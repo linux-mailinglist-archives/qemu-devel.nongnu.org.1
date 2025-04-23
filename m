@@ -2,88 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC2FDA9864E
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 11:46:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC769A98667
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 11:48:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7WdW-0001Hx-VS; Wed, 23 Apr 2025 05:43:23 -0400
+	id 1u7Whw-0000GH-N9; Wed, 23 Apr 2025 05:47:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7Wct-0007Xb-Pn
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:42:43 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <lma@suse.de>) id 1u7Whq-00007G-W1
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:47:51 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7Wcr-0008Sj-QP
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:42:43 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-43cf06eabdaso59252685e9.2
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 02:42:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745401360; x=1746006160; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=pk0z//l7H5AQM3pFebl20YpP/76wc9xrCy7OKB46KV4=;
- b=p0haFd3uMHak0BpSrJh5GEKsMUS4i49RQuNtqn9EqPzRdY3sfnAgZuZVa4vzQ8aGjK
- BaFxs+m0bYUs6ptgMJORO7V022ZpxFgzkFQqIOaYqS+vJua+dQFdl7Fkg8CWlk+RGaP+
- k7vhmZz6aihnYvgdYN+kPRvELlEsXflp9YlhPi4p8jrM1tNv8HBtjUQwmvlF61w6PLjh
- Sfc3RtgyXha1DKNOGNIu17bDBQ+wsUYBI5xGRnnjTqZW4NCHIQIUOXqxupFv5LAtIKdy
- Nn3GkhektzfxbBsDguKayY7h15nopiNiUczMv/4HymU03jDVRSjtBhbvaursva4iS3Eu
- zfLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745401360; x=1746006160;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pk0z//l7H5AQM3pFebl20YpP/76wc9xrCy7OKB46KV4=;
- b=CqgJ4jvsKkA1Zp2NzERZPMQX5AV8IjugKWFYjm0qRn1lY74EitCeBiXpN9FJsbTJNZ
- RKlm5SSq8vU4o+KVNNRu6ZHmD00bAyYYG3+1ebqBKqZms3nY4JAZU5dbq4mCVRwaPZZ/
- QjIA7TmEXMCpqv/X2EAjpMj1feo/0m/dxmHljpcFsxHTtit9ugA1IR0sepyY0aqQlXJP
- EnQE6PLBb2NBbItJ0RLWtSZ/wJja4YehmuCXx63ggDxUVqg2PNJqiIGdGpxNDb5VT/Xg
- Uk+0+YBLeLnmBIKZNVvnZlvtiEB3wPRkSke692suBAVqB6FTjpJg+y2kR1yHJR7g5ZeF
- qq2g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVJyJQWValKi5jQ8vRpoMD6UecQzogLB6zl7lbApj+mx7WTqid718iZsN0ZlbCKlMgA5N9+2YLCgmN8@nongnu.org
-X-Gm-Message-State: AOJu0YycYK39aV3VIIVfmrugnWcUSKRWhFonqGq115jb1DahobXv5xeW
- SQzmuVfyurpg6x2OjXQYXk4xNpCPskhjlYgSVIElqqQbm9RSBXH8J0gYv7PIDg2c/D2AqVbK5L3
- x
-X-Gm-Gg: ASbGncsDnMIfeBEOt9V/NLFYm+Qmw8eKzoVX8XALo3/kG8WYJvmMNj1tWLMBJJYtsQu
- uS/VzU9Yx76LpUj5as23UVRCDxcfgtRF7Zxn9z0H1x4Q6dESb27TUva9tInxR+U14B1a9G3/8Ng
- GwLO6uGfKy1bPiJDYPD+9LBcduoBciLq/Tca+7sIobYJ+McJOCwb5gFVjkDr5ExneOngFlk5dT6
- OaCDPrqwGOFzYDSf4kQzo+BYWh7ak6MF8+M0QrjsaBTALah2nOTNDVdyn8xPWJmarB4sedIK4YM
- LbexVdG/UnR0tAoldOH4c3jZ6TTfDnGp430DQ9rHDvYA1RUDVy1VZQly+qfJfA+LnJrRDonqMBi
- tlm1Fm3iKPLtWQVls/JU=
-X-Google-Smtp-Source: AGHT+IEwy2r3JIiFCTKDfvFKRU2rXv3shfSCMfa3RwPSc6/yMuisdakn4o+ZFtOHjnBjyaWqZKZ9ww==
-X-Received: by 2002:a05:600c:3d08:b0:43c:efed:732d with SMTP id
- 5b1f17b1804b1-4406aba8457mr190215125e9.16.1745401359904; 
- Wed, 23 Apr 2025 02:42:39 -0700 (PDT)
-Received: from [192.168.69.169] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-44092d2d558sm19774475e9.17.2025.04.23.02.42.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 23 Apr 2025 02:42:39 -0700 (PDT)
-Message-ID: <a8abe93c-bde5-4f71-a2e5-711893634a0e@linaro.org>
-Date: Wed, 23 Apr 2025 11:42:38 +0200
+ (Exim 4.90_1) (envelope-from <lma@suse.de>) id 1u7Who-0000YN-L9
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:47:50 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id F3F8221174;
+ Wed, 23 Apr 2025 09:47:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1745401665; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=mXLbIUVp8qDxw3neFcb8/AT3D+ctnPrZ/n0cqL6NuSQ=;
+ b=xzyJ8ELlWBv0JFnB5JzBSaKVKUcp1FlJKE2DASqrjjnhiXuvcWJCdefGSb9mjT3QF0SgAI
+ KaIqWWCJxPuIApWkiLXYEYlIr4gDYJREedkAIEzITmTEHsFCwuSTqV/Sfh0ZM9MStuE6zN
+ hRkRCexO7I/D4nfxCrNCzF0bmxtB9tc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1745401665;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=mXLbIUVp8qDxw3neFcb8/AT3D+ctnPrZ/n0cqL6NuSQ=;
+ b=R41HZ3t/nqdEGMvMmi1oJZPAsyfJ/Oqqi30XOPmDW5mHIMb5OLCUowrKUc2cJhtvMS63KU
+ cB8bkhxv5h0JibBA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1745401665; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=mXLbIUVp8qDxw3neFcb8/AT3D+ctnPrZ/n0cqL6NuSQ=;
+ b=xzyJ8ELlWBv0JFnB5JzBSaKVKUcp1FlJKE2DASqrjjnhiXuvcWJCdefGSb9mjT3QF0SgAI
+ KaIqWWCJxPuIApWkiLXYEYlIr4gDYJREedkAIEzITmTEHsFCwuSTqV/Sfh0ZM9MStuE6zN
+ hRkRCexO7I/D4nfxCrNCzF0bmxtB9tc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1745401665;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=mXLbIUVp8qDxw3neFcb8/AT3D+ctnPrZ/n0cqL6NuSQ=;
+ b=R41HZ3t/nqdEGMvMmi1oJZPAsyfJ/Oqqi30XOPmDW5mHIMb5OLCUowrKUc2cJhtvMS63KU
+ cB8bkhxv5h0JibBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E0B6313691;
+ Wed, 23 Apr 2025 09:47:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id HgvANkC3CGizEwAAD6G6ig
+ (envelope-from <lma@suse.de>); Wed, 23 Apr 2025 09:47:44 +0000
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 056/147] include/exec: Split out icount.h
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20250422192819.302784-1-richard.henderson@linaro.org>
- <20250422192819.302784-57-richard.henderson@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250422192819.302784-57-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Date: Wed, 23 Apr 2025 17:47:44 +0800
+From: lma <lma@suse.de>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, qemu-block@nongnu.org
+Subject: Re: A question about how to calculate the "Maximum transfer length"
+ in case of its absence in the Block Limits VPD device response from the
+ hardware
+In-Reply-To: <20250418153456.GA128796@fedora>
+References: <20db3af2ece22f598b54a47ec350b466@suse.de>
+ <20250418153456.GA128796@fedora>
+User-Agent: Roundcube Webmail
+Message-ID: <81accb5693785748c476bf34eb18a0ba@suse.de>
+X-Sender: lma@suse.de
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+X-Spamd-Result: default: False [-4.29 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ XM_UA_NO_VERSION(0.01)[]; ARC_NA(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
+ MIME_TRACE(0.00)[0:+]; FROM_EQ_ENVFROM(0.00)[];
+ RCVD_TLS_ALL(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ TO_DN_SOME(0.00)[]
+X-Spam-Score: -4.29
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=lma@suse.de; helo=smtp-out1.suse.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,42 +121,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/4/25 21:26, Richard Henderson wrote:
-> Split icount stuff from system/cpu-timers.h.
-> There are 17 files which only require icount.h, 7 that only
-> require cpu-timers.h, and 7 that require both.
+在 2025-04-18 23:34，Stefan Hajnoczi 写道：
+> On Thu, Apr 17, 2025 at 07:27:26PM +0800, lma wrote:
+>> Hi all,
+>> 
+>> In case of SCSI passthrough, If the Block Limits VPD device response 
+>> is
+>> absent from hardware, QEMU handles it.
+>> 
+>> There are several variables involved in this process as follows:
+>> * The bl.max_transfer
+>> * The bl.max_iov that is associated with IOV_MAX.
+>> * The bl.max_hw_iov that is associated with the max_segments sysfs 
+>> setting
+>> for the relevant block device on the host.
+>> * The bl.max_hw_transfer that is associated with the BLKSECTGET ioctl, 
+>> in
+>> other words related to the current max_sectors_kb sysfs setting of the
+>> relevant block device on the host.
+>> 
+>> Then take the smallest value and return it as the result of "Maximum
+>> transfer length" after relevant calculation, See:
+>> static uint64_t calculate_max_transfer(SCSIDevice *s)
+>> {
+>>     uint64_t max_transfer = blk_get_max_hw_transfer(s->conf.blk);
+>>     uint32_t max_iov = blk_get_max_hw_iov(s->conf.blk);
+>> 
+>>     assert(max_transfer);
+>>     max_transfer = MIN_NON_ZERO(max_transfer,
+>>                                 max_iov * qemu_real_host_page_size());
+>> 
+>>     return max_transfer / s->blocksize;
+>> }
+>> 
+>> 
+>> However, due to the limitation of IOV_MAX, no matter how powerful the 
+>> host
+>> scsi hardware is, the "Maximum transfer length" that qemu emulates in 
+>> bl vpd
+>> page is capped at 8192 sectors in case of 4kb page size and 512 bytes
+>> logical block size.
+>> For example：
+>> host:~ # sg_vpd -p bl /dev/sda
+>> Block limits VPD page (SBC)
+>>   ......
+>>   Maximum transfer length: 0 blocks [not reported]
+>>   ......
+>> 
+>> 
+>> host:~ # cat /sys/class/block/sda/queue/max_sectors_kb
+>> 16384
+>> 
+>> host:~ # cat /sys/class/block/sda/queue/max_hw_sectors_kb
+>> 32767
+>> 
+>> host:~ # cat /sys/class/block/sda/queue/max_segments
+>> 4096
+>> 
+>> 
+>> Expected:
+>> guest:~ # sg_vpd -p bl /dev/sda
+>> Block limits VPD page (SBC)
+>>   ......
+>>   Maximum transfer length: 0x8000
+>>   ......
+>> 
+>> guest:~ # cat /sys/class/block/sda/queue/max_sectors_kb
+>> 16384
+>> 
+>> guest:~ # cat /sys/class/block/sda/queue/max_hw_sectors_kb
+>> 32767
+>> 
+>> 
+>> Actual:
+>> guest:~ # sg_vpd -p bl /dev/sda
+>> Block limits VPD page (SBC)
+>>   ......
+>>   Maximum transfer length: 0x2000
+>>   ......
+>> 
+>> guest:~ # cat /sys/class/block/sda/queue/max_sectors_kb
+>> 4096
+>> 
+>> guest:~ # cat /sys/class/block/sda/queue/max_hw_sectors_kb
+>> 32767
+>> 
+>> 
+>> It seems the current design logic is not able to fully utilize the
+>> performance of the scsi hardware. I have two questions:
+>> 1. I'm curious that is it reasonable to drop the logic about IOV_MAX
+>> limitation, directly use the return value of BLKSECTGET as the maximum
+>> transfer length when QEMU emulates the block limit page of scsi vpd?
+>>    If we doing so, we will have maximum transfer length in the guest 
+>> that is
+>> consistent with the capabilities of the host hardware。
+>> 
+>> 2. Besides, Assume I set a value(eg: 8192 in kb) to max_sectors_kb in 
+>> guest
+>> which doesn't exceed the capabilities of the host hardware(eg: 16384 
+>> in kb)
+>> but exceeds the limit(eg: 4096 in kb) caused by IOV_MAX,
+>>    Any risks in readv()/writev() of raw-posix?
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   include/exec/icount.h            | 68 ++++++++++++++++++++++++++++++++
->   include/system/cpu-timers.h      | 58 ---------------------------
->   accel/tcg/cpu-exec.c             |  2 +-
->   accel/tcg/icount-common.c        |  2 +-
->   accel/tcg/monitor.c              |  1 +
->   accel/tcg/tcg-accel-ops-icount.c |  2 +-
->   accel/tcg/tcg-accel-ops-mttcg.c  |  2 +-
->   accel/tcg/tcg-accel-ops-rr.c     |  2 +-
->   accel/tcg/tcg-accel-ops.c        |  2 +-
->   accel/tcg/tcg-all.c              |  2 +-
->   accel/tcg/translate-all.c        |  2 +-
->   hw/core/ptimer.c                 |  2 +-
->   replay/replay.c                  |  2 +-
->   stubs/icount.c                   |  2 +-
->   system/cpu-timers.c              |  1 +
->   system/dma-helpers.c             |  2 +-
->   system/vl.c                      |  1 +
->   target/arm/helper.c              |  1 +
->   target/riscv/cpu_helper.c        |  2 +-
->   target/riscv/csr.c               |  2 +-
->   target/riscv/debug.c             |  1 +
->   target/riscv/machine.c           |  2 +-
->   target/riscv/pmu.c               |  2 +-
->   util/async.c                     |  2 +-
->   util/main-loop.c                 |  1 +
->   util/qemu-timer.c                |  1 +
->   26 files changed, 92 insertions(+), 75 deletions(-)
->   create mode 100644 include/exec/icount.h
+> Not a definitive answer, but just something to encourage discussion:
+> 
+> In theory IOV_MAX should not be factored into the Block Limits VPD page
+> Maximum Transfer Length field because there is already a HBA limit on
+> the maximum number of segments. For example, virtio-scsi has a seg_max
+> Configuration Space field that guest drivers honor independently of
+> Maximum Transfer Length.
+> 
+> However, I can imagine why MAX_IOV needs to be factored in:
+> 
+> 1. The maximum number of segments might be hardcoded in guest drivers
+>    for some SCSI HBAs and QEMU has no way of exposing MAX_IOV to the
+>    guest in that case.
+> 
+> 2. Guest physical RAM addresses translate to host virtual memory. That
+>    means 1 segment as seen by the guest might actually require multiple
+>    physical DMA segments on the host. A conservative calculation that
+>    assumes the worst-case 1 iovec per 4 KB memory page prevents the
+>    host maximum segments limit (note this is not the Maximum Transfer
+>    Length limit!) from being exceeded.
+> 
+> So there seem to be at least two problems here. If you relax the
+> calculation there will be corner cases that break because the guest can
+> send too many segments.
+> 
+> Stefan
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+The maximum allowed value for
+/sys/class/block/<GUEST_DEV>/queue/max_sectors_kb in guest os depends
+on the smaller of below two items in guest os:
+the "maximum transfer length of block limits VPD page"
+and
+the "/sys/class/block/<GUEST_DEV>/queue/max_hw_sectors_kb".
 
+
+The "seg_max Configuration Space field" in hw/scsi/virtio-scsi.c:
+static const Property virtio_scsi_properties[] = {
+     ...
+     DEFINE_PROP_UINT32("max_sectors", VirtIOSCSI, 
+parent_obj.conf.max_sectors,
+                                                   0xFFFF),
+     ...
+};
+
+This field determines the value of max_hw_sectors_kb in sysfs in guest
+os, Eg: In case of Logical block size 512 bytes, 0xFFFF sectors means:
+max_hw_sectors_kb = 0xFFFF/2 = 32767, I believe many users will keep
+this default value when using virtio-scsi, rather than customizing it.
+
+But by the current design and affected by IOV_MAX, the upper limit of
+/sys/class/block/<GUEST_DEV>/queue/max_sectors_kb is 4096 for SCSI
+passthrough scenario in case of 4kb page size and 512 bytes logical
+block size. Therefore, the gap between the upper limit of max_sectors_kb
+and the max_hw_sectors_kb is very large.
+
+I think this design logic is a bit strange.
+
+Anyway, Thanks for the detailed answer,
+Lin
 
