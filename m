@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2B81A98616
+	by mail.lfdr.de (Postfix) with ESMTPS id C4677A98617
 	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 11:44:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7Wd7-0008Ax-Pi; Wed, 23 Apr 2025 05:42:58 -0400
+	id 1u7Wcp-0006gz-ED; Wed, 23 Apr 2025 05:42:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u7Wc7-0005HI-Nt
+ id 1u7Wc8-0005HV-NY
  for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u7Wc5-0008O2-At
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:54 -0400
+ id 1u7Wc6-0008OS-Ow
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745401312;
+ s=mimecast20190719; t=1745401314;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rf3WOwpBMy3VnijFsEl6zZ2nGHJDtSnWrh1lZgVXQU0=;
- b=PV5B1NYREc3VecxNzZkWoYrDJli/MUITJfJjRz0KwDin62Kq8QE40T3XuvMiB3GFl/mFVp
- nEyGVnFYqFReC0cIAm725xoy82VPMxmIXG9ukJDk8Z4VvCfxd5mKv77unLRsHpVt6aWrc2
- IDGXOkmVBOkqnh56oeNfwtPvRM2IZ/8=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=5t0D0WTFgFL6eXjyADFjpdY9F8zDaIDJzfYFsnNUC/Q=;
+ b=ixpdjc4q74vxsD0bkXskZD9xjFo5Syt7TFszz235iMi0OpVK/3TM4oKnVlcHrhn5lXy2dK
+ hJPtmMyGN0+KbzeXT2m1xsVbfRGmHWm0gQOOufvx0YsS6BebnjrCuhUY3m3A26DJYVTbZ0
+ 4EMqYJfjg795CY95pkrrUtarlr0J2OQ=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-650-bGiSZowSP_6YTvNQ4AY8uA-1; Wed, 23 Apr 2025 05:41:50 -0400
-X-MC-Unique: bGiSZowSP_6YTvNQ4AY8uA-1
-X-Mimecast-MFC-AGG-ID: bGiSZowSP_6YTvNQ4AY8uA_1745401309
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-5e5c1bb6a23so749563a12.0
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 02:41:49 -0700 (PDT)
+ us-mta-633-cbaOr5dtPBC3Pn4XW9aaXw-1; Wed, 23 Apr 2025 05:41:52 -0400
+X-MC-Unique: cbaOr5dtPBC3Pn4XW9aaXw-1
+X-Mimecast-MFC-AGG-ID: cbaOr5dtPBC3Pn4XW9aaXw_1745401311
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-acbbb0009aeso173822466b.1
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 02:41:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745401308; x=1746006108;
+ d=1e100.net; s=20230601; t=1745401310; x=1746006110;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rf3WOwpBMy3VnijFsEl6zZ2nGHJDtSnWrh1lZgVXQU0=;
- b=PoGwuUtPOXcjZqdgMYZM8a6i7+wMyu9kPoMcuKUqkif5uGEcPa8OGQDLdI1H0zWkEa
- 0MKqUKf7cuukSm0+6wbfSIFYZWBXdrClj288zGgT/p7dK7e1DKcD68x5e2mnSCRl3/dE
- 13E3lhzmsKhHg2aOzwoQYGMS76ShHAHjGErJEaKfVJZNyXkQfiGeNWglUoIE8pOzfTuj
- N/ti+llrw+SK7A22n2LqezrADJL9ro3uLBXzRUVqYyDGT+WqwEeN6D0EO6Ia3kSvY2Gp
- 2YAa+Xuh9XzR3JKTedeejlQS2hGxkXG97ZiQHpowspSvCX2SrIICvFL0kvI8ykeKShC8
- n6TQ==
-X-Gm-Message-State: AOJu0YzdXrzuZzj3pxOb5faguUfEVWRFcTSJxfTPljKG1r8pIaCiGCrr
- 0GKaaSSmPtoHj++jmm1auw0bxCIji1TXnYyue9UctBaUXSwj+P4ESR3Q5KAtYdiorJDzFmzNLtM
- UL/KHZfMbefMnVQsOt76aozAyx7VadoDIkOUMSL3SI5Xxl/48MxLYMEA8B7QhXjQYYMSS8OhSFi
- 83c8XDn5Ll6TgN5VvjpXLfOsaA5Te1XSB5Bpc7
-X-Gm-Gg: ASbGncs35+KcgVY/5ic/H/3HhaP9meOGNcwBl1xdZ67qjDWMeQBnClaXYK5QvwRn1Yh
- HjVNN6EDhw2HKwIHARBQ7x+gm/+Au+VNzPi4plXsGyzefZU33PnXzZcBBaEU6uA00HXrQxHZ8Bz
- hajBouTQPW+pZ/MyopPdnXIyVpRTqaLwoFZOzSb/huTGwx2MQB/3HKwgO5RfwfJCOPsA7XLCqOn
- JRSUnGNItNzjFEB+oF5QwdAN5o0rU9iTwqL1Lfk8g7L0IGRzxQDTp/uF0Oa/z0OnPHa5GY/Arrq
- zO5VROCpR7WTLBGF
-X-Received: by 2002:a05:6402:2695:b0:5e4:d52b:78a2 with SMTP id
- 4fb4d7f45d1cf-5f6cf481c32mr1839635a12.15.1745401308079; 
- Wed, 23 Apr 2025 02:41:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH0a2JVa/5PyAmpbziD9AUD6Xtk5+F3xYuJBiZCdKxFzDR4AbQRY3g5cvZtu26iPtWxTK0EMg==
-X-Received: by 2002:a05:6402:2695:b0:5e4:d52b:78a2 with SMTP id
- 4fb4d7f45d1cf-5f6cf481c32mr1839604a12.15.1745401307545; 
- Wed, 23 Apr 2025 02:41:47 -0700 (PDT)
+ bh=5t0D0WTFgFL6eXjyADFjpdY9F8zDaIDJzfYFsnNUC/Q=;
+ b=veW8gXfUKLRRo/LpBNnbU2f2lh9ElfMG4WLOpdiwHq+9QN+x+S2IX3LThtu1Tg9BEz
+ WYOo4PRr9VWdwnT7JZsA4kbyBw8mqGfzYtgbp07k8BuGTiZG1FRoIRm29ziqqrRzK0kC
+ utWiokhPbf6SlygkrPxUm1po+jYTuquGnalEyA/QqsEP18InTCg1ivCNGm/tCY0THyFh
+ qyhDzCyxNhotL0MIVIXWPRZlQw42we6XVa5dYyGx8x2XGxx5ke7E07B+9WfF/b6NQ4hX
+ 7zKMZOazuWmljp0g6pXX5SF2/UQUtEqBhGwNf52LawcQeLnqvNGs94dBqyH/JrhGM99G
+ g8CA==
+X-Gm-Message-State: AOJu0YxNT2fWqsi9AKjuSO8ThHQdXMJOerqtCQT8r9ayzoRbkTEXILip
+ GFJGebkCFxld/uLdEq7ynIv7zEhKLKRljMgCY1KCWjmOLVGBNFguMztr5Q5jEjetrUkSu+CoeAB
+ pdWFraQkmYJr7wcz67rOYv36KWLqjbeOgJJuqyRLNBkILH53rLPE9X2pakBdMjJvc8pw44TxJNI
+ 4AP0Px9/rxzbRz85Qkl9L9AfXt8KGqLIGpd5qT
+X-Gm-Gg: ASbGnctteSKMLEUHFtM/VLkGXu9mHmsuwDDzD/FzCGyBQ0ZQpkoGnj/BQypXUKnFVx3
+ yT3+39C9sylfEsAmvSo22pSEb+Bxsi70cpzj9UHhFLJ7kP+OMtGNvTuNCFtCxnC1N9JpJtG5oYw
+ FLCXDpUljF99kaprD1W3lkFYADdCN3x//EVDRP8ETNnDyC1kJcIdcvQuhYJ8VlEEQctu6wzHtzi
+ VX+f2uVng7V3gRbM3ZczmdJ4q77Z0WGoAnlrnwRCwl9qtwAxHB7+AvVrAImcSptAv6G3WKmpP2N
+ X3iREeDZUHqn44EB
+X-Received: by 2002:a17:906:4fd5:b0:ac8:1efc:bf66 with SMTP id
+ a640c23a62f3a-acb74ddb584mr1679806866b.50.1745401310447; 
+ Wed, 23 Apr 2025 02:41:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGAPXMc1pHs3w80/+Vj2gxnnEFLWbACaWRVySlCEL9bf54r4im/j7zzKhTgUHoZi6KTKV15lg==
+X-Received: by 2002:a17:906:4fd5:b0:ac8:1efc:bf66 with SMTP id
+ a640c23a62f3a-acb74ddb584mr1679804566b.50.1745401309873; 
+ Wed, 23 Apr 2025 02:41:49 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.233.241])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5f625833ef1sm7066794a12.51.2025.04.23.02.41.45
+ a640c23a62f3a-acb6efaa9c1sm774298466b.168.2025.04.23.02.41.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Apr 2025 02:41:45 -0700 (PDT)
+ Wed, 23 Apr 2025 02:41:48 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Wei Liu <liuwe@linux.microsoft.com>
-Subject: [PULL 19/34] target/i386/hvf: provide and use simulate_{wrmsr,
- rdmsr} in emul_ops
-Date: Wed, 23 Apr 2025 11:40:49 +0200
-Message-ID: <20250423094105.40692-20-pbonzini@redhat.com>
+Subject: [PULL 20/34] target/i386: rename lazy flags field and its type
+Date: Wed, 23 Apr 2025 11:40:50 +0200
+Message-ID: <20250423094105.40692-21-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423094105.40692-1-pbonzini@redhat.com>
 References: <20250423094105.40692-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -109,119 +108,195 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Wei Liu <liuwe@linux.microsoft.com>
 
-Change the first argument's type to be CPUState to match other hooks.
+The same structure and code can be used by other accelerators. Drop
+the hvf prefix in the type and field name.
+
+No functional change.
 
 Signed-off-by: Wei Liu <liuwe@linux.microsoft.com>
-Link: https://lore.kernel.org/r/1741377325-28175-8-git-send-email-liuwe@linux.microsoft.com
+Link: https://lore.kernel.org/r/1741377325-28175-9-git-send-email-liuwe@linux.microsoft.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/hvf/hvf-i386.h |  4 ++--
- target/i386/hvf/x86_emu.h  |  2 ++
- target/i386/hvf/hvf.c      | 18 ++++++++++--------
- target/i386/hvf/x86_emu.c  |  4 ++--
- 4 files changed, 16 insertions(+), 12 deletions(-)
+ target/i386/cpu.h           |  6 ++--
+ target/i386/hvf/x86_flags.c | 56 ++++++++++++++++++-------------------
+ 2 files changed, 31 insertions(+), 31 deletions(-)
 
-diff --git a/target/i386/hvf/hvf-i386.h b/target/i386/hvf/hvf-i386.h
-index 044ad236ae8..8c42ae6b013 100644
---- a/target/i386/hvf/hvf-i386.h
-+++ b/target/i386/hvf/hvf-i386.h
-@@ -19,8 +19,8 @@
- uint32_t hvf_get_supported_cpuid(uint32_t func, uint32_t idx, int reg);
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 3c5c39ce3d3..119efc6c605 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -1811,10 +1811,10 @@ typedef struct CPUCaches {
+         CPUCacheInfo *l3_cache;
+ } CPUCaches;
  
- void hvf_handle_io(CPUState *, uint16_t, void *, int, int, int);
--void hvf_simulate_rdmsr(CPUX86State *env);
--void hvf_simulate_wrmsr(CPUX86State *env);
-+void hvf_simulate_rdmsr(CPUState *cpu);
-+void hvf_simulate_wrmsr(CPUState *cpu);
+-typedef struct HVFX86LazyFlags {
++typedef struct X86LazyFlags {
+     target_ulong result;
+     target_ulong auxbits;
+-} HVFX86LazyFlags;
++} X86LazyFlags;
  
- /* Host specific functions */
- int hvf_inject_interrupt(CPUArchState *env, int vector);
-diff --git a/target/i386/hvf/x86_emu.h b/target/i386/hvf/x86_emu.h
-index 107c1f1ac86..555b567e2c7 100644
---- a/target/i386/hvf/x86_emu.h
-+++ b/target/i386/hvf/x86_emu.h
-@@ -30,6 +30,8 @@ struct x86_emul_ops {
-                                     enum X86Seg seg);
-     void (*handle_io)(CPUState *cpu, uint16_t port, void *data, int direction,
-                       int size, int count);
-+    void (*simulate_rdmsr)(CPUState *cs);
-+    void (*simulate_wrmsr)(CPUState *cs);
- };
+ typedef struct CPUArchState {
+     /* standard registers */
+@@ -2108,7 +2108,7 @@ typedef struct CPUArchState {
+     QemuMutex xen_timers_lock;
+ #endif
+ #if defined(CONFIG_HVF)
+-    HVFX86LazyFlags hvf_lflags;
++    X86LazyFlags lflags;
+     void *emu_mmio_buf;
+ #endif
  
- extern const struct x86_emul_ops *emul_ops;
-diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
-index e4f48a79fb7..8c31d2e0cf7 100644
---- a/target/i386/hvf/hvf.c
-+++ b/target/i386/hvf/hvf.c
-@@ -252,6 +252,8 @@ static const struct x86_emul_ops hvf_x86_emul_ops = {
-     .write_mem = hvf_write_mem,
-     .read_segment_descriptor = hvf_read_segment_descriptor,
-     .handle_io = hvf_handle_io,
-+    .simulate_rdmsr = hvf_simulate_rdmsr,
-+    .simulate_wrmsr = hvf_simulate_wrmsr,
- };
- 
- int hvf_arch_init_vcpu(CPUState *cpu)
-@@ -506,10 +508,10 @@ void hvf_store_regs(CPUState *cs)
-     macvm_set_rip(cs, env->eip);
+diff --git a/target/i386/hvf/x86_flags.c b/target/i386/hvf/x86_flags.c
+index 0c75e0419c3..84e27364a03 100644
+--- a/target/i386/hvf/x86_flags.c
++++ b/target/i386/hvf/x86_flags.c
+@@ -53,7 +53,7 @@
+ #define SET_FLAGS_OSZAPC_SIZE(size, lf_carries, lf_result) { \
+     target_ulong temp = ((lf_carries) & (LF_MASK_AF)) | \
+     (((lf_carries) >> (size - 2)) << LF_BIT_PO); \
+-    env->hvf_lflags.result = (target_ulong)(int##size##_t)(lf_result); \
++    env->lflags.result = (target_ulong)(int##size##_t)(lf_result); \
+     if ((size) == 32) { \
+         temp = ((lf_carries) & ~(LF_MASK_PDB | LF_MASK_SD)); \
+     } else if ((size) == 16) { \
+@@ -63,7 +63,7 @@
+     } else { \
+         VM_PANIC("unimplemented");  \
+     } \
+-    env->hvf_lflags.auxbits = (target_ulong)(uint32_t)temp; \
++    env->lflags.auxbits = (target_ulong)(uint32_t)temp; \
  }
  
--void hvf_simulate_rdmsr(CPUX86State *env)
-+void hvf_simulate_rdmsr(CPUState *cs)
- {
--    X86CPU *cpu = env_archcpu(env);
--    CPUState *cs = env_cpu(env);
-+    X86CPU *cpu = X86_CPU(cs);
-+    CPUX86State *env = &cpu->env;
-     uint32_t msr = ECX(env);
-     uint64_t val = 0;
- 
-@@ -611,10 +613,10 @@ void hvf_simulate_rdmsr(CPUX86State *env)
-     RDX(env) = (uint32_t)(val >> 32);
+ /* carries, result */
+@@ -90,10 +90,10 @@
+     } else { \
+         VM_PANIC("unimplemented");      \
+     } \
+-    env->hvf_lflags.result = (target_ulong)(int##size##_t)(lf_result); \
+-    target_ulong delta_c = (env->hvf_lflags.auxbits ^ temp) & LF_MASK_CF; \
++    env->lflags.result = (target_ulong)(int##size##_t)(lf_result); \
++    target_ulong delta_c = (env->lflags.auxbits ^ temp) & LF_MASK_CF; \
+     delta_c ^= (delta_c >> 1); \
+-    env->hvf_lflags.auxbits = (target_ulong)(uint32_t)(temp ^ delta_c); \
++    env->lflags.auxbits = (target_ulong)(uint32_t)(temp ^ delta_c); \
  }
  
--void hvf_simulate_wrmsr(CPUX86State *env)
-+void hvf_simulate_wrmsr(CPUState *cs)
+ /* carries, result */
+@@ -107,8 +107,8 @@
+ void SET_FLAGS_OxxxxC(CPUX86State *env, uint32_t new_of, uint32_t new_cf)
  {
--    X86CPU *cpu = env_archcpu(env);
--    CPUState *cs = env_cpu(env);
-+    X86CPU *cpu = X86_CPU(cs);
-+    CPUX86State *env = &cpu->env;
-     uint32_t msr = ECX(env);
-     uint64_t data = ((uint64_t)EDX(env) << 32) | EAX(env);
- 
-@@ -900,9 +902,9 @@ int hvf_vcpu_exec(CPUState *cpu)
-         {
-             hvf_load_regs(cpu);
-             if (exit_reason == EXIT_REASON_RDMSR) {
--                hvf_simulate_rdmsr(env);
-+                hvf_simulate_rdmsr(cpu);
-             } else {
--                hvf_simulate_wrmsr(env);
-+                hvf_simulate_wrmsr(cpu);
-             }
-             env->eip += ins_len;
-             hvf_store_regs(cpu);
-diff --git a/target/i386/hvf/x86_emu.c b/target/i386/hvf/x86_emu.c
-index 3ff41c35d89..aec7a8a3fa8 100644
---- a/target/i386/hvf/x86_emu.c
-+++ b/target/i386/hvf/x86_emu.c
-@@ -672,13 +672,13 @@ void x86_emul_raise_exception(CPUX86State *env, int exception_index, int error_c
- 
- static void exec_rdmsr(CPUX86State *env, struct x86_decode *decode)
- {
--    hvf_simulate_rdmsr(env);
-+    emul_ops->simulate_rdmsr(env_cpu(env));
-     env->eip += decode->len;
+     uint32_t temp_po = new_of ^ new_cf;
+-    env->hvf_lflags.auxbits &= ~(LF_MASK_PO | LF_MASK_CF);
+-    env->hvf_lflags.auxbits |= (temp_po << LF_BIT_PO) | (new_cf << LF_BIT_CF);
++    env->lflags.auxbits &= ~(LF_MASK_PO | LF_MASK_CF);
++    env->lflags.auxbits |= (temp_po << LF_BIT_PO) | (new_cf << LF_BIT_CF);
  }
  
- static void exec_wrmsr(CPUX86State *env, struct x86_decode *decode)
+ void SET_FLAGS_OSZAPC_SUB32(CPUX86State *env, uint32_t v1, uint32_t v2,
+@@ -204,27 +204,27 @@ void SET_FLAGS_OSZAPC_LOGIC8(CPUX86State *env, uint8_t v1, uint8_t v2,
+ 
+ bool get_PF(CPUX86State *env)
  {
--    hvf_simulate_wrmsr(env);
-+    emul_ops->simulate_wrmsr(env_cpu(env));
-     env->eip += decode->len;
+-    uint32_t temp = (255 & env->hvf_lflags.result);
+-    temp = temp ^ (255 & (env->hvf_lflags.auxbits >> LF_BIT_PDB));
++    uint32_t temp = (255 & env->lflags.result);
++    temp = temp ^ (255 & (env->lflags.auxbits >> LF_BIT_PDB));
+     temp = (temp ^ (temp >> 4)) & 0x0F;
+     return (0x9669U >> temp) & 1;
  }
  
+ void set_PF(CPUX86State *env, bool val)
+ {
+-    uint32_t temp = (255 & env->hvf_lflags.result) ^ (!val);
+-    env->hvf_lflags.auxbits &= ~(LF_MASK_PDB);
+-    env->hvf_lflags.auxbits |= (temp << LF_BIT_PDB);
++    uint32_t temp = (255 & env->lflags.result) ^ (!val);
++    env->lflags.auxbits &= ~(LF_MASK_PDB);
++    env->lflags.auxbits |= (temp << LF_BIT_PDB);
+ }
+ 
+ bool get_OF(CPUX86State *env)
+ {
+-    return ((env->hvf_lflags.auxbits + (1U << LF_BIT_PO)) >> LF_BIT_CF) & 1;
++    return ((env->lflags.auxbits + (1U << LF_BIT_PO)) >> LF_BIT_CF) & 1;
+ }
+ 
+ bool get_CF(CPUX86State *env)
+ {
+-    return (env->hvf_lflags.auxbits >> LF_BIT_CF) & 1;
++    return (env->lflags.auxbits >> LF_BIT_CF) & 1;
+ }
+ 
+ void set_OF(CPUX86State *env, bool val)
+@@ -241,45 +241,45 @@ void set_CF(CPUX86State *env, bool val)
+ 
+ bool get_AF(CPUX86State *env)
+ {
+-    return (env->hvf_lflags.auxbits >> LF_BIT_AF) & 1;
++    return (env->lflags.auxbits >> LF_BIT_AF) & 1;
+ }
+ 
+ void set_AF(CPUX86State *env, bool val)
+ {
+-    env->hvf_lflags.auxbits &= ~(LF_MASK_AF);
+-    env->hvf_lflags.auxbits |= val << LF_BIT_AF;
++    env->lflags.auxbits &= ~(LF_MASK_AF);
++    env->lflags.auxbits |= val << LF_BIT_AF;
+ }
+ 
+ bool get_ZF(CPUX86State *env)
+ {
+-    return !env->hvf_lflags.result;
++    return !env->lflags.result;
+ }
+ 
+ void set_ZF(CPUX86State *env, bool val)
+ {
+     if (val) {
+-        env->hvf_lflags.auxbits ^=
+-         (((env->hvf_lflags.result >> LF_SIGN_BIT) & 1) << LF_BIT_SD);
++        env->lflags.auxbits ^=
++         (((env->lflags.result >> LF_SIGN_BIT) & 1) << LF_BIT_SD);
+         /* merge the parity bits into the Parity Delta Byte */
+-        uint32_t temp_pdb = (255 & env->hvf_lflags.result);
+-        env->hvf_lflags.auxbits ^= (temp_pdb << LF_BIT_PDB);
++        uint32_t temp_pdb = (255 & env->lflags.result);
++        env->lflags.auxbits ^= (temp_pdb << LF_BIT_PDB);
+         /* now zero the .result value */
+-        env->hvf_lflags.result = 0;
++        env->lflags.result = 0;
+     } else {
+-        env->hvf_lflags.result |= (1 << 8);
++        env->lflags.result |= (1 << 8);
+     }
+ }
+ 
+ bool get_SF(CPUX86State *env)
+ {
+-    return ((env->hvf_lflags.result >> LF_SIGN_BIT) ^
+-            (env->hvf_lflags.auxbits >> LF_BIT_SD)) & 1;
++    return ((env->lflags.result >> LF_SIGN_BIT) ^
++            (env->lflags.auxbits >> LF_BIT_SD)) & 1;
+ }
+ 
+ void set_SF(CPUX86State *env, bool val)
+ {
+     bool temp_sf = get_SF(env);
+-    env->hvf_lflags.auxbits ^= (temp_sf ^ val) << LF_BIT_SD;
++    env->lflags.auxbits ^= (temp_sf ^ val) << LF_BIT_SD;
+ }
+ 
+ void lflags_to_rflags(CPUX86State *env)
+@@ -295,7 +295,7 @@ void lflags_to_rflags(CPUX86State *env)
+ 
+ void rflags_to_lflags(CPUX86State *env)
+ {
+-    env->hvf_lflags.auxbits = env->hvf_lflags.result = 0;
++    env->lflags.auxbits = env->lflags.result = 0;
+     set_OF(env, env->eflags & CC_O);
+     set_SF(env, env->eflags & CC_S);
+     set_ZF(env, env->eflags & CC_Z);
 -- 
 2.49.0
 
