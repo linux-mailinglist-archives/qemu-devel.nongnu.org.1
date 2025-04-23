@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1986BA98897
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 13:28:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 008EFA98893
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 13:28:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7YFt-0004BY-HN; Wed, 23 Apr 2025 07:27:05 -0400
+	id 1u7YFp-00046E-8K; Wed, 23 Apr 2025 07:27:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7YFY-000423-Ko
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 07:26:48 -0400
+ id 1u7YFc-00042i-Pw
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 07:26:51 -0400
 Received: from mgamail.intel.com ([192.198.163.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7YFW-0002wd-AH
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 07:26:44 -0400
+ id 1u7YFa-0002wd-No
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 07:26:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745407602; x=1776943602;
+ t=1745407607; x=1776943607;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=4q6Or/+6p9mp+08bZ9Ij5ZWPX5A6SM+UoEM54szMPr4=;
- b=MWIMvZpHuNKGw8ax/i7jIDGyaDSdiJ8fZ6+GDo5cz2aKFw0tw2Sb56FO
- iVohAtjEh74DppFeXBnU5JtaGJhkc8asRZibP7eAXS3mL8C586QHVf86k
- Qr4kDJ1gDNAzuLaZKF55qfU5ifR7/bnsWebDUP5gu5jDs4kR9tBYnBGr+
- +A1Q8PkKHcamBs3+J2RGM6UFcXCegCSFYHL4OKbk2co5GVGlqSM4zXNdM
- Y4Sgwzie5Dc208Q8qdJ1CXgs14RkxfbkxlV7Iqgqw8KD0SDmaNSrAHFm/
- MEs2jfLpSylI/N16PrvyxIPETcT+yFm1AMf0QyhJ1EEmFedWIOYJdNDHo w==;
-X-CSE-ConnectionGUID: pIepYYMMRtK2jIe/22f/jg==
-X-CSE-MsgGUID: AhrETjlEQ7KDx9WLEnaJNA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="50825314"
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="50825314"
+ bh=Ru8y57hh6APWX2y18YyGmRmqQ+sT6KAsNwnfHzd4IY4=;
+ b=i5/HkXz1ebqTrnqg2CUdqvjVgV9F/wX3wQCeZfmUTwuKCNfuBJEtsya1
+ 4OoQNQO/4hURGIHYXe8Ddc2zSrMHlIkrJycmJYNL7FUD6Z1BMfEg5dM9k
+ BPWWNn7Q8j2MAHF2EFz8f13FZs3SjAYBEMxaO0ZUDxNMwzXcPdYxx6WDa
+ u0I69JL6zX2qGlVrDAOIVdi/+LYbTGMoAMBC49np3sGUqVqKWRfwZNz5b
+ yfZu3B3Xi6rG2+FHD6sGXPsLZL2bx1OM4K38gsPzu6vpcuD44N88/sueq
+ l4Jmq+McqvTp4q3Tgyd10eNSnFt3BmX1eYi0gQj/aNzKM49pPC5EA2RUj g==;
+X-CSE-ConnectionGUID: plag3YijQmOZDKrMpKJ9nw==
+X-CSE-MsgGUID: KqPWrMKiStKFTIVSC5nWtw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="50825326"
+X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="50825326"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2025 04:26:41 -0700
-X-CSE-ConnectionGUID: LydGAKfyTp+US07j7VmH9A==
-X-CSE-MsgGUID: MQJmjqnKRnGYG4bE3LBY/A==
+ 23 Apr 2025 04:26:45 -0700
+X-CSE-ConnectionGUID: W9p10uIKSGGYNjTOX4fqYQ==
+X-CSE-MsgGUID: b72GhZUaTw6dE7wyqdtjbQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="137150812"
+X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="137150820"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa003.jf.intel.com with ESMTP; 23 Apr 2025 04:26:38 -0700
+ by orviesa003.jf.intel.com with ESMTP; 23 Apr 2025 04:26:42 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -52,9 +52,9 @@ Cc: Babu Moger <babu.moger@amd.com>, Ewan Hai <ewanhai-oc@zhaoxin.com>,
  Jason Zeng <jason.zeng@intel.com>,
  Manish Mishra <manish.mishra@nutanix.com>, Tao Su <tao1.su@intel.com>,
  qemu-devel@nongnu.org, kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 08/10] i386/cpu: Enable 0x1f leaf for SierraForest by default
-Date: Wed, 23 Apr 2025 19:47:00 +0800
-Message-Id: <20250423114702.1529340-9-zhao1.liu@intel.com>
+Subject: [RFC 09/10] i386/cpu: Enable 0x1f leaf for GraniteRapids by default
+Date: Wed, 23 Apr 2025 19:47:01 +0800
+Message-Id: <20250423114702.1529340-10-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250423114702.1529340-1-zhao1.liu@intel.com>
 References: <20250423114702.1529340-1-zhao1.liu@intel.com>
@@ -85,7 +85,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Host SierraForest CPU has 0x1f leaf by default, so that enable it for
+Host GraniteRapids CPU has 0x1f leaf by default, so that enable it for
 Guest CPU by default as well.
 
 Suggested-by: Igor Mammedov <imammedo@redhat.com>
@@ -95,16 +95,16 @@ Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
  1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 26dc5b6a6a8c..2a518b68e67a 100644
+index 2a518b68e67a..38b330aaed4f 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -4856,8 +4856,11 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+@@ -4706,8 +4706,11 @@ static const X86CPUDefinition builtin_x86_defs[] = {
              },
              {
                  .version = 3,
--                .note = "with srf-sp cache model",
-+                .note = "with srf-sp cache model and 0x1f leaf",
-                 .cache_info = &xeon_srf_cache_info,
+-                .note = "with gnr-sp cache model",
++                .note = "with gnr-sp cache model and 0x1f leaf",
+                 .cache_info = &xeon_gnr_cache_info,
 +                .props = (PropValue[]) {
 +                    { "cpuid-0x1f", "on" },
 +                }
