@@ -2,70 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD5CDA98A71
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 15:07:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46513A98A88
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 15:09:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7ZoB-0004W1-Ve; Wed, 23 Apr 2025 09:06:36 -0400
+	id 1u7ZqN-0007Vi-33; Wed, 23 Apr 2025 09:08:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1u7Znf-0004Kw-H1
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 09:06:03 -0400
-Received: from mgamail.intel.com ([198.175.65.21])
+ id 1u7Zq8-0007LE-00
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 09:08:41 -0400
+Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1u7Znc-0007sb-F5
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 09:06:03 -0400
+ id 1u7Zq1-0008GX-Hu
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 09:08:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745413561; x=1776949561;
+ t=1745413710; x=1776949710;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to:content-transfer-encoding;
- bh=Tl+0+y185DgIHpX7ae3+z9ruYdWnjo2wg62la9Udigo=;
- b=Wmss7KISVwGiRBOBpqKYC4//suxPxLfdmg649St5H9EUK3j3IX1sNSXP
- NK+xIFsDrvidtUX6WmZBOJx7K7yAqhijFqJ8YWx4ujwhyaqMQEX+6nKvE
- LXPopA5XyUFGj/fZch1xJAOmlkDMBSE6abVk+gLQhQInMesIiB3WLiTGQ
- e9tzBukN6ePFVQSUvSU4vg2YgyRVNXCpCS5nXGk1aH3JDBshH0yJnlpcT
- 3IxrCS0oDLUewsqs6Wmtl7tu42QoSKo/Dgb3fJA1RG1+NKgwj0EicUvAo
- An50CpXNlhFYTdoA/LMecax5g8YRRAv2fjdQXBGuW/gz84dZo8XPjjMIA Q==;
-X-CSE-ConnectionGUID: WC9ofMfYTs2629F8KLjxXA==
-X-CSE-MsgGUID: n8TWVb+GT5yqTfq/+cPLNg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="46914905"
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="46914905"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2025 06:05:51 -0700
-X-CSE-ConnectionGUID: uXSIB91ITSG/dEQvO9r4RQ==
-X-CSE-MsgGUID: HzAHN9adTmaDywAH/ernmA==
+ bh=3VqGwj3+sY0uLWw4JqTBQNg6+lFNIaFJqTbg3MNeBZw=;
+ b=VvfJ3AE4YRzctLb2X0x1N0c8PzhC9GlV0bdbyIQO6EDizNLML9pl4M93
+ 0vvLwrdEJX0SsfklPN/efz2Rsahj0kNb7Sln8L70Kexgn+uq0zoKRiWAS
+ AWuBVBSwmcgovZP/QUXfEYqjUJAIiCCJPpBAP3sSZC2kyIaxSvFnUqWkU
+ tCEaZkU9KnrvWEHZGyrRkxAZ0TkIv6TrtbkqzOcKV7PD6yEaDplSekDHC
+ 1N16vhscDXJQl/Jd+HsJ9d/qtTSHGJEjRM+x9MlLs1oAAk0SbNPYYf+2f
+ iV5UsBwo9Cy9q+d4fxMuRnhbhCGiKGY/oTxr6tkaV6Zm1c0p7ir1adovp Q==;
+X-CSE-ConnectionGUID: jqp/sqqyQMyBEGlVOnIv3A==
+X-CSE-MsgGUID: E2HQumV8Rmi/spGC/FFZHg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="64532035"
+X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="64532035"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2025 06:08:27 -0700
+X-CSE-ConnectionGUID: ABK32sNeQxW7E6ftS5OXvg==
+X-CSE-MsgGUID: Hk4J5wkESpCOZchnIzJ/hQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="132061302"
+X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="163283416"
 Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
  ([10.124.247.1])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2025 06:05:46 -0700
-Message-ID: <596c7a44-797b-4a16-bd7e-0f0dc5c2e593@intel.com>
-Date: Wed, 23 Apr 2025 21:05:36 +0800
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2025 06:08:24 -0700
+Message-ID: <bb453ec7-deec-42aa-b9b1-ac0f4bf2f967@intel.com>
+Date: Wed, 23 Apr 2025 21:08:18 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 01/10] i386/cpu: Mark CPUID[0x80000005] as reserved for Intel
-To: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>
-Cc: Babu Moger <babu.moger@amd.com>, Ewan Hai <ewanhai-oc@zhaoxin.com>,
- Tejus GK <tejus.gk@nutanix.com>, Jason Zeng <jason.zeng@intel.com>,
- Manish Mishra <manish.mishra@nutanix.com>, Tao Su <tao1.su@intel.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org
-References: <20250423114702.1529340-1-zhao1.liu@intel.com>
- <20250423114702.1529340-2-zhao1.liu@intel.com>
+Subject: Re: [PATCH v8 13/55] i386/tdx: Support user configurable
+ mrconfigid/mrowner/mrownerconfig
+To: Zhao Liu <zhao1.liu@intel.com>, Markus Armbruster <armbru@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Francesco Lavra <francescolavra.fl@gmail.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
+ <20250401130205.2198253-14-xiaoyao.li@intel.com> <aAe49odpsz108aZb@intel.com>
+ <e67699a5-8b62-45a0-8cf1-586440ec85ee@intel.com> <aAjdqiTY/KNB+KtQ@intel.com>
 Content-Language: en-US
 From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20250423114702.1529340-2-zhao1.liu@intel.com>
+In-Reply-To: <aAjdqiTY/KNB+KtQ@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.21; envelope-from=xiaoyao.li@intel.com;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.198.163.8; envelope-from=xiaoyao.li@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -36
 X-Spam_score: -3.7
@@ -90,83 +92,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/23/2025 7:46 PM, Zhao Liu wrote:
-> Per SDM, 0x80000005 leaf is reserved for Intel CPU, and its current
-> "assert" check blocks adding new cache model for non-AMD CPUs.
+On 4/23/2025 8:31 PM, Zhao Liu wrote:
+> On Wed, Apr 23, 2025 at 04:11:25PM +0800, Xiaoyao Li wrote:
+>> Date: Wed, 23 Apr 2025 16:11:25 +0800
+>> From: Xiaoyao Li <xiaoyao.li@intel.com>
+>> Subject: Re: [PATCH v8 13/55] i386/tdx: Support user configurable
+>>   mrconfigid/mrowner/mrownerconfig
+>>
+>> On 4/22/2025 11:42 PM, Zhao Liu wrote:
+>>>> diff --git a/qapi/qom.json b/qapi/qom.json
+>>>> index f229bb07aaec..a8379bac1719 100644
+>>>> --- a/qapi/qom.json
+>>>> +++ b/qapi/qom.json
+>>>> @@ -1060,11 +1060,25 @@
+>>>>    #     pages.  Some guest OS (e.g., Linux TD guest) may require this to
+>>>>    #     be set, otherwise they refuse to boot.
+>>>>    #
+>>>> +# @mrconfigid: ID for non-owner-defined configuration of the guest TD,
+>>>> +#     e.g., run-time or OS configuration (base64 encoded SHA384 digest).
+>>>> +#     Defaults to all zeros.
+>>>
+>>> Maybe a typo? s/Defaults/Default/
+>>
+>> (It) defaults to all zeros.
+>>
+>> If you grep the "defaults to", you can get a lot of it.
 > 
-> Therefore, check the vendor and encode this leaf as all-0 for Intel
-> CPU. And since Zhaoxin mostly follows Intel behavior, apply the vendor
-> check for Zhaoxin as well.
-> 
-> Note, for !vendor_cpuid_only case, non-AMD CPU would get the wrong
-> information, i.e., get AMD's cache model for Intel or Zhaoxin CPUs.
-> For this case, there is no need to tweak for non-AMD CPUs, because
-> vendor_cpuid_only has been turned on by default since PC machine v6.1.
-> 
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> ---
->   target/i386/cpu.c | 16 ++++++++++++++--
->   1 file changed, 14 insertions(+), 2 deletions(-)
-> 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 1b64ceaaba46..8fdafa8aedaf 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -7248,11 +7248,23 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->           *edx = env->cpuid_model[(index - 0x80000002) * 4 + 3];
->           break;
->       case 0x80000005:
-> -        /* cache info (L1 cache) */
-> -        if (cpu->cache_info_passthrough) {
-> +        /*
-> +         * cache info (L1 cache)
-> +         *
-> +         * For !vendor_cpuid_only case, non-AMD CPU would get the wrong
-> +         * information, i.e., get AMD's cache model. It doesn't matter,
-> +         * vendor_cpuid_only has been turned on by default since
-> +         * PC machine v6.1.
-> +         */
+> The comment can be relaxed, but please try to be precise with the doc.
+> You can add the omitted "It".
 
-We need to define a new compat property for it other than 
-vendor_cpuid_only, for 10.1.
+Actually, it came from Markus[*], the QAPI maintainer.
 
-I proposed some change to leaf FEAT_8000_0001_EDX[1], and I was told by 
-Paolo (privately) that vendor_cpuid_only doesn't suffice.
+So I would leave it to him to make the decision.
 
-  On Fri, Oct 11, 2024 at 6:22 PM Xiaoyao Li <xiaoyao.li@intel.com> wrote:
-  >
-  > On 10/11/2024 11:30 PM, Paolo Bonzini wrote:
-  > > On Fri, Oct 11, 2024 at 4:55 PM Xiaoyao Li <xiaoyao.li@intel.com> 
-wrote:
-  > >>
-  > >> I think patch 8 is also a general issue> Without it, the
-  > >> CPUID_EXT2_AMD_ALIASES bits are exposed to Intel VMs which are
-  > >> reserved bits for Intel.
-  > >
-  > > Yes but you'd have to add compat properties for these. If you can do
-  > > it for TDX only, that's easier.
-  >
-  > Does vendor_cpuid_only suffice?
-
-  Unfortunately not, because it is turned off only for <=6.0 machine
-  types. Here you'd have to turn it off for <=9.1 machine types.
-
-
-[1] 
-https://lore.kernel.org/qemu-devel/20240814075431.339209-9-xiaoyao.li@intel.com/
-
-
-> +        if (cpu->vendor_cpuid_only &&
-> +            (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env))) {
-> +            *eax = *ebx = *ecx = *edx = 0;
-> +            break;
-> +        } else if (cpu->cache_info_passthrough) {
->               x86_cpu_get_cache_cpuid(index, 0, eax, ebx, ecx, edx);
->               break;
->           }
-> +
->           *eax = (L1_DTLB_2M_ASSOC << 24) | (L1_DTLB_2M_ENTRIES << 16) |
->                  (L1_ITLB_2M_ASSOC <<  8) | (L1_ITLB_2M_ENTRIES);
->           *ebx = (L1_DTLB_4K_ASSOC << 24) | (L1_DTLB_4K_ENTRIES << 16) |
-
+[*] https://lore.kernel.org/qemu-devel/87ttli87sw.fsf@pond.sub.org/
 
