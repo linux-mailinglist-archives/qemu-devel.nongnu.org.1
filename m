@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 248F3A98896
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 13:28:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8E70A9888E
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 13:27:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7YFo-000456-Q2; Wed, 23 Apr 2025 07:27:00 -0400
+	id 1u7YFf-0003xY-CQ; Wed, 23 Apr 2025 07:26:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7YF8-0003uX-QW
+ id 1u7YF9-0003uh-Fg
  for qemu-devel@nongnu.org; Wed, 23 Apr 2025 07:26:22 -0400
 Received: from mgamail.intel.com ([192.198.163.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7YF4-0002vs-G8
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 07:26:18 -0400
+ id 1u7YF7-0002vw-47
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 07:26:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745407574; x=1776943574;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=sWI3DOLRDTWF/zbnA7amIpyitgpG1InAQItEsYRGi6E=;
- b=mrrM/knlm+MZ33jh4w1otR4vOtZsLWVDhhUYSibZLGP71W5W13AYenmS
- Mba4q3tQGtPxg0NzoOjLy/uxmKtpIZby27oDc0+NBfrjuCQEcAwhnhzYF
- ovEBthbmM6MC3Gk/+mhiJSnEvIZ1SUO056ZUaDVkJirivsPf1tjZlDtHh
- bZq1BtIt2BulGfQJT2Qorv4Z1tPlJtfVWWJl3N1KtniNSTYlSbO8SmI5O
- 3qvaT4KQNP4J5vF3gMmzfXobbEtebQqy+hFVyIcdS1ilG/HbEFQwUzsCN
- lEMFZsPp2CPJNMnuTqOrtAvSl79MHAKQxxaDu8T5t45A9Dc/wPkAVg/1J A==;
-X-CSE-ConnectionGUID: m9aJka83QV2GympMONDTcw==
-X-CSE-MsgGUID: lkpI43R6THqMmIJ5/UA/MQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="50825246"
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="50825246"
+ t=1745407577; x=1776943577;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=hFmCDh1g6jFUGO8m7NQhmZ+M7gV0kLnTguTu4AQJhYA=;
+ b=ILm2u1j2aUjNZkAGGbAGYxnkVZuTrF2q8+d/8BzGLSNdp0DblD59N/m8
+ rI0RWsNCuda8YNYH8QyrrXk0Q9QcTgiPItaY0HToPFjW6qqitTAjZ8cuF
+ b5AEG32qWcRswWwPmid2yI9lvhxYQBdRB5LJK5umM1z5Xc9N02qvX26tL
+ UBphuCfbQaywn0ES3kuZUGKaLTmCh4V1dcCmvJZVw5w6Ux0lSCfhJUnw4
+ 85k1BL2CulrN6omdJAVRViJUnAfG2oN1sDnEfzZ+kjTSD/KSEgx9nbx2c
+ fLzVPE3htJQGusLs/HErcH4ybTpkjhmeZ6wjzz8E7gQYpiU8rJ53YeGCF g==;
+X-CSE-ConnectionGUID: 0tqkhLdeR6WSPtR5xXim4Q==
+X-CSE-MsgGUID: lIcY+OS6TmGZQLTEoie26w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="50825254"
+X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="50825254"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2025 04:26:11 -0700
-X-CSE-ConnectionGUID: 7kic6yL5Ry26K8wLOk1jIg==
-X-CSE-MsgGUID: FK6712zITSS+5mtmot+13g==
+ 23 Apr 2025 04:26:14 -0700
+X-CSE-ConnectionGUID: tsvDa8cqR0qLIgIGbl3vlA==
+X-CSE-MsgGUID: FVISKOKWSki5mLfx20fGug==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="137150718"
+X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="137150725"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa003.jf.intel.com with ESMTP; 23 Apr 2025 04:26:07 -0700
+ by orviesa003.jf.intel.com with ESMTP; 23 Apr 2025 04:26:11 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -52,13 +52,13 @@ Cc: Babu Moger <babu.moger@amd.com>, Ewan Hai <ewanhai-oc@zhaoxin.com>,
  Jason Zeng <jason.zeng@intel.com>,
  Manish Mishra <manish.mishra@nutanix.com>, Tao Su <tao1.su@intel.com>,
  qemu-devel@nongnu.org, kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 00/10] i386/cpu: Cache CPUID fixup,
- Intel cache model & topo CPUID enhencement
-Date: Wed, 23 Apr 2025 19:46:52 +0800
-Message-Id: <20250423114702.1529340-1-zhao1.liu@intel.com>
+Subject: [RFC 01/10] i386/cpu: Mark CPUID[0x80000005] as reserved for Intel
+Date: Wed, 23 Apr 2025 19:46:53 +0800
+Message-Id: <20250423114702.1529340-2-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250423114702.1529340-1-zhao1.liu@intel.com>
+References: <20250423114702.1529340-1-zhao1.liu@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.12; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
@@ -85,122 +85,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi all,
+Per SDM, 0x80000005 leaf is reserved for Intel CPU, and its current
+"assert" check blocks adding new cache model for non-AMD CPUs.
 
-(Since patches 1 and 2 involve changes to x86 vendors other than Intel,
-I have also cc'd friends from AMD and Zhaoxin.)
+Therefore, check the vendor and encode this leaf as all-0 for Intel
+CPU. And since Zhaoxin mostly follows Intel behavior, apply the vendor
+check for Zhaoxin as well.
 
-These are the ones I was going to clean up a long time ago:
- * Fixup CPUID 0x80000005 & 0x80000006 for Intel (and Zhaoxin now).
- * Add cache model for Intel CPUs.
- * Enable 0x1f CPUID leaf for specific Intel CPUs, which already have
-   this leaf on host by default.
+Note, for !vendor_cpuid_only case, non-AMD CPU would get the wrong
+information, i.e., get AMD's cache model for Intel or Zhaoxin CPUs.
+For this case, there is no need to tweak for non-AMD CPUs, because
+vendor_cpuid_only has been turned on by default since PC machine v6.1.
 
-Overall, the enhancements to the Intel CPU models are still based on
-feedback received over time, for a long time...
-
-I'll introduce my changes one by one in the order of importance as I
-see it. (The doc update is missing in this version.)
-
-
-Intel Cache Model
-=================
-
-AMD has supports cache model for a long time. And this feature strats
-from the Eduardo's idea [1].
-
-Unfortunately, Intel does not support this, and I have received some
-feedback (from Tejus on mail list [2] and kvm forum, and from Jason).
-
-Additionally, after clearly defining the cache topology for QEMU's
-cache model, outdated cache models can easily raise more questions. For
-example, the default legacy cache model's L3 is per die, but SPR's
-real L3 is per socket. Users may question how the L3 topology changes
-when multiple dies are created (discussed with Daniel on [3]).
-
-So, in this series, I have added cache models for SRF, GNR, and SPR
-(because these are the only machines I can find at the moment :-) ).
-
-Note that the cache models are based on the Scalable Performance (SP)
-version, and the Xeon Advanced Performance (AP) version may have
-different cache sizes. However, SP is sufficient as the default cache
-model baseline. In the future, I will consider adding additional
-parameters in "smp-cache" to adjust cache sizes to meet different needs.
-
-[1]: https://lore.kernel.org/qemu-devel/20180320175427.GU3417@localhost.localdomain/
-[2]: https://lore.kernel.org/qemu-devel/6766AC1F-96D1-41F0-AAEB-CE4158662A51@nutanix.com/
-[3]: https://lore.kernel.org/qemu-devel/ZkTrsDdyGRFzVULG@redhat.com/
-
-0x1f CPUID by default (for some CPUs)
-=====================================
-
-Once the cache model can be clearly defined, another issue is the
-topology.
-
-Currently, the cache topology is actually tied to the CPU topology.
-However, in recent Intel CPUs (from cascadelake-AP - 2nd xeon [4]),
-CPU topology information is primarily expressed using the 0x1f leaf.
-
-Due to compatibility issues and historical reasons, the Guest's 0x1f
-is not unconditionally exposed.
-
-The discrepancy between having 0x1f on the Host but not on the Guest
-does indeed cause problems (Manish mentioned in [5]).
-
-Manish and Xiaoyao (for TDX) both attempted to enable 0x1f by default
-for Intel CPUs [6] [7], but following Igor's suggestion, it is more
-appropriate to enable it by default only for certain CPU models [8]. 
-
-So, as I update the CPU model at this time, I think it's time to revisit
-the community's idea (referencing patch 7, where I "took the liberty" to
-merge the property-related work pieces from Manish and Xiaoyao, based on
-a TDX patch from Xiaoyao [9]).
-
-I enable the 0x1f leaf for SRF, GNR and SPR by default for better
-emulation of real silicons.
-
-[4]: https://lore.kernel.org/qemu-devel/ZpoWskY4XE%2F98jss@intel.com/
-[5]: https://lore.kernel.org/qemu-devel/PH0PR02MB738410511BF51B12DB09BE6CF6AC2@PH0PR02MB7384.namprd02.prod.outlook.com/
-[6]: https://lore.kernel.org/qemu-devel/20240722101859.47408-1-manish.mishra@nutanix.com/
-[7]: https://lore.kernel.org/qemu-devel/20240813033145.279307-1-xiaoyao.li@intel.com/
-[8]: https://lore.kernel.org/qemu-devel/20240723170321.0ef780c5@imammedo.users.ipa.redhat.com/
-[9]: https://lore.kernel.org/qemu-devel/20250401130205.2198253-34-xiaoyao.li@intel.com/
-
-
-CPUID 0x80000005 & 0x80000006 Fix
-=================================
-
-CPUID[0x80000005] is reserved for Intel, and Intel only supports
-CPUID[0x80000006].ECX. And becuase AMD requires lines_per_tag to be not
-0, which blocks Intel's new cache model.
-
-Therefore, fix these 2 leaves for Intel (and Zhaoxin - which follows
-Intel's SDM).
-
-Thanks and Best Regards,
-Zhao
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
-Manish Mishra (1):
-  i386/cpu: Add a "cpuid-0x1f" property
+ target/i386/cpu.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-Xiaoyao Li (1):
-  i386/cpu: Introduce enable_cpuid_0x1f to force exposing CPUID 0x1f
-
-Zhao Liu (8):
-  i386/cpu: Mark CPUID[0x80000005] as reserved for Intel
-  i386/cpu: Fix CPUID[0x80000006] for Intel CPU
-  i386/cpu: Introduce cache model for SierraForest
-  i386/cpu: Introduce cache model for GraniteRapids
-  i386/cpu: Introduce cache model for SapphireRapids
-  i386/cpu: Enable 0x1f leaf for SierraForest by default
-  i386/cpu: Enable 0x1f leaf for GraniteRapids by default
-  i386/cpu: Enable 0x1f leaf for SapphireRapids by default
-
- target/i386/cpu.c     | 346 ++++++++++++++++++++++++++++++++++++++++--
- target/i386/cpu.h     |   9 ++
- target/i386/kvm/kvm.c |   2 +-
- 3 files changed, 343 insertions(+), 14 deletions(-)
-
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 1b64ceaaba46..8fdafa8aedaf 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -7248,11 +7248,23 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+         *edx = env->cpuid_model[(index - 0x80000002) * 4 + 3];
+         break;
+     case 0x80000005:
+-        /* cache info (L1 cache) */
+-        if (cpu->cache_info_passthrough) {
++        /*
++         * cache info (L1 cache)
++         *
++         * For !vendor_cpuid_only case, non-AMD CPU would get the wrong
++         * information, i.e., get AMD's cache model. It doesn't matter,
++         * vendor_cpuid_only has been turned on by default since
++         * PC machine v6.1.
++         */
++        if (cpu->vendor_cpuid_only &&
++            (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env))) {
++            *eax = *ebx = *ecx = *edx = 0;
++            break;
++        } else if (cpu->cache_info_passthrough) {
+             x86_cpu_get_cache_cpuid(index, 0, eax, ebx, ecx, edx);
+             break;
+         }
++
+         *eax = (L1_DTLB_2M_ASSOC << 24) | (L1_DTLB_2M_ENTRIES << 16) |
+                (L1_ITLB_2M_ASSOC <<  8) | (L1_ITLB_2M_ENTRIES);
+         *ebx = (L1_DTLB_4K_ASSOC << 24) | (L1_DTLB_4K_ENTRIES << 16) |
 -- 
 2.34.1
 
