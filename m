@@ -2,97 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60D6CA985C0
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 11:37:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FC62A985C4
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 11:38:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7WXT-0000sq-AO; Wed, 23 Apr 2025 05:37:07 -0400
+	id 1u7WYS-00023z-KI; Wed, 23 Apr 2025 05:38:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=wlG+=XJ=kaod.org=clg@ozlabs.org>)
- id 1u7WXP-0000rq-8l; Wed, 23 Apr 2025 05:37:03 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=wlG+=XJ=kaod.org=clg@ozlabs.org>)
- id 1u7WXM-0007qY-Kp; Wed, 23 Apr 2025 05:37:03 -0400
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4ZjDX568Gwz4xPQ;
- Wed, 23 Apr 2025 19:36:53 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (Client did not present a certificate)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4ZjDX22vVSz4xN6;
- Wed, 23 Apr 2025 19:36:50 +1000 (AEST)
-Message-ID: <52aa4d05-c1a4-480a-af82-b244bf046a28@kaod.org>
-Date: Wed, 23 Apr 2025 11:36:47 +0200
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7WYO-0001xS-F0
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:38:04 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7WYM-0007uO-HJ
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:38:04 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-43d0359b1fcso5044385e9.0
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 02:38:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1745401081; x=1746005881; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=67uTXp5dXdKL6tOsDTOv+uwAJPHIt6IAbB7sPlQplzY=;
+ b=QAtwG8m2PgCJe1heZfctpDYth3qzfvrBYhowX9b2Oa/te/r5HZYeAwRHgVv+zxXgdM
+ Xt3sRaIyH+PO0lwP63aImTf0ETZpR7c7TrmLWjcLnIR0qtSJX9A1GUOkIhVMxMQ9+cPO
+ 8pmjOylGz/vSRcxjCJpr0XtaO5yjUI4BMnZMtbTJ6yovmTLo+edNgUoOfZXiAOi/sFN2
+ +VE4zoHja6tO+bJGqTZfUJduDUlJtwYZ59OpQCurRH/PS3q9TN07mRN0FfmNoQWz702u
+ K2VvdtHFS+d5+ocQKc/U7KnryMIazVmNgFr5OVIftr1Gi4azhcked1nl8aXRwISHZ0ld
+ 4pzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1745401081; x=1746005881;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=67uTXp5dXdKL6tOsDTOv+uwAJPHIt6IAbB7sPlQplzY=;
+ b=Qc2jRSolvK4E0xhtXetrqbeh1zz6gWynipXEetYaausBM2x5y8+2hFf056gWTSRP9g
+ ebDNNQcIZWomXG5FXVY6AgOlDp05tNYb2XUkwh0qwVTD2cuWZmQOworyjkUk5HlZKsKs
+ /iYL7OFGBVmMFj7DnwgIUDl2xsoc1BOkeb4VsNojnojaxSRLgo7KN++FG/hUtRY5onbA
+ BPXOtJBQ47YmH/FLKEJvlhZBoB6vWqWji0haB1DTHeiKroF1FAGyf1fBjMu7USkFn6hx
+ E9swT4bXrvyNrPVyKE/s+D2P/y4uGQognlsD4UIB85hOzE4HmGiJuz/k+/HUmgnOZC0F
+ 23Ww==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU1y8viu3I4PyaMVONY4VhjfCqtkI8kc4IT0pdT6KY6bxvyJx4d+5Mg6hE6DPtf3tS/X79qEFF48FYV@nongnu.org
+X-Gm-Message-State: AOJu0YwpJCcGRfHjDyJboyZervBMzxfdx9PdXGhDjQdcA24y+gDwVMTV
+ uSWPtD8QUFlty5II8mbcfs7GlHhGAwY0nAjk8aZbGgz8b2U16ChZgg8lOeJDB0Kq0WXnGoF6xuP
+ V
+X-Gm-Gg: ASbGncu/6K2uCjIHlgudtsdhrl2/gfS6zNxuW5ct7FAs6z/FybMfJ9Cw7c0W58JMTLj
+ ej9El0nPYKT8D7+uGtl7QK2wsbuJlZaAO6MKgF0wI8/kzIS84wN/+K4sK3NWVxQVQQGEXpewzRy
+ JpZnwpaGQmk9LiKDDx8+EdzzOalAYoeDaS5DJiWtM4sHcMRAkYENyhAArw7o6FXS+JFOSxJK4+U
+ mZqEABvlPPCzIWX4NfYxaXI2YN+OOOjfm2h+q3coxWNV5w+ODv5yDbzlEpyHVnJL9ZM6gKQEIcf
+ 8rjgz+MR4sSCDJh4Yt+fmJ5Jg5mu5jAaz4x79B3ardZwtqKqZzCmTSsOi8Bwwter26ln8pHAV2K
+ Fd1CgYFvT
+X-Google-Smtp-Source: AGHT+IE6zeO/suq/tt06p7owY1n8PcDFsrfruOilTVQ7Y0kTeOKlsWlEtlQdeFGyhFa+vxYP0watzw==
+X-Received: by 2002:a7b:c5c6:0:b0:440:67d4:ec70 with SMTP id
+ 5b1f17b1804b1-44091ef2dffmr16649715e9.8.1745401080786; 
+ Wed, 23 Apr 2025 02:38:00 -0700 (PDT)
+Received: from [192.168.69.169] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-44092d40766sm19039485e9.37.2025.04.23.02.37.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 23 Apr 2025 02:37:59 -0700 (PDT)
+Message-ID: <7b4addd7-48b8-4664-9830-9858e6364573@linaro.org>
+Date: Wed, 23 Apr 2025 11:37:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 00/11] Support vbootrom for AST2700
-To: Jamin Lin <jamin_lin@aspeedtech.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>,
- "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
-Cc: troy_lee@aspeedtech.com, nabihestefan@google.com
-References: <20250423072350.541742-1-jamin_lin@aspeedtech.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Autocrypt: addr=clg@kaod.org; keydata=
- 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
-In-Reply-To: <20250423072350.541742-1-jamin_lin@aspeedtech.com>
+Subject: Re: [PATCH 048/147] include/exec: Split out watchpoint.h
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20250422192819.302784-1-richard.henderson@linaro.org>
+ <20250422192819.302784-49-richard.henderson@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250422192819.302784-49-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=wlG+=XJ=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,70 +100,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/23/25 09:23, Jamin Lin wrote:
-> v1:
->    Add initial support for AST27x0
->    The purpose of vbootrom here is to simulate the work of BootMCU SPL (riscv)
->    in AST2700, because QEMU doesn't support heterogenous architecture yet.
+On 22/4/25 21:26, Richard Henderson wrote:
+> Relatively few objects in qemu care about watchpoints, so split
+> out to a new header.  Removes an instance of CONFIG_USER_ONLY
+> from hw/core/cpu.h.
 > 
->    ast27x0_bootrom.bin is a simplified, free (Apache 2.0) boot ROM for
->    ASPEED AST27x0 BMC SOC. It currently implements the bare minimum to
->    load, parse, initialize and run boot images stored in SPI flash, but may grow
->    more features over time as needed. The source code is available at:
->    https://github.com/google/vbootrom
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   include/exec/watchpoint.h           | 41 +++++++++++++++++++++++++++++
+>   include/hw/core/cpu.h               | 30 ---------------------
+>   accel/tcg/tcg-accel-ops.c           |  1 +
+>   system/watchpoint.c                 |  1 +
+>   target/arm/debug_helper.c           |  1 +
+>   target/i386/cpu.c                   |  1 +
+>   target/i386/machine.c               |  2 +-
+>   target/i386/tcg/system/bpt_helper.c |  1 +
+>   target/ppc/cpu.c                    |  1 +
+>   target/ppc/cpu_init.c               |  2 +-
+>   target/riscv/debug.c                |  1 +
+>   target/s390x/helper.c               |  1 +
+>   target/s390x/tcg/excp_helper.c      |  1 +
+>   target/xtensa/dbg_helper.c          |  1 +
+>   14 files changed, 53 insertions(+), 32 deletions(-)
+>   create mode 100644 include/exec/watchpoint.h
 > 
-> v2:
->    Add "Introduced ASPEED_DEV_VBOOTROM in the device enumeration" patch to fix
->    build failed.
-> 
-> v3:
->    1. Supports both vbootrom and device loader boot methods, with vbootrom used as
->    the default.
->    2. Fix review and QTEST test failed issues.
-> 
-> v4:
->    Adjust the patch order.
->    
-> v5:
->    fix review issue and remove unnecessary class attribure.
->    doc: create a new section for AST2700.
-> 
-> Jamin Lin (11):
->    hw/arm/aspeed_ast27x0: Rename variable sram_name to name in ast2700
->      realize
->    hw/arm/aspeed_ast27x0 Introduce vbootrom memory region
->    hw/arm/aspeed: Add vbootrom support on AST2700 EVB machines
->    hw/arm/aspeed: Reuse rom_size variable for vbootrom setup
->    pc-bios: Add AST27x0 vBootrom
->    hw/arm/aspeed: Add support for loading vbootrom image via "-bios"
->    tests/functional/aspeed: Move I2C test into shared helper for AST2700
->      reuse
->    tests/functional/aspeed: Update test ASPEED SDK v09.06
->    tests/functional/aspeed: extract boot and login sequence into helper
->      function
->    tests/functional/aspeed: Add to test vbootrom for AST2700
->    docs/system/arm/aspeed: Support vbootrom for AST2700
-> 
->   MAINTAINERS                             |   1 +
->   docs/system/arm/aspeed.rst              |  96 ++++++++++++++++++++++--
->   include/hw/arm/aspeed.h                 |   1 +
->   include/hw/arm/aspeed_soc.h             |   2 +
->   hw/arm/aspeed.c                         |  40 +++++++++-
->   hw/arm/aspeed_ast27x0.c                 |  17 ++++-
->   pc-bios/README                          |   6 ++
->   pc-bios/ast27x0_bootrom.bin             | Bin 0 -> 15424 bytes
->   pc-bios/meson.build                     |   1 +
->   tests/functional/test_aarch64_aspeed.py |  82 +++++++++++++-------
->   10 files changed, 209 insertions(+), 37 deletions(-)
->   create mode 100644 pc-bios/ast27x0_bootrom.bin
-> 
+> diff --git a/include/exec/watchpoint.h b/include/exec/watchpoint.h
+> new file mode 100644
+> index 0000000000..4b6668826c
+> --- /dev/null
+> +++ b/include/exec/watchpoint.h
+> @@ -0,0 +1,41 @@
+> +/*
+> + * CPU watchpoints
+> + *
+> + * Copyright (c) 2012 SUSE LINUX Products GmbH
+> + * SPDX-License-Identifier: LGPL-2.1-or-later
+> + */
+> +
+> +#ifndef EXEC_WATCHPOINT_H
+> +#define EXEC_WATCHPOINT_H
+> +
+> +#if defined(CONFIG_USER_ONLY)
+> +static inline int cpu_watchpoint_insert(CPUState *cpu, vaddr addr, vaddr len,
+> +                                        int flags, CPUWatchpoint **watchpoint)
+> +{
+> +    return -ENOSYS;
+> +}
+> +
+> +static inline int cpu_watchpoint_remove(CPUState *cpu, vaddr addr,
+> +                                        vaddr len, int flags)
+> +{
+> +    return -ENOSYS;
+> +}
+> +
+> +static inline void cpu_watchpoint_remove_by_ref(CPUState *cpu,
+> +                                                CPUWatchpoint *wp)
+> +{
+> +}
+> +
+> +static inline void cpu_watchpoint_remove_all(CPUState *cpu, int mask)
+> +{
+> +}
+> +#else
+> +int cpu_watchpoint_insert(CPUState *cpu, vaddr addr, vaddr len,
+> +                          int flags, CPUWatchpoint **watchpoint);
+> +int cpu_watchpoint_remove(CPUState *cpu, vaddr addr,
+> +                          vaddr len, int flags);
+> +void cpu_watchpoint_remove_by_ref(CPUState *cpu, CPUWatchpoint *watchpoint);
+> +void cpu_watchpoint_remove_all(CPUState *cpu, int mask);
+> +#endif
+> +
+> +#endif /* EXEC_WATCHPOINT_H */
 
+Should we also move the CPUWatchpoint definition?
 
-Applied patches 1,7,8,9 to aspeed-next.
-
-Thanks,
-
-C.
-
+Can be done later, so:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
