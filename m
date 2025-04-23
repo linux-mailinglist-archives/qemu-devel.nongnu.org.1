@@ -2,52 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F0E1A97D19
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 04:58:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21D03A97D20
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 05:05:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7QIc-0007HC-E1; Tue, 22 Apr 2025 22:57:22 -0400
+	id 1u7QPg-0002YR-Nz; Tue, 22 Apr 2025 23:04:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1u7QIV-0007Dd-CT; Tue, 22 Apr 2025 22:57:15 -0400
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1u7QPe-0002YF-Lc
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 23:04:38 -0400
+Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kane_chen@aspeedtech.com>)
- id 1u7QIT-00043I-9V; Tue, 22 Apr 2025 22:57:15 -0400
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Wed, 23 Apr
- 2025 10:56:52 +0800
-Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Wed, 23 Apr 2025 10:56:52 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Jamin Lin <jamin_lin@aspeedtech.com>, Andrew Jeffery
- <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>, "open
- list:ASPEED BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>
-CC: <troy_lee@aspeedtech.com>, Kane-Chen-AS <kane_chen@aspeedtech.com>
-Subject: [PATCH v3 3/3] hw/arm: Integrate Aspeed OTP memory into AST10x0 and
- AST2600 SoCs
-Date: Wed, 23 Apr 2025 10:56:51 +0800
-Message-ID: <20250423025651.189702-4-kane_chen@aspeedtech.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250423025651.189702-1-kane_chen@aspeedtech.com>
-References: <20250423025651.189702-1-kane_chen@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1u7QPb-0004p4-Bk
+ for qemu-devel@nongnu.org; Tue, 22 Apr 2025 23:04:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1745377475; x=1776913475;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=WTQm2u4iP01bF9Q0+aqoUjJjydCuXyRZ6MzXC/f9H9k=;
+ b=KCXjqnRX0ckQFkStEhDBvjlPzH61xm4wxvGIIBn4c+gkx2CXpcwtMXyS
+ wN2BXEltZcN+CiOfDLQUxLmgqklCZ2BesohBcYW5eqorJgh01k4ObdQf9
+ K+KopwArxtmN/YI1kUryFd92AhUt4wD01buY8MRDJKmRuKbH0BhOA+gjG
+ JaqFhmXpPSxgpSceDLqV4o4xhwaZpz9M9JBg7zM0kgZzzXUqA9g8QpMsc
+ uB0qnmGDgYgzijivWDQrV89fkOHFePD3khNAuFHF4ynXnNspneOj48c0s
+ zWA74slZ2llY7g8eavfqIL9oIspnf7hqTqu9Pt5/F0+AsKRbGzeXu79du w==;
+X-CSE-ConnectionGUID: xanQyDsOS9evgyiovB7ypw==
+X-CSE-MsgGUID: ipF7CrQXQZSXD+3ltr2q7A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="64367658"
+X-IronPort-AV: E=Sophos;i="6.15,232,1739865600"; d="scan'208";a="64367658"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Apr 2025 20:04:32 -0700
+X-CSE-ConnectionGUID: NarXM0pITRmgBVABl2lQcw==
+X-CSE-MsgGUID: 1yby85Y+QdGLC+kUHAdMfg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,232,1739865600"; d="scan'208";a="132720793"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa007.jf.intel.com with ESMTP; 22 Apr 2025 20:04:30 -0700
+Date: Wed, 23 Apr 2025 11:25:24 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Francesco Lavra <francescolavra.fl@gmail.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+Subject: Re: [PATCH v8 15/55] i386/tdx: Implement user specified tsc frequency
+Message-ID: <aAhdpCwCx93NbKrk@intel.com>
+References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
+ <20250401130205.2198253-16-xiaoyao.li@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=kane_chen@aspeedtech.com; helo=TWMBX01.aspeed.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250401130205.2198253-16-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.411,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,166 +85,35 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Kane Chen <kane_chen@aspeedtech.com>
-From:  Kane Chen via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kane-Chen-AS <kane_chen@aspeedtech.com>
+On Tue, Apr 01, 2025 at 09:01:25AM -0400, Xiaoyao Li wrote:
+> Date: Tue,  1 Apr 2025 09:01:25 -0400
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: [PATCH v8 15/55] i386/tdx: Implement user specified tsc frequency
+> X-Mailer: git-send-email 2.34.1
+> 
+> Reuse "-cpu,tsc-frequency=" to get user wanted tsc frequency and call VM
+> scope VM_SET_TSC_KHZ to set the tsc frequency of TD before KVM_TDX_INIT_VM.
+> 
+> Besides, sanity check the tsc frequency to be in the legal range and
+> legal granularity (required by TDX module).
+> 
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+> ---
+> Changes in v3:
+> - use @errp to report error info; (Daniel)
+> 
+> Changes in v1:
+> - Use VM scope VM_SET_TSC_KHZ to set the TSC frequency of TD since KVM
+>   side drop the @tsc_khz field in struct kvm_tdx_init_vm
+> ---
+>  target/i386/kvm/kvm.c |  9 +++++++++
+>  target/i386/kvm/tdx.c | 25 +++++++++++++++++++++++++
+>  2 files changed, 34 insertions(+)
 
-This patch wires up the OTP memory device (`aspeed.otpmem`) into the
-AST1030 and AST2600 SoC models. The device is initialized, attached
-to a backing block drive (`-drive id=otpmem`) and linked to the SBC
-controller via a QOM link.
-
-The default OTP memory image can be generated using the following
-command.
-```bash
-for i in $(seq 1 2048); do
-  printf '\x00\x00\x00\x00\xff\xff\xff\xff'
-done > otpmem.img
-```
-
-To load the OTP memory image into the guest, use:
-```bash
-./qemu-system-arm \
-  -drive id=otpmem,file=otpmem.img,if=none,format=raw \
-  ...
-```
-
-Note: Do not use the -snapshot option, or OTP data writes will not
-persist to the image file.
-
-Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
----
- hw/arm/aspeed_ast10x0.c     | 19 +++++++++++++++++++
- hw/arm/aspeed_ast2600.c     | 19 +++++++++++++++++++
- include/hw/arm/aspeed_soc.h |  2 ++
- 3 files changed, 40 insertions(+)
-
-diff --git a/hw/arm/aspeed_ast10x0.c b/hw/arm/aspeed_ast10x0.c
-index ec329f4991..eaa70feb9f 100644
---- a/hw/arm/aspeed_ast10x0.c
-+++ b/hw/arm/aspeed_ast10x0.c
-@@ -15,6 +15,7 @@
- #include "system/system.h"
- #include "hw/qdev-clock.h"
- #include "hw/misc/unimp.h"
-+#include "system/block-backend-global-state.h"
- #include "hw/arm/aspeed_soc.h"
- 
- #define ASPEED_SOC_IOMEM_SIZE 0x00200000
-@@ -156,6 +157,8 @@ static void aspeed_soc_ast1030_init(Object *obj)
- 
-     object_initialize_child(obj, "sbc", &s->sbc, TYPE_ASPEED_SBC);
- 
-+    object_initialize_child(obj, "otpmem", &s->otpmem, TYPE_ASPEED_OTPMEM);
-+
-     for (i = 0; i < sc->wdts_num; i++) {
-         snprintf(typename, sizeof(typename), "aspeed.wdt-%s", socname);
-         object_initialize_child(obj, "wdt[*]", &s->wdt[i], typename);
-@@ -194,6 +197,7 @@ static void aspeed_soc_ast1030_realize(DeviceState *dev_soc, Error **errp)
-     Error *err = NULL;
-     int i;
-     g_autofree char *sram_name = NULL;
-+    BlockBackend *blk;
- 
-     if (!clock_has_source(s->sysclk)) {
-         error_setg(errp, "sysclk clock must be wired up by the board code");
-@@ -359,6 +363,21 @@ static void aspeed_soc_ast1030_realize(DeviceState *dev_soc, Error **errp)
-                         ASPEED_SMC_GET_CLASS(&s->spi[i])->flash_window_base);
-     }
- 
-+    /* OTP memory */
-+    blk = blk_by_name(ASPEED_OTPMEM_DRIVE);
-+    if (blk) {
-+        blk_set_perm(blk, BLK_PERM_CONSISTENT_READ | BLK_PERM_WRITE,
-+                     0, &error_fatal);
-+        qdev_prop_set_drive(DEVICE(&s->otpmem), "drive", blk);
-+
-+        if (!sysbus_realize(SYS_BUS_DEVICE(&s->otpmem), errp)) {
-+            return;
-+        }
-+        /* Assign OTP memory to SBC */
-+        object_property_set_link(OBJECT(&s->sbc), "otpmem",
-+                                 OBJECT(&s->otpmem), &error_abort);
-+    }
-+
-     /* Secure Boot Controller */
-     if (!sysbus_realize(SYS_BUS_DEVICE(&s->sbc), errp)) {
-         return;
-diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
-index 1f994ba26c..9fe3eeeb0e 100644
---- a/hw/arm/aspeed_ast2600.c
-+++ b/hw/arm/aspeed_ast2600.c
-@@ -10,6 +10,7 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "hw/misc/unimp.h"
-+#include "system/block-backend-global-state.h"
- #include "hw/arm/aspeed_soc.h"
- #include "qemu/module.h"
- #include "qemu/error-report.h"
-@@ -263,6 +264,8 @@ static void aspeed_soc_ast2600_init(Object *obj)
- 
-     object_initialize_child(obj, "sbc", &s->sbc, TYPE_ASPEED_SBC);
- 
-+    object_initialize_child(obj, "otpmem", &s->otpmem, TYPE_ASPEED_OTPMEM);
-+
-     object_initialize_child(obj, "iomem", &s->iomem, TYPE_UNIMPLEMENTED_DEVICE);
-     object_initialize_child(obj, "video", &s->video, TYPE_UNIMPLEMENTED_DEVICE);
-     object_initialize_child(obj, "dpmcu", &s->dpmcu, TYPE_UNIMPLEMENTED_DEVICE);
-@@ -293,6 +296,7 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
-     AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
-     qemu_irq irq;
-     g_autofree char *sram_name = NULL;
-+    BlockBackend *blk;
- 
-     /* Default boot region (SPI memory or ROMs) */
-     memory_region_init(&s->spi_boot_container, OBJECT(s),
-@@ -628,6 +632,21 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
-         sysbus_connect_irq(SYS_BUS_DEVICE(&s->i3c.devices[i]), 0, irq);
-     }
- 
-+    /* OTP memory */
-+    blk = blk_by_name(ASPEED_OTPMEM_DRIVE);
-+    if (blk) {
-+        blk_set_perm(blk, BLK_PERM_CONSISTENT_READ | BLK_PERM_WRITE,
-+                     0, &error_fatal);
-+        qdev_prop_set_drive(DEVICE(&s->otpmem), "drive", blk);
-+
-+        if (!sysbus_realize(SYS_BUS_DEVICE(&s->otpmem), errp)) {
-+            return;
-+        }
-+        /* Assign OTP memory to SBC */
-+        object_property_set_link(OBJECT(&s->sbc), "otpmem",
-+                                 OBJECT(&s->otpmem), &error_abort);
-+    }
-+
-     /* Secure Boot Controller */
-     if (!sysbus_realize(SYS_BUS_DEVICE(&s->sbc), errp)) {
-         return;
-diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
-index f069d17d16..2d15c6047a 100644
---- a/include/hw/arm/aspeed_soc.h
-+++ b/include/hw/arm/aspeed_soc.h
-@@ -36,6 +36,7 @@
- #include "hw/usb/hcd-ehci.h"
- #include "qom/object.h"
- #include "hw/misc/aspeed_lpc.h"
-+#include "hw/misc/aspeed_otpmem.h"
- #include "hw/misc/unimp.h"
- #include "hw/misc/aspeed_peci.h"
- #include "hw/fsi/aspeed_apb2opb.h"
-@@ -73,6 +74,7 @@ struct AspeedSoCState {
-     AspeedSMCState spi[ASPEED_SPIS_NUM];
-     EHCISysBusState ehci[ASPEED_EHCIS_NUM];
-     AspeedSBCState sbc;
-+    AspeedOTPMemState otpmem;
-     AspeedSLIState sli;
-     AspeedSLIState sliio;
-     MemoryRegion secsram;
--- 
-2.43.0
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
