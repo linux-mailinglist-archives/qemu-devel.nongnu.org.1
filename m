@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BB93A9993B
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 22:12:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 871BFA99940
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 22:13:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7gQl-0006DF-UA; Wed, 23 Apr 2025 16:10:51 -0400
+	id 1u7gSU-0008LN-Sb; Wed, 23 Apr 2025 16:12:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1u7gQi-0006AF-Rd
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 16:10:48 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1u7gSL-0008If-LN
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 16:12:29 -0400
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1u7gQg-0006GG-Uh
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 16:10:48 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-224341bbc1dso2865235ad.3
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 13:10:46 -0700 (PDT)
+ id 1u7gSJ-0006ZR-VV
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 16:12:29 -0400
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-301d6cbbd5bso286480a91.3
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 13:12:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745439045; x=1746043845; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745439146; x=1746043946; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=GsBZsCm15OTl3aSIzfnAH4eJem3+KOInakLOd+f/fUM=;
- b=ZdoFDtS2X2c+vYkHRFaxZZZXYbIKacAGBo+YQdH79w00iO/WSsf6anE90/CHCI1A+Z
- Sog2Sj517Rw6Wg33Quw9p0mPjFJdae/wRFvShHHN3ZJsu5HBXChccGASFE7Kudc0A69W
- 9edFjP7SQWln3dakT3AU3W8Kp7z93KATvSWmQAoFADG17lSR9idxmhFXk8kgy3BiKP8v
- oZNC5bfpiHCmsnnRvY+p5FtWRelgDWuZi56VTtWQORpVfuHRDr2MDCB7pLQKDR+ueMFz
- shsySHOplH8FC3BWQleBworFxsprbiWuCDE55A4o5AC1lVWrL0LgrFr13sMGHWR9Jjof
- 70uw==
+ bh=6Iv5SATF2CTzFHF4MLbFYOrIyCkUqabC7/gqFf83Xi0=;
+ b=U/pr4+gIWT0JVz0jF6+lKjPlh70j+DLW7T8bBX6/1i20ZbruM+2aK8lkaP/+lbj5kv
+ EVl4UnfDzPBP9DME/pUCkoPyAzJ/Qm3upINODgKmJ0mmY49vbDXylnKIrwgMJRKNJ02f
+ PCpIM6jSMRl/RTUiAN4y3HuETFD1r3ZWyT5fg/Tm19PFXVrG3eDg23uDFjbaGad36M4h
+ B6/Pk9Xjl11YjE5BgakCIxzaBe7K9iMBSSnere4x/bhw0pUAHTV2HiAbRcDXoJKv4BxP
+ evl9BY3j7DkWl7HR2Rpwh56Dkle7SqJcx0Mgqae6fhFj4EsAD0Fi/CSyGp+RzrgMcU74
+ NI1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745439045; x=1746043845;
+ d=1e100.net; s=20230601; t=1745439146; x=1746043946;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GsBZsCm15OTl3aSIzfnAH4eJem3+KOInakLOd+f/fUM=;
- b=sNTniay3u8oBVBV76JLpmcMKk46bT7HAlcs420SLrYnwtRgGECqzI/E+DbItd16oIA
- OkEWY0tI+FTHvlhhL/Wjzz4PVKE06QlqP/m2TZJnim+stqip2eFSlst1o2XsiBTC3zwo
- ff51o/9zrKXgqj4KdFqxMFYORSJWgg7ikEtWu63Cd2RmT+ChPL2rvWC6uT+egy+VC5ZJ
- L13I7LzeNQgfeDWJYIoZO15eD75/n/1SOJRaY22hI0PzkkHt9jdba8/nHoaknZtYCj8X
- KoRWelnHFWUYqmRGvPdWWppzRZCsNP8QviDUR3Xfe/a/+MrJxoeKUzTcN3dKJDWU2u0j
- 9ZpA==
+ bh=6Iv5SATF2CTzFHF4MLbFYOrIyCkUqabC7/gqFf83Xi0=;
+ b=lSufU9CzIWPNAfIbkz2seCKItoK2a4wDI1RFhMloUUkRdPT+KAbmC5LZhk+1OJF65m
+ kHlf2rO9RumvwqWtfrgTGOZ8wK3HABxQVuOnrjgBCXkoSOGL3KGKyo9P0pdl84IsoDfE
+ XkfsEP3uw3BKCWou6rAJClwDlbKDHDQvWwySie2aco4oS2ElplN6E0cqpgEYlWONHsyp
+ 6oEo95hFq7JnamNtt91+ltD3ft0pIyk1YlUDsK+TLx5UYhH5KWprk1at1nW1Arr0u/bX
+ +3aWHd9jnFvJXVTR5DV0Lmir7sDUnbEqNn6Z6mKofpkxvch8uN+oqikZNgYXQFEi0d4O
+ rINA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUDHZezMCjIa7+O3EyiGtnL3I3mik8UZ9fQJgu9EEDVIeQtaF2lzKL/GSLJnMoPv9YxSO5wmGBlOlrH@nongnu.org
-X-Gm-Message-State: AOJu0Yw/X6FqTWsGCD5rtbTmmq0fGAbflcI7mpUWj1lksSoainvZbDEM
- zc7Q09ekE9fAgRUw3I6wroshqL4rVpqYx7Y2OYhJxHqiJLhioTzPAiIkm/Q8U/Y=
-X-Gm-Gg: ASbGncu2Zc2BnkEn+aFOytUCVDiRXNR/DfJ3OeSnLQ+wwKgvIDpaQ42qktNlIbPn4wH
- l1z8ejNxAEN3d7U+DomgFxGDY8vdhTMNCyD25kPf9OTYwp62mvw3k1aSIs1jiJ4UcIXG1/630pY
- eeuoz5+O3rBj5UtcB0vRQfEsHbcRjaF8x3+uqEWZzy8WbSF7JjlKdsMH80oJo38aR+UpUpzSiR1
- dGSI0dEJtDVto39uuyAPuQENF4YWq1IrIy/PdjdCc1PeQlwY5ZW7bA0aMdziTUraRhSyQRwCSNj
- 4Tnu7av1Gb1s+pIuGY63yV+l66zXTf8+2y/SVfn6YWY0ktWpT6nmNA==
-X-Google-Smtp-Source: AGHT+IGhPOeh6jXgRsnBXTnzfQAQIJ1LSOVYO2emTRNG83K5vKZi8o33tr+HR8zN1bWS3M4zV28odg==
-X-Received: by 2002:a17:903:3d0e:b0:215:bc30:c952 with SMTP id
- d9443c01a7336-22db1a65cb8mr9081045ad.6.1745439044794; 
- Wed, 23 Apr 2025 13:10:44 -0700 (PDT)
+ AJvYcCW371tAzfzUNGYho2pTu2gU2la5UAqjY0J4Eb0dHCJry7fEbbG48KScMzG9nDakVGgnpodojdkgx5UQ@nongnu.org
+X-Gm-Message-State: AOJu0YyogW/GhKjFXLvFS9nJRD8shPF6IOKD2KxWNYDoK76eX1GpHE0e
+ HtVG1QkBXcNnRDQEWwa4KRAy16lUPhJA4bfIkr4mf3Z73MAfkZ3fz7o6sFpKXPU=
+X-Gm-Gg: ASbGnct2NHRRqpgIShozAcexjaCOtjP6Flz85aEK/c9jXLvUydksEAie/31DdjiV44O
+ TIWZ/eNzomCSmv9PyatnbhY9Ufj3tlxW796Dj46i5T9zzX55E+FdnUYlzhFC5ziYUD4BzMvg0Ol
+ aZaxDbksdG+4rEDAGUIGFb2tKUoMJhpbOY8eu6piM0E1/t34HBzwgDl6pxOSzdjb/LqZ94q9ggY
+ 4ZgssDe7yXOWRnfumYD8kWLKFCmeGjJdc4hz3P0mEbpSD8+ChyIG5gFdRHU8HUdGPbIwKUi21Je
+ p9fWsoPW/CaEaO5iGhFGqN1i+eGGyrxX10IfLEejj9ei3IDP/+NPyg==
+X-Google-Smtp-Source: AGHT+IF445NfdiiwwULABActSIWNVJp6oAtbnyptohQJDCWEzRmrXCv3qqttVvn0mqlzI0+bYJvNfg==
+X-Received: by 2002:a17:90b:314c:b0:2ff:5ed8:83d1 with SMTP id
+ 98e67ed59e1d1-309ed286424mr166907a91.19.1745439146256; 
+ Wed, 23 Apr 2025 13:12:26 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22c50bde206sm109001295ad.14.2025.04.23.13.10.44
+ 98e67ed59e1d1-309e0ccefe2sm2091048a91.30.2025.04.23.13.12.25
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 23 Apr 2025 13:10:44 -0700 (PDT)
-Message-ID: <b181a62c-c9cf-4d33-b694-b5099069ee79@linaro.org>
-Date: Wed, 23 Apr 2025 13:10:43 -0700
+ Wed, 23 Apr 2025 13:12:25 -0700 (PDT)
+Message-ID: <24345256-3a93-4fa1-bb89-f001c5430083@linaro.org>
+Date: Wed, 23 Apr 2025 13:12:25 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC PATCH v4 06/19] hw/arm: Filter machine types for
  qemu-system-arm/aarch64 binaries
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+To: Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
 Cc: Anton Johansson <anjo@rev.ng>
 References: <20250422145502.70770-1-philmd@linaro.org>
  <20250422145502.70770-7-philmd@linaro.org>
@@ -80,13 +81,13 @@ References: <20250422145502.70770-1-philmd@linaro.org>
  <1937ddb0-a87d-4a87-ac73-3be72ded0c55@linaro.org>
  <6f2805ef-2fcd-4525-a7fd-cad59c64f38c@linaro.org>
  <213ba7a9-6c86-48cd-b595-38954d938665@linaro.org>
- <ee9d6b5e-0a38-4237-aa4e-2aebbe9785d8@linaro.org>
+ <990864df-638a-4c0d-a01b-87c916771bd8@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <ee9d6b5e-0a38-4237-aa4e-2aebbe9785d8@linaro.org>
+In-Reply-To: <990864df-638a-4c0d-a01b-87c916771bd8@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62d.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x102e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,35 +110,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/23/25 12:53, Philippe Mathieu-Daudé wrote:
-> On 23/4/25 21:33, Pierrick Bouvier wrote:
->> On 4/23/25 12:12, Richard Henderson wrote:
->>>> @Richard:
->>>> Is it a concern regarding code maintenance, or potential impact
->>>> on .data?
->>>
->>> I was thinking of impact on .data, especially with so many.
->>>
->>
->> du qemu-system-aarch64 optimized and stripped (in kB):
->> 31880    upstream
->> 31896    upstream + this series
+On 4/23/25 13:04, Richard Henderson wrote:
+> On 4/23/25 12:33, Pierrick Bouvier wrote:
+>> Else, in case we make this array const, can we expect the linker to deduplicate it? I'm
+>> not familiar with how final .data section is assembled.
 > 
-> FYI same tag as a branch with InterfaceInfo constified:
-> https://gitlab.com/philmd/qemu/-/tree/single-binary-hw-arm-rfc-v4-const
+> No, we do not expect de-duplication.
+> It's a "that would technically break the object model" thing.
+> Const or not,
+> 
+>     static S *a = &(S){ };
+>     static S *b = &(S){ };
+>     assert(a != b);
 > 
 
-Maybe I missed something, but machine interfaces are not const on this 
-branch.
+I see.
+However, it's only type names, and not really object models (we don't 
+duplicate interfaces themselves, but list of interfaces).
 
->> So we have +16kB which is a size increase of +0.0005%.
->> Even if we project something similar on other architectures (let's say
->> x10), the final impact on binary size should be < 0.005%.
->>
->> Maybe it's a reasonable impact considering the trade off on coherency
->> and readability through the codebase?
->> Else, in case we make this array const, can we expect the linker to
->> deduplicate it? I'm not familiar with how final .data section is assembled.
+Or did I miss something in QOM?
+
 > 
+> r~
 
 
