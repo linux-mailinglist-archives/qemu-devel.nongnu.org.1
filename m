@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A48BA985EC
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 11:42:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D06A985EA
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 11:42:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7Wbw-0004hZ-I9; Wed, 23 Apr 2025 05:41:44 -0400
+	id 1u7Wc5-0004s9-17; Wed, 23 Apr 2025 05:41:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u7WbW-00047X-5W
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:18 -0400
+ id 1u7WbX-0004An-Oz
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u7WbU-0008Jk-0w
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:17 -0400
+ id 1u7WbV-0008Jz-Hy
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745401275;
+ s=mimecast20190719; t=1745401276;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4KUXfxem6hXz9wBC7InW3PIEnFU5WiG11keAeu8ffU8=;
- b=LHdP/QV4Kox138XdeQj0W0qabYHvchaJPduGv/quuxJCm2zkky9+rlhNUMdD++3dtq1Dxn
- PIM2D6kDicNPmqFyMhh6fYckrzW7QngFe6CJ0Sz31GaMn9+g/Fz5Jk7QhCkW2S5gWSsSB2
- pusE/HemXlvFjoV0uOUcSFR6eoQrgjI=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3uWoXnckgp/3cPXEWV6PWVXNFh+phzVHf+shlzxT9o0=;
+ b=g7uKM/nOeKhKpGj0L4yqUhCuwV30LCXmp7GLHXfVSSZQnfBXkg5hHe2fxizbPyvR5NIENu
+ nHl9d2xszzA2x0Cx4XBwP3vXWZHgvcctGHijzyoHWY7GTSHYF4NHJl+23brMBZS8clQiXU
+ C2wYM2ZIQkq0HfzVC5SMUi4UEZj3vfE=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-442-UDXO1TD4MvaumuJX3GH_aQ-1; Wed, 23 Apr 2025 05:41:12 -0400
-X-MC-Unique: UDXO1TD4MvaumuJX3GH_aQ-1
-X-Mimecast-MFC-AGG-ID: UDXO1TD4MvaumuJX3GH_aQ_1745401271
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-5f4d2b91f1eso6279118a12.0
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 02:41:12 -0700 (PDT)
+ us-mta-166-YShB35MlNrCd2qOq1U00-A-1; Wed, 23 Apr 2025 05:41:14 -0400
+X-MC-Unique: YShB35MlNrCd2qOq1U00-A-1
+X-Mimecast-MFC-AGG-ID: YShB35MlNrCd2qOq1U00-A_1745401273
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-ac6ebab17d8so569039766b.1
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 02:41:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745401271; x=1746006071;
+ d=1e100.net; s=20230601; t=1745401273; x=1746006073;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4KUXfxem6hXz9wBC7InW3PIEnFU5WiG11keAeu8ffU8=;
- b=bEdUS4Ta4fdikvKBtkRIwuM2McMxWWZRBVwhFOqHLnt0IMbL6KEyElFFZVJuh/0MTV
- 8z9mnObvkV7SN0OKAWo7cNIvwJp+mEl6PikmEU0VT6qdJQt7LAtcnKXngZTWVmuHllyE
- vCufs+oyl8yRCTXnAXqnHCunz+e4uBQbZvpBKNy23GVb3ogISIo/xO6b0u9SNrroUmcd
- 59p9kTmrFhXKCTa5mpuwIP38mnU+X4zp7BXAhz8x/6Cs44M+MxNxtwvxM/wwa9vPwYyU
- dPy1I6xZoyMC1trhbrII44YIXi9qAZFgi+IcE+7bPNriGW95PdO2jtZpu2DYK3o6zfs2
- LWhA==
-X-Gm-Message-State: AOJu0YwH0B/Bo+CEnqxWrn2an0wnFNKDyPxWti1VeFCmSvueSL4qZm87
- vE+pctZFKhY5/Gaw8gVtC7dU4QNS+EidGktV73D17hajotHC401ltufnyYM9/FAPFG8j1oyFF8k
- 0iQnYw7JaIh71eHcLEsBaFrC7uH5K2A8doJLNczcGdEwgbY2Eq/NMfj9APeIoB5XRgdA3w/i8oo
- HYoTy9qu7Dxgn2Ztipkr0DS62iWDyeXtMNrzwC
-X-Gm-Gg: ASbGncuAY1SfAr0iEdAJDgZoSs4moyyV0BWZSh02FN2vvEJvmaC7dDsnW3bE/Vl0C96
- kjEGS20XmVI4pQBDZ1O6L5ogQDIJwJpTV9B/n1PkefRhZnMiwjxDx2M69ooZorACf3Fo1ZvY1XM
- icybqHKbzCP5MYiNyA6620fCjpr/v7ef/OJGWZFHjls+FgvzIgYcfjjdGfxnJdcT+HvYmQlqSgC
- 9YjsMNYkGgmKX1KW37RkmQT5A9GqwmrStJ4N3fPdCFIrMKUfl2o6lk7pz2z7wkmXl28u8KpcaTV
- S3rN+tVFjE3aq1no
-X-Received: by 2002:a05:6402:524b:b0:5e6:13bf:2c7c with SMTP id
- 4fb4d7f45d1cf-5f628524b53mr14875905a12.9.1745401270974; 
- Wed, 23 Apr 2025 02:41:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHnWnqWjKL4pAElTiX2uf0opZRUGtI5NNPTXCb9cECCgpeug3R5Js7gSjj5R2rgiXVO7JEXmg==
-X-Received: by 2002:a05:6402:524b:b0:5e6:13bf:2c7c with SMTP id
- 4fb4d7f45d1cf-5f628524b53mr14875888a12.9.1745401270559; 
- Wed, 23 Apr 2025 02:41:10 -0700 (PDT)
+ bh=3uWoXnckgp/3cPXEWV6PWVXNFh+phzVHf+shlzxT9o0=;
+ b=LH/fHEBVfTv/GYuBtpqIIkvXMnAsaMg+rM85LONu4eZGa3Zsahg4OuTF8vjubQGYct
+ bczava9xu0PHhWCjg1weIxUJGTolDl5Yya0qdi9yIujnrX1vUwBf14DQs8sStEpuM+1q
+ 1Q8Hi2TgHRwCM90G7sWjlojsJS3RdK+a6asn6uURaNNyxBBgtRm1onCs/R4sXuOME4kt
+ mmVvxBt/1PUdVTSIBF/3CEEZ0TGmQFi0v6ts3z/63Xa8rmZYUDS2tOzy3d00TjLuKi8N
+ blf63aYtORLIRmLQjisO33kUm6EDMABAIIuX5O0NQVZuHs+LfAyER9OTZ6SvVcZKxiLM
+ 5eWw==
+X-Gm-Message-State: AOJu0YzYWS59An4Y1Z2Hd6d+vM5b32QE6+M65JKhSLFwpA0I0r3aygqp
+ AG5TSYebYNe7stCdbDFJnqs9kO/TaNEViutWCdabD4jH7kB7LZdGIYMHNKNn/bCWk+S/UujXkoQ
+ sqrWS3xzU4JRz0AWNYQFnhqT8hZFxumTrhGySWGhg+GSEQyuFB+d1n4ctcv3Ig+WgmwWqddw0Wt
+ cwldf9hcN/6J1zlVOosGah0Khb+JyTjOQoOAG1
+X-Gm-Gg: ASbGncsfyqT8i4wp41j9hTgLNKKhCtKwyqOtXlzwwY2nkp1efCcyLXi1lC/MhvjLdBR
+ RPtoAWl7U5vys6b54/xOJqelnOmr0rNOp2rEtCtbGCVtwtCrJWIJpjgz1npjptHRDN1mTjPanf1
+ +uGECQNIX8QRBoW4VEdwOmNwrO85MBN8DubzvfOZLXYWbsiihK0NG0dYv6eVMeM/OtiqhlGdbuT
+ yWPtyvTfXKvteYj2eJD2LzP3pME7fv+l7BpmhoBWOjXoyOMN1TDC5p8YET24KoBOPXY0YVYmOKz
+ g5oUKuu897V2pJk/
+X-Received: by 2002:a17:907:3f24:b0:ac7:e80a:c6f9 with SMTP id
+ a640c23a62f3a-acb74af255fmr1683396566b.1.1745401272697; 
+ Wed, 23 Apr 2025 02:41:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEwC5gbD141pwWEThOthqh39gX1rFCRE68f7IrbFHZvmYiFQ+ZiE2abh8wN6q6fMPbfgDlenw==
+X-Received: by 2002:a17:907:3f24:b0:ac7:e80a:c6f9 with SMTP id
+ a640c23a62f3a-acb74af255fmr1683394066b.1.1745401272274; 
+ Wed, 23 Apr 2025 02:41:12 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.233.241])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5f62557a151sm7223601a12.32.2025.04.23.02.41.09
+ a640c23a62f3a-acb8cca2323sm623837966b.181.2025.04.23.02.41.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Apr 2025 02:41:09 -0700 (PDT)
+ Wed, 23 Apr 2025 02:41:11 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Ewan Hai <ewanhai-oc@zhaoxin.com>
-Subject: [PULL 02/34] target/i386: Fix model number of Zhaoxin YongFeng vCPU
- template
-Date: Wed, 23 Apr 2025 11:40:32 +0200
-Message-ID: <20250423094105.40692-3-pbonzini@redhat.com>
+Cc: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>, qemu-stable@nongnu.org
+Subject: [PULL 03/34] target/i386: Reset parked vCPUs together with the online
+ ones
+Date: Wed, 23 Apr 2025 11:40:33 +0200
+Message-ID: <20250423094105.40692-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423094105.40692-1-pbonzini@redhat.com>
 References: <20250423094105.40692-1-pbonzini@redhat.com>
@@ -91,7 +91,7 @@ X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.411,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,50 +107,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ewan Hai <ewanhai-oc@zhaoxin.com>
+From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-The model number was mistakenly set to 0x0b (11) in commit ff04bc1ac4.
-The correct value is 0x5b. This mistake occurred because the extended
-model bits in cpuid[eax=0x1].eax were overlooked, and only the base
-model was used.
+Commit 3f2a05b31ee9 ("target/i386: Reset TSCs of parked vCPUs too on VM
+reset") introduced a way to reset TSCs of parked vCPUs during VM reset to
+prevent them getting desynchronized with the online vCPUs and therefore
+causing the KVM PV clock to lose PVCLOCK_TSC_STABLE_BIT.
 
-Using the wrong model number can affect guest behavior. One known issue
-is that vPMU (which relies on the model number) may fail to operate
-correctly.
+The way this was done was by registering a parked vCPU-specific QEMU reset
+callback via qemu_register_reset().
 
-This patch corrects the model field by introducing a new vCPU version.
+However, it turns out that on particularly device-rich VMs QEMU reset
+callbacks can take a long time to execute (which isn't surprising,
+considering that they involve resetting all of VM devices).
 
-Fixes: ff04bc1ac4 ("target/i386: Introduce Zhaoxin Yongfeng CPU model")
-Signed-off-by: Ewan Hai <ewanhai-oc@zhaoxin.com>
-Link: https://lore.kernel.org/r/20250414075342.411626-1-ewanhai-oc@zhaoxin.com
+In particular, their total runtime can exceed the 1-second TSC
+synchronization window introduced in KVM commit 5d3cb0f6a8e3 ("KVM:
+Improve TSC offset matching").
+Since the TSCs of online vCPUs are only reset from "synchronize_post_reset"
+AccelOps handler (which runs after all qemu_register_reset() handlers) this
+essentially makes that fix ineffective on these VMs.
+
+The easiest way to guarantee that these parked vCPUs are reset at the same
+time as the online ones (regardless how long it takes for VM devices to
+reset) is to piggyback on post-reset vCPU synchronization handler for one
+of online vCPUs - as there is no generic post-reset AccelOps handler that
+isn't per-vCPU.
+
+The first online vCPU was selected for that since it is easily available
+under "first_cpu" define.
+This does not create an ordering issue since the order of vCPU TSC resets
+does not matter.
+
+Fixes: 3f2a05b31ee9 ("target/i386: Reset TSCs of parked vCPUs too on VM reset")
+Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+Link: https://lore.kernel.org/r/e8b85a5915f79aa177ca49eccf0e9b534470c1cd.1743099810.git.maciej.szmigiero@oracle.com
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ accel/kvm/kvm-all.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 1b64ceaaba4..3fb1ec62da1 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -5621,6 +5621,18 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-         .features[FEAT_VMX_VMFUNC] = MSR_VMX_VMFUNC_EPT_SWITCHING,
-         .xlevel = 0x80000008,
-         .model_id = "Zhaoxin YongFeng Processor",
-+        .versions = (X86CPUVersionDefinition[]) {
-+            { .version = 1 },
-+            {
-+                .version = 2,
-+                .note = "with the correct model number",
-+                .props = (PropValue[]) {
-+                    { "model", "0x5b" },
-+                    { /* end of list */ }
-+                }
-+            },
-+            { /* end of list */ }
-+        }
-     },
- };
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index f89568bfa39..951e8214e07 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -437,9 +437,8 @@ int kvm_unpark_vcpu(KVMState *s, unsigned long vcpu_id)
+     return kvm_fd;
+ }
  
+-static void kvm_reset_parked_vcpus(void *param)
++static void kvm_reset_parked_vcpus(KVMState *s)
+ {
+-    KVMState *s = param;
+     struct KVMParkedVcpu *cpu;
+ 
+     QLIST_FOREACH(cpu, &s->kvm_parked_vcpus, node) {
+@@ -2738,7 +2737,6 @@ static int kvm_init(MachineState *ms)
+     }
+ 
+     qemu_register_reset(kvm_unpoison_all, NULL);
+-    qemu_register_reset(kvm_reset_parked_vcpus, s);
+ 
+     if (s->kernel_irqchip_allowed) {
+         kvm_irqchip_create(s);
+@@ -2908,6 +2906,10 @@ static void do_kvm_cpu_synchronize_post_reset(CPUState *cpu, run_on_cpu_data arg
+ void kvm_cpu_synchronize_post_reset(CPUState *cpu)
+ {
+     run_on_cpu(cpu, do_kvm_cpu_synchronize_post_reset, RUN_ON_CPU_NULL);
++
++    if (cpu == first_cpu) {
++        kvm_reset_parked_vcpus(kvm_state);
++    }
+ }
+ 
+ static void do_kvm_cpu_synchronize_post_init(CPUState *cpu, run_on_cpu_data arg)
 -- 
 2.49.0
 
