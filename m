@@ -2,70 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C14FA98A38
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 14:59:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B12A98A79
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 15:07:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7Zh8-00089l-4E; Wed, 23 Apr 2025 08:59:18 -0400
+	id 1u7Zo3-0004Sz-9R; Wed, 23 Apr 2025 09:06:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1u7Zh4-00087c-3V
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 08:59:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <liushuyu@aosc.io>) id 1u7UCB-0007ZD-CB
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 03:07:01 -0400
+Received: from relay3.mymailcheap.com ([217.182.66.161])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1u7Zh2-0006g6-Ed
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 08:59:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745413151;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type;
- bh=oBrYJNriCXZk8J0CSJ2GnGEYfxno/8nVGIFpIelLlyM=;
- b=XUkcHmlCHkzLHaPL/RYhADj2T9Oq9koKNn9uKN8CBJbPGokW3RMy5jwdinConMpv9Wgw3E
- Se0tIyG4u6hVOquuIUmIgsg8OSt1nUdZwGDjhNV9NBEO3qRX3k7stIZsH1GObjpbMqJ3jC
- 2RkdLOqXW+QO0tnX7elqInimfWOUtYU=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-479-peV8sNK2OFGlYMUX9Kkfrw-1; Wed,
- 23 Apr 2025 08:59:07 -0400
-X-MC-Unique: peV8sNK2OFGlYMUX9Kkfrw-1
-X-Mimecast-MFC-AGG-ID: peV8sNK2OFGlYMUX9Kkfrw_1745413147
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (Exim 4.90_1) (envelope-from <liushuyu@aosc.io>) id 1u7UC7-0007Cb-HJ
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 03:06:58 -0400
+Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
+ by relay3.mymailcheap.com (Postfix) with ESMTPS id E92FD3E8FD
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 07:06:49 +0000 (UTC)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+ by nf1.mymailcheap.com (Postfix) with ESMTPSA id 545A140009
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 07:06:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
+ t=1745392009; bh=ywaMDFSvOEiAd55OmAYPF4TmtjYsJYhO3Cd/jQYR9tA=;
+ h=From:To:Cc:Subject:Date:From;
+ b=aiZayUHg+rhH0t8iAQejncP0ws5SumwjhDZlLO1cPkrIKBvGmFga8LMRuGHX2YhcW
+ PFTuRKKqFD5uZWO9R1Iol/gIpQAeOyuwQ4ewtNlC0c78lb7GCDVEdVOK4GUDaRC14i
+ mOJkeo3KQBg9/N0PQMRIKZNLcNaOXL84Bdn0h8zA=
+Received: from localhost.localdomain (unknown [117.151.12.180])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 935B51800370; Wed, 23 Apr 2025 12:59:06 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.102])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id DEDAD19560A3; Wed, 23 Apr 2025 12:59:05 +0000 (UTC)
-Date: Tue, 22 Apr 2025 11:41:31 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>
-Subject: Migration compatibility test broken on major version releases
-Message-ID: <20250422154131.GA308586@fedora>
+ by mail20.mymailcheap.com (Postfix) with ESMTPSA id 0750C40165;
+ Wed, 23 Apr 2025 07:06:46 +0000 (UTC)
+From: Zixing Liu <liushuyu@aosc.io>
+To: qemu-devel@nongnu.org
+Cc: Zixing Liu <liushuyu@aosc.io>
+Subject: [PATCH] linux-user/syscall.c: add translation logic for epoll_pwait2
+ syscall
+Date: Wed, 23 Apr 2025 15:06:00 +0800
+Message-ID: <20250423070605.2989622-1-liushuyu@aosc.io>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="7xNKQKfrJ7sUr5g6"
-Content-Disposition: inline
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -12
-X-Spam_score: -1.3
-X-Spam_bar: -
-X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_12_24=1.049,
- DKIMWL_WL_HIGH=-0.294, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [1.50 / 10.00]; MID_CONTAINS_FROM(1.00)[];
+ R_MISSING_CHARSET(0.50)[]; MIME_GOOD(-0.10)[text/plain];
+ SUBJECT_RANDOM_CHARS_1(0.10)[];
+ ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
+ RCVD_COUNT_ONE(0.00)[1]; MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ FUZZY_RATELIMITED(0.00)[rspamd.com];
+ SPFBL_URIBL_EMAIL_FAIL(0.00)[liushuyu.aosc.io:server fail];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ FROM_EQ_ENVFROM(0.00)[]; RCPT_COUNT_TWO(0.00)[2];
+ TO_MATCH_ENVRCPT_SOME(0.00)[]; RCVD_TLS_ALL(0.00)[]
+X-Rspamd-Server: nf1.mymailcheap.com
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 545A140009
+Received-SPF: pass client-ip=217.182.66.161; envelope-from=liushuyu@aosc.io;
+ helo=relay3.mymailcheap.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 23 Apr 2025 09:06:05 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,57 +83,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Signed-off-by: Zixing Liu <liushuyu@aosc.io>
+---
+ linux-user/syscall.c | 36 ++++++++++++++++++++++++++++++++----
+ 1 file changed, 32 insertions(+), 4 deletions(-)
 
---7xNKQKfrJ7sUr5g6
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi Fabiano,
-The build-previous-qemu job does not work when a new major version is
-released:
-https://gitlab.com/qemu-project/qemu/-/jobs/9788294494
-
-The previous version computation produces "v10.0.0" when testing:
-
-  $ export QEMU_PREV_VERSION=3D"$(sed 's/\([0-9.]*\)\.[0-9]*/v=E2=90=81.0/'=
- VERSION)"
-  $ git remote add upstream https://gitlab.com/qemu-project/qemu
-  $ git fetch upstream refs/tags/$QEMU_PREV_VERSION:refs/tags/$QEMU_PREV_VE=
-RSION
-  warning: redirecting to https://gitlab.com/qemu-project/qemu.git/
-  fatal: couldn't find remote ref refs/tags/v10.0.0
-
-The CI job runs before the v10.0.0 tag is pushed to the repo. (The tag
-is only pushed once tests have passed.)
-
-Even if the tag was there and git fetch succeeded, the test would test
-migration between v10.0.0 and v10.0.0, which doesn't seem to be the
-purpose of the test.
-
-Please adjust the test to handle this situation. For now I will re-run
-the job after pushing the final tag (since it already passed for the
-release candidate tag).
-
-Thanks!
-
-Stefan
-
---7xNKQKfrJ7sUr5g6
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmgHuKoACgkQnKSrs4Gr
-c8ijEQf/UE+vJZsHp22gBf6GFLjHuHgZ9aYOTM7D4z5zTJjA1A/pO6Zk7qHbDah/
-8/NEMU678FQ39lc+tCCZ44+a7BB+5Xz3atddvqFP9GH0TxOenai+2oj3znuMMoCu
-ilCmdX9qkNzTV8L+qmj2VfL4QAl32v57kPlb9smEOEUsCYyCQyL1VMseYhPRlUNW
-oLH4Eyfx+NepiSWjuzENOTDPXlaY/0GB+GTNVW6GmolUaTuQsyWmF2HPW5fpfWDC
-V6DGpCA0sfeMbH2co1jO6NLkDeHM6YqwBc3i9rP7U83kks4wASwGJqvSoWKD5c03
-pJntiU42iK23sJErly5mcwfgqXC1iQ==
-=V6s8
------END PGP SIGNATURE-----
-
---7xNKQKfrJ7sUr5g6--
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 8bfe491..6906e7b 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -711,6 +711,11 @@ safe_syscall5(int, ppoll, struct pollfd *, ufds, unsigned int, nfds,
+ safe_syscall6(int, epoll_pwait, int, epfd, struct epoll_event *, events,
+               int, maxevents, int, timeout, const sigset_t *, sigmask,
+               size_t, sigsetsize)
++#if defined(__NR_epoll_pwait2)
++safe_syscall6(int, epoll_pwait2, int, epfd, struct epoll_event *, events,
++              int, maxevents, struct timespec *, timeout, const sigset_t *, sigmask,
++              size_t, sigsetsize)
++#endif
+ #if defined(__NR_futex)
+ safe_syscall6(int,futex,int *,uaddr,int,op,int,val, \
+               const struct timespec *,timeout,int *,uaddr2,int,val3)
+@@ -13363,19 +13368,22 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+     }
+ #endif
+ 
+-#if defined(TARGET_NR_epoll_wait) || defined(TARGET_NR_epoll_pwait)
++#if defined(TARGET_NR_epoll_wait) || defined(TARGET_NR_epoll_pwait) || defined(TARGET_NR_epoll_pwait2)
+ #if defined(TARGET_NR_epoll_wait)
+     case TARGET_NR_epoll_wait:
+ #endif
+ #if defined(TARGET_NR_epoll_pwait)
+     case TARGET_NR_epoll_pwait:
++#endif
++#if defined(TARGET_NR_epoll_pwait2)
++    case TARGET_NR_epoll_pwait2:
+ #endif
+     {
+         struct target_epoll_event *target_ep;
+         struct epoll_event *ep;
+         int epfd = arg1;
+         int maxevents = arg3;
+-        int timeout = arg4;
++        abi_long timeout = arg4;
+ 
+         if (maxevents <= 0 || maxevents > TARGET_EP_MAX_EVENTS) {
+             return -TARGET_EINVAL;
+@@ -13396,6 +13404,9 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+         switch (num) {
+ #if defined(TARGET_NR_epoll_pwait)
+         case TARGET_NR_epoll_pwait:
++#if defined(TARGET_NR_epoll_pwait2)
++        case TARGET_NR_epoll_pwait2:
++#endif
+         {
+             sigset_t *set = NULL;
+ 
+@@ -13406,8 +13417,25 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+                 }
+             }
+ 
+-            ret = get_errno(safe_epoll_pwait(epfd, ep, maxevents, timeout,
+-                                             set, SIGSET_T_SIZE));
++            if (num == TARGET_NR_epoll_pwait) {
++                ret = get_errno(safe_epoll_pwait(epfd, ep, maxevents, (int)timeout,
++                                                 set, SIGSET_T_SIZE));
++            } else {
++#if defined(TARGET_NR_epoll_pwait2)
++                struct timespec hspec;
++                struct timespec *ts_arg = NULL;
++                if (timeout) {
++                    if (target_to_host_timespec(&hspec, (abi_ulong)timeout)) {
++                        return -TARGET_EFAULT;
++                    }
++                    ts_arg = &hspec;
++                }
++                ret = get_errno(safe_epoll_pwait2(epfd, ep, maxevents, ts_arg,
++                                              set, SIGSET_T_SIZE));
++#else
++                return -TARGET_ENOSYS;
++#endif
++            }
+ 
+             if (set) {
+                 finish_sigsuspend_mask(ret);
+-- 
+2.49.0
 
 
