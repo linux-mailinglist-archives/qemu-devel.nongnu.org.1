@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A370A98146
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 09:39:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D083A9813A
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 09:38:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7UfQ-0003Jy-PD; Wed, 23 Apr 2025 03:37:12 -0400
+	id 1u7UfS-0003OY-5u; Wed, 23 Apr 2025 03:37:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1u7UfE-0003EM-I6
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 03:37:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1u7UfH-0003FO-JZ
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 03:37:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1u7UfB-0003HX-Nh
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 03:36:59 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1u7UfF-0003IH-AR
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 03:37:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745393816;
+ s=mimecast20190719; t=1745393820;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ICnDD9gDStiGMubGBNvzpXFf7u4VFjhcPlW1x+Zd+jo=;
- b=PsJWHmdRVl3gJtLJItIiFnMy0Mjw6AB8U8teW+Pz1HI7p7lsuiXxYSGcA44Nml5BZ2VxqC
- O12L4VWcrxKXAe1UjazERHCsWWwgZsLN1WrLi1C9eU1xeVdvWiyi+zACOC+ugWUfvQZWHH
- fcsm6lAKqwdaVIypkMwmwk3YCrvAc34=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Ht4IJJXpV+d7/B6NOUTg1u7tsE8nzljSN+037UyyjJI=;
+ b=ANVHzvYFnn/B/meD5Mc1Ga1Rs/oXu9F0Mq3sy/XqCqUBxzKmrX5ZqvAiQhSRuAWxtBedqm
+ 6cc4Km4+ShDZK+ykJhi4lZmRKFOAuKxIdymCjIjFDowdJGxheofewJKWfuDRAGdFfKjVHB
+ nXt88k27x50n6LA6eXTWQ/jSyZYXeyY=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-356-PO6NiB_7NyObt6Xoptv3Yg-1; Wed,
- 23 Apr 2025 03:36:54 -0400
-X-MC-Unique: PO6NiB_7NyObt6Xoptv3Yg-1
-X-Mimecast-MFC-AGG-ID: PO6NiB_7NyObt6Xoptv3Yg_1745393813
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-487-eIw_L9SJNQeVfCHd0rpSdw-1; Wed,
+ 23 Apr 2025 03:36:56 -0400
+X-MC-Unique: eIw_L9SJNQeVfCHd0rpSdw-1
+X-Mimecast-MFC-AGG-ID: eIw_L9SJNQeVfCHd0rpSdw_1745393815
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 85B731955DCC; Wed, 23 Apr 2025 07:36:53 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8843919560B7; Wed, 23 Apr 2025 07:36:55 +0000 (UTC)
 Received: from thuth-p1g4.str.redhat.com (dhcp-192-219.str.redhat.com
  [10.33.192.219])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id ED3181955BCB; Wed, 23 Apr 2025 07:36:51 +0000 (UTC)
+ id EF34519560A3; Wed, 23 Apr 2025 07:36:53 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 17/29] tests/functional: Convert the 32-bit little endian
+Subject: [PULL 18/29] tests/functional: Convert the 64-bit little endian
  Wheezy mips test
-Date: Wed, 23 Apr 2025 09:35:57 +0200
-Message-ID: <20250423073610.271585-18-thuth@redhat.com>
+Date: Wed, 23 Apr 2025 09:35:58 +0200
+Message-ID: <20250423073610.271585-19-thuth@redhat.com>
 In-Reply-To: <20250423073610.271585-1-thuth@redhat.com>
 References: <20250423073610.271585-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -87,70 +87,67 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-Reuse the test function from the big endian test to easily
-convert the 32-bit little endian Wheezy mips test.
+Reuse the test function from the 32-bit big endian test to easily
+convert the 64-bit little endian Wheezy mips test.
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20250414113031.151105-8-thuth@redhat.com>
+Message-ID: <20250414113031.151105-9-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/avocado/linux_ssh_mips_malta.py |  8 --------
- tests/functional/meson.build          |  1 +
- tests/functional/test_mipsel_malta.py | 22 ++++++++++++++++++++++
+ tests/avocado/linux_ssh_mips_malta.py   |  8 --------
+ tests/functional/meson.build            |  1 +
+ tests/functional/test_mips64el_malta.py | 22 ++++++++++++++++++++++
  3 files changed, 23 insertions(+), 8 deletions(-)
 
 diff --git a/tests/avocado/linux_ssh_mips_malta.py b/tests/avocado/linux_ssh_mips_malta.py
-index 73d294ad5cf..c1300aec961 100644
+index c1300aec961..2fa5cf9a6c1 100644
 --- a/tests/avocado/linux_ssh_mips_malta.py
 +++ b/tests/avocado/linux_ssh_mips_malta.py
-@@ -172,14 +172,6 @@ def check_mips_malta(self, uname_m, endianess):
-         # Wait for VM to shut down gracefully
-         self.vm.wait()
- 
--    def test_mips_malta32el_kernel3_2_0(self):
+@@ -179,11 +179,3 @@ def test_mips_malta64eb_kernel3_2_0(self):
+         :avocado: tags=device:pcnet32
+         """
+         self.check_mips_malta('mips64', 'be')
+-
+-    def test_mips_malta64el_kernel3_2_0(self):
 -        """
--        :avocado: tags=arch:mipsel
+-        :avocado: tags=arch:mips64el
 -        :avocado: tags=endian:little
 -        :avocado: tags=device:pcnet32
 -        """
--        self.check_mips_malta('mips', 'le')
--
-     def test_mips_malta64eb_kernel3_2_0(self):
-         """
-         :avocado: tags=arch:mips64
+-        self.check_mips_malta('mips64', 'le')
 diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 4dedfc7b9f7..cba0abf2920 100644
+index cba0abf2920..a4a317115b3 100644
 --- a/tests/functional/meson.build
 +++ b/tests/functional/meson.build
-@@ -40,6 +40,7 @@ test_timeouts = {
-   'arm_sx1' : 360,
-   'intel_iommu': 300,
+@@ -42,6 +42,7 @@ test_timeouts = {
    'mips_malta' : 480,
-+  'mipsel_malta' : 420,
+   'mipsel_malta' : 420,
    'mipsel_replay' : 480,
++  'mips64el_malta' : 420,
    'mips64el_replay' : 180,
    'netdev_ethtool' : 180,
-diff --git a/tests/functional/test_mipsel_malta.py b/tests/functional/test_mipsel_malta.py
-index fe9c3a172e6..9ee2884da8e 100755
---- a/tests/functional/test_mipsel_malta.py
-+++ b/tests/functional/test_mipsel_malta.py
-@@ -13,6 +13,8 @@
- from qemu_test import interrupt_interactive_console_until_pattern
- from qemu_test import wait_for_console_pattern
+   'ppc_40p' : 240,
+diff --git a/tests/functional/test_mips64el_malta.py b/tests/functional/test_mips64el_malta.py
+index a8da15a26b3..dd37212f9df 100755
+--- a/tests/functional/test_mips64el_malta.py
++++ b/tests/functional/test_mips64el_malta.py
+@@ -16,6 +16,8 @@
+ from qemu_test import exec_command_and_wait_for_pattern
+ from qemu_test import skipIfMissingImports, skipFlakyTest, skipUntrustedTest
  
 +from test_mips_malta import mips_check_wheezy
 +
  
  class MaltaMachineConsole(LinuxKernelTest):
  
-@@ -57,6 +59,26 @@ def test_mips_malta32el_nanomips_16k_up(self):
-     def test_mips_malta32el_nanomips_64k_dbg(self):
-         self.do_test_mips_malta32el_nanomips(self.ASSET_KERNEL_64K)
+@@ -90,6 +92,26 @@ def test_mips64el_malta_5KEc_cpio(self):
+         # Wait for VM to shut down gracefully
+         self.vm.wait()
  
 +    ASSET_WHEEZY_KERNEL = Asset(
 +        ('https://people.debian.org/~aurel32/qemu/mipsel/'
-+         'vmlinux-3.2.0-4-4kc-malta'),
-+        'dc8a3648305b0201ca7a5cd135fe2890067a65d93c38728022bb0e656ad2bf9a')
++         'vmlinux-3.2.0-4-5kc-malta'),
++        '5e8b725244c59745bb8b64f5d8f49f25fecfa549f3395fb6d19a3b9e5065b85b')
 +
 +    ASSET_WHEEZY_DISK = Asset(
 +        ('https://people.debian.org/~aurel32/qemu/mipsel/'
@@ -163,13 +160,13 @@ index fe9c3a172e6..9ee2884da8e 100755
 +        kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE
 +                               + 'console=ttyS0 root=/dev/sda1')
 +        mips_check_wheezy(self,
-+            kernel_path, image_path, kernel_command_line,
-+            dl_file='/boot/initrd.img-3.2.0-4-4kc-malta',
-+            hsum='9fc9f250ed56a74e35e704ddfd5a1c5a5625adefc5c9da91f649288d3ca000f0')
++            kernel_path, image_path, kernel_command_line, cpuinfo='MIPS 20Kc',
++            dl_file='/boot/initrd.img-3.2.0-4-5kc-malta',
++            hsum='7579f8b56c1187c7c04d0dc3c0c56c7a6314c5ddd3a9bf8803ecc7cf8a3be9f8')
 +
  
- class MaltaMachineYAMON(QemuSystemTest):
- 
+ @skipIfMissingImports('numpy', 'cv2')
+ class MaltaMachineFramebuffer(LinuxKernelTest):
 -- 
 2.49.0
 
