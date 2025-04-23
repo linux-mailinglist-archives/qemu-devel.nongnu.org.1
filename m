@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8141BA985DF
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 11:42:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A48BA985EC
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 11:42:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7Wbi-000494-0p; Wed, 23 Apr 2025 05:41:31 -0400
+	id 1u7Wbw-0004hZ-I9; Wed, 23 Apr 2025 05:41:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u7WbT-000441-PS
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1u7WbW-00047X-5W
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u7WbS-0008JT-0S
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:15 -0400
+ id 1u7WbU-0008Jk-0w
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745401272;
+ s=mimecast20190719; t=1745401275;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=I94wcuIjpCSwv4K7/E+7/Tfezi1orTnp1Ih//GpLUwA=;
- b=RNMgOF/gcrkrVo7mFjBLnj8TWhREWWvZt0Q6PBIh7H8gS8repIHufLPbQNWMvF/L9NNkX5
- EkDdbiQXFsxAQdzipU/2CMHS9f9gLIUzbHczH9LC2nu6CY+Ppxk0C6QNNAV+ZYGI1lCcyu
- aYS7AfKvzQo+DhDFPNZiSdSDmqZT9pc=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=4KUXfxem6hXz9wBC7InW3PIEnFU5WiG11keAeu8ffU8=;
+ b=LHdP/QV4Kox138XdeQj0W0qabYHvchaJPduGv/quuxJCm2zkky9+rlhNUMdD++3dtq1Dxn
+ PIM2D6kDicNPmqFyMhh6fYckrzW7QngFe6CJ0Sz31GaMn9+g/Fz5Jk7QhCkW2S5gWSsSB2
+ pusE/HemXlvFjoV0uOUcSFR6eoQrgjI=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-327-cCFw5HMIMx2zoA9ssQbTog-1; Wed, 23 Apr 2025 05:41:10 -0400
-X-MC-Unique: cCFw5HMIMx2zoA9ssQbTog-1
-X-Mimecast-MFC-AGG-ID: cCFw5HMIMx2zoA9ssQbTog_1745401270
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-ac297c7a0c2so391378966b.3
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 02:41:10 -0700 (PDT)
+ us-mta-442-UDXO1TD4MvaumuJX3GH_aQ-1; Wed, 23 Apr 2025 05:41:12 -0400
+X-MC-Unique: UDXO1TD4MvaumuJX3GH_aQ-1
+X-Mimecast-MFC-AGG-ID: UDXO1TD4MvaumuJX3GH_aQ_1745401271
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-5f4d2b91f1eso6279118a12.0
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 02:41:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745401269; x=1746006069;
+ d=1e100.net; s=20230601; t=1745401271; x=1746006071;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=I94wcuIjpCSwv4K7/E+7/Tfezi1orTnp1Ih//GpLUwA=;
- b=PwBtj4GcuYXVShGfbaC3J2jWIdX+a955+5Ho++YZ8MrsVqOovOQGE90+cvGgZ8FuaG
- N8u97FRTMRHmglao7wkyfSaeNPn2gzhhIBiSbsEspCWzKh8u+sCBj3l4fo22CIdIWgvc
- 5YNOKOG+nV391/TFtNAmj21R3uFH6Hd3l9PA/XbOBrOEDTNd5yD/WO+S1mBZLuerLdsh
- s119miQGOzJt/BasjFrUqvxyJGHcfTjtl7GP7s3VIxF41yjBTf0l5fGAVjX3zKHsngTv
- zQIs3kp0/uOB06P2dH0DC8f3awZebJznakGlVWnD2YLuTj38shxUfmXqNIwwGt4N9KA4
- jDsw==
-X-Gm-Message-State: AOJu0YynKy1tmA2oqFwqlUkp2T0bg2PRdvMKiyJFl4HQRQLny/wLNIRd
- /i+SGz8y81GKilyU8F/vakMhm54kixHgXYiWkBo+h/MMJMEquNdfLz6rq5+uuj552VNQMj4G+S+
- 35gTMbTNr6m+bN14T8+5T5FwZMbV9yejiWUZaCAqteApVvieBb/aA2/8zJ/XtIGt+UKGEu1meO9
- YycG6KCO46A6HgDa3ryAHxzcmPEf0pG03jwUdo
-X-Gm-Gg: ASbGnctP6QdfWokZ1du04qidmLA1mG6R/J1ULkFnXnGsD2olRaKd0XfvrZUzkUlf+dD
- IQZSu9OYMOQfuz9kE/4tZguI+TNdbpkhDox2Di1gzDlGqx6Hot7JWVYw1zIrriru8Pbkbm3K0ds
- Y7hk05i3orhHSOqIOMegMmAU1Nx0i8kR2lAacjywC2L3OVaQNzO6VY1I+NfhXQrIvCEHNUaf0+b
- fix3EWO//q8vJS/qKPvT2sKcImlAAvT0Y9QBprenA9PVMFQ1bYFuwWmXPniciOl6cEDwv/mRfzS
- Y+Df5jonkGVq/HjM
-X-Received: by 2002:a17:907:2ce4:b0:acb:5c83:25b with SMTP id
- a640c23a62f3a-acb74ad93b8mr1571267766b.7.1745401269140; 
- Wed, 23 Apr 2025 02:41:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFJ4Vu8wGobWhPIPJ4+gO/prXDfemcKA5RiFSyJK0+kpo8vHE2AoZIMMIWDO4XUSJ/IhT6daw==
-X-Received: by 2002:a17:907:2ce4:b0:acb:5c83:25b with SMTP id
- a640c23a62f3a-acb74ad93b8mr1571265766b.7.1745401268632; 
- Wed, 23 Apr 2025 02:41:08 -0700 (PDT)
+ bh=4KUXfxem6hXz9wBC7InW3PIEnFU5WiG11keAeu8ffU8=;
+ b=bEdUS4Ta4fdikvKBtkRIwuM2McMxWWZRBVwhFOqHLnt0IMbL6KEyElFFZVJuh/0MTV
+ 8z9mnObvkV7SN0OKAWo7cNIvwJp+mEl6PikmEU0VT6qdJQt7LAtcnKXngZTWVmuHllyE
+ vCufs+oyl8yRCTXnAXqnHCunz+e4uBQbZvpBKNy23GVb3ogISIo/xO6b0u9SNrroUmcd
+ 59p9kTmrFhXKCTa5mpuwIP38mnU+X4zp7BXAhz8x/6Cs44M+MxNxtwvxM/wwa9vPwYyU
+ dPy1I6xZoyMC1trhbrII44YIXi9qAZFgi+IcE+7bPNriGW95PdO2jtZpu2DYK3o6zfs2
+ LWhA==
+X-Gm-Message-State: AOJu0YwH0B/Bo+CEnqxWrn2an0wnFNKDyPxWti1VeFCmSvueSL4qZm87
+ vE+pctZFKhY5/Gaw8gVtC7dU4QNS+EidGktV73D17hajotHC401ltufnyYM9/FAPFG8j1oyFF8k
+ 0iQnYw7JaIh71eHcLEsBaFrC7uH5K2A8doJLNczcGdEwgbY2Eq/NMfj9APeIoB5XRgdA3w/i8oo
+ HYoTy9qu7Dxgn2Ztipkr0DS62iWDyeXtMNrzwC
+X-Gm-Gg: ASbGncuAY1SfAr0iEdAJDgZoSs4moyyV0BWZSh02FN2vvEJvmaC7dDsnW3bE/Vl0C96
+ kjEGS20XmVI4pQBDZ1O6L5ogQDIJwJpTV9B/n1PkefRhZnMiwjxDx2M69ooZorACf3Fo1ZvY1XM
+ icybqHKbzCP5MYiNyA6620fCjpr/v7ef/OJGWZFHjls+FgvzIgYcfjjdGfxnJdcT+HvYmQlqSgC
+ 9YjsMNYkGgmKX1KW37RkmQT5A9GqwmrStJ4N3fPdCFIrMKUfl2o6lk7pz2z7wkmXl28u8KpcaTV
+ S3rN+tVFjE3aq1no
+X-Received: by 2002:a05:6402:524b:b0:5e6:13bf:2c7c with SMTP id
+ 4fb4d7f45d1cf-5f628524b53mr14875905a12.9.1745401270974; 
+ Wed, 23 Apr 2025 02:41:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHnWnqWjKL4pAElTiX2uf0opZRUGtI5NNPTXCb9cECCgpeug3R5Js7gSjj5R2rgiXVO7JEXmg==
+X-Received: by 2002:a05:6402:524b:b0:5e6:13bf:2c7c with SMTP id
+ 4fb4d7f45d1cf-5f628524b53mr14875888a12.9.1745401270559; 
+ Wed, 23 Apr 2025 02:41:10 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.233.241])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-acb6ec047b3sm773650966b.28.2025.04.23.02.41.07
- for <qemu-devel@nongnu.org>
+ 4fb4d7f45d1cf-5f62557a151sm7223601a12.32.2025.04.23.02.41.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Apr 2025 02:41:07 -0700 (PDT)
+ Wed, 23 Apr 2025 02:41:09 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/34] scsi: add conversion from ENODEV to sense
-Date: Wed, 23 Apr 2025 11:40:31 +0200
-Message-ID: <20250423094105.40692-2-pbonzini@redhat.com>
+Cc: Ewan Hai <ewanhai-oc@zhaoxin.com>
+Subject: [PULL 02/34] target/i386: Fix model number of Zhaoxin YongFeng vCPU
+ template
+Date: Wed, 23 Apr 2025 11:40:32 +0200
+Message-ID: <20250423094105.40692-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423094105.40692-1-pbonzini@redhat.com>
 References: <20250423094105.40692-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -106,51 +107,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is mostly for completeness; I noticed it because ENODEV is used internally
-within scsi-disk.c, but when scsi_sense_from_errno(ENODEV) is called the resulting
-sense is never used and instead scsi_sense_from_host_status() is called later
-by scsi_req_complete_failed().
+From: Ewan Hai <ewanhai-oc@zhaoxin.com>
 
+The model number was mistakenly set to 0x0b (11) in commit ff04bc1ac4.
+The correct value is 0x5b. This mistake occurred because the extended
+model bits in cpuid[eax=0x1].eax were overlooked, and only the base
+model was used.
+
+Using the wrong model number can affect guest behavior. One known issue
+is that vPMU (which relies on the model number) may fail to operate
+correctly.
+
+This patch corrects the model field by introducing a new vCPU version.
+
+Fixes: ff04bc1ac4 ("target/i386: Introduce Zhaoxin Yongfeng CPU model")
+Signed-off-by: Ewan Hai <ewanhai-oc@zhaoxin.com>
+Link: https://lore.kernel.org/r/20250414075342.411626-1-ewanhai-oc@zhaoxin.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- scsi/utils.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ target/i386/cpu.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/scsi/utils.c b/scsi/utils.c
-index 357b0366716..545956f4f95 100644
---- a/scsi/utils.c
-+++ b/scsi/utils.c
-@@ -587,20 +587,27 @@ int scsi_sense_from_errno(int errno_value, SCSISense *sense)
-         return GOOD;
-     case EDOM:
-         return TASK_SET_FULL;
-+#if ENODEV != ENOMEDIUM
-+    case ENODEV:
-+        /*
-+         * Some of the BSDs have ENODEV and ENOMEDIUM as synonyms.  For
-+         * everyone else, give a more severe sense code for ENODEV.
-+         */
-+#endif
- #ifdef CONFIG_LINUX
-         /* These errno mapping are specific to Linux.  For more information:
-          * - scsi_check_sense and scsi_decide_disposition in drivers/scsi/scsi_error.c
-          * - scsi_result_to_blk_status in drivers/scsi/scsi_lib.c
-          * - blk_errors[] in block/blk-core.c
-          */
-+    case EREMOTEIO:
-+        *sense = SENSE_CODE(TARGET_FAILURE);
-+        return CHECK_CONDITION;
-     case EBADE:
-         return RESERVATION_CONFLICT;
-     case ENODATA:
-         *sense = SENSE_CODE(READ_ERROR);
-         return CHECK_CONDITION;
--    case EREMOTEIO:
--        *sense = SENSE_CODE(TARGET_FAILURE);
--        return CHECK_CONDITION;
- #endif
-     case ENOMEDIUM:
-         *sense = SENSE_CODE(NO_MEDIUM);
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 1b64ceaaba4..3fb1ec62da1 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -5621,6 +5621,18 @@ static const X86CPUDefinition builtin_x86_defs[] = {
+         .features[FEAT_VMX_VMFUNC] = MSR_VMX_VMFUNC_EPT_SWITCHING,
+         .xlevel = 0x80000008,
+         .model_id = "Zhaoxin YongFeng Processor",
++        .versions = (X86CPUVersionDefinition[]) {
++            { .version = 1 },
++            {
++                .version = 2,
++                .note = "with the correct model number",
++                .props = (PropValue[]) {
++                    { "model", "0x5b" },
++                    { /* end of list */ }
++                }
++            },
++            { /* end of list */ }
++        }
+     },
+ };
+ 
 -- 
 2.49.0
 
