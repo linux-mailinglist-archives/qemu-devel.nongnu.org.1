@@ -2,82 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64AC5A987C3
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 12:45:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BDEDA987CE
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 12:47:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7Xbb-0000ao-Gd; Wed, 23 Apr 2025 06:45:27 -0400
+	id 1u7Xdd-0002Qp-Mf; Wed, 23 Apr 2025 06:47:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7XbS-0000Xf-Oe
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 06:45:21 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7Xdb-0002PF-W0
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 06:47:32 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7XbP-0006wq-DJ
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 06:45:17 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-5f4d0da2d2cso8127330a12.3
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 03:45:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7Xda-00073D-5j
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 06:47:31 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3913d129c1aso605029f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 03:47:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745405113; x=1746009913; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745405248; x=1746010048; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=0IR/47eCkgowldnbNBOrsTJBr5V5cH40pH12vLJJtYk=;
- b=ATL9NgAyo06x3Ctg9qb9DHc20Wx/p38stCQH0oo9rHQioRk/PsRpr/e7MSQeE0daAS
- KqX2NIE0NlF6X2VIh2BaAII3Th6Kx+AePkQh7SVpAjUi2wAzvRHOIFFobuuU0X5mvOUh
- aUnfAPYx51mljv7eN4BUkwAqqGL44LzV8NuUf8AzAEOlFxYDmAqiqpSszvt8og73zFT/
- DLWKC7JvtHQwIa72Y379Ngtp5bnPe5xp8/AJG0Kcms+IcOq9AnADG/J3SIAGoXwXsCDr
- wg3viuNccjI1W6fOaX56JDjY2Jab4C+Mq6/EeP73VUbMaSRr1c1oZSV4e4eJaQnz4zSt
- FaOA==
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=d35VazuwwTo6rIIsoHBG8IeRdQGisd6oQW+QHgCIWgg=;
+ b=Imzem50wduKFpioTven/l3vVFbQj0veqcsh54yMvsS5fz3LgtxLm4mbbAZzOu0gvjg
+ HTd07KmIs2hF9a5RFW5C846bKEGUqh+l4+ciN3ZFtBG7HmfUI5vCElp9DPsTuf3HyfGG
+ I/Sn/vHKgRr6iNpPs541qCmeuLHEZodJMl1wQaxzEAhOZBaAl6ccDfnyLgy5yWEh7Fvg
+ 4VCN3FW7P5IfIhhzodmTeq9Ms5Q+jnbP2vqJKryWiAZGtUyvZS8bMaxacsx7c+adNbS5
+ U/MN2pbWaGnfEQkz3X4YLlihg87LtGd0MdxLyGWqgljvtaMgpNbrQ9MjpJ3341lhNl4R
+ uFyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745405113; x=1746009913;
+ d=1e100.net; s=20230601; t=1745405248; x=1746010048;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0IR/47eCkgowldnbNBOrsTJBr5V5cH40pH12vLJJtYk=;
- b=ijTeaYk6oa0EO65twxq5lPKHdlTzczD+Ve2R/qMiJvxWsSGR6K6hHAtvRUbDw4xS7Z
- FxNdgV9Wdbru7IxpSKZpL1XePTlhGtC1E/SwWh+3SIbA0NLSK/xZZD+WWL+W/q/4pBl/
- n8sixc1dFu9qXQJ1Ipw+ys32SJupo3Pt4MwGWpRn5l5oU9lio9BQwnGqMfOzQv5ZZgAw
- /9tzaGdhb8yOK4oWJDSxbQ4lJfYbfUCWwYKcZ+9WM7C1/t9Fy0d78hInfeF6VDJjorFX
- JD9YNUp/ZqJ85X4VWS0sBBxLxzqnUB9c7icy8P6KXmuU/AXVqCiKpfoWkjYbM/gKpU3Z
- AwOA==
+ bh=d35VazuwwTo6rIIsoHBG8IeRdQGisd6oQW+QHgCIWgg=;
+ b=XND+03h537/s/4JSW0s2WNEeOwVcg6EQqa8US4iVIegi4AZm9udpP54VIwM3Xk20UK
+ VHP9v0YVztH8Gfsk26O8+vrIJZkCT5l/Qib9TAT4gKW+kUhStYQYYDQ+uxe8GVu1TuXf
+ ipeuVFvh3nmkJjz4RCdMgj3tODz9UyjjGGLzcfHWzQKNeaoyeMeTuGG3XUQGxnHwyxQ+
+ DRf5uldoiNb3yhJaeVra2nq6zTpdscmHkIzCVXLViiJ3jyVyz1viBibqeJjie8k7zHo8
+ 7cb4sL8JrFZOPUg4f9P2EwrNu9K9/xY13REUGx2vYpavyCKNnZvunreJ+/iNABwQcwSn
+ KAsw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUjWtdN/KoVFGrrRU9jEE1iEmXPlaTPH727uChUr+TCBKOS2zxwXqCqYmZuK78QcwAjy3HITL+k1RhR@nongnu.org
-X-Gm-Message-State: AOJu0Yxs3IMbpebynyGubGOXnkMn9PX/9CTAKIL+UBhHe6QnspGAIiLr
- EUVSZc0ScFjeOi+fLnQXh65eBX50SDxGtC22cNHpGAdo88R8PeM15x629LUoNWudELNlQlnrjfc
- 9
-X-Gm-Gg: ASbGncuRy1OKYrFMi+GMJqtqgtvMMPxh3EN6tPi1nrLBcV2IHZco6FzVMkJW+yAcvg/
- XF8DepQNhf2ic1oQTE7v/ZNUKs1FL7LHyZDMaUKtUWM23umvDwZabqXjmyPO4WG1DHDkLQoKUQ+
- 1mUmjYpI6z5EX/P2pVw7/jETxOX5t/e2sTjtDDSaxyxC+vFeM5vposx8zX9R7jgRYUBm4XUjLfT
- dymxsHx1mdXaivt6LkGqZVNTcUd6rWdlhdOKHP9ZabV8OLehbsPX3dTm6xMRyzrayKLhfdZUpUQ
- E8S8XRVMVeE0X4ukcNQGe+uZE6z6wL19+npMgnMLvutCX82DQBdj0uY6Gq4S6QhKencP9p5zxE5
- 27YQRQJ8ZMV/KdKgXtSc=
-X-Google-Smtp-Source: AGHT+IEMa5iqwbAKnCvqmWZexLqe6wF7lQGZdSPr1mlKO39kWxdDpc2Svn8JdkIGgGB+DsmBezU5dw==
-X-Received: by 2002:a05:6402:1ece:b0:5f3:4ac5:9bc0 with SMTP id
- 4fb4d7f45d1cf-5f62860f778mr16843982a12.25.1745405113391; 
- Wed, 23 Apr 2025 03:45:13 -0700 (PDT)
+ AJvYcCWunTwwbZqKjvq8cv6DFW1hXVdSuVN7Zqi7jcLZ4mgUnfXJSXaWbECBZzXNJuxtDO+Ceg8xVKTTtlSa@nongnu.org
+X-Gm-Message-State: AOJu0Yx3snq7y9whyS5fxMex2qkyffuZjW0N1dDaF6JB9roKhldmXlN4
+ 4s9eKEjoePajQ7dDiqrdiKcVx90Ibwy6rPRfp//KhZSDX38pqws6vJcWNoKKp9p/+DGiEv6pXq/
+ p
+X-Gm-Gg: ASbGncsBQQblnik2GA5++nmTiAUsIxoPGYNasDhXCpYcETyaWiK+H90YClvbtWS81fb
+ Rx22skon5pOnya2cRae/hGhiz3WtzpI5zaxELSmwPMyXIlyml+ABEOKFI/1HrpIQKoi+5nJhByD
+ l7qiwHslDgjxIBycxR0upJQuL/837Vogssk+cpL3zx0qW7JkmuOqKb0gXrC8/As+qSR5CcLjw++
+ O2SgI2yGziE3hcRPmm+pgnjQF1Pc+ezpjcFgi+bVOCJJWE72WbXl0yr420RcVuX5JTnsx6u4T+F
+ Uh3DCyr/WuSOjXn6soOLUAB+rGdg8kwuCUU4rWImGH1MYzDflMM01SlDQ0mxlF4Ac9G4+snQzyo
+ u95r3G4ggHTxdnnrHCto=
+X-Google-Smtp-Source: AGHT+IFFwxw8u6RIaPLoGcWA8IzJiU0YNHkd75HWk3XVr6CnrLijFSRpaWIO2fxDHv2jt17N7cllwQ==
+X-Received: by 2002:a05:6000:22c4:b0:39f:cfc:d520 with SMTP id
+ ffacd0b85a97d-3a067243ce4mr1858274f8f.15.1745405248488; 
+ Wed, 23 Apr 2025 03:47:28 -0700 (PDT)
 Received: from [192.168.69.169] (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5f6258340b8sm7281268a12.56.2025.04.23.03.45.12
+ ffacd0b85a97d-39efa420683sm18426740f8f.20.2025.04.23.03.47.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 23 Apr 2025 03:45:12 -0700 (PDT)
-Message-ID: <fa33278d-e0ce-435d-a064-fdd425eb7b5d@linaro.org>
-Date: Wed, 23 Apr 2025 12:45:11 +0200
+ Wed, 23 Apr 2025 03:47:27 -0700 (PDT)
+Message-ID: <5a5f0fde-3881-41a0-82d9-ec8e9987f97a@linaro.org>
+Date: Wed, 23 Apr 2025 12:47:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 144/147] accel/tcg: Move mttcg warning to tcg_init_machine
+Subject: Re: [PATCH 147/147] tcg: Convert TARGET_SUPPORTS_MTTCG to
+ TCGCPUOps::mttcg_supported field
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: Anton Johansson <anjo@rev.ng>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
 References: <20250422192819.302784-1-richard.henderson@linaro.org>
- <20250422192819.302784-145-richard.henderson@linaro.org>
+ <20250422192819.302784-148-richard.henderson@linaro.org>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250422192819.302784-145-richard.henderson@linaro.org>
+In-Reply-To: <20250422192819.302784-148-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,14 +104,78 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 22/4/25 21:28, Richard Henderson wrote:
-> Delay the warning to tcg_init_machine, because we will
-> have resolved the CPUClass at that point.
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
 > 
+> Instead of having a compile-time TARGET_SUPPORTS_MTTCG definition,
+> have each target set the 'mttcg_supported' field in the TCGCPUOps
+> structure.
+> 
+
+This part -->
+
+> Since so far we only emulate one target architecture at a time,
+> tcg_init_machine() gets whether MTTCG is supported via the
+> current CPU class (CPU_RESOLVING_TYPE).
+> 
+> Since TARGET_SUPPORTS_MTTCG isn't available anymore,
+> instead of emiting a warning when the 'thread' property
+> is set in tcg_set_thread(), emit it in tcg_init_machine()
+> where it is consumed.
+
+<-- is now implemented by patch #144 "accel/tcg: Move mttcg warning
+to tcg_init_machine" so can be removed.
+
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Anton Johansson <anjo@rev.ng>
+> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Message-ID: <20250405161320.76854-17-philmd@linaro.org>
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   accel/tcg/tcg-all.c | 21 ++++++++++++++-------
->   1 file changed, 14 insertions(+), 7 deletions(-)
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>   include/accel/tcg/cpu-ops.h              |  8 ++++++++
+>   include/exec/poison.h                    |  1 -
+>   accel/tcg/tcg-all.c                      | 11 +++++------
+>   target/alpha/cpu.c                       |  1 +
+>   target/arm/cpu.c                         |  1 +
+>   target/arm/tcg/cpu-v7m.c                 |  1 +
+>   target/avr/cpu.c                         |  1 +
+>   target/hexagon/cpu.c                     |  1 +
+>   target/hppa/cpu.c                        |  1 +
+>   target/i386/tcg/tcg-cpu.c                |  1 +
+>   target/loongarch/cpu.c                   |  1 +
+>   target/m68k/cpu.c                        |  1 +
+>   target/microblaze/cpu.c                  |  1 +
+>   target/mips/cpu.c                        |  1 +
+>   target/openrisc/cpu.c                    |  1 +
+>   target/ppc/cpu_init.c                    |  1 +
+>   target/riscv/tcg/tcg-cpu.c               |  1 +
+>   target/rx/cpu.c                          |  1 +
+>   target/s390x/cpu.c                       |  1 +
+>   target/sh4/cpu.c                         |  1 +
+>   target/sparc/cpu.c                       |  1 +
+>   target/tricore/cpu.c                     |  1 +
+>   target/xtensa/cpu.c                      |  1 +
+>   configs/targets/aarch64-softmmu.mak      |  1 -
+>   configs/targets/alpha-softmmu.mak        |  1 -
+>   configs/targets/arm-softmmu.mak          |  1 -
+>   configs/targets/hppa-softmmu.mak         |  1 -
+>   configs/targets/i386-softmmu.mak         |  1 -
+>   configs/targets/loongarch64-softmmu.mak  |  1 -
+>   configs/targets/microblaze-softmmu.mak   |  1 -
+>   configs/targets/microblazeel-softmmu.mak |  1 -
+>   configs/targets/mips-softmmu.mak         |  1 -
+>   configs/targets/mipsel-softmmu.mak       |  1 -
+>   configs/targets/or1k-softmmu.mak         |  1 -
+>   configs/targets/ppc64-softmmu.mak        |  1 -
+>   configs/targets/riscv32-softmmu.mak      |  1 -
+>   configs/targets/riscv64-softmmu.mak      |  1 -
+>   configs/targets/s390x-softmmu.mak        |  1 -
+>   configs/targets/sparc-softmmu.mak        |  1 -
+>   configs/targets/sparc64-softmmu.mak      |  1 -
+>   configs/targets/x86_64-softmmu.mak       |  1 -
+>   configs/targets/xtensa-softmmu.mak       |  1 -
+>   configs/targets/xtensaeb-softmmu.mak     |  1 -
+>   docs/devel/multi-thread-tcg.rst          |  2 +-
+>   44 files changed, 34 insertions(+), 28 deletions(-)
 
 
