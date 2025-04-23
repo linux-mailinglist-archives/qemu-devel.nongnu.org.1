@@ -2,164 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB006A97F31
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 08:29:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67E49A97F41
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 08:32:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7Tbc-0002io-SI; Wed, 23 Apr 2025 02:29:14 -0400
+	id 1u7TeU-0006Vd-Ay; Wed, 23 Apr 2025 02:32:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Sairaj.ArunKodilkar@amd.com>)
- id 1u7TbR-0002ZU-LN
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 02:29:02 -0400
-Received: from mail-dm6nam10on2060f.outbound.protection.outlook.com
- ([2a01:111:f403:2413::60f]
- helo=NAM10-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1u7TeD-0006Sm-TW
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 02:31:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Sairaj.ArunKodilkar@amd.com>)
- id 1u7TbN-0003Jt-1c
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 02:29:00 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sbkaEJlcLCdfKSBMF6p6B/N9oF//3Upb6tzZwCdV6fPPd2CdckioGjfDYsAB3STbBQjZnUltyTsOdMaKkJOfWuTTMFuf3sGq5g61RON7fksYGzZdkIVXR2nXnyCwWzvCddvh0FE7vcqIR1nsffBEFJgFJ+Hf0NXhoLxdTWYzvIh8LQNyc0DJCINHEG5NHbjUZRbic5+aVcaXB6wG4F+mbaCUrgw65UKuHKeSKDOCF+bpTRG92Y9E7tkv/GQ69b0XfhPCiQ17i70vSJEcMNQvbCdyF6Op3n7zAfqwk9S55J8VKRZt1+49vTJ52cBfqOsHckyqMTguBrpO21nkBRZQkA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=E7g28WOcp9BzXmdwnFTlbTtoAg3k4qco95Gu6JWWGdQ=;
- b=CsaOeccYNhMJsGZd312G0awoc3df6NxeoiPeT2cn2x37PvgFDBJT8BIyEbO31EHbTGHGrEBor+DuQT5BOfBgVbXM3lQrh8s1b94cspivFFGM4KP/E+ez6+oBHAdJeALDvLmP3920XqP/Nzc/ox3OJ6wgDtW3+qt7PcfP8BPiVMc+7Axve09Sq0evXEry2IzWLxkIH8EgwUDm3fywPoapfQiGOQGauPe+4CyZjPhgrOuDklpF7r482coQbtbBnHyNVX2Oh3a762zrjkZ0UO+NNmgvWkBzSVjrt2+uyLl6I36IabpH7HujiwcP/6fcSDEbxPkZjEyNwFnaJy89lop+sw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=eviden.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=E7g28WOcp9BzXmdwnFTlbTtoAg3k4qco95Gu6JWWGdQ=;
- b=WCxwv9evoibQxYL1iQdPN+h/1XApAygVE8vrD7uHU2UluSOPDb2V025nfy64o5TYibbkDuwBkyoWdZyzGVngdiIYAvTgXN7D/XhqEE+NCkD6h+dWGAywoPKj6qpf2NZ0QjQp5zvE/MUXpnzGD0CDmA+XzS+KUcYRqZLNr/bhwlc=
-Received: from MN2PR08CA0021.namprd08.prod.outlook.com (2603:10b6:208:239::26)
- by CH3PR12MB9193.namprd12.prod.outlook.com (2603:10b6:610:195::14)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.36; Wed, 23 Apr
- 2025 06:28:46 +0000
-Received: from BL6PEPF0001AB58.namprd02.prod.outlook.com
- (2603:10b6:208:239:cafe::da) by MN2PR08CA0021.outlook.office365.com
- (2603:10b6:208:239::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.37 via Frontend Transport; Wed,
- 23 Apr 2025 06:28:46 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BL6PEPF0001AB58.mail.protection.outlook.com (10.167.241.10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8655.12 via Frontend Transport; Wed, 23 Apr 2025 06:28:46 +0000
-Received: from [10.85.41.53] (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 23 Apr
- 2025 01:28:40 -0500
-Message-ID: <c8e4d4b3-7546-4dd4-b76f-6a9ea04f2257@amd.com>
-Date: Wed, 23 Apr 2025 11:58:37 +0530
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1u7TeA-0003we-Ce
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 02:31:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1745389907;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=1EQGRTYAm/QH8JhqTlXKA4ja9GkduCUgaHHCxWdHgI4=;
+ b=C1IoPH/9HbEHvb28xqPZS3yJG7thf4hHn3EjgZjlFBCa2CzeDR/LAk0cJqoedz4o2T+eal
+ pSkMFa62i9L4fx8fD0hQLBf0WxD9AYoHrneL9rWVFCCHMLyDQdMenwyOygOrUnYRz0bWsA
+ q50jEJqqfpTLpRsjIPWY0/sxhUiX/W8=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-674-Nv_os66ROuW1Bpa9RkdM2Q-1; Wed, 23 Apr 2025 02:31:42 -0400
+X-MC-Unique: Nv_os66ROuW1Bpa9RkdM2Q-1
+X-Mimecast-MFC-AGG-ID: Nv_os66ROuW1Bpa9RkdM2Q_1745389901
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-39c2da64df9so2703909f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 22 Apr 2025 23:31:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1745389901; x=1745994701;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=1EQGRTYAm/QH8JhqTlXKA4ja9GkduCUgaHHCxWdHgI4=;
+ b=DtQXNUy2hrFIpZD+jvv+123dhzhnByMTOCAFrcuz6oPtgtH20fwaVAX+mqTA+FmM33
+ Fdxiw5wYzD+FZqA/mc8Ae5nrCRdLeYFEJYD2mNdDKspWOGPB4rqTLqHe9q1gCUyiiLhK
+ /G9vin6KuHH6WR9rc2nvnHJjALzeZarouhJtHgNDpyILqWfnDnavr9lQr9VZczgVtwxn
+ u0tYiWDwJ+dA4LRxZ6KZjzoo1B6JmxYGLUl/Ir44u3Xa31Y+8xghU2JrG4DIGvfy81bO
+ gRg4/xTZvMBvPsdCCARLhSFiLv1G2UsbzBsczX4bSmjQcO9DzEWhHNtRErJ0J1Ymxl5C
+ 2Ymg==
+X-Gm-Message-State: AOJu0Yyk93/ITu8t3Vu/fxXFp9KU7RSNKoAFvfjnJYFwWxnzcVZHBPVp
+ GhAlGVKDoZAXPpqZE3cE6/UcvvtJ/pdCRnHNE/FWhpwM+oyX7i9lT8Vc71lQVFb5omIhmganzbC
+ iC5mrvIa4JPvzzW3elyWPwli3VyvLf/4iAPnyYj7+YQ3CPU9+9ugf
+X-Gm-Gg: ASbGncurWwkiRZurxartvXlQ3Sz6dNFgWmU13Q6HQB9kVWh6OJFfGfy7Q356t+JQvnU
+ C9J/LZuXN0ZwWlqBtqWXjvmlYfJuKyQJtpg318+1BkrujgBJLjgEFbCUNYvEm7A/9NWCYbeAi08
+ FPIKSLrRBSrS78lRr4KXAl9HE5cwQa2ONQZ17dJTuH4kbNstyZyheWyCzUGrGfKFSIVkMzPHJsC
+ jHerF8U4IWtamn/5naIfam4R0ZSvq2jC+5Qy6pdxkEg/1GtN8as6veEY+8Z7KLSdpbFDYFavR/I
+ BNPrLw==
+X-Received: by 2002:a05:6000:184c:b0:39e:cbcf:9dad with SMTP id
+ ffacd0b85a97d-39efba50f42mr13164627f8f.20.1745389901449; 
+ Tue, 22 Apr 2025 23:31:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHHTnNViFGtj+hE8eSS47RMTl6phnmWrOiw3RfHySOJRAaPYd7BUvEM8jxvJlxU+3Y5Lvs8Ww==
+X-Received: by 2002:a05:6000:184c:b0:39e:cbcf:9dad with SMTP id
+ ffacd0b85a97d-39efba50f42mr13164597f8f.20.1745389900902; 
+ Tue, 22 Apr 2025 23:31:40 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-44092d35bb0sm13509805e9.27.2025.04.22.23.31.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 22 Apr 2025 23:31:40 -0700 (PDT)
+Date: Wed, 23 Apr 2025 02:31:37 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>,
+ Antoine Damhet <adamhet@scaleway.com>
+Subject: Re: [PATCH] Reapply "virtio-net: Copy received header to buffer"
+Message-ID: <20250423022734-mutt-send-email-mst@kernel.org>
+References: <20250423-reapply-v1-1-6f4fc3027906@daynix.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/18] amd_iommu: Add helpers to walk AMD v1 Page Table
- format
-To: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>, "Alejandro
- Jimenez" <alejandro.j.jimenez@oracle.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-CC: "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "richard.henderson@linaro.org" <richard.henderson@linaro.org>,
- "eduardo@habkost.net" <eduardo@habkost.net>, "peterx@redhat.com"
- <peterx@redhat.com>, "david@redhat.com" <david@redhat.com>,
- "philmd@linaro.org" <philmd@linaro.org>, "mst@redhat.com" <mst@redhat.com>,
- "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>,
- "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "vasant.hegde@amd.com" <vasant.hegde@amd.com>,
- "suravee.suthikulpanit@amd.com" <suravee.suthikulpanit@amd.com>,
- "santosh.shukla@amd.com" <santosh.shukla@amd.com>, "Wei.Huang2@amd.com"
- <Wei.Huang2@amd.com>, "joao.m.martins@oracle.com"
- <joao.m.martins@oracle.com>, "boris.ostrovsky@oracle.com"
- <boris.ostrovsky@oracle.com>
-References: <20250414020253.443831-1-alejandro.j.jimenez@oracle.com>
- <20250414020253.443831-10-alejandro.j.jimenez@oracle.com>
- <32609749-864c-4fe2-8c00-8dd8e0ab2efc@eviden.com>
- <4162f7d1-a4e3-47b7-8288-d8e320ed18b3@oracle.com>
- <b1dbf15a-b2a1-43e0-bfc8-6b4ca3d18e66@eviden.com>
-Content-Language: en-US
-From: Sairaj Kodilkar <sarunkod@amd.com>
-In-Reply-To: <b1dbf15a-b2a1-43e0-bfc8-6b4ca3d18e66@eviden.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB58:EE_|CH3PR12MB9193:EE_
-X-MS-Office365-Filtering-Correlation-Id: df15eca7-24b0-43be-3902-08dd82301a03
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|82310400026|1800799024|7416014|376014|36860700013; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?eG5yYllPZEltOE9CRDJ2dEhMelZxSU1nYWptZXEzWGo3WlZjTzlKbHR6UnZZ?=
- =?utf-8?B?RGxmbmNGS0diZ0VwWVZRcXA0bFE1ekFvS0lMTnRPaUtEQk9Td3ptMWY2UTJR?=
- =?utf-8?B?cnQxdUUzaHZneitSdWtBRml6SmxwRVVKbGxrVXlTbWpTbWU5MmluN0tQZkR5?=
- =?utf-8?B?TjZGV1U3Zzd0aEIwUitQVExsbWlFUnRsVVY2V2hxMGNEbjUzRjFRbVpFMVlQ?=
- =?utf-8?B?SkMxdzlTNGFWTjhPK0NoakJYTkhPUFkvcnlCVWlNYUVsNU85Q1drKzBtMVFO?=
- =?utf-8?B?b1g4N05TOWZaSXZ3TXd1VmkzM2thYVV2ZTRvaDFSMlYzbW1UVDh5cWJkWDNz?=
- =?utf-8?B?MGZHczZXQTExTW5TemxYMWhzZ0FmNTZyVjE4TWR0Q2hNRmZDNTNUODNLdDdQ?=
- =?utf-8?B?dDlpbjdoMnFpV21NREQvUXI3ckJzZ3pOMHpTQ1hCaFpGWCt3L2ZzSXR3M1BS?=
- =?utf-8?B?MEdOZkdmYUFHUHZuYmRML2dmL0xpL2VSLzRrYm5yMno4VCthVDZoV1E0Ujgv?=
- =?utf-8?B?cjFzZ1c0UVU4eTVpT1lDYnM4Wm1aRmNpSk16b0Q1RFdaelo4YTJLQXBZUUgw?=
- =?utf-8?B?M0xMY09lZ3d6ZWJBbnNuZ1V6RW1QUTRXNTBpTnhoUjhCcnlZOFVwdU5KUmxC?=
- =?utf-8?B?TjZPM1Y5aXlXbnNrSzN5YlVxYkI5d2wzVm95S29IT29CbVZFMXczeTZuUExM?=
- =?utf-8?B?QWxOZllOYytVWUdwWiswR3llaVQzc0dXSFRWVUJjK0hCa2l3bzlKSkdFUHRq?=
- =?utf-8?B?WDBsamNPU1g1ckEvZml0c0ZKc1NkdWNMVDU5M2N3MUVQK0ZRS0pxR0w1Um1z?=
- =?utf-8?B?N2kzYjM3bUlhbnM4MXlMcVdWb25SZUVtaDlXOEZpL3A4K2FVekJuM0RPZkpx?=
- =?utf-8?B?K1FYa29CZnlDbmJhdXZLVFgxS0VacUF5c2crbUNUTHN0M0hTN0xWanErczEv?=
- =?utf-8?B?UmNqRG81dHhaSXNtMnJGN2hZSlkzTkttN1N1YlFEVTlQSW5VZGxaWjBvK3Bi?=
- =?utf-8?B?RmlPeUkzZ3VtNjN1dmFXcUpEUGtNbHB2UTBsSDUzYVNXSmtXZi8zVDhnZElm?=
- =?utf-8?B?OUg1c2ZkcmpNV2kzWGtuZThobTRmQzVCQmxaYjc3MW9qVTBaSXJ2SkZHb2JS?=
- =?utf-8?B?MmtPVWhPUitpOExSNmV2REFYcGlubUlxejdpbnV3NUF1ZFNUcnY1RHJ4ckNy?=
- =?utf-8?B?aG5UR0RuQnpnMk5MZGJkM3VIOG9CUWhxOHdTNENqdVAzMWVtZ21tWUhnZC8y?=
- =?utf-8?B?TzBZWjlicTh1bmEvT2lhWEZ6WUxuODdpUkEyRjJPeSs4bDNNQUgwRkRQOFJD?=
- =?utf-8?B?T3NHYlVncmlWSVVVSnAzd1ZxNUY1bXhOY1B3TDZPd1A4SERMRmtpMGsveDdq?=
- =?utf-8?B?bHVkd2NjOURKWDlQdlBWRXlZc000OXlpc2dJdkxsenRmWVpYTWJDelpLamcv?=
- =?utf-8?B?cXc3VlhPdW5xdGQ4all6UEJxeTY5U0g5ZnBXM1RWU0grTmpxckp5OXJQRXRn?=
- =?utf-8?B?cFdDaHZzSGE1dUNCK291Y2NUK0hvdzRBL2lxL1ZYTmZ2Z21tUUNxeGVqeDZO?=
- =?utf-8?B?NUsvS3pYRnRZZGd1TCsycmd4cWJVQTAwMEZDTTNBYkU0Smt5T09XVlpOa29Q?=
- =?utf-8?B?N1FUS255T3owTmgyZjFIMEppT3FvTGtrZll6Z2daMlhmMWVYdEdXY3pLbVdk?=
- =?utf-8?B?TXpLWXMwNmIzMDZPVE1DK2NFMFNGZTJqQm5tYmlMenBTemdQSUFTeEZxM3hS?=
- =?utf-8?B?YVN6N1Ryemt3YzltVXA0Rnladml4SGNrcDVhYXk2Q04vTFY0Zis5WXlzNDMz?=
- =?utf-8?B?N0pDZlV0TVVzekdhWm1PRzVpRTRlNnNvWG9wR0dweHRyN3NKbjFUaHQyVEJq?=
- =?utf-8?B?Skt2dU9pYW1BN0VBbVRqSEtOa3d4Nk40THZuK0lSMUJ5blBFRkhPbmhEWHRI?=
- =?utf-8?B?MjRTSWdQd1loaFJVYVltQ1ViVi8wNEt3cHZ0N3gwaDYrdEU4MUVCVjhzc2x2?=
- =?utf-8?B?Ym9lcEg1OFE2b0ROeVh5R3ZVUzFaZmtuaEwxczhTbER6NkM5QUttOXBPTWc3?=
- =?utf-8?Q?NdUH9A?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(82310400026)(1800799024)(7416014)(376014)(36860700013); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2025 06:28:46.2482 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: df15eca7-24b0-43be-3902-08dd82301a03
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB58.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9193
-Received-SPF: permerror client-ip=2a01:111:f403:2413::60f;
- envelope-from=Sairaj.ArunKodilkar@amd.com;
- helo=NAM10-DM6-obe.outbound.protection.outlook.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250423-reapply-v1-1-6f4fc3027906@daynix.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.411,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -175,336 +103,227 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed, Apr 23, 2025 at 03:19:30PM +0900, Akihiko Odaki wrote:
+> This reverts commit e28fbd1c525db21f0502b85517f49504c9f9dcd8.
+> 
+> The goal of commit 7987d2be5a8b ("virtio-net: Copy received header to
+> buffer") was to remove the need to patch the (const) input buffer with a
+> recomputed UDP checksum by copying headers to a RW region and inject the
+> checksum there. The patch computed the checksum only from the header
+> fields (missing the rest of the payload) producing an invalid one
+> and making guests fail to acquire a DHCP lease.
+> 
+> Reapply the mentioned commit with a change to copy the entire packet
+> instead of only copying the headers to acheive the original goal without
+
+achieve
+
+> breaking checksums.
+> 
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+
+thanks for the patch!
+yet the commit log needs improvement:
+
+I don't think this "reverts commit
+e28fbd1c525db21f0502b85517f49504c9f9dcd8" is correct.
+
+and now it's all of the packet not the header.
 
 
-On 4/18/2025 11:00 AM, CLEMENT MATHIEU--DRIF wrote:
-> 
-> 
-> On 17/04/2025 5:27 pm, Alejandro Jimenez wrote:
->> Caution: External email. Do not open attachments or click links, unless
->> this email comes from a known sender and you know the content is safe.
->>
->>
->> On 4/17/25 8:40 AM, CLEMENT MATHIEU--DRIF wrote:
->>>
->>>
->>> On 14/04/2025 4:02 am, Alejandro Jimenez wrote:
->>>> Caution: External email. Do not open attachments or click links,
->>>> unless this email comes from a known sender and you know the content
->>>> is safe.
->>>>
->>>>
->>>> The current amdvi_page_walk() is designed to be called by the replay()
->>>> method. Rather than drastically altering it, introduce helpers to fetch
->>>> guest PTEs that will be used by a page walker implementation.
->>>>
->>>> Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
->>>> ---
->>>>     hw/i386/amd_iommu.c | 125 ++++++++++++++++++++++++++++++++++++++++
->>>> ++++
->>>>     hw/i386/amd_iommu.h |  42 +++++++++++++++
->>>>     2 files changed, 167 insertions(+)
->>>>
->>>> diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
->>>> index 0af873b66a31..d089fdc28ef1 100644
->>>> --- a/hw/i386/amd_iommu.c
->>>> +++ b/hw/i386/amd_iommu.c
->>>> @@ -1563,6 +1563,131 @@ static const MemoryRegionOps amdvi_ir_ops = {
->>>>         }
->>>>     };
->>>>
->>>> +/*
->>>> + * For a PTE encoding a large page, return the page size it encodes
->>>> as described
->>>> + * by the AMD IOMMU Specification Table 14: Example Page Size
->>>> Encodings.
->>>> + * No need to adjust the value of the PTE to point to the first PTE
->>>> in the large
->>>> + * page since the encoding guarantees all "base" PTEs in the large
->>>> page are the
->>>> + * same.
->>>> + */
->>>> +static uint64_t large_pte_page_size(uint64_t pte)
->>>> +{
->>>> +    assert(PTE_NEXT_LEVEL(pte) == 7);
->>>> +
->>>> +    /* Determine size of the large/contiguous page encoded in the
->>>> PTE */
->>>> +    return PTE_LARGE_PAGE_SIZE(pte);
->>>> +}
->>>> +
->>>> +/*
->>>> + * Helper function to fetch a PTE using AMD v1 pgtable format.
->>>> + * Returns:
->>>> + * -2:  The Page Table Root could not be read from DTE, or IOVA is
->>>> larger than
->>>> + *      supported by current page table level encodedin DTE[Mode].
->>>> + * -1:  PTE could not be read from guest memory during a page table
->>>> walk.
->>>> + *      This means that the DTE has valid data, and one of the lower
->>>> level
->>>> + *      entries in the Page Table could not be read.
->>>> + *  0:  PTE is marked not present, or entry is 0.
->>>> + * >0:  Leaf PTE value resolved from walking Guest IO Page Table.
->>>> + */
->>>
->>> This seems to be a bit error prone as any statement like "if (pte < 0)"
->>> might be completely removed by the compiler during optimization phases.
->>
->> Yes, caller(s) of fetch_pte() must cast to uint64_t in any comparison to
->> check for error values. Like it is the case in many of the patches, I am
->> following the examples from the VTD implementations where they do the
->> same thing in vtd_iova_to_slpte() to validate the return of vtd_get_pte().
-> 
-> Yes, I know :)
-> 
-> Note that VT-d only has 1 potential error code (-1) which seems easier
-> to handle at call site.
-> 
->>
->> When using fetch_pte() again in patch [17/18] I considered adding a
->> helper to check if fetch_pte() returned a valid PTE, but seemed
->> unnecessary given that there are only two errors to be checked.
->>
->> Another choice was to make fetch_pte() return an int so the error check
->> could be done simply via (pte < 0), since bit 63 is either Reserved
->> (DTE) or Ignored (PDE/PTE), but that seemed more prone to confusion
->> since you'd expect a PTE to be a 64-bit long value. Though I am aware
->> the way error return/checking is implemented essentially relies on that
->> behavior.
->>
->>> If you want to reuse such "high" values, defines could help.
->>
->> Sorry, I don't follow. Do you mean using defines as in still returning a
->> uint64_t but giving -1 and -2 special definitions? That might make the
->> code a somewhat more readable when checking the error values, but still
->> requires casting to uint64_t on the check, and doesn't solve the problem
->> of a careless caller using (pte < 0) to check for errors...
-> 
-> Yes, I think that it would be more readable.
-> When using defines, the caller no longer needs to be aware of the fact
-> that the value has been casted from a negative number, which reduces the
-> risk of writing things like (pte < 0).
-> 
-> I prefer the out parameter solution but let's see what other reviews say.
-> 
+So just call it:
+virtio-net: copy received packet to buffer
 
-I think having pte as out parameter is the better solution here.
-less error prone and readable !
+and introduce the issue and the fixup, not the archeology.
 
-Regards
-Sairaj Kodilkar
+something like:
 
-> Thanks for this patch set :)
+commit e28fbd1c525db reintroduced an issue that we attempted
+to fix with commit 7987d2be5a8b:
+....
+
+fix by ....
+
+
+
+HTH
+
+
+
+> ---
+> Supersedes: <20250405-mtu-v1-1-08c5910fa6fd@daynix.com>
+> ("[PATCH] virtio-net: Copy all for dhclient workaround")
 > 
->>
->>> Otherwise, pte could be an out parameter.
->>
->> In general, I think we have to accept the caveat that callers of
->> fetch_pte() must have some implementation specific knowledge to know
->> they cannot check for errors using (pte < 0). Maybe with the aid of a
->> strongly worded warning on the function header comment...
->>
->> But if that argument doesn't convince you, and none of the alternatives
->> above seem better, then I am leaning towards using the out parameter
->> approach.
->>
->> Thank you for the feedback.
->> Alejandro
->>
->>>
->>>> +static uint64_t __attribute__((unused))
->>>> +fetch_pte(AMDVIAddressSpace *as, const hwaddr address, uint64_t dte,
->>>> +          hwaddr *page_size)
->>>> +{
->>>> +    IOMMUAccessFlags perms = amdvi_get_perms(dte);
->>>> +
->>>> +    uint8_t level, mode;
->>>> +    uint64_t pte = dte, pte_addr;
->>>> +
->>>> +    *page_size = 0;
->>>> +
->>>> +    if (perms == IOMMU_NONE) {
->>>> +        return (uint64_t)-2;
->>>> +    }
->>>> +
->>>> +    /*
->>>> +     * The Linux kernel driver initializes the default mode to 3,
->>>> corresponding
->>>> +     * to a 39-bit GPA space, where each entry in the pagetable
->>>> translates to a
->>>> +     * 1GB (2^30) page size.
->>>> +     */
->>>> +    level = mode = get_pte_translation_mode(dte);
->>>> +    assert(mode > 0 && mode < 7);
->>>> +
->>>> +    /*
->>>> +     * If IOVA is larger than the max supported by the current
->>>> pgtable level,
->>>> +     * there is nothing to do. This signals that the pagetable level
->>>> should be
->>>> +     * increased, or is an address meant to have special behavior like
->>>> +     * invalidating the entire cache.
->>>> +     */
->>>> +    if (address > PT_LEVEL_MAX_ADDR(mode - 1)) {
->>>> +        /* IOVA too large for the current DTE */
->>>> +        return (uint64_t)-2;
->>>> +    }
->>>> +
->>>> +    do {
->>>> +        level -= 1;
->>>> +
->>>> +        /* Update the page_size */
->>>> +        *page_size = PTE_LEVEL_PAGE_SIZE(level);
->>>> +
->>>> +        /* Permission bits are ANDed at every level, including the
->>>> DTE */
->>>> +        perms &= amdvi_get_perms(pte);
->>>> +        if (perms == IOMMU_NONE) {
->>>> +            return pte;
->>>> +        }
->>>> +
->>>> +        /* Not Present */
->>>> +        if (!IOMMU_PTE_PRESENT(pte)) {
->>>> +            return 0;
->>>> +        }
->>>> +
->>>> +        /* Large or Leaf PTE found */
->>>> +        if (PTE_NEXT_LEVEL(pte) == 7 || PTE_NEXT_LEVEL(pte) == 0) {
->>>> +            /* Leaf PTE found */
->>>> +            break;
->>>> +        }
->>>> +
->>>> +        /*
->>>> +         * Index the pgtable using the IOVA bits corresponding to
->>>> current level
->>>> +         * and walk down to the lower level.
->>>> +         */
->>>> +        pte_addr = NEXT_PTE_ADDR(pte, level, address);
->>>> +        pte = amdvi_get_pte_entry(as->iommu_state, pte_addr, as-
->>>>> devfn);
->>>> +
->>>> +        if (pte == (uint64_t)-1) {
->>>> +            /*
->>>> +             * A returned PTE of -1 indicates a failure to read the
->>>> page table
->>>> +             * entry from guest memory.
->>>> +             */
->>>> +            if (level == mode - 1) {
->>>> +                /* Failure to retrieve the Page Table from Root
->>>> Pointer */
->>>> +                *page_size = 0;
->>>> +                return (uint64_t)-2;
->>>> +            } else {
->>>> +                /* Failure to read PTE. Page walk skips a page_size
->>>> chunk */
->>>> +                return pte;
->>>> +            }
->>>> +        }
->>>> +    } while (level > 0);
->>>> +
->>>> +    /*
->>>> +     * Page walk ends when Next Level field on PTE shows that either
->>>> a leaf PTE
->>>> +     * or a series of large PTEs have been reached. In the latter
->>>> case, return
->>>> +     * the pointer to the first PTE of the series.
->>>> +     */
->>>> +    assert(level == 0 || PTE_NEXT_LEVEL(pte) == 0 ||
->>>> PTE_NEXT_LEVEL(pte) == 7);
->>>> +
->>>> +    /*
->>>> +     * In case the range starts in the middle of a contiguous page,
->>>> need to
->>>> +     * return the first PTE
->>>> +     */
->>>> +    if (PTE_NEXT_LEVEL(pte) == 7) {
->>>> +        /* Update page_size with the large PTE page size */
->>>> +        *page_size = large_pte_page_size(pte);
->>>> +    }
->>>> +
->>>> +    return pte;
->>>> +}
->>>> +
->>>>     /*
->>>>      * Toggle between address translation and passthrough modes by
->>>> enabling the
->>>>      * corresponding memory regions.
->>>> diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
->>>> index c89e7dc9947d..fc4d2f7a4575 100644
->>>> --- a/hw/i386/amd_iommu.h
->>>> +++ b/hw/i386/amd_iommu.h
->>>> @@ -25,6 +25,8 @@
->>>>     #include "hw/i386/x86-iommu.h"
->>>>     #include "qom/object.h"
->>>>
->>>> +#define GENMASK64(h, l)  (((~0ULL) >> (63 - (h) + (l))) << (l))
->>>> +
->>>>     /* Capability registers */
->>>>     #define AMDVI_CAPAB_BAR_LOW           0x04
->>>>     #define AMDVI_CAPAB_BAR_HIGH          0x08
->>>> @@ -174,6 +176,46 @@
->>>>     #define AMDVI_GATS_MODE                 (2ULL <<  12)
->>>>     #define AMDVI_HATS_MODE                 (2ULL <<  10)
->>>>
->>>> +/* Page Table format */
->>>> +
->>>> +#define AMDVI_PTE_PR                    (1ULL << 0)
->>>> +#define AMDVI_PTE_NEXT_LEVEL_MASK       GENMASK64(11, 9)
->>>> +
->>>> +#define IOMMU_PTE_PRESENT(pte)          ((pte) & AMDVI_PTE_PR)
->>>> +
->>>> +/* Using level=0 for leaf PTE at 4K page size */
->>>> +#define PT_LEVEL_SHIFT(level)           (12 + ((level) * 9))
->>>> +
->>>> +/* Return IOVA bit group used to index the Page Table at specific
->>>> level */
->>>> +#define PT_LEVEL_INDEX(level, iova)     (((iova) >>
->>>> PT_LEVEL_SHIFT(level)) & \
->>>> +                                        GENMASK64(8, 0))
->>>> +
->>>> +/* Return the max address for a specified level i.e. max_oaddr */
->>>> +#define PT_LEVEL_MAX_ADDR(x)    (((x) < 5) ? \
->>>> +                                ((1ULL << PT_LEVEL_SHIFT((x + 1))) -
->>>> 1) : \
->>>> +                                (~(0ULL)))
->>>> +
->>>> +/* Extract the NextLevel field from PTE/PDE */
->>>> +#define PTE_NEXT_LEVEL(pte)     (((pte) & AMDVI_PTE_NEXT_LEVEL_MASK)
->>>>>> 9)
->>>> +
->>>> +/* Take page table level and return default pagetable size for level */
->>>> +#define PTE_LEVEL_PAGE_SIZE(level)      (1ULL <<
->>>> (PT_LEVEL_SHIFT(level)))
->>>> +
->>>> +/*
->>>> + * Return address of lower level page table encoded in PTE and
->>>> specified by
->>>> + * current level and corresponding IOVA bit group at such level.
->>>> + */
->>>> +#define NEXT_PTE_ADDR(pte, level, iova) (((pte) &
->>>> AMDVI_DEV_PT_ROOT_MASK) + \
->>>> +                                        (PT_LEVEL_INDEX(level, iova)
->>>> * 8))
->>>> +
->>>> +/*
->>>> + * Take a PTE value with mode=0x07 and return the page size it encodes.
->>>> + */
->>>> +#define PTE_LARGE_PAGE_SIZE(pte)    (1ULL << (1 + cto64(((pte) |
->>>> 0xfffULL))))
->>>> +
->>>> +/* Return number of PTEs to use for a given page size (expected
->>>> power of 2) */
->>>> +#define PAGE_SIZE_PTE_COUNT(pgsz)       (1ULL << ((ctz64(pgsz) - 12)
->>>> % 9))
->>>> +
->>>>     /* IOTLB */
->>>>     #define AMDVI_IOTLB_MAX_SIZE 1024
->>>>     #define AMDVI_DEVID_SHIFT    36
->>>> -- 
->>>> 2.43.5
->>>>
->>>>
->>
+> This reapplies commit 7987d2be5a8b ("virtio-net: Copy all for dhclient
+> workaround"), which was reverted by commit e28fbd1c525d ("Revert
+> "virtio-net: Copy received header to buffer""), with a fix in the
+> superseded patch. It also renames identifiers according to the
+> discussion with Antoine Damhet.
+> ---
+>  hw/net/virtio-net.c | 91 ++++++++++++++++++++++++++++-------------------------
+>  1 file changed, 48 insertions(+), 43 deletions(-)
+> 
+> diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+> index bd37651dabb0..f1688e0b2536 100644
+> --- a/hw/net/virtio-net.c
+> +++ b/hw/net/virtio-net.c
+> @@ -1687,6 +1687,11 @@ static void virtio_net_hdr_swap(VirtIODevice *vdev, struct virtio_net_hdr *hdr)
+>      virtio_tswap16s(vdev, &hdr->csum_offset);
+>  }
+>  
+> +typedef struct PacketPrefix {
+> +    struct virtio_net_hdr_v1_hash virtio_net;
+> +    uint8_t payload[1500];
+> +} PacketPrefix;
+> +
+>  /* dhclient uses AF_PACKET but doesn't pass auxdata to the kernel so
+>   * it never finds out that the packets don't have valid checksums.  This
+>   * causes dhclient to get upset.  Fedora's carried a patch for ages to
+> @@ -1701,42 +1706,46 @@ static void virtio_net_hdr_swap(VirtIODevice *vdev, struct virtio_net_hdr *hdr)
+>   * we should provide a mechanism to disable it to avoid polluting the host
+>   * cache.
+>   */
+> -static void work_around_broken_dhclient(struct virtio_net_hdr *hdr,
+> -                                        uint8_t *buf, size_t size)
+> +static void work_around_broken_dhclient(struct PacketPrefix *prefix,
+> +                                        size_t *prefix_len, const uint8_t *buf,
+> +                                        size_t buf_size, size_t *buf_offset)
+>  {
+>      size_t csum_size = ETH_HLEN + sizeof(struct ip_header) +
+>                         sizeof(struct udp_header);
+> +    uint8_t *payload = (uint8_t *)prefix + *prefix_len;
+> +
+> +    buf += *buf_offset;
+> +    buf_size -= *buf_offset;
+>  
+> -    if ((hdr->flags & VIRTIO_NET_HDR_F_NEEDS_CSUM) && /* missing csum */
+> -        (size >= csum_size && size < 1500) && /* normal sized MTU */
+> +    if ((prefix->virtio_net.hdr.flags & VIRTIO_NET_HDR_F_NEEDS_CSUM) && /* missing csum */
+> +        (buf_size >= csum_size && buf_size < sizeof(prefix->payload)) && /* normal sized MTU */
+>          (buf[12] == 0x08 && buf[13] == 0x00) && /* ethertype == IPv4 */
+>          (buf[23] == 17) && /* ip.protocol == UDP */
+>          (buf[34] == 0 && buf[35] == 67)) { /* udp.srcport == bootps */
+> -        net_checksum_calculate(buf, size, CSUM_UDP);
+> -        hdr->flags &= ~VIRTIO_NET_HDR_F_NEEDS_CSUM;
+> +        memcpy(payload, buf, buf_size);
+> +        net_checksum_calculate(payload, buf_size, CSUM_UDP);
+> +        prefix->virtio_net.hdr.flags &= ~VIRTIO_NET_HDR_F_NEEDS_CSUM;
+> +        *prefix_len += buf_size;
+> +        *buf_offset += buf_size;
+>      }
+>  }
+>  
+> -static void receive_header(VirtIONet *n, const struct iovec *iov, int iov_cnt,
+> -                           const void *buf, size_t size)
+> +static size_t receive_prefix(VirtIONet *n, PacketPrefix *prefix,
+> +                             const void *buf, size_t buf_size,
+> +                             size_t *buf_offset)
+>  {
+> -    if (n->has_vnet_hdr) {
+> -        /* FIXME this cast is evil */
+> -        void *wbuf = (void *)buf;
+> -        work_around_broken_dhclient(wbuf, wbuf + n->host_hdr_len,
+> -                                    size - n->host_hdr_len);
+> +    size_t prefix_len = n->guest_hdr_len;
+>  
+> -        if (n->needs_vnet_hdr_swap) {
+> -            virtio_net_hdr_swap(VIRTIO_DEVICE(n), wbuf);
+> -        }
+> -        iov_from_buf(iov, iov_cnt, 0, buf, sizeof(struct virtio_net_hdr));
+> -    } else {
+> -        struct virtio_net_hdr hdr = {
+> -            .flags = 0,
+> -            .gso_type = VIRTIO_NET_HDR_GSO_NONE
+> -        };
+> -        iov_from_buf(iov, iov_cnt, 0, &hdr, sizeof hdr);
+> +    memcpy(prefix, buf, sizeof(struct virtio_net_hdr));
+> +
+> +    *buf_offset = n->host_hdr_len;
+> +    work_around_broken_dhclient(prefix, &prefix_len, buf, buf_size, buf_offset);
+> +
+> +    if (n->needs_vnet_hdr_swap) {
+> +        virtio_net_hdr_swap(VIRTIO_DEVICE(n), (struct virtio_net_hdr *)prefix);
+>      }
+> +
+> +    return prefix_len;
+>  }
+>  
+>  static int receive_filter(VirtIONet *n, const uint8_t *buf, int size)
+> @@ -1913,15 +1922,15 @@ static ssize_t virtio_net_receive_rcu(NetClientState *nc, const uint8_t *buf,
+>      VirtQueueElement *elems[VIRTQUEUE_MAX_SIZE];
+>      size_t lens[VIRTQUEUE_MAX_SIZE];
+>      struct iovec mhdr_sg[VIRTQUEUE_MAX_SIZE];
+> -    struct virtio_net_hdr_v1_hash extra_hdr;
+> +    PacketPrefix prefix;
+>      unsigned mhdr_cnt = 0;
+>      size_t offset, i, guest_offset, j;
+>      ssize_t err;
+>  
+> -    memset(&extra_hdr, 0, sizeof(extra_hdr));
+> +    memset(&prefix.virtio_net, 0, sizeof(prefix.virtio_net));
+>  
+>      if (n->rss_data.enabled && n->rss_data.enabled_software_rss) {
+> -        int index = virtio_net_process_rss(nc, buf, size, &extra_hdr);
+> +        int index = virtio_net_process_rss(nc, buf, size, &prefix.virtio_net);
+>          if (index >= 0) {
+>              nc = qemu_get_subqueue(n->nic, index % n->curr_queue_pairs);
+>          }
+> @@ -1986,23 +1995,19 @@ static ssize_t virtio_net_receive_rcu(NetClientState *nc, const uint8_t *buf,
+>              if (n->mergeable_rx_bufs) {
+>                  mhdr_cnt = iov_copy(mhdr_sg, ARRAY_SIZE(mhdr_sg),
+>                                      sg, elem->in_num,
+> -                                    offsetof(typeof(extra_hdr), hdr.num_buffers),
+> -                                    sizeof(extra_hdr.hdr.num_buffers));
+> +                                    offsetof(typeof(prefix),
+> +                                             virtio_net.hdr.num_buffers),
+> +                                    sizeof(prefix.virtio_net.hdr.num_buffers));
+>              } else {
+> -                extra_hdr.hdr.num_buffers = cpu_to_le16(1);
+> +                prefix.virtio_net.hdr.num_buffers = cpu_to_le16(1);
+>              }
+>  
+> -            receive_header(n, sg, elem->in_num, buf, size);
+> -            if (n->rss_data.populate_hash) {
+> -                offset = offsetof(typeof(extra_hdr), hash_value);
+> -                iov_from_buf(sg, elem->in_num, offset,
+> -                             (char *)&extra_hdr + offset,
+> -                             sizeof(extra_hdr.hash_value) +
+> -                             sizeof(extra_hdr.hash_report));
+> -            }
+> -            offset = n->host_hdr_len;
+> -            total += n->guest_hdr_len;
+> -            guest_offset = n->guest_hdr_len;
+> +            guest_offset = n->has_vnet_hdr ?
+> +                           receive_prefix(n, &prefix, buf, size, &offset) :
+> +                           n->guest_hdr_len;
+> +
+> +            iov_from_buf(sg, elem->in_num, 0, &prefix, guest_offset);
+> +            total += guest_offset;
+>          } else {
+>              guest_offset = 0;
+>          }
+> @@ -2028,11 +2033,11 @@ static ssize_t virtio_net_receive_rcu(NetClientState *nc, const uint8_t *buf,
+>      }
+>  
+>      if (mhdr_cnt) {
+> -        virtio_stw_p(vdev, &extra_hdr.hdr.num_buffers, i);
+> +        virtio_stw_p(vdev, &prefix.virtio_net.hdr.num_buffers, i);
+>          iov_from_buf(mhdr_sg, mhdr_cnt,
+>                       0,
+> -                     &extra_hdr.hdr.num_buffers,
+> -                     sizeof extra_hdr.hdr.num_buffers);
+> +                     &prefix.virtio_net.hdr.num_buffers,
+> +                     sizeof prefix.virtio_net.hdr.num_buffers);
+>      }
+>  
+>      for (j = 0; j < i; j++) {
+> 
+> ---
+> base-commit: 1da8f3a3c53b604edfe0d55e475102640490549e
+> change-id: 20250423-reapply-63176514d76d
+> 
+> Best regards,
+> -- 
+> Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
