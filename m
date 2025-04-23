@@ -2,64 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90EE6A99752
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 19:59:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBC5DA99779
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 20:07:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7eMd-0005Tz-Q4; Wed, 23 Apr 2025 13:58:28 -0400
+	id 1u7eUc-0000XY-Eb; Wed, 23 Apr 2025 14:06:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1u7eMb-0005Ti-Cg
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 13:58:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1u7eUa-0000Wd-LX
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 14:06:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1u7eMZ-0005BR-8x
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 13:58:24 -0400
+ (Exim 4.90_1) (envelope-from <abologna@redhat.com>)
+ id 1u7eUY-0005wa-5l
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 14:06:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745431101;
+ s=mimecast20190719; t=1745431595;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=HVGsuir8uw83Mkj1Y8521HV6NN+LGjuI2FATsEMM6ec=;
- b=Q4ZKWoEMYSoEmbojYlWJbvBxtU7SFx+b1Ek3Zu5YzEw3OSbsy8DCFr3uBvIiTaw8A+QZLE
- IUxiywQY3Do3PSk88bvDAqxEDIlR0kwGDYIpTVVY2rKDssZDf3du+cLzBDuA3OarG95aqN
- jav6bySxBemj4tAgWnH5MwQPZx+MQn8=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-452-oK88PrJHPNWEOve0DC5KdQ-1; Wed,
- 23 Apr 2025 13:58:19 -0400
-X-MC-Unique: oK88PrJHPNWEOve0DC5KdQ-1
-X-Mimecast-MFC-AGG-ID: oK88PrJHPNWEOve0DC5KdQ_1745431099
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DAABC1800261
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:58:18 +0000 (UTC)
-Received: from localhost (dhcp-2-16-89.telco5g.eng.rdu2.redhat.com
- [10.2.16.89])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4760C1956095; Wed, 23 Apr 2025 17:58:18 +0000 (UTC)
-Date: Wed, 23 Apr 2025 13:58:16 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PULL 00/34] i386, Rust, SCSI changes for 2025-04-23
-Message-ID: <20250423175816.GA353719@fedora>
-References: <20250423094105.40692-1-pbonzini@redhat.com>
+ bh=myCDdcqniXC3srlIWAAe0gy7O8yWyWlg+CPTXt6oQUI=;
+ b=IEjs1XQ+DkfeSQKqLTe/YMAm7LOzjgjlq32E4Sxypoq1ov5FwfhN9PF/tc+KAr0PYmpJ7j
+ Ruj/Hr0pAODfe02UHJb/5B8VA7kg+YLj9XMg9qsGSZWNjpptOi4/V5sN0NQs0klKDPUB65
+ HVwrPoeXw9LssrYclK+OAqvX5tcM4FQ=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-451-KIPUprxKNYCPDx-XfQZN0Q-1; Wed, 23 Apr 2025 14:06:33 -0400
+X-MC-Unique: KIPUprxKNYCPDx-XfQZN0Q-1
+X-Mimecast-MFC-AGG-ID: KIPUprxKNYCPDx-XfQZN0Q_1745431593
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-4769a8d15afso1521221cf.3
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 11:06:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1745431593; x=1746036393;
+ h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=myCDdcqniXC3srlIWAAe0gy7O8yWyWlg+CPTXt6oQUI=;
+ b=iFMHG8Asizvgse7tPPGeB86cQKP2/i3z2KBoVFUpiA+UtnSqBMQ4UAVAd0RbdBP9nA
+ Vyt/hrfd0WfUy+e0zV8ylmtQAVAhcLGIAh12d1I0ySEGL+xgmRNQf5bUh+ruUmATkgiZ
+ u2hwwhzCmWaRa3WIKEfhH3eWnK5dYDJR02vwjymBCgnmAUsuoq2xhqAEDquRFTZ+hLbM
+ 9JILQbAVxku2DDo/vnkA0CKtKIkZ9QTZC/alOjS18uussjcw7oB0lX9J5M2ynWHC5bmi
+ i8e1fRkAfPZRoNUSzxQG4xMEstwPFSobsLpiblLuvFKW9y5MWD4igLFK/tza7QfvjHpj
+ K/AA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVOWZ+bmqoR8+r7JtJpE7uonOf+c1Wbh8hlyHPWvv2Qa/sfiahEky88MzfsIDb2reO2MCQZ+N82CFWS@nongnu.org
+X-Gm-Message-State: AOJu0YyUDpXFzCGhZHx9zIpcp2aboPTDVnRkHD9NHhO9mY2NW4rRLvUV
+ DIASEQG2Z/yYEzgSOA3hRBPgao+lmVq5l88+PnlftdXg1wcfBPLDDpDqhe4uqralMbeKj72SzOQ
+ N0DIkDS8yEdrtlYFPxebEl5j2klxcXfPTdxAtiW9BU8xx2BaWuEaxC+9MXEaXL+2EEC3kl8UXjR
+ 1Ue7+Evl/00DHgkRWLdvsAy+5boKs=
+X-Gm-Gg: ASbGncvwMcSlixiTKkXc+byF/twOpz4TNj/s53wJPhxUUtmfGmZKr47H6pw4BrlVz9g
+ UYTLY3knsgcX+6D5R/8eoAay2sUh2rbtY81lV9HqPMVN1MYzAQWCI6JpoF5V1XCu2Xyll0Q==
+X-Received: by 2002:ac8:7e89:0:b0:476:91a5:c832 with SMTP id
+ d75a77b69052e-47e77ca9fbbmr2526291cf.32.1745431592852; 
+ Wed, 23 Apr 2025 11:06:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEYArIOfVgc3Ow8oA3HkIQHw262mp5pDAZw1DnyCRp2OIl7CK5M1FNAu14g7sb7KJA7bIDcC+caiD2UW+lY0Q4=
+X-Received: by 2002:ac8:7e89:0:b0:476:91a5:c832 with SMTP id
+ d75a77b69052e-47e77ca9fbbmr2525891cf.32.1745431592434; Wed, 23 Apr 2025
+ 11:06:32 -0700 (PDT)
+Received: from 744723338238 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 23 Apr 2025 14:06:31 -0400
+Received: from 744723338238 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 23 Apr 2025 14:06:31 -0400
+From: Andrea Bolognani <abologna@redhat.com>
+References: <20250417124839.1870494-1-dbarboza@ventanamicro.com>
+ <20250417124839.1870494-8-dbarboza@ventanamicro.com>
+ <20250423-7d7e348ed0ec6cadb1efe399@orel>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="jflbwcHjc5fE4a/M"
-Content-Disposition: inline
-In-Reply-To: <20250423094105.40692-1-pbonzini@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+In-Reply-To: <20250423-7d7e348ed0ec6cadb1efe399@orel>
+Date: Wed, 23 Apr 2025 14:06:31 -0400
+X-Gm-Features: ATxdqUHC7WKWWSAaVnA1qrTj3VbEi455gE6LUEJ1xhAg_l3NTVRokwwmjiDaZUA
+Message-ID: <CABJz62NKOzO=aE-fz9Ad2gxLnSNvU41xnfhOS0EKLim0SnYOtA@mail.gmail.com>
+Subject: Re: [PATCH 7/7] target/riscv/kvm: reset 'scounteren' with host val
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org, 
+ alistair.francis@wdc.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=abologna@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
@@ -68,7 +91,7 @@ X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.294,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,30 +107,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed, Apr 23, 2025 at 05:46:16PM +0200, Andrew Jones wrote:
+> I would just drop this patch and make the default 'virt' cpu type 'max',
+> then nobody will hit the issue.
 
---jflbwcHjc5fE4a/M
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+FWIW virt-manager has recently started doing just that:
 
-Applied, thanks.
+  https://github.com/virt-manager/virt-manager/pull/784
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/10.0 for any user-visible changes.
-
---jflbwcHjc5fE4a/M
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmgJKjgACgkQnKSrs4Gr
-c8i38Af/caramjvVlIWrXly2/d6c5kvS5wp63DR/CKHBwIoVuFxU5uCBq1QmRLTR
-DgiWyVOjvj/XcMF23ff+/0f0muXmtTvusH2t5nKVZdmrmzoN0UB1oXuoxyHLb+/y
-++Y5AV072ts88NEGxNYJyTVuYzKiz0+/Cji26z4H0stx0Ynd8oGEWfvshjxU9Lhe
-6mXzfkOaTrJGfw7revtqrOoeyQPdLlHiKnDyE5zJShYH9IFRofCCngHdKKvfXFwU
-IjbUrJ2Cwaqx6FwCYyTlbwQVfzsFD/Q+SrfxDtp50yOv0aN/oX607XXWiCPxBWgB
-JcLXYbvcl9TGqjHsrdOAT+3gu3L3Ug==
-=bz7h
------END PGP SIGNATURE-----
-
---jflbwcHjc5fE4a/M--
+-- 
+Andrea Bolognani / Red Hat / Virtualization
 
 
