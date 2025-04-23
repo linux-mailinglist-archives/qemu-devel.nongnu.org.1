@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C11AA9865F
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 11:47:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2B81A98616
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 11:44:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7Wcn-0006bn-IY; Wed, 23 Apr 2025 05:42:37 -0400
+	id 1u7Wd7-0008Ax-Pi; Wed, 23 Apr 2025 05:42:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u7Wc4-000574-7D
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1u7Wc7-0005HI-Nt
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u7Wc2-0008NR-38
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:51 -0400
+ id 1u7Wc5-0008O2-At
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 05:41:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745401309;
+ s=mimecast20190719; t=1745401312;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OT4XQr3P98GwFzQI0F4wcCbYrMCD1ziXjFmYKeB1AUc=;
- b=TWa0zkxcMyJ+XPQ+bYEjcf6Ohlf4KgXC88vIxAhwRVd3Bbwt9glRpxv0exssvRMvQ6oc6A
- GptXZXYrgTPiYljkKUuZRAJHmrU6yaIDIooAKWZ1RQ1YokPOSHPDyQ2pnmLc7tPdsfloPe
- CP7GBZjLfAK+vHEkRqHLq73FhAVH0wI=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rf3WOwpBMy3VnijFsEl6zZ2nGHJDtSnWrh1lZgVXQU0=;
+ b=PV5B1NYREc3VecxNzZkWoYrDJli/MUITJfJjRz0KwDin62Kq8QE40T3XuvMiB3GFl/mFVp
+ nEyGVnFYqFReC0cIAm725xoy82VPMxmIXG9ukJDk8Z4VvCfxd5mKv77unLRsHpVt6aWrc2
+ IDGXOkmVBOkqnh56oeNfwtPvRM2IZ/8=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-335-PhkYex-MNxKb8eVhch9MHQ-1; Wed, 23 Apr 2025 05:41:47 -0400
-X-MC-Unique: PhkYex-MNxKb8eVhch9MHQ-1
-X-Mimecast-MFC-AGG-ID: PhkYex-MNxKb8eVhch9MHQ_1745401306
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-acb8f9f58ebso290113266b.2
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 02:41:46 -0700 (PDT)
+ us-mta-650-bGiSZowSP_6YTvNQ4AY8uA-1; Wed, 23 Apr 2025 05:41:50 -0400
+X-MC-Unique: bGiSZowSP_6YTvNQ4AY8uA-1
+X-Mimecast-MFC-AGG-ID: bGiSZowSP_6YTvNQ4AY8uA_1745401309
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-5e5c1bb6a23so749563a12.0
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 02:41:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745401305; x=1746006105;
+ d=1e100.net; s=20230601; t=1745401308; x=1746006108;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OT4XQr3P98GwFzQI0F4wcCbYrMCD1ziXjFmYKeB1AUc=;
- b=nZh2r5rBeSykAwf34ouWm6jV5Km6whyEp0ardd3JmDiRiLh6dIj4f9q/cDhZZMGifT
- 2SPJnNkWeNxkhTGGpi/wocr7XslgKlg4Li/kWOrYUsYaxMkkfGpmKwJZZn6BK3pLz3KE
- GefnTw/BVoa+9I/KEzCx1ihApC6gxo+4iI8IqcOOskga5Akd0JLbtXCvsdsYc6liJ2mc
- CWC8mY1XvWRtIUvoDYok1YwgcN1iYaClWyC6MG3OAp6Fq6OuLWgp8iEe+hJZEUHXC4bY
- 3wd5pzkOJxMFnm6EcaMO88+TjSbkDxq1L5xzT2CpcXS5hLLlAwxS/6yNSdMm/XpQOkBE
- Qebg==
-X-Gm-Message-State: AOJu0Yx91J1eC2z6za7KhHJy/W8R6gbCIl0aRtFy5cHuKqEaeCZzEa4T
- AAsJJj4kUXfMceJqp5LGpI6MXhJWnqm28yRFDePW31kwS16O1ak6k7AikalFTLNyiMRpr7AnVZv
- K0Zb/KD7m2gFcRw5DD2k0QKbINhMYeJ+1aMTIy4tXAoWtkUeFYLwYPgLtlB2UBZUy7ch0kQaKXb
- B70pV/sVvKthknMVX7BWxZhGb/SQ+41j03Ks6t
-X-Gm-Gg: ASbGncvcx84EzXRpe7Mvfp2W4tatkM8VpTLOx01Wy7mLAKhbwEMwJc99uAMn0Z4SSeT
- hb37hIMRa/p0wGUpZoqBZwarBrq+EXiz3GzT52C7eKZBYojDYYO5wuZHXVFdmZ7c0QhBd5R/Mdv
- mLl35Q95meDel3e8fxeMJMNISQDSBWGhc6rswUnCu+o6MEGft31ZsSS9VrH8mw2MwA5SnC+EPJW
- lbHw79dQI8jWflE8xcbAm0WrJcSwHBKPnxRWfCFov7myE38bRySszfQH2/JF13gIh78R9+h7HE7
- nioZnl6qb78jsTBB
-X-Received: by 2002:a17:907:9801:b0:ac3:48e4:f8bb with SMTP id
- a640c23a62f3a-acb74d655d9mr1913821666b.41.1745401305363; 
- Wed, 23 Apr 2025 02:41:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHSRrsLlXLPQgaCjy1C1tCFn4YRshcCSrTO+ceHqCcnb4S9oa5iV93Alnm5Klc0Zi9yo/IeMQ==
-X-Received: by 2002:a17:907:9801:b0:ac3:48e4:f8bb with SMTP id
- a640c23a62f3a-acb74d655d9mr1913819966b.41.1745401304895; 
- Wed, 23 Apr 2025 02:41:44 -0700 (PDT)
+ bh=rf3WOwpBMy3VnijFsEl6zZ2nGHJDtSnWrh1lZgVXQU0=;
+ b=PoGwuUtPOXcjZqdgMYZM8a6i7+wMyu9kPoMcuKUqkif5uGEcPa8OGQDLdI1H0zWkEa
+ 0MKqUKf7cuukSm0+6wbfSIFYZWBXdrClj288zGgT/p7dK7e1DKcD68x5e2mnSCRl3/dE
+ 13E3lhzmsKhHg2aOzwoQYGMS76ShHAHjGErJEaKfVJZNyXkQfiGeNWglUoIE8pOzfTuj
+ N/ti+llrw+SK7A22n2LqezrADJL9ro3uLBXzRUVqYyDGT+WqwEeN6D0EO6Ia3kSvY2Gp
+ 2YAa+Xuh9XzR3JKTedeejlQS2hGxkXG97ZiQHpowspSvCX2SrIICvFL0kvI8ykeKShC8
+ n6TQ==
+X-Gm-Message-State: AOJu0YzdXrzuZzj3pxOb5faguUfEVWRFcTSJxfTPljKG1r8pIaCiGCrr
+ 0GKaaSSmPtoHj++jmm1auw0bxCIji1TXnYyue9UctBaUXSwj+P4ESR3Q5KAtYdiorJDzFmzNLtM
+ UL/KHZfMbefMnVQsOt76aozAyx7VadoDIkOUMSL3SI5Xxl/48MxLYMEA8B7QhXjQYYMSS8OhSFi
+ 83c8XDn5Ll6TgN5VvjpXLfOsaA5Te1XSB5Bpc7
+X-Gm-Gg: ASbGncs35+KcgVY/5ic/H/3HhaP9meOGNcwBl1xdZ67qjDWMeQBnClaXYK5QvwRn1Yh
+ HjVNN6EDhw2HKwIHARBQ7x+gm/+Au+VNzPi4plXsGyzefZU33PnXzZcBBaEU6uA00HXrQxHZ8Bz
+ hajBouTQPW+pZ/MyopPdnXIyVpRTqaLwoFZOzSb/huTGwx2MQB/3HKwgO5RfwfJCOPsA7XLCqOn
+ JRSUnGNItNzjFEB+oF5QwdAN5o0rU9iTwqL1Lfk8g7L0IGRzxQDTp/uF0Oa/z0OnPHa5GY/Arrq
+ zO5VROCpR7WTLBGF
+X-Received: by 2002:a05:6402:2695:b0:5e4:d52b:78a2 with SMTP id
+ 4fb4d7f45d1cf-5f6cf481c32mr1839635a12.15.1745401308079; 
+ Wed, 23 Apr 2025 02:41:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH0a2JVa/5PyAmpbziD9AUD6Xtk5+F3xYuJBiZCdKxFzDR4AbQRY3g5cvZtu26iPtWxTK0EMg==
+X-Received: by 2002:a05:6402:2695:b0:5e4:d52b:78a2 with SMTP id
+ 4fb4d7f45d1cf-5f6cf481c32mr1839604a12.15.1745401307545; 
+ Wed, 23 Apr 2025 02:41:47 -0700 (PDT)
 Received: from [192.168.10.48] ([151.49.233.241])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-acb6eefd8a2sm794056066b.90.2025.04.23.02.41.42
+ 4fb4d7f45d1cf-5f625833ef1sm7066794a12.51.2025.04.23.02.41.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Apr 2025 02:41:42 -0700 (PDT)
+ Wed, 23 Apr 2025 02:41:45 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Wei Liu <liuwe@linux.microsoft.com>
-Subject: [PULL 18/34] target/i386/hvf: provide and use write_mem in emul_ops
-Date: Wed, 23 Apr 2025 11:40:48 +0200
-Message-ID: <20250423094105.40692-19-pbonzini@redhat.com>
+Subject: [PULL 19/34] target/i386/hvf: provide and use simulate_{wrmsr,
+ rdmsr} in emul_ops
+Date: Wed, 23 Apr 2025 11:40:49 +0200
+Message-ID: <20250423094105.40692-20-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423094105.40692-1-pbonzini@redhat.com>
 References: <20250423094105.40692-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -108,79 +109,119 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Wei Liu <liuwe@linux.microsoft.com>
 
+Change the first argument's type to be CPUState to match other hooks.
+
 Signed-off-by: Wei Liu <liuwe@linux.microsoft.com>
-Link: https://lore.kernel.org/r/1741377325-28175-7-git-send-email-liuwe@linux.microsoft.com
+Link: https://lore.kernel.org/r/1741377325-28175-8-git-send-email-liuwe@linux.microsoft.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/hvf/x86_emu.h | 1 +
- target/i386/hvf/hvf.c     | 6 ++++++
- target/i386/hvf/x86_emu.c | 8 ++++----
- 3 files changed, 11 insertions(+), 4 deletions(-)
+ target/i386/hvf/hvf-i386.h |  4 ++--
+ target/i386/hvf/x86_emu.h  |  2 ++
+ target/i386/hvf/hvf.c      | 18 ++++++++++--------
+ target/i386/hvf/x86_emu.c  |  4 ++--
+ 4 files changed, 16 insertions(+), 12 deletions(-)
 
+diff --git a/target/i386/hvf/hvf-i386.h b/target/i386/hvf/hvf-i386.h
+index 044ad236ae8..8c42ae6b013 100644
+--- a/target/i386/hvf/hvf-i386.h
++++ b/target/i386/hvf/hvf-i386.h
+@@ -19,8 +19,8 @@
+ uint32_t hvf_get_supported_cpuid(uint32_t func, uint32_t idx, int reg);
+ 
+ void hvf_handle_io(CPUState *, uint16_t, void *, int, int, int);
+-void hvf_simulate_rdmsr(CPUX86State *env);
+-void hvf_simulate_wrmsr(CPUX86State *env);
++void hvf_simulate_rdmsr(CPUState *cpu);
++void hvf_simulate_wrmsr(CPUState *cpu);
+ 
+ /* Host specific functions */
+ int hvf_inject_interrupt(CPUArchState *env, int vector);
 diff --git a/target/i386/hvf/x86_emu.h b/target/i386/hvf/x86_emu.h
-index 40cc786694e..107c1f1ac86 100644
+index 107c1f1ac86..555b567e2c7 100644
 --- a/target/i386/hvf/x86_emu.h
 +++ b/target/i386/hvf/x86_emu.h
-@@ -25,6 +25,7 @@
- 
- struct x86_emul_ops {
-     void (*read_mem)(CPUState *cpu, void *data, target_ulong addr, int bytes);
-+    void (*write_mem)(CPUState *cpu, void *data, target_ulong addr, int bytes);
-     void (*read_segment_descriptor)(CPUState *cpu, struct x86_segment_descriptor *desc,
+@@ -30,6 +30,8 @@ struct x86_emul_ops {
                                      enum X86Seg seg);
      void (*handle_io)(CPUState *cpu, uint16_t port, void *data, int direction,
+                       int size, int count);
++    void (*simulate_rdmsr)(CPUState *cs);
++    void (*simulate_wrmsr)(CPUState *cs);
+ };
+ 
+ extern const struct x86_emul_ops *emul_ops;
 diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
-index 1cecb765952..e4f48a79fb7 100644
+index e4f48a79fb7..8c31d2e0cf7 100644
 --- a/target/i386/hvf/hvf.c
 +++ b/target/i386/hvf/hvf.c
-@@ -242,8 +242,14 @@ static void hvf_read_mem(CPUState *cpu, void *data, target_ulong gva, int bytes)
-     vmx_read_mem(cpu, data, gva, bytes);
- }
- 
-+static void hvf_write_mem(CPUState *cpu, void *data, target_ulong gva, int bytes)
-+{
-+    vmx_write_mem(cpu, gva, data, bytes);
-+}
-+
- static const struct x86_emul_ops hvf_x86_emul_ops = {
-     .read_mem = hvf_read_mem,
-+    .write_mem = hvf_write_mem,
+@@ -252,6 +252,8 @@ static const struct x86_emul_ops hvf_x86_emul_ops = {
+     .write_mem = hvf_write_mem,
      .read_segment_descriptor = hvf_read_segment_descriptor,
      .handle_io = hvf_handle_io,
++    .simulate_rdmsr = hvf_simulate_rdmsr,
++    .simulate_wrmsr = hvf_simulate_wrmsr,
  };
+ 
+ int hvf_arch_init_vcpu(CPUState *cpu)
+@@ -506,10 +508,10 @@ void hvf_store_regs(CPUState *cs)
+     macvm_set_rip(cs, env->eip);
+ }
+ 
+-void hvf_simulate_rdmsr(CPUX86State *env)
++void hvf_simulate_rdmsr(CPUState *cs)
+ {
+-    X86CPU *cpu = env_archcpu(env);
+-    CPUState *cs = env_cpu(env);
++    X86CPU *cpu = X86_CPU(cs);
++    CPUX86State *env = &cpu->env;
+     uint32_t msr = ECX(env);
+     uint64_t val = 0;
+ 
+@@ -611,10 +613,10 @@ void hvf_simulate_rdmsr(CPUX86State *env)
+     RDX(env) = (uint32_t)(val >> 32);
+ }
+ 
+-void hvf_simulate_wrmsr(CPUX86State *env)
++void hvf_simulate_wrmsr(CPUState *cs)
+ {
+-    X86CPU *cpu = env_archcpu(env);
+-    CPUState *cs = env_cpu(env);
++    X86CPU *cpu = X86_CPU(cs);
++    CPUX86State *env = &cpu->env;
+     uint32_t msr = ECX(env);
+     uint64_t data = ((uint64_t)EDX(env) << 32) | EAX(env);
+ 
+@@ -900,9 +902,9 @@ int hvf_vcpu_exec(CPUState *cpu)
+         {
+             hvf_load_regs(cpu);
+             if (exit_reason == EXIT_REASON_RDMSR) {
+-                hvf_simulate_rdmsr(env);
++                hvf_simulate_rdmsr(cpu);
+             } else {
+-                hvf_simulate_wrmsr(env);
++                hvf_simulate_wrmsr(cpu);
+             }
+             env->eip += ins_len;
+             hvf_store_regs(cpu);
 diff --git a/target/i386/hvf/x86_emu.c b/target/i386/hvf/x86_emu.c
-index 7b816b5a1da..3ff41c35d89 100644
+index 3ff41c35d89..aec7a8a3fa8 100644
 --- a/target/i386/hvf/x86_emu.c
 +++ b/target/i386/hvf/x86_emu.c
-@@ -179,7 +179,7 @@ void write_val_ext(CPUX86State *env, target_ulong ptr, target_ulong val, int siz
-         write_val_to_reg(ptr, val, size);
-         return;
-     }
--    vmx_write_mem(env_cpu(env), ptr, &val, size);
-+    emul_ops->write_mem(env_cpu(env), &val, ptr, size);
+@@ -672,13 +672,13 @@ void x86_emul_raise_exception(CPUX86State *env, int exception_index, int error_c
+ 
+ static void exec_rdmsr(CPUX86State *env, struct x86_decode *decode)
+ {
+-    hvf_simulate_rdmsr(env);
++    emul_ops->simulate_rdmsr(env_cpu(env));
+     env->eip += decode->len;
  }
  
- uint8_t *read_mmio(CPUX86State *env, target_ulong ptr, int bytes)
-@@ -489,8 +489,8 @@ static void exec_ins_single(CPUX86State *env, struct x86_decode *decode)
- 
-     emul_ops->handle_io(env_cpu(env), DX(env), env->emu_mmio_buf, 0,
-                         decode->operand_size, 1);
--    vmx_write_mem(env_cpu(env), addr, env->emu_mmio_buf,
--                  decode->operand_size);
-+    emul_ops->write_mem(env_cpu(env), env->emu_mmio_buf, addr,
-+                        decode->operand_size);
- 
-     string_increment_reg(env, R_EDI, decode);
+ static void exec_wrmsr(CPUX86State *env, struct x86_decode *decode)
+ {
+-    hvf_simulate_wrmsr(env);
++    emul_ops->simulate_wrmsr(env_cpu(env));
+     env->eip += decode->len;
  }
-@@ -596,7 +596,7 @@ static void exec_stos_single(CPUX86State *env, struct x86_decode *decode)
-     addr = linear_addr_size(env_cpu(env), RDI(env),
-                             decode->addressing_size, R_ES);
-     val = read_reg(env, R_EAX, decode->operand_size);
--    vmx_write_mem(env_cpu(env), addr, &val, decode->operand_size);
-+    emul_ops->write_mem(env_cpu(env), &val, addr, decode->operand_size);
  
-     string_increment_reg(env, R_EDI, decode);
- }
 -- 
 2.49.0
 
