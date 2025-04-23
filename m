@@ -2,92 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FAA8A9957C
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 18:39:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34B42A995C2
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 18:50:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7d7V-0000Ru-5f; Wed, 23 Apr 2025 12:38:45 -0400
+	id 1u7dHt-00031l-9V; Wed, 23 Apr 2025 12:49:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7d7S-0000RW-UK
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 12:38:42 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7d7Q-0004JF-Mi
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 12:38:42 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-440685d6afcso571195e9.0
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 09:38:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745426319; x=1746031119; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=yLzJXDA+CN/xTWiNpDYE5amg25OuLYoru0TaLj2PX8Y=;
- b=rWcGRsMMAVS4hXEBH+JSQlx3AXaRk0sbNBjnjWlObyoBjjwEEAtHdmVxZ2W7E5+ull
- 6QIjOQdCf8k5qweARRU8v05E3oJHBwelX9/Nepc+M9BN88eZEjGLubpQh6/Sf5cZbbsH
- WrtBpXMgs40J3ftvSL6pEdFqubIa1K8DEILxcidQou2M9+mKvVPRAS6SDd3KfahvwSZS
- H0YaFQMBUvmcvF/yc6EI9wOWqTNMgVKsPT/Mvovp1p3v8adMUOOPL/11I1dCbyqf/k5n
- CHVQvF+eBbRGx5ph0nx3eSMYbDPvNCoZltr3Cvlj872OPZGwGpmF2iDWaHdkApuSG3nv
- cnHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745426319; x=1746031119;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yLzJXDA+CN/xTWiNpDYE5amg25OuLYoru0TaLj2PX8Y=;
- b=iHSXE9dyQDBm1lkMDndZDcAO/Ic8GdWGKh64zbg5n2PzZZdyAO3P5oeeURagcTLmRA
- d+In6yc8sV7VkHQyUcHEIMDytBgNgzlnndqAUWToefHIDIgc7TLxLVKxUJmEVvXqTyq0
- zXUOaBW0NY5/Qif4Z5S7b3K2AZR0wQpKhOaotMrEZwQoZfLcX0Rq31FmX97Q8GD4UPOm
- kPvsdlLdbmKT0IJ219QEuROQWKBSt+M+zQIsQTYGi138ZIJ3ZpOkF+oJT2nRSll/jjkj
- bljN/uuaFz0yExlmsc7RoRpKMVQpYQTk+Ot+m9gQNqac+iVBOH++jZxK8WhEz0eTq8t8
- tIUg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV0fahnbNXD16kUQ9PpbW7+DNHTvAGucQTL9UKS05Fcq1Nrj20GfWAEPBAuNL7CpLfMcYLmP/7agNIk@nongnu.org
-X-Gm-Message-State: AOJu0Yw3S3Bw7k7/PzoHf4tlj9fHNZQ5r0Dd/byfYNnJkBO1jh9G9PHz
- b7frdNaSnkdwp940mTcyfNKbK+dn8KP6/ceJTk0FTd4sVQn5emjIm1rVD5lpMlU=
-X-Gm-Gg: ASbGncshEBHfe0EEXgS1a/+Wh3AB841cc1ZuLlQueY5j9z+xtMtiNO/wl72qrr5WhbU
- Kvwo/qIOqTCSCLE6blcIzO7axl1Rrs+UukKEAU7fkU+nHPOfmBwZLkH+QIS4LdEVC+bp+cP+l6y
- v65yUkZIaMW/nwYFpvgzcjxsIWsTMyIstI8vkLz7ZPCB01xIVU0Kdcjfg+8rphj8+Wsn8kQzFUE
- 9Z0mbP1BSCPboduOWGfPmsMnDtVUMm89SsXlryHi4O1GkBbdReXCQjiTN3ByxjFVl5NbtsqO9yi
- QIUNdCwO4CHFBphsIHj7dK0jIVxd8gOA6VW08yTKH3wnSaTve6c4L7Gn4mrzn+0h/DkPDsWH5Ts
- G/XX6gQdv
-X-Google-Smtp-Source: AGHT+IG7VE9YDi5uz8+FtJbEltTi9NzNnUm5EaDlQvYaAvD4k1jBxZvqdOlFKMucGDCMSW0s5b3Omw==
-X-Received: by 2002:a05:600c:1547:b0:43c:e481:3353 with SMTP id
- 5b1f17b1804b1-4406ababea3mr175785045e9.17.1745426318707; 
- Wed, 23 Apr 2025 09:38:38 -0700 (PDT)
-Received: from [192.168.69.226] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-44092dc229esm31978285e9.40.2025.04.23.09.38.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 23 Apr 2025 09:38:38 -0700 (PDT)
-Message-ID: <f5c71904-342b-47b4-af8e-4155067b5e7f@linaro.org>
-Date: Wed, 23 Apr 2025 18:38:37 +0200
+ (Exim 4.90_1) (envelope-from <sunnyzhyy@qq.com>)
+ id 1u7dHm-0002yT-1D; Wed, 23 Apr 2025 12:49:22 -0400
+Received: from out203-205-221-236.mail.qq.com ([203.205.221.236])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sunnyzhyy@qq.com>)
+ id 1u7dHh-0005TN-Bj; Wed, 23 Apr 2025 12:49:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+ t=1745426938; bh=CXhedZ0BjMBZjD5/kl8r5K85vI68/WhYZz4OTn3eSSs=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References;
+ b=dGZxSjsPfk8wcFBZJvvJtxXpzlBWa60diu3P+4WSzNJg3U7xexLzu60AtT7Lh7pnW
+ b4KBvT60Sllt+G/MRJVGWdN3e/q80XrB7c2Y/uCm0598RU2S49q+pfiY0LdO+HNCmJ
+ NE6q7xMsCJMIa65QnEoaaBfxYoFnEHMLuyiqZ4Nc=
+Received: from 192.168.182.133 ([117.147.34.254])
+ by newxmesmtplogicsvrszc16-0.qq.com (NewEsmtp) with SMTP
+ id AAD85CE2; Thu, 24 Apr 2025 00:42:45 +0800
+X-QQ-mid: xmsmtpt1745426565t3ahhi450
+Message-ID: <tencent_85E0A24CC61971732FCD04DD85BC3689E205@qq.com>
+X-QQ-XMAILINFO: OAope3s6+8Xpvxpyv8Jc31jgje9BkoOyIu0m723z862UXWpLew4s8HaOXdoFJZ
+ tw4jObRl6bsrjHFO/vDMcQ/W7/OUubB/gaPFCjQX9sgMCqmucnmAotsl06Ezdoarp9/ficAfoAXY
+ Uc/pMcXmyQLO/0B3u+vRW6piKx5ZxQ9epgoyP6aaOqH1UWAzn7Evimd3A4w4C9vLQsfeXxEv7Att
+ kSJ5/FeodUjziwLMew1Vlkf761RxvV5x9nAyox7GTeKFnLbJezspn1K/JW4FRFKnri8HZhmRD7ae
+ 0Nxy9qjFMrb7DnupqgSXRweAJdMv+tm7AncS6TxyZtrdPG5dwV9byxlWFuEh6WXNVsdNXbkWrWJ9
+ vAG5SRUvCsRqNZThb6huyi+9sVGQ6yuFbIE55G249VV/gr2TRsT1Zipr4itujDo25d2KQ2zBLsxQ
+ RcxjJTjaxXShCe1ZcgGHjpQWMaBrlysta+shFWwWoQgGnsTO+mUMTQthNO2yeMRM8XSqxiD3Js6k
+ y6fVT4SMG2nCf/Wq5rD+Zv0kw5CDTvPxcQKwPmNk/3uA2YDbburHYTv/WWdAJGTnwkGG9WKfR+cw
+ RpY+SpZecS1LMcWUovCmNIcdiSQpJi3IcF1LH+6imlVTpSgYN1BxS8gr2kf8NCu6qsRSIBGuPpMi
+ n6AQvdb9vsWhuuoZ9xnFxinWUR2JVIg0mmFMyhIChmhWPTSYNT9pN+DeXChKDeptZmFyqMB1/dd6
+ 92phKEIaY61E3oGtw4JpcDLcsTdXwe9UXGR5Z6xWUmYlZQ5a4ZPq4J9N43/7f6s1lz2rKjpX/m0t
+ +xcxhGlR/IlWvauXEP1BfFZB908BJniUkT7feJRZX9G7flXbc6+iMVphvdXks6WIxPxWjnIeRj/G
+ V2cl3u4VtshyteaqqctZrDLjWApir+Wei/Z0xhZ/H0tHHcmcyEDq9UW5uQ99xOZXln7ISrYolplu
+ ie8ZWoex7ZK6RhW6PZf/elFxRKte9GfNHTYRUdQ9WjeKZianFbzQ==
+X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
+From: Sunny Zhu <sunnyzhyy@qq.com>
+To: eblake@redhat.com
+Cc: hreitz@redhat.com, jsnow@redhat.com, kwolf@redhat.com,
+ qemu-block@nongnu.org, qemu-devel@nongnu.org, vsementsov@yandex-team.ru,
+ stefanha@redhat.com
+Subject: Re: [PATCH v2 08/11] mirror: Skip writing zeroes when target is
+ already zero
+Date: Thu, 24 Apr 2025 00:42:45 +0800
+X-OQ-MSGID: <20250423164245.44228-1-sunnyzhyy@qq.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250417184133.105746-21-eblake@redhat.com>
+References: <20250417184133.105746-21-eblake@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 118/147] target/arm/cpu: remove inline stubs for aarch32
- emulation
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20250422192819.302784-1-richard.henderson@linaro.org>
- <20250422192819.302784-119-richard.henderson@linaro.org>
- <4a8da7b6-7773-453d-b704-0991caa3cd97@linaro.org>
- <41f54ebf-6831-41d6-aa67-f083d6b7b0e8@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <41f54ebf-6831-41d6-aa67-f083d6b7b0e8@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=203.205.221.236; envelope-from=sunnyzhyy@qq.com;
+ helo=out203-205-221-236.mail.qq.com
+X-Spam_score_int: 8
+X-Spam_score: 0.8
+X-Spam_bar: /
+X-Spam_report: (0.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HELO_DYNAMIC_IPADDR=1.951, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RDNS_DYNAMIC=0.982, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,93 +82,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/4/25 18:26, Pierrick Bouvier wrote:
-> On 4/23/25 03:35, Philippe Mathieu-Daudé wrote:
->> On 22/4/25 21:27, Richard Henderson wrote:
->>> From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->>>
->>> Directly condition associated calls in target/arm/helper.c for now.
->>>
->>> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
->>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->>> Message-ID: <20250325045915.994760-23-pierrick.bouvier@linaro.org>
->>> ---
->>>    target/arm/cpu.h    | 8 --------
->>>    target/arm/helper.c | 6 ++++++
->>>    2 files changed, 6 insertions(+), 8 deletions(-)
->>>
->>> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
->>> index b1c3e46326..c1a0faed3a 100644
->>> --- a/target/arm/cpu.h
->>> +++ b/target/arm/cpu.h
->>> @@ -1222,7 +1222,6 @@ int 
->>> arm_cpu_write_elf32_note(WriteCoreDumpFunction f, CPUState *cs,
->>>     */
->>>    void arm_emulate_firmware_reset(CPUState *cpustate, int target_el);
->>> -#ifdef TARGET_AARCH64
->>>    int aarch64_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, 
->>> int reg);
->>>    int aarch64_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, 
->>> int reg);
->>>    void aarch64_sve_narrow_vq(CPUARMState *env, unsigned vq);
->>> @@ -1254,13 +1253,6 @@ static inline uint64_t *sve_bswap64(uint64_t 
->>> *dst, uint64_t *src, int nr)
->>>    #endif
->>>    }
->>> -#else
->>> -static inline void aarch64_sve_narrow_vq(CPUARMState *env, unsigned 
->>> vq) { }
->>> -static inline void aarch64_sve_change_el(CPUARMState *env, int o,
->>> -                                         int n, bool a)
->>> -{ }
->>> -#endif
->>> -
->>>    void aarch64_sync_32_to_64(CPUARMState *env);
->>>    void aarch64_sync_64_to_32(CPUARMState *env);
->>
->> Should we complete squashing:
->>
->> -- >8 --
->> diff --git a/target/arm/internals.h b/target/arm/internals.h
->> index cf4ab17bc08..f9353887415 100644
->> --- a/target/arm/internals.h
->> +++ b/target/arm/internals.h
->> @@ -1810,7 +1810,6 @@ static inline uint64_t
->> pmu_counter_mask(CPUARMState *env)
->>      return (1ULL << 31) | ((1ULL << pmu_num_counters(env)) - 1);
->>    }
->>
->> -#ifdef TARGET_AARCH64
->>    GDBFeature *arm_gen_dynamic_svereg_feature(CPUState *cpu, int 
->> base_reg);
->>    int aarch64_gdb_get_sve_reg(CPUState *cs, GByteArray *buf, int reg);
->>    int aarch64_gdb_set_sve_reg(CPUState *cs, uint8_t *buf, int reg);
->> @@ -1820,7 +1819,6 @@ int aarch64_gdb_get_pauth_reg(CPUState *cs,
->> GByteArray *buf, int reg);
->>    int aarch64_gdb_set_pauth_reg(CPUState *cs, uint8_t *buf, int reg);
->>    int aarch64_gdb_get_tag_ctl_reg(CPUState *cs, GByteArray *buf, int 
->> reg);
->>    int aarch64_gdb_set_tag_ctl_reg(CPUState *cs, uint8_t *buf, int reg);
->> -#endif
->>    void arm_cpu_sve_finalize(ARMCPU *cpu, Error **errp);
->>    void arm_cpu_sme_finalize(ARMCPU *cpu, Error **errp);
->>    void arm_cpu_pauth_finalize(ARMCPU *cpu, Error **errp);
->> ---
->>
->> ?
->>
+on Thu, 17 Apr 2025 13:39:13 -0500, Eric Blake wrote:
+> When mirroring, the goal is to ensure that the destination reads the
+> same as the source; this goal is met whether the destination is sparse
+> or fully-allocated.  However, if the destination cannot efficiently
+> write zeroes, then any time the mirror operation wants to copy zeroes
+> from the source to the destination (either during the background over
+> sparse regions when doing a full mirror, or in the foreground when the
+> guest actively writes zeroes), we were causing the destination to
+> fully allocate that portion of the disk, even if it already read as
+> zeroes.
 > 
-> This part of the series focus on hw/arm, so it was not needed to clean 
-> target/arm/internals.h as part of it.
-> That's why I "pushed" the TARGET_AARCH64 #ifdef to target/arm/helper.c, 
-> allowing to do it later.
-> I tried to cleanup that completely at the time, as requested by Peter, 
-> but it was pulling too many things, so I just dropped it.
+> The effect is especially pronounced when the source is a raw file.
+> That's because when the source is a qcow2 file, the dirty bitmap only
+> visits the portions of the source that are allocated, which tend to be
+> non-zero.  But when the source is a raw file,
+> bdrv_co_is_allocated_above() reports the entire file as allocated so
+> mirror_dirty_init sets the entire dirty bitmap, and it is only later
+> during mirror_iteration that we change to consulting the more precise
+> bdrv_co_block_status_above() to learn where the source reads as zero.
 > 
-> So I think we should not squash it here.
+> Remember that since a mirror operation can write a cluster more than
+> once (every time the guest changes the source, the destination is also
+> changed to keep up), we can't take the shortcut of relying on
+> s->zero_target (which is static for the life of the job) in
+> mirror_co_zero() to see if the destination is already zero, because
+> that information may be stale.  Any solution we use must be dynamic in
+> the face of the guest writing or discarding a cluster while the mirror
+> has been ongoing.
+> 
+> We could just teach mirror_co_zero() to do a block_status() probe of
+> the destination, and skip the zeroes if the destination already reads
+> as zero, but we know from past experience that extra block_status()
+> calls are not always cheap (tmpfs, anyone?), especially when they are
+> random access rather than linear.  Use of block_status() of the source
+> by the background task in a linear fashion is not our bottleneck (it's
+> a background task, after all); but since mirroring can be done while
+> the source is actively being changed, we don't want a slow
+> block_status() of the destination to occur on the hot path of the
+> guest trying to do random-access writes to the source.
+> 
+> So this patch takes a slightly different approach: any time we have to
+> transfer the full image, we know that mirror_dirty_init() is _already_
+> doing a pre-zero pass over the entire destination.  Therefore, if we
+> track which clusters of the destination are zero at any given moment,
+> we don't have to do a block_status() call on the destination, but can
+> instead just refer to the zero bitmap associated with the job.
+> 
+> With this patch, if I create a raw sparse destination file, connect it
+> with QMP 'blockdev-add' while leaving it at the default "discard":
+> "ignore", then run QMP 'blockdev-mirror' with "sync": "full", the
+> destination remains sparse rather than fully allocated.
+> 
+> Signed-off-by: Eric Blake <eblake@redhat.com>
+> ---
+>  block/mirror.c | 70 ++++++++++++++++++++++++++++++++++++++++++++++----
+>  1 file changed, 65 insertions(+), 5 deletions(-)
+> 
+> diff --git a/block/mirror.c b/block/mirror.c
+> index 234e3a55e60..4770d87abf6 100644
+> --- a/block/mirror.c
+> +++ b/block/mirror.c
+> @@ -73,6 +73,7 @@ typedef struct MirrorBlockJob {
+>      size_t buf_size;
+>      int64_t bdev_length;
+>      unsigned long *cow_bitmap;
+> +    unsigned long *zero_bitmap;
+>      BdrvDirtyBitmap *dirty_bitmap;
+>      BdrvDirtyBitmapIter *dbi;
+>      uint8_t *buf;
+> @@ -408,15 +409,33 @@ static void coroutine_fn mirror_co_read(void *opaque)
+>  static void coroutine_fn mirror_co_zero(void *opaque)
+>  {
+>      MirrorOp *op = opaque;
+> -    int ret;
+> +    bool write_needed = true;
+> +    int ret = 0;
+> 
+>      op->s->in_flight++;
+>      op->s->bytes_in_flight += op->bytes;
+>      *op->bytes_handled = op->bytes;
+>      op->is_in_flight = true;
+> 
+> -    ret = blk_co_pwrite_zeroes(op->s->target, op->offset, op->bytes,
+> -                               op->s->unmap ? BDRV_REQ_MAY_UNMAP : 0);
+> +    if (op->s->zero_bitmap) {
+> +        unsigned long end = DIV_ROUND_UP(op->offset + op->bytes,
+> +                                         op->s->granularity);
+> +        assert(QEMU_IS_ALIGNED(op->offset, op->s->granularity));
+> +        assert(QEMU_IS_ALIGNED(op->bytes, op->s->granularity) ||
+> +               op->offset + op->bytes == op->s->bdev_length);
+> +        if (find_next_zero_bit(op->s->zero_bitmap, end,
+> +                               op->offset / op->s->granularity) == end) {
+> +            write_needed = false;
+> +        }
+> +    }
+> +    if (write_needed) {
+> +        ret = blk_co_pwrite_zeroes(op->s->target, op->offset, op->bytes,
+> +                                   op->s->unmap ? BDRV_REQ_MAY_UNMAP : 0);
+> +    }
+> +    if (ret >= 0 && op->s->zero_bitmap) {
+> +        bitmap_set(op->s->zero_bitmap, op->offset / op->s->granularity,
+> +                   DIV_ROUND_UP(op->bytes, op->s->granularity));
+> +    }
+>      mirror_write_complete(op, ret);
+>  }
+> 
+> @@ -441,6 +460,9 @@ static unsigned mirror_perform(MirrorBlockJob *s, int64_t offset,
+>      Coroutine *co;
+>      int64_t bytes_handled = -1;
+> 
+> +    assert(QEMU_IS_ALIGNED(offset, s->granularity));
+> +    assert(QEMU_IS_ALIGNED(bytes, s->granularity) ||
+> +           offset + bytes == s->bdev_length);
+>      op = g_new(MirrorOp, 1);
+>      *op = (MirrorOp){
+>          .s              = s,
+> @@ -452,12 +474,21 @@ static unsigned mirror_perform(MirrorBlockJob *s, int64_t offset,
+> 
+>      switch (mirror_method) {
+>      case MIRROR_METHOD_COPY:
+> +        if (s->zero_bitmap) {
+> +            bitmap_clear(s->zero_bitmap, offset / s->granularity,
+> +                         DIV_ROUND_UP(bytes, s->granularity));
+> +        }
+>          co = qemu_coroutine_create(mirror_co_read, op);
+>          break;
+>      case MIRROR_METHOD_ZERO:
+> +        /* s->zero_bitmap handled in mirror_co_zero */
+>          co = qemu_coroutine_create(mirror_co_zero, op);
+>          break;
+>      case MIRROR_METHOD_DISCARD:
+> +        if (s->zero_bitmap) {
+> +            bitmap_clear(s->zero_bitmap, offset / s->granularity,
+> +                         DIV_ROUND_UP(bytes, s->granularity));
+> +        }
+>          co = qemu_coroutine_create(mirror_co_discard, op);
+>          break;
+>      default:
+> 
 
-OK, then this patch can be queued on top:
-https://lore.kernel.org/qemu-devel/20250403235821.9909-37-philmd@linaro.org/
+If we have performed the skip-zero operation, it should not be constrained
+by mirror job bandwidth limits. Therefore, it is preferable to exclude it
+from rate limiting.
+  
+  bool skip_write_zero = false;
+
+  io_bytes = mirror_perform(s, offset, io_bytes, mirror_method, &skip_write_zero);
+  if (skip_write_zero || (mirror_method != MIRROR_METHOD_COPY && write_zeroes_ok)) {
+      io_bytes_acct = 0;
+  } ..
+
+> @@ -849,6 +880,8 @@ static int coroutine_fn GRAPH_UNLOCKED mirror_dirty_init(MirrorBlockJob *s)
+>      bdrv_graph_co_rdunlock();
+> 
+>      if (s->zero_target) {
+> +        int64_t bitmap_length = DIV_ROUND_UP(s->bdev_length, s->granularity);
+> +
+>          offset = 0;
+>          bdrv_graph_co_rdlock();
+>          ret = bdrv_co_is_all_zeroes(target_bs);
 
 
