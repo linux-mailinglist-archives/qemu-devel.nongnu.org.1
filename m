@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6438A97C2F
-	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 03:42:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C7EEA97C32
+	for <lists+qemu-devel@lfdr.de>; Wed, 23 Apr 2025 03:42:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7P6M-0007gz-QJ; Tue, 22 Apr 2025 21:40:38 -0400
+	id 1u7P6S-0007xL-4j; Tue, 22 Apr 2025 21:40:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1u7P6I-0007aL-PV; Tue, 22 Apr 2025 21:40:34 -0400
+ id 1u7P6O-0007tC-Or; Tue, 22 Apr 2025 21:40:40 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1u7P6F-0004FX-PA; Tue, 22 Apr 2025 21:40:34 -0400
+ id 1u7P6L-0004FX-UJ; Tue, 22 Apr 2025 21:40:40 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Wed, 23 Apr
@@ -28,18 +28,17 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
  Stanley" <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
  "open list:All patches CC here" <qemu-devel@nongnu.org>
-CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v2 2/3] tests/functional/aspeed: Update test ASPEED SDK v09.06
- for AST2600
-Date: Wed, 23 Apr 2025 09:40:06 +0800
-Message-ID: <20250423014008.147542-3-jamin_lin@aspeedtech.com>
+CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
+Subject: [PATCH v2 3/3] tests/functional/aspeed: Update test ASPEED SDK v03.00
+ for AST1030
+Date: Wed, 23 Apr 2025 09:40:07 +0800
+Message-ID: <20250423014008.147542-4-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250423014008.147542-1-jamin_lin@aspeedtech.com>
 References: <20250423014008.147542-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Received-SPF: pass client-ip=211.20.114.72;
  envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
 X-Spam_score_int: -18
@@ -65,53 +64,38 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update test for AST2600 production revision A3.
-
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- tests/functional/test_arm_aspeed_ast2600.py | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ tests/functional/test_arm_aspeed_ast1030.py | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/tests/functional/test_arm_aspeed_ast2600.py b/tests/functional/test_arm_aspeed_ast2600.py
-index 6ae4ed636a..c30397f60d 100755
---- a/tests/functional/test_arm_aspeed_ast2600.py
-+++ b/tests/functional/test_arm_aspeed_ast2600.py
-@@ -97,26 +97,27 @@ def test_arm_ast2600_evb_buildroot_tpm(self):
+diff --git a/tests/functional/test_arm_aspeed_ast1030.py b/tests/functional/test_arm_aspeed_ast1030.py
+index d45d9f7c1c..77037f0179 100755
+--- a/tests/functional/test_arm_aspeed_ast1030.py
++++ b/tests/functional/test_arm_aspeed_ast1030.py
+@@ -12,17 +12,17 @@
  
-         self.do_test_arm_aspeed_buildroot_poweroff()
+ class AST1030Machine(LinuxKernelTest):
  
--    ASSET_SDK_V806_AST2600_A2 = Asset(
--        'https://github.com/AspeedTech-BMC/openbmc/releases/download/v08.06/ast2600-a2-obmc.tar.gz',
--        '9083506135f622d5e7351fcf7d4e1c7125cee5ba16141220c0ba88931f3681a4')
-+    ASSET_SDK_V906_AST2600 = Asset(
-+        'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.06/ast2600-default-obmc.tar.gz',
-+        '768d76e247896ad78c154b9cff4f766da2ce65f217d620b286a4a03a8a4f68f5')
+-    ASSET_ZEPHYR_1_04 = Asset(
++    ASSET_ZEPHYR_3_00 = Asset(
+         ('https://github.com/AspeedTech-BMC'
+-         '/zephyr/releases/download/v00.01.04/ast1030-evb-demo.zip'),
+-        '4ac6210adcbc61294927918707c6762483fd844dde5e07f3ba834ad1f91434d3')
++         '/zephyr/releases/download/v00.03.00/ast1030-evb-demo.zip'),
++        '37fe3ecd4a1b9d620971a15b96492a81093435396eeac69b6f3e384262ff555f')
  
-     def test_arm_ast2600_evb_sdk(self):
-         self.set_machine('ast2600-evb')
+-    def test_ast1030_zephyros_1_04(self):
++    def test_ast1030_zephyros_3_00(self):
+         self.set_machine('ast1030-evb')
  
--        self.archive_extract(self.ASSET_SDK_V806_AST2600_A2)
-+        self.archive_extract(self.ASSET_SDK_V906_AST2600)
+         kernel_name = "ast1030-evb-demo/zephyr.elf"
+         kernel_file = self.archive_extract(
+-            self.ASSET_ZEPHYR_1_04, member=kernel_name)
++            self.ASSET_ZEPHYR_3_00, member=kernel_name)
  
-         self.vm.add_args('-device',
-             'tmp105,bus=aspeed.i2c.bus.5,address=0x4d,id=tmp-test');
-         self.vm.add_args('-device',
-             'ds1338,bus=aspeed.i2c.bus.5,address=0x32');
-         self.do_test_arm_aspeed_sdk_start(
--            self.scratch_file("ast2600-a2", "image-bmc"))
-+            self.scratch_file("ast2600-default", "image-bmc"))
- 
--        self.wait_for_console_pattern('ast2600-a2 login:')
-+        self.wait_for_console_pattern('ast2600-default login:')
- 
-         exec_command_and_wait_for_pattern(self, 'root', 'Password:')
--        exec_command_and_wait_for_pattern(self, '0penBmc', 'root@ast2600-a2:~#')
-+        exec_command_and_wait_for_pattern(self, '0penBmc',
-+                                          'root@ast2600-default:~#')
- 
-         exec_command_and_wait_for_pattern(self,
-             'echo lm75 0x4d > /sys/class/i2c-dev/i2c-5/device/new_device',
+         self.vm.set_console()
+         self.vm.add_args('-kernel', kernel_file, '-nographic')
 -- 
 2.43.0
 
