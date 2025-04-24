@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBB44A99DFC
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:20:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39C37A99D9C
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:04:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7ks5-0007Wp-0E; Wed, 23 Apr 2025 20:55:21 -0400
+	id 1u7ksd-0000W9-9m; Wed, 23 Apr 2025 20:55:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kqX-00015b-TU
+ id 1u7kqX-00015c-TQ
  for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:53:46 -0400
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kqF-0004js-Cg
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:53:29 -0400
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-af5139ad9a2so252104a12.1
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:53:26 -0700 (PDT)
+ id 1u7kqG-0004k7-1D
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:53:30 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-73c17c770a7so477926b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:53:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1745456006; x=1746060806; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tlaPgaqu+RlzrqR3gxsyz4cZtfxx2Xq8XD/b6ALmxlQ=;
- b=ioD6t+8oNLjmL/6xIxjXBN+YYBI8qE4O+EqS/CAN1NN0U0Mqn0ZHkdut70Re5dp2d8
- 9CTdNY4WS93LFEad+JrHpNj5CJcOsioHEm98sQ4YkTT/P+b00mhiX6Tlep7y832ZTYRm
- p0k9mjubImw6jIdFU+Q2OBYM3WI3fEhQ2xI21fqr88uG9wp2rk+1Loe5oTI7JWM76x5a
- 3yXopKFD/r/RPIQGvyDtmS3W3QFPuYlg7wRsa0HnzjyUSOOgAmdoKTWmgQP3hTwPTJQT
- xvN91UnX6kEAjrWoZlXlnZ1SOtJqTkNfGPOqVXBibnWGa1wf5vVGapRWWW81v8QhoGLO
- s7tw==
+ bh=kmSekyJdLD+byQ4wK17YzPBAZbfCl98xaVqmrAmqTEQ=;
+ b=kYmeMnuMuHWVt0X5D93In7IbP4dcUuRRlCqVuNY61iMlfysxZxbySpe+U/RdJ3B8A2
+ 6t+D8uB+fqO41pazOsBo4UaPKU7B1dXoWJ2X/Mar5LGxePHnDCki9X2f11vyet/0MSkq
+ zNTHjmbfcReMLPURAwaSDtISVsfotB/oBRYCdQ2QqKUG8JsuAK9WDCWyOzpgn4A7QNFK
+ SebVZfegynE90oNXTVw9TrfI4o235obZ10hKnpzOf/aqMRYz8/UXWEEhnsUJNaTcawQc
+ A2dB8uUxmL+/WgtjA9vxy13NZmlSSG3bgUhYkQ6Ohgq4UbsEgh1cLtgTjuERaB0ANM33
+ Qs0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1745456006; x=1746060806;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tlaPgaqu+RlzrqR3gxsyz4cZtfxx2Xq8XD/b6ALmxlQ=;
- b=I7G5yTaRM2O/q5/S+uPfXCXQz2oZDaf/0jLZrj37BYzHylrXlzOlEKlHM1Gs9lEP2J
- MiGiOxS9y83BjamHK4ZIs/p7Fme2cSmeJQ9AdmgpCkDnGVuE12eYLmL0rpG8bLcVYVcL
- DXYsN8HTscXJtHKPAI5IAmpSZOVcMQAa9MQogOWuwGmUl0h8ZXZc3MGv6SuAukek42yH
- EX3p0nqXaRkmbhznYOmvPlYTtgmu4NmgdbmpLw3QgMQeBUCSMWUCVV6wtwVIxcO4cqa0
- 5xg6PwHg11wCZJQIhxyeEviVbZY1vop+GuJB+X98MS2YcJQ4smp0c7eiPfBWHxrlHT/C
- eb7A==
-X-Gm-Message-State: AOJu0YwarnA/Jve5A4ZKFW6aDFHawTi0UFxvxPxMC6600NPhKpkSCiPd
- zDweS/SooNMbn1mwSbpQlEddD6e79K8Kg5T8zqxsRdjr8wUftdJXNj6obwAN27+WeaJa00gcNES
- J
-X-Gm-Gg: ASbGncu1Z1IWl601Au6+XjENA5AdUyif159FC0Cdw8/V9RsibEj4nlD1/ZJizwf2KLj
- 0hZF+c6U+QBJPKzTiSFSXKm3uiZ7xH5kyFEQHjMv5Hm8vZWBGZ6l3zN+tKpGoyol9+AL9CsQdW1
- O7KC4Jsj8U6tw7Jy1V1AqB8c2BHy6pHr4oTrI/bdbJ4SS8Wv/dww/4Hcr5HbxcZrmHGdKCcrGQd
- BvICP7UqAZ+bJMRkiKgKktXKFxZLOGr0RfeEmZh3C5O8BFsjlm2zQ16+i9RZ7FmNrxyPAuNmp3g
- cxxGAtr7v8f/Ys6LaPVuxhFY3aBnDgI906de0eQkPbksa9GwcHGDz/oPnAri0q2O31phYP+nerF
- SFkRtONtfmQ==
-X-Google-Smtp-Source: AGHT+IH8zRPzQII+4f4BfIMcy4HECB/2TMFTDPPp1qw5cACcv77FmqNVNShxkIs4UptLhqzr4ZDCsg==
-X-Received: by 2002:a05:6a21:3e0a:b0:204:4573:d855 with SMTP id
- adf61e73a8af0-2044573d9d4mr546203637.9.1745456005880; 
- Wed, 23 Apr 2025 17:53:25 -0700 (PDT)
+ bh=kmSekyJdLD+byQ4wK17YzPBAZbfCl98xaVqmrAmqTEQ=;
+ b=jIaUjWQb3KYca8C6YhdzorMwOyrxdspM0tZvcfgbthvLl9fymVrjOBxD7JQDRja65U
+ BAr7lm2TVmVAdn0Bs7cQbuM5RxDbtsQBiFaP98kXci9u+K0wOUpZjOmf9GnuJC1GzD3/
+ NVsrW9Cu9jMIHqsng5ISZgUdp237MhrYoiik5L7U0nXJLl+MVdTktj+rF+3w7fm4MSJv
+ UzJ0Ox/78viWoRNK3cwWywjDTCuZprhvOHQWzJZ3RcGu9s+JIPOl/pWWGOdU1JdLMd6h
+ VPIVKqUWj3ak4i9iYtKrf9hOG+VWKuXqdaUsr5WqJ+55yWbIQc8l2CKJSU2adJ41Wxxp
+ g1Qg==
+X-Gm-Message-State: AOJu0Ywa9Xwhmf+q8fAsDW+5ZLC8HmjO0qEyMQzJE2AmfFlz7fsE+U7A
+ AdRgy3YZM8QxmnfFCnQPd+WFGf6kUIZ2nwHj0+hLK0FsyAje+9rLNw/AkAbHH9epYnnjduvL77v
+ w
+X-Gm-Gg: ASbGncv2LSFs1rlkhqywGIAKOR4mxQ6DceWOKxTCEn5X/N/JWZPSH+Qdl1X4DaFft3V
+ gMbR+daWBDbIZX2s2cLdEr7Q3e7uPqXIvsFVDQq3ZKNmERG462o+Rwgep1ZW2FNUoUleT5sOcqk
+ ScDVRVsO6NMLcmWcwJGHfSUTLEYt8hmzHlDgZFTmjjX8jBMdQiEvnj9kd/T5tEupMWyuqrtvmQL
+ IgnChvjBqNfvWbKyiImvBVsPKigfqyxjaIctxHlY/GtgZp+SLupJFJScr3NbWKiKz1no8+dH5fO
+ M+YBdYxIfbDjNHg6p6WzDT2YwRwwO5xZzPByoREPPIOFUdOfw44mnD4JR7YZIgM+bfnfQpOp/Xw
+ =
+X-Google-Smtp-Source: AGHT+IGlG3BDDwrJZT2AMB7tw8b0V0nW1FDgt8ljXlp+tv9WB8YxSkUwk8l15UqPiZOVO1uHn5ZAAA==
+X-Received: by 2002:a05:6a20:d48b:b0:1f5:7d57:830f with SMTP id
+ adf61e73a8af0-20444f8a679mr824547637.33.1745456006463; 
+ Wed, 23 Apr 2025 17:53:26 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73e25a6a971sm209353b3a.103.2025.04.23.17.53.25
+ d2e1a72fcca58-73e25a6a971sm209353b3a.103.2025.04.23.17.53.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Apr 2025 17:53:25 -0700 (PDT)
+ Wed, 23 Apr 2025 17:53:26 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 067/148] include/exec: Move tb_{,
- set_}page_addr[01] to translation-block.h
-Date: Wed, 23 Apr 2025 17:48:12 -0700
-Message-ID: <20250424004934.598783-68-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PULL 068/148] accel/tcg: Move get_page_addr_code* declarations
+Date: Wed, 23 Apr 2025 17:48:13 -0700
+Message-ID: <20250424004934.598783-69-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250424004934.598783-1-richard.henderson@linaro.org>
 References: <20250424004934.598783-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,142 +100,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the accessor functions for TranslationBlock
-into the header related to the structure.
+Move the declarations from exec/exec-all.h to the
+private accel/tcg/internal-common.h.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/exec-all.h          | 49 -------------------------------
- include/exec/translation-block.h | 50 ++++++++++++++++++++++++++++++++
- 2 files changed, 50 insertions(+), 49 deletions(-)
+ accel/tcg/internal-common.h | 34 ++++++++++++++++++++++++++++++++++
+ include/exec/exec-all.h     | 34 ----------------------------------
+ accel/tcg/translator.c      |  1 +
+ 3 files changed, 35 insertions(+), 34 deletions(-)
 
+diff --git a/accel/tcg/internal-common.h b/accel/tcg/internal-common.h
+index 9b6ab3a8cc..2f00560d10 100644
+--- a/accel/tcg/internal-common.h
++++ b/accel/tcg/internal-common.h
+@@ -74,4 +74,38 @@ uint32_t curr_cflags(CPUState *cpu);
+ 
+ void tb_check_watchpoint(CPUState *cpu, uintptr_t retaddr);
+ 
++/**
++ * get_page_addr_code_hostp()
++ * @env: CPUArchState
++ * @addr: guest virtual address of guest code
++ *
++ * See get_page_addr_code() (full-system version) for documentation on the
++ * return value.
++ *
++ * Sets *@hostp (when @hostp is non-NULL) as follows.
++ * If the return value is -1, sets *@hostp to NULL. Otherwise, sets *@hostp
++ * to the host address where @addr's content is kept.
++ *
++ * Note: this function can trigger an exception.
++ */
++tb_page_addr_t get_page_addr_code_hostp(CPUArchState *env, vaddr addr,
++                                        void **hostp);
++
++/**
++ * get_page_addr_code()
++ * @env: CPUArchState
++ * @addr: guest virtual address of guest code
++ *
++ * If we cannot translate and execute from the entire RAM page, or if
++ * the region is not backed by RAM, returns -1. Otherwise, returns the
++ * ram_addr_t corresponding to the guest code at @addr.
++ *
++ * Note: this function can trigger an exception.
++ */
++static inline tb_page_addr_t get_page_addr_code(CPUArchState *env,
++                                                vaddr addr)
++{
++    return get_page_addr_code_hostp(env, addr, NULL);
++}
++
+ #endif
 diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
-index 19b0eda44a..fcad3446fe 100644
+index fcad3446fe..f52a680f42 100644
 --- a/include/exec/exec-all.h
 +++ b/include/exec/exec-all.h
-@@ -123,55 +123,6 @@ int probe_access_full_mmu(CPUArchState *env, vaddr addr, int size,
- #endif /* !CONFIG_USER_ONLY */
- #endif /* CONFIG_TCG */
- 
--static inline tb_page_addr_t tb_page_addr0(const TranslationBlock *tb)
--{
--#ifdef CONFIG_USER_ONLY
--    return tb->itree.start;
--#else
--    return tb->page_addr[0];
--#endif
--}
--
--static inline tb_page_addr_t tb_page_addr1(const TranslationBlock *tb)
--{
--#ifdef CONFIG_USER_ONLY
--    tb_page_addr_t next = tb->itree.last & TARGET_PAGE_MASK;
--    return next == (tb->itree.start & TARGET_PAGE_MASK) ? -1 : next;
--#else
--    return tb->page_addr[1];
--#endif
--}
--
--static inline void tb_set_page_addr0(TranslationBlock *tb,
--                                     tb_page_addr_t addr)
--{
--#ifdef CONFIG_USER_ONLY
--    tb->itree.start = addr;
--    /*
--     * To begin, we record an interval of one byte.  When the translation
--     * loop encounters a second page, the interval will be extended to
--     * include the first byte of the second page, which is sufficient to
--     * allow tb_page_addr1() above to work properly.  The final corrected
--     * interval will be set by tb_page_add() from tb->size before the
--     * node is added to the interval tree.
--     */
--    tb->itree.last = addr;
--#else
--    tb->page_addr[0] = addr;
--#endif
--}
--
--static inline void tb_set_page_addr1(TranslationBlock *tb,
--                                     tb_page_addr_t addr)
--{
--#ifdef CONFIG_USER_ONLY
--    /* Extend the interval to the first byte of the second page.  See above. */
--    tb->itree.last = addr;
--#else
--    tb->page_addr[1] = addr;
--#endif
--}
--
- /* TranslationBlock invalidate API */
- void tb_phys_invalidate(TranslationBlock *tb, tb_page_addr_t page_addr);
- void tb_invalidate_phys_range(tb_page_addr_t start, tb_page_addr_t last);
-diff --git a/include/exec/translation-block.h b/include/exec/translation-block.h
-index 3c69bc71a9..8b8e730561 100644
---- a/include/exec/translation-block.h
-+++ b/include/exec/translation-block.h
-@@ -13,6 +13,7 @@
- #include "exec/vaddr.h"
- #ifdef CONFIG_USER_ONLY
- #include "qemu/interval-tree.h"
-+#include "exec/target_page.h"
+@@ -143,40 +143,6 @@ struct MemoryRegionSection *iotlb_to_section(CPUState *cpu,
+                                              hwaddr index, MemTxAttrs attrs);
  #endif
  
- /*
-@@ -157,4 +158,53 @@ static inline uint32_t tb_cflags(const TranslationBlock *tb)
- bool tcg_cflags_has(CPUState *cpu, uint32_t flags);
- void tcg_cflags_set(CPUState *cpu, uint32_t flags);
+-/**
+- * get_page_addr_code_hostp()
+- * @env: CPUArchState
+- * @addr: guest virtual address of guest code
+- *
+- * See get_page_addr_code() (full-system version) for documentation on the
+- * return value.
+- *
+- * Sets *@hostp (when @hostp is non-NULL) as follows.
+- * If the return value is -1, sets *@hostp to NULL. Otherwise, sets *@hostp
+- * to the host address where @addr's content is kept.
+- *
+- * Note: this function can trigger an exception.
+- */
+-tb_page_addr_t get_page_addr_code_hostp(CPUArchState *env, vaddr addr,
+-                                        void **hostp);
+-
+-/**
+- * get_page_addr_code()
+- * @env: CPUArchState
+- * @addr: guest virtual address of guest code
+- *
+- * If we cannot translate and execute from the entire RAM page, or if
+- * the region is not backed by RAM, returns -1. Otherwise, returns the
+- * ram_addr_t corresponding to the guest code at @addr.
+- *
+- * Note: this function can trigger an exception.
+- */
+-static inline tb_page_addr_t get_page_addr_code(CPUArchState *env,
+-                                                vaddr addr)
+-{
+-    return get_page_addr_code_hostp(env, addr, NULL);
+-}
+-
+ #if !defined(CONFIG_USER_ONLY)
  
-+static inline tb_page_addr_t tb_page_addr0(const TranslationBlock *tb)
-+{
-+#ifdef CONFIG_USER_ONLY
-+    return tb->itree.start;
-+#else
-+    return tb->page_addr[0];
-+#endif
-+}
-+
-+static inline tb_page_addr_t tb_page_addr1(const TranslationBlock *tb)
-+{
-+#ifdef CONFIG_USER_ONLY
-+    tb_page_addr_t next = tb->itree.last & TARGET_PAGE_MASK;
-+    return next == (tb->itree.start & TARGET_PAGE_MASK) ? -1 : next;
-+#else
-+    return tb->page_addr[1];
-+#endif
-+}
-+
-+static inline void tb_set_page_addr0(TranslationBlock *tb,
-+                                     tb_page_addr_t addr)
-+{
-+#ifdef CONFIG_USER_ONLY
-+    tb->itree.start = addr;
-+    /*
-+     * To begin, we record an interval of one byte.  When the translation
-+     * loop encounters a second page, the interval will be extended to
-+     * include the first byte of the second page, which is sufficient to
-+     * allow tb_page_addr1() above to work properly.  The final corrected
-+     * interval will be set by tb_page_add() from tb->size before the
-+     * node is added to the interval tree.
-+     */
-+    tb->itree.last = addr;
-+#else
-+    tb->page_addr[0] = addr;
-+#endif
-+}
-+
-+static inline void tb_set_page_addr1(TranslationBlock *tb,
-+                                     tb_page_addr_t addr)
-+{
-+#ifdef CONFIG_USER_ONLY
-+    /* Extend the interval to the first byte of the second page.  See above. */
-+    tb->itree.last = addr;
-+#else
-+    tb->page_addr[1] = addr;
-+#endif
-+}
-+
- #endif /* EXEC_TRANSLATION_BLOCK_H */
+ MemoryRegionSection *
+diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
+index 2ab081b95f..5f0aa9d56a 100644
+--- a/accel/tcg/translator.c
++++ b/accel/tcg/translator.c
+@@ -17,6 +17,7 @@
+ #include "exec/translator.h"
+ #include "exec/plugin-gen.h"
+ #include "tcg/tcg-op-common.h"
++#include "internal-common.h"
+ #include "internal-target.h"
+ #include "disas/disas.h"
+ #include "tb-internal.h"
 -- 
 2.43.0
 
