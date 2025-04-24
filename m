@@ -2,92 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D30EA9A4BF
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 09:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 908F2A9A4DA
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 09:52:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7rJs-0008H9-Nu; Thu, 24 Apr 2025 03:48:28 -0400
+	id 1u7rN6-0001Gm-Nx; Thu, 24 Apr 2025 03:51:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7rJr-0008Gw-61
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 03:48:27 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7rJp-0006JU-Dn
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 03:48:26 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-43cf0d787eeso7100185e9.3
- for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 00:48:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745480902; x=1746085702; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
- :subject:date:message-id:reply-to;
- bh=DPgI1oZLg+jjZlmM6sUVCZyxaRiAtrHDBayvOE4ZQOI=;
- b=XJu5pv2lNXrvkCRB6t3sjQu/vDsLg+kCPhW/6E51fcTvG8CejK3npe+knjD1EZw6er
- 4Vrmp+6B7TUKyxh2w7KH7aePu5wPVQABkdKfH2y/vleCWV2QGfVi7MRFbC8xiUMjlsX2
- c5NKTnCzAxLHhCX4x0d+MpDrZdxJS5s9zhDsqzEl6wSEZPcFYOaHgLUR7gQ8Jo4oZVR5
- w7SHzNK8a7ij9kiyoj85u0UlZg06wx2qhXAc22iJM14a3XczRZSV2vEDXZMdulc32XMX
- EjclOFQk9DeVJ86K7vLU0shj0khSsEioC8aGN/pI3YszydWPI4K+8iewF+Brdg45SVTx
- pRzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745480902; x=1746085702;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :to:from:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DPgI1oZLg+jjZlmM6sUVCZyxaRiAtrHDBayvOE4ZQOI=;
- b=hRQZSCz+v/71FTdP7JWUYWoUhiV1IIIzNcTjQkXgLlHA6BQa9gY/qFBQGTGQ1itPBU
- KrkFf5rqy+lTVBYiVIrWMtO6PITtPnqs1w21HTwQxmhmo8onMrd3RZYW8mJ2O0TuFT/U
- 3F85YyOtHSoEYMQ8ZtLDGJQbXlGaluqo38asF5/jivQ0mD9roX5aj+GbKzdK5SMurIT4
- HWDnsh8jakQby+Ky3Pa2DSWzNf1i54/qkZgpw8p0Y//4PfiS+OLEyohQCB/1cx0quX87
- 276Lb1Xuv61k7WjTWSI/Wa4AYK8cQMj4T9lSKnlpcKFP/h4hZfFEvKZNy1255iYtRk3R
- ryag==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWfqDRp57Blefm02CISKrXLyXoXuUNW1X3hV69dZX5pwACoVFMlm6eSKddSiaNbN6c7mjclk3titMbN@nongnu.org
-X-Gm-Message-State: AOJu0YwqEfPzG/Txd4HvKHohWHhZufbNKCo1atjdzKNGSb8AtqObjEZ+
- MuLdCEZ8QZRN8gHoLFaieNj81dI1a8FVvUdwy/czTgao26AbwGKb+I6Zdof2EnIrkMgtk4ifUYw
- x
-X-Gm-Gg: ASbGncvpe76OrxQjlQuT1juZ9J3Vu0BjFUtX/11hXs0onazjJNBWFH2RZ/+w1eKZhIg
- 4CnSxDTSwjBE3kLcpIZjLNMhfXAoNZuokVEt9L+qIsPOAB0xu0LQnSFNE7Pv3EJyn6WVEgQVm58
- cY0EEOthwisQECoPAkFIMVDU1kVsOdaL7KV3BaKd5FM2/Grg5OLtrHVqZ9M0XnS1pYY7Ml5Uklc
- UEQ3vmxtEzCpRSOelNwbZjt5nJFBNhevJGI7zjqs9dAgJ9rMVB3Wi5jqFNvGzQ+OjqlTiCE3ys6
- 4ccAgFzFW5dT6nrKldiyv+qssEbwZWdIjtyi67OfNBWRuV3vBw+KNSKp7bWeTy2NgqodQ+CG/Fy
- XAPwW7Uc49TOiNhljM4J0UTbQ
-X-Google-Smtp-Source: AGHT+IFYmDpaQDzQT81hrD3CGfdIU1L6VfOElpBMuPNDL8L0ojAE38h/Ja4G9fVQedmLzMmeiYUmvQ==
-X-Received: by 2002:a05:600c:4693:b0:43d:b32:40aa with SMTP id
- 5b1f17b1804b1-4409bcfc1f6mr13560295e9.3.1745480902098; 
- Thu, 24 Apr 2025 00:48:22 -0700 (PDT)
-Received: from [192.168.69.169] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4409d29bfc4sm10134965e9.8.2025.04.24.00.48.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 24 Apr 2025 00:48:21 -0700 (PDT)
-Message-ID: <52a40a95-97cb-47fd-8cf7-05dbfbde2601@linaro.org>
-Date: Thu, 24 Apr 2025 09:48:20 +0200
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1u7rN3-0001GP-L7; Thu, 24 Apr 2025 03:51:45 -0400
+Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1u7rN1-0006ez-8D; Thu, 24 Apr 2025 03:51:45 -0400
+Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 24 Apr
+ 2025 15:51:36 +0800
+Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
+ Transport; Thu, 24 Apr 2025 15:51:36 +0800
+To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
+ <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
+ <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
+ Stanley" <joel@jms.id.au>, "open list:All patches CC here"
+ <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
+CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
+ <nabihestefan@google.com>
+Subject: [PATCH v6 0/6] Support vbootrom for AST2700
+Date: Thu, 24 Apr 2025 15:51:28 +0800
+Message-ID: <20250424075135.3715128-1-jamin_lin@aspeedtech.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/15] include/exec: Move tb_invalidate_phys_range to
- translation-block.h
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20250424011918.599958-1-richard.henderson@linaro.org>
- <20250424011918.599958-15-richard.henderson@linaro.org>
- <d48bfcaa-5d98-41cf-9ab0-829ba5f8bdd7@linaro.org>
- <35f49ccb-05fc-4143-9af1-c4a43e83d293@linaro.org>
-Content-Language: en-US
-In-Reply-To: <35f49ccb-05fc-4143-9af1-c4a43e83d293@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=211.20.114.72;
+ envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,67 +57,65 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
+From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/4/25 09:36, Philippe Mathieu-Daudé wrote:
-> On 24/4/25 09:33, Philippe Mathieu-Daudé wrote:
->> On 24/4/25 03:19, Richard Henderson wrote:
->>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->>> ---
->>>   include/exec/exec-all.h          | 4 ----
->>>   include/exec/translation-block.h | 4 ++++
->>>   2 files changed, 4 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
->>> index 24383b6aba..90986152df 100644
->>> --- a/include/exec/exec-all.h
->>> +++ b/include/exec/exec-all.h
->>> @@ -120,10 +120,6 @@ int probe_access_full_mmu(CPUArchState *env, 
->>> vaddr addr, int size,
->>>   #endif /* !CONFIG_USER_ONLY */
->>>   #endif /* CONFIG_TCG */
->>> -/* TranslationBlock invalidate API */
->>> -void tb_invalidate_phys_range(CPUState *cpu, tb_page_addr_t start,
->>> -                              tb_page_addr_t last);
->>> -
->>>   #if !defined(CONFIG_USER_ONLY)
->>
->> We don't need to include "exec/translation-block.h" anymore, please 
->> remove it.
-> 
-> To squash:
-> 
-> -- >8 --
-> diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
-> index 90986152df3..4c5ad98c6a9 100644
-> --- a/include/exec/exec-all.h
-> +++ b/include/exec/exec-all.h
-> @@ -22,4 +22,6 @@
-> 
-> +#include "exec/hwaddr.h"
-> +#include "exec/memattrs.h"
->   #include "exec/mmu-access-type.h"
-> -#include "exec/translation-block.h"
-> +#include "exec/vaddr.h"
-> 
-> ---
-> 
+v1:
+  Add initial support for AST27x0
+  The purpose of vbootrom here is to simulate the work of BootMCU SPL (riscv)
+  in AST2700, because QEMU doesn't support heterogenous architecture yet.
 
-and because "exec/translation-block.h" includes "exec/cpu-common.h":
+  ast27x0_bootrom.bin is a simplified, free (Apache 2.0) boot ROM for
+  ASPEED AST27x0 BMC SOC. It currently implements the bare minimum to
+  load, parse, initialize and run boot images stored in SPI flash, but may grow
+  more features over time as needed. The source code is available at:
+  https://github.com/google/vbootrom
 
--- >8 --
-diff --git a/accel/stubs/tcg-stub.c b/accel/stubs/tcg-stub.c
-index b2b9881bdfb..3b76b8b17c1 100644
---- a/accel/stubs/tcg-stub.c
-+++ b/accel/stubs/tcg-stub.c
-@@ -13,4 +13,3 @@
-  #include "qemu/osdep.h"
--#include "exec/tb-flush.h"
--#include "exec/exec-all.h"
-+#include "exec/cpu-common.h"
+v2:
+  Add "Introduced ASPEED_DEV_VBOOTROM in the device enumeration" patch to fix
+  build failed.
 
----
+v3:
+  1. Supports both vbootrom and device loader boot methods, with vbootrom used as
+  the default.
+  2. Fix review and QTEST test failed issues. 
 
+v4: 
+  Adjust the patch order.
+  
+v5:
+  fix review issue and remove unnecessary class attribure.
+  doc: create a new section for AST2700.
+  
+v6:
+  fix review issue.
+  Add google/vbootrom commit id for ast27x0
+  split to patch to update documentataion for ast27x0
+
+Jamin Lin (6):
+  hw/arm/aspeed_ast27x0 Introduce vbootrom memory region
+  pc-bios: Add AST27x0 vBootrom
+  hw/arm/aspeed: Add support for loading vbootrom image via "-bios"
+  tests/functional/aspeed: Add to test vbootrom for AST2700
+  docs/system/arm/aspeed: move AST2700 content to new section
+  docs/system/arm/aspeed: Support vbootrom for AST2700
+
+ MAINTAINERS                             |   1 +
+ docs/system/arm/aspeed.rst              |  99 ++++++++++++++++++++++--
+ include/hw/arm/aspeed.h                 |   1 +
+ include/hw/arm/aspeed_soc.h             |   2 +
+ hw/arm/aspeed.c                         |  36 +++++++++
+ hw/arm/aspeed_ast27x0.c                 |   9 +++
+ pc-bios/README                          |   6 ++
+ pc-bios/ast27x0_bootrom.bin             | Bin 0 -> 15424 bytes
+ pc-bios/meson.build                     |   1 +
+ tests/functional/test_aarch64_aspeed.py |  26 +++++++
+ 10 files changed, 173 insertions(+), 8 deletions(-)
+ create mode 100644 pc-bios/ast27x0_bootrom.bin
+
+-- 
+2.43.0
 
 
