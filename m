@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90B93A9BAA6
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 00:23:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 260EEA9BABC
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 00:25:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u84y2-0006ub-AJ; Thu, 24 Apr 2025 18:22:50 -0400
+	id 1u84y8-0007Rs-IJ; Thu, 24 Apr 2025 18:22:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u84y0-0006nD-9T
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 18:22:48 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u84y6-0007MK-6w
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 18:22:54 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u84xy-00013t-Em
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 18:22:47 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-43d0782d787so10071105e9.0
- for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 15:22:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u84y4-00014T-Gq
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 18:22:53 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-43d2d952eb1so11460715e9.1
+ for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 15:22:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745533364; x=1746138164; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745533370; x=1746138170; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=d3nBv1wq0iSqHo3T8AiwbSlooRvE9Xfj8Kh+6H3aSYc=;
- b=TJpX3oBJIldCb79w8BLF299QKONtKAmB0K5SeiZe7uavYIb1r3hB1iSa0Fnd2ZzXh+
- 633zsWGNk5RGeQdSkbpp1Vnumqs/gCvua7ifI88GmHtnRaxo5QLOsJFKS00ZqH+38UYT
- gSNnoSl7f2v6UjpNR4O9DrwHWhOSEXu25CsAm8PdXUvMy7trGbAjlspJThccjx8SiZmY
- 0layp4BtwokMO33/mxrJQbKtwe10xVad4MJDxIwuL05aZckFut12V4ww2YHZ83Y+uBrB
- 0i/Aha1QI/yUzqHp7CFmPx8QEu9Ba1laL6gwkYdkcladnGtNR1yOZTW3E/IWbKc9vsXC
- j0gg==
+ bh=TEEsp3WvcS1IZU1517HV/+srKi3TaTLqQjkTs9SQZOc=;
+ b=e+Ty8Y+eRSrd54Xyf6gS99pVTg8KONSDqezKHYKofcnUDiJe6+EyEn/zaKzhsruv0J
+ yz/0NjPZlcuXBBFMQ9O9EpN1jf5M0oGGqjQJQ+yu/uAo0i4wxeE3RWMeOsdaYqJw5vP4
+ A+YNhUnYrY1+uSBu0Xu/kSTZ7m/HVsZZ6Q7dPNHqyWV6Si/5ZdfOw0uUCAyAGkejTk49
+ V8mID3zzyOU4Dngm5icRsDhQy3GGn49U21SjxwooDewZHdk3LMGocssk7bMu/pKtVFwI
+ Km2tB4Rs0tZGisUV2M8QrcQY04mGPNKE9aUlaNTSk/D9FHrBj/1d4AoOEBG6px90wWf4
+ Le4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745533364; x=1746138164;
+ d=1e100.net; s=20230601; t=1745533370; x=1746138170;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=d3nBv1wq0iSqHo3T8AiwbSlooRvE9Xfj8Kh+6H3aSYc=;
- b=I3BJcAexBPBB2l3VycL9RvhgDe0GBItSuYdYPCF6PQQ3XVjM2I7ekt/kNn5ie4bDOM
- m25+FErTwJrcnfCuY4D/id/W9YxBhAe0AVAJkX+9vAoH/FOYhEoWaac47mCrL1fPmHbg
- NBui5g7ex1M5DPjXW+Sl//qRyj6eK7tinJftvoFwiSq1uwG2qPBnI0F68RzAG6uoaUBd
- +SEE46/AZGtBUWDfUiAA8kgTeJUgm7KAKy+4TcITqieAGLBxZKkqqN9HwfX/JJXzpweT
- 3s6s9wJrTvOTAAkhpiNvyegMT21puuBz8sc2TJuLKldTV6PtYyH2UJthUAUvqw06S99H
- tNPA==
+ bh=TEEsp3WvcS1IZU1517HV/+srKi3TaTLqQjkTs9SQZOc=;
+ b=RQwGaYiX6i7BMO8ZdhRzJ3TxN9lvEyrcyQJ0IiAFYjJEUEwb1XbYRaPafzCyoR5GIy
+ 9sW2M+yyo3AmYnyG9rOmNTrnJ6zxP6RWZYuNzLC263fMQtezrruYh97rtQNU9V77wpOZ
+ tqNhR6WA/lcUK2jvqIoc2Ia9AypViI2eFLelfiI0mvrefSRnLEDmo7gDzZ7z+KJC03Te
+ nByGp8gJFskNEAlkZ95h+TalH7wf5mUmgMCyMG6QwllU393++bcEJszJy+Z/R9kaEfH3
+ QpluXRTZM8vXC26KMaglHBnu4Ns9AatWqKbNDqP87ARjX7npps3XypiYeHhGFtLRuJ09
+ Txeg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWWnAJw7JcIKiZb2OHj8hwzw47SqGQnwA55a+O2aINM4EBaFLbei0EqC4EKz++2T0NmFkoC44zgkfkU@nongnu.org
-X-Gm-Message-State: AOJu0YykgZBZxW1bKyjdhUH/HnimZnCCoVJ2afCsaYPE+NIK2uKTmY1w
- ALGqRY1K0yqGKVA9FudPO+OfRxa5SOT6jurmLi4sNf49U5gIhXXlSjxFYinwI0M=
-X-Gm-Gg: ASbGncscjfN4Vf0Q0w2SkvqxCKO17cTTbkY08+5XIOX/PLfyyJXBmzeA7GY7KHtt9x4
- mN+1gzA3qZShA+x4MUq4bAQnMKQAUQ06HoHb60lDKtQQxjsfe9Ht+G4a1wpMbvKLguTQsCR33MB
- x7XT+V4M04LT8fg+8IKlihFyNrzaDKLVdC2Goowgi09Fic8dgHHMrapwmEAU4FugmCgJigGRQEp
- HgDkmFVNJb5Z9CXQNkwWXWxaFsGC3oyWYTNPbWmbOyKiIAAtgg2gT2OLAiaO6fDAW8DoGpUL2yM
- ztAT6WI0rVhHFqgdsZPQg/lJm0rdI+4ZIi77/jgPqMooK1Ahs5UwKpm33+1MC006X1t697dzUHJ
- 3eg+2Ce/NXfbcUupOHjTqR0b7VQ==
-X-Google-Smtp-Source: AGHT+IGSg/IdYaeJuRxBRhjXnmgjgKmWquOZYWPhzZlep/8KVdHK3dZ+EHBfBONovSN44DoklZTwRA==
-X-Received: by 2002:a05:6000:144e:b0:39c:1f10:d294 with SMTP id
- ffacd0b85a97d-3a072ac9c2fmr771940f8f.26.1745533364562; 
- Thu, 24 Apr 2025 15:22:44 -0700 (PDT)
+ AJvYcCWJcHVbNWZTlEwmNzhd+Mx7Zf2FQWsWrHGAgKFRxKi8oWpqKdmWLjk2hD1wvgLueG70tKRHpe4uyTy6@nongnu.org
+X-Gm-Message-State: AOJu0Yxk4xCxmbSUheqSOUkVPqbmnC0U63tURTlX/3I35VZbbGO5Vd31
+ 8qBcPlAws0ChER7h4PG4S9a6UHslWeJQi6Pq0XQeQ1fi5tvRnlvZ65PhapDTj2M=
+X-Gm-Gg: ASbGncuViRCNBpGlFj+IZjYzLME7Gsv0VILjH5RoAXzfq3RiRA+hOxNZ4/T41lHvFcK
+ eYoBRLgML4VvrfOW12Pc+KTp5pbC2IpasJRbtzzWsZZ4Rra9GnWoJi+UUZdHX1+fEvyQ0uiBAl1
+ wAjdMt+dW52juySvbhwaudMDb+A+otZpAsnGGNkXyKRBmEeV1LgzHvvQypaT3QBiSE1qICThO8/
+ ejkfraPMkemwKXFaujYfzn4k1IUy80BzqDVkDzt1X9DsPArBSSQ3z7IG3GADLZee/9eDaAPPCi9
+ 24szL09rzMPt7W+WkK2ci379FjdBzxlsP65RAdkIcSyRBtXooK+D4IFj7u+I4bdruUx0mpJW++z
+ A3vhZR5EFJO19fBg=
+X-Google-Smtp-Source: AGHT+IFeZ75vFmqeYSS2c0ETGpO5NMiAjsgmuVlTBDOH3KTBhSffvYrKvh5i9H4800kq0mPSJ1Xrow==
+X-Received: by 2002:a05:6000:4285:b0:391:952:c728 with SMTP id
+ ffacd0b85a97d-3a06cf5007amr3425988f8f.4.1745533369890; 
+ Thu, 24 Apr 2025 15:22:49 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a073e46538sm471329f8f.64.2025.04.24.15.22.43
+ ffacd0b85a97d-3a073c8cd7fsm521991f8f.1.2025.04.24.15.22.48
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 24 Apr 2025 15:22:44 -0700 (PDT)
+ Thu, 24 Apr 2025 15:22:48 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.caveayland@nutanix.com>,
  Anton Johansson <anjo@rev.ng>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH v5 18/21] qemu/target_info: Add target_aarch64() helper
-Date: Fri, 25 Apr 2025 00:21:09 +0200
-Message-ID: <20250424222112.36194-19-philmd@linaro.org>
+Subject: [RFC PATCH v5 19/21] hw/arm/virt: Replace TARGET_AARCH64 ->
+ target_aarch64()
+Date: Fri, 25 Apr 2025 00:21:10 +0200
+Message-ID: <20250424222112.36194-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250424222112.36194-1-philmd@linaro.org>
 References: <20250424222112.36194-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,46 +102,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a helper to distinct the binary is targetting
-Aarch64 or not.
+Replace the target-specific TARGET_AARCH64 definition
+by a call to the generic target_aarch64() helper.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- include/qemu/target-info.h | 7 +++++++
- target-info.c              | 5 +++++
- 2 files changed, 12 insertions(+)
+ hw/arm/virt.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/include/qemu/target-info.h b/include/qemu/target-info.h
-index 0224b35b166..395c009baf2 100644
---- a/include/qemu/target-info.h
-+++ b/include/qemu/target-info.h
-@@ -24,4 +24,11 @@ const char *target_name(void);
-  */
- const char *target_machine_typename(void);
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 13aa2f34c6c..566afa4c978 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -32,6 +32,7 @@
+ #include "qemu/datadir.h"
+ #include "qemu/units.h"
+ #include "qemu/option.h"
++#include "qemu/target-info.h"
+ #include "monitor/qdev.h"
+ #include "hw/sysbus.h"
+ #include "hw/arm/boot.h"
+@@ -3133,7 +3134,8 @@ static GPtrArray *virt_get_valid_cpu_types(const MachineState *ms)
+     if (tcg_enabled()) {
+         g_ptr_array_add(vct, g_strdup(ARM_CPU_TYPE_NAME("cortex-a7")));
+         g_ptr_array_add(vct, g_strdup(ARM_CPU_TYPE_NAME("cortex-a15")));
+-#ifdef TARGET_AARCH64
++    }
++    if (tcg_enabled() && target_aarch64()) {
+         g_ptr_array_add(vct, g_strdup(ARM_CPU_TYPE_NAME("cortex-a35")));
+         g_ptr_array_add(vct, g_strdup(ARM_CPU_TYPE_NAME("cortex-a55")));
+         g_ptr_array_add(vct, g_strdup(ARM_CPU_TYPE_NAME("cortex-a72")));
+@@ -3143,15 +3145,14 @@ static GPtrArray *virt_get_valid_cpu_types(const MachineState *ms)
+         g_ptr_array_add(vct, g_strdup(ARM_CPU_TYPE_NAME("neoverse-n1")));
+         g_ptr_array_add(vct, g_strdup(ARM_CPU_TYPE_NAME("neoverse-v1")));
+         g_ptr_array_add(vct, g_strdup(ARM_CPU_TYPE_NAME("neoverse-n2")));
+-#endif /* TARGET_AARCH64 */
+     }
+-#ifdef TARGET_AARCH64
++    if (target_aarch64()) {
+         g_ptr_array_add(vct, g_strdup(ARM_CPU_TYPE_NAME("cortex-a53")));
+         g_ptr_array_add(vct, g_strdup(ARM_CPU_TYPE_NAME("cortex-a57")));
+         if (kvm_enabled() || hvf_enabled()) {
+             g_ptr_array_add(vct, g_strdup(ARM_CPU_TYPE_NAME("host")));
+         }
+-#endif /* TARGET_AARCH64 */
++    }
+     g_ptr_array_add(vct, g_strdup(ARM_CPU_TYPE_NAME("max")));
  
-+/**
-+ * target_aarch64:
-+ *
-+ * Returns whether the target architecture is Aarch64.
-+ */
-+bool target_aarch64(void);
-+
- #endif
-diff --git a/target-info.c b/target-info.c
-index 0042769e3a2..7f1758ae34f 100644
---- a/target-info.c
-+++ b/target-info.c
-@@ -19,3 +19,8 @@ const char *target_machine_typename(void)
- {
-     return target_info()->machine_typename;
- }
-+
-+bool target_aarch64(void)
-+{
-+    return target_info()->target_arch == SYS_EMU_TARGET_AARCH64;
-+}
+     return vct;
 -- 
 2.47.1
 
