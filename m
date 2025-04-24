@@ -2,74 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13431A9A119
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 08:14:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CE07A9A267
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 08:38:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7ppE-00048n-EW; Thu, 24 Apr 2025 02:12:45 -0400
+	id 1u7qDS-0005Z5-Bs; Thu, 24 Apr 2025 02:37:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7pp4-00045C-0u; Thu, 24 Apr 2025 02:12:34 -0400
-Received: from mgamail.intel.com ([192.198.163.12])
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1u7qDP-0005Yk-Mb
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 02:37:44 -0400
+Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7pp1-0003kQ-Fn; Thu, 24 Apr 2025 02:12:33 -0400
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1u7qDN-0007OW-Uy
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 02:37:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745475151; x=1777011151;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=+wR3q3TpP6Sy48Z2TnhaEs8cnjRG2sHsyvRLGH/8NIU=;
- b=Jvsx2B2TUoEPdMrWaBZEt++ANLSc0AyS6Qw6oys8T8qssPhiwZSexeBy
- qIg5cgO2QA48QdMD1GaFC9wDmGxMgFzPeGDqpU4PKOHIaowTafzLwJn69
- 24uMij+W9LtHtShzYif/GOZ381tYCiUE2ju6jSVr+n8lFjI65SuN7xFCc
- 8GNPSSvwZgUVjNRNFSBv6VbcbU23A9H8vt9LxVcFaRgYVhwr6XcHqVaP/
- GcoqQrwP52glLr/5+cszhMA7Lp1EcQp1Rd7GufiXjdCjcd5c7G5ivPTrs
- uXETrRS++ptu2bTsYe2h7VZQoWwCv96tSontVSL/srmZcds1Afg4G/vYw Q==;
-X-CSE-ConnectionGUID: FQr0lZ5yTPetAKJ7vE+ijg==
-X-CSE-MsgGUID: 1tWrPty8QiG4Lqhw2ckUow==
-X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="50915760"
-X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; d="scan'208";a="50915760"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2025 23:12:27 -0700
-X-CSE-ConnectionGUID: AXBQj+KTTMui2ZOnky74AQ==
-X-CSE-MsgGUID: /zjX24e/S2i0kYYfnU6H3A==
+ t=1745476662; x=1777012662;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=052CSqqUsncSHlJwaSuZqbyQYDfJIFStG0WEIrI4/Yg=;
+ b=bUs9GtS8jPYQ+V7+xdqEf1v4/khAQbjdwpK/2hULOpN3xNhAa+b0LqpO
+ fFy2Sr0JAGWFw8iQ3LZZR7x1f1M+HwPv5hAIzWT0p+maC5xVlpeKZVFAe
+ bylq+Bn7WlhKJ2y9v05BN7S37fV4xqxyEzwoDlM5MYyxP+XpZY/te/7DN
+ 1PHjfTSPz0e5LB/iRIj5mJmA8RFBtu55/tI/sjzEzSZ8B84V20fWHeeiu
+ lHwxH9uOtHC9beeE/piDlTxNzhPlbZFbekOa25Ke3u1ucgYIwWXjTX/4m
+ VHQN0WgvwkvLFXOtHZPDdvzh7tF43+rtYg4iWrwSaro30AWxr42aMvTmp w==;
+X-CSE-ConnectionGUID: Xj4JKDKORdaOlMAUjiVEKw==
+X-CSE-MsgGUID: 1MvteIXBT4ykzAOSDOzslw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="58086045"
+X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; d="scan'208";a="58086045"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2025 23:37:39 -0700
+X-CSE-ConnectionGUID: qZ1eD5mHTMappuG81xJ/2Q==
+X-CSE-MsgGUID: xvGMOIaTTX+BEfzR6Tfacg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; d="scan'208";a="137696301"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa005.jf.intel.com with ESMTP; 23 Apr 2025 23:12:22 -0700
-Date: Thu, 24 Apr 2025 14:33:18 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Michael Roth <michael.roth@amd.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Shaoqin Huang <shahuang@redhat.com>, Eric Auger <eauger@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Sebastian Ott <sebott@redhat.com>, Gavin Shan <gshan@redhat.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
- Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>
-Subject: Re: [PATCH 1/5] qapi/qom: Introduce kvm-pmu-filter object
-Message-ID: <aAnbLhBXMFAxE2vT@intel.com>
-References: <20250409082649.14733-1-zhao1.liu@intel.com>
- <20250409082649.14733-2-zhao1.liu@intel.com>
- <878qo8yu5u.fsf@pond.sub.org> <Z/iUiEXZj52CbduB@intel.com>
- <87frifxqgk.fsf@pond.sub.org> <Z/i3+l3uQ3dTjnHT@intel.com>
- <87fri8o70b.fsf@pond.sub.org>
+X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; d="scan'208";a="132831435"
+Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2025 23:37:36 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
+ nicolinc@nvidia.com, joao.m.martins@oracle.com, steven.sistare@oracle.com,
+ yi.l.liu@intel.com, chao.p.peng@intel.com,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH] vfio: Register/unregister container for CPR only once for
+ each container
+Date: Thu, 24 Apr 2025 14:33:55 +0800
+Message-Id: <20250424063355.3855174-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=gb2312
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87fri8o70b.fsf@pond.sub.org>
-Received-SPF: pass client-ip=192.198.163.12; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
+Received-SPF: pass client-ip=198.175.65.13;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
 X-Spam_score_int: -46
 X-Spam_score: -4.7
 X-Spam_bar: ----
@@ -93,83 +82,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Markus,
+vfio_cpr_register_container and vfio_cpr_unregister_container are container
+scoped function. Calling them for each device attaching/detaching would
+corrupt CPR reboot notifier list, i.e., when two VFIO devices are attached
+to same container and have same notifier registered twice.
 
-> > This is for security purposes, and can restrict Guest users from
-> > accessing certain sensitive hardware information on the Host via perf or
-> > PMU counter.
-> >
-> > When a PMU event is blocked by KVM, Guest users can't get the
-> > corresponding event count via perf/PMU counter.
-> >
-> > EMM, if ¡®system¡¯ refers to the QEMU part, then QEMU is responsible
-> > for checking the format and passing the list to KVM.
-> >
-> > Thanks,
-> > Zhao
-> 
-> This helped some, thanks.  To make sure I got it:
-> 
-> KVM can restrict the guest's access to the PMU.  This is either a
-> whitelist (guest can access exactly what's on this list), or a blacklist
-> (guest can access exactly what's not this list).
+Fixes: d9fa4223b30a ("vfio: register container for cpr")
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+---
+btw: untested as I have no env with two migration capable devices,
+     appreciate if someone have env to help test, thanks
 
-Yes! The "action" field controls if it's a "whitelist" (allow) or
-"blacklist" (deny).
+ hw/vfio/iommufd.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-And "access" means Guest could get the event count, if "no access", then
-Guest would get nothing.
-
-For example, if we set a the whitelist ony for the event (select: 0xc4,
-umask: 0) in QEMU:
-
-pmu='{"qom-type":"kvm-pmu-filter","id":"f0","action":"allow","events":[{"format":"x86-select-umask","select":196,"umask":0}]}'
-
-then in Guest, this command tries to get count of 2 events:
-
-perf stat -e cpu/event=0xc4,name=branches/,cpu/event=0xc5,name=branch-misses/ sleep 1
-
-Since another event (select: 0xc5, umask: 0) is not on whitelist, its
-"access" is blocked by KVM, so user would get the result like:
-
- Performance counter stats for 'sleep 1':
-
-            348709      branches
-                 0      branch-misses
-
-       1.015962921 seconds time elapsed
-
-       0.000000000 seconds user
-       0.015195000 seconds sys
-
-The "allowed" event has the normal output, and the result of "denied"
-event is zero.
-
-> QEMU's kvm-pmu-filter object provides an interface to this KVM feature.
-
-Yes!
-
-> KVM takes "raw" list entries: an entry is a number, and the number's
-> meaning depends on the architecture. 
-
-Yes, and meaning also depends on format. masked-entry format has special
-meaning (with a flag).
-
-> The kvm-pmu-filter object can take such entries, and passes them to
-> straight to KVM.
-> 
-> On x86, we commonly use two slightly higher level formats: select &
-> umask, and masked.  The kvm-pmu-filter object can take entries in either
-> format, and maps them to "raw".
->
-> Correct?
-
-Yes, Markus, you're right! (And sorry for late reply.)
-
-And "raw" format as a lower level format can be used for other arches
-(e.g., ARM).
-
-Thanks,
-Zhao
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index f24054a6a5..b2f72dc8c3 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -416,6 +416,7 @@ static void iommufd_cdev_container_destroy(VFIOIOMMUFDContainer *container)
+     if (!QLIST_EMPTY(&bcontainer->device_list)) {
+         return;
+     }
++    vfio_cpr_unregister_container(bcontainer);
+     vfio_listener_unregister(bcontainer);
+     iommufd_backend_free_id(container->be, container->ioas_id);
+     object_unref(container);
+@@ -561,6 +562,10 @@ static bool iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
+         goto err_listener_register;
+     }
+ 
++    if (!vfio_cpr_register_container(bcontainer, errp)) {
++        goto err_listener_register;
++    }
++
+     bcontainer->initialized = true;
+ 
+ found_container:
+@@ -570,13 +575,9 @@ found_container:
+         goto err_listener_register;
+     }
+ 
+-    if (!vfio_cpr_register_container(bcontainer, errp)) {
+-        goto err_listener_register;
+-    }
+-
+     if (!vfio_device_hiod_create_and_realize(vbasedev,
+                      TYPE_HOST_IOMMU_DEVICE_IOMMUFD_VFIO, errp)) {
+-        goto err_hiod_realize;
++        goto err_listener_register;
+     }
+ 
+     /*
+@@ -600,8 +601,6 @@ found_container:
+                                    vbasedev->num_regions, vbasedev->flags);
+     return true;
+ 
+-err_hiod_realize:
+-    vfio_cpr_unregister_container(bcontainer);
+ err_listener_register:
+     iommufd_cdev_ram_block_discard_disable(false);
+ err_discard_disable:
+@@ -632,7 +631,6 @@ static void iommufd_cdev_detach(VFIODevice *vbasedev)
+     }
+ 
+     object_unref(vbasedev->hiod);
+-    vfio_cpr_unregister_container(bcontainer);
+     iommufd_cdev_detach_container(vbasedev, container);
+     iommufd_cdev_container_destroy(container);
+     vfio_address_space_put(space);
+-- 
+2.34.1
 
 
