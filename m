@@ -2,82 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A5B2A99D56
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 02:54:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CED7A99E63
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:40:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7kpU-0008M7-4m; Wed, 23 Apr 2025 20:52:41 -0400
+	id 1u7lZZ-00049I-FD; Wed, 23 Apr 2025 21:40:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1u7knO-0005y3-S4
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:50:31 -0400
-Received: from mail-ua1-x92e.google.com ([2607:f8b0:4864:20::92e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1u7knM-0004cQ-VS
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:50:30 -0400
-Received: by mail-ua1-x92e.google.com with SMTP id
- a1e0cc1a2514c-86fbc8717fcso215289241.2
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:50:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1745455827; x=1746060627; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=IzJ4VjTv7UiCNY59yEfApfr/zsUNaMfb/CiTUZSZjfg=;
- b=W5DWSvbk5RCCotgJryrs3U6aulGilAMLBvDv73HTVEZ/Fm8gLQfqu/ZQhgXN8uZ22b
- vps2Razzpl4Q81gO7Fu4W5PPkhkz9sU5siSA0jKZdLX7/2IXlZhD2X+9oTxXrTeqM7oj
- 9rE1xeZ+vVH2AF8GDkQZsELg2ceAE0kLr/1xLL9NlM7CwXdpWGNT144jBP8QPl/CDLmX
- K6DzpTwDFdwDXCdyCODAX+0s1lqkEdvdcSab9cmrRwBAROdTcixONCWV04+uGCOITgcp
- JsYinSOHeOuGns7c+kaYZZk/NbUpBHOUBhOerfVrwBWYXsiflr3TsY3sbE/YpD+qwYOd
- trlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745455827; x=1746060627;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=IzJ4VjTv7UiCNY59yEfApfr/zsUNaMfb/CiTUZSZjfg=;
- b=cwLpiPhjEGfv9ua3dNmMolp7VwH/GhoBMCnKlDIb/E4VMpX0bt3KzrxjQ8sMr+/VV/
- KSc066IBgrmcTBbf2WfsJ89BpfLm5fZ/ww2P6g5SkI8+Ovf1S9hlf7ZjTAl08r2+BWMs
- UF5/1A45OBdcn0W1os3kCHz1iDYMFu4wZCZhDGiDuHoqmNLwSq07CrQ5psSlEaHxmDdk
- QqwaGRJkaQyQ9PT7W+blotmu/UJ37ifElFwZWRmWX1mnw5F5BQ1I3M6w+zzy5cFsAPoo
- MLca2nk7Y2TuaVMyfssIPconB76CXnejUaYbwwgE+dcjPBuZuzB3Kqr0GqjDui/va4R1
- bXMQ==
-X-Gm-Message-State: AOJu0YzTycRbuHNKr8FhLi442SiwOS8S3Iqoq1TbdtZOXkzgSRV97GTf
- T0psZQCmVj9nIcpz6bscezFRZz3zp0DaOIBctZwzcSlPHQ4hZOe1bGtHwlgfVe+QIUUy3azwv0a
- Y02Ks2JCr0Add7SCILG261hHQfH+XTg==
-X-Gm-Gg: ASbGncuWmUQOIRBzs2I1nVcsSDlkvHQkgOdx1ISgWdh49X+w19bZtkawf1TNxJLc/XL
- 3g0srJdV0IahCZXdiC0CrOPn+EnbdW0WdMhEFIIC5ynUxql7aUyiscIdJoNq1BJPxcX08Cbd1sl
- p69bW2EzKXW6Y9ksUgHgQuHP38L+oC6jfawaFEqvN3qkHDhWxz5X8p
-X-Google-Smtp-Source: AGHT+IHZrQBx0gHn/f/tNjv3S/6Bc7Ylg6B81DqowEy6PDMyWJWoBeRfNwlXFmb5s9UWreUpPTZHOmqlU0tL5+VHNSk=
-X-Received: by 2002:a05:6102:e0d:b0:4c1:76a4:aee4 with SMTP id
- ada2fe7eead31-4d38eef3e42mr1009481137.19.1745455827183; Wed, 23 Apr 2025
- 17:50:27 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250406070254.274797-1-pbonzini@redhat.com>
- <20250406070254.274797-15-pbonzini@redhat.com>
-In-Reply-To: <20250406070254.274797-15-pbonzini@redhat.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 24 Apr 2025 10:50:01 +1000
-X-Gm-Features: ATxdqUGUiH_Gzx9w6f7f3o8p2h3_vrV9w8HZhCnXu8hIHC7i6dM0yA12syFRpFw
-Message-ID: <CAKmqyKMvhAZ18R+n4Vg4_f4Gr_P3o-VFnNt1e0eFwEuQNZ7jow@mail.gmail.com>
-Subject: Re: [PATCH 14/27] target/riscv: convert abstract CPU classes to
- RISCVCPUDef
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1u7lZP-000479-4m; Wed, 23 Apr 2025 21:40:07 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1u7lZK-000160-Gm; Wed, 23 Apr 2025 21:40:06 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53NGsASv024462;
+ Thu, 24 Apr 2025 01:39:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=j4JsxA
+ ffBu0RszYAfx0kwyslAKZQnkt6QG2eR/FNy64=; b=aRHXvj1kQIe3dTDnaPfplH
+ TfPExO6G9lOrlJRIW8Ha+BeQkfF2PWRFUThPGx/+vPFy9MFZkaOXWwY+gbE/FlqO
+ 1QJzdi4fF5fOwyRs1edFNvI86fEna3XLOv7NU6aBJQCrJ9/NkFlkqqc4QPljwPOT
+ 9PJ4mwICeTXo+TVXm3b9HRdh5/Y7gSoVANMghA/MNQiatrMxYbHKocU3jCac/lPq
+ Lupn1uV8oT45HON1yACYYzZnmSrtm4b/bgCpU6naZ62R0EkcoJOfTyWD0SGpc2J0
+ GVrd0DreemiWwO+AGq1n3UAVu9bXUI8IDfCol7DPoPW9Y3R1l9FE6Pug5Bopn85g
+ ==
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 466x4jv15h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 24 Apr 2025 01:39:58 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53NMRUv2008601;
+ Thu, 24 Apr 2025 01:39:58 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 466jfxp09s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 24 Apr 2025 01:39:58 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 53O1dum825690612
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 24 Apr 2025 01:39:56 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2AA9258058;
+ Thu, 24 Apr 2025 01:39:56 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 26D4058057;
+ Thu, 24 Apr 2025 01:39:55 +0000 (GMT)
+Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
+ [9.61.182.41]) by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 24 Apr 2025 01:39:55 +0000 (GMT)
+Message-ID: <3c215d78c44fb3b0572b2e8c67e3826aef8d8b0b.camel@linux.ibm.com>
+Subject: Re: [PATCH v6 6/7] linux-header: update-linux-header script changes
+From: Eric Farman <farman@linux.ibm.com>
+To: Rorie Reyes <rreyes@linux.ibm.com>, qemu-devel@nongnu.org,
+ qemu-s390x@nongnu.org
+Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
+ jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
+ alex.williamson@redhat.com, clg@redhat.com, thuth@redhat.com,
+ akrowiak@linux.ibm.com
+In-Reply-To: <20250423214506.72728-7-rreyes@linux.ibm.com>
+References: <20250423214506.72728-1-rreyes@linux.ibm.com>
+ <20250423214506.72728-7-rreyes@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92e;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92e.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+MIME-Version: 1.0
+Date: Wed, 23 Apr 2025 21:04:07 -0400
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=eJ4TjGp1 c=1 sm=1 tr=0 ts=6809966e cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VnNF1IyMAAAA:8 a=V2FlQnaG_eUonHtXfN4A:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: ZXOySPnjGwz2zPKKa_Yh1NQq66nEKGV3
+X-Proofpoint-ORIG-GUID: ZXOySPnjGwz2zPKKa_Yh1NQq66nEKGV3
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI0MDAwOCBTYWx0ZWRfX4K2EcU0SqBRN
+ sq9mrOCxK8XnXNJ3D7f7Jf/ok6515d+xpdWVodYkJ9Dckd/T62FocNsRpviCudX4SVwAI/6qHo9
+ pGnA65Tz4xRi0of5cjWGG2B9OP/85OQqYoYJTHGW15dfaFLPIwjGib/BewKnQ4ay7a7hd/tFBZE
+ h3mYibFbOJdsIhzF2VUvErxanq9ovQewocgMOpHKLhcP01vr8WMFp+xw8J9rWTrzxD4s4s6fp62
+ nbIr8gkJsS4Dc2yeBa+slsFeur78or8U41KPl8toqAjALPczlqN5IS5ILwKjhSaLMlHiR1Ak5HZ
+ 2bu1kS0ZYWiIZIeNuxzm/BExZtkzswYFohcV7vzgLqFR4xRqyPfRFIRLAP077PDB7Bo9XeFLExA
+ jWUyHXO0c+IL+tPl4W/zupqgbZCRQdIBqoNpo8kU1m5/gNSeUUZ+TEV4ovLQp6CGr410a8VP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.680,FMLib:17.12.80.40
+ definitions=2025-04-24_01,2025-04-22_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015
+ bulkscore=0 adultscore=0 mlxscore=0 phishscore=0 priorityscore=1501
+ spamscore=0 mlxlogscore=975 suspectscore=0 lowpriorityscore=0
+ malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2504240008
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=farman@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,176 +121,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Apr 6, 2025 at 5:03=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com> =
-wrote:
->
-> Start from the top of the hierarchy: dynamic and vendor CPUs are just
-> markers, whereas bare CPUs can have their instance_init function
-> replaced by RISCVCPUDef.
->
-> The only difference is that the maximum supported SATP mode has to
-> be specified separately for 32-bit and 64-bit modes.
->
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+On Wed, 2025-04-23 at 17:45 -0400, Rorie Reyes wrote:
+> Kernel commit 8a14 changed from using ASSEMBLY to ASSEMBLER
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Kernel commit 8a141be3233a ("x86/headers: Replace __ASSEMBLY__ with __ASSEM=
+BLER__ in UAPI headers")
 
-Alistair
-
+> Updated the update-linux-header script to match
+>=20
+> Signed-off-by: Rorie Reyes <rreyes@linux.ibm.com>
 > ---
->  target/riscv/cpu.h |  1 +
->  target/riscv/cpu.c | 93 ++++++++++++++++++++++------------------------
->  2 files changed, 46 insertions(+), 48 deletions(-)
->
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index acaa49b979c..d247b9007a6 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -547,6 +547,7 @@ typedef struct RISCVCPUDef {
->      int priv_spec;
->      int32_t vext_spec;
->      RISCVCPUConfig cfg;
-> +    bool bare;
->  } RISCVCPUDef;
->
->  /**
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 620641fbed6..002f5a15ba2 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1482,8 +1482,8 @@ static void riscv_cpu_init(Object *obj)
->       * for all CPUs. Each accelerator will decide what to do when
->       * users disable them.
->       */
-> -    RISCV_CPU(obj)->cfg.ext_zicntr =3D true;
-> -    RISCV_CPU(obj)->cfg.ext_zihpm =3D true;
-> +    RISCV_CPU(obj)->cfg.ext_zicntr =3D !mcc->def->bare;
-> +    RISCV_CPU(obj)->cfg.ext_zihpm =3D !mcc->def->bare;
->
->      /* Default values for non-bool cpu properties */
->      cpu->cfg.pmu_mask =3D MAKE_64BIT_MASK(3, 16);
-> @@ -1506,36 +1506,6 @@ static void riscv_cpu_init(Object *obj)
->      }
->  }
->
-> -static void riscv_bare_cpu_init(Object *obj)
-> -{
-> -    RISCVCPU *cpu =3D RISCV_CPU(obj);
-> -
-> -    /*
-> -     * Bare CPUs do not inherit the timer and performance
-> -     * counters from the parent class (see riscv_cpu_init()
-> -     * for info on why the parent enables them).
-> -     *
-> -     * Users have to explicitly enable these counters for
-> -     * bare CPUs.
-> -     */
-> -    cpu->cfg.ext_zicntr =3D false;
-> -    cpu->cfg.ext_zihpm =3D false;
-> -
-> -    /* Set to QEMU's first supported priv version */
-> -    cpu->env.priv_ver =3D PRIV_VERSION_1_10_0;
-> -
-> -    /*
-> -     * Support all available satp_mode settings. The default
-> -     * value will be set to MBARE if the user doesn't set
-> -     * satp_mode manually (see set_satp_mode_default()).
-> -     */
-> -#ifndef CONFIG_USER_ONLY
-> -    set_satp_mode_max_supported(RISCV_CPU(obj),
-> -        riscv_cpu_mxl(&RISCV_CPU(obj)->env) =3D=3D MXL_RV32 ?
-> -        VM_1_10_SV32 : VM_1_10_SV57);
-> -#endif
-> -}
-> -
->  typedef struct misa_ext_info {
->      const char *name;
->      const char *description;
-> @@ -3106,6 +3076,7 @@ static void riscv_cpu_class_base_init(ObjectClass *=
-c, void *data)
->
->      if (data) {
->          const RISCVCPUDef *def =3D data;
-> +        mcc->def->bare |=3D def->bare;
->          if (def->misa_mxl_max) {
->              assert(def->misa_mxl_max <=3D MXL_RV128);
->              mcc->def->misa_mxl_max =3D def->misa_mxl_max;
-> @@ -3259,6 +3230,19 @@ void riscv_isa_write_fdt(RISCVCPU *cpu, void *fdt,=
- char *nodename)
->          }),                                                 \
->      }
->
-> +#define DEFINE_ABSTRACT_RISCV_CPU(type_name, parent_type_name, ...) \
-> +    {                                                       \
-> +        .name =3D (type_name),                                \
-> +        .parent =3D (parent_type_name),                       \
-> +        .abstract =3D true,                                   \
-> +        .class_data =3D (void*) &((const RISCVCPUDef) {       \
-> +             .priv_spec =3D RISCV_PROFILE_ATTR_UNUSED,        \
-> +             .vext_spec =3D RISCV_PROFILE_ATTR_UNUSED,        \
-> +             .cfg.max_satp_mode =3D -1,                       \
-> +             __VA_ARGS__                                    \
-> +        }),                                                 \
-> +    }
-> +
->  #define DEFINE_PROFILE_CPU(type_name, misa_mxl_max_, initfn) \
->      {                                                       \
->          .name =3D (type_name),                                \
-> @@ -3285,22 +3269,35 @@ static const TypeInfo riscv_cpu_type_infos[] =3D =
-{
->          .class_init =3D riscv_cpu_common_class_init,
->          .class_base_init =3D riscv_cpu_class_base_init,
->      },
-> -    {
-> -        .name =3D TYPE_RISCV_DYNAMIC_CPU,
-> -        .parent =3D TYPE_RISCV_CPU,
-> -        .abstract =3D true,
-> -    },
-> -    {
-> -        .name =3D TYPE_RISCV_VENDOR_CPU,
-> -        .parent =3D TYPE_RISCV_CPU,
-> -        .abstract =3D true,
-> -    },
-> -    {
-> -        .name =3D TYPE_RISCV_BARE_CPU,
-> -        .parent =3D TYPE_RISCV_CPU,
-> -        .instance_init =3D riscv_bare_cpu_init,
-> -        .abstract =3D true,
-> -    },
-> +
-> +    DEFINE_ABSTRACT_RISCV_CPU(TYPE_RISCV_DYNAMIC_CPU, TYPE_RISCV_CPU),
-> +    DEFINE_ABSTRACT_RISCV_CPU(TYPE_RISCV_VENDOR_CPU, TYPE_RISCV_CPU),
-> +    DEFINE_ABSTRACT_RISCV_CPU(TYPE_RISCV_BARE_CPU, TYPE_RISCV_CPU,
-> +        /*
-> +         * Bare CPUs do not inherit the timer and performance
-> +         * counters from the parent class (see riscv_cpu_init()
-> +         * for info on why the parent enables them).
-> +         *
-> +         * Users have to explicitly enable these counters for
-> +         * bare CPUs.
-> +         */
-> +        .bare =3D true,
-> +
-> +        /* Set to QEMU's first supported priv version */
-> +        .priv_spec =3D PRIV_VERSION_1_10_0,
-> +
-> +        /*
-> +         * Support all available satp_mode settings. By default
-> +         * only MBARE will be available if the user doesn't enable
-> +         * a mode manually (see riscv_cpu_satp_mode_finalize()).
-> +         */
-> +#ifdef TARGET_RISCV32
-> +        .cfg.max_satp_mode =3D VM_1_10_SV32,
-> +#else
-> +        .cfg.max_satp_mode =3D VM_1_10_SV57,
-> +#endif
-> +    ),
-> +
->  #if defined(TARGET_RISCV32)
->      DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_MAX,       MXL_RV32,  riscv_max_cp=
-u_init),
->  #elif defined(TARGET_RISCV64)
-> --
-> 2.49.0
->
+>  scripts/update-linux-headers.sh | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/scripts/update-linux-headers.sh b/scripts/update-linux-heade=
+rs.sh
+> index 8913e4fb99..b43b8ef75a 100755
+> --- a/scripts/update-linux-headers.sh
+> +++ b/scripts/update-linux-headers.sh
+> @@ -177,7 +177,7 @@ EOF
+> =20
+>          # Remove everything except the macros from bootparam.h avoiding =
+the
+>          # unnecessary import of several video/ist/etc headers
+> -        sed -e '/__ASSEMBLY__/,/__ASSEMBLY__/d' \
+> +        sed -e '/__ASSEMBLER__/,/__ASSEMBLER__/d' \
+>                 "$hdrdir/include/asm/bootparam.h" > "$hdrdir/bootparam.h"
+>          cp_portable "$hdrdir/bootparam.h" \
+>                      "$output/include/standard-headers/asm-$arch"
+
 
