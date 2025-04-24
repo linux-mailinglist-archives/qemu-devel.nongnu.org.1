@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAEBFA99E15
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:25:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEF46A99DFF
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:21:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7kvc-0001o1-W3; Wed, 23 Apr 2025 20:59:01 -0400
+	id 1u7kxh-0006T8-JS; Wed, 23 Apr 2025 21:01:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7ktl-00068s-Hl
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:57:09 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1u7kwg-0004Z6-Te
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 21:00:10 -0400
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7ktj-0005A4-Pc
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:57:05 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-7396f13b750so433188b3a.1
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:57:01 -0700 (PDT)
+ id 1u7kwe-0005Hh-1R
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 21:00:06 -0400
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-af5085f7861so266867a12.3
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 18:00:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745456221; x=1746061021; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745456402; x=1746061202; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Swy+toUntFPIZLsZyS/sq5veF2DhYECVz3JKVwtsdjA=;
- b=tSePn71AqO0CTVR/BkJ7U/9s1x3IV+3l4A5E110FtIFIk5I8Vnz86rF32cnhWu5Q+W
- edl9UxPz8R8xcx3jLraaGcpgMDvsYiVmHJ3xzgAeVJ8lQAMLoXyuaPZkDqBcYp+Uf/fu
- opoL/ijX+q7uz/qRp5OA6VfK7+Zyr1zHR1ZB7BKl3VBYcHl+w9nickm4/le1eWB3wZSt
- PqHTB6zqijyYbIJo2EVUwuvNJ26S3AV1pf6ntTeF+12+SFVoypMZ+4Rfx7RTvODeu2lw
- 5XeqIpt0q+nol022CLf8rHhZOqOgjLeSejGXXNNQ7izaT09cgwcvrOxGkd0TuOPFg9jv
- idew==
+ bh=34NdhhU3f0ctFhHISwM+Va89Ek8XPnoY2t73ZYMcmeo=;
+ b=HqV/aSIXIZsvT5XMscle6kjuWfCJyEit/9LOL+aKZq2/l2r9s3VnXqDyVcc9Hm8Sxf
+ k04yGlPdBuKoGVgo7rEvKrjPKp3E7oLlL6Q4eHzlIN6wprtCtu8N9mStq7h6dJjmg4a5
+ QDj9u8/tRKHLxXr0sKzxiiwozVP8OFDXYNhhZV5h1EKtuGTqrSTmcfQOoH5E47ilgJt5
+ KraPxZ3ox/hAG3pdPG2pB0WTJL5dPFIFlxO12zrit9yCTqOT3eQJhg71fuFGBIbIR7sk
+ TtpZt/2ye39ak+iecLWeXXgV/tlzqHQYLEewxlndu6YUqs8osjw4YdintDuAHZjz9udJ
+ DFpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745456221; x=1746061021;
+ d=1e100.net; s=20230601; t=1745456402; x=1746061202;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Swy+toUntFPIZLsZyS/sq5veF2DhYECVz3JKVwtsdjA=;
- b=GJbJDefnyQ14YoP7g0mnlPyQfBTHPlFm3eBnJBMx1nrdXtmeHWUqRcewoEiQ2ss6EO
- mk27v18vmW/c0V6aBzPS8NFXn6z4D6SOwHOXJhM8x6+fqnXikVhb0CR83T4Fr82TQGic
- /ZJEV09ZRnbwqWg24gtVa3joZJAGSWnkNiLM3BGiOmv36e4huwe4pvMBpJKYQtfUAeNM
- 2CRPN5yeLBd7ElSjbHQaxXwL9KHoNkMTGV5Wk3b2zVdGwfP6Lx/7wdcFDojQI036g94F
- BMxkeDsQfJUzPdaVhG7uc2jIOaXcxtYSljuLqJMOU/DUXFWj0bdTL0AI1f+SPmvnx9m0
- f4Eg==
-X-Gm-Message-State: AOJu0YwtdIEBut6sRz7Zr68mdvRtrweKdRoxe+/rG9GpkfgbZJdlo39b
- bj6aZIHVZdaU+7oKIt0pWB54/Mq/KDCb2zmFazXpcqhJwFlHpDodl6xwa0DsCIMVMcvDQrvhuJM
- U
-X-Gm-Gg: ASbGncsih23ajOznmCt/2sINxhhD09aRpg9DWBtys51QgKy8Axt+7Xe2wGamdq0kz42
- 0X/8xyCiZf7LSaFbqBZSqq6EU2C7uuUZMWsxe0bfegb4HXQKaoTIKBpn5GcLM5Xkokr4L0Femyr
- I9rwLXXm/1enMf/D/sLkZF16+TMudnAb+9NORnsfo6RMq3UhaVHwu7yRQ0JTvVzmSMAwt3C5Ocw
- MDaLj3ir7FIfAgZYeQwVT77DAKBkzETC1UB6m8WvTiihPKJLSyzlrv79dHt5Bc1q/fljzwxXGtF
- dfLhw2oyN3ZNrNXLM2avv3SJo+69IqYBkd4fKnZVGYw2biTDB5/MqXgAalW8l16JDN859D1Ve14
- =
-X-Google-Smtp-Source: AGHT+IEdgy5q+V4+onDikKQeqITx9j2ODmAy41y8SsYQfd5DAJEIckIWO35m6ffVikl+yB5OrLB0Fw==
-X-Received: by 2002:a05:6a20:9f89:b0:1f5:70d8:6a98 with SMTP id
- adf61e73a8af0-20444d21018mr968697637.0.1745456220712; 
- Wed, 23 Apr 2025 17:57:00 -0700 (PDT)
+ bh=34NdhhU3f0ctFhHISwM+Va89Ek8XPnoY2t73ZYMcmeo=;
+ b=kHuO7rN4Oyn8MyMIKSDai/JSKO0tEUDiTI2VsGs8NmE7+7hfrwtM7oxqViUZWNvfor
+ eK86coSe+RgEIZZ3hVTX8iWQiPweMAB3QubCgHEnOmAbbJ5oQUjJc8vtUHLCpzj8kITY
+ ifu2Jfiz7dHEPlX6YqgMIDSbI3/LlOFwCs1lHUq5wiKaHsJjD2oS2s3HrCMsTnpreRp8
+ ty24eTeqv4RfU89Smqe7LckrBgnywPiiOTupDaPFsrnLtThLaTRFyzxYaCIzmu6xrL9W
+ 1DUnkdhG9kPUPvqxpbg48BTtakxIrNYzOeDrVZUEAl0taVYrdsK+6nuO9oxND2UGY9RA
+ 3I6Q==
+X-Gm-Message-State: AOJu0YxpQDlfRUzs9v+jphsZLFuCUGOhZFJ8Id0ap+jQIvdGkJjEyFRG
+ wdv3QG8KoyfpEKrnrE6H8cSYsUg4+fGz2w8xkZDUuVmrIOHgU3KSrVS3NTcElDB7fGTzm+u0iNO
+ p
+X-Gm-Gg: ASbGncswJawoLxeHOD9wR2lM8HrKCJBGX6ZOVbgyA+VklfFT9XGQPv2d3SvqyXgCR8R
+ a4+mnveMMYgzaNX4qtx3qMOAn7ZysZJjR4Sxls+hsB16JG1rimm3nNOLkgsnBwCj83lKQB/E6uv
+ 1cyV5lrwuR5tcBFJOLbXG5WmNhANVAWTOQAQjUplMV1AeKbV3bLxI/YG0uCyqAdeFdmdXNHRmMa
+ ph2ooxk4+aqw2Ku7VBoTcOP6WMRShrBS7RbPViDlP7+Ktr69aFpWvoXQi74oe/vBqXdtXhjTXsZ
+ 5IhAivtx2uMUSqjQQa3z6GJCTVEk9xmB36vxlC6Tnb+PS13wtVvgCHlTWnGhdTfA2agt8FwhhJe
+ wPyjwQ12bDw==
+X-Google-Smtp-Source: AGHT+IGfB1sF15Zv9DYD4J75P19rWeN113Qgtk9lwPRE38BcVnfwTebj9jRA4nSKzBHuZTocEUiAnA==
+X-Received: by 2002:a05:6a20:9f4e:b0:1fd:f4df:9a89 with SMTP id
+ adf61e73a8af0-20444f0e60emr1002446637.25.1745456401851; 
+ Wed, 23 Apr 2025 18:00:01 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b15fa907fcdsm119775a12.54.2025.04.23.17.57.00
+ 41be03b00d2f7-b15f76f45c7sm129259a12.16.2025.04.23.18.00.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Apr 2025 17:57:00 -0700 (PDT)
+ Wed, 23 Apr 2025 18:00:01 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 119/148] target/arm: Expose Aarch64 helpers unconditionally
-Date: Wed, 23 Apr 2025 17:49:04 -0700
-Message-ID: <20250424004934.598783-120-richard.henderson@linaro.org>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PULL 120/148] meson: add common hw files
+Date: Wed, 23 Apr 2025 17:49:05 -0700
+Message-ID: <20250424004934.598783-121-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250424004934.598783-1-richard.henderson@linaro.org>
 References: <20250424004934.598783-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,39 +98,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-At worst, for 32-bit arm binary, using these methods will
-now produce a link time error, instead of a compile time one.
+Those files will be compiled once per base architecture ("arm" in this
+case), instead of being compiled for every variant/bitness of
+architecture.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250403235821.9909-37-philmd@linaro.org>
+We make sure to not include target cpu definitions (exec/cpu-defs.h) by
+defining header guard directly. This way, a given compilation unit can
+access a specific cpu definition, but not access to compile time defines
+associated.
+
+Previous commits took care to clean up some headers to not rely on
+cpu-defs.h content.
+
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20250325045915.994760-24-pierrick.bouvier@linaro.org>
 ---
- target/arm/internals.h | 2 --
- 1 file changed, 2 deletions(-)
+ meson.build | 37 ++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 1 deletion(-)
 
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index 01408e40a3..d24acdd672 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -1808,7 +1808,6 @@ static inline uint64_t pmu_counter_mask(CPUARMState *env)
-   return (1ULL << 31) | ((1ULL << pmu_num_counters(env)) - 1);
- }
+diff --git a/meson.build b/meson.build
+index 657949326b..bcb9d39a38 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3682,6 +3682,7 @@ hw_arch = {}
+ target_arch = {}
+ target_system_arch = {}
+ target_user_arch = {}
++hw_common_arch = {}
  
--#ifdef TARGET_AARCH64
- GDBFeature *arm_gen_dynamic_svereg_feature(CPUState *cpu, int base_reg);
- int aarch64_gdb_get_sve_reg(CPUState *cs, GByteArray *buf, int reg);
- int aarch64_gdb_set_sve_reg(CPUState *cs, uint8_t *buf, int reg);
-@@ -1826,7 +1825,6 @@ void aarch64_max_tcg_initfn(Object *obj);
- void aarch64_add_pauth_properties(Object *obj);
- void aarch64_add_sve_properties(Object *obj);
- void aarch64_add_sme_properties(Object *obj);
--#endif
+ # NOTE: the trace/ subdirectory needs the qapi_trace_events variable
+ # that is filled in by qapi/.
+@@ -4079,6 +4080,34 @@ common_all = static_library('common',
+                             implicit_include_directories: false,
+                             dependencies: common_ss.all_dependencies())
  
- /* Read the CONTROL register as the MRS instruction would. */
- uint32_t arm_v7m_mrs_control(CPUARMState *env, uint32_t secure);
++# construct common libraries per base architecture
++hw_common_arch_libs = {}
++foreach target : target_dirs
++  config_target = config_target_mak[target]
++  target_base_arch = config_target['TARGET_BASE_ARCH']
++
++  # check if already generated
++  if target_base_arch in hw_common_arch_libs
++    continue
++  endif
++
++  if target_base_arch in hw_common_arch
++    target_inc = [include_directories('target' / target_base_arch)]
++    src = hw_common_arch[target_base_arch]
++    lib = static_library(
++      'hw_' + target_base_arch,
++      build_by_default: false,
++      sources: src.all_sources() + genh,
++      include_directories: common_user_inc + target_inc,
++      implicit_include_directories: false,
++      # prevent common code to access cpu compile time
++      # definition, but still allow access to cpu.h
++      c_args: ['-DCPU_DEFS_H', '-DCOMPILING_SYSTEM_VS_USER', '-DCONFIG_SOFTMMU'],
++      dependencies: src.all_dependencies())
++    hw_common_arch_libs += {target_base_arch: lib}
++  endif
++endforeach
++
+ if have_rust
+   # We would like to use --generate-cstr, but it is only available
+   # starting with bindgen 0.66.0.  The oldest supported versions
+@@ -4244,8 +4273,14 @@ foreach target : target_dirs
+   arch_deps += t.dependencies()
+ 
+   target_common = common_ss.apply(config_target, strict: false)
+-  objects = common_all.extract_objects(target_common.sources())
++  objects = [common_all.extract_objects(target_common.sources())]
+   arch_deps += target_common.dependencies()
++  if target_type == 'system' and target_base_arch in hw_common_arch_libs
++    src = hw_common_arch[target_base_arch].apply(config_target, strict: false)
++    lib = hw_common_arch_libs[target_base_arch]
++    objects += lib.extract_objects(src.sources())
++    arch_deps += src.dependencies()
++  endif
+ 
+   target_specific = specific_ss.apply(config_target, strict: false)
+   arch_srcs += target_specific.sources()
 -- 
 2.43.0
 
