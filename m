@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D897A9A8BD
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 11:47:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D68EA9A8C4
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 11:48:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7tBB-0007vP-S9; Thu, 24 Apr 2025 05:47:37 -0400
+	id 1u7tBF-000836-QP; Thu, 24 Apr 2025 05:47:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7tB6-0007qh-3P
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 05:47:32 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7tBA-0007zP-R7
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 05:47:37 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7tB4-0002aj-4x
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 05:47:31 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-43cf034d4abso7063505e9.3
- for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 02:47:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7tB9-0002at-4h
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 05:47:36 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-39c0e0bc733so674713f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 02:47:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745488048; x=1746092848; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745488053; x=1746092853; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=766nu4+voMP/IZQOGysMn7ofUaqxPgeNp6L0gDtkVMA=;
- b=dM8Priw/a6VamxtAtUE/XLYR9h3U84T1V34luaPqUhVw3O9nFGHUSIL0XGA4Oneknw
- H9hvfT6px/SbNj1jek99kzoQEs1XxxIybp3qkY4CVFo2jUlDiBtgwY4cgXud5drA5AGL
- Okln0UxNa9MqSw7cRcWFjSgWLJL28/rKk+KsbHhodVgpb7bwvmIZbrCG81zRBPslvZaR
- bd0PpoC/Bp5L3go/owtGlaySDeil1QqqECeWO+3FVItX8TBMBbvLlrh+wjTJHbAVBvei
- oscev77thg4ypB/bYcAjABaIVgf2WeOyET3a8XyMw1ftoG3IakQ5rXaCHr5HmjznR2XR
- /Y8w==
+ bh=J4J0VMJ6GfvwPK+ehChCjxy21KDTNZZmDYppJFi+hTg=;
+ b=H1KiyEGFkmqo+c9nDMQZx6uDHS+qSZJpXk2DV0id6h9pylbAAsiqTQpH60psywygLH
+ QpmyGbG/rFaW1NIelgKvDoge1DatiKmEIGqndLFkGrs26EJ8+GyEK1PJ2fbO2vqYx/yE
+ WNitpny42D7LsCMHx4bu+EdAlUp9jtjyMiQeV8GcMBDtZgNH1W1IhXwnZfutEBRcWfek
+ ni9l17eEmkrvEzAaMoliT41gUiMKbGS5ChLqiKMkFPfhFifbLaquSxZ8GZny3p/HWUed
+ OLxTguX3RL6NvhXoa0TdLCKHKNJyPlHCWdJbR+bnFJt46BTp2r5jPYAXOLYi4SaunSbd
+ rkig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745488048; x=1746092848;
+ d=1e100.net; s=20230601; t=1745488053; x=1746092853;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=766nu4+voMP/IZQOGysMn7ofUaqxPgeNp6L0gDtkVMA=;
- b=YdvYfrD47XLNAiSClHL94a4FzQiR9LmvaUEYpqAYa8lERTk4DtDZva9+OPmVRjghCO
- 96siwcw5Fp3jZBb+91Ri2sDXWh8eQ1MWSG52xkIDY95Hyjvo6aTxGzQstwILMYImey3n
- hoAli7XFUW+D4GJAplCmnB731Lw6jbnWpX0b7iibZCN9KV7ETJoxhdtoPi2dxAki92aw
- oSALOSNeVVYSY5kCp+EmZomWrEyNPzUZ4cME4y4qZJD7qTgZ7FchAeW2V3P5OB9rIOJ6
- YoQMYm1rMOgf8JrgC2VszF/2dXewhUGqgulsJDbXDEe3KZk3+Od6s0EwT6tI986yzfDA
- KScw==
-X-Gm-Message-State: AOJu0YzQQV6Jkcjo8GKDLZ+WACWQiJTC1Nysa1kMUtlkQNFX9odBRk0m
- ABVRMTmb0tGTGZFBymaht7i3tY7TgFj5ISyMCfTr40wozeVGuI6+IVLGIzGa6PufxceBraPyGqu
- K
-X-Gm-Gg: ASbGncvrQqKes51kvQ9pbOOkFBU09BBy7GBacwjF35SINjzP2+dGl86oFgrrbWnrSZe
- PUp1ay5eztC+0EI7Miy6MatEm0uJBrUtIUAjSMIVRHr0E1223vjMspHyVj3u0BJVopL8xCku0ZV
- Ion8F1TIERAKuwsHfaAygngbMbarYe5TxbCi8dtm9c3P/TjqDGt+2FxBY4Nac7Vc7cCYh+DFNx8
- CEbUp1qyQx6jLJ8ki/zI7A1qh3O80is3qKPIzyIQM3Blda/bSnWAZw/GQ12lda2AStJTPESptoP
- u8uMsPU7x1qrpjnRouu9TNZVkdk5Kge2gZ5BxWjF9DO956WLnI25V/iN7XlvL0fNxiZx9doIs33
- fuXbM00mQDGcQ7uoOyyWj
-X-Google-Smtp-Source: AGHT+IEM9nUBdcFHzd7Ao2xx27IDjBOA8cM85PkrVmQbR2Odxvhut4ZVkwi3sb+7iWGV13qrB8BNlQ==
-X-Received: by 2002:a05:600c:450e:b0:43d:1824:aadc with SMTP id
- 5b1f17b1804b1-4409bd89ca4mr13272515e9.29.1745488048358; 
- Thu, 24 Apr 2025 02:47:28 -0700 (PDT)
+ bh=J4J0VMJ6GfvwPK+ehChCjxy21KDTNZZmDYppJFi+hTg=;
+ b=InZi8lzMLT32px+T6qbHl/sNgEScLHfxRAW+SNZnzM+4nHXGD9dITJuCquRVFl8ScK
+ iOAQ3V3IUza8emLUOazb3Z9WgczHQCxDnI+Asgvbm+NYp0jMft2yjbCzrti9qGJ6eIjS
+ PzTpn5XGiadE9N5gNpa2um7UOWx83xAFzxuWYFWBxC2YwhNwtac7oiplpAaECvlyW8k9
+ guTo2Kh7sgZaBDiVfgBzS5q28llWQUQC6FEsO8VQYdHYyxP1vyvbTNKHz8ARbUisonBW
+ AUNiowE9n9HfL552tzodVk5XgI803OB//rkBe6Z9wU9d+Gzg5d+6QchcpIPNx3BJF2MS
+ q8Aw==
+X-Gm-Message-State: AOJu0Yy1Udhk67+FmoYana7Bg+76jF5Ztt1IFtldKSnP7bEuhq2oxnAB
+ mM60yaalQokuPyGsu7iC+7iM1MuuhSl8BgXy6pObxKHwQ7gEVy9xRxxCR9Fb5GOYpy2XaEOrKX8
+ 1
+X-Gm-Gg: ASbGncv4MftpskZQPJm+IsgkI8nnYJGqqunAi4E8r1331mesmgGjacbrZHfQNWMLymU
+ Rwx8dT6SUG7juqLhHPWeWAvSMFSuDqoUj66dHb3IiGQKsqKSRZptcGWnqTMBn5uDGs+6ZqnZjD3
+ GdfgqScoOntWXNh24UnRySHRn6KGgP9YuBWRvxvNvsP/8976ZE5bgJgj4Kl4GV/Dp/T6rnjcytQ
+ OMDtaMrn4wtuo1vSJD0a+COJ//qrrBsEez4FUnPEGjTwYd51brh1UbAQvKUeZ39DiP/xY/Je0RE
+ uyJrGFr11g/h+ylQNRFP9uX20En0tFFYh+fUH+PrSR5j/O6/AWLchomvcRiRqX7jVpX2yx/bZoM
+ FubHn1OCyAuTT3AolVtnlY+aL20gcjII=
+X-Google-Smtp-Source: AGHT+IE7CAQ+GrbTpu76I4sL5k581SWd2SReA43pqozmu9K6SWlw+XwRclvoLBgxzDhBrJ9APbPW1g==
+X-Received: by 2002:a05:6000:22c6:b0:39e:e438:8e32 with SMTP id
+ ffacd0b85a97d-3a06cfc5d0bmr1187599f8f.55.1745488053012; 
+ Thu, 24 Apr 2025 02:47:33 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4409d2bfa93sm13947915e9.37.2025.04.24.02.47.27
+ 5b1f17b1804b1-4409d2a2386sm14204155e9.14.2025.04.24.02.47.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 24 Apr 2025 02:47:27 -0700 (PDT)
+ Thu, 24 Apr 2025 02:47:32 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 07/13] target/riscv: Include missing 'accel/tcg/getpc.h' in
- csr.c
-Date: Thu, 24 Apr 2025 11:46:47 +0200
-Message-ID: <20250424094653.35932-8-philmd@linaro.org>
+Subject: [PATCH v2 08/13] target/hexagon: Include missing 'accel/tcg/getpc.h'
+Date: Thu, 24 Apr 2025 11:46:48 +0200
+Message-ID: <20250424094653.35932-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250424094653.35932-1-philmd@linaro.org>
 References: <20250424094653.35932-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,30 +100,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"accel/tcg/getpc.h" is pulled in indirectly. Include it
-explicitly to avoid when refactoring unrelated headers:
-
-  target/riscv/csr.c:2117:25: error: call to undeclared function 'GETPC' [-Wimplicit-function-declaration]
-   2117 |     if ((val & RVC) && (GETPC() & ~3) != 0) {
-        |                         ^
+Since the macros.h headers call GETPC(), they need to
+include "accel/tcg/getpc.h", which defines it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/riscv/csr.c | 1 +
- 1 file changed, 1 insertion(+)
+ target/hexagon/macros.h       | 1 +
+ target/hexagon/mmvec/macros.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index c52c87faaea..13086438552 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -28,6 +28,7 @@
- #include "exec/cputlb.h"
- #include "exec/tb-flush.h"
- #include "exec/icount.h"
+diff --git a/target/hexagon/macros.h b/target/hexagon/macros.h
+index ee3d4c88e7b..6f82277a415 100644
+--- a/target/hexagon/macros.h
++++ b/target/hexagon/macros.h
+@@ -21,6 +21,7 @@
+ #include "cpu.h"
+ #include "hex_regs.h"
+ #include "reg_fields.h"
 +#include "accel/tcg/getpc.h"
- #include "qemu/guest-random.h"
- #include "qapi/error.h"
- #include <stdbool.h>
+ 
+ #define GET_FIELD(FIELD, REGIN) \
+     fEXTRACTU_BITS(REGIN, reg_field_info[FIELD].width, \
+diff --git a/target/hexagon/mmvec/macros.h b/target/hexagon/mmvec/macros.h
+index bcd4a1e8973..c1a88392c05 100644
+--- a/target/hexagon/mmvec/macros.h
++++ b/target/hexagon/mmvec/macros.h
+@@ -21,6 +21,7 @@
+ #include "qemu/host-utils.h"
+ #include "arch.h"
+ #include "mmvec/system_ext_mmvec.h"
++#include "accel/tcg/getpc.h"
+ 
+ #ifndef QEMU_GENERATE
+ #define VdV      (*(MMVector *restrict)(VdV_void))
 -- 
 2.47.1
 
