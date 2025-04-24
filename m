@@ -2,109 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CED7A99E63
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:40:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1B91A99E11
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:24:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7lZZ-00049I-FD; Wed, 23 Apr 2025 21:40:18 -0400
+	id 1u7l9K-0005Hi-6y; Wed, 23 Apr 2025 21:13:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1u7lZP-000479-4m; Wed, 23 Apr 2025 21:40:07 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1u7lZK-000160-Gm; Wed, 23 Apr 2025 21:40:06 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53NGsASv024462;
- Thu, 24 Apr 2025 01:39:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=j4JsxA
- ffBu0RszYAfx0kwyslAKZQnkt6QG2eR/FNy64=; b=aRHXvj1kQIe3dTDnaPfplH
- TfPExO6G9lOrlJRIW8Ha+BeQkfF2PWRFUThPGx/+vPFy9MFZkaOXWwY+gbE/FlqO
- 1QJzdi4fF5fOwyRs1edFNvI86fEna3XLOv7NU6aBJQCrJ9/NkFlkqqc4QPljwPOT
- 9PJ4mwICeTXo+TVXm3b9HRdh5/Y7gSoVANMghA/MNQiatrMxYbHKocU3jCac/lPq
- Lupn1uV8oT45HON1yACYYzZnmSrtm4b/bgCpU6naZ62R0EkcoJOfTyWD0SGpc2J0
- GVrd0DreemiWwO+AGq1n3UAVu9bXUI8IDfCol7DPoPW9Y3R1l9FE6Pug5Bopn85g
- ==
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 466x4jv15h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 24 Apr 2025 01:39:58 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53NMRUv2008601;
- Thu, 24 Apr 2025 01:39:58 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 466jfxp09s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 24 Apr 2025 01:39:58 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 53O1dum825690612
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 24 Apr 2025 01:39:56 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2AA9258058;
- Thu, 24 Apr 2025 01:39:56 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 26D4058057;
- Thu, 24 Apr 2025 01:39:55 +0000 (GMT)
-Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
- [9.61.182.41]) by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 24 Apr 2025 01:39:55 +0000 (GMT)
-Message-ID: <3c215d78c44fb3b0572b2e8c67e3826aef8d8b0b.camel@linux.ibm.com>
-Subject: Re: [PATCH v6 6/7] linux-header: update-linux-header script changes
-From: Eric Farman <farman@linux.ibm.com>
-To: Rorie Reyes <rreyes@linux.ibm.com>, qemu-devel@nongnu.org,
- qemu-s390x@nongnu.org
-Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
- jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
- alex.williamson@redhat.com, clg@redhat.com, thuth@redhat.com,
- akrowiak@linux.ibm.com
-In-Reply-To: <20250423214506.72728-7-rreyes@linux.ibm.com>
-References: <20250423214506.72728-1-rreyes@linux.ibm.com>
- <20250423214506.72728-7-rreyes@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1u7l8q-0004zi-Af
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 21:12:40 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1u7l8n-0006Zp-2l
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 21:12:40 -0400
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8Bx12n+jwloxvrEAA--.64279S3;
+ Thu, 24 Apr 2025 09:12:31 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by front1 (Coremail) with SMTP id qMiowMCx7xv7jwlosbaSAA--.36356S3;
+ Thu, 24 Apr 2025 09:12:29 +0800 (CST)
+Subject: Re: [PATCH] hw/intc/loongarch_pch_msi: Remove gpio input handler
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
+References: <20250410085004.3577627-1-maobibo@loongson.cn>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <60ee8c05-d07b-9c14-790a-7af628820204@loongson.cn>
+Date: Thu, 24 Apr 2025 09:15:05 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Date: Wed, 23 Apr 2025 21:04:07 -0400
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=eJ4TjGp1 c=1 sm=1 tr=0 ts=6809966e cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VnNF1IyMAAAA:8 a=V2FlQnaG_eUonHtXfN4A:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: ZXOySPnjGwz2zPKKa_Yh1NQq66nEKGV3
-X-Proofpoint-ORIG-GUID: ZXOySPnjGwz2zPKKa_Yh1NQq66nEKGV3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI0MDAwOCBTYWx0ZWRfX4K2EcU0SqBRN
- sq9mrOCxK8XnXNJ3D7f7Jf/ok6515d+xpdWVodYkJ9Dckd/T62FocNsRpviCudX4SVwAI/6qHo9
- pGnA65Tz4xRi0of5cjWGG2B9OP/85OQqYoYJTHGW15dfaFLPIwjGib/BewKnQ4ay7a7hd/tFBZE
- h3mYibFbOJdsIhzF2VUvErxanq9ovQewocgMOpHKLhcP01vr8WMFp+xw8J9rWTrzxD4s4s6fp62
- nbIr8gkJsS4Dc2yeBa+slsFeur78or8U41KPl8toqAjALPczlqN5IS5ILwKjhSaLMlHiR1Ak5HZ
- 2bu1kS0ZYWiIZIeNuxzm/BExZtkzswYFohcV7vzgLqFR4xRqyPfRFIRLAP077PDB7Bo9XeFLExA
- jWUyHXO0c+IL+tPl4W/zupqgbZCRQdIBqoNpo8kU1m5/gNSeUUZ+TEV4ovLQp6CGr410a8VP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.680,FMLib:17.12.80.40
- definitions=2025-04-24_01,2025-04-22_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015
- bulkscore=0 adultscore=0 mlxscore=0 phishscore=0 priorityscore=1501
- spamscore=0 mlxlogscore=975 suspectscore=0 lowpriorityscore=0
- malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2504240008
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=farman@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+In-Reply-To: <20250410085004.3577627-1-maobibo@loongson.cn>
+Content-Type: text/plain; charset=gbk; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID: qMiowMCx7xv7jwlosbaSAA--.36356S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7Ar18Jr4fGFyDGrWUuFyDArc_yoW8WrWxpr
+ Zxua4rKr4rJw4DuFs2q3429F93XFnrGF4xZFnxKry7Crn8Awn8WF18Jry2gFy2k3yruFyq
+ v3ykKrWUX3WUCabCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AK
+ xVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+ Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE
+ 14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
+ AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
+ rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUXVWUAw
+ CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
+ 67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr
+ 0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUrNtx
+ DUUUU
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -1
+X-Spam_score: -0.2
+X-Spam_bar: /
+X-Spam_report: (-0.2 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
+ NICE_REPLY_A=-0.765, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -121,33 +80,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2025-04-23 at 17:45 -0400, Rorie Reyes wrote:
-> Kernel commit 8a14 changed from using ASSEMBLY to ASSEMBLER
-
-Kernel commit 8a141be3233a ("x86/headers: Replace __ASSEMBLY__ with __ASSEM=
-BLER__ in UAPI headers")
-
-> Updated the update-linux-header script to match
->=20
-> Signed-off-by: Rorie Reyes <rreyes@linux.ibm.com>
+ÔÚ 2025/4/10 ÏÂÎç4:50, Bibo Mao Ð´µÀ:
+> MSI interrupt is triggered by writing message on specified memory address.
+> In generic it is used by PCI devices, and no device is connected pch MSI
+> irqchip with GPIO pin line method, here remove gpio input setting for MSI
+> controller.
+>
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 > ---
->  scripts/update-linux-headers.sh | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/scripts/update-linux-headers.sh b/scripts/update-linux-heade=
-rs.sh
-> index 8913e4fb99..b43b8ef75a 100755
-> --- a/scripts/update-linux-headers.sh
-> +++ b/scripts/update-linux-headers.sh
-> @@ -177,7 +177,7 @@ EOF
-> =20
->          # Remove everything except the macros from bootparam.h avoiding =
-the
->          # unnecessary import of several video/ist/etc headers
-> -        sed -e '/__ASSEMBLY__/,/__ASSEMBLY__/d' \
-> +        sed -e '/__ASSEMBLER__/,/__ASSEMBLER__/d' \
->                 "$hdrdir/include/asm/bootparam.h" > "$hdrdir/bootparam.h"
->          cp_portable "$hdrdir/bootparam.h" \
->                      "$output/include/standard-headers/asm-$arch"
+>   hw/intc/loongarch_pch_msi.c | 9 ---------
+>   1 file changed, 9 deletions(-)
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+Tested-by: Song Gao <gaosong@loongson.cn>
+
+Thanks.
+Song Gao.
+> diff --git a/hw/intc/loongarch_pch_msi.c b/hw/intc/loongarch_pch_msi.c
+> index 66b5c1e660..bc93504ff7 100644
+> --- a/hw/intc/loongarch_pch_msi.c
+> +++ b/hw/intc/loongarch_pch_msi.c
+> @@ -42,13 +42,6 @@ static const MemoryRegionOps loongarch_pch_msi_ops = {
+>       .endianness = DEVICE_LITTLE_ENDIAN,
+>   };
+>   
+> -static void pch_msi_irq_handler(void *opaque, int irq, int level)
+> -{
+> -    LoongArchPCHMSI *s = LOONGARCH_PCH_MSI(opaque);
+> -
+> -    qemu_set_irq(s->pch_msi_irq[irq], level);
+> -}
+> -
+>   static void loongarch_pch_msi_realize(DeviceState *dev, Error **errp)
+>   {
+>       LoongArchPCHMSI *s = LOONGARCH_PCH_MSI(dev);
+> @@ -59,9 +52,7 @@ static void loongarch_pch_msi_realize(DeviceState *dev, Error **errp)
+>       }
+>   
+>       s->pch_msi_irq = g_new(qemu_irq, s->irq_num);
+> -
+>       qdev_init_gpio_out(dev, s->pch_msi_irq, s->irq_num);
+> -    qdev_init_gpio_in(dev, pch_msi_irq_handler, s->irq_num);
+>   }
+>   
+>   static void loongarch_pch_msi_unrealize(DeviceState *dev)
+>
+> base-commit: 56c6e249b6988c1b6edc2dd34ebb0f1e570a1365
 
 
