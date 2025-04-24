@@ -2,80 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 896DEA9B5FC
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 20:10:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F28A9B66C
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 20:35:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u810L-0005FJ-Kn; Thu, 24 Apr 2025 14:08:58 -0400
+	id 1u81Of-0003cJ-6a; Thu, 24 Apr 2025 14:34:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1u810H-0005B5-OP
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 14:08:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1u810E-0004Ri-HO
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 14:08:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745518128;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=paT5S8UD1OBkn3kxBHkk2HQ6lRr9G8I86jTkuWfZ2SA=;
- b=VLMh9XnH3iRvsaclnfmnNrNCoflsPwAGl7F+N41UDmrabe8SFoFenb2gcSeGq/fn/yOeg3
- ewn62QzNP2LPlAVMpz0VqybXtBghKILZJpvT4ITxpmz99vCEnGbE+oQ6IpHXAnsFPyro1N
- WMFzX0f+XrHwe7RFUpg4iFZytbcwwLY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-387-1SL-qsotO2WryBUipnQiBA-1; Thu,
- 24 Apr 2025 14:08:45 -0400
-X-MC-Unique: 1SL-qsotO2WryBUipnQiBA-1
-X-Mimecast-MFC-AGG-ID: 1SL-qsotO2WryBUipnQiBA_1745518124
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0191119560B0; Thu, 24 Apr 2025 18:08:42 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.59])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7C61F1800378; Thu, 24 Apr 2025 18:08:37 +0000 (UTC)
-Date: Thu, 24 Apr 2025 13:08:34 -0500
-From: Eric Blake <eblake@redhat.com>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1u81Ob-0003b4-FL
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 14:34:01 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1u81OY-0007lr-6b
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 14:34:01 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-736e52948ebso1552526b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 11:33:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1745519636; x=1746124436; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=JtAsAk9Pi6vIy9Bk1sQSsGqUPVl8PURk7rv1C5keXn0=;
+ b=IorF5kUy8MRhbYZkl1KHB5hMJHVQIIBjKMzqf9QBumSoDgM/bFKfzXJCrELqaalZCX
+ 2RFDAYMS9Imw9PVzWROX3yyik5//FUqdIZaRgChmEpcuS/afCiUqorr1aEXCtEj9rWFQ
+ 8rXhVJm0fsBB/bb5YcI/5vUrCA6evihscptRhQMsIOjgCitcuURTPRjvXGjr9gj0PoiN
+ TQhQi5zRsEqojC3XQGBScYRoD0dGaje5XeCx6O12fcCXrdVQuaXQ0As/HigSg1/4mLSW
+ ywyp/8VEkAd01Th8EH8PAH5RN34R7r3ZbrPipP+rTNUrWFO111tns2L+MD4RtgniPLvE
+ IeDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1745519636; x=1746124436;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=JtAsAk9Pi6vIy9Bk1sQSsGqUPVl8PURk7rv1C5keXn0=;
+ b=p5mBZuyv5fngTlRMp9Ij9ItLTUn6KilJHTwcC/L26yZPicbZb36z8vErNeOX4LqDQO
+ mB4/hHP7Dh+wbI1EcN+h0qZaXBpBJScWplQ3yvtmxzvblX+sU7udQ/PetnJueVgw08Rn
+ sX5LB2zxjAZSV2I7d8KHvhC9I8HKBVv5uCyjZ2KMXAGObFxUIPT5cSQonc1LZUZf0Ip0
+ jGyAb/WWvYFDZOp3s1qDpfGQAUo7aTlNWr/4DPktbzyEfCwIo7PJtUbDjZrXUHY5kdfJ
+ U1HPLX9fImy+TKEeguZIR955uebevTDLQIgyr5HTDb/I4IEU7C5Kv63HziaI3VtYiKmq
+ 3VmA==
+X-Gm-Message-State: AOJu0Ywmq2fwqoGUXTRG7jtBsPVPPFg0sy3aRG1fDrBQOE3+AAFIbJeQ
+ IgPykDh8P+vB1HVLqQ3iFIVsRgWzTRVmaVN+fAsuoqou4q58/qN8GsNhae3muHpMaiBQBEEjhHx
+ d4Ic=
+X-Gm-Gg: ASbGnctj6WMJVw5Ygk4mt6yPf7DLFs13XZUWaXsKlSuiL9fIk0LZzZkuushpZBpcy0L
+ 6D28SJ4K7diN5nVkYdOUT7+ypDzsfM8DyMhz5pdIpqScA0JWcYBPY5ZuxpAdKqt3HnwPbyIIcz5
+ 8ZUSFvF05oHc2c4fpTvH9DU7hu9tghcceO/31BtQZRaWuxDRWAvgxV1ygja5h6JzqbuApyDWqi4
+ /UUBXNHYlQK4NCwNGSOZtf4T0/ADYsxun0mbgbqE9ko90BhGH9R0YIn9vg2j3yx03kD9b8z79dN
+ puVxuTJjhqATJfXHxQf0/DOiwsqO2UtapTTzZUBP
+X-Google-Smtp-Source: AGHT+IH9f9p/GT01Kwh9idNn12hJhJM1QYMNA5GJ3veUuXg0T5yD6NKyQJeRDlPoKXuyrK1GsmjxbQ==
+X-Received: by 2002:a05:6a21:501:b0:1fe:90c5:7d00 with SMTP id
+ adf61e73a8af0-20456709facmr467948637.28.1745519635992; 
+ Thu, 24 Apr 2025 11:33:55 -0700 (PDT)
+Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-b15fa80fbaasm1544157a12.49.2025.04.24.11.33.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 24 Apr 2025 11:33:55 -0700 (PDT)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, stefanha@redhat.com, 
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- John Snow <jsnow@redhat.com>, 
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Fam Zheng <fam@euphon.net>, 
- Ronnie Sahlberg <ronniesahlberg@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Lieven <pl@dlhnet.de>, 
- "Denis V. Lunev" <den@openvz.org>, Alberto Garcia <berto@igalia.com>, 
- Ilya Dryomov <idryomov@gmail.com>, Stefan Weil <sw@weilnetz.de>, 
- "open list:GLUSTER" <integration@gluster.org>
-Subject: Re: [PATCH v2.5 01/11] block: Expand block status mode from bool to
- flags
-Message-ID: <abnvlaphunplpfo25dk7cqpxzkay72gvonunm4tiuddsynxiou@zhmmjny2nzht>
-References: <20250417184133.105746-13-eblake@redhat.com>
- <20250418215412.404558-3-eblake@redhat.com>
+Cc: richard.henderson@linaro.org, stefanha@redhat.com,
+ Michael Roth <michael.roth@amd.com>, pbonzini@redhat.com,
+ berrange@redhat.com, peter.maydell@linaro.org, thuth@redhat.com,
+ jsnow@redhat.com, philmd@linaro.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [RFC PATCH 0/3] single-binary: make QAPI generated files common
+Date: Thu, 24 Apr 2025 11:33:47 -0700
+Message-Id: <20250424183350.1798746-1-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.39.5
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250418215412.404558-3-eblake@redhat.com>
-User-Agent: NeoMutt/20250404
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -28
-X-Spam_score: -2.9
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.84,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,52 +100,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Apr 18, 2025 at 04:52:46PM -0500, Eric Blake wrote:
-> This patch is purely mechanical, changing bool want_zero into an
-> unsigned int for bitwise-or of flags.  As of this patch, all
-> implementations are unchanged (the old want_zero==true is now
-> mode==BDRV_WANT_PRECISE which is a superset of BDRV_WANT_ZERO); but
-> the callers in io.c that used to pass want_zero==false are now
-> prepared for future driver changes that can now distinguish bewteen
-> BDRV_WANT_ZERO vs. BDRV_WANT_ALLOCATED.  The next patch will actually
-> change the file-posix driver along those lines, now that we have
-> more-specific hints.
-> 
-> As for the background why this patch is useful: right now, the
-> file-posix driver recognizes that if allocation is being queried, the
-> entire image can be reported as allocated (there is no backing file to
-> refer to) - but this throws away information on whether the entire
-> image reads as zero (trivially true if lseek(SEEK_HOLE) at offset 0
-> returns -ENXIO, a bit more complicated to prove if the raw file was
-> created with 'qemu-img create' since we intentionally allocate a small
-> chunk of all-zero data to help with alignment probing).  Later patches
-> will add a generic algorithm for seeing if an entire file reads as
-> zeroes.
-> 
-> Signed-off-by: Eric Blake <eblake@redhat.com>
-> ---
-> 
-> In response to Stefan's ask for what it would look like as a bitmask
-> of flags instead of an enum.  Only the first two patches of the series
-> change.
+Note: This RFC was posted to trigger a discussion around this topic, and it's
+not expected to merge it as it is.
 
-> +++ b/block/io.c
-> @@ -2364,10 +2364,8 @@ int bdrv_flush_all(void)
->   * Drivers not implementing the functionality are assumed to not support
->   * backing files, hence all their sectors are reported as allocated.
->   *
-> - * If 'want_zero' is true, the caller is querying for mapping
-> - * purposes, with a focus on valid BDRV_BLOCK_OFFSET_VALID, _DATA, and
-> - * _ZERO where possible; otherwise, the result favors larger 'pnum',
-> - * with a focus on accurate BDRV_BLOCK_ALLOCATED.
-> + * 'mode' serves as a hint as to which results are favored; see enum
-> + * BlockStatusMode for details of the supported modes.
+Context
+=======
 
-Stale comment applicable to v2 but not v2.5; will fix for v3.
+Linaro is working towards heterogeneous emulation, mixing several architectures
+in a single QEMU process. The first prerequisite is to be able to build such a
+binary, which we commonly name "single-binary" in our various series.
+An (incomplete) list of series is available here:
+https://patchew.org/search?q=project%3AQEMU+single-binary
+
+We don't expect to change existing command line interface or any observable
+behaviour, it should be identical to existing binaries. If anyone notices a
+difference, it will be a bug.
+
+The first objective we target is to combine qemu-system-arm and
+qemu-system-aarch64 in a single binary, showing that we can build and link such
+a thing. While being useless from a feature point of view, it allows us to make
+good progress towards the goal, and unify two "distinct" architectures, and gain
+experience on problems met.
+
+Our current approach is to remove compilation units duplication to be able to
+link all object files together. One of the concerned subsystem is QAPI.
+
+QAPI
+====
+
+QAPI generated files contain conditional clauses to define various structures,
+enums, and commands only for specific targets. This forces files to be
+compiled for every target. What we try to do here is to build them only once
+instead.
+
+In the past, we identied that the best approach to solve this is to expose code
+for all targets (thus removing all #if clauses), and stub missing
+symbols for concerned targets.
+
+This series build QAPI generated code once, by removing all TARGET_{arch} and
+CONFIG_KVM clauses. What it does *not* at the moment is:
+- prevent target specific commands to be visible for all targets
+  (see TODO comment on patch 2 explaining how to address this)
+- nothing was done to hide all this from generated documentation
+
+From what I understood, the only thing that matters is to limit qmp commands
+visible. Exposing enums, structure, or events is not a problem, since they
+won't be used/triggered for non concerned targets. Please correct me if this is
+wrong, and if there are unexpected consequences for libvirt or other consumers.
+
+Impact on code size
+===================
+
+There is a strong focus on keeping QEMU fast and small. Concerning performance,
+there is no impact, as the only thing that would change is to conditionally
+check current target to register some commands.
+Concerning code size, you can find the impact on various qemu-system binaries
+with optimized and stripped build.
+
+upstream:
+12588   ./build/qemu-system-s390x
+83992   ./build/qemu-system-x86_64
+31884   ./build/qemu-system-aarch64
+upstream + this series:
+12644   ./build/qemu-system-s390x (+56kB, +0.004%)
+84076   ./build/qemu-system-x86_64 (+84kB, +0.001%)
+31944   ./build/qemu-system-aarch64 (+60kB, +0.001%)
+
+Feedback
+========
+
+The goal of this series is to be spark a conversation around following topics:
+
+- Would you be open to such an approach? (expose all code, and restrict commands
+  registered at runtime only for specific targets)
+
+- Are there unexpected consequences for libvirt or other consumers to expose
+  more definitions than what we have now?
+
+- Would you recommend another approach instead? I experimented with having per
+  target generated files, but we still need to expose quite a lot in headers, so
+  my opinion is that it's much more complicated for zero benefit. As well, the
+  code size impact is more than negligible, so the simpler, the better.
+
+Feel free to add anyone I could have missed in CC.
+
+Regards,
+Pierrick
+
+Pierrick Bouvier (3):
+  qapi: add weak stubs for target specific commands
+  qapi: always expose TARGET_* or CONFIG_KVM code
+  qapi: make all generated files common
+
+ qapi/commands-weak-stubs.c | 38 ++++++++++++++++++++++++++++++++++++++
+ qapi/meson.build           |  5 ++++-
+ scripts/qapi/commands.py   |  4 ++++
+ scripts/qapi/common.py     |  4 +++-
+ 4 files changed, 49 insertions(+), 2 deletions(-)
+ create mode 100644 qapi/commands-weak-stubs.c
 
 -- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+2.39.5
 
 
