@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7E2AA99D4B
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 02:51:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAA2AA99D65
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 02:55:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7kmh-0005B7-UF; Wed, 23 Apr 2025 20:49:47 -0400
+	id 1u7kmk-0005Cb-Kb; Wed, 23 Apr 2025 20:49:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kmf-000591-0c
+ id 1u7kmf-00059E-GS
  for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:49:45 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kmd-0004J3-A5
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:49:44 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-736aaeed234so337747b3a.0
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:49:42 -0700 (PDT)
+ id 1u7kmd-0004JB-NV
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:49:45 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-7398d65476eso358761b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:49:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745455781; x=1746060581; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745455782; x=1746060582; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JxyuRypmtO/qMdbERqKxpEE+x505tOJO18IE2EpCobs=;
- b=b5j1rgicJzrtqP2R2WCf4AAMrEyUjzxied2bC+u35zNRa/dC5GrxClrM0PrkA7vSeS
- ql/Wzu/4eWDmvNZbLg63+jCj2myK1mNEoboUtpMAjZPlTgRP64PfFmlwTUnDsYkNU1i5
- BZAyx8Mhq46enYCSBBvsLOyOUJaQV2Q05MTVYs9of1hSiosvfmyDmGcTCvtxcao52/Sw
- YfXOlgGXrjW5WbEwNiLhnGkgoko3MkvIEIrjGptgPfuOPTf1KTFLmcNj59izrYIVcwFr
- gwbtrV8RO/ErVnolhT26OvuI/4gkMlTG3+Xj/bnqtwI0yhAyJ/LoRpr4Pu3zzJO79y3Q
- iWgA==
+ bh=lG5GR1LgS5q2ZsGX0HNw3y+WcVPJJCWNVDcD2UvIEdE=;
+ b=kFcCHicqp+EIxKgTkwIgdBJ/16mmxjlXn3vFYmdpEq72n0YDYFmvN7k0HfCivsIBK8
+ 1J1jddVkJilQ8PmOgDldHOq8yxcLNloJfAtyyF80fLw0yLt48qkOnyzsWVA887plSA7F
+ HntbsXiJv7Fcd0iTmfwH8xg3bi9OeoXPDIAAA44cbHa04hUF6vSO66DP7dHC3V++h0ZB
+ eYpAomXMdscqM47dB9uLUVjPtRzw1ZHyZXNGUGwdPo4GwOqg7Zm4juNdVFrgoG5J/nh2
+ cZCzZbjHZrFDiD9NjJgG5c0ZZu1quKdiMlC3uZKccM5OXj7eKkGV4aKZRu0Gsj9bWvX7
+ U6zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745455781; x=1746060581;
+ d=1e100.net; s=20230601; t=1745455782; x=1746060582;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JxyuRypmtO/qMdbERqKxpEE+x505tOJO18IE2EpCobs=;
- b=oyCctjPda9r0rH9HDrfzNzJsqwZX0z+dFiPo9p6ANbmVV/eKWFCNsg3mJWvnyy4tJI
- wLUECKg3Xc+7ZITgkgssIdejSAwjs2ah0nkSS8X72uD8ajV6wqOWbylgQjs4RUMGEWx1
- E40+33+6mEPchp2RtMD1wmZfHLejZnsZAjvJtjzfH+CZd/JyoH2CSQ25UpHCORzcDEuO
- 6VnVMG6cMIJEp+QmkxGP3/HblYFOVCoxNX4zzAmjNlq4y7EY/d+dnZLjyuyE9tNAINFD
- OxEHFre6OSxZUeX4SVNs8DgaOyHeynTHKZogPYOc5DcumSxEPnvy8deIq4IfxoS45EDd
- 4d2A==
-X-Gm-Message-State: AOJu0YxZIXRaa6W1Fvy/cnTUPaHCZFVhccqu+eeXV9YBU+LAQpPa/EmE
- AoKRDUVLj4K1ICw5ZHX4fDM/pLOLCFIqwAfPkhg/u1IUp+N/379TPD3s34UMO0IoA4u0LijwhDF
- Q
-X-Gm-Gg: ASbGncvtjtgjjWyPtBIsCuMLaVeWx04u3+SoT2kxExmwHEyPKfkz/XoP/MvIWY5hjcS
- acDGGyTRwnTx3kEVGu83OVUoaj5mVmo4ZTA3mpCve6tSaUa8V/QpZwwURHq7Sza+UI319Ye1wGy
- rhYJPbtkcCJCKOz1f5D4f6E6qjR60WrnUE/kX1Ft6GQxpZePQlrkOxfyql7+K9i30bVxE1U8Coe
- fs4n9U/JCcXQndnnMIXn8Lyzl/nWacDg1nsKnrB93KXxPOhwcqfGPYs7t8tMcZkcz1vAU1qGG8Q
- Hn5YpDo5gyzYCecxo99PRRQFs3aSD7nwzDttUvnYWYU4XPSjNvzdJEtoa76StjuaX2uKYKMsOhA
+ bh=lG5GR1LgS5q2ZsGX0HNw3y+WcVPJJCWNVDcD2UvIEdE=;
+ b=HP4SxvmRoPrp3WLgDzfPLdJ0sx1eaTfuh14MDgM0RimhuO/f0hWABSEZRi7akgokpu
+ IbJyEch34ccVxT1p9Xwr4USZW5sXRXZi1uSAO6YxnZbFZSMQMuQBlee9Nhr7axXYcA1p
+ JVAYO6tt47jwhQdk9idgkNF7fDjNkpYZUKscCzsM/mq6EKqXapZ6kuiIzZd9+5rqBVsB
+ 8r0IzvjZleMeHKv0ZM7U/40GrZGRX6bFQUymaDS4UTWFzY74bhF7yv5Ebemh/7Jlm/tD
+ anpBR6pZjN5enf7DmQ8MSt6MRvdh3YMvnXv3at8yif8Hl8RS77SchHBa0Z0LmDAq0ZoX
+ L8Ng==
+X-Gm-Message-State: AOJu0Yw+DsR3GwHcyZ2+lJoebaTzr8M7UOI5tCNjH1X4w29SYySgDGAe
+ nOm8EPVE+npgRc5ZSWL/3XSqeuYBbcIXUoASmHJE67C+QMF7rL3bN+IJw40Q+YoIKOYNjQo+WL8
+ o
+X-Gm-Gg: ASbGnctCHEdzj/ochVno4i3xXYOAmmqWcMgP03Kz4Vt3WU0Y2bvJPJthxGRRSeGUMCc
+ M1rU6jo04o0NjXCak30i65yaDX/DMhOYq8EWOqgwtZ1fauRsgv/ncHFlnZkaliE0klqatvwkUuF
+ Fc2UHQYghh3xlZUJi1/MByTmqRGSTdz8b/30oEJna9t/1FDoxoGYay3nQSx2pl4QvK0Ug207JJh
+ AIOn5XI5b/dvAoCjPsSWF00pDoexynQbPcIOFcDejcPANoQjKThHq3GF/V5ICFcDrgHFRC3NgNt
+ o1+uT9kdSAzYIBCyN06UrkO5hc87zfXLDO1T+Hs7NuhSv3gI7Z4O79UTbzuNSIxjVu9/33nbnx0
  =
-X-Google-Smtp-Source: AGHT+IFaZTG/U1wAL/P6H6dp3fPe4QNqPc1xoX5KKdeQURCaihhaSQx3tTin3u+4fD659jgtsBcZOg==
-X-Received: by 2002:a05:6a00:2da6:b0:732:5164:3cc with SMTP id
- d2e1a72fcca58-73e24ae120fmr872724b3a.19.1745455781330; 
- Wed, 23 Apr 2025 17:49:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGWFpHQGDViRSLddcs/Ypk4doGwQIru/oB50uM9dW4lwm9026L6YvbYIx1KXY/j8ktyx4h7iQ==
+X-Received: by 2002:aa7:8a04:0:b0:736:aea8:c9b7 with SMTP id
+ d2e1a72fcca58-73e267b8980mr580394b3a.2.1745455782140; 
+ Wed, 23 Apr 2025 17:49:42 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73e25a9a0f1sm207344b3a.137.2025.04.23.17.49.40
+ d2e1a72fcca58-73e25a9a0f1sm207344b3a.137.2025.04.23.17.49.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 23 Apr 2025 17:49:41 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 009/148] exec/ram_addr: remove dependency on cpu.h
-Date: Wed, 23 Apr 2025 17:47:14 -0700
-Message-ID: <20250424004934.598783-10-richard.henderson@linaro.org>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PULL 010/148] system/kvm: make kvm_flush_coalesced_mmio_buffer()
+ accessible for common code
+Date: Wed, 23 Apr 2025 17:47:15 -0700
+Message-ID: <20250424004934.598783-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250424004934.598783-1-richard.henderson@linaro.org>
 References: <20250424004934.598783-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,37 +101,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Needed so compilation units including it can be common.
+This function is used by system/physmem.c will be turn into common code
+in next commit.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250317183417.285700-10-pierrick.bouvier@linaro.org>
+Message-ID: <20250317183417.285700-11-pierrick.bouvier@linaro.org>
 ---
- include/exec/ram_addr.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/system/kvm.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/exec/ram_addr.h b/include/exec/ram_addr.h
-index e4c28fbec9..f5d574261a 100644
---- a/include/exec/ram_addr.h
-+++ b/include/exec/ram_addr.h
-@@ -20,13 +20,14 @@
- #define RAM_ADDR_H
+diff --git a/include/system/kvm.h b/include/system/kvm.h
+index ab17c09a55..21da3b8b05 100644
+--- a/include/system/kvm.h
++++ b/include/system/kvm.h
+@@ -210,11 +210,11 @@ bool kvm_arm_supports_user_irq(void);
+ int kvm_on_sigbus_vcpu(CPUState *cpu, int code, void *addr);
+ int kvm_on_sigbus(int code, void *addr);
  
- #ifndef CONFIG_USER_ONLY
--#include "cpu.h"
- #include "system/xen.h"
- #include "system/tcg.h"
- #include "exec/cputlb.h"
- #include "exec/ramlist.h"
- #include "exec/ramblock.h"
- #include "exec/exec-all.h"
-+#include "exec/memory.h"
-+#include "exec/target_page.h"
- #include "qemu/rcu.h"
++void kvm_flush_coalesced_mmio_buffer(void);
++
+ #ifdef COMPILING_PER_TARGET
+ #include "cpu.h"
  
- #include "exec/hwaddr.h"
+-void kvm_flush_coalesced_mmio_buffer(void);
+-
+ /**
+  * kvm_update_guest_debug(): ensure KVM debug structures updated
+  * @cs: the CPUState for this cpu
 -- 
 2.43.0
 
