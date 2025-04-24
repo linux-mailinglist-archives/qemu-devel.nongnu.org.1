@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAA2AA99D65
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 02:55:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE034A99D67
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 02:55:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7kmk-0005Cb-Kb; Wed, 23 Apr 2025 20:49:50 -0400
+	id 1u7kmk-0005Cc-U3; Wed, 23 Apr 2025 20:49:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kmf-00059E-GS
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:49:45 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1u7kmg-0005AE-1w
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:49:46 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kmd-0004JB-NV
+ id 1u7kme-0004JR-8F
  for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:49:45 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-7398d65476eso358761b3a.1
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-7398d65476eso358765b3a.1
  for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:49:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745455782; x=1746060582; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745455783; x=1746060583; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lG5GR1LgS5q2ZsGX0HNw3y+WcVPJJCWNVDcD2UvIEdE=;
- b=kFcCHicqp+EIxKgTkwIgdBJ/16mmxjlXn3vFYmdpEq72n0YDYFmvN7k0HfCivsIBK8
- 1J1jddVkJilQ8PmOgDldHOq8yxcLNloJfAtyyF80fLw0yLt48qkOnyzsWVA887plSA7F
- HntbsXiJv7Fcd0iTmfwH8xg3bi9OeoXPDIAAA44cbHa04hUF6vSO66DP7dHC3V++h0ZB
- eYpAomXMdscqM47dB9uLUVjPtRzw1ZHyZXNGUGwdPo4GwOqg7Zm4juNdVFrgoG5J/nh2
- cZCzZbjHZrFDiD9NjJgG5c0ZZu1quKdiMlC3uZKccM5OXj7eKkGV4aKZRu0Gsj9bWvX7
- U6zQ==
+ bh=XogLtFAmQTWKnFni/PyMhKIavN2RURu41I1WKUUy13M=;
+ b=wSVg7Ti+c1Ohe1R9xcVYy8fnczWdVKNY/D49YOwQ2c0ucOO30DcMoCibDbMUsvb1/W
+ NTLBxsXDdmPDw0rIJUADXBitzo3snsvMCRp6bwBCUtP47wht8LFG4qX5UlFNO4KEUbov
+ SgQe2Aehpu7X86OU1pCO3UuCQUawpmdfFIZUTIUwDPLHswlG/3bV4Q5V1a6CMSvMOQDT
+ CDMZjsLLm7xi4RJqlwOO2v20wLmsyWp+F/xBK6LYqklb8V/5stixPhM+vUxldRkNOh4P
+ FKsHLB0OnkSZT8O6cNIrWrqa10VkoRiTKiNVU0ELKJoZ+s/OvjE6rNAMYNr6MAXJKPnB
+ hgmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745455782; x=1746060582;
+ d=1e100.net; s=20230601; t=1745455783; x=1746060583;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lG5GR1LgS5q2ZsGX0HNw3y+WcVPJJCWNVDcD2UvIEdE=;
- b=HP4SxvmRoPrp3WLgDzfPLdJ0sx1eaTfuh14MDgM0RimhuO/f0hWABSEZRi7akgokpu
- IbJyEch34ccVxT1p9Xwr4USZW5sXRXZi1uSAO6YxnZbFZSMQMuQBlee9Nhr7axXYcA1p
- JVAYO6tt47jwhQdk9idgkNF7fDjNkpYZUKscCzsM/mq6EKqXapZ6kuiIzZd9+5rqBVsB
- 8r0IzvjZleMeHKv0ZM7U/40GrZGRX6bFQUymaDS4UTWFzY74bhF7yv5Ebemh/7Jlm/tD
- anpBR6pZjN5enf7DmQ8MSt6MRvdh3YMvnXv3at8yif8Hl8RS77SchHBa0Z0LmDAq0ZoX
- L8Ng==
-X-Gm-Message-State: AOJu0Yw+DsR3GwHcyZ2+lJoebaTzr8M7UOI5tCNjH1X4w29SYySgDGAe
- nOm8EPVE+npgRc5ZSWL/3XSqeuYBbcIXUoASmHJE67C+QMF7rL3bN+IJw40Q+YoIKOYNjQo+WL8
- o
-X-Gm-Gg: ASbGnctCHEdzj/ochVno4i3xXYOAmmqWcMgP03Kz4Vt3WU0Y2bvJPJthxGRRSeGUMCc
- M1rU6jo04o0NjXCak30i65yaDX/DMhOYq8EWOqgwtZ1fauRsgv/ncHFlnZkaliE0klqatvwkUuF
- Fc2UHQYghh3xlZUJi1/MByTmqRGSTdz8b/30oEJna9t/1FDoxoGYay3nQSx2pl4QvK0Ug207JJh
- AIOn5XI5b/dvAoCjPsSWF00pDoexynQbPcIOFcDejcPANoQjKThHq3GF/V5ICFcDrgHFRC3NgNt
- o1+uT9kdSAzYIBCyN06UrkO5hc87zfXLDO1T+Hs7NuhSv3gI7Z4O79UTbzuNSIxjVu9/33nbnx0
+ bh=XogLtFAmQTWKnFni/PyMhKIavN2RURu41I1WKUUy13M=;
+ b=MC7P/uP50jdhMv9SNnDB59CjaBoScRQMH+ceJZkUJJOzm2aflrktRaOaQ7s9if5EEV
+ rmcG8qgf3iGk4ofpvsyM096uy2FaXBEE3dCP1vV19g9iD1cWfx4W2KOLcPtgVjUqop5n
+ 5qtE2tvIPKHfsdfvGbCz+sofWOHnlmB8+3RMnC4PNmP9slDsuvwtYrgkvK0it2lsou3O
+ wk8jXiax4FkxtowcBwxh/jW1SjxH7/1BwYMMM1Y95keHIOAln3Bwvcoy7PGCXwPxJ/Ja
+ Ci2nt2swLzkcoPLOql0UtjNOfccZ1dRy3ImUaglcsfujfsBu7YQV2/ITLsnxelvBkRyp
+ y/cQ==
+X-Gm-Message-State: AOJu0YzFyhWgb/GjYqo9ZwtBJqh5jMHsmWSPzPRC4/lzWQeLTOWbFjHE
+ jiB6dh0BeXG+eCTBeGbuCUHPFJpTsu5Pr7WWKRupAPzZA7jkP2siMUBY+Z/oqDwSLD2/HtL2gyK
+ S
+X-Gm-Gg: ASbGncuvjFpTdutXXr2jANPXfq1+VAr357IUl5NVMBPqnK8/mcmoMIagIlgS6bSJekK
+ Y05Zndv/n5peL2D+v4ecSjeVo5uJDULEG+rnnN8z0IeAQalqEkp7e5yv0vKzx5Bf8oaOrjl/Eoe
+ DhEbzVH2kfCvHfbQUEpvdRvluvhtRHwy9OdP9hd3EDWS/UF43AQ6gDLCn2r72qMbpCusBMsijJ9
+ 7ycygGc8UBXrix8eQlbfM47446TBl8BcDLzKnC2PgVZAO8SN8lzV0Acp8iBmsjiKoeLalcdCM0Z
+ GJUTZs+hgEca8xHdTVmuIvwZ5PbL5Ezeef3cwvd6lUCQqhd92w2MF5X2PpNA4BWt65ItszP4/T4
  =
-X-Google-Smtp-Source: AGHT+IGWFpHQGDViRSLddcs/Ypk4doGwQIru/oB50uM9dW4lwm9026L6YvbYIx1KXY/j8ktyx4h7iQ==
-X-Received: by 2002:aa7:8a04:0:b0:736:aea8:c9b7 with SMTP id
- d2e1a72fcca58-73e267b8980mr580394b3a.2.1745455782140; 
+X-Google-Smtp-Source: AGHT+IEqGYk/MjR08X59nB+SwBCoqqKpJupqCBnZGMaJ8jdag0u//xoel0OS3yUwwDdCflLpmCwQag==
+X-Received: by 2002:a05:6a00:6c98:b0:737:cd8:2484 with SMTP id
+ d2e1a72fcca58-73e267e25dfmr659723b3a.6.1745455782748; 
  Wed, 23 Apr 2025 17:49:42 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73e25a9a0f1sm207344b3a.137.2025.04.23.17.49.41
+ d2e1a72fcca58-73e25a9a0f1sm207344b3a.137.2025.04.23.17.49.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Apr 2025 17:49:41 -0700 (PDT)
+ Wed, 23 Apr 2025 17:49:42 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 010/148] system/kvm: make kvm_flush_coalesced_mmio_buffer()
- accessible for common code
-Date: Wed, 23 Apr 2025 17:47:15 -0700
-Message-ID: <20250424004934.598783-11-richard.henderson@linaro.org>
+Subject: [PULL 011/148] exec/ram_addr: call xen_hvm_modified_memory only if
+ xen is enabled
+Date: Wed, 23 Apr 2025 17:47:16 -0700
+Message-ID: <20250424004934.598783-12-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250424004934.598783-1-richard.henderson@linaro.org>
 References: <20250424004934.598783-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,35 +101,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-This function is used by system/physmem.c will be turn into common code
-in next commit.
-
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250317183417.285700-11-pierrick.bouvier@linaro.org>
+Message-ID: <20250317183417.285700-12-pierrick.bouvier@linaro.org>
 ---
- include/system/kvm.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/exec/ram_addr.h | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/include/system/kvm.h b/include/system/kvm.h
-index ab17c09a55..21da3b8b05 100644
---- a/include/system/kvm.h
-+++ b/include/system/kvm.h
-@@ -210,11 +210,11 @@ bool kvm_arm_supports_user_irq(void);
- int kvm_on_sigbus_vcpu(CPUState *cpu, int code, void *addr);
- int kvm_on_sigbus(int code, void *addr);
+diff --git a/include/exec/ram_addr.h b/include/exec/ram_addr.h
+index f5d574261a..92e8708af7 100644
+--- a/include/exec/ram_addr.h
++++ b/include/exec/ram_addr.h
+@@ -339,7 +339,9 @@ static inline void cpu_physical_memory_set_dirty_range(ram_addr_t start,
+         }
+     }
  
-+void kvm_flush_coalesced_mmio_buffer(void);
-+
- #ifdef COMPILING_PER_TARGET
- #include "cpu.h"
+-    xen_hvm_modified_memory(start, length);
++    if (xen_enabled()) {
++        xen_hvm_modified_memory(start, length);
++    }
+ }
  
--void kvm_flush_coalesced_mmio_buffer(void);
--
- /**
-  * kvm_update_guest_debug(): ensure KVM debug structures updated
-  * @cs: the CPUState for this cpu
+ #if !defined(_WIN32)
+@@ -415,7 +417,9 @@ uint64_t cpu_physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
+             }
+         }
+ 
+-        xen_hvm_modified_memory(start, pages << TARGET_PAGE_BITS);
++        if (xen_enabled()) {
++            xen_hvm_modified_memory(start, pages << TARGET_PAGE_BITS);
++        }
+     } else {
+         uint8_t clients = tcg_enabled() ? DIRTY_CLIENTS_ALL : DIRTY_CLIENTS_NOCODE;
+ 
 -- 
 2.43.0
 
