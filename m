@@ -2,67 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A972CA9B91F
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 22:26:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AF0CA9B92A
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 22:28:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u837n-0008Ey-60; Thu, 24 Apr 2025 16:24:47 -0400
+	id 1u837p-0008GC-3P; Thu, 24 Apr 2025 16:24:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u837X-0008DE-W5
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 16:24:33 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u837c-0008Do-VF
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 16:24:37 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u837W-0004za-Co
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 16:24:31 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-43cf05f0c3eso10637915e9.0
- for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 13:24:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u837b-000508-5B
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 16:24:36 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-39ac56756f6so1414345f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 13:24:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745526268; x=1746131068; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745526273; x=1746131073; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ddcO3MH/wvfN8le+HNpO9SiipEJHLq56ZFRiij0VC60=;
- b=lAOvFslaf00f9nFc0JlWmm/ZQZ0+gYXD0tnWD4T0FX9fLfQv/XsF/ZxE4E/Dyysrsr
- rmuGf/QFDMPyfRcFBMmCrGVeATJiAMB0TarEfp1IquzhU4fnUhqIdaB/BPvZolQtVgPS
- qu5txQJCc6zethSDaaM4A9mfNPcXa7KVD+AFQ4/qrm6tGOgzyMZpDVL/VDTB64DeVSYt
- XEHS39y4LqadM6QcIz107QIL+24MbUKrKF5fU94N9MDhCMVMvtrdtaCFS2ZhWw29BYpq
- mAuyFsbJ02szYFbZyr3+x9x8nhSEff0Fh491+6XtkTWl6l2V2qbtfScl8H7QdZRuzA1n
- Gn3w==
+ bh=3zoze0HQX2v4PQHrHD9ETMHyzKW/oYRwQhqDIameM5A=;
+ b=MpBw5sTGg4HwZ8Fk2T7mJWow1pByqwJGqkfzVyFmPdd1bppfi5meGCNix6kZe9KlUn
+ GAwTHZOFbh/4TQuYc5Nnv3Nz7V0GpWEJy7ks1KDjyKxNO9VxD3BrxcWxmmCCw4swxT/c
+ uWr8p4Yoyuq08EgLwKaOSSqNGSXs+Bxl1cdXilrM6JX5SnEwStypT+3IHvoQsvqqQBUb
+ g0U4cWApI9n6502G3mJfKbjZm74aRmFqNzBRZFlquYv2uj5rMa4twOpuptWSm2lcLoNU
+ LGBi7jzvpWSrpZqlVpKcfnsSZP03pcfOuZFVmpQUZdXQkr3uH+gLw8/Htruc3qI8zYCA
+ +VCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745526268; x=1746131068;
+ d=1e100.net; s=20230601; t=1745526273; x=1746131073;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ddcO3MH/wvfN8le+HNpO9SiipEJHLq56ZFRiij0VC60=;
- b=Ta38ZTz4R0Q2txdGZJc9DGdN+eDPvt3Dg+UVUsaO/Bho5DjSJJBJ5g34z5gZf7IIK8
- ZgsxyU5BggN+76NetEFk5WZCvvJ1Iwt+4f7aO5fY/Puv19Y1EEJSJunYlpB2GnAvcCJJ
- FQqCZ7eA89JZPlmWG0JVBi09sCC4WSUinxsyfzDmTgS1Xd4vuHMnmHa9L1CkBIf7VOvj
- nYPFLn1qoY5lMfYP2gClp2sGXpO8IB8ABqSMCtnYSPGoSYUE4+j7c7i9niLSbPeD9uto
- 52kFFRjeiZW9VRIelhAdwSE6muBbOHfQD9oKWnBRLez1uLzndt5CzdjeA+FfI0/o6EDC
- XfLA==
+ bh=3zoze0HQX2v4PQHrHD9ETMHyzKW/oYRwQhqDIameM5A=;
+ b=iD44I6AbLA76m58QPm0zDXC0rIsrfwZILBgsIMe+V3FXOMTifgGXfRzVAshnuRwh9K
+ gDfaJ4ZBCghW/rZRyjdkNvDPPaqJxVWbRWOq4w8R6hnB+Pu4hW9hfcIIBNH7SPAF0q1X
+ 6mEtbFkIl/JRcgCMPNeUuEp6X5q0HWwvPsPPn+D/vV/u021nmtIFtdBFrvuSXIoDJQaU
+ S1X0RDtjJ6YaPrJOV28EC57CWBF/7TqmBv4giVIfSktsFSn6OD5BzNXl2TMpp7ExiWQa
+ 1PA22W1sH02P5EC/9BLEu8PfodGJuZCkghhlJB9PvEPuIu6qnMhqJTHnnInHEkG/9E7b
+ F6bg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWnFnD5TYdRQq5LE3MXv1rpCTKe1W4f8f0+bv4musnIqWgIrjQrWGDEWiIt5iADP6bk2t/64su8BH2H@nongnu.org
-X-Gm-Message-State: AOJu0YwXA5WzX1a5TPThrbZ1JL9YSyBB+CdU1xrzWt0uJ9dcBopzXO6w
- TkGhBt6HfTiMrHcmx4YWGDOyc2GRYN7GU5pDkygStz2IuuQc67W0yZ5jSfRhKL9yMOjJcBJrHZB
- x
-X-Gm-Gg: ASbGncuK/CqsZvPx4AdQXlf7HW61fUMhBt3QCH21fDAUT6xIZR2IwReJhxn3O79QDSr
- QTG9+1cKYaNJlbOa6aN2fOEU/HAInWHQr02PxSDvVCREeIthDxKK2WhOooWv9glqWY1LB80ppWn
- NDgY2SrM4zJ5iUy+vEQanO+V5z2esc9nTSCJHixsD8gP9BEUPD3QVtZTt8PSxsjGW+uAfsdg47F
- vKrrndUs7WkcYidi2LvU8JCloYyP33Y4LB2w931o4/9XzgQMsV4yGtmsEDX6pkHZviqXaPG0+mp
- 2YzRqW7WrxTF+3sDI6VrOlR203elakR4beDvljps1eBzxZfYDU8LnvoZxeFJJ/65HmwDoiIR3zd
- X69WLZO64D5bPXYNJjGVfszZcBA==
-X-Google-Smtp-Source: AGHT+IFnGxfr/sr4kkMJfRBriFTUG64cuc12dSB7Iz5BQGnZ/6vb3aIvFhYPNj4Zyhozk5U2/eWg0Q==
-X-Received: by 2002:a05:600c:8710:b0:43e:afca:808f with SMTP id
- 5b1f17b1804b1-440a31a409bmr9219915e9.31.1745526268450; 
- Thu, 24 Apr 2025 13:24:28 -0700 (PDT)
+ AJvYcCVMlE8MSAe3EKcM80BKmuWtd2IVdtQvA/9zLmU7cbMSuJe/0qGxNtHzfnZvqTQz8nkgUimoGBxUs9vQ@nongnu.org
+X-Gm-Message-State: AOJu0Yx0fAK/cRVWUdIecUIQX0POF3k+JcFbc5g4psTS2zOysm4ay0Lp
+ gVTFQz/pEYxMBPVWq4jzDbHlqgv8uEqsvTsokbFeLYQMznx/HRq5ap5T1itXVag=
+X-Gm-Gg: ASbGncu3T27tYMLM15Y8lstNE9AOxpLmY4fKcjPqZN+J22bF1ycgSEKm/gUJfWdtWjQ
+ 6lTDE9+z1YVNUnsMS97FkxqLTzCgdSl71xbtNIszb5QLpdNCpPvhJqniCVQtDfcTQftPb/09/sb
+ NzUb+/QV5BvlfGdY7nS9rWufRWQL+wxrQT9F8A111UFTnLAo08kThv7JVoYE9DSLeCEGodK1fi7
+ G9Ok55qJwgGfPA4I04Ru1XjjYhJPigpCtunOSM4MA89GPVtTiyzKj/t5rBrj0uL/F6qXm62CQGc
+ 5lvub+vuvnoHvd+J01Txgs5Vr+AuQFZ6pQBCVm3QuB36xkGqzKzupFN+hjVG5o7V3CNz/xzZe0C
+ 9h+C6erl+cvgNwJRqngVWp55A7A==
+X-Google-Smtp-Source: AGHT+IHtgTMU5++X8wPjSfrSQPuW3DPrd+vuCS2eNuu+dFvHtfOSLmXluXWiwnY3dGzb4JzhwvPBXQ==
+X-Received: by 2002:a5d:5f93:0:b0:39c:30cd:352c with SMTP id
+ ffacd0b85a97d-3a072a68d45mr604179f8f.8.1745526273129; 
+ Thu, 24 Apr 2025 13:24:33 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4409d2ac26dsm32728515e9.21.2025.04.24.13.24.27
+ ffacd0b85a97d-3a073cbec5csm281461f8f.43.2025.04.24.13.24.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 24 Apr 2025 13:24:27 -0700 (PDT)
+ Thu, 24 Apr 2025 13:24:32 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-devel@nongnu.org
@@ -70,18 +69,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Subject: [PATCH v3 03/13] accel/tcg: Correct list of included headers in
- tcg-stub.c
-Date: Thu, 24 Apr 2025 22:24:02 +0200
-Message-ID: <20250424202412.91612-4-philmd@linaro.org>
+Subject: [PATCH v3 04/13] include/exec: Include missing headers in exec-all.h
+Date: Thu, 24 Apr 2025 22:24:03 +0200
+Message-ID: <20250424202412.91612-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250424202412.91612-1-philmd@linaro.org>
 References: <20250424202412.91612-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,36 +102,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In commit 3549118b498 we moved cpu_loop_exit*() declarations to
-"exec/cpu-common.h" but neglected to update tcg-stub.c. We missed
-it because "exec/cpu-common.h" is indirectly pulled in via
-"exec/exec-all.h" -> "exec/translation-block.h". Include it
-directly instead of the not necessary "exec/exec-all.h".
+"exec/exec-all.h" declares prototypes such:
 
-Commit bb6cf6f0168 ("accel/tcg: Factor tcg_cpu_reset_hold() out")
-removed the need for "exec/tb-flush.h", so remote it too.
+  void *probe_access(CPUArchState *env, vaddr addr, int size,
+                                        ^^^^^
+                     MMUAccessType access_type, int mmu_idx,
+                     uintptr_t retaddr);
+  MemoryRegionSection *iotlb_to_section(CPUState *cpu,
+                                        hwaddr index,
+                                        ^^^^^^
+                                        MemTxAttrs attrs);
+                                        ^^^^^^^^^^
 
-Fixes: 3549118b498 ("exec: Move cpu_loop_foo() functions to 'cpu-common.h'")
+vaddr is defined in "exec/vaddr.h", hwaddr in "exec/hwaddr.h"
+and MemTxAttrs in "exec/memattrs.h". All these headers are
+indirectly pulled in via "exec/translation-block.h". Since
+we will remove "exec/translation-block.h" in the next commit,
+include the missing ones, otherwise we'd get errors such:
+
+  include/exec/exec-all.h:51:1: error: unknown type name 'hwaddr'
+     51 | hwaddr memory_region_section_get_iotlb(CPUState *cpu,
+        | ^
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 ---
- accel/stubs/tcg-stub.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ include/exec/exec-all.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/accel/stubs/tcg-stub.c b/accel/stubs/tcg-stub.c
-index b2b9881bdfb..3b76b8b17c1 100644
---- a/accel/stubs/tcg-stub.c
-+++ b/accel/stubs/tcg-stub.c
-@@ -11,8 +11,7 @@
-  */
+diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
+index 24383b6abad..c46255e66ef 100644
+--- a/include/exec/exec-all.h
++++ b/include/exec/exec-all.h
+@@ -20,8 +20,11 @@
+ #ifndef EXEC_ALL_H
+ #define EXEC_ALL_H
  
- #include "qemu/osdep.h"
--#include "exec/tb-flush.h"
--#include "exec/exec-all.h"
-+#include "exec/cpu-common.h"
++#include "exec/hwaddr.h"
++#include "exec/memattrs.h"
+ #include "exec/mmu-access-type.h"
+ #include "exec/translation-block.h"
++#include "exec/vaddr.h"
  
- G_NORETURN void cpu_loop_exit(CPUState *cpu)
- {
+ #if defined(CONFIG_TCG)
+ #include "accel/tcg/getpc.h"
 -- 
 2.47.1
 
