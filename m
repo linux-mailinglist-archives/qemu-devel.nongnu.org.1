@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AF0CA9B92A
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 22:28:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AA95A9B91D
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 22:26:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u837p-0008GC-3P; Thu, 24 Apr 2025 16:24:49 -0400
+	id 1u837q-0008HH-Hf; Thu, 24 Apr 2025 16:24:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u837c-0008Do-VF
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 16:24:37 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u837h-0008F3-FQ
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 16:24:43 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u837b-000508-5B
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 16:24:36 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-39ac56756f6so1414345f8f.2
- for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 13:24:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u837f-00050Q-Rm
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 16:24:41 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-39c13fa05ebso988866f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 13:24:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745526273; x=1746131073; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745526278; x=1746131078; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3zoze0HQX2v4PQHrHD9ETMHyzKW/oYRwQhqDIameM5A=;
- b=MpBw5sTGg4HwZ8Fk2T7mJWow1pByqwJGqkfzVyFmPdd1bppfi5meGCNix6kZe9KlUn
- GAwTHZOFbh/4TQuYc5Nnv3Nz7V0GpWEJy7ks1KDjyKxNO9VxD3BrxcWxmmCCw4swxT/c
- uWr8p4Yoyuq08EgLwKaOSSqNGSXs+Bxl1cdXilrM6JX5SnEwStypT+3IHvoQsvqqQBUb
- g0U4cWApI9n6502G3mJfKbjZm74aRmFqNzBRZFlquYv2uj5rMa4twOpuptWSm2lcLoNU
- LGBi7jzvpWSrpZqlVpKcfnsSZP03pcfOuZFVmpQUZdXQkr3uH+gLw8/Htruc3qI8zYCA
- +VCw==
+ bh=3spF3BHyP+3nJq+PBnSsTeYKhoBB0RsO1qRS6M0pmcw=;
+ b=MUfkEqIB7lPXGeP90ULAWyHvcSHQ9yJQur14O2b8oATemj21VJ3F7El1oFm8ps821r
+ 0N0pYVq69lRB8px9WLCcVyXOeTG8RbqyG0d6tpnYcILM2wym7ZGuc2m2txB5GguEOyVv
+ FhtOrpWLFALjuXPH64NcINplm1luYWffa7Cz+XegSuL24zlG29eM52LLFFIq5hTgjQl9
+ uLYCneLI2GpcfR+6CCfWXHvnmMZkRQJx3oJlZg1DZkA3FQQvEzIcsIopMzoFusw6F1oF
+ eOP565x5LhVCf08EPSetAuJ0nEq0c5Fov1LEuNOlb1MYHil8SUUmrt5VyW6Gk4jEQRBw
+ y9eQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745526273; x=1746131073;
+ d=1e100.net; s=20230601; t=1745526278; x=1746131078;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3zoze0HQX2v4PQHrHD9ETMHyzKW/oYRwQhqDIameM5A=;
- b=iD44I6AbLA76m58QPm0zDXC0rIsrfwZILBgsIMe+V3FXOMTifgGXfRzVAshnuRwh9K
- gDfaJ4ZBCghW/rZRyjdkNvDPPaqJxVWbRWOq4w8R6hnB+Pu4hW9hfcIIBNH7SPAF0q1X
- 6mEtbFkIl/JRcgCMPNeUuEp6X5q0HWwvPsPPn+D/vV/u021nmtIFtdBFrvuSXIoDJQaU
- S1X0RDtjJ6YaPrJOV28EC57CWBF/7TqmBv4giVIfSktsFSn6OD5BzNXl2TMpp7ExiWQa
- 1PA22W1sH02P5EC/9BLEu8PfodGJuZCkghhlJB9PvEPuIu6qnMhqJTHnnInHEkG/9E7b
- F6bg==
+ bh=3spF3BHyP+3nJq+PBnSsTeYKhoBB0RsO1qRS6M0pmcw=;
+ b=V8gFD0xh4kQ9bEjaR2Azn8QXExOOdwfsRmQ6xGCrde3Sol+4gsHyPz49aX82PvPlIG
+ yzBdazMwcpS4YXTfm9vKAmvU3JPcDHZ0zZU18mhlzOG4U5Knf5/B9t+9ry6Qi3On3wO0
+ UK2dNRHkJ3t7PvJ5EKrPYZP7UAl8VNz59Vgc7TlCcPyuovkMUgCz0u1iL1sZGePbIRjk
+ 9lcBDn4tehUGS8MpuHexvcu/b4ZhZjfa07Z7rIayyTdcNoB4DCmTb475nb1xULQNQB5m
+ hOYPewx4HK7z4yPnWhBNCqG/WBC7cywFi8nWHgn2Mkz6DiTUc+VlD9BA7GuyPn3HOa+p
+ Ykdg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVMlE8MSAe3EKcM80BKmuWtd2IVdtQvA/9zLmU7cbMSuJe/0qGxNtHzfnZvqTQz8nkgUimoGBxUs9vQ@nongnu.org
-X-Gm-Message-State: AOJu0Yx0fAK/cRVWUdIecUIQX0POF3k+JcFbc5g4psTS2zOysm4ay0Lp
- gVTFQz/pEYxMBPVWq4jzDbHlqgv8uEqsvTsokbFeLYQMznx/HRq5ap5T1itXVag=
-X-Gm-Gg: ASbGncu3T27tYMLM15Y8lstNE9AOxpLmY4fKcjPqZN+J22bF1ycgSEKm/gUJfWdtWjQ
- 6lTDE9+z1YVNUnsMS97FkxqLTzCgdSl71xbtNIszb5QLpdNCpPvhJqniCVQtDfcTQftPb/09/sb
- NzUb+/QV5BvlfGdY7nS9rWufRWQL+wxrQT9F8A111UFTnLAo08kThv7JVoYE9DSLeCEGodK1fi7
- G9Ok55qJwgGfPA4I04Ru1XjjYhJPigpCtunOSM4MA89GPVtTiyzKj/t5rBrj0uL/F6qXm62CQGc
- 5lvub+vuvnoHvd+J01Txgs5Vr+AuQFZ6pQBCVm3QuB36xkGqzKzupFN+hjVG5o7V3CNz/xzZe0C
- 9h+C6erl+cvgNwJRqngVWp55A7A==
-X-Google-Smtp-Source: AGHT+IHtgTMU5++X8wPjSfrSQPuW3DPrd+vuCS2eNuu+dFvHtfOSLmXluXWiwnY3dGzb4JzhwvPBXQ==
-X-Received: by 2002:a5d:5f93:0:b0:39c:30cd:352c with SMTP id
- ffacd0b85a97d-3a072a68d45mr604179f8f.8.1745526273129; 
- Thu, 24 Apr 2025 13:24:33 -0700 (PDT)
+ AJvYcCV82L8jR9zJRzlRvHQI8BJfX+Mc2FDNtL+k5hFvgn5YV97XSzTSmLkbQtI/csKsLY+PVozyUhr22NK3@nongnu.org
+X-Gm-Message-State: AOJu0YwbvArH856/rSKmPlyxodtHx1EstW73ew//ajwjN/Fu9GVRGcxL
+ Ewtp7VCMiJ28iSQpDJ42fM9/C6Wgcpj66WfIhLityP0trgKacK9fqMOwJ7c5oBI=
+X-Gm-Gg: ASbGncuKzEazuMoVsunJ+5uvCcrn1MqfPmwl1HGyNOASmK8N/5aX99AFUnY0f9eRu9e
+ XHw3jlUU4OaZLmMk+h11PNmLDVVma4oO5OSpRJn8NebR+K0p63sAvdYZOHg4q8sLjob0bQ75qvL
+ I1CwfG05ppZcuHTW3NWG8Wjo3FGHpidB3KEM5+7XaV6HpkDNv7IkIS+BuiKjEk6jBcPRgfcgxx5
+ /unZQxAezh3EUPRCRqBwEa5VcccwppP6BF2PsvVp0owg25/JOiJBjM9egFM9rIGl7SY+ySIKSXj
+ mywCzHhzz63542QQgxhdRRBgaQrxYveENrI+5nGNcfcA3FxJqMmm9BD8vxeacB7R8NJ1NOBf8nk
+ hS4u1hUnckByOmKg=
+X-Google-Smtp-Source: AGHT+IGN41rx+j8FPCY2AB3k/b8jhhgwUr9ZrqH8IdWXic8w0wKm80U35kHbxyVu5WsozwYASHkzLQ==
+X-Received: by 2002:a5d:64e3:0:b0:39a:c9d9:877b with SMTP id
+ ffacd0b85a97d-3a072aa6a1dmr625584f8f.27.1745526278019; 
+ Thu, 24 Apr 2025 13:24:38 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a073cbec5csm281461f8f.43.2025.04.24.13.24.32
+ ffacd0b85a97d-3a073c8cd7fsm297607f8f.1.2025.04.24.13.24.37
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 24 Apr 2025 13:24:32 -0700 (PDT)
+ Thu, 24 Apr 2025 13:24:37 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Subject: [PATCH v3 04/13] include/exec: Include missing headers in exec-all.h
-Date: Thu, 24 Apr 2025 22:24:03 +0200
-Message-ID: <20250424202412.91612-5-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 05/13] include/exec: Move tb_invalidate_phys_range to
+ translation-block.h
+Date: Thu, 24 Apr 2025 22:24:04 +0200
+Message-ID: <20250424202412.91612-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250424202412.91612-1-philmd@linaro.org>
 References: <20250424202412.91612-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,50 +102,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"exec/exec-all.h" declares prototypes such:
+From: Richard Henderson <richard.henderson@linaro.org>
 
-  void *probe_access(CPUArchState *env, vaddr addr, int size,
-                                        ^^^^^
-                     MMUAccessType access_type, int mmu_idx,
-                     uintptr_t retaddr);
-  MemoryRegionSection *iotlb_to_section(CPUState *cpu,
-                                        hwaddr index,
-                                        ^^^^^^
-                                        MemTxAttrs attrs);
-                                        ^^^^^^^^^^
-
-vaddr is defined in "exec/vaddr.h", hwaddr in "exec/hwaddr.h"
-and MemTxAttrs in "exec/memattrs.h". All these headers are
-indirectly pulled in via "exec/translation-block.h". Since
-we will remove "exec/translation-block.h" in the next commit,
-include the missing ones, otherwise we'd get errors such:
-
-  include/exec/exec-all.h:51:1: error: unknown type name 'hwaddr'
-     51 | hwaddr memory_region_section_get_iotlb(CPUState *cpu,
-        | ^
-
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250424011918.599958-15-richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 ---
- include/exec/exec-all.h | 3 +++
- 1 file changed, 3 insertions(+)
+ include/exec/exec-all.h          | 5 -----
+ include/exec/translation-block.h | 4 ++++
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
-index 24383b6abad..c46255e66ef 100644
+index c46255e66ef..4c5ad98c6a9 100644
 --- a/include/exec/exec-all.h
 +++ b/include/exec/exec-all.h
-@@ -20,8 +20,11 @@
- #ifndef EXEC_ALL_H
- #define EXEC_ALL_H
- 
-+#include "exec/hwaddr.h"
-+#include "exec/memattrs.h"
+@@ -23,7 +23,6 @@
+ #include "exec/hwaddr.h"
+ #include "exec/memattrs.h"
  #include "exec/mmu-access-type.h"
- #include "exec/translation-block.h"
-+#include "exec/vaddr.h"
+-#include "exec/translation-block.h"
+ #include "exec/vaddr.h"
  
  #if defined(CONFIG_TCG)
- #include "accel/tcg/getpc.h"
+@@ -123,10 +122,6 @@ int probe_access_full_mmu(CPUArchState *env, vaddr addr, int size,
+ #endif /* !CONFIG_USER_ONLY */
+ #endif /* CONFIG_TCG */
+ 
+-/* TranslationBlock invalidate API */
+-void tb_invalidate_phys_range(CPUState *cpu, tb_page_addr_t start,
+-                              tb_page_addr_t last);
+-
+ #if !defined(CONFIG_USER_ONLY)
+ 
+ /**
+diff --git a/include/exec/translation-block.h b/include/exec/translation-block.h
+index 8b8e730561d..cdce399ebab 100644
+--- a/include/exec/translation-block.h
++++ b/include/exec/translation-block.h
+@@ -207,4 +207,8 @@ static inline void tb_set_page_addr1(TranslationBlock *tb,
+ #endif
+ }
+ 
++/* TranslationBlock invalidate API */
++void tb_invalidate_phys_range(CPUState *cpu, tb_page_addr_t start,
++                              tb_page_addr_t last);
++
+ #endif /* EXEC_TRANSLATION_BLOCK_H */
 -- 
 2.47.1
 
