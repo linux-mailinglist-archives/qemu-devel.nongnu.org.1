@@ -2,80 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 369DEA9BAA0
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 00:22:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9664A9BA9E
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 00:22:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u84wh-0004SJ-2d; Thu, 24 Apr 2025 18:21:27 -0400
+	id 1u84wh-0004T4-Tf; Thu, 24 Apr 2025 18:21:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u84wZ-0004S6-3k
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 18:21:20 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u84wc-0004SS-Cq
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 18:21:22 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u84wW-0000vb-W1
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 18:21:18 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3914aba1ce4so1204517f8f.2
- for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 15:21:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u84wa-0000w4-OL
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 18:21:22 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-39ee5a5bb66so992502f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 15:21:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745533274; x=1746138074; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=hc9oFBxQbOXJtIL/AdITLWvLaB7iAJbD619rbLcK/kM=;
- b=lbuthDVdTwO3wt/djKKvgVfLZsZfgsIKJ2GMvELufManExaHpGkO9tlSdWBvdMJXEF
- uW3pjFoh1/uOmW6cFaFA+7fDmxqXdTSK4dBtjS1xjltBe7VropC6u/yhiggxGrdtyTxA
- E89wRGzO7ml7dklMgEOkdBqv6YcU1ZAqDG1rPt0M7h2Hiup8AW+hAYKMnFsZvoCvw8DY
- PbafD8FXP/KTI+paEOssX4Bbr9JlJsd7DWE2ePrp5fl8SHk0G8Bj66wguAEcf1W+44wI
- FvxAuk/puPeLVzos0XItX5Gq3y9RVqVS1BCcUvqYgJB4kzxYLNamlZUiSxgzlAg2p1ab
- qzCA==
+ d=linaro.org; s=google; t=1745533279; x=1746138079; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5LxRNMlVfoq/xLHs+1YnVYUs29an33zqnfwHUeMoXn4=;
+ b=Ngljd7ga0myWaA//gl0BKuJWPVEKAEfY4vHpgZIkTSOlG7A7WRQ0pK4fG2gEWIUV2m
+ V+QBrOzO+xGkuSnvJXaF/RsWJOEGsiKydNmn5nJQwijM97mKn+YTWTINJibOKiyR+GLT
+ LYdC+4FzsArppdMuvdFSBJORyN9OnV7VYJBDhHHDgywC+/xxeQ0ET3OS9Jxfm0CEI2/I
+ ts0wIYItt8iaXT3uxzYSMp43EbK5NL0WfXeXG5DzFgjb5C3HnSe7HP6Ul85CgvmrfmKf
+ 8fKhfnqeRY9WoXjJAw2dj2jcWXtI6i70T73ZTYTayVXJ5lKNTt04kdtL2ALwr4pVQhm+
+ ZIIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745533274; x=1746138074;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=hc9oFBxQbOXJtIL/AdITLWvLaB7iAJbD619rbLcK/kM=;
- b=da9ldnuGKmAgph9hoo7QbnJDF4MOfvtWd6y615m56lKvRMO9wO5cFbeYlc+vHnryiY
- 33ytycTRmNUa7X2T+JIx4SPJQ4BcLi6P/9TJ26x5VBKG5LazXX+9l07X27EFapdNWXz9
- mYtH0jl5PPU1FULlTe81J7syEc/xJfR38tccTr5YqyIL08PKLmMRauSFPMaNlIjJmgd0
- Yo4MBvPPFE9GjnOe8q8xZG/MfW15l0r8feaJxDG2Hc1df/H2q7os+JBZ9wqth7/UYEEt
- AzjxAkMnqCUN6/MUhbpOz3UKvjqvl4SAWL6FNJxlKaCraVLCUHDQVeYNpmUkR1bRhljJ
- uQOw==
+ d=1e100.net; s=20230601; t=1745533279; x=1746138079;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=5LxRNMlVfoq/xLHs+1YnVYUs29an33zqnfwHUeMoXn4=;
+ b=rKSZG7OuPsnfAwJJwNJfmfNyhFmq1aW2xizxofyy8mAJt6VhDgcyLffpd+kpLWxxlA
+ liuBFLV2d+Lgf9qhz1R77kJs89/vKL3gmClomtV+5yPjo+1jq8qqJPiA+bBRxUgc6c4H
+ oWb8swK8ms97g8Ime35s1QeAciazkQq9I+AfMSr46QVh3BjY3u5ZnE4yjgTXgcZ8VcDt
+ eKipbpPkBg65CvOujWrT2A+8JyPugye9s47LSpXxSMiAz+BjFH8kpFFYkHpk586yTeUA
+ cU92Xn9GG+izsg+VLJs3V6qeu4s1rc6xCEenoPAatmOI9qdlZ258hkFIDGSg/RhBWLqT
+ PuHQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVmj4XQtzZL8xZG1+ixL6oyg1Xv4DUnOkJWtTzznQXksQ8U+pZcoQQL/9TnjPWT60JTVCOtIPkOnaqx@nongnu.org
-X-Gm-Message-State: AOJu0YzgGOaIdlJ8IlP55cLVom02XR+fG7Rl6nxQheH8A3xoyZPlsaDF
- kmezOJXwFMlDh3YEPyrzlIEZyLAT+1f6PamOxEWwjXFxlTk0nIE3syKCcvc1pqM=
-X-Gm-Gg: ASbGncv7qGE6PXPBIj+auVG2nxpFFzkhO5OU6X8qSbkyzS8xJgDHqziUfMRhmBhIGBj
- xfrfbNrPGfwvz+NAbouf3vpMrr1QVwX5MD6+FxigBwyFcMYjYpi9kHFTqK46lwTmBT56knhjZwy
- Utet3yh6STj47HtUm8iSCoby+kStJfq5Vt8ejYfZvlKjgeEtnL8NfWmoRXwiwf9nnqaBxj+F+5V
- OXa0znq2XSEHFNza3vModXa584+jxN2cOhckFm055ytRTfAXInNn1XgEptECWFPWFvRLJ3L74TV
- EStJl5vehc6ZTeqyjwvBDZfwy5sKETCmB8kjIk8HcYNtWjCutmfnSz3lgr+qKd8skPlLRX0axxR
- 5vurhMuwMItEvk2/kabTgAvbCPQ==
-X-Google-Smtp-Source: AGHT+IGlZJmnEhRlvc/fU9hPcLYHrUFYC+aitAFtqHUeozSl6cJkzT8IHwyzMYgDCus8Q6n7MdPafg==
-X-Received: by 2002:a5d:47cc:0:b0:39f:9f:a177 with SMTP id
- ffacd0b85a97d-3a072a99d31mr612092f8f.17.1745533274258; 
- Thu, 24 Apr 2025 15:21:14 -0700 (PDT)
+ AJvYcCXRVJwew1mo3RBoa1wGaHtd1Ca7sg1lrD5p4x69z+3jJI1FLIni1J97gqJHd8aLpHeQV5USTgSlt/CR@nongnu.org
+X-Gm-Message-State: AOJu0Yx/O3LuXfqxed5LWySCzCm7rWMSdiMtJtutOyXHMK9U7k8Hn6wj
+ N0qawnwrEEDnfM4QSg3v/OsC7xt4/ec+AdxkhTvfN7t478JVNmfvuljxaDhAZCvSLavieGVJeeV
+ x
+X-Gm-Gg: ASbGnctUEuwKLF3H2DKlRG/ysffnX4eATKoEie/WsEQOzDFBYsVZ6+z49S0LPsOuKnD
+ 0qjTsCeonUfSGksTVT43pOSQbIVUe0M2XWljZFZGic4ufBFR3IAtsWI+2ylT/Sj+tLWoeGlpUeQ
+ cVa3Jg3PlKquQJWLWfy6Kihidz00FAzMgrRz8eQGwj/qh9/hA4KCpmSvtleEa9gXdWGYBMorLLe
+ k7e8TsFk1cMKB3pYV+/A/JGanrxJEhmYM/IvCpYi3+CIuzoCkR607IlI1bqCd8CPbm4UuX40ZBX
+ talbdrQjGI438Z/TJdpypBU0zCZaZ/l69IvYYpnQvtY4ydA8sRMOCjsaNgddnhkBZ05mIHy9tDP
+ sAIhzTzLYCW+c8Mg=
+X-Google-Smtp-Source: AGHT+IHSad4Xz7LFQzJPYSs85Be7hKqxjhStIklnsslLexuzRdqmT+tUHQ/6l9UPL9jmTD+kmXwGQA==
+X-Received: by 2002:a05:6000:1888:b0:39c:142c:e889 with SMTP id
+ ffacd0b85a97d-3a06cf635bbmr3575647f8f.27.1745533278969; 
+ Thu, 24 Apr 2025 15:21:18 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a073ccb8e1sm516449f8f.59.2025.04.24.15.21.13
+ ffacd0b85a97d-3a073ca5219sm508551f8f.27.2025.04.24.15.21.18
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 24 Apr 2025 15:21:13 -0700 (PDT)
+ Thu, 24 Apr 2025 15:21:18 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.caveayland@nutanix.com>,
  Anton Johansson <anjo@rev.ng>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH v5 00/21] single-binary: Make hw/arm/ common
-Date: Fri, 25 Apr 2025 00:20:51 +0200
-Message-ID: <20250424222112.36194-1-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: [RFC PATCH v5 01/21] qapi: Rename TargetInfo structure as
+ QemuTargetInfo
+Date: Fri, 25 Apr 2025 00:20:52 +0200
+Message-ID: <20250424222112.36194-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250424222112.36194-1-philmd@linaro.org>
+References: <20250424222112.36194-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,134 +104,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since v4:
-- Add DEFINE_MACHINE_WITH_INTERFACES (Zoltan)
-- Use GPtrArray for get_valid_cpu_type (Richard)
-- Define InterfaceInfo[] arrays (Richard)
-- Collect R-b tags
+The QAPI-generated 'TargetInfo' structure name is only used
+in a single file. We want to heavily use another structure
+similarly named. Rename the QAPI one, since structure names
+are not part of the public API.
 
-Since v3:
-- QAPI structure renamed as QemuTargetInfo
-- MachineClass::get_valid_cpu_types() runtime
-- target_aarch64() checking SysEmuTarget value
-- Remove CONFIG_TCG #ifdef'ry in hw/arm/
+Suggested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Message-Id: <20250422145502.70770-2-philmd@linaro.org>
+---
+ qapi/machine.json          | 10 +++++-----
+ hw/core/machine-qmp-cmds.c |  4 ++--
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-Since v2:
-- More comments from Pierrick addressed
-- Use GList to register valid CPUs list
-- Remove all TARGET_AARCH64 uses in hw/arm/
-
-Since v1:
-- Dropped unrelated / irrelevant patches
-- Addressed Pierrick comments
-- Added R-b tag
-- Only considering machines, not CPUs.
-
-Available here, based on my pending patch queue:
-https://gitlab.com/philmd/qemu/-/tags/single-binary-hw-arm-rfc-v5
-
-Philippe Mathieu-Daudé (21):
-  qapi: Rename TargetInfo structure as QemuTargetInfo
-  qemu: Convert target_name() to TargetInfo API
-  system/vl: Filter machine list available for a particular target
-    binary
-  hw/core/null-machine: Define machine as generic QOM type
-  hw/arm: Register TYPE_TARGET_ARM/AARCH64_MACHINE QOM interfaces
-  hw/core: Allow ARM/Aarch64 binaries to use the 'none' machine
-  hw/boards: Introduce DEFINE_MACHINE_WITH_INTERFACES() macro
-  hw/arm: Add DEFINE_MACHINE_[ARM_]AARCH64() macros
-  hw/arm: Filter machine types for qemu-system-arm/aarch64 binaries
-  meson: Prepare to accept per-binary TargetInfo structure
-    implementation
-  config/target: Implement per-binary TargetInfo structure (ARM,
-    AARCH64)
-  hw/arm/aspeed: Build objects once
-  hw/arm/raspi: Build objects once
-  hw/core/machine: Allow dynamic registration of valid CPU types
-  hw/arm/virt: Register valid CPU types dynamically
-  hw/arm/virt: Check accelerator availability at runtime
-  qemu/target_info: Add %target_arch field to TargetInfo
-  qemu/target_info: Add target_aarch64() helper
-  hw/arm/virt: Replace TARGET_AARCH64 -> target_aarch64()
-  hw/core: Introduce MachineClass::get_default_cpu_type() helper
-  hw/arm/virt: Get default CPU type at runtime
-
- MAINTAINERS                       |  8 ++++
- meson.build                       | 11 +++++
- qapi/machine.json                 | 10 ++---
- include/hw/arm/machines-qom.h     | 31 +++++++++++++
- include/hw/boards.h               | 16 ++++++-
- include/hw/core/cpu.h             |  2 -
- include/qemu/target-info-impl.h   | 31 +++++++++++++
- include/qemu/target-info.h        | 34 ++++++++++++++
- configs/targets/aarch64-softmmu.c | 23 ++++++++++
- configs/targets/arm-softmmu.c     | 23 ++++++++++
- cpu-target.c                      |  5 ---
- hw/arm/aspeed.c                   | 31 ++++++++++---
- hw/arm/b-l475e-iot01a.c           |  2 +
- hw/arm/bananapi_m2u.c             |  3 +-
- hw/arm/bcm2836.c                  |  4 --
- hw/arm/collie.c                   |  2 +
- hw/arm/cubieboard.c               |  3 +-
- hw/arm/digic_boards.c             |  3 +-
- hw/arm/exynos4_boards.c           |  3 ++
- hw/arm/fby35.c                    |  2 +
- hw/arm/highbank.c                 |  3 ++
- hw/arm/imx25_pdk.c                |  3 +-
- hw/arm/imx8mp-evk.c               |  4 +-
- hw/arm/integratorcp.c             |  3 +-
- hw/arm/kzm.c                      |  3 +-
- hw/arm/mcimx6ul-evk.c             |  4 +-
- hw/arm/mcimx7d-sabre.c            |  4 +-
- hw/arm/microbit.c                 |  2 +
- hw/arm/mps2-tz.c                  |  5 +++
- hw/arm/mps2.c                     |  5 +++
- hw/arm/mps3r.c                    |  2 +
- hw/arm/msf2-som.c                 |  3 +-
- hw/arm/musca.c                    |  3 ++
- hw/arm/musicpal.c                 |  3 +-
- hw/arm/netduino2.c                |  3 +-
- hw/arm/netduinoplus2.c            |  3 +-
- hw/arm/npcm7xx_boards.c           |  6 +++
- hw/arm/npcm8xx_boards.c           |  2 +
- hw/arm/olimex-stm32-h405.c        |  3 +-
- hw/arm/omap_sx1.c                 |  3 ++
- hw/arm/orangepi.c                 |  3 +-
- hw/arm/raspi.c                    | 10 +++--
- hw/arm/raspi4b.c                  |  2 +
- hw/arm/realview.c                 |  5 +++
- hw/arm/sabrelite.c                |  3 +-
- hw/arm/sbsa-ref.c                 |  2 +
- hw/arm/stellaris.c                |  3 ++
- hw/arm/stm32vldiscovery.c         |  3 +-
- hw/arm/versatilepb.c              |  3 ++
- hw/arm/vexpress.c                 |  3 ++
- hw/arm/virt.c                     | 74 ++++++++++++++++++-------------
- hw/arm/xilinx_zynq.c              |  2 +
- hw/arm/xlnx-versal-virt.c         |  2 +
- hw/arm/xlnx-zcu102.c              |  2 +
- hw/core/machine-qmp-cmds.c        |  5 ++-
- hw/core/machine.c                 | 36 +++++++++++++++
- hw/core/null-machine.c            | 20 ++++++++-
- plugins/loader.c                  |  2 +-
- system/vl.c                       |  7 +--
- target-info-qom.c                 | 24 ++++++++++
- target-info-stub.c                | 22 +++++++++
- target-info.c                     | 26 +++++++++++
- target/arm/machine.c              | 12 +++++
- configs/targets/meson.build       |  5 +++
- hw/arm/meson.build                | 12 +++--
- 65 files changed, 513 insertions(+), 89 deletions(-)
- create mode 100644 include/hw/arm/machines-qom.h
- create mode 100644 include/qemu/target-info-impl.h
- create mode 100644 include/qemu/target-info.h
- create mode 100644 configs/targets/aarch64-softmmu.c
- create mode 100644 configs/targets/arm-softmmu.c
- create mode 100644 target-info-qom.c
- create mode 100644 target-info-stub.c
- create mode 100644 target-info.c
- create mode 100644 configs/targets/meson.build
-
+diff --git a/qapi/machine.json b/qapi/machine.json
+index a9ff8076317..c8feb9fe17b 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -275,15 +275,15 @@
+ { 'command': 'query-current-machine', 'returns': 'CurrentMachineParams' }
+ 
+ ##
+-# @TargetInfo:
++# @QemuTargetInfo:
+ #
+-# Information describing the QEMU target.
++# Information on the target configuration built into the QEMU binary.
+ #
+ # @arch: the target architecture
+ #
+ # Since: 1.2
+ ##
+-{ 'struct': 'TargetInfo',
++{ 'struct': 'QemuTargetInfo',
+   'data': { 'arch': 'SysEmuTarget' } }
+ 
+ ##
+@@ -291,11 +291,11 @@
+ #
+ # Return information about the target for this QEMU
+ #
+-# Returns: TargetInfo
++# Returns: QemuTargetInfo
+ #
+ # Since: 1.2
+ ##
+-{ 'command': 'query-target', 'returns': 'TargetInfo' }
++{ 'command': 'query-target', 'returns': 'QemuTargetInfo' }
+ 
+ ##
+ # @UuidInfo:
+diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
+index 9447e345b3c..a5e635152dc 100644
+--- a/hw/core/machine-qmp-cmds.c
++++ b/hw/core/machine-qmp-cmds.c
+@@ -134,9 +134,9 @@ CurrentMachineParams *qmp_query_current_machine(Error **errp)
+     return params;
+ }
+ 
+-TargetInfo *qmp_query_target(Error **errp)
++QemuTargetInfo *qmp_query_target(Error **errp)
+ {
+-    TargetInfo *info = g_malloc0(sizeof(*info));
++    QemuTargetInfo *info = g_malloc0(sizeof(*info));
+ 
+     info->arch = qapi_enum_parse(&SysEmuTarget_lookup, target_name(), -1,
+                                  &error_abort);
 -- 
 2.47.1
 
