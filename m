@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C738A99D5C
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 02:54:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C3CA99D7A
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 02:58:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7krR-0003iV-HF; Wed, 23 Apr 2025 20:54:41 -0400
+	id 1u7krs-0006Ku-SU; Wed, 23 Apr 2025 20:55:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kqX-00015R-Pm
+ id 1u7kqX-00015S-MH
  for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:53:46 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kqA-0004ip-QD
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:53:24 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-b0b2ce7cc81so375035a12.3
+ id 1u7kqB-0004iw-B3
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:53:25 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-739b3fe7ce8so396929b3a.0
  for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:53:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745456001; x=1746060801; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745456002; x=1746060802; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=N/LWI/F8VdrNv0zLmIvQDUtowepeiN+2e5bv51DEBF8=;
- b=vPTGnB2bhpozCVRyRfwMQXR8xnX8gHfiz1JYz6HUtFEcbRsHzO1OC5fZ610ctYHEHQ
- 3oG0jPogUIswU9wAWtGemTEpfS04XWjmpFoO29m3GNqT71EwK+GRUvSr4/VKjOoJ7UvA
- TCe5UqOg5ZzTLjveEBNpr94AtNMnjixmPHxYEPBJSG4LInZpANx+rSzOQ3rDCph8nA20
- Dxe4EhoCXoqoRa54BnGRPAcH7pkvEN4jS6eo5nNe/eWQlCcIpwqBG7BtGZskcHCKtCyn
- kdx1boOBeF3G3lzI/ikEBi9IG9ZV3uMTKyl1Q+xK0htykvvE1m5Hu6wckJEMW+5HK2rR
- QQJA==
+ bh=43YpcfeoVoWWDUGo+tAp4Ol8hUTU+r+JKYk8jD3UJRA=;
+ b=ucfo4MvsS0/lkZnqDH3dSWPSHQV0tn1rOkK7HCvTEMJmzg3Xa1UjYStNTc7rKGlfea
+ o3dRDbdhaM21/b79y7D8Wwn5xIPvatrSMkMvjRVhlyhx/CbKzVGLk7rKgP3OmcGlSu1m
+ GbjIolOwcrDmboThjjFr+HgF+bwSRIp8Zose8YbuICL2qw387chrIjgnv+Qf4iUXGdzx
+ +sojyHXkUEGUKwB+uZLpguzMHFUim8fjCFArGsBGlv3AucKgMynCDYo3SMBHk3zlvHAW
+ qr272q/LP7WcZsVVp/6q3bwKdgSKGUeeHSX6DQ/6KIhFDzg1Rt91shfunJy+UF3kJFKf
+ dMyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745456001; x=1746060801;
+ d=1e100.net; s=20230601; t=1745456002; x=1746060802;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=N/LWI/F8VdrNv0zLmIvQDUtowepeiN+2e5bv51DEBF8=;
- b=mINLlJ98MNTnkMA2R8L/osj8qfGg5HYdD8aBFJsUDX0CXwEbwAaTfAu2pGx+lHtuLO
- +83a5cfqlKhU8WL8cr0UzHvQuA/h0spX5SNA8gMiKUmEDNvrCiBjMcF2jmyNeNbKIW4x
- ncygF1EyKft8FndZhgPMrxCTZDiHp33HfTWumpV8p3euIE546Eu23yvRksqxspLUSbKL
- QcGuNrxzyrs54JKA4w1ptpHDPJsa5tD697h8U82CfMT6FfD15hOX20iVJvU9FJ9N1KEm
- /W0QdecQjOG1ahPowxRg+Bl1yc/xw7dLcvh0KOO1Rx6YOhhW6hsG6LHC495orJi1k4BI
- 3/0A==
-X-Gm-Message-State: AOJu0YxMdLh1kcHV/rANfXqBcRe+ZfL9L25cTnQKietkGH2TWWRjcO4Y
- hQSRuBUEsK59Ih1Ja3mgYi8zfHFPNPIPPc/hp1mkTs1SRBv0TVoQ2uixagyIEuSWicHzn6FXrLf
- a
-X-Gm-Gg: ASbGncufVJDNxSNwjhIcAEHWoW4KMo6Git7NfFdhXGh6fm5aQTSpReyOmAWokKOg4Vw
- ugBE+z7wv57UK2ov5UtHFBT489WJie8gawmzNNVG+LVKcGtpZLIZ3urBhy5KpV9LEs+veKsBQLO
- JdVfVfpcSncObti+RIiZVcsnXyluImXPA7a4Bu0i3qzas3/ookA78Hbzzo16MELulQN2Pk/tQdO
- Pl2wtPpv3MVwRHbLMRlJABiXzjJp3/nWNMkdeR3cLuLExXmzGRPIF38kAzFlo8LRW0rjy4UFDXz
- tZ/s7xs2tefw19neQ0ODkLcZKds9WQLq6rvSSqHrAKman6DrAy44S/uKyzEZGdJgTWA7gz47CTE
+ bh=43YpcfeoVoWWDUGo+tAp4Ol8hUTU+r+JKYk8jD3UJRA=;
+ b=QhDtoe+GWnOmYRz5FsPoK2MdzBTTFCOO42EijwKjIvHFSGBLqWKeGlqICh1QQLsIm1
+ YlYa80DJrVTGJCnWB9fKSvsLl9NeYdF9nA8gkY60m5NWVomouQxzGMYxD8ekB/0VeWtH
+ dtx91jRLcSJFFlRU5lVuKyjsW9fadsxbS0dB1KDY00c6m3imavUwxhNekgKWGMGtu9m/
+ LbcVPHpcz3J8BRAQDgDbhCZwxJWFF/5lVhy9Tf+rhslxRFqp+s7bmmRgsoKraMcSuBCs
+ Ce5DD1MgWSTjAjA0mZRB/uEgX3lzCs+0doanhR3qaEeR+6XC+yy5y5ZaM8Ewt3/LvJ6z
+ dTWw==
+X-Gm-Message-State: AOJu0YxlnHynjTxT+a1LGtIgcX6/Jkzd9OkOzZ4zTofZfVuDtEiqwPdM
+ ptFKn5w/oh/o5Y6vl+sVN75U8o/yxieuiDMzNW9+11Izjx0apo/yAECNTIpn7IynOZ4QOgzJkka
+ z
+X-Gm-Gg: ASbGncuHdpkZGIutJHFy7QSp8iRk0fY0B6e3sfLl6FehlCKRFnBew9xQdmORpTyBqoQ
+ amh35itoGT0EJNzANaZwNxDXKS70tpBwbA5wEgk/aTyzs1nGwax73SDkldMBpv5gdYZXoWct1oZ
+ xhqbPB+HUDYHH6CcZ/0vrDOv34NhOtxge4q0YirQJNo18seCSr9u2VlIQrjXWv6z4IFe9JJP+hi
+ BqMQITxhSKW49UEjBUf3AO+PNbQt38AM2RZiO4+iB1sCkt1U9d/Ac2WkWm/2g9q+wKXNdW58AjR
+ vjQQUzLIxQOvsiKct4aZu4P0y3Dvuo89QWh/bXOcnMBApclKwOjTDK+OZDzB5ATianhCO2KmpJY
  =
-X-Google-Smtp-Source: AGHT+IFrJKoJb4xUJG1reokIwTargxByO+7E8mEdMlKNjA4RWIckT9EP3iGAvch63GiCjVd3MV9aSA==
-X-Received: by 2002:a05:6a21:1509:b0:1f5:6e00:14c9 with SMTP id
- adf61e73a8af0-20444ee3970mr881665637.15.1745456001173; 
+X-Google-Smtp-Source: AGHT+IFG9AfBLnuVln3o96fTVuT4Bwz6XZfKxdyeISUhi5Y1xBf89ENt0+SB7HPpZYvtHgO6bEa3Gg==
+X-Received: by 2002:a05:6a00:1150:b0:730:9801:d3e2 with SMTP id
+ d2e1a72fcca58-73e2460ecd0mr1183724b3a.8.1745456001799; 
  Wed, 23 Apr 2025 17:53:21 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73e25a6a971sm209353b3a.103.2025.04.23.17.53.20
+ d2e1a72fcca58-73e25a6a971sm209353b3a.103.2025.04.23.17.53.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Apr 2025 17:53:20 -0700 (PDT)
+ Wed, 23 Apr 2025 17:53:21 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Alistair Francis <alistair.francis@wdc.com>,
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 060/148] target/riscv: Remove ifndef CONFIG_USER_ONLY from
- cpu_cfg.h
-Date: Wed, 23 Apr 2025 17:48:05 -0700
-Message-ID: <20250424004934.598783-61-richard.henderson@linaro.org>
+Subject: [PULL 061/148] meson: Only allow CONFIG_USER_ONLY from certain source
+ sets
+Date: Wed, 23 Apr 2025 17:48:06 -0700
+Message-ID: <20250424004934.598783-62-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250424004934.598783-1-richard.henderson@linaro.org>
 References: <20250424004934.598783-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,31 +101,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While RISCVCPUConfig.satp_mode is unused for user-only,
-this header is used from disas/riscv.h, whose users are
-only built once.  The savings of 4 bytes isn't worth it.
+Poison CONFIG_USER_ONLY and CONFIG_SOFTMMU unless
+the compilation unit is in specific_ss, libuser_ss,
+or libsystem_ss.  This is intended to prevent files
+being incorrectly added to common_ss.
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Remove #ifndef CONFIG_USER_ONLY / #error / #endif blocks.
+All they do is trigger the poison error.
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/riscv/cpu_cfg.h | 2 --
- 1 file changed, 2 deletions(-)
+ include/exec/poison.h                       | 5 +++++
+ include/hw/hw.h                             | 4 ----
+ include/system/confidential-guest-support.h | 4 ----
+ include/system/replay.h                     | 4 ----
+ include/system/xen.h                        | 4 ----
+ meson.build                                 | 6 ++++--
+ 6 files changed, 9 insertions(+), 18 deletions(-)
 
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index 8a843482cc..cfe371b829 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -196,9 +196,7 @@ struct RISCVCPUConfig {
+diff --git a/include/exec/poison.h b/include/exec/poison.h
+index 2c151fd1e0..4180a5a489 100644
+--- a/include/exec/poison.h
++++ b/include/exec/poison.h
+@@ -66,4 +66,9 @@
+ #pragma GCC poison CONFIG_WHPX
+ #pragma GCC poison CONFIG_XEN
  
-     bool short_isa_string;
++#ifndef COMPILING_SYSTEM_VS_USER
++#pragma GCC poison CONFIG_USER_ONLY
++#pragma GCC poison CONFIG_SOFTMMU
++#endif
++
+ #endif
+diff --git a/include/hw/hw.h b/include/hw/hw.h
+index 045c1c8b09..1b33d12b7f 100644
+--- a/include/hw/hw.h
++++ b/include/hw/hw.h
+@@ -1,10 +1,6 @@
+ #ifndef QEMU_HW_H
+ #define QEMU_HW_H
  
--#ifndef CONFIG_USER_ONLY
-     RISCVSATPMap satp_mode;
+-#ifdef CONFIG_USER_ONLY
+-#error Cannot include hw/hw.h from user emulation
 -#endif
- };
+-
+ G_NORETURN void hw_error(const char *fmt, ...) G_GNUC_PRINTF(1, 2);
  
- typedef struct RISCVCPUConfig RISCVCPUConfig;
+ #endif
+diff --git a/include/system/confidential-guest-support.h b/include/system/confidential-guest-support.h
+index b68c4bebbc..ea46b50c56 100644
+--- a/include/system/confidential-guest-support.h
++++ b/include/system/confidential-guest-support.h
+@@ -18,10 +18,6 @@
+ #ifndef QEMU_CONFIDENTIAL_GUEST_SUPPORT_H
+ #define QEMU_CONFIDENTIAL_GUEST_SUPPORT_H
+ 
+-#ifdef CONFIG_USER_ONLY
+-#error Cannot include system/confidential-guest-support.h from user emulation
+-#endif
+-
+ #include "qom/object.h"
+ 
+ #define TYPE_CONFIDENTIAL_GUEST_SUPPORT "confidential-guest-support"
+diff --git a/include/system/replay.h b/include/system/replay.h
+index 8926d8cf4b..1c87c97fdd 100644
+--- a/include/system/replay.h
++++ b/include/system/replay.h
+@@ -11,10 +11,6 @@
+ #ifndef SYSTEM_REPLAY_H
+ #define SYSTEM_REPLAY_H
+ 
+-#ifdef CONFIG_USER_ONLY
+-#error Cannot include this header from user emulation
+-#endif
+-
+ #include "exec/replay-core.h"
+ #include "qapi/qapi-types-misc.h"
+ #include "qapi/qapi-types-run-state.h"
+diff --git a/include/system/xen.h b/include/system/xen.h
+index 5f41915732..c2f283d1c2 100644
+--- a/include/system/xen.h
++++ b/include/system/xen.h
+@@ -10,10 +10,6 @@
+ #ifndef SYSTEM_XEN_H
+ #define SYSTEM_XEN_H
+ 
+-#ifdef CONFIG_USER_ONLY
+-#error Cannot include system/xen.h from user emulation
+-#endif
+-
+ #include "exec/cpu-common.h"
+ 
+ #ifdef COMPILING_PER_TARGET
+diff --git a/meson.build b/meson.build
+index 7e22afe135..657949326b 100644
+--- a/meson.build
++++ b/meson.build
+@@ -4050,7 +4050,8 @@ common_ss.add_all(when: 'CONFIG_USER_ONLY', if_true: user_ss)
+ libuser_ss = libuser_ss.apply({})
+ libuser = static_library('user',
+                          libuser_ss.sources() + genh,
+-                         c_args: '-DCONFIG_USER_ONLY',
++                         c_args: ['-DCONFIG_USER_ONLY',
++                                  '-DCOMPILING_SYSTEM_VS_USER'],
+                          dependencies: libuser_ss.dependencies(),
+                          build_by_default: false)
+ libuser = declare_dependency(objects: libuser.extract_all_objects(recursive: false),
+@@ -4060,7 +4061,8 @@ common_ss.add(when: 'CONFIG_USER_ONLY', if_true: libuser)
+ libsystem_ss = libsystem_ss.apply({})
+ libsystem = static_library('system',
+                            libsystem_ss.sources() + genh,
+-                           c_args: '-DCONFIG_SOFTMMU',
++                           c_args: ['-DCONFIG_SOFTMMU',
++                                    '-DCOMPILING_SYSTEM_VS_USER'],
+                            dependencies: libsystem_ss.dependencies(),
+                            build_by_default: false)
+ libsystem = declare_dependency(objects: libsystem.extract_all_objects(recursive: false),
 -- 
 2.43.0
 
