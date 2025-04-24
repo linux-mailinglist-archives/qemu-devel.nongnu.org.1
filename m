@@ -2,88 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABF30A99D64
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 02:55:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D48ACA99D43
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 02:49:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7kr9-0001gE-VY; Wed, 23 Apr 2025 20:54:24 -0400
+	id 1u7klO-0003rW-LI; Wed, 23 Apr 2025 20:48:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kqO-0000zx-Pn
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:53:37 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1u7klK-0003pz-9A
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:48:22 -0400
+Received: from mail-vk1-xa32.google.com ([2607:f8b0:4864:20::a32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kpz-0004gs-5T
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:53:13 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-73c17c770a7so477718b3a.2
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:53:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1u7klI-0004FJ-Jq
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:48:21 -0400
+Received: by mail-vk1-xa32.google.com with SMTP id
+ 71dfb90a1353d-528ce9731dbso181443e0c.0
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:48:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745455990; x=1746060790; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1745455699; x=1746060499; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=G9WIPyymM2ElF4UPWEqRA70/pK5WAg/CnC/iZWyOuxk=;
- b=tDyFJEEM67562oa4ypuQWdZdgG5zjowSdHqxR/QibStnNy6BZ6TZ0DHyzGB9e3O+aW
- kfByvevPdKPKRW8yoJGmPkV8w5rYdZUniZ9oKC599VOb77ZqGtl4Av1ogOBMjNGrnCOh
- 8KR22rNoyB40hJxnF+PRgb13+R6tlhGNKs+1EYzhOUMtIS8ghWPhFu0eHGzsUfkPg524
- 7RmKr6VeMi2rW/6yKExYldcHbwWzEWiUXGo82J8XN5sm0gZTlvzU/O4Tclo2s/8Dhvfs
- zO1lfQSRqblpA8gd2JpQJF6SqAO0eRVrGZThkVhTS5KXwkTIubEGua7/vp4ujTA8scDL
- i1/w==
+ bh=9IG5N1pqLx9B8Z9xeqc0VH1mfeolX8GiqFT9Oc6Bz+8=;
+ b=N483Iu2DrxcukrbqqUJorNyXlrMSjOvjwyOm5yQadxxzDRffK68a7Bbfo1yade+GHF
+ YAqh+giK/fcJvmZdJ2C0ANvx5Y0ZolvH0jk2dZMeOd1JvgUSgrriB4yXdg7BckXJA62S
+ tvX2H5EagoffPzfKdRG/0sqzWn+t+1kaYGN5OtSW3lkAbsy8FWrP1mDZS58O1rwMagLd
+ sAZOrHOR/USVUqnq/alCS3aVgJojmbYQtnov+wNpjnwSOe3VRjPzrN5ePWjNFaEozPMm
+ ricQwIZZ61Zwt7dpz3WcUoriu1p10zMFlGMP9jE7r6kmQq6W6ZuAdNE3IkdzQNOJnOD1
+ KZUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745455990; x=1746060790;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1745455699; x=1746060499;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=G9WIPyymM2ElF4UPWEqRA70/pK5WAg/CnC/iZWyOuxk=;
- b=mDuuonxpV/3aKQGEwF2YaRmneS+Nj/mA0O+qGhtTMbCpoAzP6Ync91sFgjzhidlGM7
- kLtLgCEGiFr/c1bFzmiZmyRUF2S4Skl3viq54BrfEAL5Yyp1HdxW8UPzNCb3EYJh7vEt
- qB560i/t69U1kqoiU/4HEbJRr1tL3R5Zx3FuMxFsY6CHmVYP22P3P7X7oxz9L7RYeHK9
- xvApKworLltBP/TiYA7cc/r04AQt6Wex7q15oqZDuqu9q0KLeqb/ShfhxO44l14R6Ufp
- tQtWZ8/KYEvGY5Ie4gYNVEsmjXVp+fqI5RN9Pk6X9zLLaKl8NYJZjj/s0bjU5/BtKawb
- Q5rg==
-X-Gm-Message-State: AOJu0Yzxt7nz+qZWWtUv2759f1+mTldyS3CTxzVhZWgDLCkvJzO38aey
- TbzC8VZClPy9MDQdOTj4Z8pNbOREnFh+/fgrpqyHRZC8+a7x8gFtLRNRtypq7CHPp1NcGN3dA9W
- w
-X-Gm-Gg: ASbGncujOd5H8aB8kKZe9ZbmUvNyw5UPu7uvL9lPZOx6T90J6f1NOVlKN2l+sh/VLtR
- aA24s/j72+Cn7wyUujDzw2gQbjyvGsXgIQ2GvoTzQbkmDcckUDD8TZTAtHMv3HwCdQmJ6pA3vvH
- FMfYP649gr2oVH82BnhQiJREIHx40jpVsYDPg/oXnP1rwJSfKgUif1Na7gc3+p2JSxIPYh2X8A1
- PXdXZIApf4G92lEzyWurUGhe5SMWf/1whHrxv8H9OhjCAhWfAl+uM/GNXBjOO3x2RLUZf/ObSmJ
- xHIuOaw5hZHYysVLDw/BYhscQyTLx+4Wu1q3xM3UmQNp5pKI/+xJ5ZDJ7xt3XAXpDT4DK0sDAwo
- =
-X-Google-Smtp-Source: AGHT+IEWxJl050k8pmWBrls2go1GEKGzxNo3/TqReos9voIj2DqSGGZjL38Vi8UYsXAfJtnsltsHig==
-X-Received: by 2002:a05:6a00:35c7:b0:736:326a:bb3e with SMTP id
- d2e1a72fcca58-73e24aed44amr1028469b3a.15.1745455989817; 
- Wed, 23 Apr 2025 17:53:09 -0700 (PDT)
-Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73e25a6a971sm209353b3a.103.2025.04.23.17.53.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Apr 2025 17:53:09 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 047/148] semihosting: Assert is_user in user-only
- semihosting_enabled
-Date: Wed, 23 Apr 2025 17:47:52 -0700
-Message-ID: <20250424004934.598783-48-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250424004934.598783-1-richard.henderson@linaro.org>
-References: <20250424004934.598783-1-richard.henderson@linaro.org>
+ bh=9IG5N1pqLx9B8Z9xeqc0VH1mfeolX8GiqFT9Oc6Bz+8=;
+ b=fQ6VHp58+hjg6Rpv502/H4ZAg6ZC5d1Rs0rZND/YkkcfQYN06qqOFR1dMDOArBtubv
+ UFT2xxM1n4YF1X4iatZY6sQ2WWo0fZ/4RJipDNZwWwJ/JgmWJO2Cp84UcT92rJeHSSbe
+ VVwvdR3tz+lZAWTouKnoNrRITfkCBI5vpSqPIbQ1RP+deHayxzrZakBT46+7n9ExkOkE
+ lGT0NYGDE8SDVBrQEt7o3rGIOsvaEL5dMoO9bgdMNHdNl8cNnOLwhZRMfl4NpaSZb92P
+ ss0X5TtPwT4DpG4GVZaa1F3YtL4T27fkVFUaa/pNZrO10/94cPGX62x44d8/Piq4BWf0
+ dB9g==
+X-Gm-Message-State: AOJu0Yz24Y4UWc9RO35xhVYBoMz++BFgBy3Q0wZqdGijTRdFqJcbfQdY
+ eo+08HMVBR6a9+iSO/xDNxF8oWIPXOHUtId3zIlBSd8+jIgFzH7qDi/oQqcbhIKIEmw1iQmIl5Z
+ UP08jL8dgig2VLj5kIHQFquBStks=
+X-Gm-Gg: ASbGncu2XMQHGTK9s6yTy5g2z7L46KH9QPKPcHKTS/FSyd1lTWaEzg/VCs4njdIZB+z
+ p7yZKM/mmo2G9sISWtJhpbch83wT1+n6Me8LW6OwSieCOblyfJAkWbDXKDHumTstNPpw4CJ+U1N
+ jqxQPTTPMTUzWLMubmwT1X/8AcNsWAxY16vtKjBu8MIWHnnl7ZlfzwijvUEancfD0=
+X-Google-Smtp-Source: AGHT+IEVJy6wyLb22Z8uLU/hqh7aNmKMYo1xuBt3zmLzYH3CQmWd0THGuUA9QqLgAXj5u/q69ftRjkWXprAqePYfu/w=
+X-Received: by 2002:a05:6102:508c:b0:4c4:e0e0:f7bd with SMTP id
+ ada2fe7eead31-4d38ebed43cmr978226137.19.1745455698990; Wed, 23 Apr 2025
+ 17:48:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <20250406070254.274797-1-pbonzini@redhat.com>
+ <20250406070254.274797-27-pbonzini@redhat.com>
+In-Reply-To: <20250406070254.274797-27-pbonzini@redhat.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Thu, 24 Apr 2025 10:47:53 +1000
+X-Gm-Features: ATxdqUFrcQj01QgVollwty9Pd52qoK6tTZMxdSH6PzcVFGw3YyDYU6b3UCCyQDA
+Message-ID: <CAKmqyKN-yXysNXB7gj_Xo3rCAzNhy9p695O+YZu=Pipkm9eTJw@mail.gmail.com>
+Subject: Re: [PATCH 26/27] target/riscv: convert Xiangshan Nanhu to RISCVCPUDef
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a32;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa32.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,27 +93,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- semihosting/user.c | 1 +
- 1 file changed, 1 insertion(+)
+On Sun, Apr 6, 2025 at 5:04=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com> =
+wrote:
+>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-diff --git a/semihosting/user.c b/semihosting/user.c
-index 515de3d2c0..98c144cb45 100644
---- a/semihosting/user.c
-+++ b/semihosting/user.c
-@@ -11,6 +11,7 @@
- 
- bool semihosting_enabled(bool is_user)
- {
-+    assert(is_user);
-     return true;
- }
- 
--- 
-2.43.0
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
+Alistair
+
+> ---
+>  target/riscv/cpu.c | 80 +++++++++++++---------------------------------
+>  1 file changed, 23 insertions(+), 57 deletions(-)
+>
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 4e4d8ddf5a2..0a3a0343087 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -441,16 +441,6 @@ const char *satp_mode_str(uint8_t satp_mode, bool is=
+_32_bit)
+>      g_assert_not_reached();
+>  }
+>
+> -static void __attribute__((unused))
+> -set_satp_mode_max_supported(RISCVCPU *cpu, int satp_mode)
+> -{
+> -    bool rv32 =3D riscv_cpu_mxl(&cpu->env) =3D=3D MXL_RV32;
+> -    const bool *valid_vm =3D rv32 ? valid_vm_1_10_32 : valid_vm_1_10_64;
+> -
+> -    assert(valid_vm[satp_mode]);
+> -    cpu->cfg.max_satp_mode =3D satp_mode;
+> -}
+> -
+>  static bool get_satp_mode_supported(RISCVCPU *cpu, uint16_t *supported)
+>  {
+>      bool rv32 =3D riscv_cpu_is_32bit(cpu);
+> @@ -499,38 +489,6 @@ static void riscv_register_custom_csrs(RISCVCPU *cpu=
+, const RISCVCSR *csr_list)
+>  }
+>  #endif
+>
+> -#if defined(TARGET_RISCV64)
+> -
+> -static void rv64_xiangshan_nanhu_cpu_init(Object *obj)
+> -{
+> -    CPURISCVState *env =3D &RISCV_CPU(obj)->env;
+> -    RISCVCPU *cpu =3D RISCV_CPU(obj);
+> -
+> -    riscv_cpu_set_misa_ext(env, RVG | RVC | RVB | RVS | RVU);
+> -    env->priv_ver =3D PRIV_VERSION_1_12_0;
+> -
+> -    /* Enable ISA extensions */
+> -    cpu->cfg.ext_zbc =3D true;
+> -    cpu->cfg.ext_zbkb =3D true;
+> -    cpu->cfg.ext_zbkc =3D true;
+> -    cpu->cfg.ext_zbkx =3D true;
+> -    cpu->cfg.ext_zknd =3D true;
+> -    cpu->cfg.ext_zkne =3D true;
+> -    cpu->cfg.ext_zknh =3D true;
+> -    cpu->cfg.ext_zksed =3D true;
+> -    cpu->cfg.ext_zksh =3D true;
+> -    cpu->cfg.ext_svinval =3D true;
+> -
+> -    cpu->cfg.mmu =3D true;
+> -    cpu->cfg.pmp =3D true;
+> -
+> -#ifndef CONFIG_USER_ONLY
+> -    set_satp_mode_max_supported(cpu, VM_1_10_SV39);
+> -#endif
+> -}
+> -
+> -#endif /* !TARGET_RISCV64 */
+> -
+>  static ObjectClass *riscv_cpu_class_by_name(const char *cpu_model)
+>  {
+>      ObjectClass *oc;
+> @@ -2895,19 +2853,6 @@ void riscv_isa_write_fdt(RISCVCPU *cpu, void *fdt,=
+ char *nodename)
+>  }
+>  #endif
+>
+> -#define DEFINE_VENDOR_CPU(type_name, misa_mxl_max_, initfn) \
+> -    {                                                       \
+> -        .name =3D (type_name),                                \
+> -        .parent =3D TYPE_RISCV_VENDOR_CPU,                    \
+> -        .instance_init =3D (initfn),                          \
+> -        .class_data =3D (void*) &((const RISCVCPUDef) {       \
+> -             .misa_mxl_max =3D (misa_mxl_max_),               \
+> -             .priv_spec =3D RISCV_PROFILE_ATTR_UNUSED,        \
+> -             .vext_spec =3D RISCV_PROFILE_ATTR_UNUSED,        \
+> -             .cfg.max_satp_mode =3D -1,                       \
+> -        }),                                                 \
+> -    }
+> -
+>  #define DEFINE_ABSTRACT_RISCV_CPU(type_name, parent_type_name, ...) \
+>      {                                                       \
+>          .name =3D (type_name),                                \
+> @@ -3207,8 +3152,29 @@ static const TypeInfo riscv_cpu_type_infos[] =3D {
+>          .cfg.max_satp_mode =3D VM_1_10_SV48,
+>      ),
+>
+> -    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_XIANGSHAN_NANHU,
+> -                                                 MXL_RV64, rv64_xiangsha=
+n_nanhu_cpu_init),
+> +    DEFINE_RISCV_CPU(TYPE_RISCV_CPU_XIANGSHAN_NANHU, TYPE_RISCV_VENDOR_C=
+PU,
+> +        .misa_mxl_max =3D MXL_RV64,
+> +        .misa_ext =3D RVG | RVC | RVB | RVS | RVU,
+> +        .priv_spec =3D PRIV_VERSION_1_12_0,
+> +
+> +        /* ISA extensions */
+> +        .cfg.ext_zbc =3D true,
+> +        .cfg.ext_zbkb =3D true,
+> +        .cfg.ext_zbkc =3D true,
+> +        .cfg.ext_zbkx =3D true,
+> +        .cfg.ext_zknd =3D true,
+> +        .cfg.ext_zkne =3D true,
+> +        .cfg.ext_zknh =3D true,
+> +        .cfg.ext_zksed =3D true,
+> +        .cfg.ext_zksh =3D true,
+> +        .cfg.ext_svinval =3D true,
+> +
+> +        .cfg.mmu =3D true,
+> +        .cfg.pmp =3D true,
+> +
+> +        .cfg.max_satp_mode =3D VM_1_10_SV39,
+> +    ),
+> +
+>  #ifdef CONFIG_TCG
+>      DEFINE_RISCV_CPU(TYPE_RISCV_CPU_BASE128, TYPE_RISCV_DYNAMIC_CPU,
+>          .cfg.max_satp_mode =3D VM_1_10_SV57,
+> --
+> 2.49.0
+>
 
