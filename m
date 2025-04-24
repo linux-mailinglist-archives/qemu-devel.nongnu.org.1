@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 310A8A99E01
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C738A99D5C
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 02:54:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7ks4-0007Py-Mi; Wed, 23 Apr 2025 20:55:20 -0400
+	id 1u7krR-0003iV-HF; Wed, 23 Apr 2025 20:54:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kqX-00015Q-Sa
+ id 1u7kqX-00015R-Pm
  for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:53:46 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kqA-0004ij-Fc
+ id 1u7kqA-0004ip-QD
  for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:53:24 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-736c1cf75e4so320543b3a.2
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:53:21 -0700 (PDT)
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-b0b2ce7cc81so375035a12.3
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:53:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745456000; x=1746060800; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745456001; x=1746060801; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Z/d4Opsx2QmpRYGlTe7zbsmEBVXLmlU0lp+CJtYfxNc=;
- b=E9HVqo8ksu5mNsYCNI7lpHesxBnQO42dkyDQM1CJuU7keaGolWKZYyv5XINiOC3qez
- oUMAc+ec4r3hgrkRYpXII5PcnlPfbLaPjE0J8clzUYf4qQwHGELtYma237KzRsWk6/LA
- wi1n/tHSpujQZSenoJYE4LU/D1WJtPoAMuT2FTCKw1dBoqQeiMMojG7YWDq7c2C7E40p
- p5pV7aS1ULkRJyF/SAvk0AH4a07Z+np6R7yXtH0bm6R0C2XUTvll9VpM26GUmEW0BXFY
- J74dluTauhREbd1K3UQjlinFNXUStyZuyj3VxJTTmo5PwK8a5sovC010Zz906wg2pZo8
- WmvA==
+ bh=N/LWI/F8VdrNv0zLmIvQDUtowepeiN+2e5bv51DEBF8=;
+ b=vPTGnB2bhpozCVRyRfwMQXR8xnX8gHfiz1JYz6HUtFEcbRsHzO1OC5fZ610ctYHEHQ
+ 3oG0jPogUIswU9wAWtGemTEpfS04XWjmpFoO29m3GNqT71EwK+GRUvSr4/VKjOoJ7UvA
+ TCe5UqOg5ZzTLjveEBNpr94AtNMnjixmPHxYEPBJSG4LInZpANx+rSzOQ3rDCph8nA20
+ Dxe4EhoCXoqoRa54BnGRPAcH7pkvEN4jS6eo5nNe/eWQlCcIpwqBG7BtGZskcHCKtCyn
+ kdx1boOBeF3G3lzI/ikEBi9IG9ZV3uMTKyl1Q+xK0htykvvE1m5Hu6wckJEMW+5HK2rR
+ QQJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745456000; x=1746060800;
+ d=1e100.net; s=20230601; t=1745456001; x=1746060801;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Z/d4Opsx2QmpRYGlTe7zbsmEBVXLmlU0lp+CJtYfxNc=;
- b=T5DseCPvz10C4ienPMQwdMT03nJPzFPrGZFnbjxody542CGNSa6dQ+xxBY3VmlE1Ow
- reyD+yscodALroVue7wRXk9+HStUFjgSGnDZmnU1X2d0t4W7khBeTHwbPMMEZI63vSwl
- bZPXTlZOcO4j6J2Qjono+sfvII3+qWmEdVXfjxa0kkg2t4Qq+IC5IHx1S1pTHN7ZoUA0
- +oJeW9uFjbN5Q+EjV8RRJvRFBchdvj4ZKtwgs07l1khU8dvYjl3tUVAvfO3iUM6O8712
- gBZiAtzNdtynl5I+Cm19Lo2u8niKhTZRf4iaL+ZFPe5SuaHLFXiYz/BJo9pg44ViOuIz
- KBUQ==
-X-Gm-Message-State: AOJu0YwcqIiqC0ddbFNWq5eCBd1jYE0RCcMs3rgw3hsKfo8QZygpi1kT
- IamOUp5QJ3F/nXklehznvR4DevvHl8XOnwTosIGBsG+q88VoX6u6nC6YutMtbx7iHgucE9YnN1f
- k
-X-Gm-Gg: ASbGncsmenZO0QYq7AH7NUwtCdQakR8lRxhS6l950WPX0VAHNF+nexIOu3UnysVeIYy
- 12AchCVP0wpf8QGSYqclafnLGzdyhgR/K82rZMjUzpC3rxZaWElJaTb+kfJtJFqgjZy6rbvQVMS
- tWI7S5oTrNHt41xpD4HX1d/MzrUJhDVkW19mAM5lh00KSTf7o8CQP6vr5Paum/mhWvAyI0lBn3m
- K86mNezYAHyN3DNsh/s7/jd2mpME8m8JP2q7ae6exKNLHHXq4KIhU8b8iOOluSPIKf16ebsd5mB
- LvIH7aKf4T2IsMnh3YzZSle+Z8n8mBynlVlvB1hcF3Pev3qf++Wjyyf4qXa2RiKqfI0w5bLJz30
+ bh=N/LWI/F8VdrNv0zLmIvQDUtowepeiN+2e5bv51DEBF8=;
+ b=mINLlJ98MNTnkMA2R8L/osj8qfGg5HYdD8aBFJsUDX0CXwEbwAaTfAu2pGx+lHtuLO
+ +83a5cfqlKhU8WL8cr0UzHvQuA/h0spX5SNA8gMiKUmEDNvrCiBjMcF2jmyNeNbKIW4x
+ ncygF1EyKft8FndZhgPMrxCTZDiHp33HfTWumpV8p3euIE546Eu23yvRksqxspLUSbKL
+ QcGuNrxzyrs54JKA4w1ptpHDPJsa5tD697h8U82CfMT6FfD15hOX20iVJvU9FJ9N1KEm
+ /W0QdecQjOG1ahPowxRg+Bl1yc/xw7dLcvh0KOO1Rx6YOhhW6hsG6LHC495orJi1k4BI
+ 3/0A==
+X-Gm-Message-State: AOJu0YxMdLh1kcHV/rANfXqBcRe+ZfL9L25cTnQKietkGH2TWWRjcO4Y
+ hQSRuBUEsK59Ih1Ja3mgYi8zfHFPNPIPPc/hp1mkTs1SRBv0TVoQ2uixagyIEuSWicHzn6FXrLf
+ a
+X-Gm-Gg: ASbGncufVJDNxSNwjhIcAEHWoW4KMo6Git7NfFdhXGh6fm5aQTSpReyOmAWokKOg4Vw
+ ugBE+z7wv57UK2ov5UtHFBT489WJie8gawmzNNVG+LVKcGtpZLIZ3urBhy5KpV9LEs+veKsBQLO
+ JdVfVfpcSncObti+RIiZVcsnXyluImXPA7a4Bu0i3qzas3/ookA78Hbzzo16MELulQN2Pk/tQdO
+ Pl2wtPpv3MVwRHbLMRlJABiXzjJp3/nWNMkdeR3cLuLExXmzGRPIF38kAzFlo8LRW0rjy4UFDXz
+ tZ/s7xs2tefw19neQ0ODkLcZKds9WQLq6rvSSqHrAKman6DrAy44S/uKyzEZGdJgTWA7gz47CTE
  =
-X-Google-Smtp-Source: AGHT+IHo81lWmhZJn26q9XPQRkPrZJdvO7kEzr0CkEB1Gnu/cQkxmtjTNgVSsElj7ya8ber19GtVmQ==
-X-Received: by 2002:a05:6a21:e92:b0:1f5:7353:c303 with SMTP id
- adf61e73a8af0-20444ee3960mr922711637.11.1745456000574; 
- Wed, 23 Apr 2025 17:53:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFrJKoJb4xUJG1reokIwTargxByO+7E8mEdMlKNjA4RWIckT9EP3iGAvch63GiCjVd3MV9aSA==
+X-Received: by 2002:a05:6a21:1509:b0:1f5:6e00:14c9 with SMTP id
+ adf61e73a8af0-20444ee3970mr881665637.15.1745456001173; 
+ Wed, 23 Apr 2025 17:53:21 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
  d2e1a72fcca58-73e25a6a971sm209353b3a.103.2025.04.23.17.53.20
@@ -65,18 +65,19 @@ Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  Wed, 23 Apr 2025 17:53:20 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 059/148] include/qemu: Remove ifndef CONFIG_USER_ONLY from
- accel.h
-Date: Wed, 23 Apr 2025 17:48:04 -0700
-Message-ID: <20250424004934.598783-60-richard.henderson@linaro.org>
+Cc: Alistair Francis <alistair.francis@wdc.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PULL 060/148] target/riscv: Remove ifndef CONFIG_USER_ONLY from
+ cpu_cfg.h
+Date: Wed, 23 Apr 2025 17:48:05 -0700
+Message-ID: <20250424004934.598783-61-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250424004934.598783-1-richard.henderson@linaro.org>
 References: <20250424004934.598783-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,50 +100,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While setup_post and has_memory will not be used for
-CONFIG_USER_ONLY, let the struct have constant layout.
+While RISCVCPUConfig.satp_mode is unused for user-only,
+this header is used from disas/riscv.h, whose users are
+only built once.  The savings of 4 bytes isn't worth it.
 
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/qemu/accel.h | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ target/riscv/cpu_cfg.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/include/qemu/accel.h b/include/qemu/accel.h
-index 972a849a2b..fbd3d897fe 100644
---- a/include/qemu/accel.h
-+++ b/include/qemu/accel.h
-@@ -38,13 +38,13 @@ typedef struct AccelClass {
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index 8a843482cc..cfe371b829 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -196,9 +196,7 @@ struct RISCVCPUConfig {
  
-     const char *name;
-     int (*init_machine)(MachineState *ms);
+     bool short_isa_string;
+ 
 -#ifndef CONFIG_USER_ONLY
-+    bool (*cpu_common_realize)(CPUState *cpu, Error **errp);
-+    void (*cpu_common_unrealize)(CPUState *cpu);
-+
-+    /* system related hooks */
-     void (*setup_post)(MachineState *ms, AccelState *accel);
-     bool (*has_memory)(MachineState *ms, AddressSpace *as,
-                        hwaddr start_addr, hwaddr size);
+     RISCVSATPMap satp_mode;
 -#endif
--    bool (*cpu_common_realize)(CPUState *cpu, Error **errp);
--    void (*cpu_common_unrealize)(CPUState *cpu);
+ };
  
-     /* gdbstub related hooks */
-     int (*gdbstub_supported_sstep_flags)(void);
-@@ -78,12 +78,10 @@ const char *current_accel_name(void);
- 
- void accel_init_interfaces(AccelClass *ac);
- 
--#ifndef CONFIG_USER_ONLY
- int accel_init_machine(AccelState *accel, MachineState *ms);
- 
- /* Called just before os_setup_post (ie just before drop OS privs) */
- void accel_setup_post(MachineState *ms);
--#endif /* !CONFIG_USER_ONLY */
- 
- /**
-  * accel_cpu_instance_init:
+ typedef struct RISCVCPUConfig RISCVCPUConfig;
 -- 
 2.43.0
 
