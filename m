@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3D7FA9B0FD
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 16:33:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4662A9B17C
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 16:50:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7xce-0006t0-Mp; Thu, 24 Apr 2025 10:32:16 -0400
+	id 1u7xsY-0005IO-E5; Thu, 24 Apr 2025 10:48:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7xca-0006sH-L4
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 10:32:14 -0400
-Received: from mgamail.intel.com ([198.175.65.10])
+ id 1u7xsV-0005I7-Un
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 10:48:40 -0400
+Received: from mgamail.intel.com ([198.175.65.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7xcU-0003CW-GB
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 10:32:09 -0400
+ id 1u7xsT-00054D-0z
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 10:48:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745505127; x=1777041127;
+ t=1745506117; x=1777042117;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=GE0hFtDyF9YEdLhXifRl+/HPP948KEXYy2V669a4+8w=;
- b=f2xzV3PNcQcPfPHmmdzmfpCgQ4V0sBw1G+VHG8npTrJ+iiBVrn4Z3pz6
- 9Yjw6nCQvenUCaOvosvIJT/IpxoTmFhj6hSJM323gumY5t8SHpcVlktD4
- ap7RVkhJPRWy4DQC9MC0yL1BUkb9p2fdwUGlB02taBOGu0DeqbCqmSi8F
- G9lyNxJFY4K/XRHFln1mrxEaWncF9Xv6MJ4cU0RoNbjzvo9tBdJZ7qaRW
- tNR4YGPaG1YAXkZaxFzV/m6XHyhQSMYP3OwrENit7yfGRUONruWIi2Yvd
- LjIlRHVu5kPgum6Vz8zIhL2Hz2CTh4dhN6s5Tv6wPHE6nh2Xt4Cdg/GeS g==;
-X-CSE-ConnectionGUID: pGxCbYS7Rw+uTgEYeArqag==
-X-CSE-MsgGUID: eURf6MmqR0qdxdOV6Z4aBg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="64559038"
-X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; d="scan'208";a="64559038"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Apr 2025 07:32:03 -0700
-X-CSE-ConnectionGUID: L9Qf74xYRviGBk4lVkWtsA==
-X-CSE-MsgGUID: YkqTDrd0Qbatrnth7w5OnA==
+ bh=/iFBV0oZPpeakmRrY7zKBM2B1+WV4Ixfsnzftghnm7I=;
+ b=Fyfwhoc2TZ+rQ9FcYNjCr1A8TalTwN1lU2o/yeE/HgnnzhHm/9nUadu0
+ K9meaKAUMLtHMcpF4iNp36R9uhvhS+RftgJ9RPXZSXvQiztKBtSk5zG3k
+ Pxzw5xhhFllKxpusGZHe/ABtgAfnBDFdtBDG0DeATVzBHFYGAHfgZSheA
+ BsGuoBL6XZ98bbQDZU2pbEr/zD4narJpdMewPHreXhdOLqm0ZdJFKBQSx
+ T6Y2F4Ij8vQTxnvNjhoQjd9SBL0aW527PG2zz8ui0IayAYPWaHCOVw0Yj
+ oeFxVujWBL69vavKRZI9MY17psRRcpHhq5L1L87JikPJN7QVUvG606v2p A==;
+X-CSE-ConnectionGUID: N9UO0VX8SsCzlqU/UtAKbw==
+X-CSE-MsgGUID: gxuCk+1UQXG98Hl0MZFKhQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="69632151"
+X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; d="scan'208";a="69632151"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Apr 2025 07:48:33 -0700
+X-CSE-ConnectionGUID: ChmlyuCWRCu6fjVR6EO/4g==
+X-CSE-MsgGUID: VU8cssADSeqvisc42fb64A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; d="scan'208";a="137734810"
+X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; d="scan'208";a="155867711"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by fmviesa004.fm.intel.com with ESMTP; 24 Apr 2025 07:32:00 -0700
-Date: Thu, 24 Apr 2025 22:52:56 +0800
+ by fmviesa002.fm.intel.com with ESMTP; 24 Apr 2025 07:48:30 -0700
+Date: Thu, 24 Apr 2025 23:09:25 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Xiaoyao Li <xiaoyao.li@intel.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -55,15 +55,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
  Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH v8 19/55] i386/tdx: Don't initialize pc.rom for TDX VMs
-Message-ID: <aApQSAeNCtOcEZwG@intel.com>
+Subject: Re: [PATCH v8 20/55] i386/tdx: Track mem_ptr for each firmware entry
+ of TDVF
+Message-ID: <aApUJahseohnXdp2@intel.com>
 References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
- <20250401130205.2198253-20-xiaoyao.li@intel.com>
+ <20250401130205.2198253-21-xiaoyao.li@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250401130205.2198253-20-xiaoyao.li@intel.com>
-Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20250401130205.2198253-21-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -51
 X-Spam_score: -5.2
@@ -88,27 +89,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Apr 01, 2025 at 09:01:29AM -0400, Xiaoyao Li wrote:
-> Date: Tue,  1 Apr 2025 09:01:29 -0400
+On Tue, Apr 01, 2025 at 09:01:30AM -0400, Xiaoyao Li wrote:
+> Date: Tue,  1 Apr 2025 09:01:30 -0400
 > From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: [PATCH v8 19/55] i386/tdx: Don't initialize pc.rom for TDX VMs
+> Subject: [PATCH v8 20/55] i386/tdx: Track mem_ptr for each firmware entry
+>  of TDVF
 > X-Mailer: git-send-email 2.34.1
 > 
-> For TDX, the address below 1MB are entirely general RAM. No need to
-> initialize pc.rom memory region for TDs.
+> For each TDVF sections, QEMU needs to copy the content to guest
+> private memory via KVM API (KVM_TDX_INIT_MEM_REGION).
+> 
+> Introduce a field @mem_ptr for TdxFirmwareEntry to track the memory
+> pointer of each TDVF sections. So that QEMU can add/copy them to guest
+> private memory later.
+> 
+> TDVF sections can be classified into two groups:
+>  - Firmware itself, e.g., TDVF BFV and CFV, that located separately from
+>    guest RAM. Its memory pointer is the bios pointer.
+> 
+>  - Sections located at guest RAM, e.g., TEMP_MEM and TD_HOB.
+>    mmap a new memory range for them.
+> 
+> Register a machine_init_done callback to do the stuff.
 > 
 > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 > ---
-> This is more as a workaround of the issue that for q35 machine type, the
-> real memslot update (which requires memslot deletion )for pc.rom happens
-> after tdx_init_memory_region. It leads to the private memory ADD'ed
-> before get lost. I haven't work out a good solution to resolve the
-> order issue. So just skip the pc.rom setup to avoid memslot deletion.
+> Changes in v8:
+> - Remove the duplicated header include;
+> - Add error handling for qemu_ram_mmap() failure;
 > ---
->  hw/i386/pc.c | 29 ++++++++++++++++-------------
->  1 file changed, 16 insertions(+), 13 deletions(-)
-
-Fine for me,
+>  hw/i386/tdvf.c         |  1 +
+>  include/hw/i386/tdvf.h |  7 +++++++
+>  target/i386/kvm/tdx.c  | 37 +++++++++++++++++++++++++++++++++++++
+>  3 files changed, 45 insertions(+)
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
