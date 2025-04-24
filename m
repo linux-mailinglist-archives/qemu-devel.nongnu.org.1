@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04925A99DEF
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:18:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBC45A99DFB
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:19:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7kuY-0007ID-RG; Wed, 23 Apr 2025 20:57:55 -0400
+	id 1u7kuY-0007I8-Nj; Wed, 23 Apr 2025 20:57:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7ktQ-0005lL-Ku
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:56:48 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1u7ktU-0005pM-3j
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:56:52 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7ktO-00055C-9m
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:56:43 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-736c062b1f5so352478b3a.0
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:56:41 -0700 (PDT)
+ id 1u7ktQ-00055N-2K
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:56:47 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-22d95f0dda4so6680375ad.2
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:56:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745456200; x=1746061000; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745456201; x=1746061001; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XEXzmO/KCSQQZKkw02RCDXKV53yZWyTGZY0ovHpDmRg=;
- b=J3u1w79YpeokMsP10Lk23NtOiTG/QV6vJ1KgZGZ8ZglYY7YbpXYkZCgSfWj/AuZbaK
- hEC4njoBEc1exfIkR4buyGLZ0NijIgo8l/9mlS0c1iq4DpMcT34aQYOU33AupSlOLu1H
- SHZjj9Djn+Hfq16Roe1m+smtzxoZzlzPAr5FUfDjhxXVWAu5NmY3bQzridWKRlUAVpFv
- 5OpO/8J41yBNIYwxqMG5AvmtqAywDiKGbLSkBLteC3o1b2jjH1zT4Uxo6eLUmV1lspQw
- YugDLgWuEExat3ghHPjwc4bvsimT2WxbZOl7t64iinizA7yFwK6BCk69pqQqsMRcM5mc
- 1ztg==
+ bh=ZMFyoxMcqEJbFer+UYr/caW6q12pnT/2IbFSElSLN88=;
+ b=I/CjQchSeBPEi7NiO8slyH9sTHhEvPn0iWqJ04XmN5RKf9T4bsHClSxwbskNGlzVS7
+ yRy0/DSrsvvFOezye4GlFZj5Sz5P+kiu0XTKeJK7501MGXHGCQEHxWT33ShXMB3BBOqK
+ eMXwftERAKn5bmQIdqDWJwh1p70Gb9/pTbz/QTv/z7vXVPh5/C0GT7U+VxvQn5EojYcK
+ v+5oB37aM4EXV6C2NAwY15z8hW9yQHST+MO0TogzZd/GsmhdMMxxCHoHC7mgc2sp2UDV
+ hV6IcMDCPivhIrB6fmidGOFZdz1vyLouH9k29i0gtIRMpfiw96tdSrtnbCrBg/Fpd0+p
+ C6JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745456200; x=1746061000;
+ d=1e100.net; s=20230601; t=1745456201; x=1746061001;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XEXzmO/KCSQQZKkw02RCDXKV53yZWyTGZY0ovHpDmRg=;
- b=X2lP6X1swBgm3wtNt20gAHzE5LQumwbbzW8W1KMR2NfLWeh9WmYUCVHGzFhbFGCV+e
- s5ljcFfgvKoxP/y++oFDfHz6TGk8to2zzcUWqmQ+3IgheRW973Dz/JhCs8H/Mt9fUv0o
- d1UrNR8ZvESq8eUn5lFrCcGLJfFYchOzNl3cxxVy/cRNfc4IHwo1q9GHfMMHc/ow90wu
- Z2HMFKGWuLp8T7cRCGH4XLJ0vvM2v5HaFNF2Y4DDV1kjCYCR5JS2jK4PxDiq1yJ3pY7T
- Dit9CenkKA7ifBuIu+M++FD4JI/tli+zrhc0hBMO2uD6JyUYrJhkZcqgXCbhcj+e7yT/
- mmYQ==
-X-Gm-Message-State: AOJu0YxklER5xf3xSMrz4DaNCacM/38mbfVh4E5wbnAZCO3Hn84vY4cd
- 89UU+7esjEvjeifsdYzRwmOu/wis7tojGgWUeO1yBCx1+45ji94M1zNMqfoROo4euyRToNGojRu
- c
-X-Gm-Gg: ASbGncuIiOzZLgwriyDfw/e+aaihGDtseokfRmwzd3GiFvDDLwJuvVL6aCsK/3VepHT
- Gg5No2ojHUf4qw9lDRLOSbzg8DN1BX0ZYbZyiCt/bOBTDWQI2vo36h9PCQdped2i9KDZzLL/ovS
- 8gZXQw4bnf6UT8h6VfHqF8wNByPxVIC8ALixovWXay5Cv6K9PzkdOz717hJJYe1bVqvlg5FCR/J
- /oTENLsFZrhxxiOOAA3V/8rSjwvM7hbj+b5pom+r3aXjvWQ7OFW0O2eO0G+I2wqV1HtQvyBRJl3
- i5hku/QQ+T61R4GGoGqSgfd/e2nxF+e0BMpsdxTUFWDvv+tP46cLL+h5gGFfwMs/cZcg64sMPN7
- +i3zT3u6cpA==
-X-Google-Smtp-Source: AGHT+IE/s6+WrCNZpU4ABQmKHMHx5Q/Uen49bpAAq8EWUHwQlFiELA8JJ8nb/9IHXbDMo1cdHFqkqA==
-X-Received: by 2002:a05:6a00:448a:b0:736:ab49:d56 with SMTP id
- d2e1a72fcca58-73e244bab2amr1088797b3a.1.1745456200475; 
- Wed, 23 Apr 2025 17:56:40 -0700 (PDT)
+ bh=ZMFyoxMcqEJbFer+UYr/caW6q12pnT/2IbFSElSLN88=;
+ b=CEHiDGzEESxr4SMQ/iRLZYggMn3VodYo0DwYzApaOlx/Kr2lA5nFMAqr9iHdlrCYds
+ iiSDl+D4xR3jVkHnsJPlZA6SW7VXWE6MOgF7I8SvH+betJySfMfbYFon0nUFqyzYHfHq
+ gFGDeg9VHQO/WiW91/31SFM1Ftx4JTtUI5RrMNI6DdLbt6f0jkjyiFM35PLd9r7PpbZW
+ TKaoZ02064wA+DMfMruQuwiA8KfdO7O5cO2ynyABE3nklP5nS9DTcp485LQnKqdRDwyi
+ zZeWPddZDlUnQLcCIM5NlavFIkOieqFmoTLJILouGdLR9y4GQgs2P7yvrvTfRAM73NfY
+ NhYA==
+X-Gm-Message-State: AOJu0YwhKTtkYu0nLqjfhTG4Kta7whkqbQGR7CXUMw8qtVAYAtVfyGFD
+ XVDisuMyr3M4UZ7JGPhLp69py/8R+gLlG/hAnCkegPfAN5zqayP5+fYwKHE+Tg2aNNJhXf9iw/X
+ s
+X-Gm-Gg: ASbGncs9q/ieOFIv/jPRPW1Z2jb1t+RWPkVJzEQLBSSmadmNkF+7okAQgUABEbYNz85
+ Q0ZxZbPVdKu7S2p6C2HARdBykzhaE1sjvOKAyFramzIMnLBM9DyCHJmbvz+6vyFTAjf2PjTycEy
+ E+MtCdI7COYBf8Sj3+8PyyLfne9gp90/R6Fn4qVBMQxtYxD6jxWM0met8pXdwPMaSt5z5d72vIU
+ pzl3Czb4dJVgGstllMYF2rogXytyEvN3BCkeXJY0xCl3BhFLFI8NjJzaYKVCroV+PYAX6gIxZRp
+ R7vTppTqm/6nXDygwPLeWnlq86/sv069uFWjOuZa+Q6nR05L8RCkKUeAHK1UZ2HcVFiS09Tj7EI
+ =
+X-Google-Smtp-Source: AGHT+IH+90lcR+I4/DdHnEIfDncCD+VdjMwENuNnwv9iOtQ2NvaEMpvUp+DVaFfwgEnYyxpMKJe/bw==
+X-Received: by 2002:a17:902:cccf:b0:223:90ec:80f0 with SMTP id
+ d9443c01a7336-22db3c0e0b3mr9065535ad.22.1745456201098; 
+ Wed, 23 Apr 2025 17:56:41 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
  41be03b00d2f7-b15fa907fcdsm119775a12.54.2025.04.23.17.56.40
@@ -66,17 +66,17 @@ Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 089/148] target/s390x: Restrict SoftMMU mmu_index() to TCG
-Date: Wed, 23 Apr 2025 17:48:34 -0700
-Message-ID: <20250424004934.598783-90-richard.henderson@linaro.org>
+Subject: [PULL 090/148] target/sh4: Restrict SoftMMU mmu_index() to TCG
+Date: Wed, 23 Apr 2025 17:48:35 -0700
+Message-ID: <20250424004934.598783-91-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250424004934.598783-1-richard.henderson@linaro.org>
 References: <20250424004934.598783-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,61 +101,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Convert CPUClass::mmu_index() to TCGCPUOps::mmu_index(),
-restricting s390x_cpu_mmu_index() to TCG #ifdef.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250401080938.32278-19-philmd@linaro.org>
+Message-ID: <20250401080938.32278-20-philmd@linaro.org>
 ---
- target/s390x/cpu.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ target/sh4/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
-index 1f75629ddc..d15b1943e0 100644
---- a/target/s390x/cpu.c
-+++ b/target/s390x/cpu.c
-@@ -126,11 +126,6 @@ static vaddr s390_cpu_get_pc(CPUState *cs)
-     return cpu->env.psw.addr;
- }
+diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
+index ce84bdf539..df093988cb 100644
+--- a/target/sh4/cpu.c
++++ b/target/sh4/cpu.c
+@@ -266,6 +266,7 @@ static const TCGCPUOps superh_tcg_ops = {
+     .translate_code = sh4_translate_code,
+     .synchronize_from_tb = superh_cpu_synchronize_from_tb,
+     .restore_state_to_opc = superh_restore_state_to_opc,
++    .mmu_index = sh4_cpu_mmu_index,
  
--static int s390x_cpu_mmu_index(CPUState *cs, bool ifetch)
--{
--    return s390x_env_mmu_index(cpu_env(cs), ifetch);
--}
--
- static void s390_query_cpu_fast(CPUState *cpu, CpuInfoFast *value)
- {
-     S390CPU *s390_cpu = S390_CPU(cpu);
-@@ -308,6 +303,11 @@ static const Property s390x_cpu_properties[] = {
- #ifdef CONFIG_TCG
- #include "accel/tcg/cpu-ops.h"
- 
-+static int s390x_cpu_mmu_index(CPUState *cs, bool ifetch)
-+{
-+    return s390x_env_mmu_index(cpu_env(cs), ifetch);
-+}
-+
- void cpu_get_tb_cpu_state(CPUS390XState *env, vaddr *pc,
-                           uint64_t *cs_base, uint32_t *pflags)
- {
-@@ -348,6 +348,7 @@ static const TCGCPUOps s390_tcg_ops = {
-     .initialize = s390x_translate_init,
-     .translate_code = s390x_translate_code,
-     .restore_state_to_opc = s390x_restore_state_to_opc,
-+    .mmu_index = s390x_cpu_mmu_index,
- 
- #ifdef CONFIG_USER_ONLY
-     .record_sigsegv = s390_cpu_record_sigsegv,
-@@ -378,7 +379,6 @@ static void s390_cpu_class_init(ObjectClass *oc, void *data)
+ #ifndef CONFIG_USER_ONLY
+     .tlb_fill = superh_cpu_tlb_fill,
+@@ -291,7 +292,6 @@ static void superh_cpu_class_init(ObjectClass *oc, void *data)
                                         &scc->parent_phases);
  
-     cc->class_by_name = s390_cpu_class_by_name;
--    cc->mmu_index = s390x_cpu_mmu_index;
-     cc->dump_state = s390_cpu_dump_state;
-     cc->query_cpu_fast = s390_query_cpu_fast;
-     cc->set_pc = s390_cpu_set_pc;
+     cc->class_by_name = superh_cpu_class_by_name;
+-    cc->mmu_index = sh4_cpu_mmu_index;
+     cc->dump_state = superh_cpu_dump_state;
+     cc->set_pc = superh_cpu_set_pc;
+     cc->get_pc = superh_cpu_get_pc;
 -- 
 2.43.0
 
