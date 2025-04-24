@@ -2,52 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C869A9A4E6
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 09:53:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF709A9A3FF
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 09:33:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7rNQ-0001Qw-NI; Thu, 24 Apr 2025 03:52:08 -0400
+	id 1u7r43-0002wO-4E; Thu, 24 Apr 2025 03:32:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1u7rNO-0001QX-Mj; Thu, 24 Apr 2025 03:52:06 -0400
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1u7r40-0002wA-1V
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 03:32:04 -0400
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1u7rNN-0006ez-3j; Thu, 24 Apr 2025 03:52:06 -0400
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 24 Apr
- 2025 15:51:37 +0800
-Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Thu, 24 Apr 2025 15:51:37 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
- Stanley" <joel@jms.id.au>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>
-CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
- <nabihestefan@google.com>, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?=
- <clg@redhat.com>
-Subject: [PATCH v6 6/6] docs/system/arm/aspeed: Support vbootrom for AST2700
-Date: Thu, 24 Apr 2025 15:51:34 +0800
-Message-ID: <20250424075135.3715128-7-jamin_lin@aspeedtech.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250424075135.3715128-1-jamin_lin@aspeedtech.com>
-References: <20250424075135.3715128-1-jamin_lin@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1u7r3y-0004vS-3H
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 03:32:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1745479922; x=1777015922;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=rAODJRHQ5blDTW4fl3P17Ph9OaV50GCWIt/ZXONfCCw=;
+ b=k5pn6z1EzgD0rhdtzxtde/SnPFDOCD7Y5Ca4K8zo2Sglsd+EbDGctPN4
+ HSo8L0XfwfyyvWRq22xVJqG6HA3FIYlnCdC6F943GsdoV43+jhaSDuKeE
+ 0KA9004O59I7DIct12rRcbqnvC0Nt6DHMJbRO6M5xopGpMiAhwdjdQ/bR
+ IDCPV2HDghfpbo67/tLPA/PSm4PbVlGX1sQC7uewBb4wyO27fGWO2WvT7
+ k7l2r06oREHI+3vtKq8RvhFaLXTXwMik2oSLyT5Dhecrgl/XHYlC5N/nf
+ FO+hDv4QxhrheiKVxvKhzWzl50xKPdP5hDCZ2V0ommsQUtin1ikBCete4 g==;
+X-CSE-ConnectionGUID: YOJpKd5oTJ2r/v0g3VRqAQ==
+X-CSE-MsgGUID: MXdRPDFuTnmf7NLGIjosIA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="57740464"
+X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; d="scan'208";a="57740464"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Apr 2025 00:31:59 -0700
+X-CSE-ConnectionGUID: OxnOi8g9ROOlAyNQJ4qH4Q==
+X-CSE-MsgGUID: cS6gdTPHRQCROGbHLgaCfQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; d="scan'208";a="132272230"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa009.jf.intel.com with ESMTP; 24 Apr 2025 00:31:57 -0700
+Date: Thu, 24 Apr 2025 15:52:52 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Francesco Lavra <francescolavra.fl@gmail.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+Subject: Re: [PATCH v8 16/55] i386/tdx: load TDVF for TD guest
+Message-ID: <aAnt1HjQmbdtmsGM@intel.com>
+References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
+ <20250401130205.2198253-17-xiaoyao.li@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250401130205.2198253-17-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.294,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,70 +85,36 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
-From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Using the vbootrom image support and the boot ROM binary is
-now passed via the -bios option, using the image located in
-pc-bios/ast27x0_bootrom.bin.
+On Tue, Apr 01, 2025 at 09:01:26AM -0400, Xiaoyao Li wrote:
+> Date: Tue,  1 Apr 2025 09:01:26 -0400
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: [PATCH v8 16/55] i386/tdx: load TDVF for TD guest
+> X-Mailer: git-send-email 2.34.1
+> 
+> From: Chao Peng <chao.p.peng@linux.intel.com>
+> 
+> TDVF(OVMF) needs to run at private memory for TD guest. TDX cannot
+> support pflash device since it doesn't support read-only private memory.
+> Thus load TDVF(OVMF) with -bios option for TDs.
+> 
+> Use memory_region_init_ram_guest_memfd() to allocate the MemoryRegion
+> for TDVF because it needs to be located at private memory.
+> 
+> Also store the MemoryRegion pointer of TDVF since the shared ramblock of
+> it can be discared after it gets copied to private ramblock.
+> 
+> Signed-off-by: Chao Peng <chao.p.peng@linux.intel.com>
+> Co-developed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> ---
+>  hw/i386/x86-common.c  | 6 +++++-
+>  target/i386/kvm/tdx.c | 6 ++++++
+>  target/i386/kvm/tdx.h | 3 +++
+>  3 files changed, 14 insertions(+), 1 deletion(-)
 
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Reviewed-by: Nabih Estefan <nabihestefan@google.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
----
- docs/system/arm/aspeed.rst | 29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
-
-diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
-index 08a33b7008..014545f444 100644
---- a/docs/system/arm/aspeed.rst
-+++ b/docs/system/arm/aspeed.rst
-@@ -306,7 +306,14 @@ Images can be downloaded from the ASPEED Forked OpenBMC GitHub release repositor
- Booting the ast2700-evb machine
- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- 
--Boot the AST2700 machine from the flash image, use an MTD drive :
-+Boot the AST2700 machine from the flash image.
-+
-+There are two supported methods for booting the AST2700 machine with a flash image:
-+
-+Manual boot using ``-device loader``:
-+
-+It causes all 4 CPU cores to start execution from address ``0x430000000``, which
-+corresponds to the BL31 image load address.
- 
- .. code-block:: bash
- 
-@@ -326,6 +333,26 @@ Boot the AST2700 machine from the flash image, use an MTD drive :
-        -drive file=${IMGDIR}/image-bmc,format=raw,if=mtd \
-        -nographic
- 
-+Boot using a virtual boot ROM (``-bios``):
-+
-+If users do not specify the ``-bios option``, QEMU will attempt to load the
-+default vbootrom image ``ast27x0_bootrom.bin`` from either the current working
-+directory or the ``pc-bios`` directory within the QEMU source tree.
-+
-+.. code-block:: bash
-+
-+  $ qemu-system-aarch64 -M ast2700-evb \
-+      -drive file=image-bmc,format=raw,if=mtd \
-+      -nographic
-+
-+The ``-bios`` option allows users to specify a custom path for the vbootrom
-+image to be loaded during boot. This will load the vbootrom image from the
-+specified path in the ${HOME} directory.
-+
-+.. code-block:: bash
-+
-+  -bios ${HOME}/ast27x0_bootrom.bin
-+
- Aspeed minibmc family boards (``ast1030-evb``)
- ==================================================================
- 
--- 
-2.43.0
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
