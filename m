@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EDF7A9B91C
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 22:26:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD967A9B920
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 22:26:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u838b-0000LA-Oi; Thu, 24 Apr 2025 16:25:40 -0400
+	id 1u838k-0000fo-EG; Thu, 24 Apr 2025 16:25:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8386-0008V0-Gx
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 16:25:06 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u838C-0000Pk-2P
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 16:25:13 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8384-00052C-Cs
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 16:25:06 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-43d04dc73b7so13304675e9.3
- for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 13:25:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8389-0005Dg-Mi
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 16:25:11 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-43cf05f0c3eso10643055e9.0
+ for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 13:25:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745526302; x=1746131102; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745526307; x=1746131107; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3ZaZUiVtvhip+YjUPzbukhiUty3aZRnPrZlaJVYneow=;
- b=l+AdB8HclIJLhxMv4eS5VDnF3VoSN689AljGoi6MUnHhtG5kaNcHX0UdCBK3HjPoqv
- EGIATutv6sJNSy5sH6Wl7zSTsF0E91eu5hkXf/RRQCOYbJWA71v0c3hCyqZE//dAbRAc
- HunPzEzQK6THvyZeWRatVcXwApRr6m0gdaQ1t63ldgj9o0bVjLfVaQQqYxKJqeQt+gaT
- CXaycBWQVyhAZpDLnYBIYLmQm+mbeJ5QCcSbce/ZIH7kxcI2GmIv9cdpCQzJpxCI2+CV
- lYvNYaMxy+Y6RH12oR+6qose6rnLkH3ZOfyua6MhrqdkyO/XWP3gX80gZS5BfLLlwlOA
- iZIA==
+ bh=oDnRsco8X4925YTV8UTDqMtG98oA60/dC49QTKfKMmw=;
+ b=gBvBYkeHpyhw8e+sOcKcg0xM0MMb3Jv2BGbAzIOX1yriTqawWH51LMTKE4YMQ+YcCh
+ CZIadNKcw+TbYlir0JMLB2z7+Vgm4D1mRLvPSKBvMyCxVXCr//NtfZrxxBVSn2CQT7kQ
+ AMJEMWk7/IFQqIDpkIqqVg50fsubrQnUoewIejfmoJrVBMjE66qQQZjdNTbt7JNUeKkq
+ pdo2hfcgOqsGYI5QNF5MeXMpW8KzILrLdktiTKBU3oZKJM/yPiLBmE9zdMuE9QjAty58
+ s2WJ33DywpMv2dHQ7dLTxMekUquGDVlDlY9YTq30SjgIEDUWUmlGM1mdPLeG8hEurHV3
+ qypA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745526302; x=1746131102;
+ d=1e100.net; s=20230601; t=1745526307; x=1746131107;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3ZaZUiVtvhip+YjUPzbukhiUty3aZRnPrZlaJVYneow=;
- b=UKhVG4ktq7lRMRGHjSJGVXa8z648Hf3BXPWW2TlCa4q7lgtGejbr9gOXeKNWAfwsWy
- 1Kkq7hjXfHay8ypOGiEu+o3BTv5oPxBMkHVBIG/IzGFDSHzJtIwzAoFNbblQs29z2M0N
- KrrTljMlTafPXI8K4FgJT0hMdR4hN9e/UdwqRPkORmXjB6f8CWAcA6jrcGbT1H2P0bGn
- xNaBLAudpNE/GD4S3NGn34OIf4HxJVRyrJhUMX2XalqdGrONP+5DDs4P+IhqPkBlZtlD
- ZY/gqmgR0DmHvadtlRxZFIIBA3wfygi3zUL7PhWPNFVxacOoQqq+bX8ZpWpcBY2ecfHa
- bDrQ==
+ bh=oDnRsco8X4925YTV8UTDqMtG98oA60/dC49QTKfKMmw=;
+ b=TMXV6dIWJybmcrIyQrz6lpXQcUrW1BTRszI3rihAl+F3e1/yqs4S6dzaMN4uui07eF
+ Mi6y1qA5pi9eac2B7YglY8k9aMvhAh3Wp71fGwxnj9PAcF+0OBUGpaRagrPMJUJLKJbw
+ Qbz9a6Rre7WXzkctvZy3Z5vHXuleSQ/YXYRcmnTVrTV/0Q5FU+R5cd5RnZV9AlpICCrp
+ 1hDFG/Bki/xepF4GgaljF2lsLK8hH4yxL1pH9pXRQWwzAHVgxAQQStXvU6KvFN87Gmge
+ u/3FawCvIyVD7jyf86RniVsSGyuLb3Tj367gB1Y8BqMHI9cqzauviYHkcG5k3dVHBMki
+ z/QA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUfzkNSmZ2c1SNyLSs1ro6S/8oC/TxweadfKwvYLaGJcxERD1uZtUvomc5Z/hoLDss5O5m31jexiZqA@nongnu.org
-X-Gm-Message-State: AOJu0Yz9WAG4u+FRkUSfAdscaoj6/CgVGpT/S1mnMtPaDk4SgiMDf54G
- vh9RE7PJwF5OsPMADSiDPPBhtsTaPUZ2fj1uoQdVbh+LHE7dZzN/My8RaRk7BDU=
-X-Gm-Gg: ASbGncucNY2sd/mKfb/zoeGEF+WMS5KU9bt6hAToOi/+gwTYSZrFg0hvHW+87DnEX1C
- OdZ02zv8AjU0t74b0Fmf3pVZYucBnVmfrp0p63pAWjJOtBDTKYHJkHE+42jG2uIBoTOfexUjcif
- Zssz8mh3Py4Z+4urZwzL7HunBsfIEz+UIwDoBgUKk8iXyIZhozPeAzJKE7vTAG4xgStYwmkh13/
- CeX2vaE9byNc80uY67fNAvWS9PFutXlvevdyEWDc2CxgbpLgNtdAaCm/J7SwCtCE8h8KubZAjDO
- At6lhCu7/gJK/EJSNdOTeVcBtBdcWGf8pXddmgrhnA23b1OgR13ZLlW8THBkSnBVtDozK42GEcY
- R/GcNhjWVc1w0Dso=
-X-Google-Smtp-Source: AGHT+IGtXw0XNrjlq7CWdnIXxs1DRrxI/a7YfhBBL17hb7NGrgIn0LtM9TXpOzmNpa7pBkWIcIG25A==
-X-Received: by 2002:a05:600c:510e:b0:43c:fee3:2bce with SMTP id
- 5b1f17b1804b1-440a3173a9fmr5815295e9.26.1745526302531; 
- Thu, 24 Apr 2025 13:25:02 -0700 (PDT)
+ AJvYcCXSEh4oMsa0ayshXfYRSWg4f48Q+vhDl8k3y+rLpwZISb4PZHXClDEGvY7Q/KRVL6eMTgRblzwf4jxi@nongnu.org
+X-Gm-Message-State: AOJu0YwuUi+yQwpJCFVOhiYsr+F+8E8DuycI9MToV8MtjzeKT/CgK2s8
+ eynOFM3zNWgWeRd69CdFzESfhVCLyvqlRwMdYnNxvO7exiiWef6UPQ7cEM5mh5g=
+X-Gm-Gg: ASbGncvjEGs1YcGRwXaaYUhGfA5Ke0Ml+mVYbplrg5vuCUCAEs+rRv1J9HE7299lU53
+ uU3cViD5GJmI6R238Wa6PjEzXEWHO9tHF8KrGeGBpDNH35v+UxHi0kgLbQE23LqxCbotE0cKbmL
+ +yX1e+ml8dEs5DbV8hCevwYYY7apigg5VL5hhtBeD5Y76VP0cNH48eOc1Tx9kOg6cNL2gNDMEmF
+ 5fFZ5KzziuZPpZ+HzISg7liuCGjUlVxhVzAISsi+3uc5+5Uso+UppBLuN8WCcjLStVxdYcvg/xk
+ GpgiJBlPt8r6IdjymFiw7gQJTPc6OL4buC3m94mpkBaJNMc2B4s31Vs2B1uYZsckRBMgAQf5Qfz
+ FP743Tj6DamW6fIfVbmEP5eiseA==
+X-Google-Smtp-Source: AGHT+IFOKuU3iQB66cmrgnvlskzQPtUQIB4xHVVyYN/BBFH0GBw/GY8IT30Z9dagI8n7wta/en4Fjw==
+X-Received: by 2002:a05:6000:40cb:b0:390:fb37:1bd with SMTP id
+ ffacd0b85a97d-3a072bb51a6mr568656f8f.46.1745526307256; 
+ Thu, 24 Apr 2025 13:25:07 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-440a538f691sm622195e9.37.2025.04.24.13.25.01
+ ffacd0b85a97d-3a073cb2acbsm290110f8f.40.2025.04.24.13.25.06
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 24 Apr 2025 13:25:01 -0700 (PDT)
+ Thu, 24 Apr 2025 13:25:06 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Subject: [PATCH v3 10/13] physmem: Move TCG IOTLB methods around
-Date: Thu, 24 Apr 2025 22:24:09 +0200
-Message-ID: <20250424202412.91612-11-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 11/13] physmem: Restrict TCG IOTLB code to TCG accel
+Date: Thu, 24 Apr 2025 22:24:10 +0200
+Message-ID: <20250424202412.91612-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250424202412.91612-1-philmd@linaro.org>
 References: <20250424202412.91612-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,93 +101,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The next commit will restrict TCG specific code in physmem.c
-using some #ifdef'ry. In order to keep it simple, move
-iotlb_to_section() and memory_region_section_get_iotlb()
-around close together.
+Restrict iotlb_to_section(), address_space_translate_for_iotlb()
+and memory_region_section_get_iotlb() to TCG. Declare them in
+the new "accel/tcg/iommu.h" header. Declare iotlb_to_section()
+using the MemoryRegionSection typedef.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 ---
- system/physmem.c | 50 ++++++++++++++++++++++++------------------------
- 1 file changed, 25 insertions(+), 25 deletions(-)
+ MAINTAINERS               |  2 +-
+ include/accel/tcg/iommu.h | 41 +++++++++++++++++++++++++++++++++++++++
+ include/exec/exec-all.h   | 26 -------------------------
+ accel/tcg/cputlb.c        |  1 +
+ system/physmem.c          |  5 +++++
+ 5 files changed, 48 insertions(+), 27 deletions(-)
+ create mode 100644 include/accel/tcg/iommu.h
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 661a47db5ac..3a37cc73af7 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -168,7 +168,7 @@ F: include/exec/helper*.h.inc
+ F: include/exec/helper-info.c.inc
+ F: include/exec/page-protection.h
+ F: include/system/tcg.h
+-F: include/accel/tcg/cpu-ops.h
++F: include/accel/tcg/
+ F: host/include/*/host/cpuinfo.h
+ F: util/cpuinfo-*.c
+ F: include/tcg/
+diff --git a/include/accel/tcg/iommu.h b/include/accel/tcg/iommu.h
+new file mode 100644
+index 00000000000..90cfd6c0ed1
+--- /dev/null
++++ b/include/accel/tcg/iommu.h
+@@ -0,0 +1,41 @@
++/*
++ * TCG IOMMU translations.
++ *
++ * Copyright (c) 2003 Fabrice Bellard
++ * SPDX-License-Identifier: LGPL-2.1-or-later
++ */
++#ifndef ACCEL_TCG_IOMMU_H
++#define ACCEL_TCG_IOMMU_H
++
++#ifdef CONFIG_USER_ONLY
++#error Cannot include accel/tcg/iommu.h from user emulation
++#endif
++
++#include "exec/hwaddr.h"
++#include "exec/memattrs.h"
++
++/**
++ * iotlb_to_section:
++ * @cpu: CPU performing the access
++ * @index: TCG CPU IOTLB entry
++ *
++ * Given a TCG CPU IOTLB entry, return the MemoryRegionSection that
++ * it refers to. @index will have been initially created and returned
++ * by memory_region_section_get_iotlb().
++ */
++MemoryRegionSection *iotlb_to_section(CPUState *cpu,
++                                      hwaddr index, MemTxAttrs attrs);
++
++MemoryRegionSection *address_space_translate_for_iotlb(CPUState *cpu,
++                                                       int asidx,
++                                                       hwaddr addr,
++                                                       hwaddr *xlat,
++                                                       hwaddr *plen,
++                                                       MemTxAttrs attrs,
++                                                       int *prot);
++
++hwaddr memory_region_section_get_iotlb(CPUState *cpu,
++                                       MemoryRegionSection *section);
++
++#endif
++
+diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
+index 816274bf905..b9eb9bc4b63 100644
+--- a/include/exec/exec-all.h
++++ b/include/exec/exec-all.h
+@@ -21,7 +21,6 @@
+ #define EXEC_ALL_H
+ 
+ #include "exec/hwaddr.h"
+-#include "exec/memattrs.h"
+ #include "exec/mmu-access-type.h"
+ #include "exec/vaddr.h"
+ 
+@@ -121,29 +120,4 @@ int probe_access_full_mmu(CPUArchState *env, vaddr addr, int size,
+ #endif /* !CONFIG_USER_ONLY */
+ #endif /* CONFIG_TCG */
+ 
+-#if !defined(CONFIG_USER_ONLY)
+-
+-/**
+- * iotlb_to_section:
+- * @cpu: CPU performing the access
+- * @index: TCG CPU IOTLB entry
+- *
+- * Given a TCG CPU IOTLB entry, return the MemoryRegionSection that
+- * it refers to. @index will have been initially created and returned
+- * by memory_region_section_get_iotlb().
+- */
+-struct MemoryRegionSection *iotlb_to_section(CPUState *cpu,
+-                                             hwaddr index, MemTxAttrs attrs);
+-#endif
+-
+-#if !defined(CONFIG_USER_ONLY)
+-
+-MemoryRegionSection *
+-address_space_translate_for_iotlb(CPUState *cpu, int asidx, hwaddr addr,
+-                                  hwaddr *xlat, hwaddr *plen,
+-                                  MemTxAttrs attrs, int *prot);
+-hwaddr memory_region_section_get_iotlb(CPUState *cpu,
+-                                       MemoryRegionSection *section);
+-#endif
+-
+ #endif
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index ca69128232c..d11989f5674 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -20,6 +20,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/main-loop.h"
+ #include "accel/tcg/cpu-ops.h"
++#include "accel/tcg/iommu.h"
+ #include "exec/exec-all.h"
+ #include "exec/page-protection.h"
+ #include "system/memory.h"
 diff --git a/system/physmem.c b/system/physmem.c
-index 637f2d85324..ccbeae241c4 100644
+index ccbeae241c4..f1ec0902c78 100644
 --- a/system/physmem.c
 +++ b/system/physmem.c
-@@ -746,6 +746,31 @@ translate_fail:
-     return &d->map.sections[PHYS_SECTION_UNASSIGNED];
+@@ -29,6 +29,7 @@
+ 
+ #ifdef CONFIG_TCG
+ #include "accel/tcg/cpu-ops.h"
++#include "accel/tcg/iommu.h"
+ #endif /* CONFIG_TCG */
+ 
+ #include "exec/exec-all.h"
+@@ -587,6 +588,8 @@ MemoryRegion *flatview_translate(FlatView *fv, hwaddr addr, hwaddr *xlat,
+     return mr;
  }
  
-+MemoryRegionSection *iotlb_to_section(CPUState *cpu,
-+                                      hwaddr index, MemTxAttrs attrs)
-+{
-+    int asidx = cpu_asidx_from_attrs(cpu, attrs);
-+    CPUAddressSpace *cpuas = &cpu->cpu_ases[asidx];
-+    AddressSpaceDispatch *d = cpuas->memory_dispatch;
-+    int section_index = index & ~TARGET_PAGE_MASK;
-+    MemoryRegionSection *ret;
++#ifdef CONFIG_TCG
 +
-+    assert(section_index < d->map.sections_nb);
-+    ret = d->map.sections + section_index;
-+    assert(ret->mr);
-+    assert(ret->mr->ops);
-+
-+    return ret;
-+}
-+
-+/* Called from RCU critical section */
-+hwaddr memory_region_section_get_iotlb(CPUState *cpu,
-+                                       MemoryRegionSection *section)
-+{
-+    AddressSpaceDispatch *d = flatview_to_dispatch(section->fv);
-+    return section - d->map.sections;
-+}
+ typedef struct TCGIOMMUNotifier {
+     IOMMUNotifier n;
+     MemoryRegion *mr;
+@@ -771,6 +774,8 @@ hwaddr memory_region_section_get_iotlb(CPUState *cpu,
+     return section - d->map.sections;
+ }
+ 
++#endif /* CONFIG_TCG */
 +
  void cpu_address_space_init(CPUState *cpu, int asidx,
                              const char *prefix, MemoryRegion *mr)
  {
-@@ -1002,14 +1027,6 @@ bool cpu_physical_memory_snapshot_get_dirty(DirtyBitmapSnapshot *snap,
-     return false;
- }
- 
--/* Called from RCU critical section */
--hwaddr memory_region_section_get_iotlb(CPUState *cpu,
--                                       MemoryRegionSection *section)
--{
--    AddressSpaceDispatch *d = flatview_to_dispatch(section->fv);
--    return section - d->map.sections;
--}
--
- static int subpage_register(subpage_t *mmio, uint32_t start, uint32_t end,
-                             uint16_t section);
- static subpage_t *subpage_init(FlatView *fv, hwaddr base);
-@@ -2669,23 +2686,6 @@ static uint16_t dummy_section(PhysPageMap *map, FlatView *fv, MemoryRegion *mr)
-     return phys_section_add(map, &section);
- }
- 
--MemoryRegionSection *iotlb_to_section(CPUState *cpu,
--                                      hwaddr index, MemTxAttrs attrs)
--{
--    int asidx = cpu_asidx_from_attrs(cpu, attrs);
--    CPUAddressSpace *cpuas = &cpu->cpu_ases[asidx];
--    AddressSpaceDispatch *d = cpuas->memory_dispatch;
--    int section_index = index & ~TARGET_PAGE_MASK;
--    MemoryRegionSection *ret;
--
--    assert(section_index < d->map.sections_nb);
--    ret = d->map.sections + section_index;
--    assert(ret->mr);
--    assert(ret->mr->ops);
--
--    return ret;
--}
--
- static void io_mem_init(void)
- {
-     memory_region_init_io(&io_mem_unassigned, NULL, &unassigned_mem_ops, NULL,
 -- 
 2.47.1
 
