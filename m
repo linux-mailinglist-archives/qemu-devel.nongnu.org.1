@@ -2,88 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA14AA9A8EF
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 11:51:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C2ADA9A8FC
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 11:52:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7tEX-0000CU-3f; Thu, 24 Apr 2025 05:51:05 -0400
+	id 1u7tFK-0000i5-AO; Thu, 24 Apr 2025 05:51:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7tEU-0000BG-CQ
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 05:51:02 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1u7tEq-0000Qq-AS; Thu, 24 Apr 2025 05:51:25 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7tES-0002wq-EQ
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 05:51:02 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-39c14016868so736549f8f.1
- for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 02:50:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1u7tEn-0002zR-Vo; Thu, 24 Apr 2025 05:51:24 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-acb415dd8faso122142266b.2; 
+ Thu, 24 Apr 2025 02:51:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745488258; x=1746093058; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=YsXZIYaRmo2+Zyqhkbaujh4Q38THW6hETikCJQhi8mY=;
- b=iVKHhnXOPp7N0HF5Apd+fiwNJDuu3HawmD7zswJohPsa8XQsI/6B/ByRxvFbWQ9zcy
- epQdiwgBtKvqg+HNwQATFP83qxLA602FjpxdlHa/oPDjcG2EhUTFHLKT8zTIGiDlmDz3
- WG+fp+SqmvYeSHepbfmOJjfYiiWqxzcz79Ey2bDgV4ll+pqejYxldxZ5KdlfRCoADQx7
- dzjcfx3lgZZZ37XFlDapJ4JOzrPqb3OeGo8RDpf1+od+Cfgb3Nsp0owEHoRGcFx1R+mi
- bC2Dmf3wZuQop2EivKxk6VjBeJ09nHI/KUyLVJxdVZH1azcs0joI9Mo6MQ4O/s4qcyxv
- IF4Q==
+ d=jms.id.au; s=google; t=1745488280; x=1746093080; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=pdeNaUx0YAovtOzfXHmWEHPybZDJQR7lFOpaCZFQHY8=;
+ b=EhCCZoMs9olvZhdmrN1KVi/v1G37AtAsZMQ121zIcAKXko9+nHnkArbRSasAo+mtUz
+ lfNvqaeZihT2kVX1RIBE05k5JCiSWjM/Hc4WQpozBCBQNh4xFB5fHzqTujcu9isQLA1o
+ v70B5JRbDHsbijrYNzNyNR+WJGHkUTjTiEEdg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745488258; x=1746093058;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YsXZIYaRmo2+Zyqhkbaujh4Q38THW6hETikCJQhi8mY=;
- b=qVdJBXGTDHrbgT50KX1QpwzJe8dtxCf4dL/Im2NliAUnCp/TwfySkTho5nhdGJK6Z0
- vOLc8O4BgAlJdSRlQeGP7OBSWBHugU3K6bNYCR23OWa0abpdQi+bv/rACl7mUE4hd0Gp
- HAjafXmGlq0nWXzMHrtuaCPDEtlbk05weg+p2GmQI+VuBbuJki4vQGQfIRLl7YsMKBpi
- 3W8xhnm3ldquPWPc+mEvYBizw0MCDAEhZea2qNnAMfA4TYW04WCmJUgstOnMzark11TA
- 1/TcrpEDoLFJ6BrNZNNCKVIaV/op61Az5BYjezH28NWmqpcSA47tEfJNTqX0nlRbOiqG
- L7Aw==
-X-Gm-Message-State: AOJu0YzyWuWmQHrxqUIjSzQ9RHB7kKJ4/mKQOI3YkbJkmlfQPQbx8+kI
- WkmjqF+LclYEcjymkJ0PIs22pHVPM4i3Eex5QxZAPRF88eImaFuecmTGHdXjG3El4k806F3X0vm
- Q
-X-Gm-Gg: ASbGncs0+pydYfIFXc8Jb93GXYZ5+ygIfvl8qmbsGG5s7oFe226bCjoZje5ogEXf7UT
- 5VbU75KLq5JNtVKkLmhwpzRM0emFlAXYwq//n/wPuraZTggtcJAV2ntryeDXapo/5hPMhPcoAU9
- AdiEvEbwyoVY6pf7kR0jebxqvUJS7MEjn9FBN3FuuGpjqDvn9ExnCBdF/yOxVS4tH3CIw0arD4a
- Op6Bf9Wp4kJ5SWRbW4AYkShyiSdX47L2ng+hI9a4zCzmLRQ+a5gZaX8yXMO6pASo0/MDOvzogc4
- 9q33iqz9rVoY8anjlSBvYNYBK02R+0498eBAEHhsUKvVbgGidAo7AxCVjkMlN9x/nHeHUmK6dDx
- RYX4bYRCMeLpypw==
-X-Google-Smtp-Source: AGHT+IHAZiuzoSH6MM1swwFuD5jWs322oqZxsZXJhz90ISBIJd7gJswfcXxaop6KqnrqoxG9Sk2e3Q==
-X-Received: by 2002:a05:6000:2212:b0:39c:266c:12a5 with SMTP id
- ffacd0b85a97d-3a06cf56518mr1663951f8f.13.1745488257770; 
- Thu, 24 Apr 2025 02:50:57 -0700 (PDT)
-Received: from [192.168.69.169] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a06d54ea37sm1527445f8f.90.2025.04.24.02.50.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 24 Apr 2025 02:50:57 -0700 (PDT)
-Message-ID: <6b685fec-d024-45ab-b723-1fdf345c65e2@linaro.org>
-Date: Thu, 24 Apr 2025 11:50:56 +0200
+ d=1e100.net; s=20230601; t=1745488280; x=1746093080;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=pdeNaUx0YAovtOzfXHmWEHPybZDJQR7lFOpaCZFQHY8=;
+ b=a7i5/sTTDhEmd2LpBNpbrN+VR+9BNmzZpqehppR7t59hrUyVagDdF30FEOUdnZLOBf
+ RUg3mkit/TntcYyxgnay4Ba9fo8UXmfFcJnmhhu81LTzpOpCjuaJfE+DWXk1SidCtJaW
+ b573xoMVJolGeEvbf+6Ofd+aoD2rC9xaByb8R7QabOs3ITzhytJvt/Vz90PlPUcyJGJa
+ 6uQJnvQBYm/qGGifngImC68DXWEUo7NEiOLS10gZEv20K103TpotXYqzEHsErOQAyE8Q
+ xfKU7XsnzDWbssIRO/hL6O9aeuGDtWnaS36LLiGy742d1JHi0GPAGGZtTOYgzpa5XiQY
+ Clrw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXWaoTmHWiL+OYCrnyCQmCa9CK0gM0ScAFTIb/Ddc94ADM1csYhIj7RAEg5IA/w1I635fMP8UojpPR3@nongnu.org
+X-Gm-Message-State: AOJu0Yzs3mNEkyjh+PZFLPbAVcQbAIonA6RCx1e4eZ55Munf6YKMyH+h
+ lELP/pGiZ/6c1mGwiEmrmAfFJEyu7thvToZ+yCdqF82VLyA10aEb1yDNGy4X6raxIMXUtHSPvPh
+ 7aW2zaURwaB4zbQtyu1l4VUaEo+w=
+X-Gm-Gg: ASbGncsHX4K5/yxs4CUHABPUPBHIj7ylQon6XkTMQvnIftlhoM05QyTPvJTmXV1l81R
+ yX+2dGhJi2TMbNoGV0cK9sihHjQzSQcOUPi9X3Td9+W7bV0OOJ+/71/1fbc1lgmJtKKNonXcM3P
+ TO0ZPqAEDC3yO0tecbbaWp
+X-Google-Smtp-Source: AGHT+IGeGeI5B4njJvBnvhpWzw62TQbOREO9QrxTlivOjDfHnr6bBFeJvIxr56gwQVbSHb6mvz5Kc0KWeqasAA3qxao=
+X-Received: by 2002:a17:907:9725:b0:acb:32c5:43ff with SMTP id
+ a640c23a62f3a-ace56e46911mr178563366b.0.1745488279475; Thu, 24 Apr 2025
+ 02:51:19 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 12/13] accel/tcg: Extract probe API out of
- 'exec/exec-all.h'
-To: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20250424094653.35932-1-philmd@linaro.org>
- <20250424094653.35932-13-philmd@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250424094653.35932-13-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <20250423110630.2249904-1-dbarboza@ventanamicro.com>
+ <20250423110630.2249904-2-dbarboza@ventanamicro.com>
+In-Reply-To: <20250423110630.2249904-2-dbarboza@ventanamicro.com>
+From: Joel Stanley <joel@jms.id.au>
+Date: Thu, 24 Apr 2025 19:21:06 +0930
+X-Gm-Features: ATxdqUHtJzJ95Jbgzlb4Xd2a-JkMSb4SegQ8o2JTaQo_y25P2qXH9w_e8vDgOhM
+Message-ID: <CACPK8XfF74wHqdBBz=qPLefAD8pKT-0C8e=kfFtTeMH+teF-7A@mail.gmail.com>
+Subject: Re: [PATCH 1/9] hw/riscv/virt.c: enforce s->memmap use in
+ machine_init()
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=joel.stan@gmail.com; helo=mail-ej1-x629.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.001,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,46 +90,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/4/25 11:46, Philippe Mathieu-Daudé wrote:
-> Declare probe methods in "accel/tcg/probe.h" to emphasize
-> they are specific to TCG accelerator.
-> 
-> target/arm/ptw.c is the only non-TCG specific file, its
-> call to the probe API is already guarded within CONFIG_TCG
-> checks.
-> 
+On Wed, 23 Apr 2025 at 20:37, Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
+>
+> Throughout the code we're accessing the board memmap, most of the time,
+> by accessing it statically via 'virt_memmap'. This static map is also
+> assigned in the machine state in s->memmap.
+>
+> We're also passing it as a variable to some fdt functions, which is
+> unorthodox since we can spare a function argument by accessing it
+> statically or via the machine state.
+>
+> All the current forms are valid but not all of the are scalable. In the
+> future we will version this board, and then all this code will need
+> rework because it should point to the updated memmap. In this case,
+> we'll want to assign the adequate versioned memmap once during init,
+> in s->memmap like it is being done today, and the rest of the code
+> will access the updated map via s->memmap.
 
-Forgot to include:
+I was writing a patch for a machine and came across the same
+inconsistencies. Nice clean up.
 
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+Some of the device initlisation code could be refactored out to be
+shared by other machines within the riscv directory. Related, parts of
+the device tree creation could belong to the model, instead of to the
+machine, as the properties are a property (!) of the device.
 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   include/accel/tcg/probe.h            | 110 +++++++++++++++++++++++++++
->   include/exec/exec-all.h              | 100 ------------------------
->   target/hexagon/mmvec/macros.h        |   1 +
->   accel/tcg/cputlb.c                   |   1 +
->   accel/tcg/user-exec.c                |   1 +
->   semihosting/uaccess.c                |   1 +
->   target/arm/helper.c                  |   1 +
->   target/arm/ptw.c                     |   3 +
->   target/arm/tcg/helper-a64.c          |   1 +
->   target/arm/tcg/mte_helper.c          |   1 +
->   target/arm/tcg/op_helper.c           |   1 +
->   target/arm/tcg/sve_helper.c          |   1 +
->   target/hexagon/op_helper.c           |   1 +
->   target/hppa/mem_helper.c             |   1 +
->   target/hppa/op_helper.c              |   1 +
->   target/i386/tcg/access.c             |   1 +
->   target/i386/tcg/seg_helper.c         |   1 +
->   target/i386/tcg/system/excp_helper.c |   1 +
->   target/mips/tcg/msa_helper.c         |   1 +
->   target/ppc/mem_helper.c              |   1 +
->   target/riscv/op_helper.c             |   1 +
->   target/riscv/vector_helper.c         |   1 +
->   target/s390x/tcg/mem_helper.c        |   1 +
->   target/xtensa/mmu_helper.c           |   1 +
->   24 files changed, 134 insertions(+), 100 deletions(-)
->   create mode 100644 include/accel/tcg/probe.h
+With that in mind we should consider passing the eg. fdt pointer and
+the MemMap pointer instead of machine state, where practical.
 
+> We're also enforcing the pattern of using s->memmap instead of assigning
+> it to a temp variable 'memmap'. Code is copy/pasted around all the time
+> and being consistent is important.
+
+Reviewed-by: Joel Stanley <joel@jms.id.au>
+
+Cheers,
+
+Joel
 
