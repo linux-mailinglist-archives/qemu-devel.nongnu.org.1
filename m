@@ -2,80 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D48ACA99D43
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 02:49:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02347A99D59
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 02:54:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7klO-0003rW-LI; Wed, 23 Apr 2025 20:48:26 -0400
+	id 1u7krB-0002GE-Sn; Wed, 23 Apr 2025 20:54:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1u7klK-0003pz-9A
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:48:22 -0400
-Received: from mail-vk1-xa32.google.com ([2607:f8b0:4864:20::a32])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1u7kqR-00010q-6S
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:53:41 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1u7klI-0004FJ-Jq
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:48:21 -0400
-Received: by mail-vk1-xa32.google.com with SMTP id
- 71dfb90a1353d-528ce9731dbso181443e0c.0
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:48:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1u7kq3-0004hQ-0R
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:53:17 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-7369ce5d323so304483b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:53:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1745455699; x=1746060499; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1745455994; x=1746060794; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9IG5N1pqLx9B8Z9xeqc0VH1mfeolX8GiqFT9Oc6Bz+8=;
- b=N483Iu2DrxcukrbqqUJorNyXlrMSjOvjwyOm5yQadxxzDRffK68a7Bbfo1yade+GHF
- YAqh+giK/fcJvmZdJ2C0ANvx5Y0ZolvH0jk2dZMeOd1JvgUSgrriB4yXdg7BckXJA62S
- tvX2H5EagoffPzfKdRG/0sqzWn+t+1kaYGN5OtSW3lkAbsy8FWrP1mDZS58O1rwMagLd
- sAZOrHOR/USVUqnq/alCS3aVgJojmbYQtnov+wNpjnwSOe3VRjPzrN5ePWjNFaEozPMm
- ricQwIZZ61Zwt7dpz3WcUoriu1p10zMFlGMP9jE7r6kmQq6W6ZuAdNE3IkdzQNOJnOD1
- KZUw==
+ bh=tycB/Ucpd1VV/Am2B/wQ8+fOjRJD7I+YEhW19LaJbw8=;
+ b=TFYcdRhfmmuK+Vuje27eZeFaQciDhmAwSdUQGP8s3cKg/vGZAOiimYCVeyrXLprlW3
+ nI3Lvu0j/dQJl7kBvETJbGEVzoLhHRQoEWzBXB0C5UKAMn8SXA7WmSV4ldu8J11vwnDS
+ uRNQz7m1Zbd6JseGoTlBrprMufMTeQFceCWMHDKWzHUVGf0cpux5Y2kR39wfXAd5Unb3
+ nHLhbK0WMQPhpR4F0Ovk8y+P+K1NWEdboNDBh3qlHqPsPizJkmbcMV47ytDisOHFKGTe
+ ebR9ViZaGZ5xjAuR0HynJ1WHSBdAztfK9NDapHutx+THz7TfChFD2A4vucm+mFJ/pHJZ
+ xATg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745455699; x=1746060499;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1745455994; x=1746060794;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9IG5N1pqLx9B8Z9xeqc0VH1mfeolX8GiqFT9Oc6Bz+8=;
- b=fQ6VHp58+hjg6Rpv502/H4ZAg6ZC5d1Rs0rZND/YkkcfQYN06qqOFR1dMDOArBtubv
- UFT2xxM1n4YF1X4iatZY6sQ2WWo0fZ/4RJipDNZwWwJ/JgmWJO2Cp84UcT92rJeHSSbe
- VVwvdR3tz+lZAWTouKnoNrRITfkCBI5vpSqPIbQ1RP+deHayxzrZakBT46+7n9ExkOkE
- lGT0NYGDE8SDVBrQEt7o3rGIOsvaEL5dMoO9bgdMNHdNl8cNnOLwhZRMfl4NpaSZb92P
- ss0X5TtPwT4DpG4GVZaa1F3YtL4T27fkVFUaa/pNZrO10/94cPGX62x44d8/Piq4BWf0
- dB9g==
-X-Gm-Message-State: AOJu0Yz24Y4UWc9RO35xhVYBoMz++BFgBy3Q0wZqdGijTRdFqJcbfQdY
- eo+08HMVBR6a9+iSO/xDNxF8oWIPXOHUtId3zIlBSd8+jIgFzH7qDi/oQqcbhIKIEmw1iQmIl5Z
- UP08jL8dgig2VLj5kIHQFquBStks=
-X-Gm-Gg: ASbGncu2XMQHGTK9s6yTy5g2z7L46KH9QPKPcHKTS/FSyd1lTWaEzg/VCs4njdIZB+z
- p7yZKM/mmo2G9sISWtJhpbch83wT1+n6Me8LW6OwSieCOblyfJAkWbDXKDHumTstNPpw4CJ+U1N
- jqxQPTTPMTUzWLMubmwT1X/8AcNsWAxY16vtKjBu8MIWHnnl7ZlfzwijvUEancfD0=
-X-Google-Smtp-Source: AGHT+IEVJy6wyLb22Z8uLU/hqh7aNmKMYo1xuBt3zmLzYH3CQmWd0THGuUA9QqLgAXj5u/q69ftRjkWXprAqePYfu/w=
-X-Received: by 2002:a05:6102:508c:b0:4c4:e0e0:f7bd with SMTP id
- ada2fe7eead31-4d38ebed43cmr978226137.19.1745455698990; Wed, 23 Apr 2025
- 17:48:18 -0700 (PDT)
+ bh=tycB/Ucpd1VV/Am2B/wQ8+fOjRJD7I+YEhW19LaJbw8=;
+ b=kUE3FytEVwwaspf338t3ifsAbXa+6dtGzFXiiHcsiEmirUUiK2bEEAKqUBjNvkTlFS
+ zX4xwX3EDW9LIt0PyhmfsvgTQSHzzZLt4Z9sh2UJbdvMJCcYBpvgd17ph+RIiuyw5h8F
+ FiuaCB+LnZv2Ufy5fHnaMS82qzvles/6TRhoIWfpglxqHlJAlzUwr16CVyIFMAwUufxv
+ IkhwudlE9B5hn1xN8yMHngIeRVU5TcHmpv1aUFIdIe74LRrZJP+VY1ybhSdWerrqGBTG
+ M2anHEp1hhbxPF1nNbLsnEBZS5vZlC/ynEq+GIUY45Jxo7M6yUFtYRICvJgYwtvNrD+C
+ gtvQ==
+X-Gm-Message-State: AOJu0Ywtbf9aG5RzQTaBIuq7cwShmxW+YcCcAcYmpa3qkfTDRRWXUc/A
+ OXOp5eqIKCYJTeWcyioS0gTY3l3J1tsMgnmXMKy38dr1LIXmNA1oQlB1PmPyQWOwTdYkiQD0iPs
+ P
+X-Gm-Gg: ASbGnctBLB28cphYBFl14Jz3pnsjoU6GHtvaE0vPXTe6v4tRg+0B4oQID9i7j7p/HfM
+ FXiQ7x3ovbtlwp4vQ5TrfpraB4hb6GP0R2E5SqwKRAdxUtaAP38BTnpAiHV+jPtBDNn+1X0IGtH
+ pJSLPBKYX3kSdNSMUZnm5juKK/LTByGM5kZeN0/8QzV5SGCG8LZ8+PgRhmYxXewkeose/dxU1Or
+ ZTBAqzNmHe7ldWYq7G1rlH+Z62SwVFqbJ5OXsS0cDYiy2VFnNCFzDckNGeFCJqkkJd7k+fd/YsS
+ 4ZZap9ZMzH8om1t+H1a6yguCNjY/+u7HAYMily+yOI3GJGqwMzjZTOs/b4MtrUADskjcI1VxytY
+ =
+X-Google-Smtp-Source: AGHT+IGg66qKuktfF5Om8JEt/izTK/gdUJu4UK4SGlhaqISbwPYXjhp9pk7WP2C0cExj6PFW3rwZwg==
+X-Received: by 2002:a05:6a21:1304:b0:1f5:9024:3246 with SMTP id
+ adf61e73a8af0-20444f053a4mr759198637.17.1745455990459; 
+ Wed, 23 Apr 2025 17:53:10 -0700 (PDT)
+Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-73e25a6a971sm209353b3a.103.2025.04.23.17.53.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 23 Apr 2025 17:53:10 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PULL 048/148] include/exec: Split out watchpoint.h
+Date: Wed, 23 Apr 2025 17:47:53 -0700
+Message-ID: <20250424004934.598783-49-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250424004934.598783-1-richard.henderson@linaro.org>
+References: <20250424004934.598783-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-References: <20250406070254.274797-1-pbonzini@redhat.com>
- <20250406070254.274797-27-pbonzini@redhat.com>
-In-Reply-To: <20250406070254.274797-27-pbonzini@redhat.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 24 Apr 2025 10:47:53 +1000
-X-Gm-Features: ATxdqUFrcQj01QgVollwty9Pd52qoK6tTZMxdSH6PzcVFGw3YyDYU6b3UCCyQDA
-Message-ID: <CAKmqyKN-yXysNXB7gj_Xo3rCAzNhy9p695O+YZu=Pipkm9eTJw@mail.gmail.com>
-Subject: Re: [PATCH 26/27] target/riscv: convert Xiangshan Nanhu to RISCVCPUDef
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a32;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa32.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,137 +100,266 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Apr 6, 2025 at 5:04=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com> =
-wrote:
->
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Relatively few objects in qemu care about watchpoints, so split
+out to a new header.  Removes an instance of CONFIG_USER_ONLY
+from hw/core/cpu.h.
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ include/exec/watchpoint.h           | 41 +++++++++++++++++++++++++++++
+ include/hw/core/cpu.h               | 30 ---------------------
+ accel/tcg/tcg-accel-ops.c           |  1 +
+ system/watchpoint.c                 |  1 +
+ target/arm/debug_helper.c           |  1 +
+ target/i386/cpu.c                   |  1 +
+ target/i386/machine.c               |  2 +-
+ target/i386/tcg/system/bpt_helper.c |  1 +
+ target/ppc/cpu.c                    |  1 +
+ target/ppc/cpu_init.c               |  2 +-
+ target/riscv/debug.c                |  1 +
+ target/s390x/helper.c               |  1 +
+ target/s390x/tcg/excp_helper.c      |  1 +
+ target/xtensa/dbg_helper.c          |  1 +
+ 14 files changed, 53 insertions(+), 32 deletions(-)
+ create mode 100644 include/exec/watchpoint.h
 
-Alistair
+diff --git a/include/exec/watchpoint.h b/include/exec/watchpoint.h
+new file mode 100644
+index 0000000000..4b6668826c
+--- /dev/null
++++ b/include/exec/watchpoint.h
+@@ -0,0 +1,41 @@
++/*
++ * CPU watchpoints
++ *
++ * Copyright (c) 2012 SUSE LINUX Products GmbH
++ * SPDX-License-Identifier: LGPL-2.1-or-later
++ */
++
++#ifndef EXEC_WATCHPOINT_H
++#define EXEC_WATCHPOINT_H
++
++#if defined(CONFIG_USER_ONLY)
++static inline int cpu_watchpoint_insert(CPUState *cpu, vaddr addr, vaddr len,
++                                        int flags, CPUWatchpoint **watchpoint)
++{
++    return -ENOSYS;
++}
++
++static inline int cpu_watchpoint_remove(CPUState *cpu, vaddr addr,
++                                        vaddr len, int flags)
++{
++    return -ENOSYS;
++}
++
++static inline void cpu_watchpoint_remove_by_ref(CPUState *cpu,
++                                                CPUWatchpoint *wp)
++{
++}
++
++static inline void cpu_watchpoint_remove_all(CPUState *cpu, int mask)
++{
++}
++#else
++int cpu_watchpoint_insert(CPUState *cpu, vaddr addr, vaddr len,
++                          int flags, CPUWatchpoint **watchpoint);
++int cpu_watchpoint_remove(CPUState *cpu, vaddr addr,
++                          vaddr len, int flags);
++void cpu_watchpoint_remove_by_ref(CPUState *cpu, CPUWatchpoint *watchpoint);
++void cpu_watchpoint_remove_all(CPUState *cpu, int mask);
++#endif
++
++#endif /* EXEC_WATCHPOINT_H */
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index abd8764e83..37cb7d1531 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -1109,36 +1109,6 @@ static inline bool cpu_breakpoint_test(CPUState *cpu, vaddr pc, int mask)
+     return false;
+ }
+ 
+-#if defined(CONFIG_USER_ONLY)
+-static inline int cpu_watchpoint_insert(CPUState *cpu, vaddr addr, vaddr len,
+-                                        int flags, CPUWatchpoint **watchpoint)
+-{
+-    return -ENOSYS;
+-}
+-
+-static inline int cpu_watchpoint_remove(CPUState *cpu, vaddr addr,
+-                                        vaddr len, int flags)
+-{
+-    return -ENOSYS;
+-}
+-
+-static inline void cpu_watchpoint_remove_by_ref(CPUState *cpu,
+-                                                CPUWatchpoint *wp)
+-{
+-}
+-
+-static inline void cpu_watchpoint_remove_all(CPUState *cpu, int mask)
+-{
+-}
+-#else
+-int cpu_watchpoint_insert(CPUState *cpu, vaddr addr, vaddr len,
+-                          int flags, CPUWatchpoint **watchpoint);
+-int cpu_watchpoint_remove(CPUState *cpu, vaddr addr,
+-                          vaddr len, int flags);
+-void cpu_watchpoint_remove_by_ref(CPUState *cpu, CPUWatchpoint *watchpoint);
+-void cpu_watchpoint_remove_all(CPUState *cpu, int mask);
+-#endif
+-
+ /**
+  * cpu_get_address_space:
+  * @cpu: CPU to get address space from
+diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
+index d9b662efe3..5c88056157 100644
+--- a/accel/tcg/tcg-accel-ops.c
++++ b/accel/tcg/tcg-accel-ops.c
+@@ -37,6 +37,7 @@
+ #include "exec/hwaddr.h"
+ #include "exec/tb-flush.h"
+ #include "exec/translation-block.h"
++#include "exec/watchpoint.h"
+ #include "gdbstub/enums.h"
+ 
+ #include "hw/core/cpu.h"
+diff --git a/system/watchpoint.c b/system/watchpoint.c
+index 08dbd8483d..21d0bb36ca 100644
+--- a/system/watchpoint.c
++++ b/system/watchpoint.c
+@@ -21,6 +21,7 @@
+ #include "qemu/error-report.h"
+ #include "exec/cputlb.h"
+ #include "exec/target_page.h"
++#include "exec/watchpoint.h"
+ #include "hw/core/cpu.h"
+ 
+ /* Add a watchpoint.  */
+diff --git a/target/arm/debug_helper.c b/target/arm/debug_helper.c
+index a9a619ba6b..473ee2af38 100644
+--- a/target/arm/debug_helper.c
++++ b/target/arm/debug_helper.c
+@@ -13,6 +13,7 @@
+ #include "cpregs.h"
+ #include "exec/exec-all.h"
+ #include "exec/helper-proto.h"
++#include "exec/watchpoint.h"
+ #include "system/tcg.h"
+ 
+ #ifdef CONFIG_TCG
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 5c9f80b4cc..c596e2174d 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -35,6 +35,7 @@
+ #include "standard-headers/asm-x86/kvm_para.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/i386/topology.h"
++#include "exec/watchpoint.h"
+ #ifndef CONFIG_USER_ONLY
+ #include "system/reset.h"
+ #include "qapi/qapi-commands-machine-target.h"
+diff --git a/target/i386/machine.c b/target/i386/machine.c
+index 70f632a36f..6cb561c632 100644
+--- a/target/i386/machine.c
++++ b/target/i386/machine.c
+@@ -7,7 +7,7 @@
+ #include "hw/i386/x86.h"
+ #include "kvm/kvm_i386.h"
+ #include "hw/xen/xen.h"
+-
++#include "exec/watchpoint.h"
+ #include "system/kvm.h"
+ #include "system/kvm_xen.h"
+ #include "system/tcg.h"
+diff --git a/target/i386/tcg/system/bpt_helper.c b/target/i386/tcg/system/bpt_helper.c
+index be232c1ca9..08ccd3f5e6 100644
+--- a/target/i386/tcg/system/bpt_helper.c
++++ b/target/i386/tcg/system/bpt_helper.c
+@@ -21,6 +21,7 @@
+ #include "cpu.h"
+ #include "exec/exec-all.h"
+ #include "exec/helper-proto.h"
++#include "exec/watchpoint.h"
+ #include "tcg/helper-tcg.h"
+ 
+ 
+diff --git a/target/ppc/cpu.c b/target/ppc/cpu.c
+index bfcc695de7..4d8faaddee 100644
+--- a/target/ppc/cpu.c
++++ b/target/ppc/cpu.c
+@@ -22,6 +22,7 @@
+ #include "cpu-models.h"
+ #include "cpu-qom.h"
+ #include "exec/log.h"
++#include "exec/watchpoint.h"
+ #include "fpu/softfloat-helpers.h"
+ #include "mmu-hash64.h"
+ #include "helper_regs.h"
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index f81cb680fc..17f0f3d3ff 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -40,7 +40,7 @@
+ #include "qemu/cutils.h"
+ #include "disas/capstone.h"
+ #include "fpu/softfloat.h"
+-
++#include "exec/watchpoint.h"
+ #include "helper_regs.h"
+ #include "internal.h"
+ #include "spr_common.h"
+diff --git a/target/riscv/debug.c b/target/riscv/debug.c
+index 9db4048523..fea989afe9 100644
+--- a/target/riscv/debug.c
++++ b/target/riscv/debug.c
+@@ -30,6 +30,7 @@
+ #include "trace.h"
+ #include "exec/exec-all.h"
+ #include "exec/helper-proto.h"
++#include "exec/watchpoint.h"
+ #include "system/cpu-timers.h"
+ 
+ /*
+diff --git a/target/s390x/helper.c b/target/s390x/helper.c
+index c689e11b46..e660c69f60 100644
+--- a/target/s390x/helper.c
++++ b/target/s390x/helper.c
+@@ -27,6 +27,7 @@
+ #include "target/s390x/kvm/pv.h"
+ #include "system/hw_accel.h"
+ #include "system/runstate.h"
++#include "exec/watchpoint.h"
+ 
+ void s390x_tod_timer(void *opaque)
+ {
+diff --git a/target/s390x/tcg/excp_helper.c b/target/s390x/tcg/excp_helper.c
+index ac733f407f..1d51043e88 100644
+--- a/target/s390x/tcg/excp_helper.c
++++ b/target/s390x/tcg/excp_helper.c
+@@ -24,6 +24,7 @@
+ #include "exec/helper-proto.h"
+ #include "exec/cputlb.h"
+ #include "exec/exec-all.h"
++#include "exec/watchpoint.h"
+ #include "s390x-internal.h"
+ #include "tcg_s390x.h"
+ #ifndef CONFIG_USER_ONLY
+diff --git a/target/xtensa/dbg_helper.c b/target/xtensa/dbg_helper.c
+index 163a1ffc7b..c4f4298a50 100644
+--- a/target/xtensa/dbg_helper.c
++++ b/target/xtensa/dbg_helper.c
+@@ -31,6 +31,7 @@
+ #include "exec/helper-proto.h"
+ #include "qemu/host-utils.h"
+ #include "exec/exec-all.h"
++#include "exec/watchpoint.h"
+ #include "system/address-spaces.h"
+ 
+ void HELPER(wsr_ibreakenable)(CPUXtensaState *env, uint32_t v)
+-- 
+2.43.0
 
-> ---
->  target/riscv/cpu.c | 80 +++++++++++++---------------------------------
->  1 file changed, 23 insertions(+), 57 deletions(-)
->
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 4e4d8ddf5a2..0a3a0343087 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -441,16 +441,6 @@ const char *satp_mode_str(uint8_t satp_mode, bool is=
-_32_bit)
->      g_assert_not_reached();
->  }
->
-> -static void __attribute__((unused))
-> -set_satp_mode_max_supported(RISCVCPU *cpu, int satp_mode)
-> -{
-> -    bool rv32 =3D riscv_cpu_mxl(&cpu->env) =3D=3D MXL_RV32;
-> -    const bool *valid_vm =3D rv32 ? valid_vm_1_10_32 : valid_vm_1_10_64;
-> -
-> -    assert(valid_vm[satp_mode]);
-> -    cpu->cfg.max_satp_mode =3D satp_mode;
-> -}
-> -
->  static bool get_satp_mode_supported(RISCVCPU *cpu, uint16_t *supported)
->  {
->      bool rv32 =3D riscv_cpu_is_32bit(cpu);
-> @@ -499,38 +489,6 @@ static void riscv_register_custom_csrs(RISCVCPU *cpu=
-, const RISCVCSR *csr_list)
->  }
->  #endif
->
-> -#if defined(TARGET_RISCV64)
-> -
-> -static void rv64_xiangshan_nanhu_cpu_init(Object *obj)
-> -{
-> -    CPURISCVState *env =3D &RISCV_CPU(obj)->env;
-> -    RISCVCPU *cpu =3D RISCV_CPU(obj);
-> -
-> -    riscv_cpu_set_misa_ext(env, RVG | RVC | RVB | RVS | RVU);
-> -    env->priv_ver =3D PRIV_VERSION_1_12_0;
-> -
-> -    /* Enable ISA extensions */
-> -    cpu->cfg.ext_zbc =3D true;
-> -    cpu->cfg.ext_zbkb =3D true;
-> -    cpu->cfg.ext_zbkc =3D true;
-> -    cpu->cfg.ext_zbkx =3D true;
-> -    cpu->cfg.ext_zknd =3D true;
-> -    cpu->cfg.ext_zkne =3D true;
-> -    cpu->cfg.ext_zknh =3D true;
-> -    cpu->cfg.ext_zksed =3D true;
-> -    cpu->cfg.ext_zksh =3D true;
-> -    cpu->cfg.ext_svinval =3D true;
-> -
-> -    cpu->cfg.mmu =3D true;
-> -    cpu->cfg.pmp =3D true;
-> -
-> -#ifndef CONFIG_USER_ONLY
-> -    set_satp_mode_max_supported(cpu, VM_1_10_SV39);
-> -#endif
-> -}
-> -
-> -#endif /* !TARGET_RISCV64 */
-> -
->  static ObjectClass *riscv_cpu_class_by_name(const char *cpu_model)
->  {
->      ObjectClass *oc;
-> @@ -2895,19 +2853,6 @@ void riscv_isa_write_fdt(RISCVCPU *cpu, void *fdt,=
- char *nodename)
->  }
->  #endif
->
-> -#define DEFINE_VENDOR_CPU(type_name, misa_mxl_max_, initfn) \
-> -    {                                                       \
-> -        .name =3D (type_name),                                \
-> -        .parent =3D TYPE_RISCV_VENDOR_CPU,                    \
-> -        .instance_init =3D (initfn),                          \
-> -        .class_data =3D (void*) &((const RISCVCPUDef) {       \
-> -             .misa_mxl_max =3D (misa_mxl_max_),               \
-> -             .priv_spec =3D RISCV_PROFILE_ATTR_UNUSED,        \
-> -             .vext_spec =3D RISCV_PROFILE_ATTR_UNUSED,        \
-> -             .cfg.max_satp_mode =3D -1,                       \
-> -        }),                                                 \
-> -    }
-> -
->  #define DEFINE_ABSTRACT_RISCV_CPU(type_name, parent_type_name, ...) \
->      {                                                       \
->          .name =3D (type_name),                                \
-> @@ -3207,8 +3152,29 @@ static const TypeInfo riscv_cpu_type_infos[] =3D {
->          .cfg.max_satp_mode =3D VM_1_10_SV48,
->      ),
->
-> -    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_XIANGSHAN_NANHU,
-> -                                                 MXL_RV64, rv64_xiangsha=
-n_nanhu_cpu_init),
-> +    DEFINE_RISCV_CPU(TYPE_RISCV_CPU_XIANGSHAN_NANHU, TYPE_RISCV_VENDOR_C=
-PU,
-> +        .misa_mxl_max =3D MXL_RV64,
-> +        .misa_ext =3D RVG | RVC | RVB | RVS | RVU,
-> +        .priv_spec =3D PRIV_VERSION_1_12_0,
-> +
-> +        /* ISA extensions */
-> +        .cfg.ext_zbc =3D true,
-> +        .cfg.ext_zbkb =3D true,
-> +        .cfg.ext_zbkc =3D true,
-> +        .cfg.ext_zbkx =3D true,
-> +        .cfg.ext_zknd =3D true,
-> +        .cfg.ext_zkne =3D true,
-> +        .cfg.ext_zknh =3D true,
-> +        .cfg.ext_zksed =3D true,
-> +        .cfg.ext_zksh =3D true,
-> +        .cfg.ext_svinval =3D true,
-> +
-> +        .cfg.mmu =3D true,
-> +        .cfg.pmp =3D true,
-> +
-> +        .cfg.max_satp_mode =3D VM_1_10_SV39,
-> +    ),
-> +
->  #ifdef CONFIG_TCG
->      DEFINE_RISCV_CPU(TYPE_RISCV_CPU_BASE128, TYPE_RISCV_DYNAMIC_CPU,
->          .cfg.max_satp_mode =3D VM_1_10_SV57,
-> --
-> 2.49.0
->
 
