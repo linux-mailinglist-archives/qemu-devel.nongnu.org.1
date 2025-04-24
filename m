@@ -2,71 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58D8BA9A51E
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 10:01:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84B7CA9A4CD
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 09:51:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7rUc-0001J6-Qq; Thu, 24 Apr 2025 03:59:34 -0400
+	id 1u7rLy-0000dw-Bv; Thu, 24 Apr 2025 03:50:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u7rUX-0001HB-NU
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 03:59:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1u7rLk-0000ck-1B
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 03:50:27 -0400
+Received: from mgamail.intel.com ([192.198.163.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u7rUU-0007XQ-Fo
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 03:59:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745481564;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=WHfteXiEbJ/UnkcjEIKyYx7qjgvjyi/nDUEC2y7+Xz0=;
- b=HXVCOITwEEI1kUeohX2syUzZqwtC1u+xte8A7vfja/YToGSU8GpE1wdDQcAjxX5DCf5rfu
- hLE1XgOwkER5iZ2wXNXfHiGbYeOm0F2qEPmEYEytUmsYS0aZ4oZo4S6neXeDelkwNLFmZt
- IlsPb+YEvTdI33nlVGcnab0OTb9iF18=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-327-PvdjmhCyONymFaGdz77PZA-1; Thu,
- 24 Apr 2025 03:59:21 -0400
-X-MC-Unique: PvdjmhCyONymFaGdz77PZA-1
-X-Mimecast-MFC-AGG-ID: PvdjmhCyONymFaGdz77PZA_1745481560
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0499019560AE; Thu, 24 Apr 2025 07:59:20 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.5])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7F1EE180045B; Thu, 24 Apr 2025 07:59:19 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id F14C921E661A; Thu, 24 Apr 2025 09:59:16 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, Richard Henderson <richard.henderson@linaro.org>,
- Corey Minyard <cminyard@mvista.com>
-Subject: [PULL 3/3] cleanup: Drop pointless label at end of function
-Date: Thu, 24 Apr 2025 09:59:16 +0200
-Message-ID: <20250424075916.1522767-4-armbru@redhat.com>
-In-Reply-To: <20250424075916.1522767-1-armbru@redhat.com>
-References: <20250424075916.1522767-1-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1u7rLZ-0006az-US
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 03:50:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1745481014; x=1777017014;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=/wJmc8AjbuE6ou/U1a6O64LXmKqy6snLfB0tLkyO/vA=;
+ b=hFPEndZLCW4vQ3VfEmriu6MfHJJ6j8o74Jz6oN2hq6CbSJolrIWL4UUg
+ BstSkKFUEnXvlO0YahZsWH2sU6NNDL+ZSOTe0MRXSis3wkPF/DUx0VDd3
+ 9WW19zMZmhQ5CBr3UMi4jCFFQOE1UzqCquZcoqIc5txAmz9tHJOrpSp1N
+ We70HzfClu5QWkmXOH67cJcpKejMUB1/cM73ph30ob2sMWgxuemS76p9+
+ 6ZXsDR+vFVDRt+NFQ8ZVD81tu0jfDwMiAN8u3DGpbxGLg3N/9EvAFJsef
+ M9YxgZYXIN3qP8nNtCns+KkZGwRiAXSZIoIyogmHrNprrl9pkt7/zX8mA A==;
+X-CSE-ConnectionGUID: x1AZPJjdRxqWzSIih+Eg/w==
+X-CSE-MsgGUID: 0kzYpBF5Tn++0OWPowDiXA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="57748618"
+X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; d="scan'208";a="57748618"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Apr 2025 00:50:10 -0700
+X-CSE-ConnectionGUID: M4+XoCQSS2es3Kui4xiBsA==
+X-CSE-MsgGUID: uK43kwevRpOOP2kLtziJrA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; d="scan'208";a="163517092"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa002.jf.intel.com with ESMTP; 24 Apr 2025 00:50:08 -0700
+Date: Thu, 24 Apr 2025 16:11:03 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Francesco Lavra <francescolavra.fl@gmail.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+Subject: Re: [PATCH v8 17/55] i386/tdvf: Introduce function to parse TDVF
+ metadata
+Message-ID: <aAnyF40pFLz9vY0y@intel.com>
+References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
+ <20250401130205.2198253-18-xiaoyao.li@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.294,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250401130205.2198253-18-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.294,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,136 +89,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Acked-by: Corey Minyard <cminyard@mvista.com>
-Message-ID: <20250407082643.2310002-4-armbru@redhat.com>
----
- hw/ipmi/ipmi_bmc_extern.c | 4 +---
- hw/ipmi/ipmi_bmc_sim.c    | 7 ++-----
- hw/ipmi/ipmi_bt.c         | 7 +++----
- hw/ipmi/ipmi_kcs.c        | 3 +--
- 4 files changed, 7 insertions(+), 14 deletions(-)
+On Tue, Apr 01, 2025 at 09:01:27AM -0400, Xiaoyao Li wrote:
+> Date: Tue,  1 Apr 2025 09:01:27 -0400
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: [PATCH v8 17/55] i386/tdvf: Introduce function to parse TDVF
+>  metadata
+> X-Mailer: git-send-email 2.34.1
+> 
+> From: Isaku Yamahata <isaku.yamahata@intel.com>
+> 
+> TDX VM needs to boot with its specialized firmware, Trusted Domain
+> Virtual Firmware (TDVF). QEMU needs to parse TDVF and map it in TD
+> guest memory prior to running the TDX VM.
+> 
+> A TDVF Metadata in TDVF image describes the structure of firmware.
+> QEMU refers to it to setup memory for TDVF. Introduce function
+> tdvf_parse_metadata() to parse the metadata from TDVF image and store
+> the info of each TDVF section.
+> 
+> TDX metadata is located by a TDX metadata offset block, which is a
+> GUID-ed structure. The data portion of the GUID structure contains
+> only an 4-byte field that is the offset of TDX metadata to the end
+> of firmware file.
+> 
+> Select X86_FW_OVMF when TDX is enable to leverage existing functions
+> to parse and search OVMF's GUID-ed structures.
+> 
+> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+> Co-developed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+> ---
+> Changes in v8:
+>  - Drop the failure handling of memcpy() since it cannot fail;
+> 
+> Changes in v7:
+>  - Update license info to only use SPDX tag;
+>  - use g_autofree to avoid manually free;
+> 
+> Changes in v6:
+>  - Drop the the data endianness change for metadata->Length;
+> 
+> Changes in v1:
+>  - rename tdvf_parse_section_entry() to
+>    tdvf_parse_and_check_section_entry()
+> 
+> Changes in RFC v4:
+>  - rename TDX_METADATA_GUID to TDX_METADATA_OFFSET_GUID
+> ---
+>  hw/i386/Kconfig        |   1 +
+>  hw/i386/meson.build    |   1 +
+>  hw/i386/tdvf.c         | 183 +++++++++++++++++++++++++++++++++++++++++
+>  include/hw/i386/tdvf.h |  38 +++++++++
+>  4 files changed, 223 insertions(+)
+>  create mode 100644 hw/i386/tdvf.c
+>  create mode 100644 include/hw/i386/tdvf.h
 
-diff --git a/hw/ipmi/ipmi_bmc_extern.c b/hw/ipmi/ipmi_bmc_extern.c
-index 22cb9b590b..e563214390 100644
---- a/hw/ipmi/ipmi_bmc_extern.c
-+++ b/hw/ipmi/ipmi_bmc_extern.c
-@@ -213,7 +213,7 @@ static void ipmi_bmc_extern_handle_command(IPMIBmc *b,
-         rsp[2] = err;
-         ibe->waiting_rsp = false;
-         k->handle_rsp(s, msg_id, rsp, 3);
--        goto out;
-+        return;
-     }
- 
-     addchar(ibe, msg_id);
-@@ -228,8 +228,6 @@ static void ipmi_bmc_extern_handle_command(IPMIBmc *b,
- 
-     /* Start the transmit */
-     continue_send(ibe);
--
-- out:
- }
- 
- static void handle_hw_op(IPMIBmcExtern *ibe, unsigned char hw_op)
-diff --git a/hw/ipmi/ipmi_bmc_sim.c b/hw/ipmi/ipmi_bmc_sim.c
-index c6a85e8cd1..41fe6835a7 100644
---- a/hw/ipmi/ipmi_bmc_sim.c
-+++ b/hw/ipmi/ipmi_bmc_sim.c
-@@ -465,13 +465,12 @@ void ipmi_bmc_gen_event(IPMIBmc *b, uint8_t *evt, bool log)
-     }
- 
-     if (ibs->msg_flags & IPMI_BMC_MSG_FLAG_EVT_BUF_FULL) {
--        goto out;
-+        return;
-     }
- 
-     memcpy(ibs->evtbuf, evt, 16);
-     ibs->msg_flags |= IPMI_BMC_MSG_FLAG_EVT_BUF_FULL;
-     k->set_atn(s, 1, attn_irq_enabled(ibs));
-- out:
- }
- static void gen_event(IPMIBmcSim *ibs, unsigned int sens_num, uint8_t deassert,
-                       uint8_t evd1, uint8_t evd2, uint8_t evd3)
-@@ -996,7 +995,7 @@ static void get_msg(IPMIBmcSim *ibs,
- 
-     if (QTAILQ_EMPTY(&ibs->rcvbufs)) {
-         rsp_buffer_set_error(rsp, 0x80); /* Queue empty */
--        goto out;
-+        return;
-     }
-     rsp_buffer_push(rsp, 0); /* Channel 0 */
-     msg = QTAILQ_FIRST(&ibs->rcvbufs);
-@@ -1011,8 +1010,6 @@ static void get_msg(IPMIBmcSim *ibs,
-         ibs->msg_flags &= ~IPMI_BMC_MSG_FLAG_RCV_MSG_QUEUE;
-         k->set_atn(s, attn_set(ibs), attn_irq_enabled(ibs));
-     }
--
--out:
- }
- 
- static unsigned char
-diff --git a/hw/ipmi/ipmi_bt.c b/hw/ipmi/ipmi_bt.c
-index 5cf12c59a8..e01d02fe52 100644
---- a/hw/ipmi/ipmi_bt.c
-+++ b/hw/ipmi/ipmi_bt.c
-@@ -98,14 +98,14 @@ static void ipmi_bt_handle_event(IPMIInterface *ii)
-     IPMIBT *ib = iic->get_backend_data(ii);
- 
-     if (ib->inlen < 4) {
--        goto out;
-+        return;
-     }
-     /* Note that overruns are handled by handle_command */
-     if (ib->inmsg[0] != (ib->inlen - 1)) {
-         /* Length mismatch, just ignore. */
-         IPMI_BT_SET_BBUSY(ib->control_reg, 1);
-         ib->inlen = 0;
--        goto out;
-+        return;
-     }
-     if ((ib->inmsg[1] == (IPMI_NETFN_APP << 2)) &&
-                         (ib->inmsg[3] == IPMI_CMD_GET_BT_INTF_CAP)) {
-@@ -136,7 +136,7 @@ static void ipmi_bt_handle_event(IPMIInterface *ii)
-             IPMI_BT_SET_B2H_IRQ(ib->mask_reg, 1);
-             ipmi_bt_raise_irq(ib);
-         }
--        goto out;
-+        return;
-     }
-     ib->waiting_seq = ib->inmsg[2];
-     ib->inmsg[2] = ib->inmsg[1];
-@@ -145,7 +145,6 @@ static void ipmi_bt_handle_event(IPMIInterface *ii)
-         bk->handle_command(ib->bmc, ib->inmsg + 2, ib->inlen - 2,
-                            sizeof(ib->inmsg), ib->waiting_rsp);
-     }
-- out:
- }
- 
- static void ipmi_bt_handle_rsp(IPMIInterface *ii, uint8_t msg_id,
-diff --git a/hw/ipmi/ipmi_kcs.c b/hw/ipmi/ipmi_kcs.c
-index ae549fb864..d5cfe6c068 100644
---- a/hw/ipmi/ipmi_kcs.c
-+++ b/hw/ipmi/ipmi_kcs.c
-@@ -168,7 +168,7 @@ static void ipmi_kcs_handle_event(IPMIInterface *ii)
-             ik->outpos = 0;
-             bk->handle_command(ik->bmc, ik->inmsg, ik->inlen, sizeof(ik->inmsg),
-                                ik->waiting_rsp);
--            goto out_noibf;
-+            return;
-         } else if (ik->cmd_reg == IPMI_KCS_WRITE_END_CMD) {
-             ik->cmd_reg = -1;
-             ik->write_end = 1;
-@@ -197,7 +197,6 @@ static void ipmi_kcs_handle_event(IPMIInterface *ii)
-     ik->cmd_reg = -1;
-     ik->data_in_reg = -1;
-     IPMI_KCS_SET_IBF(ik->status_reg, 0);
-- out_noibf:
- }
- 
- static void ipmi_kcs_handle_rsp(IPMIInterface *ii, uint8_t msg_id,
--- 
-2.48.1
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
