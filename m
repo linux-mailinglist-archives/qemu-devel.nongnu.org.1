@@ -2,95 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32FB4A9BAF2
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 00:49:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAD60A9BB01
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 00:58:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u85Nc-0002JS-5j; Thu, 24 Apr 2025 18:49:16 -0400
+	id 1u85Vk-0003mv-Pf; Thu, 24 Apr 2025 18:57:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1u85NT-0002IH-8k
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 18:49:08 -0400
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1u85NR-0003pi-Lo
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 18:49:07 -0400
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-b061a775ac3so1502021a12.0
- for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 15:49:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745534943; x=1746139743; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=AbBmbgvjkhL8nVWvJw08tnE3/rL/PUHv7LxMjlyVi8c=;
- b=fHSezZev6U3byox2vqzDk+yVLN3a0Oapgu3wB29b9tWC3UtAK9+CbVCLyjxqBKbY97
- dBErjSDqBoIxUs2l16SoRjbQRAGC/YpqHC6yfGAlshaATKRRMvYSuuTk6dg+7fwsE/NB
- 1Wdro9SouPm84WcNN+cQ2bIUZxkw+ifv/2t24CSUmZG1hANfsWTbsJsRcb+UCg2He3w6
- BSMXY+QPXRORftrwPQ5AlhfdB3YNhLpXbzxGEVvJ30xhPu44B9df8SN0S7sCHHDskbsQ
- p3cByZJZ4ULtZq+CL0InkMOUgXPD7tFLf+jKmRxa3emZ6tceknWKuRKr53Dm8zD/A2qO
- 9U2Q==
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1u85Vd-0003mO-B0
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 18:57:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1u85VW-0004oL-HH
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 18:57:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1745535440;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=P7NFp1tNnwYGc6TJnBF+d3M4ghn8ciyuQMQaR7zMmZw=;
+ b=ZVTjlsVUte9fgCtNpRwJxoHkLgV21UXFtt05ZfypVHrvXlPa4uOQ2QLRi82pQLDjQzLmOv
+ ZwndhBjFee39pVjplNr1f5zBxKMxJDj/aVMTKnAqcuAvW5wQx85cJOnSvyY1GmQxApv8Jt
+ P1oYOBPWx5LI9qSCTiB3Lvbjv451b4s=
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com
+ [209.85.166.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-636-E4sbZt0ENme94CZingm_dA-1; Thu, 24 Apr 2025 18:57:18 -0400
+X-MC-Unique: E4sbZt0ENme94CZingm_dA-1
+X-Mimecast-MFC-AGG-ID: E4sbZt0ENme94CZingm_dA_1745535438
+Received: by mail-io1-f69.google.com with SMTP id
+ ca18e2360f4ac-85b48e71fffso28250039f.3
+ for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 15:57:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745534943; x=1746139743;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AbBmbgvjkhL8nVWvJw08tnE3/rL/PUHv7LxMjlyVi8c=;
- b=eN1upPuRkglLHJ8Dk6ubxwORs3j94Rgbzd93P1LrWve8Euvkx1G/Pyv1767/NQsi1E
- nRJGYdq5X5VlEYjAkikrYLgK/khZcXiZhtc3OMH5AYAWIWmpOYdnhwMUPviNOZ9Q4QRF
- Pkw3K+7zFKFvpPDfArGKgrbDAnTawTGCPvsa9U4eA6wQaCG7CpN+trz+FC5A6AJRPXaP
- M5YEbAmvboMtzZJtjqo3/GUrekgWq7BH3jVUwzqPheULYmNtj5uZ9R0Ud7Qu3Xum30a9
- RINypsCWK1WGbyoKDDGJq+Gau+vGl5aIPGVeTGUxuv7fLCvJlAoi9Y9LED2O3S9wtiKk
- gjgQ==
+ d=1e100.net; s=20230601; t=1745535437; x=1746140237;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=P7NFp1tNnwYGc6TJnBF+d3M4ghn8ciyuQMQaR7zMmZw=;
+ b=h5JY+9bo/xJ3wf1WZnD53z4ZR9zZd1J24BQ6tFCcXrTzz9B15tDJ0U8UfpMx7eo3/b
+ MrO3Jbjn+E0Qm1nC3WfZo4eywmUmLSAMoTBiTfavhFLMasBxXU5RK5kk7ptC8pdjDE2B
+ GeHBl027CbXCaG7v6JhDCD91iEhU46u++ekoxuePwj2YxVHIc3RmR4JtgoFQj05KjJWt
+ Ju2vzEhE7FMHvWRtsT/fUnBzWVjqQv17YEINz5VX7JPYzHSn1ZHBDIjK2UFmRw1UhS93
+ dvQpDVHqQGDTOR4rYzG8OQ9+eotFur2a910H8tDiPzIfB/ZnNoIRSmVWivqgfjA6lPDK
+ cyfQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV7EhySKAzJOnjn/qoizWn1Lgwam03750EsuGA4A3yKpQ6cnIk/gefmqYXPii7gcMF1Q+z5fUxn0jPe@nongnu.org
-X-Gm-Message-State: AOJu0YwQugJO3/oxpyyySmef36Dw/6MlCLn4TaNbpPKYSU243OpxrCvh
- dP7Dqz+QOWnSPRqxQeWKKyQ695IoKeGco5v+osh3tTjPQOEwfgqq8DPNOh3q5Kc=
-X-Gm-Gg: ASbGncvNQloR9kiYl0S5RalCJ3Ste6x1ajnXHbiGIVZfZJzWq4iNGNsK4xzmvD5cKLu
- G4qgH31WeeR0Kss9ei8XTvpe7gjLB4BBe105SByQRUcxrHsmy80a38tctT5gf/RNzvpSkH6C96T
- //Zj/iTL3X9kLoXAf8dAGtomZlLO44qf8ZpTKjfu+fIpIb9g8ZBxDzAG9B6nXs5f2o59aVLx6VA
- cl9X8p45yyEby4+8p95I8cxChEJ8CamuerW21TXwWvqh9uOkiougDiqa572V4Gp78OtBRbS6+Vu
- UXgHB5Ur7F5gC92K49UQWfIxbC5pthowtPelz9oAPCpq/HXDCpN/Zg==
-X-Google-Smtp-Source: AGHT+IGSkAd26KaLd0Vs9YMvKZcAXCefF/ykXdlk9DuxifgkFLv4c268Dp5PeQSQRpEr0D1Y9fGPzw==
-X-Received: by 2002:a05:6a21:3386:b0:1f5:8d30:a4db with SMTP id
- adf61e73a8af0-20456589fd7mr1210701637.9.1745534943607; 
- Thu, 24 Apr 2025 15:49:03 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b15faded711sm1755744a12.66.2025.04.24.15.49.02
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 24 Apr 2025 15:49:03 -0700 (PDT)
-Message-ID: <cafc8d52-ee0e-4c21-aee3-906264c85f69@linaro.org>
-Date: Thu, 24 Apr 2025 15:49:02 -0700
+ AJvYcCXV75nFdC8saLDUNGarxcxG+icoblGpsF35HKTerlYWOmohvSLGJhuyK0cLRs+o+xHU/JpPlSfgKqXW@nongnu.org
+X-Gm-Message-State: AOJu0Yy8dtF8YzHSut0MuOkyJ3LXP9i12ghuWkZSaJbg0hINEp+6eUSa
+ RAiG1XuRWuIfsOIVALGYthN2F5r2+bKEjJPE8XnYUxOuvHE9PpsHKeR/cS6rgs2yrELqX7izqlo
+ 6jw7ACrZqS+a+2HID/CeJrWXO+ywm3dDXFhl2xpT0qnydZTaaeCh0
+X-Gm-Gg: ASbGncs+DiWPuETkXETCMusibE+K+sU+LRaPPqJ8nlYD5yqncdcFQev//IetKu/nRk+
+ lNhBd9WDukdEA0Sm0ZdJspIKkbm+dul1JmuxbIHn/X3uHgODKlRdwcwxgYataVsn1qjwGoXHKC1
+ OFuXNZ6J4Cpj1GVNlC+ETCJ2weWb5tuVDJWP2XwBPXBxk21LBaDkv7JwZ3mVr+/B5ZYP5p5MkV2
+ m7aDpwprzkaqsxnBGRUNAx1WqZg8oelhyIPwos5VPVoMw0FiOC2i4Gy70+LBPvftoFX2LNM4fuk
+ L7j8Nf8eCORK68I=
+X-Received: by 2002:a92:cd8c:0:b0:3d4:2db:326f with SMTP id
+ e9e14a558f8ab-3d93b656629mr176095ab.6.1745535437730; 
+ Thu, 24 Apr 2025 15:57:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGKrQt0JsrnlAF7zNUZK0TdvHCzdLaOGQfjprzdjaPeSkpf/mv7B/okgNaDkUJaFJ+XOexTJQ==
+X-Received: by 2002:a92:cd8c:0:b0:3d4:2db:326f with SMTP id
+ e9e14a558f8ab-3d93b656629mr176065ab.6.1745535437426; 
+ Thu, 24 Apr 2025 15:57:17 -0700 (PDT)
+Received: from redhat.com ([38.15.36.11]) by smtp.gmail.com with ESMTPSA id
+ 8926c6da1cb9f-4f824a40b8fsm485300173.43.2025.04.24.15.57.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 24 Apr 2025 15:57:16 -0700 (PDT)
+Date: Thu, 24 Apr 2025 16:57:13 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Tomita Moeko <tomitamoeko@gmail.com>
+Cc: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@redhat.com>,
+ qemu-devel@nongnu.org, Corvin =?UTF-8?B?S8O2aG5l?= <c.koehne@beckhoff.com>
+Subject: Re: [PATCH 07/11] vfio/igd: Allow hotplugging with OpRegion enabled
+Message-ID: <20250424165713.683ff583.alex.williamson@redhat.com>
+In-Reply-To: <20250421163112.21316-8-tomitamoeko@gmail.com>
+References: <20250421163112.21316-1-tomitamoeko@gmail.com>
+ <20250421163112.21316-8-tomitamoeko@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v5 04/21] hw/core/null-machine: Define machine as
- generic QOM type
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.caveayland@nutanix.com>,
- Anton Johansson <anjo@rev.ng>
-References: <20250424222112.36194-1-philmd@linaro.org>
- <20250424222112.36194-5-philmd@linaro.org>
- <8c32913f-5ee4-4f17-8fee-908c48dc4506@linaro.org>
- <f35fc475-87de-4071-a183-c12d44a52790@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <f35fc475-87de-4071-a183-c12d44a52790@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x535.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=alex.williamson@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.84,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,29 +110,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/24/25 15:47, Philippe Mathieu-Daudé wrote:
-> On 25/4/25 00:30, Pierrick Bouvier wrote:
->> On 4/24/25 15:20, Philippe Mathieu-Daudé wrote:
->>> While DEFINE_MACHINE() is a succinct macro, it doesn't
->>> allow registering QOM interfaces to the defined machine.
->>> Convert to the generic DEFINE_TYPES() in preparation to
->>> register interfaces.
->>>
->>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> ---
->>>    hw/core/null-machine.c | 14 ++++++++++++--
->>>    1 file changed, 12 insertions(+), 2 deletions(-)
->>>
->>
->> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->>
->> Maybe you can integrate your other series changing existing arm machines
->> also, so it's easy to apply this series without the other dependency.
-> 
-> I discarded the other series due to Zoltan comments, and only
-> salvaged this single patch (the others aren't needed since this
-> series introduces and uses DEFINE_MACHINE_WITH_INTERFACES).
-> 
+On Tue, 22 Apr 2025 00:31:07 +0800
+Tomita Moeko <tomitamoeko@gmail.com> wrote:
 
-Thanks, I noticed that later while reading the rest of this series.
+> OpRegion is exposed to guest as a read-only fw_cfg item, so hotplugging
+> with it wouldn't cause issues. Since OpRegion needs to be set up by
+> guest firmware, a guest reboot is typically required. For linux guests,
+> i915 driver is able to mock VBT [1] when OpRegion is not present, the
+> reboot may not required.
+> 
+> Still, hotplugging IGD devices is highly discouraged.
+
+So why exactly are we doing this... ?
+
+Thanks,
+Alex
+ 
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=bb1d132935c2f87cd261eb559759fe49d5e5dc43
+> 
+> Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
+> ---
+>  hw/vfio/igd.c | 4 ----
+>  1 file changed, 4 deletions(-)
+> 
+> diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
+> index e94ed7029a..e3ff86d0e6 100644
+> --- a/hw/vfio/igd.c
+> +++ b/hw/vfio/igd.c
+> @@ -549,10 +549,6 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
+>  
+>      /* Setup OpRegion access */
+>      if ((vdev->features & VFIO_FEATURE_ENABLE_IGD_OPREGION)) {
+> -        if (vdev->pdev.qdev.hotplugged) {
+> -            error_setg(errp, "OpRegion is not supported on hotplugged device");
+> -            goto error;
+> -        }
+>          if (!vfio_pci_igd_opregion_init(vdev, opregion, errp)) {
+>              goto error;
+>          }
+
 
