@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B2A8A99D4A
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 02:50:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0302EA99D4D
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 02:51:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7kmj-0005C5-NT; Wed, 23 Apr 2025 20:49:49 -0400
+	id 1u7kml-0005Cr-Be; Wed, 23 Apr 2025 20:49:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kmg-0005Aj-JF
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:49:46 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1u7kmh-0005Ay-1w
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:49:47 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kme-0004Ji-Qk
+ id 1u7kmf-0004Jr-AM
  for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:49:46 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-736c1138ae5so361876b3a.3
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-7399838db7fso508909b3a.0
  for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:49:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745455783; x=1746060583; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745455784; x=1746060584; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uUDSMb2yaWobcfq2T8zvFcLGEMZI8wXQ4enYzV4I/Bs=;
- b=RsW6m8eiHa9yphOoJpYM5MMgp5JLZInXR9QEJ8awQxdJJy2/elAGd0MFIla3bje7vN
- HXaeiQsfxgrjYzVsQc5+4u+LMEJgmzQxuBKtczhzZ9CcmiOjcLclfTUwCKRh/uNma0qB
- dR9v8CH0/jfYSBMFNdCgI2ISeE3UFTkOrvyVK91htC6mOzRIZXd1X3i8zFzDu51ggg3Y
- iBAt97GRdm1Lk8VZszoP7P+KefQgmWq+QII65ABpF/2z6An53EIbgZNyZn4KvkCljyKK
- jVl2N1wEOwI20cBojc8/Gp8Za1MrL7wNi/H0229uqft2FBMiUBurkWiXGeGSZMh3l04X
- JTfQ==
+ bh=tJ+EfqFiptMAQIqFH9MrlUuf9tOxdmhxubkBN2YjdQI=;
+ b=Gw1pNs7i1lfKSmriOnQ5d848YHWSRj3mSIPhviN1hDkp3CvTZyScxQDTSqf8Dl2wNV
+ B9Jrm6lxtArWoiv4/BIfG/1/nYurkl2t0zxobXMbv7GO3FaBi2aJJX9THUvXz+A6aNjW
+ K2iue060iNNuRL/Ovu5+Kmb2fXISBrQ+TmOOTSw1+K0D3AmZhF2yJ0oK2BFzOpwDOR3O
+ bjduvMrYDYvnnt11l+UTEWUg8cHxWhMTBEzn4QUh7sNKJxusQ+GtnRNah3H54n5oLy09
+ Ry33rW6YzKDpSZEBY7xwKyVNc85CfrFnoAVX85YmLw9TIt2Su8AAXgXI1jd6XUModvTS
+ gAiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745455783; x=1746060583;
+ d=1e100.net; s=20230601; t=1745455784; x=1746060584;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uUDSMb2yaWobcfq2T8zvFcLGEMZI8wXQ4enYzV4I/Bs=;
- b=nOh/QxGjzwPSCgmkQ80ri4ZIS3BooFZmyvzKGRCr6STepWhUwSslmSiDYGM13Vl2ZF
- OO4Nyk9MD/nR5PcEyBzb3P2yeZTsafy3Z+Z6F1v6rorN2vGV7iEnfCi/xXbc7G4gIgj9
- oXLxWQ3mzVamYskY2aQeFjOqvoAfaiPOXN3mPDFXx+3XNYEZEAUPTa31+RwHwk6s9FR2
- hzNrid8h5YFWPwd6ZZA+xRAhZLfYRXHqEOynPivPRZUyq3q4M6hye9BOnXIWSXS0Oc33
- 2eZnYXb0wE7CzCpgF2rswFqeH0BMjk26zU6wTL2FMs/aS5kl1AHq9e5f/eNjJ2J89glJ
- qXQQ==
-X-Gm-Message-State: AOJu0YzQbt9MniCwXwNn5aAwm0imVDDqIoQPQ5XX7Yzx8ChLFsqqb8TB
- QVIAguyBHxnotC9RjfHmBKa8o2u1Zee2sS112qsJJw9yW4a1sgdHeIHXRIIAk7N4fDpWqSXQZl/
- h
-X-Gm-Gg: ASbGncspO1q1kJEs9tsUDqFQE87T3LiM2QdnYuurx8Ii4EHlk3tOlYO4Wd6HDHpPRCH
- 7YFFJBljgZmYKS3mS5dZfKH73zBYKNqHt2Ip5LoEN2FxMoJbIeJKPKZid2GCoIf6gv10uyIuJSs
- H+KN6zslAx/EsL+7HwD0m5sD2Fd7oGDYNXeALvnqE44O2yST/GS8jptAHSiMdMuNUtxK+a+uW1V
- DmL5tKHoXYD8lVWllSIXr+vZntHdbHOAttmYvDkq22OaPhJT+oKwNu2i2IXh+NRgJ0W+kXp4chM
- Ci0iYrx0hwyJ4uPxi1zuyrMdf9yg7RUmz/F/PY9apZGd6wxgQfzw4XqP9g2hZlyRkJiVgNAK+ta
- bre8TMOepGA==
-X-Google-Smtp-Source: AGHT+IFrUEQ6DzSkqFbzPYC5iR3gk/FKLaH4Q8oUtDoj8aIAo7MV4bw49sYnvmpihjAVTq5YsH8/+A==
-X-Received: by 2002:a05:6a20:7350:b0:1fe:61a4:71d8 with SMTP id
- adf61e73a8af0-20444f2b284mr844607637.22.1745455783436; 
- Wed, 23 Apr 2025 17:49:43 -0700 (PDT)
+ bh=tJ+EfqFiptMAQIqFH9MrlUuf9tOxdmhxubkBN2YjdQI=;
+ b=l/A46OpUYSZ7/Qb5cMEDC++7KGJnuPijlR44q0UjB3wjRXfGiaJCdA+znX+kA9UFce
+ /qdn94fWcRuh+9efkZ0FqeGkg2ATH0vrQEhFEJo872DnI+glcVv9MoWLSYWw+pRt2M1c
+ piSlid7JIfLXXmAIdfuofFc/eBFjgeqKVnTfKn5mOGu7qlgBMaR5F1AHI6300PmN9BwD
+ hNABROq7xkwr47QIO8EnS3goie4XgwEYiBmBbPfACdUZChcwDKGOqlNjAaX5JsyxkulW
+ GjFzS309hWH8p8Igtq71z7VGRVdIzB7aM1xK8E3ZRNAICV2OcOA4IdniS0Os7xm5OjKI
+ /4Kg==
+X-Gm-Message-State: AOJu0YwtQQomND23sGMaVYkd2OS2exz6itrEziaKHbwyh5KT9W6L8abL
+ hPZv9R67yHOICaxmgof1iQKkZzUuVRFqyOuHp2+9NWleYiU4/CEBqJrLsGMais5o5rLKyw1ZKHE
+ Q
+X-Gm-Gg: ASbGncs2Qa4Jxwun3cnN1TadVr2flo3iBlpyJ70tVufRxRJeunyfz5VWydjNXjBoV8V
+ OejDpMoQNHDUHJe+WglyJdS1YTqwHWbS3OppB48aT6JzkOb4WI3tr6jkoaObx8bAcl//vFFDN0k
+ H9R8Ca9J8JRqdkj5er+EtO+cXi2ovBIUTATOdbV7EO1jn3m7EBhfAgob7icwvmswy08/HwRWKen
+ pqps+mmSVCZlJW2a43I33rWZVE7nbHBzwpqfI2/3Hgmpcyu1Z6qganc02JwosbqMxyAC3vavrP7
+ 8dTHc5fAQWZjQGSjNgwX3dXjd2hfFTM7YVnTA+dSh5A6NfscjKm07oKnmariJZz9GmjRM2BLoic
+ ZCj1dmqjOhw==
+X-Google-Smtp-Source: AGHT+IG1U0nJ3NukoXGRYKhcQtI33ZU2dRxqw3/waTrcBPeSAy5xb9og9kgoT1ybYGpPgW1XBgP+Zw==
+X-Received: by 2002:a05:6a00:928b:b0:725:4a1b:38ec with SMTP id
+ d2e1a72fcca58-73e267b8cf9mr690382b3a.3.1745455784056; 
+ Wed, 23 Apr 2025 17:49:44 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73e25a9a0f1sm207344b3a.137.2025.04.23.17.49.42
+ d2e1a72fcca58-73e25a9a0f1sm207344b3a.137.2025.04.23.17.49.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 23 Apr 2025 17:49:43 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Anthony PERARD <anthony.perard@vates.tech>
-Subject: [PULL 012/148] hw/xen: add stubs for various functions
-Date: Wed, 23 Apr 2025 17:47:17 -0700
-Message-ID: <20250424004934.598783-13-richard.henderson@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 013/148] system/xen: remove inline stubs
+Date: Wed, 23 Apr 2025 17:47:18 -0700
+Message-ID: <20250424004934.598783-14-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250424004934.598783-1-richard.henderson@linaro.org>
 References: <20250424004934.598783-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,95 +102,112 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Those symbols are used by system/physmem.c, and are called only if
-xen_enabled() (which happens only if CONFIG_XEN is set and xen is
-available).
-
-So we can crash the stubs in case those are called, as they are linked
-only when CONFIG_XEN is not set.
-
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Anthony PERARD <anthony.perard@vates.tech>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250317183417.285700-13-pierrick.bouvier@linaro.org>
+Message-ID: <20250317183417.285700-14-pierrick.bouvier@linaro.org>
 ---
- hw/xen/xen_stubs.c | 51 ++++++++++++++++++++++++++++++++++++++++++++++
- hw/xen/meson.build |  3 +++
- 2 files changed, 54 insertions(+)
- create mode 100644 hw/xen/xen_stubs.c
+ include/system/xen-mapcache.h | 41 -----------------------------------
+ include/system/xen.h          | 21 +++---------------
+ 2 files changed, 3 insertions(+), 59 deletions(-)
 
-diff --git a/hw/xen/xen_stubs.c b/hw/xen/xen_stubs.c
-new file mode 100644
-index 0000000000..5e565df392
---- /dev/null
-+++ b/hw/xen/xen_stubs.c
-@@ -0,0 +1,51 @@
-+/*
-+ * Various stubs for xen functions
-+ *
-+ * Those functions are used only if xen_enabled(). This file is linked only if
-+ * CONFIG_XEN is not set, so they should never be called.
-+ *
-+ * Copyright (c) 2025 Linaro, Ltd.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "system/xen.h"
-+#include "system/xen-mapcache.h"
-+
-+void xen_hvm_modified_memory(ram_addr_t start, ram_addr_t length)
-+{
-+    g_assert_not_reached();
-+}
-+
-+void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size,
-+                   struct MemoryRegion *mr, Error **errp)
-+{
-+    g_assert_not_reached();
-+}
-+
-+bool xen_mr_is_memory(MemoryRegion *mr)
-+{
-+    g_assert_not_reached();
-+}
-+
-+void xen_invalidate_map_cache_entry(uint8_t *buffer)
-+{
-+    g_assert_not_reached();
-+}
-+
-+ram_addr_t xen_ram_addr_from_mapcache(void *ptr)
-+{
-+    g_assert_not_reached();
-+}
-+
-+uint8_t *xen_map_cache(MemoryRegion *mr,
-+                       hwaddr phys_addr,
-+                       hwaddr size,
-+                       ram_addr_t ram_addr_offset,
-+                       uint8_t lock,
-+                       bool dma,
-+                       bool is_write)
-+{
-+    g_assert_not_reached();
-+}
-diff --git a/hw/xen/meson.build b/hw/xen/meson.build
-index 4a486e3673..a1850e7698 100644
---- a/hw/xen/meson.build
-+++ b/hw/xen/meson.build
-@@ -9,6 +9,9 @@ system_ss.add(when: ['CONFIG_XEN_BUS'], if_true: files(
+diff --git a/include/system/xen-mapcache.h b/include/system/xen-mapcache.h
+index b68f196ddd..bb454a7c96 100644
+--- a/include/system/xen-mapcache.h
++++ b/include/system/xen-mapcache.h
+@@ -14,8 +14,6 @@
  
- system_ss.add(when: ['CONFIG_XEN', xen], if_true: files(
-   'xen-operations.c',
-+),
-+if_false: files(
-+  'xen_stubs.c',
- ))
+ typedef hwaddr (*phys_offset_to_gaddr_t)(hwaddr phys_offset,
+                                          ram_addr_t size);
+-#ifdef CONFIG_XEN_IS_POSSIBLE
+-
+ void xen_map_cache_init(phys_offset_to_gaddr_t f,
+                         void *opaque);
+ uint8_t *xen_map_cache(MemoryRegion *mr, hwaddr phys_addr, hwaddr size,
+@@ -28,44 +26,5 @@ void xen_invalidate_map_cache(void);
+ uint8_t *xen_replace_cache_entry(hwaddr old_phys_addr,
+                                  hwaddr new_phys_addr,
+                                  hwaddr size);
+-#else
+-
+-static inline void xen_map_cache_init(phys_offset_to_gaddr_t f,
+-                                      void *opaque)
+-{
+-}
+-
+-static inline uint8_t *xen_map_cache(MemoryRegion *mr,
+-                                     hwaddr phys_addr,
+-                                     hwaddr size,
+-                                     ram_addr_t ram_addr_offset,
+-                                     uint8_t lock,
+-                                     bool dma,
+-                                     bool is_write)
+-{
+-    abort();
+-}
+-
+-static inline ram_addr_t xen_ram_addr_from_mapcache(void *ptr)
+-{
+-    abort();
+-}
+-
+-static inline void xen_invalidate_map_cache_entry(uint8_t *buffer)
+-{
+-}
+-
+-static inline void xen_invalidate_map_cache(void)
+-{
+-}
+-
+-static inline uint8_t *xen_replace_cache_entry(hwaddr old_phys_addr,
+-                                               hwaddr new_phys_addr,
+-                                               hwaddr size)
+-{
+-    abort();
+-}
+-
+-#endif
  
- xen_specific_ss = ss.source_set()
+ #endif /* XEN_MAPCACHE_H */
+diff --git a/include/system/xen.h b/include/system/xen.h
+index 990c19a8ef..5f41915732 100644
+--- a/include/system/xen.h
++++ b/include/system/xen.h
+@@ -25,30 +25,15 @@
+ #endif /* COMPILING_PER_TARGET */
+ 
+ #ifdef CONFIG_XEN_IS_POSSIBLE
+-
+ extern bool xen_allowed;
+-
+ #define xen_enabled()           (xen_allowed)
++#else /* !CONFIG_XEN_IS_POSSIBLE */
++#define xen_enabled() 0
++#endif /* CONFIG_XEN_IS_POSSIBLE */
+ 
+ void xen_hvm_modified_memory(ram_addr_t start, ram_addr_t length);
+ void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size,
+                    struct MemoryRegion *mr, Error **errp);
+-
+-#else /* !CONFIG_XEN_IS_POSSIBLE */
+-
+-#define xen_enabled() 0
+-static inline void xen_hvm_modified_memory(ram_addr_t start, ram_addr_t length)
+-{
+-    /* nothing */
+-}
+-static inline void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size,
+-                                 MemoryRegion *mr, Error **errp)
+-{
+-    g_assert_not_reached();
+-}
+-
+-#endif /* CONFIG_XEN_IS_POSSIBLE */
+-
+ bool xen_mr_is_memory(MemoryRegion *mr);
+ bool xen_mr_is_grants(MemoryRegion *mr);
+ #endif
 -- 
 2.43.0
 
