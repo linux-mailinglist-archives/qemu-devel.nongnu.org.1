@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97A53A9B66F
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 20:35:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CCCFA9B66D
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 20:35:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u81Oh-0003dS-Ct; Thu, 24 Apr 2025 14:34:07 -0400
+	id 1u81Of-0003cV-6T; Thu, 24 Apr 2025 14:34:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1u81Oc-0003bS-0M
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 14:34:02 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1u81Ob-0003bA-MP
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 14:34:01 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1u81OZ-0007m7-AW
+ id 1u81Oa-0007mJ-1V
  for qemu-devel@nongnu.org; Thu, 24 Apr 2025 14:34:01 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-22438c356c8so16465185ad.1
- for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 11:33:58 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-22c33e4fdb8so15410425ad.2
+ for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 11:33:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1745519638; x=1746124438; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dgPV2b7dRwIfWk1tCY6gzPndqnEP/HfMMUWmginm4O4=;
- b=LQuXRgXepRo/00Q9derZJ8fthOmtViVyZwF1rugEb7yuF6Kn2g5GrN310qYuFlkqBK
- jPp90SnjRy3AN3lYeAn+nKu4l/XO7y1hnLL8Pf8mD0UVY5Yl6LAY0xR/B/n7+N0IFDyo
- ZDD1hHVVpF33oET+HHNRGQ6y0DNwM9p1Tih7nlSFTs6A9cen2HjcF+R0gBUdbO47wLkj
- 6eIPauZWYJi9A41p9sUxP09J7N56ppmuJsOoJ/XEb+SUobTBoXBFmKr//QZSUdFYGAsx
- QlSC3ozY1Y1N2cUJjzrjRx//tN0Ec+MFrAUBcpLgcw4Z9qOkh/PZrQqeVwYs5ExjpPYk
- mRAA==
+ bh=IhBZqYIRQ2byJdn1RM8IMtiTT7hHnb++hz5MqumQew4=;
+ b=LZ8jlvAyd2+RIuztZhs55DZTs9uaJewSTKleN7PHUaMF/xZqdo32wEI7mYOIAFgl8D
+ zg/+URQVBxeN6LkG8Gx+Ly/L0bvZKduiDDibH/3KnZZoWYsfhPywUvhc+/Af223qi23S
+ +YJGwIZIQWDPS3sM+I1Wbqriw+0gZUyUHBUTbqkvVkqwzksBVw+0MpnwyprARQMrYqBw
+ fhFeMQWTPEGVyFW+0V6K9J4Qh8+BCvCn12rDeUzCo+VANeh7s6XRnatFSA8Xb1vcDb9c
+ DLIG2hNOs/anWbooz8dlbQBQm25XaPlQMym7x4e6bDlPYNqzNuOr511wSFGsexWz89nu
+ so5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1745519638; x=1746124438;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dgPV2b7dRwIfWk1tCY6gzPndqnEP/HfMMUWmginm4O4=;
- b=CGcrIsqqL6R1EUr4eeBpJjd37mMy8sgguMDvikiR+lQpqg9mhdVY1VI4F66Pizr/YF
- p97NKpn4c/ZR+LlLZirMgLUmHdSr1nvgjVVf9VTo7OEogJHvm2cEGq67MiiMbHn5dMOu
- eRoUAYtl8ql3NWVLa1TktM8b9z0l1JM6VQ+4+mjbre0fDQ6MYNvVDXaD7myT52AcfPvH
- P/IfSDuVkSvUj5hYaNzeTUSaZgW/XqCruH3DxhjHy27+pLkQBgbKLveQevY54VpvMvY1
- CTHSvkSZbqpdChudYcAOAXmZBQbXte9BjJsj7KBMkdzKS3kHHtnfDD16gtfvv6JyWvWO
- AUYQ==
-X-Gm-Message-State: AOJu0Yxjfn3CAcTPrR8FoyyJJSeoIs7g0CxXwtuZrR3ui3fDrJfDL3jY
- PE6JevGsdf4hupk4DB/NrAv2JNs0iTfBwMOwUHcKGPWd2Q83QlaN4yMsVBgzWTwRgYhipRXfRGZ
- gLqs=
-X-Gm-Gg: ASbGnctE093VAZYfY70Qv0XAjt8r9jVB4dk60B/sCdfOTzJEVXyg8AuyzyvQXqGxYp9
- dVpaRVSo8mG4JaOibOWlesmyhkLxU206G7lB/yWWX3PtVTeEfKuju5uLNdarf9qPCX0Jzs94c4O
- kz67K4eTcJNU4+kCSDcva9fOgbvoQydtRRl2MhCOXVWnO9ciZef0O/bR+dfClQoIoLmZW46H2iT
- P+XZt+/oIEe02Drm4BE4VzAb1PvnkgTtOhZx85HHUAOhDb+CzOcO5/Rvq5RbhxekEypz0RzUVnm
- bP3l+xhG9PIeW0crAzicp5Q9G7dfQhGiDSYJWQrA
-X-Google-Smtp-Source: AGHT+IH800NMHceYVSDK6JiIPViscPtj3caEwOz1FxsPNH9FPH3YAw4RvZiksquhZJVj+aejNWH3Dw==
-X-Received: by 2002:a17:902:cec6:b0:215:acb3:3786 with SMTP id
- d9443c01a7336-22dbd416a4dmr7474145ad.19.1745519637735; 
- Thu, 24 Apr 2025 11:33:57 -0700 (PDT)
+ bh=IhBZqYIRQ2byJdn1RM8IMtiTT7hHnb++hz5MqumQew4=;
+ b=NHh2pAtdRtSGAqhesy3tlAz6Qw5MOYf6WQO0REDB6RU6IxVitFXb8aF4jpV5gIeBaw
+ LDk4tu7ndfgR8vUm4mhfywrTmDJPYJi3sdNWeTATprrwEEAPdpsqCYZdPeC+yQoCAEAM
+ OVbTSXBjEGWbweZvTWCDBabJDL+aQO/n0UkZDzMlIneAYCeJ/SXo5k3UV1BHoDKcun4E
+ Ns2VuD4r5RnLATyLagtey1ONo5MntNa6JyI0xqBjKO8ENViVZSav46IqdsZ4mu4pgzVO
+ KzHHd3RWTsFoy1mKPcCFJcBKqRImxqVgh6h5fo2g7odZ4omFDLkH6/DOzc0S9yp/Ok7V
+ MmKQ==
+X-Gm-Message-State: AOJu0YyaKaamxpTvl3MF3gjtke6YYoLvuzyu/ik1hXXdv4071+QcRN08
+ l3T/WvcdO8Oaz0Ns8kmH8d0hlZukMXX/7Os+5P/5lZIFfA+BBn1RJ66byEjv9Ar/XW4SkTOLz9B
+ 2zQk=
+X-Gm-Gg: ASbGnctGWVJT51iBmrH3//dwXmRQlC37YHnqiXEgCqjc5tY3Wx/gf4tnYPMd4Lvu06T
+ 6SE+yxG4KJCJGagOyD4nICm0i0XYpOZpB0Ri6aN5HfcPL2vAHbjehR19PmBDVVOF4h+W0G43vJ7
+ cKKtne2FkdqdJ9kS5IgLWWjxvdcjo1715umrI1qAPWYY2VjREqWm0YzjrEXNbe3xg4Cbd33hI5f
+ L3qzwfrt2JJ67Oad/0D/r6x6QWyRwzF7BlFFHHO2327L+FhrJ9UpRso3coaVr2Lo136ieFvrPd4
+ tLjmalK5Cox+lksmxJIJLVIUgRxA4NizwNvNHKbe
+X-Google-Smtp-Source: AGHT+IEQRMkbAPUj+dnOzKh+WLxC/Zzw1YzmWUBJFd3eDaVjqJnOCV/Bsu8vdW6DYcxQwXePKZfyoQ==
+X-Received: by 2002:a17:903:98f:b0:224:10a2:cae1 with SMTP id
+ d9443c01a7336-22dbd466012mr6900765ad.37.1745519638633; 
+ Thu, 24 Apr 2025 11:33:58 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b15fa80fbaasm1544157a12.49.2025.04.24.11.33.56
+ 41be03b00d2f7-b15fa80fbaasm1544157a12.49.2025.04.24.11.33.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Apr 2025 11:33:57 -0700 (PDT)
+ Thu, 24 Apr 2025 11:33:58 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, stefanha@redhat.com,
@@ -70,16 +70,16 @@ Cc: richard.henderson@linaro.org, stefanha@redhat.com,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Markus Armbruster <armbru@redhat.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [RFC PATCH 2/3] qapi: always expose TARGET_* or CONFIG_KVM code
-Date: Thu, 24 Apr 2025 11:33:49 -0700
-Message-Id: <20250424183350.1798746-3-pierrick.bouvier@linaro.org>
+Subject: [RFC PATCH 3/3] qapi: make all generated files common
+Date: Thu, 24 Apr 2025 11:33:50 -0700
+Message-Id: <20250424183350.1798746-4-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250424183350.1798746-1-pierrick.bouvier@linaro.org>
 References: <20250424183350.1798746-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,54 +102,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As this point, we don't do anything to hide target specific commands, as
-the TODO mentions in the commit.
-
-All other CONFIG_* are based on config-host, so we can safely generate
-ifdefs.
-
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- scripts/qapi/commands.py | 4 ++++
- scripts/qapi/common.py   | 4 +++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ qapi/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/qapi/commands.py b/scripts/qapi/commands.py
-index 79142273828..1dddf008d26 100644
---- a/scripts/qapi/commands.py
-+++ b/scripts/qapi/commands.py
-@@ -405,6 +405,10 @@ def visit_command(self,
-             if self._gen_tracing:
-                 self._gen_trace_events.add(gen_trace(name))
-         with self._temp_module('./init'):
-+            # TODO: This if guard should be implemented as a runtime check
-+            # instead of #ifdef based ifcond.
-+            # "#if TARGET_S390X && CONFIG_KVM" will become:
-+            # "if (target_s390x() || kvm_enabled()) {"
-             with ifcontext(ifcond, self._genh, self._genc):
-                 self._genc.add(gen_register_command(
-                     name, features, success_response, allow_oob,
-diff --git a/scripts/qapi/common.py b/scripts/qapi/common.py
-index d7c8aa3365c..98272653303 100644
---- a/scripts/qapi/common.py
-+++ b/scripts/qapi/common.py
-@@ -206,6 +206,8 @@ def gen_ifcond(ifcond: Optional[Union[str, Dict[str, Any]]],
-     def do_gen(ifcond: Union[str, Dict[str, Any]],
-                need_parens: bool) -> str:
-         if isinstance(ifcond, str):
-+            if ifcond.startswith('TARGET_') or ifcond == 'CONFIG_KVM':
-+                return '1 /*' + ifcond + '*/'
-             return cond_fmt % ifcond
-         assert isinstance(ifcond, dict) and len(ifcond) == 1
-         if 'not' in ifcond:
-@@ -247,7 +249,7 @@ def gen_endif(cond: str) -> str:
-     if not cond:
-         return ''
-     return mcgen('''
--#endif /* %(cond)s */
-+#endif // %(cond)s
- ''', cond=cond)
- 
+diff --git a/qapi/meson.build b/qapi/meson.build
+index ba9380d3f03..58ca8caee12 100644
+--- a/qapi/meson.build
++++ b/qapi/meson.build
+@@ -144,7 +144,7 @@ foreach output : qapi_specific_outputs + qapi_nonmodule_outputs
+   if output.endswith('.trace-events')
+     qapi_trace_events += qapi_files[i]
+   endif
+-  specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: qapi_files[i])
++  system_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: qapi_files[i])
+   i = i + 1
+ endforeach
  
 -- 
 2.39.5
