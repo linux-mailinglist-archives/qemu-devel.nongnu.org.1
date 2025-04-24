@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1528A99DF4
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:18:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12E42A99DF6
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:18:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7kwy-000586-KV; Wed, 23 Apr 2025 21:00:25 -0400
+	id 1u7kxi-0006VH-0q; Wed, 23 Apr 2025 21:01:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kwi-0004d0-KI
+ id 1u7kwi-0004da-QA
  for qemu-devel@nongnu.org; Wed, 23 Apr 2025 21:00:10 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kwe-0005IK-MF
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 21:00:07 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-2279915e06eso4597945ad.1
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 18:00:03 -0700 (PDT)
+ id 1u7kwg-0005Kq-7a
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 21:00:08 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-224171d6826so6272405ad.3
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 18:00:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745456403; x=1746061203; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745456404; x=1746061204; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tMTFwuyzTM5DV5D1Qj0NNV6OmW0mRELjIvfKoj8LUWY=;
- b=LaE7ApI532dyxl0UvnysQXJyIY8MUWUcqFvFINVxxcQXdGixu69LylKgAFsiFiKHT4
- ggML9CL/biKRH3GUA3Hzb7lB5uKMXhmxnr/3XQlmWjNO/brhOXkMr2hUTj7Dw5m++RMB
- gSRjh4gt0VOpXmUrI3hg11/GpEjyeR9sPkv+SnEVco1EEFPIW1BvcRiGS+F+15Cf4ti4
- 4dDdK4cpCdeQgRzNjAjSkLJK2ZLUpg+B6BT78T1iygFE/tXoUSOgjNLx/4BN0oNpFa3s
- zfPRmCKpFb5+JHWqOTpxddLWfUZ+GGP/OMQmMuSIkm2lUtDqMCzU4O8hneL/2e0OBpoi
- iUog==
+ bh=Z6H/GoAoFwszVT4TvnJT7Vzq/vNV9Nxqb0K+QM0Htps=;
+ b=SryFA+KZ8Bnz2IkFafX1A1SE3EogIQGy0hr5JZ+HIOkk+VPASsffdGNufsiOmgsKH+
+ IcB6hproCBABxRzGhomM3rJwhQ7TLH1Re61pnTzBct8W1NghyIRx/Vx53JDEzEYNHfQX
+ wuyGcRRE7vPD1WS4xMbXRrXRPHfcj8pRC2aEjD5QdhNUabTvgR9FAcBzdY2Z9UT5DGVU
+ fXWBduuQ03af2I3Ws09JwZNxAxdTS+7oFetkFoyYN2+56nPugsuEvvdg1dIM8IPTMNmt
+ rCyhiBtJcUDU6suTFtNtCRWL7lDXeMZwZEjd3fJfUoqVETu5xWfxfDKDWRLfTHSJS8yg
+ BPPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745456403; x=1746061203;
+ d=1e100.net; s=20230601; t=1745456404; x=1746061204;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tMTFwuyzTM5DV5D1Qj0NNV6OmW0mRELjIvfKoj8LUWY=;
- b=QIGEEbR+KmrJmJDOXUznD3NW8lVyww1PHZ2Z7EMsL9pckpYliBWNhwkiS8+GHDi1nN
- 9nHOGJohFPaUxpavX1GNdJSG/3OLgmsSM4JPXOH2Wg2WkBonleggXHanZrZB8bbMJ5Wf
- Fef1VpidJYdDX63Qn7Sq8gr94W06IfdnA0FqozMeIJkk5ugMuUiZWYukCHSUmWm3UBRk
- MrLK367VtiMCzrEoOehUwJ9C1zmR9q31oQkz2rgDL3kpwN3qyGZPYKoEwbchuQKrq3zy
- HXt5kJnjpiERKSsk/ekSoJ7yBm0VDACItZ9WxQ01XX4DOQS9vibK8/bjwTdQIW2R3APW
- gPjw==
-X-Gm-Message-State: AOJu0YxYxDqTssU76rLcc1F5ezvZg0aBnYbxqM9b+Ock4kve03hNGV4C
- y1FwTp02QzJZY3b3/QB1PwsP5AG39C5EF25NpOpMS0NMzRlAK1Xdwaxk0ZqjnGcmX605n0PLgWT
- 4
-X-Gm-Gg: ASbGnct2ot3wlWtFjzFv+LH31sSFVXlatE0IhS2qOspsc/eiw3GnSafxHYnhk0p/43N
- 2Tea7iqx/xOdNcd2O2yWwnVPV/ChOxHxQnFBtz/5C8jX6yekFhPBY8K6AUxAUJjOy5Vbv1OtUNM
- IOLRfAAdwpftviQk3UPotSFqiTf+2CX6+6s3Fw2RkKAvo8wKRKkZlUQJFluxPL2sRa/ticVz9cm
- 1maSSRNwkH1sYV3oo2G/rx9YcTJlOF0CZzl86Q4XE5a0dUqGiKCQ+4dnUBGBeRSEqwy4kW71LCz
- I1eUKC9pMSkREgaYy++qRRfr6jYWSlfVsaCNSocI10GVP4MUkX1sKdAMsZ15dPIfmF825EMSLlg
+ bh=Z6H/GoAoFwszVT4TvnJT7Vzq/vNV9Nxqb0K+QM0Htps=;
+ b=o6JYzqQgfbg+gGwdnblgWJF7zy1wLoUNsRLGGzhtcv/fNJA3p3J+OgB+paf0xUaZ6l
+ Ms7wCbgMSfyX1WpxTnpE/NUQyiJPKciHhshw4xKfu+to7ovWVgc+2RqOUjKGpkM7PLwO
+ QIVOfQCjPKh+M790IuZHEboLTBIYWex1UhAVdx4OEhH5N5rDI03On7u4TJrL2OSIxP5/
+ b8E/0cmN/uFfkydj2NUXvAgOTIWjWG+EUCS5dqG9J+6QbDUecPw14lNjWB6RZ6xaKQY6
+ n40dKWeHAGVNlhuRmOuFqMcC5iDxH5mpiddPVSbmeY49oxHh9DdtIZ6IAo5prWyIqzWN
+ YiQg==
+X-Gm-Message-State: AOJu0Yy1l23bpju8tIfZXvbQ41s/Kr3NA9cBbv+LSUM8e3fZHlUHCLTg
+ 6iDyMBow6uhKvUFtMbthq8Y1m9UW0XXJon/08tK/u5q9/tK2bEwhN0liebrM8CFbHEFi/q9I6fz
+ 6
+X-Gm-Gg: ASbGncuNu2pq9KNq7tBABzg4gJq8aMJe2OtypkN1QIO5VhbuUT8LLQqFySgu1ZLIRO+
+ wPwiwtLQNQMdwOWbhiKnDyYRsemqP4HTdUmIyUAsZc5hNTnBhFMuGMOniJfwl5zsI/3QraZidnc
+ Ec9zA6gdCQLlN5IsMSd81yXVkisWg9Oyy1f53cO3e0sS55PEj9TXggj1BxN5C0Tufgtm3Kwv/2g
+ lVOISL1ckQZyb1WyYNyCidvBMSKl1CUUjrS1L76hQRwIB5ZlBRtfyV2iio5DaqugoD810i9sAOB
+ I/fg2cSYVlNq/WDDbi7nW5X579ZXhQG2frrIbY/qPZvSf0EP4/t4+w/nPuO642t7vyxX5ev6slo
  =
-X-Google-Smtp-Source: AGHT+IH1u50zo9Zr2IL3wJQGKsc4Hocwgak+as9x1ErlDozx1ZUiaQR7ZzZI9em1Y6y3Bh7BUYUN1g==
-X-Received: by 2002:a17:902:f652:b0:224:e33:889b with SMTP id
- d9443c01a7336-22db3be43abmr10597835ad.12.1745456402642; 
- Wed, 23 Apr 2025 18:00:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IECDi52F8uCsyVyTfRHSyJF7HOLJEopd7cm0y85zSfixquBMIA0bWQfGJauVKhz0D3jysnttQ==
+X-Received: by 2002:a17:903:3d07:b0:220:e023:8fa6 with SMTP id
+ d9443c01a7336-22db3db9284mr7710685ad.50.1745456403682; 
+ Wed, 23 Apr 2025 18:00:03 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b15f76f45c7sm129259a12.16.2025.04.23.18.00.02
+ 41be03b00d2f7-b15f76f45c7sm129259a12.16.2025.04.23.18.00.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Apr 2025 18:00:02 -0700 (PDT)
+ Wed, 23 Apr 2025 18:00:03 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 121/148] hw/arm/boot: make compilation unit hw common
-Date: Wed, 23 Apr 2025 17:49:06 -0700
-Message-ID: <20250424004934.598783-122-richard.henderson@linaro.org>
+Subject: [PULL 122/148] hw/arm/digic_boards: prepare compilation unit to be
+ common
+Date: Wed, 23 Apr 2025 17:49:07 -0700
+Message-ID: <20250424004934.598783-123-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250424004934.598783-1-richard.henderson@linaro.org>
 References: <20250424004934.598783-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,49 +101,27 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Now we eliminated poisoned identifiers from headers, this file can now
-be compiled once for all arm targets.
-
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250325045915.994760-25-pierrick.bouvier@linaro.org>
+Message-ID: <20250325045915.994760-27-pierrick.bouvier@linaro.org>
 ---
- hw/arm/boot.c      | 1 +
- hw/arm/meson.build | 5 ++++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ hw/arm/digic_boards.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/arm/boot.c b/hw/arm/boot.c
-index d3811b896f..f94b940bc3 100644
---- a/hw/arm/boot.c
-+++ b/hw/arm/boot.c
-@@ -14,6 +14,7 @@
- #include <libfdt.h>
- #include "hw/arm/boot.h"
- #include "hw/arm/linux-boot-if.h"
-+#include "cpu.h"
- #include "exec/target_page.h"
- #include "system/kvm.h"
- #include "system/tcg.h"
-diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-index ac473ce7cd..9e8c96059e 100644
---- a/hw/arm/meson.build
-+++ b/hw/arm/meson.build
-@@ -1,5 +1,5 @@
- arm_ss = ss.source_set()
--arm_ss.add(files('boot.c'))
-+arm_common_ss = ss.source_set()
- arm_ss.add(when: 'CONFIG_ARM_VIRT', if_true: files('virt.c'))
- arm_ss.add(when: 'CONFIG_ACPI', if_true: files('virt-acpi-build.c'))
- arm_ss.add(when: 'CONFIG_DIGIC', if_true: files('digic_boards.c'))
-@@ -75,4 +75,7 @@ system_ss.add(when: 'CONFIG_SX1', if_true: files('omap_sx1.c'))
- system_ss.add(when: 'CONFIG_VERSATILE', if_true: files('versatilepb.c'))
- system_ss.add(when: 'CONFIG_VEXPRESS', if_true: files('vexpress.c'))
+diff --git a/hw/arm/digic_boards.c b/hw/arm/digic_boards.c
+index 2492fafeb8..466b8b84c0 100644
+--- a/hw/arm/digic_boards.c
++++ b/hw/arm/digic_boards.c
+@@ -80,7 +80,7 @@ static void digic4_board_init(MachineState *machine, DigicBoard *board)
+ static void digic_load_rom(DigicState *s, hwaddr addr,
+                            hwaddr max_size, const char *filename)
+ {
+-    target_long rom_size;
++    ssize_t rom_size;
  
-+arm_common_ss.add(fdt, files('boot.c'))
-+
- hw_arch += {'arm': arm_ss}
-+hw_common_arch += {'arm': arm_common_ss}
+     if (qtest_enabled()) {
+         /* qtest runs no code so don't attempt a ROM load which
 -- 
 2.43.0
 
