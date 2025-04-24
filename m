@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 839B8A99E3C
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:29:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95F13A99DFE
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:20:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7lGP-0003a4-RV; Wed, 23 Apr 2025 21:20:30 -0400
+	id 1u7lG9-0003TF-Pu; Wed, 23 Apr 2025 21:20:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7lFP-0002aU-5t
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 21:19:28 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1u7lFQ-0002es-Dz
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 21:19:29 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7lFL-00078a-9o
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 21:19:26 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-736b98acaadso382555b3a.1
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 18:19:22 -0700 (PDT)
+ id 1u7lFL-00078y-TR
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 21:19:27 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-7399838db7fso525973b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 18:19:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745457561; x=1746062361; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745457562; x=1746062362; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=E2Pb/xj5a0DFM5mce1sHnV2dTI3TtHpGhVsfW6YeWgU=;
- b=rH7OeVHUUQSNfZuF6MRjYnSje45rdgpuMNLjAOK6FlasFLdXYjVHjl9WU6AKFh4jBN
- TsgnUsel+t4cwzvKMHaChzGDtVS65gHytX4fXIG3KpC73bS6MvZjhJRXxFBNuDAz046f
- qyf8FLlPi3tYfV1PzATCb/ZnckU+eWNJRQTG8cRysgJbcc+eSyXpgIxaU+zwIt3WgdQR
- yYQiE22Z/w1kgvnzzS3DQSfwlsWls8tv6x2ligAR3V8QUClcwZf4Y2oojtyM6n4vAZPV
- uZhGuP4tAuwbGfTSx7rYvnYrM7dnOAURQnZ4nNx2aEyNbcUKvIuNo92xcM58eSOB3f4Z
- ghiQ==
+ :reply-to; bh=+AhSAw0yISu1j2mAPNZj8JIUUEWW3orS97qT0s5kocY=;
+ b=EWdxRNf9KM20uTq8gXydcsWsLIWdkVy+fBz9K6op+Q/Sjx4SzziJcZXXxE/udVS11d
+ MyugfSPzpT4a7ggMXif03jzgAc/fo959Siq0nmVY1/DP2LQ6S5nqSN1LlEiW7zDK2vLf
+ os+7YgVjfMPEOEQOU4fJso1WQ74l7YhhzASOO1L2kX8vP4tuDk/YJUSgGR6BqRKdl3lj
+ bHNYRS51ntxiYqZnZcs3KPpX1zXrVIb6ytIYvUdNO6GxdD542oer5Ug9MpbDSTSkH6qy
+ LOqMBLvmInytgZ97nSse+L5GtGw7pQnZuZrTM715VGhQJg/RsWyig3/n+B6T1MtOBq9+
+ zaRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745457561; x=1746062361;
+ d=1e100.net; s=20230601; t=1745457562; x=1746062362;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=E2Pb/xj5a0DFM5mce1sHnV2dTI3TtHpGhVsfW6YeWgU=;
- b=JwI0A1AiBQj6PSm90qOCwJAMJ5GaFcEm5gOORGT6fnB2c9UyqN+0iDQBx0yRYpprD4
- Uzkj53G6q+5uDug+yztCFyyOcB7n8l8D4gSks8RUveXs1QqLVPT5cTyeAOf/QnhZpAQA
- y02lOQdOc5m9iz3dj4eTzAz0DVIw4Rk631DWdowdkSnBUdHWnCCaXrkXC0ByCiK5PIcX
- 177qAIkRped6uteuMKHnLK4/SGYZEUwvBEE2G9ZODiZCnRIPEegyPErUFQzyEUAgIzu4
- zuOkyRZWbm1Ac21RjxwlbxudYy9iSe7Nmp++AiD/vFoN7Z4fVWQtNLhcYRefbXLdQt6Y
- QQYw==
-X-Gm-Message-State: AOJu0YyzY2DXvAT94benW/Mkny6ZWAu86RFpQNMgKqByZo82RtHoIDOQ
- 2JTdpt5zZrDmhZg1VVKT5D+g6za0w4E5cYXCLwTvbeOSKfJjzYUO3dkfYpk7d13/jW6atjJpzxl
- X
-X-Gm-Gg: ASbGncvzl8+DXzyscVzLtZVXNH4d1rOPRUDchmmSePnUEcQSQZGYT+5P2sYE2T3Iwsf
- yGG/B3QfP75ZZ8I5OOj20Mo5w1uYGOHIcu9b0/SBNdhyQ8Xy6F4E2CqICfrSQFJ5X6m8oG1/g3C
- KmPQWvhR0kcICHVx1Q3UUpfLIv48b0yFUSDNIuHG1Fiqi7GKyddkc313WSbzPbGsah5gmaCXPYa
- KYG4OwL+aehQuaNNPW9FX3UpBFVZUV1pLjWSbbgP64yF0SvmYw6T/gld6CrYmAk/XQIJyUfvuaC
- ThQG37HmATV7UsCDxIGInwp3bTjO2VpnvLo6FrHLO80UKTzpOX1/bqXn28m9fzaUR2F+D1DDvSI
- =
-X-Google-Smtp-Source: AGHT+IEyM2VXKXx6X4PEEWSRA4fQkoBF9m52x2cgLi1s1SF2K53NeJOpkD8Iwku1iyTeSiMudDCdxQ==
-X-Received: by 2002:a05:6a00:a8a:b0:736:d6da:8f9e with SMTP id
- d2e1a72fcca58-73e23cb1724mr1201065b3a.0.1745457561566; 
- Wed, 23 Apr 2025 18:19:21 -0700 (PDT)
+ bh=+AhSAw0yISu1j2mAPNZj8JIUUEWW3orS97qT0s5kocY=;
+ b=BSSnzvryJPUXNtnoGWh7UP/CHzGluoemEUJWBXeb+4f6FOh20dcMAZTdKasw3AnXTf
+ K3L+hO0P5AoaJ3rkVLAFTjjmRadlCjovMfwRus2RwcFDCc7hXgY+6bENHBn0AuL0i9mR
+ V+V3rZMVuoWNMyxDKHEXg2x5yvOxK3pz2ELvqJvjo9bmN4ceima2pANNR6wW9yXMTU9X
+ kdMI0l0EABQtMtq4exxYqR1mpWbi8pe/xocc4ikNzceyju3X3WkbnLha2oYyVXwVIW7b
+ M21FODA9RX8XajklYepNL9rOsZ/x/s9kXw3tPRvLP1puFt+x3sXXewnuPDfqiaCtmtka
+ Mg5A==
+X-Gm-Message-State: AOJu0YxN54O6tFxLMzIqgQaw9wC/fbHw2ydcf84nAJOnc1LA4yItIFpf
+ r1TgVzQYkcshtgjMknGI9/lpE+j3nhxn+to23xkbrnXdyvHgj1jLuQXN/+qyw3h4SpkMUVvzh9L
+ u
+X-Gm-Gg: ASbGnctW/6NrBOQANq+EfCuFG57Y/p3wxOgYK+rIfSU5CchYFJrGHdwFpmqcjKAk+ga
+ ALzJxy/TM0zB/UD+OlawrYjZAjn1DiQt5nrmejiLKKZnudqMIwxSPABmTqr7Ag4s/nFY9e8buig
+ mCzolC/TZuMt2aFzWb1nVzPaJGucomtVMNHDQXn8NvCGNE+PfdSl4RMTXjCu3E+9IRxThUtCFXW
+ 4jA4tQcuxTFKOmSdjPOujN+Klpyvml7JFagm97iBmbMzFNeOqNguuTqxpt0JyaLC8BK6AJ9Km9F
+ tPkRNiQqugPuOa9KarNyTSiqM40SGnkpeuXHB258x3UKKS1+/JRwlIIFilYpGQbhElo0po4Ysoa
+ KVaR+Xv57dA==
+X-Google-Smtp-Source: AGHT+IG0+XOYeLml61p6d8wfvVV3mUhUPGrV89/ZpYefGfRfmkRJgQ7573RcKo/Z/lZaKpVFcwnwBQ==
+X-Received: by 2002:a05:6a00:e1b:b0:736:b3cb:5db with SMTP id
+ d2e1a72fcca58-73e268ee7b6mr704357b3a.11.1745457562190; 
+ Wed, 23 Apr 2025 18:19:22 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
  d2e1a72fcca58-73e25912ef0sm244079b3a.10.2025.04.23.18.19.21
@@ -65,17 +65,16 @@ Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  Wed, 23 Apr 2025 18:19:21 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 03/15] accel/tcg: Add CPUState arg to
- tb_invalidate_phys_page_range__locked
-Date: Wed, 23 Apr 2025 18:19:06 -0700
-Message-ID: <20250424011918.599958-4-richard.henderson@linaro.org>
+Subject: [PATCH 04/15] accel/tcg: Merge tb_invalidate_phys_range{__locked}
+Date: Wed, 23 Apr 2025 18:19:07 -0700
+Message-ID: <20250424011918.599958-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250424011918.599958-1-richard.henderson@linaro.org>
 References: <20250424011918.599958-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,47 +97,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Merge tb_invalidate_phys_page_fast__locked into its
+only caller, tb_invalidate_phys_range_fast.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/tb-maint.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ accel/tcg/tb-maint.c | 36 +++++++++++-------------------------
+ 1 file changed, 11 insertions(+), 25 deletions(-)
 
 diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
-index 714dcaedc9..e8a465c9ac 100644
+index e8a465c9ac..67a2570b4c 100644
 --- a/accel/tcg/tb-maint.c
 +++ b/accel/tcg/tb-maint.c
-@@ -1100,9 +1100,12 @@ bool tb_invalidate_phys_page_unwind(CPUState *cpu, tb_page_addr_t addr,
- /*
-  * @p must be non-NULL.
-  * Call with all @pages locked.
-+ * If cpu may be NULL outside of a cpu context.  In which case,
-+ * precise_smc need not be detected.
-  */
- static void
--tb_invalidate_phys_page_range__locked(struct page_collection *pages,
-+tb_invalidate_phys_page_range__locked(CPUState *cpu,
-+                                      struct page_collection *pages,
-                                       PageDesc *p, tb_page_addr_t start,
-                                       tb_page_addr_t last,
-                                       uintptr_t retaddr)
-@@ -1194,7 +1197,7 @@ void tb_invalidate_phys_range(tb_page_addr_t start, tb_page_addr_t last)
-         page_start = index << TARGET_PAGE_BITS;
-         page_last = page_start | ~TARGET_PAGE_MASK;
-         page_last = MIN(page_last, last);
--        tb_invalidate_phys_page_range__locked(pages, pd,
-+        tb_invalidate_phys_page_range__locked(NULL, pages, pd,
-                                               page_start, page_last, 0);
-     }
+@@ -1203,38 +1203,24 @@ void tb_invalidate_phys_range(tb_page_addr_t start, tb_page_addr_t last)
      page_collection_unlock(pages);
-@@ -1215,7 +1218,7 @@ static void tb_invalidate_phys_page_fast__locked(struct page_collection *pages,
-     }
- 
-     assert_page_locked(p);
--    tb_invalidate_phys_page_range__locked(pages, p, start, start + len - 1, ra);
-+    tb_invalidate_phys_page_range__locked(NULL, pages, p, start, start + len - 1, ra);
  }
  
+-/*
+- * Call with all @pages in the range [@start, @start + len[ locked.
+- */
+-static void tb_invalidate_phys_page_fast__locked(struct page_collection *pages,
+-                                                 tb_page_addr_t start,
+-                                                 unsigned len, uintptr_t ra)
+-{
+-    PageDesc *p;
+-
+-    p = page_find(start >> TARGET_PAGE_BITS);
+-    if (!p) {
+-        return;
+-    }
+-
+-    assert_page_locked(p);
+-    tb_invalidate_phys_page_range__locked(NULL, pages, p, start, start + len - 1, ra);
+-}
+-
  /*
+  * len must be <= 8 and start must be a multiple of len.
+  * Called via softmmu_template.h when code areas are written to with
+  * iothread mutex not held.
+  */
+-void tb_invalidate_phys_range_fast(ram_addr_t ram_addr,
+-                                   unsigned size,
+-                                   uintptr_t retaddr)
++void tb_invalidate_phys_range_fast(ram_addr_t start,
++                                   unsigned len, uintptr_t ra)
+ {
+-    struct page_collection *pages;
++    PageDesc *p = page_find(start >> TARGET_PAGE_BITS);
+ 
+-    pages = page_collection_lock(ram_addr, ram_addr + size - 1);
+-    tb_invalidate_phys_page_fast__locked(pages, ram_addr, size, retaddr);
+-    page_collection_unlock(pages);
++    if (p) {
++        ram_addr_t last = start + len - 1;
++        struct page_collection *pages = page_collection_lock(start, last);
++
++        tb_invalidate_phys_page_range__locked(NULL, pages, p,
++                                              start, last, ra);
++        page_collection_unlock(pages);
++    }
+ }
+ 
+ #endif /* CONFIG_USER_ONLY */
 -- 
 2.43.0
 
