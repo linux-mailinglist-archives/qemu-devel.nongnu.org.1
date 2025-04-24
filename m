@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99820A9A8BB
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 11:47:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51EE2A9A8D4
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 11:48:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7tAo-0007YX-DJ; Thu, 24 Apr 2025 05:47:14 -0400
+	id 1u7tAp-0007aL-Ov; Thu, 24 Apr 2025 05:47:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7tAe-0007WE-LI
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 05:47:05 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7tAj-0007Xn-NS
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 05:47:11 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7tAc-0002YR-Jo
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 05:47:04 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-39efc1365e4so368275f8f.1
- for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 02:47:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7tAh-0002Yp-8h
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 05:47:09 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-43cf628cb14so14635185e9.1
+ for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 02:47:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745488020; x=1746092820; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745488025; x=1746092825; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=E3lVw6KIn3D7NgOMBRI5zDO2652ucdToVqyJMqAEbX4=;
- b=LO7zEWLJvVtjHKL0ymERPQbHviZOBLX4NXN+PlNHYfa1cMX32ot8aGoYyPUtno9q3K
- OxnYLTk5HSlSYsgWntF8pb4xWTUeLOz+ewfbGi1yV6Z3BFOXmkdswhApn3LWUBy6ErVQ
- 253uJo1f2+dxdL/UhOflMVulsp1vBg2sPlyO2sWWkRiRbLjxKiLIEKseymNcgR7EN4LS
- kkocb+/+kMMEPzJ8ksjKkXE3zMIQRQONoPigK+TfDkIeY28z85pMFd1Kkpxix3l9k0+E
- FOdNUTm+b6xMHDe7Qt/lHG7xSX0cQ5Lq1dmEOGdEpaKjYaR80/W6bTFxIkbuv24Ma3Xw
- YQgg==
+ bh=/lW2jqTg4HxHkTVNBXLnGF3EuDazugPr6Lu2FtcqFU8=;
+ b=DwZq6uAJnQP5QYZjBT48eR8EQk2jwTZ1Xn+fJxTJePF+0u7c+nwi875FApNCHfHiO/
+ naQWg3mPLlMOhaSQnpIDCXmvyRdhqOmFT3ZXx1k9qQtYM2nNUIJtC8KnI6czYGSW/IZZ
+ CGn/3YGTUroubjv4jyZp+SbtJA/Y+H8HvzJY2h8kp538/lRJAbZDFKSgFtoxh8x5W2cT
+ w087j4jZLee2EnvRvAAlK3AZwFfV21UuGq3PvsIi4qZnguNgreVMmv3J31KmcM7TjU8N
+ KkW0PlJi0nVySQnm1hHY/MIWbITRng88YLCM5cvVDZscxyOhsoAbfxn9bLgYACYjHzLJ
+ 7jMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745488020; x=1746092820;
+ d=1e100.net; s=20230601; t=1745488025; x=1746092825;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=E3lVw6KIn3D7NgOMBRI5zDO2652ucdToVqyJMqAEbX4=;
- b=Lw0r42VSqzUVMqkSIBmHoKFnnCZGhqAGhz18pw4UQg2rbCuSl+VTTEOy8U0GnEVVF2
- EzRLBcgOnmnGOlB8vDes7eZNfDp7kllJH+CiRj0wytpTkrYnoelAGmTQnFkaIxCL4vCc
- +o0p8ZLwkkWYIxgYfNRyvKCKMhSfDenpzpjKV3lWnBAtuRPeDgK5QXW0R6HjCZRkj8A1
- bshKqBOydpFgUKucyrbtvR+OCM0n4OK67BS3SON9+I3vWpPPSJCa21Z2yJzlhjuxVIfV
- 9qi4yoiHmr4AOvK4BgaIPGKL3y6Dp/KxuNjFgwFHIOC+2mioGoTU97D82yszasZXYaI2
- dBBA==
-X-Gm-Message-State: AOJu0Yw59LfdQCkU37nO8KiuXQJvVthV4JaiEs7Za62PaFskAzHBNiXn
- CtElizN87tPUxXZ2LtvAydeBkTZVX7oncwsR5PXetRM4nepr8HW+2Kk4oVxcDj9sOnK9pDXlGFz
- T
-X-Gm-Gg: ASbGncvhi7WIa/uMVaKKIss0EDPPEzyDrAg9+dr1Y5WDctD3nSEPsD8qE2oQmKVBEp/
- 1HStOVpL4YQm/T6CnVYXTfYpHUxgAp9HILHb4hB/qAeW/58OjMD3mf/stNtwWwXG+PRNawiq1ZS
- dYBkpPXmlKnlAqHI1+OVwIJhVU9XgLq/KAJULnxew7JlOypn3rFu5HXoL7QTDGLd4j6Dk3AX3TL
- 259YSnf0iNkw4DYpvFZC2yjNU37IReAydzxFBWCtjc8keRHg7exIwlBLRMIC/WXwcx3tFyz38eJ
- 5IqplVpujxbtCwJ4IAExJzhc+4R4QNN9Ok5/wINIWurmPcM3o2sOsO3RxD9fewCvB+VhENDubrW
- Tmnvn9Iofil/XUZAwuXCl
-X-Google-Smtp-Source: AGHT+IF+oHwXYMRIxHw9avi8J3TubSpFtsC76No60lXwv1b4iv66vl4y591LdlxNA7c6cpreOe3E2w==
-X-Received: by 2002:a5d:6dac:0:b0:391:4999:776c with SMTP id
- ffacd0b85a97d-3a06cfa854bmr1551620f8f.40.1745488020527; 
- Thu, 24 Apr 2025 02:47:00 -0700 (PDT)
+ bh=/lW2jqTg4HxHkTVNBXLnGF3EuDazugPr6Lu2FtcqFU8=;
+ b=gPpZ8AK7zDBGLRYrf3tYDsUv+5yWG0wPKSYClre0LmnyveNF5hBL8GsZ0HOZcac7qC
+ mzWKYmeEGed3rnxa9tYDmIUXTaZJtsCGoaDSDYrZypeN7jg+KKrYzb4OYLg0v8vyMB9x
+ S5jFW+PXas/Y57x7Vo6/11UM5fmvdh+viNaltjaNFGE+amVboXh8RBiN4ucIgmP4VFJD
+ r1FLNIWtTAyvoKoOj8td54rvhn8r9+Q+Lq/SmGuNpwxaR5fLEAUJVMMauCAq6w40s2sl
+ rr8+/TI7O4HQztqv960t6hpO1us4+QG3UM7cfqVl3bCAvCqsU0Ulw5zEsKay7JOxS2uC
+ coHg==
+X-Gm-Message-State: AOJu0YyFLRFWZ2gxSf6mpKSF/XPo/W4tpJoiGIpmXchnQarvDfhypRUp
+ CQGbw5U5+Iv4bzGo1MqPDGTd1PM8BhDzSDC4hRrgAJDPW16qQEG6dEcVIB+yOUCBJmLcwtPUpcI
+ f
+X-Gm-Gg: ASbGncuzxHjJZ1YLVzcniv1vfaHspUThJD+8uOFNK7CV47z7UClKuHyvVh4Ab5ixtMf
+ XUcPIqhUNF08bS0veZir5qGMVrmV2gf197Q/A1DOKsj89Vz4IzJ8tH2PlQsGZBMfIx2CDycUxba
+ RIyyoMgqJY/r9pGc3t+35xZwAWrkHFBoibGOJHUcfGPp4Cjj0GfI7ADsc6awHyaUXH/pACR/Zh6
+ IRmhyBKRV1crR0592gB52qSSvnrGDOdoRr00pi3acidYNFhfRybm6m2GM4rSm7aUyNXGQsBtkqS
+ SWsOibZobAjpKduK+R8I3veQvkcGcvGhXgrkqQWf/bCEIEC/4t3wdKRLJTimic1jFLIqRBfvyMf
+ yCBUr8hA+DC1oxPbyE4mI
+X-Google-Smtp-Source: AGHT+IEPAdTtCElbOdp/k0njQEPheioe6u9ZbVlb4DHzaAdm1AD8KUjUJAegQUNHTrsK7EFFsn93sQ==
+X-Received: by 2002:a05:600c:1c23:b0:43c:ec72:3daf with SMTP id
+ 5b1f17b1804b1-4409c513fa7mr16522265e9.14.1745488025211; 
+ Thu, 24 Apr 2025 02:47:05 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a06d532aa9sm1535181f8f.68.2025.04.24.02.46.59
+ 5b1f17b1804b1-4408d0a7802sm48959455e9.1.2025.04.24.02.47.04
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 24 Apr 2025 02:46:59 -0700 (PDT)
+ Thu, 24 Apr 2025 02:47:04 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 01/13] accel/tcg: Use vaddr for walk_memory_regions callback
-Date: Thu, 24 Apr 2025 11:46:41 +0200
-Message-ID: <20250424094653.35932-2-philmd@linaro.org>
+Subject: [PATCH v2 02/13] accel/tcg: Use vaddr in user/page-protection.h
+Date: Thu, 24 Apr 2025 11:46:42 +0200
+Message-ID: <20250424094653.35932-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250424094653.35932-1-philmd@linaro.org>
 References: <20250424094653.35932-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,151 +102,282 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Use vaddr instead of target_ulong.  At the same time,
-use int instead of unsigned long for flags, to match
-page_set_flags().
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250424011918.599958-13-richard.henderson@linaro.org>
+Message-ID: <20250424011918.599958-14-richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/user/page-protection.h |  5 ++---
- accel/tcg/user-exec.c          | 10 +++++-----
- linux-user/elfload.c           | 19 +++++++++----------
- linux-user/syscall.c           |  8 ++++----
- 4 files changed, 20 insertions(+), 22 deletions(-)
+ include/user/page-protection.h | 17 +++++-------
+ accel/tcg/user-exec.c          | 51 ++++++++++++++++------------------
+ 2 files changed, 31 insertions(+), 37 deletions(-)
 
 diff --git a/include/user/page-protection.h b/include/user/page-protection.h
-index 1de72e31e68..8f0b769b134 100644
+index 8f0b769b134..86143212fdd 100644
 --- a/include/user/page-protection.h
 +++ b/include/user/page-protection.h
-@@ -14,6 +14,7 @@
+@@ -12,14 +12,12 @@
+ #error Cannot include this header from system emulation
+ #endif
  
- #include "cpu-param.h"
- #include "exec/target_long.h"
-+#include "exec/vaddr.h"
+-#include "cpu-param.h"
+-#include "exec/target_long.h"
+ #include "exec/vaddr.h"
  #include "exec/translation-block.h"
  
  int page_unprotect(CPUState *cpu, tb_page_addr_t address, uintptr_t pc);
-@@ -88,9 +89,7 @@ target_ulong page_find_range_empty(target_ulong min, target_ulong max,
+ 
+-int page_get_flags(target_ulong address);
++int page_get_flags(vaddr address);
+ 
+ /**
+  * page_set_flags:
+@@ -32,9 +30,9 @@ int page_get_flags(target_ulong address);
+  * The flag PAGE_WRITE_ORG is positioned automatically depending
+  * on PAGE_WRITE.  The mmap_lock should already be held.
+  */
+-void page_set_flags(target_ulong start, target_ulong last, int flags);
++void page_set_flags(vaddr start, vaddr last, int flags);
+ 
+-void page_reset_target_data(target_ulong start, target_ulong last);
++void page_reset_target_data(vaddr start, vaddr last);
+ 
+ /**
+  * page_check_range
+@@ -46,7 +44,7 @@ void page_reset_target_data(target_ulong start, target_ulong last);
+  * Return false if any page is unmapped.  Thus testing flags == 0 is
+  * equivalent to testing for flags == PAGE_VALID.
+  */
+-bool page_check_range(target_ulong start, target_ulong last, int flags);
++bool page_check_range(vaddr start, vaddr last, int flags);
+ 
+ /**
+  * page_check_range_empty:
+@@ -58,7 +56,7 @@ bool page_check_range(target_ulong start, target_ulong last, int flags);
+  * The memory lock must be held so that the caller will can ensure
+  * the result stays true until a new mapping can be installed.
+  */
+-bool page_check_range_empty(target_ulong start, target_ulong last);
++bool page_check_range_empty(vaddr start, vaddr last);
+ 
+ /**
+  * page_find_range_empty
+@@ -72,8 +70,7 @@ bool page_check_range_empty(target_ulong start, target_ulong last);
+  * The memory lock must be held, as the caller will want to ensure
+  * the returned range stays empty until a new mapping can be installed.
+  */
+-target_ulong page_find_range_empty(target_ulong min, target_ulong max,
+-                                   target_ulong len, target_ulong align);
++vaddr page_find_range_empty(vaddr min, vaddr max, vaddr len, vaddr align);
+ 
+ /**
+  * page_get_target_data(address)
+@@ -87,7 +84,7 @@ target_ulong page_find_range_empty(target_ulong min, target_ulong max,
+  * e.g. with the munmap system call.
+  */
  __attribute__((returns_nonnull))
- void *page_get_target_data(target_ulong address);
+-void *page_get_target_data(target_ulong address);
++void *page_get_target_data(vaddr address);
  
--typedef int (*walk_memory_regions_fn)(void *, target_ulong,
--                                      target_ulong, unsigned long);
--
-+typedef int (*walk_memory_regions_fn)(void *, vaddr, vaddr, int);
+ typedef int (*walk_memory_regions_fn)(void *, vaddr, vaddr, int);
  int walk_memory_regions(void *, walk_memory_regions_fn);
- 
- void page_dump(FILE *f);
 diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index 17e3be337f5..25d86567e70 100644
+index 25d86567e70..43d005e24e4 100644
 --- a/accel/tcg/user-exec.c
 +++ b/accel/tcg/user-exec.c
-@@ -199,13 +199,13 @@ int walk_memory_regions(void *priv, walk_memory_regions_fn fn)
-     return rc;
+@@ -161,7 +161,7 @@ typedef struct PageFlagsNode {
+ 
+ static IntervalTreeRoot pageflags_root;
+ 
+-static PageFlagsNode *pageflags_find(target_ulong start, target_ulong last)
++static PageFlagsNode *pageflags_find(vaddr start, vaddr last)
+ {
+     IntervalTreeNode *n;
+ 
+@@ -169,8 +169,7 @@ static PageFlagsNode *pageflags_find(target_ulong start, target_ulong last)
+     return n ? container_of(n, PageFlagsNode, itree) : NULL;
  }
  
--static int dump_region(void *priv, target_ulong start,
--                       target_ulong end, unsigned long prot)
-+static int dump_region(void *opaque, vaddr start, vaddr end, int prot)
+-static PageFlagsNode *pageflags_next(PageFlagsNode *p, target_ulong start,
+-                                     target_ulong last)
++static PageFlagsNode *pageflags_next(PageFlagsNode *p, vaddr start, vaddr last)
  {
--    FILE *f = (FILE *)priv;
-+    FILE *f = opaque;
+     IntervalTreeNode *n;
  
--    fprintf(f, TARGET_FMT_lx"-"TARGET_FMT_lx" "TARGET_FMT_lx" %c%c%c\n",
--            start, end, end - start,
-+    fprintf(f, TARGET_ABI_FMT_ptr "-" TARGET_ABI_FMT_ptr
-+            " " TARGET_ABI_FMT_ptr " %c%c%c\n",
-+            (abi_ptr)start, (abi_ptr)end, (abi_ptr)(end - start),
-             ((prot & PAGE_READ) ? 'r' : '-'),
-             ((prot & PAGE_WRITE) ? 'w' : '-'),
-             ((prot & PAGE_EXEC) ? 'x' : '-'));
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 7519b6bcda3..e281745e485 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -4044,8 +4044,7 @@ static inline void bswap_note(struct elf_note *en) { }
- /*
-  * Calculate file (dump) size of given memory region.
-  */
--static size_t vma_dump_size(target_ulong start, target_ulong end,
--                            unsigned long flags)
-+static size_t vma_dump_size(vaddr start, vaddr end, int flags)
+@@ -215,14 +214,14 @@ static int dump_region(void *opaque, vaddr start, vaddr end, int prot)
+ /* dump memory mappings */
+ void page_dump(FILE *f)
  {
-     /* The area must be readable. */
-     if (!(flags & PAGE_READ)) {
-@@ -4238,8 +4237,8 @@ static int dump_write(int fd, const void *ptr, size_t size)
-     return (0);
+-    const int length = sizeof(target_ulong) * 2;
++    const int length = sizeof(abi_ptr) * 2;
+ 
+     fprintf(f, "%-*s %-*s %-*s %s\n",
+             length, "start", length, "end", length, "size", "prot");
+     walk_memory_regions(f, dump_region);
  }
  
--static int wmr_page_unprotect_regions(void *opaque, target_ulong start,
--                                      target_ulong end, unsigned long flags)
-+static int wmr_page_unprotect_regions(void *opaque, vaddr start,
-+                                      vaddr end, int flags)
+-int page_get_flags(target_ulong address)
++int page_get_flags(vaddr address)
  {
-     if ((flags & (PAGE_WRITE | PAGE_WRITE_ORG)) == PAGE_WRITE_ORG) {
-         size_t step = MAX(TARGET_PAGE_SIZE, qemu_real_host_page_size());
-@@ -4260,8 +4259,8 @@ typedef struct {
-     size_t size;
- } CountAndSizeRegions;
+     PageFlagsNode *p = pageflags_find(address, address);
  
--static int wmr_count_and_size_regions(void *opaque, target_ulong start,
--                                      target_ulong end, unsigned long flags)
-+static int wmr_count_and_size_regions(void *opaque, vaddr start,
-+                                      vaddr end, int flags)
- {
-     CountAndSizeRegions *css = opaque;
- 
-@@ -4275,8 +4274,8 @@ typedef struct {
-     off_t offset;
- } FillRegionPhdr;
- 
--static int wmr_fill_region_phdr(void *opaque, target_ulong start,
--                                target_ulong end, unsigned long flags)
-+static int wmr_fill_region_phdr(void *opaque, vaddr start,
-+                                vaddr end, int flags)
- {
-     FillRegionPhdr *d = opaque;
-     struct elf_phdr *phdr = d->phdr;
-@@ -4298,8 +4297,8 @@ static int wmr_fill_region_phdr(void *opaque, target_ulong start,
-     return 0;
+@@ -245,7 +244,7 @@ int page_get_flags(target_ulong address)
  }
  
--static int wmr_write_region(void *opaque, target_ulong start,
--                            target_ulong end, unsigned long flags)
-+static int wmr_write_region(void *opaque, vaddr start,
-+                            vaddr end, int flags)
+ /* A subroutine of page_set_flags: insert a new node for [start,last]. */
+-static void pageflags_create(target_ulong start, target_ulong last, int flags)
++static void pageflags_create(vaddr start, vaddr last, int flags)
  {
-     int fd = *(int *)opaque;
-     size_t size = vma_dump_size(start, end, flags);
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 5826ac3adbb..23b901b7133 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -8135,8 +8135,8 @@ static void open_self_maps_4(const struct open_self_maps_data *d,
-  * Callback for walk_memory_regions, when read_self_maps() fails.
-  * Proceed without the benefit of host /proc/self/maps cross-check.
-  */
--static int open_self_maps_3(void *opaque, target_ulong guest_start,
--                            target_ulong guest_end, unsigned long flags)
-+static int open_self_maps_3(void *opaque, vaddr guest_start,
-+                            vaddr guest_end, int flags)
- {
-     static const MapInfo mi = { .is_priv = true };
+     PageFlagsNode *p = g_new(PageFlagsNode, 1);
  
-@@ -8147,8 +8147,8 @@ static int open_self_maps_3(void *opaque, target_ulong guest_start,
- /*
-  * Callback for walk_memory_regions, when read_self_maps() succeeds.
-  */
--static int open_self_maps_2(void *opaque, target_ulong guest_start,
--                            target_ulong guest_end, unsigned long flags)
-+static int open_self_maps_2(void *opaque, vaddr guest_start,
-+                            vaddr guest_end, int flags)
+@@ -256,13 +255,13 @@ static void pageflags_create(target_ulong start, target_ulong last, int flags)
+ }
+ 
+ /* A subroutine of page_set_flags: remove everything in [start,last]. */
+-static bool pageflags_unset(target_ulong start, target_ulong last)
++static bool pageflags_unset(vaddr start, vaddr last)
  {
-     const struct open_self_maps_data *d = opaque;
-     uintptr_t host_start = (uintptr_t)g2h_untagged(guest_start);
+     bool inval_tb = false;
+ 
+     while (true) {
+         PageFlagsNode *p = pageflags_find(start, last);
+-        target_ulong p_last;
++        vaddr p_last;
+ 
+         if (!p) {
+             break;
+@@ -301,8 +300,7 @@ static bool pageflags_unset(target_ulong start, target_ulong last)
+  * A subroutine of page_set_flags: nothing overlaps [start,last],
+  * but check adjacent mappings and maybe merge into a single range.
+  */
+-static void pageflags_create_merge(target_ulong start, target_ulong last,
+-                                   int flags)
++static void pageflags_create_merge(vaddr start, vaddr last, int flags)
+ {
+     PageFlagsNode *next = NULL, *prev = NULL;
+ 
+@@ -353,11 +351,11 @@ static void pageflags_create_merge(target_ulong start, target_ulong last,
+ #define PAGE_STICKY  (PAGE_ANON | PAGE_PASSTHROUGH | PAGE_TARGET_STICKY)
+ 
+ /* A subroutine of page_set_flags: add flags to [start,last]. */
+-static bool pageflags_set_clear(target_ulong start, target_ulong last,
++static bool pageflags_set_clear(vaddr start, vaddr last,
+                                 int set_flags, int clear_flags)
+ {
+     PageFlagsNode *p;
+-    target_ulong p_start, p_last;
++    vaddr p_start, p_last;
+     int p_flags, merge_flags;
+     bool inval_tb = false;
+ 
+@@ -492,7 +490,7 @@ static bool pageflags_set_clear(target_ulong start, target_ulong last,
+     return inval_tb;
+ }
+ 
+-void page_set_flags(target_ulong start, target_ulong last, int flags)
++void page_set_flags(vaddr start, vaddr last, int flags)
+ {
+     bool reset = false;
+     bool inval_tb = false;
+@@ -532,9 +530,9 @@ void page_set_flags(target_ulong start, target_ulong last, int flags)
+     }
+ }
+ 
+-bool page_check_range(target_ulong start, target_ulong len, int flags)
++bool page_check_range(vaddr start, vaddr len, int flags)
+ {
+-    target_ulong last;
++    vaddr last;
+     int locked;  /* tri-state: =0: unlocked, +1: global, -1: local */
+     bool ret;
+ 
+@@ -610,17 +608,16 @@ bool page_check_range(target_ulong start, target_ulong len, int flags)
+     return ret;
+ }
+ 
+-bool page_check_range_empty(target_ulong start, target_ulong last)
++bool page_check_range_empty(vaddr start, vaddr last)
+ {
+     assert(last >= start);
+     assert_memory_lock();
+     return pageflags_find(start, last) == NULL;
+ }
+ 
+-target_ulong page_find_range_empty(target_ulong min, target_ulong max,
+-                                   target_ulong len, target_ulong align)
++vaddr page_find_range_empty(vaddr min, vaddr max, vaddr len, vaddr align)
+ {
+-    target_ulong len_m1, align_m1;
++    vaddr len_m1, align_m1;
+ 
+     assert(min <= max);
+     assert(max <= GUEST_ADDR_MAX);
+@@ -661,7 +658,7 @@ target_ulong page_find_range_empty(target_ulong min, target_ulong max,
+ void tb_lock_page0(tb_page_addr_t address)
+ {
+     PageFlagsNode *p;
+-    target_ulong start, last;
++    vaddr start, last;
+     int host_page_size = qemu_real_host_page_size();
+     int prot;
+ 
+@@ -740,7 +737,7 @@ int page_unprotect(CPUState *cpu, tb_page_addr_t address, uintptr_t pc)
+         }
+     } else {
+         int host_page_size = qemu_real_host_page_size();
+-        target_ulong start, len, i;
++        vaddr start, len, i;
+         int prot;
+ 
+         if (host_page_size <= TARGET_PAGE_SIZE) {
+@@ -756,7 +753,7 @@ int page_unprotect(CPUState *cpu, tb_page_addr_t address, uintptr_t pc)
+             prot = 0;
+ 
+             for (i = 0; i < len; i += TARGET_PAGE_SIZE) {
+-                target_ulong addr = start + i;
++                vaddr addr = start + i;
+ 
+                 p = pageflags_find(addr, addr);
+                 if (p) {
+@@ -883,7 +880,7 @@ typedef struct TargetPageDataNode {
+ 
+ static IntervalTreeRoot targetdata_root;
+ 
+-void page_reset_target_data(target_ulong start, target_ulong last)
++void page_reset_target_data(vaddr start, vaddr last)
+ {
+     IntervalTreeNode *n, *next;
+ 
+@@ -897,7 +894,7 @@ void page_reset_target_data(target_ulong start, target_ulong last)
+          n != NULL;
+          n = next,
+          next = next ? interval_tree_iter_next(n, start, last) : NULL) {
+-        target_ulong n_start, n_last, p_ofs, p_len;
++        vaddr n_start, n_last, p_ofs, p_len;
+         TargetPageDataNode *t = container_of(n, TargetPageDataNode, itree);
+ 
+         if (n->start >= start && n->last <= last) {
+@@ -921,11 +918,11 @@ void page_reset_target_data(target_ulong start, target_ulong last)
+     }
+ }
+ 
+-void *page_get_target_data(target_ulong address)
++void *page_get_target_data(vaddr address)
+ {
+     IntervalTreeNode *n;
+     TargetPageDataNode *t;
+-    target_ulong page, region, p_ofs;
++    vaddr page, region, p_ofs;
+ 
+     page = address & TARGET_PAGE_MASK;
+     region = address & TBD_MASK;
+@@ -956,7 +953,7 @@ void *page_get_target_data(target_ulong address)
+     return t->data + p_ofs * TARGET_PAGE_DATA_SIZE;
+ }
+ #else
+-void page_reset_target_data(target_ulong start, target_ulong last) { }
++void page_reset_target_data(vaddr start, vaddr last) { }
+ #endif /* TARGET_PAGE_DATA_SIZE */
+ 
+ /* The system-mode versions of these helpers are in cputlb.c.  */
 -- 
 2.47.1
 
