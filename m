@@ -2,89 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 675A1A99E3F
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:31:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A5B2A99D56
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 02:54:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7l02-0001RP-UC; Wed, 23 Apr 2025 21:03:35 -0400
+	id 1u7kpU-0008M7-4m; Wed, 23 Apr 2025 20:52:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kx5-000691-Ma
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 21:00:32 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1u7knO-0005y3-S4
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:50:31 -0400
+Received: from mail-ua1-x92e.google.com ([2607:f8b0:4864:20::92e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kx1-0005Z1-Cz
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 21:00:31 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-2255003f4c6so4872145ad.0
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 18:00:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1u7knM-0004cQ-VS
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:50:30 -0400
+Received: by mail-ua1-x92e.google.com with SMTP id
+ a1e0cc1a2514c-86fbc8717fcso215289241.2
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:50:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745456424; x=1746061224; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1745455827; x=1746060627; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=U1g4DVjg5c6Ho5GZomYZSoMm8tVjtbkgyt05K/brssM=;
- b=WqKWMdE9V+2+7Iabpf9seMQZGBtPEfpV6B3fxbWWQqn1jNUQdq1jXJdv1sBHKuJ0fi
- Ybrjv9XkVBeOkeEsiaPW6Ne+28O9iAPHaY67eDo9Lps+anEHZZDB4HhBJ7FJto1eBhAm
- f6gm1qsxK0KkKvzqPirFlCdC0p7ajUiP92dHIhab7Venxb7no/kb4PYTNnPI201Oe/Lx
- N7KVb5/yXNzJ2fbEHdYVO46Z2E47rluWPIbKMXQvnV2tXAuSa/gZ2/zD17vinLEdyEwP
- 3msgiuhOhrpZJCqOq8Dlkw6SJUR4MD0ht3rXPe0iRri5qzPvcUVK14aZ/AmQ0/29PrZV
- uO2w==
+ bh=IzJ4VjTv7UiCNY59yEfApfr/zsUNaMfb/CiTUZSZjfg=;
+ b=W5DWSvbk5RCCotgJryrs3U6aulGilAMLBvDv73HTVEZ/Fm8gLQfqu/ZQhgXN8uZ22b
+ vps2Razzpl4Q81gO7Fu4W5PPkhkz9sU5siSA0jKZdLX7/2IXlZhD2X+9oTxXrTeqM7oj
+ 9rE1xeZ+vVH2AF8GDkQZsELg2ceAE0kLr/1xLL9NlM7CwXdpWGNT144jBP8QPl/CDLmX
+ K6DzpTwDFdwDXCdyCODAX+0s1lqkEdvdcSab9cmrRwBAROdTcixONCWV04+uGCOITgcp
+ JsYinSOHeOuGns7c+kaYZZk/NbUpBHOUBhOerfVrwBWYXsiflr3TsY3sbE/YpD+qwYOd
+ trlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745456424; x=1746061224;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1745455827; x=1746060627;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=U1g4DVjg5c6Ho5GZomYZSoMm8tVjtbkgyt05K/brssM=;
- b=buC6qXqHaUebA2rfv4t08XLLlKu3zZr0joBhooEcVpxDNGocMHJng+BEoFTpqiWabI
- CfUxGQ0nukn2gdHL+YOZAdcrBghNEqOGmk2wdbWsid4byPwdkL1DPEjMdzXJsZC/yiVe
- pBoa8/leT/clbwLWIIuVz36eb2pMDBBkmvbtOiX9aRMGKO5jznSQwNQmk3a5M/mQaCbr
- rwkZReER7jx4o4OyvOdMnjCO00Ws74oIsTKDrCbL2Tyb4grBGbDtuMG2jGuPcnWYhrvf
- T9DmwnpYbjDiMk62CwKf464JC6aqDGEFt6JPAQ2un6Q8+L36AdHmBmU2fbj+bKNWDQsM
- 2QyA==
-X-Gm-Message-State: AOJu0YyYZFwCJFWrtY9lTac+HnmxzF+auZRbF9VYdfLKku53GONC8fLb
- AOXjt9tuOntLYI0xJWzLZDbFsMP4geohlZJynyma/hb/9aZ6z4Gk2na7nYTAokp5ld/Kcvnd77g
- c
-X-Gm-Gg: ASbGncsRDYgoGXJ57m2Xyi/6FwHmuS/OxTRDjnZkshzFIfY2ax+tQ2CAh7qiu/KHBht
- ZsJ4oMDOQbVDYuJo2UQrvujAMlKROuH8+zxGmABLUCbvQmjEZTDMrjoy9/8hxTGOKac+0EP/Hw6
- B2JdTS5D8uDKOuZlIEvjzwwzr7Zhf6Ia4GzqK8WvXc4JMRHw+BbTsGHz3oxelnM39Qj85ZVUcSh
- wyE3n5PUZx0cXc3xLNEDF/ar3U5+M+FLJzVl1fABlX7ewG2nHqVzUB4/YWsWtelKVhxI8aKJBtu
- wq0FP8SEHnyimm4RPZLA2XQUp8sNQzYHftvP2DDEZev6fNigSy54hTXB0qhDpurGobbke7hpu60
- =
-X-Google-Smtp-Source: AGHT+IF80SX4xME8rDaFSKMY794fhIrmES/htugdkpBlbCosa8ZWlAMzEPG9ZViedGPsCrAL9WcxgQ==
-X-Received: by 2002:a17:903:1103:b0:22c:3609:97ed with SMTP id
- d9443c01a7336-22db3c3a039mr7385185ad.30.1745456424472; 
- Wed, 23 Apr 2025 18:00:24 -0700 (PDT)
-Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b15f76f45c7sm129259a12.16.2025.04.23.18.00.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Apr 2025 18:00:24 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Anton Johansson <anjo@rev.ng>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 148/148] tcg: Convert TARGET_SUPPORTS_MTTCG to
- TCGCPUOps::mttcg_supported field
-Date: Wed, 23 Apr 2025 17:49:33 -0700
-Message-ID: <20250424004934.598783-149-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250424004934.598783-1-richard.henderson@linaro.org>
-References: <20250424004934.598783-1-richard.henderson@linaro.org>
+ bh=IzJ4VjTv7UiCNY59yEfApfr/zsUNaMfb/CiTUZSZjfg=;
+ b=cwLpiPhjEGfv9ua3dNmMolp7VwH/GhoBMCnKlDIb/E4VMpX0bt3KzrxjQ8sMr+/VV/
+ KSc066IBgrmcTBbf2WfsJ89BpfLm5fZ/ww2P6g5SkI8+Ovf1S9hlf7ZjTAl08r2+BWMs
+ UF5/1A45OBdcn0W1os3kCHz1iDYMFu4wZCZhDGiDuHoqmNLwSq07CrQ5psSlEaHxmDdk
+ QqwaGRJkaQyQ9PT7W+blotmu/UJ37ifElFwZWRmWX1mnw5F5BQ1I3M6w+zzy5cFsAPoo
+ MLca2nk7Y2TuaVMyfssIPconB76CXnejUaYbwwgE+dcjPBuZuzB3Kqr0GqjDui/va4R1
+ bXMQ==
+X-Gm-Message-State: AOJu0YzTycRbuHNKr8FhLi442SiwOS8S3Iqoq1TbdtZOXkzgSRV97GTf
+ T0psZQCmVj9nIcpz6bscezFRZz3zp0DaOIBctZwzcSlPHQ4hZOe1bGtHwlgfVe+QIUUy3azwv0a
+ Y02Ks2JCr0Add7SCILG261hHQfH+XTg==
+X-Gm-Gg: ASbGncuWmUQOIRBzs2I1nVcsSDlkvHQkgOdx1ISgWdh49X+w19bZtkawf1TNxJLc/XL
+ 3g0srJdV0IahCZXdiC0CrOPn+EnbdW0WdMhEFIIC5ynUxql7aUyiscIdJoNq1BJPxcX08Cbd1sl
+ p69bW2EzKXW6Y9ksUgHgQuHP38L+oC6jfawaFEqvN3qkHDhWxz5X8p
+X-Google-Smtp-Source: AGHT+IHZrQBx0gHn/f/tNjv3S/6Bc7Ylg6B81DqowEy6PDMyWJWoBeRfNwlXFmb5s9UWreUpPTZHOmqlU0tL5+VHNSk=
+X-Received: by 2002:a05:6102:e0d:b0:4c1:76a4:aee4 with SMTP id
+ ada2fe7eead31-4d38eef3e42mr1009481137.19.1745455827183; Wed, 23 Apr 2025
+ 17:50:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <20250406070254.274797-1-pbonzini@redhat.com>
+ <20250406070254.274797-15-pbonzini@redhat.com>
+In-Reply-To: <20250406070254.274797-15-pbonzini@redhat.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Thu, 24 Apr 2025 10:50:01 +1000
+X-Gm-Features: ATxdqUGUiH_Gzx9w6f7f3o8p2h3_vrV9w8HZhCnXu8hIHC7i6dM0yA12syFRpFw
+Message-ID: <CAKmqyKMvhAZ18R+n4Vg4_f4Gr_P3o-VFnNt1e0eFwEuQNZ7jow@mail.gmail.com>
+Subject: Re: [PATCH 14/27] target/riscv: convert abstract CPU classes to
+ RISCVCPUDef
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92e;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x92e.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -102,580 +94,176 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+On Sun, Apr 6, 2025 at 5:03=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com> =
+wrote:
+>
+> Start from the top of the hierarchy: dynamic and vendor CPUs are just
+> markers, whereas bare CPUs can have their instance_init function
+> replaced by RISCVCPUDef.
+>
+> The only difference is that the maximum supported SATP mode has to
+> be specified separately for 32-bit and 64-bit modes.
+>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-Instead of having a compile-time TARGET_SUPPORTS_MTTCG definition,
-have each target set the 'mttcg_supported' field in the TCGCPUOps
-structure.
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Anton Johansson <anjo@rev.ng>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250405161320.76854-17-philmd@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- include/accel/tcg/cpu-ops.h              |  8 ++++++++
- include/exec/poison.h                    |  1 -
- accel/tcg/tcg-all.c                      | 11 +++++------
- target/alpha/cpu.c                       |  1 +
- target/arm/cpu.c                         |  1 +
- target/arm/tcg/cpu-v7m.c                 |  1 +
- target/avr/cpu.c                         |  1 +
- target/hexagon/cpu.c                     |  1 +
- target/hppa/cpu.c                        |  1 +
- target/i386/tcg/tcg-cpu.c                |  1 +
- target/loongarch/cpu.c                   |  1 +
- target/m68k/cpu.c                        |  1 +
- target/microblaze/cpu.c                  |  1 +
- target/mips/cpu.c                        |  1 +
- target/openrisc/cpu.c                    |  1 +
- target/ppc/cpu_init.c                    |  1 +
- target/riscv/tcg/tcg-cpu.c               |  1 +
- target/rx/cpu.c                          |  1 +
- target/s390x/cpu.c                       |  1 +
- target/sh4/cpu.c                         |  1 +
- target/sparc/cpu.c                       |  1 +
- target/tricore/cpu.c                     |  1 +
- target/xtensa/cpu.c                      |  1 +
- configs/targets/aarch64-softmmu.mak      |  1 -
- configs/targets/alpha-softmmu.mak        |  1 -
- configs/targets/arm-softmmu.mak          |  1 -
- configs/targets/hppa-softmmu.mak         |  1 -
- configs/targets/i386-softmmu.mak         |  1 -
- configs/targets/loongarch64-softmmu.mak  |  1 -
- configs/targets/microblaze-softmmu.mak   |  1 -
- configs/targets/microblazeel-softmmu.mak |  1 -
- configs/targets/mips-softmmu.mak         |  1 -
- configs/targets/mipsel-softmmu.mak       |  1 -
- configs/targets/or1k-softmmu.mak         |  1 -
- configs/targets/ppc64-softmmu.mak        |  1 -
- configs/targets/riscv32-softmmu.mak      |  1 -
- configs/targets/riscv64-softmmu.mak      |  1 -
- configs/targets/s390x-softmmu.mak        |  1 -
- configs/targets/sparc-softmmu.mak        |  1 -
- configs/targets/sparc64-softmmu.mak      |  1 -
- configs/targets/x86_64-softmmu.mak       |  1 -
- configs/targets/xtensa-softmmu.mak       |  1 -
- configs/targets/xtensaeb-softmmu.mak     |  1 -
- docs/devel/multi-thread-tcg.rst          |  2 +-
- 44 files changed, 34 insertions(+), 28 deletions(-)
+Alistair
 
-diff --git a/include/accel/tcg/cpu-ops.h b/include/accel/tcg/cpu-ops.h
-index a4932fc5d7..0e4352513d 100644
---- a/include/accel/tcg/cpu-ops.h
-+++ b/include/accel/tcg/cpu-ops.h
-@@ -19,6 +19,14 @@
- #include "tcg/tcg-mo.h"
- 
- struct TCGCPUOps {
-+    /**
-+     * mttcg_supported: multi-threaded TCG is supported
-+     *
-+     * Target (TCG frontend) supports:
-+     *   - atomic instructions
-+     *   - memory ordering primitives (barriers)
-+     */
-+    bool mttcg_supported;
- 
-     /**
-      * @guest_default_memory_order: default barrier that is required
-diff --git a/include/exec/poison.h b/include/exec/poison.h
-index a09e0c1263..bc422719d8 100644
---- a/include/exec/poison.h
-+++ b/include/exec/poison.h
-@@ -35,7 +35,6 @@
- 
- #pragma GCC poison TARGET_HAS_BFLT
- #pragma GCC poison TARGET_NAME
--#pragma GCC poison TARGET_SUPPORTS_MTTCG
- #pragma GCC poison TARGET_BIG_ENDIAN
- #pragma GCC poison TCG_GUEST_DEFAULT_MO
- #pragma GCC poison TARGET_HAS_PRECISE_SMC
-diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
-index ecdd48847c..b0d4e3e136 100644
---- a/accel/tcg/tcg-all.c
-+++ b/accel/tcg/tcg-all.c
-@@ -41,8 +41,9 @@
- #include "hw/boards.h"
- #include "system/tcg.h"
- #endif
-+#include "accel/tcg/cpu-ops.h"
- #include "internal-common.h"
--#include "cpu-param.h"
-+#include "cpu.h"
- 
- 
- struct TCGState {
-@@ -88,11 +89,9 @@ static int tcg_init_machine(MachineState *ms)
-     unsigned max_threads = 1;
- 
- #ifndef CONFIG_USER_ONLY
--# ifdef TARGET_SUPPORTS_MTTCG
--    bool mttcg_supported = true;
--# else
--    bool mttcg_supported = false;
--# endif
-+    CPUClass *cc = CPU_CLASS(object_class_by_name(CPU_RESOLVING_TYPE));
-+    bool mttcg_supported = cc->tcg_ops->mttcg_supported;
-+
-     switch (s->mttcg_enabled) {
-     case ON_OFF_AUTO_AUTO:
-         /*
-diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
-index eeaf3a81c1..35fb145d27 100644
---- a/target/alpha/cpu.c
-+++ b/target/alpha/cpu.c
-@@ -237,6 +237,7 @@ static const struct SysemuCPUOps alpha_sysemu_ops = {
- static const TCGCPUOps alpha_tcg_ops = {
-     /* Alpha processors have a weak memory model */
-     .guest_default_memory_order = 0,
-+    .mttcg_supported = true,
- 
-     .initialize = alpha_translate_init,
-     .translate_code = alpha_translate_code,
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 3e9760b551..377791c84d 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -2671,6 +2671,7 @@ static const struct SysemuCPUOps arm_sysemu_ops = {
- 
- #ifdef CONFIG_TCG
- static const TCGCPUOps arm_tcg_ops = {
-+    .mttcg_supported = true,
-     /* ARM processors have a weak memory model */
-     .guest_default_memory_order = 0,
- 
-diff --git a/target/arm/tcg/cpu-v7m.c b/target/arm/tcg/cpu-v7m.c
-index 89d4e4b4a2..f71560aa43 100644
---- a/target/arm/tcg/cpu-v7m.c
-+++ b/target/arm/tcg/cpu-v7m.c
-@@ -234,6 +234,7 @@ static void cortex_m55_initfn(Object *obj)
- static const TCGCPUOps arm_v7m_tcg_ops = {
-     /* ARM processors have a weak memory model */
-     .guest_default_memory_order = 0,
-+    .mttcg_supported = true,
- 
-     .initialize = arm_translate_init,
-     .translate_code = arm_translate_code,
-diff --git a/target/avr/cpu.c b/target/avr/cpu.c
-index 8f79cf4c08..84f3b839c9 100644
---- a/target/avr/cpu.c
-+++ b/target/avr/cpu.c
-@@ -225,6 +225,7 @@ static const struct SysemuCPUOps avr_sysemu_ops = {
- 
- static const TCGCPUOps avr_tcg_ops = {
-     .guest_default_memory_order = 0,
-+    .mttcg_supported = false,
-     .initialize = avr_cpu_tcg_init,
-     .translate_code = avr_cpu_translate_code,
-     .synchronize_from_tb = avr_cpu_synchronize_from_tb,
-diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c
-index 3d14e5cc6a..3c5191282e 100644
---- a/target/hexagon/cpu.c
-+++ b/target/hexagon/cpu.c
-@@ -327,6 +327,7 @@ static void hexagon_cpu_init(Object *obj)
- static const TCGCPUOps hexagon_tcg_ops = {
-     /* MTTCG not yet supported: require strict ordering */
-     .guest_default_memory_order = TCG_MO_ALL,
-+    .mttcg_supported = false,
-     .initialize = hexagon_translate_init,
-     .translate_code = hexagon_translate_code,
-     .synchronize_from_tb = hexagon_cpu_synchronize_from_tb,
-diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index dfbd933056..10e18c945e 100644
---- a/target/hppa/cpu.c
-+++ b/target/hppa/cpu.c
-@@ -260,6 +260,7 @@ static const TCGCPUOps hppa_tcg_ops = {
-      * basis.  It's probably easier to fall back to a strong memory model.
-      */
-     .guest_default_memory_order = TCG_MO_ALL,
-+    .mttcg_supported = true,
- 
-     .initialize = hppa_translate_init,
-     .translate_code = hppa_translate_code,
-diff --git a/target/i386/tcg/tcg-cpu.c b/target/i386/tcg/tcg-cpu.c
-index e13d0f6f86..621502c984 100644
---- a/target/i386/tcg/tcg-cpu.c
-+++ b/target/i386/tcg/tcg-cpu.c
-@@ -125,6 +125,7 @@ static bool x86_debug_check_breakpoint(CPUState *cs)
- #include "accel/tcg/cpu-ops.h"
- 
- const TCGCPUOps x86_tcg_ops = {
-+    .mttcg_supported = true,
-     /*
-      * The x86 has a strong memory model with some store-after-load re-ordering
-      */
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index f5b8ef29ab..fe9462b3b7 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -865,6 +865,7 @@ static void loongarch_cpu_dump_state(CPUState *cs, FILE *f, int flags)
- 
- static const TCGCPUOps loongarch_tcg_ops = {
-     .guest_default_memory_order = 0,
-+    .mttcg_supported = true,
- 
-     .initialize = loongarch_translate_init,
-     .translate_code = loongarch_translate_code,
-diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
-index b2d8c8f1de..99adc5eb91 100644
---- a/target/m68k/cpu.c
-+++ b/target/m68k/cpu.c
-@@ -591,6 +591,7 @@ static const struct SysemuCPUOps m68k_sysemu_ops = {
- static const TCGCPUOps m68k_tcg_ops = {
-     /* MTTCG not yet supported: require strict ordering */
-     .guest_default_memory_order = TCG_MO_ALL,
-+    .mttcg_supported = false,
- 
-     .initialize = m68k_tcg_init,
-     .translate_code = m68k_translate_code,
-diff --git a/target/microblaze/cpu.c b/target/microblaze/cpu.c
-index 4efba0dddb..edfb05758b 100644
---- a/target/microblaze/cpu.c
-+++ b/target/microblaze/cpu.c
-@@ -429,6 +429,7 @@ static const struct SysemuCPUOps mb_sysemu_ops = {
- static const TCGCPUOps mb_tcg_ops = {
-     /* MicroBlaze is always in-order. */
-     .guest_default_memory_order = TCG_MO_ALL,
-+    .mttcg_supported = true,
- 
-     .initialize = mb_tcg_init,
-     .translate_code = mb_translate_code,
-diff --git a/target/mips/cpu.c b/target/mips/cpu.c
-index 2ae7ba4407..473cecdebc 100644
---- a/target/mips/cpu.c
-+++ b/target/mips/cpu.c
-@@ -551,6 +551,7 @@ static int mips_cpu_mmu_index(CPUState *cs, bool ifunc)
- }
- 
- static const TCGCPUOps mips_tcg_ops = {
-+    .mttcg_supported = TARGET_LONG_BITS == 32,
-     .guest_default_memory_order = 0,
- 
-     .initialize = mips_tcg_init,
-diff --git a/target/openrisc/cpu.c b/target/openrisc/cpu.c
-index 87fe779042..6601e0c066 100644
---- a/target/openrisc/cpu.c
-+++ b/target/openrisc/cpu.c
-@@ -244,6 +244,7 @@ static const struct SysemuCPUOps openrisc_sysemu_ops = {
- 
- static const TCGCPUOps openrisc_tcg_ops = {
-     .guest_default_memory_order = 0,
-+    .mttcg_supported = true,
- 
-     .initialize = openrisc_translate_init,
-     .translate_code = openrisc_translate_code,
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 9ba775971a..fde7d71fc6 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -7479,6 +7479,7 @@ static const struct SysemuCPUOps ppc_sysemu_ops = {
- #include "accel/tcg/cpu-ops.h"
- 
- static const TCGCPUOps ppc_tcg_ops = {
-+  .mttcg_supported = TARGET_LONG_BITS == 64,
-   .guest_default_memory_order = 0,
-   .initialize = ppc_translate_init,
-   .translate_code = ppc_translate_code,
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 44fdf6c4cf..426145c3b9 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -141,6 +141,7 @@ static void riscv_restore_state_to_opc(CPUState *cs,
- }
- 
- const TCGCPUOps riscv_tcg_ops = {
-+    .mttcg_supported = true,
-     .guest_default_memory_order = 0,
- 
-     .initialize = riscv_translate_init,
-diff --git a/target/rx/cpu.c b/target/rx/cpu.c
-index f073fe8fc9..0a7a2b55b5 100644
---- a/target/rx/cpu.c
-+++ b/target/rx/cpu.c
-@@ -206,6 +206,7 @@ static const struct SysemuCPUOps rx_sysemu_ops = {
- static const TCGCPUOps rx_tcg_ops = {
-     /* MTTCG not yet supported: require strict ordering */
-     .guest_default_memory_order = TCG_MO_ALL,
-+    .mttcg_supported = false,
- 
-     .initialize = rx_translate_init,
-     .translate_code = rx_translate_code,
-diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
-index 1e101b5afe..41cccc1e69 100644
---- a/target/s390x/cpu.c
-+++ b/target/s390x/cpu.c
-@@ -345,6 +345,7 @@ void cpu_get_tb_cpu_state(CPUS390XState *env, vaddr *pc,
- }
- 
- static const TCGCPUOps s390_tcg_ops = {
-+    .mttcg_supported = true,
-     /*
-      * The z/Architecture has a strong memory model with some
-      * store-after-load re-ordering.
-diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
-index 7a05301c6f..861fdd47f7 100644
---- a/target/sh4/cpu.c
-+++ b/target/sh4/cpu.c
-@@ -264,6 +264,7 @@ static const struct SysemuCPUOps sh4_sysemu_ops = {
- static const TCGCPUOps superh_tcg_ops = {
-     /* MTTCG not yet supported: require strict ordering */
-     .guest_default_memory_order = TCG_MO_ALL,
-+    .mttcg_supported = false,
- 
-     .initialize = sh4_translate_init,
-     .translate_code = sh4_translate_code,
-diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-index 56d9417ae3..f7d231c6f8 100644
---- a/target/sparc/cpu.c
-+++ b/target/sparc/cpu.c
-@@ -1023,6 +1023,7 @@ static const TCGCPUOps sparc_tcg_ops = {
-      *   by an implied MEMBAR #StoreStore.
-      */
-     .guest_default_memory_order = TCG_MO_LD_LD | TCG_MO_LD_ST | TCG_MO_ST_ST,
-+    .mttcg_supported = true,
- 
-     .initialize = sparc_tcg_init,
-     .translate_code = sparc_translate_code,
-diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
-index c68954b409..a4f93e7d91 100644
---- a/target/tricore/cpu.c
-+++ b/target/tricore/cpu.c
-@@ -174,6 +174,7 @@ static const struct SysemuCPUOps tricore_sysemu_ops = {
- static const TCGCPUOps tricore_tcg_ops = {
-     /* MTTCG not yet supported: require strict ordering */
-     .guest_default_memory_order = TCG_MO_ALL,
-+    .mttcg_supported = false,
-     .initialize = tricore_tcg_init,
-     .translate_code = tricore_translate_code,
-     .synchronize_from_tb = tricore_cpu_synchronize_from_tb,
-diff --git a/target/xtensa/cpu.c b/target/xtensa/cpu.c
-index 2cbf4e3010..971e67ad97 100644
---- a/target/xtensa/cpu.c
-+++ b/target/xtensa/cpu.c
-@@ -234,6 +234,7 @@ static const struct SysemuCPUOps xtensa_sysemu_ops = {
- static const TCGCPUOps xtensa_tcg_ops = {
-     /* Xtensa processors have a weak memory model */
-     .guest_default_memory_order = 0,
-+    .mttcg_supported = true,
- 
-     .initialize = xtensa_translate_init,
-     .translate_code = xtensa_translate_code,
-diff --git a/configs/targets/aarch64-softmmu.mak b/configs/targets/aarch64-softmmu.mak
-index 82cb72cb83..5dfeb35af9 100644
---- a/configs/targets/aarch64-softmmu.mak
-+++ b/configs/targets/aarch64-softmmu.mak
-@@ -1,6 +1,5 @@
- TARGET_ARCH=aarch64
- TARGET_BASE_ARCH=arm
--TARGET_SUPPORTS_MTTCG=y
- TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/arm-core.xml gdb-xml/arm-vfp.xml gdb-xml/arm-vfp3.xml gdb-xml/arm-vfp-sysregs.xml gdb-xml/arm-neon.xml gdb-xml/arm-m-profile.xml gdb-xml/arm-m-profile-mve.xml gdb-xml/aarch64-pauth.xml
- # needed by boot.c
-diff --git a/configs/targets/alpha-softmmu.mak b/configs/targets/alpha-softmmu.mak
-index 89f3517aca..5275076e50 100644
---- a/configs/targets/alpha-softmmu.mak
-+++ b/configs/targets/alpha-softmmu.mak
-@@ -1,3 +1,2 @@
- TARGET_ARCH=alpha
--TARGET_SUPPORTS_MTTCG=y
- TARGET_LONG_BITS=64
-diff --git a/configs/targets/arm-softmmu.mak b/configs/targets/arm-softmmu.mak
-index afc64f5927..6a5a8eda94 100644
---- a/configs/targets/arm-softmmu.mak
-+++ b/configs/targets/arm-softmmu.mak
-@@ -1,5 +1,4 @@
- TARGET_ARCH=arm
--TARGET_SUPPORTS_MTTCG=y
- TARGET_XML_FILES= gdb-xml/arm-core.xml gdb-xml/arm-vfp.xml gdb-xml/arm-vfp3.xml gdb-xml/arm-vfp-sysregs.xml gdb-xml/arm-neon.xml gdb-xml/arm-m-profile.xml gdb-xml/arm-m-profile-mve.xml
- # needed by boot.c
- TARGET_NEED_FDT=y
-diff --git a/configs/targets/hppa-softmmu.mak b/configs/targets/hppa-softmmu.mak
-index 63ca74ed5e..ea331107a0 100644
---- a/configs/targets/hppa-softmmu.mak
-+++ b/configs/targets/hppa-softmmu.mak
-@@ -1,4 +1,3 @@
- TARGET_ARCH=hppa
- TARGET_BIG_ENDIAN=y
--TARGET_SUPPORTS_MTTCG=y
- TARGET_LONG_BITS=64
-diff --git a/configs/targets/i386-softmmu.mak b/configs/targets/i386-softmmu.mak
-index 5dd8921756..e9d89e8ab4 100644
---- a/configs/targets/i386-softmmu.mak
-+++ b/configs/targets/i386-softmmu.mak
-@@ -1,5 +1,4 @@
- TARGET_ARCH=i386
--TARGET_SUPPORTS_MTTCG=y
- TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_KVM_HAVE_RESET_PARKED_VCPU=y
- TARGET_XML_FILES= gdb-xml/i386-32bit.xml
-diff --git a/configs/targets/loongarch64-softmmu.mak b/configs/targets/loongarch64-softmmu.mak
-index 351341132f..fc44c54233 100644
---- a/configs/targets/loongarch64-softmmu.mak
-+++ b/configs/targets/loongarch64-softmmu.mak
-@@ -1,7 +1,6 @@
- TARGET_ARCH=loongarch64
- TARGET_BASE_ARCH=loongarch
- TARGET_KVM_HAVE_GUEST_DEBUG=y
--TARGET_SUPPORTS_MTTCG=y
- TARGET_XML_FILES= gdb-xml/loongarch-base32.xml gdb-xml/loongarch-base64.xml gdb-xml/loongarch-fpu.xml gdb-xml/loongarch-lsx.xml gdb-xml/loongarch-lasx.xml
- # all boards require libfdt
- TARGET_NEED_FDT=y
-diff --git a/configs/targets/microblaze-softmmu.mak b/configs/targets/microblaze-softmmu.mak
-index 99a33ed44a..23457d0ae6 100644
---- a/configs/targets/microblaze-softmmu.mak
-+++ b/configs/targets/microblaze-softmmu.mak
-@@ -1,6 +1,5 @@
- TARGET_ARCH=microblaze
- TARGET_BIG_ENDIAN=y
--TARGET_SUPPORTS_MTTCG=y
- # needed by boot.c
- TARGET_NEED_FDT=y
- TARGET_XML_FILES=gdb-xml/microblaze-core.xml gdb-xml/microblaze-stack-protect.xml
-diff --git a/configs/targets/microblazeel-softmmu.mak b/configs/targets/microblazeel-softmmu.mak
-index 52cdeae1a2..c82c509623 100644
---- a/configs/targets/microblazeel-softmmu.mak
-+++ b/configs/targets/microblazeel-softmmu.mak
-@@ -1,5 +1,4 @@
- TARGET_ARCH=microblaze
--TARGET_SUPPORTS_MTTCG=y
- # needed by boot.c
- TARGET_NEED_FDT=y
- TARGET_XML_FILES=gdb-xml/microblaze-core.xml gdb-xml/microblaze-stack-protect.xml
-diff --git a/configs/targets/mips-softmmu.mak b/configs/targets/mips-softmmu.mak
-index b62a088249..c9588066b8 100644
---- a/configs/targets/mips-softmmu.mak
-+++ b/configs/targets/mips-softmmu.mak
-@@ -1,4 +1,3 @@
- TARGET_ARCH=mips
- TARGET_BIG_ENDIAN=y
--TARGET_SUPPORTS_MTTCG=y
- TARGET_LONG_BITS=32
-diff --git a/configs/targets/mipsel-softmmu.mak b/configs/targets/mipsel-softmmu.mak
-index 620ec68178..90e09bdc3e 100644
---- a/configs/targets/mipsel-softmmu.mak
-+++ b/configs/targets/mipsel-softmmu.mak
-@@ -1,3 +1,2 @@
- TARGET_ARCH=mips
--TARGET_SUPPORTS_MTTCG=y
- TARGET_LONG_BITS=32
-diff --git a/configs/targets/or1k-softmmu.mak b/configs/targets/or1k-softmmu.mak
-index adfddb1a8a..0e47d9878b 100644
---- a/configs/targets/or1k-softmmu.mak
-+++ b/configs/targets/or1k-softmmu.mak
-@@ -1,5 +1,4 @@
- TARGET_ARCH=openrisc
--TARGET_SUPPORTS_MTTCG=y
- TARGET_BIG_ENDIAN=y
- # needed by boot.c and all boards
- TARGET_NEED_FDT=y
-diff --git a/configs/targets/ppc64-softmmu.mak b/configs/targets/ppc64-softmmu.mak
-index 7cee0e97f4..74572864b3 100644
---- a/configs/targets/ppc64-softmmu.mak
-+++ b/configs/targets/ppc64-softmmu.mak
-@@ -1,7 +1,6 @@
- TARGET_ARCH=ppc64
- TARGET_BASE_ARCH=ppc
- TARGET_BIG_ENDIAN=y
--TARGET_SUPPORTS_MTTCG=y
- TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_XML_FILES= gdb-xml/power64-core.xml gdb-xml/power-fpu.xml gdb-xml/power-altivec.xml gdb-xml/power-spe.xml gdb-xml/power-vsx.xml
- # all boards require libfdt
-diff --git a/configs/targets/riscv32-softmmu.mak b/configs/targets/riscv32-softmmu.mak
-index c828066ce6..db55275b86 100644
---- a/configs/targets/riscv32-softmmu.mak
-+++ b/configs/targets/riscv32-softmmu.mak
-@@ -1,6 +1,5 @@
- TARGET_ARCH=riscv32
- TARGET_BASE_ARCH=riscv
--TARGET_SUPPORTS_MTTCG=y
- TARGET_XML_FILES= gdb-xml/riscv-32bit-cpu.xml gdb-xml/riscv-32bit-fpu.xml gdb-xml/riscv-64bit-fpu.xml gdb-xml/riscv-32bit-virtual.xml
- # needed by boot.c
- TARGET_NEED_FDT=y
-diff --git a/configs/targets/riscv64-softmmu.mak b/configs/targets/riscv64-softmmu.mak
-index 09f613d24a..2bdd4a62cd 100644
---- a/configs/targets/riscv64-softmmu.mak
-+++ b/configs/targets/riscv64-softmmu.mak
-@@ -1,6 +1,5 @@
- TARGET_ARCH=riscv64
- TARGET_BASE_ARCH=riscv
--TARGET_SUPPORTS_MTTCG=y
- TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_XML_FILES= gdb-xml/riscv-64bit-cpu.xml gdb-xml/riscv-32bit-fpu.xml gdb-xml/riscv-64bit-fpu.xml gdb-xml/riscv-64bit-virtual.xml gdb-xml/riscv-32bit-cpu.xml gdb-xml/riscv-32bit-virtual.xml
- # needed by boot.c
-diff --git a/configs/targets/s390x-softmmu.mak b/configs/targets/s390x-softmmu.mak
-index 5242ebe7c2..76dd5de658 100644
---- a/configs/targets/s390x-softmmu.mak
-+++ b/configs/targets/s390x-softmmu.mak
-@@ -1,6 +1,5 @@
- TARGET_ARCH=s390x
- TARGET_BIG_ENDIAN=y
--TARGET_SUPPORTS_MTTCG=y
- TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_XML_FILES= gdb-xml/s390x-core64.xml gdb-xml/s390-acr.xml gdb-xml/s390-fpr.xml gdb-xml/s390-vx.xml gdb-xml/s390-cr.xml gdb-xml/s390-virt.xml gdb-xml/s390-virt-kvm.xml gdb-xml/s390-gs.xml
- TARGET_LONG_BITS=64
-diff --git a/configs/targets/sparc-softmmu.mak b/configs/targets/sparc-softmmu.mak
-index 78c2e25bd1..57801faf1f 100644
---- a/configs/targets/sparc-softmmu.mak
-+++ b/configs/targets/sparc-softmmu.mak
-@@ -1,4 +1,3 @@
- TARGET_ARCH=sparc
- TARGET_BIG_ENDIAN=y
--TARGET_SUPPORTS_MTTCG=y
- TARGET_LONG_BITS=32
-diff --git a/configs/targets/sparc64-softmmu.mak b/configs/targets/sparc64-softmmu.mak
-index f7bab97a00..2504e31ae3 100644
---- a/configs/targets/sparc64-softmmu.mak
-+++ b/configs/targets/sparc64-softmmu.mak
-@@ -1,5 +1,4 @@
- TARGET_ARCH=sparc64
- TARGET_BASE_ARCH=sparc
- TARGET_BIG_ENDIAN=y
--TARGET_SUPPORTS_MTTCG=y
- TARGET_LONG_BITS=64
-diff --git a/configs/targets/x86_64-softmmu.mak b/configs/targets/x86_64-softmmu.mak
-index 1ceefde131..5619b2bc68 100644
---- a/configs/targets/x86_64-softmmu.mak
-+++ b/configs/targets/x86_64-softmmu.mak
-@@ -1,6 +1,5 @@
- TARGET_ARCH=x86_64
- TARGET_BASE_ARCH=i386
--TARGET_SUPPORTS_MTTCG=y
- TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_KVM_HAVE_RESET_PARKED_VCPU=y
- TARGET_XML_FILES= gdb-xml/i386-64bit.xml
-diff --git a/configs/targets/xtensa-softmmu.mak b/configs/targets/xtensa-softmmu.mak
-index 65845df4ff..2a9797338a 100644
---- a/configs/targets/xtensa-softmmu.mak
-+++ b/configs/targets/xtensa-softmmu.mak
-@@ -1,3 +1,2 @@
- TARGET_ARCH=xtensa
--TARGET_SUPPORTS_MTTCG=y
- TARGET_LONG_BITS=32
-diff --git a/configs/targets/xtensaeb-softmmu.mak b/configs/targets/xtensaeb-softmmu.mak
-index f1f789d697..5204729af8 100644
---- a/configs/targets/xtensaeb-softmmu.mak
-+++ b/configs/targets/xtensaeb-softmmu.mak
-@@ -1,4 +1,3 @@
- TARGET_ARCH=xtensa
- TARGET_BIG_ENDIAN=y
--TARGET_SUPPORTS_MTTCG=y
- TARGET_LONG_BITS=32
-diff --git a/docs/devel/multi-thread-tcg.rst b/docs/devel/multi-thread-tcg.rst
-index 14a2a9dc7b..da9a1530c9 100644
---- a/docs/devel/multi-thread-tcg.rst
-+++ b/docs/devel/multi-thread-tcg.rst
-@@ -30,7 +30,7 @@ user-space thread. This is enabled by default for all FE/BE
- combinations where the host memory model is able to accommodate the
- guest (TCGCPUOps::guest_default_memory_order & ~TCG_TARGET_DEFAULT_MO is zero)
- and the guest has had the required work done to support this safely
--(TARGET_SUPPORTS_MTTCG).
-+(TCGCPUOps::mttcg_supported).
- 
- System emulation will fall back to the original round robin approach
- if:
--- 
-2.43.0
-
+> ---
+>  target/riscv/cpu.h |  1 +
+>  target/riscv/cpu.c | 93 ++++++++++++++++++++++------------------------
+>  2 files changed, 46 insertions(+), 48 deletions(-)
+>
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index acaa49b979c..d247b9007a6 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -547,6 +547,7 @@ typedef struct RISCVCPUDef {
+>      int priv_spec;
+>      int32_t vext_spec;
+>      RISCVCPUConfig cfg;
+> +    bool bare;
+>  } RISCVCPUDef;
+>
+>  /**
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 620641fbed6..002f5a15ba2 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -1482,8 +1482,8 @@ static void riscv_cpu_init(Object *obj)
+>       * for all CPUs. Each accelerator will decide what to do when
+>       * users disable them.
+>       */
+> -    RISCV_CPU(obj)->cfg.ext_zicntr =3D true;
+> -    RISCV_CPU(obj)->cfg.ext_zihpm =3D true;
+> +    RISCV_CPU(obj)->cfg.ext_zicntr =3D !mcc->def->bare;
+> +    RISCV_CPU(obj)->cfg.ext_zihpm =3D !mcc->def->bare;
+>
+>      /* Default values for non-bool cpu properties */
+>      cpu->cfg.pmu_mask =3D MAKE_64BIT_MASK(3, 16);
+> @@ -1506,36 +1506,6 @@ static void riscv_cpu_init(Object *obj)
+>      }
+>  }
+>
+> -static void riscv_bare_cpu_init(Object *obj)
+> -{
+> -    RISCVCPU *cpu =3D RISCV_CPU(obj);
+> -
+> -    /*
+> -     * Bare CPUs do not inherit the timer and performance
+> -     * counters from the parent class (see riscv_cpu_init()
+> -     * for info on why the parent enables them).
+> -     *
+> -     * Users have to explicitly enable these counters for
+> -     * bare CPUs.
+> -     */
+> -    cpu->cfg.ext_zicntr =3D false;
+> -    cpu->cfg.ext_zihpm =3D false;
+> -
+> -    /* Set to QEMU's first supported priv version */
+> -    cpu->env.priv_ver =3D PRIV_VERSION_1_10_0;
+> -
+> -    /*
+> -     * Support all available satp_mode settings. The default
+> -     * value will be set to MBARE if the user doesn't set
+> -     * satp_mode manually (see set_satp_mode_default()).
+> -     */
+> -#ifndef CONFIG_USER_ONLY
+> -    set_satp_mode_max_supported(RISCV_CPU(obj),
+> -        riscv_cpu_mxl(&RISCV_CPU(obj)->env) =3D=3D MXL_RV32 ?
+> -        VM_1_10_SV32 : VM_1_10_SV57);
+> -#endif
+> -}
+> -
+>  typedef struct misa_ext_info {
+>      const char *name;
+>      const char *description;
+> @@ -3106,6 +3076,7 @@ static void riscv_cpu_class_base_init(ObjectClass *=
+c, void *data)
+>
+>      if (data) {
+>          const RISCVCPUDef *def =3D data;
+> +        mcc->def->bare |=3D def->bare;
+>          if (def->misa_mxl_max) {
+>              assert(def->misa_mxl_max <=3D MXL_RV128);
+>              mcc->def->misa_mxl_max =3D def->misa_mxl_max;
+> @@ -3259,6 +3230,19 @@ void riscv_isa_write_fdt(RISCVCPU *cpu, void *fdt,=
+ char *nodename)
+>          }),                                                 \
+>      }
+>
+> +#define DEFINE_ABSTRACT_RISCV_CPU(type_name, parent_type_name, ...) \
+> +    {                                                       \
+> +        .name =3D (type_name),                                \
+> +        .parent =3D (parent_type_name),                       \
+> +        .abstract =3D true,                                   \
+> +        .class_data =3D (void*) &((const RISCVCPUDef) {       \
+> +             .priv_spec =3D RISCV_PROFILE_ATTR_UNUSED,        \
+> +             .vext_spec =3D RISCV_PROFILE_ATTR_UNUSED,        \
+> +             .cfg.max_satp_mode =3D -1,                       \
+> +             __VA_ARGS__                                    \
+> +        }),                                                 \
+> +    }
+> +
+>  #define DEFINE_PROFILE_CPU(type_name, misa_mxl_max_, initfn) \
+>      {                                                       \
+>          .name =3D (type_name),                                \
+> @@ -3285,22 +3269,35 @@ static const TypeInfo riscv_cpu_type_infos[] =3D =
+{
+>          .class_init =3D riscv_cpu_common_class_init,
+>          .class_base_init =3D riscv_cpu_class_base_init,
+>      },
+> -    {
+> -        .name =3D TYPE_RISCV_DYNAMIC_CPU,
+> -        .parent =3D TYPE_RISCV_CPU,
+> -        .abstract =3D true,
+> -    },
+> -    {
+> -        .name =3D TYPE_RISCV_VENDOR_CPU,
+> -        .parent =3D TYPE_RISCV_CPU,
+> -        .abstract =3D true,
+> -    },
+> -    {
+> -        .name =3D TYPE_RISCV_BARE_CPU,
+> -        .parent =3D TYPE_RISCV_CPU,
+> -        .instance_init =3D riscv_bare_cpu_init,
+> -        .abstract =3D true,
+> -    },
+> +
+> +    DEFINE_ABSTRACT_RISCV_CPU(TYPE_RISCV_DYNAMIC_CPU, TYPE_RISCV_CPU),
+> +    DEFINE_ABSTRACT_RISCV_CPU(TYPE_RISCV_VENDOR_CPU, TYPE_RISCV_CPU),
+> +    DEFINE_ABSTRACT_RISCV_CPU(TYPE_RISCV_BARE_CPU, TYPE_RISCV_CPU,
+> +        /*
+> +         * Bare CPUs do not inherit the timer and performance
+> +         * counters from the parent class (see riscv_cpu_init()
+> +         * for info on why the parent enables them).
+> +         *
+> +         * Users have to explicitly enable these counters for
+> +         * bare CPUs.
+> +         */
+> +        .bare =3D true,
+> +
+> +        /* Set to QEMU's first supported priv version */
+> +        .priv_spec =3D PRIV_VERSION_1_10_0,
+> +
+> +        /*
+> +         * Support all available satp_mode settings. By default
+> +         * only MBARE will be available if the user doesn't enable
+> +         * a mode manually (see riscv_cpu_satp_mode_finalize()).
+> +         */
+> +#ifdef TARGET_RISCV32
+> +        .cfg.max_satp_mode =3D VM_1_10_SV32,
+> +#else
+> +        .cfg.max_satp_mode =3D VM_1_10_SV57,
+> +#endif
+> +    ),
+> +
+>  #if defined(TARGET_RISCV32)
+>      DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_MAX,       MXL_RV32,  riscv_max_cp=
+u_init),
+>  #elif defined(TARGET_RISCV64)
+> --
+> 2.49.0
+>
 
