@@ -2,54 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84B7CA9A4CD
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 09:51:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A314A9A4F4
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 09:54:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7rLy-0000dw-Bv; Thu, 24 Apr 2025 03:50:38 -0400
+	id 1u7rPf-00066a-Ks; Thu, 24 Apr 2025 03:54:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7rLk-0000ck-1B
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 03:50:27 -0400
-Received: from mgamail.intel.com ([192.198.163.11])
+ id 1u7rPd-00066Q-UJ
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 03:54:26 -0400
+Received: from mgamail.intel.com ([198.175.65.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7rLZ-0006az-US
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 03:50:22 -0400
+ id 1u7rPc-0006vP-20
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 03:54:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745481014; x=1777017014;
+ t=1745481264; x=1777017264;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=/wJmc8AjbuE6ou/U1a6O64LXmKqy6snLfB0tLkyO/vA=;
- b=hFPEndZLCW4vQ3VfEmriu6MfHJJ6j8o74Jz6oN2hq6CbSJolrIWL4UUg
- BstSkKFUEnXvlO0YahZsWH2sU6NNDL+ZSOTe0MRXSis3wkPF/DUx0VDd3
- 9WW19zMZmhQ5CBr3UMi4jCFFQOE1UzqCquZcoqIc5txAmz9tHJOrpSp1N
- We70HzfClu5QWkmXOH67cJcpKejMUB1/cM73ph30ob2sMWgxuemS76p9+
- 6ZXsDR+vFVDRt+NFQ8ZVD81tu0jfDwMiAN8u3DGpbxGLg3N/9EvAFJsef
- M9YxgZYXIN3qP8nNtCns+KkZGwRiAXSZIoIyogmHrNprrl9pkt7/zX8mA A==;
-X-CSE-ConnectionGUID: x1AZPJjdRxqWzSIih+Eg/w==
-X-CSE-MsgGUID: 0kzYpBF5Tn++0OWPowDiXA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="57748618"
-X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; d="scan'208";a="57748618"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Apr 2025 00:50:10 -0700
-X-CSE-ConnectionGUID: M4+XoCQSS2es3Kui4xiBsA==
-X-CSE-MsgGUID: uK43kwevRpOOP2kLtziJrA==
+ bh=uh2RyeMH6MjQsOJfpZlnPDAGaChJ3wjA6eoytmR8ggM=;
+ b=LciydTwJQXb0huMl9ZO3k2QGdRNnpg0lMGpFOr4szQtkK8tLbe/fU3U7
+ GZbUzGMRi8e8DQv51XwXOgRhPsY7y5BWuk92pUiwLVUF8TRjcZzstQjOR
+ 5GhK9IiYSEHFUrr6DWLzHMy8DdEz1xpsA9Esuc4p6aeHE0EYO1Gz++Zb+
+ GLUUM18pKnXJ3d021cLn2FLLbuav6P/emozlWm3Um8DLcOFdvq480dzTz
+ arga+sLUAy0dl5wdzbDVgxtPBVM+1+E1tQvYEo6Z3nNpNzLgHpiAnE5rn
+ xb8iGQ3JChJ21/gbae4mPv3YmcMXYS0/EPJx7PxVEs/d/xX5Txu6p7aTp w==;
+X-CSE-ConnectionGUID: rAk9N+Q0RmW51OLEFX1JFg==
+X-CSE-MsgGUID: yV2dgOxcRaW2pybg/09TgA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="47195634"
+X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; d="scan'208";a="47195634"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Apr 2025 00:54:20 -0700
+X-CSE-ConnectionGUID: 15tzpQGwQV2yswp7wjkEnw==
+X-CSE-MsgGUID: X+tVTFriQ667o0bdxJfNIA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; d="scan'208";a="163517092"
+X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; d="scan'208";a="137396598"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by orviesa002.jf.intel.com with ESMTP; 24 Apr 2025 00:50:08 -0700
-Date: Thu, 24 Apr 2025 16:11:03 +0800
+ by orviesa003.jf.intel.com with ESMTP; 24 Apr 2025 00:54:19 -0700
+Date: Thu, 24 Apr 2025 16:15:14 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
+Cc: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Francesco Lavra <francescolavra.fl@gmail.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
@@ -57,14 +56,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>
 Subject: Re: [PATCH v8 17/55] i386/tdvf: Introduce function to parse TDVF
  metadata
-Message-ID: <aAnyF40pFLz9vY0y@intel.com>
+Message-ID: <aAnzEhX+8gXgngfl@intel.com>
 References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
  <20250401130205.2198253-18-xiaoyao.li@intel.com>
+ <Z-0o0sYJcnqI23aX@redhat.com>
+ <f311a233-0238-4bcd-8481-0829d6bc1eda@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250401130205.2198253-18-xiaoyao.li@intel.com>
-Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <f311a233-0238-4bcd-8481-0829d6bc1eda@intel.com>
+Received-SPF: pass client-ip=198.175.65.16; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -46
 X-Spam_score: -4.7
@@ -89,62 +90,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Apr 01, 2025 at 09:01:27AM -0400, Xiaoyao Li wrote:
-> Date: Tue,  1 Apr 2025 09:01:27 -0400
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: [PATCH v8 17/55] i386/tdvf: Introduce function to parse TDVF
->  metadata
-> X-Mailer: git-send-email 2.34.1
+> > struct field names starting with an initial capital is
+> > not the usual QEMU code style. Can this be all initial
+> > lowercase, with capital just for word separation.
 > 
-> From: Isaku Yamahata <isaku.yamahata@intel.com>
+> I think Isaku used such names because they are defined in TDVF Design Guide
+> spec[1].
 > 
-> TDX VM needs to boot with its specialized firmware, Trusted Domain
-> Virtual Firmware (TDVF). QEMU needs to parse TDVF and map it in TD
-> guest memory prior to running the TDX VM.
+> QEMU's internal data structure for metadata are below, which follows QEMU
+> coding style.
 > 
-> A TDVF Metadata in TDVF image describes the structure of firmware.
-> QEMU refers to it to setup memory for TDVF. Introduce function
-> tdvf_parse_metadata() to parse the metadata from TDVF image and store
-> the info of each TDVF section.
+> 	typedef struct TdxFirmwareEntry {
+> 	    uint32_t data_offset;
+> 	    uint32_t data_len;
+> 	    uint64_t address;
+> 	    uint64_t size;
+> 	    uint32_t type;
+> 	    uint32_t attributes;
+> 	} TdxFirmwareEntry;
 > 
-> TDX metadata is located by a TDX metadata offset block, which is a
-> GUID-ed structure. The data portion of the GUID structure contains
-> only an 4-byte field that is the offset of TDX metadata to the end
-> of firmware file.
+> 	typedef struct TdxFirmware {
+> 	    uint32_t nr_entries;
+> 	    TdxFirmwareEntry *entries;
+> 	} TdxFirmware;
 > 
-> Select X86_FW_OVMF when TDX is enable to leverage existing functions
-> to parse and search OVMF's GUID-ed structures.
+> So if no strong preference, I would keep it as-is that the raw struct read
+> from TDVF keeps the name convention of TDVF Design Guide spec and internal
+> data struct uses QEMU's convention.
 > 
-> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> Co-developed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
-> ---
-> Changes in v8:
->  - Drop the failure handling of memcpy() since it cannot fail;
-> 
-> Changes in v7:
->  - Update license info to only use SPDX tag;
->  - use g_autofree to avoid manually free;
-> 
-> Changes in v6:
->  - Drop the the data endianness change for metadata->Length;
-> 
-> Changes in v1:
->  - rename tdvf_parse_section_entry() to
->    tdvf_parse_and_check_section_entry()
-> 
-> Changes in RFC v4:
->  - rename TDX_METADATA_GUID to TDX_METADATA_OFFSET_GUID
-> ---
->  hw/i386/Kconfig        |   1 +
->  hw/i386/meson.build    |   1 +
->  hw/i386/tdvf.c         | 183 +++++++++++++++++++++++++++++++++++++++++
->  include/hw/i386/tdvf.h |  38 +++++++++
->  4 files changed, 223 insertions(+)
->  create mode 100644 hw/i386/tdvf.c
->  create mode 100644 include/hw/i386/tdvf.h
+> [1] https://cdrdv2.intel.com/v1/dl/getContent/733585
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Or you can add a simple comemnt about "the raw struct read from TDVF
+keeps the name convention of TDVF Design Guide spec", to remind other
+people that there is no need to clean up the style here. I have no
+objections; up to you.
 
 
