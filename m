@@ -2,38 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3180A99F0C
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 04:57:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A07BDA99F07
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 04:57:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7mkj-0000d5-3t; Wed, 23 Apr 2025 22:55:53 -0400
+	id 1u7mko-0000fU-7C; Wed, 23 Apr 2025 22:55:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1u7mkN-0000ZQ-C0
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 22:55:32 -0400
+ id 1u7mkN-0000ZU-Ny
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 22:55:33 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1u7mkK-0008WS-CG
+ (envelope-from <gaosong@loongson.cn>) id 1u7mkK-00004s-GY
  for qemu-devel@nongnu.org; Wed, 23 Apr 2025 22:55:31 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxJHAXqAlojQbFAA--.64218S3;
- Thu, 24 Apr 2025 10:55:19 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8BxXWscqAlokQbFAA--.64545S3;
+ Thu, 24 Apr 2025 10:55:24 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMCxrhsVqAlogNaSAA--.53120S2;
- Thu, 24 Apr 2025 10:55:18 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowMCxrhsVqAlogNaSAA--.53120S3;
+ Thu, 24 Apr 2025 10:55:24 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
-Cc: stefanha@gmail.com, peter.maydell@linaro.org, richard.henderson@linaro.org
-Subject: [PULL 00/13] loongarch-to-apply queue
-Date: Thu, 24 Apr 2025 10:33:04 +0800
-Message-Id: <20250424023317.3980755-1-gaosong@loongson.cn>
+Cc: stefanha@gmail.com, peter.maydell@linaro.org, richard.henderson@linaro.org,
+ Bibo Mao <maobibo@loongson.cn>
+Subject: [PULL 01/13] hw/intc/loongarch_pch_msi: Remove gpio input handler
+Date: Thu, 24 Apr 2025 10:33:05 +0800
+Message-Id: <20250424023317.3980755-2-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20250424023317.3980755-1-gaosong@loongson.cn>
+References: <20250424023317.3980755-1-gaosong@loongson.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMCxrhsVqAlogNaSAA--.53120S2
+X-CM-TRANSID: qMiowMCxrhsVqAlogNaSAA--.53120S3
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -61,53 +63,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 91d0d16b44c93fa82cf76ae12990ce3aa96096c9:
+From: Bibo Mao <maobibo@loongson.cn>
 
-  Merge tag 'pull-avr-20250422' of https://gitlab.com/rth7680/qemu into staging (2025-04-23 09:29:33 -0400)
+MSI interrupt is triggered by writing message on specified memory address.
+In generic it is used by PCI devices, and no device is connected pch MSI
+irqchip with GPIO pin line method, here remove gpio input setting for MSI
+controller.
 
-are available in the Git repository at:
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+Tested-by: Song Gao <gaosong@loongson.cn>
+Message-Id: <20250410085004.3577627-1-maobibo@loongson.cn>
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+---
+ hw/intc/loongarch_pch_msi.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-  https://github.com/gaosong715/qemu.git tags/pull-loongarch-20250424
-
-for you to fetch changes up to 875caabdb1701a7c57ad0655a7963d74afc1b4d9:
-
-  target/loongarch: Guard BCEQZ/BCNEZ instructions with FP feature (2025-04-24 10:46:31 +0800)
-
-----------------------------------------------------------------
-pull-loongarch-20230424
-
-----------------------------------------------------------------
-Bibo Mao (10):
-      hw/intc/loongarch_pch_msi: Remove gpio input handler
-      target/loongarch: Move header file helper.h to directory tcg
-      target/loongarch: Add function loongarch_get_addr_from_tlb
-      target/loongarch: Move function get_dir_base_width to common directory
-      target/loongarch: Add stub function loongarch_get_addr_from_tlb
-      target/loongarch: Set function loongarch_map_address() with common code
-      target/loongarch: Define function loongarch_get_addr_from_tlb() non-static
-      target/loongarch: Move function loongarch_tlb_search to directory tcg
-      target/loongarch: Add static definition with function loongarch_tlb_search()
-      target/loongarch: Move definition of TCG specified function to tcg directory
-
-WANG Rui (3):
-      linux-user/loongarch64: Decode BRK break codes for FPE signals
-      target/loongarch: Add CRC feature flag and use it to gate CRC instructions
-      target/loongarch: Guard BCEQZ/BCNEZ instructions with FP feature
-
- hw/intc/loongarch_pch_msi.c                        |   9 -
- linux-user/loongarch64/cpu_loop.c                  |  25 +-
- target/loongarch/cpu.c                             |   5 +-
- target/loongarch/cpu.h                             |   2 +-
- target/loongarch/cpu_helper.c                      | 177 +----
- target/loongarch/helper.h                          | 720 +-------------------
- target/loongarch/internals.h                       |   7 -
- target/loongarch/tcg/helper.h                      | 722 +++++++++++++++++++++
- target/loongarch/tcg/insn_trans/trans_branch.c.inc |   4 +-
- target/loongarch/tcg/insn_trans/trans_extra.c.inc  |  16 +-
- target/loongarch/tcg/tcg_loongarch.h               |   9 +
- target/loongarch/tcg/tlb_helper.c                  | 173 ++++-
- target/loongarch/translate.h                       |   1 +
- 13 files changed, 953 insertions(+), 917 deletions(-)
- create mode 100644 target/loongarch/tcg/helper.h
+diff --git a/hw/intc/loongarch_pch_msi.c b/hw/intc/loongarch_pch_msi.c
+index 66b5c1e660..bc93504ff7 100644
+--- a/hw/intc/loongarch_pch_msi.c
++++ b/hw/intc/loongarch_pch_msi.c
+@@ -42,13 +42,6 @@ static const MemoryRegionOps loongarch_pch_msi_ops = {
+     .endianness = DEVICE_LITTLE_ENDIAN,
+ };
+ 
+-static void pch_msi_irq_handler(void *opaque, int irq, int level)
+-{
+-    LoongArchPCHMSI *s = LOONGARCH_PCH_MSI(opaque);
+-
+-    qemu_set_irq(s->pch_msi_irq[irq], level);
+-}
+-
+ static void loongarch_pch_msi_realize(DeviceState *dev, Error **errp)
+ {
+     LoongArchPCHMSI *s = LOONGARCH_PCH_MSI(dev);
+@@ -59,9 +52,7 @@ static void loongarch_pch_msi_realize(DeviceState *dev, Error **errp)
+     }
+ 
+     s->pch_msi_irq = g_new(qemu_irq, s->irq_num);
+-
+     qdev_init_gpio_out(dev, s->pch_msi_irq, s->irq_num);
+-    qdev_init_gpio_in(dev, pch_msi_irq_handler, s->irq_num);
+ }
+ 
+ static void loongarch_pch_msi_unrealize(DeviceState *dev)
+-- 
+2.34.1
 
 
