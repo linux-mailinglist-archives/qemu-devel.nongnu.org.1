@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56523A99F08
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 04:57:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 133CDA99F0F
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 04:57:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7mkZ-0000ai-D8; Wed, 23 Apr 2025 22:55:43 -0400
+	id 1u7mmM-0003LQ-4i; Wed, 23 Apr 2025 22:57:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1u7mkN-0000ZV-S6
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 22:55:33 -0400
+ id 1u7mm2-000388-3I
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 22:57:14 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1u7mkK-00005A-FI
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 22:55:31 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1u7mlz-00009v-U0
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 22:57:13 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxTWseqAlomwbFAA--.63560S3;
+ by gateway (Coremail) with SMTP id _____8CxG6weqAlongbFAA--.32136S3;
  Thu, 24 Apr 2025 10:55:26 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMCxrhsVqAlogNaSAA--.53120S6;
- Thu, 24 Apr 2025 10:55:25 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowMCxrhsVqAlogNaSAA--.53120S7;
+ Thu, 24 Apr 2025 10:55:26 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: stefanha@gmail.com, peter.maydell@linaro.org, richard.henderson@linaro.org,
  Bibo Mao <maobibo@loongson.cn>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 04/13] target/loongarch: Move function get_dir_base_width to
- common directory
-Date: Thu, 24 Apr 2025 10:33:08 +0800
-Message-Id: <20250424023317.3980755-5-gaosong@loongson.cn>
+Subject: [PULL 05/13] target/loongarch: Add stub function
+ loongarch_get_addr_from_tlb
+Date: Thu, 24 Apr 2025 10:33:09 +0800
+Message-Id: <20250424023317.3980755-6-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20250424023317.3980755-1-gaosong@loongson.cn>
 References: <20250424023317.3980755-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMCxrhsVqAlogNaSAA--.53120S6
+X-CM-TRANSID: qMiowMCxrhsVqAlogNaSAA--.53120S7
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -68,96 +68,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bibo Mao <maobibo@loongson.cn>
 
-Function get_dir_base_width() is used by loongarch_page_table_walker(),
-so it is used by KVM mode also, here move this function from directory
-tcg to common directory.
+Stub function loongarch_get_addr_from_tlb() is added if option
+CONFIG_TCG is not enabled, so this function can be called in KVM
+only mode.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20250423080417.3739809-4-maobibo@loongson.cn>
+Message-Id: <20250423080417.3739809-5-maobibo@loongson.cn>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/cpu_helper.c     | 28 ++++++++++++++++++++++++++++
- target/loongarch/tcg/tlb_helper.c | 28 ----------------------------
- 2 files changed, 28 insertions(+), 28 deletions(-)
+ target/loongarch/cpu_helper.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/target/loongarch/cpu_helper.c b/target/loongarch/cpu_helper.c
-index a326859000..8ae9a448b4 100644
+index 8ae9a448b4..71180bc345 100644
 --- a/target/loongarch/cpu_helper.c
 +++ b/target/loongarch/cpu_helper.c
-@@ -157,6 +157,34 @@ static int loongarch_get_addr_from_tlb(CPULoongArchState *env, hwaddr *physical,
+@@ -156,7 +156,16 @@ static int loongarch_get_addr_from_tlb(CPULoongArchState *env, hwaddr *physical,
+ 
      return TLBRET_NOMATCH;
  }
- 
-+void get_dir_base_width(CPULoongArchState *env, uint64_t *dir_base,
-+                        uint64_t *dir_width, target_ulong level)
++#else
++static int loongarch_get_addr_from_tlb(CPULoongArchState *env, hwaddr *physical,
++                                       int *prot, target_ulong address,
++                                       MMUAccessType access_type, int mmu_idx)
 +{
-+    switch (level) {
-+    case 1:
-+        *dir_base = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, DIR1_BASE);
-+        *dir_width = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, DIR1_WIDTH);
-+        break;
-+    case 2:
-+        *dir_base = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, DIR2_BASE);
-+        *dir_width = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, DIR2_WIDTH);
-+        break;
-+    case 3:
-+        *dir_base = FIELD_EX64(env->CSR_PWCH, CSR_PWCH, DIR3_BASE);
-+        *dir_width = FIELD_EX64(env->CSR_PWCH, CSR_PWCH, DIR3_WIDTH);
-+        break;
-+    case 4:
-+        *dir_base = FIELD_EX64(env->CSR_PWCH, CSR_PWCH, DIR4_BASE);
-+        *dir_width = FIELD_EX64(env->CSR_PWCH, CSR_PWCH, DIR4_WIDTH);
-+        break;
-+    default:
-+        /* level may be zero for ldpte */
-+        *dir_base = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, PTBASE);
-+        *dir_width = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, PTWIDTH);
-+        break;
-+    }
++    return TLBRET_NOMATCH;
 +}
-+
- static int loongarch_page_table_walker(CPULoongArchState *env, hwaddr *physical,
-                                  int *prot, target_ulong address)
- {
-diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-index 70d1b5cf99..e6cfcc55c8 100644
---- a/target/loongarch/tcg/tlb_helper.c
-+++ b/target/loongarch/tcg/tlb_helper.c
-@@ -27,34 +27,6 @@ bool check_ps(CPULoongArchState *env, uint8_t tlb_ps)
-     return BIT_ULL(tlb_ps) & (env->CSR_PRCFG2);
- }
++#endif
  
--void get_dir_base_width(CPULoongArchState *env, uint64_t *dir_base,
--                               uint64_t *dir_width, target_ulong level)
--{
--    switch (level) {
--    case 1:
--        *dir_base = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, DIR1_BASE);
--        *dir_width = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, DIR1_WIDTH);
--        break;
--    case 2:
--        *dir_base = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, DIR2_BASE);
--        *dir_width = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, DIR2_WIDTH);
--        break;
--    case 3:
--        *dir_base = FIELD_EX64(env->CSR_PWCH, CSR_PWCH, DIR3_BASE);
--        *dir_width = FIELD_EX64(env->CSR_PWCH, CSR_PWCH, DIR3_WIDTH);
--        break;
--    case 4:
--        *dir_base = FIELD_EX64(env->CSR_PWCH, CSR_PWCH, DIR4_BASE);
--        *dir_width = FIELD_EX64(env->CSR_PWCH, CSR_PWCH, DIR4_WIDTH);
--        break;
--    default:
--        /* level may be zero for ldpte */
--        *dir_base = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, PTBASE);
--        *dir_width = FIELD_EX64(env->CSR_PWCL, CSR_PWCL, PTWIDTH);
--        break;
--    }
--}
--
- static void raise_mmu_exception(CPULoongArchState *env, target_ulong address,
-                                 MMUAccessType access_type, int tlb_error)
++#ifdef CONFIG_TCG
+ void get_dir_base_width(CPULoongArchState *env, uint64_t *dir_base,
+                         uint64_t *dir_width, target_ulong level)
  {
 -- 
 2.34.1
