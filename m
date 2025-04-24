@@ -2,83 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A298A9BAA4
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 00:22:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0487A9BAA8
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 00:23:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u84wl-0004TX-Rp; Thu, 24 Apr 2025 18:21:31 -0400
+	id 1u84wp-0004UU-MX; Thu, 24 Apr 2025 18:21:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u84wj-0004TK-8t
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 18:21:29 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u84wn-0004U8-2j
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 18:21:34 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u84wf-0000wf-OI
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 18:21:28 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-43ed8d32a95so13831825e9.3
- for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 15:21:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u84wk-0000ww-Ot
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 18:21:32 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-43d2d952eb1so11456015e9.1
+ for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 15:21:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745533284; x=1746138084; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745533289; x=1746138089; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JBHgXf1VILUQD/n0uYXLzK5bDjPq3G+VbeYo1f99nf0=;
- b=shJfuCPyS33+OwDJm/G/aSbdWI1Tpbc6Fpg0jIBkceS43MboZ8x2QoSa3CsC6ilqmA
- gtQ0CFnO21IdRRq357iHV4QG7Vr596XMzyYqiFKn6RsJMI8h9nidze3vIgoRjHRzALPI
- 6+OMG+4g25cUfMsDSwzWou43M5H9ONjl9zDEONzOEZLu8JElG4KF63U+DM0jEGTynogy
- xEYJruMsAeG6qjMqC6RqZqRu2gAi3fC43pXWL3Snn0hlodpT0Lh6pGhNP/G7GeYqCNso
- lC3Y1dWjn2f+YCro6uOysnVU8Ck6IvSYwsCdAcHNNRftg8Z577taNR7O5ZweQd1pRRvb
- bMdw==
+ bh=dgsGUsD9TKc38NlyU74exCU5XyvbS6uZfF8RzMtuwOk=;
+ b=sFcJ3R+rsoWk24M+Pbl/hYQ28KRAqp4zs65LZJnB5eM4/CZRHO8dQoeY5T2Na8UM5m
+ P9LX75Nk9lUaZ3T2qoosn44Vke9XIfNeQT6h/dnEaydVk1OhVXaeP6wGcIlmZO9msKpI
+ 5AfipbZS0zx6wigtAkYrACp4MkjycZ0s7BhJ4e62sjpqKegBMAqndKt12RWWIdLy9w1e
+ rFzpsvyDR9ocHT+9T8u1w2GTei17VvcxmpTx2vmQEui8amdz8il4GimXB1s26DHs1eT6
+ ZxEVUOt23Nn0LIKjH1d6QWy+5JTIy8pjBKp0m2XZeAF53C2HrW7XvrcsbDxy828kaLa9
+ jVHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745533284; x=1746138084;
+ d=1e100.net; s=20230601; t=1745533289; x=1746138089;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JBHgXf1VILUQD/n0uYXLzK5bDjPq3G+VbeYo1f99nf0=;
- b=Q7CK5MyTpPLR7+tAnjr5BmRBdk7lhhmBNPilS+Z4gcq/OUQQY2OuUhSh+YYOQ8Ie76
- EZ7xzO7FCEDRduA1D0vDf8HeK1owXyxXpJMwp+ffTeF+uKYueHrGe6c2HmmK2hPuL2yd
- /K9tMEtUpXbzTd4UZHC1cOkRzMhmiRPmudoyRvLnrPp+6H3GYPWHXRvyu1bW4aAIlw/W
- FsVTSR5rPJsNbEr/2ErHiBSISJvaBHqzK1rnUqfJ8u9ExoGTWYkeTDGxYsobgv0C8QsK
- yluOaWx/pDp7wP9f08vPLHjrTY7/B7TAlpDIw/ZjVJ3TWbActZdBqO6Cm4n9bPTb4XCD
- xptQ==
+ bh=dgsGUsD9TKc38NlyU74exCU5XyvbS6uZfF8RzMtuwOk=;
+ b=t9vBnMqO0FLunzADGRBQVJK2yj0w8JusDE37BkyWk5qjbatjHmGtL1+T+7kK9neaFC
+ d/Ln2BhnnWCqtcYFI9DEcJxw9YNyZv/7Qv5F/PuZ6wlXWuhHRb5r2lv4BW1WPBogPrXD
+ uDEt+uWut8+eGT9F6hZfCZrIrIy64YNFV8a7cy08pKYbUfK2u3ACJLqdXoz9zVTCoZKV
+ 5pOrYj/+LqNXxwZPMN8+vFBfq0qMXrbao8iVkvyetZYY6MPSgsCNpkRprDInTxMzbTSP
+ 3cL3O9CLAFiVEVuqjCjLYgK4G1RMVnd02lcnj9fZP7OKUqZue0JW/9moafgkDm9KGRBr
+ MuBg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV7VEwDsK3AELk2FAoUQfK6ysVxC6WeX4rLBdCHHgWqSsQL0YmWPh15DSUajo5PIgWqEPnJVJ3enBK5@nongnu.org
-X-Gm-Message-State: AOJu0YxIhZmYHFWcUcNMaS8RDjwXBi1oYZJ3iT+Jn76KT9CnWkXroNNH
- GN9kw6oB9Bp7aG8gMPkPnoYhIv8kIDHwFPHV8trDqm1IOYs3Amnq2A609y3NtlY=
-X-Gm-Gg: ASbGncvVmP0npTjnuH5Kilu9SMjWxH0xX+MOQqK8WP8TOLNIzzv5yI9h0fDly97HVl1
- MpNQLKgZzCkbolK+m4sh3t5ikpmoOWKQiC3vpshiFs1yv4lSqj9X0EAvbb4dU+8w7OZN4M56P7t
- zzL23IdtPQhsXskO7RO/tmLIFyQ6P75pqige7LV5PxP6XC5D1Genvqjth+D+itKhy/POZcoWJbr
- t3dhe9VW88w78Z4Plsd7bJvju1WvSXL+Z8/7zpmG6E6bL3VCb6Ajo9/56DLPj1r2KbQcK4nA3sS
- lnOdi6ZpcNug3kOYE1RwHQLig8aZDIGv1/cd++Mh2RhzMuGxPed5HjHUofy2ifN90KnDdDMVJJ1
- Bxwqmbz3sEDGFHLo=
-X-Google-Smtp-Source: AGHT+IHyAPfrkygc2Slbhde5Vn+Aic9mIxc+irODqPLZJu/YjZk7jmsgZw9ryLpJgU+PM3ZeFZMdmQ==
-X-Received: by 2002:a05:600c:1c08:b0:43b:cb12:ba6d with SMTP id
- 5b1f17b1804b1-4409bd0a7e2mr45290525e9.3.1745533283614; 
- Thu, 24 Apr 2025 15:21:23 -0700 (PDT)
+ AJvYcCVe7jzPBBLW55Cfk1mx9Ea5XzRdwj5MTTj3/EiiAx/n/c/ZA62XmdcggiUzouAkYUL6tC2QSc+YDRTe@nongnu.org
+X-Gm-Message-State: AOJu0YyvfH0vJbMeF0lvqG8m4U0mgVUCVjMpq0ca4286KgXYAFoY4cC2
+ NaOr+SUA70n+qrzb5NTRLISHtPjY2I6Fpsd6JADkY+fXAN3vYYBzwthGUQGkEiV3AFRbMgwaJj9
+ i
+X-Gm-Gg: ASbGncuMhvxybUuV8JaReAfWRPfPUtH0PQmoqwzCeLi4MEMP0FOLErFEHrOLjLZKTC6
+ lEjlnnOjnBTsca3GHUEGYe9PPTW8Ovs/yv2hjTv/SZVt1YxPV5YJrpEN/82aJ0hibnGVHTn5O5k
+ TdHMsQt6+QG/F3qKOstVMo7C9Ax7AVBW3O2trPzwpO6hpM/VZeZ6QOyHLHXTb9pd+Hkd4eQtMbD
+ ksyQ3P8llZ120LqeXKmvAkspqUZlKC7Um1T3VHO4/DiTHqeiAk2ZPlocRlDMFfO/3bP5wXEQlGj
+ LtJiwvDbL4c3krcFSYU1wCPoBE0nGuVdZd7e7o6m950LiH8H24nqjlZqb5CfeoYK+PyYz4/X8jZ
+ yZ+MYO5uLLmZvjqNP3u652e7xqg==
+X-Google-Smtp-Source: AGHT+IE3sqcGE2giccXkvx0tRgKdi/r3SAXUBhELk8FJcZp5A2O5YcgbSmh8w0LO6TXjqLDjsQeF2A==
+X-Received: by 2002:a05:600c:3154:b0:43d:79:ae1b with SMTP id
+ 5b1f17b1804b1-4409bd23b36mr41148345e9.14.1745533288932; 
+ Thu, 24 Apr 2025 15:21:28 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-440a5a74314sm1923935e9.4.2025.04.24.15.21.22
+ 5b1f17b1804b1-4409d29ba29sm37164625e9.7.2025.04.24.15.21.27
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 24 Apr 2025 15:21:23 -0700 (PDT)
+ Thu, 24 Apr 2025 15:21:28 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.caveayland@nutanix.com>,
  Anton Johansson <anjo@rev.ng>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH v5 02/21] qemu: Convert target_name() to TargetInfo API
-Date: Fri, 25 Apr 2025 00:20:53 +0200
-Message-ID: <20250424222112.36194-3-philmd@linaro.org>
+Subject: [RFC PATCH v5 03/21] system/vl: Filter machine list available for a
+ particular target binary
+Date: Fri, 25 Apr 2025 00:20:54 +0200
+Message-ID: <20250424222112.36194-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250424222112.36194-1-philmd@linaro.org>
 References: <20250424222112.36194-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,239 +103,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Have target_name() be a target-agnostic method, dispatching
-to a per-target TargetInfo singleton structure.
-By default a stub singleton is used. No logical change
-expected.
+Binaries can register a QOM type to filter their machines
+by filling their TargetInfo::machine_typename field.
 
-Inspired-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+This can be used by example by main() -> machine_help_func()
+to filter the machines list.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- MAINTAINERS                     |  7 +++++++
- meson.build                     |  3 +++
- include/hw/core/cpu.h           |  2 --
- include/qemu/target-info-impl.h | 26 ++++++++++++++++++++++++++
- include/qemu/target-info.h      | 19 +++++++++++++++++++
- cpu-target.c                    |  5 -----
- hw/core/machine-qmp-cmds.c      |  1 +
- plugins/loader.c                |  2 +-
- system/vl.c                     |  2 +-
- target-info-stub.c              | 19 +++++++++++++++++++
- target-info.c                   | 16 ++++++++++++++++
- 11 files changed, 93 insertions(+), 9 deletions(-)
- create mode 100644 include/qemu/target-info-impl.h
- create mode 100644 include/qemu/target-info.h
- create mode 100644 target-info-stub.c
- create mode 100644 target-info.c
+ include/qemu/target-info-impl.h | 2 ++
+ include/qemu/target-info.h      | 8 ++++++++
+ system/vl.c                     | 3 ++-
+ target-info-stub.c              | 2 ++
+ target-info.c                   | 5 +++++
+ 5 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d82d962f1a4..451e2778888 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1926,6 +1926,13 @@ F: tests/functional/test_empty_cpu_model.py
- F: tests/unit/test-smp-parse.c
- T: git https://gitlab.com/ehabkost/qemu.git machine-next
- 
-+TargetInfo API
-+M: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-+M: Philippe Mathieu-Daudé <philmd@linaro.org>
-+S: Supported
-+F: include/qemu/target-info*.h
-+F: target-info*.c
-+
- Xtensa Machines
- ---------------
- sim
-diff --git a/meson.build b/meson.build
-index c736a6f4c4b..8ae70dbe45a 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3795,6 +3795,9 @@ endif
- common_ss.add(pagevary)
- specific_ss.add(files('page-target.c', 'page-vary-target.c'))
- 
-+common_ss.add(files('target-info.c'))
-+specific_ss.add(files('target-info-stub.c'))
-+
- subdir('backends')
- subdir('disas')
- subdir('migration')
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 5b645df59f5..9d9448341d1 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -1115,8 +1115,6 @@ bool cpu_exec_realizefn(CPUState *cpu, Error **errp);
- void cpu_exec_unrealizefn(CPUState *cpu);
- void cpu_exec_reset_hold(CPUState *cpu);
- 
--const char *target_name(void);
--
- #ifdef COMPILING_PER_TARGET
- 
- extern const VMStateDescription vmstate_cpu_common;
 diff --git a/include/qemu/target-info-impl.h b/include/qemu/target-info-impl.h
-new file mode 100644
-index 00000000000..d30805f7f28
---- /dev/null
+index d30805f7f28..d0e8c86176c 100644
+--- a/include/qemu/target-info-impl.h
 +++ b/include/qemu/target-info-impl.h
-@@ -0,0 +1,26 @@
-+/*
-+ * QEMU TargetInfo structure definition
-+ *
-+ *  Copyright (c) Linaro
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef QEMU_TARGET_INFO_IMPL_H
-+#define QEMU_TARGET_INFO_IMPL_H
-+
-+#include "qemu/target-info.h"
-+
-+typedef struct TargetInfo {
-+    /* runtime equivalent of TARGET_NAME definition */
-+    const char *target_name;
-+} TargetInfo;
-+
-+/**
-+ * target_info:
-+ *
-+ * Returns: The TargetInfo structure definition for this target binary.
-+ */
-+const TargetInfo *target_info(void);
-+
-+#endif
-diff --git a/include/qemu/target-info.h b/include/qemu/target-info.h
-new file mode 100644
-index 00000000000..1007dc9a5e4
---- /dev/null
-+++ b/include/qemu/target-info.h
-@@ -0,0 +1,19 @@
-+/*
-+ * QEMU target info API
-+ *
-+ *  Copyright (c) Linaro
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef QEMU_TARGET_INFO_H
-+#define QEMU_TARGET_INFO_H
-+
-+/**
-+ * target_name:
-+ *
-+ * Returns: Canonical target name (i.e. "i386").
-+ */
-+const char *target_name(void);
-+
-+#endif
-diff --git a/cpu-target.c b/cpu-target.c
-index c99d208a7c4..3f82d3ea444 100644
---- a/cpu-target.c
-+++ b/cpu-target.c
-@@ -165,8 +165,3 @@ bool target_words_bigendian(void)
- {
-     return TARGET_BIG_ENDIAN;
- }
--
--const char *target_name(void)
--{
--    return TARGET_NAME;
--}
-diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
-index a5e635152dc..d82043e1c68 100644
---- a/hw/core/machine-qmp-cmds.c
-+++ b/hw/core/machine-qmp-cmds.c
-@@ -19,6 +19,7 @@
- #include "qapi/qobject-input-visitor.h"
- #include "qapi/type-helpers.h"
- #include "qemu/uuid.h"
-+#include "qemu/target-info.h"
- #include "qom/qom-qobject.h"
- #include "system/hostmem.h"
- #include "system/hw_accel.h"
-diff --git a/plugins/loader.c b/plugins/loader.c
-index 0d6e082e170..8f0d75c9049 100644
---- a/plugins/loader.c
-+++ b/plugins/loader.c
-@@ -29,7 +29,7 @@
- #include "qemu/xxhash.h"
- #include "qemu/plugin.h"
- #include "qemu/memalign.h"
--#include "hw/core/cpu.h"
-+#include "qemu/target-info.h"
- #include "exec/tb-flush.h"
+@@ -14,6 +14,8 @@
+ typedef struct TargetInfo {
+     /* runtime equivalent of TARGET_NAME definition */
+     const char *target_name;
++    /* QOM typename machines for this binary must implement */
++    const char *machine_typename;
+ } TargetInfo;
  
- #include "plugin.h"
+ /**
+diff --git a/include/qemu/target-info.h b/include/qemu/target-info.h
+index 1007dc9a5e4..0224b35b166 100644
+--- a/include/qemu/target-info.h
++++ b/include/qemu/target-info.h
+@@ -16,4 +16,12 @@
+  */
+ const char *target_name(void);
+ 
++/**
++ * target_machine_typename:
++ *
++ * Returns: Name of the QOM interface implemented by machines
++ *          usable on this target binary.
++ */
++const char *target_machine_typename(void);
++
+ #endif
 diff --git a/system/vl.c b/system/vl.c
-index c17945c4939..cdf6eb9ee49 100644
+index cdf6eb9ee49..e8706a9ce87 100644
 --- a/system/vl.c
 +++ b/system/vl.c
-@@ -40,6 +40,7 @@
- #include "qemu/help_option.h"
- #include "qemu/hw-version.h"
- #include "qemu/uuid.h"
+@@ -27,6 +27,7 @@
+ #include "qemu/datadir.h"
+ #include "qemu/units.h"
+ #include "qemu/module.h"
 +#include "qemu/target-info.h"
- #include "system/reset.h"
- #include "system/runstate.h"
- #include "system/runstate-action.h"
-@@ -79,7 +80,6 @@
- #include "hw/block/block.h"
- #include "hw/i386/x86.h"
- #include "hw/i386/pc.h"
--#include "hw/core/cpu.h"
- #include "migration/cpr.h"
- #include "migration/misc.h"
- #include "migration/snapshot.h"
+ #include "exec/cpu-common.h"
+ #include "exec/page-vary.h"
+ #include "hw/qdev-properties.h"
+@@ -1564,7 +1565,7 @@ static void machine_help_func(const QDict *qdict)
+     GSList *el;
+     const char *type = qdict_get_try_str(qdict, "type");
+ 
+-    machines = object_class_get_list(TYPE_MACHINE, false);
++    machines = object_class_get_list(target_machine_typename(), false);
+     if (type) {
+         ObjectClass *machine_class = OBJECT_CLASS(find_machine(type, machines));
+         if (machine_class) {
 diff --git a/target-info-stub.c b/target-info-stub.c
-new file mode 100644
-index 00000000000..076b9254dd0
---- /dev/null
+index 076b9254dd0..218e5898e7f 100644
+--- a/target-info-stub.c
 +++ b/target-info-stub.c
-@@ -0,0 +1,19 @@
-+/*
-+ * QEMU target info stubs
-+ *
-+ *  Copyright (c) Linaro
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/target-info-impl.h"
-+
-+static const TargetInfo target_info_stub = {
-+    .target_name = TARGET_NAME,
-+};
-+
-+const TargetInfo *target_info(void)
-+{
-+    return &target_info_stub;
-+}
+@@ -8,9 +8,11 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/target-info-impl.h"
++#include "hw/boards.h"
+ 
+ static const TargetInfo target_info_stub = {
+     .target_name = TARGET_NAME,
++    .machine_typename = TYPE_MACHINE,
+ };
+ 
+ const TargetInfo *target_info(void)
 diff --git a/target-info.c b/target-info.c
-new file mode 100644
-index 00000000000..84b18931e7e
---- /dev/null
+index 84b18931e7e..0042769e3a2 100644
+--- a/target-info.c
 +++ b/target-info.c
-@@ -0,0 +1,16 @@
-+/*
-+ * QEMU target info helpers
-+ *
-+ *  Copyright (c) Linaro
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
+@@ -14,3 +14,8 @@ const char *target_name(void)
+ {
+     return target_info()->target_name;
+ }
 +
-+#include "qemu/osdep.h"
-+#include "qemu/target-info.h"
-+#include "qemu/target-info-impl.h"
-+
-+const char *target_name(void)
++const char *target_machine_typename(void)
 +{
-+    return target_info()->target_name;
++    return target_info()->machine_typename;
 +}
 -- 
 2.47.1
