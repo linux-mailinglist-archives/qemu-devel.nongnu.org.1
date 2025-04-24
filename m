@@ -2,75 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 505CDA9A266
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 08:37:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E409DA9A2B8
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 08:58:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7qCd-0004ot-N8; Thu, 24 Apr 2025 02:36:56 -0400
+	id 1u7qXG-0006N6-5l; Thu, 24 Apr 2025 02:58:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7qCV-0004nj-6b
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 02:36:47 -0400
-Received: from mgamail.intel.com ([198.175.65.19])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7qCR-00078e-R6
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 02:36:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745476604; x=1777012604;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=N/1BTUctU2lb6VBk1Oib3IvM00J9hBOuNikf/9LtMQ4=;
- b=F9P5pmnx1GH7xB6tzAEbK6Qqwqs64moY8t4ANVFO4Fn+HhTfMPvVmolO
- ao/ncN/d4/Ic88HU5li/cH+i6fTik/obAi8IPZUQh3YpCUfRb5EDcJuCX
- 48J9JdzqTV0gsJy7ZjSidcu+3cmtqyFaZhXLXY3EevXw4AX/lhDDxmEcX
- cD+UjRJgsnZC5jUB2z4fMnavVNSujtdIc/8fTNDwX6qXDpfhXngwYWeWg
- gpVxqDl/+7G7wua5cJJPyspOvXfeNy+TUoByQaKC3V1/hlRAdYqyN54oT
- FSDDO86Rph0k0Y4jAtVZ0jDNQWYEp6uOgtgon21Ff4D8WT7TdISdgSge5 Q==;
-X-CSE-ConnectionGUID: ATgD0X4NQIOOJiDkJAE48Q==
-X-CSE-MsgGUID: NuCzeEMMTDWxZhVoCQxkHg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="46977821"
-X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; d="scan'208";a="46977821"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2025 23:36:42 -0700
-X-CSE-ConnectionGUID: XojoAA55T+emk4kqIX2xaA==
-X-CSE-MsgGUID: ZM7pO4HHRjeXITCKypZmig==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; d="scan'208";a="155756304"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa002.fm.intel.com with ESMTP; 23 Apr 2025 23:36:38 -0700
-Date: Thu, 24 Apr 2025 14:57:33 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>
-Cc: Babu Moger <babu.moger@amd.com>, Ewan Hai <ewanhai-oc@zhaoxin.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Tejus GK <tejus.gk@nutanix.com>,
- Jason Zeng <jason.zeng@intel.com>,
- Manish Mishra <manish.mishra@nutanix.com>,
- Tao Su <tao1.su@intel.com>, qemu-devel@nongnu.org, kvm@vger.kernel.org
-Subject: Re: [RFC 00/10] i386/cpu: Cache CPUID fixup, Intel cache model &
- topo CPUID enhencement
-Message-ID: <aAng3b6hSiZw9MzP@intel.com>
-References: <20250423114702.1529340-1-zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7qXD-0006LE-Po
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 02:58:11 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7qXC-0001J8-5v
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 02:58:11 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4394a0c65fcso5933525e9.1
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 23:58:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1745477888; x=1746082688; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=SCQy5R+RF2DL85aOpCkrhZKW+JqhoBKv5AjtTOKooUA=;
+ b=UDWbbi4KXv4ut46GMpw+1VKWRvIQry9gt+PVa+f9B1o3nOTkaRipF7ONQ683ubySeW
+ cXXRIyFobcIzmO45WieVOj+GPDcLtuyFWElFr9tG2+DF7ojEAXkYRsWz34cE9YAsyp53
+ W4YhBe5Wztudp56moP6fsLD9sg6QfHMQJFVFj4MBzbma9cKGI1PQPaOdcTQDxJiim0qn
+ mlkpxqyBU5oe0ItCOxT9wkFIplIHGFhO0KFOWPRj1WRXsJZV8ZpYvF7eOyhcsD8DJUP/
+ zwANno588iD4/KUskyV7ogCdC16tzbCYdurnVo013+8GFBRw2THYDh2V+a61OA5dFpqm
+ JJiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1745477888; x=1746082688;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=SCQy5R+RF2DL85aOpCkrhZKW+JqhoBKv5AjtTOKooUA=;
+ b=LFlBoFkft2V8qSxRxaMhudaQ/qZu1EuMC5eWuD+fBBwgen5t/kJPkZN1DvToll50Ku
+ T+o2I/ifZKNsHX6Jgt31eDtiWh54HBwenxj43mCzmKnBcJQab3xySaSmvurpPYOozyW0
+ xfEszzzzcMUHbt47RkuZ6ShgVEYmajtU0O1rRf2rKx2K75onLJR8lKeMSX9/OmLn0rF8
+ /mhl87TvYvyuXPya3CnGv6djDgngdVr1RU+Fwf1RvNq6Vg5LghTgnIkqYLA/V06vkatB
+ yTPyNX+Zz6XyiS7t2tBuw5x+lw9PykZeMPnaRu6+lJQ2qLIv6AKJ74TqtePj7/a7wlJX
+ QxKg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWH9vI/vKSm2rc5ZknQoWjCKyIt0pmCt6T1wsf/dWUgpNl6wKhy5oVAKUOPh46H+SLcpb90r4Rv/tKs@nongnu.org
+X-Gm-Message-State: AOJu0YxgYhMEGcXAg+Ctt4QzfHncRMw59o5DD8FYQG+D2zYMH4BuEd/Z
+ H46iawGXfAiQi04yxqEfNeOaBMmyEo8MXKuHmB106oFeTUiztLTtGk1s+58LVnrPtpIaoRXaQCw
+ 8
+X-Gm-Gg: ASbGnctnDVMea2gVJ1uOPnWCWjoWEWY4ORPghEvosEkR3LeWFZ5b0No48V9QjJizzYb
+ jJ/RB+nbFgkPzew0t7o+QErUj7SNpouMLM8lsnCEDk15XKHeXA/rlodHKvrZZCKLjk9+QEV8DIG
+ I8tjO4PFdnYJI2b6ITKH9p/v/B5TAsoEkOVUyumt8524mwsZWgFpG1LHQ2Y+JRL9rczevEDOVlI
+ 8uPb7XJjDPeYGgaVBWM9SN7JBPscoumBep398kVS/uSZ7KxPzcmB5HbNDIcsnJHsLnho/4sNIun
+ WNYULa/o5XzZT1dtls6xuyms6g7HdOo62OmkWOltk6TESpQzl+LkqsC/AgbwBICeVaIdG6cr2Wx
+ j+54EGB5J+f0x0g==
+X-Google-Smtp-Source: AGHT+IFIEHiPp6PsyJb56LR72qda8OneY0t9eNvdyOpOEWYzfU+hMzPeMcTo/fMNyFwRnAY5yaUG/g==
+X-Received: by 2002:a05:600c:3d10:b0:43c:ea36:9840 with SMTP id
+ 5b1f17b1804b1-4409bd781a7mr10978335e9.22.1745477888429; 
+ Wed, 23 Apr 2025 23:58:08 -0700 (PDT)
+Received: from [192.168.69.169] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4408d04802fsm43822245e9.1.2025.04.23.23.58.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 23 Apr 2025 23:58:07 -0700 (PDT)
+Message-ID: <82e1e679-3c86-4c60-91d4-aedfab44334c@linaro.org>
+Date: Thu, 24 Apr 2025 08:58:06 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250423114702.1529340-1-zhao1.liu@intel.com>
-Received-SPF: pass client-ip=198.175.65.19; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.294,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 05/15] accel/tcg: Add CPUState arg to
+ tb_invalidate_phys_range
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20250424011918.599958-1-richard.henderson@linaro.org>
+ <20250424011918.599958-6-richard.henderson@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250424011918.599958-6-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,48 +101,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Apr 23, 2025 at 07:46:52PM +0800, Zhao Liu wrote:
-> Date: Wed, 23 Apr 2025 19:46:52 +0800
-> From: Zhao Liu <zhao1.liu@intel.com>
-> Subject: [RFC 00/10] i386/cpu: Cache CPUID fixup, Intel cache model & topo
->  CPUID enhencement
-> X-Mailer: git-send-email 2.34.1
-> 
-> Hi all,
-> 
-> (Since patches 1 and 2 involve changes to x86 vendors other than Intel,
-> I have also cc'd friends from AMD and Zhaoxin.)
-> 
-> These are the ones I was going to clean up a long time ago:
->  * Fixup CPUID 0x80000005 & 0x80000006 for Intel (and Zhaoxin now).
->  * Add cache model for Intel CPUs.
->  * Enable 0x1f CPUID leaf for specific Intel CPUs, which already have
->    this leaf on host by default.
-> 
-> Overall, the enhancements to the Intel CPU models are still based on
-> feedback received over time, for a long time...
-> 
-> I'll introduce my changes one by one in the order of importance as I
-> see it. (The doc update is missing in this version.)
-> 
-> 
-> Intel Cache Model
-> =================
-> 
-> AMD has supports cache model for a long time. And this feature strats
-> from the Eduardo's idea [1].
-> 
-> Unfortunately, Intel does not support this, and I have received some
-> feedback (from Tejus on mail list [2] and kvm forum, and from Jason).
+On 24/4/25 03:19, Richard Henderson wrote:
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   include/exec/exec-all.h   |  3 ++-
+>   accel/tcg/tb-maint.c      | 10 ++++++----
+>   accel/tcg/translate-all.c |  2 +-
+>   accel/tcg/user-exec.c     |  4 ++--
+>   system/physmem.c          |  2 +-
+>   target/arm/helper.c       |  2 +-
+>   6 files changed, 13 insertions(+), 10 deletions(-)
 
-I need to add more background:
-
-the legacy "host-cache-info" is becoming failing... On SRF, we have
-observed that it cannot accurately identify cache topology, so we have
-to use "smp-cache" to set the cache topology.
-
-However, once "host-cache-info" is disabled, we lose the cache info
-that matches the real silicon... Therefore, we can only add the cache
-model for the named CPU model.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
