@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB1C6A9AB16
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 12:54:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F931A9AB28
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 12:55:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7uDJ-0001N4-NO; Thu, 24 Apr 2025 06:53:53 -0400
+	id 1u7uEf-0002i4-M3; Thu, 24 Apr 2025 06:55:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1u7uDF-0001MX-UQ
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 06:53:50 -0400
+ id 1u7uEd-0002gh-NA
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 06:55:15 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1u7uDD-00018o-2a
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 06:53:49 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Zjt5R5Sgxz6M4Qg;
- Thu, 24 Apr 2025 18:49:31 +0800 (CST)
+ id 1u7uEb-0001RM-W9
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 06:55:15 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Zjt9y0QNvz6L5bt;
+ Thu, 24 Apr 2025 18:53:26 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 6E48D1400DB;
- Thu, 24 Apr 2025 18:53:42 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 3A27514025A;
+ Thu, 24 Apr 2025 18:55:12 +0800 (CST)
 Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
  (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 24 Apr
- 2025 12:53:38 +0200
-Date: Thu, 24 Apr 2025 11:53:37 +0100
+ 2025 12:55:10 +0200
+Date: Thu, 24 Apr 2025 11:55:09 +0100
 To: <anisa.su887@gmail.com>
 CC: <qemu-devel@nongnu.org>, <nifan.cxl@gmail.com>, <dave@stgolabs.net>,
  <linux-cxl@vger.kernel.org>, Anisa Su <anisa.su@samsung.com>
-Subject: Re: [PATCH 4/9] cxl-mailbox-utils: 0x5601 - FMAPI Get Host Region
- Config
-Message-ID: <20250424115337.00006768@huawei.com>
-In-Reply-To: <20250317164204.2299371-5-anisa.su887@gmail.com>
+Subject: Re: [PATCH 5/9] cxl_events.h: move definition for
+ dynamic_capacity_uuid and enum for DC event types
+Message-ID: <20250424115509.00007cc5@huawei.com>
+In-Reply-To: <20250317164204.2299371-6-anisa.su887@gmail.com>
 References: <20250317164204.2299371-1-anisa.su887@gmail.com>
- <20250317164204.2299371-5-anisa.su887@gmail.com>
+ <20250317164204.2299371-6-anisa.su887@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
@@ -71,170 +71,72 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 17 Mar 2025 16:31:31 +0000
+On Mon, 17 Mar 2025 16:31:32 +0000
 anisa.su887@gmail.com wrote:
 
 > From: Anisa Su <anisa.su@samsung.com>
 > 
-> FM DCD Management command 0x5601 implemented per CXL r3.2 Spec Section 7.6.7.6.2
+> move definition for dynamic_capacity_uuid and enum for DC event types to
+
+Move
+
+> cxl_events.h from cxl_type3.c for shared use in next patch
 > 
 > Signed-off-by: Anisa Su <anisa.su@samsung.com>
-Hi Anisa,
-
-Just a few trivial things in here.
-
 > ---
->  hw/cxl/cxl-mailbox-utils.c | 97 ++++++++++++++++++++++++++++++++++++++
->  1 file changed, 97 insertions(+)
+>  hw/mem/cxl_type3.c          | 15 ---------------
+>  include/hw/cxl/cxl_events.h | 15 +++++++++++++++
+>  2 files changed, 15 insertions(+), 15 deletions(-)
 > 
-> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-> index e9991fd1a7..4bb51bf3e8 100644
-> --- a/hw/cxl/cxl-mailbox-utils.c
-> +++ b/hw/cxl/cxl-mailbox-utils.c
-> @@ -124,6 +124,7 @@ enum {
->          #define GET_MHD_INFO 0x0
->      FMAPI_DCD_MGMT = 0x56,
->          #define GET_DCD_INFO 0x0
-> +        #define GET_HOST_DC_REGION_CONFIG 0x1
->  };
->  
->  /* CCI Message Format CXL r3.1 Figure 7-19 */
-> @@ -3399,6 +3400,100 @@ static CXLRetCode cmd_fm_get_dcd_info(const struct cxl_cmd *cmd,
->      return CXL_MBOX_SUCCESS;
+> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+> index 452a0c101a..ac74e62875 100644
+> --- a/hw/mem/cxl_type3.c
+> +++ b/hw/mem/cxl_type3.c
+> @@ -1977,21 +1977,6 @@ void qmp_cxl_inject_memory_module_event(const char *path, CxlEventLog log,
+>      }
 >  }
 >  
-> +/*
-> + * CXL r3.2 section 7.6.7.6.2: Get Host DC Region Configuration (Opcode 5601h)
-> + */
-> +static CXLRetCode cmd_fm_get_host_dc_region_config(const struct cxl_cmd *cmd,
-> +                                                   uint8_t *payload_in,
-> +                                                   size_t len_in,
-> +                                                   uint8_t *payload_out,
-> +                                                   size_t *len_out,
-> +                                                   CXLCCI *cci)
-> +{
-> +    struct {
-> +        uint16_t host_id;
-> +        uint8_t region_cnt;
-> +        uint8_t start_rid;
-> +    } QEMU_PACKED *in;
-
-= (void *)payload_in;
-
-> +    struct {
-> +        uint16_t host_id;
-> +        uint8_t num_regions;
-> +        uint8_t regions_returned;
-> +        struct {
-> +            uint64_t base;
-> +            uint64_t decode_len;
-> +            uint64_t region_len;
-> +            uint64_t block_size;
-> +            uint8_t dsmas_flags;
-> +            uint8_t rsvd1[3];
-> +            uint8_t sanitize;
-> +            uint8_t rsvd2[3];
-> +        } QEMU_PACKED records[];
-> +    } QEMU_PACKED *out;
-
-= (void *)payload_out;
-
-> +    struct {
-> +        uint32_t num_extents_supported;
-> +        uint32_t num_extents_available;
-> +        uint32_t num_tags_supported;
-> +        uint32_t num_tags_available;
-> +    } QEMU_PACKED *extra_out;
-> +    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
-> +    uint16_t record_count, out_pl_len, i;
-> +    uint8_t start_rid;
-> +
-> +    if (ct3d->dc.num_regions == 0) {
-
-As in earlier patch - we don't register these commands
-at all unless num_regions > 0 so probably don't need this
-check.
-
-> +        return CXL_MBOX_UNSUPPORTED;
-> +    }
-> +
-> +    in = (void *)payload_in;
-> +    if (in->start_rid >= ct3d->dc.num_regions) {
-> +        return CXL_MBOX_INVALID_INPUT;
-> +    }
-> +
-> +    start_rid = in->start_rid;
-
-The saving in characters for having the local variable doesn't seem
-worthwhile to me.  I'd just in->start_rid where ever you need it.
-
-> +    record_count = MIN(ct3d->dc.num_regions - start_rid, in->region_cnt);
-> +
-> +    out = (void *)payload_out;
-> +    out_pl_len = sizeof(*out) + record_count * sizeof(out->records[0]);
-> +
-> +    extra_out = (void *)(out) + out_pl_len;
-
-Do we need the brackets around out?
-
-> +    out_pl_len += sizeof(*extra_out);
-> +
-> +    assert(*len_out <= CXL_MAILBOX_MAX_PAYLOAD_SIZE);
-> +
-> +    /* TODO: For now, fix host id to be 0 */
-> +    stw_le_p(&out->host_id, 0);
-> +    out->num_regions = ct3d->dc.num_regions;
-> +    out->regions_returned = record_count;
-> +
-> +    for (i = 0; i < record_count; i++) {
-> +        stq_le_p(&out->records[i].base,
-> +                 ct3d->dc.regions[start_rid + i].base);
-> +        stq_le_p(&out->records[i].decode_len,
-> +                 ct3d->dc.regions[start_rid + i].decode_len /
-> +                 CXL_CAPACITY_MULTIPLIER);
-> +        stq_le_p(&out->records[i].region_len,
-> +                 ct3d->dc.regions[start_rid + i].len);
-> +        stq_le_p(&out->records[i].block_size,
-> +                 ct3d->dc.regions[start_rid + i].block_size);
-> +        out->records[i].dsmas_flags =
-> +            ct3d->dc.regions[start_rid + i].dsmas_flags;
-
-As in previous patch. I'd build this here from specific booleans
-as the relationship to the dmsas flags isn't defined that tightly.
-
-
-> +        out->records[i].sanitize = 0;
-> +    }
-> +    /*
-> +     * TODO: Assign values once extents and tags are introduced
-> +     * to use.
-> +     */
-> +    stl_le_p(&extra_out->num_extents_supported, CXL_NUM_EXTENTS_SUPPORTED);
-> +    stl_le_p(&extra_out->num_extents_available, CXL_NUM_EXTENTS_SUPPORTED -
-> +             ct3d->dc.total_extent_count);
-> +    stl_le_p(&extra_out->num_tags_supported, CXL_NUM_TAGS_SUPPORTED);
-> +    stl_le_p(&extra_out->num_tags_available, CXL_NUM_TAGS_SUPPORTED);
-> +
-> +    *len_out = out_pl_len;
-> +
-> +    return CXL_MBOX_SUCCESS;
-> +}
-> +
->  static const struct cxl_cmd cxl_cmd_set[256][256] = {
->      [INFOSTAT][BACKGROUND_OPERATION_ABORT] = { "BACKGROUND_OPERATION_ABORT",
->          cmd_infostat_bg_op_abort, 0, 0 },
-> @@ -3523,6 +3618,8 @@ static const struct cxl_cmd cxl_cmd_set_sw[256][256] = {
->  static const struct cxl_cmd cxl_cmd_set_fm_dcd[256][256] = {
->      [FMAPI_DCD_MGMT][GET_DCD_INFO] = { "GET_DCD_INFO",
->          cmd_fm_get_dcd_info, 0, 0},
-> +    [FMAPI_DCD_MGMT][GET_HOST_DC_REGION_CONFIG] = { "GET_HOST_DC_REGION_CONFIG",
-> +        cmd_fm_get_host_dc_region_config, 4, 0},
-Space before }
-
-Check for any other instances of this in the rest of the series.
-
->  };
->  
+> -/* CXL r3.1 Table 8-50: Dynamic Capacity Event Record */
+> -static const QemuUUID dynamic_capacity_uuid = {
+> -    .data = UUID(0xca95afa7, 0xf183, 0x4018, 0x8c, 0x2f,
+> -                 0x95, 0x26, 0x8e, 0x10, 0x1a, 0x2a),
+> -};
+> -
+> -typedef enum CXLDCEventType {
+> -    DC_EVENT_ADD_CAPACITY = 0x0,
+> -    DC_EVENT_RELEASE_CAPACITY = 0x1,
+> -    DC_EVENT_FORCED_RELEASE_CAPACITY = 0x2,
+> -    DC_EVENT_REGION_CONFIG_UPDATED = 0x3,
+> -    DC_EVENT_ADD_CAPACITY_RSP = 0x4,
+> -    DC_EVENT_CAPACITY_RELEASED = 0x5,
+> -} CXLDCEventType;
+> -
 >  /*
+>   * Check whether the range [dpa, dpa + len - 1] has overlaps with extents in
+>   * the list.
+> diff --git a/include/hw/cxl/cxl_events.h b/include/hw/cxl/cxl_events.h
+> index 38cadaa0f3..758b075a64 100644
+> --- a/include/hw/cxl/cxl_events.h
+> +++ b/include/hw/cxl/cxl_events.h
+> @@ -184,4 +184,19 @@ typedef struct CXLEventDynamicCapacity {
+>      uint32_t tags_avail;
+>  } QEMU_PACKED CXLEventDynamicCapacity;
+>  
+> +/* CXL r3.1 Table 8-50: Dynamic Capacity Event Record */
+> +static const QemuUUID dynamic_capacity_uuid = {
+> +    .data = UUID(0xca95afa7, 0xf183, 0x4018, 0x8c, 0x2f,
+> +                 0x95, 0x26, 0x8e, 0x10, 0x1a, 0x2a),
+> +};
+> +
+> +typedef enum CXLDCEventType {
+> +    DC_EVENT_ADD_CAPACITY = 0x0,
+> +    DC_EVENT_RELEASE_CAPACITY = 0x1,
+> +    DC_EVENT_FORCED_RELEASE_CAPACITY = 0x2,
+> +    DC_EVENT_REGION_CONFIG_UPDATED = 0x3,
+> +    DC_EVENT_ADD_CAPACITY_RSP = 0x4,
+> +    DC_EVENT_CAPACITY_RELEASED = 0x5,
+> +} CXLDCEventType;
+> +
+>  #endif /* CXL_EVENTS_H */
 
 
