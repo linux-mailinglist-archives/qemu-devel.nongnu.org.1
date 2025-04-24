@@ -2,125 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02A3AA9B14B
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 16:41:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F219A9B18A
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 16:52:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7xkP-0002Vc-Ip; Thu, 24 Apr 2025 10:40:17 -0400
+	id 1u7xvq-0006PM-Q8; Thu, 24 Apr 2025 10:52:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u7xkK-0002Ul-2q
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 10:40:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1u7xvn-0006Ox-F2
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 10:52:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u7xkG-0004EL-AM
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 10:40:11 -0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1u7xvl-0005VA-37
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 10:52:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745505604;
+ s=mimecast20190719; t=1745506317;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=e9+IzIw1toYW40X4FH8cW/7kZvVwglwHYrApGx3lCoM=;
- b=XPSXhz3g3uT7pxeeNzvhHvHwKwOBatoouSILARqfwS4y6FUY2ju+bgXVo6LrF29OPIhx87
- iNPQHjITZ20rVoXEOw0hUISP29S58GESdwQx2FIqkAiwdgaLu/xgUR8ioYkjZ1smIhZo0a
- SVRy8REAe5/YO87Zkf8F8d/lr4VoKI8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-18-bGoy218fNEqu10Y_JcCrYA-1; Thu, 24 Apr 2025 10:40:01 -0400
-X-MC-Unique: bGoy218fNEqu10Y_JcCrYA-1
-X-Mimecast-MFC-AGG-ID: bGoy218fNEqu10Y_JcCrYA_1745505600
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-43cf44b66f7so7894025e9.1
- for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 07:40:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745505600; x=1746110400;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=e9+IzIw1toYW40X4FH8cW/7kZvVwglwHYrApGx3lCoM=;
- b=d6qEgXcQguyjAKsb23SYbAu3JbNN+9sCQCDX6WvyX6kU23jS9jL5gMlUZkNY0LGOdT
- rexqyDP4lXieew0C7W/qn9dVN+qF0nHH7AVNNGVzRjVVVlWVkiqa8npcnLJgvzDWktrF
- M3IE12lZia4+2qRuitk+R9TESpKCMkV6Zjzvo/H2Lr1rNgySvHuaDkHTzSk2eNV/ggn9
- GRwcRBZ6dMS7AMGkLa+tN9bz4NKLU6+kpO8UlY4Fdyd6OAFC6C4Of+XlWXTpCJPvWrDX
- hOG2HCpU5qCT6wQ9rmXIlMlVynq15AwHX0HzaAKnWRAiJbkPESn4S0LLkZsJxTIuy1rK
- rNvA==
-X-Gm-Message-State: AOJu0YysKSpr6MTax6c4KH6LklURGHNz/U4Bt4rkHljGhZnOg8HUUwf3
- ywteLcpHi+Qaa+VwUCojwuHLcJXZv43iQVqnuDxUgnCd+B+AKDEqoZyskXX3iD9Dr6e3xJpe74o
- vGrhcWip/KCdMwDgLSoaQHpnD1Bk5BBwmVTDmU1B1qWORtpiCBKIV
-X-Gm-Gg: ASbGnctolcQLuFEKkjznxdDE4gkJGHsDPZblIZzey+M1gCBzJW7IpBl6UhQXxJtW8No
- WiRObxPYsv/vPEWnWAOwMzkZ0GYX2QVISmONBP2InSzy20HKuJ85lgZvlqk4nwB+SaaodTbl92r
- rLHOOmhdMbG9JG10jEJxIGqMWbiLn7g/LM4PrThFkfN3ft1h/VxoetqRui/H9CHLggK7Kkz98Fb
- WwqAxoKSEPLNRcUGCy3yEVkkeLoNpZ0vOWZZshN0Sqnm4gozaZd9avvoPt1zaxUoh/FYsI9veTr
- aZ3BAI7BS8Co
-X-Received: by 2002:a05:600c:4f8f:b0:43c:ee62:33f5 with SMTP id
- 5b1f17b1804b1-4409bdb19ffmr26944625e9.27.1745505600059; 
- Thu, 24 Apr 2025 07:40:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IENTDFuoN/24yRGkkzf5BvP6q3SDaf0Wa/EHWAkg65fsLqB8VvZc1KJVDgkZ8ImY12OzwGtJA==
-X-Received: by 2002:a05:600c:4f8f:b0:43c:ee62:33f5 with SMTP id
- 5b1f17b1804b1-4409bdb19ffmr26944325e9.27.1745505599553; 
- Thu, 24 Apr 2025 07:39:59 -0700 (PDT)
-Received: from [192.168.1.84] ([93.56.161.39])
- by smtp.googlemail.com with ESMTPSA id
- 5b1f17b1804b1-4409d29b8efsm24526905e9.6.2025.04.24.07.39.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 24 Apr 2025 07:39:58 -0700 (PDT)
-Message-ID: <c0dd76b5-da8d-4193-9ea1-5fb5e55b35a8@redhat.com>
-Date: Thu, 24 Apr 2025 16:39:57 +0200
+ in-reply-to:in-reply-to:references:references;
+ bh=eEjmOsavbEQB9cIZuNAdhrPx4QXVln7SI1lDRcBIlv4=;
+ b=Ghj/udShszEEqSQBZHNq9egODCMcVWAW/vCaFm0y4Qnpl9/NmR4sVsd40nwA0L3x7UchBK
+ xieKXj76zq1iNva0VchY9f10ff3LboQbHUZ57uiEpmhd0vP38l5TIh+l4jgeIgzwqZOukN
+ 3kftuCetqBObB2+L6LkGRktfZ2H7lV0=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-271-dKrXM_x8NeuAeYD08ycEyA-1; Thu,
+ 24 Apr 2025 10:51:55 -0400
+X-MC-Unique: dKrXM_x8NeuAeYD08ycEyA-1
+X-Mimecast-MFC-AGG-ID: dKrXM_x8NeuAeYD08ycEyA_1745506314
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BC1DB180036E; Thu, 24 Apr 2025 14:51:53 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.253])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 211C4195608D; Thu, 24 Apr 2025 14:51:52 +0000 (UTC)
+Date: Thu, 24 Apr 2025 10:51:51 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: lma <lma@suse.de>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: A question about how to calculate the "Maximum transfer length"
+ in case of its absence in the Block Limits VPD device response from the
+ hardware
+Message-ID: <20250424145151.GA399725@fedora>
+References: <20db3af2ece22f598b54a47ec350b466@suse.de>
+ <20250418153456.GA128796@fedora>
+ <81accb5693785748c476bf34eb18a0ba@suse.de>
+ <20250423132405.GA333580@fedora>
+ <32c2072d6fc017786f4d6ef0dd681ae7@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10.1 v3 00/27] target/riscv: SATP mode and CPU definition
- overhaul
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-devel@nongnu.org
-References: <20250406070254.274797-1-pbonzini@redhat.com>
- <CAKmqyKO=-QhuKNAKJBXfGiwPdSt=uT6M16pgVJENLxgEiy5Adg@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <CAKmqyKO=-QhuKNAKJBXfGiwPdSt=uT6M16pgVJENLxgEiy5Adg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="khwX8Szt+2sR4RDJ"
+Content-Disposition: inline
+In-Reply-To: <32c2072d6fc017786f4d6ef0dd681ae7@suse.de>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -28
 X-Spam_score: -2.9
@@ -145,68 +88,254 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/24/25 03:26, Alistair Francis wrote:
-> On Sun, Apr 6, 2025 at 5:03 PM Paolo Bonzini <pbonzini@redhat.com> wrote:
->>
->> This is the combination of the previously posted series to store max SATP
->> mode in RISCVCPUConfig as a single integer, and convert CPU definitions
->> to a small extension of RISCVCPUConfig called RISCVCPUDef.  I put them
->> together because the first part (patches 1-6) is already acked/reviewed.
->>
->> As mentioned in the earlier submissions, the main reason for me to do this
->> is to remove .instance_post_init, which RISC-V is using in a slightly different
->> way than everyone else.  Whereas other uses (including x86, which is
->> currently buggy, and Rust) would prefer to call .instance_post_init
->> from root to leaf, RISC-V needs it to be called from leaf (CPU model)
->> to parent (DeviceState).  The fix is to move the logic of the former
->> .instance_post_init callback for the leaf at the end of the leaf's
->> .instance_init, as done in this series.
->>
->> Paolo
->>
->> Supersedes: <20250228102747.867770-1-pbonzini@redhat.com>
->>
->> Paolo Bonzini (27):
->>    hw/riscv: acpi: only create RHCT MMU entry for supported types
->>    target/riscv: assert argument to set_satp_mode_max_supported is valid
->>    target/riscv: cpu: store max SATP mode as a single integer
->>    target/riscv: update max_satp_mode based on QOM properties
->>    target/riscv: remove supported from RISCVSATPMap
->>    target/riscv: move satp_mode.{map,init} out of CPUConfig
->>    target/riscv: introduce RISCVCPUDef
->>    target/riscv: store RISCVCPUDef struct directly in the class
->>    target/riscv: merge riscv_cpu_class_init with the class_base function
->>    target/riscv: move RISCVCPUConfig fields to a header file
->>    target/riscv: include default value in cpu_cfg_fields.h.inc
->>    target/riscv: do not make RISCVCPUConfig fields conditional
->>    target/riscv: add more RISCVCPUDef fields
->>    target/riscv: convert abstract CPU classes to RISCVCPUDef
->>    target/riscv: convert profile CPU models to RISCVCPUDef
->>    target/riscv: convert bare CPU models to RISCVCPUDef
->>    target/riscv: convert dynamic CPU models to RISCVCPUDef
->>    target/riscv: convert SiFive E CPU models to RISCVCPUDef
->>    target/riscv: convert ibex CPU models to RISCVCPUDef
->>    target/riscv: convert SiFive U models to RISCVCPUDef
->>    target/riscv: th: make CSR insertion test a bit more intuitive
->>    target/riscv: generalize custom CSR functionality
->>    target/riscv: convert TT C906 to RISCVCPUDef
->>    target/riscv: convert TT Ascalon to RISCVCPUDef
->>    target/riscv: convert Ventana V1 to RISCVCPUDef
->>    target/riscv: convert Xiangshan Nanhu to RISCVCPUDef
->>    target/riscv: remove .instance_post_init
-> 
-> Thanks!
-> 
-> Applied to riscv-to-apply.next
-> 
-> Alistair
-As Daniel noticed, I was expecting 
-https://lore.kernel.org/qemu-devel/20250210133134.90879-1-philmd@linaro.org/ 
-to get in before this series.
 
-If you need a version that applies without that series, you can pull 
-from branch riscv-for-alistair of https://github.com/bonzini/qemu.
+--khwX8Szt+2sR4RDJ
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Paolo
+On Wed, Apr 23, 2025 at 10:07:48PM +0800, lma wrote:
+> =E5=9C=A8 2025-04-23 21:24=EF=BC=8CStefan Hajnoczi =E5=86=99=E9=81=93=EF=
+=BC=9A
+> > On Wed, Apr 23, 2025 at 05:47:44PM +0800, lma wrote:
+> > > =E5=9C=A8 2025-04-18 23:34=EF=BC=8CStefan Hajnoczi =E5=86=99=E9=81=93=
+=EF=BC=9A
+> > > > On Thu, Apr 17, 2025 at 07:27:26PM +0800, lma wrote:
+> > > > > Hi all,
+> > > > >
+> > > > > In case of SCSI passthrough, If the Block Limits VPD device respo=
+nse
+> > > > > is
+> > > > > absent from hardware, QEMU handles it.
+> > > > >
+> > > > > There are several variables involved in this process as follows:
+> > > > > * The bl.max_transfer
+> > > > > * The bl.max_iov that is associated with IOV_MAX.
+> > > > > * The bl.max_hw_iov that is associated with the max_segments sysfs
+> > > > > setting
+> > > > > for the relevant block device on the host.
+> > > > > * The bl.max_hw_transfer that is associated with the BLKSECTGET
+> > > > > ioctl, in
+> > > > > other words related to the current max_sectors_kb sysfs setting o=
+f the
+> > > > > relevant block device on the host.
+> > > > >
+> > > > > Then take the smallest value and return it as the result of "Maxi=
+mum
+> > > > > transfer length" after relevant calculation, See:
+> > > > > static uint64_t calculate_max_transfer(SCSIDevice *s)
+> > > > > {
+> > > > >     uint64_t max_transfer =3D blk_get_max_hw_transfer(s->conf.blk=
+);
+> > > > >     uint32_t max_iov =3D blk_get_max_hw_iov(s->conf.blk);
+> > > > >
+> > > > >     assert(max_transfer);
+> > > > >     max_transfer =3D MIN_NON_ZERO(max_transfer,
+> > > > >                                 max_iov * qemu_real_host_page_siz=
+e());
+> > > > >
+> > > > >     return max_transfer / s->blocksize;
+> > > > > }
+> > > > >
+> > > > >
+> > > > > However, due to the limitation of IOV_MAX, no matter how powerful
+> > > > > the host
+> > > > > scsi hardware is, the "Maximum transfer length" that qemu emulates
+> > > > > in bl vpd
+> > > > > page is capped at 8192 sectors in case of 4kb page size and 512 b=
+ytes
+> > > > > logical block size.
+> > > > > For example=EF=BC=9A
+> > > > > host:~ # sg_vpd -p bl /dev/sda
+> > > > > Block limits VPD page (SBC)
+> > > > >   ......
+> > > > >   Maximum transfer length: 0 blocks [not reported]
+> > > > >   ......
+> > > > >
+> > > > >
+> > > > > host:~ # cat /sys/class/block/sda/queue/max_sectors_kb
+> > > > > 16384
+> > > > >
+> > > > > host:~ # cat /sys/class/block/sda/queue/max_hw_sectors_kb
+> > > > > 32767
+> > > > >
+> > > > > host:~ # cat /sys/class/block/sda/queue/max_segments
+> > > > > 4096
+> > > > >
+> > > > >
+> > > > > Expected:
+> > > > > guest:~ # sg_vpd -p bl /dev/sda
+> > > > > Block limits VPD page (SBC)
+> > > > >   ......
+> > > > >   Maximum transfer length: 0x8000
+> > > > >   ......
+> > > > >
+> > > > > guest:~ # cat /sys/class/block/sda/queue/max_sectors_kb
+> > > > > 16384
+> > > > >
+> > > > > guest:~ # cat /sys/class/block/sda/queue/max_hw_sectors_kb
+> > > > > 32767
+> > > > >
+> > > > >
+> > > > > Actual:
+> > > > > guest:~ # sg_vpd -p bl /dev/sda
+> > > > > Block limits VPD page (SBC)
+> > > > >   ......
+> > > > >   Maximum transfer length: 0x2000
+> > > > >   ......
+> > > > >
+> > > > > guest:~ # cat /sys/class/block/sda/queue/max_sectors_kb
+> > > > > 4096
+> > > > >
+> > > > > guest:~ # cat /sys/class/block/sda/queue/max_hw_sectors_kb
+> > > > > 32767
+> > > > >
+> > > > >
+> > > > > It seems the current design logic is not able to fully utilize the
+> > > > > performance of the scsi hardware. I have two questions:
+> > > > > 1. I'm curious that is it reasonable to drop the logic about IOV_=
+MAX
+> > > > > limitation, directly use the return value of BLKSECTGET as the ma=
+ximum
+> > > > > transfer length when QEMU emulates the block limit page of scsi v=
+pd?
+> > > > >    If we doing so, we will have maximum transfer length in the gu=
+est
+> > > > > that is
+> > > > > consistent with the capabilities of the host hardware=E3=80=82
+> > > > >
+> > > > > 2. Besides, Assume I set a value(eg: 8192 in kb) to max_sectors_kb
+> > > > > in guest
+> > > > > which doesn't exceed the capabilities of the host hardware(eg: 16=
+384
+> > > > > in kb)
+> > > > > but exceeds the limit(eg: 4096 in kb) caused by IOV_MAX,
+> > > > >    Any risks in readv()/writev() of raw-posix?
+> > > >
+> > > > Not a definitive answer, but just something to encourage discussion:
+> > > >
+> > > > In theory IOV_MAX should not be factored into the Block Limits VPD =
+page
+> > > > Maximum Transfer Length field because there is already a HBA limit =
+on
+> > > > the maximum number of segments. For example, virtio-scsi has a seg_=
+max
+> > > > Configuration Space field that guest drivers honor independently of
+> > > > Maximum Transfer Length.
+> > > >
+> > > > However, I can imagine why MAX_IOV needs to be factored in:
+> > > >
+> > > > 1. The maximum number of segments might be hardcoded in guest drive=
+rs
+> > > >    for some SCSI HBAs and QEMU has no way of exposing MAX_IOV to the
+> > > >    guest in that case.
+> > > >
+> > > > 2. Guest physical RAM addresses translate to host virtual memory. T=
+hat
+> > > >    means 1 segment as seen by the guest might actually require mult=
+iple
+> > > >    physical DMA segments on the host. A conservative calculation th=
+at
+> > > >    assumes the worst-case 1 iovec per 4 KB memory page prevents the
+> > > >    host maximum segments limit (note this is not the Maximum Transf=
+er
+> > > >    Length limit!) from being exceeded.
+> > > >
+> > > > So there seem to be at least two problems here. If you relax the
+> > > > calculation there will be corner cases that break because the guest=
+ can
+> > > > send too many segments.
+> > > >
+> > > > Stefan
+> > >=20
+> > > The maximum allowed value for
+> > > /sys/class/block/<GUEST_DEV>/queue/max_sectors_kb in guest os depends
+> > > on the smaller of below two items in guest os:
+> > > the "maximum transfer length of block limits VPD page"
+> > > and
+> > > the "/sys/class/block/<GUEST_DEV>/queue/max_hw_sectors_kb".
+> > >=20
+> > >=20
+> > > The "seg_max Configuration Space field" in hw/scsi/virtio-scsi.c:
+> > > static const Property virtio_scsi_properties[] =3D {
+> > >     ...
+> > >     DEFINE_PROP_UINT32("max_sectors", VirtIOSCSI,
+> > > parent_obj.conf.max_sectors,
+> > >                                                   0xFFFF),
+> > >     ...
+> > > };
+> > >=20
+> > > This field determines the value of max_hw_sectors_kb in sysfs in guest
+> > > os, Eg: In case of Logical block size 512 bytes, 0xFFFF sectors means:
+> > > max_hw_sectors_kb =3D 0xFFFF/2 =3D 32767, I believe many users will k=
+eep
+> > > this default value when using virtio-scsi, rather than customizing it.
+> > >=20
+> > > But by the current design and affected by IOV_MAX, the upper limit of
+> > > /sys/class/block/<GUEST_DEV>/queue/max_sectors_kb is 4096 for SCSI
+> > > passthrough scenario in case of 4kb page size and 512 bytes logical
+> > > block size. Therefore, the gap between the upper limit of
+> > > max_sectors_kb
+> > > and the max_hw_sectors_kb is very large.
+> > >=20
+> > > I think this design logic is a bit strange.
+> >=20
+> > Unless you can think of a different correct way to report block limits
+> > for scsi-generic devices, then I think we're stuck with the sub-optimal
+> > conservative value.
+> >=20
+> > By the way, scsi-disk.c's scsi-block and scsi-hd devices are less
+> > restrictive because the host is able to split requests. Splitting is not
+> > possible for SCSI passthrough requests since they could be
+> > vendor-specific requests and the host does not have enough information
+> > to split them.
+> >=20
+> > Can you use -device scsi-block instead of -device scsi-generic? That
+> > would solve this problem.
+>=20
+> Well, unfortunately, that's exactly where I ran into the problem with
+> the restriction=E2=80=8C on maximum transfer length with the scsi-block, =
+I've
+> never used the scsi-generic.
+> Eg:
+> ......
+> -device
+> '{"driver":"virtio-scsi-pci","id":"scsi0","bus":"pci.7","addr":"0x0"}' \
+> -blockdev '{"driver":"host_device","filename":"/dev/sda","node-name":\
+> "libvirt-2-storage","read-only":false}' \
+> -device
+> '{"driver":"scsi-block","bus":"scsi0.0","channel":0,"scsi-id":0,"lun":0,\
+> "drive":"libvirt-2-storage","id":"scsi0-0-0-0"}' \
+> ......
+
+Ah, scsi-blk uses scsi_generic_req_ops for INQUIRY commands.
+
+It comes down to whether scsi-block handles all commands that transfer
+logical blocks (READ/WRITE/etc) without issuing the SG_IO ioctl, then
+it's safe to increase the Optimal and Maximum Transfer Length fields to
+the same value as scsi-disk.
+
+It's possible that a vendor-specific command transfers logical blocks
+and honors Maximum Transfer Length, so then it would not be safe to make
+this change. But I'm not sure...
+
+Stefan
+
+--khwX8Szt+2sR4RDJ
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmgKUAcACgkQnKSrs4Gr
+c8hSEggAiP5Dun3qVi7Il8LbBQLSSZN7g7n3c4pGSN5wsOB/KZAwg7nTxdHWFesS
+9aRdD5Hri3JyMVoeFYXkhkeAphq46jkJCGGCqzafsILBknRXxq6I8BKLGWtdiGlh
+4Y2OvLavZTDLt128eYKQAl1ZMFreCvux5RCV6fSkhP96uTn4YnXp/rm1ndq59ZOO
+Qqi57IsIEn9VPCr5nOOyagFobmDXfw9d0C9De+yr47St4jAf7t5HY5yUMTDZHCCi
+xx8HYyACryPTpSHsnsBarZ4cx7qmkZPdJIt70QivpdoFMu9oHCtytesaNd9oyy0S
+WGv5VWIC8yMv9b+Msyyp+kV3JIBa3g==
+=hnwR
+-----END PGP SIGNATURE-----
+
+--khwX8Szt+2sR4RDJ--
 
 
