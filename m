@@ -2,76 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3529A9A250
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 08:34:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29B50A9A2A9
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 08:55:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7q8o-0003iX-P7; Thu, 24 Apr 2025 02:32:58 -0400
+	id 1u7qTw-0004VV-PX; Thu, 24 Apr 2025 02:54:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7q8m-0003iK-Uv
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 02:32:56 -0400
-Received: from mgamail.intel.com ([192.198.163.15])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u7q8k-0006g8-9t
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 02:32:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745476374; x=1777012374;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=crVvmvt20948+XIDqkkeo+K2HiFVUVQubWp6Rvxv3ZA=;
- b=NqAXUaVllveflYiUCAgphpr+olNKBsGk4iVoHZs6KEsKcgPARVvFf6hh
- PuLYCCyR94w1cQTYxdau+/AtLoOS7iCI7chzvrVqZOh+Y473JXlVkbFMu
- nhMbm6WPvdG073A2Se5mq4vX22eSUSLxYiI+nOOzA2+j17WCiWigECRsI
- f5+cW326WNRgSjxX8MxS98Aj9iEw8tF8s77UAREtWmjTYtTebnuxb6aad
- 949boFphJMOsJgRdt0jNZyeZDgivyZ5VXLuK9mTHk9NyI+wCENKfaFv61
- QaUQmIhouIfASqh/0JdeRFnJf9Tfq4fXWAvWm+xoCAg2Xy4RC38cuNyqM Q==;
-X-CSE-ConnectionGUID: tPVvqbEtTTeIBFJwExmMGw==
-X-CSE-MsgGUID: kr6cpe/pSo6bBgDl9XJQGg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="47226574"
-X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; d="scan'208";a="47226574"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2025 23:32:48 -0700
-X-CSE-ConnectionGUID: giu4a9VBT6uyMnrpiLBAeQ==
-X-CSE-MsgGUID: r0QMmQ+gS0CiIRt5Q/1iRg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; d="scan'208";a="163562658"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa001.fm.intel.com with ESMTP; 23 Apr 2025 23:32:45 -0700
-Date: Thu, 24 Apr 2025 14:53:41 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Tejus GK <tejus.gk@nutanix.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Babu Moger <babu.moger@amd.com>, Ewan Hai <ewanhai-oc@zhaoxin.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Jason Zeng <jason.zeng@intel.com>,
- Manish Mishra <manish.mishra@nutanix.com>,
- Tao Su <tao1.su@intel.com>, qemu-devel@nongnu.org, kvm@vger.kernel.org
-Subject: Re: [RFC 05/10] i386/cpu: Introduce cache model for SapphireRapids
-Message-ID: <aAnf9YvevhAo+HJE@intel.com>
-References: <20250423114702.1529340-1-zhao1.liu@intel.com>
- <20250423114702.1529340-6-zhao1.liu@intel.com>
- <315d76f0-d81c-43ed-a13e-ef9b8e6a0e75@nutanix.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7qTu-0004VI-I6
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 02:54:46 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u7qTs-0000w2-Rp
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 02:54:46 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-43cec5cd73bso2876085e9.3
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 23:54:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1745477683; x=1746082483; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=LJqDqb3zgt+C4ZQ5uifmY2LyBhUT60Z8PlWqzA1UJcs=;
+ b=b5ty3Y9X8fdKiYjb3J1aG8dAuYl2q5kue47je0/lf94iy/SmDZhqS8hGgrvNWlYJFe
+ u+UthMYcCEm21JUHOHaFyGGSx9TZ8rb4XfoFpJ0CBlTqqu3eJ2Y7+dPN6zN1sH99ft6V
+ iGBcCmvoFTyDkmM6QjuRHzSe4XK51Ofo+n1utV6NHSL5SqzdsYjO7gQpH0QM07enPEOl
+ f3ppVqN4J1I3Uk7GFnNvERdfXPbPoawOnPjJdsXPWJAquYWAe98NOp6MnBLhDZ4lfUmx
+ hI02wJjoF7q4pUa4r89u8ThBr+OCQgKXC1GregrAoHr37ZYRUrhDfMIeZEW88qMf+GSU
+ oHnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1745477683; x=1746082483;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=LJqDqb3zgt+C4ZQ5uifmY2LyBhUT60Z8PlWqzA1UJcs=;
+ b=JBqG+EPqHbak18nKR9qmM445Cyg15jgLQB7zFp6fcObCxj7HyhY8z57j8ZL5r4hjT2
+ yXuS5DgX2BC6ZevYWZM6Vp4CrGnbjdHIx1KpoD7orS34bYenIz/u4BYbKpqaDYEcTeth
+ y0fXhIwlScToJ/lPyhGaUsjDcaW02iR4eWggo2tvBhJ7CM5HWZo+H/9kfJCDMbHSijlF
+ ZHPkwN46Cp+NR6A6sXnITMyqH745itji/ToSEHaEP17/Iy/HfZQr/8SI1uMcv4cib/Cr
+ k2qM0/5T0lSe669DV/lyMU4rgeK+D8ndWvSS1fXkHrfLN+nFL4oGGVqvFZwDj04bRLYM
+ k7cQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXt0rIxVKOMaE2lLLNmmmeP8pSIm0ph6SwcNYIWPvXbOLcSsZtzob3FyDgWtL6LHGFb5qNRfcgjV4Hg@nongnu.org
+X-Gm-Message-State: AOJu0Yw3uaaCV84Oc+zBPjxTaVDira05rPKQRW3ULmyTNGwpwnhGul5h
+ eMJOUMu8eKWYV5pS1fwzFhwMYfwfkT19tUjRjlrFSCvCov9IgesZ39TVK6t57sk=
+X-Gm-Gg: ASbGnctL3OshQ4UgNG6m7NpyEnR3Z+vrK/Oibe/0oMPBtwFHsLIIyRapBph2LbabzCU
+ qhs4QelO0OdEDrlIj8ZTBFeBIphRMoijfTmHRb28GCFp5Ow5UmwLEHGX5pU0bQwApteM8GvoWh/
+ WEfJGa0I8bIA565Iay+2Qm1YJifPfG4A4IcWa5AeiDTJpYX+tfTBJqDZtU3wfYHZTAVvZhrOhog
+ J5ZF8i0KJGkEG9Iy7/ZRhYvMVFCbyCsAO9fsLP4E237cAVnSx1Bms95EgTVgrdm/4zslmA13MIk
+ bsjCMCv3t69AZzYJq32Eu0fuU3t0bEv/FBQMJet1B/piGR41eCSOTJlPHJH/Xk7WznWowGj5N+8
+ l017i9crAsxynbA==
+X-Google-Smtp-Source: AGHT+IHheP7cK+bS4Er53rQda1CTPIrVcU1j3GQ9mQQYXLKm4B8hLgvwb6YbzN8IKc04xe3AaiJcQg==
+X-Received: by 2002:a05:600c:1c91:b0:43d:5ec:b2f4 with SMTP id
+ 5b1f17b1804b1-4409bd18185mr12678575e9.10.1745477682860; 
+ Wed, 23 Apr 2025 23:54:42 -0700 (PDT)
+Received: from [192.168.69.169] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4409d2bec50sm8251835e9.33.2025.04.23.23.54.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 23 Apr 2025 23:54:42 -0700 (PDT)
+Message-ID: <87d5270d-6c90-48a5-a973-a647a67e6c20@linaro.org>
+Date: Thu, 24 Apr 2025 08:54:41 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <315d76f0-d81c-43ed-a13e-ef9b8e6a0e75@nutanix.com>
-Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.294,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 03/15] accel/tcg: Add CPUState arg to
+ tb_invalidate_phys_page_range__locked
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20250424011918.599958-1-richard.henderson@linaro.org>
+ <20250424011918.599958-4-richard.henderson@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250424011918.599958-4-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,34 +100,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Tejus,
+On 24/4/25 03:19, Richard Henderson wrote:
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   accel/tcg/tb-maint.c | 9 ++++++---
+>   1 file changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
+> index 714dcaedc9..e8a465c9ac 100644
+> --- a/accel/tcg/tb-maint.c
+> +++ b/accel/tcg/tb-maint.c
+> @@ -1100,9 +1100,12 @@ bool tb_invalidate_phys_page_unwind(CPUState *cpu, tb_page_addr_t addr,
+>   /*
+>    * @p must be non-NULL.
+>    * Call with all @pages locked.
+> + * If cpu may be NULL outside of a cpu context.  In which case,
 
-> Thank you for this improvement! I see that even within the SPR-SP line of
-> Processors, the cache sizes vary across different models. What happens for
-> an instance when a processor only has 37.5 MiB of L3 per socket, but the CPU
-> Model exposes 60 MiB of L3 to the VM?
+s/If cpu/@cpu/ ?
 
-AFAIK, the Linux scheduler doesn't take cache size into account, so
-generally speaking, I think there's no impat on Linux.
+> + * precise_smc need not be detected.
+>    */
 
-If user space apps don't care about this info, then there's no problem.
-
-However, I've met some cases where certain customers prefer that the
-named cpu model also become closer to real silicon (e.g. current cache
-size). The advantage of this is that an app that works fine on real
-silicon is more likely to run normally in a Guest environment...
-Because nobody can ensure that no user space app care about cache
-size at all. And it's also unknown if there will be other OSes that
-depend on the cache size (although I think it should be fine, after
-all, current x86 only supports smp machines).
-
-In contrast, the 0x1f example is more typical. By SDM, 0x1f is only
-optional, and if 0x1f is not available, the one should check 0xb.
-However, in Mishra's case, his windows only relies on 0x1f, so making
-the named CPU model and the real silicon alignable is a better way
-of avoiding all sorts of incompatibilities.
-
-Thanks,
-Zhao
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
