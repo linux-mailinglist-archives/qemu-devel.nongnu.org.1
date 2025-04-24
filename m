@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2203A99E40
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:31:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B54BA99E3B
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:29:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7kz7-0008OV-4U; Wed, 23 Apr 2025 21:02:37 -0400
+	id 1u7ky0-0006lY-8M; Wed, 23 Apr 2025 21:01:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kwl-0004nA-9I
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 21:00:13 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1u7kwm-0004pE-GT
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 21:00:14 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kwi-0005T5-BL
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 21:00:10 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-736c1cf75e4so323827b3a.2
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 18:00:07 -0700 (PDT)
+ id 1u7kwj-0005TE-P2
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 21:00:11 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-736c3e7b390so373073b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 18:00:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745456406; x=1746061206; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745456407; x=1746061207; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=k6epK1kHVGM7DWadqrW/21XmOu9df43IQ+8cLDy78ic=;
- b=wT/A5J1Z741CEq96kOqgXTLLhrj0VFvTdt328jx7/OAc6VFAPkZcL68EPQzsSkqVqi
- OvI0GoRHtNSNyp6wrqDNhg6O2yrKyqYFesAYEKSvx+fsmCElCePCdWjD7kMsi5f+9xtG
- gBAmmwXNIioZTXhBdxUGFg9gqTZzqDOMN5ktE6Nm7t/paVhao0p6GajpMOcdUvo4nWCU
- w0NouK6uYyVdVZ7C0o0jW1iTTTZvu08NgEEEdyeADU7Uvla+fphWXFB3pem8SY9o0izl
- fdold+in18zQ1FCooFZIK1LwmQkmIrwk68SfLpaYbacXh1gZJUZx31TaVHk/0X7yqtKE
- pX3A==
+ bh=Judoew0yyRM+ZQdcs+U7k7YNBkFAe4iaEkKni645IrU=;
+ b=JRiRZa5aWKCLMvLiWcV32HG8w/+tFttgp0iyX1QG3JZkIpH12Q4bIQDoLO1S9PZVvG
+ VwYigDdGl4lRI7CQO4gQxc++95eW/fFu4N+bgxq2gADmEXHcA0RMu+q3yBXbnROr7Ow1
+ NEUWQHeG52UKMOWtKzF5rXcP+JotpjOTuV2AiL7idqRTWm2Ki/KuxYe4IXrowvB5gCm4
+ s3Qgr+UO9cOb60WHBmSNS3/j5MHWByjkJ+GdUZiHTiyEebjVLC9ToTUiLQ9/pMlNvmr+
+ xZ5sWcoYwF7hFIF4n9+KoDYrUljqX9d++C1y8fBOhYFppWe0LRueMirxVu6vXdX1sitE
+ T6dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745456406; x=1746061206;
+ d=1e100.net; s=20230601; t=1745456407; x=1746061207;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=k6epK1kHVGM7DWadqrW/21XmOu9df43IQ+8cLDy78ic=;
- b=OF8GQ+i26tXH22Oe1IajxGrJuJmJiWE1pXF79vnzk1tOfcBBNqc1FYMGPLAYgUVLfM
- YyMwg5yKqjs+PSoPksn7xm+PMXQl1v62LC+86gxt4+lgBlFK9Y/2hm5f2ksFbXPSQRs6
- /jyoBlefNJQK5Qwa7deSK488Vsal7WS8odApMuk3IkCKGF1Z2E1vZ6WX2rJxCVM/uc1n
- QY03oZHolKFKiWSZZlkx66/RFO19/lFFMQKGK068Duz95Zk7QH9hWWRfQaWwNUdTUA+4
- 8WI23iIoblDo7jG59FxT3SQ1fwbLUrgJA92S2kzrgE3ONQ0Sy9QH4o/VwjPlvbUXHdv+
- vIhw==
-X-Gm-Message-State: AOJu0YwIsvNcrRQvN0Yx7o4f5+Y84nQYhGpX6+FWShmmd8rsE72OWXLe
- isZn0WgfXRsygkPbuWkyl1DMOWIVOdEBZ0pWqeVg5mSxwYJafRcpRg6jSCN5BYIoHH5S8sPHd9t
- l
-X-Gm-Gg: ASbGncsg0ND9rWDzKnr1ZN/iNqqSn11eRVe4Yd3AL+zCfUtLGMCJDOfW4GLiWG/nUcq
- YuS21kHd2cAck88VFB3oqMEOMrBu5buqm+0VimYIcOCs5d8wcU7OgQ0YdJEEle/7okTzpAZzMzp
- VMerW6+yLo/wUrNDe3nR5g5/MwYyYXtE18LstVN9AnCG//Tcqc73/d/kec4XzHi6tWuKfWqRC/y
- wPAOHIJOnxW2UCXiFsvzNb6F0EaCkMwd0KnIwkMNCvJIaFhB4laWflKlRZdP2j9wdp/W6jancmh
- wrpoxFHkl6tO9FCuLpPzAEYz6vb1QcVh3QrjCO5/CNY+4z7X1lBYFKY64udr0i8rXXobp8SH5oE
- =
-X-Google-Smtp-Source: AGHT+IFRvibgNF5FITUMoseFlP5gAy6ai/ooyB4iawOBZZgAUdhMP1KYUPJzj87GWSqEjWNi39mZKA==
-X-Received: by 2002:a05:6a20:6f07:b0:1f5:706b:5410 with SMTP id
- adf61e73a8af0-20444fe0b39mr781453637.38.1745456406242; 
+ bh=Judoew0yyRM+ZQdcs+U7k7YNBkFAe4iaEkKni645IrU=;
+ b=R1S/tazFMxX479FzxM293zrxGnx7AYs/DUefHa+qm0NhGW5IBa92RxBo1ucuC/XcBN
+ 821ocXeb5TDf5+M8fcdQ0Q4Ug+NuoyvkMORvrXoLtUHN6Ygh9OKmzk4WgBZn1UgCbhQF
+ 1L7sKNi/0ug0FYL8buxIioI55lNpqN28yqGSd+en5BuYk6JUF++ii4XEFFvcNEhJeDSX
+ MWJhFaF/UzQXO1M3Fl7D0EwIj9M5VpTxjeRdQ2voAbpfFvrGmTGAKNXcXdrbArXsuRvY
+ xuSeDbkwKAwOJLSlzKTII3K2gW3X2FRVPmO9SJET6IGjwXxlUtLvw2NJdN7tDwsFe/R6
+ 1Vcg==
+X-Gm-Message-State: AOJu0Ywwj/64HH8pz1Z4rqkKai5NbZ2qGe66YkQICJYr2vS7bqGzTNDH
+ jblDmXNq1Ac9xr4FKaz1vAbM8ovvwdzmQ4fzuj3jaIpHmWvvTQjxbcpRRVfCqlkcmByPn0qAIxT
+ j
+X-Gm-Gg: ASbGncvmBBHRB2TUSsbf3uEmDIvQz0YHyBRBDtrFhv5d1C1eWpCgYv0m0dgP8PHADwq
+ fHiwl5o82MdFj2aBCZyi/KQ8AtTyeN9o1uTyp8YjRxIUbBugotO6IoGVmme0oUcZjXy7cOeXWUR
+ kGGqV4cU+2gsVwDGZP0yB5GzabzqlLCfbXk0RimXLGWf6m/3AXQFz3yPcPx241Ko/VM8ikE9NhS
+ MdAjmEr4KUhErTWs0p65DSWKmDPyGEXLBAGxCA8TKyJ3PRaj/d9QRsezYcE4YG0yL9c5LnefbF2
+ 1B4j2oVJ53aP7hEIkrfEz0G6J1aFbVBJsSZGpYqSw1LpnM+JkYSE2b9JH2ciRn4nf6KBw7W9w6U
+ HMHoaJ1skBQ==
+X-Google-Smtp-Source: AGHT+IEUV5aF+g7SRwso+9NY2+Zn9bz25xXC2jjLUYy0zk3NhZSU9Z6zflw91mn4RztczFk+BOEZGQ==
+X-Received: by 2002:a05:6a20:3d90:b0:1fd:f48b:f397 with SMTP id
+ adf61e73a8af0-20444f0e8fcmr697526637.23.1745456406938; 
  Wed, 23 Apr 2025 18:00:06 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b15f76f45c7sm129259a12.16.2025.04.23.18.00.05
+ 41be03b00d2f7-b15f76f45c7sm129259a12.16.2025.04.23.18.00.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Apr 2025 18:00:05 -0700 (PDT)
+ Wed, 23 Apr 2025 18:00:06 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 125/148] hw/arm: make most of the compilation units common
-Date: Wed, 23 Apr 2025 17:49:10 -0700
-Message-ID: <20250424004934.598783-126-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 126/148] target/riscv: Do not expose rv128 CPU on user mode
+ emulation
+Date: Wed, 23 Apr 2025 17:49:11 -0700
+Message-ID: <20250424004934.598783-127-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250424004934.598783-1-richard.henderson@linaro.org>
 References: <20250424004934.598783-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,154 +100,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+As Richard mentioned:
+
+  We should allow RV128 in user-mode at all until there's a
+  kernel abi for it.
+
+Remove the experimental 'x-rv128' CPU on user emulation
+(since it is experimental, no deprecation period is required).
+
+Reported-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250325045915.994760-30-pierrick.bouvier@linaro.org>
 ---
- hw/arm/meson.build | 112 ++++++++++++++++++++++-----------------------
- 1 file changed, 56 insertions(+), 56 deletions(-)
+ target/riscv/cpu.c         | 10 ++++------
+ target/riscv/tcg/tcg-cpu.c |  5 +++--
+ 2 files changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-index 9e8c96059e..09b1cfe5b5 100644
---- a/hw/arm/meson.build
-+++ b/hw/arm/meson.build
-@@ -2,43 +2,43 @@ arm_ss = ss.source_set()
- arm_common_ss = ss.source_set()
- arm_ss.add(when: 'CONFIG_ARM_VIRT', if_true: files('virt.c'))
- arm_ss.add(when: 'CONFIG_ACPI', if_true: files('virt-acpi-build.c'))
--arm_ss.add(when: 'CONFIG_DIGIC', if_true: files('digic_boards.c'))
--arm_ss.add(when: 'CONFIG_EMCRAFT_SF2', if_true: files('msf2-som.c'))
--arm_ss.add(when: 'CONFIG_HIGHBANK', if_true: files('highbank.c'))
--arm_ss.add(when: 'CONFIG_INTEGRATOR', if_true: files('integratorcp.c'))
--arm_ss.add(when: 'CONFIG_MICROBIT', if_true: files('microbit.c'))
--arm_ss.add(when: 'CONFIG_MPS3R', if_true: files('mps3r.c'))
--arm_ss.add(when: 'CONFIG_MUSICPAL', if_true: files('musicpal.c'))
--arm_ss.add(when: 'CONFIG_NETDUINOPLUS2', if_true: files('netduinoplus2.c'))
--arm_ss.add(when: 'CONFIG_OLIMEX_STM32_H405', if_true: files('olimex-stm32-h405.c'))
--arm_ss.add(when: 'CONFIG_NPCM7XX', if_true: files('npcm7xx.c', 'npcm7xx_boards.c'))
--arm_ss.add(when: 'CONFIG_NPCM8XX', if_true: files('npcm8xx.c', 'npcm8xx_boards.c'))
--arm_ss.add(when: 'CONFIG_REALVIEW', if_true: files('realview.c'))
-+arm_common_ss.add(when: 'CONFIG_DIGIC', if_true: files('digic_boards.c'))
-+arm_common_ss.add(when: 'CONFIG_EMCRAFT_SF2', if_true: files('msf2-som.c'))
-+arm_common_ss.add(when: 'CONFIG_HIGHBANK', if_true: files('highbank.c'))
-+arm_common_ss.add(when: 'CONFIG_INTEGRATOR', if_true: files('integratorcp.c'))
-+arm_common_ss.add(when: 'CONFIG_MICROBIT', if_true: files('microbit.c'))
-+arm_common_ss.add(when: 'CONFIG_MPS3R', if_true: files('mps3r.c'))
-+arm_common_ss.add(when: 'CONFIG_MUSICPAL', if_true: [pixman, files('musicpal.c')])
-+arm_common_ss.add(when: 'CONFIG_NETDUINOPLUS2', if_true: files('netduinoplus2.c'))
-+arm_common_ss.add(when: 'CONFIG_OLIMEX_STM32_H405', if_true: files('olimex-stm32-h405.c'))
-+arm_common_ss.add(when: 'CONFIG_NPCM7XX', if_true: files('npcm7xx.c', 'npcm7xx_boards.c'))
-+arm_common_ss.add(when: 'CONFIG_NPCM8XX', if_true: files('npcm8xx.c', 'npcm8xx_boards.c'))
-+arm_common_ss.add(when: 'CONFIG_REALVIEW', if_true: files('realview.c'))
- arm_ss.add(when: 'CONFIG_SBSA_REF', if_true: files('sbsa-ref.c'))
--arm_ss.add(when: 'CONFIG_STELLARIS', if_true: files('stellaris.c'))
--arm_ss.add(when: 'CONFIG_STM32VLDISCOVERY', if_true: files('stm32vldiscovery.c'))
--arm_ss.add(when: 'CONFIG_ZYNQ', if_true: files('xilinx_zynq.c'))
--arm_ss.add(when: 'CONFIG_SABRELITE', if_true: files('sabrelite.c'))
-+arm_common_ss.add(when: 'CONFIG_STELLARIS', if_true: files('stellaris.c'))
-+arm_common_ss.add(when: 'CONFIG_STM32VLDISCOVERY', if_true: files('stm32vldiscovery.c'))
-+arm_common_ss.add(when: 'CONFIG_ZYNQ', if_true: files('xilinx_zynq.c'))
-+arm_common_ss.add(when: 'CONFIG_SABRELITE', if_true: files('sabrelite.c'))
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 430b02d2a5..ad534cee51 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -697,7 +697,7 @@ static void rv64_xiangshan_nanhu_cpu_init(Object *obj)
+ #endif
+ }
  
--arm_ss.add(when: 'CONFIG_ARM_V7M', if_true: files('armv7m.c'))
--arm_ss.add(when: 'CONFIG_EXYNOS4', if_true: files('exynos4210.c'))
--arm_ss.add(when: 'CONFIG_DIGIC', if_true: files('digic.c'))
--arm_ss.add(when: 'CONFIG_OMAP', if_true: files('omap1.c'))
--arm_ss.add(when: 'CONFIG_ALLWINNER_A10', if_true: files('allwinner-a10.c', 'cubieboard.c'))
--arm_ss.add(when: 'CONFIG_ALLWINNER_H3', if_true: files('allwinner-h3.c', 'orangepi.c'))
--arm_ss.add(when: 'CONFIG_ALLWINNER_R40', if_true: files('allwinner-r40.c', 'bananapi_m2u.c'))
-+arm_common_ss.add(when: 'CONFIG_ARM_V7M', if_true: files('armv7m.c'))
-+arm_common_ss.add(when: 'CONFIG_EXYNOS4', if_true: files('exynos4210.c'))
-+arm_common_ss.add(when: 'CONFIG_DIGIC', if_true: files('digic.c'))
-+arm_common_ss.add(when: 'CONFIG_OMAP', if_true: files('omap1.c'))
-+arm_common_ss.add(when: 'CONFIG_ALLWINNER_A10', if_true: files('allwinner-a10.c', 'cubieboard.c'))
-+arm_common_ss.add(when: 'CONFIG_ALLWINNER_H3', if_true: files('allwinner-h3.c', 'orangepi.c'))
-+arm_common_ss.add(when: 'CONFIG_ALLWINNER_R40', if_true: files('allwinner-r40.c', 'bananapi_m2u.c'))
- arm_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2836.c', 'raspi.c'))
--arm_ss.add(when: ['CONFIG_RASPI', 'TARGET_AARCH64'], if_true: files('bcm2838.c', 'raspi4b.c'))
--arm_ss.add(when: 'CONFIG_STM32F100_SOC', if_true: files('stm32f100_soc.c'))
--arm_ss.add(when: 'CONFIG_STM32F205_SOC', if_true: files('stm32f205_soc.c'))
--arm_ss.add(when: 'CONFIG_STM32F405_SOC', if_true: files('stm32f405_soc.c'))
--arm_ss.add(when: 'CONFIG_B_L475E_IOT01A', if_true: files('b-l475e-iot01a.c'))
--arm_ss.add(when: 'CONFIG_STM32L4X5_SOC', if_true: files('stm32l4x5_soc.c'))
--arm_ss.add(when: 'CONFIG_XLNX_ZYNQMP_ARM', if_true: files('xlnx-zynqmp.c', 'xlnx-zcu102.c'))
--arm_ss.add(when: 'CONFIG_XLNX_VERSAL', if_true: files('xlnx-versal.c', 'xlnx-versal-virt.c'))
--arm_ss.add(when: 'CONFIG_FSL_IMX25', if_true: files('fsl-imx25.c', 'imx25_pdk.c'))
--arm_ss.add(when: 'CONFIG_FSL_IMX31', if_true: files('fsl-imx31.c', 'kzm.c'))
--arm_ss.add(when: 'CONFIG_FSL_IMX6', if_true: files('fsl-imx6.c'))
-+arm_common_ss.add(when: ['CONFIG_RASPI', 'TARGET_AARCH64'], if_true: files('bcm2838.c', 'raspi4b.c'))
-+arm_common_ss.add(when: 'CONFIG_STM32F100_SOC', if_true: files('stm32f100_soc.c'))
-+arm_common_ss.add(when: 'CONFIG_STM32F205_SOC', if_true: files('stm32f205_soc.c'))
-+arm_common_ss.add(when: 'CONFIG_STM32F405_SOC', if_true: files('stm32f405_soc.c'))
-+arm_common_ss.add(when: 'CONFIG_B_L475E_IOT01A', if_true: files('b-l475e-iot01a.c'))
-+arm_common_ss.add(when: 'CONFIG_STM32L4X5_SOC', if_true: files('stm32l4x5_soc.c'))
-+arm_common_ss.add(when: 'CONFIG_XLNX_ZYNQMP_ARM', if_true: files('xlnx-zynqmp.c', 'xlnx-zcu102.c'))
-+arm_common_ss.add(when: 'CONFIG_XLNX_VERSAL', if_true: files('xlnx-versal.c', 'xlnx-versal-virt.c'))
-+arm_common_ss.add(when: 'CONFIG_FSL_IMX25', if_true: files('fsl-imx25.c', 'imx25_pdk.c'))
-+arm_common_ss.add(when: 'CONFIG_FSL_IMX31', if_true: files('fsl-imx31.c', 'kzm.c'))
-+arm_common_ss.add(when: 'CONFIG_FSL_IMX6', if_true: files('fsl-imx6.c'))
- arm_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files(
-   'aspeed.c',
-   'aspeed_soc_common.c',
-@@ -47,33 +47,33 @@ arm_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files(
-   'aspeed_ast10x0.c',
-   'aspeed_eeprom.c',
-   'fby35.c'))
--arm_ss.add(when: ['CONFIG_ASPEED_SOC', 'TARGET_AARCH64'], if_true: files('aspeed_ast27x0.c'))
--arm_ss.add(when: 'CONFIG_MPS2', if_true: files('mps2.c'))
--arm_ss.add(when: 'CONFIG_MPS2', if_true: files('mps2-tz.c'))
--arm_ss.add(when: 'CONFIG_MSF2', if_true: files('msf2-soc.c'))
--arm_ss.add(when: 'CONFIG_MUSCA', if_true: files('musca.c'))
--arm_ss.add(when: 'CONFIG_ARMSSE', if_true: files('armsse.c'))
--arm_ss.add(when: 'CONFIG_FSL_IMX7', if_true: files('fsl-imx7.c', 'mcimx7d-sabre.c'))
--arm_ss.add(when: 'CONFIG_FSL_IMX8MP', if_true: files('fsl-imx8mp.c'))
--arm_ss.add(when: 'CONFIG_FSL_IMX8MP_EVK', if_true: files('imx8mp-evk.c'))
--arm_ss.add(when: 'CONFIG_ARM_SMMUV3', if_true: files('smmuv3.c'))
--arm_ss.add(when: 'CONFIG_FSL_IMX6UL', if_true: files('fsl-imx6ul.c', 'mcimx6ul-evk.c'))
--arm_ss.add(when: 'CONFIG_NRF51_SOC', if_true: files('nrf51_soc.c'))
-+arm_common_ss.add(when: ['CONFIG_ASPEED_SOC', 'TARGET_AARCH64'], if_true: files('aspeed_ast27x0.c'))
-+arm_common_ss.add(when: 'CONFIG_MPS2', if_true: files('mps2.c'))
-+arm_common_ss.add(when: 'CONFIG_MPS2', if_true: files('mps2-tz.c'))
-+arm_common_ss.add(when: 'CONFIG_MSF2', if_true: files('msf2-soc.c'))
-+arm_common_ss.add(when: 'CONFIG_MUSCA', if_true: files('musca.c'))
-+arm_common_ss.add(when: 'CONFIG_ARMSSE', if_true: files('armsse.c'))
-+arm_common_ss.add(when: 'CONFIG_FSL_IMX7', if_true: files('fsl-imx7.c', 'mcimx7d-sabre.c'))
-+arm_common_ss.add(when: 'CONFIG_FSL_IMX8MP', if_true: files('fsl-imx8mp.c'))
-+arm_common_ss.add(when: 'CONFIG_FSL_IMX8MP_EVK', if_true: files('imx8mp-evk.c'))
-+arm_common_ss.add(when: 'CONFIG_ARM_SMMUV3', if_true: files('smmuv3.c'))
-+arm_common_ss.add(when: 'CONFIG_FSL_IMX6UL', if_true: files('fsl-imx6ul.c', 'mcimx6ul-evk.c'))
-+arm_common_ss.add(when: 'CONFIG_NRF51_SOC', if_true: files('nrf51_soc.c'))
- arm_ss.add(when: 'CONFIG_XEN', if_true: files(
-   'xen-stubs.c',
-   'xen-pvh.c',
- ))
+-#ifdef CONFIG_TCG
++#if defined(CONFIG_TCG) && !defined(CONFIG_USER_ONLY)
+ static void rv128_base_cpu_init(Object *obj)
+ {
+     RISCVCPU *cpu = RISCV_CPU(obj);
+@@ -708,11 +708,9 @@ static void rv128_base_cpu_init(Object *obj)
  
--system_ss.add(when: 'CONFIG_ARM_SMMUV3', if_true: files('smmu-common.c'))
--system_ss.add(when: 'CONFIG_COLLIE', if_true: files('collie.c'))
--system_ss.add(when: 'CONFIG_EXYNOS4', if_true: files('exynos4_boards.c'))
--system_ss.add(when: 'CONFIG_NETDUINO2', if_true: files('netduino2.c'))
--system_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2835_peripherals.c'))
--system_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2838_peripherals.c'))
--system_ss.add(when: 'CONFIG_STRONGARM', if_true: files('strongarm.c'))
--system_ss.add(when: 'CONFIG_SX1', if_true: files('omap_sx1.c'))
--system_ss.add(when: 'CONFIG_VERSATILE', if_true: files('versatilepb.c'))
--system_ss.add(when: 'CONFIG_VEXPRESS', if_true: files('vexpress.c'))
-+arm_common_ss.add(when: 'CONFIG_ARM_SMMUV3', if_true: files('smmu-common.c'))
-+arm_common_ss.add(when: 'CONFIG_COLLIE', if_true: files('collie.c'))
-+arm_common_ss.add(when: 'CONFIG_EXYNOS4', if_true: files('exynos4_boards.c'))
-+arm_common_ss.add(when: 'CONFIG_NETDUINO2', if_true: files('netduino2.c'))
-+arm_common_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2835_peripherals.c'))
-+arm_common_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2838_peripherals.c'))
-+arm_common_ss.add(when: 'CONFIG_STRONGARM', if_true: files('strongarm.c'))
-+arm_common_ss.add(when: 'CONFIG_SX1', if_true: files('omap_sx1.c'))
-+arm_common_ss.add(when: 'CONFIG_VERSATILE', if_true: files('versatilepb.c'))
-+arm_common_ss.add(when: 'CONFIG_VEXPRESS', if_true: files('vexpress.c'))
+     /* Set latest version of privileged specification */
+     env->priv_ver = PRIV_VERSION_LATEST;
+-#ifndef CONFIG_USER_ONLY
+     set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV57);
+-#endif
+ }
+-#endif /* CONFIG_TCG */
++#endif /* CONFIG_TCG && !CONFIG_USER_ONLY */
  
- arm_common_ss.add(fdt, files('boot.c'))
+ static void rv64i_bare_cpu_init(Object *obj)
+ {
+@@ -3255,9 +3253,9 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+     DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_VEYRON_V1,  MXL_RV64,  rv64_veyron_v1_cpu_init),
+     DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_XIANGSHAN_NANHU,
+                                                  MXL_RV64, rv64_xiangshan_nanhu_cpu_init),
+-#ifdef CONFIG_TCG
++#if defined(CONFIG_TCG) && !defined(CONFIG_USER_ONLY)
+     DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE128,   MXL_RV128, rv128_base_cpu_init),
+-#endif /* CONFIG_TCG */
++#endif /* CONFIG_TCG && !CONFIG_USER_ONLY */
+     DEFINE_BARE_CPU(TYPE_RISCV_CPU_RV64I,        MXL_RV64,  rv64i_bare_cpu_init),
+     DEFINE_BARE_CPU(TYPE_RISCV_CPU_RV64E,        MXL_RV64,  rv64e_bare_cpu_init),
+     DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22U64,  MXL_RV64,  rva22u64_profile_cpu_init),
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index 710449d17e..5d0429b4d0 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -1046,7 +1046,6 @@ static bool riscv_cpu_is_generic(Object *cpu_obj)
+ static bool riscv_tcg_cpu_realize(CPUState *cs, Error **errp)
+ {
+     RISCVCPU *cpu = RISCV_CPU(cs);
+-    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cpu);
  
+     if (!riscv_cpu_tcg_compatible(cpu)) {
+         g_autofree char *name = riscv_cpu_get_name(cpu);
+@@ -1055,6 +1054,9 @@ static bool riscv_tcg_cpu_realize(CPUState *cs, Error **errp)
+         return false;
+     }
+ 
++#ifndef CONFIG_USER_ONLY
++    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cpu);
++
+     if (mcc->misa_mxl_max >= MXL_RV128 && qemu_tcg_mttcg_enabled()) {
+         /* Missing 128-bit aligned atomics */
+         error_setg(errp,
+@@ -1063,7 +1065,6 @@ static bool riscv_tcg_cpu_realize(CPUState *cs, Error **errp)
+         return false;
+     }
+ 
+-#ifndef CONFIG_USER_ONLY
+     CPURISCVState *env = &cpu->env;
+ 
+     tcg_cflags_set(CPU(cs), CF_PCREL);
 -- 
 2.43.0
 
