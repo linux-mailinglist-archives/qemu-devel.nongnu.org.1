@@ -2,43 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE1E2A9A8F3
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 11:51:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9A00A9A904
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 11:52:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7tEa-0000FA-HK; Thu, 24 Apr 2025 05:51:08 -0400
+	id 1u7tFr-0002Vh-0w; Thu, 24 Apr 2025 05:52:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1u7tEW-0000DF-8w
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 05:51:04 -0400
+ id 1u7tFl-0002HD-6Q
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 05:52:21 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1u7tET-0002wL-Jv
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 05:51:03 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1u7tFi-000316-T5
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 05:52:20 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8CxaWp8CQpoVjzFAA--.1182S3;
- Thu, 24 Apr 2025 17:50:52 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8BxIK99CQpoWjzFAA--.62412S3;
+ Thu, 24 Apr 2025 17:50:53 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMCx_cZ8CQpoIFeTAA--.43713S2;
+ by front1 (Coremail) with SMTP id qMiowMCx_cZ8CQpoIFeTAA--.43713S3;
  Thu, 24 Apr 2025 17:50:52 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: stefanha@gmail.com, peter.maydell@linaro.org,
- --cc=richard.henderson@linaro.org, Bibo Mao <maobibo@loongson.cn>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 10/13] target/loongarch: Move definition of TCG specified
- function to tcg directory
-Date: Thu, 24 Apr 2025 17:28:46 +0800
-Message-Id: <20250424092849.3985437-1-gaosong@loongson.cn>
+ --cc=richard.henderson@linaro.org, WANG Rui <wangrui@loongson.cn>
+Subject: [PULL 11/13] linux-user/loongarch64: Decode BRK break codes for FPE
+ signals
+Date: Thu, 24 Apr 2025 17:28:47 +0800
+Message-Id: <20250424092849.3985437-2-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20250424023317.3980755-1-gaosong@loongson.cn>
+In-Reply-To: <20250424092849.3985437-1-gaosong@loongson.cn>
 References: <20250424023317.3980755-1-gaosong@loongson.cn>
+ <20250424092849.3985437-1-gaosong@loongson.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMCx_cZ8CQpoIFeTAA--.43713S2
+X-CM-TRANSID: qMiowMCx_cZ8CQpoIFeTAA--.43713S3
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -66,64 +65,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: WANG Rui <wangrui@loongson.cn>
 
-Function loongarch_cpu_tlb_fill() only works in TCG mode, move its
-definition from header file internals.h to file tcg/tcg_loongarch.h
+Handle specific LoongArch BRK break codes in user-mode emulation
+to deliver accurate floating-point exception signals. Specifically,
+BRK_OVERFLOW (6) triggers TARGET_FPE_INTOVF, and BRK_DIVZERO (7)
+triggers TARGET_FPE_INTDIV. Other BRK codes fall back to a generic
+SIGTRAP.
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20250423080417.3739809-10-maobibo@loongson.cn>
+This improves correctness for programs that rely on BRK to signal
+overflow or divide-by-zero conditions.
+
+Signed-off-by: WANG Rui <wangrui@loongson.cn>
+Acked-by: Song Gao <gaosong@loongson.cn>
+Message-Id: <20250414074952.6253-1-wangrui@loongson.cn>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/cpu.c               | 1 +
- target/loongarch/internals.h         | 5 -----
- target/loongarch/tcg/tcg_loongarch.h | 4 ++++
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ linux-user/loongarch64/cpu_loop.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index ea1665e270..bf3d592574 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -32,6 +32,7 @@
- #include "exec/cpu_ldst.h"
- #include "tcg/tcg.h"
- #endif
-+#include "tcg/tcg_loongarch.h"
+diff --git a/linux-user/loongarch64/cpu_loop.c b/linux-user/loongarch64/cpu_loop.c
+index 0614d3de22..ec8a06c88c 100644
+--- a/linux-user/loongarch64/cpu_loop.c
++++ b/linux-user/loongarch64/cpu_loop.c
+@@ -11,6 +11,12 @@
+ #include "user/cpu_loop.h"
+ #include "signal-common.h"
  
- const char * const regnames[32] = {
-     "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7",
-diff --git a/target/loongarch/internals.h b/target/loongarch/internals.h
-index 3a079feb1d..a7384b0d31 100644
---- a/target/loongarch/internals.h
-+++ b/target/loongarch/internals.h
-@@ -61,11 +61,6 @@ void get_dir_base_width(CPULoongArchState *env, uint64_t *dir_base,
-                                uint64_t *dir_width, target_ulong level);
- hwaddr loongarch_cpu_get_phys_page_debug(CPUState *cpu, vaddr addr);
- 
--#ifdef CONFIG_TCG
--bool loongarch_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
--                            MMUAccessType access_type, int mmu_idx,
--                            bool probe, uintptr_t retaddr);
--#endif
- #endif /* !CONFIG_USER_ONLY */
- 
- uint64_t read_fcc(CPULoongArchState *env);
-diff --git a/target/loongarch/tcg/tcg_loongarch.h b/target/loongarch/tcg/tcg_loongarch.h
-index b29427d981..fd4e116022 100644
---- a/target/loongarch/tcg/tcg_loongarch.h
-+++ b/target/loongarch/tcg/tcg_loongarch.h
-@@ -10,6 +10,10 @@
- 
- void loongarch_csr_translate_init(void);
- 
-+bool loongarch_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-+                            MMUAccessType access_type, int mmu_idx,
-+                            bool probe, uintptr_t retaddr);
++/* Break codes */
++enum {
++    BRK_OVERFLOW = 6,
++    BRK_DIVZERO = 7
++};
 +
- int loongarch_get_addr_from_tlb(CPULoongArchState *env, hwaddr *physical,
-                                 int *prot, target_ulong address,
-                                 MMUAccessType access_type, int mmu_idx);
+ void cpu_loop(CPULoongArchState *env)
+ {
+     CPUState *cs = env_cpu(env);
+@@ -66,9 +72,26 @@ void cpu_loop(CPULoongArchState *env)
+             force_sig_fault(TARGET_SIGFPE, si_code, env->pc);
+             break;
+         case EXCP_DEBUG:
+-        case EXCCODE_BRK:
+             force_sig_fault(TARGET_SIGTRAP, TARGET_TRAP_BRKPT, env->pc);
+             break;
++        case EXCCODE_BRK:
++            {
++                unsigned int opcode;
++
++                get_user_u32(opcode, env->pc);
++
++                switch (opcode & 0x7fff) {
++                case BRK_OVERFLOW:
++                    force_sig_fault(TARGET_SIGFPE, TARGET_FPE_INTOVF, env->pc);
++                    break;
++                case BRK_DIVZERO:
++                    force_sig_fault(TARGET_SIGFPE, TARGET_FPE_INTDIV, env->pc);
++                    break;
++                default:
++                    force_sig_fault(TARGET_SIGTRAP, TARGET_TRAP_BRKPT, env->pc);
++                }
++            }
++            break;
+         case EXCCODE_BCE:
+             force_sig_fault(TARGET_SIGSYS, TARGET_SI_KERNEL, env->pc);
+             break;
 -- 
 2.34.1
 
