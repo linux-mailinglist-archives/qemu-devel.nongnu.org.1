@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B89CA99D5E
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 02:54:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10994A99D5B
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 02:54:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7kp9-0007q3-Fv; Wed, 23 Apr 2025 20:52:19 -0400
+	id 1u7kp3-0007HQ-JC; Wed, 23 Apr 2025 20:52:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kn7-0005eu-2b
+ id 1u7kn7-0005et-2K
  for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:50:20 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kmy-0004Oy-MY
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:50:08 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-73bf1cef6ceso385272b3a.0
+ id 1u7kmy-0004Qa-Md
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:50:09 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-7370a2d1981so306274b3a.2
  for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:50:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745455802; x=1746060602; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745455803; x=1746060603; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lLjtkdVg3jxGT84stBTwdpl7UMQktBniBef0Jy8HlE4=;
- b=CHnVEVBZObq5Wy+O3h/zlmtOoov+ScVcCGh/1yLvKpipiRHW8a7j+PwHH6i2PODhzR
- g3nzroKqYRXh4tFEfAYMm1AsGsPVSWanidfIwiz8h9H7Z1FRZW1CKtGKp24zeaU7cD4T
- /9+xWx5xbu78YLHnC3BRj7SQfKa+TH08rVKcePMMhzCs7WHdRiqPsum+Yqca/7XQF98i
- uv350TSS358qf/GmJk+kADJvLXDGTV5cCdT8SawQo7iA6WOkAgrMVmdjsEux+wgWq8mM
- vqnrrYsJvyaNJNp6ilJNGFCZlaA0vthSKbCmMeI5Jd0yFBMHBfQ557+wQEGIOappb5Oi
- iiJw==
+ bh=SfzDetC/vdIssYfiVbn8MXEeWiVxndT5CmpHo57J/CM=;
+ b=J0PIQhEJoMAa1ewQ7kF8O4SweQc7fidcGYUazGNgw0qtvb/ZVvkYQUG7SbdGKn8tPx
+ xWt8Lu0JH7li/qlGWFk2uzdPjq+Psm/ODmHX/tyfbMNivFGXPbvNWZJuLMp8JhjvKDTD
+ 9BvhetvUiUf29XHvs8z/SfTMJAmlym8Ptfy2No8o59l6FgUul00o6IotZPNOnyORomTV
+ 0WcTVBWmR6a1fjIOAMrMoFI5iHIlxgwV8Ws0hO6tC559r2MaIjMxN3Lb7h5WV3udqFSo
+ m3CMldRcEtbvfVQXpSeTgVvyp0JUKcUrJy4/VGC+UZrmhWs/by/C2DjGJ5xlFRM5Nc6l
+ v9zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745455802; x=1746060602;
+ d=1e100.net; s=20230601; t=1745455803; x=1746060603;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lLjtkdVg3jxGT84stBTwdpl7UMQktBniBef0Jy8HlE4=;
- b=JTuyf/TcBwk9UK1blsqrCVPWIOT7TsxwFcPrTRCplxFzjqFnAxF4sYelND2PMoxV9Z
- gaw6PINq8h6IX745g62M0VBULTxiC7DxBwbCWk3TEAMHSfnGlvVlptF4XEt97m/d53wD
- W7LlYCR1tEBmxo9fhPcnqvONLYIeInad83IF0jw4gl0+l8Pp7zk2uH/gxs1wL9rq69bp
- JSysRtwzSaz4aa33wkBMLgCCwF1QGNWoUkRjn6PzZnJByWpUAJDYD8atXE0WmfD+EO9W
- 7xDSBm60ZZE4oxLC8CkOzX2iL6H7B0G5ggQwOqiBlYXBahBcRkQWWqVdWerZLQgK+4pJ
- 2/Yw==
-X-Gm-Message-State: AOJu0Yx/55TckfOt37txhdry/Fbb8cKkPCMMEetXskhhN4IwXqYclOnb
- mtjNclErC84aVbMR2TWt7Qj6mzEFGH6/C/SrikqWf2b8OXe3T1nTDl4QDPGmwJwv/VcswLMNKwm
- 5
-X-Gm-Gg: ASbGncsdGGmsEfhPVg/iRuw42f+p/EYU8Cry35dPVPp4cIEyIdOr2abJ90XZ/C0mrqi
- uNjuqfgH00lLtb8603e3FRD46aMXtpAvNmqOGi9zsmeXVmhSbrJ24k2V+CXi+XUKlSYC2HWACeX
- XXQAe8r8uvQSsNPXLq61Z/TWLgbqf6Qvp8kGvv3VOtfcFw00dc7lhRyj0JlyzU1eszNi5C4FC66
- 1XnWf/Dww6KcIul7ax8pGuLXhzFeHOKB7h1frtXmsHqhTEAP+9MV3II64RJHcaPQviZQ9J2kDZ7
- r8/cVk4Dwpew/4HJFtjvNWC+HK5xikviNAIPnOWjTSM3fkMCDDCnaeoEfJT5Tx2Ln3k30DiJW0M
+ bh=SfzDetC/vdIssYfiVbn8MXEeWiVxndT5CmpHo57J/CM=;
+ b=CqXFHNKx63huEBD3einRfjpQPwhCe65zluAoTtBEmRDDPoH6ogJ6PJOfNJeFrmAo8O
+ 20hNrYY1E/y47sJMX3tA0VmL7RWZer0maTlUjVgst0YN5SCWDxblbr3gGywXnFmLzdNe
+ /m552XBOZPE+g7gVPuwuuFAflPYMmwE5YjBZ3XyUDEC/3QxrcnDP2pTIY3KNipkdysd3
+ iBYm0Kbc3ZQr8OMnuPl+W6chkP+l5k4BgRrLGaiOtyGI6Do34l93QTNvHquOLPqJxzY4
+ zJD/NiZMxKU+k/2uGY5IuxP4yHQSjkNXa0Tz2YTQP7mWAdmb7kmNcSSR1Xl5pOYSrHMA
+ f18w==
+X-Gm-Message-State: AOJu0YxjW5UmZ7zAfmUkbgCb9nJTSeuq/UQi3HxIQi2blYNOK4HiNI6o
+ GXB/P6ZSVaS+zreLGtbrdJUpPCFy9rzmhc4WEtW08vG8CspLiwloyFAnWdgpRmwyyATIt647cw9
+ 9
+X-Gm-Gg: ASbGncuCLsL9MayD97cVvVCQ8jKn3+Y8Z82fy9u1MG4cy0ocntLGP5tKSBF0IIfX6fX
+ BwvAYMVC0dOwViD+k6VoXBzodKy3dhccI4pgCXwM59KpX/4LPtHgbjZ7e6jyQWkBQmtgZ8KWupE
+ ziCUz7RejPPGVv2GLS/8NwqHttuuShk5Y+cFdrbMXjZkPAi93X1XvLC6Fr3wegOxWYRJcqx0X5b
+ JJgRxX3Wb/FKVJ8s8QwDbpT/uHNI7DME+Vn5Z98Zlf9DqDnJhRAeJULRM+VxGLL4SFba39AUf8T
+ PmqMzvL7RsQENUVWOWvXSuVd6vi/5NRDE7XAN5BRf1oxCUUxyr/Z/doPHda86MDoXe3hCvFxQkE
  =
-X-Google-Smtp-Source: AGHT+IEyBmFFFYYs8pP55izjXbFQEvpqmDuLln4mDOmyHCgwN/2o2MVpBpqhKxsF8DjdAV00FWi1bw==
-X-Received: by 2002:a05:6a20:e18a:b0:201:4061:bd94 with SMTP id
- adf61e73a8af0-20444ebdf33mr828001637.19.1745455802142; 
+X-Google-Smtp-Source: AGHT+IF87LPpCNJTo0hTJN4Wlr0pfp934h6HroFgFZ7Icx2ertbn4XU84B+O2rE9pqEw4pBgKg7xnw==
+X-Received: by 2002:a05:6a21:9ccb:b0:1f5:55b7:1bb2 with SMTP id
+ adf61e73a8af0-20444e6e860mr926483637.6.1745455802788; 
  Wed, 23 Apr 2025 17:50:02 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73e25a9a0f1sm207344b3a.137.2025.04.23.17.50.01
+ d2e1a72fcca58-73e25a9a0f1sm207344b3a.137.2025.04.23.17.50.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Apr 2025 17:50:01 -0700 (PDT)
+ Wed, 23 Apr 2025 17:50:02 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 036/148] include/system: Move exec/ioport.h to system/ioport.h
-Date: Wed, 23 Apr 2025 17:47:41 -0700
-Message-ID: <20250424004934.598783-37-richard.henderson@linaro.org>
+Subject: [PULL 037/148] include/system: Move exec/ram_addr.h to
+ system/ram_addr.h
+Date: Wed, 23 Apr 2025 17:47:42 -0700
+Message-ID: <20250424004934.598783-38-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250424004934.598783-1-richard.henderson@linaro.org>
 References: <20250424004934.598783-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,234 +107,346 @@ Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/display/vga_int.h              | 2 +-
- include/hw/char/parallel-isa.h    | 2 +-
- include/hw/dma/i8257.h            | 2 +-
- include/hw/ide/ide-bus.h          | 2 +-
- include/hw/isa/isa.h              | 2 +-
- include/{exec => system}/ioport.h | 6 ++----
- hw/block/fdc-isa.c                | 2 +-
- monitor/hmp-cmds.c                | 2 +-
- system/ioport.c                   | 2 +-
- system/physmem.c                  | 2 +-
- system/qtest.c                    | 2 +-
- target/i386/nvmm/nvmm-all.c       | 2 +-
- target/i386/whpx/whpx-all.c       | 2 +-
- tests/qtest/fuzz/qtest_wrappers.c | 2 +-
- MAINTAINERS                       | 2 +-
- 15 files changed, 16 insertions(+), 18 deletions(-)
- rename include/{exec => system}/ioport.h (97%)
+ include/{exec => system}/ram_addr.h | 7 +++----
+ accel/kvm/kvm-all.c                 | 2 +-
+ accel/tcg/cputlb.c                  | 2 +-
+ accel/tcg/translate-all.c           | 2 +-
+ hw/ppc/spapr.c                      | 2 +-
+ hw/ppc/spapr_caps.c                 | 2 +-
+ hw/ppc/spapr_pci.c                  | 2 +-
+ hw/remote/memory.c                  | 2 +-
+ hw/remote/proxy-memory-listener.c   | 2 +-
+ hw/s390x/s390-stattrib-kvm.c        | 2 +-
+ hw/s390x/s390-stattrib.c            | 2 +-
+ hw/s390x/s390-virtio-ccw.c          | 2 +-
+ hw/vfio/common.c                    | 3 +--
+ hw/vfio/container.c                 | 2 +-
+ hw/vfio/spapr.c                     | 2 +-
+ hw/virtio/virtio-mem.c              | 2 +-
+ migration/ram.c                     | 2 +-
+ system/memory.c                     | 2 +-
+ system/physmem.c                    | 2 +-
+ target/arm/tcg/mte_helper.c         | 2 +-
+ target/ppc/kvm.c                    | 2 +-
+ target/s390x/kvm/kvm.c              | 2 +-
+ MAINTAINERS                         | 2 +-
+ 23 files changed, 25 insertions(+), 27 deletions(-)
+ rename include/{exec => system}/ram_addr.h (99%)
 
-diff --git a/hw/display/vga_int.h b/hw/display/vga_int.h
-index 60ad26e03e..747b5cc6cf 100644
---- a/hw/display/vga_int.h
-+++ b/hw/display/vga_int.h
-@@ -26,7 +26,7 @@
- #define HW_VGA_INT_H
- 
- #include "ui/console.h"
--#include "exec/ioport.h"
-+#include "system/ioport.h"
- #include "system/memory.h"
- 
- #include "hw/display/bochs-vbe.h"
-diff --git a/include/hw/char/parallel-isa.h b/include/hw/char/parallel-isa.h
-index 5284b2ffec..3edaf9dbe4 100644
---- a/include/hw/char/parallel-isa.h
-+++ b/include/hw/char/parallel-isa.h
-@@ -12,7 +12,7 @@
- 
- #include "parallel.h"
- 
--#include "exec/ioport.h"
-+#include "system/ioport.h"
- #include "hw/isa/isa.h"
- #include "qom/object.h"
- 
-diff --git a/include/hw/dma/i8257.h b/include/hw/dma/i8257.h
-index 4342e4a91e..33b6286d5a 100644
---- a/include/hw/dma/i8257.h
-+++ b/include/hw/dma/i8257.h
-@@ -2,7 +2,7 @@
- #define HW_I8257_H
- 
- #include "hw/isa/isa.h"
--#include "exec/ioport.h"
-+#include "system/ioport.h"
- #include "qom/object.h"
- 
- #define TYPE_I8257 "i8257"
-diff --git a/include/hw/ide/ide-bus.h b/include/hw/ide/ide-bus.h
-index 4841a7dcd6..121b455fcd 100644
---- a/include/hw/ide/ide-bus.h
-+++ b/include/hw/ide/ide-bus.h
-@@ -1,7 +1,7 @@
- #ifndef HW_IDE_BUS_H
- #define HW_IDE_BUS_H
- 
--#include "exec/ioport.h"
-+#include "system/ioport.h"
- #include "hw/ide/ide-dev.h"
- #include "hw/ide/ide-dma.h"
- 
-diff --git a/include/hw/isa/isa.h b/include/hw/isa/isa.h
-index 1d852011b3..a82c5f1004 100644
---- a/include/hw/isa/isa.h
-+++ b/include/hw/isa/isa.h
-@@ -4,7 +4,7 @@
- /* ISA bus */
- 
- #include "system/memory.h"
--#include "exec/ioport.h"
-+#include "system/ioport.h"
- #include "hw/qdev-core.h"
- #include "qom/object.h"
- 
-diff --git a/include/exec/ioport.h b/include/system/ioport.h
-similarity index 97%
-rename from include/exec/ioport.h
-rename to include/system/ioport.h
-index ecea3575bc..780ea5a676 100644
---- a/include/exec/ioport.h
-+++ b/include/system/ioport.h
-@@ -21,8 +21,8 @@
-  * IO ports API
+diff --git a/include/exec/ram_addr.h b/include/system/ram_addr.h
+similarity index 99%
+rename from include/exec/ram_addr.h
+rename to include/system/ram_addr.h
+index 8677761af5..3b81c3091f 100644
+--- a/include/exec/ram_addr.h
++++ b/include/system/ram_addr.h
+@@ -16,10 +16,9 @@
+  * The functions declared here will be removed soon.
   */
  
--#ifndef IOPORT_H
--#define IOPORT_H
-+#ifndef SYSTEM_IOPORT_H
-+#define SYSTEM_IOPORT_H
- 
- #include "system/memory.h"
- 
-@@ -39,9 +39,7 @@ typedef struct MemoryRegionPortio {
- 
- #define PORTIO_END_OF_LIST() { }
+-#ifndef RAM_ADDR_H
+-#define RAM_ADDR_H
++#ifndef SYSTEM_RAM_ADDR_H
++#define SYSTEM_RAM_ADDR_H
  
 -#ifndef CONFIG_USER_ONLY
- extern const MemoryRegionOps unassigned_io_ops;
+ #include "system/xen.h"
+ #include "system/tcg.h"
+ #include "exec/cputlb.h"
+@@ -559,5 +558,5 @@ uint64_t cpu_physical_memory_sync_dirty_bitmap(RAMBlock *rb,
+ 
+     return num_dirty;
+ }
 -#endif
- 
- void cpu_outb(uint32_t addr, uint8_t val);
- void cpu_outw(uint32_t addr, uint16_t val);
-diff --git a/hw/block/fdc-isa.c b/hw/block/fdc-isa.c
-index a10c24aab1..561cfa47c1 100644
---- a/hw/block/fdc-isa.c
-+++ b/hw/block/fdc-isa.c
-@@ -42,7 +42,7 @@
- #include "system/block-backend.h"
- #include "system/blockdev.h"
- #include "system/system.h"
--#include "exec/ioport.h"
-+#include "system/ioport.h"
- #include "qemu/log.h"
++
+ #endif
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 9e06a95f75..a30b19f455 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -34,7 +34,7 @@
+ #include "system/accel-blocker.h"
+ #include "qemu/bswap.h"
+ #include "system/memory.h"
+-#include "exec/ram_addr.h"
++#include "system/ram_addr.h"
+ #include "qemu/event_notifier.h"
  #include "qemu/main-loop.h"
- #include "qemu/module.h"
-diff --git a/monitor/hmp-cmds.c b/monitor/hmp-cmds.c
-index 8ddcdd76c1..74a0f56566 100644
---- a/monitor/hmp-cmds.c
-+++ b/monitor/hmp-cmds.c
-@@ -15,7 +15,7 @@
- 
- #include "qemu/osdep.h"
- #include "system/address-spaces.h"
--#include "exec/ioport.h"
-+#include "system/ioport.h"
- #include "exec/gdbstub.h"
- #include "gdbstub/enums.h"
- #include "monitor/hmp.h"
-diff --git a/system/ioport.c b/system/ioport.c
-index 5300716464..4f96e9119f 100644
---- a/system/ioport.c
-+++ b/system/ioport.c
-@@ -26,7 +26,7 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "exec/ioport.h"
-+#include "system/ioport.h"
- #include "system/memory.h"
- #include "system/address-spaces.h"
  #include "trace.h"
-diff --git a/system/physmem.c b/system/physmem.c
-index e61fea41b5..234e489199 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -51,7 +51,7 @@
- #include "qemu/memalign.h"
- #include "qemu/memfd.h"
- #include "system/memory.h"
--#include "exec/ioport.h"
-+#include "system/ioport.h"
- #include "system/dma.h"
- #include "system/hostmem.h"
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index 6f0ea9067b..134e523cab 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -27,7 +27,7 @@
+ #include "exec/cputlb.h"
+ #include "exec/tb-flush.h"
+ #include "exec/memory-internal.h"
+-#include "exec/ram_addr.h"
++#include "system/ram_addr.h"
+ #include "exec/mmu-access-type.h"
+ #include "exec/tlb-common.h"
+ #include "exec/vaddr.h"
+diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+index 16e5043597..167535bcb1 100644
+--- a/accel/tcg/translate-all.c
++++ b/accel/tcg/translate-all.c
+@@ -40,7 +40,7 @@
+ #endif
+ #endif
+ #else
+-#include "exec/ram_addr.h"
++#include "system/ram_addr.h"
+ #endif
+ 
+ #include "exec/cputlb.h"
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 6fef1d167a..c1a7ac3536 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -77,7 +77,7 @@
+ #include "hw/virtio/virtio-scsi.h"
+ #include "hw/virtio/vhost-scsi-common.h"
+ 
+-#include "exec/ram_addr.h"
++#include "system/ram_addr.h"
+ #include "system/confidential-guest-support.h"
+ #include "hw/usb.h"
+ #include "qemu/config-file.h"
+diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
+index 815c94ed2f..f2f5722d8a 100644
+--- a/hw/ppc/spapr_caps.c
++++ b/hw/ppc/spapr_caps.c
+@@ -27,7 +27,7 @@
+ #include "qapi/error.h"
+ #include "qapi/visitor.h"
  #include "system/hw_accel.h"
-diff --git a/system/qtest.c b/system/qtest.c
-index 5407289154..523a047995 100644
---- a/system/qtest.c
-+++ b/system/qtest.c
-@@ -16,7 +16,7 @@
- #include "system/qtest.h"
- #include "system/runstate.h"
- #include "chardev/char-fe.h"
--#include "exec/ioport.h"
-+#include "system/ioport.h"
- #include "system/memory.h"
- #include "exec/tswap.h"
- #include "hw/qdev-core.h"
-diff --git a/target/i386/nvmm/nvmm-all.c b/target/i386/nvmm/nvmm-all.c
-index 91f0e32366..17394d073d 100644
---- a/target/i386/nvmm/nvmm-all.c
-+++ b/target/i386/nvmm/nvmm-all.c
-@@ -10,7 +10,7 @@
- #include "qemu/osdep.h"
- #include "cpu.h"
- #include "system/address-spaces.h"
--#include "exec/ioport.h"
-+#include "system/ioport.h"
- #include "qemu/accel.h"
- #include "system/nvmm.h"
- #include "system/cpus.h"
-diff --git a/target/i386/whpx/whpx-all.c b/target/i386/whpx/whpx-all.c
-index d58cb11cee..b64852e13e 100644
---- a/target/i386/whpx/whpx-all.c
-+++ b/target/i386/whpx/whpx-all.c
+-#include "exec/ram_addr.h"
++#include "system/ram_addr.h"
+ #include "target/ppc/cpu.h"
+ #include "target/ppc/mmu-hash64.h"
+ #include "cpu-models.h"
+diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
+index e0a9d50edc..384269b831 100644
+--- a/hw/ppc/spapr_pci.c
++++ b/hw/ppc/spapr_pci.c
+@@ -34,7 +34,7 @@
+ #include "hw/pci/pci_host.h"
+ #include "hw/ppc/spapr.h"
+ #include "hw/pci-host/spapr.h"
+-#include "exec/ram_addr.h"
++#include "system/ram_addr.h"
+ #include <libfdt.h>
+ #include "trace.h"
+ #include "qemu/error-report.h"
+diff --git a/hw/remote/memory.c b/hw/remote/memory.c
+index 6d60da91e0..00193a552f 100644
+--- a/hw/remote/memory.c
++++ b/hw/remote/memory.c
 @@ -11,7 +11,7 @@
  #include "qemu/osdep.h"
+ 
+ #include "hw/remote/memory.h"
+-#include "exec/ram_addr.h"
++#include "system/ram_addr.h"
+ #include "qapi/error.h"
+ 
+ static void remote_sysmem_reset(void)
+diff --git a/hw/remote/proxy-memory-listener.c b/hw/remote/proxy-memory-listener.c
+index ce7f5b9bfb..30ac74961d 100644
+--- a/hw/remote/proxy-memory-listener.c
++++ b/hw/remote/proxy-memory-listener.c
+@@ -12,7 +12,7 @@
+ #include "qemu/range.h"
+ #include "system/memory.h"
+ #include "exec/cpu-common.h"
+-#include "exec/ram_addr.h"
++#include "system/ram_addr.h"
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
+ #include "hw/remote/mpqemu-link.h"
+diff --git a/hw/s390x/s390-stattrib-kvm.c b/hw/s390x/s390-stattrib-kvm.c
+index d0ff04364d..ebcd56368f 100644
+--- a/hw/s390x/s390-stattrib-kvm.c
++++ b/hw/s390x/s390-stattrib-kvm.c
+@@ -16,7 +16,7 @@
+ #include "qemu/error-report.h"
+ #include "system/kvm.h"
+ #include "system/memory_mapping.h"
+-#include "exec/ram_addr.h"
++#include "system/ram_addr.h"
+ #include "kvm/kvm_s390x.h"
+ #include "qapi/error.h"
+ 
+diff --git a/hw/s390x/s390-stattrib.c b/hw/s390x/s390-stattrib.c
+index 35bf697ef0..a86002be6a 100644
+--- a/hw/s390x/s390-stattrib.c
++++ b/hw/s390x/s390-stattrib.c
+@@ -16,7 +16,7 @@
+ #include "hw/qdev-properties.h"
+ #include "hw/s390x/storage-attributes.h"
+ #include "qemu/error-report.h"
+-#include "exec/ram_addr.h"
++#include "system/ram_addr.h"
+ #include "qapi/error.h"
+ #include "qobject/qdict.h"
  #include "cpu.h"
- #include "system/address-spaces.h"
--#include "exec/ioport.h"
-+#include "system/ioport.h"
- #include "gdbstub/helpers.h"
- #include "qemu/accel.h"
- #include "system/whpx.h"
-diff --git a/tests/qtest/fuzz/qtest_wrappers.c b/tests/qtest/fuzz/qtest_wrappers.c
-index 0580f8df86..d7adcbe3fd 100644
---- a/tests/qtest/fuzz/qtest_wrappers.c
-+++ b/tests/qtest/fuzz/qtest_wrappers.c
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index 5af3c4f547..52c273b3de 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
 @@ -13,7 +13,7 @@
  
  #include "qemu/osdep.h"
- #include "hw/core/cpu.h"
--#include "exec/ioport.h"
-+#include "system/ioport.h"
+ #include "qapi/error.h"
+-#include "exec/ram_addr.h"
++#include "system/ram_addr.h"
+ #include "system/confidential-guest-support.h"
+ #include "hw/boards.h"
+ #include "hw/s390x/sclp.h"
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index 98832af88d..bae0633c3d 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -29,8 +29,7 @@
+ #include "hw/vfio/pci.h"
+ #include "system/address-spaces.h"
+ #include "system/memory.h"
+-#include "exec/ram_addr.h"
+-#include "exec/target_page.h"
++#include "system/ram_addr.h"
+ #include "hw/hw.h"
+ #include "qemu/error-report.h"
+ #include "qemu/main-loop.h"
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index 2e993c7e73..812d5edbcf 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -25,7 +25,7 @@
+ #include "hw/vfio/vfio-common.h"
+ #include "system/address-spaces.h"
+ #include "system/memory.h"
+-#include "exec/ram_addr.h"
++#include "system/ram_addr.h"
+ #include "qemu/error-report.h"
+ #include "qemu/range.h"
+ #include "system/reset.h"
+diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
+index c9a7dd8d68..66a2d2bb0d 100644
+--- a/hw/vfio/spapr.c
++++ b/hw/vfio/spapr.c
+@@ -17,7 +17,7 @@
  
- #include "fuzz.h"
+ #include "hw/vfio/vfio-common.h"
+ #include "hw/hw.h"
+-#include "exec/ram_addr.h"
++#include "system/ram_addr.h"
+ #include "qemu/error-report.h"
+ #include "qapi/error.h"
+ #include "trace.h"
+diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
+index 5f57eccbb6..c7968ee0c6 100644
+--- a/hw/virtio/virtio-mem.c
++++ b/hw/virtio/virtio-mem.c
+@@ -24,7 +24,7 @@
+ #include "hw/virtio/virtio-mem.h"
+ #include "qapi/error.h"
+ #include "qapi/visitor.h"
+-#include "exec/ram_addr.h"
++#include "system/ram_addr.h"
+ #include "migration/misc.h"
+ #include "hw/boards.h"
+ #include "hw/qdev-properties.h"
+diff --git a/migration/ram.c b/migration/ram.c
+index 424df6d9f1..6295f675df 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -48,7 +48,7 @@
+ #include "qapi/qapi-commands-migration.h"
+ #include "qapi/qmp/qerror.h"
+ #include "trace.h"
+-#include "exec/ram_addr.h"
++#include "system/ram_addr.h"
+ #include "exec/target_page.h"
+ #include "qemu/rcu_queue.h"
+ #include "migration/colo.h"
+diff --git a/system/memory.c b/system/memory.c
+index a4185ea353..6a5d853071 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -26,7 +26,7 @@
+ #include "trace.h"
  
+ #include "exec/memory-internal.h"
+-#include "exec/ram_addr.h"
++#include "system/ram_addr.h"
+ #include "system/kvm.h"
+ #include "system/runstate.h"
+ #include "system/tcg.h"
+diff --git a/system/physmem.c b/system/physmem.c
+index 234e489199..307d0764b6 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -67,7 +67,7 @@
+ #include "system/replay.h"
+ 
+ #include "exec/memory-internal.h"
+-#include "exec/ram_addr.h"
++#include "system/ram_addr.h"
+ 
+ #include "qemu/pmem.h"
+ 
+diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
+index 5d6d8a17ae..80164a8050 100644
+--- a/target/arm/tcg/mte_helper.c
++++ b/target/arm/tcg/mte_helper.c
+@@ -27,7 +27,7 @@
+ #include "user/cpu_loop.h"
+ #include "user/page-protection.h"
+ #else
+-#include "exec/ram_addr.h"
++#include "system/ram_addr.h"
+ #endif
+ #include "exec/cpu_ldst.h"
+ #include "exec/helper-proto.h"
+diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
+index 992356cb75..8b12b8e7d2 100644
+--- a/target/ppc/kvm.c
++++ b/target/ppc/kvm.c
+@@ -41,7 +41,7 @@
+ #include "trace.h"
+ #include "gdbstub/enums.h"
+ #include "exec/memattrs.h"
+-#include "exec/ram_addr.h"
++#include "system/ram_addr.h"
+ #include "system/hostmem.h"
+ #include "qemu/cutils.h"
+ #include "qemu/main-loop.h"
+diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
+index 4d56e653dd..b9f1422197 100644
+--- a/target/s390x/kvm/kvm.c
++++ b/target/s390x/kvm/kvm.c
+@@ -41,7 +41,7 @@
+ #include "system/runstate.h"
+ #include "system/device_tree.h"
+ #include "gdbstub/enums.h"
+-#include "exec/ram_addr.h"
++#include "system/ram_addr.h"
+ #include "trace.h"
+ #include "hw/s390x/s390-pci-inst.h"
+ #include "hw/s390x/s390-pci-bus.h"
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 5d391cfaa7..9a96cc1b5e 100644
+index 9a96cc1b5e..b1ac3ff7d2 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -3118,7 +3118,7 @@ M: Peter Xu <peterx@redhat.com>
- M: David Hildenbrand <david@redhat.com>
- R: Philippe Mathieu-Daudé <philmd@linaro.org>
- S: Supported
--F: include/exec/ioport.h
-+F: include/system/ioport.h
+@@ -3121,7 +3121,7 @@ S: Supported
+ F: include/system/ioport.h
  F: include/exec/memop.h
  F: include/system/memory.h
- F: include/exec/ram_addr.h
+-F: include/exec/ram_addr.h
++F: include/system/ram_addr.h
+ F: include/exec/ramblock.h
+ F: include/system/memory_mapping.h
+ F: system/dma-helpers.c
 -- 
 2.43.0
 
