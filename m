@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3F7AA99DDE
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:12:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AEA8A99D6D
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 02:56:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7ksc-0000QI-At; Wed, 23 Apr 2025 20:55:55 -0400
+	id 1u7krs-0006LN-VE; Wed, 23 Apr 2025 20:55:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kqX-000159-KP
+ id 1u7kqX-00015O-Mx
  for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:53:46 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kq8-0004iQ-Vp
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:53:22 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-73bf1cef6ceso387139b3a.0
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:53:20 -0700 (PDT)
+ id 1u7kq9-0004iY-V2
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:53:23 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-739b3fe7ce8so396922b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:53:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745455999; x=1746060799; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745456000; x=1746060800; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kEc/3fiG4iISK/71vr3crINCUz3P6fX9ye3zEIs07n0=;
- b=P/ZyKyj4lM40oaQW1jiMLaKOPr38Z2xLR2tL5RvmBO6W1gbNCoy2JJ0dm+/3LnsM8N
- SKwMCRfHjnwBUwI9czbhCM6fekAv5OVtrpc5YZChxLrUQE+gGacwh1i5IZ+FPQFhdXtB
- JI0ge8cZWqbgaTvVKAT987Pi/m43QyJge6ZYLK1RR/2EFKBlnyNX8XIkz941FcUuuksM
- AXPDDru0GaWo9VTN05QilhkLRzMa08+yu3/3MHd0MLNpvYqWj5DQ1ZzavfR4SUh1XqnZ
- dj0Q7GRQJcPh9SqfBvWKIHLKFDmfseOYCMOI/zVzWnnl+5TkowMn5wUwvZqIbjl/kpVP
- MUVA==
+ bh=nr7dQ2xZvL2F3PC/UuWtMxSETtioG4RgNm5kcrKHZNI=;
+ b=s1CKhxNxoPpLUyOiCcY4S2ZwP0lD5VJGHpaGnkKC3dlNM/LYaDjTnqqLxWfBrMXoyU
+ e1TjXoWwaYpC8STmiJQ1wFjFhlO9hQ6nbM/c0v5z3/adwRGA0kx1eGyP358YBZXmRuDc
+ TWqG8TYirNi128MWT8OXY00WQZwWWvHkT68e2eFpX8/IwQIOIswlhmG3+Kx0cZmzwD4j
+ ADxUD37jiBJ4YxW5DH6fnUqvTzCuBUg0QpeI29s/L0lxz/6OXKWs+WVfy3vdfuOA5OiM
+ YLQqsxL7A4o5wn+jwb+HLMKmCBNdQGceNWZYMT2d9WJ8OMlS6Xav2GZFm3l980s/4FsM
+ 2Dew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745455999; x=1746060799;
+ d=1e100.net; s=20230601; t=1745456000; x=1746060800;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kEc/3fiG4iISK/71vr3crINCUz3P6fX9ye3zEIs07n0=;
- b=BUmz3y1wDpJxk9yeVMm9Qot2zh4oFwwbt8t1KRsRzA7aWZxe8Lp3DvdbGUADc942xS
- UaZgvWespiA8CmpizMlmDn7hnqpUkvBuxAqoF+NFfotm4vUny+ccGyXBpdWt96xsEvPZ
- yLiWrF5JtCfWg5dr2OqG8thnxhbH39KPB0OviLcR/rll2CimGHwb9nejB0fFkIicki5S
- TzPLKbgZlOQFr3ekv2RrR8KdUQOPzqciBsqehQmssmRLI92ai8WryNbgvvQB4py9UJ78
- 0HidtGSFOuJKQy765NWY7EIDX1a8Deh2gKAtXdxxqnxpst4SkY587I2bn6ADGm5fccz6
- +Ptg==
-X-Gm-Message-State: AOJu0Yz3Uij8GCyNU7YQis5cPQ8z+2+yQaSp4WjMSk63NojOw/qkYJx/
- /eBnXS0z9vWmoGOtdziUflkRUuWaUsTSYafvxBfVwyETcZbwu3ayjgU31hi3mUI8eBNLgYqjgKP
- Q
-X-Gm-Gg: ASbGncuAv4Gj93H4kUPZS9mK273QIKvMzZ7jByAiylxFGVWqCwV0TLTDuR8ySDWU276
- /gBAqJSQdvXfzOoQWF18VimFkrffL2knaE2DYZmIZy2LCcvrGdASAmLH5zizuLmhLcTkTxFP1t4
- km9xGJf0uB0nViQ1FQRjY1R/0vQUf/nQQXJOL/D4VBPMxi7mCAgYw30XIwYUdEXIgbgY7wjkWD5
- MOUzEEOKVAh5DwP6tV5aAzMUIxsrnO8QTgKD08AbfPw3HVrRJy9PqcGe8etSdOytUp8o/tdcZ+B
- pV/9jiepaDQqXQPRmDKq8OBfjXNw9wfEQqzk+uYE+eQnkF10yR2APGol0ra22W4wrXiZTWyDhCk
+ bh=nr7dQ2xZvL2F3PC/UuWtMxSETtioG4RgNm5kcrKHZNI=;
+ b=o0u7mOM98e2RjTAJ9pZXjIjdZ1PtI2jgT9mSsjkbxZx97vlu+tPxVhhcZ+DuloMOuX
+ PTRE+x0qkTWnhAh3mkxbUjunk3dDkcnFJaNjlIDARmVjrjSDKV0TJ62kWXzde2Xx1yNp
+ J51IKofWccHACXsJZURQ1t9d36pHxfLSdel1/V2b54ojK8ZLZ7bxwk0MYasLbNvPQKIQ
+ kvFYLkDnOlb/SNRj3iIjpA2NewhVGlKd9YvrCf6F9cp7zD9XJgRASFDdVpvr6w8Gxw4M
+ jWWF9x92UUJS32kRNtsMxTXRAuslutttlqcsufua0Q+07TKHrQOMZde/0HIBmbbQXU05
+ 3kUA==
+X-Gm-Message-State: AOJu0YzrqbluyYKyr+8ugg0NeLo37zO2l5LkyspDS1oOo8nSe3TyTYQg
+ 1hv41MNC4DfzJ0F7eK4LOhmM5qFROVjCg9GJnGEGF4VJblV6RZHoIzOoSYcLnYODswgD2ehwvDu
+ 1
+X-Gm-Gg: ASbGncsrWA5cZGOrBdlsb43b28HObiguevoV2WqALOfGWdcsvVKWE+RZqiJ4VNOmMXr
+ BWOMQCJXyHulpbSflGbPfNVwk+uScntnKV2FkAO7VYauJg7lHKfbKSeUvaSu7xL29OAevfj9UaM
+ nycjVGxtYsSUdYdxHBWktqXcbAo4EHFMwrLMW5TTa7DmJ6rGsDw91KcwjKQjGNBM9TB9z0TAEZl
+ lSYmjkgLNgKnNaPK7mU52uLKCBq3Ph+gj8kvEkc+YdGY4EQxXf6ExyvpAGT41xA6ZH2D6ADRaSV
+ yWdnIj2boxxUcCOQ+xBPNg5kTfG53l9Y78tuc1DXNyIdL1dHpE+mMdE5x2i7RvnsIITBJuO59AI
  =
-X-Google-Smtp-Source: AGHT+IGkuGdxoc7VS2BLhl1jXF1r3PYobYqoCASrJRNi6lyOOuMP1GVmYtAt7afME1NfFaC8cxLHDA==
-X-Received: by 2002:a05:6a20:e18a:b0:201:4061:bd94 with SMTP id
- adf61e73a8af0-20444ebdf33mr839092637.19.1745455999327; 
+X-Google-Smtp-Source: AGHT+IGRTJsXRrngSQE1HeWd3Vju3UMiKhQzgxcYdzKE0by1P+zikvtUSaSYeQoaYud1zZ0AoiQ9oQ==
+X-Received: by 2002:a05:6a00:4b08:b0:736:476b:fcd3 with SMTP id
+ d2e1a72fcca58-73e24b0c0a3mr1161545b3a.24.1745455999991; 
  Wed, 23 Apr 2025 17:53:19 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73e25a6a971sm209353b3a.103.2025.04.23.17.53.18
+ d2e1a72fcca58-73e25a6a971sm209353b3a.103.2025.04.23.17.53.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 23 Apr 2025 17:53:19 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 057/148] include/exec: Protect icount_enabled from poisoned
- symbols
-Date: Wed, 23 Apr 2025 17:48:02 -0700
-Message-ID: <20250424004934.598783-58-richard.henderson@linaro.org>
+Subject: [PULL 058/148] include/system: Remove ifndef CONFIG_USER_ONLY in
+ qtest.h
+Date: Wed, 23 Apr 2025 17:48:03 -0700
+Message-ID: <20250424004934.598783-59-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250424004934.598783-1-richard.henderson@linaro.org>
 References: <20250424004934.598783-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,39 +99,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This is include/system, so CONFIG_USER_ONLY will never be true.
+
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/icount.h | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ include/system/qtest.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/include/exec/icount.h b/include/exec/icount.h
-index 4964987ae4..7a26b40084 100644
---- a/include/exec/icount.h
-+++ b/include/exec/icount.h
-@@ -22,13 +22,21 @@ typedef enum {
-     ICOUNT_ADAPTATIVE,
- } ICountMode;
+diff --git a/include/system/qtest.h b/include/system/qtest.h
+index 6ddddc501b..84b1f8c6ee 100644
+--- a/include/system/qtest.h
++++ b/include/system/qtest.h
+@@ -23,7 +23,6 @@ static inline bool qtest_enabled(void)
+     return qtest_allowed;
+ }
  
--#if defined(CONFIG_TCG) && !defined(CONFIG_USER_ONLY)
-+#ifdef CONFIG_TCG
- extern ICountMode use_icount;
- #define icount_enabled() (use_icount)
- #else
- #define icount_enabled() ICOUNT_DISABLED
+-#ifndef CONFIG_USER_ONLY
+ void G_GNUC_PRINTF(2, 3) qtest_sendf(CharBackend *chr, const char *fmt, ...);
+ void qtest_set_command_cb(bool (*pc_cb)(CharBackend *chr, gchar **words));
+ bool qtest_driver(void);
+@@ -33,6 +32,5 @@ void qtest_server_init(const char *qtest_chrdev, const char *qtest_log, Error **
+ void qtest_server_set_send_handler(void (*send)(void *, const char *),
+                                  void *opaque);
+ void qtest_server_inproc_recv(void *opaque, const char *buf);
+-#endif
+ 
  #endif
- 
-+/* Protect the CONFIG_USER_ONLY test vs poisoning. */
-+#if defined(COMPILING_PER_TARGET) || defined(COMPILING_SYSTEM_VS_USER)
-+# ifdef CONFIG_USER_ONLY
-+#  undef  icount_enabled
-+#  define icount_enabled() ICOUNT_DISABLED
-+# endif
-+#endif
-+
- /*
-  * Update the icount with the executed instructions. Called by
-  * cpus-tcg vCPU thread so the main-loop can see time has moved forward.
 -- 
 2.43.0
 
