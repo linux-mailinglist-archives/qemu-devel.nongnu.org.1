@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25E65A99E30
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:28:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46D0FA99E2E
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:27:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7lHG-0006NU-Pq; Wed, 23 Apr 2025 21:21:23 -0400
+	id 1u7lH1-00056r-9V; Wed, 23 Apr 2025 21:21:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7lFS-0002kA-At
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 21:19:32 -0400
+ id 1u7lFT-0002lV-36
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 21:19:33 -0400
 Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7lFP-00079i-V8
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 21:19:29 -0400
+ id 1u7lFQ-00079v-0G
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 21:19:30 -0400
 Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-736a72220edso432243b3a.3
+ d2e1a72fcca58-736c3e7b390so385201b3a.2
  for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 18:19:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745457565; x=1746062365; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745457566; x=1746062366; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=lN8U4pCvani3EVxhH+Cp85aPQAK2No9bOUG5l7LfXn8=;
- b=bHeTss/SfJBByix4nrUnbHqSMbOb1RTIk7Ecfw1H1zoY3sAJgjMVmYF3/Nj/XAZ5NO
- vP2gxpVdCt1h1Mbc5+OVk+5iMTy4bUR/uGhT6OqCadz4KOABswgHf3MVZK/QrIRm35La
- evwkEtMkPdwa7GezG8rLQEwmKUilyIkuWpXKQ6GRnQijSbCXqPCc4oQorb9IL5h8CReX
- SHgbYaN8m/rH2I3K3AmgJ4sB9DLsXoA/Lzd8CIG4t6IISxuPxgcx67yNa18B12Ibw9zi
- RyzZK3gFnurzZeAbdBQrigKhSjL7wUglzH9pcqP7PR1bxdart2GskveMyqotjVdNfpYl
- WRgQ==
+ :reply-to; bh=jtt7Oh++1fV+Vh2SgiqUZ2mBLC6qZ0dag5VMp1U8aEA=;
+ b=fXv9L5kU5qBcxXFanRDYBVw91WhpnqfwSWMYExouvTP3q712KZv5nEgOhcM6O0eDw/
+ wDUWdV2lqjdmMAQ26hOW89qLiDJV+uk9hT8gnWzzCvDeX0SMyKMw7suDAqDKdDcqIWSH
+ dUSEe88LazlQ3JOB4Sudqr3FsKigrYgjOv6OjlyJwapMwTFVCmYMC56j4deSznOgb9HU
+ EL5/2ddLn8vyWUrR4KwOYw8nIHJ2hWqE1RsLG1Zfb8fqRl8VFcVZcFPEHweOQdb94M5K
+ Yn8mKTDaicDYDOGMyD42BW0lQ9UpGfugF3ZadoaGBp1DZfRGJq7BTKZOSTZMmBJxlLki
+ 7ybQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745457565; x=1746062365;
+ d=1e100.net; s=20230601; t=1745457566; x=1746062366;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lN8U4pCvani3EVxhH+Cp85aPQAK2No9bOUG5l7LfXn8=;
- b=GVTdOF0f4iiLpEC2hiOhPK3zH2CJkq7gxcYJ3kAyp34A6JLAV/72LY0x2PTBh2/ex1
- qTFAZxuZt9Pm01pnay79wRWmm63X6NMquxjqa4rLAjRHgbAUK9Gz82pD33AX69fUWCDZ
- 0fqfGzde/sce40f6jwAUW43kiQF0HiLyCqaPROgl5+kaygRyL4lrwqzM3bYGTRDwJEdy
- OFwANJpS1/xsC3jhZobJxXHSca2MGWpLZZ++8NOz2IvCpOwNN+mxcT/TVM+HgyoR5fu1
- 72ErNhy36Fs/9wAfq2wVdeu9+4ofYqhU89BIMttugLVjK1NitflEs1DwAlHINzW+ocsb
- ph9w==
-X-Gm-Message-State: AOJu0YywIx5btksfm+jpIlpWjI5cX4WQmCTY+0S6MUzuBAO1Sn+nsAwq
- ZP6sCUwSFRTSnL6aOaoIuCoOkxvV58NtbRswe3Sy/7PcJVuo9bl+4Oxvc9vy64rjRZeUBYhUTWE
- s
-X-Gm-Gg: ASbGncv39ktSRv15Ce8UqMv3CZ7Uwp8SxcbHGY/Cumz0k3tFdQ3shvSOeYmE2OufqVn
- gOA/jiG2XmVpXMMFkn3XCLKTGEaMCyWV/TxzDYRiXA4n/+bXQdc4+uabktmBpRrt1A5ziHnPpZu
- 3oiE999YTH6rPa4sgHHsj/Fy7ACTp83PVknibxWeRCNbj86p00h57pjHOKw9PquAUfjkCm4oB+j
- Ys7ELMK7Cd77+klFP/j+g7EX99H9+fTFYQewKgdtj/kmOHZW90MbJwqZaob7rHIag/1NXP1OhuO
- rUOWccwjURNwzHR6RyWoDLCvOp0Vfpi8cHtmnSPHvyAw1y0vAr+sRSqRAGrjaaGOWw5V1COJ/Uk
+ bh=jtt7Oh++1fV+Vh2SgiqUZ2mBLC6qZ0dag5VMp1U8aEA=;
+ b=cz3SVYFtYw72AvVoVVu9C7IhybNkz2f8dv51VKrZax0Ne/9by6GPzCJJlIxHfhaqhW
+ /sj+XTgYxFUTgfU8DXC7MBHsfSTiK0mTikq4u0kl/NQ3Kz6hBpG1UR0IXt/NLHGmJCOr
+ CPi7F0g4kGHeZaHbpMAUCYbiay7Hcqwdq/9xZqi4i7LJZFd2Y+ySkWTXmgYT52mnOBqQ
+ a6oZfL678wanQ3TEzgJC2TAcM0bOxxhLurUvs6OIU5dH/L79pbLy0jxGR+RKwlzmXoZS
+ 5bmBWgHRE5nDia3MPPDNH8o/SPUO+L9NlsjNB2zpqEP7TVICgd/SalgY4cfypbxz2Mch
+ kBjQ==
+X-Gm-Message-State: AOJu0YwWwAbN55fRtzXxlIklFSmA5utNq2B9cE1jpcZlCg4mGLHI7qBq
+ x+Y9gZ+vyIW/3KIxVsNPamUHti8FaCltLOZTLxIBgw2j+4drtD2PHlFB5Ihhg8EDaRtOH4xzhxI
+ d
+X-Gm-Gg: ASbGnctOagNgHECspu1ZVk29wsS2z8JpKDmrLcodZ0q4WQEy/xr9JrBQH/fRbHjd5PZ
+ 26PwpkVeFQE/oqmTDc0W4eXbH9hVraNykEgsEQUhRU/jDn3lcjLdW7qpvimVbpolIldDh+pjWWT
+ lY1T1CMxv0Vrm9Eelf/U2YyuDCWERaYMfrGtJNxU4LrAdYMLOBmgw2fjZo/YT9rZkgpHPYAN+GG
+ uw7aIcdQKDs4T00BznBJ1jVv6ZH87IC7t4ZEsXi0oleS7czh+9zAPYXrQqmea7WuxbASGxe1gVd
+ VPdLkz5MrifiLJ7iaROtnhGyHhcLG89xRevKtndG4T37PmvtUxKpxhc7gPPL61XLmE31a/L+gpA
  =
-X-Google-Smtp-Source: AGHT+IFWZjr2rSRh3faFqc8z/jLEjTjptxTwUWnR16rA+g+PIxWdy97x6nRpAejvfXAQlnGDDmXLCg==
-X-Received: by 2002:a05:6a21:181a:b0:1f5:9cb2:28a2 with SMTP id
- adf61e73a8af0-20444ebe192mr921198637.19.1745457565253; 
+X-Google-Smtp-Source: AGHT+IFmYAB/pkkO231HW+jR7UBi7MWJXDoJhPRTSm5V2fS7MTPLAhRlZSmMHo4VFpqwMzE/De9Lug==
+X-Received: by 2002:a05:6a00:3a22:b0:736:32d2:aa93 with SMTP id
+ d2e1a72fcca58-73e24cfa09amr1267586b3a.20.1745457565871; 
  Wed, 23 Apr 2025 18:19:25 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73e25912ef0sm244079b3a.10.2025.04.23.18.19.24
+ d2e1a72fcca58-73e25912ef0sm244079b3a.10.2025.04.23.18.19.25
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Apr 2025 18:19:24 -0700 (PDT)
+ Wed, 23 Apr 2025 18:19:25 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 09/15] accel/tcg: Simplify L1_MAP_ADDR_SPACE_BITS
-Date: Wed, 23 Apr 2025 18:19:12 -0700
-Message-ID: <20250424011918.599958-10-richard.henderson@linaro.org>
+Subject: [PATCH 10/15] accel/tcg: Merge internal-target.h into
+ internal-common.h
+Date: Wed, 23 Apr 2025 18:19:13 -0700
+Message-ID: <20250424011918.599958-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250424011918.599958-1-richard.henderson@linaro.org>
 References: <20250424011918.599958-1-richard.henderson@linaro.org>
@@ -97,31 +98,178 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Stop taking TARGET_PHYS_ADDR_SPACE_BITS into account.
-Simply allow the entire ram_addr_t space.
+There's nothing left in internal-target.h that is
+target specific.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/tb-maint.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ accel/tcg/internal-common.h | 29 +++++++++++++++++++++++
+ accel/tcg/internal-target.h | 46 -------------------------------------
+ accel/tcg/cpu-exec.c        |  1 -
+ accel/tcg/cputlb.c          |  1 -
+ accel/tcg/tb-maint.c        |  1 -
+ accel/tcg/translate-all.c   |  1 -
+ accel/tcg/user-exec.c       |  1 -
+ 7 files changed, 29 insertions(+), 51 deletions(-)
+ delete mode 100644 accel/tcg/internal-target.h
 
+diff --git a/accel/tcg/internal-common.h b/accel/tcg/internal-common.h
+index 2f00560d10..573e8438c3 100644
+--- a/accel/tcg/internal-common.h
++++ b/accel/tcg/internal-common.h
+@@ -11,6 +11,7 @@
+ 
+ #include "exec/cpu-common.h"
+ #include "exec/translation-block.h"
++#include "exec/mmap-lock.h"
+ 
+ extern int64_t max_delay;
+ extern int64_t max_advance;
+@@ -108,4 +109,32 @@ static inline tb_page_addr_t get_page_addr_code(CPUArchState *env,
+     return get_page_addr_code_hostp(env, addr, NULL);
+ }
+ 
++/*
++ * Access to the various translations structures need to be serialised
++ * via locks for consistency.  In user-mode emulation access to the
++ * memory related structures are protected with mmap_lock.
++ * In !user-mode we use per-page locks.
++ */
++#ifdef CONFIG_USER_ONLY
++#define assert_memory_lock() tcg_debug_assert(have_mmap_lock())
++#else
++#define assert_memory_lock()
++#endif
++
++#if defined(CONFIG_SOFTMMU) && defined(CONFIG_DEBUG_TCG)
++void assert_no_pages_locked(void);
++#else
++static inline void assert_no_pages_locked(void) { }
++#endif
++
++#ifdef CONFIG_USER_ONLY
++static inline void page_table_config_init(void) { }
++#else
++void page_table_config_init(void);
++#endif
++
++#ifndef CONFIG_USER_ONLY
++G_NORETURN void cpu_io_recompile(CPUState *cpu, uintptr_t retaddr);
++#endif /* CONFIG_USER_ONLY */
++
+ #endif
+diff --git a/accel/tcg/internal-target.h b/accel/tcg/internal-target.h
+deleted file mode 100644
+index 9a9cef3140..0000000000
+--- a/accel/tcg/internal-target.h
++++ /dev/null
+@@ -1,46 +0,0 @@
+-/*
+- * Internal execution defines for qemu (target specific)
+- *
+- *  Copyright (c) 2003 Fabrice Bellard
+- *
+- * SPDX-License-Identifier: LGPL-2.1-or-later
+- */
+-
+-#ifndef ACCEL_TCG_INTERNAL_TARGET_H
+-#define ACCEL_TCG_INTERNAL_TARGET_H
+-
+-#include "cpu-param.h"
+-#include "exec/exec-all.h"
+-#include "exec/translation-block.h"
+-#include "tb-internal.h"
+-#include "exec/mmap-lock.h"
+-
+-/*
+- * Access to the various translations structures need to be serialised
+- * via locks for consistency.  In user-mode emulation access to the
+- * memory related structures are protected with mmap_lock.
+- * In !user-mode we use per-page locks.
+- */
+-#ifdef CONFIG_USER_ONLY
+-#define assert_memory_lock() tcg_debug_assert(have_mmap_lock())
+-#else
+-#define assert_memory_lock()
+-#endif
+-
+-#if defined(CONFIG_SOFTMMU) && defined(CONFIG_DEBUG_TCG)
+-void assert_no_pages_locked(void);
+-#else
+-static inline void assert_no_pages_locked(void) { }
+-#endif
+-
+-#ifdef CONFIG_USER_ONLY
+-static inline void page_table_config_init(void) { }
+-#else
+-void page_table_config_init(void);
+-#endif
+-
+-#ifndef CONFIG_USER_ONLY
+-G_NORETURN void cpu_io_recompile(CPUState *cpu, uintptr_t retaddr);
+-#endif /* CONFIG_USER_ONLY */
+-
+-#endif /* ACCEL_TCG_INTERNAL_H */
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index b00f046b29..4f1955d3d8 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -46,7 +46,6 @@
+ #include "tb-context.h"
+ #include "tb-internal.h"
+ #include "internal-common.h"
+-#include "internal-target.h"
+ 
+ /* -icount align implementation. */
+ 
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index ed6de1e96e..ca69128232 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -43,7 +43,6 @@
+ #include "tb-internal.h"
+ #include "tlb-bounds.h"
+ #include "internal-common.h"
+-#include "internal-target.h"
+ #ifdef CONFIG_PLUGIN
+ #include "qemu/plugin-memory.h"
+ #endif
 diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
-index 581d06ebf3..f43f5342a6 100644
+index f43f5342a6..cf12a28eab 100644
 --- a/accel/tcg/tb-maint.c
 +++ b/accel/tcg/tb-maint.c
-@@ -160,11 +160,7 @@ static PageForEachNext foreach_tb_next(PageForEachNext tb,
- /*
-  * In system mode we want L1_MAP to be based on ram offsets.
-  */
--#if HOST_LONG_BITS < TARGET_PHYS_ADDR_SPACE_BITS
--# define L1_MAP_ADDR_SPACE_BITS  HOST_LONG_BITS
--#else
--# define L1_MAP_ADDR_SPACE_BITS  TARGET_PHYS_ADDR_SPACE_BITS
--#endif
-+#define L1_MAP_ADDR_SPACE_BITS  HOST_LONG_BITS
+@@ -36,7 +36,6 @@
+ #include "tb-context.h"
+ #include "tb-internal.h"
+ #include "internal-common.h"
+-#include "internal-target.h"
+ #ifdef CONFIG_USER_ONLY
+ #include "user/page-protection.h"
+ #endif
+diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+index 9bf8728064..38819a507b 100644
+--- a/accel/tcg/translate-all.c
++++ b/accel/tcg/translate-all.c
+@@ -66,7 +66,6 @@
+ #include "tb-context.h"
+ #include "tb-internal.h"
+ #include "internal-common.h"
+-#include "internal-target.h"
+ #include "tcg/perf.h"
+ #include "tcg/insn-start-words.h"
+ #include "cpu.h"
+diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
+index 112292b729..17e3be337f 100644
+--- a/accel/tcg/user-exec.c
++++ b/accel/tcg/user-exec.c
+@@ -39,7 +39,6 @@
+ #include "tcg/tcg-ldst.h"
+ #include "backend-ldst.h"
+ #include "internal-common.h"
+-#include "internal-target.h"
+ #include "tb-internal.h"
  
- /* Size of the L2 (and L3, etc) page tables.  */
- #define V_L2_BITS 10
+ __thread uintptr_t helper_retaddr;
 -- 
 2.43.0
 
