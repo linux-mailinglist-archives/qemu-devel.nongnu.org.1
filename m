@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99092A99E37
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:28:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 839B8A99E3C
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:29:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7lGU-0003uX-W8; Wed, 23 Apr 2025 21:20:35 -0400
+	id 1u7lGP-0003a4-RV; Wed, 23 Apr 2025 21:20:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7lFP-0002a7-5s
+ id 1u7lFP-0002aU-5t
  for qemu-devel@nongnu.org; Wed, 23 Apr 2025 21:19:28 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7lFK-00078V-LF
+ id 1u7lFL-00078a-9o
  for qemu-devel@nongnu.org; Wed, 23 Apr 2025 21:19:26 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-736a72220edso432203b3a.3
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-736b98acaadso382555b3a.1
  for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 18:19:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1745457561; x=1746062361; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7BSyrZdC7v2JUnVuoXHNlf5lgfOuXFUfOH2AgahCd9o=;
- b=y0FK71/dodldrMacsgVxZUYO6NKDQ8WXukDxmzPVUzGmYVJNxjdCljcDAO4RTJL5Ln
- RHEyZ67U7cXXw9VrNWMfzLQxyI9LCgIzWn1qdRFIQyeIzTSYJW6pydx5IF/gq2E8RLcf
- VUAdkaU32K9jflvY0/P8iJMm+HSY6h1C4o3yHmxlTyYqY08qo6X5GCqjQ2ZKVHxV1t1y
- pz4XSfPyGXF25fArIW/+N2h9ntKB1j6O59Va5BnY/akT+Ln9Xjwhpqim12vJDR/1nAqs
- P1p3E993Qe59rPv2Q+1YwA8VGTexyXFDKToO3VJfF/h9FklEx1fGOIBmEvjBRn5E+yA2
- NMeg==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=E2Pb/xj5a0DFM5mce1sHnV2dTI3TtHpGhVsfW6YeWgU=;
+ b=rH7OeVHUUQSNfZuF6MRjYnSje45rdgpuMNLjAOK6FlasFLdXYjVHjl9WU6AKFh4jBN
+ TsgnUsel+t4cwzvKMHaChzGDtVS65gHytX4fXIG3KpC73bS6MvZjhJRXxFBNuDAz046f
+ qyf8FLlPi3tYfV1PzATCb/ZnckU+eWNJRQTG8cRysgJbcc+eSyXpgIxaU+zwIt3WgdQR
+ yYQiE22Z/w1kgvnzzS3DQSfwlsWls8tv6x2ligAR3V8QUClcwZf4Y2oojtyM6n4vAZPV
+ uZhGuP4tAuwbGfTSx7rYvnYrM7dnOAURQnZ4nNx2aEyNbcUKvIuNo92xcM58eSOB3f4Z
+ ghiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1745457561; x=1746062361;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7BSyrZdC7v2JUnVuoXHNlf5lgfOuXFUfOH2AgahCd9o=;
- b=DXjIfMWnuNPOSrNqTe4BTg62d2QO88ewZWpafk8naZhcMtiJbgVCJMMSgzslSBJJiE
- VMppaNz0nSFu1CWwqgVRacO69ZvLcSajSrfHdcvfBOPtz5Pd4RExc0i+HSm3PPXg+VQI
- 5/1N4jKe23QEB2KU0lWU0/sb6jL6LSTLIU/TQMSfymtFVcHaOzczZ6f3pOoadslUTZp6
- EWRvXELj2L8i0jPh30AOFJBcB6uF/qdhQUu26UX/8XwTFx6fh/XiJzvxD7Wke58HTPzP
- u87vFAct+KTSMpHlUZCqot1AI+pdZ7pNnWXaFsULgQjg9l9wsdFUds1DGGy/IRAu6zwl
- fDGw==
-X-Gm-Message-State: AOJu0YwYdsV5P4JoIt8yjmGEwE4gJfdr3ASAqt6SbYFoF/zoacGB67Sy
- el+Htpjz5JrWQKIvKYqGGxqYyQF6xK8WVNZlb9YOaMAqrBIc6w+MDwdpS74Rh1yb0JjXTY+qYq/
- +
-X-Gm-Gg: ASbGnctAExJxYjgC8aisz4Y9vLs0xuchrMBAQWdg4EQaaeRUxcnj1himBFeZCKNXdBs
- shrzBT3wIsZ0xVBDOtwNx+dIlQvWVHxRaB8Gom7SmZ2eAa5A6inqD9vTU3nIiN1BC4BbJUx7GOP
- CE3rXfVXFgMRKuRBjYLQ+qS5nhUtLoyQxy9glK7beiwEK6E5H+uvk3QCUooMCnqXO2scKj3l8w3
- WIG+jYzDHe2sfRMJDA++/9YWhfaURC4O0asQeEZi26WHIks1f1VSRzCjzBASHcLZ1rV9+RF+F8q
- wsRZU+Tvd6cEilW+fg8AwitMlRila6GkIt4q+6nl9+zwuSAH0juQ2Z8BPy/c0y8qWxOO9X0MaRd
- 5U8c/WBru2Q==
-X-Google-Smtp-Source: AGHT+IGYM2DwESJiINJzNJzPPoHI7bpOL6ks1LIELyRacW7v4H+T8a6/PjQ6dFd5EjyhqNYM3sxtXw==
-X-Received: by 2002:a05:6a00:1d0a:b0:736:457b:9858 with SMTP id
- d2e1a72fcca58-73e245e6478mr1034101b3a.10.1745457560957; 
- Wed, 23 Apr 2025 18:19:20 -0700 (PDT)
+ bh=E2Pb/xj5a0DFM5mce1sHnV2dTI3TtHpGhVsfW6YeWgU=;
+ b=JwI0A1AiBQj6PSm90qOCwJAMJ5GaFcEm5gOORGT6fnB2c9UyqN+0iDQBx0yRYpprD4
+ Uzkj53G6q+5uDug+yztCFyyOcB7n8l8D4gSks8RUveXs1QqLVPT5cTyeAOf/QnhZpAQA
+ y02lOQdOc5m9iz3dj4eTzAz0DVIw4Rk631DWdowdkSnBUdHWnCCaXrkXC0ByCiK5PIcX
+ 177qAIkRped6uteuMKHnLK4/SGYZEUwvBEE2G9ZODiZCnRIPEegyPErUFQzyEUAgIzu4
+ zuOkyRZWbm1Ac21RjxwlbxudYy9iSe7Nmp++AiD/vFoN7Z4fVWQtNLhcYRefbXLdQt6Y
+ QQYw==
+X-Gm-Message-State: AOJu0YyzY2DXvAT94benW/Mkny6ZWAu86RFpQNMgKqByZo82RtHoIDOQ
+ 2JTdpt5zZrDmhZg1VVKT5D+g6za0w4E5cYXCLwTvbeOSKfJjzYUO3dkfYpk7d13/jW6atjJpzxl
+ X
+X-Gm-Gg: ASbGncvzl8+DXzyscVzLtZVXNH4d1rOPRUDchmmSePnUEcQSQZGYT+5P2sYE2T3Iwsf
+ yGG/B3QfP75ZZ8I5OOj20Mo5w1uYGOHIcu9b0/SBNdhyQ8Xy6F4E2CqICfrSQFJ5X6m8oG1/g3C
+ KmPQWvhR0kcICHVx1Q3UUpfLIv48b0yFUSDNIuHG1Fiqi7GKyddkc313WSbzPbGsah5gmaCXPYa
+ KYG4OwL+aehQuaNNPW9FX3UpBFVZUV1pLjWSbbgP64yF0SvmYw6T/gld6CrYmAk/XQIJyUfvuaC
+ ThQG37HmATV7UsCDxIGInwp3bTjO2VpnvLo6FrHLO80UKTzpOX1/bqXn28m9fzaUR2F+D1DDvSI
+ =
+X-Google-Smtp-Source: AGHT+IEyM2VXKXx6X4PEEWSRA4fQkoBF9m52x2cgLi1s1SF2K53NeJOpkD8Iwku1iyTeSiMudDCdxQ==
+X-Received: by 2002:a05:6a00:a8a:b0:736:d6da:8f9e with SMTP id
+ d2e1a72fcca58-73e23cb1724mr1201065b3a.0.1745457561566; 
+ Wed, 23 Apr 2025 18:19:21 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73e25912ef0sm244079b3a.10.2025.04.23.18.19.20
+ d2e1a72fcca58-73e25912ef0sm244079b3a.10.2025.04.23.18.19.21
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Apr 2025 18:19:20 -0700 (PDT)
+ Wed, 23 Apr 2025 18:19:21 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 02/15] accel/tcg: Add CPUState argument to
- tb_invalidate_phys_page_unwind
-Date: Wed, 23 Apr 2025 18:19:05 -0700
-Message-ID: <20250424011918.599958-3-richard.henderson@linaro.org>
+Subject: [PATCH 03/15] accel/tcg: Add CPUState arg to
+ tb_invalidate_phys_page_range__locked
+Date: Wed, 23 Apr 2025 18:19:06 -0700
+Message-ID: <20250424011918.599958-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250424011918.599958-1-richard.henderson@linaro.org>
 References: <20250424011918.599958-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,84 +98,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace existing usage of current_cpu.
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/tb-internal.h | 3 ++-
- accel/tcg/tb-maint.c    | 8 ++++----
- accel/tcg/user-exec.c   | 5 +++--
- 3 files changed, 9 insertions(+), 7 deletions(-)
+ accel/tcg/tb-maint.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/accel/tcg/tb-internal.h b/accel/tcg/tb-internal.h
-index 08538e2896..1078de6c99 100644
---- a/accel/tcg/tb-internal.h
-+++ b/accel/tcg/tb-internal.h
-@@ -50,6 +50,7 @@ void tb_invalidate_phys_range_fast(ram_addr_t ram_addr,
-                                    uintptr_t retaddr);
- #endif /* CONFIG_SOFTMMU */
- 
--bool tb_invalidate_phys_page_unwind(tb_page_addr_t addr, uintptr_t pc);
-+bool tb_invalidate_phys_page_unwind(CPUState *cpu, tb_page_addr_t addr,
-+                                    uintptr_t pc);
- 
- #endif
 diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
-index d479f53ae0..714dcaedc9 100644
+index 714dcaedc9..e8a465c9ac 100644
 --- a/accel/tcg/tb-maint.c
 +++ b/accel/tcg/tb-maint.c
-@@ -1045,7 +1045,8 @@ static void tb_invalidate_phys_page(tb_page_addr_t addr)
-  * TB (because it was modified by this store and the guest CPU has
-  * precise-SMC semantics).
+@@ -1100,9 +1100,12 @@ bool tb_invalidate_phys_page_unwind(CPUState *cpu, tb_page_addr_t addr,
+ /*
+  * @p must be non-NULL.
+  * Call with all @pages locked.
++ * If cpu may be NULL outside of a cpu context.  In which case,
++ * precise_smc need not be detected.
   */
--bool tb_invalidate_phys_page_unwind(tb_page_addr_t addr, uintptr_t pc)
-+bool tb_invalidate_phys_page_unwind(CPUState *cpu, tb_page_addr_t addr,
-+                                    uintptr_t pc)
- {
-     TranslationBlock *current_tb;
-     bool current_tb_modified;
-@@ -1083,15 +1084,14 @@ bool tb_invalidate_phys_page_unwind(tb_page_addr_t addr, uintptr_t pc)
-              * the CPU state.
-              */
-             current_tb_modified = true;
--            cpu_restore_state_from_tb(current_cpu, current_tb, pc);
-+            cpu_restore_state_from_tb(cpu, current_tb, pc);
-         }
-         tb_phys_invalidate__locked(tb);
+ static void
+-tb_invalidate_phys_page_range__locked(struct page_collection *pages,
++tb_invalidate_phys_page_range__locked(CPUState *cpu,
++                                      struct page_collection *pages,
+                                       PageDesc *p, tb_page_addr_t start,
+                                       tb_page_addr_t last,
+                                       uintptr_t retaddr)
+@@ -1194,7 +1197,7 @@ void tb_invalidate_phys_range(tb_page_addr_t start, tb_page_addr_t last)
+         page_start = index << TARGET_PAGE_BITS;
+         page_last = page_start | ~TARGET_PAGE_MASK;
+         page_last = MIN(page_last, last);
+-        tb_invalidate_phys_page_range__locked(pages, pd,
++        tb_invalidate_phys_page_range__locked(NULL, pages, pd,
+                                               page_start, page_last, 0);
+     }
+     page_collection_unlock(pages);
+@@ -1215,7 +1218,7 @@ static void tb_invalidate_phys_page_fast__locked(struct page_collection *pages,
      }
  
-     if (current_tb_modified) {
-         /* Force execution of one insn next time.  */
--        CPUState *cpu = current_cpu;
--        cpu->cflags_next_tb = 1 | CF_NOIRQ | curr_cflags(current_cpu);
-+        cpu->cflags_next_tb = 1 | CF_NOIRQ | curr_cflags(cpu);
-         return true;
-     }
-     return false;
-diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index 90b345a0cf..39b76d9654 100644
---- a/accel/tcg/user-exec.c
-+++ b/accel/tcg/user-exec.c
-@@ -749,7 +749,8 @@ int page_unprotect(CPUState *cpu, tb_page_addr_t address, uintptr_t pc)
-             len = TARGET_PAGE_SIZE;
-             prot = p->flags | PAGE_WRITE;
-             pageflags_set_clear(start, start + len - 1, PAGE_WRITE, 0);
--            current_tb_invalidated = tb_invalidate_phys_page_unwind(start, pc);
-+            current_tb_invalidated =
-+                tb_invalidate_phys_page_unwind(cpu, start, pc);
-         } else {
-             start = address & -host_page_size;
-             len = host_page_size;
-@@ -772,7 +773,7 @@ int page_unprotect(CPUState *cpu, tb_page_addr_t address, uintptr_t pc)
-                  * the corresponding translated code.
-                  */
-                 current_tb_invalidated |=
--                    tb_invalidate_phys_page_unwind(addr, pc);
-+                    tb_invalidate_phys_page_unwind(cpu, addr, pc);
-             }
-         }
-         if (prot & PAGE_EXEC) {
+     assert_page_locked(p);
+-    tb_invalidate_phys_page_range__locked(pages, p, start, start + len - 1, ra);
++    tb_invalidate_phys_page_range__locked(NULL, pages, p, start, start + len - 1, ra);
+ }
+ 
+ /*
 -- 
 2.43.0
 
