@@ -2,55 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9E42A99F0A
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 04:57:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FB62A99ED1
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 04:32:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7mki-0000c6-8g; Wed, 23 Apr 2025 22:55:52 -0400
+	id 1u7mNI-0003Uk-2X; Wed, 23 Apr 2025 22:31:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1u7mkQ-0000aW-Qy
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 22:55:34 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1u7mkN-00005g-5J
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 22:55:34 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxlnAhqAloqwbFAA--.63993S3;
- Thu, 24 Apr 2025 10:55:29 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMCxrhsVqAlogNaSAA--.53120S11;
- Thu, 24 Apr 2025 10:55:28 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: stefanha@gmail.com, peter.maydell@linaro.org, richard.henderson@linaro.org,
- Bibo Mao <maobibo@loongson.cn>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 09/13] target/loongarch: Add static definition with function
- loongarch_tlb_search()
-Date: Thu, 24 Apr 2025 10:33:13 +0800
-Message-Id: <20250424023317.3980755-10-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20250424023317.3980755-1-gaosong@loongson.cn>
-References: <20250424023317.3980755-1-gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1u7mNF-0003U7-Ao
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 22:31:37 -0400
+Received: from mgamail.intel.com ([192.198.163.11])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1u7mND-00061A-5t
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 22:31:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1745461895; x=1776997895;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=Ekg2qfsM9bPBGyQiZZJL+MMvwd2ayI0bu7Qyc0F1u/8=;
+ b=meVAD5Y+6O3fjcueaDJUPHyA4zeJjT0ONgDewobpNV7XrFAj+woakQu0
+ RVX86k0Ji3BU7EhzKOo/DGl9sRC4vYY8TxbCcVCdNwKTRF34PzlW2k54u
+ 0kMiICmiB5v3tpGyhS1Ogm8CAQ/Vj9U4yFe6/lK2i+oH7udgKUx6ENKC5
+ R6bHGWg5TuesX3Zj+haXtfeqatYuCX87d5NVkRAdYu1kzBPOf33v4AJjM
+ bTSywA5zJgDyKyxroQ8O1xSxh7ZFWICVBl2SkCvP0eb4bgjr+FzqsbMUh
+ XiJfSnBrjLbgPnXH/BLpOGmbZo1MPzqLbFH3Tg0+drKfnyRcixEn0ilYg A==;
+X-CSE-ConnectionGUID: YdEicEHtQwWKBhtSVdfudw==
+X-CSE-MsgGUID: Vws1opZeRt2q3F8L2Ela0w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="57724973"
+X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="57724973"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2025 19:31:31 -0700
+X-CSE-ConnectionGUID: 3zhve+q3R8inQ1NaKVLnag==
+X-CSE-MsgGUID: UH0bjNOcTgOH3Yrd3jjvvA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; d="scan'208";a="132788659"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa008.fm.intel.com with ESMTP; 23 Apr 2025 19:31:28 -0700
+Date: Thu, 24 Apr 2025 10:52:24 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Babu Moger <babu.moger@amd.com>, Ewan Hai <ewanhai-oc@zhaoxin.com>,
+ Tejus GK <tejus.gk@nutanix.com>, Jason Zeng <jason.zeng@intel.com>,
+ Manish Mishra <manish.mishra@nutanix.com>,
+ Tao Su <tao1.su@intel.com>, qemu-devel@nongnu.org, kvm@vger.kernel.org
+Subject: Re: [RFC 01/10] i386/cpu: Mark CPUID[0x80000005] as reserved for Intel
+Message-ID: <aAmnaAbrELVl3UiT@intel.com>
+References: <20250423114702.1529340-1-zhao1.liu@intel.com>
+ <20250423114702.1529340-2-zhao1.liu@intel.com>
+ <596c7a44-797b-4a16-bd7e-0f0dc5c2e593@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMCxrhsVqAlogNaSAA--.53120S11
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <596c7a44-797b-4a16-bd7e-0f0dc5c2e593@intel.com>
+Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.294,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,49 +89,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bibo Mao <maobibo@loongson.cn>
+> > +        /*
+> > +         * cache info (L1 cache)
+> > +         *
+> > +         * For !vendor_cpuid_only case, non-AMD CPU would get the wrong
+> > +         * information, i.e., get AMD's cache model. It doesn't matter,
+> > +         * vendor_cpuid_only has been turned on by default since
+> > +         * PC machine v6.1.
+> > +         */
+> 
+> We need to define a new compat property for it other than vendor_cpuid_only,
+> for 10.1.
+> 
+> I proposed some change to leaf FEAT_8000_0001_EDX[1], and I was told by
+> Paolo (privately) that vendor_cpuid_only doesn't suffice.
+> 
+>  On Fri, Oct 11, 2024 at 6:22 PM Xiaoyao Li <xiaoyao.li@intel.com> wrote:
+>  >
+>  > On 10/11/2024 11:30 PM, Paolo Bonzini wrote:
+>  > > On Fri, Oct 11, 2024 at 4:55 PM Xiaoyao Li <xiaoyao.li@intel.com>
+> wrote:
+>  > >>
+>  > >> I think patch 8 is also a general issue> Without it, the
+>  > >> CPUID_EXT2_AMD_ALIASES bits are exposed to Intel VMs which are
+>  > >> reserved bits for Intel.
+>  > >
+>  > > Yes but you'd have to add compat properties for these. If you can do
+>  > > it for TDX only, that's easier.
+>  >
+>  > Does vendor_cpuid_only suffice?
+> 
+>  Unfortunately not, because it is turned off only for <=6.0 machine
+>  types. Here you'd have to turn it off for <=9.1 machine types.
+> 
+> 
+> [1] https://lore.kernel.org/qemu-devel/20240814075431.339209-9-xiaoyao.li@intel.com/
 
-Function loongarch_tlb_search() is only referenced in file tcg/tlb_helper.c,
-define this function with static attribution.
+For the patch link, you wanted to mark it as unavailiable but it would
+break the machine <= 6.0 (with vendor_cpuid_only turned off), correct?
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20250423080417.3739809-9-maobibo@loongson.cn>
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- target/loongarch/internals.h      | 2 --
- target/loongarch/tcg/tlb_helper.c | 4 ++--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+For this patch:
+ * vendor_cpuid_only turns off for <= 6.0 machine, no change.
+ * vendor_cpuid_only turns on for > 6.0 machine, I treated it as a
+   "direct" fix because original codes encode the AMD cache model info
+   on non-AMD platform (in ecx & edx). This doesn't make sense. Non-AMD
+   platform should use cache_info_cpuid4 or 0 here. If it is considered
+   a fix, it may be more appropriate to use cache_info_cpuid4.
 
-diff --git a/target/loongarch/internals.h b/target/loongarch/internals.h
-index 9fdc3059d8..3a079feb1d 100644
---- a/target/loongarch/internals.h
-+++ b/target/loongarch/internals.h
-@@ -54,8 +54,6 @@ uint64_t cpu_loongarch_get_constant_timer_counter(LoongArchCPU *cpu);
- uint64_t cpu_loongarch_get_constant_timer_ticks(LoongArchCPU *cpu);
- void cpu_loongarch_store_constant_timer_config(LoongArchCPU *cpu,
-                                                uint64_t value);
--bool loongarch_tlb_search(CPULoongArchState *env, target_ulong vaddr,
--                          int *index);
- int get_physical_address(CPULoongArchState *env, hwaddr *physical,
-                          int *prot, target_ulong address,
-                          MMUAccessType access_type, int mmu_idx, int is_debug);
-diff --git a/target/loongarch/tcg/tlb_helper.c b/target/loongarch/tcg/tlb_helper.c
-index 8509aa99cf..2fdd10022b 100644
---- a/target/loongarch/tcg/tlb_helper.c
-+++ b/target/loongarch/tcg/tlb_helper.c
-@@ -209,8 +209,8 @@ static uint32_t get_random_tlb(uint32_t low, uint32_t high)
-  * field in tlb entry contains bit[47:13], so need adjust.
-  * virt_vpn = vaddr[47:13]
-  */
--bool loongarch_tlb_search(CPULoongArchState *env, target_ulong vaddr,
--                          int *index)
-+static bool loongarch_tlb_search(CPULoongArchState *env, target_ulong vaddr,
-+                                 int *index)
- {
-     LoongArchTLB *tlb;
-     uint16_t csr_asid, tlb_asid, stlb_idx;
--- 
-2.34.1
+I think it's somehow similar to the “trade-offs” Daniel indicated [2].
 
+This case can also be fixed by compat option. Then we don't  need to
+encode cache_info_cpuid4 info for non-AMD platforms in this leaf.
+
+Do you still need the patches in your links? (I didn't find the related
+patch merged.) If so, I can add the compat option in the next version
+which could also help you land your previous patches v10.1 as well.
+
+[2]: https://lore.kernel.org/qemu-devel/Z08j2Ii-QuZk3lTY@redhat.com/
+
+> > +        if (cpu->vendor_cpuid_only &&
+> > +            (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env))) {
+> > +            *eax = *ebx = *ecx = *edx = 0;
+> > +            break;
+> > +        } else if (cpu->cache_info_passthrough) {
+> >               x86_cpu_get_cache_cpuid(index, 0, eax, ebx, ecx, edx);
+> >               break;
+> >           }
+> > +
+> >           *eax = (L1_DTLB_2M_ASSOC << 24) | (L1_DTLB_2M_ENTRIES << 16) |
+> >                  (L1_ITLB_2M_ASSOC <<  8) | (L1_ITLB_2M_ENTRIES);
+> >           *ebx = (L1_DTLB_4K_ASSOC << 24) | (L1_DTLB_4K_ENTRIES << 16) |
+> 
 
