@@ -2,78 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3779A9A0A6
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 07:53:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29F2DA9A182
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 08:20:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7pVM-0007DV-1T; Thu, 24 Apr 2025 01:52:13 -0400
+	id 1u7pvt-0007Rf-3D; Thu, 24 Apr 2025 02:19:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1u7pVI-0007DI-65
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 01:52:08 -0400
-Received: from mgamail.intel.com ([198.175.65.20])
+ (Exim 4.90_1) (envelope-from <dietmar@proxmox.com>)
+ id 1u7pvp-0007QZ-AL
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 02:19:33 -0400
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1u7pVF-0000ts-Nz
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 01:52:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745473926; x=1777009926;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=bEXJv9PIByrS1p+kj+bzV/0sGFaz6Cp/dC7FgW0hGlk=;
- b=kMpyS6+9L9iC2Kf8/TYArwvOCfx1E3+8ybRIgyOHjgLj64B2MdtS2MTV
- xWY1N+XQ/nHlcaMi/Xx6pGsahsL/8UdF/qoS6L+8BhVxvsERz2KEjqPKz
- lwB2h+fzVD0OA1iMRvSPqRLpzMiKSkFxWiEtCvEkPlv/aiGFeeqmTbZcB
- nKwlW0sDRFHsyFSAa9MGaoz/B8DHlrwaPiqPOihFh74SDN6+r3TJvQSbW
- dRbMquBZi3pfSXt1ESouWr4tYPShpnZvkrXQGckSxXt9PrLESV8/JiUoR
- a76eq9aqe0iCqNILN2GdctnxbrUaO5Uo6OP++GDkPTioxICdheasRdnFy Q==;
-X-CSE-ConnectionGUID: e/pHritqSJaQHY1qy31cJw==
-X-CSE-MsgGUID: pgVFvlWaSg6p9eK+mCvecA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="46797029"
-X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; d="scan'208";a="46797029"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2025 22:52:02 -0700
-X-CSE-ConnectionGUID: rwxKsCQNTtGyu9NN76x9Zg==
-X-CSE-MsgGUID: kJtkQ2peSi+kdPdwbM+/kw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; d="scan'208";a="133042115"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
- ([10.124.247.1])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Apr 2025 22:52:00 -0700
-Message-ID: <884fdc77-94f8-41f5-a579-aa70fa652eb9@intel.com>
-Date: Thu, 24 Apr 2025 13:51:55 +0800
+ (Exim 4.90_1) (envelope-from <dietmar@proxmox.com>)
+ id 1u7pvm-0004re-W6
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 02:19:32 -0400
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id C6DB649A7F;
+ Thu, 24 Apr 2025 08:19:25 +0200 (CEST)
+Date: Thu, 24 Apr 2025 08:19:25 +0200 (CEST)
+From: Dietmar Maurer <dietmar@proxmox.com>
+To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>
+Cc: qemu-devel@nongnu.org
+Message-ID: <1814146671.4781.1745475565149@webmail.proxmox.com>
+In-Reply-To: <CAJ+F1C+n-yVHA-u7=MvChwn17bHLY8_XVBiQJOtFAX5pxdbj-w@mail.gmail.com>
+References: <20250418112953.1744442-1-dietmar@proxmox.com>
+ <20250418112953.1744442-3-dietmar@proxmox.com>
+ <CAJ+F1CLHF0VQHg0JYmaooVRJSZbDkQa01D__iX-5umUcQjJd1Q@mail.gmail.com>
+ <1186263082.4663.1745408772058@webmail.proxmox.com>
+ <CAJ+F1C+n-yVHA-u7=MvChwn17bHLY8_XVBiQJOtFAX5pxdbj-w@mail.gmail.com>
+Subject: Re: [PATCH v3 2/9] add vnc h264 encoder
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 31/55] i386/cpu: introduce
- x86_confidential_guest_cpu_instance_init()
-To: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Francesco Lavra <francescolavra.fl@gmail.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
- <20250401130205.2198253-32-xiaoyao.li@intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20250401130205.2198253-32-xiaoyao.li@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=198.175.65.20; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -36
-X-Spam_score: -3.7
-X-Spam_bar: ---
-X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.294,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
+X-Priority: 3
+Importance: Normal
+X-Mailer: Open-Xchange Mailer v7.10.6-Rev75
+X-Originating-Client: open-xchange-appsuite
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=dietmar@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,54 +63,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Paolo,
+> > > > +        VNC_DEBUG("Could not add source to gst pipeline\n");
+> > > > +        goto error;
+> > > > +    }
+> > > > +
+> > > > +    gst_object_ref(vs->h264->convert);
+> > > > +    if (!gst_bin_add(GST_BIN(vs->h264->pipeline), vs->h264->convert)) {
+> > >
+> > > Can you use gst_bin_add_many() ?
+> >
+> > will try to use that.
 
-On 4/1/2025 9:01 PM, Xiaoyao Li wrote:
-...
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index add6430f7edd..5c69d1489365 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -36,6 +36,7 @@
->   #include "hw/qdev-properties.h"
->   #include "hw/i386/topology.h"
->   #ifndef CONFIG_USER_ONLY
-> +#include "confidential-guest.h"
->   #include "system/reset.h"
->   #include "qapi/qapi-commands-machine-target.h"
->   #include "exec/address-spaces.h"
-> @@ -8504,6 +8505,15 @@ static void x86_cpu_post_initfn(Object *obj)
->       }
->   
->       accel_cpu_instance_init(CPU(obj));
-> +
-> +#ifndef CONFIG_USER_ONLY
-> +    MachineState *ms = MACHINE(object_dynamic_cast(qdev_get_machine(),
-> +                                                   TYPE_MACHINE));
+I really struggle to use those functions. Documentation states
+that gst_bin_add() can fail, but gst_bin_add_many() simply ignores
+the results of gst_bin_add() (explicitly stated in the docs)? 
 
-It leads to
+Do you really want to use gst_bin_add_many() anyways?
 
-   qemu-system-x86_64: ../hw/core/qdev.c:824: qdev_get_machine: 
-Assertion `dev' failed.
-   Aborted (core dumped)
-
-for the case of "-cpu help" due to the assert(dev) in qdev_get_machine().
-
-How do you want to resolve it? I can think of two:
-1. remove the assert() in qdev_get_machine(). or
-2. drop the callback introduce by this patch. Instead just do
-
-    if (is_tdx_vm()) {
-	tdx_cpu_instance_init();
-    }
-
-> +    if (ms && ms->cgs) {
-> +        x86_confidential_guest_cpu_instance_init(X86_CONFIDENTIAL_GUEST(ms->cgs),
-> +                                                 (CPU(obj)));
-> +    }
-> +#endif
->   }
->   
->   static void x86_cpu_init_default_topo(X86CPU *cpu)
+- Dietmar
 
 
