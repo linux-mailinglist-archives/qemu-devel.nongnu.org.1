@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7A27A99DD7
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:11:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5BC2A99DB4
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:05:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7kvc-0001oG-LL; Wed, 23 Apr 2025 20:59:01 -0400
+	id 1u7kwR-0003pI-LL; Wed, 23 Apr 2025 20:59:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7ktY-0005ul-M4
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:56:57 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1u7ktc-0005vc-3d
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:56:58 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7ktX-00057A-2N
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:56:52 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-736ad42dfd6so333941b3a.3
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:56:50 -0700 (PDT)
+ id 1u7ktY-00057S-CG
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:56:54 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-223f4c06e9fso4320575ad.1
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:56:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745456209; x=1746061009; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745456210; x=1746061010; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BgalV7HruJEO8qZACAhRIvHXd09mMPeIqD7Z/pvVOVM=;
- b=miipDs6Rjee+dibWnnTd/dmElbmRIPLfsOgZCQQxLEq0YnJoynYEq0WAP+zAuXeaYI
- P83dhlxPgSqcniC7ewVvcQlfE1D+4daABF9hqMvBqMPZhNqGTlZEmbpzgNwTBBEBiy/j
- cflQq+PuY51HdUtq161UKLG9CHsyWER7c1Ef6Vb0ZdRcxUQFvoUatNpIKLQnP/N5fU+g
- B6zrBVJVCMYz6dyc/0LYJOM3Rynf/cuGxWsirORhra9XTWzCp6qAXjL6Uxn9tya4IkY+
- nutP52w8seIqjA/mPQGuAqnt5YGf3JjiEQEAkMX/fWeosBuNxl73s++UIhIFLt2Cdudn
- 8uWA==
+ bh=j9HHGABI/+QZ6I/uzvzo64WoBmQeTxV0UDzCb6CtbrY=;
+ b=JVZYPVzXqfHZttb/UHRuuajvrYnkHdC/wFZ+U33JQupBCxuZQPJPPUP5RmmFtaFsrf
+ /WXACLpsp7SYvrN4Sz3vemm+oUs1kcRiSTLwpQ63yFA8TBhlnsV2axXVLMs66S4Z12oD
+ JMNNZM9FlmXc36DWsvjng70emtjNDmjODAOETNA0402sDsEsBl+VzD31Jy4CkbXOcIY6
+ KF3pEN9eu3Lvpf0NYSelyxj6BnLw/tekTqdsQVLplwIJaFO3CN/LyK7ckHrj7bhGb/1i
+ p9FWHgNSvrqCaeygnhbRBxDvsrEoocqDqRavUEAF9bPfY9Kc30s8nxqsaMdb9IZ3yB9x
+ Ytcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745456209; x=1746061009;
+ d=1e100.net; s=20230601; t=1745456210; x=1746061010;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BgalV7HruJEO8qZACAhRIvHXd09mMPeIqD7Z/pvVOVM=;
- b=U7Kn1amEYHPJphogolF5S5R7hO63XGS7MXAydrzgiu5M7SfD6QETWKOs9rILADrodA
- d1Q631IEdAxKpBJeI82AFYV91XTfIEO1nb9NOueiNW4QcayplGVoO8iZsqwF32KcQM0t
- YfKfLzhfrB6WfUHsaunaKfwQa18s0Y6L1grgr/9l3IRI3IjdMzUYhxMJDI6p1zQjzdZ0
- 7rdnmFCZ91ZzN/i2sC0lDoGMyKDPxckKb03H+zU7q1pTXi34D+Yuzewbd4N3XIymKQ1D
- jsWPuSeXWv9xxezK7UMlUFAHT8z8Ca5OwfFVCTFYyKHV2EDkhx+D5lUD0XnwXJ//DXY7
- 7TGw==
-X-Gm-Message-State: AOJu0Yz8N25oGClzlxM8eazVyxyPq6w//dRWIZExsoIV32HkXvXBbYJv
- WcVYvswhehBIA7Uday6AznY+8Zq4KqgE+K/7fYjQqLuI44p1SChmOmT/qGHpvC3ms/us0ip9W4r
- o
-X-Gm-Gg: ASbGncsszC0ld6uFwfeU/ch9QokgSxHw7vn3bKcNQSKSjq6BJp9voECTe3T8CdVLpx4
- Es7jpsMyjz0Hbd3nHoflSS8PHlR53tU/AFvwD1KorwFLA5IgFLiGy7i1Is1V4bIpxUU4URR88JO
- lWNLWTUKW3P05/y6hKoST1INoK0njKVn9Tk/ne7ApzIARMzLdL+jhPktuovTSoMKNbsWWfJuNxy
- 3S25pvH79qKMm5ikbBdJjXYJixZkzSkSj4zhNeL+qskQsbjcOH0EBeyG7pQT0mBkFEyeCmcu2+2
- 5+NcmkTzfkXNOtnTPK7DWlidx70bor9UbzMcm0es0XMziMzcfKuSbeeb4J4teK5rKsacGNgmRn9
- UUb4bD9mu4A==
-X-Google-Smtp-Source: AGHT+IGOZAAGWaunYX3QMFDZRVlVUQBD4w4mBpl74MRWUb0/XVWf1wJKXl9s8UxYLi/UHUTCUGdvIQ==
-X-Received: by 2002:a05:6a21:1510:b0:1fd:ecfa:b6d7 with SMTP id
- adf61e73a8af0-20444f2e8cdmr925517637.28.1745456209674; 
- Wed, 23 Apr 2025 17:56:49 -0700 (PDT)
+ bh=j9HHGABI/+QZ6I/uzvzo64WoBmQeTxV0UDzCb6CtbrY=;
+ b=JXXVemGRrH09XDYRCaxRthEfAxEKnzx3W/rYzd0PNu+9yDVGhJ/pqNveUMgihAfbLh
+ uNMi0ERI/C835QtZIZZCaQ16Oi2VcMRg1twVqANAbThT8/Dn5/1YFfZTz9wvhXgBKXTo
+ 1TnUcn1WLzj3FAmrJXb/aeFvawSoqbL20PST4AEbhp8tRIj2XxzpbE0FzUjfONnPykh4
+ iOMCUnbqiPEyEaBBY/oXslpde82BaMVmB7R9Zy1MluwucAuPUPW4X0iOt005Xx/Z3Kao
+ KIU3SZirg+/MNMXoiwAyYWPSESiHzUhhfDS6/phGDxOUzievheJmb8iVdmTd9TmjShg1
+ e4kQ==
+X-Gm-Message-State: AOJu0YzZtOQ1r256uhes+OwGmzyqXrHsRAUOZaq9Sk2HG5X4OySCHNLg
+ CVQxWEAMOvbPm976sfiPe2HL9fZqtGnLh4kiD5G1dGiYei/x50wBhveN1HtLBjaEoUk24uV2uk/
+ q
+X-Gm-Gg: ASbGncs5vTJW2OeO2Gdjnq3U9U4OyHUnsWca0I7Mw6+HZTrQ4ysc9mMYBFZyjn0Cw+J
+ Vq5CEApTt/rLcHuAA8DYF8YwXVuCydoiO1Ux/N1cIJHHrqyJoFgAZH9QhfGTstg63LlrN72Hkr+
+ Y/jt/C+/mcvXUjWAaaPsDorByj0B66jU/kWSVc3HsYY5xfcdZcQcL9314rTqeBbzRqKozyVKQBR
+ l3/vzLQavgJh1vkW77zHZqXE4oNXofLsM2IbW26uYLUg8xEHoblWRJXIIM4OzrsU6qzOWuZ7EZ6
+ 9cpI0Dvw8S82RvpZaNXrqMO5VNLA3XmtnL/0kQdlZNGKdPrNuSDfelUsman6G3PyD15PTsIzzW8
+ =
+X-Google-Smtp-Source: AGHT+IFsEG1v+p8teMcmr92Ey4hNNkKCFbyzkT/zLXwMrrc6XQ23Z5Q+69yhYMlF30Af/UOV7ChEQA==
+X-Received: by 2002:a17:903:184:b0:21f:6dcf:fd2b with SMTP id
+ d9443c01a7336-22db47939aamr5882265ad.1.1745456210255; 
+ Wed, 23 Apr 2025 17:56:50 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
  41be03b00d2f7-b15fa907fcdsm119775a12.54.2025.04.23.17.56.49
@@ -65,20 +65,17 @@ Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  Wed, 23 Apr 2025 17:56:49 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 102/148] include/exec/cpu-all: move compile time check for
- CPUArchState to cpu-target.c
-Date: Wed, 23 Apr 2025 17:48:47 -0700
-Message-ID: <20250424004934.598783-103-richard.henderson@linaro.org>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PULL 103/148] exec/cpu-all: remove system/memory include
+Date: Wed, 23 Apr 2025 17:48:48 -0700
+Message-ID: <20250424004934.598783-104-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250424004934.598783-1-richard.henderson@linaro.org>
 References: <20250424004934.598783-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,53 +100,321 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+We include this header where needed. When includes set already have
+ifdef CONFIG_USER_ONLY, we add it here, else, we don't condition the
+include.
+
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250325045915.994760-4-pierrick.bouvier@linaro.org>
+Message-ID: <20250325045915.994760-5-pierrick.bouvier@linaro.org>
 ---
- include/exec/cpu-all.h | 4 ----
- cpu-target.c           | 5 +++++
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ hw/s390x/ipl.h                       | 1 +
+ include/exec/cpu-all.h               | 5 -----
+ target/arm/internals.h               | 1 +
+ target/hppa/cpu.h                    | 1 +
+ target/i386/hvf/vmx.h                | 1 +
+ target/ppc/mmu-hash32.h              | 2 ++
+ hw/ppc/spapr_ovec.c                  | 1 +
+ target/alpha/helper.c                | 1 +
+ target/arm/hvf/hvf.c                 | 1 +
+ target/i386/arch_memory_mapping.c    | 1 +
+ target/i386/helper.c                 | 1 +
+ target/i386/tcg/system/misc_helper.c | 1 +
+ target/i386/tcg/system/tcg-cpu.c     | 1 +
+ target/m68k/helper.c                 | 1 +
+ target/ppc/excp_helper.c             | 1 +
+ target/ppc/mmu-book3s-v3.c           | 1 +
+ target/ppc/mmu-hash64.c              | 1 +
+ target/ppc/mmu-radix64.c             | 1 +
+ target/riscv/cpu_helper.c            | 1 +
+ target/sparc/ldst_helper.c           | 1 +
+ target/sparc/mmu_helper.c            | 1 +
+ target/xtensa/mmu_helper.c           | 1 +
+ target/xtensa/op_helper.c            | 1 +
+ 23 files changed, 23 insertions(+), 5 deletions(-)
 
-diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index 2aaaf0548d..be462c4410 100644
---- a/include/exec/cpu-all.h
-+++ b/include/exec/cpu-all.h
-@@ -33,8 +33,4 @@
+diff --git a/hw/s390x/ipl.h b/hw/s390x/ipl.h
+index c6ecb3433c..6557ac3be5 100644
+--- a/hw/s390x/ipl.h
++++ b/hw/s390x/ipl.h
+@@ -15,6 +15,7 @@
  
  #include "cpu.h"
- 
--/* Validate correct placement of CPUArchState. */
--QEMU_BUILD_BUG_ON(offsetof(ArchCPU, parent_obj) != 0);
--QEMU_BUILD_BUG_ON(offsetof(ArchCPU, env) != sizeof(CPUState));
+ #include "system/address-spaces.h"
++#include "system/memory.h"
+ #include "hw/qdev-core.h"
+ #include "hw/s390x/ipl/qipl.h"
+ #include "qom/object.h"
+diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
+index be462c4410..399fcbb9d1 100644
+--- a/include/exec/cpu-all.h
++++ b/include/exec/cpu-all.h
+@@ -26,11 +26,6 @@
+ #include "hw/core/cpu.h"
+ #include "exec/cpu-defs.h"
+ #include "exec/target_page.h"
+-#ifndef CONFIG_USER_ONLY
+-#include "system/memory.h"
+-#endif
 -
+-
+ #include "cpu.h"
+ 
  #endif /* CPU_ALL_H */
-diff --git a/cpu-target.c b/cpu-target.c
-index 519b0f8900..7f3b244ed1 100644
---- a/cpu-target.c
-+++ b/cpu-target.c
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 8756c24c08..01408e40a3 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -28,6 +28,7 @@
+ #include "exec/breakpoint.h"
+ #include "hw/registerfields.h"
+ #include "tcg/tcg-gvec-desc.h"
++#include "system/memory.h"
+ #include "syndrome.h"
+ #include "cpu-features.h"
+ 
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index 8b36642b59..f6bf068776 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -22,6 +22,7 @@
+ 
+ #include "cpu-qom.h"
+ #include "exec/cpu-defs.h"
++#include "system/memory.h"
+ #include "qemu/cpu-float.h"
+ #include "qemu/interval-tree.h"
+ #include "hw/registerfields.h"
+diff --git a/target/i386/hvf/vmx.h b/target/i386/hvf/vmx.h
+index 029516e5c0..26d6029fa5 100644
+--- a/target/i386/hvf/vmx.h
++++ b/target/i386/hvf/vmx.h
+@@ -34,6 +34,7 @@
+ #include "system/hvf_int.h"
+ 
+ #include "system/address-spaces.h"
++#include "system/memory.h"
+ 
+ static inline uint64_t rreg(hv_vcpuid_t vcpu, hv_x86_reg_t reg)
+ {
+diff --git a/target/ppc/mmu-hash32.h b/target/ppc/mmu-hash32.h
+index 2838de031c..04c23ea75e 100644
+--- a/target/ppc/mmu-hash32.h
++++ b/target/ppc/mmu-hash32.h
+@@ -3,6 +3,8 @@
+ 
+ #ifndef CONFIG_USER_ONLY
+ 
++#include "system/memory.h"
++
+ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+                       hwaddr *raddrp, int *psizep, int *protp, int mmu_idx,
+                       bool guest_visible);
+diff --git a/hw/ppc/spapr_ovec.c b/hw/ppc/spapr_ovec.c
+index 6d6eaf67cb..75ab4fe262 100644
+--- a/hw/ppc/spapr_ovec.c
++++ b/hw/ppc/spapr_ovec.c
+@@ -16,6 +16,7 @@
+ #include "migration/vmstate.h"
+ #include "qemu/bitmap.h"
+ #include "system/address-spaces.h"
++#include "system/memory.h"
+ #include "qemu/error-report.h"
+ #include "trace.h"
+ #include <libfdt.h>
+diff --git a/target/alpha/helper.c b/target/alpha/helper.c
+index 57cefcba14..f6261a3a53 100644
+--- a/target/alpha/helper.c
++++ b/target/alpha/helper.c
+@@ -25,6 +25,7 @@
+ #include "fpu/softfloat-types.h"
+ #include "exec/helper-proto.h"
+ #include "qemu/qemu-print.h"
++#include "system/memory.h"
+ 
+ 
+ #define CONVERT_BIT(X, SRC, DST) \
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 93a3f9b53d..34ca36fab5 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -23,6 +23,7 @@
+ #include <mach/mach_time.h>
+ 
+ #include "system/address-spaces.h"
++#include "system/memory.h"
+ #include "hw/boards.h"
+ #include "hw/irq.h"
+ #include "qemu/main-loop.h"
+diff --git a/target/i386/arch_memory_mapping.c b/target/i386/arch_memory_mapping.c
+index ced199862d..a2398c2173 100644
+--- a/target/i386/arch_memory_mapping.c
++++ b/target/i386/arch_memory_mapping.c
+@@ -14,6 +14,7 @@
+ #include "qemu/osdep.h"
+ #include "cpu.h"
+ #include "system/memory_mapping.h"
++#include "system/memory.h"
+ 
+ /* PAE Paging or IA-32e Paging */
+ static void walk_pte(MemoryMappingList *list, AddressSpace *as,
+diff --git a/target/i386/helper.c b/target/i386/helper.c
+index c07b1b16ea..64d9e8ab9c 100644
+--- a/target/i386/helper.c
++++ b/target/i386/helper.c
+@@ -25,6 +25,7 @@
+ #include "system/runstate.h"
+ #ifndef CONFIG_USER_ONLY
+ #include "system/hw_accel.h"
++#include "system/memory.h"
+ #include "monitor/monitor.h"
+ #include "kvm/kvm_i386.h"
+ #endif
+diff --git a/target/i386/tcg/system/misc_helper.c b/target/i386/tcg/system/misc_helper.c
+index 0555cf2604..67896c8c87 100644
+--- a/target/i386/tcg/system/misc_helper.c
++++ b/target/i386/tcg/system/misc_helper.c
+@@ -23,6 +23,7 @@
+ #include "exec/helper-proto.h"
+ #include "exec/cpu_ldst.h"
+ #include "system/address-spaces.h"
++#include "system/memory.h"
+ #include "exec/cputlb.h"
+ #include "tcg/helper-tcg.h"
+ #include "hw/i386/apic.h"
+diff --git a/target/i386/tcg/system/tcg-cpu.c b/target/i386/tcg/system/tcg-cpu.c
+index ab1f3c7c59..0538a4fd51 100644
+--- a/target/i386/tcg/system/tcg-cpu.c
++++ b/target/i386/tcg/system/tcg-cpu.c
+@@ -24,6 +24,7 @@
+ #include "system/system.h"
+ #include "qemu/units.h"
+ #include "system/address-spaces.h"
++#include "system/memory.h"
+ 
+ #include "tcg/tcg-cpu.h"
+ 
+diff --git a/target/m68k/helper.c b/target/m68k/helper.c
+index 0bf574830f..8251272219 100644
+--- a/target/m68k/helper.c
++++ b/target/m68k/helper.c
+@@ -25,6 +25,7 @@
+ #include "exec/page-protection.h"
+ #include "exec/gdbstub.h"
+ #include "exec/helper-proto.h"
++#include "system/memory.h"
+ #include "gdbstub/helpers.h"
+ #include "fpu/softfloat.h"
+ #include "qemu/qemu-print.h"
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index c941c89806..da8b525a41 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -19,6 +19,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/main-loop.h"
+ #include "qemu/log.h"
++#include "system/memory.h"
+ #include "system/tcg.h"
+ #include "system/system.h"
+ #include "system/runstate.h"
+diff --git a/target/ppc/mmu-book3s-v3.c b/target/ppc/mmu-book3s-v3.c
+index a812cb5113..3865556310 100644
+--- a/target/ppc/mmu-book3s-v3.c
++++ b/target/ppc/mmu-book3s-v3.c
 @@ -18,6 +18,7 @@
   */
  
  #include "qemu/osdep.h"
-+#include "cpu.h"
- #include "qapi/error.h"
++#include "system/memory.h"
+ #include "cpu.h"
+ #include "mmu-hash64.h"
+ #include "mmu-book3s-v3.h"
+diff --git a/target/ppc/mmu-hash64.c b/target/ppc/mmu-hash64.c
+index 5ca4faee2a..3ba4810497 100644
+--- a/target/ppc/mmu-hash64.c
++++ b/target/ppc/mmu-hash64.c
+@@ -25,6 +25,7 @@
  #include "qemu/error-report.h"
  #include "qemu/qemu-print.h"
-@@ -29,6 +30,10 @@
- #include "accel/accel-cpu-target.h"
- #include "trace/trace-root.h"
+ #include "system/hw_accel.h"
++#include "system/memory.h"
+ #include "kvm_ppc.h"
+ #include "mmu-hash64.h"
+ #include "exec/log.h"
+diff --git a/target/ppc/mmu-radix64.c b/target/ppc/mmu-radix64.c
+index 461eda4a3d..4ab5f3bb92 100644
+--- a/target/ppc/mmu-radix64.c
++++ b/target/ppc/mmu-radix64.c
+@@ -23,6 +23,7 @@
+ #include "exec/page-protection.h"
+ #include "qemu/error-report.h"
+ #include "system/kvm.h"
++#include "system/memory.h"
+ #include "kvm_ppc.h"
+ #include "exec/log.h"
+ #include "internal.h"
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index 0dd8645994..ca58094fb5 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -26,6 +26,7 @@
+ #include "exec/cputlb.h"
+ #include "exec/exec-all.h"
+ #include "exec/page-protection.h"
++#include "system/memory.h"
+ #include "instmap.h"
+ #include "tcg/tcg-op.h"
+ #include "accel/tcg/cpu-ops.h"
+diff --git a/target/sparc/ldst_helper.c b/target/sparc/ldst_helper.c
+index 45882e25db..8890d2b119 100644
+--- a/target/sparc/ldst_helper.c
++++ b/target/sparc/ldst_helper.c
+@@ -27,6 +27,7 @@
+ #include "exec/cputlb.h"
+ #include "exec/page-protection.h"
+ #include "exec/cpu_ldst.h"
++#include "system/memory.h"
+ #ifdef CONFIG_USER_ONLY
+ #include "user/page-protection.h"
+ #endif
+diff --git a/target/sparc/mmu_helper.c b/target/sparc/mmu_helper.c
+index 249b1f6c4c..c5d82a0854 100644
+--- a/target/sparc/mmu_helper.c
++++ b/target/sparc/mmu_helper.c
+@@ -24,6 +24,7 @@
+ #include "accel/tcg/cpu-mmu-index.h"
+ #include "exec/page-protection.h"
+ #include "exec/tlb-flags.h"
++#include "system/memory.h"
+ #include "qemu/qemu-print.h"
+ #include "trace.h"
  
-+/* Validate correct placement of CPUArchState. */
-+QEMU_BUILD_BUG_ON(offsetof(ArchCPU, parent_obj) != 0);
-+QEMU_BUILD_BUG_ON(offsetof(ArchCPU, env) != sizeof(CPUState));
-+
- char *cpu_model_from_type(const char *typename)
- {
-     const char *suffix = "-" CPU_RESOLVING_TYPE;
+diff --git a/target/xtensa/mmu_helper.c b/target/xtensa/mmu_helper.c
+index 40b02f0a2c..1ce125794d 100644
+--- a/target/xtensa/mmu_helper.c
++++ b/target/xtensa/mmu_helper.c
+@@ -36,6 +36,7 @@
+ #include "accel/tcg/cpu-mmu-index.h"
+ #include "exec/exec-all.h"
+ #include "exec/page-protection.h"
++#include "system/memory.h"
+ 
+ #define XTENSA_MPU_SEGMENT_MASK 0x0000001f
+ #define XTENSA_MPU_ACC_RIGHTS_MASK 0x00000f00
+diff --git a/target/xtensa/op_helper.c b/target/xtensa/op_helper.c
+index 028d4e0a1c..c125fa4946 100644
+--- a/target/xtensa/op_helper.c
++++ b/target/xtensa/op_helper.c
+@@ -31,6 +31,7 @@
+ #include "exec/page-protection.h"
+ #include "qemu/host-utils.h"
+ #include "exec/exec-all.h"
++#include "system/memory.h"
+ #include "qemu/atomic.h"
+ #include "qemu/timer.h"
+ 
 -- 
 2.43.0
 
