@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDCD8A99DBE
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:06:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88206A99E38
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:28:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7kuo-00005b-H3; Wed, 23 Apr 2025 20:58:11 -0400
+	id 1u7ku8-0006U7-9W; Wed, 23 Apr 2025 20:57:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7ktN-0005ft-F9
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:56:42 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1u7ktO-0005j6-Df
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:56:45 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7ktL-00054Q-GA
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:56:41 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-736aa9d0f2aso524380b3a.0
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:56:38 -0700 (PDT)
+ id 1u7ktM-00054Z-GZ
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:56:42 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-736b0c68092so333592b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:56:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1745456198; x=1746060998; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LfrM+ZFsKrY5Zrl+zb7ZsXPhOM4tj+2Yc0NhZX/EHbY=;
- b=Kw/NiHkGYBpsX4ErSi+a05xQO8gUB5TajRYIAJLHXGdlCAEbK5VGcw9CjXIZI8LA9+
- ENSR8MMIS9OeOdHeMWTu5wc+Y0Y/U6q8dbwXzC4oQT9MixLrPfqa8n3Cuy0stBVGKyZ4
- 3PnA6j8du7vSevZ5QqLUERWfPJMEw2LBMFh2yt9JwRojKfIaRHr3fTf7JSfezSA/A5/r
- uCcV4sCGrm3KGloWunEJojkdoiX/xiPNBH0LhZeMMCea04mD5zU/qEasfJu1LFh3z7yu
- jXWyHFU6CXRLIHuNC7LJwZ/bkD6Psy9wNLEJTDocXar6E+3O7z7Ia+Ok0G5pxDypHFXB
- 0SVg==
+ bh=wTTbJUYSutthRAHWERBfaY61+pWxicGlAYRiaD9+MBo=;
+ b=Qp2Y9nqybqJqiicuKpqxwj3PVd6fWOtoymXUhxwg6mHS+QIUTqPms/1cfyY3NBtxLi
+ pmqUebGCA5hv9wK+zZZomqjSqY6Chw/XAtIDrAEtPuvzVapL/MUlnR7wLRvVvOurjDGn
+ qEiW+2JLgrs0ew/X8WD9ZTJ/MYZf72We6qKMLunPWqMIjSeCs4VKVeobKZ3jSFbTo9SB
+ Xy8P71GA1ASelezUzfXja0NVuY2qSGsBl3Mrb5L2VfqT0tTeqYSpy24qWcF02tjaWRfq
+ +lGd0tLnrKBH5jHG66KbTn+pu2FoMp53Lflqsn1J1NwbgcTH2CrSIQYJSPFs/OiokSrZ
+ tkig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1745456198; x=1746060998;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LfrM+ZFsKrY5Zrl+zb7ZsXPhOM4tj+2Yc0NhZX/EHbY=;
- b=IvP8wrtEgjHNj62o5UXN9ekQ367frusBGtNGKWeqtwMJZI2JJUEZ9AMNSZxq45L8dC
- FqcLl8bEPCekgkA1KLFTADAlxMC1PB9vIN0lKay68Sgtv3+hrlyASgFx+bmMHo+/06Vi
- Z9Tdo6CC0ee4KpL2AFfXx/zbLCsZtqjSykR5zwowI5iKRhemzYufwQHNwjKIioWBADGM
- QSuNnm86XnbWTXwN+lLYNIrKb06aO44ZkzS5PzQuOqOqcnjKyJz4u0/zNWf0w1AFwof8
- ZnwaJjYkCd1hDeerA7YpX7KkZpvyeM9kkgp8kOUUTjd9ldLQeMxXD+UcEsmvMDdaKuPv
- 08LA==
-X-Gm-Message-State: AOJu0YyrXF3ZLCZY7cFThVRmLUrCFCCKh+aXWZP2mnsOT7y+Q5MHVA3H
- eoF8qLOrfQHV6Zjt2ly4nqmphjOrdeEg+BSxYkIAmBmr2abx4BUJlF2gRe1ua1L9gD134feRlld
- 2
-X-Gm-Gg: ASbGncuHKgwMx05fx35kVIXmkEpjmQlbF4t68C2Ii5S8ToPvclk3tFUIWei1XDY612A
- aZz/+Q0B/W+lEvYpgy+mIvnoqL9/DJtaQzy0oiFIUixM4Kwng08UIHb099nD7+LmNPU7BWZzbqZ
- YplxK00yabzSUtD2xj0a09CvMXUlk4UZ7CD+mn6uLdPjas5gKf+5Z8uOJAd+PVxPpoYfk6zFZzd
- F698c2wOjnd0C8yZyYWsv3gxxkxZ3E3OIOo1pCLc+fMlAZW85Wa7E0JgpqsDtITH/7G4+t1B6OZ
- LLAsNUnhVQtudgrQlbDcU8hK8Mut2UaQilpr6jSx5O9lQSxPajJsCabWkX8DJZVBAi22OWDcyNs
+ bh=wTTbJUYSutthRAHWERBfaY61+pWxicGlAYRiaD9+MBo=;
+ b=bxwp8x2bwtNMzPRvDekMTxpmK3jfpsCsKEUNKtYOGuk7oOjqHCM4xqivfzkol4fk8D
+ OW0HuP+MoGZdZ7H2eyxzn3fr9QvzioPbTXZMSsEdARbgXmWX911R08gWlStxieFUCEw7
+ LmuFNqcScOWHdD7DbPBADnqnUFwjrBR1Zrbl0Bc3ISB+HbIigK/604Uh65ZbPdEr/dtw
+ y2xbTATAQAQE9F3AooR106DBfstTrE7rX5qm0g/QdmZ1D5k7ESadA4g/9BDwXIjjKTN7
+ O0LIDXvnlhdWQQB6nj4Ex0wGmfvhv6aLRaxqKi/tbcVRBsfgGjD8FAj0gkktqual+PdU
+ EFIw==
+X-Gm-Message-State: AOJu0YxNPeU1kIg9MDHguOuKa0qS6Juc6HigPTkoUBu/N42hcsv5SWzB
+ CVfNhH5DuxaVm0Qh3VNt5TouybtbGuxisNYfJ5j2Hp/xtCIGir50V7bJtJSkntrDUYfqgfJou+o
+ 9
+X-Gm-Gg: ASbGnctZC2HnWp32CHJChzfNH3F2P6RIL8rJ9bIiK0TAU+DvDXTiPApbSE10gMmIE3Q
+ wR+mJbtggfiaUR3LVjvlWiEhxNEUkslHqpeAPI6zq5OWPOQ4S4BiLtez6pOKXXgey13CQLMPItY
+ zCRVxYuiJk+0jq6tCDtmanW2JpjSn23luGp+glzjXQaKhbvHqEnMWLHJmgrjYrTVHBFA6xnD0Yp
+ dfKjaeGqVIPkjNkXw4Wenkf5fmIaVpzmWWzpOCTqr38uzOj+89TVJLJD9FKhyn0oWxpv4C18pN7
+ gi2HMBd+QqVApAmS003btRX1oa/ZMKXremlPCR9B4hDdXSuAG+tBX1CYt2+g9+FT3zB5jY2eigM
  =
-X-Google-Smtp-Source: AGHT+IGv5wD8UQvJT1QKgRrRu/oD4QRoRzCak+TwD7Ju3f8DW6xhpnoKpKSf6zJMYuOHriceEV4TqQ==
-X-Received: by 2002:a05:6a20:6f88:b0:1f5:59e5:8ada with SMTP id
- adf61e73a8af0-20444e71afamr897908637.4.1745456197805; 
- Wed, 23 Apr 2025 17:56:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF60DJEe4UakaoApjqvhIPrCKONWLQOL98iuUKSwSVi5/qyfDfe5dyn1zrm1xriHhiLLsLHfg==
+X-Received: by 2002:a05:6a20:1587:b0:1fe:8ffe:9801 with SMTP id
+ adf61e73a8af0-20444ebe04dmr839253637.22.1745456198415; 
+ Wed, 23 Apr 2025 17:56:38 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
  41be03b00d2f7-b15fa907fcdsm119775a12.54.2025.04.23.17.56.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Apr 2025 17:56:37 -0700 (PDT)
+ Wed, 23 Apr 2025 17:56:38 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 085/148] target/openrisc: Restrict SoftMMU mmu_index() to TCG
-Date: Wed, 23 Apr 2025 17:48:30 -0700
-Message-ID: <20250424004934.598783-86-richard.henderson@linaro.org>
+Subject: [PULL 086/148] target/ppc: Restrict SoftMMU mmu_index() to TCG
+Date: Wed, 23 Apr 2025 17:48:31 -0700
+Message-ID: <20250424004934.598783-87-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250424004934.598783-1-richard.henderson@linaro.org>
 References: <20250424004934.598783-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,34 +101,61 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+Convert CPUClass::mmu_index() to TCGCPUOps::mmu_index(),
+restricting ppc_cpu_mmu_index() to TCG #ifdef.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250401080938.32278-15-philmd@linaro.org>
+Message-ID: <20250401080938.32278-16-philmd@linaro.org>
 ---
- target/openrisc/cpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/ppc/cpu_init.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/target/openrisc/cpu.c b/target/openrisc/cpu.c
-index e8abf1f8b5..dc55594a7d 100644
---- a/target/openrisc/cpu.c
-+++ b/target/openrisc/cpu.c
-@@ -247,6 +247,7 @@ static const TCGCPUOps openrisc_tcg_ops = {
-     .translate_code = openrisc_translate_code,
-     .synchronize_from_tb = openrisc_cpu_synchronize_from_tb,
-     .restore_state_to_opc = openrisc_restore_state_to_opc,
-+    .mmu_index = openrisc_cpu_mmu_index,
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 17f0f3d3ff..fd8c42069e 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -7216,6 +7216,11 @@ static void ppc_restore_state_to_opc(CPUState *cs,
+ 
+     cpu->env.nip = data[0];
+ }
++
++static int ppc_cpu_mmu_index(CPUState *cs, bool ifetch)
++{
++    return ppc_env_mmu_index(cpu_env(cs), ifetch);
++}
+ #endif /* CONFIG_TCG */
  
  #ifndef CONFIG_USER_ONLY
-     .tlb_fill = openrisc_cpu_tlb_fill,
-@@ -269,7 +270,6 @@ static void openrisc_cpu_class_init(ObjectClass *oc, void *data)
-                                        &occ->parent_phases);
+@@ -7225,11 +7230,6 @@ static bool ppc_cpu_has_work(CPUState *cs)
+ }
+ #endif /* !CONFIG_USER_ONLY */
  
-     cc->class_by_name = openrisc_cpu_class_by_name;
--    cc->mmu_index = openrisc_cpu_mmu_index;
-     cc->dump_state = openrisc_cpu_dump_state;
-     cc->set_pc = openrisc_cpu_set_pc;
-     cc->get_pc = openrisc_cpu_get_pc;
+-static int ppc_cpu_mmu_index(CPUState *cs, bool ifetch)
+-{
+-    return ppc_env_mmu_index(cpu_env(cs), ifetch);
+-}
+-
+ static void ppc_cpu_reset_hold(Object *obj, ResetType type)
+ {
+     CPUState *cs = CPU(obj);
+@@ -7482,6 +7482,7 @@ static const TCGCPUOps ppc_tcg_ops = {
+   .initialize = ppc_translate_init,
+   .translate_code = ppc_translate_code,
+   .restore_state_to_opc = ppc_restore_state_to_opc,
++  .mmu_index = ppc_cpu_mmu_index,
+ 
+ #ifdef CONFIG_USER_ONLY
+   .record_sigsegv = ppc_cpu_record_sigsegv,
+@@ -7518,7 +7519,6 @@ static void ppc_cpu_class_init(ObjectClass *oc, void *data)
+                                        &pcc->parent_phases);
+ 
+     cc->class_by_name = ppc_cpu_class_by_name;
+-    cc->mmu_index = ppc_cpu_mmu_index;
+     cc->dump_state = ppc_cpu_dump_state;
+     cc->set_pc = ppc_cpu_set_pc;
+     cc->get_pc = ppc_cpu_get_pc;
 -- 
 2.43.0
 
