@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A3C5A99E07
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:22:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABF30A99D64
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 02:55:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7ksr-0001za-Tp; Wed, 23 Apr 2025 20:56:10 -0400
+	id 1u7kr9-0001gE-VY; Wed, 23 Apr 2025 20:54:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kqO-0000zm-9b
+ id 1u7kqO-0000zx-Pn
  for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:53:37 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kpy-0004gn-Po
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:53:12 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-7369ce5d323so304453b3a.1
+ id 1u7kpz-0004gs-5T
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:53:13 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-73c17c770a7so477718b3a.2
  for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:53:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745455989; x=1746060789; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745455990; x=1746060790; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qwbKvRdGoMiUrRuxJx+msL79vGWbZKojWAn1/Wo2xRE=;
- b=xF1Dbn4WWFDALgf/Lc5PTDGWPmXnjLig77rJgjL8iU6Uo4xqq/sNZ4fU6WYn7on8tl
- LBgNNB/7PAI1uH776QKtFxdek+L643GRLc97Hbj3OhjuNOGyD+ElCMAOp7GwjQXj3J9F
- e1HgmNmpwqWdFs+cndz6N9rEIEvdpCarA6PFWRqFlT/4+dkW0xpF/aBFDBBme7U4CVF+
- 7itvq+Zg4GqBrmUP5hnT7EsxHojirnfw5POjZWidINIFgMTIMt37DGkMdGtdwSNerFV7
- Kz7g0PF0PCsxQny8gwk/JsEv+w3L1cK1TM56MF7MzArJdj/j+Vyt4XVH2fgBLYfC8I2o
- 1kAA==
+ bh=G9WIPyymM2ElF4UPWEqRA70/pK5WAg/CnC/iZWyOuxk=;
+ b=tDyFJEEM67562oa4ypuQWdZdgG5zjowSdHqxR/QibStnNy6BZ6TZ0DHyzGB9e3O+aW
+ kfByvevPdKPKRW8yoJGmPkV8w5rYdZUniZ9oKC599VOb77ZqGtl4Av1ogOBMjNGrnCOh
+ 8KR22rNoyB40hJxnF+PRgb13+R6tlhGNKs+1EYzhOUMtIS8ghWPhFu0eHGzsUfkPg524
+ 7RmKr6VeMi2rW/6yKExYldcHbwWzEWiUXGo82J8XN5sm0gZTlvzU/O4Tclo2s/8Dhvfs
+ zO1lfQSRqblpA8gd2JpQJF6SqAO0eRVrGZThkVhTS5KXwkTIubEGua7/vp4ujTA8scDL
+ i1/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745455989; x=1746060789;
+ d=1e100.net; s=20230601; t=1745455990; x=1746060790;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qwbKvRdGoMiUrRuxJx+msL79vGWbZKojWAn1/Wo2xRE=;
- b=cOfxqCrLYE3n94bmk7nt+pi91yJHgCFRWNPZqvP4C84KdvBanq7TAbyp6YnLsXn2n9
- Tr3OjNR1caXNThiEvp/pYv760jSz2cqN9B80W8q2iSBztrKx58iNKuIXcFz75xC8ZrUJ
- quyX+lo2Qg0yUgfWgT5pLmj36c7QvfHBrNdEDF7EwS58MjJZjt1GmC0Gml20bUaHs0lZ
- YpMqwHgFcrte8t0lMwOS9LTKs+5M4Pz7wY2MlhlU26OpKLiQkhCALkYzX1LoLj7rB7BX
- 6H72MUsUNXKXSc8G/Ce8nwSGwKPdQi4bjL7twrfXKO22fvxQy26doJppQ66JmYZlLhnX
- +jTw==
-X-Gm-Message-State: AOJu0YysDMKFJ/ps/vklw4/54Pl6kku1cbeCGsEM4Ogx3tzQYMwNFvuE
- GNH4Z09QBgCUyuScytN1EdwM1e5dCBo/ClpMQagLgOO69U9EN8EloL2evgDehBKNY+kiNiOFJLq
- i
-X-Gm-Gg: ASbGncujucHTBo9YnpCxT6qnLV9jAbtuB2gJjcuJu+Fr2ngABDCPYRhQuWqjiPlKjJo
- 9bWp356LdQ6Z5WUcd7JXvMArUCCh0zFAax6MTUFnzq0EJHs0Nrop/BsmSltynwYz+TENjxVGyXl
- K5ckmeQ1GHF4ui3D/XM+FaVzsGv/N7byQDZixapxjtn7DQ8u4LaF/h7o2m1BX0sKT+WIVK1wbAp
- oVsR5eqgtvv5WxaIJstEqKMVTHdbCJ/gMd1qJNwf2ohOk3OBMbepQUK0aCf598oL32QNBe8DRd+
- lUSa1kSINgYYGYjpFYDDsJZwoAo/MsNxv4ZMSW7IjQ1J3khUFdEKRsS7RCnrujnagfZ2TMhOBLU
+ bh=G9WIPyymM2ElF4UPWEqRA70/pK5WAg/CnC/iZWyOuxk=;
+ b=mDuuonxpV/3aKQGEwF2YaRmneS+Nj/mA0O+qGhtTMbCpoAzP6Ync91sFgjzhidlGM7
+ kLtLgCEGiFr/c1bFzmiZmyRUF2S4Skl3viq54BrfEAL5Yyp1HdxW8UPzNCb3EYJh7vEt
+ qB560i/t69U1kqoiU/4HEbJRr1tL3R5Zx3FuMxFsY6CHmVYP22P3P7X7oxz9L7RYeHK9
+ xvApKworLltBP/TiYA7cc/r04AQt6Wex7q15oqZDuqu9q0KLeqb/ShfhxO44l14R6Ufp
+ tQtWZ8/KYEvGY5Ie4gYNVEsmjXVp+fqI5RN9Pk6X9zLLaKl8NYJZjj/s0bjU5/BtKawb
+ Q5rg==
+X-Gm-Message-State: AOJu0Yzxt7nz+qZWWtUv2759f1+mTldyS3CTxzVhZWgDLCkvJzO38aey
+ TbzC8VZClPy9MDQdOTj4Z8pNbOREnFh+/fgrpqyHRZC8+a7x8gFtLRNRtypq7CHPp1NcGN3dA9W
+ w
+X-Gm-Gg: ASbGncujOd5H8aB8kKZe9ZbmUvNyw5UPu7uvL9lPZOx6T90J6f1NOVlKN2l+sh/VLtR
+ aA24s/j72+Cn7wyUujDzw2gQbjyvGsXgIQ2GvoTzQbkmDcckUDD8TZTAtHMv3HwCdQmJ6pA3vvH
+ FMfYP649gr2oVH82BnhQiJREIHx40jpVsYDPg/oXnP1rwJSfKgUif1Na7gc3+p2JSxIPYh2X8A1
+ PXdXZIApf4G92lEzyWurUGhe5SMWf/1whHrxv8H9OhjCAhWfAl+uM/GNXBjOO3x2RLUZf/ObSmJ
+ xHIuOaw5hZHYysVLDw/BYhscQyTLx+4Wu1q3xM3UmQNp5pKI/+xJ5ZDJ7xt3XAXpDT4DK0sDAwo
  =
-X-Google-Smtp-Source: AGHT+IHLLnieU/Aq5ZaPDM5umhB/LmNnLLuSz56ISGzscxaEpIStF8IgnSThOJRy0rg1U7VUlPFhJA==
-X-Received: by 2002:a05:6a20:d817:b0:1f5:7f56:a649 with SMTP id
- adf61e73a8af0-20444eebf54mr848872637.13.1745455989145; 
+X-Google-Smtp-Source: AGHT+IEWxJl050k8pmWBrls2go1GEKGzxNo3/TqReos9voIj2DqSGGZjL38Vi8UYsXAfJtnsltsHig==
+X-Received: by 2002:a05:6a00:35c7:b0:736:326a:bb3e with SMTP id
+ d2e1a72fcca58-73e24aed44amr1028469b3a.15.1745455989817; 
  Wed, 23 Apr 2025 17:53:09 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73e25a6a971sm209353b3a.103.2025.04.23.17.53.08
+ d2e1a72fcca58-73e25a6a971sm209353b3a.103.2025.04.23.17.53.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Apr 2025 17:53:08 -0700 (PDT)
+ Wed, 23 Apr 2025 17:53:09 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 046/148] semihosting: Move user-only implementation out-of-line
-Date: Wed, 23 Apr 2025 17:47:51 -0700
-Message-ID: <20250424004934.598783-47-richard.henderson@linaro.org>
+Subject: [PULL 047/148] semihosting: Assert is_user in user-only
+ semihosting_enabled
+Date: Wed, 23 Apr 2025 17:47:52 -0700
+Message-ID: <20250424004934.598783-48-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250424004934.598783-1-richard.henderson@linaro.org>
 References: <20250424004934.598783-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DIET_1=0.001, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
@@ -100,154 +101,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Avoid testing CONFIG_USER_ONLY in semihost.h.
-The only function that's required is semihosting_enabled.
-
+Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/semihosting/semihost.h | 29 ++---------------------------
- semihosting/stubs-all.c        |  6 ++++++
- semihosting/stubs-system.c     |  6 ------
- semihosting/user.c             | 20 ++++++++++++++++++++
- semihosting/meson.build        |  5 +++--
- 5 files changed, 31 insertions(+), 35 deletions(-)
- create mode 100644 semihosting/user.c
+ semihosting/user.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/semihosting/semihost.h b/include/semihosting/semihost.h
-index 97d2a2ba99..b03e637578 100644
---- a/include/semihosting/semihost.h
-+++ b/include/semihosting/semihost.h
-@@ -26,32 +26,6 @@ typedef enum SemihostingTarget {
-     SEMIHOSTING_TARGET_GDB
- } SemihostingTarget;
- 
--#ifdef CONFIG_USER_ONLY
--static inline bool semihosting_enabled(bool is_user)
--{
--    return true;
--}
--
--static inline SemihostingTarget semihosting_get_target(void)
--{
--    return SEMIHOSTING_TARGET_AUTO;
--}
--
--static inline const char *semihosting_get_arg(int i)
--{
--    return NULL;
--}
--
--static inline int semihosting_get_argc(void)
--{
--    return 0;
--}
--
--static inline const char *semihosting_get_cmdline(void)
--{
--    return NULL;
--}
--#else /* !CONFIG_USER_ONLY */
- /**
-  * semihosting_enabled:
-  * @is_user: true if guest code is in usermode (i.e. not privileged)
-@@ -59,17 +33,18 @@ static inline const char *semihosting_get_cmdline(void)
-  * Return true if guest code is allowed to make semihosting calls.
-  */
- bool semihosting_enabled(bool is_user);
-+
- SemihostingTarget semihosting_get_target(void);
- const char *semihosting_get_arg(int i);
- int semihosting_get_argc(void);
- const char *semihosting_get_cmdline(void);
- void semihosting_arg_fallback(const char *file, const char *cmd);
-+
- /* for vl.c hooks */
- void qemu_semihosting_enable(void);
- int qemu_semihosting_config_options(const char *optstr);
- void qemu_semihosting_chardev_init(void);
- void qemu_semihosting_console_init(Chardev *);
--#endif /* CONFIG_USER_ONLY */
- void qemu_semihosting_guestfd_init(void);
- 
- #endif /* SEMIHOST_H */
-diff --git a/semihosting/stubs-all.c b/semihosting/stubs-all.c
-index a2a1fc9c6f..c001c84574 100644
---- a/semihosting/stubs-all.c
-+++ b/semihosting/stubs-all.c
-@@ -11,6 +11,12 @@
- #include "qemu/osdep.h"
- #include "semihosting/semihost.h"
- 
-+/* Queries to config status default to off */
-+bool semihosting_enabled(bool is_user)
-+{
-+    return false;
-+}
-+
- SemihostingTarget semihosting_get_target(void)
- {
-     return SEMIHOSTING_TARGET_AUTO;
-diff --git a/semihosting/stubs-system.c b/semihosting/stubs-system.c
-index f26cbb7c25..989789f373 100644
---- a/semihosting/stubs-system.c
-+++ b/semihosting/stubs-system.c
-@@ -22,12 +22,6 @@ QemuOptsList qemu_semihosting_config_opts = {
-     },
- };
- 
--/* Queries to config status default to off */
--bool semihosting_enabled(bool is_user)
--{
--    return false;
--}
--
- /*
-  * All the rest are empty subs. We could g_assert_not_reached() but
-  * that adds extra weight to the final binary. Waste not want not.
 diff --git a/semihosting/user.c b/semihosting/user.c
-new file mode 100644
-index 0000000000..515de3d2c0
---- /dev/null
+index 515de3d2c0..98c144cb45 100644
+--- a/semihosting/user.c
 +++ b/semihosting/user.c
-@@ -0,0 +1,20 @@
-+/*
-+ * Semihosting for user emulation
-+ *
-+ * Copyright (c) 2019 Linaro Ltd
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "semihosting/semihost.h"
-+
-+bool semihosting_enabled(bool is_user)
-+{
-+    return true;
-+}
-+
-+SemihostingTarget semihosting_get_target(void)
-+{
-+    return SEMIHOSTING_TARGET_AUTO;
-+}
-diff --git a/semihosting/meson.build b/semihosting/meson.build
-index 86f5004bed..f3d38dda91 100644
---- a/semihosting/meson.build
-+++ b/semihosting/meson.build
-@@ -7,8 +7,9 @@ specific_ss.add(when: ['CONFIG_SEMIHOSTING', 'CONFIG_SYSTEM_ONLY'], if_true: fil
-   'uaccess.c',
- ))
+@@ -11,6 +11,7 @@
  
--common_ss.add(when: ['CONFIG_SEMIHOSTING', 'CONFIG_SYSTEM_ONLY'], if_false: files('stubs-all.c'))
--system_ss.add(when: ['CONFIG_SEMIHOSTING'], if_true: files(
-+common_ss.add(when: 'CONFIG_SEMIHOSTING', if_false: files('stubs-all.c'))
-+user_ss.add(when: 'CONFIG_SEMIHOSTING', if_true: files('user.c'))
-+system_ss.add(when: 'CONFIG_SEMIHOSTING', if_true: files(
-   'config.c',
-   'console.c',
- ), if_false: files(
+ bool semihosting_enabled(bool is_user)
+ {
++    assert(is_user);
+     return true;
+ }
+ 
 -- 
 2.43.0
 
