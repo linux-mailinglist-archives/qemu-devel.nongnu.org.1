@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4703AA99D66
-	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 02:55:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0729A99E0D
+	for <lists+qemu-devel@lfdr.de>; Thu, 24 Apr 2025 03:24:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u7knR-0005ns-En; Wed, 23 Apr 2025 20:50:33 -0400
+	id 1u7kpL-0008CP-Ko; Wed, 23 Apr 2025 20:52:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kmy-0005TO-LS
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:50:04 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1u7kn0-0005b4-GF
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:50:08 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u7kmt-0004N3-Bt
- for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:50:00 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-7376dd56f8fso498650b3a.2
- for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:49:58 -0700 (PDT)
+ id 1u7kmu-0004NG-8L
+ for qemu-devel@nongnu.org; Wed, 23 Apr 2025 20:50:06 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-7398d65476eso358855b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 23 Apr 2025 17:49:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745455798; x=1746060598; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745455799; x=1746060599; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wBYxT4EZlPkn7bKzklLjARHvSiI+QmQyMRdt3yUNx28=;
- b=mK7UHdER1Nil2Ri6hXyOTtC2BkYPUjxFSD/qmzoqhO+hY1upAahWOSoLY9KN5zX2fV
- GYcnFJhozZeT3pr3Myy0vzXAwRyYwm/rMT4C0Jgt5ZUWk2Q8mzDr2hMRPDQf2LIIcsYB
- pxBdLIq7fXunL3+n1Yb0ZbeY2/nTMKNBSOcWkoIvVuW0VtTQt3JNChodMGqguliFksrm
- gTd9I0b4nchBc0msiNgBveuy1gXko5otikndbg4tDDO6xHCcfV7YqbTCchDNNwPzxaNr
- SCIWVOgzd1jhacq7otxiiirtUvlqHMYhW1PXSUkqux8Ui9waNxv+AcGeYOPNRG55kcC0
- iCHQ==
+ bh=6RZv4stV/SvG8IKjkEcJ2d9gwvNpfIIefKf42fhrHvc=;
+ b=dXGFWDD94EiCU9mtFKhhnFB43DVQHLooSvV/PKWqTd4ZZu3yd/5XkVH3eDi6ZhfC1H
+ vPHNuGgu2yBC1QzNaMtkWZeoLwMYnGzxB2M7gzpex7qhxIlOqeQHV9/4apVbd9nc1sFE
+ TcUOsM3olSx0k4IJ448CBrrcVB/bkRrg138HSgwh/5AgbDf60LTQNFtW0GMUm1bZZEe1
+ wgy0tiFiRKWgg/3bmPsOHFac91U9Ec1eSiN7XIyHV1SKFoauGIxCfgahgVix4r/QfoWK
+ 0dOujTrKn6GnK8ZW5QPOVYxkk3VzyPVqMgxxnmdPYV/paP/mw1iAztY+NBSi3J39gzuJ
+ erwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745455798; x=1746060598;
+ d=1e100.net; s=20230601; t=1745455799; x=1746060599;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wBYxT4EZlPkn7bKzklLjARHvSiI+QmQyMRdt3yUNx28=;
- b=f5OCPLt/4YgEWseZEMB7KcwrJga9MVeR+iysCtewR2z3oT309xLAu7gRKK6UfUAE8G
- XyvKVPE08UzZxesydfe7Iehyyx/87R6iUsFf0BfZ57jTyZ7UUoD5B2XUzLf1eZ3aUmFy
- FmxALCOfqP35vD+BICCNSEKG8EUp4vge5bpVK0a01exA+zW3jhPaZrWCDHRQOe2OhlAh
- TAnpJ1l4IJMmBxjVnBKfpHxy9vtvAGIdOuD2C/n4YsIFbNH/r6mOoWA1HP6TIA4Pvuw4
- l3ndRl1LjQpcVVpbm6eFnj59DKK8ulN4AF+YelFMeyKJhynr2zypDuvp/dQD9bdq1chX
- J22Q==
-X-Gm-Message-State: AOJu0YwQAQUQHsgU7/Ljxmp4Y5/YprMvUWCQPECaf6sIftJV5SjYZYs/
- x9AA0+2szwpEUFV4us7GIVsAMsW3MEk22Vdg6EaG/oCSWokYSlLbtBMKfUMOteMbI8RRKLlYWM7
- +
-X-Gm-Gg: ASbGnct6Rgc83JnODvR5ggPWBzC5f/GU2JEw/noTGUuXHGRhWnQIUGODv7/CAgnSj52
- W0FL3LAJ04FXgp8PGaBASV4Lkaqk1WwWM2aVyb4QjkjkYpiRjdiSVlmi6IQZg3r94+MuMvg7b6l
- OzSFG9a6/wA25Cl/9NTozaZd5R3m74YAoMSTnjWmxHLeDxCsHzLX9USkswCWKeeRVLvLJsYGuSd
- luhBoVC0XSk/deb38ADPNsSQgTnxUbAiDI+U3pMegTlkBPZmHgUtH6Twcj17VRvLwqcoP8HOzOr
- KIq7Ztc/zd2PDiWy3HbNpx8DOj/CC8iTXWmeFSoVWMOhLngdjj5uGLHIVEd0ybZxce1NwNPFURE
+ bh=6RZv4stV/SvG8IKjkEcJ2d9gwvNpfIIefKf42fhrHvc=;
+ b=QICLVipMwpS8xmmViGAfKunU/2bJW8bh0e7tJgDUj6N9u5gUOGUzxP7cp3lq9NunPZ
+ z8EcSNVobSW9bLbw+JSCwqZPpFSfyD6R+nsgm4oUhK/7uys6fJ3giwgz8kz/6WXO1ZSZ
+ /tSOwUMBH1yoDFNxi8G6wclYOP9jjIYiPemTferA13ubc0QDM8nK3dh3sNQYu51l2r9e
+ 4s880fDXR+oFq6Y78EoVrK3OfLebtbBiidHc+foynogDL+SNC0Qh3RZRlA9DfnhaFfi2
+ jD3vbyjZYc9BN5B57UHj5WMrAAfNJK2yK000FOhZCy01jCd0vMLfTwDLsqJ0ZkH9K9dH
+ ELpw==
+X-Gm-Message-State: AOJu0YxAiiV58je3AaX9O+tfS8dcQCESGAWWYrkusNnJFg8xyOYJrn1/
+ YeAhd8lX7cIhI25/ZjPdjcCVoqAtXEHoym01Kb7BuZ1OPi5vw3nsSC+vX9LX/4KLDR5CfoqPZOv
+ Y
+X-Gm-Gg: ASbGncvFkwxcMkKYNCce2ql45nXIeJTlY+vzDje2rHFieYXLz55io/pNBEVjCETi/D6
+ UZOblzeTN2ZnzQQo10hOEmxJVF65ia49yoG05SmVWhHgattPGceb8l+5cr/CciVe/rXZMy4misM
+ BoWXK3i0oKvfwkhaF9PlfWdybWG3NMys2bX1+o1UzIHM+q05kh4hL0Au/v87AwqnobgD3OGXvtR
+ WiJ9JgkqwgCZmx4yqxWTJj2oW9wMmEpatP6xT4kUByw3tIORx1w6q4u4etsTm2CgfrUS+/nl7HT
+ LykW8L6x4qNT94Tv6oSUf18FKjFCSiYzechuD8CRk64wODrycmgvpjFKhkwVODlFQxf/6tyPPdU
  =
-X-Google-Smtp-Source: AGHT+IFJtzak2rL4SlZTCND5YK5Ekds2zcKfhEUIjGkHCgXWPIW1vA9eFl98z3n91ZgdWM7+/t9Glg==
-X-Received: by 2002:a05:6a21:6da4:b0:203:bb65:995a with SMTP id
- adf61e73a8af0-20444f25041mr861150637.30.1745455798037; 
+X-Google-Smtp-Source: AGHT+IHiDqmHRpgEKuiEKr4rUc+soxoeMLfonKSMpfFPK1OXdpnKNsINki1ftCo3M8wWD3KlXkc5lA==
+X-Received: by 2002:a05:6a00:3213:b0:736:4c3d:2cba with SMTP id
+ d2e1a72fcca58-73e2689e0f1mr451239b3a.9.1745455798655; 
  Wed, 23 Apr 2025 17:49:58 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73e25a9a0f1sm207344b3a.137.2025.04.23.17.49.57
+ d2e1a72fcca58-73e25a9a0f1sm207344b3a.137.2025.04.23.17.49.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Apr 2025 17:49:57 -0700 (PDT)
+ Wed, 23 Apr 2025 17:49:58 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 030/148] accel/tcg: Use cpu_ld*_code_mmu in translator.c
-Date: Wed, 23 Apr 2025 17:47:35 -0700
-Message-ID: <20250424004934.598783-31-richard.henderson@linaro.org>
+Subject: [PULL 031/148] accel/tcg: Implement translator_ld*_end
+Date: Wed, 23 Apr 2025 17:47:36 -0700
+Message-ID: <20250424004934.598783-32-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250424004934.598783-1-richard.henderson@linaro.org>
 References: <20250424004934.598783-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,131 +98,176 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cache the mmu index in DisasContextBase.
-Perform the read on host endianness, which lets us
-share code with the translator_ld fast path.
+Add a new family of translator load functions which take
+an absolute endianness value in the form of MO_BE/MO_LE.
+Expand the other translator_ld* functions on top of this.
+Remove exec/tswap.h from translator.c.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/translator.h |  1 +
- accel/tcg/translator.c    | 58 ++++++++++++++++++---------------------
- 2 files changed, 28 insertions(+), 31 deletions(-)
+ include/exec/translator.h | 49 ++++++++++++++++++++++++---------------
+ accel/tcg/translator.c    | 26 +++++++++++++++------
+ 2 files changed, 49 insertions(+), 26 deletions(-)
 
 diff --git a/include/exec/translator.h b/include/exec/translator.h
-index d70942a10f..205dd85bba 100644
+index 205dd85bba..3c32655569 100644
 --- a/include/exec/translator.h
 +++ b/include/exec/translator.h
-@@ -73,6 +73,7 @@ struct DisasContextBase {
-     int max_insns;
-     bool plugin_enabled;
-     bool fake_insn;
-+    uint8_t code_mmuidx;
-     struct TCGOp *insn_start;
-     void *host_addr[2];
+@@ -18,7 +18,7 @@
+  * member in your target-specific DisasContext.
+  */
  
+-#include "qemu/bswap.h"
++#include "exec/memop.h"
+ #include "exec/vaddr.h"
+ 
+ /**
+@@ -181,42 +181,53 @@ bool translator_io_start(DisasContextBase *db);
+  */
+ 
+ uint8_t translator_ldub(CPUArchState *env, DisasContextBase *db, vaddr pc);
+-uint16_t translator_lduw(CPUArchState *env, DisasContextBase *db, vaddr pc);
+-uint32_t translator_ldl(CPUArchState *env, DisasContextBase *db, vaddr pc);
+-uint64_t translator_ldq(CPUArchState *env, DisasContextBase *db, vaddr pc);
++uint16_t translator_lduw_end(CPUArchState *env, DisasContextBase *db,
++                             vaddr pc, MemOp endian);
++uint32_t translator_ldl_end(CPUArchState *env, DisasContextBase *db,
++                            vaddr pc, MemOp endian);
++uint64_t translator_ldq_end(CPUArchState *env, DisasContextBase *db,
++                            vaddr pc, MemOp endian);
++
++#ifdef COMPILING_PER_TARGET
++static inline uint16_t
++translator_lduw(CPUArchState *env, DisasContextBase *db, vaddr pc)
++{
++    return translator_lduw_end(env, db, pc, MO_TE);
++}
++
++static inline uint32_t
++translator_ldl(CPUArchState *env, DisasContextBase *db, vaddr pc)
++{
++    return translator_ldl_end(env, db, pc, MO_TE);
++}
++
++static inline uint64_t
++translator_ldq(CPUArchState *env, DisasContextBase *db, vaddr pc)
++{
++    return translator_ldq_end(env, db, pc, MO_TE);
++}
+ 
+ static inline uint16_t
+ translator_lduw_swap(CPUArchState *env, DisasContextBase *db,
+                      vaddr pc, bool do_swap)
+ {
+-    uint16_t ret = translator_lduw(env, db, pc);
+-    if (do_swap) {
+-        ret = bswap16(ret);
+-    }
+-    return ret;
++    return translator_lduw_end(env, db, pc, MO_TE ^ (do_swap * MO_BSWAP));
+ }
+ 
+ static inline uint32_t
+ translator_ldl_swap(CPUArchState *env, DisasContextBase *db,
+                     vaddr pc, bool do_swap)
+ {
+-    uint32_t ret = translator_ldl(env, db, pc);
+-    if (do_swap) {
+-        ret = bswap32(ret);
+-    }
+-    return ret;
++    return translator_ldl_end(env, db, pc, MO_TE ^ (do_swap * MO_BSWAP));
+ }
+ 
+ static inline uint64_t
+ translator_ldq_swap(CPUArchState *env, DisasContextBase *db,
+                     vaddr pc, bool do_swap)
+ {
+-    uint64_t ret = translator_ldq(env, db, pc);
+-    if (do_swap) {
+-        ret = bswap64(ret);
+-    }
+-    return ret;
++    return translator_ldq_end(env, db, pc, MO_TE ^ (do_swap * MO_BSWAP));
+ }
++#endif /* COMPILING_PER_TARGET */
+ 
+ /**
+  * translator_fake_ld - fake instruction load
 diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index 157be33bf6..4c320ab9c3 100644
+index 4c320ab9c3..2ab081b95f 100644
 --- a/accel/tcg/translator.c
 +++ b/accel/tcg/translator.c
-@@ -11,10 +11,10 @@
+@@ -8,6 +8,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qemu/bswap.h"
  #include "qemu/log.h"
  #include "qemu/error-report.h"
  #include "exec/exec-all.h"
-+#include "exec/cpu-ldst-common.h"
-+#include "accel/tcg/cpu-mmu-index.h"
+@@ -15,7 +16,6 @@
+ #include "accel/tcg/cpu-mmu-index.h"
  #include "exec/translator.h"
--#include "exec/cpu_ldst.h"
  #include "exec/plugin-gen.h"
--#include "exec/cpu_ldst.h"
- #include "exec/tswap.h"
+-#include "exec/tswap.h"
  #include "tcg/tcg-op-common.h"
  #include "internal-target.h"
-@@ -142,6 +142,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
-     db->host_addr[1] = NULL;
-     db->record_start = 0;
-     db->record_len = 0;
-+    db->code_mmuidx = cpu_mmu_index(cpu, true);
+ #include "disas/disas.h"
+@@ -468,7 +468,8 @@ uint8_t translator_ldub(CPUArchState *env, DisasContextBase *db, vaddr pc)
+     return val;
+ }
  
-     ops->init_disas_context(db, cpu);
-     tcg_debug_assert(db->is_jmp == DISAS_NEXT);  /* no early exit */
-@@ -457,55 +458,50 @@ bool translator_st(const DisasContextBase *db, void *dest,
- 
- uint8_t translator_ldub(CPUArchState *env, DisasContextBase *db, vaddr pc)
+-uint16_t translator_lduw(CPUArchState *env, DisasContextBase *db, vaddr pc)
++uint16_t translator_lduw_end(CPUArchState *env, DisasContextBase *db,
++                             vaddr pc, MemOp endian)
  {
--    uint8_t raw;
-+    uint8_t val;
+     uint16_t val;
  
--    if (!translator_ld(env, db, &raw, pc, sizeof(raw))) {
--        raw = cpu_ldub_code(env, pc);
--        record_save(db, pc, &raw, sizeof(raw));
-+    if (!translator_ld(env, db, &val, pc, sizeof(val))) {
-+        MemOpIdx oi = make_memop_idx(MO_UB, db->code_mmuidx);
-+        val = cpu_ldb_code_mmu(env, pc, oi, 0);
-+        record_save(db, pc, &val, sizeof(val));
+@@ -477,10 +478,14 @@ uint16_t translator_lduw(CPUArchState *env, DisasContextBase *db, vaddr pc)
+         val = cpu_ldw_code_mmu(env, pc, oi, 0);
+         record_save(db, pc, &val, sizeof(val));
      }
--    return raw;
+-    return tswap16(val);
++    if (endian & MO_BSWAP) {
++        val = bswap16(val);
++    }
 +    return val;
  }
  
- uint16_t translator_lduw(CPUArchState *env, DisasContextBase *db, vaddr pc)
+-uint32_t translator_ldl(CPUArchState *env, DisasContextBase *db, vaddr pc)
++uint32_t translator_ldl_end(CPUArchState *env, DisasContextBase *db,
++                            vaddr pc, MemOp endian)
  {
--    uint16_t raw, tgt;
-+    uint16_t val;
+     uint32_t val;
  
--    if (translator_ld(env, db, &raw, pc, sizeof(raw))) {
--        tgt = tswap16(raw);
--    } else {
--        tgt = cpu_lduw_code(env, pc);
--        raw = tswap16(tgt);
--        record_save(db, pc, &raw, sizeof(raw));
-+    if (!translator_ld(env, db, &val, pc, sizeof(val))) {
-+        MemOpIdx oi = make_memop_idx(MO_UW, db->code_mmuidx);
-+        val = cpu_ldw_code_mmu(env, pc, oi, 0);
-+        record_save(db, pc, &val, sizeof(val));
+@@ -489,10 +494,14 @@ uint32_t translator_ldl(CPUArchState *env, DisasContextBase *db, vaddr pc)
+         val = cpu_ldl_code_mmu(env, pc, oi, 0);
+         record_save(db, pc, &val, sizeof(val));
      }
--    return tgt;
-+    return tswap16(val);
+-    return tswap32(val);
++    if (endian & MO_BSWAP) {
++        val = bswap32(val);
++    }
++    return val;
  }
  
- uint32_t translator_ldl(CPUArchState *env, DisasContextBase *db, vaddr pc)
+-uint64_t translator_ldq(CPUArchState *env, DisasContextBase *db, vaddr pc)
++uint64_t translator_ldq_end(CPUArchState *env, DisasContextBase *db,
++                            vaddr pc, MemOp endian)
  {
--    uint32_t raw, tgt;
-+    uint32_t val;
+     uint64_t val;
  
--    if (translator_ld(env, db, &raw, pc, sizeof(raw))) {
--        tgt = tswap32(raw);
--    } else {
--        tgt = cpu_ldl_code(env, pc);
--        raw = tswap32(tgt);
--        record_save(db, pc, &raw, sizeof(raw));
-+    if (!translator_ld(env, db, &val, pc, sizeof(val))) {
-+        MemOpIdx oi = make_memop_idx(MO_UL, db->code_mmuidx);
-+        val = cpu_ldl_code_mmu(env, pc, oi, 0);
-+        record_save(db, pc, &val, sizeof(val));
+@@ -501,7 +510,10 @@ uint64_t translator_ldq(CPUArchState *env, DisasContextBase *db, vaddr pc)
+         val = cpu_ldq_code_mmu(env, pc, oi, 0);
+         record_save(db, pc, &val, sizeof(val));
      }
--    return tgt;
-+    return tswap32(val);
- }
- 
- uint64_t translator_ldq(CPUArchState *env, DisasContextBase *db, vaddr pc)
- {
--    uint64_t raw, tgt;
-+    uint64_t val;
- 
--    if (translator_ld(env, db, &raw, pc, sizeof(raw))) {
--        tgt = tswap64(raw);
--    } else {
--        tgt = cpu_ldq_code(env, pc);
--        raw = tswap64(tgt);
--        record_save(db, pc, &raw, sizeof(raw));
-+    if (!translator_ld(env, db, &val, pc, sizeof(val))) {
-+        MemOpIdx oi = make_memop_idx(MO_UQ, db->code_mmuidx);
-+        val = cpu_ldq_code_mmu(env, pc, oi, 0);
-+        record_save(db, pc, &val, sizeof(val));
-     }
--    return tgt;
-+    return tswap64(val);
+-    return tswap64(val);
++    if (endian & MO_BSWAP) {
++        val = bswap64(val);
++    }
++    return val;
  }
  
  void translator_fake_ld(DisasContextBase *db, const void *data, size_t len)
