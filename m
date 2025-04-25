@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5EB5A9CCCD
+	by mail.lfdr.de (Postfix) with ESMTPS id CB18DA9CCCC
 	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:24:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8Ktk-0001iz-3H; Fri, 25 Apr 2025 11:23:28 -0400
+	id 1u8Kti-0001hX-KR; Fri, 25 Apr 2025 11:23:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u8Kte-0001fQ-Vt
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:23:23 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ id 1u8Kte-0001ea-25
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:23:22 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u8KtZ-0002p9-Mw
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:23:22 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-72d3b48d2ffso2347731b3a.2
+ id 1u8Kta-0002pg-9w
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:23:21 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-7376e311086so3238026b3a.3
  for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:23:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745594596; x=1746199396; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745594597; x=1746199397; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2+F3AGtcq0LBY9UzRHTX0Z+/0ocsWmI8LW9rY6+lCBw=;
- b=PXvBxxKfIyF8K24W4IVUvymO0X8dhTAPpKItVUU549tV+zdy6NJI5MnENllzGxgKNU
- Ll7X9idmYUg2GjdiBH4ZDg/gk1N+GWPqL+J+YD7pwCdH57mz4WhsNqpNKaWTPhMFQyjF
- uSjnhmCKeAVAiqiYKh6CEt14vBrtWMH9wKKaQI/Q2QLu0yVnC5VjzpNZJwdKsPqkvtAG
- jjMXR7K4tysv4BEkkgjOfJcr63aZmT9XWRHK5XoDIqDqhxO6FFTY5i5WwQ3Z6squtKUe
- nkKXtozimFOK7rLNL8XOWIS4500/Rsjl7G8eBICc98nlIMk8ZZd9yi54xLcoIf7SMnk5
- B7HQ==
+ bh=xNi29cUmvbhQyUeV6Au09yg4HVFM1Boo5sSDPMUFN5U=;
+ b=rx9gA6NV10zGWYMDPQU5OVoiUC+3/KcF6utX5+3pkPZlD1rFMnV9NpOGNWsX0fOLpZ
+ DfDB+3KyFQe15xQGzUquIiio7rnMCdJucRujH7MJhWGDN92rD9ahRFyBH7SISCKSb0QF
+ /MnWQtKL9cCi4vPNwEASYvnY1ZcWckaJFBTCEsZAnCUA6/e4y4UNU9enfCYNhz+86/jb
+ TrlOd9KRaaUMPMfWWeHM+3ugAvYIhxQYSpEz9wdm1eqD+QWNR6ZOOpx/PDBMwEuYn5bv
+ RlZJGNevGD7Y2Kdi7pHvufXD8uye6K6ZesIbJVhUhl3f1UEa2Ex206MHw5rEqLh/tWFU
+ tSsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745594596; x=1746199396;
+ d=1e100.net; s=20230601; t=1745594597; x=1746199397;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2+F3AGtcq0LBY9UzRHTX0Z+/0ocsWmI8LW9rY6+lCBw=;
- b=j/Fev1jDAzqp39fVa0EdvmvP9UMOgK2/O9K9yh3SzgyxTVeT//iSZarwTgZs/fKzmJ
- zQS7l95sN0TXkOPoWSl9IZQAIoaz7Z1CGkcdGSzqNnwinaO8/np6nps4zqiXT9Ec/uTb
- zJn2O7gObcSwhnJiGle8XVXTSuXvYRLMpLI4AyelguCT1MUVDC1ruME8usjtuFm2/2LZ
- Rxj4tyJvijZApglzK4ExCOYHQLAQ7xOyjK1XzRSdrkSJI6KFhYkraXV3zslr2eTSY8eq
- TkjqpnBRbjlzVSiIgwZRPM65RUnsK+QdUD2A35sbeVxzrjEZD/nXF/XznU26FFR6P0bZ
- dosQ==
-X-Gm-Message-State: AOJu0Ywd1/CYaEhqPHN9eFSW8fQ3Ad9qRjAx5oMSk60TXMR/W+/9d6B/
- covsJBqlbReJw+OJLBW0zwiEH8JxXUh4lpLB69pLSFmK4lYiyme/UxaNh20UEmwQswQkk2XPHeM
- B
-X-Gm-Gg: ASbGncv0lZCNawEbbt6zM3BOTYPctaBc37QocMF85/g/CqG1SeTE21Sd4cn8DPzR1/4
- 04m6VhdO06k/29e/esHBrMPl5SeGqmhCEPDDXiJMVbGoiMNU8LokLqHxFxjqt1ygOg8Xx/GrCgv
- qHlDnP72QAIu4imh83/1QQCxla3MuUONeyQtbrPeZNniIWCD+gFHJ2JfQ3UWCNeE+Sb8AS6Duox
- dYqf3WG8kSWMiFAeXcDMhzIm++Mb4Vc48nXYD8fPr2djZmg0y6bWKq7wI8SFm6tQVOuEZ3/P1ZX
- 2cCUHKn31IAmt6qruxVxCnCw9EDlrj1x8fGXO9Vs+NJj+XHJgu/F5Z4eeF+b41t+CCyijPXme0A
+ bh=xNi29cUmvbhQyUeV6Au09yg4HVFM1Boo5sSDPMUFN5U=;
+ b=oECiPlJLCQYSCe9gFKma1XrNHtq0OGSprWcHMG2UcpT0c3fW3QkaYfZvyB4ab3nX08
+ potK+6QQOnpwxRxqZBbLo4ObSWdCaMNk3m8d0yzNjWd0n3Koe1hW4erv5z13HaiP5Ifi
+ amhkb6S+JozQKTo8BSKqIsEyVNUQys3RcXAKaJRWezJ7pPkKON7dyoOgxeAX7mBZHip+
+ G7HgbddrEqRP1YVgiWCXFvpB0aStwipbRl/ceJzPVSEqjG3smRos92ObG8OU8xhdnmmu
+ jaRsTEKj8euIYzXp0srhxWy8P8klN43Trfl+ShwO8gQ3ihr7CRxRHGHAfgqiaFhkrBSo
+ K3AQ==
+X-Gm-Message-State: AOJu0YxNRQGzdQSiGKlq3t4hIsAHEx1QPczGfdfmbheNA8EGInHI1jjW
+ zCSgMRzCLhTa9rCISmCGn8Rqh4Xh3hhs7ZaJ6uEe7lihwGhqeM67sJ1xxfGJMdFzBiNr+8YZE5P
+ s
+X-Gm-Gg: ASbGncsMOX0YRp/XL1FpsArXC3n8lk3N2q5u8eHhe9kzQZmZ0jgdpAsRvRehADpAz5D
+ r9Z4FcyJ3P5gSlnQ1clxC+NrWb2xva7ZOBgcmURTStJjxme0CS+9Oc0Ly2R9/h2oZZOuWa3OLDL
+ i2P9FtT6nynfn2mFWk4G/DwPz1vXKDZx1iv8xBqko2GzlqKHukcqZT26ZPzWZTDZ5EYF4sx1Vsc
+ UMjtZU0A/ZKwTDZFulf846VfKKjY8vJ8yRNfOloQaOImiDtL1IM/rwEcd314VCWXoQidQRFnfTw
+ ttCD1v4YNgXeGH50hEb5n4qAWjYqysu6nrqTAJ4MMDyci3EFtXhZGAaJzMLXNGBMS9q211s47fM
  =
-X-Google-Smtp-Source: AGHT+IEzDeX2afsNRb2mmlhjGNU6//Q1hDLyc7GBG1Nt17zFsrhyf6eGBE3X7HY5rwtFxMMCXB0MiA==
-X-Received: by 2002:a05:6a00:b84:b0:736:4fe0:2661 with SMTP id
- d2e1a72fcca58-73fd73c7ff1mr3260845b3a.11.1745594596099; 
+X-Google-Smtp-Source: AGHT+IFYaA7OEpPoQ1dhQ7EJLs6ZVzHDkNu2pzIww5etqOZVJsTnSgdHSR5GwpIQAjxKanG2ydS0yQ==
+X-Received: by 2002:a05:6a00:1150:b0:736:692e:129 with SMTP id
+ d2e1a72fcca58-73fd8f4f0a7mr4483681b3a.24.1745594596919; 
  Fri, 25 Apr 2025 08:23:16 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73e25a6a49esm3390466b3a.106.2025.04.25.08.23.15
+ d2e1a72fcca58-73e25a6a49esm3390466b3a.106.2025.04.25.08.23.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Apr 2025 08:23:15 -0700 (PDT)
+ Fri, 25 Apr 2025 08:23:16 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, dbarboza@ventanamicro.com
-Subject: [PATCH 4/7] target/riscv: Pass ra to riscv_csrrw
-Date: Fri, 25 Apr 2025 08:23:08 -0700
-Message-ID: <20250425152311.804338-5-richard.henderson@linaro.org>
+Subject: [PATCH 5/7] target/riscv: Pass ra to riscv_csrrw_i128
+Date: Fri, 25 Apr 2025 08:23:09 -0700
+Message-ID: <20250425152311.804338-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250425152311.804338-1-richard.henderson@linaro.org>
 References: <20250425152311.804338-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,107 +100,87 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/riscv/cpu.h       | 8 ++++----
- hw/riscv/riscv_hart.c    | 2 +-
+ target/riscv/cpu.h       | 4 ++--
  target/riscv/csr.c       | 8 ++++----
- target/riscv/op_helper.c | 4 ++--
- 4 files changed, 11 insertions(+), 11 deletions(-)
+ target/riscv/op_helper.c | 9 +++++----
+ 3 files changed, 11 insertions(+), 10 deletions(-)
 
 diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 4d41a66d72..2c0524d0be 100644
+index 2c0524d0be..8b84793b15 100644
 --- a/target/riscv/cpu.h
 +++ b/target/riscv/cpu.h
-@@ -816,8 +816,8 @@ RISCVException riscv_csrr(CPURISCVState *env, int csrno,
-                           target_ulong *ret_value);
+@@ -851,8 +851,8 @@ typedef RISCVException (*riscv_csr_op_fn)(CPURISCVState *env, int csrno,
+ RISCVException riscv_csrr_i128(CPURISCVState *env, int csrno,
+                                Int128 *ret_value);
+ RISCVException riscv_csrrw_i128(CPURISCVState *env, int csrno,
+-                                Int128 *ret_value,
+-                                Int128 new_value, Int128 write_mask);
++                                Int128 *ret_value, Int128 new_value,
++                                Int128 write_mask, uintptr_t ra);
  
- RISCVException riscv_csrrw(CPURISCVState *env, int csrno,
--                           target_ulong *ret_value,
--                           target_ulong new_value, target_ulong write_mask);
-+                           target_ulong *ret_value, target_ulong new_value,
-+                           target_ulong write_mask, uintptr_t ra);
- RISCVException riscv_csrrw_debug(CPURISCVState *env, int csrno,
-                                  target_ulong *ret_value,
-                                  target_ulong new_value,
-@@ -826,13 +826,13 @@ RISCVException riscv_csrrw_debug(CPURISCVState *env, int csrno,
- static inline void riscv_csr_write(CPURISCVState *env, int csrno,
-                                    target_ulong val)
- {
--    riscv_csrrw(env, csrno, NULL, val, MAKE_64BIT_MASK(0, TARGET_LONG_BITS));
-+    riscv_csrrw(env, csrno, NULL, val, MAKE_64BIT_MASK(0, TARGET_LONG_BITS), 0);
- }
- 
- static inline target_ulong riscv_csr_read(CPURISCVState *env, int csrno)
- {
-     target_ulong val = 0;
--    riscv_csrrw(env, csrno, &val, 0, 0);
-+    riscv_csrrw(env, csrno, &val, 0, 0, 0);
-     return val;
- }
- 
-diff --git a/hw/riscv/riscv_hart.c b/hw/riscv/riscv_hart.c
-index a55d156668..2ebbf41b18 100644
---- a/hw/riscv/riscv_hart.c
-+++ b/hw/riscv/riscv_hart.c
-@@ -72,7 +72,7 @@ static void csr_call(char *cmd, uint64_t cpu_num, int csrno, uint64_t *val)
-         ret = riscv_csrr(env, csrno, (target_ulong *)val);
-     } else if (strcmp(cmd, "set_csr") == 0) {
-         ret = riscv_csrrw(env, csrno, NULL, *(target_ulong *)val,
--                MAKE_64BIT_MASK(0, TARGET_LONG_BITS));
-+                          MAKE_64BIT_MASK(0, TARGET_LONG_BITS), 0);
-     }
- 
-     g_assert(ret == RISCV_EXCP_NONE);
+ typedef RISCVException (*riscv_csr_read128_fn)(CPURISCVState *env, int csrno,
+                                                Int128 *ret_value);
 diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index d62d1aaaee..097640e25d 100644
+index 097640e25d..a663f527a4 100644
 --- a/target/riscv/csr.c
 +++ b/target/riscv/csr.c
-@@ -5574,15 +5574,15 @@ RISCVException riscv_csrr(CPURISCVState *env, int csrno,
+@@ -5656,8 +5656,8 @@ RISCVException riscv_csrr_i128(CPURISCVState *env, int csrno,
  }
  
- RISCVException riscv_csrrw(CPURISCVState *env, int csrno,
--                           target_ulong *ret_value,
--                           target_ulong new_value, target_ulong write_mask)
-+                           target_ulong *ret_value, target_ulong new_value,
-+                           target_ulong write_mask, uintptr_t ra)
+ RISCVException riscv_csrrw_i128(CPURISCVState *env, int csrno,
+-                                Int128 *ret_value,
+-                                Int128 new_value, Int128 write_mask)
++                                Int128 *ret_value, Int128 new_value,
++                                Int128 write_mask, uintptr_t ra)
  {
-     RISCVException ret = riscv_csrrw_check(env, csrno, true);
-     if (ret != RISCV_EXCP_NONE) {
-         return ret;
+     RISCVException ret;
+ 
+@@ -5668,7 +5668,7 @@ RISCVException riscv_csrrw_i128(CPURISCVState *env, int csrno,
+ 
+     if (csr_ops[csrno].read128) {
+         return riscv_csrrw_do128(env, csrno, ret_value,
+-                                 new_value, write_mask, 0);
++                                 new_value, write_mask, ra);
      }
  
--    return riscv_csrrw_do64(env, csrno, ret_value, new_value, write_mask, 0);
-+    return riscv_csrrw_do64(env, csrno, ret_value, new_value, write_mask, ra);
- }
- 
- static RISCVException riscv_csrrw_do128(CPURISCVState *env, int csrno,
-@@ -5704,7 +5704,7 @@ RISCVException riscv_csrrw_debug(CPURISCVState *env, int csrno,
-     if (!write_mask) {
-         ret = riscv_csrr(env, csrno, ret_value);
-     } else {
--        ret = riscv_csrrw(env, csrno, ret_value, new_value, write_mask);
-+        ret = riscv_csrrw(env, csrno, ret_value, new_value, write_mask, 0);
+     /*
+@@ -5681,7 +5681,7 @@ RISCVException riscv_csrrw_i128(CPURISCVState *env, int csrno,
+     target_ulong old_value;
+     ret = riscv_csrrw_do64(env, csrno, &old_value,
+                            int128_getlo(new_value),
+-                           int128_getlo(write_mask), 0);
++                           int128_getlo(write_mask), ra);
+     if (ret == RISCV_EXCP_NONE && ret_value) {
+         *ret_value = int128_make64(old_value);
      }
- #if !defined(CONFIG_USER_ONLY)
-     env->debugger = false;
 diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
-index 5b0db2c45a..aee16e2e3a 100644
+index aee16e2e3a..e3770a2655 100644
 --- a/target/riscv/op_helper.c
 +++ b/target/riscv/op_helper.c
-@@ -71,7 +71,7 @@ target_ulong helper_csrr(CPURISCVState *env, int csr)
- void helper_csrw(CPURISCVState *env, int csr, target_ulong src)
+@@ -108,7 +108,7 @@ void helper_csrw_i128(CPURISCVState *env, int csr,
  {
-     target_ulong mask = env->xl == MXL_RV32 ? UINT32_MAX : (target_ulong)-1;
--    RISCVException ret = riscv_csrrw(env, csr, NULL, src, mask);
-+    RISCVException ret = riscv_csrrw(env, csr, NULL, src, mask, GETPC());
+     RISCVException ret = riscv_csrrw_i128(env, csr, NULL,
+                                           int128_make128(srcl, srch),
+-                                          UINT128_MAX);
++                                          UINT128_MAX, GETPC());
  
      if (ret != RISCV_EXCP_NONE) {
          riscv_raise_exception(env, ret, GETPC());
-@@ -82,7 +82,7 @@ target_ulong helper_csrrw(CPURISCVState *env, int csr,
-                           target_ulong src, target_ulong write_mask)
+@@ -116,13 +116,14 @@ void helper_csrw_i128(CPURISCVState *env, int csr,
+ }
+ 
+ target_ulong helper_csrrw_i128(CPURISCVState *env, int csr,
+-                       target_ulong srcl, target_ulong srch,
+-                       target_ulong maskl, target_ulong maskh)
++                               target_ulong srcl, target_ulong srch,
++                               target_ulong maskl, target_ulong maskh)
  {
-     target_ulong val = 0;
--    RISCVException ret = riscv_csrrw(env, csr, &val, src, write_mask);
-+    RISCVException ret = riscv_csrrw(env, csr, &val, src, write_mask, GETPC());
+     Int128 rv = int128_zero();
+     RISCVException ret = riscv_csrrw_i128(env, csr, &rv,
+                                           int128_make128(srcl, srch),
+-                                          int128_make128(maskl, maskh));
++                                          int128_make128(maskl, maskh),
++                                          GETPC());
  
      if (ret != RISCV_EXCP_NONE) {
          riscv_raise_exception(env, ret, GETPC());
