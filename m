@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C773A9D4B9
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 23:59:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5855EA9D4CC
+	for <lists+qemu-devel@lfdr.de>; Sat, 26 Apr 2025 00:00:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8R0o-0007HK-Nd; Fri, 25 Apr 2025 17:55:10 -0400
+	id 1u8R0l-0007GP-Ov; Fri, 25 Apr 2025 17:55:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u8R0h-0007E7-AO
+ id 1u8R0h-0007Dz-2Y
  for qemu-devel@nongnu.org; Fri, 25 Apr 2025 17:55:03 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u8R0f-0000IW-0x
+ id 1u8R0f-0000Il-3v
  for qemu-devel@nongnu.org; Fri, 25 Apr 2025 17:55:02 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-736aaeed234so2394130b3a.0
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-af548cb1f83so2894514a12.3
  for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 14:55:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1745618099; x=1746222899; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eO5DfNMHmibDzC5S7R129uJ9XbuwIQeM7aiNNCULxXU=;
- b=GFDSyLlmnsv+mYUcuKdFBgTT6xxdvUoOi3eC/4rWUusPEdaz0/PfmLcEXpWGbi4G5z
- ASTUcxsD7RMI0BKiwsG82+hDxKyehxS3xABSSzek13o19gugUUY8kC14rC++gmQzaBws
- L9o8KaZSpKwrzSNK7jqT2YX7MzEseLuJUwYpK7FcUq8PmMrOqWMTAE9j7KkI9Zy5Ns+A
- BzrLFoxelOXGiiiBTx9MEgPLloRXSd/rHP0r58678uqFVFovtRFn6Y6opfSZ3lclxPvZ
- GZTz18MAZvMyGtBIHvuoVYgF1av1gRa3+kX7BxL0ox8Wa27b/clmBuUgZLXPen0l1TiB
- +Jdg==
+ bh=t/zQGxGO/NlI4vEg03ZEmNBPOEr3MMOkBBYL06UjaHI=;
+ b=dh265df6BaUE06vDK0Mh+ybdHlnMIzVq6o5dPP8Q79hKAfL0CP4NeoyAuurGc3CDE6
+ qTJSlNkYIUHr76ljcR4fU92xMCa39SPavN2W3gRAZ6Ya2MSoP49+6NqQ7cKcyu8ctuZ7
+ Jn3skuocxHY88LKwjqT9LW0qC47knclyafH7Y68eAEe/2k4DEG9tVqQFPIMrHRJgfIo8
+ l9CenTfsSaY5WtJ6r7B6Ncx76bleQ9dgFXE5vxkbkZmsvWbM0cASW0/ijpk16P32Mxtq
+ a9X1uctQQq8X1DRXfrpoLZWWfcD2jMzsTwbuMy/tXBlLPWr1bciSTlWFUPX31Fajh7Un
+ O9uA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1745618099; x=1746222899;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eO5DfNMHmibDzC5S7R129uJ9XbuwIQeM7aiNNCULxXU=;
- b=gkqWaq/clT5CbquQh0VdyAN66OxvtnQxTQmF/jnD8/3tJ+GjGzt0vVELUScSwdLFuf
- lPhjhrrltCjqsXcx+RxvPxb75mtZeE12tScDGFuE/RYhgk+Q1NsABZ9dbW17N7B8u3ig
- HdR6z9YgPUgmhTrFzMFklhugEaiU7jbtPcqPUPOJvwIqhqWxxNJCkMTaXkmHGfzgIaUq
- mNdkWVCtspHPmkG1P1winlCevR0trQ0LRO6xQKqwmgklytWdJfe589gezkQ0eFrYLVPa
- LjFFSGWrMJCmK/TSuFubw401YNwcj6GESvsQRXNwXERkFOIS2pJ5TMfCcJfIRBSUcCps
- rofg==
-X-Gm-Message-State: AOJu0YwiUh1cZlXBOHeYp/ctq6dJRCKzlkAAYVUS8cstJ7X6KPRE80xT
- u6V9Hz//acN18lYxBf4Pf2e2ITh96HZag0lDdwBBjdxR68yDkNXPrAGNOqjIo6M20oaBa39yzK8
- T
-X-Gm-Gg: ASbGncsz6l9YA5LPwk5KOaUgrjblhte+tz04oVDOC1hNP23/WKAm0K4HBPzdJPwUcoU
- ojqL8VHo2UieUG3GhcSSOD0CRPGTrx+Z8WODKM8RAmsbRuda3YkoK3soVkBhNqlOIi1O3ClpvFE
- E/Gog3WfxQNxFDXJ0qHafwyNycvQf5uHhSAC7bAWioIyFY5foGtztvatbUdfhm+Fn6BdpUr3kTM
- u2Oz3jIUWEdOtDT3EJThcOTxjX3i3ceJQUYFM9M22Ld6G1rmNyzUF9WFKhCTVZ3MR4Cqx1ESLlc
- Ew5K/a+J50tHL//AbDcGAn5Je/5HmkcCxyie3w9NUPnPg2dtOtADBoTG9H3IK27IA2IrM0A0aRU
- =
-X-Google-Smtp-Source: AGHT+IF06vOodccV2VbZ6VbM1pNfI2xQ34VcwOAes2g25a2twrOTel6z6Xar9WRvekg5NwSpcnTAJQ==
-X-Received: by 2002:a05:6a00:80f:b0:730:75b1:7219 with SMTP id
- d2e1a72fcca58-73fd74c7b87mr5018604b3a.12.1745618098864; 
- Fri, 25 Apr 2025 14:54:58 -0700 (PDT)
+ bh=t/zQGxGO/NlI4vEg03ZEmNBPOEr3MMOkBBYL06UjaHI=;
+ b=KMFH6sHwkdGhkm+GmTtPNpt0RYFlk5nFPJ6ab4vStIW81Xk6iI8wJ/LA4vb6GgLhUX
+ 0V0rRRQ7b2fWMteZ2UzKCo+d0FW+3FID0g0WEffi7Q7tBZ54A5CnWbnJEn+PlK4hpwvH
+ 4gwPmrRhNEZQWxl5WyYaLpWs4NK+rLVTPinExuB1qZr1qrKu79W3LxMZUhEFM1KgKyha
+ qdPnmOSHWI4Y1BeNlHng2QSrRC6fbLKC4cycCKCRpR+0e5KwTmgeG2ZyAQpFJ1kkd1ji
+ Hmd//1DL9SkbWioSxApLw05jPdgmXNbmpBD0kMPKA1lnn0bZtOQCo91ddr6UEG1DCaaE
+ kBKA==
+X-Gm-Message-State: AOJu0YwZoz++DYkiSTQO6ZVz7KBMCxhbR31lheUkYCHY9zW+L69/0lAT
+ 31bRveZF18hsWh1QHiInQnKGGXZddWFYgBMHKTmwH1lQKsy+gxC0XWvyfeLd9WUSA9DIM3DWxBG
+ 9
+X-Gm-Gg: ASbGncsbWUzcQK6U2QQ2aSBmvX7IkV66+/eyFmw2oHBx7Ob2VyJ2NoGt7IfJr0TFi34
+ EoSBKpt7D0FztdlxEdsVV+brKusmEXTfyya4oms+/NAbuVFuy5Rf2DZFxGxnd5pextxnSpY4OWm
+ JJ8Sc5leDDvj6T2rFmQMxiKnJCuzzuQgVe9MFSb0Pj7buqhWHPFMA3LOIrVGNxN4EUVqbqeckA0
+ 5egJG6LF3Imts7Xz1c6lSWWu02otVOdHigxusqOGtnxai/sVS08uotftiAuRo/KL1jM4oYw1h2k
+ KqHTRQ+HJO8P3LcV1TJ3/mOg9R/FKVTewaQNuGdz2mboeB4vlQaifOS+4LgjMZCRKPxMm1aaUEw
+ 52WGj8E0WOA==
+X-Google-Smtp-Source: AGHT+IGtTVwn7jVbT/2fKR6/VfUsyS8bICFFKvpwUxkBDFSTm3osJJ9874zJ5Znd/8qtaW0KjPEMDQ==
+X-Received: by 2002:a05:6a20:2d27:b0:1f5:60ce:6cc6 with SMTP id
+ adf61e73a8af0-2046a58d8c8mr913231637.21.1745618099623; 
+ Fri, 25 Apr 2025 14:54:59 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73e259414b0sm3664392b3a.48.2025.04.25.14.54.58
+ d2e1a72fcca58-73e259414b0sm3664392b3a.48.2025.04.25.14.54.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Apr 2025 14:54:58 -0700 (PDT)
+ Fri, 25 Apr 2025 14:54:59 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 005/159] tcg: Add all_outop[]
-Date: Fri, 25 Apr 2025 14:52:19 -0700
-Message-ID: <20250425215454.886111-6-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 006/159] tcg: Use extract2 for cross-word 64-bit extract on
+ 32-bit host
+Date: Fri, 25 Apr 2025 14:52:20 -0700
+Message-ID: <20250425215454.886111-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250425215454.886111-1-richard.henderson@linaro.org>
 References: <20250425215454.886111-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,140 +100,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add infrastructure for more consolidated output of opcodes.
-The base structure allows for constraints to be either static
-or dynamic, and for the existence of those constraints to
-replace TCG_TARGET_HAS_* and the bulk of tcg_op_supported.
-
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/tcg.c | 76 +++++++++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 68 insertions(+), 8 deletions(-)
+ tcg/tcg-op.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index 198d6181d9..5090cdb3c6 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -861,6 +861,7 @@ static int tcg_out_pool_finalize(TCGContext *s)
- #define C_N1_O1_I4(O1, O2, I1, I2, I3, I4) C_PFX6(c_n1_o1_i4_, O1, O2, I1, I2, I3, I4),
- 
- typedef enum {
-+    C_Dynamic = -2,
-     C_NotImplemented = -1,
- #include "tcg-target-con-set.h"
- } TCGConstraintSetIndex;
-@@ -954,6 +955,29 @@ static const TCGConstraintSet constraint_sets[] = {
- #define C_O2_I4(O1, O2, I1, I2, I3, I4) C_PFX6(c_o2_i4_, O1, O2, I1, I2, I3, I4)
- #define C_N1_O1_I4(O1, O2, I1, I2, I3, I4) C_PFX6(c_n1_o1_i4_, O1, O2, I1, I2, I3, I4)
- 
-+/*
-+ * TCGOutOp is the base class for a set of structures that describe how
-+ * to generate code for a given TCGOpcode.
-+ *
-+ * @static_constraint:
-+ *   C_NotImplemented: The TCGOpcode is not supported by the backend.
-+ *   C_Dynamic:        Use @dynamic_constraint to select a constraint set
-+ *                     based on any of @type, @flags, or host isa.
-+ *   Otherwise:        The register allocation constrains for the TCGOpcode.
-+ *
-+ * Subclasses of TCGOutOp will define a set of output routines that may
-+ * be used.  Such routines will often be selected by the set of registers
-+ * and constants that come out of register allocation.  The set of
-+ * routines that are provided will guide the set of constraints that are
-+ * legal.  In particular, assume that tcg_optimize() has done its job in
-+ * swapping commutative operands and folding operations for which all
-+ * operands are constant.
-+ */
-+typedef struct TCGOutOp {
-+    TCGConstraintSetIndex static_constraint;
-+    TCGConstraintSetIndex (*dynamic_constraint)(TCGType type, unsigned flags);
-+} TCGOutOp;
+diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
+index fec6d678a2..f68c4f9702 100644
+--- a/tcg/tcg-op.c
++++ b/tcg/tcg-op.c
+@@ -2804,9 +2804,18 @@ void tcg_gen_extract_i64(TCGv_i64 ret, TCGv_i64 arg,
+             tcg_gen_movi_i32(TCGV_HIGH(ret), 0);
+             return;
+         }
+-        /* The field is split across two words.  One double-word
+-           shift is better than two double-word shifts.  */
+-        goto do_shift_and;
 +
- #include "tcg-target.c.inc"
- 
- #ifndef CONFIG_TCG_INTERPRETER
-@@ -963,6 +987,10 @@ QEMU_BUILD_BUG_ON((int)(offsetof(CPUNegativeOffsetState, tlb.f[0]) -
-                   < MIN_TLB_MASK_TABLE_OFS);
- #endif
- 
-+/* Register allocation descriptions for every TCGOpcode. */
-+static const TCGOutOp * const all_outop[NB_OPS] = {
-+};
-+
- /*
-  * All TCG threads except the parent (i.e. the one that called tcg_context_init
-  * and registered the target's TCG globals) must register with this function
-@@ -2416,8 +2444,32 @@ bool tcg_op_supported(TCGOpcode op, TCGType type, unsigned flags)
-         return has_type && TCG_TARGET_HAS_cmpsel_vec;
- 
-     default:
--        tcg_debug_assert(op > INDEX_op_last_generic && op < NB_OPS);
-+        if (op < INDEX_op_last_generic) {
-+            const TCGOutOp *outop;
-+            TCGConstraintSetIndex con_set;
-+
-+            if (!has_type) {
-+                return false;
-+            }
-+
-+            outop = all_outop[op];
-+            tcg_debug_assert(outop != NULL);
-+
-+            con_set = outop->static_constraint;
-+            if (con_set == C_Dynamic) {
-+                con_set = outop->dynamic_constraint(type, flags);
-+            }
-+            if (con_set >= 0) {
-+                return true;
-+            }
-+            tcg_debug_assert(con_set == C_NotImplemented);
-+            return false;
++        /* The field is split across two words. */
++        tcg_gen_extract2_i32(TCGV_LOW(ret), TCGV_LOW(arg),
++                             TCGV_HIGH(arg), ofs);
++        if (len <= 32) {
++            tcg_gen_extract_i32(TCGV_LOW(ret), TCGV_LOW(ret), 0, len);
++            tcg_gen_movi_i32(TCGV_HIGH(ret), 0);
++        } else {
++            tcg_gen_extract_i32(TCGV_HIGH(ret), TCGV_HIGH(arg),
++                                ofs, len - 32);
 +        }
-+        tcg_debug_assert(op < NB_OPS);
-         return true;
-+
-+    case INDEX_op_last_generic:
-+        g_assert_not_reached();
-     }
- }
- 
-@@ -3335,19 +3387,27 @@ static void process_constraint_sets(void)
- 
- static const TCGArgConstraint *opcode_args_ct(const TCGOp *op)
- {
--    const TCGOpDef *def = &tcg_op_defs[op->opc];
-+    TCGOpcode opc = op->opc;
-+    TCGType type = TCGOP_TYPE(op);
-+    unsigned flags = TCGOP_FLAGS(op);
-+    const TCGOpDef *def = &tcg_op_defs[opc];
-+    const TCGOutOp *outop = all_outop[opc];
-     TCGConstraintSetIndex con_set;
- 
--#ifdef CONFIG_DEBUG_TCG
--    assert(tcg_op_supported(op->opc, TCGOP_TYPE(op), TCGOP_FLAGS(op)));
--#endif
--
-     if (def->flags & TCG_OPF_NOT_PRESENT) {
-         return empty_cts;
++        return;
      }
  
--    con_set = tcg_target_op_def(op->opc, TCGOP_TYPE(op), TCGOP_FLAGS(op));
--    tcg_debug_assert(con_set >= 0 && con_set < ARRAY_SIZE(constraint_sets));
-+    if (outop) {
-+        con_set = outop->static_constraint;
-+        if (con_set == C_Dynamic) {
-+            con_set = outop->dynamic_constraint(type, flags);
-+        }
-+    } else {
-+        con_set = tcg_target_op_def(opc, type, flags);
-+    }
-+    tcg_debug_assert(con_set >= 0);
-+    tcg_debug_assert(con_set < ARRAY_SIZE(constraint_sets));
- 
-     /* The constraint arguments must match TCGOpcode arguments. */
-     tcg_debug_assert(constraint_sets[con_set].nb_oargs == def->nb_oargs);
+     if (TCG_TARGET_extract_valid(TCG_TYPE_I64, ofs, len)) {
+@@ -2844,7 +2853,6 @@ void tcg_gen_extract_i64(TCGv_i64 ret, TCGv_i64 arg,
+        so that we get ext8u, ext16u, and ext32u.  */
+     switch (len) {
+     case 1 ... 8: case 16: case 32:
+-    do_shift_and:
+         tcg_gen_shri_i64(ret, arg, ofs);
+         tcg_gen_andi_i64(ret, ret, (1ull << len) - 1);
+         break;
 -- 
 2.43.0
 
