@@ -2,109 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31CF0A9D431
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 23:35:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE89EA9D49C
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 23:56:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8QgS-0008QG-Kv; Fri, 25 Apr 2025 17:34:09 -0400
+	id 1u8R0h-0007DL-F9; Fri, 25 Apr 2025 17:55:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
- id 1u8Qfc-0007hr-Ss; Fri, 25 Apr 2025 17:33:20 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongli.zhang@oracle.com>)
- id 1u8QfY-0005rQ-MQ; Fri, 25 Apr 2025 17:33:15 -0400
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53PLC7ix003939;
- Fri, 25 Apr 2025 21:32:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2023-11-20; bh=WxUf1
- UFi+mfkYCrfwMrv9Ia53TIl9f9TpR4DnuWsBb8=; b=MlWqt0/Lm4GvxbVN1Yr7r
- OP1QIGj7VhHvfDfulgvXL1lN90AwhAIulKeTHPI5Ft3+QLGjslCwy6oYwUt1T563
- IzTWHKDW23Eu2xm2sY1T9m4vnc7xSXY5Mw11fOvDViI4ZpMrDgwj/qBj3Cs+eKeT
- GqmS/VK80Cwez8lmHUTCrJ1KXL5NH14lB3HGO/gAUrzTJTQd/UIngAG5gnPjg/Bk
- nTvPHLEzJvGGF7L2ISs3gjZzV1XejJ2eS2kDQO5RZacnpE/TGOMyaBf6vlPZXiaK
- TDze0iMeLRLdYz4ATXcSPSABh736nPSaS5UzBlvgSyZWg/cIw6nnTreCWaUFBEms
- g==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 468j3hg4pn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 25 Apr 2025 21:32:37 +0000 (GMT)
-Received: from pps.filterd
- (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 53PL2NLO030859; Fri, 25 Apr 2025 21:32:07 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 466k095vfa-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 25 Apr 2025 21:32:07 +0000
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 53PLVdAp039597;
- Fri, 25 Apr 2025 21:32:06 GMT
-Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 466k095v2d-11; Fri, 25 Apr 2025 21:32:05 +0000
-From: Dongli Zhang <dongli.zhang@oracle.com>
-To: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
- qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org
-Cc: pbonzini@redhat.com, zhao1.liu@intel.com, mtosatti@redhat.com,
- sandipan.das@amd.com, babu.moger@amd.com, likexu@tencent.com,
- like.xu.linux@gmail.com, groug@kaod.org, khorenko@virtuozzo.com,
- alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
- davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
- dapeng1.mi@linux.intel.com, joe.jin@oracle.com,
- peter.maydell@linaro.org, gaosong@loongson.cn, chenhuacai@kernel.org,
- philmd@linaro.org, aurelien@aurel32.net, jiaxun.yang@flygoat.com,
- arikalo@gmail.com, npiggin@gmail.com, danielhb413@gmail.com,
- palmer@dabbelt.com, alistair.francis@wdc.com, liwei1518@gmail.com,
- zhiwei_liu@linux.alibaba.com, pasic@linux.ibm.com,
- borntraeger@linux.ibm.com, richard.henderson@linaro.org,
- david@redhat.com, iii@linux.ibm.com, thuth@redhat.com,
- flavra@baylibre.com, ewanhai-oc@zhaoxin.com, ewanhai@zhaoxin.com,
- cobechen@zhaoxin.com, louisqi@zhaoxin.com, liamni@zhaoxin.com,
- frankzhu@zhaoxin.com, silviazhao@zhaoxin.com, kraxel@redhat.com,
- berrange@redhat.com
-Subject: [PATCH v5 10/10] target/i386/kvm: don't stop Intel PMU counters
-Date: Fri, 25 Apr 2025 14:30:07 -0700
-Message-ID: <20250425213037.8137-11-dongli.zhang@oracle.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250425213037.8137-1-dongli.zhang@oracle.com>
-References: <20250425213037.8137-1-dongli.zhang@oracle.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1u8R0e-0007Ca-CU
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 17:55:00 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1u8R0b-0000I2-PU
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 17:55:00 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-73bf5aa95e7so2505549b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 14:54:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1745618095; x=1746222895; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=41RP72iINcoaFtzLeoBo0s8QKFEIVkJzXPipULbk1BQ=;
+ b=i/xDLji6Q/kzTlArxo6n1Az5ohNW0O4hTmuPj+SQbrAX5+okHpb43e5ZcbEEiWmgLO
+ Xfrs0rGMepVCficIi2wPXQFBFIL72PB6I7fdH2BgdKOjYIZe0JZLLsM/6RIQsTkhY64k
+ 8YUdwuFxk5A10xfou4yFmI51lACTOC8FraVTeies9Qw2pG6Ts8PCAADpjewpKvfOmWJa
+ LU8eIaGWAswBRL7Xk/9F9XkhOK3ZT2SR1Lhn3f8ZbTfPG9yGSXXAMgTK8gZng79XAYqt
+ geN6kWQt9L6e1vThJ1lSAyGaEKRUWlT9LAxNSvKGV0P/cTtHCKmEHxMXFHAmeGvwfWnW
+ dsEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1745618095; x=1746222895;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=41RP72iINcoaFtzLeoBo0s8QKFEIVkJzXPipULbk1BQ=;
+ b=PvddQXyuogCyqO7oJSvoNa7MwQLtbWRSB4NPPPRxl8u33qPVUDnAT+9KbXqZ8geqkq
+ VQYU11VnRyrn7Z1ArlJGf3r/8v5kNpbPSIqkVxvYvi8LIx8FnHVvI8l0njVTo9eHrckt
+ 6zGc5gr4oMSqcYDvYrik1zhOFetrVxlaDAG+F34CpznrSJ8+67XyXCWiisVQ7KqHwS18
+ /z555pVP40q3DwC/HTqqep5VqByS21Ihu5+aMW2huZKyrgBM7i4NaHB0XN0jDAsgXqFz
+ QAm0Gie+PTXWvBdB3F0gfxIdQXkiykhxqdiSMUE1jt96YCC00A1LyY1OaGDkH8pAFH0Y
+ eZmg==
+X-Gm-Message-State: AOJu0YzRT0xGBFrGepwts0eMmJo7t+z5UxBfYAFbnSa0dZCV4zBcFSzn
+ z/F+BRv95liQSVnIs2QH0lbf3ZOf5gpBofs03wYq2BdzzuIwOyd3IMYzUMQkbZ9UdQhUwD4uqM3
+ D
+X-Gm-Gg: ASbGncuEubjLVLEh+xehB5A14T1UpAXJxtczjg2dYcj9/neCxIeF7++Fw6pGapUGtqm
+ 2ovjMixBSeQT4SU8u4bgt87TPHswmPP+LAsxfmTCfjyKmnIniEJy1k8hgPi33OXudQ795Gg3Ix2
+ LSSn8SN8gKVgQAmcAHORD6b9rVyGH3HkFRrT74r7I4kWIMb3AFwJvJ9WDhZvGWjQi4CSj1gRJDq
+ k7EBUbabLZTSzZqcSh2E+MDplB72+L08bYCEZ0VrFLJpDA5HpBTS3yXBwufA3v0UVveIlJEmNyr
+ SNIyH7n8A96DSePfj3Z9nZuIojPu5y5BQ7qMBlC5fDwS+GRrlK3skErQ3jlhto3Nq/Mn/3tgpDI
+ =
+X-Google-Smtp-Source: AGHT+IGDhdS2W5BmI/labBLX1wcTu6R2E+q6G27uLjUM2D0gzlv2RoWAgKctY+zyQVusfupHsVyKEQ==
+X-Received: by 2002:a05:6a00:b4a:b0:73e:10ea:b1e9 with SMTP id
+ d2e1a72fcca58-73fd6defd3emr4800005b3a.6.1745618094995; 
+ Fri, 25 Apr 2025 14:54:54 -0700 (PDT)
+Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-73e259414b0sm3664392b3a.48.2025.04.25.14.54.54
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 25 Apr 2025 14:54:54 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 000/159] tcg patch queue
+Date: Fri, 25 Apr 2025 14:52:14 -0700
+Message-ID: <20250425215454.886111-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-04-25_07,2025-04-24_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- bulkscore=0 mlxscore=0
- spamscore=0 malwarescore=0 mlxlogscore=999 suspectscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2504070000
- definitions=main-2504250154
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI1MDE1NSBTYWx0ZWRfX9ZPZ0ehyO+K7
- Eg1HUqayZ/aL8QEDEe9LGnN/rtWxKvtZfYq1QExZK6vYA04n1IMw0N7wryruTXPKikVbl7n69X0
- JPnSbTTJbZszTNT+tuyLmSJLg8L1BQL935Zl8t0h7UpwEaHi57sQcx6sbDULxmqtTPsWbhPBUH3
- MxwUWSVEyubNg9raR06zmqo3up3usCrJwCQYCHMGGWFQmNGt1hEDaD6AqEdlLUX5PErgblFE6zz
- kbIyX2gvv5lxZPMXHqJgY0YW+qK7tGtW3xBSqKeSQf5mh9/EashOSy9OC5eZj8p78Wt7yJ+1cQT
- zkFFfhAs8PCL/ELKjxLbF/jVfnOQjnYS8MIhyRnMd91QYG8H2I1z7YQ0IlpUQjXR9GJX2+CpIn4
- dOyARVel
-X-Proofpoint-ORIG-GUID: CCRHqRAJr0c2OwXbb5L_EHYgoQjGjLzf
-X-Proofpoint-GUID: CCRHqRAJr0c2OwXbb5L_EHYgoQjGjLzf
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=dongli.zhang@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.5,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -120,63 +95,243 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PMU MSRs are set by QEMU only at levels >= KVM_PUT_RESET_STATE,
-excluding runtime. Therefore, updating these MSRs without stopping events
-should be acceptable.
+The following changes since commit 019fbfa4bcd2d3a835c241295e22ab2b5b56129b:
 
-In addition, KVM creates kernel perf events with host mode excluded
-(exclude_host = 1). While the events remain active, they don't increment
-the counter during QEMU vCPU userspace mode.
+  Merge tag 'pull-misc-2025-04-24' of https://repo.or.cz/qemu/armbru into staging (2025-04-24 13:44:57 -0400)
 
-Finally, The kvm_put_msrs() sets the MSRs using KVM_SET_MSRS. The x86 KVM
-processes these MSRs one by one in a loop, only saving the config and
-triggering the KVM_REQ_PMU request. This approach does not immediately stop
-the event before updating PMC. This approach is true since Linux kernel
-commit 68fb4757e867 ("KVM: x86/pmu: Defer reprogram_counter() to
-kvm_pmu_handle_event"), that is, v6.2.
+are available in the Git repository at:
 
-No Fixed tag is going to be added for the commit 0d89436786b0 ("kvm:
-migrate vPMU state"), because this isn't a bugfix.
+  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20250425
 
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
----
-Changed since v3:
-  - Re-order reasons in commit messages.
-  - Mention KVM's commit 68fb4757e867 (v6.2).
-  - Keep Zhao's review as there isn't code change.
+for you to fetch changes up to 8038bbe0339fac90fa88970bf635cc9036cf6be9:
 
- target/i386/kvm/kvm.c | 9 ---------
- 1 file changed, 9 deletions(-)
+  tcg: Remove tcg_out_op (2025-04-25 13:18:24 -0700)
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 1670a6a4d7..6547b53952 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -4173,13 +4173,6 @@ static int kvm_put_msrs(X86CPU *cpu, int level)
-         }
- 
-         if ((IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env)) && pmu_version > 0) {
--            if (pmu_version > 1) {
--                /* Stop the counter.  */
--                kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR_CTRL, 0);
--                kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_CTRL, 0);
--            }
--
--            /* Set the counter values.  */
-             for (i = 0; i < num_pmu_fixed_counters; i++) {
-                 kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR0 + i,
-                                   env->msr_fixed_counters[i]);
-@@ -4195,8 +4188,6 @@ static int kvm_put_msrs(X86CPU *cpu, int level)
-                                   env->msr_global_status);
-                 kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_OVF_CTRL,
-                                   env->msr_global_ovf_ctrl);
--
--                /* Now start the PMU.  */
-                 kvm_msr_entry_add(cpu, MSR_CORE_PERF_FIXED_CTR_CTRL,
-                                   env->msr_fixed_ctr_ctrl);
-                 kvm_msr_entry_add(cpu, MSR_CORE_PERF_GLOBAL_CTRL,
--- 
-2.39.3
+----------------------------------------------------------------
+Convert TCG backend code generators to TCGOutOp structures,
+decomposing the monolithic tcg_out_op functions.
 
+----------------------------------------------------------------
+Richard Henderson (159):
+      tcg/loongarch64: Fix vec_val computation in tcg_target_const_match
+      tcg/loongarch64: Improve constraints for TCG_CT_CONST_VCMP
+      tcg/optimize: Introduce opt_insert_{before,after}
+      tcg: Add TCGType to tcg_op_insert_{after,before}
+      tcg: Add all_outop[]
+      tcg: Use extract2 for cross-word 64-bit extract on 32-bit host
+      tcg: Remove INDEX_op_ext{8,16,32}*
+      tcg: Merge INDEX_op_mov_{i32,i64}
+      tcg: Convert add to TCGOutOpBinary
+      tcg: Merge INDEX_op_add_{i32,i64}
+      tcg: Convert and to TCGOutOpBinary
+      tcg: Merge INDEX_op_and_{i32,i64}
+      tcg/optimize: Fold andc with immediate to and
+      tcg/optimize: Emit add r,r,-1 in fold_setcond_tst_pow2
+      tcg: Convert andc to TCGOutOpBinary
+      tcg: Merge INDEX_op_andc_{i32,i64}
+      tcg: Convert or to TCGOutOpBinary
+      tcg: Merge INDEX_op_or_{i32,i64}
+      tcg/optimize: Fold orc with immediate to or
+      tcg: Convert orc to TCGOutOpBinary
+      tcg: Merge INDEX_op_orc_{i32,i64}
+      tcg: Convert xor to TCGOutOpBinary
+      tcg: Merge INDEX_op_xor_{i32,i64}
+      tcg/optimize: Fold eqv with immediate to xor
+      tcg: Convert eqv to TCGOutOpBinary
+      tcg: Merge INDEX_op_eqv_{i32,i64}
+      tcg: Convert nand to TCGOutOpBinary
+      tcg: Merge INDEX_op_nand_{i32,i64}
+      tcg/loongarch64: Do not accept constant argument to nor
+      tcg: Convert nor to TCGOutOpBinary
+      tcg: Merge INDEX_op_nor_{i32,i64}
+      tcg/arm: Fix constraints for sub
+      tcg: Convert sub to TCGOutOpSubtract
+      tcg: Merge INDEX_op_sub_{i32,i64}
+      tcg: Convert neg to TCGOutOpUnary
+      tcg: Merge INDEX_op_neg_{i32,i64}
+      tcg: Convert not to TCGOutOpUnary
+      tcg: Merge INDEX_op_not_{i32,i64}
+      tcg: Convert mul to TCGOutOpBinary
+      tcg: Merge INDEX_op_mul_{i32,i64}
+      tcg: Convert muluh to TCGOutOpBinary
+      tcg: Merge INDEX_op_muluh_{i32,i64}
+      tcg: Convert mulsh to TCGOutOpBinary
+      tcg: Merge INDEX_op_mulsh_{i32,i64}
+      tcg: Convert div to TCGOutOpBinary
+      tcg: Merge INDEX_op_div_{i32,i64}
+      tcg: Convert divu to TCGOutOpBinary
+      tcg: Merge INDEX_op_divu_{i32,i64}
+      tcg: Convert div2 to TCGOutOpDivRem
+      tcg: Merge INDEX_op_div2_{i32,i64}
+      tcg: Convert divu2 to TCGOutOpDivRem
+      tcg: Merge INDEX_op_divu2_{i32,i64}
+      tcg: Convert rem to TCGOutOpBinary
+      tcg: Merge INDEX_op_rem_{i32,i64}
+      tcg: Convert remu to TCGOutOpBinary
+      tcg: Merge INDEX_op_remu_{i32,i64}
+      tcg: Convert shl to TCGOutOpBinary
+      tcg: Merge INDEX_op_shl_{i32,i64}
+      tcg: Convert shr to TCGOutOpBinary
+      tcg: Merge INDEX_op_shr_{i32,i64}
+      tcg: Convert sar to TCGOutOpBinary
+      tcg: Merge INDEX_op_sar_{i32,i64}
+      tcg: Do not require both rotr and rotl from the backend
+      tcg: Convert rotl, rotr to TCGOutOpBinary
+      tcg: Merge INDEX_op_rot{l,r}_{i32,i64}
+      tcg: Convert clz to TCGOutOpBinary
+      tcg: Merge INDEX_op_clz_{i32,i64}
+      tcg: Convert ctz to TCGOutOpBinary
+      tcg: Merge INDEX_op_ctz_{i32,i64}
+      tcg: Convert ctpop to TCGOutOpUnary
+      tcg: Merge INDEX_op_ctpop_{i32,i64}
+      tcg: Convert muls2 to TCGOutOpMul2
+      tcg: Merge INDEX_op_muls2_{i32,i64}
+      tcg: Convert mulu2 to TCGOutOpMul2
+      tcg: Merge INDEX_op_mulu2_{i32,i64}
+      tcg/loongarch64: Support negsetcond
+      tcg/mips: Support negsetcond
+      tcg/tci: Support negsetcond
+      tcg: Remove TCG_TARGET_HAS_negsetcond_{i32,i64}
+      tcg: Convert setcond, negsetcond to TCGOutOpSetcond
+      tcg: Merge INDEX_op_{neg}setcond_{i32,i64}`
+      tcg: Convert brcond to TCGOutOpBrcond
+      tcg: Merge INDEX_op_brcond_{i32,i64}
+      tcg: Convert movcond to TCGOutOpMovcond
+      tcg: Merge INDEX_op_movcond_{i32,i64}
+      tcg/ppc: Drop fallback constant loading in tcg_out_cmp
+      tcg/arm: Expand arguments to tcg_out_cmp2
+      tcg/ppc: Expand arguments to tcg_out_cmp2
+      tcg: Convert brcond2_i32 to TCGOutOpBrcond2
+      tcg: Convert setcond2_i32 to TCGOutOpSetcond2
+      tcg: Convert bswap16 to TCGOutOpBswap
+      tcg: Merge INDEX_op_bswap16_{i32,i64}
+      tcg: Convert bswap32 to TCGOutOpBswap
+      tcg: Merge INDEX_op_bswap32_{i32,i64}
+      tcg: Convert bswap64 to TCGOutOpUnary
+      tcg: Rename INDEX_op_bswap64_i64 to INDEX_op_bswap64
+      tcg: Convert extract to TCGOutOpExtract
+      tcg: Merge INDEX_op_extract_{i32,i64}
+      tcg: Convert sextract to TCGOutOpExtract
+      tcg: Merge INDEX_op_sextract_{i32,i64}
+      tcg: Convert ext_i32_i64 to TCGOutOpUnary
+      tcg: Convert extu_i32_i64 to TCGOutOpUnary
+      tcg: Convert extrl_i64_i32 to TCGOutOpUnary
+      tcg: Convert extrh_i64_i32 to TCGOutOpUnary
+      tcg: Convert deposit to TCGOutOpDeposit
+      tcg/aarch64: Improve deposit
+      tcg: Merge INDEX_op_deposit_{i32,i64}
+      tcg: Convert extract2 to TCGOutOpExtract2
+      tcg: Merge INDEX_op_extract2_{i32,i64}
+      tcg: Expand fallback add2 with 32-bit operations
+      tcg: Expand fallback sub2 with 32-bit operations
+      tcg: Do not default add2/sub2_i32 for 32-bit hosts
+      tcg/mips: Drop support for add2/sub2
+      tcg/riscv: Drop support for add2/sub2
+      tcg: Move i into each for loop in liveness_pass_1
+      tcg: Sink def, nb_iargs, nb_oargs loads in liveness_pass_1
+      tcg: Add add/sub with carry opcodes and infrastructure
+      tcg: Add TCGOutOp structures for add/sub carry opcodes
+      tcg/optimize: Handle add/sub with carry opcodes
+      tcg/optimize: With two const operands, prefer 0 in arg1
+      tcg: Use add carry opcodes to expand add2
+      tcg: Use sub carry opcodes to expand sub2
+      tcg/i386: Honor carry_live in tcg_out_movi
+      tcg/i386: Implement add/sub carry opcodes
+      tcg/i386: Special case addci r, 0, 0
+      tcg: Add tcg_gen_addcio_{i32,i64,tl}
+      target/arm: Use tcg_gen_addcio_* for ADCS
+      target/hppa: Use tcg_gen_addcio_i64
+      target/microblaze: Use tcg_gen_addcio_i32
+      target/openrisc: Use tcg_gen_addcio_* for ADDC
+      target/ppc: Use tcg_gen_addcio_tl for ADD and SUBF
+      target/s390x: Use tcg_gen_addcio_i64 for op_addc64
+      target/sh4: Use tcg_gen_addcio_i32 for addc
+      target/sparc: Use tcg_gen_addcio_tl for gen_op_addcc_int
+      target/tricore: Use tcg_gen_addcio_i32 for gen_addc_CC
+      tcg/aarch64: Implement add/sub carry opcodes
+      tcg/arm: Implement add/sub carry opcodes
+      tcg/ppc: Implement add/sub carry opcodes
+      tcg/s390x: Honor carry_live in tcg_out_movi
+      tcg/s390x: Add TCG_CT_CONST_N32
+      tcg/s390x: Implement add/sub carry opcodes
+      tcg/s390x: Use ADD LOGICAL WITH SIGNED IMMEDIATE
+      tcg/sparc64: Hoist tcg_cond_to_bcond lookup out of tcg_out_movcc
+      tcg/sparc64: Implement add/sub carry opcodes
+      tcg/tci: Implement add/sub carry opcodes
+      tcg: Remove add2/sub2 opcodes
+      tcg: Formalize tcg_out_mb
+      tcg: Formalize tcg_out_br
+      tcg: Formalize tcg_out_goto_ptr
+      tcg: Convert ld to TCGOutOpLoad
+      tcg: Merge INDEX_op_ld*_{i32,i64}
+      tcg: Convert st to TCGOutOpStore
+      tcg: Merge INDEX_op_st*_{i32,i64}
+      tcg: Stash MemOp size in TCGOP_FLAGS
+      tcg: Remove INDEX_op_qemu_st8_*
+      tcg: Merge INDEX_op_{ld,st}_{i32,i64,i128}
+      tcg: Convert qemu_ld{2} to TCGOutOpLoad{2}
+      tcg: Convert qemu_st{2} to TCGOutOpLdSt{2}
+      tcg: Remove tcg_out_op
+
+ include/tcg/tcg-op-common.h          |    4 +
+ include/tcg/tcg-op.h                 |    2 +
+ include/tcg/tcg-opc.h                |  212 ++--
+ include/tcg/tcg.h                    |   15 +-
+ tcg/aarch64/tcg-target-con-set.h     |    5 +-
+ tcg/aarch64/tcg-target-has.h         |   57 -
+ tcg/arm/tcg-target-con-set.h         |    5 +-
+ tcg/arm/tcg-target-has.h             |   27 -
+ tcg/i386/tcg-target-con-set.h        |    4 +-
+ tcg/i386/tcg-target-con-str.h        |    2 +-
+ tcg/i386/tcg-target-has.h            |   57 -
+ tcg/loongarch64/tcg-target-con-set.h |    9 +-
+ tcg/loongarch64/tcg-target-con-str.h |    1 -
+ tcg/loongarch64/tcg-target-has.h     |   60 --
+ tcg/mips/tcg-target-con-set.h        |   15 +-
+ tcg/mips/tcg-target-con-str.h        |    1 -
+ tcg/mips/tcg-target-has.h            |   64 --
+ tcg/ppc/tcg-target-con-set.h         |   12 +-
+ tcg/ppc/tcg-target-con-str.h         |    1 +
+ tcg/ppc/tcg-target-has.h             |   59 -
+ tcg/riscv/tcg-target-con-set.h       |    7 +-
+ tcg/riscv/tcg-target-con-str.h       |    2 -
+ tcg/riscv/tcg-target-has.h           |   61 --
+ tcg/s390x/tcg-target-con-set.h       |    7 +-
+ tcg/s390x/tcg-target-con-str.h       |    1 +
+ tcg/s390x/tcg-target-has.h           |   57 -
+ tcg/sparc64/tcg-target-con-set.h     |    9 +-
+ tcg/sparc64/tcg-target-has.h         |   59 -
+ tcg/tcg-has.h                        |   47 -
+ tcg/tcg-internal.h                   |    4 +-
+ tcg/tci/tcg-target-has.h             |   59 -
+ target/arm/tcg/translate-a64.c       |   10 +-
+ target/arm/tcg/translate-sve.c       |    2 +-
+ target/arm/tcg/translate.c           |   17 +-
+ target/hppa/translate.c              |   17 +-
+ target/microblaze/translate.c        |   10 +-
+ target/openrisc/translate.c          |    3 +-
+ target/ppc/translate.c               |   11 +-
+ target/s390x/tcg/translate.c         |    6 +-
+ target/sh4/translate.c               |   36 +-
+ target/sparc/translate.c             |    3 +-
+ target/tricore/translate.c           |   12 +-
+ tcg/optimize.c                       | 1080 +++++++++++--------
+ tcg/tcg-op-ldst.c                    |   74 +-
+ tcg/tcg-op.c                         | 1242 ++++++++++-----------
+ tcg/tcg.c                            | 1313 +++++++++++++++-------
+ tcg/tci.c                            |  766 +++++--------
+ docs/devel/tcg-ops.rst               |  228 ++--
+ target/i386/tcg/emit.c.inc           |   12 +-
+ tcg/aarch64/tcg-target.c.inc         | 1626 ++++++++++++++++------------
+ tcg/arm/tcg-target.c.inc             | 1556 ++++++++++++++++----------
+ tcg/i386/tcg-target.c.inc            | 1850 ++++++++++++++++++-------------
+ tcg/loongarch64/tcg-target.c.inc     | 1473 ++++++++++++++-----------
+ tcg/mips/tcg-target.c.inc            | 1703 ++++++++++++++++-------------
+ tcg/ppc/tcg-target.c.inc             | 1978 +++++++++++++++++++---------------
+ tcg/riscv/tcg-target.c.inc           | 1375 ++++++++++++-----------
+ tcg/s390x/tcg-target.c.inc           | 1945 ++++++++++++++++++---------------
+ tcg/sparc64/tcg-target.c.inc         | 1306 ++++++++++++++--------
+ tcg/tci/tcg-target-opc.h.inc         |   11 +
+ tcg/tci/tcg-target.c.inc             | 1175 +++++++++++++-------
+ 60 files changed, 12156 insertions(+), 9609 deletions(-)
 
