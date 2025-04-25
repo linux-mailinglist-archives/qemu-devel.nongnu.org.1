@@ -2,83 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86613A9C6F7
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 13:17:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B78CA9C7C7
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 13:39:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8H2W-0003Bf-NJ; Fri, 25 Apr 2025 07:16:17 -0400
+	id 1u8HNC-00016L-O7; Fri, 25 Apr 2025 07:37:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8H2R-0003Am-02
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 07:16:11 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1u8HN6-00014R-Rn
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 07:37:35 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8H2P-00048E-8x
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 07:16:10 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-43cf0d787eeso24074715e9.3
- for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 04:16:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1u8HMx-0006Vf-Lt
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 07:37:27 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-22928d629faso22081755ad.3
+ for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 04:37:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745579767; x=1746184567; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:cc:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=C0+6++I8ZYzgo53hdAJlQ+PAexnb750t9iDp5+aKXc0=;
- b=IPoDpf8Yucq3Jxk6eHJrFNQ3BMAbKpwViBpe0XVYvq7mxLy38u03d70+rMQyMEydk7
- 3Vh0dyU+VGBSaWeD0AiKPYO/aE6JyJ70wHRPAn3XYOADFsLo0HxGfBqpjCFNf/Qt29GN
- MTU/sJtL6QMUTV/CU2iyvfty4hT1pTYB5am1s7djOXk0Pjz4491Lx/12flnda9gcpjDa
- M8GOs7jM2yqyzlgMEhSBkneCt2LnLknoPQfms59p7mo2P6U/52VGpAf28VocdFX9jeKN
- bJbqa7ru3EljqDDTcRiIFwg8k1+Wufw24td3LbjPX6kEnCxHP0Qqh0HwgKnvRXYd4Atn
- EPzg==
+ d=ventanamicro.com; s=google; t=1745581038; x=1746185838; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=VxjqAUEe0f1pPvvqlknIp09bPayLFq3yGFptQ+mQZzA=;
+ b=V3M53k9Yq/ar9XhVUxzcn3Hpv4ZYuCs6RWs2tRsV88AUv96xxxeGqdeVr+tT9A66Zk
+ H1o9+ceOZLpF9QsqD+k3MUQjZiYmnFnOvWswfY5vylAsgLvAgr/5qnE5rGUPhzF6q8Al
+ yxtIT5Mlk48tn7pAEDfYCQwPuLVYopD7lqrmSydH3ysOlqR/Z5QNgJtFk1gBHSCjaOzc
+ pYmawPbLfex6JlqKx5TR8O+WYDdcFuOfm32SUBrL5Wrq9K0FEJ9wab7IEAlNYKll2SsI
+ vM6T0Ii4dUNSy9m8KX41gj01KdZWp7XSgo4GQuBPf90bFQPFgoIy7Rj4zpltQnzDTlOY
+ uyiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745579767; x=1746184567;
- h=content-transfer-encoding:in-reply-to:from:cc:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=C0+6++I8ZYzgo53hdAJlQ+PAexnb750t9iDp5+aKXc0=;
- b=rEJxSFiJm5ZxLBN7Yzeq0ZDMD5e/VdVVd7J4qzExk+EjZ0OqdMQ7LN+bo28tqRiowa
- F8aonaJgY3+0hFUdLo0L/y1X2HhXbNFb24rcUWaTjOpBWdD5Q59auCKzllUPR95wfnOB
- Aid2bMYrgtTvuvSG4T+wsquqKJgbrA0IeaPd4kycOGL8hUmzpPzhZtYjuAgoQTnivghb
- EA+i/yDlEpJ8KvyT/7gU6m072XThRnTB4Ksm8WYWSb0PnVipQyP1HFUsKGIE8GPAj1lC
- nVCYdDFQ95EFrq2CC6fP3Ppess1fQlvsY5MBwPpCslwgLcoEbUh/FaLXjIdGZ1EoMYr2
- Jy+g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXc+L8wG5riergcH2biAmFBlHEImQPt4cDWeWluEct55J5oG8dINS5CWfVMmDwaBRPEdaryzU61IY/v@nongnu.org
-X-Gm-Message-State: AOJu0YxD9T0ylaLNzOgbBI32w5T8u30pr+wv763eTYA8cfZWdY6+4B+c
- mFmMIoqMEKIFc+nQzns4muC5eedy0lOXUDfHYij8//0WNQfhyY9U8iYJH+8KbgA=
-X-Gm-Gg: ASbGncv1KjszaBmIJM6LVr7AlY7Gmv52YBDoqsmIS3JBZ8lGytr915k6UgFpBKdP6Jc
- HMaShe5WhKPxXYB8JcxBmPBVWgIKmMgMYU8J4zxEIrSw0zKWGmNou8wk2SO/YNutXuITMNd8kW0
- wk/Cxc58FRnhdre+YUeHSbQKLlvEPjE6UuQgXEr+2ElWE6Tyd1yvR03zQpzmXkprUoeuK6805e+
- VPEyhNhgaX+GHAyfbhmehMei3ur5UbS4ID8vYapmTjoAbIzuSEc7uug6blXgJg0f7WJQ+Vn9HhG
- dW/rw741Ilemtvj0xsZatFzcCC2tYBJ6y7l5ibjZ6bG4rdNUVfpK69J66WmpMVXYGEwYpKyVRMV
- WF60clwv1cMyB4uJNJK8=
-X-Google-Smtp-Source: AGHT+IFJV11VAEAxATVG3sMjByRSdGuphrEr2qODFZ9f5cf/caZYYTfz2MLUCKAR0HsSka0w8rNILA==
-X-Received: by 2002:a05:600c:1911:b0:43d:83a:417d with SMTP id
- 5b1f17b1804b1-440a65dbddcmr13430915e9.12.1745579767379; 
- Fri, 25 Apr 2025 04:16:07 -0700 (PDT)
-Received: from [192.168.69.169] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4409d29b9c4sm56294895e9.3.2025.04.25.04.16.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 25 Apr 2025 04:16:06 -0700 (PDT)
-Message-ID: <152f7911-21ee-48e7-b0ca-dd562dad8afd@linaro.org>
-Date: Fri, 25 Apr 2025 13:16:05 +0200
+ d=1e100.net; s=20230601; t=1745581038; x=1746185838;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=VxjqAUEe0f1pPvvqlknIp09bPayLFq3yGFptQ+mQZzA=;
+ b=JOWSwD8mXWIjZiwI4/tJGx3BNVwXmhcKXTsTKi+WfQgFQi5iPPCriSkgQD5W6pa4e7
+ MduiXEygZ11mhz2rHhRh8ZXpwdwuOywFLTAYumh1XObPSFtxG2BdGi4SpYBmdDA3xeXC
+ I5B+Jb/cUuFx6C4K6H1fR0w6pn6Va5WatdlUaWAsCi+ZkNunHL19FVWbNQR8ptjOmo3/
+ Iro0COQCjleYFS2aww3udha2IjXILNygDZOJ+Un6E/HbUw1o6RkcrU9qXKwVows+qD7I
+ Vr1C14IoeGfeRBl/S8F37Yb6g5eKUNUAyHuDx3UyjDVK33OVVt5XxIKDqkxCesrevTug
+ 2hdw==
+X-Gm-Message-State: AOJu0Yx1IWgPVKlmxwmE3GHFT70ZxMeXIYtka88luGTIBbv1MwOQ4BwV
+ QRJ1wNvzVAIce2ctSPBo64xYEKepRxQXtBUYvESlhCUXWEmXMr0Pvxu0Q+5AGMM4WmyUHDVzR22
+ H
+X-Gm-Gg: ASbGncv2uN2W/JqTrI+x3EyLDcxWMAddlXPcFFu9s+PdgiUEj2FNRcqeWKtc4O717dB
+ ucrPu83KScU0LnwiJvho7YL7xUVvNSnxQaDPU9M2684UTersxe/qMIXazHx5fcxBzd5I+6K8drv
+ NvDd4RD3VdGbM37hrbn+IHDn0AA4X+Afu0FITaVBoycN7Tfvmqu0BthZ1m6/JYLiwWu2fp2SpFv
+ BLbR6CVP7cgJ4F+r1mU+CYSwXVFgQgNcSTyDTsYzdRJTCxkEIDze5LoZD0BH6MsDhsXIlydcwxZ
+ /+YbiRLgfU8vzKjhMf815d1SW6RMniFT7f7Qh+FAnEr6it9a1CRiWvLmlKgDDfkDoUnH
+X-Google-Smtp-Source: AGHT+IFd3OI/CweU98rju+fjOrw5RyH0h5IHGyLwqp41halDh1/wvFHPFgO05Lz1Cjqh07w0zxpaDQ==
+X-Received: by 2002:a17:903:320b:b0:220:e362:9b1a with SMTP id
+ d9443c01a7336-22dbf5f9367mr31825305ad.25.1745581037963; 
+ Fri, 25 Apr 2025 04:37:17 -0700 (PDT)
+Received: from grind.dc1.ventanamicro.com ([152.234.125.33])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-22db50e7a40sm29881055ad.147.2025.04.25.04.37.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 25 Apr 2025 04:37:17 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, liwei1518@gmail.com,
+ zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com, ajones@ventanamicro.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v2 0/9] target/riscv/kvm: CSR related fixes
+Date: Fri, 25 Apr 2025 08:36:56 -0300
+Message-ID: <20250425113705.2741457-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Whether the qemu mps2-an385 model support getchar?
-To: =?UTF-8?B?5bCP6ams6am5?= <1353455048@qq.com>,
- qemu-devel <qemu-devel@nongnu.org>
-References: <tencent_6CC3332A93DC02BE2030AB5BC0E63B10B808@qq.com>
-Content-Language: en-US
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-arm <qemu-arm@nongnu.org>, Gustavo Romero <gustavo.romero@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <tencent_6CC3332A93DC02BE2030AB5BC0E63B10B808@qq.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,16 +98,73 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Hi,
 
-Cc'ing Alex and Gustavo.
+In this second version the most noticeable changes are:
 
-On 23/4/25 13:31, 小马驹 wrote:
-> When I use mps2-an385 model on qemu, I found that it seems not support 
-> getchar. I used the FreeRTOS official demo(mps2-an385-GCC-QEMU), then I 
-> tried to use UART  to receive input strings from QEMU terminal, so I 
-> tried to use getchar() function. However, some errors occurred in QEMU 
-> as shown below:
-> qemu: fatal: Lockup: can't escalate 3 to HardFault (current priority -1)
-> Is it means there are something wrong in the emulated board? And how to 
-> solve the problem?
-> ------------------------------------------------------------------------
+- patch "target/riscv/kvm: reset 'scounteren' with host val" was
+  dropped. After the v1 reviews [1] we decided that a better way would
+  be to change the default 'virt' CPU to max. This would prevent the
+  error condition handled in that patch to occur in the first place;
+
+- we're not saving the size of the CPURISCVState flags that will be used
+  to store the KVM CSR regs. We'll write the flags directly;
+
+- as a result of the aforementioned change, we're changing the size of
+  scounteren from uint32_t to target_ulong. All KVM CSRs are ulongs, and
+  we don't want to deal with a 64 bit CSR write into a 32 bit flag.
+  mcounteren was changed for consistency;
+
+- scounteren requires the size change to be effective before KVM can use
+  it, so I've split the patch that introduced scounteren and senvcfg in
+  two.
+
+Other minor changes after feedback from v1 were also made. 
+
+Patches based on alistair/riscv-to-apply.next branch with a build fix
+(see [2] for more info). 
+
+Changes from v1:
+- patch 7 ("target/riscv/kvm: reset 'scounteren' with host val")
+  - dropped
+- patch 2 (new):
+  - fix mem leak
+- patch 5 (former 4):
+  - kvm_cpu_csr_get_u32() now returns an uint32_t
+  - removed prop_size attribute from KVMCPUConfig
+  - use KVM_REG_SIZE to determine the read/write size of the CSR
+- patch 6 (former 5):
+  - rename kvm_riscv_init_multiext_csr_cfg() to kvm_riscv_init_cfg()
+- patch 7 (former 6):
+  - removed all tags
+  - added 'Reported-by' tag
+  - removed 'scounteren'
+- patch 8 (new):
+  - change scounteren and mcounteren to 'target_ulong'
+- patch 9 (new):
+  - add scounteren KVM CSR
+  - added 'Reported-by' tag
+- v1 link: https://lore.kernel.org/qemu-riscv/20250417124839.1870494-1-dbarboza@ventanamicro.com/ 
+
+
+[1] https://lore.kernel.org/qemu-riscv/20250417124839.1870494-1-dbarboza@ventanamicro.com/
+[2] https://lore.kernel.org/qemu-devel/8f3bae37-e1f3-4e55-9dc6-b7876992b47e@ventanamicro.com/
+
+Daniel Henrique Barboza (9):
+  target/riscv/kvm: minor fixes/tweaks
+  target/riscv/kvm: fix leak in kvm_riscv_init_multiext_cfg()
+  target/riscv/kvm: turn u32/u64 reg functions in macros
+  target/riscv/kvm: turn kvm_riscv_reg_id_ulong() in a macro
+  target/riscv/kvm: add kvm_csr_cfgs[]
+  target/riscv/kvm: do not read unavailable CSRs
+  target/riscv/kvm: add senvcfg CSR
+  target/riscv: widen (m|s)counteren to target_ulong
+  target/riscv/kvm: add scounteren CSR
+
+ target/riscv/cpu.h         |   5 +-
+ target/riscv/kvm/kvm-cpu.c | 331 +++++++++++++++++++++++--------------
+ target/riscv/machine.c     |   8 +-
+ 3 files changed, 216 insertions(+), 128 deletions(-)
+
+-- 
+2.49.0
+
 
