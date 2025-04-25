@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84CE9A9CD5C
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:41:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A44F8A9CD48
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:37:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8L1O-0003IG-Ge; Fri, 25 Apr 2025 11:31:22 -0400
+	id 1u8L1t-0005DT-Ea; Fri, 25 Apr 2025 11:31:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L1A-0002W6-CP
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:31:08 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L1F-0002v6-3h
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:31:13 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L18-00041Q-EE
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:31:08 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-39129fc51f8so1925999f8f.0
- for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:31:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L1D-00041k-CR
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:31:12 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-43ce70f9afbso19520685e9.0
+ for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:31:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745595064; x=1746199864; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745595069; x=1746199869; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5L0VRZfPFZCVjC2nBfKXHPmUNh0r0Sy/642Ifkd7GzA=;
- b=adbHjS71pIBqBJUZN00GGbMCiY9O0W25nmUaGR7AN/+/seb6scO2WeO+HYN+CxhBI1
- L/a+nGWU2/JYa9cRX7EJtXV4ptvwyrux9yAedbMQAKHehIi/Yh5Fsi++NhRJVQrDreJd
- G2qKbPlotTFCvww+JwqGgWuIYQthUyNoJJ25WN2EbL5xzX7QY2GMk5Oanup42k38XRR/
- BRRH6wiFf6cVkPvF4mJ6LJTOD68vlKnpTDX/DhexbbZjN7gzQ3YnZZallTwC77RigeTx
- F5/yvi0CMWE2xCrjh94Tycz3R52drIyjicLWSHhlySVz7tTEBbZLvkqLY+y75w5UF6fR
- nbqA==
+ bh=iAwKCszrwhoJ0+d1w9IlzmQBxd3Zr8DxCtpHtOvRE80=;
+ b=nzMQ1WRyQIjd0NjOUrgtRpYzPXlK+CDXO5rb6NsofA5zakLPdOZeyyBAm+2uPXD7fd
+ hRta9MH9q0EAaDmPrZdxLcHFl0R7k1Sp+/PHDJTocugtmsYhnixdqbqhqP96MS1r7gkU
+ 18FJA7r0dC5uQBpsuliM6fkBU7UbzDtHb5dBa3e5NFPtjecTI44qUuQ0xZ/07Uq2qbSA
+ XrmoOUL1R6JjqNYMMdi3G9Uz6R77eqQMPR1YE3m5dlSEIc9YDUsOQt80RAxXscIEfNac
+ tNF71VgWqgCt0weN6ddoKscbralDDU2g5vuLo1xF2GyAX5unTuL6vXnBe2OS5Z6CB9xk
+ v3Cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745595064; x=1746199864;
+ d=1e100.net; s=20230601; t=1745595069; x=1746199869;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5L0VRZfPFZCVjC2nBfKXHPmUNh0r0Sy/642Ifkd7GzA=;
- b=LyjELxenHpA6+MtGFZExLkYuzsY0fWhV8Xl/ykoYrbxIeQYEmn6GJ0RQeBl4HuklqR
- SVKJh2PFn97CuqQQes81bHh0heCUdExaqESyvV3YzzZ9NZp80AkD86JTLM4abSA8o59r
- pjqvhoYoZF9x4+pN5dRngK9k4ghmWsCiIndcnJTnvFU4BFJ+YywUiqcet6xYk56Yltud
- Z/47mMZGIwNqI/WvLdildV8j9/lvgtXPsW7rGd7WHVL1LtC/PKR0KfYrfRV0UDTvr0FV
- OJ4oJgsCWrF5qUnfKl5bbGOxrx0FA1rHfreStbJ9ZIjvjtT3BL7eOd1rlBJ4MKseK53F
- +iDA==
-X-Gm-Message-State: AOJu0Yw3lVpE3bV6xVfKf0pS74Pdjq3a+yPkm2bDdoJ4WjMJ5jcZPx2F
- H4aYWoR789ogyVu91dSJWbbIWZZAXIp1TySjuoS4wnCGppGltGQ8G90euZZ9PIhFHGgRNGVQlxX
- u
-X-Gm-Gg: ASbGncsX6a3eLBHStOQ75V3fty6LW1NvJ7G9+2hi37l4ubAkcw5I5d9whxwsXcEAygm
- 3nLuN2rfgzDb/Tg9e5GecdxGKcTQtLMIn+tsC+OzolJpY8aqXbG2kowfjzkOA7sAoXuQsN/u98S
- 96k9BXw5pd0SltXJkcKEXnJk1N8BRfaAPImm1mkRyPqkliuUJ9cEDH9+dMEdmV/LcryqjqtOyx4
- xtwt/Resreplfa74exAba2pOp3uLgiKcukFNvNUUT/Oqu6s0Lzsx7lAFa14CEm3HiH0XbmhqxjK
- jv8uYTbSJdfbuXYE1gCHqOAaWF/Q3zP+qx1Dn5sxTa7/MgpiRsdF0ZQW5S1X9680lxA9umzExRM
- mLnIBTrT69bH2xKI=
-X-Google-Smtp-Source: AGHT+IGVal3MRlvy3621e5+2nfOeCAg1kfnlrmLDJZh/UrGI00WRQ2n7cFhDgDEyPJnfTeLgnNCKfg==
-X-Received: by 2002:a05:6000:2505:b0:38b:d7d2:12f6 with SMTP id
- ffacd0b85a97d-3a074e147a9mr2115676f8f.2.1745595064267; 
- Fri, 25 Apr 2025 08:31:04 -0700 (PDT)
+ bh=iAwKCszrwhoJ0+d1w9IlzmQBxd3Zr8DxCtpHtOvRE80=;
+ b=Onta9pFU+vvL1wTrZiFvPhZzJ0wWIm5NbWlebH0Qx+xdeNQc3I7eWGKR2M4iHvUjBY
+ 0g3QqEExmUuQvv2k4IHQh2eH6iq19nMs/ERiUZvSokjTO8+zoU5Gtiwng6eVjYNwtM9Q
+ 9V7ZrXKxjUsrZTfr5I85pLagXfgzs+pzVzuyDO3mFWnZqH478dFf+Jc3bFLhXrtOJCtj
+ rUdjOmMM83CixEhAfrp6rUd2nU29jMOnCB16PdJPS0GwWzkcTKjSnskOL/e01NXAIRkC
+ usXT0xv0luftFNkTEXhY88x7/A73GxJ4FPGze5vnhp6+3j1UIQV2w9WSepcrMz+M56wM
+ 6J2g==
+X-Gm-Message-State: AOJu0YwwXFx9CMnKjmjU3FAma0hjyjuV/7S4f/yxQl6pubYepeAJEmls
+ 7AX64AbeRAl/gwIBUku5BkGPtsMv5v4U88oJSzCsRK5mxbB0VfHr0dPpSNDSevrdRwD/djWjfP1
+ H
+X-Gm-Gg: ASbGnct02WsErCjXndZ3wuMUnYq82uP8bm3Z7qOfFJhcTaPnLZmVo9G4i+8jdrOQv1l
+ g14u+FwY1nhET++RkszwUp121VNlFvp9g54y57ecApm5ao5Srh3Deoo7HqfW5thNdxmOvkFz01N
+ D5gY7o6ZKqpJY2vUn6BDQqNIJqE5qyefr93YTnYvjwB5Ob7veMuj0JJfput6NYUwiSPTYysW9Is
+ vDj9Ci2ic5MSP9PzUf9ZTZ/thF+qAIn7NPd1snrrYFZckzqCdEZwZKWGNPImw2Flb3UpDblppBy
+ e9sfbHhY8twi5kxaPj1PR9Nt1LO/Ur3ksjSPTfpOvLSaoo424wLQWzMrcXwrPCo7Hcu3x1JIpjn
+ sX1GplqagHkWvAtg=
+X-Google-Smtp-Source: AGHT+IHckEEJ8x5KnwDpfxVPaBuWCR8bWZGdnLYZivPKsLjOthmS4uMTfVFeAw95EreQ/Y6mntzHvg==
+X-Received: by 2002:a05:6000:1867:b0:39e:f9e8:d07d with SMTP id
+ ffacd0b85a97d-3a074e2ef27mr2578486f8f.20.1745595069394; 
+ Fri, 25 Apr 2025 08:31:09 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a073c8cc81sm2699639f8f.19.2025.04.25.08.31.03
+ ffacd0b85a97d-3a073ca556bsm2686953f8f.37.2025.04.25.08.31.08
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 25 Apr 2025 08:31:03 -0700 (PDT)
+ Fri, 25 Apr 2025 08:31:08 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 28/58] hw/usb/hcd-xhci: Unmap canceled packet
-Date: Fri, 25 Apr 2025 17:28:12 +0200
-Message-ID: <20250425152843.69638-29-philmd@linaro.org>
+Cc: BALATON Zoltan <balaton@eik.bme.hu>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Mark Cave-Ayland <mark.caveayland@nutanix.com>
+Subject: [PULL 29/58] hw/intc/i8259: Remove unused DEBUG_PIC define
+Date: Fri, 25 Apr 2025 17:28:13 +0200
+Message-ID: <20250425152843.69638-30-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250425152843.69638-1-philmd@linaro.org>
 References: <20250425152843.69638-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,60 +99,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: BALATON Zoltan <balaton@eik.bme.hu>
 
-When the Stop Endpoint Command is received, packets running
-asynchronously are canceled and then all packets are cleaned up. Packets
-running asynchronously hold the DMA mapping so cleaning the packets leak
-the mapping. Remove the mapping after canceling packets to fix the leak.
+The debug printfs were converted to traces so this define is now unused.
 
-Fixes: 62c6ae04cf43 ("xhci: Initial xHCI implementation")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Fixes: 0880a87300 (i8259: convert DPRINTFs into trace)
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250418-xhc-v1-1-bb32dab6a67e@daynix.com>
+Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+Message-ID: <20250423101125.B243A55C592@zero.eik.bme.hu>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/usb/hcd-xhci.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ hw/intc/i8259.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
-index b3785b8ba6c..292c378bfc9 100644
---- a/hw/usb/hcd-xhci.c
-+++ b/hw/usb/hcd-xhci.c
-@@ -1187,6 +1187,12 @@ static void xhci_ep_free_xfer(XHCITransfer *xfer)
-     g_free(xfer);
- }
+diff --git a/hw/intc/i8259.c b/hw/intc/i8259.c
+index 2359dd82534..b6f96bf208c 100644
+--- a/hw/intc/i8259.c
++++ b/hw/intc/i8259.c
+@@ -32,10 +32,7 @@
+ #include "trace.h"
+ #include "qom/object.h"
  
-+static void xhci_xfer_unmap(XHCITransfer *xfer)
-+{
-+    usb_packet_unmap(&xfer->packet, &xfer->sgl);
-+    qemu_sglist_destroy(&xfer->sgl);
-+}
-+
- static int xhci_ep_nuke_one_xfer(XHCITransfer *t, TRBCCode report)
- {
-     int killed = 0;
-@@ -1198,6 +1204,7 @@ static int xhci_ep_nuke_one_xfer(XHCITransfer *t, TRBCCode report)
- 
-     if (t->running_async) {
-         usb_cancel_packet(&t->packet);
-+        xhci_xfer_unmap(t);
-         t->running_async = 0;
-         killed = 1;
-     }
-@@ -1480,12 +1487,6 @@ err:
-     return -1;
- }
- 
--static void xhci_xfer_unmap(XHCITransfer *xfer)
--{
--    usb_packet_unmap(&xfer->packet, &xfer->sgl);
--    qemu_sglist_destroy(&xfer->sgl);
--}
+-/* debug PIC */
+-//#define DEBUG_PIC
 -
- static void xhci_xfer_report(XHCITransfer *xfer)
- {
-     uint32_t edtla = 0;
+-//#define DEBUG_IRQ_LATENCY
++/*#define DEBUG_IRQ_LATENCY*/
+ 
+ #define TYPE_I8259 "isa-i8259"
+ typedef struct PICClass PICClass;
 -- 
 2.47.1
 
