@@ -2,67 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B190A9CD59
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:41:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C503BA9CD5A
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:41:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8L7f-0006Qp-Af; Fri, 25 Apr 2025 11:37:51 -0400
+	id 1u8L8r-0001Xd-0f; Fri, 25 Apr 2025 11:39:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1u8L72-0005il-LU
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:37:15 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u8L8k-0001AB-1b
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:38:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1u8L6x-0004wi-BJ
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:37:11 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u8L8h-00054F-7Z
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:38:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745595425;
+ s=mimecast20190719; t=1745595533;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZNP4X7YDT7jlq0NijXYhRKSq76c+Q+Jr1DDXlpUK+dg=;
- b=Vun/IkXnDOtOoeYVCIyDf5xAxbMC8gDeIUMhPM6L2v0FsmwVLtSj2fl1sR4FoAC5ZqNYVA
- 9E5E2QbXFfUCZ37ljl7kDgOa5fGtlPv2vwxOP8pvG5y5JIAD8PT5kSqAYlhA3EVXKKw4jb
- IJRwPsQFEDUZvQrBKgMv7zbqo4mCpLU=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=d0FskcGIWSxkj7w01b9Qqnff6G+zI1qtuJblZAs+kRg=;
+ b=Je/PJXUbCODcZIVe+OaJ/vfHU9y3DL5OfAwOC/mwp6jS1H8fwJ1WtuQlIQSeaJdC8sQB2p
+ kFRBzsF6xudEDy65fYZy0CVkg26ouiwylcCWAKPClLkMeo9jOOQsXm6aWnmH30vRKtHTuy
+ ruJLt8cZYKQmbceFYOkUGVznBeidY4o=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-110-xaag4b2mMmajCS6wk2R0dw-1; Fri,
- 25 Apr 2025 11:37:01 -0400
-X-MC-Unique: xaag4b2mMmajCS6wk2R0dw-1
-X-Mimecast-MFC-AGG-ID: xaag4b2mMmajCS6wk2R0dw_1745595420
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-282-RFLaFB4uNTmIUVmnqZtgBw-1; Fri,
+ 25 Apr 2025 11:38:50 -0400
+X-MC-Unique: RFLaFB4uNTmIUVmnqZtgBw-1
+X-Mimecast-MFC-AGG-ID: RFLaFB4uNTmIUVmnqZtgBw_1745595528
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2442D195609D; Fri, 25 Apr 2025 15:37:00 +0000 (UTC)
-Received: from redhat.com (unknown [10.45.225.183])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 15323195608D; Fri, 25 Apr 2025 15:36:56 +0000 (UTC)
-Date: Fri, 25 Apr 2025 17:36:54 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Eric Blake <eblake@redhat.com>
-Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Sunny Zhu <sunnyzhyy@qq.com>, qemu-devel@nongnu.org,
- qemu-block@nongnu.org, hreitz@redhat.com
-Subject: Re: [PATCH] =?utf-8?Q?block=EF=BC=9A_chang?= =?utf-8?Q?e?= type of
- bytes from int to int64_t for *bdrv_aio_pdiscard
-Message-ID: <aAusFsX7FwnElrNf@redhat.com>
-References: <tencent_8649D99B33E6E6665A0EFA05B97592D70106@qq.com>
- <cxsasg7qiopbpwu24a6f2hponb2lv6ut5ylhcpeyagi6g6k2m5@w2c6mwuqi5ik>
- <292632c9-4492-4071-9100-a7b165af3e97@linaro.org>
- <zd2plm54sqdos4oqsd4lbukzozupboivu4pueawwtxrmtsg5q4@ay2rhlohwjub>
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F400B1956096; Fri, 25 Apr 2025 15:38:47 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.5])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 303E3180045C; Fri, 25 Apr 2025 15:38:47 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id CA48821E66C3; Fri, 25 Apr 2025 17:38:44 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-devel@nongnu.org,  richard.henderson@linaro.org,
+ stefanha@redhat.com,  Michael Roth <michael.roth@amd.com>,
+ pbonzini@redhat.com,  berrange@redhat.com,  peter.maydell@linaro.org,
+ thuth@redhat.com,  jsnow@redhat.com,  philmd@linaro.org,  Alex
+ =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>, devel@lists.libvirt.org
+Subject: Re: [RFC PATCH 0/3] single-binary: make QAPI generated files common
+In-Reply-To: <20250424183350.1798746-1-pierrick.bouvier@linaro.org> (Pierrick
+ Bouvier's message of "Thu, 24 Apr 2025 11:33:47 -0700")
+References: <20250424183350.1798746-1-pierrick.bouvier@linaro.org>
+Date: Fri, 25 Apr 2025 17:38:44 +0200
+Message-ID: <87a584b69n.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <zd2plm54sqdos4oqsd4lbukzozupboivu4pueawwtxrmtsg5q4@ay2rhlohwjub>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
@@ -71,7 +70,7 @@ X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.314,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,74 +86,198 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 24.04.2025 um 19:40 hat Eric Blake geschrieben:
-> On Tue, Apr 22, 2025 at 09:11:51AM +0200, Philippe Mathieu-Daudé wrote:
-> > Hi Eric,
-> > 
-> > On 21/4/25 17:03, Eric Blake wrote:
-> > > On Mon, Apr 21, 2025 at 12:19:14AM +0800, Sunny Zhu wrote:
-> > > > Keep it consistent with *bdrv_co_pdiscard.
-> > > > 
-> > > > Currently, there is no BlockDriver implemented the bdrv_aio_pdiscard() function,
-> > > > so we don’t need to make any adaptations either.
-> > > 
-> > > If there are no drivers implementing the callback, then why have it?
-> > > I think we have been moving towards more coroutine-based callbacks and
-> > > away from the aio callbacks; if so, should we instead be deleting this
-> > > callback as stale code?
-> > 
-> > Could we add a comment in BlockDriver prototypes about prefering co over
-> > aio implementations, possibly mentioning them as legacy?
-> 
-> Thinking about this a bit more (but you'll definitely want Kevin's
-> opinion, not just mine):
-> 
-> $ git grep '\.bdrv_aio_'
-> block/file-win32.c:    .bdrv_aio_preadv    = raw_aio_preadv,
-> block/file-win32.c:    .bdrv_aio_pwritev   = raw_aio_pwritev,
-> block/file-win32.c:    .bdrv_aio_flush     = raw_aio_flush,
-> block/file-win32.c:    .bdrv_aio_preadv    = raw_aio_preadv,
-> block/file-win32.c:    .bdrv_aio_pwritev   = raw_aio_pwritev,
-> block/file-win32.c:    .bdrv_aio_flush     = raw_aio_flush,
-> block/iscsi.c:    .bdrv_aio_ioctl   = iscsi_aio_ioctl,
-> block/iscsi.c:    .bdrv_aio_ioctl   = iscsi_aio_ioctl,
-> block/null.c:    .bdrv_aio_preadv        = null_aio_preadv,
-> block/null.c:    .bdrv_aio_pwritev       = null_aio_pwritev,
-> block/null.c:    .bdrv_aio_flush         = null_aio_flush,
-> 
-> file-win32.c looks to be the major client of remaining aio interfaces.
-> How hard would it be to convert those over to coroutines?
+Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
 
-Not terribly complicated. In case of doubt, they remain callback based
-internally and just yield until the callback reenters the coroutine.
+> Note: This RFC was posted to trigger a discussion around this topic, and it's
+> not expected to merge it as it is.
+>
+> Context
+> =======
+>
+> Linaro is working towards heterogeneous emulation, mixing several architectures
+> in a single QEMU process. The first prerequisite is to be able to build such a
+> binary, which we commonly name "single-binary" in our various series.
+> An (incomplete) list of series is available here:
+> https://patchew.org/search?q=project%3AQEMU+single-binary
+>
+> We don't expect to change existing command line interface or any observable
+> behaviour, it should be identical to existing binaries. If anyone notices a
+> difference, it will be a bug.
 
-For file-win32 specifically, paio_submit() can be modified to call
-thread_pool_submit_co(), which already does this. The win32-aio paths
-won't necessarily become simpler, but that's okay.
+Define "notice a difference" :)  More on that below.
 
-> iscsi.c uses aio only for ioctl.  How hard would it be to convert it
-> in the same way that we converted read/write/flush back in commit
-> 063c3378?
+> The first objective we target is to combine qemu-system-arm and
+> qemu-system-aarch64 in a single binary, showing that we can build and link such
+> a thing. While being useless from a feature point of view, it allows us to make
+> good progress towards the goal, and unify two "distinct" architectures, and gain
+> experience on problems met.
 
-iscsi_aio_ioctl() could probably be simplified a bit when the callback
-is moved into the function itself, especially for the case of
-iscsi_ioctl_handle_emulated().
+Makes sense to me.
 
-> null.c provides aio interfaces solely for benchmarking purposes - but
-> if it is the only remaining client of aio interfaces, it would be nice
-> to just rip out support for null-aio: and rely solely on null:
+> Our current approach is to remove compilation units duplication to be able to
+> link all object files together. One of the concerned subsystem is QAPI.
+>
+> QAPI
+> ====
+>
+> QAPI generated files contain conditional clauses to define various structures,
+> enums, and commands only for specific targets. This forces files to be
+> compiled for every target.
 
-null-aio is specifically an AIO based version, I think mainly to test
-performance of AIO vs. coroutines. If we get rid of the AIO interfaces,
-then we can probably just remove the whole null-aio driver. (Or rather,
-make it an alias of null-co for now and deprecate it.)
+To be precise: conditionals that use macros restricted to
+target-specific code, i.e. the ones poisoned by exec/poison.h.  Let's
+call them target-specific QAPI conditionals.
 
-> It sounds like we are close enough to a generic cleanup of detritus
-> that it would be better to just finish the job than to add a comment
-> about preferring co over aio.
+The QAPI generator is blissfully unaware of all this.
 
-Agreed.
+The build system treats QAPI modules qapi/*-target.json as
+target-specific.  The .c files generated for them are compiled per
+target.  See qapi/meson.build.
 
-Kevin
+Only such target-specific modules can can use target-specific QAPI
+conditionals.  Use in target-independent modules will generate C that
+won't compile.
+
+Poisoned macros used in qapi/*-target.json:
+
+    CONFIG_KVM
+    TARGET_ARM
+    TARGET_I386
+    TARGET_LOONGARCH64
+    TARGET_MIPS
+    TARGET_PPC
+    TARGET_RISCV
+    TARGET_S390X
+
+>                            What we try to do here is to build them only once
+> instead.
+
+You're trying to eliminate target-specific QAPI conditionals.  Correct?
+
+> In the past, we identied that the best approach to solve this is to expose code
+> for all targets (thus removing all #if clauses), and stub missing
+> symbols for concerned targets.
+
+This affects QAPI/QMP introspection, i.e. the value of query-qmp-schema.
+
+Management applications can no longer use introspection to find out
+whether target-specific things are available.
+
+For instance, query-cpu-definitions is implemented for targets arm,
+i386, loongarch, mips, ppc, riscv, and s390x.  It initially was for
+fewer targets, and more targets followed one by one.  Still more may
+follow in the future.  Right now, management applications can use
+introspection to find out whether it is available.  That stops working
+when you make it available for all targets, stubbed out for the ones
+that don't (yet) implement it.
+
+Management applications may have to be adjusted for this.
+
+This is not an attempt to shoot down your approach.  I'm merely
+demonstrating limitations of your promise "if anyone notices a
+difference, it will be a bug."
+
+Now, we could get really fancy and try to keep introspection the same by
+applying conditionals dynamically somehow.  I.e. have the single binary
+return different introspection values depending on the actual guest's
+target.
+
+This requires fixing the target before introspection.  Unless this is
+somehow completely transparent (wrapper scripts, or awful hacks based on
+the binary's filename, perhaps), management applications may have to be
+adjusted to actually do that.
+
+Applies not just to introspection.  Consider query-cpu-definitions
+again.  It currently returns CPU definitions for *the* target.  What
+would a single binary's query-cpu-definitions return?  The CPU
+definitions for *all* its targets?  Management applications then receive
+CPUs that won't work, which may upset them.  To avoid noticable
+difference, we again have to fix the target before we look.
+
+Of course, "fixing the target" stops making sense once we move to
+heterogeneous machines with multiple targets.
+
+> This series build QAPI generated code once, by removing all TARGET_{arch} and
+> CONFIG_KVM clauses. What it does *not* at the moment is:
+> - prevent target specific commands to be visible for all targets
+>   (see TODO comment on patch 2 explaining how to address this)
+> - nothing was done to hide all this from generated documentation
+
+For better or worse, generated documentation always contains everything.
+
+An argument could be made for stripping out documentation for the stuff
+that isn't included in this build.
+
+> From what I understood, the only thing that matters is to limit qmp commands
+> visible. Exposing enums, structure, or events is not a problem, since they
+> won't be used/triggered for non concerned targets. Please correct me if this is
+> wrong, and if there are unexpected consequences for libvirt or other consumers.
+
+I'm not sure what you mean by "to limit qmp commands visible".
+
+QAPI/QMP introspection has all commands and events, and all types
+reachable from them.  query-qmp-schema returns an array, where each
+array element describes one command, event, or type.  When a command,
+event, or type is conditional in the schema, the element is wrapped in
+the #if generated for the condition.
+
+>
+> Impact on code size
+> ===================
+>
+> There is a strong focus on keeping QEMU fast and small. Concerning performance,
+> there is no impact, as the only thing that would change is to conditionally
+> check current target to register some commands.
+> Concerning code size, you can find the impact on various qemu-system binaries
+> with optimized and stripped build.
+>
+> upstream:
+> 12588   ./build/qemu-system-s390x
+> 83992   ./build/qemu-system-x86_64
+> 31884   ./build/qemu-system-aarch64
+> upstream + this series:
+> 12644   ./build/qemu-system-s390x (+56kB, +0.004%)
+> 84076   ./build/qemu-system-x86_64 (+84kB, +0.001%)
+> 31944   ./build/qemu-system-aarch64 (+60kB, +0.001%)
+>
+> Feedback
+> ========
+>
+> The goal of this series is to be spark a conversation around following topics:
+>
+> - Would you be open to such an approach? (expose all code, and restrict commands
+>   registered at runtime only for specific targets)
+
+Yes, if we can find acceptable solutions for the problems that come with
+it.
+
+> - Are there unexpected consequences for libvirt or other consumers to expose
+>   more definitions than what we have now?
+
+Maybe.
+
+> - Would you recommend another approach instead? I experimented with having per
+>   target generated files, but we still need to expose quite a lot in headers, so
+>   my opinion is that it's much more complicated for zero benefit. As well, the
+>   code size impact is more than negligible, so the simpler, the better.
+>
+> Feel free to add anyone I could have missed in CC.
+
+I'm throwing in devel@lists.libvirt.org.
+
+> Regards,
+> Pierrick
+>
+> Pierrick Bouvier (3):
+>   qapi: add weak stubs for target specific commands
+>   qapi: always expose TARGET_* or CONFIG_KVM code
+>   qapi: make all generated files common
+>
+>  qapi/commands-weak-stubs.c | 38 ++++++++++++++++++++++++++++++++++++++
+>  qapi/meson.build           |  5 ++++-
+>  scripts/qapi/commands.py   |  4 ++++
+>  scripts/qapi/common.py     |  4 +++-
+>  4 files changed, 49 insertions(+), 2 deletions(-)
+>  create mode 100644 qapi/commands-weak-stubs.c
 
 
