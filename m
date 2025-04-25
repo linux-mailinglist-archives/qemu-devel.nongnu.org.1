@@ -2,105 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 991A8A9BDD7
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 07:26:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDD18A9BE5A
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 08:06:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8BYP-0008W7-Ma; Fri, 25 Apr 2025 01:24:49 -0400
+	id 1u8CBU-0008IJ-54; Fri, 25 Apr 2025 02:05:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
- id 1u8BXq-0008Tr-E7; Fri, 25 Apr 2025 01:24:14 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
- id 1u8BXn-0004HM-UN; Fri, 25 Apr 2025 01:24:14 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53OISIg4001038;
- Fri, 25 Apr 2025 05:24:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=j2lYSG6CJU+JTlrLB
- tdCxHVpBpMWDJrmlEnYf5pSVro=; b=ryejpvxn6H86MFdqBxtN9morAHSMv8S5A
- ikzuDOhmOTOSlyWb/OLysvEINOeyb5gxVVMIZ+Rr7uDHGKlwHy0B3mwtHjPsdtIn
- 11YmXgpAsa/bVs8hsCP/j3xwbrPQ6o0lvyCs9piCzDvcGrstmP5TpiYVIzBa8vcB
- hAEk+WL9p0OBKkpbJBmiiZrfLC93bfvPScHZAVTuRPmc6xHXkHK58PNwFO9vR1QH
- 6wtoLw0ejjaxIW+sinZnP1YoA4XF+2R5W1IziV6L4K1g66l3HxEhV/fHT3HtF2nN
- jT1zOZAoObZk5rnV5dSN+kznkEOnptAEfDdsWxJaLUfQh2U1Wn5CA==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 467k7k4tej-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 25 Apr 2025 05:24:10 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53P3HkV0022271;
- Fri, 25 Apr 2025 05:24:09 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 466jfxkr0n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 25 Apr 2025 05:24:09 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
- [10.241.53.101])
- by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 53P5O8PI20906750
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 25 Apr 2025 05:24:08 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 27FDC5805F;
- Fri, 25 Apr 2025 05:24:08 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5AE6B58051;
- Fri, 25 Apr 2025 05:24:07 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.61.253.76])
- by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 25 Apr 2025 05:24:07 +0000 (GMT)
-From: Rorie Reyes <rreyes@linux.ibm.com>
-To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
-Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
- jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
- alex.williamson@redhat.com, clg@redhat.com, thuth@redhat.com,
- akrowiak@linux.ibm.com, rreyes@linux.ibm.com
-Subject: [PATCH v7 6/6] s390: implementing CHSC SEI for AP config change
-Date: Fri, 25 Apr 2025 01:24:01 -0400
-Message-ID: <20250425052401.8287-7-rreyes@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250425052401.8287-1-rreyes@linux.ibm.com>
-References: <20250425052401.8287-1-rreyes@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1u8CBQ-0008Fh-Vs
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 02:05:09 -0400
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1u8CBO-0000Vc-W0
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 02:05:08 -0400
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-b061a775ac3so1786458a12.0
+ for <qemu-devel@nongnu.org>; Thu, 24 Apr 2025 23:05:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1745561105; x=1746165905; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ABpbcOWjuHUUX4PFpFLH1HSDJ2yZI97EUbncpxaJW3M=;
+ b=x+TXEP4Id/GWWWkINoG1z3nYiwaaheXjy1hTO0kFN/HeHGkQ/KJwUwKQQEbnLWfmPJ
+ EMSXcGrJ5u4ENJQyIcJ93vXZsurRHymm0wmumyinYvnLfApNTwH18iNdjMAqT2LYMmU4
+ UcWjOC+Br55JeEOOI9KVH2Jjp8UW+GbXfBRZKQkgpu4Cckk76po9e19ATqZ8WUljYAYq
+ lgCDJW+TzLJF/VkUan3Yqg56lTEDxaFnh31gll3RFv+NAthIYcpVVrkNUIAw31WG8uVP
+ 3kGUJR9K0e4o3iiuOB4iwmSz0iPOe6Yg1iYDaoRXDGLFzkgIwtxbeLQncU1PNUNnwkxN
+ EyAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1745561105; x=1746165905;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ABpbcOWjuHUUX4PFpFLH1HSDJ2yZI97EUbncpxaJW3M=;
+ b=mENCKFsVyXRfnYTtzB7d3H2ugOFMn8Wj6heL3bwGoKEXAoAhGEL1lkKLCbReOf6gaI
+ HPAXq1+lgxLefEO2KySe3qdlyj5Jbrzy7sSWhuapo9deUqb5YCoCT5245adS8krb5AeL
+ eplV75SwyhaS3G+ucekLdvUDRK87TX8yxil1qf1EPh6W4PeF8Pwu9Ozlj3Dp/Oa58Fjj
+ Fsz//8fOGN3G0NnINkGMvwdymEFadIYfLSFmlrCSZinV4PFjeyd/P0szDVLIqwn7Auwh
+ KeiZNUScMP1Yp6gzLZ9QE208ase7Zz3G/JrxkAbiRKMyzif/39yfl73odhLJShg77kZk
+ UsDg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUIZnwYl30DbmM8zu3Zzd3epXkCWyVNeeDJwyIi28CokeM0B2w2cGMM/qlrn9SHN4Cw0S4o9kThkMyp@nongnu.org
+X-Gm-Message-State: AOJu0Yz7Noxmqgn+4ELOMucpVapdUXMzIwwVq0M0NHB1uDrppDCgr1qx
+ 33AQL64fekD+9Z32KGD6OOCqKSFU7bjZ14WqPNCzYKFkLu8orXzn4B2SD8NKzNM=
+X-Gm-Gg: ASbGncsm8cy5eFTXyXGUbKneEuTDgToRb3DBRBmEgspb6RbmaJfgFyPkjRckdW4vLQ4
+ XCQYBtj5krX4s+0eR8QKb/An5/O98ikzHG4AOxtaQ3L2DNu1kqd/Xprm4q2sXnQbhKTgetKT5t9
+ 437QN9yZP/O1ZmzdwToRTjJeoSJZ01ujoNlNmDoqNnWWnYTRH3XKMRmzH0AYjiio4sdApqo9Yb4
+ n4m+4KfrRPeuxpqGZgyW9+bVmSyenoEvNSb05XTzPmEvaWvTM7gbJRjFWOIsPdSBaQMNfHW0a8Q
+ pZ0vdaJJj/n32IpYSlZ/XrAPJXkWH8J02ExeU/2o5jmXzGsNLxYq35a+6iiFmY6U
+X-Google-Smtp-Source: AGHT+IF0ny0a3YirJTRFRu8m4HDGJhYVUBY2gIKRiHfaWG/oIWLs2woM9F7MrykNpn6a5be8G1j2qg==
+X-Received: by 2002:a05:6a21:3284:b0:1f5:8678:183d with SMTP id
+ adf61e73a8af0-2045b6f1a80mr1567692637.14.1745561104889; 
+ Thu, 24 Apr 2025 23:05:04 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-73e25912ee5sm2426497b3a.33.2025.04.24.23.05.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 24 Apr 2025 23:05:04 -0700 (PDT)
+Message-ID: <51f3a96b-9c7a-4242-a822-145d68e068d9@linaro.org>
+Date: Thu, 24 Apr 2025 23:05:03 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v5 08/21] hw/arm: Add DEFINE_MACHINE_[ARM_]AARCH64()
+ macros
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ Mark Cave-Ayland <mark.caveayland@nutanix.com>, Anton Johansson <anjo@rev.ng>
+References: <20250424222112.36194-1-philmd@linaro.org>
+ <20250424222112.36194-9-philmd@linaro.org>
+ <1332b395-1e3e-2be7-83f2-15f2d89b0449@eik.bme.hu>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <1332b395-1e3e-2be7-83f2-15f2d89b0449@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: bpZOmcsHyONXK_FUYgsL6n-vEFRgY6ms
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI1MDAzNSBTYWx0ZWRfXyZPWYz30L3au
- 14kC79JoCY0LlFwQ+kz7yDteTPVqFEGYNzF6ubY1VRpp20G3JXT392A/1hItJZ4qKbkcFpa67IQ
- fmh+dvsAtjxEErrVEAhmlg5/nToIXptc07W+KH/5Zab7etPRHwW6AcMZC6BzRz56EJv0j8tTcnO
- TwF9vd1OKdNLb6uvzYvMSq4L2JLNnKP2FWXGFat2jd35gbFN0mtCKRXoOHP/hXexeR5mjYp1hhD
- rjPqjxYn1X2vM17XYMbTike52SBaH/vaFIvDoU8ieraE6B8bnFLbSn/qZqKSHWSMTBT3C31qLgF
- 8vForRtQFg8EeDYZrZM9cPTeUMiVAi5LMVdfkSkW9FpFIZJvFVKlfyKQ2AnlIqLWhqOaYVk3+MV
- 209zQTtuOXZ+VdUr32I7tp/VJGQrrh22rzXHPbSNAGkEoYTdrlJ5vFawb8OUneQWJvyKw7Bg
-X-Authority-Analysis: v=2.4 cv=KZjSsRYD c=1 sm=1 tr=0 ts=680b1c7a cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=XR8D0OoHHMoA:10 a=VnNF1IyMAAAA:8 a=cXSfBGZelckeR0FG7_wA:9
-X-Proofpoint-GUID: bpZOmcsHyONXK_FUYgsL6n-vEFRgY6ms
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-04-25_01,2025-04-24_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0
- impostorscore=0 clxscore=1015 bulkscore=0 lowpriorityscore=0
- malwarescore=0 mlxlogscore=999 adultscore=0 mlxscore=0 spamscore=0
- priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2504250035
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=rreyes@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x531.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,112 +105,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Handle interception of the CHSC SEI instruction for requests
-indicating the guest's AP configuration has changed.
+On 4/24/25 17:16, BALATON Zoltan wrote:
+> On Fri, 25 Apr 2025, Philippe Mathieu-Daudé wrote:
+>> A machine defined with the DEFINE_MACHINE_ARM_AARCH64() macro
+>> will be available on qemu-system-arm and qemu-system-aarch64
+>> binaries.
+>>
+>> One defined with DEFINE_MACHINE_AARCH64() will only be available
+>> in the qemu-system-aarch64 binary.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>> include/hw/arm/machines-qom.h | 13 +++++++++++++
+>> target/arm/machine.c          | 12 ++++++++++++
+>> 2 files changed, 25 insertions(+)
+>>
+>> diff --git a/include/hw/arm/machines-qom.h b/include/hw/arm/machines-qom.h
+>> index a17225f5f92..6277ee986d9 100644
+>> --- a/include/hw/arm/machines-qom.h
+>> +++ b/include/hw/arm/machines-qom.h
+>> @@ -9,10 +9,23 @@
+>> #ifndef HW_ARM_MACHINES_QOM_H
+>> #define HW_ARM_MACHINES_QOM_H
+>>
+>> +#include "hw/boards.h"
+>> +
+>> #define TYPE_TARGET_ARM_MACHINE \
+>>          "target-info-arm-machine"
+>>
+>> #define TYPE_TARGET_AARCH64_MACHINE \
+>>          "target-info-aarch64-machine"
+>>
+>> +extern InterfaceInfo arm_aarch64_machine_interfaces[];
+>> +extern InterfaceInfo aarch64_machine_interfaces[];
+>> +
+>> +#define DEFINE_MACHINE_ARM_AARCH64(namestr, machine_initfn) \
+>> +        DEFINE_MACHINE_WITH_INTERFACES(namestr, machine_initfn, \
+>> +                                       arm_aarch64_machine_interfaces)
+>> +
+>> +#define DEFINE_MACHINE_AARCH64(namestr, machine_initfn) \
+>> +        DEFINE_MACHINE_WITH_INTERFACES(namestr, machine_initfn, \
+>> +                                       aarch64_machine_interfaces)
+>> +
+>> #endif
+>> diff --git a/target/arm/machine.c b/target/arm/machine.c
+>> index 978249fb71b..193c7a9cff0 100644
+>> --- a/target/arm/machine.c
+>> +++ b/target/arm/machine.c
+>> @@ -8,6 +8,7 @@
+>> #include "cpu-features.h"
+>> #include "migration/cpu.h"
+>> #include "target/arm/gtimer.h"
+>> +#include "hw/arm/machines-qom.h"
+>>
+>> static bool vfp_needed(void *opaque)
+>> {
+>> @@ -1111,3 +1112,14 @@ const VMStateDescription vmstate_arm_cpu = {
+>>          NULL
+>>      }
+>> };
+>> +
+>> +InterfaceInfo arm_aarch64_machine_interfaces[] = {
+>> +    { TYPE_TARGET_ARM_MACHINE },
+>> +    { TYPE_TARGET_AARCH64_MACHINE },
+>> +    { }
+>> +};
+>> +
+>> +InterfaceInfo aarch64_machine_interfaces[] = {
+>> +    { TYPE_TARGET_AARCH64_MACHINE },
+>> +    { }
+>> +};
+> 
+> Why do you need these? If you define DEFINE_MACHINE_WITH_INTERFACES as
+> OBJECT_DEFINE_TYPE_WITH_INTERFACES then you can write:
+> 
 
-If configuring -without-defaul-devices, hw/vfio/ap-sub.c
-was created to handle such circumstance. Also added if
-CONFIG_VFIO_AP is false, it will use the stub file.
+This was requested in v4 by Richard to remove anonymous array 
+duplication in .data.
 
-Signed-off-by: Rorie Reyes <rreyes@linux.ibm.com>
-Reviewed-by: Anthony Krowiak <akrowiak@linux.ibm.com>
-Tested-by: Anthony Krowiak <akrowiak@linux.ibm.com>
----
- MAINTAINERS           |  1 +
- hw/vfio/ap-stub.c     | 23 +++++++++++++++++++++++
- hw/vfio/meson.build   |  1 +
- target/s390x/ioinst.c | 11 +++++++++--
- 4 files changed, 34 insertions(+), 2 deletions(-)
- create mode 100644 hw/vfio/ap-stub.c
+> DEFINE_MACHINE_WITH_INTERFACES(name, initfn, { TYPE_TARGET_ARM_MACHINE },
+>       { TYPE_TARGET_AARCH64_MACHINE }, { })
+> 
+> and no more macros needed. Ideally those places that are now blown up
+> should use DEFINE_MACHINE too. Maybe they don't yet because the parent
+> type  is hardcoded so we should really have
+> 
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 661a47db5a..ad85d081e3 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -112,6 +112,7 @@ F: hw/intc/s390_flic.c
- F: hw/intc/s390_flic_kvm.c
- F: hw/s390x/
- F: hw/vfio/ap.c
-+F: hw/vfio/ap-stub.c
- F: hw/vfio/ccw.c
- F: hw/watchdog/wdt_diag288.c
- F: include/hw/s390x/
-diff --git a/hw/vfio/ap-stub.c b/hw/vfio/ap-stub.c
-new file mode 100644
-index 0000000000..9d2c4c2e67
---- /dev/null
-+++ b/hw/vfio/ap-stub.c
-@@ -0,0 +1,23 @@
-+/*
-+ * VFIO based AP matrix device assignment
-+ *
-+ * Copyright 2025 IBM Corp.
-+ * Author(s): Rorie Reyes <rreyes@linux.ibm.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or (at
-+ * your option) any later version. See the COPYING file in the top-level
-+ * directory.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/s390x/ap-bridge.h"
-+
-+int ap_chsc_sei_nt0_get_event(void *res)
-+{
-+    return 0;
-+}
-+
-+int ap_chsc_sei_nt0_have_event(void)
-+{
-+    return 0;
-+}
-diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
-index a8939c8386..28f4c959b8 100644
---- a/hw/vfio/meson.build
-+++ b/hw/vfio/meson.build
-@@ -11,6 +11,7 @@ vfio_ss.add(when: 'CONFIG_VFIO_PCI', if_true: files(
- vfio_ss.add(when: 'CONFIG_VFIO_CCW', if_true: files('ccw.c'))
- vfio_ss.add(when: 'CONFIG_VFIO_PLATFORM', if_true: files('platform.c'))
- vfio_ss.add(when: 'CONFIG_VFIO_AP', if_true: files('ap.c'))
-+vfio_ss.add(when: 'CONFIG_VFIO_AP', if_false: files('ap-stub.c'))
- vfio_ss.add(when: 'CONFIG_VFIO_IGD', if_true: files('igd.c'))
- 
- specific_ss.add_all(when: 'CONFIG_VFIO', if_true: vfio_ss)
-diff --git a/target/s390x/ioinst.c b/target/s390x/ioinst.c
-index fe62ba5b06..2320dd4c12 100644
---- a/target/s390x/ioinst.c
-+++ b/target/s390x/ioinst.c
-@@ -18,6 +18,7 @@
- #include "trace.h"
- #include "hw/s390x/s390-pci-bus.h"
- #include "target/s390x/kvm/pv.h"
-+#include "hw/s390x/ap-bridge.h"
- 
- /* All I/O instructions but chsc use the s format */
- static uint64_t get_address_from_regs(CPUS390XState *env, uint32_t ipb,
-@@ -574,13 +575,19 @@ out:
- 
- static int chsc_sei_nt0_get_event(void *res)
- {
--    /* no events yet */
-+    if (s390_has_feat(S390_FEAT_AP)) {
-+        return ap_chsc_sei_nt0_get_event(res);
-+    }
-+
-     return 1;
- }
- 
- static int chsc_sei_nt0_have_event(void)
- {
--    /* no events yet */
-+    if (s390_has_feat(S390_FEAT_AP)) {
-+        return ap_chsc_sei_nt0_have_event();
-+    }
-+
-     return 0;
- }
- 
--- 
-2.48.1
+Not sure what you mean by "no more macros needed".
+arm_aarch64_machine_interfaces or aarch64_machine_interfaces are arrays 
+(defined only once), which are passed as a parameter to 
+DEFINE_MACHINE_WITH_INTERFACES, or manually set with ".interfaces =".
+
+> DEFINE_MACHINE_EXTENDED(name, parent, initfn, interfaces...)
+> 
+> and remove more bolier plate that way?
+> 
+
+Could you can share a concrete example of what you expect, with the new 
+macros to add, and how to use them for a given board?
+
+> Regards,
+> BALATON Zoltan
 
 
