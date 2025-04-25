@@ -2,87 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C47C5A9CBC0
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 16:32:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B798DA9CBE4
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 16:44:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8K6M-00024Z-Hp; Fri, 25 Apr 2025 10:32:26 -0400
+	id 1u8KGY-0006jN-IY; Fri, 25 Apr 2025 10:42:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1u8K6D-0001zf-CK; Fri, 25 Apr 2025 10:32:21 -0400
-Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8KGF-0006gf-LV
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 10:42:40 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1u8K6A-0003ov-Vh; Fri, 25 Apr 2025 10:32:16 -0400
-Received: by mail-lj1-x22f.google.com with SMTP id
- 38308e7fff4ca-30bf3f3539dso24566861fa.1; 
- Fri, 25 Apr 2025 07:32:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8KGD-0006G3-Nd
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 10:42:39 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-39c266c1389so1674318f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 07:42:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1745591530; x=1746196330; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=NG4zYuYYpcJqlLYEG5C5mY3Kfpvlarp9AnNvsczkLIA=;
- b=IT4Ax2huzMtlLODQoXGCmrKWsiOQfGjLQcbxefnxTb+8tNNVWJo+Ded8B+9AOivX7/
- eVeWcF+KudP1v17B3sVeooctEfISz9smxlnVoQKNoX/zvNoNGEviusi48R7Z4Lz9JJ1O
- 8gudje7b6UuLAilG6V3OAy3dtK9RJAcLAR+lZ63OPigyCj5c2k7kIdun2/7DXFHw47k3
- YzlcUP1Inzv40EEJzuV4ZcCMh5nLS4lQB2f6qK5HoEYzm4r7jYwnDSTfTe3VCtmzMFvx
- tVR9RP3CGhKqdv6GMuqzPKWVFU98wRwAYboBq6cbKXeSj5LGmqtz8ObKoaXX3Lxp1RWl
- tEoA==
+ d=linaro.org; s=google; t=1745592155; x=1746196955; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:cc:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=WlA1P3UYiP5nqEUfWorUtHT++/4e9WdbRP9cK6FMuUk=;
+ b=R+mVybW0rTUReWqf2P2WvigzUELjf5Sp+OTER0FnNcRVVpH/3OyZE04pAsQjhJxUrj
+ lidMoUg2G1oz6AyurCGWULspbeZW+9zo0QxH3csDxh0lhCnkaOmqHzloQvnFB+kyLVMo
+ 2PYy0gTDxYG7xQYgpGDizqqlZlIdWeicnricI3GvJbjCQa75NT7+If4MK92CpHPQs/uU
+ g5lDmVr8hBQ9AQgJeSBaUu0oQap/C8eRTZ27LcE8ZYAY6NPT5QUSzQkukfYp6qjkBgvR
+ 4g4bVF8M/IOlo3dhrfCBappzQhYYFboVRBQg+jP+X98rb0nStY3S5kEGmtnlElO/NmXT
+ 1jXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745591530; x=1746196330;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NG4zYuYYpcJqlLYEG5C5mY3Kfpvlarp9AnNvsczkLIA=;
- b=QpSNtVO5AKYHpOMTjnplvpVRNZ9hT3e5ZtjzmHlPfNQ3cwOMh/3+0Dy4N7BdWg4E5A
- NKY2o107QKfmWIP2hm9ET52+Rqlo+ahZKVjgIO4hT1IN7glBetVeaR5iJxftuPy8T1ZX
- b7N+yp2HCXHlm74JKOKAYujJUugIzzTsf0tdNwFvAqyYxezDjh8Fg+g7TxJ82iycEOkl
- hADTct5k/yoNVh2gtxFuuQUD+h0sgBaoqW2PJaUo7ffrFliSCAL3IkVYaPhZiGIBlTB1
- OYxTtpruQ1J2Su7b1JbrJgtuZGqPv7qoelbm8GCXINRDOM0MYYTiH90YWxIUKvZJqtt1
- 58Bw==
+ d=1e100.net; s=20230601; t=1745592155; x=1746196955;
+ h=content-transfer-encoding:in-reply-to:cc:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=WlA1P3UYiP5nqEUfWorUtHT++/4e9WdbRP9cK6FMuUk=;
+ b=HQK5zS8OZSLcFRBv6UxB4diBUb+RxYTBz/AtmqzzT7e9KBk4ub2uaFVE+i/x/wrjBo
+ L4ArD79xNjruEC2LbyuGyXjmWxkpR1k+MGYaxwX3hC6/oCGKXsckzu1Fj24iZIlZyJE0
+ ndmPKxbhYUaSQTmifAIIoinRw7EbVZbyjsYVFf1XClFhC8D2uEGeK+4aYyjBfaec7PiX
+ mCbdXZr7nQ4srb0DpYG8fIlOcWRf1Nl8pT3nqlPykuTxvrZfZpzjB5BJXprOcByCR5z9
+ CaRupfvYqOIKT/Xha8qEBeq/FV65udYM4XIHA61Addy4Clq3lWZeZDkFLVGyC6WYEN4U
+ ogOw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU3PQha95bmi2oCax+ZLjC5pB/hLpzc+xgKFweHYP+8GW5zWE78fw+5ah6QPPVC1WSMPh88/t7pZDeGmA==@nongnu.org
-X-Gm-Message-State: AOJu0Yz52jEtlRlMHejrry6G97vB+6S21TdZN8iCWC0C37zT6nF+9+8V
- FwoSUeZiWE0HDHvRtqU7yNGqu1j1lTIQMMCIOcQCJt4KLXu84Fq3pKOmjV9DLxY=
-X-Gm-Gg: ASbGncu4YpRjkIR0JWTbQ0B3Vuh2KEpnEpIpAsLHMPfYgb5vejfzEUYmgKA2q+VOuWE
- pgwiOCZsbIuQQmX5qBsc8bRug2WoiPrRSsz/FkXX13EKuIF9VI7WvFlff6H9vNZ1l7Ml65iArf3
- A37yN1nSsGn8xybEMc58uz8q79oMg7aNX5OK06WalbWet2aaoJzbuJ7I3cFctkIo6/1fh8CU0mV
- 6cA5wp+T5Kq49UROi7jk1OMaRrjcYSTQ2Q8VIj6APNbESX1iIHQ24U+2eWNXV5P0YIM86r4BT2n
- jes8YJAAhGbD2YQnjBViy0etA2JNeEd7LEI+ht/mdzWNZro7SKyZwGcQGwBuFMz9bPj5Og6So5M
- 0+MKJAr1QDUUXU/FIr2QxSHs=
-X-Google-Smtp-Source: AGHT+IHWARaFw57BZ01THUTSc2KFZuId+pV+qu+u3iEKnTFsjDPBoBcWZkR34cYxgsb/mk2/7B64+Q==
-X-Received: by 2002:a05:651c:881:b0:30d:e10c:cae0 with SMTP id
- 38308e7fff4ca-317ce4c347amr22810961fa.20.1745591529939; 
- Fri, 25 Apr 2025 07:32:09 -0700 (PDT)
-Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
- by smtp.gmail.com with ESMTPSA id
- 38308e7fff4ca-317d16a8312sm7745871fa.86.2025.04.25.07.32.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Apr 2025 07:32:08 -0700 (PDT)
-From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-To: qemu-devel@nongnu.org,
-	qemu-stable@nongnu.org
-Cc: sstabellini@kernel.org, anthony@xenproject.org, paul@xen.org,
- edgar.iglesias@amd.com, xen-devel@lists.xenproject.org,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Subject: [PATCH v1 1/1] xen: mapcache: Split mapcache_grants by ro and rw
-Date: Fri, 25 Apr 2025 16:31:56 +0200
-Message-ID: <20250425143156.204452-2-edgar.iglesias@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250425143156.204452-1-edgar.iglesias@gmail.com>
-References: <20250425143156.204452-1-edgar.iglesias@gmail.com>
+ AJvYcCXaWE2f2Ai+enQGUH9SE3WyLV9j4fcfl8TV08204CIfqGAdEdKj63ADc205vD4XUM394LpsJluE3hTG@nongnu.org
+X-Gm-Message-State: AOJu0YxeAHenka/PbxG+3jHlZXvYucbUmlgaiqJ01FraoBWJKP0wO/2E
+ txqcbNuI3RAgyS/ISoNe4cGEw/aPw+hA0/ECSoehfIc6XZr5IBG4A2t4iwalWiU=
+X-Gm-Gg: ASbGncuiOAY8lXyvpIi0D5E5z42tt3acnNiCi1YsJq0Rl9fJz/4gKo5WBcdw5SQSVMB
+ tH+VaMgMWS/ss7DrcuLBpgpxtaAZ1N86Jw8JpT3dfa7L7/3vaozfPJ6TwO+4LMO8lLg0lLVXdlI
+ IfGk5MHIbDHerXUjM6YklyjkIOy7f7uts4RQ8/ZaxZ4WMmtbTstE01tul/uZ/y88txgcG31kFK6
+ PE7W1oaeY27s1nC6PzHhH8oM05yrThWvtDMfIxoznx4Z4tM9wYUrxN7WKBxKO+tQXU5PLTcn/A+
+ Z7ihLD5ReXDTfEQShYmIbBuYGswWl6Px692rMV3EE3YyE6MkPUevn+7rUjnA6ASn4/0H29mgmd4
+ PlZvmv+E/LmprsH2BR7M=
+X-Google-Smtp-Source: AGHT+IFD+Tgcw+N2OZdydhTGME0xCuO5L6z7HZ4zFveTRLvgao2+spK6go/9aqM1WoC0+B+fZp2JUA==
+X-Received: by 2002:a05:6000:40ce:b0:391:4674:b136 with SMTP id
+ ffacd0b85a97d-3a074e3cfc1mr1917795f8f.29.1745592154971; 
+ Fri, 25 Apr 2025 07:42:34 -0700 (PDT)
+Received: from [192.168.69.226] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a073cbedc4sm2502026f8f.47.2025.04.25.07.42.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 25 Apr 2025 07:42:34 -0700 (PDT)
+Message-ID: <ca432cc8-31a6-4b22-81e7-4c620a9f199f@linaro.org>
+Date: Fri, 25 Apr 2025 16:42:33 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-lj1-x22f.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-10.1 6/9] target/arm: Present AArch64 gdbstub based on
+ ARM_FEATURE_AARCH64
+To: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+References: <20250317142819.900029-1-peter.maydell@linaro.org>
+ <20250317142819.900029-7-peter.maydell@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org
+In-Reply-To: <20250317142819.900029-7-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,89 +103,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
+Hi Peter,
 
-Today, we don't track write-abiliy in the cache, if a user
-requests a readable mapping followed by a writeable mapping
-on the same page, the second lookup will incorrectly hit
-the readable entry.
+On 17/3/25 15:28, Peter Maydell wrote:
+> Currently we provide an AArch64 gdbstub for CPUs which are
+> TYPE_AARCH64_CPU, and an AArch32 gdbstub for those which are only
+> TYPE_ARM_CPU.  This mostly does the right thing, except in the
+> corner case of KVM with -cpu host,aarch64=off.  That produces a CPU
+> which is TYPE_AARCH64_CPU but which has ARM_FEATURE_AARCH64 removed
+> and which to the guest is in AArch32 mode.
+> 
+> Now we have moved all the handling of AArch64-vs-AArch32 gdbstub
+> behaviour into TYPE_ARM_CPU we can change the condition we use for
+> whether to select the AArch64 gdbstub to look at ARM_FEATURE_AARCH64.
+> This will mean that we now correctly provide an AArch32 gdbstub for
+> aarch64=off CPUs.
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   target/arm/internals.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/target/arm/internals.h b/target/arm/internals.h
+> index a14c269fa5a..a18d87fa28b 100644
+> --- a/target/arm/internals.h
+> +++ b/target/arm/internals.h
+> @@ -1694,7 +1694,7 @@ void aarch64_add_sme_properties(Object *obj);
+>   /* Return true if the gdbstub is presenting an AArch64 CPU */
+>   static inline bool arm_gdbstub_is_aarch64(ARMCPU *cpu)
+>   {
+> -    return object_dynamic_cast(OBJECT(cpu), TYPE_AARCH64_CPU);
+> +    return arm_feature(&cpu->env, ARM_FEATURE_AARCH64);
 
-Split mapcache_grants by ro and rw access. Grants will now
-have separate ways in the cache depending on writeability.
+Unfortunately this doesn't work well: while a Aarch64 CPU is of type
+TYPE_AARCH64_CPU right after being instantiated (not yet QOM realized),
+the features are only finalized during arm_cpu_instance_init():
 
-Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
----
- hw/xen/xen-mapcache.c | 26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
+static void arm_cpu_instance_init(Object *obj)
+{
+     ARMCPUClass *acc = ARM_CPU_GET_CLASS(obj);
 
-diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c
-index 2c8f861fdb..e31d379702 100644
---- a/hw/xen/xen-mapcache.c
-+++ b/hw/xen/xen-mapcache.c
-@@ -75,7 +75,8 @@ typedef struct MapCache {
- } MapCache;
- 
- static MapCache *mapcache;
--static MapCache *mapcache_grants;
-+static MapCache *mapcache_grants_ro;
-+static MapCache *mapcache_grants_rw;
- static xengnttab_handle *xen_region_gnttabdev;
- 
- static inline void mapcache_lock(MapCache *mc)
-@@ -176,9 +177,12 @@ void xen_map_cache_init(phys_offset_to_gaddr_t f, void *opaque)
-      * Grant mappings must use XC_PAGE_SIZE granularity since we can't
-      * map anything beyond the number of pages granted to us.
+     acc->info->initfn(obj);
+     arm_cpu_post_init(obj);
+}
+
+void arm_cpu_post_init(Object *obj)
+{
+     ARMCPU *cpu = ARM_CPU(obj);
+
+     /*
+      * Some features imply others. Figure this out now, because we
+      * are going to look at the feature bits in deciding which
+      * properties to add.
       */
--    mapcache_grants = xen_map_cache_init_single(f, opaque,
--                                                XC_PAGE_SHIFT,
--                                                max_mcache_size);
-+    mapcache_grants_ro = xen_map_cache_init_single(f, opaque,
-+                                                   XC_PAGE_SHIFT,
-+                                                   max_mcache_size);
-+    mapcache_grants_rw = xen_map_cache_init_single(f, opaque,
-+                                                   XC_PAGE_SHIFT,
-+                                                   max_mcache_size);
- 
-     setrlimit(RLIMIT_AS, &rlimit_as);
- }
-@@ -456,9 +460,13 @@ uint8_t *xen_map_cache(MemoryRegion *mr,
-                        bool is_write)
- {
-     bool grant = xen_mr_is_grants(mr);
--    MapCache *mc = grant ? mapcache_grants : mapcache;
-+    MapCache *mc = mapcache;
-     uint8_t *p;
- 
-+    if (grant) {
-+        mc = is_write ? mapcache_grants_rw : mapcache_grants_ro;
-+    }
-+
-     if (grant && !lock) {
-         /*
-          * Grants are only supported via address_space_map(). Anything
-@@ -523,7 +531,10 @@ ram_addr_t xen_ram_addr_from_mapcache(void *ptr)
- 
-     addr = xen_ram_addr_from_mapcache_single(mapcache, ptr);
-     if (addr == RAM_ADDR_INVALID) {
--        addr = xen_ram_addr_from_mapcache_single(mapcache_grants, ptr);
-+        addr = xen_ram_addr_from_mapcache_single(mapcache_grants_ro, ptr);
-+    }
-+    if (addr == RAM_ADDR_INVALID) {
-+        addr = xen_ram_addr_from_mapcache_single(mapcache_grants_rw, ptr);
-     }
- 
-     return addr;
-@@ -626,7 +637,8 @@ static void xen_invalidate_map_cache_entry_single(MapCache *mc, uint8_t *buffer)
- static void xen_invalidate_map_cache_entry_all(uint8_t *buffer)
- {
-     xen_invalidate_map_cache_entry_single(mapcache, buffer);
--    xen_invalidate_map_cache_entry_single(mapcache_grants, buffer);
-+    xen_invalidate_map_cache_entry_single(mapcache_grants_ro, buffer);
-+    xen_invalidate_map_cache_entry_single(mapcache_grants_rw, buffer);
- }
- 
- static void xen_invalidate_map_cache_entry_bh(void *opaque)
--- 
-2.43.0
+     arm_cpu_propagate_feature_implications(cpu);
+     ...
+}
 
+The GDB feature checks are done earlier:
+
+   object_init_with_type
+    -> cpu_common_initfn
+        -> gdb_init_cpu
+           -> gdb_get_core_xml_file
+              -> arm_gdb_get_core_xml_file
+                 -> arm_gdbstub_is_aarch64
+
+At this point the feature set is empty, triggering the
+assertion in gdb_find_static_feature():
+
+$ ./build/qemu-aarch64 build/tests/tcg/aarch64-linux-user/semihosting
+**
+ERROR:../../gdbstub/gdbstub.c:494:gdb_find_static_feature: code should 
+not be reached
+Bail out! ERROR:../../gdbstub/gdbstub.c:494:gdb_find_static_feature: 
+code should not be reached
+Aborted (core dumped)
+
+I suppose gdb_init_cpu() needs more splitting work. For now I'll drop
+this patches 5+ from my queue.
+
+Regards,
+
+Phil.
 
