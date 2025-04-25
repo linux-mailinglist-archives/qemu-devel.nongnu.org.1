@@ -2,85 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE50FA9C823
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 13:54:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 323F4A9C861
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 13:59:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8HcI-0007Se-Hd; Fri, 25 Apr 2025 07:53:15 -0400
+	id 1u8Hhz-000785-58; Fri, 25 Apr 2025 07:59:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1u8Hc9-0007Pv-4c
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 07:53:05 -0400
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1u8Hhs-00070r-2j
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 07:59:00 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1u8Hc5-0000KM-Fx
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 07:53:04 -0400
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-b074d908e56so1469314a12.2
- for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 04:53:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1u8Hhp-0000vK-HP
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 07:58:59 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-43cf3192f3bso19249525e9.1
+ for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 04:58:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1745581979; x=1746186779; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=GcNXf7DIbL50r/3uCyCpmAaenNe2fphdxOkQrVg/xCU=;
- b=dn3aTjHBrwRFDjMEa8kX3RfAJ/NX74bD1oUVa2KEh6ze9dy47lfDpyX2fnEOOuRLOv
- VvJe0ydSqgz8FLPGkGMN2QJAsyIOD9wZqeEPnw0ca6HKMGHYTFDKZN3nTsSbmmxQ6WZX
- mGOP4di/6WEwySL0Fa1h79eDkscXDZfvtK+spBz5kEkWgcD0U0ViuDNpb9PjGbqVhBS0
- 8BGiExisIZ8d/Z+D2RxD4um/QrGnbMzl5rKS1cqnvNpHpe4mbLdMI9oUbVnSGRbNY5uo
- TCmRIj66N0BuLxsVKsBnGV+rC+9MrgiIjubGtz471nGReEHUKXWXeRbFYee74hZEZoN5
- axsw==
+ d=ventanamicro.com; s=google; t=1745582335; x=1746187135; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=vY56RVujAEoc12xInC1yMnrFWBOLzAq9GoyRcsOeDCk=;
+ b=YSO/jFa5EIpvFOf8riU3OWZPcCbcYrkeYMKZpb84SDMNhbhbO9FLL8TLoecfcqKrMG
+ +n1VjNI4CsUkPluuEcvqeD51jQHiU32NBx3IOkNfebuyOmqgSYVNoCa+lf9fiVdVvQv4
+ UKB53yOHMInJrsXpFlBdqLXMDC9q9OTejJpPAjHRMAytNXXvu5AY+zzCzzBIAhua4S9s
+ o/ZSb+OfYxFSN/+UMPcEdS/Nj3uovUzolXm5SCjTpa0aHpJYG0DvXJpEQ+leVCMX/y2J
+ Hmc+lVA7UZ8tJoZgmquRMf2SyJQnvrSgjrSEqxBwwzTrLYjFXXMJvK9OVGf6aH6bxke7
+ 9ozA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745581979; x=1746186779;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GcNXf7DIbL50r/3uCyCpmAaenNe2fphdxOkQrVg/xCU=;
- b=Dwm5WX62bxkuJDdk2UU5OzmOESfTA3PeP81P9F2cm7O4BLFD4aS+cYglt70XWf7Bkw
- P2ZLEn8a6PosUbdGgNjToqPi8OVlHP4hr864gf5XdFf6bWNpy70rGBEPZjmO3z5Mdvau
- WJhi9DSE2+JRFcCK9sX3425byp67yorQT6wtL4g9op1133HjG+Bzm0IGTa2Mkq97BgnJ
- GTQjIkdLKRXz3Y/YzFjXLZjFUW9ZWfh+L73XWSt3h90y+849K6Qx+ZzU8S8gfGSGtdnP
- qwDz9az50sMiy04yYTcRBwqv68Rcahk4jye3qPys2eBvaRkJQHTLkDtalITFwglbnKex
- pwrA==
-X-Gm-Message-State: AOJu0Yyb79zTbs3ZnbDGuJ7Tevc1fwK26yfWj8jzt4PpGpyZL27MWuXh
- T3EOBGBRhiUxmU/8vfEX/BQ3b7Wz7Pd9yiznH3esgNisYIuFmEIAP1OVYIb4b5I=
-X-Gm-Gg: ASbGncuH0/L9zki3WImJQ0P4+BPJpVYgkukwTyed7PTdy0nz7QZTmIIB0B+UvjpygPz
- 95yPlfw7kJW4dWCO7kZJvNFdzs7GVeVMGHp7+WfewxkZvmEdIMcyNA4LcWsZ6J2ck5rSZX89tVN
- ISWuSPVudEe2j0RZ42qPxQtZJTbxlNfUIQPCBWZyfofeFoECG3uPoeEev52quA/suUo1CHLT0EZ
- 1JOB7mB8Uy2qFK1e+voXZqsqoCH005nlhA9NpyH//gvqT1PlKWZf47MboSR4bEmSWGHEBKnotjd
- HSGF01QbxvHD4abG3lVnF7ugNA7evnEWUCCwBHojy8q/qEl4GRHVjus=
-X-Google-Smtp-Source: AGHT+IEyoA48IDNQZsQl0JUBJq0ml+dEvjssfa61zQcdxPDcjyqmYrIwEZhmJoeUF1aIrU3+oPNuHw==
-X-Received: by 2002:a17:90b:3941:b0:2ef:19d0:2261 with SMTP id
- 98e67ed59e1d1-309f7df9f58mr3508659a91.16.1745581979331; 
- Fri, 25 Apr 2025 04:52:59 -0700 (PDT)
-Received: from [192.168.68.110] ([152.234.125.33])
+ d=1e100.net; s=20230601; t=1745582335; x=1746187135;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vY56RVujAEoc12xInC1yMnrFWBOLzAq9GoyRcsOeDCk=;
+ b=l9WVJXUtUrSGAFv9Q5QLwBf99/Ae6hUTs+P5me7akcOuQQmJs5gk7BDptHaAUWBTU9
+ RdzDzY6tV50J5vw9Z5jEOCBILDUbaKZOFXdGL5YA1my7ossflqWxMqgUKWvMuAVqoLis
+ mscXhmwPUeYmVxQMKJrvXauzHgTMfsgmlMA9W80nkMI9L4qx+89BeA/H+2ESdWoME0fN
+ ZjLkXMp6RXBgUUVRlhKzUBjAohn7t16CVRM6c3KI4mBxJhUo8QDFAybqOmf45bN6pFhr
+ BDmWKYCFgpvHc9hd4Oje0O6De5lW13Q2H3saSTK71gdDWLFSWT8GtEOevppwRPGvjIsU
+ nZ6g==
+X-Gm-Message-State: AOJu0YwJ12AEa7+kEodsndrQPDILylFj4zxSYEPCC4tzb3uY5rL8Tixw
+ I7ONWaBz/IanB7nMmI4A6jc17mWjXg97z3fNzywHDrRGpRTlfa6l2r9S0G5hFOk=
+X-Gm-Gg: ASbGnctC6AiT+UCh+148rbmJFS4nFuN2gUgIvtCjsV6XDqB10bILYi3zPx+eMSeGQJN
+ gYOkg5dHBn2rf8exLFij8uWXWJ8rRQRvAzqRdtVqbuJFyiwSfmmqi1OcUwiZz4JpAklIeswkCkA
+ KoYiFNcHvUnmhiEdzBQqrwUZVhtQJESXoReLGOfu4LeJs7ODzYkUqAlLx7VeTKWWZdCbugYgE8G
+ m971gPQDpP4yNr+88vqHcl/StFPcm7liCb6JZP0r25z6OQ4VYxWp+dpnv495cjMGnznXoNyAbiD
+ RZnIc1xxOAo4zBeJe3aKZAry7bsa
+X-Google-Smtp-Source: AGHT+IF6++AlN2iS7BWqGmNLqDc/2BktAwFo8I6deN5GMY8tblV28BpaobYsGA7JfnA617EDQBKWLg==
+X-Received: by 2002:a05:600c:5120:b0:43d:22d9:4b8e with SMTP id
+ 5b1f17b1804b1-440a65d8e5bmr18941015e9.10.1745582335108; 
+ Fri, 25 Apr 2025 04:58:55 -0700 (PDT)
+Received: from localhost ([2a02:8308:a00c:e200::f716])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-309f784a56asm1397820a91.41.2025.04.25.04.52.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 25 Apr 2025 04:52:58 -0700 (PDT)
-Message-ID: <7d5181de-eb42-44b0-80cb-b2f8a3aed47c@ventanamicro.com>
-Date: Fri, 25 Apr 2025 08:52:55 -0300
+ 5b1f17b1804b1-4409d2d86f7sm54221625e9.32.2025.04.25.04.58.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 25 Apr 2025 04:58:54 -0700 (PDT)
+Date: Fri, 25 Apr 2025 13:58:53 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com
+Subject: Re: [PATCH v2 5/9] target/riscv/kvm: add kvm_csr_cfgs[]
+Message-ID: <20250425-940e765f7d6ff4381ed08367@orel>
+References: <20250425113705.2741457-1-dbarboza@ventanamicro.com>
+ <20250425113705.2741457-6-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/9] hw/riscv/virt.c: enforce s->memmap use in
- machine_init()
-To: Joel Stanley <joel@jms.id.au>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- Conor Dooley <conor@kernel.org>
-References: <20250423110630.2249904-1-dbarboza@ventanamicro.com>
- <20250423110630.2249904-2-dbarboza@ventanamicro.com>
- <CACPK8XfF74wHqdBBz=qPLefAD8pKT-0C8e=kfFtTeMH+teF-7A@mail.gmail.com>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <CACPK8XfF74wHqdBBz=qPLefAD8pKT-0C8e=kfFtTeMH+teF-7A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x534.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250425113705.2741457-6-dbarboza@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=ajones@ventanamicro.com; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,70 +97,212 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 4/24/25 6:51 AM, Joel Stanley wrote:
-> On Wed, 23 Apr 2025 at 20:37, Daniel Henrique Barboza
-> <dbarboza@ventanamicro.com> wrote:
->>
->> Throughout the code we're accessing the board memmap, most of the time,
->> by accessing it statically via 'virt_memmap'. This static map is also
->> assigned in the machine state in s->memmap.
->>
->> We're also passing it as a variable to some fdt functions, which is
->> unorthodox since we can spare a function argument by accessing it
->> statically or via the machine state.
->>
->> All the current forms are valid but not all of the are scalable. In the
->> future we will version this board, and then all this code will need
->> rework because it should point to the updated memmap. In this case,
->> we'll want to assign the adequate versioned memmap once during init,
->> in s->memmap like it is being done today, and the rest of the code
->> will access the updated map via s->memmap.
+On Fri, Apr 25, 2025 at 08:37:01AM -0300, Daniel Henrique Barboza wrote:
+> At this moment we're not checking if the host has support for any
+> specific CSR before doing get/put regs. This will cause problems if the
+> host KVM doesn't support it (see [1] as an example).
 > 
-> I was writing a patch for a machine and came across the same
-> inconsistencies. Nice clean up.
+> We'll use the same approach done with the CPU extensions: read all known
+> KVM CSRs during init() to check for availability, then read/write them
+> if they are present. This will be made by either using get-reglist or by
+> directly reading the CSRs.
 > 
-> Some of the device initlisation code could be refactored out to be
-> shared by other machines within the riscv directory. Related, parts of
-> the device tree creation could belong to the model, instead of to the
-> machine, as the properties are a property (!) of the device.
-
-
-Yes, delegating the FDT creation to the device, instead of having each machine
-to create the (mostly) same FDT code over and over again, is something that
-I've considering for awhile.
-
-I keep postponing it mainly because I would like to verify with the DT folks if
-there's a guarantee that a given device/CPU DT is always the same, i.e. a device
-DT is always the same regardless of the machine. I have a guess that that this is
-indeed the case but a confirmation would be nice .... Conor, care to comment?
-
-
-In this refactor we could then create FDTs by passing along a memmap pointer and
-a fdt pointer, as you've suggested.
-
-
-All this said, there's no need to do such FDT refactory all at once. I think I'll
-start with the most common devices between RISC-V boards and go from there.
-
-Thanks,
-
-Daniel
-
-
+> For now we'll just convert the CSRs to use a kvm_csr_cfg[] array,
+> reusing the same KVMCPUConfig abstraction we use for extensions, and use
+> the array in (get|put)_csr_regs() instead of manually listing them. A
+> lot of boilerplate will be added but at least we'll automate the get/put
+> procedure for CSRs, i.e. adding a new CSR in the future will be a matter
+> of adding it in kvm_csr_regs[] and everything else will be taken care
+> of.
 > 
-> With that in mind we should consider passing the eg. fdt pointer and
-> the MemMap pointer instead of machine state, where practical.
+> Despite all the code changes no behavioral change is made.
 > 
->> We're also enforcing the pattern of using s->memmap instead of assigning
->> it to a temp variable 'memmap'. Code is copy/pasted around all the time
->> and being consistent is important.
+> [1] https://lore.kernel.org/qemu-riscv/CABJz62OfUDHYkQ0T3rGHStQprf1c7_E0qBLbLKhfv=+jb0SYAw@mail.gmail.com/
 > 
-> Reviewed-by: Joel Stanley <joel@jms.id.au>
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> ---
+>  target/riscv/cpu.h         |   1 +
+>  target/riscv/kvm/kvm-cpu.c | 121 ++++++++++++++++++++++++++-----------
+>  2 files changed, 86 insertions(+), 36 deletions(-)
 > 
-> Cheers,
-> 
-> Joel
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index 679f417336..f5a60d0c52 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -79,6 +79,7 @@ const char *riscv_get_misa_ext_name(uint32_t bit);
+>  const char *riscv_get_misa_ext_description(uint32_t bit);
+>  
+>  #define CPU_CFG_OFFSET(_prop) offsetof(struct RISCVCPUConfig, _prop)
+> +#define ENV_CSR_OFFSET(_csr) offsetof(CPURISCVState, _csr)
+>  
+>  typedef struct riscv_cpu_profile {
+>      struct riscv_cpu_profile *u_parent;
+> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+> index fd66bc1759..7cbe566e5f 100644
+> --- a/target/riscv/kvm/kvm-cpu.c
+> +++ b/target/riscv/kvm/kvm-cpu.c
+> @@ -114,22 +114,6 @@ static uint64_t kvm_riscv_vector_reg_id(RISCVCPU *cpu,
+>      KVM_RISCV_REG_ID_ULONG(KVM_REG_RISCV_VECTOR, \
+>                             KVM_REG_RISCV_VECTOR_CSR_REG(name))
+>  
+> -#define KVM_RISCV_GET_CSR(cs, env, csr, reg) \
+> -    do { \
+> -        int _ret = kvm_get_one_reg(cs, RISCV_CSR_REG(csr), &reg); \
+> -        if (_ret) { \
+> -            return _ret; \
+> -        } \
+> -    } while (0)
+> -
+> -#define KVM_RISCV_SET_CSR(cs, env, csr, reg) \
+> -    do { \
+> -        int _ret = kvm_set_one_reg(cs, RISCV_CSR_REG(csr), &reg); \
+> -        if (_ret) { \
+> -            return _ret; \
+> -        } \
+> -    } while (0)
+> -
+>  #define KVM_RISCV_GET_TIMER(cs, name, reg) \
+>      do { \
+>          int ret = kvm_get_one_reg(cs, RISCV_TIMER_REG(name), &reg); \
+> @@ -251,6 +235,53 @@ static void kvm_riscv_update_cpu_misa_ext(RISCVCPU *cpu, CPUState *cs)
+>      }
+>  }
+>  
+> +#define KVM_CSR_CFG(_name, _env_prop, reg_id) \
+> +    {.name = _name, .offset = ENV_CSR_OFFSET(_env_prop), \
+> +     .kvm_reg_id = reg_id}
+> +
+> +static KVMCPUConfig kvm_csr_cfgs[] = {
+> +    KVM_CSR_CFG("sstatus", mstatus, RISCV_CSR_REG(sstatus)),
+> +    KVM_CSR_CFG("sie", mie, RISCV_CSR_REG(sie)),
+> +    KVM_CSR_CFG("stvec", stvec, RISCV_CSR_REG(stvec)),
+> +    KVM_CSR_CFG("sscratch", sscratch, RISCV_CSR_REG(sscratch)),
+> +    KVM_CSR_CFG("sepc", sepc, RISCV_CSR_REG(sepc)),
+> +    KVM_CSR_CFG("scause", scause, RISCV_CSR_REG(scause)),
+> +    KVM_CSR_CFG("stval", stval, RISCV_CSR_REG(stval)),
+> +    KVM_CSR_CFG("sip", mip, RISCV_CSR_REG(sip)),
+> +    KVM_CSR_CFG("satp", satp, RISCV_CSR_REG(satp)),
 
+nit: could tabulate this
+
+> +};
+> +
+> +static void *kvmconfig_get_env_addr(RISCVCPU *cpu, KVMCPUConfig *csr_cfg)
+> +{
+> +    return (void *)&cpu->env + csr_cfg->offset;
+> +}
+> +
+> +static uint64_t kvm_cpu_csr_get_u32(RISCVCPU *cpu, KVMCPUConfig *csr_cfg)
+
+Despite the cover letter stating this was changed to return a uint32_t,
+it's not.
+
+> +{
+> +    uint32_t *val32 = kvmconfig_get_env_addr(cpu, csr_cfg);
+> +    return *val32;
+> +}
+> +
+> +static uint64_t kvm_cpu_csr_get_u64(RISCVCPU *cpu, KVMCPUConfig *csr_cfg)
+> +{
+> +    uint64_t *val64 = kvmconfig_get_env_addr(cpu, csr_cfg);
+> +    return *val64;
+> +}
+> +
+> +static void kvm_cpu_csr_set_u32(RISCVCPU *cpu, KVMCPUConfig *csr_cfg,
+> +                                uint32_t val)
+> +{
+> +    uint32_t *val32 = kvmconfig_get_env_addr(cpu, csr_cfg);
+> +    *val32 = val;
+> +}
+> +
+> +static void kvm_cpu_csr_set_u64(RISCVCPU *cpu, KVMCPUConfig *csr_cfg,
+> +                                uint64_t val)
+> +{
+> +    uint64_t *val64 = kvmconfig_get_env_addr(cpu, csr_cfg);
+> +    *val64 = val;
+> +}
+> +
+>  #define KVM_EXT_CFG(_name, _prop, _reg_id) \
+>      {.name = _name, .offset = CPU_CFG_OFFSET(_prop), \
+>       .kvm_reg_id = _reg_id}
+> @@ -598,34 +629,52 @@ static int kvm_riscv_put_regs_core(CPUState *cs)
+>  
+>  static int kvm_riscv_get_regs_csr(CPUState *cs)
+>  {
+> -    CPURISCVState *env = &RISCV_CPU(cs)->env;
+> +    RISCVCPU *cpu = RISCV_CPU(cs);
+> +    uint64_t reg;
+> +    int i, ret;
+> +
+> +    for (i = 0; i < ARRAY_SIZE(kvm_csr_cfgs); i++) {
+> +        KVMCPUConfig *csr_cfg = &kvm_csr_cfgs[i];
+>  
+> -    KVM_RISCV_GET_CSR(cs, env, sstatus, env->mstatus);
+> -    KVM_RISCV_GET_CSR(cs, env, sie, env->mie);
+> -    KVM_RISCV_GET_CSR(cs, env, stvec, env->stvec);
+> -    KVM_RISCV_GET_CSR(cs, env, sscratch, env->sscratch);
+> -    KVM_RISCV_GET_CSR(cs, env, sepc, env->sepc);
+> -    KVM_RISCV_GET_CSR(cs, env, scause, env->scause);
+> -    KVM_RISCV_GET_CSR(cs, env, stval, env->stval);
+> -    KVM_RISCV_GET_CSR(cs, env, sip, env->mip);
+> -    KVM_RISCV_GET_CSR(cs, env, satp, env->satp);
+> +        ret = kvm_get_one_reg(cs, csr_cfg->kvm_reg_id, &reg);
+> +        if (ret) {
+> +            return ret;
+> +        }
+> +
+> +        if (KVM_REG_SIZE(csr_cfg->kvm_reg_id) == sizeof(uint32_t)) {
+> +            kvm_cpu_csr_set_u32(cpu, csr_cfg, reg);
+> +        } else if (KVM_REG_SIZE(csr_cfg->kvm_reg_id) == sizeof(uint64_t)) {
+> +            kvm_cpu_csr_set_u64(cpu, csr_cfg, reg);
+> +        } else {
+> +            g_assert_not_reached();
+> +        }
+> +    }
+>  
+>      return 0;
+>  }
+>  
+>  static int kvm_riscv_put_regs_csr(CPUState *cs)
+>  {
+> -    CPURISCVState *env = &RISCV_CPU(cs)->env;
+> +    RISCVCPU *cpu = RISCV_CPU(cs);
+> +    uint64_t reg;
+> +    int i, ret;
+> +
+> +    for (i = 0; i < ARRAY_SIZE(kvm_csr_cfgs); i++) {
+> +        KVMCPUConfig *csr_cfg = &kvm_csr_cfgs[i];
+> +
+> +        if (KVM_REG_SIZE(csr_cfg->kvm_reg_id) == sizeof(uint32_t)) {
+> +            reg = kvm_cpu_csr_get_u32(cpu, csr_cfg);
+> +        } else if (KVM_REG_SIZE(csr_cfg->kvm_reg_id) == sizeof(uint64_t)) {
+> +            reg = kvm_cpu_csr_get_u64(cpu, csr_cfg);
+> +        } else {
+> +            g_assert_not_reached();
+> +        }
+>  
+> -    KVM_RISCV_SET_CSR(cs, env, sstatus, env->mstatus);
+> -    KVM_RISCV_SET_CSR(cs, env, sie, env->mie);
+> -    KVM_RISCV_SET_CSR(cs, env, stvec, env->stvec);
+> -    KVM_RISCV_SET_CSR(cs, env, sscratch, env->sscratch);
+> -    KVM_RISCV_SET_CSR(cs, env, sepc, env->sepc);
+> -    KVM_RISCV_SET_CSR(cs, env, scause, env->scause);
+> -    KVM_RISCV_SET_CSR(cs, env, stval, env->stval);
+> -    KVM_RISCV_SET_CSR(cs, env, sip, env->mip);
+> -    KVM_RISCV_SET_CSR(cs, env, satp, env->satp);
+> +        ret = kvm_set_one_reg(cs, csr_cfg->kvm_reg_id, &reg);
+> +        if (ret) {
+> +            return ret;
+> +        }
+> +    }
+>  
+>      return 0;
+>  }
+> -- 
+> 2.49.0
+>
+
+Otherwise,
+
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 
