@@ -2,69 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47CE6A9C01C
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 09:51:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4712BA9C07B
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 10:10:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8DqC-0007LE-U0; Fri, 25 Apr 2025 03:51:21 -0400
+	id 1u8E6o-0007c9-8d; Fri, 25 Apr 2025 04:08:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u8Dq9-0007Ky-J2
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 03:51:17 -0400
-Received: from mgamail.intel.com ([192.198.163.7])
+ id 1u8E6c-0007b5-Q1; Fri, 25 Apr 2025 04:08:20 -0400
+Received: from mgamail.intel.com ([198.175.65.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u8Dq7-00056r-SA
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 03:51:17 -0400
+ id 1u8E6Z-00076N-Q5; Fri, 25 Apr 2025 04:08:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745567475; x=1777103475;
+ t=1745568496; x=1777104496;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=BZqusQBZyDnBJsKfQrHAVWBpClWoCGYJAwfbRCNf7jg=;
- b=LAGAeBZc+GBu2lleLDgoB/wvPeb2t7+Vj4LdiifxwS63Ba1N9WB+8fdc
- qve/yTzMTu0a6eofYuUz0x2vlJG10TmIQNE5sChfOSs9cHOQWPNk6P/Ja
- d8rHyyfI9OH6f499Dd01EPItAH82kPj3/I0zHLRNTl0G8+4OzIKxhdKTV
- BC6cRLQxAA2G68IJfzZwTOtqDupqLs1SPae+fqahCr+XHYv/XsMG9XcXp
- 6nX4HSbnm4KWUVMYNILYTf/+qtioOM2kmVHoFGdv2tqJUvSXL9OSR/zI7
- KjBrpCegOZo3Hi6hkusN7fkR56qUjMr93gNTPi3uucuYcrzZv1q4OdhJs g==;
-X-CSE-ConnectionGUID: 8KNTyMi7QhSt5wRkNxE0wQ==
-X-CSE-MsgGUID: mcsDrwDnTY+n2o8kbqLr4w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="72592487"
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="72592487"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Apr 2025 00:51:12 -0700
-X-CSE-ConnectionGUID: nhd2iUhZRsGWjkMDqe1UuQ==
-X-CSE-MsgGUID: 7pivHPZrT9+VA+W/W3qzXg==
+ bh=5KRtg0VP7RhePb2K1+43zCTF9YsbA4O/PrqeshZCb4w=;
+ b=PK8aNYUoJuEx4LxX7TElVXurQieQYMXXBpZ3RGL36kmUPFlTlYXN4Mha
+ HMVqFPQXubFI594kxQ97k+LFMGdCIHDb+Xb/y8ITMc6CJUMRWD74YDUbd
+ iW9OWls00TXQpyvBYEcJrBWo7CMsa/2Q5XFn/t2502em5xy8USXgPurWK
+ 7WsY72cp9g4Eeq7Kzr2Vd6RU6ggLwFgB3Wbc8E7h8HnJI0ezB4QzlP5CL
+ wwVmSzAWMROfubCWVicGrSF6QgL0AlEBV2K1X1yQwj87JAJvlidq7xinW
+ pW/fOUMix+HS2QJKWLEJtDpj5bRGBLJ9mS0g3QX5To1nBbhbm8RTbhkyQ w==;
+X-CSE-ConnectionGUID: du0OzITwRR+C1HZ2bU/X4g==
+X-CSE-MsgGUID: e94w0k4vTQm5BU4pp/Z1lg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="47240146"
+X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="47240146"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Apr 2025 01:08:09 -0700
+X-CSE-ConnectionGUID: 2BKS4ujcSP2OGoMmWUBd1w==
+X-CSE-MsgGUID: BElnjdbdSySYVUcokWJU+A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="137926586"
+X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="163808291"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by fmviesa004.fm.intel.com with ESMTP; 25 Apr 2025 00:51:10 -0700
-Date: Fri, 25 Apr 2025 16:12:06 +0800
+ by orviesa002.jf.intel.com with ESMTP; 25 Apr 2025 01:07:59 -0700
+Date: Fri, 25 Apr 2025 16:28:54 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Francesco Lavra <francescolavra.fl@gmail.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH v8 25/55] i386/tdx: Call KVM_TDX_INIT_VCPU to initialize
- TDX vcpu
-Message-ID: <aAtD1ngjuDzmvJkH@intel.com>
-References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
- <20250401130205.2198253-26-xiaoyao.li@intel.com>
+To: Dongli Zhang <dongli.zhang@oracle.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
+ qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
+ pbonzini@redhat.com, mtosatti@redhat.com, sandipan.das@amd.com,
+ babu.moger@amd.com, likexu@tencent.com, like.xu.linux@gmail.com,
+ groug@kaod.org, khorenko@virtuozzo.com,
+ alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
+ davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
+ dapeng1.mi@linux.intel.com, joe.jin@oracle.com,
+ peter.maydell@linaro.org, gaosong@loongson.cn,
+ chenhuacai@kernel.org, philmd@linaro.org, aurelien@aurel32.net,
+ jiaxun.yang@flygoat.com, arikalo@gmail.com, npiggin@gmail.com,
+ danielhb413@gmail.com, palmer@dabbelt.com, alistair.francis@wdc.com,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com,
+ pasic@linux.ibm.com, borntraeger@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
+ thuth@redhat.com, flavra@baylibre.com, ewanhai-oc@zhaoxin.com,
+ ewanhai@zhaoxin.com, cobechen@zhaoxin.com, louisqi@zhaoxin.com,
+ liamni@zhaoxin.com, frankzhu@zhaoxin.com, silviazhao@zhaoxin.com,
+ kraxel@redhat.com, berrange@redhat.com
+Subject: Re: [PATCH v4 01/11] [DO NOT MERGE] i386/cpu: Consolidate the helper
+ to get Host's vendor
+Message-ID: <aAtHxmpV7ka1lseC@intel.com>
+References: <20250416215306.32426-1-dongli.zhang@oracle.com>
+ <20250416215306.32426-2-dongli.zhang@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250401130205.2198253-26-xiaoyao.li@intel.com>
-Received-SPF: pass client-ip=192.198.163.7; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20250416215306.32426-2-dongli.zhang@oracle.com>
+Received-SPF: pass client-ip=198.175.65.17; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -51
 X-Spam_score: -5.2
@@ -89,25 +98,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Apr 01, 2025 at 09:01:35AM -0400, Xiaoyao Li wrote:
-> Date: Tue,  1 Apr 2025 09:01:35 -0400
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: [PATCH v8 25/55] i386/tdx: Call KVM_TDX_INIT_VCPU to initialize
->  TDX vcpu
-> X-Mailer: git-send-email 2.34.1
+On Wed, Apr 16, 2025 at 02:52:26PM -0700, Dongli Zhang wrote:
+> Date: Wed, 16 Apr 2025 14:52:26 -0700
+> From: Dongli Zhang <dongli.zhang@oracle.com>
+> Subject: [PATCH v4 01/11] [DO NOT MERGE] i386/cpu: Consolidate the helper
+>  to get Host's vendor
+> X-Mailer: git-send-email 2.43.5
 > 
-> TDX vcpu needs to be initialized by SEAMCALL(TDH.VP.INIT) and KVM
-> provides vcpu level IOCTL KVM_TDX_INIT_VCPU for it.
+> From: Zhao Liu <zhao1.liu@intel.com>
 > 
-> KVM_TDX_INIT_VCPU needs the address of the HOB as input. Invoke it for
-> each vcpu after HOB list is created.
+> Extend host_cpu_vendor_fms() to help more cases to get Host's vendor
+> information.
 > 
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+> Cc: Dongli Zhang <dongli.zhang@oracle.com>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 > ---
->  target/i386/kvm/tdx.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
+> This patch is already queued by Paolo.
+> https://lore.kernel.org/all/20250410075619.145792-1-zhao1.liu@intel.com/
+> I don't need to add my Signed-off-by.
+> 
+>  target/i386/host-cpu.c        | 10 ++++++----
+>  target/i386/kvm/vmsr_energy.c |  3 +--
+>  2 files changed, 7 insertions(+), 6 deletions(-)
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Thanks. It has been merged as commit ae39acef49e2916 now.
 
 
