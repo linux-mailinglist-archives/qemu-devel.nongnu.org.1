@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AA68A9CD22
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:33:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B0E2A9CD0B
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:31:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8L1L-00034d-Kq; Fri, 25 Apr 2025 11:31:19 -0400
+	id 1u8L1E-0002ak-AT; Fri, 25 Apr 2025 11:31:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L0Z-0001T6-2V
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:30:35 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L0c-0001X5-Nn
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:30:43 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L0U-0003tj-VM
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:30:29 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-43cfba466b2so23068165e9.3
- for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:30:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L0a-0003uP-9P
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:30:33 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-43cf848528aso16829025e9.2
+ for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:30:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745595024; x=1746199824; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745595030; x=1746199830; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ex/E2xCBWHEai+sxwrZADL0ldrbpBVfhX+RO14sMF64=;
- b=KCci/5Z3h1ztVEMlH4dR6oAA4vHYuNNcduP8cY7DNAbZSdXJQGVHfzhEv/LsSjOg1V
- eRw6htDcKd09U6s3gLicMoQucQJiTlinu9HcOnzjVj7kvhWl2Uj/pe/Y+xWhrPuRJIhN
- ako7VsEo9On5jcXtfzaDU9pJx+Z8D2anP1K7v12j6WVFmyMpBrtRNqQUnIofQY+uWh12
- w1hjEqrzdz3dAVBvBjWK0Ws3aBoVnGCRZVjtgy+zs5qAbnebZakEt9UDxd5FiF/UQIO8
- LIqIZnGsZl5GLe7ojzMA0eeZZFWQt8wsMANDr5CZIwPgXTKMYjYcZkUPTLbYQ1Au1ah4
- qm9Q==
+ bh=Jvs44ehSMS7vr5Ngp7xi3bJceK1a1pBELdrshQJvya0=;
+ b=xOxYV4byykdUB/31gInDlyo79quNgSyGvIWHGw6LeY7NgG6jTaM0HJ+5iRDdtTM9RF
+ m8+6dO477Tvnq37jksU7/wdzKtF2glyX48BZrM5zFTpUWjw50Z2Oaeav2wN56++Bm5ot
+ QJYOOYx7Qd0Z6AHYAEUFPSytCq83dJjpVzwdq39FN+DozEaCqF7PSYB6d7uB0a8Z4uZQ
+ wOnuN3lAhcNT3+5NYNMHO+NDwf3rIMRLyztppJRyjSbVhVkzkxKpevv1cKg7eDpfHesw
+ QCmsJEnUFZmlJVqGMuS277sCORHPQWnMVGXe5bHjHLdlfML8UTt/l0qSHLErT0vTATPG
+ 56vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745595024; x=1746199824;
+ d=1e100.net; s=20230601; t=1745595030; x=1746199830;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ex/E2xCBWHEai+sxwrZADL0ldrbpBVfhX+RO14sMF64=;
- b=JuFg/KQDkKH26KypswM8bn/ROS/5gN5/l8rrokcC3dgs3ETKlglKT+qGGem37p7duO
- ekaEF2fo2kspfCpYbPqf1VR1oaXvfO+xx37krspgpOK/kLwTzQ+2SNk36fFtxHLpxl4q
- WzVH0b+Jm3M9zp8zF63FCgL4Y1rNUZvKeylLjzbpZX+7YWCyvjZQfzH+Goj71iXchwFw
- Wm74VXhIzJLvdlZdLUAoVXkCuiaGL2gwzS0KIGUC2r5nN7AR17oiA+zxfuWGVhoZzv+Z
- N6qI/+ZTcX33VTDjdmz8rAOunQ1n6ueJz/Zbzg0H7y/88gQku3S0yDA4nNnfLERc2zuz
- DscA==
-X-Gm-Message-State: AOJu0Yw/e2huXnMK7bS2C3XMYYzUfHVSLPRA7L2V0Y/AThZXvlUUsAE3
- gZjThMb9OJPsHSAE6vacykc3L3ijk0qoXE3lVV+l3/utULWNsN/Df48VqA951og48uNboqSbh1s
- Y
-X-Gm-Gg: ASbGncsycTm4sGBZaHyXPdJJAtmSO5GHcfavcElulVOix2U8ErIdSM4tv5/2rffnm35
- PZrt7FnUoRdE80EKoe6ta5FZC+PQeP3G2SDVJg8Tom5cz8YAARv4xUpHMt7srpTyhcDtiq4lcVy
- XyAQ2z2Hhoj+J3CdTp7EmBle9Sm0oAgT6T6jXSiOnePJN7WC07v8UdMY01axLFxy5U3b+lGzxqU
- NP/5Ew1uS9Wyu9grAqJgfKmDNImH0kWxGapy6hTgwiGCingbEkWpHdgif7bhJqaO1DeFt2W49ju
- JAkM6P/eSWcvL5zkvcry5E0m7zb5Li81HpEqk4Jgfgqlt8ALGTEOFyrpqXaaqi0frNglU7Zkgkd
- vKAtagzhAJFZzzFk=
-X-Google-Smtp-Source: AGHT+IFx7YnImKhTUyO79AuicihCgTHhfMnGZGp/CzHOlE9MFoosudDeKbFExWd+FWV6pB5k3BtloQ==
-X-Received: by 2002:a05:600c:1e0b:b0:439:9424:1b70 with SMTP id
- 5b1f17b1804b1-440a66ad403mr27267835e9.30.1745595024433; 
- Fri, 25 Apr 2025 08:30:24 -0700 (PDT)
+ bh=Jvs44ehSMS7vr5Ngp7xi3bJceK1a1pBELdrshQJvya0=;
+ b=Kvv1OvaU+FxDJSswOX9XYKdEeKsI9Za+xUbf3DsrXQBkSkpRpwsl2Wsl2WF7RbOWFm
+ VQ2NnsN15bjGwDBZQ9rXnjScit/qnWfoR4xbXw9Pt6828rDWg4S9eciEwA3+mXaDQdlE
+ 8oQZJfcqwpjRFby/OTUH+eh8k860Vm0lRCIRiXd9gR+S7HL8xCkfRhc39y95ZoZyC9U8
+ Oay1aVxIz5gWlw6Kom1yM5rp4kH77r9MsrXa2iS5po3BcPK8+7FaKtL0MToYzVovmP8x
+ dFr4xttWTKSDY4jB7Otp9qYPGJkWAd56lqTwPTdZrKVY9ZPE0wUrWthFnnesm830TSE/
+ AohQ==
+X-Gm-Message-State: AOJu0YzU8z83H70m+PoyQGqat2V+OW/nZh2W82GMXR7XR6F+4yGfo9PN
+ n6cwF5/0GuLX0u3HhgTRfN09CUynuGdu1LbAPoB02xoteOyuAptc43luY8gXiKpbEkfiKU/A072
+ Q
+X-Gm-Gg: ASbGncvOeOT5UChLKEzvBN92qiWld+kNXwsKcWeyNczKQp1yYBunX02pBKmBTXoGqqm
+ 44OdtI9k7dDJqeBLSikt8W98ByuPrzkdQVnaKpqbwokKgLm5dAYek5W1hp90A1EvLDWP2kWtP00
+ JSZPsoku1EFXfpCo3yVUHxqoCL+5QvSVz1hmZwy6hLtQ2/kqDXtw1SPG68sL1g5CT4fVvknd73q
+ Ql8Mg/qjlG2vjSEWWNn+V9cLMssV5umk8aNZI0oxSnJtP2w4mptgzLhyRyixnOzoQaRE2tS1NIV
+ xmfTbXMQUk7kfBugdGcgU3SuL/lLft2N5pdpEMP5JWpJPa4Mvc+eLUi0SHwl6ULrkAr3Z/GrZ0H
+ SZXemDv7/WlnVl4Q=
+X-Google-Smtp-Source: AGHT+IH+Ngl9OZstdsZLuLUTczfqV5MXeo7jPlYtHmwfzO9QDr2VUhA/NNC0yPEUcSulmeAcOs39iw==
+X-Received: by 2002:a05:600c:3d8b:b0:440:6852:5b31 with SMTP id
+ 5b1f17b1804b1-440a65d8109mr31817015e9.10.1745595030141; 
+ Fri, 25 Apr 2025 08:30:30 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a073e47307sm2673782f8f.65.2025.04.25.08.30.23
+ 5b1f17b1804b1-440a536a1ddsm28165085e9.30.2025.04.25.08.30.28
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 25 Apr 2025 08:30:23 -0700 (PDT)
+ Fri, 25 Apr 2025 08:30:29 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 20/58] gdbstub: Allow gdb_core_xml_file to be set at runtime
-Date: Fri, 25 Apr 2025 17:28:04 +0200
-Message-ID: <20250425152843.69638-21-philmd@linaro.org>
+Subject: [PULL 21/58] target/arm: Handle AArch64 in TYPE_ARM_CPU gdb_arch_name
+Date: Fri, 25 Apr 2025 17:28:05 +0200
+Message-ID: <20250425152843.69638-22-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250425152843.69638-1-philmd@linaro.org>
 References: <20250425152843.69638-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,103 +101,82 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Peter Maydell <peter.maydell@linaro.org>
 
-Currently the CPUClass:gdb_core_xml_file setting is a simple 'const
-char *' which the CPU class must set to a fixed string.  Allow the
-CPU class to instead set a new method gdb_get_core_xml_file() which
-returns this string.
+Instead of having the TYPE_AARCH64_CPU subclass set
+CPUClass::gdb_arch_name to a different function, make the
+TYPE_ARM_CPU implementation of the method handle AArch64.
 
-This will allow Arm CPUs to use different XML files for AArch32 vs
-AArch64 without having to have an extra AArch64-specific class type
-purely to give somewhere to set cc->gdb_core_xml_file differently.
+For the moment we make the "is this AArch64?" function test "is the
+CPU of TYPE_AARCH64_CPU?", so that this produces no behavioural
+change.  When we've moved all the gdbstub related methods across to
+the base class, we will be able to change this to be "does the CPU
+have the ARM_FEATURE_AARCH64 feature?".
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Acked-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250317142819.900029-3-peter.maydell@linaro.org>
+Message-ID: <20250317142819.900029-4-peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/core/cpu.h |  5 +++++
- gdbstub/gdbstub.c     | 23 +++++++++++++++++++----
- 2 files changed, 24 insertions(+), 4 deletions(-)
+ target/arm/internals.h | 6 ++++++
+ target/arm/cpu.c       | 3 +++
+ target/arm/cpu64.c     | 6 ------
+ 3 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 6ea246514ea..2a02d4f0789 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -131,6 +131,10 @@ struct SysemuCPUOps;
-  * @gdb_num_core_regs: Number of core registers accessible to GDB or 0 to infer
-  *                     from @gdb_core_xml_file.
-  * @gdb_core_xml_file: File name for core registers GDB XML description.
-+ * @gdb_get_core_xml_file: Optional callback that returns the file name for
-+ * the core registers GDB XML description. The returned value is expected to
-+ * be a simple constant string: the caller will not g_free() it. If this
-+ * is NULL then @gdb_core_xml_file will be used instead.
-  * @gdb_stop_before_watchpoint: Indicates whether GDB expects the CPU to stop
-  *           before the insn which triggers a watchpoint rather than after it.
-  * @gdb_arch_name: Optional callback that returns the architecture name known
-@@ -166,6 +170,7 @@ struct CPUClass {
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index d24acdd672e..08f4bd16791 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1826,6 +1826,12 @@ void aarch64_add_pauth_properties(Object *obj);
+ void aarch64_add_sve_properties(Object *obj);
+ void aarch64_add_sme_properties(Object *obj);
  
-     const char *gdb_core_xml_file;
-     const gchar * (*gdb_arch_name)(CPUState *cpu);
-+    const char * (*gdb_get_core_xml_file)(CPUState *cpu);
- 
-     void (*disas_set_info)(CPUState *cpu, disassemble_info *info);
- 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 282e13e163f..565f6b33a90 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -565,15 +565,30 @@ static void gdb_register_feature(CPUState *cpu, int base_reg,
-     g_array_append_val(cpu->gdb_regs, s);
- }
- 
-+static const char *gdb_get_core_xml_file(CPUState *cpu)
++/* Return true if the gdbstub is presenting an AArch64 CPU */
++static inline bool arm_gdbstub_is_aarch64(ARMCPU *cpu)
 +{
-+    CPUClass *cc = cpu->cc;
-+
-+    /*
-+     * The CPU class can provide the XML filename via a method,
-+     * or as a simple fixed string field.
-+     */
-+    if (cc->gdb_get_core_xml_file) {
-+        return cc->gdb_get_core_xml_file(cpu);
-+    }
-+    return cc->gdb_core_xml_file;
++    return object_dynamic_cast(OBJECT(cpu), TYPE_AARCH64_CPU);
 +}
 +
- void gdb_init_cpu(CPUState *cpu)
+ /* Read the CONTROL register as the MRS instruction would. */
+ uint32_t arm_v7m_mrs_control(CPUARMState *env, uint32_t secure);
+ 
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 00577f97eb6..bed0e58f3c0 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -2649,6 +2649,9 @@ static const gchar *arm_gdb_arch_name(CPUState *cs)
+     ARMCPU *cpu = ARM_CPU(cs);
+     CPUARMState *env = &cpu->env;
+ 
++    if (arm_gdbstub_is_aarch64(cpu)) {
++        return "aarch64";
++    }
+     if (arm_feature(env, ARM_FEATURE_IWMMXT)) {
+         return "iwmmxt";
+     }
+diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
+index eaf5705cdc2..fbb7e7b3d64 100644
+--- a/target/arm/cpu64.c
++++ b/target/arm/cpu64.c
+@@ -813,11 +813,6 @@ static void aarch64_cpu_finalizefn(Object *obj)
  {
-     CPUClass *cc = cpu->cc;
-     const GDBFeature *feature;
-+    const char *xmlfile = gdb_get_core_xml_file(cpu);
+ }
  
-     cpu->gdb_regs = g_array_new(false, false, sizeof(GDBRegisterState));
- 
--    if (cc->gdb_core_xml_file) {
--        feature = gdb_find_static_feature(cc->gdb_core_xml_file);
-+    if (xmlfile) {
-+        feature = gdb_find_static_feature(xmlfile);
-         gdb_register_feature(cpu, 0,
-                              cc->gdb_read_register, cc->gdb_write_register,
-                              feature);
-@@ -1644,7 +1659,7 @@ void gdb_extend_qsupported_features(char *qflags)
- static void handle_query_supported(GArray *params, void *user_ctx)
+-static const gchar *aarch64_gdb_arch_name(CPUState *cs)
+-{
+-    return "aarch64";
+-}
+-
+ static void aarch64_cpu_class_init(ObjectClass *oc, const void *data)
  {
-     g_string_printf(gdbserver_state.str_buf, "PacketSize=%x", MAX_PACKET_LENGTH);
--    if (first_cpu->cc->gdb_core_xml_file) {
-+    if (gdb_get_core_xml_file(first_cpu)) {
-         g_string_append(gdbserver_state.str_buf, ";qXfer:features:read+");
-     }
+     CPUClass *cc = CPU_CLASS(oc);
+@@ -825,7 +820,6 @@ static void aarch64_cpu_class_init(ObjectClass *oc, const void *data)
+     cc->gdb_read_register = aarch64_cpu_gdb_read_register;
+     cc->gdb_write_register = aarch64_cpu_gdb_write_register;
+     cc->gdb_core_xml_file = "aarch64-core.xml";
+-    cc->gdb_arch_name = aarch64_gdb_arch_name;
  
-@@ -1701,7 +1716,7 @@ static void handle_query_xfer_features(GArray *params, void *user_ctx)
-     }
- 
-     process = gdb_get_cpu_process(gdbserver_state.g_cpu);
--    if (!gdbserver_state.g_cpu->cc->gdb_core_xml_file) {
-+    if (!gdb_get_core_xml_file(gdbserver_state.g_cpu)) {
-         gdb_put_packet("");
-         return;
-     }
+     object_class_property_add_bool(oc, "aarch64", aarch64_cpu_get_aarch64,
+                                    aarch64_cpu_set_aarch64);
 -- 
 2.47.1
 
