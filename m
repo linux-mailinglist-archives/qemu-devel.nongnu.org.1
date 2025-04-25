@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25FAEA9CD28
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:34:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 039E4A9CD55
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:40:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8L27-0006Y1-Dq; Fri, 25 Apr 2025 11:32:07 -0400
+	id 1u8L2G-000736-UM; Fri, 25 Apr 2025 11:32:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L1u-0005hs-V7
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:31:55 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L1z-00067V-Bc
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:31:59 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L1r-00045Y-LJ
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:31:54 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-39ee682e0ddso1557630f8f.1
- for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:31:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L1w-000464-72
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:31:58 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-43cebe06e9eso17118545e9.3
+ for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:31:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745595109; x=1746199909; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745595114; x=1746199914; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=B/dNYV9pYXgt9CiWoeZ7raRRHnU5OLtbyz8NfKzKm4I=;
- b=y5klToHBqO74zvWovmtCbfqS1Fh8keIHhNzUmyNTL6DG8OXUm3d03kmBJywT42DArn
- AYNeHicra56230vUbNy02KAKp+thQ9+r/bgYFlXWVOvJFcpJASHMBJtcLNDFH5i7ifvO
- zbqspZTKl4tjUb+cu3vkJ+zo75vKKojNYJ8NOE3bRxOSU2MxwNsQjuL1Xu+OvCPdepNX
- mQBGfX9QwepX2DUigHKGCGAov08qcRCt0eMunMQfvW7fpCPWLdT01a+aKvx1nU1mZNXb
- ic62DcSeSEfVDkKYzj8dERCmCwDXdWhlTVDtFpP9W71LfDkII5fd/SR+2zMZA7nr5vr/
- V0VA==
+ bh=Bn8ZwlSg8DF1L5LTUuHBCXKlF5X/HcHey9e05VeENiM=;
+ b=CWz+dmRDvO6Xnf0yWkkoBvU7/adWxJfWICSOBFFa/5ZLvGYk9LoQv8uJJDw1w4TChW
+ cLtbXvnNm47um5+EMCmLoFypOHcjlhbtxGzpSQi3GZpuqSZ7AFRR/lB+BIJALzyu+8+4
+ x5/gW7ma/BzE6Gi+io2ylronuKTF6y8cMrWQVL+HCXchR0MJwGasY5CLGgc2aCbBsyYN
+ 98+2gxOIM4JA/OeH8haOxo5aVc/Lr7HFktjcAF1w2tVtDdNB/r31aWvWPViHrPbK+R2K
+ 559I1wbFKBId+3JOVlEbTWlrgKDuTTCrsbrz2/x51W2/akaV4bM2uKDIfr9EXd5ynDYx
+ iQBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745595109; x=1746199909;
+ d=1e100.net; s=20230601; t=1745595114; x=1746199914;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=B/dNYV9pYXgt9CiWoeZ7raRRHnU5OLtbyz8NfKzKm4I=;
- b=sDpU66c10V7j8Rda1VDIVW+sd40LZx/Cw+Pzgpdmd80I3gN7fg3MCAuOOckV0BEl8m
- 7et+wn+hpG3DMpT14Fn2R6g2NxUm8IJ/I0Ikhp79cSSDd+QysgfHMIswkHEu4YMo0ETJ
- 1QFdKhW2C6zv/VtRBnm1Bc49vp+FQBL2nZBE7JAz+EU9J6Bk7fhGriBOR6hs+Wc3MCxa
- hkBj6i1daxM6gBHEsDhSNPY8Qj9VdJ1NF1/pPhlozrhJVvOd6Drsivr5dHANO3JJCtk2
- 6c51LClZlwr28t8okDWcmg0D1bngNa8xx5D2ebsAs3Pz/ns2P3QtDP+ZuZ+aaBLrWQJ8
- q2eA==
-X-Gm-Message-State: AOJu0YzhwmxNo0Mu84Yvcy6GgObzbCrLPOYIPXNpkpwigjLTK6FIYz+C
- 5FF+zKDRveTlARvGJTcZCEtXRZixGXDCDk51+y+t0kswQiOVJztRQFY7aKn1bf8L+ajyqDGH7ls
- h
-X-Gm-Gg: ASbGncuenjyu245Cr6/uJDDVwAvJH7pHwaDiwHkFzWjNa9eJm1B6VSjtN7O3Vrx/AJa
- rFWcoguSWa02EoRGVUIaGFmN4ITifHdi1w9fgZL+aN5sNG7Gq52z/5BgXjl8fesAg4PwFn1o/0P
- aY/mW7i018yoxmoQdcB1p0Sf7EYwlfob/qRPCnSMFlcegsm/zTmFD+y+Jvc6PkJeJYopqyLzwmz
- lGCnDwf3zkV/n8NYr/UFfzGo63sxwwwyCXnLI2xkSF6435w68zyXNyV5040+jEKB2Q0+IQVErqV
- ns74VYhRaxdQXcNA8dWQKYOgmBDmTNmn7dVq8AOMygfGBUL1QRwNS5MsUTzlzTfsdACNUO3Jlv+
- CsWk8Iw1kkz33fLM=
-X-Google-Smtp-Source: AGHT+IGuToGSGwRyMea8QELQzjNXUIW94RTo6/+DqZv4j/S5O5Is0r4Ymz5/+IP4eWXMLUzDchaC/A==
-X-Received: by 2002:a05:6000:144b:b0:39a:ca04:3dff with SMTP id
- ffacd0b85a97d-3a074f14606mr2560482f8f.40.1745595109125; 
- Fri, 25 Apr 2025 08:31:49 -0700 (PDT)
+ bh=Bn8ZwlSg8DF1L5LTUuHBCXKlF5X/HcHey9e05VeENiM=;
+ b=NjnwCibXAQDmOzC8QCcAd8K8vjRQJ0B8K6fKtToZbswdIkw6jocUdGS6p+8/4zsHF5
+ KYdLfe6s+536y/cEg3+g5tyEZzjEzFrqkDWKhSPzckiUopCeZ8sO5vRwZ0Gp+PgSG/oh
+ 4WZW4nZxP2TMjJ4siY+OR5TGLa5uayAeVV7G99VChopF5TeU8LnjoFdmOIT5a3M3ozBl
+ 3Mlqrejh6iOK3XY9A5OQQyJCq2jB4UNmM7AupiecKxii3DoyQSVvWLkilrnanSU4ZCLG
+ Wkq0A7DfKWUnpAbh5Yps4vIvtAkrRJ18xlRV5b/P3+XvOLZ2DJWlzX8P6bYPYPNCXBrf
+ MW6A==
+X-Gm-Message-State: AOJu0YxG2z5uocUgPN+KMdS77BlpdHoz7gRfDT1UM2Il1u14ByctcRfU
+ TTP1N8d1GMfOGAhADX1ggdbXni8rWS+ehb59alLl+0NAbjc9BrL6rLc5LZJwVhFlLSD64MIZpDQ
+ N
+X-Gm-Gg: ASbGnctAPBxny7h8n+JGFsDg+3s1N44Dv5q53NW/A3wq8w/ipBCixHpuCS+GEWi1DvN
+ j+LoUBDkNsCDGUoFidcv8Ees1bbYt5EZjciLfwVpQmGIBuS2XrDpzGOsnIupHwPCSxu7+OGaNxY
+ bEnX/9L0F3MPoRGif5hQm64dQVnRvZJEokyPYf9gxkyFqAmlny0jkfK0twIEAHLerK0DuU1RUbY
+ wJ9P6zGwiK2XPaYiZw0UoEWxcj0lA5v8jlmD9dJuxnnZpDyuUECgkziMJCbNv+PfC/j4dvpYCB1
+ 958ejEWimzfoemzjk+1vJsnzDM1HttZk4xGTrLEqQElLD9/3623dcaikz2SID7la9dF8NPD9+AZ
+ 9Pl6pvB48+JS+qEo=
+X-Google-Smtp-Source: AGHT+IHr0/PNK30nFOlUIPGSBYhibii8vvP5pDNoKKzYU9WZ3cLOu1ogqPFHe1ZuKrgHEjPMKyEL6w==
+X-Received: by 2002:a05:600c:3484:b0:440:6a79:6df0 with SMTP id
+ 5b1f17b1804b1-440a66973c7mr23499305e9.22.1745595113843; 
+ Fri, 25 Apr 2025 08:31:53 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4409d1e19e1sm60449215e9.0.2025.04.25.08.31.48
+ 5b1f17b1804b1-440a5303c15sm28045965e9.11.2025.04.25.08.31.53
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 25 Apr 2025 08:31:48 -0700 (PDT)
+ Fri, 25 Apr 2025 08:31:53 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, qemu-stable@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 37/58] meson: Use has_header_symbol() to check getcpu()
-Date: Fri, 25 Apr 2025 17:28:21 +0200
-Message-ID: <20250425152843.69638-38-philmd@linaro.org>
+Subject: [PULL 38/58] meson: Remove CONFIG_STATX and CONFIG_STATX_MNT_ID
+Date: Fri, 25 Apr 2025 17:28:22 +0200
+Message-ID: <20250425152843.69638-39-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250425152843.69638-1-philmd@linaro.org>
 References: <20250425152843.69638-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,43 +100,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-The use of gnu_source_prefix in the detection of getcpu() was
-ineffective because the header file that declares getcpu() when
-_GNU_SOURCE is defined was not included. Pass sched.h to
-has_header_symbol() so that the existence of the declaration will be
-properly checked.
+CONFIG_STATX and CONFIG_STATX_MNT_ID are not used since commit
+e0dc2631ec4 ("virtiofsd: Remove source").
 
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250424-buildsys-v1-1-97655e3b25d7@daynix.com>
+Message-ID: <20250424-buildsys-v1-2-97655e3b25d7@daynix.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- meson.build | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ meson.build | 10 ----------
+ 1 file changed, 10 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index bcb9d39a387..f77a9ce569e 100644
+index f77a9ce569e..35dcec8ce5c 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -2635,7 +2635,6 @@ config_host_data.set('CONFIG_CLOCK_ADJTIME', cc.has_function('clock_adjtime'))
- config_host_data.set('CONFIG_DUP3', cc.has_function('dup3'))
- config_host_data.set('CONFIG_FALLOCATE', cc.has_function('fallocate'))
- config_host_data.set('CONFIG_POSIX_FALLOCATE', cc.has_function('posix_fallocate'))
--config_host_data.set('CONFIG_GETCPU', cc.has_function('getcpu', prefix: gnu_source_prefix))
- config_host_data.set('CONFIG_SCHED_GETCPU', cc.has_function('sched_getcpu', prefix: '#include <sched.h>'))
- # Note that we need to specify prefix: here to avoid incorrectly
- # thinking that Windows has posix_memalign()
-@@ -2713,6 +2712,8 @@ config_host_data.set('CONFIG_FALLOCATE_ZERO_RANGE',
- config_host_data.set('CONFIG_FIEMAP',
-                      cc.has_header('linux/fiemap.h') and
-                      cc.has_header_symbol('linux/fs.h', 'FS_IOC_FIEMAP'))
-+config_host_data.set('CONFIG_GETCPU',
-+                     cc.has_header_symbol('sched.h', 'getcpu', prefix: gnu_source_prefix))
- config_host_data.set('CONFIG_GETRANDOM',
-                      cc.has_function('getrandom') and
-                      cc.has_header_symbol('sys/random.h', 'GRND_NONBLOCK'))
+@@ -2191,14 +2191,6 @@ gnu_source_prefix = '''
+   #endif
+ '''
+ 
+-# Check whether the glibc provides STATX_BASIC_STATS
+-
+-has_statx = cc.has_header_symbol('sys/stat.h', 'STATX_BASIC_STATS', prefix: gnu_source_prefix)
+-
+-# Check whether statx() provides mount ID information
+-
+-has_statx_mnt_id = cc.has_header_symbol('sys/stat.h', 'STATX_MNT_ID', prefix: gnu_source_prefix)
+-
+ have_vhost_user_blk_server = get_option('vhost_user_blk_server') \
+   .require(host_os == 'linux',
+            error_message: 'vhost_user_blk_server requires linux') \
+@@ -2560,8 +2552,6 @@ config_host_data.set('CONFIG_CRYPTO_SM3', crypto_sm3.found())
+ config_host_data.set('CONFIG_HOGWEED', hogweed.found())
+ config_host_data.set('CONFIG_QEMU_PRIVATE_XTS', xts == 'private')
+ config_host_data.set('CONFIG_MALLOC_TRIM', has_malloc_trim)
+-config_host_data.set('CONFIG_STATX', has_statx)
+-config_host_data.set('CONFIG_STATX_MNT_ID', has_statx_mnt_id)
+ config_host_data.set('CONFIG_ZSTD', zstd.found())
+ config_host_data.set('CONFIG_QPL', qpl.found())
+ config_host_data.set('CONFIG_UADK', uadk.found())
 -- 
 2.47.1
 
