@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03688A9CD04
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:31:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01190A9CD38
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:35:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8Kzr-0000Jf-0j; Fri, 25 Apr 2025 11:29:47 -0400
+	id 1u8Kzs-0000Ma-2z; Fri, 25 Apr 2025 11:29:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8Kzi-0000Gy-FS
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:29:38 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8Kzl-0000Jt-SK
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:29:42 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8Kzf-0003ZJ-7d
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:29:38 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-43cf628cb14so26264915e9.1
- for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:29:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8Kzk-0003Zk-6c
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:29:41 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-43edb40f357so16848685e9.0
+ for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:29:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745594973; x=1746199773; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745594978; x=1746199778; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xDeK2OgzN2P2mbb8Tyis2S5kU/yrfY2rgHLC/uGH9B8=;
- b=K4SaGfamANQ7k+pNMlr4S0Ydhd8TtzzpcyNB9W1Ufhl5r1QE0cVwP5KBcP3ZLp3Dmm
- 19pLZ/dckdt0eF/rAaKwCsDRgzFaEH6Q/MVJLraZr1QBuy36XfiaS2HoYE313fLfMJBY
- 4Ll33OxqehmhpqOv/HdgOYsbcbVX8NcAO7kaNNSxoyJG6BxTRg7c5c4GoCYHgsYTUpkV
- 2vCpA+UbP0azGMq8mjIccfgsvyudbXHGHtGn5qh6vDP0DurC+zI1wkOL+Ae6eVk2tmaV
- 3XM0gpCXB3xc/7JG0VWNmxK/Ux7a3Lt5GQiOdO1nXA/sa2jAmOPyjg5RtwzLLujYJOr1
- vTCw==
+ bh=YS0KKbVb3QlYsS+EDVG/sJJ1OU5Cca6YcSkQlykDIeM=;
+ b=bW9O5mgNzVg5l4I5seWtmQGM3rQYY6eJJ+yxCHISU7UrKFH9HxgTd0ZYW9UcP9oQT/
+ 2q8ygk5LP4s+EThWHQprQbYulF6EewWp5YGNA3CuGEVOjOaIL4HybUoM4+ztkOhMm/dW
+ 8jD4mzW/kFHjmpR+rorviWhtwHkQjVx4toPf6Plg4QZRDdBEuDZAJX+3bWgYm16JnBsY
+ Ty2OqFgGebBs3BCYLnEq7wQ+IfwE6aqWgnOGnXu9vnERtr3oV6UAiFeMka94crN7kyse
+ 4XxMphE5AXpoPgmIiy/rs58lxrs9v9w1zYqfv5JHaVjdFn/lUY1KqQeZIi87d2DSwX8a
+ ytlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745594973; x=1746199773;
+ d=1e100.net; s=20230601; t=1745594978; x=1746199778;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xDeK2OgzN2P2mbb8Tyis2S5kU/yrfY2rgHLC/uGH9B8=;
- b=VC/87Cm87Xrp11yVPhaXPoyUgp6EYKhpJKEveFad0aoI19Ut988bRy2tvv5ozsfBp5
- rhLI6weAknt9KwowLNEkcS4ug2x37gcLnoYDBH0m5rKJ1FTvrf1paM7JRNyAAfuojdXF
- h9AtDEATHFL0Kn+4ImminYXnD5Pe9kzFCqjq7nidtRqwX0N9K/DT7h/FbkNDQwvZPuuc
- hOfwU7wEhm5JprgVZLxq37cv+WxUfxM8x1k0Lw3pX4b8NbzwXZnQp3eoO9BuJHxxJviP
- 8O4qHL9RyZxXGqoyX7UJ06BNdFcfcJFyf9t4exaAGzbN8O0lVCcc5GQIfYpAhOax1wDJ
- tBRw==
-X-Gm-Message-State: AOJu0YxkXSPAeQck/3YjoxaGDgwtrlXu7QiKFKdihNMNeurZR1r/syX3
- CdCS7re7PJ3ExhwgMuMw7pGhJVR8QcGISfkQ27+YRoT/AfAx6kkXc6V7oWgeScQ4qYolaaZnrCo
- 0
-X-Gm-Gg: ASbGncs2pjiTcnuw9asDTAv17+YFZPvP73yQUU1lYRWPjrHBC0nDQ7Cywue2sfnrcMn
- 6TNB0naxW34hg1FEnX4bAN5I16XOZtgSoYCfrPv9dods0HvOPk6zGJTYnoZdZFjTVyj7IT1oOsJ
- cvBYLqBWEv/YzLK2acV5/PcX1mdahnhivHvVUNGhoXb/OmnTdFdvYmKKujkHwcy+SPFts05rXQC
- NmLnB30G4i+m0L9ZJHaEhzvIS5XvmNhm1U1sodgr36BvUMLBn3gLSWvimigK04TVWa2BIuGTtTx
- elgBVhnJPqMZp3dBSiFILEJXJhrLEhYsUuX/8jO3VUCkvqmXS8iaEXDxHLiyY+ciboFVTl6f+x6
- c5go7LJ8tJVyxXk8=
-X-Google-Smtp-Source: AGHT+IFjD+H6lueYbYeVkK/+gDvAJSfBFBormjGh3T+fbRHyh6addhdZcPjTQ7oTnGPsfZ3BdbclLQ==
-X-Received: by 2002:a5d:64a3:0:b0:39f:bfa:7c90 with SMTP id
- ffacd0b85a97d-3a06d66cfb5mr6043146f8f.13.1745594973234; 
- Fri, 25 Apr 2025 08:29:33 -0700 (PDT)
+ bh=YS0KKbVb3QlYsS+EDVG/sJJ1OU5Cca6YcSkQlykDIeM=;
+ b=MGFP/1efNG3siaoZg8BUkzTJ6fwUeom9ypv8WK7HX54gIOjp3qMdNCTOHkbIFCY16d
+ tJHWZI7NiDjrriMvPtyddDtr3jJBzIvTemaV5jHwHM6aL3amXIk5dEzSUd8rBs+KoiOP
+ ia7pmBxcYrDGmXK+feHMcbrEpgUp+oiVWp+ysoblJXpM9G6ydc5EH3bBacbobanTLXwS
+ RNaYP+ny6owULK4sBRDNlcfYt53CGASWT3noYVRR/5j/pcp1R5Wncf5Sq1BuIFPkLfSD
+ 6/aMYIi5tkCVRLy78g+3dIMlHbuWT3u57me7Sq9BpDYR/o3/RfGt5FPYhRxJ8S05prI3
+ p8gA==
+X-Gm-Message-State: AOJu0YywU/VXVkg4FlUR4UL2nQsUuedvw9wDlL2lMZLCPG4GameeDQlw
+ SydaD5rg2KcsRUcSTEOd4LpUct2oKLfzBr9uVAq1VnrcFaxx3dw6U/LpzUBR1CWfYxsE5cu5FQD
+ F
+X-Gm-Gg: ASbGnctkOcIuiH62C0aGVUWYMm5tIkO+y7WI40yGy38TjeHTA5eCGIb6oR6p35KASMo
+ OJZsRuae49th95sxgQHf/Wu8rSOJJoJfr/QvMHbk0FbwYACP1teJo93z7a1RBruLIFi9GXzkpL4
+ 0UncUhsWwmbl9buRvVpWkFUEp8I5nRbQO1TI1b4PQt2vxotax+TQlSG1iC2XiSXhMbjTOT/vYUZ
+ cPjkYOyzRm4jzzVrtvH8oQeanOWl3cJkmK1PXFD1BBszL87MwJTxOrr/knW+8QXVnByP2nZTTKd
+ 0GM6xCW2LuOseIA8QvKTrS54hPSawkptYl167SBsPyw6V6xvhPi1230FWXB0j7oKB+xvPOksZDr
+ Npf6jjiehSGLJhbU=
+X-Google-Smtp-Source: AGHT+IFInjTQAR1G200iUGYgOowwmDQfqVthj6CTIfwaQ54XRZhxQgpBt71wqtuBQPjqKHUeF3ZBWg==
+X-Received: by 2002:a05:600c:4f12:b0:43c:e70d:4504 with SMTP id
+ 5b1f17b1804b1-440a661a17dmr21668015e9.19.1745594977953; 
+ Fri, 25 Apr 2025 08:29:37 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a073e5c82fsm2608749f8f.85.2025.04.25.08.29.32
+ 5b1f17b1804b1-4409d29ba29sm62396805e9.7.2025.04.25.08.29.37
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 25 Apr 2025 08:29:32 -0700 (PDT)
+ Fri, 25 Apr 2025 08:29:37 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gustavo Romero <gustavo.romero@linaro.org>
-Subject: [PULL 10/58] hw/pci-host/designware: Use deposit/extract API
-Date: Fri, 25 Apr 2025 17:27:54 +0200
-Message-ID: <20250425152843.69638-11-philmd@linaro.org>
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 11/58] hw/misc/edu: Convert type_init() -> DEFINE_TYPES()
+Date: Fri, 25 Apr 2025 17:27:55 +0200
+Message-ID: <20250425152843.69638-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250425152843.69638-1-philmd@linaro.org>
 References: <20250425152843.69638-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,115 +98,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Prefer the safer (less bug-prone) deposit/extract API
-to access lower/upper 32-bit of 64-bit registers.
+Prefer DEFINE_TYPES() macro over type_init() to register
+QOM types.
+
+Initialize the .interfaces struct field as compound literal
+casted to InterfaceInfo type like the rest of our code base.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
-Message-Id: <20250331152041.74533-3-philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20250424194905.82506-2-philmd@linaro.org>
 ---
- hw/pci-host/designware.c | 48 ++++++++++++++--------------------------
- 1 file changed, 17 insertions(+), 31 deletions(-)
+ hw/misc/edu.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
-index 5598d18f478..9c3a5f8d910 100644
---- a/hw/pci-host/designware.c
-+++ b/hw/pci-host/designware.c
-@@ -22,6 +22,7 @@
- #include "qapi/error.h"
- #include "qemu/module.h"
- #include "qemu/log.h"
-+#include "qemu/bitops.h"
- #include "hw/pci/msi.h"
- #include "hw/pci/pci_bridge.h"
- #include "hw/pci/pci_host.h"
-@@ -162,11 +163,9 @@ designware_pcie_root_config_read(PCIDevice *d, uint32_t address, int len)
-         break;
+diff --git a/hw/misc/edu.c b/hw/misc/edu.c
+index 504178b4a22..5723ef0ed13 100644
+--- a/hw/misc/edu.c
++++ b/hw/misc/edu.c
+@@ -429,21 +429,18 @@ static void edu_class_init(ObjectClass *class, void *data)
+     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+ }
  
-     case DESIGNWARE_PCIE_MSI_ADDR_LO:
--        val = root->msi.base;
--        break;
--
-     case DESIGNWARE_PCIE_MSI_ADDR_HI:
--        val = root->msi.base >> 32;
-+        val = extract64(root->msi.base,
-+                        address == DESIGNWARE_PCIE_MSI_ADDR_LO ? 0 : 32, 32);
-         break;
+-static void pci_edu_register_types(void)
+-{
+-    static InterfaceInfo interfaces[] = {
+-        { INTERFACE_CONVENTIONAL_PCI_DEVICE },
+-        { },
+-    };
+-    static const TypeInfo edu_info = {
++static const TypeInfo edu_types[] = {
++    {
+         .name          = TYPE_PCI_EDU_DEVICE,
+         .parent        = TYPE_PCI_DEVICE,
+         .instance_size = sizeof(EduState),
+         .instance_init = edu_instance_init,
+         .class_init    = edu_class_init,
+-        .interfaces = interfaces,
+-    };
++        .interfaces    = (InterfaceInfo[]) {
++            { INTERFACE_CONVENTIONAL_PCI_DEVICE },
++            { },
++        },
++    }
++};
  
-     case DESIGNWARE_PCIE_MSI_INTR0_ENABLE:
-@@ -190,19 +189,16 @@ designware_pcie_root_config_read(PCIDevice *d, uint32_t address, int len)
-         break;
- 
-     case DESIGNWARE_PCIE_ATU_LOWER_BASE:
--        val = viewport->base;
--        break;
--
-     case DESIGNWARE_PCIE_ATU_UPPER_BASE:
--        val = viewport->base >> 32;
-+        val = extract64(viewport->base,
-+                        address == DESIGNWARE_PCIE_ATU_LOWER_BASE ? 0 : 32, 32);
-         break;
- 
-     case DESIGNWARE_PCIE_ATU_LOWER_TARGET:
--        val = viewport->target;
--        break;
--
-     case DESIGNWARE_PCIE_ATU_UPPER_TARGET:
--        val = viewport->target >> 32;
-+        val = extract64(viewport->target,
-+                        address == DESIGNWARE_PCIE_ATU_LOWER_TARGET ? 0 : 32,
-+                        32);
-         break;
- 
-     case DESIGNWARE_PCIE_ATU_LIMIT:
-@@ -321,14 +317,10 @@ static void designware_pcie_root_config_write(PCIDevice *d, uint32_t address,
-         break;
- 
-     case DESIGNWARE_PCIE_MSI_ADDR_LO:
--        root->msi.base &= 0xFFFFFFFF00000000ULL;
--        root->msi.base |= val;
--        designware_pcie_root_update_msi_mapping(root);
--        break;
--
-     case DESIGNWARE_PCIE_MSI_ADDR_HI:
--        root->msi.base &= 0x00000000FFFFFFFFULL;
--        root->msi.base |= (uint64_t)val << 32;
-+        root->msi.base = deposit64(root->msi.base,
-+                                   address == DESIGNWARE_PCIE_MSI_ADDR_LO
-+                                   ? 0 : 32, 32, val);
-         designware_pcie_root_update_msi_mapping(root);
-         break;
- 
-@@ -355,23 +347,17 @@ static void designware_pcie_root_config_write(PCIDevice *d, uint32_t address,
-         break;
- 
-     case DESIGNWARE_PCIE_ATU_LOWER_BASE:
--        viewport->base &= 0xFFFFFFFF00000000ULL;
--        viewport->base |= val;
--        break;
--
-     case DESIGNWARE_PCIE_ATU_UPPER_BASE:
--        viewport->base &= 0x00000000FFFFFFFFULL;
--        viewport->base |= (uint64_t)val << 32;
-+        viewport->base = deposit64(root->msi.base,
-+                                   address == DESIGNWARE_PCIE_ATU_LOWER_BASE
-+                                   ? 0 : 32, 32, val);
-         break;
- 
-     case DESIGNWARE_PCIE_ATU_LOWER_TARGET:
--        viewport->target &= 0xFFFFFFFF00000000ULL;
--        viewport->target |= val;
--        break;
--
-     case DESIGNWARE_PCIE_ATU_UPPER_TARGET:
--        viewport->target &= 0x00000000FFFFFFFFULL;
--        viewport->target |= (uint64_t)val << 32;
-+        viewport->target = deposit64(root->msi.base,
-+                                     address == DESIGNWARE_PCIE_ATU_LOWER_TARGET
-+                                     ? 0 : 32, 32, val);
-         break;
- 
-     case DESIGNWARE_PCIE_ATU_LIMIT:
+-    type_register_static(&edu_info);
+-}
+-type_init(pci_edu_register_types)
++DEFINE_TYPES(edu_types)
 -- 
 2.47.1
 
