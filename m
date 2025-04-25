@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 131DBA9CD3F
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:35:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17060A9CD35
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:35:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8L1R-0003WH-0A; Fri, 25 Apr 2025 11:31:25 -0400
+	id 1u8L17-00022X-Jd; Fri, 25 Apr 2025 11:31:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L0h-0001Zy-Ls
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:30:47 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L0l-0001bB-Gg
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:30:48 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L0e-0003vT-Tt
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:30:38 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-43cfa7e7f54so16128385e9.1
- for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:30:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L0j-0003wz-NU
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:30:43 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-39bf44be22fso1640024f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:30:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745595035; x=1746199835; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745595040; x=1746199840; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=15v8jL3LCLtXh+M75p16dlGPvBB3CQJEUK4JwbtboS4=;
- b=bf08L0VZcfvhlHwFZX/ytTYcvLkPX6K4HEC/OGeAHLu0Yxh3Jpm9Uv2Bq3dlMwnDRm
- VP/pEHuRILdF05mB7XIrI+E1bcuM7EydkbpBH7OGnhDbhlIvyc3dQx82XdMMqdqiOrZp
- 8O9Fs3ZMXD0Z7ROXM4lQtzA8lbX6Uk2xGFQeO8EyNCs4VitmUciyjs5d9b6pnKSggtEZ
- uXQod0UdPAyFtc4CbwR3YsTBLX/zh837LjvRwtFfYvm2pjZADEECcvC9FgeAuhinhiQf
- mSAqu1vTHQIx91cQFkMtBBu3DaLTtWDI+s6/sNyGl52tna79H6E3Yq/v7MfCuLHPq4kr
- Qd9w==
+ bh=mlzJ4A4jALjtU+0r3cIdS3NAsSdBaVqAytVllxW1gkI=;
+ b=haGZqoR2i4Vhw6wPRnh1bR67hwwjr+/k4QiBvGriqC7t4qRCenYQhYCfV42hLf9iT/
+ XGfeCKelQISSOxUwa0OdPMXDcobEkKXEnOOmHAkO8WXGdF96AbAhplgg6nuvAkfur21l
+ u8LwnIxf+AwIXWhGofAJfBSKCOI3rn6I9dEJ4/BNnqeAlMnBAPzqOcEP1eXyoRC93aPr
+ YIjUfyIfPHjwkNUg/dIbDaf4AFs8EWMf+px5BgapGHzMA1xmLfeLEfTGza6QcGT36BIt
+ UwYEnZZykpbPB910Nk86SD2MU0xynyNWatlvw0doPmctJwJ00uu5r/EBR8REkGgYjlzz
+ KovQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745595035; x=1746199835;
+ d=1e100.net; s=20230601; t=1745595040; x=1746199840;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=15v8jL3LCLtXh+M75p16dlGPvBB3CQJEUK4JwbtboS4=;
- b=Tq01QitopuYvA6Py3h8PwYW5ezf8Kn1R0h4jHouz1QQUhRDlX+cfwTTnv+tIqV+MyH
- UgzZglQ+PjqKIj3VNCQ1N/TRuphW4YYKH4vEsR4PkBuUko/i65oSal9GBjcdCrn9hot0
- RDd9GEK+mf67/zSq7+dEueE50/k5n9837OcyiWOLykUzikvhJO1Iv9rD6QtmNaiQs8Uv
- lLwJh9Xv6i4TWq77GYYInOVezAPm04hZTj9JBQp5HUVNppY/wtL76vLxu5M49iLG3RCI
- 1yKKxXoFU6hROcwovkews2GUdYsdf8UVLdMvTkqQg4JsseVZVwgdcnyUc6n90iDnXYWO
- 4OUA==
-X-Gm-Message-State: AOJu0YyW3C243pV54t8Cyokji7HcQl9Oa49EVrxcrPbc41WJC1LHQGO5
- WDJbgut3DVlnjFD7XSlmwcXQwdQUDa5LEtfOhLRFYxeKEPCCDN34MhZ6uV0pVIAe2O9iF/xdfZk
- l
-X-Gm-Gg: ASbGncuBy6BDUDeMV7hNXdW8hLWS2POVD6acur4Oa1yQpakcQx7jgiWuyEX8D/Lpu3J
- Y+SSYpKEUrRlo15bgY0SjfKPWcKclBJx6P8prYXmkgLQfh8xFNMX1mz3hIrCFz/BbzDWXa/HTM9
- Jxf1nOTx7swwh140e0/kS46jL80AP4k5LXaYSvNoczI2xZEaPOV47fu8kvyIfhS5Ofe48axZq/Z
- Twj1YHwb2zSXqFuX5Z326Ml2l85fZHfpZ1LVqFWzv5RZy1nlA/g1ZRrgDScAAfY6cgvJ44Dezpi
- VFwz8d7hV1gYpXjuewEgmBhKQZnKM4xxzTckfGQOI5myS5UWzlXlti26IoItmU3cqadFGraXtwT
- seEj3eu1jS9bA/K8=
-X-Google-Smtp-Source: AGHT+IH8SQHrkH0J2Ql8/NM4ppcaYbEctWS7ChLrkvx/JqhaEMY2tl5PTdT1IwEx2OdXrjW/U6u0wQ==
-X-Received: by 2002:a05:600c:4691:b0:43b:c7f0:6173 with SMTP id
- 5b1f17b1804b1-440a65cde53mr22838965e9.4.1745595035009; 
- Fri, 25 Apr 2025 08:30:35 -0700 (PDT)
+ bh=mlzJ4A4jALjtU+0r3cIdS3NAsSdBaVqAytVllxW1gkI=;
+ b=Sg03h0jtdw6SYB/Oy9O1SGYFRqRIOVwvL99NJBwmhh8dDR4JL0TKsJelWkSUg4HaOe
+ EhKD8jIqF7Mnw+oGYRHU+jrzRBTPYC0uut6zeh861mIK/HyylWkNj4S3dHbA2bun6kUk
+ r8yeu88+iq3EbkmRhET6rqsCYzqlTdVhzJ2+c9zo7LC88UyEy0+gogW4Ocys5Eb2kepc
+ BoXORj1VccN/zZE+2XN2lFgqO42GKn7xiTNc5isstL+tID+8AXrqGn0gQyfnsHIGPci4
+ OyAJcailSngeyZqBbJeBCsyoXTmueugT8pyIBriUmyn0rrBBcDtbLv0JA7ve5G6yI0Ln
+ yjyA==
+X-Gm-Message-State: AOJu0YwmzvRNKtareqr0X3p+SY1iISRX4QoKWJxu5Vq9SW6MhcGJG/wF
+ NkFh5C8XDiGWnUoaIt7ue6KXy9OkkBPtA2iHs18/aH0hh4Wzl9isRIjz5QmIKETBvKf/BP34ShP
+ b
+X-Gm-Gg: ASbGncsW0AONYzN5KVFZ7fVEwHrY1sYMxiwVlpi/BRjY78jVPyRNJlacDZk/ETGPvZV
+ kuiLFOUvN70es8ZIx+n2WESUG6yTMeM2A55XwzT/ay2DzFeCjPsAHdiup/s3n1qGn/jYF0y/x0b
+ Mr/X6J7+d1VH9f0yrfgF2YdY6h3rAh+0qH+9S0QSpZva8nU3rHXqOvg8KQ+IAUimJfYIZpeq5uU
+ whfvSD20cITnd1ceCyzeLGmfMbjiTGIbOdW3YN/6SxCxEOLS3pfRgJLRiQm56hNhD1kLuSojmvd
+ iBPnReHrhO6xlrWq/73p/hKLyZ6pntHd/6suYZV7EhkU95yqCcFHhNOJPqth9kWJ6c69AgeKVn3
+ 3s9lkwDJ6LUYF59w=
+X-Google-Smtp-Source: AGHT+IE6vPf9xNnWijRG4N4GrEi4epGED/SiKnjulZ7msqAbDByeQIF4QoAspisS64Onyc9cLe7P2Q==
+X-Received: by 2002:a05:6000:4212:b0:39e:f9d8:e016 with SMTP id
+ ffacd0b85a97d-3a074f0dbc6mr2163346f8f.44.1745595039908; 
+ Fri, 25 Apr 2025 08:30:39 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a073c8c968sm2636951f8f.8.2025.04.25.08.30.34
+ ffacd0b85a97d-3a073e5e198sm2704997f8f.97.2025.04.25.08.30.39
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 25 Apr 2025 08:30:34 -0700 (PDT)
+ Fri, 25 Apr 2025 08:30:39 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 22/58] target/arm: Handle gdb_core_xml_file in TYPE_ARM_CPU
-Date: Fri, 25 Apr 2025 17:28:06 +0200
-Message-ID: <20250425152843.69638-23-philmd@linaro.org>
+Subject: [PULL 23/58] target/arm: Handle AArch64 gdb read/write regs in
+ TYPE_ARM_CPU
+Date: Fri, 25 Apr 2025 17:28:07 +0200
+Message-ID: <20250425152843.69638-24-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250425152843.69638-1-philmd@linaro.org>
 References: <20250425152843.69638-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,86 +102,65 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Peter Maydell <peter.maydell@linaro.org>
 
 Instead of having the TYPE_AARCH64_CPU subclass set
-CPUClass:gdb_core_xml_file to a different value from that that
-TYPE_ARM_CPU uses, implement the gdb_get_core_xml_file method in the
-TYPE_ARM_CPU class to return either the AArch64 or AArch32 XML file
-name.
+CPUClass::gdb_read_register and ::gdb_write_register to different
+methods from those of the TYPE_ARM_CPU parent class, have the
+TYPE_ARM_CPU methods handle either AArch32 or AArch64 at runtime.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250317142819.900029-5-peter.maydell@linaro.org>
+Message-ID: <20250317142819.900029-6-peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/arm/cpu.c         | 16 +++++++++++++++-
- target/arm/cpu64.c       |  1 -
- target/arm/tcg/cpu-v7m.c |  1 -
- 3 files changed, 15 insertions(+), 3 deletions(-)
+ target/arm/cpu64.c   |  5 -----
+ target/arm/gdbstub.c | 12 ++++++++++++
+ 2 files changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index bed0e58f3c0..5e951675c60 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -2658,6 +2658,20 @@ static const gchar *arm_gdb_arch_name(CPUState *cs)
-     return "arm";
- }
- 
-+static const char *arm_gdb_get_core_xml_file(CPUState *cs)
-+{
-+    ARMCPU *cpu = ARM_CPU(cs);
-+    CPUARMState *env = &cpu->env;
-+
-+    if (arm_gdbstub_is_aarch64(cpu)) {
-+        return "aarch64-core.xml";
-+    }
-+    if (arm_feature(env, ARM_FEATURE_M)) {
-+        return "arm-m-profile.xml";
-+    }
-+    return "arm-core.xml";
-+}
-+
- #ifndef CONFIG_USER_ONLY
- #include "hw/core/sysemu-cpu-ops.h"
- 
-@@ -2727,6 +2741,7 @@ static void arm_cpu_class_init(ObjectClass *oc, const void *data)
-     cc->sysemu_ops = &arm_sysemu_ops;
- #endif
-     cc->gdb_arch_name = arm_gdb_arch_name;
-+    cc->gdb_get_core_xml_file = arm_gdb_get_core_xml_file;
-     cc->gdb_stop_before_watchpoint = true;
-     cc->disas_set_info = arm_disas_set_info;
- 
-@@ -2749,7 +2764,6 @@ static void cpu_register_class_init(ObjectClass *oc, const void *data)
-     CPUClass *cc = CPU_CLASS(acc);
- 
-     acc->info = data;
--    cc->gdb_core_xml_file = "arm-core.xml";
-     if (acc->info->deprecation_note) {
-         cc->deprecation_note = acc->info->deprecation_note;
-     }
 diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
-index fbb7e7b3d64..5135ef63cb2 100644
+index 5135ef63cb2..00629a5d1d1 100644
 --- a/target/arm/cpu64.c
 +++ b/target/arm/cpu64.c
-@@ -819,7 +819,6 @@ static void aarch64_cpu_class_init(ObjectClass *oc, const void *data)
+@@ -815,11 +815,6 @@ static void aarch64_cpu_finalizefn(Object *obj)
  
-     cc->gdb_read_register = aarch64_cpu_gdb_read_register;
-     cc->gdb_write_register = aarch64_cpu_gdb_write_register;
--    cc->gdb_core_xml_file = "aarch64-core.xml";
- 
+ static void aarch64_cpu_class_init(ObjectClass *oc, const void *data)
+ {
+-    CPUClass *cc = CPU_CLASS(oc);
+-
+-    cc->gdb_read_register = aarch64_cpu_gdb_read_register;
+-    cc->gdb_write_register = aarch64_cpu_gdb_write_register;
+-
      object_class_property_add_bool(oc, "aarch64", aarch64_cpu_get_aarch64,
                                     aarch64_cpu_set_aarch64);
-diff --git a/target/arm/tcg/cpu-v7m.c b/target/arm/tcg/cpu-v7m.c
-index 7426aac0dc4..b34b6578574 100644
---- a/target/arm/tcg/cpu-v7m.c
-+++ b/target/arm/tcg/cpu-v7m.c
-@@ -266,7 +266,6 @@ static void arm_v7m_class_init(ObjectClass *oc, const void *data)
+     object_class_property_set_description(oc, "aarch64",
+diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
+index 30068c22627..ce4497ad7c3 100644
+--- a/target/arm/gdbstub.c
++++ b/target/arm/gdbstub.c
+@@ -44,6 +44,12 @@ int arm_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+     ARMCPU *cpu = ARM_CPU(cs);
+     CPUARMState *env = &cpu->env;
  
-     acc->info = data;
-     cc->tcg_ops = &arm_v7m_tcg_ops;
--    cc->gdb_core_xml_file = "arm-m-profile.xml";
- }
++#ifdef TARGET_AARCH64
++    if (arm_gdbstub_is_aarch64(cpu)) {
++        return aarch64_cpu_gdb_read_register(cs, mem_buf, n);
++    }
++#endif
++
+     if (n < 16) {
+         /* Core integer register.  */
+         return gdb_get_reg32(mem_buf, env->regs[n]);
+@@ -66,6 +72,12 @@ int arm_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+     CPUARMState *env = &cpu->env;
+     uint32_t tmp;
  
- static const ARMCPUInfo arm_v7m_cpus[] = {
++#ifdef TARGET_AARCH64
++    if (arm_gdbstub_is_aarch64(cpu)) {
++        return aarch64_cpu_gdb_write_register(cs, mem_buf, n);
++    }
++#endif
++
+     tmp = ldl_p(mem_buf);
+ 
+     /*
 -- 
 2.47.1
 
