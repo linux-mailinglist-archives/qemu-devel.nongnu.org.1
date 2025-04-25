@@ -2,107 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFC9DA9CBBF
+	by mail.lfdr.de (Postfix) with ESMTPS id D02AAA9CBBE
 	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 16:32:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8K5O-0001h7-2d; Fri, 25 Apr 2025 10:31:28 -0400
+	id 1u8K6L-00023g-8L; Fri, 25 Apr 2025 10:32:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <seiden@linux.ibm.com>)
- id 1u8K5A-0001gD-M1; Fri, 25 Apr 2025 10:31:13 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <seiden@linux.ibm.com>)
- id 1u8K58-0003Yr-CM; Fri, 25 Apr 2025 10:31:12 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53PA41es026461;
- Fri, 25 Apr 2025 14:30:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-type:date:from:in-reply-to:message-id:mime-version
- :references:subject:to; s=pp1; bh=GoUoHZi/HP0QEXV0jU7oEFcHl0nqTa
- 8aRsWZBhVoMwA=; b=aHZfHj4aSpYoV73sR1hjhJEU8IizrsPbTDtMh557ZIsF3V
- 6uGCPWoBtdF5qqDJoy+ef8mmuK+3CuxNYD1HiiyYkfCa0NoUekMvbMmBX78ZfY5X
- 7K8lsRaJpz4SLbIyjYZ2k7+BKuYb7TQ6XnYPgR17wMgfMiZenrhP5MttYHaHgl6r
- MEcOhLMYIETano6EUby+0zD+OfYQkE9Jm57yrSe7zQ2WFpanvlLwV7FtSX0EEf+/
- xb7zctOl4Q+PiswCUBvAc8K5ABcNjFe3t+DjAjLVT/Wvs4OvYU8YS88KC8Z+kzUU
- V/EBZUnQXOO2m1PXVHisuF6TPNvIhJ/5gnbHak3g==
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4688ajs5uy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 25 Apr 2025 14:30:54 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53PC4U1U008666;
- Fri, 25 Apr 2025 14:30:53 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 466jfxwm98-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 25 Apr 2025 14:30:53 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
- [10.20.54.104])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 53PEUnes32702776
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 25 Apr 2025 14:30:49 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B75D320043;
- Fri, 25 Apr 2025 14:30:49 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4990A20040;
- Fri, 25 Apr 2025 14:30:49 +0000 (GMT)
-Received: from osiris (unknown [9.111.72.247])
- by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
- Fri, 25 Apr 2025 14:30:49 +0000 (GMT)
-Date: Fri, 25 Apr 2025 16:30:47 +0200
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: Gautam Gala <ggala@linux.ibm.com>
-Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, Janosch Frank <frankja@linux.ibm.com>
-Subject: Re: [PATCH v5 3/3] target/s390x: Return UVC cmd code, RC and RRC
- value when DIAG 308 Subcode 10 fails to enter secure mode
-Message-ID: <20250425143047.632151-E-seiden@linux.ibm.com>
-References: <20250423080915.1048123-1-ggala@linux.ibm.com>
- <20250423080915.1048123-4-ggala@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
+ id 1u8K6A-0001zT-Nr; Fri, 25 Apr 2025 10:32:19 -0400
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
+ id 1u8K68-0003oA-6r; Fri, 25 Apr 2025 10:32:14 -0400
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-54d65cb6e8aso2941521e87.1; 
+ Fri, 25 Apr 2025 07:32:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1745591528; x=1746196328; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=azeeqSY8CzJ4Bp0LEe7Hpbdx1EyTNPLikM5147epRk8=;
+ b=cqqHFS/I96s2V6VbN08+bPt4sbCxrolHctb7hllUPwJ9omru43+pUwP/Xr/m3ta8hW
+ gEzashMpW6wvTGRT+X0eT9lLXdBgUxmY1hqiXzGVe77X9/He19SMDZq2bMky2RJAS7YL
+ CDT+tQPAuxx7TAfK2YRpWfh7maY7a9DF6rkY9jUAvYFuYkoPJVoGzIVmMvCys6NF98pP
+ IfB72bFsUuxC5EM4IYOLUbbV8L71I9YJ/gUPFOwK4Zt3AWtloIMA8GF8d/l3olibaQRy
+ lge1xZLnAcgaZJnuA8ElUT5ktcruSpyFmLtWga3pjOM7kB+tkLfuc0bwXAhWTGsomyjb
+ zERA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1745591528; x=1746196328;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=azeeqSY8CzJ4Bp0LEe7Hpbdx1EyTNPLikM5147epRk8=;
+ b=qQ7tOW62XhLMK8V7yB4MDo3YxGa1aVVGUmzBvUe0X0eSAb4iyuZ3MA9fNFnSJwBq+V
+ gVmkONnIbLzurzJyX+ojuChY7LicP8nKIKFtlytM8BTxU/vl1kIHobGby88r5MHZhxyL
+ Z3GH//bE6NOdHL1UV8LqQxCKpmKPzhrjvSykuivvcIzf/LQiQ4z1omQtrumbmVSEhGHn
+ hZ/FfavBg7qQrnkCx8u1J4dj06vz2zcz4qF0BlfFG/616IlVfQBRq+95GW04SbA/Zh4q
+ ZCJXYBzxSe/d5fF6+GQrnBA+qweuQj+kC5GSM6TbT3QIVETGJ9T483u254tdo+/TPFKb
+ t7vw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVgHXpO+mLg5voIBDVt2ZGAW6Y1xIfhyEwvmbHkC/ArvEJznhxe/KTT3HESZabNhGAX89iuW1/mB4Zu1g==@nongnu.org
+X-Gm-Message-State: AOJu0YyhnN7XX3krqfeNL1qEf3+JQRTi4aNptAI2Abf1yY1htLMSCAqs
+ AriwuSRkv1WLUbTrIEVVADXWePIQa6m2rTWEFCRm6+Zpvx6aWIryvM4lQpoz0LA=
+X-Gm-Gg: ASbGncv5urrFT2TnY8XJDjPr6f7a8ZkxkEbw6okbKq58dmOzMRBSYkw5UK9D+aCxDO2
+ oua5xD6VW4oz1xTuwzYuOh60sbTgddjl5B/9cnid3wlWHXbn5cs/dN2Cje0iNBSGhUe0wDfX+Fp
+ i7CneEcqUaq/hgALeCuDefu7kGmpyu7tB2PZqKDJS9toUxwqa9YQeuc6YYEBgwdTiZJCYkN3bbb
+ BfX+vEenDkH6D23Un7b6fq+mmmKJarX4GxgXTqVY6ncCe5iMxcdxPWEnfRDCcrmlS9Rfttk6TW6
+ g9VM4qkwdE4jo5xK29VKB01Fnr68KT8WqtN1QEZfjrWQ06pS92lRA2JdBpDrRftT5F8/Sh0MeJw
+ 95cK8UsNgAhIv
+X-Google-Smtp-Source: AGHT+IF6GoiPiuFmU1v0uNdbuCBJilb8xb2JfSTEgACYnhGTyApmLy4m47IQ+SEYeYHqhegvkysP7A==
+X-Received: by 2002:a05:6512:10cf:b0:54b:f04:59e8 with SMTP id
+ 2adb3069b0e04-54e8cbd55e2mr744424e87.23.1745591527794; 
+ Fri, 25 Apr 2025 07:32:07 -0700 (PDT)
+Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
+ by smtp.gmail.com with ESMTPSA id
+ 2adb3069b0e04-54e7cc9e883sm632540e87.133.2025.04.25.07.32.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 25 Apr 2025 07:32:06 -0700 (PDT)
+From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+To: qemu-devel@nongnu.org,
+	qemu-stable@nongnu.org
+Cc: sstabellini@kernel.org, anthony@xenproject.org, paul@xen.org,
+ edgar.iglesias@amd.com, xen-devel@lists.xenproject.org
+Subject: [PATCH v1 0/1] xen: mapcache: grants: Fix mixup betwen ro and rw
+ mappings
+Date: Fri, 25 Apr 2025 16:31:55 +0200
+Message-ID: <20250425143156.204452-1-edgar.iglesias@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250423080915.1048123-4-ggala@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI1MDEwMCBTYWx0ZWRfXxjhk/iPyTcvK
- +TMcZw67woHtEaWBd0SxrpVvZJax/O4daEqC7EBC2ST9cbxYo/DF1Mu4Hyl9yUvxa3wBNpwtA/u
- UQ5SJ2zSlxfYgICU70QqbbhLTMjnDGQTQMXY22htxOBFsmZnTH97fdEL2QaCO1lYANsihEf8i5d
- CV9sQ46B+bSiA+a55Ygb1l3eYdxKGyGMjTxsvFZ099/0PWsVhq8uHO9Hknz2Y5XkzANxQWQl13j
- jVcn6Nzi79nzytwZoaswVECIf4zpdXiu+tEA16OZf7F/6Syq//oU43F7p8/lnY+peKLINeQZ3DC
- J7ycnCoya49dCZkXuWczeP60y0z5tB7FmkDLPo79jVwKF09dkudZRTL36ezZZrNWJtBrXMjKt/O
- 2BQINj7rVjyONH6da93Ga4kbFBpSc6SYG8ij6JWf86KGLNghipeaolnF+E80G/TcIh2FrDVn
-X-Authority-Analysis: v=2.4 cv=F8xXdrhN c=1 sm=1 tr=0 ts=680b9c9e cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=XR8D0OoHHMoA:10 a=VnNF1IyMAAAA:8 a=HLircMxoZoq3qCPMhvQA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: TSAun840M3rFWj9bKPoGaDXQdsdCPdMa
-X-Proofpoint-ORIG-GUID: TSAun840M3rFWj9bKPoGaDXQdsdCPdMa
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-04-25_04,2025-04-24_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_spam_definite policy=outbound
- score=100 phishscore=0
- impostorscore=0 mlxscore=100 priorityscore=1501 lowpriorityscore=0
- mlxlogscore=-999 malwarescore=0 clxscore=1015 bulkscore=0 adultscore=0
- spamscore=100 suspectscore=0 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2504070000 definitions=main-2504250100
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=seiden@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
+ envelope-from=edgar.iglesias@gmail.com; helo=mail-lf1-x12a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,23 +97,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Apr 23, 2025 at 10:09:15AM +0200, Gautam Gala wrote:
-> Extend DIAG308 subcode 10 to return the UVC RC, RRC and command code
-> in bit positions 32-47, 16-31, and 0-15 of register R1 + 1 if the
-> function does not complete successfully (in addition to the
-> previously returned diag response code in bit position 47-63).
-> 
+From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
 
-Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
+This fixes an issue with grant mappings when a read-only
+mapping is requested followed by a read-write mapping for
+the same page. Today, we don't track write-ability and
+read-write lookups hit on read-only entries.
 
-> Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
-> Signed-off-by: Gautam Gala <ggala@linux.ibm.com>
-> ---
->  hw/s390x/ipl.c             | 11 ++++----
->  hw/s390x/ipl.h             |  6 +++--
->  hw/s390x/s390-virtio-ccw.c | 14 ++++++-----
->  target/s390x/kvm/pv.c      | 51 +++++++++++++++++++++++++++-----------
->  target/s390x/kvm/pv.h      | 26 +++++++++++++------
->  5 files changed, 73 insertions(+), 35 deletions(-)
-> 
+This series is an attempt to fix this by splitting mapcache_grants
+in two, a read-only and a read-write instance.
+
+I tried a couple of other approaches, one was to speculatively
+map grants as read-write and if mapping fails, then fall back
+to read-only. This works but since Xen logs each failed grant
+mapping, it gets noisy.
+
+Another way is to track writeability per mapping in the cache
+and modify the lookup logic to only hit on compatible mappings.
+It works but adds more complexity to the lookup logic compared
+with the split cache approach.
+https://gitlab.com/edgar.iglesias/qemu/-/commits/edgar/grants-ro-rw-fix
+
+Cheers,
+Edgar
+
+Edgar E. Iglesias (1):
+  xen: mapcache: Split mapcache_grants by ro and rw
+
+ hw/xen/xen-mapcache.c | 26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
+
+-- 
+2.43.0
+
 
