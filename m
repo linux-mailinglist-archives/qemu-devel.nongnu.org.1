@@ -2,96 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50515A9CD98
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:53:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75603A9CDB3
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 18:03:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8LLV-0000EY-Qq; Fri, 25 Apr 2025 11:52:09 -0400
+	id 1u8LVd-0006Av-Bx; Fri, 25 Apr 2025 12:02:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1u8LLS-0000DI-9o; Fri, 25 Apr 2025 11:52:06 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1u8LVG-0005pf-MH
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 12:02:18 -0400
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1u8LLQ-0006pL-AQ; Fri, 25 Apr 2025 11:52:05 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-54e7216aaccso2112839e87.1; 
- Fri, 25 Apr 2025 08:52:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1u8LVC-0008Kg-Nk
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 12:02:13 -0400
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-b074d908e56so1795466a12.2
+ for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 09:02:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1745596322; x=1746201122; darn=nongnu.org;
- h=user-agent:in-reply-to:content-transfer-encoding
- :content-disposition:mime-version:references:message-id:subject:cc
- :to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=7c8bi+tYxGd3uDu+5jaT9Zf7rx1GDd9V54uFLw7R+Qs=;
- b=gVBkAr5kQAP+7g3ur3sT7zkUrkXgi9/mQpCTITGOvMWRGYQh3KnDR0C3Ols2ODjT0Y
- NyNGlQ5xy+0bTBSdKHMtvd8178gbB9IMsnr33pb9MhS9E1cNfuZAykuOOoygatb+73Ax
- rmG/WEbQZ5yBDktThFffnMYBhn2utM9UHO0GZjbHp2FePReNVCCHKbIJRrjiLsBVkghx
- qhhNOHKoqyBngymj1auBoCdYONyc69d9s6Dw4gI9iledRIO517+AZNu41VdZ5uvuziuG
- nDm8QkmmX3G8DkmuuspYpzYrqOjkoHXrooPbFxJjC0Ik2RgoJAoV7PPTeNhS9m6jV+C+
- pjPw==
+ d=ventanamicro.com; s=google; t=1745596929; x=1746201729; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=EkJ/iUGr9j0bS9GADPEzLCdejduU+F7nVyD9oU685W0=;
+ b=cMmJ+hZuIe/iCf5NSPxWCpuQ08Ncou2k9aIWRn1HMTdrfsJCQjTujobYLpMCIoOhXN
+ bYEvVvsPgYaiSNBLG8SxWvMaMDApVLiy8SDQOWZoeRLIaGMIXDYyjM95OJyzT7oZy69W
+ C+pLkedPCEOMZKHK37OyZYmdBdAT5OfBhPP+3/nYnL09+rdjWbLk39+jOFCuY+gJTiLW
+ ZIgeugm/XjXdt92kHAgji5XUrb2CR1ISc0zq/4qIvZZS8s6KjW4oVm3lgl0mwQkkQKSS
+ aksPt94i9ka4K/yq9RbJFRJ91bnSXAtDEkcKU77xwG0+kFaZl2UJy/c0D/1YBjBbbCra
+ H35Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745596322; x=1746201122;
- h=user-agent:in-reply-to:content-transfer-encoding
- :content-disposition:mime-version:references:message-id:subject:cc
- :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1745596929; x=1746201729;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=7c8bi+tYxGd3uDu+5jaT9Zf7rx1GDd9V54uFLw7R+Qs=;
- b=nNbumotPBoPDXSN2FopskoHn/tt/L7t9idMoxN3MNKbU6ejm7usOd1oBrXb25z3TRy
- 8ARZSl6kCKkWcqFb3Bk/VgBGC7EDTbJfRzTePypgCW/apt5QryA7z6wz11QhdolVKiAA
- Ar8yUV8duFA3WxVgTMVxSw12HChszj6UlFGjlybhF1WcK7vaa4cTJZ7tEjK0JlD/x56B
- F+qBpYfIWsneO7bbplrIfrrhutFmHhf7WVrL9wj/za4pCnt3naGyM0T4lEhmOqPxDOt7
- jGntGD0BRT7G+tvRl+D1/DGgvL1AVxZ4tYrAsUbaCIE+41Rxlsia0oco69k3IZo5HA0v
- WRsQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWj5+UQZJyb1do/rLi3QYdl3EKiwceu1QIVTS0B78LHxnKe09LXqiR1fpwOSHPmzhbrFCxJaNTUeQ==@nongnu.org
-X-Gm-Message-State: AOJu0YxAsLk+QGlt2gX8mmVVq+humMwHRt4c6GlHdzQwI9Ql7ke1Im80
- JdIm1bFryF0oTkn4vDB2eWKZMx/3eyd+Uvm7/3ci2gQCIgXJnVZw
-X-Gm-Gg: ASbGncv2kGtSaeBKQlpFx4dOareCUB3Oi8MOtHzO5vKrYaiuxddbUNtbgYoEIMlEg9s
- COjZ57G5IPpHT/FGnjkv9LrxuAGumiwWsVRuRDhTu5xT1PYvhb5yNQ7CTkjPhsfvjtM6E3dRynf
- 2UCYH3BH7omdjZFZkBvEaIHAfrKhBkTvPjHyuTD6tNT5hPT7tyqwRt7CPQ+g3fv+LN4scY3G0t2
- VPUk/FMYk64pXIxn6i+Jalg0FbwzwEMc5IUUtFBKBBFyhzCgqri855Om1Y/DIz6sHGznTX6u719
- u4i5ECQqP6ObVAP1+ZpbwyloYzy616Zl116b8fq29JGDhDkhm+0IkJIaPwxM5Lmq/TvxxIyYGoP
- GYxXKNtiLBjq9
-X-Google-Smtp-Source: AGHT+IEBhHvhYlRd/AFuPOojwnovkQU99ip8b1orQYqHZZjfeTjtjdpUdISwOqzPlh2adZSjayNi/Q==
-X-Received: by 2002:a05:6512:b0b:b0:549:4b8c:a118 with SMTP id
- 2adb3069b0e04-54e8cbd53b2mr1046741e87.17.1745596321671; 
- Fri, 25 Apr 2025 08:52:01 -0700 (PDT)
-Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
+ bh=EkJ/iUGr9j0bS9GADPEzLCdejduU+F7nVyD9oU685W0=;
+ b=Cf+7tsYyJ2xcNc196wN6yhsVfj+C5sAzfaQwePEj3TvWeWb5ZefLEM8ikYZALHyjnH
+ rd0K6N9fmTsq/Xbn1+iqwzWeu7K0MitAXxuJM4FUIZNcUx87DY6oOat4WL2TJQqZ+//F
+ H0M3RyCXiUNIgyVTfhefIL7aSZgXEFuR3uFe/JLY1ZscPSBFmOHIHuZDAzdEqKXst1WQ
+ 1JxNm9t+GNl+MHqtiTjHSifcDUNw9ldsZX97Vkh1rvu/h7eZG+KsjoEwKpCPMvVakXKr
+ XyzB7AeTTfj5VNOMwY7V+rC/VZMFm7WgjJVHOZaYSB2Ddy4JKK9xmB8t6JZCWc4cjJli
+ ofKw==
+X-Gm-Message-State: AOJu0YwHEx6M/DlJ3rR7LuKAfzjRczk62FpW6cKPseLzA0CmZoDOreYS
+ UyeaiGAk0PG3y+bY5Mu+cKgrWrAMFHEdzut/L6ITwnqngcNIDxRhaOxx4Vji2MWcO6p6q/e4wei
+ C
+X-Gm-Gg: ASbGnctoU1Do9nOdNi6pnLk/nKYTvTJZxEm0CUOASyU2ELrsJpZX9+77Sk3yo54+Yj2
+ xyyWkBD1R1jfIrnHIiThsTRR+ZplcIhYMzXGRiUlOsAxc0Sz5cQPATTituIzan48QYyVYqXqmb7
+ RKwmcnVl8JdWOepIept7JqWAe+5qsdjdZNEIWcTdW6uCVUxZW/otgSXnCPi/mlWfQoq13VsLbku
+ 1haJsX/UwuVJKNtHvFCWH1XOKjm5ALTxQmAYlTTdk43wBd5qs1ivqMl3GpzblgdKyp5Od3nRfjO
+ aC88YP3i0Hs9ETADBrWomHeQ9NBnzZKlSi4SxiZQ5R/KnlfrWVbDwFwbX7tbfNVtsRRp
+X-Google-Smtp-Source: AGHT+IFfcyat/z6PFfxRAo5CSHXVoe8P063qxHi2fc2SgXnffFsfW0RgeSqMJq25FnrmIVlXOWUzsw==
+X-Received: by 2002:a17:90a:d647:b0:2ff:5714:6a with SMTP id
+ 98e67ed59e1d1-30a01340e04mr151341a91.19.1745596928615; 
+ Fri, 25 Apr 2025 09:02:08 -0700 (PDT)
+Received: from grind.dc1.ventanamicro.com ([152.234.125.33])
  by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-54e7ccb803fsm642112e87.228.2025.04.25.08.52.01
+ 98e67ed59e1d1-309f774e534sm1820005a91.17.2025.04.25.09.02.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Apr 2025 08:52:01 -0700 (PDT)
-Date: Fri, 25 Apr 2025 17:52:00 +0200
-From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-To: Corvin =?iso-8859-1?Q?K=F6hne?= <corvin.koehne@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- Yannick =?iso-8859-1?Q?Vo=DFen?= <y.vossen@beckhoff.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Alistair Francis <alistair@alistair23.me>,
- Corvin =?iso-8859-1?Q?K=F6hne?= <c.koehne@beckhoff.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 04/21] hw/arm/zynq-devcfg: Prevent unintended unlock
- during initialization
-Message-ID: <aAuvoFjhS0VEtpqq@zapote>
-References: <20250318130817.119636-1-corvin.koehne@gmail.com>
- <20250318130817.119636-5-corvin.koehne@gmail.com>
+ Fri, 25 Apr 2025 09:02:08 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, liwei1518@gmail.com,
+ zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com, ajones@ventanamicro.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v3 0/9] target/riscv/kvm: CSR related fixes
+Date: Fri, 25 Apr 2025 13:01:54 -0300
+Message-ID: <20250425160203.2774835-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250318130817.119636-5-corvin.koehne@gmail.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-lf1-x133.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,76 +96,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Mar 18, 2025 at 02:07:55PM +0100, Corvin Kˆhne wrote:
-> From: YannickV <Y.Vossen@beckhoff.com>
-> 
-> During the emulation startup, all registers are reset, which triggers the
-> `r_unlock_post_write` function with a value of 0. This led to an
-> unintended memory access disable, making the devcfg unusable.
-> 
-> To address this, a property 'is_initialized' is introduced. It is set
-> to false during reset and updated to true once the initialization is
-> complete. The unlock function is simply ignored while 'is_initialized'
-> is false.
-> 
-> I have no idea how this ever worked. Nevertheless, this restores the
-> correct behavior.
-> 
-> Signed-off-by: Yannick Voﬂen <y.vossen@beckhoff.com>
-> ---
->  hw/dma/xlnx-zynq-devcfg.c         | 6 +++++-
->  include/hw/dma/xlnx-zynq-devcfg.h | 2 ++
->  2 files changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/hw/dma/xlnx-zynq-devcfg.c b/hw/dma/xlnx-zynq-devcfg.c
-> index b838c1c0d0..03b5280228 100644
-> --- a/hw/dma/xlnx-zynq-devcfg.c
-> +++ b/hw/dma/xlnx-zynq-devcfg.c
-> @@ -143,9 +143,11 @@ static void xlnx_zynq_devcfg_reset(DeviceState *dev)
->      XlnxZynqDevcfg *s = XLNX_ZYNQ_DEVCFG(dev);
->      int i;
->  
-> +    s->is_initialized = false;
->      for (i = 0; i < XLNX_ZYNQ_DEVCFG_R_MAX; ++i) {
->          register_reset(&s->regs_info[i]);
->      }
-> +    s->is_initialized = true;
->  }
->  
->  static void xlnx_zynq_devcfg_dma_go(XlnxZynqDevcfg *s)
-> @@ -221,7 +223,9 @@ static void r_unlock_post_write(RegisterInfo *reg, uint64_t val)
->  {
->      XlnxZynqDevcfg *s = XLNX_ZYNQ_DEVCFG(reg->opaque);
->      const char *device_prefix = object_get_typename(OBJECT(s));
-> -
-> +    if (!s->is_initialized) {
+Hi,
 
+In this version, aside from minor adjustments suggested by Drew in v2,
+the most relevant change made is left mcounteren untouched in patch
+8. We're just changing scounteren to target_ulong as required by KVM.
 
-I think you can use device_is_in_reset(DEVICE(s))
-and get rid of is_initialized alltogether?
+Patches based on alistair/riscv-to-apply.next with a KVM build fix [1]. 
 
+Patches missing review/acks: patch 8.
 
+Changes from v2:
+- patch 2:
+  - changed 'g+malloc' to 'g-malloc' in the commit msg
+- patch 3:
+  - changed commit subject: sed s/in/into/
+- patch 4:
+  - changed commit subject: sed s/in/into/
+- patch 5:
+  - kvm_cpu_csr_get_u32() now returns an uint32_t (for real this time)
+  - tabulate kvm_csrs_cfg[]
+- patch 6: 
+  - mention kvm_riscv_init_cfg() in commit msg
+- patch 8:
+  - added comment explaning why we're changing scounteren
+  - left mcounteren untouched
+- patch 9:
+  - add scounteren in the same order as it is shown in kvm_riscv_csr
+- v2 link: https://lore.kernel.org/qemu-riscv/20250425113705.2741457-1-dbarboza@ventanamicro.com/
 
+[1] https://lore.kernel.org/qemu-devel/8f3bae37-e1f3-4e55-9dc6-b7876992b47e@ventanamicro.com/
 
-> +        return;
-> +    }
->      if (val == R_UNLOCK_MAGIC) {
->          DB_PRINT("successful unlock\n");
->          s->regs[R_CTRL] |= R_CTRL_PCAP_PR_MASK;
-> diff --git a/include/hw/dma/xlnx-zynq-devcfg.h b/include/hw/dma/xlnx-zynq-devcfg.h
-> index e4cf085d70..2ab054e598 100644
-> --- a/include/hw/dma/xlnx-zynq-devcfg.h
-> +++ b/include/hw/dma/xlnx-zynq-devcfg.h
-> @@ -55,6 +55,8 @@ struct XlnxZynqDevcfg {
->      XlnxZynqDevcfgDMACmd dma_cmd_fifo[XLNX_ZYNQ_DEVCFG_DMA_CMD_FIFO_LEN];
->      uint8_t dma_cmd_fifo_num;
->  
-> +    bool is_initialized;
-> +
->      uint32_t regs[XLNX_ZYNQ_DEVCFG_R_MAX];
->      RegisterInfo regs_info[XLNX_ZYNQ_DEVCFG_R_MAX];
->  };
-> -- 
-> 2.49.0
-> 
+Daniel Henrique Barboza (9):
+  target/riscv/kvm: minor fixes/tweaks
+  target/riscv/kvm: fix leak in kvm_riscv_init_multiext_cfg()
+  target/riscv/kvm: turn u32/u64 reg functions into macros
+  target/riscv/kvm: turn kvm_riscv_reg_id_ulong() into a macro
+  target/riscv/kvm: add kvm_csr_cfgs[]
+  target/riscv/kvm: do not read unavailable CSRs
+  target/riscv/kvm: add senvcfg CSR
+  target/riscv: widen scounteren to target_ulong
+  target/riscv/kvm: add scounteren CSR
+
+ target/riscv/cpu.h         |  10 +-
+ target/riscv/kvm/kvm-cpu.c | 331 +++++++++++++++++++++++--------------
+ target/riscv/machine.c     |   6 +-
+ 3 files changed, 221 insertions(+), 126 deletions(-)
+
+-- 
+2.49.0
+
 
