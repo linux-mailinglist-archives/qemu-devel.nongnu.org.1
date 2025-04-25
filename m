@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17060A9CD35
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:35:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFD5DA9CD54
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:40:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8L17-00022X-Jd; Fri, 25 Apr 2025 11:31:05 -0400
+	id 1u8L1R-0003h4-UL; Fri, 25 Apr 2025 11:31:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L0l-0001bB-Gg
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:30:48 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L0r-0001fd-Ax
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:30:51 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L0j-0003wz-NU
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:30:43 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-39bf44be22fso1640024f8f.0
- for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:30:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L0p-0003yA-57
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:30:48 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-43cf680d351so20919145e9.0
+ for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:30:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745595040; x=1746199840; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745595045; x=1746199845; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mlzJ4A4jALjtU+0r3cIdS3NAsSdBaVqAytVllxW1gkI=;
- b=haGZqoR2i4Vhw6wPRnh1bR67hwwjr+/k4QiBvGriqC7t4qRCenYQhYCfV42hLf9iT/
- XGfeCKelQISSOxUwa0OdPMXDcobEkKXEnOOmHAkO8WXGdF96AbAhplgg6nuvAkfur21l
- u8LwnIxf+AwIXWhGofAJfBSKCOI3rn6I9dEJ4/BNnqeAlMnBAPzqOcEP1eXyoRC93aPr
- YIjUfyIfPHjwkNUg/dIbDaf4AFs8EWMf+px5BgapGHzMA1xmLfeLEfTGza6QcGT36BIt
- UwYEnZZykpbPB910Nk86SD2MU0xynyNWatlvw0doPmctJwJ00uu5r/EBR8REkGgYjlzz
- KovQ==
+ bh=1RuU8AtKetNHWTiYfP+x4IVHUbKHficL49y52z2FVyk=;
+ b=Ole6G8F0gfjcxnzAy7tfhNpXPO3xB/7Q0XTMF83x5XTbIdYO+zwSTPvjwQ+Tb2Jxsz
+ 0xBBUVw0t98GEuht4/RGrrNQ9xMu/0+c3WJNLT6CkCxeu1/eTzp8ALUzyeL8rW9WLcqh
+ 2s4I1WwMmGc0AkXSPhVyNjQRu/cQBkeAdwyuafuRacrks9bEWhORFViNgcCzHnKhHm/B
+ qVxjT/oeaIzCsx+QZZg55kC9dTPPHKqinGmR+XKUr2savEDYToNg6rDHMD+XW6ICLONC
+ yMZerO6e62dNdcNowcfap6Kn+ptFL1q+7jufDZDKDzp9le30HRJMvpbOZWbZHh7DjNUT
+ gIPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745595040; x=1746199840;
+ d=1e100.net; s=20230601; t=1745595045; x=1746199845;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mlzJ4A4jALjtU+0r3cIdS3NAsSdBaVqAytVllxW1gkI=;
- b=Sg03h0jtdw6SYB/Oy9O1SGYFRqRIOVwvL99NJBwmhh8dDR4JL0TKsJelWkSUg4HaOe
- EhKD8jIqF7Mnw+oGYRHU+jrzRBTPYC0uut6zeh861mIK/HyylWkNj4S3dHbA2bun6kUk
- r8yeu88+iq3EbkmRhET6rqsCYzqlTdVhzJ2+c9zo7LC88UyEy0+gogW4Ocys5Eb2kepc
- BoXORj1VccN/zZE+2XN2lFgqO42GKn7xiTNc5isstL+tID+8AXrqGn0gQyfnsHIGPci4
- OyAJcailSngeyZqBbJeBCsyoXTmueugT8pyIBriUmyn0rrBBcDtbLv0JA7ve5G6yI0Ln
- yjyA==
-X-Gm-Message-State: AOJu0YwmzvRNKtareqr0X3p+SY1iISRX4QoKWJxu5Vq9SW6MhcGJG/wF
- NkFh5C8XDiGWnUoaIt7ue6KXy9OkkBPtA2iHs18/aH0hh4Wzl9isRIjz5QmIKETBvKf/BP34ShP
- b
-X-Gm-Gg: ASbGncsW0AONYzN5KVFZ7fVEwHrY1sYMxiwVlpi/BRjY78jVPyRNJlacDZk/ETGPvZV
- kuiLFOUvN70es8ZIx+n2WESUG6yTMeM2A55XwzT/ay2DzFeCjPsAHdiup/s3n1qGn/jYF0y/x0b
- Mr/X6J7+d1VH9f0yrfgF2YdY6h3rAh+0qH+9S0QSpZva8nU3rHXqOvg8KQ+IAUimJfYIZpeq5uU
- whfvSD20cITnd1ceCyzeLGmfMbjiTGIbOdW3YN/6SxCxEOLS3pfRgJLRiQm56hNhD1kLuSojmvd
- iBPnReHrhO6xlrWq/73p/hKLyZ6pntHd/6suYZV7EhkU95yqCcFHhNOJPqth9kWJ6c69AgeKVn3
- 3s9lkwDJ6LUYF59w=
-X-Google-Smtp-Source: AGHT+IE6vPf9xNnWijRG4N4GrEi4epGED/SiKnjulZ7msqAbDByeQIF4QoAspisS64Onyc9cLe7P2Q==
-X-Received: by 2002:a05:6000:4212:b0:39e:f9d8:e016 with SMTP id
- ffacd0b85a97d-3a074f0dbc6mr2163346f8f.44.1745595039908; 
- Fri, 25 Apr 2025 08:30:39 -0700 (PDT)
+ bh=1RuU8AtKetNHWTiYfP+x4IVHUbKHficL49y52z2FVyk=;
+ b=FPSNMyNRwjC8N4pVXzrq79F66oa3pcXa5Sw5z63JNG69lrDD4Ba2y62ZghqfI2c9XQ
+ mt22m8HgDQgWqPv4tlBze5r8iO69lzIU2jQ3IFFPr637zQMr89/mSvcOai590ifok4iw
+ 5AcrNT9Gf95lC6Bumi6KliCoIiyNzMFfoe7oIbAm6DNFd0u4AsWlWKXy2rgQsXxhKgGP
+ 4nody0nvcgat5/fLk9MWbfI+e1A3JUYZIbaonDTbyBTWSW8mKKZmQL8NabFDdSNPCm5C
+ Py7fM1LZ4Ux9hjG+UCPfEoLAnEXxF40yvHnIaVM+pf9Y9sPtZqQq7T2ycadbWR3pXfDE
+ f6LA==
+X-Gm-Message-State: AOJu0YwIfo6VRQonRnBF8Sqz750gSFJdORsiOGj0/Hp8IdBrisFxJNiI
+ /V/vAzp16uTVi+yYSxOyWmLi4d+5Qc4+cZAdXyFnMAXPXGCvI33NoA7ho+HCkA81cL3eTVOMJUA
+ j
+X-Gm-Gg: ASbGncsVt2SA7H0UOpmSPls8OEjqF82ruUXqXZEXuZIlxr9lxkRhk5mw41ErP4mw0vA
+ rYw9/VdOuEG5+pK0HBJNkTAbAh9OhrsrR9U4Q8+yZo3oV5Xp+/clcrCQOwtmO1VyKBPQ2UIncb6
+ x5R0A005rfV/AA3+gHljTdoyi3RCflEBXrRgqy2m0tjdl8v7zd2jGaODtq3RfPx9desHX1BXq9M
+ GZiGneXngj75dqddtnyJHdfZXlWvyL5pilvUBc5H0TE/Axr/mrqgJodOTc9dqOFY40tZ3TQp7qB
+ aK7+4rxNuLqvBhxrmBycXfMiituvbIC4YK0zEg2Pxf5+Dmbt/vB7o3iX69SK7u5oMm63W0OQwNd
+ nzEkf4OTxkI1Iyec=
+X-Google-Smtp-Source: AGHT+IE229UQmGI7Ko/h8dvAnmf+lRtYW5wq30hNjawphyVsnHhTKcVKOYa4AUP5g8VYWebCvFICMw==
+X-Received: by 2002:a05:6000:4202:b0:3a0:6a8b:ae4a with SMTP id
+ ffacd0b85a97d-3a074d4f0d2mr2630580f8f.24.1745595044984; 
+ Fri, 25 Apr 2025 08:30:44 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a073e5e198sm2704997f8f.97.2025.04.25.08.30.39
+ ffacd0b85a97d-3a073ca5219sm2644819f8f.27.2025.04.25.08.30.44
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 25 Apr 2025 08:30:39 -0700 (PDT)
+ Fri, 25 Apr 2025 08:30:44 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 23/58] target/arm: Handle AArch64 gdb read/write regs in
- TYPE_ARM_CPU
-Date: Fri, 25 Apr 2025 17:28:07 +0200
-Message-ID: <20250425152843.69638-24-philmd@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 24/58] target/arm: Replace target_ulong -> hwaddr in
+ ARMMMUFaultInfo
+Date: Fri, 25 Apr 2025 17:28:08 +0200
+Message-ID: <20250425152843.69638-25-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250425152843.69638-1-philmd@linaro.org>
 References: <20250425152843.69638-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,68 +100,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
-
-Instead of having the TYPE_AARCH64_CPU subclass set
-CPUClass::gdb_read_register and ::gdb_write_register to different
-methods from those of the TYPE_ARM_CPU parent class, have the
-TYPE_ARM_CPU methods handle either AArch32 or AArch64 at runtime.
-
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250317142819.900029-6-peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20250415172246.79470-2-philmd@linaro.org>
 ---
- target/arm/cpu64.c   |  5 -----
- target/arm/gdbstub.c | 12 ++++++++++++
- 2 files changed, 12 insertions(+), 5 deletions(-)
+ target/arm/internals.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
-index 5135ef63cb2..00629a5d1d1 100644
---- a/target/arm/cpu64.c
-+++ b/target/arm/cpu64.c
-@@ -815,11 +815,6 @@ static void aarch64_cpu_finalizefn(Object *obj)
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 08f4bd16791..0818de530b2 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -25,6 +25,7 @@
+ #ifndef TARGET_ARM_INTERNALS_H
+ #define TARGET_ARM_INTERNALS_H
  
- static void aarch64_cpu_class_init(ObjectClass *oc, const void *data)
- {
--    CPUClass *cc = CPU_CLASS(oc);
--
--    cc->gdb_read_register = aarch64_cpu_gdb_read_register;
--    cc->gdb_write_register = aarch64_cpu_gdb_write_register;
--
-     object_class_property_add_bool(oc, "aarch64", aarch64_cpu_get_aarch64,
-                                    aarch64_cpu_set_aarch64);
-     object_class_property_set_description(oc, "aarch64",
-diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
-index 30068c22627..ce4497ad7c3 100644
---- a/target/arm/gdbstub.c
-+++ b/target/arm/gdbstub.c
-@@ -44,6 +44,12 @@ int arm_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
-     ARMCPU *cpu = ARM_CPU(cs);
-     CPUARMState *env = &cpu->env;
- 
-+#ifdef TARGET_AARCH64
-+    if (arm_gdbstub_is_aarch64(cpu)) {
-+        return aarch64_cpu_gdb_read_register(cs, mem_buf, n);
-+    }
-+#endif
-+
-     if (n < 16) {
-         /* Core integer register.  */
-         return gdb_get_reg32(mem_buf, env->regs[n]);
-@@ -66,6 +72,12 @@ int arm_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
-     CPUARMState *env = &cpu->env;
-     uint32_t tmp;
- 
-+#ifdef TARGET_AARCH64
-+    if (arm_gdbstub_is_aarch64(cpu)) {
-+        return aarch64_cpu_gdb_write_register(cs, mem_buf, n);
-+    }
-+#endif
-+
-     tmp = ldl_p(mem_buf);
- 
-     /*
++#include "exec/hwaddr.h"
+ #include "exec/breakpoint.h"
+ #include "hw/registerfields.h"
+ #include "tcg/tcg-gvec-desc.h"
+@@ -726,8 +727,8 @@ typedef struct ARMMMUFaultInfo ARMMMUFaultInfo;
+ struct ARMMMUFaultInfo {
+     ARMFaultType type;
+     ARMGPCF gpcf;
+-    target_ulong s2addr;
+-    target_ulong paddr;
++    hwaddr s2addr;
++    hwaddr paddr;
+     ARMSecuritySpace paddr_space;
+     int level;
+     int domain;
 -- 
 2.47.1
 
