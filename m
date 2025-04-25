@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0270AA9CD2D
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:34:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6348FA9CD47
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:37:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8L24-00065g-41; Fri, 25 Apr 2025 11:32:05 -0400
+	id 1u8L1t-0005DZ-4d; Fri, 25 Apr 2025 11:31:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L1Y-0004aO-Aq
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:31:32 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L1d-0004n4-9W
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:31:40 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L1W-00043j-CX
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:31:31 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3913b539aabso1345499f8f.2
- for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:31:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L1b-000441-BM
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:31:36 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-43cf06eabdaso22175865e9.2
+ for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:31:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745595088; x=1746199888; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745595093; x=1746199893; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eiBpwyewNsWHNCmNEbMKXMBr6iNUyIIVRgYWIEt5InM=;
- b=ZGH7DSvcFNIGejkujG7vV7L4q0s4PDnUtJxRXY3GF3HzLiD/A8nLJhKO5PSQKHT4NT
- wVtjmC4inaQTqYvIVrAjN9MyyvIX+HWMlqsnIstG7t35C3Q7mX1wv56RJxaqPYRH+YR0
- yGkymrv6PRWTfx88cRvLDjskujAJWqWk2l0qAGchdRgZzeRmhca05KG7jxd9Wme4xNyT
- PAePWkdKfLccjVAlBwGc27X6M+PSHVqapZfJkwm4Q2HMurDzzm8J5joicdEBdAdjphWt
- FZWWJsoeuDEXmtx2l/VY8G/BsjO/rFdYJ2IXutfxe8ICuRjSD0haMzRNLz7wFrP8btP3
- ETsQ==
+ bh=fL1tyjiMehEL35jBFEUS3hsenMPouYIDfhpqN9W/Knk=;
+ b=dHjOaDW+vW/5mZyxV6Z13LArRMMrA/VjyphGSh9oGUdK6YEPz39W98C7PoaAsKD8VB
+ AsDIZBWcPSZvGYeXGnWeuw/zyqzQUg8ijDvJ+cCAEZLcgYmvwpU1cKoIv509skyxpNuE
+ dRDCfhOPE7+vDoX1N+7o554zC/7T2DXRWZy79rI2NlbxaiAn4BToINDg7CjibrJQiwV4
+ 0EjQpsi0WIaS4sBNxJc7hJahpkiwpOwXJYx6IMC9teY3hsnGUI6KIiJudOkAC9bgns44
+ kfs5faKL/N5Hz9ycQDbxHAkCtifuubrtHsT+zXtomMqgyKg30dqbhejEPqcmA/xwAGll
+ xkAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745595088; x=1746199888;
+ d=1e100.net; s=20230601; t=1745595093; x=1746199893;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eiBpwyewNsWHNCmNEbMKXMBr6iNUyIIVRgYWIEt5InM=;
- b=tiUlooUubO0c7X8hdrjWuefRk5ulnrQdSxXDzJIlCfRMjWL7gYNqIdmbbjnwjpgqg7
- 6NOeHl+++6UFeKbj1wqYhhWQpxNGGOTuH/ebWaCHBrrAA+MLaxYxvh72NGQXuJmd8nae
- ogP+wtWuBFQviBntBcCg3aS1GEYwOvRB6hPQFe9FwgepfdeeEPTBJ6UG2jn+clJ07qrd
- x8n5RDpaWq0e5yyTsD734+5VSi4yHPgQ36AAk8xmy/ZREMbbqPflqEx/7NC+Uc65V4Iz
- 63EdZclt+56o7A3+YCttBArI7f8c6XDk30gYij26DkOhiJm6kj/ybcE6aCWY1SQz9/CR
- wbAQ==
-X-Gm-Message-State: AOJu0Yzn+Fr8qjni2b/TQadx4MOzvXE7KL7f1kvLP664ax243dX9ugcO
- 4q230h2bcV4dxOrkucGgYulTcu5LHBU+YoSk9PBxp02ZfD4c0hVUYrB3uowtsqoRczMuynLznMK
- I
-X-Gm-Gg: ASbGnctHWEJls6Gyyeafx9uNQjshRfWRjN575H0k4pDcgJoonWGreWT1+I0aLNwvUKQ
- Cxhzr7VowqEeANf52ImaxlTeSc8o2esTP1TJmFxwaVMzwEDggRB7JH2+mzDomNRzTE2kFrRmLaP
- e7rUB7r9e/52HxlVFdmDBuI7LzPHTCjZOQ6TBXdbxk32r3FBdfFZ2CW4eZYLOf1QfPh0A8BF0DJ
- VjdKluqVGtYZ9dJb2BxzWxkoSkAIPJ1GIxYy48YWw/4zanOMlOCZ95guKOgLY8vFFr66CQNLPo/
- JpXpWw0qixM7xK+pERnBZuiUqTfcxQdsaqD9KfxDhkHfy0N+t1Liz1HNIHONg4978ssog3wE5N/
- NLPDwzRteV6JSBwU=
-X-Google-Smtp-Source: AGHT+IHqVqye5O5d1Et5LvyMSdWsU+Mg5+k727CftuHgsLo+DR+EECnLym6PIWk7dSJ/2iSaCOvcPw==
-X-Received: by 2002:a5d:59ae:0:b0:39a:ca05:5232 with SMTP id
- ffacd0b85a97d-3a074e0ef10mr2309522f8f.5.1745595088378; 
- Fri, 25 Apr 2025 08:31:28 -0700 (PDT)
+ bh=fL1tyjiMehEL35jBFEUS3hsenMPouYIDfhpqN9W/Knk=;
+ b=Axbeow7W9DT8UOnwPqYnod2JNX0u5gtYDuOuguuYIKOGXailHGsjsWZAWlDfgq4rdu
+ l5xr8nUp1ZSos9+4tMt4XSWnVATnuhXsVG41SLZAPDE6xvYOHDTrV/VBcGmZf1ouHgLO
+ sdv0LHyhj1MaB77loTfTK5QJQA8I0raI92X0PB1x3cD1zWDhU801zoFTAIXodmpHiJ8N
+ cTWQ/OGeHt3bUWLmYyW19fzyWwHB5mb+RyQvhjdoO6dVYwfqj/P02z1+lVExcI8f8zru
+ UzT1uxlQ2uFxAeQfb01kJydlgegtSuvT3cfCtnWsYCrR1DjkDo4ABXzPCQzLlZY9tEph
+ rLzQ==
+X-Gm-Message-State: AOJu0YzPgd4oqTHlT0jrQdiaN+QyFbGTI1li18K1VF3hw3wc19/66XJP
+ 47iu3ui/k4DGm/YaWh7f7Z3tLB2Rz07LS+CZoMN4xdTLzrN1Un50bv6I7sqgGYekTCCP/HaeDbk
+ m
+X-Gm-Gg: ASbGncuSIxHlMpLtDIzqv5iSyGClqBP5DyPfPNopCTk418lx8/3ZnJW8FdbYdiAUL3y
+ NhdYK0wLzBtRbtKvd9QvbtkDjIccvCeyb9pjt06D0uiFqOEWOwky0FIeaeXeOYRe2WYmLO8yiJ7
+ 4LKMLf6ydL+FO+WAXLZO0BOT35x+Bhsn3GppH6ovfTFahPHqUCJOjkomvffSPgsIN4dwMq2dQ+y
+ 0GLVzTZgDQAWSGzVuF/TrNr/ciVy11dANF5L5Cb2an5GjQ/0LyMqehTmsln6p48MRpgUvAzFZQi
+ MTHWWVL7TDU4Fw3brVHKiqL1exmDdRaWBebkfUMONd+f1PUjn6xoXsbBdJ8w3AhBJyeVzCdIkg8
+ x7i5ji0NnXEBxLW4=
+X-Google-Smtp-Source: AGHT+IHbYZf350joq2DKMCq14OYRU3ZxaZ5RLhIrAVs5dLJLCGimrtv0L/oKbHGtXElvAG0KL7G+kw==
+X-Received: by 2002:a05:600c:1e18:b0:43d:fa59:be39 with SMTP id
+ 5b1f17b1804b1-440a66b075cmr23372835e9.33.1745595093123; 
+ Fri, 25 Apr 2025 08:31:33 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a073e4684csm2624707f8f.76.2025.04.25.08.31.27
+ ffacd0b85a97d-3a073ca4f88sm2619353f8f.29.2025.04.25.08.31.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 25 Apr 2025 08:31:27 -0700 (PDT)
+ Fri, 25 Apr 2025 08:31:32 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Kohei Tokunaga <ktokunaga.mail@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 33/58] system/vl: Fix type conflict of GLib function pointers
-Date: Fri, 25 Apr 2025 17:28:17 +0200
-Message-ID: <20250425152843.69638-34-philmd@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ David Hildenbrand <david@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 34/58] system/memory: Remove DEVICE_HOST_ENDIAN definition
+Date: Fri, 25 Apr 2025 17:28:18 +0200
+Message-ID: <20250425152843.69638-35-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250425152843.69638-1-philmd@linaro.org>
 References: <20250425152843.69638-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,45 +99,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+Since the previous commit ("exec/memory.h: make devend_memop
+"target defines" agnostic") there is a single use of the
+DEVICE_HOST_ENDIAN definition in ram_device_mem_ops: inline
+it and remove its definition altogether.
 
-On Emscripten, function pointer casts can result in runtime failures due to
-strict function signature checks. This affects the use of g_list_sort and
-g_slist_sort, which internally perform function pointer casts that are not
-supported by Emscripten. To avoid these issues, g_list_sort_with_data and
-g_slist_sort_with_data should be used instead, as they do not rely on
-function pointer casting.
-
-Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <e9a50b76c54cc64fc9985186f0aef3fcc2024da6.1745295397.git.ktokunaga.mail@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20250423111625.10424-1-philmd@linaro.org>
 ---
- system/vl.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/exec/cpu-common.h | 6 ------
+ system/memory-internal.h  | 3 ---
+ system/memory.c           | 2 +-
+ 3 files changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/system/vl.c b/system/vl.c
-index c17945c4939..4ab2001df75 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -1524,7 +1524,7 @@ static bool debugcon_parse(const char *devname, Error **errp)
-     return true;
- }
+diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+index 9b83fd7ac88..dab1e7e5809 100644
+--- a/include/exec/cpu-common.h
++++ b/include/exec/cpu-common.h
+@@ -44,12 +44,6 @@ enum device_endian {
+     DEVICE_LITTLE_ENDIAN,
+ };
  
--static gint machine_class_cmp(gconstpointer a, gconstpointer b)
-+static gint machine_class_cmp(gconstpointer a, gconstpointer b, gpointer d)
+-#if HOST_BIG_ENDIAN
+-#define DEVICE_HOST_ENDIAN DEVICE_BIG_ENDIAN
+-#else
+-#define DEVICE_HOST_ENDIAN DEVICE_LITTLE_ENDIAN
+-#endif
+-
+ /* address in the RAM (different from a physical address) */
+ #if defined(CONFIG_XEN_BACKEND)
+ typedef uint64_t ram_addr_t;
+diff --git a/system/memory-internal.h b/system/memory-internal.h
+index 29717b3c58f..46f758fa7e4 100644
+--- a/system/memory-internal.h
++++ b/system/memory-internal.h
+@@ -41,9 +41,6 @@ void mtree_print_dispatch(struct AddressSpaceDispatch *d,
+ /* returns true if end is big endian. */
+ static inline bool devend_big_endian(enum device_endian end)
  {
-     const MachineClass *mc1 = a, *mc2 = b;
-     int res;
-@@ -1574,7 +1574,7 @@ static void machine_help_func(const QDict *qdict)
+-    QEMU_BUILD_BUG_ON(DEVICE_HOST_ENDIAN != DEVICE_LITTLE_ENDIAN &&
+-                      DEVICE_HOST_ENDIAN != DEVICE_BIG_ENDIAN);
+-
+     if (end == DEVICE_NATIVE_ENDIAN) {
+         return target_big_endian();
      }
- 
-     printf("Supported machines are:\n");
--    machines = g_slist_sort(machines, machine_class_cmp);
-+    machines = g_slist_sort_with_data(machines, machine_class_cmp, NULL);
-     for (el = machines; el; el = el->next) {
-         MachineClass *mc = el->data;
-         if (mc->alias) {
+diff --git a/system/memory.c b/system/memory.c
+index 67e433095b4..71434e7ad02 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -1382,7 +1382,7 @@ static void memory_region_ram_device_write(void *opaque, hwaddr addr,
+ static const MemoryRegionOps ram_device_mem_ops = {
+     .read = memory_region_ram_device_read,
+     .write = memory_region_ram_device_write,
+-    .endianness = DEVICE_HOST_ENDIAN,
++    .endianness = HOST_BIG_ENDIAN ? DEVICE_BIG_ENDIAN : DEVICE_LITTLE_ENDIAN,
+     .valid = {
+         .min_access_size = 1,
+         .max_access_size = 8,
 -- 
 2.47.1
 
