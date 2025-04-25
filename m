@@ -2,65 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7584FA9C1E8
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 10:48:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8CA5A9C22E
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 10:53:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8Eiv-0002tP-4t; Fri, 25 Apr 2025 04:47:53 -0400
+	id 1u8Eiw-0002uL-Sa; Fri, 25 Apr 2025 04:47:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u8Eiq-0002sG-MZ
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 04:47:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u8Eiu-0002u2-O1
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 04:47:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u8Ein-0003Ea-2y
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 04:47:48 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u8Eiq-0003F1-Uk
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 04:47:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745570862;
+ s=mimecast20190719; t=1745570867;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XZSS12jJn3Ab8jgyon0Rq7AsqZv904HgNZr+YuZoE5Q=;
- b=S+o26oePHvc9zkO0KXrQHaSeXKzPe7tVTxQJ4xF/VgoEqxrgH69wGG8IeIYSta6rdmcVUF
- rMMPJwZRpJoy/3E2v+78fB5OTG4KXllb2sn151333sspgqNkYXmTTyUMdI69dNbX7L3Pij
- F4eLt6N4bXDbDg3g8uzYp78jQPOfn9U=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=xWgRWlLQMC2r71ndq/oCQcCpGwUhQV+NcXbs5vRXN/8=;
+ b=DebfhpeNum/NEw7UapIoaMrVaZtzmIkTi+SuzUI8l1LlzArfGOE++giro0mJpmRqYdeUcE
+ NhSp87wpS1YhenSJJeBKHXVmRRmGdHcODsTkP0v8yhmaNPuD47AXm63ol/MOBHPS/csvl6
+ AKLVj0CtNjrvrEOqe9xwUGArixFLytw=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-344-2g8EwTomMpC3CG5La_52vw-1; Fri,
- 25 Apr 2025 04:47:41 -0400
-X-MC-Unique: 2g8EwTomMpC3CG5La_52vw-1
-X-Mimecast-MFC-AGG-ID: 2g8EwTomMpC3CG5La_52vw_1745570860
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-575-4UJxiGsVNvC21VSN_HbiJA-1; Fri,
+ 25 Apr 2025 04:47:44 -0400
+X-MC-Unique: 4UJxiGsVNvC21VSN_HbiJA-1
+X-Mimecast-MFC-AGG-ID: 4UJxiGsVNvC21VSN_HbiJA_1745570863
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E09F01956095; Fri, 25 Apr 2025 08:47:39 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9C2D71955DCC; Fri, 25 Apr 2025 08:47:43 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.33.65])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0CD8A30001AB; Fri, 25 Apr 2025 08:47:36 +0000 (UTC)
+ id 6B01030001A2; Fri, 25 Apr 2025 08:47:40 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Joao Martins <joao.m.martins@oracle.com>, Yi Liu <yi.l.liu@intel.com>,
- John Levon <john.levon@nutanix.com>,
+ Eric Auger <eric.auger@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PULL 14/50] vfio: Introduce a new header file for VFIOIOMMUFD
+Subject: [PULL 15/50] vfio: Introduce new files for VFIORegion definitions and
  declarations
-Date: Fri, 25 Apr 2025 10:46:07 +0200
-Message-ID: <20250425084644.102196-15-clg@redhat.com>
+Date: Fri, 25 Apr 2025 10:46:08 +0200
+Message-ID: <20250425084644.102196-16-clg@redhat.com>
 In-Reply-To: <20250425084644.102196-1-clg@redhat.com>
 References: <20250425084644.102196-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -28
 X-Spam_score: -2.9
@@ -85,114 +84,1041 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Gather all VFIOIOMMUFD related declarations introduced by commits
-5ee3dc7af785 ("vfio/iommufd: Implement the iommufd backend") and
-5b1e96e65403 ("vfio/iommufd: Introduce auto domain creation") into
-"vfio-iommufd.h". This to reduce exposure of VFIO internals in
-"hw/vfio/vfio-common.h".
+Gather all VFIORegion related declarations and definitions into their
+own files to reduce exposure of VFIO internals in "hw/vfio/vfio-common.h".
+They were introduced for 'vfio-platform' support in commits
+db0da029a185 ("vfio: Generalize region support") and a664477db8da
+("hw/vfio/pci: Introduce VFIORegion").
 
-Cc: Joao Martins <joao.m.martins@oracle.com>
-Cc: Yi Liu <yi.l.liu@intel.com>
-Reviewed-by: John Levon <john.levon@nutanix.com>
-Link: https://lore.kernel.org/qemu-devel/20250318095415.670319-10-clg@redhat.com
-Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
+To be noted that the 'vfio-platform' devices have been deprecated and
+will be removed in QEMU 10.2. Until then, make the declarations
+available externally for 'sysbus-fdt.c'.
+
+Cc: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Link: https://lore.kernel.org/qemu-devel/20250326075122.1299361-11-clg@redhat.com
+Link: https://lore.kernel.org/qemu-devel/20250326075122.1299361-12-clg@redhat.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/vfio-iommufd.h        | 34 ++++++++++++++++++++++++++++++++++
- include/hw/vfio/vfio-common.h | 21 +++------------------
- hw/vfio/iommufd.c             |  1 +
- 3 files changed, 38 insertions(+), 18 deletions(-)
- create mode 100644 hw/vfio/vfio-iommufd.h
+ hw/vfio/pci.h                   |   1 +
+ hw/vfio/vfio-display.h          |   1 +
+ include/hw/vfio/vfio-common.h   |  32 +--
+ include/hw/vfio/vfio-platform.h |   2 +
+ include/hw/vfio/vfio-region.h   |  47 ++++
+ hw/core/sysbus-fdt.c            |   1 +
+ hw/vfio/helpers.c               | 363 -----------------------------
+ hw/vfio/platform.c              |   1 +
+ hw/vfio/region.c                | 394 ++++++++++++++++++++++++++++++++
+ hw/vfio/meson.build             |   1 +
+ hw/vfio/trace-events            |  16 +-
+ 11 files changed, 458 insertions(+), 401 deletions(-)
+ create mode 100644 include/hw/vfio/vfio-region.h
+ create mode 100644 hw/vfio/region.c
 
-diff --git a/hw/vfio/vfio-iommufd.h b/hw/vfio/vfio-iommufd.h
+diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+index 62fd5f49978845ba24613ada972e625e629c5080..801ea445b8c9f7b11fb209146aa54349fe29ccf4 100644
+--- a/hw/vfio/pci.h
++++ b/hw/vfio/pci.h
+@@ -15,6 +15,7 @@
+ #include "system/memory.h"
+ #include "hw/pci/pci_device.h"
+ #include "hw/vfio/vfio-common.h"
++#include "hw/vfio/vfio-region.h"
+ #include "qemu/event_notifier.h"
+ #include "qemu/queue.h"
+ #include "qemu/timer.h"
+diff --git a/hw/vfio/vfio-display.h b/hw/vfio/vfio-display.h
+index 99b8cb67ef7558d3eefe3105a831e3fcb30afc4d..2606c34b396a88cec3e8f884adb158e48e8105f1 100644
+--- a/hw/vfio/vfio-display.h
++++ b/hw/vfio/vfio-display.h
+@@ -11,6 +11,7 @@
+ 
+ #include "ui/console.h"
+ #include "hw/display/ramfb.h"
++#include "hw/vfio/vfio-region.h"
+ 
+ typedef struct VFIODMABuf {
+     QemuDmaBuf *buf;
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index 9ec90fbac007f39d222cc42c25cca96be4e4421b..b37203374178045f2b534bf6d8990f9dbea1fca7 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -39,25 +39,6 @@ enum {
+     VFIO_DEVICE_TYPE_CCW = 2,
+     VFIO_DEVICE_TYPE_AP = 3,
+ };
+-
+-typedef struct VFIOMmap {
+-    MemoryRegion mem;
+-    void *mmap;
+-    off_t offset;
+-    size_t size;
+-} VFIOMmap;
+-
+-typedef struct VFIORegion {
+-    struct VFIODevice *vbasedev;
+-    off_t fd_offset; /* offset of region within device fd */
+-    MemoryRegion *mem; /* slow, read/write access */
+-    size_t size;
+-    uint32_t flags; /* VFIO region flags (rd/wr/mmap) */
+-    uint32_t nr_mmaps;
+-    VFIOMmap *mmaps;
+-    uint8_t nr; /* cache the region number for debug */
+-} VFIORegion;
+-
+ struct VFIOGroup;
+ 
+ typedef struct VFIOContainer {
+@@ -168,17 +149,7 @@ void vfio_unmask_single_irqindex(VFIODevice *vbasedev, int index);
+ void vfio_mask_single_irqindex(VFIODevice *vbasedev, int index);
+ bool vfio_set_irq_signaling(VFIODevice *vbasedev, int index, int subindex,
+                             int action, int fd, Error **errp);
+-void vfio_region_write(void *opaque, hwaddr addr,
+-                           uint64_t data, unsigned size);
+-uint64_t vfio_region_read(void *opaque,
+-                          hwaddr addr, unsigned size);
+-int vfio_region_setup(Object *obj, VFIODevice *vbasedev, VFIORegion *region,
+-                      int index, const char *name);
+-int vfio_region_mmap(VFIORegion *region);
+-void vfio_region_mmaps_set_enabled(VFIORegion *region, bool enabled);
+-void vfio_region_unmap(VFIORegion *region);
+-void vfio_region_exit(VFIORegion *region);
+-void vfio_region_finalize(VFIORegion *region);
++
+ void vfio_reset_handler(void *opaque);
+ struct vfio_device_info *vfio_get_device_info(int fd);
+ bool vfio_device_is_mdev(VFIODevice *vbasedev);
+@@ -194,7 +165,6 @@ int vfio_kvm_device_del_fd(int fd, Error **errp);
+ bool vfio_cpr_register_container(VFIOContainerBase *bcontainer, Error **errp);
+ void vfio_cpr_unregister_container(VFIOContainerBase *bcontainer);
+ 
+-extern const MemoryRegionOps vfio_region_ops;
+ typedef QLIST_HEAD(VFIOGroupList, VFIOGroup) VFIOGroupList;
+ typedef QLIST_HEAD(VFIODeviceList, VFIODevice) VFIODeviceList;
+ extern VFIOGroupList vfio_group_list;
+diff --git a/include/hw/vfio/vfio-platform.h b/include/hw/vfio/vfio-platform.h
+index c414c3dffcc840a2f40a1b252d0f7b4e309c78d4..3191545717da51abc41d10cd3646cd047b4a676c 100644
+--- a/include/hw/vfio/vfio-platform.h
++++ b/include/hw/vfio/vfio-platform.h
+@@ -47,6 +47,8 @@ typedef struct VFIOINTp {
+ /* function type for user side eventfd handler */
+ typedef void (*eventfd_user_side_handler_t)(VFIOINTp *intp);
+ 
++typedef struct VFIORegion VFIORegion;
++
+ struct VFIOPlatformDevice {
+     SysBusDevice sbdev;
+     VFIODevice vbasedev; /* not a QOM object */
+diff --git a/include/hw/vfio/vfio-region.h b/include/hw/vfio/vfio-region.h
 new file mode 100644
-index 0000000000000000000000000000000000000000..07ea0f43049645a5f3782048117fd9bf22083053
+index 0000000000000000000000000000000000000000..cbffb269628cc89fbbdb060ce3ce6e45bd701bad
 --- /dev/null
-+++ b/hw/vfio/vfio-iommufd.h
-@@ -0,0 +1,34 @@
++++ b/include/hw/vfio/vfio-region.h
+@@ -0,0 +1,47 @@
 +/*
-+ * VFIO iommufd
++ * VFIO region
 + *
 + * Copyright Red Hat, Inc. 2025
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + */
 +
-+#ifndef HW_VFIO_VFIO_IOMMUFD_H
-+#define HW_VFIO_VFIO_IOMMUFD_H
++#ifndef HW_VFIO_REGION_H
++#define HW_VFIO_REGION_H
 +
-+#include "hw/vfio/vfio-container-base.h"
++#include "system/memory.h"
++
++typedef struct VFIOMmap {
++    MemoryRegion mem;
++    void *mmap;
++    off_t offset;
++    size_t size;
++} VFIOMmap;
 +
 +typedef struct VFIODevice VFIODevice;
 +
-+typedef struct VFIOIOASHwpt {
-+    uint32_t hwpt_id;
-+    uint32_t hwpt_flags;
-+    QLIST_HEAD(, VFIODevice) device_list;
-+    QLIST_ENTRY(VFIOIOASHwpt) next;
-+} VFIOIOASHwpt;
++typedef struct VFIORegion {
++    struct VFIODevice *vbasedev;
++    off_t fd_offset; /* offset of region within device fd */
++    MemoryRegion *mem; /* slow, read/write access */
++    size_t size;
++    uint32_t flags; /* VFIO region flags (rd/wr/mmap) */
++    uint32_t nr_mmaps;
++    VFIOMmap *mmaps;
++    uint8_t nr; /* cache the region number for debug */
++} VFIORegion;
 +
-+typedef struct IOMMUFDBackend IOMMUFDBackend;
 +
-+typedef struct VFIOIOMMUFDContainer {
-+    VFIOContainerBase bcontainer;
-+    IOMMUFDBackend *be;
-+    uint32_t ioas_id;
-+    QLIST_HEAD(, VFIOIOASHwpt) hwpt_list;
-+} VFIOIOMMUFDContainer;
++void vfio_region_write(void *opaque, hwaddr addr,
++                           uint64_t data, unsigned size);
++uint64_t vfio_region_read(void *opaque,
++                          hwaddr addr, unsigned size);
++int vfio_region_setup(Object *obj, VFIODevice *vbasedev, VFIORegion *region,
++                      int index, const char *name);
++int vfio_region_mmap(VFIORegion *region);
++void vfio_region_mmaps_set_enabled(VFIORegion *region, bool enabled);
++void vfio_region_unmap(VFIORegion *region);
++void vfio_region_exit(VFIORegion *region);
++void vfio_region_finalize(VFIORegion *region);
 +
-+OBJECT_DECLARE_SIMPLE_TYPE(VFIOIOMMUFDContainer, VFIO_IOMMU_IOMMUFD);
-+
-+#endif /* HW_VFIO_VFIO_IOMMUFD_H */
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 83b1f7be805998c00f02d5b264a4171b51c1d55c..9ec90fbac007f39d222cc42c25cca96be4e4421b 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -69,27 +69,12 @@ typedef struct VFIOContainer {
++#endif /* HW_VFIO_REGION_H */
+diff --git a/hw/core/sysbus-fdt.c b/hw/core/sysbus-fdt.c
+index e85066b905637b1ca34b5965f383df341f3a4eb7..c339a27875cbee8131b064674aa09adf4b9efa25 100644
+--- a/hw/core/sysbus-fdt.c
++++ b/hw/core/sysbus-fdt.c
+@@ -35,6 +35,7 @@
+ #include "hw/vfio/vfio-platform.h"
+ #include "hw/vfio/vfio-calxeda-xgmac.h"
+ #include "hw/vfio/vfio-amd-xgbe.h"
++#include "hw/vfio/vfio-region.h"
+ #include "hw/display/ramfb.h"
+ #include "hw/uefi/var-service-api.h"
+ #include "hw/arm/fdt.h"
+diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
+index 4b255d4f3a9e81f55df00c68fc71da769fd5bd04..89403943a7a219e491b6812d50b27b7f1fd7b4a4 100644
+--- a/hw/vfio/helpers.c
++++ b/hw/vfio/helpers.c
+@@ -147,118 +147,6 @@ bool vfio_set_irq_signaling(VFIODevice *vbasedev, int index, int subindex,
+     return false;
+ }
  
- OBJECT_DECLARE_SIMPLE_TYPE(VFIOContainer, VFIO_IOMMU_LEGACY);
+-/*
+- * IO Port/MMIO - Beware of the endians, VFIO is always little endian
+- */
+-void vfio_region_write(void *opaque, hwaddr addr,
+-                       uint64_t data, unsigned size)
+-{
+-    VFIORegion *region = opaque;
+-    VFIODevice *vbasedev = region->vbasedev;
+-    union {
+-        uint8_t byte;
+-        uint16_t word;
+-        uint32_t dword;
+-        uint64_t qword;
+-    } buf;
+-
+-    switch (size) {
+-    case 1:
+-        buf.byte = data;
+-        break;
+-    case 2:
+-        buf.word = cpu_to_le16(data);
+-        break;
+-    case 4:
+-        buf.dword = cpu_to_le32(data);
+-        break;
+-    case 8:
+-        buf.qword = cpu_to_le64(data);
+-        break;
+-    default:
+-        hw_error("vfio: unsupported write size, %u bytes", size);
+-        break;
+-    }
+-
+-    if (pwrite(vbasedev->fd, &buf, size, region->fd_offset + addr) != size) {
+-        error_report("%s(%s:region%d+0x%"HWADDR_PRIx", 0x%"PRIx64
+-                     ",%d) failed: %m",
+-                     __func__, vbasedev->name, region->nr,
+-                     addr, data, size);
+-    }
+-
+-    trace_vfio_region_write(vbasedev->name, region->nr, addr, data, size);
+-
+-    /*
+-     * A read or write to a BAR always signals an INTx EOI.  This will
+-     * do nothing if not pending (including not in INTx mode).  We assume
+-     * that a BAR access is in response to an interrupt and that BAR
+-     * accesses will service the interrupt.  Unfortunately, we don't know
+-     * which access will service the interrupt, so we're potentially
+-     * getting quite a few host interrupts per guest interrupt.
+-     */
+-    vbasedev->ops->vfio_eoi(vbasedev);
+-}
+-
+-uint64_t vfio_region_read(void *opaque,
+-                          hwaddr addr, unsigned size)
+-{
+-    VFIORegion *region = opaque;
+-    VFIODevice *vbasedev = region->vbasedev;
+-    union {
+-        uint8_t byte;
+-        uint16_t word;
+-        uint32_t dword;
+-        uint64_t qword;
+-    } buf;
+-    uint64_t data = 0;
+-
+-    if (pread(vbasedev->fd, &buf, size, region->fd_offset + addr) != size) {
+-        error_report("%s(%s:region%d+0x%"HWADDR_PRIx", %d) failed: %m",
+-                     __func__, vbasedev->name, region->nr,
+-                     addr, size);
+-        return (uint64_t)-1;
+-    }
+-    switch (size) {
+-    case 1:
+-        data = buf.byte;
+-        break;
+-    case 2:
+-        data = le16_to_cpu(buf.word);
+-        break;
+-    case 4:
+-        data = le32_to_cpu(buf.dword);
+-        break;
+-    case 8:
+-        data = le64_to_cpu(buf.qword);
+-        break;
+-    default:
+-        hw_error("vfio: unsupported read size, %u bytes", size);
+-        break;
+-    }
+-
+-    trace_vfio_region_read(vbasedev->name, region->nr, addr, size, data);
+-
+-    /* Same as write above */
+-    vbasedev->ops->vfio_eoi(vbasedev);
+-
+-    return data;
+-}
+-
+-const MemoryRegionOps vfio_region_ops = {
+-    .read = vfio_region_read,
+-    .write = vfio_region_write,
+-    .endianness = DEVICE_LITTLE_ENDIAN,
+-    .valid = {
+-        .min_access_size = 1,
+-        .max_access_size = 8,
+-    },
+-    .impl = {
+-        .min_access_size = 1,
+-        .max_access_size = 8,
+-    },
+-};
+-
+ int vfio_bitmap_alloc(VFIOBitmap *vbmap, hwaddr size)
+ {
+     vbmap->pages = REAL_HOST_PAGE_ALIGN(size) / qemu_real_host_page_size();
+@@ -306,257 +194,6 @@ vfio_get_device_info_cap(struct vfio_device_info *info, uint16_t id)
+     return vfio_get_cap((void *)info, info->cap_offset, id);
+ }
  
--typedef struct IOMMUFDBackend IOMMUFDBackend;
+-static int vfio_setup_region_sparse_mmaps(VFIORegion *region,
+-                                          struct vfio_region_info *info)
+-{
+-    struct vfio_info_cap_header *hdr;
+-    struct vfio_region_info_cap_sparse_mmap *sparse;
+-    int i, j;
 -
--typedef struct VFIOIOASHwpt {
--    uint32_t hwpt_id;
--    uint32_t hwpt_flags;
--    QLIST_HEAD(, VFIODevice) device_list;
--    QLIST_ENTRY(VFIOIOASHwpt) next;
--} VFIOIOASHwpt;
+-    hdr = vfio_get_region_info_cap(info, VFIO_REGION_INFO_CAP_SPARSE_MMAP);
+-    if (!hdr) {
+-        return -ENODEV;
+-    }
 -
--typedef struct VFIOIOMMUFDContainer {
--    VFIOContainerBase bcontainer;
--    IOMMUFDBackend *be;
--    uint32_t ioas_id;
--    QLIST_HEAD(, VFIOIOASHwpt) hwpt_list;
--} VFIOIOMMUFDContainer;
+-    sparse = container_of(hdr, struct vfio_region_info_cap_sparse_mmap, header);
 -
--OBJECT_DECLARE_SIMPLE_TYPE(VFIOIOMMUFDContainer, VFIO_IOMMU_IOMMUFD);
+-    trace_vfio_region_sparse_mmap_header(region->vbasedev->name,
+-                                         region->nr, sparse->nr_areas);
 -
- typedef struct VFIODeviceOps VFIODeviceOps;
- typedef struct VFIOMigration VFIOMigration;
+-    region->mmaps = g_new0(VFIOMmap, sparse->nr_areas);
+-
+-    for (i = 0, j = 0; i < sparse->nr_areas; i++) {
+-        if (sparse->areas[i].size) {
+-            trace_vfio_region_sparse_mmap_entry(i, sparse->areas[i].offset,
+-                                            sparse->areas[i].offset +
+-                                            sparse->areas[i].size - 1);
+-            region->mmaps[j].offset = sparse->areas[i].offset;
+-            region->mmaps[j].size = sparse->areas[i].size;
+-            j++;
+-        }
+-    }
+-
+-    region->nr_mmaps = j;
+-    region->mmaps = g_realloc(region->mmaps, j * sizeof(VFIOMmap));
+-
+-    return 0;
+-}
+-
+-int vfio_region_setup(Object *obj, VFIODevice *vbasedev, VFIORegion *region,
+-                      int index, const char *name)
+-{
+-    g_autofree struct vfio_region_info *info = NULL;
+-    int ret;
+-
+-    ret = vfio_get_region_info(vbasedev, index, &info);
+-    if (ret) {
+-        return ret;
+-    }
+-
+-    region->vbasedev = vbasedev;
+-    region->flags = info->flags;
+-    region->size = info->size;
+-    region->fd_offset = info->offset;
+-    region->nr = index;
+-
+-    if (region->size) {
+-        region->mem = g_new0(MemoryRegion, 1);
+-        memory_region_init_io(region->mem, obj, &vfio_region_ops,
+-                              region, name, region->size);
+-
+-        if (!vbasedev->no_mmap &&
+-            region->flags & VFIO_REGION_INFO_FLAG_MMAP) {
+-
+-            ret = vfio_setup_region_sparse_mmaps(region, info);
+-
+-            if (ret) {
+-                region->nr_mmaps = 1;
+-                region->mmaps = g_new0(VFIOMmap, region->nr_mmaps);
+-                region->mmaps[0].offset = 0;
+-                region->mmaps[0].size = region->size;
+-            }
+-        }
+-    }
+-
+-    trace_vfio_region_setup(vbasedev->name, index, name,
+-                            region->flags, region->fd_offset, region->size);
+-    return 0;
+-}
+-
+-static void vfio_subregion_unmap(VFIORegion *region, int index)
+-{
+-    trace_vfio_region_unmap(memory_region_name(&region->mmaps[index].mem),
+-                            region->mmaps[index].offset,
+-                            region->mmaps[index].offset +
+-                            region->mmaps[index].size - 1);
+-    memory_region_del_subregion(region->mem, &region->mmaps[index].mem);
+-    munmap(region->mmaps[index].mmap, region->mmaps[index].size);
+-    object_unparent(OBJECT(&region->mmaps[index].mem));
+-    region->mmaps[index].mmap = NULL;
+-}
+-
+-int vfio_region_mmap(VFIORegion *region)
+-{
+-    int i, ret, prot = 0;
+-    char *name;
+-
+-    if (!region->mem) {
+-        return 0;
+-    }
+-
+-    prot |= region->flags & VFIO_REGION_INFO_FLAG_READ ? PROT_READ : 0;
+-    prot |= region->flags & VFIO_REGION_INFO_FLAG_WRITE ? PROT_WRITE : 0;
+-
+-    for (i = 0; i < region->nr_mmaps; i++) {
+-        size_t align = MIN(1ULL << ctz64(region->mmaps[i].size), 1 * GiB);
+-        void *map_base, *map_align;
+-
+-        /*
+-         * Align the mmap for more efficient mapping in the kernel.  Ideally
+-         * we'd know the PMD and PUD mapping sizes to use as discrete alignment
+-         * intervals, but we don't.  As of Linux v6.12, the largest PUD size
+-         * supporting huge pfnmap is 1GiB (ARCH_SUPPORTS_PUD_PFNMAP is only set
+-         * on x86_64).  Align by power-of-two size, capped at 1GiB.
+-         *
+-         * NB. qemu_memalign() and friends actually allocate memory, whereas
+-         * the region size here can exceed host memory, therefore we manually
+-         * create an oversized anonymous mapping and clean it up for alignment.
+-         */
+-        map_base = mmap(0, region->mmaps[i].size + align, PROT_NONE,
+-                        MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+-        if (map_base == MAP_FAILED) {
+-            ret = -errno;
+-            goto no_mmap;
+-        }
+-
+-        map_align = (void *)ROUND_UP((uintptr_t)map_base, (uintptr_t)align);
+-        munmap(map_base, map_align - map_base);
+-        munmap(map_align + region->mmaps[i].size,
+-               align - (map_align - map_base));
+-
+-        region->mmaps[i].mmap = mmap(map_align, region->mmaps[i].size, prot,
+-                                     MAP_SHARED | MAP_FIXED,
+-                                     region->vbasedev->fd,
+-                                     region->fd_offset +
+-                                     region->mmaps[i].offset);
+-        if (region->mmaps[i].mmap == MAP_FAILED) {
+-            ret = -errno;
+-            goto no_mmap;
+-        }
+-
+-        name = g_strdup_printf("%s mmaps[%d]",
+-                               memory_region_name(region->mem), i);
+-        memory_region_init_ram_device_ptr(&region->mmaps[i].mem,
+-                                          memory_region_owner(region->mem),
+-                                          name, region->mmaps[i].size,
+-                                          region->mmaps[i].mmap);
+-        g_free(name);
+-        memory_region_add_subregion(region->mem, region->mmaps[i].offset,
+-                                    &region->mmaps[i].mem);
+-
+-        trace_vfio_region_mmap(memory_region_name(&region->mmaps[i].mem),
+-                               region->mmaps[i].offset,
+-                               region->mmaps[i].offset +
+-                               region->mmaps[i].size - 1);
+-    }
+-
+-    return 0;
+-
+-no_mmap:
+-    trace_vfio_region_mmap_fault(memory_region_name(region->mem), i,
+-                                 region->fd_offset + region->mmaps[i].offset,
+-                                 region->fd_offset + region->mmaps[i].offset +
+-                                 region->mmaps[i].size - 1, ret);
+-
+-    region->mmaps[i].mmap = NULL;
+-
+-    for (i--; i >= 0; i--) {
+-        vfio_subregion_unmap(region, i);
+-    }
+-
+-    return ret;
+-}
+-
+-void vfio_region_unmap(VFIORegion *region)
+-{
+-    int i;
+-
+-    if (!region->mem) {
+-        return;
+-    }
+-
+-    for (i = 0; i < region->nr_mmaps; i++) {
+-        if (region->mmaps[i].mmap) {
+-            vfio_subregion_unmap(region, i);
+-        }
+-    }
+-}
+-
+-void vfio_region_exit(VFIORegion *region)
+-{
+-    int i;
+-
+-    if (!region->mem) {
+-        return;
+-    }
+-
+-    for (i = 0; i < region->nr_mmaps; i++) {
+-        if (region->mmaps[i].mmap) {
+-            memory_region_del_subregion(region->mem, &region->mmaps[i].mem);
+-        }
+-    }
+-
+-    trace_vfio_region_exit(region->vbasedev->name, region->nr);
+-}
+-
+-void vfio_region_finalize(VFIORegion *region)
+-{
+-    int i;
+-
+-    if (!region->mem) {
+-        return;
+-    }
+-
+-    for (i = 0; i < region->nr_mmaps; i++) {
+-        if (region->mmaps[i].mmap) {
+-            munmap(region->mmaps[i].mmap, region->mmaps[i].size);
+-            object_unparent(OBJECT(&region->mmaps[i].mem));
+-        }
+-    }
+-
+-    object_unparent(OBJECT(region->mem));
+-
+-    g_free(region->mem);
+-    g_free(region->mmaps);
+-
+-    trace_vfio_region_finalize(region->vbasedev->name, region->nr);
+-
+-    region->mem = NULL;
+-    region->mmaps = NULL;
+-    region->nr_mmaps = 0;
+-    region->size = 0;
+-    region->flags = 0;
+-    region->nr = 0;
+-}
+-
+-void vfio_region_mmaps_set_enabled(VFIORegion *region, bool enabled)
+-{
+-    int i;
+-
+-    if (!region->mem) {
+-        return;
+-    }
+-
+-    for (i = 0; i < region->nr_mmaps; i++) {
+-        if (region->mmaps[i].mmap) {
+-            memory_region_set_enabled(&region->mmaps[i].mem, enabled);
+-        }
+-    }
+-
+-    trace_vfio_region_mmaps_set_enabled(memory_region_name(region->mem),
+-                                        enabled);
+-}
+-
+ int vfio_get_region_info(VFIODevice *vbasedev, int index,
+                          struct vfio_region_info **info)
+ {
+diff --git a/hw/vfio/platform.c b/hw/vfio/platform.c
+index f273ae9a51a179b8d8851ec2170f441a21a427fc..ca6528cc568db4f4666fea70896a39b650642679 100644
+--- a/hw/vfio/platform.c
++++ b/hw/vfio/platform.c
+@@ -37,6 +37,7 @@
+ #include "hw/platform-bus.h"
+ #include "hw/qdev-properties.h"
+ #include "system/kvm.h"
++#include "hw/vfio/vfio-region.h"
  
-+typedef struct IOMMUFDBackend IOMMUFDBackend;
-+typedef struct VFIOIOASHwpt VFIOIOASHwpt;
+ /*
+  * Functions used whatever the injection method
+diff --git a/hw/vfio/region.c b/hw/vfio/region.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..08cd69e7047ab950151832864a14af7af774ff3b
+--- /dev/null
++++ b/hw/vfio/region.c
+@@ -0,0 +1,394 @@
++/*
++ * VFIO regions
++ *
++ * Copyright Red Hat, Inc. 2012
++ *
++ * Authors:
++ *  Alex Williamson <alex.williamson@redhat.com>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2.  See
++ * the COPYING file in the top-level directory.
++ *
++ * Based on qemu-kvm device-assignment:
++ *  Adapted for KVM by Qumranet.
++ *  Copyright (c) 2007, Neocleus, Alex Novik (alex@neocleus.com)
++ *  Copyright (c) 2007, Neocleus, Guy Zana (guy@neocleus.com)
++ *  Copyright (C) 2008, Qumranet, Amit Shah (amit.shah@qumranet.com)
++ *  Copyright (C) 2008, Red Hat, Amit Shah (amit.shah@redhat.com)
++ *  Copyright (C) 2008, IBM, Muli Ben-Yehuda (muli@il.ibm.com)
++ */
 +
- typedef struct VFIODevice {
-     QLIST_ENTRY(VFIODevice) next;
-     QLIST_ENTRY(VFIODevice) container_next;
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 42c8412bbf50724dddb43f9b19a3aa40c8bc311d..7196c4080125674ec58b1ebf02dad84b4387c355 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -25,6 +25,7 @@
- #include "qemu/cutils.h"
- #include "qemu/chardev_open.h"
- #include "pci.h"
-+#include "vfio-iommufd.h"
++#include "qemu/osdep.h"
++#include <sys/ioctl.h>
++
++#include "hw/vfio/vfio-common.h"
++#include "hw/vfio/pci.h"
++#include "hw/hw.h"
++#include "trace.h"
++#include "qapi/error.h"
++#include "qemu/error-report.h"
++#include "qemu/units.h"
++#include "monitor/monitor.h"
++
++/*
++ * IO Port/MMIO - Beware of the endians, VFIO is always little endian
++ */
++void vfio_region_write(void *opaque, hwaddr addr,
++                       uint64_t data, unsigned size)
++{
++    VFIORegion *region = opaque;
++    VFIODevice *vbasedev = region->vbasedev;
++    union {
++        uint8_t byte;
++        uint16_t word;
++        uint32_t dword;
++        uint64_t qword;
++    } buf;
++
++    switch (size) {
++    case 1:
++        buf.byte = data;
++        break;
++    case 2:
++        buf.word = cpu_to_le16(data);
++        break;
++    case 4:
++        buf.dword = cpu_to_le32(data);
++        break;
++    case 8:
++        buf.qword = cpu_to_le64(data);
++        break;
++    default:
++        hw_error("vfio: unsupported write size, %u bytes", size);
++        break;
++    }
++
++    if (pwrite(vbasedev->fd, &buf, size, region->fd_offset + addr) != size) {
++        error_report("%s(%s:region%d+0x%"HWADDR_PRIx", 0x%"PRIx64
++                     ",%d) failed: %m",
++                     __func__, vbasedev->name, region->nr,
++                     addr, data, size);
++    }
++
++    trace_vfio_region_write(vbasedev->name, region->nr, addr, data, size);
++
++    /*
++     * A read or write to a BAR always signals an INTx EOI.  This will
++     * do nothing if not pending (including not in INTx mode).  We assume
++     * that a BAR access is in response to an interrupt and that BAR
++     * accesses will service the interrupt.  Unfortunately, we don't know
++     * which access will service the interrupt, so we're potentially
++     * getting quite a few host interrupts per guest interrupt.
++     */
++    vbasedev->ops->vfio_eoi(vbasedev);
++}
++
++uint64_t vfio_region_read(void *opaque,
++                          hwaddr addr, unsigned size)
++{
++    VFIORegion *region = opaque;
++    VFIODevice *vbasedev = region->vbasedev;
++    union {
++        uint8_t byte;
++        uint16_t word;
++        uint32_t dword;
++        uint64_t qword;
++    } buf;
++    uint64_t data = 0;
++
++    if (pread(vbasedev->fd, &buf, size, region->fd_offset + addr) != size) {
++        error_report("%s(%s:region%d+0x%"HWADDR_PRIx", %d) failed: %m",
++                     __func__, vbasedev->name, region->nr,
++                     addr, size);
++        return (uint64_t)-1;
++    }
++    switch (size) {
++    case 1:
++        data = buf.byte;
++        break;
++    case 2:
++        data = le16_to_cpu(buf.word);
++        break;
++    case 4:
++        data = le32_to_cpu(buf.dword);
++        break;
++    case 8:
++        data = le64_to_cpu(buf.qword);
++        break;
++    default:
++        hw_error("vfio: unsupported read size, %u bytes", size);
++        break;
++    }
++
++    trace_vfio_region_read(vbasedev->name, region->nr, addr, size, data);
++
++    /* Same as write above */
++    vbasedev->ops->vfio_eoi(vbasedev);
++
++    return data;
++}
++
++static const MemoryRegionOps vfio_region_ops = {
++    .read = vfio_region_read,
++    .write = vfio_region_write,
++    .endianness = DEVICE_LITTLE_ENDIAN,
++    .valid = {
++        .min_access_size = 1,
++        .max_access_size = 8,
++    },
++    .impl = {
++        .min_access_size = 1,
++        .max_access_size = 8,
++    },
++};
++
++static int vfio_setup_region_sparse_mmaps(VFIORegion *region,
++                                          struct vfio_region_info *info)
++{
++    struct vfio_info_cap_header *hdr;
++    struct vfio_region_info_cap_sparse_mmap *sparse;
++    int i, j;
++
++    hdr = vfio_get_region_info_cap(info, VFIO_REGION_INFO_CAP_SPARSE_MMAP);
++    if (!hdr) {
++        return -ENODEV;
++    }
++
++    sparse = container_of(hdr, struct vfio_region_info_cap_sparse_mmap, header);
++
++    trace_vfio_region_sparse_mmap_header(region->vbasedev->name,
++                                         region->nr, sparse->nr_areas);
++
++    region->mmaps = g_new0(VFIOMmap, sparse->nr_areas);
++
++    for (i = 0, j = 0; i < sparse->nr_areas; i++) {
++        if (sparse->areas[i].size) {
++            trace_vfio_region_sparse_mmap_entry(i, sparse->areas[i].offset,
++                                            sparse->areas[i].offset +
++                                            sparse->areas[i].size - 1);
++            region->mmaps[j].offset = sparse->areas[i].offset;
++            region->mmaps[j].size = sparse->areas[i].size;
++            j++;
++        }
++    }
++
++    region->nr_mmaps = j;
++    region->mmaps = g_realloc(region->mmaps, j * sizeof(VFIOMmap));
++
++    return 0;
++}
++
++int vfio_region_setup(Object *obj, VFIODevice *vbasedev, VFIORegion *region,
++                      int index, const char *name)
++{
++    g_autofree struct vfio_region_info *info = NULL;
++    int ret;
++
++    ret = vfio_get_region_info(vbasedev, index, &info);
++    if (ret) {
++        return ret;
++    }
++
++    region->vbasedev = vbasedev;
++    region->flags = info->flags;
++    region->size = info->size;
++    region->fd_offset = info->offset;
++    region->nr = index;
++
++    if (region->size) {
++        region->mem = g_new0(MemoryRegion, 1);
++        memory_region_init_io(region->mem, obj, &vfio_region_ops,
++                              region, name, region->size);
++
++        if (!vbasedev->no_mmap &&
++            region->flags & VFIO_REGION_INFO_FLAG_MMAP) {
++
++            ret = vfio_setup_region_sparse_mmaps(region, info);
++
++            if (ret) {
++                region->nr_mmaps = 1;
++                region->mmaps = g_new0(VFIOMmap, region->nr_mmaps);
++                region->mmaps[0].offset = 0;
++                region->mmaps[0].size = region->size;
++            }
++        }
++    }
++
++    trace_vfio_region_setup(vbasedev->name, index, name,
++                            region->flags, region->fd_offset, region->size);
++    return 0;
++}
++
++static void vfio_subregion_unmap(VFIORegion *region, int index)
++{
++    trace_vfio_region_unmap(memory_region_name(&region->mmaps[index].mem),
++                            region->mmaps[index].offset,
++                            region->mmaps[index].offset +
++                            region->mmaps[index].size - 1);
++    memory_region_del_subregion(region->mem, &region->mmaps[index].mem);
++    munmap(region->mmaps[index].mmap, region->mmaps[index].size);
++    object_unparent(OBJECT(&region->mmaps[index].mem));
++    region->mmaps[index].mmap = NULL;
++}
++
++int vfio_region_mmap(VFIORegion *region)
++{
++    int i, ret, prot = 0;
++    char *name;
++
++    if (!region->mem) {
++        return 0;
++    }
++
++    prot |= region->flags & VFIO_REGION_INFO_FLAG_READ ? PROT_READ : 0;
++    prot |= region->flags & VFIO_REGION_INFO_FLAG_WRITE ? PROT_WRITE : 0;
++
++    for (i = 0; i < region->nr_mmaps; i++) {
++        size_t align = MIN(1ULL << ctz64(region->mmaps[i].size), 1 * GiB);
++        void *map_base, *map_align;
++
++        /*
++         * Align the mmap for more efficient mapping in the kernel.  Ideally
++         * we'd know the PMD and PUD mapping sizes to use as discrete alignment
++         * intervals, but we don't.  As of Linux v6.12, the largest PUD size
++         * supporting huge pfnmap is 1GiB (ARCH_SUPPORTS_PUD_PFNMAP is only set
++         * on x86_64).  Align by power-of-two size, capped at 1GiB.
++         *
++         * NB. qemu_memalign() and friends actually allocate memory, whereas
++         * the region size here can exceed host memory, therefore we manually
++         * create an oversized anonymous mapping and clean it up for alignment.
++         */
++        map_base = mmap(0, region->mmaps[i].size + align, PROT_NONE,
++                        MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++        if (map_base == MAP_FAILED) {
++            ret = -errno;
++            goto no_mmap;
++        }
++
++        map_align = (void *)ROUND_UP((uintptr_t)map_base, (uintptr_t)align);
++        munmap(map_base, map_align - map_base);
++        munmap(map_align + region->mmaps[i].size,
++               align - (map_align - map_base));
++
++        region->mmaps[i].mmap = mmap(map_align, region->mmaps[i].size, prot,
++                                     MAP_SHARED | MAP_FIXED,
++                                     region->vbasedev->fd,
++                                     region->fd_offset +
++                                     region->mmaps[i].offset);
++        if (region->mmaps[i].mmap == MAP_FAILED) {
++            ret = -errno;
++            goto no_mmap;
++        }
++
++        name = g_strdup_printf("%s mmaps[%d]",
++                               memory_region_name(region->mem), i);
++        memory_region_init_ram_device_ptr(&region->mmaps[i].mem,
++                                          memory_region_owner(region->mem),
++                                          name, region->mmaps[i].size,
++                                          region->mmaps[i].mmap);
++        g_free(name);
++        memory_region_add_subregion(region->mem, region->mmaps[i].offset,
++                                    &region->mmaps[i].mem);
++
++        trace_vfio_region_mmap(memory_region_name(&region->mmaps[i].mem),
++                               region->mmaps[i].offset,
++                               region->mmaps[i].offset +
++                               region->mmaps[i].size - 1);
++    }
++
++    return 0;
++
++no_mmap:
++    trace_vfio_region_mmap_fault(memory_region_name(region->mem), i,
++                                 region->fd_offset + region->mmaps[i].offset,
++                                 region->fd_offset + region->mmaps[i].offset +
++                                 region->mmaps[i].size - 1, ret);
++
++    region->mmaps[i].mmap = NULL;
++
++    for (i--; i >= 0; i--) {
++        vfio_subregion_unmap(region, i);
++    }
++
++    return ret;
++}
++
++void vfio_region_unmap(VFIORegion *region)
++{
++    int i;
++
++    if (!region->mem) {
++        return;
++    }
++
++    for (i = 0; i < region->nr_mmaps; i++) {
++        if (region->mmaps[i].mmap) {
++            vfio_subregion_unmap(region, i);
++        }
++    }
++}
++
++void vfio_region_exit(VFIORegion *region)
++{
++    int i;
++
++    if (!region->mem) {
++        return;
++    }
++
++    for (i = 0; i < region->nr_mmaps; i++) {
++        if (region->mmaps[i].mmap) {
++            memory_region_del_subregion(region->mem, &region->mmaps[i].mem);
++        }
++    }
++
++    trace_vfio_region_exit(region->vbasedev->name, region->nr);
++}
++
++void vfio_region_finalize(VFIORegion *region)
++{
++    int i;
++
++    if (!region->mem) {
++        return;
++    }
++
++    for (i = 0; i < region->nr_mmaps; i++) {
++        if (region->mmaps[i].mmap) {
++            munmap(region->mmaps[i].mmap, region->mmaps[i].size);
++            object_unparent(OBJECT(&region->mmaps[i].mem));
++        }
++    }
++
++    object_unparent(OBJECT(region->mem));
++
++    g_free(region->mem);
++    g_free(region->mmaps);
++
++    trace_vfio_region_finalize(region->vbasedev->name, region->nr);
++
++    region->mem = NULL;
++    region->mmaps = NULL;
++    region->nr_mmaps = 0;
++    region->size = 0;
++    region->flags = 0;
++    region->nr = 0;
++}
++
++void vfio_region_mmaps_set_enabled(VFIORegion *region, bool enabled)
++{
++    int i;
++
++    if (!region->mem) {
++        return;
++    }
++
++    for (i = 0; i < region->nr_mmaps; i++) {
++        if (region->mmaps[i].mmap) {
++            memory_region_set_enabled(&region->mmaps[i].mem, enabled);
++        }
++    }
++
++    trace_vfio_region_mmaps_set_enabled(memory_region_name(region->mem),
++                                        enabled);
++}
+diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
+index a8939c838657b09c38f93ad69d541df5aea30a6f..07010c7c9e01a39ae3449c54d2027a2cdd0a7a4d 100644
+--- a/hw/vfio/meson.build
++++ b/hw/vfio/meson.build
+@@ -23,6 +23,7 @@ system_ss.add(when: 'CONFIG_VFIO', if_true: files(
+   'migration.c',
+   'migration-multifd.c',
+   'cpr.c',
++  'region.c',
+ ))
+ system_ss.add(when: ['CONFIG_VFIO', 'CONFIG_IOMMUFD'], if_true: files(
+   'iommufd.c',
+diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
+index 9347e3a5f6607ec6907f9b426da9ab90553292cf..81f4130100c48012c15b5b4858446149a7eaf5b6 100644
+--- a/hw/vfio/trace-events
++++ b/hw/vfio/trace-events
+@@ -90,8 +90,6 @@ vfio_pci_igd_host_bridge_enabled(const char *name) "%s"
+ vfio_pci_igd_lpc_bridge_enabled(const char *name) "%s"
  
- static int iommufd_cdev_map(const VFIOContainerBase *bcontainer, hwaddr iova,
-                             ram_addr_t size, void *vaddr, bool readonly)
+ # common.c
+-vfio_region_write(const char *name, int index, uint64_t addr, uint64_t data, unsigned size) " (%s:region%d+0x%"PRIx64", 0x%"PRIx64 ", %d)"
+-vfio_region_read(char *name, int index, uint64_t addr, unsigned size, uint64_t data) " (%s:region%d+0x%"PRIx64", %d) = 0x%"PRIx64
+ vfio_iommu_map_notify(const char *op, uint64_t iova_start, uint64_t iova_end) "iommu %s @ 0x%"PRIx64" - 0x%"PRIx64
+ vfio_listener_region_skip(const char *name, uint64_t start, uint64_t end) "SKIPPING %s 0x%"PRIx64" - 0x%"PRIx64
+ vfio_spapr_group_attach(int groupfd, int tablefd) "Attached groupfd %d to liobn fd %d"
+@@ -107,6 +105,15 @@ vfio_disconnect_container(int fd) "close container->fd=%d"
+ vfio_put_group(int fd) "close group->fd=%d"
+ vfio_get_device(const char * name, unsigned int flags, unsigned int num_regions, unsigned int num_irqs) "Device %s flags: %u, regions: %u, irqs: %u"
+ vfio_put_base_device(int fd) "close vdev->fd=%d"
++vfio_get_dev_region(const char *name, int index, uint32_t type, uint32_t subtype) "%s index %d, %08x/%08x"
++vfio_legacy_dma_unmap_overflow_workaround(void) ""
++vfio_get_dirty_bitmap(uint64_t iova, uint64_t size, uint64_t bitmap_size, uint64_t start, uint64_t dirty_pages) "iova=0x%"PRIx64" size= 0x%"PRIx64" bitmap_size=0x%"PRIx64" start=0x%"PRIx64" dirty_pages=%"PRIu64
++vfio_iommu_map_dirty_notify(uint64_t iova_start, uint64_t iova_end) "iommu dirty @ 0x%"PRIx64" - 0x%"PRIx64
++vfio_reset_handler(void) ""
++
++# region.c
++vfio_region_write(const char *name, int index, uint64_t addr, uint64_t data, unsigned size) " (%s:region%d+0x%"PRIx64", 0x%"PRIx64 ", %d)"
++vfio_region_read(char *name, int index, uint64_t addr, unsigned size, uint64_t data) " (%s:region%d+0x%"PRIx64", %d) = 0x%"PRIx64
+ vfio_region_setup(const char *dev, int index, const char *name, unsigned long flags, unsigned long offset, unsigned long size) "Device %s, region %d \"%s\", flags: 0x%lx, offset: 0x%lx, size: 0x%lx"
+ vfio_region_mmap_fault(const char *name, int index, unsigned long offset, unsigned long size, int fault) "Region %s mmaps[%d], [0x%lx - 0x%lx], fault: %d"
+ vfio_region_mmap(const char *name, unsigned long offset, unsigned long end) "Region %s [0x%lx - 0x%lx]"
+@@ -116,11 +123,6 @@ vfio_region_mmaps_set_enabled(const char *name, bool enabled) "Region %s mmaps e
+ vfio_region_unmap(const char *name, unsigned long offset, unsigned long end) "Region %s unmap [0x%lx - 0x%lx]"
+ vfio_region_sparse_mmap_header(const char *name, int index, int nr_areas) "Device %s region %d: %d sparse mmap entries"
+ vfio_region_sparse_mmap_entry(int i, unsigned long start, unsigned long end) "sparse entry %d [0x%lx - 0x%lx]"
+-vfio_get_dev_region(const char *name, int index, uint32_t type, uint32_t subtype) "%s index %d, %08x/%08x"
+-vfio_legacy_dma_unmap_overflow_workaround(void) ""
+-vfio_get_dirty_bitmap(uint64_t iova, uint64_t size, uint64_t bitmap_size, uint64_t start, uint64_t dirty_pages) "iova=0x%"PRIx64" size= 0x%"PRIx64" bitmap_size=0x%"PRIx64" start=0x%"PRIx64" dirty_pages=%"PRIu64
+-vfio_iommu_map_dirty_notify(uint64_t iova_start, uint64_t iova_end) "iommu dirty @ 0x%"PRIx64" - 0x%"PRIx64
+-vfio_reset_handler(void) ""
+ 
+ # platform.c
+ vfio_platform_realize(char *name, char *compat) "vfio device %s, compat = %s"
 -- 
 2.49.0
 
