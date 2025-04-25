@@ -2,87 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58343A9C27F
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 10:58:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C0A4A9C329
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 11:19:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8Esj-0008Gy-1a; Fri, 25 Apr 2025 04:58:02 -0400
+	id 1u8FDc-0007W4-7I; Fri, 25 Apr 2025 05:19:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u8EsY-0008F1-Df; Fri, 25 Apr 2025 04:57:50 -0400
-Received: from mgamail.intel.com ([192.198.163.10])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u8FDT-0007R5-Pe
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 05:19:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u8EsV-0004Lf-Au; Fri, 25 Apr 2025 04:57:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745571467; x=1777107467;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=mcEr0zmSiDOPEt70TYU6E6B7dOkZJjNKNUv16j9oVcE=;
- b=gzJzqx9urLiWY7IF+T7VZB1QYy7yKnyIrd+9yW9gv44b0kGPhxqmGybJ
- +oXA7hRe3W/p8yKwBOGlEFxlKejUVqefFmiMSoqskazHUt3NEt8ef0qQ+
- 6aHrs80p+BEf6jAoBoOixhDPfzLycDDJ7Jx//Ouu8czfP5ObCd42RMEMj
- qe/mlCdUwsm8rdwg2Pf9s4uYzSCnbseDXQXoHYvpYrs3Q9+onUgNMEug+
- AF12JPh3oqkgNqzkZa03d893vVzgGQtWqZIMMpxVekQI8exYbkwAunHWV
- x2r1QyXmanXSlXuqD3EuhUFoX7qTrM4Z01Df+ePM2uQx4rfG7HBwVjWQe Q==;
-X-CSE-ConnectionGUID: IwSWVHI9RG2I35TwnBtCTg==
-X-CSE-MsgGUID: h1loQsGDTrq39tAMSSeo0A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="58598709"
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="58598709"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Apr 2025 01:57:43 -0700
-X-CSE-ConnectionGUID: GO8FEL63QBeQRXrZ2LqRRQ==
-X-CSE-MsgGUID: gdGUVTFQQaa54FHx4mG1AA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="132847488"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa007.fm.intel.com with ESMTP; 25 Apr 2025 01:57:33 -0700
-Date: Fri, 25 Apr 2025 17:18:28 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Dongli Zhang <dongli.zhang@oracle.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
- qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
- pbonzini@redhat.com, mtosatti@redhat.com, sandipan.das@amd.com,
- babu.moger@amd.com, likexu@tencent.com, like.xu.linux@gmail.com,
- groug@kaod.org, khorenko@virtuozzo.com,
- alexander.ivanov@virtuozzo.com, den@virtuozzo.com,
- davydov-max@yandex-team.ru, xiaoyao.li@intel.com,
- dapeng1.mi@linux.intel.com, joe.jin@oracle.com,
- peter.maydell@linaro.org, gaosong@loongson.cn,
- chenhuacai@kernel.org, philmd@linaro.org, aurelien@aurel32.net,
- jiaxun.yang@flygoat.com, arikalo@gmail.com, npiggin@gmail.com,
- danielhb413@gmail.com, palmer@dabbelt.com, alistair.francis@wdc.com,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com,
- pasic@linux.ibm.com, borntraeger@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, iii@linux.ibm.com,
- thuth@redhat.com, flavra@baylibre.com, ewanhai-oc@zhaoxin.com,
- ewanhai@zhaoxin.com, cobechen@zhaoxin.com, louisqi@zhaoxin.com,
- liamni@zhaoxin.com, frankzhu@zhaoxin.com, silviazhao@zhaoxin.com,
- kraxel@redhat.com, berrange@redhat.com
-Subject: Re: [PATCH v4 09/11] target/i386/kvm: reset AMD PMU registers during
- VM reset
-Message-ID: <aAtTZLZR7IRhdOUC@intel.com>
-References: <20250416215306.32426-1-dongli.zhang@oracle.com>
- <20250416215306.32426-10-dongli.zhang@oracle.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u8FDR-0006xY-PF
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 05:19:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1745572763;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=7ZutwbOjXGr5bGwYW46iHYOEUi2TGqqNhr0ZW2OCt4A=;
+ b=aZ0s53+Wp7K3EkSfb3DIlxWLrUq5SyepnOnLsVP5JBrsUFw7TphRyJLuPULpGr+fZpl+jP
+ JYcY+JQgmsj1ANJhGZ0BVgc4FjAOnONIofZq9WMPnFmGVXKViy/R92eFWqDzxWvMmkgEJt
+ iKagTXRuAwVJwHmosbknOpTYVM6uBU0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-15-LdiWRZCINieW0mfEquIkpQ-1; Fri,
+ 25 Apr 2025 05:19:17 -0400
+X-MC-Unique: LdiWRZCINieW0mfEquIkpQ-1
+X-Mimecast-MFC-AGG-ID: LdiWRZCINieW0mfEquIkpQ_1745572755
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 65F7E19560AE; Fri, 25 Apr 2025 09:19:15 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.5])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 886F030001AB; Fri, 25 Apr 2025 09:19:13 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id EB81421E6766; Fri, 25 Apr 2025 11:19:10 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,  Eric Blake <eblake@redhat.com>,
+ Michael Roth <michael.roth@amd.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>,  Marcelo
+ Tosatti <mtosatti@redhat.com>,  Shaoqin Huang <shahuang@redhat.com>,  Eric
+ Auger <eauger@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>,  Thomas Huth <thuth@redhat.com>,
+ Sebastian Ott <sebott@redhat.com>,  Gavin Shan <gshan@redhat.com>,
+ qemu-devel@nongnu.org,  kvm@vger.kernel.org,  qemu-arm@nongnu.org,
+ Dapeng Mi <dapeng1.mi@intel.com>,  Yi Lai <yi1.lai@intel.com>,
+ =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH 1/5] qapi/qom: Introduce kvm-pmu-filter object
+In-Reply-To: <20250409082649.14733-2-zhao1.liu@intel.com> (Zhao Liu's message
+ of "Wed, 9 Apr 2025 16:26:45 +0800")
+References: <20250409082649.14733-1-zhao1.liu@intel.com>
+ <20250409082649.14733-2-zhao1.liu@intel.com>
+Date: Fri, 25 Apr 2025 11:19:10 +0200
+Message-ID: <87a584ha41.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250416215306.32426-10-dongli.zhang@oracle.com>
-Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -51
-X-Spam_score: -5.2
-X-Spam_bar: -----
-X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.84,
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
+X-Spam_bar: --
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.84,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,77 +92,169 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Apr 16, 2025 at 02:52:34PM -0700, Dongli Zhang wrote:
-> Date: Wed, 16 Apr 2025 14:52:34 -0700
-> From: Dongli Zhang <dongli.zhang@oracle.com>
-> Subject: [PATCH v4 09/11] target/i386/kvm: reset AMD PMU registers during
->  VM reset
-> X-Mailer: git-send-email 2.43.5
-> 
-> QEMU uses the kvm_get_msrs() function to save Intel PMU registers from KVM
-> and kvm_put_msrs() to restore them to KVM. However, there is no support for
-> AMD PMU registers. Currently, pmu_version and num_pmu_gp_counters are
-> initialized based on cpuid(0xa), which does not apply to AMD processors.
-> For AMD CPUs, prior to PerfMonV2, the number of general-purpose registers
-> is determined based on the CPU version.
-> 
-> To address this issue, we need to add support for AMD PMU registers.
-> Without this support, the following problems can arise:
-> 
-> 1. If the VM is reset (e.g., via QEMU system_reset or VM kdump/kexec) while
-> running "perf top", the PMU registers are not disabled properly.
-> 
-> 2. Despite x86_cpu_reset() resetting many registers to zero, kvm_put_msrs()
-> does not handle AMD PMU registers, causing some PMU events to remain
-> enabled in KVM.
-> 
-> 3. The KVM kvm_pmc_speculative_in_use() function consistently returns true,
-> preventing the reclamation of these events. Consequently, the
-> kvm_pmc->perf_event remains active.
-> 
-> 4. After a reboot, the VM kernel may report the following error:
-> 
-> [    0.092011] Performance Events: Fam17h+ core perfctr, Broken BIOS detected, complain to your hardware vendor.
-> [    0.092023] [Firmware Bug]: the BIOS has corrupted hw-PMU resources (MSR c0010200 is 530076)
-> 
-> 5. In the worst case, the active kvm_pmc->perf_event may inject unknown
-> NMIs randomly into the VM kernel:
-> 
-> [...] Uhhuh. NMI received for unknown reason 30 on CPU 0.
-> 
-> To resolve these issues, we propose resetting AMD PMU registers during the
-> VM reset process.
-> 
-> Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-> ---
-> Changed since v1:
->   - Modify "MSR_K7_EVNTSEL0 + 3" and "MSR_K7_PERFCTR0 + 3" by using
->     AMD64_NUM_COUNTERS (suggested by Sandipan Das).
->   - Use "AMD64_NUM_COUNTERS_CORE * 2 - 1", not "MSR_F15H_PERF_CTL0 + 0xb".
->     (suggested by Sandipan Das).
->   - Switch back to "-pmu" instead of using a global "pmu-cap-disabled".
->   - Don't initialize PMU info if kvm.enable_pmu=N.
-> Changed since v2:
->   - Remove 'static' from host_cpuid_vendorX.
->   - Change has_pmu_version to pmu_version.
->   - Use object_property_get_int() to get CPU family.
->   - Use cpuid_find_entry() instead of cpu_x86_cpuid().
->   - Send error log when host and guest are from different vendors.
->   - Move "if (!cpu->enable_pmu)" to begin of function. Add comments to
->     reminder developers.
->   - Add support to Zhaoxin. Change is_same_vendor() to
->     is_host_compat_vendor().
->   - Didn't add Reviewed-by from Sandipan because the change isn't minor.
-> Changed since v3:
->   - Use host_cpu_vendor_fms() from Zhao's patch.
->   - Check AMD directly makes the "compat" rule clear.
->   - Add comment to MAX_GP_COUNTERS.
->   - Skip PMU info initialization if !kvm_pmu_disabled.
-> 
->  target/i386/cpu.h     |  12 +++
->  target/i386/kvm/kvm.c | 175 +++++++++++++++++++++++++++++++++++++++++-
->  2 files changed, 183 insertions(+), 4 deletions(-)
+Philippe, there's a question for you on target-specific QAPI schema.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Zhao Liu <zhao1.liu@intel.com> writes:
+
+> Introduce the kvm-pmu-filter object and support the PMU event with raw
+> format.
+>
+> The raw format, as a native PMU event code representation, can be used
+> for several architectures.
+>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> Tested-by: Yi Lai <yi1.lai@intel.com>
+
+[...]
+
+> diff --git a/accel/kvm/kvm-pmu.c b/accel/kvm/kvm-pmu.c
+> new file mode 100644
+> index 000000000000..22f749bf9183
+> --- /dev/null
+> +++ b/accel/kvm/kvm-pmu.c
+
+[...]
+
+> +static const TypeInfo kvm_pmu_filter_info = {
+> +    .parent = TYPE_OBJECT,
+> +    .name = TYPE_KVM_PMU_FILTER,
+> +    .class_init = kvm_pmu_filter_class_init,
+> +    .instance_size = sizeof(KVMPMUFilter),
+> +    .instance_init = kvm_pmu_filter_instance_init,
+> +    .interfaces = (InterfaceInfo[]) {
+> +        { TYPE_USER_CREATABLE },
+> +        { }
+> +    }
+> +};
+> +
+> +static void kvm_pmu_event_register_type(void)
+> +{
+> +    type_register_static(&kvm_pmu_filter_info);
+> +}
+> +
+> +type_init(kvm_pmu_event_register_type);
+> diff --git a/accel/kvm/meson.build b/accel/kvm/meson.build
+> index 397a1fe1fd1e..dfab2854f3a8 100644
+> --- a/accel/kvm/meson.build
+> +++ b/accel/kvm/meson.build
+> @@ -2,6 +2,7 @@ kvm_ss = ss.source_set()
+>  kvm_ss.add(files(
+>    'kvm-all.c',
+>    'kvm-accel-ops.c',
+> +  'kvm-pmu.c',
+>  ))
+>  
+>  specific_ss.add_all(when: 'CONFIG_KVM', if_true: kvm_ss)
+
+The new file is compiled into the binary when CONFIG_KVM.  Therefore,
+object kvm-pmu-filter is available exactly then.  Makes sense.
+However, ...
+
+[...]
+
+> diff --git a/qapi/kvm.json b/qapi/kvm.json
+> new file mode 100644
+> index 000000000000..1861d86a9726
+> --- /dev/null
+> +++ b/qapi/kvm.json
+> @@ -0,0 +1,84 @@
+> +# -*- Mode: Python -*-
+> +# vim: filetype=python
+> +#
+> +# Copyright (C) 2025 Intel Corporation.
+> +#
+> +# Author: Zhao Liu <zhao1.liu@intel.com>
+> +#
+> +# SPDX-License-Identifier: GPL-2.0-or-later
+> +
+> +##
+> +# == KVM
+> +##
+> +
+> +##
+> +# === PMU stuff (KVM related)
+> +##
+> +
+> +##
+> +# @KvmPmuFilterAction:
+> +#
+> +# Actions that KVM PMU filter supports.
+> +#
+> +# @deny: disable the PMU event/counter in KVM PMU filter.
+> +#
+> +# @allow: enable the PMU event/counter in KVM PMU filter.
+> +#
+> +# Since 10.1
+> +##
+> +{ 'enum': 'KvmPmuFilterAction',
+> +  'data': ['allow', 'deny'] }
+> +
+> +##
+> +# @KvmPmuEventFormat:
+> +#
+> +# Encoding formats of PMU event that QEMU/KVM supports.
+> +#
+> +# @raw: the encoded event code that KVM can directly consume.
+> +#
+> +# Since 10.1
+> +##
+> +{ 'enum': 'KvmPmuEventFormat',
+> +  'data': ['raw'] }
+> +
+> +##
+> +# @KvmPmuRawEvent:
+> +#
+> +# Raw PMU event code.
+> +#
+> +# @code: the raw value that has been encoded, and QEMU could deliver
+> +#     to KVM directly.
+> +#
+> +# Since 10.1
+> +##
+> +{ 'struct': 'KvmPmuRawEvent',
+> +  'data': { 'code': 'uint64' } }
+> +
+> +##
+> +# @KvmPmuFilterEvent:
+> +#
+> +# PMU event filtered by KVM.
+> +#
+> +# @format: PMU event format.
+> +#
+> +# Since 10.1
+> +##
+> +{ 'union': 'KvmPmuFilterEvent',
+> +  'base': { 'format': 'KvmPmuEventFormat' },
+> +  'discriminator': 'format',
+> +  'data': { 'raw': 'KvmPmuRawEvent' } }
+> +
+> +##
+> +# @KvmPmuFilterProperties:
+> +#
+> +# Properties of KVM PMU Filter.
+> +#
+> +# @action: action that KVM PMU filter will take for selected PMU events.
+> +#
+> +# @events: list of selected PMU events.
+> +#
+> +# Since 10.1
+> +##
+> +{ 'struct': 'KvmPmuFilterProperties',
+> +  'data': { 'action': 'KvmPmuFilterAction',
+> +            '*events': ['KvmPmuFilterEvent'] } }
+
+... the QAPI schema doesn't reflect that.
+
+To make it reflect, we'd have to add 'if': 'CONFIG_KVM'.  Since
+CONFIG_KVM can only be used in target-specific code, we'd have to put
+the definitions in a target-specific schema module kvm-target.json.
+
+This makes the headers generated for the module target-specific, which
+can be inconvenient.  Whether it's inconvenient here, I can't say.
+
+I understand target-specific QAPI modules are problematic for the single
+binary / heterogeneous machine work.  Philippe, thoughts on this one?
+
+[...]
 
 
