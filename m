@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE75EA9CD40
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:35:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92F9DA9CD29
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:34:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8L2T-0008FP-QC; Fri, 25 Apr 2025 11:32:29 -0400
+	id 1u8L2e-0000CU-19; Fri, 25 Apr 2025 11:32:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L2D-0007I8-Jh
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:32:14 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L2G-0007WP-S9
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:32:17 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L2A-00048e-3Z
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:32:13 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-39c14016868so2262466f8f.1
- for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:32:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L2E-00049S-ML
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:32:16 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-39c1efbefc6so1734435f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:32:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745595128; x=1746199928; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745595133; x=1746199933; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IxXJRtg6QqaW97XxEFpJjDjkVurmz7fFxY1fgchqgLI=;
- b=SMijpDuspowig71cVJJYQu2E3zbDMNBRBC3SmwhC6w9XePhtVIYlXHTOL/MKo1bHJz
- bJ4COw4+08vVpLNfkjhowwY2bLsbptjxtTxr43hrKtHzppUGeW5XQkFA/soRxaNgor5p
- OZbEHWNarbEVzP5AZqD2uYkz7lKxX4kmeRycOujud5hompOIl9wTzeSAdjRkAutOJV8/
- Dt1R3eobBLOKOp/Cjk3ZUbF/oeP+eeQiV1T90dsFMRkv4uC4A3xLlfibDKh8EtVEEdUy
- THpmRlzvLc7ZrHeOA3TD6ctF4tHBKpfxPLCiTjowmMnV4r/lFz87qrZWl8xC8PZw4eCF
- z6nQ==
+ bh=EELvltSoqjycSzfTXLLiwOA4/4MwtemDzO18DWWtAns=;
+ b=jCDc0tGFXToPeYY2Fk8uxQB1wSd4vmXbHw3SgQn7kIsomeSTNBG6+3NN2yp2Dpdeqn
+ E0CJbLWRMCmGLzThzWsoMpXca/IZq4ld+XvmeE0bBs5xGa0L+dbDxAH/8KI6fqVYM+Mf
+ dPI+XWcN0+l0Ep/jckxE7sYOrnmBfHkoEWNIzg3B/O0ZQ8wDczri79p1K7kT6G9NF5MX
+ E2xKNGqqpCF49lgYEfXH3ET37TQHwZBH3ReH7oyT2UzoLLscWmpBvDExvEUfvxZ/5CaM
+ 2U2kHDx0eM26EOICLoM6Mv0AhTz6eZtCfCdvU3a+IkgIjmoBuXIJGsAe14DZm0obPW6D
+ OAMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745595128; x=1746199928;
+ d=1e100.net; s=20230601; t=1745595133; x=1746199933;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IxXJRtg6QqaW97XxEFpJjDjkVurmz7fFxY1fgchqgLI=;
- b=OnuXeEWTH1+8eRJ1oD4cVQqr3uCIteNCPry2rFMFBPtV0LBwtNKvj0lnnStwnKNhjT
- fL69Mgfyg7ApIl1J0e31lHhKTAT6sWrdWKTvTELhS21t3zikQnLU9L/vtQ9lG/tnFl/d
- /tYX+aMkT4njA6fLO5iYycppBC3FXQYfXjlvjioxmZj0hNv9b/1qYhMs+K9LwqPVL5Y4
- y0WROA6TYadrFG3j9/xlKoYGzYKFyL8QNv8Hl2ldtEulIijkAoV4eap1TLt1Towg82Fx
- tEE39dY01Gzt6VIbjuA9qvOZ4u6neZOI0hBPoPEgus3D6ipAitx9QMdKOW3MR9qB70UX
- KeuQ==
-X-Gm-Message-State: AOJu0YyvrPHTi9t2RFLA6ukAbBWpxT38xLorCHSazluSVGh1S2qdAoo2
- S5IlngAoaV98kKDOZ2CWXLitGdDrY/btVdeP0J3M25oog/w75sKefUeV5xxJbGrHSKGcoakIopC
- 1
-X-Gm-Gg: ASbGncvWMEQbmNi+7j1ASbx/EXDFREwP/C6+J9kA4ghWjdWW/QS9mRzNoYUjCUDJ6rn
- TzZv7nTG6zYF1gZMYIFLPPX6hiY98nIyEuHuZdaC4bZvrxXhX0kA2vW715iQQh5R4l8G71RDTBU
- oi07oW5ClL/3+FEaSxTUoVn8Hexfo0+xD5uVnqEGi206C+GJY9qHcRkbETjw2mAtdCRXq9n6NNr
- pr/J374x+MWfp1LNwoYxCWVfL3jQvPouYCUajpaYWIGh/Lb81HL8aK/890y5L1n+v2Jq5aC6LKq
- svnlbYgHckZe2A8Itf7LIwFt5r8mg0+ZLweYDJlapsNYBD0Z3gJt5CKY7dmHCTDlcN/YCAZlr9i
- fRB2QsETZ3dxUqoE=
-X-Google-Smtp-Source: AGHT+IFDqQZSt0gYfJw2WCHXjGFKdP+LXp/4aFb+cw90md1BsyMSr957YnrFuFQHl2heFr3dzK3Oww==
-X-Received: by 2002:a5d:64e4:0:b0:391:41c9:7a87 with SMTP id
- ffacd0b85a97d-3a074f79251mr2215414f8f.51.1745595128062; 
- Fri, 25 Apr 2025 08:32:08 -0700 (PDT)
+ bh=EELvltSoqjycSzfTXLLiwOA4/4MwtemDzO18DWWtAns=;
+ b=U+8C8pq4/bwjWJ2T3WZeKVRe6htMv5nyPaIf9B/rahzszyKgj4q9Al0HvqJmxLADcl
+ dHI3I5Q6fG4w04wN7wVfKlcsypWrhvFE0ce4j7/r1h9q1uB0586NsFBPCv7s8+a+g1Ua
+ xZKC0ZOXZGVPTPHdG9sanibPdotomk+nOoecoXua4QwojRW5P4WAk58ZrSMOfi6RbMpg
+ +SIGQF9nhV6BfB8bqaXVGegGi0CPtL/clgak8i3zJ6XXwcXn1fTPokANz9kMuGumzGsN
+ sfsdGFD1FVDkMEggdXw0/L9AgnqL+ScpLP1y/xfJORBym+reeSrGBy3NvXbcAcWTD+pj
+ FTcQ==
+X-Gm-Message-State: AOJu0Ywg0RZVbioHIyIsJaC+LrG6S/fgXaSwY1y8NMZtiqYrgr+yT2vU
+ 5ULYP6N/JUXRHMDaCfE+ZqEkrm264MYZ56tgBVfXOZz+jqHCXmO3LwfM8BKdaChhyvc9O34QHsW
+ R
+X-Gm-Gg: ASbGncsifW09oTTVTc46cK1FkBu8LUV7dIoUevYKq387ZS/eR/PPDc/ukdFT7dfCNGA
+ v7pI8Zj0wBnLkC5Gh24xairtmd/Izui3NEB3F/t8NnBNIbHu0tkWod+v1jwecGjRXWIi1t33zxB
+ iQHguOxBqBAUoaWEuKDPbdasqjatjdwZLcEQxEGTGgVO6qFvcNiVxyJoP1QR2nN1XkwDg2tTn1J
+ JP9PG5Zkugv86zez0R/91v3LredNWhJq5kadasC2dJCU6L6L0x8L3bSXrMi6KKFwfnzIToKsPL2
+ 0uVk+Vg3i0FViy8g7WJk0hLiMrAQtFIIZkYbt7+knEbBLvUnzkgzNvDYnMmfrRfg3JYsoZHi+wi
+ sJFnSgU38XZtsT2w=
+X-Google-Smtp-Source: AGHT+IF/RD7nTh5HmJo8iKoAP1f6SNpFHcFQ9Ov7medVI9U/IroALc0zZZ6SFtpMStMfYpFXRJ8VgA==
+X-Received: by 2002:a05:6000:402c:b0:391:43cb:43e6 with SMTP id
+ ffacd0b85a97d-3a074f3a152mr2071514f8f.51.1745595132765; 
+ Fri, 25 Apr 2025 08:32:12 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a073cc4153sm2726173f8f.57.2025.04.25.08.32.07
+ ffacd0b85a97d-3a073cc1842sm2730638f8f.54.2025.04.25.08.32.11
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 25 Apr 2025 08:32:07 -0700 (PDT)
+ Fri, 25 Apr 2025 08:32:12 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 41/58] system/kvm: make functions accessible from common code
-Date: Fri, 25 Apr 2025 17:28:25 +0200
-Message-ID: <20250425152843.69638-42-philmd@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Mark Cave-Ayland <mark.caveayland@nutanix.com>
+Subject: [PULL 42/58] accel/tcg: Correct list of included headers in tcg-stub.c
+Date: Fri, 25 Apr 2025 17:28:26 +0200
+Message-ID: <20250425152843.69638-43-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250425152843.69638-1-philmd@linaro.org>
 References: <20250425152843.69638-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,49 +98,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In commit 3549118b498 we moved cpu_loop_exit*() declarations to
+"exec/cpu-common.h" but neglected to update tcg-stub.c. We missed
+it because "exec/cpu-common.h" is indirectly pulled in via
+"exec/exec-all.h" -> "exec/translation-block.h". Include it
+directly instead of the not necessary "exec/exec-all.h".
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250424232829.141163-8-pierrick.bouvier@linaro.org>
+Commit bb6cf6f0168 ("accel/tcg: Factor tcg_cpu_reset_hold() out")
+removed the need for "exec/tb-flush.h", so remote it too.
+
+Fixes: 3549118b498 ("exec: Move cpu_loop_foo() functions to 'cpu-common.h'")
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+Message-Id: <20250424094653.35932-4-philmd@linaro.org>
 ---
- include/system/kvm.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ accel/stubs/tcg-stub.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/system/kvm.h b/include/system/kvm.h
-index 18811cad6fd..b690dda1370 100644
---- a/include/system/kvm.h
-+++ b/include/system/kvm.h
-@@ -210,6 +210,10 @@ bool kvm_arm_supports_user_irq(void);
- int kvm_on_sigbus_vcpu(CPUState *cpu, int code, void *addr);
- int kvm_on_sigbus(int code, void *addr);
+diff --git a/accel/stubs/tcg-stub.c b/accel/stubs/tcg-stub.c
+index b2b9881bdfb..3b76b8b17c1 100644
+--- a/accel/stubs/tcg-stub.c
++++ b/accel/stubs/tcg-stub.c
+@@ -11,8 +11,7 @@
+  */
  
-+int kvm_check_extension(KVMState *s, unsigned int extension);
-+
-+int kvm_vm_ioctl(KVMState *s, unsigned long type, ...);
-+
- void kvm_flush_coalesced_mmio_buffer(void);
+ #include "qemu/osdep.h"
+-#include "exec/tb-flush.h"
+-#include "exec/exec-all.h"
++#include "exec/cpu-common.h"
  
- #ifdef COMPILING_PER_TARGET
-@@ -237,8 +241,6 @@ static inline int kvm_update_guest_debug(CPUState *cpu, unsigned long reinject_t
- 
- int kvm_ioctl(KVMState *s, unsigned long type, ...);
- 
--int kvm_vm_ioctl(KVMState *s, unsigned long type, ...);
--
- int kvm_vcpu_ioctl(CPUState *cpu, unsigned long type, ...);
- 
- /**
-@@ -441,8 +443,6 @@ void kvm_arch_update_guest_debug(CPUState *cpu, struct kvm_guest_debug *dbg);
- 
- bool kvm_arch_stop_on_emulation_error(CPUState *cpu);
- 
--int kvm_check_extension(KVMState *s, unsigned int extension);
--
- int kvm_vm_check_extension(KVMState *s, unsigned int extension);
- 
- #define kvm_vm_enable_cap(s, capability, cap_flags, ...)             \
+ G_NORETURN void cpu_loop_exit(CPUState *cpu)
+ {
 -- 
 2.47.1
 
