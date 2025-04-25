@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D3C9A9CD18
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:32:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE75EA9CD40
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:35:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8L2U-0008J6-1S; Fri, 25 Apr 2025 11:32:30 -0400
+	id 1u8L2T-0008FP-QC; Fri, 25 Apr 2025 11:32:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L28-00072l-Ut
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:32:09 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L2D-0007I8-Jh
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:32:14 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L25-00047e-Ss
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:32:08 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-43edecbfb46so16114045e9.0
- for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:32:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L2A-00048e-3Z
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:32:13 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-39c14016868so2262466f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:32:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745595123; x=1746199923; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745595128; x=1746199928; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bbFk5T/Gx2RWDfL/8OYFT9numZ3eK39ufVSLHy/LkBY=;
- b=bCaVA4ZiSXabzNzP8I/NsEVXtdtCxEGhwS1KvVFyzQgIoIErNO5FO/r7xA99yGSjLv
- /dYhxCf69OqR5DqHCRCdeN7vWrV26yZ1q51HiNywVXk1vHM3UCCEKip6fKJGw8HlTP/x
- NVt3BpIHL9xwNnqvTEZ9dM24XPZbuyOReart+//aiXYFL1qkXHOmOQ/wWPqB1g4a6jvP
- 3b4oupQUwiUP6Ob6c2DbJEIgs1zzbIoCJuOFQF5cSHIW2kLZBHCrKn3fSdq1yav+goiF
- moNs9XmBBBLZFQI9+6p7PrKHiJ1oVmXs2ti3MIdMRtfgjQ8HYaAZQXwPoHa4yVjKk2nS
- DIZQ==
+ bh=IxXJRtg6QqaW97XxEFpJjDjkVurmz7fFxY1fgchqgLI=;
+ b=SMijpDuspowig71cVJJYQu2E3zbDMNBRBC3SmwhC6w9XePhtVIYlXHTOL/MKo1bHJz
+ bJ4COw4+08vVpLNfkjhowwY2bLsbptjxtTxr43hrKtHzppUGeW5XQkFA/soRxaNgor5p
+ OZbEHWNarbEVzP5AZqD2uYkz7lKxX4kmeRycOujud5hompOIl9wTzeSAdjRkAutOJV8/
+ Dt1R3eobBLOKOp/Cjk3ZUbF/oeP+eeQiV1T90dsFMRkv4uC4A3xLlfibDKh8EtVEEdUy
+ THpmRlzvLc7ZrHeOA3TD6ctF4tHBKpfxPLCiTjowmMnV4r/lFz87qrZWl8xC8PZw4eCF
+ z6nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745595123; x=1746199923;
+ d=1e100.net; s=20230601; t=1745595128; x=1746199928;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bbFk5T/Gx2RWDfL/8OYFT9numZ3eK39ufVSLHy/LkBY=;
- b=ZhPQWGoKgrDVt8PoFGHUa8Y61K9dNJfgGe0gpAXTaVxQehTzkWnTEa6hDtvOg7Iqbv
- zAUzGHdNimJlBdS0h4HrffrwH86eep1Z9maGyrsevt+hp19wb8+SgeuZp9BPEp4XVucq
- OsJIO43PHDpCCPypaVGmf7XlPWOSmEeT7srjxSy3JyNfDmW734l1DMstS4KY7JEvwtfB
- 7bW5p1XD+B3b8ULhN0JSRV5vbN2M1BBf+B/z7OirjRAjzTJc3uEkNPkDcrHsh3UnH4tV
- 9cc0Wab3OWZ2DvQvicKTOsIABz0iWXg1Jf/CNEREXM3Kg7HEvKCzhoCL8MZPunhjVU23
- pERQ==
-X-Gm-Message-State: AOJu0YwWB/ffoLqdW0t4nhPRJiPCyxPcoCbP8CYrli0kenr6KQ9l8tEF
- RhmySGaIZo9o62OyoPmv0sfFLEGWlyO5I1yGbn5tfSYeDiMXeeN8y3H6C8ER/gcjLyFGegdt4Nr
- 0
-X-Gm-Gg: ASbGncu0vO2cqQOUVxnxdbtICITtQhFLnaHlrQAL1mL1UphgLilhUM9t2v1926vwlZn
- MtTED/fJY5cQdia4TTVyZdmK4f8WcM6u8AwaemL1kkG4AfE2RNtWemujKM9/YOx9nFnFEXkKSv4
- Jem/DCjq5PFS/C2QdbvtM3I6tJ9mSOmshbAodAF76EThFdjQAnwCSRPR80DOLoI+0m/wfPYoyJy
- maRkwvRqUGFHeMuYHX3tNGP3/m/lNC00Il8CYrpunekCEfcixMlg5fFdpkEwmAOAgT3DAZVhw+w
- gvwWgQEMPFbLaPVgQZzMpgQd8iTB+bdw1SynSS8TN96UAuHyS/frFcT/yvf1L2AoSKQ7AV9XVYw
- WHCbRmjeAkB8POFM=
-X-Google-Smtp-Source: AGHT+IFAprrNEoVYN9Y7KeboHnKCfngfv0yNbo5SV1cksQNE593lFogn8o6CMm6Cr3v16jro2BpuBw==
-X-Received: by 2002:a05:600c:a41:b0:43c:eeee:b706 with SMTP id
- 5b1f17b1804b1-440a6698266mr21912505e9.24.1745595123372; 
- Fri, 25 Apr 2025 08:32:03 -0700 (PDT)
+ bh=IxXJRtg6QqaW97XxEFpJjDjkVurmz7fFxY1fgchqgLI=;
+ b=OnuXeEWTH1+8eRJ1oD4cVQqr3uCIteNCPry2rFMFBPtV0LBwtNKvj0lnnStwnKNhjT
+ fL69Mgfyg7ApIl1J0e31lHhKTAT6sWrdWKTvTELhS21t3zikQnLU9L/vtQ9lG/tnFl/d
+ /tYX+aMkT4njA6fLO5iYycppBC3FXQYfXjlvjioxmZj0hNv9b/1qYhMs+K9LwqPVL5Y4
+ y0WROA6TYadrFG3j9/xlKoYGzYKFyL8QNv8Hl2ldtEulIijkAoV4eap1TLt1Towg82Fx
+ tEE39dY01Gzt6VIbjuA9qvOZ4u6neZOI0hBPoPEgus3D6ipAitx9QMdKOW3MR9qB70UX
+ KeuQ==
+X-Gm-Message-State: AOJu0YyvrPHTi9t2RFLA6ukAbBWpxT38xLorCHSazluSVGh1S2qdAoo2
+ S5IlngAoaV98kKDOZ2CWXLitGdDrY/btVdeP0J3M25oog/w75sKefUeV5xxJbGrHSKGcoakIopC
+ 1
+X-Gm-Gg: ASbGncvWMEQbmNi+7j1ASbx/EXDFREwP/C6+J9kA4ghWjdWW/QS9mRzNoYUjCUDJ6rn
+ TzZv7nTG6zYF1gZMYIFLPPX6hiY98nIyEuHuZdaC4bZvrxXhX0kA2vW715iQQh5R4l8G71RDTBU
+ oi07oW5ClL/3+FEaSxTUoVn8Hexfo0+xD5uVnqEGi206C+GJY9qHcRkbETjw2mAtdCRXq9n6NNr
+ pr/J374x+MWfp1LNwoYxCWVfL3jQvPouYCUajpaYWIGh/Lb81HL8aK/890y5L1n+v2Jq5aC6LKq
+ svnlbYgHckZe2A8Itf7LIwFt5r8mg0+ZLweYDJlapsNYBD0Z3gJt5CKY7dmHCTDlcN/YCAZlr9i
+ fRB2QsETZ3dxUqoE=
+X-Google-Smtp-Source: AGHT+IFDqQZSt0gYfJw2WCHXjGFKdP+LXp/4aFb+cw90md1BsyMSr957YnrFuFQHl2heFr3dzK3Oww==
+X-Received: by 2002:a5d:64e4:0:b0:391:41c9:7a87 with SMTP id
+ ffacd0b85a97d-3a074f79251mr2215414f8f.51.1745595128062; 
+ Fri, 25 Apr 2025 08:32:08 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-440a52f8794sm29256445e9.1.2025.04.25.08.32.02
+ ffacd0b85a97d-3a073cc4153sm2726173f8f.57.2025.04.25.08.32.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 25 Apr 2025 08:32:02 -0700 (PDT)
+ Fri, 25 Apr 2025 08:32:07 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, qemu-stable@nongnu.org,
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 40/58] meson: Use osdep_prefix for strchrnul()
-Date: Fri, 25 Apr 2025 17:28:24 +0200
-Message-ID: <20250425152843.69638-41-philmd@linaro.org>
+Subject: [PULL 41/58] system/kvm: make functions accessible from common code
+Date: Fri, 25 Apr 2025 17:28:25 +0200
+Message-ID: <20250425152843.69638-42-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250425152843.69638-1-philmd@linaro.org>
 References: <20250425152843.69638-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,44 +98,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-macOS SDK may have the symbol of strchrnul(), but it is actually
-available only on macOS 15.4 or later and that fact is codified in
-string.h. Include the header file using osdep_prefix to check if the
-function is available on the deployment target.
-
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250424-buildsys-v1-4-97655e3b25d7@daynix.com>
+Message-ID: <20250424232829.141163-8-pierrick.bouvier@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- meson.build | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/system/kvm.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index d93dbde194f..c736a6f4c4b 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2193,6 +2193,7 @@ osdep_prefix = '''
-   #include <stddef.h>
-   #include <sys/types.h>
+diff --git a/include/system/kvm.h b/include/system/kvm.h
+index 18811cad6fd..b690dda1370 100644
+--- a/include/system/kvm.h
++++ b/include/system/kvm.h
+@@ -210,6 +210,10 @@ bool kvm_arm_supports_user_irq(void);
+ int kvm_on_sigbus_vcpu(CPUState *cpu, int code, void *addr);
+ int kvm_on_sigbus(int code, void *addr);
  
-+  #include <string.h>
-   #include <limits.h>
-   /* Put unistd.h before time.h as that triggers localtime_r/gmtime_r
-    * function availability on recentish Mingw-w64 platforms. */
-@@ -2657,7 +2658,7 @@ config_host_data.set('HAVE_GETIFADDRS', cc.has_function('getifaddrs'))
- config_host_data.set('HAVE_GLIB_WITH_SLICE_ALLOCATOR', glib_has_gslice)
- config_host_data.set('HAVE_GLIB_WITH_ALIGNED_ALLOC', glib_has_aligned_alloc)
- config_host_data.set('HAVE_OPENPTY', cc.has_function('openpty', dependencies: util))
--config_host_data.set('HAVE_STRCHRNUL', cc.has_function('strchrnul'))
-+config_host_data.set('HAVE_STRCHRNUL', cc.has_function('strchrnul', prefix: osdep_prefix))
- config_host_data.set('HAVE_SYSTEM_FUNCTION', cc.has_function('system', prefix: '#include <stdlib.h>'))
- if rbd.found()
-   config_host_data.set('HAVE_RBD_NAMESPACE_EXISTS',
++int kvm_check_extension(KVMState *s, unsigned int extension);
++
++int kvm_vm_ioctl(KVMState *s, unsigned long type, ...);
++
+ void kvm_flush_coalesced_mmio_buffer(void);
+ 
+ #ifdef COMPILING_PER_TARGET
+@@ -237,8 +241,6 @@ static inline int kvm_update_guest_debug(CPUState *cpu, unsigned long reinject_t
+ 
+ int kvm_ioctl(KVMState *s, unsigned long type, ...);
+ 
+-int kvm_vm_ioctl(KVMState *s, unsigned long type, ...);
+-
+ int kvm_vcpu_ioctl(CPUState *cpu, unsigned long type, ...);
+ 
+ /**
+@@ -441,8 +443,6 @@ void kvm_arch_update_guest_debug(CPUState *cpu, struct kvm_guest_debug *dbg);
+ 
+ bool kvm_arch_stop_on_emulation_error(CPUState *cpu);
+ 
+-int kvm_check_extension(KVMState *s, unsigned int extension);
+-
+ int kvm_vm_check_extension(KVMState *s, unsigned int extension);
+ 
+ #define kvm_vm_enable_cap(s, capability, cap_flags, ...)             \
 -- 
 2.47.1
 
