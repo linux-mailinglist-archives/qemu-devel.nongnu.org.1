@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D863A9C002
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 09:47:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47CE6A9C01C
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 09:51:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8DlQ-0005QC-DK; Fri, 25 Apr 2025 03:46:24 -0400
+	id 1u8DqC-0007LE-U0; Fri, 25 Apr 2025 03:51:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u8DlN-0005PG-DD
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 03:46:22 -0400
-Received: from mgamail.intel.com ([198.175.65.21])
+ id 1u8Dq9-0007Ky-J2
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 03:51:17 -0400
+Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u8DlK-0004YZ-19
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 03:46:21 -0400
+ id 1u8Dq7-00056r-SA
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 03:51:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745567178; x=1777103178;
+ t=1745567475; x=1777103475;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=4mZRmJVx+XVyCH/bdyS3TfV2zCh3V/UMRqrDdsKYcnc=;
- b=ho08yuimG6DC7Kc6eUGQL6yN9TMGx0/PehdXah1SffDzpsGq8QaNZCHs
- 6M9XuALxNNX/ay7LwMODShIuHrpv2VKSqEvAZQG9CPFvi8gJeVSCCF72+
- HR/hbwiayreIB6dONPs7yCujMyF3IG3PxmSLvYU4Pa5wE7XVaZUconI7D
- ea8So9mprTb1JVsGGxkwmPwWVJ+C+zBIZCvdYRcB93cQZHc+KJOyvPBmB
- XotUn++6uzEjLjyHKFlZN4o9jLzgzhE/ImElJIJVvHdhcUBbbS1fqi9Ub
- Go0aVQRNs4cv/MrYJNb+OROAa0o68rt8XDNNlIOLKvyoGwOWCxPhLd3a+ w==;
-X-CSE-ConnectionGUID: k2LBF18zT4mYm0JWCZs3NQ==
-X-CSE-MsgGUID: L9nWJkX7Q/WIOj/gQGkScQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="47133260"
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="47133260"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Apr 2025 00:46:14 -0700
-X-CSE-ConnectionGUID: a/Ely33TRu6tK+A1D1CKDQ==
-X-CSE-MsgGUID: JoPRMRv0SXWC7OiW+Ypvjw==
+ bh=BZqusQBZyDnBJsKfQrHAVWBpClWoCGYJAwfbRCNf7jg=;
+ b=LAGAeBZc+GBu2lleLDgoB/wvPeb2t7+Vj4LdiifxwS63Ba1N9WB+8fdc
+ qve/yTzMTu0a6eofYuUz0x2vlJG10TmIQNE5sChfOSs9cHOQWPNk6P/Ja
+ d8rHyyfI9OH6f499Dd01EPItAH82kPj3/I0zHLRNTl0G8+4OzIKxhdKTV
+ BC6cRLQxAA2G68IJfzZwTOtqDupqLs1SPae+fqahCr+XHYv/XsMG9XcXp
+ 6nX4HSbnm4KWUVMYNILYTf/+qtioOM2kmVHoFGdv2tqJUvSXL9OSR/zI7
+ KjBrpCegOZo3Hi6hkusN7fkR56qUjMr93gNTPi3uucuYcrzZv1q4OdhJs g==;
+X-CSE-ConnectionGUID: 8KNTyMi7QhSt5wRkNxE0wQ==
+X-CSE-MsgGUID: mcsDrwDnTY+n2o8kbqLr4w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="72592487"
+X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="72592487"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Apr 2025 00:51:12 -0700
+X-CSE-ConnectionGUID: nhd2iUhZRsGWjkMDqe1UuQ==
+X-CSE-MsgGUID: 7pivHPZrT9+VA+W/W3qzXg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="132829709"
+X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; d="scan'208";a="137926586"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by fmviesa007.fm.intel.com with ESMTP; 25 Apr 2025 00:46:12 -0700
-Date: Fri, 25 Apr 2025 16:07:08 +0800
+ by fmviesa004.fm.intel.com with ESMTP; 25 Apr 2025 00:51:10 -0700
+Date: Fri, 25 Apr 2025 16:12:06 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Xiaoyao Li <xiaoyao.li@intel.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -55,16 +55,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
  Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH v8 24/55] i386/tdx: Add TDVF memory via
- KVM_TDX_INIT_MEM_REGION
-Message-ID: <aAtCrMkLX4MaTDUS@intel.com>
+Subject: Re: [PATCH v8 25/55] i386/tdx: Call KVM_TDX_INIT_VCPU to initialize
+ TDX vcpu
+Message-ID: <aAtD1ngjuDzmvJkH@intel.com>
 References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
- <20250401130205.2198253-25-xiaoyao.li@intel.com>
+ <20250401130205.2198253-26-xiaoyao.li@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250401130205.2198253-25-xiaoyao.li@intel.com>
-Received-SPF: pass client-ip=198.175.65.21; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20250401130205.2198253-26-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=192.198.163.7; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -51
 X-Spam_score: -5.2
@@ -89,33 +89,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Apr 01, 2025 at 09:01:34AM -0400, Xiaoyao Li wrote:
-> Date: Tue,  1 Apr 2025 09:01:34 -0400
+On Tue, Apr 01, 2025 at 09:01:35AM -0400, Xiaoyao Li wrote:
+> Date: Tue,  1 Apr 2025 09:01:35 -0400
 > From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: [PATCH v8 24/55] i386/tdx: Add TDVF memory via
->  KVM_TDX_INIT_MEM_REGION
+> Subject: [PATCH v8 25/55] i386/tdx: Call KVM_TDX_INIT_VCPU to initialize
+>  TDX vcpu
 > X-Mailer: git-send-email 2.34.1
 > 
-> From: Isaku Yamahata <isaku.yamahata@intel.com>
+> TDX vcpu needs to be initialized by SEAMCALL(TDH.VP.INIT) and KVM
+> provides vcpu level IOCTL KVM_TDX_INIT_VCPU for it.
 > 
-> TDVF firmware (CODE and VARS) needs to be copied to TD's private
-> memory via KVM_TDX_INIT_MEM_REGION, as well as TD HOB and TEMP memory.
+> KVM_TDX_INIT_VCPU needs the address of the HOB as input. Invoke it for
+> each vcpu after HOB list is created.
 > 
-> If the TDVF section has TDVF_SECTION_ATTRIBUTES_MR_EXTEND set in the
-> flag, calling KVM_TDX_EXTEND_MEMORY to extend the measurement.
-> 
-> After populating the TDVF memory, the original image located in shared
-> ramblock can be discarded.
-> 
-> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 > ---
-> Changes in v6:
->  - switch back to use KVM_TDX_INIT_MEM_REGION according to KVM's change;
-> ---
->  target/i386/kvm/tdx.c | 42 ++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 42 insertions(+)
+>  target/i386/kvm/tdx.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
