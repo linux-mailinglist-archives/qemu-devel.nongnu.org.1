@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0CDBA9D546
-	for <lists+qemu-devel@lfdr.de>; Sat, 26 Apr 2025 00:14:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F91CA9D5B1
+	for <lists+qemu-devel@lfdr.de>; Sat, 26 Apr 2025 00:39:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8RB4-0003Gd-Uf; Fri, 25 Apr 2025 18:05:47 -0400
+	id 1u8RAo-00039Y-BV; Fri, 25 Apr 2025 18:05:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u8R7q-0005lg-Mi
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 18:02:28 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1u8R7r-0005oo-67
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 18:02:29 -0400
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u8R7n-0001P7-70
+ id 1u8R7n-0001PR-UU
  for qemu-devel@nongnu.org; Fri, 25 Apr 2025 18:02:25 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-73712952e1cso3103242b3a.1
- for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 15:02:22 -0700 (PDT)
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-b06e9bcc986so2225853a12.0
+ for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 15:02:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745618541; x=1746223341; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745618542; x=1746223342; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8//ojLZJrPt4VyoPAL/J6gTwyVjXocIJX+OHfLkTJEA=;
- b=GRyqo+e3R8TH8YYu1bbCsf8U8MxKZlfEVQeTxSJevlACP6nwLczOfAcoF8aD3CvsBF
- yBVtebH5Cdp2uHrq+IReNwYNxzNXy6Uo0qR1RWk+5hfT/pEbaiSQsG7LiKTg5QoZaif0
- I32EYxBYsq7gtRN271WnEn0XwoXSS01DNQOqEi53nLfOa0t/HxDrtJu+dRjIgGOxP3xO
- tQH4uLje9Hm+59qoHo4qdIwlyGzfcd3XvXsqgkOugKl3k46Ars0U/phVbIArmlXgNMHK
- Ro68FUwJCsHpJ98C8Of9T/ielhsJbq6HLg0sIL/G0GItrah6x/n3Qa0J/wzFJiUB98G/
- chmA==
+ bh=c7nKQ2YkM0Lpy1XEsivIBsnUnrv96r1Hsq5GljE/l0I=;
+ b=EYyYfzISs2oJyp8csH3huepzM3TReMBy/5BWD1Qlv6/3Iic7xg61XL2fQ8D0k1vqCB
+ EMezQ12AnPbN4Mdq2spzt79PSOOb+xuMlx6EHQKadg1f5S402uxVziyhdbhFdpl5/0KK
+ zQ27FXVp1FhQsQbTrwfM7jFuQ0EqakUZ+hgc6YD0N09FF5hkXXWwqfgmFlIpQu3h4CVQ
+ B6L6D6+NaDY0obLuihck/ZMFNcFkTlu4KaGXgfTVaAKw2QVVVSjtDRsRxIaSB9R7GVHH
+ eEdLulRxcjjjSpPPt73ocewXwzV96UkAyh7C6JcxzZxjuhfUbPekPTlXcywaW978MA6M
+ 8ykQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745618541; x=1746223341;
+ d=1e100.net; s=20230601; t=1745618542; x=1746223342;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8//ojLZJrPt4VyoPAL/J6gTwyVjXocIJX+OHfLkTJEA=;
- b=ZM6oe+XySxmQlFgbUl2euNr+BjXnBVhwvwftLRYe2fi52u33/d/vSRyHIUU0fpfdSP
- TbDR/34iWLClE+PvgRmDObDRHEpxLWjltCHdZhbQ3muakBqltcAfCzbABbV6aJ9USfOf
- 35yxC4dooQcWfSEdHMsz+5ExtX6CPMXtvoNJLDr8RetyxdzrXC7rrO3ABWFhHI5UDgzP
- wWQ00/QFpRroVcfq7xYHSKxYk12g7LTC/lbLaSy5G35LE7yfT4XNbH+vP9LPrdxJ8AZJ
- hAeU9EViDomCoXh1dllDEhBUZtIFT2u2tJmrOEEAkZi2Mz+UmN0AUVQKLm/GVrzHVJlm
- Noeg==
-X-Gm-Message-State: AOJu0YzCMxT8/SflJa64u+K2XyBGLATWXonA3VWKqZ6bRCYvEh1QdE9l
- FYk6rx76eceU0TAjg79fpTNjeAn+/5GbeRubuI/RQkF8RAdBPmn7sIwy+BzklmFhG22GOil7IqU
- W
-X-Gm-Gg: ASbGncsEjwbcwlYGCdvPnl/FM+Ca7i+RsyaBq6aChMa8JY3RYLoD+5jnPMNkhgInS4o
- 4on2Mij0KvOGwESpWg1dfgEsQBbcAgW45/g57ihJjHAQ3saWyK9v2vRfLeQAds01qe0TLx01yLi
- 73Kl3JqhaIcvQG0Q8JopOoGJn0Jw9SwyjVVYkLgFfp4DCZagDkCFBGsRLcTkp9aVyxg+Wc6qBUT
- BdwrDVdxeZPy239eXkktFIzS+F18TBileHDh/+OPzQ4gQl4numXSdpeJtz4LUtorwlYFI0zj+zy
- 52z9srwpKJrc+aQp4upaA0onNNK4WfLJuN3Q+d0dZnE3AqFCiH5szwA5WXKfiKs/Y1ZPX6Q6GLN
- b8ew9enFfCg==
-X-Google-Smtp-Source: AGHT+IGLISKj9fF5+kxEPuTsTJWcvwV/w1xeUnjSz/llUAp8Q4ADEUpufNqhPNvHEein0EzuY9Jf3A==
-X-Received: by 2002:a17:90b:3dcf:b0:2ee:693e:ed7a with SMTP id
- 98e67ed59e1d1-30a013bcf66mr1566166a91.35.1745618541399; 
+ bh=c7nKQ2YkM0Lpy1XEsivIBsnUnrv96r1Hsq5GljE/l0I=;
+ b=hUxLgeRVqMgGqRF/o9gI13yGPfh37rjIpfL2plg6iN+lH3VNXR6bbBAvYvevOLO813
+ MDshEEAbr2J0acy9ZsPQ2XsJHEj8A1OTgXP/s2dquMPpOs9jMDqQ8RfASMrjLxJJmczJ
+ XRPGoH4to4RZi3xiG0DejYfy5tspSzTLyONiRre9q9ckiQhLcltHuaWFoRbTgv4L0MMk
+ M53pvDAea0eoBztXddnyqzAEeRL0BU8eMhXrXxUBqJ3pTWlJWzG5GxKzNFspFxuUpuKs
+ 3kl7ojAXeg7CGIiC/p8QzbkHNiALzIGmnC6Aec5cXiXMa/dBBKpemHBZGZPra1eNIYW0
+ zerw==
+X-Gm-Message-State: AOJu0YzqRiIL0Bo1WiM8s8NMMPm0wGgoj5s6TnlZXF+qyofFvUrnk82A
+ FRgabdDhwOgLbnQYecQvGBTLmsOFQ4WYfJyFgeqWVMWNWjmYR49qoujnUHV6KSaSXXgA+DdcedW
+ n
+X-Gm-Gg: ASbGncvGA6zOQ1XQEgwDwHd5oNkGkLLFBezV1mNsUuznTVTIt3utALKeImOtU+Gqgnn
+ yX19vW85vuuqu1kv93ICd0WIEnQFEsfiz3XrH4fihqpHGCh2S5YkX9LpbgIXnDti2e6mPgr4LsJ
+ k9OXyxnHBo5ROiAQsUoD6lFsQQG6fddgjYc6ppLoayRH9x35JSxxLenTlVqX7DkULtygou1twgT
+ upOZOk0MOYN6ZBH3g9wJ9QFb3OfLtf1BzsAXnujs1JK4dT7yiLUqi5gNSSYVC6sy89ntLWZGYkM
+ +dEtpaL86UpnNBwsXUTRyifin+yGULT4ispu1umtLkwvcW8eaXVRDb06iSVlD0f1P2DqCrMRKjV
+ C6n9IhUDrBQ==
+X-Google-Smtp-Source: AGHT+IETHZe3DVSeXStk2aB/yyzQvkborwkZjY6cTFPmnpge5Kq9RNEHuVaKTz3+nYN49+L9YjOX0g==
+X-Received: by 2002:a17:90b:1f83:b0:2ff:7031:e380 with SMTP id
+ 98e67ed59e1d1-30a01327529mr1716104a91.10.1745618541991; 
  Fri, 25 Apr 2025 15:02:21 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-309f7765c88sm2212961a91.28.2025.04.25.15.02.20
+ 98e67ed59e1d1-309f7765c88sm2212961a91.28.2025.04.25.15.02.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 25 Apr 2025 15:02:21 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 115/159] tcg: Move i into each for loop in liveness_pass_1
-Date: Fri, 25 Apr 2025 14:54:09 -0700
-Message-ID: <20250425215454.886111-116-richard.henderson@linaro.org>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PULL 116/159] tcg: Sink def, nb_iargs,
+ nb_oargs loads in liveness_pass_1
+Date: Fri, 25 Apr 2025 14:54:10 -0700
+Message-ID: <20250425215454.886111-117-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250425215454.886111-1-richard.henderson@linaro.org>
 References: <20250425215454.886111-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,120 +99,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use per-loop variables instead of one 'i' for the function.
+Sink the sets of the def, nb_iargs, nb_oargs variables to
+the default and do_not_remove labels.  They're not really
+needed beforehand, and it avoids preceding code from having
+to keep them up-to-date.  Note that def had *not* been kept
+up-to-date; thankfully only def->flags had been used and
+those bits were constant between opcode changes.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/tcg.c | 23 +++++++++++------------
- 1 file changed, 11 insertions(+), 12 deletions(-)
+ tcg/tcg.c | 20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
 
 diff --git a/tcg/tcg.c b/tcg/tcg.c
-index 037b5a4664..e2ca02eddf 100644
+index e2ca02eddf..2849bba480 100644
 --- a/tcg/tcg.c
 +++ b/tcg/tcg.c
-@@ -3924,10 +3924,9 @@ liveness_pass_1(TCGContext *s)
-     int nb_temps = s->nb_temps;
-     TCGOp *op, *op_prev;
-     TCGRegSet *prefs;
--    int i;
+@@ -4071,8 +4071,6 @@ liveness_pass_1(TCGContext *s)
+         case INDEX_op_sub2_i64:
+             opc_new = INDEX_op_sub;
+         do_addsub2:
+-            nb_iargs = 4;
+-            nb_oargs = 2;
+             /* Test if the high part of the operation is dead, but not
+                the low part.  The result can be optimized to a simple
+                add or sub.  This happens often for x86_64 guest when the
+@@ -4087,8 +4085,6 @@ liveness_pass_1(TCGContext *s)
+                 op->args[1] = op->args[2];
+                 op->args[2] = op->args[4];
+                 /* Fall through and mark the single-word operation live.  */
+-                nb_iargs = 2;
+-                nb_oargs = 1;
+             }
+             goto do_not_remove;
  
-     prefs = tcg_malloc(sizeof(TCGRegSet) * nb_temps);
--    for (i = 0; i < nb_temps; ++i) {
-+    for (int i = 0; i < nb_temps; ++i) {
-         s->temps[i].state_ptr = prefs + i;
-     }
+@@ -4100,8 +4096,6 @@ liveness_pass_1(TCGContext *s)
+             opc_new = INDEX_op_mul;
+             opc_new2 = INDEX_op_muluh;
+         do_mul2:
+-            nb_iargs = 2;
+-            nb_oargs = 2;
+             if (arg_temp(op->args[1])->state == TS_DEAD) {
+                 if (arg_temp(op->args[0])->state == TS_DEAD) {
+                     /* Both parts of the operation are dead.  */
+@@ -4122,19 +4116,15 @@ liveness_pass_1(TCGContext *s)
+                 goto do_not_remove;
+             }
+             /* Mark the single-word operation live.  */
+-            nb_oargs = 1;
+             goto do_not_remove;
  
-@@ -3954,7 +3953,7 @@ liveness_pass_1(TCGContext *s)
- 
-                 /* pure functions can be removed if their result is unused */
-                 if (call_flags & TCG_CALL_NO_SIDE_EFFECTS) {
--                    for (i = 0; i < nb_oargs; i++) {
-+                    for (int i = 0; i < nb_oargs; i++) {
-                         ts = arg_temp(op->args[i]);
-                         if (ts->state != TS_DEAD) {
-                             goto do_not_remove_call;
-@@ -3965,7 +3964,7 @@ liveness_pass_1(TCGContext *s)
-             do_not_remove_call:
- 
-                 /* Output args are dead.  */
--                for (i = 0; i < nb_oargs; i++) {
-+                for (int i = 0; i < nb_oargs; i++) {
-                     ts = arg_temp(op->args[i]);
-                     if (ts->state & TS_DEAD) {
-                         arg_life |= DEAD_ARG << i;
-@@ -3988,7 +3987,7 @@ liveness_pass_1(TCGContext *s)
-                 }
- 
-                 /* Record arguments that die in this helper.  */
--                for (i = nb_oargs; i < nb_iargs + nb_oargs; i++) {
-+                for (int i = nb_oargs; i < nb_iargs + nb_oargs; i++) {
-                     ts = arg_temp(op->args[i]);
-                     if (ts->state & TS_DEAD) {
-                         arg_life |= DEAD_ARG << i;
-@@ -4008,7 +4007,7 @@ liveness_pass_1(TCGContext *s)
-                  * order so that if a temp is used more than once, the stack
-                  * reset to max happens before the register reset to 0.
-                  */
--                for (i = nb_iargs - 1; i >= 0; i--) {
-+                for (int i = nb_iargs - 1; i >= 0; i--) {
-                     const TCGCallArgumentLoc *loc = &info->in[i];
-                     ts = arg_temp(op->args[nb_oargs + i]);
- 
-@@ -4036,7 +4035,7 @@ liveness_pass_1(TCGContext *s)
-                  * If a temp is used once, this produces a single set bit;
-                  * if a temp is used multiple times, this produces a set.
-                  */
--                for (i = 0; i < nb_iargs; i++) {
-+                for (int i = 0; i < nb_iargs; i++) {
-                     const TCGCallArgumentLoc *loc = &info->in[i];
-                     ts = arg_temp(op->args[nb_oargs + i]);
- 
-@@ -4135,7 +4134,7 @@ liveness_pass_1(TCGContext *s)
+         default:
+-            /* XXX: optimize by hardcoding common cases (e.g. triadic ops) */
+-            nb_iargs = def->nb_iargs;
+-            nb_oargs = def->nb_oargs;
+-
+             /* Test if the operation can be removed because all
                 its outputs are dead. We assume that nb_oargs == 0
                 implies side effects */
-             if (!(def->flags & TCG_OPF_SIDE_EFFECTS) && nb_oargs != 0) {
--                for (i = 0; i < nb_oargs; i++) {
-+                for (int i = 0; i < nb_oargs; i++) {
+-            if (!(def->flags & TCG_OPF_SIDE_EFFECTS) && nb_oargs != 0) {
+-                for (int i = 0; i < nb_oargs; i++) {
++            def = &tcg_op_defs[opc];
++            if (!(def->flags & TCG_OPF_SIDE_EFFECTS) && def->nb_oargs != 0) {
++                for (int i = def->nb_oargs - 1; i >= 0; i--) {
                      if (arg_temp(op->args[i])->state != TS_DEAD) {
                          goto do_not_remove;
                      }
-@@ -4149,7 +4148,7 @@ liveness_pass_1(TCGContext *s)
+@@ -4148,6 +4138,10 @@ liveness_pass_1(TCGContext *s)
              break;
  
          do_not_remove:
--            for (i = 0; i < nb_oargs; i++) {
-+            for (int i = 0; i < nb_oargs; i++) {
++            def = &tcg_op_defs[opc];
++            nb_iargs = def->nb_iargs;
++            nb_oargs = def->nb_oargs;
++
+             for (int i = 0; i < nb_oargs; i++) {
                  ts = arg_temp(op->args[i]);
- 
-                 /* Remember the preference of the uses that followed.  */
-@@ -4183,7 +4182,7 @@ liveness_pass_1(TCGContext *s)
-             }
- 
-             /* Record arguments that die in this opcode.  */
--            for (i = nb_oargs; i < nb_oargs + nb_iargs; i++) {
-+            for (int i = nb_oargs; i < nb_oargs + nb_iargs; i++) {
-                 ts = arg_temp(op->args[i]);
-                 if (ts->state & TS_DEAD) {
-                     arg_life |= DEAD_ARG << i;
-@@ -4191,7 +4190,7 @@ liveness_pass_1(TCGContext *s)
-             }
- 
-             /* Input arguments are live for preceding opcodes.  */
--            for (i = nb_oargs; i < nb_oargs + nb_iargs; i++) {
-+            for (int i = nb_oargs; i < nb_oargs + nb_iargs; i++) {
-                 ts = arg_temp(op->args[i]);
-                 if (ts->state & TS_DEAD) {
-                     /* For operands that were dead, initially allow
-@@ -4215,7 +4214,7 @@ liveness_pass_1(TCGContext *s)
- 
-             default:
-                 args_ct = opcode_args_ct(op);
--                for (i = nb_oargs; i < nb_oargs + nb_iargs; i++) {
-+                for (int i = nb_oargs; i < nb_oargs + nb_iargs; i++) {
-                     const TCGArgConstraint *ct = &args_ct[i];
-                     TCGRegSet set, *pset;
  
 -- 
 2.43.0
