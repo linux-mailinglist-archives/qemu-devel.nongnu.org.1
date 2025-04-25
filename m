@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC6CA9CCFE
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:30:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD139A9CCF2
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:30:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8KzN-000077-Va; Fri, 25 Apr 2025 11:29:18 -0400
+	id 1u8KzP-000084-JW; Fri, 25 Apr 2025 11:29:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8KzC-00005K-94
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:29:09 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8KzE-00005V-E1
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:29:11 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8Kz8-0003W0-1L
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:29:05 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-43cf257158fso14449885e9.2
- for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:29:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8KzC-0003WS-N8
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:29:08 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-43cfecdd8b2so15055115e9.2
+ for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:29:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745594940; x=1746199740; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745594945; x=1746199745; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sdo7Xbgn21HSVu7ZHUjvfQORqZjCBRL3kE4FdFeU+do=;
- b=LT7UY9bvP3P4ggBczaNNlywrZsIj9XcadshZDStVE1s9YxKaV+uiIRsuuMdHDfnsBF
- neCY79ZHlbkb3EO6IzQMmc8+9CN9UbawX3yL+Zm+xHq3g9+8UGG748WSolk9CaZ9aDDM
- dLG2oJhxhPfAY5y0O/i/jWvlx7GArvHfxMxKwX9HR5RPrwL8r9PV++OVhfaR+P1TY6PM
- ePzrezklKVuLtvXydurDeFwog8ih2D6bC1UNntWKueMnUi87DYC6p3rDskutoi3qWOni
- 92vmo+i0ldRjNu+UXwMCCVnkxNTRD9tEyeVX9XIgQreYx0n86LQn250LX3w1EZBy7ugJ
- jITQ==
+ bh=N6uHbC7gkNaBaOGHOhDOw2ZtpkNYSZdzsksMim+79v8=;
+ b=XGjwg7pbF7cTq/1H5nqC6rwUXMKWFKxI/emJ/elb2kOeixivOrmEt5zGmRttr1r2Wu
+ Td+qBtONRJaCo6zy53y8oJ5wPijFak1A2WLkR479hw47YvnhSxOxBRSTMlCUtcxpMRGs
+ fJXsGNlCzjjqkzMtuuYhohIWKPVA/z5oAipb2rI0VZ7jseW3LjnQtRsy5YUZrF+ghvEH
+ ESL4V+uA8GYK6Faw35bbTa1pCcBYy4jCdqPHlzdUGNhuoYTjvYr4YUdyRoKInCifi/xJ
+ xK55BnufiqQo+UyLiEZKJZnhe88ixr3xqU7OMZ0h9xSbdJPY6oggKA0GnTZnldMZxjt1
+ Gxmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745594940; x=1746199740;
+ d=1e100.net; s=20230601; t=1745594945; x=1746199745;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sdo7Xbgn21HSVu7ZHUjvfQORqZjCBRL3kE4FdFeU+do=;
- b=XhVnwH286A2z4yWIvMxx3/xBmCJpjzLMvhv8J9fieStDTODzQKcS1aoYeikQPkcrEH
- TyVQnEznRlqm1nmJ24YaSQgaCjk3821L8M8xddzMJTdWwbVxzTeO5VusSeB+juK9qMSk
- LaWA/5zOo7GrRdcGU2BPxbHknUaaOQHT1m7u8vZaWsBXzzFWe2sRMEE9XRzqSpjsDo5t
- TPra5npyunsZRarY3qPNql4kNYAGYDd2IZWDwT75clLOURpLIJEYBwY8m8aNa1EPLU/p
- h/1T0VCjQizuIjoQwGwH1muAss8ruvuI0TFh6MVKGWqAFio4eGuceMn2lABRX2j0H7dY
- Xj/g==
-X-Gm-Message-State: AOJu0YxJy3jymIXyJ+Gy1nZ+bObrX80cs8CScBuifUeyoE7DIo+wqFQU
- a6uJ8ht3lvz6L6MhBuyM/LlTIPF4Oqbhvj4KUT/WSPszCxKZJktHOOvt7A7HzzlqQjMg6acn/Si
- x
-X-Gm-Gg: ASbGncvyWyPhnw64BRJUs7yrEi/zZnWdoEMRIKiI4tESly3YEHFNxdOLHcuy/V+AuLl
- v+L1fI0x6FKJnKlx5QmfsewiRN4ogsXUHFbSWOz2/nuqbT43vYnAyLxHgK4gmY+Y8U9NmhE8hhf
- 9rNwZ43+3KWo4D9q3M9DuQKQGtT3FIMGxEKG89RvFzXHVy19WoA6p859Yl4Jsuc1rXP3HLvSPNM
- j1hW8AcubqH+d9I7jpp03f2ZH7DI+d5hQ40pe7jo49PlMyIukJ1/RoM5Yuso2PhxVK3ZUwgsQt8
- RIuECZqGLAa5uhM6VS3VgAxfKZfRIoSHUiW0x0kdzeJmrlG64/yM8uzt74HYtzdwHQdAmJXg60d
- I4lwwyjinJh6qADw=
-X-Google-Smtp-Source: AGHT+IHg5Cp0m8cXlJu7JskjOYRYdEajE/BwUaL2LvwaHg+COkXiScEQ8GtxDwWPSszLA2FuAHmfGA==
-X-Received: by 2002:a05:600c:46c5:b0:43c:f332:703a with SMTP id
- 5b1f17b1804b1-440a66ab4cemr27817715e9.31.1745594939978; 
- Fri, 25 Apr 2025 08:28:59 -0700 (PDT)
+ bh=N6uHbC7gkNaBaOGHOhDOw2ZtpkNYSZdzsksMim+79v8=;
+ b=YplrDhv8asKoic8tEFCerfOjhLplpJ9gqkmO9lQWXuSrcI+6L2dHh5P77L6Vfk/GHv
+ E0sMtYsjh7OaMgXDHy1acj0Wk53fZlQvgdjC8nEykc3l3pofBDEs1d47QQ08wkJSQkVe
+ /mRTmFMkW5Kyw+w/3M3quSJP+79j6O6vs/l7EVUxsqaHLAGc0lqZiBfePZjbOC6QrjT9
+ /TK9gxsJL+YwI+hAhQOg6ZjiHBsn+XHhsCpVBi+pwB7iCm2+QvlurpIb7RFSAMNdaSc5
+ Co89XK6K7CLGUzZqU4ahbcpUQt85xSfdQo8I7Cz5HAvQHp++bTZjM03xQYpDumcKZSpJ
+ hXlw==
+X-Gm-Message-State: AOJu0YySIJBSi4cDiXIQuxcINN6yej6jh2tFRpYSGdefLDJC8oGcVyLr
+ 75Nf6xXMp0sIIPKMDa/nagTAb1V0YfwlZcd/8ZpUCf/vLXifOLbgopb4ql11RtCExWSA9wuYcTD
+ f
+X-Gm-Gg: ASbGncsJQvt7CLnNu7TSb/10k07hSYBZijyzIryMeKs/JUYEMBUo6Cq+PCcNuiL7C3Y
+ +2x6SYN/5LjLu/WN4IHZ+xjtGE2j+bcXBl5iXSJkL4fLCALbmZu9GfbtrI9f27dWBQRvai80TqI
+ wEu82DWN/YHWMbzszhnnNTVROEVir0w7zlfP0tjZWixdxpOQPBRb+TdDH6DnCqyvnNpjzj4Ca66
+ 1XEPgrnur4oncl4RCdwZeTgIuFe6Dm6N1L41/7PK8Ip5fqsuJ09zbBJJPZtM/IqTWdryLPV8XHf
+ 0MBLZ16t/3MnkLfjCRp3KZ1xDkrTrKsnDN9shsgvudRh1mkwR7/AtO/VphtfuFZNmInANlTH7j/
+ dTObVpdiX+U4LNxU=
+X-Google-Smtp-Source: AGHT+IHXVHgfivUPJdlyiYbRw7cyA/7AbPiaEaxnBqJcP5gvej4meMNzlV9WG2Sdy4HhA5ZkxSKyag==
+X-Received: by 2002:a05:600c:4ec8:b0:43d:2313:7b54 with SMTP id
+ 5b1f17b1804b1-440a65ba1f2mr28179845e9.3.1745594944723; 
+ Fri, 25 Apr 2025 08:29:04 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-440a53870f9sm27851985e9.33.2025.04.25.08.28.58
+ 5b1f17b1804b1-4409d2a1544sm61619915e9.11.2025.04.25.08.29.03
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 25 Apr 2025 08:28:59 -0700 (PDT)
+ Fri, 25 Apr 2025 08:29:04 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 03/58] target/i386: Replace MO_TE* -> MO_LE*
-Date: Fri, 25 Apr 2025 17:27:47 +0200
-Message-ID: <20250425152843.69638-4-philmd@linaro.org>
+ Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 04/58] cpus: Introduce CPUClass::list_cpus() callback
+Date: Fri, 25 Apr 2025 17:27:48 +0200
+Message-ID: <20250425152843.69638-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250425152843.69638-1-philmd@linaro.org>
 References: <20250425152843.69638-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,46 +100,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The x86 architecture is only implemented as little-endian.
-The MO_TE definition always expands to MO_LE.
+Some targets define cpu_list to a method listing their
+CPUs on stdout. In order to make list_cpus() generic,
+introduce the CPUClass::list_cpus() callback.
+When no callback is registered, list_cpus() defaults
+to the cpu_list definition.
 
-Replace:
- - MO_TEUQ -> MO_LEUQ
- - MO_TE   -> MO_LE
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20250312142124.15138-1-philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Message-Id: <20250324185837.46506-2-philmd@linaro.org>
 ---
- target/i386/tcg/emit.c.inc | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/hw/core/cpu.h | 2 ++
+ cpu-target.c          | 8 +++++++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index 4e09e96fc13..ca6bc2ea82f 100644
---- a/target/i386/tcg/emit.c.inc
-+++ b/target/i386/tcg/emit.c.inc
-@@ -1813,7 +1813,7 @@ static void gen_CMPXCHG(DisasContext *s, X86DecodedInsn *decode)
- static void gen_CMPXCHG16B(DisasContext *s, X86DecodedInsn *decode)
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index c8d6abff19a..5b645df59f5 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -102,6 +102,7 @@ struct SysemuCPUOps;
+  * CPUClass:
+  * @class_by_name: Callback to map -cpu command line model name to an
+  *                 instantiatable CPU type.
++ * @list_cpus: list available CPU models and flags.
+  * @parse_features: Callback to parse command line arguments.
+  * @reset_dump_flags: #CPUDumpFlags to use for reset logging.
+  * @memory_rw_debug: Callback for GDB memory access.
+@@ -148,6 +149,7 @@ struct CPUClass {
+     /*< public >*/
+ 
+     ObjectClass *(*class_by_name)(const char *cpu_model);
++    void (*list_cpus)(void);
+     void (*parse_features)(const char *typename, char *str, Error **errp);
+ 
+     int (*memory_rw_debug)(CPUState *cpu, vaddr addr,
+diff --git a/cpu-target.c b/cpu-target.c
+index 14cd623bffe..d139a18f5b1 100644
+--- a/cpu-target.c
++++ b/cpu-target.c
+@@ -104,7 +104,13 @@ static void cpu_list(void)
+ 
+ void list_cpus(void)
  {
- #ifdef TARGET_X86_64
--    MemOp mop = MO_TE | MO_128 | MO_ALIGN;
-+    MemOp mop = MO_LE | MO_128 | MO_ALIGN;
-     TCGv_i64 t0, t1;
-     TCGv_i128 cmp, val;
+-    cpu_list();
++    CPUClass *cc = CPU_CLASS(object_class_by_name(CPU_RESOLVING_TYPE));
++
++    if (cc->list_cpus) {
++        cc->list_cpus();
++    } else {
++        cpu_list();
++    }
+ }
  
-@@ -1870,10 +1870,10 @@ static void gen_CMPXCHG8B(DisasContext *s, X86DecodedInsn *decode)
- 
-     /* Only require atomic with LOCK; non-parallel handled in generator. */
-     if (s->prefix & PREFIX_LOCK) {
--        tcg_gen_atomic_cmpxchg_i64(old, s->A0, cmp, val, s->mem_index, MO_TEUQ);
-+        tcg_gen_atomic_cmpxchg_i64(old, s->A0, cmp, val, s->mem_index, MO_LEUQ);
-     } else {
-         tcg_gen_nonatomic_cmpxchg_i64(old, s->A0, cmp, val,
--                                      s->mem_index, MO_TEUQ);
-+                                      s->mem_index, MO_LEUQ);
-     }
- 
-     /* Compute the required value of Z. */
+ /* enable or disable single step mode. EXCP_DEBUG is returned by the
 -- 
 2.47.1
 
