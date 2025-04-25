@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0218FA9CD4F
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:39:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0349CA9CD33
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:34:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8L3G-00029r-Lz; Fri, 25 Apr 2025 11:33:20 -0400
+	id 1u8L3k-0002qE-Bw; Fri, 25 Apr 2025 11:33:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L2o-0001Fp-CJ
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:32:50 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L2t-0001dP-E4
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:32:55 -0400
 Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L2m-0004CL-Bd
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:32:49 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L2r-0004D2-K2
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:32:55 -0400
 Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-39129fc51f8so1928040f8f.0
- for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:32:47 -0700 (PDT)
+ ffacd0b85a97d-39efc1365e4so1201389f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:32:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745595166; x=1746199966; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745595171; x=1746199971; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=teMG3JygoBDrbKMTX3hz7+h4Vn64sYsEGgE4H+sueD8=;
- b=uH5Aw6RcZ//9egpKj9mTt5MF6XoWpF9SFkvt6DAZYlIltG67UDkrvrb8a75sbgdZDF
- o4qhBje/XeIjE8wJO83tasTgrbYVppzXU9S1tSASLma1thDfnJ5qrxE/Ti4NsucTyfDe
- EKvPX2SoXvfwSJkYjrLc2OYuqDlwZ6pF6q0Q+WolXd2++bNS00gGM8SFLskglnAKNcD2
- SXhC85gzyFR44ZUaDHT23WYMezl7WN/O6GZ/4c396vM8i0NRgMIrOJztIe8Cvq1DCh8W
- c9ysZkiPbCKsFemSo7HKdb5XbnvoFeYFF3Y/8RmKc4JtWWp2HNCCdy3vk095IbETthxY
- nbhA==
+ bh=5LxRNMlVfoq/xLHs+1YnVYUs29an33zqnfwHUeMoXn4=;
+ b=pFH9c2Fw1dekRwF25pDju0ABzqSupGzHVVlF/IzgijMQiD+4Crv7EBV/enVME8S4tn
+ XRNL/4e3jVdutZg6hcxseATEAIB9MepVFWYnbOByvMYPifqoXKocWAFWv7xCPcZb8mxK
+ g/XqbDC2hdTomjZOK0qeFcX3ve00e9JL6FMitW/TXc0pZUFlZB2vlzcsk/Z9luiVFjky
+ 558+E2urqDxpqOT9SQwBp3tTczDG0QEBN1FH4UKIf56B+MwOgFY7MPZzQklaUHR98yZd
+ KhDyFy9gGqu0l89oxfzNTEHny3Kvb2f/odc1coi90esElY/O5q/Zcu2QdnJo2NzfyqPs
+ ofqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745595166; x=1746199966;
+ d=1e100.net; s=20230601; t=1745595171; x=1746199971;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=teMG3JygoBDrbKMTX3hz7+h4Vn64sYsEGgE4H+sueD8=;
- b=cTIPHNCU5nz7pd8A1DxQgXAF1DpjE8m8SQEOaan3lZfwoSd5WqTgU8zBnK3Dz+9qy7
- NQ5U40hH0J+xRrtK1ttf66Nn4xRQKZzl3DD7c39FtfAAmQYzInyhXx01IzZnsWqUlbVK
- ImlslJ5BKskVxXbEuNMy55O3AM6VSbhaMTj/k2jOrZ0xBbx4JT74XO7vxls6n1BRj7Dh
- bqWHZCJ2YJhhjHjImyspPFJO5H1VdjhQ/tZ0XDKTxeDOlDAn3ArF/1TBWRuisazFEhsm
- s9lCqmhK6w711C6m/0HscR6hcrMHtAzD5I5R3TR5SywO4lnEawiAWLJJ/Ckhu2/UP4ii
- NCtg==
-X-Gm-Message-State: AOJu0YzT7ORnxEuiubts9LGWqPk9qUN0mc8Kxkll6e//cOVEVPkP2ij3
- KrCohFtq9QuP/5kN61jzim9IF4PjMQ1Ibpll0LbBPQmQNuiZWh2su99rtZRLLa1Up8pRFzjSxwe
- 5
-X-Gm-Gg: ASbGncst2AdoCHQyvhhE/x7aSR/AyNVEy95a47afLl4YHNpVhBe7EDbKZBBNgsEfoFV
- Ubf9m8+0/1voGx2uk6FFNHZApcN3AHk73ZstZBu9eH/Nkq/T7TrhLaW4+thsvpp8erL5ek/90Se
- D8+FLjCkhiRlYnKokUHB0eV6Lb0Cm7U3Jl/hltcjhd2ziqrvuCLXvD7lLsPU6+nf3DKknMIsaW6
- jXsA9VOK5UjheqNDV3xGzyNHkbnElfvp2kg3q6Rqhrf+9PVRo07AhizU7IzSgIu5CM6L/Ly1JTQ
- Rg1tPh6wVw5sLzHgudfXCqnEU0Hw5hgenDbdncShoO/vsDaxBytaExRSoJq0tu+8a8ZGnlC8IDx
- AzwltDu1FNjycHdg=
-X-Google-Smtp-Source: AGHT+IHVPOnV4OysBe/RFdgzwdK35ucDEHmhUOGjZsO9JM18gpu9z+0CWkK34iJo7v/vX5e1NAjQAg==
-X-Received: by 2002:a05:6000:40ca:b0:39c:1257:ccae with SMTP id
- ffacd0b85a97d-3a074fa76bcmr2068527f8f.57.1745595166423; 
- Fri, 25 Apr 2025 08:32:46 -0700 (PDT)
+ bh=5LxRNMlVfoq/xLHs+1YnVYUs29an33zqnfwHUeMoXn4=;
+ b=nFelEJZAlTt4aemasn46IaXSSbXBnWxC+gHUm4PusZdTAJoL+OKIO+oI4BZAI1+j11
+ FDHl6kVBtO7x3MMFGYDGYrZGfOnM4uqC5u/oa+YhxgHKRgZCItMztAEYltdeeIhaxLV3
+ MvSfIQIMvNUBIvP5dmQftrCS7mnQULEclpGUYuQwQmxfeuv5YDf5ZjzdoJI24aOR/uAR
+ Q0BeGTCtR3+UGug4f2sZRNG7YRgWiqt79wvCyZ+m71OstF8YxtDvW7O+mfLxEofb5aTb
+ HSVFj1plDM4GdDN63hjw6QAmzfPuD66jvLU9udIwCLgYqV2EjynUG+dJ1OUMXepfjCXY
+ lajg==
+X-Gm-Message-State: AOJu0Yx4U78Qc4QOujG0rBx+k7f9t7G4+/zjvX3BTD1xpHkcpwH+wL5m
+ RTpJmoAujh/cXQUFMVoW6doF33PTnw04kWTUxfxJx9RmO5d9OT0YUiAhVoH3ElMztsvEao/IQ/k
+ 0
+X-Gm-Gg: ASbGncuvjz6lv56081YmY814pe0AnhSLi4Gcx0vVTD1WUKRLqk5u5Vx3IS5YrVQvBlO
+ vsUkb8toJ8NYkgc8v2dDoNwCosydZv9g2GlySALPXjCPwnIxo9qvy7DoSHKqNFo8IYqVeCgoZMG
+ 4zCAAoKGCPr5598qfpzRwLsW+9BGHCIVDBFQub3FKPGPhRZyq5UYOOAOMxHmR8fgQr3r0iIjBe4
+ AvVN22ZcVXpx6iELDnvQggcGGj8btX7HAJLIzDLp/8TdpvOrOAUJf+2W3K5+30t93gTmVoYUXb6
+ 9QuWkK7jWcCKh3gKge5wungjXLQ0amAuRCtRZlbRa6H3/cJph44wmhBlXpOKL4aE8nQiSAjA7ht
+ mBp/kmHu0wS8xTKAolLoFDSmv9w==
+X-Google-Smtp-Source: AGHT+IH3O/+X0r+KoZgu2SHZgErRj2XLtWbjNCNFjeWB/oebMu7qmxcLe7kASZGDTq194d91lBXlhA==
+X-Received: by 2002:a5d:64ee:0:b0:3a0:6b91:fefc with SMTP id
+ ffacd0b85a97d-3a074f7e3dbmr2172971f8f.50.1745595171160; 
+ Fri, 25 Apr 2025 08:32:51 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-440a53108f2sm28032085e9.19.2025.04.25.08.32.45
+ 5b1f17b1804b1-4409d2e00e3sm61672295e9.34.2025.04.25.08.32.50
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 25 Apr 2025 08:32:46 -0700 (PDT)
+ Fri, 25 Apr 2025 08:32:50 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 49/58] hw/microblaze: Evaluate TARGET_BIG_ENDIAN at compile time
-Date: Fri, 25 Apr 2025 17:28:33 +0200
-Message-ID: <20250425152843.69638-50-philmd@linaro.org>
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: [PULL 50/58] qapi: Rename TargetInfo structure as QemuTargetInfo
+Date: Fri, 25 Apr 2025 17:28:34 +0200
+Message-ID: <20250425152843.69638-51-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250425152843.69638-1-philmd@linaro.org>
 References: <20250425152843.69638-1-philmd@linaro.org>
@@ -98,63 +100,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rather than evaluating TARGET_BIG_ENDIAN at preprocessing
-time via #ifdef'ry, do it in C at compile time
+The QAPI-generated 'TargetInfo' structure name is only used
+in a single file. We want to heavily use another structure
+similarly named. Rename the QAPI one, since structure names
+are not part of the public API.
 
+Suggested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250417131004.47205-8-philmd@linaro.org>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Message-Id: <20250422145502.70770-2-philmd@linaro.org>
 ---
- hw/microblaze/petalogix_ml605_mmu.c | 12 ++++++------
- hw/microblaze/xlnx-zynqmp-pmu.c     | 12 ++++++------
- 2 files changed, 12 insertions(+), 12 deletions(-)
+ qapi/machine.json          | 10 +++++-----
+ hw/core/machine-qmp-cmds.c |  4 ++--
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/hw/microblaze/petalogix_ml605_mmu.c b/hw/microblaze/petalogix_ml605_mmu.c
-index c887c7a99ed..bea6b689fd1 100644
---- a/hw/microblaze/petalogix_ml605_mmu.c
-+++ b/hw/microblaze/petalogix_ml605_mmu.c
-@@ -218,12 +218,12 @@ petalogix_ml605_init(MachineState *machine)
+diff --git a/qapi/machine.json b/qapi/machine.json
+index a9ff8076317..c8feb9fe17b 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -275,15 +275,15 @@
+ { 'command': 'query-current-machine', 'returns': 'CurrentMachineParams' }
  
- static void petalogix_ml605_machine_init(MachineClass *mc)
- {
--#if TARGET_BIG_ENDIAN
--    mc->desc = "PetaLogix linux refdesign for xilinx ml605 (big endian)";
--    mc->deprecation_reason = "big endian support is not tested";
--#else
--    mc->desc = "PetaLogix linux refdesign for xilinx ml605 (little endian)";
--#endif
-+    if (TARGET_BIG_ENDIAN) {
-+        mc->desc = "PetaLogix linux refdesign for xilinx ml605 (big endian)";
-+        mc->deprecation_reason = "big endian support is not tested";
-+    } else {
-+        mc->desc = "PetaLogix linux refdesign for xilinx ml605 (little endian)";
-+    }
-     mc->init = petalogix_ml605_init;
+ ##
+-# @TargetInfo:
++# @QemuTargetInfo:
+ #
+-# Information describing the QEMU target.
++# Information on the target configuration built into the QEMU binary.
+ #
+ # @arch: the target architecture
+ #
+ # Since: 1.2
+ ##
+-{ 'struct': 'TargetInfo',
++{ 'struct': 'QemuTargetInfo',
+   'data': { 'arch': 'SysEmuTarget' } }
+ 
+ ##
+@@ -291,11 +291,11 @@
+ #
+ # Return information about the target for this QEMU
+ #
+-# Returns: TargetInfo
++# Returns: QemuTargetInfo
+ #
+ # Since: 1.2
+ ##
+-{ 'command': 'query-target', 'returns': 'TargetInfo' }
++{ 'command': 'query-target', 'returns': 'QemuTargetInfo' }
+ 
+ ##
+ # @UuidInfo:
+diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
+index 9447e345b3c..a5e635152dc 100644
+--- a/hw/core/machine-qmp-cmds.c
++++ b/hw/core/machine-qmp-cmds.c
+@@ -134,9 +134,9 @@ CurrentMachineParams *qmp_query_current_machine(Error **errp)
+     return params;
  }
  
-diff --git a/hw/microblaze/xlnx-zynqmp-pmu.c b/hw/microblaze/xlnx-zynqmp-pmu.c
-index ea1430f4081..ed40b5f2e05 100644
---- a/hw/microblaze/xlnx-zynqmp-pmu.c
-+++ b/hw/microblaze/xlnx-zynqmp-pmu.c
-@@ -181,12 +181,12 @@ static void xlnx_zynqmp_pmu_init(MachineState *machine)
- 
- static void xlnx_zynqmp_pmu_machine_init(MachineClass *mc)
+-TargetInfo *qmp_query_target(Error **errp)
++QemuTargetInfo *qmp_query_target(Error **errp)
  {
--#if TARGET_BIG_ENDIAN
--    mc->desc = "Xilinx ZynqMP PMU machine (big endian)";
--    mc->deprecation_reason = "big endian support is not tested";
--#else
--    mc->desc = "Xilinx ZynqMP PMU machine (little endian)";
--#endif
-+    if (TARGET_BIG_ENDIAN) {
-+        mc->desc = "Xilinx ZynqMP PMU machine (big endian)";
-+        mc->deprecation_reason = "big endian support is not tested";
-+    } else {
-+        mc->desc = "Xilinx ZynqMP PMU machine (little endian)";
-+    }
-     mc->init = xlnx_zynqmp_pmu_init;
- }
+-    TargetInfo *info = g_malloc0(sizeof(*info));
++    QemuTargetInfo *info = g_malloc0(sizeof(*info));
  
+     info->arch = qapi_enum_parse(&SysEmuTarget_lookup, target_name(), -1,
+                                  &error_abort);
 -- 
 2.47.1
 
