@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B776A9D598
-	for <lists+qemu-devel@lfdr.de>; Sat, 26 Apr 2025 00:33:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EE68A9D535
+	for <lists+qemu-devel@lfdr.de>; Sat, 26 Apr 2025 00:12:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8RBj-0006BJ-GV; Fri, 25 Apr 2025 18:06:27 -0400
+	id 1u8RER-0002u1-Tb; Fri, 25 Apr 2025 18:09:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u8RAz-0003iQ-F3
+ id 1u8RAz-0003iR-IG
  for qemu-devel@nongnu.org; Fri, 25 Apr 2025 18:05:45 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u8RAx-0001sX-JD
+ id 1u8RAx-0001st-Pv
  for qemu-devel@nongnu.org; Fri, 25 Apr 2025 18:05:41 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-736b34a71a1so3233064b3a.0
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-736c1138ae5so2758857b3a.3
  for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 15:05:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1745618738; x=1746223538; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=N73pKoDb0INGlWZ/JQrCEp9VeW0cZzon0oiZFLZTLc8=;
- b=QRV49gNUZE3fK9nsQr7fnZnMPRduHigfZztLYU+dlaai4rkeYHvoQ/oSGKts+RfxgV
- JVuxVg/bPPdUtlGkOywaWmbV3ZFaOBg4ilYdTNDC40JAAUXIKTpIrOt9JUS4FRTSBXeE
- nyaPyeYSbcWAs9CBJYDnK8nGYgIt2+0/YEvOb4v3r60Xx9AaqGbxR2OWnIldZMGe0vmf
- dqrRn6JrqSOo2EQBu4HIefAXAPj+T+NlsBQXMuiipRcgfHvLn42s1tnPl8wXvoH1yZ36
- 56JAjAyotVAyD+kcrSQf7TAlkU7Rfg9F07OLywwNDcH/P75yoBkWHlgRruVaP8AGxZba
- /oVA==
+ bh=BrBCsIJgWKGCpaAsMFDooeM8W+Z2wqYDVyB0/xDhg7c=;
+ b=BVr2N3XRFRAWz+zavJ8cT6qgBFmM+WmYrKeBhIriwRLImqYGCUGIEJDEKLEAUO3tDP
+ H/4hTPvWPyjYCdxHGhiMh3dBhuTOtb+oiirFC7TypErn+i5IDLlYW+jvakcCSICMH6uD
+ CZSMTauITWm1s/dNvSrW8WKIx8IMkWkpe4Gk77OOKFnm4O5SPmgCAeXjki6hiV5YGLW+
+ 0u4mfN78XlyhvTOgLWi4e6o1P5L1DTU/G0C93v6cuzKDOhKuEDM8lDWfEcFp5TfCLG2V
+ x1rQ4Pl5i3Drh24t9sU94NL/SYpDdlC1QimLYEfWQbN88KSquIjeAj7z4W0AnNi99/XW
+ j2Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1745618738; x=1746223538;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=N73pKoDb0INGlWZ/JQrCEp9VeW0cZzon0oiZFLZTLc8=;
- b=pBeklfr9vludBKyTdoxJMRXtPic3FJqLWrjq2eJcXuYc7mNGcnZohrHEWHZGLDefKj
- 7GW7l5n1XW+0stvUSk1Qs/8g4Zl9q6SzdxO88PEfCTJjxacUfa5oIcY4v/bYU8+8zCR1
- jf19T2kcx85V4+PIpS7OxHcsj9/UbtjbzRgjgDS/vjbU7EwZGyYRCLu7dCSWnXFTwJnc
- sTTiBxN/EYdQSdCwm3NTEMGd2Vm1OpOW7OMikhdYyhwdCvxRD2mx1lTmguW4lIBWnBHE
- HD/MGBc0xqGLbr4PMSMQEJBdwCr7z6q9p8EaXMKTiLP3P3/QKAEv7Sjo8paV8krSPqdn
- dt4w==
-X-Gm-Message-State: AOJu0YzucEsmEGqrTZR1NWEhlPORUXWScMu8wG54XgOruNnVAReZDRZW
- LUGapdBhnkvPAShUtEyBYO91yLmOwu/ZrgUFhfZNYUqAajmabp8qARTZmt1f/Utqs0dbWS7JMMN
- k
-X-Gm-Gg: ASbGncvIeqFqiJ22jhZ2TvHS5lGY5MM60FM3jbODvuGybK/xCcblPObnBx3wfSN3fdZ
- 1G0LB0SPLjOR4BEBUFCVTI9c5XGXOrivsavOQY3R9BkX82l6wmERS0m4WPRVCszT11J9jdZqZUV
- VH+nJQJd5fTz8fMZWgKC0BU2xdoiuyRUkqWGku78Bj+0aotjgz+V6JJZmUz5+HYM6FRneaTGfqa
- F3snchrS0qPUgULvIGWXdug0trDv6BcTsyrKK8sR69/DLlNSymDVCv6I8Q2cxq69++ZrcNGADQ3
- 84PdF7BTNWx1BtTcvcRU+pyO2ZzjPFiVVXz7VAQDCxYT0SZ3GYnMzNhbOSrUT4hO51GPWSgY1zw
+ bh=BrBCsIJgWKGCpaAsMFDooeM8W+Z2wqYDVyB0/xDhg7c=;
+ b=QeBVn98oapHQHh6ep0/j/kn6rLnIoMsazs99PXh2luym6ESl6JsLpCogBd/gl3tTjE
+ 9A3+zwlCnS4zY8jP79IX4Tkxu/TJZjWXb0uQUZff4IY/q6UDrH7xyskMc2MZmNFANnOJ
+ rn7Qhy2xx89dLJxhPVuUukxgZ2HBI869xrnRe8oFkEq2OCDGFmwmLRSXcJPWVCsLHoMC
+ KxEM778Yg4fZ5AbXPM2jBHx0XNE3LYru2rKVqYjkJXRGAcOJuRQ7TiHmPspOWDEGxqXt
+ Shdtq8SUnn0JqbB8GuFDD9vj3X8/ncPYTfgUej3FogjHHHVTikYigp7uwLHizfaRUF75
+ VXow==
+X-Gm-Message-State: AOJu0YxCAcagzVrzHOGpU23bJ99QRNqKXiwWkcFrjpGqYoLv2Z3puyyn
+ QtGloHf0h1mNZUVRAjkkmqgGs8/sFMv5ci/DRm3FVE+ONV+g++wRY9F0/6W730BxQjVK8QWM03h
+ S
+X-Gm-Gg: ASbGncslmjPjW6KfPSwmx/xoQlI9Iy/jHjzbQKhgTiQlRvdURq1/HofdLJpPzvVl/A6
+ gsAg36VtpAb7T/Wj9K7uMVGvwLc3VvxonrIEeNLF4VJEkSOjV4jURmJSwMFDvAnVG/2WPF82PjJ
+ pPc0j7aXfitaGQL+MwQvfLkJCV2GcLO67nHV6vGKaofpiHcWhtk1j6iFcN7Vbzn1p7l2WQvQtnA
+ +NMdnZa8sxpZ8MMsKh6IZJKqEr6uD2XShtOWLESzdOO2ZSyeP6yzH5bzhTfX2rJptnFGTuvRPHo
+ OajGHPjo34CFEnb2kDPuKDfKraEauH0Cuoux0kuoh9mfuOu6rVv9fzpw01rL3m7hVPTSd4oXUAc
  =
-X-Google-Smtp-Source: AGHT+IFmdKHmKnBsZHEfEu2rBYijESuydocNeY9mvTXCvC9esPXmEORf5lfuWBr6pkCQpVRXt+qUXg==
-X-Received: by 2002:a05:6a00:4b03:b0:736:34a2:8a18 with SMTP id
- d2e1a72fcca58-73ff73f4b0bmr1668892b3a.24.1745618737602; 
- Fri, 25 Apr 2025 15:05:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG9MhhbG3uv8kQVqCa8lzMoI0Q/AuxP+L59yu47jFpHjBMvL7zjrs40NJXFCq3Ik/Dv5ssTBQ==
+X-Received: by 2002:a05:6a00:1481:b0:736:42a8:a742 with SMTP id
+ d2e1a72fcca58-73ff72e237amr1363009b3a.11.1745618738400; 
+ Fri, 25 Apr 2025 15:05:38 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
  d2e1a72fcca58-73e25a6a49esm3796573b3a.106.2025.04.25.15.05.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Apr 2025 15:05:37 -0700 (PDT)
+ Fri, 25 Apr 2025 15:05:38 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 139/159] tcg/s390x: Honor carry_live in tcg_out_movi
-Date: Fri, 25 Apr 2025 14:54:33 -0700
-Message-ID: <20250425215454.886111-140-richard.henderson@linaro.org>
+Subject: [PULL 140/159] tcg/s390x: Add TCG_CT_CONST_N32
+Date: Fri, 25 Apr 2025 14:54:34 -0700
+Message-ID: <20250425215454.886111-141-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250425215454.886111-1-richard.henderson@linaro.org>
 References: <20250425215454.886111-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,67 +98,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not clobber flags if they're live.  Required in order
-to perform register allocation on add/sub carry opcodes.
-LA and AGHI are the same size, so use LA unconditionally.
+We were using S32 | U32 for add2/sub2.  But the ALGFI and SLGFI
+insns that implement this both have uint32_t immediates.
+This makes the composite range balanced and
+enables use of -0xffffffff ... -0x80000001.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/s390x/tcg-target.c.inc | 35 +++++++++++++++++++++--------------
- 1 file changed, 21 insertions(+), 14 deletions(-)
+ tcg/s390x/tcg-target-con-set.h | 2 +-
+ tcg/s390x/tcg-target-con-str.h | 1 +
+ tcg/s390x/tcg-target.c.inc     | 8 ++++++--
+ 3 files changed, 8 insertions(+), 3 deletions(-)
 
+diff --git a/tcg/s390x/tcg-target-con-set.h b/tcg/s390x/tcg-target-con-set.h
+index 78f06e3e52..f5d3878070 100644
+--- a/tcg/s390x/tcg-target-con-set.h
++++ b/tcg/s390x/tcg-target-con-set.h
+@@ -44,4 +44,4 @@ C_O2_I2(o, m, 0, r)
+ C_O2_I2(o, m, r, r)
+ C_O2_I3(o, m, 0, 1, r)
+ C_N1_O1_I4(r, r, 0, 1, ri, r)
+-C_N1_O1_I4(r, r, 0, 1, rJU, r)
++C_N1_O1_I4(r, r, 0, 1, rUV, r)
+diff --git a/tcg/s390x/tcg-target-con-str.h b/tcg/s390x/tcg-target-con-str.h
+index 3e574e0662..636a38a168 100644
+--- a/tcg/s390x/tcg-target-con-str.h
++++ b/tcg/s390x/tcg-target-con-str.h
+@@ -24,4 +24,5 @@ CONST('M', TCG_CT_CONST_M1)
+ CONST('N', TCG_CT_CONST_INV)
+ CONST('R', TCG_CT_CONST_INVRISBG)
+ CONST('U', TCG_CT_CONST_U32)
++CONST('V', TCG_CT_CONST_N32)
+ CONST('Z', TCG_CT_CONST_ZERO)
 diff --git a/tcg/s390x/tcg-target.c.inc b/tcg/s390x/tcg-target.c.inc
-index a30afb455e..e262876614 100644
+index e262876614..9b28083945 100644
 --- a/tcg/s390x/tcg-target.c.inc
 +++ b/tcg/s390x/tcg-target.c.inc
-@@ -951,25 +951,32 @@ static void tcg_out_movi(TCGContext *s, TCGType type,
-     if (pc_off == (int32_t)pc_off) {
-         tcg_out_insn(s, RIL, LARL, ret, pc_off);
-         if (sval & 1) {
--            tcg_out_insn(s, RI, AGHI, ret, 1);
-+            tcg_out_insn(s, RX, LA, ret, ret, TCG_REG_NONE, 1);
-         }
-         return;
-     }
+@@ -43,6 +43,7 @@
+ #define TCG_CT_CONST_INVRISBG   (1 << 14)
+ #define TCG_CT_CONST_CMP        (1 << 15)
+ #define TCG_CT_CONST_M1         (1 << 16)
++#define TCG_CT_CONST_N32        (1 << 17)
  
--    /* Otherwise, load it by parts. */
--    i = is_const_p16((uint32_t)uval);
--    if (i >= 0) {
--        tcg_out_insn_RI(s, li_insns[i], ret, uval >> (i * 16));
--    } else {
--        tcg_out_insn(s, RIL, LLILF, ret, uval);
--    }
--    uval >>= 32;
--    i = is_const_p16(uval);
--    if (i >= 0) {
--        tcg_out_insn_RI(s, oi_insns[i + 2], ret, uval >> (i * 16));
--    } else {
--        tcg_out_insn(s, RIL, OIHF, ret, uval);
-+    if (!s->carry_live) {
-+        /* Load by parts, at most 2 instructions. */
-+        i = is_const_p16((uint32_t)uval);
-+        if (i >= 0) {
-+            tcg_out_insn_RI(s, li_insns[i], ret, uval >> (i * 16));
-+        } else {
-+            tcg_out_insn(s, RIL, LLILF, ret, uval);
-+        }
-+        uval >>= 32;
-+        i = is_const_p16(uval);
-+        if (i >= 0) {
-+            tcg_out_insn_RI(s, oi_insns[i + 2], ret, uval >> (i * 16));
-+        } else {
-+            tcg_out_insn(s, RIL, OIHF, ret, uval);
-+        }
-+        return;
+ #define ALL_GENERAL_REGS     MAKE_64BIT_MASK(0, 16)
+ #define ALL_VECTOR_REGS      MAKE_64BIT_MASK(32, 32)
+@@ -613,7 +614,10 @@ static bool tcg_target_const_match(int64_t val, int ct,
+     if ((ct & TCG_CT_CONST_S32) && val == (int32_t)val) {
+         return true;
      }
-+
-+    /* Otherwise, stuff it in the constant pool.  */
-+    tcg_out_insn(s, RIL, LGRL, ret, 0);
-+    new_pool_label(s, sval, R_390_PC32DBL, s->code_ptr - 2, 2);
- }
+-    if ((ct & TCG_CT_CONST_U32) && val == (uint32_t)val) {
++    if ((ct & TCG_CT_CONST_U32) && uval <= UINT32_MAX) {
++        return true;
++    }
++    if ((ct & TCG_CT_CONST_N32) && -uval <= UINT32_MAX) {
+         return true;
+     }
+     if ((ct & TCG_CT_CONST_S16) && val == (int16_t)val) {
+@@ -3548,7 +3552,7 @@ tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
  
- /* Emit a load/store type instruction.  Inputs are:
+     case INDEX_op_add2_i64:
+     case INDEX_op_sub2_i64:
+-        return C_N1_O1_I4(r, r, 0, 1, rJU, r);
++        return C_N1_O1_I4(r, r, 0, 1, rUV, r);
+ 
+     case INDEX_op_st_vec:
+         return C_O0_I2(v, r);
 -- 
 2.43.0
 
