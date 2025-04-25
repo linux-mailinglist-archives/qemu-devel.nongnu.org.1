@@ -2,69 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CD60A9D00E
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 19:54:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00252A9D07D
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 20:26:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8NEi-00012n-Bi; Fri, 25 Apr 2025 13:53:16 -0400
+	id 1u8NjZ-0007gt-KP; Fri, 25 Apr 2025 14:25:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1u8NEa-0000sO-O6
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 13:53:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1u8NEZ-0007Pd-3P
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 13:53:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745603585;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=YiuccxRLu8fqNjoYvByXR1A/ypUE0qohnuPHymM6eZ8=;
- b=OJaWUzuUSTRsRJsCrhJuiqJoBw3YqAXMhqzWPNTozf3+eG7+Okjpy5g6/wvq9GY+Nx+ZyT
- +6EXV7SFctaNrA+5UsYJ4WytPVBeHneROWHZ9yBwjy95CNpiye3FrVE52CIbmPHpxotlyR
- EEsU/S4Pcu/GHDsXUL+XDhx5Ps/YFEk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-548-_Ys1nd8CP8iTvuVYb6_hnA-1; Fri,
- 25 Apr 2025 13:53:04 -0400
-X-MC-Unique: _Ys1nd8CP8iTvuVYb6_hnA-1
-X-Mimecast-MFC-AGG-ID: _Ys1nd8CP8iTvuVYb6_hnA_1745603583
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 85191180036E; Fri, 25 Apr 2025 17:53:03 +0000 (UTC)
-Received: from merkur.redhat.com (unknown [10.45.225.183])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 4954C1800D9D; Fri, 25 Apr 2025 17:53:02 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com,
-	qemu-devel@nongnu.org
-Subject: [PULL 4/4] qemu-img: improve queue depth validation in img_bench
-Date: Fri, 25 Apr 2025 19:52:52 +0200
-Message-ID: <20250425175252.316807-5-kwolf@redhat.com>
-In-Reply-To: <20250425175252.316807-1-kwolf@redhat.com>
-References: <20250425175252.316807-1-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1u8NjX-0007gV-H6
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 14:25:07 -0400
+Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1u8NjQ-00041q-FI
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 14:25:07 -0400
+Received: by mail-pg1-x529.google.com with SMTP id
+ 41be03b00d2f7-b041afe0ee1so2413754a12.1
+ for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 11:24:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1745605498; x=1746210298; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=qW6fnXz5t+pg46xWOVvAG8nHBfNnncvM49jG0ilcnH8=;
+ b=idTIl3OgDQJxaUhY7cLvpBqEeHoT3v/tENj6/poOjuaedLVrqZ4cCIIr1uugmPIT6+
+ 68zbWRtWJhappUIrplx97S406r5XZpldexGks8DMGbkFFnEpwdu+HLgItOoyZ6CJQf9b
+ ZJT1T8RtSjm5953DYBcIqKotay6lMlW+eMAvr49nc2eQpv/c5kZJqt29+64ao1o15XZM
+ g5mWbBwXTF2kHT+DysKpBJyOhSFB2WSOnCdSM4NQ35l4lY3a64dbKSO/jc2PzompiPX6
+ Rzbm078FVmehnl5wDCN1lPNsU/h/dh+2Y2fBRsel+Gv4bhOTMWrFxF1DrXy+JhWql9sb
+ HYCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1745605498; x=1746210298;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=qW6fnXz5t+pg46xWOVvAG8nHBfNnncvM49jG0ilcnH8=;
+ b=WVGA+mr+w1mUzYhvp58GjJ0hlkkwkwDyqh6lvOKlsigdFtQVfk6Td4iQig8QuykmkN
+ bwZprinenXz7t4CE7D/x99pVRjbt3jE0mWI3VOWQE/qqrA53HxF17c9FAaSAcaSo5PCz
+ 2J+1dmniFe3XGBvFcMQi5OWlLXjBg8hBcWS8NuuHwKF1W9shwl+4gR9KTz42tjugOYoi
+ CxUYpBS+CEE+E9SyI+8EDkzYXbOMpSoMsZcdHmQuvMysgVXSV+dZ359cgXK05Rvht8o1
+ Qu9/PHo5t1XFbpRepOUJiRry3MTbZOi3WUnmFjHSujhCTG5yO/hYoort9aQqdSsnC/tX
+ Z57Q==
+X-Gm-Message-State: AOJu0YwVUrVWK4kpFRkpRSUY3zQz04yPAsUgZzeO/yz9/bLDj7e8IorL
+ ZvoJmvP7baLS1s4EQ16xLYzVvgkk4rTJxOqmlkt8JW0Ond0b3LM4IvyUf2iNLyVb2Hs4fGXCBEY
+ c
+X-Gm-Gg: ASbGncu5FfNcVWOoySURmTd/AtHLT9ATQw29kXGDCRKQoMA6ZUJOOn94B/N9x7a9UTu
+ U1+2HPcJdTZnTiq0vLtzo/rTr/TSCkys8Sf+dFcbbagq2eLY2wHNlidkMJAioEipmy2LzbXvvHp
+ 2F/RepumMY970Ms6OmVaI7/yW8i72Du2nb/TmmGclyfUNHC3YgEmb+6flkiJDOyNRF8sFgTZ38e
+ SuuPeJAZu6AyWjV3US+xUQJAdREDPxMG2XFKclIwJ9rveXlersWaYyktdmzOPQ7mj08n578A/+v
+ 2ejkTszlC4Vr4bV3vfrk3hhUNa2phtBiF8e8OiqmuChv+Fk2oDOz5lqGFpj5+IOlqRjQBxU8EX2
+ 8tWwD3Q8=
+X-Google-Smtp-Source: AGHT+IFEv5kvDUWshZ+maiv10ZaubdWmlgP3JC84uh0nvUFm5dwKiN7HHfT6w/bRdFpzkMwOFO1hbQ==
+X-Received: by 2002:a05:6a20:9c90:b0:1f5:717b:46dc with SMTP id
+ adf61e73a8af0-2045b98feefmr4569001637.27.1745605498036; 
+ Fri, 25 Apr 2025 11:24:58 -0700 (PDT)
+Received: from [192.168.0.4] (71-212-47-143.tukw.qwest.net. [71.212.47.143])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-73e25acde9bsm3510462b3a.180.2025.04.25.11.24.57
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 25 Apr 2025 11:24:57 -0700 (PDT)
+Message-ID: <47602bda-16f6-4b3d-9787-08b51c89ccea@linaro.org>
+Date: Fri, 25 Apr 2025 11:24:56 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/9] target/riscv: Add mips.ccmov instruction
+To: qemu-devel@nongnu.org
+References: <20250425115912.912889-1-djordje.todorovic@htecgroup.com>
+ <20250425115912.912889-6-djordje.todorovic@htecgroup.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20250425115912.912889-6-djordje.todorovic@htecgroup.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x529.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.314,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,35 +101,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Denis Rastyogin <gerben@altlinux.org>
+On 4/25/25 05:01, Djordje Todorovic wrote:
+> +# Fields
+> +%rs3       27:5
+> +%rs2       20:5
+> +%rs1       15:5
+> +%rd        7:5
+> +
+> +# Argument sets
+> +
+> +# Formats
+> +@r4      ..... ..  ..... ..... ... ..... ....... %rs3 %rs2 %rs1 %rd
+> +
+> +# *** RV64 MIPS Extension ***
+> +ccmov       .....11  ..... ..... 011 .....  0001011 @r4
 
-This error was discovered by fuzzing qemu-img.
+Just write
 
-Currently, running `qemu-img bench -d 0` in img_bench is allowed,
-which is a pointless operation and causes qemu-img to hang.
+ccmov          rs3:5 11 rs2:5 rs1:5 011 rd:5 0001011
 
-Signed-off-by: Denis Rastyogin <gerben@altlinux.org>
-Message-ID: <20250327162423.25154-5-gerben@altlinux.org>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
----
- qemu-img.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+since none of the fields or argument sets are reused.
 
-diff --git a/qemu-img.c b/qemu-img.c
-index 2044c22a4c..76ac5d3028 100644
---- a/qemu-img.c
-+++ b/qemu-img.c
-@@ -4571,7 +4571,7 @@ static int img_bench(int argc, char **argv)
-         {
-             unsigned long res;
- 
--            if (qemu_strtoul(optarg, NULL, 0, &res) < 0 || res > INT_MAX) {
-+            if (qemu_strtoul(optarg, NULL, 0, &res) <= 0 || res > INT_MAX) {
-                 error_report("Invalid queue depth specified");
-                 return 1;
-             }
--- 
-2.49.0
+
+r~
 
 
