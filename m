@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B0E2A9CD0B
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:31:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 131DBA9CD3F
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:35:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8L1E-0002ak-AT; Fri, 25 Apr 2025 11:31:12 -0400
+	id 1u8L1R-0003WH-0A; Fri, 25 Apr 2025 11:31:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L0c-0001X5-Nn
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:30:43 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L0h-0001Zy-Ls
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:30:47 -0400
 Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L0a-0003uP-9P
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:30:33 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8L0e-0003vT-Tt
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:30:38 -0400
 Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-43cf848528aso16829025e9.2
- for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:30:31 -0700 (PDT)
+ 5b1f17b1804b1-43cfa7e7f54so16128385e9.1
+ for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:30:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745595030; x=1746199830; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745595035; x=1746199835; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Jvs44ehSMS7vr5Ngp7xi3bJceK1a1pBELdrshQJvya0=;
- b=xOxYV4byykdUB/31gInDlyo79quNgSyGvIWHGw6LeY7NgG6jTaM0HJ+5iRDdtTM9RF
- m8+6dO477Tvnq37jksU7/wdzKtF2glyX48BZrM5zFTpUWjw50Z2Oaeav2wN56++Bm5ot
- QJYOOYx7Qd0Z6AHYAEUFPSytCq83dJjpVzwdq39FN+DozEaCqF7PSYB6d7uB0a8Z4uZQ
- wOnuN3lAhcNT3+5NYNMHO+NDwf3rIMRLyztppJRyjSbVhVkzkxKpevv1cKg7eDpfHesw
- QCmsJEnUFZmlJVqGMuS277sCORHPQWnMVGXe5bHjHLdlfML8UTt/l0qSHLErT0vTATPG
- 56vQ==
+ bh=15v8jL3LCLtXh+M75p16dlGPvBB3CQJEUK4JwbtboS4=;
+ b=bf08L0VZcfvhlHwFZX/ytTYcvLkPX6K4HEC/OGeAHLu0Yxh3Jpm9Uv2Bq3dlMwnDRm
+ VP/pEHuRILdF05mB7XIrI+E1bcuM7EydkbpBH7OGnhDbhlIvyc3dQx82XdMMqdqiOrZp
+ 8O9Fs3ZMXD0Z7ROXM4lQtzA8lbX6Uk2xGFQeO8EyNCs4VitmUciyjs5d9b6pnKSggtEZ
+ uXQod0UdPAyFtc4CbwR3YsTBLX/zh837LjvRwtFfYvm2pjZADEECcvC9FgeAuhinhiQf
+ mSAqu1vTHQIx91cQFkMtBBu3DaLTtWDI+s6/sNyGl52tna79H6E3Yq/v7MfCuLHPq4kr
+ Qd9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745595030; x=1746199830;
+ d=1e100.net; s=20230601; t=1745595035; x=1746199835;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Jvs44ehSMS7vr5Ngp7xi3bJceK1a1pBELdrshQJvya0=;
- b=Kvv1OvaU+FxDJSswOX9XYKdEeKsI9Za+xUbf3DsrXQBkSkpRpwsl2Wsl2WF7RbOWFm
- VQ2NnsN15bjGwDBZQ9rXnjScit/qnWfoR4xbXw9Pt6828rDWg4S9eciEwA3+mXaDQdlE
- 8oQZJfcqwpjRFby/OTUH+eh8k860Vm0lRCIRiXd9gR+S7HL8xCkfRhc39y95ZoZyC9U8
- Oay1aVxIz5gWlw6Kom1yM5rp4kH77r9MsrXa2iS5po3BcPK8+7FaKtL0MToYzVovmP8x
- dFr4xttWTKSDY4jB7Otp9qYPGJkWAd56lqTwPTdZrKVY9ZPE0wUrWthFnnesm830TSE/
- AohQ==
-X-Gm-Message-State: AOJu0YzU8z83H70m+PoyQGqat2V+OW/nZh2W82GMXR7XR6F+4yGfo9PN
- n6cwF5/0GuLX0u3HhgTRfN09CUynuGdu1LbAPoB02xoteOyuAptc43luY8gXiKpbEkfiKU/A072
- Q
-X-Gm-Gg: ASbGncvOeOT5UChLKEzvBN92qiWld+kNXwsKcWeyNczKQp1yYBunX02pBKmBTXoGqqm
- 44OdtI9k7dDJqeBLSikt8W98ByuPrzkdQVnaKpqbwokKgLm5dAYek5W1hp90A1EvLDWP2kWtP00
- JSZPsoku1EFXfpCo3yVUHxqoCL+5QvSVz1hmZwy6hLtQ2/kqDXtw1SPG68sL1g5CT4fVvknd73q
- Ql8Mg/qjlG2vjSEWWNn+V9cLMssV5umk8aNZI0oxSnJtP2w4mptgzLhyRyixnOzoQaRE2tS1NIV
- xmfTbXMQUk7kfBugdGcgU3SuL/lLft2N5pdpEMP5JWpJPa4Mvc+eLUi0SHwl6ULrkAr3Z/GrZ0H
- SZXemDv7/WlnVl4Q=
-X-Google-Smtp-Source: AGHT+IH+Ngl9OZstdsZLuLUTczfqV5MXeo7jPlYtHmwfzO9QDr2VUhA/NNC0yPEUcSulmeAcOs39iw==
-X-Received: by 2002:a05:600c:3d8b:b0:440:6852:5b31 with SMTP id
- 5b1f17b1804b1-440a65d8109mr31817015e9.10.1745595030141; 
- Fri, 25 Apr 2025 08:30:30 -0700 (PDT)
+ bh=15v8jL3LCLtXh+M75p16dlGPvBB3CQJEUK4JwbtboS4=;
+ b=Tq01QitopuYvA6Py3h8PwYW5ezf8Kn1R0h4jHouz1QQUhRDlX+cfwTTnv+tIqV+MyH
+ UgzZglQ+PjqKIj3VNCQ1N/TRuphW4YYKH4vEsR4PkBuUko/i65oSal9GBjcdCrn9hot0
+ RDd9GEK+mf67/zSq7+dEueE50/k5n9837OcyiWOLykUzikvhJO1Iv9rD6QtmNaiQs8Uv
+ lLwJh9Xv6i4TWq77GYYInOVezAPm04hZTj9JBQp5HUVNppY/wtL76vLxu5M49iLG3RCI
+ 1yKKxXoFU6hROcwovkews2GUdYsdf8UVLdMvTkqQg4JsseVZVwgdcnyUc6n90iDnXYWO
+ 4OUA==
+X-Gm-Message-State: AOJu0YyW3C243pV54t8Cyokji7HcQl9Oa49EVrxcrPbc41WJC1LHQGO5
+ WDJbgut3DVlnjFD7XSlmwcXQwdQUDa5LEtfOhLRFYxeKEPCCDN34MhZ6uV0pVIAe2O9iF/xdfZk
+ l
+X-Gm-Gg: ASbGncuBy6BDUDeMV7hNXdW8hLWS2POVD6acur4Oa1yQpakcQx7jgiWuyEX8D/Lpu3J
+ Y+SSYpKEUrRlo15bgY0SjfKPWcKclBJx6P8prYXmkgLQfh8xFNMX1mz3hIrCFz/BbzDWXa/HTM9
+ Jxf1nOTx7swwh140e0/kS46jL80AP4k5LXaYSvNoczI2xZEaPOV47fu8kvyIfhS5Ofe48axZq/Z
+ Twj1YHwb2zSXqFuX5Z326Ml2l85fZHfpZ1LVqFWzv5RZy1nlA/g1ZRrgDScAAfY6cgvJ44Dezpi
+ VFwz8d7hV1gYpXjuewEgmBhKQZnKM4xxzTckfGQOI5myS5UWzlXlti26IoItmU3cqadFGraXtwT
+ seEj3eu1jS9bA/K8=
+X-Google-Smtp-Source: AGHT+IH8SQHrkH0J2Ql8/NM4ppcaYbEctWS7ChLrkvx/JqhaEMY2tl5PTdT1IwEx2OdXrjW/U6u0wQ==
+X-Received: by 2002:a05:600c:4691:b0:43b:c7f0:6173 with SMTP id
+ 5b1f17b1804b1-440a65cde53mr22838965e9.4.1745595035009; 
+ Fri, 25 Apr 2025 08:30:35 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-440a536a1ddsm28165085e9.30.2025.04.25.08.30.28
+ ffacd0b85a97d-3a073c8c968sm2636951f8f.8.2025.04.25.08.30.34
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 25 Apr 2025 08:30:29 -0700 (PDT)
+ Fri, 25 Apr 2025 08:30:34 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 21/58] target/arm: Handle AArch64 in TYPE_ARM_CPU gdb_arch_name
-Date: Fri, 25 Apr 2025 17:28:05 +0200
-Message-ID: <20250425152843.69638-22-philmd@linaro.org>
+Subject: [PULL 22/58] target/arm: Handle gdb_core_xml_file in TYPE_ARM_CPU
+Date: Fri, 25 Apr 2025 17:28:06 +0200
+Message-ID: <20250425152843.69638-23-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250425152843.69638-1-philmd@linaro.org>
 References: <20250425152843.69638-1-philmd@linaro.org>
@@ -102,81 +101,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Peter Maydell <peter.maydell@linaro.org>
 
 Instead of having the TYPE_AARCH64_CPU subclass set
-CPUClass::gdb_arch_name to a different function, make the
-TYPE_ARM_CPU implementation of the method handle AArch64.
-
-For the moment we make the "is this AArch64?" function test "is the
-CPU of TYPE_AARCH64_CPU?", so that this produces no behavioural
-change.  When we've moved all the gdbstub related methods across to
-the base class, we will be able to change this to be "does the CPU
-have the ARM_FEATURE_AARCH64 feature?".
+CPUClass:gdb_core_xml_file to a different value from that that
+TYPE_ARM_CPU uses, implement the gdb_get_core_xml_file method in the
+TYPE_ARM_CPU class to return either the AArch64 or AArch32 XML file
+name.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250317142819.900029-4-peter.maydell@linaro.org>
+Message-ID: <20250317142819.900029-5-peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/arm/internals.h | 6 ++++++
- target/arm/cpu.c       | 3 +++
- target/arm/cpu64.c     | 6 ------
- 3 files changed, 9 insertions(+), 6 deletions(-)
+ target/arm/cpu.c         | 16 +++++++++++++++-
+ target/arm/cpu64.c       |  1 -
+ target/arm/tcg/cpu-v7m.c |  1 -
+ 3 files changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index d24acdd672e..08f4bd16791 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -1826,6 +1826,12 @@ void aarch64_add_pauth_properties(Object *obj);
- void aarch64_add_sve_properties(Object *obj);
- void aarch64_add_sme_properties(Object *obj);
- 
-+/* Return true if the gdbstub is presenting an AArch64 CPU */
-+static inline bool arm_gdbstub_is_aarch64(ARMCPU *cpu)
-+{
-+    return object_dynamic_cast(OBJECT(cpu), TYPE_AARCH64_CPU);
-+}
-+
- /* Read the CONTROL register as the MRS instruction would. */
- uint32_t arm_v7m_mrs_control(CPUARMState *env, uint32_t secure);
- 
 diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 00577f97eb6..bed0e58f3c0 100644
+index bed0e58f3c0..5e951675c60 100644
 --- a/target/arm/cpu.c
 +++ b/target/arm/cpu.c
-@@ -2649,6 +2649,9 @@ static const gchar *arm_gdb_arch_name(CPUState *cs)
-     ARMCPU *cpu = ARM_CPU(cs);
-     CPUARMState *env = &cpu->env;
- 
-+    if (arm_gdbstub_is_aarch64(cpu)) {
-+        return "aarch64";
-+    }
-     if (arm_feature(env, ARM_FEATURE_IWMMXT)) {
-         return "iwmmxt";
-     }
-diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
-index eaf5705cdc2..fbb7e7b3d64 100644
---- a/target/arm/cpu64.c
-+++ b/target/arm/cpu64.c
-@@ -813,11 +813,6 @@ static void aarch64_cpu_finalizefn(Object *obj)
- {
+@@ -2658,6 +2658,20 @@ static const gchar *arm_gdb_arch_name(CPUState *cs)
+     return "arm";
  }
  
--static const gchar *aarch64_gdb_arch_name(CPUState *cs)
--{
--    return "aarch64";
--}
--
- static void aarch64_cpu_class_init(ObjectClass *oc, const void *data)
- {
-     CPUClass *cc = CPU_CLASS(oc);
-@@ -825,7 +820,6 @@ static void aarch64_cpu_class_init(ObjectClass *oc, const void *data)
++static const char *arm_gdb_get_core_xml_file(CPUState *cs)
++{
++    ARMCPU *cpu = ARM_CPU(cs);
++    CPUARMState *env = &cpu->env;
++
++    if (arm_gdbstub_is_aarch64(cpu)) {
++        return "aarch64-core.xml";
++    }
++    if (arm_feature(env, ARM_FEATURE_M)) {
++        return "arm-m-profile.xml";
++    }
++    return "arm-core.xml";
++}
++
+ #ifndef CONFIG_USER_ONLY
+ #include "hw/core/sysemu-cpu-ops.h"
+ 
+@@ -2727,6 +2741,7 @@ static void arm_cpu_class_init(ObjectClass *oc, const void *data)
+     cc->sysemu_ops = &arm_sysemu_ops;
+ #endif
+     cc->gdb_arch_name = arm_gdb_arch_name;
++    cc->gdb_get_core_xml_file = arm_gdb_get_core_xml_file;
+     cc->gdb_stop_before_watchpoint = true;
+     cc->disas_set_info = arm_disas_set_info;
+ 
+@@ -2749,7 +2764,6 @@ static void cpu_register_class_init(ObjectClass *oc, const void *data)
+     CPUClass *cc = CPU_CLASS(acc);
+ 
+     acc->info = data;
+-    cc->gdb_core_xml_file = "arm-core.xml";
+     if (acc->info->deprecation_note) {
+         cc->deprecation_note = acc->info->deprecation_note;
+     }
+diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
+index fbb7e7b3d64..5135ef63cb2 100644
+--- a/target/arm/cpu64.c
++++ b/target/arm/cpu64.c
+@@ -819,7 +819,6 @@ static void aarch64_cpu_class_init(ObjectClass *oc, const void *data)
+ 
      cc->gdb_read_register = aarch64_cpu_gdb_read_register;
      cc->gdb_write_register = aarch64_cpu_gdb_write_register;
-     cc->gdb_core_xml_file = "aarch64-core.xml";
--    cc->gdb_arch_name = aarch64_gdb_arch_name;
+-    cc->gdb_core_xml_file = "aarch64-core.xml";
  
      object_class_property_add_bool(oc, "aarch64", aarch64_cpu_get_aarch64,
                                     aarch64_cpu_set_aarch64);
+diff --git a/target/arm/tcg/cpu-v7m.c b/target/arm/tcg/cpu-v7m.c
+index 7426aac0dc4..b34b6578574 100644
+--- a/target/arm/tcg/cpu-v7m.c
++++ b/target/arm/tcg/cpu-v7m.c
+@@ -266,7 +266,6 @@ static void arm_v7m_class_init(ObjectClass *oc, const void *data)
+ 
+     acc->info = data;
+     cc->tcg_ops = &arm_v7m_tcg_ops;
+-    cc->gdb_core_xml_file = "arm-m-profile.xml";
+ }
+ 
+ static const ARMCPUInfo arm_v7m_cpus[] = {
 -- 
 2.47.1
 
