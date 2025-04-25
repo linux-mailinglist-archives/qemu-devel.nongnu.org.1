@@ -2,54 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 284FAA9BC05
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 02:56:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 069D2A9BC0B
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 02:57:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u87ME-00070u-K3; Thu, 24 Apr 2025 20:56:00 -0400
+	id 1u87MW-0007hj-F1; Thu, 24 Apr 2025 20:56:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1u87Lh-0006zc-Vh
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 20:55:26 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1u87Ll-00070c-Lu
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 20:55:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1u87Le-0000nY-Kd
- for qemu-devel@nongnu.org; Thu, 24 Apr 2025 20:55:25 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1u87Lj-0000oP-T1
+ for qemu-devel@nongnu.org; Thu, 24 Apr 2025 20:55:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745542522;
+ s=mimecast20190719; t=1745542526;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NRLd7boJqvVSVN51xZPvCh0dSNAo4MXyysFZo2lzQio=;
- b=izmQf+0y39bwY6HEx2lE5R1D/g1h18uysNRczSTnbi/EIeV3WLXMMTZMYJrPJGtkWXK4/u
- 0Do7yGeyLWhC01o4phM/GDGwlkndnCI897wSucEY0TVXGZ/27Llsd4EdaM4OgaXyVAdVEN
- Lskb3wyo0WmLXp1M75+inhQ0CWlaxE8=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=4wAKS4SfzEqvGnIXI4PNlsxK1Beih4ozBtm96dyoYU4=;
+ b=biWMj62Rz12AGX/5Syy0SJynpjMDJ2RBsxDK9RnY4dMLMup+nuqgFID5IUa7cFwMK2cViG
+ pvbQeGu8H90dXLeCqmehv3+I7SG5ajUo6gjL08dYfpX8/ZZhwiNR80lCygn4xUEbbBXeOp
+ rujOF2Rs3bVAq2hYgaRYbxdIsDl1HEw=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-12-K94r-eUSPFSJQkfkcq1CFg-1; Thu,
- 24 Apr 2025 20:55:19 -0400
-X-MC-Unique: K94r-eUSPFSJQkfkcq1CFg-1
-X-Mimecast-MFC-AGG-ID: K94r-eUSPFSJQkfkcq1CFg_1745542518
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-640-TQbrQqJ6PPaX_w6YMH_ybw-1; Thu,
+ 24 Apr 2025 20:55:22 -0400
+X-MC-Unique: TQbrQqJ6PPaX_w6YMH_ybw-1
+X-Mimecast-MFC-AGG-ID: TQbrQqJ6PPaX_w6YMH_ybw_1745542521
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CF4E21956089; Fri, 25 Apr 2025 00:55:18 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 802F71800264; Fri, 25 Apr 2025 00:55:21 +0000 (UTC)
 Received: from green.redhat.com (unknown [10.2.16.59])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 042CE1800378; Fri, 25 Apr 2025 00:55:16 +0000 (UTC)
+ id 270A31800374; Fri, 25 Apr 2025 00:55:18 +0000 (UTC)
 From: Eric Blake <eblake@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, vsementsov@yandex-team.ru, stefanha@redhat.com,
+ Markus Armbruster <armbru@redhat.com>, John Snow <jsnow@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
-Subject: [PATCH v3 10/11] tests: Add iotest mirror-sparse for recent patches
-Date: Thu, 24 Apr 2025 19:52:10 -0500
-Message-ID: <20250425005439.2252467-23-eblake@redhat.com>
+Subject: [PATCH v3 11/11] mirror: Allow QMP override to declare target already
+ zero
+Date: Thu, 24 Apr 2025 19:52:11 -0500
+Message-ID: <20250425005439.2252467-24-eblake@redhat.com>
 In-Reply-To: <20250425005439.2252467-13-eblake@redhat.com>
 References: <20250425005439.2252467-13-eblake@redhat.com>
 MIME-Version: 1.0
@@ -65,7 +67,7 @@ X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.84,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,537 +83,233 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Prove that blockdev-mirror can now result in sparse raw destination
-files, regardless of whether the source is raw or qcow2.  By making
-this a separate test, it was possible to test effects of individual
-patches for the various pieces that all have to work together for a
-sparse mirror to be successful.
-
-Note that ./check -file produces different job lengths than ./check
--qcow2 (the test uses a filter to normalize); that's because when
-deciding how much of the image to be mirrored, the code looks at how
-much of the source image was allocated (for qcow2, this is only the
-written clusters; for raw, it is the entire file).  But the important
-part is that the destination file ends up smaller than 3M, rather than
-the 20M it used to be before this patch series.
+QEMU's attempts to learn whether a destination file starts life with
+all zero contents are just a heuristic.  There may be cases where the
+caller is aware of information that QEMU cannot learn quickly, in
+which case telling QEMU what to assume about the destination can make
+the mirror operation faster.  Given our existing example of "qemu-img
+convert --target-is-zero", it is time to expose this override in QMP
+for blockdev-mirror as well.
 
 Signed-off-by: Eric Blake <eblake@redhat.com>
-
+Acked-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
+ qapi/block-core.json                   |  8 +++++++-
+ include/block/block_int-global-state.h |  3 ++-
+ block/mirror.c                         | 23 +++++++++++++++--------
+ blockdev.c                             | 18 +++++++++++-------
+ tests/unit/test-block-iothread.c       |  2 +-
+ 5 files changed, 36 insertions(+), 18 deletions(-)
 
-Improve test with more cases
----
- tests/qemu-iotests/tests/mirror-sparse     | 128 ++++++++
- tests/qemu-iotests/tests/mirror-sparse.out | 365 +++++++++++++++++++++
- 2 files changed, 493 insertions(+)
- create mode 100755 tests/qemu-iotests/tests/mirror-sparse
- create mode 100644 tests/qemu-iotests/tests/mirror-sparse.out
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index b1937780e19..7f70ec6d3cb 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -2538,6 +2538,11 @@
+ #     disappear from the query list without user intervention.
+ #     Defaults to true.  (Since 3.1)
+ #
++# @target-is-zero: Assume the destination reads as all zeroes before
++#     the mirror started.  Setting this to true can speed up the
++#     mirror.  Setting this to true when the destination is not
++#     actually all zero can corrupt the destination.  (Since 10.1)
++#
+ # Since: 2.6
+ #
+ # .. qmp-example::
+@@ -2557,7 +2562,8 @@
+             '*on-target-error': 'BlockdevOnError',
+             '*filter-node-name': 'str',
+             '*copy-mode': 'MirrorCopyMode',
+-            '*auto-finalize': 'bool', '*auto-dismiss': 'bool' },
++            '*auto-finalize': 'bool', '*auto-dismiss': 'bool',
++            '*target-is-zero': 'bool'},
+   'allow-preconfig': true }
 
-diff --git a/tests/qemu-iotests/tests/mirror-sparse b/tests/qemu-iotests/tests/mirror-sparse
-new file mode 100755
-index 00000000000..33cc7a1e5f3
---- /dev/null
-+++ b/tests/qemu-iotests/tests/mirror-sparse
-@@ -0,0 +1,128 @@
-+#!/usr/bin/env bash
-+# group: rw auto quick
-+#
-+# Test blockdev-mirror with raw sparse destination
-+#
-+# Copyright (C) 2025 Red Hat, Inc.
-+#
-+# This program is free software; you can redistribute it and/or modify
-+# it under the terms of the GNU General Public License as published by
-+# the Free Software Foundation; either version 2 of the License, or
-+# (at your option) any later version.
-+#
-+# This program is distributed in the hope that it will be useful,
-+# but WITHOUT ANY WARRANTY; without even the implied warranty of
-+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+# GNU General Public License for more details.
-+#
-+# You should have received a copy of the GNU General Public License
-+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+#
-+
-+seq="$(basename $0)"
-+echo "QA output created by $seq"
-+
-+status=1 # failure is the default!
-+
-+_cleanup()
-+{
-+    _cleanup_test_img
-+    _cleanup_qemu
-+}
-+trap "_cleanup; exit \$status" 0 1 2 3 15
-+
-+# get standard environment, filters and checks
-+cd ..
-+. ./common.rc
-+. ./common.filter
-+. ./common.qemu
-+
-+_supported_fmt qcow2 raw  # Format of the source. dst is always raw file
-+_supported_proto file
-+_supported_os Linux
-+
-+filter_len() {
-+    sed -e 's/"len": [0-9]*/"len": LEN/g' \
-+        -e 's/"offset": [0-9]*/"offset": OFFSET/g'
-+}
-+
-+echo
-+echo "=== Initial image setup ==="
-+echo
-+
-+TEST_IMG="$TEST_IMG.base" _make_test_img 20M
-+$QEMU_IO -c 'w 8M 2M' -f $IMGFMT "$TEST_IMG.base" | _filter_qemu_io
-+
-+_launch_qemu -machine q35 \
-+    -blockdev '{"driver":"file", "cache":{"direct":true, "no-flush":false},
-+                "filename":"'"$TEST_IMG.base"'", "node-name":"src-file"}' \
-+    -blockdev '{"driver":"'$IMGFMT'", "node-name":"src", "file":"src-file"}'
-+h1=$QEMU_HANDLE
-+_send_qemu_cmd $h1 '{"execute": "qmp_capabilities"}' 'return'
-+
-+# Check several combinations; most should result in a sparse destination;
-+# the destination should only be fully allocated if pre-allocated
-+# and not punching holes due to detect-zeroes
-+# do_test creation discard zeroes result
-+do_test() {
-+    creation=$1
-+    discard=$2
-+    zeroes=$3
-+    expected=$4
-+
-+echo
-+echo "=== Testing creation=$creation discard=$discard zeroes=$zeroes ==="
-+echo
-+
-+rm -f $TEST_IMG
-+if test $creation = external; then
-+    truncate --size=20M $TEST_IMG
-+else
-+    _send_qemu_cmd $h1 '{"execute": "blockdev-create", "arguments":
-+          {"options": {"driver":"file", "filename":"'$TEST_IMG'",
-+            "size":'$((20*1024*1024))', "preallocation":"'$creation'"},
-+           "job-id":"job1"}}' 'concluded'
-+    _send_qemu_cmd $h1 '{"execute": "job-dismiss", "arguments":
-+          {"id": "job1"}}' 'return'
-+fi
-+_send_qemu_cmd $h1 '{"execute": "blockdev-add", "arguments":
-+                     {"node-name": "dst", "driver":"file",
-+                      "filename":"'$TEST_IMG'", "aio":"threads",
-+                      "auto-read-only":true, "discard":"'$discard'",
-+                      "detect-zeroes":"'$zeroes'"}}' 'return'
-+_send_qemu_cmd $h1 '{"execute":"blockdev-mirror", "arguments":
-+                     {"sync":"full", "device":"src", "target":"dst",
-+                      "job-id":"job2"}}' 'return'
-+_timed_wait_for $h1 '"ready"'
-+_send_qemu_cmd $h1 '{"execute": "job-complete", "arguments":
-+               {"id":"job2"}}' 'return' | filter_len
-+_send_qemu_cmd $h1 '{"execute": "blockdev-del", "arguments":
-+                {"node-name": "dst"}}' 'return' | filter_len
-+$QEMU_IMG compare -U -f $IMGFMT -F raw $TEST_IMG.base $TEST_IMG
-+result=$(disk_usage $TEST_IMG)
-+if test $result -lt $((3*1024*1024)); then
-+    actual=sparse
-+elif test $result = $((20*1024*1024)); then
-+    actual=full
-+else
-+    actual=unknown
-+fi
-+echo "Destination is $actual; expected $expected"
-+}
-+
-+do_test external ignore off sparse
-+do_test external unmap off sparse
-+do_test external unmap unmap sparse
-+do_test off ignore off sparse
-+do_test off unmap off sparse
-+do_test off unmap unmap sparse
-+do_test full ignore off full
-+do_test full unmap off sparse
-+do_test full unmap unmap sparse
-+
-+_send_qemu_cmd $h1 '{"execute":"quit"}' ''
-+
-+# success, all done
-+echo '*** done'
-+rm -f $seq.full
-+status=0
-diff --git a/tests/qemu-iotests/tests/mirror-sparse.out b/tests/qemu-iotests/tests/mirror-sparse.out
-new file mode 100644
-index 00000000000..2103b891c3f
---- /dev/null
-+++ b/tests/qemu-iotests/tests/mirror-sparse.out
-@@ -0,0 +1,365 @@
-+QA output created by mirror-sparse
-+
-+=== Initial image setup ===
-+
-+Formatting 'TEST_DIR/t.IMGFMT.base', fmt=IMGFMT size=20971520
-+wrote 2097152/2097152 bytes at offset 8388608
-+2 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+{"execute": "qmp_capabilities"}
-+{"return": {}}
-+
-+=== Testing creation=external discard=ignore zeroes=off ===
-+
-+{"execute": "blockdev-add", "arguments":
-+                     {"node-name": "dst", "driver":"file",
-+                      "filename":"TEST_DIR/t.IMGFMT", "aio":"threads",
-+                      "auto-read-only":true, "discard":"ignore",
-+                      "detect-zeroes":"off"}}
-+{"return": {}}
-+{"execute":"blockdev-mirror", "arguments":
-+                     {"sync":"full", "device":"src", "target":"dst",
-+                      "job-id":"job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "created", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "running", "id": "job2"}}
-+{"return": {}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "job2"}}
-+{"execute": "job-complete", "arguments":
-+               {"id":"job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_READY", "data": {"device": "job2", "len": LEN, "offset": OFFSET, "speed": 0, "type": "mirror"}}
-+{"return": {}}
-+{"execute": "blockdev-del", "arguments":
-+                {"node-name": "dst"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "waiting", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "pending", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_COMPLETED", "data": {"device": "job2", "len": LEN, "offset": OFFSET, "speed": 0, "type": "mirror"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "concluded", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "null", "id": "job2"}}
-+{"return": {}}
-+Images are identical.
-+Destination is sparse; expected sparse
-+
-+=== Testing creation=external discard=unmap zeroes=off ===
-+
-+{"execute": "blockdev-add", "arguments":
-+                     {"node-name": "dst", "driver":"file",
-+                      "filename":"TEST_DIR/t.IMGFMT", "aio":"threads",
-+                      "auto-read-only":true, "discard":"unmap",
-+                      "detect-zeroes":"off"}}
-+{"return": {}}
-+{"execute":"blockdev-mirror", "arguments":
-+                     {"sync":"full", "device":"src", "target":"dst",
-+                      "job-id":"job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "created", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "running", "id": "job2"}}
-+{"return": {}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "job2"}}
-+{"execute": "job-complete", "arguments":
-+               {"id":"job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_READY", "data": {"device": "job2", "len": LEN, "offset": OFFSET, "speed": 0, "type": "mirror"}}
-+{"return": {}}
-+{"execute": "blockdev-del", "arguments":
-+                {"node-name": "dst"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "waiting", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "pending", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_COMPLETED", "data": {"device": "job2", "len": LEN, "offset": OFFSET, "speed": 0, "type": "mirror"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "concluded", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "null", "id": "job2"}}
-+{"return": {}}
-+Images are identical.
-+Destination is sparse; expected sparse
-+
-+=== Testing creation=external discard=unmap zeroes=unmap ===
-+
-+{"execute": "blockdev-add", "arguments":
-+                     {"node-name": "dst", "driver":"file",
-+                      "filename":"TEST_DIR/t.IMGFMT", "aio":"threads",
-+                      "auto-read-only":true, "discard":"unmap",
-+                      "detect-zeroes":"unmap"}}
-+{"return": {}}
-+{"execute":"blockdev-mirror", "arguments":
-+                     {"sync":"full", "device":"src", "target":"dst",
-+                      "job-id":"job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "created", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "running", "id": "job2"}}
-+{"return": {}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "job2"}}
-+{"execute": "job-complete", "arguments":
-+               {"id":"job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_READY", "data": {"device": "job2", "len": LEN, "offset": OFFSET, "speed": 0, "type": "mirror"}}
-+{"return": {}}
-+{"execute": "blockdev-del", "arguments":
-+                {"node-name": "dst"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "waiting", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "pending", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_COMPLETED", "data": {"device": "job2", "len": LEN, "offset": OFFSET, "speed": 0, "type": "mirror"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "concluded", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "null", "id": "job2"}}
-+{"return": {}}
-+Images are identical.
-+Destination is sparse; expected sparse
-+
-+=== Testing creation=off discard=ignore zeroes=off ===
-+
-+{"execute": "blockdev-create", "arguments":
-+          {"options": {"driver":"file", "filename":"TEST_DIR/t.IMGFMT",
-+            "size":20971520, "preallocation":"off"},
-+           "job-id":"job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "created", "id": "job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "running", "id": "job1"}}
-+{"return": {}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "waiting", "id": "job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "pending", "id": "job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "concluded", "id": "job1"}}
-+{"execute": "job-dismiss", "arguments":
-+          {"id": "job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "null", "id": "job1"}}
-+{"return": {}}
-+{"execute": "blockdev-add", "arguments":
-+                     {"node-name": "dst", "driver":"file",
-+                      "filename":"TEST_DIR/t.IMGFMT", "aio":"threads",
-+                      "auto-read-only":true, "discard":"ignore",
-+                      "detect-zeroes":"off"}}
-+{"return": {}}
-+{"execute":"blockdev-mirror", "arguments":
-+                     {"sync":"full", "device":"src", "target":"dst",
-+                      "job-id":"job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "created", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "running", "id": "job2"}}
-+{"return": {}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "job2"}}
-+{"execute": "job-complete", "arguments":
-+               {"id":"job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_READY", "data": {"device": "job2", "len": LEN, "offset": OFFSET, "speed": 0, "type": "mirror"}}
-+{"return": {}}
-+{"execute": "blockdev-del", "arguments":
-+                {"node-name": "dst"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "waiting", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "pending", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_COMPLETED", "data": {"device": "job2", "len": LEN, "offset": OFFSET, "speed": 0, "type": "mirror"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "concluded", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "null", "id": "job2"}}
-+{"return": {}}
-+Images are identical.
-+Destination is sparse; expected sparse
-+
-+=== Testing creation=off discard=unmap zeroes=off ===
-+
-+{"execute": "blockdev-create", "arguments":
-+          {"options": {"driver":"file", "filename":"TEST_DIR/t.IMGFMT",
-+            "size":20971520, "preallocation":"off"},
-+           "job-id":"job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "created", "id": "job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "running", "id": "job1"}}
-+{"return": {}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "waiting", "id": "job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "pending", "id": "job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "concluded", "id": "job1"}}
-+{"execute": "job-dismiss", "arguments":
-+          {"id": "job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "null", "id": "job1"}}
-+{"return": {}}
-+{"execute": "blockdev-add", "arguments":
-+                     {"node-name": "dst", "driver":"file",
-+                      "filename":"TEST_DIR/t.IMGFMT", "aio":"threads",
-+                      "auto-read-only":true, "discard":"unmap",
-+                      "detect-zeroes":"off"}}
-+{"return": {}}
-+{"execute":"blockdev-mirror", "arguments":
-+                     {"sync":"full", "device":"src", "target":"dst",
-+                      "job-id":"job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "created", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "running", "id": "job2"}}
-+{"return": {}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "job2"}}
-+{"execute": "job-complete", "arguments":
-+               {"id":"job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_READY", "data": {"device": "job2", "len": LEN, "offset": OFFSET, "speed": 0, "type": "mirror"}}
-+{"return": {}}
-+{"execute": "blockdev-del", "arguments":
-+                {"node-name": "dst"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "waiting", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "pending", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_COMPLETED", "data": {"device": "job2", "len": LEN, "offset": OFFSET, "speed": 0, "type": "mirror"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "concluded", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "null", "id": "job2"}}
-+{"return": {}}
-+Images are identical.
-+Destination is sparse; expected sparse
-+
-+=== Testing creation=off discard=unmap zeroes=unmap ===
-+
-+{"execute": "blockdev-create", "arguments":
-+          {"options": {"driver":"file", "filename":"TEST_DIR/t.IMGFMT",
-+            "size":20971520, "preallocation":"off"},
-+           "job-id":"job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "created", "id": "job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "running", "id": "job1"}}
-+{"return": {}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "waiting", "id": "job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "pending", "id": "job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "concluded", "id": "job1"}}
-+{"execute": "job-dismiss", "arguments":
-+          {"id": "job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "null", "id": "job1"}}
-+{"return": {}}
-+{"execute": "blockdev-add", "arguments":
-+                     {"node-name": "dst", "driver":"file",
-+                      "filename":"TEST_DIR/t.IMGFMT", "aio":"threads",
-+                      "auto-read-only":true, "discard":"unmap",
-+                      "detect-zeroes":"unmap"}}
-+{"return": {}}
-+{"execute":"blockdev-mirror", "arguments":
-+                     {"sync":"full", "device":"src", "target":"dst",
-+                      "job-id":"job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "created", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "running", "id": "job2"}}
-+{"return": {}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "job2"}}
-+{"execute": "job-complete", "arguments":
-+               {"id":"job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_READY", "data": {"device": "job2", "len": LEN, "offset": OFFSET, "speed": 0, "type": "mirror"}}
-+{"return": {}}
-+{"execute": "blockdev-del", "arguments":
-+                {"node-name": "dst"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "waiting", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "pending", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_COMPLETED", "data": {"device": "job2", "len": LEN, "offset": OFFSET, "speed": 0, "type": "mirror"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "concluded", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "null", "id": "job2"}}
-+{"return": {}}
-+Images are identical.
-+Destination is sparse; expected sparse
-+
-+=== Testing creation=full discard=ignore zeroes=off ===
-+
-+{"execute": "blockdev-create", "arguments":
-+          {"options": {"driver":"file", "filename":"TEST_DIR/t.IMGFMT",
-+            "size":20971520, "preallocation":"full"},
-+           "job-id":"job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "created", "id": "job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "running", "id": "job1"}}
-+{"return": {}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "waiting", "id": "job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "pending", "id": "job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "concluded", "id": "job1"}}
-+{"execute": "job-dismiss", "arguments":
-+          {"id": "job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "null", "id": "job1"}}
-+{"return": {}}
-+{"execute": "blockdev-add", "arguments":
-+                     {"node-name": "dst", "driver":"file",
-+                      "filename":"TEST_DIR/t.IMGFMT", "aio":"threads",
-+                      "auto-read-only":true, "discard":"ignore",
-+                      "detect-zeroes":"off"}}
-+{"return": {}}
-+{"execute":"blockdev-mirror", "arguments":
-+                     {"sync":"full", "device":"src", "target":"dst",
-+                      "job-id":"job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "created", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "running", "id": "job2"}}
-+{"return": {}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "job2"}}
-+{"execute": "job-complete", "arguments":
-+               {"id":"job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_READY", "data": {"device": "job2", "len": LEN, "offset": OFFSET, "speed": 0, "type": "mirror"}}
-+{"return": {}}
-+{"execute": "blockdev-del", "arguments":
-+                {"node-name": "dst"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "waiting", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "pending", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_COMPLETED", "data": {"device": "job2", "len": LEN, "offset": OFFSET, "speed": 0, "type": "mirror"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "concluded", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "null", "id": "job2"}}
-+{"return": {}}
-+Images are identical.
-+Destination is full; expected full
-+
-+=== Testing creation=full discard=unmap zeroes=off ===
-+
-+{"execute": "blockdev-create", "arguments":
-+          {"options": {"driver":"file", "filename":"TEST_DIR/t.IMGFMT",
-+            "size":20971520, "preallocation":"full"},
-+           "job-id":"job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "created", "id": "job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "running", "id": "job1"}}
-+{"return": {}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "waiting", "id": "job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "pending", "id": "job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "concluded", "id": "job1"}}
-+{"execute": "job-dismiss", "arguments":
-+          {"id": "job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "null", "id": "job1"}}
-+{"return": {}}
-+{"execute": "blockdev-add", "arguments":
-+                     {"node-name": "dst", "driver":"file",
-+                      "filename":"TEST_DIR/t.IMGFMT", "aio":"threads",
-+                      "auto-read-only":true, "discard":"unmap",
-+                      "detect-zeroes":"off"}}
-+{"return": {}}
-+{"execute":"blockdev-mirror", "arguments":
-+                     {"sync":"full", "device":"src", "target":"dst",
-+                      "job-id":"job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "created", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "running", "id": "job2"}}
-+{"return": {}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "job2"}}
-+{"execute": "job-complete", "arguments":
-+               {"id":"job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_READY", "data": {"device": "job2", "len": LEN, "offset": OFFSET, "speed": 0, "type": "mirror"}}
-+{"return": {}}
-+{"execute": "blockdev-del", "arguments":
-+                {"node-name": "dst"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "waiting", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "pending", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_COMPLETED", "data": {"device": "job2", "len": LEN, "offset": OFFSET, "speed": 0, "type": "mirror"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "concluded", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "null", "id": "job2"}}
-+{"return": {}}
-+Images are identical.
-+Destination is sparse; expected sparse
-+
-+=== Testing creation=full discard=unmap zeroes=unmap ===
-+
-+{"execute": "blockdev-create", "arguments":
-+          {"options": {"driver":"file", "filename":"TEST_DIR/t.IMGFMT",
-+            "size":20971520, "preallocation":"full"},
-+           "job-id":"job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "created", "id": "job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "running", "id": "job1"}}
-+{"return": {}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "waiting", "id": "job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "pending", "id": "job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "concluded", "id": "job1"}}
-+{"execute": "job-dismiss", "arguments":
-+          {"id": "job1"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "null", "id": "job1"}}
-+{"return": {}}
-+{"execute": "blockdev-add", "arguments":
-+                     {"node-name": "dst", "driver":"file",
-+                      "filename":"TEST_DIR/t.IMGFMT", "aio":"threads",
-+                      "auto-read-only":true, "discard":"unmap",
-+                      "detect-zeroes":"unmap"}}
-+{"return": {}}
-+{"execute":"blockdev-mirror", "arguments":
-+                     {"sync":"full", "device":"src", "target":"dst",
-+                      "job-id":"job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "created", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "running", "id": "job2"}}
-+{"return": {}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "job2"}}
-+{"execute": "job-complete", "arguments":
-+               {"id":"job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_READY", "data": {"device": "job2", "len": LEN, "offset": OFFSET, "speed": 0, "type": "mirror"}}
-+{"return": {}}
-+{"execute": "blockdev-del", "arguments":
-+                {"node-name": "dst"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "waiting", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "pending", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "BLOCK_JOB_COMPLETED", "data": {"device": "job2", "len": LEN, "offset": OFFSET, "speed": 0, "type": "mirror"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "concluded", "id": "job2"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "null", "id": "job2"}}
-+{"return": {}}
-+Images are identical.
-+Destination is sparse; expected sparse
-+{"execute":"quit"}
-+*** done
+ ##
+diff --git a/include/block/block_int-global-state.h b/include/block/block_int-global-state.h
+index eb2d92a2261..a2b96f90d44 100644
+--- a/include/block/block_int-global-state.h
++++ b/include/block/block_int-global-state.h
+@@ -140,6 +140,7 @@ BlockJob *commit_active_start(const char *job_id, BlockDriverState *bs,
+  * @mode: Whether to collapse all images in the chain to the target.
+  * @backing_mode: How to establish the target's backing chain after completion.
+  * @zero_target: Whether the target should be explicitly zero-initialized
++ * @target_is_zero: Whether the target already is zero-initialized
+  * @on_source_error: The action to take upon error reading from the source.
+  * @on_target_error: The action to take upon error writing to the target.
+  * @unmap: Whether to unmap target where source sectors only contain zeroes.
+@@ -159,7 +160,7 @@ void mirror_start(const char *job_id, BlockDriverState *bs,
+                   int creation_flags, int64_t speed,
+                   uint32_t granularity, int64_t buf_size,
+                   MirrorSyncMode mode, BlockMirrorBackingMode backing_mode,
+-                  bool zero_target,
++                  bool zero_target, bool target_is_zero,
+                   BlockdevOnError on_source_error,
+                   BlockdevOnError on_target_error,
+                   bool unmap, const char *filter_node_name,
+diff --git a/block/mirror.c b/block/mirror.c
+index 69a02dfc2b7..69467db0f79 100644
+--- a/block/mirror.c
++++ b/block/mirror.c
+@@ -55,6 +55,8 @@ typedef struct MirrorBlockJob {
+     BlockMirrorBackingMode backing_mode;
+     /* Whether the target image requires explicit zero-initialization */
+     bool zero_target;
++    /* Whether the target should be assumed to be already zero initialized */
++    bool target_is_zero;
+     /*
+      * To be accesssed with atomics. Written only under the BQL (required by the
+      * current implementation of mirror_change()).
+@@ -892,9 +894,13 @@ static int coroutine_fn GRAPH_UNLOCKED mirror_dirty_init(MirrorBlockJob *s)
+         int64_t bitmap_length = DIV_ROUND_UP(s->bdev_length, s->granularity);
+
+         offset = 0;
+-        bdrv_graph_co_rdlock();
+-        ret = bdrv_co_is_all_zeroes(target_bs);
+-        bdrv_graph_co_rdunlock();
++        if (s->target_is_zero) {
++            ret = 1;
++        } else {
++            bdrv_graph_co_rdlock();
++            ret = bdrv_co_is_all_zeroes(target_bs);
++            bdrv_graph_co_rdunlock();
++        }
+         if (ret < 0) {
+             return ret;
+         }
+@@ -1799,7 +1805,7 @@ static BlockJob *mirror_start_job(
+                              const char *replaces, int64_t speed,
+                              uint32_t granularity, int64_t buf_size,
+                              BlockMirrorBackingMode backing_mode,
+-                             bool zero_target,
++                             bool zero_target, bool target_is_zero,
+                              BlockdevOnError on_source_error,
+                              BlockdevOnError on_target_error,
+                              bool unmap,
+@@ -1968,6 +1974,7 @@ static BlockJob *mirror_start_job(
+     s->is_none_mode = is_none_mode;
+     s->backing_mode = backing_mode;
+     s->zero_target = zero_target;
++    s->target_is_zero = target_is_zero;
+     qatomic_set(&s->copy_mode, copy_mode);
+     s->base = base;
+     s->base_overlay = bdrv_find_overlay(bs, base);
+@@ -2096,7 +2103,7 @@ void mirror_start(const char *job_id, BlockDriverState *bs,
+                   int creation_flags, int64_t speed,
+                   uint32_t granularity, int64_t buf_size,
+                   MirrorSyncMode mode, BlockMirrorBackingMode backing_mode,
+-                  bool zero_target,
++                  bool zero_target, bool target_is_zero,
+                   BlockdevOnError on_source_error,
+                   BlockdevOnError on_target_error,
+                   bool unmap, const char *filter_node_name,
+@@ -2121,8 +2128,8 @@ void mirror_start(const char *job_id, BlockDriverState *bs,
+
+     mirror_start_job(job_id, bs, creation_flags, target, replaces,
+                      speed, granularity, buf_size, backing_mode, zero_target,
+-                     on_source_error, on_target_error, unmap, NULL, NULL,
+-                     &mirror_job_driver, is_none_mode, base, false,
++                     target_is_zero, on_source_error, on_target_error, unmap,
++                     NULL, NULL, &mirror_job_driver, is_none_mode, base, false,
+                      filter_node_name, true, copy_mode, false, errp);
+ }
+
+@@ -2148,7 +2155,7 @@ BlockJob *commit_active_start(const char *job_id, BlockDriverState *bs,
+
+     job = mirror_start_job(
+                      job_id, bs, creation_flags, base, NULL, speed, 0, 0,
+-                     MIRROR_LEAVE_BACKING_CHAIN, false,
++                     MIRROR_LEAVE_BACKING_CHAIN, false, false,
+                      on_error, on_error, true, cb, opaque,
+                      &commit_active_job_driver, false, base, auto_complete,
+                      filter_node_name, false, MIRROR_COPY_MODE_BACKGROUND,
+diff --git a/blockdev.c b/blockdev.c
+index 1d1f27cfff6..6f5373991c8 100644
+--- a/blockdev.c
++++ b/blockdev.c
+@@ -2798,7 +2798,7 @@ static void blockdev_mirror_common(const char *job_id, BlockDriverState *bs,
+                                    const char *replaces,
+                                    enum MirrorSyncMode sync,
+                                    BlockMirrorBackingMode backing_mode,
+-                                   bool zero_target,
++                                   bool zero_target, bool target_is_zero,
+                                    bool has_speed, int64_t speed,
+                                    bool has_granularity, uint32_t granularity,
+                                    bool has_buf_size, int64_t buf_size,
+@@ -2909,11 +2909,10 @@ static void blockdev_mirror_common(const char *job_id, BlockDriverState *bs,
+     /* pass the node name to replace to mirror start since it's loose coupling
+      * and will allow to check whether the node still exist at mirror completion
+      */
+-    mirror_start(job_id, bs, target,
+-                 replaces, job_flags,
++    mirror_start(job_id, bs, target, replaces, job_flags,
+                  speed, granularity, buf_size, sync, backing_mode, zero_target,
+-                 on_source_error, on_target_error, unmap, filter_node_name,
+-                 copy_mode, errp);
++                 target_is_zero, on_source_error, on_target_error, unmap,
++                 filter_node_name, copy_mode, errp);
+ }
+
+ void qmp_drive_mirror(DriveMirror *arg, Error **errp)
+@@ -2928,6 +2927,7 @@ void qmp_drive_mirror(DriveMirror *arg, Error **errp)
+     int64_t size;
+     const char *format = arg->format;
+     bool zero_target;
++    bool target_is_zero;
+     int ret;
+
+     bs = qmp_get_root_bs(arg->device, errp);
+@@ -3044,6 +3044,8 @@ void qmp_drive_mirror(DriveMirror *arg, Error **errp)
+     zero_target = (arg->sync == MIRROR_SYNC_MODE_FULL &&
+                    (arg->mode == NEW_IMAGE_MODE_EXISTING ||
+                     !bdrv_has_zero_init(target_bs)));
++    target_is_zero = (arg->mode == NEW_IMAGE_MODE_ABSOLUTE_PATHS &&
++                      bdrv_has_zero_init(target_bs));
+     bdrv_graph_rdunlock_main_loop();
+
+
+@@ -3055,7 +3057,7 @@ void qmp_drive_mirror(DriveMirror *arg, Error **errp)
+
+     blockdev_mirror_common(arg->job_id, bs, target_bs,
+                            arg->replaces, arg->sync,
+-                           backing_mode, zero_target,
++                           backing_mode, zero_target, target_is_zero,
+                            arg->has_speed, arg->speed,
+                            arg->has_granularity, arg->granularity,
+                            arg->has_buf_size, arg->buf_size,
+@@ -3085,6 +3087,7 @@ void qmp_blockdev_mirror(const char *job_id,
+                          bool has_copy_mode, MirrorCopyMode copy_mode,
+                          bool has_auto_finalize, bool auto_finalize,
+                          bool has_auto_dismiss, bool auto_dismiss,
++                         bool has_target_is_zero, bool target_is_zero,
+                          Error **errp)
+ {
+     BlockDriverState *bs;
+@@ -3115,7 +3118,8 @@ void qmp_blockdev_mirror(const char *job_id,
+
+     blockdev_mirror_common(job_id, bs, target_bs,
+                            replaces, sync, backing_mode,
+-                           zero_target, has_speed, speed,
++                           zero_target, has_target_is_zero && target_is_zero,
++                           has_speed, speed,
+                            has_granularity, granularity,
+                            has_buf_size, buf_size,
+                            has_on_source_error, on_source_error,
+diff --git a/tests/unit/test-block-iothread.c b/tests/unit/test-block-iothread.c
+index e26b3be5939..54aed8252c0 100644
+--- a/tests/unit/test-block-iothread.c
++++ b/tests/unit/test-block-iothread.c
+@@ -755,7 +755,7 @@ static void test_propagate_mirror(void)
+
+     /* Start a mirror job */
+     mirror_start("job0", src, target, NULL, JOB_DEFAULT, 0, 0, 0,
+-                 MIRROR_SYNC_MODE_NONE, MIRROR_OPEN_BACKING_CHAIN, false,
++                 MIRROR_SYNC_MODE_NONE, MIRROR_OPEN_BACKING_CHAIN, false, false,
+                  BLOCKDEV_ON_ERROR_REPORT, BLOCKDEV_ON_ERROR_REPORT,
+                  false, "filter_node", MIRROR_COPY_MODE_BACKGROUND,
+                  &error_abort);
 -- 
 2.49.0
 
