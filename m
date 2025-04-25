@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8307DA9C20E
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 10:51:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47851A9C22A
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 10:53:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8ElN-0008E8-8X; Fri, 25 Apr 2025 04:50:25 -0400
+	id 1u8ElL-00084A-Su; Fri, 25 Apr 2025 04:50:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u8EkT-00073b-Nw
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 04:49:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u8EkV-00077t-Ku
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 04:49:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u8EkQ-0003Na-Vw
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 04:49:28 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u8EkT-0003Nq-Ul
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 04:49:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745570966;
+ s=mimecast20190719; t=1745570969;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YB4bT7X5Ei4XBUUch0D+TK6fEAPbX+If5u9eieOsydE=;
- b=Dvg51CubbXfLQ+5lgTZODcMuS8MkuZGQG6kTnJL6pLQ/NRxKXnTGkjKRp+tHhkMgXnVYZW
- BX3T5z4+LcHdkI+T0CTfGX7bFPJBEC4SrJdf81OgeNM6isjRkvFrjb0hx7EORgUeiydjRj
- 2zDI6Z+FVxeOhaHkQlrAXrKzPhJ4tdY=
+ bh=X+aoCmiHdt5aSTQt6vuKxlPA0N2D0f+F6ijAi7/To8Y=;
+ b=Tb5hhDA/445upQEf2MSlH+RZXqTOrapsWW3eOrDGr6KTSwy3ghhEIUQE74hxuH25ynnWpq
+ iux4Er7ZlWNIg7Wy5sJcFZ/SEjvh0ctElnDHtQr4CXZlvERWHiQsrR4H6EkFrLaxLGCdCa
+ LvNbLwaMT0mo/yfsFVB6obRXjbsoaKk=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-636-BT-cSXBINsy5GYsoY2QcLA-1; Fri,
- 25 Apr 2025 04:49:20 -0400
-X-MC-Unique: BT-cSXBINsy5GYsoY2QcLA-1
-X-Mimecast-MFC-AGG-ID: BT-cSXBINsy5GYsoY2QcLA_1745570959
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-343-ceS8g4ydPjC0-VDgJUJmLw-1; Fri,
+ 25 Apr 2025 04:49:25 -0400
+X-MC-Unique: ceS8g4ydPjC0-VDgJUJmLw-1
+X-Mimecast-MFC-AGG-ID: ceS8g4ydPjC0-VDgJUJmLw_1745570964
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5B2861800263; Fri, 25 Apr 2025 08:49:19 +0000 (UTC)
+ id CC759180034E; Fri, 25 Apr 2025 08:49:24 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.33.65])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id DF19330001A2; Fri, 25 Apr 2025 08:49:16 +0000 (UTC)
+ id 036CC30001A2; Fri, 25 Apr 2025 08:49:19 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 47/50] vfio: Remove hiod_typename property
-Date: Fri, 25 Apr 2025 10:46:40 +0200
-Message-ID: <20250425084644.102196-48-clg@redhat.com>
+Subject: [PULL 48/50] vfio: Register/unregister container for CPR only once
+ for each container
+Date: Fri, 25 Apr 2025 10:46:41 +0200
+Message-ID: <20250425084644.102196-49-clg@redhat.com>
 In-Reply-To: <20250425084644.102196-1-clg@redhat.com>
 References: <20250425084644.102196-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -28
 X-Spam_score: -2.9
@@ -84,60 +85,75 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-Because we handle host IOMMU device creation in each container backend,
-we know which type name to use, so hiod_typename property is useless
-now, just remove it.
+vfio_cpr_register_container and vfio_cpr_unregister_container are container
+scoped function. Calling them for each device attaching/detaching would
+corrupt CPR reboot notifier list, i.e., when two VFIO devices are attached
+to same container and have same notifier registered twice.
 
+Fixes: d9fa4223b30a ("vfio: register container for cpr")
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250423072824.3647952-6-zhenzhong.duan@intel.com
+Link: https://lore.kernel.org/qemu-devel/20250424063355.3855174-1-zhenzhong.duan@intel.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-container-base.h | 3 ---
- hw/vfio/container.c                   | 2 --
- hw/vfio/iommufd.c                     | 2 --
- 3 files changed, 7 deletions(-)
+ hw/vfio/iommufd.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-index af63373c92359ec53eb1669edfd4deb5a5177c20..5527e027220ac05f82d2a9beaf8b921e26597271 100644
---- a/include/hw/vfio/vfio-container-base.h
-+++ b/include/hw/vfio/vfio-container-base.h
-@@ -115,9 +115,6 @@ OBJECT_DECLARE_TYPE(VFIOContainerBase, VFIOIOMMUClass, VFIO_IOMMU)
- struct VFIOIOMMUClass {
-     ObjectClass parent_class;
- 
--    /* Properties */
--    const char *hiod_typename;
--
-     /* basic feature */
-     bool (*setup)(VFIOContainerBase *bcontainer, Error **errp);
-     int (*dma_map)(const VFIOContainerBase *bcontainer,
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 78f70e63d6fcef09a7c12cbd01526701073e6952..29170f063465e2c428a760a081603543c46f1ca3 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -1103,8 +1103,6 @@ static void vfio_iommu_legacy_class_init(ObjectClass *klass, void *data)
- {
-     VFIOIOMMUClass *vioc = VFIO_IOMMU_CLASS(klass);
- 
--    vioc->hiod_typename = TYPE_HOST_IOMMU_DEVICE_LEGACY_VFIO;
--
-     vioc->setup = vfio_legacy_setup;
-     vioc->dma_map = vfio_legacy_dma_map;
-     vioc->dma_unmap = vfio_legacy_dma_unmap;
 diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 8a010a51ea3882ef62fd1906b97ed3b77c5e57ef..f24054a6a5467e3b3436f106bf764c7de8019b0c 100644
+index f24054a6a5467e3b3436f106bf764c7de8019b0c..b2f72dc8c3687190f2c9d0f1d0a8bc80200930c3 100644
 --- a/hw/vfio/iommufd.c
 +++ b/hw/vfio/iommufd.c
-@@ -795,8 +795,6 @@ static void vfio_iommu_iommufd_class_init(ObjectClass *klass, void *data)
- {
-     VFIOIOMMUClass *vioc = VFIO_IOMMU_CLASS(klass);
+@@ -416,6 +416,7 @@ static void iommufd_cdev_container_destroy(VFIOIOMMUFDContainer *container)
+     if (!QLIST_EMPTY(&bcontainer->device_list)) {
+         return;
+     }
++    vfio_cpr_unregister_container(bcontainer);
+     vfio_listener_unregister(bcontainer);
+     iommufd_backend_free_id(container->be, container->ioas_id);
+     object_unref(container);
+@@ -561,6 +562,10 @@ static bool iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
+         goto err_listener_register;
+     }
  
--    vioc->hiod_typename = TYPE_HOST_IOMMU_DEVICE_IOMMUFD_VFIO;
++    if (!vfio_cpr_register_container(bcontainer, errp)) {
++        goto err_listener_register;
++    }
++
+     bcontainer->initialized = true;
+ 
+ found_container:
+@@ -570,13 +575,9 @@ found_container:
+         goto err_listener_register;
+     }
+ 
+-    if (!vfio_cpr_register_container(bcontainer, errp)) {
+-        goto err_listener_register;
+-    }
 -
-     vioc->dma_map = iommufd_cdev_map;
-     vioc->dma_unmap = iommufd_cdev_unmap;
-     vioc->attach_device = iommufd_cdev_attach;
+     if (!vfio_device_hiod_create_and_realize(vbasedev,
+                      TYPE_HOST_IOMMU_DEVICE_IOMMUFD_VFIO, errp)) {
+-        goto err_hiod_realize;
++        goto err_listener_register;
+     }
+ 
+     /*
+@@ -600,8 +601,6 @@ found_container:
+                                    vbasedev->num_regions, vbasedev->flags);
+     return true;
+ 
+-err_hiod_realize:
+-    vfio_cpr_unregister_container(bcontainer);
+ err_listener_register:
+     iommufd_cdev_ram_block_discard_disable(false);
+ err_discard_disable:
+@@ -632,7 +631,6 @@ static void iommufd_cdev_detach(VFIODevice *vbasedev)
+     }
+ 
+     object_unref(vbasedev->hiod);
+-    vfio_cpr_unregister_container(bcontainer);
+     iommufd_cdev_detach_container(vbasedev, container);
+     iommufd_cdev_container_destroy(container);
+     vfio_address_space_put(space);
 -- 
 2.49.0
 
