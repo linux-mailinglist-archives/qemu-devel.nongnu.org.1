@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 688E6A9C1EC
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 10:48:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D220CA9C23E
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 10:54:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8EjV-0003Ya-4U; Fri, 25 Apr 2025 04:48:29 -0400
+	id 1u8Ejc-0003vb-5z; Fri, 25 Apr 2025 04:48:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u8EjH-0003Ri-Et
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u8EjI-0003SF-KE
  for qemu-devel@nongnu.org; Fri, 25 Apr 2025 04:48:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u8EjE-0003Ga-5B
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 04:48:15 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u8EjE-0003Gh-FU
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 04:48:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745570887;
+ s=mimecast20190719; t=1745570891;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qOKPEmVG3cL7qwvWrWnc6oMtBMiJ4La+cPHLDKNEb0k=;
- b=WFCF1UvOr2Kd2xDRbFJVaLM8bt5WCjsHDoRKBnPHgGtOSMVr0ZLpc/mWDHowWdD4tVpxbp
- 6vQZCH8QGQbcqMQxIwwtvXqXjtzinNlaTbGL45myuJfq+K4kAZT1LutXd5InsT2bnnNKs/
- NfZFCaJIJuq/1WGueBtgQ9+JWRVy+Io=
+ bh=s30yRNqQjluROqGY+qZrtxBuCfrpV+9NHGTuq8+0ywE=;
+ b=BaoUTIijxnKGu8Tu8eokvaWVx6Loo/HWciRcfkFIgKjDPy3/nxPCUmWgDn4Y0mO7iiVF6O
+ DuYQV1KJun3ugbkGqZx0T+TZGyL1ua0e4ArvDkfuKoAjhjuuejajbuPdVqpF6dpAO0u51G
+ LruJdS0pATR2sz3xgdOb0UfdxWKDCgY=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-82-RnHDP8ldMymMgB6_78qpDA-1; Fri,
- 25 Apr 2025 04:48:03 -0400
-X-MC-Unique: RnHDP8ldMymMgB6_78qpDA-1
-X-Mimecast-MFC-AGG-ID: RnHDP8ldMymMgB6_78qpDA_1745570883
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-584-z41OSc6xMUKUg0l1n6CXEg-1; Fri,
+ 25 Apr 2025 04:48:06 -0400
+X-MC-Unique: z41OSc6xMUKUg0l1n6CXEg-1
+X-Mimecast-MFC-AGG-ID: z41OSc6xMUKUg0l1n6CXEg_1745570885
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E0BCF1800876; Fri, 25 Apr 2025 08:48:02 +0000 (UTC)
+ id B466A1800876; Fri, 25 Apr 2025 08:48:05 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.33.65])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0ADC230001A2; Fri, 25 Apr 2025 08:48:00 +0000 (UTC)
+ id 67A3130001A2; Fri, 25 Apr 2025 08:48:03 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- John Levon <john.levon@nutanix.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PULL 21/50] vfio: Move vfio_get_info_dma_avail() into helpers.c
-Date: Fri, 25 Apr 2025 10:46:14 +0200
-Message-ID: <20250425084644.102196-22-clg@redhat.com>
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ John Levon <john.levon@nutanix.com>
+Subject: [PULL 22/50] vfio: Move vfio_kvm_device_add/del_fd() to helpers.c
+Date: Fri, 25 Apr 2025 10:46:15 +0200
+Message-ID: <20250425084644.102196-23-clg@redhat.com>
 In-Reply-To: <20250425084644.102196-1-clg@redhat.com>
 References: <20250425084644.102196-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -83,135 +83,227 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vfio_get_info_dma_avail() is a low level routine similar to the other
-routines extracting capabilities from 'struct vfio_iommu_type1_info'.
-It belongs to file "helpers.c".
+vfio_kvm_device_add/del_fd() are low level routines. Move them with
+the other helpers.
 
-Reviewed-by: John Levon <john.levon@nutanix.com>
-Link: https://lore.kernel.org/qemu-devel/20250318095415.670319-17-clg@redhat.com
 Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Link: https://lore.kernel.org/qemu-devel/20250326075122.1299361-18-clg@redhat.com
+Reviewed-by: John Levon <john.levon@nutanix.com>
+Link: https://lore.kernel.org/qemu-devel/20250318095415.670319-18-clg@redhat.com
+Link: https://lore.kernel.org/qemu-devel/20250326075122.1299361-19-clg@redhat.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/vfio-helpers.h        |  5 ++++-
- include/hw/vfio/vfio-common.h |  2 --
- hw/vfio/container.c           | 31 -------------------------------
- hw/vfio/helpers.c             | 31 +++++++++++++++++++++++++++++++
- 4 files changed, 35 insertions(+), 34 deletions(-)
+ hw/vfio/vfio-helpers.h        |  3 ++
+ include/hw/vfio/vfio-common.h |  3 --
+ hw/vfio/common.c              | 58 ----------------------------------
+ hw/vfio/helpers.c             | 59 +++++++++++++++++++++++++++++++++++
+ hw/vfio/iommufd.c             |  1 +
+ hw/vfio/meson.build           |  2 +-
+ 6 files changed, 64 insertions(+), 62 deletions(-)
 
 diff --git a/hw/vfio/vfio-helpers.h b/hw/vfio/vfio-helpers.h
-index d7e4dcba512a2a842c4a9d75e2d834bdf97c8f31..9af43878b8b90c0247221543423a5aca8be2eef5 100644
+index 9af43878b8b90c0247221543423a5aca8be2eef5..5d91e33d27be1bdd8eb9b3ce74c39a4ac1991adc 100644
 --- a/hw/vfio/vfio-helpers.h
 +++ b/hw/vfio/vfio-helpers.h
-@@ -18,7 +18,10 @@ struct vfio_info_cap_header *
- vfio_get_device_info_cap(struct vfio_device_info *info, uint16_t id);
- struct vfio_info_cap_header *
- vfio_get_region_info_cap(struct vfio_region_info *info, uint16_t id);
--
-+struct vfio_info_cap_header *
-+vfio_get_iommu_type1_info_cap(struct vfio_iommu_type1_info *info, uint16_t id);
-+bool vfio_get_info_dma_avail(struct vfio_iommu_type1_info *info,
-+                             unsigned int *avail);
- #endif
+@@ -26,4 +26,7 @@ bool vfio_get_info_dma_avail(struct vfio_iommu_type1_info *info,
  
  int vfio_bitmap_alloc(VFIOBitmap *vbmap, hwaddr size);
+ 
++int vfio_kvm_device_add_fd(int fd, Error **errp);
++int vfio_kvm_device_del_fd(int fd, Error **errp);
++
+ #endif /* HW_VFIO_VFIO_HELPERS_H */
 diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 8e465111d26ff612148fcd1af9a39a4e4de5184e..be2558f7e4e1e577caf69ee98798e490e80be96b 100644
+index be2558f7e4e1e577caf69ee98798e490e80be96b..442ec287d799538e1d3669a6c470960cce5459a0 100644
 --- a/include/hw/vfio/vfio-common.h
 +++ b/include/hw/vfio/vfio-common.h
-@@ -147,8 +147,6 @@ int vfio_get_region_info(VFIODevice *vbasedev, int index,
- int vfio_get_dev_region_info(VFIODevice *vbasedev, uint32_t type,
-                              uint32_t subtype, struct vfio_region_info **info);
- bool vfio_has_region_cap(VFIODevice *vbasedev, int region, uint16_t cap_type);
--bool vfio_get_info_dma_avail(struct vfio_iommu_type1_info *info,
--                             unsigned int *avail);
- #endif
+@@ -130,9 +130,6 @@ bool vfio_attach_device(char *name, VFIODevice *vbasedev,
+ void vfio_detach_device(VFIODevice *vbasedev);
+ VFIODevice *vfio_get_vfio_device(Object *obj);
  
- bool vfio_devices_all_dirty_tracking_started(
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index b2d72f5036c5182e4b2d48b8cf57260d906e0bb5..3fdd5dac379bd43fdd8f606e02029c1f44bdb69a 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -278,37 +278,6 @@ static int vfio_legacy_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
-     return ret;
+-int vfio_kvm_device_add_fd(int fd, Error **errp);
+-int vfio_kvm_device_del_fd(int fd, Error **errp);
+-
+ bool vfio_cpr_register_container(VFIOContainerBase *bcontainer, Error **errp);
+ void vfio_cpr_unregister_container(VFIOContainerBase *bcontainer);
+ 
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index 18e5aacbd1b5e8033221df99999739cd58c883b0..2b3af051cc46118799b882a9a8e3ae96e556952b 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -1333,64 +1333,6 @@ void vfio_reset_handler(void *opaque)
+     }
  }
  
--static struct vfio_info_cap_header *
--vfio_get_iommu_type1_info_cap(struct vfio_iommu_type1_info *info, uint16_t id)
+-int vfio_kvm_device_add_fd(int fd, Error **errp)
 -{
--    if (!(info->flags & VFIO_IOMMU_INFO_CAPS)) {
--        return NULL;
+-#ifdef CONFIG_KVM
+-    struct kvm_device_attr attr = {
+-        .group = KVM_DEV_VFIO_FILE,
+-        .attr = KVM_DEV_VFIO_FILE_ADD,
+-        .addr = (uint64_t)(unsigned long)&fd,
+-    };
+-
+-    if (!kvm_enabled()) {
+-        return 0;
 -    }
 -
--    return vfio_get_cap((void *)info, info->cap_offset, id);
+-    if (vfio_kvm_device_fd < 0) {
+-        struct kvm_create_device cd = {
+-            .type = KVM_DEV_TYPE_VFIO,
+-        };
+-
+-        if (kvm_vm_ioctl(kvm_state, KVM_CREATE_DEVICE, &cd)) {
+-            error_setg_errno(errp, errno, "Failed to create KVM VFIO device");
+-            return -errno;
+-        }
+-
+-        vfio_kvm_device_fd = cd.fd;
+-    }
+-
+-    if (ioctl(vfio_kvm_device_fd, KVM_SET_DEVICE_ATTR, &attr)) {
+-        error_setg_errno(errp, errno, "Failed to add fd %d to KVM VFIO device",
+-                         fd);
+-        return -errno;
+-    }
+-#endif
+-    return 0;
 -}
 -
--bool vfio_get_info_dma_avail(struct vfio_iommu_type1_info *info,
--                             unsigned int *avail)
+-int vfio_kvm_device_del_fd(int fd, Error **errp)
 -{
--    struct vfio_info_cap_header *hdr;
--    struct vfio_iommu_type1_info_dma_avail *cap;
+-#ifdef CONFIG_KVM
+-    struct kvm_device_attr attr = {
+-        .group = KVM_DEV_VFIO_FILE,
+-        .attr = KVM_DEV_VFIO_FILE_DEL,
+-        .addr = (uint64_t)(unsigned long)&fd,
+-    };
 -
--    /* If the capability cannot be found, assume no DMA limiting */
--    hdr = vfio_get_iommu_type1_info_cap(info,
--                                        VFIO_IOMMU_TYPE1_INFO_DMA_AVAIL);
--    if (!hdr) {
--        return false;
+-    if (vfio_kvm_device_fd < 0) {
+-        error_setg(errp, "KVM VFIO device isn't created yet");
+-        return -EINVAL;
 -    }
 -
--    if (avail != NULL) {
--        cap = (void *) hdr;
--        *avail = cap->avail;
+-    if (ioctl(vfio_kvm_device_fd, KVM_SET_DEVICE_ATTR, &attr)) {
+-        error_setg_errno(errp, errno,
+-                         "Failed to remove fd %d from KVM VFIO device", fd);
+-        return -errno;
 -    }
--
--    return true;
+-#endif
+-    return 0;
 -}
 -
- static bool vfio_get_info_iova_range(struct vfio_iommu_type1_info *info,
-                                      VFIOContainerBase *bcontainer)
+ struct vfio_device_info *vfio_get_device_info(int fd)
  {
+     struct vfio_device_info *info;
 diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
-index 054ee6e31ebd080cc10516b9fc5a0373725b63d8..1a584ba5f007995a16d2364faeb72cb2b22de4e9 100644
+index 1a584ba5f007995a16d2364faeb72cb2b22de4e9..e6b75baa805241b4df28769338b15a6fe9b99501 100644
 --- a/hw/vfio/helpers.c
 +++ b/hw/vfio/helpers.c
-@@ -222,6 +222,37 @@ retry:
-     return 0;
+@@ -22,6 +22,7 @@
+ #include "qemu/osdep.h"
+ #include <sys/ioctl.h>
+ 
++#include "system/kvm.h"
+ #include "hw/vfio/vfio-common.h"
+ #include "hw/vfio/pci.h"
+ #include "hw/hw.h"
+@@ -253,6 +254,64 @@ bool vfio_get_info_dma_avail(struct vfio_iommu_type1_info *info,
+     return true;
  }
  
-+struct vfio_info_cap_header *
-+vfio_get_iommu_type1_info_cap(struct vfio_iommu_type1_info *info, uint16_t id)
++int vfio_kvm_device_add_fd(int fd, Error **errp)
 +{
-+    if (!(info->flags & VFIO_IOMMU_INFO_CAPS)) {
-+        return NULL;
++#ifdef CONFIG_KVM
++    struct kvm_device_attr attr = {
++        .group = KVM_DEV_VFIO_FILE,
++        .attr = KVM_DEV_VFIO_FILE_ADD,
++        .addr = (uint64_t)(unsigned long)&fd,
++    };
++
++    if (!kvm_enabled()) {
++        return 0;
 +    }
 +
-+    return vfio_get_cap((void *)info, info->cap_offset, id);
++    if (vfio_kvm_device_fd < 0) {
++        struct kvm_create_device cd = {
++            .type = KVM_DEV_TYPE_VFIO,
++        };
++
++        if (kvm_vm_ioctl(kvm_state, KVM_CREATE_DEVICE, &cd)) {
++            error_setg_errno(errp, errno, "Failed to create KVM VFIO device");
++            return -errno;
++        }
++
++        vfio_kvm_device_fd = cd.fd;
++    }
++
++    if (ioctl(vfio_kvm_device_fd, KVM_SET_DEVICE_ATTR, &attr)) {
++        error_setg_errno(errp, errno, "Failed to add fd %d to KVM VFIO device",
++                         fd);
++        return -errno;
++    }
++#endif
++    return 0;
 +}
 +
-+bool vfio_get_info_dma_avail(struct vfio_iommu_type1_info *info,
-+                             unsigned int *avail)
++int vfio_kvm_device_del_fd(int fd, Error **errp)
 +{
-+    struct vfio_info_cap_header *hdr;
-+    struct vfio_iommu_type1_info_dma_avail *cap;
++#ifdef CONFIG_KVM
++    struct kvm_device_attr attr = {
++        .group = KVM_DEV_VFIO_FILE,
++        .attr = KVM_DEV_VFIO_FILE_DEL,
++        .addr = (uint64_t)(unsigned long)&fd,
++    };
 +
-+    /* If the capability cannot be found, assume no DMA limiting */
-+    hdr = vfio_get_iommu_type1_info_cap(info,
-+                                        VFIO_IOMMU_TYPE1_INFO_DMA_AVAIL);
-+    if (!hdr) {
-+        return false;
++    if (vfio_kvm_device_fd < 0) {
++        error_setg(errp, "KVM VFIO device isn't created yet");
++        return -EINVAL;
 +    }
 +
-+    if (avail != NULL) {
-+        cap = (void *) hdr;
-+        *avail = cap->avail;
++    if (ioctl(vfio_kvm_device_fd, KVM_SET_DEVICE_ATTR, &attr)) {
++        error_setg_errno(errp, errno,
++                         "Failed to remove fd %d from KVM VFIO device", fd);
++        return -errno;
 +    }
-+
-+    return true;
++#endif
++    return 0;
 +}
 +
  int vfio_get_dev_region_info(VFIODevice *vbasedev, uint32_t type,
                               uint32_t subtype, struct vfio_region_info **info)
  {
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index 2ec15bc2692e2eb90299e5a1c09ab6b738c69cf0..85b5a8146ac401af6be8109c28ea4c7a39e84521 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -26,6 +26,7 @@
+ #include "qemu/chardev_open.h"
+ #include "pci.h"
+ #include "vfio-iommufd.h"
++#include "vfio-helpers.h"
+ 
+ #define TYPE_HOST_IOMMU_DEVICE_IOMMUFD_VFIO             \
+             TYPE_HOST_IOMMU_DEVICE_IOMMUFD "-vfio"
+diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
+index 07010c7c9e01a39ae3449c54d2027a2cdd0a7a4d..21795b3d19e5db0c93993c0cb4a951a70d260f10 100644
+--- a/hw/vfio/meson.build
++++ b/hw/vfio/meson.build
+@@ -2,6 +2,7 @@ vfio_ss = ss.source_set()
+ vfio_ss.add(files(
+   'common.c',
+   'container.c',
++  'helpers.c',
+ ))
+ vfio_ss.add(when: 'CONFIG_PSERIES', if_true: files('spapr.c'))
+ vfio_ss.add(when: 'CONFIG_VFIO_PCI', if_true: files(
+@@ -18,7 +19,6 @@ specific_ss.add_all(when: 'CONFIG_VFIO', if_true: vfio_ss)
+ system_ss.add(when: 'CONFIG_VFIO_XGMAC', if_true: files('calxeda-xgmac.c'))
+ system_ss.add(when: 'CONFIG_VFIO_AMD_XGBE', if_true: files('amd-xgbe.c'))
+ system_ss.add(when: 'CONFIG_VFIO', if_true: files(
+-  'helpers.c',
+   'container-base.c',
+   'migration.c',
+   'migration-multifd.c',
 -- 
 2.49.0
 
