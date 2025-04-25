@@ -2,90 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3635A9CD4B
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:38:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B190A9CD59
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 17:41:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8L4B-0005IU-4s; Fri, 25 Apr 2025 11:34:15 -0400
+	id 1u8L7f-0006Qp-Af; Fri, 25 Apr 2025 11:37:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u8L3n-0003Zn-4S
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:33:51 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u8L3l-0004Oo-GL
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:33:50 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-7369ce5d323so1970578b3a.1
- for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:33:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745595227; x=1746200027; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=QPCim8b+LO4Q2JcSDoJ2nk4O0pMo2S3iPj2Txm8vP3w=;
- b=wLZGDabH/BZVGCKqIJ9uO9bNEVlByGaYRlK6KOewrrtvVgDndAYwxIN9Gu5tHlDBST
- M7Q+LIrAfYfPBa/6FO5OC0iJjD0CVRrB0y5hq6P4fo+cmOa/h2LXekXh7m1qWfl2S/Bq
- SHYKJKAOCUGIWIzVisDKcF9kHr92a89tp1sVzEuAK5jRMxMliW5+wZ5RvhD9f/+z2UK/
- ugOrUyV+dPwCq122uyMtk21plzLePvWC6buCCxKhrGKPshXgFuQM/MZsrT7yx/WjkK72
- D6Oicf8oRs/vth4RXBPMAC3W8YuEZy29J1Hk6ose8i/caeFrvwVnIGozI+0ec14l15c+
- PJtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745595227; x=1746200027;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QPCim8b+LO4Q2JcSDoJ2nk4O0pMo2S3iPj2Txm8vP3w=;
- b=vTJ4rbVCnvlt+NBqg1K0la0hJe/m2My+3PYoQXJ4O8EN88fLHAYH0ybBe3O1oCJdsW
- 2k0e6t+ooy7lBGeat7jQUGH7KywhZRkU84WWW0IV03ZXwex50fVaZLbf2x/FOUmwcaZX
- AhGxHzTHg+sD3KaE/1OmWmcUS3YVy4tVn6sJAJfJnGtJFqyyY3Cej78WNlN602Vcf27K
- VdviGcA2rH4N8fUVugqY5nfkaG+vosi4IbQIvCcV2ynuSi0pSHIOO0DtIBo0toDTaANN
- j5jU6RrPoN+7KGEQmWlyi3koyVzcXAVWE6uuFIuaHIpyLKe3YZDHnuxEOKhwLPFaNg+d
- AzIA==
-X-Gm-Message-State: AOJu0Yyjuj80w6EXvP+KXkwgwnjttToTpCZSLdroYLuFaysmwIYFE//4
- fDvwXbyi9ohOBKAHZ3PzQV9IRr7EMdGHk9Ci+oboGuETD0DnJVSKKSzdTg4meQs=
-X-Gm-Gg: ASbGncsaj3AbY5szUrZdUjbZ8FBlJYEOR5j6Q/Lyi4KyMvdzlhyZ5n9s5uzxKfFxcM9
- V2jTwYNd9dx5MeqNN0DW6WIsJxmgNTls1GZgPuRPzfdJhvGfgXF9AhEXXXI1IpEm6PCYlqLpjxW
- Djpdl1TP4AbwPrfjOAnvP8J0/XBLdtVn2EgO7Y8k1KBBOXNIe0tcOYe3IUGfuYViUrmI839EEii
- DE2VD0VtZXsxzFaM8w1xApQWc1N2CLErwv4A907BMStXmVY9UbeCCpn+N8mjnewTS+7rYeq9ehj
- GpDqnPLiDVP8au69mlOvUIgTFcCFk9s2l/6GkEoRvf2QuFvKwZeTTK6S8sLDzuq788qG2OFH8Tl
- VaQpjDWI=
-X-Google-Smtp-Source: AGHT+IE/oQ4K6EnWfQGgNQPzyDfhP8uWARAMS+VZ/cPcaqCxAWJYlKy3QxsxrauDyGkH63dZ/rxLWQ==
-X-Received: by 2002:a05:6a00:2e22:b0:736:339b:8296 with SMTP id
- d2e1a72fcca58-73fd896a1b8mr3636652b3a.18.1745595227173; 
- Fri, 25 Apr 2025 08:33:47 -0700 (PDT)
-Received: from [192.168.0.4] (71-212-47-143.tukw.qwest.net. [71.212.47.143])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73e259134a9sm3297699b3a.24.2025.04.25.08.33.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 25 Apr 2025 08:33:46 -0700 (PDT)
-Message-ID: <49fafb18-2186-4d19-867b-bc26c1c43572@linaro.org>
-Date: Fri, 25 Apr 2025 08:33:45 -0700
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1u8L72-0005il-LU
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:37:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1u8L6x-0004wi-BJ
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 11:37:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1745595425;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZNP4X7YDT7jlq0NijXYhRKSq76c+Q+Jr1DDXlpUK+dg=;
+ b=Vun/IkXnDOtOoeYVCIyDf5xAxbMC8gDeIUMhPM6L2v0FsmwVLtSj2fl1sR4FoAC5ZqNYVA
+ 9E5E2QbXFfUCZ37ljl7kDgOa5fGtlPv2vwxOP8pvG5y5JIAD8PT5kSqAYlhA3EVXKKw4jb
+ IJRwPsQFEDUZvQrBKgMv7zbqo4mCpLU=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-110-xaag4b2mMmajCS6wk2R0dw-1; Fri,
+ 25 Apr 2025 11:37:01 -0400
+X-MC-Unique: xaag4b2mMmajCS6wk2R0dw-1
+X-Mimecast-MFC-AGG-ID: xaag4b2mMmajCS6wk2R0dw_1745595420
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2442D195609D; Fri, 25 Apr 2025 15:37:00 +0000 (UTC)
+Received: from redhat.com (unknown [10.45.225.183])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 15323195608D; Fri, 25 Apr 2025 15:36:56 +0000 (UTC)
+Date: Fri, 25 Apr 2025 17:36:54 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Eric Blake <eblake@redhat.com>
+Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Sunny Zhu <sunnyzhyy@qq.com>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org, hreitz@redhat.com
+Subject: Re: [PATCH] =?utf-8?Q?block=EF=BC=9A_chang?= =?utf-8?Q?e?= type of
+ bytes from int to int64_t for *bdrv_aio_pdiscard
+Message-ID: <aAusFsX7FwnElrNf@redhat.com>
+References: <tencent_8649D99B33E6E6665A0EFA05B97592D70106@qq.com>
+ <cxsasg7qiopbpwu24a6f2hponb2lv6ut5ylhcpeyagi6g6k2m5@w2c6mwuqi5ik>
+ <292632c9-4492-4071-9100-a7b165af3e97@linaro.org>
+ <zd2plm54sqdos4oqsd4lbukzozupboivu4pueawwtxrmtsg5q4@ay2rhlohwjub>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] hw/loongarch/virt: Get physical entry address with elf
- file
-To: Bibo Mao <maobibo@loongson.cn>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Song Gao <gaosong@loongson.cn>
-Cc: qemu-devel@nongnu.org
-References: <20250425021620.3968737-1-maobibo@loongson.cn>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250425021620.3968737-1-maobibo@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <zd2plm54sqdos4oqsd4lbukzozupboivu4pueawwtxrmtsg5q4@ay2rhlohwjub>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.314,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,27 +87,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/24/25 19:16, Bibo Mao wrote:
-> With load_elf() api, image load low address and high address is converted
-> to physical address if parameter translate_fn is provided. However
-> executing entry address is still virtual address. Here convert entry
-> address into physical address, since MMU is disabled when system power on,
-> the first PC instruction should be physical address.
+Am 24.04.2025 um 19:40 hat Eric Blake geschrieben:
+> On Tue, Apr 22, 2025 at 09:11:51AM +0200, Philippe Mathieu-Daudé wrote:
+> > Hi Eric,
+> > 
+> > On 21/4/25 17:03, Eric Blake wrote:
+> > > On Mon, Apr 21, 2025 at 12:19:14AM +0800, Sunny Zhu wrote:
+> > > > Keep it consistent with *bdrv_co_pdiscard.
+> > > > 
+> > > > Currently, there is no BlockDriver implemented the bdrv_aio_pdiscard() function,
+> > > > so we don’t need to make any adaptations either.
+> > > 
+> > > If there are no drivers implementing the callback, then why have it?
+> > > I think we have been moving towards more coroutine-based callbacks and
+> > > away from the aio callbacks; if so, should we instead be deleting this
+> > > callback as stale code?
+> > 
+> > Could we add a comment in BlockDriver prototypes about prefering co over
+> > aio implementations, possibly mentioning them as legacy?
 > 
-> Signed-off-by: Bibo Mao<maobibo@loongson.cn>
-> ---
->    v1 ... v2:
->    1. Only modify LoongArch specified rather than load_elf() API, since
->       there is be potential influence with other architectures.
-> ---
->   hw/loongarch/boot.c | 1 +
->   1 file changed, 1 insertion(+)
+> Thinking about this a bit more (but you'll definitely want Kevin's
+> opinion, not just mine):
+> 
+> $ git grep '\.bdrv_aio_'
+> block/file-win32.c:    .bdrv_aio_preadv    = raw_aio_preadv,
+> block/file-win32.c:    .bdrv_aio_pwritev   = raw_aio_pwritev,
+> block/file-win32.c:    .bdrv_aio_flush     = raw_aio_flush,
+> block/file-win32.c:    .bdrv_aio_preadv    = raw_aio_preadv,
+> block/file-win32.c:    .bdrv_aio_pwritev   = raw_aio_pwritev,
+> block/file-win32.c:    .bdrv_aio_flush     = raw_aio_flush,
+> block/iscsi.c:    .bdrv_aio_ioctl   = iscsi_aio_ioctl,
+> block/iscsi.c:    .bdrv_aio_ioctl   = iscsi_aio_ioctl,
+> block/null.c:    .bdrv_aio_preadv        = null_aio_preadv,
+> block/null.c:    .bdrv_aio_pwritev       = null_aio_pwritev,
+> block/null.c:    .bdrv_aio_flush         = null_aio_flush,
+> 
+> file-win32.c looks to be the major client of remaining aio interfaces.
+> How hard would it be to convert those over to coroutines?
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Not terribly complicated. In case of doubt, they remain callback based
+internally and just yield until the callback reenters the coroutine.
 
-Although perhaps we should adjust the API because all users have to do exactly this, and 
-it's easy to miss.
+For file-win32 specifically, paio_submit() can be modified to call
+thread_pool_submit_co(), which already does this. The win32-aio paths
+won't necessarily become simpler, but that's okay.
 
+> iscsi.c uses aio only for ioctl.  How hard would it be to convert it
+> in the same way that we converted read/write/flush back in commit
+> 063c3378?
 
-r~
+iscsi_aio_ioctl() could probably be simplified a bit when the callback
+is moved into the function itself, especially for the case of
+iscsi_ioctl_handle_emulated().
+
+> null.c provides aio interfaces solely for benchmarking purposes - but
+> if it is the only remaining client of aio interfaces, it would be nice
+> to just rip out support for null-aio: and rely solely on null:
+
+null-aio is specifically an AIO based version, I think mainly to test
+performance of AIO vs. coroutines. If we get rid of the AIO interfaces,
+then we can probably just remove the whole null-aio driver. (Or rather,
+make it an alias of null-co for now and deprecate it.)
+
+> It sounds like we are close enough to a generic cleanup of detritus
+> that it would be better to just finish the job than to add a comment
+> about preferring co over aio.
+
+Agreed.
+
+Kevin
+
 
