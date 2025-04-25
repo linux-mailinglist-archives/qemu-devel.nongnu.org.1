@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 647D8A9D4CD
-	for <lists+qemu-devel@lfdr.de>; Sat, 26 Apr 2025 00:00:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F4FA9D4A7
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 23:57:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8R0k-0007Fc-Kf; Fri, 25 Apr 2025 17:55:06 -0400
+	id 1u8R0i-0007EH-HH; Fri, 25 Apr 2025 17:55:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u8R0f-0007Cp-F8
+ id 1u8R0f-0007Co-Ep
  for qemu-devel@nongnu.org; Fri, 25 Apr 2025 17:55:01 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u8R0c-0000IH-Jb
+ id 1u8R0d-0000IN-BR
  for qemu-devel@nongnu.org; Fri, 25 Apr 2025 17:55:01 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-736c062b1f5so2462719b3a.0
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-739be717eddso2231958b3a.2
  for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 14:54:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745618097; x=1746222897; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745618098; x=1746222898; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9yL5Df6MlqpnjsRM4lJY2fvGRb96qZEkbw6f23uPi2c=;
- b=qh5tVCPq7+bjA7TDK8in3YPFRZfG+MOe+M+13AUxcO+272ehUFyff52zxK4fydK3pI
- nQGRUmY/GZL3SuasgVkm2sw9HbFjuOdzb68QaWRo3PBTRcqnxsT1rSBldr3wNaasggAt
- PhmZJ6gwFGI/3zS0GdF36l90ZQYP7F1RkDFPpi7cmDq9l9btVX5w9sqqKYI7BdgBGmKQ
- iBDLigC9sIJ4b4aG1602fdEYjiBBBLtk++PWLYuC+Q/j38MVZvqNatjE4aqoDsTw4pjZ
- qNWt31NIh9qbUYx+hyGVinVFg6u8QQ4hkbOdxHaIWWpxwKkzwEA96l9PrsreamsoBt0t
- ASwg==
+ bh=g6mwXVI8d1YSlQiyWs1i63ZlMrwCEMPHw0ptzVPcyMU=;
+ b=gKS5DG3O1IOgK9vmRQJzbuWpL77QqzT3x11mY8SxJ2tYUqPwON14Wi+Ripz2BeQobV
+ fny3AxEstgwjRnkiA0rpqAkNuANKT2SX7M4+iiXOeJYo5dUJUY5kJpZSs/bwY5IM87yC
+ j/G71WkbF2emp3Il+Zf62GZmOU54+MzpHQUE8vV/sppKNnyGNMdbHnOrCk75PiQMcbTD
+ awYDQ6MJyOEJw/kRl/QNxmTszmwnW1TyXeyn+VtJ4u0YgNlSlb8OPDphR42rt1xLrDiP
+ ECay8WXePGzU3dmw15FvN1TEe5O8DESmKLe2LcAKHlE+ZsDPB66uy0+nviKt3aRrfS6r
+ 3Uzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745618097; x=1746222897;
+ d=1e100.net; s=20230601; t=1745618098; x=1746222898;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9yL5Df6MlqpnjsRM4lJY2fvGRb96qZEkbw6f23uPi2c=;
- b=oxsdvnbmf77I5Zq1J+tLvq+wom8se0HJ0TTGbqMbQUx7yiXrar0FRnSWHDYOd+/ZSu
- XqhvOtGy0MRmfAexpEuxQbxA9Bh/vh/TEvZiVy+5A5aLS5iwkXXBh9WZXpXk+dTSXATO
- WGXE6Et9w+26YlJLFcAs2LbsBGiShLhzLZVzT9GdA2DxEAO9qZeUUhVbkS7AdgJiM8o1
- GBw1Xz99LFIJOR5SHnGSbV3GQwygUqGAUxI/b5GD514ZyYaMDkD63+4/X5eOO33LskTH
- lNrO9WFo6EY9O5yuBkwtGGae54nLANCQuwiwkN+aqAUC0z2wDo1/P6bmfk6EecY3BDZb
- 6SGA==
-X-Gm-Message-State: AOJu0YzK16qWVai9Dju3x0bQ0NbyDZQLsTiv6JVZ+XOJSUXwgVihI2MR
- sMaUT9QwkYgrqvJVa5yCiawz2/iPKWJGU3eXBn3RGzOInBfmRti33F2kgupVEyDCZN/EvMKS0FV
- +
-X-Gm-Gg: ASbGncsJajNk5Pd/4qx1pUkdOJH4U7SP3DMdRbp2Yzej/dFXqACbNfsC7W9heQF6H7V
- cDVX8ujMRD2FN+PmN/1iSQUwF1K7BdiJ+tpKsceWdT5BSablAKLsoorOw2kWJCiAh9/2kK/F5k/
- lP3mrlcafhz80pzuIiwgyV9kFwo6rBnI4OsEMoGNmjCAJR8B/1pjdA5jmAQB5+AA1HgLK3iXtwL
- /YAHsvCdn7pQiZEsOyNfP5xc8FLV1+fq1Mf7TVj+SwdF4BfMT8Th9FpIvr6ehA6gzMJW90MP43r
- izJj40k+qz/aaqA4WMRsHRpIQ0igsgqP+2va7Hy20E3qmOVePcE+ghEZMR2ACEYwtHNhlY2D3gM
+ bh=g6mwXVI8d1YSlQiyWs1i63ZlMrwCEMPHw0ptzVPcyMU=;
+ b=ZBuMtUYyRCV36M+oaNTUARrmD8rLrNThCV3HjDTHSOcD2btoGvW1md+C0UqcrCxLni
+ qhYbxDE7GS5BTW7ZJyOiPjHq3287b3erT+11Ek7EMIkqc+w1rj2T9TUr4uTSx+aFBXd/
+ AQQzYbBujQy6dSz0HYsp9ZQ0g6Eo33Q1ZZDhcU+70vpn6WLUH/OiUqGdrMPOnFI8aJcS
+ hAa0E8sWZlFLpTx36tM+R3DuEXOXgw4c/GRBTne3YmO/PuSjDX9Xmu47PXs77Gl0DDgU
+ zN82p1trZvu/uEEET59fVw6mwkY70U1EvgdXGVqae/hFvAkPpyIFf6dXkSZD+HDw+rQ2
+ nkjA==
+X-Gm-Message-State: AOJu0Yz+YffITzcOk2aVUXNEETUBvt4GGzfep4lVl3IO6fO/BApKMWAz
+ JeV/fSQnIZtxYugOEGdCxTI+iHOI7FkPUjNq1XQqGk0SQU8gOszgR7GTlUylaSQO0tgt/yqlauI
+ j
+X-Gm-Gg: ASbGncuMaRzDLSbJwWKenI6kT+lShPgtOtlbuxo8yvJxqDYgDSxbcNgmp62V1Pt8tUC
+ E1Fr7zdejsSs2jgpS68Io4/pvy4p8Zh4iR4TgabEks57TVEIW1+CqN54gNKjLWdiTnmzstgda5k
+ EuB6s+TOW3Ic2rdJOpBTWM43aWHaH9Dpet+n3ILZcYg32tevjFVgiuN08FcRBghInztLQsCF6Xc
+ 1fHFGbOu4DB/O1Qv770XtbSM0UepmdRSs/XFqvMIZ+Fk2Xv8ghR+reg22I/qtPhE247nSYA4fhx
+ u/QPEkdR99HFR6/zWgXtEllJgf5F7iHXyjsofvJh1q5XZQNpgl4Pse+clQjako9wrjBI4evf1YE
  =
-X-Google-Smtp-Source: AGHT+IEnwK8UPFjOQkoKJr67f5m+2NhQcVBefeT3ddVBTkeXVUFLSzgEbkgq1G83y8v71ysNzyfRvQ==
-X-Received: by 2002:a05:6a21:1f81:b0:1f5:75a9:526c with SMTP id
- adf61e73a8af0-2045b6f5201mr5903141637.13.1745618097218; 
- Fri, 25 Apr 2025 14:54:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHZtGI0nCrwaS/jVbiUAAkIYhLe2hDXT30By5qfKIOVAdj7Cm5H6Xq87sMXo++tHmxgpwXRVA==
+X-Received: by 2002:a05:6a21:9102:b0:1f5:619a:7f4c with SMTP id
+ adf61e73a8af0-2045b99e19dmr5977835637.29.1745618098089; 
+ Fri, 25 Apr 2025 14:54:58 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73e259414b0sm3664392b3a.48.2025.04.25.14.54.56
+ d2e1a72fcca58-73e259414b0sm3664392b3a.48.2025.04.25.14.54.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Apr 2025 14:54:56 -0700 (PDT)
+ Fri, 25 Apr 2025 14:54:57 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 003/159] tcg/optimize: Introduce opt_insert_{before,after}
-Date: Fri, 25 Apr 2025 14:52:17 -0700
-Message-ID: <20250425215454.886111-4-richard.henderson@linaro.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 004/159] tcg: Add TCGType to tcg_op_insert_{after,before}
+Date: Fri, 25 Apr 2025 14:52:18 -0700
+Message-ID: <20250425215454.886111-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250425215454.886111-1-richard.henderson@linaro.org>
 References: <20250425215454.886111-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,106 +100,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Consolidate the places we call tcg_op_insert_{before,after}
-within the optimization pass.
+We cannot rely on the value copied from TCGOP_TYPE(op), because
+the relevant op could be typeless, such as INDEX_op_call.
 
+Fixes: fb744ece3a78 ("tcg: Copy TCGOP_TYPE in tcg_op_insert_{after,before}")
+Suggested-by: Nicholas Piggin <npiggin@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/optimize.c | 30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
+ tcg/tcg-internal.h |  4 ++--
+ tcg/optimize.c     |  4 ++--
+ tcg/tcg.c          | 17 ++++++++++-------
+ 3 files changed, 14 insertions(+), 11 deletions(-)
 
+diff --git a/tcg/tcg-internal.h b/tcg/tcg-internal.h
+index ff85fb23fa..d6a12afe06 100644
+--- a/tcg/tcg-internal.h
++++ b/tcg/tcg-internal.h
+@@ -107,8 +107,8 @@ void vec_gen_6(TCGOpcode opc, TCGType type, unsigned vece, TCGArg r,
+                TCGArg a, TCGArg b, TCGArg c, TCGArg d, TCGArg e);
+ 
+ TCGOp *tcg_op_insert_before(TCGContext *s, TCGOp *op,
+-                            TCGOpcode opc, unsigned nargs);
++                            TCGOpcode, TCGType, unsigned nargs);
+ TCGOp *tcg_op_insert_after(TCGContext *s, TCGOp *op,
+-                           TCGOpcode opc, unsigned nargs);
++                           TCGOpcode, TCGType, unsigned nargs);
+ 
+ #endif /* TCG_INTERNAL_H */
 diff --git a/tcg/optimize.c b/tcg/optimize.c
-index f922f86a1d..a4d4ad3005 100644
+index a4d4ad3005..3bd4ee4d58 100644
 --- a/tcg/optimize.c
 +++ b/tcg/optimize.c
-@@ -344,6 +344,18 @@ static TCGArg arg_new_temp(OptContext *ctx)
-     return temp_arg(ts);
+@@ -347,13 +347,13 @@ static TCGArg arg_new_temp(OptContext *ctx)
+ static TCGOp *opt_insert_after(OptContext *ctx, TCGOp *op,
+                                TCGOpcode opc, unsigned narg)
+ {
+-    return tcg_op_insert_after(ctx->tcg, op, opc, narg);
++    return tcg_op_insert_after(ctx->tcg, op, opc, ctx->type, narg);
  }
  
-+static TCGOp *opt_insert_after(OptContext *ctx, TCGOp *op,
-+                               TCGOpcode opc, unsigned narg)
-+{
-+    return tcg_op_insert_after(ctx->tcg, op, opc, narg);
-+}
-+
-+static TCGOp *opt_insert_before(OptContext *ctx, TCGOp *op,
-+                                TCGOpcode opc, unsigned narg)
-+{
-+    return tcg_op_insert_before(ctx->tcg, op, opc, narg);
-+}
-+
- static bool tcg_opt_gen_mov(OptContext *ctx, TCGOp *op, TCGArg dst, TCGArg src)
+ static TCGOp *opt_insert_before(OptContext *ctx, TCGOp *op,
+                                 TCGOpcode opc, unsigned narg)
  {
-     TCGTemp *dst_ts = arg_temp(dst);
-@@ -808,7 +820,7 @@ static int do_constant_folding_cond1(OptContext *ctx, TCGOp *op, TCGArg dest,
-     if (!TCG_TARGET_HAS_tst) {
-         TCGOpcode and_opc = (ctx->type == TCG_TYPE_I32
-                              ? INDEX_op_and_i32 : INDEX_op_and_i64);
--        TCGOp *op2 = tcg_op_insert_before(ctx->tcg, op, and_opc, 3);
-+        TCGOp *op2 = opt_insert_before(ctx, op, and_opc, 3);
-         TCGArg tmp = arg_new_temp(ctx);
+-    return tcg_op_insert_before(ctx->tcg, op, opc, narg);
++    return tcg_op_insert_before(ctx->tcg, op, opc, ctx->type, narg);
+ }
  
-         op2->args[0] = tmp;
-@@ -901,8 +913,8 @@ static int do_constant_folding_cond2(OptContext *ctx, TCGOp *op, TCGArg *args)
+ static bool tcg_opt_gen_mov(OptContext *ctx, TCGOp *op, TCGArg dst, TCGArg src)
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index ec7f6743d7..198d6181d9 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -3449,21 +3449,21 @@ TCGOp *tcg_emit_op(TCGOpcode opc, unsigned nargs)
+ }
  
-     /* Expand to AND with a temporary if no backend support. */
-     if (!TCG_TARGET_HAS_tst && is_tst_cond(c)) {
--        TCGOp *op1 = tcg_op_insert_before(ctx->tcg, op, INDEX_op_and_i32, 3);
--        TCGOp *op2 = tcg_op_insert_before(ctx->tcg, op, INDEX_op_and_i32, 3);
-+        TCGOp *op1 = opt_insert_before(ctx, op, INDEX_op_and_i32, 3);
-+        TCGOp *op2 = opt_insert_before(ctx, op, INDEX_op_and_i32, 3);
-         TCGArg t1 = arg_new_temp(ctx);
-         TCGArg t2 = arg_new_temp(ctx);
+ TCGOp *tcg_op_insert_before(TCGContext *s, TCGOp *old_op,
+-                            TCGOpcode opc, unsigned nargs)
++                            TCGOpcode opc, TCGType type, unsigned nargs)
+ {
+     TCGOp *new_op = tcg_op_alloc(opc, nargs);
  
-@@ -1263,7 +1275,7 @@ static bool fold_addsub2(OptContext *ctx, TCGOp *op, bool add)
-         rh = op->args[1];
+-    TCGOP_TYPE(new_op) = TCGOP_TYPE(old_op);
++    TCGOP_TYPE(new_op) = type;
+     QTAILQ_INSERT_BEFORE(old_op, new_op, link);
+     return new_op;
+ }
  
-         /* The proper opcode is supplied by tcg_opt_gen_mov. */
--        op2 = tcg_op_insert_before(ctx->tcg, op, 0, 2);
-+        op2 = opt_insert_before(ctx, op, 0, 2);
+ TCGOp *tcg_op_insert_after(TCGContext *s, TCGOp *old_op,
+-                           TCGOpcode opc, unsigned nargs)
++                           TCGOpcode opc, TCGType type, unsigned nargs)
+ {
+     TCGOp *new_op = tcg_op_alloc(opc, nargs);
  
-         tcg_opt_gen_movi(ctx, op, rl, al);
-         tcg_opt_gen_movi(ctx, op2, rh, ah);
-@@ -2096,7 +2108,7 @@ static bool fold_multiply2(OptContext *ctx, TCGOp *op)
-         rh = op->args[1];
+-    TCGOP_TYPE(new_op) = TCGOP_TYPE(old_op);
++    TCGOP_TYPE(new_op) = type;
+     QTAILQ_INSERT_AFTER(&s->ops, old_op, new_op, link);
+     return new_op;
+ }
+@@ -4214,7 +4214,8 @@ liveness_pass_2(TCGContext *s)
+                 TCGOpcode lopc = (arg_ts->type == TCG_TYPE_I32
+                                   ? INDEX_op_ld_i32
+                                   : INDEX_op_ld_i64);
+-                TCGOp *lop = tcg_op_insert_before(s, op, lopc, 3);
++                TCGOp *lop = tcg_op_insert_before(s, op, lopc,
++                                                  arg_ts->type, 3);
  
-         /* The proper opcode is supplied by tcg_opt_gen_mov. */
--        op2 = tcg_op_insert_before(ctx->tcg, op, 0, 2);
-+        op2 = opt_insert_before(ctx, op, 0, 2);
+                 lop->args[0] = temp_arg(dir_ts);
+                 lop->args[1] = temp_arg(arg_ts->mem_base);
+@@ -4277,7 +4278,8 @@ liveness_pass_2(TCGContext *s)
+                     TCGOpcode sopc = (arg_ts->type == TCG_TYPE_I32
+                                       ? INDEX_op_st_i32
+                                       : INDEX_op_st_i64);
+-                    TCGOp *sop = tcg_op_insert_after(s, op, sopc, 3);
++                    TCGOp *sop = tcg_op_insert_after(s, op, sopc,
++                                                     arg_ts->type, 3);
+                     TCGTemp *out_ts = dir_ts;
  
-         tcg_opt_gen_movi(ctx, op, rl, l);
-         tcg_opt_gen_movi(ctx, op2, rh, h);
-@@ -2406,7 +2418,7 @@ static void fold_setcond_tst_pow2(OptContext *ctx, TCGOp *op, bool neg)
-         op->args[3] = 1;
-     } else {
-         if (sh) {
--            op2 = tcg_op_insert_before(ctx->tcg, op, shr_opc, 3);
-+            op2 = opt_insert_before(ctx, op, shr_opc, 3);
-             op2->args[0] = ret;
-             op2->args[1] = src1;
-             op2->args[2] = arg_new_constant(ctx, sh);
-@@ -2418,17 +2430,17 @@ static void fold_setcond_tst_pow2(OptContext *ctx, TCGOp *op, bool neg)
-     }
+                     if (IS_DEAD_ARG(0)) {
+@@ -4313,7 +4315,8 @@ liveness_pass_2(TCGContext *s)
+                     TCGOpcode sopc = (arg_ts->type == TCG_TYPE_I32
+                                       ? INDEX_op_st_i32
+                                       : INDEX_op_st_i64);
+-                    TCGOp *sop = tcg_op_insert_after(s, op, sopc, 3);
++                    TCGOp *sop = tcg_op_insert_after(s, op, sopc,
++                                                     arg_ts->type, 3);
  
-     if (neg && inv) {
--        op2 = tcg_op_insert_after(ctx->tcg, op, sub_opc, 3);
-+        op2 = opt_insert_after(ctx, op, sub_opc, 3);
-         op2->args[0] = ret;
-         op2->args[1] = ret;
-         op2->args[2] = arg_new_constant(ctx, 1);
-     } else if (inv) {
--        op2 = tcg_op_insert_after(ctx->tcg, op, xor_opc, 3);
-+        op2 = opt_insert_after(ctx, op, xor_opc, 3);
-         op2->args[0] = ret;
-         op2->args[1] = ret;
-         op2->args[2] = arg_new_constant(ctx, 1);
-     } else if (neg) {
--        op2 = tcg_op_insert_after(ctx->tcg, op, neg_opc, 2);
-+        op2 = opt_insert_after(ctx, op, neg_opc, 2);
-         op2->args[0] = ret;
-         op2->args[1] = ret;
-     }
+                     sop->args[0] = temp_arg(dir_ts);
+                     sop->args[1] = temp_arg(arg_ts->mem_base);
 -- 
 2.43.0
 
