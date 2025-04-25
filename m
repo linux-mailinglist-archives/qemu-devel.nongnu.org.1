@@ -2,57 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04FF5A9C26A
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 10:56:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D26FA9C23A
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 10:54:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8Eit-0002sv-Ag; Fri, 25 Apr 2025 04:47:51 -0400
+	id 1u8Eis-0002sW-9W; Fri, 25 Apr 2025 04:47:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u8Eip-0002rU-IX
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u8Eip-0002rV-I6
  for qemu-devel@nongnu.org; Fri, 25 Apr 2025 04:47:47 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u8Eil-0003EL-6K
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u8Eim-0003EQ-Fe
  for qemu-devel@nongnu.org; Fri, 25 Apr 2025 04:47:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745570860;
+ s=mimecast20190719; t=1745570861;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ku80WnsyoY1yoKJVZbi1RE32bDtPSkPy28YgWR2YXGE=;
- b=MwITkoqgmQDd99EnPId/mCR2ctfhvAOmb4jYnVXeHERYCjEdx0Q4meRtYPfYvJgC4Rw0ET
- F9jbJmIgHkDdLnsK1bjRfpRwwCjYO40aSo0quH9fM9BPWkZ/G/w6xOtDm2DQnAZYf6y0gQ
- vMwy4aERtKJBbcFU1I7WiY5XxEgmxic=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=8cxLXqQWGxONyUm7QCDXODzWCXomUnP/zkxG1RLXQw0=;
+ b=drNVJDjGa/L5btoe9ftvVymWvDRtCc8RxIybVoZGIywd/6Cj8fXRnqZrIgZelsdsJ8mOmg
+ mIlVV2rKWHAGPASJIO6s5irBOvnIYrWA/2bj8XIqAy6s1+Y1Xtbk5TEbTNigi+nc/KbfG3
+ CFG4qwrUXuvgf2ZbugxolCllVLegcbQ=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-UJ2lJQuFPaCkK0J4QNFL5g-1; Fri,
- 25 Apr 2025 04:47:35 -0400
-X-MC-Unique: UJ2lJQuFPaCkK0J4QNFL5g-1
-X-Mimecast-MFC-AGG-ID: UJ2lJQuFPaCkK0J4QNFL5g_1745570854
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-491-Z8SBxffyOLKKa2Zsql1lAQ-1; Fri,
+ 25 Apr 2025 04:47:37 -0400
+X-MC-Unique: Z8SBxffyOLKKa2Zsql1lAQ-1
+X-Mimecast-MFC-AGG-ID: Z8SBxffyOLKKa2Zsql1lAQ_1745570856
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 180431956087; Fri, 25 Apr 2025 08:47:34 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 85D1F1800877; Fri, 25 Apr 2025 08:47:36 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.33.65])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3A0E930001A2; Fri, 25 Apr 2025 08:47:31 +0000 (UTC)
+ id 93BAE30001A2; Fri, 25 Apr 2025 08:47:34 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  John Levon <john.levon@nutanix.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PULL 12/50] vfio: Introduce a new header file for VFIOdisplay
- declarations
-Date: Fri, 25 Apr 2025 10:46:05 +0200
-Message-ID: <20250425084644.102196-13-clg@redhat.com>
+Subject: [PULL 13/50] vfio: Move VFIOHostDMAWindow definition into spapr.c
+Date: Fri, 25 Apr 2025 10:46:06 +0200
+Message-ID: <20250425084644.102196-14-clg@redhat.com>
 In-Reply-To: <20250425084644.102196-1-clg@redhat.com>
 References: <20250425084644.102196-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -84,142 +83,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Gather all VFIOdisplay related declarations into "vfio-display.h" to
-reduce exposure of VFIO internals in "hw/vfio/vfio-common.h".
+VFIOHostDMAWindow is only used in file "spapr.c". Move it there.
 
 Reviewed-by: John Levon <john.levon@nutanix.com>
-Link: https://lore.kernel.org/qemu-devel/20250318095415.670319-8-clg@redhat.com
+Link: https://lore.kernel.org/qemu-devel/20250318095415.670319-9-clg@redhat.com
 Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Link: https://lore.kernel.org/qemu-devel/20250326075122.1299361-9-clg@redhat.com
+Link: https://lore.kernel.org/qemu-devel/20250326075122.1299361-10-clg@redhat.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/pci.h                 |  1 +
- hw/vfio/vfio-display.h        | 41 +++++++++++++++++++++++++++++++++++
- include/hw/vfio/vfio-common.h | 28 ------------------------
- hw/vfio/display.c             |  2 +-
- 4 files changed, 43 insertions(+), 29 deletions(-)
- create mode 100644 hw/vfio/vfio-display.h
+ include/hw/vfio/vfio-common.h | 7 -------
+ hw/vfio/spapr.c               | 7 +++++++
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
-index 6c59300248f279f56cff46874085992eeb3f82f9..62fd5f49978845ba24613ada972e625e629c5080 100644
---- a/hw/vfio/pci.h
-+++ b/hw/vfio/pci.h
-@@ -20,6 +20,7 @@
- #include "qemu/timer.h"
- #include "qom/object.h"
- #include "system/kvm.h"
-+#include "vfio-display.h"
- 
- #define PCI_ANY_ID (~0)
- 
-diff --git a/hw/vfio/vfio-display.h b/hw/vfio/vfio-display.h
-new file mode 100644
-index 0000000000000000000000000000000000000000..99b8cb67ef7558d3eefe3105a831e3fcb30afc4d
---- /dev/null
-+++ b/hw/vfio/vfio-display.h
-@@ -0,0 +1,41 @@
-+/*
-+ * VFIO display
-+ *
-+ * Copyright Red Hat, Inc. 2025
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef HW_VFIO_VFIO_DISPLAY_H
-+#define HW_VFIO_VFIO_DISPLAY_H
-+
-+#include "ui/console.h"
-+#include "hw/display/ramfb.h"
-+
-+typedef struct VFIODMABuf {
-+    QemuDmaBuf *buf;
-+    uint32_t pos_x, pos_y, pos_updates;
-+    uint32_t hot_x, hot_y, hot_updates;
-+    int dmabuf_id;
-+    QTAILQ_ENTRY(VFIODMABuf) next;
-+} VFIODMABuf;
-+
-+typedef struct VFIODisplay {
-+    QemuConsole *con;
-+    RAMFBState *ramfb;
-+    struct vfio_region_info *edid_info;
-+    struct vfio_region_gfx_edid *edid_regs;
-+    uint8_t *edid_blob;
-+    QEMUTimer *edid_link_timer;
-+    struct {
-+        VFIORegion buffer;
-+        DisplaySurface *surface;
-+    } region;
-+    struct {
-+        QTAILQ_HEAD(, VFIODMABuf) bufs;
-+        VFIODMABuf *primary;
-+        VFIODMABuf *cursor;
-+    } dmabuf;
-+} VFIODisplay;
-+
-+#endif /* HW_VFIO_VFIO_DISPLAY_H */
 diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index fa0b74d5eac53cc49e9da97007cc36ca7b8d8611..528eafadf9f2886d567584c45cc3fc749ef8ddd7 100644
+index 528eafadf9f2886d567584c45cc3fc749ef8ddd7..83b1f7be805998c00f02d5b264a4171b51c1d55c 100644
 --- a/include/hw/vfio/vfio-common.h
 +++ b/include/hw/vfio/vfio-common.h
-@@ -23,8 +23,6 @@
+@@ -69,13 +69,6 @@ typedef struct VFIOContainer {
  
- #include "system/memory.h"
- #include "qemu/queue.h"
--#include "ui/console.h"
--#include "hw/display/ramfb.h"
- #ifdef CONFIG_LINUX
- #include <linux/vfio.h>
- #endif
-@@ -182,32 +180,6 @@ typedef struct VFIOGroup {
- #define TYPE_HOST_IOMMU_DEVICE_IOMMUFD_VFIO \
-             TYPE_HOST_IOMMU_DEVICE_IOMMUFD "-vfio"
+ OBJECT_DECLARE_SIMPLE_TYPE(VFIOContainer, VFIO_IOMMU_LEGACY);
  
--typedef struct VFIODMABuf {
--    QemuDmaBuf *buf;
--    uint32_t pos_x, pos_y, pos_updates;
--    uint32_t hot_x, hot_y, hot_updates;
--    int dmabuf_id;
--    QTAILQ_ENTRY(VFIODMABuf) next;
--} VFIODMABuf;
+-typedef struct VFIOHostDMAWindow {
+-    hwaddr min_iova;
+-    hwaddr max_iova;
+-    uint64_t iova_pgsizes;
+-    QLIST_ENTRY(VFIOHostDMAWindow) hostwin_next;
+-} VFIOHostDMAWindow;
 -
--typedef struct VFIODisplay {
--    QemuConsole *con;
--    RAMFBState *ramfb;
--    struct vfio_region_info *edid_info;
--    struct vfio_region_gfx_edid *edid_regs;
--    uint8_t *edid_blob;
--    QEMUTimer *edid_link_timer;
--    struct {
--        VFIORegion buffer;
--        DisplaySurface *surface;
--    } region;
--    struct {
--        QTAILQ_HEAD(, VFIODMABuf) bufs;
--        VFIODMABuf *primary;
--        VFIODMABuf *cursor;
--    } dmabuf;
--} VFIODisplay;
--
- VFIOAddressSpace *vfio_get_address_space(AddressSpace *as);
- void vfio_put_address_space(VFIOAddressSpace *space);
- void vfio_address_space_insert(VFIOAddressSpace *space,
-diff --git a/hw/vfio/display.c b/hw/vfio/display.c
-index 4fdcef505da59477e52df14ff9e611797bac162c..70cfd685bd049aadf97b73d06086a0e44eb3f9cb 100644
---- a/hw/vfio/display.c
-+++ b/hw/vfio/display.c
-@@ -16,9 +16,9 @@
+ typedef struct IOMMUFDBackend IOMMUFDBackend;
  
- #include "qemu/error-report.h"
- #include "hw/display/edid.h"
--#include "ui/console.h"
+ typedef struct VFIOIOASHwpt {
+diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
+index 7e5cb95f6a48ff87a0fddd62f9c3c297b790049d..f21955a3442b956bdcb2964b0042a12e2ac8a03d 100644
+--- a/hw/vfio/spapr.c
++++ b/hw/vfio/spapr.c
+@@ -22,6 +22,13 @@
  #include "qapi/error.h"
- #include "pci.h"
-+#include "vfio-display.h"
  #include "trace.h"
  
- #ifndef DRM_PLANE_TYPE_PRIMARY
++typedef struct VFIOHostDMAWindow {
++    hwaddr min_iova;
++    hwaddr max_iova;
++    uint64_t iova_pgsizes;
++    QLIST_ENTRY(VFIOHostDMAWindow) hostwin_next;
++} VFIOHostDMAWindow;
++
+ typedef struct VFIOSpaprContainer {
+     VFIOContainer container;
+     MemoryListener prereg_listener;
 -- 
 2.49.0
 
