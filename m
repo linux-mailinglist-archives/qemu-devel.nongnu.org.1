@@ -2,71 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AF34A9C100
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 10:30:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62822A9C1F3
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 10:49:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8EQc-0005SA-DL; Fri, 25 Apr 2025 04:28:58 -0400
+	id 1u8EiQ-0002hw-Ca; Fri, 25 Apr 2025 04:47:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1u8EQY-0005Qc-St
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 04:28:54 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1u8EQW-0000si-1O
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 04:28:54 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8CxG6y5RwtoP_DFAA--.33604S3;
- Fri, 25 Apr 2025 16:28:41 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by front1 (Coremail) with SMTP id qMiowMAxzxu2RwtoedqUAA--.58220S3;
- Fri, 25 Apr 2025 16:28:41 +0800 (CST)
-Subject: Re: [PATCH v2 03/16] hw/intc/loongarch_pch: Remove some duplicate
- macro
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
-References: <20250324093730.3683378-1-maobibo@loongson.cn>
- <20250324093730.3683378-4-maobibo@loongson.cn>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <6831bc3e-b681-00a8-18b4-6903d5faffa5@loongson.cn>
-Date: Fri, 25 Apr 2025 16:31:17 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u8Ei9-0002gn-U1
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 04:47:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1u8Ei6-0003AA-Gt
+ for qemu-devel@nongnu.org; Fri, 25 Apr 2025 04:47:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1745570817;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=sgm3hN8CPcZYOnubr0ezLc6scsHZe862J6vWnHPZcdE=;
+ b=aP6x6hsy5sItJCw+mcdazQWjXH4YDhZxTPBB08EYoXkiZUoYWsV0ifra+foE8y7FMwF1v/
+ lFDN4uxzlWjYKj+EUmCfM5cSWPzYYq3AQdUCEivgtLPqvRds3FFPdCcelg1vJn/iU/p5Id
+ b3NfYUG72ZTzarwozlSBHvjXH5SsL9M=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-581-bi9IDfisOAiAdnLW_WWk3g-1; Fri,
+ 25 Apr 2025 04:46:54 -0400
+X-MC-Unique: bi9IDfisOAiAdnLW_WWk3g-1
+X-Mimecast-MFC-AGG-ID: bi9IDfisOAiAdnLW_WWk3g_1745570813
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 910EE19560AF
+ for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 08:46:52 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.44.33.65])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id AB1C230001A2; Fri, 25 Apr 2025 08:46:50 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 00/50] vfio queue
+Date: Fri, 25 Apr 2025 10:45:53 +0200
+Message-ID: <20250425084644.102196-1-clg@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20250324093730.3683378-4-maobibo@loongson.cn>
-Content-Type: text/plain; charset=gbk; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: qMiowMAxzxu2RwtoedqUAA--.58220S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxCr48Zryrtw4DKryUur4UGFX_yoW5Aw18pF
- ZxAFWagF4DGry7XFn2ya45Zrn7J3ZrWr9F9anIkryrGrs8X34xWF1kJ3yagF1UK3y3Jryv
- gFsxua4a9F4UXFbCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
- 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AK
- xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
- AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
- 14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF1lIx
- kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
- wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
- 4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8czVUUU
- UUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-2.215, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
+X-Spam_bar: --
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.84,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,91 +79,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ÔÚ 2025/3/24 ÏÂÎç5:37, Bibo Mao Ð´µÀ:
-> The meaning of macro definition STATUS_LO_START is simliar with
-> PCH_PIC_INT_STATUS, only that offset is different, the same for
-> macro POL_LO_START. Now remove these duplicated macro definitions.
->
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> ---
->   hw/intc/loongarch_pch_pic.c            | 20 ++++++++++----------
->   include/hw/intc/loongarch_pic_common.h |  5 -----
->   2 files changed, 10 insertions(+), 15 deletions(-)
-Reviewed-by: Song Gao <gaosong@loongson.cn>
+The following changes since commit 019fbfa4bcd2d3a835c241295e22ab2b5b56129b:
 
-Thanks.
-Song Gao
-> diff --git a/hw/intc/loongarch_pch_pic.c b/hw/intc/loongarch_pch_pic.c
-> index 4c845ba5e9..a2d9930ac9 100644
-> --- a/hw/intc/loongarch_pch_pic.c
-> +++ b/hw/intc/loongarch_pch_pic.c
-> @@ -208,19 +208,19 @@ static uint64_t loongarch_pch_pic_high_readw(void *opaque, hwaddr addr,
->   {
->       LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(opaque);
->       uint64_t val = 0;
-> -    uint32_t offset = addr & 0xfff;
-> +    uint32_t offset = addr + PCH_PIC_INT_STATUS;
->   
->       switch (offset) {
-> -    case STATUS_LO_START:
-> +    case PCH_PIC_INT_STATUS:
->           val = (uint32_t)(s->intisr & (~s->int_mask));
->           break;
-> -    case STATUS_HI_START:
-> +    case PCH_PIC_INT_STATUS + 4:
->           val = (s->intisr & (~s->int_mask)) >> 32;
->           break;
-> -    case POL_LO_START:
-> +    case PCH_PIC_INT_POL:
->           val = (uint32_t)s->int_polarity;
->           break;
-> -    case POL_HI_START:
-> +    case PCH_PIC_INT_POL + 4:
->           val = s->int_polarity >> 32;
->           break;
->       default:
-> @@ -236,21 +236,21 @@ static void loongarch_pch_pic_high_writew(void *opaque, hwaddr addr,
->   {
->       LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(opaque);
->       uint32_t offset, data = (uint32_t)value;
-> -    offset = addr & 0xfff;
-> +    offset = addr + PCH_PIC_INT_STATUS;
->   
->       trace_loongarch_pch_pic_high_writew(size, addr, data);
->   
->       switch (offset) {
-> -    case STATUS_LO_START:
-> +    case PCH_PIC_INT_STATUS:
->           s->intisr = get_writew_val(s->intisr, data, 0);
->           break;
-> -    case STATUS_HI_START:
-> +    case PCH_PIC_INT_STATUS + 4:
->           s->intisr = get_writew_val(s->intisr, data, 1);
->           break;
-> -    case POL_LO_START:
-> +    case PCH_PIC_INT_POL:
->           s->int_polarity = get_writew_val(s->int_polarity, data, 0);
->           break;
-> -    case POL_HI_START:
-> +    case PCH_PIC_INT_POL + 4:
->           s->int_polarity = get_writew_val(s->int_polarity, data, 1);
->           break;
->       default:
-> diff --git a/include/hw/intc/loongarch_pic_common.h b/include/hw/intc/loongarch_pic_common.h
-> index b33bebb129..ef6edc15bf 100644
-> --- a/include/hw/intc/loongarch_pic_common.h
-> +++ b/include/hw/intc/loongarch_pic_common.h
-> @@ -26,11 +26,6 @@
->   #define PCH_PIC_INT_STATUS              0x3a0
->   #define PCH_PIC_INT_POL                 0x3e0
->   
-> -#define STATUS_LO_START                 0
-> -#define STATUS_HI_START                 0x4
-> -#define POL_LO_START                    0x40
-> -#define POL_HI_START                    0x44
-> -
->   #define TYPE_LOONGARCH_PIC_COMMON "loongarch_pic_common"
->   OBJECT_DECLARE_TYPE(LoongArchPICCommonState,
->                       LoongArchPICCommonClass, LOONGARCH_PIC_COMMON)
+  Merge tag 'pull-misc-2025-04-24' of https://repo.or.cz/qemu/armbru into staging (2025-04-24 13:44:57 -0400)
+
+are available in the Git repository at:
+
+  https://github.com/legoater/qemu/ tags/pull-vfio-20250425
+
+for you to fetch changes up to a9d270f6b85bab40d388fe5244f02d145759cc08:
+
+  vfio: refactor out vfio_pci_config_setup() (2025-04-25 09:01:38 +0200)
+
+----------------------------------------------------------------
+vfio queue:
+
+* Updated IGD passthrough documentation
+* Fixed L2 crash on pseries machines
+* Reorganized code and renamed services
+* Moved HostIOMMUDevice realize after device attachement to help
+  adding support for nested IOMMU
+* Fixed CPR registration with IOMMUFD backend
+* Refactored vfio-pci code to prepare ground for vfio-user
+
+----------------------------------------------------------------
+Amit Machhiwal (2):
+      vfio/spapr: Enhance error handling in vfio_spapr_create_window()
+      vfio/spapr: Fix L2 crash with PCI device passthrough and memory > 128G
+
+CÃ©dric Le Goater (39):
+      vfio: Open code vfio_migration_set_error()
+      vfio: Move vfio_mig_active() into migration.c
+      vfio: Rename vfio_reset_bytes_transferred()
+      vfio: Introduce a new header file for external migration services
+      vfio: Make vfio_un/block_multiple_devices_migration() static
+      vfio: Make vfio_viommu_preset() static
+      vfio: Introduce a new header file for internal migration services
+      vfio: Move vfio_device_state_is_running/precopy() into migration.c
+      vfio: Introduce a new header file for VFIOdisplay declarations
+      vfio: Move VFIOHostDMAWindow definition into spapr.c
+      vfio: Introduce a new header file for VFIOIOMMUFD declarations
+      vfio: Introduce new files for VFIORegion definitions and declarations
+      vfio: Introduce a new header file for VFIOcontainer declarations
+      vfio: Make vfio_group_list static
+      vfio: Move VFIOAddressSpace helpers into container-base.c
+      vfio: Move Host IOMMU type declarations into their respective files
+      vfio: Introduce a new header file for helper services
+      vfio: Move vfio_get_info_dma_avail() into helpers.c
+      vfio: Move vfio_kvm_device_add/del_fd() to helpers.c
+      vfio: Move vfio_get_device_info() to helpers.c
+      vfio: Introduce a new file for VFIODevice definitions
+      vfio: Introduce new files for CPR definitions and declarations
+      vfio: Move vfio_kvm_device_fd() into helpers.c
+      vfio: Move vfio_device_list into device.c
+      vfio: Move vfio_de/attach_device() into device.c
+      vfio: Move vfio_reset_handler() into device.c
+      vfio: Move dirty tracking related services into container-base.c
+      vfio: Make vfio_devices_query_dirty_bitmap() static
+      vfio: Make vfio_container_query_dirty_bitmap() static
+      vfio: Rename vfio_devices_all_dirty_tracking_started()
+      vfio: Rename vfio_devices_all_device_dirty_tracking()
+      vfio: Rename vfio_get_dirty_bitmap()
+      vfio: Introduce new files for VFIO MemoryListener
+      vfio: Rename RAM discard related services
+      vfio: Introduce vfio_listener_un/register() routines
+      vfio: Rename vfio-common.h to vfio-device.h
+      vfio: Rename VFIODevice related services
+      vfio: Rename VFIOContainer related services
+      MAINTAINERS: Add a maintainer for util/vfio-helpers.c
+
+John Levon (2):
+      vfio: refactor out vfio_interrupt_setup()
+      vfio: refactor out vfio_pci_config_setup()
+
+Tomita Moeko (1):
+      vfio/igd: Update IGD passthrough documentation
+
+Zhenzhong Duan (6):
+      vfio/iommufd: Make a separate call to get IOMMU capabilities
+      vfio/iommufd: Move realize() after attachment
+      vfio/container: Move realize() after attachment
+      vfio: Cleanup host IOMMU device creation
+      vfio: Remove hiod_typename property
+      vfio: Register/unregister container for CPR only once for each container
+
+ MAINTAINERS                           |   1 +
+ docs/igd-assign.txt                   | 265 +++++++++----
+ hw/vfio/migration-multifd.h           |   2 +-
+ hw/vfio/pci.h                         |   4 +-
+ hw/vfio/vfio-cpr.h                    |  15 +
+ hw/vfio/vfio-display.h                |  42 ++
+ hw/vfio/vfio-helpers.h                |  35 ++
+ hw/vfio/vfio-iommufd.h                |  34 ++
+ hw/vfio/vfio-listener.h               |  15 +
+ hw/vfio/vfio-migration-internal.h     |  74 ++++
+ include/hw/s390x/vfio-ccw.h           |   2 +-
+ include/hw/vfio/vfio-common.h         | 346 -----------------
+ include/hw/vfio/vfio-container-base.h |  15 +-
+ include/hw/vfio/vfio-container.h      |  36 ++
+ include/hw/vfio/vfio-device.h         | 150 ++++++++
+ include/hw/vfio/vfio-migration.h      |  16 +
+ include/hw/vfio/vfio-platform.h       |   4 +-
+ include/hw/vfio/vfio-region.h         |  47 +++
+ backends/iommufd.c                    |   2 +-
+ hw/core/sysbus-fdt.c                  |   1 +
+ hw/ppc/spapr_pci_vfio.c               |   6 +-
+ hw/s390x/s390-pci-vfio.c              |   3 +-
+ hw/vfio/ap.c                          |  14 +-
+ hw/vfio/ccw.c                         |  30 +-
+ hw/vfio/container-base.c              | 192 +++++++++-
+ hw/vfio/container.c                   | 144 +++----
+ hw/vfio/cpr.c                         |   3 +-
+ hw/vfio/device.c                      | 400 +++++++++++++++++++
+ hw/vfio/display.c                     |  10 +-
+ hw/vfio/helpers.c                     | 702 ++++------------------------------
+ hw/vfio/igd.c                         |  10 +-
+ hw/vfio/iommufd.c                     |  55 +--
+ hw/vfio/{common.c => listener.c}      | 510 +++---------------------
+ hw/vfio/migration-multifd.c           |   7 +-
+ hw/vfio/migration.c                   | 108 +++++-
+ hw/vfio/pci.c                         | 283 +++++++-------
+ hw/vfio/platform.c                    |  15 +-
+ hw/vfio/region.c                      | 395 +++++++++++++++++++
+ hw/vfio/spapr.c                       |  79 ++--
+ migration/target.c                    |   8 +-
+ hw/vfio/meson.build                   |  10 +-
+ hw/vfio/trace-events                  |  36 +-
+ 42 files changed, 2290 insertions(+), 1836 deletions(-)
+ create mode 100644 hw/vfio/vfio-cpr.h
+ create mode 100644 hw/vfio/vfio-display.h
+ create mode 100644 hw/vfio/vfio-helpers.h
+ create mode 100644 hw/vfio/vfio-iommufd.h
+ create mode 100644 hw/vfio/vfio-listener.h
+ create mode 100644 hw/vfio/vfio-migration-internal.h
+ delete mode 100644 include/hw/vfio/vfio-common.h
+ create mode 100644 include/hw/vfio/vfio-container.h
+ create mode 100644 include/hw/vfio/vfio-device.h
+ create mode 100644 include/hw/vfio/vfio-migration.h
+ create mode 100644 include/hw/vfio/vfio-region.h
+ create mode 100644 hw/vfio/device.c
+ rename hw/vfio/{common.c => listener.c} (74%)
+ create mode 100644 hw/vfio/region.c
 
 
