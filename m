@@ -2,93 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57D91A9C489
-	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 12:00:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DBBDA9C801
+	for <lists+qemu-devel@lfdr.de>; Fri, 25 Apr 2025 13:44:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8Fqr-0005Bl-BC; Fri, 25 Apr 2025 06:00:09 -0400
+	id 1u8HU6-0001Hr-Ai; Fri, 25 Apr 2025 07:44:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8Fqo-0005At-T6
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 06:00:07 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u8Fqm-0002pr-Ho
- for qemu-devel@nongnu.org; Fri, 25 Apr 2025 06:00:06 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-43cef035a3bso13860445e9.1
- for <qemu-devel@nongnu.org>; Fri, 25 Apr 2025 03:00:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745575203; x=1746180003; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=jxdmkHEq0pFQGxDjTDaZiXSaDwdSP8VoH1JzK7bL3tM=;
- b=d+QjrmFInkyZYLtKNiqtqeOWRkgjxIimSBV5EcEuaWREcok64a/lHApl9vY+hJsKlf
- G8cSTHuNsw8Jw9rddhsLZnGP75eVbqwZLf5giSiPVhRoluosUNoy464qYluFYDViXCOm
- 1ehhUtOfYONcRIs67919VsG67C5CADUVHG0EVP9u6iv0Fdvy32eg2Tc9skt7eUpyr8BS
- j4/zxu/TTt8I1G0PzV98l4eIbLJNyaEPn8atoR5Q2BkVpvqnoMvNqf7hhE+r/UMsFuS4
- LJBb5ypvsAw0vbkfnlxnq051fGEikrgxmR5eITa6Nbl6xWmc2GVU4QOwoOVqdto6U0Zr
- kpuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745575203; x=1746180003;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jxdmkHEq0pFQGxDjTDaZiXSaDwdSP8VoH1JzK7bL3tM=;
- b=tbeV2I+X3bH2XYYDGQrXXRnTJsmi3A7dM1UbRI2sGuZpZ+IfCzV9hyRWcAHKP4ni2w
- ZEGYG1PTkSUp+jL8j9ciiZidATpc79MxWWBxTaJf/f1bLPc8KBiI/nsRFkLO0R5Tqa3e
- AFXdg2T7vxi97jviM1C8sio+i+Qc2/BQIgl3hvo7JBnD2r95O8kazLGZ2w/oQThhohBT
- JiTq19oCaFqnzUk544wrdG0utKc4QbOAVl/ZgNyu5euUohi5EEReLCF6GeDMP4A+Z+MN
- NgAdPwNq/4AJ0QhMRy1rVlF+4E35HzKhelyPESOIUITN6NhzroBq+agP6msl/Bz7h3LB
- RQ5g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVa33C8Bw2yhFz1S40chaJHUE3LM6Ykn/zZU2MBtmIHjnUyA8CypyMzWjCFqHoc7uiMLOnSkMWZItGx@nongnu.org
-X-Gm-Message-State: AOJu0YzrcYLs492eaNhiHNm6gEUzpS5OxxQQ9cQNKGzgZcoTwL3OuBSF
- GMQcqmARv54DYDJ0lVmvUvzrKDmHCFLuu+8hR1cL6k2j2uvwlFuq0EZu/sy3DYg=
-X-Gm-Gg: ASbGncu5uYEqqA/nQXdgH0VrD2ZPg7YHxg/+mxKI1Oo/ZtsCJbjks/tfVOrKnVNtJvm
- cE60U9BMqF2B95cRXH2roWO13ur7jQJUyKVp5vsCnAiNBKVnRZ2QYjDknNgFnllSiul0TEPOymX
- 8B5hBzX+FDGJv7+80OJR2Ng5H3J4/JVDrjAN3ovRpTJXvL30UQxOufvj9i+Vj5svfXwKLxeGclB
- +4oKDKRHtymlJnpqPuUjJjUiKGEwXfmRhLScG0LClKrES+PeDxVzxMv1jCbA/xR+Ex2b/LUYGS2
- tf3b3JBo7Wz+CtLXQkjYXw3ot1wfvG7KMu2n/Vtk3qGPeOLjzEtnD8f/Er5i84oHYSmAosm4oE4
- m+ncDfSVpjtrJdA==
-X-Google-Smtp-Source: AGHT+IG5kOb23QnP7zoG7jSNMxnY+XHcDOw/3vWB9yhmNzAimCOjeNvn8IHq2TKeLvC7EmD+cMdkOg==
-X-Received: by 2002:a05:600c:c8d:b0:43d:9d5:474d with SMTP id
- 5b1f17b1804b1-440a63470c6mr15520275e9.0.1745575202707; 
- Fri, 25 Apr 2025 03:00:02 -0700 (PDT)
-Received: from [192.168.69.169] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4409d2ac27dsm51270175e9.22.2025.04.25.02.59.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 25 Apr 2025 03:00:01 -0700 (PDT)
-Message-ID: <747b53e3-2913-4a51-95d0-1a8b67de2d4a@linaro.org>
-Date: Fri, 25 Apr 2025 11:59:59 +0200
+ (Exim 4.90_1) (envelope-from <wangran@bosc.ac.cn>)
+ id 1u8D9R-0000hz-PJ; Fri, 25 Apr 2025 03:07:09 -0400
+Received: from out28-121.mail.aliyun.com ([115.124.28.121])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <wangran@bosc.ac.cn>)
+ id 1u8D9N-000890-63; Fri, 25 Apr 2025 03:07:09 -0400
+Received: from 172.38.29.63(mailfrom:wangran@bosc.ac.cn
+ fp:SMTPD_---.cWQHKaY_1745564503 cluster:ay29) by smtp.aliyun-inc.com;
+ Fri, 25 Apr 2025 15:01:44 +0800
+Message-ID: <f39a07eb-e63d-4373-ab7a-fd83fab37c68@bosc.ac.cn>
+Date: Fri, 25 Apr 2025 15:01:42 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/3] Enable QEMU NVMe userspace driver on s390x
-To: Farhan Ali <alifm@linux.ibm.com>, qemu-devel@nongnu.org,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Cc: stefanha@redhat.com, mjrosato@linux.ibm.com, schnelle@linux.ibm.com,
- kwolf@redhat.com, hreitz@redhat.com, thuth@redhat.com, fam@euphon.net
-References: <20250417173801.827-1-alifm@linux.ibm.com>
- <15457df6-11fd-41d4-9cb1-14e4473c1866@linux.ibm.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <15457df6-11fd-41d4-9cb1-14e4473c1866@linux.ibm.com>
+Subject: Re: [PATCH v3 1/2] target/riscv: Add BOSC's Xiangshan Kunminghu CPU
+To: Alistair Francis <alistair23@gmail.com>, Huang Borong <3543977024@qq.com>
+Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
+ liwei1518@gmail.com, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, qemu-devel@nongnu.org
+References: <20250408022121.173531-1-huangborong@bosc.ac.cn>
+ <CAKmqyKOwbLJrRTkVrGO8+Kd-5SAEj1GU7ToytB8b66b_gbADHg@mail.gmail.com>
+From: Ran Wang <wangran@bosc.ac.cn>
+In-Reply-To: <CAKmqyKOwbLJrRTkVrGO8+Kd-5SAEj1GU7ToytB8b66b_gbADHg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=115.124.28.121; envelope-from=wangran@bosc.ac.cn;
+ helo=out28-121.mail.aliyun.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 25 Apr 2025 07:44:38 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,94 +60,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/4/25 18:24, Farhan Ali wrote:
-> Hi Alex,
+Hi Alistair
 
-Cc'ing Cédric as co-maintainer with Alex.
+On 2025/4/24 18:49, Alistair Francis wrote:
+> On Tue, Apr 8, 2025 at 12:23 PM Huang Borong <huangborong@bosc.ac.cn> wrote:
+>>
+>> Add a CPU entry for the Xiangshan Kunminghu CPU, an open-source,
+>> high-performance RISC-V processor. More details can be found at:
 
+<snip>
+
+>> +    cpu->cfg.ext_ssaia = true;
+>> +
+>> +    /* RVA23 Profiles */
+>> +    cpu->cfg.ext_zicbom = true;
+>> +    cpu->cfg.ext_zicbop = true;
+>> +    cpu->cfg.ext_zicboz = true;
+>> +    cpu->cfg.ext_svade = true;
+>> +
+>> +#ifndef CONFIG_USER_ONLY
+>> +    set_satp_mode_max_supported(cpu, VM_1_10_SV48);
+>> +#endif
+>> +}
+>> +
 > 
-> Polite ping. Please let me know if there are any concerns with this 
-> version of the patches.
+> Sorry about this, but we just merged a new way of defining CPU types.
+> Can you please rebase on
+> https://github.com/alistair23/qemu/tree/riscv-to-apply.next to use the
+> new macros? It shouldn't be much work, just a little restructuring.
 > 
-> Thanks
+> When sending a new version can you also include a cover letter [1]
 > 
-> Farhan
+> 1: https://www.qemu.org/docs/master/devel/submitting-a-patch.html#include-a-meaningful-cover-letter
+
+Sure, Borong just left BOSC and I will take over his job and send out 
+next version patch mail later.
+
+Thanks & Regards,
+
+Ran
+
+> Alistair
 > 
-> On 4/17/2025 10:37 AM, Farhan Ali wrote:
->> Hi,
+>>   #ifdef CONFIG_TCG
+>>   static void rv128_base_cpu_init(Object *obj)
+>>   {
+>> @@ -3261,6 +3331,8 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+>>       DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_VEYRON_V1,  MXL_RV64,  rv64_veyron_v1_cpu_init),
+>>       DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_XIANGSHAN_NANHU,
+>>                                                    MXL_RV64, rv64_xiangshan_nanhu_cpu_init),
+>> +    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_XIANGSHAN_KMH,
+>> +                                                 MXL_RV64,  rv64_xiangshan_kmh_cpu_init),
+>>   #ifdef CONFIG_TCG
+>>       DEFINE_DYNAMIC_CPU(TYPE_RISCV_CPU_BASE128,   MXL_RV128, rv128_base_cpu_init),
+>>   #endif /* CONFIG_TCG */
+>> --
+>> 2.34.1
 >>
->> Recently on s390x we have enabled mmap support for vfio-pci devices [1].
->> This allows us to take advantage and use userspace drivers on s390x. 
->> However,
->> on s390x we have special instructions for MMIO access. Starting with z15
->> (and newer platforms) we have new PCI Memory I/O (MIO) instructions which
->> operate on virtually mapped PCI memory spaces, and can be used from 
->> userspace.
->> On older platforms we would fallback to using existing system calls 
->> for MMIO access.
->>
->> This patch series introduces support the PCI MIO instructions, and 
->> enables s390x
->> support for the userspace NVMe driver on s390x. I would appreciate any 
->> review/feedback
->> on the patches.
->>
->> Thanks
->> Farhan
->>
->> [1] https://lore.kernel.org/linux-s390/20250226-vfio_pci_mmap-v7-0- 
->> c5c0f1d26efd@linux.ibm.com/
->>
->> ChangeLog
->> ---------
->> v4 series https://lore.kernel.org/qemu-devel/20250414213616.2675-1- 
->> alifm@linux.ibm.com/
->> v4 -> v5
->>      - Fixup typo in PCI MMIO API (patch 2).
->>
->> v3 series https://lore.kernel.org/qemu-devel/20250401172246.2688-1- 
->> alifm@linux.ibm.com/
->> v3 -> v4
->>      - Use generic ld/st functions for non s390x PCI access suggested 
->> by Alex (patch 2).
->>      - Removed R-b for patch 2 as the host PCI MMIO access API changed 
->> for non-s390x.
->>      Would appreciate review on this again.
->>
->> v2 series https://mail.gnu.org/archive/html/qemu-devel/2025-03/ 
->> msg06847.html
->> v2 -> v3
->>      - Update the PCI MMIO APIs to reflect that its PCI MMIO access on 
->> host
->> as suggested by Stefan(patch 2)
->>      - Move s390x ifdef check to s390x_pci_mmio.h as suggested by 
->> Philippe (patch 1)
->>      - Add R-bs for the respective patches.
->>
->> v1 series https://mail.gnu.org/archive/html/qemu-devel/2025-03/ 
->> msg06596.html
->> v1 -> v2
->>      - Add 8 and 16 bit reads/writes for completeness (patch 1)
->>      - Introduce new QEMU PCI MMIO read/write API as suggested by 
->> Stefan (patch 2)
->>      - Update NVMe userspace driver to use QEMU PCI MMIO functions 
->> (patch 3)
->>
->>
->> Farhan Ali (3):
->>    util: Add functions for s390x mmio read/write
->>    include: Add a header to define host PCI MMIO functions
->>    block/nvme: Use host PCI MMIO API
->>
->>   block/nvme.c                  |  41 +++++-----
->>   include/qemu/host-pci-mmio.h  | 141 ++++++++++++++++++++++++++++++++
->>   include/qemu/s390x_pci_mmio.h |  24 ++++++
->>   util/meson.build              |   2 +
->>   util/s390x_pci_mmio.c         | 148 ++++++++++++++++++++++++++++++++++
->>   5 files changed, 338 insertions(+), 18 deletions(-)
->>   create mode 100644 include/qemu/host-pci-mmio.h
->>   create mode 100644 include/qemu/s390x_pci_mmio.h
->>   create mode 100644 util/s390x_pci_mmio.c
 >>
 
 
