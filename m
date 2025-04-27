@@ -2,82 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6F11A9E37A
-	for <lists+qemu-devel@lfdr.de>; Sun, 27 Apr 2025 16:18:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64519A9E3FE
+	for <lists+qemu-devel@lfdr.de>; Sun, 27 Apr 2025 18:51:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u92p7-0002VT-AB; Sun, 27 Apr 2025 10:17:37 -0400
+	id 1u95DK-0000zh-Pa; Sun, 27 Apr 2025 12:50:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1u92p3-0002VH-Tk
- for qemu-devel@nongnu.org; Sun, 27 Apr 2025 10:17:34 -0400
-Received: from sender4-pp-f112.zoho.com ([136.143.188.112])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1u92p1-0005sn-OL
- for qemu-devel@nongnu.org; Sun, 27 Apr 2025 10:17:33 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1745763427; cv=none; 
- d=zohomail.com; s=zohoarc; 
- b=YgrTw22p2Nbl2f0BemAqPXIu3XPUqLz1SSfZRpuj8nNtr+KAaoxmzJCcXjuAjYN6mX13HITomBlqKGPvtTVEAr4jJPEDOj8LHz+XlM2tNN+4ZLzoCnuO080fhqFeRSPVB4tj9zOVUaKkkue/wSPrcMXVe9aePRE6YpR3PbFQIHY=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1745763427;
- h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=ktzXeDDldCrHsg+oyZMDHKVStkDAPY4HOV3pxFsIuFg=; 
- b=TIU942ybHa8PzpWFmBQ1oEuGB3hUwxZuI14o+jvIAeo+yMOyYovu1BPFQkh29rs6pW3b2twGh04qwqUkqGJQAK8woWXyAMFJ0FivQt1BT3MiX/P7zsDdq6dtt2qaLzazPDNwrmf+3tT6qITimRhgCB8XoP5jFw0pnHaPKESnrzY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
- dkim=pass  header.i=collabora.com;
- spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
- dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1745763427; 
- s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com; 
- h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
- bh=ktzXeDDldCrHsg+oyZMDHKVStkDAPY4HOV3pxFsIuFg=;
- b=I4YWaVfPhjnD4rPxHrPVH4lax+5lCF5A9ngwud1bqwAZVH17y9c1a0blj/Im3/bO
- dR6LmbSuoWnjgY/BYXNmdzcmNiOfboKMhdvyWxdxZc9KPzH+yzIAyVOtyOHsK2KCDCN
- pGsFYLihS0Vc2VR//xLNBAEfVLkQxWPsVROF2bmI=
-Received: by mx.zohomail.com with SMTPS id 1745763420491569.2022588417423;
- Sun, 27 Apr 2025 07:17:00 -0700 (PDT)
-Message-ID: <03414f52-def8-4b50-8da4-69b722dfc758@collabora.com>
-Date: Sun, 27 Apr 2025 17:16:52 +0300
+ (Exim 4.90_1) (envelope-from <nirsof@gmail.com>) id 1u95DI-0000z2-8A
+ for qemu-devel@nongnu.org; Sun, 27 Apr 2025 12:50:44 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <nirsof@gmail.com>) id 1u95DB-0005pH-AY
+ for qemu-devel@nongnu.org; Sun, 27 Apr 2025 12:50:38 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-43edecbfb94so38202125e9.1
+ for <qemu-devel@nongnu.org>; Sun, 27 Apr 2025 09:50:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1745772634; x=1746377434; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=lYHxWvOlghFSADlJY7dsqqkXQbCxF+CrIV5UmKFdgTk=;
+ b=kF3XqYKIVhqtZpxC1LWQoK7//TsRaF1qhuOVty62tfa5zZGXZ/xvwMrlTKOn82lXBv
+ xx7MiYiXdZuYGUo942uUww3zzEhxMvERWUUGOEmGODGCNy8wlq0jl51Wy/TwbD/MXuav
+ 7LWls1XBpQMVeISK/cuMY1LhkY2+OgtwXYLrT1kCIDQ3CUi6RzCS8Bfa/HbHMyt65NaU
+ HD7QG2cVmCwe8yWlQnKHFuOyeXsQbv9JJsyd3EJ6x3ar4AMGJhddfmE63VDFTHJ3YjGz
+ hKBOal8w2+FNOHGwznZ6aLTJiz9v+hdoZwj8n3R5ccPcnLEseHZpEHyJnIKYuwIYjGOD
+ HdNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1745772634; x=1746377434;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=lYHxWvOlghFSADlJY7dsqqkXQbCxF+CrIV5UmKFdgTk=;
+ b=EtA0SeqDJTxV65qAKWMnrZ9GscG3wM0f/+tgJ8T02Wzbpjs8jvhv0M4rJIaeFZky1t
+ WyYKBAVnav6uECZ1rTCk1+voVwkxgDjmhFXSIOtMkJCMpC6pHPw8Zi/5mCAebnvD0A4w
+ 2Cwkgzz3+b/bCbAttKlSHtTo24OhbynDa5MaqjWIxvnqWl3uJ+eSTcdjGB2ZyS/OOSRl
+ p4nQEPQBb0tyxH4yi+eOe6rcX83Y9mczp/7i1sUJ16F5ycdnhrtQyaVcoLlmIqSxEtej
+ V8RS4GYtRNkiKzyVwOk9iD0J6Tl8wufFo37T0MNvGG4TV7Q+e3l8MG5pIuvlh8u2iKg/
+ wtJg==
+X-Gm-Message-State: AOJu0Yz9KpE7wO4/ik4RGe8PRreMLH/owCDuKJZ7ADEJWAQlOyIg/5O/
+ JELTvOvXNz7jRdFUFDh4yVqJwRzci381j6sxvAtSSINFeqBHccSF58hIkg==
+X-Gm-Gg: ASbGncuc02sA/CiFOa9Kh8Ej2k/Dk2HUbhV8MA8nIomRrWn8TDEpHgiU0lBv2xdNVhs
+ cNn3Gv8+wWeCGJBuy846msWJ3vCW6jUY4qotjsVw5gawU7dfSYJFNLYnpRbZQf2ga39i1gvRTkM
+ KNUZbLRRTX83iuEw6EFapfhnI6Z4aeWbOErJ3oqYAaC0b60c9OJ2uTZMYeP7+/11eqqo2D574oZ
+ HOAbK/yxLWT5M94WXmciyNKs9uDD/eAVIZVcukxUQYZo5SFy5jjsSZwtuVC2XJKvYnEcOYp0+kS
+ vbOxcTYsd7nUnmiuq42q2a7uq0w3uhKWYTo2PsEHUFT9/EkuN0iIpFvOgvHU5saf8ubNy3Rhlpb
+ Tcv9M2hjQUFfIgBOGSFF7TmY9hIg1
+X-Google-Smtp-Source: AGHT+IHOKbclK3XSCYZIZjm0gxY6h3lKbp0qznWjlyfBYxrrRP7F0XZY5ab20FcfTZPCjlRbkmww2w==
+X-Received: by 2002:a05:6000:430a:b0:39c:1257:cd41 with SMTP id
+ ffacd0b85a97d-3a074fbc45emr6566409f8f.59.1745772633826; 
+ Sun, 27 Apr 2025 09:50:33 -0700 (PDT)
+Received: from localhost.localdomain (46-116-102-127.bb.netvision.net.il.
+ [46.116.102.127]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a073c8cd7fsm8783139f8f.1.2025.04.27.09.50.32
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Sun, 27 Apr 2025 09:50:33 -0700 (PDT)
+From: Nir Soffer <nirsof@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ "Richard Jones" <rjones@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Eric Blake" <eblake@redhat.com>, Nir Soffer <nirsof@gmail.com>
+Subject: [PATCH v3 0/2] io: Increase unix stream socket buffer size
+Date: Sun, 27 Apr 2025 19:50:27 +0300
+Message-Id: <20250427165029.9072-1-nirsof@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 04/10] virtio-gpu: Support asynchronous fencing
-To: =?UTF-8?B?5YiY6IGq?= <liucong2565@phytium.com.cn>,
- Sean Christopherson <seanjc@google.com>
-Cc: Jiqian.Chen@amd.com, akihiko.odaki@daynix.com, alex.bennee@linaro.org,
- alexander.deucher@amd.com, christian.koenig@amd.com,
- gert.wollny@collabora.com, gurchetansingh@chromium.org, hi@alyssa.is,
- honglei1.huang@amd.com, julia.zhang@amd.com, kraxel@redhat.com,
- marcandre.lureau@redhat.com, mst@redhat.com, pbonzini@redhat.com,
- philmd@linaro.org, pierre-eric.pelloux-prayer@amd.com,
- qemu-devel@nongnu.org, ray.huang@amd.com, robdclark@gmail.com,
- roger.pau@citrix.com, slp@redhat.com, stefano.stabellini@amd.com,
- xenia.ragiadakou@amd.com, zzyiwei@chromium.org
-References: <20250310120555.150077-5-dmitry.osipenko@collabora.com>
- <20250410095454.188105-1-liucong2565@phytium.com.cn>
- <d0e9e72a-02bf-4f1e-abe0-6e8d0d089b29@collabora.com>
- <5514d916.6d34.19622831b11.Coremail.liucong2565@phytium.com.cn>
- <425ebb80-4348-46f3-878b-054800a8fe85@collabora.com>
- <f662c725-e40e-43eb-b155-2440cff34324@collabora.com>
- <2d6e3b03.bb9.1967717fa84.Coremail.liucong2565@phytium.com.cn>
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Content-Language: en-US
-In-Reply-To: <2d6e3b03.bb9.1967717fa84.Coremail.liucong2565@phytium.com.cn>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-Received-SPF: pass client-ip=136.143.188.112;
- envelope-from=dmitry.osipenko@collabora.com; helo=sender4-pp-f112.zoho.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=nirsof@gmail.com; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,47 +96,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/27/25 14:53, 刘聪 wrote:
-> Hi Dmitry,
-> 
-> The virglrender patch can fix the virgl issue, but the native context still fails to run on my machine.
-> I'm not sure if anyone has successfully run it on an ARM64 machine before.
+On both macOS and Linux, the default send buffer size too small causing poor
+performance when reading and writing to qemu-nbd. A simple way to experience
+this is to compare TCP and unix sockets, showing that TCP socket is much
+faster. Programs like nbdcopy partly mitigate this by using multiple NBD
+connections.
 
-Thanks for the testing!
+On macOS the default send buffer size is 8192 bytes. Increasing the send buffer
+size to 2 MiB shows up to *12.6 times higher throughput* and lower cpu usage.
 
-> When running with Venus, the virtual machine can successfully run vkcube. However, when using the native context, a KVM error is triggered. Both my guest and host kernels are already updated to version 6.14.
-> 
-> Here are the commands and error messages I encountered:
-> 
-> ```
-> phytium@ubuntu:~/working/virglrenderer$ /opt/native-context-v11/bin/qemu-system-aarch64 --machine virt,accel=kvm,memory-backend=mem1 -cpu host -smp 4 -m 4G -drive file=/home/phytium/working/ubuntu24.04-aarch64-native-context,format=raw,if=virtio -bios /usr/share/AAVMF/AAVMF_CODE.ms.fd -netdev user,id=net0 -device virtio-net-pci,netdev=net0 -device virtio-gpu-gl,hostmem=4G,blob=on,venus=on -object memory-backend-memfd,id=mem1,size=4G  -display sdl,gl=on,show-cursor=on -device usb-ehci,id=usb -device usb-mouse,bus=usb.0 -device usb-kbd,bus=usb.0
-> phytium@ubuntu:~/working/virglrenderer$ 
-> phytium@ubuntu:~/working/virglrenderer$ /opt/native-context-v11/bin/qemu-system-aarch64 --machine virt,accel=kvm,memory-backend=mem1 -cpu host -smp 4 -m 4G -drive file=/home/phytium/working/ubuntu24.04-aarch64-native-context,format=raw,if=virtio -bios /usr/share/AAVMF/AAVMF_CODE.ms.fd -netdev user,id=net0 -device virtio-net-pci,netdev=net0 -device virtio-gpu-gl,hostmem=4G,blob=on,drm_native_context=on -object memory-backend-memfd,id=mem1,size=4G  -display sdl,gl=on,show-cursor=on -device usb-ehci,id=usb -device usb-mouse,bus=usb.0 -device usb-kbd,bus=usb.0
-> error: kvm run failed Bad address
->  PC=0000e2bcbbf31ab0 X00=0000e2bc9c3ae060 X01=0000e2bc7c02af00
-> X02=0000000000000014 X03=0000e2bc9c3ae000 X04=0000e2bc7c02af14
-> X05=0000e2bc9c3ae074 X06=0000000000000200 X07=0000e2bc7c02a8f8
-> X08=00000000000000de X09=0000000000000200 X10=0000000000001000
-> X11=0000000000000004 X12=0000e2bc7c0000b0 X13=0000000000000001
-> X14=0000000000000020 X15=0000e2bc9e465f93 X16=0000e2bcad6a01f0
-> X17=0000e2bcbbf31a80 X18=0000000000000093 X19=0000000000000060
-> X20=0000000000000074 X21=0000e2bc9e46c5f0 X22=0000e2bc9c3ae000
-> X23=0000000000000074 X24=0000c02241da83b0 X25=0000c02241da85a0
-> X26=0000c02241da85a0 X27=0000000000000014 X28=0000e2bc9e46c5f0
-> X29=0000e2bc9e46c610 X30=0000e2bcac809c38  SP=0000e2bc9e46c510
-> PSTATE=20001000 --C- EL0t
-> phytium@ubuntu:~/working/virglrenderer$ uname -a
-> Linux ubuntu 6.14.1-061401-generic #202504071048 SMP PREEMPT_DYNAMIC Mon Apr  7 11:34:37 UTC 2025 aarch64 aarch64 aarch64 GNU/Linux
-> ```
+On Linux the default and maximum buffer size is 212992 bytes. Increasing the
+send buffer size to 2 MiB shows up to *2.7 times higher throughput* and lower
+cpu usage. On older machine we see very little improvement, up to 1.03 times
+higher throughput.
 
-Alex Bennée reported the very same problem with KVM on ARM + native ctx
-AMD dGPU in the past. You may try to add error messages to
-virt/kvm/kvm_main.c of host Linux kernel to find from where KVM error
-originates. Sounds like page refcounting may be not working properly on ARM.
+We likely have the same issue on other platforms. It should be easy to enable
+this change for more platform by defining UNIX_STREAM_SOCKET_SEND_BUFFER_SIZE.
 
-+CC: Sean Christopherson
+Changes since v2:
+- Test with different receive buffer size (Daniel)
+- Test with larger send buffer size (2m, 4m)
+- Set only send buffer size - setting receive buffer size has no effect
+- Increase send buffer size to 2m (based on new tests)
+- Enable the change also for Linux
+- Change only unix stream socket - datagram socket need different configuration
+- Modify the code to make it easy to support unix datagram socket
+
+v2 was here:
+https://lists.gnu.org/archive/html/qemu-devel/2025-04/msg03167.html
+
+Nir Soffer (2):
+  io: Increase unix socket buffers size on macOS
+  io: Increase unix socket buffers on Linux
+
+ io/channel-socket.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
 -- 
-Best regards,
-Dmitry
+2.39.5 (Apple Git-154)
+
 
