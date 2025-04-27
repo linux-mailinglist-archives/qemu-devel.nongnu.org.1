@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8830EA9E0E8
-	for <lists+qemu-devel@lfdr.de>; Sun, 27 Apr 2025 10:35:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB7FDA9E11F
+	for <lists+qemu-devel@lfdr.de>; Sun, 27 Apr 2025 10:47:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8xSd-0005Uj-GE; Sun, 27 Apr 2025 04:34:03 -0400
+	id 1u8xeb-00086Q-Jg; Sun, 27 Apr 2025 04:46:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u8xSb-0005UE-0Q
- for qemu-devel@nongnu.org; Sun, 27 Apr 2025 04:34:01 -0400
-Received: from mgamail.intel.com ([192.198.163.11])
+ id 1u8xeZ-00086G-K6
+ for qemu-devel@nongnu.org; Sun, 27 Apr 2025 04:46:23 -0400
+Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u8xSY-0007lD-Ck
- for qemu-devel@nongnu.org; Sun, 27 Apr 2025 04:34:00 -0400
+ id 1u8xeX-0000cS-2A
+ for qemu-devel@nongnu.org; Sun, 27 Apr 2025 04:46:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745742838; x=1777278838;
+ t=1745743581; x=1777279581;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=4rGlzdu8He8ClHKNopue69zlaCk1VKVz+yGQua4n6FQ=;
- b=JEy4rCFDXuJ7ahIjWEVmspbDWpbwXh0t+X0vyvdJLIUMT7fPNuqzu12C
- P4zGTh0sBXuGwxhfnVZ2LAsN1pySWbUfywv69GJ+kFVa1nHQHeF539ZGR
- fNL0p5eIdZFhk36rczwsVuwWZ9mSuCvWZsiYpIIaqvq9UBmSljxsGG9eO
- 9afqWFi+Of5trDWq9k9TJKnkX39zTjlN0DQO2h83n3vp1GI23o8Y5XVtw
- bu4GLvux6mXQ9ECkdDhUF7QdCtbx84s5ZIhItWzlQlLn/E06F8uypKVFr
- 7tUk+67DtF9v+QDMzMvWBGHKxrltSCMg2EIj08azB7pdoeAv4n9ByVzb3 Q==;
-X-CSE-ConnectionGUID: 2RAH1MLjTwKZl1mcRC9Cug==
-X-CSE-MsgGUID: xPcgzVBATv2NnWH79qq5cg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11415"; a="57995102"
-X-IronPort-AV: E=Sophos;i="6.15,243,1739865600"; d="scan'208";a="57995102"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2025 01:33:55 -0700
-X-CSE-ConnectionGUID: Qcy2UMLbRIaepBdyJ083tw==
-X-CSE-MsgGUID: CFL9Pbq7TRmRVanh/NT93w==
+ bh=HZlpvbx0btXNobowdrNIQrAi8AUXXT/IK+bqPl2J49M=;
+ b=hDImlAvSlQMWcFDTFqTwWPNttRl4PrJ6XTWRzbs3U+QSzOGFXG6tSbT/
+ YQ/H1DQ7RJVMoJSiChC9c33m6lOwmEBtEwb5/DuPYlzMQIqEZ7e54EJrz
+ Qziu69au9S8vg9GfHDLtOuZgyDuFNj5OqsZA+P8bw6lFgVPN7m5gfowyz
+ oLz9yVQsZa+yXLkN+W7pu/Sx0UZA7Q6Qke5T7C6aD/5fbnzYOYNG1j+Ti
+ mMGXt3V0HEubp3FUVrdXkhPHsLz2gVyA2QnRrYR6uoKioOdlm/92SUWK9
+ nLn4zbbA5ybCIfGDevAOSqYj52FQyo/rIS6UjQ0VYCKwvaEzqM/bt7Aw3 A==;
+X-CSE-ConnectionGUID: 5W3HxfvtSXWkjaeTH5VLrw==
+X-CSE-MsgGUID: oeRbw1SkQnuWw4Le1Y1eoA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11415"; a="58718470"
+X-IronPort-AV: E=Sophos;i="6.15,243,1739865600"; d="scan'208";a="58718470"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Apr 2025 01:46:18 -0700
+X-CSE-ConnectionGUID: 5YzqeFwsRCSkAAsJU2H1Eg==
+X-CSE-MsgGUID: USKQEiDpQ6CDPsbiXZFTlA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,243,1739865600"; d="scan'208";a="133782755"
+X-IronPort-AV: E=Sophos;i="6.15,243,1739865600"; d="scan'208";a="138415687"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by orviesa007.jf.intel.com with ESMTP; 27 Apr 2025 01:33:51 -0700
-Date: Sun, 27 Apr 2025 16:54:48 +0800
+ by orviesa005.jf.intel.com with ESMTP; 27 Apr 2025 01:46:16 -0700
+Date: Sun, 27 Apr 2025 17:07:11 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
-To: Dapeng Mi <dapeng1.mi@linux.intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Zide Chen <zide.chen@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Dongli Zhang <dongli.zhang@oracle.com>,
- Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>,
- Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi <dapeng1.mi@intel.com>
-Subject: Re: [PATCH 3/3] target/i386: Support
- VMX_VM_EXIT_SAVE_IA32_PERF_GLOBAL_CTRL
-Message-ID: <aA3w2PiRuNOMKwdM@intel.com>
-References: <20250324123712.34096-1-dapeng1.mi@linux.intel.com>
- <20250324123712.34096-4-dapeng1.mi@linux.intel.com>
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Francesco Lavra <francescolavra.fl@gmail.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+Subject: Re: [PATCH v8 26/55] i386/tdx: Finalize TDX VM
+Message-ID: <aA3zvysjNFBy2ATU@intel.com>
+References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
+ <20250401130205.2198253-27-xiaoyao.li@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250324123712.34096-4-dapeng1.mi@linux.intel.com>
-Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20250401130205.2198253-27-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -50
 X-Spam_score: -5.1
@@ -70,8 +71,8 @@ X-Spam_bar: -----
 X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.738,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UPPERCASE_50_75=0.008 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,39 +88,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> @@ -4212,7 +4213,8 @@ static const X86CPUDefinition builtin_x86_defs[] = {
->              VMX_VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL |
->              VMX_VM_EXIT_ACK_INTR_ON_EXIT | VMX_VM_EXIT_SAVE_IA32_PAT |
->              VMX_VM_EXIT_LOAD_IA32_PAT | VMX_VM_EXIT_SAVE_IA32_EFER |
-> -            VMX_VM_EXIT_LOAD_IA32_EFER | VMX_VM_EXIT_SAVE_VMX_PREEMPTION_TIMER,
-> +            VMX_VM_EXIT_LOAD_IA32_EFER | VMX_VM_EXIT_SAVE_VMX_PREEMPTION_TIMER |
-> +            VMX_VM_EXIT_SAVE_IA32_PERF_GLOBAL_CTRL,
->          .features[FEAT_VMX_MISC] =
->              MSR_VMX_MISC_STORE_LMA | MSR_VMX_MISC_ACTIVITY_HLT |
->              MSR_VMX_MISC_VMWRITE_VMEXIT,
-> @@ -4368,7 +4370,8 @@ static const X86CPUDefinition builtin_x86_defs[] = {
->              VMX_VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL |
->              VMX_VM_EXIT_ACK_INTR_ON_EXIT | VMX_VM_EXIT_SAVE_IA32_PAT |
->              VMX_VM_EXIT_LOAD_IA32_PAT | VMX_VM_EXIT_SAVE_IA32_EFER |
-> -            VMX_VM_EXIT_LOAD_IA32_EFER | VMX_VM_EXIT_SAVE_VMX_PREEMPTION_TIMER,
-> +            VMX_VM_EXIT_LOAD_IA32_EFER | VMX_VM_EXIT_SAVE_VMX_PREEMPTION_TIMER |
-> +            VMX_VM_EXIT_SAVE_IA32_PERF_GLOBAL_CTRL,
->          .features[FEAT_VMX_MISC] =
->              MSR_VMX_MISC_STORE_LMA | MSR_VMX_MISC_ACTIVITY_HLT |
->              MSR_VMX_MISC_VMWRITE_VMEXIT,
-> @@ -4511,7 +4514,8 @@ static const X86CPUDefinition builtin_x86_defs[] = {
->              VMX_VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL |
->              VMX_VM_EXIT_ACK_INTR_ON_EXIT | VMX_VM_EXIT_SAVE_IA32_PAT |
->              VMX_VM_EXIT_LOAD_IA32_PAT | VMX_VM_EXIT_SAVE_IA32_EFER |
-> -            VMX_VM_EXIT_LOAD_IA32_EFER | VMX_VM_EXIT_SAVE_VMX_PREEMPTION_TIMER,
-> +            VMX_VM_EXIT_LOAD_IA32_EFER | VMX_VM_EXIT_SAVE_VMX_PREEMPTION_TIMER |
-> +            VMX_VM_EXIT_SAVE_IA32_PERF_GLOBAL_CTRL,
->          .features[FEAT_VMX_MISC] =
->              MSR_VMX_MISC_STORE_LMA | MSR_VMX_MISC_ACTIVITY_HLT |
->              MSR_VMX_MISC_VMWRITE_VMEXIT,
+On Tue, Apr 01, 2025 at 09:01:36AM -0400, Xiaoyao Li wrote:
+> Date: Tue,  1 Apr 2025 09:01:36 -0400
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: [PATCH v8 26/55] i386/tdx: Finalize TDX VM
+> X-Mailer: git-send-email 2.34.1
+> 
+> Invoke KVM_TDX_FINALIZE_VM to finalize the TD's measurement and make
+> the TD vCPUs runnable once machine initialization is complete.
+> 
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+> ---
+>  target/i386/kvm/tdx.c | 3 +++
+>  1 file changed, 3 insertions(+)
 
-Instead of modifying SPR's CPU model directly, we should introduce a new
-version (SapphireRapids-v4), like Skylake-Server-v4 enables
-"vmx-eptp-switching".
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
