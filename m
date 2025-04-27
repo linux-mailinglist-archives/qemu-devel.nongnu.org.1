@@ -2,79 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9239DA9E057
-	for <lists+qemu-devel@lfdr.de>; Sun, 27 Apr 2025 09:16:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E494DA9E0E9
+	for <lists+qemu-devel@lfdr.de>; Sun, 27 Apr 2025 10:36:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8wEE-00049m-10; Sun, 27 Apr 2025 03:15:06 -0400
+	id 1u8xUn-0006NB-U5; Sun, 27 Apr 2025 04:36:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u8wEB-00049W-EY; Sun, 27 Apr 2025 03:15:03 -0400
-Received: from mgamail.intel.com ([198.175.65.21])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u8wE8-0006pM-Qr; Sun, 27 Apr 2025 03:15:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745738101; x=1777274101;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=aLKBRMi982qUAHpHdxX4Pn/tcuPuoLKos+FcQs/PFQ8=;
- b=Hc3qcgoIu6Zx5Nb/4ltYK4Veh6Cr92YMR3qUdfsZoL5Se/7ZcR1LbAcV
- PKvv1bzwNX2TwPO5l8gNuI+Oh+88B2HFSu3Rl5e4gsu+saUpcENA696tF
- HS8eMRGTXx0sNWn77CCyiGkQ8jcbB631NA7p94bGEg9qzUx3wOJXNlF2V
- iDOX58mIDhRL6OFKVFu7fwYwiYs+RBXuS+gfRPK9vf5JLS2Z0JYWiv7we
- MuxRBnXoYFAJ2IGc6A4GxZC42stEJCnbEFn8sATFaTTWftzeLyl4gJ/GE
- ycu9bHlPFJfEerepIFMgevVMBJ/W9GFgt79b3JbU7OGA7gMfelXAj7zJ/ Q==;
-X-CSE-ConnectionGUID: 4Ry/3JVJRrCleWaSh0w+8Q==
-X-CSE-MsgGUID: R9LuVs54Qjy7HbUdfzPvxw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11415"; a="47255935"
-X-IronPort-AV: E=Sophos;i="6.15,243,1739865600"; d="scan'208";a="47255935"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2025 00:14:57 -0700
-X-CSE-ConnectionGUID: yiYQh6xbR5mx5fsKnfCVjg==
-X-CSE-MsgGUID: +JKhKX8pQWayxyAvjVHFBw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,243,1739865600"; d="scan'208";a="156477006"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa002.fm.intel.com with ESMTP; 27 Apr 2025 00:14:53 -0700
-Date: Sun, 27 Apr 2025 15:35:49 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Shaoqin Huang <shahuang@redhat.com>, Eric Auger <eauger@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Sebastian Ott <sebott@redhat.com>, Gavin Shan <gshan@redhat.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
- Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>
-Subject: Re: [PATCH 5/5] i386/kvm: Support fixed counter in KVM PMU filter
-Message-ID: <aA3eVdwujSmqKAKu@intel.com>
-References: <20250409082649.14733-1-zhao1.liu@intel.com>
- <20250409082649.14733-6-zhao1.liu@intel.com>
- <6a93fa6b-d38d-48ac-9cde-488765238247@linaro.org>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1u8xUX-0006MY-QA
+ for qemu-devel@nongnu.org; Sun, 27 Apr 2025 04:36:02 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1u8xUU-00084O-Dr
+ for qemu-devel@nongnu.org; Sun, 27 Apr 2025 04:36:01 -0400
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8AxGHFn7A1oRyvHAA--.4395S3;
+ Sun, 27 Apr 2025 16:35:51 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by front1 (Coremail) with SMTP id qMiowMBxb8dl7A1oRXyYAA--.53743S3;
+ Sun, 27 Apr 2025 16:35:51 +0800 (CST)
+Subject: Re: [PATCH v2] hw/loongarch/virt: Get physical entry address with elf
+ file
+To: Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Song Gao <gaosong@loongson.cn>
+Cc: qemu-devel@nongnu.org
+References: <20250425021620.3968737-1-maobibo@loongson.cn>
+ <49fafb18-2186-4d19-867b-bc26c1c43572@linaro.org>
+From: bibo mao <maobibo@loongson.cn>
+Message-ID: <0b336af3-cfb5-4641-4a28-7dd280287210@loongson.cn>
+Date: Sun, 27 Apr 2025 16:34:45 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6a93fa6b-d38d-48ac-9cde-488765238247@linaro.org>
-Received-SPF: pass client-ip=198.175.65.21; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.738,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <49fafb18-2186-4d19-867b-bc26c1c43572@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowMBxb8dl7A1oRXyYAA--.53743S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj9xXoW7GFyUWr4UtFWkuFW5CF4xXwc_yoWDXrX_ua
+ yxCr1kXw1kt39rWw1rtr4rXr97A3WjkryY934xWFyxXry5JanxCFna9rZ3uas5KFWjyrnr
+ Ga929w4fC343GosvyTuYvTs0mTUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUj1kv1TuYvT
+ s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+ cSsGvfJTRUUUbxAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+ vaj40_Wr0E3s1l1IIY67AEw4v_JrI_Jryl8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+ w2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+ W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+ Cr1j6rxdM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
+ 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AK
+ xVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
+ AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
+ 14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIx
+ kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
+ wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F
+ 4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jOF4_U
+ UUUU=
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.665,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,27 +83,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> >   static void kvm_pmu_filter_class_init(ObjectClass *oc, void *data)
-> >   {
-> >       object_class_property_add_enum(oc, "action", "KvmPmuFilterAction",
-> > @@ -116,6 +139,14 @@ static void kvm_pmu_filter_class_init(ObjectClass *oc, void *data)
-> >                                 NULL, NULL);
-> >       object_class_property_set_description(oc, "events",
-> >                                             "KVM PMU event list");
-> > +
-> > +    object_class_property_add(oc, "x86-fixed-counter", "uint32_t",
-> > +                              kvm_pmu_filter_get_fixed_counter,
-> > +                              kvm_pmu_filter_set_fixed_counter,
-> > +                              NULL, NULL);
-> > +    object_class_property_set_description(oc, "x86-fixed-counter",
-> > +                                          "Enablement bitmap of "
-> > +                                          "x86 PMU fixed counter");
+
+
+On 2025/4/25 下午11:33, Richard Henderson wrote:
+> On 4/24/25 19:16, Bibo Mao wrote:
+>> With load_elf() api, image load low address and high address is converted
+>> to physical address if parameter translate_fn is provided. However
+>> executing entry address is still virtual address. Here convert entry
+>> address into physical address, since MMU is disabled when system power 
+>> on,
+>> the first PC instruction should be physical address.
+>>
+>> Signed-off-by: Bibo Mao<maobibo@loongson.cn>
+>> ---
+>>    v1 ... v2:
+>>    1. Only modify LoongArch specified rather than load_elf() API, since
+>>       there is be potential influence with other architectures.
+>> ---
+>>   hw/loongarch/boot.c | 1 +
+>>   1 file changed, 1 insertion(+)
 > 
-> Adding that x86-specific field to all architectures is a bit dubious.
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> 
+> Although perhaps we should adjust the API because all users have to do 
+> exactly this, and it's easy to miss.
+Thanks, that is fair.
 
-Similarly, do you think that it would be a good idea to wrap x86 related
-codes in "#if defined(TARGET_I386)"? Like I said in this reply:
-
-https://lore.kernel.org/qemu-devel/aA3TeaYG9mNMdEiW@intel.com/
+Regards
+Bibo Mao
+> 
+> 
+> r~
 
 
