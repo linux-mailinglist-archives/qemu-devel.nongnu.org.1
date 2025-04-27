@@ -2,53 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05969A9E049
-	for <lists+qemu-devel@lfdr.de>; Sun, 27 Apr 2025 09:06:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9239DA9E057
+	for <lists+qemu-devel@lfdr.de>; Sun, 27 Apr 2025 09:16:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u8w55-0005i5-SS; Sun, 27 Apr 2025 03:05:39 -0400
+	id 1u8wEE-00049m-10; Sun, 27 Apr 2025 03:15:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u8w51-0005hQ-Em; Sun, 27 Apr 2025 03:05:35 -0400
+ id 1u8wEB-00049W-EY; Sun, 27 Apr 2025 03:15:03 -0400
 Received: from mgamail.intel.com ([198.175.65.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u8w4x-0005nw-UM; Sun, 27 Apr 2025 03:05:35 -0400
+ id 1u8wE8-0006pM-Qr; Sun, 27 Apr 2025 03:15:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745737532; x=1777273532;
+ t=1745738101; x=1777274101;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=/VAXcw1oJpNq80iCbs63zP5UG4yX37TNo7LthnbGVBo=;
- b=WPycwxgB746nkyfhq7oZ97mJE0UngqJuCp9pjZe8F9enW8zJlH5E3U3l
- I8eqs3fHA1B3XLhoFSw1UKG4PZgQ6Gqyp0qWodmQXCjw2bS66wdUOgM7H
- YOb7pBnbqHxU495hNiUXtfv2mm0p9IlavuYr/bPZizR5h/St8uty7T/Dw
- NBt9cMNblD23iMlYvPn7PdN8UtmyyyKqoa0yLSSjB/4/N4SAYyvV1IlDI
- oHuRw2g3okRd9JqjXNN6MlWB5uRkF/pZIkNo5XWQ6NVxon2wZdmTRDARI
- Nyf718FSNdNmMXcMPT6oulxmzFlhmCuMraBsoL3AcuopeYrFJCo5h+jAV w==;
-X-CSE-ConnectionGUID: gJV9MrDkSDCkkw3G+EZXuw==
-X-CSE-MsgGUID: uB1B60kaQdO+GLOf6tI5Gg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11415"; a="47255469"
-X-IronPort-AV: E=Sophos;i="6.15,243,1739865600"; d="scan'208";a="47255469"
+ bh=aLKBRMi982qUAHpHdxX4Pn/tcuPuoLKos+FcQs/PFQ8=;
+ b=Hc3qcgoIu6Zx5Nb/4ltYK4Veh6Cr92YMR3qUdfsZoL5Se/7ZcR1LbAcV
+ PKvv1bzwNX2TwPO5l8gNuI+Oh+88B2HFSu3Rl5e4gsu+saUpcENA696tF
+ HS8eMRGTXx0sNWn77CCyiGkQ8jcbB631NA7p94bGEg9qzUx3wOJXNlF2V
+ iDOX58mIDhRL6OFKVFu7fwYwiYs+RBXuS+gfRPK9vf5JLS2Z0JYWiv7we
+ MuxRBnXoYFAJ2IGc6A4GxZC42stEJCnbEFn8sATFaTTWftzeLyl4gJ/GE
+ ycu9bHlPFJfEerepIFMgevVMBJ/W9GFgt79b3JbU7OGA7gMfelXAj7zJ/ Q==;
+X-CSE-ConnectionGUID: 4Ry/3JVJRrCleWaSh0w+8Q==
+X-CSE-MsgGUID: R9LuVs54Qjy7HbUdfzPvxw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11415"; a="47255935"
+X-IronPort-AV: E=Sophos;i="6.15,243,1739865600"; d="scan'208";a="47255935"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2025 00:05:28 -0700
-X-CSE-ConnectionGUID: rVl3Mel3THqiZcQli6WIqg==
-X-CSE-MsgGUID: kb1BB0dSQ0S5A+G0fWVAEQ==
+ 27 Apr 2025 00:14:57 -0700
+X-CSE-ConnectionGUID: yiYQh6xbR5mx5fsKnfCVjg==
+X-CSE-MsgGUID: +JKhKX8pQWayxyAvjVHFBw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,243,1739865600"; d="scan'208";a="156475720"
+X-IronPort-AV: E=Sophos;i="6.15,243,1739865600"; d="scan'208";a="156477006"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by fmviesa002.fm.intel.com with ESMTP; 27 Apr 2025 00:05:23 -0700
-Date: Sun, 27 Apr 2025 15:26:20 +0800
+ by fmviesa002.fm.intel.com with ESMTP; 27 Apr 2025 00:14:53 -0700
+Date: Sun, 27 Apr 2025 15:35:49 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: Markus Armbruster <armbru@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Michael Roth <michael.roth@amd.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcelo Tosatti <mtosatti@redhat.com>,
  Shaoqin Huang <shahuang@redhat.com>, Eric Auger <eauger@redhat.com>,
@@ -56,21 +55,16 @@ Cc: Markus Armbruster <armbru@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Sebastian Ott <sebott@redhat.com>, Gavin Shan <gshan@redhat.com>,
  qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
- Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>,
- Alexander Graf <agraf@csgraf.de>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: Re: [PATCH 1/5] qapi/qom: Introduce kvm-pmu-filter object
-Message-ID: <aA3cHIcKmt3vdkVk@intel.com>
+ Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>
+Subject: Re: [PATCH 5/5] i386/kvm: Support fixed counter in KVM PMU filter
+Message-ID: <aA3eVdwujSmqKAKu@intel.com>
 References: <20250409082649.14733-1-zhao1.liu@intel.com>
- <20250409082649.14733-2-zhao1.liu@intel.com>
- <878qo8yu5u.fsf@pond.sub.org> <Z/iUiEXZj52CbduB@intel.com>
- <87frifxqgk.fsf@pond.sub.org> <Z/i3+l3uQ3dTjnHT@intel.com>
- <87fri8o70b.fsf@pond.sub.org> <aAnbLhBXMFAxE2vT@intel.com>
- <fa6f20a9-3d7a-4c2d-94e5-c20dbaf4303e@linaro.org>
+ <20250409082649.14733-6-zhao1.liu@intel.com>
+ <6a93fa6b-d38d-48ac-9cde-488765238247@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fa6f20a9-3d7a-4c2d-94e5-c20dbaf4303e@linaro.org>
+In-Reply-To: <6a93fa6b-d38d-48ac-9cde-488765238247@linaro.org>
 Received-SPF: pass client-ip=198.175.65.21; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -50
@@ -96,71 +90,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Philip and Markus,
-
-Let's discuss how to handle compilation for different architectures as
-well as different accelerators here.
-
-> > And "raw" format as a lower level format can be used for other arches
-> > (e.g., ARM).
+> >   static void kvm_pmu_filter_class_init(ObjectClass *oc, void *data)
+> >   {
+> >       object_class_property_add_enum(oc, "action", "KvmPmuFilterAction",
+> > @@ -116,6 +139,14 @@ static void kvm_pmu_filter_class_init(ObjectClass *oc, void *data)
+> >                                 NULL, NULL);
+> >       object_class_property_set_description(oc, "events",
+> >                                             "KVM PMU event list");
+> > +
+> > +    object_class_property_add(oc, "x86-fixed-counter", "uint32_t",
+> > +                              kvm_pmu_filter_get_fixed_counter,
+> > +                              kvm_pmu_filter_set_fixed_counter,
+> > +                              NULL, NULL);
+> > +    object_class_property_set_description(oc, "x86-fixed-counter",
+> > +                                          "Enablement bitmap of "
+> > +                                          "x86 PMU fixed counter");
 > 
-> Since you provide the ability to use a raw format, are we sure other
-> accelerators will never be interested in such PMU filtering?
-> 
-> I'm pretty sure HVF could benefit of it (whether we implement it there
-> is another story).
+> Adding that x86-specific field to all architectures is a bit dubious.
 
-Nice to know it could benefit more cases.
-
-> What do you think about adding this as a generic accelerator feature.
-
-I can implement pmu-filter directly at the "accel" level.
-
-> If a particular accel doesn't support it and we ask to filter, we simply
-> report an error.
-
-One of the main issues is how to organize the QAPI scheme:
-
-First we have a "qapi/accelerator.json" like current implementation to
-provide:
-
-##
-# = Accelerators
-##
-
-Then we should have a "qapi/accelerator-target.json" (which will follows
-qapi/accelerator.json in qapi-schema.json, just like machine.json &
-machine-target.json), and place all pmu-filter related things in this
-file with specify the compilation condition, for example:
-
-{ 'struct': 'KvmPmuFilterProperties',
-  'data': { 'action': 'KvmPmuFilterAction',
-            '*x86-fixed-counter': 'uint32',
-            '*events': ['KvmPmuFilterEvent'] },
-  'if': 'CONFIG_KVM' }
-
-In the future, this could be expanded to: 'if': { 'any': [ 'CONFIG_HVF', 'CONFIG_KVM' ] }.
-
-I understand that there is no way to specify the architecture here,
-because it is not possible to specify a combination case like
-"TARGET_I386 & CONFIG_KVM", "TARGET_ARM & CONFIG_KVM", "TARGET_ARM & CONFIG_HVF"
-(please educate me if such "if" condition be implemented in QAPI :-)).
-
-So, I will put the arch-specific format check in pmu-filter.c by adding
-arch macros as I mentioned in this reply:
+Similarly, do you think that it would be a good idea to wrap x86 related
+codes in "#if defined(TARGET_I386)"? Like I said in this reply:
 
 https://lore.kernel.org/qemu-devel/aA3TeaYG9mNMdEiW@intel.com/
-
-And there'll need accel-specific format check (for example, maksed-entry
-is KVM specific, and it is not defined in x86 spec). I can check the
-accel-specific format in the `check` hook of
-object_class_property_add_link(), which links the pmu-filter object to
-accelerator.
-
-Do you like this idea?
-
-Thanks,
-Zhao
-
 
 
