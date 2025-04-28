@@ -2,70 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 159F4A9E66B
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 05:14:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77F64A9E672
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 05:18:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9EwB-00006H-8A; Sun, 27 Apr 2025 23:13:45 -0400
+	id 1u9F0i-0003IK-5C; Sun, 27 Apr 2025 23:18:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1u9Evm-00005r-Ip
- for qemu-devel@nongnu.org; Sun, 27 Apr 2025 23:13:18 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1u9Evk-0005HO-Pz
- for qemu-devel@nongnu.org; Sun, 27 Apr 2025 23:13:18 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8BxrnJI8g5ou_LHAA--.3794S3;
- Mon, 28 Apr 2025 11:13:12 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by front1 (Coremail) with SMTP id qMiowMCx_cZG8g5o5lmaAA--.63019S3;
- Mon, 28 Apr 2025 11:13:10 +0800 (CST)
-Subject: Re: [PATCH v2 06/16] hw/intc/loongarch_pch: Discard write operation
- with ISR register
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
-References: <20250324093730.3683378-1-maobibo@loongson.cn>
- <20250324093730.3683378-7-maobibo@loongson.cn>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <33f34f64-ed2b-aac5-84de-9c9059403e82@loongson.cn>
-Date: Mon, 28 Apr 2025 11:15:48 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <zhangckid@gmail.com>)
+ id 1u9F0H-0003Gs-7x
+ for qemu-devel@nongnu.org; Sun, 27 Apr 2025 23:17:59 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <zhangckid@gmail.com>)
+ id 1u9F0E-0005j0-Tw
+ for qemu-devel@nongnu.org; Sun, 27 Apr 2025 23:17:56 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-ac289147833so753396266b.2
+ for <qemu-devel@nongnu.org>; Sun, 27 Apr 2025 20:17:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1745810272; x=1746415072; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=dAuCze/EqI6H7SrQ8G87JgWqTWY1CwrbSIbdOEVNJxk=;
+ b=TQ32rrZRILx60/SXEbbpofB9rh6IHOixT6z9cINXyj+2sOcMnZJqfLqFzhbXTuSTNl
+ pudJ7sxIhAFwJe1J6Z0NmHL0MgO1lauQQbHjDyoZx5HNhZY9GNCrF5YX5/ZQW7Roc6qc
+ EkGOw1KeuLuwQAsxznInPy0xX/rhL3obxXZyRZ4EJesNOVHSApt2qw6q6hY+/ib0l5oy
+ zrwdaZtExPJxXVjGsLnh1uFidLGvmAxOtv/MtTrOFdOb3c+Hqq0OMZexVdVj7AjtTGL/
+ UVXHE5ipWGfYrrSvtdHhOUsg0CQs8qXDuFY43rBiICeAYT+yA/XMUmULO072E0ilk36Q
+ LwCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1745810272; x=1746415072;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=dAuCze/EqI6H7SrQ8G87JgWqTWY1CwrbSIbdOEVNJxk=;
+ b=Ck5B4hTWprR/TetoAvUFf4DFOR+5BBH+E7UPHt3VDu5c/c5W49/4Ck/Xr8Y3O69VoN
+ iq4B+4X1TJv/lcB0T2vyLZhbqyv6ZAZtVthbpdmwkzKT7H7MGNwqpBFhgSciGDa2pFPt
+ JUmAm+s3nZRjtjgC5RG5Z3PaG6PGOlgZfpO26XJOjq2GPb3gSk7EQmAUt1rPxOcJpRst
+ d9YgAyCrcRdkercSy8dIm7Lk149lBkBzQhTI0PeAf3fmilLJlk8XIxu3bKwfrM+NFZN8
+ JrU6hWB83YFcpYcACKFgx3AWigu56WcROCfr0gTyKbut960PFmh9bSzGc2DQmuvwTUdG
+ 12Ew==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWTjXImKAUcUDrcJaWtX2/Wydkn+UjlvqfwsM8lQUMsfMIdp8qgWU/90Av+2zVZRC5S2LQrW1g0O+zP@nongnu.org
+X-Gm-Message-State: AOJu0YzkAD7+dIprC76MkvGB/a0iCmF/rcUyOtWV1gX6/+7OliFjgoDg
+ FLhvNNq6zgEJyi2pDS1siP+1otQ0il9qunolxZf/Gu3ugPbAuNWs2VXMnBraIH7qZBRenXEdlh5
+ 1HCoHnv+p+N0Sfizx1Fwz2faA708=
+X-Gm-Gg: ASbGncsJ454YSzE8tzwx6kuZcyJpCEiBHwFCsutzxrWjNvmWPd0ft45nF3DtLHcHCV4
+ d4x9SESKTeVOw1SjJEDoHubRHMBCiqhzRtMVXAfm4vCjXODliEvng2F9lPmvNDJlACyXw6DuqlN
+ iUjpFaGDP5JERbN8p8ZcYr/79fDx/5j/FyVQ==
+X-Google-Smtp-Source: AGHT+IG+VVos+L8id9GusLsisPP+ktqjmh+FTOzfMpdF0rhGEOEZHV34OdlH487qMc0cpmRSTDjqGJxE1R3yjPXkHKk=
+X-Received: by 2002:a17:907:97c7:b0:ace:4ed4:d428 with SMTP id
+ a640c23a62f3a-ace84b3b270mr712419366b.57.1745810271549; Sun, 27 Apr 2025
+ 20:17:51 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20250324093730.3683378-7-maobibo@loongson.cn>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: qMiowMCx_cZG8g5o5lmaAA--.63019S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj9xXoWrZr4xZw1DXw18KF1xWw4rZwc_yoWDtrb_W3
- Wak3sxCw1UJr1rAa1qvr15ZF45A3W5XF9ayas7Xr18J345XFWrAw1UWrs8Zrn2qa4UWwn8
- GayxZr9a9w1FkosvyTuYvTs0mTUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvT
- s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
- cSsGvfJTRUUUbI8YFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
- vaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
- w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
- W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
- Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE
- 14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
- AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
- rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUXVWUAw
- CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
- 67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr
- 0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUwmhF
- DUUUU
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -6
-X-Spam_score: -0.7
-X-Spam_bar: /
-X-Spam_report: (-0.7 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-1.279, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+References: <20250402135402.14526-1-zhangckid@gmail.com>
+ <d39ed054-d99b-46a8-afc8-1a2981d919e1@linaro.org>
+ <CAK3tnvLqGLzQffAi=dk_VzXgH_k_r_z2xNTN3tVE-G+xjpPWcw@mail.gmail.com>
+ <CAK3tnvJMOe+rtjnwbfQ8nuZyQAtGMPKjgXBVo2RpkmKNtzAXpQ@mail.gmail.com>
+ <5d285d42-f91f-4e3d-9cda-ba9058236f95@linaro.org>
+In-Reply-To: <5d285d42-f91f-4e3d-9cda-ba9058236f95@linaro.org>
+From: Zhang Chen <zhangckid@gmail.com>
+Date: Mon, 28 Apr 2025 11:17:14 +0800
+X-Gm-Features: ATxdqUEP8vSPpu-5yqjf6ZPvsVKqvQT4DmKhSIx7rQ1Iw-ggna5wmRWUKQpYHy4
+Message-ID: <CAK3tnv+wA5Qy=2mT3jTU0iiuzeEQdbMvzSzACns5=bbooXDNcA@mail.gmail.com>
+Subject: Re: [PATCH] hw/arm/virt.c: Fix wrong default cpu type in AARCH64
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Andrew Jones <ajones@ventanamicro.com>, Alexander Graf <agraf@csgraf.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=zhangckid@gmail.com; helo=mail-ej1-x62b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,33 +99,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ÔÚ 2025/3/24 ÏÂÎç5:37, Bibo Mao Ð´µÀ:
-> With the latest 7A1000 user manual, interrupt status register ISR is
-> read only. Here discard write operation with ISR register.
+On Thu, Apr 24, 2025 at 5:58=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
+<philmd@linaro.org> wrote:
 >
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> ---
->   hw/intc/loongarch_pch_pic.c | 6 ------
->   1 file changed, 6 deletions(-)
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-thanks.
-Song Gao
-> diff --git a/hw/intc/loongarch_pch_pic.c b/hw/intc/loongarch_pch_pic.c
-> index 93f7ceb6b9..10b4231464 100644
-> --- a/hw/intc/loongarch_pch_pic.c
-> +++ b/hw/intc/loongarch_pch_pic.c
-> @@ -234,12 +234,6 @@ static void loongarch_pch_pic_high_writew(void *opaque, hwaddr addr,
->       trace_loongarch_pch_pic_high_writew(size, addr, data);
->   
->       switch (addr) {
-> -    case PCH_PIC_INT_STATUS:
-> -        s->intisr = get_writew_val(s->intisr, data, 0);
-> -        break;
-> -    case PCH_PIC_INT_STATUS + 4:
-> -        s->intisr = get_writew_val(s->intisr, data, 1);
-> -        break;
->       case PCH_PIC_INT_POL:
->           s->int_polarity = get_writew_val(s->int_polarity, data, 0);
->           break;
+> On 24/4/25 10:56, Zhang Chen wrote:
+> > On Thu, Apr 3, 2025 at 10:23=E2=80=AFAM Zhang Chen <zhangckid@gmail.com=
+> wrote:
+> >>
+> >> On Thu, Apr 3, 2025 at 2:43=E2=80=AFAM Richard Henderson
+> >> <richard.henderson@linaro.org> wrote:
+> >>>
+> >>> On 4/2/25 06:54, Zhang Chen wrote:
+> >>>> Because of the CONFIG_TCG auto enabled, the cpu type "cortex-a15"
+> >>>> is mistakenly set to the default AARCH64 target.
+> >>>
+> >>> This is the correct backward compatible setting.
+> >>> In essence, it means that you *must* supply a -cpu argument.
+> >>>
+> >>>
+> >>
+> >> If the "-cpu" is required, the VM should not be started without this a=
+rgument.
+> >> If yes, I will skip this patch and submit another one to make QEMU
+> >> refuse to start without this parameter.
+> >>
+> >
+> > Ping... and let me explain this status, it is not just for the default =
+value.
+> > 1. The cpu type "cortex-a15" is not the correct backward compatible
+> > setting for AARCH64 target.
+>
+> IIUC it was meant to be backward compatible for KVM (as in "not TCG"),
+> HVF was not a thing for ARM at this time.
+>
+> > The ARM cortex-a15 is a 32 bit CPU based on ARMv7-A architecture. It
+> > can not boot for AARCH64 target.
+> > For example, the Apple M silicon can not boot with the default -cpu val=
+ue.
+>
+> A respin of this series might help you, I'll try to remember to Cc you:
+> https://lore.kernel.org/qemu-devel/b883f0ef-6131-4335-b273-90fd3d8cc5e4@l=
+inaro.org/
+>
 
+Thanks Philippe, your patch fix the same issue and looks good for me.
+Let's drop this patch.
+
+Thanks
+Chen
+
+
+
+> > 2. Most of QEMU docs does not said user *must* supply a -cpu argument.
+> > https://www.qemu.org/docs/master/system/qemu-manpage.html
+> >
+> > Thanks
+> > Chen
+> >
+> >> Thanks
+> >> Chen
+> >>
+> >>> r~
+> >>>
+> >>>>
+> >>>> Signed-off-by: Zhang Chen <zhangckid@gmail.com>
+> >>>> ---
+> >>>>    hw/arm/virt.c | 5 +++--
+> >>>>    1 file changed, 3 insertions(+), 2 deletions(-)
+> >>>>
+> >>>> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> >>>> index a96452f17a..63649e9543 100644
+> >>>> --- a/hw/arm/virt.c
+> >>>> +++ b/hw/arm/virt.c
+> >>>> @@ -3178,9 +3178,10 @@ static void virt_machine_class_init(ObjectCla=
+ss *oc, void *data)
+> >>>>        mc->cpu_index_to_instance_props =3D virt_cpu_index_to_props;
+> >>>>    #ifdef CONFIG_TCG
+> >>>>        mc->default_cpu_type =3D ARM_CPU_TYPE_NAME("cortex-a15");
+> >>>> -#else
+> >>>> +#ifdef TARGET_AARCH64
+> >>>>        mc->default_cpu_type =3D ARM_CPU_TYPE_NAME("max");
+> >>>> -#endif
+> >>>> +#endif /* TARGET_AARCH64 */
+> >>>> +#endif /* CONFIG_TCG */
+> >>>>        mc->valid_cpu_types =3D valid_cpu_types;
+> >>>>        mc->get_default_cpu_node_id =3D virt_get_default_cpu_node_id;
+> >>>>        mc->kvm_type =3D virt_kvm_type;
+> >>>
+> >>>
+> >
+>
 
