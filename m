@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0864FA9F96A
+	by mail.lfdr.de (Postfix) with ESMTPS id 63A0CA9F96D
 	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 21:25:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9U5D-0003iy-T9; Mon, 28 Apr 2025 15:24:03 -0400
+	id 1u9U5G-0003kL-3c; Mon, 28 Apr 2025 15:24:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1u9U5B-0003iW-SR
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 15:24:01 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1u9U5D-0003jH-Qu
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 15:24:03 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1u9U59-0007Ot-Ih
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 15:24:01 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-2260c91576aso44454545ad.3
- for <qemu-devel@nongnu.org>; Mon, 28 Apr 2025 12:23:59 -0700 (PDT)
+ id 1u9U5C-0007PB-7Y
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 15:24:03 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-2240b4de12bso78563685ad.2
+ for <qemu-devel@nongnu.org>; Mon, 28 Apr 2025 12:24:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1745868237; x=1746473037; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1745868240; x=1746473040; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VZIvABSaT73JoHWdEqC95e5mabS4fGuob+IqY91t3yE=;
- b=deS0xEFEcqPrwb3FxBMwRf31WYltW7O1wHH1PsfMgvEHR5w4RlzD3KdJmJdDNOe7pm
- pu/nFHkQc1j4XSSNsG7Yjdvd8s5Cflkz04nJ+x/ZK809AIserlJlPv/6jqs0njdv/lqJ
- XddUtks9PNTziOCjrQ3IrE7ZXIVokuu9jCn4MzgkS+tqZSlPRY9EF7+ELCFuSk/xGPjm
- tavZq6K62OzjM9i23ymEqYYCi8nIzi8ZjdFw3xEOa7K9Vr44SV/Xnj6+KbCo8+2rHYN1
- diMJ0dzAS7tszxVvBGSBTNLjuvLlfOtNLsZOAw5VldN56LsVPuwjD5MvI1Q08jimYkZ0
- S18g==
+ bh=5nQvphfEuGeh2n9SYU8tx7Ki7baxefxZJJlRlKKLmGY=;
+ b=G3GBfRpHnv8BI6cNuR+F0RglBZ7SabogtvUXf0/UmwZBuQyr/DCcr/p1QW6PStkTD6
+ rVylcxe9TOVMdy9DdknGKlyA9tg4bPqTqSmT3w7u1ipjMmuatYM/khcJRDIGHcRiEnfj
+ 0p2AYn34Ze9fTzNu2lJL3jigpUWmZ16Z/W/GEiIFGwd6MNSxsYy5mpntHvlnd0sAnFOe
+ mZx91ZntEGAzAPGyiicn9D5mtghEE4y76CzFjeVu/hRehoXdonuyzsREQb/1EM27r5uz
+ 30Sa7jz9kqTBN8h/fkRqmR2nRPuf/JPBf6AwUWez8W4T2r2jdQeIdCJJQ0nTg9GIgEI6
+ u0iA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745868237; x=1746473037;
+ d=1e100.net; s=20230601; t=1745868240; x=1746473040;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VZIvABSaT73JoHWdEqC95e5mabS4fGuob+IqY91t3yE=;
- b=BUPeFekkllyiqfia+q18RfD2COC5bR+/PuEKuVQgQUkydy+BelkjsjzEzODseE866x
- 7oW9rhlmR6YpOa9/BavvjsCrBIQvDSaFNu/ZfzltRgqBfQfNvZYLis1u/Q9/Kemjpk3M
- TFywc51glfelnIKvHIdEyXW3BIRQZguH1z4uOXS7w8WdxaG/iwnLHS045iLbORjDCRpB
- NRsu75yRDrkF0u/m7XTLjEXeP/6zjdGUdM/qVeDkyuS4/5HPlzoQgLng3Xpb5LJCZF1N
- K0fXJ0w9Zed/8YiIYIMC9n6mQpcleYGMJia6DdHa6EjiH1cNOTzEukqxfV7WEh5UXe8T
- 2Aew==
-X-Gm-Message-State: AOJu0YwLl9oR8DiARZr5/KuZ4uY8Vg7Mh4Yas5WCfwoWf5qHaAIWFIG5
- bKh2nPKEg23Bq82knQzC9dPU37Pmew60FCQI5XAwxXK9o+0MFfpMC2RkwVgcfhOBmL8JDJg//yn
- D5dk=
-X-Gm-Gg: ASbGncsPyJlBXpdt7LwueiApSWv7mVI42c0dS+esK2MzbHaJzFmIbWCA6V2bxXfh5h8
- oSWyGZiaQqZ8IrdzzOWCaAFNe80DTv4D6U8PV3cDRjMpnBIWBEh4/5u0TJku3+AT9RaJpMXLAhU
- 0CyEefC52g5TXlATNAVME9oVV6t3dYDvp4V8WC9gPELdDtnebF/KWKLYgsaSDAbRyMw7I8tKEvK
- TaGR1Kp1EKGCQxa9/ADpwbLqKSjJ6j+y4LX8rRcced63OeK+i/rkB+XuKH1FXwT/CnF2w5gm54+
- XBjrfeKUJOthr0wkQDDk9aU13j7p4szXhwfG2E//C2F8
-X-Google-Smtp-Source: AGHT+IFiCW5aKSRjo0qafxqjcMegLspQ0FUZXgMv2FGWGNhd/N8Al89jp1+nRuK04bPpe344dISrJQ==
-X-Received: by 2002:a17:903:2292:b0:223:54e5:bf4b with SMTP id
- d9443c01a7336-22dc6a0d4d1mr150313595ad.25.1745868237391; 
- Mon, 28 Apr 2025 12:23:57 -0700 (PDT)
+ bh=5nQvphfEuGeh2n9SYU8tx7Ki7baxefxZJJlRlKKLmGY=;
+ b=XY9NC31lT14+TRLJxjPUC8wDbYxaDQslOr2tDR3IK+ESKGs0L9bKC6/7bucMN2bIQg
+ xRkf21i1R7J6eHhU0YSbR+MXBaBCHaLwTtiW9oUJpvNFxhdw5LuzgWrvF2060xtrg+Nn
+ EHvORPaeiOAJeXYUIPeCT7hvKRH4Qnbl9HA3SPyNGlIegBkxAQhwlPjquQb71ThzpPKG
+ nON1JIZ3c3LXyazFJ7iVRDP3XZrnL3MVsQcnjj1wvVVGD67FGMoFfIVYrbvir9e/DVYn
+ ShhLLb548joc10b8KqDMLFnEeFzFnnWNp6h5+E0EV03xLo1WGLedy0k1PJ+GX/fYRVvz
+ 2vQQ==
+X-Gm-Message-State: AOJu0YzFw5KfhxMZsWg69J0vFOK2jACiYorrxfmUeX9eVtZaKqI+I2T8
+ cdLOmp1h9tL20TUtxuvvqtqYAe+hZgloky+WTtsGiq703B9Rxu7lJFDzGDTZsRXNvXhseBHAloX
+ kC/w=
+X-Gm-Gg: ASbGncu26BL1zJxb8eIRRdIknhcDybqPfmKnAl3MOxrhvh6KPgPG8gCb97lcUbq71sB
+ UHuCPwPfia/w/ruO3ikqPoGljHrS8f3Gxf2QZUv62EqfnNqEBMvyXaAKnOBaXGxjeZSnCY5cnSK
+ M5ux5GoeqBSHtQCZD00TORR9GblfePR1AGuQQfTkBbU0jwOiMbNc1XcNIm27F9frCXWXBDX8VOQ
+ I0FUbdxNsViTxwC3BYc9ndPKDwT7ZdvDhJlIvyfdSOhVEdUqDzug23Q2Mz2XO2MigHtVokjPC9O
+ MZoxWtAUpaKTOoYPr/fX3825UnvK1axhgzzMLTYIQTDi40ebsTpVnrw=
+X-Google-Smtp-Source: AGHT+IFO9/zjGz3SGatZpzmrZ+jY+EELMNE7T5WfBF2gOT1OUMsndKGSUPQW9i/qU/ct7w7WXehG1Q==
+X-Received: by 2002:a17:902:ea03:b0:220:be86:a421 with SMTP id
+ d9443c01a7336-22dc6a68648mr164813055ad.38.1745868240530; 
+ Mon, 28 Apr 2025 12:24:00 -0700 (PDT)
 Received: from grind.. ([2804:7f0:bcc0:906e:57d5:dca2:1ab3:20de])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22db4db99d3sm87300565ad.53.2025.04.28.12.23.54
+ d9443c01a7336-22db4db99d3sm87300565ad.53.2025.04.28.12.23.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Apr 2025 12:23:57 -0700 (PDT)
+ Mon, 28 Apr 2025 12:24:00 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, liwei1518@gmail.com,
  zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com, ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v4 8/9] target/riscv/kvm: read/write KVM regs via env size
-Date: Mon, 28 Apr 2025 16:23:22 -0300
-Message-ID: <20250428192323.84992-9-dbarboza@ventanamicro.com>
+Subject: [PATCH v4 9/9] target/riscv/kvm: add scounteren CSR
+Date: Mon, 28 Apr 2025 16:23:23 -0300
+Message-ID: <20250428192323.84992-10-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250428192323.84992-1-dbarboza@ventanamicro.com>
 References: <20250428192323.84992-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,74 +99,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We're going to add support for scounteren in the next patch. KVM defines
-as a target_ulong CSR, while QEMU defines env->scounteren as a 32 bit
-field. This will cause the current code to read/write a 64 bit CSR in a
-32 bit field when running in a 64 bit CPU.
+Add support for the scounteren KVM CSR. Note that env->scounteren is a
+32 bit and all KVM CSRs are target_ulong, so scounteren will be capped
+to 32 bits read/writes.
 
-To prevent that, change the current logic to honor the size of the QEMU
-storage instead of the KVM CSR reg.
-
+Reported-by: Andrew Jones <ajones@ventanamicro.com>
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Suggested-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 ---
- target/riscv/kvm/kvm-cpu.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ target/riscv/kvm/kvm-cpu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 5efee8adb2..53c34b43a2 100644
+index 53c34b43a2..209fe769df 100644
 --- a/target/riscv/kvm/kvm-cpu.c
 +++ b/target/riscv/kvm/kvm-cpu.c
-@@ -135,6 +135,7 @@ typedef struct KVMCPUConfig {
-     const char *description;
-     target_ulong offset;
-     uint64_t kvm_reg_id;
-+    uint32_t prop_size;
-     bool user_set;
-     bool supported;
- } KVMCPUConfig;
-@@ -237,6 +238,7 @@ static void kvm_riscv_update_cpu_misa_ext(RISCVCPU *cpu, CPUState *cs)
+@@ -251,6 +251,7 @@ static KVMCPUConfig kvm_csr_cfgs[] = {
+     KVM_CSR_CFG("stval",      stval,      RISCV_CSR_REG(stval)),
+     KVM_CSR_CFG("sip",        mip,        RISCV_CSR_REG(sip)),
+     KVM_CSR_CFG("satp",       satp,       RISCV_CSR_REG(satp)),
++    KVM_CSR_CFG("scounteren", scounteren, RISCV_CSR_REG(scounteren)),
+     KVM_CSR_CFG("senvcfg",    senvcfg,    RISCV_CSR_REG(senvcfg)),
+ };
  
- #define KVM_CSR_CFG(_name, _env_prop, reg_id) \
-     {.name = _name, .offset = ENV_CSR_OFFSET(_env_prop), \
-+     .prop_size = sizeof(((CPURISCVState *)0)->_env_prop), \
-      .kvm_reg_id = reg_id}
+@@ -703,6 +704,7 @@ static void kvm_riscv_reset_regs_csr(CPURISCVState *env)
+     env->stval = 0;
+     env->mip = 0;
+     env->satp = 0;
++    env->scounteren = 0;
+     env->senvcfg = 0;
+ }
  
- static KVMCPUConfig kvm_csr_cfgs[] = {
-@@ -632,6 +634,7 @@ static int kvm_riscv_get_regs_csr(CPUState *cs)
- {
-     RISCVCPU *cpu = RISCV_CPU(cs);
-     uint64_t reg;
-+    uint32_t reg32;
-     int i, ret;
- 
-     for (i = 0; i < ARRAY_SIZE(kvm_csr_cfgs); i++) {
-@@ -646,9 +649,10 @@ static int kvm_riscv_get_regs_csr(CPUState *cs)
-             return ret;
-         }
- 
--        if (KVM_REG_SIZE(csr_cfg->kvm_reg_id) == sizeof(uint32_t)) {
--            kvm_cpu_csr_set_u32(cpu, csr_cfg, reg);
--        } else if (KVM_REG_SIZE(csr_cfg->kvm_reg_id) == sizeof(uint64_t)) {
-+        if (csr_cfg->prop_size == sizeof(uint32_t)) {
-+            reg32 = reg & 0xFFFF;
-+            kvm_cpu_csr_set_u32(cpu, csr_cfg, reg32);
-+        } else if (csr_cfg->prop_size == sizeof(uint64_t)) {
-             kvm_cpu_csr_set_u64(cpu, csr_cfg, reg);
-         } else {
-             g_assert_not_reached();
-@@ -671,9 +675,9 @@ static int kvm_riscv_put_regs_csr(CPUState *cs)
-             continue;
-         }
- 
--        if (KVM_REG_SIZE(csr_cfg->kvm_reg_id) == sizeof(uint32_t)) {
-+        if (csr_cfg->prop_size == sizeof(uint32_t)) {
-             reg = kvm_cpu_csr_get_u32(cpu, csr_cfg);
--        } else if (KVM_REG_SIZE(csr_cfg->kvm_reg_id) == sizeof(uint64_t)) {
-+        } else if (csr_cfg->prop_size == sizeof(uint64_t)) {
-             reg = kvm_cpu_csr_get_u64(cpu, csr_cfg);
-         } else {
-             g_assert_not_reached();
 -- 
 2.49.0
 
