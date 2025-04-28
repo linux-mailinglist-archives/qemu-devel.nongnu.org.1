@@ -2,70 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 975D7A9EE04
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 12:31:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C63AAA9EDDF
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 12:26:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9Lk0-0004FC-1B; Mon, 28 Apr 2025 06:29:36 -0400
+	id 1u9Lh3-0005Qv-4J; Mon, 28 Apr 2025 06:26:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1u9Lj5-0000t3-A7
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 06:28:39 -0400
+ (Exim 4.90_1) (envelope-from <pkrempa@redhat.com>)
+ id 1u9Lgh-0005H6-Jv
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 06:26:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1u9Lj2-0003XV-31
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 06:28:38 -0400
+ (Exim 4.90_1) (envelope-from <pkrempa@redhat.com>)
+ id 1u9Lgb-0003DO-UJ
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 06:26:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745836113;
+ s=mimecast20190719; t=1745835964;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=CFfNtyDoOAoDlEZ4I7GVcU8E7p9ldhkePZ9VBtg34o4=;
- b=dkYPolSPuXxxoi8Gd1MKp9a06K3B3+8gUK6ijkfLcVIUB2HWeHz83U4GHdcI5wKRRA/rcl
- 6j2J6Hjzk+upja893JxMVBJu/NLDG0h+kHZYb0sXQtamXNspxGg7aCz0Ap3YSawEVj764S
- sF2YM/nxjOpx38xLgrWcB5bxNOpQ4/A=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=8L/Vl7KLYcbc8m1amlTRX99KHG6o8GH3Fy/XlwhZc9s=;
+ b=I/bmKX2IavMdfsmbZxy5wtPTqcRTHIVL8ar6v72+dr4Qt5H4r7lLJJmtxsMgqDOFo5jPpc
+ dOmdt/DWn5tI5DfeX0FO8TvAIxxh6MIMYg4umAEPS8Iv7bknhKt1c/lXQZEzfah6nvfGrg
+ WaKpvpFPMqJ0P2mnDqTwN2i8aEUBpPo=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-216-mhiu-1f-MmCjKt0ezOOMkg-1; Mon,
- 28 Apr 2025 06:28:30 -0400
-X-MC-Unique: mhiu-1f-MmCjKt0ezOOMkg-1
-X-Mimecast-MFC-AGG-ID: mhiu-1f-MmCjKt0ezOOMkg_1745836109
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-540-NpjqbdA8PimjALTxtqNlGQ-1; Mon,
+ 28 Apr 2025 06:26:02 -0400
+X-MC-Unique: NpjqbdA8PimjALTxtqNlGQ-1
+X-Mimecast-MFC-AGG-ID: NpjqbdA8PimjALTxtqNlGQ_1745835961
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 491B519560AE; Mon, 28 Apr 2025 10:28:29 +0000 (UTC)
-Received: from laptop.redhat.com (unknown [10.44.32.14])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A8DC3180045C; Mon, 28 Apr 2025 10:28:25 +0000 (UTC)
-From: Eric Auger <eric.auger@redhat.com>
-To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, peter.maydell@linaro.org, imammedo@redhat.com,
- anisinha@redhat.com, mst@redhat.com, shannon.zhaosl@gmail.com
-Cc: pbonzini@redhat.com,
-	Jonathan.Cameron@huawei.com
-Subject: [RFC 24/24] hw/arm/virt: Use ACPI PCI hotplug by default
-Date: Mon, 28 Apr 2025 12:25:50 +0200
-Message-ID: <20250428102628.378046-25-eric.auger@redhat.com>
-In-Reply-To: <20250428102628.378046-1-eric.auger@redhat.com>
-References: <20250428102628.378046-1-eric.auger@redhat.com>
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1CC871800874; Mon, 28 Apr 2025 10:26:01 +0000 (UTC)
+Received: from angien.pipo.sk (unknown [10.45.242.14])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9663C1956094; Mon, 28 Apr 2025 10:25:56 +0000 (UTC)
+Date: Mon, 28 Apr 2025 12:25:53 +0200
+From: Peter Krempa <pkrempa@redhat.com>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
+ richard.henderson@linaro.org, stefanha@redhat.com,
+ Michael Roth <michael.roth@amd.com>, pbonzini@redhat.com,
+ berrange@redhat.com, peter.maydell@linaro.org, thuth@redhat.com,
+ jsnow@redhat.com, philmd@linaro.org,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ devel@lists.libvirt.org
+Subject: Re: [RFC PATCH 0/3] single-binary: make QAPI generated files common
+Message-ID: <aA9XsYFIxw-XIcix@angien.pipo.sk>
+References: <20250424183350.1798746-1-pierrick.bouvier@linaro.org>
+ <87a584b69n.fsf@pond.sub.org>
+ <5b21965d-2428-454c-9dd7-266987495abd@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5b21965d-2428-454c-9dd7-266987495abd@linaro.org>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pkrempa@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
 X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.492,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
@@ -84,30 +90,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now all the enablers are there for ACPI PCI hotplug support,
-let's use it by default for 10.1 virt machine onwards.
+On Fri, Apr 25, 2025 at 14:07:34 -0700, Pierrick Bouvier wrote:
+> On 4/25/25 08:38, Markus Armbruster wrote:
+> > Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
+> > 
+> > > Note: This RFC was posted to trigger a discussion around this topic, and it's
+> > > not expected to merge it as it is.
+> > > 
+> > > Context
+> > > =======
+> > > 
+> > > Linaro is working towards heterogeneous emulation, mixing several architectures
+> > > in a single QEMU process. The first prerequisite is to be able to build such a
+> > > binary, which we commonly name "single-binary" in our various series.
+> > > An (incomplete) list of series is available here:
+> > > https://patchew.org/search?q=project%3AQEMU+single-binary
+> > > 
+> > > We don't expect to change existing command line interface or any observable
+> > > behaviour, it should be identical to existing binaries. If anyone notices a
+> > > difference, it will be a bug.
+> > 
+> > Define "notice a difference" :)  More on that below.
+> > 
+> 
+> Given a single-binary *named* exactly like an existing qemu-system-X binary,
+> any user or QEMU management layer should not be able to distinguish it from
+> the real qemu-system-X binary.
+> 
+> The new potential things will be:
+> - introduction of an (optional) -target option, which allows to
+> override/disambiguate default target detected.
+> - potentially more boards/cpus/devices visible, once we start developing
+> heterogeneous emulation. See it as a new CONFIG_{new_board} present.
+> 
+> Out of that, once the current target is identified, based on argv[0], there
+> should be absolutely no difference, whether in the behaviour, UI, command
+> line, or the monitor interfaces.
 
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
----
- hw/arm/virt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Okay, so assuming that the correctly named binaries will apply whatever
+necessary magic to have them behave identically as they did.
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 5e6562e754..ecdc1fcfbb 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -3446,8 +3446,8 @@ static void virt_instance_init(Object *obj)
-         }
-     }
- 
--    /* default disallows ACPI PCI hotplug */
--    vms->acpi_pcihp = false;
-+    /* default allows ACPI PCI hotplug */
-+    vms->acpi_pcihp = true;
- 
-     /* Default disallows iommu instantiation */
-     vms->iommu = VIRT_IOMMU_NONE;
--- 
-2.49.0
+I'll also ignore the distros that rename them assuming they do it in a
+way that stays compatible.
+
+The question is how the new unified binary will behave when being
+introspected:
+
+ - Can the unified binary be introspected without selecting an
+   architecture?
+   (by introspection I mean starting with -M none and querying stuff via
+   QMP)
+
+   if no: libvirt will have a chicken&egg problem deciding what to do
+
+ - What will be the answer for the platform-specific stuff such as CPU
+   definitions?
+
+   e.g. does/can an architecture need to be instantiated later via QMP?
+   can it be changed dynamically?
 
 
