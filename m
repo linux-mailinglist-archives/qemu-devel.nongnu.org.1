@@ -2,86 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12745A9E642
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 04:31:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2576DA9E66A
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 05:14:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9EFm-0001KN-WD; Sun, 27 Apr 2025 22:29:55 -0400
+	id 1u9EvD-0008Ul-Fn; Sun, 27 Apr 2025 23:12:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <timlee660101@gmail.com>)
- id 1u9EFg-0001B6-0A; Sun, 27 Apr 2025 22:29:49 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <timlee660101@gmail.com>)
- id 1u9EFe-0000HE-92; Sun, 27 Apr 2025 22:29:47 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-7376dd56f8fso5767535b3a.2; 
- Sun, 27 Apr 2025 19:29:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1745807384; x=1746412184; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=SgIEZVqP2SoL72AS38TPlzGLTk7c9CmbSWc1OpOBnGc=;
- b=hqS2W+b3Qx2+EmAgBwuVkCMMoR8nxC1Sm1bMGG+KFuiz8mIUpTrPzZ1MFl3o7J0TLJ
- AyahEsTXeM4Y4yLLYQbzrW8HxWB0hvRiI1Athqb3L6DM8gMMxEd0XPdGDfGsde5PjBQe
- HnqcBjnjCTPwRXxAhKGN93PlXp3tjFEXzNiGzCXr7FX6a9NwaZLYr92L1mjTIErNcYQZ
- 62mmaoUz1Afe/H8DOy40OI3v3Ek0LkG42B3fVtjPt8ejR1u/GHwb9F3mptowAORff4UK
- maZs2CrGoOlqsE+kBlEm9eTqJXb32/Ao4RlD+Q+N3zQzZ8ETVJSgUrPmMpsun15vE96g
- eP0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745807384; x=1746412184;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=SgIEZVqP2SoL72AS38TPlzGLTk7c9CmbSWc1OpOBnGc=;
- b=aYek2yxVhzi604Wi3AT8ysiEHB7p6abkbjOO1t9CUC3XGTa7NST2Ie5g88WHJL70nt
- WDVQbIIld4xWPTn6KBHHn1Z0XRUZG9CjSUfsszni8duVBcPc+okrenjG5gknSeg7Mq0N
- 0/71dx1eXBxB8UKZsMvx1rccHniQ8dseHvKLOGJb/eeBMZk3TEb3vrlk0Anx1OkMToq5
- dIktwiQdaa1LyA3iqpRyubvFTY9wvEDZO2g/jyExKqTfONLEDeEPRyzrpBbN7Q+om0HK
- qhf5Z/fgLIz9eJqparCpuAAG5k54lYZhWpi37zHPdnrsjrkDoMlS5qMx71fKYrbDaebE
- ocRw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXkdpcyLh9YxdnMpprkSyRx6ITjATdSe+3QjWt51Oe3UMIlFjYsXMXhm4X9RDeH7sDg7kAotTtdHBy1@nongnu.org
-X-Gm-Message-State: AOJu0Ywmk635RRmFYhJ+ZqKVGOfvQrWUx6WPlQgjGwg73q+0ZnSr6XBL
- j1n4QRCNFrln3nt7WRvaH5pxLft2ecmzhz5x79EofOQvvStTTlC4
-X-Gm-Gg: ASbGnctd8lejwHoizkUZpK7bH9jTYiBdoduL6wWKe6dRnHZCT+aWUt+1/GfuB/PjAaO
- yWWypD5RsMRPZSO2Nmxga5SURhoKUjLwU1k46zbXatL57nNADvnjS8ZPKkgPaYqeu/GbamMJfKv
- bGm5jwo1dsDV1jBd2Kd9QIML1MW2bz6ZIjBV+qEPjfwpbDsyRg572ifyY+cZtAt8Qu7HHD0INdS
- o/yB2bSvJXTC6oukRmD0x9n9NDqUVNaSxGiXMwuGMWE/su3Tu0k4nqsydNv/jsWfWIDccy5+VuV
- 0sWcpbmWDj2Qd4067clZ3oUkesf+MZPveDc1txTJRd6NO35Zx1Y+w+k1vmyXKghc71cMDJpqi83
- tJKashYttQXu/2uWjojQ=
-X-Google-Smtp-Source: AGHT+IFPLzdbNwn8WI0xgg+Regp2GllciQEkS36fRd9g5Iv/JrMpllEe9Cr7dmL2Ho0jrH4Vlf2ROA==
-X-Received: by 2002:a05:6a00:99f:b0:73b:71a9:a5ad with SMTP id
- d2e1a72fcca58-73fd897ac9amr13151151b3a.16.1745807383829; 
- Sun, 27 Apr 2025 19:29:43 -0700 (PDT)
-Received: from hcdev-d520mt.. (60-250-196-139.hinet-ip.hinet.net.
- [60.250.196.139]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73e25941eecsm7085557b3a.54.2025.04.27.19.29.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 27 Apr 2025 19:29:43 -0700 (PDT)
-From: Tim Lee <timlee660101@gmail.com>
-To: peter.maydell@linaro.org, wuhaotsh@google.com, kfting@nuvoton.com,
- chli30@nuvoton.com
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- Tim Lee <timlee660101@gmail.com>
-Subject: [PATCH] hw/arm/npcm8xx_boards: Correct valid_cpu_types setting of
- NPCM8XX SoC
-Date: Mon, 28 Apr 2025 10:29:34 +0800
-Message-Id: <20250428022934.3081139-1-timlee660101@gmail.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1u9Ev4-0008UX-HJ
+ for qemu-devel@nongnu.org; Sun, 27 Apr 2025 23:12:34 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1u9Ev1-0005F4-Ng
+ for qemu-devel@nongnu.org; Sun, 27 Apr 2025 23:12:34 -0400
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8Bx12kU8g5or_LHAA--.3603S3;
+ Mon, 28 Apr 2025 11:12:20 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by front1 (Coremail) with SMTP id qMiowMCxbsUS8g5oclmaAA--.62031S3;
+ Mon, 28 Apr 2025 11:12:20 +0800 (CST)
+Subject: Re: [PATCH v2 05/16] hw/intc/loongarch_pch: Use relative address in
+ MemoryRegionOps
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
+References: <20250324093730.3683378-1-maobibo@loongson.cn>
+ <20250324093730.3683378-6-maobibo@loongson.cn>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <44555821-5129-849e-ebed-fce807d86166@loongson.cn>
+Date: Mon, 28 Apr 2025 11:14:57 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <20250324093730.3683378-6-maobibo@loongson.cn>
+Content-Type: text/plain; charset=gbk; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=timlee660101@gmail.com; helo=mail-pf1-x42a.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Language: en-US
+X-CM-TRANSID: qMiowMCxbsUS8g5oclmaAA--.62031S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxur1UJFW8ArWUGryxJF1kWFX_yoWrCrW7pr
+ ZIyFy7KFW7tanFgFsrA34DZas7W3Z7G342g390ka4FkrWDZrykXa4DA34DK3Wjk347ArWr
+ XFs8Gw1a9a9rXFgCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF
+ 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8cz
+ VUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -6
+X-Spam_score: -0.7
+X-Spam_bar: /
+X-Spam_report: (-0.7 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
+ NICE_REPLY_A=-1.279, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,29 +82,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-NPCM8XX SoC is the successor of the NPCM7XX. It features quad-core
-Cortex-A35 (Armv8, 64-bit) CPUs and some additional peripherals.
-Correct the `valid_cpu_types` setting to match the NPCM8XX SoC.
+ÔÚ 2025/3/24 ÏÂÎç5:37, Bibo Mao Ð´µÀ:
+> Parameter address for read and write callback in MemoryRegionOps is
+> relative offset with base address of this MemoryRegionOps. It can
+> be directly used as offset and offset calculation can be removed.
+>
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> ---
+>   hw/intc/loongarch_pch_pic.c | 34 ++++++++++++++++------------------
+>   1 file changed, 16 insertions(+), 18 deletions(-)
+Reviewed-by: Song Gao <gaosong@loongson.cn>
 
-Signed-off-by: Tim Lee <timlee660101@gmail.com>
----
- hw/arm/npcm8xx_boards.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/hw/arm/npcm8xx_boards.c b/hw/arm/npcm8xx_boards.c
-index 3fb8478e72..6d3e59f6b9 100644
---- a/hw/arm/npcm8xx_boards.c
-+++ b/hw/arm/npcm8xx_boards.c
-@@ -213,7 +213,7 @@ static void npcm8xx_machine_class_init(ObjectClass *oc, void *data)
- {
-     MachineClass *mc = MACHINE_CLASS(oc);
-     static const char * const valid_cpu_types[] = {
--        ARM_CPU_TYPE_NAME("cortex-a9"),
-+        ARM_CPU_TYPE_NAME("cortex-a35"),
-         NULL
-     };
- 
--- 
-2.34.1
+Thanks.
+Song Gao
+> diff --git a/hw/intc/loongarch_pch_pic.c b/hw/intc/loongarch_pch_pic.c
+> index 7043b8b9f4..93f7ceb6b9 100644
+> --- a/hw/intc/loongarch_pch_pic.c
+> +++ b/hw/intc/loongarch_pch_pic.c
+> @@ -76,9 +76,8 @@ static uint64_t loongarch_pch_pic_low_readw(void *opaque, hwaddr addr,
+>   {
+>       LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(opaque);
+>       uint64_t val = 0;
+> -    uint32_t offset = addr & 0xfff;
+>   
+> -    switch (offset) {
+> +    switch (addr) {
+>       case PCH_PIC_INT_ID:
+>           val = s->id.data & UINT_MAX;
+>           break;
+> @@ -129,13 +128,12 @@ static void loongarch_pch_pic_low_writew(void *opaque, hwaddr addr,
+>                                            uint64_t value, unsigned size)
+>   {
+>       LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(opaque);
+> -    uint32_t offset, old_valid, data = (uint32_t)value;
+> +    uint32_t old_valid, data = (uint32_t)value;
+>       uint64_t old, int_mask;
+> -    offset = addr & 0xfff;
+>   
+>       trace_loongarch_pch_pic_low_writew(size, addr, data);
+>   
+> -    switch (offset) {
+> +    switch (addr) {
+>       case PCH_PIC_INT_MASK:
+>           old = s->int_mask;
+>           s->int_mask = get_writew_val(old, data, 0);
+> @@ -203,9 +201,9 @@ static uint64_t loongarch_pch_pic_high_readw(void *opaque, hwaddr addr,
+>   {
+>       LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(opaque);
+>       uint64_t val = 0;
+> -    uint32_t offset = addr + PCH_PIC_INT_STATUS;
+>   
+> -    switch (offset) {
+> +    addr += PCH_PIC_INT_STATUS;
+> +    switch (addr) {
+>       case PCH_PIC_INT_STATUS:
+>           val = (uint32_t)(s->intisr & (~s->int_mask));
+>           break;
+> @@ -230,12 +228,12 @@ static void loongarch_pch_pic_high_writew(void *opaque, hwaddr addr,
+>                                        uint64_t value, unsigned size)
+>   {
+>       LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(opaque);
+> -    uint32_t offset, data = (uint32_t)value;
+> -    offset = addr + PCH_PIC_INT_STATUS;
+> +    uint32_t data = (uint32_t)value;
+>   
+> +    addr += PCH_PIC_INT_STATUS;
+>       trace_loongarch_pch_pic_high_writew(size, addr, data);
+>   
+> -    switch (offset) {
+> +    switch (addr) {
+>       case PCH_PIC_INT_STATUS:
+>           s->intisr = get_writew_val(s->intisr, data, 0);
+>           break;
+> @@ -258,18 +256,18 @@ static uint64_t loongarch_pch_pic_readb(void *opaque, hwaddr addr,
+>   {
+>       LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(opaque);
+>       uint64_t val = 0;
+> -    uint32_t offset = (addr & 0xfff) + PCH_PIC_ROUTE_ENTRY;
+>       int64_t offset_tmp;
+>   
+> -    switch (offset) {
+> +    addr += PCH_PIC_ROUTE_ENTRY;
+> +    switch (addr) {
+>       case PCH_PIC_HTMSI_VEC ... PCH_PIC_HTMSI_VEC_END:
+> -        offset_tmp = offset - PCH_PIC_HTMSI_VEC;
+> +        offset_tmp = addr - PCH_PIC_HTMSI_VEC;
+>           if (offset_tmp >= 0 && offset_tmp < 64) {
+>               val = s->htmsi_vector[offset_tmp];
+>           }
+>           break;
+>       case PCH_PIC_ROUTE_ENTRY ... PCH_PIC_ROUTE_ENTRY_END:
+> -        offset_tmp = offset - PCH_PIC_ROUTE_ENTRY;
+> +        offset_tmp = addr - PCH_PIC_ROUTE_ENTRY;
+>           if (offset_tmp >= 0 && offset_tmp < 64) {
+>               val = s->route_entry[offset_tmp];
+>           }
+> @@ -287,19 +285,19 @@ static void loongarch_pch_pic_writeb(void *opaque, hwaddr addr,
+>   {
+>       LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(opaque);
+>       int32_t offset_tmp;
+> -    uint32_t offset = (addr & 0xfff) + PCH_PIC_ROUTE_ENTRY;
+>   
+> +    addr += PCH_PIC_ROUTE_ENTRY;
+>       trace_loongarch_pch_pic_writeb(size, addr, data);
+>   
+> -    switch (offset) {
+> +    switch (addr) {
+>       case PCH_PIC_HTMSI_VEC ... PCH_PIC_HTMSI_VEC_END:
+> -        offset_tmp = offset - PCH_PIC_HTMSI_VEC;
+> +        offset_tmp = addr - PCH_PIC_HTMSI_VEC;
+>           if (offset_tmp >= 0 && offset_tmp < 64) {
+>               s->htmsi_vector[offset_tmp] = (uint8_t)(data & 0xff);
+>           }
+>           break;
+>       case PCH_PIC_ROUTE_ENTRY ... PCH_PIC_ROUTE_ENTRY_END:
+> -        offset_tmp = offset - PCH_PIC_ROUTE_ENTRY;
+> +        offset_tmp = addr - PCH_PIC_ROUTE_ENTRY;
+>           if (offset_tmp >= 0 && offset_tmp < 64) {
+>               s->route_entry[offset_tmp] = (uint8_t)(data & 0xff);
+>           }
 
 
