@@ -2,92 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97BA0A9F978
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 21:26:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5103EA9F97A
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 21:26:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9U7Z-0007W1-QH; Mon, 28 Apr 2025 15:26:30 -0400
+	id 1u9U7s-0008Pb-QC; Mon, 28 Apr 2025 15:26:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1u9U6w-00079j-5l
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 15:25:50 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1u9U6u-0007iF-0g
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 15:25:49 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-2295d78b433so56079635ad.2
- for <qemu-devel@nongnu.org>; Mon, 28 Apr 2025 12:25:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745868346; x=1746473146; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=G0J8v9DNKygywueCRdyX/mMSkZhWURCDm00BQmhtFzQ=;
- b=L++KuDUtFB5g0JGEpcv54qCj5nyRfcyaHiGHP7B7tk/aRiq0Niv5nWkrvhv9LvHBkt
- 5xCeCblP6iWdIcfjEuftpsUvgPmu34nZWe+LVwiNYI7oZsJv7uYbV7M/zxoTsGdgWTrf
- f3S4WWNNgvyylzH1rrcImvDBCYfzkC4ltgBYbAc/Esn6QQIhb04/P2FuUaRyKbkRXFBE
- WBdDRk4lr2u5XtymAQHp12D37jkBMogFabfzXl1cQFnFAhkSCFr+m5Fkq43uaDr68iQR
- sb6TiYpE5iVaz4nuvQZ+2DgSf4UCkOgJvnvjQhXG2GcEPxUheGMZUGBAS5CAzB4w6lIu
- L6iw==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1u9U7a-00089j-VM
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 15:26:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1u9U7W-0007mk-In
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 15:26:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1745868377;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=reoO9WwG9kD8Bqut2r9HmOF5uG44ei84eP9T5qRklqA=;
+ b=Sk6W/cM7ng65RrFFgJZyWeat+pESkiBPb3GU8Oc3w0XN1bWrAipz3HFQ1QLqN61PtC6eq5
+ hvqFCuG7GSiUAHAIK7zrC7TfjXd5V+O9SnOzU8VWf6wjaH8tM8BClxVCVLSaWWocp9Lq7A
+ iycI+QovCSSQ9VL0ZtGVmoJKpcthzDk=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-439-xhfaBfgTN5aK89voOaTq_Q-1; Mon, 28 Apr 2025 15:26:16 -0400
+X-MC-Unique: xhfaBfgTN5aK89voOaTq_Q-1
+X-Mimecast-MFC-AGG-ID: xhfaBfgTN5aK89voOaTq_Q_1745868375
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-43cf44b66f7so30905205e9.1
+ for <qemu-devel@nongnu.org>; Mon, 28 Apr 2025 12:26:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745868346; x=1746473146;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=G0J8v9DNKygywueCRdyX/mMSkZhWURCDm00BQmhtFzQ=;
- b=hil36UfK6KDPGWJTKeLysOhwkb5Y1C0z1oIBk+KjT5CYqcKLMI5BvhyhnQh+/L0fw/
- SocExo4lv0JNjnmRVk0MSqvOEh6tDSSv0n2VVCYdaAH3+gBHla7G6Naj5fpRqFpjBu2s
- +05i4Wu0cvtGZGh1LSOJdRNhOBskSZUoIjBMldaOJsdGle9EcLIcLzjAzCUA01kg8O1Q
- 5MPFtoy8tth9ccHZb2E0mJeTK82fvwyMJFCtoL9QcamwNalBhpOcefGlPqI6vKF1oisQ
- OfjPULrh47Tqcu2kJauB0dQzCRL+TMdX2qxlyF4uEK+XF5ggKHANHuUQOke4OERmU6VL
- gysg==
-X-Gm-Message-State: AOJu0YzG7dVMXSGxL+cGsdYt5gvbe7uJ5xBeweAl+4kWKoa1PQ5VQL1k
- FLYc6H80/5+eJlDXHZjAD7yugEvFiFtxwqTsPsxg09fYqmvrQCjnoEwzpNoI+g8=
-X-Gm-Gg: ASbGncvc7SEhSPeqzJ2VUIULfKQL3Q9RqKeUqtv5RFWDPGxsQACCER1V4YnbI4huUhH
- TH9LTWPsCGb9t6782RTdr9h0ehvIoUVifcvVOG60GLM5+1jIbfxJM5waDBawFzjGOW91sMTBo6u
- VhOdKDvtkO4mhV+iA+Tx0rRiUy7ExXXHw982eeJlY3zXJqC0eIMQcIBqoQYg043+uUG1KxIOtA9
- kRGWd7KxRrnb3gK9fSozDsIfknEzkzL19/zdFr7j4qLBD48W7ca5y1xpg1i+Mm2lPiwXBjV5U1G
- c5LgXzAC+2uf3226NpQ48Vwxf6Eh+pE3o30rt6F3AW6hK6L70FnPSQ==
-X-Google-Smtp-Source: AGHT+IEYR6dPWLX65HwUc8Qcj8L4EZ7D0KMeuovaSuZVPspQ0SnTBSyg3wHG/sIo3oGJ1Gz4num++w==
-X-Received: by 2002:a17:903:291:b0:225:adf8:8634 with SMTP id
- d9443c01a7336-22dc6a8265dmr136229065ad.51.1745868346125; 
- Mon, 28 Apr 2025 12:25:46 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-309f7763deasm7646225a91.23.2025.04.28.12.25.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 28 Apr 2025 12:25:45 -0700 (PDT)
-Message-ID: <1718b3de-9187-4fd0-87e7-ffe91393caf8@linaro.org>
-Date: Mon, 28 Apr 2025 12:25:44 -0700
+ d=1e100.net; s=20230601; t=1745868375; x=1746473175;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=reoO9WwG9kD8Bqut2r9HmOF5uG44ei84eP9T5qRklqA=;
+ b=q+qe0rnyeo0rsj0n07/W0qyrOe+pVtF796Kf6Cg+swKHyYpUu1zNYSooXqTeALBB4R
+ PA0wS0DDerL0xF0ulP++Jkcj+4C4U6tT2I1ferGwte3ZuATbuWuwUK4eujs4J2PywO1N
+ W4eLSdaal9FKew4PrfzXdTGhRmA7wJs6eS7ur8KX75+SAkKmSLufyH9OjSOehjZOHpfz
+ J7NRb5a9/DTT3Dqb2c77dfB/D1JPw0cE1LYGllTZlCTiZUdRbbfvFMfrh6uZGdFUARuF
+ AiFsMe6DZnPo39q3JjbBYl7E8w+c2T613TDarGlCqjGQyn/pTByYD0hyvXzlNGLgZbvp
+ IG0g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWR5jm1RHbIYz/nSPszm281UyjsCBRy37DN03n17iET8C6lJB7JaZBkycqjIuVV0PhISNIU6J9RK0fG@nongnu.org
+X-Gm-Message-State: AOJu0Yyanc+9NzUmmadbuqxhIU42aTgUAT8MQfyBqL9SnsLTtPjdbMpB
+ ZRUaiiBDyKat2yFkKrxGAGZ7km32Y1jGZ+U24uOIKGZAJsJkUNj+wk2thEJC9DwpeXGlRjRT+1v
+ arrKV0+HO+KRJKExQi16eYpAxNP+SspPOcOPRATKj7k2cpS8ipmhB+MQSOl7hiy3NIzgzpgW3S/
+ b1yMEKgF2RuNTiVVjD4MpDDh5ge4g=
+X-Gm-Gg: ASbGnctQ0YQ/2eGv8XTDf957Q+XvnM4l5dXelxt+Tu9WySN7jdH+y5jBsKTkmu8ku9U
+ w1OfOpb/zj1RSgfy384tTb3ikbACTJx/QZJ02BGaK97DjTNA3EZwEP9yVuij0Gz1E9xLP
+X-Received: by 2002:a05:600c:45c9:b0:43d:1840:a13f with SMTP id
+ 5b1f17b1804b1-440a66abe3cmr101124145e9.25.1745868374788; 
+ Mon, 28 Apr 2025 12:26:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEN+8+06AFPnzq9z/nQcRNDLP+zLDB+hGoJmVhjB6svmaANL2nM8vizc3TCPe+nI/myhZ8CCS6U0dB56IFRHfw=
+X-Received: by 2002:a05:600c:45c9:b0:43d:1840:a13f with SMTP id
+ 5b1f17b1804b1-440a66abe3cmr101124005e9.25.1745868374365; Mon, 28 Apr 2025
+ 12:26:14 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/3] single-binary: make QAPI generated files common
-Content-Language: en-US
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org, stefanha@redhat.com, 
- Michael Roth <michael.roth@amd.com>, pbonzini@redhat.com,
- berrange@redhat.com, peter.maydell@linaro.org, thuth@redhat.com,
- jsnow@redhat.com, philmd@linaro.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Markus Armbruster <armbru@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-References: <20250424183350.1798746-1-pierrick.bouvier@linaro.org>
- <CAJSP0QUXuAUxMLOz5Zw1zwk0zwBRwuFM=qCufwf0TLr+w1YXvQ@mail.gmail.com>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <CAJSP0QUXuAUxMLOz5Zw1zwk0zwBRwuFM=qCufwf0TLr+w1YXvQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <20250428073442.315770-1-pbonzini@redhat.com>
+ <20250428073442.315770-9-pbonzini@redhat.com>
+ <30770d2b-ac76-4d13-b8f2-ca39c0b82e0f@ventanamicro.com>
+ <CABgObfZX1j4N=Oeq9Y=_YeccCq7--s0=r5DaANA+iA1UnoJyVg@mail.gmail.com>
+ <7cf90706-05e8-40b7-aef5-108c2d7234df@linaro.org>
+In-Reply-To: <7cf90706-05e8-40b7-aef5-108c2d7234df@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 28 Apr 2025 21:26:01 +0200
+X-Gm-Features: ATxdqUEM9xEBhLhw3-g05s9vLhGl60sg_6QaFd-DQsvCMwVAuTdQcMEwgGMt4kU
+Message-ID: <CABgObfZE1tqVxyVeb30Wuewp=Gna=7z7+z3kp5YD+HVzoZbe5A@mail.gmail.com>
+Subject: Re: [PATCH 08/26] target/riscv: store RISCVCPUDef struct directly in
+ the class
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ qemu-devel <qemu-devel@nongnu.org>, 
+ Alistair Francis <alistair.francis@wdc.com>
+Content-Type: multipart/alternative; boundary="000000000000476f1c0633dba831"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.484,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,80 +107,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Stefan,
+--000000000000476f1c0633dba831
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 4/28/25 11:14 AM, Stefan Hajnoczi wrote:
-> On Thu, Apr 24, 2025 at 2:35 PM Pierrick Bouvier
-> <pierrick.bouvier@linaro.org> wrote:
->> Feedback
->> ========
->>
->> The goal of this series is to be spark a conversation around following topics:
->>
->> - Would you be open to such an approach? (expose all code, and restrict commands
->>    registered at runtime only for specific targets)
->>
->> - Are there unexpected consequences for libvirt or other consumers to expose
->>    more definitions than what we have now?
->>
->> - Would you recommend another approach instead? I experimented with having per
->>    target generated files, but we still need to expose quite a lot in headers, so
->>    my opinion is that it's much more complicated for zero benefit. As well, the
->>    code size impact is more than negligible, so the simpler, the better.
-> 
-> Do you anticipate that Linux distributions will change how they
-> package QEMU? For example, should they ship a single qemu-all package
-> in addition to or as a replacement for the typical model today where
-> qemu-system-aarch64, qemu-system-x86_64, etc are shipped as separate
-> packages?
-> 
+Il lun 28 apr 2025, 17:21 Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> h=
+a
+scritto:
 
-Different distributions will have different opinions.
-In case we decide one day (which is *not* short term future) to replace 
-existing binaries with a single one, it's probably a discussion that 
-will happen.
-
-My personal "anticipation" is that if we unify all targets in a single 
-binary (which is not happening tomorrow), distributions can always 
-create a qemu-system-common package, and depend on it for all targets.
-Thus, every qemu-system-X will simply include the expected symlink (or 
-wrapper script, or whatever) to the single binary.
-Or they can recompile the single binary for every subpackage they want 
-in case they want to absolutely reduce the code size for a single 
-target, even though the sum of binaries will be infinitely bigger than 
-using the single one.
-In any case, it's not something that will happen soon, except if 
-everyone in the community becomes convinced of the advantage of building 
-QEMU as a single binary, instead of per target binaries.
-
-Even if this never converges, there are still benefits left for what is 
-done right now:
-- Faster multi targets build: less compilation units == less time.
-- Smaller multi targets build footprint: seems relevant as disk space on 
-GitLab CI is a recurrent complaint.
-- Clarification of code: I hope C developers are objectively (i.e. not 
-personal preference) convinced that less ifdef soup is better.
-
-> It would be nice to hear from packager maintainers in this discussion
-> so that there is a consensus between developers and package
-> maintainers.
+> >> Are we sure this patch compiles?
+> >
+> > No, you're right; I was not aware that RISC-V KVM is not covered by
+> > CI. I'm sorry.
+>
+> I remember doing it and Daniel reviewed it...:
+>
+> https://lore.kernel.org/qemu-devel/20230703183145.24779-1-philmd@linaro.o=
+rg/
+>
+> I suppose the shame is on me for not insisting getting it merged,
+> wasting my own time.
 >
 
-Sure.
+This is not a --disable-tcg issue, it's just a RISC-V host issue. Flaky
+cross RISC-V toolchains, that caused it to be removed from CI, but I didn't
+make 2+2. It should be added back soon as I understand it.
 
-Maybe there is a misunderstanding, but at this point, we are not trying 
-to invent anything new. We are just looking for a way to build QAPI 
-generated code only once, so it's possible to link together object files 
-coming from two different targets.
+Paolo
 
-My mistake was to not mention introspection in the cover letter, but 
-thanks to Markus and Daniel, I understood the consequences of that, and 
-my position is to keep the current schema and serialization methods 
-*exactly* as they are, so consumers don't see any change. The only place 
-where we need to do changes are scripts/qapi and qapi/.
+>
 
-> Stefan
+--000000000000476f1c0633dba831
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Regards,
-Pierrick
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote gmail_quote_contai=
+ner"><div dir=3D"ltr" class=3D"gmail_attr">Il lun 28 apr 2025, 17:21 Philip=
+pe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linaro.org">philmd@linar=
+o.org</a>&gt; ha scritto:<br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex">&gt;&gt; Are we sure this patch compiles?<br>
+&gt; <br>
+&gt; No, you&#39;re right; I was not aware that RISC-V KVM is not covered b=
+y<br>
+&gt; CI. I&#39;m sorry.<br>
+<br>
+I remember doing it and Daniel reviewed it...:<br>
+<a href=3D"https://lore.kernel.org/qemu-devel/20230703183145.24779-1-philmd=
+@linaro.org/" rel=3D"noreferrer noreferrer" target=3D"_blank">https://lore.=
+kernel.org/qemu-devel/20230703183145.24779-1-philmd@linaro.org/</a><br>
+<br>
+I suppose the shame is on me for not insisting getting it merged,<br>
+wasting my own time.<br></blockquote></div></div><div dir=3D"auto"><br></di=
+v><div dir=3D"auto">This is not a --disable-tcg issue, it&#39;s just a RISC=
+-V host issue. Flaky cross RISC-V toolchains, that caused it to be removed =
+from CI, but I didn&#39;t make 2+2. It should be added back soon as I under=
+stand it.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Paolo=C2=A0</d=
+iv><div dir=3D"auto"><div class=3D"gmail_quote gmail_quote_container"><bloc=
+kquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:=
+1px solid rgb(204,204,204);padding-left:1ex">
+</blockquote></div></div></div>
+
+--000000000000476f1c0633dba831--
+
 
