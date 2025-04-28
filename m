@@ -2,65 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FB7EA9EE0F
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 12:33:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16840A9EE43
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 12:46:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9Llx-0000Kx-5e; Mon, 28 Apr 2025 06:31:37 -0400
+	id 1u9LyV-0006yd-89; Mon, 28 Apr 2025 06:44:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1u9Lld-0008P9-2K
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 06:31:17 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ id 1u9LyT-0006yQ-7X; Mon, 28 Apr 2025 06:44:33 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1u9LlY-0004AK-Fh
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 06:31:15 -0400
+ id 1u9LyQ-0006Gv-0B; Mon, 28 Apr 2025 06:44:32 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 1F8A855D22A;
- Mon, 28 Apr 2025 12:31:10 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 9844655D22A;
+ Mon, 28 Apr 2025 12:44:25 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id yCvVJ2_XAtYS; Mon, 28 Apr 2025 12:31:08 +0200 (CEST)
+ with ESMTP id fsxaJjuxAPke; Mon, 28 Apr 2025 12:44:23 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 0923455D232; Mon, 28 Apr 2025 12:31:08 +0200 (CEST)
+ id 3B0FF55C592; Mon, 28 Apr 2025 12:44:23 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 06FD0745683;
- Mon, 28 Apr 2025 12:31:08 +0200 (CEST)
-Date: Mon, 28 Apr 2025 12:31:07 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 399AA745682;
+ Mon, 28 Apr 2025 12:44:23 +0200 (CEST)
+Date: Mon, 28 Apr 2025 12:44:23 +0200 (CEST)
 From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-cc: Richard Henderson <richard.henderson@linaro.org>, 
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org, 
- Mark Cave-Ayland <mark.caveayland@nutanix.com>, 
- Anton Johansson <anjo@rev.ng>
-Subject: Re: [RFC PATCH v5 08/21] hw/arm: Add DEFINE_MACHINE_[ARM_]AARCH64()
- macros
-In-Reply-To: <c4479348-00b2-4604-adad-e8d8911c75a6@linaro.org>
-Message-ID: <21e6cbae-54fe-2d11-307f-2fe36a08c97b@eik.bme.hu>
-References: <20250424222112.36194-1-philmd@linaro.org>
- <20250424222112.36194-9-philmd@linaro.org>
- <1332b395-1e3e-2be7-83f2-15f2d89b0449@eik.bme.hu>
- <51f3a96b-9c7a-4242-a822-145d68e068d9@linaro.org>
- <f84a52af-aecf-5235-7971-689580ffb71f@eik.bme.hu>
- <29f67d66-9eef-493a-9d96-99240ca25a14@linaro.org>
- <75b7e110-9293-32b2-64c8-26eabaace8b7@eik.bme.hu>
- <033d94c7-ac74-4a44-87ae-aeac964afd10@linaro.org>
- <c4479348-00b2-4604-adad-e8d8911c75a6@linaro.org>
+To: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+cc: Nicholas Piggin <npiggin@gmail.com>, 
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [RFC PATCH] target/ppc: Inline most of dcbz helper
+In-Reply-To: <173c9111-e065-0dd5-c276-6bbc0351f9cc@eik.bme.hu>
+Message-ID: <2b969dcd-4a82-9086-803d-c52ea274fefb@eik.bme.hu>
+References: <20240701005939.5A0AF4E6000@zero.eik.bme.hu>
+ <d3c6c417-20d9-a215-2a5c-86fa084b00fa@eik.bme.hu>
+ <173c9111-e065-0dd5-c276-6bbc0351f9cc@eik.bme.hu>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-523160171-1745836268=:12513"
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,233 +63,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
---3866299591-523160171-1745836268=:12513
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
-
-On Mon, 28 Apr 2025, Philippe Mathieu-Daudé wrote:
-> On 25/4/25 22:36, Pierrick Bouvier wrote:
->> On 4/25/25 13:29, BALATON Zoltan wrote:
->>> On Fri, 25 Apr 2025, Pierrick Bouvier wrote:
->>>> On 4/25/25 02:43, BALATON Zoltan wrote:
->>>>> On Thu, 24 Apr 2025, Pierrick Bouvier wrote:
->>>>>> On 4/24/25 17:16, BALATON Zoltan wrote:
->>>>>>> On Fri, 25 Apr 2025, Philippe Mathieu-Daudé wrote:
->>>>>>>> A machine defined with the DEFINE_MACHINE_ARM_AARCH64() macro
->>>>>>>> will be available on qemu-system-arm and qemu-system-aarch64
->>>>>>>> binaries.
->>>>>>>> 
->>>>>>>> One defined with DEFINE_MACHINE_AARCH64() will only be available
->>>>>>>> in the qemu-system-aarch64 binary.
->>>>>>>> 
->>>>>>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>>>>>>> ---
->>>>>>>> include/hw/arm/machines-qom.h | 13 +++++++++++++
->>>>>>>> target/arm/machine.c          | 12 ++++++++++++
->>>>>>>> 2 files changed, 25 insertions(+)
->>>>>>>> 
->>>>>>>> diff --git a/include/hw/arm/machines-qom.h
->>>>>>>> b/include/hw/arm/machines-qom.h
->>>>>>>> index a17225f5f92..6277ee986d9 100644
->>>>>>>> --- a/include/hw/arm/machines-qom.h
->>>>>>>> +++ b/include/hw/arm/machines-qom.h
->>>>>>>> @@ -9,10 +9,23 @@
->>>>>>>> #ifndef HW_ARM_MACHINES_QOM_H
->>>>>>>> #define HW_ARM_MACHINES_QOM_H
->>>>>>>> 
->>>>>>>> +#include "hw/boards.h"
->>>>>>>> +
->>>>>>>> #define TYPE_TARGET_ARM_MACHINE \
->>>>>>>>            "target-info-arm-machine"
->>>>>>>> 
->>>>>>>> #define TYPE_TARGET_AARCH64_MACHINE \
->>>>>>>>            "target-info-aarch64-machine"
->>>>>>>> 
->>>>>>>> +extern InterfaceInfo arm_aarch64_machine_interfaces[];
->>>>>>>> +extern InterfaceInfo aarch64_machine_interfaces[];
->>>>>>>> +
->>>>>>>> +#define DEFINE_MACHINE_ARM_AARCH64(namestr, machine_initfn) \
->>>>>>>> +        DEFINE_MACHINE_WITH_INTERFACES(namestr, machine_initfn, \
->>>>>>>> + 
->>>>>>>> arm_aarch64_machine_interfaces)
->>>>>>>> +
->>>>>>>> +#define DEFINE_MACHINE_AARCH64(namestr, machine_initfn) \
->>>>>>>> +        DEFINE_MACHINE_WITH_INTERFACES(namestr, machine_initfn, \
->>>>>>>> +                                       aarch64_machine_interfaces)
->>>>>>>> +
->>>>>>>> #endif
->>>>>>>> diff --git a/target/arm/machine.c b/target/arm/machine.c
->>>>>>>> index 978249fb71b..193c7a9cff0 100644
->>>>>>>> --- a/target/arm/machine.c
->>>>>>>> +++ b/target/arm/machine.c
->>>>>>>> @@ -8,6 +8,7 @@
->>>>>>>> #include "cpu-features.h"
->>>>>>>> #include "migration/cpu.h"
->>>>>>>> #include "target/arm/gtimer.h"
->>>>>>>> +#include "hw/arm/machines-qom.h"
->>>>>>>> 
->>>>>>>> static bool vfp_needed(void *opaque)
->>>>>>>> {
->>>>>>>> @@ -1111,3 +1112,14 @@ const VMStateDescription vmstate_arm_cpu = {
->>>>>>>>            NULL
->>>>>>>>        }
->>>>>>>> };
->>>>>>>> +
->>>>>>>> +InterfaceInfo arm_aarch64_machine_interfaces[] = {
->>>>>>>> +    { TYPE_TARGET_ARM_MACHINE },
->>>>>>>> +    { TYPE_TARGET_AARCH64_MACHINE },
->>>>>>>> +    { }
->>>>>>>> +};
->>>>>>>> +
->>>>>>>> +InterfaceInfo aarch64_machine_interfaces[] = {
->>>>>>>> +    { TYPE_TARGET_AARCH64_MACHINE },
->>>>>>>> +    { }
->>>>>>>> +};
->>>>>>> 
->>>>>>> Why do you need these? If you define DEFINE_MACHINE_WITH_INTERFACES as
->>>>>>> OBJECT_DEFINE_TYPE_WITH_INTERFACES then you can write:
->>>>>>> 
->>>>>> 
->>>>>> This was requested in v4 by Richard to remove anonymous array 
->>>>>> duplication
->>>>>> in
->>>>>> .data.
->>>>>> 
->>>>>>> DEFINE_MACHINE_WITH_INTERFACES(name, initfn, { TYPE_TARGET_ARM_MACHINE 
->>>>>>> },
->>>>>>>         { TYPE_TARGET_AARCH64_MACHINE }, { })
->>>>>>> 
->>>>>>> and no more macros needed. Ideally those places that are now blown up
->>>>>>> should use DEFINE_MACHINE too. Maybe they don't yet because the parent
->>>>>>> type  is hardcoded so we should really have
->>>>>>> 
->>>>>> 
->>>>>> Not sure what you mean by "no more macros needed".
->>>>> 
->>>>> No other specialised macros needed for each machine type other than
->>>>> DEFINE_MACHINE_WITH_INTERFACES or DEFINE_MACHINE_EXTENDED. So I 
->>>>> suggested
->>>>> to keep DEFINE_MACHINE by making it more general so it can cover the new
->>>>> uses instead of bringing back the boiler plate and losing the clarity
->>>>> hinding these behind the macros.
->>>>> 
->>>> 
->>>> This is exactly what we have in this series.
->>>> Patch 7 introduces DEFINE_MACHINE_WITH_INTERFACES.
->>>> I guess Philippe chose a new name to avoid modifying all existing
->>>> DEFINE_MACHINE, and I think it's understandable, as we want those changes 
->>>> to
->>>> impact hw/arm only first. That said, it would be very easy to 
->>>> refactor/modify
->>>> later, so it's not a big deal.
->>>> 
->>>> This patch introduces DEFINE_MACHINE_ARM_AARCH64 and 
->>>> DEFINE_MACHINE_AARCH64.
->>>> 
->>>> Is the problem with those specialized DEFINE_MACHINE_{ARM, AARCH64}
->>>> definition?
->>>> If yes, and if you prefer an explicit DEFINE_MACHINE_WITH_INTERFACES(...,
->>>> arm_aarch64_machine_interfaces), I'm sure Philippe would be open to make 
->>>> such
->>>> a change to satisfy reviews.
->>>> 
->>>> Let's just try to decide something, and move on.
->>>> 
->>>>>> arm_aarch64_machine_interfaces or aarch64_machine_interfaces are arrays
->>>>>> (defined only once), which are passed as a parameter to
->>>>>> DEFINE_MACHINE_WITH_INTERFACES, or manually set with ".interfaces =".
->>>>> 
->>>>> Look at how OBJECT_DEFINE_TYPE_WITH_INTERFACES is defined.
->>>>> 
->>>> 
->>>> This macro is not used for any machine definition so far, and 
->>>> DEFINE_MACHINE
->>>> is the "standard" macro used, at least the one most commonly used in the
->>>> codebase. So it makes sense to simply expand the latter.
+On Mon, 28 Apr 2025, BALATON Zoltan wrote:
+> On Thu, 24 Apr 2025, BALATON Zoltan wrote:
+>>> The test case I've used came out of a discussion about very slow
+>>> access to VRAM of a graphics card passed through with vfio the reason
+>>> for which is still not clear but it was already known that dcbz is
+>>> often used by MacOS and AmigaOS for clearing memory and to avoid
+>>> reading values about to be overwritten which is faster on real CPU but
+>>> was found to be slower on QEMU. The optimised copy routines were
+>>> posted here:
+>>> https://www.amigans.net/modules/newbb/viewtopic.php?post_id=149123#forumpost149123
+>>> and the rest of it I've written to make it a test case is here:
+>>> http://zero.eik.bme.hu/~balaton/qemu/vramcopy.tar.xz
+>>> Replace the body of has_altivec() with just "return false". Sorry for
+>>> only giving pieces but the code posted above has a copyright that does
+>>> not allow me to include it in the test. This is not measuring VRAM
+>>> access now just memory copy but shows the effect of dcbz. I've got
+>>> these results with this patch:
 >>> 
->>> I was referring to that as an example how a DEFINE_MACHINE_WITH_INTERFACES
->>> should work not suggesting to use OBJECT_DEFINE_TYPE_WITH_INTERFACES.
+>>> Linux user master:                  Linux user patch:
+>>> byte loop: 2.2 sec                  byte loop: 2.2 sec
+>>> memcpy: 2.19 sec                    memcpy: 2.19 sec
+>>> copyToVRAMNoAltivec: 1.7 sec        copyToVRAMNoAltivec: 1.71 sec
+>>> copyToVRAMAltivec: 2.13 sec         copyToVRAMAltivec: 2.12 sec
+>>> copyFromVRAMNoAltivec: 5.11 sec     copyFromVRAMNoAltivec: 2.79 sec
+>>> copyFromVRAMAltivec: 5.87 sec       copyFromVRAMAltivec: 3.26 sec
 >>> 
->>>>>>> DEFINE_MACHINE_EXTENDED(name, parent, initfn, interfaces...)
->>>>>>> 
->>>>>>> and remove more bolier plate that way?
->>>>>>> 
->>>>>> 
->>>>>> Could you can share a concrete example of what you expect, with the new
->>>>>> macros to add, and how to use them for a given board?
->>>>> 
->>>>> I tried to do that in this message you replied to.
->>>>> 
->>>> 
->>>> If you refer to "DEFINE_MACHINE_EXTENDED(name, parent, initfn,
->>>> interfaces...)", this is almost exactly what patch 7 is introducing with
->>>> DEFINE_MACHINE_WITH_INTERFACES(namestr, machine_initfn, ifaces).
->>> 
->>> The difference is that OBJECT_DEFINE_TYPE_WITH_INTERFACES takes a list of
->>> interfaces and defines the array itself and you pass the array which is
->>> limiting as you then need to define a lot of arrays to pass to your macro
->>> instead of only passing the elements and let it define tha array.
->>> 
->>> I just want to see instead of
->>> 
->>> static const TypeInfo machine_types[] = {
->>> ...lots of boiler plate code here
->>> };
->>> 
->>> something like
->>> 
->>> DEFINE_MACHINE_EXTENDED(machine1, TYPE_WHATEVER_MACHINE, {INTERFACE1}, 
->>> {INTERFACE2}, {})
->>> DEFINE_MACHINE_EXTENDED(machine2, TYPE_OTHER_MACHINE, {INTERFACE1}, 
->>> {INTERFACE3}, {})
->>> DEFINE_MACHINE_EXTENDED(machine3, TYPE_THIRD_MACHINE, {INTERFACE1}, {})
->>> 
->> 
->> Ok, I understand better.
->> 
->> It was my point as well on v4, that introducing those symbols is less 
->> readable and less scalable, for a negligible benefit in terms of code size, 
->> which was the primary concern.
->> We can always reconsider this later, especially when adding another 
->> architecture to single binary, it's not a problem and something set in 
->> stone.
->> 
->> Would you be ok if we proceed with the current version, knowing those 
->> limitations, for now?
+>>> Linux system master:                Linux system patch:
+>>> byte loop: 5.86 sec                 byte loop: 5.9 sec
+>>> memcpy: 5.45 sec                    memcpy: 5.47 sec
+>>> copyToVRAMNoAltivec: 2.51 sec       copyToVRAMNoAltivec: 2.53 sec
+>>> copyToVRAMAltivec: 3.84 sec         copyToVRAMAltivec: 3.85 sec
+>>> copyFromVRAMNoAltivec: 6.11 sec     copyFromVRAMNoAltivec: 3.92 sec
+>>> copyFromVRAMAltivec: 7.22 sec       copyFromVRAMAltivec: 5.51 sec
 >
-> If Zoltan disagrees, we need Richard to agree to go back on v4.
+> I did some more benchmarking to identify what slows it down. I noticed that 
+> memset uses dcbz too so I added a test for that. I've also added a parameter 
+> to allow testing actual VRAM and now that I have a card working with vfio-pci 
+> passthrough I could also test that. The updated vramcopy.tar.xz is at the 
+> same URL as above. These tests were run with the amigaone machine under Linux 
+> booted as described here:
+> https://www.qemu.org/docs/master/system/ppc/amigang.html
 >
-> Keep in mind that what we are trying to achieve is quite more complex
-> than code style or .rodata savings, besides we eventually want to have
-> dynamic machines & DSL.
+> I compiled the benchmark twice, once as in the tar and once replacing dcbz in 
+> the copyFromVRAM* routines with dcba (which is noop on QEMU). First two 
+> results are with both src and dst in RAM, second two tests are with dst in 
+> VRAM (mapped from phys address 0x80800000 where the card's framebuffer is 
+> mapped). The left column shows results with emulated ati-vga as in the 
+> amigang.html docs. The right column is with real ATI X550 card (old and slow 
+> but works with this old PPC Linux) passed through with vfio-pci.
+>
+> with ati-vga                            with vfio-pci
+>
+> src 0xb79c8008 dst 0xb78c7008	      |	src 0xb7c92008 dst 0xb7b91008
+> byte loop: 21.16 sec			byte loop: 21.16 sec
+> memset: 3.85 sec		      |	memset: 3.87 sec
+> memcpy: 5.07 sec			memcpy: 5.07 sec
+> copyToVRAMNoAltivec: 2.52 sec	      |	copyToVRAMNoAltivec: 2.53 sec
+> copyToVRAMAltivec: 2.42 sec	      |	copyToVRAMAltivec: 2.37 sec
+> copyFromVRAMNoAltivec: 6.39 sec	      |	copyFromVRAMNoAltivec: 6.38 sec
+> copyFromVRAMAltivec: 7.02 sec	      |	copyFromVRAMAltivec: 7 sec
+>
+> using dcba instead of dcbz	      |	using dcba instead of dcbz
+> src 0xb7b69008 dst 0xb7a68008	      |	src 0xb7c44008 dst 0xb7b43008
+> byte loop: 21.14 sec			byte loop: 21.14 sec
+> memset: 3.85 sec		      |	memset: 3.88 sec
+> memcpy: 5.06 sec		      |	memcpy: 5.07 sec
+> copyToVRAMNoAltivec: 2.53 sec	      |	copyToVRAMNoAltivec: 2.52 sec
+> copyToVRAMAltivec: 2.3 sec		copyToVRAMAltivec: 2.3 sec
+> copyFromVRAMNoAltivec: 2.59 sec		copyFromVRAMNoAltivec: 2.59 sec
+> copyFromVRAMAltivec: 2.95 sec		copyFromVRAMAltivec: 2.95 sec
+>
+> dst in emulated ati-vga		      |	dst in real card vfio vram
+> mapping 0x80800000			mapping 0x80800000
+> src 0xb78e0008 dst 0xb77de000	      |	src 0xb7ec5008 dst 0xb7dc3000
+> byte loop: 21.2 sec		      |	byte loop: 563.98 sec
+> memset: 3.89 sec		      |	memset: 39.25 sec
+> memcpy: 5.07 sec		      |	memcpy: 140.49 sec
+> copyToVRAMNoAltivec: 2.53 sec	      |	copyToVRAMNoAltivec: 72.03 sec
+> copyToVRAMAltivec: 12.22 sec	      |	copyToVRAMAltivec: 78.12 sec
+> copyFromVRAMNoAltivec: 6.43 sec	      |	copyFromVRAMNoAltivec: 728.52 sec
+> copyFromVRAMAltivec: 35.33 sec	      |	copyFromVRAMAltivec: 754.95 sec
+>
+> dst in emulated ati-vga using dcba    |	dst in real card vfio vram using dcba
+> mapping 0x80800000			mapping 0x80800000
+> src 0xb7ba7008 dst 0xb7aa5000	      |	src 0xb77f4008 dst 0xb76f2000
+> byte loop: 21.15 sec		      |	byte loop: 577.42 sec
+> memset: 3.85 sec		      |	memset: 39.52 sec
+> memcpy: 5.06 sec		      |	memcpy: 142.8 sec
+> copyToVRAMNoAltivec: 2.53 sec	      |	copyToVRAMNoAltivec: 71.71 sec
+> copyToVRAMAltivec: 12.2 sec	      |	copyToVRAMAltivec: 78.09 sec
+> copyFromVRAMNoAltivec: 2.6 sec	      |	copyFromVRAMNoAltivec: 727.23 sec
+> copyFromVRAMAltivec: 35.03 sec	      |	copyFromVRAMAltivec: 753.15 sec
+>
+> The results show that dcbz has some effect but an even bigger slow down is 
+> caused by using AltiVec which is supposed to do wider access to reduce the 
+> overhead but maybe it's not translated to host vector instructions correctly. 
+> The host in the above test was Intel i7-9700K. So to solve this maybe AltiVec 
+> should be improved more than dcbz but I don't know what and how.
 
-Since you are touching the lines using DEFINE_MACHINE it's a good 
-opportunity to change the macro to be more general to be able to keep 
-using it instead of replacing it with the boiler plate it's supposed to 
-hide. Adding one or two more parameters to the macro is not a big change 
-so I don't see why you don't want to do it. This could be addressed later 
-to revert to use the macro again but in practice it will not be addressed 
-because everybody will be busy doing other things and doing that now would 
-prevent some churn. I too, don't like doing unrelated clean up which is 
-not the main goal, but if it's not much more work then it's not 
-unreasonable to do it. I only oppose to that if it's a lot of work so I 
-would not ask such change but what I asked is not unrelated and quite 
-simple change.
-
-That said, I can't stop you so if you still don't want to do it now then 
-you can move on. I don't care that much as long as you stay within hw/arm, 
-but will raise my concern again when you submit a similar patch that 
-touches parts I care more about. If others don't think it's a problem and 
-not bothered by the boiler plate code then it's not so important but 
-otherwise I think I have a valid point. I remember when I started to get 
-to know QEMU it was quite difficult to wade through all the QOM boiler 
-plate just to see what is related to the actual functionality. These 
-macros help to make code more readable and accessible for new people.
+Looking at what AltiVec ops are used there aren't many. lvx and stvx 
+should translate to 128 bit ops so those are probably ok, there are some 
+lvsl lvsr ops which may be ok too and the only other one left is vperm 
+which seems very much unoptimised, so my guess is likely that vperm causes 
+the slow down here (I could try profiling to confirm if needed). Is there 
+a way to improve that? I don't know vector support on different archs. 
+Maybe other archs have less general permutation ops that's why ppc has 
+unoptimised implementation or is it possible just wasn't addressed yet?
 
 Regards,
 BALATON Zoltan
---3866299591-523160171-1745836268=:12513--
 
