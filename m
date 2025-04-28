@@ -2,53 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32369A9F8DB
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 20:50:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B65FFA9F928
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 21:04:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9TYA-0001kD-4P; Mon, 28 Apr 2025 14:49:54 -0400
+	id 1u9Tks-0001Co-7w; Mon, 28 Apr 2025 15:03:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1u9TY7-0001h7-R5
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 14:49:51 -0400
-Received: from rev.ng ([94.130.142.21])
+ (Exim 4.90_1) (envelope-from <joel.granados@kernel.org>)
+ id 1u9Tkp-0001AI-Nx
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 15:02:59 -0400
+Received: from nyc.source.kernel.org ([2604:1380:45d1:ec00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1u9TY3-00025G-L0
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 14:49:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=eZPFv6zr9QnvZwiNbXEfQUR8fybZZXENgDMScBve+eo=; b=XuftLwzikBlC5EP
- kmx/QJAKwJ4uAoqaCmDaiOVJcBthYZGoU7nMlt2yj1RgJQwUHbKJtM9o8PS/SxNYkkV7sebDjwoM7
- d2rsnRzY+mUIG05172rWrCGn38zNxow7EkmnFmFDsxqnCiTJrPUExLDV3eQAUPa3Pi8QORpIRIEJB
- 9Q=;
-Date: Mon, 28 Apr 2025 20:51:01 +0200
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Richard Henderson <richard.henderson@linaro.org>, 
- qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: Re: [PATCH v3 11/13] physmem: Restrict TCG IOTLB code to TCG accel
-Message-ID: <cao656ggvonu2gwwcrpu5n23nfa2epmdr6v2str4pwofhzoypo@mmbjpmvzkdxe>
-References: <20250424202412.91612-1-philmd@linaro.org>
- <20250424202412.91612-12-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <joel.granados@kernel.org>)
+ id 1u9Tkn-0004MP-JW
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 15:02:59 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by nyc.source.kernel.org (Postfix) with ESMTP id 98EEAA4B69B;
+ Mon, 28 Apr 2025 18:57:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDEE3C4CEEC;
+ Mon, 28 Apr 2025 19:02:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1745866973;
+ bh=WLSZhBBT9gkPhkRBnZaRPmPwo+8i+anFn+XKZTQ39pg=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=Ok2qtl+yZUlwzge+hTG+tcRB/yhNFK+h8GRHiiCOd3z0L3z2V53uQQBOKvO9Io1CZ
+ JYivaOk3PfEiJKzhVVnmt0QcyJTVa/b33OmaGTW98y4WARb7R3h6LBJNMGEO6cxdcZ
+ 8D41MP3GLiMf4Pj3U6gHNGmY7DdrX9zVb6kzJKU0Rn1I1DQbKo/Cp6TW7MGevtJHFt
+ ey2BXlm3H7fdLCwRGFzz+CiOAE2/QfMBYkqpzs3xKTFmQr5o7FgoiWrd81rhx2Y3OD
+ 3uTTXtIHBcHwCbjk9OfpEumdezuSh2nhkYZKGQXo2HeUcqrlUTTYxBOF7tEThRBkrx
+ ZNzCEE5uw5v4Q==
+Date: Mon, 28 Apr 2025 21:02:26 +0200
+From: Joel Granados <joel.granados@kernel.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>, 
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH 1/3] scripts: nixify archive-source.sh
+Message-ID: <6mef3aim5bxvvvq3z5m7pz7sfpcyvipxqlxoqcbpc6a36spast@ky5oyciosoqb>
+References: <20250408-jag-sysctl-v1-0-3f4f38b751be@kernel.org>
+ <20250408-jag-sysctl-v1-1-3f4f38b751be@kernel.org>
+ <4f64f6a8-2e4a-4e20-b2c8-8f87b8b7900c@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="jnswfay337qfci37"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250424202412.91612-12-philmd@linaro.org>
-Received-SPF: pass client-ip=94.130.142.21; envelope-from=anjo@rev.ng;
- helo=rev.ng
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+In-Reply-To: <4f64f6a8-2e4a-4e20-b2c8-8f87b8b7900c@redhat.com>
+Received-SPF: pass client-ip=2604:1380:45d1:ec00::3;
+ envelope-from=joel.granados@kernel.org; helo=nyc.source.kernel.org
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.484,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,65 +70,91 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Anton Johansson <anjo@rev.ng>
-From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/04/25, Philippe Mathieu-Daudé wrote:
-> Restrict iotlb_to_section(), address_space_translate_for_iotlb()
-> and memory_region_section_get_iotlb() to TCG. Declare them in
-> the new "accel/tcg/iommu.h" header. Declare iotlb_to_section()
-> using the MemoryRegionSection typedef.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->  MAINTAINERS               |  2 +-
->  include/accel/tcg/iommu.h | 41 +++++++++++++++++++++++++++++++++++++++
->  include/exec/exec-all.h   | 26 -------------------------
->  accel/tcg/cputlb.c        |  1 +
->  system/physmem.c          |  5 +++++
->  5 files changed, 48 insertions(+), 27 deletions(-)
->  create mode 100644 include/accel/tcg/iommu.h
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 661a47db5ac..3a37cc73af7 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -168,7 +168,7 @@ F: include/exec/helper*.h.inc
->  F: include/exec/helper-info.c.inc
->  F: include/exec/page-protection.h
->  F: include/system/tcg.h
-> -F: include/accel/tcg/cpu-ops.h
-> +F: include/accel/tcg/
->  F: host/include/*/host/cpuinfo.h
->  F: util/cpuinfo-*.c
->  F: include/tcg/
-> diff --git a/include/accel/tcg/iommu.h b/include/accel/tcg/iommu.h
-> new file mode 100644
-> index 00000000000..90cfd6c0ed1
-> --- /dev/null
-> +++ b/include/accel/tcg/iommu.h
-> @@ -0,0 +1,41 @@
-> +/*
-> + * TCG IOMMU translations.
-> + *
-> + * Copyright (c) 2003 Fabrice Bellard
-> + * SPDX-License-Identifier: LGPL-2.1-or-later
-> + */
-> +#ifndef ACCEL_TCG_IOMMU_H
-> +#define ACCEL_TCG_IOMMU_H
-> +
-> +#ifdef CONFIG_USER_ONLY
-> +#error Cannot include accel/tcg/iommu.h from user emulation
-> +#endif
-> +
-> +#include "exec/hwaddr.h"
-> +#include "exec/memattrs.h"
 
-Missing qemu/typedefs.h include
+--jnswfay337qfci37
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Otherwise:
+On Thu, Apr 10, 2025 at 02:18:01PM +0200, Paolo Bonzini wrote:
+> On 4/8/25 22:14, Joel Granados wrote:
+> > Use "#!/usr/bin/env bash" instead of "#!/bin/bash". This is necessary
+> > for nix environments as they only provide /usr/bin/env at the standard
+> > location.
+>=20
+> I am confused, how does this not break everything else?  All the test
+> scripts in tests/docker/test-* have "#!/bin/bash", and configure has
+> "/bin/sh".
+Not sure what "break" means here, but the "env" shebang should just work
+in distros that follow (or try to) POSIX. AFAIK, to be POSIX compliant,
+you need to provide an "env" for command invocation [1]. The two
+previous changes that I know of [2], [3] have not had any adverse
+effects that I'm aware of.
 
-Reviewed-by: Anton Johansson <anjo@rev.ng>
+> How is the environment that runs scripts/archive-source.sh
+> different, and why should it be fixed in scripts/archive-source.sh?
+It is different from the other files in that I hit the issue only on
+that file. I'm happy to provide a treewide change if it would make more
+sense.
+
+>=20
+> These are genuine questions - it would help if the commit message explain=
+ed
+> those...
+I can weave the explanation into the commit for V2.
+
+> In fact, what is a nix overlay and why would you use
+> scripts/archive-source.sh to prepare one? :)
+I now realize that mentioning a nix overlay in the commit message might
+be to far from a general context. How about if I change the commit
+message of the second patch to:
+
+```
+  The archive-source script appends everything directly on the tar root
+  making it unsuitable for cases where a different directory structure
+  is expected, like during nix packages customization.
+
+  Add a "-d|--dir" argument that places all files under a custom root.
+  Behaviour is unchanged when the argument is not given.
+```
+
+To answer the question of what an nix overlay is: It is a way of
+customizing nix packages. I use it to override specific elements from a
+nix package and replace them with my stuff [4]. I am working with the qemu
+package and am overriding the qemu tarbal.
+
+Best
+
+[1] https://pubs.opengroup.org/onlinepubs/9799919799/utilities/env.html
+[2] https://lore.kernel.org/all/20250122-jag-nix-ify-v1-1-addb3170f93c@kern=
+el.org/
+[3] https://lore.kernel.org/all/20240817215025.161628-1-kent.overstreet@lin=
+ux.dev/
+[4] https://nixos.wiki/wiki/Overlays
+--=20
+
+Joel Granados
+
+--jnswfay337qfci37
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmgP0KUACgkQupfNUreW
+QU9D2wv9GWk6u/p9a5A5j+UjishgB18Ct1QlyvRM+dBTTAgCGf4fHQ27FJfs4KC/
+hT7pwmcG7FjmEHaiAKA68Razj81ux9WmzHn8LfMyzEukHPMELAkQ1s3tSs9mjdFd
+IHP7kd7dCe0LbvkWdvIgngEHLQZ+MSOPt9DhqH2SGPRra8D9MPp+Q+YoIjnd58+j
++SZvIXF6pyoWowQw4iXkDwUqaH6njNf2X5JuYVhK7WT1S6Kj19Tg9/Zh90pOslUu
+maYaIRzMAZnFmfw9t/0Z8kEYh1h2kK4xqxgKDB0aOeC4HAGRlRXM/X7TB9JD+5Lg
+3zhanPqiVQLTUcKUQO6OHeC//oF3WKntTk4xeZzvvbUW4BFieu3JPYp8WCHwp0KH
+/MHsuD+RJQ48eAFd1D/PAfYiXWwR60WC24CPFai9+iHrqAlcO+VFerSDVZgHnfCH
+cbuegN3+YxIyArtKuwp5PHKuE8ZM2jiOEploatBNi6eZCKX7tU+aSU+Lgd42r9EN
++e1GSrYD
+=2ANN
+-----END PGP SIGNATURE-----
+
+--jnswfay337qfci37--
 
