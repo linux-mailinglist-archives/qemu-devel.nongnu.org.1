@@ -2,97 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDBDBA9F2A0
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 15:46:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE86A9F2AD
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 15:47:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9OnM-0000Pm-5Y; Mon, 28 Apr 2025 09:45:16 -0400
+	id 1u9Opn-0006Jh-3Q; Mon, 28 Apr 2025 09:47:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rkrcmar@ventanamicro.com>)
- id 1u9Oft-0004GD-2J
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 09:37:42 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1u9Opd-0006Hg-Jv
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 09:47:37 -0400
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rkrcmar@ventanamicro.com>)
- id 1u9Ofp-0001DU-R4
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 09:37:32 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-43d16a01deaso2826925e9.2
- for <qemu-devel@nongnu.org>; Mon, 28 Apr 2025 06:37:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1u9Opa-0002pq-Lb
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 09:47:37 -0400
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-b07d607dc83so4149749a12.1
+ for <qemu-devel@nongnu.org>; Mon, 28 Apr 2025 06:47:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1745847447; x=1746452247; darn=nongnu.org;
- h=in-reply-to:references:cc:subject:from:to:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=G/3gG/ZaE7DaiwKoxmsM3/UdNWWdxYHJtBxnwxmPe3k=;
- b=NqMw0zh562GAjJWO0FZZPoDDZfpfnDynNDNMi0UU2AJkTtl6zMAa9VLjboVTTerd3w
- 5MI8zdIZyH3N8xLnxjMhf9ew+e863GDN54Zezt+PDzpIdfWqM9wueGuJclpUgnUVYl7q
- TKOaiHJtCTek5GguJXaoKSNtBpZzEuHIeWon6P9Z6zdAjkhEfirYaDLA2iVBJXszj8XZ
- mLvHwklUyTfsND8QeawjRxviepB30OzP8OpKx09mJvrCSmSdiNXWkIuTtxtIhNDn78NP
- gPSYsoj4xaiwEV5vjlmIIgXgkl904RFcKxZ66gGExAoKzaWm1OX7xcIZpbz6c2/8/Lym
- wG9Q==
+ d=linaro.org; s=google; t=1745848052; x=1746452852; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=wq1rFmNEHgX2FeK42gIa+Nv74jFHymhRXwt6/Ht0GNg=;
+ b=qAeqOnAyI0k3kHkQLyhiUmg6Ut5WRNm8ju//3peQQnI5M7M8s7bWnSgcDShH/EKMl8
+ 61eU7/UmpdarwZmbbsMX7xeHJdzN+4sGtPFu2rAaFaZxXi0mwF9xfxz41ECrmOhQ2kzS
+ XdOGrUeAfwHUWvvxkYvXQRXuPgYyOC53TSFHjnVWCKgFN6AvmDU41gaoJPgvbhPJtrG4
+ +aqQoc8DrvOnEYRxL9Qo55qbdQooCa11EUIwO8p7mMA9CpMIM9bT5vKeQyZ6NoYNWqwR
+ dRNaVQ1tVUEzCOoR/Tqbd5TzBbAZfffVTYKgI2e8SGMoFgf6wYyaDxoI4PkxoWN7aQE/
+ ULmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745847447; x=1746452247;
- h=in-reply-to:references:cc:subject:from:to:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=G/3gG/ZaE7DaiwKoxmsM3/UdNWWdxYHJtBxnwxmPe3k=;
- b=dAMK0mr4kxTdIHbs/h0Fz2CTJCVY+wyN/UsZIw9zZ0PgcOshTIFcyiB1FvyrtvS+QI
- UOQcCTWKORT9gwqcUnd0vAiFJNK2H6dCL2EqXNA9zjFhSbFONvavza7gkTfyhL+pAJ9u
- hmf2MFdF0OeYRQbC2NRFPr9KSbqqHTCFiSydYWvjMv+W0AGg/sODJZKxYnf+NOEBEGC7
- BsFbwwp273yYfX3FLjjsmKHjbZONYiYpeEukSY5R8OG2TD5/TrgT2SrUpQwzE6n3lvt3
- /IPvFb11ow9GE/WdMYWQnQqFpibNipP5Z4lXVdmYYzuqgd9D7h8aLXDAZQh697TVuQGE
- u75g==
+ d=1e100.net; s=20230601; t=1745848052; x=1746452852;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wq1rFmNEHgX2FeK42gIa+Nv74jFHymhRXwt6/Ht0GNg=;
+ b=ntCWiBM3Eas7Z7p7/cK1vPkxJbdcvzM1dm5tKQQtI5DDDNk8b6WNxS628IV1OKeIU4
+ MdCDzhKiGSy9wM0Hq6WfaRnWR2miUG1uFybanzirqISOi3KBx6KtutSUBL7E68y8LFNL
+ SW8EhiPDESlYYHD/V+SWGI/rKOA7Ny78ZHhfLvcT8Qg7FGXeR/Heodzhs9dplN2761Bz
+ cG96X0Jt1/st+NZyaARYqcL5GCz5bXIqK/dCmy35YUW/XzmtKqgbIdVF1xTmNAKljmpr
+ /AFrbwIdgnv1yx0nSDgaafvxeW4Oy7UbK6OlkzlEpjzwOKng6wf7Hr6ZJesFiE0RPQK/
+ yEfA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW7mOFLxRgE8KU0m+ZzDZHI8Vr//I/8dPfmws819tRo+5R+TZJ3PrGPzW1XsNmEirFyMsK4P0ix/ExS@nongnu.org
-X-Gm-Message-State: AOJu0YxRkfLIKaXVt6yN8I4FtnKE1HYJrPbBSyVt2AWQNP0U2EJbuAEx
- GseNWwMlsaGOR6hMQBZ4dIml6Y3/MlNTo/Ga0W4nls0DywGI92ifWcJETVUU7OU=
-X-Gm-Gg: ASbGncsuUOcQh/q7XeY/cNU92kVoPfb+DOxGF63D7k9socdTddhOx3HrYL20yarNcOT
- sL2KNJX3yjnc9tKFjZT2BWzyExGpKQEsBSKnavz2ELG6Ix3GfZqRHWtMFR5xJj+fIW2QlbHsHrF
- TcSvy5dfxP6zOEUG7McjtmjKXuLuuftSWHm2pYqflfF3J7zR3h68SNrqdhxsPlDSQ1RTrb59mSM
- SoNSMDVSJLPEGWEutWF75F1ZpjR8+IbSNNQ7VZEB/zUqOLNg2nNWpx4H6tzZdLWwSXaVE9SbNtz
- lpqz1TTogiZaKI9DKGdweiQhoQfANGCMLIYS8igYIsxplxk=
-X-Google-Smtp-Source: AGHT+IEnTFNJ18fmzAaiDVTJ4NKdELQHx/MVKWGT4I2VMPcsz5zkPws0tQ5PTK712u+S0Bq393mnSg==
-X-Received: by 2002:a05:6000:4210:b0:3a0:87f1:1900 with SMTP id
- ffacd0b85a97d-3a087f125b0mr442850f8f.2.1745847447041; 
- Mon, 28 Apr 2025 06:37:27 -0700 (PDT)
-Received: from localhost ([2a02:8308:a00c:e200:785:f3a7:1fbb:6b76])
+ AJvYcCVOKag4RGJgI2nGWFH8u/N3jgsv2Ivuv1ZcGLxxrOG6ZRY3O3RfVhvOzfofXpcFlE4KIX8vYrNthdzq@nongnu.org
+X-Gm-Message-State: AOJu0Ywl/ehqwI1OR+ESWKkRWZGCWSEx2Vw5agiVStMTqVr/w9PGSZhV
+ hDfeAxLE+PMNtmlN3OWaizSI8sPfLKmFwyxGeMMZ193gYwiEG1oqT6pmdNIoBO8=
+X-Gm-Gg: ASbGncuwZbJWTaBi9fUPTuCm4M3849B5LovOf1RIb6ZWj9TGYG17unY13dHwbiLEvt+
+ YqdC7ElvKu5KOScnuJ8lRnXq4S5TfzG4eWmSyOORhTonw0H5/PKkD7NPdBo0YVqELpz23Zgeskj
+ 219LFpdOf1BgMf3jiz+5lHjhiWoYcY9UxPVQYHQNei5T07jtX3ktzXtUj0Z9iMnA8GIkOXsQudR
+ KIa2tuiD9aQHhlotgoENlLc/HN03VJqAYEhtUu9XI/rf1hm40j4yM/o3ujDfmuAGKTbyoK9sBkM
+ VsbLUo12eLDIJn1PYyTeeIcdisqryE3B50nKy2nSiUCXSdVOxWn0oV4JmKTbpO/bXcWfn6E6sc/
+ c5ERPbBQ=
+X-Google-Smtp-Source: AGHT+IGy2UhDGwgMs3xVh4FMzIQmk5kPFpFshvIqTcuvkXjcem9uiOSTdvuF3UPpQANnzjCdLZxybA==
+X-Received: by 2002:a17:90b:2b86:b0:2ee:cded:9ac7 with SMTP id
+ 98e67ed59e1d1-309f7dde854mr15667906a91.20.1745848052250; 
+ Mon, 28 Apr 2025 06:47:32 -0700 (PDT)
+Received: from [192.168.0.4] (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a073ccb8e1sm11345667f8f.59.2025.04.28.06.37.26
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Apr 2025 06:37:26 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 28 Apr 2025 15:37:26 +0200
-Message-Id: <D9IB9OMTGUZ7.8UBDDIX7RW0J@ventanamicro.com>
-To: "Andrew Jones" <ajones@ventanamicro.com>
-From: =?utf-8?q?Radim_Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>
-Subject: Re: [PATCH] target/riscv: add satp mode for kvm host cpu
-Cc: "Meng Zhuo" <mengzhuo@iscas.ac.cn>, <qemu-devel@nongnu.org>,
- <qemu-riscv@nongnu.org>, "Alistair Francis" <alistair.francis@wdc.com>,
- "Liu Zhiwei" <zhiwei_liu@linux.alibaba.com>, "Weiwei Li"
- <liwei1518@gmail.com>, "Palmer Dabbelt" <palmer@dabbelt.com>, "Daniel
- Henrique Barboza" <dbarboza@ventanamicro.com>,
- <qemu-riscv-bounces+qemu-riscv=archiver.kernel.org@nongnu.org>
-References: <20250427132557.1589276-1-mengzhuo@iscas.ac.cn>
- <20250428-00fc862d2d2d628ffa4c8547@orel>
- <D9I60P8TG036.2ZHSS9EHW4W8N@ventanamicro.com>
- <20250428-4cb96c7f0226e15a40006dee@orel>
-In-Reply-To: <20250428-4cb96c7f0226e15a40006dee@orel>
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=rkrcmar@ventanamicro.com; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ 98e67ed59e1d1-309f784a56asm7165759a91.41.2025.04.28.06.47.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 28 Apr 2025 06:47:31 -0700 (PDT)
+Message-ID: <ded56ee3-25bb-4ffd-98e4-2f47c500c88d@linaro.org>
+Date: Mon, 28 Apr 2025 06:47:29 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] target/ppc: Inline most of dcbz helper
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>
+References: <20240701005939.5A0AF4E6000@zero.eik.bme.hu>
+ <d3c6c417-20d9-a215-2a5c-86fa084b00fa@eik.bme.hu>
+ <173c9111-e065-0dd5-c276-6bbc0351f9cc@eik.bme.hu>
+ <2b969dcd-4a82-9086-803d-c52ea274fefb@eik.bme.hu>
+ <e4fc537a-a15e-77dd-1167-32b12ee7a22d@eik.bme.hu>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <e4fc537a-a15e-77dd-1167-32b12ee7a22d@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 28 Apr 2025 09:44:41 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,59 +106,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-2025-04-28T14:08:59+02:00, Andrew Jones <ajones@ventanamicro.com>:
-> On Mon, Apr 28, 2025 at 11:30:36AM +0200, Radim Kr=C4=8Dm=C3=A1=C5=99 wro=
-te:
->> 2025-04-28T09:00:55+02:00, Andrew Jones <ajones@ventanamicro.com>:
->> > On Sun, Apr 27, 2025 at 09:25:57PM +0800, Meng Zhuo wrote:
->> >> This patch adds host satp mode while kvm/host cpu satp mode is not
->> >> set.
->> >
->> > Huh, the KVM side[1] was written for this purpose, but it appears we n=
-ever
->> > got a QEMU side merged.
->> >
->> > [1] commit 2776421e6839 ("RISC-V: KVM: provide UAPI for host SATP mode=
-")
->>=20
->> KVM satp_mode is the current SATP.mode and I don't think the other
->> SATP.modes can generally be guessed from the host SATP mode.
->>=20
->> Can't QEMU use the host capabilities from cpuinfo or something?
->>=20
->> Do we need to return a bitmask from KVM?
->> (e.g. WARL all modes in vsatp and return what sticks.)
->>
->
-> The widest supported is sufficient because all narrower must also be
-> supported. Linux should be figuring out the widest and capturing that
-> at boot time and we should be returing that info for the KVM satp_mode
-> get-one-reg call.
+On 4/28/25 06:26, BALATON Zoltan wrote:
+> I have tried profiling the dst in real card vfio vram with dcbz case (with 100 iterations 
+> instead of 10000 in above tests) but I'm not sure I understand the results. vperm and dcbz 
+> show up but not too high. Can somebody explain what is happening here and where the 
+> overhead likely comes from? Here is the profile result I got:
+> 
+> Samples: 104K of event 'cycles:Pu', Event count (approx.): 122371086557
+>    Children      Self  Command          Shared Object            Symbol
+> -   99.44%     0.95%  qemu-system-ppc  qemu-system-ppc          [.] cpu_exec_loop
+>     - 98.49% cpu_exec_loop
+>        - 98.48% cpu_tb_exec
+>           - 90.95% 0x7f4e705d8f15
+>                helper_ldub_mmu
+>                do_ld_mmio_beN
+>              - cpu_io_recompile
+>                 - 45.79% cpu_loop_exit_noexc
 
-Linux has command line overrides for the mode (no4lvl and no5vlv), so
-the active mode in Linux might not be the widest supported by the cpu.
+I think the real problem is the number of loop exits due to i/o.  If I'm reading this 
+rightly, 45% of execution is in cpu_io_recompile.
 
-Let's say Linux decides to use 9 on a host cpu that has 0,8,9,10.
-set_satp_mode_max_supported() will set supported vcpu modes to 0,8,9.
+I/O can only happen as the last insn of a translation block.  When we detect that it has 
+happened in the middle of a translation block, we abort the block, compile a new one, and 
+restart execution.
 
-Should "-cpu host" contain the 10?
+Where this becomes a bottleneck is when this same translation block is in a loop.  Exactly 
+this case of memset/memcpy of VRAM.  This could be addressed by invalidating the previous 
+translation block and creating a new one which always ends with the i/o.
 
-> If the satp_mode we're currently returning isn't the widest possible,
-> then we should fix that in KVM.
 
-The numbers are even more complicated... Pasting the values from manual:
-
-  0      Bare
-  1-7    Reserved for standard use
-  8      Sv39
-  9      Sv48
-  10     Sv57
-  11     Reserved for Sv64
-  12-13  Reserved for standard use
-  14-15  Designated for custom use
-
-The reserved values make this extra juicy, let's say Linux uses 14 on
-machine that has 0,8,9,14.  QEMU sees 14 and sets the vcpu modes to
-0,8,9,10 -- it's not even a subset of the host CPU.
-(There might be similar problems even with future standard extensions.)
+r~
 
