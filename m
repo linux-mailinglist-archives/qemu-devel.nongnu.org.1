@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF141A9EA3F
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 10:05:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF5BCA9EA42
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 10:05:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9JSz-0004nV-6w; Mon, 28 Apr 2025 04:03:53 -0400
+	id 1u9JSv-0004hb-CI; Mon, 28 Apr 2025 04:03:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dietmar@zilli.proxmox.com>)
- id 1u9JSs-0004ht-Nu
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 04:03:47 -0400
+ id 1u9JSr-0004gD-FG
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 04:03:45 -0400
 Received: from [94.136.29.99] (helo=zilli.proxmox.com)
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <dietmar@zilli.proxmox.com>) id 1u9JSp-00051S-AQ
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 04:03:46 -0400
+ (envelope-from <dietmar@zilli.proxmox.com>) id 1u9JSp-00051T-4f
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 04:03:45 -0400
 Received: by zilli.proxmox.com (Postfix, from userid 1000)
- id D83451C05DA; Mon, 28 Apr 2025 10:03:38 +0200 (CEST)
+ id DA03C1C082A; Mon, 28 Apr 2025 10:03:38 +0200 (CEST)
 From: Dietmar Maurer <dietmar@proxmox.com>
 To: marcandre.lureau@redhat.com,
 	qemu-devel@nongnu.org
 Cc: Dietmar Maurer <dietmar@proxmox.com>
-Subject: [PATCH v4 1/8] new configure option to enable gstreamer
-Date: Mon, 28 Apr 2025 10:03:29 +0200
-Message-Id: <20250428080336.2574852-2-dietmar@proxmox.com>
+Subject: [PATCH v4 2/8] vnc: initialize gst during argument processing
+Date: Mon, 28 Apr 2025 10:03:30 +0200
+Message-Id: <20250428080336.2574852-3-dietmar@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250428080336.2574852-1-dietmar@proxmox.com>
 References: <20250428080336.2574852-1-dietmar@proxmox.com>
@@ -56,85 +56,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-GStreamer is required to implement H264 encoding for VNC. Please note
-that QEMU already depends on this library when you enable Spice.
+So that we can set --gst- options on the qemu command line.
 
 Signed-off-by: Dietmar Maurer <dietmar@proxmox.com>
 ---
- meson.build                   | 10 ++++++++++
- meson_options.txt             |  2 ++
- scripts/meson-buildoptions.sh |  3 +++
- 3 files changed, 15 insertions(+)
+ system/vl.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/meson.build b/meson.build
-index 41f68d3806..626d58d989 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1348,6 +1348,14 @@ if not get_option('zstd').auto() or have_block
-                     required: get_option('zstd'),
-                     method: 'pkg-config')
- endif
-+
-+gstreamer = not_found
-+if not get_option('gstreamer').auto() or have_system
-+  gstreamer = dependency('gstreamer-1.0 gstreamer-base-1.0', version: '>=1.22.0',
-+                          required: get_option('gstreamer'),
-+                          method: 'pkg-config')
-+endif
-+
- qpl = not_found
- if not get_option('qpl').auto() or have_system
-   qpl = dependency('qpl', version: '>=1.5.0',
-@@ -2563,6 +2571,7 @@ config_host_data.set('CONFIG_MALLOC_TRIM', has_malloc_trim)
- config_host_data.set('CONFIG_STATX', has_statx)
- config_host_data.set('CONFIG_STATX_MNT_ID', has_statx_mnt_id)
- config_host_data.set('CONFIG_ZSTD', zstd.found())
-+config_host_data.set('CONFIG_GSTREAMER', gstreamer.found())
- config_host_data.set('CONFIG_QPL', qpl.found())
- config_host_data.set('CONFIG_UADK', uadk.found())
- config_host_data.set('CONFIG_QATZIP', qatzip.found())
-@@ -4836,6 +4845,7 @@ summary_info += {'snappy support':    snappy}
- summary_info += {'bzip2 support':     libbzip2}
- summary_info += {'lzfse support':     liblzfse}
- summary_info += {'zstd support':      zstd}
-+summary_info += {'gstreamer support': gstreamer}
- summary_info += {'Query Processing Library support': qpl}
- summary_info += {'UADK Library support': uadk}
- summary_info += {'qatzip support':    qatzip}
-diff --git a/meson_options.txt b/meson_options.txt
-index 59d973bca0..11cd132be5 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -254,6 +254,8 @@ option('vnc_sasl', type : 'feature', value : 'auto',
-        description: 'SASL authentication for VNC server')
- option('vte', type : 'feature', value : 'auto',
-        description: 'vte support for the gtk UI')
-+option('gstreamer', type : 'feature', value : 'auto',
-+       description: 'for VNC H.264 encoding with gstreamer')
+diff --git a/system/vl.c b/system/vl.c
+index ec93988a03..c7fff02da2 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -140,6 +140,10 @@
+ #include "qemu/guest-random.h"
+ #include "qemu/keyval.h"
  
- # GTK Clipboard implementation is disabled by default, since it may cause hangs
- # of the guest VCPUs. See gitlab issue 1150:
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index 3e8e00852b..f88475f707 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -229,6 +229,7 @@ meson_options_help() {
-   printf "%s\n" '                  Xen PCI passthrough support'
-   printf "%s\n" '  xkbcommon       xkbcommon support'
-   printf "%s\n" '  zstd            zstd compression support'
-+  printf "%s\n" '  gstreamer       gstreamer support (H264 for VNC)'
- }
- _meson_option_parse() {
-   case $1 in
-@@ -581,6 +582,8 @@ _meson_option_parse() {
-     --disable-xkbcommon) printf "%s" -Dxkbcommon=disabled ;;
-     --enable-zstd) printf "%s" -Dzstd=enabled ;;
-     --disable-zstd) printf "%s" -Dzstd=disabled ;;
-+    --enable-gstreamer) printf "%s" -Dgstreamer=enabled ;;
-+    --disable-gstreamer) printf "%s" -Dgstreamer=disabled ;;
-     *) return 1 ;;
-   esac
- }
++#ifdef CONFIG_GSTREAMER
++#include <gst/gst.h>
++#endif
++
+ #define MAX_VIRTIO_CONSOLES 1
+ 
+ typedef struct BlockdevOptionsQueueEntry {
+@@ -2848,6 +2852,10 @@ void qemu_init(int argc, char **argv)
+     bool userconfig = true;
+     FILE *vmstate_dump_file = NULL;
+ 
++#ifdef CONFIG_GSTREAMER
++    gst_init(&argc, &argv);
++#endif
++
+     qemu_add_opts(&qemu_drive_opts);
+     qemu_add_drive_opts(&qemu_legacy_drive_opts);
+     qemu_add_drive_opts(&qemu_common_drive_opts);
 -- 
 2.39.5
 
