@@ -2,147 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55B51A9F311
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 16:03:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98A8EA9F2C3
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 15:51:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9P3k-0007Iq-L7; Mon, 28 Apr 2025 10:02:12 -0400
+	id 1u9OtZ-0007ub-55; Mon, 28 Apr 2025 09:51:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1u9P3i-0007ID-2B
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 10:02:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1u9OtG-0007tE-W1; Mon, 28 Apr 2025 09:51:27 -0400
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1u9P3g-0004Cq-Ax
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 10:02:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745848927;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=oVDaO+qTXn+ujDK2ncQx+yn7CcEGLmLQc2GUBGf+VUE=;
- b=hLu5jGe/F62Jjyv++HPR0olPUA8B6nVDMSJHbqiU0soNJYpksvn/L5Uvq+JeU4xrqLjTp5
- LjmuveMN6FJcLz2GCRV7HPma9bZcCl71DsPbnwp9RNdjPkypOVNDSMLm91Bx1EbP9XgMBI
- b3qYymt4yPudLVADIN2tbpXBgsvWieQ=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-244-LoVN3MlKPgO1L2dQgWlVOA-1; Mon, 28 Apr 2025 10:02:01 -0400
-X-MC-Unique: LoVN3MlKPgO1L2dQgWlVOA-1
-X-Mimecast-MFC-AGG-ID: LoVN3MlKPgO1L2dQgWlVOA_1745848921
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-acb98b5b0bdso433981266b.1
- for <qemu-devel@nongnu.org>; Mon, 28 Apr 2025 07:02:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745848920; x=1746453720;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=oVDaO+qTXn+ujDK2ncQx+yn7CcEGLmLQc2GUBGf+VUE=;
- b=v4MSx7ivH9FOa7XNQOJOVVEAjY6TrB4tzbpyVDED3xcs0aRuU1/XpTZFNDVp90KY/y
- KKC97IOY43T4vWvOama8sUXn1CCHn8qukRVlaChJAbDnNzhuayF4QLFGKAv1ds+0lTi9
- KMT5mlDWxp/6ooSVKZ2kwtmCp6ouOBKXziuH1dEa4NKhitZBgsG40PB5iH1wBV1Fd5jb
- ZMlztvM82kgG+NlzZW+WNnkGYbAUsBcj7Mbx6lIG+gRPjXALqjJEq+x6KIwVPoI4caTD
- P+swUAhIBF88nF9rZduhfM7rAv52T+UGz9xZUN3Xff5JFgtsMYDWloJOSBhrxrsnW1qX
- 5UTg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWrJWj9eoPusS68NpTIDtrDVgSUFsxo+YaxM8XpMVcTygeN3iFPuch09sm5hD2ShC16JMkP08Zns2jh@nongnu.org
-X-Gm-Message-State: AOJu0YzrBonjak2r7ECE+iRslnR31uc/MsB4RYCITNcdx2ltA0W1zx3p
- tFj/Xgtl/KpZxflatIfy+fO2nJOgiR31XiAquR4u9Gd6dEPUQ1t2Nb73rDDDLcTb5g1YpncxvNg
- 0dp6ZFCYhCC/jTEQohe9EwjCAPT24crqIIkQNYaRq93aLxUABnuD3
-X-Gm-Gg: ASbGncuyeNyVvth0mhiWeCpvNBZunGFjT0Vzl2yP00sDsDxATlALip6L41r/ulfxHu8
- j3yNZAeaRTwNQAPeZDQUVlVMbC/u1zsEqbgEH8Lqdr4Pi2nYMxKi9bqX8W/KuihoTHbWDUcxu5R
- DKtJKQf7gpubmZyFSWW93LEsTBpTNpE4r1eWKZ9CGRGyNXV1tHjIv10C6hgnwWbh2iQWtOXPnmm
- 790cQYxN3QLglz21kH174/MJ86VQD6qjSX8OHUZywHtt+gLNW74NkNwrJ2mT9+5pdnUUqsj8t6P
- Vjhyf1vps3TrNmhOlOmEfr9Wfm7IJVZ23pMaSzwz4fp3Wg==
-X-Received: by 2002:a17:907:3ea3:b0:ac1:ecb5:7207 with SMTP id
- a640c23a62f3a-ace7111e569mr1044832466b.29.1745848920373; 
- Mon, 28 Apr 2025 07:02:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHpQ2A59x4luIYuijd4eK/UCx5XlvMVMe+kGUR42Kos1u8T673GCTD3ZcRVKEoVz1ZeH1tQJw==
-X-Received: by 2002:a17:907:3ea3:b0:ac1:ecb5:7207 with SMTP id
- a640c23a62f3a-ace7111e569mr1044825466b.29.1745848919721; 
- Mon, 28 Apr 2025 07:01:59 -0700 (PDT)
-Received: from [192.168.0.7] (ip-109-43-178-177.web.vodafone.de.
- [109.43.178.177]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ace6edafec7sm626447466b.165.2025.04.28.07.01.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 28 Apr 2025 07:01:59 -0700 (PDT)
-Message-ID: <294fd9b9-6880-477f-a2b4-773f1e5274c8@redhat.com>
-Date: Mon, 28 Apr 2025 16:01:57 +0200
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1u9OtD-0003Bk-VE; Mon, 28 Apr 2025 09:51:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1745848280; x=1777384280;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=VsHmrNXKviIE8IQ9R1HhlyLdam+mB76jNTS9v/imXWs=;
+ b=afBJGxlnOygstodwxP54aaFlIZ3eTk0lr/YevradvLsAnXAYODv1IFua
+ zjXAVv0GZEk2Hg9elHoi1nv9mvBDr8Orh7BRnYm1qOvoIA6zBY7RA8HB3
+ U19BC7HAbYaMyQNAu94NNY5nr5OHjaniDFmWg2VLzVZVvtaRmwymtWuLS
+ CjEWZN6orvJ1XqIhjOltEUf0IJqYn4ZpTfXYVldVhFLmrs7o7Zpnb9Eiv
+ zAmtCOBJvNeGWRYWuw3HVu5PIYR7P2CrdsKjr7BRPeTIqHcN8llBQx1cU
+ ym7WzcTGgsZc+l8aaU13xW6vVGkBtVYDU+6pitS4hvUyGFC3RYQN3PcCW A==;
+X-CSE-ConnectionGUID: ++y8CVQiTomQGISsRyufGw==
+X-CSE-MsgGUID: hOnViCjORTiYDAyCkld9mg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11416"; a="58085736"
+X-IronPort-AV: E=Sophos;i="6.15,246,1739865600"; d="scan'208";a="58085736"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Apr 2025 06:51:14 -0700
+X-CSE-ConnectionGUID: 9rsWKEuKTXSkzsns7eGPDg==
+X-CSE-MsgGUID: mHZMTY5nS4exFTHFKWI5vQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,246,1739865600"; d="scan'208";a="164487636"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa002.jf.intel.com with ESMTP; 28 Apr 2025 06:51:09 -0700
+Date: Mon, 28 Apr 2025 22:12:06 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Michael Roth <michael.roth@amd.com>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Shaoqin Huang <shahuang@redhat.com>, Eric Auger <eauger@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Sebastian Ott <sebott@redhat.com>, Gavin Shan <gshan@redhat.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
+ Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>
+Subject: Re: [PATCH 2/5] i386/kvm: Support basic KVM PMU filter
+Message-ID: <aA+MttdYlZKPAwqT@intel.com>
+References: <20250409082649.14733-1-zhao1.liu@intel.com>
+ <20250409082649.14733-3-zhao1.liu@intel.com>
+ <878qnoha3j.fsf@pond.sub.org> <aA3sLRzZj2270cSs@intel.com>
+ <87r01c3jd2.fsf@pond.sub.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/9] gitlab: disable debug info on CI builds
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Alexandre Iooss <erdnaxe@crans.org>, "Michael S. Tsirkin"
- <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-arm@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Xu <peterx@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>
-References: <20250428125918.449346-1-alex.bennee@linaro.org>
- <20250428125918.449346-3-alex.bennee@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20250428125918.449346-3-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.484,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87r01c3jd2.fsf@pond.sub.org>
+Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -48
+X-Spam_score: -4.9
+X-Spam_bar: ----
+X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.484,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -158,34 +91,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/04/2025 14.59, Alex Bennée wrote:
-> Our default build enables debug info which adds hugely to the size of
-> the builds as well as the size of cached objects. Disable debug info
-> across the board to save space and reduce pressure on the CI system.
-> We still have a number of builds which explicitly enable debug and
-> related extra asserts like --enable-debug-tcg.
+On Mon, Apr 28, 2025 at 08:12:09AM +0200, Markus Armbruster wrote:
+> Date: Mon, 28 Apr 2025 08:12:09 +0200
+> From: Markus Armbruster <armbru@redhat.com>
+> Subject: Re: [PATCH 2/5] i386/kvm: Support basic KVM PMU filter
 > 
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> ---
->   .gitlab-ci.d/buildtest-template.yml | 1 +
->   1 file changed, 1 insertion(+)
+> Zhao Liu <zhao1.liu@intel.com> writes:
 > 
-> diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
-> index d4f145fdb5..d9e69c3237 100644
-> --- a/.gitlab-ci.d/buildtest-template.yml
-> +++ b/.gitlab-ci.d/buildtest-template.yml
-> @@ -24,6 +24,7 @@
->       - ccache --zero-stats
->       - section_start configure "Running configure"
->       - ../configure --enable-werror --disable-docs --enable-fdt=system
-> +          --disable-debug-info
+> > ...
+> >
+> >> > diff --git a/qemu-options.hx b/qemu-options.hx
+> >> > index dc694a99a30a..51a7c61ce0b0 100644
+> >> > --- a/qemu-options.hx
+> >> > +++ b/qemu-options.hx
+> >> > @@ -232,7 +232,8 @@ DEF("accel", HAS_ARG, QEMU_OPTION_accel,
+> >> >      "                eager-split-size=n (KVM Eager Page Split chunk size, default 0, disabled. ARM only)\n"
+> >> >      "                notify-vmexit=run|internal-error|disable,notify-window=n (enable notify VM exit and set notify window, x86 only)\n"
+> >> >      "                thread=single|multi (enable multi-threaded TCG)\n"
+> >> > -    "                device=path (KVM device path, default /dev/kvm)\n", QEMU_ARCH_ALL)
+> >> > +    "                device=path (KVM device path, default /dev/kvm)\n"
+> >> > +    "                pmu-filter=id (configure KVM PMU filter)\n", QEMU_ARCH_ALL)
+> >> 
+> >> As we'll see below, this property is actually available only for i386.
+> >> Other target-specific properties document this like "x86 only".  Please
+> >> do that for this one, too.
+> >
+> > Thanks! I'll change QEMU_ARCH_ALL to QEMU_ARCH_I386.
+> 
+> That would be wrong :)
+> 
+> QEMU_ARCH_ALL is the last argument passed to macro DEF().  It applies to
+> the entire option, in this case -accel.
 
-Do we have any jobs that might show stack traces in the console output ? 
-build-oss-fuzz comes to my mind, but that uses a separate script, so we 
-should be fine there?
+Thank you for correction! I didn't realize this point :-(.
 
-So assuming there are no other jobs around that might need it:
+> I'd like you to mark the option parameter as "(x86 only)", like
+> notify-vmexit right above, and several more elsewhere.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Sure, I see. This option has already provided good example for me.
+
+> >> As far as I can tell, the kvm-pmu-filter object needs to be activated
+> >> with -accel pmu-filter=... to do anything.  Correct?
+> >
+> > Yes,
+> >
+> >> You can create any number of kvm-pmu-filter objects, but only one of
+> >> them can be active.  Correct?
+> >
+> > Yes! I'll try to report error when user repeats to set this object, or
+> > mention this rule in doc.
+> 
+> Creating kvm-pmu-filter objects without using them should be harmless,
+> shouldn't it?  I think users can already create other kinds of unused
+> objects.
+
+I think I understand now. Indeed, creating an object should be allowed
+regardless of whether it's used, as this helps decouple "-object" from
+other options.
+
+I can add something that:
+
+the kvm-pmu-filter object needs to be activated with "-accel pmu-filter=id",
+and only when it is activated, its filter policy can be passed to KVM.
+
+(A single sentence is just an example; I think it needs to be carefully
+refined within the context of the entire paragraph :-).)
+
+> >> > +
+> >> > +static int kvm_install_pmu_event_filter(KVMState *s)
+> >> > +{
+> >> > +    struct kvm_pmu_event_filter *kvm_filter;
+> >> > +    KVMPMUFilter *filter = s->pmu_filter;
+> >> > +    int ret;
+> >> > +
+> >> > +    kvm_filter = g_malloc0(sizeof(struct kvm_pmu_event_filter) +
+> >> > +                           filter->nevents * sizeof(uint64_t));
+> >> 
+> >> Should we use sizeof(filter->events[0])?
+> >
+> > No, here I'm trying to constructing the memory accepted in kvm interface
+> > (with the specific layout), which is not the same as the KVMPMUFilter
+> > object.
+> 
+> You're right.  What about sizeof(kvm_filter->events[0])?
+
+I get your point now! Yes, I should do in this way.
+
+Thanks,
+Zhao
 
 
