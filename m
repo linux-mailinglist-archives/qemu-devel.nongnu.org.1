@@ -2,82 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4048A9E802
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 08:11:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 766A6A9E945
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 09:27:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9Hgx-00052v-Ly; Mon, 28 Apr 2025 02:10:11 -0400
+	id 1u9Ist-0004mq-7p; Mon, 28 Apr 2025 03:26:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1u9Hgr-00051b-0L
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 02:10:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u9IsW-0004fH-00
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 03:26:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1u9Hgo-0002OP-6d
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 02:10:04 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u9IsS-0008Da-IV
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 03:26:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745820600;
+ s=mimecast20190719; t=1745825167;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+z4i+41zwqN4dV9AdZu/w/vurPApnrl88zS3GbUA73g=;
- b=U1Clu2eSthSc4F+TdDqofr6FxTS3KmnWg2KiKBcLaa42vd4EjY3ug3TV7DH/u/FZ3i0hcA
- QB35nQVfgV/o80YcajqjnCCzeTQmM7MJXzoiGRsMDlGus6X5vBS0VzVyyXNjTa9e3rw2a2
- yjxcItEOx2b5miYvYaKrWn4pLdIioGs=
-Received: from mail-vk1-f199.google.com (mail-vk1-f199.google.com
- [209.85.221.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-393-PkL0MYoWMxaqf6B2PKDynQ-1; Mon, 28 Apr 2025 02:09:57 -0400
-X-MC-Unique: PkL0MYoWMxaqf6B2PKDynQ-1
-X-Mimecast-MFC-AGG-ID: PkL0MYoWMxaqf6B2PKDynQ_1745820597
-Received: by mail-vk1-f199.google.com with SMTP id
- 71dfb90a1353d-523c33cfea8so4752883e0c.1
- for <qemu-devel@nongnu.org>; Sun, 27 Apr 2025 23:09:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745820596; x=1746425396;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=+z4i+41zwqN4dV9AdZu/w/vurPApnrl88zS3GbUA73g=;
- b=hQczJdsbIdEVaHcUux3NPNCt2TRYRjwwIHO8isoTju5zFT98g4+XCZkJqvApgVdfm5
- HRKB5rO9lpWO4lQwh/LKZJ+ziB5ZUN1KyKXL7kI0/rBMYlEtOP4GOOqumkeqzVa9JfV1
- CN95XwtBci+nagwofaYcABDYrmaw59VRXGNWWSbL+juOqK0aQYHe2OCcbaytC8RkngY2
- 3G1nP2PXwrBn9XZ23pB44e4LpaIJcLk1LV8tsxA+AHf0gttjHGvrsf/ybDz7dWOt4xki
- QnJjCkUvHAIw8CCsMLrbCt/B/wSXcYx4v9kLRGkEmfi9pTyHpECgFok2Uxvn20OGdhsI
- 3cJA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXSsHudcmEBBqAjQs/Qfgpfzge3yfy2J/h2zB13uZ/2XbQrImh20hY8LSc+pEPI6ps1AUviXPjp3Xxg@nongnu.org
-X-Gm-Message-State: AOJu0YxMxKdHkoje2MJK7lvWuBK3UAQTgvhQ+z+og4dus2rlIurYcliK
- BM+U+jXjE9Dc7oovIdBZIoVnrHb7yYbefwrhdTmH23Xd5iJ9gUWlukzfx+Lqql/UP7vC84Cpkfr
- lT5zUTTK4DQ3lntkmXwkBhFixUBFAW0fLTVhgtUiW59mXtW+EXpsIMzlinxgNbIwFzuW5h4VJRJ
- D7SqH2q+dE8oc2rJWRXff21rauWMXFh31Lcdp8+A==
-X-Gm-Gg: ASbGnctjdzfFgf+3rp0vlfDeEW1eDbUjn7X/1RUJfn+1BIEKuNAQ5GQh4cknQOl+A3t
- qmPj9BSWpay2WfV/TjszU0lxs8sD4HRF7K5Xn7pZz85o86fHGsGMDH8uATZqhk2ip708ilg==
-X-Received: by 2002:a05:6102:15a5:b0:4c1:90ee:f8c1 with SMTP id
- ada2fe7eead31-4d5433ef0c2mr6665164137.5.1745820596552; 
- Sun, 27 Apr 2025 23:09:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEOYoEt4QEx8QIKtjVo4LYirnufWasrfZWzS48RbfPHHg+jNFITCvv6kieJGUDp5U+DtwTGJLz0wS578wMR3u8=
-X-Received: by 2002:a05:6102:15a5:b0:4c1:90ee:f8c1 with SMTP id
- ada2fe7eead31-4d5433ef0c2mr6665161137.5.1745820596330; Sun, 27 Apr 2025
- 23:09:56 -0700 (PDT)
+ bh=CISJnPMfG/uXMv0l6JF9iE0pkiWbduTPqPP8qKQb4lc=;
+ b=fH7vsYChrAznmqO8re0AV1vJzBXPUwOgh3J2XRem4nnupixrRlVA7Qc2NgCTo45yJZhP7V
+ Clfnr7ylddPvPD5c2jQPJu716wxxveSaF4e/P2qVGCdmkgDv3FA05G95nTcHoK6DZ+tYbQ
+ 1MxVPV7FS7ODGjIHBMzOucxCZTX74wE=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-122-P6WChWBUNwemPEoOA7SP5g-1; Mon,
+ 28 Apr 2025 03:26:04 -0400
+X-MC-Unique: P6WChWBUNwemPEoOA7SP5g-1
+X-Mimecast-MFC-AGG-ID: P6WChWBUNwemPEoOA7SP5g_1745825162
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6B09618004A7; Mon, 28 Apr 2025 07:26:02 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.27])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C7A6E1800352; Mon, 28 Apr 2025 07:26:00 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id E6E6821E66C2; Mon, 28 Apr 2025 08:12:09 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,  Eric Blake <eblake@redhat.com>,
+ Michael Roth <michael.roth@amd.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>,  Marcelo
+ Tosatti <mtosatti@redhat.com>,  Shaoqin Huang <shahuang@redhat.com>,  Eric
+ Auger <eauger@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>,  Thomas Huth <thuth@redhat.com>,
+ Sebastian Ott <sebott@redhat.com>,  Gavin Shan <gshan@redhat.com>,
+ qemu-devel@nongnu.org,  kvm@vger.kernel.org,  qemu-arm@nongnu.org,
+ Dapeng Mi <dapeng1.mi@intel.com>,  Yi Lai <yi1.lai@intel.com>
+Subject: Re: [PATCH 2/5] i386/kvm: Support basic KVM PMU filter
+In-Reply-To: <aA3sLRzZj2270cSs@intel.com> (Zhao Liu's message of "Sun, 27 Apr
+ 2025 16:34:53 +0800")
+References: <20250409082649.14733-1-zhao1.liu@intel.com>
+ <20250409082649.14733-3-zhao1.liu@intel.com>
+ <878qnoha3j.fsf@pond.sub.org> <aA3sLRzZj2270cSs@intel.com>
+Date: Mon, 28 Apr 2025 08:12:09 +0200
+Message-ID: <87r01c3jd2.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-References: <20250417102522.4125379-1-lulu@redhat.com>
- <20250417102522.4125379-4-lulu@redhat.com>
- <CACGkMEscXQxKSNN=3-0wuYJUxw7wGby1B-pD0yLLbSOHY9ez0w@mail.gmail.com>
-In-Reply-To: <CACGkMEscXQxKSNN=3-0wuYJUxw7wGby1B-pD0yLLbSOHY9ez0w@mail.gmail.com>
-From: Cindy Lu <lulu@redhat.com>
-Date: Mon, 28 Apr 2025 14:09:20 +0800
-X-Gm-Features: ATxdqUFmGLfq3p5Tuf-qvGl16v58zP88aYzlD_nuCBN9IDxZsnqEUtBPOQ-DhYQ
-Message-ID: <CACLfguWLXgEcKyjOPC-2Uih5ARJA34_2gm3hebN+CC0OV4DbRA@mail.gmail.com>
-Subject: Re: [PATCH v7 3/4] virtio_net: Add second acceptable configuration
- for MAC setup
-To: Jason Wang <jasowang@redhat.com>
-Cc: mst@redhat.com, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=lulu@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
@@ -102,61 +92,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Apr 21, 2025 at 11:19=E2=80=AFAM Jason Wang <jasowang@redhat.com> w=
-rote:
+Zhao Liu <zhao1.liu@intel.com> writes:
+
+> ...
 >
-> On Thu, Apr 17, 2025 at 6:25=E2=80=AFPM Cindy Lu <lulu@redhat.com> wrote:
-> >
-> > For VDPA devices, Allow configurations where the hardware MAC address
-> > is non-zero while the MAC address in the QEMU command line is zero.
-> > In this case, QEMU will use the hardware MAC address from the device.
-> >
-> > Signed-off-by: Cindy Lu <lulu@redhat.com>
-> > ---
-> >  hw/net/virtio-net.c | 14 ++++++++++++++
-> >  1 file changed, 14 insertions(+)
-> >
-> > diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-> > index 0b6a4e5634..808a2fe4d4 100644
-> > --- a/hw/net/virtio-net.c
-> > +++ b/hw/net/virtio-net.c
-> > @@ -3757,6 +3757,20 @@ static bool virtio_net_check_vdpa_mac(VirtIONet =
-*n, uint8_t *hwmac,
-> >          if ((memcmp(hwmac, cmdline_mac, sizeof(MACAddr)) =3D=3D 0)) {
-> >              return true;
-> >          }
-> > +        /*
-> > +         * 2. The hardware MAC address is NOT 0 and the MAC address in
-> > +         *  the QEMU command line is 0.
-> > +         *  In this case,qemu will use the hardware MAC address overwr=
-ite
-> > +         *  the QEMU command line MAC address saved in VirtIONet->mac[=
-0].
-> > +         *  In the following process, QEMU will use this MAC address
-> > +         *  to complete the initialization.
-> > +         */
-> > +        if (memcmp(cmdline_mac, &zero, sizeof(MACAddr)) =3D=3D 0) {
-> > +            /* overwrite the mac address with hardware address */
-> > +            memcpy(&n->mac[0], hwmac, sizeof(n->mac));
-> > +            memcpy(&n->nic_conf.macaddr, hwmac, sizeof(n->mac));
+>> > diff --git a/qemu-options.hx b/qemu-options.hx
+>> > index dc694a99a30a..51a7c61ce0b0 100644
+>> > --- a/qemu-options.hx
+>> > +++ b/qemu-options.hx
+>> > @@ -232,7 +232,8 @@ DEF("accel", HAS_ARG, QEMU_OPTION_accel,
+>> >      "                eager-split-size=n (KVM Eager Page Split chunk size, default 0, disabled. ARM only)\n"
+>> >      "                notify-vmexit=run|internal-error|disable,notify-window=n (enable notify VM exit and set notify window, x86 only)\n"
+>> >      "                thread=single|multi (enable multi-threaded TCG)\n"
+>> > -    "                device=path (KVM device path, default /dev/kvm)\n", QEMU_ARCH_ALL)
+>> > +    "                device=path (KVM device path, default /dev/kvm)\n"
+>> > +    "                pmu-filter=id (configure KVM PMU filter)\n", QEMU_ARCH_ALL)
+>> 
+>> As we'll see below, this property is actually available only for i386.
+>> Other target-specific properties document this like "x86 only".  Please
+>> do that for this one, too.
 >
-> I'm not sure I get here, shouldn't we need to call get_config() here?
+> Thanks! I'll change QEMU_ARCH_ALL to QEMU_ARCH_I386.
+
+That would be wrong :)
+
+QEMU_ARCH_ALL is the last argument passed to macro DEF().  It applies to
+the entire option, in this case -accel.
+
+I'd like you to mark the option parameter as "(x86 only)", like
+notify-vmexit right above, and several more elsewhere.
+
+>> As far as I can tell, the kvm-pmu-filter object needs to be activated
+>> with -accel pmu-filter=... to do anything.  Correct?
 >
-> Thanks
+> Yes,
 >
-I made a small change to this function: get_config() is called in
-virtio_net_device_realize() before check_mac(), so we don't need to
-call it again.
-Thanks
-Cindy
-> > +            return true;
-> > +        }
-> >      }
-> >
-> >      return false;
-> > --
-> > 2.45.0
-> >
+>> You can create any number of kvm-pmu-filter objects, but only one of
+>> them can be active.  Correct?
 >
+> Yes! I'll try to report error when user repeats to set this object, or
+> mention this rule in doc.
+
+Creating kvm-pmu-filter objects without using them should be harmless,
+shouldn't it?  I think users can already create other kinds of unused
+objects.
+
+>> > +
+>> > +static int kvm_install_pmu_event_filter(KVMState *s)
+>> > +{
+>> > +    struct kvm_pmu_event_filter *kvm_filter;
+>> > +    KVMPMUFilter *filter = s->pmu_filter;
+>> > +    int ret;
+>> > +
+>> > +    kvm_filter = g_malloc0(sizeof(struct kvm_pmu_event_filter) +
+>> > +                           filter->nevents * sizeof(uint64_t));
+>> 
+>> Should we use sizeof(filter->events[0])?
+>
+> No, here I'm trying to constructing the memory accepted in kvm interface
+> (with the specific layout), which is not the same as the KVMPMUFilter
+> object.
+
+You're right.  What about sizeof(kvm_filter->events[0])?
+
+[...]
 
 
