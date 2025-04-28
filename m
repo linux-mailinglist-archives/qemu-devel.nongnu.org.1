@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27995A9F1AA
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 15:06:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50B1CA9F1B2
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 15:07:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9O5G-00081Z-4z; Mon, 28 Apr 2025 08:59:42 -0400
+	id 1u9O5V-0008Gy-KC; Mon, 28 Apr 2025 08:59:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1u9O50-0007sm-IK
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 08:59:26 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ id 1u9O50-0007sk-Ha
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 08:59:27 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1u9O4x-00036B-2n
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 08:59:26 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-ac345bd8e13so664322266b.0
+ id 1u9O4x-00036L-3X
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 08:59:25 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-5eb92df4fcbso9078194a12.0
  for <qemu-devel@nongnu.org>; Mon, 28 Apr 2025 05:59:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745845160; x=1746449960; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=5mQ9IZhr7/ovEKIiDLpqqFq4fpN84jvhC9IW2qym288=;
- b=oNS3W0+GyKYpCZo8zgP6lw4xwLTE6hxfSFiDnc52BtWCiqTVOzRP3DQJ2qhyQh7xNX
- ibshUxcki4nqrAVMXsVJkIoHdNEX2A5I+R1byZj9OcWpeBm6RtTk8zImUavm1BgfjIus
- D5x4mH8ju9kzLf/tz40ETsAXYkeDaqICYC7QqqWv88P5e0jMTVrKnYNOnFDchM7xfC1k
- gPGOqV4FRCVQdH7ziSYQyU+WfAS8SSvG/nXOyEWgpcwTfVPiIcGk4VTRmtekXXNpdpEn
- Uv3HP4n3w+SYq26WIY6OM/J5q9TmP/GNRqNorSxzWDjpyqVEc9Uv3CWSNZmOhsXI8H1N
- 15WA==
+ d=linaro.org; s=google; t=1745845161; x=1746449961; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=jhcZnu+Y1TIeUDuUOI6qKcuAJbQrXxQgcrFBlI5eh30=;
+ b=ChkFS2oGlIUdvk3dcuGuoLxujrulNR87jXBJ74zIt859im84W+HZeTGepoQ1y9jO2r
+ GmGShvg1ZQAxCcBm2bya0zHScW4f4ph6h4yqDxTIDvN/i87UnROuoLzm/PJN41oDBn48
+ fGVqAy4XbJpU2ath7spafBAPlWdaMhK+baBgz30kQORlEFjuxX3CVfP6OH8eWg42+YrL
+ hG3zQn8y5Ltx61z8SFnEU3hvRX6qwiAZyKAL2WT8cbyexaDH8tCtBMOME1xubZiyOaJ1
+ OZRcaQDEdenGzby7LpiLDDx9U2f9rYHCV2i871WSVF1wSOx1NFjlQ7d6C8j/X8jdxNtY
+ GmBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745845160; x=1746449960;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=5mQ9IZhr7/ovEKIiDLpqqFq4fpN84jvhC9IW2qym288=;
- b=OjiUPhFowEoVLKes2N3KjISiYIQtxr8JrCfBbyGG8JtOL8OiaBIPkYNGCOyui0NJho
- SDl2EjpP5owEEGwWuCM/PDrx/tD8fco50zJvVQMcBkgD0Sx/mHVqXtAJJ9TcXfwHi+Vl
- qACSUZaE0YuMF8mlTtNUUkwC67u2ecIQp9/2dJ8nRCwjDunDVA5f9cFg5LYvq8cB3Uq/
- 0Um9AiO9RXC3pAvm2QmOggf/n/rm3zsYBBEXFWbsuit3pw6pbQwb3tdn2WUbcohDiB23
- cHbtoTM5euZFpELnG2wvJnFA27e9IF/PNj2jv5RarW/c411MnJHT5gioxrN/93PvND4I
- cGKw==
-X-Gm-Message-State: AOJu0YzbEeJ24ylrKSsQ1XYepniOILyhCblYJJrTBsd7KbPnhY4eoYsB
- lsJY+sGhL+8hgEHei0rv3PCreO/CjyFavxGNEHaRQuUkSqrr7+RMlLQriHUhEas=
-X-Gm-Gg: ASbGnctoO1D8+Tux7m9LjDReCtAGvSYD4ePR3i27XQbpLdR5F0mQfwiEV6+wukdTUvH
- fAnF1pNjf8Bkc+kO8wIWY97G2qRi70DmSxHS/NBxusn6Al6AGBnWKuWGndyqQMc/HvYGUtft4Rs
- SX1ATmEkMFp82AVy0vLvHVVNiTdYHg2uQmyZ+8prFs4dck0QW9dMUmzJbAX0OmzIGzIVSSAW/fg
- f00dxrQjkLUQyGK/2mvk8iHKHrbPJJkHoojCyT90jpfOJOWPGaXx3dg/R463Dr6yL6gfDHfQiir
- 1gaArrqNRY3xm4GIfxRmZKlxiEmvshFPVr/37SSkp1w=
-X-Google-Smtp-Source: AGHT+IH5xfUaHbJ07bPqoRiVPoWUEldLAazuA+mH0x8Bw2a9shQVtJTe4aSCtPdAeEyY2xv+5egWCQ==
-X-Received: by 2002:a17:906:5801:b0:ace:7f5a:bc2 with SMTP id
- a640c23a62f3a-ace7f5a1787mr619522466b.37.1745845159976; 
- Mon, 28 Apr 2025 05:59:19 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1745845161; x=1746449961;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jhcZnu+Y1TIeUDuUOI6qKcuAJbQrXxQgcrFBlI5eh30=;
+ b=iaPP79/TczlrpWJomwwavMAX9cfHTtCRWzSwCeirLcusWu5LVpyz/KJQm0hGoJX5lQ
+ O5yd+0y+FUlxMHPqJXNWcCptsQOVJkElwj/O5RG4UMPPnqVmdP6ljn9X11wCh4TFzYBi
+ +4yTtBRLiHXr+KOJEta8QejihZQDbALbPw6ZQY5MnfMB1WuFQZlVqkhMgoxyUdzgxcF4
+ gZ0pFYC29TPZMm29p5pFYLI+UtVQHBsOhQ5uGjhk5O+icV5rcT8t/0qbVG14RzShh5qP
+ sg27OeZPZoEwO+w/M4T8KsxTx21R15q2CnlY9g0qeEN8+SmRvQZKcSzt45bs2fktrGdA
+ KJIw==
+X-Gm-Message-State: AOJu0Yz0w8TfRxgYmGcNQh0rRrSMWUEdysPiIQTiP5bvzp0YTlE2VUtU
+ z25Wmk+wdMBYrF5I48wBQRE/8MFFvA9h9Jkpt7EBP7UOI0eMb+m4QWOeqnQ3JbY=
+X-Gm-Gg: ASbGnctfUDz4NIZyKz/VhRveV3yb4yZF+II2MSem+k3t8q8ghjGvSM2pnskzHAPNQg9
+ BkgMIiSRLdHezJ4atPqGf/dUXcuD5BZVfdAwh3rzgzG6j1+mWg3P+eIKWVMzr77a+jWLTpUebEu
+ alWtEuuTzMGQHN00WoNbWvCBVYq2U1jJSwfNyLRHcXziS1e6K/S1egIY2G2JZdM4iUG4ihpRSXC
+ aPJwrIaeRg7aDmiHTpCLA/AJSwPt+p7pQ3iHHAr8Ge3b2oSMrBwpYytILMS50bkQhOWoTbPrP2V
+ 1Fzac91a7aTtjdL+PedC1JcjokjgRgF1YIblNXrrj8/7wD4czwWc8g==
+X-Google-Smtp-Source: AGHT+IHzwrW8Z6/xL77xr5HDqwIXyleV3+13Qsst/3fwmkro5hoQrL7uKBd9zbvHvdOS1HoFqzKkHw==
+X-Received: by 2002:a17:907:9405:b0:ace:6bfb:4a12 with SMTP id
+ a640c23a62f3a-ace848c2190mr861793366b.7.1745845160665; 
+ Mon, 28 Apr 2025 05:59:20 -0700 (PDT)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ace6e41bbc3sm622870366b.3.2025.04.28.05.59.18
+ a640c23a62f3a-ace6e41bc62sm618677666b.25.2025.04.28.05.59.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 28 Apr 2025 05:59:19 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 42B225F905;
+ by draig.lan (Postfix) with ESMTP id 592E05F93C;
  Mon, 28 Apr 2025 13:59:18 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -72,15 +73,17 @@ Cc: Thomas Huth <thuth@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Xu <peterx@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PATCH 0/9] Maintainer updates for May (testing, plugins, virtio-gpu)
-Date: Mon, 28 Apr 2025 13:59:09 +0100
-Message-Id: <20250428125918.449346-1-alex.bennee@linaro.org>
+Subject: [PATCH 1/9] tests/docker: expose $HOME/.cache as docker volume
+Date: Mon, 28 Apr 2025 13:59:10 +0100
+Message-Id: <20250428125918.449346-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250428125918.449346-1-alex.bennee@linaro.org>
+References: <20250428125918.449346-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -103,47 +106,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now the tree is open here is the state of my current maintainer
-queues. I've tagged the virtio-gpu changes as Cc: qemu-stable but
-given how close to release we were it didn't seem worth rushing them
-in for 10.0. I've included a MAINTAINERS patch just to make sure I can
-route any more fixes until a more full time maintainer volunteers.
+If you want to run functional tests we should share .cache so we don't
+force containers to continually re-download images.
 
-The following need review:
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ tests/docker/Makefile.include | 1 +
+ 1 file changed, 1 insertion(+)
 
-  MAINTAINERS: add myself to virtio-gpu for Odd Fixes
-  contrib/plugins: allow setting of instructions per quantum
-  contrib/plugins: add a scaling factor to the ips arg
-  tests/tcg: make aarch64 boot.S handle different starting modes
-  gitlab: disable debug info on CI builds
-  tests/docker: expose $HOME/.cache as docker volume
-
-Alex.
-
-Alex Bennée (7):
-  tests/docker: expose $HOME/.cache as docker volume
-  gitlab: disable debug info on CI builds
-  tests/tcg: make aarch64 boot.S handle different starting modes
-  contrib/plugins: add a scaling factor to the ips arg
-  contrib/plugins: allow setting of instructions per quantum
-  MAINTAINERS: add myself to virtio-gpu for Odd Fixes
-  hw/display: re-arrange memory region tracking
-
-Manos Pitsidianakis (2):
-  virtio-gpu: fix hang under TCG when unmapping blob
-  virtio-gpu: refactor async blob unmapping
-
- MAINTAINERS                               |   3 +-
- docs/about/emulation.rst                  |   4 +
- include/system/memory.h                   |   1 +
- contrib/plugins/ips.c                     |  33 +++++-
- hw/display/virtio-gpu-virgl.c             |  60 +++++-----
- .gitlab-ci.d/buildtest-template.yml       |   1 +
- tests/docker/Makefile.include             |   1 +
- tests/tcg/aarch64/Makefile.softmmu-target |   3 +-
- tests/tcg/aarch64/system/boot.S           | 127 +++++++++++++++++++++-
- 9 files changed, 202 insertions(+), 31 deletions(-)
-
+diff --git a/tests/docker/Makefile.include b/tests/docker/Makefile.include
+index fa1cbb6726..56a8d9f8ff 100644
+--- a/tests/docker/Makefile.include
++++ b/tests/docker/Makefile.include
+@@ -224,6 +224,7 @@ docker-run: docker-qemu-src
+ 			$(if $(NOUSER),,				\
+ 				-e CCACHE_DIR=/var/tmp/ccache 		\
+ 				-v $(DOCKER_CCACHE_DIR):/var/tmp/ccache:z \
++				-v $(HOME)/.cache:$(HOME)/.cache 	\
+ 			)						\
+ 			-v $$(readlink -e $(DOCKER_SRC_COPY)):/var/tmp/qemu:z$(COMMA)ro \
+ 			$(IMAGE) 					\
 -- 
 2.39.5
 
