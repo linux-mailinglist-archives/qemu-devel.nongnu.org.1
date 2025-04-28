@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05AFAA9EDE6
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 12:27:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA542A9EDFE
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 12:29:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9LhT-00066m-4V; Mon, 28 Apr 2025 06:27:00 -0400
+	id 1u9LhZ-0006ef-Ak; Mon, 28 Apr 2025 06:27:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1u9LhJ-0005rP-Tl
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 06:26:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1u9LhR-0006ER-Gh
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 06:26:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1u9LhH-0003Fl-Ip
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 06:26:48 -0400
+ id 1u9LhL-0003GI-O9
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 06:26:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745836006;
+ s=mimecast20190719; t=1745836010;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6XahBnXpFqwycsDBbg1wLu1EfXJ0E3CuvWhdSJiCoos=;
- b=BmbFEPG2efQN3ARm5+jW4l9h7v41PGBdt7UjtbEjIQTFFl1ToPjauIkYxX/r0xAR0fhBP4
- 7MYdlM8K1bIzVzuQ4g2uSKAQN8WN+Sxg/i8gaOLvu5wgRypn9lfG3eCNZyPS9RpYSMcDkI
- evIHbCWsIY56sXBTMC/sBJ6eMjp1PhA=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=CdD5WhvUXDD+TKpNtMmpeP4Gbsk9q0qnRvNCY4+zyDg=;
+ b=X5i48mOaXT7Y8uz4h7QDrTvnx7WBFRa60IWYEXhFtz/UrZPLx8M165tvmDyrMsKIaaLwBu
+ pNgpwLKwuQPiOZ7Am5M+eA/0Btahw3oSu9iTWtjPxyTfOkjztVctV7HtQ3MI3A3D9n/Lqx
+ G8c/yEabaH+IdDS3i1UxzOJloL+30Bg=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-626-6ey_4z0KMjCz6EJX54VPFQ-1; Mon,
- 28 Apr 2025 06:26:43 -0400
-X-MC-Unique: 6ey_4z0KMjCz6EJX54VPFQ-1
-X-Mimecast-MFC-AGG-ID: 6ey_4z0KMjCz6EJX54VPFQ_1745836002
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-333-yGbEaFJIMAqiXgk2Xt8oZg-1; Mon,
+ 28 Apr 2025 06:26:47 -0400
+X-MC-Unique: yGbEaFJIMAqiXgk2Xt8oZg-1
+X-Mimecast-MFC-AGG-ID: yGbEaFJIMAqiXgk2Xt8oZg_1745836006
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 00E7319560AA; Mon, 28 Apr 2025 10:26:42 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 538161956086; Mon, 28 Apr 2025 10:26:46 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.44.32.14])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D0464180045C; Mon, 28 Apr 2025 10:26:36 +0000 (UTC)
+ id 81D72180045C; Mon, 28 Apr 2025 10:26:42 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, peter.maydell@linaro.org, imammedo@redhat.com,
  anisinha@redhat.com, mst@redhat.com, shannon.zhaosl@gmail.com
 Cc: pbonzini@redhat.com,
 	Jonathan.Cameron@huawei.com
-Subject: [RFC 01/24] hw/pci/pcie_port: Fix pcie_slot_is_hotpluggbale_bus typo
-Date: Mon, 28 Apr 2025 12:25:27 +0200
-Message-ID: <20250428102628.378046-2-eric.auger@redhat.com>
+Subject: [RFC 02/24] hw/acpi/ged: Fix wrong identation
+Date: Mon, 28 Apr 2025 12:25:28 +0200
+Message-ID: <20250428102628.378046-3-eric.auger@redhat.com>
 In-Reply-To: <20250428102628.378046-1-eric.auger@redhat.com>
 References: <20250428102628.378046-1-eric.auger@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124;
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
@@ -86,31 +86,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
 ---
- hw/pci/pcie_port.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/acpi/generic_event_device.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/hw/pci/pcie_port.c b/hw/pci/pcie_port.c
-index c73db30e98..072500ed34 100644
---- a/hw/pci/pcie_port.c
-+++ b/hw/pci/pcie_port.c
-@@ -188,7 +188,7 @@ int pcie_count_ds_ports(PCIBus *bus)
-     return dsp_count;
- }
+diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
+index c85d97ca37..7b2d582fff 100644
+--- a/hw/acpi/generic_event_device.c
++++ b/hw/acpi/generic_event_device.c
+@@ -458,11 +458,11 @@ static void acpi_ged_initfn(Object *obj)
+      * container for memory hotplug IO and expose it as GED sysbus
+      * MMIO so that boards can map it separately.
+      */
+-     memory_region_init(&s->container_memhp, OBJECT(dev), "memhp container",
+-                        MEMORY_HOTPLUG_IO_LEN);
+-     sysbus_init_mmio(sbd, &s->container_memhp);
+-     acpi_memory_hotplug_init(&s->container_memhp, OBJECT(dev),
+-                              &s->memhp_state, 0);
++    memory_region_init(&s->container_memhp, OBJECT(dev), "memhp container",
++                       MEMORY_HOTPLUG_IO_LEN);
++    sysbus_init_mmio(sbd, &s->container_memhp);
++    acpi_memory_hotplug_init(&s->container_memhp, OBJECT(dev),
++                             &s->memhp_state, 0);
  
--static bool pcie_slot_is_hotpluggbale_bus(HotplugHandler *plug_handler,
-+static bool pcie_slot_is_hotpluggable_bus(HotplugHandler *plug_handler,
-                                           BusState *bus)
- {
-     PCIESlot *s = PCIE_SLOT(bus->parent);
-@@ -221,7 +221,7 @@ static void pcie_slot_class_init(ObjectClass *oc, void *data)
-     hc->plug = pcie_cap_slot_plug_cb;
-     hc->unplug = pcie_cap_slot_unplug_cb;
-     hc->unplug_request = pcie_cap_slot_unplug_request_cb;
--    hc->is_hotpluggable_bus = pcie_slot_is_hotpluggbale_bus;
-+    hc->is_hotpluggable_bus = pcie_slot_is_hotpluggable_bus;
- }
- 
- static const TypeInfo pcie_slot_type_info = {
+     memory_region_init_io(&ged_st->regs, obj, &ged_regs_ops, ged_st,
+                           TYPE_ACPI_GED "-regs", ACPI_GED_REG_COUNT);
 -- 
 2.49.0
 
