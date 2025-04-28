@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E541CA9F560
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 18:15:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFB5FA9F54E
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 18:13:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9R5z-0003uM-C7; Mon, 28 Apr 2025 12:12:39 -0400
+	id 1u9R6D-0004Ha-GN; Mon, 28 Apr 2025 12:12:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1u9R4F-0002CK-UR
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 12:10:55 -0400
-Received: from mail-pl1-x644.google.com ([2607:f8b0:4864:20::644])
+ id 1u9R4M-0002EF-SN
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 12:11:01 -0400
+Received: from mail-pl1-x642.google.com ([2607:f8b0:4864:20::642])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
- id 1u9R49-0008Qc-VI
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 12:10:51 -0400
-Received: by mail-pl1-x644.google.com with SMTP id
- d9443c01a7336-22c33e4fdb8so53564825ad.2
- for <qemu-devel@nongnu.org>; Mon, 28 Apr 2025 09:10:42 -0700 (PDT)
+ id 1u9R4E-0008RL-5q
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 12:10:54 -0400
+Received: by mail-pl1-x642.google.com with SMTP id
+ d9443c01a7336-225df540edcso60591745ad.0
+ for <qemu-devel@nongnu.org>; Mon, 28 Apr 2025 09:10:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1745856642; x=1746461442; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1745856646; x=1746461446; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9fhN0VyLSegOAjwuvnZ1woBdLvhXgEUMO0BwptjYJj8=;
- b=XU/KHaqlTGEKLZHJaRJ501/5Noqg5cuAMqKnL1vw40HInuW5IrIodJOTWtoVVGXcxS
- NoeJADmsGrVw6cScA9SoPY7Y8c3wzyv07aw184+rBFcyGKMfm+wcuNuHzy44YNHSamvK
- ndzoGQZpEwOdnOD+AW9yVvgnXx+DlY9lhJdtMD6GE5FUDSpdkbMdxQR29nsybWDZn9/s
- hInsO+dlmzTtCTgbaEH3VIGfBYUg/0Ald8CMKYITTaDa9Z32729Ir+rbFS6Cg0rfII9g
- 4bJ919F2LLo8ck+0dMZKUIYp+4U0wg0Q8Y8j5eDW6PlEBCbYfK3DqlsyQHLf9Y/ygavE
- 0uyA==
+ bh=7aE8b1UhajUDkj6qd0OYblaMEqfKDSI9mrQFdziqmhQ=;
+ b=fTRKidCXePIqlZiARiHuHKUlhVElkxwY2ENoHWf7wMs43Vi7PVyqpvkaCaeSMpGipO
+ Lq8I9TACyeK5HGDiy0cFR6QocHZsPwqdZf3maYxtzLMwa6LCudjG7cmduXxXIEtAgszX
+ dt5KkaeFBW8rH/Gi60WQm+vB/VhQyDMwaXY2EcNpI4UvY9Qxrzuw0wvfMWPr7N799oIK
+ gEKUOCsjpT5b9y2ZE8gsy5+gpBCXpv9FU7bkM6tEg14v2FhR0ExHLGhlO5xIr8CEc5ou
+ TWkhXOJcqIWDZAxB7bH1EGOn0ecUqyX3HVsPgi/w4Oj4WPymWEHp2Cx6HQon5VMi5zzY
+ itsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745856642; x=1746461442;
+ d=1e100.net; s=20230601; t=1745856646; x=1746461446;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9fhN0VyLSegOAjwuvnZ1woBdLvhXgEUMO0BwptjYJj8=;
- b=sDRcBrE7sVHxjddxjs+3IzzROH0WhlHuAAN896iUo1deaUWemDQtjnWakPkUqcaJvs
- WXBXDN2lAff2HObLmOleXJpadu2nwtNSnwqJejjJe1vXWJjVVRuwUM4oExTWH1bCWf5w
- sgzs6BDhrr/Yf6kEddfC+AlE2ePJ4emEbYFf/xMei3tjaFoQoN4zsQpE/AZO0EKX4UW1
- zV4myDdEDaMXQ6UlJi31OaU77UxNX1CWxE5zcYaU9f8gbbKxwP2BlkFArLRfe16vYSLf
- fsaFoFyqQEJKxc6O8PQJ+qvBfg0KrkElUH7ZqwZw3GiALMtx20+6z/AS5C6PDYP3S9ud
- DH0Q==
-X-Gm-Message-State: AOJu0YyVzNaK7mDALKhOPwXcswKwZ8LHh2A2oVFilFnHUw4PryhAKmu3
- JfcNdNjNZrMddmVcqAqV8t3OP1IL0R9uOtMtOxwqow8RrYObizM=
-X-Gm-Gg: ASbGnct3SDAeftycaeYkNAy4tGxp2dzFOVTuQ80w+8fC4siPITPn2E9glci7ZOoJm8Q
- nVlyZ+igiBU+9NbTvt/gk9otrih3q4Zjm1DSKDGgPX60T0TS59MMANJOkE7kZpiF/XpRh0N2m+1
- vzaUd3YNORXhAX+2iYvxCJoLLogVdabGwvTl+aRtT4wasCLti/87ddKM/xoor8vxgzWK3OzGpZI
- clOfIYYB7PX8qf1cLa9PB9XLgYQ4R9FOJB+SDUCSlI+Qn6G4jFsDC1RfGzF3gEadeBr0rFyLcPX
- SbkTJIL42IkvvBtlpUkWlPXmjOoANnIz7i00Y9jBz+LosEmFohO+oYqj
-X-Google-Smtp-Source: AGHT+IGOtORRFBZhqBFIVRplUhNCQjH+UBq0vzYsv3blOegcIFMh5wKcWZno+md0N/gEUAfnswBt0Q==
-X-Received: by 2002:a17:903:1212:b0:223:325c:89de with SMTP id
- d9443c01a7336-22de5eca45bmr2947185ad.1.1745856641846; 
- Mon, 28 Apr 2025 09:10:41 -0700 (PDT)
+ bh=7aE8b1UhajUDkj6qd0OYblaMEqfKDSI9mrQFdziqmhQ=;
+ b=tqbxNxruUj+yemcUD3jhNpkL7S6L807MLn/0EUa2pDj1zRLlaFTywsTBVJwZx5mFC0
+ ve5jj0cOiddy5QqGoQtZnIIXnHADRLatIzZPzF1E6oLwjo3F0vQeqX7Qyz7eYS14gnXK
+ j94InNxPtppZh4zG8z3hHcjNctDXB3o5jEkTJv5nRERatDENKC+PDiCtic6j8x3PXdZk
+ Rk5H8hH5gOB/d4mn/ipUNgWkZtYBT2Oq14j9UStbt8BJxY+ztFwGw/pWgcWhb7+toe6f
+ WWqWwXai9iHEqwsPnpswF2Bn4DQoD5VVnwPXYQLNk30ueMZyo96sPRj7ueaJ0ZrJ5aF8
+ 481Q==
+X-Gm-Message-State: AOJu0YyvGUPvBTz+MR5SHSa/1/AglhWB0f07NbebBwFdKQjbfAtB31j1
+ 99a6UdSVEvMKwr3YyXKBPi9xHoeU2l4nyBaSVqqF2smbAd7rliA=
+X-Gm-Gg: ASbGncu/yfs8CS3NPIfd09C7We7qcWJdzkfjq2hvF9ocXGXUkoHfgTAnzJbVZ8rTWX2
+ 9dSFr/MNHacMQ5WAs7WjnFcFnraYSHEGzESCgeu+F0xldAL4gbtqaXw0IMDiWhIRZF9FptJdLPE
+ 4dotHkXQJKo43Ec43T1f4LT5GnWnX9IPBd03Vkhg6WDQwmseP9oI62svUDMYu8LL0UgF6zZ+sdq
+ TrfeXqacC6zp8rCm9qbMt0Zq0JMHNXvqyOsUfmo+/wn/OKizbO9co8BufcVK3FoHZwZDbAnGrR2
+ 7o8sJ6rB8mqHA/Y1ZJqKHvngIwSd7jBKzLZ4xcipWbBbwRQRD4KhP1vb
+X-Google-Smtp-Source: AGHT+IF0P4WqVmtv2hEgazmdoJOonBje32hXkn1pw5WMtRPCiXTmlp0XUAXweGDpid1uxs2zR4N8hA==
+X-Received: by 2002:a17:903:3bae:b0:215:a2f4:d4ab with SMTP id
+ d9443c01a7336-22dbf8ea2ecmr160007625ad.7.1745856646136; 
+ Mon, 28 Apr 2025 09:10:46 -0700 (PDT)
 Received: from localhost.localdomain ([139.227.182.191])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22db5221677sm84357515ad.248.2025.04.28.09.10.37
+ d9443c01a7336-22db5221677sm84357515ad.248.2025.04.28.09.10.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Apr 2025 09:10:41 -0700 (PDT)
+ Mon, 28 Apr 2025 09:10:45 -0700 (PDT)
 From: Tomita Moeko <tomitamoeko@gmail.com>
 To: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  Tomita Moeko <tomitamoeko@gmail.com>
 Cc: qemu-devel@nongnu.org,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>
-Subject: [PATCH 6/9] vfio/igd: Enable OpRegion by default
-Date: Tue, 29 Apr 2025 00:10:01 +0800
-Message-ID: <20250428161004.35613-7-tomitamoeko@gmail.com>
+Subject: [PATCH 7/9] vfio/igd: Allow overriding GMS with 0xf0 to 0xfe on Gen9+
+Date: Tue, 29 Apr 2025 00:10:02 +0800
+Message-ID: <20250428161004.35613-8-tomitamoeko@gmail.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250428161004.35613-1-tomitamoeko@gmail.com>
 References: <20250428161004.35613-1-tomitamoeko@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::644;
- envelope-from=tomitamoeko@gmail.com; helo=mail-pl1-x644.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::642;
+ envelope-from=tomitamoeko@gmail.com; helo=mail-pl1-x642.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,61 +99,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As the presence of OpRegion is used to detect IGD device now, and
-guest driver usually depends on OpRegion to work. Enable OpRegion
-on IGD devices by default for out-of-the-box passthrough experience
-(except pre-boot display output), especially for libvirt users.
-
-Example of IGD passthrough with libvirt:
-<hostdev mode="subsystem" type="pci" managed="yes">
-  <source>
-    <address domain="0x0000" bus="0x00" slot="0x02" function="0x0"/>
-  </source>
-  <rom file="/path/to/igd/rom"/>
-  <address type="pci" domain="0x0000" bus="0x00" slot="0x02" function="0x0"/>
- </hostdev>
+On Gen9 and later IGD devices, GMS 0xf0 to 0xfe represents 4MB to 60MB
+pre-allocated memory size in 4MB increments. Allow users overriding
+GMS with these values.
 
 Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
 ---
- docs/igd-assign.txt | 4 ++--
- hw/vfio/pci.c       | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ hw/vfio/igd.c | 59 +++++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 41 insertions(+), 18 deletions(-)
 
-diff --git a/docs/igd-assign.txt b/docs/igd-assign.txt
-index 95beb76812..fc444503ff 100644
---- a/docs/igd-assign.txt
-+++ b/docs/igd-assign.txt
-@@ -102,7 +102,7 @@ digital formats work well.
+diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
+index 496d3df598..7f289a62a3 100644
+--- a/hw/vfio/igd.c
++++ b/hw/vfio/igd.c
+@@ -411,6 +411,44 @@ static bool vfio_pci_igd_setup_lpc_bridge(VFIOPCIDevice *vdev, Error **errp)
+     return true;
+ }
  
- Options
- =======
--* x-igd-opregion=[on|*off*]
-+* x-igd-opregion=[*on*|off]
-   Copy host IGD OpRegion and expose it to guest with fw_cfg
++static bool vfio_pci_igd_override_gms(int gen, uint32_t gms, uint32_t *gmch)
++{
++    bool ret = false;
++
++    if (gen == -1) {
++        error_report("x-igd-gms is not supported on this device");
++    } else if (gen < 8) {
++        if (gms <= 0x10) {
++            *gmch &= ~(IGD_GMCH_GEN6_GMS_MASK << IGD_GMCH_GEN6_GMS_SHIFT);
++            *gmch |= gms << IGD_GMCH_GEN6_GMS_SHIFT;
++            ret = true;
++        } else {
++            error_report(QERR_INVALID_PARAMETER_VALUE, "x-igd-gms", "0~0x10");
++        }
++    } else if (gen == 8) {
++        if (gms <= 0x40) {
++            *gmch &= ~(IGD_GMCH_GEN8_GMS_MASK << IGD_GMCH_GEN8_GMS_SHIFT);
++            *gmch |= gms << IGD_GMCH_GEN8_GMS_SHIFT;
++            ret = true;
++        } else {
++            error_report(QERR_INVALID_PARAMETER_VALUE, "x-igd-gms", "0~0x40");
++        }
++    } else {
++        /* 0x0  to 0x40: 32MB increments starting at 0MB */
++        /* 0xf0 to 0xfe: 4MB increments starting at 4MB */
++        if ((gms <= 0x40) || (gms >= 0xf0 && gms <= 0xfe)) {
++            *gmch &= ~(IGD_GMCH_GEN8_GMS_MASK << IGD_GMCH_GEN8_GMS_SHIFT);
++            *gmch |= gms << IGD_GMCH_GEN8_GMS_SHIFT;
++            ret = true;
++        } else {
++            error_report(QERR_INVALID_PARAMETER_VALUE,
++                         "x-igd-gms", "0~0x40 or 0xf0~0xfe");
++        }
++    }
++
++    return ret;
++}
++
+ #define IGD_GGC_MMIO_OFFSET     0x108040
+ #define IGD_BDSM_MMIO_OFFSET    0x1080C0
  
- * x-igd-lpc=[on|*off*]
-@@ -124,7 +124,7 @@ Examples
+@@ -593,24 +631,9 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
+      * 32MiB. This option should only be used when the desired size cannot be
+      * set from DVMT Pre-Allocated option in host BIOS.
+      */
+-    if (vdev->igd_gms) {
+-        if (gen < 8) {
+-            if (vdev->igd_gms <= 0x10) {
+-                gmch &= ~(IGD_GMCH_GEN6_GMS_MASK << IGD_GMCH_GEN6_GMS_SHIFT);
+-                gmch |= vdev->igd_gms << IGD_GMCH_GEN6_GMS_SHIFT;
+-            } else {
+-                error_report(QERR_INVALID_PARAMETER_VALUE,
+-                             "x-igd-gms", "0~0x10");
+-            }
+-        } else {
+-            if (vdev->igd_gms <= 0x40) {
+-                gmch &= ~(IGD_GMCH_GEN8_GMS_MASK << IGD_GMCH_GEN8_GMS_SHIFT);
+-                gmch |= vdev->igd_gms << IGD_GMCH_GEN8_GMS_SHIFT;
+-            } else {
+-                error_report(QERR_INVALID_PARAMETER_VALUE,
+-                             "x-igd-gms", "0~0x40");
+-            }
+-        }
++    if (vdev->igd_gms &&
++        !vfio_pci_igd_override_gms(gen, vdev->igd_gms, &gmch)) {
++        return false;
+     }
  
- * Adding IGD with OpRegion and LPC ID hack, but without VGA ranges
-   (For UEFI guests)
--  -device vfio-pci,host=00:02.0,id=hostdev0,addr=2.0,x-igd-legacy-mode=off,x-igd-opregion=on,x-igd-lpc=on,romfile=efi_oprom.rom
-+  -device vfio-pci,host=00:02.0,id=hostdev0,addr=2.0,x-igd-legacy-mode=off,x-igd-lpc=on,romfile=efi_oprom.rom
- 
- 
- Guest firmware
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 05a7a62204..38ff231625 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -3361,7 +3361,7 @@ static const Property vfio_pci_dev_properties[] = {
-     DEFINE_PROP_BIT("x-req", VFIOPCIDevice, features,
-                     VFIO_FEATURE_ENABLE_REQ_BIT, true),
-     DEFINE_PROP_BIT("x-igd-opregion", VFIOPCIDevice, features,
--                    VFIO_FEATURE_ENABLE_IGD_OPREGION_BIT, false),
-+                    VFIO_FEATURE_ENABLE_IGD_OPREGION_BIT, true),
-     DEFINE_PROP_BIT("x-igd-lpc", VFIOPCIDevice, features,
-                     VFIO_FEATURE_ENABLE_IGD_LPC_BIT, false),
-     DEFINE_PROP_ON_OFF_AUTO("x-igd-legacy-mode", VFIOPCIDevice,
+     gms_size = igd_stolen_memory_size(gen, gmch);
 -- 
 2.47.2
 
