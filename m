@@ -2,78 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6C2AA9FA3D
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 22:12:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED11BA9FA34
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 22:11:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9UoG-00057U-QE; Mon, 28 Apr 2025 16:10:36 -0400
+	id 1u9UoH-00057t-4P; Mon, 28 Apr 2025 16:10:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u9UoE-00057A-Fw
+ id 1u9UoE-000571-2M
  for qemu-devel@nongnu.org; Mon, 28 Apr 2025 16:10:34 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u9UoC-0000bb-Ab
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 16:10:34 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-7376dd56f8fso7135945b3a.2
+ id 1u9UoC-0000bf-FH
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 16:10:33 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-736a7e126c7so4836318b3a.3
  for <qemu-devel@nongnu.org>; Mon, 28 Apr 2025 13:10:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745871030; x=1746475830; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=ZstQx0xoB7jIoONMjyreiTAoGKvxvGwP2tm8dTefAWo=;
- b=Gsks/igplDbtvbN3QVvAxJ8QahXGed5eP0blDsDxHYqLOu1umqA16BLDeNnjRKYG+r
- GJ5c7r2+kdYo5PFAsTyJVSydoyJMzU7OngugOxU3xSGsJPh1ytuAyk+aiX8B2LO2aFfB
- oZYnxkNlh0pdUlbGqwIZCuWe9tjNmroEys6sPovBaEk0SUXg2sA0LopIIZ5eL++fvy6r
- GNqGWCmRw8FbC+e9mR4BxW7yNaLxbpdUOFoAUpItHCEBiaGUrStgMC9LhjQvpsYgLb0X
- HlmkjVadEoiiqzRse3DiSchF65eO1tDwZ17rCRvuOpgZtmSLl8glSJMVAIJ8OQrKgJKX
- /cfw==
+ d=linaro.org; s=google; t=1745871031; x=1746475831; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=kb64jDbydlHs1gsAgmEL7amkIFYp+vQ2o3FW/Pq/bbI=;
+ b=qSB1W+cJbxTJgPYztAd5jYORuoquCStrrLA9aBuWSu7Jnt2QfBfyjKDg+ADg10fVzs
+ SPqE5BxIK+Fayh5qUL/BciXvGB3nCMhQlm9++B3dGB2bBwTvQlOGcfMijPecBMmZ97It
+ 8oz4lPABuah0R2J2sKCdoBkJ4HDDZOAJ6YLDxd8XYH0UN6Q5vt9H1OgbKzMOJNhO9JHl
+ C61Kvqw/d6ztu/QeJQHt0Z+ke1RBWIEepmGVE9Ubms3TUqZcGD1tw/ljLx6/dZIBb9nR
+ IPPX9/VLNi/f/Aukn8wtZJFpUC49TPx6M7yqkoaYmE0Ke9595uHN8Oqo/2594Fxrsu6d
+ LQCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745871030; x=1746475830;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ZstQx0xoB7jIoONMjyreiTAoGKvxvGwP2tm8dTefAWo=;
- b=P9p+dzhPk5xuTkR38qjDtCj7Pd97DxpigzEwqpha8q6NpBdSeQuWUe3STanI6/T+vu
- rIdE7T2N1nzSk4ZHIwF4DUadL2qFUM0TaGk0KTEUJC9CsFFhD8jalk0GZFiC128EmkOU
- vCA3IFkvchzpmR6y0CfJCBNn7hSYYae4C79x/rg/+x10exe1QkU/VvHVWEq0ylDVQur2
- CTiV2mhO0pO8BoWidUL9intkwxlVU6ncO1FCW1dp/Rf5pksoK9+12p+hAMjMXopf54GM
- 1GudRSrPyCP5F0MpFD/pjkcyD4Nt3yCwApThw+6w0ZPKAN7d+Bn4n+SikNxRmBrFY1oL
- 6w3w==
-X-Gm-Message-State: AOJu0YyAbMGyaSYGDGydbiQNObv08yT1pBrcfxO1VlMyW+ApTDh5czsS
- 5IbiS82XREU3qY4Lnp6lz4odsqrQnJIHzWwmpbohy2ix9akDB7g+B4BOcp7wymg33c00kRaae5v
- 3
-X-Gm-Gg: ASbGncuJDoBIM5zvPcCOumfhlZAHBiKn+neQUbgXJT/J8t1v2NZiq4hb7he4Zm8tX2A
- 7MQ4Tjc8WRAbq4BPeemoFe0MoWilkdFewYT5d3aD0MS4n+99N3xXJEjjkQT43UX9dhm8Dnwrx+E
- xZyx36euHZhNL/FHwcFslAGcgZ9PlhNPdAQgfAHcYsNS2+gQ9swxY52qEAIwhpnNPgfyU9wyRZW
- MWqWUO+vMmBuyI/0h1wTbLk/39Q2FM8EYt9GzR+BB9IcgWMK02nEAOmA1c+o8YP3SiX5zN3jVp9
- MdRuKNIgz8W/UHe3a+i8NCOvm3MpXLVRaKxl9GGCAw3pPI21Le+wQlNF+x6N+fUynFRYxRs0saE
- =
-X-Google-Smtp-Source: AGHT+IEYYJIbVfKVYbgNcefR5Vq8buIxa1A+Kj+iCTakVB4sKMNUUIiG/W3EmxdBCyLUISWjFJC6jQ==
-X-Received: by 2002:aa7:888c:0:b0:736:4644:86ee with SMTP id
- d2e1a72fcca58-740292a2faamr527096b3a.14.1745871030072; 
+ d=1e100.net; s=20230601; t=1745871031; x=1746475831;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=kb64jDbydlHs1gsAgmEL7amkIFYp+vQ2o3FW/Pq/bbI=;
+ b=HG7Hijd/sJmjIyTp8PG9jAoGZQgADuaaieVmChViDMNLgJohN04A8pCR4uDi8/4U6r
+ Tah5jVcncHQ7T9kPtDyHJc+htIFR5JVK6l3ZoSuM4K167Y+KXWk92q0IQbGHnUeQls7g
+ nPcRc0EY75XGs/xCtqvf8jVi6cJkLqR1CSoIFdyWJ4+sbJZ8DjzSzYDTTSRV1AH+qjWJ
+ tq6aS6+SCnp9OjtShz/azpgtMtVuxCF/HZ3X7TWLiDXiQAWM1gIGt/8q0cODATdOw3+x
+ opdqQEQlCprTtQyryoSBWO/QtcEChmWyWmqPYkKAKxhq9kscklyTdL0PNYiQGRJgenZr
+ m3YQ==
+X-Gm-Message-State: AOJu0YwooDY8nHABBuSSOqOuW8uv2Ze78XIg/IfSmXjYwL0cr2KWbOQr
+ E6b8q4XBM8UeyeCQfuhDMyCWQuYsqqlg5AEzQmBy8CkWpqvz1dD17eWKTshe/4MUs7LNy/782Ug
+ 4
+X-Gm-Gg: ASbGncvyjQ6+9iIMy5IbtrHoJwSg5RXdIyRsEOx8rZTihSQkDlvtIpjsE/tbZ/z/RcR
+ aDQIPnUmL3bsB9QnDiOEj459n450m7QTeM/iR9Po3GMzOGeMT91bkpFJ4nDlUJ0Qe+BJFZzMVYV
+ Nz4CrbATUGH+1A0D6bhaeP3FtptX6keb/ZiaNOKEPG/mDS1DwWjSgq0qzhY8O4rj8Qae7ZHlQhd
+ 6I0FX5gqAEdeKd5IW03x4UjVVFOCwC637UaZ4SH+S9vd54EGNClThd20H0XhE3gx+bi8j67Yps6
+ NqaDYA6zdK9lCsnCoFxIdCJcDrvpS69bpPGaHvf5dJ9QUMWyd0xSOkM7UMfXIRq4IqWkHXBk4Hf
+ a0/k3O4T3rA==
+X-Google-Smtp-Source: AGHT+IFC3b6Di07GyZpJYiaR4ZgcBN9F49kuL3KhcdXdBVv0RW4CnvPiwy0HCbVpfc5ua/qzfbgTQg==
+X-Received: by 2002:a05:6a00:2286:b0:739:4a93:a5db with SMTP id
+ d2e1a72fcca58-73ff7396ad8mr12590319b3a.22.1745871030766; 
  Mon, 28 Apr 2025 13:10:30 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-73e25912fb9sm8469976b3a.34.2025.04.28.13.10.29
+ d2e1a72fcca58-73e25912fb9sm8469976b3a.34.2025.04.28.13.10.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Apr 2025 13:10:29 -0700 (PDT)
+ Mon, 28 Apr 2025 13:10:30 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org,
 	philmd@linaro.org
-Subject: [PATCH 00/10] accel/tcg: Compile cpu-exec.c twice
-Date: Mon, 28 Apr 2025 13:10:18 -0700
-Message-ID: <20250428201028.1699157-1-richard.henderson@linaro.org>
+Subject: [PATCH 01/10] accel/tcg: Generalize fake_user_interrupt test
+Date: Mon, 28 Apr 2025 13:10:19 -0700
+Message-ID: <20250428201028.1699157-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250428201028.1699157-1-richard.henderson@linaro.org>
+References: <20250428201028.1699157-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,83 +99,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-More work toward single-binary.
+Test for the hook being present instead of ifdef TARGET_I386.
 
-r~
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ accel/tcg/cpu-exec.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Richard Henderson (10):
-  accel/tcg: Generalize fake_user_interrupt test
-  accel/tcg: Unconditionally use CPU_DUMP_CCOP in log_cpu_exec
-  accel/tcg: Introduce TCGCPUOps.cpu_exec_reset
-  target/i386: Split out x86_cpu_exec_reset
-  accel/tcg: Hoist cpu_get_tb_cpu_state decl to accl/tcg/cpu-ops.h
-  target/riscv: Move cpu_get_tb_cpu_state to tcg-cpu.c
-  accel/tcg: Return TCGTBCPUState from cpu_get_tb_cpu_state
-  accel/tcg: Move cpu_get_tb_cpu_state to TCGCPUOps
-  accel/tcg: Split out accel/tcg/helper-retaddr.h
-  accel/tcg: Compile cpu-exec.c twice
-
- accel/tcg/internal-common.h        |   6 ++
- include/accel/tcg/cpu-ldst.h       |  34 ----------
- include/accel/tcg/cpu-ops.h        |  14 ++++
- include/accel/tcg/helper-retaddr.h |  43 ++++++++++++
- include/qemu/typedefs.h            |   1 +
- target/alpha/cpu.h                 |  11 ---
- target/arm/cpu.h                   |   3 -
- target/arm/internals.h             |   1 +
- target/avr/cpu.h                   |  18 -----
- target/hexagon/cpu.h               |  15 -----
- target/hppa/cpu.h                  |   3 -
- target/i386/cpu.h                  |  14 ----
- target/loongarch/cpu.h             |  12 ----
- target/m68k/cpu.h                  |  16 -----
- target/microblaze/cpu.h            |   8 ---
- target/mips/cpu.h                  |   9 ---
- target/openrisc/cpu.h              |  10 ---
- target/ppc/cpu.h                   |  13 ----
- target/ppc/internal.h              |   2 +
- target/riscv/cpu.h                 |   3 -
- target/rx/cpu.h                    |   9 ---
- target/s390x/cpu.h                 |   9 ---
- target/sh4/cpu.h                   |  15 -----
- target/sparc/cpu.h                 |   3 -
- target/tricore/cpu.h               |  12 ----
- target/xtensa/cpu.h                |  68 -------------------
- accel/tcg/cpu-exec.c               | 103 +++++++++++------------------
- accel/tcg/translate-all.c          |   8 +--
- accel/tcg/user-exec.c              |   1 +
- target/alpha/cpu.c                 |  17 ++++-
- target/arm/cpu.c                   |   2 +
- target/arm/helper.c                |  17 +++--
- target/arm/tcg/cpu-v7m.c           |   2 +
- target/arm/tcg/helper-a64.c        |   1 +
- target/arm/tcg/sme_helper.c        |   1 +
- target/arm/tcg/sve_helper.c        |   1 +
- target/avr/cpu.c                   |  20 +++++-
- target/hexagon/cpu.c               |  20 +++++-
- target/hppa/cpu.c                  |  15 +++--
- target/i386/tcg/tcg-cpu.c          |  33 ++++++++-
- target/loongarch/cpu.c             |  19 +++++-
- target/m68k/cpu.c                  |  23 ++++++-
- target/microblaze/cpu.c            |  16 ++++-
- target/mips/cpu.c                  |  13 ++++
- target/openrisc/cpu.c              |  17 ++++-
- target/ppc/cpu_init.c              |   3 +-
- target/ppc/helper_regs.c           |  19 +++---
- target/ppc/mem_helper.c            |   1 +
- target/riscv/cpu_helper.c          |  97 ---------------------------
- target/riscv/tcg/tcg-cpu.c         | 100 ++++++++++++++++++++++++++++
- target/rx/cpu.c                    |  16 ++++-
- target/s390x/cpu.c                 |  17 +++--
- target/s390x/tcg/mem_helper.c      |   1 +
- target/sh4/cpu.c                   |  28 +++++++-
- target/sparc/cpu.c                 |  19 ++++--
- target/tricore/cpu.c               |  15 ++++-
- target/xtensa/cpu.c                |  75 ++++++++++++++++++++-
- accel/tcg/meson.build              |   2 +-
- 58 files changed, 561 insertions(+), 513 deletions(-)
- create mode 100644 include/accel/tcg/helper-retaddr.h
-
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index 279df5fae7..8ff4a34509 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -732,10 +732,10 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret)
+      * If user mode only, we simulate a fake exception which will be
+      * handled outside the cpu execution loop.
+      */
+-#if defined(TARGET_I386)
+     const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
+-    tcg_ops->fake_user_interrupt(cpu);
+-#endif /* TARGET_I386 */
++    if (tcg_ops->fake_user_interrupt) {
++        tcg_ops->fake_user_interrupt(cpu);
++    }
+     *ret = cpu->exception_index;
+     cpu->exception_index = -1;
+     return true;
 -- 
 2.43.0
 
