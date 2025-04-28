@@ -2,89 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DFF7A9E515
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 01:00:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5E1CA9E55B
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 02:14:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9Ay4-0006gY-7e; Sun, 27 Apr 2025 18:59:24 -0400
+	id 1u9C7U-0002iu-48; Sun, 27 Apr 2025 20:13:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nirsof@gmail.com>)
- id 1u9Axz-0006d4-FM; Sun, 27 Apr 2025 18:59:19 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nirsof@gmail.com>)
- id 1u9Axs-0007Ak-Jj; Sun, 27 Apr 2025 18:59:18 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-43cf0d787eeso49120825e9.3; 
- Sun, 27 Apr 2025 15:59:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1745794749; x=1746399549; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=HSuwgn3kwaToSHFvmtmMXzxOsbtyQZbX33X5rqvsZxU=;
- b=WSIULo/aF6G6ML7JgJy8g3aqBTDbsBJLOQtoXCfxjfjtuYMedHymrHOZNhhvzknlBl
- 5HrRMfl9ALpDYGXeMjNgBrOP9cstoiTSVcKYOrD9Lx2Xk/KG1V9nSSMvR8NdTrRlO51k
- zCw95L+nX3sXPAdlJO/f820sqYgLFgzRlXEj9GP1a4t81Ccnt590TU23Os7wxR62Ls5k
- baji8O9FpZqt8m3i9woTqNTFryF92DPcseUMEL+MbJ9MxjZkNbET/WqKh56F4nDKds0j
- +lnT50Kmh87+wmgTzd0uB60/fsPR5ov2cv+fuE4fpHJgntSzGZs21F2UtFqpMzN1OgMg
- ZHMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745794749; x=1746399549;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=HSuwgn3kwaToSHFvmtmMXzxOsbtyQZbX33X5rqvsZxU=;
- b=j2lVdYp/J2aI7a040Cue4IpvTX5ltOG90HmU5cFt3Yakaq+Y1cNHWnexND0+0uwzhC
- cbEgRmFLXTjmREMdv2rAG32BVoVTiA2eEBDmG269nzENbrtYGBZK/Vtn+TUc2DEJFQlf
- uOgT8CCtsi66LIU0asMQB1UNEuRrzMC6MH9zIs2IXP1wTBSpcfONNpBpseeEM52yiPcR
- jFZrDFtG/Ic8DJdDJf0W9TZ7X+ZnPfvmKP+qhbX/FxKauzbNCc2FEHRwq0V1XEO0dKXw
- gofVhqWbuhyT2YVBVSGejlvn8TEjG4GxVCK22oeSmuMXJp/9xYD1lShAC5gGTWqtZzJP
- 282A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVWGlaI48MNOsZhq1/YouZl9cMMjcxSvN4NgNep9nu4mJF/p0n61slZxeYT1omqslimuD3Hezg0H+zP@nongnu.org
-X-Gm-Message-State: AOJu0Yw9napq4Ayy76B9gl4zxYHxAmk5An4Gn5eepLUmMztlcs5Ve/QB
- 2Z1vWtdpTyX/w2C3h80wi/c2GmmatyEY5uITrbs0LxBYB2xL1iDDFDs3lekG
-X-Gm-Gg: ASbGnctSQzkJuVpdju7nFPqjDNkgc6pbV8c4vFxid3+u+nZX6Esvna9PedQUIHwNYcN
- K1Yqgz6kTWGnocmoABpGpPPgUKqDA2QDtcQUeCNI4Sa4FVgdVDBydSZFtJeAEXv9NwLSo+cqNVT
- Vd4ul7JnwF6eA3pNbiHAxIhxLLoi4noF1G1kNQgf9gsUdOuFzjbBU1cisFLNpl/rC4JN3hT74v3
- rcSa3klvzIS8cLUVfP2Vebcfy+XraK+YGZUhQCW+wffcm0/ZoA5gcBmmjtns2h7vGli0ireC3rX
- EkAqzRKzkAiR3BAHPAAjLx+JhTQd46piSJZlCTM1ybAhNsN20SXjk3JU9uh0vv7665+AShZOlvV
- t6jPZMVIJdsQFHO3nlOZJgilF/VOm
-X-Google-Smtp-Source: AGHT+IEc9i3q1YnwpFzxCGe/OJT8SWB+7F+kd0M3pEjKhdmofZAefL4JadNRdb2j0Z2CAazGHaj82g==
-X-Received: by 2002:a05:6000:2207:b0:3a0:839b:f52c with SMTP id
- ffacd0b85a97d-3a0839bf543mr1350794f8f.0.1745794749024; 
- Sun, 27 Apr 2025 15:59:09 -0700 (PDT)
-Received: from localhost.localdomain (46-116-102-127.bb.netvision.net.il.
- [46.116.102.127]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a073e5da4dsm9499765f8f.99.2025.04.27.15.59.07
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 27 Apr 2025 15:59:07 -0700 (PDT)
-From: Nir Soffer <nirsof@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, qemu-block@nongnu.org,
- Fam Zheng <fam@euphon.net>, Kevin Wolf <kwolf@redhat.com>,
- Nir Soffer <nirsof@gmail.com>
-Subject: [PATCH 2/2] block/null: Add read-pattern option
-Date: Mon, 28 Apr 2025 01:59:00 +0300
-Message-Id: <20250427225900.24316-3-nirsof@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250427225900.24316-1-nirsof@gmail.com>
-References: <20250427225900.24316-1-nirsof@gmail.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1u9C7Q-0002ic-D8; Sun, 27 Apr 2025 20:13:08 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1u9C7J-0001hN-Mv; Sun, 27 Apr 2025 20:13:06 -0400
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 4BD1455D22A;
+ Mon, 28 Apr 2025 02:12:48 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id iVVeL8i09SWT; Mon, 28 Apr 2025 02:12:45 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id DD41355C592; Mon, 28 Apr 2025 02:12:45 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id D9703745682;
+ Mon, 28 Apr 2025 02:12:45 +0200 (CEST)
+Date: Mon, 28 Apr 2025 02:12:45 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+cc: Nicholas Piggin <npiggin@gmail.com>, 
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [RFC PATCH] target/ppc: Inline most of dcbz helper
+In-Reply-To: <d3c6c417-20d9-a215-2a5c-86fa084b00fa@eik.bme.hu>
+Message-ID: <173c9111-e065-0dd5-c276-6bbc0351f9cc@eik.bme.hu>
+References: <20240701005939.5A0AF4E6000@zero.eik.bme.hu>
+ <d3c6c417-20d9-a215-2a5c-86fa084b00fa@eik.bme.hu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=nirsof@gmail.com; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,164 +63,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the `read-zeroes` is set, reads produce zeroes, and block status
-return BDRV_BLOCK_ZERO, emulating a sparse image.
+On Thu, 24 Apr 2025, BALATON Zoltan wrote:
+>> The test case I've used came out of a discussion about very slow
+>> access to VRAM of a graphics card passed through with vfio the reason
+>> for which is still not clear but it was already known that dcbz is
+>> often used by MacOS and AmigaOS for clearing memory and to avoid
+>> reading values about to be overwritten which is faster on real CPU but
+>> was found to be slower on QEMU. The optimised copy routines were
+>> posted here:
+>> https://www.amigans.net/modules/newbb/viewtopic.php?post_id=149123#forumpost149123
+>> and the rest of it I've written to make it a test case is here:
+>> http://zero.eik.bme.hu/~balaton/qemu/vramcopy.tar.xz
+>> Replace the body of has_altivec() with just "return false". Sorry for
+>> only giving pieces but the code posted above has a copyright that does
+>> not allow me to include it in the test. This is not measuring VRAM
+>> access now just memory copy but shows the effect of dcbz. I've got
+>> these results with this patch:
+>> 
+>> Linux user master:                  Linux user patch:
+>> byte loop: 2.2 sec                  byte loop: 2.2 sec
+>> memcpy: 2.19 sec                    memcpy: 2.19 sec
+>> copyToVRAMNoAltivec: 1.7 sec        copyToVRAMNoAltivec: 1.71 sec
+>> copyToVRAMAltivec: 2.13 sec         copyToVRAMAltivec: 2.12 sec
+>> copyFromVRAMNoAltivec: 5.11 sec     copyFromVRAMNoAltivec: 2.79 sec
+>> copyFromVRAMAltivec: 5.87 sec       copyFromVRAMAltivec: 3.26 sec
+>> 
+>> Linux system master:                Linux system patch:
+>> byte loop: 5.86 sec                 byte loop: 5.9 sec
+>> memcpy: 5.45 sec                    memcpy: 5.47 sec
+>> copyToVRAMNoAltivec: 2.51 sec       copyToVRAMNoAltivec: 2.53 sec
+>> copyToVRAMAltivec: 3.84 sec         copyToVRAMAltivec: 3.85 sec
+>> copyFromVRAMNoAltivec: 6.11 sec     copyFromVRAMNoAltivec: 3.92 sec
+>> copyFromVRAMAltivec: 7.22 sec       copyFromVRAMAltivec: 5.51 sec
 
-If we don't set `read-zeros` we report BDRV_BLOCK_DATA, but image data
-is undefined; posix_memalign, _aligned_malloc, valloc, or memalign do
-not promise to zero allocated memory.
+I did some more benchmarking to identify what slows it down. I noticed 
+that memset uses dcbz too so I added a test for that. I've also added a 
+parameter to allow testing actual VRAM and now that I have a card working 
+with vfio-pci passthrough I could also test that. The updated 
+vramcopy.tar.xz is at the same URL as above. These tests were run with the 
+amigaone machine under Linux booted as described here:
+https://www.qemu.org/docs/master/system/ppc/amigang.html
 
-When computing a blkhash of an image via qemu-nbd, we want to test 3
-cases:
+I compiled the benchmark twice, once as in the tar and once replacing dcbz 
+in the copyFromVRAM* routines with dcba (which is noop on QEMU). First two 
+results are with both src and dst in RAM, second two tests are with dst in 
+VRAM (mapped from phys address 0x80800000 where the card's framebuffer is 
+mapped). The left column shows results with emulated ati-vga as in the 
+amigang.html docs. The right column is with real ATI X550 card (old and 
+slow but works with this old PPC Linux) passed through with vfio-pci.
 
-1. Sparse image: skip reading the entire image based on block status
-   result, and use a pre-computed zero block hash.
-2. Image full of zeroes: read the entire image, detect block full of
-   zeroes and skip block hash computation.
-3. Image full of data: read the entire image and compute a hash of all
-   blocks.
+with ati-vga                            with vfio-pci
 
-This change adds `read-pattern` option. If the option is set, reads
-produce the specified pattern. With this option we can emulate an image
-full of zeroes or full of non-zeroes.
+src 0xb79c8008 dst 0xb78c7008	      |	src 0xb7c92008 dst 0xb7b91008
+byte loop: 21.16 sec			byte loop: 21.16 sec
+memset: 3.85 sec		      |	memset: 3.87 sec
+memcpy: 5.07 sec			memcpy: 5.07 sec
+copyToVRAMNoAltivec: 2.52 sec	      |	copyToVRAMNoAltivec: 2.53 sec
+copyToVRAMAltivec: 2.42 sec	      |	copyToVRAMAltivec: 2.37 sec
+copyFromVRAMNoAltivec: 6.39 sec	      |	copyFromVRAMNoAltivec: 6.38 sec
+copyFromVRAMAltivec: 7.02 sec	      |	copyFromVRAMAltivec: 7 sec
 
-Specifying both `read-zeroes` and `read-pattern != 0` is not useful
-since `read-zeroes` implies a sparse image.  In this case `read-zeroes`
-wins and we ignore the pattern. Maybe we need to make the options mutual
-exclusive.
+using dcba instead of dcbz	      |	using dcba instead of dcbz
+src 0xb7b69008 dst 0xb7a68008	      |	src 0xb7c44008 dst 0xb7b43008
+byte loop: 21.14 sec			byte loop: 21.14 sec
+memset: 3.85 sec		      |	memset: 3.88 sec
+memcpy: 5.06 sec		      |	memcpy: 5.07 sec
+copyToVRAMNoAltivec: 2.53 sec	      |	copyToVRAMNoAltivec: 2.52 sec
+copyToVRAMAltivec: 2.3 sec		copyToVRAMAltivec: 2.3 sec
+copyFromVRAMNoAltivec: 2.59 sec		copyFromVRAMNoAltivec: 2.59 sec
+copyFromVRAMAltivec: 2.95 sec		copyFromVRAMAltivec: 2.95 sec
 
-The following examples shows how the new option can be used with blksum
-(or nbdcopy --blkhash) to compute a blkhash of an image using the
-null-co driver.
+dst in emulated ati-vga		      |	dst in real card vfio vram
+mapping 0x80800000			mapping 0x80800000
+src 0xb78e0008 dst 0xb77de000	      |	src 0xb7ec5008 dst 0xb7dc3000
+byte loop: 21.2 sec		      |	byte loop: 563.98 sec
+memset: 3.89 sec		      |	memset: 39.25 sec
+memcpy: 5.07 sec		      |	memcpy: 140.49 sec
+copyToVRAMNoAltivec: 2.53 sec	      |	copyToVRAMNoAltivec: 72.03 sec
+copyToVRAMAltivec: 12.22 sec	      |	copyToVRAMAltivec: 78.12 sec
+copyFromVRAMNoAltivec: 6.43 sec	      |	copyFromVRAMNoAltivec: 728.52 sec
+copyFromVRAMAltivec: 35.33 sec	      |	copyFromVRAMAltivec: 754.95 sec
 
-Sparse image - the very fast path:
+dst in emulated ati-vga using dcba    |	dst in real card vfio vram using dcba
+mapping 0x80800000			mapping 0x80800000
+src 0xb7ba7008 dst 0xb7aa5000	      |	src 0xb77f4008 dst 0xb76f2000
+byte loop: 21.15 sec		      |	byte loop: 577.42 sec
+memset: 3.85 sec		      |	memset: 39.52 sec
+memcpy: 5.06 sec		      |	memcpy: 142.8 sec
+copyToVRAMNoAltivec: 2.53 sec	      |	copyToVRAMNoAltivec: 71.71 sec
+copyToVRAMAltivec: 12.2 sec	      |	copyToVRAMAltivec: 78.09 sec
+copyFromVRAMNoAltivec: 2.6 sec	      |	copyFromVRAMNoAltivec: 727.23 sec
+copyFromVRAMAltivec: 35.03 sec	      |	copyFromVRAMAltivec: 753.15 sec
 
-    % ./qemu-nbd -r -t -e 0 -f raw -k /tmp/sparse.sock \
-        "json:{'driver': 'raw', 'file': {'driver': 'null-co', 'size': '100g', 'read-zeroes': true}}" &
+The results show that dcbz has some effect but an even bigger slow down is 
+caused by using AltiVec which is supposed to do wider access to reduce the 
+overhead but maybe it's not translated to host vector instructions 
+correctly. The host in the above test was Intel i7-9700K. So to solve this 
+maybe AltiVec should be improved more than dcbz but I don't know what and 
+how.
 
-    % time blksum 'nbd+unix:///?socket=/tmp/sparse.sock'
-    300ad1efddb063822fea65ae3174cd35320939d4d0b050613628c6e1e876f8f6  nbd+unix:///?socket=/tmp/sparse.sock
-    blksum 'nbd+unix:///?socket=/tmp/sparse.sock'  0.05s user 0.01s system 92% cpu 0.061 total
-
-Image full of zeros - same hash, 268 times slower:
-
-    % ./qemu-nbd -r -t -e 0 -f raw -k /tmp/zero.sock \
-        "json:{'driver': 'raw', 'file': {'driver': 'null-co', 'size': '100g', 'read-pattern': 0}}" &
-
-    % time blksum 'nbd+unix:///?socket=/tmp/zero.sock'
-    300ad1efddb063822fea65ae3174cd35320939d4d0b050613628c6e1e876f8f6  nbd+unix:///?socket=/tmp/zero.sock
-    blksum 'nbd+unix:///?socket=/tmp/zero.sock'  7.45s user 22.57s system 183% cpu 16.347 total
-
-Image full of data - difference hash, heavy cpu usage:
-
-    % ./qemu-nbd -r -t -e 0 -f raw -k /tmp/data.sock \
-        "json:{'driver': 'raw', 'file': {'driver': 'null-co', 'size': '100g', 'read-pattern': -1}}" &
-
-    % time blksum 'nbd+unix:///?socket=/tmp/data.sock'
-    2c122b3ed28c83ede3c08485659fa9b56ee54ba1751db74d8ba9aa13d9866432  nbd+unix:///?socket=/tmp/data.sock
-    blksum 'nbd+unix:///?socket=/tmp/data.sock'  46.05s user 14.15s system 448% cpu 13.414 total
-
-Tested on top of
-https://lists.gnu.org/archive/html/qemu-devel/2025-04/msg05096.html.
-
-Signed-off-by: Nir Soffer <nirsof@gmail.com>
----
- block/null.c         | 17 +++++++++++++++++
- qapi/block-core.json |  9 ++++++++-
- 2 files changed, 25 insertions(+), 1 deletion(-)
-
-diff --git a/block/null.c b/block/null.c
-index 7ba87bd9a9..cbd7d1fdbd 100644
---- a/block/null.c
-+++ b/block/null.c
-@@ -22,11 +22,14 @@
- 
- #define NULL_OPT_LATENCY "latency-ns"
- #define NULL_OPT_ZEROES  "read-zeroes"
-+#define NULL_OPT_PATTERN  "read-pattern"
- 
- typedef struct {
-     int64_t length;
-     int64_t latency_ns;
-     bool read_zeroes;
-+    bool has_read_pattern;
-+    int read_pattern;
- } BDRVNullState;
- 
- static QemuOptsList runtime_opts = {
-@@ -49,6 +52,11 @@ static QemuOptsList runtime_opts = {
-             .type = QEMU_OPT_BOOL,
-             .help = "return zeroes when read",
-         },
-+        {
-+            .name = NULL_OPT_PATTERN,
-+            .type = QEMU_OPT_NUMBER,
-+            .help = "return pattern when read",
-+        },
-         { /* end of list */ }
-     },
- };
-@@ -95,6 +103,10 @@ static int null_open(BlockDriverState *bs, QDict *options, int flags,
-         ret = -EINVAL;
-     }
-     s->read_zeroes = qemu_opt_get_bool(opts, NULL_OPT_ZEROES, false);
-+    s->has_read_pattern = qemu_opt_find(opts, NULL_OPT_PATTERN) != NULL;
-+    if (s->has_read_pattern) {
-+        s->read_pattern = qemu_opt_get_number(opts, NULL_OPT_PATTERN, 0);
-+    }
-     qemu_opts_del(opts);
-     bs->supported_write_flags = BDRV_REQ_FUA;
-     return ret;
-@@ -125,6 +137,8 @@ static coroutine_fn int null_co_preadv(BlockDriverState *bs,
- 
-     if (s->read_zeroes) {
-         qemu_iovec_memset(qiov, 0, 0, bytes);
-+    } else if (s->has_read_pattern) {
-+        qemu_iovec_memset(qiov, 0, s->read_pattern, bytes);
-     }
- 
-     return null_co_common(bs);
-@@ -199,6 +213,8 @@ static BlockAIOCB *null_aio_preadv(BlockDriverState *bs,
- 
-     if (s->read_zeroes) {
-         qemu_iovec_memset(qiov, 0, 0, bytes);
-+    } else if (s->has_read_pattern) {
-+        qemu_iovec_memset(qiov, 0, s->read_pattern, bytes);
-     }
- 
-     return null_aio_common(bs, cb, opaque);
-@@ -272,6 +288,7 @@ null_co_get_allocated_file_size(BlockDriverState *bs)
- static const char *const null_strong_runtime_opts[] = {
-     BLOCK_OPT_SIZE,
-     NULL_OPT_ZEROES,
-+    NULL_OPT_PATTERN,
- 
-     NULL
- };
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index b1937780e1..7d576cccbb 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -3297,10 +3297,17 @@
- #     false, the buffer is left unchanged.
- #     (default: false; since: 4.1)
- #
-+# @read-pattern: if set, reads from the device produce the specified
-+#     pattern; if unset, the buffer is left unchanged.
-+#     (since: 10.1)
-+#
- # Since: 2.9
- ##
- { 'struct': 'BlockdevOptionsNull',
--  'data': { '*size': 'int', '*latency-ns': 'uint64', '*read-zeroes': 'bool' } }
-+  'data': { '*size': 'int',
-+            '*latency-ns': 'uint64',
-+            '*read-zeroes': 'bool',
-+            '*read-pattern': 'int' } }
- 
- ##
- # @BlockdevOptionsNVMe:
--- 
-2.39.5 (Apple Git-154)
-
+Regards,
+BALATON Zoltan
 
