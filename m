@@ -2,81 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81D35A9E996
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 09:40:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDF5BA9E973
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 09:36:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9J1Q-0006B2-HX; Mon, 28 Apr 2025 03:35:24 -0400
+	id 1u9J1U-0006Gh-Q3; Mon, 28 Apr 2025 03:35:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u9J0w-0005UE-LP
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 03:34:54 -0400
+ id 1u9J0y-0005WM-2u
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 03:34:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1u9J0u-0000vd-Gz
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 03:34:54 -0400
+ id 1u9J0v-0000w1-CK
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 03:34:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745825688;
+ s=mimecast20190719; t=1745825692;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=B99/og5rMuCkodv4MIhThbXa/C68v7OicONbccI/XSk=;
- b=e6mLZCt9Qd0I135+5WCCOqYzm8n2pJ3eG9zU6xaIBoeSjDv8XWH2pecDBWjXW+IS9uurlY
- AUmr87UqHE18+WUgfrhDUyOqQeHX9rNAWZYuhqDX3eXEr1sbpRzcN1n5u+Bvy1ztlmjGUf
- xSZzYi4MK1VwhYlL6IY3i5AmoTjXdpQ=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=EFeHuKDiAX8NDQZnVqS8Fkkwi4+2zsns3YqN+D31BBw=;
+ b=I/20upchT5bKkW1gJ+xv/QCR0TvgRrSEJtVkGt2FcSZndqoX16UgOJ6CnF4tLhOrbQsB71
+ w5vn4i7LeCawrTMazfqfRi/phBn6wyJ0To7s1DMhzd+E5IKo95TpptG5IMMFqqX6p0cfiv
+ Af5ayd+P405wi85VyAZEkvJLruT23ZM=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-374-FQKtcKgPPZKB9zY20FHHMg-1; Mon, 28 Apr 2025 03:34:46 -0400
-X-MC-Unique: FQKtcKgPPZKB9zY20FHHMg-1
-X-Mimecast-MFC-AGG-ID: FQKtcKgPPZKB9zY20FHHMg_1745825686
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-39d8e5ca9c2so2241464f8f.0
- for <qemu-devel@nongnu.org>; Mon, 28 Apr 2025 00:34:46 -0700 (PDT)
+ us-mta-498-DoUMN6F7NhSYLEPB2AbCvA-1; Mon, 28 Apr 2025 03:34:49 -0400
+X-MC-Unique: DoUMN6F7NhSYLEPB2AbCvA-1
+X-Mimecast-MFC-AGG-ID: DoUMN6F7NhSYLEPB2AbCvA_1745825688
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-39130f02631so1396273f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 28 Apr 2025 00:34:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745825684; x=1746430484;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=B99/og5rMuCkodv4MIhThbXa/C68v7OicONbccI/XSk=;
- b=GUpIyH0vepdiBOfS0v858MMqPVpMmd8Ix2dHlvzR9hMTdH0CkaantVIfZMdc33xj79
- Qft0JsIJr9/BET0pLexkDdkrqXO8NwVJP+YOZANJHL5P5PcOh9b4eOUxXFhXfZfXcNV+
- +roe7xD5IzxykkjCs79x/uNrpp9CpbUutEVZ69zWM6/fJj4Mq5eJozqJG5HqLqOJpcoU
- iYxb6pdj95KiwGdTXWq9vZk87/D3ouezGf2TfWk85vE0C0gGLmv5tvTi3/rfbPJ9M8Q6
- v/H5Mv2mUEL8BeyRDcTiQYz/8UZIkDtbwizeMEmHvgnQiG5qGPa7VljdcjQ2aQzsGJaX
- pt/g==
-X-Gm-Message-State: AOJu0Yy27FQEwFsC/4u5fySlartINWWvbM8s1nO9DqIZGaztrGp1n2sn
- BH6A3G4F05AhGj00ltGMPlQ8cEMGw2XlpZuvBVXqdtVN3tfMymPfM4yRdMhX76qh57sFeHLHSSl
- ANXWPWr3scOU2RylIFjSsEStNkRLIcC2nWEDBzUybE+vNsoUTavNBe758FemAZtzN+3kxyhZO2U
- xjNkLOyLO+PMACIqWgNkZW2zx6eY/ZEzbcqwDG
-X-Gm-Gg: ASbGncuTvXPWqNq6DV4tlKUAAALe4KULHh5z2B15mhmiYdQ5QgTtLMuuENnldy/+IiC
- 4hZk14h0MHl8vrUs9MDLAPNrfe9Cguc8UnlOEoM6Jz/vmgHfkeDFYL1wJzPaxyboYqbVeEzYdpE
- JIiKzEtVlATtb6R8pMd2yYMajltdRzCXYtXnfdZLgX9N6gtmxbhxfclE6vatabSghbwcjJSQIqX
- 8r72GODXkvBxEs/TaZt1aDIkhUPnN7PCflKkTyhN53QCzBPEOyvABkzDQ7AE1hRfqX/7UJYlKKa
- tPG9gIdpJeSEvHA=
-X-Received: by 2002:a05:6000:144c:b0:3a0:830d:ec58 with SMTP id
- ffacd0b85a97d-3a0830dec71mr2224144f8f.28.1745825684447; 
- Mon, 28 Apr 2025 00:34:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHcQ4DtFhS0dYWhwOkt0RKWG19LnC22i6e2UuEDh54TWh2cF4dqZ9Xe8sMWyjf5CS0QZ8qKCg==
-X-Received: by 2002:a05:6000:144c:b0:3a0:830d:ec58 with SMTP id
- ffacd0b85a97d-3a0830dec71mr2224129f8f.28.1745825684045; 
- Mon, 28 Apr 2025 00:34:44 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1745825687; x=1746430487;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=EFeHuKDiAX8NDQZnVqS8Fkkwi4+2zsns3YqN+D31BBw=;
+ b=fwbpfyJLpEo/MlvJfpSJX4B4rcS7vNQXIZubh6rOEQJFA1H/a1j8N2qHJxjW8K4BJ8
+ qeTKmfBPkoBPbFgv461tty1mdvwEw01mY8YGjevle/DljSdNCXMdGsbOdssw/eePD+Fz
+ Y/EpmN/3HGtzeTpYKoMg4wIVJ5g0y7WVdV5QxVkoLJVxhMnxmtf3bMQ76p6KlQIkF59u
+ fdyHg0sTBI18DTgH4nByy6X8In8KkExezwOACqL3aF925LoR9EMwml+tSY9J4gNalcT1
+ cj52WWfxyhyh4gPBkQ2RlHWTTje16Q809iTAIDF9q7MuZOTdHvV0GLLZ+q+bp4TWRvaz
+ r09w==
+X-Gm-Message-State: AOJu0YyLaaHIrb9JrnRgqgA63Fav/YqWQHqwJHFnMpq7HnZ/MaZZXeWv
+ Mc6dUWvGS+Jo84l/Cf+ZoTjVDwl/ZtltKKwHn87lEKmiZTV5skwVepPOeHLdgMW9PewAC9aIyzC
+ YSj+CEXvQNW2eKrJpDCBsCdaLtpdVc5GLiTGdwg6lZ1ihj5Ky5MXyteL1nBlbgR5OqdTUB31S1J
+ b7eGJSuTtooZWDYLyQK2pATQMkxt0FC73UOniW
+X-Gm-Gg: ASbGncuzhXakSOAfknIgLJevrUHXNCvB0C6UbLJAPD+aWfSRCk9vzH6+8TYCpEeLvAt
+ 6L9FEhfp2N/3DPxYx3qEL7moxqjBtrbUqSSGn0I86Qef8wWZNu6v67pB0tsetSi9JFE5K2zC7fB
+ i0ET/9sNAV2NdY6KE7PMg7bpIV9vbgZ0bEkAFLxV5fHtnk0LHuXUGpDhy5iz3GV6Pc7bBsZkbh8
+ KVk5oWa8mNKYVJYVrV11Eue2YuqfiSmzs82dkq9cQixArnzs+t7GMm/0l6v7k8kwkOYQl0T48ZU
+ NJgpkL4RqrgPwHg=
+X-Received: by 2002:a05:6000:1787:b0:3a0:7fcf:1f41 with SMTP id
+ ffacd0b85a97d-3a07fcf1facmr4419535f8f.47.1745825687298; 
+ Mon, 28 Apr 2025 00:34:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEsGwq+yLShN/RkC60H2fSjCcnflEJXOa5pd07yiFstPDm8dXEgKVAFVT8kHx7zlsv8FhAn8A==
+X-Received: by 2002:a05:6000:1787:b0:3a0:7fcf:1f41 with SMTP id
+ ffacd0b85a97d-3a07fcf1facmr4419510f8f.47.1745825686870; 
+ Mon, 28 Apr 2025 00:34:46 -0700 (PDT)
 Received: from [192.168.122.1] ([151.95.54.106])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-440a536a1d1sm116822955e9.26.2025.04.28.00.34.43
+ ffacd0b85a97d-3a073ca4cbcsm10132608f8f.25.2025.04.28.00.34.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Apr 2025 00:34:43 -0700 (PDT)
+ Mon, 28 Apr 2025 00:34:45 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: alistair.francis@wdc.com,
 	dbarboza@ventanamicro.com
-Subject: [PATCH v4 00/26] target/riscv: SATP mode and CPU definition overhaul
-Date: Mon, 28 Apr 2025 09:34:15 +0200
-Message-ID: <20250428073442.315770-1-pbonzini@redhat.com>
+Subject: [PATCH 01/26] hw/riscv: acpi: only create RHCT MMU entry for
+ supported types
+Date: Mon, 28 Apr 2025 09:34:16 +0200
+Message-ID: <20250428073442.315770-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250428073442.315770-1-pbonzini@redhat.com>
+References: <20250428073442.315770-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
@@ -104,60 +108,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is just a rebase of v3 on top of all pending pull requests.  One patch
-(target/riscv: do not make RISCVCPUConfig fields conditional) went away
-because the field was already made unconditional by commit e4610f38095
-("target/riscv: Remove ifndef CONFIG_USER_ONLY from cpu_cfg.h", 2025-04-23).
+Do not create the RHCT MMU type entry for RV32 CPUs, since it
+only has definitions for SV39/SV48/SV57.  Likewise, check that
+satp_mode_max_from_map() will actually return a valid value, skipping
+the MMU type entry if all MMU types were disabled on the command line.
 
-Paolo
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ hw/riscv/virt-acpi-build.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-
-Paolo Bonzini (26):
-  hw/riscv: acpi: only create RHCT MMU entry for supported types
-  target/riscv: assert argument to set_satp_mode_max_supported is valid
-  target/riscv: cpu: store max SATP mode as a single integer
-  target/riscv: update max_satp_mode based on QOM properties
-  target/riscv: remove supported from RISCVSATPMap
-  target/riscv: move satp_mode.{map,init} out of CPUConfig
-  target/riscv: introduce RISCVCPUDef
-  target/riscv: store RISCVCPUDef struct directly in the class
-  target/riscv: merge riscv_cpu_class_init with the class_base function
-  target/riscv: move RISCVCPUConfig fields to a header file
-  target/riscv: include default value in cpu_cfg_fields.h.inc
-  target/riscv: add more RISCVCPUDef fields
-  target/riscv: convert abstract CPU classes to RISCVCPUDef
-  target/riscv: convert profile CPU models to RISCVCPUDef
-  target/riscv: convert bare CPU models to RISCVCPUDef
-  target/riscv: convert dynamic CPU models to RISCVCPUDef
-  target/riscv: convert SiFive E CPU models to RISCVCPUDef
-  target/riscv: convert ibex CPU models to RISCVCPUDef
-  target/riscv: convert SiFive U models to RISCVCPUDef
-  target/riscv: th: make CSR insertion test a bit more intuitive
-  target/riscv: generalize custom CSR functionality
-  target/riscv: convert TT C906 to RISCVCPUDef
-  target/riscv: convert TT Ascalon to RISCVCPUDef
-  target/riscv: convert Ventana V1 to RISCVCPUDef
-  target/riscv: convert Xiangshan Nanhu to RISCVCPUDef
-  target/riscv: remove .instance_post_init
-
- target/riscv/cpu-qom.h            |    2 +
- target/riscv/cpu.h                |   42 +-
- target/riscv/cpu_cfg.h            |  178 +----
- target/riscv/cpu_cfg_fields.h.inc |  170 +++++
- hw/riscv/boot.c                   |    2 +-
- hw/riscv/virt-acpi-build.c        |   15 +-
- hw/riscv/virt.c                   |    5 +-
- target/riscv/cpu.c                | 1014 +++++++++++++----------------
- target/riscv/csr.c                |   11 +-
- target/riscv/gdbstub.c            |    6 +-
- target/riscv/kvm/kvm-cpu.c        |   27 +-
- target/riscv/machine.c            |    2 +-
- target/riscv/tcg/tcg-cpu.c        |   13 +-
- target/riscv/th_csr.c             |   30 +-
- target/riscv/translate.c          |    2 +-
- 15 files changed, 730 insertions(+), 789 deletions(-)
- create mode 100644 target/riscv/cpu_cfg_fields.h.inc
-
+diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
+index 1ad68005085..2b374ebacbf 100644
+--- a/hw/riscv/virt-acpi-build.c
++++ b/hw/riscv/virt-acpi-build.c
+@@ -262,6 +262,7 @@ static void build_rhct(GArray *table_data,
+     RISCVCPU *cpu = &s->soc[0].harts[0];
+     uint32_t mmu_offset = 0;
+     uint8_t satp_mode_max;
++    bool rv32 = riscv_cpu_is_32bit(cpu);
+     g_autofree char *isa = NULL;
+ 
+     AcpiTable table = { .sig = "RHCT", .rev = 1, .oem_id = s->oem_id,
+@@ -281,7 +282,8 @@ static void build_rhct(GArray *table_data,
+         num_rhct_nodes++;
+     }
+ 
+-    if (cpu->cfg.satp_mode.supported != 0) {
++    if (!rv32 && cpu->cfg.satp_mode.supported != 0 &&
++        (cpu->cfg.satp_mode.map & ~(1 << VM_1_10_MBARE))) {
+         num_rhct_nodes++;
+     }
+ 
+@@ -341,7 +343,8 @@ static void build_rhct(GArray *table_data,
+     }
+ 
+     /* MMU node structure */
+-    if (cpu->cfg.satp_mode.supported != 0) {
++    if (!rv32 && cpu->cfg.satp_mode.supported != 0 &&
++        (cpu->cfg.satp_mode.map & ~(1 << VM_1_10_MBARE))) {
+         satp_mode_max = satp_mode_max_from_map(cpu->cfg.satp_mode.map);
+         mmu_offset = table_data->len - table.table_offset;
+         build_append_int_noprefix(table_data, 2, 2);    /* Type */
+@@ -356,7 +359,7 @@ static void build_rhct(GArray *table_data,
+         } else if (satp_mode_max == VM_1_10_SV39) {
+             build_append_int_noprefix(table_data, 0, 1);    /* Sv39 */
+         } else {
+-            assert(1);
++            g_assert_not_reached();
+         }
+     }
+ 
 -- 
 2.49.0
 
