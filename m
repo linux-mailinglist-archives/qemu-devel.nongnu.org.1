@@ -2,79 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98A8EA9F2C3
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 15:51:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EF99A9F352
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 16:22:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9OtZ-0007ub-55; Mon, 28 Apr 2025 09:51:41 -0400
+	id 1u9PMN-0007Xj-Hb; Mon, 28 Apr 2025 10:21:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u9OtG-0007tE-W1; Mon, 28 Apr 2025 09:51:27 -0400
-Received: from mgamail.intel.com ([192.198.163.9])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u9OtD-0003Bk-VE; Mon, 28 Apr 2025 09:51:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745848280; x=1777384280;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=VsHmrNXKviIE8IQ9R1HhlyLdam+mB76jNTS9v/imXWs=;
- b=afBJGxlnOygstodwxP54aaFlIZ3eTk0lr/YevradvLsAnXAYODv1IFua
- zjXAVv0GZEk2Hg9elHoi1nv9mvBDr8Orh7BRnYm1qOvoIA6zBY7RA8HB3
- U19BC7HAbYaMyQNAu94NNY5nr5OHjaniDFmWg2VLzVZVvtaRmwymtWuLS
- CjEWZN6orvJ1XqIhjOltEUf0IJqYn4ZpTfXYVldVhFLmrs7o7Zpnb9Eiv
- zAmtCOBJvNeGWRYWuw3HVu5PIYR7P2CrdsKjr7BRPeTIqHcN8llBQx1cU
- ym7WzcTGgsZc+l8aaU13xW6vVGkBtVYDU+6pitS4hvUyGFC3RYQN3PcCW A==;
-X-CSE-ConnectionGUID: ++y8CVQiTomQGISsRyufGw==
-X-CSE-MsgGUID: hOnViCjORTiYDAyCkld9mg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11416"; a="58085736"
-X-IronPort-AV: E=Sophos;i="6.15,246,1739865600"; d="scan'208";a="58085736"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Apr 2025 06:51:14 -0700
-X-CSE-ConnectionGUID: 9rsWKEuKTXSkzsns7eGPDg==
-X-CSE-MsgGUID: mHZMTY5nS4exFTHFKWI5vQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,246,1739865600"; d="scan'208";a="164487636"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa002.jf.intel.com with ESMTP; 28 Apr 2025 06:51:09 -0700
-Date: Mon, 28 Apr 2025 22:12:06 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Michael Roth <michael.roth@amd.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Shaoqin Huang <shahuang@redhat.com>, Eric Auger <eauger@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Sebastian Ott <sebott@redhat.com>, Gavin Shan <gshan@redhat.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
- Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>
-Subject: Re: [PATCH 2/5] i386/kvm: Support basic KVM PMU filter
-Message-ID: <aA+MttdYlZKPAwqT@intel.com>
-References: <20250409082649.14733-1-zhao1.liu@intel.com>
- <20250409082649.14733-3-zhao1.liu@intel.com>
- <878qnoha3j.fsf@pond.sub.org> <aA3sLRzZj2270cSs@intel.com>
- <87r01c3jd2.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1u9PM7-0007Wd-GY
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 10:21:11 -0400
+Received: from mail-yb1-xb2c.google.com ([2607:f8b0:4864:20::b2c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1u9PM2-00086q-0Z
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 10:21:09 -0400
+Received: by mail-yb1-xb2c.google.com with SMTP id
+ 3f1490d57ef6-e637edaa652so3530039276.1
+ for <qemu-devel@nongnu.org>; Mon, 28 Apr 2025 07:21:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1745850063; x=1746454863; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=/5AV2rcjFxnMYqjywlIgXT36ModyBnbTGwKMojCdUv0=;
+ b=q25nekrGQ31xoiADVdapLVmMuZ0iIlLNaVL3dAbLSgIpXqw/uNTUI0bmE8VBiHs4F9
+ k/M8zN9b+BvnB0pR6o++47EnSxnC+1mHEb7BMGhiWCSPPbuE+1jr1hS80tbmyDIPIpIx
+ 7AshQcZMnkn+AsoO5ossQdVlKQrsNom9PeM59d6DR2l8EoJtR7r8m31fRepLH0NPP1xM
+ s1y+OL+NOUGFEg5D2YjhjaV6/tXxPSa+IbxOYIWEF/keIpm+7nsHhiMdetr+rF3ccjY8
+ 2dwqYPu1UJvv62Gfc42XJ9G1zvhHUP0Pz6jC/NIwM0YlR1vMpMAoh0SA5VLJG/ZwvucS
+ LOMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1745850063; x=1746454863;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=/5AV2rcjFxnMYqjywlIgXT36ModyBnbTGwKMojCdUv0=;
+ b=Sp9Rb9DRY6C7vhKUvXyvy0koKsEKm4/KTXOhySHKM9EGD6De5i5O1qrBIdUv4h77BB
+ 4uqWiQC2pww2gSoQXy63vU7dUgUaXSEEGwq3Atc58GwvEe41EAXDZtI6a/zKzdCnuDdS
+ gQA4T2CLYW4s4/yMl+M9msiJ/DTAxhoL+uBMB5iwLplWYGIUIYZuWIO8nPDhh5ruo1/L
+ LACCopzt8rcKmb/X0cOArfV+QTg1gUMkvdOzyB1G9l/wN5E0eRzNoJ1ZDA7dvNfuR+UP
+ M946cp/Jg5O2qtdivgm90H4MJNW4fnZf+wXyY9929tMfhD2mrPUmyXJF8hFFFreroxIr
+ 1FkQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW+k5nMo4pxey0vbkY1NOGzSg+u11fHFtMwyGZ4/STeW4ftUjnIHOYBJWtIN0wfTOvyAXcYJoMUbS6o@nongnu.org
+X-Gm-Message-State: AOJu0Yw7kroEvMNISiUIwLJCG3/VMC8GSSS6ibJPhQmEfzjH/m3+dmPq
+ L4h5/NDAR/9VdzR7FQjMUZi4mwsd7psf43rJgfO/PtJGHXllGH1PaucA7Wf2g82pAXtmZyHuNRG
+ lOklX8fEjILC68K5Zjx9EFda3/olB007Mz2syig==
+X-Gm-Gg: ASbGnctyvL717ehyI/tseSeBqJFQghVLTbVuPNf00oAJBAn8HxjNw/tf2kLpRl8D60i
+ e1PzgXNJc+KRqhCj/RywUZnh9nmhbNPPmGYxTuzxXVOgZo8MuLibKMWp7/805KT0AkvWGJ4F0r7
+ 8qnuOHrIfD/+jOegzAV6yRzic=
+X-Google-Smtp-Source: AGHT+IGvbnu5A18NZyy3KoQabDs4CcQPdjJ+h9nkWt+ZyuSf+4N872mHG4NbB2XChGSKt+OBPENw8r4pBA1xgaz6vhQ=
+X-Received: by 2002:a05:690c:6d05:b0:702:d54:5794 with SMTP id
+ 00721157ae682-708541e9ffcmr171135307b3.31.1745850063725; Mon, 28 Apr 2025
+ 07:21:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87r01c3jd2.fsf@pond.sub.org>
-Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.484,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+References: <20250428125918.449346-1-alex.bennee@linaro.org>
+ <20250428125918.449346-3-alex.bennee@linaro.org>
+ <294fd9b9-6880-477f-a2b4-773f1e5274c8@redhat.com>
+In-Reply-To: <294fd9b9-6880-477f-a2b4-773f1e5274c8@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 28 Apr 2025 15:20:52 +0100
+X-Gm-Features: ATxdqUGHWS-7X3JRAng4fMhhaz9ExxVdX6hc3tnznIo9BWdMm5kwV2UI-2XE3yA
+Message-ID: <CAFEAcA9=YaBw=X+6NUw1D3RPgcSJn0OdmGC2=N=195jjJ7ijRw@mail.gmail.com>
+Subject: Re: [PATCH 2/9] gitlab: disable debug info on CI builds
+To: Thomas Huth <thuth@redhat.com>
+Cc: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ qemu-devel@nongnu.org, Alexandre Iooss <erdnaxe@crans.org>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ David Hildenbrand <david@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-arm@nongnu.org, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Peter Xu <peterx@redhat.com>, Mahmoud Mandour <ma.mandourr@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,93 +101,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Apr 28, 2025 at 08:12:09AM +0200, Markus Armbruster wrote:
-> Date: Mon, 28 Apr 2025 08:12:09 +0200
-> From: Markus Armbruster <armbru@redhat.com>
-> Subject: Re: [PATCH 2/5] i386/kvm: Support basic KVM PMU filter
-> 
-> Zhao Liu <zhao1.liu@intel.com> writes:
-> 
-> > ...
+On Mon, 28 Apr 2025 at 15:02, Thomas Huth <thuth@redhat.com> wrote:
+>
+> On 28/04/2025 14.59, Alex Benn=C3=A9e wrote:
+> > Our default build enables debug info which adds hugely to the size of
+> > the builds as well as the size of cached objects. Disable debug info
+> > across the board to save space and reduce pressure on the CI system.
+> > We still have a number of builds which explicitly enable debug and
+> > related extra asserts like --enable-debug-tcg.
 > >
-> >> > diff --git a/qemu-options.hx b/qemu-options.hx
-> >> > index dc694a99a30a..51a7c61ce0b0 100644
-> >> > --- a/qemu-options.hx
-> >> > +++ b/qemu-options.hx
-> >> > @@ -232,7 +232,8 @@ DEF("accel", HAS_ARG, QEMU_OPTION_accel,
-> >> >      "                eager-split-size=n (KVM Eager Page Split chunk size, default 0, disabled. ARM only)\n"
-> >> >      "                notify-vmexit=run|internal-error|disable,notify-window=n (enable notify VM exit and set notify window, x86 only)\n"
-> >> >      "                thread=single|multi (enable multi-threaded TCG)\n"
-> >> > -    "                device=path (KVM device path, default /dev/kvm)\n", QEMU_ARCH_ALL)
-> >> > +    "                device=path (KVM device path, default /dev/kvm)\n"
-> >> > +    "                pmu-filter=id (configure KVM PMU filter)\n", QEMU_ARCH_ALL)
-> >> 
-> >> As we'll see below, this property is actually available only for i386.
-> >> Other target-specific properties document this like "x86 only".  Please
-> >> do that for this one, too.
+> > Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> > ---
+> >   .gitlab-ci.d/buildtest-template.yml | 1 +
+> >   1 file changed, 1 insertion(+)
 > >
-> > Thanks! I'll change QEMU_ARCH_ALL to QEMU_ARCH_I386.
-> 
-> That would be wrong :)
-> 
-> QEMU_ARCH_ALL is the last argument passed to macro DEF().  It applies to
-> the entire option, in this case -accel.
+> > diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildte=
+st-template.yml
+> > index d4f145fdb5..d9e69c3237 100644
+> > --- a/.gitlab-ci.d/buildtest-template.yml
+> > +++ b/.gitlab-ci.d/buildtest-template.yml
+> > @@ -24,6 +24,7 @@
+> >       - ccache --zero-stats
+> >       - section_start configure "Running configure"
+> >       - ../configure --enable-werror --disable-docs --enable-fdt=3Dsyst=
+em
+> > +          --disable-debug-info
+>
+> Do we have any jobs that might show stack traces in the console output ?
+> build-oss-fuzz comes to my mind, but that uses a separate script, so we
+> should be fine there?
 
-Thank you for correction! I didn't realize this point :-(.
+If you build with Rust enabled, and the Rust code panics,
+then you get a Rust backtrace. But I don't know if that
+cares about debug info to get its backtraces: quite
+possibly it's an entirely different mechanism.
 
-> I'd like you to mark the option parameter as "(x86 only)", like
-> notify-vmexit right above, and several more elsewhere.
-
-Sure, I see. This option has already provided good example for me.
-
-> >> As far as I can tell, the kvm-pmu-filter object needs to be activated
-> >> with -accel pmu-filter=... to do anything.  Correct?
-> >
-> > Yes,
-> >
-> >> You can create any number of kvm-pmu-filter objects, but only one of
-> >> them can be active.  Correct?
-> >
-> > Yes! I'll try to report error when user repeats to set this object, or
-> > mention this rule in doc.
-> 
-> Creating kvm-pmu-filter objects without using them should be harmless,
-> shouldn't it?  I think users can already create other kinds of unused
-> objects.
-
-I think I understand now. Indeed, creating an object should be allowed
-regardless of whether it's used, as this helps decouple "-object" from
-other options.
-
-I can add something that:
-
-the kvm-pmu-filter object needs to be activated with "-accel pmu-filter=id",
-and only when it is activated, its filter policy can be passed to KVM.
-
-(A single sentence is just an example; I think it needs to be carefully
-refined within the context of the entire paragraph :-).)
-
-> >> > +
-> >> > +static int kvm_install_pmu_event_filter(KVMState *s)
-> >> > +{
-> >> > +    struct kvm_pmu_event_filter *kvm_filter;
-> >> > +    KVMPMUFilter *filter = s->pmu_filter;
-> >> > +    int ret;
-> >> > +
-> >> > +    kvm_filter = g_malloc0(sizeof(struct kvm_pmu_event_filter) +
-> >> > +                           filter->nevents * sizeof(uint64_t));
-> >> 
-> >> Should we use sizeof(filter->events[0])?
-> >
-> > No, here I'm trying to constructing the memory accepted in kvm interface
-> > (with the specific layout), which is not the same as the KVMPMUFilter
-> > object.
-> 
-> You're right.  What about sizeof(kvm_filter->events[0])?
-
-I get your point now! Yes, I should do in this way.
-
-Thanks,
-Zhao
-
+-- PMM
 
