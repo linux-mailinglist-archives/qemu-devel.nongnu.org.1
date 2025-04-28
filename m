@@ -2,100 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0554DA9E8D1
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 09:07:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FFD8A9E942
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 09:26:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9IZb-0002Lk-CW; Mon, 28 Apr 2025 03:06:40 -0400
+	id 1u9Isw-0004nt-58; Mon, 28 Apr 2025 03:26:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=KRh2=XO=kaod.org=clg@ozlabs.org>)
- id 1u9IZX-0002Ky-Jn; Mon, 28 Apr 2025 03:06:35 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u9IsX-0004hE-TP
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 03:26:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=KRh2=XO=kaod.org=clg@ozlabs.org>)
- id 1u9IZS-0004C3-SR; Mon, 28 Apr 2025 03:06:34 -0400
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4ZmDy44lm9z4xCy;
- Mon, 28 Apr 2025 17:06:20 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u9IsS-0008DW-I8
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 03:26:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1745825167;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Ep5vsTDMIvlMOpMmlujwECawCCp8PH/R3i2HglWtj1U=;
+ b=ixGMDb7liLKJjK4T+oAeWU2oOXWF4wQSZ1CQf/8fhYsp/pPS+v1bcRfa0ss90P1rwlhe30
+ pkogBkQcTmscnrinju9iVW08fmKbvNPg8He3mUvu85/Rx4UhYGxlgKSejkK/ha/kdXOAyp
+ hmKR3+dR8VcbULo7QnVIa2Wv2+q5DwI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-274-A1i62NlANvOIKNqsvKAyjw-1; Mon,
+ 28 Apr 2025 03:26:03 -0400
+X-MC-Unique: A1i62NlANvOIKNqsvKAyjw-1
+X-Mimecast-MFC-AGG-ID: A1i62NlANvOIKNqsvKAyjw_1745825162
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (Client did not present a certificate)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4ZmDy10WXSz4x0t;
- Mon, 28 Apr 2025 17:06:14 +1000 (AEST)
-Message-ID: <ed2f2840-1eee-46d9-8f2f-aa720e015c83@kaod.org>
-Date: Mon, 28 Apr 2025 09:06:11 +0200
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B8DDA1800ECA; Mon, 28 Apr 2025 07:26:01 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.27])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E450830001AB; Mon, 28 Apr 2025 07:26:00 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 8A93121E6682; Mon, 28 Apr 2025 09:19:07 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,  Eric Blake <eblake@redhat.com>,
+ Michael Roth <michael.roth@amd.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>,  Marcelo
+ Tosatti <mtosatti@redhat.com>,  Shaoqin Huang <shahuang@redhat.com>,  Eric
+ Auger <eauger@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>,  Thomas Huth <thuth@redhat.com>,
+ Sebastian Ott <sebott@redhat.com>,  Gavin Shan <gshan@redhat.com>,
+ qemu-devel@nongnu.org,  kvm@vger.kernel.org,  qemu-arm@nongnu.org,
+ Dapeng Mi <dapeng1.mi@intel.com>,  Yi Lai <yi1.lai@intel.com>,
+ =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ pierrick.bouvier@linaro.org
+Subject: Re: [PATCH 3/5] i386/kvm: Support event with select & umask format
+ in KVM PMU filter
+In-Reply-To: <aA3TeaYG9mNMdEiW@intel.com> (Zhao Liu's message of "Sun, 27 Apr
+ 2025 14:49:29 +0800")
+References: <20250409082649.14733-1-zhao1.liu@intel.com>
+ <20250409082649.14733-4-zhao1.liu@intel.com>
+ <87frhwfuv1.fsf@pond.sub.org> <aA3TeaYG9mNMdEiW@intel.com>
+Date: Mon, 28 Apr 2025 09:19:07 +0200
+Message-ID: <87h6283g9g.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] hw/misc/aspeed_otp: Add Aspeed OTP memory device
- model
-To: Kane Chen <kane_chen@aspeedtech.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
- Jamin Lin <jamin_lin@aspeedtech.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
- "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-Cc: troy_lee@aspeedtech.com
-References: <20250423025651.189702-1-kane_chen@aspeedtech.com>
- <20250423025651.189702-2-kane_chen@aspeedtech.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Autocrypt: addr=clg@kaod.org; keydata=
- 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
-In-Reply-To: <20250423025651.189702-2-kane_chen@aspeedtech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=KRh2=XO=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.492,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,332 +95,213 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/23/25 04:56, Kane Chen wrote:
-> From: Kane-Chen-AS <kane_chen@aspeedtech.com>
-> 
-> This introduces a new model for the ASPEED OTP (One-Time Programmable)
-> memory. The device is implemented as a `SysBusDevice` and provides an
-> abstracted interface for OTP read, write (program), and default value
-> initialization.
-> 
-> OTP content is backed by a block device and supports QEMU’s drive
-> infrastructure via the "drive" property.
-> 
-> Features:
-> - Enforces irreversible bit programming logic (0->1 or 1->0)
-> - Provides interface for SoC/secure controller integration
-> - Validates bounds and bit-level constraints
-> - Uses QEMU error handling conventions and logging
-> 
-> Signed-off-by: Kane-Chen-AS <kane_chen@aspeedtech.com>
-> ---
->   hw/misc/aspeed_otpmem.c         | 211 ++++++++++++++++++++++++++++++++
->   hw/misc/meson.build             |   1 +
->   include/hw/misc/aspeed_otpmem.h |  40 ++++++
->   3 files changed, 252 insertions(+)
->   create mode 100644 hw/misc/aspeed_otpmem.c
->   create mode 100644 include/hw/misc/aspeed_otpmem.h
-> 
-> diff --git a/hw/misc/aspeed_otpmem.c b/hw/misc/aspeed_otpmem.c
-> new file mode 100644
-> index 0000000000..4f8f2827f7
-> --- /dev/null
-> +++ b/hw/misc/aspeed_otpmem.c
-> @@ -0,0 +1,211 @@
-> +/*
-> + *  ASPEED OTP (One-Time Programmable) memory
-> + *
-> + *  Copyright (C) 2025 Aspeed
-> + *
-> + * This code is licensed under the GPL version 2 or later.  See
-> + * the COPYING file in the top-level directory.
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "hw/block/block.h"
-> +#include "hw/block/flash.h"
-> +#include "hw/qdev-properties.h"
-> +#include "hw/qdev-properties-system.h"
-> +#include "system/block-backend.h"
-> +#include "qemu/log.h"
-> +#include "qemu/option.h"
-> +#include "hw/sysbus.h"
-> +#include "qemu/error-report.h"
-> +#include "hw/misc/aspeed_otpmem.h"
-> +
-> +static const Property aspeed_otpmem_properties[] = {
-> +    DEFINE_PROP_DRIVE("drive", AspeedOTPMemState, blk),
-> +};
+Zhao Liu <zhao1.liu@intel.com> writes:
 
-Usually the 'Property' array is defined just before the class_init
-routine. Please move it there.
+> Hi Markus,
+>
+>> > +        case KVM_PMU_EVENT_FORMAT_X86_SELECT_UMASK: {
+>> > +            if (event->u.x86_select_umask.select > UINT12_MAX) {
+>> > +                error_setg(errp,
+>> > +                           "Parameter 'select' out of range (%d).",
+>> > +                           UINT12_MAX);
+>> > +                goto fail;
+>> > +            }
+>> > +
+>> > +            /* No need to check the range of umask since it's uint8_t. */
+>> > +            break;
+>> > +        }
+>> 
+>> As we'll see below, the new x86-specific format is defined in the QAPI
+>> schema regardless of target.
+>> 
+>> It is accepted here also regardless of target.  Doesn't matter much
+>> right now, as the object is effectively useless for targets other than
+>> x86, but I understand that will change.
+>> 
+>> Should we reject it unless the target is x86?
+>
+> I previously supposed that different architectures should implement
+> their own kvm_arch_check_pmu_filter(), which is the `check` hook of
+> object_class_property_add_link():
+>
+>     object_class_property_add_link(oc, "pmu-filter",
+>                                    TYPE_KVM_PMU_FILTER,
+>                                    offsetof(KVMState, pmu_filter),
+>                                    kvm_arch_check_pmu_filter,
+>                                    OBJ_PROP_LINK_STRONG);
 
-> +static void aspeed_otpmem_read(void *opaque, uint32_t addr,
-> +                               uint32_t *out, Error **errp)
+This way, the checking happens only when you actually connect the
+kvm-pmu-filter object to the accelerator.
 
-hmm, that's not a MemoryRegion handler. Why not ? I will check in the
-following patches
+Have you considered checking in the kvm-pmu-filter object's complete()
+method?  Simple example of how to do that: qauthz_simple_complete() in
+authz/simple.c.
 
-> +{
-> +    AspeedOTPMemState *otp = ASPEED_OTPMEM(opaque);
-> +
-> +    assert(otp->blk);
+> For x86, I implemented kvm_arch_check_pmu_filter() in target/i386/kvm/
+> kvm.c and checked the supported formats (I also supposed arch-specific
+> PMU filter could reject the unsupported format in
+> kvm_arch_check_pmu_filter().)
+>
+> But I think your idea is better, i.e., rejecting unsupported format
+> early in pmu-filter parsing.
+>
+> Well, IIUC, there is no way to specify in QAPI that certain enumerations
+> are generic and certain enumerations are arch-specific,
 
-This check shouldn't be needed if the backend id initialized in the
-realize routine.
+Here's how to make enum values conditional:
 
-> +    if (out == NULL) {
-> +        error_setg(errp, "out is NULL");
-> +        return;
-> +    }
-> +
-> +    if (addr > (otp->max_size - 4)) {
+    { 'enum': 'KvmPmuEventFormat',
+      'data': ['raw',
+               { 'name': 'x86-select-umask', 'if': 'TARGET_I386' }
+               { 'name': 'x86-masked-entry', 'if': 'TARGET_I386' } ] }
 
-Why a MemoryRegion, no need for this check.
+However, TARGET_I386 is usable only in target-specific code.  This has
+two consequences here:
 
-> +        error_setg(errp, "OTP memory 0x%x is exceeded", addr);
-> +        return;
-> +    }
-> +
-> +    if (blk_pread(otp->blk, (int64_t)addr, sizeof(uint32_t), out, 0) < 0) {
-> +        error_setg(errp, "Failed to read data 0x%x", addr);
-> +        return;
-> +    }
-> +    return;
-> +}
-> +
-> +static bool valid_program_data(uint32_t otp_addr,
-> +                                 uint32_t value, uint32_t prog_bit)
-> +{
-> +    uint32_t programmed_bits, has_programmable_bits;
-> +    bool is_odd = otp_addr & 1;
-> +
-> +    /*
-> +     * prog_bit uses 0s to indicate target bits to program:
-> +     *   - if OTP word is even-indexed, programmed bits flip 0->1
-> +     *   - if odd, bits flip 1->0
-> +     * Bit programming is one-way only and irreversible.
-> +     */
-> +    if (is_odd) {
-> +        programmed_bits = ~value & prog_bit;
-> +    } else {
-> +        programmed_bits = value & (~prog_bit);
-> +    }
-> +
-> +    /* If there is some bit can be programed, to accept the request */
-> +    has_programmable_bits = value ^ (~prog_bit);
-> +
-> +    if (programmed_bits) {
-> +        qemu_log_mask(LOG_GUEST_ERROR,
-> +                      "%s: Found programmed bits in addr %x\n",
-> +                      __func__, otp_addr);
-> +        for (int i = 0; i < 32; ++i) {
-> +            if (programmed_bits & (1U << i)) {
-> +                qemu_log_mask(LOG_GUEST_ERROR,
-> +                              "  Programmed bit %d\n",
-> +                              i);
-> +            }
-> +        }
-> +    }
-> +
-> +    return has_programmable_bits != 0;
-> +}
-> +
-> +static bool program_otpmem_data(void *opaque, uint32_t otp_addr,
-> +                             uint32_t prog_bit, uint32_t *value)
-> +{
-> +    AspeedOTPMemState *s = ASPEED_OTPMEM(opaque);
-> +    bool is_odd = otp_addr & 1;
-> +    uint32_t otp_offset = otp_addr << 2;
-> +
-> +    if (blk_pread(s->blk, (int64_t)otp_offset,
-> +                  sizeof(uint32_t), value, 0) < 0) {
-> +        qemu_log_mask(LOG_GUEST_ERROR,
-> +                      "%s: Failed to read data 0x%x\n",
-> +                      __func__, otp_offset);
-> +        return false;
-> +    }
-> +
-> +    if (!valid_program_data(otp_addr, *value, prog_bit)) {
-> +        return false;
-> +    }
-> +
-> +    if (is_odd) {
-> +        *value &= ~prog_bit;
-> +    } else {
-> +        *value |= ~prog_bit;
-> +    }
-> +
-> +    return true;
-> +}
-> +
-> +static void aspeed_otpmem_prog(void *s, uint32_t otp_addr,
-> +                               uint32_t data, Error **errp)
-> +{
-> +    AspeedOTPMemState *otp = ASPEED_OTPMEM(s);
-> +    uint32_t otp_offset, value;
-> +
-> +    assert(otp->blk);
-> +
-> +    if (otp_addr > (otp->max_size >> 2)) {
-> +        error_setg(errp, "OTP memory 0x%x is exceeded", otp_addr);
-> +        return;
-> +    }
-> +
-> +    otp_offset = otp_addr << 2;
-> +    if (!program_otpmem_data(s, otp_addr, data, &value)) {
-> +        error_setg(errp, "Failed to program data");
-> +        return;
-> +    }
-> +
-> +    if (blk_pwrite(otp->blk, (int64_t)otp_offset,
-> +                   sizeof(value), &value, 0) < 0) {
-> +        error_setg(errp, "Failed to write data");
-> +    }
-> +
-> +    return;
-> +}
-> +
-> +static void aspeed_otpmem_set_default(void *s, uint32_t otp_offset,
-> +                                      uint32_t data, Error **errp)
-> +{
-> +    AspeedOTPMemState *otp = ASPEED_OTPMEM(s);
-> +
-> +    if ((otp_offset + 4) > otp->max_size) {
-> +        error_setg(errp, "OTP memory 0x%x is exceeded", otp_offset);
-> +        return;
-> +    }
-> +
-> +    if (blk_pwrite(otp->blk, (int64_t)otp_offset,
-> +                   sizeof(data), &data, 0) < 0) {
-> +        error_setg(errp, "Failed to write data");
-> +    }
-> +    return;
-> +}
-> +
-> +static AspeedOTPMemOps aspeed_otpmem_ops = {
-> +    .read = aspeed_otpmem_read,
-> +    .prog = aspeed_otpmem_prog,
-> +    .set_default_value = aspeed_otpmem_set_default
-> +};
-> +
-> +static void aspeed_otpmem_realize(DeviceState *dev, Error **errp)
-> +{
-> +    AspeedOTPMemState *s = ASPEED_OTPMEM(dev);
-> +
-> +    if (!s->blk) {
-> +        error_setg(&error_fatal, "OTP memory is not initialized");
-> +        return;
-> +    }
-> +
-> +    s->max_size = blk_getlength(s->blk);
-> +    if (s->max_size < 0 || (s->max_size % 4)) {
-> +        error_setg(&error_fatal,
-> +                   "Unexpected OTP memory size: %" PRId64 "",
-> +                   s->max_size);
-> +        return;
-> +    }
-> +
-> +    s->ops = &aspeed_otpmem_ops;
+1. It won't compile, since QAPI schema module kvm.json is
+   target-independent.  We'd have to put it into a target-specific
+   module kvm-target.json.
 
-You should consider using an AddressSpace for the OTP transactions.
+2. Target-specific QAPI schema mdoules are problematic for the single
+   binary / heterogeneous machine work.  We are discussing how to best
+   handle that.  Unclear whether adding more target-specific QAPI
+   definitions are a good idea.
 
-> +    return;
-> +}
-> +
-> +static void aspeed_otpmem_system_reset(DeviceState *dev)
-> +{
-> +    return;
-> +}
-> +
+>                                                         so rejecting
+> unsupported format can only happen in parsing code. For example, wrap
+> the above code in "#if defined(TARGET_I386)":
+>
+>     for (node = head; node; node = node->next) {
+>         KvmPmuFilterEvent *event = node->value;
+>
+>         switch (event->format) {
+>         case KVM_PMU_EVENT_FORMAT_RAW:
+>             break;
+> #if defined(TARGET_I386)
+>         case KVM_PMU_EVENT_FORMAT_X86_SELECT_UMASK: {
+>             ...
+>             break;
+>         }
+>         case KVM_PMU_EVENT_FORMAT_X86_MASKED_ENTRY: {
+>             ...
+> 	    break;
+>         }
+> #endif
+>         default:
+> 	    error_setg(errp,
+>                        "Unsupported format.");
+>             goto fail;
+>         }
+>
+>         ...
+>     }
+>
+> EMM, do you like this idea?
 
-Reset is empty. Please remove.
+This is kvm_pmu_filter_set_event(), I presume.
 
+The #if is necessary when you make the enum values conditional.  The
+default: code is unreachable then, so it should stay
+g_assert_not_reached().
 
-> +static void aspeed_otpmem_class_init(ObjectClass *klass, void *data)> +{
-> +    DeviceClass *dc = DEVICE_CLASS(klass);
-> +
-> +    device_class_set_legacy_reset(dc, aspeed_otpmem_system_reset);
-> +    dc->realize = aspeed_otpmem_realize;
-> +    device_class_set_props(dc, aspeed_otpmem_properties);
-> +
-> +}
-> +
-> +static const TypeInfo aspeed_otpmem_types[] = {
-> +    {
-> +        .name           = TYPE_ASPEED_OTPMEM,
-> +        .parent         = TYPE_SYS_BUS_DEVICE,
-> +        .instance_size  = sizeof(AspeedOTPMemState),
-> +        .class_init     = aspeed_otpmem_class_init,
-> +    },
-> +};
-> +
-> +DEFINE_TYPES(aspeed_otpmem_types)
-> diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-> index 6d47de482c..ed1eaaa2ad 100644
-> --- a/hw/misc/meson.build
-> +++ b/hw/misc/meson.build
-> @@ -136,6 +136,7 @@ system_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files(
->     'aspeed_sbc.c',
->     'aspeed_sdmc.c',
->     'aspeed_xdma.c',
-> +  'aspeed_otpmem.c',
->     'aspeed_peci.c',
->     'aspeed_sli.c'))
->   
-> diff --git a/include/hw/misc/aspeed_otpmem.h b/include/hw/misc/aspeed_otpmem.h
-> new file mode 100644
-> index 0000000000..11e2de70b6
-> --- /dev/null
-> +++ b/include/hw/misc/aspeed_otpmem.h
-> @@ -0,0 +1,40 @@
-> +/*
-> + *  ASPEED OTP (One-Time Programmable) memory
-> + *
-> + *  Copyright (C) 2025 Aspeed
-> + *
-> + * This code is licensed under the GPL version 2 or later.  See
-> + * the COPYING file in the top-level directory.
-> + */
-> +
-> +#ifndef ASPEED_OTPMMEM_H
-> +#define ASPEED_OTPMMEM_H
-> +
-> +#include "hw/sysbus.h"
-> +#include "qapi/error.h"
-> +
-> +#define TYPE_ASPEED_OTPMEM "aspeed.otpmem"
-> +#define ASPEED_OTPMEM_DRIVE "otpmem"
+The #if is fine even when you don't make the enum values conditional.
+The default: code is reachable then, unless you reject the unwanted
+enums earlier some other way.
 
-This ASPEED_OTPMEM_DRIVE definition looks wrong to me. What is it for ?
+>> If not, I feel the behavior should be noted in the commit message.
+>
+> With the above change, I think it's possible to reject x86-specific
+> format on non-x86 arch. And I can also note this behavior in commit
+> message.
+>
+>> >          default:
+>> >              g_assert_not_reached();
+>> >          }
+>> > @@ -67,6 +82,9 @@ static void kvm_pmu_filter_set_event(Object *obj, Visitor *v, const char *name,
+>> >      filter->events = head;
+>> >      qapi_free_KvmPmuFilterEventList(old_head);
+>> >      return;
+>> > +
+>> > +fail:
+>> > +    qapi_free_KvmPmuFilterEventList(head);
+>> >  }
+>> >  
+>> >  static void kvm_pmu_filter_class_init(ObjectClass *oc, void *data)
+>
+> ...
+>
+>> >  ##
+>> >  # @KvmPmuFilterEvent:
+>> >  #
+>> > @@ -66,7 +82,8 @@
+>> >  { 'union': 'KvmPmuFilterEvent',
+>> >    'base': { 'format': 'KvmPmuEventFormat' },
+>> >    'discriminator': 'format',
+>> > -  'data': { 'raw': 'KvmPmuRawEvent' } }
+>> > +  'data': { 'raw': 'KvmPmuRawEvent',
+>> > +            'x86-select-umask': 'KvmPmuX86SelectUmaskEvent' } }
+>> >  
+>> >  ##
+>> >  # @KvmPmuFilterProperties:
+>> 
+>> Documentation could perhaps be more explicit about this making sense
+>> only for x86.
+>
+> What about the following doc?
+>
+> ##
+> # @KvmPmuFilterProperties:
+> #
+> # Properties of KVM PMU Filter (only for x86).
 
-Thanks,
+Hmm.  Branch 'raw' make sense regardless of target, doesn't it?  It's
+actually usable only for i86 so far, because this series implements
+accelerator property "pmu-filter" only for i386.
 
-C.
+Let's not worry about this until we decided whether to use QAPI
+conditionals or not.
 
-
-> +
-> +#define ASPEED_OTPMEM(obj) OBJECT_CHECK(AspeedOTPMemState, (obj), \
-> +                                        TYPE_ASPEED_OTPMEM)
-> +
-> +typedef struct AspeedOTPMemOps {
-> +    void (*read)(void *s, uint32_t addr, uint32_t *out, Error **errp);
-> +    void (*prog)(void *s, uint32_t addr, uint32_t data, Error **errp);
-> +    void (*set_default_value)(void *s, uint32_t otp_offset,
-> +                              uint32_t data, Error **errp);
-> +} AspeedOTPMemOps;
-> +
-> +typedef struct AspeedOTPMemState {
-> +    SysBusDevice parent_obj;
-> +
-> +    MemoryRegion mmio;
-> +    BlockBackend *blk;
-> +    int64_t max_size;
-> +
-> +    AspeedOTPMemOps *ops;
-> +} AspeedOTPMemState;
-> +
-> +#endif /* ASPEED_OTPMMEM_H */
-> +
+>> > diff --git a/qemu-options.hx b/qemu-options.hx
+>> > index 51a7c61ce0b0..5dcce067d8dd 100644
+>> > --- a/qemu-options.hx
+>> > +++ b/qemu-options.hx
+>> > @@ -6180,6 +6180,9 @@ SRST
+>> >               ((select) & 0xff) | \
+>> >               ((umask) & 0xff) << 8)
+>> >  
+>> > +        ``{"format":"x86-select-umask","select":event_select,"umask":event_umask}``
+>> > +            Specify the single x86 PMU event with select and umask fields.
+>> > +
+>> >          An example KVM PMU filter object would look like:
+>> >  
+>> >          .. parsed-literal::
+>> > diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+>> > index fa3a696654cb..0d36ccf250ed 100644
+>> > --- a/target/i386/kvm/kvm.c
+>> > +++ b/target/i386/kvm/kvm.c
+>> > @@ -5974,6 +5974,10 @@ static bool kvm_config_pmu_event(KVMPMUFilter *filter,
+>> >          case KVM_PMU_EVENT_FORMAT_RAW:
+>> >              code = event->u.raw.code;
+>> >              break;
+>> > +        case KVM_PMU_EVENT_FORMAT_X86_SELECT_UMASK:
+>> > +            code = X86_PMU_RAW_EVENT(event->u.x86_select_umask.select,
+>> > +                                     event->u.x86_select_umask.umask);
+>> > +            break;
+>> >          default:
+>> >              g_assert_not_reached();
+>> >          }
+>> > @@ -6644,6 +6648,7 @@ static void kvm_arch_check_pmu_filter(const Object *obj, const char *name,
+>> >  
+>> >          switch (event->format) {
+>> >          case KVM_PMU_EVENT_FORMAT_RAW:
+>> > +        case KVM_PMU_EVENT_FORMAT_X86_SELECT_UMASK:
+>
+> Here's the current format check I mentioned above. But I agree your idea
+> and will check in the parsing of pmu-filter object.
+>
+>> >              break;
+>> >          default:
+>> >              error_setg(errp,
+>> 
 
 
