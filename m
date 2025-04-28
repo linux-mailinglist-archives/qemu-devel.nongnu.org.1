@@ -2,81 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 766A6A9E945
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 09:27:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A39FA9E877
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 08:44:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9Ist-0004mq-7p; Mon, 28 Apr 2025 03:26:37 -0400
+	id 1u9I9v-0002Ix-E8; Mon, 28 Apr 2025 02:40:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u9IsW-0004fH-00
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 03:26:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1u9IsS-0008Da-IV
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 03:26:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745825167;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=CISJnPMfG/uXMv0l6JF9iE0pkiWbduTPqPP8qKQb4lc=;
- b=fH7vsYChrAznmqO8re0AV1vJzBXPUwOgh3J2XRem4nnupixrRlVA7Qc2NgCTo45yJZhP7V
- Clfnr7ylddPvPD5c2jQPJu716wxxveSaF4e/P2qVGCdmkgDv3FA05G95nTcHoK6DZ+tYbQ
- 1MxVPV7FS7ODGjIHBMzOucxCZTX74wE=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-122-P6WChWBUNwemPEoOA7SP5g-1; Mon,
- 28 Apr 2025 03:26:04 -0400
-X-MC-Unique: P6WChWBUNwemPEoOA7SP5g-1
-X-Mimecast-MFC-AGG-ID: P6WChWBUNwemPEoOA7SP5g_1745825162
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6B09618004A7; Mon, 28 Apr 2025 07:26:02 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.27])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C7A6E1800352; Mon, 28 Apr 2025 07:26:00 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E6E6821E66C2; Mon, 28 Apr 2025 08:12:09 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Zhao Liu <zhao1.liu@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,  Eric Blake <eblake@redhat.com>,
- Michael Roth <michael.roth@amd.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>,  Marcelo
- Tosatti <mtosatti@redhat.com>,  Shaoqin Huang <shahuang@redhat.com>,  Eric
- Auger <eauger@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>,  Thomas Huth <thuth@redhat.com>,
- Sebastian Ott <sebott@redhat.com>,  Gavin Shan <gshan@redhat.com>,
- qemu-devel@nongnu.org,  kvm@vger.kernel.org,  qemu-arm@nongnu.org,
- Dapeng Mi <dapeng1.mi@intel.com>,  Yi Lai <yi1.lai@intel.com>
-Subject: Re: [PATCH 2/5] i386/kvm: Support basic KVM PMU filter
-In-Reply-To: <aA3sLRzZj2270cSs@intel.com> (Zhao Liu's message of "Sun, 27 Apr
- 2025 16:34:53 +0800")
-References: <20250409082649.14733-1-zhao1.liu@intel.com>
- <20250409082649.14733-3-zhao1.liu@intel.com>
- <878qnoha3j.fsf@pond.sub.org> <aA3sLRzZj2270cSs@intel.com>
-Date: Mon, 28 Apr 2025 08:12:09 +0200
-Message-ID: <87r01c3jd2.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
+ id 1u9I9j-0002IZ-5d; Mon, 28 Apr 2025 02:39:55 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
+ id 1u9I9g-0006nS-P6; Mon, 28 Apr 2025 02:39:54 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-22401f4d35aso52576155ad.2; 
+ Sun, 27 Apr 2025 23:39:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1745822381; x=1746427181; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=dK6O7z60HbSeZt8wVKmalny4ZAGsn1II5uWKl1TPKnE=;
+ b=ZRZq9V/Hq3s4i617VLHylixCy357bslDWx4+FwIGnZDnTOI8Q+hmg8OBzXm1CPvd4g
+ lXSxOBI5PAufmRX//rA34zfCB+sXAKTFWCmLiqEszvMNvGt7YEcxHUBFXfdHsBafTeWI
+ a9jGUuXVZnu21X0WwAHQN4AR/2rfydP5WrMLGWvDJTRkR/fXqKS8tap56LryOiUHsCTl
+ Y4mulffhmUdgPt75idLERGNd8yVEgiYmoM8BBQQ3/yrB4eSQCiKLYcGARyyBO7czpEgE
+ n16lpFIIWgXd7aS94Yv0nWBu6VUu+D0v4xpzNjikqXBITbLy86VST5hyuy6J4lbW4mRU
+ OkUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1745822381; x=1746427181;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=dK6O7z60HbSeZt8wVKmalny4ZAGsn1II5uWKl1TPKnE=;
+ b=GkU8l8Mi0eOnvMziOzotWfouY1cPzLb1ydBWivkSfkYkQ2gaKYWrmAgXsG8ksrl4UJ
+ 1ed7NR4YHNC7wFgCdOz5rnXqgR5NajksEHplac7VfTuSuwVOvgdsJ47l9+MOsiJ/sfdr
+ 0Q8IcTX1PQzEGIPNSGeXpomlwtwRDO8XYfWMyC3Fi68qM5IxjKAcxvOZww8hOsfALh/n
+ 1ACC7ums6bppll4UGK2YL3OQOhnU5j/ErWkSfPEx2xL0HTcvwRir8RNXO1Ay3Ub4Vdzx
+ 1Hm9e45xaiYWy9f4dPzPuCRw5xlvai5d75zq1smfH8rhlf7UWVE43ifC6Ec9Y5X1GJ13
+ 0SOw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUeUOn6li4MWrEKuVXBK7oWba8H0itDd7E6KU2SG3AWnMVDVQ1OlzHVD5icOxKsGfdrfQKdaVTtO3PucA==@nongnu.org,
+ AJvYcCVwIAD1S3y+PEe4ImpDKa1qc1ceXEM1dH8i95TQp91qxHLGR3pUAKiyNOYsoELax4DKt6LnYFY0k2zkxA==@nongnu.org,
+ AJvYcCVx4M6bJZl4YVNdHZRfvyqgFVnfODxkUJIXHMPVWk8foSvsdygRTiU2QjYVhvr5H44yXVlpUP0UWLc=@nongnu.org,
+ AJvYcCW89pKQmi93xnKfPgdQ8o1jHT3HvtlpdTl6rmlidd0MEgpXx6YcrqbmloMhwGUuVhZLQ4HSxjU8yg==@nongnu.org
+X-Gm-Message-State: AOJu0YwEEdfPHQPGeNsZa8dKytZuxpbA9gsMq5OUM0xS2a7xAf7JZiJk
+ ueIj6lfdUo4cSC9ezGHo6SprQkAg0I1LWWaoFwCi1t9Eq8fvNVLjAiy8T9Y1
+X-Gm-Gg: ASbGnctN3gZFsPSiZRaYgDxD5Oc2HdVOK+bA0f5yE1KAwS6BrPK5QCfpRe5GgSUBvqB
+ BAJjZzsIKLMS0dEYaPJ0L2LQd9RA2o1wWgcGWntXxAg0FO/UniXIF7Vq6CXbW0tEgVFouRPhgXe
+ nSrgVuedpkg6kuuGWSRryLzBh9H/sIzn5OfHQs70NbXYNyGyO4w4IPW36y1q1MDCuKIYO6dUKnA
+ /phio9eR0ekcmuZat1vqimBovu956gcPVwImPQ2/ux+YvGuCur+L8Fsbnvt+HoeyLjp90cZ/mW4
+ J5cPIsTpcJbO4gLw13b3F1Om+1tGVcbjLGbSpA==
+X-Google-Smtp-Source: AGHT+IHPd7IjtWljONhKaRHyhvOAjolgIljZ6M+cmIGcBSZiB7onlO9bQZ2wvguMrsXMbppPtLQsow==
+X-Received: by 2002:a17:902:f683:b0:223:62f5:fd44 with SMTP id
+ d9443c01a7336-22dbf62c38emr164470995ad.40.1745822380908; 
+ Sun, 27 Apr 2025 23:39:40 -0700 (PDT)
+Received: from ktock.. ([240d:1a:3b6:8b00:bcb:2cf3:f1b5:b7f])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-22db4dbe328sm74721215ad.88.2025.04.27.23.39.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 27 Apr 2025 23:39:40 -0700 (PDT)
+From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Kohei Tokunaga <ktokunaga.mail@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Francisco Iglesias <francisco.iglesias@amd.com>,
+ Vikram Garhwal <vikram.garhwal@bytedance.com>,
+ Pavel Pisa <pisa@cmp.felk.cvut.cz>, Jason Wang <jasowang@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Zhao Liu <zhao1.liu@intel.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ilya Leoshkevich <iii@linux.ibm.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
+ qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org
+Subject: [PATCH v3 00/20] Enable QEMU TCI to run 32bit guests on browsers
+Date: Mon, 28 Apr 2025 15:38:49 +0900
+Message-ID: <cover.1745820062.git.ktokunaga.mail@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.492,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=ktokunaga.mail@gmail.com; helo=mail-pl1-x62f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,69 +117,204 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Zhao Liu <zhao1.liu@intel.com> writes:
+V3:
 
-> ...
->
->> > diff --git a/qemu-options.hx b/qemu-options.hx
->> > index dc694a99a30a..51a7c61ce0b0 100644
->> > --- a/qemu-options.hx
->> > +++ b/qemu-options.hx
->> > @@ -232,7 +232,8 @@ DEF("accel", HAS_ARG, QEMU_OPTION_accel,
->> >      "                eager-split-size=n (KVM Eager Page Split chunk size, default 0, disabled. ARM only)\n"
->> >      "                notify-vmexit=run|internal-error|disable,notify-window=n (enable notify VM exit and set notify window, x86 only)\n"
->> >      "                thread=single|multi (enable multi-threaded TCG)\n"
->> > -    "                device=path (KVM device path, default /dev/kvm)\n", QEMU_ARCH_ALL)
->> > +    "                device=path (KVM device path, default /dev/kvm)\n"
->> > +    "                pmu-filter=id (configure KVM PMU filter)\n", QEMU_ARCH_ALL)
->> 
->> As we'll see below, this property is actually available only for i386.
->> Other target-specific properties document this like "x86 only".  Please
->> do that for this one, too.
->
-> Thanks! I'll change QEMU_ARCH_ALL to QEMU_ARCH_I386.
+- Fixed the argument type of cpreg_key_compare to use gpointer instead of
+  void*.
+- Fixed the multiline comment to ensure it starts with "/*" on a separate
+  line.
+- Fixed the commit message to remove a confusing link in the
+  util/cacheflush.c patch.
+- Resolved patch conflicts against the latest upstream master branch in the
+  gitlab CI configuration patch.
+- The patches 01, 02, 03, 06, and 07 are included in this series sololy to
+  ensure successful builds. They have already been picked up by the pull
+  requests, so please ignore them.
 
-That would be wrong :)
+V2:
 
-QEMU_ARCH_ALL is the last argument passed to macro DEF().  It applies to
-the entire option, in this case -accel.
+- Updated the commit message to explicitly explain that function pointer
+  casts are performed internally by GLib.
+- Fixed typo in the comment in include/glib-compat.h: s/insted/instead/
+- In util/cacheflush.c patch, added an explanation for the change to both
+  the code comment and the commit message.
+- Split the block/file-posix.c hunk that adds "#include <sys/ioctl.h>" into
+  a separate commit and revised the commit message to clarify the purpose of
+  the patch.
+- Removed the Emscripten-specific stub of copy_file_range in
+  stubs/emscripten.c. Instead, updated the type of the existing
+  copy_file_range stub in block/file-posix.c to match the declaration in the
+  Emscripten headers and avoid a compilation error.
+- Moved the change that was incorrectly applied to os-posix.h into os-wasm.h
+- Split MAINTAINERS file change to each commit that adds new files.
+- Unified two consecutive #ifndef macros into a single condition in
+  qemu-options.hx.
+- Instead of porting mmap-alloc.c to Emscripten, this version excludes the
+  file entirely. The rationale is described in the commit message.
+- In meson.build, added a check to ensure TCI is enabled for the wasm build.
+- Split the Dockerfile addition from the previous 18th patch into a separate
+  commit.
 
-I'd like you to mark the option parameter as "(x86 only)", like
-notify-vmexit right above, and several more elsewhere.
+V1:
 
->> As far as I can tell, the kvm-pmu-filter object needs to be activated
->> with -accel pmu-filter=... to do anything.  Correct?
->
-> Yes,
->
->> You can create any number of kvm-pmu-filter objects, but only one of
->> them can be active.  Correct?
->
-> Yes! I'll try to report error when user repeats to set this object, or
-> mention this rule in doc.
+This patch series is split from the original "Enable QEMU to run on
+browsers" series, focusing solely on the essential code changes needed to
+compile QEMU TCI with Emscripten. It also inclues fixes based on feedback
+received in the original series, thank you for the comments.
 
-Creating kvm-pmu-filter objects without using them should be harmless,
-shouldn't it?  I think users can already create other kinds of unused
-objects.
+# Supported features in this series
 
->> > +
->> > +static int kvm_install_pmu_event_filter(KVMState *s)
->> > +{
->> > +    struct kvm_pmu_event_filter *kvm_filter;
->> > +    KVMPMUFilter *filter = s->pmu_filter;
->> > +    int ret;
->> > +
->> > +    kvm_filter = g_malloc0(sizeof(struct kvm_pmu_event_filter) +
->> > +                           filter->nevents * sizeof(uint64_t));
->> 
->> Should we use sizeof(filter->events[0])?
->
-> No, here I'm trying to constructing the memory accepted in kvm interface
-> (with the specific layout), which is not the same as the KVMPMUFilter
-> object.
+This patch series enables TCI interpreter mode with 32bit guest
+support. While the original series included the non-TCI backend and 9pfs
+patches, those components are not included here. They will be reintroduced
+in follow-up series after the foundational patches have been merged.
 
-You're right.  What about sizeof(kvm_filter->events[0])?
+# Emscripten-Based Coroutine Backend
 
-[...]
+Emscripten does not support couroutine methods currently used by QEMU but
+provides a coroutine implementation called "fiber". This patch series
+introduces a coroutine backend using fiber. However, fiber does not support
+submitting coroutines to other threads. As a result, this patch series
+doesn't support components like hw/9pfs, which rely on that behavior.
+
+# Overview of build process
+
+This section provides an overview of the build process for compiling QEMU
+using Emscripten. Full instructions are available in the sample
+repository[1].
+
+To compile QEMU with Emscripten, the following dependencies are required.
+The emsdk-wasm32-cross.docker environment includes all necessary components
+and can be used as the build environment:
+
+- Emscripten SDK (emsdk) v3.1.50
+- Libraries cross-compiled with Emscripten (refer to
+  emsdk-wasm32-cross.docker for build steps)
+  - GLib v2.84.0
+  - zlib v1.3.1
+  - libffi v3.4.7
+  - Pixman v0.44.2
+
+QEMU can be compiled using Emscripten's emconfigure and emmake, which
+automatically set environment variables such as CC for targeting Emscripten.
+
+emconfigure configure --static --disable-tools \
+                      --target-list=arm-softmmu --enable-tcg-interpreter
+emmake make -j$(nproc)
+
+This process generates the following files:
+
+- qemu-system-arm.js
+- qemu-system-arm.wasm
+- qemu-system-arm.worker.js
+
+Guest images can be packaged using Emscripten's file_packager.py tool.
+For example, if the images are stored in a directory named "pack", the
+following command packages them, allowing QEMU to access them through
+Emscripten's virtual filesystem:
+
+/path/to/file_packager.py qemu-system-arm.data --preload pack > load.js
+
+This process generates the following files:
+
+- qemu-system-arm.data
+- load.js
+
+Emscripten allows passing arguments to the QEMU command via the Module
+object in JavaScript:
+
+Module['arguments'] = [
+    '-nographic', '-m', '512M', '-machine', 'virt',
+    '-L', 'pack/',
+    '-global', 'virtio-mmio.force-legacy=false',
+    '-device', 'virtio-blk-device,drive=d0',
+    '-drive', 'file=pack/rootfs.bin,if=none,format=raw,id=d0',
+    '-kernel', 'pack/kernel.img',
+    '-append', 'console=ttyAMA0 root=/dev/vda loglevel=7',
+];
+
+The sample repository[1] provides a complete setup, including an HTML file
+that implements a terminal UI.
+
+[1] https://github.com/ktock/qemu-wasm-sample/tree/tcidev
+
+# Additional references
+
+- Original patch series "Enable QEMU to run on browsers":
+  https://patchew.org/QEMU/cover.1744032780.git.ktokunaga.mail@gmail.com/
+- A talk at FOSDEM 2025:
+  https://fosdem.org/2025/schedule/event/fosdem-2025-6290-running-qemu-inside-browser/
+
+Kohei Tokunaga (20):
+  hw/core/loader.c: Fix type conflict of GLib function pointers
+  qom/object.c: Fix type conflict of GLib function pointers
+  system/vl.c: Fix type conflict of GLib function pointers
+  target/arm/helper.c: Fix type conflict of GLib function pointers
+  target/i386/cpu.c: Fix type conflict of GLib function pointers
+  contrib/plugins: Fix type conflict of GLib function pointers
+  hw/net/can: Fix type conflict of GLib function pointers
+  target/ppc: Fix type conflict of GLib function pointers
+  target/s390x: Fix type conflict of GLib function pointers
+  include/glib-compat.h: Poison g_list_sort and g_slist_sort
+  util/cacheflush.c: Update cache flushing mechanism for Emscripten
+  block: Add including of ioctl header for Emscripten build
+  block: Fix type confict of the copy_file_range stub
+  include/qemu/osdep.h: Add Emscripten-specific OS dependencies
+  Disable options unsupported on Emscripten
+  util: exclude mmap-alloc.c from compilation target on Emscripten
+  util: Add coroutine backend for emscripten
+  meson: Add wasm build in build scripts
+  tests: Add Dockerfile containing dependencies for Emscripten build
+  gitlab: Enable CI for wasm build
+
+ .gitlab-ci.d/buildtest-template.yml           |  27 ++++
+ .gitlab-ci.d/buildtest.yml                    |   9 ++
+ .gitlab-ci.d/container-cross.yml              |   5 +
+ MAINTAINERS                                   |   9 ++
+ backends/meson.build                          |   6 +-
+ block/file-posix.c                            |   8 +-
+ configs/meson/emscripten.txt                  |   8 +
+ configure                                     |   7 +
+ contrib/plugins/cache.c                       |  12 +-
+ contrib/plugins/cflow.c                       |  10 +-
+ contrib/plugins/hotblocks.c                   |   4 +-
+ contrib/plugins/hotpages.c                    |   4 +-
+ contrib/plugins/howvec.c                      |   4 +-
+ contrib/plugins/hwprofile.c                   |   8 +-
+ hw/core/loader.c                              |   4 +-
+ hw/net/can/xlnx-versal-canfd.c                |   4 +-
+ include/glib-compat.h                         |   7 +
+ include/qemu/cacheflush.h                     |   7 +
+ include/qemu/osdep.h                          |   8 +-
+ include/system/os-wasm.h                      | 104 +++++++++++++
+ meson.build                                   |  29 +++-
+ meson_options.txt                             |   2 +-
+ os-wasm.c                                     | 119 ++++++++++++++
+ qemu-options.hx                               |   4 +-
+ qom/object.c                                  |   7 +-
+ scripts/meson-buildoptions.sh                 |   2 +-
+ system/memory.c                               |   2 +-
+ system/physmem.c                              |   9 +-
+ system/vl.c                                   |   8 +-
+ target/arm/helper.c                           |   4 +-
+ target/i386/cpu.c                             |  11 +-
+ target/ppc/cpu_init.c                         |   4 +-
+ target/s390x/cpu_models.c                     |   4 +-
+ .../dockerfiles/emsdk-wasm32-cross.docker     | 145 ++++++++++++++++++
+ tests/tcg/plugins/mem.c                       |   4 +-
+ tests/tcg/plugins/syscall.c                   |   4 +-
+ util/cacheflush.c                             |   4 +
+ util/coroutine-wasm.c                         | 127 +++++++++++++++
+ util/meson.build                              |   4 +-
+ util/oslib-posix.c                            |  28 ++++
+ 40 files changed, 710 insertions(+), 66 deletions(-)
+ create mode 100644 configs/meson/emscripten.txt
+ create mode 100644 include/system/os-wasm.h
+ create mode 100644 os-wasm.c
+ create mode 100644 tests/docker/dockerfiles/emsdk-wasm32-cross.docker
+ create mode 100644 util/coroutine-wasm.c
+
+-- 
+2.43.0
 
 
