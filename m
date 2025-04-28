@@ -2,95 +2,147 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCE86A9F2AD
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 15:47:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41C91A9F2CA
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 15:53:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9Opn-0006Jh-3Q; Mon, 28 Apr 2025 09:47:47 -0400
+	id 1u9OvG-0000XB-8M; Mon, 28 Apr 2025 09:53:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u9Opd-0006Hg-Jv
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 09:47:37 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u9Opa-0002pq-Lb
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 09:47:37 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-b07d607dc83so4149749a12.1
- for <qemu-devel@nongnu.org>; Mon, 28 Apr 2025 06:47:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745848052; x=1746452852; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=wq1rFmNEHgX2FeK42gIa+Nv74jFHymhRXwt6/Ht0GNg=;
- b=qAeqOnAyI0k3kHkQLyhiUmg6Ut5WRNm8ju//3peQQnI5M7M8s7bWnSgcDShH/EKMl8
- 61eU7/UmpdarwZmbbsMX7xeHJdzN+4sGtPFu2rAaFaZxXi0mwF9xfxz41ECrmOhQ2kzS
- XdOGrUeAfwHUWvvxkYvXQRXuPgYyOC53TSFHjnVWCKgFN6AvmDU41gaoJPgvbhPJtrG4
- +aqQoc8DrvOnEYRxL9Qo55qbdQooCa11EUIwO8p7mMA9CpMIM9bT5vKeQyZ6NoYNWqwR
- dRNaVQ1tVUEzCOoR/Tqbd5TzBbAZfffVTYKgI2e8SGMoFgf6wYyaDxoI4PkxoWN7aQE/
- ULmw==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1u9Ouj-0000Ly-8F
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 09:52:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1u9Oug-0003GV-5x
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 09:52:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1745848368;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=ydF/CRkQhZ0+q5pcoTRoTNfmD5eC+hVGKPkhgX5DjXM=;
+ b=TW0LY8GaSo81Pn0pJJ7vdQN6YfLJRNhXPmgqBI8YCuFzUuUJlSSmp7O1CkJjJe8QeGGgDy
+ Qohi+iOPhknJ9N7R9m1bDQwEqW8POBpv7PAuvNi45T0HginhJ7xftPiJS2x4yP5nD1g9Zd
+ yzlFMxnitmx8qSH4iT2UNf/r69JXqlw=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-246-Ol_zdvgGNEeNd_TS9nxcaw-1; Mon, 28 Apr 2025 09:52:45 -0400
+X-MC-Unique: Ol_zdvgGNEeNd_TS9nxcaw-1
+X-Mimecast-MFC-AGG-ID: Ol_zdvgGNEeNd_TS9nxcaw_1745848364
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-acb8f9f58ebso354255966b.2
+ for <qemu-devel@nongnu.org>; Mon, 28 Apr 2025 06:52:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745848052; x=1746452852;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wq1rFmNEHgX2FeK42gIa+Nv74jFHymhRXwt6/Ht0GNg=;
- b=ntCWiBM3Eas7Z7p7/cK1vPkxJbdcvzM1dm5tKQQtI5DDDNk8b6WNxS628IV1OKeIU4
- MdCDzhKiGSy9wM0Hq6WfaRnWR2miUG1uFybanzirqISOi3KBx6KtutSUBL7E68y8LFNL
- SW8EhiPDESlYYHD/V+SWGI/rKOA7Ny78ZHhfLvcT8Qg7FGXeR/Heodzhs9dplN2761Bz
- cG96X0Jt1/st+NZyaARYqcL5GCz5bXIqK/dCmy35YUW/XzmtKqgbIdVF1xTmNAKljmpr
- /AFrbwIdgnv1yx0nSDgaafvxeW4Oy7UbK6OlkzlEpjzwOKng6wf7Hr6ZJesFiE0RPQK/
- yEfA==
+ d=1e100.net; s=20230601; t=1745848364; x=1746453164;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ydF/CRkQhZ0+q5pcoTRoTNfmD5eC+hVGKPkhgX5DjXM=;
+ b=YpN9BpMM12Hgp7i8naO0eZ2GT5id+nQoFQfoCkd5KgiuYIwAmY74RDZh+2vEwamBt1
+ KRQk0I1i9uNWpIYHXFYMWlRaCNmNMyQGD81kmBLJ1oDfEBMCBtIkmWvTZdB+SOsv8gFw
+ Pb2IzEKVjYrmvvjj1X/OT6VnsEJd5gusCfL2uvMhLGbqGrOWZp8pET2ih2ZCPqqhsVAS
+ PqhK16h6ffi/CKgYTeSTNDqqLjnLCLtF83wF1q1/LpCA3ubsNwbuFxsIOsv2x6ivK32v
+ XoBeWPKJ1+WO7fc+ZiHydUi7u2EK1K3SBojVwgU5nXuaqxEGKjzZmSBASW2MWBIWHxom
+ qiPw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVOKag4RGJgI2nGWFH8u/N3jgsv2Ivuv1ZcGLxxrOG6ZRY3O3RfVhvOzfofXpcFlE4KIX8vYrNthdzq@nongnu.org
-X-Gm-Message-State: AOJu0Ywl/ehqwI1OR+ESWKkRWZGCWSEx2Vw5agiVStMTqVr/w9PGSZhV
- hDfeAxLE+PMNtmlN3OWaizSI8sPfLKmFwyxGeMMZ193gYwiEG1oqT6pmdNIoBO8=
-X-Gm-Gg: ASbGncuwZbJWTaBi9fUPTuCm4M3849B5LovOf1RIb6ZWj9TGYG17unY13dHwbiLEvt+
- YqdC7ElvKu5KOScnuJ8lRnXq4S5TfzG4eWmSyOORhTonw0H5/PKkD7NPdBo0YVqELpz23Zgeskj
- 219LFpdOf1BgMf3jiz+5lHjhiWoYcY9UxPVQYHQNei5T07jtX3ktzXtUj0Z9iMnA8GIkOXsQudR
- KIa2tuiD9aQHhlotgoENlLc/HN03VJqAYEhtUu9XI/rf1hm40j4yM/o3ujDfmuAGKTbyoK9sBkM
- VsbLUo12eLDIJn1PYyTeeIcdisqryE3B50nKy2nSiUCXSdVOxWn0oV4JmKTbpO/bXcWfn6E6sc/
- c5ERPbBQ=
-X-Google-Smtp-Source: AGHT+IGy2UhDGwgMs3xVh4FMzIQmk5kPFpFshvIqTcuvkXjcem9uiOSTdvuF3UPpQANnzjCdLZxybA==
-X-Received: by 2002:a17:90b:2b86:b0:2ee:cded:9ac7 with SMTP id
- 98e67ed59e1d1-309f7dde854mr15667906a91.20.1745848052250; 
- Mon, 28 Apr 2025 06:47:32 -0700 (PDT)
-Received: from [192.168.0.4] (71-212-47-143.tukw.qwest.net. [71.212.47.143])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-309f784a56asm7165759a91.41.2025.04.28.06.47.31
+ AJvYcCXzZLaTKyRnTlVL9zq+bhI2FkaDLPDi7XGrfuLoCyXVw32QcAIKx/2Gb1auQh5c4JY+nJge8hsohkFj@nongnu.org
+X-Gm-Message-State: AOJu0Yy5C1mJX5V3cO915H0dlU0bPQr3OkWbAtXRSE4gAPyNEfy2NYj7
+ qN57ZPnkjENNyuoZAEsWesBdWQXX1yG5Ha0qRestos+nEkTTUlRp9HQQvcJBFEg3VAfH8rjC4M3
+ n5IytOuSU7tZr5tqUgtj8xdvcZwL8g7C+FU2L4pxuAWWqVJPZ4p7f
+X-Gm-Gg: ASbGncvtaGUbs0oI4GoUTAEVbrVs7c8ohHjovJKQ73cn2dmEwuPa7kaE89gZnWpUimQ
+ xtiwMnEdV215qulc0LQT5cNwwZc2J45tkbqw032bc9fd0kWvJUEpx9qgOSDZeCjTmNUPyS5zjR2
+ tStpfs10l/Vz+y2gGs9TngMhWB9t2KclnfRoIS6cguzAabFZRtrx99aGB47EYbL3RGJr9hYBbU+
+ 17vKM0dOqRqCz83mWVKKW7qGU/Xt/eogD3NzOSrPqYuKTrgNoAM/q9zzzJJ8sAPWmVsHgFKLrk7
+ qwc0zY6K6xuuk6Os4mX21vCPOSrO+7nxiGC3uIB+9d6j7Q==
+X-Received: by 2002:a17:906:38cc:b0:ac7:b7:c0ce with SMTP id
+ a640c23a62f3a-ace713def6emr852376566b.53.1745848364016; 
+ Mon, 28 Apr 2025 06:52:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFkhZdCFOIKpmUdS3g8or6a14mHPsR3vTSgcucFkXPGidH+VIoSF21S67h+xXlXJoidojxwag==
+X-Received: by 2002:a17:906:38cc:b0:ac7:b7:c0ce with SMTP id
+ a640c23a62f3a-ace713def6emr852374766b.53.1745848363602; 
+ Mon, 28 Apr 2025 06:52:43 -0700 (PDT)
+Received: from [192.168.0.7] (ip-109-43-178-177.web.vodafone.de.
+ [109.43.178.177]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ace6edb0f40sm632216466b.174.2025.04.28.06.52.42
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 28 Apr 2025 06:47:31 -0700 (PDT)
-Message-ID: <ded56ee3-25bb-4ffd-98e4-2f47c500c88d@linaro.org>
-Date: Mon, 28 Apr 2025 06:47:29 -0700
+ Mon, 28 Apr 2025 06:52:43 -0700 (PDT)
+Message-ID: <0dae4e29-2706-49bf-a40b-8fa9e121c7e1@redhat.com>
+Date: Mon, 28 Apr 2025 15:52:41 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] target/ppc: Inline most of dcbz helper
-To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>
-References: <20240701005939.5A0AF4E6000@zero.eik.bme.hu>
- <d3c6c417-20d9-a215-2a5c-86fa084b00fa@eik.bme.hu>
- <173c9111-e065-0dd5-c276-6bbc0351f9cc@eik.bme.hu>
- <2b969dcd-4a82-9086-803d-c52ea274fefb@eik.bme.hu>
- <e4fc537a-a15e-77dd-1167-32b12ee7a22d@eik.bme.hu>
+Subject: Re: [PATCH 6/9] MAINTAINERS: add myself to virtio-gpu for Odd Fixes
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Alexandre Iooss <erdnaxe@crans.org>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-arm@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Xu <peterx@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>
+References: <20250428125918.449346-1-alex.bennee@linaro.org>
+ <20250428125918.449346-7-alex.bennee@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <e4fc537a-a15e-77dd-1167-32b12ee7a22d@eik.bme.hu>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20250428125918.449346-7-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.484,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,34 +158,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/28/25 06:26, BALATON Zoltan wrote:
-> I have tried profiling the dst in real card vfio vram with dcbz case (with 100 iterations 
-> instead of 10000 in above tests) but I'm not sure I understand the results. vperm and dcbz 
-> show up but not too high. Can somebody explain what is happening here and where the 
-> overhead likely comes from? Here is the profile result I got:
+On 28/04/2025 14.59, Alex Bennée wrote:
+> Seeing as I've taken a few patches to here now I might as well put
+> myself forward to maintain virtio-gpu. I've marked it as Odd Fixes as
+> it's not my core focus. If someone with more GPU experience comes
+> forward we can always update again.
 > 
-> Samples: 104K of event 'cycles:Pu', Event count (approx.): 122371086557
->    Children      Self  Command          Shared Object            Symbol
-> -   99.44%     0.95%  qemu-system-ppc  qemu-system-ppc          [.] cpu_exec_loop
->     - 98.49% cpu_exec_loop
->        - 98.48% cpu_tb_exec
->           - 90.95% 0x7f4e705d8f15
->                helper_ldub_mmu
->                do_ld_mmio_beN
->              - cpu_io_recompile
->                 - 45.79% cpu_loop_exit_noexc
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>   MAINTAINERS | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 661a47db5a..f67c8edcf6 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2636,7 +2636,8 @@ F: hw/display/ramfb*.c
+>   F: include/hw/display/ramfb.h
+>   
+>   virtio-gpu
+> -S: Orphan
+> +M: Alex Bennée <alex.bennee@linaro.org>
+> +M: Odd Fixes
+>   F: hw/display/virtio-gpu*
+>   F: hw/display/virtio-vga.*
+>   F: include/hw/virtio/virtio-gpu.h
 
-I think the real problem is the number of loop exits due to i/o.  If I'm reading this 
-rightly, 45% of execution is in cpu_io_recompile.
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-I/O can only happen as the last insn of a translation block.  When we detect that it has 
-happened in the middle of a translation block, we abort the block, compile a new one, and 
-restart execution.
-
-Where this becomes a bottleneck is when this same translation block is in a loop.  Exactly 
-this case of memset/memcpy of VRAM.  This could be addressed by invalidating the previous 
-translation block and creating a new one which always ends with the i/o.
-
-
-r~
 
