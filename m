@@ -2,65 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94C6AA9EDFA
-	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 12:29:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 297B5A9EE05
+	for <lists+qemu-devel@lfdr.de>; Mon, 28 Apr 2025 12:31:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9LhZ-0006fn-Fz; Mon, 28 Apr 2025 06:27:05 -0400
+	id 1u9Lhe-0006vo-EY; Mon, 28 Apr 2025 06:27:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1u9LhT-0006Q2-DC
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 06:27:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1u9LhV-0006YK-OL
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 06:27:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1u9LhR-0003H8-7R
- for qemu-devel@nongnu.org; Mon, 28 Apr 2025 06:26:58 -0400
+ id 1u9LhT-0003Hf-Um
+ for qemu-devel@nongnu.org; Mon, 28 Apr 2025 06:27:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745836016;
+ s=mimecast20190719; t=1745836019;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LeJXJwfY19odADe3uaP+XnIF7D9OuwkP8OljrGWEpNc=;
- b=W/+J/nBGJYqenULvV8n2OEI0ryyf1n68db59hWF/yoEEcZReyIW5ccHzYqM2/YvJx70Mo2
- ViUXlMfWcKYdOjbgjH1vI0EGTj/FREXKr4vasiR5HRJRRGwoFzaLGlhNebtMipTI1/HqIf
- 6lVuv8UcVy2sM8lFAyeTbhfsZCXJdWw=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=BFhhKtuB/GLN0X0tr2Wjb3qJ1u13+DKgZlyOT3giFE4=;
+ b=R+0WiTRMskL7PnUeoCAixKOU86VH040zLsispwP3Z73OCe3JEuGD3fHv9jnrrmxFK9xShH
+ t8MO5tqrcYkHiR/7zY0M6NRPKO4Zl7JpEm3I4nHqfl34sDdVgl8eNKqsGoD21pren3qSPa
+ 9J/PV4d3roeXB2lXiccgaW8oQ3Y18l4=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-302-K1vl_8BNMwi369vXV6Llfg-1; Mon,
- 28 Apr 2025 06:26:53 -0400
-X-MC-Unique: K1vl_8BNMwi369vXV6Llfg-1
-X-Mimecast-MFC-AGG-ID: K1vl_8BNMwi369vXV6Llfg_1745836012
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-265-9okCYOIxOOiLXrqWHhbq1Q-1; Mon,
+ 28 Apr 2025 06:26:57 -0400
+X-MC-Unique: 9okCYOIxOOiLXrqWHhbq1Q-1
+X-Mimecast-MFC-AGG-ID: 9okCYOIxOOiLXrqWHhbq1Q_1745836016
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E1D2E18004A7; Mon, 28 Apr 2025 10:26:51 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 55B72195608C; Mon, 28 Apr 2025 10:26:56 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.44.32.14])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D196D180045C; Mon, 28 Apr 2025 10:26:47 +0000 (UTC)
+ id 700B7180045C; Mon, 28 Apr 2025 10:26:52 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, peter.maydell@linaro.org, imammedo@redhat.com,
  anisinha@redhat.com, mst@redhat.com, shannon.zhaosl@gmail.com
 Cc: pbonzini@redhat.com,
 	Jonathan.Cameron@huawei.com
-Subject: [RFC 03/24] hw/i386/acpi-build: Fix build_append_notfication_callback
- typo
-Date: Mon, 28 Apr 2025 12:25:29 +0200
-Message-ID: <20250428102628.378046-4-eric.auger@redhat.com>
+Subject: [RFC 04/24] hw/i386/acpi-build: Make aml_pci_device_dsm() static
+Date: Mon, 28 Apr 2025 12:25:30 +0200
+Message-ID: <20250428102628.378046-5-eric.auger@redhat.com>
 In-Reply-To: <20250428102628.378046-1-eric.auger@redhat.com>
 References: <20250428102628.378046-1-eric.auger@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124;
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
@@ -85,47 +84,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename build_append_notfication_callback into
-build_append_notification_callback
+No need to export aml_pci_device_dsm() as it is only used
+in hw/i386/acpi-build.c.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
 ---
- hw/i386/acpi-build.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/hw/acpi/pci.h | 1 -
+ hw/i386/acpi-build.c  | 2 +-
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
+diff --git a/include/hw/acpi/pci.h b/include/hw/acpi/pci.h
+index 6359d574fd..ab0187a894 100644
+--- a/include/hw/acpi/pci.h
++++ b/include/hw/acpi/pci.h
+@@ -36,7 +36,6 @@ typedef struct AcpiMcfgInfo {
+ 
+ void build_mcfg(GArray *table_data, BIOSLinker *linker, AcpiMcfgInfo *info,
+                 const char *oem_id, const char *oem_table_id);
+-Aml *aml_pci_device_dsm(void);
+ 
+ void build_append_pci_bus_devices(Aml *parent_scope, PCIBus *bus);
+ void build_pci_bridge_aml(AcpiDevAmlIf *adev, Aml *scope);
 diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index 3fffa4a332..85c8a8566b 100644
+index 85c8a8566b..864f6b5bf8 100644
 --- a/hw/i386/acpi-build.c
 +++ b/hw/i386/acpi-build.c
-@@ -589,8 +589,8 @@ void build_append_pci_bus_devices(Aml *parent_scope, PCIBus *bus)
-     }
+@@ -338,7 +338,7 @@ build_facs(GArray *table_data)
+     g_array_append_vals(table_data, reserved, 40); /* Reserved */
  }
  
--static bool build_append_notfication_callback(Aml *parent_scope,
--                                              const PCIBus *bus)
-+static bool build_append_notification_callback(Aml *parent_scope,
-+                                               const PCIBus *bus)
+-Aml *aml_pci_device_dsm(void)
++static Aml *aml_pci_device_dsm(void)
  {
      Aml *method;
-     PCIBus *sec;
-@@ -604,7 +604,7 @@ static bool build_append_notfication_callback(Aml *parent_scope,
-             continue;
-         }
-         nr_notifiers = nr_notifiers +
--                       build_append_notfication_callback(br_scope, sec);
-+                       build_append_notification_callback(br_scope, sec);
-         /*
-          * add new child scope to parent
-          * and keep track of bus that have PCNT,
-@@ -1773,7 +1773,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
-         PCIBus *b = PCI_HOST_BRIDGE(pci_host)->bus;
  
-         scope = aml_scope("\\_SB.PCI0");
--        has_pcnt = build_append_notfication_callback(scope, b);
-+        has_pcnt = build_append_notification_callback(scope, b);
-         if (has_pcnt) {
-             aml_append(dsdt, scope);
-         }
 -- 
 2.49.0
 
