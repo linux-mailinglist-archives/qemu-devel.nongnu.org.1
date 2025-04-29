@@ -2,46 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9EDAAA09DD
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 13:36:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4B80AA09BE
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 13:35:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9jDr-00077J-2z; Tue, 29 Apr 2025 07:33:59 -0400
+	id 1u9jDs-0007AG-7U; Tue, 29 Apr 2025 07:34:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1u9jDh-0006vc-V1; Tue, 29 Apr 2025 07:33:50 -0400
+ id 1u9jDh-0006vG-LJ; Tue, 29 Apr 2025 07:33:49 -0400
 Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1u9jDd-0008Ef-D0; Tue, 29 Apr 2025 07:33:49 -0400
+ id 1u9jDd-0008Eg-G6; Tue, 29 Apr 2025 07:33:49 -0400
 Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
  [IPv6:2a02:6b8:c42:cca4:0:640:432b:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 1088861324;
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id BC2336139C;
  Tue, 29 Apr 2025 14:33:38 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:b423::1:3a])
  by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id bXTAnY0Fe0U0-txTTJjks; Tue, 29 Apr 2025 14:33:37 +0300
+ ESMTPSA id bXTAnY0Fe0U0-et8shCl8; Tue, 29 Apr 2025 14:33:38 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1745926417;
- bh=Vm2HAZVgfPIq6W6SB0U0k40btXOrHXbeUMpwUF6dPwE=;
- h=Message-ID:Date:Cc:Subject:To:From;
- b=ABGcd66Tzet0Nnou13FM7KMfc+/+nCQ5RGQUj3RMJniwO3umcJt0Bu+Jk82cWhcWY
- YIfLLk/agXQpq15fmy5zMFsRfEWeFg/dlh7GV6S4F4i9dwQ+CLadCZ5SH0AcJXKJiC
- q1X6ZEYc1BqJrnXCb7iZgzZyepfQf6WROyMK+j8c=
+ s=default; t=1745926418;
+ bh=5oseaxkYuuPVOra7hdGoqyPtzdfbXPYktFbnwhW/LzQ=;
+ h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
+ b=Vhfbbb94yRIIRPX+ZZx/nsvF3UXTeFPyyufiRRhkmnPWZYySwwkd0/JJsQNP2xREy
+ n1jTIf/xGRBYPxpQJ6xot+gyhZ1TNlXppFvOQ0gpc1tebmOJ+nKWujq/KGk/bCFySG
+ BB/BXMqKS/p+x36OJMMMifoR17dxgkKMrDKr981o=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org,
+Cc: qemu-devel@nongnu.org, Vincent Vanlaer <libvirt-e6954efa@volkihar.be>,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PULL 0/8] block-job patches 2025-04-29
-Date: Tue, 29 Apr 2025 14:33:22 +0300
-Message-ID: <20250429113335.423535-1-vsementsov@yandex-team.ru>
+Subject: [PULL 1/8] block: get type of block allocation in commit_run
+Date: Tue, 29 Apr 2025 14:33:23 +0300
+Message-ID: <20250429113335.423535-2-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250429113335.423535-1-vsementsov@yandex-team.ru>
+References: <20250429113335.423535-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=178.154.239.200;
@@ -69,58 +71,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 73d29ea2417b58ca55fba1aa468ba38e3607b583:
+From: Vincent Vanlaer <libvirt-e6954efa@volkihar.be>
 
-  Merge tag 'for-upstream' of https://repo.or.cz/qemu/kevin into staging (2025-04-27 12:47:23 -0400)
+bdrv_co_common_block_status_above not only returns whether the block is
+allocated, but also if it contains zeroes.
 
-are available in the Git repository at:
+Signed-off-by: Vincent Vanlaer <libvirt-e6954efa@volkihar.be>
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Message-Id: <20241026163010.2865002-2-libvirt-e6954efa@volkihar.be>
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+---
+ block/commit.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-  https://gitlab.com/vsementsov/qemu.git tags/pull-block-jobs-2025-04-29
-
-for you to fetch changes up to 300ef7b9d16067f3d8d85f5c36006c6d9637e07f:
-
-  blockdev-backup: Add error handling option for copy-before-write jobs (2025-04-29 12:55:28 +0300)
-
-----------------------------------------------------------------
-block-job patches
-
-- deprecate some old block-job- APIs
-- on-cbw-error option for backup
-- more efficient zero handling in block commit
-
-----------------------------------------------------------------
-Raman Dzehtsiar (1):
-      blockdev-backup: Add error handling option for copy-before-write jobs
-
-Vincent Vanlaer (5):
-      block: get type of block allocation in commit_run
-      block: move commit_run loop to separate function
-      block: refactor error handling of commit_iteration
-      block: allow commit to unmap zero blocks
-      block: add test non-active commit with zeroed data
-
-Vladimir Sementsov-Ogievskiy (2):
-      qapi: synchronize jobs and block-jobs documentation
-      qapi/block-core: deprecate some block-job- APIs
-
- block/backup.c                                  |   3 +-
- block/commit.c                                  | 117 +++++++++++++++++-------
- block/copy-before-write.c                       |   2 +
- block/copy-before-write.h                       |   1 +
- block/replication.c                             |   4 +-
- blockdev.c                                      |   6 ++
- docs/about/deprecated.rst                       |  31 +++++++
- include/block/block_int-global-state.h          |   2 +
- qapi/block-core.json                            |  95 ++++++++++++++-----
- qapi/job.json                                   |  30 +++++-
- tests/qemu-iotests/tests/commit-zero-blocks     |  96 +++++++++++++++++++
- tests/qemu-iotests/tests/commit-zero-blocks.out |  54 +++++++++++
- tests/qemu-iotests/tests/copy-before-write      |  90 ++++++++++++++++++
- tests/qemu-iotests/tests/copy-before-write.out  |   4 +-
- 14 files changed, 470 insertions(+), 65 deletions(-)
- create mode 100755 tests/qemu-iotests/tests/commit-zero-blocks
- create mode 100644 tests/qemu-iotests/tests/commit-zero-blocks.out
-
+diff --git a/block/commit.c b/block/commit.c
+index 5df3d05346..ba0ba59316 100644
+--- a/block/commit.c
++++ b/block/commit.c
+@@ -15,6 +15,8 @@
+ #include "qemu/osdep.h"
+ #include "qemu/cutils.h"
+ #include "trace.h"
++#include "block/block-common.h"
++#include "block/coroutines.h"
+ #include "block/block_int.h"
+ #include "block/blockjob_int.h"
+ #include "qapi/error.h"
+@@ -167,9 +169,13 @@ static int coroutine_fn commit_run(Job *job, Error **errp)
+             break;
+         }
+         /* Copy if allocated above the base */
+-        ret = blk_co_is_allocated_above(s->top, s->base_overlay, true,
+-                                        offset, COMMIT_BUFFER_SIZE, &n);
+-        copy = (ret > 0);
++        WITH_GRAPH_RDLOCK_GUARD() {
++            ret = bdrv_co_common_block_status_above(blk_bs(s->top),
++                s->base_overlay, true, true, offset, COMMIT_BUFFER_SIZE,
++                &n, NULL, NULL, NULL);
++        }
++
++        copy = (ret >= 0 && ret & BDRV_BLOCK_ALLOCATED);
+         trace_commit_one_iteration(s, offset, n, ret);
+         if (copy) {
+             assert(n < SIZE_MAX);
 -- 
 2.48.1
 
