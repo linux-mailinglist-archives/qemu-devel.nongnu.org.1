@@ -2,88 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FBF4AA135D
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 19:05:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA385AA1428
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 19:13:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9oNj-00052V-1s; Tue, 29 Apr 2025 13:04:31 -0400
+	id 1u9oUo-0008EK-E7; Tue, 29 Apr 2025 13:11:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rakeshjb010@gmail.com>)
- id 1u9oNh-0004zj-4b
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 13:04:29 -0400
-Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rakeshjb010@gmail.com>)
- id 1u9oNf-0004oI-EO
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 13:04:28 -0400
-Received: by mail-pj1-x102c.google.com with SMTP id
- 98e67ed59e1d1-30384072398so5366526a91.0
- for <qemu-devel@nongnu.org>; Tue, 29 Apr 2025 10:04:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1745946265; x=1746551065; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=3pXfIvvLPEoJkDhc+UeevpmG/kxQGyml4Jhd4d3dRFg=;
- b=Y3DaX+3zyHgTWI/YoPPPPOCphSpOFwbtTHR/zBJ5ZmE8lT4hljhiczB6L76EA1CRnz
- u/k21aAqFg/GSxMOc4cuSRMtOO2SQZ3hMy6xvgFqYo/xLKlWnJ9VAbZGsxWlcIZbMJ/+
- +JlZoJ7igseiZ6gvMimMkc16SrCf6TfBPF/vHzb0EViFF6vmsgKLCx+7X9HapQY3b6t3
- 4xy4Ir7nfN3oiO1WTF+9qzHnshnEHdUoEYBNGnq5IqtrIzYVWmwIS5OYguGbaJphdV5q
- kfSKmrrpzGQc/yAYNYGc8TElC+5jGPv+21vaumZy3U3PfizxX7ON0SCwnSTotZ2v1ipc
- C2Bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745946265; x=1746551065;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=3pXfIvvLPEoJkDhc+UeevpmG/kxQGyml4Jhd4d3dRFg=;
- b=iAxFEwby3LK3qtTAfyE7ir4g7C0aqMeCqOYn8ZU86JbgOyP+wCBlYD2IC9IzqBHT3M
- 6wo5PYiYsSvNL9KjjUxtiBRDkfUOb1gfc1aUbC6ZwW49qQZEYJiaqprv3HsULyrEUi6W
- Ax8fp1u3R4fjU9Vg/8gH7TYV2+kQTBCjvSqIvcrsNywhHlBDnGfOWyRKkIz/+X9RYNXz
- tyL3lOz+U096r0dtiMD+wyqZjXy3g8fepZpugv3GiOTGobV58bWKLvEUkrH00ArhVBF6
- mi4Ompy9rmHo6z27Q19tFR7eCP1hElQmMVWOJMuq63PuLo2G++61+jm8LZznhlZloxPh
- DMRw==
-X-Gm-Message-State: AOJu0Yx1SbCeQBbINe7TIqZQ9APtx1Fw4EFJaKxjRRlvo6PlE08TG9Ko
- pv3HqEcX+bbAZBSwBaWJWSEhqXalTYApI+0YxN1Iik1DGTAfjbyNQCnCgQ==
-X-Gm-Gg: ASbGncveHUexcMDYzEIKJRrkMc50NRkhg1R5hG4Lv2F+u3j+zwHnvradDd6IrPoRNCK
- H2Iv4odIfOPSSpjkzWqJcw5+5Xk/hnZvsfcjXo2JG11wJjb/FVL50TSBahWRmq1uyqIE/9utpj6
- jarjbZSmNaqb0atHBVMb7MXnG50yFrOZuzkVq+8VlWBYj4zOCt7XYfhQipVNgUB3o0WoF9msagp
- YE0uE8k2IVUQzS1kp6CmC7fDlbIxLMg0aRMN2JYng9VfdWRfg1IdlaTstaeX/nxham291MHkNeC
- KxocwOe5eCUZDCSnsbgVaReOFQvLj6j9xWM/GeNVHLWnVL+w
-X-Google-Smtp-Source: AGHT+IEc2hRXVvRnzcIirO/+1rtfUIfy2I3o1g/5fUAWYTpibv0yNgr4C0fuC8NqXBvFb3OAvX5okQ==
-X-Received: by 2002:a17:90b:254d:b0:2ee:f076:20fb with SMTP id
- 98e67ed59e1d1-30a23de9182mr5104361a91.17.1745946265349; 
- Tue, 29 Apr 2025 10:04:25 -0700 (PDT)
-Received: from blackjackal.. ([2409:40f4:2012:c135:ab3b:a163:4eeb:c538])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-309ef03bb26sm12678043a91.6.2025.04.29.10.04.21
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Apr 2025 10:04:25 -0700 (PDT)
-From: Rakesh Jeyasingh <rakeshjb010@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, philmd@linaro.org, thuth@redhat.com,
- balaton@eik.bme.hu, rakeshjb010@gmail.com
-Subject: [PATCH v5 2/2] hw/pci-host: Remove unused pci_host_data_be_ops
-Date: Tue, 29 Apr 2025 22:33:54 +0530
-Message-ID: <20250429170354.150581-3-rakeshjb010@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250429170354.150581-1-rakeshjb010@gmail.com>
-References: <20250429170354.150581-1-rakeshjb010@gmail.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1u9oUi-0008Do-KU; Tue, 29 Apr 2025 13:11:44 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1u9oUf-0006bY-VC; Tue, 29 Apr 2025 13:11:44 -0400
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 7E8A555D239;
+ Tue, 29 Apr 2025 19:11:37 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id uWSJJS7hS5iB; Tue, 29 Apr 2025 19:11:35 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 19F0C55C592; Tue, 29 Apr 2025 19:11:35 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 17D17745682;
+ Tue, 29 Apr 2025 19:11:35 +0200 (CEST)
+Date: Tue, 29 Apr 2025 19:11:35 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>
+cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [RFC PATCH] target/ppc: Inline most of dcbz helper
+In-Reply-To: <87bjsf3s40.fsf@draig.linaro.org>
+Message-ID: <9438979e-b809-8209-bed0-7ac4b0c10912@eik.bme.hu>
+References: <20240701005939.5A0AF4E6000@zero.eik.bme.hu>
+ <d3c6c417-20d9-a215-2a5c-86fa084b00fa@eik.bme.hu>
+ <173c9111-e065-0dd5-c276-6bbc0351f9cc@eik.bme.hu>
+ <2b969dcd-4a82-9086-803d-c52ea274fefb@eik.bme.hu>
+ <e4fc537a-a15e-77dd-1167-32b12ee7a22d@eik.bme.hu>
+ <87bjsf3s40.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
- envelope-from=rakeshjb010@gmail.com; helo=mail-pj1-x102c.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
+Content-Type: multipart/mixed;
+ boundary="3866299591-1258299402-1745946695=:85983"
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,61 +69,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-pci_host_data_be_ops became unused after endianness fixes
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Rakesh Jeyasingh <rakeshjb010@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/pci/pci_host.c          | 6 ------
- include/hw/pci-host/dino.h | 4 ----
- include/hw/pci/pci_host.h  | 1 -
- 3 files changed, 11 deletions(-)
+--3866299591-1258299402-1745946695=:85983
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-diff --git a/hw/pci/pci_host.c b/hw/pci/pci_host.c
-index abe83bbab8..7179d99178 100644
---- a/hw/pci/pci_host.c
-+++ b/hw/pci/pci_host.c
-@@ -217,12 +217,6 @@ const MemoryRegionOps pci_host_data_le_ops = {
-     .endianness = DEVICE_LITTLE_ENDIAN,
- };
- 
--const MemoryRegionOps pci_host_data_be_ops = {
--    .read = pci_host_data_read,
--    .write = pci_host_data_write,
--    .endianness = DEVICE_BIG_ENDIAN,
--};
--
- static bool pci_host_needed(void *opaque)
- {
-     PCIHostState *s = opaque;
-diff --git a/include/hw/pci-host/dino.h b/include/hw/pci-host/dino.h
-index fd7975c798..5dc8cdf610 100644
---- a/include/hw/pci-host/dino.h
-+++ b/include/hw/pci-host/dino.h
-@@ -109,10 +109,6 @@ static const uint32_t reg800_keep_bits[DINO800_REGS] = {
- struct DinoState {
-     PCIHostState parent_obj;
- 
--    /*
--     * PCI_CONFIG_ADDR is parent_obj.config_reg, via pci_host_conf_be_ops,
--     * so that we can map PCI_CONFIG_DATA to pci_host_data_be_ops.
--     */
-     uint32_t config_reg_dino; /* keep original copy, including 2 lowest bits */
- 
-     uint32_t iar0;
-diff --git a/include/hw/pci/pci_host.h b/include/hw/pci/pci_host.h
-index e52d8ec2cd..954dd446fa 100644
---- a/include/hw/pci/pci_host.h
-+++ b/include/hw/pci/pci_host.h
-@@ -68,6 +68,5 @@ uint32_t pci_data_read(PCIBus *s, uint32_t addr, unsigned len);
- extern const MemoryRegionOps pci_host_conf_le_ops;
- extern const MemoryRegionOps pci_host_conf_be_ops;
- extern const MemoryRegionOps pci_host_data_le_ops;
--extern const MemoryRegionOps pci_host_data_be_ops;
- 
- #endif /* PCI_HOST_H */
--- 
-2.43.0
+On Tue, 29 Apr 2025, Alex Bennée wrote:
+> BALATON Zoltan <balaton@eik.bme.hu> writes:
+>> On Mon, 28 Apr 2025, BALATON Zoltan wrote:
+>>> On Mon, 28 Apr 2025, BALATON Zoltan wrote:
+>>>> On Thu, 24 Apr 2025, BALATON Zoltan wrote:
+>>>>>> The test case I've used came out of a discussion about very slow
+>>>>>> access to VRAM of a graphics card passed through with vfio the reason
+>>>>>> for which is still not clear but it was already known that dcbz is
+>>>>>> often used by MacOS and AmigaOS for clearing memory and to avoid
+>>>>>> reading values about to be overwritten which is faster on real CPU but
+>>>>>> was found to be slower on QEMU. The optimised copy routines were
+>>>>>> posted here:
+> <snip>
+>>
+>> I have tried profiling the dst in real card vfio vram with dcbz case
+>> (with 100 iterations instead of 10000 in above tests) but I'm not sure
+>> I understand the results. vperm and dcbz show up but not too high. Can
+>> somebody explain what is happening here and where the overhead likely
+>> comes from? Here is the profile result I got:
+>>
+>> Samples: 104K of event 'cycles:Pu', Event count (approx.): 122371086557
+>>   Children      Self  Command          Shared Object            Symbol
+>> -   99.44%     0.95%  qemu-system-ppc  qemu-system-ppc          [.] cpu_exec_loop
+>>    - 98.49% cpu_exec_loop
+>>       - 98.48% cpu_tb_exec
+>>          - 90.95% 0x7f4e705d8f15
+>>               helper_ldub_mmu
+>>               do_ld_mmio_beN
+>>             - cpu_io_recompile
+>
+> This looks like the dbz instructions are being used to clear device
+> memory and tripping over the can_do_io check (normally the translator
+> tries to ensure all device access is at the end of a block).
 
+If you look at the benchmark results I posted earlier in this thread in 
+https://lists.nongnu.org/archive/html/qemu-ppc/2025-04/msg00326.html
+I also tried using dcba instead of dcbz in the CopyFromVRAM* functions but 
+that only helped very little so not sure it's because of dcbz. Then I 
+thought it might be VPERM but the NoAltivec variants are also only a 
+little faster. It could be that using 64 bit access instead of 128 bit 
+(the NoAltivec functions use FPU regs) makes it slower while avoiding 
+VPERM makes it faster which cancel each other but the profile also shows 
+VPERM not high and somebody else also tested this with -cpu g3 and only 
+got 1% faster result so maybe it's also not primarily because of VPERM but 
+there's a bigger overhead before these..
+
+> You could try ending the block on dbz instructions and seeing if that
+> helps. Normally I would expect the helper to be more efficient as it can
+> probe the whole address range once and then use host insns to blat the
+> memory.
+
+Maybe I could try that if I can do that the same way as done in 
+io_prepare.
+
+>>                - 45.79% cpu_loop_exit_noexc
+>>                   - cpu_loop_exit
+>>                     __longjmp_chk
+>>                     cpu_exec_setjmp
+>>                   - cpu_exec_loop
+>>                      - 45.78% cpu_tb_exec
+>>                           42.35% 0x7f4e6f3f0000
+>>                         - 0.72% 0x7f4e99f37037
+>>                              helper_VPERM
+>>                         - 0.68% 0x7f4e99f3716d
+>>                              helper_VPERM
+>>                - 45.16% rr_cpu_thread_fn
+>
+> Hmm you seem to be running in icount mode here for some reason.
+
+No idea why. I had no such options and complied without --enable-debug and 
+nothing special on QEMU command just defaults options. How can I check if 
+icount is enabled? Can profiling with perf tool interfere? I thought that 
+only reads CPU performance counters and does not attach to the process 
+otherwise.
+
+Regards,
+BALATON Zoltan
+
+>>                   - 45.16% tcg_cpu_exec
+>>                      - 45.15% cpu_exec
+>>                         - 45.15% cpu_exec_setjmp
+>>                            - cpu_exec_loop
+>>                               - 45.14% cpu_tb_exec
+>>                                    42.08% 0x7f4e6f3f0000
+>>                                  - 0.72% 0x7f4e99f37037
+>>                                       helper_VPERM
+>>                                  - 0.67% 0x7f4e99f3716d
+>>                                       helper_VPERM
+> <snip>
+>
+>
+--3866299591-1258299402-1745946695=:85983--
 
