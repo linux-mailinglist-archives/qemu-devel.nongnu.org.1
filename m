@@ -2,64 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8579AA0B17
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 14:06:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0C06AA0B61
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 14:19:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9jhy-0005VM-HT; Tue, 29 Apr 2025 08:05:06 -0400
+	id 1u9jtw-0002WI-Mv; Tue, 29 Apr 2025 08:17:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1u9jhs-0005UT-UG
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 08:05:01 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1u9jhp-0006Fr-TW
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 08:05:00 -0400
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 7A2D455D23B;
- Tue, 29 Apr 2025 14:04:54 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id p3F8Upxsfi85; Tue, 29 Apr 2025 14:04:52 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 72C5E55C592; Tue, 29 Apr 2025 14:04:52 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 70F53745682;
- Tue, 29 Apr 2025 14:04:52 +0200 (CEST)
-Date: Tue, 29 Apr 2025 14:04:52 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Markus Armbruster <armbru@redhat.com>
-cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>, 
- Peter Krempa <pkrempa@redhat.com>, qemu-devel@nongnu.org, 
- richard.henderson@linaro.org, stefanha@redhat.com, 
- Michael Roth <michael.roth@amd.com>, pbonzini@redhat.com, 
- peter.maydell@linaro.org, thuth@redhat.com, jsnow@redhat.com, 
- philmd@linaro.org, 
- =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>, 
- devel@lists.libvirt.org
-Subject: Re: [RFC PATCH 0/3] single-binary: make QAPI generated files
- common
-In-Reply-To: <875xinnzok.fsf@pond.sub.org>
-Message-ID: <c1a03806-b9f5-6301-4cc0-fcb571ed2b37@eik.bme.hu>
-References: <20250424183350.1798746-1-pierrick.bouvier@linaro.org>
- <87a584b69n.fsf@pond.sub.org> <aA9ChuXrkmx1Igy5@angien.pipo.sk>
- <8734dswnm3.fsf@pond.sub.org>
- <2cc27344-8cfd-4435-9d41-79b86f61d537@linaro.org>
- <875xinnzok.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <magnuskulke@linux.microsoft.com>)
+ id 1u9jtj-0002Uo-El
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 08:17:17 -0400
+Received: from linux.microsoft.com ([13.77.154.182])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <magnuskulke@linux.microsoft.com>) id 1u9jth-0008NJ-4E
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 08:17:15 -0400
+Received: from example.com (unknown [108.142.230.59])
+ by linux.microsoft.com (Postfix) with ESMTPSA id E09E0211AD34;
+ Tue, 29 Apr 2025 05:17:05 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E09E0211AD34
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+ s=default; t=1745929027;
+ bh=1XPxPir8lra0UNtYxSHBdrPL662eZyHFWKwACucdB8s=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=VJKNy9Ih1Njm+/PZ/lL+luaU1CaL6kwLHfN42NwXBc/HFbLZnjDjwtdDRVgWZTP7L
+ ZKtbUa7eTgo+uwba13Pli+OoRwl1vzI5YBcuy3E8wHKdNxC06S4GvqSMRaFV9Vu3O1
+ 5IFiaSjnosFAlwKcioi3gLi4KLgG8R/7g2Gmv4xU=
+Date: Tue, 29 Apr 2025 14:17:01 +0200
+From: Magnus Kulke <magnuskulke@linux.microsoft.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, Roman Bolshakov <rbolshakov@ddn.com>,
+ Cameron Esfahani <dirty@apple.com>, Wei Liu <wei.liu@kernel.org>,
+ Phil Dennis-Jordan <phil@philjordan.eu>
+Subject: Re: [PATCH v3] target/i386/emulate: remove rflags leftovers
+Message-ID: <aBDBExDzR57PcRre@example.com>
+References: <20250429093319.5010-1-magnuskulke@linux.microsoft.com>
+ <CABgObfaxzxdBf3f-JwKA8osOwZZQf-dqpsambpAFhPvkvjDo8w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CABgObfaxzxdBf3f-JwKA8osOwZZQf-dqpsambpAFhPvkvjDo8w@mail.gmail.com>
+Received-SPF: pass client-ip=13.77.154.182;
+ envelope-from=magnuskulke@linux.microsoft.com; helo=linux.microsoft.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,159 +66,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 29 Apr 2025, Markus Armbruster wrote:
-> Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
->> On 4/28/25 4:07 AM, Markus Armbruster wrote:
->>> Peter Krempa <pkrempa@redhat.com> writes:
->>>
->>>> So what should libvirt do once multiple targets are supported?
->>>>
->>>> How do we query CPUs for each of the supported targets?
->>>>
->>
->> It's kind of a similar question we have to solve now with QEMU code.
->> What happens when a symbol is duplicated, and available only for several
->> targets?
->>
->> In this case, we found various approaches to solve this:
->> - unify this symbol for all targets (single implementation)
->> - unify all targets to provide this symbol (multiple impl, all targets)
->> - rename symbols adding {arch} suffix, so it's disambiguated by name
->> - create a proper interface which an available function (multiple impl,
->> selective targets)
->>
->> In the case of query-cpu-definitions, my intuition is that we want to
->> have a single implementation, and that we return *all* the cpus, merging
->> all architectures. In the end, we (and libvirt also) should think out of
->> the "target" box. It's an implementation detail, based on the fact QEMU
->> had 'targets' associated to various binaries for a long time and not a
->> concept that should leak into all consumers.
->>
->>>> Will the result be the same if we query them one at a time or all at
->>>> once?
->>>
->>> Pierrick's stated goal is to have no noticable differences between the
->>> single binary and the qemu-system-<target> it covers.  This is obviously
->>> impossible if we can interact with the single binary before the target
->>> is fixed.
->>>
->>
->> Right.
->> At this point, we can guarantee the target will be fixed before anything
->> else, at the start of main(). It's obviously an implementation choice,
->> but to be honest, I don't see what we would gain from having a "null"
->> default QEMU target, unable to emulate anything.
->>
->>>>> This requires fixing the target before introspection.  Unless this is
->>>>> somehow completely transparent (wrapper scripts, or awful hacks based on
->>>>> the binary's filename, perhaps), management applications may have to be
->>>>> adjusted to actually do that.
->>>>
->>>> As noted filename will not work. Users can specify any filename and
->>>> create override scripts or rename the binary.
->>>
->>> True.
->>>
->>
->> I would prefer to not open this pandora box on this thread, but don't
->> worry, the best will be done to support all those cases, including
->> renaming the binary, allowing any prefix, suffix, as long as name stays
->> unambiguous. If you rename it to qemu-ok, how can you expect anything?
->>
->> We can provide the possibility to have a "default" target set at compile
->> time, for distributors creating their own specific QEMU binaries. But in
->> the context of classical software distribution, it doesn't make any sense.
->
-> I don't wish to derail this thread, but we've been dancing around the
-> question of how to best fix the target for some time.  I think we should
-> talk about it for real.
->
-> Mind, this is not an objection to your larger "single binary" idea.  It
-> could be only if it was an intractable problem, but I don't think it is.
->
-> You want the single binary you're trying to create to be a drop-in
-> replacement for per-target binaries.
->
-> "Drop-in replacement" means existing usage continues to work.
-> Additional interfaces are not a problem.
->
-> To achieve "drop-in replacement", the target needs to be fixed
-> automatically, and before the management application can further
-> interact with it.
->
-> If I understand you correctly, you're proposing to use argv[0] for that,
-> roughly like this: assume it's qemu-system-<target>, extract <target>
-> first thing in main(), done.
->
-> What if it's not named that way?  If I understand you correctly, you're
-> proposing to fall back to a compiled-in default target.
->
-> I don't think this is going to fly.
->
-> Developers rename the binary all the time, and expect this not to change
-> behavior.  For instance, I routinely rename qemu-FOO to qemu-FOO.old or
-> qemu-FOO.COMMIT-HASH to let me compare behavior easily.
+On Tue, Apr 29, 2025 at 12:02:48PM +0200, Paolo Bonzini wrote:
+> Il mar 29 apr 2025, 11:33 Magnus Kulke <magnuskulke@linux.microsoft.com> ha
+> scritto:
+> 
+> > Fixes: c901905ea670 ("target/i386/emulate: remove flags_mask")
+> >
+> > In c901905ea670 rflags have been removed from `x86_decode`, but there
+> > were some leftovers.
+> >
+> > Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
+> >
+> 
+> Thanks, I will queue thos; I have some more emulator patches but no way to
+> test that, could you please help?
+> 
+> Paolo
+> 
 
-These would be handled by doing only a prefix match with strncmp instead 
-of strcmp on argv[0].
+Yes, I'm using the generalized emulator in the context of adding the MSHV
+accelerator. (I'll probably get around sending an RFC patchset this week for
+it). There were minor compilation issues w/ the emulator code, that I had to
+fix to make it compile on Linux. However I don't have access to an x86_64
+Mac for development either, so I can't test a HVF build.
 
-> We could relax the assumption to support such renames.  Developers then
-> need to be aware of what renames are supported.  Meh.
->
-> The more we relax the pattern, the likelier surprising behavior becomes.
->
-> We could mitigate surprises by eliminating the built-in default target.
->
-> Users invoke their binaries with their own names, too.  If Joe R. User
-> finds qemu-system-<joe's-fav-target> too much to type, and creates a
-> symlink named q to it, more power to him!
->
-> Distributions have packaged renamed binaries.  qemu-kvm has been used
-> quite widely.
->
-> In neither of these cases, relaxing the pattern helps.
+Best,
 
-But completely renaming is not solved even by prefix match.
+Magnus
 
-> The least bad solution I can see so far is a new option -target.
->
-> Instead of turning the target-specific binaries into links to / copies
-> of the single binary, they become wrappers that pass -target as the
-> first option.  We need to make sure this option is honored in time then,
-> which should be easy enough.
-
-I proposed before that since target (or arch because target is used in 
-different senses so may be confusing) is usually tied to the board it 
-could be made part of the board name. Such as ppc:g3beige or x86:pc. Then 
-you can search the board list and find a match for the -machine option and 
-find the arch from that. There are only a few machines that are 
-problematic that behave differently based on which binary they are in and 
-use different default -cpu type based on that, such as mac99 and maybe pc 
-and q35 (I don't know if these x86 machines use same default cpu in 
-qemu-system-i386 and qemu-system-x86_64) but those could be solved by 
-deprecating this behaviour and adding different machines for each variant 
-then by the time we have a single binary they would fit in this scheme.
-
-One question is what arch to use for heterogeneous machines using multiple 
-archs. Those still may have one that's considered a main arch so could be 
-grouped there or we may use multi:name format for those that cannot have a 
-main architecture. Or we can list them with multiple names, one for each 
-arch so any of them could be used and on start to select the machine and 
-the binary can check that all of the listed archs are compiled in. 
-Specifying the arch for -machine would also be optional anyway unless we 
-have two machines with same name but different arch which is rare.
-
-Regards,
-BALATON Zoltan
-
-> If you invoke the single binary directly, you need to pass -target
-> yourself.  If you don't to pass it, or pass it late in the command line,
-> you open up a window for interaction with indeterminate target.
-> Target-specific interfaces could exhibit different behavior then, even
-> fail.  That's fine under "additional interfaces are not a problem".
->
-> Thoughts?
->
->
->
+> ---
+> >  target/i386/emulate/x86_decode.c | 17 ++++++-----------
+> >  1 file changed, 6 insertions(+), 11 deletions(-)
+> >
+> > diff --git a/target/i386/emulate/x86_decode.c
+> > b/target/i386/emulate/x86_decode.c
+> > index 7fee219687..7efa2f570e 100644
+> > --- a/target/i386/emulate/x86_decode.c
+> > +++ b/target/i386/emulate/x86_decode.c
+> > @@ -1408,7 +1408,7 @@ struct decode_tbl _2op_inst[] = {
+> >  };
+> >
+> >  struct decode_x87_tbl invl_inst_x87 = {0x0, 0, 0, 0, 0, false, false,
+> > NULL,
+> > -                                       NULL, decode_invalid, 0};
+> > +                                       NULL, decode_invalid};
+> >
+> >  struct decode_x87_tbl _x87_inst[] = {
+> >      {0xd8, 0, 3, X86_DECODE_CMD_FADD, 10, false, false,
+> > @@ -1456,8 +1456,7 @@ struct decode_x87_tbl _x87_inst[] = {
+> >       decode_x87_modrm_st0, NULL, decode_d9_4},
+> >      {0xd9, 4, 0, X86_DECODE_CMD_INVL, 4, false, false,
+> >       decode_x87_modrm_bytep, NULL, NULL},
+> > -    {0xd9, 5, 3, X86_DECODE_CMD_FLDxx, 10, false, false, NULL, NULL, NULL,
+> > -     RFLAGS_MASK_NONE},
+> > +    {0xd9, 5, 3, X86_DECODE_CMD_FLDxx, 10, false, false, NULL, NULL,
+> > NULL},
+> >      {0xd9, 5, 0, X86_DECODE_CMD_FLDCW, 2, false, false,
+> >       decode_x87_modrm_bytep, NULL, NULL},
+> >
+> > @@ -1478,20 +1477,17 @@ struct decode_x87_tbl _x87_inst[] = {
+> >       decode_x87_modrm_st0, NULL},
+> >      {0xda, 3, 3, X86_DECODE_CMD_FCMOV, 10, false, false,
+> > decode_x87_modrm_st0,
+> >       decode_x87_modrm_st0, NULL},
+> > -    {0xda, 4, 3, X86_DECODE_CMD_INVL, 10, false, false, NULL, NULL, NULL,
+> > -     RFLAGS_MASK_NONE},
+> > +    {0xda, 4, 3, X86_DECODE_CMD_INVL, 10, false, false, NULL, NULL, NULL},
+> >      {0xda, 4, 0, X86_DECODE_CMD_FSUB, 4, false, false,
+> > decode_x87_modrm_st0,
+> >       decode_x87_modrm_intp, NULL},
+> >      {0xda, 5, 3, X86_DECODE_CMD_FUCOM, 10, false, true,
+> > decode_x87_modrm_st0,
+> >       decode_decode_x87_modrm_st0, NULL},
+> >      {0xda, 5, 0, X86_DECODE_CMD_FSUB, 4, true, false,
+> > decode_x87_modrm_st0,
+> >       decode_x87_modrm_intp, NULL},
+> > -    {0xda, 6, 3, X86_DECODE_CMD_INVL, 10, false, false, NULL, NULL, NULL,
+> > -     RFLAGS_MASK_NONE},
+> > +    {0xda, 6, 3, X86_DECODE_CMD_INVL, 10, false, false, NULL, NULL, NULL},
+> >      {0xda, 6, 0, X86_DECODE_CMD_FDIV, 4, false, false,
+> > decode_x87_modrm_st0,
+> >       decode_x87_modrm_intp, NULL},
+> > -    {0xda, 7, 3, X86_DECODE_CMD_INVL, 10, false, false, NULL, NULL, NULL,
+> > -     RFLAGS_MASK_NONE},
+> > +    {0xda, 7, 3, X86_DECODE_CMD_INVL, 10, false, false, NULL, NULL, NULL},
+> >      {0xda, 7, 0, X86_DECODE_CMD_FDIV, 4, true, false,
+> > decode_x87_modrm_st0,
+> >       decode_x87_modrm_intp, NULL},
+> >
+> > @@ -1511,8 +1507,7 @@ struct decode_x87_tbl _x87_inst[] = {
+> >       decode_x87_modrm_intp, NULL, NULL},
+> >      {0xdb, 4, 3, X86_DECODE_CMD_INVL, 10, false, false, NULL, NULL,
+> >       decode_db_4},
+> > -    {0xdb, 4, 0, X86_DECODE_CMD_INVL, 10, false, false, NULL, NULL, NULL,
+> > -     RFLAGS_MASK_NONE},
+> > +    {0xdb, 4, 0, X86_DECODE_CMD_INVL, 10, false, false, NULL, NULL, NULL},
+> >      {0xdb, 5, 3, X86_DECODE_CMD_FUCOMI, 10, false, false,
+> >       decode_x87_modrm_st0, decode_x87_modrm_st0, NULL},
+> >      {0xdb, 5, 0, X86_DECODE_CMD_FLD, 10, false, false,
+> > --
+> > 2.34.1
+> >
+> >
 
