@@ -2,60 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77C8DAA1CAF
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 23:11:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0D7FAA1CB0
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 23:11:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9sDm-0002mx-D1; Tue, 29 Apr 2025 17:10:30 -0400
+	id 1u9sDn-0002t3-I4; Tue, 29 Apr 2025 17:10:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1u9sDQ-0002Zg-2d; Tue, 29 Apr 2025 17:10:12 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1u9sDU-0002dM-IL
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 17:10:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1u9sDM-0004Os-NB; Tue, 29 Apr 2025 17:10:06 -0400
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 65CD455D23D;
- Tue, 29 Apr 2025 23:10:00 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id oVZGMrcTHd65; Tue, 29 Apr 2025 23:09:58 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 6B4AF55C592; Tue, 29 Apr 2025 23:09:58 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 69387745682;
- Tue, 29 Apr 2025 23:09:58 +0200 (CEST)
-Date: Tue, 29 Apr 2025 23:09:58 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>
-cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org, 
- qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC PATCH] target/ppc: Inline most of dcbz helper
-In-Reply-To: <87zffy3l4g.fsf@draig.linaro.org>
-Message-ID: <aec151d9-fae2-4bbc-c690-2b68f5906664@eik.bme.hu>
-References: <20240701005939.5A0AF4E6000@zero.eik.bme.hu>
- <d3c6c417-20d9-a215-2a5c-86fa084b00fa@eik.bme.hu>
- <173c9111-e065-0dd5-c276-6bbc0351f9cc@eik.bme.hu>
- <2b969dcd-4a82-9086-803d-c52ea274fefb@eik.bme.hu>
- <e4fc537a-a15e-77dd-1167-32b12ee7a22d@eik.bme.hu>
- <ded56ee3-25bb-4ffd-98e4-2f47c500c88d@linaro.org>
- <164d86d5-f17a-1f89-d973-c3e56255195d@eik.bme.hu>
- <875xin3qeh.fsf@draig.linaro.org>
- <4f7cbb13-2c7c-1d3e-9d41-49ec16bee245@eik.bme.hu>
- <87zffy3l4g.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1u9sDR-0004bp-8O
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 17:10:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1745961007;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=XUG+KkQ45U9EacYTA31tuITJO3opkrTU9B6gRT//zuI=;
+ b=UrjJqjDP+N+Gvn87kC4Y7cyNtrVn9CjBPT1Dj4YQgY6OEt7BOLIqoqyv249b/Zv7GbeX3G
+ 2narbW72ctSE7KvECdIN31Xy8kOELN+QuSZ4UzQgksOcRNJPgoeKTDZh/QCeOtMFPNXywF
+ FsOoIiXqPK8BzJGgT/ViYJD5e7UzC+0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-537-tmxW9DFCOMuViTDXFGm3uA-1; Tue,
+ 29 Apr 2025 17:10:05 -0400
+X-MC-Unique: tmxW9DFCOMuViTDXFGm3uA-1
+X-Mimecast-MFC-AGG-ID: tmxW9DFCOMuViTDXFGm3uA_1745961004
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8AF971955D81; Tue, 29 Apr 2025 21:10:04 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.31])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 54FE1180045C; Tue, 29 Apr 2025 21:10:02 +0000 (UTC)
+Date: Tue, 29 Apr 2025 16:09:59 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-block@nongnu.org, stefanha@redhat.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH] file-posix: Fix crash on discard_granularity == 0
+Message-ID: <rszddhhx6nbqx3nvpnowdednlc5oa3nu5p4i7iv5yx6zfdsyh7@istyvqkqqzqq>
+References: <20250429155654.102735-1-kwolf@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1856500306-1745960998=:61830"
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250429155654.102735-1-kwolf@redhat.com>
+User-Agent: NeoMutt/20250404
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.489,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,97 +80,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Tue, Apr 29, 2025 at 05:56:54PM +0200, Kevin Wolf wrote:
+> Block devices that don't support discard have a discard_granularity of
+> 0. Currently, this results in a division by zero when we try to make
+> sure that it's a multiple of request_alignment. Only try to update
+> bs->bl.pdiscard_alignment when we got a non-zero discard_granularity
+> from sysfs.
+> 
+> Fixes: f605796aae4 ('file-posix: probe discard alignment on Linux block devices')
+> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> ---
+>  block/file-posix.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
---3866299591-1856500306-1745960998=:61830
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+Reviewed-by: Eric Blake <eblake@redhat.com>
 
-On Tue, 29 Apr 2025, Alex Bennée wrote:
-> BALATON Zoltan <balaton@eik.bme.hu> writes:
->> On Tue, 29 Apr 2025, Alex Bennée wrote:
->>> BALATON Zoltan <balaton@eik.bme.hu> writes:
->>>> On Mon, 28 Apr 2025, Richard Henderson wrote:
->>>>> On 4/28/25 06:26, BALATON Zoltan wrote:
->>>>>> I have tried profiling the dst in real card vfio vram with dcbz
->>>>>> case (with 100 iterations instead of 10000 in above tests) but I'm
->>>>>> not sure I understand the results. vperm and dcbz show up but not
->>>>>> too high. Can somebody explain what is happening here and where the
->>>>>> overhead likely comes from? Here is the profile result I got:
->>>>>> Samples: 104K of event 'cycles:Pu', Event count (approx.):
->>>>>> 122371086557
->>>>>>    Children      Self  Command          Shared Object            Symbol
->>>>>> -   99.44%     0.95%  qemu-system-ppc  qemu-system-ppc          [.]
->>>>>> cpu_exec_loop
->>>>>>     - 98.49% cpu_exec_loop
->>>>>>        - 98.48% cpu_tb_exec
->>>>>>           - 90.95% 0x7f4e705d8f15
->>>>>>                helper_ldub_mmu
->>>>>>                do_ld_mmio_beN
->>>>>>              - cpu_io_recompile
->>>>>>                 - 45.79% cpu_loop_exit_noexc
->>>>>
->>>>> I think the real problem is the number of loop exits due to i/o.  If
->>>>> I'm reading this rightly, 45% of execution is in cpu_io_recompile.
->>>>>
->>>>> I/O can only happen as the last insn of a translation block.
->>>>
->>>> I'm not sure I understand this. A comment above cpu_io_recompile says
->>>> "In deterministic execution mode, instructions doing device I/Os must
->>>> be at the end of the TB." Is that wrong? Otherwise shouldn't this only
->>>> apply if running with icount or something like that?
->>>
->>> That comment should be fixed. It used to only be the case for icount
->>> mode but there was another race bug that meant we need to honour device
->>> access as the last insn for both modes.
->>>
->>>>
->>>>> When we detect that it has happened in the middle of a translation
->>>>> block, we abort the block, compile a new one, and restart execution.
->>>>
->>>> Where does that happen? The calls of cpu_io_recompile in this case
->>>> seem to come from io_prepare which is called from do_ld16_mmio_beN if
->>>> (!cpu->neg.can_do_io) but I don't see how can_do_io is set.
->>>
->>> Inline by set_can_do_io()
->>
->> That one I've found but don't know where the cpu_loop_exit returns
->> from the end of cpu_io_recompile.
->
-> cpu_loop_exit longjmp's back to the top of the execution loop.
->
->>
->>>>> Where this becomes a bottleneck is when this same translation block
->>>>> is in a loop.  Exactly this case of memset/memcpy of VRAM.  This
->>>>> could be addressed by invalidating the previous translation block
->>>>> and creating a new one which always ends with the i/o.
->>>>
->>>> And where to do that? cpu_io_recompile just exits the TB but what
->>>> generates the new TB? I need some more clues to understands how to do
->>>> this.
->>>
->>>  cpu->cflags_next_tb = curr_cflags(cpu) | CF_MEMI_ONLY | CF_NOIRQ | n;
->>>
->>> sets the cflags for the next cb, which typically will fail to find and
->>> then regenerate. Normally cflags_next_tb is empty.
->>
->> Shouldn't this only regenerate the next TB on the first loop iteration
->> and not afterwards?
->
-> if we've been here before (needing n insn from the base addr) we will
-> have a cached translation we can re-use. It doesn't stop the longer TB
-> being called again as we re-enter a loop.
+(Coverity has proven its worth, yet again)
 
-So then maybe it should at least check if there's already a cached TB 
-where it can continue before calling cpu_io_recompile in io_prepare and 
-only recompile if needed? I was thinking maybe we need a flag or counter 
-to see if cpu_io_recompile is called more than once and after a limit 
-invalidate the TB and create two new ones the first ending at the I/O and 
-then what cpu_io_recompile does now which as I understood was what Richard 
-suggested but I don't know how to do that.
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
-Regards,
-BALATON Zoltan
---3866299591-1856500306-1745960998=:61830--
 
