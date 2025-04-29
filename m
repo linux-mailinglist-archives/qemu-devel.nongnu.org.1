@@ -2,87 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1A97AA0D6B
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 15:25:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC78AAA0D6C
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 15:25:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9kvN-0005BO-F4; Tue, 29 Apr 2025 09:23:01 -0400
+	id 1u9kve-0005NJ-7k; Tue, 29 Apr 2025 09:23:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1u9kuj-00056j-Fo
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 09:22:23 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1u9kuj-00056m-GU
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 09:22:24 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1u9kua-0005bY-VS
+ id 1u9kub-0005cM-PP
  for qemu-devel@nongnu.org; Tue, 29 Apr 2025 09:22:18 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-39c0e0bc733so5488058f8f.1
- for <qemu-devel@nongnu.org>; Tue, 29 Apr 2025 06:22:03 -0700 (PDT)
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-39c266c2dd5so6767627f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 29 Apr 2025 06:22:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745932922; x=1746537722; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=IoMNbAYXFLaqKD9rC9xntMAc6IoA+MzpMqmKhBJw3ns=;
- b=fUImrGcc73Sh4R4LniSoW6KRJ9+7lg5/52BnnKVwhTE5QfRzmD3MHmccO4miPUypQw
- dBrBGthw2u4/ZAkD9KZyCLOKlg+rOFanDZdBxu1eNpmDqnDtxqkl4bNmmWkhXX//r9A5
- 3GCKuzinUdbr4B6hFuhrMXFzIlbu3QjFTJRk+/HbNXRUudJ3kWA/Yr4ndEuIn+vfnXpf
- 6lb7XjWk7n+nzwU4S1LYnXFdgnpOrDOb97s3FOqWj6y2DzTuWyN0FyDOCHrvK9klAkAn
- kwGlhJV2LZQ7vLyENKsKftem0n2kO9IZ6c761m+214msaln1UsgPTr2hr1Iy1qAhu8Dy
- 6tyQ==
+ d=linaro.org; s=google; t=1745932923; x=1746537723; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=jry+P8FNPxXBYqdgMf1f9uotm9bgcJ4IEZiGTKV/sRU=;
+ b=RLcnheujz04RgOhqFjcdyGlDuzeEwbpWPG4Xp34V3L7LsIbhdcaOD/l4jZrkFdcdV+
+ 4NCkQ/MkTSYMVQc24C8yu9vAf6baHvYAO+L/gIXQjZkbz/Xg2G2As2UqIl4/mb71GeX1
+ ya+boXEkfJBGxk7Fr/6hEEFTdirEbHwpyCu4jmDA5Du7cS7pOSpYVczglqg0pr4a2MM/
+ +kMr7B9AYVN6OO7TCp5lGDKaH+K6GB47/3nWsvh+JHEVFcbYk1zU2i+UEJoe89WAO1ew
+ Dv9KnjewRvvsHH9kIo/owAexCVrbetHHDT4C+UVdbfYffCYdiy9ZMQIlwbBf2eStMULQ
+ +SyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745932922; x=1746537722;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=IoMNbAYXFLaqKD9rC9xntMAc6IoA+MzpMqmKhBJw3ns=;
- b=SvLqvcJabKEM9/GOBaz6Dfmzo7SB6CF4NBX5knnWQVyTUnmMi4ReHPBOyvlENXbR+n
- PLhWhrqLezyhjIIQyThU5IySLEmUtAwYUfQ5ZHJwCriWH/MF35BHHQX47NgSUfSOmiDu
- 1NC5O/5KjaJBEvNbXdWzQ6QhKajJENNJMM+ffLiGBxIrWP3ibQyRbaiqk8ackUD+r461
- Nzhj1BUbn2jsOKS5W4jF1aaF1AsaJp14+98dTDN1oRl1iYJZ/obk/qBWF8zDrHtjSdRB
- C2BT7JuVhwC6Hu8E2tVj6XhmCxY98O84qwNm0cUhvVZoZ7e8MJl+r6cPtaegyKrB5abZ
- nEPg==
+ d=1e100.net; s=20230601; t=1745932923; x=1746537723;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jry+P8FNPxXBYqdgMf1f9uotm9bgcJ4IEZiGTKV/sRU=;
+ b=NFi/McwcruFL9EiJLyF516s6MAgOnTVG5/8YY0lUbNSvvp4i2rVgFHnaHuRYTSYUv+
+ 1RiOZvQep8OagGtP93hDm3ZDk/7sc8dl3+C7XU4KfA3YaEHdSAd+Hdl/dcHL47e9vhdf
+ 7JjK/a5jrK1s3kuLOoJqnIQFOP/DgyPNfdlYLzLspD8NN9Bbrm5HCCjUjAopcAVAnkgy
+ vyCpnsXDd0ySIpnZkY8a7/1Hxh9s4NC6PcoYeEdn9TjME2+z4sXV8o5eyokIk8qu8Ize
+ w6VsOA7QNARDSMSrLH29mK29re8KnR/HhAwZdXUAuHzsaQeCbojWqwnpR90PcaO+OVYV
+ sTUA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXYdKGuewCNYnl8JX711ykPPy8tz46S2/vOAGImHRhSdkcKcM91iS2Ue2EW3xASsT0vfqcICdzIZlSs@nongnu.org
-X-Gm-Message-State: AOJu0YyAqzBtH30tn0vfWm5Ypfzz5beeg/MReI8/2ZtKb628M9wcJiL3
- GLbD12P/X24AITBHWGkKwGizx3US/KxpXZdELCyuRO/SZQpjizhPyxlCEbrPoXg=
-X-Gm-Gg: ASbGnctcTcmUMXcuHnsXYCysFqOzQRwx311HP8VGeTrXGvGfIJt2pnVUfTrfBsKqIK4
- aM5GgXM4mrXGAFS879Ju3/YT4vgkh0VEsqj/txsmCq57qRCY4QOQttzZ/4bVPH3yZFoH54kQht5
- dzn5bMj7rQgr7hSp3rJpWcPuj2MSAZ/C8VqloNjtRNt7AbOFHcKanENy508mQR4oe9IjfRxMCVO
- 2fkivHfoVKHpnddZx0pePpMusoni5n0m6bO4HwOI8SofuBfmXiDOC9lRfY8K9rJWyK1ajTKLd86
- lSkNNokgBF1XIYMJNgPYFa11fCtc+4bom0oZS2KgY0/yWXs=
-X-Google-Smtp-Source: AGHT+IFNyfMYzPvkbKDH9ls/rFRy7J36YXD9LAQK1e45PqX5U49V6E0FFJjuUSn+HtARGrhKjkZViA==
-X-Received: by 2002:a05:6000:401e:b0:39c:e0e:bb46 with SMTP id
- ffacd0b85a97d-3a07aa5fd30mr8672886f8f.4.1745932922513; 
- Tue, 29 Apr 2025 06:22:02 -0700 (PDT)
+ AJvYcCWpmALNo8/ZoM6s8H9DOdAHL0l9PpHVAYxxhfx5+d7uFlUgSuZANL1CKcF8d7HtgvYvo/R1L63lDSuB@nongnu.org
+X-Gm-Message-State: AOJu0YyC30puU42/uDwKzECk6X7yWvvdoZjSIV3H2QFVWpnlLdnz/f6m
+ aNhcIRtdUuPcoXqL2lXLC74Esltphm1kuQipOPFiPeL4nA0NEvir3piuEogTvNA=
+X-Gm-Gg: ASbGncvqQamw4OB6pe+AeKG06Yq2jb66CmGr724hiYQkHFSYfu0HQwKYUVNgTNnw6zz
+ z3FLZwWJ2yRN0yy3duwGclzAifT9CoMe6qzs1Z6EHmwV8zcJ+T1spQrJVvgazlivwY6pBR57ZuB
+ s/nPAHgbosn2AR5jlyovDRC3hFb50BHTY7CpNBaRYZCYiIsUOK8WPlQ8UrK8cjrHph71kg4IARY
+ XwGRqtKIu/i1pJNdJuR2kZUuSfM7LSJaKHTflLJlN7jTiGlrmianC9uj0B8SdsZTei7bXp7dDhO
+ vyjnf6n0maPL3s30YvAXoHOyrbwSvrvRYqqWToz4ePJ8wvU=
+X-Google-Smtp-Source: AGHT+IG7HSBydWfx8YTIsDDva31B7d2yqbSS9wTPdwilM2zlq2kbKzyFbqhxasZWW7S0wvH85hUgWQ==
+X-Received: by 2002:a5d:4ec2:0:b0:3a0:83b5:f4c1 with SMTP id
+ ffacd0b85a97d-3a0891b2dc7mr2372329f8f.24.1745932923467; 
+ Tue, 29 Apr 2025 06:22:03 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a073ca5219sm13729371f8f.27.2025.04.29.06.22.01
+ ffacd0b85a97d-3a073ca5219sm13729371f8f.27.2025.04.29.06.22.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Apr 2025 06:22:01 -0700 (PDT)
+ Tue, 29 Apr 2025 06:22:02 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  "Edgar E . Iglesias" <edgar.iglesias@gmail.com>
-Subject: [PATCH v2 0/7] target/arm: Remove TYPE_AARCH64_CPU class
-Date: Tue, 29 Apr 2025 14:21:53 +0100
-Message-ID: <20250429132200.605611-1-peter.maydell@linaro.org>
+Subject: [PATCH v2 1/7] target/microblaze: Use 'obj' in DEVICE() casts in
+ mb_cpu_initfn()
+Date: Tue, 29 Apr 2025 14:21:54 +0100
+Message-ID: <20250429132200.605611-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250429132200.605611-1-peter.maydell@linaro.org>
+References: <20250429132200.605611-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,65 +101,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently we have a class hierarchy for Arm CPUs where
-all the 32-bit CPUs (including M-profile) inherit directly
-from TYPE_ARM_CPU, but the 64-bit CPUs inherit from
-TYPE_AARCH64_CPU, which is a subclass of TYPE_ARM_CPU.
-This subclass does essentially two things:
- * it sets up fields and methods for the gdbstub so that
-   the gdbstub presents an AArch64 CPU to gdb rather than
-   an AArch32 one
- * it defines the 'aarch64' CPU property which you can use
-   with KVM to disable AArch64 and create a 32-bit VM
-   (with "-cpu host,aarch64=off")
+We're about to make a change that removes the only other use
+of the 'cpu' local variable in mb_cpu_initfn(); since the
+DEVICE() casts work fine with the Object*, use that instead,
+so that we can remove the local variable when we make the
+following change.
 
-This is a bit weird, because the 32-bit CPU you create with
-KVM and aarch64=off is still a subclass of TYPE_AARCH64_CPU.
-It also still presents gdb with an AArch64 CPU, so you
-effectively can't use the gdbstub with this kind of VM.
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ target/microblaze/cpu.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-This patchseries removes TYPE_AARCH64_CPU so that all CPUs,
-both AArch32 and AArch64, directly inherit from TYPE_ARM_CPU.
-This lets us fix the bug with gdbstub and "aarch64=off".
-
-In this version I fix the bug that Philippe found where we
-were calling arm_gdbstub_is_aarch64() too early, before the
-object had been created and the "is it AArch64 or not?"
-question resolved. This is basically moving the gdb_init_cpu()
-call into cpu_exec_realizefn(), but we need to do a little
-adjustment of microblaze for that to work.
-
-Version 2 of the patchset:
- * patches 1-5 from v1 are already upstream
- * new patches 1-3 here delay the call to gdb_init_cpu()
-   so that it is done only after the CPU object is at least
-   inited and we definitely know the final value of the
-   'aarch64' property
- * patches 4-7 are the old 6-9 and have been reviewed
-
-thanks
--- PMM
-
-Peter Maydell (7):
-  target/microblaze: Use 'obj' in DEVICE() casts in mb_cpu_initfn()
-  target/microblaze: Delay gdb_register_coprocessor() to realize
-  hw/core/cpu-common: Don't init gdbstub until cpu_exec_realizefn()
-  target/arm: Present AArch64 gdbstub based on ARM_FEATURE_AARCH64
-  target/arm: Move aarch64 CPU property code to TYPE_ARM_CPU
-  target/arm/kvm: don't check TYPE_AARCH64_CPU
-  target/arm: Remove TYPE_AARCH64_CPU
-
- target/arm/cpu-qom.h    |  5 ---
- target/arm/cpu.h        |  4 --
- target/arm/internals.h  |  3 +-
- hw/core/cpu-common.c    |  3 +-
- target/arm/cpu.c        | 36 ++++++++++++++++++
- target/arm/cpu64.c      | 82 +----------------------------------------
- target/arm/kvm.c        |  3 +-
- target/arm/tcg/cpu64.c  |  2 +-
- target/microblaze/cpu.c | 22 +++++------
- 9 files changed, 52 insertions(+), 108 deletions(-)
-
+diff --git a/target/microblaze/cpu.c b/target/microblaze/cpu.c
+index 00a2730de4d..d92a43191bd 100644
+--- a/target/microblaze/cpu.c
++++ b/target/microblaze/cpu.c
+@@ -333,11 +333,11 @@ static void mb_cpu_initfn(Object *obj)
+ 
+ #ifndef CONFIG_USER_ONLY
+     /* Inbound IRQ and FIR lines */
+-    qdev_init_gpio_in(DEVICE(cpu), microblaze_cpu_set_irq, 2);
+-    qdev_init_gpio_in_named(DEVICE(cpu), mb_cpu_ns_axi_dp, "ns_axi_dp", 1);
+-    qdev_init_gpio_in_named(DEVICE(cpu), mb_cpu_ns_axi_ip, "ns_axi_ip", 1);
+-    qdev_init_gpio_in_named(DEVICE(cpu), mb_cpu_ns_axi_dc, "ns_axi_dc", 1);
+-    qdev_init_gpio_in_named(DEVICE(cpu), mb_cpu_ns_axi_ic, "ns_axi_ic", 1);
++    qdev_init_gpio_in(DEVICE(obj), microblaze_cpu_set_irq, 2);
++    qdev_init_gpio_in_named(DEVICE(obj), mb_cpu_ns_axi_dp, "ns_axi_dp", 1);
++    qdev_init_gpio_in_named(DEVICE(obj), mb_cpu_ns_axi_ip, "ns_axi_ip", 1);
++    qdev_init_gpio_in_named(DEVICE(obj), mb_cpu_ns_axi_dc, "ns_axi_dc", 1);
++    qdev_init_gpio_in_named(DEVICE(obj), mb_cpu_ns_axi_ic, "ns_axi_ic", 1);
+ #endif
+ 
+     /* Restricted 'endianness' property is equivalent of 'little-endian' */
 -- 
 2.43.0
 
