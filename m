@@ -2,62 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50E5AAA0E20
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 16:05:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5564AA0E2D
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 16:06:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9lZe-0001Fs-2U; Tue, 29 Apr 2025 10:04:38 -0400
+	id 1u9lZt-0001Ly-GU; Tue, 29 Apr 2025 10:04:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1u9lZc-0001Ex-6E
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 10:04:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1u9lZj-0001Jp-T8
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 10:04:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1u9lZa-0005Zv-I0
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 10:04:35 -0400
+ id 1u9lZg-0005ay-8r
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 10:04:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745935473;
+ s=mimecast20190719; t=1745935479;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=SMBovFAZMNvCOHb2FkLzLZCT++8W3Fs8vcZyQ75LiNI=;
- b=cf7615YxFGUfSab3dPhjjeooAfquG5H+R8TTeNhBoz2V2kpjNd5HIzOMgkukAGnAyaD8FG
- xL5q7sTAAb0/I6oADTEyr7N2DIbGanYfhL5HCjllIbN2vFpt5mO9rKuurWawrREPQjs+9Z
- jiGR2MMmIqu3LNXjmyjzRLm7YOMgJgo=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=1f+PWZIz/I4CGg2ZXncwhIizsYznxLtF7pmbIdxCI7M=;
+ b=KNmBIpkGEPCCAfv0+SwbdvG1cjrN10uJLWL0uOT09QS6LqkintUwixM2OU7KIET+95J9qC
+ Uz+WJfEnubPuU0R8Xg5WbBBnuK5mi7F5VHxz6fGq1p55UQDDGfOuHB7EmOwhQlraMaBOBd
+ 0fPlKuG/j0dBnT2FlMoGtCUWRDD44pI=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-93-qhB7HPQmMVeeMcn9QUJbPg-1; Tue,
- 29 Apr 2025 10:03:16 -0400
-X-MC-Unique: qhB7HPQmMVeeMcn9QUJbPg-1
-X-Mimecast-MFC-AGG-ID: qhB7HPQmMVeeMcn9QUJbPg_1745935392
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-240-pnVa7Cf5OiGQkPg5KRI89w-1; Tue,
+ 29 Apr 2025 10:03:20 -0400
+X-MC-Unique: pnVa7Cf5OiGQkPg5KRI89w-1
+X-Mimecast-MFC-AGG-ID: pnVa7Cf5OiGQkPg5KRI89w_1745935397
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C8CDC18009AC; Tue, 29 Apr 2025 14:03:11 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 64E1819560B9; Tue, 29 Apr 2025 14:03:17 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.19])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8E95330001A2; Tue, 29 Apr 2025 14:03:09 +0000 (UTC)
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 0351F19560A3; Tue, 29 Apr 2025 14:03:15 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Stefan Berger <stefanb@linux.vnet.ibm.com>,
  Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 0/6] qom/object properties cleanups
-Date: Tue, 29 Apr 2025 18:03:00 +0400
-Message-ID: <20250429140306.190384-1-marcandre.lureau@redhat.com>
+Subject: [PATCH 1/6] qdev: make release_string() idempotent
+Date: Tue, 29 Apr 2025 18:03:01 +0400
+Message-ID: <20250429140306.190384-2-marcandre.lureau@redhat.com>
+In-Reply-To: <20250429140306.190384-1-marcandre.lureau@redhat.com>
+References: <20250429140306.190384-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
@@ -85,30 +88,27 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Hi,
+So it can eventually be called multiple times safely.
 
-While reviewing some related code, I noticed array properties are leaking.
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+---
+ hw/core/qdev-properties.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-I also wonder why I refactored object_property_del_all() with a HashTable, and
-whether it's really necessary. Here is also a RFC to simplify that code.
-
-Marc-André Lureau (6):
-  qdev: make release_string() idempotent
-  qdev: make release_drive() idempotent
-  qdev: make release_tpm() idempotent
-  qdev: make release_prop_array() free array and idempotent
-  tests: add /qdev/free-properties test
-  RFC: qom/object: simplify object_property_del_all()
-
- backends/tpm/tpm_util.c          |  1 +
- hw/core/qdev-properties-system.c |  1 +
- hw/core/qdev-properties.c        | 18 +++---
- qom/object.c                     | 18 ++----
- tests/unit/test-qdev.c           | 96 ++++++++++++++++++++++++++++++++
- tests/unit/meson.build           |  1 +
- 6 files changed, 114 insertions(+), 21 deletions(-)
- create mode 100644 tests/unit/test-qdev.c
-
+diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
+index 147b3ffd16..bad111833c 100644
+--- a/hw/core/qdev-properties.c
++++ b/hw/core/qdev-properties.c
+@@ -484,7 +484,8 @@ const PropertyInfo qdev_prop_usize = {
+ static void release_string(Object *obj, const char *name, void *opaque)
+ {
+     const Property *prop = opaque;
+-    g_free(*(char **)object_field_prop_ptr(obj, prop));
++
++    g_clear_pointer((char **)object_field_prop_ptr(obj, prop), g_free);
+ }
+ 
+ static void get_string(Object *obj, Visitor *v, const char *name,
 -- 
 2.49.0
 
