@@ -2,90 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC78AAA0D6C
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 15:25:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1821FAA0D6D
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 15:25:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9kve-0005NJ-7k; Tue, 29 Apr 2025 09:23:18 -0400
+	id 1u9kvd-0005Mm-4S; Tue, 29 Apr 2025 09:23:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1u9kuj-00056m-GU
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 09:22:24 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ id 1u9kuj-00056i-G4
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 09:22:23 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1u9kub-0005cM-PP
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 09:22:18 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-39c266c2dd5so6767627f8f.3
- for <qemu-devel@nongnu.org>; Tue, 29 Apr 2025 06:22:04 -0700 (PDT)
+ id 1u9kud-0005ch-DD
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 09:22:19 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-43d2d952eb1so39867595e9.1
+ for <qemu-devel@nongnu.org>; Tue, 29 Apr 2025 06:22:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745932923; x=1746537723; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745932925; x=1746537725; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jry+P8FNPxXBYqdgMf1f9uotm9bgcJ4IEZiGTKV/sRU=;
- b=RLcnheujz04RgOhqFjcdyGlDuzeEwbpWPG4Xp34V3L7LsIbhdcaOD/l4jZrkFdcdV+
- 4NCkQ/MkTSYMVQc24C8yu9vAf6baHvYAO+L/gIXQjZkbz/Xg2G2As2UqIl4/mb71GeX1
- ya+boXEkfJBGxk7Fr/6hEEFTdirEbHwpyCu4jmDA5Du7cS7pOSpYVczglqg0pr4a2MM/
- +kMr7B9AYVN6OO7TCp5lGDKaH+K6GB47/3nWsvh+JHEVFcbYk1zU2i+UEJoe89WAO1ew
- Dv9KnjewRvvsHH9kIo/owAexCVrbetHHDT4C+UVdbfYffCYdiy9ZMQIlwbBf2eStMULQ
- +SyA==
+ bh=1K2H3VE4tCQOLcXEpqGHsbFF7wzsGTavlqzL6DY4PxQ=;
+ b=f5Qah+i3N+JvYx5hiUjmHxSd3UHW/OLMGzGN5WZBGHNeT9GfjrKhCCx81I7goZb+G6
+ jXXXijnfDrhhqFnJOqQ31cp0U2MUrbhm3CIm71o6psPiVJ5GtRgMbPa73/ILREIBx6Yj
+ ev3nhu6FYxO4T787YfuT43Fawv8AWGkg3Xkr5xANgpvnnnRzoIhZ/ZuwWGLvjaIHChM0
+ WxfFOyoZ+OwDF52u986Xh7rZVCrWeHaW+ITXZnN+AWy1QuW3o/bpj96C+8p2+RLbnkc5
+ II5qR1D+IOoQfUU7TjEFiBqwQB58HmVWiWHYtKnsKk94UlmQdSGRqt0o14cmaWTbh7r+
+ 9HLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745932923; x=1746537723;
+ d=1e100.net; s=20230601; t=1745932925; x=1746537725;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jry+P8FNPxXBYqdgMf1f9uotm9bgcJ4IEZiGTKV/sRU=;
- b=NFi/McwcruFL9EiJLyF516s6MAgOnTVG5/8YY0lUbNSvvp4i2rVgFHnaHuRYTSYUv+
- 1RiOZvQep8OagGtP93hDm3ZDk/7sc8dl3+C7XU4KfA3YaEHdSAd+Hdl/dcHL47e9vhdf
- 7JjK/a5jrK1s3kuLOoJqnIQFOP/DgyPNfdlYLzLspD8NN9Bbrm5HCCjUjAopcAVAnkgy
- vyCpnsXDd0ySIpnZkY8a7/1Hxh9s4NC6PcoYeEdn9TjME2+z4sXV8o5eyokIk8qu8Ize
- w6VsOA7QNARDSMSrLH29mK29re8KnR/HhAwZdXUAuHzsaQeCbojWqwnpR90PcaO+OVYV
- sTUA==
+ bh=1K2H3VE4tCQOLcXEpqGHsbFF7wzsGTavlqzL6DY4PxQ=;
+ b=nr1P4m9cS7qeb5A34ODVZ8bgkYgqlE0oWXBequV9pGvGJSHziRz1F5owJD50MGXj9u
+ r7Cj9JOIFSAnorTt7aKlzl2GvBts+TakGQdp/MjaTZp1A6umdfCdRCStKxB/CXDLsvaT
+ IZ5VZQWAjY5+HXEcA0XZCW4TaBd3EjehJcUtWDY57mm1sZFqP8Um2ylQ2G3MvP3Bs0vk
+ P16Pep3cnDHDrIFcuofm/FTa7YpJWWlZno/m1msWuzzYUlD6Y+d/RpLt0c/i8fC+uHrV
+ ZuD6NWTRpEue6FURSNemKRkoH6Eycyn/C/MxspxpMangJRNmt2t3OweruAOAesCQdOOx
+ HOfQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWpmALNo8/ZoM6s8H9DOdAHL0l9PpHVAYxxhfx5+d7uFlUgSuZANL1CKcF8d7HtgvYvo/R1L63lDSuB@nongnu.org
-X-Gm-Message-State: AOJu0YyC30puU42/uDwKzECk6X7yWvvdoZjSIV3H2QFVWpnlLdnz/f6m
- aNhcIRtdUuPcoXqL2lXLC74Esltphm1kuQipOPFiPeL4nA0NEvir3piuEogTvNA=
-X-Gm-Gg: ASbGncvqQamw4OB6pe+AeKG06Yq2jb66CmGr724hiYQkHFSYfu0HQwKYUVNgTNnw6zz
- z3FLZwWJ2yRN0yy3duwGclzAifT9CoMe6qzs1Z6EHmwV8zcJ+T1spQrJVvgazlivwY6pBR57ZuB
- s/nPAHgbosn2AR5jlyovDRC3hFb50BHTY7CpNBaRYZCYiIsUOK8WPlQ8UrK8cjrHph71kg4IARY
- XwGRqtKIu/i1pJNdJuR2kZUuSfM7LSJaKHTflLJlN7jTiGlrmianC9uj0B8SdsZTei7bXp7dDhO
- vyjnf6n0maPL3s30YvAXoHOyrbwSvrvRYqqWToz4ePJ8wvU=
-X-Google-Smtp-Source: AGHT+IG7HSBydWfx8YTIsDDva31B7d2yqbSS9wTPdwilM2zlq2kbKzyFbqhxasZWW7S0wvH85hUgWQ==
-X-Received: by 2002:a5d:4ec2:0:b0:3a0:83b5:f4c1 with SMTP id
- ffacd0b85a97d-3a0891b2dc7mr2372329f8f.24.1745932923467; 
- Tue, 29 Apr 2025 06:22:03 -0700 (PDT)
+ AJvYcCUXji3FzwRkcxMzC8ZUDvz8hDJRFn7kJVayL3OaO5dBoxS4PEIkPLqerdWY2TXYdtZbxjNvV3VeQ0XW@nongnu.org
+X-Gm-Message-State: AOJu0Ywhshb40loz9QXe5ut9dSXgBxUU3JdP2rHFFPEy32HjrozSi6LY
+ 6pcuEaeTYFODKiS0vSfd4uQeNSounQxrcEJwqJMo/khjlgISWs+88Zn5CecWR90=
+X-Gm-Gg: ASbGncsOle3CPU9sVgjg+y4/9strMctrEMK9OBWyu1vGf+dVlRuiwKnl6c+mesXbwTH
+ 8++mbl31E3BAIR24JPHkK3UTkzZv6OOsFt7XG/JMHnhhBl1p5ut4UUWPjJOcWHUmQZxyMecODMd
+ U5lM/CzyQAPHrP9EExdTnAo/7uiNPA+mUwbaDaJRNnkBeqrLdMZSPd1DAaHcvyXxmrvxB45pZde
+ LEVlxrQxCucD/vlx5fkdp/61UgSJbk38y1NTOofcEP0JBYkniOU+EQaoncWLTzKDITx2Dwm2mp9
+ b6K9q8FJGGcDi6UpakKhteffWA4zrTuyAeOj1UnhjJlOgWI=
+X-Google-Smtp-Source: AGHT+IFAm531afu8IRUjxFRSRK7e42jZB66aW5MzYUCCRrrg2CmJkLzfBZHk3BEzQnLzx8SWYsk1bA==
+X-Received: by 2002:a05:6000:310d:b0:391:2f2f:818 with SMTP id
+ ffacd0b85a97d-3a08ad282e0mr2327221f8f.9.1745932924757; 
+ Tue, 29 Apr 2025 06:22:04 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a073ca5219sm13729371f8f.27.2025.04.29.06.22.02
+ ffacd0b85a97d-3a073ca5219sm13729371f8f.27.2025.04.29.06.22.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Apr 2025 06:22:02 -0700 (PDT)
+ Tue, 29 Apr 2025 06:22:03 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  "Edgar E . Iglesias" <edgar.iglesias@gmail.com>
-Subject: [PATCH v2 1/7] target/microblaze: Use 'obj' in DEVICE() casts in
- mb_cpu_initfn()
-Date: Tue, 29 Apr 2025 14:21:54 +0100
-Message-ID: <20250429132200.605611-2-peter.maydell@linaro.org>
+Subject: [PATCH v2 2/7] target/microblaze: Delay gdb_register_coprocessor() to
+ realize
+Date: Tue, 29 Apr 2025 14:21:55 +0100
+Message-ID: <20250429132200.605611-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250429132200.605611-1-peter.maydell@linaro.org>
 References: <20250429132200.605611-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,38 +101,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We're about to make a change that removes the only other use
-of the 'cpu' local variable in mb_cpu_initfn(); since the
-DEVICE() casts work fine with the Object*, use that instead,
-so that we can remove the local variable when we make the
-following change.
+Currently the microblaze code calls gdb_register_coprocessor() in its
+initfn.  This works, but we would like to delay setting up GDB
+registers until realize.  All other target architectures only call
+gdb_register_coprocessor() in realize, after the call to
+cpu_exec_realizefn().
+
+Move the microblaze gdb_register_coprocessor() use, bringing it
+in line with other targets.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/microblaze/cpu.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ target/microblaze/cpu.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
 diff --git a/target/microblaze/cpu.c b/target/microblaze/cpu.c
-index 00a2730de4d..d92a43191bd 100644
+index d92a43191bd..b8dae83ce0c 100644
 --- a/target/microblaze/cpu.c
 +++ b/target/microblaze/cpu.c
-@@ -333,11 +333,11 @@ static void mb_cpu_initfn(Object *obj)
+@@ -252,6 +252,11 @@ static void mb_cpu_realizefn(DeviceState *dev, Error **errp)
+         return;
+     }
  
++    gdb_register_coprocessor(cs, mb_cpu_gdb_read_stack_protect,
++                             mb_cpu_gdb_write_stack_protect,
++                             gdb_find_static_feature("microblaze-stack-protect.xml"),
++                             0);
++
+     qemu_init_vcpu(cs);
+ 
+     version = cpu->cfg.version ? cpu->cfg.version : DEFAULT_CPU_VERSION;
+@@ -324,13 +329,6 @@ static void mb_cpu_realizefn(DeviceState *dev, Error **errp)
+ 
+ static void mb_cpu_initfn(Object *obj)
+ {
+-    MicroBlazeCPU *cpu = MICROBLAZE_CPU(obj);
+-
+-    gdb_register_coprocessor(CPU(cpu), mb_cpu_gdb_read_stack_protect,
+-                             mb_cpu_gdb_write_stack_protect,
+-                             gdb_find_static_feature("microblaze-stack-protect.xml"),
+-                             0);
+-
  #ifndef CONFIG_USER_ONLY
      /* Inbound IRQ and FIR lines */
--    qdev_init_gpio_in(DEVICE(cpu), microblaze_cpu_set_irq, 2);
--    qdev_init_gpio_in_named(DEVICE(cpu), mb_cpu_ns_axi_dp, "ns_axi_dp", 1);
--    qdev_init_gpio_in_named(DEVICE(cpu), mb_cpu_ns_axi_ip, "ns_axi_ip", 1);
--    qdev_init_gpio_in_named(DEVICE(cpu), mb_cpu_ns_axi_dc, "ns_axi_dc", 1);
--    qdev_init_gpio_in_named(DEVICE(cpu), mb_cpu_ns_axi_ic, "ns_axi_ic", 1);
-+    qdev_init_gpio_in(DEVICE(obj), microblaze_cpu_set_irq, 2);
-+    qdev_init_gpio_in_named(DEVICE(obj), mb_cpu_ns_axi_dp, "ns_axi_dp", 1);
-+    qdev_init_gpio_in_named(DEVICE(obj), mb_cpu_ns_axi_ip, "ns_axi_ip", 1);
-+    qdev_init_gpio_in_named(DEVICE(obj), mb_cpu_ns_axi_dc, "ns_axi_dc", 1);
-+    qdev_init_gpio_in_named(DEVICE(obj), mb_cpu_ns_axi_ic, "ns_axi_ic", 1);
- #endif
- 
-     /* Restricted 'endianness' property is equivalent of 'little-endian' */
+     qdev_init_gpio_in(DEVICE(obj), microblaze_cpu_set_irq, 2);
 -- 
 2.43.0
 
