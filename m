@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3311AA09CC
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 13:35:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64C88AA09C7
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 13:35:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9jDr-00078c-Bw; Tue, 29 Apr 2025 07:33:59 -0400
+	id 1u9jDq-00076x-CF; Tue, 29 Apr 2025 07:33:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1u9jDj-0006xE-Rz; Tue, 29 Apr 2025 07:33:52 -0400
+ id 1u9jDk-0006yJ-F8; Tue, 29 Apr 2025 07:33:53 -0400
 Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1u9jDh-0008Gx-K1; Tue, 29 Apr 2025 07:33:51 -0400
+ id 1u9jDh-0008Gw-Q7; Tue, 29 Apr 2025 07:33:52 -0400
 Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
  [IPv6:2a02:6b8:c42:cca4:0:640:432b:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 1779461333;
- Tue, 29 Apr 2025 14:33:44 +0300 (MSK)
+ by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 88FB5613E7;
+ Tue, 29 Apr 2025 14:33:45 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:b423::1:3a])
  by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id bXTAnY0Fe0U0-E099GDmw; Tue, 29 Apr 2025 14:33:43 +0300
+ ESMTPSA id bXTAnY0Fe0U0-aBhvFnOW; Tue, 29 Apr 2025 14:33:45 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1745926423;
- bh=BtuTV4i6Dso4pgdFfeN1B9eAAXqbLI7RCSe0Zk64D1I=;
+ s=default; t=1745926425;
+ bh=SijDt/tVC8RzUpiTA3pc0vLmFBOBKfrzJu2UzhRznAY=;
  h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=dlQe4M/FN6pErqV75MkagQYMuJbv8snm0aFLmTP4RUf7ALH1swMa1x4dl7IsTuqu/
- /0qiCvEGmTzqj7isbmsORyD8ro/8Pd9fkeNFEE7lLaqRzAEZ0P006b7YiALmFGKBmM
- NHJLU5eeiE0qF0fkQC4Fx86gfTocOQ6TMMhvjt7g=
+ b=UcJG8IxxLjb14iTpfNu3G+wTg3zJtbmg8fu7BB1QJF5hchI8oS0WM4Dkrd885T3Kj
+ hDnaAWZhEC0GQvWgVwZD59o0n/ekDfCj+myN70kcpgKS/6BhPRHqA0+U4j5kRrDSL/
+ 2MKIUMbmVUi2FC9+d+a2dTrmPAm5WmcwcFZshpg8=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, "Dr. David Alan Gilbert" <dave@treblig.org>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PULL 5/5] util/co-shared-resource: Remove unused
- co_try_get_from_shres
-Date: Tue, 29 Apr 2025 14:33:32 +0300
-Message-ID: <20250429113335.423535-11-vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: [PULL 6/8] qapi: synchronize jobs and block-jobs documentation
+Date: Tue, 29 Apr 2025 14:33:33 +0300
+Message-ID: <20250429113335.423535-12-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250429113335.423535-1-vsementsov@yandex-team.ru>
 References: <20250429113335.423535-1-vsementsov@yandex-team.ru>
@@ -72,58 +72,188 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Dr. David Alan Gilbert" <dave@treblig.org>
+Actualize documentation and synchronize it for commands which actually
+call the same functions internally.
 
-co_try_get_from_shres hasn't been used since it was added in
-  55fa54a789 ("co-shared-resource: protect with a mutex")
-
-(Everyone uses the _locked version)
-Remove it.
-
-Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
-Message-Id: <20240918124220.27871-1-dave@treblig.org>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Message-ID: <20250409084232.28201-2-vsementsov@yandex-team.ru>
 ---
- include/qemu/co-shared-resource.h | 7 -------
- util/qemu-co-shared-resource.c    | 6 ------
- 2 files changed, 13 deletions(-)
+ qapi/block-core.json | 61 ++++++++++++++++++++++++++------------------
+ qapi/job.json        | 30 ++++++++++++++++++++--
+ 2 files changed, 64 insertions(+), 27 deletions(-)
 
-diff --git a/include/qemu/co-shared-resource.h b/include/qemu/co-shared-resource.h
-index 78ca5850f8..41be1a8131 100644
---- a/include/qemu/co-shared-resource.h
-+++ b/include/qemu/co-shared-resource.h
-@@ -44,13 +44,6 @@ SharedResource *shres_create(uint64_t total);
-  */
- void shres_destroy(SharedResource *s);
- 
--/*
-- * Try to allocate an amount of @n.  Return true on success, and false
-- * if there is too little left of the collective resource to fulfill
-- * the request.
-- */
--bool co_try_get_from_shres(SharedResource *s, uint64_t n);
--
- /*
-  * Allocate an amount of @n, and, if necessary, yield until
-  * that becomes possible.
-diff --git a/util/qemu-co-shared-resource.c b/util/qemu-co-shared-resource.c
-index a66cc07e75..752eb5a1c5 100644
---- a/util/qemu-co-shared-resource.c
-+++ b/util/qemu-co-shared-resource.c
-@@ -66,12 +66,6 @@ static bool co_try_get_from_shres_locked(SharedResource *s, uint64_t n)
-     return false;
- }
- 
--bool co_try_get_from_shres(SharedResource *s, uint64_t n)
--{
--    QEMU_LOCK_GUARD(&s->lock);
--    return co_try_get_from_shres_locked(s, n);
--}
--
- void coroutine_fn co_get_from_shres(SharedResource *s, uint64_t n)
- {
-     assert(n <= s->total);
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index b1937780e1..6beab0dc12 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -2956,13 +2956,14 @@
+ #
+ # Pause an active background block operation.
+ #
+-# This command returns immediately after marking the active background
+-# block operation for pausing.  It is an error to call this command if
+-# no operation is in progress or if the job is already paused.
++# This command returns immediately after marking the active job for
++# pausing.  Pausing an already paused job is an error.
++#
++# The job will pause as soon as possible, which means transitioning
++# into the PAUSED state if it was RUNNING, or into STANDBY if it was
++# READY.  The corresponding JOB_STATUS_CHANGE event will be emitted.
+ #
+-# The operation will pause as soon as possible.  No event is emitted
+-# when the operation is actually paused.  Cancelling a paused job
+-# automatically resumes it.
++# Cancelling a paused job automatically resumes it.
+ #
+ # @device: The job identifier.  This used to be a device name (hence
+ #     the name of the parameter), but since QEMU 2.7 it can have other
+@@ -2982,9 +2983,8 @@
+ #
+ # Resume an active background block operation.
+ #
+-# This command returns immediately after resuming a paused background
+-# block operation.  It is an error to call this command if no
+-# operation is in progress or if the job is not paused.
++# This command returns immediately after resuming a paused job.
++# Resuming an already running job is an error.
+ #
+ # This command also clears the error status of the job.
+ #
+@@ -3004,10 +3004,15 @@
+ ##
+ # @block-job-complete:
+ #
+-# Manually trigger completion of an active background block operation.
+-# This is supported for drive mirroring, where it also switches the
+-# device to write to the target path only.  The ability to complete is
+-# signaled with a BLOCK_JOB_READY event.
++# Manually trigger completion of an active job in the READY or STANDBY
++# state.  Completing the job in any other state is an error.
++#
++# This is supported only for drive mirroring, where it also switches
++# the device to write to the target path only. Note that drive
++# mirroring includes drive-mirror, blockdev-mirror and block-commit
++# job (only in case of "active commit", when the node being commited
++# is used by the guest). The ability to complete is signaled with a
++# BLOCK_JOB_READY event.
+ #
+ # This command completes an active background block operation
+ # synchronously.  The ordering of this command's return with the
+@@ -3017,8 +3022,6 @@
+ # rerror/werror arguments that were specified when starting the
+ # operation.
+ #
+-# A cancelled or paused job cannot be completed.
+-#
+ # @device: The job identifier.  This used to be a device name (hence
+ #     the name of the parameter), but since QEMU 2.7 it can have other
+ #     values.
+@@ -3035,10 +3038,13 @@
+ ##
+ # @block-job-dismiss:
+ #
+-# For jobs that have already concluded, remove them from the
+-# block-job-query list.  This command only needs to be run for jobs
+-# which were started with QEMU 2.12+ job lifetime management
+-# semantics.
++# Deletes a job that is in the CONCLUDED state.  This command only
++# needs to be run explicitly for jobs that don't have automatic
++# dismiss enabled. In turn, automatic dismiss may be enabled only
++# for jobs that have @auto-dismiss option, which are drive-backup,
++# blockdev-backup, drive-mirror, blockdev-mirror, block-commit and
++# block-stream. @auto-dismiss is enabled by default for these
++# jobs.
+ #
+ # This command will refuse to operate on any job that has not yet
+ # reached its terminal state, JOB_STATUS_CONCLUDED.  For jobs that
+@@ -3055,12 +3061,17 @@
+ ##
+ # @block-job-finalize:
+ #
+-# Once a job that has manual=true reaches the pending state, it can be
+-# instructed to finalize any graph changes and do any necessary
+-# cleanup via this command.  For jobs in a transaction, instructing
+-# one job to finalize will force ALL jobs in the transaction to
+-# finalize, so it is only necessary to instruct a single member job to
+-# finalize.
++# Instructs all jobs in a transaction (or a single job if it is not
++# part of any transaction) to finalize any graph changes and do any
++# necessary cleanup.  This command requires that all involved jobs are
++# in the PENDING state.
++#
++# For jobs in a transaction, instructing one job to finalize will
++# force ALL jobs in the transaction to finalize, so it is only
++# necessary to instruct a single member job to finalize.
++#
++# The command is applicable only to jobs which have @auto-finalize option
++# and only when this option is set to false.
+ #
+ # @id: The job identifier.
+ #
+diff --git a/qapi/job.json b/qapi/job.json
+index cfc3beedd2..b03f80bc84 100644
+--- a/qapi/job.json
++++ b/qapi/job.json
+@@ -156,6 +156,9 @@
+ # This command returns immediately after resuming a paused job.
+ # Resuming an already running job is an error.
+ #
++# This command also clears the error status for block-jobs (stream,
++# commit, mirror, backup).
++#
+ # @id: The job identifier.
+ #
+ # Since: 3.0
+@@ -184,7 +187,23 @@
+ ##
+ # @job-complete:
+ #
+-# Manually trigger completion of an active job in the READY state.
++# Manually trigger completion of an active job in the READY or STANDBY
++# state.  Completing the job in any other state is an error.
++#
++# This is supported only for drive mirroring, where it also switches
++# the device to write to the target path only. Note that drive
++# mirroring includes drive-mirror, blockdev-mirror and block-commit
++# job (only in case of "active commit", when the node being commited
++# is used by the guest). The ability to complete is signaled with a
++# BLOCK_JOB_READY event.
++#
++# This command completes an active background block operation
++# synchronously.  The ordering of this command's return with the
++# BLOCK_JOB_COMPLETED event is not defined.  Note that if an I/O error
++# occurs during the processing of this command: 1) the command itself
++# will fail; 2) the error will be processed according to the
++# rerror/werror arguments that were specified when starting the
++# operation.
+ #
+ # @id: The job identifier.
+ #
+@@ -197,7 +216,11 @@
+ #
+ # Deletes a job that is in the CONCLUDED state.  This command only
+ # needs to be run explicitly for jobs that don't have automatic
+-# dismiss enabled.
++# dismiss enabled. In turn, automatic dismiss may be enabled only
++# for jobs that have @auto-dismiss option, which are drive-backup,
++# blockdev-backup, drive-mirror, blockdev-mirror, block-commit and
++# block-stream. @auto-dismiss is enabled by default for these
++# jobs.
+ #
+ # This command will refuse to operate on any job that has not yet
+ # reached its terminal state, JOB_STATUS_CONCLUDED.  For jobs that
+@@ -222,6 +245,9 @@
+ # force ALL jobs in the transaction to finalize, so it is only
+ # necessary to instruct a single member job to finalize.
+ #
++# The command is applicable only to jobs which have @auto-finalize option
++# and only when this option is set to false.
++#
+ # @id: The identifier of any job in the transaction, or of a job that
+ #     is not part of any transaction.
+ #
 -- 
-2.34.1
+2.48.1
 
 
