@@ -2,76 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C430FAA0255
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 08:04:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2013AA02F4
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 08:18:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9e4A-0000fr-TF; Tue, 29 Apr 2025 02:03:38 -0400
+	id 1u9eCr-0000cS-Ac; Tue, 29 Apr 2025 02:12:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u9e47-0000em-NU; Tue, 29 Apr 2025 02:03:36 -0400
-Received: from mgamail.intel.com ([192.198.163.10])
+ (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
+ id 1u9eCc-0000YT-Hp
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 02:12:22 -0400
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u9e45-0004Mi-Vf; Tue, 29 Apr 2025 02:03:35 -0400
+ (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
+ id 1u9eCa-0005Ma-KB
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 02:12:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745906614; x=1777442614;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Y/6SsQsFPmZzG1yqe9KNbE234gRASllcF7yURiWMsc4=;
- b=AL7dL8DLEMR56CweMQ61Ri9uM91XGEJhVVI1xaOC2KpO19sSRTW3HIV+
- anPkRyCYVyYhqHCnNv27HBEvedLc+y6GLuxWXv37ZMhgfMHgcc+PeoP47
- qi7HlbHQmAhFiaNI4mjCo7OPAWIdZAOaCSTnG/+MIwKjS3bGRhzB8zNYb
- AktHcKUeoXrVhXOAZut2kNmZVXjRHUnHxHmMX/B4rMBn63qM+2YIA+9v/
- ywVnp2aKZ3b0t+jot3qJB8vWnasTanOftwgksm6cSlop6I290KmwN2Zqy
- sC2h6My8L2nL9q6Jm+B4phLfaw9hzt9W/wer4LYLaCikvpNgTrLZApzLc g==;
-X-CSE-ConnectionGUID: JgdG1c/gRlWK87f/iZejLg==
-X-CSE-MsgGUID: iHPmttSqT1WgX1Yg3qOhDg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11417"; a="58881338"
-X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; d="scan'208";a="58881338"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Apr 2025 23:03:31 -0700
-X-CSE-ConnectionGUID: +FC4s7NbQ9O8szr9018u1A==
-X-CSE-MsgGUID: btLFCSAaS12P/HF88J38mA==
+ t=1745907141; x=1777443141;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=X8bkKeZ6iP/uoINx+upLqqZFShFKcJNLcZmGz3zJiEs=;
+ b=Q/HOo6qU5iC4FJjptg/0Tj4ozrjaUnc6sr/SNXoxOAQNbCqmdpRaGKiH
+ tQhktxRjPROLU0/Xpr3GUqB36DKVVhhz/9WJ8NZOwIuFQUhbZF6Ceonkb
+ QerPaDnGnLMPmJLUv4yw0DwdWFR7MSTzHHteGQyK1SjlA/GcowbJuIS4/
+ Qlq3jjZKxoEOS/h8+wOJIXUZoegmMJpTAsxUsxEdnp2gB8a19xHHRyOLp
+ 195inVIFeAw1giRVwTEc3ndoNL/LWPxJfasRl+avctYFLl3fJRmBc4IQe
+ 6Jltm6CUlvFXHE96LIfRVt+G7ls5JBvZfpxnERn8WozU7JBZiuDHh32eK w==;
+X-CSE-ConnectionGUID: 2FDRzKz+QuanvbKEMud1RA==
+X-CSE-MsgGUID: Y0WpwXaSQiWMm2Z6hUaHtg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11417"; a="58169825"
+X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; d="scan'208";a="58169825"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Apr 2025 23:12:10 -0700
+X-CSE-ConnectionGUID: f01IJIG6QuimBU7puSjgVA==
+X-CSE-MsgGUID: zbPUi2pSQACUdM//FF+WKg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; d="scan'208";a="164679601"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa002.jf.intel.com with ESMTP; 28 Apr 2025 23:03:27 -0700
-Date: Tue, 29 Apr 2025 14:24:24 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Michael Roth <michael.roth@amd.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Shaoqin Huang <shahuang@redhat.com>, Eric Auger <eauger@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Sebastian Ott <sebott@redhat.com>, Gavin Shan <gshan@redhat.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-arm@nongnu.org,
- Dapeng Mi <dapeng1.mi@intel.com>, Yi Lai <yi1.lai@intel.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- pierrick.bouvier@linaro.org
-Subject: Re: [PATCH 3/5] i386/kvm: Support event with select & umask format
- in KVM PMU filter
-Message-ID: <aBBwmDnZ5v7tpAkr@intel.com>
-References: <20250409082649.14733-1-zhao1.liu@intel.com>
- <20250409082649.14733-4-zhao1.liu@intel.com>
- <87frhwfuv1.fsf@pond.sub.org> <aA3TeaYG9mNMdEiW@intel.com>
- <87h6283g9g.fsf@pond.sub.org> <aA+Ty2IqnE4zQhJv@intel.com>
- <87ldrks17s.fsf@pond.sub.org>
+X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; d="scan'208";a="133687164"
+Received: from vkasired-desk2.fm.intel.com ([10.105.128.132])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Apr 2025 23:12:05 -0700
+From: Vivek Kasireddy <vivek.kasireddy@intel.com>
+To: qemu-devel@nongnu.org
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Frediano Ziglio <freddy77@gmail.com>,
+ Michael Scherle <michael.scherle@rz.uni-freiburg.de>,
+ Dongwon Kim <dongwon.kim@intel.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v3 0/6] ui/spice: Enable gl=on option for non-local or remote
+ clients
+Date: Mon, 28 Apr 2025 23:08:24 -0700
+Message-ID: <20250429060952.59508-1-vivek.kasireddy@intel.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87ldrks17s.fsf@pond.sub.org>
-Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.198.163.9;
+ envelope-from=vivek.kasireddy@intel.com; helo=mgamail.intel.com
 X-Spam_score_int: -48
 X-Spam_score: -4.9
 X-Spam_bar: ----
@@ -95,45 +87,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> > What I'm a bit hesitant about is that, if different arches add similar
-> > "conditional" enumerations later, it could cause the enumeration values
-> > to change under different compilation conditions (correct? :-)). Although
-> > it might not break anything, since we don't rely on the specific numeric
-> > values.
-> 
-> Every binary we create contains target-specific code for at most one
-> target.  Therefore, different numerical encodings for different targets
-> are fine.
-> 
-> Same argument for struct members, by the way.  Consider
-> 
->     { 'struct': 'CpuModelExpansionInfo',
->       'data': { 'model': 'CpuModelInfo',
->                 'deprecated-props' : { 'type': ['str'],
->                                        'if': 'TARGET_S390X' } },
->       'if': { 'any': [ 'TARGET_S390X',
->                        'TARGET_I386',
->                        'TARGET_ARM',
->                        'TARGET_LOONGARCH64',
->                        'TARGET_RISCV' ] } }
-> 
-> This generates
-> 
->     #if defined(TARGET_S390X) || defined(TARGET_I386) || defined(TARGET_ARM) || defined(TARGET_LOONGARCH64) || defined(TARGET_RISCV)
->     struct CpuModelExpansionInfo {
->         CpuModelInfo *model;
->     #if defined(TARGET_S390X)
->         strList *deprecated_props;
->     #endif /* defined(TARGET_S390X) */
->     };
->     #endif /* defined(TARGET_S390X) || defined(TARGET_I386) || defined(TARGET_ARM) || defined(TARGET_LOONGARCH64) || defined(TARGET_RISCV) */
-> 
-> The struct's size depends on the target.  If we ever add members after
-> @deprecated_props, their offset depends on the target, too.
+To address the limitation that this option is incompatible with
+remote clients, this patch series adds an option to select a
+preferred codec and also enable gl=on option for clients that
+are connected via the network. In other words, with this option
+enabled (and the below linked Spice series merged), it would be
+possible to have Qemu share a dmabuf fd with Spice, which would
+then forward it to a hardware or software based encoder and
+eventually send the data associated with the fd to a client that
+could be located on a different machine.
 
-Thank your for further explanation!
+Essentially, this patch series provides a hardware accelerated,
+opensource VDI option for users using Qemu and Spice by leveraging
+the iGPU/dGPU on the host machine via the Gstreamer framework.
 
-Regards,
-Zhao
+v2 -> v3:
+- Check for errors after invoking glImportMemoryFdEXT() using
+  glGetError() and report the error to user (Dmitry)
+
+v1 -> v2:
+- Replace the option name preferred-codec with video-codecs (Marc-André)
+- Add a warning when an fd cannot be created from texture (Marc-André)
+- Add a new patch to blit the scanout texture into a linear one to
+  make it work with virgl
+- Rebased and tested against the latest Spice master
+
+Tested with the following Qemu parameters:
+-device virtio-vga,max_outputs=1,xres=1920,yres=1080,blob=true
+-spice port=3001,gl=on,disable-ticketing=on,video-codecs=gstreamer:h264
+
+and remote-viewer --spice-debug spice://x.x.x.x:3001 on the client side.
+
+Associated Spice server MR (merged):
+https://gitlab.freedesktop.org/spice/spice/-/merge_requests/229
+
+---
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
+Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc: Frediano Ziglio <freddy77@gmail.com>
+Cc: Michael Scherle <michael.scherle@rz.uni-freiburg.de>
+Cc: Dongwon Kim <dongwon.kim@intel.com>
+Cc: Alex Bennée <alex.bennee@linaro.org>
+
+Vivek Kasireddy (6):
+  ui/spice: Add an option for users to provide a preferred codec
+  ui/spice: Enable gl=on option for non-local or remote clients
+  ui/spice: Submit the gl_draw requests at 60 FPS for remote clients
+  ui/console-gl: Add a helper to create a texture with linear memory
+    layout
+  ui/spice: Create a new texture with linear layout when gl=on is
+    enabled
+  ui/spice: Blit the scanout texture if its memory layout is not linear
+
+ include/ui/console.h       |   2 +
+ include/ui/spice-display.h |   4 +
+ qemu-options.hx            |   5 +
+ ui/console-gl.c            |  28 ++++++
+ ui/spice-core.c            |  16 ++++
+ ui/spice-display.c         | 184 +++++++++++++++++++++++++++++++++----
+ 6 files changed, 223 insertions(+), 16 deletions(-)
+
+-- 
+2.49.0
 
 
