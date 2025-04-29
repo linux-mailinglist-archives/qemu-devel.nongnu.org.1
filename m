@@ -2,84 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F186AA10AD
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 17:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6897BAA10B2
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 17:40:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9n3V-0006hm-OT; Tue, 29 Apr 2025 11:39:33 -0400
+	id 1u9n3P-0006ca-Ss; Tue, 29 Apr 2025 11:39:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u9n3B-0006Zy-VW
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 11:39:22 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u9n3F-0006aC-V3
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 11:39:24 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u9n39-0007ah-N1
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 11:39:13 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-43690d4605dso47555255e9.0
- for <qemu-devel@nongnu.org>; Tue, 29 Apr 2025 08:39:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u9n3D-0007bY-Hk
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 11:39:17 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-39ee682e0ddso4298375f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 29 Apr 2025 08:39:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745941149; x=1746545949; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=e8K6kEID/otFQGFpZ6THZdlNxB8rttBD3fHPnDNJPs8=;
- b=qr8Am1ht0Ojes9r+9LuzAuhIUuY7LeB9RJA8wqu9whFjsnN7f1F78IxfFSuthDuDCl
- kTAIaERkNyLWuzvv/VpPXtFeam1lEvlDVy/StKgZH7Eek1VN7+qToNzyB++GJlPiy4GY
- Xt2eDUGGku2q4R6CzAPukx4wgqguCWFbyn2i8GtRsDGxOtoFpJvpqoMsH1n3tbCWZG/j
- 4Ii5tWeSbD6UHSBvY8edWI8c4RnHWh8uwg5jmrL15UA7TY5tvk2feH6aC448eikJ3yWG
- MjezmerRlvm3ofmorr9KILporQK9MldljnsghZVCX/mQyzVuygKpeAQtU/DEYmjP7AEY
- /pcg==
+ d=linaro.org; s=google; t=1745941153; x=1746545953; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=B/dF9ePSe8e/Wos3Lfb/d8anPOw/xvpQ5gn6BfEi2A0=;
+ b=NqVkwhbPE22isy/hBqQ10SsUqGu7BCoTaRiVFD1vrixdhUg+IHk30EV1NOMFGLAqzF
+ /+3i/RScZutfTvCodUNYsyTEXJrkyKvw9hP4pjnwjqiewAjGQnrTVJ9mNDoBVeEMdRf6
+ nQLvSZLX1RWbMlBIZRqkfZuh+l3AbMYzYA67vThkXK5BoHR6LLW6uy0UIjFX1p/je36q
+ Ub+6FNETUE2kqBTie0BiuF3TvgeVKOy1NDxmZANGfZilW4jGVwE+1Nh6bhLaCPmRzyMi
+ 6VEntG09IIiRoyENbpgmXHRRsWhXdo2OcBYFlC8FccUgpiswLyvM7OCj3TFc63MIr5gp
+ 2hSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745941149; x=1746545949;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=e8K6kEID/otFQGFpZ6THZdlNxB8rttBD3fHPnDNJPs8=;
- b=FKXKRHzmjFLl5NEJp0aVOWzDYEbjZ/W1rAMOBlJ0UXFFZ7OqlYaZJXkhSPq0naUv/3
- wcXqWI8YK+rnmDuD0It7hHkXxr5ZU1iGBV0lYDCsfo9aNrebpAsyAs4oiqLHZwDrkXGr
- h7qeT2a7zRfAmV7mlK4qSgnypaqahgn3M5npPazaynJb+hLwiyTwctvm05LOTiMcOH57
- eiMYm2xm4sds2p2+aC89tEW5ctfeaiKWbMKHK1Ysd39NWZHO34XLygSDFMaWx7NMyjvQ
- urgnaJXh7L6VmNlVCMYL4pHS/4avhIlVdtw6raevOSbnEM5iI1ca6D8kodMi4yIB8dSD
- 7UAQ==
-X-Gm-Message-State: AOJu0YyKwQTjeO1AbFmLE4miBgHYYQ27SDqInmoC4IFZamxW8pRL8NTs
- ABwC6OkXzq+UBjMaCT7mCsjhQVMr0o6acoWkK5dbRLsYq+2NrdUggcHtgnZyBpnOaeyhhCbBEk4
- e
-X-Gm-Gg: ASbGncv5eZeJkXk7PV/mnbDIxYYK+WhZKKr5wGmf0SccAij2rlxSR+FWJNsr2KZm23q
- X6EmhzGXSzVCne91WEalK1TVkgeSljE7uiTGBx4ZCESdcjmUe9PTcv9tszBitroE+rJcix9zBgE
- odv5ua0+4f36R0iAKYC0+UDLFqlRU960wCp1GzZQ+8Su/sZpF37TwnyT0bkSye+qAbLGbgLYGMS
- Dx++3S0uS0HwaKJ5IqxXCIHZEft+N9t4rIXf8afl829hUaB+WlU60PKbBaxTGnU5p7V+PkywGWX
- KMnCP5sasdEPMnMN5M6C/8gbIgu0ggCVnOkmMbxw6ads6KIx+PchYCZOFlH2GGRwNv1rymtIeaH
- SPGJabof+za/jX+79c8aJ
-X-Google-Smtp-Source: AGHT+IE6Db6AyeWPRg+ygxXO8vPHQEWWsScrNVjpbeToecX1+KBXLq8z0JekiIlAXOZVlV7e92ZtQA==
-X-Received: by 2002:a05:600c:1c8c:b0:43d:9d5:474d with SMTP id
- 5b1f17b1804b1-440ab65a367mr89213395e9.0.1745941148941; 
- Tue, 29 Apr 2025 08:39:08 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1745941153; x=1746545953;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=B/dF9ePSe8e/Wos3Lfb/d8anPOw/xvpQ5gn6BfEi2A0=;
+ b=UQ+6YgRRkqTMatFLObNbSTfMNH3BuUHeaaGFW2FMFbDicAzpR5pDBjVyeEO8ULQhZF
+ JHrOL69J+MD1c0afEfB+U8z68CB9fZ64qxRYH+7NMHEUszL/urK8WK2+34Em1NHHGeYe
+ xvvPADK1XjYH3qFKRAZyProBNjn6lHCq6y4mZQHNpqOlktKtOnV7UwMOdhyLxPIbCA/Y
+ NuXsE48m50e307ASHqwp7HY5WCVMXgdqAltDfoFiEN94VQ6Zxpm6yZVwni8esikGgG3H
+ n1RhwljnbleCq8OuUU4hnOUokJHYHRNs9ZlqRV6V8cBcQs3o2+ALWXb0bw2pDrKd/h7n
+ jj+Q==
+X-Gm-Message-State: AOJu0YzV7XiEpXWg3ir6wGTZZy/iHXj6pw9nbvJIDrJzQOFOlC5jWJrk
+ mj5yiNw+naa7RRa1D7XjesSc0uFVZuvrWSvATdcrftcyZ0v2744xUP8hwVOo5Oai91AKqT++M2b
+ M
+X-Gm-Gg: ASbGncv3tv5A7zcW/FMQSyY43JyTISn/6PvFQl7bZOA0OXTbXJq8P3UDuxkvrslOZm8
+ ozFYoOQE1Q0qEEjvt3c3GswXTNF7ci9t//jhjav36NWgZv24WshXVlKdph0lY9rsl1DbOS/KtcP
+ 1gLV7wzg8JYfUKZ3eFWK5qt+672DOnBrefDd1HxwiQr4Cwx588X69UX3NqYd5jk/KFWkIWX7QX3
+ P9qiZMLPGvfWvijUWJ4tAMu3/XqO0epLdByT4rajCw0lGB1q9FYR1IvCKpRN705ITinygOAz1Wy
+ Wp187isa0g9SqMLWAmGwSrwDr+1d7xjIC+Wf4tPa6eensJ/baaq3pQBiOGg24X3LbdhmrxXLUJq
+ TYZsRE1PcK0uF4QkdZNX8aTHgLnx3DdA=
+X-Google-Smtp-Source: AGHT+IE5d/9HdfksCoM4dGmCnfGqn1mQQ28gZ4b0eRZwNXa/6Mt7GKKRDdl6Y+YEPFUG9Zj91uNLGQ==
+X-Received: by 2002:a5d:444e:0:b0:39a:ca04:3dff with SMTP id
+ ffacd0b85a97d-3a07ab9bce2mr8812412f8f.40.1745941153506; 
+ Tue, 29 Apr 2025 08:39:13 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4409d2abdf7sm192118995e9.19.2025.04.29.08.39.08
+ ffacd0b85a97d-3a073c8d60asm14560685f8f.18.2025.04.29.08.39.12
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 29 Apr 2025 08:39:08 -0700 (PDT)
+ Tue, 29 Apr 2025 08:39:13 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/4] hw/arm: Remove deprecated virt-3.0 up to virt-4.0 machines
-Date: Tue, 29 Apr 2025 17:39:03 +0200
-Message-ID: <20250429153907.31866-1-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Andrew Jones <ajones@ventanamicro.com>
+Subject: [PATCH 1/4] hw/arm/virt: Update comment about Multiprocessor Affinity
+ Register
+Date: Tue, 29 Apr 2025 17:39:04 +0200
+Message-ID: <20250429153907.31866-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250429153907.31866-1-philmd@linaro.org>
+References: <20250429153907.31866-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,22 +100,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The versioned 'virt' machines up to 4.0 been marked as deprecated
-two releases ago, and are older than 6 years, so according to our
-support policy we can remove them.
+Support on ARMv7 has been dropped in commit 82bf7ae84ce
+("target/arm: Remove KVM support for 32-bit Arm hosts").
+Update the comment in virt_cpu_mp_affinity() to avoid
+mentioning it.
 
-Based-on: <20250116145944.38028-1-philmd@linaro.org>
-          "hw/arm: Remove virt-2.6 up to virt-2.12 machines"
+Suggested-by: Andrew Jones <ajones@ventanamicro.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/arm/virt.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-Philippe Mathieu-Daudé (4):
-  hw/arm/virt: Update comment about Multiprocessor Affinity Register
-  hw/arm/virt: Remove deprecated virt-3.0 machine
-  hw/arm/virt: Remove deprecated virt-3.1 machine
-  hw/arm/virt: Remove deprecated virt-4.0 machine
-
- hw/arm/virt.c | 28 +---------------------------
- 1 file changed, 1 insertion(+), 27 deletions(-)
-
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 7e3933066f2..83bd1152804 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -1767,12 +1767,7 @@ static uint64_t virt_cpu_mp_affinity(VirtMachineState *vms, int idx)
+     VirtMachineClass *vmc = VIRT_MACHINE_GET_CLASS(vms);
+ 
+     /*
+-     * Adjust MPIDR like 64-bit KVM hosts, which incorporate the
+-     * GIC's target-list limitations. 32-bit KVM hosts currently
+-     * always create clusters of 4 CPUs, but that is expected to
+-     * change when they gain support for gicv3. When KVM is enabled
+-     * it will override the changes we make here, therefore our
+-     * purposes are to make TCG consistent (with 64-bit KVM hosts)
++     * Adjust MPIDR to make TCG consistent (with 64-bit KVM hosts)
+      * and to improve SGI efficiency.
+      */
+     if (vms->gic_version == VIRT_GIC_VERSION_2) {
 -- 
 2.47.1
 
