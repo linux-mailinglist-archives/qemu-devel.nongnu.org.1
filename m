@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C60A6AA0BF1
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 14:46:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AA4AAA0BEC
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 14:45:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9kKV-0002d1-Qt; Tue, 29 Apr 2025 08:44:57 -0400
+	id 1u9kKQ-0002Ue-Uj; Tue, 29 Apr 2025 08:44:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1u9kKO-0002TC-SF
+ id 1u9kKO-0002TH-Ts
  for qemu-devel@nongnu.org; Tue, 29 Apr 2025 08:44:48 -0400
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1u9kKJ-0004Mo-1R
+ id 1u9kKL-0004N7-Iy
  for qemu-devel@nongnu.org; Tue, 29 Apr 2025 08:44:47 -0400
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-2ff799d99dcso6002035a91.1
- for <qemu-devel@nongnu.org>; Tue, 29 Apr 2025 05:44:42 -0700 (PDT)
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-2ff6e91cff5so5471197a91.2
+ for <qemu-devel@nongnu.org>; Tue, 29 Apr 2025 05:44:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1745930681; x=1746535481; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1745930683; x=1746535483; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=R37KMDljb4CsAfrDdBRy5Wnf5bfrROiq1X3f4Wy4iUE=;
- b=hMkgP6tPYe/nYoZ2B03YpckCh0asnSINM0tSY8K7f265//siB2uKIqML1UU4TlkmF7
- k08QbDWzsXoovsZg4ZYRSnKPSAaSBHJfZpexbX9aV8ybigkF8gpsrerZ8isH3Js1OcT5
- BO3OT9rvi2z441Ejt6nLUeGv4rWvFiG7gvUFHaFyrO4DgFBAkgnrblEYKBJlsy76v7IE
- iUrQS0+m/ZMm7YcTLWJ/fFs6WKfk+djg+LFU5D0la2/kZggXNk7+VUs6pPyl9Tg0wfut
- ZTABqDSuC7Spu3V1rAV9p5++RDHYUOeoXoa99XmcJUB5l7sTbe41nymMdEbQDcHWdmbV
- GUmA==
+ bh=sqkSXWmlAzXCmkQApAbF+YpwERfG9A2hRBSgef/JTFs=;
+ b=ZDok/Q5Cj78hcj7v68oV8h7G6ySTe+IUjExHRQR22BtwGFQE6iHl1tuQDUijJflFGv
+ 8cPj9stRuir4JcDzGPSTvsjFi5sVCcJtIdaYPLC7EBm6mz6abDgy7RFhGgzWPJcPuQw/
+ ELZoG8vChgVYCGKn/moHkDh4r/QigA06KtAlNa3lkXB6vRlRFkHaSdqmqXtIhb9ZhUHa
+ 5HOuYl6i+w34DDeOzH7wl5pIGb50Oz/dnHKmPimHMx8vEQHDu+21Miq+hFMx1KUOZHvE
+ Pa1Q20wHErs3EOjQr0rRLiSTiGP1VeHigGIzjOskijtmbk/hsPRsPNHHG8Q0hZCLWfnp
+ k1YQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745930681; x=1746535481;
+ d=1e100.net; s=20230601; t=1745930683; x=1746535483;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=R37KMDljb4CsAfrDdBRy5Wnf5bfrROiq1X3f4Wy4iUE=;
- b=OgfjC7L0O141NPecWgodLThucBROmfKL8qHFj9APXRp5swMbXo9hHCClaqqGwGLMiv
- +CpwiV7E12fUnAAao09olTmizPs3OlsfeXd2PHtIDkd+92JwnIDm+nfSpXw6ISQQiOAr
- TPX7N9d71zme5LDtv/vajGEXR3+L7e5Br47zkFjH/oNAKA9BCVWqcRdMcqJBwKPqgT3d
- 3G73+JOqUvLT2Zacc7MtSN1mPBKIcEBcSpUbZYjYwZinirM5gQDtI3+sIEmGiZZw+byb
- 44Q5bihzqZtnz1zxraXtj95HHimeCGlKaVwuxR0eI8IWUCH7HIIpumqmu7RodtBJrp4z
- wAkA==
-X-Gm-Message-State: AOJu0YwqIPu7UWNDb0+6AWkUVplH26pbypZFcEWNDqHpcDPwgtWNeE3h
- gL8zmhxelTwjgKLDHSF0YkthTMCcTAy8FxAcr7zKkoNyuh9uoUR81/MPEp94t6JZ7F10xMDOBMD
- D
-X-Gm-Gg: ASbGncuawJR3QXbxM2zFWL7EQ/cT8ldQ9rh90Qt26jHxJ3ODD5oGmLQpja/bjz2GD4H
- A1+rvY1dIVSX2UjTTWhO52JJevEH8GwHgvmttYwrz3ntQXKJXydErBoljYKi4Yovo/KRyigMeAC
- GTrBwGebAKdjIf4Tx1tblyGhemBTFusvJYzIOXdHDmw8wnnZYQpnpMoxZ3dylzs9jS2iTesv9Ed
- fwbsEImiP/Y1lGHJp73YM7m7QPFdl6WueylxsFjvkSgEsYSqiEALusAMZoejIA2ji4J7lcY9o7J
- TL9d/uiD2YQORqHNL2L6o2XO65qdnVMosOiZj62E3SeIUUAI2TEYCg==
-X-Google-Smtp-Source: AGHT+IEL7xROVk7A114uX5GJ4gtABYjYPFKjD/BY6PAVzNL2L5h33hYbGTAsByTFWNnAKDGAj1PocQ==
-X-Received: by 2002:a17:90b:4c09:b0:2ef:2f49:7d7f with SMTP id
- 98e67ed59e1d1-30a2155ece6mr6017273a91.18.1745930680952; 
- Tue, 29 Apr 2025 05:44:40 -0700 (PDT)
+ bh=sqkSXWmlAzXCmkQApAbF+YpwERfG9A2hRBSgef/JTFs=;
+ b=NDI/w06IPsxlI35nI35uXWUyia/v+ysN4J0MtV0rgW295UY7fdOARQUnru/kechdkK
+ wseJ0Uf4Byp0fnVmJzmob/Xv6nRj1R9UbPmCxnXP7ESc5U/spxwfv16FJXK5hHFXbpOE
+ bgS/C8xbYJhiy3ds+NSKQGQhG5RooTJOEvwOlZPbW1n2uZtc3uEACcfB0aUJ0GxVF3QQ
+ V6DhjHyEJ0+0in8TlBinMwHpNC4HQGeks3lpxH2dFmMA6jormEzNKuH4Ls5MnwL6o0BA
+ cyKTr4oqyDZTiaj+SvyTtiQEdtuMyiygf/1XWyivVBGRxhbPMa6g3z0oZOr/RNfk7IQi
+ VaRQ==
+X-Gm-Message-State: AOJu0Yy1M+wyLKeVFTiUvzP5Cq+NunWk/Hq8IIqNaTpNClRFok1vuKoE
+ bSyaMKKgOMQRa/Ukx9m0Z0LihAKTRrG6f6J8jI5LKaOS8pMKqriPe0HqL1GCB4AvxcBNXWpiZkS
+ J
+X-Gm-Gg: ASbGncvnIjx0o9LKDtD9HWnooPsFA7u4b7AwZb0g+umZ8wTVLHEW0j1cbYoxxKyhfE8
+ h0DY+h10sRNLt/SaOPUPQS+Ew1HCn7kNHp16MKebtEy01wjDwBhjswSOLHUvvDi5CLzvlniipLi
+ jHmtutCrFiNc1I3KEJi+qi7p7AuzczpylfS9BMw+5TZawjRJtCtboF1J3qnnXeyv+wOZGfgPaPj
+ Uzu8yWRxxfW0TOyn7v7l7M9lNp693z2LWuw1VReFwA3LLk4N4cxlU4srjXjxaeYpDGlglmgACSR
+ +1a4Vbl9+cm01NQhcQ/VOkagVnsbewj9UDPA6hmwCOU=
+X-Google-Smtp-Source: AGHT+IGRP37o9WXqP6qNkb4kWf2nc8/v/hyMZYH+atvtdw7PrOYEpLRly9pK/EhuHjgpSxrIIMrf9A==
+X-Received: by 2002:a17:90b:394d:b0:2ff:5357:1c7f with SMTP id
+ 98e67ed59e1d1-30a215ac108mr4945816a91.30.1745930683201; 
+ Tue, 29 Apr 2025 05:44:43 -0700 (PDT)
 Received: from grind.. ([152.234.125.33]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-309ef04ba89sm11001161a91.10.2025.04.29.05.44.38
+ 98e67ed59e1d1-309ef04ba89sm11001161a91.10.2025.04.29.05.44.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Apr 2025 05:44:40 -0700 (PDT)
+ Tue, 29 Apr 2025 05:44:42 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org, ajones@ventanamicro.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Andrea Bolognani <abologna@redhat.com>
-Subject: [PATCH v5 6/9] target/riscv/kvm: do not read unavailable CSRs
-Date: Tue, 29 Apr 2025 09:44:18 -0300
-Message-ID: <20250429124421.223883-7-dbarboza@ventanamicro.com>
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v5 7/9] target/riscv/kvm: add senvcfg CSR
+Date: Tue, 29 Apr 2025 09:44:19 -0300
+Message-ID: <20250429124421.223883-8-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429124421.223883-1-dbarboza@ventanamicro.com>
 References: <20250429124421.223883-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x102e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x1031.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,150 +97,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-[1] reports that commit 4db19d5b21 broke a KVM guest running kernel 6.6.
-This happens because the kernel does not know 'senvcfg', making it
-unable to boot because QEMU is reading/wriiting it without any checks.
+We're missing the senvcfg CSRs which is already present in the
+KVM UAPI.
 
-After converting the CSRs to do "automated" get/put reg procedures in
-the previous patch we can now scan for availability. Two functions are
-created:
-
-- kvm_riscv_read_csr_cfg_legacy() will check if the CSR exists by brute
-  forcing KVM_GET_ONE_REG in each one of them, interpreting an EINVAL
-  return as indication that the CSR isn't available. This will be use in
-  absence of KVM_GET_REG_LIST;
-
-- kvm_riscv_read_csr_cfg() will use the existing result of get_reg_list
-  to check if the CSRs ids are present.
-
-kvm_riscv_init_multiext_cfg() is now kvm_riscv_init_cfg() to reflect that
-the function is also dealing with CSRs.
-
-[1] https://lore.kernel.org/qemu-riscv/CABJz62OfUDHYkQ0T3rGHStQprf1c7_E0qBLbLKhfv=+jb0SYAw@mail.gmail.com/
-
-Fixes: 4db19d5b21 ("target/riscv/kvm: add missing KVM CSRs")
-Reported-by: Andrea Bolognani <abologna@redhat.com>
+Reported-by: Andrew Jones <ajones@ventanamicro.com>
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 ---
- target/riscv/kvm/kvm-cpu.c | 62 ++++++++++++++++++++++++++++++++++++--
- 1 file changed, 59 insertions(+), 3 deletions(-)
+ target/riscv/kvm/kvm-cpu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index f881e7eb5d..1ce747d047 100644
+index 1ce747d047..5efee8adb2 100644
 --- a/target/riscv/kvm/kvm-cpu.c
 +++ b/target/riscv/kvm/kvm-cpu.c
-@@ -636,6 +636,10 @@ static int kvm_riscv_get_regs_csr(CPUState *cs)
-     for (i = 0; i < ARRAY_SIZE(kvm_csr_cfgs); i++) {
-         KVMCPUConfig *csr_cfg = &kvm_csr_cfgs[i];
+@@ -249,6 +249,7 @@ static KVMCPUConfig kvm_csr_cfgs[] = {
+     KVM_CSR_CFG("stval",      stval,      RISCV_CSR_REG(stval)),
+     KVM_CSR_CFG("sip",        mip,        RISCV_CSR_REG(sip)),
+     KVM_CSR_CFG("satp",       satp,       RISCV_CSR_REG(satp)),
++    KVM_CSR_CFG("senvcfg",    senvcfg,    RISCV_CSR_REG(senvcfg)),
+ };
  
-+        if (!csr_cfg->supported) {
-+            continue;
-+        }
-+
-         ret = kvm_get_one_reg(cs, csr_cfg->kvm_reg_id, &reg);
-         if (ret) {
-             return ret;
-@@ -662,6 +666,10 @@ static int kvm_riscv_put_regs_csr(CPUState *cs)
-     for (i = 0; i < ARRAY_SIZE(kvm_csr_cfgs); i++) {
-         KVMCPUConfig *csr_cfg = &kvm_csr_cfgs[i];
- 
-+        if (!csr_cfg->supported) {
-+            continue;
-+        }
-+
-         if (KVM_REG_SIZE(csr_cfg->kvm_reg_id) == sizeof(uint32_t)) {
-             reg = kvm_cpu_csr_get_u32(cpu, csr_cfg);
-         } else if (KVM_REG_SIZE(csr_cfg->kvm_reg_id) == sizeof(uint64_t)) {
-@@ -1090,6 +1098,32 @@ static void kvm_riscv_read_multiext_legacy(RISCVCPU *cpu,
-     }
+ static void *kvmconfig_get_env_addr(RISCVCPU *cpu, KVMCPUConfig *csr_cfg)
+@@ -698,6 +699,7 @@ static void kvm_riscv_reset_regs_csr(CPURISCVState *env)
+     env->stval = 0;
+     env->mip = 0;
+     env->satp = 0;
++    env->senvcfg = 0;
  }
  
-+static void kvm_riscv_read_csr_cfg_legacy(KVMScratchCPU *kvmcpu)
-+{
-+    uint64_t val;
-+    int i, ret;
-+
-+    for (i = 0; i < ARRAY_SIZE(kvm_csr_cfgs); i++) {
-+        KVMCPUConfig *csr_cfg = &kvm_csr_cfgs[i];
-+        struct kvm_one_reg reg;
-+
-+        reg.id = csr_cfg->kvm_reg_id;
-+        reg.addr = (uint64_t)&val;
-+        ret = ioctl(kvmcpu->cpufd, KVM_GET_ONE_REG, &reg);
-+        if (ret != 0) {
-+            if (errno == EINVAL) {
-+                csr_cfg->supported = false;
-+            } else {
-+                error_report("Unable to read KVM CSR %s: %s",
-+                             csr_cfg->name, strerror(errno));
-+                exit(EXIT_FAILURE);
-+            }
-+        } else {
-+            csr_cfg->supported = true;
-+        }
-+    }
-+}
-+
- static int uint64_cmp(const void *a, const void *b)
- {
-     uint64_t val1 = *(const uint64_t *)a;
-@@ -1146,7 +1180,26 @@ static void kvm_riscv_read_vlenb(RISCVCPU *cpu, KVMScratchCPU *kvmcpu,
-     }
- }
- 
--static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
-+static void kvm_riscv_read_csr_cfg(struct kvm_reg_list *reglist)
-+{
-+    struct kvm_reg_list *reg_search;
-+    uint64_t reg_id;
-+
-+    for (int i = 0; i < ARRAY_SIZE(kvm_csr_cfgs); i++) {
-+        KVMCPUConfig *csr_cfg = &kvm_csr_cfgs[i];
-+
-+        reg_id = csr_cfg->kvm_reg_id;
-+        reg_search = bsearch(&reg_id, reglist->reg, reglist->n,
-+                             sizeof(uint64_t), uint64_cmp);
-+        if (!reg_search) {
-+            continue;
-+        }
-+
-+        csr_cfg->supported = true;
-+    }
-+}
-+
-+static void kvm_riscv_init_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
- {
-     g_autofree struct kvm_reg_list *reglist = NULL;
-     KVMCPUConfig *multi_ext_cfg;
-@@ -1163,7 +1216,9 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
-      * (EINVAL). Use read_legacy() in this case.
-      */
-     if (errno == EINVAL) {
--        return kvm_riscv_read_multiext_legacy(cpu, kvmcpu);
-+        kvm_riscv_read_multiext_legacy(cpu, kvmcpu);
-+        kvm_riscv_read_csr_cfg_legacy(kvmcpu);
-+        return;
-     } else if (errno != E2BIG) {
-         /*
-          * E2BIG is an expected error message for the API since we
-@@ -1226,6 +1281,7 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
-     }
- 
-     kvm_riscv_check_sbi_dbcn_support(cpu, reglist);
-+    kvm_riscv_read_csr_cfg(reglist);
- }
- 
- static void riscv_init_kvm_registers(Object *cpu_obj)
-@@ -1239,7 +1295,7 @@ static void riscv_init_kvm_registers(Object *cpu_obj)
- 
-     kvm_riscv_init_machine_ids(cpu, &kvmcpu);
-     kvm_riscv_init_misa_ext_mask(cpu, &kvmcpu);
--    kvm_riscv_init_multiext_cfg(cpu, &kvmcpu);
-+    kvm_riscv_init_cfg(cpu, &kvmcpu);
- 
-     kvm_riscv_destroy_scratch_vcpu(&kvmcpu);
- }
+ static int kvm_riscv_get_regs_fp(CPUState *cs)
 -- 
 2.49.0
 
