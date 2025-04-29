@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 343C4AA0E61
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 16:13:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33A42AA0E6E
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 16:15:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9leQ-0002yD-Nq; Tue, 29 Apr 2025 10:09:34 -0400
+	id 1u9lef-00039G-A5; Tue, 29 Apr 2025 10:09:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u9leO-0002wL-1Y
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 10:09:32 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u9leT-00035S-5C
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 10:09:37 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u9leM-0006RA-G3
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 10:09:31 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-4394a823036so59785255e9.0
- for <qemu-devel@nongnu.org>; Tue, 29 Apr 2025 07:09:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u9leR-0006ST-Hv
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 10:09:36 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-39ac9aea656so7012002f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 29 Apr 2025 07:09:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745935768; x=1746540568; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745935773; x=1746540573; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eXL4/W2KCy0v23MfOskz73x1LQjRcBzqdAtJsMYaNnI=;
- b=dFJvsBeddabeDJNS/UfMG0oWdNTae/dStcosvLYI0MoXwB9+Vd3YOjxMJwqAWLDW24
- UOg4tAUYPSU/Bhb9TKlxsSXBFF4M5W5Af71Vqa5hwhTFH3A1cx1DXInMdeaK5G0HAzd7
- IadIrgS1PIwIa7T5DXdv7FZqT6eT6IboWY5T/rjCgL7HaXyS83Z/kGf4Oxry+dQbXmns
- 7PlWNd5OTlMizhesNY1t4NIzC445W6mAWqHslZVLCPRg1NkJC/32uqQvY1H/XA8G0HQa
- mAsTSg8tPAGhOlKzdtmrFhEsFB8+i+UFH1t6fQ0SY2A13pS2wOul6QD16AZzmb/s6tyJ
- +P7Q==
+ bh=gjm2NV3MsVuXzERs7qPetKCBg7pCwU7Ow/3BPmE8MOo=;
+ b=s8tELiNfdWUMK/re0nnttFyDPyg2LCNNmhEUpPibsumqSYnO40Zt8XpMUjb1lkNvCB
+ NP+PF+gIgDd2b7r/qUWLh1ymJuOZy9NPGXhyUTIOef7XoxUzZP/kll1KvzngCti0P/kM
+ 6zx1E1wporjSQD1NStIOr2Qm2lMTdZWEcSYVlxW3TekCh833Yv6ZkXpHp7ZfCHZ/IK9a
+ Hqx6Hfouz8Se47CzoLTjBdN27QtaNsxFvmT2lIbmjHvPIb7osieqdTTNw5oBDkpflhrI
+ 3tXIbv4rbuUVVktpSyoCSkLlkZl7+rl04iQ7hfi2uhnFjWD4nB+6Mmh/KCXZPdtO4Y7I
+ x5gQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745935768; x=1746540568;
+ d=1e100.net; s=20230601; t=1745935773; x=1746540573;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eXL4/W2KCy0v23MfOskz73x1LQjRcBzqdAtJsMYaNnI=;
- b=u4OxjKSV4aBAiteeDdlbXy4aWW55W+1hSfKr8VW1XkH/uNLi0jVbGiM3+sPb96RMbj
- CQziqU4rSnb13wKRhvBrTIs1m+pSKKr2fP+nC2jJQRd4r1wXfkK2s7Fje5aJm/uNaPE8
- 0K5bTyi66aUSs4UAJ9YkehRujHDxtkaOtopeSvX6nidK5ia+YLK4jQw7J6fgzvyk+LxW
- ZytUXoQMYSmDNwpZOYoaXWCHaBipLVfkFNb6y0eLEj3T0IBlkWRvhDTIN1yuXDbVTYjg
- wQWPlzKj3CXOvUq1eoawanjbcmCIWsNAlvRKa2W4NiskFzwUCEb/w2Uoe3ULCnvxC6wY
- PoSw==
-X-Gm-Message-State: AOJu0YyIPQr3E+rQcE/5z4ixGWrX73wUMbq15y1cpHhSkWM7c6XcEjRg
- rzUzGG8Zw0XQFcO2lslN4ipUhcpKzP9hnWZ74pNHmzvYhebpZJYyJ4khDRWCzlbFlH11aMWxoLi
- h
-X-Gm-Gg: ASbGncvnfAjCjV0DQI4wV/oVIqKhxlKUUUrPFbOyr/85h+GoNsYCH4fTpXke2l9UZVi
- IWR6BOtv1Hi3JRtchnDjtpcAy+sk+sWZhaGYidYjvByX+btESB+sma/fBUZC2YEEpWmvk7rPpj3
- bV1S9adHXjHu6rIsGYKOyxnW6siX1EQewb1q4YEZBuwrFhvnbWGBGy9CKjgT2VCaTKmAWysIyVE
- Uwmd0+i712k9R39aqLR8TlmZ0XFmriebHMcRj2BpKhx6UQ+0TfbiE/O/0FrWZdm3z5/F/PaVfWD
- Mr83wmFZZH+7siiVWgBQHx61/HpAvj1UIWS9UiODDA0gtwlSOlopYTJX9cgnu+WJJx4ZH5MIKzn
- YIgK/867mCcJVb5dSV+rs
-X-Google-Smtp-Source: AGHT+IEdRrfAgd3XftcbCdMHLFCzzJRLUiQAR8tVcSfN/HNySPywkwWJ4aBd32Zn1FLecdT6cL/FYw==
-X-Received: by 2002:a05:600c:1c24:b0:440:6a37:be09 with SMTP id
- 5b1f17b1804b1-441ad3d6bfbmr28873985e9.16.1745935768081; 
- Tue, 29 Apr 2025 07:09:28 -0700 (PDT)
+ bh=gjm2NV3MsVuXzERs7qPetKCBg7pCwU7Ow/3BPmE8MOo=;
+ b=IbfTBdTg8dpJ78wQq4HHj3x2DWzMMy3NlE4dXqQS8FcMP01cDV6hP8or7omsrEx333
+ B2PuerXaTaVMOOAJtn1sdBZovKxtr8lyoDP/zGXHSQ393V25JLnDOnXLwDNnedUNNz03
+ i433P7xmUgzWUfaiH0dYe3U/E45duXd0jELZNypiIThEirKSTz6JUvEf0F9b6dITCGpX
+ CR47Btc8gCOn5B2EkiqBJic/DqHpel7ZRv6AQSbhc/ytDrXunJ1JpyvDd5G6BQggwlSt
+ 4tUSUzVxYcnQEwY+s7yjQltEB6wKwVpdUsjwVEDA66O4YJ69k3qgXk4eEQsemGpbvDW4
+ 8zeQ==
+X-Gm-Message-State: AOJu0YxMBIt4UUN5z8ywTZMxsbErqqd8k0qYdm1isPJ2767ixUlkX6B6
+ ueAFixKNWXYyFy2SPLRZ4GnyM7Bb3yiq0nh0ujIQ0dGQsimVtUoFvSiXTvc6r0/+aHAFtNNDTxH
+ Q
+X-Gm-Gg: ASbGncul+K9cfnY6kHSYJhg0zgoA2rebwqJ4eOXsaCxlWlJA2TTD9VlGVsi7UoMaBqw
+ Ag04PX6/QpViRxW/H41bgsT9MQi4YZnwnLM3Zw0yOReLszYYQPGE1NtR+G++/OkNfPGHcXaYUm6
+ 0UGAmLEOF4MAqsSW/pdHgWZeQlI0JXX7khoLi6NBq+5woVqEBaYbWxKHj8Sq8N++9LJvRasfuno
+ 7UH54lTeRwPlGIUPQkfexNW5esrst81jxLMp3vsdJqdiiM03JSwu4HWjGP3V8G5d5pHUo9jg0u2
+ Pkv/bY/BXPUqf/akavFLMsxmkr03NhYjIIpHNh2ZiePLsrWFqN6OTXSh98Ps7SIrIYPe9Y/w4bP
+ TMFel+/0PBiLJHDgn+b71
+X-Google-Smtp-Source: AGHT+IHmtjd22uvPcFnUpa/nMrx3oCiUUi2PRaaIGjDRAHalryLJau6NB77HdgTQ0VKUnMxJQN7Nrg==
+X-Received: by 2002:a5d:59a7:0:b0:390:f0ff:2c11 with SMTP id
+ ffacd0b85a97d-3a0890a516cmr3487498f8f.2.1745935773168; 
+ Tue, 29 Apr 2025 07:09:33 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4409d2ac26dsm191313335e9.21.2025.04.29.07.09.26
+ ffacd0b85a97d-3a073c8cd7fsm14065276f8f.1.2025.04.29.07.09.31
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 29 Apr 2025 07:09:27 -0700 (PDT)
+ Tue, 29 Apr 2025 07:09:32 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -74,17 +74,17 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Dmitry Fleytman <dmitry.fleytman@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 12/19] hw/core/machine: Remove hw_compat_2_5[] array
-Date: Tue, 29 Apr 2025 16:08:18 +0200
-Message-ID: <20250429140825.25964-13-philmd@linaro.org>
+Subject: [PATCH v2 13/19] hw/block/fdc-isa: Remove 'fallback' property
+Date: Tue, 29 Apr 2025 16:08:19 +0200
+Message-ID: <20250429140825.25964-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250429140825.25964-1-philmd@linaro.org>
 References: <20250429140825.25964-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,48 +107,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The hw_compat_2_5[] array was only used by the pc-q35-2.5 and
-pc-i440fx-2.5 machines, which got removed. Remove it.
+The "fallback" property was only used by the hw_compat_2_5[] array,
+as 'fallback=144'. We removed all machines using that array, lets
+remove ISA floppy drive 'fallback' property, manually setting the
+default value in isabus_fdc_realize().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- include/hw/boards.h | 3 ---
- hw/core/machine.c   | 9 ---------
- 2 files changed, 12 deletions(-)
+ hw/block/fdc-isa.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index 5dc5e3b547d..5f1a0fb7e28 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -844,7 +844,4 @@ extern const size_t hw_compat_2_7_len;
- extern GlobalProperty hw_compat_2_6[];
- extern const size_t hw_compat_2_6_len;
+diff --git a/hw/block/fdc-isa.c b/hw/block/fdc-isa.c
+index 6d1790e0e61..090b91361cd 100644
+--- a/hw/block/fdc-isa.c
++++ b/hw/block/fdc-isa.c
+@@ -112,6 +112,7 @@ static void isabus_fdc_realize(DeviceState *dev, Error **errp)
+     }
  
--extern GlobalProperty hw_compat_2_5[];
--extern const size_t hw_compat_2_5_len;
--
- #endif
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index d66b02b564c..e7001bf92cd 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -283,15 +283,6 @@ GlobalProperty hw_compat_2_6[] = {
+     qdev_set_legacy_instance_id(dev, isa->iobase, 2);
++    qdev_prop_set_enum(dev, "fallback", FLOPPY_DRIVE_TYPE_288);
+ 
+     fdctrl_realize_common(dev, fdctrl, &err);
+     if (err != NULL) {
+@@ -293,9 +294,6 @@ static const Property isa_fdc_properties[] = {
+     DEFINE_PROP_SIGNED("fdtypeB", FDCtrlISABus, state.qdev_for_drives[1].type,
+                         FLOPPY_DRIVE_TYPE_AUTO, qdev_prop_fdc_drive_type,
+                         FloppyDriveType),
+-    DEFINE_PROP_SIGNED("fallback", FDCtrlISABus, state.fallback,
+-                        FLOPPY_DRIVE_TYPE_288, qdev_prop_fdc_drive_type,
+-                        FloppyDriveType),
  };
- const size_t hw_compat_2_6_len = G_N_ELEMENTS(hw_compat_2_6);
  
--GlobalProperty hw_compat_2_5[] = {
--    { "isa-fdc", "fallback", "144" },
--    { "pvscsi", "x-old-pci-configuration", "on" },
--    { "pvscsi", "x-disable-pcie", "on" },
--    { "vmxnet3", "x-old-msi-offsets", "on" },
--    { "vmxnet3", "x-disable-pcie", "on" },
--};
--const size_t hw_compat_2_5_len = G_N_ELEMENTS(hw_compat_2_5);
--
- MachineState *current_machine;
- 
- static char *machine_get_kernel(Object *obj, Error **errp)
+ static void isabus_fdc_class_init(ObjectClass *klass, const void *data)
 -- 
 2.47.1
 
