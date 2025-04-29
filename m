@@ -2,96 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A133AA0E6D
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 16:15:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DFE7AA0E79
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 16:15:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9lfR-0004Er-ND; Tue, 29 Apr 2025 10:10:37 -0400
+	id 1u9le6-0001kV-9m; Tue, 29 Apr 2025 10:09:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u9lf5-0003mP-7u
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 10:10:21 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u9lf1-0006b1-JW
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 10:10:13 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-43cfa7e7f54so40884395e9.1
- for <qemu-devel@nongnu.org>; Tue, 29 Apr 2025 07:10:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745935807; x=1746540607; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=kg1vT0Z/kKcz1VyaWx5HUe6zicIy/oQzxPnBZl9mXrw=;
- b=H+5ob/45GKczEEZW8o5PqgsVP6V58hb6IltywBddL3pA1/R7Z64Z+NVCfZHuM8pKjt
- YW1qv0tasaEmC3V3Pgt663r17Vt3kPiYlzlKTkBwFc6rlelJ9U5c3DgWosV3UAqQTV9b
- LMzsT9gL5+TnPiWqvdaxbOUyijVSP6RvGVyKEG4+p0TMMRIZrrMoS5SKE1ki441StXEA
- O1Llq6XHQHsntWGodM95kXkl0O+S+cJri+xYlMcmtrR5KuXTXrSW04FE81jDNUzyc16q
- OqNfAcikxSOsJk0TNqtB5IIpDe3bUQUdlHJ9JiN6bWwlxLDvQ3BGJuiLrJy5zBTtwajo
- 7ftw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745935807; x=1746540607;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=kg1vT0Z/kKcz1VyaWx5HUe6zicIy/oQzxPnBZl9mXrw=;
- b=A/++nffezrxCfK0vCVYFSciGXu8l7FvTh0nmK/BdyFAjODwaWrkJRvXbZBwDmLVbXi
- bkOlj8KcKonU2NhQajjapJ3PEVXPHnSEYR823m7IpE+bSeZITeJK3+TkszIAYzpQAkFt
- IKZ+jwpF96lIfy0Nhj/6HvX3+pS4aPKsEM4j32Wrs26c7alJbOnOu5+9x2kWIt5Pz+m3
- FEFxAM8aEe92WvWhJBCvOQYFttcYxKlzsPgFclMk84E2VdbxwZkAeZaAS7zDNxZzVKip
- iCL6NfRMlTVT4eZF1FADYsTARm4MT+Fqlpl6S+ajyD9E2jvdnVUVJmR3NDfyjmg+W0Yn
- kWog==
-X-Gm-Message-State: AOJu0YwSLvhTcUyox3CGj5ia3bDGng5PTUQeYwk7xvsQSzTbcOWnMPdH
- Ld/FMsIbNW4eGD9+79lMweDstdb1qEC+IJUvyBbMt1DRFcZcWCHz3iWjOV6rP62RmaRIzBTjzSu
- i
-X-Gm-Gg: ASbGnctS+Ut8wm6OJAKgIABPhrIAPIMFycnGiuNw6AR7WvEcASiwSVX3u8f2eNGf2vO
- xPWr4QiePEdJkAVm5bBCFpYMibLUB4QwaS7I9m4FERrChyoQR5zLZ/+wZd9xL0PxayIImX+Xqg9
- 2Cuxr4iE8O1LV4y23T4usIBchi1eBpzj66xHAwuCVAPvPvk2uS3G6uBLpkm7AjuqsrIXp5HlRbu
- pFAb+J4VyNm346bnxPFbvK4J94Q0LAGKUrPC5k+H/6Q4wCLkfYySaKTanwsN+8B7l0NM78BP52c
- p75cGR3ZjbFq/knyEAqeebnNnAztVBua5NEgl1ssZIUhqsKLeSxV07JcTi7rKI7VR94URTJmLLE
- olOwnRdo3Sveme4rNQa9X
-X-Google-Smtp-Source: AGHT+IHk7wVMcAJ7CJy0vuobbFvebze2eS9GHWo0ETRu1ZsJtGW9dbeiW/vYH8PeKZOs2G5zL2MZCw==
-X-Received: by 2002:a05:600c:35cf:b0:439:4b23:9e8e with SMTP id
- 5b1f17b1804b1-441acadf4a7mr31220505e9.3.1745935806849; 
- Tue, 29 Apr 2025 07:10:06 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4409d1e19e1sm188405515e9.0.2025.04.29.07.10.05
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 29 Apr 2025 07:10:06 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Hanna Reitz <hreitz@redhat.com>, Fam Zheng <fam@euphon.net>,
- Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- qemu-block@nongnu.org, John Snow <jsnow@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
- Eduardo Habkost <eduardo@habkost.net>, Jason Wang <jasowang@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 19/19] hw/net/vmxnet3: Merge DeviceRealize in InstanceInit
-Date: Tue, 29 Apr 2025 16:08:25 +0200
-Message-ID: <20250429140825.25964-20-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250429140825.25964-1-philmd@linaro.org>
-References: <20250429140825.25964-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
+ id 1u9le2-0001fw-Sp; Tue, 29 Apr 2025 10:09:11 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
+ id 1u9le0-0006M1-Pq; Tue, 29 Apr 2025 10:09:10 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53TE6rHp028151;
+ Tue, 29 Apr 2025 14:09:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=5nydxt
+ aZDcw5q2n0MXjbyI/knMJUwOtNSMWt4e0/3wg=; b=eUZJdRvDRgnTKblx9dgsK2
+ xf9nChTEDJIk3iQpuDRfs1/Y5yj35TYM7mVF7+w6jRvRwKhxtuYhbBOGlTuQoK97
+ xyLyBUtk6w2VocPMytnsEDpS6TWGgrV54dYTQWq+6r9YswzGZ09nxH0VRcKh3i7p
+ hyM58vN2wXIic0wo82A1t2WGZgAp0+Ms0E2mdVtI/thepcM8yuzBZjMxE30u/CyI
+ kv2U9lV8nv7yHnzZmuD3Pzx2rTYpTyUkRtxEWgxYJRxzbK0PBggjIFU1IwhboSkO
+ tvYcaBSn398uUjKiyUc4lW1euiMvfqFB9/1xWWuigMQMGLCnlH6aO9LUP4E24pMg
+ ==
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46ah8mbksh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 29 Apr 2025 14:09:04 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53TB1di2008542;
+ Tue, 29 Apr 2025 14:09:04 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 469ch33783-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 29 Apr 2025 14:09:04 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
+ [10.241.53.103])
+ by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 53TE93jJ20054684
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 29 Apr 2025 14:09:03 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EE79658066;
+ Tue, 29 Apr 2025 14:09:02 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 35DA358056;
+ Tue, 29 Apr 2025 14:09:02 +0000 (GMT)
+Received: from [9.61.85.22] (unknown [9.61.85.22])
+ by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 29 Apr 2025 14:09:02 +0000 (GMT)
+Message-ID: <27d5d332-bc7c-4036-a3d9-d4666411bd4a@linux.ibm.com>
+Date: Tue, 29 Apr 2025 10:09:01 -0400
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] s390x: Clear RAM on diag308 subcode 3 reset
+To: Christian Borntraeger <borntraeger@linux.ibm.com>,
+ David Hildenbrand <david@redhat.com>,
+ Nicholas Miehlbradt <nicholas@linux.ibm.com>, thuth@redhat.com,
+ richard.henderson@linaro.org, iii@linux.ibm.com, pasic@linux.ibm.com,
+ farman@linux.ibm.com, qemu-s390x@nongnu.org
+Cc: qemu-devel@nongnu.org
+References: <20250429052021.10789-1-nicholas@linux.ibm.com>
+ <489d0473-579a-4850-a6d5-be38bf2954b9@redhat.com>
+ <5863e80e-8296-4f63-bf7d-783b2a9aca0a@linux.ibm.com>
+Content-Language: en-US
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+In-Reply-To: <5863e80e-8296-4f63-bf7d-783b2a9aca0a@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: e3JCedogs6VyMwM4QsOp_zqnNJKghNmz
+X-Proofpoint-GUID: e3JCedogs6VyMwM4QsOp_zqnNJKghNmz
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI5MDEwNSBTYWx0ZWRfX31q8XMMT03X/
+ QIaX9jZR7EMruV6nYO+h9g+Q8TRGKBigU39JgC3arLj+A83TS/6Q2JTrXcw5XG6/Ud0/ilUCUEF
+ zGbXczCygfGTzdg7gkBKM7pw4cRJQm6HPYeI65P225apI003RitqnaT8UUxHheVLj6q/FQTy2Dv
+ bneizvJfah2h/ECVDo528KMaao3D4nGjugcQfBtLYfUYwCcDpXnIfmOLG9U8fW5T/cM6U/zz77j
+ rS/n5WodXrJEdmAhmbZ3opb2sUhoafKhlQ26iRkxn/yU/pCL8hziRIcAr+Mcfv67WkNFMhNZxWD
+ lmuUEg6Pe4DyJjU1oxnUzmcv8z9H94X4RpDRboZd5jOhsc5qchhZ7i8QqWcuTe4nzf6MAB4Eo+9
+ kF/6OR6FxoExARZt6NuM1Ix+sl39r4gZBBdc2frtRhl7JSan5LT5AN4uk5D593IZVG1PpFbx
+X-Authority-Analysis: v=2.4 cv=QNRoRhLL c=1 sm=1 tr=0 ts=6810dd80 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=pFZH5SylCiH5rCbaQB4A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-04-29_05,2025-04-24_02,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 suspectscore=0
+ mlxlogscore=954 spamscore=0 clxscore=1011 mlxscore=0 malwarescore=0
+ bulkscore=0 priorityscore=1501 phishscore=0 impostorscore=0
+ lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2504290105
+Received-SPF: pass client-ip=148.163.156.1;
+ envelope-from=mjrosato@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,60 +124,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Simplify merging vmxnet3_realize() within vmxnet3_instance_init(),
-removing the need for device_class_set_parent_realize().
+On 4/29/25 3:45 AM, Christian Borntraeger wrote:
+> Am 29.04.25 um 09:37 schrieb David Hildenbrand:
+> [...]
+>> The only problem I see is with vfio devices is the new "memory pinned" mode. [1]
+>>
+>> There, we'd have to check if any such device is around (discarding of ram is disabled?), and fallback to actual zeroing of memory.
+> 
+> CC Matt to double check.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
----
- hw/net/vmxnet3.c | 15 +--------------
- 1 file changed, 1 insertion(+), 14 deletions(-)
+When triggering the "relaxed translation" mode via iommu.passthrough in the guest, we now take the default (for other platforms) memory_region_is_ram() path in vfio_listener_region_add/del() which handles the pin/unpin from vfio common code.  As for ram discarding, we then also use the vfio common path and only uncoordinated discards are disabled via:
 
-diff --git a/hw/net/vmxnet3.c b/hw/net/vmxnet3.c
-index d080fe9b38a..7c0ca56b7c0 100644
---- a/hw/net/vmxnet3.c
-+++ b/hw/net/vmxnet3.c
-@@ -2238,6 +2238,7 @@ static void vmxnet3_instance_init(Object *obj)
-     device_add_bootindex_property(obj, &s->conf.bootindex,
-                                   "bootindex", "/ethernet-phy@0",
-                                   DEVICE(obj));
-+    PCI_DEVICE(obj)->cap_present |= QEMU_PCI_CAP_EXPRESS;
- }
- 
- static void vmxnet3_pci_uninit(PCIDevice *pci_dev)
-@@ -2463,22 +2464,10 @@ static const Property vmxnet3_properties[] = {
-     DEFINE_NIC_PROPERTIES(VMXNET3State, conf),
- };
- 
--static void vmxnet3_realize(DeviceState *qdev, Error **errp)
--{
--    VMXNET3Class *vc = VMXNET3_DEVICE_GET_CLASS(qdev);
--    PCIDevice *pci_dev = PCI_DEVICE(qdev);
--    VMXNET3State *s = VMXNET3(qdev);
--
--    pci_dev->cap_present |= QEMU_PCI_CAP_EXPRESS;
--
--    vc->parent_dc_realize(qdev, errp);
--}
--
- static void vmxnet3_class_init(ObjectClass *class, const void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(class);
-     PCIDeviceClass *c = PCI_DEVICE_CLASS(class);
--    VMXNET3Class *vc = VMXNET3_DEVICE_CLASS(class);
- 
-     c->realize = vmxnet3_pci_realize;
-     c->exit = vmxnet3_pci_uninit;
-@@ -2489,8 +2478,6 @@ static void vmxnet3_class_init(ObjectClass *class, const void *data)
-     c->class_id = PCI_CLASS_NETWORK_ETHERNET;
-     c->subsystem_vendor_id = PCI_VENDOR_ID_VMWARE;
-     c->subsystem_id = PCI_DEVICE_ID_VMWARE_VMXNET3;
--    device_class_set_parent_realize(dc, vmxnet3_realize,
--                                    &vc->parent_dc_realize);
-     dc->desc = "VMWare Paravirtualized Ethernet v3";
-     device_class_set_legacy_reset(dc, vmxnet3_qdev_reset);
-     dc->vmsd = &vmstate_vmxnet3;
--- 
-2.47.1
+vfio_ram_block_discard_disable() -> ram_block_uncoordinated_discard_disable()
+
+
+> 
+>>
+>> [1] https://lkml.kernel.org/r/20250226210013.238349-1-mjrosato@linux.ibm.com
+> 
 
 
