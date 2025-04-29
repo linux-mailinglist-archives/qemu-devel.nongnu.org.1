@@ -2,58 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EB21AA1052
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 17:22:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF397AA105A
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 17:22:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9mmS-0002ed-Mx; Tue, 29 Apr 2025 11:21:56 -0400
+	id 1u9mmW-0002fl-ML; Tue, 29 Apr 2025 11:22:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1u9mmO-0002eN-WE
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 11:21:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1u9mmT-0002ey-8S
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 11:21:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1u9mmN-00046B-Bc
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 11:21:52 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1u9mmP-00046g-Jy
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 11:21:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1745940110;
+ s=mimecast20190719; t=1745940112;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=OWcDNlinGNFO3RLbbYaloSh0EiMQcHVyn7VLxmHsfl0=;
- b=VvK9PAwwiI8QRzxZFnIQ3qELTtaMUEOkZfqYFSZoM7+o8Q2BNCIg+WcDT2MKvjntNkeFVO
- 8Yjr8CP4l1rqrATRVNgm+1W1nFnabr/2ryaxmwjIiFw+KDaS8ZiKRg07SHnAGH4oi1EJps
- q6qIz1TCsWCMuC/slI726qvyGEQLTGE=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=n84q6Vk/tLnHjZWzQeD6DTkHFzw+DUOPzoraCC1rTFU=;
+ b=iehL0+YHh+AHQQrnjmNIahqxpN+jupyB4OKJUE/GFr7tLDLxt/c72ozVvWX/IE4deIDWAd
+ 2wHabsKjS6cvxHsj1SR9u/hKmyFQJUaDX5lNdDKDpZuoqBKHmhZj0GMcs0qiKCQbae5yYH
+ 8N72TrFVwZ38+b33DP56JFdPgp6x7xM=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-261-YLKxHgj5P-CUz7ahfw7oRg-1; Tue,
- 29 Apr 2025 11:21:46 -0400
-X-MC-Unique: YLKxHgj5P-CUz7ahfw7oRg-1
-X-Mimecast-MFC-AGG-ID: YLKxHgj5P-CUz7ahfw7oRg_1745940105
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-522-ZRa2FPfHNBmVWGyn9FnIoQ-1; Tue,
+ 29 Apr 2025 11:21:50 -0400
+X-MC-Unique: ZRa2FPfHNBmVWGyn9FnIoQ-1
+X-Mimecast-MFC-AGG-ID: ZRa2FPfHNBmVWGyn9FnIoQ_1745940110
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C1949195609D; Tue, 29 Apr 2025 15:21:45 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C093E1956095; Tue, 29 Apr 2025 15:21:49 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.33.241])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9AE91180045C; Tue, 29 Apr 2025 15:21:43 +0000 (UTC)
+ id BCD81180045C; Tue, 29 Apr 2025 15:21:46 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Fabiano Rosas <farosas@suse.de>
 Cc: Peter Xu <peterx@redhat.com>,
 	John Snow <jsnow@redhat.com>
-Subject: [PATCH 0/4] Test vmstate with scripts/vmstate-static-checker.py
-Date: Tue, 29 Apr 2025 17:21:37 +0200
-Message-ID: <20250429152141.294380-1-thuth@redhat.com>
+Subject: [PATCH 1/4] tests/vmstate-static-checker-data: Remove old dump files
+Date: Tue, 29 Apr 2025 17:21:38 +0200
+Message-ID: <20250429152141.294380-2-thuth@redhat.com>
+In-Reply-To: <20250429152141.294380-1-thuth@redhat.com>
+References: <20250429152141.294380-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -78,43 +81,2175 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This set of patches adds an automatic test of the vmstate via the
-scripts/vmstate-static-checker.py script. For this we need some
-reference files from an older version of QEMU. There are already
-some files available in tests/vmstate-static-checker-data/ but
-they are of no use anymore since they have been taken from machines
-that have already been removed a long time ago (and thus these files
-now get removed, too). I chose to use QEMU 7.2 for the reference files
-instead since this is a long term support release that is still actively
-being maintained, so we certainly want to make sure that we don't
-break migration from that version to the latest one.
+From: Thomas Huth <thuth@redhat.com>
 
-Thomas Huth (4):
-  tests/vmstate-static-checker-data: Remove old dump files
-  scripts/vmstate-static-checker.py: Allow new name for ghes_addr_le
-    field
-  tests/data/vmstate-static-checker: Add dump files from QEMU 7.2.17
-  tests/functional: Test with scripts/vmstate-static-checker.py
+These files reference QEMU machine types that have already been
+removed and thus are of no use anymore.
 
- MAINTAINERS                                   |    3 +-
- scripts/vmstate-static-checker.py             |    1 +
- .../aarch64/virt-7.2.json                     | 2571 +++++++++++++
- .../vmstate-static-checker/m68k/virt-7.2.json | 2936 ++++++++++++++
- .../ppc64/pseries-7.2.json}                   | 1276 ++++---
- .../s390x/s390-ccw-virtio-7.2.json            |  475 +++
- .../x86_64/pc-q35-7.2.json                    | 3402 +++++++++++++++++
- tests/functional/meson.build                  |   13 +-
- tests/functional/test_vmstate.py              |   56 +
- tests/vmstate-static-checker-data/dump1.json  | 1163 ------
- 10 files changed, 10143 insertions(+), 1753 deletions(-)
- create mode 100644 tests/data/vmstate-static-checker/aarch64/virt-7.2.json
- create mode 100644 tests/data/vmstate-static-checker/m68k/virt-7.2.json
- rename tests/{vmstate-static-checker-data/dump2.json => data/vmstate-static-checker/ppc64/pseries-7.2.json} (51%)
- create mode 100644 tests/data/vmstate-static-checker/s390x/s390-ccw-virtio-7.2.json
- create mode 100644 tests/data/vmstate-static-checker/x86_64/pc-q35-7.2.json
- create mode 100755 tests/functional/test_vmstate.py
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ MAINTAINERS                                  |    1 -
+ tests/vmstate-static-checker-data/dump1.json | 1163 ------------------
+ tests/vmstate-static-checker-data/dump2.json |  968 ---------------
+ 3 files changed, 2132 deletions(-)
  delete mode 100644 tests/vmstate-static-checker-data/dump1.json
+ delete mode 100644 tests/vmstate-static-checker-data/dump2.json
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index b3f9f2680bc..bb2a66b9866 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3524,7 +3524,6 @@ F: include/qemu/userfaultfd.h
+ F: migration/
+ F: scripts/vmstate-static-checker.py
+ F: tests/functional/test_migration.py
+-F: tests/vmstate-static-checker-data/
+ F: tests/qtest/migration/
+ F: tests/qtest/migration-*
+ F: docs/devel/migration/
+diff --git a/tests/vmstate-static-checker-data/dump1.json b/tests/vmstate-static-checker-data/dump1.json
+deleted file mode 100644
+index 334ec079631..00000000000
+--- a/tests/vmstate-static-checker-data/dump1.json
++++ /dev/null
+@@ -1,1163 +0,0 @@
+-{
+-  "vmschkmachine": {
+-    "Name": "pc-i440fx-2.1"
+-  },
+-  "fw_cfg": {
+-    "Name": "fw_cfg",
+-    "version_id": 2,
+-    "minimum_version_id": 1,
+-    "Description": {
+-      "name": "fw_cfg",
+-      "version_id": 2,
+-      "minimum_version_id": 1,
+-      "Fields": [
+-        {
+-          "field": "cur_entry",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 2
+-        },
+-        {
+-          "field": "cur_offset",
+-          "version_id": 0,
+-          "field_exists": true,
+-          "size": 4
+-        },
+-        {
+-          "field": "cur_offset",
+-          "version_id": 2,
+-          "field_exists": false,
+-          "size": 4
+-        }
+-      ]
+-    }
+-  },
+-  "fusbh200-ehci-usb": {
+-    "Name": "fusbh200-ehci-usb",
+-    "version_id": 2,
+-    "minimum_version_id": 1,
+-    "Description": {
+-      "name": "ehci-sysbus",
+-      "version_id": 2,
+-      "minimum_version_id": 1,
+-      "Fields": [
+-        {
+-          "field": "ehci",
+-          "version_id": 2,
+-          "field_exists": false,
+-          "size": 1880,
+-          "Description": {
+-            "name": "ehci-core",
+-            "version_id": 2,
+-            "minimum_version_id": 1,
+-            "Fields": [
+-              {
+-                "field": "usbcmd",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "usbsts",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "usbsts_pending",
+-                "version_id": 2,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "usbsts_frindex",
+-                "version_id": 2,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "usbintr",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "frindex",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "ctrldssegment",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "periodiclistbase",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "asynclistaddr",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "configflag",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "portsc[0]",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "portsc[1]",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "portsc[2]",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "portsc[3]",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "portsc[4]",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "portsc[5]",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "frame_timer",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 8
+-              },
+-              {
+-                "field": "last_run_ns",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 8
+-              },
+-              {
+-                "field": "async_stepdown",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "astate",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "pstate",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "a_fetch_addr",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "p_fetch_addr",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              }
+-            ]
+-          }
+-        }
+-      ]
+-    }
+-  },
+-  "pci-serial-4x": {
+-    "Name": "pci-serial-4x",
+-    "version_id": 1,
+-    "minimum_version_id": 1,
+-    "Description": {
+-      "name": "pci-serial-multi",
+-      "version_id": 1,
+-      "minimum_version_id": 1,
+-      "Fields": [
+-        {
+-          "field": "dev",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 1944,
+-          "Description": {
+-            "name": "PCIDevice",
+-            "version_id": 2,
+-            "minimum_version_id": 1,
+-            "Fields": [
+-              {
+-                "field": "version_id",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "config",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 256
+-              },
+-              {
+-                "field": "irq_state",
+-                "version_id": 2,
+-                "field_exists": false,
+-                "size": 16
+-              }
+-            ]
+-          }
+-        },
+-        {
+-          "field": "state",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 368,
+-          "Description": {
+-            "name": "serial",
+-            "version_id": 3,
+-            "minimum_version_id": 2,
+-            "Fields": [
+-              {
+-                "field": "divider",
+-                "version_id": 2,
+-                "field_exists": false,
+-                "size": 2
+-              },
+-              {
+-                "field": "rbr",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "ier",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "iir",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "lcr",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "mcr",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "lsr",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "msr",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "scr",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "fcr_vmstate",
+-                "version_id": 3,
+-                "field_exists": false,
+-                "size": 1
+-              }
+-            ]
+-          }
+-        },
+-        {
+-          "field": "level",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        }
+-      ]
+-    }
+-  },
+-  "intel-hda-generic": {
+-    "Name": "intel-hda-generic",
+-    "version_id": 1,
+-    "minimum_version_id": 0,
+-    "Description": {
+-      "name": "intel-hda",
+-      "version_id": 1,
+-      "minimum_version_id": 0,
+-      "Fields": [
+-        {
+-          "field": "pci",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 1944,
+-          "Description": {
+-            "name": "PCIDevice",
+-            "version_id": 2,
+-            "minimum_version_id": 1,
+-            "Fields": [
+-              {
+-                "field": "version_id",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "config",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 256
+-              },
+-              {
+-                "field": "irq_state",
+-                "version_id": 2,
+-                "field_exists": false,
+-                "size": 16
+-              }
+-            ]
+-          }
+-        },
+-        {
+-          "field": "g_ctl",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "wake_en",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "state_sts",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "int_ctl",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "int_sts",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "wall_clk",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "corb_lbase",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "corb_ubase",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "corb_rp",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "corb_wp",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "corb_ctl",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "corb_sts",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "corb_size",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "rirb_lbase",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "rirb_ubase",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "rirb_wp",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "rirb_cnt",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "rirb_ctl",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "rirb_sts",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "rirb_size",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "dp_lbase",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "dp_ubase",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "icw",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "irr",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "ics",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "st",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 56,
+-          "Description": {
+-            "name": "intel-hda-stream",
+-            "version_id": 1,
+-            "minimum_version_id": 0,
+-            "Fields": [
+-              {
+-                "field": "ctl",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "lpib",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "cbl",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "lvi",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "fmt",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "bdlp_lbase",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "bdlp_ubase",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              }
+-            ]
+-          }
+-        },
+-        {
+-          "field": "rirb_count",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "wall_base_ns",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 8
+-        }
+-      ]
+-    }
+-  },
+-  "cfi.pflash01": {
+-    "Name": "cfi.pflash01",
+-    "version_id": 1,
+-    "minimum_version_id": 1,
+-    "Description": {
+-      "name": "pflash_cfi01",
+-      "version_id": 1,
+-      "minimum_version_id": 1,
+-      "Fields": [
+-        {
+-          "field": "wcycle",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 1
+-        },
+-        {
+-          "field": "cmd",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 1
+-        },
+-        {
+-          "field": "status",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 1
+-        },
+-        {
+-          "field": "counter",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 8
+-        }
+-      ]
+-    }
+-  },
+-  "megasas": {
+-    "Name": "megasas",
+-    "version_id": 0,
+-    "minimum_version_id": 0,
+-    "Description": {
+-      "name": "megasas",
+-      "version_id": 0,
+-      "minimum_version_id": 0,
+-      "Fields": [
+-        {
+-          "field": "parent_obj",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 1944,
+-          "Description": {
+-            "name": "PCIDevice",
+-            "version_id": 2,
+-            "minimum_version_id": 1,
+-            "Fields": [
+-              {
+-                "field": "version_id",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "config",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 256
+-              },
+-              {
+-                "field": "irq_state",
+-                "version_id": 2,
+-                "field_exists": false,
+-                "size": 16
+-              }
+-            ]
+-          }
+-        },
+-        {
+-          "field": "fw_state",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "intr_mask",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "doorbell",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "reply_queue_pa",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 8
+-        },
+-        {
+-          "field": "consumer_pa",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 8
+-        },
+-        {
+-          "field": "producer_pa",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 8
+-        }
+-      ]
+-    }
+-  },
+-  "PIIX3-xen": {
+-    "Name": "PIIX3-xen",
+-    "version_id": 3,
+-    "minimum_version_id": 2,
+-    "Description": {
+-      "name": "PIIX3",
+-      "version_id": 1,
+-      "minimum_version_id": 2,
+-      "Fields": [
+-        {
+-          "field": "dev",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 1944,
+-          "Description": {
+-            "name": "PCIDevice",
+-            "version_id": 2,
+-            "minimum_version_id": 1,
+-            "Fields": [
+-              {
+-                "field": "version_id",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "config",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 256
+-              },
+-              {
+-                "field": "irq_state",
+-                "version_id": 2,
+-                "field_exists": false,
+-                "size": 16
+-              }
+-            ]
+-          }
+-        },
+-        {
+-          "field": "pci_irq_levels_vmstate",
+-          "version_id": 3,
+-          "field_exists": false,
+-          "size": 4
+-        }
+-      ],
+-      "Subsections": [
+-        {
+-          "name": "PIIX3/rcr",
+-          "version_id": 1,
+-          "minimum_version_id": 1,
+-          "Fields": [
+-            {
+-              "field": "rcr",
+-              "version_id": 0,
+-              "field_exists": false,
+-              "size": 1
+-            }
+-          ]
+-        }
+-      ]
+-    }
+-  },
+-  "tpci200": {
+-    "Name": "tpci200",
+-    "version_id": 1,
+-    "minimum_version_id": 1,
+-    "Description": {
+-      "name": "tpci200",
+-      "version_id": 1,
+-      "minimum_version_id": 1,
+-      "Fields": [
+-        {
+-          "field": "dev",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 1944,
+-          "Description": {
+-            "name": "PCIDevice",
+-            "version_id": 2,
+-            "minimum_version_id": 1,
+-            "Fields": [
+-              {
+-                "field": "version_id",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "config",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 256
+-              },
+-              {
+-                "field": "irq_state",
+-                "version_id": 2,
+-                "field_exists": false,
+-                "size": 16
+-              }
+-            ]
+-          }
+-        },
+-        {
+-          "field": "big_endian",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 1
+-        },
+-        {
+-          "field": "ctrl",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 1
+-        },
+-        {
+-          "field": "status",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 2
+-        },
+-        {
+-          "field": "int_set",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 1
+-        }
+-      ]
+-    }
+-  },
+-  "sun-fdtwo": {
+-    "Name": "sun-fdtwo",
+-    "version_id": 2,
+-    "minimum_version_id": 2,
+-    "Description": {
+-      "name": "fdc",
+-      "version_id": 2,
+-      "minimum_version_id": 2,
+-      "Fields": [
+-        {
+-          "field": "state",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 360,
+-          "Description": {
+-            "name": "fdc",
+-            "version_id": 2,
+-            "minimum_version_id": 2,
+-            "Fields": [
+-              {
+-                "field": "sra",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "srb",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "dor_vmstate",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "tdr",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "dsr",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "msr",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "status0",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "status1",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "status2",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "fifo",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "data_pos",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "data_len",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "data_state",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "data_dir",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "eot",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "timer0",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "timer1",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "precomp_trk",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "config",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "lock",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "pwrd",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "num_floppies",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "drives",
+-                "version_id": 1,
+-                "field_exists": false,
+-                "size": 40,
+-                "Description": {
+-                  "name": "fdrive",
+-                  "version_id": 1,
+-                  "minimum_version_id": 1,
+-                  "Fields": [
+-                    {
+-                      "field": "head",
+-                      "version_id": 0,
+-                      "field_exists": false,
+-                      "size": 1
+-                    },
+-                    {
+-                      "field": "track",
+-                      "version_id": 0,
+-                      "field_exists": false,
+-                      "size": 1
+-                    },
+-                    {
+-                      "field": "sect",
+-                      "version_id": 0,
+-                      "field_exists": false,
+-                      "size": 1
+-                    }
+-                  ],
+-                  "Subsections": [
+-                    {
+-                      "name": "fdrive/media_changed",
+-                      "version_id": 1,
+-                      "minimum_version_id": 1,
+-                      "Fields": [
+-                        {
+-                          "field": "media_changed",
+-                          "version_id": 0,
+-                          "field_exists": false,
+-                          "size": 1
+-                        }
+-                      ]
+-                    },
+-                    {
+-                      "name": "fdrive/media_rate",
+-                      "version_id": 1,
+-                      "minimum_version_id": 1,
+-                      "Fields": [
+-                        {
+-                          "field": "media_rate",
+-                          "version_id": 0,
+-                          "field_exists": false,
+-                          "size": 1
+-                        }
+-                      ]
+-                    }
+-                  ]
+-                }
+-              }
+-            ]
+-          }
+-        }
+-      ]
+-    }
+-  },
+-  "usb-kbd": {
+-    "Name": "usb-kbd",
+-    "version_id": 1,
+-    "minimum_version_id": 1,
+-    "Description": {
+-      "name": "usb-kbd",
+-      "version_id": 1,
+-      "minimum_version_id": 1,
+-      "Fields": [
+-        {
+-          "field": "dev",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4352,
+-          "Description": {
+-            "name": "USBDevice",
+-            "version_id": 1,
+-            "minimum_version_id": 1,
+-            "Fields": [
+-              {
+-                "field": "addr",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "state",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "remote_wakeup",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "setup_state",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "setup_len",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "setup_index",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "setup_buf",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              }
+-            ]
+-          }
+-        },
+-        {
+-          "field": "kbd.keycodes",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "head",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "n",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "kbd.modifiers",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 2
+-        },
+-        {
+-          "field": "kbd.leds",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 1
+-        },
+-        {
+-          "field": "kbd.key",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 1
+-        },
+-        {
+-          "field": "kbd.keys",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "protocol",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "idle",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 1
+-        }
+-      ]
+-    }
+-  }
+-}
+diff --git a/tests/vmstate-static-checker-data/dump2.json b/tests/vmstate-static-checker-data/dump2.json
+deleted file mode 100644
+index 7184e9ccbb5..00000000000
+--- a/tests/vmstate-static-checker-data/dump2.json
++++ /dev/null
+@@ -1,968 +0,0 @@
+-{
+-  "vmschkmachine": {
+-    "Name": "pc-i440fx-2.2"
+-  },
+-  "fw_cfg2": {
+-    "Name": "fw_cfg",
+-    "version_id": 2,
+-    "minimum_version_id": 1,
+-    "Description": {
+-      "name": "fw_cfg",
+-      "version_id": 2,
+-      "minimum_version_id": 1,
+-      "Fields": [
+-        {
+-          "field": "cur_entry",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 2
+-        },
+-        {
+-          "field": "cur_offset",
+-          "version_id": 0,
+-          "field_exists": true,
+-          "size": 4
+-        },
+-        {
+-          "field": "cur_offset",
+-          "version_id": 2,
+-          "field_exists": false,
+-          "size": 4
+-        }
+-      ]
+-    }
+-  },
+-  "fusbh200-ehci-usb": {
+-    "Name": "fusbh200-ehci-usb",
+-    "version_id": 1,
+-    "minimum_version_id": 1,
+-    "Description": {
+-      "name": "ehci-sysbus",
+-      "version_id": 2,
+-      "minimum_version_id": 1,
+-      "Fields": [
+-        {
+-          "field": "ehci",
+-          "version_id": 2,
+-          "field_exists": false,
+-          "size": 1880,
+-          "Description": {
+-            "name": "ehci-core",
+-            "version_id": 2,
+-            "minimum_version_id": 1,
+-            "Fields": [
+-              {
+-                "field": "usbcmd",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "usbsts_pending",
+-                "version_id": 2,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "usbsts_frindex",
+-                "version_id": 2,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "usbintr",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "frindex",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "ctrldssegment",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "periodiclistbase",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "asynclistaddr",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "configflag",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "portsc[0]",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "portsc[1]",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "portsc[2]",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "portsc[3]",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "portsc[4]",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "portsc[5]",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "frame_timer",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 8
+-              },
+-              {
+-                "field": "last_run_ns",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 8
+-              },
+-              {
+-                "field": "async_stepdown",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "astate",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "pstate",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "a_fetch_addr",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "p_fetch_addr",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              }
+-            ]
+-          }
+-        }
+-      ]
+-    }
+-  },
+-  "pci-serial-4x": {
+-    "Name": "pci-serial-4x",
+-    "version_id": 1,
+-    "minimum_version_id": 1,
+-    "Description": {
+-      "name": "pci-serial-multi",
+-      "version_id": 1,
+-      "minimum_version_id": 1
+-    }
+-  },
+-  "intel-hda-generic": {
+-    "Name": "intel-hda-generic",
+-    "version_id": 1,
+-    "minimum_version_id": 0,
+-    "Description": {
+-      "name": "intel-hda",
+-      "version_id": 1,
+-      "minimum_version_id": 0,
+-      "Fields": [
+-        {
+-          "field": "pci",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 1944
+-        },
+-        {
+-          "field": "g_ctl",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "wake_en",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "state_sts",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "int_ctl",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "int_sts",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "wall_clk",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "corb_lbase",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "corb_ubase",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "corb_rp",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "corb_wp",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "corb_ctl",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "corb_sts",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "corb_size",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "rirb_lbase",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "rirb_ubase",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "rirb_wp",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "rirb_cnt",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "rirb_ctl",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "rirb_sts",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "rirb_size",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "dp_lbase",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "dp_ubase",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "icw",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "irr",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "ics",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "st",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 56,
+-          "Description": {
+-            "name": "intel-hda-stream",
+-            "version_id": 1,
+-            "minimum_version_id": 0,
+-            "Fields": [
+-              {
+-                "field": "ctl",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "lpib",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "cbl",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "lvi",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "fmt",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "bdlp_lbase",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "bdlp_ubase",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              }
+-            ]
+-          }
+-        },
+-        {
+-          "field": "rirb_count",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "wall_base_ns",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 8
+-        }
+-      ]
+-    }
+-  },
+-  "cfi.pflash01": {
+-    "Name": "cfi.pflash01",
+-    "version_id": 1,
+-    "minimum_version_id": 1
+-  },
+-  "megasas": {
+-    "Name": "megasas",
+-    "version_id": 0,
+-    "minimum_version_id": 0,
+-    "Description": {
+-      "name": "megasas",
+-      "version_id": 0,
+-      "minimum_version_id": 0,
+-      "Fields": [
+-        {
+-          "field": "parent_obj",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 1944,
+-          "Description": {
+-            "name": "PCIDevice",
+-            "version_id": 2,
+-            "minimum_version_id": 1,
+-            "Fields": [
+-              {
+-                "field": "version_id",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "config",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 256
+-              }
+-            ]
+-          }
+-        },
+-        {
+-          "field": "fw_state",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "intr_mask",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "doorbell",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 4
+-        },
+-        {
+-          "field": "reply_queue_pa",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 8
+-        },
+-        {
+-          "field": "consumer_pa",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 8
+-        },
+-        {
+-          "field": "producer_pa",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 8
+-        }
+-      ]
+-    }
+-  },
+-  "PIIX3-xen": {
+-    "Name": "PIIX3-xen",
+-    "version_id": 3,
+-    "minimum_version_id": 2,
+-    "Description": {
+-      "name": "PIIX3",
+-      "version_id": 3,
+-      "minimum_version_id": 2,
+-      "Fields": [
+-        {
+-          "field": "dev",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 1944,
+-          "Description": {
+-            "name": "PCIDevice",
+-            "version_id": 2,
+-            "minimum_version_id": 1,
+-            "Fields": [
+-              {
+-                "field": "version_id",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "config",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 256
+-              },
+-              {
+-                "field": "irq_state",
+-                "version_id": 2,
+-                "field_exists": false,
+-                "size": 16
+-              }
+-            ]
+-          }
+-        },
+-        {
+-          "field": "pci_irq_levels_vmstate",
+-          "version_id": 3,
+-          "field_exists": false,
+-          "size": 4
+-        }
+-      ]
+-    }
+-  },
+-  "tpci200": {
+-    "Name": "tpci200",
+-    "version_id": 1,
+-    "minimum_version_id": 1,
+-    "Description": {
+-      "name": "tpci2002",
+-      "version_id": 1,
+-      "minimum_version_id": 1,
+-      "Fields": [
+-        {
+-          "field": "dev",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 1944,
+-          "Description": {
+-            "name": "PCIDevice",
+-            "version_id": 2,
+-            "minimum_version_id": 1,
+-            "Fields": [
+-              {
+-                "field": "version_id",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "config",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 256
+-              },
+-              {
+-                "field": "irq_state",
+-                "version_id": 2,
+-                "field_exists": false,
+-                "size": 16
+-              }
+-            ]
+-          }
+-        },
+-        {
+-          "field": "big_endian",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 1
+-        },
+-        {
+-          "field": "ctrl",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 1
+-        },
+-        {
+-          "field": "status",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 2
+-        },
+-        {
+-          "field": "int_set",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 1
+-        }
+-      ]
+-    }
+-  },
+-  "sun-fdtwo": {
+-    "Name": "sun-fdtwo",
+-    "version_id": 2,
+-    "minimum_version_id": 2,
+-    "Description": {
+-      "name": "fdc",
+-      "version_id": 1,
+-      "minimum_version_id": 2,
+-      "Fields": [
+-        {
+-          "field": "state",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 360,
+-          "Description": {
+-            "name": "fdc",
+-            "version_id": 2,
+-            "minimum_version_id": 2,
+-            "Fields": [
+-              {
+-                "field": "sra",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "srb",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "dor_vmstate",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "tdr",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "dsr",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "msr",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "status0",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "status1",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "status2",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "fifo",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "data_pos",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "data_len",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "data_state",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "data_dir",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "eot",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "timer0",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "timer1",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "precomp_trk",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "config",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "lock",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "pwrd",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "num_floppies",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "drives",
+-                "version_id": 1,
+-                "field_exists": false,
+-                "size": 40,
+-                "Description": {
+-                  "name": "fdrive",
+-                  "version_id": 1,
+-                  "minimum_version_id": 1,
+-                  "Fields": [
+-                    {
+-                      "field": "head",
+-                      "version_id": 0,
+-                      "field_exists": false,
+-                      "size": 1
+-                    },
+-                    {
+-                      "field": "track",
+-                      "version_id": 0,
+-                      "field_exists": false,
+-                      "size": 1
+-                    },
+-                    {
+-                      "field": "sect",
+-                      "version_id": 0,
+-                      "field_exists": false,
+-                      "size": 1
+-                    }
+-                  ],
+-                  "Subsections": [
+-                    {
+-                      "name": "fdrive/media_changed",
+-                      "version_id": 1,
+-                      "minimum_version_id": 1,
+-                      "Fields": [
+-                        {
+-                          "field": "media_changed",
+-                          "version_id": 0,
+-                          "field_exists": false,
+-                          "size": 1
+-                        }
+-                      ]
+-                    }
+-                  ]
+-                }
+-              }
+-            ]
+-          }
+-        }
+-      ]
+-    }
+-  },
+-  "usb-kbd": {
+-    "Name": "usb-kbd",
+-    "version_id": 1,
+-    "minimum_version_id": 1,
+-    "Description": {
+-      "name": "usb-kbd",
+-      "version_id": 1,
+-      "minimum_version_id": 1,
+-      "Fields": [
+-        {
+-          "field": "dev",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 5832,
+-          "Description": {
+-            "name": "USBDevice",
+-            "version_id": 1,
+-            "minimum_version_id": 1,
+-            "Fields": [
+-              {
+-                "field": "addr",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "state",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "remote_wakeup",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "setup_state",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "setup_len",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "setup_index",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "setup_buf",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              }
+-            ]
+-          }
+-        },
+-        {
+-          "field": "hid",
+-          "version_id": 0,
+-          "field_exists": false,
+-          "size": 312,
+-          "Description": {
+-            "name": "HIDKeyboardDevice",
+-            "version_id": 1,
+-            "minimum_version_id": 1,
+-            "Fields": [
+-              {
+-                "field": "kbd.keycodes",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 2
+-              },
+-              {
+-                "field": "head",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "n",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "kbd.modifiers",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 2
+-              },
+-              {
+-                "field": "kbd.leds",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "kbd.key",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              },
+-              {
+-                "field": "kbd.keys",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "protocol",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 4
+-              },
+-              {
+-                "field": "idle",
+-                "version_id": 0,
+-                "field_exists": false,
+-                "size": 1
+-              }
+-            ]
+-          }
+-        }
+-      ]
+-    }
+-  }
+-}
 -- 
 2.49.0
 
