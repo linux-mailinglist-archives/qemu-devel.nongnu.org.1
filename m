@@ -2,53 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97F4AAA1BE0
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 22:15:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 281FFAA1BDA
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 22:13:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9rLY-0000Zm-8y; Tue, 29 Apr 2025 16:14:28 -0400
+	id 1u9rJA-0006mB-Tl; Tue, 29 Apr 2025 16:12:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1u9rLK-0000UV-FW
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 16:14:15 -0400
-Received: from mail-a.sr.ht ([46.23.81.152])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1u9rLF-0001HU-2E
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 16:14:12 -0400
-DKIM-Signature: a=rsa-sha256; bh=zkSu4yIS7+YQyZiHy8m5iK9pPqaKovZJQ0CeGa5pW1k=; 
- c=simple/simple; d=git.sr.ht;
- h=From:Date:Subject:Reply-to:In-Reply-To:To:Cc; q=dns/txt; s=20240113;
- t=1745957643; v=1;
- b=e9bBj4LLp6QVvxoa2FO+EH64ujJfulS3flz7WZJ47nOUv4J0PiNaSl28d1UlTQqQEnvydgxN
- vAVrsVXkMLkrOzVWiNXKUJCABUvqVsVFkh0vDXt5K/h18sefb0mu367dbcjZr5b6+wsTkzs7ZzD
- zRF2K5RjOfcQYVUyNIWp3AuaFfcp9v4/fqF+/h9+mOynxd/1wWMblvI+2qbEbWI4jh1cGQC768G
- pKYKS/aBA3SBA2YpqkumwJKN53/W6ZirsqIAQC0qZy4DpgvKUbZk6F160RLPTBTK7Isliv6XljG
- CfgbNxQBiTaZ4Sp/P3bh27wR3oyDSh16C+LsyD2CXn+Yg==
-Received: from git.sr.ht (unknown [46.23.81.155])
- by mail-a.sr.ht (Postfix) with ESMTPSA id 61FAC21569;
- Tue, 29 Apr 2025 20:14:03 +0000 (UTC)
-From: ~percival_foss <percival_foss@git.sr.ht>
-Date: Tue, 29 Apr 2025 12:12:10 -0400
-Subject: [PATCH qemu v2 2/2] tests/functional: Added cross page overflow test
-Message-ID: <174595764300.3422.13156465553505851834-2@git.sr.ht>
-X-Mailer: git.sr.ht
-In-Reply-To: <174595764300.3422.13156465553505851834-0@git.sr.ht>
-To: qemu-devel <qemu-devel@nongnu.org>
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1u9rJ4-0006iT-Nb
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 16:11:55 -0400
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1u9rIz-0000mV-TF
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 16:11:51 -0400
+Received: by mail-pj1-x102f.google.com with SMTP id
+ 98e67ed59e1d1-2ff6cf448b8so8426867a91.3
+ for <qemu-devel@nongnu.org>; Tue, 29 Apr 2025 13:11:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1745957507; x=1746562307; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=sXjQ1GwSAPjEhoESh+xA0/zVcxdIHeGgOhsOgA9BWCU=;
+ b=k28LbMJd4/02b7PAGRON5iSqlRCsxKjE3Z9plrWyOEkl6mHE/61k03N1t0IJ5Du4vX
+ tPJbhNiD7kwzCfnzmJ9Wuh7TlYvmTnKRvTl0denBhztYujH5u4oiu1ouUY1sO817tupZ
+ wYa4cshY1G6rreACqZlRZGGA0duTB4R6hcS8qTk/1rNiAQLixm0el7TziPJG5Z99Qcha
+ yls+t4xvOBbLM7DFaINfHoz71S0ZIjmV5fpojL3YSX9nrhfJtmRJLAczKWQYvS9dmIyg
+ a99KGw5w/yfMOt4VSkcJucdlhN6MMcGxYesWIx0CJNxuRhOS3OtWjokJmCvk1a/k9Bx2
+ cm+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1745957507; x=1746562307;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=sXjQ1GwSAPjEhoESh+xA0/zVcxdIHeGgOhsOgA9BWCU=;
+ b=LtAK9rpCyPtnklgon/LSa6WMBU4ftul2kaBO7FEU1Mlsl+kJbm+cUPLUIRz+jI4NOr
+ lCcbBun+X7Wj16yNkqezcofES9fDWhSbwo6o4ogwSthIL2iNJlzizVNcdd60m5BWekuM
+ Ic2ptzs+r9iVc7hV9iXrjIX3ojh290qVk9GwrgkEeLUYlWVxhNTzRVTpENcvWFMZNzFY
+ a2BSH66VrS6VSBLqeDNwrLzlwjpqz8RXXAoT/5wM+rluJq0pwsolRkOI02L+tOAOnaNR
+ 1vhd9wmRZyeOIduMGF4Fs8x2IT6hOoUTTlRasbnkWT+tpOPZW8z4t4mnwM/MPTpbmp/B
+ RGGA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVYqUNwqfUKJZnd7NY3oPL993Ur67duAUSkT+PSPvsR9P1HUhAc0gmtnplsOw39mqbkcGxKJXWaH3g2@nongnu.org
+X-Gm-Message-State: AOJu0Yz/JLCwdVCuxMUkAZev07L/5T1kcWbokllEC1fG6aP6DLQLy8ZB
+ ANTXUrI7BnsP/9Mpx67ZlSv4y52UN+lFAlzMrIEmVvK3T65lv/rfKIjer7R0DtA=
+X-Gm-Gg: ASbGncss0CP77CxIwi73h9EFFXH4zHWkkanRz2icI6hzle+xZD7CCtnqxNdU/3P+0Gh
+ Qvlc6h+uU/HB82OHQi+Mh4WhKY4l1kSXIhCyXY4MGBMfof5AEvmo7q82AgBBFhw1igPAuIvUjfh
+ lPm/ibH+O7KyP6HrMUPKvtuAEn/k/zGaYaKt8LXfhnHRcQyCQgox1RS6nz6S+HveXvh7GqwXRX6
+ jv9TFU1OehSBzmr5/UkPwldzuB6d76IDFcysReLKwWr1XplquuxAN2fHWbY6o/aGEQ+0FE7CeIB
+ 0IP6BoD24KkeMVrjV6NYOZGk96a1XW2EftD0+4jBBBVfhyg5EamLTg==
+X-Google-Smtp-Source: AGHT+IEERfCWnRx9vJ6QYIl/mPnjihSsEpXkD2ME0J641tQxemqLtjnV9EsGF5XCC+Z8SrXO7u/L6Q==
+X-Received: by 2002:a17:90b:1d48:b0:30a:204e:3271 with SMTP id
+ 98e67ed59e1d1-30a33300d8emr657806a91.17.1745957507302; 
+ Tue, 29 Apr 2025 13:11:47 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-309f784ab1bsm9879875a91.42.2025.04.29.13.11.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 29 Apr 2025 13:11:46 -0700 (PDT)
+Message-ID: <d33ca7c1-221d-4d0e-85bb-d84c3acba629@linaro.org>
+Date: Tue, 29 Apr 2025 13:11:46 -0700
 MIME-Version: 1.0
-Received-SPF: pass client-ip=46.23.81.152; envelope-from=outgoing@sr.ht;
- helo=mail-a.sr.ht
-X-Spam_score_int: 0
-X-Spam_score: -0.0
-X-Spam_bar: /
-X-Spam_report: (-0.0 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
- DKIM_INVALID=0.1, DKIM_SIGNED=0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- URIBL_SBL_A=0.1 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/3] single-binary: make QAPI generated files common
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>
+Cc: Peter Krempa <pkrempa@redhat.com>, qemu-devel@nongnu.org,
+ richard.henderson@linaro.org, stefanha@redhat.com,
+ Michael Roth <michael.roth@amd.com>, pbonzini@redhat.com,
+ peter.maydell@linaro.org, thuth@redhat.com, jsnow@redhat.com,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ devel@lists.libvirt.org
+References: <20250424183350.1798746-1-pierrick.bouvier@linaro.org>
+ <87a584b69n.fsf@pond.sub.org> <aA9ChuXrkmx1Igy5@angien.pipo.sk>
+ <8734dswnm3.fsf@pond.sub.org>
+ <2cc27344-8cfd-4435-9d41-79b86f61d537@linaro.org>
+ <875xinnzok.fsf@pond.sub.org>
+ <ae321f41-9405-4a6a-915e-969303c08d9b@linaro.org>
+ <41c2ee8e-d077-46c9-8106-e979e7cb80bc@linaro.org>
+Content-Language: en-US
+In-Reply-To: <41c2ee8e-d077-46c9-8106-e979e7cb80bc@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x102f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,125 +109,32 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: ~percival_foss <foss@percivaleng.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Percival Foss <foss@percivaleng.com>
+On 4/29/25 12:57 PM, Pierrick Bouvier wrote:
+> On 4/29/25 2:35 AM, Philippe Mathieu-Daudé wrote:
+>> If a distro wants to name a binary 'qemu-kvm' it can drop the
+>> -target option and hard-wire its target_info() to a distro-specific
+>> TargetInfo implementation, or &target_info_x86_64_system.
+>>
+> 
+> Having updated my Debian stable to next stable (trixie) last week, I
+> noticed that qemu-kvm was removed [1].
+> 
+> I don't know why, when or how, but it's just an example that things can
+> change, and people can survive to it.
+> 
+> [1] https://packages.debian.org/search?keywords=qemu-kvm
+> 
+> For the concerned other distros, if at least one packager asks us to
+> provide a "./configure --default-target", it will be an excellent reason
+> and opportunity to do it.
+> 
+> But before that, let's first build this single binary, let's see if it's
+> useful, let's see how to use it, and eventually, let's see how to
+> package this and cover corner cases.
 
-This test utilizes pegasos2 to show the cross page overflow bug on 32 bit sys=
-tems. We patch the firmware
-image to cause the overflow. The instructions to do this are as follows:
-li r3, 0
-li r4, -1
-lwz r5, 0x0(r4)
-lwz r5, 0x0(r3)
-
-This test will add an invalid translation when ran and then crash QEMU. If th=
-e fix is applied then pegasos2
-will start properly and not crash.
-
-Signed off by:Percival Engineering <foss@percivalemg.com>
----
- tests/functional/meson.build          |  1 +
- tests/functional/test_ppc_pegasos2.py | 69 +++++++++++++++++++++++++++
- 2 files changed, 70 insertions(+)
- create mode 100755 tests/functional/test_ppc_pegasos2.py
-
-diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-index 0f8be30fe2..6641b878c3 100644
---- a/tests/functional/meson.build
-+++ b/tests/functional/meson.build
-@@ -213,6 +213,7 @@ tests_ppc_system_thorough =3D [
-   'ppc_bamboo',
-   'ppc_mac',
-   'ppc_mpc8544ds',
-+  'ppc_pegasos2',
-   'ppc_replay',
-   'ppc_sam460ex',
-   'ppc_tuxrun',
-diff --git a/tests/functional/test_ppc_pegasos2.py b/tests/functional/test_pp=
-c_pegasos2.py
-new file mode 100755
-index 0000000000..ef76745068
---- /dev/null
-+++ b/tests/functional/test_ppc_pegasos2.py
-@@ -0,0 +1,69 @@
-+#!/usr/bin/env python3
-+#
-+# Test AmigaNG boards
-+#
-+# Copyright (c) 2023 BALATON Zoltan
-+#
-+# This work is licensed under the terms of the GNU GPL, version 2 or
-+# later.  See the COPYING file in the top-level directory.
-+
-+import subprocess
-+
-+from qemu_test import QemuSystemTest, Asset
-+from qemu_test import wait_for_console_pattern
-+from zipfile import ZipFile
-+
-+class Pegasos2Machine(QemuSystemTest):
-+
-+    timeout =3D 90
-+
-+    ASSET_IMAGE =3D Asset(
-+        ('https://web.archive.org/web/20071021223056if_/http://www.bplan-gmb=
-h.de/up050404/up050404'),
-+        '0b4ff042b293033e094b47ac7051824fc45f83adb340d455a17db1674b0150b0c60=
-ffc624ac766f5369cd79f0447214d468baa182c1f18c5e04cd23a50f0b9a2')
-+
-+    def test_ppc_pegasos2(self):
-+        self.require_accelerator("tcg")
-+        self.set_machine('pegasos2')
-+        file_path =3D self.ASSET_IMAGE.fetch()
-+        bios_fh =3D open(self.workdir + "/pegasos2.rom", "wb")
-+        subprocess.run(['tail', '-c','+85581', file_path], stdout=3Dbios_fh)
-+        bios_fh.close()
-+        subprocess.run(['truncate', '-s', '524288', self.workdir + "/pegasos=
-2.rom"], )
-+
-+        self.vm.set_console()
-+        self.vm.add_args('-bios', self.workdir + '/pegasos2.rom')
-+        self.vm.launch()
-+        wait_for_console_pattern(self, 'SmartFirmware:')
-+
-+    def test_ppc_pegasos2_test_tcg_crosspage_overflow_bug(self):
-+        self.require_accelerator("tcg")
-+        self.set_machine('pegasos2')
-+        file_path =3D self.ASSET_IMAGE.fetch()
-+        bios_fh =3D open(self.workdir + "/pegasos2.rom", "wb")
-+        subprocess.run(['tail', '-c','+85581', file_path], stdout=3Dbios_fh)
-+        bios_fh.close()
-+        subprocess.run(['truncate', '-s', '524288', self.workdir + "/pegasos=
-2.rom"], )
-+
-+        with open(self.workdir + "/pegasos2.rom", "rb") as bios_fh:
-+            bios_data =3D bios_fh.read()
-+       =20
-+        # Patch the firmware image with the following instructions that will=
- cause tcg to crash for 32-bit guests on 64-bit platforms:
-+        #   li r3, 0
-+        #   li r4, -1
-+        #   lwz r5, 0x0(r4)
-+        #   lwz r5, 0x0(r3)
-+
-+        bios_data_new =3D bios_data[:0x6c10] + b'\x38\x60\x00\x00' + b'\x38\=
-x80\xff\xff' + b'\x80\xa4\x00\x00' + b'\x80\xa3\x00\x00' + bios_data[0x6c20:]
-+        with open(self.workdir + "/pegasos2_new.rom", "wb") as bios_new_fh:
-+            bios_new_fh.write(bios_data_new)
-+
-+        self.vm.set_console()
-+        self.vm.add_args('-bios', self.workdir + '/pegasos2_new.rom')
-+        self.vm.launch()
-+        wait_for_console_pattern(self, 'Releasing IDE reset')
-+
-+        # set $pc =3D 0 and expect crash
-+
-+
-+if __name__ =3D=3D '__main__':
-+    QemuSystemTest.main()
---=20
-2.45.3
+Well, thinking about it twice, it's pretty easy to cover: qemu-kvm means 
+select the target that match host and add -accel kvm to argv.
 
