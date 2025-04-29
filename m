@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 140A9AA0E85
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 16:17:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34C51AA0E3A
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 16:09:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9ldr-0000ol-HW; Tue, 29 Apr 2025 10:08:59 -0400
+	id 1u9ldw-00018V-3H; Tue, 29 Apr 2025 10:09:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u9ldo-0000lL-Mq
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 10:08:56 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u9ldt-00011g-Kw
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 10:09:01 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u9ldm-0006IT-0y
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 10:08:56 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-39c30d9085aso4447634f8f.1
- for <qemu-devel@nongnu.org>; Tue, 29 Apr 2025 07:08:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1u9ldr-0006JU-9r
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 10:09:01 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-43cfe574976so42268365e9.1
+ for <qemu-devel@nongnu.org>; Tue, 29 Apr 2025 07:08:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745935732; x=1746540532; darn=nongnu.org;
+ d=linaro.org; s=google; t=1745935737; x=1746540537; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Y41oplbkU9wFEHQN9IFbTeGkihP8bHFwwIYrwg5eFCU=;
- b=EYYe0DQ6Z2PJ3Wse7CLLsldjIbap0voSi6u6xk9zwq9jZmQ7kwN/Lqg+4dUq6JRvYN
- o7ueJ39lXmXbqtkchPrAan48Ont4A+rprmgnxF+rDfgHxezUIlk1ILmtxdTWavG9TSNS
- JfWT2WXdVfen4hTP/2uVTvXPP+eux4IXRPK8MqTg5W0X3evgZzBglOwPR4cSHH7m9DsR
- 0/gTWn5NDz8qLb6z2KT7pOh+oiFE/EbkNXJNPw37M5OkGRbPS+d9OQPf6LklvDFMVcL0
- JmSIIFpGQSXQu40BbQhJk2Ohh0s6Z04DkOGcE6Dr4BpfFpZp3GCTyifIbgA0L7JC7owz
- xLCg==
+ bh=D7M6Tutx3exMAOrtlWY2rOEtIIwc+eHcrkvSbvRNBy0=;
+ b=KykhTJl4Xws9JBBG3bXZJk1mi0PGCMGBmyA/uNraDXH+B5TLulq+XEWv1W43Usr5V7
+ q1eCfPhTZqFeykIi1jtpNP/bNNBJi6q2/bWFL9Q60v6GPfR2rTlgSq7VnoMaWi87pw6R
+ Epe9sRDPS6h4qAEvFYXmLToolL3IoAYd4kTSdKM26AObU7syEaLAwjrEm4vrDepYvuSn
+ 749kNRhU/9U/JY1WivZiTo4WBNIxCct/TZTSv/Dq0mR6ixYXxhB2O0dIidHhmAuo6oaX
+ tTYrrtb89sk7+YMk6m2gNCF3mpPaqkjMHBHkLKQAj3WCl1cA8jm5P/nKECYKTE+5B9u8
+ Yhdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745935732; x=1746540532;
+ d=1e100.net; s=20230601; t=1745935737; x=1746540537;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Y41oplbkU9wFEHQN9IFbTeGkihP8bHFwwIYrwg5eFCU=;
- b=ELOtlI/3UEfuUqqoc0Ogwbhuivo4MBPaY4SneLRDC7nWvSxDNOmjlgp+JVdCzujfKs
- woQbO0nGO3+SflmgIXi25Bgp46CdfLF2rnGzlW6oHWZOeks+adNQOVtF/VgjOIAWf8rs
- 3i3AoLSCNYlEVEPjrYl5abS8a4DKbi7mVvYaJ93EP1MTx77uNbHDjLHYScaYjBHmAeO2
- 2GAlxfchwIHmha3qA3rtBwzZnFIeHJ0jB7BuYWQsAoL00E7GART6WYLl+qEGHeBbma5E
- ri/jLInPfDYARV4v3Aw8mGE+g6lHLZyU0NFxKh+HcUrCFbd7+LsLnDv49gY+Ked4u1ew
- PYyg==
-X-Gm-Message-State: AOJu0YzVtJ1tH7tT2z2Q+7WSk+QL5AqbccL5kcgNoF5hassAuPE1gAfA
- gLqOYXuRiMLbN944MxdQdgNk1P/Oh9H04rjTgoxhgYjAUe2tZ7ICoM/pC4KgYiOsXiymPBq8GwD
- T
-X-Gm-Gg: ASbGncvLXOvqqaz/mITIL1JlPgooBjFfFc4SPeSAaPsARZJMMmuWnOZxtTgn/Wf4FBO
- 1J+D3BnCyyxRc/nIdA2e+1vjNdbAo9F+F1z3i+XXPna2ylZWEufT9nUeKEdzBWHY1Xmd1mUMQWO
- tQKsY94gm4sgcyHfWPrtOuGBhWp3h+4aEi9Uuj9Bwsy9c304IxhGQYYieNPvY/p86bbeOrpQwoA
- J1flze/aMneZMeDWObp7h79B9ARwUFyDVAbM20/2YOhUpGGjJ9RSxAiDpiSOHPeeD+XNad7/jEr
- K8WI/xMgZ8ZXCeMsy1dgDLbCSNOUWOo5QL7u21JR26RrBrFY7PXd2h87b92fqpLIqHka2XvDbLS
- ksaxoI6RHWioXdSbAsBca
-X-Google-Smtp-Source: AGHT+IEco0W5dgiz/k9F0w521n574zMOPJiaS2/f48WwzXtNScnfK9ipNQ6rnRYeDvAjM48e12A5RA==
-X-Received: by 2002:a05:6000:1f03:b0:3a0:7a8f:db22 with SMTP id
- ffacd0b85a97d-3a07aa6b57emr7712782f8f.24.1745935732109; 
- Tue, 29 Apr 2025 07:08:52 -0700 (PDT)
+ bh=D7M6Tutx3exMAOrtlWY2rOEtIIwc+eHcrkvSbvRNBy0=;
+ b=WUDP1ZhnC1edzWAEhm5faCSndLUsV65jW5HCifBSoWWtbsHLAUPPqoEYAHkmM+DX5s
+ 2cuPFVw2yb+BcFPF6FG3WR8UF6J/N1Ke/4f7jYWZdBBfcIlhqwq9m0UjtXFW8FPxItre
+ dthYFdeHOqHJFdWu2KEoIbNk1nsyklt8u5Nf2mNRRy8MzN305i08Ei5tzam2ogaCpnv4
+ S9yj0IiZM2bdSIZacgFQzz3rGqDxVGMFOz5nRm90GPuycyBu7Nhk9igP1ZfKk9hxLEB+
+ wNHwqlZ2jMBkI6oKGr+++HEjb3FAyDa00Wohb/gY10FlL0xUJNyr4w6mlH3F+Rd4PPs8
+ L9/w==
+X-Gm-Message-State: AOJu0Yy+nV0+TfB+DOI5APQwdaYoOLEOImEDZPSWp3j/498cg711q6Dg
+ nkxMuNi24w3pQtGK5qWCn5WIc0eJDL0tw6s8deJ1gbWaIP12x4WcnZAWb6TjeNRsK1bxRCiBxOs
+ R
+X-Gm-Gg: ASbGncsYsZmqP+GV7RiJBqEBVLpZrl5cAvlRi8ePd0ujFXBfa2dYNFYhXTBC9vPMzez
+ FkzR1k2ysqrQi36fdcdc6x4tCfSpg810Dcki4Rmv/t2f7VFuZoFgDLskVaUKAt9Zea8T6dMT8A1
+ 1ZAkrqJiuZ0AwZs6z0dcj5C3l6Idrfs0+sqEti67uiQqyu8PdJhKG6JKMPXq8YbGOD7fwvLKm1j
+ lXwfbDC+YVczSBaJMMIgXtNubZJxZtGXfTCAyWEouU+sqa9rvtB3C0U31+jqYajjnBhJ/AGOb6i
+ Cjd+bAEpkvu5JA48ALT16Ki3kqPdXUE43ASjtIu+HABU2Gbdd7/uLOsY32qqe3kMQLXOYeisDFP
+ lEkNzYxkfDnXEK7jKv8Cw
+X-Google-Smtp-Source: AGHT+IFBdvLXaSfzgUODTJlwELKJq3jC658a3PXh4+8SDRkVU7raGgrxMfB7xaEKlZLs4jYTsI4TQw==
+X-Received: by 2002:a05:600c:3ca5:b0:43b:c0fa:f9dd with SMTP id
+ 5b1f17b1804b1-441ac918133mr25754115e9.25.1745935737168; 
+ Tue, 29 Apr 2025 07:08:57 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a073ca4742sm13810098f8f.23.2025.04.29.07.08.50
+ 5b1f17b1804b1-4409d2ac26dsm191298615e9.21.2025.04.29.07.08.55
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 29 Apr 2025 07:08:51 -0700 (PDT)
+ Tue, 29 Apr 2025 07:08:56 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -74,24 +74,24 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Dmitry Fleytman <dmitry.fleytman@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 05/19] hw/core/machine: Remove hw_compat_2_4[] array
-Date: Tue, 29 Apr 2025 16:08:11 +0200
-Message-ID: <20250429140825.25964-6-philmd@linaro.org>
+Subject: [PATCH v2 06/19] hw/net/e1000: Remove unused E1000_FLAG_MAC flag
+Date: Tue, 29 Apr 2025 16:08:12 +0200
+Message-ID: <20250429140825.25964-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250429140825.25964-1-philmd@linaro.org>
 References: <20250429140825.25964-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,48 +107,152 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The hw_compat_2_4[] array was only used by the pc-q35-2.4 and
-pc-i440fx-2.4 machines, which got removed. Remove it.
+E1000_FLAG_MAC was only used by the hw_compat_2_4[] array,
+via the 'extra_mac_registers=off' property. We removed all
+machines using that array, lets remove all the code around
+E1000_FLAG_MAC, including the MAC_ACCESS_FLAG_NEEDED enum,
+similarly to commit fa4ec9ffda7 ("e1000: remove old
+compatibility code").
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- include/hw/boards.h | 3 ---
- hw/core/machine.c   | 9 ---------
- 2 files changed, 12 deletions(-)
+ hw/net/e1000.c | 72 ++++++++++----------------------------------------
+ 1 file changed, 14 insertions(+), 58 deletions(-)
 
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index 765dc8dd35e..5c4e3d2a2cd 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -848,7 +848,4 @@ extern const size_t hw_compat_2_6_len;
- extern GlobalProperty hw_compat_2_5[];
- extern const size_t hw_compat_2_5_len;
+diff --git a/hw/net/e1000.c b/hw/net/e1000.c
+index cba4999e6d0..e0310aef872 100644
+--- a/hw/net/e1000.c
++++ b/hw/net/e1000.c
+@@ -127,10 +127,8 @@ struct E1000State_st {
+     QEMUTimer *flush_queue_timer;
  
--extern GlobalProperty hw_compat_2_4[];
--extern const size_t hw_compat_2_4_len;
+ /* Compatibility flags for migration to/from qemu 1.3.0 and older */
+-#define E1000_FLAG_MAC_BIT 2
+ #define E1000_FLAG_TSO_BIT 3
+ #define E1000_FLAG_VET_BIT 4
+-#define E1000_FLAG_MAC (1 << E1000_FLAG_MAC_BIT)
+ #define E1000_FLAG_TSO (1 << E1000_FLAG_TSO_BIT)
+ #define E1000_FLAG_VET (1 << E1000_FLAG_VET_BIT)
+ 
+@@ -1210,54 +1208,24 @@ static const writeops macreg_writeops[] = {
+ 
+ enum { NWRITEOPS = ARRAY_SIZE(macreg_writeops) };
+ 
+-enum { MAC_ACCESS_PARTIAL = 1, MAC_ACCESS_FLAG_NEEDED = 2 };
++enum { MAC_ACCESS_PARTIAL = 1 };
+ 
+-#define markflag(x)    ((E1000_FLAG_##x << 2) | MAC_ACCESS_FLAG_NEEDED)
+ /* In the array below the meaning of the bits is: [f|f|f|f|f|f|n|p]
+  * f - flag bits (up to 6 possible flags)
+  * n - flag needed
+  * p - partially implenented */
+ static const uint8_t mac_reg_access[0x8000] = {
+-    [IPAV]    = markflag(MAC),    [WUC]     = markflag(MAC),
+-    [IP6AT]   = markflag(MAC),    [IP4AT]   = markflag(MAC),
+-    [FFVT]    = markflag(MAC),    [WUPM]    = markflag(MAC),
+-    [ECOL]    = markflag(MAC),    [MCC]     = markflag(MAC),
+-    [DC]      = markflag(MAC),    [TNCRS]   = markflag(MAC),
+-    [RLEC]    = markflag(MAC),    [XONRXC]  = markflag(MAC),
+-    [XOFFTXC] = markflag(MAC),    [RFC]     = markflag(MAC),
+-    [TSCTFC]  = markflag(MAC),    [MGTPRC]  = markflag(MAC),
+-    [WUS]     = markflag(MAC),    [AIT]     = markflag(MAC),
+-    [FFLT]    = markflag(MAC),    [FFMT]    = markflag(MAC),
+-    [SCC]     = markflag(MAC),    [FCRUC]   = markflag(MAC),
+-    [LATECOL] = markflag(MAC),    [COLC]    = markflag(MAC),
+-    [SEQEC]   = markflag(MAC),    [CEXTERR] = markflag(MAC),
+-    [XONTXC]  = markflag(MAC),    [XOFFRXC] = markflag(MAC),
+-    [RJC]     = markflag(MAC),    [RNBC]    = markflag(MAC),
+-    [MGTPDC]  = markflag(MAC),    [MGTPTC]  = markflag(MAC),
+-    [RUC]     = markflag(MAC),    [ROC]     = markflag(MAC),
+-    [GORCL]   = markflag(MAC),    [GORCH]   = markflag(MAC),
+-    [GOTCL]   = markflag(MAC),    [GOTCH]   = markflag(MAC),
+-    [BPRC]    = markflag(MAC),    [MPRC]    = markflag(MAC),
+-    [TSCTC]   = markflag(MAC),    [PRC64]   = markflag(MAC),
+-    [PRC127]  = markflag(MAC),    [PRC255]  = markflag(MAC),
+-    [PRC511]  = markflag(MAC),    [PRC1023] = markflag(MAC),
+-    [PRC1522] = markflag(MAC),    [PTC64]   = markflag(MAC),
+-    [PTC127]  = markflag(MAC),    [PTC255]  = markflag(MAC),
+-    [PTC511]  = markflag(MAC),    [PTC1023] = markflag(MAC),
+-    [PTC1522] = markflag(MAC),    [MPTC]    = markflag(MAC),
+-    [BPTC]    = markflag(MAC),
 -
- #endif
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index ed01798d37c..d66b02b564c 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -292,15 +292,6 @@ GlobalProperty hw_compat_2_5[] = {
+-    [TDFH]  = markflag(MAC) | MAC_ACCESS_PARTIAL,
+-    [TDFT]  = markflag(MAC) | MAC_ACCESS_PARTIAL,
+-    [TDFHS] = markflag(MAC) | MAC_ACCESS_PARTIAL,
+-    [TDFTS] = markflag(MAC) | MAC_ACCESS_PARTIAL,
+-    [TDFPC] = markflag(MAC) | MAC_ACCESS_PARTIAL,
+-    [RDFH]  = markflag(MAC) | MAC_ACCESS_PARTIAL,
+-    [RDFT]  = markflag(MAC) | MAC_ACCESS_PARTIAL,
+-    [RDFHS] = markflag(MAC) | MAC_ACCESS_PARTIAL,
+-    [RDFTS] = markflag(MAC) | MAC_ACCESS_PARTIAL,
+-    [RDFPC] = markflag(MAC) | MAC_ACCESS_PARTIAL,
+-    [PBM]   = markflag(MAC) | MAC_ACCESS_PARTIAL,
++    [TDFH]  = MAC_ACCESS_PARTIAL,
++    [TDFT]  = MAC_ACCESS_PARTIAL,
++    [TDFHS] = MAC_ACCESS_PARTIAL,
++    [TDFTS] = MAC_ACCESS_PARTIAL,
++    [TDFPC] = MAC_ACCESS_PARTIAL,
++    [RDFH]  = MAC_ACCESS_PARTIAL,
++    [RDFT]  = MAC_ACCESS_PARTIAL,
++    [RDFHS] = MAC_ACCESS_PARTIAL,
++    [RDFTS] = MAC_ACCESS_PARTIAL,
++    [RDFPC] = MAC_ACCESS_PARTIAL,
++    [PBM]   = MAC_ACCESS_PARTIAL,
  };
- const size_t hw_compat_2_5_len = G_N_ELEMENTS(hw_compat_2_5);
  
--GlobalProperty hw_compat_2_4[] = {
--    { "e1000", "extra_mac_registers", "off" },
--    { "virtio-pci", "x-disable-pcie", "on" },
--    { "virtio-pci", "migrate-extra", "off" },
--    { "fw_cfg_mem", "dma_enabled", "off" },
--    { "fw_cfg_io", "dma_enabled", "off" }
--};
--const size_t hw_compat_2_4_len = G_N_ELEMENTS(hw_compat_2_4);
+ static void
+@@ -1268,8 +1236,7 @@ e1000_mmio_write(void *opaque, hwaddr addr, uint64_t val,
+     unsigned int index = (addr & 0x1ffff) >> 2;
+ 
+     if (index < NWRITEOPS && macreg_writeops[index]) {
+-        if (!(mac_reg_access[index] & MAC_ACCESS_FLAG_NEEDED)
+-            || (s->compat_flags & (mac_reg_access[index] >> 2))) {
++        if (s->compat_flags & (mac_reg_access[index] >> 2)) {
+             if (mac_reg_access[index] & MAC_ACCESS_PARTIAL) {
+                 DBGOUT(GENERAL, "Writing to register at offset: 0x%08x. "
+                        "It is not fully implemented.\n", index<<2);
+@@ -1295,8 +1262,7 @@ e1000_mmio_read(void *opaque, hwaddr addr, unsigned size)
+     unsigned int index = (addr & 0x1ffff) >> 2;
+ 
+     if (index < NREADOPS && macreg_readops[index]) {
+-        if (!(mac_reg_access[index] & MAC_ACCESS_FLAG_NEEDED)
+-            || (s->compat_flags & (mac_reg_access[index] >> 2))) {
++        if (s->compat_flags & (mac_reg_access[index] >> 2)) {
+             if (mac_reg_access[index] & MAC_ACCESS_PARTIAL) {
+                 DBGOUT(GENERAL, "Reading register at offset: 0x%08x. "
+                        "It is not fully implemented.\n", index<<2);
+@@ -1419,13 +1385,6 @@ static int e1000_tx_tso_post_load(void *opaque, int version_id)
+     return 0;
+ }
+ 
+-static bool e1000_full_mac_needed(void *opaque)
+-{
+-    E1000State *s = opaque;
 -
- MachineState *current_machine;
+-    return chkflag(MAC);
+-}
+-
+ static bool e1000_tso_state_needed(void *opaque)
+ {
+     E1000State *s = opaque;
+@@ -1451,7 +1410,6 @@ static const VMStateDescription vmstate_e1000_full_mac_state = {
+     .name = "e1000/full_mac_state",
+     .version_id = 1,
+     .minimum_version_id = 1,
+-    .needed = e1000_full_mac_needed,
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINT32_ARRAY(mac_reg, E1000State, 0x8000),
+         VMSTATE_END_OF_LIST()
+@@ -1679,8 +1637,6 @@ static void pci_e1000_realize(PCIDevice *pci_dev, Error **errp)
  
- static char *machine_get_kernel(Object *obj, Error **errp)
+ static const Property e1000_properties[] = {
+     DEFINE_NIC_PROPERTIES(E1000State, conf),
+-    DEFINE_PROP_BIT("extra_mac_registers", E1000State,
+-                    compat_flags, E1000_FLAG_MAC_BIT, true),
+     DEFINE_PROP_BIT("migrate_tso_props", E1000State,
+                     compat_flags, E1000_FLAG_TSO_BIT, true),
+     DEFINE_PROP_BIT("init-vet", E1000State,
 -- 
 2.47.1
 
