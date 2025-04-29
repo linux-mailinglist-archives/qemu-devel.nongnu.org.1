@@ -2,91 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D52E5AA0D68
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 15:24:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6110BAA0D7D
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 15:29:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9kve-0005NP-DT; Tue, 29 Apr 2025 09:23:18 -0400
+	id 1u9l1H-0003Qk-0N; Tue, 29 Apr 2025 09:29:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1u9kuj-00056g-FE
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 09:22:23 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1u9kub-0005gN-PY
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 09:22:18 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-39c1efbefc6so4114091f8f.1
- for <qemu-devel@nongnu.org>; Tue, 29 Apr 2025 06:22:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745932929; x=1746537729; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=1ZwkigIUy0IIiAszFNbLpeUVLw4uBqn4OmPKEQckEf8=;
- b=OebY71w+830xMii18W0xfl8h8Aomm9SXj/sVMAxccyPhyZx//Wgc1hk59gcESGa2GD
- mfNzn0TRm7tekot+vk4Lgrrvh7/W6YPfSKq6u2MgGoEiVxlkoRwHJ5BsL+PztkvETYib
- HkjAPl3pY192riqkxfhPy7sqNT64kagGVKi4zaPWY9L028kcmI9tPQ2+Fw4qlFcx+GJE
- LHl3C1XBW2fLlTnr9U8LSMARHgPXb6DaveMJ1TViRq7xv+Pvvejulxeuq4oJ6RvJsJPp
- jKNALSBFEZxbLoHbr7La8BtimOVnc6ULravDyPN/7x/66ueZwmulU20MVSn2zeS6FDwZ
- gDcA==
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1u9l14-0003Lr-P4
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 09:28:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1u9l12-0006zW-P2
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 09:28:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1745933330;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=MeGhxl9QUGq3KyGalvYR6vREk4HUFrempDi813QrCoE=;
+ b=S4kOgWotZZWRYoWjaGyiD9Ibydp4l9Zy6eqMGlF9M3UyDUvtOBZI9MXPKIU5bLjpMxButz
+ 0HZNPIp4A0nFCMgc3T6V9gqg1ZTIFQ7GyBLPBI73H+ZiCek8fwfzRgakNYjBaO9h4/C2ft
+ q0wYZvv0g08Lnfci/sMfGjkUkwN+34o=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-627-lJIgbSUeNOibZA1AlWA-gQ-1; Tue, 29 Apr 2025 09:28:48 -0400
+X-MC-Unique: lJIgbSUeNOibZA1AlWA-gQ-1
+X-Mimecast-MFC-AGG-ID: lJIgbSUeNOibZA1AlWA-gQ_1745933326
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-43941ad86d4so26199345e9.2
+ for <qemu-devel@nongnu.org>; Tue, 29 Apr 2025 06:28:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745932929; x=1746537729;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=1ZwkigIUy0IIiAszFNbLpeUVLw4uBqn4OmPKEQckEf8=;
- b=itzfedcL8t4G/CbqQ/FYfpufkdq+2NpiBdFfLRmhynGo4ODnCLWJB5EBbcYaQW4COl
- aB2m/TU61uoUOG/a+aBYqRNnK5KOm7nBtUhQ1gSLIQa5mEHfImX1Ciox9qXMDMwNsKIN
- xTOcUjKWaNEowmhFKWLqqIFCKCBb2dtl3FO20cLXaKElIC9Zxx2zdvO52uDOa5S0x2/J
- XsuKDs7KMk0R71xeT34GNTJeMIl2GEm/deeNb2BGy8Ao9KQAJsSeBnWJHYVC9ZKeFaaO
- jjN5LSUr4Abdpy5bEj6/hqNFz+Pc8uVyGh5Rz7zZU3bmTvHhQUTIfVAeDLBwbHGn0UN3
- BWBw==
+ d=1e100.net; s=20230601; t=1745933326; x=1746538126;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=MeGhxl9QUGq3KyGalvYR6vREk4HUFrempDi813QrCoE=;
+ b=rBh+FmLLv4MzH/OQD9XZkmCcacwv9YrNzFh4Nau6zHthFWr/rNPYJC5gLXEVcK52TB
+ ivq9ySPAxv5G4Sdv5GGnL9i08cd9XkgqK3TyXf0JxgsilFNNdSENhYkkrrQKGW9Xxr2t
+ clOMHy53+BPwLHKsOGjIgR5r0qD+gpb98ud+5s2O4tGvel4FVZzI+pdA/q3rSkls0S7+
+ FJV7GKyYPZQ+rHFQUk/2mE8sGPpp44vxdhn/JgiwlLbBaG7yEbFp85eXOQqbcMnlFDQN
+ +aCkeRN8VIdeT3ejBSNTws3eNXOKqmpYOUdI3vAD1AoVqQdwSZloRNj4Ndk2xdadLUz3
+ MsKw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVCT2KAqjfOH/uJa/G67DuT2Ngn/vJjn+tvdMlxnjrtrGJJcI3euJX6Gcpk1YLvZU6Aph6LaFkQmcwQ@nongnu.org
-X-Gm-Message-State: AOJu0YyyFXnHqZ20eUDWn5bxmlQUg54/S/AhVBsYB1nMxA6AN7Da9ITt
- ntpfCurh7MVfFAGNGvBtfEql9ks2Ola+YgigVlVi+VuOUKY/LkkQcDhwdaobNYd3UKQ/goDm8WF
- 4
-X-Gm-Gg: ASbGnct8yTXtUF7b1cT26kwYeB4v8cVgXcPmQRjb8xm8PPNRemtHU6r6T7eWGXUM5xj
- JrNp+aepQqJQEec0Um1KDURtNjBRDcOOspdnwBqWWhY+PGndzivC7hUUEIr3zxmFyrnX/A1CKqQ
- +c3VD9rvxtLnmZOKsP9C4D9I8oy7qcp0hZAXRVBs3YCIbjHB9xE+5qpi/QaWNyTJiTlaZUbOM7Q
- KaeOwxTsisnrg8DXgIuzFG5lEA1AoMU4rfTITaBjiSfqUTVNs3Kxh7AuIMsRBItEyYjh5Ou9MVM
- whmi1BvmEq4kpmygSEqgiuSsIq6sEdvR2J6lG+y1pZT9tZo=
-X-Google-Smtp-Source: AGHT+IFxI6Z9guiwoFXputfkjuj6m/0HV4z+gVSiFmysC4u0iNvAf5OrZxT/jhYqwpKainfr0VU4XQ==
-X-Received: by 2002:a05:6000:2211:b0:39e:cbd2:986e with SMTP id
- ffacd0b85a97d-3a08ad28663mr2286164f8f.5.1745932929510; 
- Tue, 29 Apr 2025 06:22:09 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a073ca5219sm13729371f8f.27.2025.04.29.06.22.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Apr 2025 06:22:08 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Edgar E . Iglesias" <edgar.iglesias@gmail.com>
-Subject: [PATCH v2 7/7] target/arm: Remove TYPE_AARCH64_CPU
-Date: Tue, 29 Apr 2025 14:22:00 +0100
-Message-ID: <20250429132200.605611-8-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250429132200.605611-1-peter.maydell@linaro.org>
-References: <20250429132200.605611-1-peter.maydell@linaro.org>
+ AJvYcCUIMj4QM4NnJ/lPnXTyVsSqV0vJ9Cgth6TcrsIMVZzKuQqWmhzQL8JGW5g9erX86IsKE/jd9FaO23Io@nongnu.org
+X-Gm-Message-State: AOJu0Yx1g+MlDKn+VheLNLUU2g+jg3G5eAT4OxD0jPOBbS5WCpKetBsa
+ iJ2f8xiWuhoQdmT1yX3dZvp0lKKF12Sf2nWii0Myu/mUXqf3Z5MIOwirpXKZ/omwrWVYwktA29I
+ uZF1ZfnVBIBq8PZ1k9LYAfw8+bLunRUFy0UIB7o7iaCkVAWikqDpz5B9Fx1JHexGvVUQjPC0f38
+ Phau/w3nONUEAKy/JqoRdUWexrE0M=
+X-Gm-Gg: ASbGnct2DY7OfHngj6xpryRynb9MwwsuChwjlaflxKfvY53SLjHNLIcyjuvjV1LmAma
+ Mx8fQR+sdZes9t5A7sQ9oyrgCX7KVnTUe9W8RGs54IKgHMJ+XtZbc9GoGiLF1UOrHRRG8
+X-Received: by 2002:a05:600c:3b1d:b0:441:ac58:ead5 with SMTP id
+ 5b1f17b1804b1-441ad4fe11bmr22572405e9.31.1745933326289; 
+ Tue, 29 Apr 2025 06:28:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHDKenmYyveZXPzAqHk11ms3Bc+jlC7014s/6UDk917dDn/xcpdH6L61AFCxm7Z84llQ4BFiTT+GzUXH3nmrqw=
+X-Received: by 2002:a05:600c:3b1d:b0:441:ac58:ead5 with SMTP id
+ 5b1f17b1804b1-441ad4fe11bmr22572245e9.31.1745933325942; Tue, 29 Apr 2025
+ 06:28:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <20250411114534.3370816-1-ppandit@redhat.com>
+ <87ecxteym0.fsf@suse.de> <87bjswfeis.fsf@suse.de>
+ <CAE8KmOzzn7g1=pd2J325gAf4ffmGALKoHdgL17So4KawxkZdbg@mail.gmail.com>
+ <87y0vyepta.fsf@suse.de> <aAlu0hcUCdzmIN4p@x1.local>
+ <CAE8KmOz7P+Pz8zwJq+mTEJbZjhCk7iAo9+c5DrZzhbTmz=VtUQ@mail.gmail.com>
+ <aBDObgL7hDQMy63F@x1.local>
+In-Reply-To: <aBDObgL7hDQMy63F@x1.local>
+From: Prasad Pandit <ppandit@redhat.com>
+Date: Tue, 29 Apr 2025 18:58:29 +0530
+X-Gm-Features: ATxdqUG4SbJatBAz-6GG07P6b5e-lPXMZgzKv0sdUY1L5i9pHCo4AzfC5LrWYjs
+Message-ID: <CAE8KmOx9yuZWWHnaA6gkC2VpeimY1=Pw+AU9iDvQ+vVpUp_vKg@mail.gmail.com>
+Subject: Re: [PATCH v9 0/7] Allow to enable multifd and postcopy migration
+ together
+To: Peter Xu <peterx@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org, berrange@redhat.com,
+ Prasad Pandit <pjp@fedoraproject.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.489,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,143 +106,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The TYPE_AARCH64_CPU class is an abstract type that is the parent of
-all the AArch64 CPUs.  It now has no special behaviour of its own, so
-we can eliminate it and make the AArch64 CPUs directly inherit from
-TYPE_ARM_CPU.
+On Tue, 29 Apr 2025 at 18:34, Peter Xu <peterx@redhat.com> wrote:
+> I think that's what Fabiano mentioned, but ultimately we need to verify it
+> on a reproducer to know.
+...
+> Looks ok, but please add some comments explain why postcopy needs to do it,
+> and especially do it during precopy phase.
+>
+> I'd use migrate_postcopy_ram() instead.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/arm/cpu-qom.h   |  5 -----
- target/arm/cpu.h       |  4 ----
- target/arm/internals.h |  1 -
- target/arm/cpu64.c     | 49 +-----------------------------------------
- target/arm/tcg/cpu64.c |  2 +-
- 5 files changed, 2 insertions(+), 59 deletions(-)
-
-diff --git a/target/arm/cpu-qom.h b/target/arm/cpu-qom.h
-index b497667d61e..2fcb0e12525 100644
---- a/target/arm/cpu-qom.h
-+++ b/target/arm/cpu-qom.h
-@@ -28,11 +28,6 @@ OBJECT_DECLARE_CPU_TYPE(ARMCPU, ARMCPUClass, ARM_CPU)
- 
- #define TYPE_ARM_MAX_CPU "max-" TYPE_ARM_CPU
- 
--#define TYPE_AARCH64_CPU "aarch64-cpu"
--typedef struct AArch64CPUClass AArch64CPUClass;
--DECLARE_CLASS_CHECKERS(AArch64CPUClass, AARCH64_CPU,
--                       TYPE_AARCH64_CPU)
--
- #define ARM_CPU_TYPE_SUFFIX "-" TYPE_ARM_CPU
- #define ARM_CPU_TYPE_NAME(name) (name ARM_CPU_TYPE_SUFFIX)
- 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index fdcf8cd1ae0..a394c7d46d7 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -1141,10 +1141,6 @@ struct ARMCPUClass {
-     ResettablePhases parent_phases;
- };
- 
--struct AArch64CPUClass {
--    ARMCPUClass parent_class;
--};
--
- /* Callback functions for the generic timer's timers. */
- void arm_gt_ptimer_cb(void *opaque);
- void arm_gt_vtimer_cb(void *opaque);
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index f1c06a3fd89..7be34388fc2 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -353,7 +353,6 @@ static inline int r14_bank_number(int mode)
- }
- 
- void arm_cpu_register(const ARMCPUInfo *info);
--void aarch64_cpu_register(const ARMCPUInfo *info);
- 
- void register_cp_regs_for_features(ARMCPU *cpu);
- void init_cpreg_list(ARMCPU *cpu);
-diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
-index e527465a3ca..200da1c489b 100644
---- a/target/arm/cpu64.c
-+++ b/target/arm/cpu64.c
-@@ -781,59 +781,12 @@ static const ARMCPUInfo aarch64_cpus[] = {
- #endif
- };
- 
--static void aarch64_cpu_finalizefn(Object *obj)
--{
--}
--
--static void aarch64_cpu_class_init(ObjectClass *oc, const void *data)
--{
--}
--
--static void aarch64_cpu_instance_init(Object *obj)
--{
--    ARMCPUClass *acc = ARM_CPU_GET_CLASS(obj);
--
--    acc->info->initfn(obj);
--    arm_cpu_post_init(obj);
--}
--
--static void cpu_register_class_init(ObjectClass *oc, const void *data)
--{
--    ARMCPUClass *acc = ARM_CPU_CLASS(oc);
--
--    acc->info = data;
--}
--
--void aarch64_cpu_register(const ARMCPUInfo *info)
--{
--    TypeInfo type_info = {
--        .parent = TYPE_AARCH64_CPU,
--        .instance_init = aarch64_cpu_instance_init,
--        .class_init = info->class_init ?: cpu_register_class_init,
--        .class_data = info,
--    };
--
--    type_info.name = g_strdup_printf("%s-" TYPE_ARM_CPU, info->name);
--    type_register_static(&type_info);
--    g_free((void *)type_info.name);
--}
--
--static const TypeInfo aarch64_cpu_type_info = {
--    .name = TYPE_AARCH64_CPU,
--    .parent = TYPE_ARM_CPU,
--    .instance_finalize = aarch64_cpu_finalizefn,
--    .abstract = true,
--    .class_init = aarch64_cpu_class_init,
--};
--
- static void aarch64_cpu_register_types(void)
+* Okay. It should be '||' instead of '&&' in the first conditional I
+think, we want to write zeropage when postcopy is enabled.
+===
+diff --git a/migration/multifd-zero-page.c b/migration/multifd-zero-page.c
+index dbc1184921..4d6677feab 100644
+--- a/migration/multifd-zero-page.c
++++ b/migration/multifd-zero-page.c
+@@ -85,9 +85,11 @@ void multifd_recv_zero_page_process(MultiFDRecvParams *p)
  {
-     size_t i;
- 
--    type_register_static(&aarch64_cpu_type_info);
--
-     for (i = 0; i < ARRAY_SIZE(aarch64_cpus); ++i) {
--        aarch64_cpu_register(&aarch64_cpus[i]);
-+        arm_cpu_register(&aarch64_cpus[i]);
+     for (int i = 0; i < p->zero_num; i++) {
+         void *page = p->host + p->zero[i];
+-        if (ramblock_recv_bitmap_test_byte_offset(p->block, p->zero[i])) {
++        if (migrate_postcopy_ram() ||
++            ramblock_recv_bitmap_test_byte_offset(p->block, p->zero[i])) {
+             memset(page, 0, multifd_ram_page_size());
+-        } else {
++        }
++        if (!ramblock_recv_bitmap_test_byte_offset(p->block, p->zero[i])) {
+             ramblock_recv_bitmap_set_offset(p->block, p->zero[i]);
+         }
      }
- }
- 
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 29ab0ac79da..5d8ed2794d3 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1316,7 +1316,7 @@ static void aarch64_cpu_register_types(void)
-     size_t i;
- 
-     for (i = 0; i < ARRAY_SIZE(aarch64_cpus); ++i) {
--        aarch64_cpu_register(&aarch64_cpus[i]);
-+        arm_cpu_register(&aarch64_cpus[i]);
-     }
- }
- 
--- 
-2.43.0
+===
+* I'll send this one if it looks okay.
+
+> I don't think we can know that - receivedmap set doesn't mean it's a zero
+> page, but only says it's been received before.  It can also happen e.g. >1
+> threads faulted on the same page then the 2nd thread faulted on it may see
+> receivedmap set because the 1st thread got faulted already got the fault
+> resolved.
+
+* Okay.
+
+Thank you.
+---
+  - Prasad
 
 
