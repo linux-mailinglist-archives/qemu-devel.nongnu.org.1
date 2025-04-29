@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E392BAA07BE
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 11:50:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A75DAAA07C9
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 11:52:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9hbP-0006Xy-Uc; Tue, 29 Apr 2025 05:50:11 -0400
+	id 1u9hd0-0007fK-Rq; Tue, 29 Apr 2025 05:51:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u9hbN-0006Wq-EV
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 05:50:09 -0400
-Received: from mgamail.intel.com ([198.175.65.16])
+ id 1u9hcy-0007ep-UT
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 05:51:48 -0400
+Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u9hbL-000128-Ht
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 05:50:08 -0400
+ id 1u9hcx-0001IO-9G
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 05:51:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745920208; x=1777456208;
+ t=1745920307; x=1777456307;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=Wz0oQcKHk/Az2NoDoiHHFLOVkWTsFpelBCDLt3Mle9w=;
- b=b7/CLpZYT8QmhZ07VEO35wkua3paSbXTTTstHe59/TkMrJWe1Kw5XK3c
- /UCPrICk3n9O9MNzJre89a0HXlExhjS8thflJitR9O4M3VsfCON0ff9Rm
- jdT/gQXoLyle7krvKnNp92Sv8ksHgDx2665p1YCW6BZeF8wDBu1nc+q2I
- YJeomO975vFI3H5uUU93d6FU7xd8lF5KTwsMJ6RwmfOCq+3kp3xdSgdjl
- sIMVk+YqqXb+iSEHTetnDeShIn6TlR5z16xdqwNZPx4vS3HSrqrVab5wf
- QFPam6zHhOCGtmb6H6GjAUSKjLBpCUg0/3vsEbt3A3H9J5pEL1DvPierN Q==;
-X-CSE-ConnectionGUID: jT2XKOfRRX6YrHyY9y0/ow==
-X-CSE-MsgGUID: phlbX1KLQECA1YuCzo4geg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11417"; a="47623366"
-X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; d="scan'208";a="47623366"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Apr 2025 02:50:05 -0700
-X-CSE-ConnectionGUID: Je5z58QtQEC0dOA2BMJMpw==
-X-CSE-MsgGUID: o5nFavxwQO6MyxeEyIW66g==
+ bh=tGU38TRg07K/Mv43zK/ICJjv0cU0Nf3qQm21pikXjEQ=;
+ b=PEhS+++nFCqQe/bSm6MEshjwTZPciN1LrjApMd9qaRPlt2jGZiDtEicN
+ SICceLBVzinMOjB9PoCu1ox1AEyRbqMXhUHuEMSmqYrbkAP7PBydeiL27
+ FZGA0XVQh4fRJ+487lb3XzPr3d71NEmmhmuoTAVzJlqucQqcXEJ+8ScHx
+ EHjTm3wyayVCxkARkWtr0SyRwRj6hd5ziXm4YoFdmoo2O8uSTLBAbLu9a
+ Q+R/ewnI+f4I2Y3vAV5aMinNSRougZSLLycUcUldcAhiLVrHfkjzp3fY2
+ AsSCT4KX0m6or+rdQ/suYJwvDmakGvTrz6sAIh5+a63IKxr1OD5v2ue2y A==;
+X-CSE-ConnectionGUID: s+tS25ouT5+o3iLKH/Dirg==
+X-CSE-MsgGUID: b5qHphmzRVOVLQkaFOYNVg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11417"; a="57732697"
+X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; d="scan'208";a="57732697"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Apr 2025 02:51:45 -0700
+X-CSE-ConnectionGUID: 72qf1D+RRFiaKmOQ4wvoSg==
+X-CSE-MsgGUID: YQ5dcPU0RBG2MXgqhaMizg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; d="scan'208";a="134286309"
+X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; d="scan'208";a="133661221"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by fmviesa010.fm.intel.com with ESMTP; 29 Apr 2025 02:50:01 -0700
-Date: Tue, 29 Apr 2025 18:10:58 +0800
+ by fmviesa006.fm.intel.com with ESMTP; 29 Apr 2025 02:51:43 -0700
+Date: Tue, 29 Apr 2025 18:12:40 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Xiaoyao Li <xiaoyao.li@intel.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -55,15 +55,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
  Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH v8 34/55] i386/tdx: Force exposing CPUID 0x1f
-Message-ID: <aBClsr+6urEwc2J1@intel.com>
+Subject: Re: [PATCH v8 35/55] i386/tdx: Set kvm_readonly_mem_enabled to false
+ for TDX VM
+Message-ID: <aBCmGAIE1Y/OPfmk@intel.com>
 References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
- <20250401130205.2198253-35-xiaoyao.li@intel.com>
+ <20250401130205.2198253-36-xiaoyao.li@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250401130205.2198253-35-xiaoyao.li@intel.com>
-Received-SPF: pass client-ip=198.175.65.16; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20250401130205.2198253-36-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -48
 X-Spam_score: -4.9
@@ -88,19 +89,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Apr 01, 2025 at 09:01:44AM -0400, Xiaoyao Li wrote:
-> Date: Tue,  1 Apr 2025 09:01:44 -0400
+On Tue, Apr 01, 2025 at 09:01:45AM -0400, Xiaoyao Li wrote:
+> Date: Tue,  1 Apr 2025 09:01:45 -0400
 > From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: [PATCH v8 34/55] i386/tdx: Force exposing CPUID 0x1f
+> Subject: [PATCH v8 35/55] i386/tdx: Set kvm_readonly_mem_enabled to false
+>  for TDX VM
 > X-Mailer: git-send-email 2.34.1
 > 
-> TDX uses CPUID 0x1f to configure TD guest's CPU topology. So set
-> enable_cpuid_0x1f for TDs.
+> TDX only supports readonly for shared memory but not for private memory.
+> 
+> In the view of QEMU, it has no idea whether a memslot is used as shared
+> memory of private. Thus just mark kvm_readonly_mem_enabled to false to
+> TDX VM for simplicity.
 > 
 > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 > ---
->  target/i386/kvm/tdx.c | 4 ++++
->  1 file changed, 4 insertions(+)
+>  target/i386/kvm/tdx.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
