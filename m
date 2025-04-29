@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCDD8AA07E5
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 12:00:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DECCAA07EA
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 12:02:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9hl2-00051v-49; Tue, 29 Apr 2025 06:00:08 -0400
+	id 1u9hmd-0006DV-77; Tue, 29 Apr 2025 06:01:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u9hl0-00051Y-27
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 06:00:06 -0400
-Received: from mgamail.intel.com ([198.175.65.13])
+ id 1u9hmV-00068h-9e
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 06:01:39 -0400
+Received: from mgamail.intel.com ([198.175.65.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1u9hkx-0002Ng-KV
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 06:00:05 -0400
+ id 1u9hmS-0002gb-0S
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 06:01:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1745920804; x=1777456804;
+ t=1745920896; x=1777456896;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=sMsJ5qHPHTmJfzHu/ec0CYmK0AWN9SeIEx/Gc3iUK88=;
- b=VKDvOUGlAKSn5xGY+gujtgK+DfCzcH4SiYZtOq1DSOeviSgdO08BWa1a
- mwMqKyXzH/QOFkF2WTrlEA3LMHlLzWhLTitHYOngFlYSjvKOwBZir7VDh
- u16nAiTNOWyJE/845CZHB1T89YvWTjVjskAX9X09Wncfwz5+bJKHAVUSa
- kuwwE90HqTySq7JtLUlN3dfly9lace09nf7F+O2GSume2V7hTACSIPThr
- n98bodUowKOWXL2Zh7whGC0/MmKY4BFkqFDuFE1VMcL/kpO1lmjx4hHN7
- +JM9LfHPoNRf7jwamPIOAz3TzymRRjIhFel1t4Kws+uhR2VR9CtmEX6db A==;
-X-CSE-ConnectionGUID: NGAMsXHWSYyd9jHzFBPYaQ==
-X-CSE-MsgGUID: 2y3drpQOTsWRAhgoD+tHzQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11417"; a="58521844"
-X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; d="scan'208";a="58521844"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Apr 2025 03:00:02 -0700
-X-CSE-ConnectionGUID: q5SY9WLSQQOoQ43/tbBFPA==
-X-CSE-MsgGUID: CyHCJLDNRSmwVfhjgrpn0g==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=l7uF9Ubp8bF62r3NRtrZhms4/wPtHAA4ocx2CtWSn24=;
+ b=MCtVvwZ51ghVHxg77Mh7NJGvBwQ3LOLYvXe3VpCGA9wdcfmsFM/fk8C6
+ chx7KjxRVo+VSF4F5oFwwUaluK0htav03EEXjN3mHwPfpiEbkprK1r597
+ 8sBytvo2CzcTSxofrloNRmxaUnQzb6XJvDChvbZCDxUWs/wHwd4SSzFyN
+ OmeU6EmIZhB9jCvciIsCRVGGb1EwIm/X7nLA6tasJSmuIwT0KB8CQh8zo
+ x7URvx+4mUTmYHZ7PcpHMaoJGkNgJQPTlyEFZaPXstrigeUQ8qwBmwS5Q
+ iB3mcwSfg7UPudMVwpT2JBRSjVSlbfM8zhgaWedJg2emMvEOgF2HqG4qh g==;
+X-CSE-ConnectionGUID: WSIdbSioQMi9csnET2oAmQ==
+X-CSE-MsgGUID: gLgmAuKsTcm3YL1Rweqdag==
+X-IronPort-AV: E=McAfee;i="6700,10204,11417"; a="47545758"
+X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; d="scan'208";a="47545758"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Apr 2025 03:01:32 -0700
+X-CSE-ConnectionGUID: LvR1YQ0ERKuJfZxV0RMhjg==
+X-CSE-MsgGUID: CKXeCByhQ/ivJqjr92tWeg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; d="scan'208";a="138575115"
+X-IronPort-AV: E=Sophos;i="6.15,248,1739865600"; d="scan'208";a="134091213"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by orviesa003.jf.intel.com with ESMTP; 29 Apr 2025 02:59:59 -0700
-Date: Tue, 29 Apr 2025 18:20:56 +0800
+ by fmviesa008.fm.intel.com with ESMTP; 29 Apr 2025 03:01:28 -0700
+Date: Tue, 29 Apr 2025 18:22:26 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Xiaoyao Li <xiaoyao.li@intel.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -55,16 +55,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
  Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH v8 40/55] i386/tdx: Only configure MSR_IA32_UCODE_REV in
- kvm_init_msrs() for TDs
-Message-ID: <aBCoCL3zj3E+mYKp@intel.com>
+Subject: Re: [PATCH v8 38/55] i386/tdx: Set and check kernel_irqchip mode for
+ TDX
+Message-ID: <aBCoYh53h0JgoNeS@intel.com>
 References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
- <20250401130205.2198253-41-xiaoyao.li@intel.com>
+ <20250401130205.2198253-39-xiaoyao.li@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250401130205.2198253-41-xiaoyao.li@intel.com>
-Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250401130205.2198253-39-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=198.175.65.17; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -48
 X-Spam_score: -4.9
@@ -89,24 +90,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Apr 01, 2025 at 09:01:50AM -0400, Xiaoyao Li wrote:
-> Date: Tue,  1 Apr 2025 09:01:50 -0400
+On Tue, Apr 01, 2025 at 09:01:48AM -0400, Xiaoyao Li wrote:
+> Date: Tue,  1 Apr 2025 09:01:48 -0400
 > From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: [PATCH v8 40/55] i386/tdx: Only configure MSR_IA32_UCODE_REV in
->  kvm_init_msrs() for TDs
+> Subject: [PATCH v8 38/55] i386/tdx: Set and check kernel_irqchip mode for
+>  TDX
 > X-Mailer: git-send-email 2.34.1
 > 
-> For TDs, only MSR_IA32_UCODE_REV in kvm_init_msrs() can be configured
-> by VMM, while the features enumerated/controlled by other MSRs except
-> MSR_IA32_UCODE_REV in kvm_init_msrs() are not under control of VMM.
+> KVM mandates kernel_irqchip to be split mode.
 > 
-> Only configure MSR_IA32_UCODE_REV for TDs.
+> Set it to split mode automatically when users don't provide an explicit
+> value, otherwise check it to be the split mode.
 > 
+> Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
 > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 > ---
->  target/i386/kvm/kvm.c | 44 ++++++++++++++++++++++---------------------
->  1 file changed, 23 insertions(+), 21 deletions(-)
+>  target/i386/kvm/tdx.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
