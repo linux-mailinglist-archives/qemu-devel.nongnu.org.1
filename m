@@ -2,86 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9978EAA1726
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 19:44:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88E1EAA1838
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 19:57:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9ozU-0006lV-1P; Tue, 29 Apr 2025 13:43:32 -0400
+	id 1u9pC9-0005Ch-Hb; Tue, 29 Apr 2025 13:56:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u9ozQ-0006l1-6n
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 13:43:28 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ (Exim 4.90_1) (envelope-from <anisa.su887@gmail.com>)
+ id 1u9pC1-0005CG-N8
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 13:56:30 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1u9ozN-0006eM-MU
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 13:43:27 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-2254e0b4b79so94949235ad.2
- for <qemu-devel@nongnu.org>; Tue, 29 Apr 2025 10:43:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <anisa.su887@gmail.com>)
+ id 1u9pBz-0001Ys-0D
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 13:56:28 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-227a8cdd241so87199215ad.3
+ for <qemu-devel@nongnu.org>; Tue, 29 Apr 2025 10:56:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745948603; x=1746553403; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=k3nV9Ny53k5M2p2D/6hdWEhlGk4a6icaPdiqA/NIhyA=;
- b=OBUcU9DXNIsBOokjEnV5O/PrKuugV7YOYN6ABYMh0KENkLz5VuJsbz9qpKcpXL10mb
- Jbb/YZzt2OdtaJQEw/nwfdOaayJ/MPWMyTE29pNW3OjzV16wtP6JbsgDXfw73rSFPaxw
- A3YXTolxCRXD1SadaPJPlPRQbSgKtw4XJmRR+MDiEI54QeyPUQ1ypmeBLh1buOVRmZ5h
- 8WM/YPT1TS+tazEuYU6p5Mx//l9ui2+wPp/S9KY/fU5VCZ8gsnzFgzxqIeZ3n2x5SjbD
- cc+DOG3WeKp8ndIj3K6ZETlCgRzmxMFvR5oPCzkPB5ivKVBPJFC5kvkfSaa68U5jg324
- tVmg==
+ d=gmail.com; s=20230601; t=1745949384; x=1746554184; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=yJuFu2T2uACt7lYPR7DK5aCYKnlqtxYEUsDvqs5aJGA=;
+ b=V672B3AW3dALPvBcRTgU3O8jwhY4JSQik2zF+ypk50W8tF9tFfBgqEHT0CRF8AoCZU
+ y7n0jSthGHBjC+3850nHKgTvEEnIrPxK8wKzIFbhEA0JCl6vytV5CNltjgj4rgjcT3et
+ 1Vv8rnNrlMjgl6Xs1UVyBBvRXXkaUCzhZQQEU6Vrc9mcgP3EgtiTUny7DZTdcJXd/NHb
+ Rp1TeWS111fFg9D+glDa+Q98xf2iJSrBpuVqFLytPMpi9CEVxaF36LsfVkqp5tmGQKAC
+ 8SMEBhLtQ3V/iQje3X8jYh7RTwExaKv81i/7EgTs4vRETbAFqoiwOYZS71VhqeOcbIn0
+ OCYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745948603; x=1746553403;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=k3nV9Ny53k5M2p2D/6hdWEhlGk4a6icaPdiqA/NIhyA=;
- b=jucKAkLtYOCVfUYwBqh8fcwATulzkW7If/aX4wAj+tmQl2McFxlZJzgxhHjzikEx9S
- 3nGAZuIaPjJEDe2uAjlz680V8FCgm8pkQKxCSz/7iMMggnbb/ez6yL6Nmor0DfPygjs6
- nAwYOCECeD40ZVL73tddlCGv9s8sLXpo+vg2dLwdhG+arQs9IPqNXzrFIINp3TkBFKSe
- 0/O8MBnCYyDmG75fhOJ8FtKHoNIRLZx3Q3hJfkV/qMprqlHha/EG2Y7pXFuR6VLNiVdJ
- E1hv6CmC7Yu1OL+PUaXxYhgrvIjbeThWNNXeDLqgfeaxDy4zmLkNx6LXFeyb83QjmO2S
- tjcA==
-X-Gm-Message-State: AOJu0YwaAdXEk9NDrNmjHAOfPXbFUEfJSNxJSmiMFc1Hn0vqvmdJQW5B
- 5F+Cyq8/Q/8BVnVGvjeTEg20OLFU7NpdYLNQIhKVyyvBj9wZSSAH4q3FaDDVQHa/bIUyEy9nwp7
- /
-X-Gm-Gg: ASbGncuOKwVT799gGRk4OIqoykyO49GqSYbhcyPPaL4ygJ2OBtXUM7E5/142TTWgaNU
- 0jIW4Ia+/2lY+mvp88hmlbr4Tq6pa0cy11mNamiKdDDwsqmQSNgye7hMQKV2U7+ui0QDBTKZ44w
- KxZ5sQgJV06ygnwZCdAp8XDteq6ybktKodyq8fHHFW5OqU+swaAcjlen47aHmsuRncepDc/0Nyv
- seC5BmQ8c/gN3mUndt2RKZxbWajfYwN9UdW8CikmJVNNHp+hsIxlxAq2RUJW+397+VBXYzd0oLR
- zKomMcbeohl3rJYrl0WMDFO6LcEhi9BlPf3NMXO3dKOYkKjqLATpkY6VHOO8IUaixf99OAfMlxU
- =
-X-Google-Smtp-Source: AGHT+IGbBwudOtCLYwzWV/W04je9ISnHZXnehszNM+gf2NCc9/lOIiDt8EZKbJgtzn5ZIblE5dqPrw==
-X-Received: by 2002:a17:902:f68f:b0:220:e9ef:ec98 with SMTP id
- d9443c01a7336-22df34d8324mr3976475ad.19.1745948603377; 
- Tue, 29 Apr 2025 10:43:23 -0700 (PDT)
-Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
+ d=1e100.net; s=20230601; t=1745949384; x=1746554184;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yJuFu2T2uACt7lYPR7DK5aCYKnlqtxYEUsDvqs5aJGA=;
+ b=BaxyovhyAxU6kB0WfCRGTbge+nvfOOTavcfRVOXUcl4uSelYoLKM933d9wGldizZG6
+ lutug65vGjIKrkfVtG4pxhXBGaNf74QqT4YwW6G9Ki/kLP4wj3BWvXuX4rOF2kOYBg52
+ sHt4Us83n9ObauJV799vFk311g08WezMZsOOOIX3tz3FWWPQ8eOetNPDwpVBilSk7lqW
+ gX1uUQ37uFSMayq2KkvDnjW9MFw9kp3+7RfFJtxvYzZCaU7XqkmvYqvnu3rcFuLY73qK
+ qxjkfQH6H4xTzEIFMr46ERVpu9geFnnXEuCq/dTXIpKW+tg7LROI/nrO2VtycYmyFI46
+ X6RQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW+kUng8/Vk815YOlXbZZUlNWrmJdnAzWvGH3/13kUYj6SY0qZz63bv7c+fAa9WN40+hL+JQvPGFbev@nongnu.org
+X-Gm-Message-State: AOJu0Yw5HvAXc6EUqZtLGnU4TP9kLZRqCPcMSvPFsZbmqtuXsIpLdqtz
+ LK9l1uSSylMDxU+QtQeRN6fClHyW4rhuf4hVeWSvrp7t11hw8CMu
+X-Gm-Gg: ASbGnctXCjs3oTZcQuRJ/3BScvSx8aoBe6csobKikAhhUvEp4u6AajhPTc7LS8j0pIt
+ zuy9VCgWalLm78ZFMP+uuW2IrjBxVVFRQTPSvSKQXIxT0E/V1L7JfxDpVmR/JSU1rTfMy5zwGK/
+ PkvBDgGhuGbSSwQMC2trbrGznpd5Nln06lMWPtPWm0bro2bxN1sl7IMtEF3Udb5vrmR+yCnZFa1
+ C3BmJ4DoaU6x68pI7N7k61jHyAv3hTAfkUPCVNog6TBxjculz1c/B6TO+mRa1SSwh65YhjIqjWz
+ YpwHwaQJ/wDZ6FIkYm27Oad+oHG9txtZWzBr2kpd/iha+Qs0tQfyHQj3WzVGGEJoWsI=
+X-Google-Smtp-Source: AGHT+IHh05EfYulLqBSbJTNmqSNuuxyR3fQUErngIO1EFAitJiPAP6+8QHeuDFL7PSyVG7VRZRbZ/A==
+X-Received: by 2002:a17:903:1aa5:b0:223:635d:3e38 with SMTP id
+ d9443c01a7336-22df34e7f64mr4824645ad.15.1745949384214; 
+ Tue, 29 Apr 2025 10:56:24 -0700 (PDT)
+Received: from deb-101020-bm01.eng.stellus.in ([149.97.161.244])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22db4e0c385sm105795955ad.105.2025.04.29.10.43.22
+ d9443c01a7336-22db5100aa7sm105284405ad.161.2025.04.29.10.56.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Apr 2025 10:43:23 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL v2 161/161] tcg/sparc64: Implement CTPOP
-Date: Tue, 29 Apr 2025 10:43:20 -0700
-Message-ID: <20250429174320.1841700-4-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250429174320.1841700-1-richard.henderson@linaro.org>
-References: <20250429174320.1841700-1-richard.henderson@linaro.org>
+ Tue, 29 Apr 2025 10:56:23 -0700 (PDT)
+From: Anisa Su <anisa.su887@gmail.com>
+X-Google-Original-From: Anisa Su <anisa.su@samsung.com>
+Date: Tue, 29 Apr 2025 17:56:21 +0000
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: anisa.su887@gmail.com, qemu-devel@nongnu.org, nifan.cxl@gmail.com,
+ dave@stgolabs.net, linux-cxl@vger.kernel.org
+Subject: Re: [PATCH 1/9] cxl/type3: Add supported block sizes bitmask to
+ CXLDCRegion struct
+Message-ID: <aBESxXNTecIbPJPP@deb-101020-bm01.eng.stellus.in>
+References: <20250317164204.2299371-1-anisa.su887@gmail.com>
+ <20250317164204.2299371-2-anisa.su887@gmail.com>
+ <20250424111131.00005ff2@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250424111131.00005ff2@huawei.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=anisa.su887@gmail.com; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,78 +103,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tcg/sparc64/tcg-target.c.inc | 27 ++++++++++++++++++++++-----
- 1 file changed, 22 insertions(+), 5 deletions(-)
+On Thu, Apr 24, 2025 at 11:11:31AM +0100, Jonathan Cameron wrote:
+> On Mon, 17 Mar 2025 16:31:28 +0000
+> anisa.su887@gmail.com wrote:
+> 
+> > From: Anisa Su <anisa.su@samsung.com>
+> > 
+> > Add supported_blk_size field to CXLDCRegion struct in preparation for
+> > next patch. It is needed by command 0x5600 Get DC Region Config.
+...
+> > @@ -8,6 +8,7 @@
+> >   *
+> >   * SPDX-License-Identifier: GPL-v2-only
+> >   */
+> > +#include <math.h>
+> >  
+> >  #include "qemu/osdep.h"
+> >  #include "qemu/units.h"
+> > @@ -766,6 +767,7 @@ static bool cxl_create_dc_regions(CXLType3Dev *ct3d, Error **errp)
+> >      uint64_t region_len;
+> >      uint64_t decode_len;
+> >      uint64_t blk_size = 2 * MiB;
+> > +    uint64_t supported_blk_size_bitmask = BIT((int) log2(blk_size));
+> 
+> Isn't this going in circles?  I guess it sort of acts as documentation that it
+> is a bitmap but then the name is already doing that. 
+> Maybe set it to blk_size and add a comment that for now only a fixed block size
+> is supported?
+> 
+> I'm a little confused on what this is for given you don't check it in patch 6
+> which is changing the block size?
+Good catch! It doesn't seem to specify this check in Section 7.6.7.6.3
+Set DC Region Configuration (Opcode 5602h) in the 3.2 spec, but it would
+make sense to me to fail with the same rc as when the region has not
+been cleared, which is CXL_MBOX_UNSUPPORTED.
 
-diff --git a/tcg/sparc64/tcg-target.c.inc b/tcg/sparc64/tcg-target.c.inc
-index 260dd461bd..9e004fb511 100644
---- a/tcg/sparc64/tcg-target.c.inc
-+++ b/tcg/sparc64/tcg-target.c.inc
-@@ -210,6 +210,7 @@ static TCGReg tcg_target_call_oarg_reg(TCGCallReturnKind kind, int slot)
- #define ARITH_UDIVX (INSN_OP(2) | INSN_OP3(0x0d))
- #define ARITH_SDIVX (INSN_OP(2) | INSN_OP3(0x2d))
- #define ARITH_MOVCC (INSN_OP(2) | INSN_OP3(0x2c))
-+#define ARITH_POPC (INSN_OP(2) | INSN_OP3(0x2e))
- #define ARITH_MOVR (INSN_OP(2) | INSN_OP3(0x2f))
- 
- #define ARITH_ADDXC (INSN_OP(2) | INSN_OP3(0x36) | INSN_OPF(0x11))
-@@ -274,6 +275,7 @@ static TCGReg tcg_target_call_oarg_reg(TCGCallReturnKind kind, int slot)
- #define STW_LE     (STWA  | INSN_ASI(ASI_PRIMARY_LITTLE))
- #define STX_LE     (STXA  | INSN_ASI(ASI_PRIMARY_LITTLE))
- 
-+static bool use_popc_instructions;
- #if defined(__VIS__) && __VIS__ >= 0x300
- #define use_vis3_instructions  1
- #else
-@@ -1511,8 +1513,23 @@ static const TCGOutOpBinary outop_clz = {
-     .base.static_constraint = C_NotImplemented,
- };
- 
-+static void tgen_ctpop(TCGContext *s, TCGType type, TCGReg a0, TCGReg a1)
-+{
-+    tcg_out_arith(s, a0, TCG_REG_G0, a1, ARITH_POPC);
-+}
-+
-+static TCGConstraintSetIndex cset_ctpop(TCGType type, unsigned flags)
-+{
-+    if (use_popc_instructions && type == TCG_TYPE_I64) {
-+        return C_O1_I1(r, r);
-+    }
-+    return C_NotImplemented;
-+}
-+
- static const TCGOutOpUnary outop_ctpop = {
--    .base.static_constraint = C_NotImplemented,
-+    .base.static_constraint = C_Dynamic,
-+    .base.dynamic_constraint = cset_ctpop,
-+    .out_rr = tgen_ctpop,
- };
- 
- static const TCGOutOpBinary outop_ctz = {
-@@ -2084,15 +2101,15 @@ tcg_target_op_def(TCGOpcode op, TCGType type, unsigned flags)
- 
- static void tcg_target_init(TCGContext *s)
- {
-+    unsigned long hwcap = qemu_getauxval(AT_HWCAP);
-+
-     /*
-      * Only probe for the platform and capabilities if we haven't already
-      * determined maximum values at compile time.
-      */
-+    use_popc_instructions = (hwcap & HWCAP_SPARC_POPC) != 0;
- #ifndef use_vis3_instructions
--    {
--        unsigned long hwcap = qemu_getauxval(AT_HWCAP);
--        use_vis3_instructions = (hwcap & HWCAP_SPARC_VIS3) != 0;
--    }
-+    use_vis3_instructions = (hwcap & HWCAP_SPARC_VIS3) != 0;
- #endif
- 
-     tcg_target_available_regs[TCG_TYPE_I32] = ALL_GENERAL_REGS;
--- 
-2.43.0
+Will have the fix in v2.
 
+> >      CXLDCRegion *region;
+> >      MemoryRegion *mr;
+> >      uint64_t dc_size;
+> > @@ -811,6 +813,7 @@ static bool cxl_create_dc_regions(CXLType3Dev *ct3d, Error **errp)
+> >              .block_size = blk_size,
+> >              /* dsmad_handle set when creating CDAT table entries */
+> >              .flags = 0,
+> > +            .supported_blk_size_bitmask = supported_blk_size_bitmask,
+> >          };
+> >          ct3d->dc.total_capacity += region->len;
+> >          region->blk_bitmap = bitmap_new(region->len / region->block_size);
+> > diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+> > index ca515cab13..bebed04085 100644
+> > --- a/include/hw/cxl/cxl_device.h
+> > +++ b/include/hw/cxl/cxl_device.h
+> > @@ -608,6 +608,7 @@ typedef struct CXLDCRegion {
+> >      uint32_t dsmadhandle;
+> >      uint8_t flags;
+> >      unsigned long *blk_bitmap;
+> > +    uint64_t supported_blk_size_bitmask;
+> >  } CXLDCRegion;
+> >  
+> >  typedef struct CXLSetFeatureInfo {
+> 
 
