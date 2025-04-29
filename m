@@ -2,94 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1271AA1CAD
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 23:10:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81FFCAA1CAE
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 23:10:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9sCz-00023h-Lt; Tue, 29 Apr 2025 17:09:42 -0400
+	id 1u9sDl-0002im-2j; Tue, 29 Apr 2025 17:10:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1u9sCW-00021r-Hn
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 17:09:12 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1u9sCU-0004H5-GR
- for qemu-devel@nongnu.org; Tue, 29 Apr 2025 17:09:12 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-22c336fcdaaso79197795ad.3
- for <qemu-devel@nongnu.org>; Tue, 29 Apr 2025 14:09:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1745960949; x=1746565749; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=MLeuxHcfNivb7tyBBoY+e0IZqSm/iDGYB29+J+i/d7Q=;
- b=Ld3v+HGKKcO9hcUNRRC+SVOd4ArC6E+KpsPjDcHW7DWCSIHt8u7sZiYHa2deyFFSBd
- chY+KHBVuXiaAgqajy18wsrLDdDmv/QLxD18HywI32I5RSIKiajJu2kaNSo4Lqq/mlQY
- z8L5+17bTDQqu/hW84+Y5XvTQfbIrQZQEF7ypfv++sO8J58/O2xmWscYjCb6PisUvtQm
- pYh5KPlkwOzpAGSCmur4tWdSmdD293A0eT2v1/KcbwFqvph6wAEW1ofHUCAUNV0ut/Sh
- +pMypV+QaQGGxM9w/NGoH2zuN4tVZLojpm/uFkHxEcmGsInRJ3uA6TNNsn6kq8YeTdCX
- zFWw==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1u9sDM-0002Wl-R5
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 17:10:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1u9sDK-0004Ot-EY
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 17:10:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1745961000;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=t0TkmPAJC++aOcwxNLPzRA5BSXAyu2A+z7pCcLdi/uk=;
+ b=Rk7/JZVBbP1t4FM7JQNr+RqDABEEtwU6uWAnKgzHdC+nbawQkRktOyRwsLFaqo1oq7UV0X
+ 8Y8QaFpxqjcTB+g4TGgrrhmZRfVAxdu4H81ZUIi5O6JGv3FK998iEDqiJYILXeY7s9iEnR
+ VB7g2Ttn++Xmze64ymlWSPGBeviRmdI=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-597-kbzhuR-7OFOWC0wNeCJqSA-1; Tue, 29 Apr 2025 17:09:58 -0400
+X-MC-Unique: kbzhuR-7OFOWC0wNeCJqSA-1
+X-Mimecast-MFC-AGG-ID: kbzhuR-7OFOWC0wNeCJqSA_1745960998
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-7c53e316734so1029124585a.2
+ for <qemu-devel@nongnu.org>; Tue, 29 Apr 2025 14:09:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745960949; x=1746565749;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MLeuxHcfNivb7tyBBoY+e0IZqSm/iDGYB29+J+i/d7Q=;
- b=Cw4as8u87PiSEVZRHyWex4/WbGBh7ocjPO3OQqPgrVGvDVqtc33bDmH0x3OhglUFG6
- bBjUwFnESRJJ1kT6Z8zUKEkFUiVPFfa75O8YfLq9GiItZsoBVnl6EyyGHtjwP14Da+AW
- NM/GOjzwx0QgZaZxHdSTnPi6KralYLiUWVYue0jWtQkkJ6tvhXfbPQOKhp36Bslnsear
- gfFlv1GxKawwFnnT9W8S2IEbWvhpey0vb+xo/jeixtRnps+bYRYyqxptWbcrzADQzweZ
- a7wH3N9MHPFxuoHfRAk/lQVvs0h84+HhsstqTMoue+dxaV+8tqptdZvEzePREHeIRqDa
- wNMg==
+ d=1e100.net; s=20230601; t=1745960998; x=1746565798;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=t0TkmPAJC++aOcwxNLPzRA5BSXAyu2A+z7pCcLdi/uk=;
+ b=O68+BHRdMiAjl99NX+b8O9p0EFjjmlJYJoLpLEQcCBj1enQYzTZVTmDPLCafb/mQfx
+ gPHXjFGnemEKQRwUsG2U8FAVwu8a8NIAd9Glc/xUTJgldG8s6bd6FCsI845Uenj6oHbM
+ b/UAsFyEU+fADqyE/aPjHFBiIBnM7vEePvdXjPLMgz5A1edpdd/lN1NiWFTGkr7LHUse
+ fo2tbRK/BTU2ePydj2VeqA1ttvMttub6P15mX5YHGhsUBWieMyUQNKhLRtAqDdzKQ+2j
+ +iuRwjrRfJofJOOqvyauGzS20V6twP/oIwC2DmUppVIK4YRhoehVw/u/DGRR9kg/PG9C
+ HamQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV5P886dfqznuxdXhq2mRVXCbziXoOdgajJOyXgOUmXMZcPFOL1cqYN4g25tF1jZNvjO78oKLGHU1Ti@nongnu.org
-X-Gm-Message-State: AOJu0YyD01cRMDo4YHkG5fY+kRH1yu2+rGmm7RIkqv+SNh4/PfMe5aL9
- A3KqN9r+LRMJAskrEFXyISpVfzbvI4ZgVQ9E5DFxkncdGlH8jDcyT2PmGf9p8kw=
-X-Gm-Gg: ASbGnctzr8ydwrALrp1e3N634nV3myH+qcys5GePppCwo6hZ839QbSkq4w50Qp9dEOR
- D8EkH5kd6UlX1BViC9dx4VS9VpYxN/l3bOvKg8IZNv3fc/sU+ivDqh8wKD2hSSUFgGQO6lL+DIo
- EH9rTSH3mnP+b33aVaqSS+lR7eVCdT/wojq0ZFF2hQDwuStdFl79FiI6wWO+q33DXNReb5wm6qu
- SvGiObAChy8bP7AMMlKl0IxUUzv6tTqLxhrnkSrso1kP8s7dKYmRrH7xyc8DUCsh69c65Oezrvc
- K2PaZPJ4EHcceCfh44eXi4cDIn2HzSs4syMIQVQf/Q/bRryki3xTlPRwAaLKMRmp
-X-Google-Smtp-Source: AGHT+IFRj+IPjAu+ZLe7pYPx3EsLGYybdG1EozzrwQ8TYu9qesZOiZaauU4yxthkSrf6JESEIKXUQw==
-X-Received: by 2002:a17:903:3c48:b0:220:d257:cdbd with SMTP id
- d9443c01a7336-22df358762bmr13027345ad.48.1745960948821; 
- Tue, 29 Apr 2025 14:09:08 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22db4d770d6sm107801645ad.17.2025.04.29.14.09.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Apr 2025 14:09:08 -0700 (PDT)
-Message-ID: <75cc3e9c-05bc-46e0-9bd0-d0c889133434@linaro.org>
-Date: Tue, 29 Apr 2025 14:09:07 -0700
+ AJvYcCWMw+M/sCD3COcnnC+Utwj4s1b82pAhyGIl9GDRfStmvKm5RMcxJDJ42BA37S5+ZsiF/v7bP0TI9dl/@nongnu.org
+X-Gm-Message-State: AOJu0Yx5/X6AEYZUqrpS78AMXBf9xDTCJXHbSLxEbpDwWiEDaBi/znlo
+ W3+f4iy97Y5ZViPNf3SHLBq/t21Epd5IiZak5quosnQ5shjSz4rafDJJRWN83sIEv5ZdS5JluTE
+ Uijr65nb64cFsjNffeEMWDuUJwGbNeLH92+tJXX6qJ+Q38Meh3R3T
+X-Gm-Gg: ASbGncuQECxZOZEnPBYkiGYkxFPlb/TnqNf8XKIiX6Tadilrg0ulQt2rMzy99eqDyWq
+ KIRDYII88+JRBtx9sVzkAamae+g4UrqLiprlARL1MkJXJX12DdaGpYjP4KkOiGGJteQCM/tiHG1
+ NNMoYMrBAbAJ7ITffw8GbhAWCvw63Dlf/4v1/ymfoUSE0m20g/FFGWvkB6rZ6m5r/vA6AozPOYV
+ fzHsxObjknbRowya2ye4arMwaZVvCJVDcvXD+nH/QSmOVcVkIG39V6N/NKDTUIyEVyMnS9b/W51
+ WY4=
+X-Received: by 2002:a05:620a:4083:b0:7c5:5d32:2612 with SMTP id
+ af79cd13be357-7cac76e342dmr90479185a.58.1745960998090; 
+ Tue, 29 Apr 2025 14:09:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFe9nUbuI+xVaXnvZCSir2MwMyuhGs+bBt8f9B9LpypYqTUIbuhxjS9rEqo4joe9Ms/tEyJPw==
+X-Received: by 2002:a05:620a:4083:b0:7c5:5d32:2612 with SMTP id
+ af79cd13be357-7cac76e342dmr90476185a.58.1745960997751; 
+ Tue, 29 Apr 2025 14:09:57 -0700 (PDT)
+Received: from x1.local ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7c958cbfb1bsm775469885a.44.2025.04.29.14.09.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 29 Apr 2025 14:09:57 -0700 (PDT)
+Date: Tue, 29 Apr 2025 17:09:53 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Li Zhijian <lizhijian@fujitsu.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Jack Wang <jinpu.wang@ionos.com>,
+ "Michael R . Galaxy" <mrgalaxy@nvidia.com>, Yu Zhang <yu.zhang@ionos.com>
+Subject: Re: [PATCH] qtest/migration/rdma: Add test for rdma migration with
+ ipv6
+Message-ID: <aBFAIflmJns_nVIm@x1.local>
+References: <20250327021234.264161-1-lizhijian@fujitsu.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/13] include/system/hvf: missing vaddr include
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, kvm@vger.kernel.org,
- alex.bennee@linaro.org, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-arm@nongnu.org, anjo@rev.ng, richard.henderson@linaro.org
-References: <20250429050010.971128-1-pierrick.bouvier@linaro.org>
- <20250429050010.971128-3-pierrick.bouvier@linaro.org>
- <e178a430-7916-4294-b0c3-60343ce6f023@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <e178a430-7916-4294-b0c3-60343ce6f023@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250327021234.264161-1-lizhijian@fujitsu.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.489,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,53 +107,185 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/29/25 12:13 AM, Philippe Mathieu-Daudé wrote:
-> Hi Pierrick,
+On Thu, Mar 27, 2025 at 10:12:34AM +0800, Li Zhijian wrote:
+> Recently, we removed ipv6 restriction[0] from RDMA migration, add a
+> test for it.
 > 
-> On 29/4/25 06:59, Pierrick Bouvier wrote:
->> On MacOS x86_64:
->> In file included from ../target/i386/hvf/x86_task.c:13:
->> /Users/runner/work/qemu/qemu/include/system/hvf.h:42:5: error: unknown type name 'vaddr'
->>       vaddr pc;
->>       ^
->> /Users/runner/work/qemu/qemu/include/system/hvf.h:43:5: error: unknown type name 'vaddr'
->>       vaddr saved_insn;
->>       ^
->> /Users/runner/work/qemu/qemu/include/system/hvf.h:45:5: error: type name requires a specifier or qualifier
->>       QTAILQ_ENTRY(hvf_sw_breakpoint) entry;
->>       ^
->> /Users/runner/work/qemu/qemu/include/system/hvf.h:45:18: error: a parameter list without types is only allowed in a function definition
->>       QTAILQ_ENTRY(hvf_sw_breakpoint) entry;
->>                    ^
->> /Users/runner/work/qemu/qemu/include/system/hvf.h:45:36: error: expected ';' at end of declaration list
->>       QTAILQ_ENTRY(hvf_sw_breakpoint) entry;
->>
->> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->> ---
->>    include/system/hvf.h | 1 +
->>    1 file changed, 1 insertion(+)
->>
->> diff --git a/include/system/hvf.h b/include/system/hvf.h
->> index 730f927f034..356fced63e3 100644
->> --- a/include/system/hvf.h
->> +++ b/include/system/hvf.h
->> @@ -15,6 +15,7 @@
->>    
->>    #include "qemu/accel.h"
->>    #include "qom/object.h"
->> +#include "exec/vaddr.h"
->>    
->>    #ifdef COMPILING_PER_TARGET
->>    #include "cpu.h"
+> [0] https://lore.kernel.org/qemu-devel/20250326095224.9918-1-jinpu.wang@ionos.com/
 > 
-> What do you think of these changes instead?
+> Cc: Jack Wang <jinpu.wang@ionos.com>
+> Cc: Michael R. Galaxy <mrgalaxy@nvidia.com>
+> Cc: Peter Xu <peterx@redhat.com>
+> Cc: Yu Zhang <yu.zhang@ionos.com>
+> Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+> ---
 > 
-> https://lore.kernel.org/qemu-devel/20250403235821.9909-27-philmd@linaro.org/
+> This test is added based on [1]
 
-Sounds good to me, it's the right include set.
-I tried to remove cpu.h, and noticed the error, so readded it, without 
-investigating too much.
+Hmm, this cannot apply cleanly on top of your rdma test + Jake's ipv6 fix.
+Did I made it wrong somewhere?
 
-Feel free to merge the current patch on your side (or the version you 
-wrote, it's ok for me).
+At the meantime, I found that the current rdma unit test failing if I did
+the "setup" phase then run this test without root:
+
+stderr:
+qemu-system-x86_64: cannot get rkey
+qemu-system-x86_64: error while loading state section id 2(ram)
+qemu-system-x86_64: load of migration failed: Operation not permitted
+qemu-system-x86_64: rdma migration: recv polling control error!
+qemu-system-x86_64: RDMA is in an error state waiting migration to abort!
+qemu-system-x86_64: failed to save SaveStateEntry with id(name): 2(ram): -1
+qemu-system-x86_64: Channel error: Operation not permitted
+**
+ERROR:../tests/qtest/migration/migration-qmp.c:200:check_migration_status: assertion failed (current_status != "failed"): ("failed" != "failed")
+qemu-system-x86_64: warning: Early error. Sending error.
+qemu-system-x86_64: warning: rdma migration: send polling control error
+../tests/qtest/libqtest.c:199: kill_qemu() tried to terminate QEMU process but encountered exit status 1 (expected 0)
+
+So running the test also needs root?  Is it possible we fix the test so it
+can also be smart enough to skip if it knows it'll hit the "cannot get
+rkey" error (even if it sees the rdma link setup)?  Not something urgent
+but definitely good to have.
+
+OTOH, running the test using root always works for me.
+
+> 
+> Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+> ---
+>  scripts/rdma-migration-helper.sh      | 26 +++++++++++++++++++++++---
+>  tests/qtest/migration/precopy-tests.c | 21 +++++++++++++++++----
+>  2 files changed, 40 insertions(+), 7 deletions(-)
+> 
+> diff --git a/scripts/rdma-migration-helper.sh b/scripts/rdma-migration-helper.sh
+> index 019b9ad932..c358392b72 100755
+> --- a/scripts/rdma-migration-helper.sh
+> +++ b/scripts/rdma-migration-helper.sh
+> @@ -8,6 +8,15 @@ get_ipv4_addr()
+>          head -1 | tr -d '\n'
+>  }
+>  
+> +get_ipv6_addr() {
+> +    ipv6=$(ip -6 -o addr show dev "$1" |
+> +        sed -n 's/.*[[:blank:]]inet6[[:blank:]]*\([^[:blank:]/]*\).*/\1/p' |
+> +        head -1 | tr -d '\n')
+> +
+> +    [ $? -eq 0 ] || return
+> +    echo -n ["$ipv6"%$1]
+> +}
+> +
+>  # existing rdma interfaces
+>  rdma_interfaces()
+>  {
+> @@ -20,11 +29,16 @@ ipv4_interfaces()
+>      ip -o addr show | awk '/inet / {print $2}' | sort -u | grep -v -w lo
+>  }
+>  
+> +ipv6_interfaces()
+> +{
+> +    ip -o addr show | awk '/inet6 / {print $2}' | sort -u | grep -v -w lo
+> +}
+> +
+>  rdma_rxe_detect()
+>  {
+>      for r in $(rdma_interfaces)
+>      do
+> -        ipv4_interfaces | grep -qw $r && get_ipv4_addr $r && return
+> +        "$IP_FAMILY"_interfaces | grep -qw $r && get_"$IP_FAMILY"_addr $r && return
+>      done
+>  
+>      return 1
+> @@ -32,11 +46,11 @@ rdma_rxe_detect()
+>  
+>  rdma_rxe_setup()
+>  {
+> -    for i in $(ipv4_interfaces)
+> +    for i in $("$IP_FAMILY"_interfaces)
+>      do
+>          rdma_interfaces | grep -qw $i && continue
+>          rdma link add "${i}_rxe" type rxe netdev "$i" && {
+> -            echo "Setup new rdma/rxe ${i}_rxe for $i with $(get_ipv4_addr $i)"
+> +            echo "Setup new rdma/rxe ${i}_rxe for $i with $(get_"$IP_FAMILY"_addr $i)"
+>              return
+>          }
+>      done
+> @@ -50,6 +64,12 @@ rdma_rxe_clean()
+>      modprobe -r rdma_rxe
+>  }
+>  
+> +IP_FAMILY=${IP_FAMILY:-ipv4}
+> +if [ "$IP_FAMILY" != "ipv6" ] && [ "$IP_FAMILY" != "ipv4" ]; then
+> +    echo "Unknown ip family '$IP_FAMILY', only ipv4 or ipv6 is supported," >&2
+> +    exit 1
+> +fi
+> +
+>  operation=${1:-detect}
+>  
+>  command -v rdma >/dev/null || {
+> diff --git a/tests/qtest/migration/precopy-tests.c b/tests/qtest/migration/precopy-tests.c
+> index a137ea9f2c..9f7236dc59 100644
+> --- a/tests/qtest/migration/precopy-tests.c
+> +++ b/tests/qtest/migration/precopy-tests.c
+> @@ -102,12 +102,13 @@ static void test_precopy_unix_dirty_ring(void)
+>  #ifdef CONFIG_RDMA
+>  
+>  #define RDMA_MIGRATION_HELPER "scripts/rdma-migration-helper.sh"
+> -static int new_rdma_link(char *buffer)
+> +static int new_rdma_link(char *buffer, bool ipv6)
+>  {
+>      char cmd[256];
+>      bool verbose = g_getenv("QTEST_LOG");
+>  
+> -    snprintf(cmd, sizeof(cmd), "%s detect %s", RDMA_MIGRATION_HELPER,
+> +    snprintf(cmd, sizeof(cmd), "IP_FAMILY=%s %s detect %s",
+> +             ipv6 ? "ipv6" : "ipv4", RDMA_MIGRATION_HELPER,
+>               verbose ? "" : "2>/dev/null");
+>  
+>      FILE *pipe = popen(cmd, "r");
+> @@ -132,11 +133,11 @@ static int new_rdma_link(char *buffer)
+>      return -1;
+>  }
+>  
+> -static void test_precopy_rdma_plain(void)
+> +static void test_precopy_rdma_plain_ip(bool ipv6)
+>  {
+>      char buffer[128] = {};
+>  
+> -    if (new_rdma_link(buffer)) {
+> +    if (new_rdma_link(buffer, ipv6)) {
+>          g_test_skip("No rdma link available\n"
+>                      "# To enable the test:\n"
+>                      "# Run \'" RDMA_MIGRATION_HELPER " setup\' with root to setup"
+> @@ -159,6 +160,16 @@ static void test_precopy_rdma_plain(void)
+>  
+>      test_precopy_common(&args);
+>  }
+> +
+> +static void test_precopy_rdma_plain(void)
+> +{
+> +    test_precopy_rdma_plain_ip(0);
+> +}
+> +
+> +static void test_precopy_rdma_plain_ipv6(void)
+> +{
+> +    test_precopy_rdma_plain_ip(1);
+> +}
+>  #endif
+>  
+>  static void test_precopy_tcp_plain(void)
+> @@ -1189,6 +1200,8 @@ static void migration_test_add_precopy_smoke(MigrationTestEnv *env)
+>  #ifdef CONFIG_RDMA
+>      migration_test_add("/migration/precopy/rdma/plain",
+>                         test_precopy_rdma_plain);
+> +    migration_test_add("/migration/precopy/rdma/plain/ipv6",
+> +                       test_precopy_rdma_plain_ipv6);
+>  #endif
+>  }
+>  
+> -- 
+> 2.41.0
+> 
+
+-- 
+Peter Xu
+
 
