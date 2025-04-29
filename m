@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80A80AA08A6
+	by mail.lfdr.de (Postfix) with ESMTPS id AD944AA08A7
 	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 12:33:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9iG0-0000Zi-QL; Tue, 29 Apr 2025 06:32:09 -0400
+	id 1u9iFs-0000Wo-3v; Tue, 29 Apr 2025 06:32:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
- id 1u9iFm-0000RC-IX; Tue, 29 Apr 2025 06:31:54 -0400
+ id 1u9iFk-0000Pl-8k; Tue, 29 Apr 2025 06:31:52 -0400
 Received: from apollo.dupie.be ([51.159.20.238])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
- id 1u9iFi-0007Q9-GM; Tue, 29 Apr 2025 06:31:53 -0400
+ id 1u9iFh-0007QB-82; Tue, 29 Apr 2025 06:31:51 -0400
 Received: from localhost.localdomain (unknown
  [IPv6:2a00:1c98:fff1:1001:aee7:ee9c:3ae8:78e2])
- by apollo.dupie.be (Postfix) with ESMTPSA id 60CBF1520EAE;
- Tue, 29 Apr 2025 12:31:38 +0200 (CEST)
+ by apollo.dupie.be (Postfix) with ESMTPSA id 70BE91520F34;
+ Tue, 29 Apr 2025 12:31:39 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dupond.be; s=dkim;
- t=1745922698;
+ t=1745922699;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=z5lX2oOTTWrWTLFLJ3cBHwUGD75JBr8YAaCk3kvF4BU=;
- b=TBzG7rnHRX1VfAzG0T9Gyh41TIp8Al5zzpEkTAuPIE4QovhvYiX1eHkpoq3Ac+NH+kh3zs
- 8uJW9OijhPKjc7tF65pJ4r6LB7y4ghOTQUYLOKkMG6ItNIoEIj9u8+8m4m6ptHC3y8k6T3
- lGtEkhjJVP0qPVsCdeOVe4n7P0JwFA4WuYHVmacUJ75vM5L70UyS1UtHcx6Z0MU769ODJD
- w2ekXSS3baIlT+dGahQdL5lesKnVIe6PcUwrDZgMpO9I0uEa4GnjkA9oxneAp2xRKsXqFA
- CtLH9UBhy0N+uRYpVYyKkIGPN60xj139vmpZq6uj38xHZzgzZ+dr3hObXl4w+Q==
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=WYCS5iAb/Nn8x3gGPhGp/cJX9hFVTuhSLnP3r8HVESs=;
+ b=P9QWHKX+5+MKLiQOa0jN+Bm5Sq/wbcI0pr5Ddg0AXCs4h5xcHmcJYBBvz2RhFTWxkVUTw4
+ wcY6mlPaHiU05+OBYhBFEhrWz3TJEAPSl6baguBKeZK+oAMCm/vwBolO7ke1hUUfwR+/g1
+ EIeJwJPLNR4FC//DXKxV5mng8d/SSFxCyMXGXzDA6PknsNVCoXoTYNLFXrIzzJ9IlWSSar
+ Tia2nKCiMbRjSQkHaHAdxtXHB9zXsnT17V2LUU36xDUXlZDnGZe0RyaqUeYe0N0kkFyN0f
+ S+K+gcnatrIOIurxTPjwpCnivW/gjcY/Kk/WFKOTpfifG+7sGSgJ3JX8WvwFbw==
 From: Jean-Louis Dupond <jean-louis@dupond.be>
 To: qemu-devel@nongnu.org
 Cc: Alexander Ivanov <alexander.ivanov@virtuozzo.com>,
@@ -38,11 +39,12 @@ Cc: Alexander Ivanov <alexander.ivanov@virtuozzo.com>,
  Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>,
  Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org,
  Jean-Louis Dupond <jean-louis@dupond.be>
-Subject: [PATCH 0/2] qcow2: queue discards when discard-no-unref enabled
-Date: Tue, 29 Apr 2025 12:31:08 +0200
-Message-ID: <20250429103110.761910-1-jean-louis@dupond.be>
+Subject: [PATCH 1/2] qcow2: rename update_refcount_discard to queue_discard
+Date: Tue, 29 Apr 2025 12:31:09 +0200
+Message-ID: <20250429103110.761910-2-jean-louis@dupond.be>
 X-Mailer: git-send-email 2.49.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20250429103110.761910-1-jean-louis@dupond.be>
+References: <20250429103110.761910-1-jean-louis@dupond.be>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=51.159.20.238; envelope-from=jean-louis@dupond.be;
@@ -69,22 +71,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Partially based on the proposal of Andrey in
-https://patchew.org/QEMU/20240913163942.423050-1-andrey.drobyshev@virtuozzo.com/
-Split up this from the rest might get it merged a bit quicker hopefully :)
+The function just queues discards, and doesn't do any refcount change.
+So let's change the function name to align with its function.
 
-Since the implementation of discard-no-unref, we did not queue the discards correctly
-when discard-no-unref was enabled.
+Signed-off-by: Jean-Louis Dupond <jean-louis@dupond.be>
+---
+ block/qcow2-refcount.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Jean-Louis Dupond (2):
-  qcow2: rename update_refcount_discard to queue_discard
-  qcow2: put discards in discard queue when discard-no-unref is enabled
-
- block/qcow2-cluster.c  | 16 ++++++----------
- block/qcow2-refcount.c | 25 +++++++++++++++++++++----
- block/qcow2.h          |  4 ++++
- 3 files changed, 31 insertions(+), 14 deletions(-)
-
+diff --git a/block/qcow2-refcount.c b/block/qcow2-refcount.c
+index 0266542cee..d796018970 100644
+--- a/block/qcow2-refcount.c
++++ b/block/qcow2-refcount.c
+@@ -754,8 +754,8 @@ void qcow2_process_discards(BlockDriverState *bs, int ret)
+     }
+ }
+ 
+-static void update_refcount_discard(BlockDriverState *bs,
+-                                    uint64_t offset, uint64_t length)
++static void queue_discard(BlockDriverState *bs,
++                          uint64_t offset, uint64_t length)
+ {
+     BDRVQcow2State *s = bs->opaque;
+     Qcow2DiscardRegion *d, *p, *next;
+@@ -902,7 +902,7 @@ update_refcount(BlockDriverState *bs, int64_t offset, int64_t length,
+             }
+ 
+             if (s->discard_passthrough[type]) {
+-                update_refcount_discard(bs, cluster_offset, s->cluster_size);
++                queue_discard(bs, cluster_offset, s->cluster_size);
+             }
+         }
+     }
 -- 
 2.49.0
 
