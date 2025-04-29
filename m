@@ -2,113 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DFE7AA0E79
-	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 16:15:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 794F4AA0EA9
+	for <lists+qemu-devel@lfdr.de>; Tue, 29 Apr 2025 16:24:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9le6-0001kV-9m; Tue, 29 Apr 2025 10:09:14 -0400
+	id 1u9lrW-0008GT-9l; Tue, 29 Apr 2025 10:23:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1u9le2-0001fw-Sp; Tue, 29 Apr 2025 10:09:11 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1u9lrU-0008GH-UT
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 10:23:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1u9le0-0006M1-Pq; Tue, 29 Apr 2025 10:09:10 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53TE6rHp028151;
- Tue, 29 Apr 2025 14:09:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=5nydxt
- aZDcw5q2n0MXjbyI/knMJUwOtNSMWt4e0/3wg=; b=eUZJdRvDRgnTKblx9dgsK2
- xf9nChTEDJIk3iQpuDRfs1/Y5yj35TYM7mVF7+w6jRvRwKhxtuYhbBOGlTuQoK97
- xyLyBUtk6w2VocPMytnsEDpS6TWGgrV54dYTQWq+6r9YswzGZ09nxH0VRcKh3i7p
- hyM58vN2wXIic0wo82A1t2WGZgAp0+Ms0E2mdVtI/thepcM8yuzBZjMxE30u/CyI
- kv2U9lV8nv7yHnzZmuD3Pzx2rTYpTyUkRtxEWgxYJRxzbK0PBggjIFU1IwhboSkO
- tvYcaBSn398uUjKiyUc4lW1euiMvfqFB9/1xWWuigMQMGLCnlH6aO9LUP4E24pMg
- ==
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46ah8mbksh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 29 Apr 2025 14:09:04 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53TB1di2008542;
- Tue, 29 Apr 2025 14:09:04 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 469ch33783-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 29 Apr 2025 14:09:04 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
- [10.241.53.103])
- by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 53TE93jJ20054684
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 29 Apr 2025 14:09:03 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EE79658066;
- Tue, 29 Apr 2025 14:09:02 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 35DA358056;
- Tue, 29 Apr 2025 14:09:02 +0000 (GMT)
-Received: from [9.61.85.22] (unknown [9.61.85.22])
- by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 29 Apr 2025 14:09:02 +0000 (GMT)
-Message-ID: <27d5d332-bc7c-4036-a3d9-d4666411bd4a@linux.ibm.com>
-Date: Tue, 29 Apr 2025 10:09:01 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1u9lrT-0000kt-3L
+ for qemu-devel@nongnu.org; Tue, 29 Apr 2025 10:23:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1745936581;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=m/F6qdLbwT/m3Y8gvVFDIPxMdu7TnuhnEGcEmtvyn3w=;
+ b=BCPf3SGvnyI9BOlOImyjzeGtGlwsUOrUDUj7hjI9Vdl1gpBUSAJ5i4VvjP5LXLOPkLi6sP
+ KbjBAArMBNUJMxQst5Xfa/8+XTPvjOJiLZoeUmrJ9XZTqvbgj0cysTTeY2IZu/r0nfTUdL
+ l4OJq0HLdQPLNremg05RRVCknZT/Ie0=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-145-xgZk4NBWMX6V5n2qxbVU1A-1; Tue, 29 Apr 2025 10:22:59 -0400
+X-MC-Unique: xgZk4NBWMX6V5n2qxbVU1A-1
+X-Mimecast-MFC-AGG-ID: xgZk4NBWMX6V5n2qxbVU1A_1745936578
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-39141ffa913so2892645f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 29 Apr 2025 07:22:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1745936578; x=1746541378;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=m/F6qdLbwT/m3Y8gvVFDIPxMdu7TnuhnEGcEmtvyn3w=;
+ b=m4dB/L9g6WVDNQR+lZpl/AOpK8i7VyfPggLEbP5Cq7iKkx4ZYSF15v/0ULESKdOCuL
+ TE7byMKT7/hVJ9XDJfE8ZQqGvbc5eF3+8OBK3uAIO66IxZ783iyypEsD0jvPUy4xRvS5
+ mUA/X6tXnsWNOguthOr7KTLlMp7xF8U5yXIht4wnq179Z3ceRmkTJrqUnxdPAbmKqe7u
+ UyBYOiNjIhxKYGil7cNIY/3vVDP7SEUPfDWdEJVd4rlJkZaiE3nhk1e5BDW65CWb2ig2
+ v2tRRdYq6IUoSOyV982BV4w9/JqOqaHRjoIebeJcnbTWH+hMDIeRDugjYmhnZEwXKDuU
+ U9tA==
+X-Gm-Message-State: AOJu0Yy3czUcoo93pE7upCPvIrhIFzeRXAM8brG5GzJ8uRHGhNfTukgv
+ r0nHVtzmukgIpwf2tIMXlO7qiH1XMYazo6N9cUISTGAt7gvLHIqZhsbCE8+Lu/rWwFKcgT+FN0Z
+ BNhGW5mF2qlYxNYiDhVtaPTDOszh5iYZyPU9zGiL8Dz3AoduyN6nq90SK6vigcJWLQKPtkbAmPh
+ VsSnCnnSH83+Xc8rHDA1IBfRql8hc=
+X-Gm-Gg: ASbGncv8j9qX/yJWLs1HelyeKebE+0VXEGvSfTtRtEnPIKSSAFVUc6WMNTZul++iw6y
+ JWMSwfPDBkwauxLP3dVhABB/7ajF4/ocjJN2y0AzsECPVLMaQ5l3/fh7mvTo/XNMNbiA=
+X-Received: by 2002:a05:6000:1cc9:b0:38f:30a3:51fe with SMTP id
+ ffacd0b85a97d-3a08949d784mr2417781f8f.42.1745936578462; 
+ Tue, 29 Apr 2025 07:22:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGKAIAo7fDZAR7vTT49NwYTreQJojBQaXRvlol6mjhM/QfM5UMOvZOXGoPDVQp5zQztIQEUt+U+FLcrt+CYD2Q=
+X-Received: by 2002:a05:6000:1cc9:b0:38f:30a3:51fe with SMTP id
+ ffacd0b85a97d-3a08949d784mr2417768f8f.42.1745936578148; Tue, 29 Apr 2025
+ 07:22:58 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] s390x: Clear RAM on diag308 subcode 3 reset
-To: Christian Borntraeger <borntraeger@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>,
- Nicholas Miehlbradt <nicholas@linux.ibm.com>, thuth@redhat.com,
- richard.henderson@linaro.org, iii@linux.ibm.com, pasic@linux.ibm.com,
- farman@linux.ibm.com, qemu-s390x@nongnu.org
-Cc: qemu-devel@nongnu.org
-References: <20250429052021.10789-1-nicholas@linux.ibm.com>
- <489d0473-579a-4850-a6d5-be38bf2954b9@redhat.com>
- <5863e80e-8296-4f63-bf7d-783b2a9aca0a@linux.ibm.com>
-Content-Language: en-US
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <5863e80e-8296-4f63-bf7d-783b2a9aca0a@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: e3JCedogs6VyMwM4QsOp_zqnNJKghNmz
-X-Proofpoint-GUID: e3JCedogs6VyMwM4QsOp_zqnNJKghNmz
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI5MDEwNSBTYWx0ZWRfX31q8XMMT03X/
- QIaX9jZR7EMruV6nYO+h9g+Q8TRGKBigU39JgC3arLj+A83TS/6Q2JTrXcw5XG6/Ud0/ilUCUEF
- zGbXczCygfGTzdg7gkBKM7pw4cRJQm6HPYeI65P225apI003RitqnaT8UUxHheVLj6q/FQTy2Dv
- bneizvJfah2h/ECVDo528KMaao3D4nGjugcQfBtLYfUYwCcDpXnIfmOLG9U8fW5T/cM6U/zz77j
- rS/n5WodXrJEdmAhmbZ3opb2sUhoafKhlQ26iRkxn/yU/pCL8hziRIcAr+Mcfv67WkNFMhNZxWD
- lmuUEg6Pe4DyJjU1oxnUzmcv8z9H94X4RpDRboZd5jOhsc5qchhZ7i8QqWcuTe4nzf6MAB4Eo+9
- kF/6OR6FxoExARZt6NuM1Ix+sl39r4gZBBdc2frtRhl7JSan5LT5AN4uk5D593IZVG1PpFbx
-X-Authority-Analysis: v=2.4 cv=QNRoRhLL c=1 sm=1 tr=0 ts=6810dd80 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=pFZH5SylCiH5rCbaQB4A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-04-29_05,2025-04-24_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 suspectscore=0
- mlxlogscore=954 spamscore=0 clxscore=1011 mlxscore=0 malwarescore=0
- bulkscore=0 priorityscore=1501 phishscore=0 impostorscore=0
- lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2504290105
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=mjrosato@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+References: <20250429140306.190384-1-marcandre.lureau@redhat.com>
+ <20250429140306.190384-7-marcandre.lureau@redhat.com>
+In-Reply-To: <20250429140306.190384-7-marcandre.lureau@redhat.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 29 Apr 2025 16:22:45 +0200
+X-Gm-Features: ATxdqUG_ye0uQwt4esUkxPy2GJ_wwIXxi90gBNItFiwPl6mNzGhDrQZYZ8sj8PA
+Message-ID: <CABgObfY03pS2DV6ttABt0-82RGvRbVKq8atM9Eoki2-WFELhXA@mail.gmail.com>
+Subject: Re: [PATCH 6/6] RFC: qom/object: simplify object_property_del_all()
+To: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>, 
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Content-Type: multipart/alternative; boundary="0000000000008a95e10633eb899e"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.489,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -124,23 +102,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/29/25 3:45 AM, Christian Borntraeger wrote:
-> Am 29.04.25 um 09:37 schrieb David Hildenbrand:
-> [...]
->> The only problem I see is with vfio devices is the new "memory pinned" mode. [1]
->>
->> There, we'd have to check if any such device is around (discarding of ram is disabled?), and fallback to actual zeroing of memory.
-> 
-> CC Matt to double check.
+--0000000000008a95e10633eb899e
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When triggering the "relaxed translation" mode via iommu.passthrough in the guest, we now take the default (for other platforms) memory_region_is_ram() path in vfio_listener_region_add/del() which handles the pin/unpin from vfio common code.  As for ram discarding, we then also use the vfio common path and only uncoordinated discards are disabled via:
+Il mar 29 apr 2025, 16:03 <marcandre.lureau@redhat.com> ha scritto:
 
-vfio_ram_block_discard_disable() -> ram_block_uncoordinated_discard_disable()
+> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+>
+> Since commit 9859fac ("object: release all props"), the code was changed
+> to tracks the already released properties in a hash table. I am not sure
+> why this was done, perhaps to prevent from potential crashes if
+> properties are being added dynamically during release. I am not sure if
+> it's a valid concern though.
+>
+
+You always need object_property_iter_init in case prop->release deletes a
+property, thus invalidating the GHashTable iterator. The hash table instead
+is needed in case prop->release does *not* delete a property, because then
+the property reappears on subsequent recreations of the iterator.
+
+Paolo
 
 
-> 
->>
->> [1] https://lkml.kernel.org/r/20250226210013.238349-1-mjrosato@linux.ibm.com
-> 
+> -    bool released;
+>
+> -    do {
+> -        released =3D false;
+> -        object_property_iter_init(&iter, obj);
+> -        while ((prop =3D object_property_iter_next(&iter)) !=3D NULL) {
+> -            if (g_hash_table_add(done, prop)) {
+> -                if (prop->release) {
+> -                    prop->release(obj, prop->name, prop->opaque);
+> -                    released =3D true;
+> -                    break;
+> -                }
+> -            }
+> +    object_property_iter_init(&iter, obj);
+> +    while ((prop =3D object_property_iter_next(&iter)) !=3D NULL) {
+> +        if (prop->release) {
+> +            prop->release(obj, prop->name, prop->opaque);
+>          }
+> -    } while (released);
+> +    }
+>
+>      g_hash_table_unref(obj->properties);
+>  }
+> --
+> 2.49.0
+>
+>
+
+--0000000000008a95e10633eb899e
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote gmail_quote_contai=
+ner"><div dir=3D"ltr" class=3D"gmail_attr">Il mar 29 apr 2025, 16:03  &lt;<=
+a href=3D"mailto:marcandre.lureau@redhat.com">marcandre.lureau@redhat.com</=
+a>&gt; ha scritto:<br></div><blockquote class=3D"gmail_quote" style=3D"marg=
+in:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1e=
+x">From: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lureau@redh=
+at.com" target=3D"_blank" rel=3D"noreferrer">marcandre.lureau@redhat.com</a=
+>&gt;<br>
+<br>
+Since commit 9859fac (&quot;object: release all props&quot;), the code was =
+changed<br>
+to tracks the already released properties in a hash table. I am not sure<br=
+>
+why this was done, perhaps to prevent from potential crashes if<br>
+properties are being added dynamically during release. I am not sure if<br>
+it&#39;s a valid concern though.<br></blockquote></div></div><div dir=3D"au=
+to"><br></div><div dir=3D"auto">You always need object_property_iter_init i=
+n case prop-&gt;release deletes a property, thus invalidating the GHashTabl=
+e iterator. The hash table instead is needed in case prop-&gt;release does =
+*not* delete a property, because then the property reappears on subsequent =
+recreations of the iterator.</div><div dir=3D"auto"><br></div><div dir=3D"a=
+uto">Paolo</div><div dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D=
+"gmail_quote gmail_quote_container"><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex"><br>
+-=C2=A0 =C2=A0 bool released;<br>
+<br>
+-=C2=A0 =C2=A0 do {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 released =3D false;<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 object_property_iter_init(&amp;iter, obj);<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 while ((prop =3D object_property_iter_next(&am=
+p;iter)) !=3D NULL) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (g_hash_table_add(done, prop)=
+) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (prop-&gt;relea=
+se) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 prop=
+-&gt;release(obj, prop-&gt;name, prop-&gt;opaque);<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 rele=
+ased =3D true;<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 brea=
+k;<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
++=C2=A0 =C2=A0 object_property_iter_init(&amp;iter, obj);<br>
++=C2=A0 =C2=A0 while ((prop =3D object_property_iter_next(&amp;iter)) !=3D =
+NULL) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (prop-&gt;release) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 prop-&gt;release(obj, prop-&gt;n=
+ame, prop-&gt;opaque);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+-=C2=A0 =C2=A0 } while (released);<br>
++=C2=A0 =C2=A0 }<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0g_hash_table_unref(obj-&gt;properties);<br>
+=C2=A0}<br>
+-- <br>
+2.49.0<br>
+<br>
+</blockquote></div></div></div>
+
+--0000000000008a95e10633eb899e--
 
 
