@@ -2,82 +2,115 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8578AA4A8F
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 14:04:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBC22AA4C8A
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 15:05:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uA68n-0003Ro-FJ; Wed, 30 Apr 2025 08:02:17 -0400
+	id 1uA771-0007cd-5e; Wed, 30 Apr 2025 09:04:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uA68j-0003RH-V8
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 08:02:14 -0400
-Received: from mail-yw1-x1134.google.com ([2607:f8b0:4864:20::1134])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uA68h-0005bT-W7
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 08:02:13 -0400
-Received: by mail-yw1-x1134.google.com with SMTP id
- 00721157ae682-6ef60e500d7so66542337b3.0
- for <qemu-devel@nongnu.org>; Wed, 30 Apr 2025 05:02:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746014530; x=1746619330; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=rTrNUbs0rHf7kHhBUd+cMNoU4jrzm2hENUQKey2H8dI=;
- b=HsdTGJSElOHth1FQR6dCcJjOglWxu4YtlGUBuAwsCSUHArXCufF6iziruS5UmZ2rP5
- pQXG+qLSeALGamZO+vNP6ibsqdODpWoxk3KzhV+jzlKU1HZ8lS603ZJbRH8IJP7sTx7r
- /qqsQpDZPB67S7x0F1GXtna3lmTa8LnNcN6Vw7lxWUXeJPm4s2Y3LDlKXbj3QYg47DWr
- HuMUbwbbN6mVv+ehbDpBGLNLGR+X0rz1MW+XulFX5omI/rgvU5pdH8NTCnvC7aCDBJBq
- 4e/OwQ6O1jts4LmbODjX8bjc1JQ1sftjcuQB48NRSmSQHYIIGVzL97CUhPM2NLfkuipD
- ZmzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746014530; x=1746619330;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=rTrNUbs0rHf7kHhBUd+cMNoU4jrzm2hENUQKey2H8dI=;
- b=hXB4gxzbDKUCbTKLhy4ty4anV4j98a3tcHcxpn1SK8KVlkRNy0TdYuwK1agdiheH3x
- cnk1zitVTDVX/y83x/12y4SlMmorteCMvTZbrkOrG5EwrmAlaygCDiuIWb+MALqMsXAX
- qmo/BWbESfE5zN2PnjXGnlq2kQpR2J70/UjHmUUOUEJJLBNOYUv6Dhkc0Fd2iW/8Xoah
- faU7M108GPBgvhV6EIK4+KyOssniKZ5498t09tNK9TSCIxnahCAKYjssLqviZKgiv78a
- Pq96NuHAsLB3bJVUptuFcCK2dN0q9WJNPOxJfJr7cbf39h0jXBSlqmnVnfgJzwJ6hF0R
- 9nJw==
-X-Gm-Message-State: AOJu0Yy+gLjsj9BUhlmpj20mnIGPozUkSEEGncmlYSeFUpzYoXZ2U5RV
- 9iFHwu9U1VonGdXFReZzVlD+C1Phjg4FnQBXLp4iLJf6yr/ofXv2uOddbnNgwJAry3yv9+hQpnU
- DZRA1jm7TRyXP1ZxyFmfMavZAVeLwhCGwYATR4w==
-X-Gm-Gg: ASbGncueKkcM+Om3+8HT/AYRHoZrtpACVHSdVf97RCC/1nbyrd/FV2Mi3+Q4S0klS3S
- AW8B6MMYl8HLbpL2tVn2LdGGcyWY9GP3CRjDeVe7RDHOLwkTH3oS8tkLN86OpZt/f8Onk+2HRgP
- a60nSsQ+zK008sUH/uJW22RTw=
-X-Google-Smtp-Source: AGHT+IH1E62hV5/kEWVMrAsdfoI6wKHqdUfwN2TM5IKtNk93QKs37LYFrXNoA2inke0f7uhnhoeHUX/85kJ0aAb5mfU=
-X-Received: by 2002:a05:690c:6ac9:b0:6fd:25dc:effe with SMTP id
- 00721157ae682-708abe248a0mr39060937b3.25.1746014530349; Wed, 30 Apr 2025
- 05:02:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <steffen_hirschmann@web.de>)
+ id 1uA5AP-0005Y9-EL
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 06:59:54 -0400
+Received: from mout.web.de ([212.227.17.11])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <steffen_hirschmann@web.de>)
+ id 1uA5AM-00065L-IG
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 06:59:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+ s=s29768273; t=1746010778; x=1746615578;
+ i=steffen_hirschmann@web.de;
+ bh=fFNNTcYnsIOHQKytBfD9qaSrFHlEEA4BlvaoH9oniEU=;
+ h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
+ Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
+ content-transfer-encoding:content-type:date:from:message-id:
+ mime-version:reply-to:subject:to;
+ b=GDMMko7m05xUidpqQeiQGIzh7X68Xj59i7ly3kRfyRhfvi8gedU7gQry80G7ACvH
+ 5nD23c1btP+4DtFd8iyAWkO0F6cvXlI5LW09kAsXyRFT+S2uQ2otmdzH9e9tEct21
+ ujfWa419AJyHsfDE0EYz9fH483071p4uw7vyenWvCGOKGKHsNlVyDwgt66gOHKXDd
+ Um9/refYO367ekppkNygb814oRCeT3ktswozLQ+gVDB125JoGLxHLcbEMiSUYqtUr
+ iH7tibM/fMdM7vdRe8x+jRnpBCt45WYiO8uUTCH73z1EnwFTju8nwdNzkyKPB0AVv
+ xy4I042vWDFH12Xevg==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from localhost ([87.123.246.30]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MkEhH-1uujel2JtR-00nXhl; Wed, 30
+ Apr 2025 12:59:38 +0200
+From: steffen_hirschmann@web.de
+To: qemu-devel@nongnu.org
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Steffen Hirschmann <steffen_hirschmann@web.de>
+Subject: [PATCH RFC 0/1] TCG plugin libinso.so: Virtual address range count
+Date: Wed, 30 Apr 2025 12:59:36 +0200
+Message-Id: <20250430105937.191814-1-steffen_hirschmann@web.de>
+X-Mailer: git-send-email 2.39.5
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <419c09dde7ca8a538f07e259a1cc3bbb4788f3ff.camel@suse.com>
-In-Reply-To: <419c09dde7ca8a538f07e259a1cc3bbb4788f3ff.camel@suse.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Wed, 30 Apr 2025 13:01:58 +0100
-X-Gm-Features: ATxdqUGvA8fYZTYdP403mWos9TmbRB25yej82zjwKHtg0YGl4y5AsmeP5drU4JA
-Message-ID: <CAFEAcA-Hz5Ni-NcB0GamsvQ=2y_1BFXgnA_uhrj-ThMHMGGuDg@mail.gmail.com>
-Subject: Re: Problem building (docs) with -j1
-To: Dario Faggioli <dfaggioli@suse.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, John Snow <jsnow@redhat.com>,
- bwiedemann@suse.com, =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1134;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1134.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Provags-ID: V03:K1:1u/YlfFMiJXqKhTy5UtoaBMDo4LcObrB32/EVIx81Z4FP5Uw4WC
+ sUOxHEyq8JW3JtMdbEtpyqTtTajwtPLS2zm3P0stZSmkRYckruJUHfHi7B9Y0u6dghW2eBY
+ ukZl1fLomMeTyq6M2Wb/5qtQkz0PKQ9oJ69y6jx8CaohVe1k+xFPA+RFHEjDNJPIVdtJJVD
+ +mX2RHRYakz4AX5ZzNuhg==
+UI-OutboundReport: notjunk:1;M01:P0:zQW4V/iwU5M=;ykLoPYJ9/Higx6qNyCmkXxxjjFX
+ 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
+Received-SPF: pass client-ip=212.227.17.11;
+ envelope-from=steffen_hirschmann@web.de; helo=mout.web.de
+X-Spam_score_int: 5
+X-Spam_score: 0.5
+X-Spam_bar: /
+X-Spam_report: (0.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 30 Apr 2025 09:04:26 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,60 +125,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 30 Apr 2025 at 10:14, Dario Faggioli <dfaggioli@suse.com> wrote:
->
-> Hello,
->
-> When building both v10.0.0 and master sequentially (like -j1 or
-> equivalent, e.g., when in a 1 vCPU VM) it fails when we get to docs
-> (`make man` is also enough to reproduce it), with this error:
->
->   [1/2] /usr/bin/env CONFDIR=3D/etc/qemu /home/dario/Sources/qemu/suse/gi=
-t_upstreams/qemu/build/pyvenv/bin/sphinx-build -q -W -Dkerneldoc_werror=3D1=
- -j 1 -Dversion=3D10.0.50 '-Drelease=3DVirtualization:Staging:10.0 / openSU=
-SE_Tumbleweed' -Ddepfile=3Ddocs/docs.d -Ddepfile_stamp=3Ddocs/docs.stamp -b=
- html -d /home/dario/Sources/qemu/suse/git_upstreams/qemu/build/docs/manual=
-.p /home/dario/Sources/qemu/suse/git_upstreams/qemu/docs /home/dario/Source=
-s/qemu/suse/git_upstreams/qemu/build/docs/manual
->   FAILED: docs/docs.stamp
->   /usr/bin/env CONFDIR=3D/etc/qemu /home/dario/Sources/qemu/suse/git_upst=
-reams/qemu/build/pyvenv/bin/sphinx-build -q -W -Dkerneldoc_werror=3D1 -j 1 =
--Dversion=3D10.0.50 '-Drelease=3DVirtualization:Staging:10.0 / openSUSE_Tum=
-bleweed' -Ddepfile=3Ddocs/docs.d -Ddepfile_stamp=3Ddocs/docs.stamp -b html =
--d /home/dario/Sources/qemu/suse/git_upstreams/qemu/build/docs/manual.p /ho=
-me/dario/Sources/qemu/suse/git_upstreams/qemu/docs /home/dario/Sources/qemu=
-/suse/git_upstreams/qemu/build/docs/manual
->   /home/dario/Sources/qemu/suse/git_upstreams/qemu/docs/system/qemu-block=
--drivers.rst.inc:506: WARNING: duplicate label nbd, other instance in /home=
-/dario/Sources/qemu/suse/git_upstreams/qemu/docs/system/images.rst
->   ninja: build stopped: subcommand failed.
->   make[1]: *** [Makefile:168: run-ninja] Error 1
->   make[1]: Leaving directory '/home/dario/Sources/qemu/suse/git_upstreams=
-/qemu/build'
->   make: *** [GNUmakefile:6: build] Error 2
->
-> It works, instead, in parallel builds. In fact, building with 2
-> processes seems to be already enough for compiling the docs
-> successfully.
->
-> OTOH, v9.2.3 works for me, in both sequential and parallel builds.
->
-> I've tried to remove the `-W -Dkerneldoc_werror=3D1` arguments from
-> sphinx-build and that "resolves" the issue, so I think the problem is
-> the "WARNING: duplicate label nbd".
+From: Steffen Hirschmann <steffen_hirschmann@web.de>
 
-It's odd that it only fails in -j1 -- our current thought was that
-this was related to the Sphinx version (some versions warn, some
-do not).
+I found it useful for the TCG plugin insn.c to be able to count only
+instructions in a certain virtual address range (e.g. single leaf function=
+). It
+could be of interest to a broader audience, thus I am RFCing it here.
 
-I sent this patchset yesterday which I think should fix it:
-https://patchew.org/QEMU/20250429163212.618953-1-peter.maydell@linaro.org/
 
-You might also be able to avoid the failure if you configure
-with --disable-werror   : I think (but have not tested) that that
-should make the warnings non-fatal for Sphinx as well as the C
-compiler.
+Steffen Hirschmann (1):
+  TCG insn.c: Implement counting specific addresses
 
-thanks
--- PMM
+ docs/about/emulation.rst |  2 +
+ tests/tcg/plugins/insn.c | 89 ++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 91 insertions(+)
+
+=2D-=20
+2.39.5
+
 
