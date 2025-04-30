@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1DB9AA5819
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 00:46:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE09CAA5879
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 01:07:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAGBP-0002z5-RG; Wed, 30 Apr 2025 18:45:43 -0400
+	id 1uAGVl-0001j5-DU; Wed, 30 Apr 2025 19:06:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uAGAs-0002Zh-2b; Wed, 30 Apr 2025 18:45:09 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uAGVh-0001gV-TP
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 19:06:37 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uAGAn-00036M-Ia; Wed, 30 Apr 2025 18:45:03 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-ac2c663a3daso66523566b.2; 
- Wed, 30 Apr 2025 15:44:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uAGVf-0007UZ-L6
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 19:06:37 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-7403f3ece96so623196b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 30 Apr 2025 16:06:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1746053095; x=1746657895; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tk2FYkcbjKhZkaXcrUcRpZBO4gSLNUW6gGqhuPngwSI=;
- b=IGfvNeyoWgbZHn5kj6hgeQX3BGL6gNYtRq9ZQplSfR0MrGTXjKk9uSDH5yrx/+LyHD
- B6DvvYh3ynzh6nNvRNyxkUcaNmh/a979WeOKssZ5kusDm65M5GipDGhp+4aQe2+7ItG+
- xF6ZXWOBvBAJYtrWwVY4/h+bi3HV1ltOlGr2guhFym1zN0YiYaoNZfowwEu3M3T9xyAa
- 6Pt7mmaLvYX/q3ZaiPKhuekPA9U2HlwKGJctaGJCbMRO91a8cSZkpag8ugBPvUvfqcbZ
- dk/Wbz6e9fcmPKoCx6VIkj4BRL1mQJhwRyooUpTiwTJYnzEWA/cEBwXuha+fjH5QTsPy
- ePmQ==
+ d=linaro.org; s=google; t=1746054393; x=1746659193; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=2F+hPsL4LbSu3gW/DCRDUJFbiar1wwWjCNPQbPWWc9A=;
+ b=S/7jKUhQM22TMYuRezZs+t7ibAxtKoOdJRll/ueEq9bbSM4AR+aDPqIFsbgvm6P2lD
+ BaPdTepf9lsdSWhjCqUrf8y1p0YffJjir2lzl853sVdXlf5kpnsPelHBO2PpskPrEu6e
+ dkPJOTwvCeAqv9omPGzjaeoEwhqzCUP9gaVh+7lwTyYDn9gmp2qbHIz1kbYaIVeoMhrV
+ dJU/rVKr6UVcAIecLheln08oE/8Iuxa2sPjXZnwyAuKdEEdQPpTpPqaPwP7wAMnG8Wl8
+ DSZGulezIWSEU+3cBrBYZk451vxov9iOn0T2FlAs5FVZVt8SoI/vbAMkZBBW1+rJXyVA
+ 2pyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746053095; x=1746657895;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=tk2FYkcbjKhZkaXcrUcRpZBO4gSLNUW6gGqhuPngwSI=;
- b=nwqJ6N/gaJ1fx8yeUyPfiDP6EbwTS94rSrpA7Oz1RhiQruI1KSnJ+We21dvnw1nGj+
- pGzIFoyo+E3kMTKK0REZnTfmQIzgFvG5scEWXtPLL1no9tUGw5i61r0rNnFa8pl7xfTB
- I1vgUHnj3q3yX5yXouvvOxZUT50KdmJLTB1mvN64nTQpxSAKT+aWXp3tXe95CF+1x3eZ
- EHlL/ICK5nREwZtF+CQdNKB+5oLlwtVunf2W+8Q+SOKY1VSrGHPVvtf8udSrdHsh/t4x
- OOF6qpDjfslUjhhge5TSKhTTcIDKaQ/jpwdBbarbn6bREMvjXY+5wbUTzufnUvQrvsIa
- K2lw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUUTQO/kbAIQlRBeFP9Z78Gi/IY2qpnhbr+8VckCJBowLuQMGUEbpBzYv/xt/bD/aFIHtcjH5akrBa4@nongnu.org
-X-Gm-Message-State: AOJu0YyFNCasUrx3iH3eYbqbOmDEhIwSG7E4MEG9EUK5BslI7mkPt+F5
- BkSpdKhT563V8xVhK/kM/AYsQ/IUMqvqnGS2CvDN8dcvxXh/ZoumI1Q37XCWAsWK8g+YNdwFWpq
- i98iGD/CSXlVTyAtwEPuo80jXhTY=
-X-Gm-Gg: ASbGnctQ62vseRNFqRzK/4Bhrd65KqzOy2qo8So3eDq0uP+rDhCel/dV/6LMS/q0DIj
- 7VXmSRocItV0B5V47FB+KQhODBCbbch4yTdwewC0vI/Fj4SuoNsuonW+o3edZGO+quqlezDRnhp
- YJ/LFE0MkBxDvI7D6/Zm4ExhmuEpteKspEA6/YbXphhKzivQEoUkEf
-X-Google-Smtp-Source: AGHT+IGRvxDAJAdFIG888Vb6S33MXGpBfTACDRs/XPRmd3CP4WtKrmgk3ludhRgeXHtDoddgPSTY3nZgEwYiviR9/kQ=
-X-Received: by 2002:a17:907:9494:b0:acb:4cd7:2963 with SMTP id
- a640c23a62f3a-acef42adea1mr103805166b.33.1746053094537; Wed, 30 Apr 2025
- 15:44:54 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1746054393; x=1746659193;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=2F+hPsL4LbSu3gW/DCRDUJFbiar1wwWjCNPQbPWWc9A=;
+ b=cFYgHbz/wNhPF7CHJp4ZI5xM0L44zQeyvLdvZA4ZagmbqOVMUcyA9RPbDZdwXnitHv
+ sJHIYZvINhJCDbptWTrren3Z1PAN9hCbs7u8VtoWCTFDy5PeofRPoIdJsnVVFJPTBker
+ Lq4XHwZDqEoeFHWHaNMymDj19tzOGGBmt7DHQBBgxs0qyi4eTy0vIiHeAaRrQQIfTPeO
+ Soyk3XPmLpzACRihMbjZKZgVhI5I75Fx3l11RCihICYUyupnZ5Ts2WbpJFBvrcwIowFO
+ IMw8dDcoWFbPvQzhFfUmYwdNiln75xBKAtQXL4F5yVVtiS4lWYGaF63PyAgYmkD88BSk
+ hVQA==
+X-Gm-Message-State: AOJu0Ywb5YTSkM6X28Bohssj3k/Y3djxzBYWh6/e6LsnYjxrkVmx9usI
+ RhdGIUw2HelF6iYRtqc+CLOo/lyC160YKRb4Juvlpa5oNfzAXNjGMmaOO5To7iXLQE03jtpyAdz
+ S
+X-Gm-Gg: ASbGnctD5rKmDNHJsJy+VJfMMPHQ9MucmVtWsGuEmfysxQ5U7J3RpQU7chJMPQzFaM0
+ U89Bee36Phz9LP6PV57tSww9ufICePXyDldeE1ikGGnUAvih1TMcMONgWYcQ9MRmFQexebsN74u
+ 40NHG7Vstr+VYaswFnVaXBYBHBvCDrI/C/iXTQAEZd5nxqqsgzTLbhVu3sm4xxmX2L/cyHteoR8
+ nx/LZvGlWJzEdpqOj6+MLYWj9rDvlCAOXgG40rBA1QoQbAa1/MxKk+wmj9sbAfpyfRyiwSOt1UI
+ J32wSZSc5swN2cr8GxafIGANaiYnDVsTDMvR17nFKL/Bg7hHRPOL4ylAzbPw7ekqsBm4imaMv/G
+ KfqD84dTdDA==
+X-Google-Smtp-Source: AGHT+IGO50nF/qjWDo+w2pPm0lbKKEOgxQUGd/De6NSVIsEShK8ms/xkju87u25fxGtdxyM3n1wciA==
+X-Received: by 2002:a05:6a00:114b:b0:736:3be3:3d76 with SMTP id
+ d2e1a72fcca58-7403a80a043mr5960016b3a.17.1746054392836; 
+ Wed, 30 Apr 2025 16:06:32 -0700 (PDT)
+Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-74039a30e2fsm2323287b3a.103.2025.04.30.16.06.32
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 30 Apr 2025 16:06:32 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PATCH 0/6] accel/tcg: Build translate-all, tcg-all twice
+Date: Wed, 30 Apr 2025 16:06:25 -0700
+Message-ID: <20250430230631.2571291-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20250425152311.804338-1-richard.henderson@linaro.org>
- <20250425152311.804338-8-richard.henderson@linaro.org>
- <5b298186-50c8-4473-8eaf-d0bc6f6793ce@linaro.org>
-In-Reply-To: <5b298186-50c8-4473-8eaf-d0bc6f6793ce@linaro.org>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 1 May 2025 08:44:20 +1000
-X-Gm-Features: ATxdqUFkktLHd-pq3jmusM_fOWWttg_d8TakmmDwIi353_2XjbOioWpt7P9E01s
-Message-ID: <CAKmqyKPxSrLkRCjiwcKHHPBapLyk50R5DLtRFSmfVRxYq0ec_Q@mail.gmail.com>
-Subject: Re: [PATCH 7/7] target/riscv: Fix write_misa vs aligned next_pc
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- dbarboza@ventanamicro.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=alistair23@gmail.com; helo=mail-ej1-x62c.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,24 +94,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Apr 30, 2025 at 12:34=E2=80=AFAM Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> On 4/25/25 08:23, Richard Henderson wrote:
-> > -    if ((val & RVC) && (GETPC() & ~3) !=3D 0) {
-> > +    /* Suppress 'C' if next instruction is not aligned. */
-> > +    if ((val & RVC) && (get_next_pc(env, ra) & ~3) !=3D 0) {
->
-> Bah.  I preserved a second bug here: not "& ~3" but "& 3".
+Based-on: 20250430164854.2233995-1-richard.henderson@linaro.org
+("[PATCH v2 00/16] accel/tcg: Compile cpu-exec.c twice")
+Based-on: 20250403234914.9154-6-philmd@linaro.org
+("RFC PATCH-for-10.1 05/19] qemu: Introduce target_long_bits()")
 
-Good catch
+The finish line for accel/tcg is in sight...
 
-I squashed this fix into the patch
+r~
 
-Alistair
+Richard Henderson (6):
+  tcg: Define INSN_START_WORDS as constant 3
+  accel/tcg: Don't use TARGET_LONG_BITS in decode_sleb128
+  accel/tcg: Use target_long_bits() in translate-all.c
+  accel/tcg: Build translate-all.c twice
+  accel/tcg: Build tcg-all.c twice
+  accel/tcg: Use vaddr in cpu_loop.h
 
->
->
-> r~
->
+ include/tcg/insn-start-words.h | 11 +++----
+ include/tcg/tcg-op.h           | 17 +++++++++--
+ include/tcg/tcg-opc.h          |  3 +-
+ include/tcg/tcg.h              | 12 +++++---
+ include/user/cpu_loop.h        | 12 +++-----
+ accel/tcg/tcg-all.c            |  6 +---
+ accel/tcg/translate-all.c      | 56 ++++++++--------------------------
+ accel/tcg/user-exec.c          |  2 +-
+ linux-user/signal.c            |  4 +--
+ target/i386/helper.c           |  2 +-
+ target/openrisc/sys_helper.c   |  2 +-
+ tcg/perf.c                     |  5 ++-
+ tcg/tcg.c                      | 12 +++-----
+ accel/tcg/meson.build          |  6 ++--
+ 14 files changed, 59 insertions(+), 91 deletions(-)
+
+-- 
+2.43.0
+
 
