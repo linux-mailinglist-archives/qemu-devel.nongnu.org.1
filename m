@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18297AA5283
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 19:20:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5CB4AA5282
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 19:20:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAB5v-0002IL-Qi; Wed, 30 Apr 2025 13:19:39 -0400
+	id 1uAB68-0002Jq-CT; Wed, 30 Apr 2025 13:19:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAB5s-0002Hw-U1
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 13:19:36 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1uAB66-0002Jf-P9
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 13:19:50 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAB5q-0005Ma-Ml
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 13:19:36 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-736a72220edso168903b3a.3
- for <qemu-devel@nongnu.org>; Wed, 30 Apr 2025 10:19:34 -0700 (PDT)
+ id 1uAB65-0005Na-28
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 13:19:50 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-22401f4d35aso796555ad.2
+ for <qemu-devel@nongnu.org>; Wed, 30 Apr 2025 10:19:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746033573; x=1746638373; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746033587; x=1746638387; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=9X63Lgk0+vL2PFMhr9f+SnGmk7U3kkh1SGmOGzf65ig=;
- b=JoFQ46HrsR+nkn42YpFMqQXWCBIrBXGbUelOXySF82V3wIdIbqpq/JNkVRJ3+KICbQ
- 6uc0gbcVXU3YOY35/UJ9APwixYR2zMKBDudFCisefEBC3LvednDfpT1MGakvr9F8bJ2x
- iSk4LVJRdikFogeO9jAmb/95Z8HI4YF8WBM11KKEnEYGyCk9MbYO7poTooCMhti8Va8C
- bp+HbP4PY5ODYlUOAwUbueYYFC2pNW+gDnSsV8Dk1b5AKNKM9ymJ3qORSaI4y4+43v0V
- rNaQDa/d+20SUdmwVwCOQJeHjjS5P+dOElLm0ioNZwYpFxA6ZvGn5M9HmdVlSkWR6NtL
- Y2qw==
+ bh=jCb/vbCI9zcbwHG1Z90zVN69PE5OMV4CHJVzN8WJG9s=;
+ b=WViZyP6x/NF1HMsE4E7MWHpkOM6SgcG3hswCBiiNNwka0B0qlJZosW/N3s233D6hDj
+ Wh8CESnPvBZHD8WobatScG03iZO2s9NHFpjA9b6S/g9+lLLPYkCIKPP6+s4CnMaDT5sn
+ SCrQ+r+HtWZCDeyqvndyVE5Si3qUqDC9gAAdjZhdRlkT7wQaaJY3K6MpOqR+PVzqEmym
+ j3rZuocs4sMYyai8EMXMP3aCMKjzkHUKPCjS5FAEKhtILPkeO3pvxO8dVEkOvgOMoyA2
+ BKkd8hl+ybFPrpH0q35aZJOkfWddw+baq011BPVCs4kups3xfoPPFeI4OreI8i8LAya+
+ Ao1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746033573; x=1746638373;
+ d=1e100.net; s=20230601; t=1746033587; x=1746638387;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9X63Lgk0+vL2PFMhr9f+SnGmk7U3kkh1SGmOGzf65ig=;
- b=sJ7ea4aXetmzNTz+mlVQdGHMR2ZnXoSWrfo1dTBD1yv2olFghYINYqOwfv7lIfgle1
- Nu5GXsiazZc9ocRUa5qUoTCHi6ESktcuTHZWyDPyhUU219Iozo/t61CW5VJoqRbxO83Q
- 3q0GknwIUm4E43IWQFjf5GwhQH8psnRd3/oln4OkL0PS2wJO4TxqNMEfDCovNrPAqxiD
- dl8dvStU2VM9R7QbvJBRm/gGN709WSUomSDtoUnrF/vHrj10shKOvmv6DzMTeNJH59+T
- fEE/qQGWq8efLyWdM3VWkzOEDMq7s4zhxSMo6kkftE+4FsgmodeF8+AgbWXtuVtdlQCw
- QkWg==
-X-Gm-Message-State: AOJu0YyCqjQBGO3REfYstbUy5h0G9etojCRGeApri5e/cHW4V359WCj3
- FqzWYCL8UHpaSF2JxO/7SkOCDsWF76ao+hLZgXAcWEiZs4m7uzMmuA6DmJupR/rEPJuyABVHThd
- A
-X-Gm-Gg: ASbGncvP9emMUGjvxj/yVzoGqYYDdCt5oBl5gCGeTLtvzd8htdgIi00/6g1hnMtPxHm
- PMwVKbjsNRafeYqxgP8AoxpO8M1Cibfaua0RQc7BBg3nDo7l9gY+3ZvDtYZZ1q2AbsU2x8njumF
- K9jWNiVgMVmS9D46fg0TBKhrHFUhndvXhC7z18hWtNB48Ri9OjY+fjBFGjcBQe4KpdGoCUDFPsa
- CwCchDacQnrR5qnig9D71E2dXm4065EGn1Us8AeqKDLMadSVc0oe3cMwSNoCNuvMLq1CQRq4j2q
- +5G35KV6mpJU2gUmnEYXJ++2YrAyQBs44DbYPl09YN8H7Ti+zeJyOhG6k7MrtoK0Zyge4MR1tL0
- K9cFlz8Q=
-X-Google-Smtp-Source: AGHT+IHZQBsVIhID7jO4yRojWBB5z9RPM/8bO3Wp3VotsZdvnxD0cQW079+TPWsbfwx7x8wJ0ccUhg==
-X-Received: by 2002:a05:6a00:1942:b0:736:a8db:93b8 with SMTP id
- d2e1a72fcca58-7403896034bmr6236454b3a.3.1746033572955; 
- Wed, 30 Apr 2025 10:19:32 -0700 (PDT)
+ bh=jCb/vbCI9zcbwHG1Z90zVN69PE5OMV4CHJVzN8WJG9s=;
+ b=HD341GvyGKjpxi0cbgbh4rO5tvWKzXKGKGgB2Ss8/vhBwaO5q2Fm7F4rUzPvyLBUeS
+ RiKcyu/7PxIy3h8Ic+vJQ3rWKHwsaQv9TN4nAu4OKCJ/+CyksuSZTfgU+AfruWWX4TT4
+ wD3MgxHG/35mLOT1D5/Wy9r9aOvklP0UmqbljjvmKHn09oRm1EWISddNo5muUqF6lfLC
+ npgtzSSoYAAE51wv3OyPSjVZt+255MLJMI61Y9ESjnWybCF06H0kksEdc2Su0apMByXd
+ Gl96Jd3ZrpDAgsuOhRP9ygi0cR2wamWjJPVEg3VRFHqtOQXUZh0ziExHyK4Jrc1lQiwf
+ vZqg==
+X-Gm-Message-State: AOJu0Yx4qbOlhmlXkNmQK/++VNzgUkyXkVCw/Z+FsVk1jy2x2yXfjOIQ
+ EzGyKZZgZknbYT6NIwPCQcKkPqnErITSOmgK7vkf3Ti0J90JQVk5UwSj8FK/wkfmkXo7sCWU/eO
+ N
+X-Gm-Gg: ASbGncvpMM3fgTG7unf50r+P5h5azGbIHtJzCEKrik2xkXIbCj3anM7TLAHdQkzy6QO
+ WJ+nrMrnnKpgr6cDzK1z9eU0q93qdgwWx17mPNganwGfJ+V0QhxOz9CPzxXESxKYgZl83NdF1ql
+ FkELiA5LICz9CKMpUG1pnjKGNHHvyiJm/3jo6qc+UN7dilTW4gAml1j4o9jzbrPKf3IgZsowVWN
+ BF44+FTbbaQ+CaMgp1JXeujNjS9jWVzSfDtfwpAHTxEIN+r0Vgl3muIrF6HThfPhftnaeZ5HUd1
+ FQwKInt5ELm/+P109+K1ugrBNIRX2veeM3sOhyl0GILvWKKiiNsnHZBnHs0jQv3ELgRQBPVfJ5+
+ wOfJTRM8=
+X-Google-Smtp-Source: AGHT+IH4eGa/J7nyNlSn5MfeZeHhzzAJB4abOW8Jrf5gCIex8qDid1sA6LjhIWL/SE7AjU+YTVe/cQ==
+X-Received: by 2002:a17:902:d486:b0:220:ce37:e31f with SMTP id
+ d9443c01a7336-22df34d5f5fmr65081075ad.17.1746033587250; 
+ Wed, 30 Apr 2025 10:19:47 -0700 (PDT)
 Received: from [192.168.0.4] (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74039a31018sm1913001b3a.113.2025.04.30.10.19.32
+ d9443c01a7336-22db4d76ce1sm125280455ad.40.2025.04.30.10.19.46
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Apr 2025 10:19:32 -0700 (PDT)
-Message-ID: <47be9d89-026b-48ac-9ebf-89902a2ec5c5@linaro.org>
-Date: Wed, 30 Apr 2025 10:19:31 -0700
+ Wed, 30 Apr 2025 10:19:46 -0700 (PDT)
+Message-ID: <dbc5dd8b-0bd9-48d6-8b0e-d9b3b6892a1e@linaro.org>
+Date: Wed, 30 Apr 2025 10:19:45 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/7] target/microblaze: Delay
- gdb_register_coprocessor() to realize
+Subject: Re: [PATCH v2 3/7] hw/core/cpu-common: Don't init gdbstub until
+ cpu_exec_realizefn()
 To: qemu-devel@nongnu.org
 References: <20250429132200.605611-1-peter.maydell@linaro.org>
- <20250429132200.605611-3-peter.maydell@linaro.org>
+ <20250429132200.605611-4-peter.maydell@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250429132200.605611-3-peter.maydell@linaro.org>
+In-Reply-To: <20250429132200.605611-4-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,19 +103,41 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 4/29/25 06:21, Peter Maydell wrote:
-> Currently the microblaze code calls gdb_register_coprocessor() in its
-> initfn.  This works, but we would like to delay setting up GDB
-> registers until realize.  All other target architectures only call
-> gdb_register_coprocessor() in realize, after the call to
-> cpu_exec_realizefn().
+> Currently we call gdb_init_cpu() in cpu_common_initfn(), which is
+> very early in the CPU object's init->realize creation sequence.  In
+> particular this happens before the architecture-specific subclass's
+> init fn has even run.  This means that gdb_init_cpu() can only do
+> things that depend strictly on the class, not on the object, because
+> the CPUState* that it is passed is currently half-initialized.
 > 
-> Move the microblaze gdb_register_coprocessor() use, bringing it
-> in line with other targets.
+> In commit a1f728ecc90cf6c6 we accidentally broke this rule, by adding
+> a call to the gdb_get_core_xml_file method which takes the CPUState.
+> At the moment we get away with this because the only implementation
+> doesn't actually look at the pointer it is passed.  However the whole
+> reason we created that method was so that we could make the "which
+> XML file?" decision based on a property of the CPU object, and we
+> currently can't change the Arm implementation of the method to do
+> what we want without causing wrong behaviour or a crash.
+> 
+> The ordering restrictions here are:
+>   * we must call gdb_init_cpu before:
+>     - any call to gdb_register_coprocessor()
+>     - any use of the gdb_num_regs field (this is only used
+>       in code that's about to call gdb_register_coprocessor()
+>       and wants to know the first register number of the
+>       set of registers it's about to add)
+>   * we must call gdb_init_cpu after CPU properties have been
+>     set, which is to say somewhere in realize
+> 
+> The function cpu_exec_realizefn() meets both of these requirements,
+> as it is called by the architecture-specific CPU realize function
+> early in realize, before any calls ot gdb_register_coprocessor().
+> Move the gdb_init_cpu() call to there.
 > 
 > Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
->   target/microblaze/cpu.c | 12 +++++-------
->   1 file changed, 5 insertions(+), 7 deletions(-)
+>   hw/core/cpu-common.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
