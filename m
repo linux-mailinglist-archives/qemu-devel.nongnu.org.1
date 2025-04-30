@@ -2,107 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DD54AA5432
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 20:52:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D456AA541C
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 20:50:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uACW0-0003KQ-UO; Wed, 30 Apr 2025 14:50:41 -0400
+	id 1uACVt-0003Iz-Sr; Wed, 30 Apr 2025 14:50:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
- id 1uACVx-0003Jw-V8
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 14:50:37 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
- id 1uACVv-0008Gd-Uq
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 14:50:37 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53UHbhcl015317;
- Wed, 30 Apr 2025 18:50:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=3aE2H3IQXiyOYxy2f
- tLDHYbQjnQLFQPe8YEnK2mDg+I=; b=CXGCZPGWDOnwR9wF8yC3LQDJ7TmhLw5xI
- FW+QyxK7OE9/zS90iIJyEFSI2YVzeKe+JI1c0gtkIXt+Jm7LMxiHllDc+6Fu/EaN
- te4niNSDA4xAsDpwy5sRqttMuekk4b1FZJdsdTuOhkQVuhB6xGYf6T4mJamvkOAV
- YzsGWSyn5JsyJml3kKl8FaVOB2rlimTkanC+wvtad2jyWrvqQIwCREffh3Uc5T+H
- hMZn/wORV2dxsW09cnPtPeMwxCJOOqfVItdF6gyEBWe7RjZwlGm0S6r8MFn3MSqJ
- QszpzyCkAp+gxyXvAIqjRnGEh1I24WnhDFGkIi+9k2KW00FBpudbQ==
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46b6upn1gq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 30 Apr 2025 18:50:23 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53UGKfea016112;
- Wed, 30 Apr 2025 18:50:22 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 469a70he0h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 30 Apr 2025 18:50:22 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
- [10.39.53.228])
- by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 53UIoIqg30081644
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 30 Apr 2025 18:50:18 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C353A58063;
- Wed, 30 Apr 2025 18:50:20 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2114858059;
- Wed, 30 Apr 2025 18:50:18 +0000 (GMT)
-Received: from IBM-D32RQW3.ibm.com (unknown [9.61.242.230])
- by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 30 Apr 2025 18:50:17 +0000 (GMT)
-From: Farhan Ali <alifm@linux.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, stefanha@redhat.com, alifm@linux.ibm.com,
- mjrosato@linux.ibm.com, schnelle@linux.ibm.com, philmd@linaro.org,
- kwolf@redhat.com, hreitz@redhat.com, thuth@redhat.com, fam@euphon.net
-Subject: [PATCH v6 1/3] util: Add functions for s390x mmio read/write
-Date: Wed, 30 Apr 2025 11:50:10 -0700
-Message-ID: <20250430185012.2303-2-alifm@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250430185012.2303-1-alifm@linux.ibm.com>
-References: <20250430185012.2303-1-alifm@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1uACVm-0003IJ-Ik
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 14:50:27 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1uACVk-0008B3-SK
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 14:50:26 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-5f3f04b5dbcso335749a12.1
+ for <qemu-devel@nongnu.org>; Wed, 30 Apr 2025 11:50:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1746039023; x=1746643823; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5i8SKjd40xYQyrMGgzw7crqd7kl9R+VF5f9d8t1mxb8=;
+ b=fwOvTfZM1Aq4im7uxbpE9RINvL2JENGmOWR+RSIHVX8nkVikVORLqPdNNOK84MMUpt
+ Kk2TN1LIGMRJEbSanK1OeO9rFYPnBSDbALcR02/2fBslTHswT2E3Sc17CM7Sk9vPhweM
+ vU+Qe8jvovq9y/QqH1E/I6vy1SoLgk7JpQ+jm6GKMWrc8szAYeDVisP9ARZ+ckrpxGVj
+ 0QoeIUNqmCV5wW9XZjn5yYGcUW0CPjL3r4vX6qs7XuIIZNYHt/+jqAngE5BbZymV1blh
+ 6ECq/spau4qXFFV2V9c1lA/YuxGS2uvYc9FLDZSCSIvI55xIYBIOOILkYoe3SMh4Yv3C
+ qnNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1746039023; x=1746643823;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=5i8SKjd40xYQyrMGgzw7crqd7kl9R+VF5f9d8t1mxb8=;
+ b=kk+2wtqj7W1HrP00N3BQpo7ea/l63TKebevCzvSE744vzuQmwERN2JMce9nhq7y2cC
+ aaKdtrlg+6vkfV+bS0VSL/EoOgiuc9WzaVh3wSU7wKL1yhBIj/j6eNb5hGc4yxt5Ic9V
+ 9YkWW4iAOq+2trG2IYNDJHEt9jyvBhewZJ2kc1Ao+/DhlBWFnkxL3yQeSn+CCzQBQxJE
+ bRw1D58VLhC8Tb6oZ01yTsyRlEgDXwCmxxG2mDwTge8EIWQs0X13iQKAKTXgys+qh69c
+ Dx/pmBbMaX4ckMkLDEfr2AB8uEo7rMt4apDqRhABizv0knFy341jQxArE1jnD0sNfn7n
+ Z0/g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU0KWob5Ei6h24PLvBLHhG5fy5Fw0NJ2JmPoOE3k9qL7T/yQj1BwAtQR6eAD/TW08WUzvH0RyjJ8Rte@nongnu.org
+X-Gm-Message-State: AOJu0YyEzLnbmVWi4s2o6NMn4A6LI1FYFrpes3XQ42fcLDTFxfKvSll+
+ e0S6ZIpY/jgIxe6vYUmZ3l3vxE2asLyMUYzPppwjpwAWc/n1TwDisRmnYgSDwAjIhWAjJelY1dg
+ FQqAJbAjN3R1wxrmpSUrTohrBWSE=
+X-Gm-Gg: ASbGncuj8i6wHOQKG+7gqlPBknGUExsHmea3K0cfKTZpYqlFRYubDAQH3w09v8P3o0R
+ PZds7SdEY3EwqOZ3pTakDTdfF+Fhewpj9pUiygCYsR1+5P3ZsNJaemWUaC20aek0Q8qhD2mSx2g
+ ljdJxNaj0sBVrz3KrZGLK8
+X-Google-Smtp-Source: AGHT+IHy+cDK49t0y0tpN93fbRwVSb92Cm59P79jguldsD+AX8AJcKkVlRGD7ABYSGeE6HQ+CR92//Sq7XHWYY657iI=
+X-Received: by 2002:a05:6402:51c7:b0:5f4:d22e:28b9 with SMTP id
+ 4fb4d7f45d1cf-5f89ab6826fmr4260766a12.3.1746039022595; Wed, 30 Apr 2025
+ 11:50:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=IqQecK/g c=1 sm=1 tr=0 ts=681270ef cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=XR8D0OoHHMoA:10 a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8 a=-3YU2YgekH6Hxld7bwEA:9
-X-Proofpoint-ORIG-GUID: ZWgmDWdud04G17Lp_sTerHpUWx1ZpJ0c
-X-Proofpoint-GUID: ZWgmDWdud04G17Lp_sTerHpUWx1ZpJ0c
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDMwMDEzNiBTYWx0ZWRfX0fokE87rP3z4
- Tn/v+pEybqbSUtpczrt5MyDLutvqBB92V5J68ZvOoI+VtPetLJ5iCfjaymZhCHfIiFgPRNQsA2a
- i7JDzHfaN9sCPiLOAHXcn313OWgpqOymFkQyvdH5Flb9mcVo4NikaOFrPBh9erZSDBgfgxfhFF7
- svt8HmjyL/msxCBOy7WnOv75D3eqeRDJ2aFBNcJ26I3cop000f5ZftB4HvRG2Uq1K0Nys5CWrvF
- NkL/T6GYbN27/RfgOtIywpick4mmXRWrgT/79dHCujUGCPTZJRr1ZOxVbuXHrn6r4+mdzaJIUV4
- xTWUgnnwdRNX7UgTFUS8opT0GkNLNaGqf0Cu6Q1qjfH5Q6UOtcHkivXGMP5Tbzu7nXmHlta0oBA
- jGzXFmi861S3+nX/8yRDYmJHbUqPBJPmNymJGVGbFM0Y+xDqy6UoNKNX67sk6K5cp7PwAXjN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-04-30_05,2025-04-24_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0
- phishscore=0 spamscore=0 clxscore=1015 bulkscore=0 impostorscore=0
- lowpriorityscore=0 mlxscore=0 mlxlogscore=631 suspectscore=0
- priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2504300136
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=alifm@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+References: <73839c04-7616-407e-b057-80ca69e63f51@virtuozzo.com>
+ <32df0a6d-93c7-4474-bae5-2254e6c1ecd2@proxmox.com>
+ <d6c6916a-5112-4c78-894c-d01fd756a2f7@virtuozzo.com>
+In-Reply-To: <d6c6916a-5112-4c78-894c-d01fd756a2f7@virtuozzo.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Wed, 30 Apr 2025 14:50:10 -0400
+X-Gm-Features: ATxdqUE6PA6g2zgHzxYcrFAcXpxvdss3Z5TZ2W6MhBO7-yolEhs3yQHyIWKEfpo
+Message-ID: <CAJSP0QWo9fxGovRbUPmLb3Oma2ankbKE0KG=9pWGj0U7ggDhFw@mail.gmail.com>
+Subject: Re: [BUG, RFC] Block graph deadlock on job-dismiss
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: Fiona Ebner <f.ebner@proxmox.com>, qemu-devel@nongnu.org, 
+ Hanna Czenczek <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>, Eric Blake <eblake@redhat.com>, 
+ "Denis V. Lunev" <den@virtuozzo.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=stefanha@gmail.com; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,220 +98,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Starting with z15 (or newer) we can execute mmio
-instructions from userspace. On older platforms
-where we don't have these instructions available
-we can fallback to using system calls to access
-the PCI mapped resources.
+On Wed, Apr 30, 2025 at 10:11=E2=80=AFAM Andrey Drobyshev
+<andrey.drobyshev@virtuozzo.com> wrote:
+>
+> On 4/30/25 11:47 AM, Fiona Ebner wrote:
+> > Am 24.04.25 um 19:32 schrieb Andrey Drobyshev:
+> >> So it looks like main thread is processing job-dismiss request and is
+> >> holding write lock taken in block_job_remove_all_bdrv() (frame #20
+> >> above).  At the same time iothread spawns a coroutine which performs I=
+O
+> >> request.  Before the coroutine is spawned, blk_aio_prwv() increases
+> >> 'in_flight' counter for Blk.  Then blk_co_do_preadv_part() (frame #5) =
+is
+> >> trying to acquire the read lock.  But main thread isn't releasing the
+> >> lock as blk_root_drained_poll() returns true since blk->in_flight > 0.
+> >> Here's the deadlock.
+> >
+> > And for the IO test you provided, it's client->nb_requests that behaves
+> > similarly to blk->in_flight here.
+> >
+> > The issue also reproduces easily when issuing the following QMP command
+> > in a loop while doing IO on a device:
+> >
+> >> void qmp_block_locked_drain(const char *node_name, Error **errp)
+> >> {
+> >>     BlockDriverState *bs;
+> >>
+> >>     bs =3D bdrv_find_node(node_name);
+> >>     if (!bs) {
+> >>         error_setg(errp, "node not found");
+> >>         return;
+> >>     }
+> >>
+> >>     bdrv_graph_wrlock();
+> >>     bdrv_drained_begin(bs);
+> >>     bdrv_drained_end(bs);
+> >>     bdrv_graph_wrunlock();
+> >> }
+> >
+> > It seems like either it would be necessary to require:
+> > 1. not draining inside an exclusively locked section
+> > or
+> > 2. making sure that variables used by drained_poll routines are only se=
+t
+> > while holding the reader lock
+> > ?
+> >
+> > Those seem to require rather involved changes, so a third option might
+> > be to make draining inside an exclusively locked section possible, by
+> > embedding such locked sections in a drained section:
+> >
+> >> diff --git a/blockjob.c b/blockjob.c
+> >> index 32007f31a9..9b2f3b3ea9 100644
+> >> --- a/blockjob.c
+> >> +++ b/blockjob.c
+> >> @@ -198,6 +198,7 @@ void block_job_remove_all_bdrv(BlockJob *job)
+> >>       * one to make sure that such a concurrent access does not attemp=
+t
+> >>       * to process an already freed BdrvChild.
+> >>       */
+> >> +    bdrv_drain_all_begin();
+> >>      bdrv_graph_wrlock();
+> >>      while (job->nodes) {
+> >>          GSList *l =3D job->nodes;
+> >> @@ -211,6 +212,7 @@ void block_job_remove_all_bdrv(BlockJob *job)
+> >>          g_slist_free_1(l);
+> >>      }
+> >>      bdrv_graph_wrunlock();
+> >> +    bdrv_drain_all_end();
+> >>  }
+> >>
+> >>  bool block_job_has_bdrv(BlockJob *job, BlockDriverState *bs)
+> >
+> > This seems to fix the issue at hand. I can send a patch if this is
+> > considered an acceptable approach.
 
-This patch adds helper functions for mmio reads
-and writes for s390x.
+Kevin is aware of this thread but it's a public holiday tomorrow so it
+may be a little longer.
 
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
----
- include/qemu/s390x_pci_mmio.h |  24 ++++++
- util/meson.build              |   2 +
- util/s390x_pci_mmio.c         | 146 ++++++++++++++++++++++++++++++++++
- 3 files changed, 172 insertions(+)
- create mode 100644 include/qemu/s390x_pci_mmio.h
- create mode 100644 util/s390x_pci_mmio.c
-
-diff --git a/include/qemu/s390x_pci_mmio.h b/include/qemu/s390x_pci_mmio.h
-new file mode 100644
-index 0000000000..c5f63ecefa
---- /dev/null
-+++ b/include/qemu/s390x_pci_mmio.h
-@@ -0,0 +1,24 @@
-+/*
-+ * s390x PCI MMIO definitions
-+ *
-+ * Copyright 2025 IBM Corp.
-+ * Author(s): Farhan Ali <alifm@linux.ibm.com>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#ifndef S390X_PCI_MMIO_H
-+#define S390X_PCI_MMIO_H
-+
-+#ifdef __s390x__
-+uint8_t s390x_pci_mmio_read_8(const void *ioaddr);
-+uint16_t s390x_pci_mmio_read_16(const void *ioaddr);
-+uint32_t s390x_pci_mmio_read_32(const void *ioaddr);
-+uint64_t s390x_pci_mmio_read_64(const void *ioaddr);
-+
-+void s390x_pci_mmio_write_8(void *ioaddr, uint8_t val);
-+void s390x_pci_mmio_write_16(void *ioaddr, uint16_t val);
-+void s390x_pci_mmio_write_32(void *ioaddr, uint32_t val);
-+void s390x_pci_mmio_write_64(void *ioaddr, uint64_t val);
-+#endif /* __s390x__ */
-+
-+#endif /* S390X_PCI_MMIO_H */
-diff --git a/util/meson.build b/util/meson.build
-index 780b5977a8..acb21592f9 100644
---- a/util/meson.build
-+++ b/util/meson.build
-@@ -131,4 +131,6 @@ elif cpu in ['ppc', 'ppc64']
-   util_ss.add(files('cpuinfo-ppc.c'))
- elif cpu in ['riscv32', 'riscv64']
-   util_ss.add(files('cpuinfo-riscv.c'))
-+elif cpu == 's390x'
-+  util_ss.add(files('s390x_pci_mmio.c'))
- endif
-diff --git a/util/s390x_pci_mmio.c b/util/s390x_pci_mmio.c
-new file mode 100644
-index 0000000000..5ab24fa474
---- /dev/null
-+++ b/util/s390x_pci_mmio.c
-@@ -0,0 +1,146 @@
-+/*
-+ * s390x PCI MMIO definitions
-+ *
-+ * Copyright 2025 IBM Corp.
-+ * Author(s): Farhan Ali <alifm@linux.ibm.com>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include <sys/syscall.h>
-+#include "qemu/s390x_pci_mmio.h"
-+#include "elf.h"
-+
-+union register_pair {
-+    unsigned __int128 pair;
-+    struct {
-+        uint64_t even;
-+        uint64_t odd;
-+    };
-+};
-+
-+static bool is_mio_supported;
-+
-+static __attribute__((constructor)) void check_is_mio_supported(void)
-+{
-+    is_mio_supported = !!(qemu_getauxval(AT_HWCAP) & HWCAP_S390_PCI_MIO);
-+}
-+
-+static uint64_t s390x_pcilgi(const void *ioaddr, size_t len)
-+{
-+    union register_pair ioaddr_len = { .even = (uint64_t)ioaddr,
-+                                       .odd = len };
-+    uint64_t val;
-+    int cc;
-+
-+    asm volatile(
-+        /* pcilgi */
-+        ".insn   rre,0xb9d60000,%[val],%[ioaddr_len]\n"
-+        "ipm     %[cc]\n"
-+        "srl     %[cc],28\n"
-+        : [cc] "=d"(cc), [val] "=d"(val),
-+        [ioaddr_len] "+d"(ioaddr_len.pair) :: "cc");
-+
-+    if (cc) {
-+        val = -1ULL;
-+    }
-+
-+    return val;
-+}
-+
-+static void s390x_pcistgi(void *ioaddr, uint64_t val, size_t len)
-+{
-+    union register_pair ioaddr_len = {.even = (uint64_t)ioaddr, .odd = len};
-+
-+    asm volatile (
-+        /* pcistgi */
-+        ".insn   rre,0xb9d40000,%[val],%[ioaddr_len]\n"
-+        : [ioaddr_len] "+d" (ioaddr_len.pair)
-+        : [val] "d" (val)
-+        : "cc", "memory");
-+}
-+
-+uint8_t s390x_pci_mmio_read_8(const void *ioaddr)
-+{
-+    uint8_t val = 0;
-+
-+    if (is_mio_supported) {
-+        val = s390x_pcilgi(ioaddr, sizeof(val));
-+    } else {
-+        syscall(__NR_s390_pci_mmio_read, ioaddr, &val, sizeof(val));
-+    }
-+    return val;
-+}
-+
-+uint16_t s390x_pci_mmio_read_16(const void *ioaddr)
-+{
-+    uint16_t val = 0;
-+
-+    if (is_mio_supported) {
-+        val = s390x_pcilgi(ioaddr, sizeof(val));
-+    } else {
-+        syscall(__NR_s390_pci_mmio_read, ioaddr, &val, sizeof(val));
-+    }
-+    return val;
-+}
-+
-+uint32_t s390x_pci_mmio_read_32(const void *ioaddr)
-+{
-+    uint32_t val = 0;
-+
-+    if (is_mio_supported) {
-+        val = s390x_pcilgi(ioaddr, sizeof(val));
-+    } else {
-+        syscall(__NR_s390_pci_mmio_read, ioaddr, &val, sizeof(val));
-+    }
-+    return val;
-+}
-+
-+uint64_t s390x_pci_mmio_read_64(const void *ioaddr)
-+{
-+    uint64_t val = 0;
-+
-+    if (is_mio_supported) {
-+        val = s390x_pcilgi(ioaddr, sizeof(val));
-+    } else {
-+        syscall(__NR_s390_pci_mmio_read, ioaddr, &val, sizeof(val));
-+    }
-+    return val;
-+}
-+
-+void s390x_pci_mmio_write_8(void *ioaddr, uint8_t val)
-+{
-+    if (is_mio_supported) {
-+        s390x_pcistgi(ioaddr, val, sizeof(val));
-+    } else {
-+        syscall(__NR_s390_pci_mmio_write, ioaddr, &val, sizeof(val));
-+    }
-+}
-+
-+void s390x_pci_mmio_write_16(void *ioaddr, uint16_t val)
-+{
-+    if (is_mio_supported) {
-+        s390x_pcistgi(ioaddr, val, sizeof(val));
-+    } else {
-+        syscall(__NR_s390_pci_mmio_write, ioaddr, &val, sizeof(val));
-+    }
-+}
-+
-+void s390x_pci_mmio_write_32(void *ioaddr, uint32_t val)
-+{
-+    if (is_mio_supported) {
-+        s390x_pcistgi(ioaddr, val, sizeof(val));
-+    } else {
-+        syscall(__NR_s390_pci_mmio_write, ioaddr, &val, sizeof(val));
-+    }
-+}
-+
-+void s390x_pci_mmio_write_64(void *ioaddr, uint64_t val)
-+{
-+    if (is_mio_supported) {
-+        s390x_pcistgi(ioaddr, val, sizeof(val));
-+    } else {
-+        syscall(__NR_s390_pci_mmio_write, ioaddr, &val, sizeof(val));
-+    }
-+}
--- 
-2.43.0
-
+Stefan
 
