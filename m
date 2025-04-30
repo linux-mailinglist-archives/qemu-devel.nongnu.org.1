@@ -2,47 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3877AA51BA
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 18:34:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC149AA51BB
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 18:34:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAANH-00027K-El; Wed, 30 Apr 2025 12:33:31 -0400
+	id 1uAAO3-0003De-EA; Wed, 30 Apr 2025 12:34:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lc00631@tecorigin.com>)
- id 1uAANE-00026o-TH
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:33:29 -0400
-Received: from out28-196.mail.aliyun.com ([115.124.28.196])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lc00631@tecorigin.com>)
- id 1uAANB-00088L-I4
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:33:28 -0400
-Received: from localhost.localdomain(mailfrom:lc00631@tecorigin.com
- fp:SMTPD_---.ccFcKS4_1746030796 cluster:ay29) by smtp.aliyun-inc.com;
- Thu, 01 May 2025 00:33:16 +0800
-From: Chao Liu <lc00631@tecorigin.com>
-To: pbonzini@redhat.com, peterx@redhat.com, david@redhat.com,
- philmd@linaro.org, armbru@redhat.com, balaton@eik.bme.hu
-Cc: zhangtj@tecorigin.com, zqz00548@tecorigin.com, lc00631@tecorigin.com,
- qemu-devel@nongnu.org
-Subject: [PATCH v4 1/1] system: improve visual representation of node hierarchy
-Date: Thu,  1 May 2025 00:32:58 +0800
-Message-ID: <3dd1e9e3eeedc70e1f1878bd17cc779a79084e58.1746030617.git.lc00631@tecorigin.com>
-X-Mailer: git-send-email 2.48.1.windows.1
-In-Reply-To: <cover.1746030617.git.lc00631@tecorigin.com>
-References: <cover.1746030617.git.lc00631@tecorigin.com>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uAANy-00038E-Sw
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:34:15 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uAANw-0008Dq-Ux
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:34:14 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-73972a54919so127047b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 30 Apr 2025 09:34:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1746030851; x=1746635651; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=H95H2KWLkf33AFMxI8fXbKPm+i+f2aa5OacAsJH4Org=;
+ b=Mt5F9Xt8K/bzdXIJ0Vn4ZNYMlPw6jWFoA+TQ4CLoav7QP8AjtpKSs/r1quVNVZuc9C
+ P+fNau6+BcAFriokOBIvEH330K1eFZGvChJVxmBjeM0W9lS5tCW8GkIJHzsqtEsFXE4l
+ tcnadRSd8aDsmLnpw5VZaFZlCT4loDoy67Bp9e7WsNz/y2SvtBXLYSnhXdDv7G3JX6em
+ z9zomOv1OjfFB/UeFGmFurNT19/D4reSMUndLizHqVcAmst+OaDJVRCbrpfRkM83z7if
+ 8Hc4jqKRfLbMHIE8u0lQoPunM7ymtdunVtfhCdptRpUNoUJh260S7VSrHqEGf8xiDGAn
+ DPKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1746030851; x=1746635651;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=H95H2KWLkf33AFMxI8fXbKPm+i+f2aa5OacAsJH4Org=;
+ b=V7cYi9WyTTGhP7soLdx0whDzU2S1PKHF3VaWKTc9w3gvSWtt76ZZJXgN780jCWXghj
+ TRwqfxmvN7CjQJriiRJulKvcK0ZTPYKUwQLNgntpQL2oR3svSkX4/KPmqiWu3Ahh9mid
+ 8VmLXFWZvUrE1zr5fn5vuvxC5A3NuDyI41oyGCqxtt9NphPNbqiJwDG8BxRyVxofITfW
+ 3kNsBOeMlx3H0jxktqW3SZP1uQAAP57EvMi4kkcEpkD5RLamkml6qAlXzHqw9smbh5YG
+ 7qKhiTSyCPD0x8mGHWDQL2HaMIwg5wgh38sMtcAWqGsICmREcXAJCbA5CU3ltzr4lYf2
+ PdkA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU4LlQ5thhM6OpiYFRjhsjwZkEg8aEQCOj/AOujhn2IEbw84OrReWgT6+c4TplNEbXeXrCF1NroqE2s@nongnu.org
+X-Gm-Message-State: AOJu0YyKJZyOmNXOJgjBdQlVoasbt8JC0fdMmmVoSkH9LT6VYLlU3lBN
+ GbqESDE1br7vkuXSR2I+Fpb+MNJX7tcY3wRFCyRuD3fXlAJS4IKznscKi1d6cxE=
+X-Gm-Gg: ASbGncsLJXIgiDybzGUk6nkUBWP9iqNZajTP+DrpwoC8J7wa/r85I8s34i/bwbFVQot
+ MA9MraU0MNVyxNbPqHOt33PvnpxTq1XqXMGgUfBcISuqq32xXa414F0Mhw2mC8Xayg+/vIThJAk
+ 39b6GwgLcvaV0pSaLV/hygBl5abUDReTgBXgSsmp2BP0BSfPUAIe3Fnle81+YVwVuxUZ2eoJKLS
+ HTizelKLQjmODes2eJaEmgyriomQ/KTaQDCkQITm+MWT8t4mnFvKi4zLXYhBQJ98fUchPwbIkdY
+ kdEKNj3dRa8UoS+FaFmDOHXFcCo8rp70zRMpeh1CJURnkj+94XMPew==
+X-Google-Smtp-Source: AGHT+IHUhl+5YHglIn865fW0T/xp0wxdxQLDc4bERD8wVsdFdcTwH35vu/8j0Um1tasjfdLShAuqog==
+X-Received: by 2002:a05:6a00:21c7:b0:736:32d2:aa93 with SMTP id
+ d2e1a72fcca58-74038abf64amr5655717b3a.20.1746030851508; 
+ Wed, 30 Apr 2025 09:34:11 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-740398f9f9bsm1872861b3a.29.2025.04.30.09.34.10
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 30 Apr 2025 09:34:11 -0700 (PDT)
+Message-ID: <f8ca0b3f-5a9a-4182-b0e0-352a90bd9374@linaro.org>
+Date: Wed, 30 Apr 2025 09:34:10 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: Functional tests precache behaviour
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+References: <c83e0d26-4d1b-4a12-957d-c7b7ff4ba1b3@linaro.org>
+ <7f0c4586-8a97-4e64-8abb-58a74b86afaa@redhat.com>
+ <6e9a3cb3-e238-48a7-a67c-c95b36a517bc@linaro.org>
+ <aBJJqtzQaTH_xcKK@redhat.com>
+ <efbaccd1-9ef2-4aed-88ed-d6a2bcb7902b@linaro.org>
+ <aBJP-_KJudesY_Pk@redhat.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <aBJP-_KJudesY_Pk@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.28.196;
- envelope-from=lc00631@tecorigin.com; helo=out28-196.mail.aliyun.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -58,235 +106,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make the hierarchical relationship between nodes clearer by adding characters.
+On 4/30/25 9:29 AM, Daniel P. Berrangé wrote:
+> On Wed, Apr 30, 2025 at 09:21:41AM -0700, Pierrick Bouvier wrote:
+>> On 4/30/25 9:02 AM, Daniel P. Berrangé wrote:
+>>> On Wed, Apr 30, 2025 at 08:48:59AM -0700, Pierrick Bouvier wrote:
+>>>> On 4/30/25 8:00 AM, Thomas Huth wrote:
+>>>>> On 30/04/2025 16.34, Pierrick Bouvier wrote:
+>>>>>> Hi folks,
+>>>>>>
+>>>>>> $ ninja -C build precache-functional
+>>>>>> 2025-04-30 07:23:20,382 - qemu-test - ERROR - Unable to download https://
+>>>>>> archive.netbsd.org/pub/NetBSD-archive/NetBSD-9.0/evbarm-earmv7hf/binary/
+>>>>>> gzimg/armv7.img.gz: HTTP error 503
+>>>>>> 2025-04-30 07:23:23,131 - qemu-test - ERROR - Unable to download https://
+>>>>>> archive.netbsd.org/pub/NetBSD-archive/NetBSD-9.0/evbarm-earmv7hf/binary/
+>>>>>> gzimg/armv7.img.gz: HTTP error 503
+>>>>>> 2025-04-30 07:23:25,870 - qemu-test - ERROR - Unable to download https://
+>>>>>> archive.netbsd.org/pub/NetBSD-archive/NetBSD-9.0/evbarm-earmv7hf/binary/
+>>>>>> gzimg/armv7.img.gz: HTTP error 503
+>>>>>> 2025-04-30 07:23:25,871 - qemu-test - ERROR - https://archive.netbsd.org/
+>>>>>> pub/NetBSD-archive/NetBSD-9.0/evbarm-earmv7hf/binary/gzimg/armv7.img.gz:
+>>>>>> Download retries exceeded: skipping asset precache
+>>>>>> $ echo $?
+>>>>>> 0
+>>>>>>
+>>>>>> Since we silently skip the asset precaching, how can we identify that an
+>>>>>> asset is not available anymore (temporarily or not)?
+>>>>>> Should we rely on test itself failing when trying to download again this asset?
+>>>>>
+>>>>> The current logic fails hard for 404 errors, so if the asset is completely
+>>>>> gone, we should notice it. For other error codes, we assume that it is only
+>>>>> a temporary server problem that will hopefully be fixed on the server side
+>>>>> sooner or later.
+>>>>>
+>>>>
+>>>> Sounds good.
+>>>> Should we replicate this semantic when running the test itself?
+>>>> It would be more useful to skip it because an asset is missing instead of
+>>>> reporting an error, except if it's a 404 error.
+>>>
+>>> The tests already gracefully skip if one or more required assets
+>>> are not available. See the 'setUp' method of QemuBaseTest
+>>>
+>>>           if not self.assets_available():
+>>>               self.skipTest('One or more assets is not available')
+>>>
+>>>
+>>> In the 404 case, the pre-cache step should fail and thus we shouldn't
+>>> even get to running the test.
+>>>
+>>
+>> This is not the behaviour I observe (error, with server returning 503) [1],
+>> thus my original email.
+>>
+>> Maybe something is missing in the associated test, or in our test
+>> infrastructure?
+>>
 
-e.g.
+Or... in my command :)
 
-```
-$ qemu-system-riscv64 -M virt -monitor stdio -display none
+>> Nothing funky in the command line used, you can reproduce it with:
+>> $ rm -rf ~/.cache/qemu build/
+>> $ ./configure
+>> $ ./build/pyvenv/bin/meson test -C build --setup thorough --suite func-quick
+>> --suite func-thorough -t 5 --print-errorlogs func-ppc-ppc_40p
+> 
+> Oh, you're running meson test directly.
+> 
+> The behaviour I describe is wrt the official way of running tests via
+> 'make check' or 'make check-functional'.
+> 
+> When you use 'make', we set 'QEMU_TEST_NO_DOWNLOAD=1' when the tests
+> themselves are run, so only the 'make precache-functional' will be
+> permitted to try downloading.
+>
 
-(qemu) info mtree
+Oh thanks, that's what I was missing!
 
-address-space: memory
-`-- 0000000000000000-ffffffffffffffff (prio 0, i/o): system
-    |-- 0000000000001000-000000000000ffff (prio 0, rom): riscv_virt_board.mrom
-...
-    |-- 0000000003000000-000000000300ffff (prio 0, i/o): gpex_ioport_window
-    |   `-- 0000000003000000-000000000300ffff (prio 0, i/o): gpex_ioport
-    |-- 0000000004000000-0000000005ffffff (prio 0, i/o): platform bus
-...
-    |-- 0000000080000000-0000000087ffffff (prio 0, ram): riscv_virt_board.ram
-    `-- 0000000400000000-00000007ffffffff (prio 0, i/o): alias pcie-mmio-high
-```
+I'm running meson because the Makefile wrapper does not allow to pass 
+any additional parameters, or running specific test.
 
-Signed-off-by: Chao Liu <lc00631@tecorigin.com>
-Reviewed-by: Qingze Zhao <zqz00548@tecorigin.com>
-Reviewed-by: Tingjian Zhang <zhangtj@tecorigin.com>
----
- system/memory.c | 122 +++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 111 insertions(+), 11 deletions(-)
-
-diff --git a/system/memory.c b/system/memory.c
-index 71434e7ad0..238221fc1b 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -3283,10 +3283,20 @@ static const char *memory_region_type(MemoryRegion *mr)
-     }
- }
- 
-+typedef struct PrintCol PrintCol;
-+
-+struct PrintCol {
-+    bool print_col;
-+    QTAILQ_ENTRY(PrintCol) queue;
-+};
-+
-+typedef QTAILQ_HEAD(, PrintCol) PrintColHead;
-+
- typedef struct MemoryRegionList MemoryRegionList;
- 
- struct MemoryRegionList {
-     const MemoryRegion *mr;
-+    PrintColHead *col_string;
-     QTAILQ_ENTRY(MemoryRegionList) mrqueue;
- };
- 
-@@ -3296,6 +3306,94 @@ typedef QTAILQ_HEAD(, MemoryRegionList) MemoryRegionListHead;
-                            int128_sub((size), int128_one())) : 0)
- #define MTREE_INDENT "  "
- 
-+static void mtree_print_col(PrintColHead *col_string, unsigned int level)
-+{
-+    PrintCol *col = NULL;
-+    int i = 0;
-+
-+    /* Level 0 always has a col. */
-+    if (level == 0 || col_string == NULL) {
-+        return;
-+    }
-+
-+    /*
-+     * If the parent node is not a tail node,
-+     * print a column at the corresponding level.
-+     */
-+    if (col_string != NULL) {
-+        QTAILQ_FOREACH(col, col_string, queue) {
-+            if (i++ == level) {
-+                break;
-+            }
-+        }
-+    }
-+
-+    if (col != NULL && col->print_col) {
-+        qemu_printf("|");
-+    } else {
-+        qemu_printf(" ");
-+    }
-+
-+    /* Align with the first character of the parent node. */
-+    qemu_printf("   ");
-+}
-+
-+static void mtree_print_node(bool is_tail)
-+{
-+    if (is_tail) {
-+        qemu_printf("`-- ");
-+    } else {
-+        qemu_printf("|-- ");
-+    }
-+}
-+
-+static void mtree_print_head(PrintColHead *col_string, unsigned int level,
-+                             bool is_tail)
-+{
-+    for (int i = 0; i < level; i++) {
-+        mtree_print_col(col_string, i);
-+    }
-+    mtree_print_node(is_tail);
-+}
-+
-+static PrintColHead *mtree_col_string_new(PrintColHead *col_string, int level,
-+                                          bool is_tail)
-+{
-+    PrintColHead *new_col_string = g_new(PrintColHead, 1);
-+    PrintCol *col, *new_col;
-+    int i = 0;
-+
-+    QTAILQ_INIT(new_col_string);
-+    if (col_string != NULL) {
-+        QTAILQ_FOREACH(col, col_string, queue) {
-+            new_col = g_new(PrintCol, 1);
-+            new_col->print_col = col->print_col;
-+            QTAILQ_INSERT_TAIL(new_col_string, new_col, queue);
-+            i++;
-+        }
-+    } else {
-+        new_col = g_new(PrintCol, 1);
-+        new_col->print_col = true;
-+        QTAILQ_INSERT_TAIL(new_col_string, new_col, queue);
-+        i++;
-+    }
-+    for (; i < level; i++) {
-+        new_col = g_new(PrintCol, 1);
-+        new_col->print_col = ((i == (level - 1)) && is_tail) ? false : true;
-+        QTAILQ_INSERT_TAIL(new_col_string, new_col, queue);
-+    }
-+    return new_col_string;
-+}
-+
-+static void mtree_col_string_free(PrintColHead *col_string)
-+{
-+    PrintCol *col, *next_col;
-+    QTAILQ_FOREACH_SAFE(col, col_string, queue, next_col) {
-+        g_free(col);
-+    }
-+    g_free(col_string);
-+}
-+
- static void mtree_expand_owner(const char *label, Object *obj)
- {
-     DeviceState *dev = (DeviceState *) object_dynamic_cast(obj, TYPE_DEVICE);
-@@ -3335,12 +3433,13 @@ static void mtree_print_mr_owner(const MemoryRegion *mr)
- static void mtree_print_mr(const MemoryRegion *mr, unsigned int level,
-                            hwaddr base,
-                            MemoryRegionListHead *alias_print_queue,
--                           bool owner, bool display_disabled)
-+                           bool owner, bool display_disabled,
-+                           PrintColHead *col_string,
-+                           bool is_tail)
- {
-     MemoryRegionList *new_ml, *ml, *next_ml;
-     MemoryRegionListHead submr_print_queue;
-     const MemoryRegion *submr;
--    unsigned int i;
-     hwaddr cur_start, cur_end;
- 
-     if (!mr) {
-@@ -3375,9 +3474,7 @@ static void mtree_print_mr(const MemoryRegion *mr, unsigned int level,
-             QTAILQ_INSERT_TAIL(alias_print_queue, ml, mrqueue);
-         }
-         if (mr->enabled || display_disabled) {
--            for (i = 0; i < level; i++) {
--                qemu_printf(MTREE_INDENT);
--            }
-+            mtree_print_head(col_string, level, is_tail);
-             qemu_printf(HWADDR_FMT_plx "-" HWADDR_FMT_plx
-                         " (prio %d, %s%s): alias %s @%s " HWADDR_FMT_plx
-                         "-" HWADDR_FMT_plx "%s",
-@@ -3397,9 +3494,7 @@ static void mtree_print_mr(const MemoryRegion *mr, unsigned int level,
-         }
-     } else {
-         if (mr->enabled || display_disabled) {
--            for (i = 0; i < level; i++) {
--                qemu_printf(MTREE_INDENT);
--            }
-+            mtree_print_head(col_string, level, is_tail);
-             qemu_printf(HWADDR_FMT_plx "-" HWADDR_FMT_plx
-                         " (prio %d, %s%s): %s%s",
-                         cur_start, cur_end,
-@@ -3420,6 +3515,8 @@ static void mtree_print_mr(const MemoryRegion *mr, unsigned int level,
-     QTAILQ_FOREACH(submr, &mr->subregions, subregions_link) {
-         new_ml = g_new(MemoryRegionList, 1);
-         new_ml->mr = submr;
-+        new_ml->col_string = mtree_col_string_new(col_string,
-+                                                  level + 1, is_tail);
-         QTAILQ_FOREACH(ml, &submr_print_queue, mrqueue) {
-             if (new_ml->mr->addr < ml->mr->addr ||
-                 (new_ml->mr->addr == ml->mr->addr &&
-@@ -3436,10 +3533,12 @@ static void mtree_print_mr(const MemoryRegion *mr, unsigned int level,
- 
-     QTAILQ_FOREACH(ml, &submr_print_queue, mrqueue) {
-         mtree_print_mr(ml->mr, level + 1, cur_start,
--                       alias_print_queue, owner, display_disabled);
-+                       alias_print_queue, owner, display_disabled,
-+                       ml->col_string, ml == QTAILQ_LAST(&submr_print_queue));
-     }
- 
-     QTAILQ_FOREACH_SAFE(ml, &submr_print_queue, mrqueue, next_ml) {
-+        mtree_col_string_free(ml->col_string);
-         g_free(ml);
-     }
- }
-@@ -3614,7 +3713,8 @@ static void mtree_print_as(gpointer key, gpointer value, gpointer user_data)
-     struct AddressSpaceInfo *asi = user_data;
- 
-     g_slist_foreach(as_same_root_mr_list, mtree_print_as_name, NULL);
--    mtree_print_mr(mr, 1, 0, asi->ml_head, asi->owner, asi->disabled);
-+    mtree_print_mr(mr, 1, 0, asi->ml_head, asi->owner, asi->disabled,
-+                   NULL, true);
-     qemu_printf("\n");
- }
- 
-@@ -3659,7 +3759,7 @@ static void mtree_info_as(bool dispatch_tree, bool owner, bool disabled)
-     /* print aliased regions */
-     QTAILQ_FOREACH(ml, &ml_head, mrqueue) {
-         qemu_printf("memory-region: %s\n", memory_region_name(ml->mr));
--        mtree_print_mr(ml->mr, 1, 0, &ml_head, owner, disabled);
-+        mtree_print_mr(ml->mr, 1, 0, &ml_head, owner, disabled, NULL, true);
-         qemu_printf("\n");
-     }
- 
--- 
-2.48.1
+> With regards,
+> Daniel
 
 
