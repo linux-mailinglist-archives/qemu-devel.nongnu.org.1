@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95C9CAA513C
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 18:11:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AB43AA5187
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 18:23:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAA1J-0000w0-7r; Wed, 30 Apr 2025 12:10:49 -0400
+	id 1uAAC3-0004Lc-TC; Wed, 30 Apr 2025 12:21:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uAA1B-0000us-Si
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:10:47 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1uAAC1-0004LH-Ae
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:21:53 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uAA14-0004om-0i
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:10:37 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-224191d92e4so81938665ad.3
- for <qemu-devel@nongnu.org>; Wed, 30 Apr 2025 09:10:33 -0700 (PDT)
+ id 1uAABz-0006WI-1f
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:21:53 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-227a8cdd241so214195ad.3
+ for <qemu-devel@nongnu.org>; Wed, 30 Apr 2025 09:21:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746029432; x=1746634232; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1746030103; x=1746634903; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=z3XyIxKPA5V4UlOW9SQ4ZX0E+VyaDz3H99BKPMxbrxA=;
- b=ktRlEEngJoNpXRaNkFBdFBNkQelMYqOTH/YqfO8f+GMJJGjhKEQrvNHvQhYEXRae0Q
- ggDZV73LwAl3qOuzggP5sR1FgjNTb4r2IZuRH9le/LaRKI6IXluAA3zPmDAsDKyL52Dy
- bEnj0aMnIAay5lnas02W2rLOqnEnnC2o0A0+RSRx4zWiWKEYDPKqbxBhlh2oMaEd29NU
- 06eU4LdtafpJZzHEbrZE4CsieORoRhgDb0DNaiyLz/uOXmGfUQpj35KGs7ICRVQaR9p1
- Pgb+ZkiX6d2m+Nkn3bcsaLLsLkfr9XUts/+edeRDIfwosqgeM+9wKWoGAiHFiU/ftewN
- e2cQ==
+ bh=CK3R8NG0Ht6HFQtv7LqmLGfMdjeBRifCgAvnIcKboVY=;
+ b=ZIxqhWJ9i9rsxTf67NWkwElFb62W+3cjRYrCoY+vpybB2N+u1FR22YriFblyYYN0gC
+ wcrXBkIqc5EodcBsl8wm8VPhnnnYYhCQVaSmcvYGFnEzNW3KHe7aMlefRx5AFKMwUT5j
+ tLeyBobWsH6npLiuQ+nnxUcIAG8zu5ztH85d/vxizI4mt493ipqmLbP1Kb3Q1WfZhFxC
+ 0lwudiRVEjL1GLXfQ3JBBQUs/Kqmi8BaSIgWFapKV/XQjoQPSOl5cLixobwWLHgEm/jG
+ KbR4HQpf5scqDYIR8QE5kJxGL9JfobV2UgaTuNlA8asGQepaQ30qxfjkE6iZAI1t3jBl
+ 3UAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746029432; x=1746634232;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1746030103; x=1746634903;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=z3XyIxKPA5V4UlOW9SQ4ZX0E+VyaDz3H99BKPMxbrxA=;
- b=VM/0yygv5SHIAgLJyP/RCDmrcr25XHf8A7LLVBnLsktke5diWLLNAL/G9vXw1gUiA4
- yuVy2No/kP5q1y/Rcz18bqPBtyCg1fCjIMVuOwHUpjM7gzbc+6de8wUYr3hunwNM3OLX
- eGHo68sYdkbWn0weYHG9cH6vnNmWtNLg3Nj1lQD8gtILqtN1GgIardvJQsN5v7uUAOIg
- /8Si6uod2VI/o2I3aYPOHEqzWk3WAvhN1Inb4BCmC62LDfcU19x/RVBB3Hle67QNUfOF
- bWdds7BBjS8h+71G1NHs/HD4tU7QTksdAcRkWnuy7TF6tUF3E9+UfomsLuwDGX6U/1Ph
- 32SA==
+ bh=CK3R8NG0Ht6HFQtv7LqmLGfMdjeBRifCgAvnIcKboVY=;
+ b=LQ9C6wo7otUtnKB3v53B5e+2aJwRyE9aVgFgqHrTVX1fBD4r3VIp9X0EJwf6tJAzmB
+ HuvuZbHPEwg1lB7Ldsoauvb4vMZ6EpQjQGHKpPOvL4MXmVdkyQPVYe8vSMYOiwdy9Pu9
+ fiM4qlTQnW9VOgZEDfQxX2iBR75IzIRerkCmzJRuwdV0nywJW+eE+kF/FsknA33Yx7VN
+ aGMXUKFedHJFwwaadc3lXB+NECJ2LlLhmgPLJmeAIBepwg5IsBS81jDu1eQXbrg7CY5q
+ ccd1FVA3ZxwiLeN1l5d75cg4zGTLQ6B1JBHX2qe+oksgwpFhNEc7UJjsMAtqECdB8ro/
+ q9sQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXj27yLFGqXS7zzzY7SUPkJ6lj72sk+vWksZOE7rp+wpp0YOTes4hFotgMRr45umdIgTU2VkzvEgv68@nongnu.org
-X-Gm-Message-State: AOJu0YyHO+nQqudZU7rwoJEXCjy+gM1FBF4S1OOaWhs70ewJrY17KCqv
- 0d04VILp3A3T8SjT67vQqY1rHc3e4sRtM82eCF0RqvTyi2JFj7skc6R6qr5OL/I=
-X-Gm-Gg: ASbGncuw/kehVJDsrbHVuebEqfiqtoSEcCzqUxfGcTv06gSJyCPWhr1GluSmjBzBzER
- gD2pnSeiOWLi/1NOECDae0ktZQAfZf4iyhthAAnBh0w9V9A/QNDwZEyxAC9v9hpryUk0D1mSfl6
- JzbczGO6i8iBYxg80QqeHuHO8Pyu9jT+26QclYzaMIdhC5gdnlWPfB0rRbcRZMo1cCVqLWbyQa1
- Rxtobypr1i/X7WeWbceK3nxY/XhpZBjGnatKF81qxm7iPhFwg/WnS+Zs/yNmtxw1OAKJ2G4LkxT
- MpytvCWdxVN4oAoZXh6zAXXjvez7522ZL8f/274J23x0zGpE16qq2Q==
-X-Google-Smtp-Source: AGHT+IFRIjZPAKgFKIjjL0a8SP/amRgggH8rAGl1JxcZ7oFOfmKkc6+eBeh/4ZSlPqYpt4q1Km/Dqg==
-X-Received: by 2002:a17:902:ec86:b0:224:f12:3735 with SMTP id
- d9443c01a7336-22df57b8365mr50309665ad.31.1746029431718; 
- Wed, 30 Apr 2025 09:10:31 -0700 (PDT)
+ AJvYcCWjOZgURkd6szOLNuF5I5xz4gQ6OR1NbCVARSCTVXXNahV69txFv0wM2hvSs4Ow4XskKpI7Qj4wf8Pm@nongnu.org
+X-Gm-Message-State: AOJu0YyetLXZ1fer4Cna42EyMQ1TrlkKDh+q972WjAUxJm/4wNsNCeiu
+ swn71lYUaCtP7/ZZN88aTFRFoQarb2aU+4cjQNxcZZZQFL2Kynpzz2+IhEn0TaI=
+X-Gm-Gg: ASbGncsGsQnmQr/IhUzpP2lOtuqhfPhfUxf/pPtMoJ1wKcvJkb+IAm8Iy12GSuIzIy/
+ ZVrmR7U9YCwlxH86acKouJZ3zNCF6i6wSpM6zVAqWfFMcO+CK8QMF8BaRNKu6V3QqLzym8T1xm5
+ l+mB0KJLTgJw6P0Qc4llWVlqVnpQc/k0FljPcEbq5U3hajmVKGwa364V0RnWXI1Ev5q+MphL1qt
+ zhu+JVe2J+wSLpK4unLxy/GHvt681Uj/uuSncwuWitMl8K9Z0DHnSZvhXveFtjqINptksmb5vwV
+ UhgcJciIGo7ELRLsX9sST40MBvAK9lmzexoX2Pef9gtJPCiqnFPOcg==
+X-Google-Smtp-Source: AGHT+IHfudTt7LszFLKuM/jUzOdJOodx6TuD54vAwFnTH4Qj15t8IKdPiLxy3B68wMPki8ZKi3v98Q==
+X-Received: by 2002:a17:903:1984:b0:224:ff0:4360 with SMTP id
+ d9443c01a7336-22df35ffbabmr67866345ad.53.1746030102775; 
+ Wed, 30 Apr 2025 09:21:42 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22db4dbcf7dsm124148525ad.69.2025.04.30.09.10.31
+ d9443c01a7336-22db4d898e2sm125117235ad.7.2025.04.30.09.21.42
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Apr 2025 09:10:31 -0700 (PDT)
-Message-ID: <d47d36db-f94c-45ee-bdf0-477607703461@linaro.org>
-Date: Wed, 30 Apr 2025 09:10:30 -0700
+ Wed, 30 Apr 2025 09:21:42 -0700 (PDT)
+Message-ID: <efbaccd1-9ef2-4aed-88ed-d6a2bcb7902b@linaro.org>
+Date: Wed, 30 Apr 2025 09:21:41 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] tests/functional: Test with
- scripts/vmstate-static-checker.py
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Fabiano Rosas <farosas@suse.de>
-Cc: Peter Xu <peterx@redhat.com>, John Snow <jsnow@redhat.com>
-References: <20250429152141.294380-1-thuth@redhat.com>
- <20250429152141.294380-5-thuth@redhat.com>
+Subject: Re: Functional tests precache behaviour
 Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+References: <c83e0d26-4d1b-4a12-957d-c7b7ff4ba1b3@linaro.org>
+ <7f0c4586-8a97-4e64-8abb-58a74b86afaa@redhat.com>
+ <6e9a3cb3-e238-48a7-a67c-c95b36a517bc@linaro.org>
+ <aBJJqtzQaTH_xcKK@redhat.com>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250429152141.294380-5-thuth@redhat.com>
+In-Reply-To: <aBJJqtzQaTH_xcKK@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62b.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,176 +104,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/29/25 8:21 AM, Thomas Huth wrote:
-> From: Thomas Huth <thuth@redhat.com>
+On 4/30/25 9:02 AM, Daniel P. Berrangé wrote:
+> On Wed, Apr 30, 2025 at 08:48:59AM -0700, Pierrick Bouvier wrote:
+>> On 4/30/25 8:00 AM, Thomas Huth wrote:
+>>> On 30/04/2025 16.34, Pierrick Bouvier wrote:
+>>>> Hi folks,
+>>>>
+>>>> $ ninja -C build precache-functional
+>>>> 2025-04-30 07:23:20,382 - qemu-test - ERROR - Unable to download https://
+>>>> archive.netbsd.org/pub/NetBSD-archive/NetBSD-9.0/evbarm-earmv7hf/binary/
+>>>> gzimg/armv7.img.gz: HTTP error 503
+>>>> 2025-04-30 07:23:23,131 - qemu-test - ERROR - Unable to download https://
+>>>> archive.netbsd.org/pub/NetBSD-archive/NetBSD-9.0/evbarm-earmv7hf/binary/
+>>>> gzimg/armv7.img.gz: HTTP error 503
+>>>> 2025-04-30 07:23:25,870 - qemu-test - ERROR - Unable to download https://
+>>>> archive.netbsd.org/pub/NetBSD-archive/NetBSD-9.0/evbarm-earmv7hf/binary/
+>>>> gzimg/armv7.img.gz: HTTP error 503
+>>>> 2025-04-30 07:23:25,871 - qemu-test - ERROR - https://archive.netbsd.org/
+>>>> pub/NetBSD-archive/NetBSD-9.0/evbarm-earmv7hf/binary/gzimg/armv7.img.gz:
+>>>> Download retries exceeded: skipping asset precache
+>>>> $ echo $?
+>>>> 0
+>>>>
+>>>> Since we silently skip the asset precaching, how can we identify that an
+>>>> asset is not available anymore (temporarily or not)?
+>>>> Should we rely on test itself failing when trying to download again this asset?
+>>>
+>>> The current logic fails hard for 404 errors, so if the asset is completely
+>>> gone, we should notice it. For other error codes, we assume that it is only
+>>> a temporary server problem that will hopefully be fixed on the server side
+>>> sooner or later.
+>>>
+>>
+>> Sounds good.
+>> Should we replicate this semantic when running the test itself?
+>> It would be more useful to skip it because an asset is missing instead of
+>> reporting an error, except if it's a 404 error.
 > 
-> We've got this nice vmstate-static-checker.py script that can help
-> to detect screw-ups in the migration states. Unfortunately, it's
-> currently only run manually, so there could be regressions that nobody
-> notices immediately. Let's run it from a functional test automatically
-> so that we got at least a basic coverage in each CI run.
+> The tests already gracefully skip if one or more required assets
+> are not available. See the 'setUp' method of QemuBaseTest
 > 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   MAINTAINERS                      |  1 +
->   tests/functional/meson.build     | 13 +++++++-
->   tests/functional/test_vmstate.py | 56 ++++++++++++++++++++++++++++++++
->   3 files changed, 69 insertions(+), 1 deletion(-)
->   create mode 100755 tests/functional/test_vmstate.py
+>          if not self.assets_available():
+>              self.skipTest('One or more assets is not available')
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 65fb61844b3..6a8d81458ad 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -3525,6 +3525,7 @@ F: migration/
->   F: scripts/vmstate-static-checker.py
->   F: tests/data/vmstate-static-checker/
->   F: tests/functional/test_migration.py
-> +F: tests/functional/test_vmstate.py
->   F: tests/qtest/migration/
->   F: tests/qtest/migration-*
->   F: docs/devel/migration/
-> diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-> index b317ad42c5a..9f339e626f6 100644
-> --- a/tests/functional/meson.build
-> +++ b/tests/functional/meson.build
-> @@ -76,6 +76,7 @@ tests_generic_bsduser = [
->   
->   tests_aarch64_system_quick = [
->     'migration',
-> +  'vmstate',
->   ]
->   
->   tests_aarch64_system_thorough = [
-> @@ -164,6 +165,10 @@ tests_loongarch64_system_thorough = [
->     'loongarch64_virt',
->   ]
->   
-> +tests_m68k_system_quick = [
-> +  'vmstate',
-> +]
-> +
->   tests_m68k_system_thorough = [
->     'm68k_mcf5208evb',
->     'm68k_nextcube',
-> @@ -230,6 +235,7 @@ tests_ppc_system_thorough = [
->   
->   tests_ppc64_system_quick = [
->     'migration',
-> +  'vmstate',
->   ]
->   
->   tests_ppc64_system_thorough = [
-> @@ -265,6 +271,10 @@ tests_rx_system_thorough = [
->     'rx_gdbsim',
->   ]
->   
-> +tests_s390x_system_quick = [
-> +  'vmstate',
-> +]
-> +
->   tests_s390x_system_thorough = [
->     's390x_ccw_virtio',
->     's390x_replay',
-> @@ -305,8 +315,9 @@ tests_x86_64_system_quick = [
->     'migration',
->     'pc_cpu_hotplug_props',
->     'virtio_version',
-> -  'x86_cpu_model_versions',
-> +  'vmstate',
->     'vnc',
-> +  'x86_cpu_model_versions',
->   ]
->   
->   tests_x86_64_system_thorough = [
-> diff --git a/tests/functional/test_vmstate.py b/tests/functional/test_vmstate.py
-> new file mode 100755
-> index 00000000000..3ba56d580db
-> --- /dev/null
-> +++ b/tests/functional/test_vmstate.py
-> @@ -0,0 +1,56 @@
-> +#!/usr/bin/env python3
-> +#
-> +# SPDX-License-Identifier: GPL-2.0-or-later
-> +#
-> +# This test runs the vmstate-static-checker script with the current QEMU
-> +
-> +import subprocess
-> +
-> +from qemu_test import QemuSystemTest
-> +
-> +
-> +class VmStateTest(QemuSystemTest):
-> +
-> +    def test_vmstate(self):
-> +        target_machine = {
-> +            'aarch64': 'virt-7.2',
-> +            'm68k': 'virt-7.2',
-> +            'ppc64': 'pseries-7.2',
-> +            's390x': 's390-ccw-virtio-7.2',
-> +            'x86_64': 'pc-q35-7.2',
-> +        }
-> +        self.set_machine(target_machine[self.arch])
-> +
-> +        # Run QEMU to get the current vmstate json file:
-> +        dst_json = self.scratch_file('dest.json')
-> +        self.log.info('Dumping vmstate from ' + self.qemu_bin)
-> +        cp = subprocess.run([self.qemu_bin, '-nodefaults',
-> +                             '-M', target_machine[self.arch],
-> +                             '-dump-vmstate', dst_json],
-> +                            stdout=subprocess.PIPE,
-> +                            stderr=subprocess.STDOUT,
-> +                            text=True)
-> +        if cp.returncode != 0:
-> +            self.fail('Running QEMU failed:\n' + cp.stdout)
-> +        if cp.stdout:
-> +            self.log.info('QEMU output: ' + cp.stdout)
-> +
-> +        # Check whether the old vmstate json file is still compatible:
-> +        src_json = self.data_file('..', 'data', 'vmstate-static-checker',
-> +                                  self.arch,
-> +                                  target_machine[self.arch] + '.json')
-> +        vmstate_checker = self.data_file('..', '..', 'scripts',
-> +                                         'vmstate-static-checker.py')
-> +        self.log.info('Comparing vmstate with ' + src_json)
-> +        cp = subprocess.run([vmstate_checker, '-s', src_json, '-d', dst_json],
-> +                            stdout=subprocess.PIPE,
-> +                            stderr=subprocess.STDOUT,
-> +                            text=True)
-> +        if cp.returncode != 0:
-> +            self.fail('Running vmstate-static-checker failed:\n' + cp.stdout)
-> +        if cp.stdout:
-> +            self.log.warning('vmstate-static-checker output: ' + cp.stdout)
-> +
-> +
-> +if __name__ == '__main__':
-> +    QemuSystemTest.main()
+> 
+> In the 404 case, the pre-cache step should fail and thus we shouldn't
+> even get to running the test.
+> 
 
-Thanks for this series Thomas, it's very useful.
-Could we extend this automatically to test migration on all 
-combinations: {qemu-system-*} x {machine}?
-We could generate a single list of references, containing hashes of all 
-outputs, and a simple and clean command to regenerate all those, and 
-associated jsons, so we don't pollute qemu code with tons of json.
+This is not the behaviour I observe (error, with server returning 503) 
+[1], thus my original email.
 
-This way, we can automatically detect that we never regress, not only 
-from release to release, but commit to commit.
+Maybe something is missing in the associated test, or in our test 
+infrastructure?
 
-In case we need to update reference, people can point what's the actual 
-difference in the commit message.
+Nothing funky in the command line used, you can reproduce it with:
+$ rm -rf ~/.cache/qemu build/
+$ ./configure
+$ ./build/pyvenv/bin/meson test -C build --setup thorough --suite 
+func-quick --suite func-thorough -t 5 --print-errorlogs func-ppc-ppc_40p
 
-As well, since I took a look into that before, this check is not enough 
-regarding migration. Beyonds the VMDstate, we should check as well that 
-the default values of every field are not changed. For instance, we 
-recently changed the default pauth property of arm cpus, and without a 
-careful backcompat, it would have break migration. It's a bit more 
-tricky, since there is nothing available now to dump this (I hacked that 
-using a custom trace). And definitely not something in the scope of your 
-series, just worth mentioning.
+[1] 
+https://github.com/pbo-linaro/qemu-ci/actions/runs/14747788692/job/41398348905
 
-I hope we can one day get rid of all "Is this change safe regarding 
-migration?" comments because we know we can trust our CI instead.
+Traceback (most recent call last):
+   File 
+"/home/runner/work/qemu-ci/qemu-ci/tests/functional/test_ppc_40p.py", 
+line 68, in test_openbios_and_netbsd
+     drive_path = self.ASSET_NETBSD71.fetch()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   File 
+"/home/runner/work/qemu-ci/qemu-ci/tests/functional/qemu_test/asset.py", 
+line 175, in fetch
+     raise AssetError(self, "Download retries exceeded", transient=True)
+qemu_test.asset.AssetError: 
+https://archive.netbsd.org/pub/NetBSD-archive/NetBSD-7.1.2/iso/NetBSD-7.1.2-prep.iso: 
+Download retries exceeded
 
-Regards,
-Pierrick
+> 
+> With regards,
+> Daniel
+
 
