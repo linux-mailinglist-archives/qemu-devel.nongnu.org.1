@@ -2,91 +2,169 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D872EAA4DE8
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 15:51:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAE5CAA4E24
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 16:11:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uA7qY-0007eE-WA; Wed, 30 Apr 2025 09:51:36 -0400
+	id 1uA88r-0005X9-A0; Wed, 30 Apr 2025 10:10:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uA7pp-0007I3-9C
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 09:50:54 -0400
-Received: from mail-qt1-x82a.google.com ([2607:f8b0:4864:20::82a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uA7pd-0002Wt-GJ
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 09:50:43 -0400
-Received: by mail-qt1-x82a.google.com with SMTP id
- d75a77b69052e-4769b16d4fbso46193681cf.2
- for <qemu-devel@nongnu.org>; Wed, 30 Apr 2025 06:50:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746021033; x=1746625833; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=q/WGqZQYnkC6GFtxQWgqnTCiwHPYRE4g5VCfUxO60fI=;
- b=Bt6YOuiAo5Gh3y+xukgXiZFVwWFg/xCpfeIqE/JwnDFEPkCIvxq6dl2U34IkugA/c3
- jMH4n3QMxj8eP+8k3Mu3bQJDaW1Vyb60QjowjiivwEsNWKZKh4UPMnYcGIPuNiHdDZC+
- N1WVi7fjlIutTW8gNIJzHwr4nhbP/gu6Zxny+cCZ5H6QTvQmEbjrx6lg89vYtugfWFnq
- WBjK5zml2HIt6h8iTYNuEsQEzSN6izi2tP2AgSsKVO6pRDm+dn8TATIdHU8TdFcpX6DQ
- mZFYJpYhEzstywineAiZbgm1DAy7haD9Y1f3UUGFwa3PXfLf2pFNZcgSmGTAeVsKNx9h
- 4sXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746021033; x=1746625833;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=q/WGqZQYnkC6GFtxQWgqnTCiwHPYRE4g5VCfUxO60fI=;
- b=pyjOk+BTuKo/zok1PLVu43WF6js/7Ct/s/RKT0kiUunjV9iPHqwxe5VAxpaAr5KhdI
- c8dQgGTk6IWPLAGgvGI3tLRwvQrJfclc/DVNGQdzT7ur8A4/8TsddOKyLV0PxdEt87Q4
- y3a7EVCDOMqIxKRLCMs+IZknbgV463YH3lY4pQF+T6mPC0fMubEdWr4yT+FKnSD2Zy+F
- VlLAj2iIzBDnJCtHGmK8s2eHHGzGAoZo8mb7nPG3CK0xnFqIPV9/38Cjy5sisBviDSoa
- xI5vUmhOPocqvfc0/UckeLmAPkmO2M+09EUHGs0Ue8YzGMr3EBa85aXCir2AEZuuZCWN
- M0YQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVkAt9YW3kj8h/138LjvkUjp0MOJPbCHSEGgnQI1ray+Uq40kK9Zc4LMCVFTDlVlT61dwU11zNAywDx@nongnu.org
-X-Gm-Message-State: AOJu0YwQd71EY5+J1gISlukpzbKur1z6CGFQkWJkk5qD/wu9Bj/rwxGu
- pnXlGmdBL789lOKWMD5rSajbwTZPtY9FFdVp0CcjEuO+wJhp/SoJwIrtFXuiVrQ=
-X-Gm-Gg: ASbGncu6zKnqh4p2yRVwwn+CwUZdKnQRcjjodQ4dVs+dYvQ1QeBoAHM8wmI8VQ3tI3/
- K2xAgY1/dds6LRUleD1LliNAGx3jMxN3ISU2hehudfzlr/IugZmjvRuuAUidUjtBs0c/y0ZtNhT
- OZJXbj/9U5E9VArbZfst1qs4dbxGPud2msFTNrda7P3/CDCGAEJZdavs9l/1K07okzZDChTS8PO
- Z3YPOba2sktprIiECUaiL2Egx2oUc62d56/D3Mo2d0kR2/beA6OlDERNstLjKkRgjLCHY/DDvr6
- fzxUo8yi8n4MR63/vFVFrN+TQZ4/S2xwP67Mq3mKxFc4aUn4DnZFNqV1W48T/LEqBZGVjTR81W8
- pBo1eo+ia
-X-Google-Smtp-Source: AGHT+IHqSgKR1Xm8BCjRd7+JqMOa1cqBIZr2dVejUivaKYQgvYHlQ2lCZWVgYBN8gKs6FxrI6aNd3A==
-X-Received: by 2002:a05:6214:5296:b0:6e8:ec85:8325 with SMTP id
- 6a1803df08f44-6f4fcf9a0fbmr57138336d6.39.1746021033439; 
- Wed, 30 Apr 2025 06:50:33 -0700 (PDT)
-Received: from [192.168.69.226] (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6f4fe70c491sm8397686d6.64.2025.04.30.06.50.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Apr 2025 06:50:32 -0700 (PDT)
-Message-ID: <d315f4dc-11a6-41a9-9a19-fe96a12b07b8@linaro.org>
-Date: Wed, 30 Apr 2025 15:50:30 +0200
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1uA88F-0005TS-PG
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 10:09:52 -0400
+Received: from mail-am6eur05on2117.outbound.protection.outlook.com
+ ([40.107.22.117] helo=EUR05-AM6-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1uA88C-0004ZU-5V
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 10:09:51 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cT+YmizKncPkFMOPx1YMLoQYAWDzs2TxqsAMbY40PovzSVNdfSHGelmQ1SGo3Ui5lEf0Hggjo602LeEekabinGtO7yOh9MEDsWZan3+4DIfx3AMdwR8dmlzVichXGiPcUCBSR+Vw3nWRRo8z3v27dgoDEMIJvtUNaItlP9mR5Tz2MLCE4U0fouGo3kbu+wW2nXR+omk2GyRGDcvLPKBS6pDnfotNz/pi4ek7wpP8cYHamQdu59E95yb9SDckP1erxsIE2qK41gzqOKLFTd3+RzCSOuQHl0Q4XntPE2n5xY3xETYBxMPzP3F3/lMf6oMr9vkK6XENsuKZxZLuzyroIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kG6l6DuU0ZNJq3Og+/5KgAFoW8e8fVBd4ckNu+uV33c=;
+ b=AFUlcS7yYOvbxpNqHVZwWvIDDPWnFnYMiz+zzhkIzgd6L3zKOdHVCNF48l5Y2WZRz/cg5Xl6eZIvIYUWp3aoQBk+iwqR3tagTa9CZ+bZdovwuzx37ZV9iI1I5/rfsoPiJs/+4faNoqTis71UhMBYG2WE8l9vuanOJLKHQl66WdUjCtz8XK1gSRnz3WUt6SQLtavxgzZMc7uzODHiDOV/kNaxKpUiTW6F4VOtHc5xDwpr7g+XUqWw0mlOHqqFqarbwj9Rd+knLCTUJZ5ZSLXOiWEyNXO1uHvPfgoszzknUXAsWkOoiw9pDa90Le7ljxjrdYv35NHhU63n9gM/SaJTTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kG6l6DuU0ZNJq3Og+/5KgAFoW8e8fVBd4ckNu+uV33c=;
+ b=dMeqW9+P7wiS4hlsteC46VyUGiOMYh2e8+WUl/ej05Lo2B0H4YErWqybr7ix9U+j1Oj+38lRLtEeKtsfw8J6/f2HLem9hLWI0dqsn0LtXpMrZDo3FO++qnhGgHIYPZMzi4rucym3AS4OyqfgFeGckJ8UfbMrzN0ctHb80vTrGzd4lEE0O8yAu28PIk4NEg4QFZ47+nadc0RFxQaC8n7LqLiO2Kt1p9SuKw4J83x7ophGxtdQf/derdqaFIaCqJHvGHpuPbVQfZtxQwmeLEo9RwW4Zfc4Cd+z4yewCUcm61Q44GhCrGVn2ltRVsabEzWHtza9vGdadAHsgIF1hWUXnw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12) by DU2PR08MB10232.eurprd08.prod.outlook.com
+ (2603:10a6:10:49b::7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.31; Wed, 30 Apr
+ 2025 14:04:39 +0000
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::7f30:b6c:9887:74a7]) by VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::7f30:b6c:9887:74a7%6]) with mapi id 15.20.8678.028; Wed, 30 Apr 2025
+ 14:04:39 +0000
+Message-ID: <d6c6916a-5112-4c78-894c-d01fd756a2f7@virtuozzo.com>
+Date: Wed, 30 Apr 2025 17:03:04 +0300
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] tests/qtest/libqos: Avoid double swapping when using
- modern virtio
-To: Thomas Huth <thuth@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- qemu-devel@nongnu.org
-Cc: Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-References: <20250430132817.610903-1-thuth@redhat.com>
+Subject: Re: [BUG, RFC] Block graph deadlock on job-dismiss
+To: Fiona Ebner <f.ebner@proxmox.com>, qemu-devel@nongnu.org
+Cc: Hanna Czenczek <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Eric Blake <eblake@redhat.com>,
+ "Denis V. Lunev" <den@virtuozzo.com>
+References: <73839c04-7616-407e-b057-80ca69e63f51@virtuozzo.com>
+ <32df0a6d-93c7-4474-bae5-2254e6c1ecd2@proxmox.com>
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250430132817.610903-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82a;
- envelope-from=philmd@linaro.org; helo=mail-qt1-x82a.google.com
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+In-Reply-To: <32df0a6d-93c7-4474-bae5-2254e6c1ecd2@proxmox.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: ZR0P278CA0193.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:44::23) To VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|DU2PR08MB10232:EE_
+X-MS-Office365-Filtering-Correlation-Id: d4d481a7-709a-4567-ace3-08dd87eff24b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?Z293Z2JGWkJVVnMxcW9acUNhWmE3ZFJJd3dCbUdwSUt1R3l5Y2NuaFZRbThE?=
+ =?utf-8?B?cm1neEZlMTg3T1Z0RkJEaUVkdnp0ZXBCK1BhU3V1KysrOFVZYlo5Q2p5aFRK?=
+ =?utf-8?B?Z1V4c1dDUDE1TzR3UXhFYlhNOTkxRmp5OEdxeU9UMkJpVUkvWVdJVlcwdDRl?=
+ =?utf-8?B?NVJwV2o5M3oxS0JwM3dGaEpFUUh5YU44MllqdWRJNFNxOCtrc1hvWkh1alJ1?=
+ =?utf-8?B?QXlNWlowQnBqdWdoRllXREVTRXovSE1vUksvdzZKN3M3T0s1WW40MkZxblNw?=
+ =?utf-8?B?VzhqaTJBczZpYXpGMWhGanBqeEFGRXNIc050dE0zOTdobWVPWFZ5REFpd3Uz?=
+ =?utf-8?B?cUl3K3FWeXYyREQ1Znd6YmMyR3NMbGEzMDIyYUI4SWJHYnVkWlgyU0RpWFJV?=
+ =?utf-8?B?ajRsQnMxUkIvbkp2TmEzVDYxQmlESXZKODM4TnA3UjlEcXZXeWEwNU1WQStn?=
+ =?utf-8?B?V0RWcmhWd2x2QWdtalcvVDVsTER5dEh5Qm1zT0tycXhXczlPTUV5TWpzbmFL?=
+ =?utf-8?B?RlBQY2VLUENaVVo1cnFWUG4xNlAzcWZXdGhDZ3Azb0ZMNW1BSVE5dnA1YjZQ?=
+ =?utf-8?B?bnhIOC9XaElUTWdhOTR4RElZS1Y2UFJBakp3djlpTWpUMkM5dWlwWGo2Umhq?=
+ =?utf-8?B?akRCMmhXUVlFNmhjMGpqTHlINDMyTVBuYVFnWHpiclpFanN4UUJPTFZRbU85?=
+ =?utf-8?B?M1RTc0JXU3kzaDhmMWR3TzhoQVBLT2RxZHdPY3o5NUVXYjROb2c1NkZqcGtD?=
+ =?utf-8?B?Z3dJRTVXU1l6bFdjQmhuS1BhcG1HMWF6RzI3aVRHQkk0ZUNhazluNkxFSVQv?=
+ =?utf-8?B?ck9pNVo3Rlg5YUtyb3ppUUhZZld6VkZSMEE3dlkzbW1tV2ZsclgrUHJ1WW13?=
+ =?utf-8?B?dlNYYlB4MEx0Q2RucFdJMU1NcHFEdlR3aUc4aVdKalFYVU1zYjlkWEJ2OU0w?=
+ =?utf-8?B?V0dZRlJid05nRzBDTHdLbjZRMEVxWWkvaDlZTVZUNG1rZjNjOUREbjcvSktY?=
+ =?utf-8?B?UU1YdGNZdlQrOUlNUkFXOHJSTUpMOXE5dmZTak9kdWozdVhnc3RkYmJycUlX?=
+ =?utf-8?B?UGVFNC9qS3VWN2F0NkNPWUF1Z2xOR3JmQU1sVU5vOEtEWnFOUFR6a3dLVnN3?=
+ =?utf-8?B?VENwR1BpT29zTVVxaFR4Z1hQRlB5dzIyYzV2bzJzdGF6eDFIS0hWSWkzbHgz?=
+ =?utf-8?B?NHNoVXVMRGdOQlVzVTQ3L1lWNUNRMGVweFlaMXhraHExMVNtamRMak4wN0pO?=
+ =?utf-8?B?c2hkZlkvVHpiRXB4eE9TZUtzdzZwRUpwcG41YmszaXFCY3RMVFlQOURHZFh2?=
+ =?utf-8?B?YTRua0ljckJzRWxDT1NGMW5NeWZtUHVDWFdZRi8ybk1VSFRzY0tKcXBlMUUx?=
+ =?utf-8?B?dkFiaXFJcFZYWnRwVTdMMThjSEJjbmE5aUNadlRkbXFKYW5jMzI2ejZZc05B?=
+ =?utf-8?B?R21Mb2ZLTDdrMXRuc3FtSHVjTVkrTjNOckQ5SzJLWFF5OWlHM0ZUbDJ1d0xQ?=
+ =?utf-8?B?VzBtUExLaE5SNnVkOHlpSGpGSDF2dVdJT3lzamxIbkQ5d0NzMXBXQ2x3WlFy?=
+ =?utf-8?B?dTR6NWsrVGdEbFYrTnJMdWJoZnI3RTZBczFxVFFFclZSbHhoK0VRRWI2VUZG?=
+ =?utf-8?B?cGk0N1I2R1hhV05vZW9KUkpWaVBPTERoQzJQVEJYeStVYWFDUEZ4eitHNkdY?=
+ =?utf-8?B?b2pUQTREbTBSM0dsVnFYV3poamRORHJrbjVqVUdEOVlFVXZvemdBWVVaZ2dW?=
+ =?utf-8?B?a2t3OUx4bEtMRmlOT3VYaTBMcHBiUkxHejhwQnZPUEp1elRkb3NWejZ1cXFG?=
+ =?utf-8?B?SnNsczZybERZNGJYSWx3TFI0L3hXSURmZFVrbnM3Qm10U3Zpay9MUlk3MVY0?=
+ =?utf-8?B?Z3lNQjZQU1BOZW9yWUtSYkNzSnJ4UTd2VWR4dFlTOVhKWlpuczdNbXU0RWR4?=
+ =?utf-8?Q?hE35G3XPi+Q=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:VI0PR08MB10656.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eUIzMmFVUDNnVHBEU2tDZEpDTk5NWldnU1BPYUVab0FheXZwZjh6UmMxOUJV?=
+ =?utf-8?B?MU9OUElydFFBeTRYZ0JETDlxSTBsN1Q3VUgrWU5zdmlzK0JVWlAyOEdXVDFo?=
+ =?utf-8?B?b0prWGlMbFkrQ3hiQWpsN3VNWmoxbU5nVlZEbFNCZk02WjZ2RlFvK3FkSU82?=
+ =?utf-8?B?aFlQbnVyZFl2MnMzOFhRbU9QSXRDZGpYajRtdUl3Tm9XSk9VTGFQSGdvOGhR?=
+ =?utf-8?B?QnlNWXF0QWk5RGI0bjR1Z1RxTnlQbXZOeW9PcnpHWUdzMWtTdlg4dSs2UkZr?=
+ =?utf-8?B?cHU3THp0MklOU3IwbjNqZWNTWDVzNmEyVC9vWnZJUzRrb2VGenE3dGVTYWQ0?=
+ =?utf-8?B?Y2JpcTZBUmRNRUluTEJlSk9FdFJabmtNcWVXYnJDUENVMWJqc2VyRCswelln?=
+ =?utf-8?B?RHRKN1lVUGpxTjNNRjRsanl1ZWtoQWdXblpGK2haNDBsZk5RYkZZbnpCZ2FB?=
+ =?utf-8?B?Zm5FNVc5Q0NkcW1xSFY4UHB6cmMyRW8wbU9mWUNqVjFQc1ZtQ29LbkJ4Mk1X?=
+ =?utf-8?B?V3Vxbnp6KzFLWmNtVGdiM1NqZWxkNXJuWUJWZ3p5TTJwT0h6bjJsU1lTUXZl?=
+ =?utf-8?B?R3Q5VStCdVQrRkxCMDhhMnVTbVV6UUlTN2c2YlJFN1lmZFhDdERMem9BcjQz?=
+ =?utf-8?B?eXc2QUhQMFRuUzNyWVhBRnpUbWh6dGVQV0pET25IMEVGbzE0N0tPeEx6UFB5?=
+ =?utf-8?B?YW42L1lqNW5qeWxEMFlNb2plbjlvVjZTTWxBcURDRU1PcDdLOXBHb1luQnZs?=
+ =?utf-8?B?N1JQd0VDY0VSQ01oOUpFeHRzQ252ZnF0MTJNaEFJMHdoalRZZmM3VFFCQXZS?=
+ =?utf-8?B?Mk9mMnR5SlBIWkVoeVEvSjRuZU9yU3AxSi94RDBSOTd6cHRhZ20zeE9uMnBy?=
+ =?utf-8?B?Y000R3NyQnphQ2ZNNlNPSE9SbDROOWpROVRucEtIYWRzQndoWi8rR2JiZHJN?=
+ =?utf-8?B?N04yTGZST09lSGswbWFjV3NkcDcvMUd1OFVMZlVhVjl1OTBvY25DT0VWbjFM?=
+ =?utf-8?B?cHFid0tWYzBjQStTb3FnMWROb1VaWTFsZC9aUHpPcXJPUE1ZZTk1ZDQreG5P?=
+ =?utf-8?B?cnU1bWVJVjVhaGxiZ0lHR3NLc2xyWVVYcmkzcnRqN3NuU2h1aWRZQjc4TXdw?=
+ =?utf-8?B?ZjBEMnl1MS95Ty92WXdrbGsyV3pCc3c0VEhEeGI5V0xnUEtCTWNQR0RoVzY1?=
+ =?utf-8?B?a2t1K0lIcUdxMWNLOGo2TWZYSzlCRWNxOWJtbzZKVm45SW9UKzRLZjBaeGd2?=
+ =?utf-8?B?cmNlLytnK3E3UUloRDVqY2pyL2VSQnkzOXlmT0ZSRjdjWUpwOUQ3bWh3ZVlM?=
+ =?utf-8?B?eDd2OVRvdjZ3TVU3a0FLb0VuTHcrZk82VUpmUVhDNnJ6SXhQS0lDNGhVWlhI?=
+ =?utf-8?B?UW1lSFQ3NEh5cFZWcWIxQ3VSZUplUFJQVWNkVU82Z0lPSzRqUkdIaUhENUJE?=
+ =?utf-8?B?b2I5WldNUDlWU0NKOWJ1a2lNcFptVE50Yy9YMS9IOG1WMHBQSlp5K0ErNWVD?=
+ =?utf-8?B?eFFCSHp5ZmJnbXRCQ0Q2YkNNSE5qWTg0aktrTW85OStWT2MwM0MrMFpWa0Nk?=
+ =?utf-8?B?clVJYmNNbDZhZ1Z6SlVIc0c5UWRwaHN3T2xZSmRSTXBwMEI2T2ZXNHhNVks5?=
+ =?utf-8?B?N3c3MTEzeWJ3MU96Q2tHTmJpbnp1Z0U2YWtDNFJ0SlFOTytSdFZ6enRMV01t?=
+ =?utf-8?B?WUFPK2NzaG5GUUt4Z2FMWEgzR0NUTmFjWnB5ZHNTbVdmdjV2eGNmQzRNWFhz?=
+ =?utf-8?B?a2E4dGRDdTIvU0Rvd0IxZnhXRHpHU09TS3dsckllcCs0cDRhbGVhZlpKaXRl?=
+ =?utf-8?B?ODl6RU5qZmVjZjg4QVNjRXJHV0N2bzkrNXZGYmo4d3VKdzd3MWpTN2I2NkRB?=
+ =?utf-8?B?RnpKQ2kwUVdKU09STS9VQUFEZTBvdnJjSjBTWm5IZHNpQUd5QWxvVW5NWkNK?=
+ =?utf-8?B?UThVbDNMWFR2d3pGaHZNa2pVb0JIOHNBYTNrMHBBSm5NZzdEbWRjYkJvMHhZ?=
+ =?utf-8?B?UElGR3hiMnhGYW1waDBiMGZleEwvTzdrdEg3NDl0eUoxQ1k4UmQxQituek9D?=
+ =?utf-8?B?TlFJcTcvL2dSV3dlblpZMFNQOEVaNVk4azlDVnhaQnIxQWFBV0FsM0dySnJy?=
+ =?utf-8?B?SFdJQ0w2bTVEQlRERy9naE51VkpuMXEycUpoMWVFd25JOXFVQlJ0Wm5kc2hH?=
+ =?utf-8?Q?riRtPBrD5GeNGFNjD8EBKV4=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d4d481a7-709a-4567-ace3-08dd87eff24b
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2025 14:04:39.0353 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: M7WvOP+r28T9J8ISxNpUnOzb6Z9BqvzX6NG7uaG6H2YgwRIibZh0SAJTxXA+bb4mAEI1NiEW2h8v3Kr5+u+iRtTOhZvuZ83oGn9zIeQXYQ0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR08MB10232
+Received-SPF: pass client-ip=40.107.22.117;
+ envelope-from=andrey.drobyshev@virtuozzo.com;
+ helo=EUR05-AM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,134 +180,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/4/25 15:28, Thomas Huth wrote:
-> From: Thomas Huth <thuth@redhat.com>
+On 4/30/25 11:47 AM, Fiona Ebner wrote:
+> Am 24.04.25 um 19:32 schrieb Andrey Drobyshev:
+>> So it looks like main thread is processing job-dismiss request and is
+>> holding write lock taken in block_job_remove_all_bdrv() (frame #20
+>> above).  At the same time iothread spawns a coroutine which performs IO
+>> request.  Before the coroutine is spawned, blk_aio_prwv() increases
+>> 'in_flight' counter for Blk.  Then blk_co_do_preadv_part() (frame #5) is
+>> trying to acquire the read lock.  But main thread isn't releasing the
+>> lock as blk_root_drained_poll() returns true since blk->in_flight > 0.
+>> Here's the deadlock.
 > 
-> The logic in the qvirtio_read/write function is rather a headache,
-> involving byte-swapping when the target is big endian, just to
-> maybe involve another byte-swapping  in the qtest_read/write
-> function immediately afterwards (on the QEMU side). Let's do it in
-> a more obvious way here: For virtio 1.0, we know that the values have
-> to be little endian, so let's read/write the bytes in that well known
-> order here.
+> And for the IO test you provided, it's client->nb_requests that behaves
+> similarly to blk->in_flight here.
 > 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   This also decreases our usage of qtest_big_endian() which might (or
->   might not) get helpful for the universal binary one day...
+> The issue also reproduces easily when issuing the following QMP command
+> in a loop while doing IO on a device:
 > 
->   v2: Use leXX_to_cpu() / cpu_to_leXX() instead of doing it manually
+>> void qmp_block_locked_drain(const char *node_name, Error **errp)
+>> {
+>>     BlockDriverState *bs;
+>>
+>>     bs = bdrv_find_node(node_name);
+>>     if (!bs) {
+>>         error_setg(errp, "node not found");
+>>         return;
+>>     }
+>>
+>>     bdrv_graph_wrlock();
+>>     bdrv_drained_begin(bs);
+>>     bdrv_drained_end(bs);
+>>     bdrv_graph_wrunlock();
+>> }
 > 
->   tests/qtest/libqos/virtio.c | 44 ++++++++++++++++++++++++-------------
->   1 file changed, 29 insertions(+), 15 deletions(-)
+> It seems like either it would be necessary to require:
+> 1. not draining inside an exclusively locked section
+> or
+> 2. making sure that variables used by drained_poll routines are only set
+> while holding the reader lock
+> ?
+> 
+> Those seem to require rather involved changes, so a third option might
+> be to make draining inside an exclusively locked section possible, by
+> embedding such locked sections in a drained section:
+> 
+>> diff --git a/blockjob.c b/blockjob.c
+>> index 32007f31a9..9b2f3b3ea9 100644
+>> --- a/blockjob.c
+>> +++ b/blockjob.c
+>> @@ -198,6 +198,7 @@ void block_job_remove_all_bdrv(BlockJob *job)
+>>       * one to make sure that such a concurrent access does not attempt
+>>       * to process an already freed BdrvChild.
+>>       */
+>> +    bdrv_drain_all_begin();
+>>      bdrv_graph_wrlock();
+>>      while (job->nodes) {
+>>          GSList *l = job->nodes;
+>> @@ -211,6 +212,7 @@ void block_job_remove_all_bdrv(BlockJob *job)
+>>          g_slist_free_1(l);
+>>      }
+>>      bdrv_graph_wrunlock();
+>> +    bdrv_drain_all_end();
+>>  }
+>>  
+>>  bool block_job_has_bdrv(BlockJob *job, BlockDriverState *bs)
+> 
+> This seems to fix the issue at hand. I can send a patch if this is
+> considered an acceptable approach.
+> 
+> Best Regards,
+> Fiona
+> 
 
-Thanks!
+Hello Fiona,
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Thanks for looking into it.  I've tried your 3rd option above and can
+confirm it does fix the deadlock, at least I can't reproduce it.  Other
+iotests also don't seem to be breaking.  So I personally am fine with
+that patch.  Would be nice to hear a word from the maintainers though on
+whether there're any caveats with such approach.
 
-I tried this on top:
-
--- >8 --
-diff --git a/tests/qtest/libqtest.h b/tests/qtest/libqtest.h
-index 930a91dcb7d..5e01c1effc7 100644
---- a/tests/qtest/libqtest.h
-+++ b/tests/qtest/libqtest.h
-@@ -731,8 +730,0 @@ int64_t qtest_clock_set(QTestState *s, int64_t val);
--/**
-- * qtest_big_endian:
-- * @s: QTestState instance to operate on.
-- *
-- * Returns: True if the architecture under test has a big endian 
-configuration.
-- */
--bool qtest_big_endian(QTestState *s);
--
-diff --git a/tests/qtest/libqos/virtio-pci.c 
-b/tests/qtest/libqos/virtio-pci.c
-index 002bf8b8c2d..98b35ceb9e3 100644
---- a/tests/qtest/libqos/virtio-pci.c
-+++ b/tests/qtest/libqos/virtio-pci.c
-@@ -389,0 +390,20 @@ void qvirtio_pci_start_hw(QOSGraphObject *obj)
-+/**
-+ * qvirtio_pci_query_legacy_endianness:
-+ * @s: QTestState instance to operate on.
-+ *
-+ * Returns: True if the architecture under test has a big endian 
-configuration.
-+ */
-+static int qvirtio_pci_query_legacy_endianness(QTestState *s)
-+{
-+    gchar **args;
-+    int big_endian;
-+
-+    qtest_sendf(s, "endianness\n");
-+    args = qtest_rsp_args(s, 1);
-+    g_assert(strcmp(args[1], "big") == 0 || strcmp(args[1], "little") 
-== 0);
-+    big_endian = strcmp(args[1], "big") == 0;
-+    g_strfreev(args);
-+
-+    return big_endian;
-+}
-+
-@@ -391,0 +412,2 @@ static void qvirtio_pci_init_legacy(QVirtioPCIDevice 
-*dev)
-+    bool big_endian = 
-qvirtio_pci_query_legacy_endianness(dev->pdev->bus->qts);
-+
-@@ -396 +418 @@ static void qvirtio_pci_init_legacy(QVirtioPCIDevice *dev)
--    dev->vdev.big_endian = qtest_big_endian(dev->pdev->bus->qts);
-+    dev->vdev.big_endian = big_endian;
-diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
-index 358580361d3..4a29a8fd750 100644
---- a/tests/qtest/libqtest.c
-+++ b/tests/qtest/libqtest.c
-@@ -87 +86,0 @@ struct QTestState
--    bool big_endian;
-@@ -552,2 +550,0 @@ void qtest_connect(QTestState *s)
--    /* ask endianness of the target */
--    s->big_endian = qtest_query_target_endianness(s);
-@@ -779,14 +775,0 @@ static void qtest_rsp(QTestState *s)
--static int qtest_query_target_endianness(QTestState *s)
--{
--    gchar **args;
--    int big_endian;
--
--    qtest_sendf(s, "endianness\n");
--    args = qtest_rsp_args(s, 1);
--    g_assert(strcmp(args[1], "big") == 0 || strcmp(args[1], "little") 
-== 0);
--    big_endian = strcmp(args[1], "big") == 0;
--    g_strfreev(args);
--
--    return big_endian;
--}
--
-@@ -1561,5 +1543,0 @@ void qtest_qmp_fds_assert_success(QTestState *qts, 
-int *fds, size_t nfds,
--bool qtest_big_endian(QTestState *s)
--{
--    return s->big_endian;
--}
--
-@@ -2000,2 +1977,0 @@ QTestState *qtest_inproc_init(QTestState **s, bool 
-log, const char* arch,
--    qts->big_endian = qtest_query_target_endianness(qts);
--
----
-
-But it doesn't work due to qtest_sendf() and qtest_rsp_args() being
-local to tests/qtest/libqtest.c:
-
-../../tests/qtest/libqos/virtio-pci.c:401:5: error: call to undeclared 
-function 'qtest_sendf'; ISO C99 and later do not support implicit 
-function declarations [-Wimplicit-function-declaration]
-   401 |     qtest_sendf(s, "endianness\n");
-       |     ^
-../../tests/qtest/libqos/virtio-pci.c:402:12: error: call to undeclared 
-function 'qtest_rsp_args'; ISO C99 and later do not support implicit 
-function declarations [-Wimplicit-function-declaration]
-   402 |     args = qtest_rsp_args(s, 1);
-       |            ^
-
+Andrey
 
