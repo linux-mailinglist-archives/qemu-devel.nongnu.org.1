@@ -2,178 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E828AA4BA1
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 14:50:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65228AA4C01
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 14:56:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uA6sA-0000eM-Ri; Wed, 30 Apr 2025 08:49:11 -0400
+	id 1uA6yt-0003iD-2G; Wed, 30 Apr 2025 08:56:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clement.mathieu--drif@eviden.com>)
- id 1uA6rP-0000SA-JM
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 08:48:26 -0400
-Received: from smarthost3.eviden.com ([80.78.11.84])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uA6yo-0003hZ-3q
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 08:56:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clement.mathieu--drif@eviden.com>)
- id 1uA6rJ-0002Nn-F3
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 08:48:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=eviden.com; i=@eviden.com; q=dns/txt; s=mail;
- t=1746017297; x=1777553297;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=XcYltWBqPQIrglbjC5wvryhtFHloGpX0c8eryQ6qzSI=;
- b=VN/1up8yjYlxCYUNXf5ofimkqZfInIrUkITo6xxtGYsNYgOMojhH4tGE
- lbJV9h4tGvCYRfhzha5mwYSxF+GsRb1zvydCi3QPzvlCHl0Umf7GsJpBF
- kezoVHjWOTvev/942LGteNX4spD2VC/tYgOunT4cimnMTsVg+Lw0oTJ1S
- oDjTVQP8b4Vhb7FYHwNkS1bQtbe6//99QaN1mzX8TpWa7P8MM6EBbaU5C
- /g1rnAWbj2CkjCUwFP2IkwGohI1SX2x+llC/RE6p+lN6qNI8qFFQtPUUX
- /ISZtj5ZfzYHGxdhukcH6NyPhALOnBFdEiu29iHMc3GeCjoioLY+FzGHP g==;
-X-CSE-ConnectionGUID: bPfPioSRSmuRyQTVrGjvJw==
-X-CSE-MsgGUID: bk7zrEroRzSIsiUiiK/t3A==
-X-IronPort-AV: E=Sophos;i="6.15,251,1739833200"; d="scan'208";a="36004698"
-X-MGA-submission: =?us-ascii?q?MDFoZJhu7anUVYrFAnvZ+DaIkzub64tx9u7fMw?=
- =?us-ascii?q?kvUyVmRruqvJSmZu5Z+N/RZ1a5eYJeVmr8t78VYSGzMcdC0d8PJI22mU?=
- =?us-ascii?q?lg5B8ms48eW5xnhI6qQSAmVeZagtS/YDnLqlxQgc1URZwvQ1AbxOpZ0S?=
- =?us-ascii?q?F7bwKslz4XFhK7NU7Ycn0ayQ=3D=3D?=
-Received: from mail-francecentralazlp17013078.outbound.protection.outlook.com
- (HELO PA4PR04CU001.outbound.protection.outlook.com) ([40.93.76.78])
- by smarthost3.eviden.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384;
- 30 Apr 2025 14:48:07 +0200
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ee8AGAhg9dHBuAbUV7qu5Abwdb6c+Ai1jcpTA7kY/g8hc1oVDpsbnPwzH1Lz1bu4J/ctMzbx3t3c+gCmZIec6HZZVkVpaUO2sr3pl7R6oKTax1VnqjO8ntDbwbmPjChfVxCMXLsaFsbw2gQkfNdy7nI22g8+58fKru3n3uJEtIcWGV8vvtIF+g5pZiBs1hkEJqDJbV9NMpSOWF25l3JcsmrkwE9govwXc1N+Wd1gGqvwigDJy8RpM8ZRsk8cD72ecovp1yd6tPyPQmKz/w3vM+/MNR/beHMM/fEjx9EIChcj4yPTlHi+OXI7kOLEs8S8UQJfv1ChdiO9/CUK0O++XA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8LFtXk0OZM49jAyOXp75yjsRkR91vwF4fLg/5edTTvs=;
- b=Q0fGKWRyQAIQ7A8k32sr8G/JrmZtjAvyjiEh7JmcVyGr3QzKTthzQxWLpycJhzRC5tPuP34sk1T0WA/g/vAv8tKH2/VV4gesla+fLQUZRru6ayqVgLX4ZvCWqZv2scOyEcpjxi7/Flk+CdQHY9JQZy+Qk0QUIt1yWepXKZBxzYrsF/MOPLnZBZM2R9yUJ6sWrrhFQ69PIiulpNt2XSYSwvTzEfG/616x5ycPNEs0HMA1dOamaEE8nmJAU7STWCI638lEXb84impklLyEhZRmaLGMSEFc4z2dHNq0xE3cfo2aFGPOvxfyOC4JLpAD+kRYgKVoFEouFWXCKS55lVQRtQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=eviden.com; dmarc=pass action=none header.from=eviden.com;
- dkim=pass header.d=eviden.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Eviden.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8LFtXk0OZM49jAyOXp75yjsRkR91vwF4fLg/5edTTvs=;
- b=T0CfdTBkiCXnscM4OZI64C26xtFR2Nf6Ob1Wo8u3eHyF23gWQG0h5usHksLK7uXlvPVFZrERInmNfAgmhrW+ARiUUX4OyJFgW/pZkjmXBtfWeruHuoBI7zYlwOz+XmWC8cnDXXqfjzbihJJ4i6xHALu/8u2LqC3RHGljL1r6dVt4vW946vXCHgj/F7YFBdWPsXsQ3cqPQrU9DZ7//xObD+DVQiDKSm8MzAbWPL0zcZrsGE/Ii6HopscY+lxC3A31JjC1JwglZwjH5sFXqDHzvW8KUvSeGf2S0lLEnoNDkuE1papvUtBqODeBfEHiP6HOmKK5pBm0KIjkzemCeW2Deg==
-Received: from AM8PR07MB7602.eurprd07.prod.outlook.com (2603:10a6:20b:24b::7)
- by DB9PR07MB8449.eurprd07.prod.outlook.com (2603:10a6:10:36f::22)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.19; Wed, 30 Apr
- 2025 12:48:06 +0000
-Received: from AM8PR07MB7602.eurprd07.prod.outlook.com
- ([fe80::fbd7:ca71:b636:6f9d]) by AM8PR07MB7602.eurprd07.prod.outlook.com
- ([fe80::fbd7:ca71:b636:6f9d%6]) with mapi id 15.20.8699.012; Wed, 30 Apr 2025
- 12:48:06 +0000
-From: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
-To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: "jasowang@redhat.com" <jasowang@redhat.com>, "zhenzhong.duan@intel.com"
- <zhenzhong.duan@intel.com>, "kevin.tian@intel.com" <kevin.tian@intel.com>,
- "yi.l.liu@intel.com" <yi.l.liu@intel.com>, "peterx@redhat.com"
- <peterx@redhat.com>, "mst@redhat.com" <mst@redhat.com>, CLEMENT MATHIEU--DRIF
- <clement.mathieu--drif@eviden.com>
-Subject: [PATCH v5 1/2] intel_iommu: Use BQL_LOCK_GUARD to manage cleanup
- automatically
-Thread-Topic: [PATCH v5 1/2] intel_iommu: Use BQL_LOCK_GUARD to manage cleanup
- automatically
-Thread-Index: AQHbuc4e/7bqZb/HQkOZOHntjScv0A==
-Date: Wed, 30 Apr 2025 12:48:06 +0000
-Message-ID: <20250430124750.240412-2-clement.mathieu--drif@eviden.com>
-References: <20250430124750.240412-1-clement.mathieu--drif@eviden.com>
-In-Reply-To: <20250430124750.240412-1-clement.mathieu--drif@eviden.com>
-Accept-Language: en-GB, fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=eviden.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM8PR07MB7602:EE_|DB9PR07MB8449:EE_
-x-ms-office365-filtering-correlation-id: 13a9140c-c1ca-422b-726e-08dd87e540e0
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|376014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?yNOYD7xN6VQWpkxNcDM2+eusphY8ZoA2SMuGrpE/s1aEMKn+stXlU18nFi?=
- =?iso-8859-1?Q?Y1XpmUGaAyX2Gxr8Oib1W9nJ2cvOyWVdBywP5TKl2O6SX8Iv4VcW+JnqzT?=
- =?iso-8859-1?Q?lhKlT30kGZn2z3R/8IyxTjgsSXcpo1qhnNZx37ewf6g0JLE2OrTQWh6KRY?=
- =?iso-8859-1?Q?TaaomGZ8kG/qwerWpNNjiCMR4i37yjkl0lEWRRh4iMwIZFOvUSmL1JHjA6?=
- =?iso-8859-1?Q?wwePo37FEHZ0+KAJ83dJBUihH5IrxCkpsJONlGo9yCTyKaX2kk1ChwPmiA?=
- =?iso-8859-1?Q?Dju9njQ3Kty5RV8kJgSKjvTcJLIAEQgPrsRxJchpR1WXftrWoYGYZ1HKDz?=
- =?iso-8859-1?Q?aByzK0tzrtibVEp0CfY4nmpuN11btZNPCjiFsZBpln3Vr9K+z4w7M8Aq5Q?=
- =?iso-8859-1?Q?8dBuOz2Vvh3zuEE5lmA9rgpZgy3e34+zcCA88gRmuBa2Yv+kSwuRVW2l06?=
- =?iso-8859-1?Q?ufVryYWXF9GStCuS3nvxuqDs9o0Xn+I78/ngVb3qYYeSlmMaT/scyzr6/I?=
- =?iso-8859-1?Q?mrVcWXeeTx4bGo8RTZs2iIkRUjFR6NeJ7gAoVy24Mi7awo/uDTSffWOSXw?=
- =?iso-8859-1?Q?p/4jxFUWBBNuowPO3cUaNDvqqz+VLUef3JtaegGBo6yBXPPgCsbPY5kNwS?=
- =?iso-8859-1?Q?VJC4ubXnSsJ/LJ85o/gSJUMJ40nXufRvqG1MRZM4P/zOK+C1AmyfyTLOF/?=
- =?iso-8859-1?Q?Z0nPTqv51AyfCWCKFb8zSQpBcwFk2kPb0NYFQBk6mRJhXAgaj7oqZ5fB57?=
- =?iso-8859-1?Q?xLPySXSmj/jrlugG3FTzj97x5OZjboDNEWVL5YMjmLbmSHhX1qe2e2l1Uv?=
- =?iso-8859-1?Q?izRE390wh9/tGOprV/WdsQaK+p35MU9xZTm4pDwrGn68Deb8Ys+DCdJFRj?=
- =?iso-8859-1?Q?9XVh+JGkehvUCTWOslK9f2VAGDS6CPThIec5EM/XrLj7D65NPL+FAWDNyl?=
- =?iso-8859-1?Q?1u/c0C6mV/FHAO3QfznBb60FWl8lyIjQOTG5B/+hWdaM5YU3aJ/eaX0DJy?=
- =?iso-8859-1?Q?W8lZ5K3jibyFcFLKx4mkT+AvHLlJbHLzUn++JOp3VK+yYISrShPtLoe+kS?=
- =?iso-8859-1?Q?l/Y5oq+5CxtbOi5ipSsPxm5nU0885MKn6BRXl6eRA7KZM6NKmfKJwKqFYM?=
- =?iso-8859-1?Q?xg4piqHmQLBRxRyM8CcC7boaEqVv0UBQVqXZapXj9IdjwEOAmL6zoAVshZ?=
- =?iso-8859-1?Q?OBqT2CAHndSo05Py/ecp9NNKMenGUUc0KuPCpbXs3/F6ckNcz/VQm6XiVH?=
- =?iso-8859-1?Q?iYZwB0tmdNI1nUZchXnTs0d04ReBdSJpcsZeBnYYLZ7w7DH//FLUcq37R7?=
- =?iso-8859-1?Q?yMe4UJRd1AiItxgSjycNOvIbmtyRwJUUVT97hLHfMt084YQILAAUt8b/CK?=
- =?iso-8859-1?Q?x6lXng2r65e4Cj7517JpNS0T4ug1zlL7ADFMt0kpTDZWAJ+mlUyj/emnwH?=
- =?iso-8859-1?Q?hS6XHSyC5ZzrobfJEfb9+Y2PUAbVyq5nhDRbsCQuNsdbCqU4Bey070S5FA?=
- =?iso-8859-1?Q?R7gnACHe7WQyff7qAnoSrKXOHOiKRldL2HU4VGx0Py8w=3D=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:AM8PR07MB7602.eurprd07.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016)(38070700018); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?S5j5Qj6KQrXTgjqPPxVhvMo2wsMDykSm9pBfnI7OIoa3/HT0YJW1GvWkZ5?=
- =?iso-8859-1?Q?cfvLBnr0t0urb434j6Janwtcebg2Z4HVTv3lCJfR+w/fhuIvRCcGoY8P6H?=
- =?iso-8859-1?Q?2IN/Hz7+s43YpdnMY5sQrOa3IsE5jPx5yWxm7ZGyBJF8VJNBFZ5qXptmIs?=
- =?iso-8859-1?Q?NvirWnI6k0IuixPAoNoVqnRy7cwo8JmygQEA3U8qQWL12QBzlJW+MLxa3E?=
- =?iso-8859-1?Q?Dq0dL8GpQsQ31eUUmz1m0ghkYwwfK2i2JopLsTOcpHcrODGO2h4mFGlCYd?=
- =?iso-8859-1?Q?5akot+S4LorqfCpHCoLV/yf+SI7Fm/JOsnN3PdswJ9CYVHCCFxOLEtUzqj?=
- =?iso-8859-1?Q?FhOShVmRGZNph7sbK0m7M1uDQgFUGptmphe0wkOcv02E5Z5bjMvYYL5BhC?=
- =?iso-8859-1?Q?qqghgEQtKSwCoZqLeYPbdySM3pWwzEqLcxAvShJAhh9tcBcoAmmt9VQvfq?=
- =?iso-8859-1?Q?Y2R4salA72paxEJ4GSHV6KHFIgpRLt1F5ZbOO3xnwFnvb6+oZac7XJT5jy?=
- =?iso-8859-1?Q?6PAy9m5mRveiE0On9zca4oDulXeZpCAAQpUXTn97OMHZoDLFBqsInQFchs?=
- =?iso-8859-1?Q?olGp4jwkXTqDT7+Fsu4R5uJyO6sfbsgIaZ2SHUymNE1wRP+4rr57hAr7EQ?=
- =?iso-8859-1?Q?0tbrz63d70aUedXHuDV6f6MOwRTn0AfMXOg017wZkg4+w+Z6n0FoFkBT+p?=
- =?iso-8859-1?Q?6tD34BuGDH7ZWcwDozAgoooab/qUhZo3GDn57onYyGLIJxRob8duYxk44F?=
- =?iso-8859-1?Q?WLt88HrGaIiP6h4RLyEjfyrnuXrkHGgWEcoGupq0n3617boBZLm8oxKkHc?=
- =?iso-8859-1?Q?jGtIn7Q4jEHNDjPMVQUerm2/Yn88PKMS1yKtD2Or4/7YmkFYbuZ6sjVfUV?=
- =?iso-8859-1?Q?vlsLluKI/9XAXf0m526pFO7JaM9cKAvhY/d6lPlAaZcep3f1Lp3FdTN/k3?=
- =?iso-8859-1?Q?C423qP11kkEfZVrW379nI4tux8MPxOGIgrhcqUMMulujK9h89bkFtpk0IK?=
- =?iso-8859-1?Q?joNWCi31hrJ8DGDLcljSovUpcWwQz+4Q3x5jCHc8MMOGQYh2/UFzVU3zj0?=
- =?iso-8859-1?Q?f8U65qWmaBGW4o42HaaUMuAphq9XYFTr9a/ER/yTuR4GTnoizir0SZTCEU?=
- =?iso-8859-1?Q?Ee69okrmfA0Okk2kzBpsP2HH6b/iC42UnOEbEkfA53pax7M0xsV8C44Rrj?=
- =?iso-8859-1?Q?aSfZWfNJtz9p7ME0cPq7+20kkcR6PNFl2vfEw5YA0yS/Ib36U6iFh1LCtf?=
- =?iso-8859-1?Q?u4H8q8lLQZP3Zt06RDLfim2iwx1x/EjriTiJHfMTAzuJw6nwze/Ygvm4Uf?=
- =?iso-8859-1?Q?O+FVF/Z/8o9xp3hwIOIv+QvNFhBVjkb3xg4v0M/VUPUmOUtcBgNkjK6zti?=
- =?iso-8859-1?Q?eLTzxo18j5qAAnNLOCnaQni9XP8fXnO0XgxkuCYDwudsWJVroD9x96EGUZ?=
- =?iso-8859-1?Q?90tQi7eq4/xlUkmm4eV+W8saJ4S/Ra4PcFlWYUBT9AGNhfptJjoZ6HgWwH?=
- =?iso-8859-1?Q?uABbR0/6JbumYjdxLPWnXeBChbx9bpeiLTw7uoXRuCP9183+pGNlUI9Gyb?=
- =?iso-8859-1?Q?ShQrhvDb+dyRzj9RPgoWGW8FLl6gwHPAahsEjdA+uah9UDhJtJh+SyNAr+?=
- =?iso-8859-1?Q?DTMSi1hY3Ru2fJVr8bQFylFEv+9ZzFsomq+srXGOePosMkdVEAuevzoPA5?=
- =?iso-8859-1?Q?qVzjynuIGR6dGd5QgJk=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uA6yl-0003bL-DE
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 08:56:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1746017755;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=aj8d6lCqlvEgGfTolFtoplJUi21zVO8KQqpC0WMVsnI=;
+ b=FQGo+3hvGxGjWuoRsf0DfgIxfVnHlHtytsRCyrXrUzmR0ABxuGVGAbymkUcg+UXxhuAXzj
+ VapwJVctS/RL9BDqEcVmheVkMPsWEJZpS2MQDhcvsJLT/4X/yphim7qsxi4HstprNOPxK4
+ HjlbKXwB5SD91uug95EFn5SlkEjzgrs=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-149-0aa__7pXOQylTRtz3QtSqQ-1; Wed,
+ 30 Apr 2025 08:55:47 -0400
+X-MC-Unique: 0aa__7pXOQylTRtz3QtSqQ-1
+X-Mimecast-MFC-AGG-ID: 0aa__7pXOQylTRtz3QtSqQ_1746017746
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 54FAA19560AF; Wed, 30 Apr 2025 12:55:46 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.35])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4CEBF1800365; Wed, 30 Apr 2025 12:55:44 +0000 (UTC)
+Date: Wed, 30 Apr 2025 13:55:41 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Mario Fleischmann <mario.fleischmann@lauterbach.com>
+Cc: qemu-devel@nongnu.org, alex.bennee@linaro.org, philmd@linaro.org,
+ armbru@redhat.com, christian.boenig@lauterbach.com
+Subject: Re: [PATCH v2 01/20] mcd: Introduce Multi-Core Debug (MCD) API
+Message-ID: <aBIdzY2CtPL7j39p@redhat.com>
+References: <20250430052741.21145-1-mario.fleischmann@lauterbach.com>
+ <20250430052741.21145-2-mario.fleischmann@lauterbach.com>
+ <aBHdEz2x_ckyfnF_@redhat.com>
+ <8ecb6cb9-1a8a-4feb-a490-032154665ac6@lauterbach.com>
 MIME-Version: 1.0
-X-OriginatorOrg: eviden.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR07MB7602.eurprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 13a9140c-c1ca-422b-726e-08dd87e540e0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Apr 2025 12:48:06.2081 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 7d1c7785-2d8a-437d-b842-1ed5d8fbe00a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 7EDaXJwtWZ0GrrD7StQe1kIbYACmfX7Q/PFU6giMxvAmGCAjOEpo/CgL9AAFzt/9p6juonXiDNXfD18FDOZ2urJszsJusK8SQx1Xq3xxYdsFCzmyOlPzwIFRXtjn+0DV
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR07MB8449
-Received-SPF: pass client-ip=80.78.11.84;
- envelope-from=clement.mathieu--drif@eviden.com; helo=smarthost3.eviden.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8ecb6cb9-1a8a-4feb-a490-032154665ac6@lauterbach.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -186,54 +86,148 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vtd_switch_address_space needs to take the BQL if not already held.
-Use BQL_LOCK_GUARD to make the iommu implementation more consistent.
+On Wed, Apr 30, 2025 at 02:47:07PM +0200, Mario Fleischmann wrote:
+> On 30.04.2025 10:20, Daniel P. Berrangé wrote:
+> 
+> > On Wed, Apr 30, 2025 at 07:27:22AM +0200, Mario Fleischmann wrote:
+> >> Formatting changes to mcd_api.h to compily with QEMU's coding style guidelines:
+> >>
+> >> * limit line width to 80
+> >> * convert Doxygen to kernel-doc comments
+> >> * avoid architecture specific defines
+> >>
+> >> The original MCD API version can be found at:
+> >> https://repo.lauterbach.com/sprint_mcd_api_v1_0.zip
+> > 
+> > The commit message needs to call out the license choice of the
+> > imported file.
+> 
+> Thanks for pointing that out. Will be added in the next version.
+> 
+> >> Signed-off-by: Mario Fleischmann <mario.fleischmann@lauterbach.com>
+> >> ---
+> >>  MAINTAINERS            |    6 +
+> >>  docs/interop/index.rst |    1 +
+> >>  docs/interop/mcd.rst   |   44 +
+> >>  mcd/mcd_api.h          | 3963 ++++++++++++++++++++++++++++++++++++++++
+> >>  4 files changed, 4014 insertions(+)
+> >>  create mode 100644 docs/interop/mcd.rst
+> >>  create mode 100644 mcd/mcd_api.h
+> > 
+> >> diff --git a/mcd/mcd_api.h b/mcd/mcd_api.h
+> >> new file mode 100644
+> >> index 0000000..8c89353
+> >> --- /dev/null
+> >> +++ b/mcd/mcd_api.h
+> >> @@ -0,0 +1,3963 @@
+> >> +/*
+> >> + * Copyright (c) 2008, ARM Ltd., Infineon Technologies, NXP Semiconductors,
+> >> + * Lauterbach, STMicroelectronics and TIMA Laboratory.
+> >> + * All rights reserved.
+> >> + *
+> >> + * PREAMBLE
+> >> + *
+> >> + * The MCD API (Multi-Core Debug) has been designed as an interface between
+> >> + * software development tools and simulated or real systems with multi-core
+> >> + * SoCs. The target is to allow consistent software tooling throughout the
+> >> + * whole SoC development flow.
+> >> + * The MCD API (the "SOFTWARE") has been developed jointly by ARM Ltd.,
+> >> + * Infineon Technologies, NXP Semiconductors, Lauterbach,
+> >> + * STMicroelectronics and TIMA Laboratory as part of the SPRINT project
+> >> + * (www.sprint-project.net).
+> >> + * The SPRINT project has been funded by the European Commission.
+> >> + *
+> >> + * LICENSE
+> >> + *
+> >> + *  Any redistribution and use of the SOFTWARE in source and binary forms,
+> >> + *  with or without modification constitutes the full acceptance of the
+> >> + *  following disclaimer as well as of the license herein and is permitted
+> >> + *  provided that the following conditions are met:
+> >> + *  - Redistributions of source code must retain the above copyright notice,
+> >> + *    this list of conditions and the disclaimer detailed below.
+> >> + *  - Redistributions in binary form must reproduce the above copyright notice,
+> >> + *    this list of conditions and the disclaimer detailed below in the
+> >> + *    documentation and/or other materials provided with the distribution.
+> >> + *  - Neither the name of its copyright holders nor the names of its
+> >> + *    contributors may be used to endorse or promote products derived from the
+> >> + *    Software without specific prior written permission.
+> >> + *  - Modification of any or all of the source code, documentation and other
+> >> + *    materials provided under this license are subject to acknowledgement of
+> >> + *    the modification(s) by including a prominent notice on the modification(s)
+> >> + *    stating the change(s) to the file(s), identifying the date of such change
+> >> + *    and stating the name of the publisher of any such modification(s).
+> > 
+> > This 4th clause is rather obnoxious and....
+> > 
+> >> + * VERSION HISTORY
+> >> + *
+> >> + *  1.0 "SPRINT Release"     : SPRINT reference version
+> >> + *
+> >> + *  1.1 "Lauterbach Release" :
+> >> + *  - forces all boolean types to 8-bit on Linux and Mac-OS-X,
+> >> + *    but 32-bit on all other OS forces 32-bit enumeration types
+> >> + *  - additional memory spaces MCD_MEM_SPACE_IS_PHYSICAL,
+> >> + *    MCD_MEM_SPACE_IS_LOGICAL, MCD_MEM_SPACE_IS_AUX
+> >> + *  - changed type of 2nd argument of mcd_qry_input_handle_f from "int" to
+> >> + *    "uint32_t"
+> >> + *  - changed type of element "data" of of mcd_tx_st from "unsigned char" to
+> >> + *     "uint8_t"
+> >> + *  - specifying the calling convention for MS Windows (x86) to __cdecl
+> >> + *
+> >> + *  1.2 "QEMU Release"       :
+> >> + *  - changes formatting to accommodate QEMU's coding style guidelines
+> >> + *  - includes qemu/osdep.h instead of mcd_types.h
+> > 
+> > ....this appears to not be compliant with the license since it fails
+> > to include the dates
+> 
+> We've got the dates of modifications available at our version control.
+> They will be added in the next version of this patch.
+> 
+> > AFAICT this license is derived from a classic BSD 3 clause, with the
+> > extra 4th clause added.
+> > 
+> > I don't see any SPDX license matching this, which is painful as it
+> > means it is going to need license approval before it can be included
+> > by distributions downstream.
+> > 
+> > Does this really have to be under a custom license instead of a
+> > well known standard license ? There's really no good reason for
+> > inventing new open source licenses.
+> 
+> BSD 3-Clause Modification matches the license of the MCD API and is
+> listed under the SPDX License List. Is it possible to extend
+> checkpatch's @valid with "BSD-3-Clause-Modification"? That way, we can
+> also add the SPDX-License-Identifier to mcd_api.h without an error being
+> generated by the script.
 
-Signed-off-by: Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
----
- hw/i386/intel_iommu.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+Conceptually this is similar to BSD-3-Clause-Modification, but the
+actual text of the license does not match
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index dffd7ee885..dad1d9f300 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -1728,8 +1728,6 @@ static bool vtd_as_pt_enabled(VTDAddressSpace *as)
- static bool vtd_switch_address_space(VTDAddressSpace *as)
- {
-     bool use_iommu, pt;
--    /* Whether we need to take the BQL on our own */
--    bool take_bql =3D !bql_locked();
-=20
-     assert(as);
-=20
-@@ -1746,9 +1744,7 @@ static bool vtd_switch_address_space(VTDAddressSpace =
-*as)
-      * from vtd_pt_enable_fast_path(). However the memory APIs need
-      * it. We'd better make sure we have had it already, or, take it.
-      */
--    if (take_bql) {
--        bql_lock();
--    }
-+    BQL_LOCK_GUARD();
-=20
-     /* Turn off first then on the other */
-     if (use_iommu) {
-@@ -1801,10 +1797,6 @@ static bool vtd_switch_address_space(VTDAddressSpace=
- *as)
-         memory_region_set_enabled(&as->iommu_ir_fault, false);
-     }
-=20
--    if (take_bql) {
--        bql_unlock();
--    }
--
-     return use_iommu;
- }
-=20
---=20
-2.49.0
+  https://spdx.org/licenses/BSD-3-Clause-Modification.html
+
+so IMHO we can't claim this is BSD-3-Clause-Modification currently.
+
+IIUC, it would have to be submitted to SPDX for review to decide
+whether it needs to be a new license, or whether the permitted text
+for BSD-3-Clause-Modification can allow a choice of matches.
+
+
+> Thank you very much for taking the time to review the patch! I will add
+> the changes in the next version of this series but will wait for further
+> reviews until submitting v3 in order to keep the mailing list less busy.
+
+Yep, makes sense.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
