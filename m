@@ -2,70 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70977AA51E0
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 18:44:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 910B7AA51D1
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 18:41:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAAXP-0008KZ-WA; Wed, 30 Apr 2025 12:44:00 -0400
+	id 1uAAUO-0005yj-Ji; Wed, 30 Apr 2025 12:40:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sunnyzhyy@qq.com>)
- id 1uAAXL-0008BE-5R; Wed, 30 Apr 2025 12:43:56 -0400
-Received: from xmbghk7.mail.qq.com ([43.163.128.54])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uAATn-0005qj-O4
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:40:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sunnyzhyy@qq.com>)
- id 1uAAXG-0001KH-2Y; Wed, 30 Apr 2025 12:43:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
- t=1746031113; bh=1ZGBTz4x3LhPONyN87aK3yB8MYzxEM/xYM9k9iCNOaA=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References;
- b=ktAyS659lJ2FJ2K9JfE/PxgjlhmFy/BrGsR1jn+7EaeHDJKA6x1A5BD4M9i8EULFq
- w2kfWZ4bHcUWU/odKhSOtEmx2Pw3pnyVMn5Hr5uzMAjR+lsDYPh0IoTeLlnbtCBR9B
- qbUguJo6sq/nIL0RAcx5ThQ7PF7f7iDR7mTG5A1k=
-Received: from 192.168.182.133 ([117.147.34.111])
- by newxmesmtplogicsvrszgpua8-1.qq.com (NewEsmtp) with SMTP
- id 99E92823; Thu, 01 May 2025 00:38:30 +0800
-X-QQ-mid: xmsmtpt1746031110tj4hpphsc
-Message-ID: <tencent_896794CDF9345EF41DF2DCA4B08380B22D07@qq.com>
-X-QQ-XMAILINFO: MQ+wLuVvI2LQpGu9SkD+8lnK4zLutLMmaTHwKWobjlKV117YhfTBaJYOanypFn
- g4ERgNTW6C5lN4tjKZUJj1bubOc3SRc1sdoXBCxK3Kc7Ip7HmL3R72lZesjwWnhN+7KsaJ22+iKe
- Z71rY72HEVaIWgUw+LmIKI//NGgXjfQAg7snhsIjBBk8z2mvrd+o80OukR9rudaonIDewaZld2yU
- CX6WN0XUlbprcffpphAwLRplDd1LIWVKIsfAVsqq1oDGWKQVtmFeTJEPIAB0PH9qYo3kLBxV+YDx
- uFS1ntYv3SV6Yc4Lk4H7WurIRNLXQVQsqV9YgaSQnrvUJueCih8t9K5SHZGAE4YyGs2MzVkFnWf3
- cfRWFxSfIkfazn/+YUPoun9ALn3QI55urWysJP+6Ih46+wdT5ktbofg+afTNZXBsJdYplvllKHJq
- NtmoqnT6K7/n9tPx/qzYfFneK9qOKCKGz1OfMlGtdNOvtz67C0o54lhyrl4nyC/cYP4jSK9SamPA
- onbmNl0hVQmtLfw1c2Tl/R2vvGwINE6DNwoBHFhDcZQ6y4OR8+Nk9ZoAbKt/3jRlZY3tppxJ7kxv
- +SZnObGYuACz8Xc0JD0BVqYm6H9OlBvFw9ThVqNQC5HqvYhQIpVWbjpGUCqCuXvU8GuD+ls5s/dx
- vapIXxriW3ikE6uWtqsiZgMV3TzgX9TAp23ic4zLGEVa9aKUOZsoxmYplpv0+/w2pfM34fUNAnzx
- PQIlh7G/0fJaBxgISawobmQMdDE17j6mN0JlRhLdJgEQN84CcMPtucfFtsTvlIezyciHeLya9cR6
- eQ8x556uojw+glbNIg5IrD7h4kaN2XF/sPt9eta+8wVk8y1s+Sn81E4VqUcFwSfttpftdpiYSkOg
- bT6p7nyIO5i08vz6VcArGLlDdmcFo2sgvqovvTThh3nBV9HEu8nmBnJOBP9QSRa8oGlMFWAT3ahv
- iN9OLvcsE=
-X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
-From: Sunny Zhu <sunnyzhyy@qq.com>
-To: eblake@redhat.com
-Cc: hreitz@redhat.com, jsnow@redhat.com, kwolf@redhat.com,
- qemu-block@nongnu.org, qemu-devel@nongnu.org, stefanha@redhat.com,
- vsementsov@yandex-team.ru
-Subject: Re [PATCH v3 08/11] mirror: Skip writing zeroes when target is
- already zero
-Date: Thu,  1 May 2025 00:38:30 +0800
-X-OQ-MSGID: <20250430163830.47692-1-sunnyzhyy@qq.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250425005439.2252467-21-eblake@redhat.com>
-References: <20250425005439.2252467-21-eblake@redhat.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uAATg-0000vQ-4d
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:40:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1746031206;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=s+OUqpisuuZ80svS9YCGtrW1ZvvCotPcAHhrT3jPQe0=;
+ b=IYmPfTjTWLJhVZulIXFjjtqMZXFA/cSsGplf8k5D+EAL8TnXc7UeN67zUzeI7rACTWqm+P
+ JTOtf4BA8jjw6OVfgRvEUC0Azo3bMMV6/yk8HCVnIbR2pb+tJ6rXiPGcxc/usTUbqJnInK
+ BBaKVUFq4Wz6kStO9hRqyd96IeKEtkA=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-470-i6AVBgQJP92XQ8gSvZcixg-1; Wed,
+ 30 Apr 2025 12:40:04 -0400
+X-MC-Unique: i6AVBgQJP92XQ8gSvZcixg-1
+X-Mimecast-MFC-AGG-ID: i6AVBgQJP92XQ8gSvZcixg_1746031204
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DE53B1956078; Wed, 30 Apr 2025 16:40:03 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.35])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C7EF81800871; Wed, 30 Apr 2025 16:40:02 +0000 (UTC)
+Date: Wed, 30 Apr 2025 17:39:59 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: Thomas Huth <thuth@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: Re: Functional tests precache behaviour
+Message-ID: <aBJSX6kcYQVM2hp7@redhat.com>
+References: <c83e0d26-4d1b-4a12-957d-c7b7ff4ba1b3@linaro.org>
+ <7f0c4586-8a97-4e64-8abb-58a74b86afaa@redhat.com>
+ <6e9a3cb3-e238-48a7-a67c-c95b36a517bc@linaro.org>
+ <aBJJqtzQaTH_xcKK@redhat.com>
+ <efbaccd1-9ef2-4aed-88ed-d6a2bcb7902b@linaro.org>
+ <aBJP-_KJudesY_Pk@redhat.com>
+ <f8ca0b3f-5a9a-4182-b0e0-352a90bd9374@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=43.163.128.54; envelope-from=sunnyzhyy@qq.com;
- helo=xmbghk7.mail.qq.com
-X-Spam_score_int: 4
-X-Spam_score: 0.4
-X-Spam_bar: /
-X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SORTED_RECIPS=2.499, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+In-Reply-To: <f8ca0b3f-5a9a-4182-b0e0-352a90bd9374@linaro.org>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,40 +89,106 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-on Thu 24 Apr 2025 19:52:08 -0500, Eric wrote:
->      if (s->zero_target) {
-> +        int64_t bitmap_length = DIV_ROUND_UP(s->bdev_length, s->granularity);
-> +
->          offset = 0;
->          bdrv_graph_co_rdlock();
->          ret = bdrv_co_is_all_zeroes(target_bs);
-> @@ -856,6 +898,7 @@ static int coroutine_fn GRAPH_UNLOCKED mirror_dirty_init(MirrorBlockJob *s)
->          if (ret < 0) {
->              return ret;
->          }
-> +        s->zero_bitmap = bitmap_new(bitmap_length);
->          /*
->           * If the destination already reads as zero, and we are not
->           * requested to punch holes into existing zeroes, then we can
-> @@ -864,6 +907,7 @@ static int coroutine_fn GRAPH_UNLOCKED mirror_dirty_init(MirrorBlockJob *s)
->          if (ret > 0 &&
->              (target_bs->detect_zeroes != BLOCKDEV_DETECT_ZEROES_OPTIONS_UNMAP ||
->               !bdrv_can_write_zeroes_with_unmap(target_bs))) {
-> +            bitmap_set(s->zero_bitmap, 0, bitmap_length);
+On Wed, Apr 30, 2025 at 09:34:10AM -0700, Pierrick Bouvier wrote:
+> On 4/30/25 9:29 AM, Daniel P. Berrangé wrote:
+> > On Wed, Apr 30, 2025 at 09:21:41AM -0700, Pierrick Bouvier wrote:
+> > > On 4/30/25 9:02 AM, Daniel P. Berrangé wrote:
+> > > > On Wed, Apr 30, 2025 at 08:48:59AM -0700, Pierrick Bouvier wrote:
+> > > > > On 4/30/25 8:00 AM, Thomas Huth wrote:
+> > > > > > On 30/04/2025 16.34, Pierrick Bouvier wrote:
+> > > > > > > Hi folks,
+> > > > > > > 
+> > > > > > > $ ninja -C build precache-functional
+> > > > > > > 2025-04-30 07:23:20,382 - qemu-test - ERROR - Unable to download https://
+> > > > > > > archive.netbsd.org/pub/NetBSD-archive/NetBSD-9.0/evbarm-earmv7hf/binary/
+> > > > > > > gzimg/armv7.img.gz: HTTP error 503
+> > > > > > > 2025-04-30 07:23:23,131 - qemu-test - ERROR - Unable to download https://
+> > > > > > > archive.netbsd.org/pub/NetBSD-archive/NetBSD-9.0/evbarm-earmv7hf/binary/
+> > > > > > > gzimg/armv7.img.gz: HTTP error 503
+> > > > > > > 2025-04-30 07:23:25,870 - qemu-test - ERROR - Unable to download https://
+> > > > > > > archive.netbsd.org/pub/NetBSD-archive/NetBSD-9.0/evbarm-earmv7hf/binary/
+> > > > > > > gzimg/armv7.img.gz: HTTP error 503
+> > > > > > > 2025-04-30 07:23:25,871 - qemu-test - ERROR - https://archive.netbsd.org/
+> > > > > > > pub/NetBSD-archive/NetBSD-9.0/evbarm-earmv7hf/binary/gzimg/armv7.img.gz:
+> > > > > > > Download retries exceeded: skipping asset precache
+> > > > > > > $ echo $?
+> > > > > > > 0
+> > > > > > > 
+> > > > > > > Since we silently skip the asset precaching, how can we identify that an
+> > > > > > > asset is not available anymore (temporarily or not)?
+> > > > > > > Should we rely on test itself failing when trying to download again this asset?
+> > > > > > 
+> > > > > > The current logic fails hard for 404 errors, so if the asset is completely
+> > > > > > gone, we should notice it. For other error codes, we assume that it is only
+> > > > > > a temporary server problem that will hopefully be fixed on the server side
+> > > > > > sooner or later.
+> > > > > > 
+> > > > > 
+> > > > > Sounds good.
+> > > > > Should we replicate this semantic when running the test itself?
+> > > > > It would be more useful to skip it because an asset is missing instead of
+> > > > > reporting an error, except if it's a 404 error.
+> > > > 
+> > > > The tests already gracefully skip if one or more required assets
+> > > > are not available. See the 'setUp' method of QemuBaseTest
+> > > > 
+> > > >           if not self.assets_available():
+> > > >               self.skipTest('One or more assets is not available')
+> > > > 
+> > > > 
+> > > > In the 404 case, the pre-cache step should fail and thus we shouldn't
+> > > > even get to running the test.
+> > > > 
+> > > 
+> > > This is not the behaviour I observe (error, with server returning 503) [1],
+> > > thus my original email.
+> > > 
+> > > Maybe something is missing in the associated test, or in our test
+> > > infrastructure?
+> > > 
+> 
+> Or... in my command :)
+> 
+> > > Nothing funky in the command line used, you can reproduce it with:
+> > > $ rm -rf ~/.cache/qemu build/
+> > > $ ./configure
+> > > $ ./build/pyvenv/bin/meson test -C build --setup thorough --suite func-quick
+> > > --suite func-thorough -t 5 --print-errorlogs func-ppc-ppc_40p
+> > 
+> > Oh, you're running meson test directly.
+> > 
+> > The behaviour I describe is wrt the official way of running tests via
+> > 'make check' or 'make check-functional'.
+> > 
+> > When you use 'make', we set 'QEMU_TEST_NO_DOWNLOAD=1' when the tests
+> > themselves are run, so only the 'make precache-functional' will be
+> > permitted to try downloading.
+> > 
+> 
+> Oh thanks, that's what I was missing!
+> 
+> I'm running meson because the Makefile wrapper does not allow to pass any
+> additional parameters, or running specific test.
 
-when arg->mode != NEW_IMAGE_MODE_EXISTING && bdrv_has_zero_init(target_bs) is true
-in drive_mirror (This means the target image is newly created), in which case
-s->zero_target == false, we still need to execute bitmap_set(s->zero_bitmap, 0, bitmap_length) 
+FWIW, if you want to run a specific test, personally don't use meson
+or make, as you can just invoke the file directly:
 
->              offset = s->bdev_length;
->          }
->          if (!bdrv_can_write_zeroes_with_unmap(target_bs)) {
-> @@ -875,6 +919,7 @@ static int coroutine_fn GRAPH_UNLOCKED mirror_dirty_init(MirrorBlockJob *s)
->          while (offset < s->bdev_length) {
->              int bytes = MIN(s->bdev_length - offset,
->                              QEMU_ALIGN_DOWN(INT_MAX, s->granularity));
+ $ QEMU_TEST_QEMU_BINARY=./build/qemu-system-x86_64 \
+   PYTHONPATH=./python \
+   ./tests/functional/test_x86_cpu_model_versions.py 
+
+This was the key feature I wanted when we replaced avocado, as debugging
+tests without a harness getting in the way is much simpler
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
