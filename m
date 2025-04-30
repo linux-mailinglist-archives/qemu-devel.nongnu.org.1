@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E4E9AA5433
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 20:52:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DE39AA5435
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 20:52:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uACWL-0003iE-DV; Wed, 30 Apr 2025 14:51:01 -0400
+	id 1uACWP-0003rj-FH; Wed, 30 Apr 2025 14:51:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uACWI-0003eq-Jc
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 14:50:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uACWN-0003oH-AD
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 14:51:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uACWH-0008Kn-3i
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 14:50:58 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uACWL-0008LA-NV
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 14:51:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746039056;
+ s=mimecast20190719; t=1746039061;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yE+Dy3KSzP7hqd2P27FXKfvA+IPbYGVyZC5yv2AnfkE=;
- b=HkZzYTgrmlSc0DDcL6z+xY1UsY2L3EqqRl8e/pIr5IZXlTxwd0tYcYa+DXwiLzGWzB7UNp
- krr7H04ZIyXPiIbzF0xBv+rhRZEAL12d3kRqIgsMYKWfHtZ2TmFzeAh7i1r/pAWXvlhQgf
- pBUx+l0J2crNxiXmHWhuAD2z19wCNSM=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=LZvW2RNky95DizNFkoHrcOHvUETO94KZq32Qqt4f62s=;
+ b=Xh2vekSjnDr1MlVkEnFUpcBUv5fWretJW6ta1aX1AMmwoqv7fNoA+sOelRPCdthP6TPGLm
+ 1EjcmVsxVWVhw6QQ4RovwM2+T515/2tXVJqA3OJM15HEQEJ77oZ2kBBRyaeB/hMuBiCNMv
+ V20VpgAM52IhJ6kjAlFmG1kQcv9ln7E=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-472-DotMhijkPq6TZPOChEJOzQ-1; Wed,
- 30 Apr 2025 14:50:55 -0400
-X-MC-Unique: DotMhijkPq6TZPOChEJOzQ-1
-X-Mimecast-MFC-AGG-ID: DotMhijkPq6TZPOChEJOzQ_1746039054
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-691-SvkHwoCfO52CUvkJlTSkcw-1; Wed,
+ 30 Apr 2025 14:50:57 -0400
+X-MC-Unique: SvkHwoCfO52CUvkJlTSkcw-1
+X-Mimecast-MFC-AGG-ID: SvkHwoCfO52CUvkJlTSkcw_1746039056
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 025B819560AE; Wed, 30 Apr 2025 18:50:54 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 5249D180036F; Wed, 30 Apr 2025 18:50:56 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.67])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 624BD19560A3; Wed, 30 Apr 2025 18:50:52 +0000 (UTC)
+ id 78ADA19560A3; Wed, 30 Apr 2025 18:50:54 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PULL 6/9] tests/functional/test_ppc64_pseries: Skip
- test_ppc64_linux_smt_boot if necessary
-Date: Wed, 30 Apr 2025 20:50:32 +0200
-Message-ID: <20250430185035.724919-7-thuth@redhat.com>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 7/9] meson.build: Put the D-Bus summary into the UI section
+Date: Wed, 30 Apr 2025 20:50:33 +0200
+Message-ID: <20250430185035.724919-8-thuth@redhat.com>
 In-Reply-To: <20250430185035.724919-1-thuth@redhat.com>
 References: <20250430185035.724919-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -83,29 +84,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-The test_ppc64_linux_smt_boot function lacks the set_machine('pseries'),
-so this test is currently failing in case the 'pseries' machine has not
-been compiled into the binary. Add the check now to fix it.
+We've got a dedicated section for UI options nowadays, so the
+D-Bus display should get reported here, too.
 
-Message-ID: <20250424085426.663377-1-thuth@redhat.com>
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Message-ID: <20250325055125.253669-1-thuth@redhat.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/functional/test_ppc64_pseries.py | 1 +
- 1 file changed, 1 insertion(+)
+ meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/functional/test_ppc64_pseries.py b/tests/functional/test_ppc64_pseries.py
-index fdc404ed033..67057934e8d 100755
---- a/tests/functional/test_ppc64_pseries.py
-+++ b/tests/functional/test_ppc64_pseries.py
-@@ -63,6 +63,7 @@ def test_ppc64_linux_hpt_smp_boot(self):
-         wait_for_console_pattern(self, self.good_message, self.panic_message)
- 
-     def test_ppc64_linux_smt_boot(self):
-+        self.set_machine('pseries')
-         self.vm.add_args('-smp', '4,threads=4')
-         self.do_test_ppc64_linux_boot()
-         console_pattern = 'CPU maps initialized for 4 threads per core'
+diff --git a/meson.build b/meson.build
+index ccd6c71577d..6c61e1dcaec 100644
+--- a/meson.build
++++ b/meson.build
+@@ -4619,7 +4619,6 @@ summary_info += {'Trace backends':    ','.join(get_option('trace_backends'))}
+ if 'simple' in get_option('trace_backends')
+   summary_info += {'Trace output file': get_option('trace_file') + '-<pid>'}
+ endif
+-summary_info += {'D-Bus display':     dbus_display}
+ summary_info += {'QOM debugging':     get_option('qom_cast_debug')}
+ summary_info += {'Relocatable install': get_option('relocatable')}
+ summary_info += {'vhost-kernel support': have_vhost_kernel}
+@@ -4802,6 +4801,7 @@ summary_info = {}
+ if host_os == 'darwin'
+   summary_info += {'Cocoa support':           cocoa}
+ endif
++summary_info += {'D-Bus display':     dbus_display}
+ summary_info += {'SDL support':       sdl}
+ summary_info += {'SDL image support': sdl_image}
+ summary_info += {'GTK support':       gtk}
 -- 
 2.49.0
 
