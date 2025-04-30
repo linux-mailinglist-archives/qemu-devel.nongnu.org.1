@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C738FAA5878
+	by mail.lfdr.de (Postfix) with ESMTPS id 68C75AA5877
 	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 01:07:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAGW6-0001nJ-9e; Wed, 30 Apr 2025 19:07:03 -0400
+	id 1uAGVv-0001lx-BH; Wed, 30 Apr 2025 19:06:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAGVi-0001hh-Pz
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 19:06:38 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1uAGVi-0001hr-W0
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 19:06:39 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAGVf-0007V9-Tq
+ id 1uAGVh-0007VJ-2W
  for qemu-devel@nongnu.org; Wed, 30 Apr 2025 19:06:38 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-736bfa487c3so421470b3a.1
- for <qemu-devel@nongnu.org>; Wed, 30 Apr 2025 16:06:35 -0700 (PDT)
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-73bf1cef6ceso498582b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 30 Apr 2025 16:06:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746054394; x=1746659194; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746054395; x=1746659195; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=AYLcw77q0drDQnqkv5fH2XhRnVGB7EFd56psZWVXXSQ=;
- b=UCcS70t45pR+lIozrmNqYyaJ+EwpwFM5FemJA2JgPZPXlcJeB8GH7ScUnQqavyHrqZ
- LKLUEtelbaGzN/6Ax/vwVwef5uKf3G91hEMxG6I5880vMFmDTBqkrBbOZNPB7iAHUbIh
- q1CXE/sKG0exHb+gg2CNEncyFg9kY4f99ol5pM9e4S72m1A17XpImGGSIZ3of6NrdIVl
- wvkm2QWBM6zgZUkEkjvjWMwwrj8GSzCpd8PqYiU6U/VFGHg7iRljiyFfwX55VqpIO14a
- tpgZ1Ratdsi7CPMYVIoMGhvJIApDMntZamFXxD1XurprD6JZYh/c5hZCm65jhDRxz7bs
- EkwA==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=3WaB8ulU2dMi9YjFSsDNWzjp+rLier7nhupyaS/o3ZU=;
+ b=A9dnc9a6aTOfWAbOOOYSg1iJw4la47mmKfzKMhwcyYurHXYVeugoWWzEbD/figgU+7
+ c69TsquA9ZrFsTljDW+KosEmSu0hp897VUSv42DW0CD9/sxI3Ka+75Mbn1IX6r1akjJI
+ ONi/uxoRBsrC/yDDNha6QMq+hgopegsMqX0bumOPDh5C6MQjpCcMaeROEjacEtT3AT5K
+ 9mui7d3LL8rfWcq9gDfD/FUSnYOTrUJf36kEd3Bf8z6Vla6AlBrJPTcbm4CvqgP34sbk
+ w/R910hi/Xz0zAcgO/ryIxZ7TOoHS7F0oMaNJur4Mj92/ZjXWnl0ydqzg3N4vlSIDWjm
+ caTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746054394; x=1746659194;
+ d=1e100.net; s=20230601; t=1746054395; x=1746659195;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AYLcw77q0drDQnqkv5fH2XhRnVGB7EFd56psZWVXXSQ=;
- b=TtbC3CbPCIXVVYOu5Az/3NeMl6p5zvQwSsUURZVuhxtakJmDG3FjNKwzBPBgmCIDUq
- 1NqmJIOc/aOuFplM8jvJE4UvwJxWHtAvvMfZ8bOGhVbkeCwRAaAAgh34dRCzmEyoMmP9
- vhirbILWMTt3t4+6Aw99sAFgkLK3LEX9cXrftMIJqf3DcdUp0Tv+bpcZjQkqt2QYngvE
- 0Q4cIaE88QDYrLIidHNcLz8UJ1QfMxiHYG7FWeVRNzRo+pFRItEoIZYwWadinOY0nKfu
- 2kKS1uTE0DADqHiheZ80amZdm8bsLHUJ9IP/5lYeLqu+f9XFOatOx9yGb/v3EznPjNhy
- WudQ==
-X-Gm-Message-State: AOJu0Yzovl5kkEgR2IO/vfE+hUuLzmnisd3//fST3Qvmaknm9waK4FQD
- MMuU4crtY1PWKYd8iAT+vv2509m3un5hs25svsppAWrnuhaio6CrzDU1MXfgybOqyPRgEIcm9Aw
- X
-X-Gm-Gg: ASbGncuHDQmkFFfF/TfqsKv2UeJqG+3qHQUA4AQEIItb/VioEwAPZF/y4MMADzzT4LL
- kxVnVu4lo/J20gCXXNwo1K8F2evzfx0WANgAjzWsuRjJ4W1prgsvhJm4stoGCHt6klS5Eii1fDB
- zDLYKrCe1IyLz3Bea2mp1NMUm7uXht28Jo5P3anLJeS/KOA4DwYArjcHL69W6QC3xGDl4dU4dUa
- jT8UkJq9u2p+bmvFFX4Gq5qyuevE7iwfamaq9kVndOs4sJLVU32WVsrG8nDGe6KgLx2gDrtuRjP
- xNewODYC1Vt7ybzIW9Z5EwwT3pX3V87Ev7aNNujX6PVpoe9unrKUof5YWC1A3GEFUvgCMcR6Tzo
+ bh=3WaB8ulU2dMi9YjFSsDNWzjp+rLier7nhupyaS/o3ZU=;
+ b=C99KOMXV36/w9ebwqHoe4DwW5rkkl2gsoIOK/3HRNJXR+uUqg40W2p78629WG7Argb
+ uFrhkMkjNfIw4d/hBRqBvD+tQQSw6H6J2rMQch4HZ+MG+0Tt99eNTm+uDYuZZgzaJwAe
+ L2ZgKIXGNuFffzPyxDcoQNLK7wtcatQxDX88UKvQpbyj/j+B9qJ3q2erpATWAfyAcgJf
+ S6YwVIOqVibjZGq30+GIMUTwRePqvze1STTw4RY68hBSiEERYTFlvXoZcgQfULKIfMMZ
+ qzwp63N+ApSO+Cju7OWW53OYpL9jXftlY0SrsWPPgQEXclaWs5mLObFxB3jweiO2Cb/i
+ r2Iw==
+X-Gm-Message-State: AOJu0YxwJvOzI2UcmfuyXVT+tcTDDC4t6D6mbAnVLVLF4ny52jEpSBd3
+ 4DMz/ucX7Sb93wWuUZROIsEaSxAI7VxEt5XykgVCj05UFNWsre1O2gpxpSeH6WHXfsmhilQ6DzL
+ A
+X-Gm-Gg: ASbGnctcJwNZFgSwxIA0eY/+IN8ZmpXDmJ18MYCJBq/UKZ34rFK6/oG2kSYWd8xGYOV
+ NHTVjlV9NH5nNzpY5z13yGT6dSsfCTqPuYj+i5kXM7KHWNE7kKEFqwwG/LO7e+KUBVi106ooYvu
+ ZaSrpLABNYMwkgS0hofu7l1qfjnzSLDl2puFD1Bl1LfTsinU2sQ3fX8X3QtMxOYlN5UACmE9ZCX
+ ve36c9GfntBZUZMSNAsf8lG+cOhIY9EQE2GFmWvhv53DPiFZEv36zICxrdyOEchr8ibTDOjk+ia
+ +EtmULWl+VYafO4Z3e94rymblSc2FHvJ24sQ0Mn6VHulQh8DY0oIgt09kbeXe4jJY893EfXgIlc
  =
-X-Google-Smtp-Source: AGHT+IFPfAcihB4qtMgBZ8eLfk/cjhfgx1AH4s9kGNRHa4zyr15xPVIeOxkQrDgmhUGuyPvHGi1AvA==
-X-Received: by 2002:a05:6a00:1909:b0:736:62a8:e52d with SMTP id
- d2e1a72fcca58-7403a7a4c90mr6599466b3a.12.1746054394368; 
- Wed, 30 Apr 2025 16:06:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEdwwZ/PLAShXUYr1ptjiSI/d99uVOwW7OupHtEy2NwZi0N2eOujhyLOnVVDLtXN5jIC+7QYw==
+X-Received: by 2002:a05:6a20:1588:b0:1f5:8e94:2e81 with SMTP id
+ adf61e73a8af0-20ba6a20782mr1378674637.9.1746054395110; 
+ Wed, 30 Apr 2025 16:06:35 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74039a30e2fsm2323287b3a.103.2025.04.30.16.06.33
+ d2e1a72fcca58-74039a30e2fsm2323287b3a.103.2025.04.30.16.06.34
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 30 Apr 2025 16:06:34 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
-Subject: [PATCH 2/6] accel/tcg: Don't use TARGET_LONG_BITS in decode_sleb128
-Date: Wed, 30 Apr 2025 16:06:27 -0700
-Message-ID: <20250430230631.2571291-3-richard.henderson@linaro.org>
+Subject: [PATCH 3/6] accel/tcg: Use target_long_bits() in translate-all.c
+Date: Wed, 30 Apr 2025 16:06:28 -0700
+Message-ID: <20250430230631.2571291-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250430230631.2571291-1-richard.henderson@linaro.org>
 References: <20250430230631.2571291-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,29 +97,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When we changed decode_sleb128 from target_long to
-int64_t, we failed to adjust the shift limit.
-
-Cc: qemu-stable@nongnu.org
-Fixes: c9ad8d27caa ("tcg: Widen gen_insn_data to uint64_t")
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/translate-all.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ accel/tcg/translate-all.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index fa4998b341..acf32e6c08 100644
+index acf32e6c08..6b6e10be9d 100644
 --- a/accel/tcg/translate-all.c
 +++ b/accel/tcg/translate-all.c
-@@ -109,7 +109,7 @@ static int64_t decode_sleb128(const uint8_t **pp)
-         val |= (int64_t)(byte & 0x7f) << shift;
-         shift += 7;
-     } while (byte & 0x80);
--    if (shift < TARGET_LONG_BITS && (byte & 0x40)) {
-+    if (shift < 64 && (byte & 0x40)) {
-         val |= -(int64_t)1 << shift;
+@@ -54,6 +54,7 @@
+ #include "qemu/qemu-print.h"
+ #include "qemu/main-loop.h"
+ #include "qemu/cacheinfo.h"
++#include "qemu/target-info.h"
+ #include "qemu/timer.h"
+ #include "exec/log.h"
+ #include "exec/icount.h"
+@@ -343,7 +344,7 @@ TranslationBlock *tb_gen_code(CPUState *cpu, TCGTBCPUState s)
      }
  
+     tcg_ctx->gen_tb = tb;
+-    tcg_ctx->addr_type = TARGET_LONG_BITS == 32 ? TCG_TYPE_I32 : TCG_TYPE_I64;
++    tcg_ctx->addr_type = target_long_bits() == 32 ? TCG_TYPE_I32 : TCG_TYPE_I64;
+ #ifdef CONFIG_SOFTMMU
+     tcg_ctx->page_bits = TARGET_PAGE_BITS;
+     tcg_ctx->page_mask = TARGET_PAGE_MASK;
 -- 
 2.43.0
 
