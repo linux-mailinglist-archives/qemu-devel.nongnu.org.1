@@ -2,95 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDF4CAA5261
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 19:07:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC19AAA5284
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 19:20:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAAtZ-0006yR-Fp; Wed, 30 Apr 2025 13:06:53 -0400
+	id 1uAB5l-0002H4-4v; Wed, 30 Apr 2025 13:19:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uAAsw-0006np-Gq
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 13:06:18 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uAB5i-0002Gm-61
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 13:19:26 -0400
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uAAsu-0003qC-My
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 13:06:14 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-acb2faa9f55so2721766b.3
- for <qemu-devel@nongnu.org>; Wed, 30 Apr 2025 10:06:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uAB5g-0005Lj-Cs
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 13:19:25 -0400
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-301e05b90caso159371a91.2
+ for <qemu-devel@nongnu.org>; Wed, 30 Apr 2025 10:19:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746032770; x=1746637570; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=KGJqPWAgUgY3KYiwBgFHReQCMU5aKRm6uD+kR5TJMYo=;
- b=IvvG/XSeCfitGCE3vHVabCtfp1OX84/ZfyEkBXn2ErTDGN9evnthazNNfpWAmg7lTZ
- XFinvoKj851m7g45KBeE4yUWqGG+LvqNs/THSuCWLAO8L7zbf+kYgXH5KvLP5A4RB64W
- n0THow/z2ZF9/alAVBfNZXMz3YZY3TTHCL7qUSa12xmruzuCPOlqrmanvJGFV601H/Bj
- 1MhsxzMSWmN3Lquf1iO1ziVYSJq6c5gRqiPXVgt9MxAPma7vND4uCdzKlA4LHCRVpwqr
- Irhjht7OYLtVnlreRmHw28WRz/aotrlpAoV298X9nCkyG1DfZXcOMPiMkCExjMmg8arY
- hBFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746032770; x=1746637570;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ d=linaro.org; s=google; t=1746033562; x=1746638362; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=KGJqPWAgUgY3KYiwBgFHReQCMU5aKRm6uD+kR5TJMYo=;
- b=m3erHzzzVup9BqG7EGyW0OnA/MUptpZ9Mj6utpaM71xUBLWp4ynlfCjGGwNxHwKKy4
- r+SnRs/PLkuz7wsyPDWayIZzdzc3RSeqF1MCYllT88JXrtoZEMeRyUh/QMgxaeJVB9VK
- jUmeDJOFcKBfQPJQXcXOEV+7Uo+OysywHODDBo/oIGf5+o5AiQ3juTsJFTzn77ffVTZ4
- at7ZQQB5+d0Kcrp52sSK12QmUsKW5xX5Yac1WaZNL7bXHRih1Q8vH/RPSSOBBrTaG2sn
- Y1AbZlJCXWFN9Vv8NiByvMUoQW+uXJa1TuM2+FFQpTBGCq8rYIdV11xtTlDoCNZ5sBCT
- s9Ww==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVN8ymYl/eXAxFYFmz/lG6Yhs7e3QKPhr+ad6ISvNI8DkN0WnLH4FXNTL17MVdWb+eZ+Rr5XtgEBSn3@nongnu.org
-X-Gm-Message-State: AOJu0YyluQv00faXfe6sgjQ/FCCN9LA0mXQb46S8x0CrPMSH8itdSvmS
- Lbmfv9Y8TfeY/K9CK6TDc1gu2Y3vC9wjUvHFGvArlHbYS86P3lc7mW90YXCPkBE=
-X-Gm-Gg: ASbGncssB3+TFuYv9W0X95vY4rGfdtPVHIfNwQwnsuHa7hTBEIJydsNZ46ozr502S8P
- TFfh3pZ9pT4uHaeEddAmRRtXuIE9UnNgxSMilq8uSKywXTVZ8vl73i5G2Phmnm73Z9m+8iWJPS6
- IU3c/HrQ/aqkvO5P2/9k2q2osOXatHVzU5iLRcyWzLFaT+4u6jli9bf8E4P42Z0x/TmKJW2tB//
- ZwICQ52o+qj8CWtzrUu7UwUHBPJhMUQewQWoRjaF70jgpSc+UEXTXAxtC5ruMxv/h5qmwyKwu8B
- k1xlnUP5jgW3c37ztTKS61d8eZGfPVd00gjNOxXiOn0=
-X-Google-Smtp-Source: AGHT+IE22pD1cAglNhpfjhZw6bB/769TtHHIzfurksbFemdKEcsjKsuKlPcD5KywiUCj9KHpbzXN8Q==
-X-Received: by 2002:a17:906:ef0a:b0:ac1:e6bd:a568 with SMTP id
- a640c23a62f3a-acee25c84acmr318872666b.37.1746032769981; 
- Wed, 30 Apr 2025 10:06:09 -0700 (PDT)
-Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ace6e41cb08sm961551466b.19.2025.04.30.10.06.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Apr 2025 10:06:09 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id B25B75F8BB;
- Wed, 30 Apr 2025 18:06:08 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Nabih Estefan <nabihestefan@google.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>,  qemu-devel@nongnu.org,
- pbonzini@redhat.com,  lvivier@redhat.com,  farosas@suse.de,
- sriram.yagnaraman@ericsson.com,  akihiko.odaki@daynix.com
-Subject: Re: [PATCH v2] Running with `--enable-ubsan` leads to a qtest failure:
-In-Reply-To: <CA+QoejXO3dJu-ifwaN1t9rK=M5RRBs9xaptE=ik6naz-3oMncQ@mail.gmail.com>
- (Nabih Estefan's message of "Wed, 30 Apr 2025 09:48:36 -0700")
-References: <20250429155621.2028198-1-nabihestefan@google.com>
- <CAFEAcA-K0B0gfpmG5x92o43aCNp-q3ocrgfvRG+7gN-NfgybJw@mail.gmail.com>
- <CA+QoejXO3dJu-ifwaN1t9rK=M5RRBs9xaptE=ik6naz-3oMncQ@mail.gmail.com>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Wed, 30 Apr 2025 18:06:08 +0100
-Message-ID: <87jz711svz.fsf@draig.linaro.org>
+ bh=8FKY1QGncwyoGF5MUOgwlGuqbGe9Z34H/uyfw+A4wT4=;
+ b=aToTytnUrgn0XbetMckfXU97XM3PqskjuASQb608vnR6cgOA2IQKWhLhQKiEq1vQ29
+ qMzuI31oELJAusMm6k3ktmduRHBdB88LMO6wvTr76ALQfNA97xtL1+lGp6/zLEtoPeS9
+ 6BgwcNb0q+hFUojwDPmHzzOifpM2cN3NkWrgvQ8IBChXrPjzVWxXE9p7ttK95MUUL3gK
+ TWKC4WjxpjK6obOIqECXXNvVw6m5p99gDgfGOKGcefzqDQfmEKYrXrqpbi+gwT6BF86X
+ qUp8YKRoH+fZNsReJOmlIxd1kN+47+lfRuBCWptwlYqENudkDPU10vrVjVMsq5IFUNEt
+ 6bEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1746033562; x=1746638362;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=8FKY1QGncwyoGF5MUOgwlGuqbGe9Z34H/uyfw+A4wT4=;
+ b=hwP+JZMMm+2AcVcxbFZ6TWlbr4lPrhX21n7SkqKqJJRkibT2TtefrucryK4EwU+6K4
+ H/7kXBpiXGLERV41TPvCMyGvxhA1g4wEZ/lEAU1Xo2kr4i3D+XzHCSYPcvPej9t+737k
+ uw5F79eo5K9/DyxOfSutFobGWW2++YdHm52E51XhKO2hxD1ZG0BumipO6Qf+tpDhBTpI
+ K3+WVsu9AwSd1JF95Zzxj1MYbNlRT3FYXt7qqeSrhznk0xLmUsZnWkRjqJ8kFn+5M7D6
+ pMUt6b9eg/eOof6mh+NfXY4lFCPGu7nMAqwo+5/Pc33dj9BHo1r1FYTuX7e3VrHA+xVA
+ xJiA==
+X-Gm-Message-State: AOJu0YxlgraC3dfz6YvTXkc+UQYa2tqVz2mncR/NxRdXhfI3xDpDjue0
+ R+ng9AH4kQOXW0hHxrKtTKjceP90b0RpjKjpOgQZ2XGRw0H13nzI49YJunpSLHMztxBPG2VtlwW
+ L
+X-Gm-Gg: ASbGnct4wn5Hw0b4VlaxnuKS7/CLjHe6kVupRstb+LqaEMvJzewNz4WTmYdSWSxYfrN
+ HPFMtEYZBXQ+r/BQgYtpYoIMR+0+4sByXxGDUnu2ZgsDMu1ykyT4+wgWiprullAaLuYz6uPwbZA
+ gaPeYrFqB/rr+SKF6Hajjo1frtZFcnmmdTHQA/NVgVPTuOPbeoQB6bZBysbk8P14AGHiYpphOZd
+ AuNWjbYPgXjEt3SFWQMR/wW042WOKPUlTWEwlAUVVG3RIWzGLeFGIbhGwPfLEZwsv8QYNiBE//N
+ Ds1oWB82UWZj12KYW4pOQMUuo5Onq+jZpLJUYecP9n/RelVGOMRpsUaIYzxQSUXbVAkblSuNduc
+ EZnlK0rLMTqBCpKa7tw==
+X-Google-Smtp-Source: AGHT+IFciluorvFNXDdNLKUOyY/s9AQ4BA0sHLQ4JSoYdkUYDmJrYrSQvW5Z/IBfPasIURv1GwDz6Q==
+X-Received: by 2002:a17:90b:4ad2:b0:30a:2173:9f0b with SMTP id
+ 98e67ed59e1d1-30a34467f57mr5122648a91.28.1746033562158; 
+ Wed, 30 Apr 2025 10:19:22 -0700 (PDT)
+Received: from [192.168.0.4] (71-212-47-143.tukw.qwest.net. [71.212.47.143])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-30a34a2ea46sm1887380a91.31.2025.04.30.10.19.21
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 30 Apr 2025 10:19:21 -0700 (PDT)
+Message-ID: <91eb1dfb-1d04-4410-85e6-bf4f5ff59b9d@linaro.org>
+Date: Wed, 30 Apr 2025 10:19:20 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/7] target/microblaze: Use 'obj' in DEVICE() casts in
+ mb_cpu_initfn()
+To: qemu-devel@nongnu.org
+References: <20250429132200.605611-1-peter.maydell@linaro.org>
+ <20250429132200.605611-2-peter.maydell@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20250429132200.605611-2-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,62 +102,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Nabih Estefan <nabihestefan@google.com> writes:
+On 4/29/25 06:21, Peter Maydell wrote:
+> We're about to make a change that removes the only other use
+> of the 'cpu' local variable in mb_cpu_initfn(); since the
+> DEVICE() casts work fine with the Object*, use that instead,
+> so that we can remove the local variable when we make the
+> following change.
+> 
+> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
+> ---
+>   target/microblaze/cpu.c | 10 +++++-----
+>   1 file changed, 5 insertions(+), 5 deletions(-)
 
-> On Wed, Apr 30, 2025 at 5:03=E2=80=AFAM Peter Maydell <peter.maydell@lina=
-ro.org> wrote:
->>
->> On Tue, 29 Apr 2025 at 16:56, Nabih Estefan <nabihestefan@google.com> wr=
-ote:
->> >
->> > v2: used ldl_le_p and lduw_l_p instead of memcpy as per upstream
->> > suggestion.
->> >
->> > ```
->> > ../tests/qtest/libqos/igb.c:106:5: runtime error: load of misaligned a=
-ddress 0x562040be8e33 for type 'uint32_t', which requires 4 byte alignment
->> > ```
->> > Instead of straight casting the uint8_t array, we use memcpy to assure
->> > alignment is correct against uint32_t and uint16_t.
->> >
->> > Signed-off-by: Nabih Estefan <nabihestefan@google.com>
->> > ---
->> >  tests/qtest/libqos/igb.c | 4 ++--
->> >  1 file changed, 2 insertions(+), 2 deletions(-)
->> >
->> > diff --git a/tests/qtest/libqos/igb.c b/tests/qtest/libqos/igb.c
->> > index f40c4ec4cd..2e0bb58617 100644
->> > --- a/tests/qtest/libqos/igb.c
->> > +++ b/tests/qtest/libqos/igb.c
->> > @@ -104,10 +104,10 @@ static void igb_pci_start_hw(QOSGraphObject *obj)
->> >      e1000e_macreg_write(&d->e1000e, E1000_RDT(0), 0);
->> >      e1000e_macreg_write(&d->e1000e, E1000_RDH(0), 0);
->> >      e1000e_macreg_write(&d->e1000e, E1000_RA,
->> > -                        le32_to_cpu(*(uint32_t *)address));
->> > +                        ldl_le_p((uint32_t *)address));
->> >      e1000e_macreg_write(&d->e1000e, E1000_RA + 4,
->> >                          E1000_RAH_AV | E1000_RAH_POOL_1 |
->> > -                        le16_to_cpu(*(uint16_t *)(address + 4)));
->> > +                        lduw_le_p((uint16_t *)(address + 4)));
->>
->> ldl_le_p() etc take a 'void *' -- the casts here should not be
->> necessary.
->
-> Should I send a new patch to fix this if it's already been queued to
-> testing/next?
-> Or can it be fixed directly in that branch?
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-I'll fix it up, I've taken notes when I re-base.
-
->
-> Thanks,
-> Nabih
->
->>
->> thanks
->> -- PMM
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+r~
 
