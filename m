@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 636D5AA5204
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 18:49:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4AB7AA5205
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 18:50:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAAch-0005au-4M; Wed, 30 Apr 2025 12:49:27 -0400
+	id 1uAAcw-0006ky-9G; Wed, 30 Apr 2025 12:49:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAAcR-0005AN-Aj
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:49:14 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1uAAcT-0005F2-9B
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:49:18 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAAcN-0001vO-I1
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:49:09 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-2295d78b45cso1186975ad.0
+ id 1uAAcP-0001vY-5R
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:49:11 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-73bf1cef6ceso169663b3a.0
  for <qemu-devel@nongnu.org>; Wed, 30 Apr 2025 09:49:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746031746; x=1746636546; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746031747; x=1746636547; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3OA/Cegqwe9p0yD6ikSN7G53T07JOQms4URcLJNl+RA=;
- b=sbq1nLre1TDYiSDkDFl+7gFSk4M0gb+DuZj/mmne5Ah5wzor26ZZFb7dL8fRY0iMb1
- 19GLjAhX/8ViQPvxF6lklfnx//MNHOUgt2XFxkMXGTodadLn89j1RVPGRvb99BbaHEfE
- HdScgt+JRZdG5Ybd9Cf5iv/9qEMvzQSxl6OA7/yrNFFLdsnZ5w2ruVQbVkWQIRTvXxn3
- OWpYjWM9KyYILfdSeWKrMC+38iH4cRlh7A7+cwaVplptz3NQRTCWZRsZqnOPmuEG9FNf
- FcfM5sX9dpciS7ITFobrCiSUp5OSGNt2DGo36P7EzN7rd1BjgiXOS/MGuq2rwKWNjQzB
- mW5Q==
+ bh=TNItTYCqljpWXCYmXErceMTzMhdQ1ZlNvx1ZSBZc8tk=;
+ b=g41GqAogsc29mLkM+uU6lZSmCVnPF97u8idsrXxM3aIgjK7l6BY6zgDd+1ClbVZwe6
+ Mt2mP0WCELRxbcM/BE9N+C+yPm+YxJRiqAfHFUuqMyXVaPxdWwIdtv5Faah10QnGVQ6i
+ hNg1me8VhwGLBNOeDJjACCQy2gfQmPsfmnsU1UKMWh8XiEEFr1UWlgKrFRiROW/x8ND2
+ Udgk4L4xstK0nZGrFF7M2z9WhDlY3dQy3nmIUGGbNGTg13dL8NSYrbnhe9YUgBhIfNW6
+ lUZzQNTVcggPAeGzhPmzRy0ex/hP3iBC4Xn6ItCeFwqGgasvb/gC27s/F8GDeX/8yIUA
+ G8Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746031746; x=1746636546;
+ d=1e100.net; s=20230601; t=1746031747; x=1746636547;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3OA/Cegqwe9p0yD6ikSN7G53T07JOQms4URcLJNl+RA=;
- b=iiaL+BMHWhYKbi5kMaRjhCvwH5q4g07dQAWtrg3tTzKt7+CxgIyPzJbgpPm62mMQTA
- eDoP2CAj754HVeMa9+3STkLH9yPD6hOz/gvW9FjOhudICLiKah9OCWtQYiJc+qKRFLLP
- ZTSyQsl+7MUkyvufBURQvSThy+HE+Ad5OBvitaNOBCKnBVLChL4kOZYz50Y/mqgSqIJq
- Y5x23fmMT6fW8Jf4Wv4fAqNS/j4UHEKqYVthkvmWjqsYYTkNdOgNJB2v5kEngcoCLKrX
- nPdkvzEI5oBQyYFxUZXg+TT8Pzi9arJXAHXr0BBOPTdgFuhqkX3CbaqQsK3iz6PgrTlT
- pk1Q==
-X-Gm-Message-State: AOJu0YxlVQ9Se+dfn6HZ2Mxrandw9RPMCZO/htjS9A6eDlDzNzHJ9Bz3
- 2VoPFdN8yoqb35GSSJOHoMrguozkSpl1IwG22XcDERL992pPEKYM76XGcegNXzQpPoQAffNmQ3e
- 0
-X-Gm-Gg: ASbGncuC8pazUMFkdRKRFjcF1DcRTwbklSPpI9fPmcvhAFyQwXfwEVfagE+w/8ulaUp
- 3Dv+nNPXNX7Brolh2SfOkIoCU9bFVoyy/+y7VW8+Bmdkj2VY3ourR4wD400JHgLL2BTDNQgNyBK
- saYko0KmaXnQY1yV5vZpjps487qFlPUd2ZrXlXZ2kVOL8jSzhDF+KNSxnKoDXZ1G4f8FaF73dP2
- VvvdTfrJy+UIu7etJZo5VPoB628VymMEN1DBZ+PAbr1Vuq6HBCsIsKh6WjFJIEISiMXuM5ZX//A
- WqegrPft2FU+xeas5n6s6vNH3c0OpMTgEzuAQxbeJiTP5rZ7pId1HnPQwOjgukrLFwBPYlCpW/A
+ bh=TNItTYCqljpWXCYmXErceMTzMhdQ1ZlNvx1ZSBZc8tk=;
+ b=Sv/tMz6upQ0Rycy/tAkTEq6vSgodlYtrEfuHijnU/G4NNn4fT6NIXVCbwZrvJY9RDh
+ kwP3ylmvsOs7KayzqBmuNzi+WpTFaEAxSQkkppjhmz4W6DO4OEvUEuUaLzrnbQ73xYOQ
+ 7GP0ktofx4wTLuFwLuJj76sMETxecz2WYqOLPf+HfAIm/bgS9SsROeumcKZO8i/HftdE
+ ntyL3jcIsVKwPfkB9I4wLQbJsxYrnh1FpfjpZ9l9D2oz8IMrk1aTebT0soVRjG7ABQeh
+ MbRpyXoQHpiCkV8ITv35RzzBCq6ySzWdf+N7Xf5yibQW0uEE5d2VwtkanWFFeLIfE12s
+ QmdQ==
+X-Gm-Message-State: AOJu0YwcfxawqCvwm+1ypzHiccurxC3EyAedWuQLZfxL9kiiX216U4V3
+ djOl5eoSXXnDvuXIxAL0UET7JEnJ/PQl9Dd0x2dinn+FSMYOpLlpfTTDQoveH3h+PnuvX1d8lsS
+ m
+X-Gm-Gg: ASbGncsngCpOW8IewSNvPlVKfY/FOBolE4jpFz3/WJb8MFpZwxUiHyOJ0umhrNoRrpB
+ FAhRXg5W0Mqr1Q0uqTL+6Spi3PiY1V4ilWEOlazg8s9EmVr5roRqlF4AT9Eiq3D0GlfIiMWXjH1
+ 2O59+emp2rDY4UCrC9lLdQsthx0mj3y78HvDWkm/SGPOI/b1eij7JLgj7SCNf4j+RxbT0z3XEMl
+ Bqzd//DjD/cllN1ajTp0tYOpUUNUtAdSvocH/CbdBwO3JTm1pfwE7SpMSRfEiOewq+7CeIzWgCc
+ SsttimMeAYhmqH+m8cUiz8BCtH6Hkj/XAjNhK/ECeMbKLRkgE37t5hWTELB7YoCnkIxREVEEDAc
  =
-X-Google-Smtp-Source: AGHT+IGPbSP6tUPSBCFcNoPnOm4tFFoeFJYYU4pvDCPIXfE+V7WGsEUVydKEPQXMkdywJuDAeuiCmA==
-X-Received: by 2002:a17:902:e88d:b0:223:f928:4553 with SMTP id
- d9443c01a7336-22df5836c5emr52767025ad.44.1746031746084; 
+X-Google-Smtp-Source: AGHT+IEZUb64eDJnTtOSb4gVDYBTxU/1+2ahoDFAxTIV1MMqSExpd5h5asji5aQsou6V7+mZ5GhxCQ==
+X-Received: by 2002:a05:6a20:9f4e:b0:1f5:7eb5:72dc with SMTP id
+ adf61e73a8af0-20aa26d41ccmr5129356637.3.1746031746767; 
  Wed, 30 Apr 2025 09:49:06 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b15f76f580asm9129704a12.2.2025.04.30.09.49.05
+ 41be03b00d2f7-b15f76f580asm9129704a12.2.2025.04.30.09.49.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Apr 2025 09:49:05 -0700 (PDT)
+ Wed, 30 Apr 2025 09:49:06 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org,
 	philmd@linaro.org
-Subject: [PATCH v2 13/16] accel/tcg: Use TCGTBCPUState in struct tb_desc
-Date: Wed, 30 Apr 2025 09:48:51 -0700
-Message-ID: <20250430164854.2233995-14-richard.henderson@linaro.org>
+Subject: [PATCH v2 14/16] accel/tcg: Pass TCGTBCPUState to tb_gen_code
+Date: Wed, 30 Apr 2025 09:48:52 -0700
+Message-ID: <20250430164854.2233995-15-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250430164854.2233995-1-richard.henderson@linaro.org>
 References: <20250430164854.2233995-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,65 +101,132 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cpu-exec.c | 20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
+ accel/tcg/internal-common.h |  5 ++---
+ accel/tcg/cpu-exec.c        |  4 ++--
+ accel/tcg/translate-all.c   | 28 +++++++++++++---------------
+ 3 files changed, 17 insertions(+), 20 deletions(-)
 
+diff --git a/accel/tcg/internal-common.h b/accel/tcg/internal-common.h
+index 98c702422f..1dbc45dd95 100644
+--- a/accel/tcg/internal-common.h
++++ b/accel/tcg/internal-common.h
+@@ -12,6 +12,7 @@
+ #include "exec/cpu-common.h"
+ #include "exec/translation-block.h"
+ #include "exec/mmap-lock.h"
++#include "accel/tcg/tb-cpu-state.h"
+ 
+ extern int64_t max_delay;
+ extern int64_t max_advance;
+@@ -46,9 +47,7 @@ static inline bool cpu_plugin_mem_cbs_enabled(const CPUState *cpu)
+ #endif
+ }
+ 
+-TranslationBlock *tb_gen_code(CPUState *cpu, vaddr pc,
+-                              uint64_t cs_base, uint32_t flags,
+-                              int cflags);
++TranslationBlock *tb_gen_code(CPUState *cpu, TCGTBCPUState s);
+ void page_init(void);
+ void tb_htable_init(void);
+ void tb_reset_jump(TranslationBlock *tb, int n);
 diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index 8e6899950e..4ad84c2db8 100644
+index 4ad84c2db8..a7436d2873 100644
 --- a/accel/tcg/cpu-exec.c
 +++ b/accel/tcg/cpu-exec.c
-@@ -150,12 +150,9 @@ static void init_delay_params(SyncClocks *sc, const CPUState *cpu)
- #endif /* CONFIG USER ONLY */
+@@ -574,7 +574,7 @@ void cpu_exec_step_atomic(CPUState *cpu)
+         tb = tb_lookup(cpu, s);
+         if (tb == NULL) {
+             mmap_lock();
+-            tb = tb_gen_code(cpu, s.pc, s.cs_base, s.flags, s.cflags);
++            tb = tb_gen_code(cpu, s);
+             mmap_unlock();
+         }
  
- struct tb_desc {
--    vaddr pc;
--    uint64_t cs_base;
-+    TCGTBCPUState s;
-     CPUArchState *env;
-     tb_page_addr_t page_addr0;
--    uint32_t flags;
--    uint32_t cflags;
- };
+@@ -951,7 +951,7 @@ cpu_exec_loop(CPUState *cpu, SyncClocks *sc)
+                 uint32_t h;
  
- static bool tb_lookup_cmp(const void *p, const void *d)
-@@ -163,11 +160,11 @@ static bool tb_lookup_cmp(const void *p, const void *d)
-     const TranslationBlock *tb = p;
-     const struct tb_desc *desc = d;
+                 mmap_lock();
+-                tb = tb_gen_code(cpu, s.pc, s.cs_base, s.flags, s.cflags);
++                tb = tb_gen_code(cpu, s);
+                 mmap_unlock();
  
--    if ((tb_cflags(tb) & CF_PCREL || tb->pc == desc->pc) &&
-+    if ((tb_cflags(tb) & CF_PCREL || tb->pc == desc->s.pc) &&
-         tb_page_addr0(tb) == desc->page_addr0 &&
--        tb->cs_base == desc->cs_base &&
--        tb->flags == desc->flags &&
--        tb_cflags(tb) == desc->cflags) {
-+        tb->cs_base == desc->s.cs_base &&
-+        tb->flags == desc->s.flags &&
-+        tb_cflags(tb) == desc->s.cflags) {
-         /* check next page if needed */
-         tb_page_addr_t tb_phys_page1 = tb_page_addr1(tb);
-         if (tb_phys_page1 == -1) {
-@@ -185,7 +182,7 @@ static bool tb_lookup_cmp(const void *p, const void *d)
-              * is different for the new TB.  Therefore any exception raised
-              * here by the faulting lookup is not premature.
-              */
--            virt_page1 = TARGET_PAGE_ALIGN(desc->pc);
-+            virt_page1 = TARGET_PAGE_ALIGN(desc->s.pc);
-             phys_page1 = get_page_addr_code(desc->env, virt_page1);
-             if (tb_phys_page1 == phys_page1) {
-                 return true;
-@@ -201,11 +198,8 @@ static TranslationBlock *tb_htable_lookup(CPUState *cpu, TCGTBCPUState s)
-     struct tb_desc desc;
-     uint32_t h;
+                 /*
+diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+index 97aadee52c..7b0bd50904 100644
+--- a/accel/tcg/translate-all.c
++++ b/accel/tcg/translate-all.c
+@@ -290,9 +290,7 @@ static int setjmp_gen_code(CPUArchState *env, TranslationBlock *tb,
+ }
  
-+    desc.s = s;
-     desc.env = cpu_env(cpu);
--    desc.cs_base = s.cs_base;
--    desc.flags = s.flags;
--    desc.cflags = s.cflags;
--    desc.pc = s.pc;
-     phys_pc = get_page_addr_code(desc.env, s.pc);
+ /* Called with mmap_lock held for user mode emulation.  */
+-TranslationBlock *tb_gen_code(CPUState *cpu,
+-                              vaddr pc, uint64_t cs_base,
+-                              uint32_t flags, int cflags)
++TranslationBlock *tb_gen_code(CPUState *cpu, TCGTBCPUState s)
+ {
+     CPUArchState *env = cpu_env(cpu);
+     TranslationBlock *tb, *existing_tb;
+@@ -305,14 +303,14 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
+     assert_memory_lock();
+     qemu_thread_jit_write();
+ 
+-    phys_pc = get_page_addr_code_hostp(env, pc, &host_pc);
++    phys_pc = get_page_addr_code_hostp(env, s.pc, &host_pc);
+ 
      if (phys_pc == -1) {
-         return NULL;
+         /* Generate a one-shot TB with 1 insn in it */
+-        cflags = (cflags & ~CF_COUNT_MASK) | 1;
++        s.cflags = (s.cflags & ~CF_COUNT_MASK) | 1;
+     }
+ 
+-    max_insns = cflags & CF_COUNT_MASK;
++    max_insns = s.cflags & CF_COUNT_MASK;
+     if (max_insns == 0) {
+         max_insns = TCG_MAX_INSNS;
+     }
+@@ -332,12 +330,12 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
+ 
+     gen_code_buf = tcg_ctx->code_gen_ptr;
+     tb->tc.ptr = tcg_splitwx_to_rx(gen_code_buf);
+-    if (!(cflags & CF_PCREL)) {
+-        tb->pc = pc;
++    if (!(s.cflags & CF_PCREL)) {
++        tb->pc = s.pc;
+     }
+-    tb->cs_base = cs_base;
+-    tb->flags = flags;
+-    tb->cflags = cflags;
++    tb->cs_base = s.cs_base;
++    tb->flags = s.flags;
++    tb->cflags = s.cflags;
+     tb_set_page_addr0(tb, phys_pc);
+     tb_set_page_addr1(tb, -1);
+     if (phys_pc != -1) {
+@@ -355,9 +353,9 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
+     tcg_ctx->guest_mo = cpu->cc->tcg_ops->guest_default_memory_order;
+ 
+  restart_translate:
+-    trace_translate_block(tb, pc, tb->tc.ptr);
++    trace_translate_block(tb, s.pc, tb->tc.ptr);
+ 
+-    gen_code_size = setjmp_gen_code(env, tb, pc, host_pc, &max_insns, &ti);
++    gen_code_size = setjmp_gen_code(env, tb, s.pc, host_pc, &max_insns, &ti);
+     if (unlikely(gen_code_size < 0)) {
+         switch (gen_code_size) {
+         case -1:
+@@ -434,10 +432,10 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
+      * For CF_PCREL, attribute all executions of the generated code
+      * to its first mapping.
+      */
+-    perf_report_code(pc, tb, tcg_splitwx_to_rx(gen_code_buf));
++    perf_report_code(s.pc, tb, tcg_splitwx_to_rx(gen_code_buf));
+ 
+     if (qemu_loglevel_mask(CPU_LOG_TB_OUT_ASM) &&
+-        qemu_log_in_addr_range(pc)) {
++        qemu_log_in_addr_range(s.pc)) {
+         FILE *logfile = qemu_log_trylock();
+         if (logfile) {
+             int code_size, data_size;
 -- 
 2.43.0
 
