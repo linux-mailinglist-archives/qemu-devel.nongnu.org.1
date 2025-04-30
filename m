@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0E42AA528E
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 19:21:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30050AA528F
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 19:21:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAB7X-0004ZN-8B; Wed, 30 Apr 2025 13:21:19 -0400
+	id 1uAB7t-0004d9-KJ; Wed, 30 Apr 2025 13:21:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAB7W-0004ZE-0B
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 13:21:18 -0400
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+ id 1uAB7m-0004at-O9
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 13:21:35 -0400
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAB7U-0005iO-4u
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 13:21:17 -0400
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-af51596da56so90196a12.0
- for <qemu-devel@nongnu.org>; Wed, 30 Apr 2025 10:21:15 -0700 (PDT)
+ id 1uAB7l-0005ji-7q
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 13:21:34 -0400
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-30863b48553so1362296a91.0
+ for <qemu-devel@nongnu.org>; Wed, 30 Apr 2025 10:21:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746033674; x=1746638474; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746033692; x=1746638492; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=o5379wxRTyHBU1utcJv0I1mi8og4i4yWwZvyD3OfOa0=;
- b=Bbn6yjlU4GozBSg8CSYBnhy6bP9EfvkiKRt9SKvB26Cdcx05dSA/HykxgC46Of/WHS
- 0qB8qJ3jsSct9K5ddE2n9UUl3DqO0BLHasgCIVp5HlPFkkg8vOMP6v8WDv3zvPLLraSL
- TofuwNFyAzgyowigttT3qkyfKcz2YBXXTNUetZKPBhEzsS6nxYv7jP27/rYCQs/EJ9sI
- qjWsCH0XYxKiJI9hZt1Mw4W/Ic8E2Dzde/lGdwIPq0HmHzjDg7HdBs+dpnFXQTcHmB8H
- AHer8mYUVQmjOXuYaw7DcadgQ45gMSlDBI0Kok+JV2ytygPuGec5H2DrO5tMVHRnERAd
- ylKw==
+ bh=+jr5Js611BWUaYXQ7IElW3L++0mJsN+n0ZQE6VOC5bo=;
+ b=F9Oi4WQuShJlxo+KDJsJll3rHulaH4tbgfYkbV8F9ExxBcMO2mxSTjfZ1+7v4MQk/j
+ HZLbjMf84HtVW5QL4isMKHt+EU5MYP6xCjD6CRErNxk4AMddM8T9hJcUN+PbmUKegpsr
+ yst88tlCJnWNdAPaM2gOaX5RQkiPTW8+Vop/diuHD/dcn6hK9DVc1qD5UVro06nPzl3N
+ cTlJ9nfGTcM+qg1r4k18yCXrt3/WMV89sRcv0so1uHllstexOrzCL89yLEqZNfT73Ov8
+ T7DvyVAwdTYH74lDgRqjg2yx5GUK/7ZhqVw/EA5QvqVoCyLpPPLYjILarqOPRP27M9pw
+ frlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746033674; x=1746638474;
+ d=1e100.net; s=20230601; t=1746033692; x=1746638492;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=o5379wxRTyHBU1utcJv0I1mi8og4i4yWwZvyD3OfOa0=;
- b=BbSiRX+C2EeFoxVjy85EFZ4cgEIf6t4XaxHEmt/x/J3GEmIFXmynVosaA6B+J+Pz6p
- JEuxSTf53y8AnwSeNGIFFnAHchyKxMg1rTV1L3SrYaje2auNZlbw6nGGk9SR7cW0H94X
- 2W+TcthXRtqyOtQ4I+DEMy6asoo4YHV6MkkQcMgyKCMrJTMcgwMvwv6m184RWrsTphk5
- E9XmORpQh0u3YWje1dGGfFNre4pKyfSsMYqMYKsf75l4Ja3+2yEzEzOrRGBf0w2vX2N2
- +KPPoeDHrrukemjWk6sSNealOzpSGAlfET/I2OkcSBdXhkhW+zIuJiNV7f/cHIjIHUU2
- Z2aw==
-X-Gm-Message-State: AOJu0YyS9qBui+jpsQdpCcRk0Zv40TeHuaA1RfYmph3LCGcAvTn1uSf1
- ODXK5DBJLl4haBB5U9O+FxZSr6EZHSUXvLMKeYSjHWZkm3Y0jkAg4JL27oazf3/49j2UmzQ0y1u
- J
-X-Gm-Gg: ASbGncssl/m6Qlqrk6bYtE377zE5sgSo+8pH2NKcu3jdVp6rYSCcCvO5zycpUR4/ulv
- sGlnrA3jh4L/KhBTUHSgpMh7E8tV0NLOVitCmTObJ6hK0gv2zUBNJVjv4VhL5GCA0Rk7pHKRXWt
- Kz0V5R86M8f4f/vr0FoNWk6rnI1L8CYI+ZrDgZA07Y3SD+JL15dgpFqeYNynYzViX1e4R19umBy
- WdFsVQQaNBSywOeD9GASGlxrJlvroP6dCAi78MkfLACqba2gMoq9/1J/DRyOHZYoD1or/A8PJ4g
- LMWAr7pnd+spwR6RLIdswY/xjzAjQnG/1HkNDo6AdrhzN/7PeT+tQLkdv5+DSRBk+zWYRHrFjhi
- Ropy9Sxg=
-X-Google-Smtp-Source: AGHT+IFwrRwqIa1N0h8IupEw/T/ViNB6u+CiQDJ1OWsRuy9d2bxuQFEmHexkjJbHiOtA9fSrjqbiFg==
-X-Received: by 2002:a05:6a20:2d1f:b0:1f5:535c:82d6 with SMTP id
- adf61e73a8af0-20a899fc28bmr6522230637.35.1746033674386; 
- Wed, 30 Apr 2025 10:21:14 -0700 (PDT)
+ bh=+jr5Js611BWUaYXQ7IElW3L++0mJsN+n0ZQE6VOC5bo=;
+ b=RUbs8Y3lzqGSIrJMFM8PSaYMDOv7PKJb4mYeMXUvS9v3IsYVlGAHFbjEE8Oxq3t7dx
+ 9LI7VdUP6xKIzyIuaibp5I3WtbIhklfibhzN2oKvsYe1abdipPDDpCHbsD9FRua1CRtj
+ lT6/yZ3CDuzKfR4gcHkEyWA13TNzQIk1CpoxHv8QrRknK5VCyqFGA8jiSzulzVXhtCFV
+ Gvg0K3d/gCzlULtajJLsTeWTOloqnnsFmb7Bc/JsqZCpSgOjf/0F/6ZXQwpsMdf7GvBe
+ HFP2p1VfrYYdAI4PzDaCPJKjkiN1v8TfioPy4gTkqqkxkNZmvGC1jFIXirLHWL6E5PdA
+ dZqA==
+X-Gm-Message-State: AOJu0Ywplm8Jcp1h69ou13OZbyitjxzZ/avhwAKBk/BEKsbcUH/rYgJh
+ v3VUf6jGl6E+BoUmCkrJmgoAatMcbXFZPYed5LRgQ70mXWlBqMENzGOQJjp2Om/Kk3B0HyLUUc3
+ 5
+X-Gm-Gg: ASbGncveb9YxEqoiBsjXgVp8vbPL3VOUK1A5FglWtoaVkj1C4ONvxnjtJGNFOUlzT2a
+ noeDwJ20WQ6p0Ywn5rIYxrDWvj+l+DZk8AhIBc/WFLaWxBfZY0cVII69pkMGhJoBlgn3owzk3Y0
+ t7BZKvQJ875Je+xigCfyHGqcmpUm2b+lSVzBylZOVaFiHej9Bbv0tqD9J30crdtJQxoKxKu3bnH
+ RQrtYci8r99DFAGlbZWH/rjFc2hQWOj14ckFCEcTOzakjjgPeWhwRaqCIE1rQNkVBrKzgmiRbkK
+ rNXwRDcRZ3vj05XP/D4sGMzbpCz31q++usKCja7JHyUySXxtTxh9zQsM+CBRrh5DGneAeO+S2J6
+ WqewatqI=
+X-Google-Smtp-Source: AGHT+IEMAB3TEBZOaAG/AOXIqcdwyQcyTrkuSSBwBxKX8afcjmV+Zb3MNoIkfEKMeRuFAAb3hzKmyQ==
+X-Received: by 2002:a17:90b:56cf:b0:2fa:21d3:4332 with SMTP id
+ 98e67ed59e1d1-30a3f0b2b7cmr331270a91.12.1746033691817; 
+ Wed, 30 Apr 2025 10:21:31 -0700 (PDT)
 Received: from [192.168.0.4] (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74039922e9csm1981507b3a.69.2025.04.30.10.21.13
+ 98e67ed59e1d1-30a3464e830sm1934854a91.0.2025.04.30.10.21.31
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Apr 2025 10:21:13 -0700 (PDT)
-Message-ID: <32047eb9-7a65-48e9-bce0-0886f07b5be6@linaro.org>
-Date: Wed, 30 Apr 2025 10:21:12 -0700
+ Wed, 30 Apr 2025 10:21:31 -0700 (PDT)
+Message-ID: <f21fd2fe-6c08-45fc-b25a-ab4c18c4fce8@linaro.org>
+Date: Wed, 30 Apr 2025 10:21:29 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/7] target/arm: Move aarch64 CPU property code to
- TYPE_ARM_CPU
+Subject: Re: [PATCH v2 6/7] target/arm/kvm: don't check TYPE_AARCH64_CPU
 To: qemu-devel@nongnu.org
 References: <20250429132200.605611-1-peter.maydell@linaro.org>
- <20250429132200.605611-6-peter.maydell@linaro.org>
+ <20250429132200.605611-7-peter.maydell@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250429132200.605611-6-peter.maydell@linaro.org>
+In-Reply-To: <20250429132200.605611-7-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x534.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,22 +102,22 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 4/29/25 06:21, Peter Maydell wrote:
-> The only thing we have left in the TYPE_AARCH64_CPU class that makes
-> it different to TYPE_ARM_CPU is that we register the handling of the
-> "aarch64" property there.
+> We want to merge TYPE_AARCH64_CPU with TYPE_ARM_CPU, so enforcing in
+> kvm_arch_init_vcpu() that the CPU class is a subclass of
+> TYPE_AARCH64_CPU will no longer be possible.
 > 
-> Move the handling of this property to the base class, where we make
-> it a property of the object rather than of the class, and add it
-> to the CPU if it has the ARM_FEATURE_AARCH64 property present at
-> init.  This is in line with how we handle other Arm CPU properties,
-> and should not change which CPUs it's visible for.
+> It's safe to just remove this test, because any purely-AArch32 CPU
+> will fail the "kvm_target isn't set" check, because we no longer
+> support the old AArch32-host KVM setup and so CPUs like the Cortex-A7
+> no longer set cpu->kvm_target. Only the 'host', 'max', and the
+> odd special cases 'cortex-a53' and 'cortex-a57' set kvm_target.
 > 
 > Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > Reviewed-by: Philippe Mathieu-Daudé<philmd@linaro.org>
 > ---
->   target/arm/cpu.c   | 36 ++++++++++++++++++++++++++++++++++++
->   target/arm/cpu64.c | 33 ---------------------------------
->   2 files changed, 36 insertions(+), 33 deletions(-)
+>   target/arm/kvm.c | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
+
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
