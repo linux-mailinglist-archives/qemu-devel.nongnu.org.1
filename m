@@ -2,95 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAB45AA5427
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 20:51:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AB08AA5437
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 20:52:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uACVz-0003K2-Jf; Wed, 30 Apr 2025 14:50:39 -0400
+	id 1uACW7-0003MN-SC; Wed, 30 Apr 2025 14:50:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
- id 1uACVv-0003JI-B9
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 14:50:36 -0400
+ id 1uACW5-0003Ls-Q8
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 14:50:45 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alifm@linux.ibm.com>)
- id 1uACVt-0008GU-6m
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 14:50:34 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53UGiboD005334;
- Wed, 30 Apr 2025 18:50:26 GMT
+ id 1uACW3-0008HP-Lq
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 14:50:45 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53UIlRRL006443;
+ Wed, 30 Apr 2025 18:50:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=+9L2H1IZRkGz1xbW/
- DFz/pzJlm7+RkVaU/bQ98/CZaQ=; b=Subxq2/DhO7Y4281smAgehTXsl4Oc3/Td
- tUkxu9QbOFt2GNRAIYf1OvZmTxDq82bNERMKJbysB+eAvKWEsf6qvYANZ+69OHN7
- f9lEXeJa9PBveoEOhB3x+zZa9kFb/LvK1vM3toqL9K92cDV60OkVDBxFcATsH+Mc
- eK2JMpN1Q1JPdhrClsHVLIl8thyVSJUgijVH71A2t2HngM6tijuw+kMtSmf41fnx
- P5Mbzx8E4SHm3AgRFXpddQUxxHUzp3D5DJ+Zx0acRP7yZnFyuJpsuJqJXv+rG4NI
- 8vdZMxkPhEXHFGjgwFa6SYXPjnKDeIoeOAtZ10C1QjZ170DxPRWHw==
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46b6vb4yw7-1
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=cZPNqk
+ 8Qh43Fof4y0nPVdye9Dl8wfYAz9/3rH0aZcxc=; b=K64gOmLKnYCK84sXDKAsFB
+ czZCCvhayfOznJ4LUr780N3a/63xKA+qSqjeqF6JU7hPOn1/3r7reiWkpFNXSPxf
+ 2NqMOwWZWsYt0phH/hmY7BK5et3/MvMi1LPNiUWqclRDsCUytnKmUVk/I9wMAfR+
+ UBcJS5yR70CHBJpRE1uqR0eeYqvfclyDlBcyKizIat2UImbBsGxy9ua29WOl/JKf
+ TQRNzqep9HagbF4DREWwboQmToJ7BrD/yxlrBGlu6CTfSeP86RLeb6l3Lyv/bnJq
+ w2L+mflOHTdbSxuqn1GXS23jEYajgMHkKdzYTVtlri+4NiTlMmpP/4fOr3eCwNeA
+ ==
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46bhsjtm40-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 30 Apr 2025 18:50:26 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53UHGIii001803;
- Wed, 30 Apr 2025 18:50:25 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 469bams752-1
+ Wed, 30 Apr 2025 18:50:28 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53UHgOBF024644;
+ Wed, 30 Apr 2025 18:50:27 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 469c1m926j-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 30 Apr 2025 18:50:25 +0000
+ Wed, 30 Apr 2025 18:50:27 +0000
 Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
  [10.39.53.228])
- by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 53UIoNuW21103166
+ by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 53UIoQGU15336046
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 30 Apr 2025 18:50:23 GMT
+ Wed, 30 Apr 2025 18:50:27 GMT
 Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B394B5804B;
- Wed, 30 Apr 2025 18:50:23 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id B64E25804B;
+ Wed, 30 Apr 2025 18:50:26 +0000 (GMT)
 Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 265C458055;
- Wed, 30 Apr 2025 18:50:21 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 14E2758055;
+ Wed, 30 Apr 2025 18:50:24 +0000 (GMT)
 Received: from IBM-D32RQW3.ibm.com (unknown [9.61.242.230])
  by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 30 Apr 2025 18:50:20 +0000 (GMT)
+ Wed, 30 Apr 2025 18:50:23 +0000 (GMT)
 From: Farhan Ali <alifm@linux.ibm.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, stefanha@redhat.com, alifm@linux.ibm.com,
  mjrosato@linux.ibm.com, schnelle@linux.ibm.com, philmd@linaro.org,
  kwolf@redhat.com, hreitz@redhat.com, thuth@redhat.com, fam@euphon.net
-Subject: [PATCH v6 2/3] include: Add a header to define host PCI MMIO functions
-Date: Wed, 30 Apr 2025 11:50:11 -0700
-Message-ID: <20250430185012.2303-3-alifm@linux.ibm.com>
+Subject: [PATCH v6 3/3] block/nvme: Use host PCI MMIO API
+Date: Wed, 30 Apr 2025 11:50:12 -0700
+Message-ID: <20250430185012.2303-4-alifm@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250430185012.2303-1-alifm@linux.ibm.com>
 References: <20250430185012.2303-1-alifm@linux.ibm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=BISzrEQG c=1 sm=1 tr=0 ts=681270f2 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=XR8D0OoHHMoA:10 a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8 a=0NFZlXjHx2QF6stEu-oA:9
-X-Proofpoint-GUID: O4A4GdtlTqnKCNEoKtA1O-pF-hfcTBVH
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDMwMDEzNiBTYWx0ZWRfX0kEhe11Cr1QI
- a5MnWwg4Lrnh9ABZZc3if5W7fZBY3xaZfAt/O3QTngwJNlEf8ISRkf+xX/DF56DDSzAXryYzQgF
- q0bBtky9kBWz6LXCAzrV98IfqtAV8XVx9SbUfzN2fHyVm89sIxaNj+29Vq6giKoVZfF/zCr65Nd
- QixA+ZBGmGV7aC4p3JAeqwswJcXYPRc1cgZRXV+j0DNqP9H9u18ADyeWFK9kMzx9/ldxn0JkWRx
- OsjI+VzF7gbcmr46RFXmJwVor0Uedii+Ng+EP0MQcbgklmhTwKO5uU1Vi+5pG9a0X4uLZP2rZZa
- +MoA2EjzbsAa/5LRSGdn1Wi+U8EoCCOaeTQyV1A7+9/HQUv4V0tQUkmAGV+uHBnRt+lV8M9ivOe
- NiPVG1/wxVBIF9Ji8QSpTGlv5x4nBSHsmkw3SloYWJmjRM92OpFpRMSjlLPCs0BU9ISb7ZfF
-X-Proofpoint-ORIG-GUID: O4A4GdtlTqnKCNEoKtA1O-pF-hfcTBVH
+X-Authority-Analysis: v=2.4 cv=dcuA3WXe c=1 sm=1 tr=0 ts=681270f4 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=KKAkSRfTAAAA:8 a=20KFwNOVAAAA:8
+ a=VnNF1IyMAAAA:8 a=WRFQ3k9MNGtuVaFztJcA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-GUID: wYeDP3ml-NbZO6BEQXlSLigtVIJkINWZ
+X-Proofpoint-ORIG-GUID: wYeDP3ml-NbZO6BEQXlSLigtVIJkINWZ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDMwMDEzNiBTYWx0ZWRfX68bsWU8oQ6bq
+ 5t+VDa7Be+qwlJpVYZBsg75T9u4HfnNm+MjMOnL4I/nULYQQ1K1GLsqPFDo6SOQ4RU6Cl/yyOCb
+ uWb6Fbbbi8J627gLuw0W85m62A9WPKXI8LYRFzVUdCFwOjZslcelz1trFg8NagnLzFq9KpgWQ75
+ jNxCA9t+5nZvGZUNt5KNKtvHNya77G/rz4nMy2uUDMex3azFOE/wC2y6B1GT5c2Pgr5l9F1PWz9
+ 2E9RCnc8X9gWeZYiKLHWbB51mBYZVnrRlVoq10WsGDdxIouPPJd0nb+zL2wVdVFVsTP0/OR4hDN
+ FT1o4MfYVQ28NeZZC674rgvvuUQWONo1xEMeT7B3jlcPi0kLf2rE9IaKc/rm0JRjRP3XWzjwR92
+ nNFCc7424NYBQSc6xIlZ+qJ4+dDSKiti4GUOGuJESDtNdu1zgoWkBYjaKIzBOm3C5GmU6KAT
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-04-30_05,2025-04-24_02,2025-02-21_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0
- priorityscore=1501 spamscore=0 lowpriorityscore=0 mlxlogscore=962
- mlxscore=0 phishscore=0 bulkscore=0 impostorscore=0 clxscore=1015
- malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ phishscore=0 suspectscore=0
+ spamscore=0 impostorscore=0 bulkscore=0 adultscore=0 mlxscore=0
+ malwarescore=0 mlxlogscore=999 priorityscore=1501 lowpriorityscore=0
+ clxscore=1015 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
  definitions=main-2504300136
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=alifm@linux.ibm.com;
@@ -118,160 +122,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a generic API for host PCI MMIO reads/writes
-(e.g. Linux VFIO BAR accesses). The functions access
-little endian memory and returns the result in
-host cpu endianness.
+Use the host PCI MMIO functions to read/write
+to NVMe registers, rather than directly accessing
+them.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
 ---
- include/qemu/host-pci-mmio.h | 136 +++++++++++++++++++++++++++++++++++
- 1 file changed, 136 insertions(+)
- create mode 100644 include/qemu/host-pci-mmio.h
+ block/nvme.c | 41 +++++++++++++++++++++++------------------
+ 1 file changed, 23 insertions(+), 18 deletions(-)
 
-diff --git a/include/qemu/host-pci-mmio.h b/include/qemu/host-pci-mmio.h
-new file mode 100644
-index 0000000000..8ae3f3af5d
---- /dev/null
-+++ b/include/qemu/host-pci-mmio.h
-@@ -0,0 +1,136 @@
-+/*
-+ * API for host PCI MMIO accesses (e.g. Linux VFIO BARs)
-+ *
-+ * Copyright 2025 IBM Corp.
-+ * Author(s): Farhan Ali <alifm@linux.ibm.com>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef HOST_PCI_MMIO_H
-+#define HOST_PCI_MMIO_H
-+
-+#include "qemu/bswap.h"
-+#include "qemu/s390x_pci_mmio.h"
-+
-+static inline uint8_t host_pci_ldub_p(const void *ioaddr)
-+{
-+    uint8_t ret = 0;
-+#ifdef __s390x__
-+    ret = s390x_pci_mmio_read_8(ioaddr);
-+#else
-+    ret = ldub_p(ioaddr);
-+#endif
-+
-+    return ret;
-+}
-+
-+static inline uint16_t host_pci_lduw_le_p(const void *ioaddr)
-+{
-+    uint16_t ret = 0;
-+#ifdef __s390x__
-+    ret = le16_to_cpu(s390x_pci_mmio_read_16(ioaddr));
-+#else
-+    ret = lduw_le_p(ioaddr);
-+#endif
-+
-+    return ret;
-+}
-+
-+static inline uint32_t host_pci_ldl_le_p(const void *ioaddr)
-+{
-+    uint32_t ret = 0;
-+#ifdef __s390x__
-+    ret = le32_to_cpu(s390x_pci_mmio_read_32(ioaddr));
-+#else
-+    ret = ldl_le_p(ioaddr);
-+#endif
-+
-+    return ret;
-+}
-+
-+static inline uint64_t host_pci_ldq_le_p(const void *ioaddr)
-+{
-+    uint64_t ret = 0;
-+#ifdef __s390x__
-+    ret = le64_to_cpu(s390x_pci_mmio_read_64(ioaddr));
-+#else
-+    ret = ldq_le_p(ioaddr);
-+#endif
-+
-+    return ret;
-+}
-+
-+static inline void host_pci_stb_le_p(void *ioaddr, uint8_t val)
-+{
-+#ifdef __s390x__
-+    s390x_pci_mmio_write_8(ioaddr, val);
-+#else
-+    stb_p(ioaddr, val);
-+#endif
-+}
-+
-+static inline void host_pci_stw_le_p(void *ioaddr, uint16_t val)
-+{
-+#ifdef __s390x__
-+    s390x_pci_mmio_write_16(ioaddr, cpu_to_le16(val));
-+#else
-+    stw_le_p(ioaddr, val);
-+#endif
-+}
-+
-+static inline void host_pci_stl_le_p(void *ioaddr, uint32_t val)
-+{
-+#ifdef __s390x__
-+    s390x_pci_mmio_write_32(ioaddr, cpu_to_le32(val));
-+#else
-+    stl_le_p(ioaddr, val);
-+#endif
-+}
-+
-+static inline void host_pci_stq_le_p(void *ioaddr, uint64_t val)
-+{
-+#ifdef __s390x__
-+    s390x_pci_mmio_write_64(ioaddr, cpu_to_le64(val));
-+#else
-+    stq_le_p(ioaddr, val);
-+#endif
-+}
-+
-+static inline uint64_t host_pci_ldn_le_p(const void *ioaddr, int sz)
-+{
-+    switch (sz) {
-+    case 1:
-+        return host_pci_ldub_p(ioaddr);
-+    case 2:
-+        return host_pci_lduw_le_p(ioaddr);
-+    case 4:
-+        return host_pci_ldl_le_p(ioaddr);
-+    case 8:
-+        return host_pci_ldq_le_p(ioaddr);
-+    default:
-+        g_assert_not_reached();
-+    }
-+}
-+
-+static inline void host_pci_stn_le_p(void *ioaddr, int sz, uint64_t v)
-+{
-+    switch (sz) {
-+    case 1:
-+        host_pci_stb_le_p(ioaddr, v);
-+        break;
-+    case 2:
-+        host_pci_stw_le_p(ioaddr, v);
-+        break;
-+    case 4:
-+        host_pci_stl_le_p(ioaddr, v);
-+        break;
-+    case 8:
-+        host_pci_stq_le_p(ioaddr, v);
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+}
-+
-+#endif
+diff --git a/block/nvme.c b/block/nvme.c
+index bbf7c23dcd..8df53ee4ca 100644
+--- a/block/nvme.c
++++ b/block/nvme.c
+@@ -18,6 +18,7 @@
+ #include "qobject/qstring.h"
+ #include "qemu/defer-call.h"
+ #include "qemu/error-report.h"
++#include "qemu/host-pci-mmio.h"
+ #include "qemu/main-loop.h"
+ #include "qemu/module.h"
+ #include "qemu/cutils.h"
+@@ -60,7 +61,7 @@ typedef struct {
+     uint8_t  *queue;
+     uint64_t iova;
+     /* Hardware MMIO register */
+-    volatile uint32_t *doorbell;
++    uint32_t *doorbell;
+ } NVMeQueue;
+ 
+ typedef struct {
+@@ -100,7 +101,7 @@ struct BDRVNVMeState {
+     QEMUVFIOState *vfio;
+     void *bar0_wo_map;
+     /* Memory mapped registers */
+-    volatile struct {
++    struct {
+         uint32_t sq_tail;
+         uint32_t cq_head;
+     } *doorbells;
+@@ -292,7 +293,7 @@ static void nvme_kick(NVMeQueuePair *q)
+     assert(!(q->sq.tail & 0xFF00));
+     /* Fence the write to submission queue entry before notifying the device. */
+     smp_wmb();
+-    *q->sq.doorbell = cpu_to_le32(q->sq.tail);
++    host_pci_stl_le_p(q->sq.doorbell, q->sq.tail);
+     q->inflight += q->need_kick;
+     q->need_kick = 0;
+ }
+@@ -441,7 +442,7 @@ static bool nvme_process_completion(NVMeQueuePair *q)
+     if (progress) {
+         /* Notify the device so it can post more completions. */
+         smp_mb_release();
+-        *q->cq.doorbell = cpu_to_le32(q->cq.head);
++        host_pci_stl_le_p(q->cq.doorbell, q->cq.head);
+         nvme_wake_free_req_locked(q);
+     }
+ 
+@@ -460,7 +461,7 @@ static void nvme_process_completion_bh(void *opaque)
+      * so notify the device that it has space to fill in more completions now.
+      */
+     smp_mb_release();
+-    *q->cq.doorbell = cpu_to_le32(q->cq.head);
++    host_pci_stl_le_p(q->cq.doorbell, q->cq.head);
+     nvme_wake_free_req_locked(q);
+ 
+     nvme_process_completion(q);
+@@ -749,9 +750,10 @@ static int nvme_init(BlockDriverState *bs, const char *device, int namespace,
+     int ret;
+     uint64_t cap;
+     uint32_t ver;
++    uint32_t cc;
+     uint64_t timeout_ms;
+     uint64_t deadline, now;
+-    volatile NvmeBar *regs = NULL;
++    NvmeBar *regs = NULL;
+ 
+     qemu_co_mutex_init(&s->dma_map_lock);
+     qemu_co_queue_init(&s->dma_flush_queue);
+@@ -779,7 +781,7 @@ static int nvme_init(BlockDriverState *bs, const char *device, int namespace,
+     /* Perform initialize sequence as described in NVMe spec "7.6.1
+      * Initialization". */
+ 
+-    cap = le64_to_cpu(regs->cap);
++    cap = host_pci_ldq_le_p(&regs->cap);
+     trace_nvme_controller_capability_raw(cap);
+     trace_nvme_controller_capability("Maximum Queue Entries Supported",
+                                      1 + NVME_CAP_MQES(cap));
+@@ -805,16 +807,17 @@ static int nvme_init(BlockDriverState *bs, const char *device, int namespace,
+     bs->bl.request_alignment = s->page_size;
+     timeout_ms = MIN(500 * NVME_CAP_TO(cap), 30000);
+ 
+-    ver = le32_to_cpu(regs->vs);
++    ver = host_pci_ldl_le_p(&regs->vs);
+     trace_nvme_controller_spec_version(extract32(ver, 16, 16),
+                                        extract32(ver, 8, 8),
+                                        extract32(ver, 0, 8));
+ 
+     /* Reset device to get a clean state. */
+-    regs->cc = cpu_to_le32(le32_to_cpu(regs->cc) & 0xFE);
++    cc = host_pci_ldl_le_p(&regs->cc);
++    host_pci_stl_le_p(&regs->cc, cc & 0xFE);
+     /* Wait for CSTS.RDY = 0. */
+     deadline = qemu_clock_get_ns(QEMU_CLOCK_REALTIME) + timeout_ms * SCALE_MS;
+-    while (NVME_CSTS_RDY(le32_to_cpu(regs->csts))) {
++    while (NVME_CSTS_RDY(host_pci_ldl_le_p(&regs->csts))) {
+         if (qemu_clock_get_ns(QEMU_CLOCK_REALTIME) > deadline) {
+             error_setg(errp, "Timeout while waiting for device to reset (%"
+                              PRId64 " ms)",
+@@ -843,19 +846,21 @@ static int nvme_init(BlockDriverState *bs, const char *device, int namespace,
+     s->queues[INDEX_ADMIN] = q;
+     s->queue_count = 1;
+     QEMU_BUILD_BUG_ON((NVME_QUEUE_SIZE - 1) & 0xF000);
+-    regs->aqa = cpu_to_le32(((NVME_QUEUE_SIZE - 1) << AQA_ACQS_SHIFT) |
+-                            ((NVME_QUEUE_SIZE - 1) << AQA_ASQS_SHIFT));
+-    regs->asq = cpu_to_le64(q->sq.iova);
+-    regs->acq = cpu_to_le64(q->cq.iova);
++    host_pci_stl_le_p(&regs->aqa,
++                        ((NVME_QUEUE_SIZE - 1) << AQA_ACQS_SHIFT) |
++                        ((NVME_QUEUE_SIZE - 1) << AQA_ASQS_SHIFT));
++    host_pci_stq_le_p(&regs->asq, q->sq.iova);
++    host_pci_stq_le_p(&regs->acq, q->cq.iova);
+ 
+     /* After setting up all control registers we can enable device now. */
+-    regs->cc = cpu_to_le32((ctz32(NVME_CQ_ENTRY_BYTES) << CC_IOCQES_SHIFT) |
+-                           (ctz32(NVME_SQ_ENTRY_BYTES) << CC_IOSQES_SHIFT) |
+-                           CC_EN_MASK);
++    host_pci_stl_le_p(&regs->cc,
++                      (ctz32(NVME_CQ_ENTRY_BYTES) << CC_IOCQES_SHIFT) |
++                      (ctz32(NVME_SQ_ENTRY_BYTES) << CC_IOSQES_SHIFT) |
++                      CC_EN_MASK);
+     /* Wait for CSTS.RDY = 1. */
+     now = qemu_clock_get_ns(QEMU_CLOCK_REALTIME);
+     deadline = now + timeout_ms * SCALE_MS;
+-    while (!NVME_CSTS_RDY(le32_to_cpu(regs->csts))) {
++    while (!NVME_CSTS_RDY(host_pci_ldl_le_p(&regs->csts))) {
+         if (qemu_clock_get_ns(QEMU_CLOCK_REALTIME) > deadline) {
+             error_setg(errp, "Timeout while waiting for device to start (%"
+                              PRId64 " ms)",
 -- 
 2.43.0
 
