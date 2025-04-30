@@ -2,79 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D020AA51B6
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 18:31:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3D5FAA51B9
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 18:34:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAAJt-0007eY-5H; Wed, 30 Apr 2025 12:30:01 -0400
+	id 1uAANI-000283-0V; Wed, 30 Apr 2025 12:33:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uAAJr-0007bt-0s
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:29:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <lc00631@tecorigin.com>)
+ id 1uAANE-00026m-P1
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:33:28 -0400
+Received: from out28-51.mail.aliyun.com ([115.124.28.51])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uAAJo-0007gs-RF
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:29:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746030595;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=xqpCAHN+2j9AUyOpBouMf2ki2zGBCPoZ2C7tqmYNs2k=;
- b=FOKUDu/C46Vj82mnjXuz+ZV0iaN42zcgTBiD473m+TP9LTUWTczAAjvnrQhIYywza2wd71
- sBwx88lmO/BC4uiNnwy8N8zAX3JMTZ8Z3HAnaUZHU5QllzsqFiTLKk9RctKR0nFhzA5+Fx
- F7tCG8M+deyqqCoIOoFJwCt2vBLQ4K8=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-10-ISj-IjnhO8uYof8LDA56aQ-1; Wed,
- 30 Apr 2025 12:29:52 -0400
-X-MC-Unique: ISj-IjnhO8uYof8LDA56aQ-1
-X-Mimecast-MFC-AGG-ID: ISj-IjnhO8uYof8LDA56aQ_1746030591
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1990B195608C; Wed, 30 Apr 2025 16:29:51 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.35])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E17C7195608D; Wed, 30 Apr 2025 16:29:49 +0000 (UTC)
-Date: Wed, 30 Apr 2025 17:29:47 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: Thomas Huth <thuth@redhat.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: Re: Functional tests precache behaviour
-Message-ID: <aBJP-_KJudesY_Pk@redhat.com>
-References: <c83e0d26-4d1b-4a12-957d-c7b7ff4ba1b3@linaro.org>
- <7f0c4586-8a97-4e64-8abb-58a74b86afaa@redhat.com>
- <6e9a3cb3-e238-48a7-a67c-c95b36a517bc@linaro.org>
- <aBJJqtzQaTH_xcKK@redhat.com>
- <efbaccd1-9ef2-4aed-88ed-d6a2bcb7902b@linaro.org>
+ (Exim 4.90_1) (envelope-from <lc00631@tecorigin.com>)
+ id 1uAANA-00088I-IQ
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:33:28 -0400
+Received: from localhost.localdomain(mailfrom:lc00631@tecorigin.com
+ fp:SMTPD_---.ccFcKOi_1746030793 cluster:ay29) by smtp.aliyun-inc.com;
+ Thu, 01 May 2025 00:33:15 +0800
+From: Chao Liu <lc00631@tecorigin.com>
+To: pbonzini@redhat.com, peterx@redhat.com, david@redhat.com,
+ philmd@linaro.org, armbru@redhat.com, balaton@eik.bme.hu
+Cc: zhangtj@tecorigin.com, zqz00548@tecorigin.com, lc00631@tecorigin.com,
+ qemu-devel@nongnu.org
+Subject: [PATCH v4 0/1] Optimizing the print format of the QEMU monitor 'info
+ mtree'
+Date: Thu,  1 May 2025 00:32:57 +0800
+Message-ID: <cover.1746028446.git.lc00631@tecorigin.com>
+X-Mailer: git-send-email 2.48.1.windows.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <efbaccd1-9ef2-4aed-88ed-d6a2bcb7902b@linaro.org>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.483,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Received-SPF: pass client-ip=115.124.28.51; envelope-from=lc00631@tecorigin.com;
+ helo=out28-51.mail.aliyun.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,85 +55,81 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Apr 30, 2025 at 09:21:41AM -0700, Pierrick Bouvier wrote:
-> On 4/30/25 9:02 AM, Daniel P. Berrangé wrote:
-> > On Wed, Apr 30, 2025 at 08:48:59AM -0700, Pierrick Bouvier wrote:
-> > > On 4/30/25 8:00 AM, Thomas Huth wrote:
-> > > > On 30/04/2025 16.34, Pierrick Bouvier wrote:
-> > > > > Hi folks,
-> > > > > 
-> > > > > $ ninja -C build precache-functional
-> > > > > 2025-04-30 07:23:20,382 - qemu-test - ERROR - Unable to download https://
-> > > > > archive.netbsd.org/pub/NetBSD-archive/NetBSD-9.0/evbarm-earmv7hf/binary/
-> > > > > gzimg/armv7.img.gz: HTTP error 503
-> > > > > 2025-04-30 07:23:23,131 - qemu-test - ERROR - Unable to download https://
-> > > > > archive.netbsd.org/pub/NetBSD-archive/NetBSD-9.0/evbarm-earmv7hf/binary/
-> > > > > gzimg/armv7.img.gz: HTTP error 503
-> > > > > 2025-04-30 07:23:25,870 - qemu-test - ERROR - Unable to download https://
-> > > > > archive.netbsd.org/pub/NetBSD-archive/NetBSD-9.0/evbarm-earmv7hf/binary/
-> > > > > gzimg/armv7.img.gz: HTTP error 503
-> > > > > 2025-04-30 07:23:25,871 - qemu-test - ERROR - https://archive.netbsd.org/
-> > > > > pub/NetBSD-archive/NetBSD-9.0/evbarm-earmv7hf/binary/gzimg/armv7.img.gz:
-> > > > > Download retries exceeded: skipping asset precache
-> > > > > $ echo $?
-> > > > > 0
-> > > > > 
-> > > > > Since we silently skip the asset precaching, how can we identify that an
-> > > > > asset is not available anymore (temporarily or not)?
-> > > > > Should we rely on test itself failing when trying to download again this asset?
-> > > > 
-> > > > The current logic fails hard for 404 errors, so if the asset is completely
-> > > > gone, we should notice it. For other error codes, we assume that it is only
-> > > > a temporary server problem that will hopefully be fixed on the server side
-> > > > sooner or later.
-> > > > 
-> > > 
-> > > Sounds good.
-> > > Should we replicate this semantic when running the test itself?
-> > > It would be more useful to skip it because an asset is missing instead of
-> > > reporting an error, except if it's a 404 error.
-> > 
-> > The tests already gracefully skip if one or more required assets
-> > are not available. See the 'setUp' method of QemuBaseTest
-> > 
-> >          if not self.assets_available():
-> >              self.skipTest('One or more assets is not available')
-> > 
-> > 
-> > In the 404 case, the pre-cache step should fail and thus we shouldn't
-> > even get to running the test.
-> > 
-> 
-> This is not the behaviour I observe (error, with server returning 503) [1],
-> thus my original email.
-> 
-> Maybe something is missing in the associated test, or in our test
-> infrastructure?
-> 
-> Nothing funky in the command line used, you can reproduce it with:
-> $ rm -rf ~/.cache/qemu build/
-> $ ./configure
-> $ ./build/pyvenv/bin/meson test -C build --setup thorough --suite func-quick
-> --suite func-thorough -t 5 --print-errorlogs func-ppc-ppc_40p
+Hi, all:
 
-Oh, you're running meson test directly.
+Thanks to Markus, BALATON, and Philippe for their reviews
 
-The behaviour I describe is wrt the official way of running tests via
-'make check' or 'make check-functional'.
+In PATCH v4, 
+I have extensively incorporated everyone's suggestions and made the
+following improvements:
 
-When you use 'make', we set 'QEMU_TEST_NO_DOWNLOAD=1' when the tests
-themselves are run, so only the 'make precache-functional' will be
-permitted to try downloading.
+1. When printing the child nodes of a single node, the line characters from the
+parent node's level are no longer printed, making the output more concise
+and clear overall;
 
-With regards,
-Daniel
+2. Use more commonly used ASCII characters, such as '|--' instead of '├──',
+and '`--' instead of '└──';
+
+3. Control the number of prefix characters to reduce unnecessary output;
+
+The result is as follows:
+
+```
+$ ./qemu-system-aarch64 -S -monitor stdio -M raspi4b
+(qemu) info mtree
+address-space: memory
+`-- 0000000000000000-ffffffffffffffff (prio 0, i/o): system
+    |-- 0000000000000000-000000007fffffff (prio 0, ram): ram
+...
+    |-- 00000000fe000000-00000000ff7fffff (prio 1, i/o): bcm2835-peripherals
+    |   |-- 00000000fe900000-00000000fe907fff (prio -1000, i/o): bcm2835-dbus
+    |   |-- 00000000fe910000-00000000fe917fff (prio -1000, i/o): bcm2835-ave0
+    |   |-- 00000000fe980000-00000000fe990fff (prio 0, i/o): dwc2
+    |   |   |-- 00000000fe980000-00000000fe980fff (prio 0, i/o): dwc2-io
+    |   |   `-- 00000000fe981000-00000000fe990fff (prio 0, i/o): dwc2-fifo
+    |   |-- 00000000fec00000-00000000fec00fff (prio -1000, i/o): bcm2835-v3d
+    |   |-- 00000000fec11000-00000000fec110ff (prio -1000, i/o): bcm2835-clkisp
+    |   |-- 00000000fee00000-00000000fee000ff (prio -1000, i/o): bcm2835-sdramc
+    |   `-- 00000000fee05000-00000000fee050ff (prio 0, i/o): bcm2835-dma-chan15
+    |-- 00000000ff800000-00000000ff8000ff (prio 0, i/o): bcm2836-control
+...
+    |-- 00000000ff845600-00000000ff8456ff (prio 0, i/o): gic_cpu
+    `-- 00000000ff846000-00000000ff847fff (prio 0, i/o): gic_vcpu
+```
+
+PATCH v3 changelog:
+1.Use more maintainable c functions instead of macros, as per review comments.
+
+PATCH v2 changelog:
+1. Enrich the commit message, add 'info mtree' print example.
+2. Optimize the code implementation according to the review comments.
+
+PATCH v3:
+https://lore.kernel.org/qemu-devel/15227d0a-c459-4bea-bec7-13dc88d22c3c@linaro.org/
+
+PATCH v2:
+https://lore.kernel.org/qemu-devel/72b2d911-112e-48e3-9ba4-017a11758060@linaro.org/
+https://lore.kernel.org/qemu-devel/7ec1e581-3919-fdf5-499a-279cba99d43d@eik.bme.hu/
+https://lore.kernel.org/qemu-devel/874iy5d9v7.fsf@pond.sub.org/
+
+PATCH v1:
+https://lore.kernel.org/qemu-devel/210c69d9-803e-41a5-b40c-bc8372e582fa@redhat.com/
+
+--
+Regards,
+Chao
+
+Chao Liu (1):
+  system: improve visual representation of node hierarchy in 'info
+    mtree' output for qemu monitor
+
+ system/memory.c | 122 +++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 111 insertions(+), 11 deletions(-)
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.48.1
 
 
