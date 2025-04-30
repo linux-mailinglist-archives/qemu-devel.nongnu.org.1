@@ -2,94 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3DBFAA5484
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 21:08:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F08BAA54BF
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 21:39:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uACm9-00048E-Ci; Wed, 30 Apr 2025 15:07:23 -0400
+	id 1uADFv-0005tC-6E; Wed, 30 Apr 2025 15:38:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uAClp-0003u6-Oe
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 15:07:07 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uADFr-0005s2-It
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 15:38:03 -0400
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uAClm-0002MR-Ni
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 15:07:01 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-227d6b530d8so2313775ad.3
- for <qemu-devel@nongnu.org>; Wed, 30 Apr 2025 12:06:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uADFo-0005Od-Bz
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 15:38:03 -0400
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-301c4850194so263413a91.2
+ for <qemu-devel@nongnu.org>; Wed, 30 Apr 2025 12:37:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746040016; x=1746644816; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1746041878; x=1746646678; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=oHH/CJ/HNr3q5RCvWrg5ycf+bD+rJTBVJLQQPcyxTPE=;
- b=quOsUMmNqaPy7/0wxekEfoiozg4ao9Av8asWoOHxXrqTdy+IguFNTuNU4/WRjWkm3w
- KuM9ZOdk1f2lj3XePzMS4mNzlEI6m/ev2FnmamJKmLTquLakpWsgFglJ04aVtnqsCpmD
- qJetNm83nFlUr+7uMVPktVzGgHjSIqmEFs+ozifxggsueowVRLgWNFgJMjH1xmxYmBcv
- BZinz4nIsKF1AWpsFQ1OkMDFLB7nN/do04R7TMHqYBxFMfU9VKG37n/d9R3b+SCxzdYZ
- boboWqbH+W3KfW5LP7F6/6wpzPbLqGqNMEtMpUJbK2Fuei3Blq94OlCQ2JfIINSr8V4I
- frYA==
+ bh=46CMMv13dD0wFfCACL3VvnbxJth6Z8s15blazSb5v24=;
+ b=LDE1XqDR5t9V6TtH7m/q6tPeKpkzIh85BznyhgdqMxGNarS64wnh541cojpBSaxnn9
+ mPEytFeNSsR10Mvn2N3W1JrYasti0XDfGfX0ESY+5EWjzsi6LW8KR9RQqxUDam4PYdtu
+ ik+jbNgMK+uXN5Mmueuyg9dzya9N0Z8NzKNMEhaZlwA3zqYH7OqVKNehVmC34GTJBNws
+ 3tedZ3g+Yd5b9mXSO5QtVMwpSyppy3Lo4sIwn8o1HTUaO/GzEj1OEfQxkGIw8U4KOGXq
+ 1jH5VMZRhv8V1FPo05ew0AvwPEaoVkOnz4PgV6ybhjiwzHPDpx1g12MEN2ywjkOamukU
+ eU6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746040016; x=1746644816;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1746041878; x=1746646678;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oHH/CJ/HNr3q5RCvWrg5ycf+bD+rJTBVJLQQPcyxTPE=;
- b=m7d+P+e1WLENs0S6/9Kqz7V1qd5IgonuUgkPgFQEdi7WkAq6+t5rCv/N1sagZobbLV
- S/cCEKvzZC1NJ/0Epmc0S8x4hpmGHE9hZbsxWaDeR2+Ecbp1FllYmzSsuTkSg6ZyEjUP
- C8xn4jHo3E2cgDzF4ljnz6YbOXQGWZFvUnoow+NkYI8+eOqb7i2tWyKgK16FzL1PnSxh
- aM2WXiwrwmul3C0qcW4vP8SxRhcVtt+0quFxCE5HYXCO6PuyiZBsMcaOIPMky8RxskgK
- OgshPTUcv5KKVvtsA5VJ3dw0k1T36pSGCBCSaiKyI9WGCrraeYX4DVWq9mN5ivTu+i9v
- hokA==
+ bh=46CMMv13dD0wFfCACL3VvnbxJth6Z8s15blazSb5v24=;
+ b=TKcVWqUB4Tpiy/+7T9sUznHmMl4k1ls803tZU+SgTtiq4PyBH3r8Xoy80pknKSe4xW
+ 7lAmJMknJ6whp9tXB7Kp3NNZR5nudrlCTKpyMklCZHVMwgoWxbyKE7Mh1bvRj6jKsQix
+ UPQ+0sU98f+bCG26zYELQ+6LcGZCLAGJAisiMSFZrE6KAZWK+XP42oyStAEo9rOqykif
+ WQ7j8TGbY/r6I1SCbrkyXaFNHKLot3vh0TvwQeqi+TCIi7RqU9JTgXHgWmZBdyobin1P
+ dbppQhixkMwL7vCPN4PIkH0mYmKXxNtk5r9DHWdkTMlYvNsoiryDHHZ6zuLsi2uiXFOu
+ wsUw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXjC+TYfMI34Z7gnU2FR+V6LBqErlwS8GUypGUO4hxhkQQInEeqeqkJboLhqZ8EDAqWt1DMwU1mv/Tj@nongnu.org
-X-Gm-Message-State: AOJu0YzfcZK9IIC2MyuOjHthYfEPDBZS10Xru6Y9j1FC2TnNWzyBBveP
- lhLrVeITN8sBnZ1F/zAasAZTwyYKoyu0Bsz6ey5gFwA2iBwbv068//yng1hj55M=
-X-Gm-Gg: ASbGncv5t694wSkq0YczvyYSyzmas0AZazF4frcfK+cD1PJAsGCFjP8LHr5UPCGVqUE
- pBdPAxcOIREqtgiu5v7ThcmUNZy6c7o8lBpcfuPs5wZx0TGOTjD7xHIqSrjOdvfa3A9/KtxxgoM
- 1ZcWP3h1qa6uM5W68O4N6pgDI6O2LgdAd/T6sHGWWuN3xFRjG/NnjzAx+2613uhJieQifFPYSuw
- 9wAyVccbySiCxESxI+EFwmj4WqrUCqgQjpCrdl7uTGCduUWyXgFoGz3+wQ4D4rsQgYNbPatWFDn
- q3SwWxtU3WW/6SYjnwWOyw4wmVZ/XciWTQ8CCky/hs4DPhbaku6txg==
-X-Google-Smtp-Source: AGHT+IEmtsMxKzfl913AuCQz4vQAnUz/8tQEJ0yj76c7JEnnFdJLPruhJNFw8n2y3PV37pbT1B8rvw==
-X-Received: by 2002:a17:90b:5347:b0:2f9:c139:b61f with SMTP id
- 98e67ed59e1d1-30a332f2c24mr7242936a91.14.1746040016332; 
- Wed, 30 Apr 2025 12:06:56 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
+ AJvYcCW9M4tWHZZcIr20pJRPuZbSSxlg2VKTJ2s5n+hafC2QMbwdCHVdL6vVoskMdio6coudTmvEjFPeSxEJ@nongnu.org
+X-Gm-Message-State: AOJu0Ywx5mqzqhb1XFFJBfVA7ldcc6uEzN13XUCPrSib9oekFVsGtonn
+ 1OLChoZwmlMD4XqBYMqOE0px1hqHgpuQaFJPSXwVxAtQe5as78lG1d8KT1ESg7o=
+X-Gm-Gg: ASbGncuZHzbyTOqVCZ5YWUkAIPuG4n8h5hgHrWQB0OG9117gzYNf3nHZVUsLo8ZRcKp
+ iJO7imihTc3sjmN1c8R4Z0qMbGeKtJJzV35Oix+YubHzQrWnTd7PmM42klefJZkdPCP6yxmL0eE
+ /dTrYiRWVTfHiHz0VDlY/kOsWHUgGFWr72SCodT7IowrGhfLsMcq/ki9jIkILznM2+SePWL4Dxv
+ lt/LrFvdVDGZY3blqOZ4MfJ+jjBIIevEdKPgHlGGy8xWGb1sMLcq5SlNuPzRy5l8ZeUE1kgev35
+ ShMKsFMn+Ae5IbD1hYIb46qOt0sK0Al0KGJN0pWm5Qmew2XQumdFGodWeK0ZmxW+ovrwbDYX4Xt
+ ozpApRyI=
+X-Google-Smtp-Source: AGHT+IFSyb/O5R1D0FrH/3mqO+Zu6tZQP0SvzElaSlsbpqRHa9Obggj09oe2OF5Cj6givspeskY3Tg==
+X-Received: by 2002:a17:90b:1f8b:b0:308:1ee5:4247 with SMTP id
+ 98e67ed59e1d1-30a4012eda4mr286125a91.32.1746041878229; 
+ Wed, 30 Apr 2025 12:37:58 -0700 (PDT)
+Received: from [192.168.0.4] (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-30a34a3bcf1sm2018153a91.37.2025.04.30.12.06.55
+ 98e67ed59e1d1-30a349fff13sm2258979a91.14.2025.04.30.12.37.57
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 30 Apr 2025 12:06:55 -0700 (PDT)
-Message-ID: <1e223128-a2cc-4070-a7a9-9a34e5abded8@linaro.org>
-Date: Wed, 30 Apr 2025 12:06:55 -0700
+ Wed, 30 Apr 2025 12:37:57 -0700 (PDT)
+Message-ID: <96559e9d-e610-433c-8ce6-3220e569fee4@linaro.org>
+Date: Wed, 30 Apr 2025 12:37:55 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 07/12] accel/hvf: add hvf_enabled() for common code
+Subject: Re: [PATCH qemu v2 1/2] accel/tcg: Fixed cross-page overflow for 32
+ bit guest
+To: ~percival_foss <foss@percivaleng.com>, qemu-devel <qemu-devel@nongnu.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ "qemu-ppc@nongnu.org" <qemu-ppc@nongnu.org>,
+ "open list:S390" <qemu-s390x@nongnu.org>,
+ "qemu-riscv@nongnu.org" <qemu-riscv@nongnu.org>
+References: <174595764300.3422.13156465553505851834-1@git.sr.ht>
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- kvm@vger.kernel.org, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- alex.bennee@linaro.org, anjo@rev.ng
-References: <20250430145838.1790471-1-pierrick.bouvier@linaro.org>
- <20250430145838.1790471-8-pierrick.bouvier@linaro.org>
- <db654764-8377-4080-8f68-7fc61e8eaaae@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <db654764-8377-4080-8f68-7fc61e8eaaae@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <174595764300.3422.13156465553505851834-1@git.sr.ht>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,20 +105,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/30/25 11:43 AM, Richard Henderson wrote:
-> On 4/30/25 07:58, Pierrick Bouvier wrote:
->> +++ b/accel/hvf/hvf-stub.c
->> @@ -0,0 +1,3 @@
->> +#include "qemu/osdep.h"
->> +
->> +bool hvf_allowed;
+On 4/29/25 09:03, ~percival_foss wrote:
+> From: Percival Foss <foss@percivaleng.com>
 > 
-> Even small files require license lines.  Otherwise,
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> The bug being resolved is that the current code in mmu_lookup() assumes
+> a valid 64-bit address space. If a guest has a 32-bit address space, a
+> page translation that crosses beyond the last page in the address space
+> will overflow out of the allocated guest virtual memory space in the
+> QEMU application and cause it to crash. In this case the first page will
+> be the last of the 32-bit address space (for example 0xFFFFF000 for 4K
+> page sizes) and the second page will overflow to a page beyond the
+> 32-bit address space (0x100000000 in the very same example). An invalid
+> translation will be added to the cpu translation table from the second
+> page. Thought the translation will be for page address 0x100000000,
+> checks in other parts of the codebase actually enforce using only 32
+> bits, and will match this translation. Part of the stored translation is
+> the effective address, and another part is the addend to be used to
+> offset into the QEMU process's virtual memory space. The addend will
+> incorporate the 0x100000000 and offset into likely invalid virtual
+> address space.
 > 
+> The fix in the diff checks if the target is 32 bits and wraps the second
+> page address to the beginning of the memory space.
+> 
+> Signed off by: Percival Engineering <foss@percivaleng.com>
+> ---
+>   accel/tcg/cputlb.c | 7 +++++++
+>   1 file changed, 7 insertions(+)
+> 
+> diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+> index fb22048876..457b3f8ec7 100644
+> --- a/accel/tcg/cputlb.c
+> +++ b/accel/tcg/cputlb.c
+> @@ -1767,6 +1767,13 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+>           l->page[1].size = l->page[0].size - size0;
+>           l->page[0].size = size0;
+>   
+> +        /* check for wrapping address space on page crossing if target is 32 bit */
+> +        #if TARGET_LONG_BITS == 32
+> +        if (l->page[1].addr >= (1UL << TARGET_LONG_BITS)) {
+> +            l->page[1].addr %= (1UL << TARGET_LONG_BITS);
+> +        }
+> +        # endif
 
-I'll add it, thanks.
+I agree something needs doing, but this isn't it.
 
-> r~
+This needs some sort of per-mmu mask, set when the cpu changes modes.  For instance, you 
+test ppc32, but the same thing can happen with ppc64 when MSR[SF] is clear.
 
+There are a fair number of other targets which can see the same issue, some more 
+complicated than this.  For instance, s390x in 24-bit mode or RISC-V with the pointer 
+masking extension.
+
+This needs some sort of extension to CPUTLBDesc, and a new variation on 
+tlb_flush_by_mmuidx in order for the target to clear the tlb while changing the mask 
+whenever the target cpu changes modes.
+
+
+r~
 
