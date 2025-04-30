@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3714AA520C
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 18:50:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63212AA51FF
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 18:49:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAAcr-0006SN-VJ; Wed, 30 Apr 2025 12:49:38 -0400
+	id 1uAAct-0006ZL-Gp; Wed, 30 Apr 2025 12:49:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAAcJ-0004z2-NR
+ id 1uAAcK-0004zD-L2
  for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:49:07 -0400
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAAcH-0001uC-OL
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:49:03 -0400
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-af91fc1fa90so51661a12.0
- for <qemu-devel@nongnu.org>; Wed, 30 Apr 2025 09:49:01 -0700 (PDT)
+ id 1uAAcI-0001uP-Pq
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:49:04 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-7399838db7fso173468b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 30 Apr 2025 09:49:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746031740; x=1746636540; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746031741; x=1746636541; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JSX6D5vgzNk6RAgZyLyRqAirOJHp5W5gvXuRkK9XdPE=;
- b=EHPl3b09oMcEOcNw+JBFGkVAdb1cxBN71ZrJdqd3lgzASWumuBjx3XXABL1af1Bmlg
- gaLSJfgtbzjNJ4TRe6CEg0zR9xVNLBjKaL4OOYnJNz/sWbLK0ceqmlxsSmeV2yoT1G7V
- leKiigsPbmX02CGghHlnClWT5ogAmZI5Qo/6J4O3xBfB0TUp4Xri/xOK0ZlJS9UMeUSM
- oFIpqMLlrpUvoEm5mcaCdSR01aQ2eqnCJQrsOSgXMowYNeSkHUiGbD7SV1IbCMqgx6tU
- STS2qi39Eye/CV/N+PPvfbOpUGlM+zn5IxgtdvsqMenhr6tnn/lhZ/K23d+lnFi/d/GP
- 0XdA==
+ bh=5f/+riQnhACWMUBAaDr1xpPHpL32m6PvI3+ANicr5Rs=;
+ b=AQv3rNEq9uVWX4N4khWo9+Gjuj6mOvXk4shVdZiYUjV9+q+YGmelQnwBEFtlE/elnG
+ 25ePBdinMIUJWU1+JO2znumyFi6bfmXnUYuiRlLmwwZonTJSm45gx7b3j2SPurm0bvz4
+ KoZ2YgfvP5f7YMJfnZDcv/gRve0bFWortSVxJcAZNe+7XvBfYrSR5IBcJX8wh31rMgO8
+ iQIHJXWOCMxXeL3KLyLv1uC5DF9OxzOdWYZOQ41DBkq2O+K7wwQiDRAeRMXdiC3BLW8A
+ sGtNbl+tokGFg62KeDbJNQiDjauDJL6Js4Ua1e4XkWShavwbuEdgT17pkonefx69mhdd
+ JCmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746031740; x=1746636540;
+ d=1e100.net; s=20230601; t=1746031741; x=1746636541;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JSX6D5vgzNk6RAgZyLyRqAirOJHp5W5gvXuRkK9XdPE=;
- b=llhATPR18TbxatbnDRejRxD6KsZSwJmeSHG2MLKXHD4iWM89zQufa+Rpl7Ql3zq5RK
- 3QMkZWa4FkT3Wnx7mLnatjYDCOlD75lgaw7mB5UYiGXO1gc/eFnYiipEZFySLaqnmvaX
- dijzn7/49CjB8hnTe8i5/e1QGTaslAMWoYpuiJZ2tHuE/xkB3GKQEXJriZCG8KD3AM0L
- yk6EBivUqh5dsj4xep+z+7zebaiRHPVJqjMvt7nyRp8+naZtDCnw+C9pyJtmERV1ZSN5
- pb74u22xstrJmSXxr08DscBb2AOxBtka6VttDr6IxMp9g1X2CAVRIsgi7rBCYGC04I+p
- bUoA==
-X-Gm-Message-State: AOJu0YyUS5cmAUMBhxPvRWCRfz8OL0NixOSvE/dUvKTu9G4693NoncHw
- FtGuMzjx8h5xcZL4GlJrZVW5lZWpq7E2FCOEZLnBY+4P7sfYfU8t3Elcp1ctuOXu+o4xdINoRX/
- j
-X-Gm-Gg: ASbGncvHocD8wOmv2VXf/3qV9sxIpEl2DE2WlZ0hHezcGakJYUYc+ZBq3zXKF/n+OLU
- aQnHnbq0rYwfww3wVUvlADdXFAmQ1gVx0XGLcsBtHbB5PuONIwsbAh1oZfWG6KRGA+u4QWbCm4p
- aiEmNaqjqwQakw/bGPiRs+ulPp4ubVKr0UHUfoWzoUUjJ5/MdQx9EmQ+KLxY8puUoJVEQYIxtTp
- lTEfloWWKBO+Wq3UN1kCOKaj7h7AnyM/DIeJG8/ea+s+1SkKF+5YLDgL4JsVehFwSgFPXz8PH1Y
- jAheSwcEZqtt/j7O7v34KLdDXKzdZ6KWWjv94TkFvndvrN48Sea7fJI/X7h6tjQ6fL2QcK4vaTg
+ bh=5f/+riQnhACWMUBAaDr1xpPHpL32m6PvI3+ANicr5Rs=;
+ b=WGmmpDTJJnGdce0qw3BtVWfVidaIZDEp9Dyf/LHdqrq8tj25UiChjAO4AipDzdW3oC
+ JkSfKE2H6zVpYnqMQot3qu3IIvFeQo//X+U0IyBoRcIV0EE1uL1WHdpcRgeQulE072pI
+ kS2M7Wg6Dd9/Z89S69a2kOjnwyIc4yku96rVfuPpHXwYRVm7EAsBVmCTy5OPIypJXDa/
+ 5FKpaGZW2QYQjkkBfEFnEi+5jKrtzCpw7wbVLkUAC1hXs1FknSHbugBFbEnBJkqDfuQU
+ WF/ESCdE1D8dwdC1ujb0562KxURafEC+o+WqlBBN0m0MLVMa43oEVzWoWC6RkJoKUwZA
+ eyBA==
+X-Gm-Message-State: AOJu0YxvZ95ObrQWZsk9Hqq/zYExPppyKHrOFMtTM8WDz+yPk5zx6h0i
+ hYoRvIlJBuJM1XfY1VO6BLvC1iCxPXmSk2MR16cqRNQoGNuuOycmwvEzou3xMU7phw/CKLbliCi
+ z
+X-Gm-Gg: ASbGncs7SwgSy9j2vzwZSyri8W0O7wqhic16hwsy0DHWe9Hh066MrTxIH5KyRuPoEX/
+ HllFwXkT9u8tWVYy0qEU2oJG7ttvX58D0eynmUE9x13qpZobl1fRpSm0/V8Ps1+4ha3EV+Op+Fr
+ GmQQ2IfUAy2X5/gXTFrG3ABki/0Ierh9r4V9LMjMARBn7XsRD54HMCctLCI1UQs/wpV29nvEKJ8
+ TS7R8aDP7ydDkkujRSaaifiwW5d5resJIAyujVFB7EWs36SrbfH+E0dg+nSPOGrEtuufXFy8UC4
+ jLyCvf4rfiykL+2+r1N9EoFJmmCbiVmP9JOgXKbWGB0+yBLZVJjDiWNKAKBuH9PAW10GoFwjHcs
  =
-X-Google-Smtp-Source: AGHT+IHwX52ET+cXJlMDflVEIME0PIbODaerdMhirkf2IpEJaiBRKupSSQboRJkfO7ovn20NihJnhA==
-X-Received: by 2002:a05:6a20:7f87:b0:1f5:6680:82b6 with SMTP id
- adf61e73a8af0-20a8980df0bmr4897921637.38.1746031740371; 
- Wed, 30 Apr 2025 09:49:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHAUFLOalQwmsptYaqhImyWpM3L2Juli4ZF+qGkGy92TbQMptBm7ngzny10ECh7zQebBR5i7g==
+X-Received: by 2002:aa7:8c05:0:b0:73b:ac3d:9d6b with SMTP id
+ d2e1a72fcca58-7404616d99amr209914b3a.4.1746031741268; 
+ Wed, 30 Apr 2025 09:49:01 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b15f76f580asm9129704a12.2.2025.04.30.09.48.59
+ 41be03b00d2f7-b15f76f580asm9129704a12.2.2025.04.30.09.49.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 30 Apr 2025 09:48:59 -0700 (PDT)
+ Wed, 30 Apr 2025 09:49:00 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org,
 	philmd@linaro.org
-Subject: [PATCH v2 06/16] target/arm: Move cpu_get_tb_cpu_state to hflags.c
-Date: Wed, 30 Apr 2025 09:48:44 -0700
-Message-ID: <20250430164854.2233995-7-richard.henderson@linaro.org>
+Subject: [PATCH v2 07/16] target/arm: Unexport assert_hflags_rebuild_correctly
+Date: Wed, 30 Apr 2025 09:48:45 -0700
+Message-ID: <20250430164854.2233995-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250430164854.2233995-1-richard.henderson@linaro.org>
 References: <20250430164854.2233995-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,269 +99,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a tcg-specific function, so move it to a tcg file.
-Also move mve_no_pred, a static function only used within
-cpu_get_tb_cpu_state.
+This function is no longer used outside of hflags.c.
+We can remove the stub as well.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/helper.c     | 110 ----------------------------------------
- target/arm/tcg/hflags.c | 110 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 110 insertions(+), 110 deletions(-)
+ target/arm/internals.h  | 2 --
+ target/arm/tcg-stubs.c  | 4 ----
+ target/arm/tcg/hflags.c | 2 +-
+ 3 files changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 98adeb7086..360e6ac0f5 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -30,7 +30,6 @@
- #include "qemu/guest-random.h"
- #ifdef CONFIG_TCG
- #include "accel/tcg/probe.h"
--#include "accel/tcg/cpu-ops.h"
- #include "semihosting/common-semi.h"
- #endif
- #include "cpregs.h"
-@@ -11424,115 +11423,6 @@ ARMMMUIdx arm_mmu_idx(CPUARMState *env)
-     return arm_mmu_idx_el(env, arm_current_el(env));
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 4d3d84ffeb..382a4d1015 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1906,8 +1906,6 @@ static inline bool arm_fgt_active(CPUARMState *env, int el)
+         (!arm_feature(env, ARM_FEATURE_EL3) || (env->cp15.scr_el3 & SCR_FGTEN));
  }
  
--static bool mve_no_pred(CPUARMState *env)
--{
--    /*
--     * Return true if there is definitely no predication of MVE
--     * instructions by VPR or LTPSIZE. (Returning false even if there
--     * isn't any predication is OK; generated code will just be
--     * a little worse.)
--     * If the CPU does not implement MVE then this TB flag is always 0.
--     *
--     * NOTE: if you change this logic, the "recalculate s->mve_no_pred"
--     * logic in gen_update_fp_context() needs to be updated to match.
--     *
--     * We do not include the effect of the ECI bits here -- they are
--     * tracked in other TB flags. This simplifies the logic for
--     * "when did we emit code that changes the MVE_NO_PRED TB flag
--     * and thus need to end the TB?".
--     */
--    if (cpu_isar_feature(aa32_mve, env_archcpu(env))) {
--        return false;
--    }
--    if (env->v7m.vpr) {
--        return false;
--    }
--    if (env->v7m.ltpsize < 4) {
--        return false;
--    }
--    return true;
--}
+-void assert_hflags_rebuild_correctly(CPUARMState *env);
 -
--void cpu_get_tb_cpu_state(CPUARMState *env, vaddr *pc,
--                          uint64_t *cs_base, uint32_t *pflags)
--{
--    CPUARMTBFlags flags;
--
--    assert_hflags_rebuild_correctly(env);
--    flags = env->hflags;
--
--    if (EX_TBFLAG_ANY(flags, AARCH64_STATE)) {
--        *pc = env->pc;
--        if (cpu_isar_feature(aa64_bti, env_archcpu(env))) {
--            DP_TBFLAG_A64(flags, BTYPE, env->btype);
--        }
--    } else {
--        *pc = env->regs[15];
--
--        if (arm_feature(env, ARM_FEATURE_M)) {
--            if (arm_feature(env, ARM_FEATURE_M_SECURITY) &&
--                FIELD_EX32(env->v7m.fpccr[M_REG_S], V7M_FPCCR, S)
--                != env->v7m.secure) {
--                DP_TBFLAG_M32(flags, FPCCR_S_WRONG, 1);
--            }
--
--            if ((env->v7m.fpccr[env->v7m.secure] & R_V7M_FPCCR_ASPEN_MASK) &&
--                (!(env->v7m.control[M_REG_S] & R_V7M_CONTROL_FPCA_MASK) ||
--                 (env->v7m.secure &&
--                  !(env->v7m.control[M_REG_S] & R_V7M_CONTROL_SFPA_MASK)))) {
--                /*
--                 * ASPEN is set, but FPCA/SFPA indicate that there is no
--                 * active FP context; we must create a new FP context before
--                 * executing any FP insn.
--                 */
--                DP_TBFLAG_M32(flags, NEW_FP_CTXT_NEEDED, 1);
--            }
--
--            bool is_secure = env->v7m.fpccr[M_REG_S] & R_V7M_FPCCR_S_MASK;
--            if (env->v7m.fpccr[is_secure] & R_V7M_FPCCR_LSPACT_MASK) {
--                DP_TBFLAG_M32(flags, LSPACT, 1);
--            }
--
--            if (mve_no_pred(env)) {
--                DP_TBFLAG_M32(flags, MVE_NO_PRED, 1);
--            }
--        } else {
--            /*
--             * Note that XSCALE_CPAR shares bits with VECSTRIDE.
--             * Note that VECLEN+VECSTRIDE are RES0 for M-profile.
--             */
--            if (arm_feature(env, ARM_FEATURE_XSCALE)) {
--                DP_TBFLAG_A32(flags, XSCALE_CPAR, env->cp15.c15_cpar);
--            } else {
--                DP_TBFLAG_A32(flags, VECLEN, env->vfp.vec_len);
--                DP_TBFLAG_A32(flags, VECSTRIDE, env->vfp.vec_stride);
--            }
--            if (env->vfp.xregs[ARM_VFP_FPEXC] & (1 << 30)) {
--                DP_TBFLAG_A32(flags, VFPEN, 1);
--            }
--        }
--
--        DP_TBFLAG_AM32(flags, THUMB, env->thumb);
--        DP_TBFLAG_AM32(flags, CONDEXEC, env->condexec_bits);
--    }
--
--    /*
--     * The SS_ACTIVE and PSTATE_SS bits correspond to the state machine
--     * states defined in the ARM ARM for software singlestep:
--     *  SS_ACTIVE   PSTATE.SS   State
--     *     0            x       Inactive (the TB flag for SS is always 0)
--     *     1            0       Active-pending
--     *     1            1       Active-not-pending
--     * SS_ACTIVE is set in hflags; PSTATE__SS is computed every TB.
--     */
--    if (EX_TBFLAG_ANY(flags, SS_ACTIVE) && (env->pstate & PSTATE_SS)) {
--        DP_TBFLAG_ANY(flags, PSTATE__SS, 1);
--    }
--
--    *pflags = flags.flags;
--    *cs_base = flags.flags2;
--}
--
- #ifdef TARGET_AARCH64
  /*
-  * The manual says that when SVE is enabled and VQ is widened the
+  * Although the ARM implementation of hardware assisted debugging
+  * allows for different breakpoints per-core, the current GDB
+diff --git a/target/arm/tcg-stubs.c b/target/arm/tcg-stubs.c
+index 93a15cad61..5e5166c049 100644
+--- a/target/arm/tcg-stubs.c
++++ b/target/arm/tcg-stubs.c
+@@ -21,10 +21,6 @@ void raise_exception_ra(CPUARMState *env, uint32_t excp, uint32_t syndrome,
+ {
+     g_assert_not_reached();
+ }
+-/* Temporarily while cpu_get_tb_cpu_state() is still in common code */
+-void assert_hflags_rebuild_correctly(CPUARMState *env)
+-{
+-}
+ 
+ /* TLBI insns are only used by TCG, so we don't need to do anything for KVM */
+ void define_tlb_insn_regs(ARMCPU *cpu)
 diff --git a/target/arm/tcg/hflags.c b/target/arm/tcg/hflags.c
-index e51d9f7b15..e530f65ed7 100644
+index e530f65ed7..5315264c28 100644
 --- a/target/arm/tcg/hflags.c
 +++ b/target/arm/tcg/hflags.c
-@@ -10,6 +10,7 @@
- #include "internals.h"
- #include "cpu-features.h"
- #include "exec/helper-proto.h"
-+#include "accel/tcg/cpu-ops.h"
- #include "cpregs.h"
- 
- static inline bool fgt_svc(CPUARMState *env, int el)
-@@ -513,3 +514,112 @@ void assert_hflags_rebuild_correctly(CPUARMState *env)
-     }
- #endif
+@@ -499,7 +499,7 @@ void HELPER(rebuild_hflags_a64)(CPUARMState *env, int el)
+     env->hflags = rebuild_hflags_a64(env, el, fp_el, mmu_idx);
  }
-+
-+static bool mve_no_pred(CPUARMState *env)
-+{
-+    /*
-+     * Return true if there is definitely no predication of MVE
-+     * instructions by VPR or LTPSIZE. (Returning false even if there
-+     * isn't any predication is OK; generated code will just be
-+     * a little worse.)
-+     * If the CPU does not implement MVE then this TB flag is always 0.
-+     *
-+     * NOTE: if you change this logic, the "recalculate s->mve_no_pred"
-+     * logic in gen_update_fp_context() needs to be updated to match.
-+     *
-+     * We do not include the effect of the ECI bits here -- they are
-+     * tracked in other TB flags. This simplifies the logic for
-+     * "when did we emit code that changes the MVE_NO_PRED TB flag
-+     * and thus need to end the TB?".
-+     */
-+    if (cpu_isar_feature(aa32_mve, env_archcpu(env))) {
-+        return false;
-+    }
-+    if (env->v7m.vpr) {
-+        return false;
-+    }
-+    if (env->v7m.ltpsize < 4) {
-+        return false;
-+    }
-+    return true;
-+}
-+
-+void cpu_get_tb_cpu_state(CPUARMState *env, vaddr *pc,
-+                          uint64_t *cs_base, uint32_t *pflags)
-+{
-+    CPUARMTBFlags flags;
-+
-+    assert_hflags_rebuild_correctly(env);
-+    flags = env->hflags;
-+
-+    if (EX_TBFLAG_ANY(flags, AARCH64_STATE)) {
-+        *pc = env->pc;
-+        if (cpu_isar_feature(aa64_bti, env_archcpu(env))) {
-+            DP_TBFLAG_A64(flags, BTYPE, env->btype);
-+        }
-+    } else {
-+        *pc = env->regs[15];
-+
-+        if (arm_feature(env, ARM_FEATURE_M)) {
-+            if (arm_feature(env, ARM_FEATURE_M_SECURITY) &&
-+                FIELD_EX32(env->v7m.fpccr[M_REG_S], V7M_FPCCR, S)
-+                != env->v7m.secure) {
-+                DP_TBFLAG_M32(flags, FPCCR_S_WRONG, 1);
-+            }
-+
-+            if ((env->v7m.fpccr[env->v7m.secure] & R_V7M_FPCCR_ASPEN_MASK) &&
-+                (!(env->v7m.control[M_REG_S] & R_V7M_CONTROL_FPCA_MASK) ||
-+                 (env->v7m.secure &&
-+                  !(env->v7m.control[M_REG_S] & R_V7M_CONTROL_SFPA_MASK)))) {
-+                /*
-+                 * ASPEN is set, but FPCA/SFPA indicate that there is no
-+                 * active FP context; we must create a new FP context before
-+                 * executing any FP insn.
-+                 */
-+                DP_TBFLAG_M32(flags, NEW_FP_CTXT_NEEDED, 1);
-+            }
-+
-+            bool is_secure = env->v7m.fpccr[M_REG_S] & R_V7M_FPCCR_S_MASK;
-+            if (env->v7m.fpccr[is_secure] & R_V7M_FPCCR_LSPACT_MASK) {
-+                DP_TBFLAG_M32(flags, LSPACT, 1);
-+            }
-+
-+            if (mve_no_pred(env)) {
-+                DP_TBFLAG_M32(flags, MVE_NO_PRED, 1);
-+            }
-+        } else {
-+            /*
-+             * Note that XSCALE_CPAR shares bits with VECSTRIDE.
-+             * Note that VECLEN+VECSTRIDE are RES0 for M-profile.
-+             */
-+            if (arm_feature(env, ARM_FEATURE_XSCALE)) {
-+                DP_TBFLAG_A32(flags, XSCALE_CPAR, env->cp15.c15_cpar);
-+            } else {
-+                DP_TBFLAG_A32(flags, VECLEN, env->vfp.vec_len);
-+                DP_TBFLAG_A32(flags, VECSTRIDE, env->vfp.vec_stride);
-+            }
-+            if (env->vfp.xregs[ARM_VFP_FPEXC] & (1 << 30)) {
-+                DP_TBFLAG_A32(flags, VFPEN, 1);
-+            }
-+        }
-+
-+        DP_TBFLAG_AM32(flags, THUMB, env->thumb);
-+        DP_TBFLAG_AM32(flags, CONDEXEC, env->condexec_bits);
-+    }
-+
-+    /*
-+     * The SS_ACTIVE and PSTATE_SS bits correspond to the state machine
-+     * states defined in the ARM ARM for software singlestep:
-+     *  SS_ACTIVE   PSTATE.SS   State
-+     *     0            x       Inactive (the TB flag for SS is always 0)
-+     *     1            0       Active-pending
-+     *     1            1       Active-not-pending
-+     * SS_ACTIVE is set in hflags; PSTATE__SS is computed every TB.
-+     */
-+    if (EX_TBFLAG_ANY(flags, SS_ACTIVE) && (env->pstate & PSTATE_SS)) {
-+        DP_TBFLAG_ANY(flags, PSTATE__SS, 1);
-+    }
-+
-+    *pflags = flags.flags;
-+    *cs_base = flags.flags2;
-+}
+ 
+-void assert_hflags_rebuild_correctly(CPUARMState *env)
++static void assert_hflags_rebuild_correctly(CPUARMState *env)
+ {
+ #ifdef CONFIG_DEBUG_TCG
+     CPUARMTBFlags c = env->hflags;
 -- 
 2.43.0
 
