@@ -2,55 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63495AA5425
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 20:51:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6D3EAA5430
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 20:52:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uACW8-0003Mc-Rf; Wed, 30 Apr 2025 14:50:48 -0400
+	id 1uACWp-00058i-64; Wed, 30 Apr 2025 14:51:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uACW5-0003Lk-I2
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 14:50:45 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uACWm-000557-Fv
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 14:51:28 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uACW3-0008HK-9F
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 14:50:45 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uACWk-0008MW-SY
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 14:51:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746039041;
+ s=mimecast20190719; t=1746039086;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=3FfK8u08oVV8pviIgKJKmYZYnSq6V3WDTwB072H8SUI=;
- b=LEdJ/rjHVAsofx5Njt6NN4/iFXNH3rHU86ErxXZhguNwxJv2V3xU5makhyYF90Nn6WLEv8
- qWEXhljtCa2vF6jk+IxP1mx9NAM9vBSXdKUJBiTpuUHC0PF6EqBkYp5afjF0JvHZ58exUD
- Drpja0lcGe+AMRb8ZE2+Zv1G2xkY2VE=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ERIgXDinfeSmrMlkgVyEvdDJ79lG2QLoTJsXS0Wtl2o=;
+ b=cVuis6RNKpVzjvSLyeMC3uQOVzBEbzvARIx16CEtxXKo3gq9/KvMHbfdlMZvTHYQHJqZ+X
+ GJ3Na8c65eCVcStNbClnBG5gWdPaibyk6osTRyMN+PPVUC2kauZ5+OQpOdqNIKg8P3hflq
+ TCcbAJzGbRcyumIsmggt8oq2drE6Tgc=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-526-QoPPYL_6N46hWzukkxJvqA-1; Wed,
- 30 Apr 2025 14:50:39 -0400
-X-MC-Unique: QoPPYL_6N46hWzukkxJvqA-1
-X-Mimecast-MFC-AGG-ID: QoPPYL_6N46hWzukkxJvqA_1746039039
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-614-w5-KKsFOOYmPsn0uIVzKhA-1; Wed,
+ 30 Apr 2025 14:50:45 -0400
+X-MC-Unique: w5-KKsFOOYmPsn0uIVzKhA-1
+X-Mimecast-MFC-AGG-ID: w5-KKsFOOYmPsn0uIVzKhA_1746039041
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BBD991800261
- for <qemu-devel@nongnu.org>; Wed, 30 Apr 2025 18:50:38 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 406E21956052; Wed, 30 Apr 2025 18:50:41 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.45.224.67])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A5E7019560A3; Wed, 30 Apr 2025 18:50:37 +0000 (UTC)
+ id 3D71F19560A3; Wed, 30 Apr 2025 18:50:38 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 0/9] Misc patches (s390x, build env, clean-ups)
-Date: Wed, 30 Apr 2025 20:50:26 +0200
-Message-ID: <20250430185035.724919-1-thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ Steffen Eiden <seiden@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>, Gautam Gala <ggala@linux.ibm.com>
+Subject: [PULL 1/9] target/s390x: Introduce constant when checking if PV
+ header couldn't be decrypted
+Date: Wed, 30 Apr 2025 20:50:27 +0200
+Message-ID: <20250430185035.724919-2-thuth@redhat.com>
+In-Reply-To: <20250430185035.724919-1-thuth@redhat.com>
+References: <20250430185035.724919-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -78,62 +82,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 73d29ea2417b58ca55fba1aa468ba38e3607b583:
+From: Gautam Gala <ggala@linux.ibm.com>
 
-  Merge tag 'for-upstream' of https://repo.or.cz/qemu/kevin into staging (2025-04-27 12:47:23 -0400)
+Introduce a named constant when checking the Set Secure Configuration parameters
+UV call return code for the case where no valid host key was found and therefore
+the PV header couldn't be decrypted (0x108).
 
-are available in the Git repository at:
+Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
+Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: Gautam Gala <ggala@linux.ibm.com>
+Message-ID: <20250423080915.1048123-2-ggala@linux.ibm.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ target/s390x/kvm/pv.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-  https://gitlab.com/thuth/qemu.git tags/pull-request-2025-04-30
-
-for you to fetch changes up to dce324fa06b358ccb01bf35611b6fc53b1f56b96:
-
-  docs/devel/build-environment: enhance MSYS2 instructions (2025-04-30 20:44:20 +0200)
-
-----------------------------------------------------------------
-* Extend s390x diagnose call 308 subcode 10 to return more information
-* Make valgrind support configurable
-* Drop support for Python 3.8
-* Some other misc cosmetic changes
-
-----------------------------------------------------------------
-Daniel P. Berrangé (1):
-      meson/configure: add 'valgrind' option & --{en, dis}able-valgrind flag
-
-Gautam Gala (3):
-      target/s390x: Introduce constant when checking if PV header couldn't be decrypted
-      target/s390x: Introduce function when exiting PV
-      target/s390x: Return UVC cmd code, RC and RRC value when DIAG 308 Subcode 10 fails to enter secure mode
-
-Philippe Mathieu-Daudé (1):
-      hw/rtc/mc146818rtc: Drop pre-v3 migration stream support
-
-Pierrick Bouvier (1):
-      docs/devel/build-environment: enhance MSYS2 instructions
-
-Thomas Huth (3):
-      Drop support for Python 3.8
-      tests/functional/test_ppc64_pseries: Skip test_ppc64_linux_smt_boot if necessary
-      meson.build: Put the D-Bus summary into the UI section
-
- docs/about/build-platforms.rst         |  2 +-
- docs/devel/build-environment.rst       |  4 +--
- configure                              | 14 ++++----
- meson.build                            | 15 ++++++--
- hw/s390x/ipl.h                         |  6 ++--
- target/s390x/kvm/pv.h                  | 26 ++++++++++----
- hw/rtc/mc146818rtc.c                   | 18 +++++-----
- hw/s390x/ipl.c                         | 11 +++---
- hw/s390x/s390-virtio-ccw.c             | 14 ++++----
- target/s390x/kvm/pv.c                  | 66 ++++++++++++++++++++++------------
- meson_options.txt                      |  2 ++
- python/Makefile                        |  8 ++---
- python/setup.cfg                       |  7 ++--
- python/tests/minreqs.txt               |  2 +-
- scripts/meson-buildoptions.sh          |  3 ++
- scripts/qapi/mypy.ini                  |  2 +-
- tests/docker/dockerfiles/python.docker |  1 -
- tests/functional/test_ppc64_pseries.py |  1 +
- 18 files changed, 126 insertions(+), 76 deletions(-)
+diff --git a/target/s390x/kvm/pv.c b/target/s390x/kvm/pv.c
+index fe0a72c416e..1947a3d6692 100644
+--- a/target/s390x/kvm/pv.c
++++ b/target/s390x/kvm/pv.c
+@@ -147,6 +147,7 @@ bool s390_pv_vm_try_disable_async(S390CcwMachineState *ms)
+     return true;
+ }
+ 
++#define UV_RC_SSC_INVAL_HOSTKEY    0x0108
+ int s390_pv_set_sec_parms(uint64_t origin, uint64_t length, Error **errp)
+ {
+     int ret, pvrc;
+@@ -158,7 +159,7 @@ int s390_pv_set_sec_parms(uint64_t origin, uint64_t length, Error **errp)
+     ret = s390_pv_cmd_pvrc(KVM_PV_SET_SEC_PARMS, &args, &pvrc);
+     if (ret) {
+         error_setg(errp, "Failed to set secure execution parameters");
+-        if (pvrc == 0x108) {
++        if (pvrc == UV_RC_SSC_INVAL_HOSTKEY) {
+             error_append_hint(errp, "Please check whether the image is "
+                                     "correctly encrypted for this host\n");
+         }
+-- 
+2.49.0
 
 
