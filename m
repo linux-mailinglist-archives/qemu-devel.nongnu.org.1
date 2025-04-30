@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F05F6AA51FB
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 18:49:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38016AA51FD
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 18:49:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAAcH-0004so-EY; Wed, 30 Apr 2025 12:49:01 -0400
+	id 1uAAcb-0004w7-Ht; Wed, 30 Apr 2025 12:49:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAAcF-0004o7-Cl
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:48:59 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1uAAcG-0004sk-JM
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:49:00 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAAcD-0001t1-Ql
- for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:48:59 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-736dd9c4b40so1239482b3a.0
- for <qemu-devel@nongnu.org>; Wed, 30 Apr 2025 09:48:57 -0700 (PDT)
+ id 1uAAcE-0001tQ-Cy
+ for qemu-devel@nongnu.org; Wed, 30 Apr 2025 12:49:00 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-736dd9c4b40so1239492b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 30 Apr 2025 09:48:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746031736; x=1746636536; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746031737; x=1746636537; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qEe9bxPY78rzldhxeSl0yGcr1LEt/gfI/ABj5JQK6lg=;
- b=KK7nyOnes8LsJ3/kuzaFefB9ID7cmyhbHtG2RgXh1YWkdEj7VSrP7n3X11qBrQqAah
- Yu68vJwvUFZ0FdKChRCP1xGtCNCukF08IPl69zIGS0eCbbyt5v3psrIGZWrRfRsVVUVk
- 3OuIJtlmgMaWLbY9I+aeRM6AMGhDdd9G/yzcxiBYqg3IFlPfhWWKOQHvrPjjGl5insOG
- GrQ30LwjDh5+gYfj0cn40G3qFl6kSAbiobUY0p0ueBVGM6bEMJkPhMIrNulq5r6oVF73
- yAoj+zaCHqcW1kI+vQGMlWuogdTNKPwX62McBZ9w90KF4364hS32AXwcrEgQ+DySkdkS
- 2YuQ==
+ bh=m8QQZQVqZoC308ckvLV+kB4d6m4SiPb0nD+im6xT08U=;
+ b=L5u/+81YhJyXNbFsj+0l/R+iIMl/pQ2cMEcChT3uNym59EIhSQ2x1pKwablYeYJyi/
+ ZZpOhKpjo5kE/AVwFgznUPOmETkeWKklUMUnwwt7L/sfmNO9YbSHpAXHVc1ZqXnXB3pw
+ 95875TiICjMp0QgXR09r4dpd7yT65PBX3LhtWOIACyEjNHtRhMXYRKYuW8Kmc9BARFgx
+ Wo+4K+wLFgQK+AjFpf1Ig8EPvn70aM46FPH/BT6uiRvGmGhFSf4ftGeCahHY8D/UaH22
+ Z4KdKQTg9CHMmhmo7CbHFO812MAfYKxsCBvEThCGnZO8aMmi+fOCIpOBBvdLuwLgLDIv
+ vYOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746031736; x=1746636536;
+ d=1e100.net; s=20230601; t=1746031737; x=1746636537;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qEe9bxPY78rzldhxeSl0yGcr1LEt/gfI/ABj5JQK6lg=;
- b=oMz1qyjtkEjAml3U8k56ueXhNoqjsWoUT7RUeQ1RRcLkpw09WiljBmTm8AmMHhBQIi
- bREtGYY6x0AaTSD+Pb3QkfwakdNhc/g1DnjUjzy9OSFPDE8AGk8Btv3Zz5EC9JAogLyU
- K7ISCNb+tp7/LYna0hL25EWcMua3Ecam61vogGh+iaj+pQ7zSiCZ6QDMSnIEEeARXGiJ
- dgFL1s1OhKiSDPfjF/isC79LH2uYfnLlKfat3/GRGslNByQa6ckHV5Nn7Dv4STaY+8cs
- zLE/kN7uhBN3iN3F6KabitvSa2pvl5nicJUl+qfBUHwMEXpqZb8AAas/9ziuECNl72V1
- +u0A==
-X-Gm-Message-State: AOJu0YwfjPezXgjCH5dKclj+EghnL/tt8Opuug/gE867lYae91fBnQkz
- JwPCeQ6jVG31Oyx8dnuicT1fjGmFw3bq51ETSLBxhenpMM02X2GKqQvpToi6UWh+k4GhDn0MQyr
- s
-X-Gm-Gg: ASbGncuHhRfB4hqF4Xk/Y+9qj4TMH3oD1iKGVIig1yFo8rGH3eFoBH2e9R3FWQlJ1La
- Qom9vbs4nOMyZ5WBO7bQCnm49ycbl3R55jWDA3cKix+tO6UjnFcqJCKzJLuPEpWD7NIdS9gYq6r
- 6uLf6fI6YKiLFt5XN1OTBxtLJdtU6R1nGyOSdtaQ6hOZvnVOLXOluYGK/tREB4VvQKqivp2xwFH
- PiZEjAdi1rLLXC7vCjq766Eot1NVF55pDQ+vyc6vFq2+ibCr1LowFStJwA3AZS195hcxoH/XpHJ
- AYe1siq4o6JfWSiyEX4BT9gipIffSbM1TLOvTBqgPRwN1rw0dL4d9d5mOBwxcafk4buQyWRlccU
+ bh=m8QQZQVqZoC308ckvLV+kB4d6m4SiPb0nD+im6xT08U=;
+ b=nmZWrzUGW5sqJXwIeEYhdRleWu160hd5RTRyLicMwM8z53gghKzSFWKtxv2Ksv+Vqw
+ R0zzS/r6T/XJj4RMQ965Aipvdyi2wrptGWG/QNLRu/xkmpxns4y/XZIW10uSoQDXrUoS
+ yLEUDNRhBHRlS7T8f7P5e3SbZ7wnhNWDQIVHuxEpiGIDE+CETXwOA+3EOKrQNJhG4UAf
+ X+f9ESBZm0ODsZ5VNRiJChwUJPOn9O2H7+bFGid/LuTsw5zQUPbyrF17Rz4Vo8pk1OCY
+ XTmuXLBtQyBEUmADFnVc7LNpYZuJE/46k9xHqyPfHm5K8C6j75zgNXCeHmiPNtp8WrXX
+ KE7A==
+X-Gm-Message-State: AOJu0Yx1CehaklE8sMnGjUFupXyddM7aZ22CUlZ7927E0B1utGCxNTHr
+ bPHzO10WH0S5p/7n40R4osru5BDxEe7RlyHv3M6EjVKg5zZxOE6Q9IwHVz/whnYJYCdtzjqeOuA
+ h
+X-Gm-Gg: ASbGncuW6LUTfc0zHCQapGERM2ikUqWr1stkWzA/4atT8XZtK/G3EYEDqH/fUBYoJmI
+ 7OyJHCxa51V76ZKUPQOSWr/xhrxhS04pnYnpGOmwq9Bn5ZLA5THzKZbilfB5cKA4XxFCLQcs4Nf
+ fm1KJDEmb+6P0Gf3YxDV77XJPcYYRyKoUZGykwMQ0R6p4bK7C4jpNw15gKchJnF3P659/wTVyJ4
+ +NQoxIEqvDfmTtFiSHvuM3PnNwZFsEuAIpZ3AYldhpq/u6ZK2jTQZGw9QP0MBQfQE+MbL9+raPx
+ T/wxw6MdIWdvtFJXHzP++aQ+oZk0tRNCzBjBL8k37nEA8D1YyIjUwgy4eJVIt3aruSwTDDKy0C4
  =
-X-Google-Smtp-Source: AGHT+IGI3/QXBrZKOsMmPLeYSI3uNZ6/5PtDuhNqCMRPomMAnvVbazYYqketqmBdKVMjbPgADmgb0A==
-X-Received: by 2002:a05:6a20:9e06:b0:1ee:d664:17a4 with SMTP id
- adf61e73a8af0-20b972547damr238217637.10.1746031736316; 
- Wed, 30 Apr 2025 09:48:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEjiXGq65W3AQN3yQZif1AObQuuPkPWlyk066RbUvm4BqWosniNjxe71pT3TZkFsUui7vqjmg==
+X-Received: by 2002:a05:6a21:1796:b0:1f0:e6db:b382 with SMTP id
+ adf61e73a8af0-20b96d5f470mr247574637.8.1746031737052; 
+ Wed, 30 Apr 2025 09:48:57 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b15f76f580asm9129704a12.2.2025.04.30.09.48.55
+ 41be03b00d2f7-b15f76f580asm9129704a12.2.2025.04.30.09.48.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 30 Apr 2025 09:48:56 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org,
 	philmd@linaro.org
-Subject: [PATCH v2 01/16] accel/tcg: Generalize fake_user_interrupt test
-Date: Wed, 30 Apr 2025 09:48:39 -0700
-Message-ID: <20250430164854.2233995-2-richard.henderson@linaro.org>
+Subject: [PATCH v2 02/16] accel/tcg: Unconditionally use CPU_DUMP_CCOP in
+ log_cpu_exec
+Date: Wed, 30 Apr 2025 09:48:40 -0700
+Message-ID: <20250430164854.2233995-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250430164854.2233995-1-richard.henderson@linaro.org>
 References: <20250430164854.2233995-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,33 +100,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Test for the hook being present instead of ifdef TARGET_I386.
+This flag is only tested by target/i386, so including this
+makes no functional change.  This is similar to other places
+like cpu-target.c which use CPU_DUMP_CCOP unconditionally.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cpu-exec.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ accel/tcg/cpu-exec.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
 diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index 279df5fae7..8ff4a34509 100644
+index 8ff4a34509..ff979a2c57 100644
 --- a/accel/tcg/cpu-exec.c
 +++ b/accel/tcg/cpu-exec.c
-@@ -732,10 +732,10 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret)
-      * If user mode only, we simulate a fake exception which will be
-      * handled outside the cpu execution loop.
-      */
+@@ -285,14 +285,11 @@ static void log_cpu_exec(vaddr pc, CPUState *cpu,
+         if (qemu_loglevel_mask(CPU_LOG_TB_CPU)) {
+             FILE *logfile = qemu_log_trylock();
+             if (logfile) {
+-                int flags = 0;
++                int flags = CPU_DUMP_CCOP;
+ 
+                 if (qemu_loglevel_mask(CPU_LOG_TB_FPU)) {
+                     flags |= CPU_DUMP_FPU;
+                 }
 -#if defined(TARGET_I386)
-     const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
--    tcg_ops->fake_user_interrupt(cpu);
--#endif /* TARGET_I386 */
-+    if (tcg_ops->fake_user_interrupt) {
-+        tcg_ops->fake_user_interrupt(cpu);
-+    }
-     *ret = cpu->exception_index;
-     cpu->exception_index = -1;
-     return true;
+-                flags |= CPU_DUMP_CCOP;
+-#endif
+                 if (qemu_loglevel_mask(CPU_LOG_TB_VPU)) {
+                     flags |= CPU_DUMP_VPU;
+                 }
 -- 
 2.43.0
 
