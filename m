@@ -2,83 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 296DBAA3D95
-	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 02:02:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58813AA3F55
+	for <lists+qemu-devel@lfdr.de>; Wed, 30 Apr 2025 02:37:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1u9usp-0002KO-Pc; Tue, 29 Apr 2025 20:01:03 -0400
+	id 1u9vQh-0004y2-Oa; Tue, 29 Apr 2025 20:36:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1u9usk-0002K2-Sx; Tue, 29 Apr 2025 20:00:58 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1u9vQg-0004wN-3U; Tue, 29 Apr 2025 20:36:02 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1u9usj-0006tw-51; Tue, 29 Apr 2025 20:00:58 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-2279915e06eso76164925ad.1; 
- Tue, 29 Apr 2025 17:00:54 -0700 (PDT)
+ id 1u9vQb-0003ng-27; Tue, 29 Apr 2025 20:36:01 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-2264aefc45dso99785285ad.0; 
+ Tue, 29 Apr 2025 17:35:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1745971254; x=1746576054; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
+ d=gmail.com; s=20230601; t=1745973355; x=1746578155; darn=nongnu.org;
+ h=in-reply-to:references:cc:to:from:subject:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Rp+BmmdqaPIOB7vBXabGioxQafO4oblBicMZFFr5CFc=;
- b=UOlXK5ZlpUFEZYFEE8xxhiniwp4xq8CSstulZxnPd9c9oldIPEV1um/DzWwcwPLoJZ
- l6aLUrPsPROoeZfD0xXoYhDqJxNMK8JV7cSgwa+OYXK4RLlj2EJ9bNjGQGRdynnBcaxn
- gOM2nS00jWWKCA8MgnHxiSPPXOCDjTYVcUyMo8ecxs4hyLHOsUAUfjdtha3Y4Xp2eXVW
- UUNVogZQWq5Q56ZDzdLwToL13zaPyvA6EvCMKAl66fJ4YCGWBRlVDb/mg0cDf+1oBhz6
- u02DM3243VsZsOOmPrhY4SWWUMUeB9nsGIcBW8pRo5GsRt3ilC0P8+Z3IQ2wNQw+XCVc
- pCZw==
+ bh=nOlo69ZX6xx9qZ8ovbNVqcFPoJA/P2fhbRZGobMJjX0=;
+ b=jydY75mHRIJooLrkce7s2rKkZsnlilPLCs9wJKyZJA0fpBuG/zN4MzMDMlMugfre5+
+ LrmLCUEa/OPVqYvHXRQO3zmvnQAWUC583h+AE9FoSHJwfxc1q0fqpnu4rCR/i/x9zOhI
+ 97QEVFjg2P70rVLuszl6m5jeGQW7Cotnex5+J4B3GrCnS0kiKRwcNYRAOYvslyVqOFSo
+ pfdai+/J1tKhcnF1njzqxOV/nwY4Rv1HYn13o7vsMAcN1lhI3EvEPy40w9/VsNqv6OVp
+ QRmhvrLqVc/63XX78chkNwK4iSM9NO87KLIHlfWVDWdiAJ8hu68WhIeRM7LWlHjB+/H9
+ UA1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1745971254; x=1746576054;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
+ d=1e100.net; s=20230601; t=1745973355; x=1746578155;
+ h=in-reply-to:references:cc:to:from:subject:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=Rp+BmmdqaPIOB7vBXabGioxQafO4oblBicMZFFr5CFc=;
- b=u0DepYoJ88T2Q3i9AI2no+ayte9yVWQTtDBSBcaBbe1wAh7VVowKZT1mveS5Jsb/Bm
- WqX7c41uZAwm5EHpbiAxmtpOa0ex/8TiS7XNS+vImH3sBmIALZLWDWBksFQITcY9tX8N
- ah8m2T+bVyG/wKOZ8XiSi08X+zTRd5g/0AdsH9kTXmct5ONXPv/Ls1g5LW7+aXyNnPqU
- 92ERWtRHd90m3eOTuJrD/nsKQHFl6aiNHFWQvtZTvmc9WtfimW2RnhgcQAYaDdMDXOCq
- 9pXoiiaLIGhqgzCh2g72g27R7IOnS8uStc2Wq5eEM/cVvSXviaQZ28nf97XiBGgUKBKO
- YXNg==
+ bh=nOlo69ZX6xx9qZ8ovbNVqcFPoJA/P2fhbRZGobMJjX0=;
+ b=QyhauKnlIIGwxn7veUtnoQBAeTBl9AGPhPVS9Vt27vFqhrIQOLRIQ6OI1hwWf66uaG
+ Gv4kpmxpAruC9u+rVIhx+qyspciF2pHImddMPPY26tT0Dc5DX/L/mq16OllX6nqDwQI3
+ kFLEEiXXdz+j9Be1O7w4IX5mKar/tAPxl/6r63JZ+zCzjiCztT1mM77Wjs4O75DYD89/
+ rjQzgOFpWbeyzubNx5rZxQVoi9ShDT4Obro937WXE01ayLf9qYPEWEOEMTgtdY0DRYHK
+ ajhOQtzUVmR7OXlmueQUkbG15b3tzlul82FW1NUF0Kuli09UQxVX5+4vHMBfPRUMW4sL
+ MRyA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUmq765EGdadWmHlf+fvLS4r8554R9kVZORTejseZ27/PlNkMBCCkfOfJODpft6K7fh0Qj5Jqp/nH3o@nongnu.org,
- AJvYcCV+nFdHNLyEqOTB5nJRVysv8FzemdZTU2+9EGNoBmUOxxhRfb3fawcaWgw9i8MVhmuHRmfAuo9jn75jLes=@nongnu.org
-X-Gm-Message-State: AOJu0YynhyKeKxnrSLBhM+fmrDc2BOwNKEwXC64J0sjsNetMZWg1K9rr
- tl4TZkbBcF4gi6HdT+yUlwhEZ0OROCr95f06PJsI02w9F+FEAj6Io4BUXGZx
-X-Gm-Gg: ASbGnctbpGdL0iP3ZGUvv3rz9yoR1/DEpITqCXyJ9QxpBKrGhdl12OHZBwIyGQa4MnU
- r5ooryy5z2ih5739fVQ3wmCW/Xbgz9pYNlX0+J5Z5KgSPRdW16zWdE/dcaFjfxjtwFRdeMEba3F
- ZFq0QIFOuHjrjBpMqKULy4evC/NMMN152m6bDekR0Bh5sGZtlEc87ToMK9YsQxW1yLtwltO7bUu
- LlkeZYxT+JC9I7r4AItuTDq9wjGT35W1rxf/Fwo4FFr3kVY5/1Ei4rMziuCaQdzt0phJeCI7257
- wgnzJJSxY7kzXHfkeO7WKmxcm6x0k8Uj
-X-Google-Smtp-Source: AGHT+IFfdmjraXc720GT5AxlxEHu0rvJK3vKTaaq6d01gOQEhfD26p5lbdQrvJ6/cI49Ua+DkyKMIw==
-X-Received: by 2002:a17:903:188:b0:224:6ee:ad with SMTP id
- d9443c01a7336-22df5861e8fmr7395985ad.44.1745971253774; 
- Tue, 29 Apr 2025 17:00:53 -0700 (PDT)
-Received: from localhost ([1.145.95.178]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22db51023a4sm109082195ad.167.2025.04.29.17.00.50
+ AJvYcCUsw+2nIAeUg/+MeE4hn7+nwve5W8/gzBz4UionlE6GQmmnGGniGLVD/sgPvnD9KpLc+m/hh05Wzjp1@nongnu.org,
+ AJvYcCWkAaCEvMiWS2jRrq+8ep1NFVvwCzajBFd9nPW0vWtxfWIZBHZE9mLJwg17660oF+Z3DJK9oAcQU+Y=@nongnu.org
+X-Gm-Message-State: AOJu0Yw11s8onuQTlHaFkswiSg5tapkwYDH5Sek0sjcqUBhWDcCy4ol6
+ pWGZ57/ibJ41t0tlq8DCrIXf6+Cb2th90ixaF/5xh5zg8KITsmQr
+X-Gm-Gg: ASbGnctKW2levdead+Fxj86xrdzuzMAsg4U2VNXryTZxwiLDlaLr5hPXDYymtj2sGM5
+ oVs48uFN7Km2ij8gxonAqqDE7k1O8aNf1clVZi+jNMGnbhFs3MfkzcggqlgKJJXJPg0rlIsPiD3
+ nBpSzS2Tselvix+Jeqy6rTb5HbOVq/OwcjEM/0hVyoz9Y1VUwcOKGnI365sNd5ysWI1RIpD0/xe
+ N8Mqfgny/+epTXJQImtMjKFKJGlgY+cDsCK1hmCA8Y5wMLFVjkR1YU1Z1iJ7Mh2+cBLvdk7LhV7
+ wmahYN9+qQDETivwAC9Tbnpw9n1V+hw1
+X-Google-Smtp-Source: AGHT+IGeQHBmFmyYvaia2fOMiXcq/6KkVqtsNeNDAXqC2CRrOqM3RlHMEZdlZ6eVGB/F+9uzalPr+Q==
+X-Received: by 2002:a17:90b:4d08:b0:309:f407:5ad1 with SMTP id
+ 98e67ed59e1d1-30a332e99f2mr1792738a91.14.1745973354942; 
+ Tue, 29 Apr 2025 17:35:54 -0700 (PDT)
+Received: from localhost ([1.145.119.81]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-22db4dbd432sm109824995ad.90.2025.04.29.17.35.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Apr 2025 17:00:53 -0700 (PDT)
+ Tue, 29 Apr 2025 17:35:54 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 30 Apr 2025 10:00:48 +1000
-Message-Id: <D9JJ5IIYVLVG.2RQ8C03WHFVBZ@gmail.com>
-Cc: <qemu-ppc@nongnu.org>, <qemu-stable@nongnu.org>, "Daniel Henrique
- Barboza" <danielhb413@gmail.com>, "Harsh Prateek Bora"
- <harshpb@linux.ibm.com>
-Subject: Re: [PULL 1/2] target/ppc: Big-core scratch register fix
+Date: Wed, 30 Apr 2025 10:35:50 +1000
+Message-Id: <D9JJWC1IWEEB.1IA8DSZF98YT4@gmail.com>
+Subject: Re: [RFC PATCH] target/ppc: Inline most of dcbz helper
 From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Thomas Huth" <thuth@redhat.com>, <qemu-devel@nongnu.org>
+To: "BALATON Zoltan" <balaton@eik.bme.hu>, =?utf-8?q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>
+Cc: "Richard Henderson" <richard.henderson@linaro.org>,
+ <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>
 X-Mailer: aerc 0.19.0
-References: <20250408124550.40485-1-npiggin@gmail.com>
- <20250408124550.40485-2-npiggin@gmail.com>
- <2d6dead5-f56c-43cf-b7d1-9567fef99616@redhat.com>
-In-Reply-To: <2d6dead5-f56c-43cf-b7d1-9567fef99616@redhat.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x631.google.com
+References: <20240701005939.5A0AF4E6000@zero.eik.bme.hu>
+ <d3c6c417-20d9-a215-2a5c-86fa084b00fa@eik.bme.hu>
+ <173c9111-e065-0dd5-c276-6bbc0351f9cc@eik.bme.hu>
+ <2b969dcd-4a82-9086-803d-c52ea274fefb@eik.bme.hu>
+ <e4fc537a-a15e-77dd-1167-32b12ee7a22d@eik.bme.hu>
+ <ded56ee3-25bb-4ffd-98e4-2f47c500c88d@linaro.org>
+ <164d86d5-f17a-1f89-d973-c3e56255195d@eik.bme.hu>
+ <875xin3qeh.fsf@draig.linaro.org>
+ <4f7cbb13-2c7c-1d3e-9d41-49ec16bee245@eik.bme.hu>
+ <87zffy3l4g.fsf@draig.linaro.org>
+ <aec151d9-fae2-4bbc-c690-2b68f5906664@eik.bme.hu>
+In-Reply-To: <aec151d9-fae2-4bbc-c690-2b68f5906664@eik.bme.hu>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,76 +109,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu Apr 24, 2025 at 6:25 PM AEST, Thomas Huth wrote:
-> On 08/04/2025 14.45, Nicholas Piggin wrote:
->> The per-core SCRATCH0-7 registers are shared between big cores, which
->> was missed in the big-core implementation. It is difficult to model
->> well with the big-core =3D=3D 2xPnvCore scheme we moved to, this fix
->> uses the even PnvCore to store the scrach data.
->>=20
->> Also remove a stray log message that came in with the same patch that
->> introduced patch.
->>=20
->> Fixes: c26504afd5f5c ("ppc/pnv: Add a big-core mode that joins two regul=
-ar cores")
->> Cc: qemu-stable@nongnu.org
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> ---
->>   target/ppc/misc_helper.c | 9 ++++++++-
->>   1 file changed, 8 insertions(+), 1 deletion(-)
->>=20
->> diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
->> index 2d9512c116..46ae454afd 100644
->> --- a/target/ppc/misc_helper.c
->> +++ b/target/ppc/misc_helper.c
->> @@ -332,6 +332,10 @@ target_ulong helper_load_sprd(CPUPPCState *env)
->>       PnvCore *pc =3D pnv_cpu_state(cpu)->pnv_core;
->>       target_ulong sprc =3D env->spr[SPR_POWER_SPRC];
->>  =20
->> +    if (pc->big_core) {
->> +        pc =3D pnv_chip_find_core(pc->chip, CPU_CORE(pc)->core_id & ~0x=
-1);
->> +    }
->> +
->>       switch (sprc & 0x3e0) {
->>       case 0: /* SCRATCH0-3 */
->>       case 1: /* SCRATCH4-7 */
->> @@ -368,6 +372,10 @@ void helper_store_sprd(CPUPPCState *env, target_ulo=
-ng val)
->>       PnvCore *pc =3D pnv_cpu_state(cpu)->pnv_core;
->>       int nr;
->>  =20
->> +    if (pc->big_core) {
->> +        pc =3D pnv_chip_find_core(pc->chip, CPU_CORE(pc)->core_id & ~0x=
-1);
->> +    }
->> +
+On Wed Apr 30, 2025 at 7:09 AM AEST, BALATON Zoltan wrote:
+> On Tue, 29 Apr 2025, Alex Benn=C3=A9e wrote:
+>> BALATON Zoltan <balaton@eik.bme.hu> writes:
+>>> On Tue, 29 Apr 2025, Alex Benn=C3=A9e wrote:
+>>>> BALATON Zoltan <balaton@eik.bme.hu> writes:
+>>>>> On Mon, 28 Apr 2025, Richard Henderson wrote:
+>>>>>> On 4/28/25 06:26, BALATON Zoltan wrote:
+>>>>>>> I have tried profiling the dst in real card vfio vram with dcbz
+>>>>>>> case (with 100 iterations instead of 10000 in above tests) but I'm
+>>>>>>> not sure I understand the results. vperm and dcbz show up but not
+>>>>>>> too high. Can somebody explain what is happening here and where the
+>>>>>>> overhead likely comes from? Here is the profile result I got:
+>>>>>>> Samples: 104K of event 'cycles:Pu', Event count (approx.):
+>>>>>>> 122371086557
+>>>>>>>  =C2=A0 Children=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Self=C2=A0 Command=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Shared Object=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Symbol
+>>>>>>> -=C2=A0=C2=A0 99.44%=C2=A0=C2=A0=C2=A0=C2=A0 0.95%=C2=A0 qemu-syste=
+m-ppc=C2=A0 qemu-system-ppc=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 [.]
+>>>>>>> cpu_exec_loop
+>>>>>>>  =C2=A0=C2=A0 - 98.49% cpu_exec_loop
+>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - 98.48% cpu_tb_exec
+>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - 90.95% 0x7f4e70=
+5d8f15
+>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 helper_ldub_mmu
+>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 do_ld_mmio_beN
+>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ - cpu_io_recompile
+>>>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 - 45.79% cpu_loop_exit_noexc
+>>>>>>
+>>>>>> I think the real problem is the number of loop exits due to i/o.  If
+>>>>>> I'm reading this rightly, 45% of execution is in cpu_io_recompile.
+>>>>>>
+>>>>>> I/O can only happen as the last insn of a translation block.
+>>>>>
+>>>>> I'm not sure I understand this. A comment above cpu_io_recompile says
+>>>>> "In deterministic execution mode, instructions doing device I/Os must
+>>>>> be at the end of the TB." Is that wrong? Otherwise shouldn't this onl=
+y
+>>>>> apply if running with icount or something like that?
+>>>>
+>>>> That comment should be fixed. It used to only be the case for icount
+>>>> mode but there was another race bug that meant we need to honour devic=
+e
+>>>> access as the last insn for both modes.
+>>>>
+>>>>>
+>>>>>> When we detect that it has happened in the middle of a translation
+>>>>>> block, we abort the block, compile a new one, and restart execution.
+>>>>>
+>>>>> Where does that happen? The calls of cpu_io_recompile in this case
+>>>>> seem to come from io_prepare which is called from do_ld16_mmio_beN if
+>>>>> (!cpu->neg.can_do_io) but I don't see how can_do_io is set.
+>>>>
+>>>> Inline by set_can_do_io()
+>>>
+>>> That one I've found but don't know where the cpu_loop_exit returns
+>>> from the end of cpu_io_recompile.
+>>
+>> cpu_loop_exit longjmp's back to the top of the execution loop.
+>>
+>>>
+>>>>>> Where this becomes a bottleneck is when this same translation block
+>>>>>> is in a loop.  Exactly this case of memset/memcpy of VRAM.  This
+>>>>>> could be addressed by invalidating the previous translation block
+>>>>>> and creating a new one which always ends with the i/o.
+>>>>>
+>>>>> And where to do that? cpu_io_recompile just exits the TB but what
+>>>>> generates the new TB? I need some more clues to understands how to do
+>>>>> this.
+>>>>
+>>>>  cpu->cflags_next_tb =3D curr_cflags(cpu) | CF_MEMI_ONLY | CF_NOIRQ | =
+n;
+>>>>
+>>>> sets the cflags for the next cb, which typically will fail to find and
+>>>> then regenerate. Normally cflags_next_tb is empty.
+>>>
+>>> Shouldn't this only regenerate the next TB on the first loop iteration
+>>> and not afterwards?
+>>
+>> if we've been here before (needing n insn from the base addr) we will
+>> have a cached translation we can re-use. It doesn't stop the longer TB
+>> being called again as we re-enter a loop.
 >
->   Hi Nicholas,
->
-> this patch breaks compilation when QEMU has been configured with=20
-> "--without-default-devices" :
->
-> FAILED: qemu-system-ppc64
-> cc -m64 @qemu-system-ppc64.rsp
-> /usr/bin/ld: libqemu-ppc64-softmmu.a.p/target_ppc_misc_helper.c.o: in=20
-> function `helper_load_sprd':
-> .../qemu/target/ppc/misc_helper.c:336:(.text+0xcab): undefined reference =
-to=20
-> `pnv_chip_find_core'
-> /usr/bin/ld: libqemu-ppc64-softmmu.a.p/target_ppc_misc_helper.c.o: in=20
-> function `helper_store_sprd':
-> .../qemu/target/ppc/misc_helper.c:376:(.text+0xda3): undefined reference =
-to=20
-> `pnv_chip_find_core'
-> collect2: error: ld returned 1 exit status
->
-> Could you please have a look?
+> So then maybe it should at least check if there's already a cached TB=20
+> where it can continue before calling cpu_io_recompile in io_prepare and=
+=20
+> only recompile if needed?
 
-Thanks for the report, I have a hopefully simple fix just going through
-CI now... Do you know if there's any reason to exclude a bunch of
-targets in the build-without-defaults CI test? I wonder if we could just
-enable all, it shouldn't add too much time to build test.
+It basically does do that AFAIKS. cpu_io_recompile() name is misleading
+it does not cause a recompile, it just updates cflags and exits. Next
+entry will look up TB that has just 1 insn and enter that.
+
+> I was thinking maybe we need a flag or counter=20
+> to see if cpu_io_recompile is called more than once and after a limit=20
+> invalidate the TB and create two new ones the first ending at the I/O and=
+=20
+> then what cpu_io_recompile does now which as I understood was what Richar=
+d=20
+> suggested but I don't know how to do that.
+
+memset/cpy routines had kind of the same problem with real hardware.
+They wanted to use vector instructions for best performance, but when
+those are used on MMIO they would trap and be very slow.
+
+Problem is we don't know ahead of time if some routine will access
+MMIO or not. You could recompile it with fewer instructions but then
+it will be slow when used for regular memory.
+
+Heuristics are tough because you could have e.g., one initial big
+memset to clear a MMIO region that iterates many times over inner
+loop of dcbz instructions, but then is never used again for MMIO but
+important for regular page clearing. Making something that dynamically
+decays or periodically would recompile to non-IO case perhaps, but
+then complexity goes up.
+
+I would prefer not like to do that just for a microbenchmark, but if
+you think it is reasonable overall win for average workloads of your
+users then perhaps.
 
 Thanks,
 Nick
