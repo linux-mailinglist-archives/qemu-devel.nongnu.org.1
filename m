@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AE1AAA66E7
+	by mail.lfdr.de (Postfix) with ESMTPS id 65926AA66EA
 	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 01:03:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAcuj-0008NT-A5; Thu, 01 May 2025 19:01:57 -0400
+	id 1uAcun-0008Rv-03; Thu, 01 May 2025 19:02:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAcua-0008MG-4X
- for qemu-devel@nongnu.org; Thu, 01 May 2025 19:01:48 -0400
-Received: from mail-il1-x12b.google.com ([2607:f8b0:4864:20::12b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAcuh-0008OV-4d
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 19:01:56 -0400
+Received: from mail-il1-x135.google.com ([2607:f8b0:4864:20::135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAcuX-0002B6-6t
- for qemu-devel@nongnu.org; Thu, 01 May 2025 19:01:47 -0400
-Received: by mail-il1-x12b.google.com with SMTP id
- e9e14a558f8ab-3d9189e9a06so5436685ab.2
- for <qemu-devel@nongnu.org>; Thu, 01 May 2025 16:01:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAcuf-0002Cy-Hl
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 19:01:54 -0400
+Received: by mail-il1-x135.google.com with SMTP id
+ e9e14a558f8ab-3d589ed2b47so4894795ab.2
+ for <qemu-devel@nongnu.org>; Thu, 01 May 2025 16:01:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746140503; x=1746745303; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746140512; x=1746745312; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UogoyiXW138ZEeb+2tt0PHdIw32Ugidt6sz27K9+AA8=;
- b=Lf09V9GTaMp9gDdB7CZonsOL/2HQ1O3tQk4uzf9vnau/9Af3UWL4nxXd657KjYqmIk
- UpKXam7XmY4YJkwq2cGFOaOOeg75ShWgfS6iX1uYPUp50ajQcfk8lnsWD0w2waXDz/WO
- 9p0dpZ2dbnD2vo0lQ6rIJpe5lMHhWFeLJl+GY8sIjkDYWYGDY0gJi5fYIstGx//gqksP
- 0m7G8A0mPga2U6+uA5tinZk33PBr5lo8PxYNQR78U6LpiDHAjZfZic3P2t2OkzV5F/QW
- KriToO6YYIyoIEb3DPQUSjRHq8qux3K75pLp6eGZOReEcc2ShOg5MapNDwij0mXuw8sd
- W6vA==
+ bh=HR3XLRk6SAEmUPB+v+pYNKb/eOwBOPxJBouKIIv+88o=;
+ b=dKFHl5fZVh8PUkVmGSU7gsYPDFVRAe3s+UqUmQUwjIUTrQkG3c49nqWYpBlVFNzUIZ
+ wg+Yx8ro2r7pBnTsosmN5gbjlJFAozabZWKvrDU0zhZW1CcYERyLwwAZwMOvt4mCXP3d
+ aVzOijbbPpuKNa1jET+2/Cu9FHTGVSrrKhknQbeofdaK0vdCfZ+afFRNKfJPKoCC6ekA
+ ratST2HusuqE2ihfVFnx950oAbjwiJIXcobpZOV1IppTXZdwYf+u1n+p6BKzoTVT9baN
+ vYrUx0MmnjhnJM8W7UJSJePd6PxQ74Bxi+h+W26QXRQpi8ehM61DMPDe+ZOYzPs50qiJ
+ FP+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746140503; x=1746745303;
+ d=1e100.net; s=20230601; t=1746140512; x=1746745312;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UogoyiXW138ZEeb+2tt0PHdIw32Ugidt6sz27K9+AA8=;
- b=AxTXmQOZO7CH3k7vzPTz56mpHhGqGx+8PLJ1JPYVDS/7hg2aP5gXtYlkB6V3G1kO9A
- fWdXfxsrIwwmh5xlT7ByZLpnzuilvmAC7Iul1iNBxYNZXm2onw55oto+G18YXFyAWrMf
- +NAV55E+d43WPaYiTy8x15aKJTLOM341oY6uP6jSWEqYsvEW7R3xXkr4dAjbTS/rwF7P
- amED4FAu7XwCj2WAQCL6ppuANAhqFgpthrH2UHMta+NgxMti3dr12zHwuGdLQztRo5sF
- FDF2WcTMjLgUUGcHAfWOv7lM9y9Q/rhhoILtUJgrs1V0BgD2hGqa7HxE97tbDQbGtopf
- s45A==
-X-Gm-Message-State: AOJu0YxaNa2ezzFeorAPgb7ZTDslE+JA3xm+DQoJ/ijuO45l8bCsJwN3
- 4wd+zVU+7+yBN1U2hAhybgQSmbKRJ2SmcC/+XJzfGO+c6HesI4WteEarvVjlnZCm4RiKTPoMMrq
- v
-X-Gm-Gg: ASbGncvlkWPELpTGJbV6ym9Q/DbLwitW9MB7KYkv85OH2NAEKPesUCFFm5f8LFLs7gq
- NVzn2P75XSoml+wx1fvY2AhbLXipYG25/i1SDHVegy/0FW3InVtm0fdcJSgJJ/RMLhsdT4vY7cs
- g8kOVmM1odCD2aUNNRHh6GNXpWW9VgML1JAH5XP6NSzi6OZna2CPSJ2gFEFctx0GqUz1HITS3j5
- pwYYCCYKqF8hq6Iz6X10i+0sWtXTMmyoyZrrSwiawEEm1/MeaMWRxyVvhDtT4yQQXTnJmIicqk7
- L4fv8Jw/ap2eBMpbdqsDcQVeRSo+NrocHQ/YPgC4uEVadILyoepGBF+A7S3k1JK7io3WFoPhb5g
- nw1SZv02alpK0EDm/IiE1
-X-Google-Smtp-Source: AGHT+IGIL0oPhv4toXK2RGB4CmhDijzyGCYQr701oKU23cJlJ54pR+dxGy3DVizBUKUNi2hsZWAU9Q==
-X-Received: by 2002:a05:6e02:18c8:b0:3d6:cd54:ba53 with SMTP id
- e9e14a558f8ab-3d97c26091bmr10181675ab.22.1746140503334; 
- Thu, 01 May 2025 16:01:43 -0700 (PDT)
+ bh=HR3XLRk6SAEmUPB+v+pYNKb/eOwBOPxJBouKIIv+88o=;
+ b=q+O8uxbUhJepZ5y9aCFnpOa1D13R4eINFFa4ska++sznf8G1eyYQ4HFfafOh9lt+zZ
+ KPbriArja8tddbYiarUD+waOpV65FWrPCFfxvHBLtMQP77/q2LY+R6RRPSSP33HIsf67
+ rvdquggqkRQubUaK/z9ynUYoCqSHCSLdRZvDSwJ8SPJwnDStMhtg9hWKqd66xEubbLFR
+ KkVh94m/AAstJK/760qMyKnqvERTTjl+UsqZJwpJ4UuxtcQ84ckIjFS2M9a0o7elF+w9
+ YsmrCA6Q2FNn8s3JsA93IgetdR83jnd3AuFMwkc2z4X+SVVefGPfso8175+vU8nJOeKt
+ Hfyg==
+X-Gm-Message-State: AOJu0YwQtZwOE8AlzH++3hITgsCAOP7RWE/mNY7orMs8VnbdXeSrSQtL
+ yOz7lG6UUVmAzc0GJyQeQk2/zy2WspYhmuEL2afA/gr7gmiTlrAYrvsaJcpqz4tDSJCvqxtw9+V
+ c
+X-Gm-Gg: ASbGnctich/pRHmTpcv4ZpKp3V9PtFZl4L8ULH0r/Ziy0H9hlwxezM4eTNALDPV/lnS
+ VVcyPIeWs9LGznFpIRlCQWUCr/fyYI58fNoVBKv0IO4cDcm4sFhtfMkw7z/Sj9UdaPbev2Bq1Ib
+ MwMrsk5doxzPdWrgMNmQ9UL8xmLWWyKE5CusZvHhQ+QdkjIqxVvnF5b4/lBZqYDypesrDhCPji7
+ UOCQL7EesoUH1KMZVjBIMU3+/9hqwzeYgr+jhIkAS8LcxZ/Mi+HGGc533pOmKl7Q5nM35r0g6DJ
+ v390ufEHrK4w78pyr4VOnTD6IWpmtOG0Phee8BWB6sF3y4Tp61T0Cirg1FVQWUOMdBZn/vLEA1X
+ RDsPjZUjuBP0AdN4WVphy
+X-Google-Smtp-Source: AGHT+IF+zogESUgYq1Zuk8I+NvCRr/x4lbeuxpRk7cDzkOJybi0oTAcDvgmWr9stqpOMpRhyGV3/0A==
+X-Received: by 2002:a05:6e02:2167:b0:3d3:db70:b585 with SMTP id
+ e9e14a558f8ab-3d97c2d3097mr10148415ab.21.1746140512111; 
+ Thu, 01 May 2025 16:01:52 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4f88aac7e1asm86910173.135.2025.05.01.16.01.39
+ e9e14a558f8ab-3d975f5885bsm3404135ab.56.2025.05.01.16.01.48
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 01 May 2025 16:01:42 -0700 (PDT)
+ Thu, 01 May 2025 16:01:51 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Yanan Wang <wangyanan55@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -76,18 +76,17 @@ Cc: Yanan Wang <wangyanan55@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  "Michael S. Tsirkin" <mst@redhat.com>, qemu-s390x@nongnu.org,
  Christian Borntraeger <borntraeger@linux.ibm.com>
-Subject: [PATCH 01/10] hw/s390x/s390-virtio-ccw: Remove the deprecated 2.10
- and 2.11 machine types
-Date: Fri,  2 May 2025 01:01:19 +0200
-Message-ID: <20250501230129.2596-2-philmd@linaro.org>
+Subject: [PATCH 02/10] hw/core/machine: Remove hw_compat_2_10[] array
+Date: Fri,  2 May 2025 01:01:20 +0200
+Message-ID: <20250501230129.2596-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250501230129.2596-1-philmd@linaro.org>
 References: <20250501230129.2596-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12b;
- envelope-from=philmd@linaro.org; helo=mail-il1-x12b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::135;
+ envelope-from=philmd@linaro.org; helo=mail-il1-x135.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,72 +109,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+The hw_compat_2_10[] array was only used by the pc-q35-2.10,
+pc-i440fx-2.10 and s390-ccw-virtio-2.10 machines, which got
+removed. Remove it.
 
-They are older than 6 years, so according to our machine support
-policy, they can be removed now.
-
-There was not anything special in the 2.10 machine type, so just remove
-it together with the 2.11 machine type. The 2.11 machine type switched
-some configuration that needs additional cleanups in the following
-patches.
-
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250115073819.15452-6-thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/s390x/s390-virtio-ccw.c | 37 -------------------------------------
- 1 file changed, 37 deletions(-)
+ include/hw/boards.h | 3 ---
+ hw/core/machine.c   | 6 ------
+ 2 files changed, 9 deletions(-)
 
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 94edd42dd25..2c90702d834 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -1250,43 +1250,6 @@ static void ccw_machine_2_12_class_options(MachineClass *mc)
- }
- DEFINE_CCW_MACHINE(2, 12);
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index 513eb2a54fd..f2f58ec4ed8 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -829,7 +829,4 @@ extern const size_t hw_compat_2_12_len;
+ extern GlobalProperty hw_compat_2_11[];
+ extern const size_t hw_compat_2_11_len;
  
--#ifdef CONFIG_S390X_LEGACY_CPUS
+-extern GlobalProperty hw_compat_2_10[];
+-extern const size_t hw_compat_2_10_len;
 -
--static void ccw_machine_2_11_instance_options(MachineState *machine)
--{
--    static const S390FeatInit qemu_cpu_feat = { S390_FEAT_LIST_QEMU_V2_11 };
--    ccw_machine_2_12_instance_options(machine);
+ #endif
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 486d1adb4b9..816d503b2a1 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -238,12 +238,6 @@ GlobalProperty hw_compat_2_11[] = {
+ };
+ const size_t hw_compat_2_11_len = G_N_ELEMENTS(hw_compat_2_11);
+ 
+-GlobalProperty hw_compat_2_10[] = {
+-    { "virtio-mouse-device", "wheel-axis", "false" },
+-    { "virtio-tablet-device", "wheel-axis", "false" },
+-};
+-const size_t hw_compat_2_10_len = G_N_ELEMENTS(hw_compat_2_10);
 -
--    /* before 2.12 we emulated the very first z900 */
--    s390_set_qemu_cpu_model(0x2064, 7, 1, qemu_cpu_feat);
--}
--
--static void ccw_machine_2_11_class_options(MachineClass *mc)
--{
--    static GlobalProperty compat[] = {
--        { TYPE_SCLP_EVENT_FACILITY, "allow_all_mask_sizes", "off", },
--    };
--
--    ccw_machine_2_12_class_options(mc);
--    compat_props_add(mc->compat_props, hw_compat_2_11, hw_compat_2_11_len);
--    compat_props_add(mc->compat_props, compat, G_N_ELEMENTS(compat));
--}
--DEFINE_CCW_MACHINE(2, 11);
--
--static void ccw_machine_2_10_instance_options(MachineState *machine)
--{
--    ccw_machine_2_11_instance_options(machine);
--}
--
--static void ccw_machine_2_10_class_options(MachineClass *mc)
--{
--    ccw_machine_2_11_class_options(mc);
--    compat_props_add(mc->compat_props, hw_compat_2_10, hw_compat_2_10_len);
--}
--DEFINE_CCW_MACHINE(2, 10);
--
--#endif
--
- static void ccw_machine_register_types(void)
- {
-     type_register_static(&ccw_machine_info);
+ MachineState *current_machine;
+ 
+ static char *machine_get_kernel(Object *obj, Error **errp)
 -- 
 2.47.1
 
