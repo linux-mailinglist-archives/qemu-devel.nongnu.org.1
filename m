@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5B60AA651D
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:09:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8AC8AA6521
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:11:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAb9G-0005dI-4D; Thu, 01 May 2025 17:08:55 -0400
+	id 1uAbB0-0007PB-Sd; Thu, 01 May 2025 17:10:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAb83-00041f-9l
- for qemu-devel@nongnu.org; Thu, 01 May 2025 17:07:35 -0400
-Received: from mail-io1-xd2d.google.com ([2607:f8b0:4864:20::d2d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAb89-0004I5-QW
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 17:07:47 -0400
+Received: from mail-il1-x12e.google.com ([2607:f8b0:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAb80-0006rO-Fg
- for qemu-devel@nongnu.org; Thu, 01 May 2025 17:07:34 -0400
-Received: by mail-io1-xd2d.google.com with SMTP id
- ca18e2360f4ac-85b3f92c8f8so164499739f.1
- for <qemu-devel@nongnu.org>; Thu, 01 May 2025 14:07:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAb88-0006sc-35
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 17:07:41 -0400
+Received: by mail-il1-x12e.google.com with SMTP id
+ e9e14a558f8ab-3d93deba52fso4621585ab.0
+ for <qemu-devel@nongnu.org>; Thu, 01 May 2025 14:07:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746133650; x=1746738450; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746133659; x=1746738459; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KzLE2lKYGYuJ3IoUvDO5W4ZXh+AwpN8VPQtHB7fCw5w=;
- b=LjPtNiwUTXlEwqq5gFaPJ+bGimccjIWzgjGAQcbZ5O1kItHlcGp161yX/ic4BJlxDJ
- 9s7TuGUzNq1kSsGDJHMuoyF4ay4wsDTqOvmggxouVQG+Ytelz9ZFZFY/Og+4YjIwPt6S
- QCK+geQiWn/IeN2OGVLfi+WbYNJ1FiSFmMQn/+FCj5+GRyi0tqjJ9Hyt6zgiDmXoK8Z9
- jCrt6U7K0duJslxLo7HYhs/uOADkOLsrmQmRU5sYiwR9w7D9cc9LdPtCEYqVgE0dM5TB
- m/EcPigztFqH16CWLCL6jm/vKAF61FrM4usXfYm9Tyfu/KnmRRT90zR6C1+zQhI3SwZl
- nATA==
+ bh=Vdzft+xCucigY9en84sWDKvV9F8XabM3RidQg1HEXDs=;
+ b=IgqS5vbT09UI6H6Lf6GSYXrxHx+96pcdd5SeJBGp9+77qxK2U+fKmdCniViQ11h/mr
+ E3Mb3wD5AzjGx11NpwVGDpmvdqeSpd2SPcI06sq2Sw5T6MnJTARbKTuYjPLdi5d6Gtas
+ EkHBdKdv0aCVOIZl6XuMFHpk0J8nIyHdCFEZagm41yCBBPd6E76cUAmciSTwELhZDzAs
+ Jpm20kt6dUUQRjt/r+WbgzVQZj2obSS5L1RAJOAsJPgkUZu0nuI37gxw+VtgsGuReww7
+ Fvz9UV0FB/HMr3oJ0CnySA5Rsp80DtCHCL/KnFxrxDafgCw3a6AM/i3KCRa/X0vsIQIM
+ PZkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746133650; x=1746738450;
+ d=1e100.net; s=20230601; t=1746133659; x=1746738459;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KzLE2lKYGYuJ3IoUvDO5W4ZXh+AwpN8VPQtHB7fCw5w=;
- b=P6ka7alY4YWfSAvP9XXhfUskYHYaRt6SywHlu1mqs2FnkdjGAfpztADlqUMmJ6kBSF
- A97CPKKFwqWgoG2iZVN+IIIBmHy0MyuVLWMwoioWVhBf6GyACMiawzKqFNydpiOjjcJh
- 0cqxx2escVoqoKCd/r1Lv7aBW3QXpkzNMVMgjmAZomF8M2kQT5SmU8dFnw53nN40uIgp
- u88YgNNeH46M1eRLYwXgHmu1zJwR6Su+DOK83CC2r+2EIGtBA+D4yl9FZEdkjwuV1Kt7
- gYH+XU2PiG23cJZNQef/AKj+6+l5RZifPG0j28Hl78dQwkLvd7pww157j1utML/23bov
- tbtg==
-X-Gm-Message-State: AOJu0YxA2MeU/6Tskjaztge0jDHrqo8JqMk1sANPNsulpvPwhac544Ut
- EsxRcFmWIzm7av2vUGzU5AYzEIC4+3Z4JU3z9oGjaF0OAHVpbxWC+2Ul9ZUHKu36h9ldUlm6fe2
- E
-X-Gm-Gg: ASbGnctBN3j8aZ4yxmFJoSboyDLVEPKphfOz7+xUuunrHQI4ykazsYMaI3eRFdavzVE
- wVpWW6hs7xDt6eBSablz0IolVF4InCMS9lgLfR4uAj0s4UH5FJVr+N4uZaIU7+H8CuqQNw4qsr9
- jzZtqRxlCnVM1dOeo3VI/rNkYqgPupGwYP1ADEq0MgUeWJCAAj8dr+UJOz4QJZYuS6CDk6uVlQO
- rk/PXPBUw+e2gHx8Cn79BAYcxUbuDzv+OevzGQOPBdkktOa+ehKecr7OLNrhOqGbFnWmSgxIrxD
- te4btijoCV2pHnAmLxNGTo7/Meadruuh4ouqN5oPe4kERVd1I769dvEi0A1EvXzMOQxXxKfrb+a
- 5XWeEfQ103+8qfjk=
-X-Google-Smtp-Source: AGHT+IEnxBq1ThHL+mZWJMXZMQb0WMT3kYAky685C7sB7D2ferkDcLHO5nZpr0r6mThfuRqkUbLWpw==
-X-Received: by 2002:a05:6e02:87:b0:3d9:5d50:e3b1 with SMTP id
- e9e14a558f8ab-3d97c295980mr6542775ab.18.1746133650032; 
- Thu, 01 May 2025 14:07:30 -0700 (PDT)
+ bh=Vdzft+xCucigY9en84sWDKvV9F8XabM3RidQg1HEXDs=;
+ b=LB4YzLH9uKa4VTBu0CVTd3MtcuIMcmWU5yjjgp3+sa+4h7AgqEbv0Asf/BBGvxw6OC
+ qV9rKDyoS+y43PeAWy/M+Jz4c0mPMzadkBffcU8U4Lr9lsa3XZ4wNTkPY0oAAQVTEUWG
+ FVhQOlf7jS001gEgxNtwQ3M1zniXuIvM5M8SbajtMogDJGz6Dwul/zC1PW5MAYb5MLCl
+ 6zaMrf7EBFGL/F/Q+3EZHsVxoL3MKvl9y/62dZ10Rng5E12KCBMcRWP5ALaQ21jpFK3d
+ zwcEl55yXZVuRdauEujif2dfRPOf8Uuaon/Ge/kN3MQsHhG2hPP073N+0Wqk70ShUSRe
+ w3JQ==
+X-Gm-Message-State: AOJu0YwwC3VNnPjJVd3Io/PdnDW3Oh58d4r4NyCjfEQ9vKUdULneEo7J
+ DCW19YmKlA17+rivOBSR/lLhbaAWxfpvqHfIXNgYSXyNrmatWVm5ahyJrHp6NCcg5ya+GXUMyu5
+ 5
+X-Gm-Gg: ASbGncsbbtzuVa/RpjtmikCYzZNq5LHMZChAG30kCZrFVJcCp6Q8wS50lQOxluCkmxL
+ d2jLS5u7lylWzhLxpS6Jdo46Q27PBgsDlLpeD5b/aaXO+6/r97KeugBpfVQbjYtYSWfZwnsHctN
+ 6s8bdSD8TAJsUZ9Ywq5hoXiLuusA2vq7Nz9kPDCRbzgGKsy5/wGALHuaOIacezbc+IJxp0aNm0Q
+ JMjX5Ar9iNKwD2lmOf9UJ9hMf5bGKskp1C6f44D464ALGczhy8cA98jZDlD3A3hLvfXFbHZ5U9x
+ ox1kvVP+sRV7WCxAh6P+LVzQUQvYxhBu/TDP0q6GpDSq3cq9RK51op7u2OK2ZtApBd/ghdNbLfS
+ /PFidrzjk/WUZUltnA3wIClpVjw==
+X-Google-Smtp-Source: AGHT+IFGvGcJrzHob4stoVa8yArOOKmCQjDSWHCLpif3ypbTpKvU2DNCbYdIFucFfcroh0IjvnzY7w==
+X-Received: by 2002:a92:c24b:0:b0:3d4:337f:121c with SMTP id
+ e9e14a558f8ab-3d97c182360mr6369495ab.10.1746133658742; 
+ Thu, 01 May 2025 14:07:38 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4f88a915f23sm49076173.39.2025.05.01.14.07.26
+ 8926c6da1cb9f-4f88a9140e2sm49190173.37.2025.05.01.14.07.35
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 01 May 2025 14:07:29 -0700 (PDT)
+ Thu, 01 May 2025 14:07:38 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?=
@@ -75,24 +75,23 @@ Cc: =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?=
  "Michael S. Tsirkin" <mst@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Yi Liu <yi.l.liu@intel.com>
-Subject: [PATCH 17/18] hw/pci-bridge/gen_pcie_rp: Remove
- GenPCIERootPort::migrate_msix field
-Date: Thu,  1 May 2025 23:04:55 +0200
-Message-ID: <20250501210456.89071-18-philmd@linaro.org>
+Subject: [PATCH 18/18] hw/i386/x86-iommu: Remove X86IOMMUState::pt_supported
+ field
+Date: Thu,  1 May 2025 23:04:56 +0200
+Message-ID: <20250501210456.89071-19-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250501210456.89071-1-philmd@linaro.org>
 References: <20250501210456.89071-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d2d;
- envelope-from=philmd@linaro.org; helo=mail-io1-xd2d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12e;
+ envelope-from=philmd@linaro.org; helo=mail-il1-x12e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -109,62 +108,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The GenPCIERootPort::migrate_msix boolean was only set in
-the hw_compat_2_9[] array, via the 'x-migrate-msix=false'
-property. We removed all machines using that array, lets
-remove that property and all the code around it.
+The X86IOMMUState::pt_supported boolean was only set in
+the hw_compat_2_9[] array, via the 'pt=off' property. We
+removed all machines using that array, lets remove that
+property and all the code around it, always setting the
+VTD_ECAP_PT capability.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/pci-bridge/gen_pcie_root_port.c | 16 ++--------------
- 1 file changed, 2 insertions(+), 14 deletions(-)
+ include/hw/i386/x86-iommu.h |  1 -
+ hw/i386/amd_iommu.c         | 12 ++----------
+ hw/i386/intel_iommu.c       | 13 ++-----------
+ hw/i386/x86-iommu.c         |  1 -
+ 4 files changed, 4 insertions(+), 23 deletions(-)
 
-diff --git a/hw/pci-bridge/gen_pcie_root_port.c b/hw/pci-bridge/gen_pcie_root_port.c
-index d9078e783bf..831d21225e9 100644
---- a/hw/pci-bridge/gen_pcie_root_port.c
-+++ b/hw/pci-bridge/gen_pcie_root_port.c
-@@ -35,8 +35,6 @@ struct GenPCIERootPort {
-     PCIESlot parent_obj;
-     /*< public >*/
- 
--    bool migrate_msix;
--
-     /* additional resources to reserve */
-     PCIResReserve res_reserve;
+diff --git a/include/hw/i386/x86-iommu.h b/include/hw/i386/x86-iommu.h
+index bfd21649d08..d6e52b1eb6b 100644
+--- a/include/hw/i386/x86-iommu.h
++++ b/include/hw/i386/x86-iommu.h
+@@ -63,7 +63,6 @@ struct X86IOMMUState {
+     SysBusDevice busdev;
+     OnOffAuto intr_supported;   /* Whether vIOMMU supports IR */
+     bool dt_supported;          /* Whether vIOMMU supports DT */
+-    bool pt_supported;          /* Whether vIOMMU supports pass-through */
+     QLIST_HEAD(, IEC_Notifier) iec_notifiers; /* IEC notify list */
  };
-@@ -66,13 +64,6 @@ static void gen_rp_interrupts_uninit(PCIDevice *d)
-     msix_uninit_exclusive_bar(d);
- }
  
--static bool gen_rp_test_migrate_msix(void *opaque, int version_id)
--{
--    GenPCIERootPort *rp = opaque;
--
--    return rp->migrate_msix;
--}
--
- static void gen_rp_realize(DeviceState *dev, Error **errp)
- {
-     PCIDevice *d = PCI_DEVICE(dev);
-@@ -121,16 +112,13 @@ static const VMStateDescription vmstate_rp_dev = {
-         VMSTATE_PCI_DEVICE(parent_obj.parent_obj.parent_obj, PCIESlot),
-         VMSTATE_STRUCT(parent_obj.parent_obj.parent_obj.exp.aer_log,
-                        PCIESlot, 0, vmstate_pcie_aer_log, PCIEAERLog),
--        VMSTATE_MSIX_TEST(parent_obj.parent_obj.parent_obj.parent_obj,
--                          GenPCIERootPort,
--                          gen_rp_test_migrate_msix),
-+        VMSTATE_MSIX(parent_obj.parent_obj.parent_obj.parent_obj,
-+                     GenPCIERootPort),
-         VMSTATE_END_OF_LIST()
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index 2cf7e24a21d..516e231bf13 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -1426,7 +1426,6 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
+     AMDVIState *s = opaque;
+     AMDVIAddressSpace **iommu_as, *amdvi_dev_as;
+     int bus_num = pci_bus_num(bus);
+-    X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
+ 
+     iommu_as = s->address_spaces[bus_num];
+ 
+@@ -1486,15 +1485,8 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
+                                             AMDVI_INT_ADDR_FIRST,
+                                             &amdvi_dev_as->iommu_ir, 1);
+ 
+-        if (!x86_iommu->pt_supported) {
+-            memory_region_set_enabled(&amdvi_dev_as->iommu_nodma, false);
+-            memory_region_set_enabled(MEMORY_REGION(&amdvi_dev_as->iommu),
+-                                      true);
+-        } else {
+-            memory_region_set_enabled(MEMORY_REGION(&amdvi_dev_as->iommu),
+-                                      false);
+-            memory_region_set_enabled(&amdvi_dev_as->iommu_nodma, true);
+-        }
++        memory_region_set_enabled(&amdvi_dev_as->iommu_nodma, false);
++        memory_region_set_enabled(MEMORY_REGION(&amdvi_dev_as->iommu), true);
      }
+     return &iommu_as[devfn]->as;
+ }
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index c980cecb4ee..cc08dc41441 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -1066,6 +1066,7 @@ static inline bool vtd_ce_type_check(X86IOMMUState *x86_iommu,
+ {
+     switch (vtd_ce_get_type(ce)) {
+     case VTD_CONTEXT_TT_MULTI_LEVEL:
++    case VTD_CONTEXT_TT_PASS_THROUGH:
+         /* Always supported */
+         break;
+     case VTD_CONTEXT_TT_DEV_IOTLB:
+@@ -1074,12 +1075,6 @@ static inline bool vtd_ce_type_check(X86IOMMUState *x86_iommu,
+             return false;
+         }
+         break;
+-    case VTD_CONTEXT_TT_PASS_THROUGH:
+-        if (!x86_iommu->pt_supported) {
+-            error_report_once("%s: PT specified but not supported", __func__);
+-            return false;
+-        }
+-        break;
+     default:
+         /* Unknown type */
+         error_report_once("%s: unknown ce type: %"PRIu32, __func__,
+@@ -4520,7 +4515,7 @@ static void vtd_cap_init(IntelIOMMUState *s)
+ {
+     X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
+ 
+-    s->cap = VTD_CAP_FRO | VTD_CAP_NFR | VTD_CAP_ND |
++    s->cap = VTD_CAP_FRO | VTD_CAP_NFR | VTD_CAP_ND | VTD_ECAP_PT |
+              VTD_CAP_MAMV | VTD_CAP_PSI | VTD_CAP_SLLPS |
+              VTD_CAP_MGAW(s->aw_bits);
+     if (s->dma_drain) {
+@@ -4548,10 +4543,6 @@ static void vtd_cap_init(IntelIOMMUState *s)
+         s->ecap |= VTD_ECAP_DT;
+     }
+ 
+-    if (x86_iommu->pt_supported) {
+-        s->ecap |= VTD_ECAP_PT;
+-    }
+-
+     if (s->caching_mode) {
+         s->cap |= VTD_CAP_CM;
+     }
+diff --git a/hw/i386/x86-iommu.c b/hw/i386/x86-iommu.c
+index d34a6849f4a..ca7cd953e98 100644
+--- a/hw/i386/x86-iommu.c
++++ b/hw/i386/x86-iommu.c
+@@ -129,7 +129,6 @@ static const Property x86_iommu_properties[] = {
+     DEFINE_PROP_ON_OFF_AUTO("intremap", X86IOMMUState,
+                             intr_supported, ON_OFF_AUTO_AUTO),
+     DEFINE_PROP_BOOL("device-iotlb", X86IOMMUState, dt_supported, false),
+-    DEFINE_PROP_BOOL("pt", X86IOMMUState, pt_supported, true),
  };
  
- static const Property gen_rp_props[] = {
--    DEFINE_PROP_BOOL("x-migrate-msix", GenPCIERootPort,
--                     migrate_msix, true),
-     DEFINE_PROP_UINT32("bus-reserve", GenPCIERootPort,
-                        res_reserve.bus, -1),
-     DEFINE_PROP_SIZE("io-reserve", GenPCIERootPort,
+ static void x86_iommu_class_init(ObjectClass *klass, const void *data)
 -- 
 2.47.1
 
