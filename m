@@ -2,99 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E14E4AA6308
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 20:42:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EDD5AA62E4
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 20:36:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAYpR-00049v-D3; Thu, 01 May 2025 14:40:13 -0400
+	id 1uAYkm-00056J-KP; Thu, 01 May 2025 14:35:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAYoG-0003Cp-W1
- for qemu-devel@nongnu.org; Thu, 01 May 2025 14:39:01 -0400
-Received: from mail-io1-xd33.google.com ([2607:f8b0:4864:20::d33])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAYoD-0008M8-Ow
- for qemu-devel@nongnu.org; Thu, 01 May 2025 14:38:59 -0400
-Received: by mail-io1-xd33.google.com with SMTP id
- ca18e2360f4ac-86135af1045so129719639f.1
- for <qemu-devel@nongnu.org>; Thu, 01 May 2025 11:38:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746124736; x=1746729536; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BWzzyY58ZMdH5v7Oa0GKNWiemzjm5i3yFvWM3N4y4TI=;
- b=mtfQU7fOY+O838h6rpvgaw4qbRdlu9EzvpVcMpP8F2Gu/0FeeaGUam1OAfCRM6alAS
- nSNcexiqkaEMzGD0mdPRY3313RQiAdoS4AOSzc0XKi7syNJxuX+2gwJhD0d25rHesi47
- zew5z9TH2XS2Tl5z8m1zXlKhiObfTVHitFpVgpjGaREwH1/yCOy53dWlfSQdR51skXk0
- Fkp6WEntI5UtLa9a+yFdQKfger3F6J9z+usHcaxfD1KOmwX7z9HbHAFseawKC2Oig7zl
- kX50TFkTigNHawYCQhlH5xmbbJhDra+1W8KZwmEQf/5mTQOt46JBDkmH+2oKUAUPAVGL
- 9adQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746124736; x=1746729536;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=BWzzyY58ZMdH5v7Oa0GKNWiemzjm5i3yFvWM3N4y4TI=;
- b=tvam02YAZaB5DXfc3Xt9PSers3MbAHyBHt8qiZGajuNGPu6/uAQOF7mlU4Jtvzc8t9
- 257ywNx/WFPP8gsBUBckbv8FbjKuHPE3ZbtT6fqgYoLRPMEhBWrwmxl5s3dNoDIvb78H
- TjZhqMUdVCcF2A9jeAKU+/PwRnU9BBmT9hR8HmDYNZmo1wklQRQp0/Opr7aHOzTeGfji
- R7UxgMKGK8mb15kfKsCA81ejJMMpHqY/lnLRQbwsyjdxR2ixb9yX0j7a2AIb/qkMA17A
- cmilaNLWSuxNiAXeO3dTHn98Nt6K00wjcBu5YLvi61MPcBxQzhyxo7B6TNkGIFFdcj+E
- hbQw==
-X-Gm-Message-State: AOJu0Yx+YJaNy6i9/KltdHI/x5YGbYa2VnsiQb27uVptwOCIxuywRi73
- cHCJo3KS0iEsudstlMnx27ldjEheOcScN2YmV+6Wxkeu5B8CnaSwPLQR76/6DyNPoW6xc+QWVN8
- 8
-X-Gm-Gg: ASbGncuQbPY85pynnFFYMKUaMRCeZADoFy8XS67FLa1IYadV9CjwUwsbZ/CFpXXreAK
- eyE9rVl6/8eITS7Kf4qQWEUWDonTM9O6nyBvwC634ADZQO7lxtIG7z0LiGUqEpbNaNGfZjsIIEc
- 9HbZKyxcnQqVoaR/FTcsZ0uPDD4nPL39VuXwKtlmSYtYMEregImYaNzO/XsfxfsbDbisMtmkNxQ
- 3bc4+TTQwwQ2iMCHvnPcWJX1qScm/VIjK6fhn3wBklTHN3VyyVY+epB2Lx5TVZ9rEWkR13xJLB7
- EeX+72fWkoXh2OuHKqHUw1wi9jKW5PYhNZKBqbrZ/SNwd0JcCjl8Qu14WOhngiadJNWSu35RUwr
- jbYMK0rlLxDGkm1joPbEjLWTI0H+HkLY=
-X-Google-Smtp-Source: AGHT+IGhK4Phq+GRyl0Xi6cfy6zpDqAKYLtfCo23SFtZDR3R+jJu/ejPiPQcE4oromZBFc18FJ/g7A==
-X-Received: by 2002:a05:6602:398b:b0:864:4a82:15ec with SMTP id
- ca18e2360f4ac-8669fad4facmr46468239f.6.1746124735919; 
- Thu, 01 May 2025 11:38:55 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4f882ee0bd8sm303406173.39.2025.05.01.11.38.52
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 01 May 2025 11:38:55 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <alan.adamson@oracle.com>)
+ id 1uAYki-00054h-ML; Thu, 01 May 2025 14:35:20 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alan.adamson@oracle.com>)
+ id 1uAYkg-0007jV-LK; Thu, 01 May 2025 14:35:20 -0400
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 541HtrlY002260;
+ Thu, 1 May 2025 18:35:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=corp-2025-04-25; bh=LHharoMHmxsUWXauDkdcFjFbox8fa
+ cOJsLCEfvBwxvM=; b=cjc/1fr5EIL+Q7BACiNopwCpnU9W8MM/Rbrc36CQMh7UZ
+ 91QeqKhigonblYrc1Xyzq6dAG3/iVzCRNhxEhEngBHMePkNoa7AFSPYlomTJyMyT
+ IlXM93pg4i8YqnwhtycIN9mBekygsJwnUpUwK0Xo2YGJ+HLOseAXE6q/TEb8RdPJ
+ zXJo0KUDJGxyqFhQF8VFcREfd0hIQJt0WVJE03E1UESJWrdDKqE8wc3symjHapz9
+ NobqQfAkPF2feMo9euK4qvOO+vc8GrHImOzDMSY9pxGkcSWZfvdWrQFOuG1DhrJd
+ ufH8Q53s9BdKaX0OOXEmssEtnCc9Qk2cGE5WI7SNA==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46b6umbkqq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 01 May 2025 18:35:10 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 541INRZD023705; Thu, 1 May 2025 18:35:10 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 468nxk3vmk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 01 May 2025 18:35:09 +0000
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 541IZ9jW011241;
+ Thu, 1 May 2025 18:35:09 GMT
+Received: from ca-dev94.us.oracle.com (ca-dev94.us.oracle.com [10.129.136.30])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
+ ESMTP id 468nxk3vm2-1; Thu, 01 May 2025 18:35:09 +0000
+From: Alan Adamson <alan.adamson@oracle.com>
 To: qemu-devel@nongnu.org
-Cc: Igor Mammedov <imammedo@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
- Yi Liu <yi.l.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Amit Shah <amit@kernel.org>, Zhao Liu <zhao1.liu@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Sergio Lopez <slp@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Yanan Wang <wangyanan55@huawei.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Ani Sinha <anisinha@redhat.com>, Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v2 16/16] hw/virtio/virtio-pci: Remove
- VIRTIO_PCI_FLAG_PAGE_PER_VQ definition
-Date: Thu,  1 May 2025 20:36:28 +0200
-Message-ID: <20250501183628.87479-17-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250501183628.87479-1-philmd@linaro.org>
-References: <20250501183628.87479-1-philmd@linaro.org>
+Cc: alan.adamson@oracle.com, foss@defmacro.it, kbusch@kernel.org,
+ its@irrelevant.dk, qemu-block@nongnu.org
+Subject: [PATCH v3 0/1] hw/nvme: CMIC.MCTRS should be set automatically for
+ multi-controller subsystems or by parameter
+Date: Thu,  1 May 2025 11:45:04 -0700
+Message-ID: <20250501184505.3630283-1-alan.adamson@oracle.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d33;
- envelope-from=philmd@linaro.org; helo=mail-io1-xd33.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-01_06,2025-04-24_02,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ phishscore=0
+ suspectscore=0 spamscore=0 adultscore=0 mlxscore=0 malwarescore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2504070000 definitions=main-2505010142
+X-Authority-Analysis: v=2.4 cv=dfSA3WXe c=1 sm=1 tr=0 ts=6813bede b=1 cx=c_pps
+ a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
+ a=dt9VzEwgFbYA:10 a=bmEpc97xn6xAZHvFHbgA:9 cc=ntf awl=host:13130
+X-Proofpoint-GUID: 2scnBPgWgsQKbe09kjCMWuwnB_2rrvDJ
+X-Proofpoint-ORIG-GUID: 2scnBPgWgsQKbe09kjCMWuwnB_2rrvDJ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAxMDE0MSBTYWx0ZWRfX9HNz+WRYA1mG
+ EQvmpf3yXPOzrw0Kva1EpzH/HQ5aQitAYT4xICDOpwJX6zzjLmNEPtk2GPDRUW5CowvM+IO6+Zq
+ RGzh5Y1svctgjtnL06DAipY11cGK8tgRrE2XpZmc0cY2fncMz9oraehbLAt8Y5yMqKk4Q57oKvM
+ acudYILOh/VcPg+Y5HKaDFfyblyuowXFmJa3cDExsZOSuOvt7WB0Mz6wHTz7JVHcpMgqdrOQgIH
+ DOGg3jY2NxDAPOHAo0M5UvU1Lqb4o/X7wauWKEzDOGO+yriWDZKe5QWEafDz0KcXIFQB7jjMBiF
+ HITnv6qyq0fhOUIWA4w4EHEf99EuC+yUQ/BhFK9e7DyQpIjut0G6fo0vNHCoiK0jwCZqyGk4ODd
+ qhlWnNAQc5zhQrkmvDG3mfs+VAWUFkQMLWgDvXEGTdE6ycJiI8mqO1P/z/8dFjcZP95yYoDs
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=alan.adamson@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,80 +105,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-VIRTIO_PCI_FLAG_PAGE_PER_VQ was only used by the hw_compat_2_7[]
-array, via the 'page-per-vq=on' property. We removed all
-machines using that array, lets remove all the code around
-VIRTIO_PCI_FLAG_PAGE_PER_VQ (see commit 9a4c0e220d8 for similar
-VIRTIO_PCI_FLAG_* enum removal).
+v3: - Sync up with v10.0
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/hw/virtio/virtio-pci.h |  1 -
- hw/display/virtio-vga.c        | 10 ----------
- hw/virtio/virtio-pci.c         |  7 +------
- 3 files changed, 1 insertion(+), 17 deletions(-)
+v2: - Change the parameter name from "cmic" to "cmic-mctrs".
+    - If there is more than 1 controller in a subsystem, set CMIC.MCTRS
+      for each controller whether or not the cmic-mctrs parameter is set.
 
-diff --git a/include/hw/virtio/virtio-pci.h b/include/hw/virtio/virtio-pci.h
-index 9838e8650a6..8abc5f8f20d 100644
---- a/include/hw/virtio/virtio-pci.h
-+++ b/include/hw/virtio/virtio-pci.h
-@@ -33,7 +33,6 @@ enum {
-     VIRTIO_PCI_FLAG_BUS_MASTER_BUG_MIGRATION_BIT,
-     VIRTIO_PCI_FLAG_USE_IOEVENTFD_BIT,
-     VIRTIO_PCI_FLAG_MODERN_PIO_NOTIFY_BIT,
--    VIRTIO_PCI_FLAG_PAGE_PER_VQ_BIT,
-     VIRTIO_PCI_FLAG_ATS_BIT,
-     VIRTIO_PCI_FLAG_INIT_DEVERR_BIT,
-     VIRTIO_PCI_FLAG_INIT_LNKCTL_BIT,
-diff --git a/hw/display/virtio-vga.c b/hw/display/virtio-vga.c
-index 40e60f70fcd..83d01f089b5 100644
---- a/hw/display/virtio-vga.c
-+++ b/hw/display/virtio-vga.c
-@@ -141,16 +141,6 @@ static void virtio_vga_base_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
-                                VIRTIO_GPU_SHM_ID_HOST_VISIBLE);
-     }
- 
--    if (!(vpci_dev->flags & VIRTIO_PCI_FLAG_PAGE_PER_VQ)) {
--        /*
--         * with page-per-vq=off there is no padding space we can use
--         * for the stdvga registers.  Make the common and isr regions
--         * smaller then.
--         */
--        vpci_dev->common.size /= 2;
--        vpci_dev->isr.size /= 2;
--    }
--
-     offset = memory_region_size(&vpci_dev->modern_bar);
-     offset -= vpci_dev->notify.size;
-     vpci_dev->notify.offset = offset;
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index 7c965771907..4e0d4bda6ed 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -314,12 +314,9 @@ static bool virtio_pci_ioeventfd_enabled(DeviceState *d)
-     return (proxy->flags & VIRTIO_PCI_FLAG_USE_IOEVENTFD) != 0;
- }
- 
--#define QEMU_VIRTIO_PCI_QUEUE_MEM_MULT 0x1000
--
- static inline int virtio_pci_queue_mem_mult(struct VirtIOPCIProxy *proxy)
- {
--    return (proxy->flags & VIRTIO_PCI_FLAG_PAGE_PER_VQ) ?
--        QEMU_VIRTIO_PCI_QUEUE_MEM_MULT : 4;
-+    return 4;
- }
- 
- static int virtio_pci_ioeventfd_assign(DeviceState *d, EventNotifier *notifier,
-@@ -2348,8 +2345,6 @@ static const Property virtio_pci_properties[] = {
-                     VIRTIO_PCI_FLAG_BUS_MASTER_BUG_MIGRATION_BIT, false),
-     DEFINE_PROP_BIT("modern-pio-notify", VirtIOPCIProxy, flags,
-                     VIRTIO_PCI_FLAG_MODERN_PIO_NOTIFY_BIT, false),
--    DEFINE_PROP_BIT("page-per-vq", VirtIOPCIProxy, flags,
--                    VIRTIO_PCI_FLAG_PAGE_PER_VQ_BIT, false),
-     DEFINE_PROP_BIT("ats", VirtIOPCIProxy, flags,
-                     VIRTIO_PCI_FLAG_ATS_BIT, false),
-     DEFINE_PROP_BIT("x-ats-page-aligned", VirtIOPCIProxy, flags,
+While testing Linux atomic writes with qemu-nvme v10.0.0-rc1, Linux was
+incorrectly displaying atomic_write_max_bytes
+# cat /sys/block/nvme0n1/queue/atomic_write_max_bytes
+0
+# nvme id-ctrl /dev/nvme0n1 | grep awupf
+awupf     : 15
+#
+Since AWUPF was set to 15, it was expected atomic_write_max_bytes would
+be set to 8192.
+
+The commit cd59f50ab017 ("hw/nvme: always initialize a subsystem")
+introduced this behavior. The commit hardcodes the subsystem cmic bit
+to ON which caused the Linux NVMe driver to treat the namespace as
+multi-pathed which uncovered a bug with how Atomic Write Queue Limits
+were being inherited.  This Linux issue is being addressed, but the
+question was asked of why the subsystem CMIC.MCTRS bit was hardcoded to ON.
+Most NVMe devices today don't set CMIC.MCTRS  to ON. Shouldn't the setting
+of this bit be a settable parameter?
+
+
+Proposal:
+
+- The default setting of the CMIC.MCTRS bit will be OFF.
+
+- If there is more than 1 controller detected in a subsystem, the CMIC.MCTRS
+  bit will be set to ON for each controller in the subsystem.
+
+- Create a subsystem specific parameter (cmic-mctrs) to specify CMIC.MCTRS
+  in one controller subsystems.  This parameter does not affect
+  multi-controller subsystems.
+
+  <subsystem>,cmic-mctrs=BOOLEAN (default: off)
+
+  Example:
+    -device nvme-subsys,id=subsys0,cmic-mctrs=on \
+    -device nvme,serial=deadbeef,id=nvme0,subsys=subsys0,atomic.dn=off,atomic.awun=31,atomic.awupf=15 \
+    -drive id=ns1,file=/dev/nullb0,if=none \
+    -device nvme-ns,drive=ns1,bus=nvme0,nsid=1,shared=false
+
+
+Alan Adamson (1):
+  hw/nvme: CMIC.MCTRS should be set automatically for multi-controller
+    subsystems or by parameter
+
+ hw/nvme/ctrl.c   | 15 ++++++++++++++-
+ hw/nvme/nvme.h   |  2 ++
+ hw/nvme/subsys.c |  1 +
+ 3 files changed, 17 insertions(+), 1 deletion(-)
+
 -- 
-2.47.1
+2.43.5
 
 
