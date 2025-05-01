@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EC1CAA6590
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:31:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06F35AA656F
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:27:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAbPg-0006Z9-1J; Thu, 01 May 2025 17:25:48 -0400
+	id 1uAbPj-000735-Qc; Thu, 01 May 2025 17:25:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAbOu-0005FM-D1
- for qemu-devel@nongnu.org; Thu, 01 May 2025 17:25:00 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1uAbOu-0005GI-HM
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 17:25:01 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAbOs-0002EB-7w
+ id 1uAbOr-0002E4-Si
  for qemu-devel@nongnu.org; Thu, 01 May 2025 17:24:59 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-739be717eddso1241859b3a.2
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-7376dd56f8fso2039227b3a.2
  for <qemu-devel@nongnu.org>; Thu, 01 May 2025 14:24:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746134695; x=1746739495; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746134696; x=1746739496; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0HNVWGhJHja66UOEh7K5lL2rGWNIhIiIn3A57097VKo=;
- b=LTP/Y0ZX34iSot4Ne79Cc/dqge728Ogwu6X+LEFEj28QGGpseW3Cdg+XqR+L9yJyeY
- 33MYxP3eJRETnOiQjtaDjlqxZeX4rBxnbHJe5Q+kQTpFq3wfGZDzaHIM/XwDnhN+jdvc
- gpmhXmS2eqA+fTwTFg2T+nbTqihKAp/qs+asa1/KhS2eABq7h+KJBGj+Ko9tgyYz4wg4
- fUEY3hta5ad7adOY9PIyZ6eEvBPVT1qDoddAySRHyyu/8IvZvejD60W1c+xVi9x+3jgf
- rEIkqEet/RQbIzQsWRdKrwULAznCRRsRhpf2KXK9eW+k0X3lI4tFjxL16e+Y703wWVfb
- EzGA==
+ bh=fe29IZ11mCzFvm4KslVvKmO7MK48jjA31j/L8P/5R8A=;
+ b=YdXwbRixG56l7kkFfVNyAA+iHvW8Kn4OKLpmsxieJWK83HYwDp7hvDQbVJ/Ibdb3N0
+ jC9L9rH3pyTX/UFTmMsmyWjMEo5ziBE0DXEyUC8rcWIyj4HfhHXAlNK5iLQbhoFDbe/+
+ SEflJMJ9E/8KeWilXe2J/oblWMMqQ+yc3085j5R05B/HGw1bCixKWE1DEB3kxsg0BHG8
+ EsgoWQqPePdAJnsWgljEMPier0ysQwRltQ5+AAhrDx66r6F+lglBdllmqoC7Z1w4i7sV
+ Ap7dfnpg5Y6fEHM2qTHVMuplvHIbj77BXlvyrOLG8NnHRqotX5rJCSrc0x09RBdlqk8z
+ y1aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746134695; x=1746739495;
+ d=1e100.net; s=20230601; t=1746134696; x=1746739496;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0HNVWGhJHja66UOEh7K5lL2rGWNIhIiIn3A57097VKo=;
- b=jyVXW6pzAQbOq4Kv7lHjz3ZLR5wZgcDcp7PeLizX3viRmePEyRFpsu3aAlkOM15VIa
- ztWAgf1bnSsAVXnJKfwrbBJRODIeMFyHgOXY31NwHM0HkRQzTGDu68dmQ4CeVwRlWPSk
- XDHSzhNO9vGxL4W03MZPca0yI9eP5sHaPs8m2kFy0xvffEYZEX2D5qGlDTIpEFhpDPV5
- L35Lwb1DGfhZxNifZNEG4srKZpb5TdoahUbHkx2bAup/dBsFTtAwI4C3D/qId7oKZpG3
- TwMqyBWtkegEXkATAl2mD47PtHpCnZWPzISA02HnDQ5K/1HGcbqH9S0eY7ZB7SHo1xQc
- jIDg==
-X-Gm-Message-State: AOJu0YwsyFBPThNfm+8izh/i9p9utZgQmGjT4mpyoZkntoofC2WKFZI/
- t8+mVTRG+32aowHa7HeVds8xuciT9iXHtHCMhzVuNSgbPcg+aWjIxdMKzZ3Sak2YEBhiibhnm5E
- K
-X-Gm-Gg: ASbGncv+TI3E26bgckPVc/dqup3JOw/81lDr96/mZ0jVxKz/D3pXkkwXcOrFtIQmh5Y
- SThU1Nz7JcmV1O/1vMIn/ZzCJs2wilmYmeog+xLcNAllsWscPMz6kKxTtbKKlmYUwuKivpqZPzI
- VsaC3ZcGrKqgBgjCQn/Mry0v/fDOIrxxJqWHsLxmjyqtnx2sbkgf/RgSVEmb8QEAdUar2bXSwRz
- P3HlSsXcMm5nWZxyNqT9O3QJtUTOX3yaBbb9aV0H+5GW5mRW2hukAotHdw88bkoWCrqVf/qu1bX
- Kb6C5hOlLEz2JM/GestRK0phYlRJlnlbvozFRy444I52G+bktIexhBe63OOJ+A/WorchJj1r9tY
+ bh=fe29IZ11mCzFvm4KslVvKmO7MK48jjA31j/L8P/5R8A=;
+ b=ZJTMyIdy31i81W1Po/3rZhUYFV2ft82DNrMdcqW+eRQogkBsnX7w0TjD1WhbwzCfF3
+ /xiPbyinGPdraLzRdLorAOPy3zWSSNVrvQdN+xaJ7ed0vWOJ/sHo3IUfOzq4rXddGR74
+ J486W/BhCSs23l043cXmA6ysT3oIttVZTVbV+mN8lTcbK9QYENSsqIZubuF05xmzgiOz
+ XmTxRsdD7w0GWOLR+uit0NgT2RSR7WiYtqwEE/SPPJhvg70C7Y1gH/bauencsPt59VmJ
+ nP9Jy8L6+NrYNJrDGXFuXnQvI+bP0hQUwP0FPyaArM4MT9Hpef98VD5ipXV8AW3UhSs2
+ ygJQ==
+X-Gm-Message-State: AOJu0Yw4ZV62yiWc6uxcItGhW/ZIiZ6uwcoUWw8FX8zvOc1eDbem6AZW
+ 5MwovggF91eHHo3NtkfX7sBEr1WekPFyKojt4Q6m9BXmryRfuggdYpDJEzjmmQo9YdMvegUAE68
+ 5
+X-Gm-Gg: ASbGncviGj2HqhyGE8swxLnb/i8kRT9fSTRDCOjl7UyZ4WqJ11XUp87RgDV523+9S1b
+ tVLL4vBSB/ookf6cLDw1HfW2JgZJjk60dSgwI2zW9nizJiCQJgJbSwNC3TPoGq/1chqXMfTNugF
+ PDGLHMX4HjNIb2QRbssS/5EaKnKgJOU6GcDFksUrrCLss3Y8N19zDDr5wRsik5EOoLMfXghM2kP
+ ocopmgXmy92Icc6Ogu1IK7fE+BRqRycDVXUevSf358nSnBVXJ6qqDdd3MnErf8liwzaOKwhHJbH
+ R7xUoOXZ+5reBIpERWoInx3d4HClKL5k8VOtt2pf2VzPjWlPds/isly0zYjLirqz5dN99n4FDig
  =
-X-Google-Smtp-Source: AGHT+IFx5kOmu2bcYNJVK5UbnDLb7xL2K4mUhGkzwXf/HXWcfvzytyg/JPk0DY//nj/5BQhKOXObkA==
-X-Received: by 2002:a05:6a00:3489:b0:730:7600:aeab with SMTP id
- d2e1a72fcca58-74058a4906dmr605001b3a.13.1746134695594; 
- Thu, 01 May 2025 14:24:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHEUPLRLy5Zhi/tOlT1fxx/dKDNQd6ZqrlTOvuuFgCPtzmXonbnajDLWzXdGi9si5L5B9NYag==
+X-Received: by 2002:a05:6a00:44cb:b0:73e:1e21:b653 with SMTP id
+ d2e1a72fcca58-740588f2301mr577758b3a.5.1746134696210; 
+ Thu, 01 May 2025 14:24:56 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
  d2e1a72fcca58-740590610desm135897b3a.146.2025.05.01.14.24.55
@@ -65,19 +65,17 @@ Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  Thu, 01 May 2025 14:24:55 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 53/59] accel/tcg: Build cputlb.c once
-Date: Thu,  1 May 2025 14:21:07 -0700
-Message-ID: <20250501212113.2961531-54-richard.henderson@linaro.org>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PULL 54/59] include/user: Convert GUEST_ADDR_MAX to a variable
+Date: Thu,  1 May 2025 14:21:08 -0700
+Message-ID: <20250501212113.2961531-55-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250501212113.2961531-1-richard.henderson@linaro.org>
 References: <20250501212113.2961531-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,49 +98,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Remove GUEST_ADDR_MAX and add guest_addr_max.
+Initialize it in *-user/main.c, after reserved_va.
+
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cputlb.c    | 3 ++-
- accel/tcg/meson.build | 5 +----
- 2 files changed, 3 insertions(+), 5 deletions(-)
+ include/user/guest-host.h | 27 +++++++--------------------
+ accel/tcg/user-exec.c     |  4 ++--
+ bsd-user/main.c           |  8 ++++++++
+ linux-user/main.c         |  8 ++++++++
+ 4 files changed, 25 insertions(+), 22 deletions(-)
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 35c467aace..5f6d7c601c 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -25,7 +25,8 @@
- #include "accel/tcg/probe.h"
- #include "exec/page-protection.h"
- #include "system/memory.h"
--#include "accel/tcg/cpu-ldst.h"
-+#include "accel/tcg/cpu-ldst-common.h"
-+#include "accel/tcg/cpu-mmu-index.h"
- #include "exec/cputlb.h"
- #include "exec/tb-flush.h"
- #include "system/ram_addr.h"
-diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
-index d6bd304add..9b86051b82 100644
---- a/accel/tcg/meson.build
-+++ b/accel/tcg/meson.build
-@@ -25,15 +25,12 @@ tcg_specific_ss = ss.source_set()
- tcg_specific_ss.add(when: 'CONFIG_USER_ONLY', if_true: files('user-exec.c'))
- specific_ss.add_all(when: 'CONFIG_TCG', if_true: tcg_specific_ss)
+diff --git a/include/user/guest-host.h b/include/user/guest-host.h
+index 8d2079bbbb..8e10d36948 100644
+--- a/include/user/guest-host.h
++++ b/include/user/guest-host.h
+@@ -23,23 +23,11 @@
+ extern unsigned long reserved_va;
  
--specific_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: files(
--  'cputlb.c',
--))
--
- libuser_ss.add(files(
-   'user-exec-stub.c',
- ))
+ /*
+- * Limit the guest addresses as best we can.
+- *
+- * When not using -R reserved_va, we cannot really limit the guest
+- * to less address space than the host.  For 32-bit guests, this
+- * acts as a sanity check that we're not giving the guest an address
+- * that it cannot even represent.  For 64-bit guests... the address
+- * might not be what the real kernel would give, but it is at least
+- * representable in the guest.
+- *
+- * TODO: Improve address allocation to avoid this problem, and to
+- * avoid setting bits at the top of guest addresses that might need
+- * to be used for tags.
++ * The last byte of the guest address space.
++ * If reserved_va is non-zero, guest_addr_max matches.
++ * If reserved_va is zero, guest_addr_max equals the full guest space.
+  */
+-#define GUEST_ADDR_MAX_                                                 \
+-    ((MIN_CONST(TARGET_VIRT_ADDR_SPACE_BITS, TARGET_ABI_BITS) <= 32) ?  \
+-     UINT32_MAX : ~0ul)
+-#define GUEST_ADDR_MAX    (reserved_va ? : GUEST_ADDR_MAX_)
++extern unsigned long guest_addr_max;
  
- libsystem_ss.add(files(
-+  'cputlb.c',
-   'icount-common.c',
-   'monitor.c',
-   'tcg-accel-ops.c',
+ #ifndef TARGET_TAGGED_ADDRESSES
+ static inline abi_ptr cpu_untagged_addr(CPUState *cs, abi_ptr x)
+@@ -61,17 +49,16 @@ static inline void *g2h(CPUState *cs, abi_ptr x)
+ 
+ static inline bool guest_addr_valid_untagged(abi_ulong x)
+ {
+-    return x <= GUEST_ADDR_MAX;
++    return x <= guest_addr_max;
+ }
+ 
+ static inline bool guest_range_valid_untagged(abi_ulong start, abi_ulong len)
+ {
+-    return len - 1 <= GUEST_ADDR_MAX && start <= GUEST_ADDR_MAX - len + 1;
++    return len - 1 <= guest_addr_max && start <= guest_addr_max - len + 1;
+ }
+ 
+ #define h2g_valid(x) \
+-    (HOST_LONG_BITS <= TARGET_VIRT_ADDR_SPACE_BITS || \
+-     (uintptr_t)(x) - guest_base <= GUEST_ADDR_MAX)
++    ((uintptr_t)(x) - guest_base <= guest_addr_max)
+ 
+ #define h2g_nocheck(x) ({ \
+     uintptr_t __ret = (uintptr_t)(x) - guest_base; \
+diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
+index adc5296ba5..f674fd875e 100644
+--- a/accel/tcg/user-exec.c
++++ b/accel/tcg/user-exec.c
+@@ -500,7 +500,7 @@ void page_set_flags(vaddr start, vaddr last, int flags)
+        guest address space.  If this assert fires, it probably indicates
+        a missing call to h2g_valid.  */
+     assert(start <= last);
+-    assert(last <= GUEST_ADDR_MAX);
++    assert(last <= guest_addr_max);
+     /* Only set PAGE_ANON with new mappings. */
+     assert(!(flags & PAGE_ANON) || (flags & PAGE_RESET));
+     assert_memory_lock();
+@@ -621,7 +621,7 @@ vaddr page_find_range_empty(vaddr min, vaddr max, vaddr len, vaddr align)
+     vaddr len_m1, align_m1;
+ 
+     assert(min <= max);
+-    assert(max <= GUEST_ADDR_MAX);
++    assert(max <= guest_addr_max);
+     assert(len != 0);
+     assert(is_power_of_2(align));
+     assert_memory_lock();
+diff --git a/bsd-user/main.c b/bsd-user/main.c
+index fa7645a56e..603fc80ba7 100644
+--- a/bsd-user/main.c
++++ b/bsd-user/main.c
+@@ -89,6 +89,7 @@ bool have_guest_base;
+ #endif
+ 
+ unsigned long reserved_va;
++unsigned long guest_addr_max;
+ 
+ const char *interp_prefix = CONFIG_QEMU_INTERP_PREFIX;
+ const char *qemu_uname_release;
+@@ -500,6 +501,13 @@ int main(int argc, char **argv)
+         /* MAX_RESERVED_VA + 1 is a large power of 2, so is aligned. */
+         reserved_va = max_reserved_va;
+     }
++    if (reserved_va != 0) {
++        guest_addr_max = reserved_va;
++    } else if (MIN(TARGET_VIRT_ADDR_SPACE_BITS, TARGET_ABI_BITS) <= 32) {
++        guest_addr_max = UINT32_MAX;
++    } else {
++        guest_addr_max = ~0ul;
++    }
+ 
+     if (getenv("QEMU_STRACE")) {
+         do_strace = 1;
+diff --git a/linux-user/main.c b/linux-user/main.c
+index 4af7f49f38..5ac5b55dc6 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -122,6 +122,7 @@ static const char *last_log_filename;
+ #endif
+ 
+ unsigned long reserved_va;
++unsigned long guest_addr_max;
+ 
+ static void usage(int exitcode);
+ 
+@@ -858,6 +859,13 @@ int main(int argc, char **argv, char **envp)
+         /* MAX_RESERVED_VA + 1 is a large power of 2, so is aligned. */
+         reserved_va = max_reserved_va;
+     }
++    if (reserved_va != 0) {
++        guest_addr_max = reserved_va;
++    } else if (MIN(TARGET_VIRT_ADDR_SPACE_BITS, TARGET_ABI_BITS) <= 32) {
++        guest_addr_max = UINT32_MAX;
++    } else {
++        guest_addr_max = ~0ul;
++    }
+ 
+     /*
+      * Temporarily disable
 -- 
 2.43.0
 
