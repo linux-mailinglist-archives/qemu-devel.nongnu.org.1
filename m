@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A75CAA62EA
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 20:37:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31017AA62F4
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 20:38:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAYmb-0007CL-Ka; Thu, 01 May 2025 14:37:18 -0400
+	id 1uAYnT-0000NN-Nt; Thu, 01 May 2025 14:38:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAYly-0006WW-O1
- for qemu-devel@nongnu.org; Thu, 01 May 2025 14:36:40 -0400
-Received: from mail-io1-xd2d.google.com ([2607:f8b0:4864:20::d2d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAYmH-0006lr-3U
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 14:36:58 -0400
+Received: from mail-io1-xd2e.google.com ([2607:f8b0:4864:20::d2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAYlw-0007sx-At
- for qemu-devel@nongnu.org; Thu, 01 May 2025 14:36:38 -0400
-Received: by mail-io1-xd2d.google.com with SMTP id
- ca18e2360f4ac-85dac9729c3so127231339f.2
- for <qemu-devel@nongnu.org>; Thu, 01 May 2025 11:36:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAYm4-0007uh-Rs
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 14:36:46 -0400
+Received: by mail-io1-xd2e.google.com with SMTP id
+ ca18e2360f4ac-85b41281b50so43688639f.3
+ for <qemu-devel@nongnu.org>; Thu, 01 May 2025 11:36:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746124594; x=1746729394; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=8xzJ3zlVkJ9sCHkvUcas2yFr0SZOS/PHLHHyjGCEldc=;
- b=AlpWgqayG1ZdCoHm0rIrfh17c7uCiB1lz0g1VhMG11IaUfe0ZwRqJfFV9uCuZiNbeT
- FunwpASamJ3HTvxkFPVKb25sloAj9riB1r3HSI8J5dEmKr/O7UKw0qeUkM2vLYvkkQJl
- Ce6Nadlw9uwAEi1AmXepcX6Pn3qkwWxReRZ9sjHH8W9jPcYW46Xf6OT8pOCbUZbR+tC/
- 6ZNxhKaCKgSLbn1gcZd8EJD9SkYPArZoRN/Fc9EQ59n48OxgPS4hYDa2fwktuysm5hxK
- l59DwVeBkwbzoR7Jf9mHT7mvnKTRPTKrFTwFAY0iAp+HhVRaNrT9CTQMDdfPBR+kXC4u
- fnHQ==
+ d=linaro.org; s=google; t=1746124603; x=1746729403; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+ppxPoByuVGLWvliwBsIadaJ9pT2YSnGBDzsW7kKKos=;
+ b=YeCEHs1sam2dJ0PFYaARpBQm5vvL2c22luPgu+7rtqJ7v6OEx4pF0WtJvXBaxma9aq
+ SLPfFhYDG5tW+rJ0pOfccXscKUlSJDDdSnBfNpvnooeKaYE/PgRPvE1rw8WLRv4lh35N
+ 76B4GbPu5S9Nd4vlsr/NmFTIc/VLg6/802HecgqDOvt6Q8iAUwKovmyvBDTYBWSDo4CA
+ +YaJ8ezl9ymUAei06AhnUxfBZs4rzwn4t45EwOTapWK8rYZCI+PUUSA1L5vDqr1TZw0l
+ uSH+6+qlmboJ0D1BLQMaD5rGX3u19/oJj0sJPc4ebwXG5RD5roO7VL5SxqkVZuwyxKYm
+ Vneg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746124594; x=1746729394;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=8xzJ3zlVkJ9sCHkvUcas2yFr0SZOS/PHLHHyjGCEldc=;
- b=MukLDkRPsuvP5cuwuO6Ru67BVods0Y+k/eOBf/IBgMV6PaG41B2CL29Q9t0dbgdA3i
- BFKaJD8NlmdILkzoETaK9XhYAzpPlDNMyouUuTy27Nb2k1qd8kKWmJMV8/NeAKPrGoyx
- aIzyoKKP80uSLTYDiRwTUqZnQXp0HhBxWF/aMHUFg+yvoGW5MN6W5umpxOEsXXKX3w3w
- kzH3T5+ejdpwzQGggmmx/qW+HSdD6V4aISRMVVwHYiEyq4QUOmde+mQmr9BFuX1aacvH
- 88zlAcQpTDoEZ9/ihpj+Apan4sBuWAHGriUQxaXk1/Tp8fkGoDx/9uw4aiHxV2bc0pZU
- LKAA==
-X-Gm-Message-State: AOJu0Yy3eor9m78TSWvuLByMAR0/B5YwR2VKkxicwnnOwsSsGkD6nG0P
- BkwyztEAvW9XwN9znMRsHeZ05Zfc2tCEIMMJP6XnWqLoQiMGx1UmIcZCG0kcwOfPjQpw1Y3A3Q/
- o
-X-Gm-Gg: ASbGncsB/SqguCdUF050w9BDaOqlwKpYs8f+DXil4lAcu6ZwxuRm6NjWd8dpu/upKyi
- OwQ8w2b4sqjYHc5BzLm7oSj3F0RuQD7vHsJyNbMiiKYb45ww9ZQ13Qsb6RRWgVocDeSsTO+hgAa
- Esj0mZQ67t9oIMCDDqrKP3kAR7wHw8IDU4Nv+ISXy0sn6clY1ZH97t5nDe7aWDdpoUL2Y+f9pUK
- 0o1vj+2INsnxaI1+9Skw/0/TnzAp6SS8TlPMC7xiRE7sZtE1mYAIqzYSNU7lq3n2mLtBYUVafbu
- VXeqDl5DjzNoqY1SUORd0KEc1V+Fz4fsRzGKUIznV0t614rdsiL7UMBKKUwEzD4U1hSxt9WrTv8
- 56rTfextDIzHHQsrDUdvbTLQ+m5p+3vE=
-X-Google-Smtp-Source: AGHT+IE7ElCsB+rMoeWTxC2zU0vJEXQRImybFmMySRC7xN4p1t+ZZ11qafNef5UfwjOJXGMPrN1YyA==
-X-Received: by 2002:a05:6602:4088:b0:85b:482b:8530 with SMTP id
- ca18e2360f4ac-8669fb09e0dmr33449639f.2.1746124594717; 
- Thu, 01 May 2025 11:36:34 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1746124603; x=1746729403;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=+ppxPoByuVGLWvliwBsIadaJ9pT2YSnGBDzsW7kKKos=;
+ b=S1zX32GLOveMmmJGunJwmOxdxrBUigD88qcZOH8BXPWfT/5Z5oSEBN8bK6EiL7lAyT
+ +BucFNaF+t6eMGXQxS6Qx+9fCvhA1aweYofHdu+BC66oOhAfS0n3DP8iYTN0d0qVP8z4
+ ukEK9+w/GmDE92FWscCyW9A3yhjrx15qbtKpM/oJVsSJL6hMXzST3+h/EaJCUn2FpZrR
+ Di48mgsXGhq0CsSTl7B8lQ4FjTGhhuqTkl91MHA1tm9OkCqMHRlFgBw2tHpfbp1iDWdi
+ haZYkN5tdI0Ux4Fs3592IQBBVoWWk10zxFEBQp+sLJyLlW0gqEsc1sk1hooqwKpqLVxY
+ WtnA==
+X-Gm-Message-State: AOJu0YyTIHqlE8PuyGbRwKrr89zWSJGR0QKvzWjll13zySua3Hkby69e
+ uzm6/GrZRS1uvS1ySKvITwLXl059/wnj58r/cz97sQ5HFItzF1X291ycltyUg+TUVz/BsJi5D1n
+ P
+X-Gm-Gg: ASbGnctFRSfLy2kwCuf58I/0Gr2cZZvygVCap+FJUUaklGL+erF9Pp4ypnn49XlVaaj
+ ppkbPpPNIjO/pRZQhnI2g5k38h0T16yfcs/JBj1LcrsCzDEQIVRY6na4zTR5wJWxh5ELtLOoVes
+ Camg7vZObZEUtkhlWw6gqxFV5I9gaTGugRaLMr9R/uYRCq4710AKKMJ/xx0YG1eVpa+HrRe2X9V
+ eJFfNCdn4ljY1SolzAs3d1lKUtklh59263ng6LlYQ0224jDGmZX+YFll6fHjwMt6/BCSoloXN+w
+ dx5H96T5hZAjYZoBjlf4WTc9rcmUiMsNbD9CpuCMZZYPo9iSgZ8x4PLCZ/X6SC5lrj3qK+1NjsU
+ z7LV6a5eBtVnoMOvBBYGx
+X-Google-Smtp-Source: AGHT+IEkDox/adfLJYQ2JgU/AdYD+FVuU2ph9ZSnt0DXIPfmiRqwGmaHZDJRFhOMqvmufehOOhvYag==
+X-Received: by 2002:a05:6602:2983:b0:864:4a9c:1bd7 with SMTP id
+ ca18e2360f4ac-8668c263a5dmr41655939f.0.1746124603367; 
+ Thu, 01 May 2025 11:36:43 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4f882eaed79sm306695173.18.2025.05.01.11.36.30
+ 8926c6da1cb9f-4f883014747sm295913173.107.2025.05.01.11.36.39
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 01 May 2025 11:36:34 -0700 (PDT)
+ Thu, 01 May 2025 11:36:43 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Igor Mammedov <imammedo@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
@@ -75,15 +76,18 @@ Cc: Igor Mammedov <imammedo@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
  Yanan Wang <wangyanan55@huawei.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Ani Sinha <anisinha@redhat.com>, Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v2 00/16] hw/i386/pc: Remove deprecated 2.6 and 2.7 PC machines
-Date: Thu,  1 May 2025 20:36:12 +0200
-Message-ID: <20250501183628.87479-1-philmd@linaro.org>
+Subject: [PATCH v2 01/16] hw/i386/pc: Remove deprecated pc-q35-2.6 and
+ pc-i440fx-2.6 machines
+Date: Thu,  1 May 2025 20:36:13 +0200
+Message-ID: <20250501183628.87479-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250501183628.87479-1-philmd@linaro.org>
+References: <20250501183628.87479-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d2d;
- envelope-from=philmd@linaro.org; helo=mail-io1-xd2d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d2e;
+ envelope-from=philmd@linaro.org; helo=mail-io1-xd2e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,68 +110,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-(repost since v1 was incomplete)
+These machines has been supported for a period of more than 6 years.
+According to our versioned machine support policy (see commit
+ce80c4fa6ff "docs: document special exception for machine type
+deprecation & removal") they can now be removed.
 
-The versioned 'pc' and 'q35' machines up to 2.12 been marked
-as deprecated two releases ago, and are older than 6 years,
-so according to our support policy we can remove them.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/i386/pc_piix.c | 14 --------------
+ hw/i386/pc_q35.c  | 14 --------------
+ 2 files changed, 28 deletions(-)
 
-This series only includes the 2.6 and 2.7 machines removal,
-as it is a big enough number of LoC removed. Rest will
-follow.
-
-Based-on: <20250429140825.25964-1-philmd@linaro.org>
-
-Philippe Mathieu-Daudé (16):
-  hw/i386/pc: Remove deprecated pc-q35-2.6 and pc-i440fx-2.6 machines
-  hw/i386/pc: Remove PCMachineClass::legacy_cpu_hotplug field
-  hw/i386/x86: Remove X86MachineClass::fwcfg_dma_enabled field
-  hw/i386/pc: Remove pc_compat_2_6[] array
-  hw/intc/apic: Remove APICCommonState::legacy_instance_id field
-  hw/core/machine: Remove hw_compat_2_6[] array
-  hw/virtio/virtio-mmio: Remove
-    VirtIOMMIOProxy::format_transport_address field
-  hw/i386/pc: Remove deprecated pc-q35-2.7 and pc-i440fx-2.7 machines
-  hw/i386/pc: Remove pc_compat_2_7[] array
-  hw/audio/pcspk: Remove PCSpkState::migrate field
-  hw/core/machine: Remove hw_compat_2_7[] array
-  hw/i386/intel_iommu: Remove IntelIOMMUState::buggy_eim field
-  hw/intc/ioapic: Remove IOAPICCommonState::version field
-  hw/virtio/virtio-pci: Remove VirtIOPCIProxy::ignore_backend_features
-    field
-  hw/char/virtio-serial: Do not expose the 'emergency-write' property
-  hw/virtio/virtio-pci: Remove VIRTIO_PCI_FLAG_PAGE_PER_VQ definition
-
- hw/intc/ioapic_internal.h       |   3 +-
- include/hw/acpi/cpu_hotplug.h   |   3 -
- include/hw/boards.h             |   6 -
- include/hw/i386/apic_internal.h |   1 -
- include/hw/i386/intel_iommu.h   |   1 -
- include/hw/i386/pc.h            |   9 --
- include/hw/i386/x86.h           |   2 -
- include/hw/virtio/virtio-mmio.h |   1 -
- include/hw/virtio/virtio-pci.h  |   2 -
- hw/acpi/cpu_hotplug.c           | 230 --------------------------------
- hw/audio/pcspk.c                |  10 --
- hw/char/virtio-serial-bus.c     |  10 +-
- hw/core/machine.c               |  17 ---
- hw/display/virtio-vga.c         |  10 --
- hw/i386/acpi-build.c            |   4 +-
- hw/i386/intel_iommu.c           |   5 +-
- hw/i386/microvm.c               |   3 -
- hw/i386/multiboot.c             |   7 +-
- hw/i386/pc.c                    |  18 ---
- hw/i386/pc_piix.c               |  23 ----
- hw/i386/pc_q35.c                |  24 ----
- hw/i386/x86-common.c            |   3 +-
- hw/i386/x86.c                   |   2 -
- hw/intc/apic_common.c           |   5 -
- hw/intc/ioapic.c                |  18 +--
- hw/intc/ioapic_common.c         |   2 +-
- hw/virtio/virtio-mmio.c         |  15 ---
- hw/virtio/virtio-pci.c          |  12 +-
- 28 files changed, 19 insertions(+), 427 deletions(-)
-
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 7a62bb06500..98a118fd4a0 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -764,20 +764,6 @@ static void pc_i440fx_machine_2_7_options(MachineClass *m)
+ 
+ DEFINE_I440FX_MACHINE(2, 7);
+ 
+-static void pc_i440fx_machine_2_6_options(MachineClass *m)
+-{
+-    X86MachineClass *x86mc = X86_MACHINE_CLASS(m);
+-    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+-
+-    pc_i440fx_machine_2_7_options(m);
+-    pcmc->legacy_cpu_hotplug = true;
+-    x86mc->fwcfg_dma_enabled = false;
+-    compat_props_add(m->compat_props, hw_compat_2_6, hw_compat_2_6_len);
+-    compat_props_add(m->compat_props, pc_compat_2_6, pc_compat_2_6_len);
+-}
+-
+-DEFINE_I440FX_MACHINE(2, 6);
+-
+ #ifdef CONFIG_ISAPC
+ static void isapc_machine_options(MachineClass *m)
+ {
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index 33211b1876f..b7ffb5f1216 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -658,17 +658,3 @@ static void pc_q35_machine_2_7_options(MachineClass *m)
+ }
+ 
+ DEFINE_Q35_MACHINE(2, 7);
+-
+-static void pc_q35_machine_2_6_options(MachineClass *m)
+-{
+-    X86MachineClass *x86mc = X86_MACHINE_CLASS(m);
+-    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+-
+-    pc_q35_machine_2_7_options(m);
+-    pcmc->legacy_cpu_hotplug = true;
+-    x86mc->fwcfg_dma_enabled = false;
+-    compat_props_add(m->compat_props, hw_compat_2_6, hw_compat_2_6_len);
+-    compat_props_add(m->compat_props, pc_compat_2_6, pc_compat_2_6_len);
+-}
+-
+-DEFINE_Q35_MACHINE(2, 6);
 -- 
 2.47.1
 
