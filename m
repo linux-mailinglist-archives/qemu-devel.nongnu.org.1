@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BF43AA6136
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 18:10:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DEFBAA6137
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 18:10:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAWU1-0001KX-NK; Thu, 01 May 2025 12:09:59 -0400
+	id 1uAWUA-0001RF-LR; Thu, 01 May 2025 12:10:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uAWRA-0007FY-Jk
- for qemu-devel@nongnu.org; Thu, 01 May 2025 12:07:04 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1uAWRS-0007bO-1b
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 12:07:18 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uAWR6-0005wu-Ip
- for qemu-devel@nongnu.org; Thu, 01 May 2025 12:06:59 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-7370a2d1981so1042822b3a.2
- for <qemu-devel@nongnu.org>; Thu, 01 May 2025 09:06:54 -0700 (PDT)
+ id 1uAWRQ-0005xS-68
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 12:07:17 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-22e09f57ed4so7343865ad.0
+ for <qemu-devel@nongnu.org>; Thu, 01 May 2025 09:07:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746115614; x=1746720414; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746115634; x=1746720434; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=n/QTXsakOxtKwGoSSmKXGLQ9cZMpySQcCKNjhQ2UAoQ=;
- b=fAiX3izroJOkkDtDRyfTHlDwz8JPTPxlkDGVqsyDVViEV7Hhas98Gd7XTPBh7bqPRP
- SvSprEr2mntgM0FYALgkXxZarAeALyjGc7aGluxl753yZapg09mQqTYh1lAqCu4iwrQX
- RawTLZLj2JA2DjocPR1/fFBEU8nwC/TiKUp2nebt7E2x7mgoPv6kplmACPIMumvTre4i
- S8UdeOJlnHydrEpbYExTK6m+CDs0gyfEqCvI6f+Ipyg9phfEJQeNA34r0Rs4K3JPms2W
- webx5cWAL7NFIOqcPzaFRiuE9ikEjeasZV/SKBvKU5rnlg9FEFW5bYfCHRmlpwBqrvI4
- +7ew==
+ bh=SSXwYMiQVgtQIFcXTd9RPepSmBTBe17hr85/w9CNRtA=;
+ b=cr8U6PE7uaouNYvClOBpv7iWROf+3CJyZ27+DzqPI7cLUiIUXF+bitiSkjc97ES4DX
+ meyotWSXnL2xYOMwgvml6f5ykuNnZcDNK8GanQ/MnzWp8Mmo1lSANJIf0sRdYvVwSwF2
+ 9FVleEWyhh/qvCf3so5pJyA3rhsX+a0nY8whMnq/V44fQ9S6nW67JKneGH5UuUR8tYLc
+ vW//Mm6BX5kaC85siTV+jmoFvCAJ4RJIHROBWXRBfACd4rb2aruv8lapJivZXPd9SV/O
+ nA2EKr5z4lMV2s+H7mHT+xi2wlt2EUBaUqr9PUqwOEiJGK5TuA398M7bZQfKMz8g0cFd
+ 2xBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746115614; x=1746720414;
+ d=1e100.net; s=20230601; t=1746115634; x=1746720434;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=n/QTXsakOxtKwGoSSmKXGLQ9cZMpySQcCKNjhQ2UAoQ=;
- b=EaiGsKId9CpHCCdvIhMvPr+e7Ya4cJWtnZS4rOu6U+643ln7n+fb+6oUa31h+YLjo9
- hfrkxmuKIPnBaDSVAFGJqmvkABwpiJyEGAI05EvRCuvMC8W8IrM8N8Z37uJ4N1+YgQgp
- vs9IQa/oyx+7PFJoo/69AnfyPh7lhD6JG3ysgpjbKKOlHkSxXzQBMFbWGasVvcWbAKFj
- K5zPmwJNtLAlIjXA18ALxu/U63qtfx0n0R+DDI5XRtOS+CONJYeri/mlVdFYCHujtbTJ
- 4Mn97OLjvQ9js44zZewMvAU5cyS/4GN47eUIjsqTjVYpTX+T5tBbRvF6DtCu/YkM1yGB
- NiuQ==
+ bh=SSXwYMiQVgtQIFcXTd9RPepSmBTBe17hr85/w9CNRtA=;
+ b=B+MjkULRJRfkwZn6cZerBl99dZp9fUaY0pgQp7MS/qD9Dz2fbLO/xqX0sHfsRL1w3P
+ LN6WDhPDlgl2a0vVVQxd875dlyV21zQLP6nZpok4U/M1HwhTBY2vOsPMsMw2t0BSyuLb
+ nUY/XPs5s+X5b+QAi1E5QQq8eq7/HSDUdU1cXduRhgRQMhKsiZ9A8ttu0bpRW0nwcL+2
+ tpfEk7xuOSWSajL58lvZOGc3P8pssBtmSyORsCWCYu7u7rnNeQDxxBwrfRviShXgjctb
+ KfwELJ4PS4YUObtfnxAJNgJIaBJ/Uxs1FA4KRafx8of+ktOpV7/CEzGZ+ID3YaXzGOye
+ 0l1A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVc0SMYZfPXwj5fnX2F9LD+3Qupc+ODjQU63BalSt3QsKDTtNMjLzUZ4/enQXJZnPYvcljMVN7r5yaM@nongnu.org
-X-Gm-Message-State: AOJu0YylRf11LRUNjDxGTOJ7Agn8V8IqQGDUJxBkRqjAPrxzCKzSrWAn
- 8WcmmIpZhoUwuYCTAKmsXRMB+EKei2n5kJ5Vy2yBuNNipPGUq3wz6nNV/RdiSNI=
-X-Gm-Gg: ASbGncuJe9LsiUMkwH18bJZ8LN3+OpmRXxZpXHAstL4g2FCGglyEynY5lBaOFC5PGk6
- B3zcZsJt21Ahx+3yVcThMgUn2oEsxy0ghwU6kx6BgPpzxF6XLXCSzngumuJDr57a+eYUpcsPylE
- HY2DqECN6Cgz89AabENF8C7zxwhA1fblIrCfTCj0WJ6KAbxwRd6oUBRS+c3wPfVmvcAJPHwHcaS
- HRAxcBuwgHK1YBuHJ/OA6fzHalVAG9qzx3DqqGIyxbQhGZrLZWnU0iBUsz70cSpOZTNglOQgiu8
- BSXoaDd6g1e1Kr6tVzax7VAQoWARDeKxrDRacgMx+va76SkQFTuOSw==
-X-Google-Smtp-Source: AGHT+IG8qSAxLjxHh8gCUMUOwuSkH7rHfRY0jM39RLsWDhp3mLjuC0VaoIQkmzO9gcr4Tn5nRkbuEg==
-X-Received: by 2002:a05:6a21:6802:b0:1f5:839e:ece8 with SMTP id
- adf61e73a8af0-20ba6a201b2mr5920779637.2.1746115613792; 
- Thu, 01 May 2025 09:06:53 -0700 (PDT)
+ AJvYcCUiri+7zOk6gCGBj3XijJyq0z8jWZ2G6S2DeC1hhLfZthoPDjYzrj0VNobu4Qum1TwsXC496FjIw/0R@nongnu.org
+X-Gm-Message-State: AOJu0Yx71hfJCrCKM8TdvutM0R0D9tGKalVU8K9ersdQu9c0/B0Cr4k0
+ eJBjAKVAPFW6oFdqne1TT8zZUB5aLRpwp0HNNn/NzM+lB6GZfRXSQ21L5TPIzZU=
+X-Gm-Gg: ASbGncvYR9Q/OLzFuww6E2SV6bxSDaRAPi1zqDP2ygeUN+UD+VxY1Znf7GQt0Af7WYx
+ 6byp4r5owplkW+1oAs0uj5VNR6qpdGjm5KCordc3/SOJcp11RmC9J6rfnMpPPRRoczwvbeRymDA
+ IW2mmxlkztoDhOBEkbnRXzw4FpW+s47XuHVzR3leM5OaiCGdn/Mj5HFQ/WJZdps/gOKDUp2gInl
+ 85BYAJynXNliqANSghxF1Ndl+b9kkATNr+TX1H/4oEBmsN6SpVzqpZBt58qEzmW5jMrvAtVOhIc
+ P8DWbqejYM0d5LBkYqZGt6Yzwdklfr1Xc21njapi+WdBVvW6GV+VjQ==
+X-Google-Smtp-Source: AGHT+IHeXvhcY9XW5df0XVfafeBtOu9lWrL+GSTBkzm8cSJ3N5cwUvLAkvhEPxylBVoNBQkgdQEdqw==
+X-Received: by 2002:a17:902:e54c:b0:215:44fe:163d with SMTP id
+ d9443c01a7336-22e087f77femr46392925ad.17.1746115634536; 
+ Thu, 01 May 2025 09:07:14 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b1f9d4f31aesm916323a12.43.2025.05.01.09.06.53
+ d9443c01a7336-22e0bc7baa7sm8415515ad.190.2025.05.01.09.07.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 01 May 2025 09:06:53 -0700 (PDT)
-Message-ID: <107f9576-b241-4e62-af17-928169a2c03b@linaro.org>
-Date: Thu, 1 May 2025 09:06:52 -0700
+ Thu, 01 May 2025 09:07:14 -0700 (PDT)
+Message-ID: <f0750224-e291-4d40-8fa7-77c65e2a13a8@linaro.org>
+Date: Thu, 1 May 2025 09:07:13 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/11] accel/tcg: Remove TARGET_PAGE_DATA_SIZE
+Subject: Re: [PATCH 00/11] accel/tcg: Finish building once
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 References: <20250501145520.2695073-1-richard.henderson@linaro.org>
- <20250501145520.2695073-10-richard.henderson@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250501145520.2695073-10-richard.henderson@linaro.org>
+In-Reply-To: <20250501145520.2695073-1-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,23 +100,47 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 5/1/25 7:55 AM, Richard Henderson wrote:
-> This macro is used by only one target, and even then under
-> unusual conditions -- AArch64 with mmap's PROT_MTE flag.
+> Based-on: 20250430230631.2571291-1-richard.henderson@linaro.org
+> ("[PATCH 0/6] accel/tcg: Build translate-all, tcg-all twice")
 > 
-> Since page size for aarch64-linux-user is variable, the
-> per-page data size is also variable.
-> Since page_reset_target_data via target_munmap does not
-> have ready access to CPUState, simply pass in the size
-> from the first allocation and remember that.
+> Adjust the final two files in accel/tcg/ to build once.
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   include/user/page-protection.h |  8 +++++---
->   target/arm/cpu.h               |  4 ----
->   accel/tcg/user-exec.c          | 26 ++++++++++++++++----------
->   target/arm/tcg/mte_helper.c    |  4 ++--
->   4 files changed, 23 insertions(+), 19 deletions(-)
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Congrats!
+
+> 
+> r~
+> 
+> 
+> Richard Henderson (11):
+>    accel/tcg: Move user-only tlb_vaddr_to_host out of line
+>    accel/tcg: Move tlb_vaddr_to_host declaration to probe.h
+>    accel/tcg: Use target_long_bits() in cputlb.c
+>    accel/tcg: Use vaddr for plugin_{load,store}_cb
+>    accel/tcg: Build cputlb.c once
+>    include/user: Convert GUEST_ADDR_MAX to a variable
+>    include/user: Use vaddr in guest-host.h
+>    accel/tcg: Move TARGET_TAGGED_ADDRESSES to TCGCPUOps.untagged_addr
+>    accel/tcg: Remove TARGET_PAGE_DATA_SIZE
+>    accel/tcg: Avoid abi_ptr in user-exec.c
+>    accel/tcg: Build user-exec.c once
+> 
+>   include/accel/tcg/cpu-ldst.h   | 24 -------------
+>   include/accel/tcg/cpu-ops.h    |  7 ++++
+>   include/accel/tcg/probe.h      | 16 +++++++++
+>   include/user/guest-host.h      | 49 ++++++++++----------------
+>   include/user/page-protection.h |  8 +++--
+>   target/arm/cpu-param.h         |  7 +---
+>   target/arm/cpu.h               | 36 +------------------
+>   accel/tcg/cputlb.c             | 28 ++++++++-------
+>   accel/tcg/user-exec.c          | 63 ++++++++++++++++++++++------------
+>   bsd-user/main.c                |  8 +++++
+>   linux-user/main.c              |  8 +++++
+>   target/arm/cpu.c               | 27 ++++++++++++++-
+>   target/arm/tcg/mte_helper.c    |  4 +--
+>   accel/tcg/ldst_common.c.inc    |  4 +--
+>   accel/tcg/meson.build          | 10 ++----
+>   15 files changed, 154 insertions(+), 145 deletions(-)
+> 
 
 
