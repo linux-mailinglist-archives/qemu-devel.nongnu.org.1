@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD0AFAA6545
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:23:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27309AA655E
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:25:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAbLx-00016b-LS; Thu, 01 May 2025 17:21:57 -0400
+	id 1uAbLx-00016G-CY; Thu, 01 May 2025 17:21:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAbLm-00010f-QR
- for qemu-devel@nongnu.org; Thu, 01 May 2025 17:21:46 -0400
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ id 1uAbLo-00011P-5E
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 17:21:48 -0400
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAbLk-0001a2-Uj
- for qemu-devel@nongnu.org; Thu, 01 May 2025 17:21:46 -0400
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-2ff799d99dcso1549852a91.1
- for <qemu-devel@nongnu.org>; Thu, 01 May 2025 14:21:44 -0700 (PDT)
+ id 1uAbLm-0001aL-9k
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 17:21:47 -0400
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-b1396171fb1so906522a12.2
+ for <qemu-devel@nongnu.org>; Thu, 01 May 2025 14:21:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746134503; x=1746739303; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746134504; x=1746739304; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VSNENHYud6d4CatFFmLB8e+vJFaHLohbjF+bNPxyKN0=;
- b=qsQlbzu15cPm/B9PbtnhCat2e34FpVPYvOTxlTApFPjSnmXViMEABeJ1GTthR+9c+P
- B1qUxP9M6PsvmKNU7wKquwzBRCS7zd6QmDrv1u1VF+4jAfM0W0kzjBXJ/EffxiibBM53
- wEeLzJx3e3NFnx5GzRaXSe6hSo0OGkcryUQIHE/Ke/0EnnknAzJXviXc6OkxQaM1GFiw
- r13UIR+ma79VsTLuaySqAmflukqTaW+I326ptIbALFQPetbO8a+2Qu6P2Hkpjz1FojG9
- kuRwOcZREPxLdg7MAj125P79KQUjS9uUs6Z/A6+BwVC11UbkhuVnsGxnJOFGOk4HlsPF
- Hkmg==
+ bh=/BWKAEDoduJo+vm6H9IfI7womewKXVIoZxey+PglUhc=;
+ b=MJGDxJOA/n83hS5OhDMX7g/sINtWgI0g11D51+ErTfXehh+BGm3/0M/TRXqDfsDlMz
+ x6mbH38SLYMbH31NKABcfqE/1+kqQWQSXDEf+ita5mo/URMqU1RK80DLj0b8uHMulxrG
+ snEvbGkm4jszsZXvfMnVaCGpU5aloW0SVkxVByxQ88zUW7jRnGdOOz7OA1pHwkf2QNji
+ 7eRbsqDlByw4PtURGKG0Px41d3rnN6B/5rcyB+6LAs0Upgo0AnYxztV2FGjAABTS18Hg
+ SKwaJM7b0plZ80xqhGrGJIFHgrmu8ephkAD1oECGaeKWTDdCbYQy1DkOYIudrys9yya0
+ bZHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746134503; x=1746739303;
+ d=1e100.net; s=20230601; t=1746134504; x=1746739304;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VSNENHYud6d4CatFFmLB8e+vJFaHLohbjF+bNPxyKN0=;
- b=vSK6nX0gJcymHnF8LcpWgQGBPbK/DecQeIVnYsCre5FaXk3oIaHex5gQgYGMw1lHZ+
- K1fe1LxEAmWkERrpsVwuM+0GNieWm0wkVRuQp5lZa9/iNjQrNsYM8t9HG+MdUI7/KUYr
- 3tur+0D3pKzLZiZ9bKCf0O3GFlQ7FupiJB1Tut+nxfmFsIwUjgwzKoE9lH1h9CL8hAh3
- ll0QG/db0K9eqb2iufYYjNri8TmsmhMTR5Stu6aAPSzxKdMYr/viD6Qq6xr1m7EBXNIQ
- E07riiobeEckD7gQPRiiLlpmzZvAXH8tcNacTIKiJXw7k1NGbe9QBT+l4t6+6nYueOiM
- s5NA==
-X-Gm-Message-State: AOJu0YxGByEvNn3D9IprJ8F3Suq2lINQhTsjR3KCWiTtisQMxyFY63lV
- UtQkLu63XFa1CN9o3oDACbPE07h2FxYOz32d/lPl0rVoyp0DyGPPe6NgWPuahPlw86osztYPHPo
- s
-X-Gm-Gg: ASbGnctBSEf9besw1OU+U7Nk0NpUNM1jzMoUIApdKbNj1eupYcF725Q/x/nc0bWe6AH
- 2Kkr2VwoSvf1e723LQpemWYhcdYRFCY+gL85YAXhdrlO5XtvLhTfq04XcHP4B8jSH1W82sN/c+A
- Yc2zZlIZ36CfWhTgDpGdouqDgRhmbd8jWZ+Jwu8zUaGqX72dBBkkGHE+iIJEG2O++ktxIn6AXJC
- QhpjMyUN+TiKyMadzbLR6b7oNMKYjkyXy1rrzDfFT4l/0K01T/kv4yerhjC1qb0TCgL+N4IQ5oi
- vGgPJ8SZXyHMxlAhOc99MmAZZ8/O7I0IAB9+8Vmt1k6lALnufsjFp0qXC24ZtavqIAlgMm5kL0A
+ bh=/BWKAEDoduJo+vm6H9IfI7womewKXVIoZxey+PglUhc=;
+ b=khCenCoZuiHTeMiv3rr1CtNBSail2b3tebL6gq3P8//tYzuoN1bcKojxfYtQb76M/D
+ w4Th7XdHpzWkitReXYIlShF1enkp5lVgEcImHuGx9RQeIdd5x6pi4EQa2yuGCrO3fB9H
+ cHBeR9l+UJ5mZf2Hb39+RwP8R19xG+rxd0mzE6tIAgDqTJ8p0TUdlgVlJYU3k9O0J0T/
+ /j7FEqYNx/dQ1oMy8R8cQNJtTt3Gi4AiyF3ndf43TqipliilN628wackUM7aW+busU+Q
+ 6FcqxKOSgITv+/pVjzVJvHY2IDy/EsxwcvAgcoMIKfP/N2qQ8ZZuClbNOygCE9AL5z03
+ 04TQ==
+X-Gm-Message-State: AOJu0YxKnjKa+VjYKY5vaNhBCHEBzpoiXgn87/EgK8sd1JgQalrymYjP
+ Wv5Ol6SKNHGMdcU2Xc0yeaWep633kA2eKwDyTPt37OoYeQ/Aob49e+ZQ+rhtaZBw+Kc3YtJh4/5
+ a
+X-Gm-Gg: ASbGncsY0TY2kapsCzbp9A3G4z4fG9Zp6GtkQ/LYstIx2rZ2NlQTtg2SACtcRrVGoSq
+ T/1977KDjpjEuGAfns7dp/c7EqzJ1SgPuHyitscglAJ1sFx/zvQxytGiEqv9sgFWihh6Qg9m1Vk
+ fkSqlEHC2lPv/6g2vxZzXkSwJppj0IJYO3V0ghXk6wZ8ySqk1ndnrZvJSdSi+3h7LhWJTxPSVai
+ hD2XNr71un7fjSkIH6nmD1J31C7sIqeCz0EuIYciJe5VnFrPpoWO+JUmpjzqsKp62ORFZCE/09A
+ ZADUe6mQ+/x8UjCXdkhE+PfyhwdIs+qV3c/O/lEDrQ9e3DByF+uwfCU3LcDMwG7ade2Y9kSRzEs
  =
-X-Google-Smtp-Source: AGHT+IFqeurWgzAdWXiCr2xo/aNnUUVo7i37e/pkV/HcufWGGogozmrYxEVK1u7RDDAVb0OD2cmCZg==
-X-Received: by 2002:a17:90a:e705:b0:2ff:64c3:3bd4 with SMTP id
- 98e67ed59e1d1-30a4e6befe1mr877791a91.31.1746134503540; 
- Thu, 01 May 2025 14:21:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGbqklZpscOflIuOeqhb5KfdVTJBYoWGWZM8LlhQEcCxjTnb4VTMZ65Sp+yuThSH7DJPKUK1g==
+X-Received: by 2002:a17:90b:5208:b0:2ee:741c:e9f4 with SMTP id
+ 98e67ed59e1d1-30a4e5b2c3fmr986404a91.11.1746134504454; 
+ Thu, 01 May 2025 14:21:44 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
  98e67ed59e1d1-30a476267e0sm1384573a91.39.2025.05.01.14.21.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 May 2025 14:21:43 -0700 (PDT)
+ Thu, 01 May 2025 14:21:44 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 35/59] accel/tcg: Pass TCGTBCPUState to tb_htable_lookup
-Date: Thu,  1 May 2025 14:20:49 -0700
-Message-ID: <20250501212113.2961531-36-richard.henderson@linaro.org>
+Subject: [PULL 36/59] accel/tcg: Use TCGTBCPUState in struct tb_desc
+Date: Thu,  1 May 2025 14:20:50 -0700
+Message-ID: <20250501212113.2961531-37-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250501212113.2961531-1-richard.henderson@linaro.org>
 References: <20250501212113.2961531-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,57 +101,65 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cpu-exec.c | 20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+ accel/tcg/cpu-exec.c | 20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
 
 diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index 808983e461..8e6899950e 100644
+index 8e6899950e..4ad84c2db8 100644
 --- a/accel/tcg/cpu-exec.c
 +++ b/accel/tcg/cpu-exec.c
-@@ -195,26 +195,24 @@ static bool tb_lookup_cmp(const void *p, const void *d)
-     return false;
- }
+@@ -150,12 +150,9 @@ static void init_delay_params(SyncClocks *sc, const CPUState *cpu)
+ #endif /* CONFIG USER ONLY */
  
--static TranslationBlock *tb_htable_lookup(CPUState *cpu, vaddr pc,
--                                          uint64_t cs_base, uint32_t flags,
--                                          uint32_t cflags)
-+static TranslationBlock *tb_htable_lookup(CPUState *cpu, TCGTBCPUState s)
- {
-     tb_page_addr_t phys_pc;
+ struct tb_desc {
+-    vaddr pc;
+-    uint64_t cs_base;
++    TCGTBCPUState s;
+     CPUArchState *env;
+     tb_page_addr_t page_addr0;
+-    uint32_t flags;
+-    uint32_t cflags;
+ };
+ 
+ static bool tb_lookup_cmp(const void *p, const void *d)
+@@ -163,11 +160,11 @@ static bool tb_lookup_cmp(const void *p, const void *d)
+     const TranslationBlock *tb = p;
+     const struct tb_desc *desc = d;
+ 
+-    if ((tb_cflags(tb) & CF_PCREL || tb->pc == desc->pc) &&
++    if ((tb_cflags(tb) & CF_PCREL || tb->pc == desc->s.pc) &&
+         tb_page_addr0(tb) == desc->page_addr0 &&
+-        tb->cs_base == desc->cs_base &&
+-        tb->flags == desc->flags &&
+-        tb_cflags(tb) == desc->cflags) {
++        tb->cs_base == desc->s.cs_base &&
++        tb->flags == desc->s.flags &&
++        tb_cflags(tb) == desc->s.cflags) {
+         /* check next page if needed */
+         tb_page_addr_t tb_phys_page1 = tb_page_addr1(tb);
+         if (tb_phys_page1 == -1) {
+@@ -185,7 +182,7 @@ static bool tb_lookup_cmp(const void *p, const void *d)
+              * is different for the new TB.  Therefore any exception raised
+              * here by the faulting lookup is not premature.
+              */
+-            virt_page1 = TARGET_PAGE_ALIGN(desc->pc);
++            virt_page1 = TARGET_PAGE_ALIGN(desc->s.pc);
+             phys_page1 = get_page_addr_code(desc->env, virt_page1);
+             if (tb_phys_page1 == phys_page1) {
+                 return true;
+@@ -201,11 +198,8 @@ static TranslationBlock *tb_htable_lookup(CPUState *cpu, TCGTBCPUState s)
      struct tb_desc desc;
      uint32_t h;
  
++    desc.s = s;
      desc.env = cpu_env(cpu);
--    desc.cs_base = cs_base;
--    desc.flags = flags;
--    desc.cflags = cflags;
--    desc.pc = pc;
--    phys_pc = get_page_addr_code(desc.env, pc);
-+    desc.cs_base = s.cs_base;
-+    desc.flags = s.flags;
-+    desc.cflags = s.cflags;
-+    desc.pc = s.pc;
-+    phys_pc = get_page_addr_code(desc.env, s.pc);
+-    desc.cs_base = s.cs_base;
+-    desc.flags = s.flags;
+-    desc.cflags = s.cflags;
+-    desc.pc = s.pc;
+     phys_pc = get_page_addr_code(desc.env, s.pc);
      if (phys_pc == -1) {
          return NULL;
-     }
-     desc.page_addr0 = phys_pc;
--    h = tb_hash_func(phys_pc, (cflags & CF_PCREL ? 0 : pc),
--                     flags, cs_base, cflags);
-+    h = tb_hash_func(phys_pc, (s.cflags & CF_PCREL ? 0 : s.pc),
-+                     s.flags, s.cs_base, s.cflags);
-     return qht_lookup_custom(&tb_ctx.htable, &desc, h, tb_lookup_cmp);
- }
- 
-@@ -253,7 +251,7 @@ static inline TranslationBlock *tb_lookup(CPUState *cpu, TCGTBCPUState s)
-         goto hit;
-     }
- 
--    tb = tb_htable_lookup(cpu, s.pc, s.cs_base, s.flags, s.cflags);
-+    tb = tb_htable_lookup(cpu, s);
-     if (tb == NULL) {
-         return NULL;
-     }
 -- 
 2.43.0
 
