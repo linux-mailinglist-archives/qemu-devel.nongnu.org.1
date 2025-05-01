@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1C75AA6565
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:26:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A811AA6594
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:32:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAbPP-0005US-Fj; Thu, 01 May 2025 17:25:31 -0400
+	id 1uAbOv-0004wR-Dn; Thu, 01 May 2025 17:25:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAbOm-0004Qt-Rb
+ id 1uAbOm-0004Rm-UH
  for qemu-devel@nongnu.org; Thu, 01 May 2025 17:24:53 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAbOk-0002Ak-Di
+ id 1uAbOk-0002Az-Dt
  for qemu-devel@nongnu.org; Thu, 01 May 2025 17:24:52 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-b0b2ce7cc81so1298234a12.3
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-73bb647eb23so1414919b3a.0
  for <qemu-devel@nongnu.org>; Thu, 01 May 2025 14:24:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746134688; x=1746739488; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746134689; x=1746739489; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YBxJ7AZiyX/+Jv6DfasHwGdvua+9mEIKfUGwWBF4FSg=;
- b=YAq8skbyzmt1XJhsFK6RBFF8JEkatwRw0rP4aryVsxkOwS1bnCM1QpZsHXxs2lkgJg
- YnjCiZE3WM0RYyy+wozSnOqIafyb87qTynzdeNcT9SR5W3CjA7ExtXvcq2sXnVs8HJEZ
- WdIFFMAJyM5Tddlcv/f+Dz9T5nKrCYhc1MAj5OMInGOzeUxAvdFndlSvW1etMG8UKF4Z
- hRnb3F/Af/kzIKkN2Rdl+vGQP0Q2o6/vOCU1ECb/LY3d9Y7+CeiqlVT++5fPVosrMEQE
- YoPVRnoEITG0LzIIceagJC0Smbk7AVzlx38dKmz01i8jKSMk7v7Yc2Z7RGp/LevCvAoA
- ETqA==
+ bh=tyYB9tvx9mmC6DxALf3PRadclD426tvlc4evfPNn6MM=;
+ b=nb8NrFznu1vILDjye6HIkVeovVNrq/o7PsIlQOfVP0VahG1DCVB12mtFKWWZBHAs1X
+ +CQLruBy3C8bbc2JSFo6fqRBsyhmnB4NCtIQLY1zQg7Aa+Bdn1g/ztB2sssRfo9L633S
+ p0Q+7ftnl84HBQX2UNBIqPUH+tzj99lkhRjvkOuGtGD37Qx9YX4ocYXvqIRk4O9AxnyF
+ xoHRE28+m/SdeUfy8uVamJ8CAvI1H9zs8hXx7BwkmAr8MpOvobeNYxK1z7gdUCEuiDaJ
+ 2k49IvO4GRE11Lj2nhS/SlZd/lVZS8P04/hsDBSfg+nEdKa3xmo6rVVodzPWegkMrNWS
+ Sbxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746134688; x=1746739488;
+ d=1e100.net; s=20230601; t=1746134689; x=1746739489;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YBxJ7AZiyX/+Jv6DfasHwGdvua+9mEIKfUGwWBF4FSg=;
- b=VfB7s0jxnja9qBjFmOoC8FNXywMQu+yQBIUCf2E8rxwqJ0zXMqb8hrKxTA5D1mgZcu
- LofXovSEoUK/KS9pQQb9lRNu81o+pB+AxaXEbBJvyE1JAn1AKMSpapmxCS3nGqbedHNf
- nCZ2y9PDZRwzdfq8mFaegTINNpueyR2rxTX/XBJEkS9obOWwDn5N8eDPU7qU5nz0AmhC
- /AcBx5CnIqqs61aWUfcenqKPv9UDZ8EJ0avaUqnMgruvKaqKEW/IvPfgxk6P0g2SLEFv
- NkLiHiV7Cjohj9h4dEeITFFPJXiTwVhKd4QqlBYCfE5sdbHZ5mXFXS6+4GCyqD15gjJG
- 0Hgw==
-X-Gm-Message-State: AOJu0YxGtU8ZXWBDN1n1eniuJwzcMVOiVRRHgjrp2LCuveVmx4uQRSTX
- /gMBhbAGaLWZxPjflC2fjxBojhz7IDb+2iBZvACJW6ihNJiAXg5+N7mBsBC3o0HbX/QzECVSmgU
- D
-X-Gm-Gg: ASbGncvsW4k4Sn49BBTgnt1Xm/3OujpWx49Ygzr6oW9iKhfjOxIJWfBEOA2nBru1LQF
- 6AEA5sJDPoVgS89D37Khwj9QX9vV4rhF74n6YENQ7LRNjkCfx2TliL6wQkrwU/08zt1IBAPmbqo
- uPFqTrssCM8tMAcKmiV41u8HcoHyCq+GbLHJzlgDpW6FQYo40QfF21mirENIUlVKL88rGL2UZtm
- DvyoIiZH6HZ/ZyEweC4WyhS8qyjGV93waUzR2UGtRtAc1weKQYCRvMox9uVDzY/ab45VDbpzzuE
- QBrB2ib+pkgUwAfs4PTZECdvuDCkFi05sZE8oZvA08l3RzXaP9swUdyFGv/Dlu03Q/p7u2/Kzkw
+ bh=tyYB9tvx9mmC6DxALf3PRadclD426tvlc4evfPNn6MM=;
+ b=DLqHNBXH8GgBf09fiAusDZnAayDpxiiC18dRFNavy24HvLpXGwV+MWGgdg6Q6eSckX
+ E6bWo3grKDClHq+7Tu1u5S3rrCqs10hcei2I1NfPPdu8zr8L/7e95636e/yw7rOhDrFS
+ wdNbJ3G0wXEQAjumbVp1tcCrVrbvuxOKxCBwkD6FtA+PllLE56SyC5NOhM0HEQpDJJCs
+ eeMuyr1t4CI3s54KycNz3n0tH56tqGrk8Klpgp7OLTl1PVVbCY+fAO8NvovXQ5Ti6tWj
+ VQoX+1gdssOFF7JbEuxP9M63FxcpZEtFuA42d2rlZieRRJ0AfKbYRpEFc9gb3IP2vKIX
+ jG6g==
+X-Gm-Message-State: AOJu0YxOYd6jfcl1IXiSSYyBqnbDvbqZgIZu8l1Zhg8anhtvmrWlFide
+ LcnBxpepowlVTbzwKEmDeO6Vg9E3zwi0Dg7/KXv+SBxwbp+NxOBE9fNZdr01DQZWQNi6QuTG1/X
+ i
+X-Gm-Gg: ASbGnctsR1FJLiUGgJ0wCDORu9PxOjKUe9rU/HbVKjChVyJD2OCsfkCwo7zXywCFlRQ
+ Ji+p3yx6lRTKcVS2VLO9+l8MNp5LU3uby76MxtB8BshGmXEHqP4oa663vt6/6uHBuM4U5ncO2EL
+ 7lSEnaFefhpWs2uzqQSoIJEQLuefmoEQpP36ZNS7gnCLsBAdm57RhpizGfNELbzR8BYb7ZWAmtd
+ navNRLS3QrRhYWkG3zwm/HDhmkTe8dJt1Shbg13s0iIC89r8mbo+YDhk2EGDKJHca6n2dtNRSs6
+ 1aTG7asGozec2Ef5W3aK5N6gOKxmzcBSadUanBU17a5S9R2fkHV0Acuhjg+cGWEKrtoqte8XHqM
  =
-X-Google-Smtp-Source: AGHT+IE8u2vxt+cFpmmSY7otVyuCvkoyl5ZqnajQV/a77E8NO6K62r/LmKxaGJ6qfHpi6EC00xqu1g==
-X-Received: by 2002:a05:6a21:9985:b0:1fa:9819:c0a5 with SMTP id
- adf61e73a8af0-20cde952d8fmr641997637.11.1746134688198; 
+X-Google-Smtp-Source: AGHT+IHFMe9eyVGfKBsYqoVmwtamEJyIIrYCXzwcojsfxlbZAjEninSgd5w8gMQiqwOyXMApl0ItrA==
+X-Received: by 2002:a05:6300:4041:b0:201:8a13:f392 with SMTP id
+ adf61e73a8af0-20cded42b11mr623013637.20.1746134688812; 
  Thu, 01 May 2025 14:24:48 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-740590610desm135897b3a.146.2025.05.01.14.24.47
+ d2e1a72fcca58-740590610desm135897b3a.146.2025.05.01.14.24.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 May 2025 14:24:47 -0700 (PDT)
+ Thu, 01 May 2025 14:24:48 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 41/59] qemu/target_info: Add %target_cpu_type field to
- TargetInfo
-Date: Thu,  1 May 2025 14:20:55 -0700
-Message-ID: <20250501212113.2961531-42-richard.henderson@linaro.org>
+Subject: [PULL 42/59] qemu: Introduce target_long_bits()
+Date: Thu,  1 May 2025 14:20:56 -0700
+Message-ID: <20250501212113.2961531-43-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250501212113.2961531-1-richard.henderson@linaro.org>
 References: <20250501212113.2961531-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x530.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,60 +104,70 @@ From: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
  include/qemu/target-info-impl.h | 2 ++
- target-info-stub.c              | 6 +-----
+ include/qemu/target-info.h      | 7 +++++++
+ target-info-stub.c              | 1 +
  target-info.c                   | 5 +++++
- 3 files changed, 8 insertions(+), 5 deletions(-)
+ 4 files changed, 15 insertions(+)
 
 diff --git a/include/qemu/target-info-impl.h b/include/qemu/target-info-impl.h
-index d0e8c86176..76766eeaae 100644
+index 76766eeaae..1b51cbcfe1 100644
 --- a/include/qemu/target-info-impl.h
 +++ b/include/qemu/target-info-impl.h
 @@ -14,6 +14,8 @@
  typedef struct TargetInfo {
      /* runtime equivalent of TARGET_NAME definition */
      const char *target_name;
-+    /* runtime equivalent of CPU_RESOLVING_TYPE definition */
-+    const char *cpu_type;
++    /* runtime equivalent of TARGET_LONG_BITS definition */
++    unsigned long_bits;
+     /* runtime equivalent of CPU_RESOLVING_TYPE definition */
+     const char *cpu_type;
      /* QOM typename machines for this binary must implement */
-     const char *machine_typename;
- } TargetInfo;
+diff --git a/include/qemu/target-info.h b/include/qemu/target-info.h
+index 2b6ccabb11..850a2958b9 100644
+--- a/include/qemu/target-info.h
++++ b/include/qemu/target-info.h
+@@ -16,6 +16,13 @@
+  */
+ const char *target_name(void);
+ 
++/**
++ * target_long_bits:
++ *
++ * Returns: number of bits in a long type for this target (i.e. 64).
++ */
++unsigned target_long_bits(void);
++
+ /**
+  * target_machine_typename:
+  *
 diff --git a/target-info-stub.c b/target-info-stub.c
-index bcf834f71d..86da297277 100644
+index 86da297277..fecc0e7128 100644
 --- a/target-info-stub.c
 +++ b/target-info-stub.c
 @@ -14,6 +14,7 @@
  
  static const TargetInfo target_info_stub = {
      .target_name = TARGET_NAME,
-+    .cpu_type = CPU_RESOLVING_TYPE,
++    .long_bits = TARGET_LONG_BITS,
+     .cpu_type = CPU_RESOLVING_TYPE,
      .machine_typename = TYPE_MACHINE,
  };
- 
-@@ -21,8 +22,3 @@ const TargetInfo *target_info(void)
- {
-     return &target_info_stub;
- }
--
--const char *target_cpu_type(void)
--{
--    return CPU_RESOLVING_TYPE;
--}
 diff --git a/target-info.c b/target-info.c
-index 0042769e3a..5f5ef1f932 100644
+index 5f5ef1f932..16fdca7aaa 100644
 --- a/target-info.c
 +++ b/target-info.c
 @@ -15,6 +15,11 @@ const char *target_name(void)
      return target_info()->target_name;
  }
  
-+const char *target_cpu_type(void)
++unsigned target_long_bits(void)
 +{
-+    return target_info()->cpu_type;
++    return target_info()->long_bits;
 +}
 +
- const char *target_machine_typename(void)
+ const char *target_cpu_type(void)
  {
-     return target_info()->machine_typename;
+     return target_info()->cpu_type;
 -- 
 2.43.0
 
