@@ -2,51 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8261AAA649C
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 22:13:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59E1FAA64AF
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 22:22:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAaGw-0006tt-6x; Thu, 01 May 2025 16:12:42 -0400
+	id 1uAaPe-0002Oq-0l; Thu, 01 May 2025 16:21:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uAaGt-0006tF-6b
- for qemu-devel@nongnu.org; Thu, 01 May 2025 16:12:39 -0400
+ id 1uAaPX-0002MG-JE; Thu, 01 May 2025 16:21:36 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uAaGp-0006zs-RL
- for qemu-devel@nongnu.org; Thu, 01 May 2025 16:12:38 -0400
+ id 1uAaPU-0007uo-W6; Thu, 01 May 2025 16:21:35 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id B9D8655D25A;
- Thu, 01 May 2025 22:12:32 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id C1A5655D25C;
+ Thu, 01 May 2025 22:21:28 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id hShp0AauQp6Y; Thu,  1 May 2025 22:12:30 +0200 (CEST)
+ with ESMTP id dQ7pYLcRGhRs; Thu,  1 May 2025 22:21:26 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id C0DDE55D25F; Thu, 01 May 2025 22:12:30 +0200 (CEST)
+ id C48AE55D25A; Thu, 01 May 2025 22:21:26 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id BEB4B745683;
- Thu, 01 May 2025 22:12:30 +0200 (CEST)
-Date: Thu, 1 May 2025 22:12:30 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id C0732745683;
+ Thu, 01 May 2025 22:21:26 +0200 (CEST)
+Date: Thu, 1 May 2025 22:21:26 +0200 (CEST)
 From: BALATON Zoltan <balaton@eik.bme.hu>
 To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-cc: Chao Liu <lc00631@tecorigin.com>, pbonzini@redhat.com, peterx@redhat.com, 
- david@redhat.com, armbru@redhat.com, zhangtj@tecorigin.com, 
- zqz00548@tecorigin.com, qemu-devel@nongnu.org
-Subject: Re: [PATCH v6 0/1] Optimizing the print format of the QEMU monitor
- 'info mtree'
-In-Reply-To: <24e572c1-7000-40ef-b006-a346a2e39792@linaro.org>
-Message-ID: <d216132a-e44b-a98d-4d5e-539fc9b0a502@eik.bme.hu>
-References: <cover.1746065388.git.lc00631@tecorigin.com>
- <6d17f9a1-67d9-4a97-ae1d-21a78d2592a4@linaro.org>
- <5d1cef0e-a8b8-77ed-0ad8-ab7c4e15fbdb@eik.bme.hu>
- <24e572c1-7000-40ef-b006-a346a2e39792@linaro.org>
+cc: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org, 
+ Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org, 
+ Andrey Smirnov <andrew.smirnov@gmail.com>
+Subject: Re: [PATCH 1/3] hw/pci-host/designware: Remove unused include
+In-Reply-To: <e7088647-aa76-4f64-b443-0ca354df8f24@linaro.org>
+Message-ID: <01dbe30f-5ef7-c76d-59dd-d05bbce2029d@eik.bme.hu>
+References: <20250501183445.2389-1-shentey@gmail.com>
+ <20250501183445.2389-2-shentey@gmail.com>
+ <e7088647-aa76-4f64-b443-0ca354df8f24@linaro.org>
 MIME-Version: 1.0
 Content-Type: multipart/mixed;
- boundary="3866299591-1648727755-1746130350=:40469"
+ boundary="3866299591-236068682-1746130886=:40469"
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -73,99 +69,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
   This message is in MIME format.  The first part should be readable text,
   while the remaining parts are likely unreadable without MIME-aware tools.
 
---3866299591-1648727755-1746130350=:40469
+--3866299591-236068682-1746130886=:40469
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8BIT
 
 On Thu, 1 May 2025, Philippe Mathieu-Daudé wrote:
-> On 1/5/25 15:49, BALATON Zoltan wrote:
->> On Thu, 1 May 2025, Philippe Mathieu-Daudé wrote:
->>> Hi Chao,
->>> 
->>> On 1/5/25 04:24, Chao Liu wrote:
->>>> Hi, all:
->>>> 
->>>> Thanks to BALATON, and David for their reviews.
->>>> 
->>>> In PATCH v6:
->>>> 1. Replaced the bool type with enum mtree_node_type to improve code 
->>>> readability.
->>>> 2. Modified the output to use only one horizontal dash instead of two, 
->>>> and
->>>>     aligned character printing for a cleaner look.
->>>> 
->>>> like this:
->>>> 
->>>> ```
->>>> $ ./qemu-system-aarch64 -S -monitor stdio -M raspi4b
->>>> (qemu) info mtree
->>>> address-space: memory
->>>> `- 0000000000000000-ffffffffffffffff (prio 0, i/o): system
->>>>     |- 0000000000000000-000000007fffffff (prio 0, ram): ram
->>>> ...
->>>>     |- 00000000fe000000-00000000ff7fffff (prio 1, i/o): bcm2835- 
->>>> peripherals
->>>>     |  |- 00000000fe900000-00000000fe907fff (prio -1000, i/o): 
->>>> bcm2835-dbus
->>>>     |  |- 00000000fe910000-00000000fe917fff (prio -1000, i/o): 
->>>> bcm2835-ave0
->>>>     |  |- 00000000fe980000-00000000fe990fff (prio 0, i/o): dwc2
->>>>     |  |  |- 00000000fe980000-00000000fe980fff (prio 0, i/o): dwc2-io
->>>>     |  |  `- 00000000fe981000-00000000fe990fff (prio 0, i/o): dwc2-fifo
->>>>     |  |- 00000000fec00000-00000000fec00fff (prio -1000, i/o): 
->>>> bcm2835-v3d
->>>>     |  |- 00000000fec11000-00000000fec110ff (prio -1000, i/o): 
->>>> bcm2835-clkisp
->>>>     |  |- 00000000fee00000-00000000fee000ff (prio -1000, i/o): 
->>>> bcm2835-sdramc
->>>>     |  `- 00000000fee05000-00000000fee050ff (prio 0, i/o): bcm2835- 
->>>> dma-chan15
->>>>     |- 00000000ff800000-00000000ff8000ff (prio 0, i/o): bcm2836-control
->>>> ...
->>>>     |- 00000000ff845600-00000000ff8456ff (prio 0, i/o): gic_cpu
->>>>     `- 00000000ff846000-00000000ff847fff (prio 0, i/o): gic_vcpu
->>>> ```
->>> 
->>> Could we keep the address ranges aligned? I.e.:
->>> 
->>>>   |--+     00000000fe000000-00000000ff7fffff (prio 1, i/o): 
->>> bcm2835-peripherals
->>>>   |  |---- 00000000fe900000-00000000fe907fff (prio -1000, i/o): 
->>> bcm2835-dbus
->>>>   |  |---- 00000000fe910000-00000000fe917fff (prio -1000, i/o): 
->>> bcm2835-ave0
->>>>   |  |--+  00000000fe980000-00000000fe990fff (prio 0, i/o): dwc2
->>>>   |  |  |- 00000000fe980000-00000000fe980fff (prio 0, i/o): dwc2-io
->>>>   |  |  `- 00000000fe981000-00000000fe990fff (prio 0, i/o): dwc2-fifo
->>>>   |  |---- 00000000fec00000-00000000fec00fff (prio -1000, i/o): 
->>>> bcm2835-v3d
->>>>   |  |---- 00000000fec11000-00000000fec110ff (prio -1000, i/o): 
->>> bcm2835-clkisp
->>>>   |  |---- 00000000fee00000-00000000fee000ff (prio -1000, i/o): 
->>> bcm2835-sdramc
->>>>   |  `---- 00000000fee05000-00000000fee050ff (prio 0, i/o): 
->>> bcm2835-dma-chan15
->>>>   |------- 00000000ff800000-00000000ff8000ff (prio 0, i/o): bcm2836- 
->>>> control
+> On 1/5/25 20:34, Bernhard Beschow wrote:
+>> The DEFINE_TYPES() macro doesn't need the qemu/module.h include.
 >> 
->> I don't think that helps. I was OK with just indents and adding graphics 
->> does not change that but this would actually make it harder to see what is 
->> below what as you'd have to trace back to the beginning of the line and not 
->> just look at the right end where it would not be clear where a sub region 
->> starts so it't less readable even if it looks more organised. So I'd keep 
->> the indent.
+>> Fixes: 13a07eb146c8 ("hw/pci-host/designware: Declare CPU QOM types using
+>> DEFINE_TYPES() macro")
 >
-> Maybe add the '-t' option then, to display as tree, and not disturb
-> the previous command output.
+> The 'Fixes:' tag is for bug being fixed. Here I suggest:
 
-That seems to be a good compromise and works for me if you want aligned 
-tree but if you're OK with indented tree I don't mind the additional chars 
-at the front either (as long as they are not too wide) so not necessary to 
-add an option in that case. On the other hand if anything tries to parse 
-this output then an option may be better to cause less disruption although 
-it's human monitor command so format can change without notice.
+Wasn't that Resolves: that's used for bugs or Buglink: and Fixes: to 
+refer to commits this fixes up? I thought we used Fixes: like that until 
+now.
 
 Regards,
 BALATON Zoltan
---3866299591-1648727755-1746130350=:40469--
+
+>  Since commit 13a07eb146c8 ("hw/pci-host/designware: Declare CPU QOM
+>  types using DEFINE_TYPES() macro") which removed the type_init() use,
+>  we don't need to include "qemu/module.h" anymore.
+>
+> (I can do the update when applying if you agree).
+>
+>> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+>> ---
+>>   hw/pci-host/designware.c | 1 -
+>>   1 file changed, 1 deletion(-)
+>> 
+>> diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
+>> index 183f838392..b4bff14579 100644
+>> --- a/hw/pci-host/designware.c
+>> +++ b/hw/pci-host/designware.c
+>> @@ -20,7 +20,6 @@
+>>     #include "qemu/osdep.h"
+>>   #include "qapi/error.h"
+>> -#include "qemu/module.h"
+>>   #include "qemu/log.h"
+>>   #include "qemu/bitops.h"
+>>   #include "hw/pci/msi.h"
+>
+> $ git grep -L type_init $(git grep -l qemu/module.h hw) | wc -l
+>      50
+>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>
+>
+>
+--3866299591-236068682-1746130886=:40469--
 
