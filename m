@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 299C0AA6520
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:11:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20C96AA6524
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:11:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAb82-0003Ny-Rk; Thu, 01 May 2025 17:07:35 -0400
+	id 1uAb9T-0005gx-JQ; Thu, 01 May 2025 17:09:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAb7J-0002hA-3e
- for qemu-devel@nongnu.org; Thu, 01 May 2025 17:06:49 -0400
-Received: from mail-il1-x12a.google.com ([2607:f8b0:4864:20::12a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAb7S-0002vY-Iz
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 17:06:59 -0400
+Received: from mail-io1-xd32.google.com ([2607:f8b0:4864:20::d32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAb7H-0006kk-K2
- for qemu-devel@nongnu.org; Thu, 01 May 2025 17:06:48 -0400
-Received: by mail-il1-x12a.google.com with SMTP id
- e9e14a558f8ab-3d7f111e9e1so15688715ab.1
- for <qemu-devel@nongnu.org>; Thu, 01 May 2025 14:06:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAb7Q-0006m0-O4
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 17:06:58 -0400
+Received: by mail-io1-xd32.google.com with SMTP id
+ ca18e2360f4ac-8616987c261so47491639f.3
+ for <qemu-devel@nongnu.org>; Thu, 01 May 2025 14:06:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746133606; x=1746738406; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746133615; x=1746738415; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pT5M0lz4iXxP6eQat70i7GTGsl8o8UafTe6D3H+LKG8=;
- b=Sua5MDqv7+6kbyAqjpct4jTdLQdqHqv0IN5nm61nsYJ5oko+xCpP0FaSGXQrt4x2kz
- HPMfOt6CDVHsFVaekaf3aGxjsemz9+90wqyYKOBZMJbeko1U6JCQ1ncv5zwyNsR+7uCT
- lUOsJQtpHnneU9UCRnozttz0HTE3s5d8HLdzUfZFP7332y6qS5xPB78DRT3z5BuYDXPg
- zHezqZRJ32bbNvsTmy/NTI7jbu3e1dkPoPYloJiiMTwzm2TXD9ogoBtHOJ1GeDoXEQg2
- 4OMCSKuKVKXIyG27Q42OaWrmUr5UWj+/1sgOFwvE9JDJYjnNn/TWujAWjDoqKE+kEa2H
- WTng==
+ bh=5ZHrZc/SqHQCuHNUknWmlRcBkOUid9mb6wG/E9aJXzY=;
+ b=JB1ZcBEhox8DyxEtyex6GQ9rcteS6g+DR4lZ5Eo28liSC7CvVI9myw9qIcTxqQzs3C
+ 2Sc6cslZ91ZWqg7wa/lR9GJheZ2si9HlZi34ewVALsq0H9Uok1LmZybooqIH3G1roc0O
+ 8+DMU8BBuGiaGSIuni3P2m8CMVkRJOvrtp2EhFRwxsfSnTIqOSc2YhPb7NoPz0rvSlGI
+ ehEOSQUcXFOzlnISfzYYIqt2dOwZfs+UPqqJvDM9O5GgTtzOn/9kmDQILbhHRYnyTaLB
+ Es/DzVJshcKWuOdxEOq+gL80kVyOmqaB+T3TmDdQjFIoi2r2B351/7nfTsciGqkfze2/
+ lOiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746133606; x=1746738406;
+ d=1e100.net; s=20230601; t=1746133615; x=1746738415;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pT5M0lz4iXxP6eQat70i7GTGsl8o8UafTe6D3H+LKG8=;
- b=k3fDjbHxesh7wskVBgObOmDgFDUZDMht8hTqXhbgQG85tPCW4clkUYbgnssJMD80E7
- O/WwKDiEpzaop79aqbB5qtG/OZHfqKcV0qi6KIpt2oJYDYGB8ITOzoX+FqXxc4HN31Np
- 2LSm2ngE9kUUZCBPt9E3rtSWI6u3qnc8A5aDQetl/MpIp4GHEaL0s/ZUMqrI2BE3CAe9
- c/MLMVQ5U2quTjCCmLyhQkbKfH5W/SmIwWBBOh6lVHUYSXnqUUdC2hTX5N6mtEuPouzz
- FKibBVkvyKiuu1Pcfe/k0/UyzYSs3Qd1WmZjeTTOU11A/8F5ERy5kxSXlPof20wInEcl
- OPXA==
-X-Gm-Message-State: AOJu0Yy139C/nAAjJFYA5pjO5tp8YQO4fHhmaX8W/+522xWT4R2Fsiia
- MYK2/66j/kAAs4yh1mVVAR1bkUBsx1Xg19vKmQ50QqU0rAAP+QV1yKMm4r2qPEb1Vfv/mo/DEvk
- b
-X-Gm-Gg: ASbGnct3wdKD6W9/48b+0xLet8fybJnsntJclyZedANecZ4nQ3W6s7Sgt95A8ybzms0
- /wneDWZsBc/TnIVbEskPoAFYjQiyU74yTzJlBD/hta9VWkUO1m3rH8sDVS94GL0XswLag9NWSN0
- WQ1ADmyfXanyelwkbr4dErP96ZjosczXKA3ctrTIeuvOt5J3v4UHkMY5ezUI7ahyS+pcPpotfrL
- hxAmiM470Gntk+VwOSEI4y9KA6l+flfSUSuacFVTtz3CdgeVUBrKLmffRrWDHJbCMu0KbjnOrmv
- uf065jw6suMvw3czj0cNnGaSCYhCAGA3l47RuKbKc32ga+cGSQ8zcKkbpMzNMElzBzdkjJl8xPN
- u0Lx59pS3sY3Qkr4=
-X-Google-Smtp-Source: AGHT+IFyZ7FYEZ0ZSdsw26U2Xktrm0Lfl9GBgVwXW2Vqi07mLib4x0Rm3VfQIgDk4i4z9prW/R11gw==
-X-Received: by 2002:a05:6e02:3784:b0:3d8:21ae:d9c with SMTP id
- e9e14a558f8ab-3d97c154012mr5765095ab.5.1746133606161; 
- Thu, 01 May 2025 14:06:46 -0700 (PDT)
+ bh=5ZHrZc/SqHQCuHNUknWmlRcBkOUid9mb6wG/E9aJXzY=;
+ b=VCK6SFhWU+oJzYCVR3j8rOkr0LvD0A+fBQ4LdTrPEw1kC74/ZqnkeEMVGFy6o1cvp6
+ jf8ilRIKsIOUZMNsqn2YN68/nCF87XPc9RPHOcG38WKIGv9SJMJ5eqZGcT2vN/7eHkET
+ 5+JR75gaYZIvUEi0gyUEKJ/urcwXFp5U30stirnFCpb8Juyn2aZw2bWhJlHqxdoxaI77
+ 43Wc2OgDAV26ZPQ4P08/RBrpaKidZ7VA7aW9ZaBgEJIRiBx0V2xWv9itPaV/Njl4PnWd
+ VfajLXVh4Ge5rfevMHWNT0Dcmc9GED7gzP8Syvew7MnX7auWDPJgYX9fXq1Qwkh+d9wq
+ CwGQ==
+X-Gm-Message-State: AOJu0Yz2/XdeWEb0h5v5gezgmGHn74B6CFh9AcsNh9ejfiEYj6ElEmGs
+ +DUThUA2BlOCcWj5hPgRPyNqqaSkrFhUqAFjuEssGoSUBr36SB5qisG7aZk9SBVnU/2Oo7OE3EL
+ Y
+X-Gm-Gg: ASbGncuRhKHGe6HEgblNCdw20PwqUYr3xilbM/4T7xvHFGWrJBhhfy09KDmxOBiYa9Z
+ /c0Ceu8vu+QOKiMOvRsafOHQ00GJurs+5IjzVMLd4lPHR3ALc5/0ON7MgbL7MeREtAl+OuOi510
+ +UHfoOLCc1Btg9qokqxRyBG59755ydO0+37hjV0WSYBcHXv7YsCFfNQOQCc4lhJDPWCpgv56uOU
+ NIr4MIoVdx6x5qSM+KgQcC66h4TkOh7Y4q2yhVSz7ooNJYpcUPOIDXCmicdQn2ZTVjYQEfjvztU
+ dW59RiqkEOvpwflEr6fa54N5MGMtnKEsHobQ0ZbUiV3aZQNQY1xN67UaWGdat+YSrKPdXDlgkN3
+ EkzXweRpXxJ5G5fY=
+X-Google-Smtp-Source: AGHT+IEFqPkhVc8RoBBRp3hJ+ER5sKSr0LXlPBt3TWkNE/vEJoqOW7hEWn7+OQbK/8C0ef4Wtyr8DQ==
+X-Received: by 2002:a05:6602:3a15:b0:85b:577b:37c9 with SMTP id
+ ca18e2360f4ac-866b4298812mr90498639f.12.1746133614798; 
+ Thu, 01 May 2025 14:06:54 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4f88aac7e27sm44626173.138.2025.05.01.14.06.42
+ ca18e2360f4ac-864aa443886sm24652739f.36.2025.05.01.14.06.51
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 01 May 2025 14:06:45 -0700 (PDT)
+ Thu, 01 May 2025 14:06:54 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?=
@@ -75,17 +75,18 @@ Cc: =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?=
  "Michael S. Tsirkin" <mst@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Yi Liu <yi.l.liu@intel.com>
-Subject: [PATCH 12/18] hw/nvram/fw_cfg: Inline fw_cfg_file_slots()
-Date: Thu,  1 May 2025 23:04:50 +0200
-Message-ID: <20250501210456.89071-13-philmd@linaro.org>
+Subject: [PATCH 13/18] hw/i386/pc: Remove deprecated pc-q35-2.9 and
+ pc-i440fx-2.9 machines
+Date: Thu,  1 May 2025 23:04:51 +0200
+Message-ID: <20250501210456.89071-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250501210456.89071-1-philmd@linaro.org>
 References: <20250501210456.89071-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12a;
- envelope-from=philmd@linaro.org; helo=mail-il1-x12a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d32;
+ envelope-from=philmd@linaro.org; helo=mail-io1-xd32.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,60 +109,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now than fw_cfg_file_slots() only returns
-FW_CFG_FILE_SLOTS_DFLT, we can inline it.
+These machines has been supported for a period of more than 6 years.
+According to our versioned machine support policy (see commit
+ce80c4fa6ff "docs: document special exception for machine type
+deprecation & removal") they can now be removed.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/nvram/fw_cfg.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ hw/i386/pc_piix.c | 9 ---------
+ hw/i386/pc_q35.c  | 9 ---------
+ 2 files changed, 18 deletions(-)
 
-diff --git a/hw/nvram/fw_cfg.c b/hw/nvram/fw_cfg.c
-index 71c41c979d7..de65ee8342e 100644
---- a/hw/nvram/fw_cfg.c
-+++ b/hw/nvram/fw_cfg.c
-@@ -255,15 +255,10 @@ static void fw_cfg_write(FWCfgState *s, uint8_t value)
-     /* nothing, write support removed in QEMU v2.4+ */
- }
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 0d6ad9db627..5c7d0c50f8e 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -737,15 +737,6 @@ static void pc_i440fx_machine_2_10_options(MachineClass *m)
  
--static inline uint16_t fw_cfg_file_slots(const FWCfgState *s)
+ DEFINE_I440FX_MACHINE(2, 10);
+ 
+-static void pc_i440fx_machine_2_9_options(MachineClass *m)
 -{
--    return FW_CFG_FILE_SLOTS_DFLT;
+-    pc_i440fx_machine_2_10_options(m);
+-    compat_props_add(m->compat_props, hw_compat_2_9, hw_compat_2_9_len);
+-    compat_props_add(m->compat_props, pc_compat_2_9, pc_compat_2_9_len);
 -}
 -
- /* Note: this function returns an exclusive limit. */
- static inline uint32_t fw_cfg_max_entry(const FWCfgState *s)
+-DEFINE_I440FX_MACHINE(2, 9);
+-
+ #ifdef CONFIG_ISAPC
+ static void isapc_machine_options(MachineClass *m)
  {
--    return FW_CFG_FILE_FIRST + fw_cfg_file_slots(s);
-+    return FW_CFG_FILE_FIRST + FW_CFG_FILE_SLOTS_DFLT;
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index 54c18100122..d66d64b3b62 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -630,12 +630,3 @@ static void pc_q35_machine_2_10_options(MachineClass *m)
  }
  
- static int fw_cfg_select(FWCfgState *s, uint16_t key)
-@@ -845,13 +840,13 @@ void fw_cfg_add_file_callback(FWCfgState *s,  const char *filename,
-     int order = 0;
- 
-     if (!s->files) {
--        dsize = sizeof(uint32_t) + sizeof(FWCfgFile) * fw_cfg_file_slots(s);
-+        dsize = sizeof(uint32_t) + sizeof(FWCfgFile) * FW_CFG_FILE_SLOTS_DFLT;
-         s->files = g_malloc0(dsize);
-         fw_cfg_add_bytes(s, FW_CFG_FILE_DIR, s->files, dsize);
-     }
- 
-     count = be32_to_cpu(s->files->count);
--    assert(count < fw_cfg_file_slots(s));
-+    assert(count < FW_CFG_FILE_SLOTS_DFLT);
- 
-     /* Find the insertion point, sorting by file name. */
-     for (index = count;
-@@ -926,7 +921,7 @@ void *fw_cfg_modify_file(FWCfgState *s, const char *filename,
-         }
-     }
- 
--    assert(index < fw_cfg_file_slots(s));
-+    assert(index < FW_CFG_FILE_SLOTS_DFLT);
- 
-     /* add new one */
-     fw_cfg_add_file_callback(s, filename, NULL, NULL, NULL, data, len, true);
+ DEFINE_Q35_MACHINE(2, 10);
+-
+-static void pc_q35_machine_2_9_options(MachineClass *m)
+-{
+-    pc_q35_machine_2_10_options(m);
+-    compat_props_add(m->compat_props, hw_compat_2_9, hw_compat_2_9_len);
+-    compat_props_add(m->compat_props, pc_compat_2_9, pc_compat_2_9_len);
+-}
+-
+-DEFINE_Q35_MACHINE(2, 9);
 -- 
 2.47.1
 
