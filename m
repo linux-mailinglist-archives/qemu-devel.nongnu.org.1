@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 186BCAA6564
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:25:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2459AA6589
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:31:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAbOz-0005ES-DX; Thu, 01 May 2025 17:25:05 -0400
+	id 1uAbPx-0008OJ-0m; Thu, 01 May 2025 17:26:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAbOp-0004iA-QY
- for qemu-devel@nongnu.org; Thu, 01 May 2025 17:24:55 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1uAbOu-0005GE-HL
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 17:25:01 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAbOn-0002C5-K2
- for qemu-devel@nongnu.org; Thu, 01 May 2025 17:24:55 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-736dd9c4b40so2446764b3a.0
+ id 1uAbOo-0002CN-B0
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 17:24:59 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-72d3b48d2ffso1656473b3a.2
  for <qemu-devel@nongnu.org>; Thu, 01 May 2025 14:24:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1746134692; x=1746739492; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UdM4Y9gYKdv124M5AuRleUua4qCDdrLmsMUhfkZBN+Y=;
- b=U+buhxOhqcKv4gIG4oMM3fHPaLj7TO0vQSQW+vObSlpUIOOPYraUdJKklcCNOkP65r
- rl9hGYOVYpDKdBroUY0BdLfgPSLnDIpOe4VOzHkvbYZ3W2Ae7DaUC9k6iwAg4QV4D6Fe
- iz7S54HynjyPy1wnk7bZuSEbyz0f68NxqkUIxor43RD+2PbqDZfHtf6wJ1D/dz+QBPRo
- HTFN+CuPjqpTSnyOX4tAigcWwcBb7s0ZA4g9Fm4aJ0IAjj/mQjeaZM7SU7YUeA9BFw4V
- I56E9DuCL3cr5yeZAlerN+spVesjiw0ydsTz1X6Sih8y9FEoId2wUr90urseuk7uq1/X
- t7xQ==
+ bh=Ee3yc1GwjdX802YpUH6+ttgdvKSjZdMr+u38Re0lfBg=;
+ b=Ud/tWVp3/qAqabq4N9jDdG9zBVqogCmL8CJAzSTK1UTd0prPGowqqABxN1RCF9wrWz
+ svUZULI4cHjqSj73RzFwTunQ3CIg2Y2ip3rbDmRJgciFbR88txPxm2CHp6/GNcGH35jf
+ qqPkwbDKjVIX5y7PgwsDiIuNFV+cXTt25TK6yeAHvPwpOd97huYmXlGQtCUNUaZ/3Wrw
+ QFEPG3UDmPB3CmWhiwyKwyl+82W1SeVg4iB88deLL6eqQ9HZLxNED65EoLzm74Kc1B9r
+ YG8G6EHNXm8EhZWXquLjHmKSPEq8OAVOszgPQclm1NC4mIbX87s8bMQhnG0+3kia6gEd
+ sRhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1746134692; x=1746739492;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UdM4Y9gYKdv124M5AuRleUua4qCDdrLmsMUhfkZBN+Y=;
- b=d8RluvNNmp9gNN18P7kmeNMoeS+P+yqha5BxWH+MtkxOEuBspc8ajpGMfS6/JRHRre
- JldX0zx9+oOKPzhFI72hbRd58OhujB0YFMgxc41bEx2HDx9nFFXCdCmCe/wGKMS/+0zV
- Vfrsbr9EY8FuPmIjcCJJ8MYda0raI2kL+XZVnCzkuyCky4Oqabh+bbH1PJDYvTF0awaq
- BlOeH6EYiuwyG54C3zOwBV5qXjEQrO5+v6mne461yE8rBx6sg75OfsUGb4C9uvVwuLJk
- ETVq/QYF4QSKTh35+gSISN3yrqpYPKia+GDRkSq9auGVejOQUoS5YfV0Vjmr/LK1FyeH
- ROPQ==
-X-Gm-Message-State: AOJu0YzvQ/UDV7vvDYXkRu22S5TAQXcK4ql3uSDGhEgH6AoWj2SLIB6y
- 3TzjXCgaqsGjwmN3kaauIuFSnyc4BaPmroN73BO/RRHNzusMQkbz9CZbR4N7iIUHGp8kI0XP2qS
- l
-X-Gm-Gg: ASbGnct8/YzC0mP5i7spDZeOrApBlLVCGZxWzyxB4F3QRIag/iX1EznXVxBVcpQwvF4
- 3h3kW8awvmXeVJIkEx0oG7gRbS4lqS9rxEGXoqzDr+6GV4Lg0dY/+gBqswO0aE7GEFFXRzpROvA
- Rg47W/3XwgajyC/AaNC7wVxcHB4DFa8tlQYEu2GR0RB84OIPOvEvk+DU3toP4ZM6AsPGR5gTPci
- 1s/Xt85xVSyLsRVaD2yxdntMmPCjeQQGR5I/ADogc3s5FgoLFIN3DFOmqMfYFm0RbwF7ijvgT95
- R+AYtYWqAwe3lHDLJsBYFhKBj7pwUDA4Z5cVvCc8tW2Etmav65hRYa/GQDJUQaQ42uSlsMb42Is
+ bh=Ee3yc1GwjdX802YpUH6+ttgdvKSjZdMr+u38Re0lfBg=;
+ b=k2R/QdEP/boiERqQ0ohk5ZXDh2kF8gjiNgaVtmUqdlTcw35Te+oMbKRHcpT45FFbbB
+ CHS+cyNSkig+gA57bqQ8lecSFk8eWUXwAWt+RPS/4SKMuZap4dvg5/gtlrMwkbJ/fRVV
+ IXjNiJLpcsBS4Im8dG+NzilV8QLRduLIeRdpAb9sam9H4ZiIMKuuxeRMKhmE7ipI94rA
+ pAARLw/6/wtLgQ+TQkE9uswJYQN+H0PppQT+0IHVx2LKOzr5DPR668tstnZTjYvhCobr
+ +emx25s2+AEEDA9Ae6gA0Odr4dm9/iZPIL/XQdzFwjcTh9ZR2o810akMU+a+/HVoVblZ
+ DO1Q==
+X-Gm-Message-State: AOJu0YxKyTv4QLrCM0Mw5Gx0z9eXAqYB6maE5DiQsNduLJkSLufOTRIn
+ cWF/Ys1XzPAw+0CLFRkM16YixBrEkOeU10W0s3/2kHvIgYgF+1md2WLkEYctBOSyzDd4hvKFGeW
+ T
+X-Gm-Gg: ASbGncuyyHT1NFD5TnSmwvnIAa2vApSapCpYdX50bPEJ6szDH/2uCwikYq33ELEqdQ5
+ VnWlOHFdRgbDEnflGsDOYRZXHDXbkUhrNNb0QrJoYOAfxyZqjjEjq0ZiCsUXCv4yOfkNHavnpHM
+ fA8o4w24sNmUa0LDhD1FCptfpt8fp8/sKUVyZKTDTmiPzgV/D5F5qjPxHPs4fwbhLrpW6QivV22
+ xlrs8fIl3ITuiahrXCH2ohV/qh6jrqphbWn5xyYzE6c6BVv6bYzGpMhEwdnqU6iAzdcHosRU8tJ
+ dmB34XfRK8clWIcSx2TKypVbXjB+p4TVEv4/dMqwhOTLSVQ0WFQOGin9+H5dxzLhDM3XhJdvoBA
  =
-X-Google-Smtp-Source: AGHT+IH93323VBd4j5bUeNeWzT80VxNCabCWP+fdM7ziIO+FBqZM2PI9t8JTMFFzCl67s7/vJasl2w==
-X-Received: by 2002:a05:6a20:cfa2:b0:1f3:1ba1:266a with SMTP id
- adf61e73a8af0-20cc905e61bmr1074870637.0.1746134691908; 
- Thu, 01 May 2025 14:24:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEFq8xNX336bIFKytr/uQmtnupiSJLMOCDX+EH85BrDN4n4sUVHVy4Lgn0TxIaKXp5FCYJ01g==
+X-Received: by 2002:a05:6a00:4ac2:b0:736:4fe0:2661 with SMTP id
+ d2e1a72fcca58-74058a486f4mr609164b3a.11.1746134692505; 
+ Thu, 01 May 2025 14:24:52 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-740590610desm135897b3a.146.2025.05.01.14.24.51
+ d2e1a72fcca58-740590610desm135897b3a.146.2025.05.01.14.24.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 May 2025 14:24:51 -0700 (PDT)
+ Thu, 01 May 2025 14:24:52 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 47/59] accel/tcg: Build tcg-all.c twice
-Date: Thu,  1 May 2025 14:21:01 -0700
-Message-ID: <20250501212113.2961531-48-richard.henderson@linaro.org>
+Subject: [PULL 48/59] accel/tcg: Use vaddr in cpu_loop.h
+Date: Thu,  1 May 2025 14:21:02 -0700
+Message-ID: <20250501212113.2961531-49-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250501212113.2961531-1-richard.henderson@linaro.org>
 References: <20250501212113.2961531-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,58 +98,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove some unused headers.
+Use vaddr instead of abi_ptr or target_ulong for a guest address.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/tcg-all.c   | 6 +-----
- accel/tcg/meson.build | 4 +---
- 2 files changed, 2 insertions(+), 8 deletions(-)
+ include/user/cpu_loop.h | 12 +++++-------
+ accel/tcg/user-exec.c   |  2 +-
+ linux-user/signal.c     |  4 ++--
+ 3 files changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
-index 0ce34ac912..6e5dc333d5 100644
---- a/accel/tcg/tcg-all.c
-+++ b/accel/tcg/tcg-all.c
-@@ -36,15 +36,11 @@
- #include "qapi/qapi-builtin-visit.h"
- #include "qemu/units.h"
- #include "qemu/target-info.h"
--#if defined(CONFIG_USER_ONLY)
--#include "hw/qdev-core.h"
--#else
-+#ifndef CONFIG_USER_ONLY
- #include "hw/boards.h"
--#include "system/tcg.h"
+diff --git a/include/user/cpu_loop.h b/include/user/cpu_loop.h
+index 589c66543f..ad8a1d711f 100644
+--- a/include/user/cpu_loop.h
++++ b/include/user/cpu_loop.h
+@@ -20,11 +20,9 @@
+ #ifndef USER_CPU_LOOP_H
+ #define USER_CPU_LOOP_H
+ 
+-#include "exec/abi_ptr.h"
++#include "exec/vaddr.h"
+ #include "exec/mmu-access-type.h"
+-#include "exec/log.h"
+-#include "exec/target_long.h"
+-#include "special-errno.h"
++
+ 
+ /**
+  * adjust_signal_pc:
+@@ -46,7 +44,7 @@ MMUAccessType adjust_signal_pc(uintptr_t *pc, bool is_write);
+  * Return true if the write fault has been handled, and should be re-tried.
+  */
+ bool handle_sigsegv_accerr_write(CPUState *cpu, sigset_t *old_set,
+-                                 uintptr_t host_pc, abi_ptr guest_addr);
++                                 uintptr_t host_pc, vaddr guest_addr);
+ 
+ /**
+  * cpu_loop_exit_sigsegv:
+@@ -59,7 +57,7 @@ bool handle_sigsegv_accerr_write(CPUState *cpu, sigset_t *old_set,
+  * Use the TCGCPUOps hook to record cpu state, do guest operating system
+  * specific things to raise SIGSEGV, and jump to the main cpu loop.
+  */
+-G_NORETURN void cpu_loop_exit_sigsegv(CPUState *cpu, target_ulong addr,
++G_NORETURN void cpu_loop_exit_sigsegv(CPUState *cpu, vaddr addr,
+                                       MMUAccessType access_type,
+                                       bool maperr, uintptr_t ra);
+ 
+@@ -73,7 +71,7 @@ G_NORETURN void cpu_loop_exit_sigsegv(CPUState *cpu, target_ulong addr,
+  * Use the TCGCPUOps hook to record cpu state, do guest operating system
+  * specific things to raise SIGBUS, and jump to the main cpu loop.
+  */
+-G_NORETURN void cpu_loop_exit_sigbus(CPUState *cpu, target_ulong addr,
++G_NORETURN void cpu_loop_exit_sigbus(CPUState *cpu, vaddr addr,
+                                      MMUAccessType access_type,
+                                      uintptr_t ra);
+ 
+diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
+index 68e01fc584..e1f4c4eacf 100644
+--- a/accel/tcg/user-exec.c
++++ b/accel/tcg/user-exec.c
+@@ -126,7 +126,7 @@ MMUAccessType adjust_signal_pc(uintptr_t *pc, bool is_write)
+  * guest, we'd end up in an infinite loop of retrying the faulting access.
+  */
+ bool handle_sigsegv_accerr_write(CPUState *cpu, sigset_t *old_set,
+-                                 uintptr_t host_pc, abi_ptr guest_addr)
++                                 uintptr_t host_pc, vaddr guest_addr)
+ {
+     switch (page_unprotect(cpu, guest_addr, host_pc)) {
+     case 0:
+diff --git a/linux-user/signal.c b/linux-user/signal.c
+index 4dafc2c3a2..cd0e7398aa 100644
+--- a/linux-user/signal.c
++++ b/linux-user/signal.c
+@@ -750,7 +750,7 @@ void force_sigsegv(int oldsig)
+ }
  #endif
- #include "accel/tcg/cpu-ops.h"
- #include "internal-common.h"
--#include "cpu-param.h"
  
+-void cpu_loop_exit_sigsegv(CPUState *cpu, target_ulong addr,
++void cpu_loop_exit_sigsegv(CPUState *cpu, vaddr addr,
+                            MMUAccessType access_type, bool maperr, uintptr_t ra)
+ {
+     const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
+@@ -766,7 +766,7 @@ void cpu_loop_exit_sigsegv(CPUState *cpu, target_ulong addr,
+     cpu_loop_exit_restore(cpu, ra);
+ }
  
- struct TCGState {
-diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
-index 7eb4619aea..d6bd304add 100644
---- a/accel/tcg/meson.build
-+++ b/accel/tcg/meson.build
-@@ -10,6 +10,7 @@ tcg_ss.add(files(
-   'tcg-runtime.c',
-   'tcg-runtime-gvec.c',
-   'tb-maint.c',
-+  'tcg-all.c',
-   'translate-all.c',
-   'translator.c',
- ))
-@@ -21,9 +22,6 @@ libuser_ss.add_all(tcg_ss)
- libsystem_ss.add_all(tcg_ss)
- 
- tcg_specific_ss = ss.source_set()
--tcg_specific_ss.add(files(
--  'tcg-all.c',
--))
- tcg_specific_ss.add(when: 'CONFIG_USER_ONLY', if_true: files('user-exec.c'))
- specific_ss.add_all(when: 'CONFIG_TCG', if_true: tcg_specific_ss)
- 
+-void cpu_loop_exit_sigbus(CPUState *cpu, target_ulong addr,
++void cpu_loop_exit_sigbus(CPUState *cpu, vaddr addr,
+                           MMUAccessType access_type, uintptr_t ra)
+ {
+     const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
 -- 
 2.43.0
 
