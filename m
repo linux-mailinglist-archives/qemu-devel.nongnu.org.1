@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E2F9AA62F5
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 20:38:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ACC1AA62FA
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 20:39:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAYnX-0000ps-AW; Thu, 01 May 2025 14:38:15 -0400
+	id 1uAYnT-0000LF-Od; Thu, 01 May 2025 14:38:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAYmO-0007Kk-L0
- for qemu-devel@nongnu.org; Thu, 01 May 2025 14:37:07 -0400
-Received: from mail-il1-x130.google.com ([2607:f8b0:4864:20::130])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAYmY-0007Ug-9d
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 14:37:16 -0400
+Received: from mail-il1-x12f.google.com ([2607:f8b0:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAYmM-0007yp-Rw
- for qemu-devel@nongnu.org; Thu, 01 May 2025 14:37:04 -0400
-Received: by mail-il1-x130.google.com with SMTP id
- e9e14a558f8ab-3d5e43e4725so3588475ab.1
- for <qemu-devel@nongnu.org>; Thu, 01 May 2025 11:37:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAYmW-00082F-Ja
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 14:37:14 -0400
+Received: by mail-il1-x12f.google.com with SMTP id
+ e9e14a558f8ab-3d450154245so10673655ab.2
+ for <qemu-devel@nongnu.org>; Thu, 01 May 2025 11:37:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746124621; x=1746729421; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746124630; x=1746729430; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=J7AMA5ZLAGtFwb46rBtPIk1KAapPoLENY9+BSCyDrfE=;
- b=ueT0FKpe6bnPG3qkhWpWNhUu/FJ3RbNGXnMPWKIpb1TUPzuLl7MCHXwzj3BFiVRXMy
- /VL/NwSDIqCh4gYRqRVrKBF7/g653H97U9gRhHXsp4ZZebN6egjNPM2UjAFHtP7kHAd8
- vb4J38hEHx9ZHUIe3Z+YpDXlbZMjHG4vTglYQoGhvnRi+TJmnfTXcIstXz13z9GEJC+H
- vzeDLgvGaW0HbHAFl4WJl77QppyBfN7I9W+UQV6sH8ax6j+oHflXtwTAg9/pXh5k1061
- 2ZNK/yQGp4fL2fSjvO5Ya3SSCsaB9Ni4VqRXIu7iFhdApj+v4zIFj03NC2O96bHkMW2g
- fdtw==
+ bh=zXADTJwgYK4rQDoTBJwmSMh4WIgzI1vWgP1J7gzagsQ=;
+ b=KdltTTsn3Ni/h/oQJaeelw3ESJW7W7A2+G9lR0c0TeVqnLBx6Uzj2CeqoXCI63kGmR
+ /ha07fqZ6oxT9KwEruLWaQeoqJ8K1upqrbTCbAMosdgsU06BhCYJnDN0/0ZSxQOVD98t
+ fkf0g7dyIzSaJ522vquZHoCJ579Vu2xCAKKJ+PEXXA2rzenzaaXaZnchap5E47x1wtyl
+ lqa27/9ikY9XT4lgFNdWrKNnLQrCNtYBgioWmTtQOrZG4WDp9oTpChprpkg1kYvS0dLM
+ P+4BqF3i/bd3+nDGyE66m+xyrLSM1y5n8ER9SzJksM0uaTGcdFLn9Px4bT+sWyA2pNbK
+ 1n3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746124621; x=1746729421;
+ d=1e100.net; s=20230601; t=1746124630; x=1746729430;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=J7AMA5ZLAGtFwb46rBtPIk1KAapPoLENY9+BSCyDrfE=;
- b=xUom7FnwMtvo7NWe/EELz+9zmE5L22AbWQOKWO4ogqQKN+bDIjiYUTRmXnlhP2VC13
- 7JRsMm9yMprHYotAVoZZavFn6FO2NDPbnlw65Yul7+JwP/nfwudWd/VWrGlAPeu+RR7z
- WSd/Qx2leTHY8n4d8gFiUrHcoEHBoSYR3jKX76MEawEFklxUGto6/h1RIqnNX8dP+IzX
- /l9QFKNFc+lhr0zbpACrg6gB4o0bDLo0x3VQyOBIlApfqejcc3JWs8hXKbBiDNec5DnP
- Xwt6Gdk0a+8IRI6Q2Xo/uoNV2S4ThJFo/eyJv3Hhq5aBCN7d85UvORXY+x6f0pA3pc56
- U75A==
-X-Gm-Message-State: AOJu0YwG/oxb8GGVoWjDiITeDZsoXPwOCsnyaP3QQuTZrkNg4bPk+mxv
- 9agCtCeI9f+4oApGAKAUmttU8eMkNqmKtyOByWOnNtgYofkujXACXWJcgydkTNIOSIhvWIVfezB
- U
-X-Gm-Gg: ASbGncuQrNc1MTQNMjFnV8diYsgL/FhyMTJAeMt8jrdHnTLYDxAhn9j/UW6PdbGL5PA
- 3+DLZU4Dam2KspZMTlY/hUpJ6LZrdiX+V6GPU8rhDu9HsSsiHFQUxck+giWDK5YNO0HRXzpQcAC
- pTbE/42krwscPBcFKAo/0kM3V2dTNznYcMfVvkBnvRuIyK0bRikx2+J+vSZK7yJUEN0I9I5h+3/
- vR7I3FuMtzyH/kpjvrEBHkRObNhNFtC9iH2+qFBf6W8mHumhwUriVW4aDmDCBmtzUJv1sOGBteu
- 6A0zhlKR1z8/GzSBCghLZIzPfRWHl5zbSy/jSIDZyHYCMkEaTPhf/iN43DJ/0CbKolM0s/U4UEV
- pQhQLvxHBTrnkTWvkfzJp
-X-Google-Smtp-Source: AGHT+IEbgbYrfwCi4lUJZSoS1gjtceVFTKnF4ENVHIkF7Z80LdhTE5+fiBsGESpUtA+lHn4QE7xS2g==
-X-Received: by 2002:a05:6e02:1c07:b0:3d8:975:b808 with SMTP id
- e9e14a558f8ab-3d96f1918famr56293115ab.5.1746124621120; 
- Thu, 01 May 2025 11:37:01 -0700 (PDT)
+ bh=zXADTJwgYK4rQDoTBJwmSMh4WIgzI1vWgP1J7gzagsQ=;
+ b=ZLRiZuLSC6eGSoXrGBfGR9YjA/u+/tJNRubgy9cx5/hPxN/1G6Mm733lQxhLEgkVuR
+ 8RvPpwqFuyNIzXmQXIM2d4bLIu2uHvXv0BR+LixBRidXsgwcOHmSmJyf9aO0yAHUvFkH
+ 2Y/qHgh1krvqHT5/oIDAh+IoMCSz2JH1cwniW4huo8SiaNsTsEzgkm8hkxaIx8EGzYAT
+ bOZkwHRoP9Ji1u2sItXyOcaJIq9FfyVbm+K4R+vAoREMQrAfnzt392nhlGVlL9evR4Nw
+ gl4DNFdrwottvLP0ER2uQXkHgRrjX2Flg+gRd1eAnF4AI2Kr/3Bm1qePbPDA2jC2DX2r
+ +oiA==
+X-Gm-Message-State: AOJu0Yya2iA2/bAU+U+MBKszSfVI1iudPjz1Fh+/ewy/4oe+lT+fXqrg
+ 0HvMbJisBnVd2PJuJtQvX2eUDG1d9uO/fIDiOC4xaM7fYG+twmbsCgSqVomq/Euau0U3KuDcZ7b
+ 6
+X-Gm-Gg: ASbGncuFt6/inla/p8QsBlnZzlvcOegjWaIg6GJXH6GaNrRsYkljPa+AHcJLM2yF5OF
+ 6q0LQiUUGz82vM/0OhEDsz1EZjT3WOlKkldDNouG3BQEUvJG1PpjKPeSBuPsolJtT8MQ92OVG9h
+ v9fwq2+kaAufXzlcEpi/KTwxT3lfxY+k2ccooN0cyp9WBbIRuimuF9cvxyQtoATajSTl2Ttq0Kb
+ xd7Eu6OayDkN6x4XCGC9StVgzw3IWmGUq2PHt31ZI05xY7sESi8p5GU+7d/Y/5+H7cKDtg7410a
+ llPZdP00MKpq3hSIrXMnhqoxUJkUdspWM4i/17GY+HeyUzLf4IWDIY0pVfyhFefE6f/I6VmFkCn
+ CPBstnoJYnv1XiLEPZN3v
+X-Google-Smtp-Source: AGHT+IG1AjPTJ9CmAnwaqhyWbwzMydJK02WR6ePNouF+OXrBZjI5JcJ2Zlaz7X4Kdy90KucPytqsSg==
+X-Received: by 2002:a05:6e02:1f05:b0:3d8:1cba:1854 with SMTP id
+ e9e14a558f8ab-3d970198c59mr55748625ab.1.1746124630482; 
+ Thu, 01 May 2025 11:37:10 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4f882ee3c6dsm309119173.44.2025.05.01.11.36.57
+ e9e14a558f8ab-3d975e7808esm2526775ab.25.2025.05.01.11.37.06
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 01 May 2025 11:37:00 -0700 (PDT)
+ Thu, 01 May 2025 11:37:10 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Igor Mammedov <imammedo@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
@@ -76,18 +76,17 @@ Cc: Igor Mammedov <imammedo@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
  Yanan Wang <wangyanan55@huawei.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Ani Sinha <anisinha@redhat.com>, Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v2 03/16] hw/i386/x86: Remove
- X86MachineClass::fwcfg_dma_enabled field
-Date: Thu,  1 May 2025 20:36:15 +0200
-Message-ID: <20250501183628.87479-4-philmd@linaro.org>
+Subject: [PATCH v2 04/16] hw/i386/pc: Remove pc_compat_2_6[] array
+Date: Thu,  1 May 2025 20:36:16 +0200
+Message-ID: <20250501183628.87479-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250501183628.87479-1-philmd@linaro.org>
 References: <20250501183628.87479-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::130;
- envelope-from=philmd@linaro.org; helo=mail-il1-x130.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12f;
+ envelope-from=philmd@linaro.org; helo=mail-il1-x12f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,118 +109,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The X86MachineClass::fwcfg_dma_enabled boolean was only used
-by the pc-q35-2.6 and pc-i440fx-2.6 machines, which got
-removed. Remove it and simplify.
+The pc_compat_2_6[] array was only used by the pc-q35-2.6
+and pc-i440fx-2.6 machines, which got removed. Remove it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/i386/x86.h | 2 --
- hw/i386/microvm.c     | 3 ---
- hw/i386/multiboot.c   | 7 +------
- hw/i386/x86-common.c  | 3 +--
- hw/i386/x86.c         | 2 --
- 5 files changed, 2 insertions(+), 15 deletions(-)
+ include/hw/i386/pc.h | 3 ---
+ hw/i386/pc.c         | 8 --------
+ 2 files changed, 11 deletions(-)
 
-diff --git a/include/hw/i386/x86.h b/include/hw/i386/x86.h
-index fc460b82f82..29d37af11e6 100644
---- a/include/hw/i386/x86.h
-+++ b/include/hw/i386/x86.h
-@@ -29,8 +29,6 @@
- struct X86MachineClass {
-     MachineClass parent;
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index a3de3e9560d..4fb2033bc54 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -292,9 +292,6 @@ extern const size_t pc_compat_2_8_len;
+ extern GlobalProperty pc_compat_2_7[];
+ extern const size_t pc_compat_2_7_len;
  
--    /* use DMA capable linuxboot option rom */
--    bool fwcfg_dma_enabled;
-     /* CPU and apic information: */
-     bool apic_xrupt_override;
- };
-diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
-index e0daf0d4fc3..b1262fb1523 100644
---- a/hw/i386/microvm.c
-+++ b/hw/i386/microvm.c
-@@ -637,7 +637,6 @@ GlobalProperty microvm_properties[] = {
- 
- static void microvm_class_init(ObjectClass *oc, const void *data)
- {
--    X86MachineClass *x86mc = X86_MACHINE_CLASS(oc);
-     MicrovmMachineClass *mmc = MICROVM_MACHINE_CLASS(oc);
-     MachineClass *mc = MACHINE_CLASS(oc);
-     HotplugHandlerClass *hc = HOTPLUG_HANDLER_CLASS(oc);
-@@ -671,8 +670,6 @@ static void microvm_class_init(ObjectClass *oc, const void *data)
-     hc->unplug_request = microvm_device_unplug_request_cb;
-     hc->unplug = microvm_device_unplug_cb;
- 
--    x86mc->fwcfg_dma_enabled = true;
+-extern GlobalProperty pc_compat_2_6[];
+-extern const size_t pc_compat_2_6_len;
 -
-     object_class_property_add(oc, MICROVM_MACHINE_RTC, "OnOffAuto",
-                               microvm_machine_get_rtc,
-                               microvm_machine_set_rtc,
-diff --git a/hw/i386/multiboot.c b/hw/i386/multiboot.c
-index 6e6b96bc345..bfa7e8f1e83 100644
---- a/hw/i386/multiboot.c
-+++ b/hw/i386/multiboot.c
-@@ -153,7 +153,6 @@ int load_multiboot(X86MachineState *x86ms,
-                    int kernel_file_size,
-                    uint8_t *header)
- {
--    bool multiboot_dma_enabled = X86_MACHINE_GET_CLASS(x86ms)->fwcfg_dma_enabled;
-     int i, is_multiboot = 0;
-     uint32_t flags = 0;
-     uint32_t mh_entry_addr;
-@@ -402,11 +401,7 @@ int load_multiboot(X86MachineState *x86ms,
-     fw_cfg_add_bytes(fw_cfg, FW_CFG_INITRD_DATA, mb_bootinfo_data,
-                      sizeof(bootinfo));
+ #define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
+     static void pc_machine_##suffix##_class_init(ObjectClass *oc, \
+                                                  const void *data) \
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 49632b69d29..7573b880905 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -251,14 +251,6 @@ GlobalProperty pc_compat_2_7[] = {
+ };
+ const size_t pc_compat_2_7_len = G_N_ELEMENTS(pc_compat_2_7);
  
--    if (multiboot_dma_enabled) {
--        option_rom[nb_option_roms].name = "multiboot_dma.bin";
--    } else {
--        option_rom[nb_option_roms].name = "multiboot.bin";
--    }
-+    option_rom[nb_option_roms].name = "multiboot_dma.bin";
-     option_rom[nb_option_roms].bootindex = 0;
-     nb_option_roms++;
- 
-diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
-index 1b0671c5239..27254a0e9f1 100644
---- a/hw/i386/x86-common.c
-+++ b/hw/i386/x86-common.c
-@@ -634,7 +634,6 @@ void x86_load_linux(X86MachineState *x86ms,
-                     int acpi_data_size,
-                     bool pvh_enabled)
- {
--    bool linuxboot_dma_enabled = X86_MACHINE_GET_CLASS(x86ms)->fwcfg_dma_enabled;
-     uint16_t protocol;
-     int setup_size, kernel_size, cmdline_size;
-     int dtb_size, setup_data_offset;
-@@ -993,7 +992,7 @@ void x86_load_linux(X86MachineState *x86ms,
- 
-     option_rom[nb_option_roms].bootindex = 0;
-     option_rom[nb_option_roms].name = "linuxboot.bin";
--    if (linuxboot_dma_enabled && fw_cfg_dma_enabled(fw_cfg)) {
-+    if (fw_cfg_dma_enabled(fw_cfg)) {
-         option_rom[nb_option_roms].name = "linuxboot_dma.bin";
-     }
-     nb_option_roms++;
-diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-index f80533df1c5..dbf104d60af 100644
---- a/hw/i386/x86.c
-+++ b/hw/i386/x86.c
-@@ -375,14 +375,12 @@ static void x86_machine_initfn(Object *obj)
- static void x86_machine_class_init(ObjectClass *oc, const void *data)
- {
-     MachineClass *mc = MACHINE_CLASS(oc);
--    X86MachineClass *x86mc = X86_MACHINE_CLASS(oc);
-     NMIClass *nc = NMI_CLASS(oc);
- 
-     mc->cpu_index_to_instance_props = x86_cpu_index_to_props;
-     mc->get_default_cpu_node_id = x86_get_default_cpu_node_id;
-     mc->possible_cpu_arch_ids = x86_possible_cpu_arch_ids;
-     mc->kvm_type = x86_kvm_type;
--    x86mc->fwcfg_dma_enabled = true;
-     nc->nmi_monitor_handler = x86_nmi;
- 
-     object_class_property_add(oc, X86_MACHINE_SMM, "OnOffAuto",
+-GlobalProperty pc_compat_2_6[] = {
+-    { TYPE_X86_CPU, "cpuid-0xb", "off" },
+-    { "vmxnet3", "romfile", "" },
+-    { TYPE_X86_CPU, "fill-mtrr-mask", "off" },
+-    { "apic-common", "legacy-instance-id", "on", }
+-};
+-const size_t pc_compat_2_6_len = G_N_ELEMENTS(pc_compat_2_6);
+-
+ /*
+  * @PC_FW_DATA:
+  * Size of the chunk of memory at the top of RAM for the BIOS ACPI tables
 -- 
 2.47.1
 
