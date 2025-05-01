@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94316AA604C
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 16:56:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D486AA6051
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 16:57:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAVKB-0005j7-Bs; Thu, 01 May 2025 10:55:43 -0400
+	id 1uAVKD-0005jf-KM; Thu, 01 May 2025 10:55:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAVK0-0005hT-5A
- for qemu-devel@nongnu.org; Thu, 01 May 2025 10:55:32 -0400
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+ id 1uAVK2-0005i4-7U
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 10:55:34 -0400
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAVJy-0005Wu-9o
- for qemu-devel@nongnu.org; Thu, 01 May 2025 10:55:31 -0400
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-30332dfc820so1330444a91.2
- for <qemu-devel@nongnu.org>; Thu, 01 May 2025 07:55:29 -0700 (PDT)
+ id 1uAVJz-0005Xx-0f
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 10:55:32 -0400
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-7fd35b301bdso1303365a12.2
+ for <qemu-devel@nongnu.org>; Thu, 01 May 2025 07:55:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1746111329; x=1746716129; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=9qBhX/Vzei5onG8CkoplGyB8ooo97U2cHYvAaBNQf3s=;
- b=yqHjfW2Pu4a4A8grA6amWgITpCSyX/D61LR4/4zn78XWcZFVdAK9nV0jGYJCmdjJQH
- Zvf8iyCafnu/V1Q+F+shIh6WILIagvKs958yTqiUMswEGVWNxs/m5VVg06RaUb7ydTid
- Im4+sJjoC0/jxBLEVst8gUV2bPj83Tk+rI+W3AZxsufk3MX0jQMOMiPiYwkaNrZSyjtA
- YNwH2twHBgyEhRklxRfnJ/F5udvxcIE6OshfI3lYB5YDBIRf5Oro3IOGxr6M2fCiztzu
- tN50klL3p7DK7vZp0OKQNXdB6wCiX8maWFUgOBDdPX5FnjHtSjRPfUmj+hmm2zTpVZDW
- 20jg==
+ :reply-to; bh=NpsPRpqYy0EdExgjwMRc7rUCQIZJoGgOry5zvIX2oes=;
+ b=gDmTO3ymeJj/466t7O2qs5cwyfmf4fVSjht1MjXZjUMSVyMVAMkfnHhNfsRsG2XUQb
+ YqF7q7rdDpAS/4i3V8bp2JVt8hIizOjf+KK0uaaTUvuA7NPT4O4ZfkiltZ97AXbLCDmm
+ g2lY8khXDngiv3RYzgLRZmWfLmUrtThhwu8n9tbDe9i9Z/L8IkOgPnXRMG4RkAWm2FP5
+ 9FbRqCjUX/lAsvGVL33Q9xKr5jBRibghAM3mZ1Q8+03lR1a7P3JmNBw+9VW2zEDqxZNq
+ MzYTrgAevYfqH0V8y2oABmu2zjUZ04tekmiK+C6CghqdqLG7SOpoxDkqkTLN0vNwoC/S
+ 4sjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1746111329; x=1746716129;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9qBhX/Vzei5onG8CkoplGyB8ooo97U2cHYvAaBNQf3s=;
- b=Vomi6CmA+AO76UEMc0Rc1GF7Ff0lrS0uO373jjqZvIovILyypkTnDZhX6Id1OXHm1M
- dvimUHaHuTeCK4wrfj2e7Y/Eww5TGlql8nBNgGPkB/T6LB9zKl95AL5PhWldSgRgmExg
- nvgJtLYVyzzI7Y35NA6aZwtZnzAOMCTUy31MAbT4xZTHBaG35eX7soZzRrzhxtmxBItj
- 178my/BPPCj5r6uOLEqjfz+0G8VTf+/PNGP0vuK1Oe428I8UEZ1O9LifwEoDe+aH0O3t
- VofwYsf3o+Duh2XovZpj15Gx6kx1UQ96J1WTuFqMn72Cw/Vx/2Hl6V7jTEIJUrBLJ6ga
- tURw==
-X-Gm-Message-State: AOJu0Yyh9JNRTCnbZ8oj8gv2ug6yyW7G9ltgMj4exzUarjcxxHhGh5lM
- p4YKH5qY6OlAV/pbXiaZrzwVACcee6RqqKGWq94M1GTu+BxUwVLE8Z6AAcTTb3peDCUR8RONLpd
- W
-X-Gm-Gg: ASbGncsMQ5SX5gd5O3PtPbprZWF+ELWT6cPnrH3lSzZJfXhubgUs2wtQmkUsnWJ8Dcu
- GDulcN5ScXiikkZyNZDtm7LCAYMfmYaLNGoE7H5VIZJK7tDdEudn21GcbX+ULVPiYqLbaKRismp
- onuTp0SXTb6dPmiE6WKPwbnmHynoduOeNkC7fAIWhAh3wd0WmiBMk+Fnh6keA50aKOvOZmtoBvH
- /xwFTLwtIAtaUWXOoRekS8ff0u1Bfjzdu99FQFuicP2IoqATohOLy8vJbqaSLmSfri5iYOJ7kDL
- uKxwpAiJ5pQRdoJ4gAV5OTLvxIrlAJorbl+LCh6Kkk81aWPiuK+65LgH8zDHh+UPA0NbskafXkI
- =
-X-Google-Smtp-Source: AGHT+IF2OcmS55quGF2jvtdXrEbtIc+w4HSYinrSkXHrfVR1MvO6LAD/27AUhgNut3sk4kVhNca0zg==
-X-Received: by 2002:a17:90b:586d:b0:2ee:7411:ca99 with SMTP id
- 98e67ed59e1d1-30a400a8791mr4701956a91.1.1746111328449; 
- Thu, 01 May 2025 07:55:28 -0700 (PDT)
+ bh=NpsPRpqYy0EdExgjwMRc7rUCQIZJoGgOry5zvIX2oes=;
+ b=tRj7cONz6zL90c6bJ7k4zPLmJufk8khiAhAtHdiAzQVksI+tyJ76QKqr3E5Yqd5Bpk
+ 1jasEO+LjWPoeERUKXH0KSNIb7qk9/SbO5m5TcVIO5JHetwKls8jTTN6dOs1arPCBM+I
+ qoue+/SfyundzWTEmESGeh6DkcBjrY3JXo0+0/35dxVNA4tOwHSnz1S8b7z537tWHKqa
+ Flll3YWLS2yM9LIAIJEXruN4yZdo5HHqA7PhSuzMExYrCn7GFSFYSE8eHYrNd3BRqc6g
+ Z5aNsd3RqD82cscpLGkqG0J3YQ4UKZcBs/ngyc2Sevo5iGCwfberyiYr5xyIQIt15sLm
+ wyFw==
+X-Gm-Message-State: AOJu0Yy45Sd8VMxZBKOWzPdMSz9Iw/bhYY5RLfS/ABx2NDBaa1o0KYWW
+ phsG++rFNOiT1uQKH0cGbQ3KUENSK5PS6xDYSBCvbjZPzluH9YPOrl9ReoxuwA3v4ez4TVFdAS7
+ 9
+X-Gm-Gg: ASbGncsGYLpRjOX2uGR1TPs3zLs7f4X21Y4G1OLD6CYYWo99K50yNmNOcC8HmUFhE0G
+ 40lyVXhzP0e7tKYnt6wRPe1ZS82KeYj1xjbPbmdiPcasi46JPYeVlskmYd3QA/8q6WhqBwPv53e
+ EGOzhbCUreZ51Fih9urmIZZ2J06JbzqGrhlJ1PT1n9ETcHGOB3UR2fH5jMB8bi1uNxFntaoQU1V
+ 4brdaLmdq6FyKCrfoY97gr3cbQFRBdMHaWjrsc9q8Ljka4fdlfn3uiuc8xXgN9IJq1088CNgY7v
+ 4wjJlysn01zcT+DlhwW/kqCpPYcpB7CxAYcQLzUGuGSJWj/Ex0DbjsjK/d1g252ewUMqsupTHIM
+ fL7uyWU+4+g==
+X-Google-Smtp-Source: AGHT+IEkihyDrcdG5GTmO0kCkbmbJIyn/QC/dRNyBK/I2JvpfRA+6N6GWqZcZYqCBIHl6KOCSHB5nQ==
+X-Received: by 2002:a17:90b:2247:b0:2ff:52e1:c49f with SMTP id
+ 98e67ed59e1d1-30a34467cbfmr9183749a91.26.1746111329146; 
+ Thu, 01 May 2025 07:55:29 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22e0bb0e770sm7644415ad.92.2025.05.01.07.55.27
+ d9443c01a7336-22e0bb0e770sm7644415ad.92.2025.05.01.07.55.28
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 01 May 2025 07:55:28 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 10/11] accel/tcg: Avoid abi_ptr in user-exec.c
-Date: Thu,  1 May 2025 07:55:18 -0700
-Message-ID: <20250501145520.2695073-11-richard.henderson@linaro.org>
+Subject: [PATCH 11/11] accel/tcg: Build user-exec.c once
+Date: Thu,  1 May 2025 07:55:19 -0700
+Message-ID: <20250501145520.2695073-12-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250501145520.2695073-1-richard.henderson@linaro.org>
 References: <20250501145520.2695073-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,73 +97,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In page_dump/dump_region, use guest_addr_max to check the
-size of the guest address space and size the output
-appropriately.  This will change output with small values
-of -R reserved_va, but shouldn't affect anything else.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/user-exec.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ accel/tcg/user-exec.c | 5 ++---
+ accel/tcg/meson.build | 5 +----
+ 2 files changed, 3 insertions(+), 7 deletions(-)
 
 diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index 46b1e97c30..085da0c036 100644
+index 085da0c036..f25d80e2dc 100644
 --- a/accel/tcg/user-exec.c
 +++ b/accel/tcg/user-exec.c
-@@ -29,6 +29,7 @@
+@@ -19,13 +19,12 @@
+ #include "qemu/osdep.h"
+ #include "accel/tcg/cpu-ops.h"
+ #include "disas/disas.h"
+-#include "cpu.h"
+ #include "exec/vaddr.h"
+ #include "exec/tlb-flags.h"
+ #include "tcg/tcg.h"
+ #include "qemu/bitops.h"
+ #include "qemu/rcu.h"
+-#include "accel/tcg/cpu-ldst.h"
++#include "accel/tcg/cpu-ldst-common.h"
  #include "accel/tcg/helper-retaddr.h"
  #include "accel/tcg/probe.h"
  #include "user/cpu_loop.h"
-+#include "user/guest-host.h"
+@@ -33,7 +32,7 @@
  #include "qemu/main-loop.h"
  #include "user/page-protection.h"
  #include "exec/page-protection.h"
-@@ -202,10 +203,19 @@ int walk_memory_regions(void *priv, walk_memory_regions_fn fn)
- static int dump_region(void *opaque, vaddr start, vaddr end, int prot)
- {
-     FILE *f = opaque;
-+    uint64_t mask;
-+    int width;
+-#include "exec/helper-proto.h"
++#include "exec/helper-proto-common.h"
+ #include "qemu/atomic128.h"
+ #include "qemu/bswap.h"
+ #include "qemu/int128.h"
+diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
+index 9b86051b82..d6f533f9a1 100644
+--- a/accel/tcg/meson.build
++++ b/accel/tcg/meson.build
+@@ -21,11 +21,8 @@ endif
+ libuser_ss.add_all(tcg_ss)
+ libsystem_ss.add_all(tcg_ss)
  
--    fprintf(f, TARGET_ABI_FMT_ptr "-" TARGET_ABI_FMT_ptr
--            " " TARGET_ABI_FMT_ptr " %c%c%c\n",
--            (abi_ptr)start, (abi_ptr)end, (abi_ptr)(end - start),
-+    if (guest_addr_max <= UINT32_MAX) {
-+        mask = UINT32_MAX, width = 8;
-+    } else {
-+        mask = UINT64_MAX, width = 16;
-+    }
-+
-+    fprintf(f, "%0*" PRIx64 "-%0*" PRIx64 " %0*" PRIx64 " %c%c%c\n",
-+            width, start & mask,
-+            width, end & mask,
-+            width, (end - start) & mask,
-             ((prot & PAGE_READ) ? 'r' : '-'),
-             ((prot & PAGE_WRITE) ? 'w' : '-'),
-             ((prot & PAGE_EXEC) ? 'x' : '-'));
-@@ -215,10 +225,10 @@ static int dump_region(void *opaque, vaddr start, vaddr end, int prot)
- /* dump memory mappings */
- void page_dump(FILE *f)
- {
--    const int length = sizeof(abi_ptr) * 2;
-+    int width = guest_addr_max <= UINT32_MAX ? 8 : 16;
+-tcg_specific_ss = ss.source_set()
+-tcg_specific_ss.add(when: 'CONFIG_USER_ONLY', if_true: files('user-exec.c'))
+-specific_ss.add_all(when: 'CONFIG_TCG', if_true: tcg_specific_ss)
+-
+ libuser_ss.add(files(
++  'user-exec.c',
+   'user-exec-stub.c',
+ ))
  
-     fprintf(f, "%-*s %-*s %-*s %s\n",
--            length, "start", length, "end", length, "size", "prot");
-+            width, "start", width, "end", width, "size", "prot");
-     walk_memory_regions(f, dump_region);
- }
- 
-@@ -1135,7 +1145,7 @@ static uint64_t do_ld8_mmu(CPUState *cpu, vaddr addr, MemOpIdx oi,
-     return ret;
- }
- 
--static Int128 do_ld16_mmu(CPUState *cpu, abi_ptr addr,
-+static Int128 do_ld16_mmu(CPUState *cpu, vaddr addr,
-                           MemOpIdx oi, uintptr_t ra)
- {
-     void *haddr;
 -- 
 2.43.0
 
