@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0B53AA6519
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:08:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D21CDAA6523
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:11:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAb7U-0002jP-P7; Thu, 01 May 2025 17:07:01 -0400
+	id 1uAb7X-00033H-R4; Thu, 01 May 2025 17:07:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAb71-0002IT-Po
- for qemu-devel@nongnu.org; Thu, 01 May 2025 17:06:31 -0400
-Received: from mail-il1-x135.google.com ([2607:f8b0:4864:20::135])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAb7B-0002Z3-HA
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 17:06:43 -0400
+Received: from mail-il1-x131.google.com ([2607:f8b0:4864:20::131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAb6z-0006hb-Tm
- for qemu-devel@nongnu.org; Thu, 01 May 2025 17:06:31 -0400
-Received: by mail-il1-x135.google.com with SMTP id
- e9e14a558f8ab-3d57143ee39so12492415ab.1
- for <qemu-devel@nongnu.org>; Thu, 01 May 2025 14:06:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAb78-0006jJ-Nf
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 17:06:40 -0400
+Received: by mail-il1-x131.google.com with SMTP id
+ e9e14a558f8ab-3d813c1c39eso12175435ab.0
+ for <qemu-devel@nongnu.org>; Thu, 01 May 2025 14:06:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746133588; x=1746738388; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746133597; x=1746738397; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LMeOw16G5YJoFKNLKg7ffX48/cP4PPOz2cimaZ7eFnY=;
- b=uJeoy0Toqw1Sx0ZbDY69SUTez5FKtpyUF/vyXj0MMLRfTIbNUAWD5KPxww22tlrgmP
- hoNoM4d2eAlu48pK4j1k+yMG1aX1vt8lQSjJiNoJtN4TE5P+Zey/epSS+yTPXcS/JZAj
- y0TsoZorucbgUTEVtmqht+JUs5PvqoSQgfs0ZLNkRgWxRTzFKUfb7k8fmyDcjiP0+QR6
- UPA4tFbB01kbZOJ44UXjO3+Ot5NxZlSZz8a5dIQ+tbNNVnEvkYchdLvq+V46JVjLPKgk
- xdnI2aYqdCBeXBOiCBZpNI6MpgkJNDkb8pcQVsNd86pYMJWr/3bynfRrNzln/HYh6mYA
- GRFA==
+ bh=plmsFCscLUV04uq2qYRMQ5RH6cv8iwmOj9x5he8hi0s=;
+ b=hDEsHcZRkfRTZeMkOPd2tfSxGmBfI68GpzkSzZtSrDgCWsnTPEdRuTHgTWvDRCZz2F
+ +8cMyDTmuKJsAmQ/y/EhZMArwFBoHYjVUnTJUtonLtvdOkO4l1cBWMawzsKbByhXvpJZ
+ icl7WScDrKYKFGQzb9Pv/Qv2h2IF8h1kJh0lqjjWgYShjcm8dtT+ytIluLlnjnZMs1kL
+ 01prLfYFKCxjIsGMZkHfevlT4LyU522Ej/NLjRosj4fYZKbuWrhgW9zuh+R3BTWhbBqv
+ ATM+9jOklbOwysdNXuohIk+u5tAvbQlIv2F8ajFzWwUtk1JLTLjGeMxAbfUR48bQ+aIb
+ geIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746133588; x=1746738388;
+ d=1e100.net; s=20230601; t=1746133597; x=1746738397;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LMeOw16G5YJoFKNLKg7ffX48/cP4PPOz2cimaZ7eFnY=;
- b=cD/f/BKN6Jsv+cOCsOrFpmyGDK3Y+znvaTrjn5HTAmJB6Ta6oXQW7IHevq6njlXLxo
- ClbZ7wZkWEJylh18+ufc9dIjkkgjQAFle7DXesB9LfvwZDTnpNcHd2mO9jkTVw2hKbR2
- r3Wa5wU3W4Yo2fVJYBSSjr4P+mcMjS9/Df9KfObKlqt9NoMhNXmpg4oZCtWylHLj0rba
- p19eRCzBiAgUI09JhM1+7idQKhFUP0GiqKbaQpV4gPpbB42laSOKGmbOM/bFHfpZnJaK
- v4uQv7IacwGhWZx4QRwfin+Udf5hEZ1CMAwmQ2p/wz2mYJSSWd6XgZE+tob3zZByxx3p
- D+fA==
-X-Gm-Message-State: AOJu0YxoOZ5xQbWcyVaL/2c8cyxO6tzKT15z2edx2Enb6OiwwJFmxReI
- ty1ccrQWkkBJAfa0r1qFx+DL4Af2BYnafzKSq/UlSoZJcjgLHbJVH13yQgOKxvSovk99PWG9QL0
- 4
-X-Gm-Gg: ASbGnctO3hLZo1v+MNBbONg5Cgdq1FCTbZ/E21eCOdmUyqFuXmE7yv6c+h0eJLvKL6W
- MzfthAYsGkhpZAPLu+kp1/Bmb87yWH4QGlfei6d+D7QWG4QAa4UBRA3dfHhBrQE5Tln4oTWoNvJ
- RsJmcnBJNhK5Qx054AqswrWb6N3ZkZuROR1zwkRHmKRO4QRDCS8F9P5IHxLNCXP9c6bSWQYUNig
- povTIhyDbQNWHfunRoYTuyBnYsINj5/psbteCHy6lIdLp2f02FxUJmVDi33BvAvP5CTOSgBF93t
- 7oe/CT8UJpIXc0mKWzXdukevz1el6jks/vsiG7A9D90Pvtrm5YZ9Cn0lXpTmS+pa9hfl16+FiZi
- F9fxIFI8UxeWvcB2GjuKgvj6jKA==
-X-Google-Smtp-Source: AGHT+IGiykznDY7kCV1tAHoOQmSa859e6UjlvbN5+afJVtfJd9G586VEFeRwWLG9CW/ZmPIDInfXKg==
-X-Received: by 2002:a05:6e02:19cf:b0:3d4:244b:db20 with SMTP id
- e9e14a558f8ab-3d97c22820emr4819675ab.16.1746133588571; 
- Thu, 01 May 2025 14:06:28 -0700 (PDT)
+ bh=plmsFCscLUV04uq2qYRMQ5RH6cv8iwmOj9x5he8hi0s=;
+ b=dcZvIvb4tBORnSr3GKvPVvbra81rdee2MjA0jxQ/zrxK9scBt4mwBBxLuVq9WO7mf/
+ djDLciVNSkDRvGPVFT1gL4poTjrw0J23RkjUH0z4XKTEzAjrHflfKGkXQD8k/0+bN+vO
+ jNbGQsdbwEwMtNIWcPaHkoZmGZkf/5vmzdYQ/JDLsZN29agWl7UbdPjnnhKb90DH4Erq
+ v95qkDaKbigUTVjKM13qH10v+OcPvbKIEV8mG3SsEH6jFXeaHlSFU+gSOuVIHaqH/qkj
+ OTRw0xMnUbupZCTc8TiN19O5oyrZq5foVz0zOYjWMJFhHkJHD+sDTW3Wz/iTnmUu+hjo
+ iRgQ==
+X-Gm-Message-State: AOJu0YxusVf8UIaQzn3P0hhzRDt6Llc71pZz4XVj0JgNQyzB2cKgmRLF
+ ZdzJr48DGhHV6Om8Ptdn25GlrR5hGEvqYTVdC/7b9MBKhhpyIkJoQeJwy6O7yooz+BQ/3/HzJIR
+ S
+X-Gm-Gg: ASbGncvQfFRLmm3MYvHXVqFn4qbCqZK4ORZhdZSIV10IjHd2S0ecO292nN8x7q5qXeq
+ x/nLl8sy+YSNQXG0UJXeAR2l5/PtXihySJ95ybOtdS6cx0u7vom/V18B0Z6jSOOAk221ICMUt+e
+ Z1BG6aT4vl1BlVnqgPTyO2om5/tmzIv3b5lVgTS0eqZ1l/kJ5+g3vHAPK6+odj/YVxHrK0j1S4b
+ o3SyWHW8z/pq04ecybPqFUhgwLEKqYulp+/VZr+BJPFg/pTkoDhlK11XUp1ZzhYDPlhqgAqMhoR
+ 6q2vnxZmaa0E4ySykPsgQhQmf7cKhz9PTHPJSMDcX9xnEeuwc2+5i8MfTRp1p9fC2/2Pon16TZJ
+ P44VAWGAXsHtplus=
+X-Google-Smtp-Source: AGHT+IE2EVWPt/an4zju0lHLQHhUQmTDSddIXQascsV19ewdipeU1SUU3c3LZXNsSrNz8PDdsE6w2A==
+X-Received: by 2002:a05:6e02:148d:b0:3d5:deaf:b443 with SMTP id
+ e9e14a558f8ab-3d97c13449bmr5738325ab.3.1746133597257; 
+ Thu, 01 May 2025 14:06:37 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4f88aa588afsm45456173.75.2025.05.01.14.06.25
+ 8926c6da1cb9f-4f88a91b069sm48588173.52.2025.05.01.14.06.33
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 01 May 2025 14:06:28 -0700 (PDT)
+ Thu, 01 May 2025 14:06:36 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?=
@@ -75,25 +75,24 @@ Cc: =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?=
  "Michael S. Tsirkin" <mst@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Yi Liu <yi.l.liu@intel.com>
-Subject: [PATCH 10/18] hw/virtio/virtio-pci: Remove VIRTIO_PCI_FLAG_INIT_PM
- definition
-Date: Thu,  1 May 2025 23:04:48 +0200
-Message-ID: <20250501210456.89071-11-philmd@linaro.org>
+Subject: [PATCH 11/18] hw/nvram/fw_cfg: Remove FWCfgState::file_slots field
+Date: Thu,  1 May 2025 23:04:49 +0200
+Message-ID: <20250501210456.89071-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250501210456.89071-1-philmd@linaro.org>
 References: <20250501210456.89071-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::135;
- envelope-from=philmd@linaro.org; helo=mail-il1-x135.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::131;
+ envelope-from=philmd@linaro.org; helo=mail-il1-x131.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,87 +108,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-VIRTIO_PCI_FLAG_INIT_PM was only used by the hw_compat_2_8[]
-array, via the 'x-pcie-pm-init=off' property. We removed all
-machines using that array, lets remove all the code around
-VIRTIO_PCI_FLAG_INIT_PM (see commit 9a4c0e220d8 for similar
-VIRTIO_PCI_FLAG_* enum removal).
+The FWCfgState::file_slots integer was only set in the
+hw_compat_2_8[] array, via the 'x-file-slots=0x10' property.
+We removed all machines using that array, lets remove that
+property and all the code around it. The number of slots is
+always FW_CFG_FILE_SLOTS_DFLT (32).
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/virtio/virtio-pci.h |  4 ----
- hw/virtio/virtio-pci.c         | 19 +++++--------------
- 2 files changed, 5 insertions(+), 18 deletions(-)
+ include/hw/nvram/fw_cfg.h |  1 -
+ hw/nvram/fw_cfg.c         | 24 +-----------------------
+ 2 files changed, 1 insertion(+), 24 deletions(-)
 
-diff --git a/include/hw/virtio/virtio-pci.h b/include/hw/virtio/virtio-pci.h
-index a8dd613ffbc..d1f7403cbdf 100644
---- a/include/hw/virtio/virtio-pci.h
-+++ b/include/hw/virtio/virtio-pci.h
-@@ -34,7 +34,6 @@ enum {
-     VIRTIO_PCI_FLAG_USE_IOEVENTFD_BIT,
-     VIRTIO_PCI_FLAG_MODERN_PIO_NOTIFY_BIT,
-     VIRTIO_PCI_FLAG_ATS_BIT,
--    VIRTIO_PCI_FLAG_INIT_PM_BIT,
-     VIRTIO_PCI_FLAG_INIT_FLR_BIT,
-     VIRTIO_PCI_FLAG_AER_BIT,
-     VIRTIO_PCI_FLAG_ATS_PAGE_ALIGNED_BIT,
-@@ -60,9 +59,6 @@ enum {
- /* address space translation service */
- #define VIRTIO_PCI_FLAG_ATS (1 << VIRTIO_PCI_FLAG_ATS_BIT)
+diff --git a/include/hw/nvram/fw_cfg.h b/include/hw/nvram/fw_cfg.h
+index d41b9328fd1..07a31d214db 100644
+--- a/include/hw/nvram/fw_cfg.h
++++ b/include/hw/nvram/fw_cfg.h
+@@ -59,7 +59,6 @@ struct FWCfgState {
+     SysBusDevice parent_obj;
+     /*< public >*/
  
--/* Init Power Management */
--#define VIRTIO_PCI_FLAG_INIT_PM (1 << VIRTIO_PCI_FLAG_INIT_PM_BIT)
--
- /* Init The No_Soft_Reset bit of Power Management */
- #define VIRTIO_PCI_FLAG_PM_NO_SOFT_RESET \
-   (1 << VIRTIO_PCI_FLAG_PM_NO_SOFT_RESET_BIT)
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index 5b86a9a447c..9ec92d5a736 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -2226,11 +2226,9 @@ static void virtio_pci_realize(PCIDevice *pci_dev, Error **errp)
-                          PCI_PM_CTRL_NO_SOFT_RESET);
-         }
+-    uint16_t file_slots;
+     FWCfgEntry *entries[2];
+     int *entry_order;
+     FWCfgFiles *files;
+diff --git a/hw/nvram/fw_cfg.c b/hw/nvram/fw_cfg.c
+index 54cfa07d3f5..71c41c979d7 100644
+--- a/hw/nvram/fw_cfg.c
++++ b/hw/nvram/fw_cfg.c
+@@ -257,7 +257,7 @@ static void fw_cfg_write(FWCfgState *s, uint8_t value)
  
--        if (proxy->flags & VIRTIO_PCI_FLAG_INIT_PM) {
--            /* Init Power Management Control Register */
--            pci_set_word(pci_dev->wmask + pos + PCI_PM_CTRL,
--                         PCI_PM_CTRL_STATE_MASK);
--        }
-+        /* Init Power Management Control Register */
-+        pci_set_word(pci_dev->wmask + pos + PCI_PM_CTRL,
-+                     PCI_PM_CTRL_STATE_MASK);
- 
-         if (proxy->flags & VIRTIO_PCI_FLAG_ATS) {
-             pcie_ats_init(pci_dev, last_pcie_cap_offset,
-@@ -2323,16 +2321,11 @@ static void virtio_pci_bus_reset_hold(Object *obj, ResetType type)
-     virtio_pci_reset(qdev);
- 
-     if (pci_is_express(dev)) {
--        VirtIOPCIProxy *proxy = VIRTIO_PCI(dev);
--
-         pcie_cap_deverr_reset(dev);
-         pcie_cap_lnkctl_reset(dev);
- 
--        if (proxy->flags & VIRTIO_PCI_FLAG_INIT_PM) {
--            pci_word_test_and_clear_mask(
--                dev->config + dev->pm_cap + PCI_PM_CTRL,
--                PCI_PM_CTRL_STATE_MASK);
--        }
-+        pci_word_test_and_clear_mask(dev->config + dev->pm_cap + PCI_PM_CTRL,
-+                                     PCI_PM_CTRL_STATE_MASK);
-     }
+ static inline uint16_t fw_cfg_file_slots(const FWCfgState *s)
+ {
+-    return s->file_slots;
++    return FW_CFG_FILE_SLOTS_DFLT;
  }
  
-@@ -2345,8 +2338,6 @@ static const Property virtio_pci_properties[] = {
-                     VIRTIO_PCI_FLAG_ATS_BIT, false),
-     DEFINE_PROP_BIT("x-ats-page-aligned", VirtIOPCIProxy, flags,
-                     VIRTIO_PCI_FLAG_ATS_PAGE_ALIGNED_BIT, true),
--    DEFINE_PROP_BIT("x-pcie-pm-init", VirtIOPCIProxy, flags,
--                    VIRTIO_PCI_FLAG_INIT_PM_BIT, true),
-     DEFINE_PROP_BIT("x-pcie-pm-no-soft-reset", VirtIOPCIProxy, flags,
-                     VIRTIO_PCI_FLAG_PM_NO_SOFT_RESET_BIT, false),
-     DEFINE_PROP_BIT("x-pcie-flr-init", VirtIOPCIProxy, flags,
+ /* Note: this function returns an exclusive limit. */
+@@ -1153,24 +1153,6 @@ static const TypeInfo fw_cfg_info = {
+ 
+ static void fw_cfg_file_slots_allocate(FWCfgState *s, Error **errp)
+ {
+-    uint16_t file_slots_max;
+-
+-    if (fw_cfg_file_slots(s) < FW_CFG_FILE_SLOTS_MIN) {
+-        error_setg(errp, "\"file_slots\" must be at least 0x%x",
+-                   FW_CFG_FILE_SLOTS_MIN);
+-        return;
+-    }
+-
+-    /* (UINT16_MAX & FW_CFG_ENTRY_MASK) is the highest inclusive selector value
+-     * that we permit. The actual (exclusive) value coming from the
+-     * configuration is (FW_CFG_FILE_FIRST + fw_cfg_file_slots(s)). */
+-    file_slots_max = (UINT16_MAX & FW_CFG_ENTRY_MASK) - FW_CFG_FILE_FIRST + 1;
+-    if (fw_cfg_file_slots(s) > file_slots_max) {
+-        error_setg(errp, "\"file_slots\" must not exceed 0x%" PRIx16,
+-                   file_slots_max);
+-        return;
+-    }
+-
+     s->entries[0] = g_new0(FWCfgEntry, fw_cfg_max_entry(s));
+     s->entries[1] = g_new0(FWCfgEntry, fw_cfg_max_entry(s));
+     s->entry_order = g_new0(int, fw_cfg_max_entry(s));
+@@ -1179,8 +1161,6 @@ static void fw_cfg_file_slots_allocate(FWCfgState *s, Error **errp)
+ static const Property fw_cfg_io_properties[] = {
+     DEFINE_PROP_BOOL("dma_enabled", FWCfgIoState, parent_obj.dma_enabled,
+                      true),
+-    DEFINE_PROP_UINT16("x-file-slots", FWCfgIoState, parent_obj.file_slots,
+-                       FW_CFG_FILE_SLOTS_DFLT),
+ };
+ 
+ static void fw_cfg_io_realize(DeviceState *dev, Error **errp)
+@@ -1228,8 +1208,6 @@ static const Property fw_cfg_mem_properties[] = {
+     DEFINE_PROP_UINT32("data_width", FWCfgMemState, data_width, -1),
+     DEFINE_PROP_BOOL("dma_enabled", FWCfgMemState, parent_obj.dma_enabled,
+                      true),
+-    DEFINE_PROP_UINT16("x-file-slots", FWCfgMemState, parent_obj.file_slots,
+-                       FW_CFG_FILE_SLOTS_DFLT),
+ };
+ 
+ static void fw_cfg_mem_realize(DeviceState *dev, Error **errp)
 -- 
 2.47.1
 
