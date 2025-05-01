@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26803AA66E5
+	by mail.lfdr.de (Postfix) with ESMTPS id 376E2AA66E6
 	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 01:03:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAcv2-00007u-Mc; Thu, 01 May 2025 19:02:16 -0400
+	id 1uAcvM-0000Ra-J6; Thu, 01 May 2025 19:02:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAcuz-00005z-VE
- for qemu-devel@nongnu.org; Thu, 01 May 2025 19:02:14 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAcv9-0000E9-5d
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 19:02:27 -0400
 Received: from mail-il1-x12e.google.com ([2607:f8b0:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAcux-0002HV-73
- for qemu-devel@nongnu.org; Thu, 01 May 2025 19:02:13 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAcv6-0002KJ-SN
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 19:02:22 -0400
 Received: by mail-il1-x12e.google.com with SMTP id
- e9e14a558f8ab-3d5e43e4725so4068335ab.1
- for <qemu-devel@nongnu.org>; Thu, 01 May 2025 16:02:10 -0700 (PDT)
+ e9e14a558f8ab-3d589ed2b47so4896055ab.2
+ for <qemu-devel@nongnu.org>; Thu, 01 May 2025 16:02:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746140530; x=1746745330; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746140539; x=1746745339; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=71cRgUxX/xvkQOIndCsIbPhvcAM9aTUzOonse2qZKrA=;
- b=mgkIZE04GSyocR6PPP6lza7MAKZy3C8ca4U0N5nT6kmMw/gxTeCtv5W1CyyidWGEgJ
- 4bkFS5MByHX2qHVjKy3Li8d9GYkg3ZR/sB/DZAbfBjmAU5X9cvB21p4jZcnq9gwJWYvn
- rhDYutjZLaNdN8D/1wL40kI5JqDIcHT/cP5pEEKGUDsMROW8IOLL5W+dpFOkRgQG1Ovh
- tqALGoJZkFEmikt8k4kUJShDrg9+ZlVBFd3EfA/LzWyI82QN81p4LgFUUH4aQGnTsfdb
- oCI5fuxkAzkFKM5aOCfo64Qcbv4tBTC0pjCv9ionsNYOf9wgY1V4aeb4JxNfZ+g4ABMT
- 6dlg==
+ bh=zUjb2KvGlUZUFz83Ds0AOUfQl+OnRqVo67ED0F/0NGk=;
+ b=DunsNhTouczSu6gQSlPVCZk/sGA54IGhDfwrSBIdZojE6RwAdRN3yrKgl0/NhHi3PF
+ 8SrN514lWzjzr7U7F5yEAwjktuNfTS24iBdxyIYdEW0fxdNuKLve1KANx6+1gDT0MGH+
+ 9TcTdCl4qZyJIyoTPx5mH8E/CniBSKQO1B++FJ8AzwU02aPmMu+CCKgWQDXJI95RrQ+I
+ TUw4DTBk2ehrnqarYXV5Se1Kcq84yvjnABm4HOqQfgQ9o4VfCl2IkXHy1ZoEl3FUveXF
+ 511dSWhk7QVdHLO7fiaapmuHX3lHOZCdBaNgzxzb7PQ02ChSVbE+d17svJm2gtfLx7FK
+ SbIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746140530; x=1746745330;
+ d=1e100.net; s=20230601; t=1746140539; x=1746745339;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=71cRgUxX/xvkQOIndCsIbPhvcAM9aTUzOonse2qZKrA=;
- b=afRYOLnD5a45z0dlug9xjkYZ6TDP6rIbfZNcFIxWU49SEQmVhwmpK9Epk+EwqIP40c
- UR/ccXWHa91s6bl2x3XE8JLqLCEXWZeWpAVUsBax3UMPK6QUwdqVqvP+A7GGn7q/e/63
- BVgU95/w8uGtmPEqt9ileNbHp9nEkL80UaD5HGgHmNLw5Nl7sR+DyfkZXIPIQJdKj01P
- 1RhdxoJ8aNiZM+knlNO0WPkrMYixsOaKTEs3+ZdczZkJ2aFJbzOv7OQyPZA0418skY6t
- zOsnfVQUTqrKetyx/FPkf/3TzmZb/c+5V0u8q5TPfAq5dk0lnKWhmobBlaJ/30BMFrgK
- DeaA==
-X-Gm-Message-State: AOJu0Yxi2LURW3Q/A8Di/6rk6tE0irAnHS0+fAH9kf/NGCaVTKJ/CtUP
- vOSisnK2t7oCUXivrFzpzdetRE0EN7l6foSgB9x/2DwXmvKlWMsCi09F0PY1LKYHjETQ7jXKJDk
+ bh=zUjb2KvGlUZUFz83Ds0AOUfQl+OnRqVo67ED0F/0NGk=;
+ b=OUXh4jJ/63WOf6GW//IvlGkSHiXoHOAuEIYLkFZ094Cy7fqxuVyWAuDvH1OvKmR5ev
+ lc7+temhKcrItYA7pA5ZjazXai0ruVKszgCaSbmfpTbW+exiJrQrRR2Hv4roV7ZD/aTC
+ EnS3Tew+zAvn3LBJSwYbhWvHgGeotIhbWppyfNcUNgfR9/EO8IPgpdAndsvw7nprH59f
+ PZ1oTxQU0eDVNQyWddqauy5NDdafMmsDLhi9lmdaT8lK9PZE7/sbjz0kRLksFeNzSB4h
+ YMw+y3q/lRX9cICmmtD2xvmRDMqk74ZeJEUhuxYRoCOMvYi0CR9KticbwXwSavQIrLxb
+ DxGQ==
+X-Gm-Message-State: AOJu0YzaNmliy7MS/aMuFxs/vo79/s4L3ryYzzgpRJh+J3PL5FH7+t93
+ uA7QvHAAR3GrCrg4mNZtPXf4cc19+KKpUVWOTXBYuYB9DunDDbqUn21z0CUy6OyHOtslLixbfmo
  Y
-X-Gm-Gg: ASbGncsDF4n/HsY/onlwZIQItW2bIxTYueVp9mz76RuKgzJE5NhwVwyOZ6dYqbvfJb0
- EjUE46qTRRuB8D0lRvfDAzlthd+eGhf17P5IqnRE/J4/Da1Maf1liyI47XYis/4UmaUgb++ESSO
- NBnsRXRBUeucFXPFHnV2ZT63AOwv49/4DGTiM8RSwFv0/m6d6P4/SVVRpRHW3pSqfItuQHmMp/b
- E0XBX5dLRTmbhNRvzVixuMxhB1lZjbdxXXctlunUXTQ6KLxp8ZLF/WaGHycEeOVOL/osx84whe7
- 0HuaYxyLQ6gqi3qOQWe9wn+hgxxSUu0ExLWcC+XtaBwls1oxgmr56jRh8SMSNWnKT7mWFgNTI+D
- 76s5JPJVeV7XFa4QPXY6B
-X-Google-Smtp-Source: AGHT+IEksWUSalHmdf1L0lBrQ4kJnb1Zq0e9zprZ1OTx3tRVCreMHfEejwW82x+JiiUe/xwS18W23A==
-X-Received: by 2002:a05:6e02:1f82:b0:3d9:6756:14b4 with SMTP id
- e9e14a558f8ab-3d97c288232mr9587435ab.18.1746140529786; 
- Thu, 01 May 2025 16:02:09 -0700 (PDT)
+X-Gm-Gg: ASbGncsg35N2TF6/V7o8UA+axmt97maRZ9j+Iq3S00yBbSIvw2EhdeMfjOIRx99ofGC
+ fGPDBIfgllLdwWONteEE9qyhrGtosmB7t7ncNHKL+FyTmhpq7qE+Ys20BZDii39WX7x+N051VQP
+ pHscpu4ob8KJydvKcmHTCLFDVP7zbkXLTuHpH/VmTB8C7B5tmBevngX99iwELxiVfwquPxup9aw
+ 7qLAx1IvQXfpVtu2uxNDLBdOgDKlhzzz/d7V/rAwrO92Ck+XrU8zJqFSUEqr5V2WnMjAPXn3RdG
+ UxK3FBH1qz4gXEVQjyLVa6+s/TAqXtdLzzOFWePCvBjqQW56Qb4pYvMkxkI+D6GbDd9e2+A5Qkd
+ fd/21HZAfjC0SobiemMwk
+X-Google-Smtp-Source: AGHT+IGDUDncsBvBWJwDg7BzIa/I82Zpdo8gtA7hcl3jIYbKpZXoLqddwTobgck/GVTy/3rgXIEmzA==
+X-Received: by 2002:a05:6e02:1522:b0:3d9:6cb6:fa52 with SMTP id
+ e9e14a558f8ab-3d97c1cba74mr10472685ab.12.1746140538619; 
+ Thu, 01 May 2025 16:02:18 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- e9e14a558f8ab-3d975e7d0c6sm3679665ab.27.2025.05.01.16.02.06
+ e9e14a558f8ab-3d975e6fbbdsm3386655ab.16.2025.05.01.16.02.15
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 01 May 2025 16:02:09 -0700 (PDT)
+ Thu, 01 May 2025 16:02:18 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Yanan Wang <wangyanan55@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -76,9 +76,9 @@ Cc: Yanan Wang <wangyanan55@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  "Michael S. Tsirkin" <mst@redhat.com>, qemu-s390x@nongnu.org,
  Christian Borntraeger <borntraeger@linux.ibm.com>
-Subject: [PATCH 04/10] hw/core/machine: Remove hw_compat_2_11[] array
-Date: Fri,  2 May 2025 01:01:22 +0200
-Message-ID: <20250501230129.2596-5-philmd@linaro.org>
+Subject: [PATCH 05/10] hw/timer/hpet: Remove HPETState::hpet_offset_saved field
+Date: Fri,  2 May 2025 01:01:23 +0200
+Message-ID: <20250501230129.2596-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250501230129.2596-1-philmd@linaro.org>
 References: <20250501230129.2596-1-philmd@linaro.org>
@@ -108,47 +108,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The hw_compat_2_11[] array was only used by the pc-q35-2.11,
-pc-i440fx-2.11 and s390-ccw-virtio-2.11 machines, which got
-removed. Remove it.
+The HPETState::hpet_offset_saved boolean was only set in the
+hw_compat_2_11[] array, via the 'hpet-offset-saved=false'
+property. We removed all machines using that array, lets remove
+that property and all the code around it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/boards.h | 3 ---
- hw/core/machine.c   | 8 --------
- 2 files changed, 11 deletions(-)
+ hw/timer/hpet.c                | 9 +--------
+ rust/hw/timer/hpet/src/hpet.rs | 9 ---------
+ 2 files changed, 1 insertion(+), 17 deletions(-)
 
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index f2f58ec4ed8..16cef33beae 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -826,7 +826,4 @@ extern const size_t hw_compat_3_0_len;
- extern GlobalProperty hw_compat_2_12[];
- extern const size_t hw_compat_2_12_len;
+diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
+index d1b7bc52b7b..47b8fc0d880 100644
+--- a/hw/timer/hpet.c
++++ b/hw/timer/hpet.c
+@@ -71,7 +71,6 @@ struct HPETState {
  
--extern GlobalProperty hw_compat_2_11[];
--extern const size_t hw_compat_2_11_len;
--
- #endif
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 816d503b2a1..8f1b44b70f7 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -230,14 +230,6 @@ GlobalProperty hw_compat_2_12[] = {
+     MemoryRegion iomem;
+     uint64_t hpet_offset;
+-    bool hpet_offset_saved;
+     qemu_irq irqs[HPET_NUM_IRQ_ROUTES];
+     uint32_t flags;
+     uint8_t rtc_irq_level;
+@@ -264,11 +263,6 @@ static int hpet_post_load(void *opaque, int version_id)
+         t->cmp64 = hpet_calculate_cmp64(t, s->hpet_counter, t->cmp);
+         t->last = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) - NANOSECONDS_PER_SECOND;
+     }
+-    /* Recalculate the offset between the main counter and guest time */
+-    if (!s->hpet_offset_saved) {
+-        s->hpet_offset = ticks_to_ns(s->hpet_counter)
+-                        - qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+-    }
+ 
+     return 0;
+ }
+@@ -277,7 +271,7 @@ static bool hpet_offset_needed(void *opaque)
+ {
+     HPETState *s = opaque;
+ 
+-    return hpet_enabled(s) && s->hpet_offset_saved;
++    return hpet_enabled(s);
+ }
+ 
+ static bool hpet_rtc_irq_level_needed(void *opaque)
+@@ -733,7 +727,6 @@ static const Property hpet_device_properties[] = {
+     DEFINE_PROP_UINT8("timers", HPETState, num_timers, HPET_MIN_TIMERS),
+     DEFINE_PROP_BIT("msi", HPETState, flags, HPET_MSI_SUPPORT, false),
+     DEFINE_PROP_UINT32(HPET_INTCAP, HPETState, intcap, 0),
+-    DEFINE_PROP_BOOL("hpet-offset-saved", HPETState, hpet_offset_saved, true),
  };
- const size_t hw_compat_2_12_len = G_N_ELEMENTS(hw_compat_2_12);
  
--GlobalProperty hw_compat_2_11[] = {
--    { "hpet", "hpet-offset-saved", "false" },
--    { "virtio-blk-pci", "vectors", "2" },
--    { "vhost-user-blk-pci", "vectors", "2" },
--    { "e1000", "migrate_tso_props", "off" },
--};
--const size_t hw_compat_2_11_len = G_N_ELEMENTS(hw_compat_2_11);
--
- MachineState *current_machine;
+ static void hpet_device_class_init(ObjectClass *klass, const void *data)
+diff --git a/rust/hw/timer/hpet/src/hpet.rs b/rust/hw/timer/hpet/src/hpet.rs
+index cbd2ed4f6bf..9e681391176 100644
+--- a/rust/hw/timer/hpet/src/hpet.rs
++++ b/rust/hw/timer/hpet/src/hpet.rs
+@@ -544,7 +544,6 @@ pub struct HPETState {
  
- static char *machine_get_kernel(Object *obj, Error **errp)
+     /// Offset of main counter relative to qemu clock.
+     hpet_offset: BqlCell<u64>,
+-    hpet_offset_saved: bool,
+ 
+     irqs: [InterruptSource; HPET_NUM_IRQ_ROUTES],
+     rtc_irq_level: BqlCell<u32>,
+@@ -885,14 +884,6 @@ impl ObjectImpl for HPETState {
+         u32,
+         default = 0
+     ),
+-    qemu_api::define_property!(
+-        c_str!("hpet-offset-saved"),
+-        HPETState,
+-        hpet_offset_saved,
+-        unsafe { &qdev_prop_bool },
+-        bool,
+-        default = true
+-    ),
+ }
+ 
+ impl DeviceImpl for HPETState {
 -- 
 2.47.1
 
