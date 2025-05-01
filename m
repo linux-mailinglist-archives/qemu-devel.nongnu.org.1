@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B803AA6053
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 16:58:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0185AA6049
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 16:56:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAVJy-0005ff-0T; Thu, 01 May 2025 10:55:30 -0400
+	id 1uAVJz-0005gI-0Z; Thu, 01 May 2025 10:55:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAVJw-0005es-6y
+ id 1uAVJw-0005ey-Fz
  for qemu-devel@nongnu.org; Thu, 01 May 2025 10:55:28 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAVJt-0005Qi-Hb
- for qemu-devel@nongnu.org; Thu, 01 May 2025 10:55:27 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-22423adf751so11443055ad.2
+ id 1uAVJu-0005RD-9k
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 10:55:28 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-2241053582dso16829035ad.1
  for <qemu-devel@nongnu.org>; Thu, 01 May 2025 07:55:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1746111324; x=1746716124; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=x/PgQfi425UDgUiGbtOMZZgEtm+lUa3KGmn3dWsY1lM=;
- b=aWCa8fk2BJ6ubapxJxbojAKB/PSF91mWx8SfU9WnroYJAaKgAcrWRQm8nKps2qwjV2
- ydbKHldijZ9ECYdJ6C/sGsowHgTiinVZZ9DY9QGEPOOeiEo8nfeeh75Dn5MURti1nzNI
- 7v1HxcyIPncrrRM9kBLQY3nvzexwIciO9u0LajSatSbBly5/DMqgjM2nlyQ1lW8/canf
- iqH3rSD6bk/IPQYGHPVlP2ekmx7ZrhWoCOaJMiV4xwkRzm5vURxZhKvgW6QhT6H8fX1T
- S26/+/aA4r/ubtMDwhPNiLxzWTfpz42SOE4mhJf0HNamb/mPTMuh3GaR6fi5FeTwU9Md
- /QFA==
+ :reply-to; bh=V3es0q86fneop67hPwyyNUzAvnUBYSgJshp4N+xyHtE=;
+ b=gBCJEWwAUHmDE+WNP78YXlVmkiaM8GwEe1KDyv1paoFl1mEOI2wXuoZk0K7fS/5NQS
+ WYzhTkIGSTWKlIXcyRBD7KT85pz6Xp4jqUddTWf24L6Bl1bheyb4xnX/vRLLRDPiYCdm
+ nlosKMqVvYcgsZgLVSR7rPAe5DolZgiIXFw7fVf9GuimtWNbem8Zssk8Ko91U2S+NP1i
+ yqk7DVDUtDthwlsw/RqQr7l/URP7pgohU/D+1CThjJB4GEEUWoBdCdltVrcolDaT+j9c
+ 0d5L4DC2gnxhRQGG7q0/C1vCUhMBUQ8JQpxeMhh5tPG6ITzkhSbazIkVGS0lehDr6Js+
+ BcRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1746111324; x=1746716124;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=x/PgQfi425UDgUiGbtOMZZgEtm+lUa3KGmn3dWsY1lM=;
- b=aQXNRAIaHy7jNkjYgLrO9UJZVBQSmCEJKhdvbvW6EI2MUHG6W5tKa8oKqgeQvMkSML
- Zie7XYoosJ5wArCtPA3/9RNySccKB+/tK0PHkrATyNJv677gHlwCgLZN/6abkqcCclek
- +7JsXeShHpyN81FsXoWq1gbnTwODrGF5ruVx2GjX4hXdfpWdkcRj4OGI/RopRsat7ic4
- twtvdfQlkRl0J/0TG72qhcoxdg3pLI/buQiODDim2IvbhV8IQHQB/ADE3QYWNol4P2uy
- 7DgtAo3GMyyBariLJVaTLUtLYfoS3ZVfxNovbchlONqTyo+9ucLbwlBsq182JU4TIvJs
- W+NQ==
-X-Gm-Message-State: AOJu0Yz13QWEpIqPOf3K+hJgnNPUg1jvOk2GgiVr7FHYzrhg6uIGjLnh
- gOOcIkUtMFze51FPpSq28pWsjy5Gb5J+5NVluCutxBOeiIXadEIs/oeuQ6W4Tx3XiP0y0jZIsxO
- J
-X-Gm-Gg: ASbGncuaSKiYAMSjunaqntorVCJyp2h7GQFtOSUlLPVUNAvpZxfT7/ymgBJ1PbHoFBo
- 1EbgRxchaBl4vkWHqbG2HBItd4+9QxnmA3r+/QALNnO3JBgFFSMXQtU/M2Dln4dn6fUL0ymUJE+
- ISnkJW8t31/v09tkPe/oYbi62B1N1HXeAGfKGJmEw2h+7zwgVbLOp7B/EeXqpfueaQ9m+Vb8gLP
- +/R8NumZWq4Eeu1GzPaMJGZ1cGMaxxdmLoEf8NRY6HvEdKT3Z+EVM/AxFSaSw3J8G0XEYS0mcla
- /Ky0IA6YAzftfIuHvo/QHRz2Ld4X9F68wlzlyv4pox9apy8LONNjTfMlwHzP/k3u5brs91wQKh8
+ bh=V3es0q86fneop67hPwyyNUzAvnUBYSgJshp4N+xyHtE=;
+ b=gkAn+6GKlxqHD5JzkY7xpWdDRqLreqNPc4iXSwaLKOrvjZCI1B0mIApYg5dnrMTDYb
+ Ae+8WpTlweXvcetd4GgoT6u1oHcTO/ncgcykDBB+c5HFRNHpnc7Jqag9uSp501auS1tD
+ nfFYSeRDmrlkwxRX0d7EehMyoFGEQF/zfCtmKfjCJi0mMnW7p3oPmmadyXloti+wpytT
+ ieqOJq7eeoizg162lYJ9cvZ5XHkzkYeSL7JAx9ZvVuC2F+C3DMR9stcCgqXrFFdzrW4z
+ vYXaO8GeWfSxgzIROH+qTVymUryZQ9jrOYRtHY0HEp9NkMXacM7TWdFKIy6M1Ir/44Kw
+ U1vA==
+X-Gm-Message-State: AOJu0YyRtsJduhBKkDPotDSVGq/R6ZPXWrPuOehOqiHg6lGX3T/5pnto
+ TqGb0PSS9mbeYWTSiyBp8PCIF7Cb/wgzYnZesLVSNyXCohKXETFR1EkmN+a2VtaqVFs0tzQfK7j
+ D
+X-Gm-Gg: ASbGnctRy/g9EpV3vNbC73kKTyGLvgkyP4Ko/LLNazusO0zniz7xcqp9IXevjI7cWY4
+ bk2oBxggWViwzxMLUF8aU8XwaWOlhWq/NpDvfEtZwE7O2h9poluOPEMdHPMlJ3OBoH4TbszcYyT
+ GFhRg/XiqxfBnGPP9FjOeZmJdjDlj63dlQ8dsojgrd2ulXj0fYAdp7Nd/2dQCSthkr30nEix/gk
+ oOTwpaSUHoQdk0QXxpC4BaTkp/xWlkNVQ7U63nFFpoP0wx5pg2I6q4ik7oG4udwvFNBao7PyoTk
+ UXPEFwmUHrS2seM0rTjCbJoLpd1qqP0Qkxz0BW5ffz2jzmE2hvNqxzQWTC+/PANpF+XIqAQ1rJM
  =
-X-Google-Smtp-Source: AGHT+IFzgauIawkopdylbCya+8pGpTTVo258JyBdljaYdeHy3R4svlchVP4ZDVBe3gjDqOTjJJHyjw==
-X-Received: by 2002:a17:903:1cc:b0:22c:35c5:e30d with SMTP id
- d9443c01a7336-22e084288bamr34948305ad.13.1746111323957; 
- Thu, 01 May 2025 07:55:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEVX7AxsVe+9bs31+EGLTsaEGL7AFYloTuA/D2MM5bqxNMYyX1QssIrq1sDplgUWdrqFeZsFw==
+X-Received: by 2002:a17:903:2f43:b0:224:1609:a74a with SMTP id
+ d9443c01a7336-22df581d613mr101616905ad.34.1746111324641; 
+ Thu, 01 May 2025 07:55:24 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22e0bb0e770sm7644415ad.92.2025.05.01.07.55.23
+ d9443c01a7336-22e0bb0e770sm7644415ad.92.2025.05.01.07.55.24
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 May 2025 07:55:23 -0700 (PDT)
+ Thu, 01 May 2025 07:55:24 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 04/11] accel/tcg: Use vaddr for plugin_{load,store}_cb
-Date: Thu,  1 May 2025 07:55:12 -0700
-Message-ID: <20250501145520.2695073-5-richard.henderson@linaro.org>
+Subject: [PATCH 05/11] accel/tcg: Build cputlb.c once
+Date: Thu,  1 May 2025 07:55:13 -0700
+Message-ID: <20250501145520.2695073-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250501145520.2695073-1-richard.henderson@linaro.org>
 References: <20250501145520.2695073-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,35 +97,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Avoid the use of abi_ptr within ldst_common.c.inc.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/ldst_common.c.inc | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ accel/tcg/cputlb.c    | 3 ++-
+ accel/tcg/meson.build | 5 +----
+ 2 files changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/accel/tcg/ldst_common.c.inc b/accel/tcg/ldst_common.c.inc
-index 9791a4e9ef..57f3e06192 100644
---- a/accel/tcg/ldst_common.c.inc
-+++ b/accel/tcg/ldst_common.c.inc
-@@ -123,7 +123,7 @@ void helper_st_i128(CPUArchState *env, uint64_t addr, Int128 val, MemOpIdx oi)
-  * Load helpers for cpu_ldst.h
-  */
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index 35c467aace..5f6d7c601c 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -25,7 +25,8 @@
+ #include "accel/tcg/probe.h"
+ #include "exec/page-protection.h"
+ #include "system/memory.h"
+-#include "accel/tcg/cpu-ldst.h"
++#include "accel/tcg/cpu-ldst-common.h"
++#include "accel/tcg/cpu-mmu-index.h"
+ #include "exec/cputlb.h"
+ #include "exec/tb-flush.h"
+ #include "system/ram_addr.h"
+diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
+index d6bd304add..9b86051b82 100644
+--- a/accel/tcg/meson.build
++++ b/accel/tcg/meson.build
+@@ -25,15 +25,12 @@ tcg_specific_ss = ss.source_set()
+ tcg_specific_ss.add(when: 'CONFIG_USER_ONLY', if_true: files('user-exec.c'))
+ specific_ss.add_all(when: 'CONFIG_TCG', if_true: tcg_specific_ss)
  
--static void plugin_load_cb(CPUArchState *env, abi_ptr addr,
-+static void plugin_load_cb(CPUArchState *env, vaddr addr,
-                            uint64_t value_low,
-                            uint64_t value_high,
-                            MemOpIdx oi)
-@@ -193,7 +193,7 @@ Int128 cpu_ld16_mmu(CPUArchState *env, vaddr addr,
-  * Store helpers for cpu_ldst.h
-  */
+-specific_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: files(
+-  'cputlb.c',
+-))
+-
+ libuser_ss.add(files(
+   'user-exec-stub.c',
+ ))
  
--static void plugin_store_cb(CPUArchState *env, abi_ptr addr,
-+static void plugin_store_cb(CPUArchState *env, vaddr addr,
-                             uint64_t value_low,
-                             uint64_t value_high,
-                             MemOpIdx oi)
+ libsystem_ss.add(files(
++  'cputlb.c',
+   'icount-common.c',
+   'monitor.c',
+   'tcg-accel-ops.c',
 -- 
 2.43.0
 
