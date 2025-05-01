@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF114AA6515
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:07:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AD3EAA6517
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:07:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAb72-0002AZ-Vj; Thu, 01 May 2025 17:06:33 -0400
+	id 1uAb7U-0002m1-Pe; Thu, 01 May 2025 17:07:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAb6d-0001RD-9o
- for qemu-devel@nongnu.org; Thu, 01 May 2025 17:06:15 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAb6m-0001d6-J8
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 17:06:19 -0400
 Received: from mail-il1-x12c.google.com ([2607:f8b0:4864:20::12c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAb6a-0006cT-Jd
- for qemu-devel@nongnu.org; Thu, 01 May 2025 17:06:06 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAb6i-0006eG-Vq
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 17:06:16 -0400
 Received: by mail-il1-x12c.google.com with SMTP id
- e9e14a558f8ab-3d5e68418b5so13085815ab.2
- for <qemu-devel@nongnu.org>; Thu, 01 May 2025 14:06:04 -0700 (PDT)
+ e9e14a558f8ab-3d91db4f0c3so7471395ab.3
+ for <qemu-devel@nongnu.org>; Thu, 01 May 2025 14:06:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746133563; x=1746738363; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746133571; x=1746738371; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2UZQft0G0qLlkzlmAjD0AN5/aAoxDFjk+IIAiFxxuxk=;
- b=Wtk+b9wBVk38HPrXI90RbZSR5BhexoRwnSnhSGq44BatVkjicuCPiPb6knSrjfntTV
- VNil/y9ftsbM7WUY+oA5EXJDJxIKbetjmTbByOi5Fcymg1L1tLwoDuCMAueKXtUH4e4E
- cMAoQ3lyUScB40aqET6H2eUSIanzv5JY/aAYRivhYHyY5FoCyco9yY2UQYXGi3u5oIEo
- Vpy9XDju38ibod/5Kx5YKh8KSPNn5O0xwSB9SOz37TqGQIaBRs4ut4DvScniSo9TQJet
- 7CsAxdj9riASCLUcGBuvyjZ2vSyqEM7NtSbN1cRNfCQwa8y/05uiR8QGnYbTr0YuCK9k
- c/pw==
+ bh=ZrPNr0Aj9fn0eddJzV+2Kcwv9eRua4WW4O8jcqwzOW4=;
+ b=cOMx2CDvkQSjjXA6Et2HTSy0eIvhbetCnvRCHp4WB/JnV9ZxNziKmkE8kR5q6u97rU
+ cd45lCvdBZrMjUAt9NwzLXYY8u5J2qcvOsVZToBbjZt5rslkzQN8ldpUZTxc6XMByrGY
+ FLe7Ru0C/Q7HTfdJVWvhoXiu0ECf8+5eCayYZYBG29clWviObq1sNlR7jM2b789O8ZFF
+ 52oXfGLQGp+tIZKlf7fp3mMW1uyLvj8KVQWZDL5eXS/yoZ9IJ7dKiwKVjdPWGYQn3V8a
+ z13n/loOk53k0BHNSogpJ5C0tvX/wnW1ZDnbXq/LeOEisQK2cWioWMY/0PHg07+3mclh
+ KbDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746133563; x=1746738363;
+ d=1e100.net; s=20230601; t=1746133571; x=1746738371;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2UZQft0G0qLlkzlmAjD0AN5/aAoxDFjk+IIAiFxxuxk=;
- b=GR1zcYKFhhZPQJWaadJuRwnbTxC61GH9qCRvrlEkIdjGw9TInk8XbmkFI8Zp+ZVE3c
- bITMh3MQ4EcwFndxmN28Tn8IuHUxW9xgQH8gWGk6OHPR/oLtcfuCKCqGaE8zAuuelb+Y
- ENtn3t4G/IkEPxEjlMYG32v9MaSJzpwC8jI1IM1yqbkgludYdXUFegTBZ+Nle38qHgbQ
- cuXAnBwRDFEfbaRg0wm4vuHJVUSaB5zqkC5riXj9E3yUcZ0KXElqjN/ihJIpztam7lZp
- dbKuiPuN53QWlw3TqQUiEJIh4p878wOTC6ZDInvl5qF5HHMGH7vsqiZCLkoeqUh34Z3z
- smCw==
-X-Gm-Message-State: AOJu0YzIqjvXEVJGl8aj/s0y0tSrRwcNB/KyeE5p29aWVrAxepJv2DpI
- 056Mzdt1YS2ObFxqRZgGayqdQ2CNRUGSZMHQadshlg1j/yquTchfwp9D3oK+pSgJOfYJ0RK4uSB
- r
-X-Gm-Gg: ASbGncuwW4C0+1n5aYVkXIVchcy+dStq9Pef2nYv2C0GtRJDJxeVSOYiczCzygvSOLO
- 3xtZtD8LrA1EgYvWSEMOfgn2B3rT/RMZJnMgtqOazwt8dbSLSEhOxbCPb4v4Rsqs6+h8z9x7jel
- +NDN+rSD6A+qtnk2TvojsWcR2oflzSXq3yOUu43/+gTiLjxUnfmbxbBLmJPZwKJHonUlVFKkSwh
- ebtsRY28JdJOykBHBSEyssR7v+ii3t2JeCYRND+3n8OcnxYR4C97IhpgxEDsNCgoo7iwlgQIy+o
- IPYlBLEPLZd3bX2YJK2bIn2pW8RKw7M/e+FmdWHVgfLMTWaNlHSmx4Zl29MI6Jb/8B7p37aAvvO
- 6l9clV+XFK5Ro22E=
-X-Google-Smtp-Source: AGHT+IHTizOnKtd//rQZ5MNZ+h2FfRR5XgBuLQ9/ebXP/1Ak9kwfMQFLAcVGBVMrwMUIxStFBA2bIA==
-X-Received: by 2002:a05:6e02:1a85:b0:3d3:d074:b0d2 with SMTP id
- e9e14a558f8ab-3d97c1771a7mr5740545ab.2.1746133562899; 
- Thu, 01 May 2025 14:06:02 -0700 (PDT)
+ bh=ZrPNr0Aj9fn0eddJzV+2Kcwv9eRua4WW4O8jcqwzOW4=;
+ b=JUKgSzrkgWkbM/Zb20heoAQtISpklFO+etvim8qDZRi6BdFR+zEXLLc21MxfA5TTvt
+ sJmZzuTuUbLzVn9LSkd5JiaD0jiTPiaXKonxuXc/qouXnVuc3WGEO/2Z92XK/nWYYYRd
+ 9DWs6ZFXRS4YhP59eq8eT44U0BS/bSs84yUNHyB8+eP4s7USOf+y0vGUHAU3/ElzUx6h
+ kHTQrJ8b5XbGmeQZoLeubTeASEVfhyXwVQdDfrl0WGpSnITUjEB4SQKU1qAZRynlxe8N
+ mXKy0hPgqf2lUcWWQP2o0dM8oBwxmU0EheXWI/3qon/nGPgx2QJ4ZHWK2OPv5R1uO2CD
+ 5aMA==
+X-Gm-Message-State: AOJu0YxqFY6FcshTkAbPKLI9Q4K2GsFrk11UQTY3lOLysW89Puo9tB05
+ xL7Fg4cgZlaYfmA0TQFm91wi3HQvwHLv2XeKz5J3sqES9tvkM9yX5/SXt3auYFRTUbcqDlTfPii
+ M
+X-Gm-Gg: ASbGncv/LWUofzj1q1yjMOL5dvprS8MzACqhFkZ2rTG2+T7NF3IeejQjNfiT4giWhPD
+ vbFmKOGt7aBXz4+L4nujY9LHhTyAvSUHfweXPjzttXWok1zf5mwbEzRpyoArRl+yDLiOx6RyEe2
+ al7t2AGG3s8dqGEZxQwyPiKLcqgaBd1H9O7HMkBcum0CxgkYlYW0gznafvL44Ic7G8U6Wr1a/Zy
+ rIHqdy8wteXgScZ6IJREO/3ylPT7JlhyYFXwuBjTUF/SRLww9PHzCLSp0UAv1xuY8WNIWZ86d4b
+ bQ/OBKU753rI8mNuxuM1ueVQdicSozUhBiHGNXtoKbEZ67+2aau3zVYe5ZJRetmxwDhSHItwYcZ
+ u7ubkRksLkjgAGaw=
+X-Google-Smtp-Source: AGHT+IGacAzQMWgI/LEam+U9zfxt7TyjpF2feQ63IFLhoXJ2ZySmggQRPvskD9DNBjzgWmUilmnVmQ==
+X-Received: by 2002:a05:6e02:12e7:b0:3d3:fdcc:8fb8 with SMTP id
+ e9e14a558f8ab-3d97c18897bmr5250535ab.10.1746133571433; 
+ Thu, 01 May 2025 14:06:11 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- e9e14a558f8ab-3d975f6d755sm3065295ab.69.2025.05.01.14.05.59
+ 8926c6da1cb9f-4f88aac80f6sm43264173.141.2025.05.01.14.06.08
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 01 May 2025 14:06:02 -0700 (PDT)
+ Thu, 01 May 2025 14:06:11 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?=
@@ -75,9 +75,10 @@ Cc: =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?=
  "Michael S. Tsirkin" <mst@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Yi Liu <yi.l.liu@intel.com>
-Subject: [PATCH 07/18] hw/pci/pcie: Remove QEMU_PCIE_EXTCAP_INIT definition
-Date: Thu,  1 May 2025 23:04:45 +0200
-Message-ID: <20250501210456.89071-8-philmd@linaro.org>
+Subject: [PATCH 08/18] hw/virtio/virtio-pci: Remove
+ VIRTIO_PCI_FLAG_INIT_DEVERR definition
+Date: Thu,  1 May 2025 23:04:46 +0200
+Message-ID: <20250501210456.89071-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250501210456.89071-1-philmd@linaro.org>
 References: <20250501210456.89071-1-philmd@linaro.org>
@@ -108,60 +109,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QEMU_PCIE_EXTCAP_INIT was only used by the hw_compat_2_8[]
-array, via the 'x-pcie-extcap-init=off' property. We removed
-all machines using that array, lets remove all the code around
-QEMU_PCIE_EXTCAP_INIT.
+VIRTIO_PCI_FLAG_INIT_DEVERR was only used by the hw_compat_2_8[]
+array, via the 'x-pcie-deverr-init=off' property. We removed all
+machines using that array, lets remove all the code around
+VIRTIO_PCI_FLAG_INIT_DEVERR (see commit 9a4c0e220d8 for similar
+VIRTIO_PCI_FLAG_* enum removal).
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/pci/pci.h | 2 --
- hw/pci/pci.c         | 2 --
- hw/pci/pcie.c        | 5 -----
- 3 files changed, 9 deletions(-)
+ include/hw/virtio/virtio-pci.h | 4 ----
+ hw/virtio/virtio-pci.c         | 8 ++------
+ 2 files changed, 2 insertions(+), 10 deletions(-)
 
-diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index c2fe6caa2c6..6c72a61c4b6 100644
---- a/include/hw/pci/pci.h
-+++ b/include/hw/pci/pci.h
-@@ -210,8 +210,6 @@ enum {
-     /* Link active status in endpoint capability is always set */
- #define QEMU_PCIE_LNKSTA_DLLLA_BITNR 8
-     QEMU_PCIE_LNKSTA_DLLLA = (1 << QEMU_PCIE_LNKSTA_DLLLA_BITNR),
--#define QEMU_PCIE_EXTCAP_INIT_BITNR 9
--    QEMU_PCIE_EXTCAP_INIT = (1 << QEMU_PCIE_EXTCAP_INIT_BITNR),
- #define QEMU_PCIE_CXL_BITNR 10
-     QEMU_PCIE_CAP_CXL = (1 << QEMU_PCIE_CXL_BITNR),
- #define QEMU_PCIE_ERR_UNC_MASK_BITNR 11
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index fe38c4c0287..36206c77b7c 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -90,8 +90,6 @@ static const Property pci_props[] = {
-                     QEMU_PCI_CAP_MULTIFUNCTION_BITNR, false),
-     DEFINE_PROP_BIT("x-pcie-lnksta-dllla", PCIDevice, cap_present,
-                     QEMU_PCIE_LNKSTA_DLLLA_BITNR, true),
--    DEFINE_PROP_BIT("x-pcie-extcap-init", PCIDevice, cap_present,
--                    QEMU_PCIE_EXTCAP_INIT_BITNR, true),
-     DEFINE_PROP_STRING("failover_pair_id", PCIDevice,
-                        failover_pair_id),
-     DEFINE_PROP_UINT32("acpi-index",  PCIDevice, acpi_index, 0),
-diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-index 1b12db6fa29..a3969423bd3 100644
---- a/hw/pci/pcie.c
-+++ b/hw/pci/pcie.c
-@@ -245,11 +245,6 @@ int pcie_cap_init(PCIDevice *dev, uint8_t offset,
+diff --git a/include/hw/virtio/virtio-pci.h b/include/hw/virtio/virtio-pci.h
+index 8abc5f8f20d..ed142932f7b 100644
+--- a/include/hw/virtio/virtio-pci.h
++++ b/include/hw/virtio/virtio-pci.h
+@@ -34,7 +34,6 @@ enum {
+     VIRTIO_PCI_FLAG_USE_IOEVENTFD_BIT,
+     VIRTIO_PCI_FLAG_MODERN_PIO_NOTIFY_BIT,
+     VIRTIO_PCI_FLAG_ATS_BIT,
+-    VIRTIO_PCI_FLAG_INIT_DEVERR_BIT,
+     VIRTIO_PCI_FLAG_INIT_LNKCTL_BIT,
+     VIRTIO_PCI_FLAG_INIT_PM_BIT,
+     VIRTIO_PCI_FLAG_INIT_FLR_BIT,
+@@ -62,9 +61,6 @@ enum {
+ /* address space translation service */
+ #define VIRTIO_PCI_FLAG_ATS (1 << VIRTIO_PCI_FLAG_ATS_BIT)
  
-     pci_set_word(dev->wmask + pos + PCI_EXP_DEVCTL2, PCI_EXP_DEVCTL2_EETLPPB);
- 
--    if (dev->cap_present & QEMU_PCIE_EXTCAP_INIT) {
--        /* read-only to behave like a 'NULL' Extended Capability Header */
--        pci_set_long(dev->wmask + PCI_CONFIG_SPACE_SIZE, 0);
--    }
+-/* Init error enabling flags */
+-#define VIRTIO_PCI_FLAG_INIT_DEVERR (1 << VIRTIO_PCI_FLAG_INIT_DEVERR_BIT)
 -
-     return pos;
- }
+ /* Init Link Control register */
+ #define VIRTIO_PCI_FLAG_INIT_LNKCTL (1 << VIRTIO_PCI_FLAG_INIT_LNKCTL_BIT)
  
+diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+index 4e0d4bda6ed..0075ae590db 100644
+--- a/hw/virtio/virtio-pci.c
++++ b/hw/virtio/virtio-pci.c
+@@ -2215,10 +2215,8 @@ static void virtio_pci_realize(PCIDevice *pci_dev, Error **errp)
+             last_pcie_cap_offset += PCI_ERR_SIZEOF;
+         }
+ 
+-        if (proxy->flags & VIRTIO_PCI_FLAG_INIT_DEVERR) {
+-            /* Init error enabling flags */
+-            pcie_cap_deverr_init(pci_dev);
+-        }
++        /* Init error enabling flags */
++        pcie_cap_deverr_init(pci_dev);
+ 
+         if (proxy->flags & VIRTIO_PCI_FLAG_INIT_LNKCTL) {
+             /* Init Link Control Register */
+@@ -2349,8 +2347,6 @@ static const Property virtio_pci_properties[] = {
+                     VIRTIO_PCI_FLAG_ATS_BIT, false),
+     DEFINE_PROP_BIT("x-ats-page-aligned", VirtIOPCIProxy, flags,
+                     VIRTIO_PCI_FLAG_ATS_PAGE_ALIGNED_BIT, true),
+-    DEFINE_PROP_BIT("x-pcie-deverr-init", VirtIOPCIProxy, flags,
+-                    VIRTIO_PCI_FLAG_INIT_DEVERR_BIT, true),
+     DEFINE_PROP_BIT("x-pcie-lnkctl-init", VirtIOPCIProxy, flags,
+                     VIRTIO_PCI_FLAG_INIT_LNKCTL_BIT, true),
+     DEFINE_PROP_BIT("x-pcie-pm-init", VirtIOPCIProxy, flags,
 -- 
 2.47.1
 
