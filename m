@@ -2,84 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5932AA655A
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:24:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB92DAA6561
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:25:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAbLq-00011s-QD; Thu, 01 May 2025 17:21:50 -0400
+	id 1uAbLk-0000xY-QO; Thu, 01 May 2025 17:21:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAbLZ-0000ng-1B
+ id 1uAbLa-0000oF-Hs
  for qemu-devel@nongnu.org; Thu, 01 May 2025 17:21:35 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAbLX-0001Ui-6k
- for qemu-devel@nongnu.org; Thu, 01 May 2025 17:21:32 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-7394945d37eso1291553b3a.3
- for <qemu-devel@nongnu.org>; Thu, 01 May 2025 14:21:30 -0700 (PDT)
+ id 1uAbLY-0001V6-1B
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 17:21:34 -0400
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-306b6ae4fb2so1303104a91.3
+ for <qemu-devel@nongnu.org>; Thu, 01 May 2025 14:21:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746134489; x=1746739289; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746134490; x=1746739290; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DY53sbbsfhMz/uL2ST/i1QboUtxsyltjh/Yn/CjASj8=;
- b=zSr6z3ZgFnlXh8HI4m9IBDNV/r4KxqA8O5zXa3NVDuGPu+vIgYz5KP3rrCFnouKewT
- uQvclVHqrnK2WAf4xm5zNQ+Sdv4HJX/QJTlxBxl7+PdM7LbvuvlBaqbAnNUjIjXO/UEr
- iM55yiqhuJWLsOTTw7FQSIj7ha0x6Axq4YfvGKIXLgdxsP+q7VWqYvjhtcnkjzEXYfvN
- G9j5kOBe9XunOS+RF5FK1teG0bFlyRi6mdlYo8ehi2XbmIMTbiwWntZtQP6uYhKfV5jz
- 7GK6t+zNGe6vQaJCBj47O15pSvrvfe73Wsm5jdndulWLSmFhdJCPsGSd3H9qzFDDbgv7
- zjYA==
+ bh=3IM3WNY4+mvaPjMT/1TSQTeg+RIG05hYdcLT8hVpAu0=;
+ b=EebyiA8H9f4uQTKXGXQezAQeq++zKQhPeQnrzctxbzwgRgIfVZpDYMXvUKH4opYU7C
+ 7kW6F62vznf402v04HRYOKS5+Vg1+kYH4Umy5hUJJREpwvaGvLGH+s60dPcFNrHastTO
+ U3qVA4b9IHFPxIwWyocmjqTw2M1Kn+PiQgMjR249G1gsxvWOWh0v16B9FbXIMrmVoznj
+ D4shaf3BL62chfS2AfpdSuhba6c5y0MzEQCsfOsCpjd5HndfJBG13knI021bxkcA1OB8
+ Q/1XsEPk5uNKbmOCPXdb+9UQtlTloeM5tNq5EkHWiIEe65fGo41p0Z5AQHQy1BTTFVta
+ jhQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746134489; x=1746739289;
+ d=1e100.net; s=20230601; t=1746134490; x=1746739290;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DY53sbbsfhMz/uL2ST/i1QboUtxsyltjh/Yn/CjASj8=;
- b=BOkVm4tKm4yRABXH27lr+A/W7fujYzE8S5iF5HlPsekrOYlQbHqkdRxxF1aCVaXQ1b
- CzSK8D85ysQM7NskCwzSziTP0VKYYny+zFgV0j+8bZtJruBlb0je0H94Us3TVd24Xbtw
- K86u2PxewKYuRj2A4IO3e1kRLu8I1gPODI1tb977fa0ZxhNe/hilW5bgnQ9OBQx4Qk+9
- qCIGffvxeu46F4Gy3LRw5TPeQO8ZuIOpohhpXjZpzS5TKcP+G96rlAxvIxQOJDhHe1uP
- LAjrsLsrdPYqq8jnVGbli82N7hhmJQN37ObAU6dH+9DvS5XaBCfIAMbFoqfdzIHAf92n
- S0fg==
-X-Gm-Message-State: AOJu0YwYuuWkDa2MShyC7iyuL5VJFiKU5lCyKYkory476Z58HUVUP9Fu
- ivBuZqQQY7MBrHEjAGMv0o03VvwKtJfsW6Wkl40/wy1uQV6dwuKp0eCKOjs9NbxUUKuw6HM66YJ
- k
-X-Gm-Gg: ASbGnctNZdpEcIOBsf1AlBpZPiWUlJRl1PG/rRTSXNm351suboKx7rlNid4fXrcdJv6
- xu/uYvnZcU/9xCotnXk/B3E/4BouIrbYSvwSMdKcxCnkekB6KVg7F/oTGMlry7Tod02hKJmFxUJ
- asF1BZ9mQCSkwqJ8N9gbxDMnwjrQlZXR2Fara5yNJJbHpvKYIVSyNKmOnKq8Pex3Ytu/aYxlxsh
- GTOPQHi8AwL44DKAXVF5dNFCTPiiWiKcneMPGL0xsZASFSlNrYhD2GbEQveCjg8va3jKkcJuTEV
- FORESXHws0mHWab0JAxSnFvpBncrKq1AtjcbticarFyyHdti7Are8np75Mhc8mhlSOhZmdz9W84
+ bh=3IM3WNY4+mvaPjMT/1TSQTeg+RIG05hYdcLT8hVpAu0=;
+ b=c2u6h7okki2gHE96PNzRdJ3wByPG4ADJBTs850JXVXOkvBYfq23bxPF9pr6Vvo9lgi
+ NqSRKHKM3EY9s9k0zyVJe4qQBCOYljrQ6CiSaaQpbJFEtwQvip6QecoWWJfSPpgKNJo7
+ lAP6tugLBCS2ys+8yUTVZan0vV4RsCjq5LM+FK6G2vxa4PxMWgsVFWi6hVJcyKzAXhym
+ /aCCcLIpf92KPBVNHEu9QS7AYxmntvhJbIgYDrGQ95PyYc5wjZn4X/CKXp9Ew7H+tDvh
+ yuP6YvNkz0qwkgVErV88R4V5RVbYkyR1saYlS4r17ws+JPVpAvmiX/CR0qTFG9vaKwte
+ kPAw==
+X-Gm-Message-State: AOJu0YzRoQWVF61+uohCEu5SJmbN5nTzE/WCYm3GREGm5Q8dUhJL3Oo2
+ 2IE+j0voPjj/a8n7PlL805n34Ekf33+ThVTX4WQ4KUEB9exVI7bDbujOUAtL24dKzT/yhfXRPAo
+ L
+X-Gm-Gg: ASbGncuD9JHTt2LYF1fn4L0M89loFFLUEeUpGLXUygeQsZt5QKS/L1LN740h9PjYoRf
+ RotZGiHBKN8ICBh2xKadgZQuSYrmX++DdHPz4uOkCH8+oG5eiLYyjWBBSAOZ5FPooveQMhc9ZRF
+ ZJXATIsWVjaSC3akFs5JxAMNAc6ubF86FBvvzWy7cX7aZ7+SN45IktmZeXTxXlS7xsG83Y2S8ST
+ ObncsJ1zYjBotA9B/upgtfhmANgTzmuZ7ZVWcm0mOG5/5emUbpqOMYnVWPeX1SKw2HmXTym76LD
+ sjatY/wbbkluU1YFxENre/nH8oCkGtsVCqSjPjcvssGKKgyyswa2Pe/591DMEjLO67C3GkXCsLE
  =
-X-Google-Smtp-Source: AGHT+IG0FVDesoCK7QnxxAAPn4ziz+8441rVXpGhO8e2XogoFFYBqGakFSFdnx3u3IDUzMD3ljWJUg==
-X-Received: by 2002:a17:90b:534d:b0:30a:4ce4:5287 with SMTP id
- 98e67ed59e1d1-30a4e42faa9mr1220926a91.0.1746134489626; 
- Thu, 01 May 2025 14:21:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGit4o1KJyAFXlSDsyoKIM8udhg6Umqt241SC/XoNvyFEOdLW18VRudmTHyH1UwzYSd7serSA==
+X-Received: by 2002:a17:90b:3c4e:b0:2ff:502e:62d4 with SMTP id
+ 98e67ed59e1d1-30a4e6b55d2mr720455a91.32.1746134490648; 
+ Thu, 01 May 2025 14:21:30 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-30a476267e0sm1384573a91.39.2025.05.01.14.21.28
+ 98e67ed59e1d1-30a476267e0sm1384573a91.39.2025.05.01.14.21.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 May 2025 14:21:28 -0700 (PDT)
+ Thu, 01 May 2025 14:21:30 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Mark Cave-Ayland <mark.caveayland@nutanix.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 18/59] target/riscv: Include missing 'accel/tcg/getpc.h' in
- csr.c
-Date: Thu,  1 May 2025 14:20:32 -0700
-Message-ID: <20250501212113.2961531-19-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 19/59] accel/tcg: Include 'accel/tcg/getpc.h' in
+ 'exec/helper-proto'
+Date: Thu,  1 May 2025 14:20:33 -0700
+Message-ID: <20250501212113.2961531-20-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250501212113.2961531-1-richard.henderson@linaro.org>
 References: <20250501212113.2961531-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,49 +102,67 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-"accel/tcg/getpc.h" is pulled in indirectly. Include it
-explicitly to avoid when refactoring unrelated headers:
-
-  target/riscv/csr.c:2117:25: error: call to undeclared function 'GETPC' [-Wimplicit-function-declaration]
-   2117 |     if ((val & RVC) && (GETPC() & ~3) != 0) {
-        |                         ^
-
-Note the TODO comment around GETPC() added upon introduction in
-commit f18637cd611 ("RISC-V: Add misa runtime write support"):
-
- 2099 static RISCVException write_misa(CPURISCVState *env, int csrno,
- 2100                                  target_ulong val)
- 2101 {
-  ...
- 2113     /*
- 2114      * Suppress 'C' if next instruction is not aligned
- 2115      * TODO: this should check next_pc
- 2116      */
- 2117     if ((val & RVC) && (GETPC() & ~3) != 0) {
- 2118         val &= ~RVC;
- 2119     }
+Most files including "exec/helper-proto.h" call GETPC().
+Include it there (in the common part) instead of the
+unspecific "exec/exec-all.h" header.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250424202412.91612-8-philmd@linaro.org>
+Message-ID: <20250424202412.91612-10-philmd@linaro.org>
 ---
- target/riscv/csr.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/exec/exec-all.h            | 1 -
+ include/exec/helper-proto-common.h | 2 ++
+ accel/tcg/translate-all.c          | 1 +
+ target/avr/helper.c                | 1 -
+ 4 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index c52c87faae..1308643855 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -28,6 +28,7 @@
- #include "exec/cputlb.h"
- #include "exec/tb-flush.h"
- #include "exec/icount.h"
+diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
+index 4c5ad98c6a..816274bf90 100644
+--- a/include/exec/exec-all.h
++++ b/include/exec/exec-all.h
+@@ -26,7 +26,6 @@
+ #include "exec/vaddr.h"
+ 
+ #if defined(CONFIG_TCG)
+-#include "accel/tcg/getpc.h"
+ 
+ /**
+  * probe_access:
+diff --git a/include/exec/helper-proto-common.h b/include/exec/helper-proto-common.h
+index 16782ef46c..76e6c25bec 100644
+--- a/include/exec/helper-proto-common.h
++++ b/include/exec/helper-proto-common.h
+@@ -13,4 +13,6 @@
+ #include "exec/helper-proto.h.inc"
+ #undef  HELPER_H
+ 
 +#include "accel/tcg/getpc.h"
- #include "qemu/guest-random.h"
++
+ #endif /* HELPER_PROTO_COMMON_H */
+diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+index 38819a507b..0408e2522a 100644
+--- a/accel/tcg/translate-all.c
++++ b/accel/tcg/translate-all.c
+@@ -61,6 +61,7 @@
+ #include "system/tcg.h"
  #include "qapi/error.h"
- #include <stdbool.h>
+ #include "accel/tcg/cpu-ops.h"
++#include "accel/tcg/getpc.h"
+ #include "tb-jmp-cache.h"
+ #include "tb-hash.h"
+ #include "tb-context.h"
+diff --git a/target/avr/helper.c b/target/avr/helper.c
+index afa591470f..b9cd6d5ef2 100644
+--- a/target/avr/helper.c
++++ b/target/avr/helper.c
+@@ -23,7 +23,6 @@
+ #include "qemu/error-report.h"
+ #include "cpu.h"
+ #include "accel/tcg/cpu-ops.h"
+-#include "accel/tcg/getpc.h"
+ #include "exec/cputlb.h"
+ #include "exec/page-protection.h"
+ #include "exec/target_page.h"
 -- 
 2.43.0
 
