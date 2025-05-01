@@ -2,96 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8AC8AA6521
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:11:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5C96AA652A
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:15:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAbB0-0007PB-Sd; Thu, 01 May 2025 17:10:43 -0400
+	id 1uAbEi-00067T-Nn; Thu, 01 May 2025 17:14:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAb89-0004I5-QW
- for qemu-devel@nongnu.org; Thu, 01 May 2025 17:07:47 -0400
-Received: from mail-il1-x12e.google.com ([2607:f8b0:4864:20::12e])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uAbEf-00066m-7B
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 17:14:25 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAb88-0006sc-35
- for qemu-devel@nongnu.org; Thu, 01 May 2025 17:07:41 -0400
-Received: by mail-il1-x12e.google.com with SMTP id
- e9e14a558f8ab-3d93deba52fso4621585ab.0
- for <qemu-devel@nongnu.org>; Thu, 01 May 2025 14:07:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uAbEd-00086g-8h
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 17:14:24 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-2243803b776so24382575ad.0
+ for <qemu-devel@nongnu.org>; Thu, 01 May 2025 14:14:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746133659; x=1746738459; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Vdzft+xCucigY9en84sWDKvV9F8XabM3RidQg1HEXDs=;
- b=IgqS5vbT09UI6H6Lf6GSYXrxHx+96pcdd5SeJBGp9+77qxK2U+fKmdCniViQ11h/mr
- E3Mb3wD5AzjGx11NpwVGDpmvdqeSpd2SPcI06sq2Sw5T6MnJTARbKTuYjPLdi5d6Gtas
- EkHBdKdv0aCVOIZl6XuMFHpk0J8nIyHdCFEZagm41yCBBPd6E76cUAmciSTwELhZDzAs
- Jpm20kt6dUUQRjt/r+WbgzVQZj2obSS5L1RAJOAsJPgkUZu0nuI37gxw+VtgsGuReww7
- Fvz9UV0FB/HMr3oJ0CnySA5Rsp80DtCHCL/KnFxrxDafgCw3a6AM/i3KCRa/X0vsIQIM
- PZkA==
+ d=linaro.org; s=google; t=1746134061; x=1746738861; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=IjAzNRLbOrsoMtq/EPdzdknnHjpmqyE7LPvsWSwmdj8=;
+ b=Zy/7VQjIEzH1X+U+aGj9Bazd4yzMqG3jAVSK2QRWE1qHlIDVTNSxktxmQ0//MfKE3G
+ 7GX5eVMjt/vkRPC5r3y/c9y+6TqvDUeKe2bmxX4SFftFuBZQAM+64X+USaGkg9fEmKFZ
+ PbnWjmiW/iZZm1rNopT/HxgXPnc1326f7lr7IknBW2cAUs4nORXbCXmP+YS03ANx2GyG
+ 9JsB3sRGIXS8Vp/0xt3ST6LmYaZDRFGelWJEqkuEbOijDK8xAVzk0FCf2oFcgWp3LLEe
+ 0JaSxGVuxW6+sOJP6xulz1y9Tk8ziS+jKwoPrVeVxOwZlejlglvfqkkHCSCNGKFThasM
+ Krrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746133659; x=1746738459;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Vdzft+xCucigY9en84sWDKvV9F8XabM3RidQg1HEXDs=;
- b=LB4YzLH9uKa4VTBu0CVTd3MtcuIMcmWU5yjjgp3+sa+4h7AgqEbv0Asf/BBGvxw6OC
- qV9rKDyoS+y43PeAWy/M+Jz4c0mPMzadkBffcU8U4Lr9lsa3XZ4wNTkPY0oAAQVTEUWG
- FVhQOlf7jS001gEgxNtwQ3M1zniXuIvM5M8SbajtMogDJGz6Dwul/zC1PW5MAYb5MLCl
- 6zaMrf7EBFGL/F/Q+3EZHsVxoL3MKvl9y/62dZ10Rng5E12KCBMcRWP5ALaQ21jpFK3d
- zwcEl55yXZVuRdauEujif2dfRPOf8Uuaon/Ge/kN3MQsHhG2hPP073N+0Wqk70ShUSRe
- w3JQ==
-X-Gm-Message-State: AOJu0YwwC3VNnPjJVd3Io/PdnDW3Oh58d4r4NyCjfEQ9vKUdULneEo7J
- DCW19YmKlA17+rivOBSR/lLhbaAWxfpvqHfIXNgYSXyNrmatWVm5ahyJrHp6NCcg5ya+GXUMyu5
- 5
-X-Gm-Gg: ASbGncsbbtzuVa/RpjtmikCYzZNq5LHMZChAG30kCZrFVJcCp6Q8wS50lQOxluCkmxL
- d2jLS5u7lylWzhLxpS6Jdo46Q27PBgsDlLpeD5b/aaXO+6/r97KeugBpfVQbjYtYSWfZwnsHctN
- 6s8bdSD8TAJsUZ9Ywq5hoXiLuusA2vq7Nz9kPDCRbzgGKsy5/wGALHuaOIacezbc+IJxp0aNm0Q
- JMjX5Ar9iNKwD2lmOf9UJ9hMf5bGKskp1C6f44D464ALGczhy8cA98jZDlD3A3hLvfXFbHZ5U9x
- ox1kvVP+sRV7WCxAh6P+LVzQUQvYxhBu/TDP0q6GpDSq3cq9RK51op7u2OK2ZtApBd/ghdNbLfS
- /PFidrzjk/WUZUltnA3wIClpVjw==
-X-Google-Smtp-Source: AGHT+IFGvGcJrzHob4stoVa8yArOOKmCQjDSWHCLpif3ypbTpKvU2DNCbYdIFucFfcroh0IjvnzY7w==
-X-Received: by 2002:a92:c24b:0:b0:3d4:337f:121c with SMTP id
- e9e14a558f8ab-3d97c182360mr6369495ab.10.1746133658742; 
- Thu, 01 May 2025 14:07:38 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4f88a9140e2sm49190173.37.2025.05.01.14.07.35
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 01 May 2025 14:07:38 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?=
- <clement.mathieu--drif@eviden.com>, Zhao Liu <zhao1.liu@intel.com>,
- Hanna Reitz <hreitz@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- qemu-block@nongnu.org, Jason Wang <jasowang@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Ani Sinha <anisinha@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Yi Liu <yi.l.liu@intel.com>
-Subject: [PATCH 18/18] hw/i386/x86-iommu: Remove X86IOMMUState::pt_supported
- field
-Date: Thu,  1 May 2025 23:04:56 +0200
-Message-ID: <20250501210456.89071-19-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250501210456.89071-1-philmd@linaro.org>
-References: <20250501210456.89071-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1746134061; x=1746738861;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=IjAzNRLbOrsoMtq/EPdzdknnHjpmqyE7LPvsWSwmdj8=;
+ b=nxiOyqet6G/mhlG1b1DC6GK4G575H22Rcl5yWoBzqDgYd7Y0HubkTZu571pLVg4B2Y
+ ntQGKv35cTBN2IBEZDiU4his7sHlsMj6jwCSefRIbezRFbH/8MSTFzRsHNYjgEUn7rRI
+ NWgS2Y3RY9jwZqbzQjRPgDeIo2uUhGCGl0ZuY+xVAXwGD5KUHGrDgoYv5dBtpqh3ytoB
+ /glqF143fggG5wxFCLJTAJ5eh4mNhbIM+Sbt7/NoMWNZ1S748ttD/Jkju6GvSpraRAUa
+ l3YpLLJYXkslMzoFrA278O9BrofobHXqX3Ml0B40jcJQxzfJnFzH+4auvOrk8sgjIDF1
+ MByA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXdaUq/A2/ylp39aIQLhblKwE9mWozP5JdKY91YVv1wgTcI8uwZWYJnsJm8GhbhPoaPvp3Hhxf6Dcc2@nongnu.org
+X-Gm-Message-State: AOJu0YxfGIAP17NeBNb58t89emLayQG9jQe9OnOUw7EiE9CAmHEVfYKW
+ HCo8mi1aDMR3v98IDhmNmf9iSvQGDA6uhG7QTebwYmQfX8QNJnaEV75x5K9inv4=
+X-Gm-Gg: ASbGncvXWPscpIFCXnq6rXYiQGm37mIQx1NpJg78np1ODiTLdwbn796vJVyvTJ6umKL
+ zy4XzoeomHDG1yhm1dLjvsYZbdlDWfzARvEr6lPoM1cgUVfHZhkiWwdNUgNqoJImIELFrVvBRG/
+ 05zDR3SihGeAL+W0BDYvpcZ5YA35j5S6+So29VDU9yxqCyCaWMyah5pG4dZKVjr/WgxWWG3eVFL
+ iHQP3TktI7j7xznEzZZhAuHe13LlO+/nLLzDypa2qiLu6EiBNN02PXLoiNOEiESjYAIivbYz5pm
+ BcsBykpd3cl8d4JbmJ+8a2LbLp/YX61MwWrjFlpxpHJOC+d8l/WJ9eNFD7mt2uSA71iizaNYL7C
+ iLb9Ligg=
+X-Google-Smtp-Source: AGHT+IHrnRruNGSrJshHmWNz0Xu2ccGJ1f+1U8k2VE3mc5qFlXIZViS2LGp1pbaM8OTkQ1Dqx2jCgg==
+X-Received: by 2002:a17:903:2f91:b0:223:90ec:80f0 with SMTP id
+ d9443c01a7336-22e10344ebamr9025215ad.22.1746134060854; 
+ Thu, 01 May 2025 14:14:20 -0700 (PDT)
+Received: from [192.168.0.4] (71-212-47-143.tukw.qwest.net. [71.212.47.143])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-22e1091702asm819235ad.206.2025.05.01.14.14.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 01 May 2025 14:14:20 -0700 (PDT)
+Message-ID: <757f10a3-712b-44a0-9914-5b221e185a20@linaro.org>
+Date: Thu, 1 May 2025 14:14:18 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 29/33] target/arm/ptw: replace target_ulong with
+ uint64_t
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ alex.bennee@linaro.org, Paolo Bonzini <pbonzini@redhat.com>, anjo@rev.ng,
+ kvm@vger.kernel.org
+References: <20250501062344.2526061-1-pierrick.bouvier@linaro.org>
+ <20250501062344.2526061-30-pierrick.bouvier@linaro.org>
+ <21d32a4f-8954-4a36-ba0d-6cb7a50f242d@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <21d32a4f-8954-4a36-ba0d-6cb7a50f242d@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12e;
- envelope-from=philmd@linaro.org; helo=mail-il1-x12e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,120 +107,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The X86IOMMUState::pt_supported boolean was only set in
-the hw_compat_2_9[] array, via the 'pt=off' property. We
-removed all machines using that array, lets remove that
-property and all the code around it, always setting the
-VTD_ECAP_PT capability.
+On 5/1/25 12:35, Philippe Mathieu-Daudé wrote:
+> On 1/5/25 08:23, Pierrick Bouvier wrote:
+>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>> ---
+>>   target/arm/ptw.c | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+>> index d0a53d0987f..424d1b54275 100644
+>> --- a/target/arm/ptw.c
+>> +++ b/target/arm/ptw.c
+>> @@ -1660,7 +1660,7 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+>>       uint64_t ttbr;
+>>       hwaddr descaddr, indexmask, indexmask_grainsize;
+>>       uint32_t tableattrs;
+>> -    target_ulong page_size;
+>> +    uint64_t page_size;
+> 
+> Alternatively size_t.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/hw/i386/x86-iommu.h |  1 -
- hw/i386/amd_iommu.c         | 12 ++----------
- hw/i386/intel_iommu.c       | 13 ++-----------
- hw/i386/x86-iommu.c         |  1 -
- 4 files changed, 4 insertions(+), 23 deletions(-)
+No, this is not related to the size of any host-side object.
 
-diff --git a/include/hw/i386/x86-iommu.h b/include/hw/i386/x86-iommu.h
-index bfd21649d08..d6e52b1eb6b 100644
---- a/include/hw/i386/x86-iommu.h
-+++ b/include/hw/i386/x86-iommu.h
-@@ -63,7 +63,6 @@ struct X86IOMMUState {
-     SysBusDevice busdev;
-     OnOffAuto intr_supported;   /* Whether vIOMMU supports IR */
-     bool dt_supported;          /* Whether vIOMMU supports DT */
--    bool pt_supported;          /* Whether vIOMMU supports pass-through */
-     QLIST_HEAD(, IEC_Notifier) iec_notifiers; /* IEC notify list */
- };
- 
-diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 2cf7e24a21d..516e231bf13 100644
---- a/hw/i386/amd_iommu.c
-+++ b/hw/i386/amd_iommu.c
-@@ -1426,7 +1426,6 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
-     AMDVIState *s = opaque;
-     AMDVIAddressSpace **iommu_as, *amdvi_dev_as;
-     int bus_num = pci_bus_num(bus);
--    X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
- 
-     iommu_as = s->address_spaces[bus_num];
- 
-@@ -1486,15 +1485,8 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
-                                             AMDVI_INT_ADDR_FIRST,
-                                             &amdvi_dev_as->iommu_ir, 1);
- 
--        if (!x86_iommu->pt_supported) {
--            memory_region_set_enabled(&amdvi_dev_as->iommu_nodma, false);
--            memory_region_set_enabled(MEMORY_REGION(&amdvi_dev_as->iommu),
--                                      true);
--        } else {
--            memory_region_set_enabled(MEMORY_REGION(&amdvi_dev_as->iommu),
--                                      false);
--            memory_region_set_enabled(&amdvi_dev_as->iommu_nodma, true);
--        }
-+        memory_region_set_enabled(&amdvi_dev_as->iommu_nodma, false);
-+        memory_region_set_enabled(MEMORY_REGION(&amdvi_dev_as->iommu), true);
-     }
-     return &iommu_as[devfn]->as;
- }
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index c980cecb4ee..cc08dc41441 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -1066,6 +1066,7 @@ static inline bool vtd_ce_type_check(X86IOMMUState *x86_iommu,
- {
-     switch (vtd_ce_get_type(ce)) {
-     case VTD_CONTEXT_TT_MULTI_LEVEL:
-+    case VTD_CONTEXT_TT_PASS_THROUGH:
-         /* Always supported */
-         break;
-     case VTD_CONTEXT_TT_DEV_IOTLB:
-@@ -1074,12 +1075,6 @@ static inline bool vtd_ce_type_check(X86IOMMUState *x86_iommu,
-             return false;
-         }
-         break;
--    case VTD_CONTEXT_TT_PASS_THROUGH:
--        if (!x86_iommu->pt_supported) {
--            error_report_once("%s: PT specified but not supported", __func__);
--            return false;
--        }
--        break;
-     default:
-         /* Unknown type */
-         error_report_once("%s: unknown ce type: %"PRIu32, __func__,
-@@ -4520,7 +4515,7 @@ static void vtd_cap_init(IntelIOMMUState *s)
- {
-     X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
- 
--    s->cap = VTD_CAP_FRO | VTD_CAP_NFR | VTD_CAP_ND |
-+    s->cap = VTD_CAP_FRO | VTD_CAP_NFR | VTD_CAP_ND | VTD_ECAP_PT |
-              VTD_CAP_MAMV | VTD_CAP_PSI | VTD_CAP_SLLPS |
-              VTD_CAP_MGAW(s->aw_bits);
-     if (s->dma_drain) {
-@@ -4548,10 +4543,6 @@ static void vtd_cap_init(IntelIOMMUState *s)
-         s->ecap |= VTD_ECAP_DT;
-     }
- 
--    if (x86_iommu->pt_supported) {
--        s->ecap |= VTD_ECAP_PT;
--    }
--
-     if (s->caching_mode) {
-         s->cap |= VTD_CAP_CM;
-     }
-diff --git a/hw/i386/x86-iommu.c b/hw/i386/x86-iommu.c
-index d34a6849f4a..ca7cd953e98 100644
---- a/hw/i386/x86-iommu.c
-+++ b/hw/i386/x86-iommu.c
-@@ -129,7 +129,6 @@ static const Property x86_iommu_properties[] = {
-     DEFINE_PROP_ON_OFF_AUTO("intremap", X86IOMMUState,
-                             intr_supported, ON_OFF_AUTO_AUTO),
-     DEFINE_PROP_BOOL("device-iotlb", X86IOMMUState, dt_supported, false),
--    DEFINE_PROP_BOOL("pt", X86IOMMUState, pt_supported, true),
- };
- 
- static void x86_iommu_class_init(ObjectClass *klass, const void *data)
--- 
-2.47.1
+Bear in mind this particular page_size is used for the sizes of the intermediate page 
+table levels.  So, at the very top level of the page table walk this will be quite large.
 
+
+
+r~
 
