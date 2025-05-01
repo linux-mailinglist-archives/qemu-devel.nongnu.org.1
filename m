@@ -2,80 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E97AAA6576
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:28:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96E34AA6572
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:28:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAbQQ-00012k-4l; Thu, 01 May 2025 17:26:34 -0400
+	id 1uAbQy-0002iH-Ch; Thu, 01 May 2025 17:27:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAbOx-0005TI-0Z
- for qemu-devel@nongnu.org; Thu, 01 May 2025 17:25:03 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uAbQG-00019v-3H
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 17:26:28 -0400
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAbOv-0002FC-0T
- for qemu-devel@nongnu.org; Thu, 01 May 2025 17:25:02 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-7fd581c2bf4so1215954a12.3
- for <qemu-devel@nongnu.org>; Thu, 01 May 2025 14:25:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uAbQE-0002fC-3Y
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 17:26:23 -0400
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-3014678689aso1222133a91.0
+ for <qemu-devel@nongnu.org>; Thu, 01 May 2025 14:26:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746134699; x=1746739499; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=D8QU7G6StI/VTOXfIkZKxNy1/7wiHIoofQ7NN/1U07c=;
- b=cQIGv50LVEQd7u09KlA9rnpenFFcom4QV7XVq+usKR5bQCX/LnnU3FF+HxFZfP1v7n
- 3JRQ9ptHfs9gBtMyIz4MhchiytoMhmt2b7JueqLOMxuh6cT7N9HwEQSgZvVI0hy2F+Is
- DD+FdD+UI1xlpDIfqONNNoV/2/OqnySMqPNAqPH9rpXd/FSKR/+2mJXsc2WLDXeN5H8l
- lL7pwaXFEJ3IaPIfB42GA2P6/hFmmtzSoqJS3Y4gylmiUa5rj6kpUzmhWATmjwek2fo/
- yKdnf/CS7HwjiqInt02tiu/tDaWKSsRlI7C7RJUGIb+f/ifSSupZWHNuQP6I9fHHJjQP
- mUlA==
+ d=linaro.org; s=google; t=1746134779; x=1746739579; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=oHNLSVJxNqeUIWo7DOe5B85qEa3xaCP8N4BLRYQ/8GI=;
+ b=boolaVNk32U0PuX0GbdTbzmJu0cWtnCGEuq1iegXJXYFS37/lbALiHNgKgdISbh153
+ zH1TLsruPjVrBzPBL85DooE8pIg7HFcPq+O7J0Yb8V4u5xTKuer0+GV33ARx6Bn4n8EP
+ 5Urukx5BGoQsxzTRmWuV/K97spL9o72b/pA99NQWr53ZsWrsDMhOr/AlH3ypmF3e7X2z
+ esGeK+X5qZVWn2jPmbI3uv/kedNDb4UOrQKqbxG4AXcNt3ixw+OpAPFv9ucqC7JW4R61
+ nyAz959iqCQXhCoqaboN43gG1rV7p18Mv1iGOsSEG5MVdnc8TuXika8marGeB7wLxqHS
+ Qz6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746134699; x=1746739499;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=D8QU7G6StI/VTOXfIkZKxNy1/7wiHIoofQ7NN/1U07c=;
- b=mcbwMs3XOnwxLCud9gmNxi9O05d8V21FIN9X8cNhLAQ1d4r2edHEMtsfcieHR+QS3C
- Fi6SPooWuVOI0ZbqZQaeqY5y9FWwfY4ctMASIa4HT5MZdvL9yPPDxQDBAcFcHaJZbnpl
- ixkKhIkTyMnVZk1Vg5Hk9dIa9n4w2SWJte1j1sK1cIz31dd26r5IEYUCZTDFDYeo8Umm
- cuzpWOMCnn7uvaShnpiz/lgxqmjMIA0eef+3KfVra/E49ubuIEUeK9BzwNfUskCcBskY
- I/qilNx3dQO+ob7tn+K/Nlp314OulH7QqeM/zVPQ3FAV++gN6a/xKxYakpEdX7i7ktSH
- //iQ==
-X-Gm-Message-State: AOJu0Ywz+mu93tFNnTvD0zSBwI+qhLr2qa0pU7RoG6Gk8oQUTU1MJbiv
- hvIHlOI7BLJ1YFHmmgpWDvkZ6raBU4+iTG2rKrVyW1Cgb2M1nmd16S+7UDxaONynpdvzB60v4mY
- v
-X-Gm-Gg: ASbGnctBQ2DBOo3KO5lxuH+CW+MvSI3x5cfnCeoZJ4Htj53wMG4kCgMfPH0sbAqEX7i
- A6Xz1i6X01ntf38ZkWZy6DkJ5+o9EGrus14bN8wA5sURb3M0zjTdV6au/3Ad1k4eGeb+x724Su+
- FfKKbjlhKDA06p/D4S+Elz1tNSKi3WPsN8lqV/Uk8J6KaqK3y/vulKZeEGTIGuK27Myg78qVUio
- Y9CpJpuxUd74235i+iUY8iIsVkxLxXVFYDwHC6L87iSpgFyUD/on5YWYYXyCyTk66ZrHXbu+b4H
- fDDjmpNWZ6Zcgnhm3k0BrznDhuVcvMlwasxz4COjpn8LPrsE/4HkwoKudp8yHzr9Vb6tfE8nzOg
- =
-X-Google-Smtp-Source: AGHT+IErUm6bUGIZMQHmDjtE7vUHJTVNhj/95b7bYSO1mahMeZsaSlPQPQ2rxpQa62XSkZa4gG8M2g==
-X-Received: by 2002:a05:6a20:c78e:b0:1f5:884a:7549 with SMTP id
- adf61e73a8af0-20ce03e9599mr709491637.41.1746134699455; 
- Thu, 01 May 2025 14:24:59 -0700 (PDT)
-Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
+ d=1e100.net; s=20230601; t=1746134779; x=1746739579;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=oHNLSVJxNqeUIWo7DOe5B85qEa3xaCP8N4BLRYQ/8GI=;
+ b=H05y26ZXYqST2kPbn5i2DRX0bi57ssq5MwOejdl4rOObT0daJxeH9N5PQ6Yt5xXypO
+ GCy2htyiFoxkIzBde2y4zH5dj5jjRF8jLWRMdMElEe2/duDFvuunqA1iN5b4aC8ATUA6
+ vhyhOjB3WPoF8/vTnkMeGiQYXB0YD1ig/EIwCf4jFHlDqUvsMzdOuqjMf2pRsl2k7XuY
+ smuTutw3tasPdymx7wPWK8Ctx8Rzb8BwTX2rWqqzrZ4oU7L2CM75IUh3ElpB53Z7JpDZ
+ sx9iN1Lh58TKIxmN9shISF6VOecNVKqQ9fAgEXPF6OGnIY4zsHNIF8FJgzn8UdDIMbDG
+ 5apA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXuGG1rS11ssoQxnTPVaFoca8uK81IUNvsI6GWLag8unDMmFbvZ2DkpNnPGJCf2S17dHDDUCGzjxYRo@nongnu.org
+X-Gm-Message-State: AOJu0YyN/C/Lb3TiDkba4ijqtLDW5PXIGkaDHIMWRcLvznmci1Ne3CSJ
+ gHAfuXRJFLwmW6pmDHmqN4L/pv9YGkFeRpDTrehdItvMY91n0mpgIsmUx1WBk84Ov539Oucrg6u
+ B
+X-Gm-Gg: ASbGncuq5WnpRVm44YPcmKF6yGzZEhHVhSSKWrATu9pPzRAPfF5Kl7+8kObSR9SWGhC
+ 7YYQzcVGIxR6OR3ACzZG9NPhMuAWV0WHUX0JcQCHTQH4Y1rdo7je80va+RZv4MNW7rhG5MXzPds
+ VOkO8XEc6wZ9OLGp3SLDech7nZ6K7LbVWYy4FnhSJfJVsWa2o90wEQ1lgRX1B6uwoXxGpW0Kduq
+ u9OM7FQjQrCYa6PacN/tpTEU/dEssmruzYrpDNe8KlaMYV+nUX1wFS9g9dku68dv6FkjLvjxY8z
+ MXfBT0WUTUVHnkWkpz4loGcsLMqXo4+gEv2/Zh/dSosvj4QuIs4HzQ==
+X-Google-Smtp-Source: AGHT+IHf0hl6cFwejEjiCi1MtUU8OpQJmbfdywE+7PJQOWqStW82tbuDTIEdfuK2dGMsW40c6011QA==
+X-Received: by 2002:a17:90b:5626:b0:2f7:4cce:ae37 with SMTP id
+ 98e67ed59e1d1-30a4e5c165amr1183572a91.18.1746134779238; 
+ Thu, 01 May 2025 14:26:19 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-740590610desm135897b3a.146.2025.05.01.14.24.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 May 2025 14:24:59 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 59/59] accel/tcg: Build user-exec.c once
-Date: Thu,  1 May 2025 14:21:13 -0700
-Message-ID: <20250501212113.2961531-60-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250501212113.2961531-1-richard.henderson@linaro.org>
-References: <20250501212113.2961531-1-richard.henderson@linaro.org>
+ 98e67ed59e1d1-30a34778329sm4124069a91.28.2025.05.01.14.26.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 01 May 2025 14:26:18 -0700 (PDT)
+Message-ID: <90c34e5a-c98b-4ee1-a176-d747c47b853b@linaro.org>
+Date: Thu, 1 May 2025 14:26:17 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: Functional tests precache behaviour
+To: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+References: <c83e0d26-4d1b-4a12-957d-c7b7ff4ba1b3@linaro.org>
+ <7f0c4586-8a97-4e64-8abb-58a74b86afaa@redhat.com>
+ <6e9a3cb3-e238-48a7-a67c-c95b36a517bc@linaro.org>
+ <aBJJqtzQaTH_xcKK@redhat.com>
+ <efbaccd1-9ef2-4aed-88ed-d6a2bcb7902b@linaro.org>
+ <aBJP-_KJudesY_Pk@redhat.com>
+ <f8ca0b3f-5a9a-4182-b0e0-352a90bd9374@linaro.org>
+ <aBJSX6kcYQVM2hp7@redhat.com>
+ <CAFEAcA-G7exikg_qa7USDvfo0+ZTLUiymfDiqK6wLTZmebv4kQ@mail.gmail.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Content-Language: en-US
+In-Reply-To: <CAFEAcA-G7exikg_qa7USDvfo0+ZTLUiymfDiqK6wLTZmebv4kQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1036.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,59 +111,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- accel/tcg/user-exec.c | 5 ++---
- accel/tcg/meson.build | 5 +----
- 2 files changed, 3 insertions(+), 7 deletions(-)
+On 5/1/25 10:56 AM, Peter Maydell wrote:
+> On Wed, 30 Apr 2025 at 17:41, Daniel P. Berrangé <berrange@redhat.com> wrote:
+>> FWIW, if you want to run a specific test, personally don't use meson
+>> or make, as you can just invoke the file directly:
+>>
+>>   $ QEMU_TEST_QEMU_BINARY=./build/qemu-system-x86_64 \
+>>     PYTHONPATH=./python \
+>>     ./tests/functional/test_x86_cpu_model_versions.py
+> 
+> The rune in docs/devel says you also need to:
+>   * put tests/functional on the PYTHONPATH too
+>   * run from the build tree, not the source tree
+>   * run using the python binary in pyvenv/
+> 
+> So you can do this, but it's pretty clunky; I have to
+> look up the runes every time. It would be nice if there
+> was a wrapper to do this for you.
+> 
 
-diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index 085da0c036..f25d80e2dc 100644
---- a/accel/tcg/user-exec.c
-+++ b/accel/tcg/user-exec.c
-@@ -19,13 +19,12 @@
- #include "qemu/osdep.h"
- #include "accel/tcg/cpu-ops.h"
- #include "disas/disas.h"
--#include "cpu.h"
- #include "exec/vaddr.h"
- #include "exec/tlb-flags.h"
- #include "tcg/tcg.h"
- #include "qemu/bitops.h"
- #include "qemu/rcu.h"
--#include "accel/tcg/cpu-ldst.h"
-+#include "accel/tcg/cpu-ldst-common.h"
- #include "accel/tcg/helper-retaddr.h"
- #include "accel/tcg/probe.h"
- #include "user/cpu_loop.h"
-@@ -33,7 +32,7 @@
- #include "qemu/main-loop.h"
- #include "user/page-protection.h"
- #include "exec/page-protection.h"
--#include "exec/helper-proto.h"
-+#include "exec/helper-proto-common.h"
- #include "qemu/atomic128.h"
- #include "qemu/bswap.h"
- #include "qemu/int128.h"
-diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
-index 9b86051b82..d6f533f9a1 100644
---- a/accel/tcg/meson.build
-+++ b/accel/tcg/meson.build
-@@ -21,11 +21,8 @@ endif
- libuser_ss.add_all(tcg_ss)
- libsystem_ss.add_all(tcg_ss)
- 
--tcg_specific_ss = ss.source_set()
--tcg_specific_ss.add(when: 'CONFIG_USER_ONLY', if_true: files('user-exec.c'))
--specific_ss.add_all(when: 'CONFIG_TCG', if_true: tcg_specific_ss)
--
- libuser_ss.add(files(
-+  'user-exec.c',
-   'user-exec-stub.c',
- ))
- 
--- 
-2.43.0
+I think that meson test command is pretty easy and "standard" (once 
+learned, you can apply this to any other project using meson test 
+infrastructure), so maybe it's the wrapper we could be interested to 
+promote.
+
+If we go this way, two things would be interesting to change:
+- enable setup thorough by default, so all tests are visible by default 
+(instead of having to dive into tests/meson.build, and understand which 
+setup does what). make check-functional can still restrict the setup, 
+it's not a problem.
+- abort gracefully (without needing an extra env var) when an asset is 
+missing and can't be downloaded, with a different error than 404.
+
+With those two changes, "meson test" does all we need, including the 
+build, in an intuitive and standard way.
+
+> (Also it doesn't work if the thing you're trying to test
+> is "does this test pass within the meson test timeout" :-))
+> 
+> IIRC there is also a rune for "run a single test within make/meson",
+> but I forget what it is and docs/devel/testing/functional.rst
+> doesn't mention it.
+>
+
+I agree with you that even though it's possible, it's something you need 
+to check in the documentation everytime, which is not convenient.
+
+> thanks
+> -- PMM
 
 
