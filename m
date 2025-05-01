@@ -2,98 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61593AA62E9
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 20:37:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D639AA6366
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 21:03:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAYkn-00057v-Tu; Thu, 01 May 2025 14:35:26 -0400
+	id 1uAZBq-00009W-D5; Thu, 01 May 2025 15:03:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alan.adamson@oracle.com>)
- id 1uAYkj-00055l-V8; Thu, 01 May 2025 14:35:21 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alan.adamson@oracle.com>)
- id 1uAYki-0007k3-7d; Thu, 01 May 2025 14:35:21 -0400
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 541Hu7rB015674;
- Thu, 1 May 2025 18:35:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2025-04-25; bh=fgxet
- DfKvpli5uI5Njpy0OHZGnxS42jFj8kIOIbVxQI=; b=XSCwPNPGhtJ4+f3r9zokf
- EAl7XKiFfypvOTLvToNc2vb2gDOD4MmP+It3d6sSkSBGyNNhZ8C/Wx/ZK73jHi8c
- JLo3700WWbWYtDhg7RkvbKkUC7I1tBOJMWdkAF6mrvZIuqRKTMeAqKMppMZqUsdU
- FKVvkpxWcs3hoQnxcZPf9a0ut/Yh9gdOzQRNtFtySU9WidAmkIdU7sY6e3Ac46kM
- w21I1BG6MBXVYdj7Jqhm0eoOcV8zdraLkFh6SJqNvrojhSUc+wka1yPSZadlrnuy
- hF7i6SpHmMPKM3QNQ2xXKMkY2bLM19BW7kWxEETJ3vGpFn5Scx+4TkoixdrlBGPC
- A==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46b6ukuqrf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 01 May 2025 18:35:11 +0000 (GMT)
-Received: from pps.filterd
- (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 541Hg6Ul023840; Thu, 1 May 2025 18:35:11 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 468nxk3vn4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 01 May 2025 18:35:10 +0000
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 541IZ9jY011241;
- Thu, 1 May 2025 18:35:10 GMT
-Received: from ca-dev94.us.oracle.com (ca-dev94.us.oracle.com [10.129.136.30])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 468nxk3vm2-2; Thu, 01 May 2025 18:35:10 +0000
-From: Alan Adamson <alan.adamson@oracle.com>
-To: qemu-devel@nongnu.org
-Cc: alan.adamson@oracle.com, foss@defmacro.it, kbusch@kernel.org,
- its@irrelevant.dk, qemu-block@nongnu.org
-Subject: [PATCH v3 1/1] hw/nvme: CMIC.MCTRS should be set automatically for
- multi-controller subsystems or by parameter
-Date: Thu,  1 May 2025 11:45:05 -0700
-Message-ID: <20250501184505.3630283-2-alan.adamson@oracle.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250501184505.3630283-1-alan.adamson@oracle.com>
-References: <20250501184505.3630283-1-alan.adamson@oracle.com>
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1uAZBk-00007u-MW; Thu, 01 May 2025 15:03:16 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1uAZBi-0004Pi-Ov; Thu, 01 May 2025 15:03:16 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-ac3fcf5ab0dso193857766b.3; 
+ Thu, 01 May 2025 12:03:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1746126192; x=1746730992; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2ocgFBXFmeG3qwIircFlJjaGx4dSo/HcAInTAgmoH2Q=;
+ b=NDDbOA4pdU2r2TKmXoV1ImPYuEb1AoAinVu6772i/xxbuCIwDy901a2koXiTALSZnT
+ qwxwkkRJvVn1M9770JKif8eOKwboNvua4bwHVKssMKBPXZGPZWM0hsEqKlnz1Kj3K+bI
+ gCyYk76KffkVfM3XoSsxfEbjhmP5pa7jH5o0mrEXHbmJ/3Yj/lH+c1xNDJLftJOHwi+x
+ KLE5tCddaDdyQB1zLxqWiqSWyG1ipLTgDwtCf9bEP+TtYm2l8x+LuPeWxyAx3U0ipy7U
+ KyuyV75RHVxeFIShIWlnc6g5Nyg4Si+0Da1rzGltNOkgvAF9Tr8oDnWiRth/ETR+UuEk
+ ocrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1746126192; x=1746730992;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=2ocgFBXFmeG3qwIircFlJjaGx4dSo/HcAInTAgmoH2Q=;
+ b=aocwGe1KMtG1qi6QDPHV80VDq9LPbkKls2WZZR8hXFvY7F0eTVhwe3UqW/EcOaMWvf
+ 7l6tfMr92henUX4OMgYZTQL25HlYNrAtNO2tS0F2T8umVZFje5Q56ou83nDwvjNogR0v
+ IlVacubNtNHev/m1MNDAW6eJT3HnwhqFAJPvfmYHPYISVvU2UMzFgPgPPnq6d9E8JZdW
+ Alr9rQ2b3/upLt1BV39p6cZvo08dSLOYFa/1dne1tVYpquEc0hZ/AEuxvdY5/i2Yn0+J
+ hHBfeU7wgDvPejflH5MWXq3LkSrIwkhZLCK0XyXGGPEpvjPfWd1HgJOe6N5+y+Ze1knm
+ 9fdg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVLDr7nJIkK2h7r6UpG939f9iV2F4JG2iB0Mn+lfNUhem5LSCPmqUQyjlaeAeesyo5Gu6g+7CbR9z2O@nongnu.org
+X-Gm-Message-State: AOJu0YwSqy6ECzpLDmY5UofR0OroRSF+9B3xWo/QsbKhyo+ZqPebbzFB
+ rHCZS5IrDtHx22YU6Kda2p3+UoUBSh5Ah2tCL64entE5zwkDF+sWK5sYfg==
+X-Gm-Gg: ASbGncujdrIroCbCqpgIVWGsXm3Gb3ekebSJY+pf451fWxYLAIK5Fagon6k0r/dtVhA
+ mzk2Q6uGgkXWI20TpG7EH1rOquyJ6sfgV4aNVwkTCL1pRO4JntxtUd3LXT5Kvm5AsoTP8RZ1OQE
+ 1o0g0DpiZNTbz5fI71nKhZmAeAp0eOD6c0Ee1oxFLC4P2luc3LUNROlNr0FNF5Wj01qqUZxP/oI
+ /njGGGjbC3Z+YGWc3qbYr1I1FXXznuxdcrNvWLOQLPFmgZb4D/QJ+uGzLIS/6ksCvUYV+GcKdRv
+ YbgeTnT8hp2Pjn0vEaQIv5hU83yqFAwa16UzvopTyu2vsdagin1iKxBS+rhUTsoufbPuZNzfY85
+ yRYkdurceLZikf63fxrrKbVydInkvpscx1E3nbKJ7q7Knb5ox
+X-Google-Smtp-Source: AGHT+IFhmFScg0kXAfJXhaKyFlP4CEXYOs38Nwz4eVNNa/7/n+dw6zQ1SREd5UvaK53hQzCiMkF9Uw==
+X-Received: by 2002:a17:907:97c7:b0:ace:5207:e2ec with SMTP id
+ a640c23a62f3a-ad17ad3a328mr36478366b.4.1746126192054; 
+ Thu, 01 May 2025 12:03:12 -0700 (PDT)
+Received: from ?IPv6:::1?
+ (dynamic-2a02-3100-2980-eb00-a8d7-7173-cc26-fcbf.310.pool.telefonica.de.
+ [2a02:3100:2980:eb00:a8d7:7173:cc26:fcbf])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ad0da55af93sm79836666b.146.2025.05.01.12.03.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 01 May 2025 12:03:11 -0700 (PDT)
+Date: Thu, 01 May 2025 18:52:42 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>
+CC: qemu-arm@nongnu.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH-for-10=2E0=3F_v2=5D_tests/functional=3A_Add?=
+ =?US-ASCII?Q?_test_for_imx8mp-evk_board_with_USDHC_coverage?=
+In-Reply-To: <e3ea2723-126f-45af-8bdd-602ee512b51f@linaro.org>
+References: <20250409202630.19667-1-shentey@gmail.com>
+ <aa47d49a-b81a-46cf-811a-2045e453f4bf@redhat.com>
+ <6621A6A6-83F8-476C-973C-FE3D1918E061@gmail.com>
+ <2c725cbc-6ba0-4e07-8863-acacbb45e121@redhat.com>
+ <e3ea2723-126f-45af-8bdd-602ee512b51f@linaro.org>
+Message-ID: <6F691694-5625-4ECF-8734-C0A546453607@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-01_06,2025-04-24_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
- phishscore=0
- suspectscore=0 spamscore=0 adultscore=0 mlxscore=0 malwarescore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2504070000 definitions=main-2505010142
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAxMDE0MSBTYWx0ZWRfXx7X+EcUbtGcU
- JP9lV2I8CSbNLij1VSLmeMZsQ0komk5eycU/T0pOV4zv8VLe6o1CxXPDgyGyG6ftf8gfioUWK6V
- 6TJ3lkAeJqi41fV47S4YiK93yhv1P+GZq3PAKqmbz1GtTT289syum/A9ekso+emuVulaDOrPjAG
- OIkq/hftf1xSvLCZgvMuVt4IJiBKFb3ei5kmuRU4gItlDmAHWQBKhbnYJF+76A+oAoVX9cxfXr8
- sFD0n2L30Qs4RayQszkrU1B85lRc8MV/vxN8rKIQ6tg3d4vMwikxF3axibzXYy6AswYVqKlZjNG
- Ca7TpmS8xLXLiDCXmCA3NSMMPve91Ed4gq1do4jN2hHjfxAnC/IKNNIGjJkUbfaX1mhXmrdoqei
- WsrvBuz1ENjH4dpRPwp0sNhRBl9GBSq3euYWNmLHyBoiG4XDLkWoskm09tK3gFzHYAUTfa00
-X-Proofpoint-GUID: 7bqB08Pd89fajsAPmg_jgOyjUHum3ZIS
-X-Authority-Analysis: v=2.4 cv=A5VsP7WG c=1 sm=1 tr=0 ts=6813bedf b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=YjdARypce4YUJNy7lvIA:9 cc=ntf
- awl=host:13130
-X-Proofpoint-ORIG-GUID: 7bqB08Pd89fajsAPmg_jgOyjUHum3ZIS
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=alan.adamson@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x630.google.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ FREEMAIL_REPLY=1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,74 +107,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If there are multiple controllers in a subsystem, CMIC.MCTRS should be set to on
-for all controllers. For single controller subsystems, CMIC.MCTRS will be off by
-default. A new subsystem specific parameter will allow setting CMIC.MCTRS for
-single controller subsystems.
 
-New NVMe Subsystem QEMU Parameter (See NVMe Specification for details):
-    <subsystem>,cmic-mctrs=BOOLEAN (default: off)
 
-Signed-off-by: Alan Adamson <alan.adamson@oracle.com>
----
- hw/nvme/ctrl.c   | 15 ++++++++++++++-
- hw/nvme/nvme.h   |  2 ++
- hw/nvme/subsys.c |  1 +
- 3 files changed, 17 insertions(+), 1 deletion(-)
+Am 23=2E April 2025 11:31:31 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <ph=
+ilmd@linaro=2Eorg>:
+>Hi Thomas,
+>
+>On 23/4/25 11:40, Thomas Huth wrote:
+>> On 23/04/2025 11=2E31, Bernhard Beschow wrote:
+>>>=20
+>>>=20
+>>> Am 10=2E April 2025 06:05:35 UTC schrieb Thomas Huth <thuth@redhat=2Ec=
+om>:
+>>>> On 09/04/2025 22=2E26, Bernhard Beschow wrote:
+>>>>> Introduce a functional test which boots Debian 12 on the imx8mp-evk =
+board=2E Since
+>>>>> the root filesystem resides on an SD card, the test also verifies th=
+e basic
+>>>>> operation of the USDHC=2E
+>>>>>=20
+>>>>> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
+>>>>>=20
+>>>>> --=20
+>>>>> v2:
+>>>>> * Make test file executable (Thomas)
+>>>>> * Omit fetch() (Thomas)
+>>>>> * Omit "-accel tcg" (Thomas)
+>>>>> * Add "snapshot=3Don" to make potential future tests independent
+>>>>>=20
+>>>>> Supersedes: 20250405214900=2E7114-1-shentey@gmail=2Ecom
+>>>>> ---
+>>>>> =C2=A0=C2=A0 MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ |=C2=A0 1 +
+>>>>> =C2=A0=C2=A0 tests/functional/meson=2Ebuild=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 =
+1 +
+>>>>> =C2=A0=C2=A0 tests/functional/test_aarch64_imx8mp_evk=2Epy | 66 ++++=
+++++++++++++ +++++
+>>>>> =C2=A0=C2=A0 3 files changed, 68 insertions(+)
+>>>>> =C2=A0=C2=A0 create mode 100755 tests/functional/test_aarch64_imx8mp=
+_evk=2Epy
+>>>>>=20
+>>>>> diff --git a/MAINTAINERS b/MAINTAINERS
+>>>>> index d54b5578f8=2E=2E4ceffa89dc 100644
+>>>>> --- a/MAINTAINERS
+>>>>> +++ b/MAINTAINERS
+>>>>> @@ -833,6 +833,7 @@ F: include/hw/arm/fsl-imx8mp=2Eh
+>>>>> =C2=A0=C2=A0 F: include/hw/misc/imx8mp_*=2Eh
+>>>>> =C2=A0=C2=A0 F: include/hw/pci-host/fsl_imx8m_phy=2Eh
+>>>>> =C2=A0=C2=A0 F: docs/system/arm/imx8mp-evk=2Erst
+>>>>> +F: tests/functional/test_aarch64_imx8mp_evk=2Epy
+>>>>> =C2=A0=C2=A0 F: tests/qtest/rs5c372-test=2Ec
+>>>>> =C2=A0=C2=A0=C2=A0=C2=A0 MPS2 / MPS3
+>>>>> diff --git a/tests/functional/meson=2Ebuild b/tests/functional/ meso=
+n=2Ebuild
+>>>>> index 0f8be30fe2=2E=2Eaaaf3472f1 100644
+>>>>> --- a/tests/functional/meson=2Ebuild
+>>>>> +++ b/tests/functional/meson=2Ebuild
+>>>>> @@ -75,6 +75,7 @@ tests_aarch64_system_quick =3D [
+>>>>> =C2=A0=C2=A0=C2=A0=C2=A0 tests_aarch64_system_thorough =3D [
+>>>>> =C2=A0=C2=A0=C2=A0=C2=A0 'aarch64_aspeed',
+>>>>> +=C2=A0 'aarch64_imx8mp_evk',
+>>>>> =C2=A0=C2=A0=C2=A0=C2=A0 'aarch64_raspi3',
+>>>>> =C2=A0=C2=A0=C2=A0=C2=A0 'aarch64_raspi4',
+>>>>> =C2=A0=C2=A0=C2=A0=C2=A0 'aarch64_replay',
+>>>>> diff --git a/tests/functional/test_aarch64_imx8mp_evk=2Epy b/tests/ =
+functional/test_aarch64_imx8mp_evk=2Epy
+>>>>> new file mode 100755
+>>>>> index 0000000000=2E=2E62fee74044
+>>>>> --- /dev/null
+>>>>> +++ b/tests/functional/test_aarch64_imx8mp_evk=2Epy
+>>>>> @@ -0,0 +1,66 @@
+>>>>> +#!/usr/bin/env python3
+>>>>> +#
+>>>>> +# Functional test that boots a Linux kernel and checks the console
+>>>>> +#
+>>>>> +# SPDX-License-Identifier: GPL-2=2E0-or-later
+>>>>> +
+>>>>> +from qemu_test import LinuxKernelTest, Asset
+>>>>> +
+>>>>=20
+>>>> In case you respin (due to other reasons), please add a second empty =
+line before the "class" statement (that's the style that we use in the othe=
+r tests, too)=2E
+>>>>=20
+>>>> Anyway:
+>>>> Reviewed-by: Thomas Huth <thuth@redhat=2Ecom>
+>>>=20
+>>> Ping (not for 10=2E0)
+>>=20
+>> Peter, should this go through your arm tree, or shall I pick it up with=
+ other functional test patches for my next PR?
+>
+>My preference would be like with previous Avocado tests: when a
+>(functional) test concerns mostly a dedicated subsystem, I'd rather see
+>the dedicated subsystem maintainers to take it, so they get familiar
+>with the test=2E Except if the maintainers are busy or unresponsive of
+>course=2E
 
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index fd935507bc02..72e45f3a7f78 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -8880,7 +8880,20 @@ static void nvme_init_ctrl(NvmeCtrl *n, PCIDevice *pci_dev)
-     id->psd[0].enlat = cpu_to_le32(0x10);
-     id->psd[0].exlat = cpu_to_le32(0x4);
- 
--    id->cmic |= NVME_CMIC_MULTI_CTRL;
-+    n->subsys->total_ctrls++;
-+
-+    /* Check if there are more than 2 controllers or cmic.mctrs is enabled */
-+    if (n->subsys->params.cmic_mctrs || (n->subsys->total_ctrls > 2)) {
-+        id->cmic |= NVME_CMIC_MULTI_CTRL;
-+    } else if (n->subsys->total_ctrls == 2) {
-+        /*
-+         * When the 2nd controller on this subsys is inited, CMIC.MCTRS
-+         * needs to be set. Also need to go back and set CMIC.MCTRS
-+         * on the first controller.
-+         */
-+        id->cmic |= NVME_CMIC_MULTI_CTRL;
-+        n->subsys->ctrls[0]->id_ctrl.cmic |= NVME_CMIC_MULTI_CTRL;
-+    }
-     ctratt |= NVME_CTRATT_ENDGRPS;
- 
-     id->endgidmax = cpu_to_le16(0x1);
-diff --git a/hw/nvme/nvme.h b/hw/nvme/nvme.h
-index b5c9378ea4e5..061e7046550b 100644
---- a/hw/nvme/nvme.h
-+++ b/hw/nvme/nvme.h
-@@ -116,7 +116,9 @@ typedef struct NvmeSubsystem {
-             uint16_t nruh;
-             uint32_t nrg;
-         } fdp;
-+        bool         cmic_mctrs;
-     } params;
-+    uint8_t          total_ctrls;
- } NvmeSubsystem;
- 
- int nvme_subsys_register_ctrl(NvmeCtrl *n, Error **errp);
-diff --git a/hw/nvme/subsys.c b/hw/nvme/subsys.c
-index 38271d78c8bd..c644fdf0be5e 100644
---- a/hw/nvme/subsys.c
-+++ b/hw/nvme/subsys.c
-@@ -216,6 +216,7 @@ static const Property nvme_subsystem_props[] = {
-                      NVME_DEFAULT_RU_SIZE),
-     DEFINE_PROP_UINT32("fdp.nrg", NvmeSubsystem, params.fdp.nrg, 1),
-     DEFINE_PROP_UINT16("fdp.nruh", NvmeSubsystem, params.fdp.nruh, 0),
-+    DEFINE_PROP_BOOL("cmic.mctrs", NvmeSubsystem, params.cmic_mctrs, false),
- };
- 
- static void nvme_subsys_class_init(ObjectClass *oc, const void *data)
--- 
-2.43.5
+Ping
 
 
