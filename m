@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EF3CAA6050
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 16:57:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8062DAA604F
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 16:57:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAVK5-0005i3-Bp; Thu, 01 May 2025 10:55:37 -0400
+	id 1uAVKD-0005kL-Rb; Thu, 01 May 2025 10:55:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAVJy-0005gJ-EA
- for qemu-devel@nongnu.org; Thu, 01 May 2025 10:55:30 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1uAVJz-0005hG-VY
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 10:55:31 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAVJw-0005Ub-DO
- for qemu-devel@nongnu.org; Thu, 01 May 2025 10:55:30 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-227cf12df27so10358725ad.0
- for <qemu-devel@nongnu.org>; Thu, 01 May 2025 07:55:27 -0700 (PDT)
+ id 1uAVJx-0005W8-UR
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 10:55:31 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-2279915e06eso11716665ad.1
+ for <qemu-devel@nongnu.org>; Thu, 01 May 2025 07:55:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746111327; x=1746716127; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746111328; x=1746716128; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=fVyP76o6EOcJrt7iH7jc6aMX3NadFlFM45GV6fkbfLE=;
- b=BycKXzwagI0bVGVq8e7jJ+R2mglSALWkb10kKRADTMfCEUC9TF5E7PDXX6ntyRYjlw
- 0nBTxE28TzvYCGgIA4rWZ+PPcLcQ1h9NB+V7zKw9+uxTqWtc4mQWLp9MnexNT3ntgRN9
- IsiryT8KBI6mUb246xhArSOE7eGCQNnKrccs+2fuAA+xRrkJqKY7KkOlkKY1t60p6Pp4
- Lu5jH0RvKIGSPthMA/NFK793KVlznTLGFOyn/JjoY5PK/1BhxKAZ8klobirIfjYM18cA
- SB7TCigExG0fActklIRYK+bJkWk50sawmeFPSZd0LYvwqskqkCihlpGObP6QJgzl9iGY
- jZ/g==
+ :reply-to; bh=K93yqXiT68gefwedjtdMyWq1+8RZcqNvsUBZSLOQy7s=;
+ b=tV3z/Cxo0QraFqqC6MCbopKi1AxuoGsesNjyQggEs/55Q2sHn6oW661WwJPqLs25UU
+ F9KTnT1C7PIsVS6N5SKXE8KakZf7OoWrg9FQexDRhz1n0H1MZmqfHpo0/eyObKhvrvVk
+ LU3zqzcl8+6KvKpHuMYzT/1fCeVq/xooeSwQiMtkizaRTmvcfQRPbmq4Ef2I6Z0Zr1du
+ 1WVXMNiSxxuIxlQtwa8pKFkiCCbq5BmuU7a/Qv07QOfXEzY3vNYBuN65jiHkLVCb4YA5
+ l2pmpv9KaEGnRZEIIETV+UhsEBfrfJV8VdDLlUpWzJk/wVPAsdy48z8FIkAFJ7w5z9sR
+ gyAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746111327; x=1746716127;
+ d=1e100.net; s=20230601; t=1746111328; x=1746716128;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fVyP76o6EOcJrt7iH7jc6aMX3NadFlFM45GV6fkbfLE=;
- b=qF4NEB6Q7q85CucUBi/AHWEMEbGmd+cmTw33Bju0f5kncjbBipK71uijklUCGOheKR
- 5NnkPQ0QxbF6lgnKzI50xhgGSvBUymguyC+IbAxZXoyhxFlpYxbJm/Y0fnTEHO7c6ywD
- B8O8hpa6IyFmS64s6hA+c/Zr82U74C238lUxoV3dCfUP3YHXsU1ADOnJThiOYYjinTqn
- llJ/xVLFcS05FDld5N5OoLqk0y8dSq0Dj8s+UvJDmlMZCzkUesOy4bULoBtHLMslx1tm
- KB6IoDICmzKiApelW8qhgeXlK8xthc8dCxcvrCPqYJVJ+IQmT8mqN7hTkGSSflrmt5sx
- k5fA==
-X-Gm-Message-State: AOJu0YwmqlEdFF4OmFi4CWlvfeOeBmZFFRC1qoA+3U/dt47SLZ51eojt
- EMkYSr3uJKyp+AVMVrAvAe1nBMGcjsuJAN2bGbNufHxOt6o5k+YA88PzKWErS85yPItsJboCyoJ
- G
-X-Gm-Gg: ASbGncv7ldrekLlcaoRWx3gZn54vDKoTocXjIOuLhaY7Gv7TC99R7msZeSM3PWNQzdh
- VW58C1kFP9p/aSAo+VPe/yiqrAZI4gg+sJEbom2yGkRW4/iK+zD+knoxDueACmcH6MabWLMPz2T
- WnqVIycoINaq4/VfguQFyQSirpnTNypHoO7LK5kqZWUCY+RVioEtW5jPRRX4oQjxRq+UcmrgWmr
- 2Tatd/ycj2v4bUpUr6Q+Kwr3sxHsJYn1f0DHli2/F51aBIR/asa1B8U/mg6ONZqupWv8WFTMdy/
- 4dcn9UvzSshKMdah6OYvVlIemiupMVURx5Zmq9KOdVkqQJD2ih6z359kAuGyZooIRyfZZY1yUlg
- =
-X-Google-Smtp-Source: AGHT+IFX9ATLOxHMw0h/lXi+fGjqm8u7aQeLw/DH2KWtQxDcTlm0NIBU5vO5Yk8Xa+KIgT5HKV/aBQ==
-X-Received: by 2002:a17:903:41ce:b0:216:4676:dfb5 with SMTP id
- d9443c01a7336-22e087ff587mr39495885ad.21.1746111326809; 
- Thu, 01 May 2025 07:55:26 -0700 (PDT)
+ bh=K93yqXiT68gefwedjtdMyWq1+8RZcqNvsUBZSLOQy7s=;
+ b=nlrsf1H8md96T+qRanueVnKftMutsRk66DxSgp+hMu4X1ox1LBvFkAoEWm8KApmj+u
+ 27LTVVU/5K+rCj1weVCD4cUdLRCnBNVG3sdY81XmD3/ekSz8dXelgsfpCKTGbGcLj9R/
+ Q0CUPeSgEAFxoypnEmyf5NILGYW/wFqODFbsSAVqeG0AVS+BFm9PCBffGQ4VtCXrOKuU
+ Lav/lkQdUBk2PM+jVlNNYnoljJ4UCi4VycnZ40D+btrVosUbnJ5ZZ3wq0quyxbwcu+6O
+ Bpw9qriCdRBDdLgA54LteFY1gM0muw1oO5Ecg+4c3jcoNuX3tae9MndCqvsXD20t1gJy
+ 5x8g==
+X-Gm-Message-State: AOJu0YzWXGzYP1NUetstq4Gnd2qK3/WjvUtdVYAto2j/OFiPs4nZYH6e
+ kLB4FyZwubwCIIBb4CHHwMHKHhX92Be3LjywYuL+9gnpZzTCCidiplAh15DwIHp+ONY9uzW7+fp
+ t
+X-Gm-Gg: ASbGncvEf0yzdjuVAV5C67q2wLfYh59C2tqnmo1AeA3FSOH4+Tz/3Hlfm0x0SM0siA1
+ nBKfV6teqmC/U7xRTd61GeLaSA1iQpwhPEc/dMxi7BGBVqD45cgXZN+SwqV0Y2YlP4eKvrUoaHR
+ UnFxZwgt2cTUvZH6XiT7B3xP8kEV5pNzSwQv3BTfZYbgOd5ZlZ5mUqpNN2KAWsN05RTkym4JftH
+ qTKQQYXbX5U9RXZDM0mEl1z3pzMUuH2kOq4bSh/MYq+4M4EyBMF9MzZR95M6nk+pKOi9s83bpuJ
+ 19EvknzCq5/PC/T5Q+wdAJ9Klu7P9zg20XNF3zlZbE2wSPBWam2jml2csQBFrSnMigpnQmrpsNp
+ EqibSoI1rlw==
+X-Google-Smtp-Source: AGHT+IEPtFaQdYEKO0sb5zTzRR+efeCWapldh5RlIDBphIbC38TZ4txuMGgr1ORfJn2BTQ//yIKmFQ==
+X-Received: by 2002:a17:902:ce82:b0:223:5241:f5ca with SMTP id
+ d9443c01a7336-22e040bf431mr44250755ad.20.1746111327667; 
+ Thu, 01 May 2025 07:55:27 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22e0bb0e770sm7644415ad.92.2025.05.01.07.55.26
+ d9443c01a7336-22e0bb0e770sm7644415ad.92.2025.05.01.07.55.27
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 May 2025 07:55:26 -0700 (PDT)
+ Thu, 01 May 2025 07:55:27 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 08/11] accel/tcg: Move TARGET_TAGGED_ADDRESSES to
- TCGCPUOps.untagged_addr
-Date: Thu,  1 May 2025 07:55:16 -0700
-Message-ID: <20250501145520.2695073-9-richard.henderson@linaro.org>
+Subject: [PATCH 09/11] accel/tcg: Remove TARGET_PAGE_DATA_SIZE
+Date: Thu,  1 May 2025 07:55:17 -0700
+Message-ID: <20250501145520.2695073-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250501145520.2695073-1-richard.henderson@linaro.org>
 References: <20250501145520.2695073-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,181 +97,171 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This macro is used by only one target, and even then under
+unusual conditions -- AArch64 with mmap's PROT_MTE flag.
+
+Since page size for aarch64-linux-user is variable, the
+per-page data size is also variable.
+Since page_reset_target_data via target_munmap does not
+have ready access to CPUState, simply pass in the size
+from the first allocation and remember that.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/accel/tcg/cpu-ops.h |  7 +++++++
- include/user/guest-host.h   |  8 +++++---
- target/arm/cpu-param.h      |  7 +------
- target/arm/cpu.h            | 32 +-------------------------------
- target/arm/cpu.c            | 27 ++++++++++++++++++++++++++-
- 5 files changed, 40 insertions(+), 41 deletions(-)
+ include/user/page-protection.h |  8 +++++---
+ target/arm/cpu.h               |  4 ----
+ accel/tcg/user-exec.c          | 26 ++++++++++++++++----------
+ target/arm/tcg/mte_helper.c    |  4 ++--
+ 4 files changed, 23 insertions(+), 19 deletions(-)
 
-diff --git a/include/accel/tcg/cpu-ops.h b/include/accel/tcg/cpu-ops.h
-index 23cd6af0b2..cd22e5d5b9 100644
---- a/include/accel/tcg/cpu-ops.h
-+++ b/include/accel/tcg/cpu-ops.h
-@@ -157,6 +157,13 @@ struct TCGCPUOps {
-      */
-     void (*record_sigbus)(CPUState *cpu, vaddr addr,
-                           MMUAccessType access_type, uintptr_t ra);
-+
-+    /**
-+     * untagged_addr: Remove an ignored tag from an address
-+     * @cpu: cpu context
-+     * @addr: tagged guest address
-+     */
-+    vaddr (*untagged_addr)(CPUState *cs, vaddr addr);
- #else
-     /** @do_interrupt: Callback for interrupt handling.  */
-     void (*do_interrupt)(CPUState *cpu);
-diff --git a/include/user/guest-host.h b/include/user/guest-host.h
-index 0656f2e356..8f7ef75896 100644
---- a/include/user/guest-host.h
-+++ b/include/user/guest-host.h
-@@ -10,7 +10,7 @@
+diff --git a/include/user/page-protection.h b/include/user/page-protection.h
+index 86143212fd..4bde664e4a 100644
+--- a/include/user/page-protection.h
++++ b/include/user/page-protection.h
+@@ -73,18 +73,20 @@ bool page_check_range_empty(vaddr start, vaddr last);
+ vaddr page_find_range_empty(vaddr min, vaddr max, vaddr len, vaddr align);
  
- #include "exec/vaddr.h"
- #include "user/guest-base.h"
--#include "cpu.h"
-+#include "accel/tcg/cpu-ops.h"
- 
- /*
-  * If non-zero, the guest virtual address space is a contiguous subset
-@@ -29,12 +29,14 @@ extern unsigned long reserved_va;
+ /**
+- * page_get_target_data(address)
++ * page_get_target_data
+  * @address: guest virtual address
++ * @size: per-page size
+  *
+- * Return TARGET_PAGE_DATA_SIZE bytes of out-of-band data to associate
++ * Return @size bytes of out-of-band data to associate
+  * with the guest page at @address, allocating it if necessary.  The
+  * caller should already have verified that the address is valid.
++ * The value of @size must be the same for every call.
+  *
+  * The memory will be freed when the guest page is deallocated,
+  * e.g. with the munmap system call.
   */
- extern unsigned long guest_addr_max;
+ __attribute__((returns_nonnull))
+-void *page_get_target_data(vaddr address);
++void *page_get_target_data(vaddr address, size_t size);
  
--#ifndef TARGET_TAGGED_ADDRESSES
- static inline vaddr cpu_untagged_addr(CPUState *cs, vaddr x)
- {
-+    const TCGCPUOps *tcg_ops = cs->cc->tcg_ops;
-+    if (tcg_ops->untagged_addr) {
-+        return tcg_ops->untagged_addr(cs, x);
-+    }
-     return x;
- }
--#endif
- 
- /* All direct uses of g2h and h2g need to go away for usermode softmmu.  */
- static inline void *g2h_untagged(vaddr x)
-diff --git a/target/arm/cpu-param.h b/target/arm/cpu-param.h
-index 5c5bc8a009..8b46c7c570 100644
---- a/target/arm/cpu-param.h
-+++ b/target/arm/cpu-param.h
-@@ -17,14 +17,9 @@
- #endif
- 
- #ifdef CONFIG_USER_ONLY
--# ifdef TARGET_AARCH64
--#  define TARGET_TAGGED_ADDRESSES
--# ifdef __FreeBSD__
--#  define TARGET_PAGE_BITS 12
--# else
-+# if defined(TARGET_AARCH64) && defined(CONFIG_LINUX)
- /* Allow user-only to vary page size from 4k */
- #  define TARGET_PAGE_BITS_VARY
--# endif
- # else
- #  define TARGET_PAGE_BITS 12
- # endif
+ typedef int (*walk_memory_regions_fn)(void *, vaddr, vaddr, int);
+ int walk_memory_regions(void *, walk_memory_regions_fn);
 diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index be4449ca06..23720b2b17 100644
+index 23720b2b17..6ed6409cb7 100644
 --- a/target/arm/cpu.h
 +++ b/target/arm/cpu.h
-@@ -783,12 +783,9 @@ typedef struct CPUArchState {
- #else /* CONFIG_USER_ONLY */
-     /* For usermode syscall translation.  */
-     bool eabi;
--#endif /* CONFIG_USER_ONLY */
--
--#ifdef TARGET_TAGGED_ADDRESSES
-     /* Linux syscall tagged address support */
-     bool tagged_addr_enable;
--#endif
-+#endif /* CONFIG_USER_ONLY */
- } CPUARMState;
- 
- static inline void set_feature(CPUARMState *env, int feature)
-@@ -3217,34 +3214,7 @@ extern const uint64_t pred_esz_masks[5];
+@@ -3213,8 +3213,4 @@ extern const uint64_t pred_esz_masks[5];
+ #define LOG2_TAG_GRANULE 4
  #define TAG_GRANULE      (1 << LOG2_TAG_GRANULE)
  
- #ifdef CONFIG_USER_ONLY
+-#ifdef CONFIG_USER_ONLY
+-#define TARGET_PAGE_DATA_SIZE (TARGET_PAGE_SIZE >> (LOG2_TAG_GRANULE + 1))
+-#endif /* CONFIG_USER_ONLY */
 -
- #define TARGET_PAGE_DATA_SIZE (TARGET_PAGE_SIZE >> (LOG2_TAG_GRANULE + 1))
--
--#ifdef TARGET_TAGGED_ADDRESSES
--/**
-- * cpu_untagged_addr:
-- * @cs: CPU context
-- * @x: tagged address
-- *
-- * Remove any address tag from @x.  This is explicitly related to the
-- * linux syscall TIF_TAGGED_ADDR setting, not TBI in general.
-- *
-- * There should be a better place to put this, but we need this in
-- * include/exec/cpu_ldst.h, and not some place linux-user specific.
-- */
--static inline target_ulong cpu_untagged_addr(CPUState *cs, target_ulong x)
--{
--    CPUARMState *env = cpu_env(cs);
--    if (env->tagged_addr_enable) {
--        /*
--         * TBI is enabled for userspace but not kernelspace addresses.
--         * Only clear the tag if bit 55 is clear.
--         */
--        x &= sextract64(x, 0, 56);
--    }
--    return x;
--}
--#endif /* TARGET_TAGGED_ADDRESSES */
- #endif /* CONFIG_USER_ONLY */
- 
  #endif
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 2020aec54a..45cb6fd7ee 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -2671,7 +2671,31 @@ static const char *arm_gdb_get_core_xml_file(CPUState *cs)
-     return "arm-core.xml";
+diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
+index f674fd875e..46b1e97c30 100644
+--- a/accel/tcg/user-exec.c
++++ b/accel/tcg/user-exec.c
+@@ -870,7 +870,6 @@ tb_page_addr_t get_page_addr_code_hostp(CPUArchState *env, vaddr addr,
+     return addr;
  }
  
--#ifndef CONFIG_USER_ONLY
-+#ifdef CONFIG_USER_ONLY
-+/**
-+ * aarch64_untagged_addr:
-+ *
-+ * Remove any address tag from @x.  This is explicitly related to the
-+ * linux syscall TIF_TAGGED_ADDR setting, not TBI in general.
-+ *
-+ * There should be a better place to put this, but we need this in
-+ * include/exec/cpu_ldst.h, and not some place linux-user specific.
-+ *
-+ * Note that arm-*-user will never set tagged_addr_enable.
-+ */
-+static vaddr aarch64_untagged_addr(CPUState *cs, vaddr x)
-+{
-+    CPUARMState *env = cpu_env(cs);
-+    if (env->tagged_addr_enable) {
-+        /*
-+         * TBI is enabled for userspace but not kernelspace addresses.
-+         * Only clear the tag if bit 55 is clear.
-+         */
-+        x &= sextract64(x, 0, 56);
-+    }
-+    return x;
-+}
-+#else
- #include "hw/core/sysemu-cpu-ops.h"
+-#ifdef TARGET_PAGE_DATA_SIZE
+ /*
+  * Allocate chunks of target data together.  For the only current user,
+  * if we allocate one hunk per page, we have overhead of 40/128 or 40%.
+@@ -886,10 +885,16 @@ typedef struct TargetPageDataNode {
+ } TargetPageDataNode;
  
- static const struct SysemuCPUOps arm_sysemu_ops = {
-@@ -2702,6 +2726,7 @@ static const TCGCPUOps arm_tcg_ops = {
+ static IntervalTreeRoot targetdata_root;
++static size_t target_page_data_size;
+ 
+ void page_reset_target_data(vaddr start, vaddr last)
+ {
+     IntervalTreeNode *n, *next;
++    size_t size = target_page_data_size;
++
++    if (likely(size == 0)) {
++        return;
++    }
+ 
+     assert_memory_lock();
+ 
+@@ -920,17 +925,22 @@ void page_reset_target_data(vaddr start, vaddr last)
+         n_last = MIN(last, n->last);
+         p_len = (n_last + 1 - n_start) >> TARGET_PAGE_BITS;
+ 
+-        memset(t->data + p_ofs * TARGET_PAGE_DATA_SIZE, 0,
+-               p_len * TARGET_PAGE_DATA_SIZE);
++        memset(t->data + p_ofs * size, 0, p_len * size);
+     }
+ }
+ 
+-void *page_get_target_data(vaddr address)
++void *page_get_target_data(vaddr address, size_t size)
+ {
+     IntervalTreeNode *n;
+     TargetPageDataNode *t;
+     vaddr page, region, p_ofs;
+ 
++    /* Remember the size from the first call, and it should be constant. */
++    if (unlikely(target_page_data_size != size)) {
++        assert(target_page_data_size == 0);
++        target_page_data_size = size;
++    }
++
+     page = address & TARGET_PAGE_MASK;
+     region = address & TBD_MASK;
+ 
+@@ -945,8 +955,7 @@ void *page_get_target_data(vaddr address)
+         mmap_lock();
+         n = interval_tree_iter_first(&targetdata_root, page, page);
+         if (!n) {
+-            t = g_malloc0(sizeof(TargetPageDataNode)
+-                          + TPD_PAGES * TARGET_PAGE_DATA_SIZE);
++            t = g_malloc0(sizeof(TargetPageDataNode) + TPD_PAGES * size);
+             n = &t->itree;
+             n->start = region;
+             n->last = region | ~TBD_MASK;
+@@ -957,11 +966,8 @@ void *page_get_target_data(vaddr address)
+ 
+     t = container_of(n, TargetPageDataNode, itree);
+     p_ofs = (page - region) >> TARGET_PAGE_BITS;
+-    return t->data + p_ofs * TARGET_PAGE_DATA_SIZE;
++    return t->data + p_ofs * size;
+ }
+-#else
+-void page_reset_target_data(vaddr start, vaddr last) { }
+-#endif /* TARGET_PAGE_DATA_SIZE */
+ 
+ /* The system-mode versions of these helpers are in cputlb.c.  */
+ 
+diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
+index 13d7ac0097..0efc18a181 100644
+--- a/target/arm/tcg/mte_helper.c
++++ b/target/arm/tcg/mte_helper.c
+@@ -37,7 +37,6 @@
+ #include "qemu/guest-random.h"
+ #include "mte_helper.h"
+ 
+-
+ static int choose_nonexcluded_tag(int tag, int offset, uint16_t exclude)
+ {
+     if (exclude == 0xffff) {
+@@ -63,6 +62,7 @@ uint8_t *allocation_tag_mem_probe(CPUARMState *env, int ptr_mmu_idx,
+                                   bool probe, uintptr_t ra)
+ {
  #ifdef CONFIG_USER_ONLY
-     .record_sigsegv = arm_cpu_record_sigsegv,
-     .record_sigbus = arm_cpu_record_sigbus,
-+    .untagged_addr = aarch64_untagged_addr,
- #else
-     .tlb_fill_align = arm_cpu_tlb_fill_align,
-     .cpu_exec_interrupt = arm_cpu_exec_interrupt,
++    const size_t page_data_size = TARGET_PAGE_SIZE >> (LOG2_TAG_GRANULE + 1);
+     uint64_t clean_ptr = useronly_clean_ptr(ptr);
+     int flags = page_get_flags(clean_ptr);
+     uint8_t *tags;
+@@ -83,7 +83,7 @@ uint8_t *allocation_tag_mem_probe(CPUARMState *env, int ptr_mmu_idx,
+         return NULL;
+     }
+ 
+-    tags = page_get_target_data(clean_ptr);
++    tags = page_get_target_data(clean_ptr, page_data_size);
+ 
+     index = extract32(ptr, LOG2_TAG_GRANULE + 1,
+                       TARGET_PAGE_BITS - LOG2_TAG_GRANULE - 1);
 -- 
 2.43.0
 
