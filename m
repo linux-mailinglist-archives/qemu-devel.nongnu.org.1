@@ -2,96 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6130DAA5FFB
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 16:28:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D132AA604A
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 16:56:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAUtb-0000Cp-6B; Thu, 01 May 2025 10:28:15 -0400
+	id 1uAVJv-0005dj-5J; Thu, 01 May 2025 10:55:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uAUtX-0000Ce-Qg
- for qemu-devel@nongnu.org; Thu, 01 May 2025 10:28:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uAUtV-0006tV-5C
- for qemu-devel@nongnu.org; Thu, 01 May 2025 10:28:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746109687;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=RrNiRMaORMW1L2xdzJRhqBsOfJBaOKONV0yU5vF1IWc=;
- b=D92DkxRQ5yNsTsF6ZttuVzt4i6HZaMsA191T9MuiADy8v80xlHLVc8Zr9H1Eu+o/azOdIg
- Nctv1ry0aDx43I6HNKLb2YAwWuG3ok4PUIv7Cm3M6daRbuzQF0E8bwPKuGyOalqMxbAyID
- bnDtudHg4Emu//LDhDb3Ds1ObXaIxn4=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-450-J4OK7GjZMIGhJGUBfUVqvQ-1; Thu, 01 May 2025 10:28:05 -0400
-X-MC-Unique: J4OK7GjZMIGhJGUBfUVqvQ-1
-X-Mimecast-MFC-AGG-ID: J4OK7GjZMIGhJGUBfUVqvQ_1746109685
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-7c9305d29abso168754485a.1
- for <qemu-devel@nongnu.org>; Thu, 01 May 2025 07:28:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uAVJt-0005dR-H2
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 10:55:25 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uAVJr-0005QL-D2
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 10:55:25 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-224019ad9edso16152175ad.1
+ for <qemu-devel@nongnu.org>; Thu, 01 May 2025 07:55:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1746111321; x=1746716121; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=6ERfDcpD0q610+HtPkmuutwyCXat3qEAtdpeWLrgOMg=;
+ b=sQ2lYBJefnKhkey6q4f4e3GqNOS8W4QmeWUSCrD2J1Hq7sX/dbKZa8go2IU0WG1TbM
+ Wfx13Oy/cKw0BYWYC3EtszE1bn8qjiYbPzaECsl+v+w3siyj5YCIOAmNcK1lmL9dI0Gh
+ yzRK+VRmZJ0u/Bha5n3FbQgrxoNl2FJ6Lsp8R+6UPo4LR1TQJLNLVECec8ETN7jJMqyl
+ nc2hs2qyEP/Qs0xZyNfR6i/RAYbGKkex0wmQTIkV1w8eusYgdpfcW1x3GJEwWN+toJAa
+ iGFRCzp39Xqg0PkdIMiRxTUPsPa3Fv1BKONtqvqbtOmSYwnsOKo9iSwCqX5ZsuPMY3PV
+ eYhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746109685; x=1746714485;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=RrNiRMaORMW1L2xdzJRhqBsOfJBaOKONV0yU5vF1IWc=;
- b=A6hgAYznL0Ew463+EJIPilLofZJYFSpBH8/RNcLTaRae+94cs2ane/DEnnOkzvcnl+
- IGPC8udG9op9/Aa9v9az/cxuiIAWL1o+d5pjenPF1/sEQwjs0zK3a7DvePORi8PVTZx6
- UpHoBkI2drcIGuYrED4dQJgNsZ0gEy0gWQD9qXFVWPUIa3iSe7WlLG6wAv5KEabTk854
- 3ysYEz3BFhr35VzzIjskhz//8ECkCE/OL/1XIE92GxcHXSAzMLGS4+1msznBdP79SREj
- iHu9G75G29YQIYbyBOzNdr6VeXQFU94qo8famfDZPzw3dlbHDdY59ssDYQWy4uPUCZrc
- koaQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUapjRPa2hA1hwHYvFroTzIMhCIQUnXyCtICmpYR3RsRmplLGYM5F8yzobh25geVXWfrSP+lFZSQoAU@nongnu.org
-X-Gm-Message-State: AOJu0YwWR9pza/902Pwt61O/XhVWgBg04wSKehNbP5RjN+Y5YBmcYr0K
- OtCRD0PT5KU1l14xj7ZRDzpjBpWCUOFnKb7+KnN+dRiU9WnP8b4y4JYuoKQRdK96OviCUc1OriS
- UGCgyCLbMZD4j/AwHRrJVKqrxfRl/KdnsEritUtAl0mW/LrQloh2o
-X-Gm-Gg: ASbGncsjnf5G+4meaF0ju0A9eUei6dM2lrBzqZsfZr7c51AydJO5bx8g4Yzo+ty6TO0
- yo+8vHq0oZZAU4LXJwXcgSU8r7udOaLO2+SAGLAoG7JiBabNjTgvLt2rsCKTXkdEEWGBBWyrTY1
- kFVXPYFSRxXMcOcEJdNhc2bHmi9S9oaFEJytJ31H7O1JIfjk5OyybVyjYY17cPPlWnu6AGDJBav
- 4NdFLuwrwbwHiqhPncs6Hm3hzUekK0e1htHH3opvP/Q8CjqmfTNr0E0C3qNNWRKblQanhZzzgX+
- bwo=
-X-Received: by 2002:a05:620a:459f:b0:7c7:ba67:38a with SMTP id
- af79cd13be357-7cac740f15amr1029691285a.6.1746109685124; 
- Thu, 01 May 2025 07:28:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGEA9dmKlMlPIDTDRwC1QFZ5vyprYRd8xC6kzmXtYJyZQgh1jRF5i/2F8mSHahR7uj+1zXkXA==
-X-Received: by 2002:a05:620a:459f:b0:7c7:ba67:38a with SMTP id
- af79cd13be357-7cac740f15amr1029688485a.6.1746109684738; 
- Thu, 01 May 2025 07:28:04 -0700 (PDT)
-Received: from x1.local ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7cad23c48ffsm48548985a.45.2025.05.01.07.28.03
+ d=1e100.net; s=20230601; t=1746111321; x=1746716121;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=6ERfDcpD0q610+HtPkmuutwyCXat3qEAtdpeWLrgOMg=;
+ b=i3HpmT48V+tB2NRaPKE3zlNnP9Ij1odwLsjjT81hulmoug99MYuNG6von+b6pXFu1j
+ kE53VRB/MxGEq50LyEPTntonOxOx4GHYhaCiMrBYqqz8enRocdr27cZk/KXwLNxYUryb
+ fKw2WS3D+fAPN3ZmydWi86T6D+Kjp5EWy+qIW0p/6iwrVRMPbeWTrsH6UPM1BVNagq3x
+ mQfC+FDFs3eboR22fWBvDwLytaf6VMfjFLlxSw5lT00M5FGUOiJV89atEWAIvqCH1xI9
+ kI0l5U2KJFUJyGyFc8n1UMeZlLo+5b03JBFPYtgtxUGDnw+B8+S8Tp6SSz3OX70dTpWf
+ UpRg==
+X-Gm-Message-State: AOJu0YwFemFehzy9fyfkXqh0Tri3GdA88wDcpwL2tp2fptgqvDqpu1v2
+ mbA52RWwAfZI3LktsSMulIh1ECS2Zp3DiOovz5feyY05uHg+qYhIryR9GVU73zS0AaVU92Yqyah
+ W
+X-Gm-Gg: ASbGncty3D6xSCyxiMxhsRlXMEEKgsxcpdn7sFEJdMvaIQjli4aL3IDikWsD4CZ2tKa
+ rOw+/+cKXukwUj0cpDtcPyUdG5m4IVDjMkQGfId25nMpLozWlXKXaD8qW9uflq+lFe8JSWl2cN0
+ rrNLpOXCfO4d/qiHJl3JiBaun4x9ynwjPqHLOc0cMbV9aIOFgovPFJVobE3wfqQGyxdZLExtBQk
+ iqdehLIdBU0OfujNoJ2VXFdjX5Er9+uaKyUJ5o6ArcByqxE+b7WRnXfntco0mKG4rEYPqpx/Fpr
+ PUsWxPOHhtFqxTkDMJtHdNqzDuskrXZFmmexNg/T2b5LaCiLScH8HGihk2Ii55wYrte0/RHALCI
+ =
+X-Google-Smtp-Source: AGHT+IHESq5aOD9v+3FVmBN/WemxdCRWcXRywvBPpxEtRgPzcXTxfJp/fJWC/orYMWXSYnJ3ded0cA==
+X-Received: by 2002:a17:902:ced2:b0:21b:d105:26b8 with SMTP id
+ d9443c01a7336-22e040a3212mr47724025ad.7.1746111321101; 
+ Thu, 01 May 2025 07:55:21 -0700 (PDT)
+Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-22e0bb0e770sm7644415ad.92.2025.05.01.07.55.20
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 May 2025 07:28:04 -0700 (PDT)
-Date: Thu, 1 May 2025 10:28:02 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Fabiano Rosas <farosas@suse.de>, John Snow <jsnow@redhat.com>
-Subject: Re: [PATCH 4/4] tests/functional: Test with
- scripts/vmstate-static-checker.py
-Message-ID: <aBOE8iwN0oIVfwTi@x1.local>
-References: <20250429152141.294380-1-thuth@redhat.com>
- <20250429152141.294380-5-thuth@redhat.com>
- <d47d36db-f94c-45ee-bdf0-477607703461@linaro.org>
+ Thu, 01 May 2025 07:55:20 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PATCH 00/11] accel/tcg: Finish building once
+Date: Thu,  1 May 2025 07:55:08 -0700
+Message-ID: <20250501145520.2695073-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <d47d36db-f94c-45ee-bdf0-477607703461@linaro.org>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.644,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,202 +94,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Apr 30, 2025 at 09:10:30AM -0700, Pierrick Bouvier wrote:
-> On 4/29/25 8:21 AM, Thomas Huth wrote:
-> > From: Thomas Huth <thuth@redhat.com>
-> > 
-> > We've got this nice vmstate-static-checker.py script that can help
-> > to detect screw-ups in the migration states. Unfortunately, it's
-> > currently only run manually, so there could be regressions that nobody
-> > notices immediately. Let's run it from a functional test automatically
-> > so that we got at least a basic coverage in each CI run.
-> > 
-> > Signed-off-by: Thomas Huth <thuth@redhat.com>
-> > ---
-> >   MAINTAINERS                      |  1 +
-> >   tests/functional/meson.build     | 13 +++++++-
-> >   tests/functional/test_vmstate.py | 56 ++++++++++++++++++++++++++++++++
-> >   3 files changed, 69 insertions(+), 1 deletion(-)
-> >   create mode 100755 tests/functional/test_vmstate.py
-> > 
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 65fb61844b3..6a8d81458ad 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -3525,6 +3525,7 @@ F: migration/
-> >   F: scripts/vmstate-static-checker.py
-> >   F: tests/data/vmstate-static-checker/
-> >   F: tests/functional/test_migration.py
-> > +F: tests/functional/test_vmstate.py
-> >   F: tests/qtest/migration/
-> >   F: tests/qtest/migration-*
-> >   F: docs/devel/migration/
-> > diff --git a/tests/functional/meson.build b/tests/functional/meson.build
-> > index b317ad42c5a..9f339e626f6 100644
-> > --- a/tests/functional/meson.build
-> > +++ b/tests/functional/meson.build
-> > @@ -76,6 +76,7 @@ tests_generic_bsduser = [
-> >   tests_aarch64_system_quick = [
-> >     'migration',
-> > +  'vmstate',
-> >   ]
-> >   tests_aarch64_system_thorough = [
-> > @@ -164,6 +165,10 @@ tests_loongarch64_system_thorough = [
-> >     'loongarch64_virt',
-> >   ]
-> > +tests_m68k_system_quick = [
-> > +  'vmstate',
-> > +]
-> > +
-> >   tests_m68k_system_thorough = [
-> >     'm68k_mcf5208evb',
-> >     'm68k_nextcube',
-> > @@ -230,6 +235,7 @@ tests_ppc_system_thorough = [
-> >   tests_ppc64_system_quick = [
-> >     'migration',
-> > +  'vmstate',
-> >   ]
-> >   tests_ppc64_system_thorough = [
-> > @@ -265,6 +271,10 @@ tests_rx_system_thorough = [
-> >     'rx_gdbsim',
-> >   ]
-> > +tests_s390x_system_quick = [
-> > +  'vmstate',
-> > +]
-> > +
-> >   tests_s390x_system_thorough = [
-> >     's390x_ccw_virtio',
-> >     's390x_replay',
-> > @@ -305,8 +315,9 @@ tests_x86_64_system_quick = [
-> >     'migration',
-> >     'pc_cpu_hotplug_props',
-> >     'virtio_version',
-> > -  'x86_cpu_model_versions',
-> > +  'vmstate',
-> >     'vnc',
-> > +  'x86_cpu_model_versions',
-> >   ]
-> >   tests_x86_64_system_thorough = [
-> > diff --git a/tests/functional/test_vmstate.py b/tests/functional/test_vmstate.py
-> > new file mode 100755
-> > index 00000000000..3ba56d580db
-> > --- /dev/null
-> > +++ b/tests/functional/test_vmstate.py
-> > @@ -0,0 +1,56 @@
-> > +#!/usr/bin/env python3
-> > +#
-> > +# SPDX-License-Identifier: GPL-2.0-or-later
-> > +#
-> > +# This test runs the vmstate-static-checker script with the current QEMU
-> > +
-> > +import subprocess
-> > +
-> > +from qemu_test import QemuSystemTest
-> > +
-> > +
-> > +class VmStateTest(QemuSystemTest):
-> > +
-> > +    def test_vmstate(self):
-> > +        target_machine = {
-> > +            'aarch64': 'virt-7.2',
-> > +            'm68k': 'virt-7.2',
-> > +            'ppc64': 'pseries-7.2',
-> > +            's390x': 's390-ccw-virtio-7.2',
-> > +            'x86_64': 'pc-q35-7.2',
-> > +        }
-> > +        self.set_machine(target_machine[self.arch])
-> > +
-> > +        # Run QEMU to get the current vmstate json file:
-> > +        dst_json = self.scratch_file('dest.json')
-> > +        self.log.info('Dumping vmstate from ' + self.qemu_bin)
-> > +        cp = subprocess.run([self.qemu_bin, '-nodefaults',
-> > +                             '-M', target_machine[self.arch],
-> > +                             '-dump-vmstate', dst_json],
-> > +                            stdout=subprocess.PIPE,
-> > +                            stderr=subprocess.STDOUT,
-> > +                            text=True)
-> > +        if cp.returncode != 0:
-> > +            self.fail('Running QEMU failed:\n' + cp.stdout)
-> > +        if cp.stdout:
-> > +            self.log.info('QEMU output: ' + cp.stdout)
-> > +
-> > +        # Check whether the old vmstate json file is still compatible:
-> > +        src_json = self.data_file('..', 'data', 'vmstate-static-checker',
-> > +                                  self.arch,
-> > +                                  target_machine[self.arch] + '.json')
-> > +        vmstate_checker = self.data_file('..', '..', 'scripts',
-> > +                                         'vmstate-static-checker.py')
-> > +        self.log.info('Comparing vmstate with ' + src_json)
-> > +        cp = subprocess.run([vmstate_checker, '-s', src_json, '-d', dst_json],
-> > +                            stdout=subprocess.PIPE,
-> > +                            stderr=subprocess.STDOUT,
-> > +                            text=True)
-> > +        if cp.returncode != 0:
-> > +            self.fail('Running vmstate-static-checker failed:\n' + cp.stdout)
-> > +        if cp.stdout:
-> > +            self.log.warning('vmstate-static-checker output: ' + cp.stdout)
-> > +
-> > +
-> > +if __name__ == '__main__':
-> > +    QemuSystemTest.main()
-> 
-> Thanks for this series Thomas, it's very useful.
-> Could we extend this automatically to test migration on all combinations:
-> {qemu-system-*} x {machine}?
-> We could generate a single list of references, containing hashes of all
-> outputs, and a simple and clean command to regenerate all those, and
-> associated jsons, so we don't pollute qemu code with tons of json.
+Based-on: 20250430230631.2571291-1-richard.henderson@linaro.org
+("[PATCH 0/6] accel/tcg: Build translate-all, tcg-all twice")
 
-I think a major challenge would be false positives, and how to filter
-them.. when we put anything into CI.
+Adjust the final two files in accel/tcg/ to build once.
 
-Side note: yesterday I just wrote a script to do exactly this, by auto
-build binaries and check all relevant archs over all machine types
-supported.  It looks like this:
 
-https://gitlab.com/peterx/qemu/-/commit/c4abfa39f8943cd62f0d982ecb36537df398ae70
+r~
 
-The plan is I can run this at the end of each release, though.. not yet for
-CI.  I also don't have plan to upstream this script, maybe I'll keep it
-myself as of now unless someone thinks we should have it.
 
-PS: I just ran it over v9.2..v10.0 over the default 4 archs
-(x86,arm,ppc,s390) and a huge list was generated..  I believe most of them
-are false positives, I'll delay walking the list for some time..  I
-attached the result at the end in case anyone is interested.
+Richard Henderson (11):
+  accel/tcg: Move user-only tlb_vaddr_to_host out of line
+  accel/tcg: Move tlb_vaddr_to_host declaration to probe.h
+  accel/tcg: Use target_long_bits() in cputlb.c
+  accel/tcg: Use vaddr for plugin_{load,store}_cb
+  accel/tcg: Build cputlb.c once
+  include/user: Convert GUEST_ADDR_MAX to a variable
+  include/user: Use vaddr in guest-host.h
+  accel/tcg: Move TARGET_TAGGED_ADDRESSES to TCGCPUOps.untagged_addr
+  accel/tcg: Remove TARGET_PAGE_DATA_SIZE
+  accel/tcg: Avoid abi_ptr in user-exec.c
+  accel/tcg: Build user-exec.c once
 
-> 
-> This way, we can automatically detect that we never regress, not only from
-> release to release, but commit to commit.
-> 
-> In case we need to update reference, people can point what's the actual
-> difference in the commit message.
-> 
-> As well, since I took a look into that before, this check is not enough
-> regarding migration. Beyonds the VMDstate, we should check as well that the
-> default values of every field are not changed. For instance, we recently
-> changed the default pauth property of arm cpus, and without a careful
-> backcompat, it would have break migration. It's a bit more tricky, since
-> there is nothing available now to dump this (I hacked that using a custom
-> trace). And definitely not something in the scope of your series, just worth
-> mentioning.
-> 
-> I hope we can one day get rid of all "Is this change safe regarding
-> migration?" comments because we know we can trust our CI instead.
-
-IMHO it's extremely hard (if not impossible) to guarantee that, because
-some migration bug may only trigger in special paths that not always
-happen, e.g. it can even involve guest driver behavior.
-
-Said that, Fabiano used to work on supporting device-specific tests in
-qtests/migration-test.c.  I don't think it landed but maybe we have room
-for specific device tests using qtests/migration-test.c framework.
-
-https://lore.kernel.org/all/20240523201922.28007-1-farosas@suse.de/
-
-Thanks,
+ include/accel/tcg/cpu-ldst.h   | 24 -------------
+ include/accel/tcg/cpu-ops.h    |  7 ++++
+ include/accel/tcg/probe.h      | 16 +++++++++
+ include/user/guest-host.h      | 49 ++++++++++----------------
+ include/user/page-protection.h |  8 +++--
+ target/arm/cpu-param.h         |  7 +---
+ target/arm/cpu.h               | 36 +------------------
+ accel/tcg/cputlb.c             | 28 ++++++++-------
+ accel/tcg/user-exec.c          | 63 ++++++++++++++++++++++------------
+ bsd-user/main.c                |  8 +++++
+ linux-user/main.c              |  8 +++++
+ target/arm/cpu.c               | 27 ++++++++++++++-
+ target/arm/tcg/mte_helper.c    |  4 +--
+ accel/tcg/ldst_common.c.inc    |  4 +--
+ accel/tcg/meson.build          | 10 ++----
+ 15 files changed, 154 insertions(+), 145 deletions(-)
 
 -- 
-Peter Xu
+2.43.0
 
 
