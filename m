@@ -2,91 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 663C3AA64B0
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 22:22:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C3E1AA6511
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:06:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAaQ1-0002pH-7F; Thu, 01 May 2025 16:22:05 -0400
+	id 1uAb5g-0000x4-WE; Thu, 01 May 2025 17:05:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1uAaPz-0002nW-Aw
- for qemu-devel@nongnu.org; Thu, 01 May 2025 16:22:03 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAb5d-0000uG-NE
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 17:05:05 -0400
+Received: from mail-io1-xd34.google.com ([2607:f8b0:4864:20::d34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1uAaPx-0007wC-GF
- for qemu-devel@nongnu.org; Thu, 01 May 2025 16:22:03 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-2295d78b45cso19046905ad.0
- for <qemu-devel@nongnu.org>; Thu, 01 May 2025 13:22:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAb5c-0006K7-0Z
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 17:05:05 -0400
+Received: by mail-io1-xd34.google.com with SMTP id
+ ca18e2360f4ac-8640d43f5e0so116478639f.0
+ for <qemu-devel@nongnu.org>; Thu, 01 May 2025 14:05:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1746130919; x=1746735719; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
- bh=F7bWiW4bRsnks3rl9OHy6axsrNrN4JteSqAxTGYEvLA=;
- b=TUOTxlvDqcQ1HhhiyuplAuPs9E1eKaa6M3nRxGZ3iXOH5n/sIvvEtDmdTJB7Fdvh0H
- zaQEfydwE2oTTMKXjaXSsEf7pIyveTRQ2crUzjJMWpSzvZzQYQ6eQctET3J6KP41Ovw2
- bvBr4UalxgnN6gwVicLhtBTRXP+MK8uYsJjAZBG4NDSFgRx8NAzJLKWRoeoFBfdQ7j+x
- xbgFnk0PjF0p+xIVitSOqarcIFPEDR1+6REkF+4c4+LrXc50be5TBIEZwKTYehfCnzB/
- mg+Kphf2zNGpMx1O/Agvs/g4c7LlLIsnECgUGhlNAqgiXl9XAPk/8jSGqmRagkyfG3ag
- NekA==
+ d=linaro.org; s=google; t=1746133502; x=1746738302; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=chTEKfhDE/uSKXfGIxpPQdBKtvzKQoAGrKDYUQ0Sip4=;
+ b=hfGK94QIIMwlpKUZ+ZzcyoJO12fffAz4Hj5FATpQhcZTemRZz/YNvh4r++V8W11aSm
+ CLibtCxFlQclfAXidXroyRYO8JkzWmd37Ujh6MsjvjoP2qkoWQQt2HjIpQ3yIYjpJXxh
+ gvVVAS+yc/OMRouQnFk6LU+5oZZS1MjSqEyKP1YQ8CK6EVchlVhPa1LC85MuqAARVtfa
+ gs1qlFZFFLsEzHLIoHyVXLS09Bv24V1gJ6jEIBwyVgD7FydEFe/I61OOIwXziNyb2bDH
+ gF0TuyJYNpBYVhNQhy24QRYz6dWcmBD6FMuTlGX3Eb483pqUZzD0rzXc1bPh8Iy2/A6A
+ CpNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746130919; x=1746735719;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=F7bWiW4bRsnks3rl9OHy6axsrNrN4JteSqAxTGYEvLA=;
- b=D/3OGi+aTWybtVvWpS8Hx5skOMg50LWaejisNJ/OmMXR9fc93nvmIF5BYtOCQOjDT2
- 6J3iOcuxQj3cd5qWzZvxHQYYgRLrQjiFL4/G5CgEe5tMmDNjoS810Bpa5pUgAxnCNY1h
- wcKFZIg7spGxYF1XhYL9+0oNxfuo0lD93eY4B963vXd5Q5Vl0YueN6qby/4fB4IAUgJn
- KSSqYv/3sXdcmVpMe3AyPBB9VDPlIGYe1wuG8tojrPNqZgnmQv21RgCCs8Py2TYJjEti
- az8Cr5KZpc/yBrRWZR/ARKLFH3+TqpkHGr7J33A31t6+c4Y3o4/F7MsorGfNswH7dE3c
- 5NlA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXQKggpN1/x3TC0kKEZV3StA4jv5Od6yeqP1TUpYkyf6Z7hlrlni3yTnUoFk6Irm0+KBBQSfryYkCVE@nongnu.org
-X-Gm-Message-State: AOJu0YzvDZZ4/h6rRPCRKs+U5bLBnMPENe5g3yJrVcbVjfXGEoIpcccB
- aMkS9OaSH3xxo6sECtTJHon3PZUZDBfiwUODcMGSk3m1wpJObsHR
-X-Gm-Gg: ASbGncs5ZoJ6nio9yXVtxTzjOtsJRf05LOHwVwMVON9ek2G8L0Fffrpfyd6qycXzsdu
- sdJfEjuctA1DGoxMMcBZ7XYUDlXhFyidKRpSbZPJNavKQxlA7DN9jAMfz8jWzDL1KAy3srgflh+
- TtBDlufCHB5h+CyJ6YcMBMMasm5UPx8h1B/IDOSpHG37+jJk3qGwXGNdtEaTf0Z234B3kfvixg9
- S/8dVubYWVO9sdXC6BsWW5d5o7ZyHfUn4rqRkq3TEAphaZv4nUqF04azPzp+rLNNK7YchCWJ3cb
- goUQAnXDQ1DrW1cDNMVmhhKjpv4UIK7exOKCcSaVB2EL
-X-Google-Smtp-Source: AGHT+IHlnqOZGR10lQx5RUe7HeSnm/NAMouxKfBunI57Mx1V7PBcF+jSOHJZiAV3AzeNMLkfJf//hw==
-X-Received: by 2002:a17:903:2303:b0:223:6180:1bf7 with SMTP id
- d9443c01a7336-22e1033eecamr5319415ad.42.1746130919440; 
- Thu, 01 May 2025 13:21:59 -0700 (PDT)
-Received: from smc-140338-bm01 ([149.97.161.244])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22e1094180esm356985ad.235.2025.05.01.13.21.58
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 May 2025 13:21:58 -0700 (PDT)
-From: Fan Ni <nifan.cxl@gmail.com>
-X-Google-Original-From: Fan Ni <fan.ni@samsung.com>
-Date: Thu, 1 May 2025 20:21:56 +0000
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: anisa.su887@gmail.com, qemu-devel@nongnu.org, nifan.cxl@gmail.com,
- dave@stgolabs.net, linux-cxl@vger.kernel.org,
- Anisa Su <anisa.su@samsung.com>
-Subject: Re: [PATCH 3/9] cxl/type3: Add dsmas_flags to CXLDCRegion struct
-Message-ID: <aBPV80J9TULzRslk@fanair.local>
-References: <20250317164204.2299371-1-anisa.su887@gmail.com>
- <20250317164204.2299371-4-anisa.su887@gmail.com>
- <20250424114259.000000a0@huawei.com>
+ d=1e100.net; s=20230601; t=1746133502; x=1746738302;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=chTEKfhDE/uSKXfGIxpPQdBKtvzKQoAGrKDYUQ0Sip4=;
+ b=urdtDY2JA9zEjZIDIqp1ufY1HQ7qVNamUQjVOMImu1ovdAbMcc2oXnFL1qg3d5eYPq
+ 0uFQbZ+2ROqK8zW9j3rM5UHG6Eak2aU6YSha8t/QeQCJPfCKcULironTdHQDE1FOzACM
+ PEnPBus1JHc1uhz8Wj5tUSPQeCVBvYU8F/O0SwROc+d/wUtwK4Vlhnt7/v/fat5wyMPH
+ BWaUTP9s9MNmQwKlRV9/mQ66RZHA3BqCYf247G5GdK86ynzBaz/ge7NhFqtyh7WlN7Yx
+ V9X2nYg+jRnDeXCId8LXoJnTuTzdBucBhZQXUm/qlIsvGGO1OZWSE+EpIbPepdKrTQ3Z
+ FSUA==
+X-Gm-Message-State: AOJu0Yy4sHpaMu9scO89tI4Kl2MXYtOU6H1KpBcGqMZN0MDMoMzcihTT
+ pu6iCX2mnZA8yHdV4EhWsl53h9Qo0aMfn+TjP3NcDXTEXorhx/2YqJZTGm+r/yVglhjH7j33GY5
+ l
+X-Gm-Gg: ASbGnct3xReIjIY1ql18dwaD6FL4k74RpaUz0h8SVM1DJiwFklVeW3lj1V9rYy70n9T
+ V2QTixvJ/draU6i55cZhi4nx0eGA35mfpKKN8puuhWSHlnbK9NUZEOGO1sgVnxhSUtaNWh81djp
+ Kk/l/IlS3cQfDlBFmWbBCdXLkFXgODVqHH8DTB9eKtWJ93BSN9xiKfZzb51pCuYpry0EudPQz86
+ d09MqtbfNHLzXJtUNGom/LUDcpoxzqiSeMGuiKGOtv3zNcznD6zP9wNIurMqZTSJMBDChwLfHYg
+ Md1QRO8IR6fHVMIZD2ke34YJ8QjHQLeTJEDzDajhKEzh2ZS3CdzmAjP3Acad2KVisBIMFlCDu0T
+ 1PY21Qv3Lqy9bvfE=
+X-Google-Smtp-Source: AGHT+IE6kNRteRiGmxaRLSa1f3lpQOEIzr+o7N//ao4Lnp5V84KSDgoW6ndTXeYIWcZGkuWn3SfbzQ==
+X-Received: by 2002:a05:6602:380e:b0:861:628f:2d2b with SMTP id
+ ca18e2360f4ac-8669f993535mr117729439f.1.1746133502180; 
+ Thu, 01 May 2025 14:05:02 -0700 (PDT)
+Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ca18e2360f4ac-864aa585a1fsm25629439f.44.2025.05.01.14.04.58
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 01 May 2025 14:05:01 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?=
+ <clement.mathieu--drif@eviden.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Hanna Reitz <hreitz@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ qemu-block@nongnu.org, Jason Wang <jasowang@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Ani Sinha <anisinha@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Yi Liu <yi.l.liu@intel.com>
+Subject: [PATCH 00/18] hw/i386/pc: Remove deprecated 2.8 and 2.9 PC machines
+Date: Thu,  1 May 2025 23:04:38 +0200
+Message-ID: <20250501210456.89071-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250424114259.000000a0@huawei.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=nifan.cxl@gmail.com; helo=mail-pl1-x62c.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d34;
+ envelope-from=philmd@linaro.org; helo=mail-io1-xd34.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,75 +105,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Apr 24, 2025 at 11:42:59AM +0100, Jonathan Cameron wrote:
-> On Mon, 17 Mar 2025 16:31:30 +0000
-> anisa.su887@gmail.com wrote:
-> 
-> > From: Anisa Su <anisa.su@samsung.com>
-> > 
-> > Add dsmas_flags field to DC Region struct in preparation for next
-> > command, which returns the dsmas flags in the response.
-> > 
-> > Signed-off-by: Anisa Su <anisa.su@samsung.com>
-> > ---
-> >  hw/mem/cxl_type3.c          | 2 ++
-> >  include/hw/cxl/cxl_device.h | 1 +
-> >  2 files changed, 3 insertions(+)
-> > 
-> > diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-> > index 731497ebda..452a0c101a 100644
-> > --- a/hw/mem/cxl_type3.c
-> > +++ b/hw/mem/cxl_type3.c
-> > @@ -237,6 +237,8 @@ static int ct3_build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
-> >                                            ct3d->dc.regions[i].len,
-> >                                            false, true, region_base);
-> >              ct3d->dc.regions[i].dsmadhandle = dsmad_handle - 1;
-> > +            CDATDsmas *dsmas = (CDATDsmas *) table[cur_ent + CT3_CDAT_DSMAS];
-> > +            ct3d->dc.regions[i].dsmas_flags = dsmas->flags;
-> 
-Hi Jonathan,
-Thanks for the feedback.
-> This is relying to much on the ordering of creating fields in
-> ct3_build_cdat_entries_for_mr().
-I am not sure whether I understand this clearly.
-In current qemu implemtation, each mr (ram,pmem or dc region) will have the
-whole set of cdat table entries (dsmas, dslbis0-3, etc), so as long as we point
-to the right table entry, we can get the table correctly.
-What do you mean "the ordering of creating fields"?
-> 
-> I'd rather you just stored the information flags is built from in CXLDCRegion
-> and then built the field that is wonderfully called 'Note' in the DC region
-This sentence is kind of broken for me, not totally clear what you are
-suggesting :-(. Can you explain more?
-Are you suggesting not directly take dsmas->flags as dsmas_flags, but
-use bit op to generate the value used in Table 7-66 in cxl spec 3.2?
-> configuration in 6.2 spec.   I've sent a mail to see if we can clean that
-6.2 spec???
-> 'what is the field called' question for future spec releases.
-> 
-> Whilst the flag definitions cross refer the CDAT spec, the actual locations
-> of those flags matches, but doesn't cross refer so maybe in the future
-> we will have other flags in here and locations might not match.
-For the flags stored in dsmas table, do we expect there can be more than those
-defined in Table 7-66 in spec 3.2?
+The versioned 'pc' and 'q35' machines up to 2.12 been marked
+as deprecated two releases ago, and are older than 6 years,
+so according to our support policy we can remove them.
 
-Fan
+This series only includes the 2.8 and 2.9 machines removal,
+as it is a big enough number of LoC removed. Rest will
+follow.
 
-> 
-> >  
-> >              cur_ent += CT3_CDAT_NUM_ENTRIES;
-> >              region_base += ct3d->dc.regions[i].len;
-> > diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-> > index bebed04085..81b826f570 100644
-> > --- a/include/hw/cxl/cxl_device.h
-> > +++ b/include/hw/cxl/cxl_device.h
-> > @@ -609,6 +609,7 @@ typedef struct CXLDCRegion {
-> >      uint8_t flags;
-> >      unsigned long *blk_bitmap;
-> >      uint64_t supported_blk_size_bitmask;
-> > +    uint8_t dsmas_flags;
-> >  } CXLDCRegion;
-> >  
-> >  typedef struct CXLSetFeatureInfo {
-> 
+Based-on: <20250501183628.87479-1-philmd@linaro.org>
+
+Philippe Mathieu-Daudé (18):
+  hw/i386/pc: Remove deprecated pc-q35-2.8 and pc-i440fx-2.8 machines
+  hw/i386/pc: Remove pc_compat_2_8[] array
+  hw/southbridge/ich9: Remove ICH9_LPC_SMI_F_BROADCAST_BIT definition
+  hw/i386/kvm: Remove KVMClockState::mach_use_reliable_get_clock field
+  hw/core/machine: Remove hw_compat_2_8[] array
+  hw/block/pflash: Remove PFlashCFI01::old_multiple_chip_handling field
+  hw/pci/pcie: Remove QEMU_PCIE_EXTCAP_INIT definition
+  hw/virtio/virtio-pci: Remove VIRTIO_PCI_FLAG_INIT_DEVERR definition
+  hw/virtio/virtio-pci: Remove VIRTIO_PCI_FLAG_INIT_LNKCTL definition
+  hw/virtio/virtio-pci: Remove VIRTIO_PCI_FLAG_INIT_PM definition
+  hw/nvram/fw_cfg: Remove FWCfgState::file_slots field
+  hw/nvram/fw_cfg: Inline fw_cfg_file_slots()
+  hw/i386/pc: Remove deprecated pc-q35-2.9 and pc-i440fx-2.9 machines
+  hw/i386/pc: Remove pc_compat_2_9[] array
+  hw/core/machine: Remove hw_compat_2_9[] array
+  hw/net/virtio-net: Remove VirtIONet::mtu_bypass_backend field
+  hw/pci-bridge/gen_pcie_rp: Remove GenPCIERootPort::migrate_msix field
+  hw/i386/x86-iommu: Remove X86IOMMUState::pt_supported field
+
+ include/hw/boards.h                |  6 -----
+ include/hw/i386/pc.h               |  6 -----
+ include/hw/i386/x86-iommu.h        |  1 -
+ include/hw/nvram/fw_cfg.h          |  1 -
+ include/hw/pci/pci.h               |  2 --
+ include/hw/southbridge/ich9.h      |  1 -
+ include/hw/virtio/virtio-net.h     |  1 -
+ include/hw/virtio/virtio-pci.h     | 12 ----------
+ hw/acpi/ich9.c                     |  6 ++---
+ hw/block/pflash_cfi01.c            | 14 +++---------
+ hw/core/machine.c                  | 22 -------------------
+ hw/i386/amd_iommu.c                | 12 ++--------
+ hw/i386/intel_iommu.c              | 13 ++---------
+ hw/i386/kvm/clock.c                | 18 ---------------
+ hw/i386/pc.c                       | 14 ------------
+ hw/i386/pc_piix.c                  | 18 ---------------
+ hw/i386/pc_q35.c                   | 18 ---------------
+ hw/i386/x86-iommu.c                |  1 -
+ hw/isa/lpc_ich9.c                  | 22 +++----------------
+ hw/net/virtio-net.c                |  8 ++-----
+ hw/nvram/fw_cfg.c                  | 35 ++++--------------------------
+ hw/pci-bridge/gen_pcie_root_port.c | 16 ++------------
+ hw/pci/pci.c                       |  2 --
+ hw/pci/pcie.c                      |  5 -----
+ hw/virtio/virtio-pci.c             | 35 ++++++++----------------------
+ 25 files changed, 29 insertions(+), 260 deletions(-)
+
+-- 
+2.47.1
+
 
