@@ -2,76 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D132AA604A
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 16:56:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C290AA6054
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 16:58:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAVJv-0005dj-5J; Thu, 01 May 2025 10:55:27 -0400
+	id 1uAVJy-0005fk-5Q; Thu, 01 May 2025 10:55:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAVJt-0005dR-H2
+ id 1uAVJt-0005dY-OW
  for qemu-devel@nongnu.org; Thu, 01 May 2025 10:55:25 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uAVJr-0005QL-D2
+ id 1uAVJr-0005QO-TJ
  for qemu-devel@nongnu.org; Thu, 01 May 2025 10:55:25 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-224019ad9edso16152175ad.1
- for <qemu-devel@nongnu.org>; Thu, 01 May 2025 07:55:22 -0700 (PDT)
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-227cf12df27so10357255ad.0
+ for <qemu-devel@nongnu.org>; Thu, 01 May 2025 07:55:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746111321; x=1746716121; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=6ERfDcpD0q610+HtPkmuutwyCXat3qEAtdpeWLrgOMg=;
- b=sQ2lYBJefnKhkey6q4f4e3GqNOS8W4QmeWUSCrD2J1Hq7sX/dbKZa8go2IU0WG1TbM
- Wfx13Oy/cKw0BYWYC3EtszE1bn8qjiYbPzaECsl+v+w3siyj5YCIOAmNcK1lmL9dI0Gh
- yzRK+VRmZJ0u/Bha5n3FbQgrxoNl2FJ6Lsp8R+6UPo4LR1TQJLNLVECec8ETN7jJMqyl
- nc2hs2qyEP/Qs0xZyNfR6i/RAYbGKkex0wmQTIkV1w8eusYgdpfcW1x3GJEwWN+toJAa
- iGFRCzp39Xqg0PkdIMiRxTUPsPa3Fv1BKONtqvqbtOmSYwnsOKo9iSwCqX5ZsuPMY3PV
- eYhA==
+ d=linaro.org; s=google; t=1746111322; x=1746716122; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=fbSBsMP5ixQP3674lJZfsVNkGgJPNW/j+NTvOfGTPO8=;
+ b=SUgcmnhlSkXBq8JqcHWLBF74yhCwrbWiuPqWxyRjpFW/LgtIppscuvzg9MIqZ1VdYh
+ ftNEVuRJu+ri6YRHgdSNJyMZwZPyE8UnqDz8prkthIsSFsDM6P5C/9Ro/vdoklTJmxI2
+ LzhruBClTdbs2fBtBO6TLpTXCgcIk2k8NnckVvqom6QxY82YW6GKHJ+fEaD8SdJAbTax
+ nvVZEN1HxVGt4bz4fXMsRfsoTEbU0AcbK/IJVhyK88IiBY7+KzF/UUBrDB/iFF47VN8K
+ G5g/G75SfiBhfc104AosglJtdZwqIqULT4k+a6BPrDXfXlpFD18AGJo/AzDWVLNHJxca
+ 7ENQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746111321; x=1746716121;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6ERfDcpD0q610+HtPkmuutwyCXat3qEAtdpeWLrgOMg=;
- b=i3HpmT48V+tB2NRaPKE3zlNnP9Ij1odwLsjjT81hulmoug99MYuNG6von+b6pXFu1j
- kE53VRB/MxGEq50LyEPTntonOxOx4GHYhaCiMrBYqqz8enRocdr27cZk/KXwLNxYUryb
- fKw2WS3D+fAPN3ZmydWi86T6D+Kjp5EWy+qIW0p/6iwrVRMPbeWTrsH6UPM1BVNagq3x
- mQfC+FDFs3eboR22fWBvDwLytaf6VMfjFLlxSw5lT00M5FGUOiJV89atEWAIvqCH1xI9
- kI0l5U2KJFUJyGyFc8n1UMeZlLo+5b03JBFPYtgtxUGDnw+B8+S8Tp6SSz3OX70dTpWf
- UpRg==
-X-Gm-Message-State: AOJu0YwFemFehzy9fyfkXqh0Tri3GdA88wDcpwL2tp2fptgqvDqpu1v2
- mbA52RWwAfZI3LktsSMulIh1ECS2Zp3DiOovz5feyY05uHg+qYhIryR9GVU73zS0AaVU92Yqyah
+ d=1e100.net; s=20230601; t=1746111322; x=1746716122;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=fbSBsMP5ixQP3674lJZfsVNkGgJPNW/j+NTvOfGTPO8=;
+ b=QzoDf+1qkxJu9cMLkA1qgOuN/7DrLbdNOA4d/6pxAjtFfEbUwrzs5SrwjzTLIGhVfo
+ IRh+pJMPBx/YFcXdSzKPvMRpEERiUz5ZsDhm+0VAAAwnVdPPrhq2g9QXla32+K0JFQDD
+ XdJYvkVL6t3s98XgakLF7uWl454ZGkDs01BQOtqggGsUThvHkM65njPYChfJHZzp2RSz
+ /cbub1BWhUxZEfC/367RR8/617AAMai0cREafOGfh2JXq9MWJJQG/NbzNB0+DEUCotbK
+ gUhUfJPMfU79GA6/i6sAtZHdJnFJq0sIwOfo3RXmlDVXojyRFJFNQuk2xk8aeiHN+J8n
+ fRCg==
+X-Gm-Message-State: AOJu0YwQ8fY/spU+ZBtX+iCWc9dZxhgZZrsJkKZZeKgxbVmHaVo4pFXg
+ 5ZfmcC20Zaic4UILLdaKiJM/laT0nOdmd+0r7VGYVA21q6nfgk80lFjuoRokc/5n/q3LlvwS+hR
  W
-X-Gm-Gg: ASbGncty3D6xSCyxiMxhsRlXMEEKgsxcpdn7sFEJdMvaIQjli4aL3IDikWsD4CZ2tKa
- rOw+/+cKXukwUj0cpDtcPyUdG5m4IVDjMkQGfId25nMpLozWlXKXaD8qW9uflq+lFe8JSWl2cN0
- rrNLpOXCfO4d/qiHJl3JiBaun4x9ynwjPqHLOc0cMbV9aIOFgovPFJVobE3wfqQGyxdZLExtBQk
- iqdehLIdBU0OfujNoJ2VXFdjX5Er9+uaKyUJ5o6ArcByqxE+b7WRnXfntco0mKG4rEYPqpx/Fpr
- PUsWxPOHhtFqxTkDMJtHdNqzDuskrXZFmmexNg/T2b5LaCiLScH8HGihk2Ii55wYrte0/RHALCI
- =
-X-Google-Smtp-Source: AGHT+IHESq5aOD9v+3FVmBN/WemxdCRWcXRywvBPpxEtRgPzcXTxfJp/fJWC/orYMWXSYnJ3ded0cA==
-X-Received: by 2002:a17:902:ced2:b0:21b:d105:26b8 with SMTP id
- d9443c01a7336-22e040a3212mr47724025ad.7.1746111321101; 
+X-Gm-Gg: ASbGnctkp/UuSm/JRXVADJSAaCWGmHxdeksGD0VHMFlpix5Tc7lgay7Qgyrb0cG1nQR
+ 5x/pmfttdRYumzB7ysvW4QdcDU9eavKkvx8sq2e3dCZuZoE1t5WeXOb9QQ8/vwFN0FKvyrG4INU
+ qlXS+oV6lsBcaAfqPnWe+YyssR4oUT6yT88tCJql2Tbh+y9QawV6L7imolixTJy4VUIbp+ABx4y
+ fVQr0fVdUZKv2kQ8Sw+VL6qay4F/BFTE3n8OImN9QEUYzvPSlfpnqrVEOzRaVFxOo5yZbyvSlca
+ nyswyk+qmPZlX7Ucce5IASiOJoqH5Yyn2G4EzxE3Lhtv75cW5D/BaxCnEAlWyuZZqEQY4pJPv3T
+ i2GfHW3dpOg==
+X-Google-Smtp-Source: AGHT+IFjhSGLnaDlUMbdpt1X3OyrArpYGOQ6OVgKKEsA3oVGq80nIkCBhU6+sCWg5KJmlMSislf7Zw==
+X-Received: by 2002:a17:902:ef03:b0:223:3394:3a2e with SMTP id
+ d9443c01a7336-22e087f7e2cmr41450325ad.18.1746111321982; 
  Thu, 01 May 2025 07:55:21 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22e0bb0e770sm7644415ad.92.2025.05.01.07.55.20
+ d9443c01a7336-22e0bb0e770sm7644415ad.92.2025.05.01.07.55.21
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 May 2025 07:55:20 -0700 (PDT)
+ Thu, 01 May 2025 07:55:21 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 00/11] accel/tcg: Finish building once
-Date: Thu,  1 May 2025 07:55:08 -0700
-Message-ID: <20250501145520.2695073-1-richard.henderson@linaro.org>
+Subject: [PATCH 01/11] accel/tcg: Move user-only tlb_vaddr_to_host out of line
+Date: Thu,  1 May 2025 07:55:09 -0700
+Message-ID: <20250501145520.2695073-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250501145520.2695073-1-richard.henderson@linaro.org>
+References: <20250501145520.2695073-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,45 +97,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Based-on: 20250430230631.2571291-1-richard.henderson@linaro.org
-("[PATCH 0/6] accel/tcg: Build translate-all, tcg-all twice")
+At the same time, fix a mis-match between user and system
+by using vaddr not abi_ptr for the address parameter.
 
-Adjust the final two files in accel/tcg/ to build once.
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ include/accel/tcg/cpu-ldst.h | 8 --------
+ accel/tcg/user-exec.c        | 6 ++++++
+ 2 files changed, 6 insertions(+), 8 deletions(-)
 
-
-r~
-
-
-Richard Henderson (11):
-  accel/tcg: Move user-only tlb_vaddr_to_host out of line
-  accel/tcg: Move tlb_vaddr_to_host declaration to probe.h
-  accel/tcg: Use target_long_bits() in cputlb.c
-  accel/tcg: Use vaddr for plugin_{load,store}_cb
-  accel/tcg: Build cputlb.c once
-  include/user: Convert GUEST_ADDR_MAX to a variable
-  include/user: Use vaddr in guest-host.h
-  accel/tcg: Move TARGET_TAGGED_ADDRESSES to TCGCPUOps.untagged_addr
-  accel/tcg: Remove TARGET_PAGE_DATA_SIZE
-  accel/tcg: Avoid abi_ptr in user-exec.c
-  accel/tcg: Build user-exec.c once
-
- include/accel/tcg/cpu-ldst.h   | 24 -------------
- include/accel/tcg/cpu-ops.h    |  7 ++++
- include/accel/tcg/probe.h      | 16 +++++++++
- include/user/guest-host.h      | 49 ++++++++++----------------
- include/user/page-protection.h |  8 +++--
- target/arm/cpu-param.h         |  7 +---
- target/arm/cpu.h               | 36 +------------------
- accel/tcg/cputlb.c             | 28 ++++++++-------
- accel/tcg/user-exec.c          | 63 ++++++++++++++++++++++------------
- bsd-user/main.c                |  8 +++++
- linux-user/main.c              |  8 +++++
- target/arm/cpu.c               | 27 ++++++++++++++-
- target/arm/tcg/mte_helper.c    |  4 +--
- accel/tcg/ldst_common.c.inc    |  4 +--
- accel/tcg/meson.build          | 10 ++----
- 15 files changed, 154 insertions(+), 145 deletions(-)
-
+diff --git a/include/accel/tcg/cpu-ldst.h b/include/accel/tcg/cpu-ldst.h
+index 44a62b54da..00e6419e13 100644
+--- a/include/accel/tcg/cpu-ldst.h
++++ b/include/accel/tcg/cpu-ldst.h
+@@ -515,15 +515,7 @@ static inline uint64_t cpu_ldq_code(CPUArchState *env, abi_ptr addr)
+  * Otherwise (TLB entry is for an I/O access, guest software
+  * TLB fill required, etc) return NULL.
+  */
+-#ifdef CONFIG_USER_ONLY
+-static inline void *tlb_vaddr_to_host(CPUArchState *env, abi_ptr addr,
+-                                      MMUAccessType access_type, int mmu_idx)
+-{
+-    return g2h(env_cpu(env), addr);
+-}
+-#else
+ void *tlb_vaddr_to_host(CPUArchState *env, vaddr addr,
+                         MMUAccessType access_type, int mmu_idx);
+-#endif
+ 
+ #endif /* ACCEL_TCG_CPU_LDST_H */
+diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
+index e1f4c4eacf..adc5296ba5 100644
+--- a/accel/tcg/user-exec.c
++++ b/accel/tcg/user-exec.c
+@@ -850,6 +850,12 @@ void *probe_access(CPUArchState *env, vaddr addr, int size,
+     return size ? g2h(env_cpu(env), addr) : NULL;
+ }
+ 
++void *tlb_vaddr_to_host(CPUArchState *env, vaddr addr,
++                        MMUAccessType access_type, int mmu_idx)
++{
++    return g2h(env_cpu(env), addr);
++}
++
+ tb_page_addr_t get_page_addr_code_hostp(CPUArchState *env, vaddr addr,
+                                         void **hostp)
+ {
 -- 
 2.43.0
 
