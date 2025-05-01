@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F394AA6525
-	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:11:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5B60AA651D
+	for <lists+qemu-devel@lfdr.de>; Thu,  1 May 2025 23:09:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAbBD-0007YL-0H; Thu, 01 May 2025 17:10:51 -0400
+	id 1uAb9G-0005dI-4D; Thu, 01 May 2025 17:08:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAb7v-0003qR-E3
- for qemu-devel@nongnu.org; Thu, 01 May 2025 17:07:31 -0400
-Received: from mail-io1-xd34.google.com ([2607:f8b0:4864:20::d34])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAb83-00041f-9l
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 17:07:35 -0400
+Received: from mail-io1-xd2d.google.com ([2607:f8b0:4864:20::d2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAb7r-0006qH-Iu
- for qemu-devel@nongnu.org; Thu, 01 May 2025 17:07:25 -0400
-Received: by mail-io1-xd34.google.com with SMTP id
- ca18e2360f4ac-85db3475637so87039939f.1
- for <qemu-devel@nongnu.org>; Thu, 01 May 2025 14:07:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAb80-0006rO-Fg
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 17:07:34 -0400
+Received: by mail-io1-xd2d.google.com with SMTP id
+ ca18e2360f4ac-85b3f92c8f8so164499739f.1
+ for <qemu-devel@nongnu.org>; Thu, 01 May 2025 14:07:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746133641; x=1746738441; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746133650; x=1746738450; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+sYT96Q+b8vV/xVN5xVJCJ5YUm+R4rge65haKgSbsJY=;
- b=Ma9XUVrNMPO0Cyx3Wm26LTcrduCW6S1K5VUa6gio800UkvEgDtuXQlaTqKGcJga/Dw
- l3M1ZovSylb5P+MYlyoElnstWrWAKijO5tODkv7xkUYpY0uOI8FnFkT7QkVg8WSyqxe9
- 0DzoklSRsO9gcAr+QylL6T+5IYSBe24YmRH11binljuqcw1JBWYLZ0TmzEqcY6eJmTBt
- 26r9cZJkYYtwzA+W2GABPWJsmJjgKhsjvpxhShoPAtqWCn5DuJlHuE6gIAL0PdEq9fRh
- JvBRkeIsCn6ghBQsPI0UYNrhIR8ljMTcJU4qnBdyqA0lAvka5+FYi9VoV3xfBEDNNciW
- HxvA==
+ bh=KzLE2lKYGYuJ3IoUvDO5W4ZXh+AwpN8VPQtHB7fCw5w=;
+ b=LjPtNiwUTXlEwqq5gFaPJ+bGimccjIWzgjGAQcbZ5O1kItHlcGp161yX/ic4BJlxDJ
+ 9s7TuGUzNq1kSsGDJHMuoyF4ay4wsDTqOvmggxouVQG+Ytelz9ZFZFY/Og+4YjIwPt6S
+ QCK+geQiWn/IeN2OGVLfi+WbYNJ1FiSFmMQn/+FCj5+GRyi0tqjJ9Hyt6zgiDmXoK8Z9
+ jCrt6U7K0duJslxLo7HYhs/uOADkOLsrmQmRU5sYiwR9w7D9cc9LdPtCEYqVgE0dM5TB
+ m/EcPigztFqH16CWLCL6jm/vKAF61FrM4usXfYm9Tyfu/KnmRRT90zR6C1+zQhI3SwZl
+ nATA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746133641; x=1746738441;
+ d=1e100.net; s=20230601; t=1746133650; x=1746738450;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+sYT96Q+b8vV/xVN5xVJCJ5YUm+R4rge65haKgSbsJY=;
- b=q10qwmpWV+JNmQ5dis+ZTDQSBl3pQkuj/b/oujLPmmKZP1CdIwPprttUIzFr5RqhYj
- 4Tm/QTytDKO+mJ6AmuP/H93nZoBxOznt4oP5kZLNS++Kwma/DhddT2cfzYSeRYtN9YaA
- HQMm1NZYHIzfPMsDcXBiqoJ0xR2Cz6lrczI30g/rhQP/tcnxZOjAjxvSmstCuKwuAaZH
- wbICRYrU46sJZCqQQbGZE2ekIi61UfQEGUujnWs4O+IjaI0UQLkKygh1ytIuo3qPgaLM
- pY7ZIiLcp6FVEfnPWRl66FAH0KjOb3blMGDLsp1d16Gy9itxYPIPaUIwjLWgHQUCyk/u
- 2Zmg==
-X-Gm-Message-State: AOJu0YxYosUw43FTgTdYWqPma+/caWHx4Ilh6ElNEx+YvjvBug9266DW
- Y1Kx8ppS/nLhOPI3NlFkiY0sFOIwsDuiuRNvWDdnKS8DXTO+U7P21RjtvfUNGdTv0qwDawnLNzG
- T
-X-Gm-Gg: ASbGncsrJRlHEY570OAcNupC0LaJPSfDT9/tuJEAyrjNVKuea7ruJwazTqBFHS6hA+J
- o6LcIbqPSRCh0CKaLPmsxZt0QI8k9ZTLoPUgyrpcbUyloBiv76W3E8YJVMEyHVNyQKWc4P987oy
- vm5WzwagjS8/TQvwjdmJkiukVS/ZJSXcUUyfIjf9MSMbH+2ufL5y6R6c4/Lq4qa5lTCNF9PicOl
- VCU4ryE6svbyGljIavhmF9jK/dEiizGOmyzmdRmLarQAWKlBgaePfo6qVB8R8OtPN3H7/b0m1b9
- yfW5mE84vo0fsC5pjK+sJMxG78LjP3h7p83dQXXyUSbnn/7pTGeLzFHw2CWOZnecm/Ia0C0R7cD
- K2eirUsQayFQD+nQ=
-X-Google-Smtp-Source: AGHT+IFGqEyNq9qahKbJ00O0JYK18J5gKj3OWvCE509BkFlAxLqOoJhJG/vCXZ0YxjnMxOO+6J+RZw==
-X-Received: by 2002:a6b:601a:0:b0:85e:d0ca:b635 with SMTP id
- ca18e2360f4ac-864a3bceb99mr487124339f.2.1746133641157; 
- Thu, 01 May 2025 14:07:21 -0700 (PDT)
+ bh=KzLE2lKYGYuJ3IoUvDO5W4ZXh+AwpN8VPQtHB7fCw5w=;
+ b=P6ka7alY4YWfSAvP9XXhfUskYHYaRt6SywHlu1mqs2FnkdjGAfpztADlqUMmJ6kBSF
+ A97CPKKFwqWgoG2iZVN+IIIBmHy0MyuVLWMwoioWVhBf6GyACMiawzKqFNydpiOjjcJh
+ 0cqxx2escVoqoKCd/r1Lv7aBW3QXpkzNMVMgjmAZomF8M2kQT5SmU8dFnw53nN40uIgp
+ u88YgNNeH46M1eRLYwXgHmu1zJwR6Su+DOK83CC2r+2EIGtBA+D4yl9FZEdkjwuV1Kt7
+ gYH+XU2PiG23cJZNQef/AKj+6+l5RZifPG0j28Hl78dQwkLvd7pww157j1utML/23bov
+ tbtg==
+X-Gm-Message-State: AOJu0YxA2MeU/6Tskjaztge0jDHrqo8JqMk1sANPNsulpvPwhac544Ut
+ EsxRcFmWIzm7av2vUGzU5AYzEIC4+3Z4JU3z9oGjaF0OAHVpbxWC+2Ul9ZUHKu36h9ldUlm6fe2
+ E
+X-Gm-Gg: ASbGnctBN3j8aZ4yxmFJoSboyDLVEPKphfOz7+xUuunrHQI4ykazsYMaI3eRFdavzVE
+ wVpWW6hs7xDt6eBSablz0IolVF4InCMS9lgLfR4uAj0s4UH5FJVr+N4uZaIU7+H8CuqQNw4qsr9
+ jzZtqRxlCnVM1dOeo3VI/rNkYqgPupGwYP1ADEq0MgUeWJCAAj8dr+UJOz4QJZYuS6CDk6uVlQO
+ rk/PXPBUw+e2gHx8Cn79BAYcxUbuDzv+OevzGQOPBdkktOa+ehKecr7OLNrhOqGbFnWmSgxIrxD
+ te4btijoCV2pHnAmLxNGTo7/Meadruuh4ouqN5oPe4kERVd1I769dvEi0A1EvXzMOQxXxKfrb+a
+ 5XWeEfQ103+8qfjk=
+X-Google-Smtp-Source: AGHT+IEnxBq1ThHL+mZWJMXZMQb0WMT3kYAky685C7sB7D2ferkDcLHO5nZpr0r6mThfuRqkUbLWpw==
+X-Received: by 2002:a05:6e02:87:b0:3d9:5d50:e3b1 with SMTP id
+ e9e14a558f8ab-3d97c295980mr6542775ab.18.1746133650032; 
+ Thu, 01 May 2025 14:07:30 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 8926c6da1cb9f-4f88a8d0fecsm50261173.12.2025.05.01.14.07.17
+ 8926c6da1cb9f-4f88a915f23sm49076173.39.2025.05.01.14.07.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 01 May 2025 14:07:20 -0700 (PDT)
+ Thu, 01 May 2025 14:07:29 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?=
@@ -75,18 +75,18 @@ Cc: =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?=
  "Michael S. Tsirkin" <mst@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Yi Liu <yi.l.liu@intel.com>
-Subject: [PATCH 16/18] hw/net/virtio-net: Remove VirtIONet::mtu_bypass_backend
- field
-Date: Thu,  1 May 2025 23:04:54 +0200
-Message-ID: <20250501210456.89071-17-philmd@linaro.org>
+Subject: [PATCH 17/18] hw/pci-bridge/gen_pcie_rp: Remove
+ GenPCIERootPort::migrate_msix field
+Date: Thu,  1 May 2025 23:04:55 +0200
+Message-ID: <20250501210456.89071-18-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250501210456.89071-1-philmd@linaro.org>
 References: <20250501210456.89071-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d34;
- envelope-from=philmd@linaro.org; helo=mail-io1-xd34.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d2d;
+ envelope-from=philmd@linaro.org; helo=mail-io1-xd2d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,62 +109,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The VirtIONet::mtu_bypass_backend boolean was only set in
-the hw_compat_2_9[] array, via the 'x-mtu-bypass-backend=off'
-property. We removed all machines using that array, lets remove
-that property and all the code around it.
+The GenPCIERootPort::migrate_msix boolean was only set in
+the hw_compat_2_9[] array, via the 'x-migrate-msix=false'
+property. We removed all machines using that array, lets
+remove that property and all the code around it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/virtio/virtio-net.h | 1 -
- hw/net/virtio-net.c            | 8 ++------
- 2 files changed, 2 insertions(+), 7 deletions(-)
+ hw/pci-bridge/gen_pcie_root_port.c | 16 ++--------------
+ 1 file changed, 2 insertions(+), 14 deletions(-)
 
-diff --git a/include/hw/virtio/virtio-net.h b/include/hw/virtio/virtio-net.h
-index b9ea9e824e3..353e872f677 100644
---- a/include/hw/virtio/virtio-net.h
-+++ b/include/hw/virtio/virtio-net.h
-@@ -214,7 +214,6 @@ struct VirtIONet {
-     uint64_t saved_guest_offloads;
-     AnnounceTimer announce_timer;
-     bool needs_vnet_hdr_swap;
--    bool mtu_bypass_backend;
-     /* primary failover device is hidden*/
-     bool failover_primary_hidden;
-     bool failover;
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 2de037c2736..a8a43ffa242 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -801,8 +801,7 @@ static uint64_t virtio_net_get_features(VirtIODevice *vdev, uint64_t features,
-     features = vhost_net_get_features(get_vhost_net(nc->peer), features);
-     vdev->backend_features = features;
+diff --git a/hw/pci-bridge/gen_pcie_root_port.c b/hw/pci-bridge/gen_pcie_root_port.c
+index d9078e783bf..831d21225e9 100644
+--- a/hw/pci-bridge/gen_pcie_root_port.c
++++ b/hw/pci-bridge/gen_pcie_root_port.c
+@@ -35,8 +35,6 @@ struct GenPCIERootPort {
+     PCIESlot parent_obj;
+     /*< public >*/
  
--    if (n->mtu_bypass_backend &&
--            (n->host_features & 1ULL << VIRTIO_NET_F_MTU)) {
-+    if (n->host_features & (1ULL << VIRTIO_NET_F_MTU)) {
-         features |= (1ULL << VIRTIO_NET_F_MTU);
+-    bool migrate_msix;
+-
+     /* additional resources to reserve */
+     PCIResReserve res_reserve;
+ };
+@@ -66,13 +64,6 @@ static void gen_rp_interrupts_uninit(PCIDevice *d)
+     msix_uninit_exclusive_bar(d);
+ }
+ 
+-static bool gen_rp_test_migrate_msix(void *opaque, int version_id)
+-{
+-    GenPCIERootPort *rp = opaque;
+-
+-    return rp->migrate_msix;
+-}
+-
+ static void gen_rp_realize(DeviceState *dev, Error **errp)
+ {
+     PCIDevice *d = PCI_DEVICE(dev);
+@@ -121,16 +112,13 @@ static const VMStateDescription vmstate_rp_dev = {
+         VMSTATE_PCI_DEVICE(parent_obj.parent_obj.parent_obj, PCIESlot),
+         VMSTATE_STRUCT(parent_obj.parent_obj.parent_obj.exp.aer_log,
+                        PCIESlot, 0, vmstate_pcie_aer_log, PCIEAERLog),
+-        VMSTATE_MSIX_TEST(parent_obj.parent_obj.parent_obj.parent_obj,
+-                          GenPCIERootPort,
+-                          gen_rp_test_migrate_msix),
++        VMSTATE_MSIX(parent_obj.parent_obj.parent_obj.parent_obj,
++                     GenPCIERootPort),
+         VMSTATE_END_OF_LIST()
      }
+ };
  
-@@ -953,8 +952,7 @@ static void virtio_net_set_features(VirtIODevice *vdev, uint64_t features)
-     Error *err = NULL;
-     int i;
- 
--    if (n->mtu_bypass_backend &&
--            !virtio_has_feature(vdev->backend_features, VIRTIO_NET_F_MTU)) {
-+    if (!virtio_has_feature(vdev->backend_features, VIRTIO_NET_F_MTU)) {
-         features &= ~(1ULL << VIRTIO_NET_F_MTU);
-     }
- 
-@@ -4121,8 +4119,6 @@ static const Property virtio_net_properties[] = {
-     DEFINE_PROP_UINT16("tx_queue_size", VirtIONet, net_conf.tx_queue_size,
-                        VIRTIO_NET_TX_QUEUE_DEFAULT_SIZE),
-     DEFINE_PROP_UINT16("host_mtu", VirtIONet, net_conf.mtu, 0),
--    DEFINE_PROP_BOOL("x-mtu-bypass-backend", VirtIONet, mtu_bypass_backend,
--                     true),
-     DEFINE_PROP_INT32("speed", VirtIONet, net_conf.speed, SPEED_UNKNOWN),
-     DEFINE_PROP_STRING("duplex", VirtIONet, net_conf.duplex_str),
-     DEFINE_PROP_BOOL("failover", VirtIONet, failover, false),
+ static const Property gen_rp_props[] = {
+-    DEFINE_PROP_BOOL("x-migrate-msix", GenPCIERootPort,
+-                     migrate_msix, true),
+     DEFINE_PROP_UINT32("bus-reserve", GenPCIERootPort,
+                        res_reserve.bus, -1),
+     DEFINE_PROP_SIZE("io-reserve", GenPCIERootPort,
 -- 
 2.47.1
 
