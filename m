@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F0E3AA79A4
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 20:58:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89320AA799D
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 20:58:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAvZO-0004Y7-RJ; Fri, 02 May 2025 14:57:10 -0400
+	id 1uAvZR-0004fM-IY; Fri, 02 May 2025 14:57:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAvZL-0004V9-2U
- for qemu-devel@nongnu.org; Fri, 02 May 2025 14:57:07 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAvZP-0004bf-Hc
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 14:57:11 -0400
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAvZI-0005NF-Oi
- for qemu-devel@nongnu.org; Fri, 02 May 2025 14:57:06 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-ac2bb7ca40bso383187866b.3
- for <qemu-devel@nongnu.org>; Fri, 02 May 2025 11:57:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAvZM-0005Nw-CS
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 14:57:10 -0400
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-ac2963dc379so355736666b.2
+ for <qemu-devel@nongnu.org>; Fri, 02 May 2025 11:57:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746212221; x=1746817021; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746212226; x=1746817026; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QsChSFQ9xfBFOGYiAY/gUqNa+0g2ne7rXsTx8MOyPRo=;
- b=Bgc1uVyYUOUEHezKlKDYH+y728lkzwupDdOXAJWjYdIBtRY5xmLGTl8oh00deIInao
- 8NmFVSCwR+g/8G0W+25rGHOfx3QnHG1f3Xww9141M3gR/s559dvTkkTjigs0DO+zSrIY
- 9r0E/RCAoESk6Q5b52an/VZvb3Ez9DfYY2jZJC3OqbeqFw3evJRotARHRPxahsck46Ve
- dwZrC45xnPTHOAPb3oGTFDU1KFOeG6j/sYU7Swrxlw93thd+SMzT2ZkP4eKT5kTK+lWY
- YtlxgGKm21SQBuKFfITYS+ZZ9Kn6CNgSVKEe5OwxCbIY9IcDttX4WMYTN4NIGNA3+6Fd
- fDUQ==
+ bh=7qfnGI5cVlujnz0wd1v+F1XwVTLfEg1rKbq6EincqJQ=;
+ b=jc5lBdrAZKWwb47rXBGBqB9BaFLVGyG46PUnZcfy6+wD49yyyfkDPq7q20vv2KrRzu
+ RcbJhgBZrp/P92snVfG0aXUfTNxg46jBtjHP5K2VwoaUuBgOtfZnS3B5d50PgWz6vqDk
+ TOoA5+uChRe3ZgJCW69OEzHy9KzYXDdgscr5kSqxn3/tgj4d2J5Bay2gA+4JljfvU85w
+ lJIAFT/dVtnCzD6ru9AH/LfxkqINvDIXt+NW7gg+muk6mQjI8xKWICdKabxzqXKU0bQi
+ 6XzyrCLPwOjUY2pptIhLiUgWRpcHbqadgQD5a7zrXC048JA6DhEQnDabXAkz8nFxhjX1
+ +0Eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746212221; x=1746817021;
+ d=1e100.net; s=20230601; t=1746212226; x=1746817026;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QsChSFQ9xfBFOGYiAY/gUqNa+0g2ne7rXsTx8MOyPRo=;
- b=D8JcST/aAmR+HspwKGH0WZ/IXeshgir5UZUecNu3lMUeRdkYoJHJZc7vceG/2ALFKV
- JdA6ebwaoOjMKkJgz7JZI0TTK9+v9IqGVnsHD0eFu/PqJJG4MyEchuNGpLM166Y7oGnh
- anh+raqreYFS5Bts96J01d8u4mxGsZrBMI+0pvl4DSf/m0eeSERNDiekg9LYrS1+RIkY
- BYgluQVXvuK7zPCjNg6Fl8LwIS59dRAFL8KZowIedyTqXa3vCngJneYg17eLxLsq/lVd
- 0E7a4pkKVbfIbxPySiLK9AiZh5OmxbBsL/0ZjiIAaOyJaeOyBgB55Czf9AarXKUWVqGc
- yznA==
-X-Gm-Message-State: AOJu0YzWMFtjD5qd0Gcv0UnAKZuE+gNnpACUKBZTSutxy1gxnskHelNh
- vbzBP9zxxogrzimUzjphhw8BZpivBl6yu4diP0G3dTC3jHSgm3aqVZz6QfEwm7UG3n72U8mTArV
+ bh=7qfnGI5cVlujnz0wd1v+F1XwVTLfEg1rKbq6EincqJQ=;
+ b=dQFkez2rH4mXKzU2/s0eYhacHllzKhETr93npDzhk8uglWR1zLwis5noEDH6Fv8j9S
+ WW/u3/hzSc7bQrSPwJRlRKJuJXxxJ8kJ6AXhSmczaVlcjEuFr1TZpCJJ3PIkLArmKUtu
+ QvmpoKmoFWIKcOWy65tFuMxU7WLF4ciNNHZ7Wat/quilRxZl1VFsDdBXqGDcoF8ZNx0p
+ aNQAnmwrD2zI4JXc0AZTRaAe+Osd5Phzgmz6Yok7qpQklGwuXxy29HIcu1wgj7kpHBV1
+ 8DoDB+KT7QtjROvfWcXNkgpDxXhyLMGZqQeQ3inFenKwXqTPqtjVjcuOET14nTnQkR/H
+ pacQ==
+X-Gm-Message-State: AOJu0YxoZF/o9GQsO9fncO8n2zcGczApeWIbRX8HMTZw6Xx0Z4lTNQvN
+ q8US7ZzDVs6MVozWX8v+DgYy+AhGxDbxExblJRqcyHwi5tLtPQJFmHJKlKkzCozQw9QI/eN72e+
  r
-X-Gm-Gg: ASbGncvJDAOlTcOm/74Ilf4YGMj+gMj/WGCDMxJlrQRDEW2vmonf9P+g3gPMP5Y3D7U
- 2KLWm9frAiu8UiDIZPOLm8882jK/vOVvh06LygQRU7JARhoCq0SqWL4BWN/Wkd6fIIJtv6HIC7D
- KoFcJEzBlJ0iqQwQzMMpGuSW9rxJposRm42OAeDwI4w4Azy2VZvtqpj/lcKdpjDqUBSjygrXnnl
- 6gT3/d3+ItUI5h7yK1zCoUVbU7AEtjoA7rl974+QDjYSYudm1+utbwccJTnQM7KZUWXxygXtf1/
- opWx8Lsjd3VReNgMedLT5sANFMzFq1gn5OmRTd/375tfPE8z85AKpPjs1ZTBzUejQYIJxtcnxbn
- 5PjNlXoKKhsPmEUIVtBRo
-X-Google-Smtp-Source: AGHT+IESQY8qEcZTdZKHVXc/Me5NPYRFcc9Vdmdab5vjHAgBJKpE2/yPJAGaaytJrYSVqamnSOFt0w==
-X-Received: by 2002:a17:907:7287:b0:ace:ca87:2306 with SMTP id
- a640c23a62f3a-ad17b5f27damr382895366b.34.1746212220734; 
- Fri, 02 May 2025 11:57:00 -0700 (PDT)
+X-Gm-Gg: ASbGncu404gISUQTZXP+WpHnfytCJiL5B399K0vKCGPp0kZi3gW6ASLS3cAk86na7ru
+ jcse57NKqsCVJ4jpXTlCRoaVdrpzbz50I7DmT8Oe/02sU9PC7m+7cEFmQJMqSDcuPFt6+P2yOuW
+ TkMkyIdKPwetgkz9V3sRhH4BienOfRmIiq79AFA/T7IyaU77xihshTsEZYbO4Lkg83g9JZxtIAf
+ XuA7ndh7C49rv7WHvGrejQ31IuDrXackBpDxKB5tb0Fez4PtBIe4IuJnmzIobxrl/BpkEpdLIW2
+ IetgXU4B1/2XsneO4Y+sTah5dbzcT8Eab6l9xo3ugG6KDe9oqO1U/ICbCsh1Vm5qCvCqTJItS16
+ fXTFUwDCJ4cGR3NnpANDE
+X-Google-Smtp-Source: AGHT+IEP5BemmITdBbdOnjdruBCRbktr46o064JxEbY22405QDVDd9QcCM5mWHs5a7l4J66mEAxcbw==
+X-Received: by 2002:a17:907:96a2:b0:aca:a1cf:d5f8 with SMTP id
+ a640c23a62f3a-ad17ad39d00mr381369766b.11.1746212226448; 
+ Fri, 02 May 2025 11:57:06 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ad1894c29d3sm84586166b.113.2025.05.02.11.56.59
+ a640c23a62f3a-ad1891a766fsm87943066b.69.2025.05.02.11.57.04
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 02 May 2025 11:57:00 -0700 (PDT)
+ Fri, 02 May 2025 11:57:05 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -77,18 +77,18 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Yi Liu <yi.l.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Subject: [PATCH v3 01/19] hw/i386/pc: Remove deprecated pc-q35-2.6 and
- pc-i440fx-2.6 machines
-Date: Fri,  2 May 2025 20:56:33 +0200
-Message-ID: <20250502185652.67370-2-philmd@linaro.org>
+Subject: [PATCH v3 02/19] hw/i386/pc: Remove
+ PCMachineClass::legacy_cpu_hotplug field
+Date: Fri,  2 May 2025 20:56:34 +0200
+Message-ID: <20250502185652.67370-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250502185652.67370-1-philmd@linaro.org>
 References: <20250502185652.67370-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,65 +111,314 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These machines has been supported for a period of more than 6 years.
-According to our versioned machine support policy (see commit
-ce80c4fa6ff "docs: document special exception for machine type
-deprecation & removal") they can now be removed.
+The PCMachineClass::legacy_cpu_hotplug boolean was only used
+by the pc-q35-2.6 and pc-i440fx-2.6 machines, which got
+removed. Remove it and simplify build_dsdt(), removing
+build_legacy_cpu_hotplug_aml() altogether.
+
+Note, this field was added by commit 679dd1a957d ("pc: use
+new CPU hotplug interface since 2.7 machine type"):
+
+ >  For compatibility reasons PC/Q35 will start with legacy
+ >  CPU hotplug interface by default but with new CPU hotplug
+ >  AML code since 2.7 machine type. That way legacy firmware
+ >  that doesn't use QEMU generated ACPI tables will be
+ >  able to continue using legacy CPU hotplug interface.
+ >
+ >  While new machine type, with firmware supporting QEMU
+ >  provided ACPI tables, will generate new CPU hotplug AML,
+ >  which will switch to new CPU hotplug interface when
+ >  guest OS executes its _INI method on ACPI tables
+ >  loading.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 ---
- hw/i386/pc_piix.c | 14 --------------
- hw/i386/pc_q35.c  | 14 --------------
- 2 files changed, 28 deletions(-)
+ include/hw/acpi/cpu_hotplug.h |   3 -
+ include/hw/i386/pc.h          |   3 -
+ hw/acpi/cpu_hotplug.c         | 230 ----------------------------------
+ hw/i386/acpi-build.c          |   4 +-
+ 4 files changed, 1 insertion(+), 239 deletions(-)
 
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 7a62bb06500..98a118fd4a0 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -764,20 +764,6 @@ static void pc_i440fx_machine_2_7_options(MachineClass *m)
+diff --git a/include/hw/acpi/cpu_hotplug.h b/include/hw/acpi/cpu_hotplug.h
+index 3b932abbbbe..aeee630cf05 100644
+--- a/include/hw/acpi/cpu_hotplug.h
++++ b/include/hw/acpi/cpu_hotplug.h
+@@ -34,7 +34,4 @@ void legacy_acpi_cpu_hotplug_init(MemoryRegion *parent, Object *owner,
+ void acpi_switch_to_modern_cphp(AcpiCpuHotplug *gpe_cpu,
+                                 CPUHotplugState *cpuhp_state,
+                                 uint16_t io_port);
+-
+-void build_legacy_cpu_hotplug_aml(Aml *ctx, MachineState *machine,
+-                                  uint16_t io_base);
+ #endif
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index 79b72c54dd3..a3de3e9560d 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -110,9 +110,6 @@ struct PCMachineClass {
+     bool enforce_amd_1tb_hole;
+     bool isa_bios_alias;
  
- DEFINE_I440FX_MACHINE(2, 7);
+-    /* generate legacy CPU hotplug AML */
+-    bool legacy_cpu_hotplug;
+-
+     /* use PVH to load kernels that support this feature */
+     bool pvh_enabled;
  
--static void pc_i440fx_machine_2_6_options(MachineClass *m)
--{
--    X86MachineClass *x86mc = X86_MACHINE_CLASS(m);
--    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
--
--    pc_i440fx_machine_2_7_options(m);
--    pcmc->legacy_cpu_hotplug = true;
--    x86mc->fwcfg_dma_enabled = false;
--    compat_props_add(m->compat_props, hw_compat_2_6, hw_compat_2_6_len);
--    compat_props_add(m->compat_props, pc_compat_2_6, pc_compat_2_6_len);
--}
--
--DEFINE_I440FX_MACHINE(2, 6);
--
- #ifdef CONFIG_ISAPC
- static void isapc_machine_options(MachineClass *m)
- {
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 33211b1876f..b7ffb5f1216 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -658,17 +658,3 @@ static void pc_q35_machine_2_7_options(MachineClass *m)
+diff --git a/hw/acpi/cpu_hotplug.c b/hw/acpi/cpu_hotplug.c
+index aa0e1e3efa5..fe439705bda 100644
+--- a/hw/acpi/cpu_hotplug.c
++++ b/hw/acpi/cpu_hotplug.c
+@@ -116,233 +116,3 @@ void acpi_switch_to_modern_cphp(AcpiCpuHotplug *gpe_cpu,
+     memory_region_del_subregion(parent, &gpe_cpu->io);
+     cpu_hotplug_hw_init(parent, gpe_cpu->device, cpuhp_state, io_port);
  }
- 
- DEFINE_Q35_MACHINE(2, 7);
 -
--static void pc_q35_machine_2_6_options(MachineClass *m)
+-void build_legacy_cpu_hotplug_aml(Aml *ctx, MachineState *machine,
+-                                  uint16_t io_base)
 -{
--    X86MachineClass *x86mc = X86_MACHINE_CLASS(m);
--    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+-    Aml *dev;
+-    Aml *crs;
+-    Aml *pkg;
+-    Aml *field;
+-    Aml *method;
+-    Aml *if_ctx;
+-    Aml *else_ctx;
+-    int i, apic_idx;
+-    Aml *sb_scope = aml_scope("_SB");
+-    uint8_t madt_tmpl[8] = {0x00, 0x08, 0x00, 0x00, 0x00, 0, 0, 0};
+-    Aml *cpu_id = aml_arg(1);
+-    Aml *apic_id = aml_arg(0);
+-    Aml *cpu_on = aml_local(0);
+-    Aml *madt = aml_local(1);
+-    Aml *cpus_map = aml_name(CPU_ON_BITMAP);
+-    Aml *zero = aml_int(0);
+-    Aml *one = aml_int(1);
+-    MachineClass *mc = MACHINE_GET_CLASS(machine);
+-    const CPUArchIdList *apic_ids = mc->possible_cpu_arch_ids(machine);
+-    X86MachineState *x86ms = X86_MACHINE(machine);
 -
--    pc_q35_machine_2_7_options(m);
--    pcmc->legacy_cpu_hotplug = true;
--    x86mc->fwcfg_dma_enabled = false;
--    compat_props_add(m->compat_props, hw_compat_2_6, hw_compat_2_6_len);
--    compat_props_add(m->compat_props, pc_compat_2_6, pc_compat_2_6_len);
+-    /*
+-     * _MAT method - creates an madt apic buffer
+-     * apic_id = Arg0 = Local APIC ID
+-     * cpu_id  = Arg1 = Processor ID
+-     * cpu_on = Local0 = CPON flag for this cpu
+-     * madt = Local1 = Buffer (in madt apic form) to return
+-     */
+-    method = aml_method(CPU_MAT_METHOD, 2, AML_NOTSERIALIZED);
+-    aml_append(method,
+-        aml_store(aml_derefof(aml_index(cpus_map, apic_id)), cpu_on));
+-    aml_append(method,
+-        aml_store(aml_buffer(sizeof(madt_tmpl), madt_tmpl), madt));
+-    /* Update the processor id, lapic id, and enable/disable status */
+-    aml_append(method, aml_store(cpu_id, aml_index(madt, aml_int(2))));
+-    aml_append(method, aml_store(apic_id, aml_index(madt, aml_int(3))));
+-    aml_append(method, aml_store(cpu_on, aml_index(madt, aml_int(4))));
+-    aml_append(method, aml_return(madt));
+-    aml_append(sb_scope, method);
+-
+-    /*
+-     * _STA method - return ON status of cpu
+-     * apic_id = Arg0 = Local APIC ID
+-     * cpu_on = Local0 = CPON flag for this cpu
+-     */
+-    method = aml_method(CPU_STATUS_METHOD, 1, AML_NOTSERIALIZED);
+-    aml_append(method,
+-        aml_store(aml_derefof(aml_index(cpus_map, apic_id)), cpu_on));
+-    if_ctx = aml_if(cpu_on);
+-    {
+-        aml_append(if_ctx, aml_return(aml_int(0xF)));
+-    }
+-    aml_append(method, if_ctx);
+-    else_ctx = aml_else();
+-    {
+-        aml_append(else_ctx, aml_return(zero));
+-    }
+-    aml_append(method, else_ctx);
+-    aml_append(sb_scope, method);
+-
+-    method = aml_method(CPU_EJECT_METHOD, 2, AML_NOTSERIALIZED);
+-    aml_append(method, aml_sleep(200));
+-    aml_append(sb_scope, method);
+-
+-    method = aml_method(CPU_SCAN_METHOD, 0, AML_NOTSERIALIZED);
+-    {
+-        Aml *while_ctx, *if_ctx2, *else_ctx2;
+-        Aml *bus_check_evt = aml_int(1);
+-        Aml *remove_evt = aml_int(3);
+-        Aml *status_map = aml_local(5); /* Local5 = active cpu bitmap */
+-        Aml *byte = aml_local(2); /* Local2 = last read byte from bitmap */
+-        Aml *idx = aml_local(0); /* Processor ID / APIC ID iterator */
+-        Aml *is_cpu_on = aml_local(1); /* Local1 = CPON flag for cpu */
+-        Aml *status = aml_local(3); /* Local3 = active state for cpu */
+-
+-        aml_append(method, aml_store(aml_name(CPU_STATUS_MAP), status_map));
+-        aml_append(method, aml_store(zero, byte));
+-        aml_append(method, aml_store(zero, idx));
+-
+-        /* While (idx < SizeOf(CPON)) */
+-        while_ctx = aml_while(aml_lless(idx, aml_sizeof(cpus_map)));
+-        aml_append(while_ctx,
+-            aml_store(aml_derefof(aml_index(cpus_map, idx)), is_cpu_on));
+-
+-        if_ctx = aml_if(aml_and(idx, aml_int(0x07), NULL));
+-        {
+-            /* Shift down previously read bitmap byte */
+-            aml_append(if_ctx, aml_shiftright(byte, one, byte));
+-        }
+-        aml_append(while_ctx, if_ctx);
+-
+-        else_ctx = aml_else();
+-        {
+-            /* Read next byte from cpu bitmap */
+-            aml_append(else_ctx, aml_store(aml_derefof(aml_index(status_map,
+-                       aml_shiftright(idx, aml_int(3), NULL))), byte));
+-        }
+-        aml_append(while_ctx, else_ctx);
+-
+-        aml_append(while_ctx, aml_store(aml_and(byte, one, NULL), status));
+-        if_ctx = aml_if(aml_lnot(aml_equal(is_cpu_on, status)));
+-        {
+-            /* State change - update CPON with new state */
+-            aml_append(if_ctx, aml_store(status, aml_index(cpus_map, idx)));
+-            if_ctx2 = aml_if(aml_equal(status, one));
+-            {
+-                aml_append(if_ctx2,
+-                    aml_call2(AML_NOTIFY_METHOD, idx, bus_check_evt));
+-            }
+-            aml_append(if_ctx, if_ctx2);
+-            else_ctx2 = aml_else();
+-            {
+-                aml_append(else_ctx2,
+-                    aml_call2(AML_NOTIFY_METHOD, idx, remove_evt));
+-            }
+-        }
+-        aml_append(if_ctx, else_ctx2);
+-        aml_append(while_ctx, if_ctx);
+-
+-        aml_append(while_ctx, aml_increment(idx)); /* go to next cpu */
+-        aml_append(method, while_ctx);
+-    }
+-    aml_append(sb_scope, method);
+-
+-    /* The current AML generator can cover the APIC ID range [0..255],
+-     * inclusive, for VCPU hotplug. */
+-    QEMU_BUILD_BUG_ON(ACPI_CPU_HOTPLUG_ID_LIMIT > 256);
+-    if (x86ms->apic_id_limit > ACPI_CPU_HOTPLUG_ID_LIMIT) {
+-        error_report("max_cpus is too large. APIC ID of last CPU is %u",
+-                     x86ms->apic_id_limit - 1);
+-        exit(1);
+-    }
+-
+-    /* create PCI0.PRES device and its _CRS to reserve CPU hotplug MMIO */
+-    dev = aml_device("PCI0." stringify(CPU_HOTPLUG_RESOURCE_DEVICE));
+-    aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0A06")));
+-    aml_append(dev,
+-        aml_name_decl("_UID", aml_string("CPU Hotplug resources"))
+-    );
+-    /* device present, functioning, decoding, not shown in UI */
+-    aml_append(dev, aml_name_decl("_STA", aml_int(0xB)));
+-    crs = aml_resource_template();
+-    aml_append(crs,
+-        aml_io(AML_DECODE16, io_base, io_base, 1, ACPI_GPE_PROC_LEN)
+-    );
+-    aml_append(dev, aml_name_decl("_CRS", crs));
+-    aml_append(sb_scope, dev);
+-    /* declare CPU hotplug MMIO region and PRS field to access it */
+-    aml_append(sb_scope, aml_operation_region(
+-        "PRST", AML_SYSTEM_IO, aml_int(io_base), ACPI_GPE_PROC_LEN));
+-    field = aml_field("PRST", AML_BYTE_ACC, AML_NOLOCK, AML_PRESERVE);
+-    aml_append(field, aml_named_field("PRS", 256));
+-    aml_append(sb_scope, field);
+-
+-    /* build Processor object for each processor */
+-    for (i = 0; i < apic_ids->len; i++) {
+-        int cpu_apic_id = apic_ids->cpus[i].arch_id;
+-
+-        assert(cpu_apic_id < ACPI_CPU_HOTPLUG_ID_LIMIT);
+-
+-        dev = aml_processor(i, 0, 0, "CP%.02X", cpu_apic_id);
+-
+-        method = aml_method("_MAT", 0, AML_NOTSERIALIZED);
+-        aml_append(method,
+-            aml_return(aml_call2(CPU_MAT_METHOD,
+-                                 aml_int(cpu_apic_id), aml_int(i))
+-        ));
+-        aml_append(dev, method);
+-
+-        method = aml_method("_STA", 0, AML_NOTSERIALIZED);
+-        aml_append(method,
+-            aml_return(aml_call1(CPU_STATUS_METHOD, aml_int(cpu_apic_id))));
+-        aml_append(dev, method);
+-
+-        method = aml_method("_EJ0", 1, AML_NOTSERIALIZED);
+-        aml_append(method,
+-            aml_return(aml_call2(CPU_EJECT_METHOD, aml_int(cpu_apic_id),
+-                aml_arg(0)))
+-        );
+-        aml_append(dev, method);
+-
+-        aml_append(sb_scope, dev);
+-    }
+-
+-    /* build this code:
+-     *   Method(NTFY, 2) {If (LEqual(Arg0, 0x00)) {Notify(CP00, Arg1)} ...}
+-     */
+-    /* Arg0 = APIC ID */
+-    method = aml_method(AML_NOTIFY_METHOD, 2, AML_NOTSERIALIZED);
+-    for (i = 0; i < apic_ids->len; i++) {
+-        int cpu_apic_id = apic_ids->cpus[i].arch_id;
+-
+-        if_ctx = aml_if(aml_equal(aml_arg(0), aml_int(cpu_apic_id)));
+-        aml_append(if_ctx,
+-            aml_notify(aml_name("CP%.02X", cpu_apic_id), aml_arg(1))
+-        );
+-        aml_append(method, if_ctx);
+-    }
+-    aml_append(sb_scope, method);
+-
+-    /* build "Name(CPON, Package() { One, One, ..., Zero, Zero, ... })"
+-     *
+-     * Note: The ability to create variable-sized packages was first
+-     * introduced in ACPI 2.0. ACPI 1.0 only allowed fixed-size packages
+-     * ith up to 255 elements. Windows guests up to win2k8 fail when
+-     * VarPackageOp is used.
+-     */
+-    pkg = x86ms->apic_id_limit <= 255 ? aml_package(x86ms->apic_id_limit) :
+-                                        aml_varpackage(x86ms->apic_id_limit);
+-
+-    for (i = 0, apic_idx = 0; i < apic_ids->len; i++) {
+-        int cpu_apic_id = apic_ids->cpus[i].arch_id;
+-
+-        for (; apic_idx < cpu_apic_id; apic_idx++) {
+-            aml_append(pkg, aml_int(0));
+-        }
+-        aml_append(pkg, aml_int(apic_ids->cpus[i].cpu ? 1 : 0));
+-        apic_idx = cpu_apic_id + 1;
+-    }
+-    aml_append(sb_scope, aml_name_decl(CPU_ON_BITMAP, pkg));
+-    aml_append(ctx, sb_scope);
+-
+-    method = aml_method("\\_GPE._E02", 0, AML_NOTSERIALIZED);
+-    aml_append(method, aml_call0("\\_SB." CPU_SCAN_METHOD));
+-    aml_append(ctx, method);
 -}
--
--DEFINE_Q35_MACHINE(2, 6);
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index 3fffa4a3328..625889783ec 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -1465,9 +1465,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+     }
+     aml_append(dsdt, scope);
+ 
+-    if (pcmc->legacy_cpu_hotplug) {
+-        build_legacy_cpu_hotplug_aml(dsdt, machine, pm->cpu_hp_io_base);
+-    } else {
++    {
+         CPUHotplugFeatures opts = {
+             .acpi_1_compatible = true, .has_legacy_cphp = true,
+             .smi_path = pm->smi_on_cpuhp ? "\\_SB.PCI0.SMI0.SMIC" : NULL,
 -- 
 2.47.1
 
