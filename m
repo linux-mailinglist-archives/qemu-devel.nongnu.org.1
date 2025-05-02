@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68387AA6961
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 05:33:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06B65AA6958
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 05:32:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAh81-0004Zb-Cc; Thu, 01 May 2025 23:31:57 -0400
+	id 1uAh8J-0004nN-CI; Thu, 01 May 2025 23:32:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1uAh7y-0004WX-F2
- for qemu-devel@nongnu.org; Thu, 01 May 2025 23:31:54 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1uAh83-0004iY-To
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 23:32:00 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1uAh7v-0001IU-R2
- for qemu-devel@nongnu.org; Thu, 01 May 2025 23:31:54 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-73bf1cef6ceso1737948b3a.0
- for <qemu-devel@nongnu.org>; Thu, 01 May 2025 20:31:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1uAh81-0001J4-Qo
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 23:31:59 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-7399838db7fso1785700b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 01 May 2025 20:31:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1746156710; x=1746761510; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1746156716; x=1746761516; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+bwaHMNOhN5/3SiuCmSg59LLWnyBqFKfT3s/956qIKI=;
- b=naXZOCuKMbln2EwyNdzPTxi2OdpR/f+ULwHYmGxNuUwvsFTOKHk892hkvOM4QmV98c
- F8ZDWd1R+YKu4uh10ImIQxs2snRfy90yXtbf30wIHL8/jXOGaKCUFdSRJZz5VsULZglG
- /iI7Tgf6ee9vf3wdDzeDapyhJDFS7EfC1JSSTmBrLDMQ2/IWywyXn0qudzHJ9USJ7eWy
- MiBPfDOnceOT8ySApCuk4bs1V9fPYIK2gErV3UKfB2EwkNPHc8kT2uZ90CaYHtbzLJUq
- g8Tv0fSuGG7a6G1LzbemWz5EwriGyuCgDnH9gz5iFRHj2RabdCdCTMyN3KYuqkaKVvWl
- 11bQ==
+ bh=TAv+aGTQCrwaNulgDta+PXng9GQbHKS2fnPZhRa5POQ=;
+ b=CKwqF6oO2KoabzBGbCf54PTh5ECr8ommNlby9g7F65ltU8mq8ZUZTvMA95yAeSNj6G
+ XtVCc51ZqDwX0C8zoBmOUYqbYw/+Zng9odIwWS8MLjQK0rwZn1e6d28+rxMlbl5JuvFu
+ kzWjqLX8mPQhzo4D7xR41ku3nI4UXMk45NgPGBQhnlp8Fmhk3XQVx3sp2VEyjAryqRV4
+ To39cF7TPa3szkq35gLyb2VPdLfp8WUCxToWJhpT/BrX2wA4UNcTUXNxK4KPoTnCMIM+
+ VMQYyuy0Rurc1j2Yx1F0OXKFl5UZMqfnG3flxZ+rrby+RioENzXIr8L9u38mSK1aEzHo
+ tngQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746156710; x=1746761510;
+ d=1e100.net; s=20230601; t=1746156716; x=1746761516;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+bwaHMNOhN5/3SiuCmSg59LLWnyBqFKfT3s/956qIKI=;
- b=T9Rky0G68Ru2wvG18O3oL5PIMw8V4T4OF9bUUewHqvI9dwI7O5rY9wTJEmnId+3Evq
- puxHWSmwD8oJXCgd7q4/fo4HvHdguT6kuYMaHP1rpce37Iingsh/pncUnc7KdZa+ZBay
- 7hIuDtRB6ZHFXcrFwy3ABGI/07MrtrOODaSaYtLJn4BDO5NyswA71edqfuaUxcSM6LZR
- jtP5SchTblxCrmuKGJid5UEjdlQI3CE+mE9LbrjdJahU2QNX7gWW7b0GqO+ZD5QVKQp0
- H0DkGsgfyTPQBPBZxWWw6tI3xklfhPJKz+fWKJHZjFe3QOIb6PI74x5zOojEQfdkwvA1
- m5tA==
+ bh=TAv+aGTQCrwaNulgDta+PXng9GQbHKS2fnPZhRa5POQ=;
+ b=Iy4Xnub17ZPlZ3qdER6glvVtJ0YXdOtzTFZQo9bJT4lN425x7No9aBeCJh3/7KbzMh
+ i3uAtrPQRdddCrm6RKzrZ2eqxvNv3mILjZsCIEn37EnBFSeK9BSo51KfSsQigfVXmh1f
+ 2KJvxc71fdx4CUAkxsRiXVHqTeVIVJUdxZHzucWBPeJvt2PhVioP8YXMZQePXtzDiUOK
+ ZXXrRjWrqSE83c7j+GyhW1akPRPkH0bBxeUT5jHYPGhhOinw6VGesxcUYakC2nwc93ss
+ TNUmR7bUayzW+1mbH3uyaCtw30qr+K0TPlqyJdH7ZtA94d1vdDX2AsJ5rai5CU5Ozcgk
+ TCMA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW+YlQmgxVxsafdm9lGcTZtEjGG42c/SL/wIycbwPPVUSrV1h/KgtSYSAbBeq7jwRZ/E/8aGcobV1Fv@nongnu.org
-X-Gm-Message-State: AOJu0YzSFxG8sSpOoYDJW5gknIl6B8926zfb3AXPLleuOo9YYkI36Uec
- nfiDIn7ksmsqk4Hb++wwBmEVliy1nYtJU/FoGvy6hQovMXIo4m1ghaxJZg==
-X-Gm-Gg: ASbGncvfZ6RBtHuoJR5Xg38AvJAXTWAlcTgQdGfPqmssAXOD8O4GF4Ya52LEBkFQqSG
- HX9nUgesxcH5lyho9L8/StaMVPzyP6z3IUWZEqKv1anuKb94tjQcNV1/OgUIy2t1R8/u7Q9NS6H
- rUT8zIu09E/IiU+wNgmSbmkVwVBip9OMWFBH4Cc0WvIff5ImP8m9N3HuOKDXCZOofZrqlbqDPbS
- uOFgiSW4z8KhaWHbW3EzAa6yTj5T+caybXrtCKqyU/RpQX/RvT26MBWFzxFNUCgo+XwMRtkl6m7
- tMkg0WkgMAKay+vlFrlMWmcE2MYV14CqF+6yNghzrtvS
-X-Google-Smtp-Source: AGHT+IHjrZ7ck+RMRIwwbbdv/PdV8MsbmCit/9MQ2zf4wf4kR5zJEBrh7MGlKCFk/VCr2QlY08E2Kw==
-X-Received: by 2002:a05:6a00:428f:b0:736:6ac4:d204 with SMTP id
- d2e1a72fcca58-74058a4e54amr1659312b3a.11.1746156710501; 
- Thu, 01 May 2025 20:31:50 -0700 (PDT)
+ AJvYcCWoGmwEvzJYz7Ayqv9fAYPu6ps/MRXLxPR/DtDD/FlQjeK6nSHbQI+Zlw6FjFbJaU6TrD2ciadVgKuR@nongnu.org
+X-Gm-Message-State: AOJu0Yz66cwhYrZfV/pxOukvXgFwjEjzoc/EJNCezop6ilr9meSceDKF
+ qhf3GV8CZ+uzehiRxHjMKvvN70aEi7qbE2zwfcpXvphj9a5eGaKIDulnCQ==
+X-Gm-Gg: ASbGncvlxYUOB9JZw42pYHU5HE4uqvlanOJH5XvbT7zESr3Zu/ivqHngAabvviPjB7L
+ S60/hzybQrFwF2GL/hYisAtmRfGauR9f6zWjlLsF+Q7v2xQPAO1HoszTJiY9v5GdS0G/iQBzFIb
+ I3wsBWuf0c4+slBgWa4eikzR89b6K1xM252fQobjKe8TdsgSmgWILk+wiq4W4lLMKM68a57cXbo
+ 71lJaZ6ttYRYNy0PdUnc9x50ZlVOsjpudoSxh6bR25tUVOHqSFWj+0AGKbZHxYpDNh3B3TKtWKn
+ mJTs6CxB1bsA+5Pei2u3RFqv5Qn66vzHFhd7lnMyyfYb
+X-Google-Smtp-Source: AGHT+IG7m47e5cg0h0QDZNsDHVQXSy7hw2KvLmbz4m/WCnlu63U+kMK7d/FXqJMiCpzqAn8rUT9QAg==
+X-Received: by 2002:a05:6a00:e8f:b0:740:6f6:7338 with SMTP id
+ d2e1a72fcca58-7404917149cmr8072520b3a.3.1746156715737; 
+ Thu, 01 May 2025 20:31:55 -0700 (PDT)
 Received: from wheely.local0.net ([220.253.99.94])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74059063f6esm488055b3a.139.2025.05.01.20.31.45
+ d2e1a72fcca58-74059063f6esm488055b3a.139.2025.05.01.20.31.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 May 2025 20:31:50 -0700 (PDT)
+ Thu, 01 May 2025 20:31:55 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Gerd Hoffmann <kraxel@redhat.com>
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
@@ -71,17 +71,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  Phil Dennis-Jordan <phil@philjordan.eu>,
  Bernhard Beschow <shentey@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v4 10/22] hw/usb/hcd-xhci-pci: Add TI TUSB73X0 XHCI controller
- model
-Date: Fri,  2 May 2025 13:30:34 +1000
-Message-ID: <20250502033047.102465-11-npiggin@gmail.com>
+Subject: [PATCH v4 11/22] usb/msd: Split in and out packet handling
+Date: Fri,  2 May 2025 13:30:35 +1000
+Message-ID: <20250502033047.102465-12-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250502033047.102465-1-npiggin@gmail.com>
 References: <20250502033047.102465-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,184 +103,322 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The TI TUSB73X0 controller has some interesting differences from NEC,
-notably a separate BAR for MSIX, and PM capabilities. The spec is freely
-available without sign-up.
-
-This controller is accepted by IBM Power proprietary firmware and
-software (when the subsystem IDs are set to Power servers, which is not
-done here). IBM code is picky about device support, so the NEC device
-can not be used.
-
-xhci qtests are enabled for this device.
+Split in and out packet handling int otheir own functions, to make
+them a bit more managable.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- include/hw/pci/pci_ids.h        |  1 +
- include/hw/usb/xhci.h           |  1 +
- hw/usb/hcd-xhci-ti.c            | 77 +++++++++++++++++++++++++++++++++
- tests/qtest/usb-hcd-xhci-test.c |  3 ++
- hw/usb/Kconfig                  |  5 +++
- hw/usb/meson.build              |  1 +
- 6 files changed, 88 insertions(+)
- create mode 100644 hw/usb/hcd-xhci-ti.c
+ hw/usb/dev-storage.c | 266 +++++++++++++++++++++++--------------------
+ 1 file changed, 145 insertions(+), 121 deletions(-)
 
-diff --git a/include/hw/pci/pci_ids.h b/include/hw/pci/pci_ids.h
-index 33e2898be95..99fe751703f 100644
---- a/include/hw/pci/pci_ids.h
-+++ b/include/hw/pci/pci_ids.h
-@@ -182,6 +182,7 @@
- #define PCI_VENDOR_ID_HP                 0x103c
+diff --git a/hw/usb/dev-storage.c b/hw/usb/dev-storage.c
+index b13fe345c45..394fb8e1ec0 100644
+--- a/hw/usb/dev-storage.c
++++ b/hw/usb/dev-storage.c
+@@ -395,158 +395,182 @@ static void usb_msd_cancel_io(USBDevice *dev, USBPacket *p)
+     }
+ }
  
- #define PCI_VENDOR_ID_TI                 0x104c
-+#define PCI_DEVICE_ID_TI_TUSB73X0        0x8241
+-static void usb_msd_handle_data(USBDevice *dev, USBPacket *p)
++static void usb_msd_handle_data_out(USBDevice *dev, USBPacket *p)
+ {
+     MSDState *s = (MSDState *)dev;
+     uint32_t tag;
+     struct usb_msd_cbw cbw;
+-    uint8_t devep = p->ep->nr;
+     SCSIDevice *scsi_dev;
+     int len;
  
- #define PCI_VENDOR_ID_MOTOROLA           0x1057
- #define PCI_DEVICE_ID_MOTOROLA_MPC106    0x0002
-diff --git a/include/hw/usb/xhci.h b/include/hw/usb/xhci.h
-index 5c90e1373e5..203ec1fca32 100644
---- a/include/hw/usb/xhci.h
-+++ b/include/hw/usb/xhci.h
-@@ -3,6 +3,7 @@
+-    if (s->needs_reset) {
+-        p->status = USB_RET_STALL;
+-        return;
+-    }
++    switch (s->mode) {
++    case USB_MSDM_CBW:
++        if (p->iov.size != 31) {
++            error_report("usb-msd: Bad CBW size");
++            goto fail;
++        }
++        usb_packet_copy(p, &cbw, 31);
++        if (le32_to_cpu(cbw.sig) != 0x43425355) {
++            error_report("usb-msd: Bad signature %08x",
++                         le32_to_cpu(cbw.sig));
++            goto fail;
++        }
++        scsi_dev = scsi_device_find(&s->bus, 0, 0, cbw.lun);
++        if (scsi_dev == NULL) {
++            error_report("usb-msd: Bad LUN %d", cbw.lun);
++            goto fail;
++        }
++        tag = le32_to_cpu(cbw.tag);
++        s->data_len = le32_to_cpu(cbw.data_len);
++        if (s->data_len == 0) {
++            s->mode = USB_MSDM_CSW;
++        } else if (cbw.flags & 0x80) {
++            s->mode = USB_MSDM_DATAIN;
++        } else {
++            s->mode = USB_MSDM_DATAOUT;
++        }
++        trace_usb_msd_cmd_submit(cbw.lun, tag, cbw.flags,
++                                 cbw.cmd_len, s->data_len);
++        assert(le32_to_cpu(s->csw.residue) == 0);
++        s->scsi_len = 0;
++        s->req = scsi_req_new(scsi_dev, tag, cbw.lun,
++                              cbw.cmd, cbw.cmd_len, NULL);
++        if (s->commandlog) {
++            scsi_req_print(s->req);
++        }
++        len = scsi_req_enqueue(s->req);
++        if (len) {
++            scsi_req_continue(s->req);
++        }
++        break;
  
- #define TYPE_XHCI "base-xhci"
- #define TYPE_NEC_XHCI "nec-usb-xhci"
-+#define TYPE_TI_XHCI "ti-usb-xhci"
- #define TYPE_QEMU_XHCI "qemu-xhci"
- #define TYPE_XHCI_SYSBUS "sysbus-xhci"
+-    switch (p->pid) {
+-    case USB_TOKEN_OUT:
+-        if (devep != 2)
++    case USB_MSDM_DATAOUT:
++        trace_usb_msd_data_out(p->iov.size, s->data_len);
++        if (p->iov.size > s->data_len) {
+             goto fail;
++        }
  
-diff --git a/hw/usb/hcd-xhci-ti.c b/hw/usb/hcd-xhci-ti.c
-new file mode 100644
-index 00000000000..b7bb71c62e8
---- /dev/null
-+++ b/hw/usb/hcd-xhci-ti.c
-@@ -0,0 +1,77 @@
-+/*
-+ * USB xHCI TI TUSB73X0 controller emulation
-+ * Datasheet https://www.ti.com/product/TUSB7340
-+ *
-+ * Copyright (c) 2025 IBM Corporation
-+ * Derived from hcd-xhci-nec.c, copyright accordingly.
-+ *
-+ * SPDX-License-Identifier: LGPL-2.1-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/usb.h"
-+#include "qemu/module.h"
-+#include "hw/pci/pci.h"
-+#include "hw/qdev-properties.h"
-+
-+#include "hcd-xhci-pci.h"
-+
-+OBJECT_DECLARE_SIMPLE_TYPE(XHCITiState, TI_XHCI)
-+
-+struct XHCITiState {
-+    XHCIPciState parent_obj;
-+
-+    uint32_t intrs;
-+    uint32_t slots;
-+};
-+
-+static const Property ti_xhci_properties[] = {
-+    DEFINE_PROP_UINT32("intrs", XHCITiState, intrs, 8),
-+    DEFINE_PROP_UINT32("slots", XHCITiState, slots, XHCI_MAXSLOTS),
-+};
-+
-+static void ti_xhci_instance_init(Object *obj)
+-        switch (s->mode) {
+-        case USB_MSDM_CBW:
+-            if (p->iov.size != 31) {
+-                error_report("usb-msd: Bad CBW size");
+-                goto fail;
+-            }
+-            usb_packet_copy(p, &cbw, 31);
+-            if (le32_to_cpu(cbw.sig) != 0x43425355) {
+-                error_report("usb-msd: Bad signature %08x",
+-                             le32_to_cpu(cbw.sig));
+-                goto fail;
+-            }
+-            scsi_dev = scsi_device_find(&s->bus, 0, 0, cbw.lun);
+-            if (scsi_dev == NULL) {
+-                error_report("usb-msd: Bad LUN %d", cbw.lun);
+-                goto fail;
+-            }
+-            tag = le32_to_cpu(cbw.tag);
+-            s->data_len = le32_to_cpu(cbw.data_len);
+-            if (s->data_len == 0) {
+-                s->mode = USB_MSDM_CSW;
+-            } else if (cbw.flags & 0x80) {
+-                s->mode = USB_MSDM_DATAIN;
+-            } else {
+-                s->mode = USB_MSDM_DATAOUT;
+-            }
+-            trace_usb_msd_cmd_submit(cbw.lun, tag, cbw.flags,
+-                                     cbw.cmd_len, s->data_len);
+-            assert(le32_to_cpu(s->csw.residue) == 0);
+-            s->scsi_len = 0;
+-            s->req = scsi_req_new(scsi_dev, tag, cbw.lun, cbw.cmd, cbw.cmd_len, NULL);
+-            if (s->commandlog) {
+-                scsi_req_print(s->req);
+-            }
+-            len = scsi_req_enqueue(s->req);
++        if (s->scsi_len) {
++            usb_msd_copy_data(s, p);
++        }
++        if (le32_to_cpu(s->csw.residue)) {
++            len = p->iov.size - p->actual_length;
+             if (len) {
+-                scsi_req_continue(s->req);
++                usb_packet_skip(p, len);
++                if (len > s->data_len) {
++                    len = s->data_len;
++                }
++                s->data_len -= len;
++                if (s->data_len == 0) {
++                    s->mode = USB_MSDM_CSW;
++                }
+             }
+-            break;
++        }
++        if (p->actual_length < p->iov.size) {
++            trace_usb_msd_packet_async();
++            s->packet = p;
++            p->status = USB_RET_ASYNC;
++        }
++        break;
+ 
+-        case USB_MSDM_DATAOUT:
+-            trace_usb_msd_data_out(p->iov.size, s->data_len);
+-            if (p->iov.size > s->data_len) {
+-                goto fail;
+-            }
++    default:
++        goto fail;
++    }
++    return;
+ 
+-            if (s->scsi_len) {
+-                usb_msd_copy_data(s, p);
+-            }
+-            if (le32_to_cpu(s->csw.residue)) {
+-                len = p->iov.size - p->actual_length;
+-                if (len) {
+-                    usb_packet_skip(p, len);
+-                    if (len > s->data_len) {
+-                        len = s->data_len;
+-                    }
+-                    s->data_len -= len;
+-                    if (s->data_len == 0) {
+-                        s->mode = USB_MSDM_CSW;
+-                    }
+-                }
+-            }
+-            if (p->actual_length < p->iov.size) {
+-                trace_usb_msd_packet_async();
+-                s->packet = p;
+-                p->status = USB_RET_ASYNC;
+-            }
+-            break;
++fail:
++    p->status = USB_RET_STALL;
++}
+ 
+-        default:
++static void usb_msd_handle_data_in(USBDevice *dev, USBPacket *p)
 +{
-+    XHCIPciState *pci = XHCI_PCI(obj);
-+    XHCITiState *ti = TI_XHCI(obj);
++    MSDState *s = (MSDState *)dev;
++    int len;
 +
-+    pci->xhci.numintrs = ti->intrs;
-+    pci->xhci.numslots = ti->slots;
-+
-+    /* Taken from datasheet */
-+    pci->cache_line_size = 0x0;
-+    pci->pm_cap_off = 0x40;
-+    pci->pcie_cap_off = 0x70;
-+    pci->msi_cap_off = 0x48;
-+    pci->msix_cap_off = 0xc0;
-+    pci->msix_bar_nr = 0x2;
-+    pci->msix_bar_size = 0x800000;
-+    pci->msix_table_off = 0x0;
-+    pci->msix_pba_off = 0x1000;
++    switch (s->mode) {
++    case USB_MSDM_DATAOUT:
++        if (s->data_len != 0 || p->iov.size < 13) {
+             goto fail;
+         }
++        /* Waiting for SCSI write to complete.  */
++        trace_usb_msd_packet_async();
++        s->packet = p;
++        p->status = USB_RET_ASYNC;
+         break;
+ 
+-    case USB_TOKEN_IN:
+-        if (devep != 1)
++    case USB_MSDM_CSW:
++        if (p->iov.size < 13) {
+             goto fail;
++        }
+ 
+-        switch (s->mode) {
+-        case USB_MSDM_DATAOUT:
+-            if (s->data_len != 0 || p->iov.size < 13) {
+-                goto fail;
+-            }
+-            /* Waiting for SCSI write to complete.  */
++        if (s->req) {
++            /* still in flight */
+             trace_usb_msd_packet_async();
+             s->packet = p;
+             p->status = USB_RET_ASYNC;
+-            break;
++        } else {
++            usb_msd_send_status(s, p);
++            s->mode = USB_MSDM_CBW;
++        }
++        break;
+ 
+-        case USB_MSDM_CSW:
+-            if (p->iov.size < 13) {
+-                goto fail;
++    case USB_MSDM_DATAIN:
++        trace_usb_msd_data_in(p->iov.size, s->data_len, s->scsi_len);
++        if (s->scsi_len) {
++            usb_msd_copy_data(s, p);
++        }
++        if (le32_to_cpu(s->csw.residue)) {
++            len = p->iov.size - p->actual_length;
++            if (len) {
++                usb_packet_skip(p, len);
++                if (len > s->data_len) {
++                    len = s->data_len;
++                }
++                s->data_len -= len;
++                if (s->data_len == 0) {
++                    s->mode = USB_MSDM_CSW;
++                }
+             }
++        }
++        if (p->actual_length < p->iov.size && s->mode == USB_MSDM_DATAIN) {
++            trace_usb_msd_packet_async();
++            s->packet = p;
++            p->status = USB_RET_ASYNC;
++        }
++        break;
+ 
+-            if (s->req) {
+-                /* still in flight */
+-                trace_usb_msd_packet_async();
+-                s->packet = p;
+-                p->status = USB_RET_ASYNC;
+-            } else {
+-                usb_msd_send_status(s, p);
+-                s->mode = USB_MSDM_CBW;
+-            }
+-            break;
++    default:
++        goto fail;
++    }
++    return;
+ 
+-        case USB_MSDM_DATAIN:
+-            trace_usb_msd_data_in(p->iov.size, s->data_len, s->scsi_len);
+-            if (s->scsi_len) {
+-                usb_msd_copy_data(s, p);
+-            }
+-            if (le32_to_cpu(s->csw.residue)) {
+-                len = p->iov.size - p->actual_length;
+-                if (len) {
+-                    usb_packet_skip(p, len);
+-                    if (len > s->data_len) {
+-                        len = s->data_len;
+-                    }
+-                    s->data_len -= len;
+-                    if (s->data_len == 0) {
+-                        s->mode = USB_MSDM_CSW;
+-                    }
+-                }
+-            }
+-            if (p->actual_length < p->iov.size && s->mode == USB_MSDM_DATAIN) {
+-                trace_usb_msd_packet_async();
+-                s->packet = p;
+-                p->status = USB_RET_ASYNC;
+-            }
+-            break;
++fail:
++    p->status = USB_RET_STALL;
 +}
 +
-+static void ti_xhci_class_init(ObjectClass *klass, const void *data)
++static void usb_msd_handle_data(USBDevice *dev, USBPacket *p)
 +{
-+    PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+
-+    device_class_set_props(dc, ti_xhci_properties);
-+    k->vendor_id    = PCI_VENDOR_ID_TI;
-+    k->device_id    = PCI_DEVICE_ID_TI_TUSB73X0;
-+    k->revision     = 0x02;
-+}
-+
-+static const TypeInfo ti_xhci_info = {
-+    .name          = TYPE_TI_XHCI,
-+    .parent        = TYPE_XHCI_PCI,
-+    .instance_size = sizeof(XHCITiState),
-+    .instance_init = ti_xhci_instance_init,
-+    .class_init    = ti_xhci_class_init,
-+};
-+
-+static void ti_xhci_register_types(void)
-+{
-+    type_register_static(&ti_xhci_info);
-+}
-+
-+type_init(ti_xhci_register_types)
-diff --git a/tests/qtest/usb-hcd-xhci-test.c b/tests/qtest/usb-hcd-xhci-test.c
-index 2eecc8d9f26..428200d9e41 100644
---- a/tests/qtest/usb-hcd-xhci-test.c
-+++ b/tests/qtest/usb-hcd-xhci-test.c
-@@ -71,6 +71,8 @@ typedef struct XHCIQState {
-                       PCI_VENDOR_ID_REDHAT)
- #define XHCI_NEC_ID (PCI_DEVICE_ID_NEC_UPD720200 << 16 | \
-                      PCI_VENDOR_ID_NEC)
-+#define XHCI_TI_ID  (PCI_DEVICE_ID_TI_TUSB73X0 << 16 | \
-+                     PCI_VENDOR_ID_TI)
++    MSDState *s = (MSDState *)dev;
++    uint8_t devep = p->ep->nr;
  
- /**
-  * Locate, verify, and return a handle to the XHCI device.
-@@ -932,6 +934,7 @@ int main(int argc, char **argv)
-     TestData td[] = {
-         { .device = "qemu-xhci", .fingerprint = XHCI_QEMU_ID, },
-         { .device = "nec-usb-xhci", .fingerprint = XHCI_NEC_ID, },
-+        { .device = "ti-usb-xhci", .fingerprint = XHCI_TI_ID, },
-     };
- 
-     g_test_init(&argc, &argv, NULL);
-diff --git a/hw/usb/Kconfig b/hw/usb/Kconfig
-index 69c663be52f..00d82a97211 100644
---- a/hw/usb/Kconfig
-+++ b/hw/usb/Kconfig
-@@ -49,6 +49,11 @@ config USB_XHCI_NEC
-     default y if PCI_DEVICES
-     select USB_XHCI_PCI
- 
-+config USB_XHCI_TI
-+    bool
-+    default y if PCI_DEVICES
-+    select USB_XHCI_PCI
+-        default:
++    if (s->needs_reset) {
++        p->status = USB_RET_STALL;
++        return;
++    }
 +
- config USB_XHCI_SYSBUS
-     bool
-     select USB_XHCI
-diff --git a/hw/usb/meson.build b/hw/usb/meson.build
-index 17360a5b5a4..375fa420be6 100644
---- a/hw/usb/meson.build
-+++ b/hw/usb/meson.build
-@@ -23,6 +23,7 @@ system_ss.add(when: 'CONFIG_USB_XHCI', if_true: files('hcd-xhci.c'))
- system_ss.add(when: 'CONFIG_USB_XHCI_PCI', if_true: files('hcd-xhci-pci.c'))
- system_ss.add(when: 'CONFIG_USB_XHCI_SYSBUS', if_true: files('hcd-xhci-sysbus.c'))
- system_ss.add(when: 'CONFIG_USB_XHCI_NEC', if_true: files('hcd-xhci-nec.c'))
-+system_ss.add(when: 'CONFIG_USB_XHCI_TI', if_true: files('hcd-xhci-ti.c'))
- system_ss.add(when: 'CONFIG_USB_DWC2', if_true: files('hcd-dwc2.c'))
- system_ss.add(when: 'CONFIG_USB_DWC3', if_true: files('hcd-dwc3.c'))
- system_ss.add(when: 'CONFIG_USB_CHIPIDEA', if_true: files('chipidea.c'))
++    switch (p->pid) {
++    case USB_TOKEN_OUT:
++        if (devep != 2) {
++            goto fail;
++        }
++        usb_msd_handle_data_out(dev, p);
++        break;
++
++    case USB_TOKEN_IN:
++        if (devep != 1) {
+             goto fail;
+         }
++        usb_msd_handle_data_in(dev, p);
+         break;
+ 
+     default:
 -- 
 2.47.1
 
