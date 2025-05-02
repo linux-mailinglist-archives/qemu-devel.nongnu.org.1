@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F882AA68B2
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 04:18:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFE10AA68BD
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 04:20:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAfwy-0003rk-T1; Thu, 01 May 2025 22:16:28 -0400
+	id 1uAfwy-0003rn-Ti; Thu, 01 May 2025 22:16:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1uAfwu-0003ql-Io
+ id 1uAfwu-0003qm-In
  for qemu-devel@nongnu.org; Thu, 01 May 2025 22:16:24 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1uAfwr-0007P6-B0
+ id 1uAfwr-0007PX-H1
  for qemu-devel@nongnu.org; Thu, 01 May 2025 22:16:24 -0400
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 541KeNlu009470;
- Fri, 2 May 2025 02:16:09 GMT
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 541KeNbi022593;
+ Fri, 2 May 2025 02:16:10 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2025-04-25; bh=hKrBO
- z8OIwOttjAENHLGK1nsTuVaVp/DcWOGP++OoSY=; b=a4zmTwlUpNPhQ+a9fMz6l
- e6x5emBF62Aea3zFGNuniQJY3+EFpqw0EIifGEbiFe2lH5Lm9/A18+n8kdN4wBYI
- /LUvnBUpjwQ1oLg82PAUXaXxn1txsrmT/SJQO7cZ/0IrxffiD8FMyvKYsSX/SxrN
- XjhbfKhvJeM2lTFb9bk92eAU1F7DYFIxa4JcisycKbTPjrlLnQsLsNkZeSKLQ4tx
- +P38sjPJMDq2uptEqx4yLRWQyHS1nu1J1j6jwoml8aDlimQj8mF11TbVJ6+hPdcZ
- y1BA1zagEQXh7Zd6Sjav0V7OA0L4YB1vyuulwJo9ZDcbbg6lMiHRf4e2XCtg3tnl
+ :mime-version:references:subject:to; s=corp-2025-04-25; bh=RA2Lt
+ f0EyegmdJBGDkE2+w28gEQf1v1EpWMa7OVBVO8=; b=Aspxikh894Dtub/p+Ypfc
+ ZrGhip7ZWBB82s8+5ywOkoWjFT/rx89aUvwyX7iiuhIUVF0obPNTTjGQDveYezOK
+ +LUZSAb+gIoHP7m5OYsUREs3LwRiUMZSRLv7oeg71EfaLrwKdCQZ3uB3lZnxiKtS
+ A+vwmy2o53kpzIWvZ7eND4L0MM64m+lzWvJKRveu28WEgdfrw5YpImP6sx2WafGf
+ j+8MddYcbv3iV7ItSdp29PHnTrQLqWOq+HfvzomKYugK+07dkGXR2yVt5Sa1kmiU
+ NLY2kD70k1hclJB1GyPtQwiBweztQfGM0x8W0ZJOOFuX4JulT4VKhHe9eDOPrYoP
  g==
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46b6utcbqh-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46b6uumday-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 02 May 2025 02:16:09 +0000 (GMT)
+ Fri, 02 May 2025 02:16:10 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 5421MJBX023814; Fri, 2 May 2025 02:16:08 GMT
+ with ESMTP id 54206o0X023906; Fri, 2 May 2025 02:16:08 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 468nxkgywb-1
+ 468nxkgywr-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 02 May 2025 02:16:07 +0000
+ Fri, 02 May 2025 02:16:08 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5422FErq011525;
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5422FErs011525;
  Fri, 2 May 2025 02:16:07 GMT
 Received: from alaljimee5bm-ol9-20250405.osdevelopmeniad.oraclevcn.com
  (alaljimee5bm-ol9-20250405.allregionaliads.osdevelopmeniad.oraclevcn.com
  [100.100.254.235])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 468nxkgyvr-2; Fri, 02 May 2025 02:16:07 +0000
+ 468nxkgyvr-3; Fri, 02 May 2025 02:16:07 +0000
 From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
@@ -64,10 +64,10 @@ Cc: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
  clement.mathieu--drif@eviden.com, ethan.milon@eviden.com,
  joao.m.martins@oracle.com, boris.ostrovsky@oracle.com,
  alejandro.j.jimenez@oracle.com
-Subject: [PATCH v2 01/20] memory: Adjust event ranges to fit within notifier
- boundaries
-Date: Fri,  2 May 2025 02:15:46 +0000
-Message-ID: <20250502021605.1795985-2-alejandro.j.jimenez@oracle.com>
+Subject: [PATCH v2 02/20] amd_iommu: Document '-device amd-iommu' common
+ options
+Date: Fri,  2 May 2025 02:15:47 +0000
+Message-ID: <20250502021605.1795985-3-alejandro.j.jimenez@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250502021605.1795985-1-alejandro.j.jimenez@oracle.com>
 References: <20250502021605.1795985-1-alejandro.j.jimenez@oracle.com>
@@ -81,19 +81,19 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  suspectscore=0 spamscore=0 adultscore=0 mlxscore=0 malwarescore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2504070000 definitions=main-2505020015
-X-Proofpoint-GUID: G_5WN9qPnXwEZv7UuO8SS6CE95BnrHbd
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAyMDAxNCBTYWx0ZWRfX+2mUSjIEkhj2
- YkjZPV5Xn1Lf8jVPfEBKOt8AgzqKfGUMEI/sJRP8NH/nbl7eVI+frvs9MtV6PeCRyMm40dLpqrq
- J3Doby5XZRUm0b6S9eg+PA5mF+KWHKTNgRxPfT+L1JCHgj+D4CUGxF6iHwrMCf49la+Ob8x5hXZ
- o2RFQKBe4Ejv2M31RRS8kD+Z/p7FD/Tv8NXoJndetZlYLH2ZbrniGTHx1q0VSDIZK+9ZQ33g3IK
- Fgf8daBqRVJSPHbHBCvt9OD6+cpkoJlqpKuYwl1MAKzG0rcnbUmTbLIIA1YQG1ng4fhBCPI6iJk
- mYs+gE+dUKDCekOZendPHIUmFVv5+YTZEvahGmXGEtJGA337cEepLfqVzqq5eiEKLPW6chqveE6
- do5cL5CBrKr7VNbMlcnW+l8lrg29iISNfF1kJiP7AS086vqiQyZ6gmgGpmIRGy4iWCf012PG
-X-Authority-Analysis: v=2.4 cv=ZuHtK87G c=1 sm=1 tr=0 ts=68142ae9 b=1 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAyMDAxNSBTYWx0ZWRfX/J2xd5SSJMKN
+ 0CV+/ByARSzuU8Z0WLY/rpLPj7oTu9+sM3a1G5DJT1UfInG9+iBeA7FKjHtKyPgoK47PIK3vRIn
+ 1NOK3+0U4im1BA2E+y/hQGIKn1ygVPWg6xvnGV1L9xDpk03sXhton1md87gIcq7D6AOPgmcK6hK
+ 7COuasZHt96rB1DfUkiptVc/gcHtPog1Mf1HEJuQmFY4EjXVBXk/i+lchruGYV8E5gGlyUdlJuH
+ nn9XJt99K8OJqRbZfFLeYoPXjwlYZTLcHz4aLq4lbFDyaI0Zsjm4lx4KYDIX4+aBgKyn1vqT5Nv
+ Ver4PmbmXe8XDE2fsLNc8qzwFm043BbKDIUq+kGPicWwGfd9WAaqFnRbA1RdYuTo7iOmMYJW3fO
+ teVv/x2df9dOLS0k64E4ti7RxLwllvsIbwYr0lFrnbQ8K4CJeaWAMzzv2NI2f96w6hM9s+NW
+X-Authority-Analysis: v=2.4 cv=Ve/3PEp9 c=1 sm=1 tr=0 ts=68142aea b=1 cx=c_pps
  a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=JiNCCaSHPG-izbK7Su4A:9 cc=ntf
+ a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=gipPy096A3ZiGWeMGKsA:9 cc=ntf
  awl=host:13130
-X-Proofpoint-ORIG-GUID: G_5WN9qPnXwEZv7UuO8SS6CE95BnrHbd
+X-Proofpoint-ORIG-GUID: q2IKr-g9EvtfMtp-AX1KE4bVvVsr7d0I
+X-Proofpoint-GUID: q2IKr-g9EvtfMtp-AX1KE4bVvVsr7d0I
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=alejandro.j.jimenez@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -119,47 +119,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Invalidating the entire address space (i.e. range of [0, ~0ULL]) is a
-valid and required operation by vIOMMU implementations. However, such
-invalidations currently trigger an assertion unless they originate from
-device IOTLB invalidations.
-
-Although in recent Linux guests this case is not exercised by the VTD
-implementation due to various optimizations, the assertion will be hit
-by upcoming AMD vIOMMU changes to support DMA address translation. More
-specifically, when running a Linux guest with VFIO passthrough device,
-and a kernel that does not contain commmit 3f2571fed2fa ("iommu/amd:
-Remove redundant domain flush from attach_device()").
-
-Remove the assertion altogether and adjust the range to ensure it does
-not cross notifier boundaries.
+Document the common parameters used when emulating AMD vIOMMU.
+Besides the two amd-iommu specific options: 'xtsup' and 'dma-remap', the
+the generic x86 IOMMU option 'intremap' is also included, since it is
+typically specified in QEMU command line examples and mailing list threads.
 
 Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 ---
- system/memory.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ qemu-options.hx | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/system/memory.c b/system/memory.c
-index 71434e7ad02c..7ad2fc098341 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -2021,13 +2021,9 @@ void memory_region_notify_iommu_one(IOMMUNotifier *notifier,
-         return;
-     }
+diff --git a/qemu-options.hx b/qemu-options.hx
+index dc694a99a30a..198acab48e8e 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -1226,6 +1226,29 @@ SRST
+     ``aw-bits=val`` (val between 32 and 64, default depends on machine)
+         This decides the address width of the IOVA address space.
  
--    if (notifier->notifier_flags & IOMMU_NOTIFIER_DEVIOTLB_UNMAP) {
--        /* Crop (iova, addr_mask) to range */
--        tmp.iova = MAX(tmp.iova, notifier->start);
--        tmp.addr_mask = MIN(entry_end, notifier->end) - tmp.iova;
--    } else {
--        assert(entry->iova >= notifier->start && entry_end <= notifier->end);
--    }
-+    /* Crop (iova, addr_mask) to range */
-+    tmp.iova = MAX(tmp.iova, notifier->start);
-+    tmp.addr_mask = MIN(entry_end, notifier->end) - tmp.iova;
++``-device amd-iommu[,option=...]``
++    Enables emulation of an AMD-Vi I/O Memory Management Unit (IOMMU).
++    Only available with ``-machine q35``, it supports the following options:
++
++    ``dma-remap=on|off`` (default: off)
++        Support for DMA address translation and access permission checking for
++        guests attaching passthrough devices to paging domains, using the AMD v1
++        I/O Page Table format. This enables ``-device vfio-pci,...`` to work
++        correctly with a guest using the DMA remapping feature of the vIOMMU.
++
++    ``intremap=on|off`` (default: auto)
++        Generic x86 IOMMU functionality implemented by ``amd-iommu`` device.
++        Enables interrupt remapping feature in guests, which is also required to
++        enable x2apic support.
++        Currently only available with ``kernel-irqchip=off|split``, it is
++        automatically enabled when either of those modes is in use, and disabled
++        with ``kernel-irqchip=on``.
++
++    ``xtsup=on|off`` (default: off)
++        Interrupt remapping table supports x2apic mode, enabling the use of
++        128-bit IRTE format with 32-bit destination field by the guest. Required
++        to support routing interrupts to vCPUs with APIC IDs larger than 0xff.
++
+ ERST
  
-     if (event->type & notifier->notifier_flags) {
-         notifier->notify(notifier, &tmp);
+ DEF("name", HAS_ARG, QEMU_OPTION_name,
 -- 
 2.43.5
 
