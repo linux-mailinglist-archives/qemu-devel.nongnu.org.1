@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDCB9AA7786
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 18:42:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 348AFAA7787
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 18:42:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAtT0-0007wW-3J; Fri, 02 May 2025 12:42:26 -0400
+	id 1uAtSz-0007v6-I5; Fri, 02 May 2025 12:42:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uAtSd-0007nG-Cr
- for qemu-devel@nongnu.org; Fri, 02 May 2025 12:42:06 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uAtSf-0007nV-V5
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 12:42:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uAtSb-0006TO-Cq
- for qemu-devel@nongnu.org; Fri, 02 May 2025 12:42:03 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uAtSd-0006U0-5I
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 12:42:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746204120;
+ s=mimecast20190719; t=1746204122;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MjUEY/w6aKXWMnaO1KafHdGD7uLuFBPM5WJk9qOv8BE=;
- b=K51Pkk1cXCX6Jg7z6UzAa7pameKrRle60Jhn1s3+SiNTX+8R8E0OSCp1/aQcflU4LxGeQj
- BEc8Ri7uYzYVtBFxTNDaaV23m+7a6zBc2BW8GS7JydJrTZS7/vWy9N37DPiI+/YXWspquX
- 8D34FHHO5qQJwxX7PugKjrKysayuGnk=
+ bh=z5iX6m9+qrQrDzgZbzFt+Gv7DkVpFoyTApZijRzVBoA=;
+ b=JFuw674F4HfbTKA1YajnVf+uSGhfA2zL/jX0FvoDJSbw4oRH/V6LaO5Fr4INAr7hZdTdqE
+ OEt2ReL5k3W/3tIsds0JbWZRdBUjdmRDCoInkA3gvdQXHbk2tcD3CpsUtOIHZ/BMT0/FGb
+ 7dI9wPxLURcvTGmyjiqtUzqFd/rNC1g=
 Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
  [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-17-_p-wMnkfO52IH9ZPJh368w-1; Fri, 02 May 2025 12:41:59 -0400
-X-MC-Unique: _p-wMnkfO52IH9ZPJh368w-1
-X-Mimecast-MFC-AGG-ID: _p-wMnkfO52IH9ZPJh368w_1746204119
+ us-mta-581-SN1wn0LuNXioNoJxHk6uWQ-1; Fri, 02 May 2025 12:42:01 -0400
+X-MC-Unique: SN1wn0LuNXioNoJxHk6uWQ-1
+X-Mimecast-MFC-AGG-ID: SN1wn0LuNXioNoJxHk6uWQ_1746204120
 Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-7c793d573b2so293222685a.1
- for <qemu-devel@nongnu.org>; Fri, 02 May 2025 09:41:59 -0700 (PDT)
+ af79cd13be357-7c5c77aff55so492507185a.3
+ for <qemu-devel@nongnu.org>; Fri, 02 May 2025 09:42:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746204118; x=1746808918;
+ d=1e100.net; s=20230601; t=1746204120; x=1746808920;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MjUEY/w6aKXWMnaO1KafHdGD7uLuFBPM5WJk9qOv8BE=;
- b=ZYpCC7dDJ73WL4KLW2+cCRz7+ceUZpiLrqxsd9fYgRP679LzQ6jiNS4fbvb69Z5J4q
- rpBx/wHxaw+nyAJm7UsZR13BojI8ILGthpQNgmsF01BJrW3FZTwr6Yz3ulE4VDMv6r91
- DtBKKkBACqR7xrsRcvRw2JkMa9xbDAjnWQWzCvCHF4pY1gHM5IzRVDuXpYqkivTB04Ru
- Wr17MkEqdapjpWb7zxdV2i0NZ7JAlEXzSGMZgINRdSRIl1GuTS8KTLbiLWDrq/QRAQsW
- S07x1P0S/vJCyjNT0opBrjdeigG+6Y56bRRnGcLU48SnykMoGTjgKmyA9b7Cs6a2Ti9t
- B/jw==
-X-Gm-Message-State: AOJu0YymK+ClHDdS4JrULcZr3UVdQtonMkyv1VB2lfnaLbT7TZmwIMZt
- BZKN1GLbFId5+oNfrJilQ8e86WGkDp/ux1jnr7Jp05Rb+RooZKayUtAxgn2EY7ufISiB/qqpSNT
- zDKlYYNXQOMjzSVVFqaogQ7yEiPRlflZZ+1OZvhsnyFTMIC1dqD/LB7avHiRlEa/nhQFpuDXZwq
- Px5MSsAA1HheXswPAFqxVOvbFDHhBITGlWPw==
-X-Gm-Gg: ASbGncs4cwMNMq5eMh8wQUqSoAAZNa2oHfF/pjOZe2kPLwfimk5XjkDsBb6lHEwZd9h
- C6eaZfK4aUXsztH50DdiDoqRx7ZXhrcO0zjbsMIGgVb2YfMwOtSPNA6nIqEhLNvOjDpMy+HmVOx
- xu2fZ1w39LZJVADC1LA4IptTmSfhwKhV2S2P9jy5BIWgw8xjnTw3lHASnNg1x5lIum32ze8F39D
- eUM7Kt240j5TsJknA+XNHqdyIsUb3jdaLMjMNLt2Wg4RfCibFpuQoqV3buF7DWch6Nqlg8XD423
-X-Received: by 2002:a05:620a:800b:b0:7c5:e92a:cba3 with SMTP id
- af79cd13be357-7cad5bb47ccmr630869185a.49.1746204118581; 
- Fri, 02 May 2025 09:41:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHqd1xypvE09vYjdZuoKFUbFo3gcCurOhzbT9FU4Mab/hK37fP4SBk3dAX3nsLyeDIMei3X3A==
-X-Received: by 2002:a05:620a:800b:b0:7c5:e92a:cba3 with SMTP id
- af79cd13be357-7cad5bb47ccmr630863985a.49.1746204118056; 
- Fri, 02 May 2025 09:41:58 -0700 (PDT)
+ bh=z5iX6m9+qrQrDzgZbzFt+Gv7DkVpFoyTApZijRzVBoA=;
+ b=NzqkBMhGFOifqKViG2nk8kRMjmlNCinUjxKs2Oml41pKxgzrvgBVX37uSVbR8GRgMA
+ IojEvVHqZX5hgs/Nmr0JgMZlmqfiL83+x7BgKwBrCH+uQ+wsHeR51CqG1EsK/mXenBds
+ n4dXuAL12QB0z53m4v/XqOQqOlKhSMNBmFnifM98yhV+dzexuvTK29LncTByFid67cDL
+ 4spCoNB3UCdh6bkrVBGqy6/tLxfze+l8U5kdLxn8B2RT8Wdxx7vI5EVsOo8GeP8vfd60
+ 9JvW5KsM8ooBpR+yFUYZNO6XbVfAtExR8PcBlDw/zk+L60XzC661FArcM7FcgdlQvtMk
+ SAZw==
+X-Gm-Message-State: AOJu0Yxokf0SmtjzncEK3RT8D/fNHSAFltXyX8jwcgSjKGzit0ZAuBgi
+ 4yDSCSuxPU423xx2Gz+25ygQSwrPCizZLKOhCz9usJKzU+CBKF4rZekJlr+MkxRK0w92y2xXyoH
+ hCYFH+prkU0A+QO9M4EygKl928zJUVoihcX3TBXT2PlF2SxOOPi84ONSvFSqJS9fNC/8TtMy5xY
+ yFqHzDKqoNcVbEsoG6GJV0lUF6DeqFnjW7Hg==
+X-Gm-Gg: ASbGnctKOJWQ24GkQjUwEyoPZUODejXOdrOSkaNOlfzxtzh+Ho43Ie7xRZnLKpUaiGv
+ LngeyHRvF5J2zpewLtWpPh4JVikfxy7wkSyA3dcu+mIgVgp10T2iCWjwOOu5d0pHqyASKSmif5e
+ jM4CvfallM+Tt4jJQoyjMxUToCok6sGSt9XOm2AH6O5jaRQ8R7MLVy1CPENKilFnvlJchvKK1HW
+ g5NFd0BRxMDpixVuep9vlmy7qm+ohWTKFypOD2kEiOU/pTZZPH8ikHU5yjdoVyj5J8P2J3wHljk
+X-Received: by 2002:a05:620a:4442:b0:7c5:9a4e:7b8a with SMTP id
+ af79cd13be357-7cad5ba5b8emr628657285a.54.1746204119924; 
+ Fri, 02 May 2025 09:41:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHE1lvHcDGV72kGzDKze0OlkIDIUP483PHYina4WYWOwFFIJsgZFF/F53YSuHwwwpe22G2qrQ==
+X-Received: by 2002:a05:620a:4442:b0:7c5:9a4e:7b8a with SMTP id
+ af79cd13be357-7cad5ba5b8emr628651785a.54.1746204119443; 
+ Fri, 02 May 2025 09:41:59 -0700 (PDT)
 Received: from x1.com ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7cad23d1c8dsm203108385a.60.2025.05.02.09.41.56
+ af79cd13be357-7cad23d1c8dsm203108385a.60.2025.05.02.09.41.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 May 2025 09:41:57 -0700 (PDT)
+ Fri, 02 May 2025 09:41:58 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Stefan Hajnoczi <stefanha@redhat.com>,
  peterx@redhat.com, Prasad Pandit <pjp@fedoraproject.org>
-Subject: [PULL 09/14] migration: Add save_postcopy_prepare() savevm handler
-Date: Fri,  2 May 2025 12:41:36 -0400
-Message-ID: <20250502164141.747202-10-peterx@redhat.com>
+Subject: [PULL 10/14] migration/ram: Implement save_postcopy_prepare()
+Date: Fri,  2 May 2025 12:41:37 -0400
+Message-ID: <20250502164141.747202-11-peterx@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250502164141.747202-1-peterx@redhat.com>
 References: <20250502164141.747202-1-peterx@redhat.com>
@@ -103,128 +103,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a savevm handler for a module to opt-in sending extra sections right
-before postcopy starts, and before VM is stopped.
-
-RAM will start to use this new savevm handler in the next patch to do flush
-and sync for multifd pages.
-
-Note that we choose to do it before VM stopped because the current only
-potential user is not sensitive to VM status, so doing it before VM is
-stopped is preferred to enlarge any postcopy downtime.
-
-It is still a bit unfortunate that we need to introduce such a new savevm
-handler just for the only use case, however it's so far the cleanest.
+Implement save_postcopy_prepare(), preparing for the enablement
+of both multifd and postcopy.
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Message-ID: <20250411114534.3370816-4-ppandit@redhat.com>
+Message-ID: <20250411114534.3370816-5-ppandit@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- include/migration/register.h | 15 +++++++++++++++
- migration/savevm.h           |  1 +
- migration/migration.c        |  4 ++++
- migration/savevm.c           | 33 +++++++++++++++++++++++++++++++++
- 4 files changed, 53 insertions(+)
+ migration/ram.c | 37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
-diff --git a/include/migration/register.h b/include/migration/register.h
-index c041ce32f2..b79dc81b8d 100644
---- a/include/migration/register.h
-+++ b/include/migration/register.h
-@@ -189,6 +189,21 @@ typedef struct SaveVMHandlers {
- 
-     /* This runs outside the BQL!  */
- 
-+    /**
-+     * @save_postcopy_prepare
-+     *
-+     * This hook will be invoked on the source side right before switching
-+     * to postcopy (before VM stopped).
-+     *
-+     * @f:      QEMUFile where to send the data
-+     * @opaque: Data pointer passed to register_savevm_live()
-+     * @errp:   Error** used to report error message
-+     *
-+     * Returns: true if succeeded, false if error occured.  When false is
-+     * returned, @errp must be set.
-+     */
-+    bool (*save_postcopy_prepare)(QEMUFile *f, void *opaque, Error **errp);
-+
-     /**
-      * @state_pending_estimate
-      *
-diff --git a/migration/savevm.h b/migration/savevm.h
-index 138c39a7f9..2d5e9c7166 100644
---- a/migration/savevm.h
-+++ b/migration/savevm.h
-@@ -45,6 +45,7 @@ void qemu_savevm_state_pending_exact(uint64_t *must_precopy,
- void qemu_savevm_state_pending_estimate(uint64_t *must_precopy,
-                                         uint64_t *can_postcopy);
- int qemu_savevm_state_complete_precopy_iterable(QEMUFile *f, bool in_postcopy);
-+bool qemu_savevm_state_postcopy_prepare(QEMUFile *f, Error **errp);
- void qemu_savevm_send_ping(QEMUFile *f, uint32_t value);
- void qemu_savevm_send_open_return_path(QEMUFile *f);
- int qemu_savevm_send_packaged(QEMUFile *f, const uint8_t *buf, size_t len);
-diff --git a/migration/migration.c b/migration/migration.c
-index f18cadcc5e..4697732bef 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -2727,6 +2727,10 @@ static int postcopy_start(MigrationState *ms, Error **errp)
-         }
-     }
- 
-+    if (!qemu_savevm_state_postcopy_prepare(ms->to_dst_file, errp)) {
-+        return -1;
-+    }
-+
-     trace_postcopy_start();
-     bql_lock();
-     trace_postcopy_start_set_run();
-diff --git a/migration/savevm.c b/migration/savevm.c
-index 0c12e373b4..006514c3e3 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -1523,6 +1523,39 @@ void qemu_savevm_state_complete_postcopy(QEMUFile *f)
-     qemu_fflush(f);
+diff --git a/migration/ram.c b/migration/ram.c
+index 1181a99cf6..a749e4a421 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -4398,6 +4398,42 @@ static int ram_resume_prepare(MigrationState *s, void *opaque)
+     return 0;
  }
  
-+bool qemu_savevm_state_postcopy_prepare(QEMUFile *f, Error **errp)
++static bool ram_save_postcopy_prepare(QEMUFile *f, void *opaque, Error **errp)
 +{
-+    SaveStateEntry *se;
-+    bool ret;
++    int ret;
 +
-+    QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
-+        if (!se->ops || !se->ops->save_postcopy_prepare) {
-+            continue;
-+        }
-+
-+        if (se->ops->is_active) {
-+            if (!se->ops->is_active(se->opaque)) {
-+                continue;
-+            }
-+        }
-+
-+        trace_savevm_section_start(se->idstr, se->section_id);
-+
-+        save_section_header(f, se, QEMU_VM_SECTION_PART);
-+        ret = se->ops->save_postcopy_prepare(f, se->opaque, errp);
-+        save_section_footer(f, se);
-+
-+        trace_savevm_section_end(se->idstr, se->section_id, ret);
-+
-+        if (!ret) {
-+            assert(*errp);
++    if (migrate_multifd()) {
++        /*
++         * When multifd is enabled, source QEMU needs to make sure all the
++         * pages queued before postcopy starts have been flushed.
++         *
++         * The load of these pages must happen before switching to postcopy.
++         * It's because loading of guest pages (so far) in multifd recv
++         * threads is still non-atomic, so the load cannot happen with vCPUs
++         * running on the destination side.
++         *
++         * This flush and sync will guarantee that those pages are loaded
++         * _before_ postcopy starts on the destination. The rationale is,
++         * this happens before VM stops (and before source QEMU sends all
++         * the rest of the postcopy messages).  So when the destination QEMU
++         * receives the postcopy messages, it must have received the sync
++         * message on the main channel (either RAM_SAVE_FLAG_MULTIFD_FLUSH,
++         * or RAM_SAVE_FLAG_EOS), and such message would guarantee that
++         * all previous guest pages queued in the multifd channels are
++         * completely loaded.
++         */
++        ret = multifd_ram_flush_and_sync(f);
++        if (ret < 0) {
++            error_setg(errp, "%s: multifd flush and sync failed", __func__);
 +            return false;
 +        }
 +    }
 +
++    qemu_put_be64(f, RAM_SAVE_FLAG_EOS);
++
 +    return true;
 +}
 +
- int qemu_savevm_state_complete_precopy_iterable(QEMUFile *f, bool in_postcopy)
+ void postcopy_preempt_shutdown_file(MigrationState *s)
  {
-     int64_t start_ts_each, end_ts_each;
+     qemu_put_be64(s->postcopy_qemufile_src, RAM_SAVE_FLAG_EOS);
+@@ -4417,6 +4453,7 @@ static SaveVMHandlers savevm_ram_handlers = {
+     .load_setup = ram_load_setup,
+     .load_cleanup = ram_load_cleanup,
+     .resume_prepare = ram_resume_prepare,
++    .save_postcopy_prepare = ram_save_postcopy_prepare,
+ };
+ 
+ static void ram_mig_ram_block_resized(RAMBlockNotifier *n, void *host,
 -- 
 2.48.1
 
