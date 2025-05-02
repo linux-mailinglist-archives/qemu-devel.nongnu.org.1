@@ -2,84 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99C87AA74D3
+	by mail.lfdr.de (Postfix) with ESMTPS id B23A8AA74D4
 	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 16:24:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uArIC-00039N-IB; Fri, 02 May 2025 10:23:08 -0400
+	id 1uArI5-00038F-Ik; Fri, 02 May 2025 10:23:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uArHu-00037t-He
- for qemu-devel@nongnu.org; Fri, 02 May 2025 10:22:51 -0400
+ id 1uArHt-00037i-JF
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 10:22:49 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uArHr-0008Pm-G1
- for qemu-devel@nongnu.org; Fri, 02 May 2025 10:22:50 -0400
+ id 1uArHr-0008Pp-EH
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 10:22:49 -0400
 Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5425Wm5U016341;
- Fri, 2 May 2025 14:22:43 GMT
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5425Wm2r016319;
+ Fri, 2 May 2025 14:22:44 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :date:from:message-id:subject:to; s=corp-2025-04-25; bh=HTKPUHWX
- MqgJHXl/Apy2CFC6Lss1TEGytBqwZzeA9ro=; b=mTgLdEbHsZR37VcMtUKrMv0m
- g/JH+/TQousYlO0qhPi0yPR55JuDmi2S6IkTgPuCI2mpFtGJ+PPeCX7jPy2F+9xn
- VAw4LdEc3gLBqJqxl89Pi8OQpHbDi7EUCj36TeTIkVWRWJT/8zKYDpUbLWMVw5gh
- 7UwR1c/1zIzpz1ifZeN+we1NrM8oiXk1VzaRT/raVpJACrMKAQFBv54eE6eqjtuz
- rOSuMMQp98ZCuBcIUV47T9KBB/586ROTJc68uS/UI3KLDj8JB3ph2rd0Rz1qP/fJ
- PJO0KNBra9Xfudb+CJTzVgrLUaPfmW1vL68KM5CpwwBR5ppQ8sFuT2NTXz06iA==
+ :date:from:in-reply-to:message-id:references:subject:to; s=
+ corp-2025-04-25; bh=4Y0h102crVZrLUiDEGK2GSp8Qjx6UOZQO641hMFgWw4=; b=
+ n7DLkLOHeccy0qgRUoUi53sD49DFyhW4BJrATuH7idmf9TvIn8k53FuAyj1M++lZ
+ ZvhsbzbCGa6Rgf+fprR8bF7s6G/BzI7MKlkUxDtE3swP1cvwzdCgJL2QlJcAIKvW
+ Qp24TMmO0YKZJNWozIkGYPUnIe2EozQv8lMCpdWGrJbzgSxq7pV4KQ0Q9/oJ3Nsg
+ 31GQsuSIEv9V/xHryjF0IbRgkiqutwSgTEjX8o2b3QFQXyHbPZmacQQFDHvFbHVo
+ A54mYuAo/OnhPXIjBrJYRI6U8AGqXooc8Uc8EMXE9cgqKR1rSxLYC4TXLpL1+T8d
+ aAdW5feY8YM7eU/QIEoFVQ==
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46b6usnbt4-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46b6usnbt5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Fri, 02 May 2025 14:22:43 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 542EFO1G023814; Fri, 2 May 2025 14:22:41 GMT
+ with ESMTP id 542CRrtN023749; Fri, 2 May 2025 14:22:42 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 468nxm33p0-1
+ 468nxm33pg-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 02 May 2025 14:22:41 +0000
+ Fri, 02 May 2025 14:22:42 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 542EIQwm039705;
- Fri, 2 May 2025 14:22:41 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 542EIQwo039705;
+ Fri, 2 May 2025 14:22:42 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 468nxm33ng-1; Fri, 02 May 2025 14:22:41 +0000
+ ESMTP id 468nxm33ng-2; Fri, 02 May 2025 14:22:42 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Cedric Le Goater <clg@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V3 0/3] vfio cleanup, pre-cpr
-Date: Fri,  2 May 2025 07:22:37 -0700
-Message-Id: <1746195760-101443-1-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V3 1/3] vfio/container: ram discard disable helper
+Date: Fri,  2 May 2025 07:22:38 -0700
+Message-Id: <1746195760-101443-2-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <1746195760-101443-1-git-send-email-steven.sistare@oracle.com>
+References: <1746195760-101443-1-git-send-email-steven.sistare@oracle.com>
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-02_02,2025-04-30_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=934
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  phishscore=0
  suspectscore=0 spamscore=0 adultscore=0 mlxscore=0 malwarescore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2504070000 definitions=main-2505020114
-X-Proofpoint-ORIG-GUID: IfepXbeE2U1xVVy3pkQ4VeM0LnLD4SYu
-X-Proofpoint-GUID: IfepXbeE2U1xVVy3pkQ4VeM0LnLD4SYu
-X-Authority-Analysis: v=2.4 cv=Hd0UTjE8 c=1 sm=1 tr=0 ts=6814d533 b=1 cx=c_pps
+X-Proofpoint-ORIG-GUID: QVT3TdxAo1IIWA4JefZ7gnwYHDebsLDM
+X-Proofpoint-GUID: QVT3TdxAo1IIWA4JefZ7gnwYHDebsLDM
+X-Authority-Analysis: v=2.4 cv=Hd0UTjE8 c=1 sm=1 tr=0 ts=6814d534 b=1 cx=c_pps
  a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=YMEQD7L_wW1zi78ti6QA:9
+ a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=20KFwNOVAAAA:8 a=d_plV5qU0UxEAfvj6MwA:9
  cc=ntf awl=host:13130
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAyMDExNCBTYWx0ZWRfX9APEnfDrA07C
- /JhAMLVEYc6bpSR+MjT6+DWf6rdhaJO/d5RI2oIBgNjb0Us9wjO0eizXGPTbZO1G+T0igsXnxSZ
- /kxIvznJikrh9SyyMvwTWYYeZCm3LqhacfctuAsZurhifmbcZkZM61LjkqA/Gs9h9K3dyG5RIt7
- qa9zl+Sx30CSW5/R/L2Al9vRen8Sor6EqlI3LTG42HyXPXMqVM+/nyYPO2X0AjLiq1ClRjM+7l/
- v6RkY+30U6q2ZmDFiGnwARkBmuPdSD3LVxGgANa6Xpr8ZUmiU6mh0JbtBLRlhJeSnJtn2B5nEvQ
- U7tLJsMuNhYcC18V6cSnUvqzgNgBDQy1b3Tawt26lVg7S16VHud6E1IU6DS3yk5Un1d5k66eLBC
- DtKn7IgdGxtwY904O1p+ysdAWFKZ1BJfu7w572221LVg7NVBguZot8aEAfixsGkEJaeUNgAl
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAyMDExNCBTYWx0ZWRfX3YJRKPpdcn0w
+ xaHTtfEdluo+md9tVHPTYtGvNCvoa/qxoM5lwW1D56eTZo79xnjJ2JoanoELrQLs42PXGHmL0Fi
+ pQrJfxEON0CGEdt0WG4YTEfpRc4IRHgjTDN+Kcayw3+5Sy0UBDpaU4tSYO4ywt9P7wJ3PINxob+
+ QaoqskUlYxGwKpjdQWZFYAlaJop13pjRSSy50Xx4/19JV1mArvD0xX2C41bjcpIASuLl1XlVts5
+ k7iM9o2LU7Y75ZhPANKdotLbAh1XsB7dLeoNJ3W7DI5jGNBWpb33T52qM06qa2qdHIIt28vkrrR
+ e9EXxg27aChCAN/c5tZwLBdSrCBoq6zSKcfYkAIZRGVYrKL07pQVaBwxhoYIy0Cn2zkIAzcvpnD
+ pLZhUNTLzOWMhFTPlhDw/YmI0+Qt3PIQ2OWvEeGMWJPH3UlTsq+58vWHe+ZgqS2QmxTIX3Re
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -105,24 +108,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cleanup a few vfio functions prior to the introduction of CPR.
+Define a helper to set ram discard disable, generate error messages,
+and cleanup on failure.  The second vfio_ram_block_discard_disable
+call site now performs VFIO_GROUP_UNSET_CONTAINER immediately on failure,
+instead of relying on the close of the container fd to do so in the kernel,
+but this is equivalent.
 
-These were extracted from 
-  https://lore.kernel.org/qemu-devel/1739542467-226739-1-git-send-email-steven.sistare@oracle.com/
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Reviewed-by: Cedric Le Goater <clg@redhat.com>
+---
+ hw/vfio/container.c | 48 +++++++++++++++++++++++++++---------------------
+ 1 file changed, 27 insertions(+), 21 deletions(-)
 
-Changes in V3:
-  * update to master
-
-Steve Sistare (3):
-  vfio/container: ram discard disable helper
-  vfio/container: reform vfio_container_connect cleanup
-  vfio/container: vfio_container_group_add
-
- hw/vfio/container.c | 131 +++++++++++++++++++++++++++++-----------------------
- 1 file changed, 73 insertions(+), 58 deletions(-)
-
-base-commit: 73d29ea2417b58ca55fba1aa468ba38e3607b583
-
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index 77ff56b..bf4bbd2 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -511,16 +511,10 @@ static bool vfio_legacy_setup(VFIOContainerBase *bcontainer, Error **errp)
+     return true;
+ }
+ 
+-static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
+-                                   Error **errp)
++static bool vfio_attach_discard_disable(VFIOContainer *container,
++                                        VFIOGroup *group, Error **errp)
+ {
+-    VFIOContainer *container;
+-    VFIOContainerBase *bcontainer;
+-    int ret, fd;
+-    VFIOAddressSpace *space;
+-    VFIOIOMMUClass *vioc;
+-
+-    space = vfio_address_space_get(as);
++    int ret;
+ 
+     /*
+      * VFIO is currently incompatible with discarding of RAM insofar as the
+@@ -553,18 +547,32 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
+      * details once we know which type of IOMMU we are using.
+      */
+ 
++    ret = vfio_ram_block_discard_disable(container, true);
++    if (ret) {
++        error_setg_errno(errp, -ret, "Cannot set discarding of RAM broken");
++        if (ioctl(group->fd, VFIO_GROUP_UNSET_CONTAINER, &container->fd)) {
++            error_report("vfio: error disconnecting group %d from"
++                         " container", group->groupid);
++        }
++    }
++    return !ret;
++}
++
++static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
++                                   Error **errp)
++{
++    VFIOContainer *container;
++    VFIOContainerBase *bcontainer;
++    int ret, fd;
++    VFIOAddressSpace *space;
++    VFIOIOMMUClass *vioc;
++
++    space = vfio_address_space_get(as);
++
+     QLIST_FOREACH(bcontainer, &space->containers, next) {
+         container = container_of(bcontainer, VFIOContainer, bcontainer);
+         if (!ioctl(group->fd, VFIO_GROUP_SET_CONTAINER, &container->fd)) {
+-            ret = vfio_ram_block_discard_disable(container, true);
+-            if (ret) {
+-                error_setg_errno(errp, -ret,
+-                                 "Cannot set discarding of RAM broken");
+-                if (ioctl(group->fd, VFIO_GROUP_UNSET_CONTAINER,
+-                          &container->fd)) {
+-                    error_report("vfio: error disconnecting group %d from"
+-                                 " container", group->groupid);
+-                }
++            if (!vfio_attach_discard_disable(container, group, errp)) {
+                 return false;
+             }
+             group->container = container;
+@@ -596,9 +604,7 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
+         goto free_container_exit;
+     }
+ 
+-    ret = vfio_ram_block_discard_disable(container, true);
+-    if (ret) {
+-        error_setg_errno(errp, -ret, "Cannot set discarding of RAM broken");
++    if (!vfio_attach_discard_disable(container, group, errp)) {
+         goto unregister_container_exit;
+     }
+ 
 -- 
 1.8.3.1
 
