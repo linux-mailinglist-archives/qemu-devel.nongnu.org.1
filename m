@@ -2,84 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E80AA73FA
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 15:39:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99C87AA74D3
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 16:24:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAqae-0003CD-JN; Fri, 02 May 2025 09:38:08 -0400
+	id 1uArIC-00039N-IB; Fri, 02 May 2025 10:23:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uAqac-0003Bo-6l
- for qemu-devel@nongnu.org; Fri, 02 May 2025 09:38:06 -0400
-Received: from mail-yb1-xb35.google.com ([2607:f8b0:4864:20::b35])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uAqaa-0002Ed-0w
- for qemu-devel@nongnu.org; Fri, 02 May 2025 09:38:05 -0400
-Received: by mail-yb1-xb35.google.com with SMTP id
- 3f1490d57ef6-e75608f945cso953691276.0
- for <qemu-devel@nongnu.org>; Fri, 02 May 2025 06:38:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746193082; x=1746797882; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=X3luG/UIDY1/GfJNc0Jva/acqJgU7jY8Ei1u63tDiqw=;
- b=WZVqYCpjAFuwQeyjXazYE2TSB1cfXCRtwbp75I0UeHdUuXN4al98TLm4YFhigxBcyY
- 5Ct2LC2+D9kKQKl9kaNWADXdw7WPF8e6LrXvOKEuEIBagdzMF+1eOb/s1LiH3XUWTrKd
- IeEHbAAtm7OkI/cpkDz9o4zb/tZb9MkkIVM1pBFaMTCTkx2MmZSz7WMMc66tk0gzSxoW
- ihLt2wEvTs5BU56LEW3hEcHC5pBbs4lEMx8Ed5fsDVzM+oaGyXP3Y0g3JH/Oa7KUU4lU
- TNiBcKg9M7CbqfjhdCn78n+y1yE192NSeaB9BmwyPwVe/lzCJZr3uRBtEjwCFsa3c3kI
- 7mcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746193082; x=1746797882;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=X3luG/UIDY1/GfJNc0Jva/acqJgU7jY8Ei1u63tDiqw=;
- b=bKUo3H1BK/WZHf74KMiLm2/Zi7+uXCulwQL1r51SAc3u0WzzyAbVE9wG0q9bu8TgCv
- bRxP7Nd8jbthkVGJl45w1Xvkyf46A+9ugblXYnMUsPVadWHVA7/3GoJTz+/aZQCzAAdl
- me1+efm65f9cLjyD0RIsblsRElReBb+iXn07AZKjXXTL3+Shc9MpTbdQxxKMHSEYtkUT
- 2/LZtIo4jXXD5cXFyNDiYqeJ7GL5dtMEO1zijp0yFiuEUAqPAVkBcUuoIXjmiCVrmOgV
- UUEEpVaEU6QoKppYW+e7CzhgJYiVjPWylMzrUzTl0ttejQyjXTK07SRuZni99Fau8W3m
- B+9w==
-X-Gm-Message-State: AOJu0Yy9ZVSJIyZYsf3DHQyMKGYeivzdfInF8+k2kvIpIlTnMBxeylEm
- JkNAImCWDrpVbjUQb7JOrTmOf9BFt9vo9AjdygcFiBPa3O5IugtikM3vCYKF4HItWW1JgrpNtkq
- QxGGt8OYIV1F2i84VQzsfKS5FBE9cSbm16edDWw==
-X-Gm-Gg: ASbGncvwEjav7iH8V8ApmZA7XvFwHIralPpspEkTfFS/y/W+n+xJMcp0+lDPbV5Jm/v
- +ZosruxuyQzfJQ3eRGTvSvZg6mszvSRlPz4/SDPOGGbVO3t0lHkuWT25OHdw0Vcvn4HlsqV0yVU
- B/kA4fybMtM3wMHem2KLglLZY=
-X-Google-Smtp-Source: AGHT+IEAWymbvfgJjsvchVISA/zyX5fAi9H/1QIrUO8o9PyH1gy3/M9stAXmBTJWdPRNTa4nFi4ZYanZd8XiD4hkkHA=
-X-Received: by 2002:a05:6902:1607:b0:e73:22c4:117b with SMTP id
- 3f1490d57ef6-e756566218cmr3817349276.47.1746193082647; Fri, 02 May 2025
- 06:38:02 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250116145944.38028-1-philmd@linaro.org>
-In-Reply-To: <20250116145944.38028-1-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 2 May 2025 14:37:51 +0100
-X-Gm-Features: ATxdqUEcczldx5jH_6rLsaK17PZJwtYUB2WXlMy9Z2CyZaaALu6Olqh7QjkTdQ8
-Message-ID: <CAFEAcA_7KfbhMj4c=HD4m+xivTK4NZcYc0O4NXt6MtVJ6bSitA@mail.gmail.com>
-Subject: Re: [PATCH-for-10.1 v2 00/13] hw/arm: Remove virt-2.6 up to virt-2.12
- machines
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Igor Mammedov <imammedo@redhat.com>, 
- Andrew Jones <ajones@ventanamicro.com>, Thomas Huth <thuth@redhat.com>, 
- Shannon Zhao <shannon.zhaosl@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b35;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb35.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1uArHu-00037t-He
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 10:22:51 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1uArHr-0008Pm-G1
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 10:22:50 -0400
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5425Wm5U016341;
+ Fri, 2 May 2025 14:22:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :date:from:message-id:subject:to; s=corp-2025-04-25; bh=HTKPUHWX
+ MqgJHXl/Apy2CFC6Lss1TEGytBqwZzeA9ro=; b=mTgLdEbHsZR37VcMtUKrMv0m
+ g/JH+/TQousYlO0qhPi0yPR55JuDmi2S6IkTgPuCI2mpFtGJ+PPeCX7jPy2F+9xn
+ VAw4LdEc3gLBqJqxl89Pi8OQpHbDi7EUCj36TeTIkVWRWJT/8zKYDpUbLWMVw5gh
+ 7UwR1c/1zIzpz1ifZeN+we1NrM8oiXk1VzaRT/raVpJACrMKAQFBv54eE6eqjtuz
+ rOSuMMQp98ZCuBcIUV47T9KBB/586ROTJc68uS/UI3KLDj8JB3ph2rd0Rz1qP/fJ
+ PJO0KNBra9Xfudb+CJTzVgrLUaPfmW1vL68KM5CpwwBR5ppQ8sFuT2NTXz06iA==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46b6usnbt4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 02 May 2025 14:22:43 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 542EFO1G023814; Fri, 2 May 2025 14:22:41 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 468nxm33p0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 02 May 2025 14:22:41 +0000
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 542EIQwm039705;
+ Fri, 2 May 2025 14:22:41 GMT
+Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
+ ESMTP id 468nxm33ng-1; Fri, 02 May 2025 14:22:41 +0000
+From: Steve Sistare <steven.sistare@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>,
+ Steve Sistare <steven.sistare@oracle.com>
+Subject: [PATCH V3 0/3] vfio cleanup, pre-cpr
+Date: Fri,  2 May 2025 07:22:37 -0700
+Message-Id: <1746195760-101443-1-git-send-email-steven.sistare@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-02_02,2025-04-30_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=934
+ phishscore=0
+ suspectscore=0 spamscore=0 adultscore=0 mlxscore=0 malwarescore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2504070000 definitions=main-2505020114
+X-Proofpoint-ORIG-GUID: IfepXbeE2U1xVVy3pkQ4VeM0LnLD4SYu
+X-Proofpoint-GUID: IfepXbeE2U1xVVy3pkQ4VeM0LnLD4SYu
+X-Authority-Analysis: v=2.4 cv=Hd0UTjE8 c=1 sm=1 tr=0 ts=6814d533 b=1 cx=c_pps
+ a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
+ a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=YMEQD7L_wW1zi78ti6QA:9
+ cc=ntf awl=host:13130
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAyMDExNCBTYWx0ZWRfX9APEnfDrA07C
+ /JhAMLVEYc6bpSR+MjT6+DWf6rdhaJO/d5RI2oIBgNjb0Us9wjO0eizXGPTbZO1G+T0igsXnxSZ
+ /kxIvznJikrh9SyyMvwTWYYeZCm3LqhacfctuAsZurhifmbcZkZM61LjkqA/Gs9h9K3dyG5RIt7
+ qa9zl+Sx30CSW5/R/L2Al9vRen8Sor6EqlI3LTG42HyXPXMqVM+/nyYPO2X0AjLiq1ClRjM+7l/
+ v6RkY+30U6q2ZmDFiGnwARkBmuPdSD3LVxGgANa6Xpr8ZUmiU6mh0JbtBLRlhJeSnJtn2B5nEvQ
+ U7tLJsMuNhYcC18V6cSnUvqzgNgBDQy1b3Tawt26lVg7S16VHud6E1IU6DS3yk5Un1d5k66eLBC
+ DtKn7IgdGxtwY904O1p+ysdAWFKZ1BJfu7w572221LVg7NVBguZot8aEAfixsGkEJaeUNgAl
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,35 +105,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 16 Jan 2025 at 14:59, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> The versioned 'virt' machines up to 2.12 been marked as deprecated
-> two releases ago, and are older than 6 years, so according to our
-> support policy we can remove them. Remove associated dead code.
->
-> Since v1:
-> - Corrected disallow_affinity_adjustment removal (Thomas)
-> - Do not modify docs/about/removed-features.rst (Thomas & Daniel)
->
-> Philippe Mathieu-Daud=C3=A9 (13):
->   hw/arm/virt: Remove deprecated virt-2.6 machine
->   hw/arm/virt: Remove VirtMachineClass::no_pmu field
->   hw/arm/virt: Remove VirtMachineClass::disallow_affinity_adjustment
->   hw/arm/virt: Remove deprecated virt-2.7 machine
->   hw/arm/virt: Remove VirtMachineClass::no_its field
->   hw/arm/virt: Remove deprecated virt-2.8 machine
->   hw/arm/virt: Remove VirtMachineClass::claim_edge_triggered_timers
->     field
->   hw/arm/virt: Remove deprecated virt-2.9 machine
->   hw/arm/virt: Remove deprecated virt-2.10 machine
->   hw/arm/virt: Remove deprecated virt-2.11 machine
->   hw/arm/virt: Remove VirtMachineClass::smbios_old_sys_ver field
->   hw/arm/virt: Remove deprecated virt-2.12 machine
->   hw/arm/virt: Remove VirtMachineClass::no_highmem_ecam field
+Cleanup a few vfio functions prior to the introduction of CPR.
 
-Applied to target-arm.next, thanks (with the tweak RTH points
-out to avoid a compilation failure in patch 3).
+These were extracted from 
+  https://lore.kernel.org/qemu-devel/1739542467-226739-1-git-send-email-steven.sistare@oracle.com/
 
--- PMM
+Changes in V3:
+  * update to master
+
+Steve Sistare (3):
+  vfio/container: ram discard disable helper
+  vfio/container: reform vfio_container_connect cleanup
+  vfio/container: vfio_container_group_add
+
+ hw/vfio/container.c | 131 +++++++++++++++++++++++++++++-----------------------
+ 1 file changed, 73 insertions(+), 58 deletions(-)
+
+base-commit: 73d29ea2417b58ca55fba1aa468ba38e3607b583
+
+-- 
+1.8.3.1
+
 
