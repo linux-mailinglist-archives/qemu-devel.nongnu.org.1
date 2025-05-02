@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EF31AA68A9
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 04:17:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5113AA68C1
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 04:21:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAfwz-0003sB-TY; Thu, 01 May 2025 22:16:30 -0400
+	id 1uAfx5-0003tc-0O; Thu, 01 May 2025 22:16:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1uAfwt-0003qj-Or
- for qemu-devel@nongnu.org; Thu, 01 May 2025 22:16:23 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ id 1uAfwv-0003rZ-Pd
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 22:16:25 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1uAfwp-0007Or-JY
- for qemu-devel@nongnu.org; Thu, 01 May 2025 22:16:22 -0400
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 541KeNeN007190;
- Fri, 2 May 2025 02:16:10 GMT
+ id 1uAfwt-0007Pr-Fx
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 22:16:25 -0400
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5420LTB6021390;
+ Fri, 2 May 2025 02:16:11 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2025-04-25; bh=LtWIZ
- F24E+i84J6YfKEXoe8ultBSd8eCMI+sgD0k6Xo=; b=Mhri1f+negInTMvtshv/+
- cg2WsSg6bVYYbQiPwgL1PWW3AlTmLYwAS/FRfldNRzJeg15xqaCxiLTik2Rdx62H
- Vd/UbQ5GPiniYxqeCbtKo2zmW3fR3JsehxQzFZToiA2F4KAGdZuPCUNeAfafZ9dR
- 6Cp2tHoknGwzrizqvPll1d9Htar66KvCaT+6mXz/CJZIZaSTwtlF0cBihu2EtgWv
- ivzUe8AznUVLR7XgJiZ1LpluZaSFnpd5ezRMdWcG+Qa003WLIcfqBsk5TcEEKvH1
- 7vZKCsbR+MYwRfaeP0bJrzhaG5g0Dwx9SBJC+bTn7xxapTpItvUGApckxjtr1qCd
- A==
+ :mime-version:references:subject:to; s=corp-2025-04-25; bh=zoGe6
+ YyEra8gRkKlb1MUbh2SB2o7LNCG7SXe9RaFZc4=; b=Qc67yLWOXsuB+wpy5UP19
+ EiP1PVUs2xyf2kJnlF3d5kX3HTdMyNoprjdlzOF43+AOwOiRP9iHWLdt2bpTHq3p
+ 9KUBEVu0aMdYzcD2VOX2ThUE9apPADRY6MWupjQgYgJoPUAiw/UVtNov5XjHIvP7
+ QYRw7CHh9UEe6eGeV9k3ILho+YtMM16FPW+W9N/RxoPgmXVFSRqQE7l5tNuYXxos
+ WXd1ZR+Aw2SIaFWpiQl/11CtBbuwMV4uMoKtukrAscUXI3hhTJyC9+p6zzTYDLO3
+ C2DbFA+nqKRr3MQ4ZbgRbH2oZ7AcHgY24RfVms1BEexVMBG2k/e3VkpewE1TYSi8
+ Q==
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46b6ucmdv8-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46b6uqmdvd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 02 May 2025 02:16:09 +0000 (GMT)
+ Fri, 02 May 2025 02:16:11 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 541NPfWf023782; Fri, 2 May 2025 02:16:09 GMT
+ with ESMTP id 542006AD023886; Fri, 2 May 2025 02:16:10 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 468nxkgyx4-1
+ 468nxkgyxa-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Fri, 02 May 2025 02:16:09 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5422FEru011525;
- Fri, 2 May 2025 02:16:08 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5422FErw011525;
+ Fri, 2 May 2025 02:16:09 GMT
 Received: from alaljimee5bm-ol9-20250405.osdevelopmeniad.oraclevcn.com
  (alaljimee5bm-ol9-20250405.allregionaliads.osdevelopmeniad.oraclevcn.com
  [100.100.254.235])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 468nxkgyvr-4; Fri, 02 May 2025 02:16:08 +0000
+ 468nxkgyvr-5; Fri, 02 May 2025 02:16:09 +0000
 From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
@@ -64,9 +64,10 @@ Cc: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
  clement.mathieu--drif@eviden.com, ethan.milon@eviden.com,
  joao.m.martins@oracle.com, boris.ostrovsky@oracle.com,
  alejandro.j.jimenez@oracle.com
-Subject: [PATCH v2 03/20] amd_iommu: Reorder device and page table helpers
-Date: Fri,  2 May 2025 02:15:48 +0000
-Message-ID: <20250502021605.1795985-4-alejandro.j.jimenez@oracle.com>
+Subject: [PATCH v2 04/20] amd_iommu: Helper to decode size of page
+ invalidation command
+Date: Fri,  2 May 2025 02:15:49 +0000
+Message-ID: <20250502021605.1795985-5-alejandro.j.jimenez@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250502021605.1795985-1-alejandro.j.jimenez@oracle.com>
 References: <20250502021605.1795985-1-alejandro.j.jimenez@oracle.com>
@@ -80,21 +81,21 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  suspectscore=0 spamscore=0 adultscore=0 mlxscore=0 malwarescore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2504070000 definitions=main-2505020015
-X-Authority-Analysis: v=2.4 cv=ZsHtK87G c=1 sm=1 tr=0 ts=68142ae9 b=1 cx=c_pps
+X-Proofpoint-ORIG-GUID: GYRyDCh9PFgfJeJQKMSsDFC-5aDdjm07
+X-Authority-Analysis: v=2.4 cv=Vq8jA/2n c=1 sm=1 tr=0 ts=68142aeb b=1 cx=c_pps
  a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=0jG7Jb7pV4afCPoZSdkA:9 cc=ntf
+ a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=ZVecacK4M2hnvEF20eUA:9 cc=ntf
  awl=host:13130
-X-Proofpoint-ORIG-GUID: uf7D6vXjx7kY4SMJgYlcC84WTsIB_sIH
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAyMDAxNSBTYWx0ZWRfXwD8IVsv8rg21
- rdRLAiyX9WEkWzNfErAGfIA2H+ox2E4tkEFJN97jVz4wdYgP/ptPdtP27lYfRhVCjphFSKrO2lN
- wWhP36HuvTmsF/m3cLO1cRMFBw3oBbFs2mvePWrudBEAOQhOAKC63JlcaIZ3CnnMuPApiCEju1o
- GsvWlHeroZOHxLCjJLMESVHzBx+WFtmLEwfg+O1+leYGyn2IhpC5ySbkkhCFTkelau2IJePZRpX
- OwgE/hiyqEiJg3OTb0t+HZHw25Fx8rKkISQ7v6OMxBEmqyzihQUKhvY3E/lcMXX8VjVLZYV8NTE
- coGwYg1t9+vx8dHRKbjXbvSf0QXQjCXUSrz1Uupv1qLD6YuVg1tpeK9sbijjqc5Ml9D0NtViZ12
- u1a3w33OcQGOaOoKnFLAEHyeEBZXnbzFQ8gKxOiaq1Q9NQOy9W+JeeffywWTHNvUC4/KlImm
-X-Proofpoint-GUID: uf7D6vXjx7kY4SMJgYlcC84WTsIB_sIH
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=alejandro.j.jimenez@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Proofpoint-GUID: GYRyDCh9PFgfJeJQKMSsDFC-5aDdjm07
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAyMDAxNSBTYWx0ZWRfX8++b010sODFu
+ QSvIGAuSYb8KKlWl2+s0EcUKUrkHt/0DkVhAEuBSRZQC1u/LGdTp0s7Pjv3ODYiFmyMyosqLaHX
+ ZIqXIyvdg/w8zSCM6kukSD4hSXS+nOWVaikYyohCyxBCSMElV/2cl35Q3IlfrdDjCUbZOIoNAvU
+ xNo6oQ2bWkVzEHrJIfvn9wKkbbxUhkfq9UFVXIfdCOd3NaaH0ZKvLnAIq7wvwzrAwBbqsEfZ+OE
+ 7PKp6JNJ/QtDfaH8mFol17gFMQv4jz2hWad4059TK3uiLKihH8wbJYgSTocsLyFi+3rCxkh5FvE
+ FZDAJnYyxNYoHx3mf69yYiWdv9fRAPdQ6cjmUJBZSlmrX44XWZ+eAWNckr5BO1gIsgh3nOPnTUd
+ 1UUQ0flL0bzkZ1tYmNYYApB8rHoD+1EQJ9lU264Cx9o+fE/cezhfsFtH3xyX/kmmhPcm+Ro5
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=alejandro.j.jimenez@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -118,206 +119,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move code related to Device Table and Page Table to an earlier location in
-the file, where it does not require forward declarations to be used by the
-various invalidation functions that will need to query the DTE and walk the
-page table in upcoming changes.
-
-This change consist of code movement only, no functional change intended.
+The size of the region to invalidate depends on the S bit and address
+encoded in the command. Add a helper to extract this information, which
+will be used to sync shadow page tables in upcoming changes.
 
 Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 ---
- hw/i386/amd_iommu.c | 170 ++++++++++++++++++++++----------------------
- 1 file changed, 85 insertions(+), 85 deletions(-)
+ hw/i386/amd_iommu.c | 34 ++++++++++++++++++++++++++++++++++
+ hw/i386/amd_iommu.h |  4 ++++
+ 2 files changed, 38 insertions(+)
 
 diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 2cf7e24a21d8..9e500121f6e8 100644
+index 9e500121f6e8..dff6f04c8651 100644
 --- a/hw/i386/amd_iommu.c
 +++ b/hw/i386/amd_iommu.c
-@@ -407,6 +407,91 @@ static void amdvi_completion_wait(AMDVIState *s, uint64_t *cmd)
-     trace_amdvi_completion_wait(addr, data);
+@@ -545,6 +545,40 @@ static gboolean amdvi_iotlb_remove_by_domid(gpointer key, gpointer value,
+     return entry->domid == domid;
  }
  
-+static inline uint64_t amdvi_get_perms(uint64_t entry)
++/*
++ * Helper to decode the size of the range to invalidate encoded in the
++ * INVALIDATE_IOMMU_PAGES Command format.
++ * The size of the region to invalidate depends on the S bit and address.
++ * S bit value:
++ * 0 :  Invalidation size is 4 Kbytes.
++ * 1 :  Invalidation size is determined by first zero bit in the address
++ *      starting from Address[12].
++ *
++ * In the AMD IOMMU Linux driver, an invalidation command with address
++ * ((1 << 63) - 1) is sent when intending to clear the entire cache.
++ * However, Table 14: Example Page Size Encodings shows that an address of
++ * ((1ULL << 51) - 1) encodes the entire cache, so effectively any address with
++ * first zero at bit 51 or larger is a request to invalidate the entire address
++ * space.
++ */
++static uint64_t __attribute__((unused))
++amdvi_decode_invalidation_size(hwaddr addr, uint16_t flags)
 +{
-+    return (entry & (AMDVI_DEV_PERM_READ | AMDVI_DEV_PERM_WRITE)) >>
-+           AMDVI_DEV_PERM_SHIFT;
-+}
++    uint64_t size = AMDVI_PAGE_SIZE;
++    uint8_t fzbit = 0;
 +
-+/* validate that reserved bits are honoured */
-+static bool amdvi_validate_dte(AMDVIState *s, uint16_t devid,
-+                               uint64_t *dte)
-+{
-+    if ((dte[0] & AMDVI_DTE_LOWER_QUAD_RESERVED)
-+        || (dte[1] & AMDVI_DTE_MIDDLE_QUAD_RESERVED)
-+        || (dte[2] & AMDVI_DTE_UPPER_QUAD_RESERVED) || dte[3]) {
-+        amdvi_log_illegaldevtab_error(s, devid,
-+                                      s->devtab +
-+                                      devid * AMDVI_DEVTAB_ENTRY_SIZE, 0);
-+        return false;
++    if (flags & AMDVI_CMD_INVAL_IOMMU_PAGES_S) {
++        fzbit = cto64(addr | 0xFFF);
++
++        if (fzbit >= 51) {
++            size = AMDVI_INV_ALL_PAGES;
++        } else {
++            size = 1ULL << (fzbit + 1);
++        }
 +    }
-+
-+    return true;
++    return size;
 +}
 +
-+/* get a device table entry given the devid */
-+static bool amdvi_get_dte(AMDVIState *s, int devid, uint64_t *entry)
-+{
-+    uint32_t offset = devid * AMDVI_DEVTAB_ENTRY_SIZE;
-+
-+    if (dma_memory_read(&address_space_memory, s->devtab + offset, entry,
-+                        AMDVI_DEVTAB_ENTRY_SIZE, MEMTXATTRS_UNSPECIFIED)) {
-+        trace_amdvi_dte_get_fail(s->devtab, offset);
-+        /* log error accessing dte */
-+        amdvi_log_devtab_error(s, devid, s->devtab + offset, 0);
-+        return false;
-+    }
-+
-+    *entry = le64_to_cpu(*entry);
-+    if (!amdvi_validate_dte(s, devid, entry)) {
-+        trace_amdvi_invalid_dte(entry[0]);
-+        return false;
-+    }
-+
-+    return true;
-+}
-+
-+/* get pte translation mode */
-+static inline uint8_t get_pte_translation_mode(uint64_t pte)
-+{
-+    return (pte >> AMDVI_DEV_MODE_RSHIFT) & AMDVI_DEV_MODE_MASK;
-+}
-+
-+static inline uint64_t pte_override_page_mask(uint64_t pte)
-+{
-+    uint8_t page_mask = 13;
-+    uint64_t addr = (pte & AMDVI_DEV_PT_ROOT_MASK) >> 12;
-+    /* find the first zero bit */
-+    while (addr & 1) {
-+        page_mask++;
-+        addr = addr >> 1;
-+    }
-+
-+    return ~((1ULL << page_mask) - 1);
-+}
-+
-+static inline uint64_t pte_get_page_mask(uint64_t oldlevel)
-+{
-+    return ~((1UL << ((oldlevel * 9) + 3)) - 1);
-+}
-+
-+static inline uint64_t amdvi_get_pte_entry(AMDVIState *s, uint64_t pte_addr,
-+                                          uint16_t devid)
-+{
-+    uint64_t pte;
-+
-+    if (dma_memory_read(&address_space_memory, pte_addr,
-+                        &pte, sizeof(pte), MEMTXATTRS_UNSPECIFIED)) {
-+        trace_amdvi_get_pte_hwerror(pte_addr);
-+        amdvi_log_pagetab_error(s, devid, pte_addr, 0);
-+        pte = 0;
-+        return pte;
-+    }
-+
-+    pte = le64_to_cpu(pte);
-+    return pte;
-+}
-+
- /* log error without aborting since linux seems to be using reserved bits */
- static void amdvi_inval_devtab_entry(AMDVIState *s, uint64_t *cmd)
+ /* we don't have devid - we can't remove pages by address */
+ static void amdvi_inval_pages(AMDVIState *s, uint64_t *cmd)
  {
-@@ -838,91 +923,6 @@ static void amdvi_mmio_write(void *opaque, hwaddr addr, uint64_t val,
-     }
- }
+diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
+index 28125130c6fc..6f35b0595054 100644
+--- a/hw/i386/amd_iommu.h
++++ b/hw/i386/amd_iommu.h
+@@ -123,6 +123,10 @@
+ #define AMDVI_CMD_COMPLETE_PPR_REQUEST    0x07
+ #define AMDVI_CMD_INVAL_AMDVI_ALL         0x08
  
--static inline uint64_t amdvi_get_perms(uint64_t entry)
--{
--    return (entry & (AMDVI_DEV_PERM_READ | AMDVI_DEV_PERM_WRITE)) >>
--           AMDVI_DEV_PERM_SHIFT;
--}
--
--/* validate that reserved bits are honoured */
--static bool amdvi_validate_dte(AMDVIState *s, uint16_t devid,
--                               uint64_t *dte)
--{
--    if ((dte[0] & AMDVI_DTE_LOWER_QUAD_RESERVED)
--        || (dte[1] & AMDVI_DTE_MIDDLE_QUAD_RESERVED)
--        || (dte[2] & AMDVI_DTE_UPPER_QUAD_RESERVED) || dte[3]) {
--        amdvi_log_illegaldevtab_error(s, devid,
--                                      s->devtab +
--                                      devid * AMDVI_DEVTAB_ENTRY_SIZE, 0);
--        return false;
--    }
--
--    return true;
--}
--
--/* get a device table entry given the devid */
--static bool amdvi_get_dte(AMDVIState *s, int devid, uint64_t *entry)
--{
--    uint32_t offset = devid * AMDVI_DEVTAB_ENTRY_SIZE;
--
--    if (dma_memory_read(&address_space_memory, s->devtab + offset, entry,
--                        AMDVI_DEVTAB_ENTRY_SIZE, MEMTXATTRS_UNSPECIFIED)) {
--        trace_amdvi_dte_get_fail(s->devtab, offset);
--        /* log error accessing dte */
--        amdvi_log_devtab_error(s, devid, s->devtab + offset, 0);
--        return false;
--    }
--
--    *entry = le64_to_cpu(*entry);
--    if (!amdvi_validate_dte(s, devid, entry)) {
--        trace_amdvi_invalid_dte(entry[0]);
--        return false;
--    }
--
--    return true;
--}
--
--/* get pte translation mode */
--static inline uint8_t get_pte_translation_mode(uint64_t pte)
--{
--    return (pte >> AMDVI_DEV_MODE_RSHIFT) & AMDVI_DEV_MODE_MASK;
--}
--
--static inline uint64_t pte_override_page_mask(uint64_t pte)
--{
--    uint8_t page_mask = 13;
--    uint64_t addr = (pte & AMDVI_DEV_PT_ROOT_MASK) >> 12;
--    /* find the first zero bit */
--    while (addr & 1) {
--        page_mask++;
--        addr = addr >> 1;
--    }
--
--    return ~((1ULL << page_mask) - 1);
--}
--
--static inline uint64_t pte_get_page_mask(uint64_t oldlevel)
--{
--    return ~((1UL << ((oldlevel * 9) + 3)) - 1);
--}
--
--static inline uint64_t amdvi_get_pte_entry(AMDVIState *s, uint64_t pte_addr,
--                                          uint16_t devid)
--{
--    uint64_t pte;
--
--    if (dma_memory_read(&address_space_memory, pte_addr,
--                        &pte, sizeof(pte), MEMTXATTRS_UNSPECIFIED)) {
--        trace_amdvi_get_pte_hwerror(pte_addr);
--        amdvi_log_pagetab_error(s, devid, pte_addr, 0);
--        pte = 0;
--        return pte;
--    }
--
--    pte = le64_to_cpu(pte);
--    return pte;
--}
--
- static void amdvi_page_walk(AMDVIAddressSpace *as, uint64_t *dte,
-                             IOMMUTLBEntry *ret, unsigned perms,
-                             hwaddr addr)
++
++#define AMDVI_CMD_INVAL_IOMMU_PAGES_S   (1ULL << 0)
++#define AMDVI_INV_ALL_PAGES             (1ULL << 52)
++
+ #define AMDVI_DEVTAB_ENTRY_SIZE           32
+ 
+ /* Device table entry bits 0:63 */
 -- 
 2.43.5
 
