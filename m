@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF18AA799F
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 20:58:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67B92AA79A3
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 20:58:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAvZu-0005FJ-AG; Fri, 02 May 2025 14:57:42 -0400
+	id 1uAvZz-0005Sp-Rb; Fri, 02 May 2025 14:57:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAvZr-00059m-U6
- for qemu-devel@nongnu.org; Fri, 02 May 2025 14:57:39 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAvZx-0005PZ-JQ
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 14:57:45 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAvZp-0005TX-V7
- for qemu-devel@nongnu.org; Fri, 02 May 2025 14:57:39 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-ac3eb3fdd2eso436825566b.0
- for <qemu-devel@nongnu.org>; Fri, 02 May 2025 11:57:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAvZv-0005UW-Um
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 14:57:45 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-5f624291db6so3623086a12.3
+ for <qemu-devel@nongnu.org>; Fri, 02 May 2025 11:57:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746212256; x=1746817056; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746212262; x=1746817062; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7W0BMY8RW+QgVy2DDvRgW0zJIWF8qk5txc1xkIoqDmI=;
- b=okKwYrCH4fb0GAwxyZUireMgFtNBlnquyTJl+scP2BgYKObt96paspU8yAaFhakmr2
- VrmCi8P62Jhe2KaPE4V2s8mqGmqajR31Fdm2BU+0/jPGvg7ZMx55XoETp7PQ8Cp4Eu5A
- DsbEZsXAieRZMIkY6izlCJrf1QEExT91dV1CjcpigFHiotRGN2s892AlDj2rCWDWDgGj
- E7J5ftsn3laa0AmBs1iBYnYZE5SP+3bmTPbOvU3QPMD/b9T6kf8KJ8/3NehvTFiniHfv
- V/x8Uu8g6lI805iUIZnCVg1k7gElSOQxvojXb0FxlKvhvnXgekBSH/nHyVzgakVNCYwi
- EqdA==
+ bh=bJup76xViPoYlcZ6DgY2Il03anUYcrocSLmxC3mshks=;
+ b=hnakHWOLYk2WSEY+1dgT1PIWStT/daysp4VTectjn05QDT0j3ShXb0gkt2TBvyQ9Q1
+ ZFDfEtua/d+iOKC67pIXfJK5buU93OtqbV86fMkEC9V6bFaH/VgK8hYk+S3Tpc/U3Q2/
+ kagaVo12QVyofsYrKyxoOVnDv7DPvKY4vVBx+zLRVppKTrIRpf6YaoR5FhU8iQXBx+sa
+ zN98NcFqhOmW+b6nuX1S4OB1cP0KXbcSsdjOFjgccMBdPwSJKcHg9rTDvKYzsHKdgrht
+ BOff37dGrhXGuom4f/ygevuKXqZrq0RqA25QJTglHdOuGDmLA7GEtKE2XQ476ocPzv6o
+ Dfog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746212256; x=1746817056;
+ d=1e100.net; s=20230601; t=1746212262; x=1746817062;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7W0BMY8RW+QgVy2DDvRgW0zJIWF8qk5txc1xkIoqDmI=;
- b=BtBv6PfgeYaX3745e2bHmspQDo6i2EQjZaRZrtAFLiZRNBJy+G8wHu2PtAAoS8eXI2
- PpDVmJCISP0b+hseilIoQcPAlQl6zGHtpmgdFzU46Wl3WI3F4Wt/Fyv5dP0hk5I37qIT
- RawjwhYszXze2ECIpHRiM0MGZsT3+cLpfHckBLPv5S/qW527q2Jpdtaptw69YH1ltTOk
- TJko7vId7CzgNCCiEy6pCdsH+vq8Ko+ab5HLgW1MS84W3lp3dbW9Gx5sq8NxCdxMsz+E
- P4QxXCk6j//AMZYSX2oIANQNHF9IW7u0MaDKbDEVysDkvYsls2oaapa+j76D74h6xsQH
- 0S/w==
-X-Gm-Message-State: AOJu0Yw2Rf2iXOrlmhFmcim1t6FxUFEKWQaZ1SIeN/VW8JXAjMQSJJBw
- CleLPMlrv3rBC7my6jVXAhjCslcqe6dYV9iLXrZTTERN10s/D7LBcbRITXm8Z6ECr2UuLIXMFG2
- m
-X-Gm-Gg: ASbGncuFWkhZGWh6C0jdhLfVS3c7G8alsvr6xVYV0MGlxUMcBd2sm22ZPe+WiOIjF1k
- dkW3QujjqjRMrDoQyGC8KgGYOVkPWlaXEnS+8dqcRpZZtRW3Yb4rV5/Rr73g+g8HAoDHiENFokc
- u/IcaKnqU/V0GM8fHkqgObgzb6xP/mHjk64SmQaZt9nN6wKMgMp00fIZVRBigGry8NzPGxkJw0l
- QBmnJulFNbOfbnZyion1iJpDAa4Yzd7jRQDQL0w44tTPk9930knpbunNFxM9b7I5FsFIUOT2qd8
- rGTD50N0WvnDH4YkiwNkef0TkxshvwOBZZU0t5/XDyKu8VkpfSVR+KNEMvd2X6iYzX8iJguspB1
- mUecl7UvORZ/GSUuGjEC9
-X-Google-Smtp-Source: AGHT+IEWo9HjXE4DNH5rf35EVfESZitQ5851Peyvf3rqPh+6nbMg8i/8hbEMRlvbQwc9Hq9pE7zeug==
-X-Received: by 2002:a17:907:394a:b0:ac4:2ae:c970 with SMTP id
- a640c23a62f3a-ad17b5ac529mr354547966b.21.1746212256211; 
- Fri, 02 May 2025 11:57:36 -0700 (PDT)
+ bh=bJup76xViPoYlcZ6DgY2Il03anUYcrocSLmxC3mshks=;
+ b=IIb5/97HgqSC6j9N16NYYPYbNXoYw0QXGrjbZ+INs9edfaItoN5s6HVyooAGVtVpg3
+ qNT6lKLZHVxuzLWL/ZPgx6/hjC8GlXWT5hqRRAPcRucXrwmDdeuYblUPFP0qDpzYsGK2
+ wqQu2gTzsLLt3jTf4+N872+C1/yWshbrMfqcb3GjJKnOqv45Qs/uZOfKJgofrXhPVoXA
+ tEl5HncSz4bDGdyzrPj7YwuQDDcA8ihPIQM6pABfm0HUdg3F8FAiNe0CChVu6YBXLpNA
+ 6pPSJUpgFR5dRmuHOfRi/EEMx2UmmKxEF66R9PeYPHOGsIOFLTfKT7amDT+kDWF5730Q
+ 94mw==
+X-Gm-Message-State: AOJu0YzPA5tIW3zV4rnCu75+fC24eOHdKt91YC0pujhfSNAJG+HITRdy
+ x1pZ/SWET0LYCBOxkCjYMi75EwTgKtJeM7zMSIdec3IGOZxSF3Nl26xjw2KXpKtSDyNAEopRByq
+ 9
+X-Gm-Gg: ASbGnctdreAbYKNE+SxEa9KUQm6JtSSGakTq16HWHliv2ZZOlrFne4M/cFh9Aj4kaxS
+ 10pmnW9U8x7xQP+Lneu0TpU6iNEJMXVPVBYgo7A+5OD1yl1rOPFQW88B1s3dgJ3ia9xbblB1+p6
+ VvM2+ynDfLegvzc5ILSbQX0tsg4j0AuW2al7Qa2opTYAbMrX0QC5nW1BghnMp633sveZMWT2BbC
+ 7lSo+aD0agTB/orwAyTCXE7xQefGpc+1tC0HUtmU6nO1I5m2xKVeZHxD8dc9T3zs4oD8t/70t4v
+ Z/PCRzp1rUx7cnpqLA05jeQzFNIZNoQeXnsONaM9eksmvZhqVsVSaKQDZd7vjcLdBzjYUrf0zep
+ uMQjYVqGB1V2uJoOqKULMGn5MSLUb4Sg=
+X-Google-Smtp-Source: AGHT+IH5/igCkChzWlVlBAT9HAF6ftX+1s8qZ3Pw5rfboLb09huidH1GiTzWBVXUg8A114AluNMqoA==
+X-Received: by 2002:a05:6402:270b:b0:5f6:ace4:9fa6 with SMTP id
+ 4fb4d7f45d1cf-5fa7804467bmr3246373a12.16.1746212261963; 
+ Fri, 02 May 2025 11:57:41 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ad18e68b571sm31491866b.104.2025.05.02.11.57.34
+ 4fb4d7f45d1cf-5fa777561basm1617455a12.9.2025.05.02.11.57.40
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 02 May 2025 11:57:35 -0700 (PDT)
+ Fri, 02 May 2025 11:57:41 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -77,17 +77,18 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Yi Liu <yi.l.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Subject: [PATCH v3 07/19] hw/i386/pc: Remove pc_compat_2_6[] array
-Date: Fri,  2 May 2025 20:56:39 +0200
-Message-ID: <20250502185652.67370-8-philmd@linaro.org>
+Subject: [PATCH v3 08/19] hw/intc/apic: Remove
+ APICCommonState::legacy_instance_id field
+Date: Fri,  2 May 2025 20:56:40 +0200
+Message-ID: <20250502185652.67370-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250502185652.67370-1-philmd@linaro.org>
 References: <20250502185652.67370-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,49 +111,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The pc_compat_2_6[] array was only used by the pc-q35-2.6
-and pc-i440fx-2.6 machines, which got removed. Remove it.
+The APICCommonState::legacy_instance_id boolean was only set
+in the pc_compat_2_6[] array, via the 'legacy-instance-id=on'
+property. We removed all machines using that array, lets remove
+that property, simplifying apic_common_realize().
+
+Because instance_id is initialized as initial_apic_id, we can
+not register vmstate_apic_common directly via dc->vmsd.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 ---
- include/hw/i386/pc.h | 3 ---
- hw/i386/pc.c         | 8 --------
- 2 files changed, 11 deletions(-)
+ include/hw/i386/apic_internal.h | 1 -
+ hw/intc/apic_common.c           | 5 -----
+ 2 files changed, 6 deletions(-)
 
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index a3de3e9560d..4fb2033bc54 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -292,9 +292,6 @@ extern const size_t pc_compat_2_8_len;
- extern GlobalProperty pc_compat_2_7[];
- extern const size_t pc_compat_2_7_len;
- 
--extern GlobalProperty pc_compat_2_6[];
--extern const size_t pc_compat_2_6_len;
--
- #define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
-     static void pc_machine_##suffix##_class_init(ObjectClass *oc, \
-                                                  const void *data) \
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 49632b69d29..7573b880905 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -251,14 +251,6 @@ GlobalProperty pc_compat_2_7[] = {
+diff --git a/include/hw/i386/apic_internal.h b/include/hw/i386/apic_internal.h
+index 429278da618..db6a9101530 100644
+--- a/include/hw/i386/apic_internal.h
++++ b/include/hw/i386/apic_internal.h
+@@ -188,7 +188,6 @@ struct APICCommonState {
+     uint32_t vapic_control;
+     DeviceState *vapic;
+     hwaddr vapic_paddr; /* note: persistence via kvmvapic */
+-    bool legacy_instance_id;
+     uint32_t extended_log_dest;
  };
- const size_t pc_compat_2_7_len = G_N_ELEMENTS(pc_compat_2_7);
  
--GlobalProperty pc_compat_2_6[] = {
--    { TYPE_X86_CPU, "cpuid-0xb", "off" },
--    { "vmxnet3", "romfile", "" },
--    { TYPE_X86_CPU, "fill-mtrr-mask", "off" },
--    { "apic-common", "legacy-instance-id", "on", }
--};
--const size_t pc_compat_2_6_len = G_N_ELEMENTS(pc_compat_2_6);
--
- /*
-  * @PC_FW_DATA:
-  * Size of the chunk of memory at the top of RAM for the BIOS ACPI tables
+diff --git a/hw/intc/apic_common.c b/hw/intc/apic_common.c
+index 37a7a7019d3..1d259b97e63 100644
+--- a/hw/intc/apic_common.c
++++ b/hw/intc/apic_common.c
+@@ -294,9 +294,6 @@ static void apic_common_realize(DeviceState *dev, Error **errp)
+         info->enable_tpr_reporting(s, true);
+     }
+ 
+-    if (s->legacy_instance_id) {
+-        instance_id = VMSTATE_INSTANCE_ID_ANY;
+-    }
+     vmstate_register_with_alias_id(NULL, instance_id, &vmstate_apic_common,
+                                    s, -1, 0, NULL);
+ 
+@@ -412,8 +409,6 @@ static const Property apic_properties_common[] = {
+     DEFINE_PROP_UINT8("version", APICCommonState, version, 0x14),
+     DEFINE_PROP_BIT("vapic", APICCommonState, vapic_control, VAPIC_ENABLE_BIT,
+                     true),
+-    DEFINE_PROP_BOOL("legacy-instance-id", APICCommonState, legacy_instance_id,
+-                     false),
+ };
+ 
+ static void apic_common_get_id(Object *obj, Visitor *v, const char *name,
 -- 
 2.47.1
 
