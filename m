@@ -2,83 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 102FDAA7B82
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 23:49:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05540AA7B7F
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 23:49:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAyFZ-0006E9-LO; Fri, 02 May 2025 17:48:53 -0400
+	id 1uAyFb-0006EJ-0Z; Fri, 02 May 2025 17:48:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uAyFX-0006DH-Ek
+ id 1uAyFX-0006DO-LM
  for qemu-devel@nongnu.org; Fri, 02 May 2025 17:48:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uAyFU-00042G-TB
+ id 1uAyFW-00042a-22
  for qemu-devel@nongnu.org; Fri, 02 May 2025 17:48:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746222526;
+ s=mimecast20190719; t=1746222529;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=qG1KShUeTk18GlOTqskYZG4cMnUbVcprVf33AbQqpCo=;
- b=PrcpQ/uKXAXKnD7Db8UjYQPqp1lFIzB3gMZuNDEwfb53WoVoMbbeMOXUvJvBYwVFPnokOC
- 8spWm+qPvKQEzVtOF3rlQUlJmayP+Knoo6dQZ5K4I5SYrERWcGHMznJ/zOuOTSDp9j+hVy
- y9Z8tRAlcKTv/jVc55Y2cNrSKSTq06c=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=hQDtzIzmoV0HVk+AWYcmKi3lcOstOQ+i6JmBjXMM7wA=;
+ b=DBIv3dIDKIizgCOdNg7IpFJgkgJEvW25h2tSbyxBOKrwIBTH8ERm+96QF6sd2boOlHVO9/
+ S+jE9jBLrV2V12DY/J+JY3p3dGp0NSC0FJa29tROGUbW76vR1CatfAqasSR02kKHyGy2yR
+ AHITN8bXM73p/AB9vD8NtPGQKm0hjKE=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-677--EfYRzunNJis3FCekEkZMQ-1; Fri, 02 May 2025 17:48:45 -0400
-X-MC-Unique: -EfYRzunNJis3FCekEkZMQ-1
-X-Mimecast-MFC-AGG-ID: -EfYRzunNJis3FCekEkZMQ_1746222524
+ us-mta-194-JMF35Hd6PyiAKmGjqC_6KA-1; Fri, 02 May 2025 17:48:48 -0400
+X-MC-Unique: JMF35Hd6PyiAKmGjqC_6KA-1
+X-Mimecast-MFC-AGG-ID: JMF35Hd6PyiAKmGjqC_6KA_1746222527
 Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-43d01024089so15641775e9.1
- for <qemu-devel@nongnu.org>; Fri, 02 May 2025 14:48:45 -0700 (PDT)
+ 5b1f17b1804b1-43cf172ff63so11245865e9.3
+ for <qemu-devel@nongnu.org>; Fri, 02 May 2025 14:48:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746222523; x=1746827323;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=qG1KShUeTk18GlOTqskYZG4cMnUbVcprVf33AbQqpCo=;
- b=ugTc7HzUrkdXLDDD8RFjWeDfQIwiRyukrkF+e0fGaTfJWeqSTV2b8UD3ln4eybjtnB
- fbrnDFN9T7mxUBmvFRRMOAHqUfXSrLS3NzP7Lo6SgjsKMBpqEwpHqhjWhWupMNoyJLKh
- AvFwGkcpOQIbPxoCILlOLFTmTH3oRYnPyF0++raQzZYYDh0WgA5fUa52A6tFX3rQxp/+
- gN9mO7imNUvMbpsHzOgyh1c/mehQKERdZHeNYFyWpu+P/jB48qdeO5X0elDWKOQRIJRb
- o0QE+9ldCwh2qEusC6pQsQNNbiDwYpaIB+5w7fMsiUCVGVg51kdW7JHWCZfQCIx7+v3m
- Pjcg==
-X-Gm-Message-State: AOJu0YwrbYHcMNAhKo8JK0aNeHTM5tMIN0Mhs4fL65suOBM80lCUavWU
- 8SIBc4bOjLInDdGQwMmos51ldV5bS6oTS+/iJJI8tVeSXvW5rIHDIw8Hz9+MIeSoVaTI9c3LlcN
- cM9RAbygsD/uLbd5T9pGn78lw1Lp7S8tUEO7u/7xwmfQ9vmlLm6h7EduyHTBCJTTupS3zG7u/3J
- qHuxQD6NryXYCUouUy1W0+V0U5hod2pfyiHq5o
-X-Gm-Gg: ASbGncs18JYTIku37FSuxda0C0vOQnWzGl1Vo8ZLbFK1wlmft70LjDG+evBT7AySlLB
- dSTrWeIt2COklEeOzzgfo2ZgotqL2vrvWadCINEPH7Bbe+4cjuL2maZxVrvDWF4VmcgnMU07kc4
- WHuwULJf4h/Qx7Lc01/NvVg54t/6ZjPEb//lyD4e4a/vNZN31L9mVeeD4b0vObQoxYlQPlr1dK5
- PRzoK0jyA+6+/gzrKwPJ/OLifU/F4qgVqIXzECEugCJMCr6+ulDdnM7nvg3zB7vuHkvAMU2dSbk
- pwO1CPx+ptj8KTo=
-X-Received: by 2002:a05:600c:1c26:b0:440:68db:a013 with SMTP id
- 5b1f17b1804b1-441bbf2cb29mr32375665e9.25.1746222523283; 
- Fri, 02 May 2025 14:48:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEwuk81mlIyv6PQ3wvB5qLXnMgSSE7ZmdcQ0wN7OGCPgzJyht+QjOYBVTdsl6UHLqA71PZQcA==
-X-Received: by 2002:a05:600c:1c26:b0:440:68db:a013 with SMTP id
- 5b1f17b1804b1-441bbf2cb29mr32375545e9.25.1746222522842; 
- Fri, 02 May 2025 14:48:42 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1746222526; x=1746827326;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=hQDtzIzmoV0HVk+AWYcmKi3lcOstOQ+i6JmBjXMM7wA=;
+ b=Y8Jnz3hdfiBslVKezZjj/JR0JkOiBywCaRSCPnfkyscBmXdeNdJNOEv/sKsOItc4tT
+ ESiW4b9ju4dihMwwy2vZW4itNYeIcBSdDcszYTmvYhYTCgi7OglAt6Y1Fdt2k2A7faW8
+ lZ0M7xv/1nVxOe1rqt1RRubLFsJKGhVdd+jQCDEnl8CkU+Y5GVuDuL97BbyTvTMPtC0S
+ jtoyzr2GHhAZnaTznLsOek945m7IlSV6z8+Nbcrh3Vg9Y/Q3vzNUqTOaJrkwbLwHfT2W
+ jmVqrab5dqxinVQVnHq+DaQaqHoEyGaGuGFFGVhNqn9h/sicGE0xE+q7lnoFhPEIXH3l
+ Su6Q==
+X-Gm-Message-State: AOJu0Yyr590M6bOuyhLHKVr5I32mJWmVFEkKT/h6z79BtLEzX9XqmGy8
+ j32wjNsvJw1EJ75lAelmVzA/DZ3/9eZp4sVSWdbFNiNjrnx8AXSn9e2aY8cm5BfXtRYpbsz/IUW
+ G4C+jr4gYvO14Z7fmZlVEsIhn+YgRYW6zfFim5ImBkP4m2TvnyJwQpslrMJU1+VycpTn98NnyTt
+ z9fuJe9zfnkwF77OkWHcf/nF6WNASLXNHydMTv
+X-Gm-Gg: ASbGncsqepDdxhgOBdpKiiSZFDIOZC5h+dyHboaDVrmtIamMVfrfQyAxxz+LxaobhLs
+ mI6MaebbbGYL0MapxwgpLBEy0n4MX+R3rgZP6T5CVFI4usNBnK05MS7Qzo4Wjn/zE2fyxQF+b0R
+ EsGMttIuZKsissvZphPJC1quVxW/eEa0O1g+YFIPWmKj7AbQTWH94rZ244osxmz13Mt05Q++aoE
+ +JFPKRFRrDo8UegjpscvRHELUz6FHc1s8jxLquylRpe3/S97bS0iMcQPzwIh5QvyGM0sEd5m2fJ
+ UWRZgcQFz1lMmng=
+X-Received: by 2002:a05:600c:528f:b0:43b:c95f:fd9 with SMTP id
+ 5b1f17b1804b1-441bbea0e11mr41188025e9.5.1746222526100; 
+ Fri, 02 May 2025 14:48:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGHbzYC8n8muNxZMT4HixA9pL6hMLK/HZjFp6P2v1cjwH6caPNCazsMdiXiBVr31HUA3puizg==
+X-Received: by 2002:a05:600c:528f:b0:43b:c95f:fd9 with SMTP id
+ 5b1f17b1804b1-441bbea0e11mr41187905e9.5.1746222525660; 
+ Fri, 02 May 2025 14:48:45 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.54.106])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-441b8a315fdsm55302455e9.34.2025.05.02.14.48.42
+ 5b1f17b1804b1-441b8a285c2sm55645825e9.32.2025.05.02.14.48.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 May 2025 14:48:42 -0700 (PDT)
+ Fri, 02 May 2025 14:48:43 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: wei.liu@kernel.org
-Subject: [CFT PATCH 0/4] target/i386/emulate: cleanups
-Date: Fri,  2 May 2025 23:48:37 +0200
-Message-ID: <20250502214841.242584-1-pbonzini@redhat.com>
+Subject: [PATCH 1/4] target/i386/emulate: fix target_ulong format strings
+Date: Fri,  2 May 2025 23:48:38 +0200
+Message-ID: <20250502214841.242584-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250502214841.242584-1-pbonzini@redhat.com>
+References: <20250502214841.242584-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
@@ -103,42 +106,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These are some improvements to the x86 emulator that I wrote but have no
-way of testing (right now).
+Do not assume that TARGET_FMT_lx is %llx.
 
-I tried to place them in order of importance so that, if something breaks,
-it is possible to commit a subset.  I tried to compile the resulting code
-on Linux but I have not run it.
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ target/i386/emulate/x86_decode.c | 2 +-
+ target/i386/emulate/x86_emu.c    | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Patch 1 is just to fix warnings on Linux.
-
-Patch 2 is the most important, as it fixes some real horrors in the code.
-
-Patch 3 makes flags handling use algorithms somewhat similar to TCG.
-It should fix issues with 64-bit ALU operations, but it's also the one
-where it's more likely to have a mistake.
-
-Patch 4 is comparatively trivial, though I cannot exclude any screwups.
-
-It should be possible to test this with both HVF and Hyper-V.
-
-Paolo
-
-Paolo Bonzini (4):
-  target/i386/emulate: fix target_ulong format strings
-  target/i386/emulate: stop overloading decode->op[N].ptr
-  target/i386/emulate: mostly rewrite flags handling
-  target/i386: remove lflags
-
- target/i386/cpu.h                |   6 -
- target/i386/emulate/x86_decode.h |   9 +-
- target/i386/emulate/x86_emu.h    |   8 +-
- target/i386/emulate/x86_flags.h  |  12 +-
- target/i386/emulate/x86_decode.c |  76 ++++++------
- target/i386/emulate/x86_emu.c    | 125 +++++++++----------
- target/i386/emulate/x86_flags.c  | 198 +++++++++++++------------------
- 7 files changed, 197 insertions(+), 237 deletions(-)
-
+diff --git a/target/i386/emulate/x86_decode.c b/target/i386/emulate/x86_decode.c
+index 7efa2f570ea..88be9479a82 100644
+--- a/target/i386/emulate/x86_decode.c
++++ b/target/i386/emulate/x86_decode.c
+@@ -26,7 +26,7 @@
+ 
+ static void decode_invalid(CPUX86State *env, struct x86_decode *decode)
+ {
+-    printf("%llx: failed to decode instruction ", env->eip);
++    printf(TARGET_FMT_lx ": failed to decode instruction ", env->eip);
+     for (int i = 0; i < decode->opcode_len; i++) {
+         printf("%x ", decode->opcode[i]);
+     }
+diff --git a/target/i386/emulate/x86_emu.c b/target/i386/emulate/x86_emu.c
+index 26a4876aac0..7773b51b95e 100644
+--- a/target/i386/emulate/x86_emu.c
++++ b/target/i386/emulate/x86_emu.c
+@@ -1241,7 +1241,7 @@ static void init_cmd_handler(void)
+ bool exec_instruction(CPUX86State *env, struct x86_decode *ins)
+ {
+     if (!_cmd_handler[ins->cmd].handler) {
+-        printf("Unimplemented handler (%llx) for %d (%x %x) \n", env->eip,
++        printf("Unimplemented handler (" TARGET_FMT_lx ") for %d (%x %x) \n", env->eip,
+                 ins->cmd, ins->opcode[0],
+                 ins->opcode_len > 1 ? ins->opcode[1] : 0);
+         env->eip += ins->len;
 -- 
 2.49.0
 
