@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67ED7AA7A02
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 21:05:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16DB4AA79A8
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 20:59:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAvau-0007LK-5f; Fri, 02 May 2025 14:58:44 -0400
+	id 1uAvb1-0007nu-U4; Fri, 02 May 2025 14:58:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAvad-0006Qv-Tg
- for qemu-devel@nongnu.org; Fri, 02 May 2025 14:58:28 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAvao-000798-67
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 14:58:38 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAvab-0005el-MT
- for qemu-devel@nongnu.org; Fri, 02 May 2025 14:58:27 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-aca99fc253bso369738166b.0
- for <qemu-devel@nongnu.org>; Fri, 02 May 2025 11:58:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAvag-0005fr-7w
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 14:58:37 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-5e6c18e2c7dso4475891a12.3
+ for <qemu-devel@nongnu.org>; Fri, 02 May 2025 11:58:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746212302; x=1746817102; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746212308; x=1746817108; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ABC8+QfGyso1WyDvOcXI+0OZWgW+TnNwcrP3jxKT+bs=;
- b=RL7w98xih3fjFfElmNHdixUCO/AJpZ3/GBJBsKCH5V9vcGXmN/KbnRktUVkQVeONRT
- L427/3QkkRGhV4mlJDosO0OFuEuOZsngS5X9Nh9bEtwU4nugPCABfkD+4N+vqajdaEje
- vNQmtfhaYyHuT31FxKWIMcccbQAxP4LONbGWnutZYm46N6N7fS315o6QgnwCJni6x/bB
- ysIrml2BayGqWVFKLEq02SHakh02tRWMCB/s2Uu0xfaxs8YHCVNb5XWlOADX/Dgua4st
- knpD/GNqgneVrks/Vhn39t2AqIu7QB+wk6xlGIN+oUm5GVk+bUoNK+kiQMjwnhO5WybP
- earA==
+ bh=J0A/U1sPooJ/zOn+77YMR3kP+UO0nbbTuEYORNZS6uE=;
+ b=x5KxkQGG4OHsTeQYxdaiSMb+lGwRt/DOjlBCyzs05wKWWjKYnvMAAlaMDrjyl9/MTl
+ I5Zqd/JjDQXOZXybxgl6sV1KdaUehdi5n8KyRH4YkeNHEXg49+C+DuOl+KbReiEDGMx1
+ 0qONppMlXJkusx8Z43eyIGeQyDuQD5+jZ8e1Xui0rxAimWZjAoAHb17F8+P8QONAK/m7
+ R2N1PaaPyV8nJvEquFBM1etHO0tHDapM4IXvPocWGm8GoWshQgZho2zI6rpv3xoEojIL
+ Uk+2Jwl/+sjhzw1w5/iP0ebARmHoj71n/ha6Gf7A0fk3NU27QW3EWDkY0F/YfaAqN4Ou
+ VyCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746212302; x=1746817102;
+ d=1e100.net; s=20230601; t=1746212308; x=1746817108;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ABC8+QfGyso1WyDvOcXI+0OZWgW+TnNwcrP3jxKT+bs=;
- b=kySE8vy/LpXYFO/rEYY8ySCCi/8+n6z0Iveilx3ViBmJZh7emahFT9obMZ0360kJyi
- w8NOVI+mXRcNyGUZoO98MFVGFXFgmzXzp3/g3NAB0oLI86E4SdWbanTQZHx8uPbp/GHr
- B2yb5eFUb4gBeOZ609k9Sy2sqweW/k9Lrh74cBl78owuxzEe9uTorCN+bt7Z7WlSwbwU
- c55W+jPFJ+gIVTWVtybTC7ecXv2vAmerYMKaNNs9tbs+T6S26paO/JK5KDS58OE40GHD
- A8QZWwfG2UJu/YwdoTcoAAxHdxHrPwI3CLm5kvbAhFxUs17L3KuJs4WT+IUsJnmsZAUZ
- dgig==
-X-Gm-Message-State: AOJu0YxGUn5ZybNd7Zgv4wOuWCXeVePWBqTDyVuvXV4x0ic4F56Rc8KF
- j4omUbQZt5F3KoZxJJ5VZZLXOB8D5uaj+NVIuO5UGUWwK+ogpgpeMb8cT8xx965D+yRWaWl+gB1
- Q
-X-Gm-Gg: ASbGncszMPZDduNccekIVqzY/4WNO0tP+IvuucckvBk/atk0KVA185H1Np0USt4Bo30
- D+h9y6iAwR8Egd52eepHou2s+sxGx4gBnYiDvQkuc+O+DVYVRUNlidruE/5CD/i1K7dZNLLZmBj
- CzKdgAuUFpBDVK49etSTIfnMlsKoS7yP6gEclZo5jiys7/ILGzMvruahkdElh3z2iao8Dram7aK
- D+YCugSLk+nKcPFSGj196c7+svk730TzrEva0I6BNnY6omacMOpUaqosM4RUoFfV+vuRgYOK4PI
- L/QJzOfwQ4/bDF0qiY0xluN6F8eqvQY0VtWbqLCZ4xtXMXGwqF/WWFN8vLnBTJ3bgiupCg7lvwC
- GiMJeu73eru/Ghy6da2ai
-X-Google-Smtp-Source: AGHT+IEa6dQWqraimJIsF2zuuhgShfG2AxC1Jl46LPV84Msdt0/W0Ub0k1nlQBHreLFL1jBlNVLYyw==
-X-Received: by 2002:a17:907:94c1:b0:aca:d6f2:5d5 with SMTP id
- a640c23a62f3a-ad17af8f6famr328521366b.39.1746212302362; 
- Fri, 02 May 2025 11:58:22 -0700 (PDT)
+ bh=J0A/U1sPooJ/zOn+77YMR3kP+UO0nbbTuEYORNZS6uE=;
+ b=OmCPNp3Vv360C3WKP7tFB4Ap4nxQ3cmGd+8QcT/EN4lr0NN0NpKcEksXbUHR1J2lLB
+ bS/Ssv9M/lJd/QZkQ/E72Gt9wIID4FQTFQcqKWgDDiN8wzQiBGtG4YJoochuZIi1kY+X
+ 7YoDm9j6+UuiVStugelzDrGaFwGAducxDi2DMC7YxLlze3N+xt8xXx38WMex+xoA9RYV
+ HWayynZ5gHfNOYR83TT484v0CE/4vqteJLx2jcMxI/RSETf7T3YuwfFQ6c9408ROxFPT
+ s5VgRF438zGCr8jPMB8ARuDC4VhW6ZLAgu153QSJ99+be3fX+ekyUr5VlNoiTScS0C0K
+ aIPA==
+X-Gm-Message-State: AOJu0Yy9Sl232i7EMR63gaXB/XA2Y5aKaHm4OY0VEtk2gDLjkOf0W2qp
+ ips4/yVagWvOJMebYfYtbBotQ6hO2FafJXYECuPgaM8lGcYejLE/HK5+qanEBSfpiRnjrMBVFxY
+ U
+X-Gm-Gg: ASbGncv/4C5UomfsRKQEJPmD611htwfBNj2+OA16N51y82k+PZRrCYQCP96/L9W+P+M
+ NSm4+/4DDU3OIByifRv87UFSDYAXDaPGKbvU6QA83O3iI5pWvy50LLxOjbfnWNfUlKoGiUogvzM
+ vfe5qinkl9pInKBNm+1k6L1DbSf6BPknVsDjT1bgaufU36B21wWSZ8mHdrfQI/v3nwH0FnCL41O
+ nrxccnXyvTG4+c/Mo+EXL7uA7itPcp0PsCXHXTKbplnYMj97IyW4P4pXJegPqDQC+1jff503PMA
+ wtMdNYTZc3RhsB0w1mj3VZm/ccHWJhe9hDyk7rLVBH5W6V7CgCiMF0A12j3W0VRkxlvhqRti+Uh
+ ticvzOUfn+PwXl5jCKTo6xYdfl3dmKz4=
+X-Google-Smtp-Source: AGHT+IFWiLSVzTmaXc0rED+0MroSCC0mr9smiOzx/BdcePCS2SUO3yIG/YNKAy8xJLBf/yCl1WjtNA==
+X-Received: by 2002:a05:6402:350c:b0:5f8:504a:88d5 with SMTP id
+ 4fb4d7f45d1cf-5faa7f31700mr178673a12.7.1746212307893; 
+ Fri, 02 May 2025 11:58:27 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ad18950830csm84058166b.124.2025.05.02.11.58.20
+ 4fb4d7f45d1cf-5fa777c732bsm1620533a12.20.2025.05.02.11.58.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 02 May 2025 11:58:21 -0700 (PDT)
+ Fri, 02 May 2025 11:58:27 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -77,18 +77,18 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Yi Liu <yi.l.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Subject: [PATCH v3 15/19] hw/i386/intel_iommu: Remove
- IntelIOMMUState::buggy_eim field
-Date: Fri,  2 May 2025 20:56:47 +0200
-Message-ID: <20250502185652.67370-16-philmd@linaro.org>
+Subject: [PATCH v3 16/19] hw/intc/ioapic: Remove IOAPICCommonState::version
+ field
+Date: Fri,  2 May 2025 20:56:48 +0200
+Message-ID: <20250502185652.67370-17-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250502185652.67370-1-philmd@linaro.org>
 References: <20250502185652.67370-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,56 +111,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The IntelIOMMUState::buggy_eim boolean was only set in
-the hw_compat_2_7[] array, via the 'x-buggy-eim=true'
-property. We removed all machines using that array, lets
-remove that property, simplifying vtd_decide_config().
+The IOAPICCommonState::version integer was only set
+in the hw_compat_2_7[] array, via the 'version=0x11'
+property. We removed all machines using that array,
+lets remove that property, simplify by only using the
+default version (defined as IOAPIC_VER_DEF).
+
+For the record, this field was introduced in commit
+20fd4b7b6d9 ("x86: ioapic: add support for explicit EOI"):
+
+ >   Some old Linux kernels (upstream before v4.0), or any released RHEL
+ >   kernels has problem in sending APIC EOI when IR is enabled.
+ >   Meanwhile, many of them only support explicit EOI for IOAPIC, which
+ >   is only introduced in IOAPIC version 0x20. This patch provide a way
+ >   to boost QEMU IOAPIC to version 0x20, in order for QEMU to correctly
+ >   receive EOI messages.
+ >
+ >   Without boosting IOAPIC version to 0x20, kernels before commit
+ >   d32932d ("x86/irq: Convert IOAPIC to use hierarchical irqdomain
+ >   interfaces") will have trouble enabling both IR and level-triggered
+ >   interrupt devices (like e1000).
+ >
+ >   To upgrade IOAPIC to version 0x20, we need to specify:
+ >
+ >     -global ioapic.version=0x20
+ >
+ >   To be compatible with old systems, 0x11 will still be the default
+ >   IOAPIC version. Here 0x11 and 0x20 are the only versions to be
+ >   supported.
+ >
+ >   One thing to mention: this patch only applies to emulated IOAPIC. It
+ >   does not affect kernel IOAPIC behavior.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 ---
- include/hw/i386/intel_iommu.h | 1 -
- hw/i386/intel_iommu.c         | 5 ++---
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ hw/intc/ioapic_internal.h |  3 +--
+ hw/intc/ioapic.c          | 18 ++----------------
+ hw/intc/ioapic_common.c   |  2 +-
+ 3 files changed, 4 insertions(+), 19 deletions(-)
 
-diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
-index e95477e8554..29304329d05 100644
---- a/include/hw/i386/intel_iommu.h
-+++ b/include/hw/i386/intel_iommu.h
-@@ -303,7 +303,6 @@ struct IntelIOMMUState {
-     uint32_t intr_size;             /* Number of IR table entries */
-     bool intr_eime;                 /* Extended interrupt mode enabled */
-     OnOffAuto intr_eim;             /* Toggle for EIM cabability */
--    bool buggy_eim;                 /* Force buggy EIM unless eim=off */
-     uint8_t aw_bits;                /* Host/IOVA address width (in bits) */
-     bool dma_drain;                 /* Whether DMA r/w draining enabled */
-     bool dma_translation;           /* Whether DMA translation supported */
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 5f8ed1243d1..c980cecb4ee 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -3823,7 +3823,6 @@ static const Property vtd_properties[] = {
-     DEFINE_PROP_UINT32("version", IntelIOMMUState, version, 0),
-     DEFINE_PROP_ON_OFF_AUTO("eim", IntelIOMMUState, intr_eim,
-                             ON_OFF_AUTO_AUTO),
--    DEFINE_PROP_BOOL("x-buggy-eim", IntelIOMMUState, buggy_eim, false),
-     DEFINE_PROP_UINT8("aw-bits", IntelIOMMUState, aw_bits,
-                       VTD_HOST_ADDRESS_WIDTH),
-     DEFINE_PROP_BOOL("caching-mode", IntelIOMMUState, caching_mode, FALSE),
-@@ -4731,11 +4730,11 @@ static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
-     }
+diff --git a/hw/intc/ioapic_internal.h b/hw/intc/ioapic_internal.h
+index 51205767f44..330ce195222 100644
+--- a/hw/intc/ioapic_internal.h
++++ b/hw/intc/ioapic_internal.h
+@@ -82,7 +82,7 @@
+ #define IOAPIC_ID_MASK                  0xf
  
-     if (s->intr_eim == ON_OFF_AUTO_AUTO) {
--        s->intr_eim = (kvm_irqchip_in_kernel() || s->buggy_eim)
-+        s->intr_eim = kvm_irqchip_in_kernel()
-                       && x86_iommu_ir_supported(x86_iommu) ?
-                                               ON_OFF_AUTO_ON : ON_OFF_AUTO_OFF;
-     }
--    if (s->intr_eim == ON_OFF_AUTO_ON && !s->buggy_eim) {
-+    if (s->intr_eim == ON_OFF_AUTO_ON) {
-         if (kvm_irqchip_is_split() && !kvm_enable_x2apic()) {
-             error_setg(errp, "eim=on requires support on the KVM side"
-                              "(X2APIC_API, first shipped in v4.7)");
+ #define IOAPIC_VER_ENTRIES_SHIFT        16
+-
++#define IOAPIC_VER_DEF                  0x20
+ 
+ #define TYPE_IOAPIC_COMMON "ioapic-common"
+ OBJECT_DECLARE_TYPE(IOAPICCommonState, IOAPICCommonClass, IOAPIC_COMMON)
+@@ -104,7 +104,6 @@ struct IOAPICCommonState {
+     uint32_t irr;
+     uint64_t ioredtbl[IOAPIC_NUM_PINS];
+     Notifier machine_done;
+-    uint8_t version;
+     uint64_t irq_count[IOAPIC_NUM_PINS];
+     int irq_level[IOAPIC_NUM_PINS];
+     int irq_eoi[IOAPIC_NUM_PINS];
+diff --git a/hw/intc/ioapic.c b/hw/intc/ioapic.c
+index 133bef852d1..5cc97767d9d 100644
+--- a/hw/intc/ioapic.c
++++ b/hw/intc/ioapic.c
+@@ -315,7 +315,7 @@ ioapic_mem_read(void *opaque, hwaddr addr, unsigned int size)
+             val = s->id << IOAPIC_ID_SHIFT;
+             break;
+         case IOAPIC_REG_VER:
+-            val = s->version |
++            val = IOAPIC_VER_DEF |
+                 ((IOAPIC_NUM_PINS - 1) << IOAPIC_VER_ENTRIES_SHIFT);
+             break;
+         default:
+@@ -411,8 +411,7 @@ ioapic_mem_write(void *opaque, hwaddr addr, uint64_t val,
+         }
+         break;
+     case IOAPIC_EOI:
+-        /* Explicit EOI is only supported for IOAPIC version 0x20 */
+-        if (size != 4 || s->version != 0x20) {
++        if (size != 4) {
+             break;
+         }
+         ioapic_eoi_broadcast(val);
+@@ -444,18 +443,10 @@ static void ioapic_machine_done_notify(Notifier *notifier, void *data)
+ #endif
+ }
+ 
+-#define IOAPIC_VER_DEF 0x20
+-
+ static void ioapic_realize(DeviceState *dev, Error **errp)
+ {
+     IOAPICCommonState *s = IOAPIC_COMMON(dev);
+ 
+-    if (s->version != 0x11 && s->version != 0x20) {
+-        error_setg(errp, "IOAPIC only supports version 0x11 or 0x20 "
+-                   "(default: 0x%x).", IOAPIC_VER_DEF);
+-        return;
+-    }
+-
+     memory_region_init_io(&s->io_memory, OBJECT(s), &ioapic_io_ops, s,
+                           "ioapic", 0x1000);
+ 
+@@ -476,10 +467,6 @@ static void ioapic_unrealize(DeviceState *dev)
+     timer_free(s->delayed_ioapic_service_timer);
+ }
+ 
+-static const Property ioapic_properties[] = {
+-    DEFINE_PROP_UINT8("version", IOAPICCommonState, version, IOAPIC_VER_DEF),
+-};
+-
+ static void ioapic_class_init(ObjectClass *klass, const void *data)
+ {
+     IOAPICCommonClass *k = IOAPIC_COMMON_CLASS(klass);
+@@ -493,7 +480,6 @@ static void ioapic_class_init(ObjectClass *klass, const void *data)
+      */
+     k->post_load = ioapic_update_kvm_routes;
+     device_class_set_legacy_reset(dc, ioapic_reset_common);
+-    device_class_set_props(dc, ioapic_properties);
+ }
+ 
+ static const TypeInfo ioapic_info = {
+diff --git a/hw/intc/ioapic_common.c b/hw/intc/ioapic_common.c
+index fce3486e519..8b3e2ba9384 100644
+--- a/hw/intc/ioapic_common.c
++++ b/hw/intc/ioapic_common.c
+@@ -83,7 +83,7 @@ static void ioapic_print_redtbl(GString *buf, IOAPICCommonState *s)
+     int i;
+ 
+     g_string_append_printf(buf, "ioapic0: ver=0x%x id=0x%02x sel=0x%02x",
+-                           s->version, s->id, s->ioregsel);
++                           IOAPIC_VER_DEF, s->id, s->ioregsel);
+     if (s->ioregsel) {
+         g_string_append_printf(buf, " (redir[%u])\n",
+                                (s->ioregsel - IOAPIC_REG_REDTBL_BASE) >> 1);
 -- 
 2.47.1
 
