@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5898EAA68F2
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 05:06:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E40EAA68FF
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 05:08:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAgiA-0001JG-GA; Thu, 01 May 2025 23:05:14 -0400
+	id 1uAgiE-0001KP-LA; Thu, 01 May 2025 23:05:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1uAgi3-0001HY-IG; Thu, 01 May 2025 23:05:08 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1uAgi9-0001JZ-5C; Thu, 01 May 2025 23:05:13 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1uAgi0-00085t-Py; Thu, 01 May 2025 23:05:07 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-736c277331eso2626096b3a.1; 
- Thu, 01 May 2025 20:05:03 -0700 (PDT)
+ id 1uAgi6-00087P-O9; Thu, 01 May 2025 23:05:12 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-7376dd56eccso1865709b3a.0; 
+ Thu, 01 May 2025 20:05:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1746155102; x=1746759902; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1746155107; x=1746759907; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3JXU/iDoCeiLKmXbMmkzTXvAvxJfUqOqd0YNU9sN6g0=;
- b=Yt2OAVx70ptomdtIlhaRrark4bdrOHJmwrz/0q00hrbfBx6Ngl7ddmEUHnW1BKnNFG
- ZF3Il3z7fcASF7B3WnyPmWBRFOEKnOdQT5myScWpJSK26h6cRQjC3Q5GUL8k03+baHV/
- 1QyOofRE7t54ktvU7Ft0IMOYvIQuD/1FRmjCPtDApsgflm4WjW3b3v4F+/XYBbya9DTh
- Rn0PeLJfCyK2aRFRsjkYdwoy1K/hI/NMR/CmKTa8L0fLlt4hvJnlp2DUCZ0i6v/S7TEb
- n6MZ0gO3qpuRcC83nQRylVWvhaqdflRnsZSHZlF1Z9BJYr9LSkrscSt3PL4Z0nEemwru
- AbMQ==
+ bh=oyvoNMD/MGbgPmwNNQJl9p2mFi5GZdgxMiyr2KvPotM=;
+ b=LccGEQ5AtEs0o01GjYRnux3mSrQvKT2mIujeuY2Q9jzmmDrz/ci0yCASFJ5TI/cQVq
+ VOo3mypej6MGkHlJbbRPANV7YxuggqZmMPUL05fR0ptIXAifa0ZIr7uP/OXFTA/EoK3w
+ f/htluUBl994hfTi11qapl6JX/wpVmMrFSwc0W8Mhyo5M9yofXL7Nm6kXgfCmHoGyraH
+ w+Pa70cXfvd2awZRIyktaWXVzktLQmUbFmzP4tqdHHuO+9SiIHvjkc6QzhOu53qG6jyX
+ SwFr3MnSGIK1g3LaQWmTiuCmDKnO55NG+C77AMos5me8bGYsRBj/KoccJDkvMihK+ec1
+ 9Cpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746155102; x=1746759902;
+ d=1e100.net; s=20230601; t=1746155107; x=1746759907;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3JXU/iDoCeiLKmXbMmkzTXvAvxJfUqOqd0YNU9sN6g0=;
- b=mv/4JtZqRIs/1bnx5UvBmP4+47qPIq++qYq6aBlgb178NGWgMGxvHEbmmjes2WFeQd
- cb3irSJmVtVLbMAtAwzhSZ2oswfddso+rTfpx9zH+ALwUAN6XN/SofYmfiychpkGwsvG
- tsFHwTwJyS0OgXOn05GwCEbTEde6zgnBJmEKHyPYhrn24dY2DaYqU+LZpGsgo0S5GxnS
- yjyVWWS3SgfaOhAuqPayCYhr7UTENu47s2IyoKHBb08tYmJo8B99rqCslWBtyDVhhzKb
- T4fLjGW4pUqh+I8XwnrVNgYiD5SxNMFHX5ebh6XszM1R/b+CMKOMnpO2b0pZsvIlOHgh
- 3Vag==
+ bh=oyvoNMD/MGbgPmwNNQJl9p2mFi5GZdgxMiyr2KvPotM=;
+ b=O+fCefC+jFRDNgT3I2trEo+Lk2XB9i7GSpfMLfCKfvF6Rb5FTB4GyG2yJTOuFTefCa
+ QwPjxlu4tUIntBHXol0DY9tQ0YhqfaPDuLRRlnfGs5qoLISjd2fVqOxWycYdcf96DaUx
+ qmFLtkdUtco4zl1Z84zS21TPQFFkvqbH9USoGIpkPECi6Wz2VHPwfWbRxoNjysCo58c1
+ OoY7Ltwu6ehvljrVBk1LsJ7175h3NHBIprAzGfv4q85F6kInaK3RHd15jOk6BmlI/OrL
+ wmfofj1kcjWPJIeuVKr3+c2mOlgakh6QJZACgogXPYfWoa3jAYRLDCtMxZdxhcPclCed
+ MN1w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUfnqZd1CdMWJun+KGkUJ3iTQbWmEJlBIPU0vDl7F/DrUMfFSwKmkajicOiQQxDu892G2q3f6zCdfMU@nongnu.org,
- AJvYcCX3rsClNuFticfMT1V1xyBew4pMaiCLGRsBB3s1Mrd4Qh94hYjLQ6Gz6Ntv/dfcKqQn3FuINoZErqU=@nongnu.org
-X-Gm-Message-State: AOJu0Yz11pdKMzp2C8/LKXi8ku7zAmoJbVTM707lsiyP2rOBNMfPdvVD
- WrDFqQmpl6RlSovxwp+eEwxfdoMABLsKysWSG6adxC4UPml97wJ6A7GOCA==
-X-Gm-Gg: ASbGncvTRdnJzktyirdtuYHOJMI0I7xpoK/ZmXuDnxVZb1+vXolJCggjCN+X+0PyJ0/
- /g7IEkE08HzV9iBNwYZ5DzynNs6d/OlTa2xdUIDTe4YzELxem9J5qPUg1fepIdwbxtHxAqW4EM7
- zMjrHspRPbvmEuSDIRnUK1/FD9LkfuPZ0T+L5fR0AyJg/MBdRj+7y3bT1rZ25CoWtpqYNtlwsik
- Xl7CSjGVYENr6vWfNgUaHycOnNNNglhfEZDAK8720I+5BqX7yr85SAlIDADK9gCEVCDnfrCBKRE
- rXeROUKiqqmN5F9me5A/q5vVvH+h6OR98QTZhL+6z65f
-X-Google-Smtp-Source: AGHT+IE1TAhhAkAbMCCVRp0HJFL4kEabWfS6X3KcU09ld7Ry/K2Ij1Hsy0zzlqMy1lLIZMKGE5wsrA==
-X-Received: by 2002:a05:6a21:8cc7:b0:1ee:b5f4:b1d7 with SMTP id
- adf61e73a8af0-20ccbf33d54mr2133540637.7.1746155101902; 
- Thu, 01 May 2025 20:05:01 -0700 (PDT)
+ AJvYcCU80G0EnbMHxGq2NiJyoIfqiGAMlvK3eahcDyXEJ9Fxs6LFdrwkeF++XJP59xUVgTikEPXNU3QS6i1s@nongnu.org,
+ AJvYcCWayCxUH8wXJT35tLyE9WeTugeiW//NwHFJ7DRtGf6SKHfwZdFH49XUwxhEcQh9Ty23rDw9jE/qAHM=@nongnu.org
+X-Gm-Message-State: AOJu0YzC2tFZl9LwWlI9lx3oaW25dVoIPJfgZvvaHqXVw3MG1vPM4qLS
+ HlfuQiB30Z+gd6f9fXX7NcgEgPXrZjmMSN+PiMHGOG/oE+gkwFZHCQQ+OQ==
+X-Gm-Gg: ASbGncteRRHFFNniKlNswRrxDAT4vDDgtFNdzl+qbjE8y2X8EPbJgeX33hbaAPLnCVD
+ hd/gI9upC1CvCeMxv8dCR8ZZsvMHfcsY8jy4HXpdTisdX9cddJQ2mS7ZJGOwnbV4L06EX8Qo8Ii
+ iB7qM8qeTWwaEjk7LMXOrZkgHRBtMBNvule7WcuJVkNaGSP35Ysko0C+wMd49N8052gSFpR3Oh9
+ PuaZLUs5R67ORUvPag/mJrfQ7qfYS2PsO+UfRIHLBcb5GsafiZHrEcvIgp3132I/e+jpKwtUk4x
+ FODCRvQIvN7pc6Bq/n8Kte6jVQjWywV5DTZbphTkir1X
+X-Google-Smtp-Source: AGHT+IF5TYxfNmocc6bkCZOdo4qMI6qvavCE3WjJoDgXq/tAspIQhAXCTMzrzHcLSLpchQLCJbTMHQ==
+X-Received: by 2002:a05:6a21:7702:b0:1f5:9431:46e7 with SMTP id
+ adf61e73a8af0-20ce04e692bmr1754858637.42.1746155107511; 
+ Thu, 01 May 2025 20:05:07 -0700 (PDT)
 Received: from wheely.local0.net ([220.253.99.94])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74059020932sm463382b3a.92.2025.05.01.20.04.56
+ d2e1a72fcca58-74059020932sm463382b3a.92.2025.05.01.20.05.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 May 2025 20:05:01 -0700 (PDT)
+ Thu, 01 May 2025 20:05:07 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -72,18 +72,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-block@nongnu.org, qemu-ppc@nongnu.org
-Subject: [PATCH v5 01/11] tests/qtest: Enforce zero for the "un-fired" msix
- message value
-Date: Fri,  2 May 2025 13:04:35 +1000
-Message-ID: <20250502030446.88310-2-npiggin@gmail.com>
+Subject: [PATCH v5 02/11] tests/qtest: Fix virtio msix message endianness
+Date: Fri,  2 May 2025 13:04:36 +1000
+Message-ID: <20250502030446.88310-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250502030446.88310-1-npiggin@gmail.com>
 References: <20250502030446.88310-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,102 +105,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-virtio-pci detects an unmasked msix interrupt has fired by looking
-for the data payload value at the target address. If a value of zero
-is enforced for the memory value when an interrupt has not fired,
-then an assertion can be added to catch the case where something
-changed the memory to an unexpected value.
-
-This catches an endian conversion bug in the message value when
-running these tests on a big endian target. Previously the test
-just times out waiting for interrupt, after this it fails nicely.
+msix messages are written to memory in little-endian order, so they
+should not be byteswapped depending on target endianness, but read
+as le and converted to host endian by the qtest.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- tests/qtest/libqos/virtio-pci-modern.c |  9 +++++----
- tests/qtest/libqos/virtio-pci.c        | 20 ++++++++++++--------
- 2 files changed, 17 insertions(+), 12 deletions(-)
+ tests/qtest/libqos/virtio-pci-modern.c | 4 +++-
+ tests/qtest/libqos/virtio-pci.c        | 6 ++++--
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/tests/qtest/libqos/virtio-pci-modern.c b/tests/qtest/libqos/virtio-pci-modern.c
-index 4e67fcbd5d3..f31b3be656d 100644
+index f31b3be656d..5dae41e6d74 100644
 --- a/tests/qtest/libqos/virtio-pci-modern.c
 +++ b/tests/qtest/libqos/virtio-pci-modern.c
-@@ -137,12 +137,13 @@ static bool get_msix_status(QVirtioPCIDevice *dev, uint32_t msix_entry,
+@@ -8,6 +8,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qemu/bswap.h"
+ #include "standard-headers/linux/pci_regs.h"
+ #include "standard-headers/linux/virtio_pci.h"
+ #include "standard-headers/linux/virtio_config.h"
+@@ -136,7 +137,8 @@ static bool get_msix_status(QVirtioPCIDevice *dev, uint32_t msix_entry,
+         return qpci_msix_pending(dev->pdev, msix_entry);
      }
  
-     data = qtest_readl(dev->pdev->bus->qts, msix_addr);
--    if (data == msix_data) {
--        qtest_writel(dev->pdev->bus->qts, msix_addr, 0);
--        return true;
--    } else {
-+    if (data == 0) {
+-    data = qtest_readl(dev->pdev->bus->qts, msix_addr);
++    qtest_memread(dev->pdev->bus->qts, msix_addr, &data, 4);
++    data = le32_to_cpu(data);
+     if (data == 0) {
          return false;
      }
-+    /* got a message, ensure it matches expected value then clear it. */
-+    g_assert_cmphex(data, ==, msix_data);
-+    qtest_writel(dev->pdev->bus->qts, msix_addr, 0);
-+    return true;
- }
- 
- static bool get_queue_isr_status(QVirtioDevice *d, QVirtQueue *vq)
 diff --git a/tests/qtest/libqos/virtio-pci.c b/tests/qtest/libqos/virtio-pci.c
-index 002bf8b8c2d..102e45b5248 100644
+index 102e45b5248..76ea1f45ba9 100644
 --- a/tests/qtest/libqos/virtio-pci.c
 +++ b/tests/qtest/libqos/virtio-pci.c
-@@ -132,12 +132,13 @@ static bool qvirtio_pci_get_queue_isr_status(QVirtioDevice *d, QVirtQueue *vq)
+@@ -131,7 +131,8 @@ static bool qvirtio_pci_get_queue_isr_status(QVirtioDevice *d, QVirtQueue *vq)
+             /* No ISR checking should be done if masked, but read anyway */
              return qpci_msix_pending(dev->pdev, vqpci->msix_entry);
          } else {
-             data = qtest_readl(dev->pdev->bus->qts, vqpci->msix_addr);
--            if (data == vqpci->msix_data) {
--                qtest_writel(dev->pdev->bus->qts, vqpci->msix_addr, 0);
--                return true;
--            } else {
-+            if (data == 0) {
+-            data = qtest_readl(dev->pdev->bus->qts, vqpci->msix_addr);
++            qtest_memread(dev->pdev->bus->qts, vqpci->msix_addr, &data, 4);
++            data = le32_to_cpu(data);
+             if (data == 0) {
                  return false;
              }
-+            /* got a message, ensure it matches expected value then clear it. */
-+            g_assert_cmphex(data, ==, vqpci->msix_data);
-+            qtest_writel(dev->pdev->bus->qts, vqpci->msix_addr, 0);
-+            return true;
-         }
-     } else {
-         return qpci_io_readb(dev->pdev, dev->bar, VIRTIO_PCI_ISR) & 1;
-@@ -156,12 +157,13 @@ static bool qvirtio_pci_get_config_isr_status(QVirtioDevice *d)
+@@ -156,7 +157,8 @@ static bool qvirtio_pci_get_config_isr_status(QVirtioDevice *d)
+             /* No ISR checking should be done if masked, but read anyway */
              return qpci_msix_pending(dev->pdev, dev->config_msix_entry);
          } else {
-             data = qtest_readl(dev->pdev->bus->qts, dev->config_msix_addr);
--            if (data == dev->config_msix_data) {
--                qtest_writel(dev->pdev->bus->qts, dev->config_msix_addr, 0);
--                return true;
--            } else {
-+            if (data == 0) {
+-            data = qtest_readl(dev->pdev->bus->qts, dev->config_msix_addr);
++            qtest_memread(dev->pdev->bus->qts, dev->config_msix_addr, &data, 4);
++            data = le32_to_cpu(data);
+             if (data == 0) {
                  return false;
              }
-+            /* got a message, ensure it matches expected value then clear it. */
-+            g_assert_cmphex(data, ==, dev->config_msix_data);
-+            qtest_writel(dev->pdev->bus->qts, dev->config_msix_addr, 0);
-+            return true;
-         }
-     } else {
-         return qpci_io_readb(dev->pdev, dev->bar, VIRTIO_PCI_ISR) & 2;
-@@ -323,6 +325,7 @@ void qvirtqueue_pci_msix_setup(QVirtioPCIDevice *d, QVirtQueuePCI *vqpci,
-     vqpci->msix_entry = entry;
- 
-     vqpci->msix_addr = guest_alloc(alloc, 4);
-+    qtest_memset(d->pdev->bus->qts, vqpci->msix_addr, 0, 4);
-     qpci_io_writel(d->pdev, d->pdev->msix_table_bar,
-                    off + PCI_MSIX_ENTRY_LOWER_ADDR, vqpci->msix_addr & ~0UL);
-     qpci_io_writel(d->pdev, d->pdev->msix_table_bar,
-@@ -355,6 +358,7 @@ void qvirtio_pci_set_msix_configuration_vector(QVirtioPCIDevice *d,
- 
-     d->config_msix_data = 0x12345678;
-     d->config_msix_addr = guest_alloc(alloc, 4);
-+    qtest_memset(d->pdev->bus->qts, d->config_msix_addr, 0, 4);
- 
-     qpci_io_writel(d->pdev, d->pdev->msix_table_bar,
-                    off + PCI_MSIX_ENTRY_LOWER_ADDR, d->config_msix_addr & ~0UL);
 -- 
 2.47.1
 
