@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A8BAA68F8
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 05:06:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69DFAAA68F3
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 05:06:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAgiN-0001NQ-KS; Thu, 01 May 2025 23:05:27 -0400
+	id 1uAgiS-0001Ps-Ei; Thu, 01 May 2025 23:05:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1uAgiK-0001MK-GU; Thu, 01 May 2025 23:05:24 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ id 1uAgiP-0001OO-Ao; Thu, 01 May 2025 23:05:29 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1uAgiI-0008Ui-6o; Thu, 01 May 2025 23:05:24 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-7398d65476eso1347558b3a.1; 
- Thu, 01 May 2025 20:05:20 -0700 (PDT)
+ id 1uAgiN-00005E-Jo; Thu, 01 May 2025 23:05:29 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-7376e311086so2381569b3a.3; 
+ Thu, 01 May 2025 20:05:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1746155119; x=1746759919; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1746155125; x=1746759925; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=07tFD1x9N80fjnrYoGuXzpd58FJGrH3FYFvyLxWlK7Y=;
- b=i8ryww1g2sEyiQUZY0l6rfhF2hRff3uw0VK5gM5hP1SMsYQzZgAVdlMEXUDHM+YLNB
- SRooCxV6DSBrWoBR6xqfl/s5S7eDtajjAFuyJ/MmPxSReHQfS2KCY9euPZoM14YigSwt
- a3/JsFRW8p1tGDEP7oYZaqKveQIscobf6ui7weJyKjwZJWvaCCWVNzI/nZ5Qj11j2j8m
- Dw9g2XE+e8RZrVXvYdOZcztv/VbjnfjD2X6hEw4y4Ifk89ZkSkBau+gI+t9WKaa7cP5j
- Dc2EHYil3wBS38vTWBkI1dE58HYScUFBoK2FIlS0nB3CB5JiFevV7sJ8cmtcgfDZxuff
- 4tow==
+ bh=KUOflv3alOGiol4S47wnqGVZoQeo26ssH01OhsbUcno=;
+ b=K/0JObhJUXGRz+3D7oMdSdwpZ1eHtrscyLuHL3dazYlJkg2nw/m04xOVFyhWvv/vDu
+ VAbdsua7kDXxtBjfBeUB30eFa++cZJr/Co3b2zlW1TKsVGDboxfQvy7m2HlPKyO2xSsS
+ J4vXT2sPCkPnh/VAs736kbSaC4fIvJfFinWIW3YVNAiPwjjuNoz1xm+tGK7S2kESDrPF
+ 8KSPNoBF5+1w08+YFz7b49GLp6WsDGt3wFVlL9VC/q/c5t/oJv5kUOM/BePKNhYjg+fo
+ EBM+wEnsU83cabruPyuT8emdq3UpYFDB0cx10FWSlQ2Ebp3EoCgAgQ+HBlmIDiERBMOL
+ IPuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746155119; x=1746759919;
+ d=1e100.net; s=20230601; t=1746155125; x=1746759925;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=07tFD1x9N80fjnrYoGuXzpd58FJGrH3FYFvyLxWlK7Y=;
- b=mBzZ6gL7GnX19S+hGwowPSdIHoleTFZDAUPymIElnrCZPxsMPVLVIJ+56Mq0cmNbVU
- kVBGYHWGL6Q92OmYVu+N13z16xxY/ZwrYZY1l1I27DjGKA2427eTflDAflM1JAQWjYae
- 1yQiWz7Ou5UVtDPqQXyd7uk4T5sm46Q5KX1jrLVwKRAU7E0MVR7AlRvpQlJIOZey5mGs
- 6W0/4c6eQwoivkmGOpQKp8wwmEGRqH1jzqm1/wqu73OOnScABK99Q8avOxY29GM8nTkj
- X4kPZO2xlFhQaAiyYECbfIAbvis5P5XkwL2+NmIZPRgOP5ud0kmRyXI1P8tG8HA1glmV
- cDzQ==
+ bh=KUOflv3alOGiol4S47wnqGVZoQeo26ssH01OhsbUcno=;
+ b=s+oxEpqtj7CvyF1EEwrli0GiO2VHHQ6iCTtBeRdF6BWteiboF5+2QjAcQUQcSsiTNd
+ QM8aGJ+/RX1xBCq5dQ/oCiEq0lc+OHRbwKSc2eSsNiQE0ISWN9lBH4uBK2ChgTLxk5lC
+ X9iDRVMDr/SbMKE6zunVa3vbfZlVUaCWZfWEdxx5gfTx5GIz6UN4pY5dNcd+AUgQwpkg
+ pOl6e4/UwrpGb0/5460crfVdL7oIdDh5js0FB0xpmM8RJG91TiLYHe7wvQ/mPVdiuquB
+ 9EKjVFMWErUMve41Uh8KEfTEx6tuPhM+KIE37c2ul3Ff9wBu0GMhz5XM7wmeYFfV2s9b
+ eJYg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUe/4roI7YLGGxey+kb+3wxHT+VqbqCBcDu3g8F1Od5CRkuEw2lyQEGYr9uHJAHgQpybzmRw1NiWhY=@nongnu.org,
- AJvYcCXyIa77Xh5zVsSzcA0o7AOuK9ogMh9zbW4UGmyNv36xBiQfVeYviAyqSOGX0QooYbfseSNoz4uy4l5X@nongnu.org
-X-Gm-Message-State: AOJu0Yy181/rx/3KYLzzf3fdXowH6wk7SOud4rp7yzR6pc5JPGM9EXiA
- wbHtdV0ghnt8dWBXUR62mFVdggmS5dxBoQHdiGgy82olAq2yI90NIjqrAA==
-X-Gm-Gg: ASbGncuirO+JWGPiebrH65SVnIBu0zOtL62dBsOeyVprpLm5743TJoKoVKMZRZhxC4y
- LLoOgjBe3nupDZZOs75M1ck9sYHgLrfKu6s+Vdq6lF4iUa+u/3HXm0v5LJHQtPn36jvpon6b7Ah
- NJ9GjnTmdONOGHIiHAvrP27BgSkShzECBSPTlTqaWbS6PJWcXlr+WE14QbnCGgHh5dRlU1+5wfL
- JIB9z/QhWilLI1ZClVpZ4W22kD0k31BCcUOhNPi78Z2JPnfT7nG1QqWuAuOVzIQjQ7X0yW8P3C5
- jYAY7C+Ac+l/AnJE7d5rAvQiR/JG446OkEgI90PfCWUy
-X-Google-Smtp-Source: AGHT+IGHwGmYXhVcTmKm/5IdcDuzNCBpUOAQAeTNmirLVAZHAdUcAjb0ZiHuonS9crSHT/2Vk3KNxA==
-X-Received: by 2002:a05:6a00:32c8:b0:736:9f2e:1357 with SMTP id
- d2e1a72fcca58-74057c547famr2372350b3a.12.1746155119354; 
- Thu, 01 May 2025 20:05:19 -0700 (PDT)
+ AJvYcCUTAKeBYoSt5JaumS7y66j03ABqj69u7/JAKWTYiLcIH+t1XW5SQXz+xUfchAL8HX2HIc05FuQnuX84@nongnu.org,
+ AJvYcCUZ4ibpN7sd2cquLKd7p8LdpRno3uGcYJ3odyOhOSAdKnSlf+B6OP2+d7mpO6DvOp+iDS9lxhPgO68=@nongnu.org
+X-Gm-Message-State: AOJu0YxV5yPHec4kM0fwdnqohxo05Po87Cr6kC5j6JMNW/nsoDWwE8mx
+ jfuwZeYw+9pZ4WgkPcpTh+hZvBGyMvAF5mH4XGVMunNNK79zSQY4KnKdVg==
+X-Gm-Gg: ASbGncsbJD277f7hkWUWS3j7sXeh8adLeQ/kaqiuXvY1fMMn5/OILOkpsGQSmmCIapd
+ unoI4Xqd0q97bcdipeHONSSMmZUk3tDvDJLUOM/zlmFlJYENg1CAoIsfyMQKnRrnm7Xbm0XjnVH
+ EYf1ontlBJJPlsUR8mX0ECLANgsl8lKi+uf6ecokMFuM63StnoZIrOdaBSvmcyVP37UlEqI2QgC
+ vTA3TVG/wzElue170NDB6yZY9hfc8v+4h+Fk5OnGOK6rvMOBHKtnAxsWPn3ANPqzqGKPikSUReT
+ tEkDwT2mkerQ7YluuZiJ4NcJGC2aGcgG3aw/X5/1BD5o
+X-Google-Smtp-Source: AGHT+IFzLp4UxAOXhR1w+7bk9AjQ9dY6f69C/9n9/xsAtdWM8nEWuYAej2Uv1ZNStxs+JuH4bdxqcw==
+X-Received: by 2002:a05:6a00:340c:b0:736:a8db:93b4 with SMTP id
+ d2e1a72fcca58-7405890a9f3mr1874428b3a.2.1746155125203; 
+ Thu, 01 May 2025 20:05:25 -0700 (PDT)
 Received: from wheely.local0.net ([220.253.99.94])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74059020932sm463382b3a.92.2025.05.01.20.05.13
+ d2e1a72fcca58-74059020932sm463382b3a.92.2025.05.01.20.05.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 May 2025 20:05:18 -0700 (PDT)
+ Thu, 01 May 2025 20:05:24 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -72,16 +72,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-block@nongnu.org, qemu-ppc@nongnu.org
-Subject: [PATCH v5 04/11] tests/qtest: Enable spapr dma with linear iommu map
-Date: Fri,  2 May 2025 13:04:38 +1000
-Message-ID: <20250502030446.88310-5-npiggin@gmail.com>
+Subject: [PATCH v5 05/11] tests/qtest/ahci: unmap pci bar before reusing device
+Date: Fri,  2 May 2025 13:04:39 +1000
+Message-ID: <20250502030446.88310-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250502030446.88310-1-npiggin@gmail.com>
 References: <20250502030446.88310-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,303 +104,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qtests spapr dma was broken because the iommu was not set up.
+ahci-test double-maps the hba bar in the pending_callback test.
+Unmap it first, to keep iomaps balanced.
 
-spapr requires hypercalls to set up the iommu (TCE tables), but
-there is no support for that or a side-channel to the iommu in
-qtests at the moment, so add a quick workaround in QEMU to have
-the spapr iommu provide a linear map to memory when running
-qtests.
-
-The buggy msix checks can all be removed since the tests all work
-now.
-
+Cc: Michael S. Tsirkin <mst@redhat.com>
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- tests/qtest/libqos/pci.h             |  4 ----
- hw/ppc/spapr_iommu.c                 | 10 +++++++++-
- tests/qtest/e1000e-test.c            | 21 ---------------------
- tests/qtest/igb-test.c               | 21 ---------------------
- tests/qtest/libqos/generic-pcihost.c |  1 -
- tests/qtest/libqos/pci-pc.c          |  3 ---
- tests/qtest/libqos/pci-spapr.c       |  7 ++++---
- tests/qtest/libqos/pci.c             | 14 --------------
- tests/qtest/vhost-user-blk-test.c    |  6 ------
- tests/qtest/virtio-blk-test.c        | 12 ------------
- 10 files changed, 13 insertions(+), 86 deletions(-)
+ tests/qtest/libqos/ahci.h |  2 ++
+ tests/qtest/ahci-test.c   |  4 ++++
+ tests/qtest/libqos/ahci.c | 11 +++++++++++
+ 3 files changed, 17 insertions(+)
 
-diff --git a/tests/qtest/libqos/pci.h b/tests/qtest/libqos/pci.h
-index 9f8f154c301..ef40a6917d3 100644
---- a/tests/qtest/libqos/pci.h
-+++ b/tests/qtest/libqos/pci.h
-@@ -51,7 +51,6 @@ struct QPCIBus {
-     QTestState *qts;
-     uint64_t pio_alloc_ptr, pio_limit;
-     uint64_t mmio_alloc_ptr, mmio_limit;
--    bool has_buggy_msi; /* TRUE for spapr, FALSE for pci */
-     bool not_hotpluggable; /* TRUE if devices cannot be hotplugged */
+diff --git a/tests/qtest/libqos/ahci.h b/tests/qtest/libqos/ahci.h
+index a0487a1557d..f610bd32a5f 100644
+--- a/tests/qtest/libqos/ahci.h
++++ b/tests/qtest/libqos/ahci.h
+@@ -574,7 +574,9 @@ void ahci_clean_mem(AHCIQState *ahci);
+ QPCIDevice *get_ahci_device(QTestState *qts, uint32_t *fingerprint);
+ void free_ahci_device(QPCIDevice *dev);
+ void ahci_pci_enable(AHCIQState *ahci);
++void ahci_pci_disable(AHCIQState *ahci);
+ void start_ahci_device(AHCIQState *ahci);
++void stop_ahci_device(AHCIQState *ahci);
+ void ahci_hba_enable(AHCIQState *ahci);
  
- };
-@@ -83,9 +82,6 @@ QPCIDevice *qpci_device_find(QPCIBus *bus, int devfn);
- void qpci_device_init(QPCIDevice *dev, QPCIBus *bus, QPCIAddress *addr);
- int qpci_secondary_buses_init(QPCIBus *bus);
- 
--bool qpci_has_buggy_msi(QPCIDevice *dev);
--bool qpci_check_buggy_msi(QPCIDevice *dev);
--
- void qpci_device_enable(QPCIDevice *dev);
- uint8_t qpci_find_capability(QPCIDevice *dev, uint8_t id, uint8_t start_addr);
- void qpci_msix_enable(QPCIDevice *dev);
-diff --git a/hw/ppc/spapr_iommu.c b/hw/ppc/spapr_iommu.c
-index c2432a0c00c..c89ccc87d71 100644
---- a/hw/ppc/spapr_iommu.c
-+++ b/hw/ppc/spapr_iommu.c
-@@ -22,6 +22,8 @@
- #include "qemu/log.h"
- #include "qemu/module.h"
- #include "system/kvm.h"
-+#include "system/qtest.h"
-+#include "exec/target_page.h"
- #include "kvm_ppc.h"
- #include "migration/vmstate.h"
- #include "system/dma.h"
-@@ -125,7 +127,13 @@ static IOMMUTLBEntry spapr_tce_translate_iommu(IOMMUMemoryRegion *iommu,
-         .perm = IOMMU_NONE,
-     };
- 
--    if ((addr >> tcet->page_shift) < tcet->nb_table) {
-+    if (qtest_enabled()) {
-+        /* spapr qtests does not set up the IOMMU, shortcut a linear map */
-+        ret.iova = addr & TARGET_PAGE_MASK;
-+        ret.translated_addr = addr & TARGET_PAGE_MASK;
-+        ret.addr_mask = ~TARGET_PAGE_MASK;
-+        ret.perm = IOMMU_RW;
-+    } else if ((addr >> tcet->page_shift) < tcet->nb_table) {
-         /* Check if we are in bound */
-         hwaddr page_mask = IOMMU_PAGE_MASK(tcet->page_shift);
- 
-diff --git a/tests/qtest/e1000e-test.c b/tests/qtest/e1000e-test.c
-index de9738fdb74..8300bf5a5b3 100644
---- a/tests/qtest/e1000e-test.c
-+++ b/tests/qtest/e1000e-test.c
-@@ -139,13 +139,6 @@ static void test_e1000e_tx(void *obj, void *data, QGuestAllocator * alloc)
+ /* Port Management */
+diff --git a/tests/qtest/ahci-test.c b/tests/qtest/ahci-test.c
+index e8aabfc13f5..36caa7b2999 100644
+--- a/tests/qtest/ahci-test.c
++++ b/tests/qtest/ahci-test.c
+@@ -198,6 +198,7 @@ static void ahci_shutdown(AHCIQState *ahci)
  {
-     QE1000E_PCI *e1000e = obj;
-     QE1000E *d = &e1000e->e1000e;
--    QOSGraphObject *e_object = obj;
--    QPCIDevice *dev = e_object->get_driver(e_object, "pci-device");
--
--    /* FIXME: add spapr support */
--    if (qpci_check_buggy_msi(dev)) {
--        return;
--    }
+     QOSState *qs = ahci->parent;
  
-     e1000e_send_verify(d, data, alloc);
- }
-@@ -154,13 +147,6 @@ static void test_e1000e_rx(void *obj, void *data, QGuestAllocator * alloc)
- {
-     QE1000E_PCI *e1000e = obj;
-     QE1000E *d = &e1000e->e1000e;
--    QOSGraphObject *e_object = obj;
--    QPCIDevice *dev = e_object->get_driver(e_object, "pci-device");
--
--    /* FIXME: add spapr support */
--    if (qpci_check_buggy_msi(dev)) {
--        return;
--    }
- 
-     e1000e_receive_verify(d, data, alloc);
- }
-@@ -173,13 +159,6 @@ static void test_e1000e_multiple_transfers(void *obj, void *data,
- 
-     QE1000E_PCI *e1000e = obj;
-     QE1000E *d = &e1000e->e1000e;
--    QOSGraphObject *e_object = obj;
--    QPCIDevice *dev = e_object->get_driver(e_object, "pci-device");
--
--    /* FIXME: add spapr support */
--    if (qpci_check_buggy_msi(dev)) {
--        return;
--    }
- 
-     for (i = 0; i < iterations; i++) {
-         e1000e_send_verify(d, data, alloc);
-diff --git a/tests/qtest/igb-test.c b/tests/qtest/igb-test.c
-index 3d397ea6973..1b3b5aa6c76 100644
---- a/tests/qtest/igb-test.c
-+++ b/tests/qtest/igb-test.c
-@@ -142,13 +142,6 @@ static void test_igb_tx(void *obj, void *data, QGuestAllocator * alloc)
- {
-     QE1000E_PCI *e1000e = obj;
-     QE1000E *d = &e1000e->e1000e;
--    QOSGraphObject *e_object = obj;
--    QPCIDevice *dev = e_object->get_driver(e_object, "pci-device");
--
--    /* FIXME: add spapr support */
--    if (qpci_check_buggy_msi(dev)) {
--        return;
--    }
- 
-     igb_send_verify(d, data, alloc);
- }
-@@ -157,13 +150,6 @@ static void test_igb_rx(void *obj, void *data, QGuestAllocator * alloc)
- {
-     QE1000E_PCI *e1000e = obj;
-     QE1000E *d = &e1000e->e1000e;
--    QOSGraphObject *e_object = obj;
--    QPCIDevice *dev = e_object->get_driver(e_object, "pci-device");
--
--    /* FIXME: add spapr support */
--    if (qpci_check_buggy_msi(dev)) {
--        return;
--    }
- 
-     igb_receive_verify(d, data, alloc);
- }
-@@ -176,13 +162,6 @@ static void test_igb_multiple_transfers(void *obj, void *data,
- 
-     QE1000E_PCI *e1000e = obj;
-     QE1000E *d = &e1000e->e1000e;
--    QOSGraphObject *e_object = obj;
--    QPCIDevice *dev = e_object->get_driver(e_object, "pci-device");
--
--    /* FIXME: add spapr support */
--    if (qpci_check_buggy_msi(dev)) {
--        return;
--    }
- 
-     for (i = 0; i < iterations; i++) {
-         igb_send_verify(d, data, alloc);
-diff --git a/tests/qtest/libqos/generic-pcihost.c b/tests/qtest/libqos/generic-pcihost.c
-index 4bbeb5ff508..568897e0ecc 100644
---- a/tests/qtest/libqos/generic-pcihost.c
-+++ b/tests/qtest/libqos/generic-pcihost.c
-@@ -182,7 +182,6 @@ void qpci_init_generic(QGenericPCIBus *qpci, QTestState *qts,
- 
-     qpci->gpex_pio_base = 0x3eff0000;
-     qpci->bus.not_hotpluggable = !hotpluggable;
--    qpci->bus.has_buggy_msi = false;
- 
-     qpci->bus.pio_readb = qpci_generic_pio_readb;
-     qpci->bus.pio_readw = qpci_generic_pio_readw;
-diff --git a/tests/qtest/libqos/pci-pc.c b/tests/qtest/libqos/pci-pc.c
-index 147009f4f44..8b79d858bd5 100644
---- a/tests/qtest/libqos/pci-pc.c
-+++ b/tests/qtest/libqos/pci-pc.c
-@@ -124,9 +124,6 @@ void qpci_init_pc(QPCIBusPC *qpci, QTestState *qts, QGuestAllocator *alloc)
- {
-     assert(qts);
- 
--    /* tests can use pci-bus */
--    qpci->bus.has_buggy_msi = false;
--
-     qpci->bus.pio_readb = qpci_pc_pio_readb;
-     qpci->bus.pio_readw = qpci_pc_pio_readw;
-     qpci->bus.pio_readl = qpci_pc_pio_readl;
-diff --git a/tests/qtest/libqos/pci-spapr.c b/tests/qtest/libqos/pci-spapr.c
-index 0f1023e4a73..dfa2087a599 100644
---- a/tests/qtest/libqos/pci-spapr.c
-+++ b/tests/qtest/libqos/pci-spapr.c
-@@ -20,6 +20,10 @@
-  * PCI devices are always little-endian
-  * SPAPR by default is big-endian
-  * so PCI accessors need to swap data endianness
-+ *
-+ * The spapr iommu model has a qtest_enabled() check that short-cuts
-+ * the TCE table and provides a linear map for DMA, since qtests does
-+ * not have a way to make hcalls to set up the TCE table.
-  */
- 
- static uint8_t qpci_spapr_pio_readb(QPCIBus *bus, uint32_t addr)
-@@ -155,9 +159,6 @@ void qpci_init_spapr(QPCIBusSPAPR *qpci, QTestState *qts,
- {
-     assert(qts);
- 
--    /* tests cannot use spapr, needs to be fixed first */
--    qpci->bus.has_buggy_msi = true;
--
-     qpci->alloc = alloc;
- 
-     qpci->bus.pio_readb = qpci_spapr_pio_readb;
-diff --git a/tests/qtest/libqos/pci.c b/tests/qtest/libqos/pci.c
-index 773fd1fb6cf..2bae119bfca 100644
---- a/tests/qtest/libqos/pci.c
-+++ b/tests/qtest/libqos/pci.c
-@@ -53,20 +53,6 @@ void qpci_device_foreach(QPCIBus *bus, int vendor_id, int device_id,
++    ahci_pci_disable(ahci);
+     ahci_clean_mem(ahci);
+     free_ahci_device(ahci->dev);
+     g_free(ahci);
+@@ -1418,6 +1419,7 @@ static void test_reset(void)
+                                CMD_READ_DMA_EXT,
+                                CMD_WRITE_DMA_EXT);
+         ahci_set(ahci, AHCI_GHC, AHCI_GHC_HR);
++        stop_ahci_device(ahci);
+         ahci_clean_mem(ahci);
      }
+ 
+@@ -1484,6 +1486,7 @@ static void test_reset_pending_callback(void)
+     sleep(1);
+ 
+     /* Start again. */
++    stop_ahci_device(ahci);
+     ahci_clean_mem(ahci);
+     ahci_pci_enable(ahci);
+     ahci_hba_enable(ahci);
+@@ -1502,6 +1505,7 @@ static void test_reset_pending_callback(void)
+     ahci_free(ahci, ptr1);
+     ahci_free(ahci, ptr2);
+ 
++    stop_ahci_device(ahci);
+     ahci_clean_mem(ahci);
+ 
+     ahci_shutdown(ahci);
+diff --git a/tests/qtest/libqos/ahci.c b/tests/qtest/libqos/ahci.c
+index 34a75b7f43b..bd1994a9208 100644
+--- a/tests/qtest/libqos/ahci.c
++++ b/tests/qtest/libqos/ahci.c
+@@ -205,6 +205,11 @@ void ahci_pci_enable(AHCIQState *ahci)
+ 
  }
  
--bool qpci_has_buggy_msi(QPCIDevice *dev)
--{
--    return dev->bus->has_buggy_msi;
--}
--
--bool qpci_check_buggy_msi(QPCIDevice *dev)
--{
--    if (qpci_has_buggy_msi(dev)) {
--        g_test_skip("Skipping due to incomplete support for MSI");
--        return true;
--    }
--    return false;
--}
--
- static void qpci_device_set(QPCIDevice *dev, QPCIBus *bus, int devfn)
- {
-     g_assert(dev);
-diff --git a/tests/qtest/vhost-user-blk-test.c b/tests/qtest/vhost-user-blk-test.c
-index ea90d41232e..3e71fdb9d78 100644
---- a/tests/qtest/vhost-user-blk-test.c
-+++ b/tests/qtest/vhost-user-blk-test.c
-@@ -554,14 +554,8 @@ static void idx(void *obj, void *u_data, QGuestAllocator *t_alloc)
-     uint32_t desc_idx;
-     uint8_t status;
-     char *data;
--    QOSGraphObject *blk_object = obj;
--    QPCIDevice *pci_dev = blk_object->get_driver(blk_object, "pci-device");
-     QTestState *qts = global_qtest;
++void ahci_pci_disable(AHCIQState *ahci)
++{
++    stop_ahci_device(ahci);
++}
++
+ /**
+  * Map BAR5/ABAR, and engage the PCI device.
+  */
+@@ -217,6 +222,12 @@ void start_ahci_device(AHCIQState *ahci)
+     qpci_device_enable(ahci->dev);
+ }
  
--    if (qpci_check_buggy_msi(pci_dev)) {
--        return;
--    }
--
-     qpci_msix_enable(pdev->pdev);
-     qvirtio_pci_set_msix_configuration_vector(pdev, t_alloc, 0);
- 
-diff --git a/tests/qtest/virtio-blk-test.c b/tests/qtest/virtio-blk-test.c
-index 98c906ebb4a..3a005d600c1 100644
---- a/tests/qtest/virtio-blk-test.c
-+++ b/tests/qtest/virtio-blk-test.c
-@@ -474,14 +474,8 @@ static void msix(void *obj, void *u_data, QGuestAllocator *t_alloc)
-     uint32_t free_head;
-     uint8_t status;
-     char *data;
--    QOSGraphObject *blk_object = obj;
--    QPCIDevice *pci_dev = blk_object->get_driver(blk_object, "pci-device");
-     QTestState *qts = global_qtest;
- 
--    if (qpci_check_buggy_msi(pci_dev)) {
--        return;
--    }
--
-     qpci_msix_enable(pdev->pdev);
-     qvirtio_pci_set_msix_configuration_vector(pdev, t_alloc, 0);
- 
-@@ -584,14 +578,8 @@ static void idx(void *obj, void *u_data, QGuestAllocator *t_alloc)
-     uint32_t desc_idx;
-     uint8_t status;
-     char *data;
--    QOSGraphObject *blk_object = obj;
--    QPCIDevice *pci_dev = blk_object->get_driver(blk_object, "pci-device");
-     QTestState *qts = global_qtest;
- 
--    if (qpci_check_buggy_msi(pci_dev)) {
--        return;
--    }
--
-     qpci_msix_enable(pdev->pdev);
-     qvirtio_pci_set_msix_configuration_vector(pdev, t_alloc, 0);
- 
++void stop_ahci_device(AHCIQState *ahci)
++{
++    /* Unmap AHCI's ABAR */
++    qpci_iounmap(ahci->dev, ahci->hba_bar);
++}
++
+ /**
+  * Test and initialize the AHCI's HBA memory areas.
+  * Initialize and start any ports with devices attached.
 -- 
 2.47.1
 
