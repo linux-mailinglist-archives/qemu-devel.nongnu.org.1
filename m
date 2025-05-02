@@ -2,92 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D389FAA778C
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 18:43:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A486EAA7785
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 18:42:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAtSz-0007vT-Rz; Fri, 02 May 2025 12:42:25 -0400
+	id 1uAtT2-0007zr-Kv; Fri, 02 May 2025 12:42:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uAtSi-0007nj-Ic
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uAtSi-0007ni-Hs
  for qemu-devel@nongnu.org; Fri, 02 May 2025 12:42:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uAtSe-0006UL-QQ
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uAtSg-0006Uc-9m
  for qemu-devel@nongnu.org; Fri, 02 May 2025 12:42:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746204124;
+ s=mimecast20190719; t=1746204125;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/yyVmAMhJTDOQ6t8/5jDqz0Y+aQajW34hgAyEzYdjng=;
- b=PnnspxqQ0s4StRu5jEY1UYmBgl8d3+/atPej3ikrU+0N/rGxpNlk1Cn3bEGk/iR2zC0iJR
- 8jiEGD1ZZqsfwqRrP7C1ebFwWKMsmNalJDtybeDpnIfkUqBEmUkg0bQFHHVpaA2vZGF754
- GrEHgD9Dpy8vkxHnzhsIV1Xnp+2nCMA=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=KYwm/MwdS+WEwVvT8ZltgPHE/zV2f/JvznZHRlv4PP4=;
+ b=e3eg6NkQX/CaiOhbJYxTLCngggpkmoSPRt2wuALZbt+xxHFEIMvFED+gGCMsjKAxkc1FnR
+ psv2zEHbn4gmBtFFu2VRZunXlrHnzYY7bvdsBXjkxRgKthp+kJ/tPhvVGJiknjAY10045s
+ +t1jA4PqUTHFS9zXpZouOlm9jw+Y7wc=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-614-kaGfrvn0N-6JdcuG87tm9A-1; Fri, 02 May 2025 12:42:03 -0400
-X-MC-Unique: kaGfrvn0N-6JdcuG87tm9A-1
-X-Mimecast-MFC-AGG-ID: kaGfrvn0N-6JdcuG87tm9A_1746204122
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-7c760637fe5so397707885a.0
- for <qemu-devel@nongnu.org>; Fri, 02 May 2025 09:42:02 -0700 (PDT)
+ us-mta-665-HasCnh74ODWniGYQq9V_uw-1; Fri, 02 May 2025 12:42:04 -0400
+X-MC-Unique: HasCnh74ODWniGYQq9V_uw-1
+X-Mimecast-MFC-AGG-ID: HasCnh74ODWniGYQq9V_uw_1746204124
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-7c3c8f8ab79so342609885a.2
+ for <qemu-devel@nongnu.org>; Fri, 02 May 2025 09:42:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746204122; x=1746808922;
+ d=1e100.net; s=20230601; t=1746204123; x=1746808923;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/yyVmAMhJTDOQ6t8/5jDqz0Y+aQajW34hgAyEzYdjng=;
- b=TuVrG4744fxyP7coA9M8RsCz5u+fCe3bGnsIbcx147vmHqrgultGcyWAg+LOmnq2Bw
- dfBv+78xwGaDVYL4WM4xXCCwX0EBiGu76z/11EutEEsFnM+ekCEEqpzIW88hYw6rYQQ2
- khXlQTwMql5eODOGa5I3XEOLyx6v1hae33SPP2HPeLTecPzDtIhd6yq+M+wnI0mLislu
- VL10rGVEAjm26lyTlqCAm5ZIazY+tmjqlErmU3PKm5jbOvE0Y+GJTjN6CW2ND7s7Tqgg
- sWIyvWULPDNEh/grrklrrpYei0CFWpqATMYagzpYyqn/I1uvFBDRdnCF8VKkgGWqT2mo
- 1SYg==
-X-Gm-Message-State: AOJu0YwRBNcoCOir7vmpqFf0OFO432gNlrt/VRx6DYYMxm6POVUCq54F
- Fgj8aOvsc6BADmeqd1c9Ad+zk8RAolDwUdDYhnhEpKa2cKRuliTq566+223X831jk0atv4QWuTo
- KRDR28wdlEhuuVHibp6peARRgwXjDcuCdWTpaR16lr3yeOk2QKmiuvKhDygL80AepLpD5AWwzxR
- ARgN0GkdGyteyr7FmzCS5b0m505EVyVcOpjg==
-X-Gm-Gg: ASbGnctsYTuE++DYG9rNsOGkOXubyd9YjCIMNzDw0SWxnSchOd5Q9ezVeNGmgChTtzo
- U3R2QPbfY2Q+S5Ah1NuiUBDbslPm5WfW6SL2lF7RKXSYndzSj2mqX2WesvRaiuR7/wVhiMukVkK
- 0c9580ixhEYQMz+t131U0iTSALQm+io5MubT1WSISokT9rBz6EKP9YASqscVVNcUSoQU/IEwEdb
- uCeJH01SQuEEs1UjLnqJSKu2dzoplVTE6kL+/DJ2ZkpLKSL9WK9B9XTaXtCQ8gIXS3j1VHG0IZu
-X-Received: by 2002:a05:620a:318c:b0:7c7:a5b7:b288 with SMTP id
- af79cd13be357-7cad5b3fe4amr438178885a.19.1746204121714; 
- Fri, 02 May 2025 09:42:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IENfU5gIhrYe/f/nl/oozzz3iYMVMw3WBONgYvAb3U5RJWsP6IateHtZbGxfbxrZ8cvpIJmhg==
-X-Received: by 2002:a05:620a:318c:b0:7c7:a5b7:b288 with SMTP id
- af79cd13be357-7cad5b3fe4amr438174885a.19.1746204121157; 
- Fri, 02 May 2025 09:42:01 -0700 (PDT)
+ bh=KYwm/MwdS+WEwVvT8ZltgPHE/zV2f/JvznZHRlv4PP4=;
+ b=A3N5SqwXXpU+pxestO0aw9+0LuWrF2gqUPwIw48YwZw62jgCAXa+daxfrTTL/x8fPd
+ R+uldKQX6ayFC+skkEBvZj46zzcRy6cexIfL5E8itIog7WPTGW5KvYNq25LVCHJdnjbT
+ zycCGnW3+Fj+txJ6a72qof1ef8n6W6XtWl658jzXQ6F+AADW5xyCfoep8R1b9BOPKFD1
+ HC9JCx8F+So00uB3Xspc2Ucr3qxZutlwvxRtoCymOGCKmzVZmw55VMIvpF7IdmQDFLfz
+ CW9zKhjSeg/hTEHMFGLWzMsWPtB1VKRpTnNcZze8he3I9pI2j6vJB4606iTIQlwTzMq/
+ akHg==
+X-Gm-Message-State: AOJu0YxWuz6SEwBgdEYS5VOcZQSitZXmo6jN6OQyseHjSWs77JivzxXd
+ rGdaQ4TwgSoUcT4t0N12qkE5pmDAukxMNYHo6CkAlAERImwOOkK8Qk92x4fU2XFCs9QjH930ZOk
+ 5K2c65hmshxi1Thbswzo2+2MwHpHKtvV6zkbzEbslK09g1F67NO22hxvibTy8TLMyUoLKak6smB
+ GeKWPyKC8m6WnBCyReILyZ0OIWq/7630OCQg==
+X-Gm-Gg: ASbGncvJOjn7Z13ma1611NdgozEmOVRn+9X7qvSr0LRoyx2+sQ46bRrJhLFnsZ2wa5C
+ Xe6UAk0RyzO0wCi5FkTMlXTM6SxYtK9S5c1Rs9xOHsGiP8kRg/1GR1Tf2TBRM3Nq3dIGApkhGIQ
+ MPwjcRNM7kvWUDVNaau8r4NQeEMpIOUdZ1cqFYba575+uS5xUQeWaPA0npPOOREqNeqsHJ4YiPd
+ 7CU008h2cYXdNJc6WTx1VF9i75FDo2vqTjnv6lHpPqOBmMOsXlDtzCTuIIIfgptMIMaciJt4/5v
+X-Received: by 2002:a05:620a:19a6:b0:7c7:93ae:fe56 with SMTP id
+ af79cd13be357-7cad5bc0a1dmr500726785a.51.1746204122792; 
+ Fri, 02 May 2025 09:42:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHiu3LgihU8stdZhmxLqzpzMm0DhsIEMmRTHTRV76IeMlKh5vLc6WWhd1F6obUdpJnvnw7LVA==
+X-Received: by 2002:a05:620a:19a6:b0:7c7:93ae:fe56 with SMTP id
+ af79cd13be357-7cad5bc0a1dmr500721985a.51.1746204122154; 
+ Fri, 02 May 2025 09:42:02 -0700 (PDT)
 Received: from x1.com ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7cad23d1c8dsm203108385a.60.2025.05.02.09.41.59
+ af79cd13be357-7cad23d1c8dsm203108385a.60.2025.05.02.09.42.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 May 2025 09:42:00 -0700 (PDT)
+ Fri, 02 May 2025 09:42:01 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Stefan Hajnoczi <stefanha@redhat.com>,
- peterx@redhat.com, Prasad Pandit <pjp@fedoraproject.org>
-Subject: [PULL 11/14] tests/qtest/migration: consolidate set capabilities
-Date: Fri,  2 May 2025 12:41:38 -0400
-Message-ID: <20250502164141.747202-12-peterx@redhat.com>
+ peterx@redhat.com, Xiaohui Li <xiaohli@redhat.com>,
+ Juraj Marcin <jmarcin@redhat.com>
+Subject: [PULL 12/14] migration/postcopy: Spatial locality page hint for
+ preempt mode
+Date: Fri,  2 May 2025 12:41:39 -0400
+Message-ID: <20250502164141.747202-13-peterx@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250502164141.747202-1-peterx@redhat.com>
 References: <20250502164141.747202-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.644,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.644,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ URG_BIZ=0.573 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,649 +106,222 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Prasad Pandit <pjp@fedoraproject.org>
+The preempt mode postcopy has been introduced for a while.  From latency
+POV, it should always win the vanilla postcopy.
 
-Migration capabilities are set in multiple '.start_hook'
-functions for various tests. Instead, consolidate setting
-capabilities in 'migrate_start_set_capabilities()' function
-which is called from the 'migrate_start()' function.
-While simplifying the capabilities setting, it helps
-to declutter the qtest sources.
+However there's one thing missing when preempt mode is enabled right now,
+which is the spatial locality hint when there're page requests from the
+destination side.
 
-Suggested-by: Fabiano Rosas <farosas@suse.de>
-Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Message-ID: <20250411114534.3370816-7-ppandit@redhat.com>
-[fix open brace]
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
+In vanilla postcopy, as long as a page request was unqueued, it will update
+the PSS of the precopy background stream, so that after a page request the
+background thread will move the pages after whatever was requested.  It's
+pretty much a natural behavior when there's only one channel anyway, and
+one scanner to send the pages.
+
+Preempt mode didn't follow that, because preempt mode has its own channel
+and its own PSS (which doesn't linearly scan the guest memory, but
+dedicated to resolve page requested from destination).  So the page request
+process and the background migration process are completely separate.
+
+This patch adds the hint explicitly for preempt mode.  With that, whenever
+the preempt mode receives a page request on the source, it will service the
+remote page fault in the return path, then it'll provide a hint to the
+background thread so that we'll start sending the pages right after the
+requested ones in the background, assuming the follow up pages have a
+higher chance to be accessed later.
+
+NOTE: since the background migration thread and return path thread run
+completely concurrently, it doesn't always mean the hint will be applied
+every single time.  For example, it's possible that the return path thread
+receives multiple page requests in a row without the background thread
+getting the chance to consume one.  In such case, the preempt thread only
+provide the hint if the previous hint has been consumed.  After all,
+there's no point queuing hints when we only have one linear scanner.
+
+This could measureably improve the simple sequential memory access pattern
+during postcopy (when preempt is on).  For random accesses, I can measure a
+slight increase of remote page fault latency from ~500us -> ~600us, that
+could be a trade-off to have such hint mechanism, and after all that's
+still greatly improved comparing to vanilla postcopy on random (~10ms).
+
+The patch is verified by our QE team in a video streaming test case, to
+reduce the pause of the video from ~1min to a few seconds when switching
+over to postcopy with preempt mode.
+
+Reported-by: Xiaohui Li <xiaohli@redhat.com>
+Tested-by: Xiaohui Li <xiaohli@redhat.com>
+Reviewed-by: Juraj Marcin <jmarcin@redhat.com>
+Link: https://lore.kernel.org/r/20250424220705.195544-1-peterx@redhat.com
+Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- tests/qtest/migration/framework.h         |  9 ++-
- tests/qtest/migration/compression-tests.c | 22 +++++--
- tests/qtest/migration/cpr-tests.c         |  6 +-
- tests/qtest/migration/file-tests.c        | 58 ++++++++----------
- tests/qtest/migration/framework.c         | 75 +++++++++++++++--------
- tests/qtest/migration/misc-tests.c        |  4 +-
- tests/qtest/migration/postcopy-tests.c    |  8 ++-
- tests/qtest/migration/precopy-tests.c     | 29 +++++----
- tests/qtest/migration/tls-tests.c         | 23 ++++++-
- 9 files changed, 150 insertions(+), 84 deletions(-)
+ migration/ram.c | 97 ++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 96 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qtest/migration/framework.h b/tests/qtest/migration/framework.h
-index e4a11870f6..01e425e64e 100644
---- a/tests/qtest/migration/framework.h
-+++ b/tests/qtest/migration/framework.h
-@@ -12,6 +12,7 @@
- #define TEST_FRAMEWORK_H
+diff --git a/migration/ram.c b/migration/ram.c
+index a749e4a421..e12913b43e 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -91,6 +91,36 @@
  
- #include "libqtest.h"
-+#include <qapi/qapi-types-migration.h>
+ XBZRLECacheStats xbzrle_counters;
  
- #define FILE_TEST_FILENAME "migfile"
- #define FILE_TEST_OFFSET 0x1000
-@@ -120,6 +121,13 @@ typedef struct {
- 
-     /* Do not connect to target monitor and qtest sockets in qtest_init */
-     bool defer_target_connect;
++/*
++ * This structure locates a specific location of a guest page.  In QEMU,
++ * it's described in a tuple of (ramblock, offset).
++ */
++struct PageLocation {
++    RAMBlock *block;
++    unsigned long offset;
++};
++typedef struct PageLocation PageLocation;
 +
++/**
++ * PageLocationHint: describes a hint to a page location
++ *
++ * @valid     set if the hint is vaild and to be consumed
++ * @location: the hint content
++ *
++ * In postcopy preempt mode, the urgent channel may provide hints to the
++ * background channel, so that QEMU source can try to migrate whatever is
++ * right after the requested urgent pages.
++ *
++ * This is based on the assumption that the VM (already running on the
++ * destination side) tends to access the memory with spatial locality.
++ * This is also the default behavior of vanilla postcopy (preempt off).
++ */
++struct PageLocationHint {
++    bool valid;
++    PageLocation location;
++};
++typedef struct PageLocationHint PageLocationHint;
++
+ /* used by the search for pages to send */
+ struct PageSearchStatus {
+     /* The migration channel used for a specific host page */
+@@ -395,6 +425,13 @@ struct RAMState {
+      * RAM migration.
+      */
+     unsigned int postcopy_bmap_sync_requested;
 +    /*
-+     * Migration capabilities to be set in both source and
-+     * destination. For unilateral capabilities, use
-+     * migration_set_capabilities().
++     * Page hint during postcopy when preempt mode is on.  Return path
++     * thread sets it, while background migration thread consumes it.
++     *
++     * Protected by @bitmap_mutex.
 +     */
-+    bool caps[MIGRATION_CAPABILITY__MAX];
- } MigrateStart;
++    PageLocationHint page_hint;
+ };
+ typedef struct RAMState RAMState;
  
- typedef enum PostcopyRecoveryFailStage {
-@@ -207,7 +215,6 @@ typedef struct {
- 
-     /* Postcopy specific fields */
-     void *postcopy_data;
--    bool postcopy_preempt;
-     PostcopyRecoveryFailStage postcopy_recovery_fail_stage;
- } MigrateCommon;
- 
-diff --git a/tests/qtest/migration/compression-tests.c b/tests/qtest/migration/compression-tests.c
-index 8b58401b84..41e79f031b 100644
---- a/tests/qtest/migration/compression-tests.c
-+++ b/tests/qtest/migration/compression-tests.c
-@@ -35,6 +35,9 @@ static void test_multifd_tcp_zstd(void)
- {
-     MigrateCommon args = {
-         .listen_uri = "defer",
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-+        },
-         .start_hook = migrate_hook_start_precopy_tcp_multifd_zstd,
-     };
-     test_precopy_common(&args);
-@@ -56,6 +59,9 @@ static void test_multifd_tcp_qatzip(void)
- {
-     MigrateCommon args = {
-         .listen_uri = "defer",
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-+        },
-         .start_hook = migrate_hook_start_precopy_tcp_multifd_qatzip,
-     };
-     test_precopy_common(&args);
-@@ -74,6 +80,9 @@ static void test_multifd_tcp_qpl(void)
- {
-     MigrateCommon args = {
-         .listen_uri = "defer",
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-+        },
-         .start_hook = migrate_hook_start_precopy_tcp_multifd_qpl,
-     };
-     test_precopy_common(&args);
-@@ -92,6 +101,9 @@ static void test_multifd_tcp_uadk(void)
- {
-     MigrateCommon args = {
-         .listen_uri = "defer",
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-+        },
-         .start_hook = migrate_hook_start_precopy_tcp_multifd_uadk,
-     };
-     test_precopy_common(&args);
-@@ -103,10 +115,6 @@ migrate_hook_start_xbzrle(QTestState *from,
-                           QTestState *to)
- {
-     migrate_set_parameter_int(from, "xbzrle-cache-size", 33554432);
--
--    migrate_set_capability(from, "xbzrle", true);
--    migrate_set_capability(to, "xbzrle", true);
--
-     return NULL;
+@@ -2019,6 +2056,21 @@ static void pss_host_page_finish(PageSearchStatus *pss)
+     pss->host_page_start = pss->host_page_end = 0;
  }
  
-@@ -118,6 +126,9 @@ static void test_precopy_unix_xbzrle(void)
-         .listen_uri = uri,
-         .start_hook = migrate_hook_start_xbzrle,
-         .iterations = 2,
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_XBZRLE] = true,
-+        },
-         /*
-          * XBZRLE needs pages to be modified when doing the 2nd+ round
-          * iteration to have real data pushed to the stream.
-@@ -146,6 +157,9 @@ static void test_multifd_tcp_zlib(void)
- {
-     MigrateCommon args = {
-         .listen_uri = "defer",
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-+        },
-         .start_hook = migrate_hook_start_precopy_tcp_multifd_zlib,
-     };
-     test_precopy_common(&args);
-diff --git a/tests/qtest/migration/cpr-tests.c b/tests/qtest/migration/cpr-tests.c
-index 4758841824..5536e14610 100644
---- a/tests/qtest/migration/cpr-tests.c
-+++ b/tests/qtest/migration/cpr-tests.c
-@@ -24,9 +24,6 @@ static void *migrate_hook_start_mode_reboot(QTestState *from, QTestState *to)
-     migrate_set_parameter_str(from, "mode", "cpr-reboot");
-     migrate_set_parameter_str(to, "mode", "cpr-reboot");
- 
--    migrate_set_capability(from, "x-ignore-shared", true);
--    migrate_set_capability(to, "x-ignore-shared", true);
--
-     return NULL;
- }
- 
-@@ -39,6 +36,9 @@ static void test_mode_reboot(void)
-         .connect_uri = uri,
-         .listen_uri = "defer",
-         .start_hook = migrate_hook_start_mode_reboot,
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_X_IGNORE_SHARED] = true,
-+        },
-     };
- 
-     test_file_common(&args, true);
-diff --git a/tests/qtest/migration/file-tests.c b/tests/qtest/migration/file-tests.c
-index f260e2871d..4d78ce0855 100644
---- a/tests/qtest/migration/file-tests.c
-+++ b/tests/qtest/migration/file-tests.c
-@@ -107,15 +107,6 @@ static void test_precopy_file_offset_bad(void)
-     test_file_common(&args, false);
- }
- 
--static void *migrate_hook_start_mapped_ram(QTestState *from,
--                                           QTestState *to)
--{
--    migrate_set_capability(from, "mapped-ram", true);
--    migrate_set_capability(to, "mapped-ram", true);
--
--    return NULL;
--}
--
- static void test_precopy_file_mapped_ram_live(void)
- {
-     g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
-@@ -123,7 +114,9 @@ static void test_precopy_file_mapped_ram_live(void)
-     MigrateCommon args = {
-         .connect_uri = uri,
-         .listen_uri = "defer",
--        .start_hook = migrate_hook_start_mapped_ram,
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_MAPPED_RAM] = true,
-+        },
-     };
- 
-     test_file_common(&args, false);
-@@ -136,26 +129,14 @@ static void test_precopy_file_mapped_ram(void)
-     MigrateCommon args = {
-         .connect_uri = uri,
-         .listen_uri = "defer",
--        .start_hook = migrate_hook_start_mapped_ram,
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_MAPPED_RAM] = true,
-+        },
-     };
- 
-     test_file_common(&args, true);
- }
- 
--static void *migrate_hook_start_multifd_mapped_ram(QTestState *from,
--                                                   QTestState *to)
--{
--    migrate_hook_start_mapped_ram(from, to);
--
--    migrate_set_parameter_int(from, "multifd-channels", 4);
--    migrate_set_parameter_int(to, "multifd-channels", 4);
--
--    migrate_set_capability(from, "multifd", true);
--    migrate_set_capability(to, "multifd", true);
--
--    return NULL;
--}
--
- static void test_multifd_file_mapped_ram_live(void)
- {
-     g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
-@@ -163,7 +144,10 @@ static void test_multifd_file_mapped_ram_live(void)
-     MigrateCommon args = {
-         .connect_uri = uri,
-         .listen_uri = "defer",
--        .start_hook = migrate_hook_start_multifd_mapped_ram,
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-+            .caps[MIGRATION_CAPABILITY_MAPPED_RAM] = true,
-+        },
-     };
- 
-     test_file_common(&args, false);
-@@ -176,7 +160,10 @@ static void test_multifd_file_mapped_ram(void)
-     MigrateCommon args = {
-         .connect_uri = uri,
-         .listen_uri = "defer",
--        .start_hook = migrate_hook_start_multifd_mapped_ram,
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-+            .caps[MIGRATION_CAPABILITY_MAPPED_RAM] = true,
-+        },
-     };
- 
-     test_file_common(&args, true);
-@@ -185,8 +172,6 @@ static void test_multifd_file_mapped_ram(void)
- static void *migrate_hook_start_multifd_mapped_ram_dio(QTestState *from,
-                                                        QTestState *to)
- {
--    migrate_hook_start_multifd_mapped_ram(from, to);
--
-     migrate_set_parameter_bool(from, "direct-io", true);
-     migrate_set_parameter_bool(to, "direct-io", true);
- 
-@@ -201,6 +186,10 @@ static void test_multifd_file_mapped_ram_dio(void)
-         .connect_uri = uri,
-         .listen_uri = "defer",
-         .start_hook = migrate_hook_start_multifd_mapped_ram_dio,
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_MAPPED_RAM] = true,
-+            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-+        },
-     };
- 
-     if (!probe_o_direct_support(tmpfs)) {
-@@ -246,7 +235,6 @@ static void *migrate_hook_start_multifd_mapped_ram_fdset_dio(QTestState *from,
-     fdset_add_fds(from, file, O_WRONLY, 2, true);
-     fdset_add_fds(to, file, O_RDONLY, 2, true);
- 
--    migrate_hook_start_multifd_mapped_ram(from, to);
-     migrate_set_parameter_bool(from, "direct-io", true);
-     migrate_set_parameter_bool(to, "direct-io", true);
- 
-@@ -261,8 +249,6 @@ static void *migrate_hook_start_multifd_mapped_ram_fdset(QTestState *from,
-     fdset_add_fds(from, file, O_WRONLY, 2, false);
-     fdset_add_fds(to, file, O_RDONLY, 2, false);
- 
--    migrate_hook_start_multifd_mapped_ram(from, to);
--
-     return NULL;
- }
- 
-@@ -275,6 +261,10 @@ static void test_multifd_file_mapped_ram_fdset(void)
-         .listen_uri = "defer",
-         .start_hook = migrate_hook_start_multifd_mapped_ram_fdset,
-         .end_hook = migrate_hook_end_multifd_mapped_ram_fdset,
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_MAPPED_RAM] = true,
-+            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-+        },
-     };
- 
-     test_file_common(&args, true);
-@@ -289,6 +279,10 @@ static void test_multifd_file_mapped_ram_fdset_dio(void)
-         .listen_uri = "defer",
-         .start_hook = migrate_hook_start_multifd_mapped_ram_fdset_dio,
-         .end_hook = migrate_hook_end_multifd_mapped_ram_fdset,
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_MAPPED_RAM] = true,
-+            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-+        },
-     };
- 
-     if (!probe_o_direct_support(tmpfs)) {
-diff --git a/tests/qtest/migration/framework.c b/tests/qtest/migration/framework.c
-index 10e1d04b58..e48b80a127 100644
---- a/tests/qtest/migration/framework.c
-+++ b/tests/qtest/migration/framework.c
-@@ -30,6 +30,7 @@
- #define QEMU_VM_FILE_MAGIC 0x5145564d
- #define QEMU_ENV_SRC "QTEST_QEMU_BINARY_SRC"
- #define QEMU_ENV_DST "QTEST_QEMU_BINARY_DST"
-+#define MULTIFD_TEST_CHANNELS 4
- 
- unsigned start_address;
- unsigned end_address;
-@@ -207,6 +208,51 @@ static QList *migrate_start_get_qmp_capabilities(const MigrateStart *args)
-     return capabilities;
- }
- 
-+static void migrate_start_set_capabilities(QTestState *from, QTestState *to,
-+                                           MigrateStart *args)
++static void ram_page_hint_update(RAMState *rs, PageSearchStatus *pss)
 +{
-+    /*
-+     * MigrationCapability_lookup and MIGRATION_CAPABILITY_ constants
-+     * are from qapi-types-migration.h.
-+     */
-+    for (uint8_t i = 0; i < MIGRATION_CAPABILITY__MAX; i++) {
-+        if (!args->caps[i]) {
-+            continue;
-+        }
-+        if (from) {
-+            migrate_set_capability(from,
-+                            MigrationCapability_lookup.array[i], true);
-+        }
-+        if (to) {
-+            migrate_set_capability(to,
-+                            MigrationCapability_lookup.array[i], true);
-+        }
++    PageLocationHint *hint = &rs->page_hint;
++
++    /* If there's a pending hint not consumed, don't bother */
++    if (hint->valid) {
++        return;
 +    }
 +
-+    /*
-+     * Always enable migration events.  Libvirt always uses it, let's try
-+     * to mimic as closer as that.
-+     */
-+    migrate_set_capability(from, "events", true);
-+    if (!args->defer_target_connect) {
-+        migrate_set_capability(to, "events", true);
-+    }
-+
-+    /*
-+     * Default number of channels should be fine for most
-+     * tests. Individual tests can override by calling
-+     * migrate_set_parameter() directly.
-+     */
-+    if (args->caps[MIGRATION_CAPABILITY_MULTIFD]) {
-+        migrate_set_parameter_int(from, "multifd-channels",
-+                                  MULTIFD_TEST_CHANNELS);
-+        migrate_set_parameter_int(to, "multifd-channels",
-+                                  MULTIFD_TEST_CHANNELS);
-+    }
-+
-+    return;
++    /* Provide a hint to the background stream otherwise */
++    hint->location.block = pss->block;
++    hint->location.offset = pss->page;
++    hint->valid = true;
 +}
 +
- int migrate_start(QTestState **from, QTestState **to, const char *uri,
-                   MigrateStart *args)
- {
-@@ -379,14 +425,7 @@ int migrate_start(QTestState **from, QTestState **to, const char *uri,
-         unlink(shmem_path);
+ /*
+  * Send an urgent host page specified by `pss'.  Need to be called with
+  * bitmap_mutex held.
+@@ -2064,6 +2116,7 @@ out:
+     /* For urgent requests, flush immediately if sent */
+     if (sent) {
+         qemu_fflush(pss->pss_channel);
++        ram_page_hint_update(rs, pss);
      }
- 
--    /*
--     * Always enable migration events.  Libvirt always uses it, let's try
--     * to mimic as closer as that.
--     */
--    migrate_set_capability(*from, "events", true);
--    if (!args->defer_target_connect) {
--        migrate_set_capability(*to, "events", true);
--    }
-+    migrate_start_set_capabilities(*from, *to, args);
- 
-     return 0;
+     return ret;
  }
-@@ -432,6 +471,10 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
- {
-     QTestState *from, *to;
+@@ -2151,6 +2204,30 @@ static int ram_save_host_page(RAMState *rs, PageSearchStatus *pss)
+     return (res < 0 ? res : pages);
+ }
  
-+    /* set postcopy capabilities */
-+    args->start.caps[MIGRATION_CAPABILITY_POSTCOPY_BLOCKTIME] = true;
-+    args->start.caps[MIGRATION_CAPABILITY_POSTCOPY_RAM] = true;
++static bool ram_page_hint_valid(RAMState *rs)
++{
++    /* There's only page hint during postcopy preempt mode */
++    if (!postcopy_preempt_active()) {
++        return false;
++    }
 +
-     if (migrate_start(&from, &to, "defer", &args->start)) {
-         return -1;
++    return rs->page_hint.valid;
++}
++
++static void ram_page_hint_collect(RAMState *rs, RAMBlock **block,
++                                  unsigned long *page)
++{
++    PageLocationHint *hint = &rs->page_hint;
++
++    assert(hint->valid);
++
++    *block = hint->location.block;
++    *page = hint->location.offset;
++
++    /* Mark the hint consumed */
++    hint->valid = false;
++}
++
+ /**
+  * ram_find_and_save_block: finds a dirty page and sends it to f
+  *
+@@ -2167,6 +2244,8 @@ static int ram_save_host_page(RAMState *rs, PageSearchStatus *pss)
+ static int ram_find_and_save_block(RAMState *rs)
+ {
+     PageSearchStatus *pss = &rs->pss[RAM_CHANNEL_PRECOPY];
++    unsigned long next_page;
++    RAMBlock *next_block;
+     int pages = 0;
+ 
+     /* No dirty page as there is zero RAM */
+@@ -2186,7 +2265,14 @@ static int ram_find_and_save_block(RAMState *rs)
+         rs->last_page = 0;
      }
-@@ -440,17 +483,7 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
-         args->postcopy_data = args->start_hook(from, to);
-     }
  
--    migrate_set_capability(from, "postcopy-ram", true);
--    migrate_set_capability(to, "postcopy-ram", true);
--    migrate_set_capability(to, "postcopy-blocktime", true);
--
--    if (args->postcopy_preempt) {
--        migrate_set_capability(from, "postcopy-preempt", true);
--        migrate_set_capability(to, "postcopy-preempt", true);
--    }
--
-     migrate_ensure_non_converge(from);
--
-     migrate_prepare_for_dirty_mem(from);
-     qtest_qmp_assert_success(to, "{ 'execute': 'migrate-incoming',"
-                              "  'arguments': { "
-@@ -948,15 +981,9 @@ void *migrate_hook_start_precopy_tcp_multifd_common(QTestState *from,
-                                                     QTestState *to,
-                                                     const char *method)
- {
--    migrate_set_parameter_int(from, "multifd-channels", 16);
--    migrate_set_parameter_int(to, "multifd-channels", 16);
--
-     migrate_set_parameter_str(from, "multifd-compression", method);
-     migrate_set_parameter_str(to, "multifd-compression", method);
+-    pss_init(pss, rs->last_seen_block, rs->last_page);
++    if (ram_page_hint_valid(rs)) {
++        ram_page_hint_collect(rs, &next_block, &next_page);
++    } else {
++        next_block = rs->last_seen_block;
++        next_page = rs->last_page;
++    }
++
++    pss_init(pss, next_block, next_page);
  
--    migrate_set_capability(from, "multifd", true);
--    migrate_set_capability(to, "multifd", true);
--
-     /* Start incoming migration from the 1st socket */
-     migrate_incoming_qmp(to, "tcp:127.0.0.1:0", NULL, "{}");
- 
-diff --git a/tests/qtest/migration/misc-tests.c b/tests/qtest/migration/misc-tests.c
-index 2e612d9e38..54995256d8 100644
---- a/tests/qtest/migration/misc-tests.c
-+++ b/tests/qtest/migration/misc-tests.c
-@@ -98,6 +98,7 @@ static void test_ignore_shared(void)
-     QTestState *from, *to;
-     MigrateStart args = {
-         .use_shmem = true,
-+        .caps[MIGRATION_CAPABILITY_X_IGNORE_SHARED] = true,
-     };
- 
-     if (migrate_start(&from, &to, uri, &args)) {
-@@ -107,9 +108,6 @@ static void test_ignore_shared(void)
-     migrate_ensure_non_converge(from);
-     migrate_prepare_for_dirty_mem(from);
- 
--    migrate_set_capability(from, "x-ignore-shared", true);
--    migrate_set_capability(to, "x-ignore-shared", true);
--
-     /* Wait for the first serial output from the source */
-     wait_for_serial("src_serial");
- 
-diff --git a/tests/qtest/migration/postcopy-tests.c b/tests/qtest/migration/postcopy-tests.c
-index 982457bed1..483e3ff99f 100644
---- a/tests/qtest/migration/postcopy-tests.c
-+++ b/tests/qtest/migration/postcopy-tests.c
-@@ -39,7 +39,9 @@ static void test_postcopy_suspend(void)
- static void test_postcopy_preempt(void)
- {
-     MigrateCommon args = {
--        .postcopy_preempt = true,
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_POSTCOPY_PREEMPT] = true,
-+        },
-     };
- 
-     test_postcopy_common(&args);
-@@ -73,7 +75,9 @@ static void test_postcopy_recovery_fail_reconnect(void)
- static void test_postcopy_preempt_recovery(void)
- {
-     MigrateCommon args = {
--        .postcopy_preempt = true,
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_POSTCOPY_PREEMPT] = true,
-+        },
-     };
- 
-     test_postcopy_recovery_common(&args);
-diff --git a/tests/qtest/migration/precopy-tests.c b/tests/qtest/migration/precopy-tests.c
-index 565630dddf..87b0a7e8ef 100644
---- a/tests/qtest/migration/precopy-tests.c
-+++ b/tests/qtest/migration/precopy-tests.c
-@@ -170,23 +170,14 @@ static void test_precopy_tcp_plain(void)
-     test_precopy_common(&args);
+     while (true){
+         if (!get_queued_page(rs, pss)) {
+@@ -2319,6 +2405,13 @@ static void ram_save_cleanup(void *opaque)
+     ram_state_cleanup(rsp);
  }
  
--static void *migrate_hook_start_switchover_ack(QTestState *from, QTestState *to)
--{
--
--    migrate_set_capability(from, "return-path", true);
--    migrate_set_capability(to, "return-path", true);
--
--    migrate_set_capability(from, "switchover-ack", true);
--    migrate_set_capability(to, "switchover-ack", true);
--
--    return NULL;
--}
--
- static void test_precopy_tcp_switchover_ack(void)
++static void ram_page_hint_reset(PageLocationHint *hint)
++{
++    hint->location.block = NULL;
++    hint->location.offset = 0;
++    hint->valid = false;
++}
++
+ static void ram_state_reset(RAMState *rs)
  {
-     MigrateCommon args = {
-         .listen_uri = "tcp:127.0.0.1:0",
--        .start_hook = migrate_hook_start_switchover_ack,
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_RETURN_PATH] = true,
-+            .caps[MIGRATION_CAPABILITY_SWITCHOVER_ACK] = true,
-+        },
-         /*
-          * Source VM must be running in order to consider the switchover ACK
-          * when deciding to do switchover or not.
-@@ -455,6 +446,9 @@ static void test_multifd_tcp_uri_none(void)
-     MigrateCommon args = {
-         .listen_uri = "defer",
-         .start_hook = migrate_hook_start_precopy_tcp_multifd,
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-+        },
-         /*
-          * Multifd is more complicated than most of the features, it
-          * directly takes guest page buffers when sending, make sure
-@@ -470,6 +464,9 @@ static void test_multifd_tcp_zero_page_legacy(void)
-     MigrateCommon args = {
-         .listen_uri = "defer",
-         .start_hook = migrate_hook_start_precopy_tcp_multifd_zero_page_legacy,
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-+        },
-         /*
-          * Multifd is more complicated than most of the features, it
-          * directly takes guest page buffers when sending, make sure
-@@ -485,6 +482,9 @@ static void test_multifd_tcp_no_zero_page(void)
-     MigrateCommon args = {
-         .listen_uri = "defer",
-         .start_hook = migrate_hook_start_precopy_tcp_multifd_no_zero_page,
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-+        },
-         /*
-          * Multifd is more complicated than most of the features, it
-          * directly takes guest page buffers when sending, make sure
-@@ -501,6 +501,9 @@ static void test_multifd_tcp_channels_none(void)
-         .listen_uri = "defer",
-         .start_hook = migrate_hook_start_precopy_tcp_multifd,
-         .live = true,
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-+        },
-         .connect_channels = ("[ { 'channel-type': 'main',"
-                              "    'addr': { 'transport': 'socket',"
-                              "              'type': 'inet',"
-diff --git a/tests/qtest/migration/tls-tests.c b/tests/qtest/migration/tls-tests.c
-index 2cb4a44bcd..72f44defbb 100644
---- a/tests/qtest/migration/tls-tests.c
-+++ b/tests/qtest/migration/tls-tests.c
-@@ -375,9 +375,11 @@ static void test_postcopy_tls_psk(void)
- static void test_postcopy_preempt_tls_psk(void)
- {
-     MigrateCommon args = {
--        .postcopy_preempt = true,
-         .start_hook = migrate_hook_start_tls_psk_match,
-         .end_hook = migrate_hook_end_tls_psk,
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_POSTCOPY_PREEMPT] = true,
-+        },
-     };
+     int i;
+@@ -2331,6 +2424,8 @@ static void ram_state_reset(RAMState *rs)
+     rs->last_page = 0;
+     rs->last_version = ram_list.version;
+     rs->xbzrle_started = false;
++
++    ram_page_hint_reset(&rs->page_hint);
+ }
  
-     test_postcopy_common(&args);
-@@ -397,9 +399,11 @@ static void test_postcopy_recovery_tls_psk(void)
- static void test_postcopy_preempt_all(void)
- {
-     MigrateCommon args = {
--        .postcopy_preempt = true,
-         .start_hook = migrate_hook_start_tls_psk_match,
-         .end_hook = migrate_hook_end_tls_psk,
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_POSTCOPY_PREEMPT] = true,
-+        },
-     };
- 
-     test_postcopy_recovery_common(&args);
-@@ -631,6 +635,9 @@ static void test_multifd_tcp_tls_psk_match(void)
-         .listen_uri = "defer",
-         .start_hook = migrate_hook_start_multifd_tcp_tls_psk_match,
-         .end_hook = migrate_hook_end_tls_psk,
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-+        },
-     };
-     test_precopy_common(&args);
- }
-@@ -640,6 +647,7 @@ static void test_multifd_tcp_tls_psk_mismatch(void)
-     MigrateCommon args = {
-         .start = {
-             .hide_stderr = true,
-+            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-         },
-         .listen_uri = "defer",
-         .start_hook = migrate_hook_start_multifd_tcp_tls_psk_mismatch,
-@@ -656,6 +664,9 @@ static void test_multifd_tcp_tls_x509_default_host(void)
-         .listen_uri = "defer",
-         .start_hook = migrate_hook_start_multifd_tls_x509_default_host,
-         .end_hook = migrate_hook_end_tls_x509,
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-+        },
-     };
-     test_precopy_common(&args);
- }
-@@ -666,6 +677,9 @@ static void test_multifd_tcp_tls_x509_override_host(void)
-         .listen_uri = "defer",
-         .start_hook = migrate_hook_start_multifd_tls_x509_override_host,
-         .end_hook = migrate_hook_end_tls_x509,
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-+        },
-     };
-     test_precopy_common(&args);
- }
-@@ -688,6 +702,7 @@ static void test_multifd_tcp_tls_x509_mismatch_host(void)
-     MigrateCommon args = {
-         .start = {
-             .hide_stderr = true,
-+            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-         },
-         .listen_uri = "defer",
-         .start_hook = migrate_hook_start_multifd_tls_x509_mismatch_host,
-@@ -703,6 +718,9 @@ static void test_multifd_tcp_tls_x509_allow_anon_client(void)
-         .listen_uri = "defer",
-         .start_hook = migrate_hook_start_multifd_tls_x509_allow_anon_client,
-         .end_hook = migrate_hook_end_tls_x509,
-+        .start = {
-+            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-+        },
-     };
-     test_precopy_common(&args);
- }
-@@ -712,6 +730,7 @@ static void test_multifd_tcp_tls_x509_reject_anon_client(void)
-     MigrateCommon args = {
-         .start = {
-             .hide_stderr = true,
-+            .caps[MIGRATION_CAPABILITY_MULTIFD] = true,
-         },
-         .listen_uri = "defer",
-         .start_hook = migrate_hook_start_multifd_tls_x509_reject_anon_client,
+ #define MAX_WAIT 50 /* ms, half buffered_file limit */
 -- 
 2.48.1
 
