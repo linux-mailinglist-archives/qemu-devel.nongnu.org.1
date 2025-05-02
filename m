@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17817AA79C7
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 21:01:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F1D0AA79F3
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 21:03:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAvby-00014E-9B; Fri, 02 May 2025 14:59:53 -0400
+	id 1uAvcl-0001mw-Os; Fri, 02 May 2025 15:00:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAvao-00079b-9B
- for qemu-devel@nongnu.org; Fri, 02 May 2025 14:58:38 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAvat-0007WS-Dk
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 14:58:43 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAval-0005go-E3
- for qemu-devel@nongnu.org; Fri, 02 May 2025 14:58:37 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-5e5deb6482cso6238450a12.1
- for <qemu-devel@nongnu.org>; Fri, 02 May 2025 11:58:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAvar-0005iI-LB
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 14:58:43 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-5f4d28d9fd8so3268052a12.3
+ for <qemu-devel@nongnu.org>; Fri, 02 May 2025 11:58:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746212313; x=1746817113; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746212320; x=1746817120; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OvirrR3TiqgBPme4BwNGSV4VqzG47GBw5DwB3TzFavY=;
- b=afZqr4MI3noG/qSTyUTCbppF3OXeyj01ByXbyxvhFCFT6XKWo2+q0XnaI+VMonWfFV
- JbeNsKCMWRhtPLc2OU4TgY14d5ra0hGMkVPGdB+mgvyFUhlx+0+l5cLLB4SV9XtouMCh
- lt7j+aX7KOiMyGGTCnS/l5ApkqOAqgc4MsrAIxi4zsnrbHkOnQBPubptp6h9T9LDuup0
- 3j7vv+U74vDjhLEoceHDptg/cQRzwfpr2e7USeiaM+UXVUsdMW67BmeqXM82/b7r0Ze7
- vVUxGsSFkgjtIz2JU+kMieftADh7sFmJKvIcV3pGw3yPLZJZv40X5b50wqStKBlhcYTJ
- JwdQ==
+ bh=ns6abkUGaM6ukyij9Yk70LzU+Vns27nmI4rpIretkkk=;
+ b=GjB5VlRJwG2MFEdyIm2nevJQf3UlnnEJhs2ykew65Leh2t8PluWMdUkmew2dJ7bUW9
+ dtVGfeMYLEak9vyEBN0OaJ4ChMP7yTNDgrAQSHGIjbBvXAz28vyKH3PPxv2mwRxf2cIV
+ VLrpyXYeIyQirhYxh5/lUkkqy1N2jrjExLUza+AIPZ0p/oESX6z4rtJ+2TGtSZ46Qo6+
+ a0Ou/uGZDVdDKFCfSP9BU4RKIJz/p3p98YelowUUURGFAYinGp2m7DCv0Fht4gX1wglB
+ v3IlYlkG62N6b/ovA22jxHsPbK23ZSVpo/RGm0nVx9yGqICKGxfnLhTEtTtRmOOEYe+n
+ /gGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746212313; x=1746817113;
+ d=1e100.net; s=20230601; t=1746212320; x=1746817120;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OvirrR3TiqgBPme4BwNGSV4VqzG47GBw5DwB3TzFavY=;
- b=Op+d4TvJU1/qaCBoHGD5ukD2d6XKtbbXOZmqZ/TaPmjFjb1ohXEB6d82MftgvT7Tw5
- g1+td4ciBZnNMN0JtbSE/5B2q8zRybeEO/guun1LfvpIvx5p7DtMLRRGVr64wGVpckMo
- dcr4MhyoRbhizCTDn5MOuXN4N5qDltpPy8YEwxLRZpogaEFTzbzuT03P3xlTQfp10R24
- 0I0VRm421ipZet2OTUPtG8efC+SrEJFTEBJXAB5OcFmFIRJDgwpGEcKO8NIuDCgjXa0D
- NoO4OV2EoEegKGAUoBfUglHVz9heSHgnFG3A7I51t2aUoEBbsPWb/GAg8tVyaJAMZoKa
- Vc4w==
-X-Gm-Message-State: AOJu0Yxw1ytJvQvZYeCbg0OPrEpMnZL30prIpGFEEnDXz1Ypwncjr0nv
- /Cm3QOJPi2KlpFRFdiZFb1gYQ6k9j5JepYvF8fyLn6omu8rYGsEWPGew0G4WiaZFbLxgkHlXlxW
- 4
-X-Gm-Gg: ASbGnct58kdvocslDh2jpShZ4BAelocux77/4pOMl6HEE5bHC+DSNZhh67H3FkVI7dp
- JAO8xY9Uh3OoObr/VQg7MlND00ojxDrzNbQR6USkdDWPKGVoXWtBHVAVQRRhFgl/6TjS0SaJg5A
- 8xHDtrx70finPvmet+DjppfQYWrH0siVs8jL0h67PwzYsA5jvbQtpP6MTn6m8GLp0MyBd9qAi/y
- wG/xXpEopLFzdF7MaJvoO34SjoAOnc7mVcBJpZpH0NdxfGavMfjWVgy+gL6RB0Sgx8i2N4jWAcC
- WEhLefDNBEW2QnUY+mqwPesqZ+utC+bLffDN7xPdFpef/n+imsgujJ/nCwbjszKTCc01cKFdi7y
- Js7MTbcBKNmwMq5C5G5uLuqfXH0GrSZQ=
-X-Google-Smtp-Source: AGHT+IGZ6wVeevyDsC+s4yACGzGUdWe3H7+qZMuHK+2rKbQWUFgefD64pbso4UAGgULjofY9yaR2gg==
-X-Received: by 2002:a17:906:4fc5:b0:aca:c67d:eac0 with SMTP id
- a640c23a62f3a-acefe63defemr673247266b.0.1746212313493; 
- Fri, 02 May 2025 11:58:33 -0700 (PDT)
+ bh=ns6abkUGaM6ukyij9Yk70LzU+Vns27nmI4rpIretkkk=;
+ b=V9CsSGZ5fItVmBdkDnehzeYUkuRy1cs6xp6NWZQ21HDKFuLju0Xf4uUToNTIfeiHwq
+ 9EBeFFXHW+RzLNt5EuS//JhPoukeR93VdjLVVkiTowylFNcbf07gieTF4kZZkHBJ33BY
+ qre/oXa57KUrqWDjwRDv2gaO5QJ7U3p0+MAGOkG8rhBIn91oMoRUIxwUVA4o8tsw/2rG
+ Pbl9bTgRzzvSJnXjBD4au7uv2zdUIwCg39DHpdjMZ1NrZCl1lwTENMOQNzy/ex0IL6mq
+ xfmFcM9PJEwk3//8iIRygTaGn0hGElmfV3knMRTqm/EEtIFEBHOPkJhAnRBG9UmaLMnm
+ /Lrw==
+X-Gm-Message-State: AOJu0Yx9vgMbwSu/rZ8CHIMvIo4tTrn/KiytM8Ib+cxcV1jwwem/YoyH
+ hNtGNZqlmVCX5tcpOmRAmPQMxyFKgE3rXBKTGBjqmASsGuvEkk1e7CUNFsGhwkKG9wODVoPFwlq
+ i
+X-Gm-Gg: ASbGncsqjmz4ri4k3cvDJQHFYTg2YpZkKXx1E53LBr2FHh6Zeyl4WPYz+Jdms/GCN+A
+ 0zNCrBicGur89kXyZjoBWQdJZd8mFW41Lou4L1PxZvawgXNDApEY3B9aYkenzbUFpchpmVAh/OA
+ Cr74t1AEXL2ZohhNYbMU3RywtdoXevtlIqFby71yv+QjQnHLAu3slvwEJo/9a1WXUKvyLtUqSnG
+ 9+Kmi3AdWXdAIyIw9TTYS2ZnfnJyIXAv0IJS+oMYfrpVQX1WA+o0P76Hm7Y49GvW7uGmiaMYRws
+ Y1sz40YwMKCmy3CzKdPC9HUYjlBqNqQvdhu7mGeItYbuNA67UNPxIOAo4VkkkqNpWoLCqRLY4/O
+ nzQiHiOEbgellIrBghI4p
+X-Google-Smtp-Source: AGHT+IGfsIrdFbhprmcGkjN7nBsEbzpBtce/Ct00AnBiJYlS7w4X2H4GU7jTA1vXIeP2OEYtXHKkZQ==
+X-Received: by 2002:a05:6402:84c:b0:5fa:82a4:4c03 with SMTP id
+ 4fb4d7f45d1cf-5fa82a44cc2mr2325996a12.13.1746212319716; 
+ Fri, 02 May 2025 11:58:39 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ad1891a311bsm88214366b.54.2025.05.02.11.58.31
+ 4fb4d7f45d1cf-5fa77816ffbsm1558875a12.34.2025.05.02.11.58.37
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 02 May 2025 11:58:32 -0700 (PDT)
+ Fri, 02 May 2025 11:58:39 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -75,20 +75,19 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
  Zhao Liu <zhao1.liu@intel.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Yi Liu <yi.l.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Subject: [PATCH v3 17/19] hw/virtio/virtio-pci: Remove
- VirtIOPCIProxy::ignore_backend_features field
-Date: Fri,  2 May 2025 20:56:49 +0200
-Message-ID: <20250502185652.67370-18-philmd@linaro.org>
+ Yi Liu <yi.l.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH v3 18/19] hw/char/virtio-serial: Do not expose the
+ 'emergency-write' property
+Date: Fri,  2 May 2025 20:56:50 +0200
+Message-ID: <20250502185652.67370-19-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250502185652.67370-1-philmd@linaro.org>
 References: <20250502185652.67370-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,53 +110,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The VirtIOPCIProxy::ignore_backend_features boolean was only set
-in the hw_compat_2_7[] array, via the 'x-ignore-backend-features=on'
+The VIRTIO_CONSOLE_F_EMERG_WRITE feature bit was only set
+in the hw_compat_2_7[] array, via the 'emergency-write=off'
 property. We removed all machines using that array, lets remove
-that property, simplify by only using the default version.
+that property. All instances have this feature bit set and
+it can not be disabled. VirtIOSerial::host_features mask is
+now unused, remove it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 ---
- include/hw/virtio/virtio-pci.h | 1 -
- hw/virtio/virtio-pci.c         | 5 +----
- 2 files changed, 1 insertion(+), 5 deletions(-)
+ include/hw/virtio/virtio-serial.h | 2 --
+ hw/char/virtio-serial-bus.c       | 9 +++------
+ 2 files changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/include/hw/virtio/virtio-pci.h b/include/hw/virtio/virtio-pci.h
-index f962c9116c1..9838e8650a6 100644
---- a/include/hw/virtio/virtio-pci.h
-+++ b/include/hw/virtio/virtio-pci.h
-@@ -149,7 +149,6 @@ struct VirtIOPCIProxy {
-     int config_cap;
-     uint32_t flags;
-     bool disable_modern;
--    bool ignore_backend_features;
-     OnOffAuto disable_legacy;
-     /* Transitional device id */
-     uint16_t trans_devid;
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index 8d68e56641a..7c965771907 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -1965,8 +1965,7 @@ static void virtio_pci_device_plugged(DeviceState *d, Error **errp)
-      * Virtio capabilities present without
-      * VIRTIO_F_VERSION_1 confuses guests
-      */
--    if (!proxy->ignore_backend_features &&
--            !virtio_has_feature(vdev->host_features, VIRTIO_F_VERSION_1)) {
-+    if (!virtio_has_feature(vdev->host_features, VIRTIO_F_VERSION_1)) {
-         virtio_pci_disable_modern(proxy);
+diff --git a/include/hw/virtio/virtio-serial.h b/include/hw/virtio/virtio-serial.h
+index d87c62eab7a..e6ceacec309 100644
+--- a/include/hw/virtio/virtio-serial.h
++++ b/include/hw/virtio/virtio-serial.h
+@@ -185,8 +185,6 @@ struct VirtIOSerial {
+     struct VirtIOSerialPostLoad *post_load;
  
-         if (!legacy) {
-@@ -2351,8 +2350,6 @@ static const Property virtio_pci_properties[] = {
-                     VIRTIO_PCI_FLAG_MODERN_PIO_NOTIFY_BIT, false),
-     DEFINE_PROP_BIT("page-per-vq", VirtIOPCIProxy, flags,
-                     VIRTIO_PCI_FLAG_PAGE_PER_VQ_BIT, false),
--    DEFINE_PROP_BOOL("x-ignore-backend-features", VirtIOPCIProxy,
--                     ignore_backend_features, false),
-     DEFINE_PROP_BIT("ats", VirtIOPCIProxy, flags,
-                     VIRTIO_PCI_FLAG_ATS_BIT, false),
-     DEFINE_PROP_BIT("x-ats-page-aligned", VirtIOPCIProxy, flags,
+     virtio_serial_conf serial;
+-
+-    uint64_t host_features;
+ };
+ 
+ /* Interface to the virtio-serial bus */
+diff --git a/hw/char/virtio-serial-bus.c b/hw/char/virtio-serial-bus.c
+index eb79f5258b6..cfc8fa42186 100644
+--- a/hw/char/virtio-serial-bus.c
++++ b/hw/char/virtio-serial-bus.c
+@@ -557,7 +557,7 @@ static uint64_t get_features(VirtIODevice *vdev, uint64_t features,
+ 
+     vser = VIRTIO_SERIAL(vdev);
+ 
+-    features |= vser->host_features;
++    features |= BIT_ULL(VIRTIO_CONSOLE_F_EMERG_WRITE);
+     if (vser->bus.max_nr_ports > 1) {
+         virtio_add_feature(&features, VIRTIO_CONSOLE_F_MULTIPORT);
+     }
+@@ -587,8 +587,7 @@ static void set_config(VirtIODevice *vdev, const uint8_t *config_data)
+     VirtIOSerialPortClass *vsc;
+     uint8_t emerg_wr_lo;
+ 
+-    if (!virtio_has_feature(vser->host_features,
+-        VIRTIO_CONSOLE_F_EMERG_WRITE) || !config->emerg_wr) {
++    if (!config->emerg_wr) {
+         return;
+     }
+ 
+@@ -1039,7 +1038,7 @@ static void virtio_serial_device_realize(DeviceState *dev, Error **errp)
+         return;
+     }
+ 
+-    if (!virtio_has_feature(vser->host_features,
++    if (!virtio_has_feature(vdev->host_features,
+                             VIRTIO_CONSOLE_F_EMERG_WRITE)) {
+         config_size = offsetof(struct virtio_console_config, emerg_wr);
+     }
+@@ -1155,8 +1154,6 @@ static const VMStateDescription vmstate_virtio_console = {
+ static const Property virtio_serial_properties[] = {
+     DEFINE_PROP_UINT32("max_ports", VirtIOSerial, serial.max_virtserial_ports,
+                                                   31),
+-    DEFINE_PROP_BIT64("emergency-write", VirtIOSerial, host_features,
+-                      VIRTIO_CONSOLE_F_EMERG_WRITE, true),
+ };
+ 
+ static void virtio_serial_class_init(ObjectClass *klass, const void *data)
 -- 
 2.47.1
 
