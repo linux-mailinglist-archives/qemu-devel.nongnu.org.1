@@ -2,93 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C166AA7796
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 18:44:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7040EAA77AE
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 18:48:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAtT1-0007xG-3r; Fri, 02 May 2025 12:42:27 -0400
+	id 1uAtYm-0008Tu-Ve; Fri, 02 May 2025 12:48:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uAtSn-0007om-DY
- for qemu-devel@nongnu.org; Fri, 02 May 2025 12:42:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uAtSl-0006VG-I7
- for qemu-devel@nongnu.org; Fri, 02 May 2025 12:42:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746204128;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=yxAXCRgMFBUrR/bs744IU7o+At9NXW4bLRS1vlLvNyo=;
- b=ERICSb7t/7PYLAjIQbHpJ9fApsZX1g3hPG7Z46+iavTBKY6tkdQX1/kU6Z1Y8VKp0zpSMY
- qCcPeTKsbbYQVH+Pcv2/GTEyRoEc7t/Fk1zvtWFQ2FUjjLAqXisdAUJsrnLMpOc2CW8W4Z
- U4b6XhijxtQLt8Jr3tBKpLxFV7ld89c=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-215-fSMIj9wgNV6FIA_shm3yYQ-1; Fri, 02 May 2025 12:42:07 -0400
-X-MC-Unique: fSMIj9wgNV6FIA_shm3yYQ-1
-X-Mimecast-MFC-AGG-ID: fSMIj9wgNV6FIA_shm3yYQ_1746204127
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-7c54a6b0c70so211000985a.0
- for <qemu-devel@nongnu.org>; Fri, 02 May 2025 09:42:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uAtYe-0008TL-PL
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 12:48:16 -0400
+Received: from mail-yb1-xb2b.google.com ([2607:f8b0:4864:20::b2b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uAtYc-00083R-Tk
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 12:48:16 -0400
+Received: by mail-yb1-xb2b.google.com with SMTP id
+ 3f1490d57ef6-e756416045bso1169211276.2
+ for <qemu-devel@nongnu.org>; Fri, 02 May 2025 09:48:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1746204493; x=1746809293; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=iglvjjFZCtDTPF4Jg1I9knCUgQ1snHxkQwUXNZrdWwM=;
+ b=dq58hkSLy/yqbPTKX8L9JW7Nui4xYTsH9TWJI5Efz7WbCXHqXrBtnOUDlg34Bhp1eW
+ 4TE0aqWTm5PjCjBQISpPIXQS9OBQG+YJ2goMe0brCU9HXxpLkexdJ7fy2OvFvbDRbflP
+ tgp9ZNNBFapdMIh2dknxzjYCc2dW0wfcUf0fGs1isXSLLo/dHSTDEIuq7vKqRhaENsW/
+ y7kRlmecuXWY6M6rEq182H5gTlZg81GzhFL8XSUgSDT0I4dkYT5bXrbpS/bmwdqRa3wo
+ pLOe0AFx88VstRaTr1+5OXHHirtG364apVg7VbPmqJtoz2zBrv+zZOWqadrSMRcSLlXX
+ cItw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746204126; x=1746808926;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1746204493; x=1746809293;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yxAXCRgMFBUrR/bs744IU7o+At9NXW4bLRS1vlLvNyo=;
- b=ZJE2CZPfoyiXB00SxAZiPOCIUk2Kq37ML6Y4rsP5yp2mAaB0HGITBJaPPOgHM22o52
- q6z8oUWhhjegyzbgNahb7kJBoqt27cQoHUYnB6YxY/ejLs4bt2zhLGvv+vRkxpzTF8l1
- 7npacnIUYuAVkc6ERQZgpWshVwG0b6HznK1XErBszC5jbzkgunVwgJUDwYH1cByvXUVr
- Gd1+HRKM8i+KBA/qi3INwq8rlGMe0+pDzSfc/dnvhmVskExPbaB+BkSHZAzsaToUbQUh
- +4YBScGIjucW80pYk+SyWwNPzyTBcjEWsVYxgzaeS8NTXubuViCSCUoMn+WdSHUfCbLQ
- h9JQ==
-X-Gm-Message-State: AOJu0YzhVYTota7yI6MbBgriGHgxR5MLQqAWboTlqo8QTrxc8UPenHnl
- c4KD6z4zexatAjoZ9VwCdU+iCSE03aySejX+hULesl7yQaEHOd1OKXPrKh89Pl2mNrhR0cZ3a4n
- 37Lzih0VabFarmlope9WuHLt1oZgEFvHLU5KhS4KfKXh1bRd7oVtgwPaGRRWCoFdO1d53ns6Y5+
- 4e5beqJKHigT0Vzr8IF1vr8RgkbRnUf1mDXQ==
-X-Gm-Gg: ASbGncvHQBTSZUp+aYUMPnNwy1JvWarikuutateAj0BjRvpDz3HJJi1DO2Hx+e+YhpR
- Dd4nmcb5juTl0a5xIO09mnz7+xFromvhfxAdmJ8694zHDOcCLw1TLBsLXqeLgfJjE4eGZR4haR3
- izKwU37CsBaQF31ysSMK5u3kLJjeps6S1JC7FWSHf6DZCFoD0XKOjKHucRwoJ/YwxbcOhx0JFsK
- f4ChxsMpSjgi8T79JFi1RbKNlbliYrAS5bOQ5uNGzV2RHZRwzPJb+/A4VibH1b4VgCBPOsHMjlS
-X-Received: by 2002:a05:620a:2724:b0:7c7:a604:d432 with SMTP id
- af79cd13be357-7cad5b4cc54mr593144285a.30.1746204126459; 
- Fri, 02 May 2025 09:42:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE7wwibhixRfqal2VlS13xB8xJzXoVhjjDXGhxF4DGn/37sb3XmwW07w/mILlQSdjMFyt2Tqw==
-X-Received: by 2002:a05:620a:2724:b0:7c7:a604:d432 with SMTP id
- af79cd13be357-7cad5b4cc54mr593139285a.30.1746204126021; 
- Fri, 02 May 2025 09:42:06 -0700 (PDT)
-Received: from x1.com ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7cad23d1c8dsm203108385a.60.2025.05.02.09.42.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 May 2025 09:42:05 -0700 (PDT)
-From: Peter Xu <peterx@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>, Stefan Hajnoczi <stefanha@redhat.com>,
- peterx@redhat.com, Thomas Huth <thuth@redhat.com>
-Subject: [PULL 14/14] scripts/vmstate-static-checker.py: Allow new name for
- ghes_addr_le field
-Date: Fri,  2 May 2025 12:41:41 -0400
-Message-ID: <20250502164141.747202-15-peterx@redhat.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250502164141.747202-1-peterx@redhat.com>
-References: <20250502164141.747202-1-peterx@redhat.com>
+ bh=iglvjjFZCtDTPF4Jg1I9knCUgQ1snHxkQwUXNZrdWwM=;
+ b=pPxheonpW0oCre0MH7JmHChw85BcLL9KKam9Z2zxKP4Y3XAe1zb69SLw+66i1z1HUx
+ yt0my1KCA8L2ZjoSYbEj8+j36Mbq7U2g8AYjySov/clqqERj+62TsjLTAd5K7Ap2vUiq
+ rWowBEJvcrrMEUX7MA4sB6YSq4sPYFf54wkYe5RZx/VXt1/70506O9dNevZnuR/Xz0Z+
+ 0vnLuuhtDoxPTx7zkO67BjWBnDvBndOde/zGOkoyVStUB71/hF0z/PgoCrH9kutYF+hz
+ EyM6w8ew7VJshQY9Zclnly41xqHQ8GiGBB5WzmuNeOl6GEsQk+qmMtkqIvIWDGIzQWPc
+ a73w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCViC6atAD8+0agtQp9RZIcJU8Pp6lZY0keKmxSIl5N9tmMC5RcW/UDCZNIMDK7az0I4U/S5gxHuQD8b@nongnu.org
+X-Gm-Message-State: AOJu0YznznkT28Z+2JgOTfe/ba4y6Wha5W4sivi6QpSAR0lZ5i4jOrjf
+ pTiHPSv+fXhdqWn6UoxV3lB/ZHWiHZzRLAZnMhbAwX00LICZ1TFEbyChQp2RSb6kKwWxdagrEbM
+ riwh6TM+1zL4AD4RTry+fD1MuDvdV2QXs1KyuVA==
+X-Gm-Gg: ASbGncsGn81SXBcDiZyv7WOQOn7nYC86ktHC+DFnwVgR+OvmhSzrBVSl+/D9J0IsQ9X
+ 2FEEiVnW8RDcJlNeCCMeI50CLVFmqm9vUhcyolx7ipP5z6wMMVPFwnliPPdv+2y6vdHVoUglJx8
+ GupI/LuDZKTu6vIvnNVi1QIRVTTKE1s5kDMA==
+X-Google-Smtp-Source: AGHT+IG/CykXw4Z4KB8lba2JmLeszRv/c8xBv3P1os8lk/nrvqn8px5qc4rNv61oHRiWTQwM2tT9hnmGbYVqrSRqDmY=
+X-Received: by 2002:a05:6902:102d:b0:e74:f068:4df1 with SMTP id
+ 3f1490d57ef6-e756557bb23mr4678755276.22.1746204493399; Fri, 02 May 2025
+ 09:48:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+References: <20250330205857.1615-1-shentey@gmail.com>
+ <20250330205857.1615-3-shentey@gmail.com>
+ <Z-pdzUBa4CrBourR@redhat.com> <318E2A13-A163-434B-B18A-8A260CD3BC27@gmail.com>
+ <Z-07WTw4PHHKhfxU@redhat.com>
+In-Reply-To: <Z-07WTw4PHHKhfxU@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 2 May 2025 17:48:02 +0100
+X-Gm-Features: ATxdqUGP4hgFxPc-D-fAywPIfuF2mfKE4VajHVlMt_HICWPwsOAT2kZ0nB7tC3Q
+Message-ID: <CAFEAcA-_eaPF16f5rBhPar_kHpW49JZ4fQNPGUtd3qbNs+ktJA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] rust/hw/char/pl011/src/device: Implement logging
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org, 
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-rust@nongnu.org, 
+ Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.644,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,33 +98,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+On Wed, 2 Apr 2025 at 14:28, Daniel P. Berrang=C3=A9 <berrange@redhat.com> =
+wrote:
+> On Wed, Apr 02, 2025 at 09:33:16AM +0000, Bernhard Beschow wrote:
+> > Am 31. M=C3=A4rz 2025 09:18:05 UTC schrieb "Daniel P. Berrang=C3=A9" <b=
+errange@redhat.com>:
+> > >General conceptual question .....  I've never understood what the divi=
+ding
+> > >line is between use of 'qemu_log_mask' and trace points.
+> >
+> > I *think* it's the perspective: If you want to see any issues, regardle=
+ss
+> > of which device, use the -l option, i.e. qemu_log_mask(). If, however,
+> > you want to see what a particular device does, use tracepoints.
+>
+> I guess I'd say that the latter ought to be capable of satisfying the
+> former use case too, given a suitable trace point selection. If it
+> can't, then perhaps that's telling us the way we select trace points
+> is insufficiently expressive ?
 
-ghes_addr_le has been renamed to hw_error_le in commit 652f6d86cbb
-("acpi/ghes: better name the offset of the hardware error firmware").
-Adjust the checker script to allow that changed field name.
+Yeah; you can turn on and off a tracepoint, and you can select
+them by wildcard, but there's no categorization of them
+(into eg "this is basically the equivalent of a debug printf"
+vs "this is something that is a guest error you probably
+want to know about"). There's also no way to say "turn on
+this logging with one switch, and it will print multiple lines
+or more than one thing" (at least not in the spirit of what
+the tracepoint API expects; you could have a trace_in_asm
+tracepoint that took a "%s" and output whatever you liked as
+the string, of course). And debug-logging is more documented:
+'-d help' shows what you can turn on and off and has at least
+a brief description of what it is you're getting. For tracepoints
+you're hoping that the name is vaguely descriptive and also
+hoping that the device/subsystem/etc named its tracepoints in
+a way that lets you usefully wildcard them.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Link: https://lore.kernel.org/r/20250429152141.294380-3-thuth@redhat.com
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- scripts/vmstate-static-checker.py | 1 +
- 1 file changed, 1 insertion(+)
+Also, the qemu_log() logging assumes "we're sending text to
+a logfile, we can format e.g. register dumps and disassembly
+as arbitrary laid out plaintext". That's fine if your tracepoint
+backend is also "we just send the text to a logfile/etc", but
+I don't know if all of the tracepoint backends would be so happy
+with that.
 
-diff --git a/scripts/vmstate-static-checker.py b/scripts/vmstate-static-checker.py
-index 9c0e6b81f2..25aca839a0 100755
---- a/scripts/vmstate-static-checker.py
-+++ b/scripts/vmstate-static-checker.py
-@@ -42,6 +42,7 @@ def check_fields_match(name, s_field, d_field):
-     # Some fields changed names between qemu versions.  This list
-     # is used to allow such changes in each section / description.
-     changed_names = {
-+        'acpi-ghes': ['ghes_addr_le', 'hw_error_le'],
-         'apic': ['timer', 'timer_expiry'],
-         'e1000': ['dev', 'parent_obj'],
-         'ehci': ['dev', 'pcidev'],
--- 
-2.48.1
-
+thanks
+-- PMM
 
