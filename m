@@ -2,97 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3061AB39C7
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 15:56:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 402DBAB3C1B
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 17:31:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uETe2-0000aQ-0G; Mon, 12 May 2025 09:56:38 -0400
+	id 1uEV7Y-0001Ka-Lm; Mon, 12 May 2025 11:31:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uETe0-0000a8-GK
- for qemu-devel@nongnu.org; Mon, 12 May 2025 09:56:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <sunnyzhyy@qq.com>)
+ id 1uEV70-0001AC-IP; Mon, 12 May 2025 11:30:39 -0400
+Received: from out162-62-57-49.mail.qq.com ([162.62.57.49])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uETdy-0003S2-GJ
- for qemu-devel@nongnu.org; Mon, 12 May 2025 09:56:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747058193;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=m2S8qbU+2NGgmIfRGiXccyMZ/bzzJTT6VcJFwaAJMvQ=;
- b=MmXEpnA+A6f7WWFqY+MReHZLJvfMrzXhe/cRadK+KZG9yGFNDdKTSY7Gc2gPY9Gupa+uP5
- lqcZL4JeTd4Ma4JFAGdVQM7iO3os9teDuCHM2EqCI9GIG3mCscjj3APk+Pg5fDG87ENX8l
- 7m5W2f308RCTaqU8XqImiysSMlWHurY=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-230-8oxFY7YYMOSZMBHHdPN8tw-1; Mon, 12 May 2025 09:56:32 -0400
-X-MC-Unique: 8oxFY7YYMOSZMBHHdPN8tw-1
-X-Mimecast-MFC-AGG-ID: 8oxFY7YYMOSZMBHHdPN8tw_1747058190
-Received: by mail-pg1-f198.google.com with SMTP id
- 41be03b00d2f7-b115fb801bcso4902438a12.3
- for <qemu-devel@nongnu.org>; Mon, 12 May 2025 06:56:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747058189; x=1747662989;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=m2S8qbU+2NGgmIfRGiXccyMZ/bzzJTT6VcJFwaAJMvQ=;
- b=UJ88qXshg4uirSJ6ucJfADOBIgdnEgilEAwtBU/MTd1s8XWmEIOCP3nvziTVsZWst3
- pet6hCBaoLUrmYMm8nalPtMu3WwE0/FRNYjKaw5CThOHXwJUL694QOSSRJwHHQ22HKso
- //x1TZXAHZHP6tlrgRj6p2Y+OpqEF1VkljQUHgekvMCEqfKFrlT0O1/i4ZMwqW0cuFtT
- L/LFWK+IYzF0DFQpuEtqMDnFyahb64DUO+nI2OyTwh0IUugVs82EZ8k8irlOcYZ3RFrO
- IBYRL/CHymNHzJFC+vvwIExtHosVHaYJPeWR6n19FOnKX5RFmaSpT0aGQ8GMD2a6MrZd
- zmYw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUjI73vRbv90uIX2O1/bujaTGeBynK8dqcH+o93se2sBkKGN7p1KKymcAeRwOvjQCXyiaIN2SjoeE3J@nongnu.org
-X-Gm-Message-State: AOJu0Yw9sjueuSAX24Mr02Szv6JoB4euh9y6wVlIA408GT7AWrM+N122
- dVs+Zy0JjEv9G5ZPEX/zRUrXFcH0R3bbYxQo25FwlB8QroLJyLU2ozB9f1JxGQEtASbbVwLr4K/
- TKzREfzC1PCPK03k4SnftcVsYfLhHe62+71y+SBJNbFV/MaTurSt9fk7Hm7k5
-X-Gm-Gg: ASbGncuYEVxcpIzulD3mhjfewKlRIWdTYmKW8q9ycMHxS7pmBmuTBFl704jzpFE7uXM
- cmnbbdYS4uryXyGKJaTWp8MKTShq7ifZfB+jdHUI+jDAYu0ouGBYwSYgZZG5NU1GcwOKCNaoP5+
- IKV1s+n7anDpNAeOuSga8/ydiCAZftGd4lhAVLq2/CXydobW5M2+Zt3NiWmA88bBS8nFbOKdeth
- m11n8w7cE3qIenAcovQncOarwFUe7RctGGPQyfs+FMTQQtTmlDPhVX3ApnEb5IZhXZV8XalV6jl
- Dr0=
-X-Received: by 2002:a17:902:f708:b0:22e:8456:b77d with SMTP id
- d9443c01a7336-22fc918c130mr220570485ad.44.1747058188616; 
- Mon, 12 May 2025 06:56:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGjYtzTrNzE2fXXce4XzwmaQP+ZJ+CrLyEFa3djqA0JfPSXD7GNhHT9ziQGku1hwfVydeHRbA==
-X-Received: by 2002:a05:620a:3715:b0:7c5:4001:3e9f with SMTP id
- af79cd13be357-7cd011189dcmr2379878185a.29.1747058177310; 
- Mon, 12 May 2025 06:56:17 -0700 (PDT)
-Received: from x1.local ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7cd00fe61edsm548440885a.106.2025.05.12.06.56.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 May 2025 06:56:16 -0700 (PDT)
-Date: Mon, 12 May 2025 09:56:13 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Li Zhijian <lizhijian@fujitsu.com>
-Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Jack Wang <jinpu.wang@ionos.com>,
- "Michael R . Galaxy" <mrgalaxy@nvidia.com>, Yu Zhang <yu.zhang@ionos.com>
-Subject: Re: [PATCH v3] qtest/migration/rdma: Add test for rdma migration
- with ipv6
-Message-ID: <aCH9_RDIgLzEbeG6@x1.local>
-References: <20250512060135.2068282-1-lizhijian@fujitsu.com>
+ (Exim 4.90_1) (envelope-from <sunnyzhyy@qq.com>)
+ id 1uEV6v-0006Pn-VX; Mon, 12 May 2025 11:30:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+ t=1747063816; bh=VR6yBohnBOWmff6WZS83sMGnbNiRHrwEFLHpUzJJkfA=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References;
+ b=UIIYCCuTx/GEK/3mh0vXMy0t8hHnoskjTkhxT0NZjNKd78ykxEpXValM+IN0XXSF3
+ eXhEoQUoq7A121JMf4PptAtY3q8PLLRHPSZ+BtGx33b2jeabPmoiIALNPdg3/odkto
+ jHLPQkUworOZPjiCQbpE/vFOqe3tWgoBXHeGKTnU=
+Received: from localhost.localdomain ([117.147.34.74])
+ by newxmesmtplogicsvrszgpuc5-0.qq.com (NewEsmtp) with SMTP
+ id 601A7CD3; Mon, 12 May 2025 23:24:01 +0800
+X-QQ-mid: xmsmtpt1747063441tweh6s15k
+Message-ID: <tencent_07B217E7CB4D92340CF42772A024FA838207@qq.com>
+X-QQ-XMAILINFO: NC4p7XQIBeah2krL13RxWWRRoaddUjXMHcb7pXyGtGun3dT9T+QaTsmhorWfDV
+ WFir2fwPJ4DLENr+p/o69TmhMdIIsanLQmw3bFYlOQOX8Cpto1S5edJXeRk5lwU18uT9MYjyrnGx
+ 6KcFK2eP0jZK9FWOohoKv9Zd6zUPUXCLBcOzARWs2MeSyCI3biqkgC/031+ppV66LLsBZBzsZuWZ
+ 4kwSpB3PIX7LPKiOV5yumZIeruwQ981IZuVlvZr8P+Qk4YWUXCNJSBvDH8g1GIXyansStBMUwL6e
+ MM7dWKk3UnSLSLOpTrJld8VrdVnYY54xNOtIuD76tf4B1RbURwuSbUX/Gmr0BdpzbKjUne/FLfgT
+ YdfZqWLAPZd5lCNkLwreq++Syeoo1JM0uazep+QQoZjfWwHgKNjFXay4SbpaHZUtnvnCiBNbJHss
+ 0JVGaMh+o642UpYVWixesoLpge/vspWwiEQ2WZEPXP/061ukLkVZIQ6xO27v3I7myoubtpvlYCY7
+ vFEvQjMiA8+eOPNeb5LjhmsfIyVLmK0ofZY88CcxZEF4uyWcGbdakOzmz5TI63kbp/eSBbfnYYxu
+ jTt6CsDvupkjiMSNXqiOrw1N+PyaEjPK+VP2YohU4S0k0UGXYsRvjmf83PwrUVDO0UtDTrCdZK+A
+ Jl/NOjN8n9yBmVC9G6A9JxqUn9oFCIbBK/Gl5bbOa14iTK6qs/7DJ8H49zH9m7mIK9xQj9/xL57K
+ SB1rNkxbRQ2N66MhTaOjIIKSYsLGaQ22PZ9HEKzPzMgAlQFNo4qsgmkgWtYDhMuK82ZYweV66xvb
+ YzQqukHbOBKRD1rVPypUaaIR/9BDRWDTcARIiIQXNhgyX29vWOa5rLCx4o2zzvj2pxDCS+46Xk6g
+ hsUlgkDwJgSyoxOweuDUrgnQr3a1wgR7mtyAk9B26bSb1Rz5D/9qhblN7TWfZ3DVkyM05kt92Y4t
+ 7YV7dXqEmRSS0e3N5UFdgGkBvYJGEw4+GKIQvGxpE=
+X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
+From: Sunny Zhu <sunnyzhyy@qq.com>
+To: eblake@redhat.com
+Cc: hreitz@redhat.com, jsnow@redhat.com, kwolf@redhat.com,
+ qemu-block@nongnu.org, qemu-devel@nongnu.org, stefanha@redhat.com,
+ sunnyzhyy@qq.com, vsementsov@yandex-team.ru
+Subject: Re: [PATCH v4 07/13] mirror: Pass full sync mode rather than bool to
+ internals
+Date: Sat,  3 May 2025 07:17:17 +0800
+X-OQ-MSGID: <20250502231717.44042-1-sunnyzhyy@qq.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250509204341.3553601-22-eblake@redhat.com>
+References: <20250509204341.3553601-22-eblake@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250512060135.2068282-1-lizhijian@fujitsu.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.551,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=162.62.57.49; envelope-from=sunnyzhyy@qq.com;
+ helo=out162-62-57-49.mail.qq.com
+X-Spam_score_int: 67
+X-Spam_score: 6.7
+X-Spam_bar: ++++++
+X-Spam_report: (6.7 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ FREEMAIL_FROM=0.001, HELO_DYNAMIC_IPADDR=1.951, RCVD_IN_DNSWL_NONE=-0.0001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
-X-Spam_action: no action
+ RDNS_DYNAMIC=0.982, SORTED_RECIPS=2.499, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_action: reject
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,79 +82,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 12, 2025 at 02:01:35PM +0800, Li Zhijian wrote:
-> Recently, we removed ipv6 restriction[0] from RDMA migration, add a
-> test for it.
+On Fri, 9 May 2025 15:40:24 -0500, Eric Blake wrote:
+> Out of the five possible values for MirrorSyncMode, INCREMENTAL and
+> BITMAP are already rejected up front in mirror_start, leaving NONE,
+> TOP, and FULL as the remaining values that the code was collapsing
+> into a single bool is_none_mode.  Furthermore, mirror_dirty_init() is
+> only reachable for modes TOP and FULL, as further guided by
+> s->zero_target.  However, upcoming patches want to further optimize
+> the pre-zeroing pass of a sync=full mirror in mirror_dirty_init(),
+> while avoiding that pass on a sync=top action.  Instead of throwing
+> away context by collapsing these two values into
+> s->is_none_mode=false, it is better to pass s->sync_mode throughout
+> the entire operation.  For active commit, the desired semantics match
+> sync mode TOP.
 > 
-> [0] https://lore.kernel.org/qemu-devel/20250326095224.9918-1-jinpu.wang@ionos.com/
+> Signed-off-by: Eric Blake <eblake@redhat.com>
 > 
-> Cc: Jack Wang <jinpu.wang@ionos.com>
-> Cc: Michael R. Galaxy <mrgalaxy@nvidia.com>
-> Cc: Peter Xu <peterx@redhat.com>
-> Cc: Yu Zhang <yu.zhang@ionos.com>
-> Reviewed-by: Jack Wang <jinpu.wang@ionos.com>
-> Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
 > ---
-> V3:
->   - skip unsupported rxe interfaces: lo, tun, tap
->   - setup/reuse both ipv4 and ipv4 in one setup shot
+> 
+> v4: new patch
+> ---
+>  block/mirror.c | 24 ++++++++++++------------
+>  1 file changed, 12 insertions(+), 12 deletions(-)
 
-It still fails the ipv6 test here...
-
-# Running /x86_64/migration/precopy/rdma/plain/ipv6
-# Using machine type: pc-q35-10.1
-# starting QEMU: exec ./qemu-system-x86_64 -qtest unix:/tmp/qtest-334248.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-334248.qmp,id=char0 -mon char
-dev=char0,mode=control -display none -audio none -accel kvm -accel tcg -machine pc-q35-10.1, -name source,debug-threads=on -m 150M  -serial file:/tmp/migration-
-test-2TUX62/src_serial -drive if=none,id=d0,file=/tmp/migration-test-2TUX62/bootsect,format=raw -device ide-hd,drive=d0,secs=1,cyls=1,heads=1    -accel qtest
-# starting QEMU: exec ./qemu-system-x86_64 -qtest unix:/tmp/qtest-334248.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-334248.qmp,id=char0 -mon char
-dev=char0,mode=control -display none -audio none -accel kvm -accel tcg -machine pc-q35-10.1, -name target,debug-threads=on -m 150M  -serial file:/tmp/migration-
-test-2TUX62/dest_serial -incoming rdma:[fdd3:4fdc:97c9:ca4e:2837:28dd:1ec4:6b5a%wlp0s20f3]:29200  -drive if=none,id=d0,file=/tmp/migration-test-2TUX62/bootsect,
-format=raw -device ide-hd,drive=d0,secs=1,cyls=1,heads=1    -accel qtest
-qemu-system-x86_64: -incoming rdma:[fdd3:4fdc:97c9:ca4e:2837:28dd:1ec4:6b5a%wlp0s20f3]:29200: RDMA ERROR: could not rdma_getaddrinfo address fdd3:4fdc:97c9:ca4e
-:2837:28dd:1ec4:6b5a%wlp0s20f3
-Broken pipe
-../tests/qtest/libqtest.c:199: kill_qemu() tried to terminate QEMU process but encountered exit status 1 (expected 0)
-Aborted
-
-Would below look right to you as a fix (I also adjusted a bool input):
-
-diff --git a/tests/qtest/migration/precopy-tests.c b/tests/qtest/migration/precopy-tests.c
-index 1a67a9e2e4..a62d3c5378 100644
---- a/tests/qtest/migration/precopy-tests.c
-+++ b/tests/qtest/migration/precopy-tests.c
-@@ -197,12 +197,12 @@ static void __test_precopy_rdma_plain(bool ipv6)
- 
- static void test_precopy_rdma_plain(void)
- {
--    __test_precopy_rdma_plain(0);
-+    __test_precopy_rdma_plain(false);
- }
- 
- static void test_precopy_rdma_plain_ipv6(void)
- {
--    __test_precopy_rdma_plain(1);
-+    __test_precopy_rdma_plain(true);
- }
- #endif
- 
-diff --git a/scripts/rdma-migration-helper.sh b/scripts/rdma-migration-helper.sh
-index 404ce63a90..6ef61b9917 100755
---- a/scripts/rdma-migration-helper.sh
-+++ b/scripts/rdma-migration-helper.sh
-@@ -14,7 +14,7 @@ get_ipv6_addr() {
-         head -1 | tr -d '\n')
- 
-     [ $? -eq 0 ] || return
--    echo -n "[$ipv6%$1]"
-+    echo -n "[$ipv6]"
- }
- 
-With that the test runs.  If it looks good to you I can queue it with that
-squashed.
-
-Thanks,
-
--- 
-Peter Xu
+Reviewed-by: Sunny Zhu <sunnyzhyy@qq.com>
 
 
