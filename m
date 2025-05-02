@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C95AAA68BF
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 04:21:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7414AA68B3
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 04:18:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAfxD-0003wW-Tt; Thu, 01 May 2025 22:16:43 -0400
+	id 1uAfxF-0003yY-Rb; Thu, 01 May 2025 22:16:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1uAfx0-0003sj-5Q
- for qemu-devel@nongnu.org; Thu, 01 May 2025 22:16:30 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ id 1uAfx5-0003ut-EH
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 22:16:35 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1uAfwx-0007RA-Ui
- for qemu-devel@nongnu.org; Thu, 01 May 2025 22:16:29 -0400
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 541KejPE021965;
- Fri, 2 May 2025 02:16:17 GMT
+ id 1uAfx3-0007Rx-3t
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 22:16:35 -0400
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 541KeZl0024646;
+ Fri, 2 May 2025 02:16:25 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2025-04-25; bh=LUm2V
- q/WeHAJjlf5AOVnPlTL4VAxfriyUwKsntIOVVE=; b=rOnknRziHFZXfLuMGILOE
- wU8qIB9Y/KCyyF66mbn/uTGpXJ7NuNiG2wjYFwNZaZwenI/2PiELGLfeQ8DNkR7N
- ARFJbJ7h0pv8444OyLaaKx1TlL0Af8N9C89iKXAGV/S2pUcsaY9nYUGtwzZ1wZ76
- OuUxJ0OU7jfmoSZnqtlRQ2Assj+fc+NQ1MpF8LG5T1VW3zt93FJpSkgeLs6350fr
- ZKpdG6rdRjmhRqbtgrF+H/9e0cKd313a/UoNum6OcTrxqn4IkzdXOyBq5Iv68UB7
- P+r0KmUpuuyERFln3gQV1JVfAQlfS8k1UgwNaMb6x0iYAKpOV75sFtH0qqLZzu2e
- g==
+ :mime-version:references:subject:to; s=corp-2025-04-25; bh=+Lo/8
+ RyqisL+Dcb2sF9z2XBonrejbmXG335l73s1918=; b=Pk9jMzLlhaAygYPSQgcSV
+ rkWCnXCy7+gV/o/U5rd+B1kuPVvqzaEUVt2WTICwM3K61A/iRSWsJm6fdH89foac
+ jziW9OLaRflLzpXrktteKUI+GTK3foQ+TySFwRWkElhDHs/9h7wqeyEEVWwl9g+l
+ RntojcjxzRaij3V6dN0kgQIe7Hk7A26R1CBtAsknlVfQJZQ3TtT2cBjrID2M1KGP
+ XkmKG1y81s/GYimOrKwJmaOMSaCeEnvd6ZhrmMrbcyzpuiiaUUxKgGv80mR7Oo03
+ HZV9jFBm0rd/j5ctX3z+kUcbYT7xcfBlfp8wNq90alP1Rt1aFDwIZOsVSCI9V0Pd
+ Q==
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46b6uqmdvj-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46b6ukvh2f-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 02 May 2025 02:16:17 +0000 (GMT)
+ Fri, 02 May 2025 02:16:25 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 541NiQwq023819; Fri, 2 May 2025 02:16:15 GMT
+ with ESMTP id 541NuN4U023769; Fri, 2 May 2025 02:16:16 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 468nxkh029-1
+ 468nxkh02h-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 02 May 2025 02:16:15 +0000
+ Fri, 02 May 2025 02:16:16 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5422FEsE011525;
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5422FEsG011525;
  Fri, 2 May 2025 02:16:15 GMT
 Received: from alaljimee5bm-ol9-20250405.osdevelopmeniad.oraclevcn.com
  (alaljimee5bm-ol9-20250405.allregionaliads.osdevelopmeniad.oraclevcn.com
  [100.100.254.235])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 468nxkgyvr-13; Fri, 02 May 2025 02:16:15 +0000
+ 468nxkgyvr-14; Fri, 02 May 2025 02:16:15 +0000
 From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
@@ -64,10 +64,9 @@ Cc: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
  clement.mathieu--drif@eviden.com, ethan.milon@eviden.com,
  joao.m.martins@oracle.com, boris.ostrovsky@oracle.com,
  alejandro.j.jimenez@oracle.com
-Subject: [PATCH v2 12/20] amd_iommu: Unmap all address spaces under the AMD
- IOMMU on reset
-Date: Fri,  2 May 2025 02:15:57 +0000
-Message-ID: <20250502021605.1795985-13-alejandro.j.jimenez@oracle.com>
+Subject: [PATCH v2 13/20] amd_iommu: Add replay callback
+Date: Fri,  2 May 2025 02:15:58 +0000
+Message-ID: <20250502021605.1795985-14-alejandro.j.jimenez@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250502021605.1795985-1-alejandro.j.jimenez@oracle.com>
 References: <20250502021605.1795985-1-alejandro.j.jimenez@oracle.com>
@@ -81,21 +80,21 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  suspectscore=0 spamscore=0 adultscore=0 mlxscore=0 malwarescore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2504070000 definitions=main-2505020015
-X-Proofpoint-ORIG-GUID: 1ZNi22iJxpsT2G_GwvHp_ohu9Trh0XVe
-X-Authority-Analysis: v=2.4 cv=Vq8jA/2n c=1 sm=1 tr=0 ts=68142af1 b=1 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAyMDAxNiBTYWx0ZWRfX7NOY773uX7zB
+ 6L6YS5n311i42inJ8cMtsNTDry4K4l2DL2iwgMzCfqL7z96QIfAk2U66MyIiGP+RG1OVaH2q02t
+ 1FLfJwjiNI2RFN/scC1S+0SQIkEGjrbmAtW8RDpo0nDuJqKxKHimvma257vs6S3a403JfhZhONt
+ /SPJNoNxPOYV3YmpEpwrvm1Rk3vF2IL4QygVznZRTcFgxQiFa0lkh3Y8ZMSaihiX6bMssgcaNlz
+ 5CjBUVxAO/89lx1+NAPyMY+Al0icX/OrRwxuQS3TfMCAppBE7mT1ZKmxAV/OdP+qCclE6iWmqsd
+ mHbhNBWHbgWw0yPiItdGyysP5IQ1tRK9M4e5Wrgq6iPp/s27XfvwKgqA3MmYlZIVaY26DnUcUpP
+ 82jExQZcc3hJQNi7aCYCWZMNP6LI8JnkXJ8RPvlLssoTAEcbKsxMXEUHmk28mFjJ7YgC1oU8
+X-Proofpoint-GUID: Ae1xsQGW63AkSm6jUKnw42cNOOzTACBB
+X-Authority-Analysis: v=2.4 cv=A5VsP7WG c=1 sm=1 tr=0 ts=68142af9 b=1 cx=c_pps
  a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=SEEq26f7jwHSYcXadsMA:9 cc=ntf
+ a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=TyYeUvuNVc17vi0sGpoA:9 cc=ntf
  awl=host:13130
-X-Proofpoint-GUID: 1ZNi22iJxpsT2G_GwvHp_ohu9Trh0XVe
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAyMDAxNSBTYWx0ZWRfXwI0JmyiHKGYp
- xcLJGVAZHY1bOxR03lQ6IvIxRU5Zm3zlW/S0Rn5HiuZ+eRA1Too2F+2vTaucdTVp1tPg2w/CJch
- 4t6BO/6zYfbqAGQ97g9V4ooNc0cb+6DSwRTHWx3+sCwH/b1Lr+/yaxNkI27uYqLeulrhS5YTMtR
- pcdbP/3WBj8eKAIWKV7k62SatIXGiCHXwGI4qDqSt6cuh8ie2ydBt2t6T7L8eG06NUdLP5OW9ze
- nCt3Dt6QqqN6MDLmeRv7AtsDAaY9xEle+Zpa0nOX6cY4PSQyJ8rEusbUoFKiykcTnsfSakslHQH
- baxOmSzhxdma16Ajyt2bzXeYbntCoHLXBVhZpqhXgGpP8byjTfiqYWP4t7mRDiB47G95NZxxmmS
- CmmUPCmTNETMWBuNTXN7ej1Y4o4te4hfEquAK2XDqTcJgSImRqX4MIdtC+EGrhLKFV5hr//3
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=alejandro.j.jimenez@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Proofpoint-ORIG-GUID: Ae1xsQGW63AkSm6jUKnw42cNOOzTACBB
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=alejandro.j.jimenez@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -119,108 +118,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Support dropping all existing mappings on reset. When the guest kernel
-reboots it will create new ones, but other components that run before
-the kernel (e.g. OVMF) should not be able to use existing mappings from
-the previous boot.
+A replay() method is necessary to efficiently synchronize the host page
+tables after VFIO registers a notifier for IOMMU events. It is called to
+ensure that existing mappings from an IOMMU memory region are "replayed" to
+a specified notifier, initializing or updating the shadow page tables on the
+host.
 
 Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 ---
- hw/i386/amd_iommu.c | 74 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 74 insertions(+)
+ hw/i386/amd_iommu.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
 diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 4f44ef159ff9..7bcba47a01ba 100644
+index 7bcba47a01ba..5ce74f2c052d 100644
 --- a/hw/i386/amd_iommu.c
 +++ b/hw/i386/amd_iommu.c
-@@ -808,6 +808,77 @@ next:
+@@ -879,6 +879,29 @@ static void amdvi_address_space_unmap_all(AMDVIState *s)
      }
  }
  
 +/*
-+ * Unmap entire range that the notifier registered for i.e. the full AS.
-+ *
-+ * This is seemingly technically equivalent to directly calling
-+ * memory_region_unmap_iommu_notifier_range(), but it allows to check for
-+ * notifier boundaries and issue notifications with ranges within those bounds.
++ * For every translation present in the IOMMU, construct IOMMUTLBEntry data
++ * and pass it as parameter to notifier callback.
 + */
-+static void amdvi_address_space_unmap(AMDVIAddressSpace *as, IOMMUNotifier *n)
++static void amdvi_iommu_replay(IOMMUMemoryRegion *iommu_mr, IOMMUNotifier *n)
 +{
++    AMDVIAddressSpace *as = container_of(iommu_mr, AMDVIAddressSpace, iommu);
++    uint64_t dte[4] = { 0 };
 +
-+    hwaddr start = n->start;
-+    hwaddr end = n->end;
-+    hwaddr remain;
-+    DMAMap map;
-+
-+    assert(start <= end);
-+    remain = end - start + 1;
-+
-+    /*
-+     * Divide the notifier range into chunks that are aligned and do not exceed
-+     * the notifier boundaries.
-+     */
-+    while (remain >= AMDVI_PAGE_SIZE) {
-+
-+        IOMMUTLBEvent event;
-+
-+        uint64_t mask = dma_aligned_pow2_mask(start, end, 64);
-+
-+        event.type = IOMMU_NOTIFIER_UNMAP;
-+
-+        IOMMUTLBEntry entry = {
-+            .target_as = &address_space_memory,
-+            .iova = start,
-+            .translated_addr = 0,   /* irrelevant for unmap case */
-+            .addr_mask = mask,
-+            .perm = IOMMU_NONE,
-+        };
-+        event.entry = entry;
-+
-+        /* Call notifier registered for updates on this address space */
-+        memory_region_notify_iommu_one(n, &event);
-+
-+        start += mask + 1;
-+        remain -= mask + 1;
++    if (!(n->notifier_flags & IOMMU_NOTIFIER_MAP)) {
++        return;
 +    }
 +
-+    assert(!remain);
-+
-+    map.iova = n->start;
-+    map.size = n->end - n->start;
-+
-+    iova_tree_remove(as->iova_tree, map);
-+}
-+
-+/*
-+ * For all the address spaces with notifiers registered, unmap the entire range
-+ * the notifier registered for i.e. clear all the address spaces managed by the
-+ * IOMMU.
-+ */
-+static void amdvi_address_space_unmap_all(AMDVIState *s)
-+{
-+    AMDVIAddressSpace *as;
-+    IOMMUNotifier *n;
-+
-+    QLIST_FOREACH(as, &s->amdvi_as_with_notifiers, next) {
-+        IOMMU_NOTIFIER_FOREACH(n, &as->iommu) {
-+            amdvi_address_space_unmap(as, n);
-+        }
++    if (amdvi_as_to_dte(as, dte)) {
++        return;
 +    }
++
++    /* Dropping all mappings for the address space. Also clears the IOVA tree */
++    amdvi_address_space_unmap(as, n);
++
++    amdvi_sync_shadow_page_table_range(as, &dte[0], 0, UINT64_MAX, false);
 +}
 +
  /* log error without aborting since linux seems to be using reserved bits */
  static void amdvi_inval_devtab_entry(AMDVIState *s, uint64_t *cmd)
  {
-@@ -2043,6 +2114,9 @@ static void amdvi_sysbus_reset(DeviceState *dev)
+@@ -2240,6 +2263,7 @@ static void amdvi_iommu_memory_region_class_init(ObjectClass *klass,
  
-     msi_reset(&s->pci.dev);
-     amdvi_init(s);
-+
-+    /* Discard all mappings on device reset */
-+    amdvi_address_space_unmap_all(s);
+     imrc->translate = amdvi_translate;
+     imrc->notify_flag_changed = amdvi_iommu_notify_flag_changed;
++    imrc->replay = amdvi_iommu_replay;
  }
  
- static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
+ static const TypeInfo amdvi_iommu_memory_region_info = {
 -- 
 2.43.5
 
