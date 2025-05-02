@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB7B3AA68AD
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 04:18:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81348AA68AA
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 04:17:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAfx6-0003uo-Fm; Thu, 01 May 2025 22:16:36 -0400
+	id 1uAfx1-0003sU-69; Thu, 01 May 2025 22:16:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1uAfwx-0003ry-Du
- for qemu-devel@nongnu.org; Thu, 01 May 2025 22:16:28 -0400
+ id 1uAfww-0003rh-Bj
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 22:16:26 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1uAfwv-0007QR-FZ
- for qemu-devel@nongnu.org; Thu, 01 May 2025 22:16:27 -0400
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 541KeMYo024913;
- Fri, 2 May 2025 02:16:15 GMT
+ id 1uAfwu-0007Q1-BK
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 22:16:26 -0400
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 541KeRSm022623;
+ Fri, 2 May 2025 02:16:16 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2025-04-25; bh=lkm/p
- AkVVKxVt7VYltQtcSibScquilHa4q4bpYTiKfE=; b=pGyEmUSz9tZVLONVN6E7e
- tF/RqvS8prGHIHTkWRB1U+6zhviNU+iV35jnItfKPxtBV68QtkolvS51sLWsY0bI
- 25JVHcgRtu2GmUT00JIsZMSpxTu6ppHRbBIuufEIIp3Lzunwshi9kK9RiRzrmNo6
- s6VZjTrPJ9m2MIwEPNCsVj7KuTngoeLOMUHK/Gz4UT68lB+FElHFMdCaEEJ9Uc7P
- s66oWde5WWQwwfXvJXVtkq/bclbCats05BjLXXjqLXnq/HGNxNRBDyOD4TKAuGZK
- w2spAyYrPnSOmtP4eV16WMBXM/WPyUxiK3UFN2ATxOomX4C25ht/sEaIMSftx4Sa
- g==
+ :mime-version:references:subject:to; s=corp-2025-04-25; bh=fb/h1
+ 6Ty+CUuGFy+swhun6Znuo6+EtUD/rHMmFydH2Y=; b=f+9IR5gexCKvScuzZm9n1
+ dUNusnJru3W24MzfCGH7ykH01bBrhzZS1FGgKeuFCP3SGm1XAm/V1CAeMTK4sM5w
+ asd/AjSN2l1+snaN4F+1g5l3S2qE5MMz78G6jmh2rOH0RZPcALK3ACKKKVsvIIfb
+ lONqc495HhjTw+aN2KamhskHN2Ryf7455rsEHsIknc8i9oZGuFZ9JlcN4mI9Yofd
+ xXINSOfMAVXU467pTv/kTngzNJhUzbY+6WzUA2u+EJkfh6gzOREki4XrTiBwwzae
+ 3rlM3Ps3Q9hSVxOULvT/75xJZvxU8MZfMhKpI3npbsMxJa+JCGGdysbhtKo9eIgd
+ Q==
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46b6usmcp4-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46b6uumdb3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 02 May 2025 02:16:15 +0000 (GMT)
+ Fri, 02 May 2025 02:16:16 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 541NiQwp023819; Fri, 2 May 2025 02:16:13 GMT
+ with ESMTP id 541Nd1kc023774; Fri, 2 May 2025 02:16:14 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 468nxkh010-1
+ 468nxkh01a-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 02 May 2025 02:16:13 +0000
+ Fri, 02 May 2025 02:16:14 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5422FEs8011525;
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5422FEsA011525;
  Fri, 2 May 2025 02:16:13 GMT
 Received: from alaljimee5bm-ol9-20250405.osdevelopmeniad.oraclevcn.com
  (alaljimee5bm-ol9-20250405.allregionaliads.osdevelopmeniad.oraclevcn.com
  [100.100.254.235])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 468nxkgyvr-10; Fri, 02 May 2025 02:16:13 +0000
+ 468nxkgyvr-11; Fri, 02 May 2025 02:16:13 +0000
 From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
@@ -64,10 +64,10 @@ Cc: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
  clement.mathieu--drif@eviden.com, ethan.milon@eviden.com,
  joao.m.martins@oracle.com, boris.ostrovsky@oracle.com,
  alejandro.j.jimenez@oracle.com
-Subject: [PATCH v2 09/20] amd_iommu: Add basic structure to support IOMMU
- notifier updates
-Date: Fri,  2 May 2025 02:15:54 +0000
-Message-ID: <20250502021605.1795985-10-alejandro.j.jimenez@oracle.com>
+Subject: [PATCH v2 10/20] amd_iommu: Sync shadow page tables on page
+ invalidation
+Date: Fri,  2 May 2025 02:15:55 +0000
+Message-ID: <20250502021605.1795985-11-alejandro.j.jimenez@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250502021605.1795985-1-alejandro.j.jimenez@oracle.com>
 References: <20250502021605.1795985-1-alejandro.j.jimenez@oracle.com>
@@ -81,19 +81,19 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  suspectscore=0 spamscore=0 adultscore=0 mlxscore=0 malwarescore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2504070000 definitions=main-2505020015
-X-Proofpoint-ORIG-GUID: Ws6OJXfLcCgLEGUNHUAoIg-rmLLXCRc0
-X-Proofpoint-GUID: Ws6OJXfLcCgLEGUNHUAoIg-rmLLXCRc0
-X-Authority-Analysis: v=2.4 cv=Hd0UTjE8 c=1 sm=1 tr=0 ts=68142aef b=1 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAyMDAxNSBTYWx0ZWRfX+mcbuvatsp2e
+ LXEdbq5qQbW6es/mrYvrOVWU+9GpUnhVP+moo7/QIdCNe/DPQBj5mT/sj6HZNruUCtmLQ4tOetr
+ lev7emsSK3Sr45GG551swnE0VLK3zXoHN2rCaJkZal6Ohs6IJcUtGrs3UW6h/EWPz5cQYgE7Meb
+ QwpeUqIr3Vn8BmEniOcjBCtPcvBT862tFNvhfoz5exTiv6fYzgtOuIAyqbTyAYI5uAZo4j02wAT
+ x2S+CNvHvf7DNSGl/VSXtx4iDdWnu4b4kWr4VUidAXUbHCMmJ9nDExYb+zaExsjOcFqIBnIQP+b
+ 91xOIkOPvfuK+hJTubg2hgdA/FezfuTjSuDOAGTxcd1pvE2QRdUIxGM7idPgv8d4UubDVVXEjIA
+ ss8gmT1xKQiasUmrulC5+H2CxWR3zdF41zFGMky+oR3G6uBVyShHt+puOqiF9f1+fq1HwMiL
+X-Authority-Analysis: v=2.4 cv=Ve/3PEp9 c=1 sm=1 tr=0 ts=68142af0 b=1 cx=c_pps
  a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=DMbGAvdIka4_Ax_3_vgA:9 cc=ntf
+ a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=yYEnZJB5WiW7dih4ZO4A:9 cc=ntf
  awl=host:13130
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAyMDAxNSBTYWx0ZWRfXwwBsIpvjZnvn
- tpuyjEAWOIybaj0sq5goB/QSQnJzRNwiLTvNFw28TVM9y4sUqciJKGNG4PUxJAfkafB7O4AWSn+
- qVJBNx9MThqoFsLMb2OxwmoyF7Rxl1M0ea3KpjI4i7wN0ruvmBrHtHUWJSxbJZgg38gEqO1H9MB
- +R/gadyY9mE5aVWBoiAtLzGbb2pe4lXEMqtJcxIzofRZe9ZTfA/irKNacC1TsN9JZaI7yfdhJNZ
- EZ2Seeb76ecZ1jtKcbGob7U6qbI1kAksyiVvD0SRypWtYpHlxq/1M7Q0g1LIPopw7zooXOMODZb
- W5dqZFo6380ekZ1ZmdXCKgXff4pf/FyrZgUvP3klDltG6KDSnyG3npUanSG7JXxokYoJCFybwLg
- yT2WEJfZa39dtHR2eh8ReoBqSMy/lfcF2jMwFjlDExlrNeGCXhn7MaSPF90ht3H+LDpd7F5O
+X-Proofpoint-ORIG-GUID: 08WLYo0hqA-dDDdfyXCLK23FllZ-wZHS
+X-Proofpoint-GUID: 08WLYo0hqA-dDDdfyXCLK23FllZ-wZHS
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=alejandro.j.jimenez@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -119,89 +119,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the minimal data structures required to maintain a list of address
-spaces (i.e. devices) with registered notifiers, and to update the type of
-events that require notifications.
-Note that the ability to register for MAP notifications is not available.
-It will be unblocked by following changes that enable the synchronization of
-guest I/O page tables with host IOMMU state, at which point an amd-iommu
-device property will be introduced to control this capability.
+When the guest issues an INVALIDATE_IOMMU_PAGES command, decode the address
+and size of the invalidation and sync the guest page table state with the
+host. This requires walking the guest page table and calling notifiers
+registered for address spaces matching the domain ID encoded in the command.
 
 Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 ---
- hw/i386/amd_iommu.c | 26 +++++++++++++++++++++++---
- hw/i386/amd_iommu.h |  3 +++
- 2 files changed, 26 insertions(+), 3 deletions(-)
+ hw/i386/amd_iommu.c | 82 ++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 74 insertions(+), 8 deletions(-)
 
 diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 6a2ba878dfa7..2f69459ab68d 100644
+index 2f69459ab68d..bddfe2f93136 100644
 --- a/hw/i386/amd_iommu.c
 +++ b/hw/i386/amd_iommu.c
-@@ -66,6 +66,11 @@ struct AMDVIAddressSpace {
-     MemoryRegion iommu_nodma;   /* Alias of shared nodma memory region  */
-     MemoryRegion iommu_ir;      /* Device's interrupt remapping region  */
-     AddressSpace as;            /* device's corresponding address space */
-+
-+    /* DMA address translation support */
-+    IOMMUNotifierFlag notifier_flags;
-+    /* entry in list of Address spaces with registered notifiers */
-+    QLIST_ENTRY(AMDVIAddressSpace) next;
- };
- 
- /* AMDVI cache entry */
-@@ -1711,6 +1716,7 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
-         iommu_as[devfn]->bus_num = (uint8_t)bus_num;
-         iommu_as[devfn]->devfn = (uint8_t)devfn;
-         iommu_as[devfn]->iommu_state = s;
-+        iommu_as[devfn]->notifier_flags = IOMMU_NONE;
- 
-         amdvi_dev_as = iommu_as[devfn];
- 
-@@ -1791,14 +1797,28 @@ static int amdvi_iommu_notify_flag_changed(IOMMUMemoryRegion *iommu,
-                                            Error **errp)
+@@ -559,9 +559,8 @@ static uint64_t large_pte_page_size(uint64_t pte)
+  *      page table walk. This means that the DTE has valid data, but one of the
+  *      lower level entries in the Page Table could not be read.
+  */
+-static int __attribute__((unused))
+-fetch_pte(AMDVIAddressSpace *as, hwaddr address, uint64_t dte, uint64_t *pte,
+-          hwaddr *page_size)
++static uint64_t fetch_pte(AMDVIAddressSpace *as, hwaddr address, uint64_t dte,
++                          uint64_t *pte, hwaddr *page_size)
  {
-     AMDVIAddressSpace *as = container_of(iommu, AMDVIAddressSpace, iommu);
-+    AMDVIState *s = as->iommu_state;
+     IOMMUAccessFlags perms = amdvi_get_perms(dte);
  
-     if (new & IOMMU_NOTIFIER_MAP) {
-         error_setg(errp,
--                   "device %02x.%02x.%x requires iommu notifier which is not "
--                   "currently supported", as->bus_num, PCI_SLOT(as->devfn),
--                   PCI_FUNC(as->devfn));
-+                "device %02x.%02x.%x requires iommu notifier which is not "
-+                "currently supported", as->bus_num, PCI_SLOT(as->devfn),
-+                PCI_FUNC(as->devfn));
-         return -EINVAL;
-     }
-+
-+    /*
-+     * Update notifier flags for address space and the list of address spaces
-+     * with registered notifiers.
-+     */
-+    as->notifier_flags = new;
-+
-+    if (old == IOMMU_NOTIFIER_NONE) {
-+        QLIST_INSERT_HEAD(&s->amdvi_as_with_notifiers, as, next);
-+    } else if (new == IOMMU_NOTIFIER_NONE) {
-+        QLIST_REMOVE(as, next);
-+    }
-+
-     return 0;
+@@ -659,9 +658,9 @@ fetch_pte(AMDVIAddressSpace *as, hwaddr address, uint64_t dte, uint64_t *pte,
+  * notifiers to sync the shadow page tables in the host.
+  * Must be called with a valid DTE for DMA remapping i.e. V=1,TV=1
+  */
+-static void __attribute__((unused))
+-amdvi_sync_shadow_page_table_range(AMDVIAddressSpace *as, uint64_t *dte,
+-                                   hwaddr addr, uint64_t size, bool send_unmap)
++static void amdvi_sync_shadow_page_table_range(AMDVIAddressSpace *as,
++                                               uint64_t *dte, hwaddr addr,
++                                               uint64_t size, bool send_unmap)
+ {
+     IOMMUTLBEvent event;
+ 
+@@ -798,8 +797,7 @@ static gboolean amdvi_iotlb_remove_by_domid(gpointer key, gpointer value,
+  * first zero at bit 51 or larger is a request to invalidate the entire address
+  * space.
+  */
+-static uint64_t __attribute__((unused))
+-amdvi_decode_invalidation_size(hwaddr addr, uint16_t flags)
++static uint64_t amdvi_decode_invalidation_size(hwaddr addr, uint16_t flags)
+ {
+     uint64_t size = AMDVI_PAGE_SIZE;
+     uint8_t fzbit = 0;
+@@ -816,10 +814,76 @@ amdvi_decode_invalidation_size(hwaddr addr, uint16_t flags)
+     return size;
  }
  
-diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
-index 5e35d4b15167..a7462b2adb79 100644
---- a/hw/i386/amd_iommu.h
-+++ b/hw/i386/amd_iommu.h
-@@ -411,6 +411,9 @@ struct AMDVIState {
-     /* for each served device */
-     AMDVIAddressSpace **address_spaces[PCI_BUS_MAX];
- 
-+    /* list of address spaces with registered notifiers */
-+    QLIST_HEAD(, AMDVIAddressSpace) amdvi_as_with_notifiers;
++/*
++ * Synchronize the guest page tables with the shadow page tables kept in the
++ * host for the specified range.
++ * The invalidation command issued by the guest and intercepted by the VMM
++ * does not specify a device, but a domain, since all devices in the same domain
++ * share the same page tables. However, vIOMMU emulation creates separate
++ * address spaces per device, so it is necessary to traverse the list of all of
++ * address spaces (i.e. devices) that have notifiers registered in order to
++ * propagate the changes to the host page tables.
++ * We cannot return early from this function once a matching domain has been
++ * identified and its page tables synced (based on the fact that all devices in
++ * the same domain share the page tables). The reason is that different devices
++ * (i.e. address spaces) could have different notifiers registered, and by
++ * skipping address spaces that appear later on the amdvi_as_with_notifiers list
++ * their notifiers (which could differ from the ones registered for the first
++ * device/address space) would not be invoked.
++ */
++static void amdvi_sync_domain(AMDVIState *s, uint16_t domid, uint64_t addr,
++                              uint16_t flags)
++{
++    AMDVIAddressSpace *as;
 +
-     /* IOTLB */
-     GHashTable *iotlb;
++    uint64_t size = amdvi_decode_invalidation_size(addr, flags);
++
++    if (size == AMDVI_INV_ALL_PAGES) {
++        addr = 0;       /* Set start address to 0 and invalidate entire AS */
++    } else {
++        addr &= ~(size - 1);
++    }
++
++    /*
++     * Call notifiers that have registered for each address space matching the
++     * domain ID, in order to sync the guest pagetable state with the host.
++     */
++    QLIST_FOREACH(as, &s->amdvi_as_with_notifiers, next) {
++
++        uint64_t dte[4] = { 0 };
++
++        /*
++         * Retrieve the Device Table entry for the devid corresponding to the
++         * current address space, and verify the DomainID matches i.e. the page
++         * tables to be synced belong to devices in the domain.
++         */
++        if (amdvi_as_to_dte(as, dte)) {
++            continue;
++        }
++
++        /* Only need to sync the Page Tables for a matching domain */
++        if (domid != (dte[1] & AMDVI_DEV_DOMID_ID_MASK)) {
++            continue;
++        }
++
++        /*
++         * We have determined that there is a valid Device Table Entry for a
++         * device matching the DomainID in the INV_IOMMU_PAGES command issued by
++         * the guest. Walk the guest page table to sync shadow page table.
++         */
++        if (as->notifier_flags & IOMMU_NOTIFIER_MAP) {
++            /* Sync guest IOMMU mappings with host */
++            amdvi_sync_shadow_page_table_range(as, &dte[0], addr, size, true);
++        }
++    }
++}
++
+ /* we don't have devid - we can't remove pages by address */
+ static void amdvi_inval_pages(AMDVIState *s, uint64_t *cmd)
+ {
+     uint16_t domid = cpu_to_le16((uint16_t)extract64(cmd[0], 32, 16));
++    uint64_t addr = cpu_to_le64(extract64(cmd[1], 12, 52)) << 12;
++    uint16_t flags = cpu_to_le16((uint16_t)extract64(cmd[1], 0, 3));
+ 
+     if (extract64(cmd[0], 20, 12) || extract64(cmd[0], 48, 12) ||
+         extract64(cmd[1], 3, 9)) {
+@@ -829,6 +893,8 @@ static void amdvi_inval_pages(AMDVIState *s, uint64_t *cmd)
+ 
+     g_hash_table_foreach_remove(s->iotlb, amdvi_iotlb_remove_by_domid,
+                                 &domid);
++
++    amdvi_sync_domain(s, domid, addr, flags);
+     trace_amdvi_pages_inval(domid);
+ }
  
 -- 
 2.43.5
