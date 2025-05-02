@@ -2,106 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E807AA7779
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 18:41:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E813FAA7780
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 18:42:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAtQP-00066c-Ri; Fri, 02 May 2025 12:39:45 -0400
+	id 1uAtSU-0007eD-VY; Fri, 02 May 2025 12:41:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uAtQO-00066D-LR
- for qemu-devel@nongnu.org; Fri, 02 May 2025 12:39:44 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uAtQL-0004Oj-CZ
- for qemu-devel@nongnu.org; Fri, 02 May 2025 12:39:44 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-7369ce5d323so2244629b3a.1
- for <qemu-devel@nongnu.org>; Fri, 02 May 2025 09:39:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746203980; x=1746808780; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ov2+fSeigHznskBWAHFz17Xla4OiPqdPbenXGIwMlQQ=;
- b=iWXER99N55qyZPyVhViDadA3mAD/krmvorog4E/UZBFqMXv8VyKyhDXV6pfE1Y8LV9
- Y4VOrmlyrC0JckSdnfNvS/KPWINpKJtAIHXsijv6AA4l54tD3gfBAk1c1ZfHvy5qFgAD
- k5UZid04l00wvmSFRmOBZe7BnaiIYtWkPBwdByiF72R8dppEZdqGD//bS/a+xmJx8a9I
- d4QGJxEENAdRZloZti7YmS+tfh2tepM7dWriDj7Zx5ooSNyazwP3vXXfGix1odcO0evV
- beyp4xmYWd9AcvhQoNeXNO6izLvpAwmhy7rtN0naVAh71+sBsy/3/T88jdwuQN+d/fBD
- iTvQ==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uAtST-0007dj-4V
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 12:41:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uAtSP-0006QZ-6k
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 12:41:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1746204107;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=IVyQGmZHakl/JocFLp1qesylf4SM4d2BrJv+WWqNJ5k=;
+ b=QnLJHiX4+lh5Fyzo6VepRBjYSVXUMNJgzJ4wwioY6a7D4S5ZxJKLkLaiEYOEfS1h8mXbuQ
+ SnVd6ZnCqD5LXMhbK0BwZVPc2V5tNFbt26fAyP7k1IWVTncOSEzMlzNv/pbyyw+NAl0hU3
+ M9zkz/NXAVqxSBNyllgBxFGSm+OHMMI=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-522-bYvRtKBdN76SXfqJGTzNhg-1; Fri, 02 May 2025 12:41:46 -0400
+X-MC-Unique: bYvRtKBdN76SXfqJGTzNhg-1
+X-Mimecast-MFC-AGG-ID: bYvRtKBdN76SXfqJGTzNhg_1746204106
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-7c0c1025adbso463457985a.1
+ for <qemu-devel@nongnu.org>; Fri, 02 May 2025 09:41:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746203980; x=1746808780;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ov2+fSeigHznskBWAHFz17Xla4OiPqdPbenXGIwMlQQ=;
- b=qFWic+B55FXcixg1D/I/kzRQ2ul14+2/jOJRaQG05OlSf7BdcSY8VIlpMpMAhvUJy/
- 9C0rpAM1dmSJKL7umI1PxuTZ30A3RUa4+1AbEcGdzu9jVRn2Xw8aQAYxifxWYmOSosnU
- nobK/r/tnKpz3S0iGq5ao8B7BGO/grBbeZNt2/bJ92e1YgB2srWgQFtqnEXzTFyzlPmd
- XgzCoTyruw2XuI9cVNX+Jze0BX+SlTKDUoiHO5vW4OSyUOO1/SdbDr5GLV2YevuurI4M
- 5i+n0ZluWaR+3u7L+GT1lvQTLpwn+odYE95FetYTgA22bPs9SLsLimFrFkO9Xen4woba
- nm5g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWIDRWNYWzPsLIoRpmzms/7/ZKbB/EChQcwlMofV8Gl6LfkvIusXjgqUipDLaPajAzSgSRuLATDOQv0@nongnu.org
-X-Gm-Message-State: AOJu0YyD22fuBqRWhLi5SNdUMPDNbI0CcljItRdPYNZvj6jk7fs2hNFY
- qHzmUphr8zPB9S7XJs5kGBJDjyKqJ1vtSDahjEP/6diVf3W5rHTxF0mGM+5K1YE=
-X-Gm-Gg: ASbGncuV8Hh7gNpPStESgY47SnmyiW+8JVa2yJU+XZ8MG9K3SF9a9+QPg61oVGtU42v
- mHK1N3sBNhu84rvudlm7E6SOC3ayxzp8RD+GqZsP7s2bArf3vst9lsnqymMRkma+uMM0MNqUWpv
- OOixhM3DTJFef1+s/xCfpC57+q1tYaFLAEvxzNBV/P5mMlew0WyP5QvHoZ9yW2oXbi/cyL4s8/4
- tyHfNzF0Ed208F+FUGFczMw4msyWphHosu3DbbMUbuvmlNJD/sxYYyHPmWuOtxAjqZGzmA7yy04
- KAnjKxhq8ysR+HzdX5ezylXOXqItbR9xqMiBjphUN2YGEHvUPLMzVQ==
-X-Google-Smtp-Source: AGHT+IHmVuFWCI2rlgJozk+6E57xaLTpIykHP1/vDuaDAViicHmCpsOUPQZ2ztzUWD8nXUVxU0xBOA==
-X-Received: by 2002:a05:6a00:4ace:b0:739:50c0:b3fe with SMTP id
- d2e1a72fcca58-74058a1a76amr5976300b3a.8.1746203979630; 
- Fri, 02 May 2025 09:39:39 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b1fb3c6d5aasm977527a12.74.2025.05.02.09.39.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 02 May 2025 09:39:39 -0700 (PDT)
-Message-ID: <ff403231-a36a-46a8-9168-2ac32a44328a@linaro.org>
-Date: Fri, 2 May 2025 09:39:37 -0700
+ d=1e100.net; s=20230601; t=1746204105; x=1746808905;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IVyQGmZHakl/JocFLp1qesylf4SM4d2BrJv+WWqNJ5k=;
+ b=c0BFqJHaoinyLvMKj0JvXG86NVbvCar8xRvuhJ7fBkS+DTKr3geg2vQRiuLJssWk2k
+ lk21BivAZi5+FwFZ4QuNzJz2USt5JWf04nIBnvCV/xWyrhr8gZ8VW1O6VZovT0pEr6/V
+ kuSSt3h4V12H0qSiz6M6Zu7do4KziPFzZgE6qvKlBfASYaRWTztN/C/gtw0IXx6oNT+O
+ TuHiTTvzsc9Ix6k+Nf7CO4HYYtj48Rhq+fvbmGx/0bQfNwFrzxgBiJMm5laxY9jSuXm6
+ 9M01CpbSWeA/DFM5/QKjXG8wMTwpIXlXS5HO3t8F/yS68enn3CULy5sAW8EGbSR3VZJN
+ MJzg==
+X-Gm-Message-State: AOJu0YysMvZ3MIaZ6uH5KvvWdv63naRzY2TWmn3VnL9eqNguriRRNhcw
+ LOpurB5/xKvrrcuWd1GeulfyXE5bFcRBOjNFWlufC6GIpR+6xaWmAb+CoSF0J2rBjlsAvgILhTA
+ jPfj4heOw+ua9QxcIqGo4dwF8IbGzJ7ValIR0epPezjq5RunSC5YOiqnqbDdvmisFOkCQndF4pi
+ Ej4pmqitqjYlq4C19HSCD3e+ravnheqOqXPQ==
+X-Gm-Gg: ASbGncvSRk7Is81ZTcr4egglsPoQUHemPrATcB51MVd+y35dem2kCl/UIDxUpk5hOBV
+ F8N+KMnpmva1vZyzy7sGcGM4UwjyMlynnLtSIW/VgxTdx+kUVKqPj9s9QISqL4sfhRB7pmOIBNs
+ s8vv0mVcT/TPOWr8vxFINf9k92LVwfl/p8Vv0XaKleBAjWW/gk6wtDNtX2IcDKW84Aws/3gnEEZ
+ wnBHBQ9igtUNmokm/aDDhc03W6hyOSAKDliPabPVXWBVMC8tVH8Wz+t660hRAlgoPcjVLU/aSFy
+X-Received: by 2002:a05:620a:2481:b0:7c7:b5dc:2e36 with SMTP id
+ af79cd13be357-7cad5b397f2mr470486385a.18.1746204105274; 
+ Fri, 02 May 2025 09:41:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEhz8IqP9l8EcwcdSYjB0+DEYqY/8bo2kpyyjEyVUNGdg/LmaxWWrPW/DZ+0t/c+pmON3b3Tw==
+X-Received: by 2002:a05:620a:2481:b0:7c7:b5dc:2e36 with SMTP id
+ af79cd13be357-7cad5b397f2mr470482285a.18.1746204104835; 
+ Fri, 02 May 2025 09:41:44 -0700 (PDT)
+Received: from x1.com ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7cad23d1c8dsm203108385a.60.2025.05.02.09.41.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 02 May 2025 09:41:44 -0700 (PDT)
+From: Peter Xu <peterx@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Fabiano Rosas <farosas@suse.de>, Stefan Hajnoczi <stefanha@redhat.com>,
+ peterx@redhat.com
+Subject: [PULL 00/14] Migration 20250502 patches
+Date: Fri,  2 May 2025 12:41:27 -0400
+Message-ID: <20250502164141.747202-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] hw/virtio: Introduce CONFIG_VIRTIO_LEGACY to disable
- legacy support
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- David Hildenbrand <david@redhat.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Jonah Palmer <jonah.palmer@oracle.com>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Jason Wang <jasowang@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- qemu-ppc@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- Anton Johansson <anjo@rev.ng>, qemu-arm@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Mark Cave-Ayland <mark.caveayland@nutanix.com>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20250502132441.64723-1-philmd@linaro.org>
-Content-Language: en-US
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250502132441.64723-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.644,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,233 +101,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/2/25 6:24 AM, Philippe Mathieu-Daudé wrote:
-> Legacy VirtIO devices don't have their endianness clearly defined.
-> QEMU infers it taking the endianness of the (target) binary, or,
-> when a target support switching endianness at runtime, taking the
-> endianness of the vCPU accessing the device.
->
+The following changes since commit 5134cf9b5d3aee4475fe7e1c1c11b093731073cf:
 
-Probably it's what you meant, but it is clearly defined by the standard 
-[1]. It's just not fixed.
+  Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2025-04-30 13:34:44 -0400)
 
-2.4.3 Legacy Interfaces: A Note on Virtqueue Endianness
-Note that when using the legacy interface, transitional devices and 
-drivers MUST use the native endian of the guest as the endian of fields 
-and in the virtqueue. This is opposed to little-endian for non-legacy 
-interface as specified by this standard. It is assumed that the host is 
-already aware of the guest endian.
+are available in the Git repository at:
 
-[1] 
-https://docs.oasis-open.org/virtio/virtio/v1.0/cs04/virtio-v1.0-cs04.html#x1-250003
+  https://gitlab.com/peterx/qemu.git tags/migration-20250502-pull-request
 
-> Devices modelling shouldn't really change depending on a property
-> of a CPU accessing it.
-> 
+for you to fetch changes up to e674fedbd1fd9953bc30026670aba6779848280a:
 
-Devices concerning various targets are aware of the cpu and its properties.
+  scripts/vmstate-static-checker.py: Allow new name for ghes_addr_le field (2025-05-02 11:09:36 -0400)
 
-> For heterogeneous systems, it is simpler to break such dev <-> cpu
-> dependency, only allowing generic device models, with no knowledge
-> of CPU (or DMA controller) accesses.
->
+----------------------------------------------------------------
+Migration pull request
 
-At this point, we speculated it could be a problem, without really 
-proving it. In case all accesses are done within a given vcpu thread, 
-there is no ambiguity on the current endianness.
-How about we wait to expose a crash in an heterogeneous system to take a 
-decision?
+- Prasad's few pre-requisite patches from multifd+postcopy enablement series
+- Markus's fix on a latent bug for tls_authz setup
+- Zhijian's latest RDMA series (includes the rdma soft-RoCE unit test)
+- Jack's RDMA migration patch to re-enable ipv6
+- Thomas's vmstate static checker update on rename field in acpi/ghes
+- Peter's postcopy preempt optimization for locality hint
 
-> Therefore we introduce the VIRTIO_LEGACY Kconfig key. We keep the
-> current default (enabled).
-> New binaries can set CONFIG_VIRTIO_LEGACY=n to restrict models to
-> the VirtIO version 1 spec.
->
+----------------------------------------------------------------
 
-I think it's a good change, regarding the legacy support.
+Jack Wang (1):
+  migration/rdma: Remove qemu_rdma_broken_ipv6_kernel
 
-However, if the only goal is to support a custom configuration for 
-heterogeneous emulation, I think it's the wrong direction.
+Li Zhijian (5):
+  migration: check RDMA and capabilities are compatible on both sides
+  migration: disable RDMA + postcopy-ram
+  migration/rdma: Remove redundant migration_in_postcopy checks
+  migration: Unfold control_save_page()
+  migration: Add qtest for migration over RDMA
 
-In essence, we are working hard right now to remove compile time 
-configuration for various QEMU targets.
-So seeing a new compile time configuration to solve something looks like 
-the opposite of what we are trying to achive.
-A possible alternative would be to enable virtio legacy support at 
-runtime, based on a specific criteria. From what I remember, legacy vs 
-modern is a property set by disable-modern=bool,disable-legacy=bool, and 
-"modern" is the default.
-Thus, we can simply restrict the disable-legacy=on in case we detect 
-it's an heterogeneous emulation scenario.
+Markus Armbruster (1):
+  migration: Fix latent bug in migrate_params_test_apply()
 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   include/hw/virtio/virtio-access.h | 5 ++++-
->   hw/virtio/virtio.c                | 8 ++++++++
->   target/arm/cpu.c                  | 5 +++++
->   target/ppc/cpu_init.c             | 5 +++++
->   hw/virtio/Kconfig                 | 5 +++++
->   5 files changed, 27 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/hw/virtio/virtio-access.h b/include/hw/virtio/virtio-access.h
-> index 07aae69042a..b5b471711a6 100644
-> --- a/include/hw/virtio/virtio-access.h
-> +++ b/include/hw/virtio/virtio-access.h
-> @@ -20,7 +20,10 @@
->   #include "hw/virtio/virtio.h"
->   #include "hw/virtio/virtio-bus.h"
->   
-> -#if defined(TARGET_PPC64) || defined(TARGET_ARM)
-> +#include CONFIG_DEVICES
-> +
-> +#if defined(CONFIG_VIRTIO_LEGACY) && \
-> +    (defined(TARGET_PPC64) || defined(TARGET_ARM))
->   #define LEGACY_VIRTIO_IS_BIENDIAN 1
->   #endif
->   
-> diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-> index 480c2e50365..659ab3cb969 100644
-> --- a/hw/virtio/virtio.c
-> +++ b/hw/virtio/virtio.c
-> @@ -47,6 +47,8 @@
->   #include "standard-headers/linux/virtio_mem.h"
->   #include "standard-headers/linux/virtio_vsock.h"
->   
-> +#include CONFIG_DEVICES
-> +
->   /*
->    * Maximum size of virtio device config space
->    */
-> @@ -3502,6 +3504,7 @@ void virtio_init(VirtIODevice *vdev, uint16_t device_id, size_t config_size)
->   bool virtio_legacy_allowed(VirtIODevice *vdev)
->   {
->       switch (vdev->device_id) {
-> +#ifdef CONFIG_VIRTIO_LEGACY
->       case VIRTIO_ID_NET:
->       case VIRTIO_ID_BLOCK:
->       case VIRTIO_ID_CONSOLE:
-> @@ -3513,6 +3516,7 @@ bool virtio_legacy_allowed(VirtIODevice *vdev)
->       case VIRTIO_ID_RPROC_SERIAL:
->       case VIRTIO_ID_CAIF:
->           return true;
-> +#endif
->       default:
->           return false;
->       }
-> @@ -4014,8 +4018,10 @@ static const Property virtio_properties[] = {
->       DEFINE_VIRTIO_COMMON_FEATURES(VirtIODevice, host_features),
->       DEFINE_PROP_BOOL("use-started", VirtIODevice, use_started, true),
->       DEFINE_PROP_BOOL("use-disabled-flag", VirtIODevice, use_disabled_flag, true),
-> +#ifdef CONFIG_VIRTIO_LEGACY
->       DEFINE_PROP_BOOL("x-disable-legacy-check", VirtIODevice,
->                        disable_legacy_check, false),
-> +#endif
->   };
->   
->   static int virtio_device_start_ioeventfd_impl(VirtIODevice *vdev)
-> @@ -4151,7 +4157,9 @@ static void virtio_device_class_init(ObjectClass *klass, const void *data)
->       vdc->start_ioeventfd = virtio_device_start_ioeventfd_impl;
->       vdc->stop_ioeventfd = virtio_device_stop_ioeventfd_impl;
->   
-> +#ifdef CONFIG_VIRTIO_LEGACY
->       vdc->legacy_features |= VIRTIO_LEGACY_FEATURES;
-> +#endif
->   }
->   
->   bool virtio_device_ioeventfd_enabled(VirtIODevice *vdev)
-> diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-> index 5e951675c60..d01fcb9fd1a 100644
-> --- a/target/arm/cpu.c
-> +++ b/target/arm/cpu.c
-> @@ -39,6 +39,7 @@
->   #if !defined(CONFIG_USER_ONLY)
->   #include "hw/loader.h"
->   #include "hw/boards.h"
-> +#include CONFIG_DEVICES
->   #ifdef CONFIG_TCG
->   #include "hw/intc/armv7m_nvic.h"
->   #endif /* CONFIG_TCG */
-> @@ -1130,6 +1131,7 @@ static void arm_cpu_kvm_set_irq(void *opaque, int irq, int level)
->   #endif
->   }
->   
-> +#ifdef CONFIG_VIRTIO_LEGACY
->   static bool arm_cpu_virtio_is_big_endian(CPUState *cs)
->   {
->       ARMCPU *cpu = ARM_CPU(cs);
-> @@ -1138,6 +1140,7 @@ static bool arm_cpu_virtio_is_big_endian(CPUState *cs)
->       cpu_synchronize_state(cs);
->       return arm_cpu_data_is_big_endian(env);
->   }
-> +#endif
->   
->   #ifdef CONFIG_TCG
->   bool arm_cpu_exec_halt(CPUState *cs)
-> @@ -2681,7 +2684,9 @@ static const struct SysemuCPUOps arm_sysemu_ops = {
->       .asidx_from_attrs = arm_asidx_from_attrs,
->       .write_elf32_note = arm_cpu_write_elf32_note,
->       .write_elf64_note = arm_cpu_write_elf64_note,
-> +#ifdef CONFIG_VIRTIO_LEGACY
->       .virtio_is_big_endian = arm_cpu_virtio_is_big_endian,
-> +#endif
->       .legacy_vmsd = &vmstate_arm_cpu,
->   };
->   #endif
-> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-> index b0973b6df95..4b6c347bda8 100644
-> --- a/target/ppc/cpu_init.c
-> +++ b/target/ppc/cpu_init.c
-> @@ -50,6 +50,7 @@
->   #include "hw/boards.h"
->   #include "hw/intc/intc.h"
->   #include "kvm_ppc.h"
-> +#include CONFIG_DEVICES
->   #endif
->   
->   #include "cpu_init.h"
-> @@ -7352,12 +7353,14 @@ static void ppc_cpu_reset_hold(Object *obj, ResetType type)
->   
->   #ifndef CONFIG_USER_ONLY
->   
-> +#ifdef CONFIG_VIRTIO_LEGACY
->   static bool ppc_cpu_is_big_endian(CPUState *cs)
->   {
->       cpu_synchronize_state(cs);
->   
->       return !FIELD_EX64(cpu_env(cs)->msr, MSR, LE);
->   }
-> +#endif
->   
->   static bool ppc_get_irq_stats(InterruptStatsProvider *obj,
->                                 uint64_t **irq_counts, unsigned int *nb_irqs)
-> @@ -7470,7 +7473,9 @@ static const struct SysemuCPUOps ppc_sysemu_ops = {
->       .get_phys_page_debug = ppc_cpu_get_phys_page_debug,
->       .write_elf32_note = ppc32_cpu_write_elf32_note,
->       .write_elf64_note = ppc64_cpu_write_elf64_note,
-> +#ifdef CONFIG_VIRTIO_LEGACY
->       .virtio_is_big_endian = ppc_cpu_is_big_endian,
-> +#endif
->       .legacy_vmsd = &vmstate_ppc_cpu,
->   };
->   #endif
-> diff --git a/hw/virtio/Kconfig b/hw/virtio/Kconfig
-> index 7648a2d68da..314185f0016 100644
-> --- a/hw/virtio/Kconfig
-> +++ b/hw/virtio/Kconfig
-> @@ -1,6 +1,11 @@
->   config VIRTIO
->       bool
->   
-> +config VIRTIO_LEGACY
-> +    bool
-> +    default y
-> +    depends on VIRTIO
-> +
->   config VIRTIO_RNG
->       bool
->       default y
+Peter Xu (3):
+  migration: Add save_postcopy_prepare() savevm handler
+  migration/ram: Implement save_postcopy_prepare()
+  migration/postcopy: Spatial locality page hint for preempt mode
 
-If the goal is to condition virtio_legacy, to maybe deprecate it one 
-day, then:
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Prasad J Pandit (3):
+  migration/multifd: move macros to multifd header
+  migration: refactor channel discovery mechanism
+  tests/qtest/migration: consolidate set capabilities
+
+Thomas Huth (1):
+  scripts/vmstate-static-checker.py: Allow new name for ghes_addr_le
+    field
+
+ MAINTAINERS                               |   1 +
+ include/migration/register.h              |  15 ++
+ migration/multifd.h                       |   5 +
+ migration/options.h                       |   1 +
+ migration/rdma.h                          |   3 +-
+ migration/savevm.h                        |   1 +
+ tests/qtest/migration/framework.h         |   9 +-
+ migration/migration.c                     | 164 +++++++++++--------
+ migration/multifd.c                       |   5 -
+ migration/options.c                       |  30 ++++
+ migration/ram.c                           | 168 +++++++++++++++----
+ migration/rdma.c                          | 191 +---------------------
+ migration/savevm.c                        |  33 ++++
+ tests/qtest/migration/compression-tests.c |  22 ++-
+ tests/qtest/migration/cpr-tests.c         |   6 +-
+ tests/qtest/migration/file-tests.c        |  58 +++----
+ tests/qtest/migration/framework.c         |  75 ++++++---
+ tests/qtest/migration/misc-tests.c        |   4 +-
+ tests/qtest/migration/postcopy-tests.c    |   8 +-
+ tests/qtest/migration/precopy-tests.c     |  91 +++++++++--
+ tests/qtest/migration/tls-tests.c         |  23 ++-
+ scripts/rdma-migration-helper.sh          |  70 ++++++++
+ scripts/vmstate-static-checker.py         |   1 +
+ 23 files changed, 614 insertions(+), 370 deletions(-)
+ create mode 100755 scripts/rdma-migration-helper.sh
+
+-- 
+2.48.1
+
 
