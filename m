@@ -2,51 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F1CCAA6FDC
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 12:37:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2196AAA6FE4
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 12:38:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAnkx-00015V-Nz; Fri, 02 May 2025 06:36:35 -0400
+	id 1uAnmc-0006rs-VL; Fri, 02 May 2025 06:38:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven_lee@aspeedtech.com>)
- id 1uAnk6-0008N8-Ku; Fri, 02 May 2025 06:35:43 -0400
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven_lee@aspeedtech.com>)
- id 1uAnk4-0006n4-Qj; Fri, 02 May 2025 06:35:42 -0400
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Fri, 2 May
- 2025 18:34:52 +0800
-Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Fri, 2 May 2025 18:34:52 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Troy Lee <leetroy@gmail.com>, Jamin Lin
- <jamin_lin@aspeedtech.com>, Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>, "open list:ASPEED BMCs" <qemu-arm@nongnu.org>, 
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-CC: <troy_lee@aspeedtech.com>, <longzl2@lenovo.com>,
- <yunlin.tang@aspeedtech.com>, <steven_lee@aspeedtech.com>
-Subject: [PATCH v4 9/9] docs: Add support for ast2700fc machine
-Date: Fri, 2 May 2025 18:34:45 +0800
-Message-ID: <20250502103449.3091642-10-steven_lee@aspeedtech.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250502103449.3091642-1-steven_lee@aspeedtech.com>
-References: <20250502103449.3091642-1-steven_lee@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uAnmT-0006nI-Jc
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 06:38:10 -0400
+Received: from mail-yw1-x1132.google.com ([2607:f8b0:4864:20::1132])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uAnmR-0008OB-V0
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 06:38:09 -0400
+Received: by mail-yw1-x1132.google.com with SMTP id
+ 00721157ae682-708a853c362so17010237b3.2
+ for <qemu-devel@nongnu.org>; Fri, 02 May 2025 03:38:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1746182286; x=1746787086; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=3tIoENnubMgHGkKDFBO3Bv7GqNEB73Ou8SOy4pptmnc=;
+ b=bKegW+PBLUJlciroGc3YLW1QcsgKYAF3hBXLcMbVyS7h4BDFBoT3+95i3n5fW2GDn5
+ N9mb2MCwaRf9WcC2gZdKmmNscyqBzU1XOC5yWLv99DnPK+g8nUXh0Jr2yHTbqdFq2Hbu
+ RRANzPPorFfSsQ0/h2KoCzKrZfyUIMHBsYYBJX0ZGRzAozhA7POv6VVGEFmWVV1mveiq
+ M2A/lYfkruFT1t6cKFwv5o3loVQ5uPnX+0rvK1tlapaAL5m8CsN6/tqO9ZenPICWxTes
+ MwpsDYs0X2iRSlBXNgatBh80XbPIbr/vykO3awYxveIsAtBlMWxb1GUSaV7Ky/bYl/CI
+ FIYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1746182286; x=1746787086;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3tIoENnubMgHGkKDFBO3Bv7GqNEB73Ou8SOy4pptmnc=;
+ b=Sv99CETnMAbDpSUqO+EiKoHw2XPnv8KTTkGHkmer41jUTDlkrRY91yIrtO46y/UV7H
+ Uh1F5Pz8WdAsLLTcx1O5I/6Y/BOekkA6uS7d/efeYbyCuuFzmXWaRoJXFRdFNT7OlhcZ
+ xxa3tw+kHQQuKAoVr1SseYXXt4OY8B4KTFfrgleBHeIqveQaQyEW1njT+nzqzYdMA8do
+ pit0dK1Und/KICbhGl2Heduyv6Zog7mHWZZRwKpLgGOkgfPS0nxiF/MuBmi71pfFNFoL
+ fxl4THEKxLv+Ub2C6J3BO2fQpC/V4o3VcKsughlglRq94BJ73+pqZar81lrpuWv1G7YQ
+ fY5A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWWRKXlrYzWNLnyC1ejKWQSJyJ2p82RCdKA9vgUDyJ9C+CRUQc/h+05vT2oICGEFp0WzKKpoONvEXts@nongnu.org
+X-Gm-Message-State: AOJu0Yx5U5vPpoDqsTZ4/O/GYd8oTBG3hwhi/LCIPQRLrIpHdeqUna4I
+ FCjv/Nf9IexMbQSvSO3lnHQ5Zs2juobQAIwdkYHAqizGwQfRSLwStMcYpeIdSkAMvM3S9ld5Ric
+ +cPPxdlaJ3jSaSb00xBlhg1mUsRnbUEx0EQ8QRQ==
+X-Gm-Gg: ASbGncu7lIPslke6vRhAfB84aUB16Mm1jFu0n6BMd4Lbs+HiyhbTsdBq2bqn9JmICVf
+ QPPFxlJ7hkfYYhl12vXIQKb5xtAWHP6u62ADrOQY6aGjNJ59Y8pZb8nV6ArAwvAh678fm1Aq6fQ
+ KQsDVYwzWS/ggo9gDH5UK4H8c=
+X-Google-Smtp-Source: AGHT+IEbEvdtEXOY25mQz6ZwnIcW/v1hlvH7mLS/PE+kn7PKg4gqxTaAZKfmF/aecflgo3yFyOzzbJUeeJpFKYJvlP8=
+X-Received: by 2002:a05:690c:905:b0:703:ac44:d37e with SMTP id
+ 00721157ae682-708cee1bb77mr34764107b3.37.1746182286683; Fri, 02 May 2025
+ 03:38:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=steven_lee@aspeedtech.com; helo=TWMBX01.aspeed.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20250428022934.3081139-1-timlee660101@gmail.com>
+In-Reply-To: <20250428022934.3081139-1-timlee660101@gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 2 May 2025 11:37:55 +0100
+X-Gm-Features: ATxdqUE6ujI42P6__rX1X47ikec_mSeFL67QxstZSelzdeBQnvkazZTqBY6e4aE
+Message-ID: <CAFEAcA9tUdcunWBrtbxXhkjjrABM_EN8ZC+HKUNG0nWoOjPQ5w@mail.gmail.com>
+Subject: Re: [PATCH] hw/arm/npcm8xx_boards: Correct valid_cpu_types setting of
+ NPCM8XX SoC
+To: Tim Lee <timlee660101@gmail.com>
+Cc: wuhaotsh@google.com, kfting@nuvoton.com, chli30@nuvoton.com, 
+ qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1132;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1132.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,121 +90,36 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Steven Lee <steven_lee@aspeedtech.com>
-From:  Steven Lee via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-- Updated Aspeed family boards list to include `ast2700fc`.
-- Added boot instructions for the `ast2700fc` machine.
-- Detailed the configuration and loading of firmware for the
-  Cortex-A35 and Cortex-M4 processors.
+On Mon, 28 Apr 2025 at 03:29, Tim Lee <timlee660101@gmail.com> wrote:
+>
+> NPCM8XX SoC is the successor of the NPCM7XX. It features quad-core
+> Cortex-A35 (Armv8, 64-bit) CPUs and some additional peripherals.
+> Correct the `valid_cpu_types` setting to match the NPCM8XX SoC.
+>
+> Signed-off-by: Tim Lee <timlee660101@gmail.com>
+> ---
+>  hw/arm/npcm8xx_boards.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/hw/arm/npcm8xx_boards.c b/hw/arm/npcm8xx_boards.c
+> index 3fb8478e72..6d3e59f6b9 100644
+> --- a/hw/arm/npcm8xx_boards.c
+> +++ b/hw/arm/npcm8xx_boards.c
+> @@ -213,7 +213,7 @@ static void npcm8xx_machine_class_init(ObjectClass *oc, void *data)
+>  {
+>      MachineClass *mc = MACHINE_CLASS(oc);
+>      static const char * const valid_cpu_types[] = {
+> -        ARM_CPU_TYPE_NAME("cortex-a9"),
+> +        ARM_CPU_TYPE_NAME("cortex-a35"),
+>          NULL
+>      };
 
-Signed-off-by: Steven Lee <steven_lee@aspeedtech.com>
-Change-Id: Id41312e9c7cf79bc55c6f24a87a7ad9993dc7261
----
- docs/system/arm/aspeed.rst | 69 ++++++++++++++++++++++++++++++++++++--
- 1 file changed, 66 insertions(+), 3 deletions(-)
+Is this worth backporting to stable branches?
 
-diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
-index 014545f444..58a8020eec 100644
---- a/docs/system/arm/aspeed.rst
-+++ b/docs/system/arm/aspeed.rst
-@@ -1,5 +1,5 @@
--Aspeed family boards (``ast2500-evb``, ``ast2600-evb``, ``bletchley-bmc``, ``fuji-bmc``, ``fby35-bmc``, ``fp5280g2-bmc``, ``g220a-bmc``, ``palmetto-bmc``, ``qcom-dc-scm-v1-bmc``, ``qcom-firework-bmc``, ``quanta-q71l-bmc``, ``rainier-bmc``, ``romulus-bmc``, ``sonorapass-bmc``, ``supermicrox11-bmc``, ``supermicrox11spi-bmc``, ``tiogapass-bmc``, ``witherspoon-bmc``, ``yosemitev2-bmc``)
--==================================================================================================================================================================================================================================================================================================================================================================================================================
-+Aspeed family boards (``ast2500-evb``, ``ast2600-evb``, ``ast2700-evb``, ``ast2700fc``, ``bletchley-bmc``, ``fuji-bmc``, ``fby35-bmc``, ``fp5280g2-bmc``, ``g220a-bmc``, ``palmetto-bmc``, ``qcom-dc-scm-v1-bmc``, ``qcom-firework-bmc``, ``quanta-q71l-bmc``, ``rainier-bmc``, ``romulus-bmc``, ``sonorapass-bmc``, ``supermicrox11-bmc``, ``supermicrox11spi-bmc``, ``tiogapass-bmc``, ``witherspoon-bmc``, ``yosemitev2-bmc``)
-+=================================================================================================================================================================================================================================================================================================================================================================================================================================
- 
- The QEMU Aspeed machines model BMCs of various OpenPOWER systems and
- Aspeed evaluation boards. They are based on different releases of the
-@@ -255,6 +255,7 @@ etc.
- AST2700 SoC based machines :
- 
- - ``ast2700-evb``          Aspeed AST2700 Evaluation board (Cortex-A35)
-+- ``ast2700fc``            Aspeed AST2700 Evaluation board (Cortex-A35 + Cortex-M4)
- 
- Supported devices
- -----------------
-@@ -285,7 +286,6 @@ Supported devices
- 
- Missing devices
- ---------------
-- * Coprocessor support
-  * PWM and Fan Controller
-  * Slave GPIO Controller
-  * Super I/O Controller
-@@ -353,6 +353,69 @@ specified path in the ${HOME} directory.
- 
-   -bios ${HOME}/ast27x0_bootrom.bin
- 
-+Booting the ast2700fc machine
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+AST2700 features four Cortex-A35 primary processors and two Cortex-M4 coprocessors.
-+**ast2700-evb** machine focuses on emulating the four Cortex-A35 primary processors,
-+**ast2700fc** machine extends **ast2700-evb** by adding support for the two Cortex-M4 coprocessors.
-+
-+Steps to boot the AST2700fc machine:
-+
-+1. Ensure you have the following AST2700A1 binaries available in a directory
-+
-+ * u-boot-nodtb.bin
-+ * u-boot.dtb
-+ * bl31.bin
-+ * optee/tee-raw.bin
-+ * image-bmc
-+ * zephyr-aspeed-ssp.elf (for SSP firmware, CPU 5)
-+ * zephyr-aspeed-tsp.elf (for TSP firmware, CPU 6)
-+
-+2. Execute the following command to start ``ast2700fc`` machine:
-+
-+.. code-block:: bash
-+
-+  IMGDIR=ast2700-default
-+  UBOOT_SIZE=$(stat --format=%s -L ${IMGDIR}/u-boot-nodtb.bin)
-+
-+  $ qemu-system-aarch64 -M ast2700fc \
-+       -device loader,force-raw=on,addr=0x400000000,file=${IMGDIR}/u-boot-nodtb.bin \
-+       -device loader,force-raw=on,addr=$((0x400000000 + ${UBOOT_SIZE})),file=${IMGDIR}/u-boot.dtb \
-+       -device loader,force-raw=on,addr=0x430000000,file=${IMGDIR}/bl31.bin \
-+       -device loader,force-raw=on,addr=0x430080000,file=${IMGDIR}/optee/tee-raw.bin \
-+       -device loader,cpu-num=0,addr=0x430000000 \
-+       -device loader,cpu-num=1,addr=0x430000000 \
-+       -device loader,cpu-num=2,addr=0x430000000 \
-+       -device loader,cpu-num=3,addr=0x430000000 \
-+       -drive file=${IMGDIR}/image-bmc,if=mtd,format=raw \
-+       -device loader,file=${IMGDIR}/zephyr-aspeed-ssp.elf,cpu-num=4 \
-+       -device loader,file=${IMGDIR}/zephyr-aspeed-tsp.elf,cpu-num=5 \
-+       -serial pty -serial pty -serial pty \
-+       -snapshot \
-+       -S -nographic
-+
-+After launching QEMU, serial devices will be automatically redirected.
-+Example output:
-+
-+.. code-block:: bash
-+
-+   char device redirected to /dev/pts/55 (label serial0)
-+   char device redirected to /dev/pts/56 (label serial1)
-+   char device redirected to /dev/pts/57 (label serial2)
-+
-+- serial0: Console for the four Cortex-A35 primary processors.
-+- serial1 and serial2: Consoles for the two Cortex-M4 coprocessors.
-+
-+Use ``tio`` or another terminal emulator to connect to the consoles:
-+
-+.. code-block:: bash
-+
-+   $ tio /dev/pts/55
-+   $ tio /dev/pts/56
-+   $ tio /dev/pts/57
-+
-+
- Aspeed minibmc family boards (``ast1030-evb``)
- ==================================================================
- 
--- 
-2.34.1
+Applied to target-arm.next, thanks.
 
+-- PMM
 
