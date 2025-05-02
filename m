@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 062ABAA79A7
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 20:59:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD60AA79A6
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 20:59:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAvZh-0004rj-3N; Fri, 02 May 2025 14:57:29 -0400
+	id 1uAvZh-0004sn-PY; Fri, 02 May 2025 14:57:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAvZV-0004m8-8k
- for qemu-devel@nongnu.org; Fri, 02 May 2025 14:57:17 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAvZb-0004oR-BW
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 14:57:23 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAvZT-0005Ol-O8
- for qemu-devel@nongnu.org; Fri, 02 May 2025 14:57:17 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-5f6214f189bso4436374a12.2
- for <qemu-devel@nongnu.org>; Fri, 02 May 2025 11:57:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAvZZ-0005Pi-8M
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 14:57:22 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-ac29fd22163so402092066b.3
+ for <qemu-devel@nongnu.org>; Fri, 02 May 2025 11:57:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746212233; x=1746817033; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746212239; x=1746817039; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=w7+NkoyA3HMTuquXVM6+FfGafWiuRck1O1aecj2hVgw=;
- b=xzd9roj+JrGBDb96hWO1kkuwO0nXKHzCVp7eEsJWbKeomOGs0gHBYlMndxhncRVJfT
- h9q7TARUqI49iosegStRebIkOTpMsGiLw2qnGH5KwTbz2V367jyeU7tqqLapgjPIS5Ld
- 4PPZB0xzkUJgazOgpxTrZjOQEcV+r0Pen1TTkbZhF48/7y0DEeytlkPTvuhiv1nyS/L1
- DSBZFt03UIal7hHqvN3s+VaG34J3K3T+othVnoKsgSCp/yp0vfVrXhpx8FXdxdFz/H/j
- UktzLqwZRXAGcSR4LBS+XVsfuLhgZKylFtctYpWZAnOgpdr6FCGsgplxGNNoQ11w+Q8I
- qMlg==
+ bh=ksLm8Hbb5N8Btg8hJJq48kxuL5GRhX/1Dl4RQBlOi+Q=;
+ b=CeBxNecBb7II4FgXONKuyCX6Ox3xOhW5ETBJot7ExX2rskH23D1gdEBwM5xaFoVYB2
+ mESOD3HbGfbVTweveHzxIspv+8rXyIdEWvSHSQMIUdFC1+QRoupib4+hzt5ejYJ+hUXf
+ 1h/EaWYygWKDxJFT1aFIaatsEeoJ4FqTTQGPaJql4gTa2wBaPsLFliYGoJxYAMZx/6EU
+ GBA3Ut2BI4nt8Gbjw1FNpM7wh4jpueDYSXsgnC2qhxDJ7fd++eANbfUs48b4VSTqbD5q
+ F1Z/GBne9889T1zZ02cOSXvr9v3J2KfBglGUi+95rwSN6LzZ+cDy25PBIxOvVi/bH/TJ
+ nLRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746212233; x=1746817033;
+ d=1e100.net; s=20230601; t=1746212239; x=1746817039;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=w7+NkoyA3HMTuquXVM6+FfGafWiuRck1O1aecj2hVgw=;
- b=Vo+oAMw20UhiRFjrUOR5MI4dcrHaVgOErntNegcpTjwMAm/KwpaqXfZtOUrGRvC9tv
- OpzByN+rjOA4wHARK2X+sP0pUohZBFdoY081y60xI6/qGT9Fe7yx+hHfh3JDH3DQEgRc
- Scege0YlwGhYSYlaNNQkfVtQftE1a8t7czDucYw6aravsdgGgzduM2TE04ui2/6+3+PT
- flzlN2erPaIBQKyqEYCRBM0qu92PrBnUcctIC9O+Ch0vt0qWt3rSW/1E+suBPE4+6X13
- qoY+WZTOQibJDupUZYDJeCPqcOR3gGbx8lTg9gY6tZD2FZhpuBb1vsMK6eq6KYY0NZ12
- g3Xw==
-X-Gm-Message-State: AOJu0YyhFsD9hal8AIjwdsk81tjky3ONse0QVxPx2g0HbA5RI10NaYWU
- gGKMlejXtRbHAXUEKj794Nlm9TKWyLgAu6FKp4K1u3wrJOMdlWkns9cn6Acq1E5F4UNWaNwvM4B
- y
-X-Gm-Gg: ASbGncsuPcqCZJk4OheUqqs0BWby3g4a22kCmaNA9bEjeU9vAK0Yojs9lKHLP6q7Lq9
- JkBBw0oiuylzDXGl21O7zTbxAyhYU4H4cVm9GXHD0zaav4e2OyLvWVOefkbZ9kPp5rtZ4WseGrY
- sEWGhfEyChVTZY/uYLcXwfuXLI2A41P4fFx6VZDbkCOE1pxMLCHgZUDxxsCn830+jJxRCYreqmU
- pDw/6Ubk0NkgzXsJ79f9AHNI1kCfxS/kVeH3kLQvcKNWPlespoNid+JOXKqzGEcaLUcK4ozHkeW
- 3ViF/1+zcZhdJvP7RpvdHsCUG9l/n9PDKjLOP36iiKQTp+is6BFN8tA92z3xEccMwc5IPp/mW+w
- 8GsxD2b+OZMX++U3+12W3fU874zVfxLU=
-X-Google-Smtp-Source: AGHT+IHRqG/lJzCcAQZCLKDNTp5GNZDqlp2eghm9UYNYKuxemB713efwdDXoNgoJGEp/ltp9p+a3Lg==
-X-Received: by 2002:a05:6402:1e8e:b0:5f6:d53f:cb9d with SMTP id
- 4fb4d7f45d1cf-5fa7891a94emr3357374a12.30.1746212233486; 
- Fri, 02 May 2025 11:57:13 -0700 (PDT)
+ bh=ksLm8Hbb5N8Btg8hJJq48kxuL5GRhX/1Dl4RQBlOi+Q=;
+ b=FVtzQLIct1YGMDhtj09qPdxITtWHOQueskdKxaCRZfAZAI+zvNgOjBRMQ6fiMFofDZ
+ MLjR6oihZ+VKUGHuCImK7KmQp3nnuv3ERuFw4IAVr+WqSvKTJBkYnVcrAZgONlWw632S
+ SgVS4jsIENeIdDASmxzMV/UXaYQ1aiypUIzGfNgvFmvoRMZt5zW0epvG732GF+GTtt90
+ fso5WvlkDYvG4/4+cxrZrEoVG6itsw2I2aG9eHRfEn9lOH1AzdIkRT65RTbl16nYv5jE
+ Wrg0EY8qg+4jHai1dy1aFHO2t898V5YIDaMZZAidQYHQyxzmojqGwT52z60FHjJt/SSS
+ JK3Q==
+X-Gm-Message-State: AOJu0Yzaz0Xz8fZvF5WdSZKbC0l0W0AUgEuVu7ysgKXfunJdD334Pe1w
+ Eb8Wwt7aCRU5NjHFbJjE4+UCQ2lhRssvTysi5jKJwYhS7lEmBztdqjPOJ8r0gd0lxSrcQbcv8FD
+ m
+X-Gm-Gg: ASbGncuKNbXU+G57HpwfUGdoCOyKYhvRAueHrx8jHMXgDzRlXTewMrkOsc/Db5rrpbO
+ hweoHjJcxyx9pGZ3091t4tNFjVXiWEE2JDXa3Lsz+3Z0BBaKcaqTFrTLFI1cGE2ec8pNQ/RHgsL
+ LtY+CR+zVtBpTUlQWESH4+625SWy297OVOtqEp+o9pMO0NYsjVwhWf4nL2e6XhI3t6j2lHdjhiV
+ pHFKbnuF/y1zWEF6ho/SM70ZDYGV2QLeuWTbLh3nN47weyncVGBZYJ9H/byLvPmvU8OdI+Ftfar
+ c4f/BAXV0DGdYw0/DPzU8GBprLdaFZlz+kzNnCsqDBkoHsvGmlEtglVxbAP2QGOL5xz8RyzCUvv
+ J4vRPQ4ZapLdKEU00m3KG
+X-Google-Smtp-Source: AGHT+IF64ZWhIWsiGX5oz2cpTj0cDIKYneInRJynvtE0nzBQ7o9ZRfkMwXwKsDh34cDk/QZPJZaYAA==
+X-Received: by 2002:a17:907:a05:b0:ac7:b368:b193 with SMTP id
+ a640c23a62f3a-ad17adbf7fbmr463741066b.27.1746212238974; 
+ Fri, 02 May 2025 11:57:18 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5fa77755777sm1569609a12.6.2025.05.02.11.57.10
+ a640c23a62f3a-ad1891f6b05sm86006066b.86.2025.05.02.11.57.17
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 02 May 2025 11:57:12 -0700 (PDT)
+ Fri, 02 May 2025 11:57:18 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -76,18 +76,18 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Yi Liu <yi.l.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH v3 03/19] hw/mips/loongson3_virt: Prefer using
- fw_cfg_init_mem()
-Date: Fri,  2 May 2025 20:56:35 +0200
-Message-ID: <20250502185652.67370-4-philmd@linaro.org>
+Subject: [PATCH v3 04/19] hw/nvram/fw_cfg: Factor fw_cfg_init_mem_internal()
+ out
+Date: Fri,  2 May 2025 20:56:36 +0200
+Message-ID: <20250502185652.67370-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250502185652.67370-1-philmd@linaro.org>
 References: <20250502185652.67370-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,27 +110,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-fw_cfg_init_mem_wide() is prefered to initialize fw_cfg
-with DMA support. Without DMA, use fw_cfg_init_mem().
+Factor fw_cfg_init_mem_internal() out of fw_cfg_init_mem_wide().
+In fw_cfg_init_mem_wide(), assert DMA arguments are provided.
+Callers without DMA have to use the fw_cfg_init_mem() helper.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/mips/loongson3_virt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/nvram/fw_cfg.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
-index de6fbcc0cb4..41733988729 100644
---- a/hw/mips/loongson3_virt.c
-+++ b/hw/mips/loongson3_virt.c
-@@ -286,7 +286,7 @@ static void fw_conf_init(void)
-     FWCfgState *fw_cfg;
-     hwaddr cfg_addr = virt_memmap[VIRT_FW_CFG].base;
+diff --git a/hw/nvram/fw_cfg.c b/hw/nvram/fw_cfg.c
+index 54cfa07d3f5..d119c10d308 100644
+--- a/hw/nvram/fw_cfg.c
++++ b/hw/nvram/fw_cfg.c
+@@ -1053,9 +1053,9 @@ FWCfgState *fw_cfg_init_io_dma(uint32_t iobase, uint32_t dma_iobase,
+     return s;
+ }
  
--    fw_cfg = fw_cfg_init_mem_wide(cfg_addr, cfg_addr + 8, 8, 0, NULL);
-+    fw_cfg = fw_cfg_init_mem(cfg_addr, cfg_addr + 8, 8);
-     fw_cfg_add_i16(fw_cfg, FW_CFG_NB_CPUS, (uint16_t)current_machine->smp.cpus);
-     fw_cfg_add_i16(fw_cfg, FW_CFG_MAX_CPUS, (uint16_t)current_machine->smp.max_cpus);
-     fw_cfg_add_i64(fw_cfg, FW_CFG_RAM_SIZE, loaderparams.ram_size);
+-FWCfgState *fw_cfg_init_mem_wide(hwaddr ctl_addr,
+-                                 hwaddr data_addr, uint32_t data_width,
+-                                 hwaddr dma_addr, AddressSpace *dma_as)
++static FWCfgState *fw_cfg_init_mem_internal(hwaddr ctl_addr,
++                                         hwaddr data_addr, uint32_t data_width,
++                                         hwaddr dma_addr, AddressSpace *dma_as)
+ {
+     DeviceState *dev;
+     SysBusDevice *sbd;
+@@ -1087,11 +1087,19 @@ FWCfgState *fw_cfg_init_mem_wide(hwaddr ctl_addr,
+     return s;
+ }
+ 
++FWCfgState *fw_cfg_init_mem_wide(hwaddr ctl_addr,
++                                 hwaddr data_addr, uint32_t data_width,
++                                 hwaddr dma_addr, AddressSpace *dma_as)
++{
++    assert(dma_iobase && dma_as);
++    fw_cfg_init_mem_internal(ctl_addr, data_addr, data_addr, dma_addr, dma_as);
++}
++
+ FWCfgState *fw_cfg_init_mem(hwaddr ctl_addr, hwaddr data_addr)
+ {
+-    return fw_cfg_init_mem_wide(ctl_addr, data_addr,
+-                                fw_cfg_data_mem_ops.valid.max_access_size,
+-                                0, NULL);
++    return fw_cfg_init_mem_internal(ctl_addr, data_addr,
++                                    fw_cfg_data_mem_ops.valid.max_access_size,
++                                    0, NULL);
+ }
+ 
+ 
 -- 
 2.47.1
 
