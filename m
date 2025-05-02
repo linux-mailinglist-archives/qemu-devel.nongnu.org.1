@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ED64AA6F7E
+	by mail.lfdr.de (Postfix) with ESMTPS id C3AC3AA6F82
 	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 12:24:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAnYZ-0001ES-KM; Fri, 02 May 2025 06:23:47 -0400
+	id 1uAnYh-0001GJ-E3; Fri, 02 May 2025 06:23:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uAnYX-0001Df-85
- for qemu-devel@nongnu.org; Fri, 02 May 2025 06:23:45 -0400
+ id 1uAnYb-0001FL-9Q
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 06:23:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uAnYV-0000iA-5x
- for qemu-devel@nongnu.org; Fri, 02 May 2025 06:23:44 -0400
+ id 1uAnYX-0000j0-Ud
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 06:23:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746181422;
+ s=mimecast20190719; t=1746181425;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Yl8DNVWxw/HVdX6rB7XjjEdD8rzZehVWReue67TF40Y=;
- b=PdcwreAUO1v3CZeut9k+iVvh0rnPVwM/0sksoQZlJLrwZ2xOlfg4SDh/UWlQ5FmVTIwFUh
- ZgeMM/Lb/4N0HYD8JcmQQBYIT1psG9d071tnSYAPdnpcc3wmzDc6EtAR0rGG1b3Ks2FCOk
- uzn64F1VvhcDci3CxLvUrASWrpYOx0s=
+ bh=1wYFKFukEgC4q83remIku1UKrxyAwoZsTo9ED8Ho7I0=;
+ b=PobhkfR/XJr3FCtlH0roIVwRAr1pNBUiDCWyZMpgy6lagF+F5+++R9dTDXzLXybt2Z7Ijk
+ IUB9yZdtlIJGdc0e/dheaI5rRhXj0q199QczjY5hHuhu+64WSaG56OaZHZPl8dsCzmuJP7
+ OYhPPFB/IJpvwH72xMQsfHeCZ033/u4=
 Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
  [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-498-wF6_hJruNXqPBWTsZFZ0Yw-1; Fri, 02 May 2025 06:23:40 -0400
-X-MC-Unique: wF6_hJruNXqPBWTsZFZ0Yw-1
-X-Mimecast-MFC-AGG-ID: wF6_hJruNXqPBWTsZFZ0Yw_1746181419
+ us-mta-232--tuzoninPTOXzvfRDRp73Q-1; Fri, 02 May 2025 06:23:44 -0400
+X-MC-Unique: -tuzoninPTOXzvfRDRp73Q-1
+X-Mimecast-MFC-AGG-ID: -tuzoninPTOXzvfRDRp73Q_1746181423
 Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-43d0a037f97so9007315e9.2
- for <qemu-devel@nongnu.org>; Fri, 02 May 2025 03:23:40 -0700 (PDT)
+ 5b1f17b1804b1-43d00017e9dso8906215e9.0
+ for <qemu-devel@nongnu.org>; Fri, 02 May 2025 03:23:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746181419; x=1746786219;
+ d=1e100.net; s=20230601; t=1746181422; x=1746786222;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Yl8DNVWxw/HVdX6rB7XjjEdD8rzZehVWReue67TF40Y=;
- b=EGK5yMxhmIvMerihdh690b9uD7+p46XknZ7Qoi0jS2XjorjZjcwVo7Bo6U6FAL4Xt8
- j0TaKA0SnTqTuNFbRYTjDm7XwQPNJOG+4bOoMrP7GdhdCbQ6zhOM+xz2gUY4mhnO4xAW
- byarzpxmEBr51b0SwC42V6q6+a6y2gEmoqtpFd6IAuGSzeB5a1fpbcNum71bgWfHOjO/
- 11e84eP7EOjW/MyXxJaAq+BXpefHWxNGF8GBJyptUkO5uegdcfp1LY7cEgoOuwm6LM/d
- qKo8PgHigvSel0b2ScZMiYJJxk9fbrP1jqPz4Yz5vXaIEKmH9dA0lNpv38laG89Jpggg
- zImA==
-X-Gm-Message-State: AOJu0Ywpocm+crQe7WBQhrNFgve23zdLUZJhsMM4UeXfImhKHwV0L6cZ
- 0vSsc7mU55lzS5eaAEH9GmCMp6BV35XjWxWMv1fYaR2bWwx66f/1UXi94EU0uow/9190nj/BLgv
- pZq5uKkcxjAnNbXWYhDNOB90YL3nw6r/ukEpdJyuRoeKKs/C/qSoRs0908zGxsslOkM4J2fZ1bB
- cXlKL+3/Y0gZm0pF8+jralORAcUiJG/YmoFVWC
-X-Gm-Gg: ASbGnctmQt+f3FAneFZTnmTl/VqyW2pqQe7TqrM7U3N05A5KzAGnePT+FMRvCDWwTDm
- rjfVXPguG8gdmqvp2Ti4BcaVMI1irT9u5mwMOcBIitl8LCXcuPn7IMve15I9aq/i0gIbc0Z2OSL
- 85pfmEDb+T06yfCTnbAcsRl51neuoNhdvO7H+CGaHAfCKypoofF1eh8juMEli2FcnGa7w7MPESA
- wi76ACf/DyrbJg3lu+jj/L7ovoGYDi/NLuoZuyNL1f/NlM+hV7z37RTtyu4PGtggiOhF+mbtO6p
- MXXKTaKMKIaOk/0=
-X-Received: by 2002:a05:600c:1e12:b0:43d:53c:1ad6 with SMTP id
- 5b1f17b1804b1-441bbf2bd66mr16522235e9.26.1746181418720; 
- Fri, 02 May 2025 03:23:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFO4trlkva0kfy15cK8IlxEl//hJufaDzfW7jYNmpK6cfxH8tX1ZLsUgTAsFrm0sVbOT9PXVA==
-X-Received: by 2002:a05:600c:1e12:b0:43d:53c:1ad6 with SMTP id
- 5b1f17b1804b1-441bbf2bd66mr16522055e9.26.1746181418320; 
- Fri, 02 May 2025 03:23:38 -0700 (PDT)
+ bh=1wYFKFukEgC4q83remIku1UKrxyAwoZsTo9ED8Ho7I0=;
+ b=RqAV9JRXn2lDtaNdh8C94nQID8Si0CeLtTFxU2xVY30sSGn+cktW/UX7IqV96+QYii
+ opPgqvj8xL9R2hR82kLhZY49Hp9ijH2p5CZkHDVcrAinqb3nSFAUgu+ypbXRaGND0Ruf
+ KXUQ+RIW6jrkaRSgBSQmWDOLSbMGPZQj6mR4QMQgufjkwJxC1aeVal+k2I/PPIgtPLds
+ 89GJ+Oc20scedGMv7Ng7tr8yuG/n427fwbX9XvWZ9He7/PK5zVOqQz/ZjvW2ViaLHWeu
+ d0xCwnADOpXEUChDoQxJHuZEZGGHBoXmWLisYebhCwz7Tzfy6y8149CA9HCeHDcou+Ky
+ qn8g==
+X-Gm-Message-State: AOJu0Yz8/JBce15xJ/7I1oVA3HSVHFZKxOUfZjy2zofZAtAY7zwBUGJC
+ U5WD5uhDKCUTZovmXgcPoZDVWZpmQaAGSY4BRSZYvAkwOJLSHHpC5muzkh072PxWBiVpNfyAtwZ
+ zBg8CkMWnIwyzRv6vShhVrfHI2WM0TLvQBJ3RjcnT2+VZNISdqZ6ZetnqWykf4/9DZWGPfS9VPK
+ mf1NBpBP9HuM+6lG8bA9DCCM9MSYysyPATmtu4
+X-Gm-Gg: ASbGnctvb+n9ZEoaaj7xJhHj+2Vr3oWb/zV+QlRxtQ/jGVazuA8SYFDhOKJkJjwngCf
+ hFvO3bdl3hqkIBhiauvWM/Mg0r1ZeAHTSiNF//v681MijU9SwapPiVOXkn+k/xwUfn6Nri/Bhkj
+ T0yhObBAr6lyQx5VYyZsCLZKNfql2YbOaIsna99C/XTqrgsk8gZEPmi6nDfh1MhtAQw8NVUGy1S
+ F4g73AcYfD4Cj/yNoYXflKPDPy026JGMHp5d0jknmjxar5fjWx5KMijWZq5QI91qiwT0w2/3YK1
+ zzNTkioturf8HZw=
+X-Received: by 2002:a05:600c:1f94:b0:43d:5ec:b2f4 with SMTP id
+ 5b1f17b1804b1-441bbeb36afmr22245055e9.10.1746181421446; 
+ Fri, 02 May 2025 03:23:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEzG6gfgMHL9lJlqgDZyxzQx3ByVYr4LexcBEYEwQxYCUQjgAKWYWeECEcC6CWq6jlHEM/aTg==
+X-Received: by 2002:a05:600c:1f94:b0:43d:5ec:b2f4 with SMTP id
+ 5b1f17b1804b1-441bbeb36afmr22244595e9.10.1746181420775; 
+ Fri, 02 May 2025 03:23:40 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.54.106])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-441b89cc50esm40868565e9.8.2025.05.02.03.23.35
+ ffacd0b85a97d-3a099ae3403sm1730617f8f.28.2025.05.02.03.23.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 May 2025 03:23:36 -0700 (PDT)
+ Fri, 02 May 2025 03:23:39 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-rust@nongnu.org
-Subject: [PATCH 5/9] rust: use MaybeUninit::zeroed() in const context
-Date: Fri,  2 May 2025 12:23:18 +0200
-Message-ID: <20250502102323.104815-6-pbonzini@redhat.com>
+Subject: [PATCH 6/9] rust: remove offset_of replacement
+Date: Fri,  2 May 2025 12:23:19 +0200
+Message-ID: <20250502102323.104815-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250502102323.104815-1-pbonzini@redhat.com>
 References: <20250502102323.104815-1-pbonzini@redhat.com>
@@ -106,182 +106,517 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- docs/devel/rust.rst              |   4 --
- rust/hw/timer/hpet/src/fw_cfg.rs |   6 +-
- rust/qemu-api/src/zeroable.rs    | 104 +++++--------------------------
- 3 files changed, 18 insertions(+), 96 deletions(-)
+ docs/devel/rust.rst                  |   6 -
+ rust/Cargo.toml                      |   2 +-
+ rust/hw/char/pl011/src/device.rs     |   4 +-
+ rust/hw/timer/hpet/src/hpet.rs       |   4 +-
+ rust/qemu-api-macros/src/lib.rs      |  29 +----
+ rust/qemu-api/Cargo.toml             |   3 -
+ rust/qemu-api/build.rs               |   7 --
+ rust/qemu-api/meson.build            |   4 -
+ rust/qemu-api/src/lib.rs             |   4 -
+ rust/qemu-api/src/offset_of.rs       | 168 ---------------------------
+ rust/qemu-api/src/qdev.rs            |   6 +-
+ rust/qemu-api/src/vmstate.rs         |  10 +-
+ rust/qemu-api/tests/tests.rs         |   2 -
+ rust/qemu-api/tests/vmstate_tests.rs |   5 +-
+ 14 files changed, 16 insertions(+), 238 deletions(-)
+ delete mode 100644 rust/qemu-api/src/offset_of.rs
 
 diff --git a/docs/devel/rust.rst b/docs/devel/rust.rst
-index 8167ff49aa9..13a002cfe69 100644
+index 13a002cfe69..8dad90fdf98 100644
 --- a/docs/devel/rust.rst
 +++ b/docs/devel/rust.rst
-@@ -83,10 +83,6 @@ are missing:
- * "Return position ``impl Trait`` in Traits" (1.75.0, blocker for including
-   the pinned-init create).
- 
--* ``MaybeUninit::zeroed()`` as a ``const`` function (1.75.0).  QEMU's
--  ``Zeroable`` trait can be implemented without ``MaybeUninit::zeroed()``,
--  so this would be just a cleanup.
--
+@@ -86,12 +86,6 @@ are missing:
  * ``c"" literals`` (stable in 1.77.0).  QEMU provides a ``c_str!()`` macro
    to define ``CStr`` constants easily
  
-diff --git a/rust/hw/timer/hpet/src/fw_cfg.rs b/rust/hw/timer/hpet/src/fw_cfg.rs
-index bef03727ea3..aa08d283519 100644
---- a/rust/hw/timer/hpet/src/fw_cfg.rs
-+++ b/rust/hw/timer/hpet/src/fw_cfg.rs
-@@ -4,7 +4,7 @@
+-* ``offset_of!`` (stable in 1.77.0).  QEMU uses ``offset_of!()`` heavily; it
+-  provides a replacement in the ``qemu_api`` crate, but it does not support
+-  lifetime parameters and therefore ``&'a Something`` fields in the struct
+-  may have to be replaced by ``NonNull<Something>``.  *Nested* ``offset_of!``
+-  was only stabilized in Rust 1.82.0, but it is not used.
+-
+ * inline const expression (stable in 1.79.0), currently worked around with
+   associated constants in the ``FnCall`` trait.
  
- use std::ptr::addr_of_mut;
+diff --git a/rust/Cargo.toml b/rust/Cargo.toml
+index ab1185a8143..ea2a85a1d07 100644
+--- a/rust/Cargo.toml
++++ b/rust/Cargo.toml
+@@ -10,7 +10,7 @@ members = [
+ [workspace.lints.rust]
+ unexpected_cfgs = { level = "deny", check-cfg = [
+     'cfg(MESON)', 'cfg(HAVE_GLIB_WITH_ALIGNED_ALLOC)',
+-    'cfg(has_offset_of)'] }
++] }
  
--use qemu_api::{cell::bql_locked, impl_zeroable, zeroable::Zeroable};
-+use qemu_api::{cell::bql_locked, zeroable::Zeroable};
- 
- /// Each `HPETState` represents a Event Timer Block. The v1 spec supports
- /// up to 8 blocks. QEMU only uses 1 block (in PC machine).
-@@ -18,7 +18,7 @@ pub struct HPETFwEntry {
-     pub min_tick: u16,
-     pub page_prot: u8,
+ # Occasionally, we may need to silence warnings and clippy lints that
+ # were only introduced in newer Rust compiler versions.  Do not croak
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+index bb2a0f207a5..7c563ade9cd 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -74,7 +74,7 @@ fn index(&self, idx: u32) -> &Self::Output {
  }
--impl_zeroable!(HPETFwEntry);
-+unsafe impl Zeroable for HPETFwEntry {}
  
- #[repr(C, packed)]
- #[derive(Copy, Clone, Default)]
-@@ -26,7 +26,7 @@ pub struct HPETFwConfig {
-     pub count: u8,
-     pub hpet: [HPETFwEntry; HPET_MAX_NUM_EVENT_TIMER_BLOCK],
+ #[repr(C)]
+-#[derive(Debug, Default, qemu_api_macros::offsets)]
++#[derive(Debug, Default)]
+ pub struct PL011Registers {
+     #[doc(alias = "fr")]
+     pub flags: registers::Flags,
+@@ -98,7 +98,7 @@ pub struct PL011Registers {
  }
--impl_zeroable!(HPETFwConfig);
-+unsafe impl Zeroable for HPETFwConfig {}
  
- #[allow(non_upper_case_globals)]
- #[no_mangle]
-diff --git a/rust/qemu-api/src/zeroable.rs b/rust/qemu-api/src/zeroable.rs
-index a3415a2ebcc..57d802db69b 100644
---- a/rust/qemu-api/src/zeroable.rs
-+++ b/rust/qemu-api/src/zeroable.rs
-@@ -4,89 +4,15 @@
+ #[repr(C)]
+-#[derive(qemu_api_macros::Object, qemu_api_macros::offsets)]
++#[derive(qemu_api_macros::Object)]
+ /// PL011 Device Model in QEMU
+ pub struct PL011State {
+     pub parent_obj: ParentField<SysBusDevice>,
+diff --git a/rust/hw/timer/hpet/src/hpet.rs b/rust/hw/timer/hpet/src/hpet.rs
+index d4364f2f2f7..72609c31f44 100644
+--- a/rust/hw/timer/hpet/src/hpet.rs
++++ b/rust/hw/timer/hpet/src/hpet.rs
+@@ -183,7 +183,7 @@ fn timer_handler(timer_cell: &BqlRefCell<HPETTimer>) {
  
- /// Encapsulates the requirement that
- /// `MaybeUninit::<Self>::zeroed().assume_init()` does not cause undefined
--/// behavior.  This trait in principle could be implemented as just:
--///
--/// ```
--/// pub unsafe trait Zeroable: Default {
--///     const ZERO: Self = unsafe { ::core::mem::MaybeUninit::<Self>::zeroed().assume_init() };
--/// }
--/// ```
--///
--/// The need for a manual implementation is only because `zeroed()` cannot
--/// be used as a `const fn` prior to Rust 1.75.0. Once we can assume a new
--/// enough version of the compiler, we could provide a `#[derive(Zeroable)]`
--/// macro to check at compile-time that all struct fields are Zeroable, and
--/// use the above blanket implementation of the `ZERO` constant.
-+/// behavior.
- ///
- /// # Safety
- ///
--/// Because the implementation of `ZERO` is manual, it does not make
--/// any assumption on the safety of `zeroed()`.  However, other users of the
--/// trait could use it that way.  Do not add this trait to a type unless
--/// all-zeroes is a valid value for the type.  In particular, remember that
--/// raw pointers can be zero, but references and `NonNull<T>` cannot
-+/// Do not add this trait to a type unless all-zeroes is a valid value for the
-+/// type.  In particular, raw pointers can be zero, but references and `NonNull<T>`
-+/// cannot.
- pub unsafe trait Zeroable: Default {
--    const ZERO: Self;
+ /// HPET Timer Abstraction
+ #[repr(C)]
+-#[derive(Debug, qemu_api_macros::offsets)]
++#[derive(Debug)]
+ pub struct HPETTimer {
+     /// timer N index within the timer block (`HPETState`)
+     #[doc(alias = "tn")]
+@@ -523,7 +523,7 @@ fn write(&mut self, reg: TimerRegister, value: u64, shift: u32, len: u32) {
+ 
+ /// HPET Event Timer Block Abstraction
+ #[repr(C)]
+-#[derive(qemu_api_macros::Object, qemu_api_macros::offsets)]
++#[derive(qemu_api_macros::Object)]
+ pub struct HPETState {
+     parent_obj: ParentField<SysBusDevice>,
+     iomem: MemoryRegion,
+diff --git a/rust/qemu-api-macros/src/lib.rs b/rust/qemu-api-macros/src/lib.rs
+index 1448f3025a4..108f434ed44 100644
+--- a/rust/qemu-api-macros/src/lib.rs
++++ b/rust/qemu-api-macros/src/lib.rs
+@@ -6,7 +6,7 @@
+ use quote::quote;
+ use syn::{
+     parse_macro_input, parse_quote, punctuated::Punctuated, spanned::Spanned, token::Comma, Data,
+-    DeriveInput, Field, Fields, FieldsUnnamed, Ident, Meta, Path, Token, Type, Variant, Visibility,
++    DeriveInput, Field, Fields, FieldsUnnamed, Ident, Meta, Path, Token, Variant,
+ };
+ 
+ mod utils;
+@@ -157,33 +157,6 @@ pub fn derive_opaque(input: TokenStream) -> TokenStream {
+     TokenStream::from(expanded)
+ }
+ 
+-#[rustfmt::skip::macros(quote)]
+-fn derive_offsets_or_error(input: DeriveInput) -> Result<proc_macro2::TokenStream, MacroError> {
+-    is_c_repr(&input, "#[derive(offsets)]")?;
+-
+-    let name = &input.ident;
+-    let fields = get_fields(&input, "#[derive(offsets)]")?;
+-    let field_names: Vec<&Ident> = fields.iter().map(|f| f.ident.as_ref().unwrap()).collect();
+-    let field_types: Vec<&Type> = fields.iter().map(|f| &f.ty).collect();
+-    let field_vis: Vec<&Visibility> = fields.iter().map(|f| &f.vis).collect();
+-
+-    Ok(quote! {
+-	::qemu_api::with_offsets! {
+-	    struct #name {
+-		#(#field_vis #field_names: #field_types,)*
+-	    }
+-	}
+-    })
 -}
 -
--/// A macro that acts similarly to [`core::mem::zeroed()`], only is const
--///
--/// ## Safety
--///
--/// Similar to `core::mem::zeroed()`, except this zeroes padding bits. Zeroed
--/// padding usually isn't relevant to safety, but might be if a C union is used.
--///
--/// Just like for `core::mem::zeroed()`, an all zero byte pattern might not
--/// be a valid value for a type, as is the case for references `&T` and `&mut
--/// T`. Reference types trigger a (denied by default) lint and cause immediate
--/// undefined behavior if the lint is ignored
--///
--/// ```rust compile_fail
--/// use const_zero::const_zero;
--/// // error: any use of this value will cause an error
--/// // note: `#[deny(const_err)]` on by default
--/// const STR: &str = unsafe{const_zero!(&'static str)};
--/// ```
--///
--/// `const_zero` does not work on unsized types:
--///
--/// ```rust compile_fail
--/// use const_zero::const_zero;
--/// // error[E0277]: the size for values of type `[u8]` cannot be known at compilation time
--/// const BYTES: [u8] = unsafe{const_zero!([u8])};
--/// ```
--/// ## Differences with `core::mem::zeroed`
--///
--/// `const_zero` zeroes padding bits, while `core::mem::zeroed` doesn't
--#[macro_export]
--macro_rules! const_zero {
--    // This macro to produce a type-generic zero constant is taken from the
--    // const_zero crate (v0.1.1):
--    //
--    //     https://docs.rs/const-zero/latest/src/const_zero/lib.rs.html
--    //
--    // and used under MIT license
--    ($type_:ty) => {{
--        const TYPE_SIZE: ::core::primitive::usize = ::core::mem::size_of::<$type_>();
--        union TypeAsBytes {
--            bytes: [::core::primitive::u8; TYPE_SIZE],
--            inner: ::core::mem::ManuallyDrop<$type_>,
--        }
--        const ZERO_BYTES: TypeAsBytes = TypeAsBytes {
--            bytes: [0; TYPE_SIZE],
--        };
--        ::core::mem::ManuallyDrop::<$type_>::into_inner(ZERO_BYTES.inner)
--    }};
+-#[proc_macro_derive(offsets)]
+-pub fn derive_offsets(input: TokenStream) -> TokenStream {
+-    let input = parse_macro_input!(input as DeriveInput);
+-    let expanded = derive_offsets_or_error(input).unwrap_or_else(Into::into);
+-
+-    TokenStream::from(expanded)
 -}
 -
--/// A wrapper to implement the `Zeroable` trait through the `const_zero` macro.
+ #[allow(non_snake_case)]
+ fn get_repr_uN(input: &DeriveInput, msg: &str) -> Result<Path, MacroError> {
+     let repr = input.attrs.iter().find(|attr| attr.path().is_ident("repr"));
+diff --git a/rust/qemu-api/Cargo.toml b/rust/qemu-api/Cargo.toml
+index 57747bc9341..c5b7b2464e9 100644
+--- a/rust/qemu-api/Cargo.toml
++++ b/rust/qemu-api/Cargo.toml
+@@ -18,9 +18,6 @@ rust-version = "1.63.0"
+ qemu_api_macros = { path = "../qemu-api-macros" }
+ libc = "0.2.162"
+ 
+-[build-dependencies]
+-version_check = "~0.9"
+-
+ [features]
+ default = ["debug_cell"]
+ allocator = []
+diff --git a/rust/qemu-api/build.rs b/rust/qemu-api/build.rs
+index 471e6c633df..470be2a4d54 100644
+--- a/rust/qemu-api/build.rs
++++ b/rust/qemu-api/build.rs
+@@ -8,8 +8,6 @@
+ use std::os::windows::fs::symlink_file;
+ use std::{env, fs::remove_file, io::Result, path::Path};
+ 
+-use version_check as rustc;
+-
+ fn main() -> Result<()> {
+     // Placing bindings.inc.rs in the source directory is supported
+     // but not documented or encouraged.
+@@ -38,11 +36,6 @@ fn main() -> Result<()> {
+     }
+     symlink_file(file, dest_path)?;
+ 
+-    // Check for available rustc features
+-    if rustc::is_min_version("1.77.0").unwrap_or(false) {
+-        println!("cargo:rustc-cfg=has_offset_of");
+-    }
+-
+     println!("cargo:rerun-if-changed=build.rs");
+     Ok(())
+ }
+diff --git a/rust/qemu-api/meson.build b/rust/qemu-api/meson.build
+index 858685ddd4a..95e65643ae1 100644
+--- a/rust/qemu-api/meson.build
++++ b/rust/qemu-api/meson.build
+@@ -5,9 +5,6 @@ _qemu_api_cfg = run_command(rustc_args,
+ libc_dep = dependency('libc-0.2-rs')
+ 
+ # _qemu_api_cfg += ['--cfg', 'feature="allocator"']
+-if rustc.version().version_compare('>=1.77.0')
+-  _qemu_api_cfg += ['--cfg', 'has_offset_of']
+-endif
+ if get_option('debug_mutex')
+   _qemu_api_cfg += ['--cfg', 'feature="debug_cell"']
+ endif
+@@ -28,7 +25,6 @@ _qemu_api_rs = static_library(
+       'src/irq.rs',
+       'src/memory.rs',
+       'src/module.rs',
+-      'src/offset_of.rs',
+       'src/prelude.rs',
+       'src/qdev.rs',
+       'src/qom.rs',
+diff --git a/rust/qemu-api/src/lib.rs b/rust/qemu-api/src/lib.rs
+index c3641e893b7..90c19636660 100644
+--- a/rust/qemu-api/src/lib.rs
++++ b/rust/qemu-api/src/lib.rs
+@@ -23,7 +23,6 @@
+ pub mod irq;
+ pub mod memory;
+ pub mod module;
+-pub mod offset_of;
+ pub mod qdev;
+ pub mod qom;
+ pub mod sysbus;
+@@ -165,6 +164,3 @@ unsafe fn dealloc(&self, ptr: *mut u8, layout: Layout) {
+         }
+     }
+ }
+-
+-#[cfg(has_offset_of)]
+-pub use core::mem::offset_of;
+diff --git a/rust/qemu-api/src/offset_of.rs b/rust/qemu-api/src/offset_of.rs
+deleted file mode 100644
+index 373229bbde9..00000000000
+--- a/rust/qemu-api/src/offset_of.rs
++++ /dev/null
+@@ -1,168 +0,0 @@
+-// SPDX-License-Identifier: MIT
+-
+-#![doc(hidden)]
+-//! This module provides macros that emulate the functionality of
+-//! `core::mem::offset_of` on older versions of Rust.
+-//!
+-//! Documentation is hidden because it only exposes macros, which
+-//! are exported directly from `qemu_api`.
+-
+-/// This macro provides the same functionality as `core::mem::offset_of`,
+-/// except that only one level of field access is supported.  The declaration
+-/// of the struct must be wrapped with `with_offsets! { }`.
+-///
+-/// It is needed because `offset_of!` was only stabilized in Rust 1.77.
+-#[cfg(not(has_offset_of))]
 -#[macro_export]
--macro_rules! impl_zeroable {
--    ($type:ty) => {
--        unsafe impl $crate::zeroable::Zeroable for $type {
--            const ZERO: Self = unsafe { $crate::const_zero!($type) };
--        }
+-macro_rules! offset_of {
+-    ($Container:ty, $field:ident) => {
+-        <$Container>::OFFSET_TO__.$field
 -    };
-+    const ZERO: Self = unsafe { ::core::mem::MaybeUninit::<Self>::zeroed().assume_init() };
- }
+-}
+-
+-/// A wrapper for struct declarations, that allows using `offset_of!` in
+-/// versions of Rust prior to 1.77
+-#[macro_export]
+-macro_rules! with_offsets {
+-    // This method to generate field offset constants comes from:
+-    //
+-    //     https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=10a22a9b8393abd7b541d8fc844bc0df
+-    //
+-    // used under MIT license with permission of Yandros aka Daniel Henry-Mantilla
+-    (
+-        $(#[$struct_meta:meta])*
+-        $struct_vis:vis
+-        struct $StructName:ident {
+-            $(
+-                $(#[$field_meta:meta])*
+-                $field_vis:vis
+-                $field_name:ident : $field_ty:ty
+-            ),*
+-            $(,)?
+-        }
+-    ) => (
+-        #[cfg(not(has_offset_of))]
+-        const _: () = {
+-            struct StructOffsetsHelper<T>(std::marker::PhantomData<T>);
+-            const END_OF_PREV_FIELD: usize = 0;
+-
+-            // populate StructOffsetsHelper<T> with associated consts,
+-            // one for each field
+-            $crate::with_offsets! {
+-                @struct $StructName
+-                @names [ $($field_name)* ]
+-                @tys [ $($field_ty ,)*]
+-            }
+-
+-            // now turn StructOffsetsHelper<T>'s consts into a single struct,
+-            // applying field visibility.  This provides better error messages
+-            // than if offset_of! used StructOffsetsHelper::<T> directly.
+-            pub
+-            struct StructOffsets {
+-                $(
+-                    $field_vis
+-                    $field_name: usize,
+-                )*
+-            }
+-            impl $StructName {
+-                pub
+-                const OFFSET_TO__: StructOffsets = StructOffsets {
+-                    $(
+-                        $field_name: StructOffsetsHelper::<$StructName>::$field_name,
+-                    )*
+-                };
+-            }
+-        };
+-    );
+-
+-    (
+-        @struct $StructName:ident
+-        @names []
+-        @tys []
+-    ) => ();
+-
+-    (
+-        @struct $StructName:ident
+-        @names [$field_name:ident $($other_names:tt)*]
+-        @tys [$field_ty:ty , $($other_tys:tt)*]
+-    ) => (
+-        #[allow(non_local_definitions)]
+-        #[allow(clippy::modulo_one)]
+-        impl StructOffsetsHelper<$StructName> {
+-            #[allow(nonstandard_style)]
+-            const $field_name: usize = {
+-                const ALIGN: usize = std::mem::align_of::<$field_ty>();
+-                const TRAIL: usize = END_OF_PREV_FIELD % ALIGN;
+-                END_OF_PREV_FIELD + (if TRAIL == 0 { 0usize } else { ALIGN - TRAIL })
+-            };
+-        }
+-        const _: () = {
+-            const END_OF_PREV_FIELD: usize =
+-                StructOffsetsHelper::<$StructName>::$field_name +
+-                std::mem::size_of::<$field_ty>()
+-            ;
+-            $crate::with_offsets! {
+-                @struct $StructName
+-                @names [$($other_names)*]
+-                @tys [$($other_tys)*]
+-            }
+-        };
+-    );
+-}
+-
+-#[cfg(test)]
+-mod tests {
+-    use crate::offset_of;
+-
+-    #[repr(C)]
+-    struct Foo {
+-        a: u16,
+-        b: u32,
+-        c: u64,
+-        d: u16,
+-    }
+-
+-    #[repr(C)]
+-    struct Bar {
+-        pub a: u16,
+-        pub b: u64,
+-        c: Foo,
+-        d: u64,
+-    }
+-
+-    crate::with_offsets! {
+-        #[repr(C)]
+-        struct Bar {
+-            pub a: u16,
+-            pub b: u64,
+-            c: Foo,
+-            d: u64,
+-        }
+-    }
+-
+-    #[repr(C)]
+-    pub struct Baz {
+-        b: u32,
+-        a: u8,
+-    }
+-    crate::with_offsets! {
+-        #[repr(C)]
+-        pub struct Baz {
+-            b: u32,
+-            a: u8,
+-        }
+-    }
+-
+-    #[test]
+-    fn test_offset_of() {
+-        const OFFSET_TO_C: usize = offset_of!(Bar, c);
+-
+-        assert_eq!(offset_of!(Bar, a), 0);
+-        assert_eq!(offset_of!(Bar, b), 8);
+-        assert_eq!(OFFSET_TO_C, 16);
+-        assert_eq!(offset_of!(Bar, d), 40);
+-
+-        assert_eq!(offset_of!(Baz, b), 0);
+-        assert_eq!(offset_of!(Baz, a), 4);
+-    }
+-}
+diff --git a/rust/qemu-api/src/qdev.rs b/rust/qemu-api/src/qdev.rs
+index 17c7fecabeb..1279d7a58d5 100644
+--- a/rust/qemu-api/src/qdev.rs
++++ b/rust/qemu-api/src/qdev.rs
+@@ -190,7 +190,7 @@ macro_rules! define_property {
+             // use associated function syntax for type checking
+             name: ::std::ffi::CStr::as_ptr($name),
+             info: $prop,
+-            offset: $crate::offset_of!($state, $field) as isize,
++            offset: ::std::mem::offset_of!($state, $field) as isize,
+             bitnr: $bitnr,
+             set_default: true,
+             defval: $crate::bindings::Property__bindgen_ty_1 { u: $defval as u64 },
+@@ -202,7 +202,7 @@ macro_rules! define_property {
+             // use associated function syntax for type checking
+             name: ::std::ffi::CStr::as_ptr($name),
+             info: $prop,
+-            offset: $crate::offset_of!($state, $field) as isize,
++            offset: ::std::mem::offset_of!($state, $field) as isize,
+             set_default: true,
+             defval: $crate::bindings::Property__bindgen_ty_1 { u: $defval as u64 },
+             ..$crate::zeroable::Zeroable::ZERO
+@@ -213,7 +213,7 @@ macro_rules! define_property {
+             // use associated function syntax for type checking
+             name: ::std::ffi::CStr::as_ptr($name),
+             info: $prop,
+-            offset: $crate::offset_of!($state, $field) as isize,
++            offset: ::std::mem::offset_of!($state, $field) as isize,
+             set_default: false,
+             ..$crate::zeroable::Zeroable::ZERO
+         }
+diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
+index 78c7f17db13..9a6e6b734b9 100644
+--- a/rust/qemu-api/src/vmstate.rs
++++ b/rust/qemu-api/src/vmstate.rs
+@@ -205,8 +205,8 @@ macro_rules! vmstate_of {
+             name: ::core::concat!(::core::stringify!($field_name), "\0")
+                 .as_bytes()
+                 .as_ptr() as *const ::std::os::raw::c_char,
+-            offset: $crate::offset_of!($struct_name, $field_name),
+-            $(num_offset: $crate::offset_of!($struct_name, $num),)?
++            offset: ::std::mem::offset_of!($struct_name, $field_name),
++            $(num_offset: ::std::mem::offset_of!($struct_name, $num),)?
+             // The calls to `call_func_with_field!` are the magic that
+             // computes most of the VMStateField from the type of the field.
+             info: $crate::info_enum_to_ref!($crate::call_func_with_field!(
+@@ -482,10 +482,10 @@ macro_rules! vmstate_struct {
+             name: ::core::concat!(::core::stringify!($field_name), "\0")
+                 .as_bytes()
+                 .as_ptr() as *const ::std::os::raw::c_char,
+-            $(num_offset: $crate::offset_of!($struct_name, $num),)?
++            $(num_offset: ::std::mem::offset_of!($struct_name, $num),)?
+             offset: {
+                 $crate::assert_field_type!($struct_name, $field_name, $type $(, num = $num)?);
+-                $crate::offset_of!($struct_name, $field_name)
++                ::std::mem::offset_of!($struct_name, $field_name)
+             },
+             size: ::core::mem::size_of::<$type>(),
+             flags: $crate::bindings::VMStateFlags::VMS_STRUCT,
+@@ -517,7 +517,7 @@ macro_rules! vmstate_clock {
+                     $field_name,
+                     $crate::qom::Owned<$crate::qdev::Clock> $(, num = $num)?
+                 );
+-                $crate::offset_of!($struct_name, $field_name)
++                ::std::mem::offset_of!($struct_name, $field_name)
+             },
+             size: ::core::mem::size_of::<*const $crate::qdev::Clock>(),
+             flags: $crate::bindings::VMStateFlags(
+diff --git a/rust/qemu-api/tests/tests.rs b/rust/qemu-api/tests/tests.rs
+index 99a7aab6fed..d045808c3a8 100644
+--- a/rust/qemu-api/tests/tests.rs
++++ b/rust/qemu-api/tests/tests.rs
+@@ -26,7 +26,6 @@
+     ..Zeroable::ZERO
+ };
  
- // bindgen does not derive Default here
-@@ -97,13 +23,13 @@ fn default() -> Self {
+-#[derive(qemu_api_macros::offsets)]
+ #[repr(C)]
+ #[derive(qemu_api_macros::Object)]
+ pub struct DummyState {
+@@ -79,7 +78,6 @@ fn vmsd() -> Option<&'static VMStateDescription> {
      }
  }
  
--impl_zeroable!(crate::bindings::Property__bindgen_ty_1);
--impl_zeroable!(crate::bindings::Property);
--impl_zeroable!(crate::bindings::VMStateFlags);
--impl_zeroable!(crate::bindings::VMStateField);
--impl_zeroable!(crate::bindings::VMStateDescription);
--impl_zeroable!(crate::bindings::MemoryRegionOps__bindgen_ty_1);
--impl_zeroable!(crate::bindings::MemoryRegionOps__bindgen_ty_2);
--impl_zeroable!(crate::bindings::MemoryRegionOps);
--impl_zeroable!(crate::bindings::MemTxAttrs);
--impl_zeroable!(crate::bindings::CharBackend);
-+unsafe impl Zeroable for crate::bindings::Property__bindgen_ty_1 {}
-+unsafe impl Zeroable for crate::bindings::Property {}
-+unsafe impl Zeroable for crate::bindings::VMStateFlags {}
-+unsafe impl Zeroable for crate::bindings::VMStateField {}
-+unsafe impl Zeroable for crate::bindings::VMStateDescription {}
-+unsafe impl Zeroable for crate::bindings::MemoryRegionOps__bindgen_ty_1 {}
-+unsafe impl Zeroable for crate::bindings::MemoryRegionOps__bindgen_ty_2 {}
-+unsafe impl Zeroable for crate::bindings::MemoryRegionOps {}
-+unsafe impl Zeroable for crate::bindings::MemTxAttrs {}
-+unsafe impl Zeroable for crate::bindings::CharBackend {}
+-#[derive(qemu_api_macros::offsets)]
+ #[repr(C)]
+ #[derive(qemu_api_macros::Object)]
+ pub struct DummyChildState {
+diff --git a/rust/qemu-api/tests/vmstate_tests.rs b/rust/qemu-api/tests/vmstate_tests.rs
+index 9a56ffd2385..cc3527a9b6a 100644
+--- a/rust/qemu-api/tests/vmstate_tests.rs
++++ b/rust/qemu-api/tests/vmstate_tests.rs
+@@ -33,7 +33,7 @@
+ //     - VMSTATE_VARRAY_UINT16_UNSAFE
+ //     - VMSTATE_VARRAY_MULTIPLY
+ #[repr(C)]
+-#[derive(Default, qemu_api_macros::offsets)]
++#[derive(Default)]
+ struct FooA {
+     arr: [u8; FOO_ARRAY_MAX],
+     num: u16,
+@@ -154,7 +154,7 @@ fn test_vmstate_varray_multiply() {
+ //     - VMSTATE_ARRAY
+ //     - VMSTATE_STRUCT_VARRAY_UINT8 with BqlCell wrapper & test_fn
+ #[repr(C)]
+-#[derive(Default, qemu_api_macros::offsets)]
++#[derive(Default)]
+ struct FooB {
+     arr_a: [FooA; FOO_ARRAY_MAX],
+     num_a: u8,
+@@ -329,7 +329,6 @@ fn test_vmstate_struct_varray_uint8_wrapper() {
+ impl_vmstate_forward!(FooCWrapper);
+ 
+ #[repr(C)]
+-#[derive(qemu_api_macros::offsets)]
+ struct FooC {
+     ptr: *const i32,
+     ptr_a: NonNull<FooA>,
 -- 
 2.49.0
 
