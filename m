@@ -2,94 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DFD1AA7B76
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 23:47:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 881EDAA7B7D
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 23:47:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAyDB-0000lI-Ik; Fri, 02 May 2025 17:46:25 -0400
+	id 1uAyEO-0003EX-6U; Fri, 02 May 2025 17:47:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAyDA-0000l6-8C
- for qemu-devel@nongnu.org; Fri, 02 May 2025 17:46:24 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAyD8-0003Xe-Ns
- for qemu-devel@nongnu.org; Fri, 02 May 2025 17:46:24 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-ac2c663a3daso467642766b.2
- for <qemu-devel@nongnu.org>; Fri, 02 May 2025 14:46:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746222380; x=1746827180; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=DsDN4bksGI+t6Ajgx6lEwHOduZigzfyenP30N9rjdOI=;
- b=RLC2spLKgwcop4kB/u1cqoTkwAsPI5BI4Yp8fyUTKurk5ZH5iePqpsKujvutBXQyyC
- mhlrc7wszYMRT/qAAcfGnZ9PRepi9cIzzTq8EGx1APeUw8cXN0xzdSpLLUaoJ3M2NvbR
- RiKaet4AhOezzy/P5p/3TVd/gaIY5WWhDTNtWnqMPqNP1ld9n6b+fpDcXMy9PUva89AQ
- Hk64nDz5LWvgfQd1Tv1jEuD+xItgksHTC7OnCPe5ojS60Uxo7RYAuOu9jFKIIWIgBLXY
- 2SKtx5T4NNJSAx1b+OXavEyF+wqAqyDoXAuOCjbATnGmtthhza+gesWSksmf8J0oYX4p
- qQpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746222380; x=1746827180;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=DsDN4bksGI+t6Ajgx6lEwHOduZigzfyenP30N9rjdOI=;
- b=CdCiwGI+1Sk72xS4EacbkfCus1WsPa9JQyoqAXcUcH6nBeSSFmry+u0hSYPKqm2NTA
- O400hYVifAVSyyT70Itk5dcpHkJ/+1LezzSTG6aNwdyf+cKYVpG/oHFPewRUb7XgcC8G
- n3RimzgG8EnpHxWn3yc64E07adlBXOoQYMXkxEz2bPrrjbqahBgfwtYe4VOCd4zjwCsK
- okut3jCyr069uAE20L1vjBhSlZMqyAyOVImhx2CZDbQLNj4BBEimf8/1nBsAH3e8YH+3
- 0p25t2OCgURI2mSUk63eZdhjYYJGv1VOP/sWTfepn6wtMiGhEfb70zILFGLb7+WsHdZE
- /hMw==
-X-Gm-Message-State: AOJu0Yy//pBtYQNHXqJACfInHTnK5M/cL+6GsDakwMA1SMM41p6/rtMv
- 7lTasTjFxMjc7ixmeotGQM8+fW0mO0S4eRQ822TEyayzoQcQ+YtSeqVgKuq9e2pnubIhRBvDn/b
- G
-X-Gm-Gg: ASbGnctPqZ9Q4VwptN560JAlhlHM3BEQIJP1QGF5w2SzkY/4IQ2SF44ExKTOtoneRXk
- 7cEAWhtFvYLi1ZcFVuFZVj0AtexV3I866/qjZCuZflduCckfYsRSGMhvKgacfhrOwql5YHTnmC7
- KD9MibtiITxWXqMxNRBSpN24Iv2EeOEeaFGj3Hp6S4ubRnYn3oBaAAlge0KyrVgMJjtokfqodA/
- F5VdKuZi1ZJARepXWJ0KQehcY1toFilXsLmAZ40kYUIY1EED5PlAasrQaLw42smm/CCfuEIYG6D
- +VX8ONNGx4wkpPn6TBm1x3eU6xnn64u1IaOxQgzPB/Gk0gSNTRqiV1f5KcMsZ0aUuZy0ex1phmU
- 63YaN6kAIAZk+T2g=
-X-Google-Smtp-Source: AGHT+IEYBcX/pI3wzQen51X21dbxGKuxteaaxZGI6zLLmUuNwiDzk46eWWBSMsdiidXDbkWZqLpSgw==
-X-Received: by 2002:a17:907:3f88:b0:ace:d811:db25 with SMTP id
- a640c23a62f3a-ad17b01fe1dmr425125466b.60.1746222380468; 
- Fri, 02 May 2025 14:46:20 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ad1895402c7sm100535466b.164.2025.05.02.14.46.19
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 02 May 2025 14:46:19 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1uAyEK-00034a-KL
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 17:47:36 -0400
+Received: from relay.virtuozzo.com ([130.117.225.111])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1uAyEH-0003ln-W0
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 17:47:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
+ Content-Type; bh=m8lYqra3Z84SzGYlw0DK4F45QvKpvYmvP1+8xxVQUK4=; b=EIzwwLxqamdT
+ NXhLpd5PAIczkVDslfqxzIULVCafp6puGZS8bX1/sHKqC8L4mDX7wa2FMMjaASkm8/Dv6T2YPNtcq
+ Y5//zOYQPi3drAjev/eF57pLXR9DE35dBZCeWv6AGCR6seyv4D4Vsu6MjC2X+sZSjbg7+HE++xFhW
+ Aob3LAGdqhvi0zf7MERXowIAfXSWdB0cAujrkLYzEW4rWRm53bmGqy1m0TXzn1cIrjldUjAi0uraI
+ vivvBM+UIBKnGFBq1eDx227Fg6pFHUTk8Y8nsGpzEtNPzpXtK9WyNmN8A6xT9AYpXUlSUXgGSfWM0
+ UlNOZ/HXCcuaDND/g0H4GQ==;
+Received: from [130.117.225.5] (helo=dev005.ch-qa.vzint.dev)
+ by relay.virtuozzo.com with esmtp (Exim 4.96)
+ (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1uAyAV-00C5mJ-0N;
+ Fri, 02 May 2025 23:47:25 +0200
+From: andrey.drobyshev@virtuozzo.com
 To: qemu-devel@nongnu.org
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, Yanan Wang <wangyanan55@huawei.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v3 5/5] hw/virtio: Compile virtio-mem.c once
-Date: Fri,  2 May 2025 23:45:51 +0200
-Message-ID: <20250502214551.80401-6-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250502214551.80401-1-philmd@linaro.org>
-References: <20250502214551.80401-1-philmd@linaro.org>
+Cc: armbru@redhat.com, pbonzini@redhat.com, andrey.drobyshev@virtuozzo.com,
+ den@virtuozzo.com
+Subject: [PATCH 0/1] Fix racy SEGFAULT upon monitor_cleanup()
+Date: Sat,  3 May 2025 00:47:28 +0300
+Message-ID: <20250502214729.928380-1-andrey.drobyshev@virtuozzo.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=130.117.225.111;
+ envelope-from=andrey.drobyshev@virtuozzo.com; helo=relay.virtuozzo.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,43 +65,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove unused "system/ram_addr.h" header. This file doesn't
-use any target specific definitions anymore, compile it once
-by moving it to system_virtio_ss[].
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
----
- hw/virtio/virtio-mem.c | 1 -
- hw/virtio/meson.build  | 2 +-
- 2 files changed, 1 insertion(+), 2 deletions(-)
+There's a race in monitor cleanup code which might result into SEGFAULT.
+When monitor_cleanup() is launched, qmp_dispatcher_co coroutine pointer
+is set to NULL (see Paolo's commit 3e6bed61 ("monitor: cleanup detection of
+qmp_dispatcher_co shutting down")).  If after that we manage to send
+another QMP command while monitor is shutting down, we might end up
+getting SIGSEGV on aio_co_wake(NULL).
 
-diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
-index 4234396f774..f4882c6901b 100644
---- a/hw/virtio/virtio-mem.c
-+++ b/hw/virtio/virtio-mem.c
-@@ -25,7 +25,6 @@
- #include "hw/virtio/virtio-mem.h"
- #include "qapi/error.h"
- #include "qapi/visitor.h"
--#include "system/ram_addr.h"
- #include "migration/misc.h"
- #include "hw/boards.h"
- #include "hw/qdev-properties.h"
-diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
-index 164f6fd995a..525679954ee 100644
---- a/hw/virtio/meson.build
-+++ b/hw/virtio/meson.build
-@@ -56,7 +56,7 @@ specific_virtio_ss.add(when: 'CONFIG_VHOST_VSOCK', if_true: files('vhost-vsock.c
- specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_VSOCK', if_true: files('vhost-user-vsock.c'))
- specific_virtio_ss.add(when: 'CONFIG_VIRTIO_RNG', if_true: files('virtio-rng.c'))
- specific_virtio_ss.add(when: 'CONFIG_VIRTIO_NSM', if_true: [files('virtio-nsm.c', 'cbor-helpers.c'), libcbor])
--specific_virtio_ss.add(when: 'CONFIG_VIRTIO_MEM', if_true: files('virtio-mem.c'))
-+system_virtio_ss.add(when: 'CONFIG_VIRTIO_MEM', if_true: files('virtio-mem.c'))
- specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_SCMI', if_true: files('vhost-user-scmi.c'))
- specific_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_SCMI'], if_true: files('vhost-user-scmi-pci.c'))
- 
+Backtrace:
+
+> #0  0x00005565359b7e19 in aio_co_wake (co=0x0) at ../util/async.c:693
+> #1  0x0000556535814903 in qmp_dispatcher_co_wake () at ../monitor/qmp.c:361
+> #2  0x0000556535814c17 in handle_qmp_command (opaque=0x55653767bb10, req=0x7fd574007090, err=0x0)
+>     at ../monitor/qmp.c:426
+> #3  0x000055653598d8f1 in json_message_process_token
+>     (lexer=0x55653767bbd8, input=0x7fd5740055a0, type=JSON_RCURLY, x=61, y=0) at ../qobject/json-streamer.c:99
+> #4  0x00005565359dd68b in json_lexer_feed_char (lexer=0x55653767bbd8, ch=125 '}', flush=false)
+>     at ../qobject/json-lexer.c:313
+> #5  0x00005565359dd7f7 in json_lexer_feed (lexer=0x55653767bbd8, buffer=0x7fd57ecf4e50 "}", size=1)
+>     at ../qobject/json-lexer.c:350
+> #6  0x000055653598d9e3 in json_message_parser_feed (parser=0x55653767bbc0, buffer=0x7fd57ecf4e50 "}", size=1)
+>     at ../qobject/json-streamer.c:121
+> #7  0x0000556535814c72 in monitor_qmp_read (opaque=0x55653767bb10, buf=0x7fd57ecf4e50 "}", size=1)
+>     at ../monitor/qmp.c:433
+> #8  0x000055653580b4ca in qemu_chr_be_write_impl (s=0x5565374466a0, buf=0x7fd57ecf4e50 "}", len=1)
+>     at ../chardev/char.c:214
+> #9  0x000055653580b53b in qemu_chr_be_write (s=0x5565374466a0, buf=0x7fd57ecf4e50 "}", len=1) at ../chardev/char.c:226
+> #10 0x0000556535806aea in tcp_chr_read (chan=0x7fd574001600, cond=G_IO_IN, opaque=0x5565374466a0)
+>     at ../chardev/char-socket.c:520
+> #11 0x00005565356d7f6e in qio_channel_fd_source_dispatch
+>     (source=0x7fd574005780, callback=0x55653580696f <tcp_chr_read>, user_data=0x5565374466a0)
+>     at ../io/channel-watch.c:84
+> #12 0x00007fd590ae6f4f in g_main_dispatch (context=0x556537671f50) at ../glib/gmain.c:3364
+> #13 g_main_context_dispatch (context=0x556537671f50) at ../glib/gmain.c:4079
+> #14 0x00007fd590b3c268 in g_main_context_iterate.constprop.0
+>     (context=0x556537671f50, block=block@entry=1, dispatch=dispatch@entry=1, self=<optimized out>)
+>     at ../glib/gmain.c:4155
+> #15 0x00007fd590ae65a3 in g_main_loop_run (loop=0x556537672070) at ../glib/gmain.c:4353
+> #16 0x000055653570dbb0 in iothread_run (opaque=0x556537345660) at ../iothread.c:70
+> #17 0x000055653599baf6 in qemu_thread_start (args=0x556537672090) at ../util/qemu-thread-posix.c:541
+> #18 0x00007fd58f49f7f2 in start_thread (arg=<optimized out>) at pthread_create.c:443
+> #19 0x00007fd58f43f450 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+
+Unfortunately I couldn't reproduce the issue cleanly as the race window
+is quite small.  If I add sleep as follows, extending the race window
+and imitating the thread being preempted by the kernel scheduler:
+
+> diff --git a/monitor/qmp.c b/monitor/qmp.c
+> index cb99a12d94..dd608ee717 100644
+> --- a/monitor/qmp.c
+> +++ b/monitor/qmp.c
+> @@ -349,6 +349,7 @@ void coroutine_fn monitor_qmp_dispatcher_co(void *data)
+>          qmp_request_free(req_obj);
+>      }
+>      qatomic_set(&qmp_dispatcher_co, NULL);
+> +    sleep(1);
+>  }
+>  
+>  void qmp_dispatcher_co_wake(void)
+
+Then the SEGFAULT can be reproduced like that:
+
+> SRCDIR=/path/to/srcdir
+> QMPSHELL=$SRCDIR/scripts/qmp/qmp-shell
+> QMPSOCK=/path/to/qmpsock
+> 
+> $QMPSHELL -p $QMPSOCK <<EOF
+>     system_powerdown
+> EOF
+> 
+> while /bin/true ; do
+>     $QMPSHELL -p $QMPSOCK <<EOF
+>         query-status
+> EOF
+> done
+
+Andrey Drobyshev (1):
+  monitor: don't wake up qmp_dispatcher_co coroutine upon cleanup
+
+ monitor/qmp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
 -- 
-2.47.1
+2.43.5
 
 
