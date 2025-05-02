@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10FF2AA6F95
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 12:29:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CBEAAA6F96
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 12:29:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAndL-0000ah-FV; Fri, 02 May 2025 06:28:44 -0400
+	id 1uAndM-0000gE-KN; Fri, 02 May 2025 06:28:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1uAncy-0000DC-U0; Fri, 02 May 2025 06:28:22 -0400
+ id 1uAnd0-0000FX-Tv; Fri, 02 May 2025 06:28:23 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1uAncu-00029B-KU; Fri, 02 May 2025 06:28:19 -0400
+ id 1uAncz-0002At-A9; Fri, 02 May 2025 06:28:22 -0400
 Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Zpn8414Bwz67DpL;
- Fri,  2 May 2025 18:23:48 +0800 (CST)
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZpnBm1zHXz67mJg;
+ Fri,  2 May 2025 18:26:08 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id DA3E61402A4;
- Fri,  2 May 2025 18:28:10 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 7908F1403A8;
+ Fri,  2 May 2025 18:28:19 +0800 (CST)
 Received: from A2303104131.china.huawei.com (10.203.177.241) by
  frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 2 May 2025 12:28:03 +0200
+ 15.1.2507.39; Fri, 2 May 2025 12:28:11 +0200
 To: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
 CC: <eric.auger@redhat.com>, <peter.maydell@linaro.org>, <jgg@nvidia.com>,
  <nicolinc@nvidia.com>, <ddutile@redhat.com>, <berrange@redhat.com>,
  <nathanc@nvidia.com>, <mochs@nvidia.com>, <smostafa@google.com>,
  <linuxarm@huawei.com>, <wangzhou1@hisilicon.com>, <jiangkunkun@huawei.com>,
  <jonathan.cameron@huawei.com>, <zhangfei.gao@linaro.org>
-Subject: [PATCH v2 5/6] hw/arm/virt: Add support for smmuv3 device
-Date: Fri, 2 May 2025 11:27:06 +0100
-Message-ID: <20250502102707.110516-6-shameerali.kolothum.thodi@huawei.com>
+Subject: [PATCH v2 6/6] hw/arm/smmuv3: Enable smmuv3 device creation
+Date: Fri, 2 May 2025 11:27:07 +0100
+Message-ID: <20250502102707.110516-7-shameerali.kolothum.thodi@huawei.com>
 X-Mailer: git-send-email 2.12.0.windows.1
 In-Reply-To: <20250502102707.110516-1-shameerali.kolothum.thodi@huawei.com>
 References: <20250502102707.110516-1-shameerali.kolothum.thodi@huawei.com>
@@ -70,119 +70,23 @@ From:  Shameer Kolothum via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow cold-plug of smmuv3 device to virt if there is no machine
-wide legacy smmuv3 or a virtio-iommu is specified.
-
-Device tree support for new smmuv3 dev is limited to the case where
-it is associated with the default pcie.0 RC.
-
 Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 ---
- hw/arm/virt.c        | 48 ++++++++++++++++++++++++++++++++++++++++++++
- hw/core/sysbus-fdt.c |  3 +++
- 2 files changed, 51 insertions(+)
+ hw/arm/smmuv3.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index e178282d71..f6ff584bac 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -1449,6 +1449,31 @@ static void create_smmuv3_dt_bindings(const VirtMachineState *vms, hwaddr base,
-     g_free(node);
+diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+index 605de9b721..e13950b7c5 100644
+--- a/hw/arm/smmuv3.c
++++ b/hw/arm/smmuv3.c
+@@ -2022,6 +2022,7 @@ static void smmuv3_class_init(ObjectClass *klass, const void *data)
+     device_class_set_props(dc, smmuv3_properties);
+     dc->hotpluggable = false;
+     dc->bus_type = TYPE_PCIE_BUS;
++    dc->user_creatable = true;
  }
  
-+static void create_smmuv3_dev_dtb(VirtMachineState *vms,
-+                                  DeviceState *dev)
-+{
-+    PlatformBusDevice *pbus = PLATFORM_BUS_DEVICE(vms->platform_bus_dev);
-+    SysBusDevice *sbdev = SYS_BUS_DEVICE(dev);
-+    int irq = platform_bus_get_irqn(pbus, sbdev, 0);
-+    hwaddr base = platform_bus_get_mmio_addr(pbus, sbdev, 0);
-+    MachineState *ms = MACHINE(vms);
-+    PCIBus *bus;
-+
-+    bus = PCI_BUS(object_property_get_link(OBJECT(dev), "primary-bus",
-+                                           &error_abort));
-+    if (strcmp("pcie.0", bus->qbus.name)) {
-+        warn_report("SMMUv3 device only supported with pcie.0 for DT");
-+        return;
-+    }
-+    base += vms->memmap[VIRT_PLATFORM_BUS].base;
-+    irq += vms->irqmap[VIRT_PLATFORM_BUS];
-+
-+    vms->iommu_phandle = qemu_fdt_alloc_phandle(ms->fdt);
-+    create_smmuv3_dt_bindings(vms, base, SMMU_IO_LEN, irq);
-+    qemu_fdt_setprop_cells(ms->fdt, vms->pciehb_nodename, "iommu-map",
-+                           0x0, vms->iommu_phandle, 0x0, 0x10000);
-+}
-+
- static void create_smmu(const VirtMachineState *vms,
-                         PCIBus *bus)
- {
-@@ -2949,6 +2974,13 @@ static void virt_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
-         qlist_append_str(reserved_regions, resv_prop_str);
-         qdev_prop_set_array(dev, "reserved-regions", reserved_regions);
-         g_free(resv_prop_str);
-+    } else if (object_dynamic_cast(OBJECT(dev), TYPE_ARM_SMMUV3)) {
-+        if (vms->legacy_smmuv3_present || vms->iommu == VIRT_IOMMU_VIRTIO) {
-+            error_setg(errp, "virt machine already has %s set. "
-+                       "Doesn't support incompatible iommus",
-+                       (vms->legacy_smmuv3_present) ?
-+                       "iommu=smmuv3" : "virtio-iommu");
-+        }
-     }
- }
- 
-@@ -2972,6 +3004,21 @@ static void virt_machine_device_plug_cb(HotplugHandler *hotplug_dev,
-         virtio_md_pci_plug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
-     }
- 
-+    if (object_dynamic_cast(OBJECT(dev), TYPE_ARM_SMMUV3)) {
-+        if (!vms->legacy_smmuv3_present && vms->platform_bus_dev) {
-+            VirtMachineClass *vmc = VIRT_MACHINE_GET_CLASS(vms);
-+
-+            create_smmuv3_dev_dtb(vms, dev);
-+            if (vms->iommu != VIRT_IOMMU_SMMUV3) {
-+                vms->iommu = VIRT_IOMMU_SMMUV3;
-+            }
-+            if (!vmc->no_nested_smmu) {
-+                object_property_set_str(OBJECT(dev), "stage", "nested",
-+                                        &error_fatal);
-+            }
-+        }
-+    }
-+
-     if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI)) {
-         PCIDevice *pdev = PCI_DEVICE(dev);
- 
-@@ -3174,6 +3221,7 @@ static void virt_machine_class_init(ObjectClass *oc, const void *data)
-     machine_class_allow_dynamic_sysbus_dev(mc, TYPE_RAMFB_DEVICE);
-     machine_class_allow_dynamic_sysbus_dev(mc, TYPE_VFIO_PLATFORM);
-     machine_class_allow_dynamic_sysbus_dev(mc, TYPE_UEFI_VARS_SYSBUS);
-+    machine_class_allow_dynamic_sysbus_dev(mc, TYPE_ARM_SMMUV3);
- #ifdef CONFIG_TPM
-     machine_class_allow_dynamic_sysbus_dev(mc, TYPE_TPM_TIS_SYSBUS);
- #endif
-diff --git a/hw/core/sysbus-fdt.c b/hw/core/sysbus-fdt.c
-index c339a27875..d778c0f559 100644
---- a/hw/core/sysbus-fdt.c
-+++ b/hw/core/sysbus-fdt.c
-@@ -31,6 +31,7 @@
- #include "qemu/error-report.h"
- #include "system/device_tree.h"
- #include "system/tpm.h"
-+#include "hw/arm/smmuv3.h"
- #include "hw/platform-bus.h"
- #include "hw/vfio/vfio-platform.h"
- #include "hw/vfio/vfio-calxeda-xgmac.h"
-@@ -513,6 +514,8 @@ static const BindingEntry bindings[] = {
- #ifdef CONFIG_LINUX
-     TYPE_BINDING(TYPE_VFIO_CALXEDA_XGMAC, add_calxeda_midway_xgmac_fdt_node),
-     TYPE_BINDING(TYPE_VFIO_AMD_XGBE, add_amd_xgbe_fdt_node),
-+    /* No generic DT support for smmuv3 dev. Support added for arm virt only */
-+    TYPE_BINDING(TYPE_ARM_SMMUV3, no_fdt_node),
-     VFIO_PLATFORM_BINDING("amd,xgbe-seattle-v1a", add_amd_xgbe_fdt_node),
- #endif
- #ifdef CONFIG_TPM
+ static int smmuv3_notify_flag_changed(IOMMUMemoryRegion *iommu,
 -- 
 2.34.1
 
