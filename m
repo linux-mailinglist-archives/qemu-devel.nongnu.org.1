@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFE10AA68BD
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 04:20:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EF31AA68A9
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 04:17:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAfwy-0003rn-Ti; Thu, 01 May 2025 22:16:28 -0400
+	id 1uAfwz-0003sB-TY; Thu, 01 May 2025 22:16:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1uAfwu-0003qm-In
- for qemu-devel@nongnu.org; Thu, 01 May 2025 22:16:24 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ id 1uAfwt-0003qj-Or
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 22:16:23 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1uAfwr-0007PX-H1
- for qemu-devel@nongnu.org; Thu, 01 May 2025 22:16:24 -0400
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 541KeNbi022593;
+ id 1uAfwp-0007Or-JY
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 22:16:22 -0400
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 541KeNeN007190;
  Fri, 2 May 2025 02:16:10 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2025-04-25; bh=RA2Lt
- f0EyegmdJBGDkE2+w28gEQf1v1EpWMa7OVBVO8=; b=Aspxikh894Dtub/p+Ypfc
- ZrGhip7ZWBB82s8+5ywOkoWjFT/rx89aUvwyX7iiuhIUVF0obPNTTjGQDveYezOK
- +LUZSAb+gIoHP7m5OYsUREs3LwRiUMZSRLv7oeg71EfaLrwKdCQZ3uB3lZnxiKtS
- A+vwmy2o53kpzIWvZ7eND4L0MM64m+lzWvJKRveu28WEgdfrw5YpImP6sx2WafGf
- j+8MddYcbv3iV7ItSdp29PHnTrQLqWOq+HfvzomKYugK+07dkGXR2yVt5Sa1kmiU
- NLY2kD70k1hclJB1GyPtQwiBweztQfGM0x8W0ZJOOFuX4JulT4VKhHe9eDOPrYoP
- g==
+ :mime-version:references:subject:to; s=corp-2025-04-25; bh=LtWIZ
+ F24E+i84J6YfKEXoe8ultBSd8eCMI+sgD0k6Xo=; b=Mhri1f+negInTMvtshv/+
+ cg2WsSg6bVYYbQiPwgL1PWW3AlTmLYwAS/FRfldNRzJeg15xqaCxiLTik2Rdx62H
+ Vd/UbQ5GPiniYxqeCbtKo2zmW3fR3JsehxQzFZToiA2F4KAGdZuPCUNeAfafZ9dR
+ 6Cp2tHoknGwzrizqvPll1d9Htar66KvCaT+6mXz/CJZIZaSTwtlF0cBihu2EtgWv
+ ivzUe8AznUVLR7XgJiZ1LpluZaSFnpd5ezRMdWcG+Qa003WLIcfqBsk5TcEEKvH1
+ 7vZKCsbR+MYwRfaeP0bJrzhaG5g0Dwx9SBJC+bTn7xxapTpItvUGApckxjtr1qCd
+ A==
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46b6uumday-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46b6ucmdv8-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 02 May 2025 02:16:10 +0000 (GMT)
+ Fri, 02 May 2025 02:16:09 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 54206o0X023906; Fri, 2 May 2025 02:16:08 GMT
+ with ESMTP id 541NPfWf023782; Fri, 2 May 2025 02:16:09 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 468nxkgywr-1
+ 468nxkgyx4-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 02 May 2025 02:16:08 +0000
+ Fri, 02 May 2025 02:16:09 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5422FErs011525;
- Fri, 2 May 2025 02:16:07 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5422FEru011525;
+ Fri, 2 May 2025 02:16:08 GMT
 Received: from alaljimee5bm-ol9-20250405.osdevelopmeniad.oraclevcn.com
  (alaljimee5bm-ol9-20250405.allregionaliads.osdevelopmeniad.oraclevcn.com
  [100.100.254.235])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 468nxkgyvr-3; Fri, 02 May 2025 02:16:07 +0000
+ 468nxkgyvr-4; Fri, 02 May 2025 02:16:08 +0000
 From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
@@ -64,10 +64,9 @@ Cc: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
  clement.mathieu--drif@eviden.com, ethan.milon@eviden.com,
  joao.m.martins@oracle.com, boris.ostrovsky@oracle.com,
  alejandro.j.jimenez@oracle.com
-Subject: [PATCH v2 02/20] amd_iommu: Document '-device amd-iommu' common
- options
-Date: Fri,  2 May 2025 02:15:47 +0000
-Message-ID: <20250502021605.1795985-3-alejandro.j.jimenez@oracle.com>
+Subject: [PATCH v2 03/20] amd_iommu: Reorder device and page table helpers
+Date: Fri,  2 May 2025 02:15:48 +0000
+Message-ID: <20250502021605.1795985-4-alejandro.j.jimenez@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250502021605.1795985-1-alejandro.j.jimenez@oracle.com>
 References: <20250502021605.1795985-1-alejandro.j.jimenez@oracle.com>
@@ -81,21 +80,21 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  suspectscore=0 spamscore=0 adultscore=0 mlxscore=0 malwarescore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2504070000 definitions=main-2505020015
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAyMDAxNSBTYWx0ZWRfX/J2xd5SSJMKN
- 0CV+/ByARSzuU8Z0WLY/rpLPj7oTu9+sM3a1G5DJT1UfInG9+iBeA7FKjHtKyPgoK47PIK3vRIn
- 1NOK3+0U4im1BA2E+y/hQGIKn1ygVPWg6xvnGV1L9xDpk03sXhton1md87gIcq7D6AOPgmcK6hK
- 7COuasZHt96rB1DfUkiptVc/gcHtPog1Mf1HEJuQmFY4EjXVBXk/i+lchruGYV8E5gGlyUdlJuH
- nn9XJt99K8OJqRbZfFLeYoPXjwlYZTLcHz4aLq4lbFDyaI0Zsjm4lx4KYDIX4+aBgKyn1vqT5Nv
- Ver4PmbmXe8XDE2fsLNc8qzwFm043BbKDIUq+kGPicWwGfd9WAaqFnRbA1RdYuTo7iOmMYJW3fO
- teVv/x2df9dOLS0k64E4ti7RxLwllvsIbwYr0lFrnbQ8K4CJeaWAMzzv2NI2f96w6hM9s+NW
-X-Authority-Analysis: v=2.4 cv=Ve/3PEp9 c=1 sm=1 tr=0 ts=68142aea b=1 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=ZsHtK87G c=1 sm=1 tr=0 ts=68142ae9 b=1 cx=c_pps
  a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=gipPy096A3ZiGWeMGKsA:9 cc=ntf
+ a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=0jG7Jb7pV4afCPoZSdkA:9 cc=ntf
  awl=host:13130
-X-Proofpoint-ORIG-GUID: q2IKr-g9EvtfMtp-AX1KE4bVvVsr7d0I
-X-Proofpoint-GUID: q2IKr-g9EvtfMtp-AX1KE4bVvVsr7d0I
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=alejandro.j.jimenez@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Proofpoint-ORIG-GUID: uf7D6vXjx7kY4SMJgYlcC84WTsIB_sIH
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAyMDAxNSBTYWx0ZWRfXwD8IVsv8rg21
+ rdRLAiyX9WEkWzNfErAGfIA2H+ox2E4tkEFJN97jVz4wdYgP/ptPdtP27lYfRhVCjphFSKrO2lN
+ wWhP36HuvTmsF/m3cLO1cRMFBw3oBbFs2mvePWrudBEAOQhOAKC63JlcaIZ3CnnMuPApiCEju1o
+ GsvWlHeroZOHxLCjJLMESVHzBx+WFtmLEwfg+O1+leYGyn2IhpC5ySbkkhCFTkelau2IJePZRpX
+ OwgE/hiyqEiJg3OTb0t+HZHw25Fx8rKkISQ7v6OMxBEmqyzihQUKhvY3E/lcMXX8VjVLZYV8NTE
+ coGwYg1t9+vx8dHRKbjXbvSf0QXQjCXUSrz1Uupv1qLD6YuVg1tpeK9sbijjqc5Ml9D0NtViZ12
+ u1a3w33OcQGOaOoKnFLAEHyeEBZXnbzFQ8gKxOiaq1Q9NQOy9W+JeeffywWTHNvUC4/KlImm
+X-Proofpoint-GUID: uf7D6vXjx7kY4SMJgYlcC84WTsIB_sIH
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=alejandro.j.jimenez@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -119,50 +118,206 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Document the common parameters used when emulating AMD vIOMMU.
-Besides the two amd-iommu specific options: 'xtsup' and 'dma-remap', the
-the generic x86 IOMMU option 'intremap' is also included, since it is
-typically specified in QEMU command line examples and mailing list threads.
+Move code related to Device Table and Page Table to an earlier location in
+the file, where it does not require forward declarations to be used by the
+various invalidation functions that will need to query the DTE and walk the
+page table in upcoming changes.
+
+This change consist of code movement only, no functional change intended.
 
 Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 ---
- qemu-options.hx | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ hw/i386/amd_iommu.c | 170 ++++++++++++++++++++++----------------------
+ 1 file changed, 85 insertions(+), 85 deletions(-)
 
-diff --git a/qemu-options.hx b/qemu-options.hx
-index dc694a99a30a..198acab48e8e 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -1226,6 +1226,29 @@ SRST
-     ``aw-bits=val`` (val between 32 and 64, default depends on machine)
-         This decides the address width of the IOVA address space.
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index 2cf7e24a21d8..9e500121f6e8 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -407,6 +407,91 @@ static void amdvi_completion_wait(AMDVIState *s, uint64_t *cmd)
+     trace_amdvi_completion_wait(addr, data);
+ }
  
-+``-device amd-iommu[,option=...]``
-+    Enables emulation of an AMD-Vi I/O Memory Management Unit (IOMMU).
-+    Only available with ``-machine q35``, it supports the following options:
++static inline uint64_t amdvi_get_perms(uint64_t entry)
++{
++    return (entry & (AMDVI_DEV_PERM_READ | AMDVI_DEV_PERM_WRITE)) >>
++           AMDVI_DEV_PERM_SHIFT;
++}
 +
-+    ``dma-remap=on|off`` (default: off)
-+        Support for DMA address translation and access permission checking for
-+        guests attaching passthrough devices to paging domains, using the AMD v1
-+        I/O Page Table format. This enables ``-device vfio-pci,...`` to work
-+        correctly with a guest using the DMA remapping feature of the vIOMMU.
++/* validate that reserved bits are honoured */
++static bool amdvi_validate_dte(AMDVIState *s, uint16_t devid,
++                               uint64_t *dte)
++{
++    if ((dte[0] & AMDVI_DTE_LOWER_QUAD_RESERVED)
++        || (dte[1] & AMDVI_DTE_MIDDLE_QUAD_RESERVED)
++        || (dte[2] & AMDVI_DTE_UPPER_QUAD_RESERVED) || dte[3]) {
++        amdvi_log_illegaldevtab_error(s, devid,
++                                      s->devtab +
++                                      devid * AMDVI_DEVTAB_ENTRY_SIZE, 0);
++        return false;
++    }
 +
-+    ``intremap=on|off`` (default: auto)
-+        Generic x86 IOMMU functionality implemented by ``amd-iommu`` device.
-+        Enables interrupt remapping feature in guests, which is also required to
-+        enable x2apic support.
-+        Currently only available with ``kernel-irqchip=off|split``, it is
-+        automatically enabled when either of those modes is in use, and disabled
-+        with ``kernel-irqchip=on``.
++    return true;
++}
 +
-+    ``xtsup=on|off`` (default: off)
-+        Interrupt remapping table supports x2apic mode, enabling the use of
-+        128-bit IRTE format with 32-bit destination field by the guest. Required
-+        to support routing interrupts to vCPUs with APIC IDs larger than 0xff.
++/* get a device table entry given the devid */
++static bool amdvi_get_dte(AMDVIState *s, int devid, uint64_t *entry)
++{
++    uint32_t offset = devid * AMDVI_DEVTAB_ENTRY_SIZE;
 +
- ERST
++    if (dma_memory_read(&address_space_memory, s->devtab + offset, entry,
++                        AMDVI_DEVTAB_ENTRY_SIZE, MEMTXATTRS_UNSPECIFIED)) {
++        trace_amdvi_dte_get_fail(s->devtab, offset);
++        /* log error accessing dte */
++        amdvi_log_devtab_error(s, devid, s->devtab + offset, 0);
++        return false;
++    }
++
++    *entry = le64_to_cpu(*entry);
++    if (!amdvi_validate_dte(s, devid, entry)) {
++        trace_amdvi_invalid_dte(entry[0]);
++        return false;
++    }
++
++    return true;
++}
++
++/* get pte translation mode */
++static inline uint8_t get_pte_translation_mode(uint64_t pte)
++{
++    return (pte >> AMDVI_DEV_MODE_RSHIFT) & AMDVI_DEV_MODE_MASK;
++}
++
++static inline uint64_t pte_override_page_mask(uint64_t pte)
++{
++    uint8_t page_mask = 13;
++    uint64_t addr = (pte & AMDVI_DEV_PT_ROOT_MASK) >> 12;
++    /* find the first zero bit */
++    while (addr & 1) {
++        page_mask++;
++        addr = addr >> 1;
++    }
++
++    return ~((1ULL << page_mask) - 1);
++}
++
++static inline uint64_t pte_get_page_mask(uint64_t oldlevel)
++{
++    return ~((1UL << ((oldlevel * 9) + 3)) - 1);
++}
++
++static inline uint64_t amdvi_get_pte_entry(AMDVIState *s, uint64_t pte_addr,
++                                          uint16_t devid)
++{
++    uint64_t pte;
++
++    if (dma_memory_read(&address_space_memory, pte_addr,
++                        &pte, sizeof(pte), MEMTXATTRS_UNSPECIFIED)) {
++        trace_amdvi_get_pte_hwerror(pte_addr);
++        amdvi_log_pagetab_error(s, devid, pte_addr, 0);
++        pte = 0;
++        return pte;
++    }
++
++    pte = le64_to_cpu(pte);
++    return pte;
++}
++
+ /* log error without aborting since linux seems to be using reserved bits */
+ static void amdvi_inval_devtab_entry(AMDVIState *s, uint64_t *cmd)
+ {
+@@ -838,91 +923,6 @@ static void amdvi_mmio_write(void *opaque, hwaddr addr, uint64_t val,
+     }
+ }
  
- DEF("name", HAS_ARG, QEMU_OPTION_name,
+-static inline uint64_t amdvi_get_perms(uint64_t entry)
+-{
+-    return (entry & (AMDVI_DEV_PERM_READ | AMDVI_DEV_PERM_WRITE)) >>
+-           AMDVI_DEV_PERM_SHIFT;
+-}
+-
+-/* validate that reserved bits are honoured */
+-static bool amdvi_validate_dte(AMDVIState *s, uint16_t devid,
+-                               uint64_t *dte)
+-{
+-    if ((dte[0] & AMDVI_DTE_LOWER_QUAD_RESERVED)
+-        || (dte[1] & AMDVI_DTE_MIDDLE_QUAD_RESERVED)
+-        || (dte[2] & AMDVI_DTE_UPPER_QUAD_RESERVED) || dte[3]) {
+-        amdvi_log_illegaldevtab_error(s, devid,
+-                                      s->devtab +
+-                                      devid * AMDVI_DEVTAB_ENTRY_SIZE, 0);
+-        return false;
+-    }
+-
+-    return true;
+-}
+-
+-/* get a device table entry given the devid */
+-static bool amdvi_get_dte(AMDVIState *s, int devid, uint64_t *entry)
+-{
+-    uint32_t offset = devid * AMDVI_DEVTAB_ENTRY_SIZE;
+-
+-    if (dma_memory_read(&address_space_memory, s->devtab + offset, entry,
+-                        AMDVI_DEVTAB_ENTRY_SIZE, MEMTXATTRS_UNSPECIFIED)) {
+-        trace_amdvi_dte_get_fail(s->devtab, offset);
+-        /* log error accessing dte */
+-        amdvi_log_devtab_error(s, devid, s->devtab + offset, 0);
+-        return false;
+-    }
+-
+-    *entry = le64_to_cpu(*entry);
+-    if (!amdvi_validate_dte(s, devid, entry)) {
+-        trace_amdvi_invalid_dte(entry[0]);
+-        return false;
+-    }
+-
+-    return true;
+-}
+-
+-/* get pte translation mode */
+-static inline uint8_t get_pte_translation_mode(uint64_t pte)
+-{
+-    return (pte >> AMDVI_DEV_MODE_RSHIFT) & AMDVI_DEV_MODE_MASK;
+-}
+-
+-static inline uint64_t pte_override_page_mask(uint64_t pte)
+-{
+-    uint8_t page_mask = 13;
+-    uint64_t addr = (pte & AMDVI_DEV_PT_ROOT_MASK) >> 12;
+-    /* find the first zero bit */
+-    while (addr & 1) {
+-        page_mask++;
+-        addr = addr >> 1;
+-    }
+-
+-    return ~((1ULL << page_mask) - 1);
+-}
+-
+-static inline uint64_t pte_get_page_mask(uint64_t oldlevel)
+-{
+-    return ~((1UL << ((oldlevel * 9) + 3)) - 1);
+-}
+-
+-static inline uint64_t amdvi_get_pte_entry(AMDVIState *s, uint64_t pte_addr,
+-                                          uint16_t devid)
+-{
+-    uint64_t pte;
+-
+-    if (dma_memory_read(&address_space_memory, pte_addr,
+-                        &pte, sizeof(pte), MEMTXATTRS_UNSPECIFIED)) {
+-        trace_amdvi_get_pte_hwerror(pte_addr);
+-        amdvi_log_pagetab_error(s, devid, pte_addr, 0);
+-        pte = 0;
+-        return pte;
+-    }
+-
+-    pte = le64_to_cpu(pte);
+-    return pte;
+-}
+-
+ static void amdvi_page_walk(AMDVIAddressSpace *as, uint64_t *dte,
+                             IOMMUTLBEntry *ret, unsigned perms,
+                             hwaddr addr)
 -- 
 2.43.5
 
