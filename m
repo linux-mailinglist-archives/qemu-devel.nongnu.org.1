@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0ADEAA779D
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 18:44:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 089C0AA778E
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 18:43:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAtSV-0007eZ-Qa; Fri, 02 May 2025 12:41:55 -0400
+	id 1uAtSY-0007kc-O4; Fri, 02 May 2025 12:41:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uAtST-0007dx-MS
- for qemu-devel@nongnu.org; Fri, 02 May 2025 12:41:53 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uAtSV-0007i0-Uk
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 12:41:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uAtSR-0006R8-U3
- for qemu-devel@nongnu.org; Fri, 02 May 2025 12:41:53 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uAtSU-0006Rg-AT
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 12:41:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746204110;
+ s=mimecast20190719; t=1746204113;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YhEfo/crAEyxYhDSWP1l8LRwgjE5vzXQPMbrfXIzcrY=;
- b=VXGprtUjKCUuMavORY1AI60jA9wLegbTdhafOaydeTXQ6uBlQ2IwjZOVZbFtl+rnJQcCde
- VFqXmbdmpRS+6BnEJG+W3QPjOddlRNSei6fv1AKLXl3VUJJUu4PQ8OilSjeYlGuNXK/Vqi
- 0a6WwRqxMGbaA8EPEdTgMgW/zMu4Ex0=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=F2w7J9EqC67G+9BHMZMRooN71UtnTrILiK+wTczOjWk=;
+ b=DdU+Sa8IuAjv7vu0LbITXv9eayOhLoPCEKByx7P54d22L9nwZh3TuEkULW+K4/REWn7j3H
+ sKNEbTc7T3+7TzPanVGnfzbjDCL2d8DV0gpYqEswdBJDWlcn3LxN+rzlY7aJo9lSV4Pfx1
+ ANOyDix0IKUgdIfN7kMb7JUn65bk8iU=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-106-Ug5r5DfdMm2ROm0FPQIX7A-1; Fri, 02 May 2025 12:41:49 -0400
-X-MC-Unique: Ug5r5DfdMm2ROm0FPQIX7A-1
-X-Mimecast-MFC-AGG-ID: Ug5r5DfdMm2ROm0FPQIX7A_1746204109
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-7c3c8f8ab79so342584585a.2
- for <qemu-devel@nongnu.org>; Fri, 02 May 2025 09:41:49 -0700 (PDT)
+ us-mta-360-zHbJUoh4OvqUp8UbT32vBw-1; Fri, 02 May 2025 12:41:51 -0400
+X-MC-Unique: zHbJUoh4OvqUp8UbT32vBw-1
+X-Mimecast-MFC-AGG-ID: zHbJUoh4OvqUp8UbT32vBw_1746204110
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-7c7c30d8986so756448785a.2
+ for <qemu-devel@nongnu.org>; Fri, 02 May 2025 09:41:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746204108; x=1746808908;
+ d=1e100.net; s=20230601; t=1746204110; x=1746808910;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YhEfo/crAEyxYhDSWP1l8LRwgjE5vzXQPMbrfXIzcrY=;
- b=ZF5srgpPMOqRIvVjjSU8/3llFXrxMikWyCyPuL2BdgJn3eTPavDXo4MhZDRijiuwLu
- GeU8l3mSrw5tzxNHPes1o5olZ6ADQqA0IyofuGoHHiMUHfmTLDis8psHd8/hosfFiP4P
- 5ExXpi6S/vNpXNrfqaUfD/KoJCxenVSbp9cPj4KtUqXS1Vdygi0MCn32+ZYq+StyUY2W
- pUtrG+cxtwLWJ6Kwp/RruCoxuClNVZFAas8nXUuGnwkHLIbeBx4Xtku/BKmXk1BTSWlK
- pB8ICCMnk4GGhdCuQH/rzeN0tZT/DYfa9ysduAyP0UJxEU96+wMg7Q9VosFv0CK1JHA4
- 8v4w==
-X-Gm-Message-State: AOJu0Yx1q2k5dtC2WJZzPeqNqeW1Y3k3jMdytfH1V4GCEzOe6KmKkhgL
- r0FNeMyeu1qJHwN386W/kU/mVzrCcmQqjB9cY7DU1iUom3ykf59645tTXcEwsiAoTwI2dFShw4E
- l9fFaQKvicEjGF17a3r/Dhzw8V2T/2+guFLxpGnqiGAwJPbzTPNH6LRCSJTymzcUst51R0L6BaO
- EO4zjP9wBEtQb/cvgXwr+2rU2PxWtxODiaFQ==
-X-Gm-Gg: ASbGncti/j/UBJjsZgvAulNP6x9hbRx810gayS97CCUZVG+d/9V+sWLsMnQfrNCECke
- JVf8yHkkSSiaTQ4PYM6Djx9LzIFUFIf592TCqQ9vrjMiCQcTIzUS8QX2wjp0wGkxeFgOZsN7P6+
- NxkrDzRgW9KcOf9KwBETcUNAxSsz365sP8jkKBCBNecgGB+jK1ggOIgV9feI8dN8AYF/vWD/i2l
- 00Osmh8DbWyFFO+Z4bNZprGQgqU4e3Am+fHE+IE30abbsM1d/SL+yZWoLQ/lOx3xf342uByUHhb
-X-Received: by 2002:a05:620a:4111:b0:7c7:747f:89d0 with SMTP id
- af79cd13be357-7cad5b3e38cmr506280585a.18.1746204108477; 
- Fri, 02 May 2025 09:41:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGs14xF8eu3NbGT/nPm0RNHfb80OXKRMVtgmQMULhElkPHy0CTxprx+fNpHHb2qr+h40WjWfw==
-X-Received: by 2002:a05:620a:4111:b0:7c7:747f:89d0 with SMTP id
- af79cd13be357-7cad5b3e38cmr506277785a.18.1746204108152; 
- Fri, 02 May 2025 09:41:48 -0700 (PDT)
+ bh=F2w7J9EqC67G+9BHMZMRooN71UtnTrILiK+wTczOjWk=;
+ b=KmaQ5yEt+dy+5UTztUD9XVgW+sdJkUw2PmCFHpK+0mJb5ULq1jX3cR+E2Ez9qa+gxj
+ DYTNauseyUCMn9wNA+0vcG9ukco87zZULRlpmayM8nj0nZGsYlCc+vkQBm2+Ezyc/noY
+ bqtyJBsIKTm9R3+cJd000z4HphqJNS/v1aIc6ZCQ9deGUM2spxWaJZty8hjVq4Q3a9Yy
+ QIYafCy0vLW4TO1WX6HmlKQkNC7K8hyojEOQU3m2+mj31xmAjrgGOPA/40aiVWJ15d2L
+ InqbmPXkm5muGP68ERIgyamLZJOQigD25+vGJmlu7e+SgK1gY7y57+huyrn4Ju/tJquf
+ Cmhw==
+X-Gm-Message-State: AOJu0Yz4Fe2YzUwZF5clRoqnWukHTTBbbR03kRP6S+61GfsFSgWGiy24
+ ig7oQypbBzz1Vi3bmWVJCiS2ccabHFBHkDYjWWKmA2EuJvFb28FT3UbqnVlVxrhyU+r9E6UOh28
+ AnOiPDPDeoWN02mkNpWpZDsySys5h4TPtVFu3lm8iW6xkWCBWui8HKFzcA3Xd46b7na5weGQZWk
+ P6KiynjgE4ugySycUIci4+UHaCp+ttfT66bw==
+X-Gm-Gg: ASbGnctagsJLUZsXv5ucAzrpUbvcMuLIZ8eVu5e12krq59aWVZUnyRIF2BDzQ1JKxAt
+ Pbn1cjBZJaTlK0ouxEYscG+/VoeFfA3isiXf/IkKy4UpRZmiy6QtLcF/3NOK/q5d1o06CCGUNhB
+ DTbeDDUgTwyb37Eu9lKVEb1+P4Aysd9XgI1f3VEa3rD5UCSuO3PQasrl/vsyzRWlYoVLGYX82/O
+ FBJGnnosLg+A5uXqi5Yp02OXGs7ruppGTYs1714//lfbUwKrq4lSHwZxZrzW6uINK3WwAipPccM
+X-Received: by 2002:a05:620a:29d0:b0:7c5:3e22:616f with SMTP id
+ af79cd13be357-7cad5b3aca9mr422485485a.21.1746204109929; 
+ Fri, 02 May 2025 09:41:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHLG6KOxlhYX4nJwSCFnpwLZE/HGeQlxQfZXsadeTGZCSqzpd/RunT6dYXb73DAqI5itkVVeg==
+X-Received: by 2002:a05:620a:29d0:b0:7c5:3e22:616f with SMTP id
+ af79cd13be357-7cad5b3aca9mr422482985a.21.1746204109609; 
+ Fri, 02 May 2025 09:41:49 -0700 (PDT)
 Received: from x1.com ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7cad23d1c8dsm203108385a.60.2025.05.02.09.41.46
+ af79cd13be357-7cad23d1c8dsm203108385a.60.2025.05.02.09.41.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 May 2025 09:41:46 -0700 (PDT)
+ Fri, 02 May 2025 09:41:48 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Stefan Hajnoczi <stefanha@redhat.com>,
  peterx@redhat.com, Li Zhijian <lizhijian@fujitsu.com>
-Subject: [PULL 02/14] migration: disable RDMA + postcopy-ram
-Date: Fri,  2 May 2025 12:41:29 -0400
-Message-ID: <20250502164141.747202-3-peterx@redhat.com>
+Subject: [PULL 03/14] migration/rdma: Remove redundant migration_in_postcopy
+ checks
+Date: Fri,  2 May 2025 12:41:30 -0400
+Message-ID: <20250502164141.747202-4-peterx@redhat.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250502164141.747202-1-peterx@redhat.com>
 References: <20250502164141.747202-1-peterx@redhat.com>
@@ -105,33 +106,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Li Zhijian <lizhijian@fujitsu.com>
 
-It's believed that RDMA + postcopy-ram has been broken for a while.
-Rather than spending time re-enabling it, let's simply disable it as a
-trade-off.
+Since we have disabled RDMA + postcopy, it's safe to remove
+the migration_in_postcopy() that follows the migrate_rdma().
 
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Message-ID: <20250305062825.772629-4-lizhijian@fujitsu.com>
+Message-ID: <20250305062825.772629-5-lizhijian@fujitsu.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/options.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ migration/rdma.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/migration/options.c b/migration/options.c
-index 1f3602839d..4ba8fcb7dc 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -458,6 +458,10 @@ bool migrate_rdma_caps_check(bool *caps, Error **errp)
-         error_setg(errp, "RDMA and multifd can't be used together");
-         return false;
+diff --git a/migration/rdma.c b/migration/rdma.c
+index b31652baac..a3c3b432d1 100644
+--- a/migration/rdma.c
++++ b/migration/rdma.c
+@@ -3284,7 +3284,7 @@ err:
+ int rdma_control_save_page(QEMUFile *f, ram_addr_t block_offset,
+                            ram_addr_t offset, size_t size)
+ {
+-    if (!migrate_rdma() || migration_in_postcopy()) {
++    if (!migrate_rdma()) {
+         return RAM_SAVE_CONTROL_NOT_SUPP;
      }
-+    if (caps[MIGRATION_CAPABILITY_POSTCOPY_RAM]) {
-+        error_setg(errp, "RDMA and postcopy-ram can't be used together");
-+        return false;
-+    }
  
-     return true;
- }
+@@ -3829,7 +3829,7 @@ int rdma_block_notification_handle(QEMUFile *f, const char *name)
+ 
+ int rdma_registration_start(QEMUFile *f, uint64_t flags)
+ {
+-    if (!migrate_rdma() || migration_in_postcopy()) {
++    if (!migrate_rdma()) {
+         return 0;
+     }
+ 
+@@ -3861,7 +3861,7 @@ int rdma_registration_stop(QEMUFile *f, uint64_t flags)
+     RDMAControlHeader head = { .len = 0, .repeat = 1 };
+     int ret;
+ 
+-    if (!migrate_rdma() || migration_in_postcopy()) {
++    if (!migrate_rdma()) {
+         return 0;
+     }
+ 
 -- 
 2.48.1
 
