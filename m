@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FFDAAA79A9
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 20:59:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FF18AA799F
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 20:58:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAvZo-00056q-PU; Fri, 02 May 2025 14:57:36 -0400
+	id 1uAvZu-0005FJ-AG; Fri, 02 May 2025 14:57:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAvZm-00053N-G1
- for qemu-devel@nongnu.org; Fri, 02 May 2025 14:57:34 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAvZr-00059m-U6
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 14:57:39 -0400
 Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAvZk-0005Ry-NO
- for qemu-devel@nongnu.org; Fri, 02 May 2025 14:57:34 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uAvZp-0005TX-V7
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 14:57:39 -0400
 Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-ace94273f0dso513668466b.3
- for <qemu-devel@nongnu.org>; Fri, 02 May 2025 11:57:32 -0700 (PDT)
+ a640c23a62f3a-ac3eb3fdd2eso436825566b.0
+ for <qemu-devel@nongnu.org>; Fri, 02 May 2025 11:57:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746212250; x=1746817050; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746212256; x=1746817056; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kKc325giSSG2jMz6IXz+I31l486LYr2x6p+yz3FOCTQ=;
- b=LbYJAXqeYlyA+n48oQPf1aDKuXQ6z0RTYiD3c2R7GFGBMtceu3SugEvvc1JNX322mH
- N9ljLW879TxLzchXf77SvL/2l2aAqXROuXLrG+SZfcxF2iWlvZu3Epip0+u7hGqkTz0A
- rbS7pI3xuV7rsjYfSSDDAM98KPwpKb0EdwSipcuy7U1cn+gsh3dh+7sqAZIxn90iLtCR
- kIfv1jeCF2JfYzG9QxX4XdaH6osdRUkmbQi29owwTntLbuQOrY41jVf2KlB756opB2Yy
- jHI8v/TplCs9nO9QI6Ncbj9hsWUgYQ6J0ha7uE6AeLbDTSEn6H3J7SqoMAWCCgEnQ7nD
- XOFw==
+ bh=7W0BMY8RW+QgVy2DDvRgW0zJIWF8qk5txc1xkIoqDmI=;
+ b=okKwYrCH4fb0GAwxyZUireMgFtNBlnquyTJl+scP2BgYKObt96paspU8yAaFhakmr2
+ VrmCi8P62Jhe2KaPE4V2s8mqGmqajR31Fdm2BU+0/jPGvg7ZMx55XoETp7PQ8Cp4Eu5A
+ DsbEZsXAieRZMIkY6izlCJrf1QEExT91dV1CjcpigFHiotRGN2s892AlDj2rCWDWDgGj
+ E7J5ftsn3laa0AmBs1iBYnYZE5SP+3bmTPbOvU3QPMD/b9T6kf8KJ8/3NehvTFiniHfv
+ V/x8Uu8g6lI805iUIZnCVg1k7gElSOQxvojXb0FxlKvhvnXgekBSH/nHyVzgakVNCYwi
+ EqdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746212250; x=1746817050;
+ d=1e100.net; s=20230601; t=1746212256; x=1746817056;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kKc325giSSG2jMz6IXz+I31l486LYr2x6p+yz3FOCTQ=;
- b=KQNtwoO2TqfqnJKsl9YWtFSz65b8q0giAnWIebpt54M86U4d1qRZL7kxtdCnDN/I1j
- HFWYREX8CBynVwTW85o8uCc4ePFg9O0Ls8gkWMNAoXppJ1pbgJkoh34qEtiShXTpbQNL
- +jGhwTgDly/q0qs7+DP49g9y2CKvP9uXy82AHS8FyisilPss7OifIpZz1JpVqHrrcb/W
- hdMt6mX++3adFi2Zf+wFkau7+T7cnVjNqUw2uv/YQO0PXK1H4FI6IEQWwB7PrWD31dIp
- Kgr5kaelgORxoY4WKM8uBg9o5fLGfl8GFetElvmZi6lkFq7LBprFdtbYfohK3Xcu8iGh
- UAMw==
-X-Gm-Message-State: AOJu0Yz76BLUQtO/CCRGl7f7zi+hu3J+eN1SZc+dTvorHn6swdZm/eOj
- QKgSVtcHwIKTviajUkC8i2UAA/cHGbAGLtSzoQs99K2mJE49FmUXMnR6ohTdjuaxlB5zeo+dRE3
- 1
-X-Gm-Gg: ASbGncup/lR25KOnXh5StOtuNwrG2vysukNp86gzd5G7vGK9W7FLzlWcuLGICrEIvm0
- sQP1vwdxdzL2/tmiqi7TYgrQpllIRanvHXt6iRa/dGtfwiEJ0/GeB81KAT2ZmM3rI61GD/+hhCg
- spMuhRhS6YqlpfAGCZZkrcH2PWpsOP5mYr1N0eoQ52TARKIJ/aDJK6jWq2H0pks84d2sBIP6K99
- LLs840Eg30wYXPUrzYfYN1DBMzaa63kPArpPbvdzEuZCXBYjT90yW2JCIs5d+GwoOFl/7D5y5iZ
- 6wWRn4suYoUAUUKKgPKTI1hSmdeuCF4vSjjJCfKSnCO5lD9Ey83UK3kFqqdM3wuscCMGs3nHvXo
- 5f8NpQSnvZxo3ze5+DhYH
-X-Google-Smtp-Source: AGHT+IGwRzfNH9Uyfm9woG2N70pWcCB01As/wFVe87zj/jtYsrT5SkouYaK47dFnrgzuRoKqkzl0lg==
-X-Received: by 2002:a17:907:1999:b0:acb:b966:3a8f with SMTP id
- a640c23a62f3a-ad17af47f9fmr369374766b.39.1746212250389; 
- Fri, 02 May 2025 11:57:30 -0700 (PDT)
+ bh=7W0BMY8RW+QgVy2DDvRgW0zJIWF8qk5txc1xkIoqDmI=;
+ b=BtBv6PfgeYaX3745e2bHmspQDo6i2EQjZaRZrtAFLiZRNBJy+G8wHu2PtAAoS8eXI2
+ PpDVmJCISP0b+hseilIoQcPAlQl6zGHtpmgdFzU46Wl3WI3F4Wt/Fyv5dP0hk5I37qIT
+ RawjwhYszXze2ECIpHRiM0MGZsT3+cLpfHckBLPv5S/qW527q2Jpdtaptw69YH1ltTOk
+ TJko7vId7CzgNCCiEy6pCdsH+vq8Ko+ab5HLgW1MS84W3lp3dbW9Gx5sq8NxCdxMsz+E
+ P4QxXCk6j//AMZYSX2oIANQNHF9IW7u0MaDKbDEVysDkvYsls2oaapa+j76D74h6xsQH
+ 0S/w==
+X-Gm-Message-State: AOJu0Yw2Rf2iXOrlmhFmcim1t6FxUFEKWQaZ1SIeN/VW8JXAjMQSJJBw
+ CleLPMlrv3rBC7my6jVXAhjCslcqe6dYV9iLXrZTTERN10s/D7LBcbRITXm8Z6ECr2UuLIXMFG2
+ m
+X-Gm-Gg: ASbGncuFWkhZGWh6C0jdhLfVS3c7G8alsvr6xVYV0MGlxUMcBd2sm22ZPe+WiOIjF1k
+ dkW3QujjqjRMrDoQyGC8KgGYOVkPWlaXEnS+8dqcRpZZtRW3Yb4rV5/Rr73g+g8HAoDHiENFokc
+ u/IcaKnqU/V0GM8fHkqgObgzb6xP/mHjk64SmQaZt9nN6wKMgMp00fIZVRBigGry8NzPGxkJw0l
+ QBmnJulFNbOfbnZyion1iJpDAa4Yzd7jRQDQL0w44tTPk9930knpbunNFxM9b7I5FsFIUOT2qd8
+ rGTD50N0WvnDH4YkiwNkef0TkxshvwOBZZU0t5/XDyKu8VkpfSVR+KNEMvd2X6iYzX8iJguspB1
+ mUecl7UvORZ/GSUuGjEC9
+X-Google-Smtp-Source: AGHT+IEWo9HjXE4DNH5rf35EVfESZitQ5851Peyvf3rqPh+6nbMg8i/8hbEMRlvbQwc9Hq9pE7zeug==
+X-Received: by 2002:a17:907:394a:b0:ac4:2ae:c970 with SMTP id
+ a640c23a62f3a-ad17b5ac529mr354547966b.21.1746212256211; 
+ Fri, 02 May 2025 11:57:36 -0700 (PDT)
 Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
  [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ad1895094basm85876966b.145.2025.05.02.11.57.28
+ a640c23a62f3a-ad18e68b571sm31491866b.104.2025.05.02.11.57.34
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 02 May 2025 11:57:29 -0700 (PDT)
+ Fri, 02 May 2025 11:57:35 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -75,11 +75,11 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
  Zhao Liu <zhao1.liu@intel.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Yi Liu <yi.l.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH v3 06/19] hw/nvram/fw_cfg: Remove
- fw_cfg_io_properties::dma_enabled
-Date: Fri,  2 May 2025 20:56:38 +0200
-Message-ID: <20250502185652.67370-7-philmd@linaro.org>
+ Yi Liu <yi.l.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Mark Cave-Ayland <mark.caveayland@nutanix.com>
+Subject: [PATCH v3 07/19] hw/i386/pc: Remove pc_compat_2_6[] array
+Date: Fri,  2 May 2025 20:56:39 +0200
+Message-ID: <20250502185652.67370-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250502185652.67370-1-philmd@linaro.org>
 References: <20250502185652.67370-1-philmd@linaro.org>
@@ -110,82 +110,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now than all calls to fw_cfg_init_io_dma() pass DMA arguments,
-the 'dma_enabled' of the TYPE_FW_CFG_IO type is not used anymore.
-Remove it, simplifying fw_cfg_init_io_dma() and fw_cfg_io_realize().
-
-Note, we can not remove the equivalent in fw_cfg_mem_properties[]
-because it is still used in HPPA and MIPS Loongson3 machines:
-
-  $ git grep -w fw_cfg_init_mem
-  hw/hppa/machine.c:204:    fw_cfg = fw_cfg_init_mem(addr, addr + 4);
-  hw/mips/loongson3_virt.c:289:    fw_cfg = fw_cfg_init_mem(cfg_addr, cfg_addr + 8, 8);
+The pc_compat_2_6[] array was only used by the pc-q35-2.6
+and pc-i440fx-2.6 machines, which got removed. Remove it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
 ---
- hw/nvram/fw_cfg.c | 26 ++++++++------------------
- 1 file changed, 8 insertions(+), 18 deletions(-)
+ include/hw/i386/pc.h | 3 ---
+ hw/i386/pc.c         | 8 --------
+ 2 files changed, 11 deletions(-)
 
-diff --git a/hw/nvram/fw_cfg.c b/hw/nvram/fw_cfg.c
-index d119c10d308..c1bd229e8f3 100644
---- a/hw/nvram/fw_cfg.c
-+++ b/hw/nvram/fw_cfg.c
-@@ -1026,12 +1026,9 @@ FWCfgState *fw_cfg_init_io_dma(uint32_t iobase, uint32_t dma_iobase,
-     FWCfgIoState *ios;
-     FWCfgState *s;
-     MemoryRegion *iomem = get_system_io();
--    bool dma_requested = dma_iobase && dma_as;
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index a3de3e9560d..4fb2033bc54 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -292,9 +292,6 @@ extern const size_t pc_compat_2_8_len;
+ extern GlobalProperty pc_compat_2_7[];
+ extern const size_t pc_compat_2_7_len;
  
-+    assert(dma_iobase && dma_as);
-     dev = qdev_new(TYPE_FW_CFG_IO);
--    if (!dma_requested) {
--        qdev_prop_set_bit(dev, "dma_enabled", false);
--    }
- 
-     object_property_add_child(OBJECT(qdev_get_machine()), TYPE_FW_CFG,
-                               OBJECT(dev));
-@@ -1042,13 +1039,10 @@ FWCfgState *fw_cfg_init_io_dma(uint32_t iobase, uint32_t dma_iobase,
-     memory_region_add_subregion(iomem, iobase, &ios->comb_iomem);
- 
-     s = FW_CFG(dev);
+-extern GlobalProperty pc_compat_2_6[];
+-extern const size_t pc_compat_2_6_len;
 -
--    if (s->dma_enabled) {
--        /* 64 bits for the address field */
--        s->dma_as = dma_as;
--        s->dma_addr = 0;
--        memory_region_add_subregion(iomem, dma_iobase, &s->dma_iomem);
--    }
-+    /* 64 bits for the address field */
-+    s->dma_as = dma_as;
-+    s->dma_addr = 0;
-+    memory_region_add_subregion(iomem, dma_iobase, &s->dma_iomem);
- 
-     return s;
- }
-@@ -1185,8 +1179,6 @@ static void fw_cfg_file_slots_allocate(FWCfgState *s, Error **errp)
- }
- 
- static const Property fw_cfg_io_properties[] = {
--    DEFINE_PROP_BOOL("dma_enabled", FWCfgIoState, parent_obj.dma_enabled,
--                     true),
-     DEFINE_PROP_UINT16("x-file-slots", FWCfgIoState, parent_obj.file_slots,
-                        FW_CFG_FILE_SLOTS_DFLT),
+ #define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
+     static void pc_machine_##suffix##_class_init(ObjectClass *oc, \
+                                                  const void *data) \
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 49632b69d29..7573b880905 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -251,14 +251,6 @@ GlobalProperty pc_compat_2_7[] = {
  };
-@@ -1207,11 +1199,9 @@ static void fw_cfg_io_realize(DeviceState *dev, Error **errp)
-     memory_region_init_io(&s->comb_iomem, OBJECT(s), &fw_cfg_comb_mem_ops,
-                           FW_CFG(s), "fwcfg", FW_CFG_CTL_SIZE);
+ const size_t pc_compat_2_7_len = G_N_ELEMENTS(pc_compat_2_7);
  
--    if (FW_CFG(s)->dma_enabled) {
--        memory_region_init_io(&FW_CFG(s)->dma_iomem, OBJECT(s),
--                              &fw_cfg_dma_mem_ops, FW_CFG(s), "fwcfg.dma",
--                              sizeof(dma_addr_t));
--    }
-+    memory_region_init_io(&FW_CFG(s)->dma_iomem, OBJECT(s),
-+                          &fw_cfg_dma_mem_ops, FW_CFG(s), "fwcfg.dma",
-+                          sizeof(dma_addr_t));
- 
-     fw_cfg_common_realize(dev, errp);
- }
+-GlobalProperty pc_compat_2_6[] = {
+-    { TYPE_X86_CPU, "cpuid-0xb", "off" },
+-    { "vmxnet3", "romfile", "" },
+-    { TYPE_X86_CPU, "fill-mtrr-mask", "off" },
+-    { "apic-common", "legacy-instance-id", "on", }
+-};
+-const size_t pc_compat_2_6_len = G_N_ELEMENTS(pc_compat_2_6);
+-
+ /*
+  * @PC_FW_DATA:
+  * Size of the chunk of memory at the top of RAM for the BIOS ACPI tables
 -- 
 2.47.1
 
