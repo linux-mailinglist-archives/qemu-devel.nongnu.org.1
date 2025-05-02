@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 304E3AA68B0
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 04:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C6A3AA68AB
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 04:17:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAfxN-00040K-Pd; Thu, 01 May 2025 22:16:53 -0400
+	id 1uAfx8-0003vk-HM; Thu, 01 May 2025 22:16:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1uAfxE-0003yQ-W3
- for qemu-devel@nongnu.org; Thu, 01 May 2025 22:16:45 -0400
+ id 1uAfx1-0003tE-0F
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 22:16:31 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1uAfxC-0007TQ-NJ
- for qemu-devel@nongnu.org; Thu, 01 May 2025 22:16:44 -0400
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 541KeNtX024976;
- Fri, 2 May 2025 02:16:33 GMT
+ id 1uAfwz-0007RM-0z
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 22:16:30 -0400
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 541KeRSn022623;
+ Fri, 2 May 2025 02:16:20 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2025-04-25; bh=fMOsx
- hjp26Lh0BIlPWm0XLzoyoE4zg7kHdXKyAmVPgw=; b=O7qsHXOy7Jyk8HcHsZ9zo
- gfvBZyVKaI1KeXc2Dl4sPWpbLdBESGBBhGcCEAVbV7uTvX24iUPdy94wDXs5iDhQ
- 6glD+rU0aisZpG2O5VWPOo6Ha9i2bja2mduIUEWSUuNu/jKXs+tWTMLAUN5J2+7/
- PfFtsUji+a3ojXR7mRPZEQ45rKeYcad29H3MWuoBrIi8H2mSyqN0LJ061KK5kGlj
- Koj/3/wUDaFXE/RDkGRjcFQ1TF/S9XKTw1hfQpsw6rtaKIz++BMZRN5LOl5TZMvM
- soRbZA/B2xJZiZ98/qmo6AzhIyKSlNJ4z2y7TZvA/LHmPeQuwViDOn6KWSZKsbpn
- g==
+ :mime-version:references:subject:to; s=corp-2025-04-25; bh=UnbB5
+ BpJQd3wr6A0cs//jyZb2f/U7D1aOtqKnVe/+2A=; b=J6GV1TQ/VloQalv2GAl1i
+ pPFcdZDQyxU/Tqr4jMAA71PqfL1Slu/dK0l3zSE2gDhNCBHIHXyDiy9JiS4xUepb
+ l6lekEhKI4kmIokjwPSLxMgWxLi/lwfIe8RH4lnzbmZG7woxmAQ3oZrVKMlAqwHB
+ z/wgWdFuhHe/gxanyQWh1dlLpcUJXeAOR42/BZdwBL80C2XQWHTTKb9jIwtCqbvZ
+ BMEkuNQ9m2pH4xvQM4i1NkW6ETBoUhUfNhWRacNB9equ+nWqarOECGJcjHagWeN8
+ 0TRDIi+4HP5kxqt2TB/Qz0lBtM4UmnqvVPmJO7Xo2Vw/orMG0zeIpgxjwmI9BU/u
+ Q==
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46b6usmcp8-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46b6uumdb4-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 02 May 2025 02:16:33 +0000 (GMT)
+ Fri, 02 May 2025 02:16:20 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 5421Ioqa023986; Fri, 2 May 2025 02:16:18 GMT
+ with ESMTP id 5420RRqB023842; Fri, 2 May 2025 02:16:19 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 468nxkh03c-1
+ 468nxkh03n-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 02 May 2025 02:16:18 +0000
+ Fri, 02 May 2025 02:16:19 +0000
 Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5422FEsM011525;
- Fri, 2 May 2025 02:16:17 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5422FEsO011525;
+ Fri, 2 May 2025 02:16:18 GMT
 Received: from alaljimee5bm-ol9-20250405.osdevelopmeniad.oraclevcn.com
  (alaljimee5bm-ol9-20250405.allregionaliads.osdevelopmeniad.oraclevcn.com
  [100.100.254.235])
  by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 468nxkgyvr-17; Fri, 02 May 2025 02:16:17 +0000
+ 468nxkgyvr-18; Fri, 02 May 2025 02:16:18 +0000
 From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
@@ -64,10 +64,10 @@ Cc: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
  clement.mathieu--drif@eviden.com, ethan.milon@eviden.com,
  joao.m.martins@oracle.com, boris.ostrovsky@oracle.com,
  alejandro.j.jimenez@oracle.com
-Subject: [PATCH v2 16/20] amd_iommu: Set all address spaces to default
- translation mode on reset
-Date: Fri,  2 May 2025 02:16:01 +0000
-Message-ID: <20250502021605.1795985-17-alejandro.j.jimenez@oracle.com>
+Subject: [PATCH v2 17/20] amd_iommu: Add dma-remap property to AMD vIOMMU
+ device
+Date: Fri,  2 May 2025 02:16:02 +0000
+Message-ID: <20250502021605.1795985-18-alejandro.j.jimenez@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250502021605.1795985-1-alejandro.j.jimenez@oracle.com>
 References: <20250502021605.1795985-1-alejandro.j.jimenez@oracle.com>
@@ -81,19 +81,19 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  suspectscore=0 spamscore=0 adultscore=0 mlxscore=0 malwarescore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2504070000 definitions=main-2505020015
-X-Proofpoint-ORIG-GUID: fjv1qYqqMVSyFnzXzWBh8xoGhcFo7GgL
-X-Proofpoint-GUID: fjv1qYqqMVSyFnzXzWBh8xoGhcFo7GgL
-X-Authority-Analysis: v=2.4 cv=Hd0UTjE8 c=1 sm=1 tr=0 ts=68142b01 b=1 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAyMDAxNSBTYWx0ZWRfX9otAGuJHGq83
+ HlYeu30YhxRRJguLrP3gfyPYA7NSYX+yDxPVnhiqRr9JfxLehKMIQOIIFDLtt8VBBwW1qhAzmXz
+ w1dP10eO0sjdrow8TCbrZuBSRjpqSChjZt9z3pThD6aOwPrjxYh3LSh7rWa/P0dCiVmFfZuvSuE
+ vr15WUHXy1Yl5ed+UBVbvokFhkUNBqS4WE7FejwtlFBuLe+SQV60pL+oduLilrTt9NN6dqTNteb
+ LKKu5x1YKFNR47iE260WZxzjgKDbLrPjkJ7Njke6I1le6OkWwHLPB+EcfMEN9L3OwkVprNRbIQY
+ +zymCvSriwtECtVpEzaqYnFbcQE6arWjuZyDnfDXTP+l74ZuKHIpgn1Td+Je9Wp7d70JPZO7jzB
+ HA/+CCCXGHiFHWVTRnAeOHw9mQh9pRS8h2XCovCrm1zhuNEsR8z+piveV5un18JgtLaanV1Y
+X-Authority-Analysis: v=2.4 cv=Ve/3PEp9 c=1 sm=1 tr=0 ts=68142af4 b=1 cx=c_pps
  a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=TyYeUvuNVc17vi0sGpoA:9 cc=ntf
- awl=host:13130
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAyMDAxNiBTYWx0ZWRfXxG0FeF0zL4FU
- fx532BZ+gDBsSHo8DW7yrQFTy2M7N1Wn3xnaJNNB63ODyorGiS4s9aYyJuMxID68D2kISAhzdIN
- 7J1flgttqsvZhDMn8une2x914on6fIuuDrMBwJmCv8SUe7VDezd2Dgokka7tTgFroKDJAkZgESX
- n0uNdjt3OAXqGXYWXGfLwcxU/hVzzgAbJwb5P1VoB4HYx5plAClebNSZLX9ddwjpvwBwPoQqVcg
- sncuss55sygbYx3sU47cq9YrUdJMS5XU4UQGfpPihnekJ9RWoK3NNjBqqgJCAF8Zb5DqsNfsCKl
- exOWHBqiaAMCd6Q5L3zn6Wxwf/Oy2I1KSqJ4EqZqHGb1GA43tochahDmLxDoUkOfFYbLhzGSzWe
- jD2KcOe6w465xJrfriSYWqXDsKesopPcX/TxDs3h4jNbES+TBnqvdsJbnY4thlysZ15vUQTK
+ a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=lB8vL2C6TGN_h6hMWm0A:9
+ a=+jEqtf1s3R9VXZ0wqowq2kgwd+I=:19 cc=ntf awl=host:13130
+X-Proofpoint-ORIG-GUID: Qm6uFplSYo40j_ny2x_mrm7PwjvQrVrK
+X-Proofpoint-GUID: Qm6uFplSYo40j_ny2x_mrm7PwjvQrVrK
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=alejandro.j.jimenez@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -119,60 +119,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On reset, restore the default address translation mode for all the
-address spaces managed by the vIOMMU.
+In order to enable device assignment with IOMMU protection and guest DMA
+address translation, IOMMU MAP notifier support is necessary to allow users
+like VFIO to synchronize the shadow page tables i.e. to receive
+notifications when the guest updates its I/O page tables and replay the
+mappings onto host I/O page tables.
+
+Provide a new dma-remap property to govern the ability to register for MAP
+notifications, effectively providing global control over the DMA address
+translation functionality that was implemented in previous changes.
+
+Note that DMA remapping support also requires the vIOMMU is configured with
+the NpCache capability, so a guest driver issues IOMMU invalidations for
+both map() and unmap() operations. This capability is already set by default
+and written to the configuration in amdvi_pci_realize() as part of
+AMDVI_CAPAB_FEATURES.
 
 Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 ---
- hw/i386/amd_iommu.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ hw/i386/amd_iommu.c | 24 +++++++++++++++++-------
+ hw/i386/amd_iommu.h |  3 +++
+ 2 files changed, 20 insertions(+), 7 deletions(-)
 
 diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 71018d70dd10..90491367594b 100644
+index 90491367594b..a2df73062bf7 100644
 --- a/hw/i386/amd_iommu.c
 +++ b/hw/i386/amd_iommu.c
-@@ -962,6 +962,33 @@ static void amdvi_switch_address_space(AMDVIAddressSpace *amdvi_as)
-     }
- }
- 
-+/*
-+ * For all existing address spaces managed by the IOMMU, enable/disable the
-+ * corresponding memory regions depending on the address translation mode
-+ * as determined by the global and individual address space settings.
-+ */
-+static void amdvi_switch_address_space_all(AMDVIState *s)
-+{
-+    AMDVIAddressSpace **iommu_as;
-+
-+    for (int bus_num = 0; bus_num < PCI_BUS_MAX; bus_num++) {
-+
-+        /* Nothing to do if there are no devices on the current bus */
-+        if (!s->address_spaces[bus_num]) {
-+            continue;
-+        }
-+        iommu_as = s->address_spaces[bus_num];
-+
-+        for (int devfn = 0; devfn < PCI_DEVFN_MAX; devfn++) {
-+
-+            if (!iommu_as[devfn]) {
-+                continue;
-+            }
-+            amdvi_switch_address_space(iommu_as[devfn]);
-+        }
-+    }
-+}
-+
- /* log error without aborting since linux seems to be using reserved bits */
- static void amdvi_inval_devtab_entry(AMDVIState *s, uint64_t *cmd)
+@@ -951,7 +951,9 @@ static void amdvi_iommu_address_space_sync_all(AMDVIState *s)
+  */
+ static void amdvi_switch_address_space(AMDVIAddressSpace *amdvi_as)
  {
-@@ -2199,6 +2226,7 @@ static void amdvi_sysbus_reset(DeviceState *dev)
+-    if (amdvi_as->addr_translation) {
++    AMDVIState *s = amdvi_as->iommu_state;
++
++    if (s->dma_remap && amdvi_as->addr_translation) {
+         /* Enabling DMA region */
+         memory_region_set_enabled(&amdvi_as->iommu_nodma, false);
+         memory_region_set_enabled(MEMORY_REGION(&amdvi_as->iommu), true);
+@@ -2126,12 +2128,19 @@ static int amdvi_iommu_notify_flag_changed(IOMMUMemoryRegion *iommu,
+     AMDVIAddressSpace *as = container_of(iommu, AMDVIAddressSpace, iommu);
+     AMDVIState *s = as->iommu_state;
  
-     /* Discard all mappings on device reset */
-     amdvi_address_space_unmap_all(s);
-+    amdvi_switch_address_space_all(s);
- }
+-    if (new & IOMMU_NOTIFIER_MAP) {
+-        error_setg(errp,
+-                "device %02x.%02x.%x requires iommu notifier which is not "
+-                "currently supported", as->bus_num, PCI_SLOT(as->devfn),
+-                PCI_FUNC(as->devfn));
+-        return -EINVAL;
++    /*
++     * Accurate synchronization of the vIOMMU page tables required to support
++     * MAP notifiers is provided by the dma-remap feature. In addition, this
++     * also requires that the vIOMMU presents the NpCache capability, so a guest
++     * driver issues invalidations for both map() and unmap() operations. The
++     * capability is already set by default as part of AMDVI_CAPAB_FEATURES and
++     * written to the configuration in amdvi_pci_realize().
++     */
++    if (!s->dma_remap && (new & IOMMU_NOTIFIER_MAP)) {
++        error_setg_errno(errp, ENOTSUP,
++                "device %02x.%02x.%x requires dma-remap=1",
++                as->bus_num, PCI_SLOT(as->devfn), PCI_FUNC(as->devfn));
++        return -ENOTSUP;
+     }
  
- static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
+     /*
+@@ -2281,6 +2290,7 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
+ 
+ static const Property amdvi_properties[] = {
+     DEFINE_PROP_BOOL("xtsup", AMDVIState, xtsup, false),
++    DEFINE_PROP_BOOL("dma-remap", AMDVIState, dma_remap, false),
+ };
+ 
+ static const VMStateDescription vmstate_amdvi_sysbus = {
+diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
+index a7462b2adb79..fc4d2f7a4575 100644
+--- a/hw/i386/amd_iommu.h
++++ b/hw/i386/amd_iommu.h
+@@ -420,6 +420,9 @@ struct AMDVIState {
+     /* Interrupt remapping */
+     bool ga_enabled;
+     bool xtsup;
++
++    /* DMA address translation */
++    bool dma_remap;
+ };
+ 
+ uint64_t amdvi_extended_feature_register(AMDVIState *s);
 -- 
 2.43.5
 
