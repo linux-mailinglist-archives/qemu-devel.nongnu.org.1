@@ -2,108 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EB8AAA68AF
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 04:18:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F685AA68F5
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 05:06:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAfxO-00040L-0l; Thu, 01 May 2025 22:16:54 -0400
+	id 1uAgi0-0001D0-0S; Thu, 01 May 2025 23:05:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1uAfxJ-0003zg-N2
- for qemu-devel@nongnu.org; Thu, 01 May 2025 22:16:51 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alejandro.j.jimenez@oracle.com>)
- id 1uAfxH-0007U9-DQ
- for qemu-devel@nongnu.org; Thu, 01 May 2025 22:16:49 -0400
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 541KeOI8009483;
- Fri, 2 May 2025 02:16:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=corp-2025-04-25; bh=fyxYM
- HrfaDaIXUg8jIVxI57JbzBE2c2IPZNAlkldBVM=; b=GHNRyoAL3thJwSXzrQ56+
- r3KS7AmJIYPuXiM+yNtjHLAboSGN6dNCvF5Ys6103RnKEZMbk7guRFuM1FcD/P0L
- fDIeWM9jOnK/TDkWvBVJ+J1WDejHWR7BqM68+o3WiZYEB9fXac4s3p4VrESKBlyk
- VGrgcRo5gA5glKCXHLCIZtaOb/QEvUDjJ4cde2H52Z4RmbV1f99JOgMIXu3tsdbf
- wJvTcX5zYjleleBskOLddnV03MmurzIyACUrmPxAnPN1P0U+1yYsUSrXp7jtnroc
- lLRDkoz8yjZKRmFxcfR6R4ojC7Dy+RPSTnzcGg+ly5EzptoaIOOlRKG2sBSxU+aP
- A==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46b6utcbqr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 02 May 2025 02:16:36 +0000 (GMT)
-Received: from pps.filterd
- (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 541NuN4W023769; Fri, 2 May 2025 02:16:21 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 468nxkh04m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 02 May 2025 02:16:21 +0000
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5422FEsU011525;
- Fri, 2 May 2025 02:16:20 GMT
-Received: from alaljimee5bm-ol9-20250405.osdevelopmeniad.oraclevcn.com
- (alaljimee5bm-ol9-20250405.allregionaliads.osdevelopmeniad.oraclevcn.com
- [100.100.254.235])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 468nxkgyvr-21; Fri, 02 May 2025 02:16:20 +0000
-From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1uAghx-0001CJ-2i; Thu, 01 May 2025 23:05:01 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1uAghv-00084G-67; Thu, 01 May 2025 23:05:00 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-74019695377so1390808b3a.3; 
+ Thu, 01 May 2025 20:04:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1746155096; x=1746759896; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=/kFvo0g8CcZ6d6v+axjxMJhZQpCfm+ikCr6BeFDwz40=;
+ b=gEJsRsICflv4jhXqZL71F6/cSDJINmlfc4qjuw2SeNhAp2Hkfzm9TsoKgiF40s4qrs
+ hah6m/L+cwpoa+HPV5CsWYJvLUb+BtS7uxNGb8e9RL9CQy24Ohck1a28VlVyUEdf25WF
+ 5v6rTxqTYTI8xk5U/KWqIdVoy+fPsZY9KTlgBTYxCDoub8k2JbcRgRdjLR2/Q6/Xeufx
+ bV2/lPEeZEo3Boq0KYjFDNQ1X8Eb1VilO6UdlGrItVSW86Ak5+5wmXN7K3EtikO5xUJT
+ 11SBuxZLOrDH+x8q6PjKW5ki9nB83fyTJgnVNz8dqWsnmOmzhOiQpMiKc435tLsp4YAa
+ NkBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1746155096; x=1746759896;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=/kFvo0g8CcZ6d6v+axjxMJhZQpCfm+ikCr6BeFDwz40=;
+ b=Qv3cDu5QhZMrA3dvL1eudXsg2naTt7kALz9fm2Ax3tl1YwG4HMz8BpXYq850NUIZeo
+ TufqDDXBwAByMXR/kX39b0pXXqPBcsAtMRgE/Ih+LMEuWopIgcfRTDIgvX+oa+T+HGmy
+ 0Rwf75X08+ExxKJhBNEzeAgvBPU6SOVz5YzhtGhgaiF4jI4BpwDFv3fGngQ1q/2/mdYf
+ mzlmeJMeNVCsc+1zM22cUF8wHqA1SV7TvZE0LD3TXYoNne8tncVBClmK3lL1HEhp7G60
+ ZOzlb8Yr/mpmpnCWh9GkH8znu5JgLSoSk2puPLdGpJkYuZ00reyK3FWlapEvWUJS9/Ax
+ rGmw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUz9rxBBdM+48i1/lzOLu8qsNsdCSUaK7ESfT9p5T4SM3K56uhKRun2kZ83W7w2f+M77I6+OMuCldCd@nongnu.org,
+ AJvYcCXBExHrzCyG4+FwAJCY3LkZXCbnU3Az9uMKNksNND9sCY4EhO7W3e0wLWH8xld7+E9ptDkxe3Wznco=@nongnu.org
+X-Gm-Message-State: AOJu0Yxq1J0Kc+ZAWgiIPIImpn+2gOrJJ+R6pll6AHrdwZFvzhOizv1X
+ WPkJAt4Qru12JfhOo6PGynfdi5fXLGFJtc4WOI2uI5tORlyUrXPW02BzDw==
+X-Gm-Gg: ASbGncs6PXpUAvIGC3TRf1++ydxM12KgcjtIzbMj5QhhjfufSIJE4ppvrdoTKdqHiNA
+ +6DNbF7rtz7ZFnyrWqaGhjYDZHt1BAXLMyuUER0+fDjQnhpZV8HxOhnEifbnSeH6lFukNMvpVHc
+ 6FGSES2b27HRyqbg2TLUoyyP/+cS0qTbv2M1UfRyHvJ3VlvMIBIjZS86qZj3AGit1zJai1Yz+zZ
+ BF9s2QNvo2rwk6P8YptnfUAAKt8HN8rqhgloPCbtSeRoOjRoku2iRo2LXri66I9S2AaoMZz54Bt
+ eq+jpz6qx4at2OlIuCkcMcdTPYqd6KdoOeJ/6f7kK1hl
+X-Google-Smtp-Source: AGHT+IGRCzSM5xvhJoNXqm3sgfIIhC0D+MWAV4f9mqPIrge+g9tSSC/unjyw81fRClGKgNppmkqQeg==
+X-Received: by 2002:a05:6a00:e1b:b0:73f:f816:dd7f with SMTP id
+ d2e1a72fcca58-74058b12139mr1560285b3a.15.1746155095944; 
+ Thu, 01 May 2025 20:04:55 -0700 (PDT)
+Received: from wheely.local0.net ([220.253.99.94])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-74059020932sm463382b3a.92.2025.05.01.20.04.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 01 May 2025 20:04:55 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
- peterx@redhat.com, david@redhat.com, philmd@linaro.org, mst@redhat.com,
- marcel.apfelbaum@gmail.com, alex.williamson@redhat.com,
- vasant.hegde@amd.com, suravee.suthikulpanit@amd.com,
- santosh.shukla@amd.com, sarunkod@amd.com, Wei.Huang2@amd.com,
- clement.mathieu--drif@eviden.com, ethan.milon@eviden.com,
- joao.m.martins@oracle.com, boris.ostrovsky@oracle.com,
- alejandro.j.jimenez@oracle.com
-Subject: [PATCH v2 20/20] amd_iommu: Refactor amdvi_page_walk() to use common
- code for page walk
-Date: Fri,  2 May 2025 02:16:05 +0000
-Message-ID: <20250502021605.1795985-21-alejandro.j.jimenez@oracle.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250502021605.1795985-1-alejandro.j.jimenez@oracle.com>
-References: <20250502021605.1795985-1-alejandro.j.jimenez@oracle.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>, Fabiano Rosas <farosas@suse.de>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, John Snow <jsnow@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-block@nongnu.org, qemu-ppc@nongnu.org
+Subject: [PATCH v5 00/11] tests/qtest: pci and msix fixes
+Date: Fri,  2 May 2025 13:04:34 +1000
+Message-ID: <20250502030446.88310-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-01_06,2025-04-24_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
- phishscore=0
- suspectscore=0 spamscore=0 adultscore=0 mlxscore=0 malwarescore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2504070000 definitions=main-2505020015
-X-Proofpoint-GUID: vOeqr5Iz5DIhOtRbohipgXLinlwAcluU
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAyMDAxNiBTYWx0ZWRfX+bPl6Kpovm3j
- HNysKGQlOdAr5f/WRqVCE7xJurxcieXATA0qE2YtWXljAnjWWLehAHIZkjaB1KHmPsGgJWQs2SG
- nh2hUGVqrbSV2XShKcUiD/RNIN2F1hHM8A9bX64YfV4TzOjEX02QF/Rt5vIbWo9vNi9JTJfKT0g
- mnZEhDzCA7TI/UfieYuTwcz2nkXtGP9lcYyd70auv+5cTouVXB2wlkCq9YTLFay/WUqcO0q+Z7M
- bpN4zUYWo18Eb/Y38mxS/XQ7mfMeTFHDPrTWgPLpzCJM+J5jGV7Y1wedJ1fBgl589AYgJXS8E9O
- kjBH8GzlANkrRI6AKRg0iJlRRE4EsXN/Sw2xI4NqVbUJ7XoG6RP9OAJkS0ShANkS3a9XrEWPI6I
- oiA5vRQVAcsbPtRNBz9wBsoKq/Noe0OD1XRHjCdnkf10ylUVrWCUB2GYJS1140YKhl7f1bB2
-X-Authority-Analysis: v=2.4 cv=ZuHtK87G c=1 sm=1 tr=0 ts=68142b04 b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=vEuQwzgZqMseO_9XBp0A:9 cc=ntf
- awl=host:13130
-X-Proofpoint-ORIG-GUID: vOeqr5Iz5DIhOtRbohipgXLinlwAcluU
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=alejandro.j.jimenez@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,110 +102,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Simplify amdvi_page_walk() by making it call the fetch_pte() helper that is
-already in use by the shadow page synchronization code. Ensures all code
-uses the same page table walking algorithm.
+Since v4:
+https://lore.kernel.org/qemu-devel/20250411044130.201724-1-npiggin@gmail.com/
 
-Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
----
- hw/i386/amd_iommu.c | 59 +++++++++++++++++++++------------------------
- 1 file changed, 27 insertions(+), 32 deletions(-)
+I merged in the "spapr" series that touches similar code:
 
-diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 6d1e7cc65f83..ab236a8e016d 100644
---- a/hw/i386/amd_iommu.c
-+++ b/hw/i386/amd_iommu.c
-@@ -1608,11 +1608,13 @@ static void amdvi_page_walk(AMDVIAddressSpace *as, uint64_t *dte,
-                             IOMMUTLBEntry *ret, unsigned perms,
-                             hwaddr addr)
- {
--    unsigned level, present, pte_perms, oldlevel;
--    uint64_t pte = dte[0], pte_addr, page_mask;
-+    hwaddr page_mask, pagesize = 0;
-+    uint8_t mode;
-+    uint64_t pte;
-+    int fetch_ret;
- 
-     /* make sure the DTE has TV = 1 */
--    if (!(pte & AMDVI_DEV_TRANSLATION_VALID)) {
-+    if (!(dte[0] & AMDVI_DEV_TRANSLATION_VALID)) {
-         /*
-          * A DTE with V=1, TV=0 does not have a valid Page Table Root Pointer.
-          * An IOMMU processing a request that requires a table walk terminates
-@@ -1623,42 +1625,35 @@ static void amdvi_page_walk(AMDVIAddressSpace *as, uint64_t *dte,
-         return;
-     }
- 
--    level = get_pte_translation_mode(pte);
--    if (level >= 7) {
--        trace_amdvi_mode_invalid(level, addr);
-+    mode = get_pte_translation_mode(dte[0]);
-+    if (mode >= 7) {
-+        trace_amdvi_mode_invalid(mode, addr);
-         return;
-     }
--    if (level == 0) {
-+    if (mode == 0) {
-         goto no_remap;
-     }
- 
--    /* we are at the leaf page table or page table encodes a huge page */
--    do {
--        pte_perms = amdvi_get_perms(pte);
--        present = pte & 1;
--        if (!present || perms != (perms & pte_perms)) {
--            amdvi_page_fault(as->iommu_state, as->devfn, addr, perms);
--            trace_amdvi_page_fault(addr);
--            return;
--        }
--        /* go to the next lower level */
--        pte_addr = pte & AMDVI_DEV_PT_ROOT_MASK;
--        /* add offset and load pte */
--        pte_addr += ((addr >> (3 + 9 * level)) & 0x1FF) << 3;
--        pte = amdvi_get_pte_entry(as->iommu_state, pte_addr, as->devfn);
--        if (!pte) {
--            return;
--        }
--        oldlevel = level;
--        level = get_pte_translation_mode(pte);
--    } while (level > 0 && level < 7);
-+    /* Attempt to fetch the PTE to determine if a valid mapping exists */
-+    fetch_ret = fetch_pte(as, addr, dte[0], &pte, &pagesize);
- 
--    if (level == 0x7) {
--        page_mask = pte_override_page_mask(pte);
--    } else {
--        page_mask = pte_get_page_mask(oldlevel);
-+    /*
-+     * If walking the page table results in an error of any type, returns an
-+     * empty PTE i.e. no mapping, or the permissions do not match, return since
-+     * there is no translation available.
-+     */
-+    if (fetch_ret < 0 || !IOMMU_PTE_PRESENT(pte) ||
-+        perms != (perms & amdvi_get_perms(pte))) {
-+
-+        amdvi_page_fault(as->iommu_state, as->devfn, addr, perms);
-+        trace_amdvi_page_fault(addr);
-+        return;
-     }
- 
-+    /* A valid PTE and page size has been retrieved */
-+    assert(pagesize);
-+    page_mask = ~(pagesize - 1);
-+
-     /* get access permissions from pte */
-     ret->iova = addr & page_mask;
-     ret->translated_addr = (pte & AMDVI_DEV_PT_ROOT_MASK) & page_mask;
-@@ -1670,7 +1665,7 @@ no_remap:
-     ret->iova = addr & AMDVI_PAGE_MASK_4K;
-     ret->translated_addr = addr & AMDVI_PAGE_MASK_4K;
-     ret->addr_mask = ~AMDVI_PAGE_MASK_4K;
--    ret->perm = amdvi_get_perms(pte);
-+    ret->perm = amdvi_get_perms(dte[0]);
- }
- 
- static void amdvi_do_translate(AMDVIAddressSpace *as, hwaddr addr,
+https://lore.kernel.org/qemu-devel/20250416145918.415674-1-npiggin@gmail.com/
+
+- Simplified the ahci shutdown logic to keep one unified shutdown
+  function.
+
+Thanks,
+Nick
+
+Nicholas Piggin (11):
+  tests/qtest: Enforce zero for the "un-fired" msix message value
+  tests/qtest: Fix virtio msix message endianness
+  tests/qtest: Add libqos function for testing msix interrupt status
+  tests/qtest: Enable spapr dma with linear iommu map
+  tests/qtest/ahci: unmap pci bar before reusing device
+  tests/qtest/ahci: don't unmap pci bar if it wasn't mapped
+  tests/qtest/libquos/virtio: unmap pci bar when disabling device
+  tests/qtest/libquos/pci: Add migration fixup helper for pci devices
+  qtest/libqos/pci: Enforce balanced iomap/unmap
+  qtest/libqos/pci: Fix qpci_msix_enable sharing bar0
+  qtest/libqos/pci: Factor msix entry helpers into pci common code
+
+ tests/qtest/libqos/ahci.h              |   3 +
+ tests/qtest/libqos/pci.h               |  20 ++-
+ tests/qtest/libqos/virtio-pci.h        |   1 +
+ hw/ppc/spapr_iommu.c                   |  10 +-
+ tests/qtest/ahci-test.c                |  10 ++
+ tests/qtest/e1000e-test.c              |  21 ---
+ tests/qtest/igb-test.c                 |  21 ---
+ tests/qtest/libqos/ahci.c              |  20 +++
+ tests/qtest/libqos/generic-pcihost.c   |   1 -
+ tests/qtest/libqos/pci-pc.c            |   3 -
+ tests/qtest/libqos/pci-spapr.c         |   7 +-
+ tests/qtest/libqos/pci.c               | 210 ++++++++++++++++++++++---
+ tests/qtest/libqos/virtio-pci-modern.c |  30 +---
+ tests/qtest/libqos/virtio-pci.c        |  97 +++---------
+ tests/qtest/vhost-user-blk-test.c      |   6 -
+ tests/qtest/virtio-blk-test.c          |  12 --
+ 16 files changed, 278 insertions(+), 194 deletions(-)
+
 -- 
-2.43.5
+2.47.1
 
 
