@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D619AA6FDA
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 12:36:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68331AA6FDF
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 12:37:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAnk3-00085h-Uq; Fri, 02 May 2025 06:35:40 -0400
+	id 1uAnk7-0008Lu-Mz; Fri, 02 May 2025 06:35:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven_lee@aspeedtech.com>)
- id 1uAnjU-00080N-AN; Fri, 02 May 2025 06:35:04 -0400
+ id 1uAnjW-00082Q-ND; Fri, 02 May 2025 06:35:08 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven_lee@aspeedtech.com>)
- id 1uAnjR-0005yi-V1; Fri, 02 May 2025 06:35:03 -0400
+ id 1uAnjV-0005yi-A5; Fri, 02 May 2025 06:35:06 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Fri, 2 May
@@ -31,10 +31,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
 CC: <troy_lee@aspeedtech.com>, <longzl2@lenovo.com>,
  <yunlin.tang@aspeedtech.com>, <steven_lee@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v4 1/9] aspeed: ast27x0: Map unimplemented devices in SoC
- memory
-Date: Fri, 2 May 2025 18:34:37 +0800
-Message-ID: <20250502103449.3091642-2-steven_lee@aspeedtech.com>
+Subject: [PATCH v4 2/9] aspeed: ast27x0: Correct hex notation for device
+ addresses
+Date: Fri, 2 May 2025 18:34:38 +0800
+Message-ID: <20250502103449.3091642-3-steven_lee@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250502103449.3091642-1-steven_lee@aspeedtech.com>
 References: <20250502103449.3091642-1-steven_lee@aspeedtech.com>
@@ -66,165 +66,63 @@ From:  Steven Lee via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Maps following unimplemented devices in SoC memory
-- dpmcu
-- iomem
-- iomem0
-- iomem1
-- ltpi
-
-Iomem, Iomem0 and Iomem1 include unimplemented controllers in the memory ranges 0x0 - 0x1000000, 0x120000000 - 0x121000000 and
-0x14000000 - 0x141000000.
-
-For instance:
-- USB hub at 0x12010000
-- eSPI at 0x14C5000
-- PWM at 0x140C0000
-
-DPMCU stands for Display Port MCU controller. LTPI is used to connect to AST1700.
-AST1700 is an I/O expander that supports the DC-SCM 2.1 LTPI protocol.
-It provides AST2700 with additional GPIO, UART, I3C, and other interfaces.
+Corrected the hexadecimal notation for several device addresses in the
+aspeed_soc_ast2700_memmap array by changing the uppercase 'X' to
+lowercase 'x'.
 
 Signed-off-by: Steven Lee <steven_lee@aspeedtech.com>
-Change-Id: Iae4db49a4818af3e2c43c16a27fc76329d2405d6
+Change-Id: I45426e18ea8e68d7ccdf9b60c4ea235c4da33cc3
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/arm/aspeed_soc.h |  6 +++++
- hw/arm/aspeed_ast27x0.c     | 52 ++++++++++++++++++++++++++++++++-----
- 2 files changed, 51 insertions(+), 7 deletions(-)
+ hw/arm/aspeed_ast27x0.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/include/hw/arm/aspeed_soc.h b/include/hw/arm/aspeed_soc.h
-index 4dcb1010dc..5fcfd2fe2e 100644
---- a/include/hw/arm/aspeed_soc.h
-+++ b/include/hw/arm/aspeed_soc.h
-@@ -91,6 +91,8 @@ struct AspeedSoCState {
-     SerialMM uart[ASPEED_UARTS_NUM];
-     Clock *sysclk;
-     UnimplementedDeviceState iomem;
-+    UnimplementedDeviceState iomem0;
-+    UnimplementedDeviceState iomem1;
-     UnimplementedDeviceState video;
-     UnimplementedDeviceState emmc_boot_controller;
-     UnimplementedDeviceState dpmcu;
-@@ -98,6 +100,7 @@ struct AspeedSoCState {
-     UnimplementedDeviceState espi;
-     UnimplementedDeviceState udc;
-     UnimplementedDeviceState sgpiom;
-+    UnimplementedDeviceState ltpi;
-     UnimplementedDeviceState jtag[ASPEED_JTAG_NUM];
-     AspeedAPB2OPBState fsi[2];
- };
-@@ -173,6 +176,9 @@ enum {
-     ASPEED_DEV_VBOOTROM,
-     ASPEED_DEV_SPI_BOOT,
-     ASPEED_DEV_IOMEM,
-+    ASPEED_DEV_IOMEM0,
-+    ASPEED_DEV_IOMEM1,
-+    ASPEED_DEV_LTPI,
-     ASPEED_DEV_UART0,
-     ASPEED_DEV_UART1,
-     ASPEED_DEV_UART2,
 diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index a289e65e49..21769669df 100644
+index 21769669df..1974a25766 100644
 --- a/hw/arm/aspeed_ast27x0.c
 +++ b/hw/arm/aspeed_ast27x0.c
-@@ -23,9 +23,17 @@
- #include "qobject/qlist.h"
- #include "qemu/log.h"
- 
-+#define AST2700_SOC_IO_SIZE          0x01000000
-+#define AST2700_SOC_IOMEM_SIZE       0x01000000
-+#define AST2700_SOC_DPMCU_SIZE       0x00040000
-+#define AST2700_SOC_LTPI_SIZE        0x01000000
-+
- static const hwaddr aspeed_soc_ast2700_memmap[] = {
-+    [ASPEED_DEV_IOMEM]     =  0x00000000,
-     [ASPEED_DEV_VBOOTROM]  =  0x00000000,
-     [ASPEED_DEV_SRAM]      =  0x10000000,
-+    [ASPEED_DEV_DPMCU]     =  0x11000000,
-+    [ASPEED_DEV_IOMEM0]    =  0x12000000,
-     [ASPEED_DEV_EHCI1]     =  0x12061000,
-     [ASPEED_DEV_EHCI2]     =  0x12063000,
-     [ASPEED_DEV_HACE]      =  0x12070000,
-@@ -39,6 +47,7 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
+@@ -46,7 +46,7 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
+     [ASPEED_DEV_RTC]       =  0x12C0F000,
      [ASPEED_DEV_TIMER1]    =  0x12C10000,
      [ASPEED_DEV_SLI]       =  0x12C17000,
-     [ASPEED_DEV_UART4]     =  0X12C1A000,
-+    [ASPEED_DEV_IOMEM1]    =  0x14000000,
+-    [ASPEED_DEV_UART4]     =  0X12C1A000,
++    [ASPEED_DEV_UART4]     =  0x12C1A000,
+     [ASPEED_DEV_IOMEM1]    =  0x14000000,
      [ASPEED_DEV_FMC]       =  0x14000000,
      [ASPEED_DEV_SPI0]      =  0x14010000,
-     [ASPEED_DEV_SPI1]      =  0x14020000,
-@@ -73,6 +82,7 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
-     [ASPEED_DEV_UART12]    =  0X14C33B00,
+@@ -67,19 +67,19 @@ static const hwaddr aspeed_soc_ast2700_memmap[] = {
+     [ASPEED_DEV_I2C]       =  0x14C0F000,
+     [ASPEED_DEV_INTCIO]    =  0x14C18000,
+     [ASPEED_DEV_SLIIO]     =  0x14C1E000,
+-    [ASPEED_DEV_VUART]     =  0X14C30000,
+-    [ASPEED_DEV_UART0]     =  0X14C33000,
+-    [ASPEED_DEV_UART1]     =  0X14C33100,
+-    [ASPEED_DEV_UART2]     =  0X14C33200,
+-    [ASPEED_DEV_UART3]     =  0X14C33300,
+-    [ASPEED_DEV_UART5]     =  0X14C33400,
+-    [ASPEED_DEV_UART6]     =  0X14C33500,
+-    [ASPEED_DEV_UART7]     =  0X14C33600,
+-    [ASPEED_DEV_UART8]     =  0X14C33700,
+-    [ASPEED_DEV_UART9]     =  0X14C33800,
+-    [ASPEED_DEV_UART10]    =  0X14C33900,
+-    [ASPEED_DEV_UART11]    =  0X14C33A00,
+-    [ASPEED_DEV_UART12]    =  0X14C33B00,
++    [ASPEED_DEV_VUART]     =  0x14C30000,
++    [ASPEED_DEV_UART0]     =  0x14C33000,
++    [ASPEED_DEV_UART1]     =  0x14C33100,
++    [ASPEED_DEV_UART2]     =  0x14C33200,
++    [ASPEED_DEV_UART3]     =  0x14C33300,
++    [ASPEED_DEV_UART5]     =  0x14C33400,
++    [ASPEED_DEV_UART6]     =  0x14C33500,
++    [ASPEED_DEV_UART7]     =  0x14C33600,
++    [ASPEED_DEV_UART8]     =  0x14C33700,
++    [ASPEED_DEV_UART9]     =  0x14C33800,
++    [ASPEED_DEV_UART10]    =  0x14C33900,
++    [ASPEED_DEV_UART11]    =  0x14C33A00,
++    [ASPEED_DEV_UART12]    =  0x14C33B00,
      [ASPEED_DEV_WDT]       =  0x14C37000,
      [ASPEED_DEV_SPI_BOOT]  =  0x100000000,
-+    [ASPEED_DEV_LTPI]      =  0x300000000,
-     [ASPEED_DEV_SDRAM]     =  0x400000000,
- };
- 
-@@ -507,6 +517,16 @@ static void aspeed_soc_ast2700_init(Object *obj)
- 
-     snprintf(typename, sizeof(typename), "aspeed.hace-%s", socname);
-     object_initialize_child(obj, "hace", &s->hace, typename);
-+    object_initialize_child(obj, "dpmcu", &s->dpmcu,
-+                            TYPE_UNIMPLEMENTED_DEVICE);
-+    object_initialize_child(obj, "ltpi", &s->ltpi,
-+                            TYPE_UNIMPLEMENTED_DEVICE);
-+    object_initialize_child(obj, "iomem", &s->iomem,
-+                            TYPE_UNIMPLEMENTED_DEVICE);
-+    object_initialize_child(obj, "iomem0", &s->iomem0,
-+                            TYPE_UNIMPLEMENTED_DEVICE);
-+    object_initialize_child(obj, "iomem1", &s->iomem1,
-+                            TYPE_UNIMPLEMENTED_DEVICE);
- }
- 
- /*
-@@ -542,8 +562,11 @@ static bool aspeed_soc_ast2700_gic_realize(DeviceState *dev, Error **errp)
-     if (!sysbus_realize(gicbusdev, errp)) {
-         return false;
-     }
--    sysbus_mmio_map(gicbusdev, 0, sc->memmap[ASPEED_GIC_DIST]);
--    sysbus_mmio_map(gicbusdev, 1, sc->memmap[ASPEED_GIC_REDIST]);
-+
-+    aspeed_mmio_map(s, SYS_BUS_DEVICE(&a->gic), 0,
-+                    sc->memmap[ASPEED_GIC_DIST]);
-+    aspeed_mmio_map(s, SYS_BUS_DEVICE(&a->gic), 1,
-+                    sc->memmap[ASPEED_GIC_REDIST]);
- 
-     for (i = 0; i < sc->num_cpus; i++) {
-         DeviceState *cpudev = DEVICE(&a->cpu[i]);
-@@ -911,11 +934,26 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
-     sysbus_connect_irq(SYS_BUS_DEVICE(&s->hace), 0,
-                        aspeed_soc_get_irq(s, ASPEED_DEV_HACE));
- 
--    create_unimplemented_device("ast2700.dpmcu", 0x11000000, 0x40000);
--    create_unimplemented_device("ast2700.iomem0", 0x12000000, 0x01000000);
--    create_unimplemented_device("ast2700.iomem1", 0x14000000, 0x01000000);
--    create_unimplemented_device("ast2700.ltpi", 0x30000000, 0x1000000);
--    create_unimplemented_device("ast2700.io", 0x0, 0x4000000);
-+    aspeed_mmio_map_unimplemented(s, SYS_BUS_DEVICE(&s->dpmcu),
-+                                  "aspeed.dpmcu",
-+                                  sc->memmap[ASPEED_DEV_DPMCU],
-+                                  AST2700_SOC_DPMCU_SIZE);
-+    aspeed_mmio_map_unimplemented(s, SYS_BUS_DEVICE(&s->ltpi),
-+                                  "aspeed.ltpi",
-+                                  sc->memmap[ASPEED_DEV_LTPI],
-+                                  AST2700_SOC_LTPI_SIZE);
-+    aspeed_mmio_map_unimplemented(s, SYS_BUS_DEVICE(&s->iomem),
-+                                  "aspeed.io",
-+                                  sc->memmap[ASPEED_DEV_IOMEM],
-+                                  AST2700_SOC_IO_SIZE);
-+    aspeed_mmio_map_unimplemented(s, SYS_BUS_DEVICE(&s->iomem0),
-+                                  "aspeed.iomem0",
-+                                  sc->memmap[ASPEED_DEV_IOMEM0],
-+                                  AST2700_SOC_IOMEM_SIZE);
-+    aspeed_mmio_map_unimplemented(s, SYS_BUS_DEVICE(&s->iomem1),
-+                                  "aspeed.iomem1",
-+                                  sc->memmap[ASPEED_DEV_IOMEM1],
-+                                  AST2700_SOC_IOMEM_SIZE);
- }
- 
- static void aspeed_soc_ast2700a0_class_init(ObjectClass *oc, const void *data)
+     [ASPEED_DEV_LTPI]      =  0x300000000,
 -- 
 2.34.1
 
