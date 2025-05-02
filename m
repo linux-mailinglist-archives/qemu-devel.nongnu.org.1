@@ -2,95 +2,121 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 466CAAA6F85
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 12:25:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D704AA6F87
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 12:26:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAnYm-0001J1-2X; Fri, 02 May 2025 06:24:00 -0400
+	id 1uAnak-0004xv-34; Fri, 02 May 2025 06:26:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uAnYg-0001H0-Oc
- for qemu-devel@nongnu.org; Fri, 02 May 2025 06:23:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1uAnZs-0004G4-B8; Fri, 02 May 2025 06:25:08 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uAnYe-0000kQ-MI
- for qemu-devel@nongnu.org; Fri, 02 May 2025 06:23:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746181431;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=QzRX5l4/8S+wmKPEV9zweUNzezcyi85OyNacxdgQyIo=;
- b=cA25XMwGKfqdWRXDpPs4fkStFhg7vNYuDSFuAqDWqGyMtRIAj8TJkq+d1SHzsgypIpYK/q
- cus5UuivNpAbBX2kxXFKXjHsWuhHNZQCJM8JJK/RFAliImbf0gcHShWPVMk962cgWWA4Tl
- bn2Wyyr/gM9H/PEbwQz78oO0YbJv/uo=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-191-1ovr3I_gNbifhneQ5DwSQA-1; Fri, 02 May 2025 06:23:50 -0400
-X-MC-Unique: 1ovr3I_gNbifhneQ5DwSQA-1
-X-Mimecast-MFC-AGG-ID: 1ovr3I_gNbifhneQ5DwSQA_1746181429
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-44059976a1fso8493845e9.1
- for <qemu-devel@nongnu.org>; Fri, 02 May 2025 03:23:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746181428; x=1746786228;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=QzRX5l4/8S+wmKPEV9zweUNzezcyi85OyNacxdgQyIo=;
- b=Mn2WkalZU5paOGaYa9XomIAfifoMFhONCMVe+2+maTb5m1CLr15tKTKGOOUM8lgYMy
- IIBuzmmGRI9i3wCd6OQ3xShSx6buJDNvOHAXS1jOkivjbewH7I0PLScVt/AaXJjRYBm8
- 4KmYYWAZ88OurdE56Ziv6ySYJ+LeH7WtMynuQZaIWWESLNyQ0IsrmTaTtiyWq9FEMAmH
- kKdWvH1fyz2WftsN7rBEoEnhT+fZk22PhAAbhfEx//qoYIhhvhz/PfbZwZ1SNE0OF2XF
- tzwG5gw4Q7Lls0cFP45p4jlOSxws9NSO5n+AbTcqDZUsx5DsLgFnU+bRW4I+bjeF6Y2g
- 9ngA==
-X-Gm-Message-State: AOJu0YyMAltP9l1p2grPWKR0o7trezUKtw1AnHuUnRpzNJjbPzkFU8s8
- YgG3nvwDAK3ob+DTg7psE+Fznere+vJgs98nnrabNiRCKAVGKxkBUKGyBjZiJd6pbeI20Hekfe8
- 147FRscIUNKHdfeat3DTygjNBz7kwc7chV096E73TowQsp3OdOS5rZGd9g1HuFDAjeDSD7Oms8J
- v31ti+wwbrXfA0jTuytki1FjOHdtVrG3QeZzsk
-X-Gm-Gg: ASbGncvKwsOioMM/mikopBs+UzacCUhlH2UKC9e1qSL+bwC/g9OyUY+j8RY5ePDRPJB
- mpmg/uxkIIbkcpDT7SG3e7f5aLs5v1LTYg68vj5t+yZySWHi7ZTQ7EXYtSx/A58h+YEL2M+0LCB
- ehekNawKxgbIkrN/rYzCbAAqMD+paZJkSG1oIorAZ2TnZgXJFKtB9rXlmn/l6EVb1zZYhxXIy6M
- xW7HzdVr9E31+yRopuc6QZA+nve2vEhnddAlOhs6JV8DqOQw2UoQTlYEg1Eu1IjAosSuhYv8nyG
- 9Ug2FArIsNATAI8=
-X-Received: by 2002:a05:6000:1e51:b0:3a0:8819:3b69 with SMTP id
- ffacd0b85a97d-3a099ad61afmr1230259f8f.21.1746181428239; 
- Fri, 02 May 2025 03:23:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHMCuL9/GFEL0oohdP93JrNdFJ3TfQpoPEVsACDzA5eV9MT/4vPp30JD/56X+ULw6GdjstbZQ==
-X-Received: by 2002:a05:6000:1e51:b0:3a0:8819:3b69 with SMTP id
- ffacd0b85a97d-3a099ad61afmr1230237f8f.21.1746181427702; 
- Fri, 02 May 2025 03:23:47 -0700 (PDT)
-Received: from [192.168.10.48] ([151.95.54.106])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a099ae0bb5sm1727497f8f.7.2025.05.02.03.23.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 May 2025 03:23:46 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-rust@nongnu.org
-Subject: [PATCH 9/9] docs: rust: update for newer minimum supported version
-Date: Fri,  2 May 2025 12:23:22 +0200
-Message-ID: <20250502102323.104815-10-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250502102323.104815-1-pbonzini@redhat.com>
-References: <20250502102323.104815-1-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1uAnZo-0000uI-GZ; Fri, 02 May 2025 06:25:07 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 542A47Ha029870;
+ Fri, 2 May 2025 10:24:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=OSo0cG
+ W8fVUQf+2fci42UWiutGwLweeHCFtaMRmmLww=; b=PzYenpRNoFR+yd6tmY3CQH
+ eW4U7VPAy1FOJkdG/bMAiy9vpYWw9iPwhd2+t1YZda6DzLP4sJVV6wj9jQ4BpkOD
+ MQM6l4zSma9GCNk+zMBWdwEHJuF3USK/Qg2FSLSCmhbF9unNI2W7QQZbJvwLxz4F
+ GNfcmI2EUuBnryAuftupHMTQRFQt0o1awtSyaZsCjp7J0Hp0qhV3F7TGq9TWBfd0
+ hZ38EMGe6x3lj60S+Yva5yVJBehyttcjQJIH6OoKA13dNJzYaipbqZgkFxT0Lx0H
+ MCgc6uBjgzqQeUOrVAufUGY3khTYVzajevZtXHbsNOh2smKzqbiQ7EsTeOR0THfw
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46cuyk82bm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 02 May 2025 10:24:51 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 542AKo8W005213;
+ Fri, 2 May 2025 10:24:51 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46cuyk82bg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 02 May 2025 10:24:51 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54267cUi000700;
+ Fri, 2 May 2025 10:24:49 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 469atpsd9e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 02 May 2025 10:24:49 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
+ [10.241.53.103])
+ by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 542AOnln54788368
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 2 May 2025 10:24:49 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3714D58056;
+ Fri,  2 May 2025 10:24:49 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5248658052;
+ Fri,  2 May 2025 10:24:47 +0000 (GMT)
+Received: from [9.39.17.237] (unknown [9.39.17.237])
+ by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Fri,  2 May 2025 10:24:47 +0000 (GMT)
+Message-ID: <c3da8671-7e7b-4fe5-83a3-6b004e1e3255@linux.ibm.com>
+Date: Fri, 2 May 2025 15:54:45 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 14/14] ppc/spapr: remove deprecated machine pseries-3.0
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: npiggin@gmail.com, danielhb413@gmail.com
+References: <20241007153838.1085522-1-harshpb@linux.ibm.com>
+ <20241007153838.1085522-15-harshpb@linux.ibm.com>
+ <68da6aab-eb1e-4c26-888f-54a1c8cad987@kaod.org>
+ <13dbdee6-17f9-4fba-a8b2-ff4688496807@kaod.org>
+Content-Language: en-US
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <13dbdee6-17f9-4fba-a8b2-ff4688496807@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 5p2NJheSSqHAcD1Q8IPLyQyddkcIghbZ
+X-Proofpoint-ORIG-GUID: jIttFRh3zTGfqJl-ym2WGSK1rwfdK1rt
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAyMDA3OSBTYWx0ZWRfX+ntsR5HEStn2
+ I46pPFvfXHyUTpw2+JNDulXFg5ShHAJkx/bmUQBUgIVZZpgPl7Sa/8zsjYtieaAxdjxaj+GKq2X
+ ETUWldTL7sO/IkOaxetlKCNh6K0NWKNuAN0W6tID4V3JzWUbWo8fuW8G9ejuL2SmyHASparL+Jl
+ 3gk4JVlLtSW/umOCseeRXLSDCr7jr1Z/XnEz0JqrwP/tBU0jUYb9bZsVH7TaWihpqLhyLEWiPKQ
+ eubVrGyqXkIMfHpO14WFyUeU0dL+491ISlAyxXV17U2Q8uyO3/tNEIAR/1hmEInWcAwzJyoVQHC
+ ZPtzwfDefkqV9eyUQ4JxFPU2+V142469ruEcNrRi7e+vTSzqxXfiob55ZolZpsk8s9w5jw+dpuO
+ KCVUT6E/trd+MeTk+kGwS5Uf1X3yBBpkBYIezB0ivcmtYsFsGA7Vm17QsT75lK/P8WrK5lMH
+X-Authority-Analysis: v=2.4 cv=KYTSsRYD c=1 sm=1 tr=0 ts=68149d73 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=f7IdgyKtn90A:10 a=ID6ng7r3AAAA:8
+ a=VwQbUJbxAAAA:8 a=aow-egSQAAAA:8
+ a=VnNF1IyMAAAA:8 a=GII1vP590xVb74Ji_poA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=naT-Qou_QokA:10 a=RA7C4R-zLikA:10 a=AkheI1RvQwOzcTXhi5f4:22
+ a=gFNbaldVC-z-bsjSTzMo:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-01_06,2025-04-30_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 adultscore=0
+ phishscore=0 malwarescore=0 mlxlogscore=796 spamscore=0 mlxscore=0
+ lowpriorityscore=0 clxscore=1011 priorityscore=1501 impostorscore=0
+ suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2505020079
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.644,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,47 +132,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove leftover notes for Rust changes between 1.63.0 and 1.77.0.
+Hi Cedric,
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- docs/devel/rust.rst | 13 +------------
- 1 file changed, 1 insertion(+), 12 deletions(-)
+On 4/29/25 18:59, Cédric Le Goater wrote:
+> Hello Harsh,
+> 
+> On 10/11/24 07:57, Cédric Le Goater wrote:
+>> On 10/7/24 17:38, Harsh Prateek Bora wrote:
+>>> As per Qemu's deprecation policy [1], and the mailing list discussion
+>>> that happened on [2], pseries-3.0 is more than 6 years old since release
+>>> and therefore due for deletion as already deprecated for >3 years.
+>>>
+>>> [1] https://www.qemu.org/docs/master/about/deprecated.html
+>>> [2] 
+>>> https://lore.kernel.org/qemu-devel/1d7c210e-d7a6-4233-b555-c99a41f3c4e2@kaod.org/
+>>>
+>>> While at it, also remove related legacy irq hacks which are now 
+>>> obsolete.
+>>>
+>>> Suggested-by: Cédric Le Goater <clg@kaod.org>
+>>> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>>
+>> I induced you in error. This version has not been deprecated yet.
+>>
+>> We will have to wait a little longer (2 cycles) to remove it when
+>> the automatic deprecation process starts. See c9fd2d9a48ee. You
+>> can resend when the 10.1 cycle starts, around april 2025.
+> 
+> Machines pseries-3.0, 3.1 and 4.0 can now be removed.
 
-diff --git a/docs/devel/rust.rst b/docs/devel/rust.rst
-index 92550d9d581..4de86375021 100644
---- a/docs/devel/rust.rst
-+++ b/docs/devel/rust.rst
-@@ -71,14 +71,9 @@ Building Rust code with ``--enable-modules`` is not supported yet.
- Supported tools
- '''''''''''''''
- 
--QEMU supports rustc version 1.63.0 and newer.  Notably, the following features
-+QEMU supports rustc version 1.77.0 and newer.  Notably, the following features
- are missing:
- 
--* Generic Associated Types (1.65.0)
--
--* "Return position ``impl Trait`` in Traits" (1.75.0, blocker for including
--  the pinned-init create).
--
- * inline const expression (stable in 1.79.0), currently worked around with
-   associated constants in the ``FnCall`` trait.
- 
-@@ -103,12 +98,6 @@ are missing:
- 
- __ https://github.com/rust-lang/rust/pull/125258
- 
--It is expected that QEMU will advance its minimum supported version of
--rustc to 1.77.0 as soon as possible; as of January 2025, blockers
--for that right now are Debian bookworm and 32-bit MIPS processors.
--This unfortunately means that references to statics in constants will
--remain an issue.
--
- QEMU also supports version 0.60.x of bindgen, which is missing option
- ``--generate-cstr``.  This option requires version 0.66.x and will
- be adopted as soon as supporting these older versions is not necessary
--- 
-2.49.0
+Sure, will look into it.
 
+Thanks
+Harsh
+
+> 
+> Thanks,
+> 
+> C.
+> 
+> $ QEMU_DELETE_MACHINES=1 ./install/bin/qemu-system-ppc64 -machine ? | 
+> grep pseries
+> pseries-10.0         pSeries Logical Partition (PAPR compliant)
+> pseries              pSeries Logical Partition (PAPR compliant) (alias 
+> of pseries-10.1)
+> pseries-10.1         pSeries Logical Partition (PAPR compliant) (default)
+> pseries-4.1          pSeries Logical Partition (PAPR compliant) 
+> (deprecated)
+> pseries-4.2          pSeries Logical Partition (PAPR compliant) 
+> (deprecated)
+> pseries-5.0          pSeries Logical Partition (PAPR compliant) 
+> (deprecated)
+> pseries-5.1          pSeries Logical Partition (PAPR compliant) 
+> (deprecated)
+> pseries-5.2          pSeries Logical Partition (PAPR compliant) 
+> (deprecated)
+> pseries-6.0          pSeries Logical Partition (PAPR compliant) 
+> (deprecated)
+> pseries-6.1          pSeries Logical Partition (PAPR compliant) 
+> (deprecated)
+> pseries-6.2          pSeries Logical Partition (PAPR compliant) 
+> (deprecated)
+> pseries-7.0          pSeries Logical Partition (PAPR compliant) 
+> (deprecated)
+> pseries-7.1          pSeries Logical Partition (PAPR compliant)
+> pseries-7.2          pSeries Logical Partition (PAPR compliant)
+> pseries-8.0          pSeries Logical Partition (PAPR compliant)
+> pseries-8.1          pSeries Logical Partition (PAPR compliant)
+> pseries-8.2          pSeries Logical Partition (PAPR compliant)
+> pseries-9.0          pSeries Logical Partition (PAPR compliant)
+> pseries-9.1          pSeries Logical Partition (PAPR compliant)
+> pseries-9.2          pSeries Logical Partition (PAPR compliant)
+> 
 
