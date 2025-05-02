@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ADB1AA693D
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 05:19:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84CA9AA6944
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 05:21:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAgue-00045V-Jb; Thu, 01 May 2025 23:18:08 -0400
+	id 1uAgum-0004Fy-Dc; Thu, 01 May 2025 23:18:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1uAguV-0003zs-Ea
- for qemu-devel@nongnu.org; Thu, 01 May 2025 23:17:59 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1uAgua-00045e-FO
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 23:18:05 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1uAguT-0003su-Ou
- for qemu-devel@nongnu.org; Thu, 01 May 2025 23:17:59 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-739525d4e12so1648382b3a.3
- for <qemu-devel@nongnu.org>; Thu, 01 May 2025 20:17:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1uAguY-0003zd-Ti
+ for qemu-devel@nongnu.org; Thu, 01 May 2025 23:18:04 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-7394945d37eso1433057b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 01 May 2025 20:18:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1746155876; x=1746760676; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1746155881; x=1746760681; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pLzHhIcQuQ6FEeR22YuCCdcJNCbyDKG+84iGXCJrQqU=;
- b=ZxonigaUKVuDnGNvyHYUEmKfjnVBCDWd3VF9RUYLzSKNPIoZ1kJ6L/tU1t5moQ3nK1
- Q59blzUpK1UDcvmZqCxi2ahxDOZW/w3zwp9+uUFYQDDL+AeNIcaliTI0+5BiGNU7NPcs
- PXpW8Ksl42dljkGvrY/tYBv0tm+9cYrSEiDHSPKAlYQGRaAr1bIkJViX4R78/vzMx6X7
- NoaaCqBMEgiLLyMLLLBqXTYG/PnUatgE9RCZY88eVvUx2FNoMdlrE9DcwDvK8T37ylBC
- jjKXBk5cyc2CY3ilcwJkVP3vf3z/6CHaU6acDF3qvzAd804v5kJPBcdYyei70NwtRiKu
- qAmg==
+ bh=c4QqPt240JeB7hjh0OkecHrTdb+ZtBLKIB7bPU4Cqdw=;
+ b=R6iHV9QwqxA1HCEDjYd6Pmmb+TWzYKxY1SQbP8lSSoO9q4/E62G5iACfsK7ccGme2i
+ OTEnHF3ooWWESS4NHTwnR068G13pozc3lr1sr6Tt3BwWk0IIUHUVUewNwDbtr47SPv+S
+ vl4HC1b8Qk3F5b19gXMuig2QdUrOnJb9HEAe3NJXQWZyh+xWvvQEsB2EfD6IQZZBFRtD
+ 8Ubj+Bk7NnQHnNezuP5t1HL7SN9aJ6ePnbKPcAd1cAIAKT1TPH7n+qRL5F2pS2IhO48t
+ w+EaHUk6Jj2nNr80xmwJ/54TuX67Kx22Yn/UVHbVl43nV8KTNmwuenjYAtaAE7/LuWs0
+ 3mkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746155876; x=1746760676;
+ d=1e100.net; s=20230601; t=1746155881; x=1746760681;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pLzHhIcQuQ6FEeR22YuCCdcJNCbyDKG+84iGXCJrQqU=;
- b=JbQQFCacH/EiMwMsdCLr3uIBcWgDbjTXXLJUWnSB8MH2zNv0AcTiSiIwTRtc4ZGgg6
- gLO3FjcwpiJvsXmgfv9Wtna4onIIJGXA2LA+R7MCLnhj4EgQC6EK1ooeMkc5jdWxDj8V
- I0PF/0yGJ4ute4nCYzeewjtO9QMY/OfglZMnxsYWX7lGsMK/d5TBv7D6wGV6tU2m4BI6
- Y14/KZgmzQV7NdJUvPgd9oBkE5ZlCwNWvf54IgdWX0PINunIcmPiGRlamLrTTkv7+4HD
- FXUl3/wfSuufStTlhabqNx0C9LJElgxdTNAFNZN6l586UFqQubkZ/Q5n8u8Wf65xPFMW
- 84dg==
+ bh=c4QqPt240JeB7hjh0OkecHrTdb+ZtBLKIB7bPU4Cqdw=;
+ b=bzIwze0v0YY8AcJ+17jmzaXYIus0e4Y2viwhNafxRL7W7IvoZUeedvRB5uiu9Onwtl
+ w2NFdmkE8x2stE3BF+R03zm1vE4MiNgHM4rGETv+cfiSAuCWhoJjyvTpICNvZvef6k7+
+ /zAuQjq3UJ/nLAazb3ohrhO7ZDl2+zx3OWjMVo3nSD1kwz4ckFyCKLNcESA5FqgHOFTi
+ xDM2FU01I45NR297zNqFSTQAUXgaYGPqhywoOn3msMNfIl9MkSDBK6jIhwubDHY3bYbL
+ OZcy8FJSlJBDo5PxjmbYEiEmDwdeKFcFIEYNgYL/8kxEtbI8+3A7flSUyytXviLnATzr
+ ckBg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWTC8SkBusw1cnspe/7tPkBe1/WHytKwRwPJ7EIdPrGCF07doR1M9/iJvoHKzpUJiIYNzArSdiMMs1W@nongnu.org
-X-Gm-Message-State: AOJu0YxGDnu2mJdydrOu/YpaXVG/ZaRXT0gfOXctUz8jDGVGHnIRdXUw
- x59gQ24yRE7/441GsfgSe4MtWXoL4bQxZJW5mhlIsjhxuyxMTLLe
-X-Gm-Gg: ASbGncs66iGCVC7WWJsq9N88kmsAp4/bvPESFI/s3HTRcRxjZ3E2dP9SFPnIy/ZguhH
- +Xv3yPKbfATv3vzYnEAC/aHZ7cVa1rUEjGy9IbM/G0Qf37oxpCwHirXarLJxinkdBQsKoGNYJ5h
- NHKfw3C56I25aYK+xdnBpZYHwUhXXqxPFSZ8qjydBLb+eBKmJpxp+lrZrLx1A9/hsnf12vby7PI
- nKwGm294vsAK+MLAGxylH18N20m/ZVx6zy1Qg2NT1PTAZkYUdDivs+sbYROMXelgKFCGDMw+ux5
- SLKf9BxF25d9oCbST4OuXoFJdB+bviprSHc/cTy5DE9G
-X-Google-Smtp-Source: AGHT+IE9h006LyR3sjjnzqkl6eccA0RYvP3fedvKQ9dPXg9w/fUe7IwB0VXoyzZ6lVkbTVwJUAA1KA==
-X-Received: by 2002:a05:6a00:301f:b0:736:9e40:13b1 with SMTP id
- d2e1a72fcca58-74058b25ab3mr1834029b3a.23.1746155876297; 
- Thu, 01 May 2025 20:17:56 -0700 (PDT)
+ AJvYcCX9lhwp0jdezUjjRHhQUVRZysCmjVGfo9TWUqrngpQdJZ3UEQQd4kM8vPQHAm3s0wAySswuEDOa/H22@nongnu.org
+X-Gm-Message-State: AOJu0YykK6T0RqzjjXr88SI5DzJZ/szzhEp8D5YBnGrR1W11abyZd+q0
+ XmhA38rnhjAtcQuwAgqBUgT04phTlk1y9QqqtyK1z6gGaxUg64sQ
+X-Gm-Gg: ASbGncv9i23iHUTMcWJuH3REZWInsLt+kZyCXzMrHemPukmhcS0UoNidywL5xkm2PJY
+ r7MlkquXpE0SgrZ/GuaN7VTvqDzQqmCqd0zqfmtyGaJkOGy1nMWZfZGyUKR430TQrGTPoQhk3gk
+ ijX6q+uN2gHUEmVkdLIaOIsN9+Hu1ASxL5HT3ZXTqqI8TQqDOH/JZmpR0P4qFpcIwe+Fxuu0hNF
+ WPz4Ydgf6jGgU0imIVQr3OTxGNP1x+ICT7jj6qshDKatapjJ960nHBKI/2WEFEY3tw6E0WwR9FJ
+ 0DKSPS3ANlmALWCRwBUYl18PjpuwrlhhDtFcPI5Ejfb6
+X-Google-Smtp-Source: AGHT+IF3FZRxTD8+cRIoOYfIktJ0/OnEm+G4+fcejmszQ8lCw6Txqk02bWPbqJfl/CFa2LIfrdV67w==
+X-Received: by 2002:a05:6a21:78d:b0:1f5:8622:5ecb with SMTP id
+ adf61e73a8af0-20ce04e7581mr2186136637.34.1746155881616; 
+ Thu, 01 May 2025 20:18:01 -0700 (PDT)
 Received: from wheely.local0.net ([220.253.99.94])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74058ded48fsm467883b3a.83.2025.05.01.20.17.51
+ d2e1a72fcca58-74058ded48fsm467883b3a.83.2025.05.01.20.17.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 01 May 2025 20:17:55 -0700 (PDT)
+ Thu, 01 May 2025 20:18:01 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
@@ -69,17 +69,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
  Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v3 08/12] hw/net/e1000e: Postponed msix interrupt processing
- should auto-clear cause
-Date: Fri,  2 May 2025 13:17:00 +1000
-Message-ID: <20250502031705.100768-9-npiggin@gmail.com>
+Subject: [PATCH v3 09/12] hw/net/e1000e: Do not auto-clear cause on postponed
+ msix interrupt
+Date: Fri,  2 May 2025 13:17:01 +1000
+Message-ID: <20250502031705.100768-10-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250502031705.100768-1-npiggin@gmail.com>
 References: <20250502031705.100768-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,136 +102,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cause auto-clearing and masking should be performed during msix
-interrupt processing.
+If an interrupt is postponed, it should not do cause auto-clearing
+or auto-masking. That is done when the interrupt processing occurs.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/net/e1000e_core.c | 86 +++++++++++++++++++++++++++++++++++---------
- 1 file changed, 69 insertions(+), 17 deletions(-)
+ hw/net/e1000e_core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
-index f8e6522f810..5969f49e8fd 100644
+index 5969f49e8fd..022884a2ea0 100644
 --- a/hw/net/e1000e_core.c
 +++ b/hw/net/e1000e_core.c
-@@ -178,16 +178,62 @@ e1000e_intrmgr_on_throttling_timer(void *opaque)
-     }
- }
- 
-+/* returns the bitmap of causes that are mapped to a given vector */
-+static uint32_t find_msix_causes(E1000ECore *core, int vec)
-+{
-+    uint32_t causes = 0;
-+    uint32_t int_cfg;
-+
-+    int_cfg = E1000_IVAR_RXQ0(core->mac[IVAR]);
-+    if (E1000_IVAR_ENTRY_VALID(int_cfg) &&
-+        E1000_IVAR_ENTRY_VEC(int_cfg) == vec) {
-+        causes |= E1000_ICR_RXQ0;
-+    }
-+
-+    int_cfg = E1000_IVAR_RXQ1(core->mac[IVAR]);
-+    if (E1000_IVAR_ENTRY_VALID(int_cfg) &&
-+        E1000_IVAR_ENTRY_VEC(int_cfg) == vec) {
-+        causes |= E1000_ICR_RXQ1;
-+    }
-+
-+    int_cfg = E1000_IVAR_TXQ0(core->mac[IVAR]);
-+    if (E1000_IVAR_ENTRY_VALID(int_cfg) &&
-+        E1000_IVAR_ENTRY_VEC(int_cfg) == vec) {
-+        causes |= E1000_ICR_TXQ0;
-+    }
-+
-+    int_cfg = E1000_IVAR_TXQ1(core->mac[IVAR]);
-+    if (E1000_IVAR_ENTRY_VALID(int_cfg) &&
-+        E1000_IVAR_ENTRY_VEC(int_cfg) == vec) {
-+        causes |= E1000_ICR_TXQ1;
-+    }
-+
-+    int_cfg = E1000_IVAR_OTHER(core->mac[IVAR]);
-+    if (E1000_IVAR_ENTRY_VALID(int_cfg) &&
-+        E1000_IVAR_ENTRY_VEC(int_cfg) == vec) {
-+        causes |= E1000_ICR_OTHER;
-+    }
-+
-+    return causes;
-+}
-+
-+static void
-+e1000e_msix_auto_clear_mask(E1000ECore *core, uint32_t cause);
-+
- static void
- e1000e_intrmgr_on_msix_throttling_timer(void *opaque)
- {
-     E1000IntrDelayTimer *timer = opaque;
--    int idx = timer - &timer->core->eitr[0];
-+    E1000ECore *core = timer->core;
-+    int idx = timer - &core->eitr[0];
-+    uint32_t causes;
- 
-     timer->running = false;
- 
-+    causes = find_msix_causes(core, idx);
-     trace_e1000e_irq_msix_notify_postponed_vec(idx);
--    msix_notify(timer->core->owner, idx);
-+    msix_notify(core->owner, idx);
-+    e1000e_msix_auto_clear_mask(core, causes);
- }
- 
- static void
-@@ -1985,24 +2031,10 @@ e1000e_eitr_should_postpone(E1000ECore *core, int idx)
- }
- 
- static void
--e1000e_msix_notify_one(E1000ECore *core, uint32_t cause, uint32_t int_cfg)
-+e1000e_msix_auto_clear_mask(E1000ECore *core, uint32_t cause)
- {
-     uint32_t effective_eiac;
- 
--    if (E1000_IVAR_ENTRY_VALID(int_cfg)) {
--        uint32_t vec = E1000_IVAR_ENTRY_VEC(int_cfg);
--        if (vec < E1000E_MSIX_VEC_NUM) {
+@@ -2057,10 +2057,11 @@ e1000e_msix_notify_one(E1000ECore *core, uint32_t cause, uint32_t int_cfg)
+     if (E1000_IVAR_ENTRY_VALID(int_cfg)) {
+         uint32_t vec = E1000_IVAR_ENTRY_VEC(int_cfg);
+         if (vec < E1000E_MSIX_VEC_NUM) {
 -            if (!e1000e_eitr_should_postpone(core, vec)) {
 -                trace_e1000e_irq_msix_notify_vec(vec);
 -                msix_notify(core->owner, vec);
--            }
--        } else {
--            trace_e1000e_wrn_msix_vec_wrong(cause, int_cfg);
--        }
--    } else {
--        trace_e1000e_wrn_msix_invalid(cause, int_cfg);
--    }
--
-     if (core->mac[CTRL_EXT] & E1000_CTRL_EXT_EIAME) {
-         trace_e1000e_irq_iam_clear_eiame(core->mac[IAM], cause);
-         core->mac[IAM] &= ~cause;
-@@ -2019,6 +2051,26 @@ e1000e_msix_notify_one(E1000ECore *core, uint32_t cause, uint32_t int_cfg)
-     }
- }
- 
-+static void
-+e1000e_msix_notify_one(E1000ECore *core, uint32_t cause, uint32_t int_cfg)
-+{
-+    if (E1000_IVAR_ENTRY_VALID(int_cfg)) {
-+        uint32_t vec = E1000_IVAR_ENTRY_VEC(int_cfg);
-+        if (vec < E1000E_MSIX_VEC_NUM) {
-+            if (!e1000e_eitr_should_postpone(core, vec)) {
-+                trace_e1000e_irq_msix_notify_vec(vec);
-+                msix_notify(core->owner, vec);
-+            }
-+        } else {
-+            trace_e1000e_wrn_msix_vec_wrong(cause, int_cfg);
-+        }
-+    } else {
-+        trace_e1000e_wrn_msix_invalid(cause, int_cfg);
-+    }
-+
-+    e1000e_msix_auto_clear_mask(core, cause);
-+}
-+
- static void
- e1000e_msix_notify(E1000ECore *core, uint32_t causes)
- {
++            if (e1000e_eitr_should_postpone(core, vec)) {
++                return;
+             }
++            trace_e1000e_irq_msix_notify_vec(vec);
++            msix_notify(core->owner, vec);
+         } else {
+             trace_e1000e_wrn_msix_vec_wrong(cause, int_cfg);
+         }
 -- 
 2.47.1
 
