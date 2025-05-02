@@ -2,96 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34DC3AA6D5F
-	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 11:01:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D11EAA6D74
+	for <lists+qemu-devel@lfdr.de>; Fri,  2 May 2025 11:03:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uAmGQ-0006nx-C7; Fri, 02 May 2025 05:00:58 -0400
+	id 1uAmIg-00019u-0R; Fri, 02 May 2025 05:03:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uAmGO-0006l8-Hw
- for qemu-devel@nongnu.org; Fri, 02 May 2025 05:00:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uAmIb-00019P-8J
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 05:03:13 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uAmGM-0004yO-RM
- for qemu-devel@nongnu.org; Fri, 02 May 2025 05:00:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746176454;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=LqeniZgXmPTdrTI+xq1XQTwnSc7B7nOzlTpRU2OjaDw=;
- b=TY3GMfrlEc1weiUR5Q347Z5Ws44AsCuXbx6P7gxdi/lbKb8BgyhB8xdFYLNxU8N6lK2RlC
- Lh48ffL3hAr7uMxtd3gKBj3AkUvX1jerIhzar6LKL9CTN9AKEp2S2kADagAmnnjravoD8y
- LcHyEbCp2S6Glqp4i6vxDSkSvxqFe7k=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-665-eLF1UTk5NZ2AQ0LcMQnDKg-1; Fri, 02 May 2025 05:00:52 -0400
-X-MC-Unique: eLF1UTk5NZ2AQ0LcMQnDKg-1
-X-Mimecast-MFC-AGG-ID: eLF1UTk5NZ2AQ0LcMQnDKg_1746176451
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-43cf3168b87so6941765e9.2
- for <qemu-devel@nongnu.org>; Fri, 02 May 2025 02:00:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746176451; x=1746781251;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=LqeniZgXmPTdrTI+xq1XQTwnSc7B7nOzlTpRU2OjaDw=;
- b=XzEnv8ei14F6LyltrHmJrUMzdKVKnC8j1GTh+RKy1Pio53FJy97SJTIh2EbhYZpE6N
- Xv26GmXKwifVVZVo3OZGLqXNQBpy0CTuujQBDPSRx6K5fGnSozy9eAiOUrWlvu6m6i0v
- 16Ios+JidpEcTe5qNjKMDUyWS2v5uLETA/B5Xyt13NqRvgZezQCAOAdEOBPe/5t3jyaq
- eSNYyxVBTnH0HSDaojHMj6kRPpNR5TnQFxLZrWTlNHEs46SuEb6p6h5LXY0YimtjeeS1
- qn1ub0G68HjM/4wCO9sn/12SXB7v5e9MjwZ1FP9+G8M96G0EIFzkQlk9ofuTtxGrK8pD
- WNiQ==
-X-Gm-Message-State: AOJu0YwkEktpb+VRiYlteh4+izOC+QSqGJSqVyXQPrA5HGUdxXpTG6pq
- 2otYfkrRiPyyCkEO33dV0CzGvCPeURaaHvBjwAOkHTURJWOH5YFLqwZmdAKv/3IEtWPqdxXI1Yu
- 9bLFuzbtDXs714Sb6KpUL51dwHTuDh/e4I6SFeyeinC4SZxaA+ZEsfG4wnMpB5NGgDIiB851kpt
- LSybwqUR3lGYYC5a3Iyfbra7aflvntcataL0k0
-X-Gm-Gg: ASbGnct5aJoGEodrNuTQlVcscksI+aaneanURfOgEKgVV9ETphXjNM+iMUYWUeNNjV+
- P0AS3iDpwX6UPr4AOYP+1Pc9ItiSGlt5hxH7PjgLTGkIUDLA5dqF/IHD7Vz0ZF0KY7MIEeAHjcF
- I/yRz9wMyh7exly46agYo0DBiQpV8sLVEqDdyfWpoFhCwnP6Mt1DMopiznkZIegGyA/8JGKUrf4
- ajqe5TyaSlCiVnQjfoWTK8EG2zLPf1BUQCy85S6pzSwpMfd+wVjKv3Y3e8yCPBqEbhB/GBrYGVM
- /NlTIxdcWcA2Pww=
-X-Received: by 2002:a05:600c:350e:b0:43c:e478:889 with SMTP id
- 5b1f17b1804b1-441bbe2c815mr15376105e9.0.1746176451016; 
- Fri, 02 May 2025 02:00:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG+tzGHivF2o1epk5esBZ6yOZ/tw87gcc3F+4KjQOedrrPJ6XNosdMscmRTR4AVNNmWzkRMKg==
-X-Received: by 2002:a05:600c:350e:b0:43c:e478:889 with SMTP id
- 5b1f17b1804b1-441bbe2c815mr15375545e9.0.1746176450510; 
- Fri, 02 May 2025 02:00:50 -0700 (PDT)
-Received: from [192.168.10.48] ([151.95.54.106])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-441b8a2873csm37255055e9.30.2025.05.02.02.00.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 02 May 2025 02:00:48 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-rust@nongnu.org,
-	zhao1.liu@intel.com
-Subject: [PATCH 2/2] rust: assertions: Support index field wrapped in BqlCell
-Date: Fri,  2 May 2025 11:00:44 +0200
-Message-ID: <20250502090044.85557-3-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250502090044.85557-1-pbonzini@redhat.com>
-References: <20250502090044.85557-1-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uAmIY-00054B-Cz
+ for qemu-devel@nongnu.org; Fri, 02 May 2025 05:03:12 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZplH73psZz6L51q;
+ Fri,  2 May 2025 16:59:47 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id A8792140137;
+ Fri,  2 May 2025 17:01:58 +0800 (CST)
+Received: from localhost (10.48.156.249) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 2 May
+ 2025 11:01:58 +0200
+Date: Fri, 2 May 2025 10:01:55 +0100
+To: Fan Ni <nifan.cxl@gmail.com>
+CC: <anisa.su887@gmail.com>, <qemu-devel@nongnu.org>, <dave@stgolabs.net>,
+ <linux-cxl@vger.kernel.org>, Anisa Su <anisa.su@samsung.com>
+Subject: Re: [PATCH 3/9] cxl/type3: Add dsmas_flags to CXLDCRegion struct
+Message-ID: <20250502100155.00003bfa@huawei.com>
+In-Reply-To: <aBPV80J9TULzRslk@fanair.local>
+References: <20250317164204.2299371-1-anisa.su887@gmail.com>
+ <20250317164204.2299371-4-anisa.su887@gmail.com>
+ <20250424114259.000000a0@huawei.com>
+ <aBPV80J9TULzRslk@fanair.local>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.644,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.48.156.249]
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,78 +67,107 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, if the `num` field of a varray is not a numeric type, such as
-being placed in a wrapper, the array variant of assert_field_type will
-fail the check.
+On Thu, 1 May 2025 20:21:56 +0000
+Fan Ni <nifan.cxl@gmail.com> wrote:
 
-HPET currently wraps num_timers in BqlCell<>. Although BqlCell<> is not
-necessary from strictly speaking, it makes sense for vmstate to respect
-BqlCell.
+> On Thu, Apr 24, 2025 at 11:42:59AM +0100, Jonathan Cameron wrote:
+> > On Mon, 17 Mar 2025 16:31:30 +0000
+> > anisa.su887@gmail.com wrote:
+> >   
+> > > From: Anisa Su <anisa.su@samsung.com>
+> > > 
+> > > Add dsmas_flags field to DC Region struct in preparation for next
+> > > command, which returns the dsmas flags in the response.
+> > > 
+> > > Signed-off-by: Anisa Su <anisa.su@samsung.com>
+> > > ---
+> > >  hw/mem/cxl_type3.c          | 2 ++
+> > >  include/hw/cxl/cxl_device.h | 1 +
+> > >  2 files changed, 3 insertions(+)
+> > > 
+> > > diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+> > > index 731497ebda..452a0c101a 100644
+> > > --- a/hw/mem/cxl_type3.c
+> > > +++ b/hw/mem/cxl_type3.c
+> > > @@ -237,6 +237,8 @@ static int ct3_build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
+> > >                                            ct3d->dc.regions[i].len,
+> > >                                            false, true, region_base);
+> > >              ct3d->dc.regions[i].dsmadhandle = dsmad_handle - 1;
+> > > +            CDATDsmas *dsmas = (CDATDsmas *) table[cur_ent + CT3_CDAT_DSMAS];
+> > > +            ct3d->dc.regions[i].dsmas_flags = dsmas->flags;  
+> >   
+> Hi Jonathan,
+> Thanks for the feedback.
+> > This is relying to much on the ordering of creating fields in
+> > ct3_build_cdat_entries_for_mr().  
+> I am not sure whether I understand this clearly.
+> In current qemu implemtation, each mr (ram,pmem or dc region) will have the
+> whole set of cdat table entries (dsmas, dslbis0-3, etc), so as long as we point
+> to the right table entry, we can get the table correctly.
+> What do you mean "the ordering of creating fields"?
 
-The failure of assert_field_type is because it cannot convert BqlCell<T>
-into usize for use as the index.  Use a constant 0 instead for the index,
-by avoiding $(...)? and extracting the common parts of
-assert_field_type! into an internal case.
+It is an implementation detail only that the first bit of that table is
+the DSMAS entry.  I think we shouldn't rely on that.
 
-Commit message based on a patch by Zhao Liu <zhao1.liu@intel.com>.
+> > 
+> > I'd rather you just stored the information flags is built from in CXLDCRegion
+> > and then built the field that is wonderfully called 'Note' in the DC region  
+I got distracted by the spec oddity :)
 
-Link: https://lore.kernel.org/r/20250414144943.1112885-3-zhao1.liu@intel.com
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- rust/qemu-api/src/assertions.rs | 25 +++++++++----------------
- 1 file changed, 9 insertions(+), 16 deletions(-)
+> This sentence is kind of broken for me, not totally clear what you are
+> suggesting :-(. Can you explain more?
+> Are you suggesting not directly take dsmas->flags as dsmas_flags, but
+> use bit op to generate the value used in Table 7-66 in cxl spec 3.2?
 
-diff --git a/rust/qemu-api/src/assertions.rs b/rust/qemu-api/src/assertions.rs
-index eb12e9499a7..a2d38c877df 100644
---- a/rust/qemu-api/src/assertions.rs
-+++ b/rust/qemu-api/src/assertions.rs
-@@ -78,33 +78,26 @@ fn types_must_be_equal<T, U>(_: T)
- /// ```
- #[macro_export]
- macro_rules! assert_field_type {
--    ($t:ty, $i:tt, $ti:ty) => {
-+    (@internal $param_name:ident, $ti:ty, $t:ty, $($field:tt)*) => {
-         const _: () = {
-             #[allow(unused)]
--            fn assert_field_type(v: $t) {
--                fn types_must_be_equal<T, U>(_: T)
-+            fn assert_field_type($param_name: &$t) {
-+                fn types_must_be_equal<T, U>(_: &T)
-                 where
-                     T: $crate::assertions::EqType<Itself = U>,
-                 {
-                 }
--                types_must_be_equal::<_, $ti>(v.$i);
-+                types_must_be_equal::<_, $ti>(&$($field)*);
-             }
-         };
-     };
- 
-+    ($t:ty, $i:tt, $ti:ty) => {
-+        $crate::assert_field_type!(@internal v, $ti, $t, v.$i);
-+    };
-+
-     ($t:ty, $i:tt, $ti:ty, num = $num:ident) => {
--        const _: () = {
--            #[allow(unused)]
--            fn assert_field_type(v: $t) {
--                fn types_must_be_equal<T, U>(_: T)
--                where
--                    T: $crate::assertions::EqType<Itself = U>,
--                {
--                }
--                let index: usize = v.$num.try_into().unwrap();
--                types_must_be_equal::<_, &$ti>(&v.$i[index]);
--            }
--        };
-+        $crate::assert_field_type!(@internal v, $ti, $t, v.$i[0]);
-     };
- }
- 
--- 
-2.49.0
+No. Just store the various  bools etc that become dsmas->flags in the
+CXLDCRegion structure directly rather than reading back from dsmas->flags.
+Probably as explicit bools etc not a single value.
+
+Then pass those in to  ct3_build_cdat_entries_for_mr() .  Mostly they overlap
+with current true / false parameters that are hard coded.
+
+
+> > configuration in 6.2 spec.   I've sent a mail to see if we can clean that  
+> 6.2 spec???
+> > 'what is the field called' question for future spec releases.
+> > 
+> > Whilst the flag definitions cross refer the CDAT spec, the actual locations
+> > of those flags matches, but doesn't cross refer so maybe in the future
+> > we will have other flags in here and locations might not match.  
+> For the flags stored in dsmas table, do we expect there can be more than those
+> defined in Table 7-66 in spec 3.2?
+
+Not for now. Though I'm sure something will come along at some point.
+The comment is about there being particular reason the flag locations should match
+between CDAT and what we report via the commands being added here.  The definitions
+of individual bits cross refer between specs, the register as a whole does not.
+
+Jonathan
+
+> 
+> Fan
+> 
+> >   
+> > >  
+> > >              cur_ent += CT3_CDAT_NUM_ENTRIES;
+> > >              region_base += ct3d->dc.regions[i].len;
+> > > diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+> > > index bebed04085..81b826f570 100644
+> > > --- a/include/hw/cxl/cxl_device.h
+> > > +++ b/include/hw/cxl/cxl_device.h
+> > > @@ -609,6 +609,7 @@ typedef struct CXLDCRegion {
+> > >      uint8_t flags;
+> > >      unsigned long *blk_bitmap;
+> > >      uint64_t supported_blk_size_bitmask;
+> > > +    uint8_t dsmas_flags;
+> > >  } CXLDCRegion;
+> > >  
+> > >  typedef struct CXLSetFeatureInfo {  
+> >   
 
 
