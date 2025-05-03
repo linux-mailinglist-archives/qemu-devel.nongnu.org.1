@@ -2,54 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 479DFAB543B
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 14:01:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2E4FAB559C
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 15:09:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEoJ2-0004pT-CP; Tue, 13 May 2025 08:00:20 -0400
+	id 1uEpMu-0004Fo-24; Tue, 13 May 2025 09:08:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uEoIu-0004oD-U7; Tue, 13 May 2025 08:00:13 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <sunnyzhyy@qq.com>)
+ id 1uEpMb-0003vp-4O; Tue, 13 May 2025 09:08:05 -0400
+Received: from out203-205-221-240.mail.qq.com ([203.205.221.240])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uEoIs-0003ZG-AS; Tue, 13 May 2025 08:00:12 -0400
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 0B5DF55CA5C;
- Tue, 13 May 2025 14:00:06 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id XT7LZgVRll34; Tue, 13 May 2025 14:00:03 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id CDE7C55CA61; Tue, 13 May 2025 14:00:03 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id CBC60745682;
- Tue, 13 May 2025 14:00:03 +0200 (CEST)
-Date: Tue, 13 May 2025 14:00:03 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: Re: [PATCH v3] ppc/vof: Make nextprop behave more like Open Firmware
-In-Reply-To: <2bdfcf77-ff5d-4c26-839e-23f831f4abe1@app.fastmail.com>
-Message-ID: <a947a1c1-c4cc-d2bd-9a59-f5ce97c6ea1d@eik.bme.hu>
-References: <20250423101931.A0A6B55D23A@zero.eik.bme.hu>
- <cacfd877-8a93-1a1f-21c6-43743cc1bfc4@eik.bme.hu>
- <2bdfcf77-ff5d-4c26-839e-23f831f4abe1@app.fastmail.com>
+ (Exim 4.90_1) (envelope-from <sunnyzhyy@qq.com>)
+ id 1uEpMY-0003vo-0Q; Tue, 13 May 2025 09:08:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+ t=1747141670; bh=bDSXgadzVi6cTqKnSNOmHF5U2q1vE9hhr9fwYa1c8HQ=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References;
+ b=ATJ1P76vgICQEMRDN2ty4CXRKuziXZmItEJIN9Q8gq6Jo+Is96v+5z2GGkhRPguAH
+ 7SPSeTu7+LW8NGid98S7UalDwDRdPNWBK/bn2e+2EFDpB+EfAunEcrM7NajvoRFZqP
+ JnCOlvWVNET1d8S+C3niyG+NMWAhJBsu2CbcX34s=
+Received: from localhost.localdomain ([117.147.34.74])
+ by newxmesmtplogicsvrszb20-0.qq.com (NewEsmtp) with SMTP
+ id 6594E98; Tue, 13 May 2025 21:01:37 +0800
+X-QQ-mid: xmsmtpt1747141297tlmhnc3x5
+Message-ID: <tencent_27B26167A5CD8BB469F408728C24B1839707@qq.com>
+X-QQ-XMAILINFO: MeRnHSrEJzCruhXFZLV0u6YEJm5XecREYbza6BU53gM9uz3udA11Nn7/rrHLxe
+ Gaqy20L20/zZYj569xuLI8lI0sYZ8xiibR1w6kF9BXvmTiTmt5J7XqKnBfDWw7q38Ih6n2EbIv3T
+ oemWEAGQqSXSjBSkC2vT2kdhxrBWVRgABfB9lla1d7SVcza51fk8KzYSJ/eTHZB0qrNaPtOGTNYP
+ uOGQ4DaPT2+vCK+uy4ZhM703HAxDnIsidzpTxZi1wl4GGJUhfB65HkthNYGiHn8f0TlEQ4tRNDUz
+ cYI7fcmhRR/ENA/sq9x51tNDusJRHMuTbiQt9T8lTYPf6bX2qDdraq0r9wfsFQOMXCG2GIUCioNL
+ CbHK2ksw3xGEN97WD9BgWmO/vBF3/rHlA4mFMeXY6CDNj//0LUqliZGB1eJ5hP28huUYoBR6b04l
+ a6mkQyEnKsDbGvbvswtmIejWTO1k5ogUcOvsR+7CLrLrYeSBAAKELbcX/SqaDWn5xq2eSJG7QLWu
+ VEgE0d8SFIPAbMOSw3aCtn2sgSg8s6PAuTPGI/fe0Li+gexieAY8UVxoywV5IG276pgvvfbXV9oh
+ TUM+heDWGv6jxWwF2Aa/EIY99Uxy1YXLu1jxK6HGhOvu4OFICIpnQGWVgm5Qbwdr7Ahk99mSaVa3
+ W0IaEmNLt2WzFfIeFWvElASK4Kbc8Q50z2haempSmBqLXnSdIscwh+ex1TPVoK70U5HS445RQJz2
+ caVRhlxj194wO6TgaZ92GVQ5CNXooWuKoP/1GX7NiPRC1IoXlffVBw2DcyPIcz6QHDF+35m6/Zb2
+ DMqIkLosicXntigh+eKNLpmY4JkrS6NWscSo8BNGtYjX7RQtoAQY33aTj24Eq5U91sd0EO+GUtwc
+ a6oeV8eGx48fg5o+CASm09UXO21VkUqCzMC344Vh1VrdFaxAtcZWL7b4Xj6jVvVhzi9pSp8GHD/g
+ DcQWu27yKkLuSGOnERA0rfPeWAksoeJqqtCE0JqAprxlLab2+ajYlR5FG+m6cbM6ksKwOmZX95vk
+ QYRQipcXtELoTpuwwsW6y/+HcJcFEbdjt3A9ituRV+82biKVp4
+X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
+From: Sunny Zhu <sunnyzhyy@qq.com>
+To: eblake@redhat.com
+Cc: armbru@redhat.com, hreitz@redhat.com, jsnow@redhat.com, kwolf@redhat.com,
+ qemu-block@nongnu.org, qemu-devel@nongnu.org, stefanha@redhat.com,
+ sunnyzhyy@qq.com, vsementsov@yandex-team.ru
+Subject: Re: [PATCH v4 08/13] mirror: Allow QMP override to declare target
+ already zero
+Date: Sat,  3 May 2025 08:40:49 +0800
+X-OQ-MSGID: <20250503004049.49482-1-sunnyzhyy@qq.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250509204341.3553601-23-eblake@redhat.com>
+References: <20250509204341.3553601-23-eblake@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=203.205.221.240; envelope-from=sunnyzhyy@qq.com;
+ helo=out203-205-221-240.mail.qq.com
+X-Spam_score_int: 42
+X-Spam_score: 4.2
+X-Spam_bar: ++++
+X-Spam_report: (4.2 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_FROM=0.001, HELO_DYNAMIC_IPADDR=1.951, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ RDNS_DYNAMIC=0.982, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,56 +83,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 13 May 2025, Alexey Kardashevskiy wrote:
-> On Wed, 30 Apr 2025, at 21:21, BALATON Zoltan wrote:
->> On Wed, 23 Apr 2025, BALATON Zoltan wrote:
->>> The FDT does not normally store name properties but reconstructs it
->>> from path but Open Firmware specification says each node should at
->>> least have this property. This is correctly handled in getprop but
->>> nextprop should also return it even if not present as a property.
->>>
->>> Explicit name properties are still allowed because they are needed
->>> e.g. on the root node that guests expect to have specific names as
->>> seen on real machines instead of being empty so sometimes the node
->>> name may need to be overriden. For example on pegasos MorphOS checks
->>> the name of "/" and expects to find bplan,Pegasos2 which is how it
->>> identifies the machine.
->>>
->>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->>> ---
->>> v3:
->>> Keep phandle properties
->>> Changed commit message
->>
->> Ping?
->>
->
-> sorry for the delay, looks okay to me but (probably was answered but I 
-> forgot because I am slow) I still do not understand what is adding the 
-> explicit property called "name" so vof_nextprop() needs to check if it 
-> is the actual property. Thanks,
+On Fri, 9 May 2025 15:40:25 -0500, Eric Blake wrote:
+> QEMU has an optimization for a just-created drive-mirror destination
+> that is not possible for blockdev-mirror (which can't create the
+> destination) - any time we know the destination starts life as all
+> zeroes, we can skip a pre-zeroing pass on the destination.  Recent
+> patches have added an improved heuristic for detecting if a file
+> contains all zeroes, and we plan to use that heuristic in upcoming
+> patches.  But since a heuristic cannot quickly detect all scenarios,
+> and there may be cases where the caller is aware of information that
+> QEMU cannot learn quickly, it makes sense to have a way to tell QEMU
+> to assume facts about the destination that can make the mirror
+> operation faster.  Given our existing example of "qemu-img convert
+> --target-is-zero", it is time to expose this override in QMP for
+> blockdev-mirror as well.
+> 
+> This patch results in some slight redundancy between the older
+> s->zero_target (set any time mode==FULL and the destination image was
+> not just created - ie. clear if drive-mirror is asking to skip the
+> pre-zero pass) and the newly-introduced s->target_is_zero (in addition
+> to the QMP override, it is set when drive-mirror creates the
+> destination image); this will be cleaned up in the next patch.
+> 
+> There is also a subtlety that we must consider.  When drive-mirror is
+> passing target_is_zero on behalf of a just-created image, we know the
+> image is sparse (skipping the pre-zeroing keeps it that way), so it
+> doesn't matter whether the destination also has "discard":"unmap" and
+> "detect-zeroes":"unmap".  But now that we are letting the user set the
+> knob for target-is-zero, if the user passes a pre-existing file that
+> is fully allocated, it is fine to leave the file fully allocated under
+> "detect-zeroes":"on", but if the file is open with
+> "detect-zeroes":"unmap", we should really be trying harder to punch
+> holes in the destination for every region of zeroes copied from the
+> source.  The easiest way to do this is to still run the pre-zeroing
+> pass (turning the entire destination file sparse before populating
+> just the allocated portions of the source), even though that currently
+> results in double I/O to the portions of the file that are allocated.
+> A later patch will add further optimizations to reduce redundant
+> zeroing I/O during the mirror operation.
+> 
+> Since "target-is-zero":true is designed for optimizations, it is okay
+> to silently ignore the parameter rather than erroring if the user ever
+> sets the parameter in a scenario where the mirror job can't exploit it
+> (for example, when doing "sync":"top" instead of "sync":"full", we
+> can't pre-zero, so setting the parameter won't make a speed
+> difference).
+> 
+> Signed-off-by: Eric Blake <eblake@redhat.com>
+> Acked-by: Markus Armbruster <armbru@redhat.com>
+> 
+> ---
+> 
+> v4: hoist earlier in series. QMP design is unchanged, but logic in
+> mirror_dirty_init is different (in many aspects simpler, but now
+> catering to "detect-zeroes":"unmap") so Acked-by on QMP kept, but
+> Reviewed-by dropped.
+> ---
+>  qapi/block-core.json                   |  8 +++++++-
+>  include/block/block_int-global-state.h |  3 ++-
+>  block/mirror.c                         | 27 ++++++++++++++++++++++----
+>  blockdev.c                             | 18 ++++++++++-------
+>  tests/unit/test-block-iothread.c       |  2 +-
+>  5 files changed, 44 insertions(+), 14 deletions(-)
 
-Look at this series where this is used (I also included this patch there 
-as patch 2 which is identical to this v3 standalone patch):
+Reviewed-by: Sunny Zhu <sunnyzhyy@qq.com>
 
-https://patchew.org/QEMU/cover.1746139668.git.balaton@eik.bme.hu/
-
-This patch allows removing explicit name properties in patch 3 and move 
-the static parts into a dtb file in patch 4. Dtb does not allow to set 
-name property and will use the path name for it but e.g. the root of the 
-device tree on some machines must have a specific name. On Apple it's 
-called device-tree and on pegasos it's bPlan,Pegasos and some guests (e.g. 
-MorphOS) checks this to detect what machine they run on so will fail it we 
-return / or no name for the name of the root node. Therefore in patch 4 I 
-still have a
-
-qemu_fdt_setprop_string(fdt, "/", "name", "bplan,Pegasos2");
-
-to make this work, and for some nodes it may still be needed although for 
-most the path name from dtb will be correct so no need to add a name 
-property for those. But becuase of these nodes that need a name different 
-from their path we still need to allow explicit name properties.
-
-Regards,
-BALATON Zoltan
 
