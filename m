@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E359AA7F5A
-	for <lists+qemu-devel@lfdr.de>; Sat,  3 May 2025 10:02:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7042CAA7F4E
+	for <lists+qemu-devel@lfdr.de>; Sat,  3 May 2025 10:00:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uB7mW-00086T-BU; Sat, 03 May 2025 03:59:33 -0400
+	id 1uB7mb-00088U-UF; Sat, 03 May 2025 03:59:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uB7mR-00085v-2s
- for qemu-devel@nongnu.org; Sat, 03 May 2025 03:59:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uB7mT-00086E-KZ
+ for qemu-devel@nongnu.org; Sat, 03 May 2025 03:59:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uB7mO-0006f8-U9
- for qemu-devel@nongnu.org; Sat, 03 May 2025 03:59:26 -0400
+ id 1uB7mQ-0006fl-Uu
+ for qemu-devel@nongnu.org; Sat, 03 May 2025 03:59:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746259163;
+ s=mimecast20190719; t=1746259166;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hWhLgJNS8Ltljm8m4k2fCDLslDrL+mClIW8l8kOMkf4=;
- b=TTXxGG+ltVu42qeE0AHTHXzvvkgBRUT3JajxrMrZlVFe57JOCc2g4vrA1N+sbSlssZWoL/
- r06YynW6eyWubvPYcvzRymt9GmATwKMuh22Xs4+nNeFK2MjHCV6hob3wq0yn2Yf5QcZ6g+
- 0JK9sAe6b7Fr0gOSSpkhmnkk23QUeX4=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=BGFUgCwnObUQrsqI5z/bsk7l8Vga318bTFC9U7szmG0=;
+ b=gsZ8GXzdAuPeUhhqTv56US3SVNHCYPI4gIv0CQzzYGuG6tRAo3f8R5lT1RQWCcOxFG9GeZ
+ iPlDkIdfKcHr0B6bur6Nd+vNsP5VjFB4Z8C98hnAjFWPwa7FFApkfTnLWUWxSzLfinoNm4
+ zKep4rEM3U74/wBWSsXuZanYcaLA/xU=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-82-H81SP1aaOeaiAo1pYJnYBg-1; Sat, 03 May 2025 03:59:22 -0400
-X-MC-Unique: H81SP1aaOeaiAo1pYJnYBg-1
-X-Mimecast-MFC-AGG-ID: H81SP1aaOeaiAo1pYJnYBg_1746259161
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3a07a7b4298so1327765f8f.0
- for <qemu-devel@nongnu.org>; Sat, 03 May 2025 00:59:22 -0700 (PDT)
+ us-mta-491-AnNq3tUXODysBM-GUzQVvg-1; Sat, 03 May 2025 03:59:24 -0400
+X-MC-Unique: AnNq3tUXODysBM-GUzQVvg-1
+X-Mimecast-MFC-AGG-ID: AnNq3tUXODysBM-GUzQVvg_1746259163
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-43ce8f82e66so13604625e9.3
+ for <qemu-devel@nongnu.org>; Sat, 03 May 2025 00:59:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746259160; x=1746863960;
+ d=1e100.net; s=20230601; t=1746259162; x=1746863962;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hWhLgJNS8Ltljm8m4k2fCDLslDrL+mClIW8l8kOMkf4=;
- b=FcmxKRHqApGAGGl4oj49Sc3Cs5btPIw7UV3QNzMn3gdijQX2YygeJjAcre2NRU2UQB
- oN1cGy6TPpP5WObt+0eNaVRUUetR5nSFCmyYMnIX9VO7yZt8DCnFwrvsPKUi6l58oLS7
- ttsdXadzzHFduYjpNSX2zzGUVdiPjSWtuI8cvH3GulgFMUdmrH9iTPskPS8sjJDZ/4JX
- zZymtFKeraxNbhWvM7cLM6yIxwYa4aeACmmDqfK9rDRQl9Fg1vBCcYQ7XV/fsqNQ9EMW
- QZApxpSDFifCybDBiYrGq0sNmY9wiFj/tlBKXmktLaU7WmaBPpDy/YltrZw73uk7IxQy
- sbhw==
-X-Gm-Message-State: AOJu0YzqddPPA2ysQ23qrE2G6dWJDnjG7X0sBZDw6/TI9sPbzF8/5mVY
- 2SS29SEy4+wM46KBrjEXGgyZH7Q63zXJJrz98TiHoxO6KfZDt03M1C8N9ntt8oHY884bxGmZzYp
- c4vvxCw7WIcG01xzMlaNPCz1Y7aNsVaa0OSJonNAiCwvljwGNm+VlK5AHVtDGirHWl2WlW65SON
- QQvO+W325/zBw6JpCkAgH8lmqLZTujGwzlzI6g
-X-Gm-Gg: ASbGncupCwggsXbqbxQgBZ2FzC2q+bR9vPrxRRnn5BrLw8Sfr+S2InfutUNY/85eepS
- eikQkJW3VDX429m68ypswbkWSveCwNgSLiAf8ZQASObwMTaDdHIHrJHbBX/iqEktLLyiy2loV1W
- ZkeW4llraPQWFC5l9FZFs8t4AqX7neunfZA80oo2TkKLxc++aDY+qnpYbvbvmfaxQRvHU6yvZHM
- 1z9rgHuBINRpOYqpnRpMeNYMIyrsDRrJSOesfEa3kNs0GplomYsiLQxIA320fquM5bSNdW7DjCw
- m+LNOUnTA2HYuyU=
-X-Received: by 2002:a05:6000:188d:b0:3a0:8c55:26f5 with SMTP id
- ffacd0b85a97d-3a09ceba247mr1352817f8f.31.1746259159959; 
- Sat, 03 May 2025 00:59:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEAewj6qPT0jZ5BaNdWRAnm5D+jk3NqUkK+OsfI9EAn917SjWxUXmwBrrL3EV5cYpUcHjs4IA==
-X-Received: by 2002:a05:6000:188d:b0:3a0:8c55:26f5 with SMTP id
- ffacd0b85a97d-3a09ceba247mr1352798f8f.31.1746259159472; 
- Sat, 03 May 2025 00:59:19 -0700 (PDT)
+ bh=BGFUgCwnObUQrsqI5z/bsk7l8Vga318bTFC9U7szmG0=;
+ b=J6UftWqJ9xgka75f7aIAGsKrsOaS2iS04H2X0VumnCGHPvUsvmYbX6rYW2FEoH1UhH
+ TMPCDCQ2xCjullJ0sc2X2TlwHLlA1pdRZsSsHAGyXo/7qsvQ6Hfq8pF6u3Ac1J+kmttr
+ HnP1hi/PNJAGlGPv9NrowWMLk9K6KkE2GTWpMRvi1lJ6lpqXrnAOc/YkdWSSCckhw/Wa
+ N+hOKeI0uOUctB81nA1CsIM2alk4+Pcue6ojmeTsCxv2tr6TQdatBwqjONABqh/cYV8V
+ YV8N85sFfy8Tspzg90pygUa+2wtrsbGs6dgqgnxx1Pf2/aVIwsPVBOKMv1h49kTFkgMM
+ 2alg==
+X-Gm-Message-State: AOJu0YzkPx54kreDqHqUlAj5uQN3pbLcYz9LbboSelSQatMFQ7NUyDdC
+ POFsih1abJIxLCKZ4yEZK2XOy0CjAcr8UHXYeCZKfn73j4jfURfQbJQbOo+5jUEZlA7VzzlF4ky
+ MAH7QlPBSY9cf4CJS6v5mLeD+jxhhNOIA2A5mmZ+QbI8kIoG90HoyWGBP3u85p72wGA/8319lrD
+ KIjTVoxUEeAFV+PqGZfPsjXALHQ8T89clJMyk3
+X-Gm-Gg: ASbGncueqiOEb6J1J7+53XxMeS/O9hv0Uj58RHrC4TjiCyQkdQCVc99J0f7wOsOsrUQ
+ 4nzMMve3QlLFF9fG9eTlCwwWxbNLzXHMvM8M5OOSYLJShtQHhQZcGm2iq/RzzJrd+4K0cGNrtNj
+ SXlUvrGVaZ0f8g2G5sjYxMDSrJggaPmF/ojJbBqxmCsq7HAfu2hpHrwlBmqOUng6vjnNhU5ofte
+ JZ2eAiwE+FknIOefq62WWl1AGzwzFpvuku9WIpf6GP1LwsJnnCX4t1b/BWj+iGcGVq2GqBIrNcL
+ Ktn4z/yQB68vYiU=
+X-Received: by 2002:a05:600c:1d9e:b0:43c:eec7:eabb with SMTP id
+ 5b1f17b1804b1-441c48bc8f0mr1882495e9.8.1746259162697; 
+ Sat, 03 May 2025 00:59:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFwfvoGrDDxN0DgZiHxq8l6Alli1lseb0D7OcNZdPslH725XvhomroVnSfd4jFgSFyawe5vlQ==
+X-Received: by 2002:a05:600c:1d9e:b0:43c:eec7:eabb with SMTP id
+ 5b1f17b1804b1-441c48bc8f0mr1882315e9.8.1746259162290; 
+ Sat, 03 May 2025 00:59:22 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.54.106])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a099ae0c25sm4228350f8f.17.2025.05.03.00.59.18
+ 5b1f17b1804b1-441b89cc67fsm68173425e9.5.2025.05.03.00.59.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 03 May 2025 00:59:18 -0700 (PDT)
+ Sat, 03 May 2025 00:59:20 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Magnus Kulke <magnuskulke@linux.microsoft.com>
-Subject: [PULL 07/13] target/i386/emulate: remove rflags leftovers
-Date: Sat,  3 May 2025 09:58:52 +0200
-Message-ID: <20250503075858.277375-8-pbonzini@redhat.com>
+Cc: Wei Liu <wei.liu@kernel.org>
+Subject: [PULL 08/13] target/i386/hvf: fix a compilation error
+Date: Sat,  3 May 2025 09:58:53 +0200
+Message-ID: <20250503075858.277375-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250503075858.277375-1-pbonzini@redhat.com>
 References: <20250503075858.277375-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
@@ -106,77 +106,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Magnus Kulke <magnuskulke@linux.microsoft.com>
+From: Wei Liu <wei.liu@kernel.org>
 
-Fixes: c901905ea670 ("target/i386/emulate: remove flags_mask")
+Include exec/target_page.h to fix the following build error.
 
-In c901905ea670 rflags have been removed from `x86_decode`, but there
-were some leftovers.
+x86_64-softmmu.a.p/target_i386_hvf_hvf.c.o -c ../target/i386/hvf/hvf.c
+../target/i386/hvf/hvf.c:139:49: error: use of undeclared identifier 'TARGET_PAGE_SIZE'
+  139 |             uint64_t dirty_page_start = gpa & ~(TARGET_PAGE_SIZE - 1u);
+      |                                                 ^
+../target/i386/hvf/hvf.c:141:45: error: use of undeclared identifier 'TARGET_PAGE_SIZE'
+  141 |             hv_vm_protect(dirty_page_start, TARGET_PAGE_SIZE,
+      |                                             ^
 
-Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250429093319.5010-1-magnuskulke@linux.microsoft.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Link: https://lore.kernel.org/r/aBBws1ikCDfyC0RI@liuwe-devbox-ubuntu-v2.tail21d00.ts.net
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/emulate/x86_decode.c | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ target/i386/hvf/hvf.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/i386/emulate/x86_decode.c b/target/i386/emulate/x86_decode.c
-index 7fee2196878..7efa2f570ea 100644
---- a/target/i386/emulate/x86_decode.c
-+++ b/target/i386/emulate/x86_decode.c
-@@ -1408,7 +1408,7 @@ struct decode_tbl _2op_inst[] = {
- };
+diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
+index 23ebf2550ac..99e37a33e50 100644
+--- a/target/i386/hvf/hvf.c
++++ b/target/i386/hvf/hvf.c
+@@ -76,6 +76,7 @@
+ #include "qemu/main-loop.h"
+ #include "qemu/accel.h"
+ #include "target/i386/cpu.h"
++#include "exec/target_page.h"
  
- struct decode_x87_tbl invl_inst_x87 = {0x0, 0, 0, 0, 0, false, false, NULL,
--                                       NULL, decode_invalid, 0};
-+                                       NULL, decode_invalid};
+ static Error *invtsc_mig_blocker;
  
- struct decode_x87_tbl _x87_inst[] = {
-     {0xd8, 0, 3, X86_DECODE_CMD_FADD, 10, false, false,
-@@ -1456,8 +1456,7 @@ struct decode_x87_tbl _x87_inst[] = {
-      decode_x87_modrm_st0, NULL, decode_d9_4},
-     {0xd9, 4, 0, X86_DECODE_CMD_INVL, 4, false, false,
-      decode_x87_modrm_bytep, NULL, NULL},
--    {0xd9, 5, 3, X86_DECODE_CMD_FLDxx, 10, false, false, NULL, NULL, NULL,
--     RFLAGS_MASK_NONE},
-+    {0xd9, 5, 3, X86_DECODE_CMD_FLDxx, 10, false, false, NULL, NULL, NULL},
-     {0xd9, 5, 0, X86_DECODE_CMD_FLDCW, 2, false, false,
-      decode_x87_modrm_bytep, NULL, NULL},
- 
-@@ -1478,20 +1477,17 @@ struct decode_x87_tbl _x87_inst[] = {
-      decode_x87_modrm_st0, NULL},
-     {0xda, 3, 3, X86_DECODE_CMD_FCMOV, 10, false, false, decode_x87_modrm_st0,
-      decode_x87_modrm_st0, NULL},
--    {0xda, 4, 3, X86_DECODE_CMD_INVL, 10, false, false, NULL, NULL, NULL,
--     RFLAGS_MASK_NONE},
-+    {0xda, 4, 3, X86_DECODE_CMD_INVL, 10, false, false, NULL, NULL, NULL},
-     {0xda, 4, 0, X86_DECODE_CMD_FSUB, 4, false, false, decode_x87_modrm_st0,
-      decode_x87_modrm_intp, NULL},
-     {0xda, 5, 3, X86_DECODE_CMD_FUCOM, 10, false, true, decode_x87_modrm_st0,
-      decode_decode_x87_modrm_st0, NULL},
-     {0xda, 5, 0, X86_DECODE_CMD_FSUB, 4, true, false, decode_x87_modrm_st0,
-      decode_x87_modrm_intp, NULL},
--    {0xda, 6, 3, X86_DECODE_CMD_INVL, 10, false, false, NULL, NULL, NULL,
--     RFLAGS_MASK_NONE},
-+    {0xda, 6, 3, X86_DECODE_CMD_INVL, 10, false, false, NULL, NULL, NULL},
-     {0xda, 6, 0, X86_DECODE_CMD_FDIV, 4, false, false, decode_x87_modrm_st0,
-      decode_x87_modrm_intp, NULL},
--    {0xda, 7, 3, X86_DECODE_CMD_INVL, 10, false, false, NULL, NULL, NULL,
--     RFLAGS_MASK_NONE},
-+    {0xda, 7, 3, X86_DECODE_CMD_INVL, 10, false, false, NULL, NULL, NULL},
-     {0xda, 7, 0, X86_DECODE_CMD_FDIV, 4, true, false, decode_x87_modrm_st0,
-      decode_x87_modrm_intp, NULL},
- 
-@@ -1511,8 +1507,7 @@ struct decode_x87_tbl _x87_inst[] = {
-      decode_x87_modrm_intp, NULL, NULL},
-     {0xdb, 4, 3, X86_DECODE_CMD_INVL, 10, false, false, NULL, NULL,
-      decode_db_4},
--    {0xdb, 4, 0, X86_DECODE_CMD_INVL, 10, false, false, NULL, NULL, NULL,
--     RFLAGS_MASK_NONE},
-+    {0xdb, 4, 0, X86_DECODE_CMD_INVL, 10, false, false, NULL, NULL, NULL},
-     {0xdb, 5, 3, X86_DECODE_CMD_FUCOMI, 10, false, false,
-      decode_x87_modrm_st0, decode_x87_modrm_st0, NULL},
-     {0xdb, 5, 0, X86_DECODE_CMD_FLD, 10, false, false,
 -- 
 2.49.0
 
