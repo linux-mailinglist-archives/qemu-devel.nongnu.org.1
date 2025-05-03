@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0DA5AA7F56
-	for <lists+qemu-devel@lfdr.de>; Sat,  3 May 2025 10:01:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E11AAA7F57
+	for <lists+qemu-devel@lfdr.de>; Sat,  3 May 2025 10:01:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uB7mI-000846-KK; Sat, 03 May 2025 03:59:18 -0400
+	id 1uB7mK-00084R-Cm; Sat, 03 May 2025 03:59:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uB7mF-00083K-6M
- for qemu-devel@nongnu.org; Sat, 03 May 2025 03:59:15 -0400
+ id 1uB7mH-000845-RH
+ for qemu-devel@nongnu.org; Sat, 03 May 2025 03:59:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uB7mB-0006cY-SL
- for qemu-devel@nongnu.org; Sat, 03 May 2025 03:59:13 -0400
+ id 1uB7mG-0006dC-0L
+ for qemu-devel@nongnu.org; Sat, 03 May 2025 03:59:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746259151;
+ s=mimecast20190719; t=1746259153;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rCO405x1iA5TZa/s7VrWx8Lz2D6IP//q8p2gI6CpMtk=;
- b=FQKKUBmZgMcaDSiYM5jDNG8NVZT/kL4mjWu1uoJgtTrV0rvyskzDLTiN2FdRLLxQymkbCa
- A343lpB9kr8X3gRSKcNmu21emc8aQIu3dknvKviQ017fVRIpdcl735V+GLXpLDnNqbvpF6
- EMTZeorokdcl0Qc0ZETadFiCgP2dH+c=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=LqeniZgXmPTdrTI+xq1XQTwnSc7B7nOzlTpRU2OjaDw=;
+ b=LT/Y4jToNXaZMYzP5ammOewo/TP4ekawOUSUu0IeEgj+hfXPZpRwygWTT/dgxQvT66pzYl
+ FWFJkKsdFcu1hXHZhty4KvyQ8ynVA3qADMutDkGu4uZfLD8mY4p2xpt2sGsmMTzg+HRAgQ
+ WelPXaMd/qGDRpIFvsv62+ZTGKIx0/I=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-437-TenHEXkSMOe4-Egg4rUFUg-1; Sat, 03 May 2025 03:59:09 -0400
-X-MC-Unique: TenHEXkSMOe4-Egg4rUFUg-1
-X-Mimecast-MFC-AGG-ID: TenHEXkSMOe4-Egg4rUFUg_1746259148
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-43cf446681cso15678755e9.1
- for <qemu-devel@nongnu.org>; Sat, 03 May 2025 00:59:09 -0700 (PDT)
+ us-mta-47-pm-jBnJ9OA-g-W0Eoi_rew-1; Sat, 03 May 2025 03:59:11 -0400
+X-MC-Unique: pm-jBnJ9OA-g-W0Eoi_rew-1
+X-Mimecast-MFC-AGG-ID: pm-jBnJ9OA-g-W0Eoi_rew_1746259150
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-43d01024089so17696365e9.1
+ for <qemu-devel@nongnu.org>; Sat, 03 May 2025 00:59:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746259148; x=1746863948;
+ d=1e100.net; s=20230601; t=1746259150; x=1746863950;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rCO405x1iA5TZa/s7VrWx8Lz2D6IP//q8p2gI6CpMtk=;
- b=VnvUR7JPj9LY4vxfbhtUStmQYlfGcrfYkAjFwFdDSi77hHrCE2gfTypZwbhK/4R8pN
- obnCuMDLJzVzeZJLmJAXodcEhx5qBTyNFcfuMbYc7t0jaAaskCDn4J45U5r0hdTXUgDw
- JvUsJA1cNTVZVi8PQhgGfC1BheLfISFtOGiEBHk/RSKI/472SbCau4EOmHZ3Ag/1tm0c
- ogfjSj368UGjk7IxAJl47oZXdmUV6jJSqqHIZyYkqRAOUPOmRz0zoq9ekuJjySOY6C6e
- BR5nRAli1uM6Wyw9/eTPyDoCjXAyosqAljfSD+HCgHjO+NX9GrtfxsV7OUdujPb51xUG
- vtvw==
-X-Gm-Message-State: AOJu0Yzs5kBv4YOS9UUAp/VefBjnyt5VbN1NI6sad1AiieniDT1pNeAe
- aTxhrDV9vCkz2ZEa1Zxv0lYDKJvGJE2MR+jy1X52u9VF7GNupQ3F+i0lJDVY81F5iYXvkKp6N0q
- 4t+1sey5A2S9MUE7c2daPKLJItOLFG8TyjEkbOe3gZPPdWNlpFajaAKs/w1YT5tVLbzkY51iEbz
- ChSNWiesyvjTHfOS7CrxLQz2G1A+lC4wb2m+h4
-X-Gm-Gg: ASbGncv7Nb3GKtOgIWPasV9gT74y7SJ00ihmSPjTiQTXwuJKn8Wz9wq9KfTk0AJMQJV
- nXcGcwA/tG8xa48uvMY5LKGRO3jRBnUq7KsyHZpm22ze9+8Y+86GcSsgWnXLT/f11JvMQ1Im4vS
- ZMC/B2YyJnEOjJkOCJaFHbsXoYiGqdQPMD9oqlDNvphONb73K70r5oU9rKG6A5N/eB/4FXbmUvu
- 8ottdysdcbWzvBUnojiHZA7WBDxGyBo4+tJEfYG4lw9nhd4TQ3Ya1MwhhW1B9Wjdnf53YxC93Yr
- 1CYq8Ajsq5NbI7I=
-X-Received: by 2002:a05:600c:1986:b0:43d:585f:ebf5 with SMTP id
- 5b1f17b1804b1-441c48b03e9mr1597945e9.1.1746259147705; 
- Sat, 03 May 2025 00:59:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGSHTe5beqPnSvMYUqqHVp3t1Tw9eA5PQSdaH6GvWhORq2j3L6nGS1jrfbQKAaNzsditSPxEA==
-X-Received: by 2002:a05:600c:1986:b0:43d:585f:ebf5 with SMTP id
- 5b1f17b1804b1-441c48b03e9mr1597755e9.1.1746259147322; 
- Sat, 03 May 2025 00:59:07 -0700 (PDT)
+ bh=LqeniZgXmPTdrTI+xq1XQTwnSc7B7nOzlTpRU2OjaDw=;
+ b=XtFxk0ln3mK6FwFnnK4dv7IKIf5U3Txm398QRFqdG62EU2UUfyqdPrbMXbLGOmTOIO
+ XstnTtvMBc1bqLEdjN15zMFdrO7zSjrSCp9nkttCAs24pL4mGzISadL3i5O/qjCKqn9A
+ 8MkO4QtGzP2jnmV9hjx3ke+ZeQPzndzqYtoefxg91TgKopPY5CZoUnN4LPNbRJm4JNRc
+ Mlar3qf+3CLHsnSE6r3jXfnsI8xoJ1UAkvY/ur73xum3bTsQhyFDZSXRBVDH25tfeH2W
+ th2wLbd23rdG2/lX++HwlDCYR8wUprURL87CnYbrofbG34G0eYupvN9XgN5pyaPCHSab
+ mcfQ==
+X-Gm-Message-State: AOJu0YwXtu0ys4TCRb2qeKva0fDA2gJ4SgpTupcxWjZYG246sx0228Rw
+ CqgLpeJ+ZTnxMObg+jjzeknjTi+DRyAXbWZzkZWTgNes53Wri241C9HL7J85biwpyez+2KqvbDX
+ e4dMbPzusxmMF1K5jSrYn/ueK14nHfNxO0/fHOIrqPwOYgGKN+ZZFRBIN8xh3V01fRDb8TaVTWd
+ lHrn91D7GNb17lBpMxnkoSfz8Wlq0nkY1aV6cO
+X-Gm-Gg: ASbGncszjIjFvsGi2PErjV8wwUCGQEBaTsiKEfdKCRGdDcfMALhYYNeoiSmyfg95sNr
+ f9VC/Or2AtDSq4DHUlhg69/PRQ4S/CLzgv5jMPumHUf9ZBMvDb/JaIrfsQKA5G8SwXpHUVttvOA
+ Qm8rvnCnO12Rkj6CZhGPg+/ERPjClVnFiPR2ApT194zFbERRkgUMbgQGmsoF1fMbRKSwz05z7tp
+ 1id8OkGNDjp3aB0isqqToQ/2QqH3Vl8kkJsJAZz1z+9nP7Fsv1t+7uxwd0UU4W2LWbHSUuxv+Oi
+ UNygxYRG2NwJne4=
+X-Received: by 2002:a05:600c:698e:b0:43d:1b74:e89a with SMTP id
+ 5b1f17b1804b1-441c48bb3f1mr1956715e9.9.1746259149684; 
+ Sat, 03 May 2025 00:59:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGEB4g0SB8xuvvrDXehhO/Y9iC/uw0m7XxVPI8hzB8Vk3xOdm9PpL6xyXzverJiPb33P+NT0Q==
+X-Received: by 2002:a05:600c:698e:b0:43d:1b74:e89a with SMTP id
+ 5b1f17b1804b1-441c48bb3f1mr1956515e9.9.1746259149254; 
+ Sat, 03 May 2025 00:59:09 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.54.106])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-441b2b28082sm111753275e9.34.2025.05.03.00.59.03
+ 5b1f17b1804b1-441b8a286cfsm66028495e9.29.2025.05.03.00.59.08
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 03 May 2025 00:59:03 -0700 (PDT)
+ Sat, 03 May 2025 00:59:08 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 02/13] vmstate: support varray for vmstate_clock!
-Date: Sat,  3 May 2025 09:58:47 +0200
-Message-ID: <20250503075858.277375-3-pbonzini@redhat.com>
+Subject: [PULL 03/13] rust: assertions: Support index field wrapped in BqlCell
+Date: Sat,  3 May 2025 09:58:48 +0200
+Message-ID: <20250503075858.277375-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250503075858.277375-1-pbonzini@redhat.com>
 References: <20250503075858.277375-1-pbonzini@redhat.com>
@@ -106,50 +106,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make vmstate_struct and vmstate_clock more similar; they are basically the
-same thing, except for the clock case having a built-in VMStateDescription.
+Currently, if the `num` field of a varray is not a numeric type, such as
+being placed in a wrapper, the array variant of assert_field_type will
+fail the check.
 
+HPET currently wraps num_timers in BqlCell<>. Although BqlCell<> is not
+necessary from strictly speaking, it makes sense for vmstate to respect
+BqlCell.
+
+The failure of assert_field_type is because it cannot convert BqlCell<T>
+into usize for use as the index.  Use a constant 0 instead for the index,
+by avoiding $(...)? and extracting the common parts of
+assert_field_type! into an internal case.
+
+Commit message based on a patch by Zhao Liu <zhao1.liu@intel.com>.
+
+Link: https://lore.kernel.org/r/20250414144943.1112885-3-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- rust/qemu-api/src/vmstate.rs | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ rust/qemu-api/src/assertions.rs | 25 +++++++++----------------
+ 1 file changed, 9 insertions(+), 16 deletions(-)
 
-diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
-index 8c4a5bee3c1..9ae97c389c1 100644
---- a/rust/qemu-api/src/vmstate.rs
-+++ b/rust/qemu-api/src/vmstate.rs
-@@ -507,7 +507,7 @@ macro_rules! vmstate_struct {
- #[doc(alias = "VMSTATE_CLOCK")]
+diff --git a/rust/qemu-api/src/assertions.rs b/rust/qemu-api/src/assertions.rs
+index eb12e9499a7..a2d38c877df 100644
+--- a/rust/qemu-api/src/assertions.rs
++++ b/rust/qemu-api/src/assertions.rs
+@@ -78,33 +78,26 @@ fn types_must_be_equal<T, U>(_: T)
+ /// ```
  #[macro_export]
- macro_rules! vmstate_clock {
--    ($struct_name:ty, $field_name:ident) => {{
-+    ($struct_name:ty, $field_name:ident $([0 .. $num:ident $(* $factor:expr)?])?) => {{
-         $crate::bindings::VMStateField {
-             name: ::core::concat!(::core::stringify!($field_name), "\0")
-                 .as_bytes()
-@@ -516,7 +516,7 @@ macro_rules! vmstate_clock {
-                 $crate::assert_field_type!(
-                     $struct_name,
-                     $field_name,
--                    $crate::qom::Owned<$crate::qdev::Clock>
-+                    $crate::qom::Owned<$crate::qdev::Clock> $(, num = $num)?
-                 );
-                 $crate::offset_of!($struct_name, $field_name)
-             },
-@@ -527,7 +527,14 @@ macro_rules! vmstate_clock {
-             ),
-             vmsd: unsafe { ::core::ptr::addr_of!($crate::bindings::vmstate_clock) },
-             ..$crate::zeroable::Zeroable::ZERO
--        }
-+         } $(.with_varray_flag_unchecked(
-+                  $crate::call_func_with_field!(
-+                      $crate::vmstate::vmstate_varray_flag,
-+                      $struct_name,
-+                      $num
-+                  )
-+              )
-+           $(.with_varray_multiply($factor))?)?
-     }};
+ macro_rules! assert_field_type {
+-    ($t:ty, $i:tt, $ti:ty) => {
++    (@internal $param_name:ident, $ti:ty, $t:ty, $($field:tt)*) => {
+         const _: () = {
+             #[allow(unused)]
+-            fn assert_field_type(v: $t) {
+-                fn types_must_be_equal<T, U>(_: T)
++            fn assert_field_type($param_name: &$t) {
++                fn types_must_be_equal<T, U>(_: &T)
+                 where
+                     T: $crate::assertions::EqType<Itself = U>,
+                 {
+                 }
+-                types_must_be_equal::<_, $ti>(v.$i);
++                types_must_be_equal::<_, $ti>(&$($field)*);
+             }
+         };
+     };
+ 
++    ($t:ty, $i:tt, $ti:ty) => {
++        $crate::assert_field_type!(@internal v, $ti, $t, v.$i);
++    };
++
+     ($t:ty, $i:tt, $ti:ty, num = $num:ident) => {
+-        const _: () = {
+-            #[allow(unused)]
+-            fn assert_field_type(v: $t) {
+-                fn types_must_be_equal<T, U>(_: T)
+-                where
+-                    T: $crate::assertions::EqType<Itself = U>,
+-                {
+-                }
+-                let index: usize = v.$num.try_into().unwrap();
+-                types_must_be_equal::<_, &$ti>(&v.$i[index]);
+-            }
+-        };
++        $crate::assert_field_type!(@internal v, $ti, $t, v.$i[0]);
+     };
  }
  
 -- 
