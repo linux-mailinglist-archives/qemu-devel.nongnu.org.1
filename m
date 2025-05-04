@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74D75AA898D
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 23:59:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 816E9AA8984
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 23:59:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBhLO-0007SN-IW; Sun, 04 May 2025 17:57:54 -0400
+	id 1uBhLQ-0007Tb-56; Sun, 04 May 2025 17:57:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uBhLL-0007QM-Iy
- for qemu-devel@nongnu.org; Sun, 04 May 2025 17:57:51 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1uBhLN-0007SM-Su
+ for qemu-devel@nongnu.org; Sun, 04 May 2025 17:57:53 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uBhLK-0005BL-16
- for qemu-devel@nongnu.org; Sun, 04 May 2025 17:57:51 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-22c336fcdaaso42788485ad.3
- for <qemu-devel@nongnu.org>; Sun, 04 May 2025 14:57:49 -0700 (PDT)
+ id 1uBhLM-0005Bw-EG
+ for qemu-devel@nongnu.org; Sun, 04 May 2025 17:57:53 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-2264aefc45dso58852805ad.0
+ for <qemu-devel@nongnu.org>; Sun, 04 May 2025 14:57:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746395868; x=1747000668; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746395870; x=1747000670; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=56ybfnwzUbGIYEktCHIqmHOykTepTgv6Xlf9ny+yrcs=;
- b=Rh7ExY9fsx2UUMBh8pkC/L8n8hCJzjABBmGurLSwrVwpIdPravJusqbAlKXarfVI0v
- SorkEj3mzc1UM4deIB5zKIEuA3e3TBBiYOTWSvjLVROQR6zdrcJpVGznM26Fq6upFUE+
- Hpia/2hunK1aGwYI2zt1xl8r9WtLT2vCtSFo6CYfTqoVZWMY9z3poDeYBpWChGlcnAGc
- p/L7TxweVy4m7L179lxxGZuPKHTX810DfircD7k6ZaNq121bGafcyd2T/jd6GlzSMke4
- fUec6mEs9OMrOQmajmbQKcfxOtbW8rPjLdnbCDaZclolqvi22I9q63eXxs7QBwPyd8Kr
- kM2A==
+ bh=zwc13b8kC9Z5he0z0xvhp1yrhhR7Vt1vlSABNOYVc1M=;
+ b=LGQzhjBgt2ttE9oJZgT7ocBsB0XIUL8ipEyqdR4Z1JNyf9vZI0sdwavhYBSpqwJTRc
+ D2C4sz7FkFFvssT7mKatxvoa8iVVetQV+gV0TX6wvmrhwLUIs3Ux3/gFlo2bmYH5G8L0
+ fyWZuycALRVIKvleHBrdrRxHSuhGLQanxiVKFN3SbVCatkG8V8sZI94deCc7pmBni4BK
+ +/oJcOOMgDjQcTFkTgg6Gr7YmFsuct9gh4A+d98YgKkpSeSned1+KZtOaU+eKFiRZiE8
+ phlDSf1toMTqljM+rdDb9NLa/i69xwk0Rgu28zG3byM8XhzlkMb2+V0B/kk8H/7AgHnj
+ l3NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746395868; x=1747000668;
+ d=1e100.net; s=20230601; t=1746395870; x=1747000670;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=56ybfnwzUbGIYEktCHIqmHOykTepTgv6Xlf9ny+yrcs=;
- b=JZ4hII7qcMDq0JCXrBBcVIa0wZA3Qq5HcYyXFpMSFH4l2n3OCz6YSlPd/I+CBCvfwO
- nyw2Aotr1mGkayXJ2XC/Vf96zfJpWltSZZeVqo2R3ZPqW/To/GxiBkPIv8N9m17ygWvV
- L+cu1WPhyTj57Um035Ywh2u1A2Lj63lpmBQjIuRwlboPRWgkJmkretoAiKa4p7iOxZ91
- d5aL20W1oOkDkXmlYQ1uITs1wvo/lqIVS0fUg/QQDUV3HxQdgGKHLKpkwC5H7V78j6AD
- fro520ox4fLWFu9X+bAQ8hmG9RKz9L+WlZzIKgI/LgzMhrB+c+Qtt/gQU9NEK9JEtBvY
- 5ORA==
-X-Gm-Message-State: AOJu0YxZKqv/ay0F7Ewb8UJYbFfJ65o8lV3KmEo9upPZiEPu6W8OR/Uv
- PLIzKn6bEoYpNKe2B09Xeszg0U9beNw8FCbFUMR5ViKACVzM9nlRS2x4LIsavAPFGx0qShtEROO
- w5VQ=
-X-Gm-Gg: ASbGncvMJtk60BvvdZunoQEo1M6E+/1lmNslHmsYmtcG7h8nIH9gtNeAhp05E78/f8Z
- EKb+uELwKj7/BWTo0VMJCp3b01DTTLw3mv73ygH/MV39N9Jha4RChZClY9SGyjDe+Vkv89ffEAG
- stk4ggP1odhQ9ivT2vZYpccLfnxX5oxAd/TvRefCktOYzRjexEHgUqsvGjRSHLp3Er7wBpJGltG
- cv9wbcr1BILQd/6E9TUuQvejXQTN5Dq61m35jo92vZXWuC4o4wzUIAQZnuQaQkm6a+SZYwd8UpE
- 6c/YFjifLIJp62SP2vPzTEjjeAc6Zaplw/04XdKMwwFmhww7YwRilhmCxlM=
-X-Google-Smtp-Source: AGHT+IHVPC4FyzJd0HAZEcXwZiKDeTCdiv/lusHXrf+t9gii4gUOEAFX9IdMsS6N6mTKZEpEIIVhiQ==
-X-Received: by 2002:a17:902:d543:b0:21f:85af:4bbf with SMTP id
- d9443c01a7336-22e1e8f569bmr70470725ad.20.1746395868242; 
- Sun, 04 May 2025 14:57:48 -0700 (PDT)
+ bh=zwc13b8kC9Z5he0z0xvhp1yrhhR7Vt1vlSABNOYVc1M=;
+ b=j229XyAZy9fim0yRA7B/V59i9fc89pfUxtt4CjKKTztKrs7LlCd0EHV41ZkJvCKD8W
+ +cJ5gfUOAzUsORI7pg2PcrVmHyuRQHdNalu6JadaNUXnen7XfSb2tpVcIK1+q1mYyXs+
+ 4ya/bwNBCD9OKs8IOdgsnZJ0Zd7QsEJd8dbYoeOHVIa9OBa/ft05VTwCUCMudrJHMB6p
+ gHgW08/gRCEDYs66v9xjkT3fYt5JxnSEttfTApNN3LUal5Wm7vsvxwXSkPzPgm1eYElZ
+ c0csqq8KI0Rxdvw9Ere4w5kaH28KR2HSazSCDJwc15hIGTK0FDpK5PNDtaz3zWOx0KDU
+ EwCw==
+X-Gm-Message-State: AOJu0Yw5ZTfKCr/ffj7v6/0AlPgbLjSsHnW0FB4m6Ox39HLdodYM9pR7
+ jSbpCztQRG9lBTpzvzugg2Lp6JO+pe3pKoF33Ig1h6YGTewcOIOdzZemogFh3bLOFrTrkVqAxLc
+ YClQ=
+X-Gm-Gg: ASbGncsb8F0TLadHLy4uSUOv/i/Ksv8tUvCEpBi/E2VgwnOZx10y1lJ4uylYAJ2laLe
+ fbEp3EEureORqxw5j5q4fY2NnPURe4hrn7FYcz3B88hRhxSXnKvAYImgmxpRezocZEe3Pk2mZEJ
+ /a+hYgr3l+2OBfiTyORGA+QI9Kt6iFaHH5F+68KUEFk5qJDZtmidJNOw4gc7T6TzahFP6gHO6GF
+ v5Vz9fSyu2j6Aj6lV7FwwAON0giQ9y7nPknZ/RHrWzIaT2XJ7fc7My0/b0E6yIXMbdP2nXrR/Pw
+ CGgitLC1hLD+7R4ShvX3MVx275lOIwBxSULgSfYxpdCkBBQ8
+X-Google-Smtp-Source: AGHT+IECbiCHIB9yXeZyP/73ydQgOkmKcL7fDhfifpt8nRB3vdpLxi/bJq0+dAIeGnkTNsGzJmDT0w==
+X-Received: by 2002:a17:902:dacf:b0:224:24d5:f20a with SMTP id
+ d9443c01a7336-22e1eaeecf4mr93104875ad.48.1746395870493; 
+ Sun, 04 May 2025 14:57:50 -0700 (PDT)
 Received: from gromero0.. ([200.150.181.215]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22e152204fesm41664875ad.137.2025.05.04.14.57.46
+ d9443c01a7336-22e152204fesm41664875ad.137.2025.05.04.14.57.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 04 May 2025 14:57:47 -0700 (PDT)
+ Sun, 04 May 2025 14:57:50 -0700 (PDT)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, philmd@linaro.org, alex.bennee@linaro.org,
  gustavo.romero@linaro.org
-Subject: [PATCH] hw/net/e1000: Remove stray empty comment in header
-Date: Sun,  4 May 2025 21:56:32 +0000
-Message-Id: <20250504215639.54860-4-gustavo.romero@linaro.org>
+Subject: [PATCH] qom/object: Fix typo in comment
+Date: Sun,  4 May 2025 21:56:33 +0000
+Message-Id: <20250504215639.54860-5-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,27 +94,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the header file, remove a stray empty comment in the Offload Context
-Descriptor struct.
+Fix duplicate preposition in comment.
 
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 ---
- hw/net/e1000x_regs.h | 2 +-
+ qom/object.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/net/e1000x_regs.h b/hw/net/e1000x_regs.h
-index cd896fc0ca..e9a74de6f4 100644
---- a/hw/net/e1000x_regs.h
-+++ b/hw/net/e1000x_regs.h
-@@ -900,7 +900,7 @@ struct e1000_context_desc {
-             uint16_t tucse;     /* TCP checksum end */
-         } tcp_fields;
-     } upper_setup;
--    uint32_t cmd_and_length;    /* */
-+    uint32_t cmd_and_length;
-     union {
-         uint32_t data;
-         struct {
+diff --git a/qom/object.c b/qom/object.c
+index 664f0f24ae..7b013f40a0 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -485,7 +485,7 @@ bool object_apply_global_props(Object *obj, const GPtrArray *props,
+  * Slot 0: accelerator's global property defaults
+  * Slot 1: machine's global property defaults
+  * Slot 2: global properties from legacy command line option
+- * Each is a GPtrArray of of GlobalProperty.
++ * Each is a GPtrArray of GlobalProperty.
+  * Applied in order, later entries override earlier ones.
+  */
+ static GPtrArray *object_compat_props[3];
 -- 
 2.34.1
 
