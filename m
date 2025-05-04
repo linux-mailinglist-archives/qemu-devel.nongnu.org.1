@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8784CAA8985
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 23:59:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E438AA898C
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 23:59:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBhLb-0007ew-Le; Sun, 04 May 2025 17:58:07 -0400
+	id 1uBhLd-0007fw-8d; Sun, 04 May 2025 17:58:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uBhLZ-0007e8-1u
- for qemu-devel@nongnu.org; Sun, 04 May 2025 17:58:05 -0400
+ id 1uBhLb-0007f9-2g
+ for qemu-devel@nongnu.org; Sun, 04 May 2025 17:58:07 -0400
 Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uBhLX-0005E5-7S
- for qemu-devel@nongnu.org; Sun, 04 May 2025 17:58:04 -0400
+ id 1uBhLZ-0005EW-FF
+ for qemu-devel@nongnu.org; Sun, 04 May 2025 17:58:06 -0400
 Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-227d6b530d8so33503155ad.3
- for <qemu-devel@nongnu.org>; Sun, 04 May 2025 14:58:02 -0700 (PDT)
+ d9443c01a7336-22c33677183so43680535ad.2
+ for <qemu-devel@nongnu.org>; Sun, 04 May 2025 14:58:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746395882; x=1747000682; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746395884; x=1747000684; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=ZQ/IAr0L2Ye5hjM/5zDI94SM4bR+FE9DXwXYA3N/62o=;
- b=eLuShIx3K+dXoWfUFP6vgdpOTA3BHjz3eGt68r6fb00VTVM2g0VGpflHUPDUuyDG4D
- xW6465ABtn1U5lomnpMFW5zld13otE3z8fkIC4BLq1JH4lIBIT6CUhiMU8hvaSGDAxx2
- mdsGOgKkSydekM1JRM/u87VsHR2tfO/FTXVdbdR4bV7E5UtOp1SuSY+LWMW/VoyYchPq
- t26ujW3GJA09zQYgjjjUCrrXG6Ytee4hUGaPbK0Df8YTsVoYb+d2dnaRbcfXdwIDCte/
- z33iT9MxCx7Qh8DLqg/iAqhg9+3U9sdXtT4TL6uzSUzwtU5iXMCThMJ8FuiiDFos3Dy5
- jZ7g==
+ bh=yJ6sh3pLgJKtEU3rXRYV5JYEmSVW7VzWbjTxsoRblQU=;
+ b=u6TGHhkHWr6roR1I8L+WO2zNeAYMIBxw3xLct50spBmYj3YqnWtEs0DQlyZHzQRj2c
+ 21tu0glO8zo32/L73xqCvfTMdD3syDtsLB4GG7mkjGhe6/KlBEIWJlswXXAZxUaHEuvv
+ tYaOLmPHzO8cIfPBCr2oI+LfbWxE3W60ZMs4QBB845UR074DKcndiW6vUevadsofkK6k
+ SkqCNcRsH4ZgDjFmGhqJtj9PfQeGKzWTKQE9ovm6gu/GjvB4wUw//81UWBJI1M0E3H2r
+ v2/0MxbcR/g/PjE91DtTNxDS+aKYsg2tAPbFZFc47SHt4GkEmL0SsPGRTtC8zW9po0+e
+ k7XQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746395882; x=1747000682;
+ d=1e100.net; s=20230601; t=1746395884; x=1747000684;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=ZQ/IAr0L2Ye5hjM/5zDI94SM4bR+FE9DXwXYA3N/62o=;
- b=VOwsrd0xu3jkoQgj7j3j7E+1P/XvFxafwzc5H885PLuS0tUoZoxMdugTiU/McnDovG
- qoF7h7wXT8priNRfgDbpAcIa5lsc6m8IELiPYMxepi7VHeMQizZBvCd9KUzlJH+GC1rl
- tCBJB85LpgExg1FqOvGAc12UUGQ/3GcquJzL/74IjWhYl9tiNz0Q2lsV5IdTloOGPZAx
- ZprrhoNydOVCisCb3tofM6KJo4EWduCOz/mmF79edMJozMPXtkELsOcIFpphtlJa5AAI
- WT/HXY1p5quqoJvGappDWh+j0bLsFvYmP+8CmTupiCiorOnOWAaOstE1est3s090WnhQ
- uRuw==
-X-Gm-Message-State: AOJu0YxEz/IX1HFX3ZrZIQGmeU5XJhPikUnUsnpJ0xsQgXxOp3Hdhm/l
- D3SRPic2c0P9k3ZhL3iqs+YDvsu4k7/4XNV/xp9soSbtKtEeuvpy7hrl2NLJZ92oRolDd3M3Ozq
- sABg=
-X-Gm-Gg: ASbGncs6qgq/rG91OLHRZATlEI4S1QrBg7reCT5y/16aaLl0Z8OgT7Ht3PR3qU+ddHn
- 13RN+lqH6aXxdE1eWDUmacLeN5VjBDEBdAMkKqElYn2BF731hW+3/9mqk1MuXOZxw+rIBgQFiLD
- EHoy629/KVMfFxAr8sCcxE3540nprEzZfW8Kz10+IZkkWhCl7NTVbveWXbW+tj/D5etNnAxhfke
- U4/16v5gvv1TPvxCPktC4oTSrvXp1E1fE2IRgh1ilnyanatnVrHDDYlk/GaVC6Umf8K9v1Egbq9
- b69zkgtIK3kVD5htBRh0Ow1bjCQOpPdX6W7Z4VDnxzuQm5oV
-X-Google-Smtp-Source: AGHT+IFXrhvAcF8x3OxhvGDQwhP2PJYnVsaoA+xNbyCx7Jnw9h0qxvBlO2eTj20uBXbBU6q9a+BxMQ==
-X-Received: by 2002:a17:902:ce83:b0:21f:136a:a374 with SMTP id
- d9443c01a7336-22e1036cfdamr164992485ad.43.1746395881604; 
- Sun, 04 May 2025 14:58:01 -0700 (PDT)
+ bh=yJ6sh3pLgJKtEU3rXRYV5JYEmSVW7VzWbjTxsoRblQU=;
+ b=i9MJ7jR4NTTwE8ErwoybaTF0d06SD4Zkr1jsR94JC1FoWhZBqQnaPDay67EorrYbpx
+ +1fouyRrWZhjCAgAOwfbykDxENGfefKfyUB71JT+aOCbHzMJ/3hgR8arsY9KZFzce1Lr
+ g4Xbx/EGtfroiT0jYyjvpHRwPQJUjt8zZ0/C51yEMgXxOgLwSm3nkPtZ/J0xiAd1LSQV
+ 2LQPXL2W1MghBfrsugJyY72+6FruJyth09qlDdmgh+ANA+HVOtKhBOaUPv3CnNu+y/W3
+ DjtO9sKJ7pi9JKhdOb1E/mhbtVzxBzZVwrrR7PAlab/39vdKn+prPwPfbON1D14T0qwp
+ vprQ==
+X-Gm-Message-State: AOJu0YyRxEkXRp66s9HOVo3KovywD1inVfx8VH9fX9BfpcBqRvDyXmQl
+ Seml5Y9YHUalEQPZNVJo0H47J/9CKZw1qUY1syumQSd4ZDOCALrMbWNTL3sL5ADPnBa8L6Ydzsj
+ DE+4=
+X-Gm-Gg: ASbGncuq5lqFLeCSaadbvEIzS+0+oHLAp0mRON692OylMmdJ72yF0D9hPQJNZ4PAML9
+ PkC5w6dd50rFVMZrd671YCe2/AxuIIHPl7GcquHqnnEzPLqlQMaesOs9XGW5ykjgbyL9OJeUI7O
+ YEEj5sr1221V9+XIxkmyeD0LuyCFG+tWLEdQJfcG1kWRLLl/ARze07ZD4dpLuj8jAoH6/NmSEBb
+ LJDVKmJfTV0rz0GYNxQmspUVHamXRw8ALuoJ7KmQSzHqMLLJ+8SKFnIQon+Thnkd5zhYi+GKZDF
+ yMA1ft8OvjuWFBLjt61EKGEu4IWSxlaZnF/eAs0K9Kafehte
+X-Google-Smtp-Source: AGHT+IFTAEMZjB78zEYVogYT/aTb+2aaCMQnggNO7XDMlAjClzSVCXsoxQzjdCAaycYD5MfxMW7g2w==
+X-Received: by 2002:a17:903:120e:b0:223:5241:f5ca with SMTP id
+ d9443c01a7336-22e1ea7c4cbmr63451245ad.20.1746395883827; 
+ Sun, 04 May 2025 14:58:03 -0700 (PDT)
 Received: from gromero0.. ([200.150.181.215]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22e152204fesm41664875ad.137.2025.05.04.14.57.59
+ d9443c01a7336-22e152204fesm41664875ad.137.2025.05.04.14.58.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 04 May 2025 14:58:01 -0700 (PDT)
+ Sun, 04 May 2025 14:58:03 -0700 (PDT)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, philmd@linaro.org, alex.bennee@linaro.org,
  gustavo.romero@linaro.org
-Subject: [PATCH] hw/acpi/pcihp: Fix typo in function name
-Date: Sun,  4 May 2025 21:56:38 +0000
-Message-Id: <20250504215639.54860-10-gustavo.romero@linaro.org>
+Subject: [PATCH] hw/acpi/ich9: Remove ICH9_DEBUG macro
+Date: Sun,  4 May 2025 21:56:39 +0000
+Message-Id: <20250504215639.54860-11-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -94,83 +94,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix typo in QEMU's ACPI PCI hotplug API function name that checks
-whether a given bus is hotplug-capable.
+Remove the ICH9_DEBUG macro, which is only used to dump the value of the
+pm_io_base parameter, passed to ich9_pm_iospace_update(). It provides
+little to no value and is not worth converting to a trace event.
 
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 ---
- hw/acpi/acpi-pci-hotplug-stub.c | 2 +-
- hw/acpi/ich9.c                  | 2 +-
- hw/acpi/pcihp.c                 | 2 +-
- hw/acpi/piix4.c                 | 2 +-
- include/hw/acpi/pcihp.h         | 2 +-
- 5 files changed, 5 insertions(+), 5 deletions(-)
+ hw/acpi/ich9.c | 11 -----------
+ 1 file changed, 11 deletions(-)
 
-diff --git a/hw/acpi/acpi-pci-hotplug-stub.c b/hw/acpi/acpi-pci-hotplug-stub.c
-index b67b4a92da..b7bc6e40a1 100644
---- a/hw/acpi/acpi-pci-hotplug-stub.c
-+++ b/hw/acpi/acpi-pci-hotplug-stub.c
-@@ -34,7 +34,7 @@ void acpi_pcihp_reset(AcpiPciHpState *s)
- {
- }
- 
--bool acpi_pcihp_is_hotpluggbale_bus(AcpiPciHpState *s, BusState *bus)
-+bool acpi_pcihp_is_hotpluggable_bus(AcpiPciHpState *s, BusState *bus)
- {
-     return true;
- }
 diff --git a/hw/acpi/ich9.c b/hw/acpi/ich9.c
-index c7a735bf64..a07c9d115b 100644
+index a07c9d115b..967b67485e 100644
 --- a/hw/acpi/ich9.c
 +++ b/hw/acpi/ich9.c
-@@ -570,7 +570,7 @@ void ich9_pm_device_unplug_cb(HotplugHandler *hotplug_dev, DeviceState *dev,
- bool ich9_pm_is_hotpluggable_bus(HotplugHandler *hotplug_dev, BusState *bus)
+@@ -41,15 +41,6 @@
+ #include "hw/mem/pc-dimm.h"
+ #include "hw/mem/nvdimm.h"
+ 
+-//#define DEBUG
+-
+-#ifdef DEBUG
+-#define ICH9_DEBUG(fmt, ...) \
+-do { printf("%s "fmt, __func__, ## __VA_ARGS__); } while (0)
+-#else
+-#define ICH9_DEBUG(fmt, ...)    do { } while (0)
+-#endif
+-
+ static void ich9_pm_update_sci_fn(ACPIREGS *regs)
  {
-     ICH9LPCState *lpc = ICH9_LPC_DEVICE(hotplug_dev);
--    return acpi_pcihp_is_hotpluggbale_bus(&lpc->pm.acpi_pci_hotplug, bus);
-+    return acpi_pcihp_is_hotpluggable_bus(&lpc->pm.acpi_pci_hotplug, bus);
- }
+     ICH9LPCPMRegs *pm = container_of(regs, ICH9LPCPMRegs, acpi_regs);
+@@ -135,8 +126,6 @@ static const MemoryRegionOps ich9_smi_ops = {
  
- void ich9_pm_ospm_status(AcpiDeviceIf *adev, ACPIOSTInfoList ***list)
-diff --git a/hw/acpi/pcihp.c b/hw/acpi/pcihp.c
-index 5f79c9016b..aac90013d4 100644
---- a/hw/acpi/pcihp.c
-+++ b/hw/acpi/pcihp.c
-@@ -371,7 +371,7 @@ void acpi_pcihp_device_unplug_request_cb(HotplugHandler *hotplug_dev,
-     acpi_send_event(DEVICE(hotplug_dev), ACPI_PCI_HOTPLUG_STATUS);
- }
- 
--bool acpi_pcihp_is_hotpluggbale_bus(AcpiPciHpState *s, BusState *bus)
-+bool acpi_pcihp_is_hotpluggable_bus(AcpiPciHpState *s, BusState *bus)
+ void ich9_pm_iospace_update(ICH9LPCPMRegs *pm, uint32_t pm_io_base)
  {
-     Object *o = OBJECT(bus->parent);
+-    ICH9_DEBUG("to 0x%x\n", pm_io_base);
+-
+     assert((pm_io_base & ICH9_PMIO_MASK) == 0);
  
-diff --git a/hw/acpi/piix4.c b/hw/acpi/piix4.c
-index b16d45f03e..d98b80df6d 100644
---- a/hw/acpi/piix4.c
-+++ b/hw/acpi/piix4.c
-@@ -406,7 +406,7 @@ static bool piix4_is_hotpluggable_bus(HotplugHandler *hotplug_dev,
-                                       BusState *bus)
- {
-     PIIX4PMState *s = PIIX4_PM(hotplug_dev);
--    return acpi_pcihp_is_hotpluggbale_bus(&s->acpi_pci_hotplug, bus);
-+    return acpi_pcihp_is_hotpluggable_bus(&s->acpi_pci_hotplug, bus);
- }
- 
- static void piix4_pm_machine_ready(Notifier *n, void *opaque)
-diff --git a/include/hw/acpi/pcihp.h b/include/hw/acpi/pcihp.h
-index ac21a95913..a97904bada 100644
---- a/include/hw/acpi/pcihp.h
-+++ b/include/hw/acpi/pcihp.h
-@@ -58,7 +58,7 @@ typedef struct AcpiPciHpState {
- void acpi_pcihp_init(Object *owner, AcpiPciHpState *, PCIBus *root,
-                      MemoryRegion *io, uint16_t io_base);
- 
--bool acpi_pcihp_is_hotpluggbale_bus(AcpiPciHpState *s, BusState *bus);
-+bool acpi_pcihp_is_hotpluggable_bus(AcpiPciHpState *s, BusState *bus);
- void acpi_pcihp_device_pre_plug_cb(HotplugHandler *hotplug_dev,
-                                    DeviceState *dev, Error **errp);
- void acpi_pcihp_device_plug_cb(HotplugHandler *hotplug_dev, AcpiPciHpState *s,
+     pm->pm_io_base = pm_io_base;
 -- 
 2.34.1
 
