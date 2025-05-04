@@ -2,93 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5D35AA8423
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 07:35:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92BC1AA8484
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 09:22:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBRxL-0004lP-Oi; Sun, 04 May 2025 01:32:06 -0400
+	id 1uBTeb-0006VH-MC; Sun, 04 May 2025 03:20:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uBRwJ-0004Bi-Vx
- for qemu-devel@nongnu.org; Sun, 04 May 2025 01:31:03 -0400
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1uBTeN-0006TQ-Ln
+ for qemu-devel@nongnu.org; Sun, 04 May 2025 03:20:36 -0400
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uBRwI-0004tL-0f
- for qemu-devel@nongnu.org; Sun, 04 May 2025 01:30:59 -0400
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-b074d908e56so2460258a12.2
- for <qemu-devel@nongnu.org>; Sat, 03 May 2025 22:30:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1uBTeL-0000YX-DT
+ for qemu-devel@nongnu.org; Sun, 04 May 2025 03:20:35 -0400
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-b0b2d1f2845so2408344a12.3
+ for <qemu-devel@nongnu.org>; Sun, 04 May 2025 00:20:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746336656; x=1746941456; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:from
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1746343231; x=1746948031;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=6KTAcWJ13xp5uQrxG2Jl/+OuSInS0YWXgC8gF3pCHPk=;
- b=I1HhTL/A076SL0UTTRUzMQxj0ATCwhu8meZjtrxgsxzinhisuNgI+HPc9JbxX29LYm
- igkUj/0ns1Tp45WP+E0hu6pu+fq777hAoaB61awi6ebgCi5H4+l2arZR+4xSIYvO1V4a
- frtK4Gg6QtV8UZdVLReCThhVDqd/1YTAS1i6MaQ1EFegZ/vYVgETz9gg098MKo3BcsTN
- bd0dy1ZI73zhwcFc462ZE2AFUl+1jqwtCvMVYaeNo+fOgHfH3uOuSao89H7Oy5Z2fCrY
- 1FXdr+nn23Db1png53p0xyPFi82ohEDgIVdoDMn15vCZapjuxmErFTIE5r6BVN9laPAu
- kxlw==
+ bh=klhim48JAtRn+YzgbF8ISmg1WnEvPFtNfMRMCjm6AqI=;
+ b=Drz/6cDw8ADA082igFZTzxObPeVA4tO6pmO/YX+Pzw5Pmlypmvtq+EM3MImZuF9BOw
+ xs8cpPhw886EHT2u+G97+M39JkEwqIf42+oeWSz4obm10yskGe2bugdz9USEBgSq+1px
+ AHpJmd1hT6SX0AxfbIn5acH4+JBNyE8H9/5fvKoTsJ/v4lWDSeaAnBOut7zRU9eFcJrI
+ 4WqKTiCqriMBRgEFJxo1hoXFNivrMTAu9FZNDQwO+cLuvH5sJtAeq2xcx1S4bNWMIYEM
+ A2gd7ophgQfpPgeOhOD4XLnhIl+sjo96zrq3RYlnb8tW4Jj/bA8orgMwy4/Mq9Gl0kGc
+ PVKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746336656; x=1746941456;
- h=content-transfer-encoding:in-reply-to:content-language:from
+ d=1e100.net; s=20230601; t=1746343231; x=1746948031;
+ h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6KTAcWJ13xp5uQrxG2Jl/+OuSInS0YWXgC8gF3pCHPk=;
- b=uNxH3ZJtwhtWuLKJTzrYPnsfjMD5SrpxYZllKX6a6owacwbHWYekP8fe+tbcGOvDcP
- l8xtY+zF5oHL+GzR+dXxMlHw3dGXtVKajHrnR5jlVRcfCJ8g3ARlt038Z3wfo9WOwdPC
- q6NUinJmVyKH23npHM7SA3iHLWaV6IDJxQSVnuOH5U/3StijUrtoW2VOYXXkTCgR8kj0
- in9LBHxid+cRRwDJGvl5RqS7WryQYEomTwEojfHyXJj+J/hNRZtxji6rhiKsKH5wZjpa
- fbdvzdodhoJcaqh7veFHF2I6jryg5UCkpoJUTapJZ+ToUTx/b70iraJuXMqHkkpLhGgs
- Ys0g==
-X-Gm-Message-State: AOJu0YwhL4ssdRn53A92hULxSUlQ4aHWtYWS8XQ8rZPaxKfqdk8N5PqZ
- XSYbCYxUB5KHSCiVoiNFyZyvfcrNwQrENBlb2lcWigQ2CBfGH/mhrMhfkLKLBv7IpdP4WLweFuK
- 3XLc=
-X-Gm-Gg: ASbGncveFZDB8LVF8j3Gxu/AYXAyGtlQ2SGA6YqFNHq+TK8eOBAQrjqlgORyWrtq/C+
- jc3Rx/VTMbV6wJ6+NnN7B/Aye5D4PiL8Lni2ItXPBQozTa4DSGJPr+4ZAdm7DQm3yKd9ZdfTqc2
- YN3caDyRCxlJKX0/LdfLM1Vr23fAlujRmt8/NLi7xhXFGsEXElOJSNwaV4AE8WYKUv00eWXfqPx
- 3mltD0rIT0+54Krwyy57pC/kNNu69P61TGLoIn8MgBClw2n6ttcFegRbWIW1Mbx5xDLKz5dZaJb
- WbisVt/WilelGM3YxO2bbuYYd+eIEEXd1sL39wQGPDlI2SFf/9dWRCbfs9lcOFcy
-X-Google-Smtp-Source: AGHT+IFG3Fh3OmK4nyyMWaj/8CJF8m2OKT56xa6Rlm7TVxCw3VLXdVuw4KrYDmvPYL2Yqr7Q05OW6Q==
-X-Received: by 2002:a17:90b:3505:b0:308:7a70:489a with SMTP id
- 98e67ed59e1d1-30a61a49176mr4616861a91.30.1746336656291; 
- Sat, 03 May 2025 22:30:56 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
+ bh=klhim48JAtRn+YzgbF8ISmg1WnEvPFtNfMRMCjm6AqI=;
+ b=GIgCy6cE/n2tSQfDZK5VXdmPqE9EptkZ7EvqXkiKgi+TslC3Eduqb0X23isgPN63o7
+ I4KjxUErVlamhxrEtwDcoFV3xhpVzM9aiMIuMCt2C44Z3770BqDEgWtBqERWdz6Yqp72
+ Z8cK3YhIJi/WCXOu4M3mOWf1kF9EglJV2Ysw74ywH5T2Tl+CkcwGVkuRa40MqXTEUVFh
+ pSOsiKGTa+pnjRPTcV8ilKopQeZLQC+XkwEsvEHLSC19Qk7I40U0fECX6OEqyooHsi5+
+ kPGRm3g4rD6e8HQxoLkbzc2CzHQNEeKMqfvkSdplA7kpI8vNHQVUQEijO7TtF2zAM+jG
+ mbwg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWZWNDxwxVeez0wNnZHHjZpFuLCgUnNI7waZeyQpYVVALvrdx3j/BliguF0xdR8UwjDexpj3M09XkhP@nongnu.org
+X-Gm-Message-State: AOJu0YzSRjPE+mS6ouGTbU3k2MJdhrg8svV59JL0+4laa8JkdsY6eKBn
+ haLv9YXVYhublKIpfwLNwPG/q3n/hCe0LdZLIdIXRFeIx14cVf5YHrWTMLWhkNo=
+X-Gm-Gg: ASbGncujDqVjz3gzNpLFU/AZ8DmFJK5e4fvqAVVXkNNAFT++L5OkkXe7SowgADQGBIF
+ PywUlGc3ByBMEzHdJR8Ywymzv65+zSu2ofcwZnBq0/w00CzKHtFqzHhAr+zy6ASJY11rl7o3Zir
+ x+090ZtPIRwJIFZmIw0b/vFDjF2x7A4DjQszDQuI8K//u7COLHfbuhKEfgKTt3pQSUvBwtLfRXz
+ Ml1RfGssfRMocsgD2QWVBhaLrdhBS1K8ySobhuFpRqeAze7tMBEsvnkNySo7FsPMrbYvG13QgWc
+ lXaise0+SwcmfiUHNQY2bmHxl0/l2Ogi67MUTeBoT6vVexM2uP526g==
+X-Google-Smtp-Source: AGHT+IEvnN5gmBvK/h7zKWBCj1UzCVE+Vcgk2ChyTHmZn6CSFOJVGZtqauCU3yDlscfs2CG6QBwvPA==
+X-Received: by 2002:a05:6a21:900e:b0:1f5:6a1a:329b with SMTP id
+ adf61e73a8af0-20cdfee9a76mr15210766637.32.1746343231532; 
+ Sun, 04 May 2025 00:20:31 -0700 (PDT)
+Received: from [157.82.203.223] ([157.82.203.223])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22e152291e3sm32237285ad.202.2025.05.03.22.30.55
+ d2e1a72fcca58-740590a489asm4542774b3a.170.2025.05.04.00.20.28
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 03 May 2025 22:30:55 -0700 (PDT)
-Message-ID: <e060e797-306f-4541-907b-7fdd8ae7781d@linaro.org>
-Date: Sat, 3 May 2025 22:30:55 -0700
+ Sun, 04 May 2025 00:20:31 -0700 (PDT)
+Message-ID: <cdc4d710-2b7a-44fc-b58c-78a81ca83b36@daynix.com>
+Date: Sun, 4 May 2025 16:20:26 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 04/40] meson: apply target config for picking files
- from libsystem and libuser
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org, anjo@rev.ng,
- kvm@vger.kernel.org, richard.henderson@linaro.org,
- Peter Maydell <peter.maydell@linaro.org>,
+Subject: Re: [PATCH 6/9] MAINTAINERS: add myself to virtio-gpu for Odd Fixes
+To: Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-arm@nongnu.org,
  =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- alex.bennee@linaro.org
-References: <20250504052914.3525365-1-pierrick.bouvier@linaro.org>
- <20250504052914.3525365-5-pierrick.bouvier@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+ Peter Xu <peterx@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>
+References: <20250428125918.449346-1-alex.bennee@linaro.org>
+ <20250428125918.449346-7-alex.bennee@linaro.org>
+ <9115fa7c-ed94-449d-816b-a13125275dac@collabora.com>
 Content-Language: en-US
-In-Reply-To: <20250504052914.3525365-5-pierrick.bouvier@linaro.org>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <9115fa7c-ed94-449d-816b-a13125275dac@collabora.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x532.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x535.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,69 +109,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/3/25 10:28 PM, Pierrick Bouvier wrote:
-> semihosting code needs to be included only if CONFIG_SEMIHOSTING is set.
-> However, this is a target configuration, so we need to apply it to the
-> libsystem libuser source sets.
+On 2025/04/30 3:56, Dmitry Osipenko wrote:
+> On 4/28/25 15:59, Alex BennÃ©e wrote:
+>> Seeing as I've taken a few patches to here now I might as well put
+>> myself forward to maintain virtio-gpu. I've marked it as Odd Fixes as
+>> it's not my core focus. If someone with more GPU experience comes
+>> forward we can always update again.
+>>
+>> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+>> ---
+>>   MAINTAINERS | 3 ++-
+>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 661a47db5a..f67c8edcf6 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -2636,7 +2636,8 @@ F: hw/display/ramfb*.c
+>>   F: include/hw/display/ramfb.h
+>>   
+>>   virtio-gpu
+>> -S: Orphan
+>> +M: Alex Bennée <alex.bennee@linaro.org>
+>> +M: Odd Fixes
+>>   F: hw/display/virtio-gpu*
+>>   F: hw/display/virtio-vga.*
+>>   F: include/hw/virtio/virtio-gpu.h
 > 
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> ---
->   meson.build | 26 ++++++++++++++------------
->   1 file changed, 14 insertions(+), 12 deletions(-)
+> Thanks a lot for stepping up!
 > 
-> diff --git a/meson.build b/meson.build
-> index 6f4129826af..59c520de359 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -4056,27 +4056,19 @@ common_ss.add(qom, qemuutil)
->   common_ss.add_all(when: 'CONFIG_SYSTEM_ONLY', if_true: [system_ss])
->   common_ss.add_all(when: 'CONFIG_USER_ONLY', if_true: user_ss)
->   
-> -libuser_ss = libuser_ss.apply({})
->   libuser = static_library('user',
-> -                         libuser_ss.sources() + genh,
-> +                         libuser_ss.all_sources() + genh,
->                            c_args: ['-DCONFIG_USER_ONLY',
->                                     '-DCOMPILING_SYSTEM_VS_USER'],
-> -                         dependencies: libuser_ss.dependencies(),
-> +                         dependencies: libuser_ss.all_dependencies(),
->                            build_by_default: false)
-> -libuser = declare_dependency(objects: libuser.extract_all_objects(recursive: false),
-> -                             dependencies: libuser_ss.dependencies())
-> -common_ss.add(when: 'CONFIG_USER_ONLY', if_true: libuser)
->   
-> -libsystem_ss = libsystem_ss.apply({})
->   libsystem = static_library('system',
-> -                           libsystem_ss.sources() + genh,
-> +                           libsystem_ss.all_sources() + genh,
->                              c_args: ['-DCONFIG_SOFTMMU',
->                                       '-DCOMPILING_SYSTEM_VS_USER'],
-> -                           dependencies: libsystem_ss.dependencies(),
-> +                           dependencies: libsystem_ss.all_dependencies(),
->                              build_by_default: false)
-> -libsystem = declare_dependency(objects: libsystem.extract_all_objects(recursive: false),
-> -                               dependencies: libsystem_ss.dependencies())
-> -common_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: libsystem)
->   
->   # Note that this library is never used directly (only through extract_objects)
->   # and is not built by default; therefore, source files not used by the build
-> @@ -4315,6 +4307,16 @@ foreach target : target_dirs
->     target_common = common_ss.apply(config_target, strict: false)
->     objects = [common_all.extract_objects(target_common.sources())]
->     arch_deps += target_common.dependencies()
-> +  if target_type == 'system'
-> +    src = libsystem_ss.apply(config_target, strict: false)
-> +    objects += libsystem.extract_objects(src.sources())
-> +    arch_deps += src.dependencies()
-> +  endif
-> +  if target_type == 'user'
-> +    src = libuser_ss.apply(config_target, strict: false)
-> +    objects += libuser.extract_objects(src.sources())
-> +    arch_deps += src.dependencies()
-> +  endif
->     if target_base_arch in target_common_arch_libs
->       src = target_common_arch[target_base_arch].apply(config_target, strict: false)
->       lib = target_common_arch_libs[target_base_arch]
+> This reminded me that I wanted to propose myself as reviewer for the
+> virtio-gpu patches. Will do it soon.
 
-@Philippe: this is the patch you need for semihosting (+ previous one).
+Thank both of you for stepping up.
+
+> 
+> Akihiko Odaki is also good at reviewing virtio-gpu patches. Wondering if
+> Akihiko would want to be added as reviewer or co-maintainer of virtio-gpu?
+> 
+
+Yes, please add me as a reviewer.
+
+I guess it would be better if Alex add you and me with the next version 
+of this patch or add follow-up patches to this to avoid change conflicts.
 
