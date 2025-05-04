@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 896A1AA8986
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 23:59:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74D75AA898D
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 23:59:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBhLM-0007QO-Ns; Sun, 04 May 2025 17:57:52 -0400
+	id 1uBhLO-0007SN-IW; Sun, 04 May 2025 17:57:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uBhLJ-0007PJ-Fo
- for qemu-devel@nongnu.org; Sun, 04 May 2025 17:57:49 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1uBhLL-0007QM-Iy
+ for qemu-devel@nongnu.org; Sun, 04 May 2025 17:57:51 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uBhLI-0005Ay-04
- for qemu-devel@nongnu.org; Sun, 04 May 2025 17:57:49 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-225477548e1so38453785ad.0
- for <qemu-devel@nongnu.org>; Sun, 04 May 2025 14:57:47 -0700 (PDT)
+ id 1uBhLK-0005BL-16
+ for qemu-devel@nongnu.org; Sun, 04 May 2025 17:57:51 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-22c336fcdaaso42788485ad.3
+ for <qemu-devel@nongnu.org>; Sun, 04 May 2025 14:57:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746395866; x=1747000666; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746395868; x=1747000668; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=70eq9g6WHBoTjhXQzmX0KiM0KlARnQpKuNIYy55yJxM=;
- b=lcTyW13cMyMAJMDOaoejvAAXrLtOHiObyA4CWnphunjA4KwTBUaSEypQJa2TjJvf3s
- AV0caAfzni2BMTWA+HqVadLWtSTGlhmMC6nSNckRo1llm/Oi6GO6dQub9TmOtRWSf50Q
- eya3I00gY6GaxQrrHcki/opqDGWj/kzM9zcLmUZESnGaEjQAvRmFwsVgoJWabsZ3Ws9B
- SUXqgiYfzjB1ENoOjaAPK/9POcAemk1Ds2mTvwVISAsWaC53L6JDeYy2vgmURTrjFE8O
- 8vdPXAo2PNlvC4Ns+Tu69oeDKWf2Bek+5WUkxbwT/bnev/aDXbfptB0LokYqovirZVGL
- bR2Q==
+ bh=56ybfnwzUbGIYEktCHIqmHOykTepTgv6Xlf9ny+yrcs=;
+ b=Rh7ExY9fsx2UUMBh8pkC/L8n8hCJzjABBmGurLSwrVwpIdPravJusqbAlKXarfVI0v
+ SorkEj3mzc1UM4deIB5zKIEuA3e3TBBiYOTWSvjLVROQR6zdrcJpVGznM26Fq6upFUE+
+ Hpia/2hunK1aGwYI2zt1xl8r9WtLT2vCtSFo6CYfTqoVZWMY9z3poDeYBpWChGlcnAGc
+ p/L7TxweVy4m7L179lxxGZuPKHTX810DfircD7k6ZaNq121bGafcyd2T/jd6GlzSMke4
+ fUec6mEs9OMrOQmajmbQKcfxOtbW8rPjLdnbCDaZclolqvi22I9q63eXxs7QBwPyd8Kr
+ kM2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746395866; x=1747000666;
+ d=1e100.net; s=20230601; t=1746395868; x=1747000668;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=70eq9g6WHBoTjhXQzmX0KiM0KlARnQpKuNIYy55yJxM=;
- b=oUaeLSEyAZJ9kiJ8a5A+8AEgX3QXG/eZ1l/9oUGAlbDeVs6foSJ3a5SC61kR3O2M7z
- yNdRldOmh7Cn4PvxN2B6VDr3c1moyAC7yJ5hnabNW3pgTUd7eMvevUOM4IvGZ9WjZdG2
- dxck4Oi68jEQKV5/pUshjdQR/K40coJzamJJX2/F8N6+kA8XC+S8xoD5yeZFv8i5JfbB
- 5QF7amjY7y7kk73RsyXnpgr6KaYKwQbVYnBLCd1klFKouKxOBPKotkstN8nlNEu+bvvf
- NUMMXec2WN3Y46md87G9IfrX2aSxN0V6r/TQIHvwcNHgQspgwwqR7Ss07Iw18j/s/Zdn
- Ol2w==
-X-Gm-Message-State: AOJu0YxFaeddy/zMax76ZxpG+tsp/rD6mLowflqoCEE1DSaUHWEWsT0I
- ZI9KcNgKGNCvHqbCm22Ux8IN2BWVLwjBjC2Um7p/UUlEl2RGf0kSvWanCguSE8Xz7iTb/WPCkCY
- h+5Y=
-X-Gm-Gg: ASbGncvZkz478Td4zRchzg6/EfTG+jHZ/eg3c+D92/nO5D9ZUU9BVr4bia8oK5t6aD1
- swE9MV4mrfzX5WaI6NlZQWK1cz8CVmi0UdRJSkqlRcH8zcxk2AMZfTTusZLXo8mDOvBKmI7ikHd
- OaMn22MTAwSgY81HtHHoRaG/UOA7GU1NcAjUTysUmsO/n772bHwcHbfVi1h/7oQATv3jOM5+sFn
- iMSeRBO0PwsaF+ZqtVF2oVBFjcYt20atqb1FjFAcdBQxsJvZvUaGVNnIM6BS9P8qNj2BlawgP34
- 1SLgXQ+1SvkDyW2uAR8fiP5RCpuQOQBbsQmAkdUMGHLH5LiL
-X-Google-Smtp-Source: AGHT+IH8qtHtLj8WpGKYcYxJcW8v5JenW5jMtdxO9YS6Ha1A7cnpPdznd6vRtZLIj+Z+zaK9MBxQyQ==
-X-Received: by 2002:a17:903:2f07:b0:21a:8300:b9d5 with SMTP id
- d9443c01a7336-22e1e918571mr73488125ad.23.1746395866010; 
- Sun, 04 May 2025 14:57:46 -0700 (PDT)
+ bh=56ybfnwzUbGIYEktCHIqmHOykTepTgv6Xlf9ny+yrcs=;
+ b=JZ4hII7qcMDq0JCXrBBcVIa0wZA3Qq5HcYyXFpMSFH4l2n3OCz6YSlPd/I+CBCvfwO
+ nyw2Aotr1mGkayXJ2XC/Vf96zfJpWltSZZeVqo2R3ZPqW/To/GxiBkPIv8N9m17ygWvV
+ L+cu1WPhyTj57Um035Ywh2u1A2Lj63lpmBQjIuRwlboPRWgkJmkretoAiKa4p7iOxZ91
+ d5aL20W1oOkDkXmlYQ1uITs1wvo/lqIVS0fUg/QQDUV3HxQdgGKHLKpkwC5H7V78j6AD
+ fro520ox4fLWFu9X+bAQ8hmG9RKz9L+WlZzIKgI/LgzMhrB+c+Qtt/gQU9NEK9JEtBvY
+ 5ORA==
+X-Gm-Message-State: AOJu0YxZKqv/ay0F7Ewb8UJYbFfJ65o8lV3KmEo9upPZiEPu6W8OR/Uv
+ PLIzKn6bEoYpNKe2B09Xeszg0U9beNw8FCbFUMR5ViKACVzM9nlRS2x4LIsavAPFGx0qShtEROO
+ w5VQ=
+X-Gm-Gg: ASbGncvMJtk60BvvdZunoQEo1M6E+/1lmNslHmsYmtcG7h8nIH9gtNeAhp05E78/f8Z
+ EKb+uELwKj7/BWTo0VMJCp3b01DTTLw3mv73ygH/MV39N9Jha4RChZClY9SGyjDe+Vkv89ffEAG
+ stk4ggP1odhQ9ivT2vZYpccLfnxX5oxAd/TvRefCktOYzRjexEHgUqsvGjRSHLp3Er7wBpJGltG
+ cv9wbcr1BILQd/6E9TUuQvejXQTN5Dq61m35jo92vZXWuC4o4wzUIAQZnuQaQkm6a+SZYwd8UpE
+ 6c/YFjifLIJp62SP2vPzTEjjeAc6Zaplw/04XdKMwwFmhww7YwRilhmCxlM=
+X-Google-Smtp-Source: AGHT+IHVPC4FyzJd0HAZEcXwZiKDeTCdiv/lusHXrf+t9gii4gUOEAFX9IdMsS6N6mTKZEpEIIVhiQ==
+X-Received: by 2002:a17:902:d543:b0:21f:85af:4bbf with SMTP id
+ d9443c01a7336-22e1e8f569bmr70470725ad.20.1746395868242; 
+ Sun, 04 May 2025 14:57:48 -0700 (PDT)
 Received: from gromero0.. ([200.150.181.215]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22e152204fesm41664875ad.137.2025.05.04.14.57.44
+ d9443c01a7336-22e152204fesm41664875ad.137.2025.05.04.14.57.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 04 May 2025 14:57:45 -0700 (PDT)
+ Sun, 04 May 2025 14:57:47 -0700 (PDT)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, philmd@linaro.org, alex.bennee@linaro.org,
  gustavo.romero@linaro.org
-Subject: [PATCH] hw/isa/ich9: Remove stray empty comment
-Date: Sun,  4 May 2025 21:56:31 +0000
-Message-Id: <20250504215639.54860-3-gustavo.romero@linaro.org>
+Subject: [PATCH] hw/net/e1000: Remove stray empty comment in header
+Date: Sun,  4 May 2025 21:56:32 +0000
+Message-Id: <20250504215639.54860-4-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,25 +94,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove stray empty comment in IRQ routing function.
+In the header file, remove a stray empty comment in the Offload Context
+Descriptor struct.
 
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 ---
- hw/isa/lpc_ich9.c | 1 -
- 1 file changed, 1 deletion(-)
+ hw/net/e1000x_regs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/isa/lpc_ich9.c b/hw/isa/lpc_ich9.c
-index 71afb45b63..304dffac32 100644
---- a/hw/isa/lpc_ich9.c
-+++ b/hw/isa/lpc_ich9.c
-@@ -182,7 +182,6 @@ static uint64_t ich9_cc_read(void *opaque, hwaddr addr,
- }
- 
- /* IRQ routing */
--/* */
- static void ich9_lpc_rout(uint8_t pirq_rout, int *pic_irq, int *pic_dis)
- {
-     *pic_irq = pirq_rout & ICH9_LPC_PIRQ_ROUT_MASK;
+diff --git a/hw/net/e1000x_regs.h b/hw/net/e1000x_regs.h
+index cd896fc0ca..e9a74de6f4 100644
+--- a/hw/net/e1000x_regs.h
++++ b/hw/net/e1000x_regs.h
+@@ -900,7 +900,7 @@ struct e1000_context_desc {
+             uint16_t tucse;     /* TCP checksum end */
+         } tcp_fields;
+     } upper_setup;
+-    uint32_t cmd_and_length;    /* */
++    uint32_t cmd_and_length;
+     union {
+         uint32_t data;
+         struct {
 -- 
 2.34.1
 
