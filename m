@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7F05AA8953
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 22:58:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D8A7AA894F
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 22:57:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBgP0-0008Qr-V7; Sun, 04 May 2025 16:57:34 -0400
+	id 1uBgOz-0008Q0-Lg; Sun, 04 May 2025 16:57:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uBgOl-0008Ky-HB
- for qemu-devel@nongnu.org; Sun, 04 May 2025 16:57:20 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1uBgOm-0008L6-NQ
+ for qemu-devel@nongnu.org; Sun, 04 May 2025 16:57:21 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uBgOj-0006vq-Pq
- for qemu-devel@nongnu.org; Sun, 04 May 2025 16:57:19 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-227b828de00so40210655ad.1
- for <qemu-devel@nongnu.org>; Sun, 04 May 2025 13:57:17 -0700 (PDT)
+ id 1uBgOk-0006vv-GB
+ for qemu-devel@nongnu.org; Sun, 04 May 2025 16:57:20 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-223fd89d036so41535795ad.1
+ for <qemu-devel@nongnu.org>; Sun, 04 May 2025 13:57:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746392236; x=1746997036; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746392237; x=1746997037; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GmYZsTnUMl5IM410FTxmeaTfbTLbZEPczwGnLZA+ci8=;
- b=ZlXj37l1cH6WkCgYG0biKDsGVOZekxarHbhS+2En9ybbCOVN9eXZdQXoHapx8Y7qep
- WBJ3asQJaKTdXoE2GO5eQuerJuI8NlXRK/PPYYTXl5X5I18hJxvWeQSL/i3maGa6LFpW
- V0RhR1BlzQwvT8JPFNGMBh55T4RTJpNpWCW44aIfiTZIiZq3zkGxPTkXfnkqEniol6o3
- KcfqdBvP4ZKB73CHCh8s0ZeFNBwp6QfnJgU2EIcVWMsKPKbm4v3b9+FVlUFpvygGd1U5
- hi1nI2RPyIfyzNkCt+P6fFy/0z5uMnKM/o8ybP8+rndyeKwYyM9zB8wwKqskjs1v11N0
- RLHQ==
+ bh=OmHqHslUT/R30MADH7naEbPJDNCBfrJgNIi18eIVP5E=;
+ b=K5u+E651IscuzU6KpLuc0vkrzE1la7iVtoVZoQBUfq9WtxrlZRf0SQMUMIDY8qe00M
+ tcU41jJ7LSCCw6oC/1M9anUhOJdwhR7q9jyPTHTIe2t6N1+lo9eNgfh1HuUU2E63nXLV
+ 1MrnuIf/8GtCZ1NhRfm81HXq2t0i/g15j7zU6e575x+Y1Wkubko1RZ1+n6iXEe/7nJHR
+ 690kPM5XNq6wPpKxYajxKt/IYn3ASsCk+IX/KN1wyFnuoHBTseFp+eHovFG51pyfpkFo
+ 08yIyLtUDKANw5gWM5x/KlFcV/aeNPfZp3Fdni20wHJE09yS8f+XH4gZdBg8TonDR9zq
+ JMHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746392236; x=1746997036;
+ d=1e100.net; s=20230601; t=1746392237; x=1746997037;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GmYZsTnUMl5IM410FTxmeaTfbTLbZEPczwGnLZA+ci8=;
- b=jesl7MVdHQ8H0jmu5onapFkw+HlfTOjB9EZij/mcSvoTLmRz4tT0Ncy3nz9orjORhx
- BBN32g+srrTFFrZS/tPxCDf956vfS5E3O9wrcXtzNodXmFMJtj9MNZb9OcpXjo7wsc2k
- 9GcHFzIOk2Qf3i8abr4tTHiz8H8Wee3NFAx579dQNyPFlDYrr+xKKObLx9ppMA+Wh3Hj
- eYRw4wFOxb5YT1JvrePv2G4J8uYBU7GuPgDiF65cvfsAvpaAmThw7szJkwtpWoqW1lci
- LAACWHWpzzmwPqktoHNqaTablKD56FzoYhT2riZZ8yabq6X3fPixA9ST5wUZad99iD5X
- vHVw==
-X-Gm-Message-State: AOJu0Yzg0i1/1XGucarXXVPpjSTr1NJ+yk+53m0+7kTGREuoA6Gv3eln
- EGzPcVx2YFDyeDMY0FL3j4kQmQ4Xo1fNMDcjuXg3GsQM+B+NN0pRT9WjvFzJ3AUZEvY7us+CAAv
- L
-X-Gm-Gg: ASbGncu8Iq694X4QchN6eelvq9spnQU6gTg/djwp1gyhx3oXpp66ZC3FfA36PDPUgbM
- Z+j8CvOunvmzK3oGkqd8idxnYTjeEzYTUUfhc3Yj7KxIlPtinVt74xg+iJMSuVVauWHufgjPhO+
- not0EZHdrYH4/dS1QsekFug1kxY9wBm/eCuqrh+6p7uMYoA39LNbd5D0Bgftmq9EYxDW4IfJ+2P
- tSetttj/bbL0VR2R1BskheZflq2PMGDOYMMOgVcr30zxLIQnlRtKpg5Bf+iVgLMU1K0qTQHcwna
- arZlYg/RPdpVC/Muwb3vMkd5NzZjmXuc51KDlBmtcQ9UH4wb9tnos+sWG5sUvI/+VM+0RQ1QmmW
- cdiaRU8TGCQ==
-X-Google-Smtp-Source: AGHT+IGuoAZumEs9l6mRec7LrlKGjZQ8Ll6m00v1ZFPiZy10gN3SMeOpS054wvkS0piQgmMAB0AS1Q==
-X-Received: by 2002:a17:903:4403:b0:224:1eaa:5de1 with SMTP id
- d9443c01a7336-22e18bcac92mr83986955ad.18.1746392236258; 
- Sun, 04 May 2025 13:57:16 -0700 (PDT)
+ bh=OmHqHslUT/R30MADH7naEbPJDNCBfrJgNIi18eIVP5E=;
+ b=RAzvsYeA9JkrBhBzjNaHmL5EgcKS5gePb1BMovetzZ7KSgvOEMKDP6B7KN2knB2FeU
+ 8xCLh7QdSwwtgO3P2BzcCKcSZH4NKOAUUUEkxQ17Wb9V7MdbiP1uJ6Iwmp9F+zelyJno
+ mFgnvKSqMCMAeL81fPkMWob/LIbZZBtcF0WYv9h4CKLkhRBfI8aO1bgmeGc/n/5U8JG1
+ 5O9hHY0kTMRKhZKR6e1UKVFrxlm4iDW3pWj+TCc4C9zgUwHSgDxyJMfaKtmb3TxTSma2
+ EKkpYncdAxCQDUQflyRkHq0Vg4Jo0M9Wqr5lGulyvqpSsL+e814eIt+6kjLvvgBF7GEJ
+ bNpg==
+X-Gm-Message-State: AOJu0YybcIQJTmhwfa5TJBjnTz/KFefyHv+4RDp3ArTZCSFh6WsclEHa
+ Rv9IQ3TDbIGkWC7yUWg6IRlYtopyo37dvEkbkn+F+GjH3i+nURCuZh69KYF/6tYbTRb8hCKrK+U
+ Z
+X-Gm-Gg: ASbGncsWV+kFM4No7tJhSfUbrFAKxtI5dCdi0xDmLK0Ak+wrxb21d9VGxX3XTzRzGBE
+ nM5CRyUnUOnN9hMIQLLeBMRRZxrNDhB6svQy/kCsQJbhrY01FmWV3KRoaoE9nKv9NWJVRS9/OR0
+ 4dYvzRjt6ABA9ik+rpdQ/aS5tYklvhD+YLLDy/yQDPCukllkndbYOkhKf+mkEQykDjf3YJxwi9o
+ yXsvA3cicCL8mD3cn0HpkWYECVJRm1bbbFMw9IZhRlpm5HrLkwpy1tCFi4i1CKyz6Hp39UZ0xio
+ daSYDh/gaDXocl1HzMtwCU3Uoh/BqgEW9izFDPKW9JAVVfeL/VFNkUYLAOejLwBeqoGAeg/sg+I
+ =
+X-Google-Smtp-Source: AGHT+IH27hLykyp4LuHZrYogvlfS5BJJ7gfQyANfxmmdFMSl942rxAcxblpt6JTcQLbAYVeX8skPEw==
+X-Received: by 2002:a17:903:1aab:b0:225:ac99:ae08 with SMTP id
+ d9443c01a7336-22e1e8c1fc1mr67896135ad.5.1746392237069; 
+ Sun, 04 May 2025 13:57:17 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22e150eadfcsm41346425ad.32.2025.05.04.13.57.15
+ d9443c01a7336-22e150eadfcsm41346425ad.32.2025.05.04.13.57.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 04 May 2025 13:57:15 -0700 (PDT)
+ Sun, 04 May 2025 13:57:16 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: foss@percivaleng.com
-Subject: [PATCH 01/12] accel/tcg: Add TCGCPUOps.pointer_wrap
-Date: Sun,  4 May 2025 13:57:02 -0700
-Message-ID: <20250504205714.3432096-2-richard.henderson@linaro.org>
+Cc: foss@percivaleng.com, Helge Deller <deller@gmx.de>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>
+Subject: [PATCH 02/12] target: Use cpu_pointer_wrap_notreached for strict
+ align targets
+Date: Sun,  4 May 2025 13:57:03 -0700
+Message-ID: <20250504205714.3432096-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250504205714.3432096-1-richard.henderson@linaro.org>
 References: <20250504205714.3432096-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,47 +100,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Alpha, HPPA, and SH4 always use aligned addresses,
+and therefore never produce accesses that cross pages.
+
+Cc: Helge Deller <deller@gmx.de>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/accel/tcg/cpu-ops.h | 7 +++++++
- accel/tcg/cputlb.c          | 6 ++++++
- 2 files changed, 13 insertions(+)
+ include/accel/tcg/cpu-ops.h |  5 +++++
+ accel/tcg/cputlb.c          | 13 +++++++++++++
+ target/alpha/cpu.c          |  1 +
+ target/hppa/cpu.c           |  1 +
+ target/sh4/cpu.c            |  1 +
+ 5 files changed, 21 insertions(+)
 
 diff --git a/include/accel/tcg/cpu-ops.h b/include/accel/tcg/cpu-ops.h
-index cd22e5d5b9..83b2c2c864 100644
+index 83b2c2c864..4f3b4fd3bc 100644
 --- a/include/accel/tcg/cpu-ops.h
 +++ b/include/accel/tcg/cpu-ops.h
-@@ -222,6 +222,13 @@ struct TCGCPUOps {
-     bool (*tlb_fill)(CPUState *cpu, vaddr address, int size,
-                      MMUAccessType access_type, int mmu_idx,
-                      bool probe, uintptr_t retaddr);
-+    /**
-+     * @pointer_wrap:
-+     *
-+     * We have incremented @base to @result, resulting in a page change.
-+     * For the current cpu state, adjust @result for possible overflow.
-+     */
-+    vaddr (*pointer_wrap)(CPUState *cpu, int mmu_idx, vaddr result, vaddr base);
-     /**
-      * @do_transaction_failed: Callback for handling failed memory transactions
-      * (ie bus faults or external aborts; not MMU faults)
+@@ -322,6 +322,11 @@ void cpu_check_watchpoint(CPUState *cpu, vaddr addr, vaddr len,
+  */
+ int cpu_watchpoint_address_matches(CPUState *cpu, vaddr addr, vaddr len);
+ 
++/*
++ * Common pointer_wrap implementations.
++ */
++vaddr cpu_pointer_wrap_notreached(CPUState *, int, vaddr, vaddr);
++
+ #endif
+ 
+ #endif /* TCG_CPU_OPS_H */
 diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 5f6d7c601c..c394293d33 100644
+index c394293d33..75cd875948 100644
 --- a/accel/tcg/cputlb.c
 +++ b/accel/tcg/cputlb.c
-@@ -1773,6 +1773,12 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-         l->page[1].size = l->page[0].size - size0;
-         l->page[0].size = size0;
- 
-+        if (cpu->cc->tcg_ops->pointer_wrap) {
-+            l->page[1].addr = cpu->cc->tcg_ops->pointer_wrap(cpu, l->mmu_idx,
-+                                                             l->page[1].addr,
-+                                                             addr);
-+        }
+@@ -2932,3 +2932,16 @@ uint64_t cpu_ldq_code_mmu(CPUArchState *env, vaddr addr,
+ {
+     return do_ld8_mmu(env_cpu(env), addr, oi, retaddr, MMU_INST_FETCH);
+ }
 +
-         /*
-          * Lookup both pages, recognizing exceptions from either.  If the
-          * second lookup potentially resized, refresh first CPUTLBEntryFull.
++/*
++ * Common pointer_wrap implementations.
++ */
++
++/*
++ * To be used for strict alignment targets.
++ * Because no accesses are unaligned, no accesses wrap either.
++ */
++vaddr cpu_pointer_wrap_notreached(CPUState *cs, int idx, vaddr res, vaddr base)
++{
++    g_assert_not_reached();
++}
+diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
+index 890b84c032..2082db45ea 100644
+--- a/target/alpha/cpu.c
++++ b/target/alpha/cpu.c
+@@ -261,6 +261,7 @@ static const TCGCPUOps alpha_tcg_ops = {
+     .record_sigbus = alpha_cpu_record_sigbus,
+ #else
+     .tlb_fill = alpha_cpu_tlb_fill,
++    .pointer_wrap = cpu_pointer_wrap_notreached,
+     .cpu_exec_interrupt = alpha_cpu_exec_interrupt,
+     .cpu_exec_halt = alpha_cpu_has_work,
+     .cpu_exec_reset = cpu_reset,
+diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
+index 6465181543..24777727e6 100644
+--- a/target/hppa/cpu.c
++++ b/target/hppa/cpu.c
+@@ -269,6 +269,7 @@ static const TCGCPUOps hppa_tcg_ops = {
+ 
+ #ifndef CONFIG_USER_ONLY
+     .tlb_fill_align = hppa_cpu_tlb_fill_align,
++    .pointer_wrap = cpu_pointer_wrap_notreached,
+     .cpu_exec_interrupt = hppa_cpu_exec_interrupt,
+     .cpu_exec_halt = hppa_cpu_has_work,
+     .cpu_exec_reset = cpu_reset,
+diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
+index b35f18e250..4f561e8c91 100644
+--- a/target/sh4/cpu.c
++++ b/target/sh4/cpu.c
+@@ -296,6 +296,7 @@ static const TCGCPUOps superh_tcg_ops = {
+ 
+ #ifndef CONFIG_USER_ONLY
+     .tlb_fill = superh_cpu_tlb_fill,
++    .pointer_wrap = cpu_pointer_wrap_notreached,
+     .cpu_exec_interrupt = superh_cpu_exec_interrupt,
+     .cpu_exec_halt = superh_cpu_has_work,
+     .cpu_exec_reset = cpu_reset,
 -- 
 2.43.0
 
