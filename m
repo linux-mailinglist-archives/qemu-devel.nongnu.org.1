@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA6EEAA8434
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 07:40:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BCB5AA8432
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 07:38:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBRvM-0002RJ-KZ; Sun, 04 May 2025 01:30:00 -0400
+	id 1uBRvL-0002QY-KH; Sun, 04 May 2025 01:29:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uBRv8-0002DJ-N0
+ id 1uBRv9-0002Du-Rj
  for qemu-devel@nongnu.org; Sun, 04 May 2025 01:29:47 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uBRv6-0004Oy-FJ
- for qemu-devel@nongnu.org; Sun, 04 May 2025 01:29:46 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-223fd89d036so38307765ad.1
+ id 1uBRv7-0004PK-JF
+ for qemu-devel@nongnu.org; Sun, 04 May 2025 01:29:47 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-7370a2d1981so2802043b3a.2
  for <qemu-devel@nongnu.org>; Sat, 03 May 2025 22:29:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746336583; x=1746941383; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746336584; x=1746941384; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=d146Pj4KjTAmT+769pG7plO/J3O67dCMeGHKPEFKjBI=;
- b=iFdwbngVLIclcTngU/ng/9HUYTOUIc3tl7WtDE3obltyknSdwumlF/ywEAX+bcUAcj
- eLR7gX7D/k2gFtW/VlPts4K46vZvmXte0aRzfiiXCJbxGKX6eooYuZVrW/yMzz+Ikcw/
- cHUm11zreoumRZ97JDRv02SZ71japeaWtGg866Xy2OKB43JYhY6n3mcBA59PDg+zMJSz
- 42a39jrVHPbo/P6vTxFJNiWgLId5AdZ0Dn2xBZzBEwojtK4h2FU+7Fw4/lcqzrwkDLX3
- GVWRVJpLaYcZQYgDtrgfmXoo0IksQFNMXZJKo7QdwF8PRrDeSFQFY+8bfC8zA4gqsSiB
- gVSQ==
+ bh=zqH0yuKEeNcEhgp08pnDlbJMJEZktVD9woNi3X9JPBk=;
+ b=kxoVD7ryk+ZzLrV0wkBIjaARfjcCn0stmdML9txWLkqB/J+WwPeg5qWxvHEvZIPMmo
+ FNvQV7GorWFcGtbaEbXwb1MKjNx/yrKlu91YX6ZScJXY/CGoycedAYAHySXMA2HYxfO0
+ iAfikkE3Y25HAqQXlHcNzn01bHCtnS2KOTmyV6lJnY9MeBIlYluUvktDIF7GqTkyC75n
+ 0ol3UVxG26inng31UTFVBfXpebyRySZflo1OsfSZELcm3XodeJ0mQbUCNg95j4rpn5HO
+ z1Yw0Jwz4U5a3mqVRmKBBFtBzQ3N2JtlstX2ZcbaIHKSCn79JbhY6jDAvgd8ZIoEaLKf
+ rILA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746336583; x=1746941383;
+ d=1e100.net; s=20230601; t=1746336584; x=1746941384;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=d146Pj4KjTAmT+769pG7plO/J3O67dCMeGHKPEFKjBI=;
- b=jqUpVy0eo+JG+eM06YEkG/wwHEFYQ2BwbkgsmsYrpMc0kcQMw7NkjitTMyKgDfshH6
- tphHy/4Rfiiuc3nbsqQxO9JeIrxgsC5VbnsrP/iAERBP1ut3hedPIrXYEjfi4yMLZFWL
- DI4Pz9IibM2Q0pxHNlIopcdj+Ijv9/EQCHAnwcbPlyudNJXG6dr5+nMpBywdXybTRgES
- lfChREur7FuOFhPLNygKOiX0/YGi5J2ps7FQ1hrKpCoWo73ctF79eUcNtg1cNAnfMBBo
- R0oq7dg+oUzKUUGM/Bbxolc3SqgdlNu4Pwf3EoyF4LWmAOxoDMyXUZvnT9kmAPqu55O6
- dMuA==
-X-Gm-Message-State: AOJu0YxwUCL2C1PbFTJtj3lxSZ7Yj3rTijK3DFV1Zdq/u8wJTmoMc1ff
- hFqUm1fg7/5H4hfppw5ecqjK7rs2ruN1StjKW4BfC4YjXYeUcUFnDRTPev7b99gEjx5hRlCBESO
- qAqE=
-X-Gm-Gg: ASbGncs8S7JTrq8js59j0ifnR18PZiRja6eZV6RnN/tpu0Hhf+3gMriJsQcfa1ALqL2
- KOkKFToAoDhlcFm86/2SQnmoNAQvvOwtl6g7Nco2OA9u7s4NboB95hJhjGzCbZb1+1n6y9D300G
- 1V2rksCQK4LrtOn5MqkYB+vZ9vJtcePgsqqaAoO8qT7wrsdv580ltzGDOhqvqBON5oGKjjJC89E
- pgWKht2CyhwFNjno12i9wFXYza9WvVziE/GNSpL/lgrL13/lV2bsLeAaUOddT0MO+JHC82cV+8Y
- ryhZPzdYCeA5hJn4cZN3CpqNbIfS95SZdJxPt+s/
-X-Google-Smtp-Source: AGHT+IHuftjvx8K+lKIONTdQb5rUxohknLqdDXqhEx93QHw1TFnNfxBlVnv/CW1cZSPZujSKICoonw==
-X-Received: by 2002:a17:902:d2d2:b0:220:fe51:1aab with SMTP id
- d9443c01a7336-22e1ea4c3c3mr50378075ad.38.1746336582911; 
- Sat, 03 May 2025 22:29:42 -0700 (PDT)
+ bh=zqH0yuKEeNcEhgp08pnDlbJMJEZktVD9woNi3X9JPBk=;
+ b=FCTD4TzJoNVI4aMOt7dU+pO46/OdRVYbInmnRQYVAxh/CcU0uzwGv5vwe6jTAYj+hG
+ Ri4Y1qxnYMm3ZUSZnjTFdZ0DlPByif1zrsStDO71qNZ7Cc43tsrBHAL3CyN/Um4k9Pq4
+ qxvEBtJAyDJL2OCVCSdx3wWRdJFHMO7ACzQe9ld5saZmT/hO97za1stRGZooIn5922Dv
+ QVKNb6Pl87sxUUQsqrm+77Cb0LNvfZuyHfCo6ZnhKHdaj6Oo3An9xy4DG0D+jc3YOQEk
+ NQKhvjIFs1/zfbOOHjCVg46Ui9KqvXcgVh/WfgXiSfHnUx0zTJcMczTeQmCMC1tGwiHl
+ /BQg==
+X-Gm-Message-State: AOJu0YxGdiOFevn1cxhvR3FyJPCC3OebI/YJOe0k5dRvVOIEu9lEcMJg
+ 5bX0Z8PMV38o/IzkvDGpSpupIi5ND0SN6mZ9L/wnsmKyNajkbwp2PImQ9f9ToBZgj/Iaeyoi89E
+ W/RU=
+X-Gm-Gg: ASbGncuOr8pBZzA5FwcgeCQ1ImQ1WRs4MwXIjxwtVhhWzyOFU7ZvtfHfOHCFEAG1dEO
+ YD7LoFtdFf79b7FUuVxrqTp+yR+N9vSZCz8xaSnIVqATDfL917DmMONo/c8v+muy3vWb9fFl57A
+ dMnQZCQujcC8JiJxUmWjBLbeelakmFqW8ADh84DEm3AF+c0bI5ScEwbR7RPVa6De6mp69Dl2Nc9
+ wn5ghm6El+r4U/8Ik6s6P7HWZWb1vwysBV3KeP9HfCch1DKWkZwtgKNmEp6u/5frw7TOyAbwqxY
+ TfDguvJ1wltEzlQpK9StM2yM5SceyeedI9OhSaPr+qLtDr5+5L8=
+X-Google-Smtp-Source: AGHT+IFFBK8c34bQn544bg+nODkndDO7YUq7xG/ssggchm4p/JYvKNTvfhwfbEZR6iSs/1WMinW6Zg==
+X-Received: by 2002:a05:6a00:e1b:b0:73e:96f:d4c1 with SMTP id
+ d2e1a72fcca58-7406f0d9ef8mr4125601b3a.13.1746336583780; 
+ Sat, 03 May 2025 22:29:43 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-740590207e3sm4400511b3a.94.2025.05.03.22.29.42
+ d2e1a72fcca58-740590207e3sm4400511b3a.94.2025.05.03.22.29.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 03 May 2025 22:29:42 -0700 (PDT)
+ Sat, 03 May 2025 22:29:43 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org, anjo@rev.ng,
@@ -68,24 +68,25 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org, anjo@rev.ng,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  alex.bennee@linaro.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v4 26/40] target/arm/vfp_fpscr: compile file twice (user,
- system)
-Date: Sat,  3 May 2025 22:29:00 -0700
-Message-ID: <20250504052914.3525365-27-pierrick.bouvier@linaro.org>
+Subject: [PATCH v4 27/40] target/arm/arch_dump: remove TARGET_AARCH64
+ conditionals
+Date: Sat,  3 May 2025 22:29:01 -0700
+Message-ID: <20250504052914.3525365-28-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250504052914.3525365-1-pierrick.bouvier@linaro.org>
 References: <20250504052914.3525365-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,40 +102,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Associated code is protected by cpu_isar_feature(aa64*)
+
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/arm/meson.build | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ target/arm/arch_dump.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/target/arm/meson.build b/target/arm/meson.build
-index c8c80c3f969..06d479570e2 100644
---- a/target/arm/meson.build
-+++ b/target/arm/meson.build
-@@ -2,7 +2,6 @@ arm_ss = ss.source_set()
- arm_common_ss = ss.source_set()
- arm_ss.add(files(
-   'gdbstub.c',
--  'vfp_fpscr.c',
- ))
- arm_ss.add(zlib)
+diff --git a/target/arm/arch_dump.c b/target/arm/arch_dump.c
+index c40df4e7fd7..1dd79849c13 100644
+--- a/target/arm/arch_dump.c
++++ b/target/arm/arch_dump.c
+@@ -143,7 +143,6 @@ static int aarch64_write_elf64_prfpreg(WriteCoreDumpFunction f,
+     return 0;
+ }
  
-@@ -32,6 +31,7 @@ arm_user_ss.add(when: 'TARGET_AARCH64', if_false: files(
- arm_user_ss.add(files(
-   'debug_helper.c',
-   'helper.c',
-+  'vfp_fpscr.c',
- ))
+-#ifdef TARGET_AARCH64
+ static off_t sve_zreg_offset(uint32_t vq, int n)
+ {
+     off_t off = sizeof(struct aarch64_user_sve_header);
+@@ -231,7 +230,6 @@ static int aarch64_write_elf64_sve(WriteCoreDumpFunction f,
  
- arm_common_system_ss.add(files('cpu.c'), capstone)
-@@ -40,6 +40,7 @@ arm_common_system_ss.add(when: 'TARGET_AARCH64', if_false: files(
- arm_common_system_ss.add(files(
-   'debug_helper.c',
-   'helper.c',
-+  'vfp_fpscr.c',
- ))
+     return 0;
+ }
+-#endif
  
- subdir('hvf')
+ int arm_cpu_write_elf64_note(WriteCoreDumpFunction f, CPUState *cs,
+                              int cpuid, DumpState *s)
+@@ -273,11 +271,9 @@ int arm_cpu_write_elf64_note(WriteCoreDumpFunction f, CPUState *cs,
+         return ret;
+     }
+ 
+-#ifdef TARGET_AARCH64
+     if (cpu_isar_feature(aa64_sve, cpu)) {
+         ret = aarch64_write_elf64_sve(f, env, cpuid, s);
+     }
+-#endif
+ 
+     return ret;
+ }
+@@ -451,11 +447,9 @@ ssize_t cpu_get_note_size(int class, int machine, int nr_cpus)
+     if (class == ELFCLASS64) {
+         note_size = AARCH64_PRSTATUS_NOTE_SIZE;
+         note_size += AARCH64_PRFPREG_NOTE_SIZE;
+-#ifdef TARGET_AARCH64
+         if (cpu_isar_feature(aa64_sve, cpu)) {
+             note_size += AARCH64_SVE_NOTE_SIZE(&cpu->env);
+         }
+-#endif
+     } else {
+         note_size = ARM_PRSTATUS_NOTE_SIZE;
+         if (cpu_isar_feature(aa32_vfp_simd, cpu)) {
 -- 
 2.47.2
 
