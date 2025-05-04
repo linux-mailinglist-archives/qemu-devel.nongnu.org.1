@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59A4AAA879B
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 18:03:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FE17AA879D
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 18:03:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBbmt-0005LG-KM; Sun, 04 May 2025 12:01:55 -0400
+	id 1uBbmz-0005UO-IF; Sun, 04 May 2025 12:02:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uBbmj-00054e-Ru; Sun, 04 May 2025 12:01:46 -0400
+ id 1uBbmm-0005C4-Lt; Sun, 04 May 2025 12:01:48 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uBbmh-0004DM-Rn; Sun, 04 May 2025 12:01:45 -0400
+ id 1uBbmk-0004ED-SD; Sun, 04 May 2025 12:01:48 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 399C455D233;
- Sun, 04 May 2025 18:01:42 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 53D7355D23A;
+ Sun, 04 May 2025 18:01:45 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id tjCJE73rT7ND; Sun,  4 May 2025 18:01:40 +0200 (CEST)
+ with ESMTP id WUYX34EdIkCM; Sun,  4 May 2025 18:01:43 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 43B3D55D230; Sun, 04 May 2025 18:01:40 +0200 (CEST)
-Message-ID: <46d59935aa5be7b14260dc480b8b917d44bdaaf1.1746374076.git.balaton@eik.bme.hu>
+ id 68E4655D235; Sun, 04 May 2025 18:01:43 +0200 (CEST)
+Message-ID: <26b4e976fe52243e26d495d8332186aff02d0a86.1746374076.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1746374076.git.balaton@eik.bme.hu>
 References: <cover.1746374076.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 13/16] hw/pci-host/raven: Simpify discontiguous IO access
+Subject: [PATCH 16/16] hw/ppc/prep: Fix non-contiguous IO control bit
 To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
  Artyom Tarasenko <atar4qemu@gmail.com>, Nicholas Piggin <npiggin@gmail.com>
-Date: Sun, 04 May 2025 18:01:40 +0200 (CEST)
+Date: Sun, 04 May 2025 18:01:43 +0200 (CEST)
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -58,158 +58,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PREP allows remapping of the 64k ISA IO addresses from the normal
-contiguous IO space into a discontiguous 8MB region and can switch
-between the two modes. We can implement this in a simpler way than is
-done currently using an io region that forwards access to the
-contiguous pci_io region and enabling/disabling the discontiguous
-region as needed.
+The bit that is supposed to control if ISA IO ports are accessed with
+discontinuous addresses was not connected so it did nothing. We can
+now directly enable or disable the discontinuous region so allow the
+bit to function. This did not cause a problem so far as nothing seems
+to use this bit or discontinuous IO addresses.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- hw/pci-host/raven.c | 88 ++++++++++++---------------------------------
- 1 file changed, 22 insertions(+), 66 deletions(-)
+ hw/pci-host/raven.c    |  9 ---------
+ hw/ppc/prep.c          |  3 +++
+ hw/ppc/prep_systemio.c | 14 ++++++++------
+ 3 files changed, 11 insertions(+), 15 deletions(-)
 
 diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
-index 318400c595..476ae5bc65 100644
+index c9df3db401..66ab940061 100644
 --- a/hw/pci-host/raven.c
 +++ b/hw/pci-host/raven.c
-@@ -42,17 +42,14 @@ struct PREPPCIState {
-     PCIHostState parent_obj;
- 
-     qemu_irq irq;
--    AddressSpace pci_io_as;
-     MemoryRegion pci_io;
--    MemoryRegion pci_io_non_contiguous;
-+    MemoryRegion pci_discontiguous_io;
-     MemoryRegion pci_memory;
-     MemoryRegion pci_intack;
-     MemoryRegion bm;
-     MemoryRegion bm_ram_alias;
-     MemoryRegion bm_pci_memory_alias;
-     AddressSpace bm_as;
--
--    int contiguous_map;
+@@ -157,13 +157,6 @@ static const PCIIOMMUOps raven_iommu_ops = {
+     .get_address_space = raven_pcihost_set_iommu,
  };
  
- #define PCI_IO_BASE_ADDR    0x80000000  /* Physical address on main bus */
-@@ -99,63 +96,28 @@ static const MemoryRegionOps raven_intack_ops = {
-     },
- };
- 
--static inline hwaddr raven_io_address(PREPPCIState *s,
--                                      hwaddr addr)
-+/* Convert 8 MB non-contiguous address to 64k ISA IO address */
-+static inline hwaddr raven_io_addr(hwaddr addr)
- {
--    if (s->contiguous_map == 0) {
--        /* 64 KB contiguous space for IOs */
--        addr &= 0xFFFF;
--    } else {
--        /* 8 MB non-contiguous space for IOs */
--        addr = (addr & 0x1F) | ((addr & 0x007FFF000) >> 7);
--    }
--
--    /* FIXME: handle endianness switch */
--
--    return addr;
-+    return ((addr & 0x007FFF000) >> 7) | (addr & 0x1F);
- }
- 
--static uint64_t raven_io_read(void *opaque, hwaddr addr,
--                              unsigned int size)
-+static uint64_t raven_io_read(void *opaque, hwaddr addr, unsigned int size)
- {
+-static void raven_change_gpio(void *opaque, int n, int level)
+-{
 -    PREPPCIState *s = opaque;
--    uint8_t buf[4];
 -
--    addr = raven_io_address(s, addr);
--    address_space_read(&s->pci_io_as, addr + PCI_IO_BASE_ADDR,
--                       MEMTXATTRS_UNSPECIFIED, buf, size);
+-    memory_region_set_enabled(&s->pci_discontiguous_io, !!level);
+-}
 -
--    if (size == 1) {
--        return buf[0];
--    } else if (size == 2) {
--        return lduw_le_p(buf);
--    } else if (size == 4) {
--        return ldl_le_p(buf);
--    } else {
--        g_assert_not_reached();
--    }
-+    uint64_t val = 0xffffffffULL;
+ static void raven_pcihost_realize(DeviceState *d, Error **errp)
+ {
+     SysBusDevice *dev = SYS_BUS_DEVICE(d);
+@@ -172,8 +165,6 @@ static void raven_pcihost_realize(DeviceState *d, Error **errp)
+     Object *o = OBJECT(d);
+     MemoryRegion *mr, *bm, *address_space_mem = get_system_memory();
+ 
+-    qdev_init_gpio_in(d, raven_change_gpio, 1);
+-
+     memory_region_init(&s->pci_io, o, "pci-io", 0x3f800000);
+     memory_region_init_io(&s->pci_discontiguous_io, o,
+                           &raven_io_ops, &s->pci_io,
+diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
+index 23d0e1eeaa..678682fdd2 100644
+--- a/hw/ppc/prep.c
++++ b/hw/ppc/prep.c
+@@ -358,6 +358,9 @@ static void ibm_40p_init(MachineState *machine)
+         dev = DEVICE(isa_dev);
+         qdev_prop_set_uint32(dev, "ibm-planar-id", 0xfc);
+         qdev_prop_set_uint32(dev, "equipment", 0xc0);
++        object_property_set_link(OBJECT(dev), "discontiguous-io",
++                                 OBJECT(sysbus_mmio_get_region(pcihost, 1)),
++                                 &error_fatal);
+         isa_realize_and_unref(isa_dev, isa_bus, &error_fatal);
+ 
+         dev = DEVICE(pci_create_simple(pci_bus, PCI_DEVFN(1, 0),
+diff --git a/hw/ppc/prep_systemio.c b/hw/ppc/prep_systemio.c
+index 41cd923b94..fe767cc4ac 100644
+--- a/hw/ppc/prep_systemio.c
++++ b/hw/ppc/prep_systemio.c
+@@ -44,9 +44,10 @@ OBJECT_DECLARE_SIMPLE_TYPE(PrepSystemIoState, PREP_SYSTEMIO)
+ 
+ struct PrepSystemIoState {
+     ISADevice parent_obj;
 +
-+    memory_region_dispatch_read(opaque, raven_io_addr(addr), &val,
-+                                size_memop(size) | MO_LE,
-+                                MEMTXATTRS_UNSPECIFIED);
-+    return val;
+     MemoryRegion ppc_parity_mem;
++    MemoryRegion *discontiguous_io;
+ 
+-    qemu_irq non_contiguous_io_map_irq;
+     uint8_t sreset; /* 0x0092 */
+     uint8_t equipment; /* 0x080c */
+     uint8_t system_control; /* 0x081c */
+@@ -206,8 +207,8 @@ static void prep_port0850_write(void *opaque, uint32_t addr, uint32_t val)
+     PrepSystemIoState *s = opaque;
+ 
+     trace_prep_systemio_write(addr, val);
+-    qemu_set_irq(s->non_contiguous_io_map_irq,
+-                 val & PORT0850_IOMAP_NONCONTIGUOUS);
++    memory_region_set_enabled(s->discontiguous_io,
++                              !(val & PORT0850_IOMAP_NONCONTIGUOUS));
+     s->iomap_type = val & PORT0850_IOMAP_NONCONTIGUOUS;
  }
  
--static void raven_io_write(void *opaque, hwaddr addr,
--                           uint64_t val, unsigned int size)
-+static void raven_io_write(void *opaque, hwaddr addr, uint64_t val,
-+                           unsigned int size)
- {
--    PREPPCIState *s = opaque;
--    uint8_t buf[4];
--
--    addr = raven_io_address(s, addr);
--
--    if (size == 1) {
--        buf[0] = val;
--    } else if (size == 2) {
--        stw_le_p(buf, val);
--    } else if (size == 4) {
--        stl_le_p(buf, val);
--    } else {
--        g_assert_not_reached();
--    }
--
--    address_space_write(&s->pci_io_as, addr + PCI_IO_BASE_ADDR,
--                        MEMTXATTRS_UNSPECIFIED, buf, size);
-+    memory_region_dispatch_write(opaque, raven_io_addr(addr), val,
-+                                 size_memop(size) | MO_LE,
-+                                 MEMTXATTRS_UNSPECIFIED);
- }
+@@ -257,10 +258,9 @@ static void prep_systemio_realize(DeviceState *dev, Error **errp)
+     PrepSystemIoState *s = PREP_SYSTEMIO(dev);
+     PowerPCCPU *cpu;
  
- static const MemoryRegionOps raven_io_ops = {
-@@ -204,7 +166,7 @@ static void raven_change_gpio(void *opaque, int n, int level)
- {
-     PREPPCIState *s = opaque;
+-    qdev_init_gpio_out(dev, &s->non_contiguous_io_map_irq, 1);
+     s->iomap_type = PORT0850_IOMAP_NONCONTIGUOUS;
+-    qemu_set_irq(s->non_contiguous_io_map_irq,
+-                 s->iomap_type & PORT0850_IOMAP_NONCONTIGUOUS);
++    memory_region_set_enabled(s->discontiguous_io,
++                              !(s->iomap_type & PORT0850_IOMAP_NONCONTIGUOUS));
+     cpu = POWERPC_CPU(first_cpu);
+     s->softreset_irq = qdev_get_gpio_in(DEVICE(cpu), PPC6xx_INPUT_HRESET);
  
--    s->contiguous_map = level;
-+    memory_region_set_enabled(&s->pci_discontiguous_io, !!level);
- }
+@@ -288,6 +288,8 @@ static const VMStateDescription vmstate_prep_systemio = {
+ static const Property prep_systemio_properties[] = {
+     DEFINE_PROP_UINT8("ibm-planar-id", PrepSystemIoState, ibm_planar_id, 0),
+     DEFINE_PROP_UINT8("equipment", PrepSystemIoState, equipment, 0),
++    DEFINE_PROP_LINK("discontiguous-io", PrepSystemIoState, discontiguous_io,
++                     TYPE_MEMORY_REGION, MemoryRegion *),
+ };
  
- static void raven_pcihost_realizefn(DeviceState *d, Error **errp)
-@@ -250,23 +212,17 @@ static void raven_pcihost_initfn(Object *obj)
-     MemoryRegion *address_space_mem = get_system_memory();
- 
-     memory_region_init(&s->pci_io, obj, "pci-io", 0x3f800000);
--    memory_region_init_io(&s->pci_io_non_contiguous, obj, &raven_io_ops, s,
--                          "pci-io-non-contiguous", 0x00800000);
-+    memory_region_init_io(&s->pci_discontiguous_io, obj,
-+                          &raven_io_ops, &s->pci_io,
-+                          "pci-discontiguous-io", 8 * MiB);
-     memory_region_init(&s->pci_memory, obj, "pci-memory", 0x3f000000);
--    address_space_init(&s->pci_io_as, &s->pci_io, "raven-io");
--
--    /*
--     * Raven's raven_io_ops use the address-space API to access pci-conf-idx
--     * (which is also owned by the raven device). As such, mark the
--     * pci_io_non_contiguous as re-entrancy safe.
--     */
--    s->pci_io_non_contiguous.disable_reentrancy_guard = true;
- 
-     /* CPU address space */
-     memory_region_add_subregion(address_space_mem, PCI_IO_BASE_ADDR,
-                                 &s->pci_io);
-     memory_region_add_subregion_overlap(address_space_mem, PCI_IO_BASE_ADDR,
--                                        &s->pci_io_non_contiguous, 1);
-+                                        &s->pci_discontiguous_io, 1);
-+    memory_region_set_enabled(&s->pci_discontiguous_io, false);
-     memory_region_add_subregion(address_space_mem, 0xc0000000, &s->pci_memory);
- 
-     /* Bus master address space */
+ static void prep_systemio_class_initfn(ObjectClass *klass, const void *data)
 -- 
 2.41.3
 
