@@ -2,47 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FE17AA879D
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 18:03:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C125AA875E
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 17:45:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBbmz-0005UO-IF; Sun, 04 May 2025 12:02:01 -0400
+	id 1uBbW6-0007ui-Si; Sun, 04 May 2025 11:44:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uBbmm-0005C4-Lt; Sun, 04 May 2025 12:01:48 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uBbW1-0007uP-6Y
+ for qemu-devel@nongnu.org; Sun, 04 May 2025 11:44:29 -0400
+Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uBbmk-0004ED-SD; Sun, 04 May 2025 12:01:48 -0400
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 53D7355D23A;
- Sun, 04 May 2025 18:01:45 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id WUYX34EdIkCM; Sun,  4 May 2025 18:01:43 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 68E4655D235; Sun, 04 May 2025 18:01:43 +0200 (CEST)
-Message-ID: <26b4e976fe52243e26d495d8332186aff02d0a86.1746374076.git.balaton@eik.bme.hu>
-In-Reply-To: <cover.1746374076.git.balaton@eik.bme.hu>
-References: <cover.1746374076.git.balaton@eik.bme.hu>
-From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 16/16] hw/ppc/prep: Fix non-contiguous IO control bit
-To: qemu-devel@nongnu.org,
-    qemu-ppc@nongnu.org
-Cc: =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
- Artyom Tarasenko <atar4qemu@gmail.com>, Nicholas Piggin <npiggin@gmail.com>
-Date: Sun, 04 May 2025 18:01:43 +0200 (CEST)
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uBbVy-0002J2-Il
+ for qemu-devel@nongnu.org; Sun, 04 May 2025 11:44:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1746373467; x=1777909467;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=LOKB0QwOMycqPouiOhUswgKkEgwBvNoaGnpWa+22M9U=;
+ b=KQc9fsiYAJibVkTlm1UNSbGJXaRYpKMyo1XF2Z4lwxGjHSb8LOeq0FEe
+ 1jwOEkGctuJ+/pbfbozJ7Dr3CesHHVQSAI5yPvrcE/jxbMdc+Shi4cvqD
+ 5X/FVxNEpejGadeP/4070IYHXAHv+1eoLXatpxhFTp4Y42XlLbZ6KTsBR
+ QOQXSV1wYZRhabuAp0aCVZGEhW/ebp5zuegUxOzpGyrklAPz/F9uEgE1T
+ trtMShabFHEstqDFVuezVmg600IYStS3sZKI9UX9o9MBVBNAHAfjvSmJd
+ P6o/pmN6KtfCp0/1TF1dC6jMXIP/7avuhlVMcGizOPVfaxnmVasdMSIZU g==;
+X-CSE-ConnectionGUID: 8OmCn7TvScW34boeP7Qz9A==
+X-CSE-MsgGUID: aUHRGSRNSj2zGk+/qIGAKw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11423"; a="65389068"
+X-IronPort-AV: E=Sophos;i="6.15,262,1739865600"; d="scan'208";a="65389068"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 May 2025 08:44:23 -0700
+X-CSE-ConnectionGUID: +byyRncxQlidwGes1Wy5hQ==
+X-CSE-MsgGUID: 9YR/5jUsQJ6Ls8a6h51TCg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,262,1739865600"; d="scan'208";a="140196802"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa004.fm.intel.com with ESMTP; 04 May 2025 08:44:19 -0700
+Date: Mon, 5 May 2025 00:05:19 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Francesco Lavra <francescolavra.fl@gmail.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+Subject: Re: [PATCH v8 44/55] i386/tdx: Implement adjust_cpuid_features() for
+ TDX
+Message-ID: <aBeQP9Cc1nGqmfLQ@intel.com>
+References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
+ <20250401130205.2198253-45-xiaoyao.li@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250401130205.2198253-45-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -57
+X-Spam_score: -5.8
+X-Spam_bar: -----
+X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.411,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -58,110 +89,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The bit that is supposed to control if ISA IO ports are accessed with
-discontinuous addresses was not connected so it did nothing. We can
-now directly enable or disable the discontinuous region so allow the
-bit to function. This did not cause a problem so far as nothing seems
-to use this bit or discontinuous IO addresses.
+On Tue, Apr 01, 2025 at 09:01:54AM -0400, Xiaoyao Li wrote:
+> Date: Tue,  1 Apr 2025 09:01:54 -0400
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: [PATCH v8 44/55] i386/tdx: Implement adjust_cpuid_features() for
+>  TDX
+> X-Mailer: git-send-email 2.34.1
+> 
+> Maintain a TDX specific supported CPUID set, and use it to mask the
+> common supported CPUID value of KVM. It can avoid newly added supported
+> features (reported via KVM_GET_SUPPORTED_CPUID) for common VMs being
+> falsely reported as supported for TDX.
+> 
+> As the first step, initialize the TDX supported CPUID set with all the
+> configurable CPUID bits. It's not complete because there are other CPUID
+> bits are supported for TDX but not reported as directly configurable.
+> E.g. the XFAM related bits, attribute related bits and fixed-1 bits.
+> They will be handled in the future.
+> 
+> Also, what matters are the CPUID bits related to QEMU's feature word.
+> Only mask the CPUID leafs which are feature word leaf.
+> 
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> ---
+>  target/i386/cpu.c          | 18 ++++++++++++++++++
+>  target/i386/cpu.h          |  1 +
+>  target/i386/kvm/kvm.c      |  2 +-
+>  target/i386/kvm/kvm_i386.h |  1 +
+>  target/i386/kvm/tdx.c      | 34 ++++++++++++++++++++++++++++++++++
+>  5 files changed, 55 insertions(+), 1 deletion(-)
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
----
- hw/pci-host/raven.c    |  9 ---------
- hw/ppc/prep.c          |  3 +++
- hw/ppc/prep_systemio.c | 14 ++++++++------
- 3 files changed, 11 insertions(+), 15 deletions(-)
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
-index c9df3db401..66ab940061 100644
---- a/hw/pci-host/raven.c
-+++ b/hw/pci-host/raven.c
-@@ -157,13 +157,6 @@ static const PCIIOMMUOps raven_iommu_ops = {
-     .get_address_space = raven_pcihost_set_iommu,
- };
- 
--static void raven_change_gpio(void *opaque, int n, int level)
--{
--    PREPPCIState *s = opaque;
--
--    memory_region_set_enabled(&s->pci_discontiguous_io, !!level);
--}
--
- static void raven_pcihost_realize(DeviceState *d, Error **errp)
- {
-     SysBusDevice *dev = SYS_BUS_DEVICE(d);
-@@ -172,8 +165,6 @@ static void raven_pcihost_realize(DeviceState *d, Error **errp)
-     Object *o = OBJECT(d);
-     MemoryRegion *mr, *bm, *address_space_mem = get_system_memory();
- 
--    qdev_init_gpio_in(d, raven_change_gpio, 1);
--
-     memory_region_init(&s->pci_io, o, "pci-io", 0x3f800000);
-     memory_region_init_io(&s->pci_discontiguous_io, o,
-                           &raven_io_ops, &s->pci_io,
-diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
-index 23d0e1eeaa..678682fdd2 100644
---- a/hw/ppc/prep.c
-+++ b/hw/ppc/prep.c
-@@ -358,6 +358,9 @@ static void ibm_40p_init(MachineState *machine)
-         dev = DEVICE(isa_dev);
-         qdev_prop_set_uint32(dev, "ibm-planar-id", 0xfc);
-         qdev_prop_set_uint32(dev, "equipment", 0xc0);
-+        object_property_set_link(OBJECT(dev), "discontiguous-io",
-+                                 OBJECT(sysbus_mmio_get_region(pcihost, 1)),
-+                                 &error_fatal);
-         isa_realize_and_unref(isa_dev, isa_bus, &error_fatal);
- 
-         dev = DEVICE(pci_create_simple(pci_bus, PCI_DEVFN(1, 0),
-diff --git a/hw/ppc/prep_systemio.c b/hw/ppc/prep_systemio.c
-index 41cd923b94..fe767cc4ac 100644
---- a/hw/ppc/prep_systemio.c
-+++ b/hw/ppc/prep_systemio.c
-@@ -44,9 +44,10 @@ OBJECT_DECLARE_SIMPLE_TYPE(PrepSystemIoState, PREP_SYSTEMIO)
- 
- struct PrepSystemIoState {
-     ISADevice parent_obj;
-+
-     MemoryRegion ppc_parity_mem;
-+    MemoryRegion *discontiguous_io;
- 
--    qemu_irq non_contiguous_io_map_irq;
-     uint8_t sreset; /* 0x0092 */
-     uint8_t equipment; /* 0x080c */
-     uint8_t system_control; /* 0x081c */
-@@ -206,8 +207,8 @@ static void prep_port0850_write(void *opaque, uint32_t addr, uint32_t val)
-     PrepSystemIoState *s = opaque;
- 
-     trace_prep_systemio_write(addr, val);
--    qemu_set_irq(s->non_contiguous_io_map_irq,
--                 val & PORT0850_IOMAP_NONCONTIGUOUS);
-+    memory_region_set_enabled(s->discontiguous_io,
-+                              !(val & PORT0850_IOMAP_NONCONTIGUOUS));
-     s->iomap_type = val & PORT0850_IOMAP_NONCONTIGUOUS;
- }
- 
-@@ -257,10 +258,9 @@ static void prep_systemio_realize(DeviceState *dev, Error **errp)
-     PrepSystemIoState *s = PREP_SYSTEMIO(dev);
-     PowerPCCPU *cpu;
- 
--    qdev_init_gpio_out(dev, &s->non_contiguous_io_map_irq, 1);
-     s->iomap_type = PORT0850_IOMAP_NONCONTIGUOUS;
--    qemu_set_irq(s->non_contiguous_io_map_irq,
--                 s->iomap_type & PORT0850_IOMAP_NONCONTIGUOUS);
-+    memory_region_set_enabled(s->discontiguous_io,
-+                              !(s->iomap_type & PORT0850_IOMAP_NONCONTIGUOUS));
-     cpu = POWERPC_CPU(first_cpu);
-     s->softreset_irq = qdev_get_gpio_in(DEVICE(cpu), PPC6xx_INPUT_HRESET);
- 
-@@ -288,6 +288,8 @@ static const VMStateDescription vmstate_prep_systemio = {
- static const Property prep_systemio_properties[] = {
-     DEFINE_PROP_UINT8("ibm-planar-id", PrepSystemIoState, ibm_planar_id, 0),
-     DEFINE_PROP_UINT8("equipment", PrepSystemIoState, equipment, 0),
-+    DEFINE_PROP_LINK("discontiguous-io", PrepSystemIoState, discontiguous_io,
-+                     TYPE_MEMORY_REGION, MemoryRegion *),
- };
- 
- static void prep_systemio_class_initfn(ObjectClass *klass, const void *data)
--- 
-2.41.3
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index f219961b62cd..4061d38d3fbe 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -1655,6 +1655,24 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+>      },
+>  };
+>  
+> +bool is_feature_word_cpuid(uint32_t feature, uint32_t index, int reg)
+> +{
+> +    FeatureWordInfo *wi;
+> +    FeatureWord w;
+> +
+> +    for (w = 0; w < FEATURE_WORDS; w++)
+> +    {
 
+(style nit?) "{" should be at the end of the previous line?
+
+> +        wi = &feature_word_info[w];
+> +        if (wi->type == CPUID_FEATURE_WORD && wi->cpuid.eax == feature &&
+> +            (!wi->cpuid.needs_ecx || wi->cpuid.ecx == index) &&
+> +            wi->cpuid.reg == reg)
+> +        {
+
+ditto.
+
+> +            return true;
+> +        }
+> +    }
+> +    return false;
+> +}
+> +
 
