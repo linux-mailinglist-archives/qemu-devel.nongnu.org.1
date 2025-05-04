@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2BC9AA8988
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 23:59:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50642AA898A
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 23:59:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBhLU-0007Wi-Ed; Sun, 04 May 2025 17:58:00 -0400
+	id 1uBhLX-0007ct-Gj; Sun, 04 May 2025 17:58:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uBhLR-0007Vq-Ql
- for qemu-devel@nongnu.org; Sun, 04 May 2025 17:57:57 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1uBhLU-0007Xo-NB
+ for qemu-devel@nongnu.org; Sun, 04 May 2025 17:58:00 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uBhLQ-0005Cm-DO
- for qemu-devel@nongnu.org; Sun, 04 May 2025 17:57:57 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-2260c91576aso33276035ad.3
- for <qemu-devel@nongnu.org>; Sun, 04 May 2025 14:57:55 -0700 (PDT)
+ id 1uBhLT-0005D9-7U
+ for qemu-devel@nongnu.org; Sun, 04 May 2025 17:58:00 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-22438c356c8so35080705ad.1
+ for <qemu-devel@nongnu.org>; Sun, 04 May 2025 14:57:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746395875; x=1747000675; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746395877; x=1747000677; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=4IkZ6rX56LKQaeRF12GcjWtnMJwwMH7mXS6+CURuUmU=;
- b=Af4ooutyageaA+AS8szEtxgGcs7sFYLyBiX4iSq3vxxCF9lZs0rc7aut5t7dhzCuUD
- jve0dFcm8ObnXuVTjHCng8lT8eG1C2EEx7EEkNRKE/5SpNHv0pMG9Q+XONXXQsQkrHPI
- eNyEJl+RGgszU2t8BjBLVntoIaKv9xuubX1jN2c7v8GGDF1X0CCKSXkf8UKmKRUTKi7I
- r3N5YeurCpa2KyrzEgNihHVl8ke8Pag6yQRPKUKwneOkwyfUV1qCIBsiVhfTF1qB7Rwj
- uivSX5vqWVTXhnxXKtYPN2Sy6R28rqh/pZ8lfi+eUAd+DqcKzhS3i+9kOZlxV2ONvTWX
- SGcA==
+ bh=T30H+Xqi+D11ghfM6nKfQX3kyu+3U71s0mbiqhW/0/s=;
+ b=Pdql+r8rx25wcbdLqYhCuGSz5nCZ5G8dLSku0WrvlGhXkJ/BttljvjXgoxNtRYqQUK
+ 4C8aVqjomPJoDcA6MOAx4DQLIT2o+AxAu6NH98neUaiOaeRZv2ugd3/L7vrioKeSrKI/
+ RPL66q+R/xaM5NPcwNHLcmpap5+TGCHr1xcBCsKtlJxR2UETAk0sWTkiUnSeJrLwI4a0
+ 6vMDsRllX3R8AXkENmqXG3WpnT2DkW05nS7tVrpRHKExODQcGn2eRErtO/+w+sUBvEes
+ nY0zqHqA9r+zExtp18gbcShs7uAhIzxQzQ++NGo7eIgU6ItnpAn+pccU4K7L8xXt3eHU
+ z2kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746395875; x=1747000675;
+ d=1e100.net; s=20230601; t=1746395877; x=1747000677;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=4IkZ6rX56LKQaeRF12GcjWtnMJwwMH7mXS6+CURuUmU=;
- b=fDqxOoKfOjIb+sRk48gXHoWs0vT5Yvd5wGgnog0YbvgzFBwmrCDGY+BQcIkSzGjOBY
- WTNz3VDGsODOZ5UNDdX9WHz/Z34lZGtJxettKvOfPdaHKcHgK5IatW2XtwcW3J3tmXe+
- 8MgINXTpQzoCWznVbW0Q07V9jBVQw3cEcb49sAOE1i7pz8AGXlaTLAbP+jyW9MgaOxto
- BW01+9lN8k/iraKWvrqW/p5pbJ2SjWh4LYSm+U2KwtZl8zMZbM0Y8QeJKJo/S0Vke1kC
- N2m2feTnXDgs9RQCnrJLOgP8F2DevMTfkMt0V4oOyB1AGbHbSlj85An0bKLZDXsrk7YB
- FROw==
-X-Gm-Message-State: AOJu0Yyjb7sjULN/zAna/7Kq78i8TGqloVsvIDrIxOXvXLDIyK569h37
- 5Iolc5e6gXiKpCXjmMZbWRnfI1VCghRxwDe+Eb0BVAfE7mAJt4fdqnkCGVZZePFVadj1PikdyOE
- KFCE=
-X-Gm-Gg: ASbGncs1bhlRHZcOlZOr9syXYNLO6F02oJylbnjB9cgcUip7R+XavL5b4K22zqo+wep
- vwTL3GSoU8WRmHp0FZjV0RM72fYmhkMkAmeLOjfJwhcFEoU1hk8jLbOsL+KLDAhNsqVPk3yx5BX
- FBOk3cJJbsLZYfNXrM5eBTctVI2i5Fi4KEFhbb5OTihK1zlmpzLOoevvh0kq9DUVioQ8kFM26o4
- XleWBokH/nznjcseg0X4qO/Qqrr6Y2F8P1K6f/GXdZlROKOfk9JDL2tlR+F+WrWvVWrKcY3pMmR
- wT3AzVXPN909YlCecTeefgg4DM8tjUv6Nrf1BN+Jqr5ZKp5W
-X-Google-Smtp-Source: AGHT+IH3Dy6ZWpC1LCQVSAT5pW0VCitpjDb+UBJtRpZwdsHcgCtkN8WOEsYnwb/qSI0lPJ99iNC9Pw==
-X-Received: by 2002:a17:902:e750:b0:227:e7c7:d451 with SMTP id
- d9443c01a7336-22e1eaa4478mr76337595ad.29.1746395874851; 
- Sun, 04 May 2025 14:57:54 -0700 (PDT)
+ bh=T30H+Xqi+D11ghfM6nKfQX3kyu+3U71s0mbiqhW/0/s=;
+ b=RqX5jka92Rl/jQrE3Gkfc4P07GvydSbYI8jHNUjIuoI10QaCRTdFj2FTzHMNcXS8Le
+ OPNBrVBLZTHH6mX48+qb2nqaRBz7T5U5xPncg00abU8BzYxtGnKtF+1hzkQIDMZsf/4z
+ hGVuPpEjUUH052muAYbqQ3nha65tG/+cz/ET2aDIH1ko2xrn4wM6XKp5ljyWl+k16CcL
+ 4mIFRF1IatFLIUNJuBQbHpzx/d19+Lf6ieEaMrU5GJHG6DRFWBRHF9xVjbZGS5jxzjHd
+ BsFcd1UDxl2g/PLVYgd0yV5KzS7HWD4jWQKdJavCcXlvgPnOwttn2a9vlVNAx1o+Zshe
+ LxAw==
+X-Gm-Message-State: AOJu0YygmJxw1ocTig8zAgv9nnQoLQOkvvXU+6J9kXrEtacaOBLovkPG
+ BMdo1Q39Gx0263ev+xT+nmV16JlTp+PH8nJC+sXBs62X+CDxYOmqwPgoDxU7/pfc3A3lmYam1We
+ +08s=
+X-Gm-Gg: ASbGncskR0wu6O3/f1YimiURPdnNdsbH/a/XX4WFUnmGfibkM6nxxhMCv2eTDbqdnaQ
+ 6OTkSbpdh6E5xzdQ+9CUxuiXFJFZAwIAvJSymKhUMet5Y3NpMR4V/aKWxPvp4npp5L3Xjca+2v6
+ LtoxVh3AbckP6KTnffn47TCInRV4huSSIf9YqNQzftYF0rBfEx3GgbYBe40T4iPpaawvSv1/6ge
+ 2nnF+cJtZVaIgwMcd9/CiDUMOxxOfOoAkC3p43q1hn++XV46LxFbrGb0myH186IY03VzCvneOxK
+ I9j7X0KlYKIbUY7UXHxiogKYphVGuZgb0uPREXUndES0DVod
+X-Google-Smtp-Source: AGHT+IFLOYo2VF9CCIcRfjuhSTmt7XVXCxZ/TEOLp6sfRYPRnAGNb5E/aa3DrqbfoYXE3MAPRWeKPA==
+X-Received: by 2002:a17:902:f686:b0:223:635d:3e2a with SMTP id
+ d9443c01a7336-22e1e909934mr73071745ad.23.1746395877119; 
+ Sun, 04 May 2025 14:57:57 -0700 (PDT)
 Received: from gromero0.. ([200.150.181.215]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22e152204fesm41664875ad.137.2025.05.04.14.57.52
+ d9443c01a7336-22e152204fesm41664875ad.137.2025.05.04.14.57.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 04 May 2025 14:57:54 -0700 (PDT)
+ Sun, 04 May 2025 14:57:56 -0700 (PDT)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, philmd@linaro.org, alex.bennee@linaro.org,
  gustavo.romero@linaro.org
-Subject: [PATCH] hw/i386/acpi-build: Fix typo and grammar in comment
-Date: Sun,  4 May 2025 21:56:35 +0000
-Message-Id: <20250504215639.54860-7-gustavo.romero@linaro.org>
+Subject: [PATCH] hw/i386/acpi-build: Fix typo in function name
+Date: Sun,  4 May 2025 21:56:36 +0000
+Message-Id: <20250504215639.54860-8-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,26 +94,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix typo and verb conjugation in a comment about FADT initialization.
+Fix missing "i" in the name of the function responsible for adding the call to
+the PCI notification method (PCNT) in the ACPI table.
 
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 ---
- hw/i386/acpi-build.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/i386/acpi-build.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index 3fffa4a332..b5836417a0 100644
+index b5836417a0..f40ad062f9 100644
 --- a/hw/i386/acpi-build.c
 +++ b/hw/i386/acpi-build.c
-@@ -139,7 +139,7 @@ static void init_common_fadt_data(MachineState *ms, Object *o,
-     /*
-      * "ICH9-LPC" or "PIIX4_PM" has "smm-compat" property to keep the old
-      * behavior for compatibility irrelevant to smm_enabled, which doesn't
--     * comforms to ACPI spec.
-+     * conform to the ACPI spec.
-      */
-     bool smm_enabled = object_property_get_bool(o, "smm-compat", NULL) ?
-         true : x86_machine_is_smm_enabled(x86ms);
+@@ -589,8 +589,8 @@ void build_append_pci_bus_devices(Aml *parent_scope, PCIBus *bus)
+     }
+ }
+ 
+-static bool build_append_notfication_callback(Aml *parent_scope,
+-                                              const PCIBus *bus)
++static bool build_append_notification_callback(Aml *parent_scope,
++                                               const PCIBus *bus)
+ {
+     Aml *method;
+     PCIBus *sec;
+@@ -604,7 +604,7 @@ static bool build_append_notfication_callback(Aml *parent_scope,
+             continue;
+         }
+         nr_notifiers = nr_notifiers +
+-                       build_append_notfication_callback(br_scope, sec);
++                       build_append_notification_callback(br_scope, sec);
+         /*
+          * add new child scope to parent
+          * and keep track of bus that have PCNT,
+@@ -1773,7 +1773,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+         PCIBus *b = PCI_HOST_BRIDGE(pci_host)->bus;
+ 
+         scope = aml_scope("\\_SB.PCI0");
+-        has_pcnt = build_append_notfication_callback(scope, b);
++        has_pcnt = build_append_notification_callback(scope, b);
+         if (has_pcnt) {
+             aml_append(dsdt, scope);
+         }
 -- 
 2.34.1
 
