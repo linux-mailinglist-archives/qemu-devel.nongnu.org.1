@@ -2,95 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E12CAA87A6
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 18:07:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7165AA87A4
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 18:05:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBbmQ-0004fc-QP; Sun, 04 May 2025 12:01:26 -0400
+	id 1uBbmt-0005KQ-Im; Sun, 04 May 2025 12:01:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uBbm2-0004Ph-HD
- for qemu-devel@nongnu.org; Sun, 04 May 2025 12:01:08 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uBblx-00045R-VQ
- for qemu-devel@nongnu.org; Sun, 04 May 2025 12:01:01 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-2260c91576aso32156795ad.3
- for <qemu-devel@nongnu.org>; Sun, 04 May 2025 09:00:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746374455; x=1746979255; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=YzVQpNPT+TL8s16+jQLivHLgw76ZAyXebgPC9LfcVXs=;
- b=PKUP6Fk8riyNRZqkYrbCtqtU8jkRM9Go73tNk1E1fxycUhUhSiPO0NE84dVVFXKGXR
- nJzEs2pAt7ru7O0UlKTqdV18C0swEugqPUjl2SN3t6opwIlmZT3yt676nfs1EM9MDOvd
- JAcd9OA1DpxWTkEqXmRtDKnQkTHxrv/ZZGgb/iK4More4d5w9psexGBbdbTEoU0IpmhU
- 9S4JHX8q21CdZJSQ45CKzoF1RBjtjEbhR6hIY2db3S3j0nxpOCI4DFIvaFGHpVDNS06K
- fj4e47MLbi1/7zx5iulJHI1FeZtFbHLZpD6cYROZTrdt0Pa4Ae4azvO99k/oYI1hFoyD
- JyLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746374455; x=1746979255;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YzVQpNPT+TL8s16+jQLivHLgw76ZAyXebgPC9LfcVXs=;
- b=LW3cWPwW7UCqv4xE/kSZlCjJ5UbJwY5u2kQL4WuFWm9spXXNrHIkvt9Rnb7wDG6K5u
- N7lvn8X83tkh/wZUlm4zTS/X4gnzd2HBfvKtRUFrFXAcmbttMtXzrUE+4iP/BsJpjv7q
- GG2S+MumCjUVfHjGCC5okovp2K5PLOAqmXWKkTEerTDIOP5vBoIqW4p0kBeVSiXGvf3/
- ffmss+oFK53P4b9o2IJP1rdStLmcHrEnRMwrw0uqTJGQ5Xh+QVvRrz26M5Q41xdHnCHB
- przjFY5mojyj39tXyFTKki+X/hPik3RGlrAEb7nOEkPQicnyI7s6PL0B63p/9DFNqQZp
- 1rxg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW1L83k6FPjeAM03mQ71VCaNVza6KbMsIzDMulvROqlz0U3YW3uNhonSIiAnmpG2NQXBHw97zve1v3R@nongnu.org
-X-Gm-Message-State: AOJu0YzntuxZe+IPCeBcnEm9Fj+SBFVR/xsT0PAM/mOu1x7lsRm0PIm7
- sh2qbIxp49EM1vOkNuW0QtZgiUM/o6KwrS/WLm5lswnCx9jMsAb/qARHXuUXNqU=
-X-Gm-Gg: ASbGncuCAZicSzDkAXa0MRPp6ukkbq3oHK/7nsg6/KE5cQvuU0hpLQUAi8CQAiJS90x
- 3x6wHQRoRWIWRa89RCraKgCrQvfsL3ooV5Km/1uE45KhjFtYRgtUUtyjVakl6SPshsdnvY2ojyV
- cihFyN1A5pMqs6TMto7BrX/7dz+Nhcj9f74TEDCU6bsEKC1idDphspO6qkq30jemQ4PqO4qA9D4
- 8cQ3mMYio0tp9bxuVOmrqzpegp7o4BqXVbWDO6+iwo1lg7+YmJco32huOZTPW9qF7r+VgaRNnDE
- GFMGlK1SlIZrUEin8pHYZ4p2qcqF2oWTzWZVzMJKezVGOcFj38iBwvdrEsBNiwgdVWR3nI0uT0M
- dXCwxq64=
-X-Google-Smtp-Source: AGHT+IE66o3FzhnOoYhmgbYjj7kCGXhJa8dnqD/72XM0gm+75hkSaixle1rVIRPVkTst3i+gp8NmmQ==
-X-Received: by 2002:a17:902:d4cd:b0:22d:e458:96a5 with SMTP id
- d9443c01a7336-22e1eae8762mr70246125ad.38.1746374455257; 
- Sun, 04 May 2025 09:00:55 -0700 (PDT)
-Received: from [192.168.0.4] (71-212-47-143.tukw.qwest.net. [71.212.47.143])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74058d7a332sm5199607b3a.16.2025.05.04.09.00.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 04 May 2025 09:00:54 -0700 (PDT)
-Message-ID: <6ca071ae-4608-4777-a2b1-719d869e1330@linaro.org>
-Date: Sun, 4 May 2025 09:00:53 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 12/40] target/arm/cpu: compile file twice (user,
- system) only
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org, anjo@rev.ng,
- kvm@vger.kernel.org, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- alex.bennee@linaro.org
-References: <20250504052914.3525365-1-pierrick.bouvier@linaro.org>
- <20250504052914.3525365-13-pierrick.bouvier@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20250504052914.3525365-13-pierrick.bouvier@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1uBbmf-0004xA-4C; Sun, 04 May 2025 12:01:41 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1uBbmb-0004BJ-JV; Sun, 04 May 2025 12:01:40 -0400
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id EF7EA55D238;
+ Sun, 04 May 2025 18:01:35 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id LteAur2GItcj; Sun,  4 May 2025 18:01:33 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id EF04E55D23A; Sun, 04 May 2025 18:01:33 +0200 (CEST)
+Message-ID: <cdd698572440e376cb38b9ff96fc22b650101725.1746374076.git.balaton@eik.bme.hu>
+In-Reply-To: <cover.1746374076.git.balaton@eik.bme.hu>
+References: <cover.1746374076.git.balaton@eik.bme.hu>
+From: BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PATCH 07/16] hw/pci-host/raven: Simplify PCI interrupt routing
+To: qemu-devel@nongnu.org,
+    qemu-ppc@nongnu.org
+Cc: =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
+ Artyom Tarasenko <atar4qemu@gmail.com>, Nicholas Piggin <npiggin@gmail.com>
+Date: Sun, 04 May 2025 18:01:33 +0200 (CEST)
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,53 +58,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/3/25 22:28, Pierrick Bouvier wrote:
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> ---
->   target/arm/meson.build | 8 +++++++-
->   1 file changed, 7 insertions(+), 1 deletion(-)
+No need to use an or-irq to map interrupt lines to a single IRQ as the
+PCI code can handle this internally so simplify by dropping the or-irq.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+---
+ hw/pci-host/raven.c | 39 +++++++++++++++------------------------
+ hw/ppc/prep.c       |  5 ++++-
+ 2 files changed, 19 insertions(+), 25 deletions(-)
 
-
-r~
-
-> 
-> diff --git a/target/arm/meson.build b/target/arm/meson.build
-> index c39ddc4427b..89e305eb56a 100644
-> --- a/target/arm/meson.build
-> +++ b/target/arm/meson.build
-> @@ -1,6 +1,6 @@
->   arm_ss = ss.source_set()
-> +arm_common_ss = ss.source_set()
->   arm_ss.add(files(
-> -  'cpu.c',
->     'debug_helper.c',
->     'gdbstub.c',
->     'helper.c',
-> @@ -20,6 +20,7 @@ arm_ss.add(when: 'TARGET_AARCH64',
->   )
->   
->   arm_system_ss = ss.source_set()
-> +arm_common_system_ss = ss.source_set()
->   arm_system_ss.add(files(
->     'arch_dump.c',
->     'arm-powerctl.c',
-> @@ -30,6 +31,9 @@ arm_system_ss.add(files(
->   ))
->   
->   arm_user_ss = ss.source_set()
-> +arm_user_ss.add(files('cpu.c'))
-> +
-> +arm_common_system_ss.add(files('cpu.c'), capstone)
->   
->   subdir('hvf')
->   
-> @@ -42,3 +46,5 @@ endif
->   target_arch += {'arm': arm_ss}
->   target_system_arch += {'arm': arm_system_ss}
->   target_user_arch += {'arm': arm_user_ss}
-> +target_common_arch += {'arm': arm_common_ss}
-> +target_common_system_arch += {'arm': arm_common_system_ss}
+diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
+index 51427553b2..a400a22df3 100644
+--- a/hw/pci-host/raven.c
++++ b/hw/pci-host/raven.c
+@@ -30,11 +30,8 @@
+ #include "hw/pci/pci_device.h"
+ #include "hw/pci/pci_bus.h"
+ #include "hw/pci/pci_host.h"
+-#include "hw/qdev-properties.h"
+ #include "hw/intc/i8259.h"
+ #include "hw/irq.h"
+-#include "hw/or-irq.h"
+-#include "qom/object.h"
+ 
+ #define TYPE_RAVEN_PCI_DEVICE "raven"
+ #define TYPE_RAVEN_PCI_HOST_BRIDGE "raven-pcihost"
+@@ -44,8 +41,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(PREPPCIState, RAVEN_PCI_HOST_BRIDGE)
+ struct PREPPCIState {
+     PCIHostState parent_obj;
+ 
+-    OrIRQState *or_irq;
+-    qemu_irq pci_irqs[PCI_NUM_PINS];
++    qemu_irq irq;
+     AddressSpace pci_io_as;
+     MemoryRegion pci_io;
+     MemoryRegion pci_io_non_contiguous;
+@@ -183,16 +179,25 @@ static const MemoryRegionOps raven_io_ops = {
+     .valid.unaligned = true,
+ };
+ 
++/*
++ * All four IRQ[ABCD] pins from all slots are tied to a single board
++ * IRQ, so our mapping function here maps everything to IRQ 0.
++ * The code in pci_change_irq_level() tracks the number of times
++ * the mapped IRQ is asserted and deasserted, so if multiple devices
++ * assert an IRQ at the same time the behaviour is correct.
++ *
++ * This may need further refactoring for boards that use multiple IRQ lines.
++ */
+ static int raven_map_irq(PCIDevice *pci_dev, int irq_num)
+ {
+-    return (irq_num + (pci_dev->devfn >> 3)) & 1;
++    return 0;
+ }
+ 
+ static void raven_set_irq(void *opaque, int irq_num, int level)
+ {
+-    PREPPCIState *s = opaque;
++    qemu_irq *irq = opaque;
+ 
+-    qemu_set_irq(s->pci_irqs[irq_num], level);
++    qemu_set_irq(*irq, level);
+ }
+ 
+ static AddressSpace *raven_pcihost_set_iommu(PCIBus *bus, void *opaque,
+@@ -220,26 +225,12 @@ static void raven_pcihost_realizefn(DeviceState *d, Error **errp)
+     PCIHostState *h = PCI_HOST_BRIDGE(dev);
+     PREPPCIState *s = RAVEN_PCI_HOST_BRIDGE(dev);
+     MemoryRegion *address_space_mem = get_system_memory();
+-    int i;
+-
+-    /*
+-     * According to PReP specification section 6.1.6 "System Interrupt
+-     * Assignments", all PCI interrupts are routed via IRQ 15
+-     */
+-    s->or_irq = OR_IRQ(object_new(TYPE_OR_IRQ));
+-    object_property_set_int(OBJECT(s->or_irq), "num-lines", PCI_NUM_PINS,
+-                            &error_fatal);
+-    qdev_realize(DEVICE(s->or_irq), NULL, &error_fatal);
+-    sysbus_init_irq(dev, &s->or_irq->out_irq);
+-
+-    for (i = 0; i < PCI_NUM_PINS; i++) {
+-        s->pci_irqs[i] = qdev_get_gpio_in(DEVICE(s->or_irq), i);
+-    }
+ 
+     qdev_init_gpio_in(d, raven_change_gpio, 1);
+ 
++    sysbus_init_irq(dev, &s->irq);
+     h->bus = pci_register_root_bus(d, NULL, raven_set_irq, raven_map_irq,
+-                                   s, &s->pci_memory, &s->pci_io, 0, 4,
++                                   &s->irq, &s->pci_memory, &s->pci_io, 0, 1,
+                                    TYPE_PCI_BUS);
+ 
+     memory_region_init_io(&h->conf_mem, OBJECT(h), &pci_host_conf_le_ops, s,
+diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
+index 982e40e53e..d3365414d2 100644
+--- a/hw/ppc/prep.c
++++ b/hw/ppc/prep.c
+@@ -304,7 +304,10 @@ static void ibm_40p_init(MachineState *machine)
+     qdev_realize_and_unref(i82378_dev, BUS(pci_bus), &error_fatal);
+     qdev_connect_gpio_out(i82378_dev, 0,
+                           qdev_get_gpio_in(DEVICE(cpu), PPC6xx_INPUT_INT));
+-
++    /*
++     * According to PReP specification section 6.1.6 "System Interrupt
++     * Assignments", all PCI interrupts are routed via IRQ 15
++     */
+     sysbus_connect_irq(pcihost, 0, qdev_get_gpio_in(i82378_dev, 15));
+     isa_bus = ISA_BUS(qdev_get_child_bus(i82378_dev, "isa.0"));
+ 
+-- 
+2.41.3
 
 
