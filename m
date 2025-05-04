@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E581AAA8969
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 23:18:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE6BDAA896B
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 23:19:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBgi4-0002K2-UI; Sun, 04 May 2025 17:17:16 -0400
+	id 1uBgjN-0003aG-Hs; Sun, 04 May 2025 17:18:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uBgi3-0002Jt-7k
- for qemu-devel@nongnu.org; Sun, 04 May 2025 17:17:15 -0400
-Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+ id 1uBgjK-0003a0-Mv
+ for qemu-devel@nongnu.org; Sun, 04 May 2025 17:18:34 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uBgi1-0000Xc-P0
- for qemu-devel@nongnu.org; Sun, 04 May 2025 17:17:14 -0400
-Received: by mail-pj1-x102f.google.com with SMTP id
- 98e67ed59e1d1-30a5094df42so3067621a91.0
- for <qemu-devel@nongnu.org>; Sun, 04 May 2025 14:17:13 -0700 (PDT)
+ id 1uBgjG-0000bL-I9
+ for qemu-devel@nongnu.org; Sun, 04 May 2025 17:18:32 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-7399a2dc13fso5347174b3a.2
+ for <qemu-devel@nongnu.org>; Sun, 04 May 2025 14:18:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746393432; x=1746998232; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746393508; x=1746998308; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=9jthxIalgRV36qcaJ6A9+ytAz1hzHc7Ds4fwsmy4S64=;
- b=ZGSN/sZtdH9WswwuCa16mjNjmXNrj4nsnbtrqmSNEweIRnknM7hN6/40rNx/L2SL7S
- lQXzo7hPYFcbqS7U2ecsGmZXfTn36xElY/jFs0pDLYxamYMVYKL8+g2CFWE6uB2ddR11
- gmfBlTUfbXEqqbusZgK7rrJRGGV4Zo/wPAjQ6qOt/WWrY9gqPa5ZLgP1URY5YEGmiY8o
- RdprVPYK3rKpnj4PSEjPhGM/HvEaU5ZwdeP/qDS6j+HrV687IYX9h0oYZ29lQS/xbp1Q
- d/QdwU+V5VJKfkI56qzk9CKs5OwiiZjFtrn9I1V9SzEm9P3haZAHA5K0He/k8ph+kCJz
- A0ag==
+ bh=XL9Dp+3Ijo9o4E7lEJHRkNbVrgZrOjZ3VFlMuZDYPYU=;
+ b=B+RyJOXUAMsz3gEI7TdzibCLDG/HStrvF/X8m8F2yQLZ27zTFggNfz2LZ3Ok41Rr/8
+ dBTD7Ygo6cGYAL+IBSeRjVhfwCS/brdMGZWo+9ZC/kLqMKR3sZj6IVSClECklYS7dHB+
+ 63198roqaFfNoSPVJVTjDlQdN4je3KVoZk7yQUTnu1tN3dottFOiQ4yma8GLFS3jSKmH
+ VFGdD2iXNpL/eiIL/3SNYZmX0CCYRolta83M/jdzOKDpKj/+qEJGWHOMLFc0/HarKkST
+ q3iweNuWxMi98oZZPBSYMBr0PSUJyIHeb2LYro6wfHLaYjZXUhutDUymAyUVUzFRdF1I
+ eG7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746393432; x=1746998232;
+ d=1e100.net; s=20230601; t=1746393508; x=1746998308;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9jthxIalgRV36qcaJ6A9+ytAz1hzHc7Ds4fwsmy4S64=;
- b=Q3tstlo5ABF/GUZUscR+mADZZRqPv+fBNSLlD9QOnCU/+eCyZir9fhkO8LGUY5czI2
- EHVAXNz/N7ekhdU5Cso8Pk4ezvsNHyZkANIjtpUY89WhwLi8L6xMmwO2d+jM2TdVlerq
- tKpHTX9wlteMtm5I1pwL2s5tbeurlxFxZyiJZiaUzWJZPegAgPSR1rur5Dtpdh24qhnj
- vzLQdSTkDqY2yyw2TARWGrN/BlUXcb75aP9JQzlHUlSu5iIdxEaV5puRhldH5FJMdJzi
- qzPj44c47nieNMb1FgAcAjM2R0DK0/Xp57o004wzvGN259LdoI58NtvCQOlsjcp1kDhn
- kCnQ==
+ bh=XL9Dp+3Ijo9o4E7lEJHRkNbVrgZrOjZ3VFlMuZDYPYU=;
+ b=lTsP5QNK0TmgOKB46J9Z4VpB3RzvWAQTfL1HhU30UX8jgS87pk8FvWJDtdMYahFvjM
+ mQ61ivB9ynlguYQSONwXoEVLlhTKXK+mO5f2K6d8en6AY8iSjpeQROm44zUANrTz3t5B
+ JerDZvR7JCjcXFXHYL7aERYU3CqFSoePmH2ZeJ3iIc936DEHNSBfu/9fZYD9Wjjm2Z7p
+ YCMvOLXyjQl1fZFRbbECTk7fT2Gf9WP7iEUvgDPd5e4sO2bl5eU6E/OIn4Jo/OXZvCjf
+ zJ44gdxiWIpry0OLKyLZJCM+xYGVVrG4VVvyoJz9FN1WmN8qtwtIMLqLjRGbVdeQBQIc
+ lVxA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVexc1PmIzzcW0JT6jvL46y81Iha/nzUEjRtlXpsb0YXZCe29Y91Z2AdCbUi58C+Bin1bQPKG0teVOE@nongnu.org
-X-Gm-Message-State: AOJu0YzKudw6BzulEDqkNVfUhtAowGJdJfAXgbY8/fE8Qx5nrUz+mI7q
- OGGXwTcubYNnS8j3AFGmXwTVkUlhKlmBWuTS33A4nKXqrMk7HtRHuWW/Ym5598Vb7VfS+hYBVL3
- 5Hg8=
-X-Gm-Gg: ASbGncvGwhyUp4rOxoN6NMycFpxcJ5LsbKEb0AQ3RK7Ucf2sMOXT8Q45r/jYDMH/2KB
- cTJwBwZtp3Hw9y1Okl8YITH80Em4HPmbWrYeS7BoKYN1Df14ncf3rBu/Csx36kndnoM3DX5HMky
- b7WSZJVu9ffhX/VV35P8gCcbIcVvTn6+Mai1zCBIpPHULzvaWgjrHt9mu51WRlDFjBYwGVsHspV
- MB2DMlyuinlqWrIlsVSke0r72cz1JH8q7C1iF3AcT0nSsQwLbHcenuDMuheH2AQIbLDMKM9UMy6
- pqPNOvLUZpuHOxyzje2/V7PuH+manDiH/5YdpwpW5PRfLtf05fqS5w==
-X-Google-Smtp-Source: AGHT+IEQ40VJFWxh7hMv8k86s4XzR66YyQhT2LPDQifLm3NJP+IBMDfdGfnGsPMm23oxY2KX1o46Mg==
-X-Received: by 2002:a17:90b:51c7:b0:2ee:db1a:2e3c with SMTP id
- 98e67ed59e1d1-30a61954a41mr7144332a91.1.1746393431762; 
- Sun, 04 May 2025 14:17:11 -0700 (PDT)
+ AJvYcCXFJRUPir/WthQyevdnGcjfFJl3HheH3viZSUwMxP6FkSrTFK3Rj9xtpsgZTErLCaKEKtddUas673Uh@nongnu.org
+X-Gm-Message-State: AOJu0YzyPOYqHuYHb9w/FHsQEqpphbvV3LUyA87SWgN8+GKLR9lDsPn4
+ 2tHRbInmmENA7nqJw4aSupsg4Luf9Y1ZTrqQh3pbo+BdGAxv/hXEV+cOVoz95Zo=
+X-Gm-Gg: ASbGnctvA1tChRWXg//p3JwSIAj5Zl+Xo2m0roa6+Y1/VYyCfoLIZvtTglaqy17mbZY
+ JP81L52h8HxR0fqgKQV4kzIIh3NH4qhaN5GwWpl/YRSBISKA6kZEfeUqvbPc1AN5VcGtEjpbfvl
+ 3TCpJdcR+ZVBlzEyNQIQPlmgK3onysF1kJo/jjFmtftKs1Djfn3R840wWnl41F72Uu4z8x1jNHx
+ bRE7lrT3AV+F+haHAlEXrW/INxPLnL+vEIsFK8KR0SxvOVZ0QbmpaTDMUe8YqMb9upH+f0rsm/j
+ AJ/HUQu0qNC1J9coE33HiyJAYHZ4+mUzk9zAZ0NlQGD6YvsmDFGFuA==
+X-Google-Smtp-Source: AGHT+IE07EJkdNhsyk0pLI7qJlxhEjtV/w030yjvwQEcCmejOc99t3R7tRfb3LerRPeqNoTBwl6B3Q==
+X-Received: by 2002:aa7:9304:0:b0:736:31cf:2590 with SMTP id
+ d2e1a72fcca58-7406f164a6bmr7399845b3a.16.1746393508649; 
+ Sun, 04 May 2025 14:18:28 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-30a267e27b5sm6612762a91.1.2025.05.04.14.17.10
+ d2e1a72fcca58-74058df43c8sm5294678b3a.84.2025.05.04.14.18.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 04 May 2025 14:17:11 -0700 (PDT)
-Message-ID: <c582288d-c990-4078-9c15-5ed5d5a1f426@linaro.org>
-Date: Sun, 4 May 2025 14:17:10 -0700
+ Sun, 04 May 2025 14:18:28 -0700 (PDT)
+Message-ID: <eab4b9ab-8c1d-49fd-8f7d-a835b84e8639@linaro.org>
+Date: Sun, 4 May 2025 14:18:27 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/5] hw/virtio/virtio-mem: Convert
- VIRTIO_MEM_USABLE_EXTENT to runtime
+Subject: Re: [PATCH v3 4/5] hw/virtio/virtio-mem: Convert
+ VIRTIO_MEM_HAS_LEGACY_GUESTS to runtime
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -82,13 +81,13 @@ Cc: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Thomas Huth
  <thuth@redhat.com>, David Hildenbrand <david@redhat.com>
 References: <20250502214551.80401-1-philmd@linaro.org>
- <20250502214551.80401-4-philmd@linaro.org>
+ <20250502214551.80401-5-philmd@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250502214551.80401-4-philmd@linaro.org>
+In-Reply-To: <20250502214551.80401-5-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x102f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,15 +111,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 5/2/25 2:45 PM, Philippe Mathieu-Daudé wrote:
-> Use target_system_arch() to check at runtime which target
-> architecture is being run.
-> Note, since TARGET_ARM is defined for TARGET_AARCH64, we
-> check for both ARM & AARCH64 enum values.
+> Check legacy guests support at runtime: instead of evaluating
+> the VIRTIO_MEM_HAS_LEGACY_GUESTS definition at compile time,
+> call target_system_arch() to detect which target is being run at
+> runtime. Register virtio_mem_legacy_guests_properties[] at runtime.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   hw/virtio/virtio-mem.c | 23 +++++++++++++++--------
->   1 file changed, 15 insertions(+), 8 deletions(-)
+>   hw/virtio/virtio-mem.c | 77 ++++++++++++++++++++++++------------------
+>   1 file changed, 44 insertions(+), 33 deletions(-)
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
