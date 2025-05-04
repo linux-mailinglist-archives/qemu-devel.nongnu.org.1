@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 816E9AA8984
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 23:59:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C58DAA8989
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 23:59:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBhLQ-0007Tb-56; Sun, 04 May 2025 17:57:56 -0400
+	id 1uBhLS-0007W8-Tp; Sun, 04 May 2025 17:57:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uBhLN-0007SM-Su
- for qemu-devel@nongnu.org; Sun, 04 May 2025 17:57:53 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1uBhLP-0007T2-Ho
+ for qemu-devel@nongnu.org; Sun, 04 May 2025 17:57:55 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uBhLM-0005Bw-EG
- for qemu-devel@nongnu.org; Sun, 04 May 2025 17:57:53 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-2264aefc45dso58852805ad.0
- for <qemu-devel@nongnu.org>; Sun, 04 May 2025 14:57:51 -0700 (PDT)
+ id 1uBhLO-0005CE-2G
+ for qemu-devel@nongnu.org; Sun, 04 May 2025 17:57:55 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-2264aefc45dso58852965ad.0
+ for <qemu-devel@nongnu.org>; Sun, 04 May 2025 14:57:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746395870; x=1747000670; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746395872; x=1747000672; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=zwc13b8kC9Z5he0z0xvhp1yrhhR7Vt1vlSABNOYVc1M=;
- b=LGQzhjBgt2ttE9oJZgT7ocBsB0XIUL8ipEyqdR4Z1JNyf9vZI0sdwavhYBSpqwJTRc
- D2C4sz7FkFFvssT7mKatxvoa8iVVetQV+gV0TX6wvmrhwLUIs3Ux3/gFlo2bmYH5G8L0
- fyWZuycALRVIKvleHBrdrRxHSuhGLQanxiVKFN3SbVCatkG8V8sZI94deCc7pmBni4BK
- +/oJcOOMgDjQcTFkTgg6Gr7YmFsuct9gh4A+d98YgKkpSeSned1+KZtOaU+eKFiRZiE8
- phlDSf1toMTqljM+rdDb9NLa/i69xwk0Rgu28zG3byM8XhzlkMb2+V0B/kk8H/7AgHnj
- l3NQ==
+ bh=/tk0gbWoG4ApvXZ5c0JKBgUdcITDobE9RIrWnb6spIQ=;
+ b=uQ+eRlOtBzBq7CikOTB055G8LygEOkXihgGfPUQMtIW3HLQaDquot6F5pHZbqBFVC2
+ chgyJYwYWWgngWLvLgVF0bIWiN2l+o77dngAONAF1MqJHee81nJDld/979Ij8wB23iV9
+ RtoqZlDdyEezkUlIG08ddtZpHTJlHis9ijHT2oDMuvP8/02kbV4/qczWZdDsDzhGq7K5
+ ueWg+HF812GxrZLkIuQKXuJr0WcnjmCPSBjU1eNA8zGoQjCVffPGvOuPcj5XV9Io2awU
+ E6dKii4w/IHYNG7F02YbFI/A6AOkI6M+wvEsKaNUU4pgJjOEY749HGwP3O7YDduGE76r
+ vjfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746395870; x=1747000670;
+ d=1e100.net; s=20230601; t=1746395872; x=1747000672;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=zwc13b8kC9Z5he0z0xvhp1yrhhR7Vt1vlSABNOYVc1M=;
- b=j229XyAZy9fim0yRA7B/V59i9fc89pfUxtt4CjKKTztKrs7LlCd0EHV41ZkJvCKD8W
- +cJ5gfUOAzUsORI7pg2PcrVmHyuRQHdNalu6JadaNUXnen7XfSb2tpVcIK1+q1mYyXs+
- 4ya/bwNBCD9OKs8IOdgsnZJ0Zd7QsEJd8dbYoeOHVIa9OBa/ft05VTwCUCMudrJHMB6p
- gHgW08/gRCEDYs66v9xjkT3fYt5JxnSEttfTApNN3LUal5Wm7vsvxwXSkPzPgm1eYElZ
- c0csqq8KI0Rxdvw9Ere4w5kaH28KR2HSazSCDJwc15hIGTK0FDpK5PNDtaz3zWOx0KDU
- EwCw==
-X-Gm-Message-State: AOJu0Yw5ZTfKCr/ffj7v6/0AlPgbLjSsHnW0FB4m6Ox39HLdodYM9pR7
- jSbpCztQRG9lBTpzvzugg2Lp6JO+pe3pKoF33Ig1h6YGTewcOIOdzZemogFh3bLOFrTrkVqAxLc
- YClQ=
-X-Gm-Gg: ASbGncsb8F0TLadHLy4uSUOv/i/Ksv8tUvCEpBi/E2VgwnOZx10y1lJ4uylYAJ2laLe
- fbEp3EEureORqxw5j5q4fY2NnPURe4hrn7FYcz3B88hRhxSXnKvAYImgmxpRezocZEe3Pk2mZEJ
- /a+hYgr3l+2OBfiTyORGA+QI9Kt6iFaHH5F+68KUEFk5qJDZtmidJNOw4gc7T6TzahFP6gHO6GF
- v5Vz9fSyu2j6Aj6lV7FwwAON0giQ9y7nPknZ/RHrWzIaT2XJ7fc7My0/b0E6yIXMbdP2nXrR/Pw
- CGgitLC1hLD+7R4ShvX3MVx275lOIwBxSULgSfYxpdCkBBQ8
-X-Google-Smtp-Source: AGHT+IECbiCHIB9yXeZyP/73ydQgOkmKcL7fDhfifpt8nRB3vdpLxi/bJq0+dAIeGnkTNsGzJmDT0w==
-X-Received: by 2002:a17:902:dacf:b0:224:24d5:f20a with SMTP id
- d9443c01a7336-22e1eaeecf4mr93104875ad.48.1746395870493; 
- Sun, 04 May 2025 14:57:50 -0700 (PDT)
+ bh=/tk0gbWoG4ApvXZ5c0JKBgUdcITDobE9RIrWnb6spIQ=;
+ b=tpJe3S+toVeYfxdO7MXkWScWAdFCnI4hX/fDtkrmvk5cbP1zyRa6lFICsQw7JiHDtJ
+ zuini6n5xTH5zLmqqrhIRD2bnB9RoxxjlBn1r/e+QYHQCE9urBvERrbn7OioJaMOfAXJ
+ ibOZQ4/8+h20N3AMHbfm+jX7qhPy7fBG3q3H7lrCAXIF7qDdgttIuP/i7MzuQt3BrBMB
+ 1fF6KmvrUqvOZvm8a2RJVA91G5t+5qRe+vA1Q+7CRsQeYCKP55dLjkVRr+je6rD2JDhx
+ CrEyWMVzwD7fkrQpHnqmMZ7egPX2ABgKTEvi1GHrMhzbc1W4I3GGOwl8/cIVHNhcjkCI
+ YRVA==
+X-Gm-Message-State: AOJu0Yx5WBYzSsRheUmo8y7jpfhQXh3RT6SIhnwJ26E43ea+6WNX8FG4
+ pgnZHnwebSL8xhk2GCNOASunWttDXpBaakLp8JRXHeAj8Hgq6X19RPiwnXR6QpjDXPzw04euo1m
+ gbk4=
+X-Gm-Gg: ASbGnctl73+nP4unaBpYX43wqNDZENAl3yUG1SQL9I8KtOS7F/HJVzsUwVUKGp0dtAD
+ ruoPpKR8xTHwReBnZKnTZpEwOXGCsZeKi1Q89epjr54OonDgSecieFb247HJGrTU9ol1LFECS/P
+ vUumYUNPs13uas73jYJ9Nkk5uHtEdbEEtvxxXRQYcZdDRF7ONNiKRZQvElT1nA5mRVHZvz04zHc
+ 5A3H6YiiBo/R7Y5EXW4zYwZoQeifuifS25/6NTaOwBN2hwIJRIex8byT3wsrw7n5Ju/AUlcYlJN
+ Ul0oWgrLDvD75BVcLiGdNcZM7NggD2cI04j3cYDFYt4FXdLs
+X-Google-Smtp-Source: AGHT+IHX4B3MtSbPeoHfu5rcPv/UTsigKurblHN2gBuy1xugWg/RnALJkq6fkZSYL6exMOXH8S9yiA==
+X-Received: by 2002:a17:902:ef02:b0:224:2717:7993 with SMTP id
+ d9443c01a7336-22e1eadac90mr79083055ad.45.1746395872673; 
+ Sun, 04 May 2025 14:57:52 -0700 (PDT)
 Received: from gromero0.. ([200.150.181.215]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22e152204fesm41664875ad.137.2025.05.04.14.57.48
+ d9443c01a7336-22e152204fesm41664875ad.137.2025.05.04.14.57.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 04 May 2025 14:57:50 -0700 (PDT)
+ Sun, 04 May 2025 14:57:52 -0700 (PDT)
 From: Gustavo Romero <gustavo.romero@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, philmd@linaro.org, alex.bennee@linaro.org,
  gustavo.romero@linaro.org
-Subject: [PATCH] qom/object: Fix typo in comment
-Date: Sun,  4 May 2025 21:56:33 +0000
-Message-Id: <20250504215639.54860-5-gustavo.romero@linaro.org>
+Subject: [PATCH] hw/core/machine: Fix indentation
+Date: Sun,  4 May 2025 21:56:34 +0000
+Message-Id: <20250504215639.54860-6-gustavo.romero@linaro.org>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,26 +94,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix duplicate preposition in comment.
+Fix indentation for some elements in the hardware compat arrays.
 
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 ---
- qom/object.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/core/machine.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/qom/object.c b/qom/object.c
-index 664f0f24ae..7b013f40a0 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -485,7 +485,7 @@ bool object_apply_global_props(Object *obj, const GPtrArray *props,
-  * Slot 0: accelerator's global property defaults
-  * Slot 1: machine's global property defaults
-  * Slot 2: global properties from legacy command line option
-- * Each is a GPtrArray of of GlobalProperty.
-+ * Each is a GPtrArray of GlobalProperty.
-  * Applied in order, later entries override earlier ones.
-  */
- static GPtrArray *object_compat_props[3];
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index ed01798d37..b8ae155dfa 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -41,7 +41,7 @@ GlobalProperty hw_compat_10_0[] = {};
+ const size_t hw_compat_10_0_len = G_N_ELEMENTS(hw_compat_10_0);
+ 
+ GlobalProperty hw_compat_9_2[] = {
+-    {"arm-cpu", "backcompat-pauth-default-use-qarma5", "true"},
++    { "arm-cpu", "backcompat-pauth-default-use-qarma5", "true"},
+     { "virtio-balloon-pci", "vectors", "0" },
+     { "virtio-balloon-pci-transitional", "vectors", "0" },
+     { "virtio-balloon-pci-non-transitional", "vectors", "0" },
+@@ -58,12 +58,12 @@ GlobalProperty hw_compat_9_1[] = {
+ const size_t hw_compat_9_1_len = G_N_ELEMENTS(hw_compat_9_1);
+ 
+ GlobalProperty hw_compat_9_0[] = {
+-    {"arm-cpu", "backcompat-cntfrq", "true" },
++    { "arm-cpu", "backcompat-cntfrq", "true" },
+     { "scsi-hd", "migrate-emulated-scsi-request", "false" },
+     { "scsi-cd", "migrate-emulated-scsi-request", "false" },
+-    {"vfio-pci", "skip-vsc-check", "false" },
++    { "vfio-pci", "skip-vsc-check", "false" },
+     { "virtio-pci", "x-pcie-pm-no-soft-reset", "off" },
+-    {"sd-card", "spec_version", "2" },
++    { "sd-card", "spec_version", "2" },
+ };
+ const size_t hw_compat_9_0_len = G_N_ELEMENTS(hw_compat_9_0);
+ 
 -- 
 2.34.1
 
