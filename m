@@ -2,89 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27C4FAA841F
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 07:33:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5D35AA8423
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 07:35:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBRym-0008Rn-Vw; Sun, 04 May 2025 01:33:33 -0400
+	id 1uBRxL-0004lP-Oi; Sun, 04 May 2025 01:32:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uBRyP-0007xD-Bv
- for qemu-devel@nongnu.org; Sun, 04 May 2025 01:33:14 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ id 1uBRwJ-0004Bi-Vx
+ for qemu-devel@nongnu.org; Sun, 04 May 2025 01:31:03 -0400
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uBRyM-00050V-Dr
- for qemu-devel@nongnu.org; Sun, 04 May 2025 01:33:08 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-74019695377so2799369b3a.3
- for <qemu-devel@nongnu.org>; Sat, 03 May 2025 22:33:05 -0700 (PDT)
+ id 1uBRwI-0004tL-0f
+ for qemu-devel@nongnu.org; Sun, 04 May 2025 01:30:59 -0400
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-b074d908e56so2460258a12.2
+ for <qemu-devel@nongnu.org>; Sat, 03 May 2025 22:30:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746336785; x=1746941585; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ZhP0z8+DVkBnlSxtMGbkJypdQb1sgmbB67l7Zk5LpFM=;
- b=n+PAxqhd73Hm/q7Lm8StyzQLHOFj0wvWVhKaDHPFSOdHw3jMoacO7VOQRAJGMd8TQ4
- p1/YxblnMNr4F664eVAQqYa0yd/rD5a+6f5hCPhlD7wj/p5PFRBQtJ4Eh7LtdOq/qm3j
- 1bH2KPmzrkPQ2pbvJ1uUz+X6CiAEEtdSLtuSC5Jd9VydRjZMkuxmjbizdUOxVv/AkwY0
- j3iRYYjhHjqEUgWpcuadRdFaevSrCdYdji9UEH7crWN+4K5fafhG+sCQaZL3OwZArqqx
- E95/c1PjunwUp9lWuXlPcSP1cWDaLpgf9EVG2w4b0lEu8oAhfiG+NZq/XdxclbBvBhzM
- uMbw==
+ d=linaro.org; s=google; t=1746336656; x=1746941456; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=6KTAcWJ13xp5uQrxG2Jl/+OuSInS0YWXgC8gF3pCHPk=;
+ b=I1HhTL/A076SL0UTTRUzMQxj0ATCwhu8meZjtrxgsxzinhisuNgI+HPc9JbxX29LYm
+ igkUj/0ns1Tp45WP+E0hu6pu+fq777hAoaB61awi6ebgCi5H4+l2arZR+4xSIYvO1V4a
+ frtK4Gg6QtV8UZdVLReCThhVDqd/1YTAS1i6MaQ1EFegZ/vYVgETz9gg098MKo3BcsTN
+ bd0dy1ZI73zhwcFc462ZE2AFUl+1jqwtCvMVYaeNo+fOgHfH3uOuSao89H7Oy5Z2fCrY
+ 1FXdr+nn23Db1png53p0xyPFi82ohEDgIVdoDMn15vCZapjuxmErFTIE5r6BVN9laPAu
+ kxlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746336785; x=1746941585;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ZhP0z8+DVkBnlSxtMGbkJypdQb1sgmbB67l7Zk5LpFM=;
- b=IA4nuMIPgMpgExBlcABNBOXRt/eQRMJk/MFTLfk/m5eXfyjQ1wwFOkd3oWQhteNqfP
- Zc10XxHOVT+1nVKxXrKrmBAk+d8qdUiwljIPoxHwSOjBoru5ZI5CqXF/xy88EDBhcE4i
- iUunE4aUVoI6tiL1XWH2X1I5kveUpm//NsXtUQkwy2fJtGB+mgzjDB+5nlqja3U1Yhcu
- jSNtfsd6pZSyvnso1fkDNSvq4IZolNYWd6PQWS8sl2FjhQzmeD7EWz1vkdDUpT7ZZ9MJ
- OqyTE1KgMY5V6bwne6ZSmCKtG7eEkL3TK4c2iVKGdovQ0GQuCNAYBuIDcCYCpQV88sE6
- lsBg==
-X-Gm-Message-State: AOJu0YxQAyU0Xh8EGzD8af8QtAEueUScr6YeICA5gHb0QrYP9JHX/TM7
- m3Ei51sPQX+NiF/+aVcjVoytNk5aH7MMODbjr6NHbw65g8fwIVRZl0GSpWqUVCAeLXIDIHLNlPI
- lmd4=
-X-Gm-Gg: ASbGncuVWwCbYvv1ZqFa4ICiQiPKp9LRJNEw1TwQqmqc8CWB5ylYkrESrYlMPD4Vbzc
- ATdcSUwCOfVNsnVVKDkI0J+ksWfzvT3kbB/QweSUQq5ATvh2EbRy0dG7d1W1dCRPtw5X2+DgqCe
- vdysN3dbUNYjCQ+f2zYl2jw0alPQ0MPJBcDi8/hVO9ZobOM+EUki9oyiSSRgwQpa6TNWuLinFxH
- 89Ec6qSKBjlC3HrlaZ+EYbtDFp0vhwDBnRwhKTpDtBinbJQ5D0ttNmDPdqQiLrXvgpQTgxOt2Df
- kMk8bqgSYmY07hEG6mv9wXNArfN/XF9lJvGIaOlsnZUXxRFlz0c=
-X-Google-Smtp-Source: AGHT+IFxzLf5brOirIah+E07icoYpHpD+eH8Rlgkwz7ETNho3CAMflgpUA/uxvEn58nCtyo036kx9g==
-X-Received: by 2002:a05:6a20:9f8d:b0:1f5:8cdb:2777 with SMTP id
- adf61e73a8af0-20e9610a719mr4360406637.3.1746336784802; 
- Sat, 03 May 2025 22:33:04 -0700 (PDT)
-Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-740590a1c09sm4237101b3a.168.2025.05.03.22.33.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 03 May 2025 22:33:04 -0700 (PDT)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+ d=1e100.net; s=20230601; t=1746336656; x=1746941456;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=6KTAcWJ13xp5uQrxG2Jl/+OuSInS0YWXgC8gF3pCHPk=;
+ b=uNxH3ZJtwhtWuLKJTzrYPnsfjMD5SrpxYZllKX6a6owacwbHWYekP8fe+tbcGOvDcP
+ l8xtY+zF5oHL+GzR+dXxMlHw3dGXtVKajHrnR5jlVRcfCJ8g3ARlt038Z3wfo9WOwdPC
+ q6NUinJmVyKH23npHM7SA3iHLWaV6IDJxQSVnuOH5U/3StijUrtoW2VOYXXkTCgR8kj0
+ in9LBHxid+cRRwDJGvl5RqS7WryQYEomTwEojfHyXJj+J/hNRZtxji6rhiKsKH5wZjpa
+ fbdvzdodhoJcaqh7veFHF2I6jryg5UCkpoJUTapJZ+ToUTx/b70iraJuXMqHkkpLhGgs
+ Ys0g==
+X-Gm-Message-State: AOJu0YwhL4ssdRn53A92hULxSUlQ4aHWtYWS8XQ8rZPaxKfqdk8N5PqZ
+ XSYbCYxUB5KHSCiVoiNFyZyvfcrNwQrENBlb2lcWigQ2CBfGH/mhrMhfkLKLBv7IpdP4WLweFuK
+ 3XLc=
+X-Gm-Gg: ASbGncveFZDB8LVF8j3Gxu/AYXAyGtlQ2SGA6YqFNHq+TK8eOBAQrjqlgORyWrtq/C+
+ jc3Rx/VTMbV6wJ6+NnN7B/Aye5D4PiL8Lni2ItXPBQozTa4DSGJPr+4ZAdm7DQm3yKd9ZdfTqc2
+ YN3caDyRCxlJKX0/LdfLM1Vr23fAlujRmt8/NLi7xhXFGsEXElOJSNwaV4AE8WYKUv00eWXfqPx
+ 3mltD0rIT0+54Krwyy57pC/kNNu69P61TGLoIn8MgBClw2n6ttcFegRbWIW1Mbx5xDLKz5dZaJb
+ WbisVt/WilelGM3YxO2bbuYYd+eIEEXd1sL39wQGPDlI2SFf/9dWRCbfs9lcOFcy
+X-Google-Smtp-Source: AGHT+IFG3Fh3OmK4nyyMWaj/8CJF8m2OKT56xa6Rlm7TVxCw3VLXdVuw4KrYDmvPYL2Yqr7Q05OW6Q==
+X-Received: by 2002:a17:90b:3505:b0:308:7a70:489a with SMTP id
+ 98e67ed59e1d1-30a61a49176mr4616861a91.30.1746336656291; 
+ Sat, 03 May 2025 22:30:56 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-22e152291e3sm32237285ad.202.2025.05.03.22.30.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 03 May 2025 22:30:55 -0700 (PDT)
+Message-ID: <e060e797-306f-4541-907b-7fdd8ae7781d@linaro.org>
+Date: Sat, 3 May 2025 22:30:55 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 04/40] meson: apply target config for picking files
+ from libsystem and libuser
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org, anjo@rev.ng,
  kvm@vger.kernel.org, richard.henderson@linaro.org,
  Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- alex.bennee@linaro.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v4 40/40] target/arm/machine: compile file once (system)
-Date: Sat,  3 May 2025 22:29:14 -0700
-Message-ID: <20250504052914.3525365-41-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250504052914.3525365-1-pierrick.bouvier@linaro.org>
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ alex.bennee@linaro.org
 References: <20250504052914.3525365-1-pierrick.bouvier@linaro.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x430.google.com
+ <20250504052914.3525365-5-pierrick.bouvier@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20250504052914.3525365-5-pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,32 +105,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- target/arm/meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 5/3/25 10:28 PM, Pierrick Bouvier wrote:
+> semihosting code needs to be included only if CONFIG_SEMIHOSTING is set.
+> However, this is a target configuration, so we need to apply it to the
+> libsystem libuser source sets.
+> 
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> ---
+>   meson.build | 26 ++++++++++++++------------
+>   1 file changed, 14 insertions(+), 12 deletions(-)
+> 
+> diff --git a/meson.build b/meson.build
+> index 6f4129826af..59c520de359 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -4056,27 +4056,19 @@ common_ss.add(qom, qemuutil)
+>   common_ss.add_all(when: 'CONFIG_SYSTEM_ONLY', if_true: [system_ss])
+>   common_ss.add_all(when: 'CONFIG_USER_ONLY', if_true: user_ss)
+>   
+> -libuser_ss = libuser_ss.apply({})
+>   libuser = static_library('user',
+> -                         libuser_ss.sources() + genh,
+> +                         libuser_ss.all_sources() + genh,
+>                            c_args: ['-DCONFIG_USER_ONLY',
+>                                     '-DCOMPILING_SYSTEM_VS_USER'],
+> -                         dependencies: libuser_ss.dependencies(),
+> +                         dependencies: libuser_ss.all_dependencies(),
+>                            build_by_default: false)
+> -libuser = declare_dependency(objects: libuser.extract_all_objects(recursive: false),
+> -                             dependencies: libuser_ss.dependencies())
+> -common_ss.add(when: 'CONFIG_USER_ONLY', if_true: libuser)
+>   
+> -libsystem_ss = libsystem_ss.apply({})
+>   libsystem = static_library('system',
+> -                           libsystem_ss.sources() + genh,
+> +                           libsystem_ss.all_sources() + genh,
+>                              c_args: ['-DCONFIG_SOFTMMU',
+>                                       '-DCOMPILING_SYSTEM_VS_USER'],
+> -                           dependencies: libsystem_ss.dependencies(),
+> +                           dependencies: libsystem_ss.all_dependencies(),
+>                              build_by_default: false)
+> -libsystem = declare_dependency(objects: libsystem.extract_all_objects(recursive: false),
+> -                               dependencies: libsystem_ss.dependencies())
+> -common_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: libsystem)
+>   
+>   # Note that this library is never used directly (only through extract_objects)
+>   # and is not built by default; therefore, source files not used by the build
+> @@ -4315,6 +4307,16 @@ foreach target : target_dirs
+>     target_common = common_ss.apply(config_target, strict: false)
+>     objects = [common_all.extract_objects(target_common.sources())]
+>     arch_deps += target_common.dependencies()
+> +  if target_type == 'system'
+> +    src = libsystem_ss.apply(config_target, strict: false)
+> +    objects += libsystem.extract_objects(src.sources())
+> +    arch_deps += src.dependencies()
+> +  endif
+> +  if target_type == 'user'
+> +    src = libuser_ss.apply(config_target, strict: false)
+> +    objects += libuser.extract_objects(src.sources())
+> +    arch_deps += src.dependencies()
+> +  endif
+>     if target_base_arch in target_common_arch_libs
+>       src = target_common_arch[target_base_arch].apply(config_target, strict: false)
+>       lib = target_common_arch_libs[target_base_arch]
 
-diff --git a/target/arm/meson.build b/target/arm/meson.build
-index bb1c09676d5..b404fa54863 100644
---- a/target/arm/meson.build
-+++ b/target/arm/meson.build
-@@ -13,7 +13,6 @@ arm_system_ss = ss.source_set()
- arm_common_system_ss = ss.source_set()
- arm_system_ss.add(files(
-   'arm-qmp-cmds.c',
--  'machine.c',
- ))
- arm_system_ss.add(when: 'CONFIG_KVM', if_true: files('hyp_gdbstub.c', 'kvm.c'))
- arm_system_ss.add(when: 'CONFIG_HVF', if_true: files('hyp_gdbstub.c'))
-@@ -39,6 +38,7 @@ arm_common_system_ss.add(files(
-   'cortex-regs.c',
-   'debug_helper.c',
-   'helper.c',
-+  'machine.c',
-   'ptw.c',
-   'vfp_fpscr.c',
- ))
--- 
-2.47.2
-
+@Philippe: this is the patch you need for semihosting (+ previous one).
 
