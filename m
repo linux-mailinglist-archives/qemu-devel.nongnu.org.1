@@ -2,47 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7165AA87A4
-	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 18:05:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53382AA87A1
+	for <lists+qemu-devel@lfdr.de>; Sun,  4 May 2025 18:04:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBbmt-0005KQ-Im; Sun, 04 May 2025 12:01:55 -0400
+	id 1uBbmn-00058l-Dv; Sun, 04 May 2025 12:01:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uBbmf-0004xA-4C; Sun, 04 May 2025 12:01:41 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ id 1uBbmi-0004zr-FT; Sun, 04 May 2025 12:01:44 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uBbmb-0004BJ-JV; Sun, 04 May 2025 12:01:40 -0400
+ id 1uBbmg-0004Cz-Rj; Sun, 04 May 2025 12:01:44 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id EF7EA55D238;
- Sun, 04 May 2025 18:01:35 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 3027E55D21A;
+ Sun, 04 May 2025 18:01:41 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id LteAur2GItcj; Sun,  4 May 2025 18:01:33 +0200 (CEST)
+ with ESMTP id dzntd0URU0ww; Sun,  4 May 2025 18:01:39 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id EF04E55D23A; Sun, 04 May 2025 18:01:33 +0200 (CEST)
-Message-ID: <cdd698572440e376cb38b9ff96fc22b650101725.1746374076.git.balaton@eik.bme.hu>
+ id 3867855D233; Sun, 04 May 2025 18:01:39 +0200 (CEST)
+Message-ID: <24056115eec7fc376d1520283122f9191bdb0553.1746374076.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1746374076.git.balaton@eik.bme.hu>
 References: <cover.1746374076.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 07/16] hw/pci-host/raven: Simplify PCI interrupt routing
+Subject: [PATCH 12/16] hw/pci-host/raven: Fix PCI config direct access region
 To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>,
  Artyom Tarasenko <atar4qemu@gmail.com>, Nicholas Piggin <npiggin@gmail.com>
-Date: Sun, 04 May 2025 18:01:33 +0200 (CEST)
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
+Date: Sun, 04 May 2025 18:01:39 +0200 (CEST)
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -58,115 +57,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-No need to use an or-irq to map interrupt lines to a single IRQ as the
-PCI code can handle this internally so simplify by dropping the or-irq.
+The PCI configuration direct access region occupies 8 MiB at offset
+0x800000 in PCI IO space so model that accordingly.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- hw/pci-host/raven.c | 39 +++++++++++++++------------------------
- hw/ppc/prep.c       |  5 ++++-
- 2 files changed, 19 insertions(+), 25 deletions(-)
+ hw/pci-host/raven.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/hw/pci-host/raven.c b/hw/pci-host/raven.c
-index 51427553b2..a400a22df3 100644
+index 7550c291c6..318400c595 100644
 --- a/hw/pci-host/raven.c
 +++ b/hw/pci-host/raven.c
-@@ -30,11 +30,8 @@
- #include "hw/pci/pci_device.h"
- #include "hw/pci/pci_bus.h"
- #include "hw/pci/pci_host.h"
--#include "hw/qdev-properties.h"
- #include "hw/intc/i8259.h"
- #include "hw/irq.h"
--#include "hw/or-irq.h"
--#include "qom/object.h"
+@@ -231,8 +231,8 @@ static void raven_pcihost_realizefn(DeviceState *d, Error **errp)
  
- #define TYPE_RAVEN_PCI_DEVICE "raven"
- #define TYPE_RAVEN_PCI_HOST_BRIDGE "raven-pcihost"
-@@ -44,8 +41,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(PREPPCIState, RAVEN_PCI_HOST_BRIDGE)
- struct PREPPCIState {
-     PCIHostState parent_obj;
+     mr = g_new0(MemoryRegion, 1);
+     memory_region_init_io(mr, OBJECT(h), &raven_mmcfg_ops, h->bus,
+-                          "pci-mmcfg", 0x00400000);
+-    memory_region_add_subregion(address_space_mem, 0x80800000, mr);
++                          "pci-mmcfg", 8 * MiB);
++    memory_region_add_subregion(&s->pci_io, 0x800000, mr);
  
--    OrIRQState *or_irq;
--    qemu_irq pci_irqs[PCI_NUM_PINS];
-+    qemu_irq irq;
-     AddressSpace pci_io_as;
-     MemoryRegion pci_io;
-     MemoryRegion pci_io_non_contiguous;
-@@ -183,16 +179,25 @@ static const MemoryRegionOps raven_io_ops = {
-     .valid.unaligned = true,
- };
- 
-+/*
-+ * All four IRQ[ABCD] pins from all slots are tied to a single board
-+ * IRQ, so our mapping function here maps everything to IRQ 0.
-+ * The code in pci_change_irq_level() tracks the number of times
-+ * the mapped IRQ is asserted and deasserted, so if multiple devices
-+ * assert an IRQ at the same time the behaviour is correct.
-+ *
-+ * This may need further refactoring for boards that use multiple IRQ lines.
-+ */
- static int raven_map_irq(PCIDevice *pci_dev, int irq_num)
- {
--    return (irq_num + (pci_dev->devfn >> 3)) & 1;
-+    return 0;
- }
- 
- static void raven_set_irq(void *opaque, int irq_num, int level)
- {
--    PREPPCIState *s = opaque;
-+    qemu_irq *irq = opaque;
- 
--    qemu_set_irq(s->pci_irqs[irq_num], level);
-+    qemu_set_irq(*irq, level);
- }
- 
- static AddressSpace *raven_pcihost_set_iommu(PCIBus *bus, void *opaque,
-@@ -220,26 +225,12 @@ static void raven_pcihost_realizefn(DeviceState *d, Error **errp)
-     PCIHostState *h = PCI_HOST_BRIDGE(dev);
-     PREPPCIState *s = RAVEN_PCI_HOST_BRIDGE(dev);
-     MemoryRegion *address_space_mem = get_system_memory();
--    int i;
--
--    /*
--     * According to PReP specification section 6.1.6 "System Interrupt
--     * Assignments", all PCI interrupts are routed via IRQ 15
--     */
--    s->or_irq = OR_IRQ(object_new(TYPE_OR_IRQ));
--    object_property_set_int(OBJECT(s->or_irq), "num-lines", PCI_NUM_PINS,
--                            &error_fatal);
--    qdev_realize(DEVICE(s->or_irq), NULL, &error_fatal);
--    sysbus_init_irq(dev, &s->or_irq->out_irq);
--
--    for (i = 0; i < PCI_NUM_PINS; i++) {
--        s->pci_irqs[i] = qdev_get_gpio_in(DEVICE(s->or_irq), i);
--    }
- 
-     qdev_init_gpio_in(d, raven_change_gpio, 1);
- 
-+    sysbus_init_irq(dev, &s->irq);
-     h->bus = pci_register_root_bus(d, NULL, raven_set_irq, raven_map_irq,
--                                   s, &s->pci_memory, &s->pci_io, 0, 4,
-+                                   &s->irq, &s->pci_memory, &s->pci_io, 0, 1,
-                                    TYPE_PCI_BUS);
- 
-     memory_region_init_io(&h->conf_mem, OBJECT(h), &pci_host_conf_le_ops, s,
-diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
-index 982e40e53e..d3365414d2 100644
---- a/hw/ppc/prep.c
-+++ b/hw/ppc/prep.c
-@@ -304,7 +304,10 @@ static void ibm_40p_init(MachineState *machine)
-     qdev_realize_and_unref(i82378_dev, BUS(pci_bus), &error_fatal);
-     qdev_connect_gpio_out(i82378_dev, 0,
-                           qdev_get_gpio_in(DEVICE(cpu), PPC6xx_INPUT_INT));
--
-+    /*
-+     * According to PReP specification section 6.1.6 "System Interrupt
-+     * Assignments", all PCI interrupts are routed via IRQ 15
-+     */
-     sysbus_connect_irq(pcihost, 0, qdev_get_gpio_in(i82378_dev, 15));
-     isa_bus = ISA_BUS(qdev_get_child_bus(i82378_dev, "isa.0"));
- 
+     memory_region_init_io(&s->pci_intack, OBJECT(s), &raven_intack_ops, s,
+                           "pci-intack", 1);
 -- 
 2.41.3
 
