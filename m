@@ -2,46 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80311AA9025
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 11:54:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A4D1AA9059
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 11:55:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBsWa-0002eG-QJ; Mon, 05 May 2025 05:54:13 -0400
+	id 1uBsXC-00038d-3l; Mon, 05 May 2025 05:54:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
- (envelope-from <cdafeda35709ddf8cd982a7eb653c2a5028c8074@kylie.crudebyte.com>)
- id 1uBsWR-0002d3-Q2
- for qemu-devel@nongnu.org; Mon, 05 May 2025 05:54:06 -0400
+ (envelope-from <4719a2d59176a6c850e2b4f1af44cecd25430fce@kylie.crudebyte.com>)
+ id 1uBsX7-00030L-5m
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 05:54:45 -0400
 Received: from kylie.crudebyte.com ([5.189.157.229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
- (envelope-from <cdafeda35709ddf8cd982a7eb653c2a5028c8074@kylie.crudebyte.com>)
- id 1uBsWP-0005Aw-Pf
- for qemu-devel@nongnu.org; Mon, 05 May 2025 05:54:03 -0400
+ (envelope-from <4719a2d59176a6c850e2b4f1af44cecd25430fce@kylie.crudebyte.com>)
+ id 1uBsX5-0005Hs-9N
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 05:54:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Cc:To:Subject:Date:From:Message-Id:Content-Type:
- Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Content-ID:
- Content-Description; bh=drUUw/RVzvIbVSttIX2saBkyr6HVpHTY4POzOc0Ssb0=; b=Yydg4
- 2HmMNkWx6387H+EgXvTP6md1Mbxutie8FEup0JdryJBkeEOjmpcCtVb4zdvlTqRM87mN6SPyyuj1W
- bbV9RHXdGE+oLdyvJSHAucPO1XeT9+rpiCqbDlEaCcEhYegVKGoTEbUqcclqQDWn1xOiOZmtYgL26
- PSDnM+WE8lzKz64DrI+U+6jdCHOH4aMu0QZR5EmBSbiOKWIz4WMsHrGAsso0fL6GWwqLQTDCq1/G5
- tCQ1DLUB62egGcB+LEh5zNKrQeLc5nSyZQhBVUMtZmaYQ0P7XnuHofiWUafqrNuvvaWUZizO+U4kN
- Fp8oy5lLawjlMkiSIngWSh1lRtCAwvMel81eSsTo61T+gCqLkeJhqWrIXX9tlHHX1WjtAH3XcfiXP
- Hrnl9Ir8uePWCLGq/UgO0UjdiwUkrlUlTbYuYld6SdQJUgdaosDIm3hJti+3qp7gvxigQLeGPFV9u
- 9UEKq4VdQVqmC6TW1RbhEVNd7KAxoRwuyNCutBSu8sby+/JfZu6jTPsSzB00HnGo+/+nkJvC9lLNf
- sRMeuCCWwo0lTjxQIjmi/UjVubwjOQsEKGXy+2cXdr0Yo/F9O1PRP9rKwv0RIu4BKMvr8RD/mFG/F
- kwMNLe7Pl2ZGOnU7S3Y4o+3YDQd2CDUoemL6s/SeNf6j7ReZZPFevQgBA9rODg=;
-Message-Id: <cover.1746438650.git.qemu_oss@crudebyte.com>
+ d=crudebyte.com; s=kylie; h=Cc:To:Subject:Date:From:References:In-Reply-To:
+ Message-Id:Content-Type:Content-Transfer-Encoding:MIME-Version:Content-ID:
+ Content-Description; bh=fBu2ksFPOv5qG79kmGMboUHwg9Rt0hh/y2JUq6uOd94=; b=KplKb
+ K4FlZfxAuuRJ809D1eu7fm58j8W+VuyRnTV1U1mo5F1jQO/i6yh5IFNazN0QXQl+ssn328lbjlj6d
+ WHtIdobcV7XmQbu1awfxPFgqu7uArpJ3dmxUXdrF9NiqBGE7IjMXcGqwC+IxlQlYMfZUlS96F2MDU
+ tFbdCMgKTxpxRyNiowPDn3xxG3Ay+8/GKToDB6YWasSVasBEs2FypAe2utDrLXR9e8upNA+4Ae4mq
+ 3Wze3sWJ2xtqhuTkbNeuDQMqHI+/PXuwf6yJ33THLpePnkXLAWSjU237iNwqoLYEKwq8Hv2VL2Grf
+ n4VUObgtv0c+rKmRRYt+VXowDTk8h6HST6iGfL1Ger6CyCOqx8yd7obtCNsCPmGo+ulEJQH06wLA2
+ Wz/wk8CPXe5519ykpHusNRokBSr9VU6zfx4XAG7yjkd1lDdjJuS+ZAJ2pklI8hHFquKNUvB0sV47k
+ 20cFFjb1J5vLaIyd/Nyf0nV/As4dJH+DZQ3HOcLdWMlTXQCT7Ww8zXqDOKoJpwG2ljK5PImKOHxeU
+ n8nct9KW4up/l+/IAHA9PZAmhv9yiZsyHK6EkGEuTuQnfy5NRrASzifloFgmyK0P9b0x7cYg8HplQ
+ YiKjIuWw7nvJNc5D9XbuDeB9uiNBxpPzHE42koAx92aKuJ/YW7QBo5m5XKSayo=;
+Message-Id: <4719a2d59176a6c850e2b4f1af44cecd25430fce.1746438650.git.qemu_oss@crudebyte.com>
+In-Reply-To: <cover.1746438650.git.qemu_oss@crudebyte.com>
+References: <cover.1746438650.git.qemu_oss@crudebyte.com>
 From: Christian Schoenebeck <qemu_oss@crudebyte.com>
 Date: Mon, 05 May 2025 11:50:51 +0200
-Subject: [PULL 0/9] 9p queue 2025-05-05
+Subject: [PULL 7/9] tests/9p: add 'Tsetattr' request to test client
 To: qemu-devel@nongnu.org,
     Peter Maydell <peter.maydell@linaro.org>
 Cc: Greg Kurz <groug@kaod.org>
 Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=cdafeda35709ddf8cd982a7eb653c2a5028c8074@kylie.crudebyte.com;
+ envelope-from=4719a2d59176a6c850e2b4f1af44cecd25430fce@kylie.crudebyte.com;
  helo=kylie.crudebyte.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -65,53 +67,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 5134cf9b5d3aee4475fe7e1c1c11b093731073cf:
+Add and implement functions to 9pfs test client for sending a 9p2000.L
+'Tsetattr' request and receiving its 'Rsetattr' response counterpart.
 
-  Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2025-04-30 13:34:44 -0400)
+Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Signed-off-by: Greg Kurz <groug@kaod.org>
+Message-Id: <20250312152933.383967-6-groug@kaod.org>
+---
+ tests/qtest/libqos/virtio-9p-client.c | 49 +++++++++++++++++++++++++++
+ tests/qtest/libqos/virtio-9p-client.h | 34 +++++++++++++++++++
+ tests/qtest/virtio-9p-test.c          |  1 +
+ 3 files changed, 84 insertions(+)
 
-are available in the Git repository at:
+diff --git a/tests/qtest/libqos/virtio-9p-client.c b/tests/qtest/libqos/virtio-9p-client.c
+index 98b77db51d..6ab4501c6e 100644
+--- a/tests/qtest/libqos/virtio-9p-client.c
++++ b/tests/qtest/libqos/virtio-9p-client.c
+@@ -557,6 +557,55 @@ void v9fs_rgetattr(P9Req *req, v9fs_attr *attr)
+     v9fs_req_free(req);
+ }
+ 
++/*
++ * size[4] Tsetattr tag[2] fid[4] valid[4] mode[4] uid[4] gid[4] size[8]
++ *                  atime_sec[8] atime_nsec[8] mtime_sec[8] mtime_nsec[8]
++ */
++TSetAttrRes v9fs_tsetattr(TSetAttrOpt opt)
++{
++    P9Req *req;
++    uint32_t err;
++
++    g_assert(opt.client);
++
++    req = v9fs_req_init(
++        opt.client, 4/*fid*/ + 4/*valid*/ + 4/*mode*/ + 4/*uid*/ + 4/*gid*/ +
++        8/*size*/ + 8/*atime_sec*/ + 8/*atime_nsec*/ + 8/*mtime_sec*/ +
++        8/*mtime_nsec*/, P9_TSETATTR, opt.tag
++    );
++    v9fs_uint32_write(req, opt.fid);
++    v9fs_uint32_write(req, (uint32_t) opt.attr.valid);
++    v9fs_uint32_write(req, opt.attr.mode);
++    v9fs_uint32_write(req, opt.attr.uid);
++    v9fs_uint32_write(req, opt.attr.gid);
++    v9fs_uint64_write(req, opt.attr.size);
++    v9fs_uint64_write(req, opt.attr.atime_sec);
++    v9fs_uint64_write(req, opt.attr.atime_nsec);
++    v9fs_uint64_write(req, opt.attr.mtime_sec);
++    v9fs_uint64_write(req, opt.attr.mtime_nsec);
++    v9fs_req_send(req);
++
++    if (!opt.requestOnly) {
++        v9fs_req_wait_for_reply(req, NULL);
++        if (opt.expectErr) {
++            v9fs_rlerror(req, &err);
++            g_assert_cmpint(err, ==, opt.expectErr);
++        } else {
++            v9fs_rsetattr(req);
++        }
++        req = NULL; /* request was freed */
++    }
++
++    return (TSetAttrRes) { .req = req };
++}
++
++/* size[4] Rsetattr tag[2] */
++void v9fs_rsetattr(P9Req *req)
++{
++    v9fs_req_recv(req, P9_RSETATTR);
++    v9fs_req_free(req);
++}
++
+ /* size[4] Treaddir tag[2] fid[4] offset[8] count[4] */
+ TReadDirRes v9fs_treaddir(TReadDirOpt opt)
+ {
+diff --git a/tests/qtest/libqos/virtio-9p-client.h b/tests/qtest/libqos/virtio-9p-client.h
+index 78228eb97d..e3221a3104 100644
+--- a/tests/qtest/libqos/virtio-9p-client.h
++++ b/tests/qtest/libqos/virtio-9p-client.h
+@@ -65,6 +65,16 @@ typedef struct v9fs_attr {
+ #define P9_GETATTR_BASIC    0x000007ffULL /* Mask for fields up to BLOCKS */
+ #define P9_GETATTR_ALL      0x00003fffULL /* Mask for ALL fields */
+ 
++#define P9_SETATTR_MODE         0x00000001UL
++#define P9_SETATTR_UID          0x00000002UL
++#define P9_SETATTR_GID          0x00000004UL
++#define P9_SETATTR_SIZE         0x00000008UL
++#define P9_SETATTR_ATIME        0x00000010UL
++#define P9_SETATTR_MTIME        0x00000020UL
++#define P9_SETATTR_CTIME        0x00000040UL
++#define P9_SETATTR_ATIME_SET    0x00000080UL
++#define P9_SETATTR_MTIME_SET    0x00000100UL
++
+ struct V9fsDirent {
+     v9fs_qid qid;
+     uint64_t offset;
+@@ -182,6 +192,28 @@ typedef struct TGetAttrRes {
+     P9Req *req;
+ } TGetAttrRes;
+ 
++/* options for 'Tsetattr' 9p request */
++typedef struct TSetAttrOpt {
++    /* 9P client being used (mandatory) */
++    QVirtio9P *client;
++    /* user supplied tag number being returned with response (optional) */
++    uint16_t tag;
++    /* file ID of file/dir whose attributes shall be modified (required) */
++    uint32_t fid;
++    /* new attribute values to be set by 9p server */
++    v9fs_attr attr;
++    /* only send Tsetattr request but not wait for a reply? (optional) */
++    bool requestOnly;
++    /* do we expect an Rlerror response, if yes which error code? (optional) */
++    uint32_t expectErr;
++} TSetAttrOpt;
++
++/* result of 'Tsetattr' 9p request */
++typedef struct TSetAttrRes {
++    /* if requestOnly was set: request object for further processing */
++    P9Req *req;
++} TSetAttrRes;
++
+ /* options for 'Treaddir' 9p request */
+ typedef struct TReadDirOpt {
+     /* 9P client being used (mandatory) */
+@@ -470,6 +502,8 @@ TWalkRes v9fs_twalk(TWalkOpt opt);
+ void v9fs_rwalk(P9Req *req, uint16_t *nwqid, v9fs_qid **wqid);
+ TGetAttrRes v9fs_tgetattr(TGetAttrOpt);
+ void v9fs_rgetattr(P9Req *req, v9fs_attr *attr);
++TSetAttrRes v9fs_tsetattr(TSetAttrOpt opt);
++void v9fs_rsetattr(P9Req *req);
+ TReadDirRes v9fs_treaddir(TReadDirOpt);
+ void v9fs_rreaddir(P9Req *req, uint32_t *count, uint32_t *nentries,
+                    struct V9fsDirent **entries);
+diff --git a/tests/qtest/virtio-9p-test.c b/tests/qtest/virtio-9p-test.c
+index ab3a12c816..f515a9bb15 100644
+--- a/tests/qtest/virtio-9p-test.c
++++ b/tests/qtest/virtio-9p-test.c
+@@ -20,6 +20,7 @@
+ #define tversion(...) v9fs_tversion((TVersionOpt) __VA_ARGS__)
+ #define tattach(...) v9fs_tattach((TAttachOpt) __VA_ARGS__)
+ #define tgetattr(...) v9fs_tgetattr((TGetAttrOpt) __VA_ARGS__)
++#define tsetattr(...) v9fs_tsetattr((TSetAttrOpt) __VA_ARGS__)
+ #define treaddir(...) v9fs_treaddir((TReadDirOpt) __VA_ARGS__)
+ #define tlopen(...) v9fs_tlopen((TLOpenOpt) __VA_ARGS__)
+ #define twrite(...) v9fs_twrite((TWriteOpt) __VA_ARGS__)
+-- 
+2.30.2
 
-  https://github.com/cschoenebeck/qemu.git tags/pull-9p-20250505
-
-for you to fetch changes up to cdafeda35709ddf8cd982a7eb653c2a5028c8074:
-
-  9pfs: fix 'total_open_fd' decrementation (2025-05-05 11:28:29 +0200)
-
-----------------------------------------------------------------
-9pfs changes:
-
-* Fixes for file descriptor reclaiming algorithm (i.e. when running
-  towards host's allowed limit of max. open file descriptors).
-
-* Additional fixes on use-after-unlink idiom (i.e. client operations on a
-  file descriptor after file has been removed).
-
-----------------------------------------------------------------
-Christian Schoenebeck (4):
-      9pfs: fix concurrent v9fs_reclaim_fd() calls
-      9pfs: fix FD leak and reduce latency of v9fs_reclaim_fd()
-      tests/9p: add 'Tsetattr' request to test client
-      9pfs: fix 'total_open_fd' decrementation
-
-Greg Kurz (5):
-      9pfs: local : Introduce local_fid_fd() helper
-      9pfs: Don't use file descriptors in core code
-      9pfs: Introduce ftruncate file op
-      9pfs: Introduce futimens file op
-      tests/9p: Test `Tsetattr` can truncate unlinked file
-
- fsdev/file-op-9p.h                    |  5 +++
- hw/9pfs/9p-local.c                    | 51 ++++++++++++++++++--------
- hw/9pfs/9p-synth.c                    | 22 ++++++++++++
- hw/9pfs/9p-util.h                     |  1 +
- hw/9pfs/9p.c                          | 68 +++++++++++++++++++++++++++--------
- hw/9pfs/9p.h                          |  1 +
- hw/9pfs/codir.c                       |  7 +++-
- hw/9pfs/cofile.c                      |  7 +++-
- hw/9pfs/cofs.c                        | 37 +++++++++++++++++++
- hw/9pfs/coth.h                        |  4 +++
- tests/qtest/libqos/virtio-9p-client.c | 49 +++++++++++++++++++++++++
- tests/qtest/libqos/virtio-9p-client.h | 34 ++++++++++++++++++
- tests/qtest/virtio-9p-test.c          | 15 ++++++++
- 13 files changed, 271 insertions(+), 30 deletions(-)
 
