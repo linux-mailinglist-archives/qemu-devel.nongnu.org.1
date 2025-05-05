@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1CFFAA960B
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 16:43:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F4C8AA9684
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 16:55:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBx17-0000C4-9D; Mon, 05 May 2025 10:42:01 -0400
+	id 1uBxDV-0004F0-Ri; Mon, 05 May 2025 10:54:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uBx13-0000Bq-QR
- for qemu-devel@nongnu.org; Mon, 05 May 2025 10:41:57 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uBxDT-0004Eq-B9
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 10:54:47 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uBx11-0004AE-O6
- for qemu-devel@nongnu.org; Mon, 05 May 2025 10:41:57 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-5f62d3ed994so2857886a12.2
- for <qemu-devel@nongnu.org>; Mon, 05 May 2025 07:41:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uBxDR-0005Xv-FG
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 10:54:47 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-ac25520a289so762813266b.3
+ for <qemu-devel@nongnu.org>; Mon, 05 May 2025 07:54:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746456114; x=1747060914; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746456883; x=1747061683; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=7TLzdzXxgZvnqe3FXObxE+hlbODLuIZJ+qKj68426Hw=;
- b=SW1hM49k2Q9jfceQFLBWlls5t3xUCdhsG204zmNEeEvhLiPlLblE0yF6e/RBmV+Ptg
- /1Q98iQD4rj6yrMkrlVZJE2jiLnNd3sUMZfuYZ1L19L78CNzoBrWXsRBINuGDOpw0aCF
- 7R9sKF2RptUDnSJnTVKKKmKpfHqZ1k5SaElmgANNNgoMrX6Xi/O/NEm0ahgQaq1/i0Qa
- 9AhkMlPSlJwoBlE8uuSDgGD0sruw62PCe3a8LNoZ43+1D0aJ51P1Ub6ZQuPWJuqVQiug
- VVxbn6WfzBOcJJktgC/p0j9QSh4pVHxB7yc/wnM3IwqSVBvTtQAR/YRpjjVv3JtFjFmN
- nc6Q==
+ bh=9tACv9ujnBDWISNc8RQTCWu911ZglEEofIlCvb+T3G0=;
+ b=ZmYaCzzVOOt1ntyICP3N8zzCQA/AcrggVroPl1+gmEaVh5HRhIfCe7j442B+pG1EAG
+ lyLj9s6lxVhr29orU7aCDI/aFRCOG7/9hRgPHE6bmeoFtot84RMQrZaookivOft0f4gn
+ xCWaL4jS0gyTfBg8xVn9OvqY3p0q6gdk78VxkT89OYnej3f44nBGi/bgbzDPWCnCqEJX
+ /QBBqXl2tKV6woaTeIxFzPRkrfU2gtribYs/jgQg36xyqit02X/VXiEB0bnCiWlRrLW7
+ qt6dhimmnj+5WoRBaZ0+FU4oUtuAU+aDZZDgYY06fFgufslFt9hGLBy+l8+J1AuNsGXo
+ 1DlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746456114; x=1747060914;
+ d=1e100.net; s=20230601; t=1746456883; x=1747061683;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7TLzdzXxgZvnqe3FXObxE+hlbODLuIZJ+qKj68426Hw=;
- b=u6j41rvQZmH0eyWaRQCD38TFGtKLNSBphCahaosIDI673lmqmyukVqJmU72g0xaB33
- z8TRLeu1qxuk6kO0M6woDwtVePZWfsx2X9GBy23z3E8VWW/AGrZoWsZxQFt69U1UwElU
- lpqvdNRv8/kfDyGGwzIDy3PUECQ851h2lTiHhNVjp2bvf5uyS9V53WOXykNEqjIcg82e
- bjoMl1LtbCxkB/7+op/O7crI0Xazn3KW0NHTtaRHvXVx4v3oU0GI9gCedB2FPoXbFJJT
- Y6he0HamwXzfB4niYd89Gul9ARjseKeajBzOD67Dzk3QnSQOQClZWSRuHV44bJMTEhQW
- vQBg==
+ bh=9tACv9ujnBDWISNc8RQTCWu911ZglEEofIlCvb+T3G0=;
+ b=VevXiIYzLMEzcZCleLSjh/+U+oOMQ9b5pjDd6bmQgJpB1uxuRIXaqCmbnIANImJuux
+ w4H1Gdi1ckqPB7Oklpfbgr+nX35A1FJSokiVG8YTxX+rlaitc5eG9wj71zEXaNACkvI9
+ BPre0JhX0ECDmk7GRC1UGB93GuFz3RV3ec2rLVwQ1dyJ5Y9iLObcrhSI7G6qjTu4CFft
+ +DEEsADpm88VmYDnVoruLqu637/4wmzlYkoQhyW45is6TivQcPsO2Mmxo0Y948bGSJgJ
+ A2kAzComU+59aFdBec04x48+mvDATOz41NN0MIgf3B0YfvWhsrosweRQuCM7E0Zl/x3L
+ Hbug==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWfThDXr6X8AwPoxhYr6gWao/aYNGVrjkOfOlHI1zhiqVcW0CFMxa9lT4kRobTX4jnBHuI+XpS1Yq+r@nongnu.org
-X-Gm-Message-State: AOJu0Yy/0K+C9SGTH8jdxoHfUwA9Q9P14AsaMpgbA/VjXDWi66/jnfnu
- 0giogWoABtA+SZIgcwxXCoyVdm3CFMkMA+eYQi0ZbDJUspglk/OMdzpo64LflB8=
-X-Gm-Gg: ASbGncvRGISVxw1gp5Flp0UZP/UrqsuzjMKfkIX/9QqfSUhp4DTgeStdB1PlpCIw/5a
- xJlzVqlaMnyhImyhb9rcvCzdNhnafEvWoLdgn86GLyTm61mEuqGnbcxpJnvZYjfUwugb18NEHK0
- PTA9Pp0HXLRnANUcftnTRxLAqSXBjDwDSFPoD3unXGsJOs6bmT343eK+l6aasYZb87qVr41qyHD
- LQluGelyX5lEwxIpiTuOEZv53m9U9FtgCCzm8boRFepc3b2iUpHxUOEXhduqp56wfCoduOmh9SL
- uXDpC1oTKG+7yZf6QHmkOu82ymipROWNb8m3i67iIq/gSN4it9rlxa6HjDJ/YeV/Q/gtmT6/hur
- hn4uqh2ZKesrLaQ==
-X-Google-Smtp-Source: AGHT+IGyMr0zuEMIChkNbFFyF+0P5hhwWg6hQHK/ya4TEM+owgoQzmSfk9AlIHczEZuSfk9ACOpC9g==
-X-Received: by 2002:a05:6402:26c5:b0:5f3:4ad5:692b with SMTP id
- 4fb4d7f45d1cf-5faa7f3168bmr6885562a12.2.1746456113573; 
- Mon, 05 May 2025 07:41:53 -0700 (PDT)
+ AJvYcCXNR6qSinapNbIi6oRSUp/xcYMl1CeDHylTxC7quiLjpY5a/C3Y/6luRHnMK4/ScPBdAUQtdRaQ0DbC@nongnu.org
+X-Gm-Message-State: AOJu0YyKGacidATLK5TrjRNSEk1/75ny2sPQz1oaPPrxTEaFeoW0e3Y1
+ eLlPEr7Ix3lXg4l/o6uVE42KLPh05K+GdSOcLo6GCpP9e1q2WDf+WWg/7FGmAP4=
+X-Gm-Gg: ASbGncvwp9Jtdgvk9gj1zu7z0YL/5nT8MwsvfLtwptrOY2r3IP4R8Zd09wJAEu6t8Bh
+ 38hhz9nopOa1+vye3yOo38E7ANfEDV7epX+OmMXfSc80f5qICWBezUSVwjzapO7bG56W49AeLwm
+ cFcm/iGl+XEfoaPL1123UHoajs2m27fXZnS9k1Yl9F5cAd1gyLpMo6QPCmPvvzwGr/k25inneY7
+ 0itEUTIkGfmKxWu6WBWZrw5VSYIQ4d+toXUEIzSYMtT40TBmJQ8xAzZeANi02B+7XhIU5aUvbHv
+ 612qBsDnFDAqp4XN2vCjiqsvs2G3tXN3vXfmS+Qze2kDOYqEbFNBxSeS19cXAq72F75sTmfCYDs
+ L1WA=
+X-Google-Smtp-Source: AGHT+IGmal9TsFKHY1bajht27XV+kjJVDkEXe/KRUAsucBEoitRQkZHtnzdehs45pC6XBJbr0vWXNw==
+X-Received: by 2002:a17:907:d048:b0:abf:6f87:c720 with SMTP id
+ a640c23a62f3a-ad1a4967e17mr695049766b.29.1746456883306; 
+ Mon, 05 May 2025 07:54:43 -0700 (PDT)
 Received: from [10.194.152.213] (129.21.205.77.rev.sfr.net. [77.205.21.129])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5fa7775cabfsm5688039a12.2.2025.05.05.07.41.52
+ a640c23a62f3a-ad18e2d7a88sm450863966b.36.2025.05.05.07.54.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 May 2025 07:41:53 -0700 (PDT)
-Message-ID: <9aebfbbc-ff29-4af7-8afe-8e0d82c62557@linaro.org>
-Date: Mon, 5 May 2025 16:41:50 +0200
+ Mon, 05 May 2025 07:54:42 -0700 (PDT)
+Message-ID: <e8baad5d-92e4-49c2-be4d-c9c7be4b30bd@linaro.org>
+Date: Mon, 5 May 2025 16:54:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/12] target/s390x: Fill in TCGCPUOps.pointer_wrap
+Subject: Re: [PATCH 11/12] target/sparc: Fill in TCGCPUOps.pointer_wrap
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: foss@percivaleng.com, qemu-s390x@nongnu.org
+Cc: foss@percivaleng.com, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 References: <20250504205714.3432096-1-richard.henderson@linaro.org>
- <20250504205714.3432096-11-richard.henderson@linaro.org>
+ <20250504205714.3432096-12-richard.henderson@linaro.org>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250504205714.3432096-11-richard.henderson@linaro.org>
+In-Reply-To: <20250504205714.3432096-12-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,46 +101,38 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 4/5/25 22:57, Richard Henderson wrote:
-> Use the existing wrap_address function.
+> Check address masking state for sparc64.
 > 
-> Cc: qemu-s390x@nongnu.org
+> Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   target/s390x/cpu.c | 9 +++++++++
->   1 file changed, 9 insertions(+)
+>   target/sparc/cpu.c | 13 +++++++++++++
+>   1 file changed, 13 insertions(+)
 > 
-> diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
-> index 9c1158ebcc..f05ce317da 100644
-> --- a/target/s390x/cpu.c
-> +++ b/target/s390x/cpu.c
-> @@ -347,6 +347,14 @@ static TCGTBCPUState s390x_get_tb_cpu_state(CPUState *cs)
->       };
->   }
+> diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
+> index 2a3e408923..ed7701b02f 100644
+> --- a/target/sparc/cpu.c
+> +++ b/target/sparc/cpu.c
+> @@ -1002,6 +1002,18 @@ static const struct SysemuCPUOps sparc_sysemu_ops = {
+>   #ifdef CONFIG_TCG
+>   #include "accel/tcg/cpu-ops.h"
 >   
 > +#ifndef CONFIG_USER_ONLY
-> +static vaddr s390_pointer_wrap(CPUState *cs, int mmu_idx,
-> +                               vaddr result, vaddr base)
+> +static vaddr sparc_pointer_wrap(CPUState *cs, int mmu_idx,
+> +                                vaddr result, vaddr base)
 > +{
-> +    return wrap_address(cpu_env(cs), result);
+> +#ifdef TARGET_SPARC64
+> +    return cpu_env(cs)->pstate & PS_AM ? (uint32_t)result : result;
+> +#else
+> +    return (uint32_t)result;
+
+Alternatively expose AM_CHECK()?
+
+Regardless,
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> +#endif
 > +}
 > +#endif
-> +
->   static const TCGCPUOps s390_tcg_ops = {
->       .mttcg_supported = true,
->       .precise_smc = true,
-> @@ -367,6 +375,7 @@ static const TCGCPUOps s390_tcg_ops = {
->       .record_sigbus = s390_cpu_record_sigbus,
->   #else
->       .tlb_fill = s390_cpu_tlb_fill,
-> +    .pointer_wrap = s390_pointer_wrap,
-
-As future cleanup, we might now remove the wrap_address() calls
-in target/s390x/tcg/crypto_helper.c, and target/s390x/tcg/vec_helper.c,
-is that correct?
-
-Also some uses in target/s390x/tcg/mem_helper.c.
-
-Meanwhile for this patch:
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
