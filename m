@@ -2,148 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E61EAA8F10
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 11:13:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF4BBAA8EED
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 11:07:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBrmX-0005Pg-PN; Mon, 05 May 2025 05:06:38 -0400
+	id 1uBrn0-00069c-13; Mon, 05 May 2025 05:07:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uBrm8-0004qk-DV
- for qemu-devel@nongnu.org; Mon, 05 May 2025 05:06:14 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uBrmh-0005te-9P
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 05:06:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uBrm6-00066v-Kh
- for qemu-devel@nongnu.org; Mon, 05 May 2025 05:06:12 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uBrmd-0006B9-JB
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 05:06:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746435969;
+ s=mimecast20190719; t=1746436002;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=VGRmd5/9SWtUPPususO3YRijD27RSs2hAqfNB5777fE=;
- b=DnhWxzK4S3eYPb6/F0ClRO9YQ/6M8Kye4S2JaEdcc7QY8LTS1JXKBjIPkDTrS4mq7pLud0
- 6n1GAdjPLeHajyH4HaIVM/OZpB/mzKhlD4eeqxX9v0IvhV3K9qwk3AV8vQOZtmMyVXkFzY
- D+9rw5ZUI3O7D6ZroDvOQ8HoPZgAqSU=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-359-f0QKLM6bNemXeJkM1g54yQ-1; Mon, 05 May 2025 05:06:09 -0400
-X-MC-Unique: f0QKLM6bNemXeJkM1g54yQ-1
-X-Mimecast-MFC-AGG-ID: f0QKLM6bNemXeJkM1g54yQ_1746435967
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-39134c762ebso1149809f8f.0
- for <qemu-devel@nongnu.org>; Mon, 05 May 2025 02:06:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746435967; x=1747040767;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=VGRmd5/9SWtUPPususO3YRijD27RSs2hAqfNB5777fE=;
- b=gMlV546IakoG8PXDRZhvxZP8iklB3KARl+xfF5GSinBUoTsK8CTboY57jiOIsBV+d5
- NmtGWxALGRgfUzyG+Y0/hEBl497YRgW8Z2MuBN9pUfRqEmGgK609IfETMZZrcbPNltDK
- xen0G4tN/Mmd4z1c1kKs5C5IBdXjUfVACGl+GiLoKPeoUCull55P+S2rfPkqP7VUzIFp
- aMrp8/7ZY/2VMPv55nObPXBC/kzpubdjbnv59gXouSFGIDwyyNqHZH4rYykwkvTeqzsk
- xuq0hYZWUPgLXdNSJ7WVnIrNix3R3YreCQ0QJ4gqsJ2nheF7lf990+bXmUgfrm1wtR8B
- k6Ng==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU8kRm7OWcd3/Kv8aMjOY14NxymH77vZoQvQ26agYrA1lP4YbYLn2YJPTU3fZGKD1OS9tlSD1wt+R2w@nongnu.org
-X-Gm-Message-State: AOJu0YweYQtmyJ71Swxi1aYXZwBL2cAJA0TkUKy+4nBmOPQ8q7GYMoz4
- I4uhuwc4tdD84WmkzXSDqzBqsdrAkpWjWNS/wfJhliw9mfWyGHRZomciaazREMVtHJw3Q2j8AQC
- GfrIeNnbfBrStEkqJtPvwKNKwKoYmxFuDV4fLGhSD5GRb95bayTY9
-X-Gm-Gg: ASbGncumJOm3jMrc0HBY8QtGiJorzEaX5UfHlBrM+SBuV1/lWUm1VEh/WiDZPVnmXNK
- y1nZjTmlh4vPmO5SUpJsl/7DHjs95q1gh2+bcUXb9a1mNb5eOMR1z9NaGXkBjVEmOXslR4EyerZ
- Uux9C87xCeKNI7bdXWsrS1xncfHy0BVnqYMtIXmxRKDe0pQEKUDLQNREptIHP/nVKSLkZaf8CQY
- o4nTU1slgI4f1U535Qu9yxrFAySdoxBVDd+2ixIX5HrCE6xoRfghFMq81h1SCry97zgtnmx9Lj1
- w4iXDQh7RZX0SF+l40SdW6cUuRmLc7D4MmwmJo0a
-X-Received: by 2002:a05:6000:240d:b0:3a0:7ed2:46b8 with SMTP id
- ffacd0b85a97d-3a09ceafecbmr6031687f8f.16.1746435967201; 
- Mon, 05 May 2025 02:06:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEvyVuslvzKqbnRVvRVLkLL76JL7tsvVMPkvvAK6hudai9rkCrpUCucoPAl52Kaj7217gcl6g==
-X-Received: by 2002:a05:6000:240d:b0:3a0:7ed2:46b8 with SMTP id
- ffacd0b85a97d-3a09ceafecbmr6031656f8f.16.1746435966800; 
- Mon, 05 May 2025 02:06:06 -0700 (PDT)
-Received: from [192.168.0.7] (ip-109-42-49-87.web.vodafone.de. [109.42.49.87])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-441b89cc480sm129299755e9.2.2025.05.05.02.06.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 May 2025 02:06:06 -0700 (PDT)
-Message-ID: <bd23ff1c-d1a2-4967-b8bb-a6eda6a4ca33@redhat.com>
-Date: Mon, 5 May 2025 11:06:04 +0200
+ content-transfer-encoding:content-transfer-encoding;
+ bh=VCWvBzr0qKl7YiCXoP9jLX4Trdzp/81+Yq7mX33KfDo=;
+ b=enDvvwx3rPR5LfGJpgvbWV2SSYpGF62KO/gBr/7u4BBZlUeo+/GP5kLNaJBEVpgI90eXtG
+ 7ADlPL48pG9WTbgJ49khSOIxB8+FbwF0sLEGVWNr7aia/M4jLYxWjkJAlhAKNEM1bmaLYr
+ HmOSENbNipnAkB1wAIuVSvij1PMd9A4=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-683-g9Y4MgxfPM2cwPZoXfkjwQ-1; Mon,
+ 05 May 2025 05:06:41 -0400
+X-MC-Unique: g9Y4MgxfPM2cwPZoXfkjwQ-1
+X-Mimecast-MFC-AGG-ID: g9Y4MgxfPM2cwPZoXfkjwQ_1746436000
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1194B1800992; Mon,  5 May 2025 09:06:40 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.44.32.38])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 6366C30001A2; Mon,  5 May 2025 09:06:38 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 00/23] aspeed queue
+Date: Mon,  5 May 2025 11:06:12 +0200
+Message-ID: <20250505090635.778785-1-clg@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/16] hw/i386/x86: Remove
- X86MachineClass::fwcfg_dma_enabled field
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Mark Cave-Ayland <mark.caveayland@nutanix.com>, qemu-devel@nongnu.org,
- Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: Igor Mammedov <imammedo@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?Q?Cl=C3=A9ment_Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
- Yi Liu <yi.l.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Amit Shah <amit@kernel.org>, Zhao Liu <zhao1.liu@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Sergio Lopez <slp@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Yanan Wang <wangyanan55@huawei.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Ani Sinha <anisinha@redhat.com>
-References: <20250501183628.87479-1-philmd@linaro.org>
- <20250501183628.87479-4-philmd@linaro.org>
- <2acc8c0c-f563-4d27-b73d-ce4c0f8ef424@nutanix.com>
- <54d72848-9108-4b04-a46c-1f82492e06cb@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <54d72848-9108-4b04-a46c-1f82492e06cb@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -44
 X-Spam_score: -4.5
@@ -168,79 +78,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 02/05/2025 12.45, Philippe Mathieu-Daudé wrote:
-> On 2/5/25 11:08, Mark Cave-Ayland wrote:
->> On 01/05/2025 19:36, Philippe Mathieu-Daudé wrote:
->>
->>> The X86MachineClass::fwcfg_dma_enabled boolean was only used
->>> by the pc-q35-2.6 and pc-i440fx-2.6 machines, which got
->>> removed. Remove it and simplify.
->>>
->>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> ---
->>>   include/hw/i386/x86.h | 2 --
->>>   hw/i386/microvm.c     | 3 ---
->>>   hw/i386/multiboot.c   | 7 +------
->>>   hw/i386/x86-common.c  | 3 +--
->>>   hw/i386/x86.c         | 2 --
->>>   5 files changed, 2 insertions(+), 15 deletions(-)
->>>
->>> diff --git a/include/hw/i386/x86.h b/include/hw/i386/x86.h
->>> index fc460b82f82..29d37af11e6 100644
->>> --- a/include/hw/i386/x86.h
->>> +++ b/include/hw/i386/x86.h
->>> @@ -29,8 +29,6 @@
->>>   struct X86MachineClass {
->>>       MachineClass parent;
->>> -    /* use DMA capable linuxboot option rom */
->>> -    bool fwcfg_dma_enabled;
->>>       /* CPU and apic information: */
->>>       bool apic_xrupt_override;
->>>   };
-> 
-> 
->>> diff --git a/hw/i386/multiboot.c b/hw/i386/multiboot.c
->>> index 6e6b96bc345..bfa7e8f1e83 100644
->>> --- a/hw/i386/multiboot.c
->>> +++ b/hw/i386/multiboot.c
->>> @@ -153,7 +153,6 @@ int load_multiboot(X86MachineState *x86ms,
->>>                      int kernel_file_size,
->>>                      uint8_t *header)
->>>   {
->>> -    bool multiboot_dma_enabled = X86_MACHINE_GET_CLASS(x86ms)- 
->>> >fwcfg_dma_enabled;
->>>       int i, is_multiboot = 0;
->>>       uint32_t flags = 0;
->>>       uint32_t mh_entry_addr;
->>> @@ -402,11 +401,7 @@ int load_multiboot(X86MachineState *x86ms,
->>>       fw_cfg_add_bytes(fw_cfg, FW_CFG_INITRD_DATA, mb_bootinfo_data,
->>>                        sizeof(bootinfo));
->>> -    if (multiboot_dma_enabled) {
->>> -        option_rom[nb_option_roms].name = "multiboot_dma.bin";
->>> -    } else {
->>> -        option_rom[nb_option_roms].name = "multiboot.bin";
->>> -    }
->>> +    option_rom[nb_option_roms].name = "multiboot_dma.bin";
->>
->> Question: now that all machines support DMA-capable fw_cfg, does that mean 
->> that the non-DMA options roms above can also be removed?
-> 
-> All x86 machines, but there are still 2 not supporting it: HPPA and
-> MIPS Loongson-3:
-> 
-> hw/hppa/machine.c:204:    fw_cfg = fw_cfg_init_mem(addr, addr + 4);
-> 
-> hw/mips/loongson3_virt.c:289:    fw_cfg = fw_cfg_init_mem_wide(cfg_addr, 
-> cfg_addr + 8, 8, 0, NULL);
-> 
+The following changes since commit e578dcc7e1590b20a84036afe5bdfa8d23a6048e:
 
-But these don't use "multiboot.bin", do they? So I think you could remove 
-pc-bios/multiboot.bin now from the repo?
+  pc-bios: Add AST27x0 vBootrom (2025-05-02 09:47:14 +0200)
 
-Same question for "linuxboot.bin" : All users in hw/i386 seem to enable DMA, 
-so fw_cfg_dma_enabled() should always return true here? If so, I think the 
-normal "linuxboot.bin" could go away, too?
+are available in the Git repository at:
 
-  Thomas
+  https://github.com/legoater/qemu/ tags/pull-aspeed-20250505
+
+for you to fetch changes up to f32ef57f7de98ec36da52b0a13bd5d18ac4bd583:
+
+  docs: Add support for ast2700fc machine (2025-05-05 09:42:16 +0200)
+
+----------------------------------------------------------------
+aspeed queue:
+
+* Fixed AST2700 SPI model issues
+* Updated SDK images
+* Added FW support to the AST2700 EVB machines
+* Introduced an AST27x0 multi-SoC machine
+
+----------------------------------------------------------------
+Jamin Lin (12):
+      tests/functional/aspeed: Update test ASPEED SDK v09.06 for AST2500
+      tests/functional/aspeed: Update test ASPEED SDK v09.06 for AST2600
+      tests/functional/aspeed: Update test ASPEED SDK v03.00 for AST1030
+      hw/arm/aspeed_ast27x0: Rename variable sram_name to name in ast2700 realize
+      tests/functional/aspeed: Move I2C test into shared helper for AST2700 reuse
+      tests/functional/aspeed: Update test ASPEED SDK v09.06
+      tests/functional/aspeed: extract boot and login sequence into helper function
+      hw/arm/aspeed_ast27x0 Introduce vbootrom memory region
+      hw/arm/aspeed: Add support for loading vbootrom image via "-bios"
+      tests/functional/aspeed: Add to test vbootrom for AST2700
+      docs/system/arm/aspeed: move AST2700 content to new section
+      docs/system/arm/aspeed: Support vbootrom for AST2700
+
+Joe Komlodi (1):
+      hw/ssi/aspeed_smc: Allow 64-bit wide flash accesses
+
+Steven Lee (9):
+      aspeed: ast27x0: Map unimplemented devices in SoC memory
+      aspeed: ast27x0: Correct hex notation for device addresses
+      hw/intc/aspeed: Add support for AST2700 SSP INTC
+      hw/intc/aspeed: Add support for AST2700 TSP INTC
+      hw/arm/aspeed_ast27x0-ssp: Introduce AST27x0 A1 SSP SoC
+      hw/arm/aspeed_ast27x0-tsp: Introduce AST27x0 A1 TSP SoC
+      hw/arm: Introduce ASPEED AST2700 A1 full core machine
+      tests/function/aspeed: Add functional test for ast2700fc
+      docs: Add support for ast2700fc machine
+
+Troy Lee (1):
+      hw/arm: ast27x0: Wire up EHCI controllers
+
+ docs/system/arm/aspeed.rst                         | 164 +++++++-
+ include/hw/arm/aspeed.h                            |   1 +
+ include/hw/arm/aspeed_soc.h                        |  38 +-
+ include/hw/intc/aspeed_intc.h                      |   5 +
+ hw/arm/aspeed.c                                    |  36 ++
+ hw/arm/aspeed_ast27x0-fc.c                         | 192 ++++++++++
+ hw/arm/aspeed_ast27x0-ssp.c                        | 294 +++++++++++++++
+ hw/arm/aspeed_ast27x0-tsp.c                        | 294 +++++++++++++++
+ hw/arm/aspeed_ast27x0.c                            | 125 +++++--
+ hw/intc/aspeed_intc.c                              | 416 +++++++++++++++++++++
+ hw/ssi/aspeed_smc.c                                |   4 +-
+ hw/arm/meson.build                                 |   6 +-
+ tests/functional/meson.build                       |   6 +-
+ ...64_aspeed.py => test_aarch64_aspeed_ast2700.py} |  82 ++--
+ tests/functional/test_aarch64_aspeed_ast2700fc.py  | 135 +++++++
+ tests/functional/test_arm_aspeed_ast1030.py        |  10 +-
+ tests/functional/test_arm_aspeed_ast2500.py        |   8 +-
+ tests/functional/test_arm_aspeed_ast2600.py        |  15 +-
+ 18 files changed, 1749 insertions(+), 82 deletions(-)
+ create mode 100644 hw/arm/aspeed_ast27x0-fc.c
+ create mode 100644 hw/arm/aspeed_ast27x0-ssp.c
+ create mode 100644 hw/arm/aspeed_ast27x0-tsp.c
+ rename tests/functional/{test_aarch64_aspeed.py => test_aarch64_aspeed_ast2700.py} (64%)
+ create mode 100755 tests/functional/test_aarch64_aspeed_ast2700fc.py
 
 
