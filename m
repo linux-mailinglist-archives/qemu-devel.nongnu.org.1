@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2415FAA8F2F
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 11:16:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78AEAAA8F2B
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 11:15:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBrtT-0004bK-4E; Mon, 05 May 2025 05:13:47 -0400
+	id 1uBruU-0008Dw-IC; Mon, 05 May 2025 05:14:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uBrtM-0004Qi-Hx
- for qemu-devel@nongnu.org; Mon, 05 May 2025 05:13:40 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uBruP-00082P-Lf
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 05:14:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uBrtL-0007KN-0C
- for qemu-devel@nongnu.org; Mon, 05 May 2025 05:13:40 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uBruO-0007Wr-4q
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 05:14:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746436417;
+ s=mimecast20190719; t=1746436483;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=ohusxyF4YJVAE8SHfTl+fQ5mkCHARnZugzmkZAH7fns=;
- b=eto9NEvg74SoqEn9m71uAbsefuQa5r++XhBBlonEGUWwcr416tm8gYN2bYdTp5/x6EX6me
- 5XT3xLv9d1v2NKhDpdZ3ohj94sfW0F882PmbJ5ZOOGbZDRv40tsOta/EymIXdQCthZH5EP
- CLF+Chstl3+BZCnTiZehCi+/laHg59E=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ZzSiUFQIzs2VJmzP8Z40Z1CICWY4djj1SXJoME0sagw=;
+ b=E87tRcxfndkbcYDm8SsJAaD7+VFYfpDV+dXKVvnHKGHQk8MuwNNBpeN2mCc1x7QE85/qQN
+ oOywJSbEwb6JoMII5+lHKMhrDQhOrCUoZvmdn+gbKDDKGTRyooHCQYZtyAzEo7NJ6yNec5
+ 4iGqvSnXU5sCa2E640qxPTi/zOxF6Ug=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-670-jsrfduXlOu6JfQEYWJxTgg-1; Mon, 05 May 2025 05:13:36 -0400
-X-MC-Unique: jsrfduXlOu6JfQEYWJxTgg-1
-X-Mimecast-MFC-AGG-ID: jsrfduXlOu6JfQEYWJxTgg_1746436416
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-39abdadb0f0so1095748f8f.0
- for <qemu-devel@nongnu.org>; Mon, 05 May 2025 02:13:36 -0700 (PDT)
+ us-mta-102-2URl-gbuPKyn5x6H0M5QmA-1; Mon, 05 May 2025 05:14:41 -0400
+X-MC-Unique: 2URl-gbuPKyn5x6H0M5QmA-1
+X-Mimecast-MFC-AGG-ID: 2URl-gbuPKyn5x6H0M5QmA_1746436480
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3913aaf1e32so2020310f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 05 May 2025 02:14:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746436415; x=1747041215;
+ d=1e100.net; s=20230601; t=1746436480; x=1747041280;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=ohusxyF4YJVAE8SHfTl+fQ5mkCHARnZugzmkZAH7fns=;
- b=Kj1lo4Fiz7SAnf5eTjvBLvw//Xr1kQcXtYSW0JAF9GUNLSqn/yoMwBYI5SpeEgoeE+
- 0C8B83JGViU0/1Z6iYhsY10vg6D2T0Lhj6GtoSQezKW1L1bOmZ5tBfjVIGx9aepSS3pg
- 9N5MoDIF0fdRjkvdgPOh8zH0+SWVygoqg2E+emMWYHRbRNPdcQxVVZFBfXbRb0T5nR25
- qD/WHR1uapw2yaYWDlTRwrSfDH+M7XYzRm6zePIlMQNubSTRfHn/ZhQ+RXkNw/O2n366
- iCFlcilgYoU63FanTFQ+Pudt8GMQLIaZJM5ra1VEg74kAavARtp0ItRVkYnVHKJdWENM
- FQ8A==
+ bh=ZzSiUFQIzs2VJmzP8Z40Z1CICWY4djj1SXJoME0sagw=;
+ b=RLYurVARmcUsA9u6Lc4MS7Gn/XkypmaP+9MgkBjTvmaycXa0wSJvGGzqsdse5AL9Rb
+ 9S3ZIVwXO0qIS+RxWxk6ADHHlADrpljFizRrLn3MdomwWEsK2rsC2dggeXThHtlqI2xL
+ N0rrugQseveC+R4JUDAJBTL1iKBB3o+RCFkpXKjskjAodhXxVziv8wYPqCQE9O35Bs2Q
+ lsWq9eZ7bXBy5bG7H1KTMCHzuvp+1pNuuXAnNZMfQX14SzlLoLxrMalLJm6TLQeE4e2B
+ y68MSyxx44i5Ek0GdCAt/8fagCvDBdJ1I3zvQA3xU7UkECS0vWWR6P6cowgSYRz9RZvD
+ xCoA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWlreB3O4d0hPkJYrjtz4KoQ2k8aNOVqkQ2qRBPPJ1gjLG5yB42mSnLTeu+SWJMPBgGzufse4Zl0t+O@nongnu.org
-X-Gm-Message-State: AOJu0YynSTGjXDI4w332vsMECMychHU9Ghx7xoAWfThCAnx7zgM0DGCB
- wqtB3pa1IrKvM4ZATubN3eSkrLsARqa16UAef+fwnRfP0rfNDtM+3YKxnBWHTtu8Paf0X+juIfi
- A/yXwsWbnGtduH4Txefc21UkuektJpwfzVB8A94hcVQ5/TuZ973F0
-X-Gm-Gg: ASbGncu/EkReUjVM7w6Iq6+N3+CTB0l1qcmeF36m4NK6EUb676d0JrFjYTYfnrJAy9o
- ZdfyV428C3vcdBcyy1jPCx/ej1JC6ayplIRORWxr1i8jKY3HN3khuPlbCPMcIS/EqBU0cBF+cXJ
- +viqUEv4rKQwMoFKkJ2rflAKB886mOhFmPfXo+q4gmHUhxNcreelKKz5UtnTrRWVbYtbzhLIaTw
- qormFitOCFVmOxRIjfWwfZYpZUJptNP44YJXH9znptKPgP5r10gFVdxnnuFotg+/9OwUAj1RnRD
- q5+3iye1mX7iGe5zBiFRgeb4YDjqJ7WD4ubDRBGH
-X-Received: by 2002:a05:6000:4383:b0:3a0:8311:c455 with SMTP id
- ffacd0b85a97d-3a09fd7c570mr4668934f8f.34.1746436415630; 
- Mon, 05 May 2025 02:13:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFeCxlDn4HtatFoLOyLre+jY0PwjxThe8bn+KlGfeb8YHFFyzKCvGARgFPOv7wmocFAxDm5+A==
-X-Received: by 2002:a05:6000:4383:b0:3a0:8311:c455 with SMTP id
- ffacd0b85a97d-3a09fd7c570mr4668903f8f.34.1746436415232; 
- Mon, 05 May 2025 02:13:35 -0700 (PDT)
+ AJvYcCVguCULeEBio0HGcA8lFPwYUXoODckxKJ1eknSme0amNPCWn3whAkhZ5F4uMEXO6fNjzox7X9/1OyJR@nongnu.org
+X-Gm-Message-State: AOJu0Yzz3owpTB/Yib0b6sHo3RUblHgpuHxct0YSjLK/RWgzfVLnK6dy
+ 2fsXXMy2gleWSGabERIHBjoCst4f4qxyAoo3tvQZu9EIu/kZSLgABIy7yAn0wZxrs5SNjUQjdg2
+ vAnmy6kQaV40EunReKGzy4nBMMVByGO1ee3+QIf8NoMvlqVpfqx00
+X-Gm-Gg: ASbGncuzHq+RgpzEjLZqtCpJIy8RVYwSy4/QLCcF53U9KNDh4m4gpCto42oTuMeOlbt
+ XZbOIsVhCbZWsHPvxZXgQ47zPOCrNUG5LE/iDC9kwxvzOdwwhca6Xvh2W3+b1Y1hkyoFnbHNiwd
+ fL1HZteJJRimHpVsDlZyIYJsA+7J8tZtU7joBuECZjT0dlWOd2wSAzxMF3SsR2sYbdDMiwQf6OK
+ XdWC52WqeWfDnfw9eX/4KxhB0p+CF3HHFM4O8dejWNUsYEkTiF+cje7zVNbquqXZfMGFXI+zPVK
+ KcUGVpcOWGl8u0nlb0rhtLbI3EccMK5EvJRG2fUH
+X-Received: by 2002:a5d:5f48:0:b0:39c:13fd:e50e with SMTP id
+ ffacd0b85a97d-3a09fd79f75mr5085860f8f.10.1746436480595; 
+ Mon, 05 May 2025 02:14:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHvl183LY6cLBwTIign6zq0gQD6YG0HY6tA1LKVxyK/vsO1/VJuXPyfbhcvuaPCkVASTitLUw==
+X-Received: by 2002:a5d:5f48:0:b0:39c:13fd:e50e with SMTP id
+ ffacd0b85a97d-3a09fd79f75mr5085835f8f.10.1746436480288; 
+ Mon, 05 May 2025 02:14:40 -0700 (PDT)
 Received: from [192.168.0.7] (ip-109-42-49-87.web.vodafone.de. [109.42.49.87])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a099ae3cfbsm9608282f8f.40.2025.05.05.02.13.33
+ ffacd0b85a97d-3a099ae338bsm9617864f8f.27.2025.05.05.02.14.38
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 May 2025 02:13:34 -0700 (PDT)
-Message-ID: <fd5da152-cd33-48e6-96f7-7048c631661b@redhat.com>
-Date: Mon, 5 May 2025 11:13:32 +0200
+ Mon, 05 May 2025 02:14:39 -0700 (PDT)
+Message-ID: <960ec1d5-292d-4ae2-b395-979a0d630d76@redhat.com>
+Date: Mon, 5 May 2025 11:14:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 06/16] hw/core/machine: Remove hw_compat_2_6[] array
+Subject: Re: [PATCH v2 08/16] hw/i386/pc: Remove deprecated pc-q35-2.7 and
+ pc-i440fx-2.7 machines
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Igor Mammedov <imammedo@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
@@ -90,7 +91,7 @@ Cc: Igor Mammedov <imammedo@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Ani Sinha <anisinha@redhat.com>
 References: <20250501183628.87479-1-philmd@linaro.org>
- <20250501183628.87479-7-philmd@linaro.org>
+ <20250501183628.87479-9-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -135,7 +136,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20250501183628.87479-7-philmd@linaro.org>
+In-Reply-To: <20250501183628.87479-9-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -164,17 +165,17 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 01/05/2025 20.36, Philippe Mathieu-Daudé wrote:
-> The hw_compat_2_6[] array was only used by the pc-q35-2.6 and
-> pc-i440fx-2.6 machines, which got removed. Remove it.
+> These machines has been supported for a period of more than 6 years.
+> According to our versioned machine support policy (see commit
+> ce80c4fa6ff "docs: document special exception for machine type
+> deprecation & removal") they can now be removed.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   include/hw/boards.h | 3 ---
->   hw/core/machine.c   | 8 --------
->   2 files changed, 11 deletions(-)
+>   hw/i386/pc_piix.c |  9 ---------
+>   hw/i386/pc_q35.c  | 10 ----------
+>   2 files changed, 19 deletions(-)
 
-It's still used in the arm virt machine which has not been removed yet?
-
-  Thomas
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
