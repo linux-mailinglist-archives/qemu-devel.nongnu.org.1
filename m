@@ -2,94 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 382F5AA8E27
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 10:22:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73D8FAA8E37
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 10:27:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBr5L-0001qW-Sy; Mon, 05 May 2025 04:22:01 -0400
+	id 1uBr9I-0001dN-Qo; Mon, 05 May 2025 04:26:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uBr5C-0001fg-6p
- for qemu-devel@nongnu.org; Mon, 05 May 2025 04:21:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uBr6r-0004ru-Cn
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 04:23:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uBr5A-0004XU-G1
- for qemu-devel@nongnu.org; Mon, 05 May 2025 04:21:49 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uBr6l-0005Tn-Bg
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 04:23:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746433307;
+ s=mimecast20190719; t=1746433404;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=nIWKDc7clFoKREo2bBwQ0unbdu7mrRRWwceXBRmufGk=;
- b=NbF3wysjdaArVat+fqla2Fz9/1C3C3ytct7WZ+IGdvqI5QXesf01QxQ5mIzk7xuFR/pEYh
- bGC0fEQ5TmOiyPSLvQnHmnPRZVtc/F6UO+JkGLLT7ZwN2shWRStOMI4/Ao/iJH1YpISQpG
- j6z7AdZ301W+m2aQO9/4Lp5Q+5/GWMI=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=HkasCgwT3vDM5F18qpcv2bNXqYAjRrnEvKHPnV1/qvM=;
+ b=V9b0Vrp0pfzWO9i/MsPWn8BVGc/RSaszmmEgNFApfMIN+jT86beBGPKqUJ0JGO/mLAzfCI
+ 1BYKwHc8nnda4XXk0k6oKR9ClKmtv4CPk1VCg9TrhBuRvVL9wL140EC2V4EKaJnUzoOyY6
+ OUD+g8enn+DpG23/YnicY/Z2hQiEQ3g=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-654-v_cCzZsoM0GwX3lPiy7GpA-1; Mon, 05 May 2025 04:21:46 -0400
-X-MC-Unique: v_cCzZsoM0GwX3lPiy7GpA-1
-X-Mimecast-MFC-AGG-ID: v_cCzZsoM0GwX3lPiy7GpA_1746433305
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-43efa869b0aso27121915e9.3
- for <qemu-devel@nongnu.org>; Mon, 05 May 2025 01:21:46 -0700 (PDT)
+ us-mta-383-3uzmeSXCNRO_VyC8MHrSzA-1; Mon, 05 May 2025 04:23:23 -0400
+X-MC-Unique: 3uzmeSXCNRO_VyC8MHrSzA-1
+X-Mimecast-MFC-AGG-ID: 3uzmeSXCNRO_VyC8MHrSzA_1746433402
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-43e9a3d2977so29590035e9.1
+ for <qemu-devel@nongnu.org>; Mon, 05 May 2025 01:23:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746433305; x=1747038105;
+ d=1e100.net; s=20230601; t=1746433402; x=1747038202;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=nIWKDc7clFoKREo2bBwQ0unbdu7mrRRWwceXBRmufGk=;
- b=PtMI0hrLMzy5850KJu2PsZKXmoZasBYqGHZTDbBR4u0wtYEQrvrAplbMfEEb54U7hd
- ic0ndM+2NBmT7lRv11iPVVoaOpN1HYDKqEprFDY/DtkO3cyxIykQZ8TH1R77O7b9WwQY
- oOPtzhwi06st2qIEzOZWLKLra3mJ5v7CxVSn9Bz2Ph4GsN6Vckt2GA91xGWSACwuolN1
- N8jn9a+o7FA8HGCDtjpSzKJIP75ZiK+liSjSDswruM1VrSXIq1F8b87DAJ5AMk0RqpGC
- RwPIUZNySY5HTmBRiNH9AeGJ3RVlkBhCF/ED/2tWT+LWrLsbFsF08HNcSPrU4EgrlTU2
- t8Eg==
+ bh=HkasCgwT3vDM5F18qpcv2bNXqYAjRrnEvKHPnV1/qvM=;
+ b=Qb75M2wwQ7jSj4GhM0Wh1EV+FLAs9re+eZJmFeBVWAytwIeDdBWdLlCpU6p9A6IgYr
+ xBXfanL8mZpftuez6iYMP06PkVxhwWx0V+pNU5y9U6B59MsoAf3th/4879oGdofRRuD5
+ oIudc6iAaHzXYd5J1N6AS+BjO18AiQohPrG0URWyylklsItLFJ1Yw1ivdVsBWDyBtob5
+ rWop2w/DMVMF0Xb+TlL0dOrr+k39uoYfcApgBE/ivrBkTg2j1NZUSMA8acZOJpIoThv7
+ GKstrzu8guXLGCMD+j8wwf1CVDthONHkqp0kj853qSII4/oOcSftYdIyLcd1a3zWQ1EM
+ MqOA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV3ZDH6P0/Dy/fcsIz8uRgvSUS5Ia3NsUCESvLjgmMfYUwyfHFvSu+2lcuUe+eLPVIrkLgz6PbDOLvU@nongnu.org
-X-Gm-Message-State: AOJu0YyGC+74em38+eTfhXap1BKBBf9+DgVEOI+tWmh5l4udNdjWPKnB
- DH0je/SDvaF3makD8aP8BbnSZ8ahvccJL3w0xIXBeyfIuIviUgxcBz6uCz/emtYBo6pf40XjNnH
- 9+tpD7lHSmMPKmXRFOdLbIw98XDRvA3AffHNYJtBQqXYaBefaml6h
-X-Gm-Gg: ASbGncuqlOEx/mF7ciKpV0qCG5BtEDbru5e+IJMCn4Ae44D28EjWJnCE0k2hq7OZKS2
- i3nWG1BYsmF/nQ3YCu+QGRM1BeA0zhraMXtedx/K6rJpXpNNwy9COhyIodEpWfQ7HebrTawuIbI
- QTH7EVlInarOg3IbYM6FZavsXv6/mMCdJlfbuTTXdDDCVUgOv7Zlp4B1uug3M/68vbBglaG0qbl
- vq/FrocFFezoI1TDM16UtWEZcP1sH/cOxWmE5UWC5lw5W5cCJcki+2WZmIfTj9F85bIbUsbYdmY
- 1lWDah9A4T9Klld5sgxXu+o5gl2JzoAmQSioeCOt
-X-Received: by 2002:a05:600c:5124:b0:43c:fe15:41cb with SMTP id
- 5b1f17b1804b1-441c48c1d07mr45244255e9.15.1746433305240; 
- Mon, 05 May 2025 01:21:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE5N6LEFpMhiXDwTsx1qGjo0iHsOHWyry6BGZTf6ETcU0c0xwMptOF88YtpZ7/w8uWLqfAxNw==
-X-Received: by 2002:a05:600c:5124:b0:43c:fe15:41cb with SMTP id
- 5b1f17b1804b1-441c48c1d07mr45243985e9.15.1746433304860; 
- Mon, 05 May 2025 01:21:44 -0700 (PDT)
+ AJvYcCXAAsCQJrVJyYT8BfkgicSnYLQQD3Vl3KdAaaRMGbu6lsK25UnGK+3zofWJtJv5WHIYW7O9trZDH7kP@nongnu.org
+X-Gm-Message-State: AOJu0YwfKSoTp54vIrpG9J8jcq79K2Q0VQOeNOBtkumfdF4MQ41YLPiR
+ OtA9tP/OH6lkgB4MCh1nG1xbxE4pICTOUL9xc7erGaHa9Y4N+KlC0S86EiGrKVA95vl8Vp2NIFT
+ IpoKIM3XKBnYGru7XAx3CYA5fYPYr5+GqMNQnRDEUmvYUzX+Ec9Km
+X-Gm-Gg: ASbGncvn6p+lkH9AhrkrQI/1QgzoDnpDcBh4tHPMIGoxXHewk48ehPc7KGnCKsxQutn
+ IRTCBEkhyXPXssdLN7Gg8c+xGWI17fYTgqdA+pVuMfKWnWJfphNF9dotuxPZ9Ty9uVEMMdKaeoG
+ 7BtszH/8cfWeZcW8JJbVbZYitPHTQgc/6kIavhDoBWS58stqLf/RtAODqUSGSHK+QK48KfSjqsQ
+ saVswlyUICfdvdqxl3VUQcKBVvnhkTFn379FktDs5erNLl8xk/yZPxMamO6I1AhSxIYY60srB8s
+ P6b7tlIPbnKv2k7xKgdZwjmG3EOXqmLyQbIrqclc
+X-Received: by 2002:a05:600c:3e09:b0:43d:82c:2b23 with SMTP id
+ 5b1f17b1804b1-441c49236ecmr40071255e9.23.1746433402011; 
+ Mon, 05 May 2025 01:23:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGDmODba8rI5LVIElRzoCf56Ez8ntTsOdP8jiz5R0qJQitpz+RM5YH6okzwJNTOwJ/2dOrL3w==
+X-Received: by 2002:a05:600c:3e09:b0:43d:82c:2b23 with SMTP id
+ 5b1f17b1804b1-441c49236ecmr40071085e9.23.1746433401647; 
+ Mon, 05 May 2025 01:23:21 -0700 (PDT)
 Received: from [192.168.0.7] (ip-109-42-49-87.web.vodafone.de. [109.42.49.87])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a099ae796esm9482831f8f.41.2025.05.05.01.21.43
+ 5b1f17b1804b1-441c8631256sm40251025e9.20.2025.05.05.01.23.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 May 2025 01:21:44 -0700 (PDT)
-Message-ID: <96b2f6cb-8afc-49e0-a7e1-696998c67bf0@redhat.com>
-Date: Mon, 5 May 2025 10:21:42 +0200
+ Mon, 05 May 2025 01:23:21 -0700 (PDT)
+Message-ID: <eb7983a7-b6c4-4dc2-8143-6301b19fde1e@redhat.com>
+Date: Mon, 5 May 2025 10:23:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 15/19] hw/scsi/vmw_pvscsi: Remove
- PVSCSI_COMPAT_DISABLE_PCIE_BIT definition
+Subject: Re: [PATCH v2 00/19] hw/i386/pc: Remove deprecated 2.4 and 2.5 PC
+ machines
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
+ qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Hanna Reitz <hreitz@redhat.com>, Fam Zheng <fam@euphon.net>,
  Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
  qemu-block@nongnu.org, John Snow <jsnow@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
- Eduardo Habkost <eduardo@habkost.net>, Jason Wang <jasowang@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Jason Wang <jasowang@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Yanan Wang <wangyanan55@huawei.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>
 References: <20250429140825.25964-1-philmd@linaro.org>
- <20250429140825.25964-16-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -134,10 +132,10 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20250429140825.25964-16-philmd@linaro.org>
+In-Reply-To: <20250429140825.25964-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -44
 X-Spam_score: -4.5
@@ -163,18 +161,22 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 29/04/2025 16.08, Philippe Mathieu-Daudé wrote:
-> PVSCSI_COMPAT_DISABLE_PCIE_BIT was only used by the
-> hw_compat_2_5[] array, via the 'x-disable-pcie=on' property.
-> We removed all machines using that array, lets remove all the
-> code around PVSCSI_COMPAT_DISABLE_PCIE_BIT, including the now
-> unused PVSCSIState::compat_flags field.
+> Since v1:
+> - Fixed issues noticed by Thomas
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->   hw/scsi/vmw_pvscsi.c | 30 +-----------------------------
->   1 file changed, 1 insertion(+), 29 deletions(-)
+> The versioned 'pc' and 'q35' machines up to 2.12 been marked
+> as deprecated two releases ago, and are older than 6 years,
+> so according to our support policy we can remove them.
+> 
+> This series only includes the 2.4 and 2.5 machines removal,
+> as it is a big enough number of LoC removed. Rest will
+> follow. Highlight is the legacy fw_cfg API removal :)
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+There is one more occurance of "pc-i440fx-2.4" in 
+tests/qtest/test-x86-cpuid-compat.c which could get removed now, too. But 
+this can also be done in a separate patch later, this patch series here 
+should now be good to go, I think.
+
+  Thomas
 
 
