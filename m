@@ -2,194 +2,127 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 343AFAA947E
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 15:27:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08741AA94C7
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 15:46:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBvqa-0001No-2t; Mon, 05 May 2025 09:27:04 -0400
+	id 1uBw86-0005Z0-6E; Mon, 05 May 2025 09:45:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
- id 1uBvqT-0001NP-2h; Mon, 05 May 2025 09:26:57 -0400
-Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
- id 1uBvqP-00074s-OQ; Mon, 05 May 2025 09:26:56 -0400
-Received: from pps.filterd (m0127840.ppops.net [127.0.0.1])
- by mx0a-002c1b01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 545B91fT009131;
- Mon, 5 May 2025 06:26:47 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
- cc:content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=
- proofpoint20171006; bh=wbJ+rLikF5RAMwLwOBjaQWDD9p8lTwwoJ4+ebpBF5
- Pg=; b=CBI7cy1xy3Dybq74npCt3933ph6G+6lruvMQG9MobtsG/G/UpNth/CwG0
- NF+Kxy1IfkzoKubf1zhXJAkc9ufJa1Ed4gtT1wwzN4NMoViQDDRT/Bx0yfZXcHNL
- 6ICLIa5aCXk8t+1iNZ/tSTz39y3Ys+RqFWA5zJrBEtMmX++ay2EFo3Q9QItgt8U+
- 6P8fy9adUzZJNrmjRQWAo0IUkN3BOn5pXR0iwrpEODv1Wvn00rz05V9C4AxmWOV5
- AOwYX5+YWATarSQFQtHuEbYj/xvDnrBpfjAxI/XGg0I9WAIz2IhGGXMLflJAzBQH
- b0O1ds9+oA+Xv+UR/yPWjqCK8/+5g==
-Received: from nam11-bn8-obe.outbound.protection.outlook.com
- (mail-bn8nam11lp2172.outbound.protection.outlook.com [104.47.58.172])
- by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 46dffukan0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 05 May 2025 06:26:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mu8wWA1PgOewmYHr/pIC2CIp/is/TQBIpRX/FaSDIi/26F1ruuuom03O+pWpLnsjsPlqKzgxq3M9HnXphcJKfYc50ETg6SKstB6s1s5bshjGlqF0K37DPWNsaxlB3miulQ0gjMcgpFF6bhGdE9abzk6RXx6d7M3QASYyBt4yVsvFOpEGH+k0ajkiOLo1J0/E+3FZSqBtr9oDzdtmHif5zUy9DsoXzlSr/OfZ4j+kcUKLNnZJzniA+FlB9MH8/0FnIprWx7gphc7+ZO8otbT57NU24+4ljLuoZsno0N6J6FvBxGuTAqGgclo7JQ0+xElU6dHyb8RpilE5Tt/j5WZcDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=217fQLRC06nyhEphD8AeA8K8xyKVzmQeP0D+sjFhfXA=;
- b=hDgN90nhLPaW3KUJh40SKJ+oYaQaEaEFGzKj8s87iu34uefftE/VoRWvWksq9lIGcGiHKAfmnQvKnsq2Txo84l8+QcFl+H7IqmPJds7mMeasMP7QrAeNd7x6XIOxx2gOM5MBxah+/GhrVe259xfhFIsn4mzsq0KgREbI4S5b6uLyrIQ4BliBY+K+3dQlJllXoNq4gPH/US/moBRc59e7vrePpmIJfTxaW92GtyE7UC0L3YgqCWAkIHlG6LLVGbS9X/nuSBxRhIW6xxj6FDEZX5ClPFKDmEj6yxQUu6fP/9dxxyj6gckO1qe8TdcFwAcmOJ3iZi0aNtZaZwF7cGzplg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=217fQLRC06nyhEphD8AeA8K8xyKVzmQeP0D+sjFhfXA=;
- b=JnM/z1XKQqeeBg8T3cYcsEiKFSbL82g5xHmdJ3XaSZGzZ0Usn4C7u3rTqjIiVwiw6cxHb5SgoLs7BW17oHYwzsucaRpS9K/D3Icx2OeXR+qRSE/7348P+lT4OVy6KwL5F8LAav4KOMP1AswrIm2frCHCfBTf0rt6YdNO8P4DjU3mUrdxhXcMpyUsEJkVNEzX5AzSzXjpDF3Rz3lI5jMPbDHteaCT8hsaG5YA9iifAvTM+7Gp13NvR0rWfhPvcrtXbadEUghTE/OT0Ce0r9GrTOn7vioTjnRzCf/YckrjGwwto08Hb+laVY+UOWBg0F4gsGzmnR2TY3Y898SXPkikUw==
-Received: from CH2PR02MB6760.namprd02.prod.outlook.com (2603:10b6:610:7f::9)
- by PH0PR02MB8614.namprd02.prod.outlook.com (2603:10b6:510:102::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.18; Mon, 5 May
- 2025 13:26:44 +0000
-Received: from CH2PR02MB6760.namprd02.prod.outlook.com
- ([fe80::fd77:ea65:a159:ef51]) by CH2PR02MB6760.namprd02.prod.outlook.com
- ([fe80::fd77:ea65:a159:ef51%5]) with mapi id 15.20.8722.011; Mon, 5 May 2025
- 13:26:43 +0000
-Date: Mon, 5 May 2025 14:26:39 +0100
-From: John Levon <john.levon@nutanix.com>
-To: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, qemu-s390x@nongnu.org,
- Jason Herne <jjherne@linux.ibm.com>, Tomita Moeko <tomitamoeko@gmail.com>,
- Markus Armbruster <armbru@redhat.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, David Hildenbrand <david@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Tony Krowiak <akrowiak@linux.ibm.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Halil Pasic <pasic@linux.ibm.com>
-Subject: Re: [PATCH v2 08/15] vfio: add unmap_all flag to DMA unmap callback
-Message-ID: <aBi8j0sM_VA0StmY@lent>
-References: <20250430194003.2793823-1-john.levon@nutanix.com>
- <20250430194003.2793823-9-john.levon@nutanix.com>
- <bfeb9363-a33a-4a2f-b0e9-115beebb1fbf@redhat.com>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <bfeb9363-a33a-4a2f-b0e9-115beebb1fbf@redhat.com>
-X-Url: http://www.movementarian.org/
-X-ClientProxiedBy: LO2P265CA0294.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:a5::18) To CH2PR02MB6760.namprd02.prod.outlook.com
- (2603:10b6:610:7f::9)
+ (Exim 4.90_1) (envelope-from <paolo.bonzini@gmail.com>)
+ id 1uBw83-0005Xf-WD; Mon, 05 May 2025 09:45:08 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <paolo.bonzini@gmail.com>)
+ id 1uBw80-0003Kb-TG; Mon, 05 May 2025 09:45:07 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-43cf0d787eeso40676235e9.3; 
+ Mon, 05 May 2025 06:45:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1746452702; x=1747057502; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+ bh=R/BWpzrI2AEDQAX4gOs0GXLgtTs2Bpzo+sRZblVyG+I=;
+ b=WqIQZJfdwEFMqYmBF0pS7KgYiTbCiUe+mTIHyVoNPlT6L1yooMd4q3Np7e5nBZcO3U
+ An/0JLJCq49Po+ipZWa9Fn6sBgNLbjBMSa7Jzz+1kORFnE7DiKKDwYdvNIZttD1bpOWM
+ iX8qE/IMFyUhJM8pOL3TSkL/FpUro13DeCoOiQZiFz/qQh2BxUW15UYkPvsfZkTCCJxv
+ cSaFUeSdRRE8oh2fmdHToYpiG4MZcSTHzogD84sr7skV6nNfaN47/bbVndKb7ExDpagG
+ BayL4IeQ5xZe7v6RQokt84ATNrdAj2O/VjwluMzDylj5LkgjEvGhG8mTy4de4mNpKnxG
+ 3VSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1746452702; x=1747057502;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:sender:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=R/BWpzrI2AEDQAX4gOs0GXLgtTs2Bpzo+sRZblVyG+I=;
+ b=mE2HlleYHaVvPwBoFE0s0hl2iKCOKdQHWuUjGncWowsLveHov83BL5WtGc4zhyQDrb
+ 7gjRgeC0DGqWBZcl6OFng2xvzyo1QUV/sjebQ1uubcK3V60Irdwa2ezeN8smBu6MwcPg
+ z6QIKAw1N4YxvxfpYjpyq8DPoW+fBx3rzBfrSJpWj1LfYcaQF+mX/dRBHD8M1PslGXjr
+ /m+sS8j5NhabDgPuePRxvcCp0KnR5+6rdxYSpu/6gyLXjUytjuy1yNjyzbTnAIay1E/Y
+ 60jL+LF36hkQM3rZjtVb5rLEKdAAU0cSkTkubzALNRdccqXANfBn+nK3zDVcG22LDomb
+ gl4g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWZR5rlU5TYscahaG9XgM9nK3dOijvoGU/R5aqmNQZ8eW7lziPF2QwmxGZjPY3Y2ApfYPk0Q8FNJw0=@nongnu.org
+X-Gm-Message-State: AOJu0YzB7NHQBErghZqZlx8AwFbsata0fdlhlXfv1DB9NhyGm1ow76Ck
+ cQPvCUrbpnWbIuFRd4CjmRX+DM0sLMplJLlFSGPhSVhePVf9y41zbPMeVA==
+X-Gm-Gg: ASbGncsQ1cafj4TQvO6+0iWJpkGbWAUQhM4RmNUfUqQ66vvKTaCN2v7NCu7zR2NZUje
+ DpL/UqESexNymzLhfaM/JuhG4IgtpZralERyw4IVGEZBLn4nFORkO0SQd3/FR1GzPILbzMDuQwk
+ +JJBvGE4utsBq6kO7yEbHlzSdFDKmdEBQAX+DtBcBT3D3Mez4jcT0b6XnWx6y5/hJaO5SOKjtdB
+ z1YSZs7voMxy3DSPohayGcItxXdBPltmEf3LzCZ3KwYfyrt26zaoZfPtuOO8iia+ircDh21T2al
+ /NxqaFDRa7sb47ozEFb7S+1Eo8TOsna9lzzqFzDP8HYT84vpXg==
+X-Google-Smtp-Source: AGHT+IGOiVvOuJ1CvdeyG/+JzO8VNLxmF8VZ1P2oRq2vEuZtfC4kEdfIKfUwqFDEko+Bw7yEWVCNyg==
+X-Received: by 2002:a05:600c:4e88:b0:441:b19c:96fe with SMTP id
+ 5b1f17b1804b1-441c48bdfe5mr63798295e9.10.1746452701678; 
+ Mon, 05 May 2025 06:45:01 -0700 (PDT)
+Received: from [192.168.10.48] ([151.95.54.106])
+ by smtp.googlemail.com with ESMTPSA id
+ 5b1f17b1804b1-441b89ee39esm133392855e9.21.2025.05.05.06.44.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 05 May 2025 06:45:00 -0700 (PDT)
+Message-ID: <7101782c-f642-41e6-8f3a-7061ca722c99@gnu.org>
+Date: Mon, 5 May 2025 15:44:58 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR02MB6760:EE_|PH0PR02MB8614:EE_
-X-MS-Office365-Filtering-Correlation-Id: df75ecb7-0b12-4494-6f8d-08dd8bd87a15
-x-proofpoint-crosstenant: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?sKI+92lw616WDtr/MOe1TVux0lwioEn98y9/M9OVolyK9LbJBAylpUOXin?=
- =?iso-8859-1?Q?bwKZX4mE0Dwbhlx/1VSgJos/9T4/ubXuwyqzS02jJ+W7+TS2aq6j+BF54M?=
- =?iso-8859-1?Q?a3bak5CxIC+Bn5QwMGj/jRsjbZyyrP6r5rEe3rfuEl8dU5l3nWvHeTrXrc?=
- =?iso-8859-1?Q?nCXQhc6M5E9qqN892qYMKCv/mBpHZ28XeBSeK4KmCqXDL5ak/mQ5Ft3PRa?=
- =?iso-8859-1?Q?f/Up//c0kZv7SxQ810YL5J2W5iQ5DH4yrPKDxodzFKbJlpGWchIlINgL5h?=
- =?iso-8859-1?Q?1b0m+TajmHopBpR5n4slWst6wG5RRdejeN8+2tZYJ91qTynOJ0Lu0eN28K?=
- =?iso-8859-1?Q?93syVVF/OmywcKHXmT4d1WJrMvVXjHPvlbhD4oKS9Opw6jpHMCeoFPsir3?=
- =?iso-8859-1?Q?r/ZZ0YaRnXYpq4hYlFlAVlnGW0+HmopQLO593VvVjY2r0sQyS6q/eOwYV8?=
- =?iso-8859-1?Q?n0wJzVURG4thYKuaZvyKe519npn6udTC1Fczp9cjMZlCgKFY5KTPr8cpQQ?=
- =?iso-8859-1?Q?9UkUbOTCD2mXg9k99dajFhZfcyUtEj2gNoc/L2uFcWOdwFlEsqSs+jEOO1?=
- =?iso-8859-1?Q?kny/xTcxgTlXPTMvHrmIAcgkOKUriBSk3PhCk3Wpj45KgRqgvZs+qHGLWq?=
- =?iso-8859-1?Q?ce5bpbYiApDxU9o7OnVnjfjCzrPRnkRa5l0vksLcnWdCeYDmi5RhdMxBmJ?=
- =?iso-8859-1?Q?xcH84hKy8yCU1yfNyj3bmxCBlh6Vdbo0LrZkdc0Lz1e2+3l0LyJWPTxFjF?=
- =?iso-8859-1?Q?1RdhWC15+H1xGNW0KaDT9mWM/1tu9EjwzYLhEA+LA4dNEDOJJDA3j5OqLV?=
- =?iso-8859-1?Q?TY3l9RsT55SGQiCW1hrEGv5DsyA/l93G4NBfuPmdv+DFUTNUnSOlOauWIg?=
- =?iso-8859-1?Q?1N084TXUodV6Y7mfLB9fSMpjVc1gDRbMenL2iTOjDQtbzJQtF3CfDcxsYW?=
- =?iso-8859-1?Q?erNxy6eOLvr7k+QZmXOmaiWRpcDBLj/ZeFYEl0+x7ZWwtpmcywaEjsFQKI?=
- =?iso-8859-1?Q?4gcKiBdrcbXGGLiVwvC8X97nKaBvdTwvC8NuUPl0tGpog+SMEfIvxLo4pe?=
- =?iso-8859-1?Q?28q1o2977VYJX8CT+rU2Ea7QDhBoMHZ4hx0ktiM9OKOayDozdlkpZyA62A?=
- =?iso-8859-1?Q?BHus8kofbreBESCos4K0eS4/Qxj2IcJeo3Eu7YUMYb7EOZfCVTV7pzeGTh?=
- =?iso-8859-1?Q?8T3l402q39FRhHFRQ8QNthjT48fzTVvNcWiBGt4TK9Ga9HDPEgyfW/uHi/?=
- =?iso-8859-1?Q?oggaMoK1kwvv9FDQShNuQVGvR3i2KDBGTcytpb7MiYgmbY5SALtbxTiUCn?=
- =?iso-8859-1?Q?lVW4Axtlw3/OOpyfKW2kBPAm8IgBK22Te3Zkq7zjvrdPDpisSrNbRivIQ0?=
- =?iso-8859-1?Q?DvynEAsVYa1lCf3xWIqsfcQZgctrvESE5F3i4LBCdvT2WoJ4VKqzzqvtHY?=
- =?iso-8859-1?Q?vmUOSTaDBLJNLOakQ7Zg1FASCuoT/8mRLBOPEbWw8Ib2SrnBUyJHLsrlIO?=
- =?iso-8859-1?Q?o=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH2PR02MB6760.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(7416014)(1800799024)(366016)(376014); DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?x+CL/eaUaqBHdmBHXXizVxLjM/dHGbc2D50tgJ73Ctu0jUJaykBsl9yR0o?=
- =?iso-8859-1?Q?7J3AmtHgFzTSyrWUs6W9htYZXIt9ELGe6sLxATSaLDADvZMDfKVaiMZ6bB?=
- =?iso-8859-1?Q?sYfEuqsL4hajrUT3/F+4mL0krJbs0NqBlS19o83h+vcF/Dia6i551eCRuO?=
- =?iso-8859-1?Q?U5C57Yn4bDHh2GwvKlAASkJPS+Om9F1SETjp0BeskB2Gx/+CcmKmyCv4tU?=
- =?iso-8859-1?Q?m5R/Hb4Uq4YMTpDKpmaTfm295SCIpmN7xl4uVMZCpeeawbGy4Ov1YnZzal?=
- =?iso-8859-1?Q?aAZ5GkSuGvwZTvhcUG48D9q7y6A1C8PAnxyWGctIbj68ap68bXvC8ea/L7?=
- =?iso-8859-1?Q?z+u00RYlfa31qy4zTL2OfwwMmAkLXrurjWMK9je3PovawixvLRMbwOQIQI?=
- =?iso-8859-1?Q?REgdONRsqHvgkYWtDPkno+jJydICAruxk+6BwjPyXFOUN3yOYZIS4n2fie?=
- =?iso-8859-1?Q?3Q/1zXBYlgZGohmgk3UzQT6j0BCmmv57ffQu/8AmnHbaRWXKIBNTYNzXKw?=
- =?iso-8859-1?Q?cXVnPolW9J4apWtu9nLq/YTZ1G1h6CTV2dDth+RRtXS7x6oZ+f6m54jYbh?=
- =?iso-8859-1?Q?srT8t/8LVseDvPbt02BObt6anDNzV44CWVYXIBNRo6GVM1dvcdjvh7v/Lz?=
- =?iso-8859-1?Q?NNtAc3yNwMyCpJbBetWXT70dmavBcdZYtG6k9Tl3fA0jSh5kaxMil8EhSQ?=
- =?iso-8859-1?Q?gMvzBevaEvuT90mzqLxwxfaHwYsIZ1e+z4nK+lGrlT8jBm25/+vZYIipQH?=
- =?iso-8859-1?Q?Yi2EVG2X0gG03S6+DnfRiUpbja22KZXmHY4hcvP9apQ/JfAFpuGRRyB250?=
- =?iso-8859-1?Q?zCvsqjoOwp6aA6BMg/wCa25TjLNp1oFuwXe6kQNCnTXngzE9rm6kLiCDdG?=
- =?iso-8859-1?Q?xIGZCUZe2fJIGjCe616ovk4575Gk8V94WT2X9rgBaS8fuGpGor9U1egF8F?=
- =?iso-8859-1?Q?teGa8f770mYWU9Mk14r28NRLWRcNV01hg2ARbl78OKHvMFcNJ9AlF0ZbC4?=
- =?iso-8859-1?Q?TBaH+lAi83gax4uBM2r1jnKZ/fGOTUXOqx0G/aDBCatWens+ZIyvHjOy8W?=
- =?iso-8859-1?Q?hYQdOj6Vroe1Eh1QC37NlNFtZ+zWnaz5JFCx6gqvPL1+PSFY46NA4Je328?=
- =?iso-8859-1?Q?OHdGXYgUd8se0eavzoAHMwFSgqUTjqtVAHZ9YZbuVPzY35j+8RWX3q4P0G?=
- =?iso-8859-1?Q?yV1nyXkEB41TMTwVA0yyU5+lRpLW5FsFtN/c9fPWyFotMuDITL/gbAU5TJ?=
- =?iso-8859-1?Q?vwLDU75gyArN9PGG5EYz9rUONOD9MqRtcME5nq2TPYtIpCpoM0qyqRxFNV?=
- =?iso-8859-1?Q?1soxBFg70+rnSMva1bAsrkdD2eHlzFaek03RWOhTWrOVIVBqQP7L4wlide?=
- =?iso-8859-1?Q?52ZXFzZwhd82M/4ylSdqg8nNHYfoEm7TFdpBZGESVJnE40m4Mkv3nSWf8i?=
- =?iso-8859-1?Q?dP6hiMKXDKcsylrhLzcST+nm5S8+iKOrQt4qKC4attAtfoPiEMX2b9r12J?=
- =?iso-8859-1?Q?b8DDQuI/1KyhfsMn0YSwFf/eRWM/1fJFE9Lm3ixBfIVThqYh+lMoAioOT/?=
- =?iso-8859-1?Q?r4yhaVMuvEgqdAJvY3b6oHi2K4vFhoNfANI/2xTbBNHjvabB+BNgRQ0PtR?=
- =?iso-8859-1?Q?OOeGxMIAMD4krW6LXj+6yMOhaeo0mwB0ID?=
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: df75ecb7-0b12-4494-6f8d-08dd8bd87a15
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR02MB6760.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2025 13:26:43.8155 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SA82FBPEoD4ZLgCkC1uZp/75hbbeyuTM9I+2NE1YawcuguzghzhkqVgwD3kQqM88N8NgXSq7pjtFb6AfQ0Iy2g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR02MB8614
-X-Authority-Analysis: v=2.4 cv=WfYMa1hX c=1 sm=1 tr=0 ts=6818bc97 cx=c_pps
- a=1OKfMEbEQU8cdntNuaz5dg==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
- a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10
- a=dt9VzEwgFbYA:10 a=0kUYKlekyDsA:10 a=TuS_aRFGRke3ED1qvqoA:9 a=3ZKOabzyN94A:10
- a=wPNLvfGTeEIA:10
-X-Proofpoint-GUID: LxrNqZvB7BKQogHXfG2woBsaU-Lm1tWi
-X-Proofpoint-ORIG-GUID: LxrNqZvB7BKQogHXfG2woBsaU-Lm1tWi
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA1MDEyOSBTYWx0ZWRfX3UXVTy1YOSSR
- N8U9IpMOXq990THC+XARlll5sI3fsGxdIDNs8aGj8BGCVv5Z8iobhHNeU3BeOFWCx9/PSsiD8Dp
- HYY1xxUp87vMcjq5svc+SlJbaZprPZWxyYeIKxoT/jWOXdSxtrsCfMxaQqDYgR7jRcICGSjjxnV
- XJJtj+OjJo+sVUEti9ScX6yKXLvwxknyd9DNL+qhny0s7LLXPFQSYOo6KjGQErh84OGl7+WYCDi
- 089wbZL5/h2l8FV9exRdcrSCmHaAi2AYEzrEVksUlMz2gzm7Qn98MjZMZcTKP8uDR8E0AIj6yfd
- e12Bq46NqgUUhuqEY+XpcGtHtabGwZVwumLtknBVwxObZJPrYzwc4I3FEwUv5k0PeVWOtyuLjFt
- 9/JZZuqfYKYsp/h1rr4WaUnD7Q3t3ML5k+Kgyw+cUQsuEQN1Wutwn71pmyCySyM9HpHLp+gD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-05_06,2025-05-05_01,2025-02-21_01
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.151.68;
- envelope-from=john.levon@nutanix.com; helo=mx0a-002c1b01.pphosted.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: Rust in QEMU update, April 2025
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel <qemu-devel@nongnu.org>, qemu-rust@nongnu.org,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Daniel Berrange <berrange@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <d3d1944e-2482-4aa7-b621-596246a08107@gnu.org>
+ <CAAjaMXZhq_uv-w_9TT3++HAcO7r_OhriJA0RKWs8YqY_ryjK4w@mail.gmail.com>
+From: Paolo Bonzini <bonzini@gnu.org>
+Content-Language: en-US
+Autocrypt: addr=bonzini@gnu.org; keydata=
+ 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
+In-Reply-To: <CAAjaMXZhq_uv-w_9TT3++HAcO7r_OhriJA0RKWs8YqY_ryjK4w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=paolo.bonzini@gmail.com; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.001,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -206,25 +139,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 05, 2025 at 02:06:03PM +0200, Cédric Le Goater wrote:
-
-> !-------------------------------------------------------------------|
->  CAUTION: External Email
+On 5/5/25 14:26, Manos Pitsidianakis wrote:
+>>     Something I do notice is that there's some inconsistency in
+>>     how we've structured things between the two devices, e.g.:
+>>
+>>     * the pl011 main source file is device.rs, but the hpet one
+>>       is hpet.rs
+>>
+>>     * some places we use the actual names of bits in registers
+>>       (eg Interrupt's OE, BE, etc consts), and some places we
+>>       seem to have renamed them (e.g. pl011 Flags has clear_to_send
+>>       not CTS, etc)
+>>
+>>     * pl011 has defined named fields for its registers, but hpet does
+>>       things like::
+>>
+>>          self.config.get() & (1 << HPET_CFG_LEG_RT_SHIFT) != 0
+>>
+>>     * pl011 has a split between PL011State and PL011Registers,
+>>       but HPET does not. As I mentioned in an email thread a
+>>       little while back, I feel like the State/Registers split
+>>       is something we should either make a more clear deliberate
+>>       formalised separation that's part of how we recommend
+>>       device models should be designed
+>>
+>>     [...]
+>>
+>>     I think it would be good to figure out what we think is the
+>>     right, best style, for writing this kind of thing, and be
+>>     consistent. We have long standing problems in the C device
+>>     models where there are multiple different styles for how
+>>     we write them, and it would be good to try to aim for
+>>     more uniformity on the Rust side.
 > 
-> |-------------------------------------------------------------------!
+> The pl011 stuff was deliberate decisions:
 > 
-> On 4/30/25 21:39, John Levon wrote:
-> > We'll use this parameter shortly; this just adds the plumbing.
+> - device.rs vs pl011.rs: the device was written as a crate, so it's
+> essentially its own library, plus pl011/src/pl011.rs would be
+> redundant :)
+
+Right, I think Peter's comment was more about moving hpet.rs to 
+device.rs, and merging PL011's device_class.rs into its device.rs.
+
+>    That said, it's not important, we can choose either convention. I
+> like the less redundancy and separation of concerns: if pl011 gets
+> converted into a module in a future refactor, it could keep its
+> functionality split into different submodules and `pl011.rs` or
+> `pl011/mod.rs` would be the device module.
+
+I think it's okay to decide that Rust devices will have mini 
+directories: it's just the style of the language and Cargo more or less 
+relies on having lib.rs.
+
+In a vacuum I would prefer to have hw/char/pl011.rs for what is now 
+rust/hw/char/pl011/lib.rs, and place the other files in hw/char/pl011; 
+IIRC rustc accepts that style.  However we still rely on Cargo for some 
+things(*), and as long as we do there's not much we can do about it.
+
+     (*) notably "cargo fmt".  Everything else is more or less handled
+         by Meson starting with 1.8.0.
+
+> - Using typed registers instead of constants: yes coming from C I can
+> understand it can feel unfamiliar. I specifically wanted to make the
+> register fields typed to avoid making the implementation a "C port",
+> and I think it's worthwhile to use the type system as much as
+> possible.
+
+Peter's comments (especially the second and third) were about two kinds 
+of inconsistencies:
+
+1) HPET not using bilge.  This was because Zhao looked at HPET from the 
+opposite direction compared to what you did on pl011, namely avoiding 
+unsafe and modeling the BQL properly, and sacrificed a bit the usage of 
+idiomatic code like what bilge provides.
+
+I think that you made the right choice for the first device and he made 
+the right choice for the second device.  But now someone should look at 
+HPET and do the work that you did to adopt bilge.
+
+2) The choice between bilge on one side, and bitflags or integers on the 
+other.  For pl011 you kept interrupt bits as integers for example, and 
+this is related to the topic of (non-)availability of const in traits...
+
+>    A straight C port would result into integer constants with integer
+> typed fields everywhere for registers/flags.
+>    Yes, From/Into aren't const, at least yet, but it's not really a
+> hotpath performance wise. I think non-dynamically dispatched trait
+> methods can be inlined by annotating the `fn from(..)` impl with a
+> `#[inline(always)]` hint but I haven't confirmed this, just
+> speculation.
+
+It's not about hot paths, it's more that 1) you cannot use From/Into in 
+a "static"'s initializer 2) bilge relies a lot on non-const methods in 
+its internal implementation, which makes it quite messy to use it in 
+some places.  See for example this thing for which I take all the blame:
+
+     impl Data {
+         // bilge is not very const-friendly, unfortunately
+         pub const BREAK: Self = Self { value: 1 << 10 };
+     }
+
+and the same would be true of interrupt constants and the IRQMASK array.
+
+The separate bilge and bitflags worlds are what bothers me the most in 
+the experimental devices.  I can see why they would be very confusing 
+for someone who's not had much experience with Rust, and therefore 
+doesn't know *why* they are separate.
+
+>    Again, no strong opinions here. I like the "everything is typed"
+> approach and I think it's worth it to explore it because it allows us
+> to "make invalid/illegal states unrepresentable" as one sage article
+> goes.
+
+I agree, and it's why I think you made the right choice using it for 
+pl011.  With all the unsafe code that you had to use, strong-typing at 
+least showed *something* that Rust could provide compared to C(*).  And 
+I like the strong typing too, even if I'm not sure I like bilge's 
+*implementation* that much anymore.
+
+I'm not really up for rewriting it, but then I've also done more stupid 
+rewrites in the past. :)
+
+    (*) when we were discussing safety vs. unsafety last summer, I may
+        have sounded dismissive of this kind of benefit.  My point at the
+        time was that unsafe code was so much more complex than C, that
+        the benefit of strong-typing wasn't enough to *offset* the
+        complexity of unsafe code.  But it is absolutely present.
+
+>> Related to this I have found recently the `attrs crate
+>> <https://docs.rs/attrs/>`__, which provides an easy way to parse the
+>> contents of attributes in a procedural macro.
 > 
-> I am not sure the 'unmap_all' name reflects what the dma_unmap()
-> handler does.
+> I actually have some WIP patches for this I put a pause on and can
+> continue e.g. https://gitlab.com/epilys/rust-for-qemu/-/commit/c2c97caaaf03273fabc14aee5a4d1499668ddbe3
 
-FWIW the vfio API flag that reflects this is already called
-VFIO_DMA_UNMAP_FLAG_ALL so there's precedent for the name.
+The repository is private, but I look forward to seeing it!  If you want 
+to post an RFC without even any code, just to show what the device code 
+looks like, that would be helpful as it will catch stuff like lack of 
+type safety.
 
-It unmaps the entire address space, right? Do you have a suggestion for a better
-name?
+BTW, if you need it to model reflection better I think it is acceptable 
+to assume const_refs_to_static is present.
 
-regards
-john
+Paolo
 
