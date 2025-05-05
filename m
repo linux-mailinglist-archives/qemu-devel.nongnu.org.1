@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDEE5AA9052
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 11:55:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F41BAA902F
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 11:54:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBsXO-0003Vc-Do; Mon, 05 May 2025 05:55:02 -0400
+	id 1uBsWm-0002jg-FF; Mon, 05 May 2025 05:54:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
- (envelope-from <610dc187e52605c8ea8d14c5e7d8e7384f8af290@kylie.crudebyte.com>)
- id 1uBsXC-0003Js-O0
- for qemu-devel@nongnu.org; Mon, 05 May 2025 05:54:50 -0400
+ (envelope-from <4f82ce8cd94f2601fb2b2e4cfe0cf5b44131817e@kylie.crudebyte.com>)
+ id 1uBsWk-0002iy-2c
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 05:54:22 -0400
 Received: from kylie.crudebyte.com ([5.189.157.229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
- (envelope-from <610dc187e52605c8ea8d14c5e7d8e7384f8af290@kylie.crudebyte.com>)
- id 1uBsXB-0005IQ-3d
- for qemu-devel@nongnu.org; Mon, 05 May 2025 05:54:50 -0400
+ (envelope-from <4f82ce8cd94f2601fb2b2e4cfe0cf5b44131817e@kylie.crudebyte.com>)
+ id 1uBsWi-0005Ei-FZ
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 05:54:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=crudebyte.com; s=kylie; h=Cc:To:Subject:Date:From:References:In-Reply-To:
  Message-Id:Content-Type:Content-Transfer-Encoding:MIME-Version:Content-ID:
- Content-Description; bh=6RQo1Es8KUgQYat0BV6Qy/GmI5Or+2nzwgmjZh5cLPk=; b=XvMlx
- qKtzW2nXOyfgZvzCd7PFnpspGcGwhiY9y2vdx3jL+cOUy2s9PC1veY7QjbzXtfWBzZfUPnZioOhmQ
- tOyjUqusz2gmLXFTjhUi33d/HVEndk4VwvUft9gC34VRdsgWy+KA51wvP3NBJA/VW3AvYzhY3S6rx
- u+DVZHytHuuafQyo2cMUUGBUMRCKvyLu5J7FICpm3PG4KALHHhJVLXXfR7jAjq2V874lDZtkR0aJk
- 2e+EZuAaTw3js4k0NaNG9fln7PTVtqYHvUIprh8shcz2r6ekQpA9X6/qDrm/gb6BsHuUBPIFDPqBK
- P7rdJKi2BbTqpOlkBcE6mfJb2bfuAYIGydPxC36LYYWkb5S5sty5ml8v2aTN7+ZjITBYktClqs3Rb
- 9xUrCQqw8Ac7NRr267KnAemvTgzFF+Hl4ir6ySvnhthZXZ6/suqoTeCfO0EirK0onDUN6kA5RK6qv
- J3SudaiBxSuC1gloJ+l4UVthJ4IM16iu1KKy4eNFwGGo+Fdniln8wnbBzxqXVv6G8+R6To1cyzrL1
- /+3Yk5EcCZ+BN5LVlaC/Z1K1bKw679/ATVffWgpB5S/rNf9XvDmXUxndZgFTGYOZx0HtNXcs90ckI
- zEs8Ufm0F/C4xmY8WJqBND9CLdIT9w9Jb7ChgiF59x/4DTW0Ak44nxwRaze3dw=;
-Message-Id: <610dc187e52605c8ea8d14c5e7d8e7384f8af290.1746438650.git.qemu_oss@crudebyte.com>
+ Content-Description; bh=I9J7ICrc3UB3XRzyZc1GoptV6oz460tI1yHeYDw7OSo=; b=HWrKz
+ mqIP4fuwxvpbv6JDPO+ZjUI8uar4xzYVON3JjOIEIFvYCw8VMhCnSCGONPC5J8oqXL1p0yaIq0Wtg
+ ZdbkTw5BeiO/SAdUieaAK4nObdREAPhkGqe0RuHiPgtqO/UpRAXcWC2GWqvPmZ6nGJTZEc83PFuTQ
+ dnE5YgRSOh3LiBOtgFPQo11FaYERz78PbMr8Gb3xXkHrSaWPzZhRaleL7apF6hnUOTsYqlOuOyoZF
+ adwgsQp2KJ55ff4bf1a+JyvWyNjnn51nI3czBJ+8ljWgI3oq4wuIDHx0/6uMnYg6qU7iY8kZkexMx
+ Kkrn+lE6Qcz6mth8CIOrvNvu+tzuulhtNp1Fo8Q9EEWZubA7STIwvTz5PAyyAEV+QdFCCuB/PStZP
+ xZYeSSVLmmh2BSoj2gN8Z/Y6DXwMip2mqSwUxu2GvKUobwCip1/SccZLoOak04QqN0Uu0/KdUPwVy
+ ciNhJFZaKxjerXHhNGhPTbQRxXcNSshiTe3D+Q7o9drY+BREeLdNwrmrw8EF3rA8WDIWSjfbZFjs9
+ otwbrVAHaE0FslY86Bzn5oA+QE2HtgQjisglw8XoTMNyHs+44ViRkC0P9dRXu/GCsJNpmgEoWHpom
+ LDJMkqixtLfTs9Tmzuooj8tsknCLFglX51s5GrSGniaq3OrgvPEWHIwgmOQ788=;
+Message-Id: <4f82ce8cd94f2601fb2b2e4cfe0cf5b44131817e.1746438650.git.qemu_oss@crudebyte.com>
 In-Reply-To: <cover.1746438650.git.qemu_oss@crudebyte.com>
 References: <cover.1746438650.git.qemu_oss@crudebyte.com>
 From: Christian Schoenebeck <qemu_oss@crudebyte.com>
 Date: Mon, 05 May 2025 11:50:51 +0200
-Subject: [PULL 8/9] tests/9p: Test `Tsetattr` can truncate unlinked file
+Subject: [PULL 3/9] 9pfs: local : Introduce local_fid_fd() helper
 To: qemu-devel@nongnu.org,
     Peter Maydell <peter.maydell@linaro.org>
 Cc: Greg Kurz <groug@kaod.org>
 Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=610dc187e52605c8ea8d14c5e7d8e7384f8af290@kylie.crudebyte.com;
+ envelope-from=4f82ce8cd94f2601fb2b2e4cfe0cf5b44131817e@kylie.crudebyte.com;
  helo=kylie.crudebyte.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -69,44 +69,62 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Greg Kurz <groug@kaod.org>
 
-Enhance the `use-after-unlink` test with a new check for the
-case where the client wants to alter the size of an unlinked
-file for which it still has an active fid.
+Factor out duplicated code to a single helper. More users to come.
 
-Suggested-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
 Signed-off-by: Greg Kurz <groug@kaod.org>
 Reviewed-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Message-Id: <20250312152933.383967-7-groug@kaod.org>
+Message-Id: <20250312152933.383967-2-groug@kaod.org>
 Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
 ---
- tests/qtest/virtio-9p-test.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ hw/9pfs/9p-local.c | 25 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
-diff --git a/tests/qtest/virtio-9p-test.c b/tests/qtest/virtio-9p-test.c
-index f515a9bb15..ac38ccf595 100644
---- a/tests/qtest/virtio-9p-test.c
-+++ b/tests/qtest/virtio-9p-test.c
-@@ -736,6 +736,20 @@ static void fs_use_after_unlink(void *obj, void *data,
-         .data = buf
-     }).count;
-     g_assert_cmpint(count, ==, write_count);
-+
-+    /* truncate file to (arbitrarily chosen) size 2001 */
-+    tsetattr({
-+        .client = v9p, .fid = fid_file, .attr = (v9fs_attr) {
-+            .valid = P9_SETATTR_SIZE,
-+            .size = 2001
-+        }
-+     });
-+    /* truncate apparently succeeded, let's double-check the size */
-+    tgetattr({
-+        .client = v9p, .fid = fid_file, .request_mask = P9_GETATTR_BASIC,
-+        .rgetattr.attr = &attr
-+    });
-+    g_assert_cmpint(attr.size, ==, 2001);
+diff --git a/hw/9pfs/9p-local.c b/hw/9pfs/9p-local.c
+index 928523afcc..99b9560a52 100644
+--- a/hw/9pfs/9p-local.c
++++ b/hw/9pfs/9p-local.c
+@@ -766,16 +766,19 @@ out:
+     return err;
  }
  
- static void cleanup_9p_local_driver(void *data)
++static int local_fid_fd(int fid_type, V9fsFidOpenState *fs)
++{
++    if (fid_type == P9_FID_DIR) {
++        return dirfd(fs->dir.stream);
++    } else {
++        return fs->fd;
++    }
++}
++
+ static int local_fstat(FsContext *fs_ctx, int fid_type,
+                        V9fsFidOpenState *fs, struct stat *stbuf)
+ {
+-    int err, fd;
+-
+-    if (fid_type == P9_FID_DIR) {
+-        fd = dirfd(fs->dir.stream);
+-    } else {
+-        fd = fs->fd;
+-    }
++    int err, fd = local_fid_fd(fid_type, fs);
+ 
+     err = fstat(fd, stbuf);
+     if (err) {
+@@ -1167,13 +1170,7 @@ out:
+ static int local_fsync(FsContext *ctx, int fid_type,
+                        V9fsFidOpenState *fs, int datasync)
+ {
+-    int fd;
+-
+-    if (fid_type == P9_FID_DIR) {
+-        fd = dirfd(fs->dir.stream);
+-    } else {
+-        fd = fs->fd;
+-    }
++    int fd = local_fid_fd(fid_type, fs);
+ 
+     if (datasync) {
+         return qemu_fdatasync(fd);
 -- 
 2.30.2
 
