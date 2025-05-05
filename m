@@ -2,134 +2,133 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01BF7AA8FB4
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 11:38:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84E44AA8FE0
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 11:44:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBsHU-0004n4-Et; Mon, 05 May 2025 05:38:36 -0400
+	id 1uBsMG-00067N-BN; Mon, 05 May 2025 05:43:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uBsHR-0004mF-Ou
- for qemu-devel@nongnu.org; Mon, 05 May 2025 05:38:33 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uBsMC-00066s-O6
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 05:43:28 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uBsHQ-000352-8v
- for qemu-devel@nongnu.org; Mon, 05 May 2025 05:38:33 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uBsMA-0003hy-OC
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 05:43:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746437911;
+ s=mimecast20190719; t=1746438205;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=uzn7rvH7F/IQ6SMhkBPdLDP3L/8Na5c+GpQod4MMne8=;
- b=bLbc6FVOPLiESUV8qXMeZhTuKm4RVkhyc0BtN7fH4z12Af2rHOdcUR7fuN6NO8pLDy9ngl
- b/WZbThUVOHTrj27xAbmlB+Y2WKP25m3yngL5HCCrJg9r0rQagdf36lL6jwtJRD97nE61k
- HSlInLmg94DG+m+6IQe/U0mSsKl8IUQ=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=sP81zsT/RNSG8ANhqUBnaYmRGZAXZNzC428xVjzVw84=;
+ b=DcV/l3fdqcD5ukFJWB4T/YDQGV3Ag2ey/qPaKGB/TIbDd16zsTNVPlBdrO7jWJSl/uV/Yw
+ FQna4cRvM3lAHuf2FLAM5FV4Pum4k90OwTRKDGZkHbtrK0FNG1k6fwXnk8j1J9enYCcN+e
+ uupuQM0xjR52bU92FHHF+XmHvMAhH6k=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-677-0zWjt4EkMCK4uwblD_i_uw-1; Mon, 05 May 2025 05:38:30 -0400
-X-MC-Unique: 0zWjt4EkMCK4uwblD_i_uw-1
-X-Mimecast-MFC-AGG-ID: 0zWjt4EkMCK4uwblD_i_uw_1746437909
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-441c122fa56so6462015e9.2
- for <qemu-devel@nongnu.org>; Mon, 05 May 2025 02:38:29 -0700 (PDT)
+ us-mta-427-J3rVhgc3NCKd63oqmXxxkQ-1; Mon, 05 May 2025 05:43:24 -0400
+X-MC-Unique: J3rVhgc3NCKd63oqmXxxkQ-1
+X-Mimecast-MFC-AGG-ID: J3rVhgc3NCKd63oqmXxxkQ_1746438203
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-43ceb011ea5so24367055e9.2
+ for <qemu-devel@nongnu.org>; Mon, 05 May 2025 02:43:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746437909; x=1747042709;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
+ d=1e100.net; s=20230601; t=1746438203; x=1747043003;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=uzn7rvH7F/IQ6SMhkBPdLDP3L/8Na5c+GpQod4MMne8=;
- b=DPgMVqv6XZTL9SatVt9ssZGFueXI0J0ZRpQ1bbPMqTTCgbjZLXiswvfCZHYPF1gKG+
- nssaYavLG205l/UUyp7qoXL8XeuiYd4X/bUUu+mqT+DbXi053UwxxzOS63rLynfy+p4B
- hq3u1FYm7NVK4UNFYagzn4nso7+SAf3cbD4PHI6c9KUANZlJ0qVxjvRYykRBY1Li01SP
- aufKWn3KM8Wv/6PxHmTBdRt67quaFBtNLSjUasdqH11LakFlVgO6/9+YrJE54Hgjs8fC
- i1nrLJtJDkQCryxBB+l3ZcnCc66xXLM4w+G5W6N3rpOY9EfINHMhmLQJREWb+fyPopQf
- U2eQ==
+ bh=sP81zsT/RNSG8ANhqUBnaYmRGZAXZNzC428xVjzVw84=;
+ b=SnB7aehg3elOFTy92HLAFN0Lu9YB16/3JJO/k8PKbYBlTlqMaCxd0UbagS21uaolgD
+ HnAWlEsB7iiox8D/rLlfimICgMSe3cSmya1JRP+mrecGndixA8zO0ffTT/06llOUyrqV
+ fy9zRDbH/TLklhC5/JZkOw7mCnkAPJu4aAqpef1AUek09rMq+B5xOf/nZCc6q5k/h3Bs
+ SlUVVgVaO75AT0ztPfVNDxUE6kas7qQDah7wVP5JqKkphMx0t4AMggf0eKMTyLBhW3nG
+ JVtiYkWzLu+jNxzKzj63HiisPoZYcHLMPKtV4UnBmslBMmGgRS0D0D/Fypu01GVM4VuM
+ H4Gg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVyOT33IenMCEDBe86PVZsHdEjSOeoQQ07maWpxyl6ZIFH/j6GXv5YhL41GNkOK2HmegBYBbM+2b3r0@nongnu.org
-X-Gm-Message-State: AOJu0Yx2PckDkPHhP7UuBbb1SBAQhiDF3vqNW3oJwvptJVGaizgQDPnM
- CjaE9fD/Kz+X0dNv7TMbpNZOd6w2dXrs2gdJOK6xLdhiLzHMZyI8u0Xl17J0d5hMaLybYs/DZkK
- t4ODFmqs064nvWi5kpBWVHqUMeVRq0MRcLsjvf6TDAHoyfQF5QsZm
-X-Gm-Gg: ASbGncvTAb5V8JAqxJ7Q2KI5rTdILWKDgUN1GvEdbrdYBGMDL+LDcVcysfldzGIKufw
- 1h3zP3EEoZBAy/kCEPwNcyGyYjMUKSuSQ00oWnLEclmM0onaTLJaXeV+8bgOXhMi8tsP6/gxOIP
- HQnsH4/mp+7xUSTPGUUdQFjzWIjZPMARIa7BpJuN83jU0bF7Ob19WrHjy7wiBdx61EcrJEzwHAV
- lvKlgv7Ul1OfQqpxsygx5lJM7a4SrJKtzigSKY5dHM+zMbsr2gQmrTxvjRShBG6mDyJGmDO3PMf
- od4SgHDuaAR/LxYMl5nqRguBQp2WCaiueNrEf5cj
-X-Received: by 2002:a05:600c:1c27:b0:43d:609:b305 with SMTP id
- 5b1f17b1804b1-441c1cfc494mr60598975e9.17.1746437908895; 
- Mon, 05 May 2025 02:38:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF5gLo3uwWuj5RnjZP3iHHU7kCwiKclGgaSdDdYD4SA57dcKyQwGO8nNRYFAILKdsQxt4TQCw==
-X-Received: by 2002:a05:600c:1c27:b0:43d:609:b305 with SMTP id
- 5b1f17b1804b1-441c1cfc494mr60598665e9.17.1746437908526; 
- Mon, 05 May 2025 02:38:28 -0700 (PDT)
-Received: from [192.168.0.7] (ip-109-42-49-87.web.vodafone.de. [109.42.49.87])
+ AJvYcCWpLn+xQjiJ2yzogSBKKHV1t8sMRZreMjEXxNbbIucCs/qsx+Q9jKm5lyTbxksn+ShEMH6H9lhNZ5WJ@nongnu.org
+X-Gm-Message-State: AOJu0YxrSIs7wyrDeijTrbGL5WDzaV1eSavKlvxmgySdO+Etop0cbLVy
+ nocuOmCEVoKQE4z4OFui9xt+Se2vebY031lPzfiTp3B7er2FKV2Zu1dnH9kYIB7Y98ZNZZQkYaO
+ B0Y3uWwygDDWBqh0ZqS7uqxtV0erKStMY0tnKu6flz8zQK8qSrRjVUzJ++a4L
+X-Gm-Gg: ASbGnct0VrC690+pjjUifPWRlCAbqT/9HzvpXnJb1fKajOb2zIxID+EDkgLZTPHx0qt
+ DWNnnjRaWY4O4N/7nAcgj7W4t4It8QusEPSOgGFA7jnH4Nn/pt+KdQ1ZClZkJJWz7yJu+cIrIBX
+ cGn6EYYSXdD0VROl9MooJOU35j5nEL+FEVgmgZgcmaJkYWBf3H1WiaCgRPQ36Vv9MScMz2976oh
+ 0ptIERKhMkuKWbhiJOB7kvw26Kp/oLkZyKJMf4nun50bFuPM79Wow58sPNkfPq7EckaYvuW+4VS
+ pHcfCyfoAwf0IeOhxWuwaToXZiAgeBF9wHXIkV0ItXB3R7K97g==
+X-Received: by 2002:a05:600c:1e1f:b0:43d:46de:b0eb with SMTP id
+ 5b1f17b1804b1-441c48bca2dmr64706365e9.12.1746438202945; 
+ Mon, 05 May 2025 02:43:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHJ3GUXpiJthmDDDEQF60H/IjLSe5hJPj5F98GAzGsXNvWmiqXVgd61P2IgLlpYdux2MWtKFA==
+X-Received: by 2002:a05:600c:1e1f:b0:43d:46de:b0eb with SMTP id
+ 5b1f17b1804b1-441c48bca2dmr64706105e9.12.1746438202560; 
+ Mon, 05 May 2025 02:43:22 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-441c0dfc537sm81483645e9.16.2025.05.05.02.38.27
+ 5b1f17b1804b1-441b89edfc2sm125931625e9.20.2025.05.05.02.43.21
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 May 2025 02:38:28 -0700 (PDT)
-Message-ID: <0e1bcc40-7429-4aec-8632-31cd49f9d333@redhat.com>
-Date: Mon, 5 May 2025 11:38:26 +0200
+ Mon, 05 May 2025 02:43:22 -0700 (PDT)
+Message-ID: <ead3ea8e-4ce3-405f-9702-21e4f1331faf@redhat.com>
+Date: Mon, 5 May 2025 11:43:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/3] include: Add a header to define host PCI MMIO
- functions
-To: Farhan Ali <alifm@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, stefanha@redhat.com, mjrosato@linux.ibm.com,
- schnelle@linux.ibm.com, philmd@linaro.org, kwolf@redhat.com,
- hreitz@redhat.com, fam@euphon.net
-References: <20250430185012.2303-1-alifm@linux.ibm.com>
- <20250430185012.2303-3-alifm@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20250430185012.2303-3-alifm@linux.ibm.com>
+Subject: Re: [PULL 00/23] aspeed queue
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-arm@nongnu.org, qemu-devel@nongnu.org
+References: <20250505090635.778785-1-clg@redhat.com>
+ <3031f1d7-b842-4fee-adde-89a9e824ee57@linaro.org>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <3031f1d7-b842-4fee-adde-89a9e824ee57@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -44
 X-Spam_score: -4.5
@@ -154,41 +153,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/04/2025 20.50, Farhan Ali wrote:
-> Add a generic API for host PCI MMIO reads/writes
-> (e.g. Linux VFIO BAR accesses). The functions access
-> little endian memory and returns the result in
-> host cpu endianness.
+On 5/5/25 11:35, Philippe Mathieu-Daudé wrote:
+> Hi Cédric,
 > 
-> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
-> ---
-...
-> +static inline uint8_t host_pci_ldub_p(const void *ioaddr)
-> +{
-> +    uint8_t ret = 0;
-> +#ifdef __s390x__
-> +    ret = s390x_pci_mmio_read_8(ioaddr);
-> +#else
-> +    ret = ldub_p(ioaddr);
-> +#endif
-> +
-> +    return ret;
-> +}
-...
-> +static inline void host_pci_stb_le_p(void *ioaddr, uint8_t val)
-> +{
-> +#ifdef __s390x__
-> +    s390x_pci_mmio_write_8(ioaddr, val);
-> +#else
-> +    stb_p(ioaddr, val);
-> +#endif
-> +}
+> On 5/5/25 11:06, Cédric Le Goater wrote:
+>> The following changes since commit e578dcc7e1590b20a84036afe5bdfa8d23a6048e:
+>>
+>>    pc-bios: Add AST27x0 vBootrom (2025-05-02 09:47:14 +0200)
+>>
+>> are available in the Git repository at:
+>>
+>>    https://github.com/legoater/qemu/ tags/pull-aspeed-20250505
+>>
+>> for you to fetch changes up to f32ef57f7de98ec36da52b0a13bd5d18ac4bd583:
+>>
+>>    docs: Add support for ast2700fc machine (2025-05-05 09:42:16 +0200)
+>>
+>> ----------------------------------------------------------------
+>> aspeed queue:
+>>
+>> * Fixed AST2700 SPI model issues
+>> * Updated SDK images
+>> * Added FW support to the AST2700 EVB machines
+>> * Introduced an AST27x0 multi-SoC machine
+>>
+>> ----------------------------------------------------------------
+>> Jamin Lin (12):
+>>        tests/functional/aspeed: Update test ASPEED SDK v09.06 for AST2500
+>>        tests/functional/aspeed: Update test ASPEED SDK v09.06 for AST2600
+>>        tests/functional/aspeed: Update test ASPEED SDK v03.00 for AST1030
+>>        hw/arm/aspeed_ast27x0: Rename variable sram_name to name in ast2700 realize
+>>        tests/functional/aspeed: Move I2C test into shared helper for AST2700 reuse
+>>        tests/functional/aspeed: Update test ASPEED SDK v09.06
+>>        tests/functional/aspeed: extract boot and login sequence into helper function
+>>        hw/arm/aspeed_ast27x0 Introduce vbootrom memory region
+>>        hw/arm/aspeed: Add support for loading vbootrom image via "-bios"
+>>        tests/functional/aspeed: Add to test vbootrom for AST2700
+>>        docs/system/arm/aspeed: move AST2700 content to new section
+>>        docs/system/arm/aspeed: Support vbootrom for AST2700
+>>
+>> Joe Komlodi (1):
+>>        hw/ssi/aspeed_smc: Allow 64-bit wide flash accesses
+>>
+>> Steven Lee (9):
+>>        aspeed: ast27x0: Map unimplemented devices in SoC memory
+>>        aspeed: ast27x0: Correct hex notation for device addresses
+>>        hw/intc/aspeed: Add support for AST2700 SSP INTC
+>>        hw/intc/aspeed: Add support for AST2700 TSP INTC
+>>        hw/arm/aspeed_ast27x0-ssp: Introduce AST27x0 A1 SSP SoC
+>>        hw/arm/aspeed_ast27x0-tsp: Introduce AST27x0 A1 TSP SoC
+>>        hw/arm: Introduce ASPEED AST2700 A1 full core machine
+>>        tests/function/aspeed: Add functional test for ast2700fc
+>>        docs: Add support for ast2700fc machine
+>>
+>> Troy Lee (1):
+>>        hw/arm: ast27x0: Wire up EHCI controllers
+> 
+> If you ever have to send a v2, please remove the 'Change-Id:' tags.
+> 
 
-Cosmetic nit: host_pci_ldub_p() does not have a "_le_" in its name, while 
-host_pci_stb_le_p() has it. Could be fixed up while picking up the patch, so 
-no need to respin just because of this.
+This is a Gerrit trailer AFAICT.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Why ? is it breaking some tool ? Can't we keep such reference ? If so,
+I'd rather fix checkpatch.pl.
+
+Thanks,
+
+C.
+
+
+
 
 
