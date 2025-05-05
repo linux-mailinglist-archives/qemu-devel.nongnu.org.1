@@ -2,107 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE031AA9A15
+	by mail.lfdr.de (Postfix) with ESMTPS id D639CAA9A14
 	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 19:05:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBzFD-0005u2-Vp; Mon, 05 May 2025 13:04:44 -0400
+	id 1uBzFI-0006G0-UA; Mon, 05 May 2025 13:04:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uBzE4-0005Ip-AX
- for qemu-devel@nongnu.org; Mon, 05 May 2025 13:03:37 -0400
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <just4now666666@gmail.com>)
+ id 1uBzEQ-0005RJ-Bi
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 13:03:55 -0400
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uBzE0-0003XZ-8K
- for qemu-devel@nongnu.org; Mon, 05 May 2025 13:03:30 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 55B111F391;
- Mon,  5 May 2025 17:03:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1746464604; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=DYy7nDoT5sxxQ83eJAlyB74xj4XKkLyMqwm2XUZ8rUo=;
- b=mySM2br8dS9732Bze/jHGq0hEGT2hoNOHoc8p7Py8I+fxWhi1ZJTtPs1+loYW9iIqcmO3f
- NjDMX6Ab64z7tmZFSoAFsF6Oj6Jz2lf+6Rpw/8AGiP2NFyGcv7ySw24/iBTvTQ2C5HXNJ7
- ZCSj1Xzp3zjU86TjDVMXguOXSuPmFQs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1746464604;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=DYy7nDoT5sxxQ83eJAlyB74xj4XKkLyMqwm2XUZ8rUo=;
- b=L8bBvKaAQkqNNZeYjU4oLx7KGObhqOhZ+/Hbh9bwPxOXScE65fOWVHMUyCnPJ3ot3nezi/
- d7E5JOw62hmz7eCw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1746464604; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=DYy7nDoT5sxxQ83eJAlyB74xj4XKkLyMqwm2XUZ8rUo=;
- b=mySM2br8dS9732Bze/jHGq0hEGT2hoNOHoc8p7Py8I+fxWhi1ZJTtPs1+loYW9iIqcmO3f
- NjDMX6Ab64z7tmZFSoAFsF6Oj6Jz2lf+6Rpw/8AGiP2NFyGcv7ySw24/iBTvTQ2C5HXNJ7
- ZCSj1Xzp3zjU86TjDVMXguOXSuPmFQs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1746464604;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=DYy7nDoT5sxxQ83eJAlyB74xj4XKkLyMqwm2XUZ8rUo=;
- b=L8bBvKaAQkqNNZeYjU4oLx7KGObhqOhZ+/Hbh9bwPxOXScE65fOWVHMUyCnPJ3ot3nezi/
- d7E5JOw62hmz7eCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C68501372E;
- Mon,  5 May 2025 17:03:23 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id uhq0IVvvGGiceAAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 05 May 2025 17:03:23 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Tim Lee <timlee660101@gmail.com>, lvivier@redhat.com,
- pbonzini@redhat.com, wuhaotsh@google.com, kfting@nuvoton.com,
- chli30@nuvoton.com
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, Tim Lee
- <timlee660101@gmail.com>
-Subject: Re: [PATCH] tests/qtest: Add qtest for NPCM8XX PSPI module
-In-Reply-To: <20250418091208.1888768-1-timlee660101@gmail.com>
-References: <20250418091208.1888768-1-timlee660101@gmail.com>
-Date: Mon, 05 May 2025 14:03:20 -0300
-Message-ID: <874ixzgfc7.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <just4now666666@gmail.com>)
+ id 1uBzEO-0003cK-8t
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 13:03:53 -0400
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-b041afe0ee1so4426128a12.1
+ for <qemu-devel@nongnu.org>; Mon, 05 May 2025 10:03:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1746464631; x=1747069431; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=iWEKv1zazrg5p0ezhWN+WX5e2lQ7x7RrOkjhRLd1F7c=;
+ b=BkjvS4AkACiLi7AWG93goRkiVbbIYTvB0bTl5STVj6Cf0jOMRhjv1i9ZbPKPESj/TB
+ bcL9ejvSjhIvmfTgmNQxSvsg7yaVGrVaRAB1Enr+egVflNQo8bJv+ZHz+yyFOC1tBxr9
+ FhXQBKxSMeu3QJWC+wnQiLlpQAn9IldepPqudP330AOF4xXD1rj994RozUbfPztIZYCp
+ SuZk9AdngBTitZmvh8bw+UJgZQGZy7Z52Od7FQr5ncTH4ruQ4dkj8XIBB2ZOCJfuoI68
+ 0ztK1BHkbWAmWDkc9UhpxWHC9VUwWWOTvqDMBfrPrds1SatcsD1KEhMJpZVhGC555Xzg
+ Tc6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1746464631; x=1747069431;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=iWEKv1zazrg5p0ezhWN+WX5e2lQ7x7RrOkjhRLd1F7c=;
+ b=bHJ2ki+rCu8FH8LTk6VNLXw43BcyKIvkLpqGcwsnfzCCpN417/4xN11y7REd11QNjp
+ m8UjrvcE4M4yL/vVx+CHb9SBhOhXG5OoFt16XR+wSdV2gaRHzBavXq6pWxpnXaoMA/HR
+ WSFs/J1rrb7ooHMF+RH/czNUCIS5CrvCPM7xKxym/ze6waHq84cBijZ0PlKkBrudkYVb
+ iddx2SuV3ez0sKwzkbeK17jUI53Gh+YziYlCV7YGMt05kvteoFJErncg3NTTsO6nNlB5
+ JQU7fZ/WoxM3ljWrInJH2Izg1kmdBRfMGO1jCeLSfrYWjMEQFCwirwMUHCgMpFDxmGeS
+ 5zxA==
+X-Gm-Message-State: AOJu0YzsUy3ZK3Z+OIBCblBeCCxxhoTRSoJ/NzZ6Gdb2aK/KqmbPBk6c
+ VcgscMqagrMGgIBHhJkJsdWjSkoksKPdHp/3IphI6c0viMpVa/xAGz4tIM5tzOZ4u9dK1LO4Lm1
+ wFgGK1G/rwmhARDBhP3ZCR/D1i8nnBnLsY7w=
+X-Gm-Gg: ASbGncuO1u2cE1fnsU73Z4h+S6CnDoo778VFcrrksIfL/tl7G4FXyZmNdUcr2UfqnCc
+ SBIg1d6sEZYGaMtB2WKpNa3HBqvpl1GeGqPrdQgfP3utasJhrC39Vj/ISsxHRIfoNJ36R2U+Bha
+ vQMEYiXJSDD+1gXbASyGE6idReKmEQS5+RDiGVOtZO3Q==
+X-Google-Smtp-Source: AGHT+IEJgu6OHDPjX18XG7DCldBQYotQFVUJb/AK259wMRJM4Tky1q2H0tcROXd7lEKBLCkA9ztoy2GtKqyMxE16t3I=
+X-Received: by 2002:a17:90b:56d0:b0:2fe:8c22:48b0 with SMTP id
+ 98e67ed59e1d1-30a5ae3d81dmr16831017a91.15.1746464630602; Mon, 05 May 2025
+ 10:03:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- RCVD_TLS_ALL(0.00)[]; ARC_NA(0.00)[];
- FREEMAIL_ENVRCPT(0.00)[gmail.com]; RCVD_VIA_SMTP_AUTH(0.00)[];
- MISSING_XM_UA(0.00)[]; TO_DN_SOME(0.00)[];
- MIME_TRACE(0.00)[0:+];
- FREEMAIL_TO(0.00)[gmail.com,redhat.com,google.com,nuvoton.com];
- MID_RHS_MATCH_FROM(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_HAS_DN(0.00)[]; FREEMAIL_CC(0.00)[nongnu.org,gmail.com];
- RCPT_COUNT_SEVEN(0.00)[9]; FROM_EQ_ENVFROM(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- FUZZY_BLOCKED(0.00)[rspamd.com];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <20250326161927.15572-1-just4now666666@gmail.com>
+ <CAJ+F1CKzKuO940euRhCb=tx_UQ-Ncs6k4yctipeT1v4vkinu3w@mail.gmail.com>
+In-Reply-To: <CAJ+F1CKzKuO940euRhCb=tx_UQ-Ncs6k4yctipeT1v4vkinu3w@mail.gmail.com>
+From: Elisha Hollander <just4now666666@gmail.com>
+Date: Mon, 5 May 2025 20:03:38 +0300
+X-Gm-Features: ATxdqUHTSIopQrUuq1Xnv6wQeyQuxYs9LyihXe5aBHgSFh_Ja-cCQs7gkWEbf6U
+Message-ID: <CACkyd_awBqPLTQ=ouJng8+-P4y-5qutU4BJTNZrSRxSwAeiWVw@mail.gmail.com>
+Subject: Re: [PATCH 1/1] util/memfd: allow allocating 0 bytes
+To: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000eb81d50634667bce"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=just4now666666@gmail.com; helo=mail-pg1-x52a.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,193 +91,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Tim Lee <timlee660101@gmail.com> writes:
+--000000000000eb81d50634667bce
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> - Created qtest to check initialization of registers in PSPI Module
-> - Implemented test into Build File
->
-> Tested:
-> ./build/tests/qtest/npcm8xx-pspi_test
->
-> Signed-off-by: Tim Lee <timlee660101@gmail.com>
-> ---
->  MAINTAINERS                     |   1 +
->  tests/qtest/meson.build         |   3 +
->  tests/qtest/npcm8xx_pspi-test.c | 104 ++++++++++++++++++++++++++++++++
->  3 files changed, 108 insertions(+)
->  create mode 100644 tests/qtest/npcm8xx_pspi-test.c
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index d54b5578f8..0162f59bf7 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -892,6 +892,7 @@ F: hw/sensor/adm1266.c
->  F: include/hw/*/npcm*
->  F: tests/qtest/npcm*
->  F: tests/qtest/adm1266-test.c
-> +F: tests/qtest/npcm8xx_pspi-test.c
->  F: pc-bios/npcm7xx_bootrom.bin
->  F: pc-bios/npcm8xx_bootrom.bin
->  F: roms/vbootrom
-> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-> index 3136d15e0f..88672a8b00 100644
-> --- a/tests/qtest/meson.build
-> +++ b/tests/qtest/meson.build
-> @@ -210,6 +210,8 @@ qtests_npcm7xx = \
->     'npcm7xx_watchdog_timer-test',
->     'npcm_gmac-test'] + \
->     (slirp.found() ? ['npcm7xx_emc-test'] : [])
-> +qtests_npcm8xx = \
-> +  ['npcm8xx_pspi-test']
->  qtests_aspeed = \
->    ['aspeed_hace-test',
->     'aspeed_smc-test',
-> @@ -257,6 +259,7 @@ qtests_aarch64 = \
->    (config_all_accel.has_key('CONFIG_TCG') and                                            \
->     config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? ['tpm-tis-i2c-test'] : []) + \
->    (config_all_devices.has_key('CONFIG_ASPEED_SOC') ? qtests_aspeed64 : []) + \
-> +  (config_all_devices.has_key('CONFIG_NPCM8XX') ? qtests_npcm8xx : []) + \
->    ['arm-cpu-features',
->     'numa-test',
->     'boot-serial-test',
-> diff --git a/tests/qtest/npcm8xx_pspi-test.c b/tests/qtest/npcm8xx_pspi-test.c
-> new file mode 100644
-> index 0000000000..107bce681f
-> --- /dev/null
-> +++ b/tests/qtest/npcm8xx_pspi-test.c
-> @@ -0,0 +1,104 @@
-> +#include "qemu/osdep.h"
-> +#include "libqtest.h"
-> +#include "qemu/module.h"
-> +
-> +#define DATA_OFFSET 0x00
-> +#define CTL_SPIEN   0x01
-> +#define CTL_OFFSET  0x02
-> +#define CTL_MOD     0x04
-> +
-> +typedef struct PSPI {
-> +    uint64_t base_addr;
-> +} PSPI;
-> +
-> +PSPI pspi_defs = {
-> +    .base_addr  = 0xf0201000
-> +};
-> +
-> +static uint16_t pspi_read_data(QTestState *qts, const PSPI *pspi)
-> +{
-> +    return qtest_readw(qts, pspi->base_addr + DATA_OFFSET);
-> +}
-> +
-> +static void pspi_write_data(QTestState *qts, const PSPI *pspi, uint16_t value)
-> +{
-> +    qtest_writew(qts, pspi->base_addr + DATA_OFFSET, value);
-> +}
-> +
-> +static uint32_t pspi_read_ctl(QTestState *qts, const PSPI *pspi)
-> +{
-> +    return qtest_readl(qts, pspi->base_addr + CTL_OFFSET);
-> +}
-> +
-> +static void pspi_write_ctl(QTestState *qts, const PSPI *pspi, uint32_t value)
-> +{
-> +    qtest_writel(qts, pspi->base_addr + CTL_OFFSET, value);
-> +}
-> +
-> +/* Check PSPI can be reset to default value */
-> +static void test_init(gconstpointer pspi_p)
-> +{
-> +    const PSPI *pspi = pspi_p;
-> +
-> +    QTestState *qts = qtest_init("-machine npcm845-evb");
-> +    pspi_write_ctl(qts, pspi, CTL_SPIEN);
-> +    g_assert_cmphex(pspi_read_ctl(qts, pspi), ==, CTL_SPIEN);
-> +
-> +    qtest_quit(qts);
-> +}
-> +
-> +/* Check PSPI can be r/w data register */
-> +static void test_data(gconstpointer pspi_p)
-> +{
-> +    const PSPI *pspi = pspi_p;
-> +    uint16_t test = 0x1234;
-> +    uint16_t output;
-> +
-> +    QTestState *qts = qtest_init("-machine npcm845-evb");
-> +
-> +    /* Write to data register */
-> +    pspi_write_data(qts, pspi, test);
-> +    printf("Wrote 0x%x to data register\n", test);
-> +
-> +    /* Read from data register */
-> +    output = pspi_read_data(qts, pspi);
-> +    printf("Read 0x%x from data register\n", output);
-> +
-> +    qtest_quit(qts);
-> +}
-> +
-> +/* Check PSPI can be r/w control register */
-> +static void test_ctl(gconstpointer pspi_p)
-> +{
-> +    const PSPI *pspi = pspi_p;
-> +    uint8_t control = CTL_MOD;
-> +
-> +    QTestState *qts = qtest_init("-machine npcm845-evb");
-> +
-> +    /* Write CTL_MOD value to control register for 16-bit interface mode */
-> +    qtest_memwrite(qts, pspi->base_addr + CTL_OFFSET,
-> +                   &control, sizeof(control));
-> +    g_assert_cmphex(pspi_read_ctl(qts, pspi), ==, control);
-> +    printf("Wrote CTL_MOD to control register\n");
-> +
-> +    qtest_quit(qts);
-> +}
-> +
-> +static void pspi_add_test(const char *name, const PSPI* wd,
-> +        GTestDataFunc fn)
-> +{
-> +    g_autofree char *full_name = g_strdup_printf("npcm8xx_pspi/%s",  name);
-> +    qtest_add_data_func(full_name, wd, fn);
-> +}
-> +
-> +#define add_test(name, td) pspi_add_test(#name, td, test_##name)
-> +
-> +int main(int argc, char **argv)
-> +{
-> +    g_test_init(&argc, &argv, NULL);
-> +
-> +    add_test(init, &pspi_defs);
-> +    add_test(ctl, &pspi_defs);
-> +    add_test(data, &pspi_defs);
-> +    return g_test_run();
-> +}
+Not necessarily fdopen, can't remember why I chose it, we just need any
+pointer as no data will be written into the buffer anyways
 
-This fails on top of current master, please take a look:
+On Mon, May 5, 2025, 19:55 Marc-Andr=C3=A9 Lureau <marcandre.lureau@gmail.c=
+om>
+wrote:
 
-$ QTEST_LOG=1 QTEST_QEMU_BINARY=./qemu-system-aarch64 ./tests/qtest/npcm8xx_pspi-test
-# random seed: R02S03f79fc48ba73b76c881f93f90b015e9
-1..3
-# Start of aarch64 tests
-# Start of npcm8xx_pspi tests
-# starting QEMU: exec ./qemu-system-aarch64 -qtest
-  unix:/tmp/qtest-32530.sock -qtest-log /dev/fd/2 -chardev
-  socket,path=/tmp/qtest-32530.qmp,id=char0 -mon
-  chardev=char0,mode=control -display none -audio none -machine
-  npcm845-evb -accel qtest
-[I 0.000000] OPENED
-[R +0.034918] endianness
-[S +0.034944] OK little
-{"QMP": {"version": {"qemu": {"micro": 50, "minor": 0, "major": 10},
-"package": "v10.0.0-530-g88d6459dae"}, "capabilities": ["oob"]}}
-{"execute": "qmp_capabilities"}
-{"return": {}}
-[R +0.037373] writel 0xf0201002 0x1
-[S +0.037396] OK
-[R +0.037417] readl 0xf0201002
-[S +0.037426] OK 0x0000000000000000
-**
-ERROR:../tests/qtest/npcm8xx_pspi-test.c:45:test_init: assertion failed
-(pspi_read_ctl(qts, pspi) == CTL_SPIEN): (0x00000000 == 0x00000001)
-Bail out!
-[I +0.037909] CLOSED
-Aborted (core dumped)
+> Hi
+>
+> On Wed, Mar 26, 2025 at 8:21=E2=80=AFPM donno2048 <just4now666666@gmail.c=
+om>
+> wrote:
+> >
+> > This silently fixes issues resulting from trying to allocate 0 bytes.
+> >
+> > Fixes error, for example, for writing byte 0x20 to port 0x3c0, then wor=
+d
+> 0xf09 to port 0x3b4 when CPU is initiated, which shouldn't break.
+> >
+>
+> This is worth a test.
+>
+> > Signed-off-by: donno2048 <just4now666666@gmail.com>
+> > ---
+> >  util/memfd.c | 10 +++++++---
+> >  1 file changed, 7 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/util/memfd.c b/util/memfd.c
+> > index 07beab174d..4f2c4ea1dd 100644
+> > --- a/util/memfd.c
+> > +++ b/util/memfd.c
+> > @@ -131,9 +131,13 @@ void *qemu_memfd_alloc(const char *name, size_t
+> size, unsigned int seals,
+> >          }
+> >      }
+> >
+> > -    ptr =3D mmap(0, size, PROT_READ | PROT_WRITE, MAP_SHARED, mfd, 0);
+> > -    if (ptr =3D=3D MAP_FAILED) {
+> > -        goto err;
+> > +    if (size !=3D 0) {
+> > +        ptr =3D mmap(0, size, PROT_READ | PROT_WRITE, MAP_SHARED, mfd,=
+ 0);
+> > +        if (ptr =3D=3D MAP_FAILED) {
+> > +            goto err;
+> > +        }
+> > +    } else {
+> > +        ptr =3D fdopen(mfd, "rw");
+>
+> I don't understand fdopen() here, it returns a FILE*
+>
+> >      }
+> >
+> >      *fd =3D mfd;
+> > --
+> > 2.30.2
+> >
+> >
+>
+>
+> --
+> Marc-Andr=C3=A9 Lureau
+>
+
+--000000000000eb81d50634667bce
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<p dir=3D"ltr">Not necessarily fdopen, can&#39;t remember why I chose it, w=
+e just need any pointer as no data will be written into the buffer anyways<=
+/p>
+<br><div class=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" class=
+=3D"gmail_attr">On Mon, May 5, 2025, 19:55 Marc-Andr=C3=A9 Lureau &lt;<a hr=
+ef=3D"mailto:marcandre.lureau@gmail.com">marcandre.lureau@gmail.com</a>&gt;=
+ wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8=
+ex;border-left:1px #ccc solid;padding-left:1ex">Hi<br>
+<br>
+On Wed, Mar 26, 2025 at 8:21=E2=80=AFPM donno2048 &lt;<a href=3D"mailto:jus=
+t4now666666@gmail.com" target=3D"_blank" rel=3D"noreferrer">just4now666666@=
+gmail.com</a>&gt; wrote:<br>
+&gt;<br>
+&gt; This silently fixes issues resulting from trying to allocate 0 bytes.<=
+br>
+&gt;<br>
+&gt; Fixes error, for example, for writing byte 0x20 to port 0x3c0, then wo=
+rd 0xf09 to port 0x3b4 when CPU is initiated, which shouldn&#39;t break.<br=
+>
+&gt;<br>
+<br>
+This is worth a test.<br>
+<br>
+&gt; Signed-off-by: donno2048 &lt;<a href=3D"mailto:just4now666666@gmail.co=
+m" target=3D"_blank" rel=3D"noreferrer">just4now666666@gmail.com</a>&gt;<br=
+>
+&gt; ---<br>
+&gt;=C2=A0 util/memfd.c | 10 +++++++---<br>
+&gt;=C2=A0 1 file changed, 7 insertions(+), 3 deletions(-)<br>
+&gt;<br>
+&gt; diff --git a/util/memfd.c b/util/memfd.c<br>
+&gt; index 07beab174d..4f2c4ea1dd 100644<br>
+&gt; --- a/util/memfd.c<br>
+&gt; +++ b/util/memfd.c<br>
+&gt; @@ -131,9 +131,13 @@ void *qemu_memfd_alloc(const char *name, size_t s=
+ize, unsigned int seals,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 }<br>
+&gt;<br>
+&gt; -=C2=A0 =C2=A0 ptr =3D mmap(0, size, PROT_READ | PROT_WRITE, MAP_SHARE=
+D, mfd, 0);<br>
+&gt; -=C2=A0 =C2=A0 if (ptr =3D=3D MAP_FAILED) {<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 goto err;<br>
+&gt; +=C2=A0 =C2=A0 if (size !=3D 0) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 ptr =3D mmap(0, size, PROT_READ | PROT_WR=
+ITE, MAP_SHARED, mfd, 0);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (ptr =3D=3D MAP_FAILED) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 goto err;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+&gt; +=C2=A0 =C2=A0 } else {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 ptr =3D fdopen(mfd, &quot;rw&quot;);<br>
+<br>
+I don&#39;t understand fdopen() here, it returns a FILE*<br>
+<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 }<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 *fd =3D mfd;<br>
+&gt; --<br>
+&gt; 2.30.2<br>
+&gt;<br>
+&gt;<br>
+<br>
+<br>
+-- <br>
+Marc-Andr=C3=A9 Lureau<br>
+</blockquote></div>
+
+--000000000000eb81d50634667bce--
 
