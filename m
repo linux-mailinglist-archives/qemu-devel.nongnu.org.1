@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18599AA8EFD
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 11:10:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 687AEAA8F24
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 11:15:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBrnG-00076T-Ty; Mon, 05 May 2025 05:07:24 -0400
+	id 1uBro5-0000O6-E7; Mon, 05 May 2025 05:08:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uBrmo-00063Q-U6
- for qemu-devel@nongnu.org; Mon, 05 May 2025 05:06:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uBrmq-00069W-Qs
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 05:07:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uBrmk-0006CO-9I
- for qemu-devel@nongnu.org; Mon, 05 May 2025 05:06:54 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uBrmn-0006Cm-U6
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 05:06:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746436009;
+ s=mimecast20190719; t=1746436012;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Ndy2Ykgwa4f2bXKuASZKwwvf683tvWgDwjTRq87uv3o=;
- b=fgBwp6A90W+NoBGwZd7TQjduBz7K+0AnkWElC+BchxFy53EBSdzaYkZqEw9DFDgQ1DgvP5
- yCOj4MNeoPIEFaGLyVvn/5C5Q0StRsbjxuItacaszlpaDHIiP8ilQU9DiQ2d+lcYXoc106
- P8uvRI4sG7HzQ85MTdlfjuMGLOvt1Y0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=8/LgbK9aXh6E9duZWTO2B6O0ErU1RvCLEKiAekF5JPM=;
+ b=RgGCbtUfG9UJRmea4HA9eP6n85+LM8x5ZtSJ9w/e0rttwm34+/thQVYyITR22s21gzsMnV
+ gZ4zFu7baK8f1oBkCYihd7KCp3QL30B2mkvq4Ip4P50kdeNYCgnYO2ySZ0GecVi5YwZ54d
+ x1LF9Sn7OBuz7GCuvQJ2HT3s4NyNB8o=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-94-R-vhWU1nPcuKWhFV0UejSg-1; Mon,
- 05 May 2025 05:06:46 -0400
-X-MC-Unique: R-vhWU1nPcuKWhFV0UejSg-1
-X-Mimecast-MFC-AGG-ID: R-vhWU1nPcuKWhFV0UejSg_1746436005
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-7-CKk1suCaMsqit2NsMono3w-1; Mon,
+ 05 May 2025 05:06:49 -0400
+X-MC-Unique: CKk1suCaMsqit2NsMono3w-1
+X-Mimecast-MFC-AGG-ID: CKk1suCaMsqit2NsMono3w_1746436008
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4DFF31800873; Mon,  5 May 2025 09:06:45 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1ECB51956048; Mon,  5 May 2025 09:06:48 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.38])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 20E3B30002C5; Mon,  5 May 2025 09:06:42 +0000 (UTC)
+ id D0C7930001A2; Mon,  5 May 2025 09:06:45 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Cc: Joe Komlodi <komlodi@google.com>,
+Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 02/23] hw/ssi/aspeed_smc: Allow 64-bit wide flash accesses
-Date: Mon,  5 May 2025 11:06:14 +0200
-Message-ID: <20250505090635.778785-3-clg@redhat.com>
+Subject: [PULL 03/23] tests/functional/aspeed: Update test ASPEED SDK v09.06
+ for AST2500
+Date: Mon,  5 May 2025 11:06:15 +0200
+Message-ID: <20250505090635.778785-4-clg@redhat.com>
 In-Reply-To: <20250505090635.778785-1-clg@redhat.com>
 References: <20250505090635.778785-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -44
 X-Spam_score: -4.5
@@ -66,7 +67,7 @@ X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.411,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,46 +83,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Joe Komlodi <komlodi@google.com>
+From: Jamin Lin <jamin_lin@aspeedtech.com>
 
-cde3247651dc998da5dc1005148302a90d72f21f fixed atomicity for LDRD, which
-ends up making accesses 64-bits wide. However, the AST2600 bootloader
-can sometimes compile with LDRD instructions, which causes the acceses
-to fail when accessing the memory-mapped SPI flash.
-
-To fix this, increase the MMIO region valid access size to allow for
-64-bit accesses.
-
-Signed-off-by: Joe Komlodi <komlodi@google.com>
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250422002747.2593465-1-komlodi@google.com
+Link: https://lore.kernel.org/qemu-devel/20250423014008.147542-2-jamin_lin@aspeedtech.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/ssi/aspeed_smc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/functional/test_arm_aspeed_ast2500.py | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/ssi/aspeed_smc.c b/hw/ssi/aspeed_smc.c
-index 0d38f95c7a39..614528b8ef65 100644
---- a/hw/ssi/aspeed_smc.c
-+++ b/hw/ssi/aspeed_smc.c
-@@ -359,7 +359,7 @@ static const MemoryRegionOps aspeed_smc_flash_default_ops = {
-     .endianness = DEVICE_LITTLE_ENDIAN,
-     .valid = {
-         .min_access_size = 1,
--        .max_access_size = 4,
-+        .max_access_size = 8,
-     },
- };
+diff --git a/tests/functional/test_arm_aspeed_ast2500.py b/tests/functional/test_arm_aspeed_ast2500.py
+index a3b44572fcf6..6923fe870170 100755
+--- a/tests/functional/test_arm_aspeed_ast2500.py
++++ b/tests/functional/test_arm_aspeed_ast2500.py
+@@ -37,14 +37,14 @@ def test_arm_ast2500_evb_buildroot(self):
  
-@@ -670,7 +670,7 @@ static const MemoryRegionOps aspeed_smc_flash_ops = {
-     .endianness = DEVICE_LITTLE_ENDIAN,
-     .valid = {
-         .min_access_size = 1,
--        .max_access_size = 4,
-+        .max_access_size = 8,
-     },
- };
+         self.do_test_arm_aspeed_buildroot_poweroff()
  
+-    ASSET_SDK_V806_AST2500 = Asset(
+-        'https://github.com/AspeedTech-BMC/openbmc/releases/download/v08.06/ast2500-default-obmc.tar.gz',
+-        'e1755f3cadff69190438c688d52dd0f0d399b70a1e14b1d3d5540fc4851d38ca')
++    ASSET_SDK_V906_AST2500 = Asset(
++        'https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.06/ast2500-default-obmc.tar.gz',
++        '542db84645b4efd8aed50385d7f4dd1caff379a987032311cfa7b563a3addb2a')
+ 
+     def test_arm_ast2500_evb_sdk(self):
+         self.set_machine('ast2500-evb')
+ 
+-        self.archive_extract(self.ASSET_SDK_V806_AST2500)
++        self.archive_extract(self.ASSET_SDK_V906_AST2500)
+ 
+         self.do_test_arm_aspeed_sdk_start(
+             self.scratch_file("ast2500-default", "image-bmc"))
 -- 
 2.49.0
 
