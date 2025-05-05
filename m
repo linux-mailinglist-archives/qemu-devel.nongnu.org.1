@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A638FAAA450
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 01:27:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD789AAA3E8
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 01:21:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uC571-0006G5-MW; Mon, 05 May 2025 19:20:39 -0400
+	id 1uC575-0006K2-UO; Mon, 05 May 2025 19:20:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uC56w-0006Bu-6I
+ id 1uC56w-0006Bw-65
  for qemu-devel@nongnu.org; Mon, 05 May 2025 19:20:34 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uC56s-0003WU-FY
+ id 1uC56t-0003X1-0K
  for qemu-devel@nongnu.org; Mon, 05 May 2025 19:20:33 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-224341bbc1dso65406355ad.3
- for <qemu-devel@nongnu.org>; Mon, 05 May 2025 16:20:29 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-223fd89d036so56056605ad.1
+ for <qemu-devel@nongnu.org>; Mon, 05 May 2025 16:20:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746487228; x=1747092028; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746487229; x=1747092029; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LuLpPX6X06+NE7HHzhZQmUoQgosCpwXTe/wCgu+rNqA=;
- b=k5esf1GaJACP/esYU7zk5AgQd/Kp0Sc2fxfe2ueTkEl6Kjnne1JOR2N1xZNQOC52r9
- n9ILqTCEI6kkGTp7s5eqmPnp6ZhJyPUQU3EeMmdioksQ8Tv0Wjm3ay3CwRARP2K9LRdo
- p1nxfiZxeVQU2xhkjdBPZAGq4jRXnc1Q0gynAJsLQXIfMM4DcxR1rhky5gk9lOkDNPlA
- /6Pp5cpD0p53p3vd1i1wmiOfdY5t5fKZ/yPJGeVp4DoK9YdAA+CqO1v5rdEL9NAgyYGc
- /y8rfHHTusrTpT0SxG5tYknESs7h+OGdLG7Vj7/RzGdTCCf3/MwR73NtC1g1HxFmGBB1
- 8UVw==
+ bh=8+98FJCPUkZxLytRMJNRmc7jhTB2VJSy0tbuhiYCP08=;
+ b=riX4BfyviGDNrYMsd2+RDXBekRdeJjJdFN4Q5Qe/iDlIJuL8Lew40oEp7aSca8xcbf
+ klcCKwc5gHh79AfcNvNSElDego1mlnWhjjdXxFR9LT5aonH7C/9sHeRKZPFS4GLRX61f
+ aWG/LxutTsU/Hpv9q6zi9+r/TXTQcyPGu9M7XlJ2RVt5WTrP5xG+QFKhTq3glEAUIOGo
+ JlgP3PCK4dka7s/ZYw43g/ueAF1jTUbsr6uTmcg3qW1qsNLHHbjds0Ng484ncMDvZ8/s
+ vS1Bn8oFshVC9FEOMGmbvqVn9Sez40w59G3kpqTEiWsY5HYX6dEQ3gT+hp2TblnlVVG3
+ ZbhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746487228; x=1747092028;
+ d=1e100.net; s=20230601; t=1746487229; x=1747092029;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LuLpPX6X06+NE7HHzhZQmUoQgosCpwXTe/wCgu+rNqA=;
- b=gM9v0lmDKWO3GvAlwQBr3e482IoWSdBnVeyfoXpDAmj3tJH3yXvFcxTAtOBSmHfY6A
- Cnie2WY4GnT3MX26dDY26Ukxvj3V8UL69bSGEFjFgyDoKQ+qp6mO3d0qM4GtVpd9IZhR
- 1Ub2KoJzrQ1NrS7wP0U4YY4xcQzcyMU1HG+zem8Ss0MwFMfDiW+KVWwROua8cM79YrRS
- QCWw2izHUP4vt5qYGc31FkxDl829FZNR8qs59JFAdO+BaAvzd96V71OdMe/Th74/l1lO
- CTDPm6lNpBY/oIFyQVL6j19sTEh4HacST0di7eaJ52uCC1L1NbqIcqPUje5n4lHNZgtj
- KOBg==
-X-Gm-Message-State: AOJu0YwxwTHpseycpnWuUL4Yh5Bphgd/H/e/7d3Kzh5aXDNNeZwMSqoH
- PBCgoSOtFcevl6n35P+RVxiLQNzzAfdmoMrbwFKbjt0zWfjxmuWwaKXF9yFM4kuKEdUndqc1e6m
- ZjDs=
-X-Gm-Gg: ASbGnctwQoWVlxANiKSGbb4xdLR9Rx1Zzj0y/HiYC8Lo84h+rhCyxOxlAjG4Rw6WlP1
- k3gScZ2rtsmSbAEbXUJrg49NvnYnFAxQb5+bCsAZg8fYlLUVNQg5p7buC0oxwr4pvkTgBjw34El
- iKrotnhn0pCLSYtOOfBBJeh7IBfy0Up2rO/vH9lw9mRyTDyY0fXAqjnviyXeYjm6gefmdphvSf1
- t1r4WZ7afqEBG5ucLrAkcxz1sBjfUk27dxn2ycc45lRS0VEelgQiXYfwQkctt1ibj2VlweQMkZN
- 2W630hVeol+EeVj4YJ2BS3mmHpJhj5kKsN4dRYw8
-X-Google-Smtp-Source: AGHT+IGSY/R02CKSQdqXb3iHAsgo600GkoW68E32m5EK8V2wo1QEuGkpp1ZSH6DODuTARwW1aFA+vg==
-X-Received: by 2002:a17:903:2f4c:b0:223:5e76:637a with SMTP id
- d9443c01a7336-22e3620b14cmr11382035ad.23.1746487228533; 
- Mon, 05 May 2025 16:20:28 -0700 (PDT)
+ bh=8+98FJCPUkZxLytRMJNRmc7jhTB2VJSy0tbuhiYCP08=;
+ b=VPnga9hjNgWuqXwuvVgY9ZSPPQW9cfmVtkyPPHvDDytBxuEdSkZsbF0rSYzTAyfA6I
+ 5pRz8liNH+B97FKRb7BWnPZL7K8MN1YcAZhWN4oOmK60EV0e/sHErt81tQz4flVM+OAq
+ pXj2GBK3vtIEcgd35PuhN60XfsoyEP84D3uQRlQx7uNIE988X4OUieDBWez61tD3Xh/R
+ mWI0/Z2RBUceXWSRdvjwyuKP4pEk7ZC/dGHnDe0A39c37y9IhiIHNRxeyGKVpe22GY2F
+ xHSgf6Oa2D7+tsahoqpGoJ7TV6NZIaqJLiNpefSMm0bLe0nOSrmTPDMi+Rcqkq7hA8zE
+ FLcA==
+X-Gm-Message-State: AOJu0Yyv8wfOM3Sagg3xhMR+g+LYUOtp3UF3plnFZ7J7U9124yXAsk2R
+ skMus2lebLrWtDgBQIHdFb1hSGhjoeVhpE8QyKeoNmnhNCCxoL4HIf9I6Mz6VI0huod40t2nlkE
+ NOy4=
+X-Gm-Gg: ASbGncuYjQJoDebVFeSUYTBXv2TK57aqA9P3vkxL0AhcLxbBVDbbgEOaSlWmNYngRfw
+ qISpzF9JCkJ6xMytgvPg1YJ0ymVqo5j44FIfqjGDb3g2Vwj3USJ/esVmnCCzGRhKyLCgBkFDcFl
+ PtSZq2szjWLOZWr6pV7SvF1+w+kauuqOMgbl0j6p/y3aFbXFWwFYchWcePTPr2f9LMzA2vUPklz
+ 2UAbkWIR71fWWvG8jNQRkt+J1BSOm8tHXbmu85qUgUNuawjKgK+zunDSWW8PniD72k02Z+ROz1Q
+ wcHJulIhkZQMAypmFKOlKaL+fNVXJ98r+XEHWUmw
+X-Google-Smtp-Source: AGHT+IGafCDnzbl4XsOgKn16x55qDqZR3cRsQY1YC271VQ2ahGmfB+GhbWbfsVVZQQMU78koO3U2SA==
+X-Received: by 2002:a17:902:ea0b:b0:216:6283:5a8c with SMTP id
+ d9443c01a7336-22e32f08e17mr13948765ad.39.1746487229414; 
+ Mon, 05 May 2025 16:20:29 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22e1522917asm60981715ad.201.2025.05.05.16.20.27
+ d9443c01a7336-22e1522917asm60981715ad.201.2025.05.05.16.20.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 May 2025 16:20:28 -0700 (PDT)
+ Mon, 05 May 2025 16:20:29 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, anjo@rev.ng,
@@ -68,23 +68,24 @@ Cc: richard.henderson@linaro.org, anjo@rev.ng,
  kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-arm@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v6 09/50] target/arm/cpu: remove TARGET_BIG_ENDIAN dependency
-Date: Mon,  5 May 2025 16:19:34 -0700
-Message-ID: <20250505232015.130990-10-pierrick.bouvier@linaro.org>
+Subject: [PATCH v6 10/50] target/arm/cpu: remove TARGET_AARCH64 around
+ aarch64_cpu_dump_state common
+Date: Mon,  5 May 2025 16:19:35 -0700
+Message-ID: <20250505232015.130990-11-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250505232015.130990-1-pierrick.bouvier@linaro.org>
 References: <20250505232015.130990-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,34 +101,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Call is guarded by is_a64(env), so it's safe to expose without needing
+to assert anything.
+
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Anton Johansson <anjo@rev.ng>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/arm/cpu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ target/arm/cpu.c | 11 -----------
+ 1 file changed, 11 deletions(-)
 
 diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 07f279fec8c..37b11e8866f 100644
+index 37b11e8866f..00ae2778058 100644
 --- a/target/arm/cpu.c
 +++ b/target/arm/cpu.c
-@@ -23,6 +23,7 @@
- #include "qemu/timer.h"
- #include "qemu/log.h"
- #include "exec/page-vary.h"
-+#include "exec/tswap.h"
- #include "target/arm/idau.h"
- #include "qemu/module.h"
- #include "qapi/error.h"
-@@ -1172,7 +1173,7 @@ static void arm_disas_set_info(CPUState *cpu, disassemble_info *info)
+@@ -1183,8 +1183,6 @@ static void arm_disas_set_info(CPUState *cpu, disassemble_info *info)
+ #endif
+ }
  
-     info->endian = BFD_ENDIAN_LITTLE;
-     if (bswap_code(sctlr_b)) {
--        info->endian = TARGET_BIG_ENDIAN ? BFD_ENDIAN_LITTLE : BFD_ENDIAN_BIG;
-+        info->endian = target_big_endian() ? BFD_ENDIAN_LITTLE : BFD_ENDIAN_BIG;
+-#ifdef TARGET_AARCH64
+-
+ static void aarch64_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+ {
+     ARMCPU *cpu = ARM_CPU(cs);
+@@ -1342,15 +1340,6 @@ static void aarch64_cpu_dump_state(CPUState *cs, FILE *f, int flags)
      }
-     info->flags &= ~INSN_ARM_BE32;
- #ifndef CONFIG_USER_ONLY
+ }
+ 
+-#else
+-
+-static inline void aarch64_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+-{
+-    g_assert_not_reached();
+-}
+-
+-#endif
+-
+ static void arm_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+ {
+     ARMCPU *cpu = ARM_CPU(cs);
 -- 
 2.47.2
 
