@@ -2,56 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74AA1AA9030
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 11:54:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6DA4AA9068
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 11:58:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBsWd-0002er-CW; Mon, 05 May 2025 05:54:15 -0400
+	id 1uBsay-00017h-5E; Mon, 05 May 2025 05:58:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <61da38db70affd925226ce1e8a61d761c20d045b@kylie.crudebyte.com>)
- id 1uBsWV-0002dR-T4
- for qemu-devel@nongnu.org; Mon, 05 May 2025 05:54:10 -0400
-Received: from kylie.crudebyte.com ([5.189.157.229])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <61da38db70affd925226ce1e8a61d761c20d045b@kylie.crudebyte.com>)
- id 1uBsWT-0005Bz-5O
- for qemu-devel@nongnu.org; Mon, 05 May 2025 05:54:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Cc:To:Subject:Date:From:References:In-Reply-To:
- Message-Id:Content-Type:Content-Transfer-Encoding:MIME-Version:Content-ID:
- Content-Description; bh=8i/SvaaAzkSbWufnTpJVWGVUEcOG/ToduN6XkxFJX7A=; b=pRgbH
- sbWoVCR1rD8Ug+SuY/RM09PBNpgDbOOZEsDXw7cctuneV6AE4VGEmuwqvwIsRsKQ+JFM6XHmPkrFm
- eE322QQNVot/4J2pixViG6I1Skfrmi1+8MlsZ2kh98S0iYlueZAiK7WN7ZA4I/QGi39wZVTQFp2Xb
- vwJbdi3FUQv68/TZQOYofRO0xh3A5cQWwK64zAQ9YfNcF4cLoRkpRcth7BX+1x5cAv9SNV+3LKq8m
- 5QXan6LeXv+Xg3QAWAgOLJif4N/TXvZbHzZx6OQkrLUYMxPIYYT7BNDvJWa99uEE3u+VeH0OHGgeM
- oEL6YKjYvON+W+oZaPcKYCsIuTW/vf/V+lYIAQRPEe2Ss/KlPA7iIFNNA9YTT7xVKJfXvkBXjfpXY
- sbQaK/+19LggRmc//eOrC+0Mymev8JBmNXi2hhfM1jxdP9ZehAnkacMVNPaf52ndSC+Ce26yYSbxo
- WDz6YYAKImNmlI1ltJ1SAssUfZVHrFJ24QU5yVn/PjgiI66aslrMaB1WuSJe82pvW72/3GTGmB2O1
- VnckZiTUlXoCxquv1qWoIcV1eH+eoIV/OgldbqLhuBQUn83FT+8rxI/dG8XmOnXQdHOaIMdpV56yA
- rj8dmRdCP3W4abgmeOQ9DH9ePRpnJGJxNhp99LVHTJYeBPZpXkHEx7e00yGZEk=;
-Message-Id: <61da38db70affd925226ce1e8a61d761c20d045b.1746438650.git.qemu_oss@crudebyte.com>
-In-Reply-To: <cover.1746438650.git.qemu_oss@crudebyte.com>
-References: <cover.1746438650.git.qemu_oss@crudebyte.com>
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Date: Mon, 05 May 2025 11:50:51 +0200
-Subject: [PULL 1/9] 9pfs: fix concurrent v9fs_reclaim_fd() calls
-To: qemu-devel@nongnu.org,
-    Peter Maydell <peter.maydell@linaro.org>
-Cc: Greg Kurz <groug@kaod.org>
-Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=61da38db70affd925226ce1e8a61d761c20d045b@kylie.crudebyte.com;
- helo=kylie.crudebyte.com
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uBsat-00016g-3G
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 05:58:39 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uBsaq-0005rS-3E
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 05:58:38 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-43d0359b1fcso25862765e9.0
+ for <qemu-devel@nongnu.org>; Mon, 05 May 2025 02:58:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1746439114; x=1747043914; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=SpZDlT5cEJosrUV6fxdzIDuupTkbtlUZTawaLOnJ0f4=;
+ b=E4chFs6L0i2Z77ABBldeZh52DYTqqDQkG8mw0RYbeJ8hVoPYmtZGfMWOetTlt2s3Gx
+ POj3RzB+v9OwderVOqbJJvvMQrx7UBkXK0MXSv5V+FqgnxcrOIr/UJdUmSeKZUGNfddl
+ tPE4s5dI4O3+wJc4od74LbfKuHay9FtaT2Uig1TK/+rfNp8bqIzB15TteeXcf7qWN0/j
+ ewlSUVEyOs5i0Sn0JKlDWbXez/aya4n8P1A0QLmevSD9qvyYl+AEwDhtW4RlMPGm4jGF
+ CnPBJS+n/tJtXyZg3QMZ/hXP5rdRf150sFxerVzXQPrT28zuM22a8T9ZqWnA/MceBrtW
+ Hoqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1746439114; x=1747043914;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=SpZDlT5cEJosrUV6fxdzIDuupTkbtlUZTawaLOnJ0f4=;
+ b=IBvHBo+k12CKbpLRUjn/c2wbAUqphf4W2a8D7xskRuvubM+ggCxBWnq0JXvbwQ6BDs
+ XRQiWGHz6I5E35RfZ+pC20W+/EHDlsK2V+HSA9NRIAlH4DrRfXge0n149NlTEfWkQ5aM
+ MLhKggFSbw0BvMmHmsRZ8hecu3j2RhRbryAWlwBW013mL8JDSyRdYs89XnoSp8zElr/A
+ Flh+ZsPA7L5jK1r5Tc/JOqwem7BXSUrQC9vxTlPAoCYRLpoEmvmISrK9xQIpKAawpeaD
+ paGBLlj+e+LWKYd8l+gHM5nyhstKyNSVl69pjIMhAzE3bVELOYiUB4xKxl8mKyypVUJu
+ EORA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWTA1DF5UF+UWkE3+iVL/5t+pG65ofIEj4wFDNyI9IY+SgiA90JGrHkc6cYl8DZkmE1cNiZE0XB0Msi@nongnu.org
+X-Gm-Message-State: AOJu0Yx6OktQU6Ugi90Y1ENa+aWMmYq2ZQpuCMYmyxmAO/gnVFvVpB6u
+ t7PGYKzUZUNOaZ5AEe+fUecxAfyobaT1+6NFqMPXzpuNPcvhsdqJFJ/fe9bnZL4=
+X-Gm-Gg: ASbGncveKY3zj3qf2+xj0nfGQIMNofyyeW8LuVBEuU0HKzRzjf9crMYMtQWp03OoK3z
+ 1jhWZ06jbRP+xsgu3YFhzW6bJbsoTWufEPicJVk5uRjPmaco8lm83UFGllOd9JmwyNL6GIZ4NJH
+ PTTCD4rn2wyh4KziUKC9IwusVJNQFkCYhTk+LOeYMxpmhasKitKeCpQeOH3qKev9xvZFAQVt2FR
+ 2grGLuqLGcsU1Ps9CDh/hJXgcdAwWajyT+eMXTZLLGhng52kTc/VJDBm9z7Uy4CPzp/NoBoYXSn
+ F2X5MLP1wC6bjM58PqjV0nQH8iiXONhOsMVgKT1Dnv8Vsdp/vTYtoyTe4WsuE6YaXRI3zq6Mjap
+ lc4Hxx6qgTJHQ3A5IqA==
+X-Google-Smtp-Source: AGHT+IFLy6w762y1I40ejkraONKZv5a7YVh7PFtbsREBXUx1xfn35W/HcUP0ryZz7cqmsuvgtUsWvA==
+X-Received: by 2002:a05:600c:698c:b0:439:8878:5029 with SMTP id
+ 5b1f17b1804b1-441bb8483d2mr101548555e9.2.1746439114386; 
+ Mon, 05 May 2025 02:58:34 -0700 (PDT)
+Received: from [10.194.152.213] (29.red-88-28-18.dynamicip.rima-tde.net.
+ [88.28.18.29]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-441b2aed5e8sm172857945e9.16.2025.05.05.02.58.30
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 05 May 2025 02:58:33 -0700 (PDT)
+Message-ID: <cc6fbcae-fda6-4ad9-9f7c-b3afd471d151@linaro.org>
+Date: Mon, 5 May 2025 11:58:28 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 06/16] hw/core/machine: Remove hw_compat_2_6[] array
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: Igor Mammedov <imammedo@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?Q?Cl=C3=A9ment_Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
+ Yi Liu <yi.l.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Amit Shah <amit@kernel.org>, Zhao Liu <zhao1.liu@intel.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Sergio Lopez <slp@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Ani Sinha <anisinha@redhat.com>
+References: <20250501183628.87479-1-philmd@linaro.org>
+ <20250501183628.87479-7-philmd@linaro.org>
+ <fd5da152-cd33-48e6-96f7-7048c631661b@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <fd5da152-cd33-48e6-96f7-7048c631661b@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,73 +112,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Even though this function is serialized to be always called from main
-thread, v9fs_reclaim_fd() is dispatching the coroutine to a worker thread
-in between via its v9fs_co_*() calls, hence leading to the situation where
-v9fs_reclaim_fd() is effectively executed multiple times simultaniously,
-which renders its LRU algorithm useless and causes high latency.
+On 5/5/25 11:13, Thomas Huth wrote:
+> On 01/05/2025 20.36, Philippe Mathieu-Daudé wrote:
+>> The hw_compat_2_6[] array was only used by the pc-q35-2.6 and
+>> pc-i440fx-2.6 machines, which got removed. Remove it.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   include/hw/boards.h | 3 ---
+>>   hw/core/machine.c   | 8 --------
+>>   2 files changed, 11 deletions(-)
+> 
+> It's still used in the arm virt machine which has not been removed yet?
 
-Fix this by adding a simple boolean variable to ensure this function is
-only called once at a time. No synchronization needed for this boolean
-variable as this function is only entered and returned on main thread.
-
-Fixes: 7a46274529c ('hw/9pfs: Add file descriptor reclaim support')
-Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Reviewed-by: Greg Kurz <groug@kaod.org>
-Message-Id: <5c622067efd66dd4ee5eca740dcf263f41db20b2.1741339452.git.qemu_oss@crudebyte.com>
----
- hw/9pfs/9p.c | 10 ++++++++++
- hw/9pfs/9p.h |  1 +
- 2 files changed, 11 insertions(+)
-
-diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
-index 7cad2bce62..4f9c2dde9c 100644
---- a/hw/9pfs/9p.c
-+++ b/hw/9pfs/9p.c
-@@ -435,6 +435,12 @@ void coroutine_fn v9fs_reclaim_fd(V9fsPDU *pdu)
-     GHashTableIter iter;
-     gpointer fid;
- 
-+    /* prevent multiple coroutines running this function simultaniously */
-+    if (s->reclaiming) {
-+        return;
-+    }
-+    s->reclaiming = true;
-+
-     g_hash_table_iter_init(&iter, s->fids);
- 
-     QSLIST_HEAD(, V9fsFidState) reclaim_list =
-@@ -510,6 +516,8 @@ void coroutine_fn v9fs_reclaim_fd(V9fsPDU *pdu)
-          */
-         put_fid(pdu, f);
-     }
-+
-+    s->reclaiming = false;
- }
- 
- /*
-@@ -4324,6 +4332,8 @@ int v9fs_device_realize_common(V9fsState *s, const V9fsTransport *t,
-     s->ctx.fst = &fse->fst;
-     fsdev_throttle_init(s->ctx.fst);
- 
-+    s->reclaiming = false;
-+
-     rc = 0;
- out:
-     if (rc) {
-diff --git a/hw/9pfs/9p.h b/hw/9pfs/9p.h
-index 5e041e1f60..259ad32ed1 100644
---- a/hw/9pfs/9p.h
-+++ b/hw/9pfs/9p.h
-@@ -362,6 +362,7 @@ struct V9fsState {
-     uint64_t qp_ndevices; /* Amount of entries in qpd_table. */
-     uint16_t qp_affix_next;
-     uint64_t qp_fullpath_next;
-+    bool reclaiming;
- };
- 
- /* 9p2000.L open flags */
--- 
-2.30.2
+Sorry, I forgot to mention in the cover this series consider
+ARM virt-2.6 up to virt-2.12 machines removed because the
+series doing that is already queued in target-arm.next:
+https://lore.kernel.org/qemu-devel/20250116145944.38028-1-philmd@linaro.org/
 
 
