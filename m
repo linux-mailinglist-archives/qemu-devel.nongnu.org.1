@@ -2,80 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F726AA9CCA
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 21:51:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66416AA9D3A
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 22:32:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uC1pL-0001Z1-S3; Mon, 05 May 2025 15:50:11 -0400
+	id 1uC2QA-0006od-Dw; Mon, 05 May 2025 16:28:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uC1pI-0001Xr-ME
- for qemu-devel@nongnu.org; Mon, 05 May 2025 15:50:08 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1uC2Pu-0006hs-L4
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 16:28:00 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uC1pF-0004jf-HF
- for qemu-devel@nongnu.org; Mon, 05 May 2025 15:50:08 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-7399a2dc13fso6969290b3a.2
- for <qemu-devel@nongnu.org>; Mon, 05 May 2025 12:50:05 -0700 (PDT)
+ id 1uC2Ps-0000Mg-R5
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 16:27:58 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-22435603572so61174205ad.1
+ for <qemu-devel@nongnu.org>; Mon, 05 May 2025 13:27:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746474604; x=1747079404; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=yR1HKmXCPfGdsdtQ5AgCLnBtqE1jcfbBbaMp/JIfNKs=;
- b=HXjJxSDab6qNv/f2GYxTW3pEYie+e5XMl7cVCCepNGqrbYhaanylfDesxOES6DAKbL
- xX1S7UDFdbdrIk0mYjwpP9+deRfPWQxInZ4OdeItYFuiMQhSuY5nysFf98tY4ycgajmI
- DNSLkMlQ/z5YFHJfKVhcy45J4sQcFTyNYg6XZGUImbUhazrROumZCGhm/eQm7bmfbAw4
- Ps+SzAxF1YhgnOKrGBX/4xqPaQsqGGfVwnJIc2S4oK0OKTjQ/WtHd66uq+2IjglhIieQ
- LaVBKpBlXVb2Bf3x5XUlVgn4NLMBuRgObe4hH99bjtlw8zcsdpJpzu7KqtuCZLkZxaGF
- tzhQ==
+ d=linaro.org; s=google; t=1746476873; x=1747081673; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=qYe9cilYrIw7721GvcX7nL77dLgJMtBKsyyr61R06XI=;
+ b=YpByx+2+Iiu34wRJ6chDlgUwpgyaZh5zYSR5HvHmeAnxONvXMyS/17qxdmtnsa4sKG
+ r8TrSK1I31174KtIHmWiZH86ajwB/9iio7HbI0ptfZkMqUNrnUN6vHxVnU7SLj13rUir
+ NBMYeQS4e/QpAjxTSvf5/bpAtaaVhJhmhMQj65U92dbwHVEfkVssFjMGJtFuaZsKZ4nl
+ 5t5vG7CUp9gLNte71OeoxP1StP4Puw1CgwFNWP2PKhuzBBl6ExU3ivgXvJOShgJjbO3A
+ 3npG1MTobk9b4PDEjm4ZAqAkDlFhNuMp8hUz14dVWRui5h+SuLFN2f+fhkZlAhkuCFs7
+ rs1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746474604; x=1747079404;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=yR1HKmXCPfGdsdtQ5AgCLnBtqE1jcfbBbaMp/JIfNKs=;
- b=NjRRcV9fJqE7KnkJPQKQSX520AN6ybHGnD18dJIwyso1wWDZZJkf/z3r5SaAsCzgQs
- iMBJqCvyihdezA1GE6qFNsagdfP2uO16nziywhJpeBqsLGk3lSSIg+5IyT8iv+Nwksah
- jN+EF5neprSSMinC63uQALfXnjcW8okxJZCJ5YBy87y2Q040imHOh2wGsdsBpqbBcC1T
- lFsAq2dDKKDnqbwnAa9RxFNnE1qjsscC8jtPj9SbgTZ4GfsumqJHLF30HyQ71pbhWNcs
- O2EFzFiDewURxW8c84+GvNxO8Iu+kig5JViFEo8WlYvSI9G7n6k5UJSmh3x0sjK4TRrf
- Ldrg==
-X-Gm-Message-State: AOJu0YwaRuKURkex/rl628KacEkMC7umx0q+V4K4QYYa7codqevWg8ZO
- jCr0p0YKvS0JgepXZpIrfpv2QmPI9pavTShj4YzRTCOyiZw+EviaqPaX/ehdIBUMNhWrPjdHHDT
- 4
-X-Gm-Gg: ASbGncv4U9dMfkUK986nAFRgB9jJujSmz7OJjxRg725Hupz9mZGpI2pybdQeZKEHfKp
- kLFTT+GANFJkiqNXiZmaCTX4Vfwwxgazd7D0/lem/Q3iPRbqK0mIjumadICd/4lOzRlfYhYSvlk
- KxMx3Xiztfu8p9id6MHP/Ygs32eQhsjlgdXe4oIsTeUygd9TzIjgPG6gT7VhUi3ebq9ZSdj40j7
- we1aOi2QnkIzoh2n/SPisc1080Nlc25TNYAS4ZUOAJcg4c732Axp/bOFfYGdM0pedPJJ1qEwOjf
- 8Suze9LqDJAIcyu7sDnJsOO2ewPanO4y5opJA57OvL3J20F7vN1KbcQ7D4Zo63wD/pFO8XmX4Rs
+ d=1e100.net; s=20230601; t=1746476873; x=1747081673;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=qYe9cilYrIw7721GvcX7nL77dLgJMtBKsyyr61R06XI=;
+ b=O0FbSTbRB+wjge3czLG2Mhl7l8RiWpYbNLTfnxbtHGF0OieXMjyegAotprPMsMhm3H
+ 5lfLyA5inpt+yjY1x/HcQ/G/lSqlMWGRPMAZYWCpq8H+o/jL7TI8zhX9HRo8EUiQNMlN
+ tFV30DvoVXc3yYVmfy5YI1f2PnUeqM0fHELb1HXMTkFBgXlxh5BHCh+1pmj8EhZc60LT
+ 5potW/qWktYI84ln/RKXbHFhTDI3Yz/UYsCFSBs5g2Cv9pFt5m16mlLvnoPpHGIBKBBb
+ qlzhQ5GI3QN1ChlFaT/shHkOOLLIrs9vyaNEHEo7JB8RY8UMA/qQsxS2gCfV4OyShMvZ
+ mNLQ==
+X-Gm-Message-State: AOJu0YxANPSuJvxkV5hb4EeYMCuxb1DGmjKRqO801F7RbuMJcV+B9Bew
+ mgqIBspITcHJMQDxKKtG7Ff7YAO68K6xRYyKW3PbiX+8GygIK1Mc3RKK21RLXNvaY6GNW2Fhipa
+ /
+X-Gm-Gg: ASbGnctf/n7fuSz8uhfvzee4uhEUjFjJ4PBHsMFWfcICKmk+ryv2WBBfIIRB6E8DT1f
+ iTIxNTAerFuBBvKg+zBhGg1XNBJORyjFGIPtBCWoWOXiLZOx5zw9HOhF6h2Lnha+h/PKzS+62ID
+ AAbT2y6mnQS5QzA6Vh9jhDewJgOBDMOWCeyETJ86kA+ebAgIuB3FH6PndjYQgzRTl5fI6y1UX3v
+ 7UrBHuqC5Zn8DDLqwhthSLUhlj8x7Qz1tA3GI1ggI2fhloPOhTvyaWLxiEGURSCqqeEZdwkHWpM
+ 2E9SqV6q8leVsNVSGbW9c5W7NDm682GuQIhA/Pxdl0RYtvM4YvmmgyjMf6VtHZGAn+ZJ2nmrinU
  =
-X-Google-Smtp-Source: AGHT+IHS7J3paT78pHLkapBIQ9lDchzYzOfIiktSi3QpAt1ZUZFS7u2XXlIOZREfpd4W82OauePA4w==
-X-Received: by 2002:a05:6a00:ab86:b0:736:a77d:5412 with SMTP id
- d2e1a72fcca58-740919f4923mr652186b3a.12.1746474603738; 
- Mon, 05 May 2025 12:50:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFybJg8+9OXnDpjfjDRwxBMPhP1f3fhlNwj/BbWCgYu/UvU8+CNs9xfrIGroQhL+cfAvIF6Wg==
+X-Received: by 2002:a17:902:ec85:b0:21f:988d:5758 with SMTP id
+ d9443c01a7336-22e1ea61942mr124999665ad.35.1746476873349; 
+ Mon, 05 May 2025 13:27:53 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74058df2a6csm7275900b3a.81.2025.05.05.12.50.03
+ d2e1a72fcca58-74059021067sm7516485b3a.107.2025.05.05.13.27.52
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 May 2025 12:50:03 -0700 (PDT)
+ Mon, 05 May 2025 13:27:52 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL v2 48/59] accel/tcg: Use vaddr in cpu_loop.h
-Date: Mon,  5 May 2025 12:50:01 -0700
-Message-ID: <20250505195001.3479169-2-richard.henderson@linaro.org>
+Subject: [PATCH 00/20] tcg/optimize: Track and use known 1's
+Date: Mon,  5 May 2025 13:27:31 -0700
+Message-ID: <20250505202751.3510517-1-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250505195001.3479169-1-richard.henderson@linaro.org>
-References: <20250505195001.3479169-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,119 +94,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use vaddr instead of abi_ptr or target_ulong for a guest address.
+We already track and use known 0's; do the same for 1's.
+This actually simplifies some of the logical operations,
+where before required checking for a constant value.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- include/user/cpu_loop.h | 12 +++++-------
- accel/tcg/user-exec.c   |  2 +-
- bsd-user/signal.c       |  4 ++--
- linux-user/signal.c     |  4 ++--
- 4 files changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/include/user/cpu_loop.h b/include/user/cpu_loop.h
-index 589c66543f..ad8a1d711f 100644
---- a/include/user/cpu_loop.h
-+++ b/include/user/cpu_loop.h
-@@ -20,11 +20,9 @@
- #ifndef USER_CPU_LOOP_H
- #define USER_CPU_LOOP_H
- 
--#include "exec/abi_ptr.h"
-+#include "exec/vaddr.h"
- #include "exec/mmu-access-type.h"
--#include "exec/log.h"
--#include "exec/target_long.h"
--#include "special-errno.h"
-+
- 
- /**
-  * adjust_signal_pc:
-@@ -46,7 +44,7 @@ MMUAccessType adjust_signal_pc(uintptr_t *pc, bool is_write);
-  * Return true if the write fault has been handled, and should be re-tried.
-  */
- bool handle_sigsegv_accerr_write(CPUState *cpu, sigset_t *old_set,
--                                 uintptr_t host_pc, abi_ptr guest_addr);
-+                                 uintptr_t host_pc, vaddr guest_addr);
- 
- /**
-  * cpu_loop_exit_sigsegv:
-@@ -59,7 +57,7 @@ bool handle_sigsegv_accerr_write(CPUState *cpu, sigset_t *old_set,
-  * Use the TCGCPUOps hook to record cpu state, do guest operating system
-  * specific things to raise SIGSEGV, and jump to the main cpu loop.
-  */
--G_NORETURN void cpu_loop_exit_sigsegv(CPUState *cpu, target_ulong addr,
-+G_NORETURN void cpu_loop_exit_sigsegv(CPUState *cpu, vaddr addr,
-                                       MMUAccessType access_type,
-                                       bool maperr, uintptr_t ra);
- 
-@@ -73,7 +71,7 @@ G_NORETURN void cpu_loop_exit_sigsegv(CPUState *cpu, target_ulong addr,
-  * Use the TCGCPUOps hook to record cpu state, do guest operating system
-  * specific things to raise SIGBUS, and jump to the main cpu loop.
-  */
--G_NORETURN void cpu_loop_exit_sigbus(CPUState *cpu, target_ulong addr,
-+G_NORETURN void cpu_loop_exit_sigbus(CPUState *cpu, vaddr addr,
-                                      MMUAccessType access_type,
-                                      uintptr_t ra);
- 
-diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index 68e01fc584..e1f4c4eacf 100644
---- a/accel/tcg/user-exec.c
-+++ b/accel/tcg/user-exec.c
-@@ -126,7 +126,7 @@ MMUAccessType adjust_signal_pc(uintptr_t *pc, bool is_write)
-  * guest, we'd end up in an infinite loop of retrying the faulting access.
-  */
- bool handle_sigsegv_accerr_write(CPUState *cpu, sigset_t *old_set,
--                                 uintptr_t host_pc, abi_ptr guest_addr)
-+                                 uintptr_t host_pc, vaddr guest_addr)
- {
-     switch (page_unprotect(cpu, guest_addr, host_pc)) {
-     case 0:
-diff --git a/bsd-user/signal.c b/bsd-user/signal.c
-index 1aa0fd79d6..dadcc037dc 100644
---- a/bsd-user/signal.c
-+++ b/bsd-user/signal.c
-@@ -1030,7 +1030,7 @@ void process_pending_signals(CPUArchState *env)
-     ts->in_sigsuspend = false;
- }
- 
--void cpu_loop_exit_sigsegv(CPUState *cpu, target_ulong addr,
-+void cpu_loop_exit_sigsegv(CPUState *cpu, vaddr addr,
-                            MMUAccessType access_type, bool maperr, uintptr_t ra)
- {
-     const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
-@@ -1046,7 +1046,7 @@ void cpu_loop_exit_sigsegv(CPUState *cpu, target_ulong addr,
-     cpu_loop_exit_restore(cpu, ra);
- }
- 
--void cpu_loop_exit_sigbus(CPUState *cpu, target_ulong addr,
-+void cpu_loop_exit_sigbus(CPUState *cpu, vaddr addr,
-                           MMUAccessType access_type, uintptr_t ra)
- {
-     const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
-diff --git a/linux-user/signal.c b/linux-user/signal.c
-index 4dafc2c3a2..cd0e7398aa 100644
---- a/linux-user/signal.c
-+++ b/linux-user/signal.c
-@@ -750,7 +750,7 @@ void force_sigsegv(int oldsig)
- }
- #endif
- 
--void cpu_loop_exit_sigsegv(CPUState *cpu, target_ulong addr,
-+void cpu_loop_exit_sigsegv(CPUState *cpu, vaddr addr,
-                            MMUAccessType access_type, bool maperr, uintptr_t ra)
- {
-     const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
-@@ -766,7 +766,7 @@ void cpu_loop_exit_sigsegv(CPUState *cpu, target_ulong addr,
-     cpu_loop_exit_restore(cpu, ra);
- }
- 
--void cpu_loop_exit_sigbus(CPUState *cpu, target_ulong addr,
-+void cpu_loop_exit_sigbus(CPUState *cpu, vaddr addr,
-                           MMUAccessType access_type, uintptr_t ra)
- {
-     const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
+r~
+
+
+Richard Henderson (20):
+  tcg/optimize: Introduce arg_const_val
+  tcg/optimize: Add one's mask to TempOptInfo
+  tcg/optimize: Build and use o_bits in fold_and
+  tcg/optimize: Build and use o_bits in fold_andc
+  tcg/optimize: Build and use z_bits and o_bits in fold_eqv
+  tcg/optimize: Build and use z_bits and o_bits in fold_nand
+  tcg/optimize: Build and use z_bits and o_bits in fold_nor
+  tcg/optimize: Build and use z_bits and o_bits in fold_not
+  tcg/optimize: Build and use one and affected bits in fold_or
+  tcg/optimize: Build and use zero, one and affected bits in fold_orc
+  tcg/optimize: Build and use o_bits in fold_xor
+  tcg/optimize: Build and use o_bits in fold_bswap
+  tcg/optimize: Build and use o_bits in fold_deposit
+  tcg/optimize: Build and use o_bits in fold_extract
+  tcg/optimize: Build and use z_bits and o_bits in fold_extract2
+  tcg/optimize: Build and use o_bits in fold_exts
+  tcg/optimize: Build and use o_bits in fold_extu
+  tcg/optimize: Build and use o_bits in fold_movcond
+  tcg/optimize: Build and use o_bits in fold_sextract
+  tcg/optimize: Build and use o_bits in fold_shift
+
+ tcg/optimize.c | 359 +++++++++++++++++++++++++++++++------------------
+ 1 file changed, 226 insertions(+), 133 deletions(-)
+
 -- 
 2.43.0
 
