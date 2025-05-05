@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3635FAA8AE6
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 03:56:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CAE3AA8B11
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 04:03:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBl16-0004DG-DN; Sun, 04 May 2025 21:53:12 -0400
+	id 1uBl17-0004F8-Rn; Sun, 04 May 2025 21:53:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uBl0g-0003ub-Tk
+ id 1uBl0g-0003uc-Uy
  for qemu-devel@nongnu.org; Sun, 04 May 2025 21:52:49 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uBl0V-0002Ue-Nd
+ id 1uBl0X-0002Uo-00
  for qemu-devel@nongnu.org; Sun, 04 May 2025 21:52:46 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-af91fc1fa90so3546555a12.0
- for <qemu-devel@nongnu.org>; Sun, 04 May 2025 18:52:35 -0700 (PDT)
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-b0b2ce7cc81so3533625a12.3
+ for <qemu-devel@nongnu.org>; Sun, 04 May 2025 18:52:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746409954; x=1747014754; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746409955; x=1747014755; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=48VeJmtQLPOhxBVuGtRwfY5ps2vP+Hg73z2yA0rcj8A=;
- b=qt7LFuWE9F+7cdUFI7Rpu8jrl68IrT2Qs/yDztDEwm6F07hPuI3mHN1d2IWiBm2vGS
- xqjUk+J2GPLawQTjz1lPK5/YOJ1gRiPyshiLR5cxBVYBLfmG63XjS/QD0rkr0Mj3XyV1
- DBUsNU45Wq4Wdkf14bOVFyScVAeuHcfapLbnqQKDef5xaxAjWADIwHioFlwiIfxB/TYZ
- KSdrLMp3uYbzjIOyA2glRGCO4YHgmdnfZBfRD081pc+iERWXzxQKN9F2Z1W/vZkZQqjv
- pql0JSdxspyomWXnfz1Krz+PGcEpuYzQ+bSQpCoDL4i2f+pX+gDu+pPN+CQcMlt1xc1/
- zPPw==
+ bh=Gch+3DQ1xFSIgoe8nsFHA95PeotLzKWriKqshNx+4Kc=;
+ b=UePiZeZT5e+XiUGFiF3Q+ILF9kUJWLlPPKoWpBf4tun86enpbq5FWs/6CrXjuPGWPm
+ P+9XB9rK8yzLWqdM727P6Dnj5stLIf/f10L5Sgmi3II5pfZeYiBotRfRtGA8UNn2WuW8
+ AIaEogVpSTd8PAv3OhMOfiijbQrwDV+5Gw/8IogKIxx0PFnyrtVqijMqvkIFkehIxmzq
+ RaMGU3nihNj8tg+Ls4bnyYg0aYsct+AjcgrRIQFVatZ7UTPZh5YarCAM3DZ7Td5bmfvo
+ +xBsHsRSUpZyFeoMkwkzIkeNPSOGudR3pQa+w32PnD2o2uwPIQxBsDLhcMDa5cFo83tr
+ j3yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746409954; x=1747014754;
+ d=1e100.net; s=20230601; t=1746409955; x=1747014755;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=48VeJmtQLPOhxBVuGtRwfY5ps2vP+Hg73z2yA0rcj8A=;
- b=W16Qz6AU9hU20fApdfAIs8OKVu7ATIkpGqKbDsPEwQE4KRxhzg+xZ8qsNqBZTEsWek
- cE7OMgQADqcYTA1FCwFkqhQjjMOL+kiY74wafPogG336jklzRpZpop6gxdgC94ifMDxF
- 2bZJie/59cODm1uxkcZM45KHo1RB9LUd7Yfuhnmrfn2fs9iNGPVCdA1RK8qN/aNeX1rc
- E7y30Zndb+zt4WCP5zJ6DJW8TLSl37ZmBEqYPIulYmQalfeRYYE8yI/eFex48fGJ5d5C
- vGkxG8byMu6+1mKCapJ/zfpgqvH3e9juGa4kWWDuFIGljQJ6x6BqEYwttCWEZ6Z2m6Tv
- 5I+w==
-X-Gm-Message-State: AOJu0Yy+sr6a3Ojwny0zpZvN/qKULylilGZqWMm739HPhIUs8z68oqqL
- SN/KR3VQEEFkT/MKD6Eb2t0Q7H4U1A6jleGM5akSvTpc3GTvXEaVqShOGqaAzKsZCJmumebsJ5X
- ijp0=
-X-Gm-Gg: ASbGncti/OLuGno5goOdeJwJRvYT4wDHRaPvKhrF/DCkPxP5rUIvsGEwch0dS+ySSn6
- pyM9Ds5hiapeySgCE1dsEe8LT9/djDOrQ1bQrCR7AV+HAXrzqjp8Bj01ATRyNwbKs5cv6yjRFpX
- XBImurlQVzOuiSBIZKs5hzGhVPIyqN0WQy2Hb+kQ9S5e8iQbNI9SFTNWjZOy4QDNhkrngiNAIMZ
- VMv01ML2xh85Q0eZISf1wZdp9Y4uGBDfegaDvN1z3ZtdrN7j8sjUSBgRkgmVEFdC0usGrecCTXl
- +gnIAkdRGr7yT8d2A61uU8tUxi07cgq44RsK1yFj
-X-Google-Smtp-Source: AGHT+IHVsm+2T98RMan+aqKpvWrHPBx/684xgAQ6PVkROPORQuD2CG4DFxexJTT4HWRoWnoTr19PIQ==
-X-Received: by 2002:a05:6a20:9d91:b0:1f5:6680:82b6 with SMTP id
- adf61e73a8af0-20e079f2659mr10290006637.38.1746409954391; 
- Sun, 04 May 2025 18:52:34 -0700 (PDT)
+ bh=Gch+3DQ1xFSIgoe8nsFHA95PeotLzKWriKqshNx+4Kc=;
+ b=kx+Jc1XhUwVpMMvIVLxrs0XPLSmuoATx8V51VhgtwbZj/SP6SyISmxd0YAQw1uLNTb
+ KH63BXJZilpqKDT0wavBgpz13kwacc+nbT9cS8VQnZjSnhxDDFeWtXyiIFBd5Crp6cbi
+ BplwXviDgJSBHFswj833FNNFGyaGePYl7WKOr1UbpO8JF9FUx57L69wM3BDjQMIT6Odi
+ nF8N5DHWKjSg1R5MtKckL1IpoS3knc8nJ15VreEgn4M9zw/cDnivRBuYRpHCQJjFwlLF
+ 3NcKwZI3aYExHY3/HH06b03BJf79LduhZGd4ywv5oF4C35gE72fQqHL6us6dZEMbg/9x
+ nk+g==
+X-Gm-Message-State: AOJu0Ywkar3rPNYn0g6n+xVS35OCFD2PvRDa/mjc/dJttJFdG2S+QP6P
+ 2CTl5tcjedE8lDG0eKpbdMJJu8EPT+wzLNahLpz9+GgwIA6qYTgzrZfHRBMnaOaggo5XuRYzuTB
+ lvYo=
+X-Gm-Gg: ASbGncsnfyU71cLKfn1OMOj7KdDmJ83HZnyZcBfIf69oWlKInI90XCrznv83ygG2Auj
+ 0CShp0SV2CMwp9UkT3F3JjPtatVNOmkxLiprm5iu2pkm83/lXmd8zlVpi+Y62Y82vZNpFQ/B2l6
+ Eu/l8t3I05WcWM6M9mi9pa/c29M3b+FBPoa4Wf2F5+lpUd1XrB5rVfAdW9VF9jYfag7Rni8ca85
+ o8UHHhn7/MplAimWKOZqhXWRnAE+pSPcM44MSYuuqRxkzk3XV9FmWduAgB/+X56Qrw5Q7ri/Iks
+ wTrJS4pj0s26QCqygCFHffq7d5iVDe5QIo71F2r/
+X-Google-Smtp-Source: AGHT+IG3mk4YchgUCP/a9nj/YMSOA0RTdRB6Fap1pC1sILKdC2nI/TnxlESmc9cZlPoV9aa77RPxEw==
+X-Received: by 2002:a05:6a21:3a4a:b0:1f5:67e2:7790 with SMTP id
+ adf61e73a8af0-20e966057a6mr6754727637.17.1746409955584; 
+ Sun, 04 May 2025 18:52:35 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b1fb3920074sm4462101a12.11.2025.05.04.18.52.33
+ 41be03b00d2f7-b1fb3920074sm4462101a12.11.2025.05.04.18.52.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sun, 04 May 2025 18:52:34 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
@@ -68,24 +68,23 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
  Peter Maydell <peter.maydell@linaro.org>, anjo@rev.ng,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v5 07/48] target/arm/cpu: move arm_cpu_kvm_set_irq to kvm.c
-Date: Sun,  4 May 2025 18:51:42 -0700
-Message-ID: <20250505015223.3895275-8-pierrick.bouvier@linaro.org>
+Subject: [PATCH v5 08/48] accel/hvf: add hvf_enabled() for common code
+Date: Sun,  4 May 2025 18:51:43 -0700
+Message-ID: <20250505015223.3895275-9-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250505015223.3895275-1-pierrick.bouvier@linaro.org>
 References: <20250505015223.3895275-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x52e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,121 +100,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow to get rid of CONFIG_KVM in target/arm/cpu.c
+Other accelerators define a CONFIG_{accel}_IS_POSSIBLE when
+COMPILING_PER_TARGET is not defined, except hvf.
+
+Without this change, target/arm/cpu.c can't find hvf_enabled.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/arm/kvm_arm.h  |  2 ++
- target/arm/cpu.c      | 31 -------------------------------
- target/arm/kvm-stub.c |  5 +++++
- target/arm/kvm.c      | 29 +++++++++++++++++++++++++++++
- 4 files changed, 36 insertions(+), 31 deletions(-)
+ include/system/hvf.h  | 14 +++++++++-----
+ accel/hvf/hvf-stub.c  |  5 +++++
+ accel/hvf/meson.build |  1 +
+ 3 files changed, 15 insertions(+), 5 deletions(-)
+ create mode 100644 accel/hvf/hvf-stub.c
 
-diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-index 7b9c7c4a148..d156c790b66 100644
---- a/target/arm/kvm_arm.h
-+++ b/target/arm/kvm_arm.h
-@@ -221,4 +221,6 @@ int kvm_arm_set_irq(int cpu, int irqtype, int irq, int level);
+diff --git a/include/system/hvf.h b/include/system/hvf.h
+index 356fced63e3..1ee2a4177d9 100644
+--- a/include/system/hvf.h
++++ b/include/system/hvf.h
+@@ -19,15 +19,19 @@
  
- void kvm_arm_enable_mte(Object *cpuobj, Error **errp);
+ #ifdef COMPILING_PER_TARGET
+ #include "cpu.h"
++# ifdef CONFIG_HVF
++#  define CONFIG_HVF_IS_POSSIBLE
++# endif
++#else
++# define CONFIG_HVF_IS_POSSIBLE
++#endif
  
-+void arm_cpu_kvm_set_irq(void *arm_cpu, int irq, int level);
-+
- #endif
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 5e951675c60..07f279fec8c 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -1099,37 +1099,6 @@ static void arm_cpu_set_irq(void *opaque, int irq, int level)
-     }
- }
+-#ifdef CONFIG_HVF
++#ifdef CONFIG_HVF_IS_POSSIBLE
+ extern bool hvf_allowed;
+ #define hvf_enabled() (hvf_allowed)
+-#else /* !CONFIG_HVF */
++#else
+ #define hvf_enabled() 0
+-#endif /* !CONFIG_HVF */
+-
+-#endif /* COMPILING_PER_TARGET */
++#endif /* CONFIG_HVF_IS_POSSIBLE */
  
--static void arm_cpu_kvm_set_irq(void *opaque, int irq, int level)
--{
--#ifdef CONFIG_KVM
--    ARMCPU *cpu = opaque;
--    CPUARMState *env = &cpu->env;
--    CPUState *cs = CPU(cpu);
--    uint32_t linestate_bit;
--    int irq_id;
--
--    switch (irq) {
--    case ARM_CPU_IRQ:
--        irq_id = KVM_ARM_IRQ_CPU_IRQ;
--        linestate_bit = CPU_INTERRUPT_HARD;
--        break;
--    case ARM_CPU_FIQ:
--        irq_id = KVM_ARM_IRQ_CPU_FIQ;
--        linestate_bit = CPU_INTERRUPT_FIQ;
--        break;
--    default:
--        g_assert_not_reached();
--    }
--
--    if (level) {
--        env->irq_line_state |= linestate_bit;
--    } else {
--        env->irq_line_state &= ~linestate_bit;
--    }
--    kvm_arm_set_irq(cs->cpu_index, KVM_ARM_IRQ_TYPE_CPU, irq_id, !!level);
--#endif
--}
--
- static bool arm_cpu_virtio_is_big_endian(CPUState *cs)
- {
-     ARMCPU *cpu = ARM_CPU(cs);
-diff --git a/target/arm/kvm-stub.c b/target/arm/kvm-stub.c
-index e34d3f5e6b4..4806365cdc5 100644
---- a/target/arm/kvm-stub.c
-+++ b/target/arm/kvm-stub.c
-@@ -104,3 +104,8 @@ void kvm_arm_reset_vcpu(ARMCPU *cpu)
- {
-     g_assert_not_reached();
- }
+ #define TYPE_HVF_ACCEL ACCEL_CLASS_NAME("hvf")
+ 
+diff --git a/accel/hvf/hvf-stub.c b/accel/hvf/hvf-stub.c
+new file mode 100644
+index 00000000000..7f8eaa59099
+--- /dev/null
++++ b/accel/hvf/hvf-stub.c
+@@ -0,0 +1,5 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
 +
-+void arm_cpu_kvm_set_irq(void *arm_cpu, int irq, int level)
-+{
-+    g_assert_not_reached();
-+}
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 97de8c7e939..8f68aa10298 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -2468,3 +2468,32 @@ void kvm_arm_enable_mte(Object *cpuobj, Error **errp)
-         cpu->kvm_mte = true;
-     }
- }
++#include "qemu/osdep.h"
 +
-+void arm_cpu_kvm_set_irq(void *arm_cpu, int irq, int level)
-+{
-+    ARMCPU *cpu = arm_cpu;
-+    CPUARMState *env = &cpu->env;
-+    CPUState *cs = CPU(cpu);
-+    uint32_t linestate_bit;
-+    int irq_id;
-+
-+    switch (irq) {
-+    case ARM_CPU_IRQ:
-+        irq_id = KVM_ARM_IRQ_CPU_IRQ;
-+        linestate_bit = CPU_INTERRUPT_HARD;
-+        break;
-+    case ARM_CPU_FIQ:
-+        irq_id = KVM_ARM_IRQ_CPU_FIQ;
-+        linestate_bit = CPU_INTERRUPT_FIQ;
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+
-+    if (level) {
-+        env->irq_line_state |= linestate_bit;
-+    } else {
-+        env->irq_line_state &= ~linestate_bit;
-+    }
-+    kvm_arm_set_irq(cs->cpu_index, KVM_ARM_IRQ_TYPE_CPU, irq_id, !!level);
-+}
++bool hvf_allowed;
+diff --git a/accel/hvf/meson.build b/accel/hvf/meson.build
+index fc52cb78433..7745b94e50f 100644
+--- a/accel/hvf/meson.build
++++ b/accel/hvf/meson.build
+@@ -5,3 +5,4 @@ hvf_ss.add(files(
+ ))
+ 
+ specific_ss.add_all(when: 'CONFIG_HVF', if_true: hvf_ss)
++common_ss.add(when: 'CONFIG_HVF', if_false: files('hvf-stub.c'))
 -- 
 2.47.2
 
