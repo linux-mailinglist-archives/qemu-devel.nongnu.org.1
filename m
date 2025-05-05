@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F0D2AA8EF8
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 11:10:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C131AA8F08
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 11:11:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBrnj-0008Fk-Sz; Mon, 05 May 2025 05:07:53 -0400
+	id 1uBrqF-00026c-7L; Mon, 05 May 2025 05:10:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uBrmw-0006IO-Md
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uBrmw-0006IP-N3
  for qemu-devel@nongnu.org; Mon, 05 May 2025 05:07:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uBrms-0006EB-Fd
- for qemu-devel@nongnu.org; Mon, 05 May 2025 05:07:01 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uBrmu-0006El-Fo
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 05:07:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746436017;
+ s=mimecast20190719; t=1746436019;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eC1GweHDzT3sa9SSkEryxsxvGdv7quuDszdsep+5h6I=;
- b=Szf5kioDu7cv5qiGcdH8FYHyLRRDCIBsllHrwkhrDHSeQ0b9KL+xGZOE91aAVLZ2qOuXfq
- 9Geoat7AyQxA0BuTm+BvGoDzkmdlQxnVAAtqo2fFqPCpnAy1psg6B0MQmrcG5LybQ71l4V
- 53qmabK4zuT5DFWjdZLO5WPtfsMACLc=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=ZU+rrdM8D261lALuggGMiOwtX+mH1c1ZZ8492BsZ2M8=;
+ b=bYKyCLf0DDNFCTqrjO1HbGO1BR/N0lzFgMf04KkzXXBq/huoa5qO2J2NcWj7dnm3e5ASyF
+ YIUxxPNEguplh3JjzODE5cL3YGVLEg/0mHgUpqBHb2poZCnitxxVxbKJUJKkg83Oiy7ryd
+ 7JyEoFXT0o5j71B66jsAN1cQuJRH1z4=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-690-Dfq4gKVnMf64XzaF50-vbw-1; Mon,
- 05 May 2025 05:06:54 -0400
-X-MC-Unique: Dfq4gKVnMf64XzaF50-vbw-1
-X-Mimecast-MFC-AGG-ID: Dfq4gKVnMf64XzaF50-vbw_1746436013
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-53-wBkS5W-KMBu1oko-JylZ-g-1; Mon,
+ 05 May 2025 05:06:56 -0400
+X-MC-Unique: wBkS5W-KMBu1oko-JylZ-g-1
+X-Mimecast-MFC-AGG-ID: wBkS5W-KMBu1oko-JylZ-g_1746436015
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CDBCF1800373; Mon,  5 May 2025 09:06:52 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3CA7F19560AE; Mon,  5 May 2025 09:06:55 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.44.32.38])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id E937630001A2; Mon,  5 May 2025 09:06:50 +0000 (UTC)
+ id 56A2230002C5; Mon,  5 May 2025 09:06:53 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Jamin Lin <jamin_lin@aspeedtech.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 05/23] tests/functional/aspeed: Update test ASPEED SDK v03.00
- for AST1030
-Date: Mon,  5 May 2025 11:06:17 +0200
-Message-ID: <20250505090635.778785-6-clg@redhat.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Nabih Estefan <nabihestefan@google.com>
+Subject: [PULL 06/23] hw/arm/aspeed_ast27x0: Rename variable sram_name to name
+ in ast2700 realize
+Date: Mon,  5 May 2025 11:06:18 +0200
+Message-ID: <20250505090635.778785-7-clg@redhat.com>
 In-Reply-To: <20250505090635.778785-1-clg@redhat.com>
 References: <20250505090635.778785-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -44
 X-Spam_score: -4.5
@@ -85,41 +86,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jamin Lin <jamin_lin@aspeedtech.com>
 
+The variable "sram_name" was only used for naming the SRAM memory region.
+Rename it to "name" for consistency with similar code and avoid unnecessary
+new local variable declarations.
+
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250423014008.147542-4-jamin_lin@aspeedtech.com
+Tested-by: Nabih Estefan <nabihestefan@google.com>
+Link: https://lore.kernel.org/qemu-devel/20250423072350.541742-2-jamin_lin@aspeedtech.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- tests/functional/test_arm_aspeed_ast1030.py | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ hw/arm/aspeed_ast27x0.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tests/functional/test_arm_aspeed_ast1030.py b/tests/functional/test_arm_aspeed_ast1030.py
-index d45d9f7c1cf8..77037f01793c 100755
---- a/tests/functional/test_arm_aspeed_ast1030.py
-+++ b/tests/functional/test_arm_aspeed_ast1030.py
-@@ -12,17 +12,17 @@
+diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
+index ea4a611b9068..2e21c3a98fa0 100644
+--- a/hw/arm/aspeed_ast27x0.c
++++ b/hw/arm/aspeed_ast27x0.c
+@@ -592,7 +592,7 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+     AspeedSoCClass *sc = ASPEED_SOC_GET_CLASS(s);
+     AspeedINTCClass *ic = ASPEED_INTC_GET_CLASS(&a->intc[0]);
+     AspeedINTCClass *icio = ASPEED_INTC_GET_CLASS(&a->intc[1]);
+-    g_autofree char *sram_name = NULL;
++    g_autofree char *name = NULL;
+     qemu_irq irq;
  
- class AST1030Machine(LinuxKernelTest):
+     /* Default boot region (SPI memory or ROMs) */
+@@ -664,9 +664,9 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
+     }
  
--    ASSET_ZEPHYR_1_04 = Asset(
-+    ASSET_ZEPHYR_3_00 = Asset(
-         ('https://github.com/AspeedTech-BMC'
--         '/zephyr/releases/download/v00.01.04/ast1030-evb-demo.zip'),
--        '4ac6210adcbc61294927918707c6762483fd844dde5e07f3ba834ad1f91434d3')
-+         '/zephyr/releases/download/v00.03.00/ast1030-evb-demo.zip'),
-+        '37fe3ecd4a1b9d620971a15b96492a81093435396eeac69b6f3e384262ff555f')
- 
--    def test_ast1030_zephyros_1_04(self):
-+    def test_ast1030_zephyros_3_00(self):
-         self.set_machine('ast1030-evb')
- 
-         kernel_name = "ast1030-evb-demo/zephyr.elf"
-         kernel_file = self.archive_extract(
--            self.ASSET_ZEPHYR_1_04, member=kernel_name)
-+            self.ASSET_ZEPHYR_3_00, member=kernel_name)
- 
-         self.vm.set_console()
-         self.vm.add_args('-kernel', kernel_file, '-nographic')
+     /* SRAM */
+-    sram_name = g_strdup_printf("aspeed.sram.%d", CPU(&a->cpu[0])->cpu_index);
+-    if (!memory_region_init_ram(&s->sram, OBJECT(s), sram_name, sc->sram_size,
+-                                 errp)) {
++    name = g_strdup_printf("aspeed.sram.%d", CPU(&a->cpu[0])->cpu_index);
++    if (!memory_region_init_ram(&s->sram, OBJECT(s), name, sc->sram_size,
++                                errp)) {
+         return;
+     }
+     memory_region_add_subregion(s->memory,
 -- 
 2.49.0
 
