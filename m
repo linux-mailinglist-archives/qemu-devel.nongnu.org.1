@@ -2,78 +2,119 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D639CAA9A14
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 19:05:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A72EFAA9A2D
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 19:11:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBzFI-0006G0-UA; Mon, 05 May 2025 13:04:49 -0400
+	id 1uBzKj-0006IE-Kt; Mon, 05 May 2025 13:10:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <just4now666666@gmail.com>)
- id 1uBzEQ-0005RJ-Bi
- for qemu-devel@nongnu.org; Mon, 05 May 2025 13:03:55 -0400
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
+ (Exim 4.90_1) (envelope-from <paolo.bonzini@gmail.com>)
+ id 1uBzKg-0006Gd-SE
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 13:10:24 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <just4now666666@gmail.com>)
- id 1uBzEO-0003cK-8t
- for qemu-devel@nongnu.org; Mon, 05 May 2025 13:03:53 -0400
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-b041afe0ee1so4426128a12.1
- for <qemu-devel@nongnu.org>; Mon, 05 May 2025 10:03:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <paolo.bonzini@gmail.com>)
+ id 1uBzKe-0004YR-3A
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 13:10:22 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3913d129c1aso2856612f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 05 May 2025 10:10:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1746464631; x=1747069431; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=iWEKv1zazrg5p0ezhWN+WX5e2lQ7x7RrOkjhRLd1F7c=;
- b=BkjvS4AkACiLi7AWG93goRkiVbbIYTvB0bTl5STVj6Cf0jOMRhjv1i9ZbPKPESj/TB
- bcL9ejvSjhIvmfTgmNQxSvsg7yaVGrVaRAB1Enr+egVflNQo8bJv+ZHz+yyFOC1tBxr9
- FhXQBKxSMeu3QJWC+wnQiLlpQAn9IldepPqudP330AOF4xXD1rj994RozUbfPztIZYCp
- SuZk9AdngBTitZmvh8bw+UJgZQGZy7Z52Od7FQr5ncTH4ruQ4dkj8XIBB2ZOCJfuoI68
- 0ztK1BHkbWAmWDkc9UhpxWHC9VUwWWOTvqDMBfrPrds1SatcsD1KEhMJpZVhGC555Xzg
- Tc6w==
+ d=gmail.com; s=20230601; t=1746465018; x=1747069818; darn=nongnu.org;
+ h=content-transfer-encoding:autocrypt:subject:to:from
+ :content-language:user-agent:mime-version:date:message-id:sender
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Jiy8rp/gjFDm5EhiG8J/Rynj80YzBCJAZWrtqRiR6R0=;
+ b=A26dAN/CHrYCIlk7iv3WbsacqPVvm0RJUB9v9sO3k1x0z/9Y58vXltS/+CBHFivpnW
+ q8xIWib4yMp0sVTZp2dDhZDPx66bQZ6RLG9dx0q38WE7rDF99G2PifUKLKebtruzrQuk
+ N8R2xeVootzhQRynAlEjm1rr36isMipHKAH1UMQafA7Ec3qdLoEVZ54cshJqnYNIhPaT
+ Y1kMSU+LBbi14AIzYlPnCmNHSA9Q3aytRINRX1NAGw6TH0FUiTP+hDmB4GFcxDWssV7I
+ VHpvHv9B5suW95mdPxabeOZqEy8LrV460ZqjY7TfH0LgENpNq8KJL5hr/Y+dneVX7N6r
+ u2tQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746464631; x=1747069431;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=iWEKv1zazrg5p0ezhWN+WX5e2lQ7x7RrOkjhRLd1F7c=;
- b=bHJ2ki+rCu8FH8LTk6VNLXw43BcyKIvkLpqGcwsnfzCCpN417/4xN11y7REd11QNjp
- m8UjrvcE4M4yL/vVx+CHb9SBhOhXG5OoFt16XR+wSdV2gaRHzBavXq6pWxpnXaoMA/HR
- WSFs/J1rrb7ooHMF+RH/czNUCIS5CrvCPM7xKxym/ze6waHq84cBijZ0PlKkBrudkYVb
- iddx2SuV3ez0sKwzkbeK17jUI53Gh+YziYlCV7YGMt05kvteoFJErncg3NTTsO6nNlB5
- JQU7fZ/WoxM3ljWrInJH2Izg1kmdBRfMGO1jCeLSfrYWjMEQFCwirwMUHCgMpFDxmGeS
- 5zxA==
-X-Gm-Message-State: AOJu0YzsUy3ZK3Z+OIBCblBeCCxxhoTRSoJ/NzZ6Gdb2aK/KqmbPBk6c
- VcgscMqagrMGgIBHhJkJsdWjSkoksKPdHp/3IphI6c0viMpVa/xAGz4tIM5tzOZ4u9dK1LO4Lm1
- wFgGK1G/rwmhARDBhP3ZCR/D1i8nnBnLsY7w=
-X-Gm-Gg: ASbGncuO1u2cE1fnsU73Z4h+S6CnDoo778VFcrrksIfL/tl7G4FXyZmNdUcr2UfqnCc
- SBIg1d6sEZYGaMtB2WKpNa3HBqvpl1GeGqPrdQgfP3utasJhrC39Vj/ISsxHRIfoNJ36R2U+Bha
- vQMEYiXJSDD+1gXbASyGE6idReKmEQS5+RDiGVOtZO3Q==
-X-Google-Smtp-Source: AGHT+IEJgu6OHDPjX18XG7DCldBQYotQFVUJb/AK259wMRJM4Tky1q2H0tcROXd7lEKBLCkA9ztoy2GtKqyMxE16t3I=
-X-Received: by 2002:a17:90b:56d0:b0:2fe:8c22:48b0 with SMTP id
- 98e67ed59e1d1-30a5ae3d81dmr16831017a91.15.1746464630602; Mon, 05 May 2025
- 10:03:50 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1746465018; x=1747069818;
+ h=content-transfer-encoding:autocrypt:subject:to:from
+ :content-language:user-agent:mime-version:date:message-id:sender
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Jiy8rp/gjFDm5EhiG8J/Rynj80YzBCJAZWrtqRiR6R0=;
+ b=BJIGx8wmcaW5bGS5220M0KKrWZ/WemKNZdrfgL9+C0t2NptgzGmUevHQTb/9zfBK3A
+ zDK4NizopltJh298iuAqjajIysNtiEoIAhozdCYjecUr4/D/wu7Yybmrtfaa+4qJt59H
+ BgpU9BINUmzbag8YUJfqzeA04T7tWTuTgtLigCuU8nDgtoj68aogqij5XtKSsnYBH+eX
+ Eu87LcBn8P15ZppqlUaLoThk9VYM7UJDsONovZDSdOCL/un46ztANwvIrlHIXZhjeiNg
+ 8C0To+RgEbWnGV8k5qvInqvkC7UlFkz/mIb6JGJrwuvanSwtpX/Qm6BOfCrYnzV4OwMQ
+ XHOg==
+X-Gm-Message-State: AOJu0YzLx0MhoiKjEbyKLB65R6GCZH+q5UiFDQ0STRcA7DX5j74l4qKg
+ 1HFCnG8EtjjkEe1kd5YrfnmvIhSNg+hL8dnW3v6IVi7bRiNjOAhe3KjLMw==
+X-Gm-Gg: ASbGnctctYvYDFwQCftcvigD/WePH//5vgdxBdwBl30oWbMJzSraIk1D6+2bG6koPrd
+ E76JkwAVxOLBJ9WrQW4Ecy3NOt3tOxK4i2C6ZSzNIqAjndnpLFaMXQVOKleHh6WnJvStuq9mGAt
+ UxhZxE8xrP1CjzCTIx7hS3qfO8X5lxlD8s4GDF96FyHG98fTXU14yI2S9/afeS4EdsT0PpdbA26
+ Z88Ju2YkW+eZL/riZ4BDxO0Jp+P9yvDj0G0XHu93Olvh9dO296q4SsVkQ9w3FN/oQ7BRcP9x2/h
+ tXaQAeyp2RbNzP4AHrFrqhLz7zWaDMmkpdKnRep0Eg==
+X-Google-Smtp-Source: AGHT+IGtVH3C6XEmCAuXFZreOomHmPwzJNc+4m/N8MK2LRW/2wo9MW75JVmHSiMeyG9EK7hOOoRQ0w==
+X-Received: by 2002:a05:6000:2586:b0:3a0:8a19:db31 with SMTP id
+ ffacd0b85a97d-3a0ab57024dmr248742f8f.9.1746465017836; 
+ Mon, 05 May 2025 10:10:17 -0700 (PDT)
+Received: from [192.168.169.123] ([151.95.54.106])
+ by smtp.googlemail.com with ESMTPSA id
+ ffacd0b85a97d-3a099b16ea2sm10758915f8f.85.2025.05.05.10.10.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 05 May 2025 10:10:17 -0700 (PDT)
+Message-ID: <905e09ae-df13-458e-9eb2-90ff455d1ee4@gnu.org>
+Date: Mon, 5 May 2025 19:10:15 +0200
 MIME-Version: 1.0
-References: <20250326161927.15572-1-just4now666666@gmail.com>
- <CAJ+F1CKzKuO940euRhCb=tx_UQ-Ncs6k4yctipeT1v4vkinu3w@mail.gmail.com>
-In-Reply-To: <CAJ+F1CKzKuO940euRhCb=tx_UQ-Ncs6k4yctipeT1v4vkinu3w@mail.gmail.com>
-From: Elisha Hollander <just4now666666@gmail.com>
-Date: Mon, 5 May 2025 20:03:38 +0300
-X-Gm-Features: ATxdqUHTSIopQrUuq1Xnv6wQeyQuxYs9LyihXe5aBHgSFh_Ja-cCQs7gkWEbf6U
-Message-ID: <CACkyd_awBqPLTQ=ouJng8+-P4y-5qutU4BJTNZrSRxSwAeiWVw@mail.gmail.com>
-Subject: Re: [PATCH 1/1] util/memfd: allow allocating 0 bytes
-To: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000eb81d50634667bce"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
- envelope-from=just4now666666@gmail.com; helo=mail-pg1-x52a.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+From: Paolo Bonzini <bonzini@gnu.org>
+To: qemu-devel <qemu-devel@nongnu.org>, devel@lists.libvirt.org,
+ KVM list <kvm@vger.kernel.org>
+Subject: KVM Forum 2025 Call for Presentations
+Autocrypt: addr=bonzini@gnu.org; keydata=
+ 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
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=paolo.bonzini@gmail.com; helo=mail-wr1-x431.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.001,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,143 +132,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000eb81d50634667bce
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+###########################
+KVM Forum 2025
+September 4-5, 2025
+Milan, Italy
+https://kvm-forum.qemu.org/
+###########################
 
-Not necessarily fdopen, can't remember why I chose it, we just need any
-pointer as no data will be written into the buffer anyways
+KVM Forum is an annual event that brings together developers and users,
+discussing the state of Linux virtualization technology and planning for
+the challenges ahead.  Sessions include updates on the KVM virtualization
+stack, ideas for the future, and collaborative "birds of a feather"
+(BoF) sessions to plan for the year ahead.  KVM Forum provides a unique
+platform to contribute to the growth of the open source virtualization
+ecosystem.
 
-On Mon, May 5, 2025, 19:55 Marc-Andr=C3=A9 Lureau <marcandre.lureau@gmail.c=
-om>
-wrote:
+This year's event will be held in Milan, Italy on September 4-5, 2025,
+at the Politecnico di Milano university.
 
-> Hi
->
-> On Wed, Mar 26, 2025 at 8:21=E2=80=AFPM donno2048 <just4now666666@gmail.c=
-om>
-> wrote:
-> >
-> > This silently fixes issues resulting from trying to allocate 0 bytes.
-> >
-> > Fixes error, for example, for writing byte 0x20 to port 0x3c0, then wor=
-d
-> 0xf09 to port 0x3b4 when CPU is initiated, which shouldn't break.
-> >
->
-> This is worth a test.
->
-> > Signed-off-by: donno2048 <just4now666666@gmail.com>
-> > ---
-> >  util/memfd.c | 10 +++++++---
-> >  1 file changed, 7 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/util/memfd.c b/util/memfd.c
-> > index 07beab174d..4f2c4ea1dd 100644
-> > --- a/util/memfd.c
-> > +++ b/util/memfd.c
-> > @@ -131,9 +131,13 @@ void *qemu_memfd_alloc(const char *name, size_t
-> size, unsigned int seals,
-> >          }
-> >      }
-> >
-> > -    ptr =3D mmap(0, size, PROT_READ | PROT_WRITE, MAP_SHARED, mfd, 0);
-> > -    if (ptr =3D=3D MAP_FAILED) {
-> > -        goto err;
-> > +    if (size !=3D 0) {
-> > +        ptr =3D mmap(0, size, PROT_READ | PROT_WRITE, MAP_SHARED, mfd,=
- 0);
-> > +        if (ptr =3D=3D MAP_FAILED) {
-> > +            goto err;
-> > +        }
-> > +    } else {
-> > +        ptr =3D fdopen(mfd, "rw");
->
-> I don't understand fdopen() here, it returns a FILE*
->
-> >      }
-> >
-> >      *fd =3D mfd;
-> > --
-> > 2.30.2
-> >
-> >
->
->
-> --
-> Marc-Andr=C3=A9 Lureau
->
 
---000000000000eb81d50634667bce
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+CALL FOR PRESENTATIONS
+======================
 
-<p dir=3D"ltr">Not necessarily fdopen, can&#39;t remember why I chose it, w=
-e just need any pointer as no data will be written into the buffer anyways<=
-/p>
-<br><div class=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" class=
-=3D"gmail_attr">On Mon, May 5, 2025, 19:55 Marc-Andr=C3=A9 Lureau &lt;<a hr=
-ef=3D"mailto:marcandre.lureau@gmail.com">marcandre.lureau@gmail.com</a>&gt;=
- wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8=
-ex;border-left:1px #ccc solid;padding-left:1ex">Hi<br>
-<br>
-On Wed, Mar 26, 2025 at 8:21=E2=80=AFPM donno2048 &lt;<a href=3D"mailto:jus=
-t4now666666@gmail.com" target=3D"_blank" rel=3D"noreferrer">just4now666666@=
-gmail.com</a>&gt; wrote:<br>
-&gt;<br>
-&gt; This silently fixes issues resulting from trying to allocate 0 bytes.<=
-br>
-&gt;<br>
-&gt; Fixes error, for example, for writing byte 0x20 to port 0x3c0, then wo=
-rd 0xf09 to port 0x3b4 when CPU is initiated, which shouldn&#39;t break.<br=
->
-&gt;<br>
-<br>
-This is worth a test.<br>
-<br>
-&gt; Signed-off-by: donno2048 &lt;<a href=3D"mailto:just4now666666@gmail.co=
-m" target=3D"_blank" rel=3D"noreferrer">just4now666666@gmail.com</a>&gt;<br=
->
-&gt; ---<br>
-&gt;=C2=A0 util/memfd.c | 10 +++++++---<br>
-&gt;=C2=A0 1 file changed, 7 insertions(+), 3 deletions(-)<br>
-&gt;<br>
-&gt; diff --git a/util/memfd.c b/util/memfd.c<br>
-&gt; index 07beab174d..4f2c4ea1dd 100644<br>
-&gt; --- a/util/memfd.c<br>
-&gt; +++ b/util/memfd.c<br>
-&gt; @@ -131,9 +131,13 @@ void *qemu_memfd_alloc(const char *name, size_t s=
-ize, unsigned int seals,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 }<br>
-&gt;<br>
-&gt; -=C2=A0 =C2=A0 ptr =3D mmap(0, size, PROT_READ | PROT_WRITE, MAP_SHARE=
-D, mfd, 0);<br>
-&gt; -=C2=A0 =C2=A0 if (ptr =3D=3D MAP_FAILED) {<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 goto err;<br>
-&gt; +=C2=A0 =C2=A0 if (size !=3D 0) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 ptr =3D mmap(0, size, PROT_READ | PROT_WR=
-ITE, MAP_SHARED, mfd, 0);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (ptr =3D=3D MAP_FAILED) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 goto err;<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-&gt; +=C2=A0 =C2=A0 } else {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 ptr =3D fdopen(mfd, &quot;rw&quot;);<br>
-<br>
-I don&#39;t understand fdopen() here, it returns a FILE*<br>
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 }<br>
-&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 *fd =3D mfd;<br>
-&gt; --<br>
-&gt; 2.30.2<br>
-&gt;<br>
-&gt;<br>
-<br>
-<br>
--- <br>
-Marc-Andr=C3=A9 Lureau<br>
-</blockquote></div>
+We encourage you to submit presentations via Pretalx at
+https://kvm-forum.qemu.org/2025/cfp/. Suggested topics include:
 
---000000000000eb81d50634667bce--
+* Scalability and Optimization
+
+* Hardening and security
+
+* Confidential computing
+
+* KVM and the Linux Kernel:
+     * New Features and Ports
+     * Device Passthrough: VFIO, mdev, vDPA
+     * Network Virtualization
+     * Virtio and vhost
+
+* Virtual Machine Monitors and Management:
+     * VMM Implementation: APIs, Live Migration, Performance Tuning, etc.
+     * Multi-process VMMs: vhost-user, vfio-user, QEMU Storage Daemon
+     * QEMU without KVM: Hypervisor.framework and other hypervisors
+     * Managing KVM: Libvirt, KubeVirt, Kata Containers
+
+* Emulation:
+     * New Devices, Boards and Architectures
+     * CPU Emulation and Binary Translation
+
+* Developer-focused content:
+   * Tooling improvements
+   * Enabling Rust
+   * Testing frameworks and strategies
+
+All presentation slots will be 25 minutes + 5 minutes for questions.
+
+
+IMPORTANT DATES
+===============
+
+The deadline for submitting presentations is June 8, 2025 - 11:59 PM CEST.
+
+Accepted speakers will be notified on July 5, 2025.
+
+
+ATTENDING KVM FORUM
+===================
+
+Admission to KVM Forum costs $75. You can get your ticket at
+
+      https://kvm-forum.qemu.org/2025/register/
+
+Admission is free for accepted speakers.
+
+The conference will be held at the Politecnico di Milano university.
+
+The venue is a 5 minutes walk from the Piola stop of the "green" M2
+subway line. Downtown Milan can be reached by subway in about 10
+minutes.
+
+Special hotel room prices will be available for attendees
+of KVM Forum. More information will be available soon at
+https://kvm-forum.qemu.org/location/.
+
+We are committed to fostering an open and welcoming environment at our
+conference. Participants are expected to abide by our code of conduct
+and media policy:
+
+      https://kvm-forum.qemu.org/coc/
+      https://kvm-forum.qemu.org/media-policy/
+
+
+GETTING TO MILAN
+================
+
+The main airport in Milan is Milano Malpensa (MXP). It is well
+connected by trains to the city center and to the subway lines. Milano
+Linate (LIN) is a city airport with a fast connection to downtown via
+the "blue" M4 subway line.
+
+Flights are available between the Milan area and most European
+countries, as well as from America and Asia to Malpensa.
+
+Another airport, Bergamo (BGY), hosts low-cost airlines and is
+connected to the city center by buses.
+
+Milan is also accessible by rail, including high-speed and international
+routes.
+
+If you need a visa invitation letter, please reach out to the organizers
+at kvm-forum-pc@redhat.com.
+
+
+CONTACTS
+========
+
+Reach out to us should you have any questions. The program committee may
+be contacted as a group via email: kvm-forum-pc@redhat.com.
 
