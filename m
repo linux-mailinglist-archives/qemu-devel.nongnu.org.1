@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04697AA9054
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 11:55:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DFF0AA9053
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 11:55:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBsWf-0002hA-5x; Mon, 05 May 2025 05:54:17 -0400
+	id 1uBsXi-0003mD-Ip; Mon, 05 May 2025 05:55:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
- (envelope-from <89f7b4da7662ecc6840ffb0846045f03f9714bc6@kylie.crudebyte.com>)
- id 1uBsWc-0002fU-I8
- for qemu-devel@nongnu.org; Mon, 05 May 2025 05:54:15 -0400
+ (envelope-from <cdafeda35709ddf8cd982a7eb653c2a5028c8074@kylie.crudebyte.com>)
+ id 1uBsXI-0003ZL-Lk
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 05:54:58 -0400
 Received: from kylie.crudebyte.com ([5.189.157.229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
- (envelope-from <89f7b4da7662ecc6840ffb0846045f03f9714bc6@kylie.crudebyte.com>)
- id 1uBsWa-0005DI-Pm
- for qemu-devel@nongnu.org; Mon, 05 May 2025 05:54:14 -0400
+ (envelope-from <cdafeda35709ddf8cd982a7eb653c2a5028c8074@kylie.crudebyte.com>)
+ id 1uBsXG-0005Iy-SI
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 05:54:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=crudebyte.com; s=kylie; h=Cc:To:Subject:Date:From:References:In-Reply-To:
  Message-Id:Content-Type:Content-Transfer-Encoding:MIME-Version:Content-ID:
- Content-Description; bh=t0gk0Gqr6Qzh1TrGyNei3b4Br5ttDRy7REOCNRUU2bg=; b=B/HM1
- kMH0ldrHxEjHlJGBcKS+9TlV9FjaYWX/W1LoKt1Uc/1ip8vH4VMbuvWoAIXYFVWjda+hLsWOkY0EE
- iyvM9sDN6XRwoJOKnftK9cZwGT+3YJiL1eWBzCxYPJ1xSMDWK4EWly4kF/a1ywIBNk1qTdJjJf4bM
- d1O/ogbyjaYYK9R6kX9f+d/SJyDNDr7aRez+T1cXjBE68qZHPWhAdSyJgcqLCaxB2z9uVevZrwJbC
- V1vgxHDS2NLUM/kpzKuXK10XP/6/jpP+/tcAhko8YfFlnoyy8da44Ihrrm97UxCIXhlAmDH2Asm81
- fKG0I1O16oxipb5PBYlLauv3na+/dZGGUJz9zg1YF9VuV4vAD7l9AQ2lpb2O9FmueNcZhTLIOOWqb
- UVV5CYUri6fqGvT4aNpGKjIKonUhGo7qHy4Ltlh3+zsjYKSJV1qEhHGSw+7T44mvjwXjILiwJtpKp
- sSufUyCuyurSFDwN3XlH415BiCl9+35QTmAfs2HBar4RcTxlJdA/QDyyZrH59AC2+UGWyKzT3Ccz5
- BzbkJVF9eIxTKOIm0Al6OFjwGJOrGe1FSFJ3D/q4JuiIkHjEnsfA0b3YtaPf8XuxJAL2zeV8s/Ahd
- 1i4qet1dZYpkB3FkrMPgspgfDcIT2UEcL0cDmKPsYOfE76s2uslD6odh2pI4N0=;
-Message-Id: <89f7b4da7662ecc6840ffb0846045f03f9714bc6.1746438650.git.qemu_oss@crudebyte.com>
+ Content-Description; bh=Mp2Eg6CkyW+uhuWyA5G7O36YvvWOJfgQ0Dp3mofC4KE=; b=vY3uq
+ BLNH9KOHm/heySeau1nJ67ntbJMwz/9cgmMziVNP08x72HB9emvYtmKvNsHcXdTyV8HJkocKYB4xD
+ OJDSt9CQ0IU63UyWrjtIcej+TEshECgbWI1Wf04ET8exPVJ/YAjR60PfUfp/dhwJwdzETcwWCPZuT
+ V006yoBkDc+9PPQf9mWpvJxsVv4SaE9EcIyammQr37pXD6sDq7u92xnbLuR3nt0j1iZINvvut7a0U
+ 1k8NDEANm5iodLKIn32DpUHSUhJkW8hUY68Crh/sQhNbMjfHs3wjFf1Wm0CCFeS1V48m5nzLUNG5P
+ MBBNl9wx6MUX5CshSaJDJ1+Wxiid/Bz26QL13BARy7A3IaiZCFgf0PCFtboNhHT/FXvHCyMpaCLRK
+ 1T6aP8jE9BGh1JwRriIg63CJuiugiqA7DcogVw16PfWPZ5+t7yT0Xfr5w5jl5Sst8TVLa5ndWinog
+ wOnUg+qTfWXSCEVUChSsPbj/HrcEyz1myjx+2Y8bilUpv8DVUMmCYFqi5R2y7XDqjGlP+XlRMAxLg
+ bFuNPomU+OA1MXDuRPJWQm42AG5UMxvMssGm7qED+yyHc9XNEPtkd/8Aiy7jqxoLjncQL22CswOu+
+ eN6pv/+qrgBw8Fin67Y8Tz9lPWW5vatf/tanTWjh9uNOZIuoT97BR1VHrVjgy4=;
+Message-Id: <cdafeda35709ddf8cd982a7eb653c2a5028c8074.1746438650.git.qemu_oss@crudebyte.com>
 In-Reply-To: <cover.1746438650.git.qemu_oss@crudebyte.com>
 References: <cover.1746438650.git.qemu_oss@crudebyte.com>
 From: Christian Schoenebeck <qemu_oss@crudebyte.com>
 Date: Mon, 05 May 2025 11:50:51 +0200
-Subject: [PULL 2/9] 9pfs: fix FD leak and reduce latency of v9fs_reclaim_fd()
+Subject: [PULL 9/9] 9pfs: fix 'total_open_fd' decrementation
 To: qemu-devel@nongnu.org,
     Peter Maydell <peter.maydell@linaro.org>
 Cc: Greg Kurz <groug@kaod.org>
 Received-SPF: pass client-ip=5.189.157.229;
- envelope-from=89f7b4da7662ecc6840ffb0846045f03f9714bc6@kylie.crudebyte.com;
+ envelope-from=cdafeda35709ddf8cd982a7eb653c2a5028c8074@kylie.crudebyte.com;
  helo=kylie.crudebyte.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -67,108 +67,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch fixes two different bugs in v9fs_reclaim_fd():
+According to 'man 2 close' errors returned by close() should only be used
+for either diagnostic purposes or for catching data loss due to a previous
+write error, as an error result of close() usually indicates a deferred
+error of a previous write operation.
 
-1. Reduce latency:
+Therefore not decrementing 'total_open_fd' on a close() error is wrong
+and would yield in a higher open file descriptor count than actually the
+case, leading to 9p server reclaiming open file descriptors too soon.
 
-This function calls v9fs_co_close() and v9fs_co_closedir() in a loop. Each
-one of the calls adds two thread hops (between main thread and a fs driver
-background thread). Each thread hop adds latency, which sums up in
-function's loop to a significant duration.
-
-Reduce overall latency by open coding what v9fs_co_close() and
-v9fs_co_closedir() do, executing those and the loop itself altogether in
-only one background thread block, hence reducing the total amount of
-thread hops to only two.
-
-2. Fix file descriptor leak:
-
-The existing code called v9fs_co_close() and v9fs_co_closedir() to close
-file descriptors. Both functions check right at the beginning if the 9p
-request was cancelled:
-
-    if (v9fs_request_cancelled(pdu)) {
-        return -EINTR;
-    }
-
-So if client sent a 'Tflush' message, v9fs_co_close() / v9fs_co_closedir()
-returned without having closed the file descriptor and v9fs_reclaim_fd()
-subsequently freed the FID without its file descriptor being closed, hence
-leaking those file descriptors.
-
-This 2nd bug is fixed by this patch as well by open coding v9fs_co_close()
-and v9fs_co_closedir() inside of v9fs_reclaim_fd() and not performing the
-v9fs_request_cancelled(pdu) check there.
-
-Fixes: 7a46274529c ('hw/9pfs: Add file descriptor reclaim support')
-Fixes: bccacf6c792 ('hw/9pfs: Implement TFLUSH operation')
+Based-on: <20250312152933.383967-7-groug@kaod.org>
 Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
 Reviewed-by: Greg Kurz <groug@kaod.org>
-Message-Id: <5747469d3f039c53147e850b456943a1d4b5485c.1741339452.git.qemu_oss@crudebyte.com>
+Message-Id: <E1tvEyJ-004dMa-So@kylie.crudebyte.com>
 ---
- hw/9pfs/9p.c | 29 ++++++++++++++++++++---------
- 1 file changed, 20 insertions(+), 9 deletions(-)
+ hw/9pfs/9p.c     | 10 +++++++++-
+ hw/9pfs/codir.c  |  7 ++++++-
+ hw/9pfs/cofile.c |  7 ++++++-
+ 3 files changed, 21 insertions(+), 3 deletions(-)
 
 diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
-index 4f9c2dde9c..80b190ff5b 100644
+index b22df3aa2b..8b001b9112 100644
 --- a/hw/9pfs/9p.c
 +++ b/hw/9pfs/9p.c
-@@ -434,6 +434,8 @@ void coroutine_fn v9fs_reclaim_fd(V9fsPDU *pdu)
-     V9fsFidState *f;
-     GHashTableIter iter;
-     gpointer fid;
-+    int err;
-+    int nclosed = 0;
- 
-     /* prevent multiple coroutines running this function simultaniously */
-     if (s->reclaiming) {
-@@ -446,10 +448,10 @@ void coroutine_fn v9fs_reclaim_fd(V9fsPDU *pdu)
-     QSLIST_HEAD(, V9fsFidState) reclaim_list =
-         QSLIST_HEAD_INITIALIZER(reclaim_list);
- 
-+    /* Pick FIDs to be closed, collect them on reclaim_list. */
-     while (g_hash_table_iter_next(&iter, &fid, (gpointer *) &f)) {
-         /*
--         * Unlink fids cannot be reclaimed. Check
--         * for them and skip them. Also skip fids
-+         * Unlinked fids cannot be reclaimed, skip those, and also skip fids
-          * currently being operated on.
-          */
-         if (f->ref || f->flags & FID_NON_RECLAIMABLE) {
-@@ -499,17 +501,26 @@ void coroutine_fn v9fs_reclaim_fd(V9fsPDU *pdu)
-         }
+@@ -510,7 +510,15 @@ void coroutine_fn v9fs_reclaim_fd(V9fsPDU *pdu)
+             err = (f->fid_type == P9_FID_DIR) ?
+                 s->ops->closedir(&s->ctx, &f->fs_reclaim) :
+                 s->ops->close(&s->ctx, &f->fs_reclaim);
+-            if (!err) {
++
++            /* 'man 2 close' suggests to ignore close() errors except of EBADF */
++            if (unlikely(err && errno == EBADF)) {
++                /*
++                 * unexpected case as FIDs were picked above by having a valid
++                 * file descriptor
++                 */
++                error_report("9pfs: v9fs_reclaim_fd() WARNING: close() failed with EBADF");
++            } else {
+                 /* total_open_fd must only be mutated on main thread */
+                 nclosed++;
+             }
+diff --git a/hw/9pfs/codir.c b/hw/9pfs/codir.c
+index 2068a4779d..bce7dd96e9 100644
+--- a/hw/9pfs/codir.c
++++ b/hw/9pfs/codir.c
+@@ -20,6 +20,7 @@
+ #include "fsdev/qemu-fsdev.h"
+ #include "qemu/thread.h"
+ #include "qemu/main-loop.h"
++#include "qemu/error-report.h"
+ #include "coth.h"
+ #include "9p-xattr.h"
+ #include "9p-util.h"
+@@ -353,7 +354,11 @@ int coroutine_fn v9fs_co_closedir(V9fsPDU *pdu, V9fsFidOpenState *fs)
+                 err = -errno;
+             }
+         });
+-    if (!err) {
++    /* 'man 2 close' suggests to ignore close() errors except of EBADF */
++    if (unlikely(err && errno == EBADF)) {
++        /* unexpected case as we should have checked for a valid file handle */
++        error_report("9pfs: WARNING: v9fs_co_closedir() failed with EBADF");
++    } else {
+         total_open_fd--;
      }
-     /*
--     * Now close the fid in reclaim list. Free them if they
--     * are already clunked.
-+     * Close the picked FIDs altogether on a background I/O driver thread. Do
-+     * this all at once to keep latency (i.e. amount of thread hops between main
-+     * thread <-> fs driver background thread) as low as possible.
-      */
-+    v9fs_co_run_in_worker({
-+        QSLIST_FOREACH(f, &reclaim_list, reclaim_next) {
-+            err = (f->fid_type == P9_FID_DIR) ?
-+                s->ops->closedir(&s->ctx, &f->fs_reclaim) :
-+                s->ops->close(&s->ctx, &f->fs_reclaim);
-+            if (!err) {
-+                /* total_open_fd must only be mutated on main thread */
-+                nclosed++;
-+            }
-+        }
-+    });
-+    total_open_fd -= nclosed;
-+    /* Free the closed FIDs. */
-     while (!QSLIST_EMPTY(&reclaim_list)) {
-         f = QSLIST_FIRST(&reclaim_list);
-         QSLIST_REMOVE(&reclaim_list, f, V9fsFidState, reclaim_next);
--        if (f->fid_type == P9_FID_FILE) {
--            v9fs_co_close(pdu, &f->fs_reclaim);
--        } else if (f->fid_type == P9_FID_DIR) {
--            v9fs_co_closedir(pdu, &f->fs_reclaim);
--        }
-         /*
-          * Now drop the fid reference, free it
-          * if clunked.
+     return err;
+diff --git a/hw/9pfs/cofile.c b/hw/9pfs/cofile.c
+index 71174c3e4a..6e775c8e41 100644
+--- a/hw/9pfs/cofile.c
++++ b/hw/9pfs/cofile.c
+@@ -20,6 +20,7 @@
+ #include "fsdev/qemu-fsdev.h"
+ #include "qemu/thread.h"
+ #include "qemu/main-loop.h"
++#include "qemu/error-report.h"
+ #include "coth.h"
+ 
+ int coroutine_fn v9fs_co_st_gen(V9fsPDU *pdu, V9fsPath *path, mode_t st_mode,
+@@ -197,7 +198,11 @@ int coroutine_fn v9fs_co_close(V9fsPDU *pdu, V9fsFidOpenState *fs)
+                 err = -errno;
+             }
+         });
+-    if (!err) {
++    /* 'man 2 close' suggests to ignore close() errors except of EBADF */
++    if (unlikely(err && errno == EBADF)) {
++        /* unexpected case as we should have checked for a valid file handle */
++        error_report("9pfs: WARNING: v9fs_co_close() failed with EBADF");
++    } else {
+         total_open_fd--;
+     }
+     return err;
 -- 
 2.30.2
 
