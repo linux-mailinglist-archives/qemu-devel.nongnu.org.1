@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF8FDAAA457
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 01:27:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56328AAA4A0
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 01:32:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uC5Cw-000536-Vy; Mon, 05 May 2025 19:26:47 -0400
+	id 1uC5CX-0002xW-Vl; Mon, 05 May 2025 19:26:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uC5AY-0006z8-FF
- for qemu-devel@nongnu.org; Mon, 05 May 2025 19:24:22 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1uC5AZ-0006zI-Bz
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 19:24:23 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uC5AV-0003y7-Ti
+ id 1uC5AX-0003yd-2F
  for qemu-devel@nongnu.org; Mon, 05 May 2025 19:24:18 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-2295d78b45cso65362425ad.0
- for <qemu-devel@nongnu.org>; Mon, 05 May 2025 16:24:15 -0700 (PDT)
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-22c33677183so59931325ad.2
+ for <qemu-devel@nongnu.org>; Mon, 05 May 2025 16:24:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746487454; x=1747092254; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746487455; x=1747092255; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Lxiqm18+sn4NfhFWpGsu8e9acXNWibaUDGV6AOwg284=;
- b=TjJUDY3LsOwYGRPL6Lweg6VRkTy2xcEd8GGwKXAP4MvlTg5hmq+4gsxmBQ4TSBmwCF
- i9jBiKnFb6tn8BNuRdFC6zesDkOOwXdvLhwbBSaYf995cKNBurM0MoT/EA7rFWEDCQFw
- KD0IDjh2p45wxUDnTNojC8IUJYbPDkcmVQry5KZgVeHcEcqMcMITK0a+7X+gPwzZRvrq
- 5R2EaoFlHoCiykdFpotXb2uYlUyR9f0bfuUTu7BCuucD7hGcVOzpszfrQMe+eADKO1kA
- xSr1M2CyDHmqhj4bKIomwq3G4/uauHQ723YVLg7m5KLiA1i2pa14lzL0ey7012fYJvOK
- IZEQ==
+ bh=ZWI42H1mGpC+qtJnGTlft49SFGxWloHLdh6QbAbdhzc=;
+ b=cmShyxcgr6e4hLDZLelL8HsSz/ht7386yK3e/n7V99fnnVF+9IZC3ynrc3MwBqm1iP
+ OAinkdRr7A6xy50JodQMe6Yy8vU/kMVyoaroRRjETv7jdkuaiAd4NcmswsKmnrhQGICa
+ qUSWMmuYe5fA+XRQuRqs6hWQ9NMrn7MmA1pjWI1QOurzxN1NeH+p0eKwTG6emp9J84v6
+ FMvPSFZnct9KCFKVecEP1mUEh4nYOCN+uzISV0X7UCl2411ohPFL4F3Cmr3t3OnMCfbe
+ VvMD8SKHPFITtSD/9QciqNa+Smcyh4amtBb4e/LqvAIXlgB/ryiPSDgE5vmGJ6j04zP8
+ Ajnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746487454; x=1747092254;
+ d=1e100.net; s=20230601; t=1746487455; x=1747092255;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Lxiqm18+sn4NfhFWpGsu8e9acXNWibaUDGV6AOwg284=;
- b=PGQloaERBeiGQksScOYKkw4VRXcVCHJEM9PbFgmC1PHz1U9UJYPKvTeahnr3DP99NJ
- XON8P90DEdBvA84i14p8d8ixQ/TeM7zGTI6it8ccP3r/YWRuILYEnffnTkUQw6B0K1bD
- Nj+QzX5IpvnenXDNtu8KA8kqdo86dWkwKaOlcohdqpI1izSaheecS7S9Fe2A4CI2TGov
- Deby++QIF8Zul6PWb2+EX6lfRpieY0lf08zpsOXM96OPlzkVBQ1emVCabFlCDjMVBBYc
- IF89weMbptvcSIiXt04WkM8pQ1+WfOT10DbM7XmhfDF1Z1Co0HymyyQ5pIXHIHIxaCgc
- v2FA==
-X-Gm-Message-State: AOJu0Yw1tsQchTnYLDFJcEQxVe+GHANb/iiwNNbQZaYnzffsJmrgQKhB
- aiqrtLCGnfJ+NYu+NQEAb/lEvwPn/beA2Hs/mtfs+hbqKfJcUDOrIFikBcUUYPv/Na4bRQonyyd
- kPd4=
-X-Gm-Gg: ASbGncubpHqnhYTNjREFwt25T46jlcn8dO5JwIII0/yiul+YZSOEYY4hu6zB0LKiGil
- x/nBbbt1cFeF2BnbcfYuWJK45oWQbBTFgHjhAzZ39hM5s/d37pSSbpPR0B75SPEY9lbpJED8oOZ
- 2+ySL62E2Gs+HTBa99Mt3+NDzSUfPFD2w/65zhfD6bCTTNTY1qngYrGloIL0AdV3NsF0sxhhEUN
- y3Iru4y4fzFFDzYjV5OrmrcEPxiyx0qsEirTvMGTAIbNUsZ1D1Df9hgoSx7aO1/0Y9y1aavxLAe
- dNNn21qOw8iG9z4poWhgEgxkVBzm5+pbaiuWmRFk
-X-Google-Smtp-Source: AGHT+IH+n+7t3z29C7R6sRRD9PrLWdyQFgHaAF6qg00b9P4xkufJ3wIXXkW4T544/tooWyNTVIcfsw==
-X-Received: by 2002:a17:902:e54c:b0:215:7421:262 with SMTP id
- d9443c01a7336-22e328cf694mr20675215ad.12.1746487454294; 
- Mon, 05 May 2025 16:24:14 -0700 (PDT)
+ bh=ZWI42H1mGpC+qtJnGTlft49SFGxWloHLdh6QbAbdhzc=;
+ b=sbgurNXiQbnCpc/2FAazIm9I8gLxJ4cI0oCmiRNkV72w3Pt8KuFKyxnX/MaOssAmZJ
+ Rfs+QtHUYh8w+EvZyHfqrxOEH4lqB5j/q8NQDl2jYrJwjYUz1msJuMN5sD5jere4Tlbi
+ 1JiFKAyP9KB7wynOG7u50BCI1/y0DZcwN0t6HWOEhWNkGySixiE9/5YtZQECVI+UiT4A
+ +akIh/2oNvKvDao02isJY8Nk5vtSMuBcra8SIPGCoALE6aZ5gJfLYl8Yven0vImbzCyq
+ B8lT2DTrTiAYp+hhkcAyn0jivDdyiiiv45esku8TkmUaAGbvKhyGcGe2W9z/LqfDY7Ma
+ qyHg==
+X-Gm-Message-State: AOJu0Ywj9+ysowmiiR3ZjsAfBDb2S/aR7fmG0yAPig1wfJ8Mzt8bWgji
+ I98A9DspiULtnl/a1UEriMS5gs+2AKJfch+xBUtQjjvKYmBUrRA+DtuGwpQ5uOe2eunCfWe+ZVy
+ XS9A=
+X-Gm-Gg: ASbGnctBOxCFQ1DxPcj0wC5665+eE1CYJskpWh/jKhGokSJdc1B+qPTc8ZJ4XxlYJRX
+ FzKqlhIfP92/rX/gdC0070EMHkOdGmCfM6LgEEXClMfW991pMv3ck9aSr3S4S4ru3WBzKDKHfmG
+ l7mml9Q5KgRWYxDX4IGeYcO4xSbb7aKnVy7NZK7zpH8F1ek4yek/lLwZveDapSCLkNxunna7Rp5
+ c078SZyPnFnWp4VfWOVM+Qv/ZNs9OTPuf/u+dWupFx0otzUzIjZ9n83mwt/iO2nOXQjAo5pX678
+ MhwA/FHHnh8wcYZCvAVWx9rutdnT0OrSViJSP2zKnlz/BJu3rC8=
+X-Google-Smtp-Source: AGHT+IEUQQFAnhHZvpgEW269JjynFC74SxQHriC0mVPlLRJAjytrepF+TKFERHIHr5qYzSkqIHY0bA==
+X-Received: by 2002:a17:902:f14d:b0:22e:37b8:7972 with SMTP id
+ d9443c01a7336-22e37b881c3mr6291595ad.10.1746487455166; 
+ Mon, 05 May 2025 16:24:15 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22e16348edasm58705265ad.28.2025.05.05.16.24.13
+ d9443c01a7336-22e16348edasm58705265ad.28.2025.05.05.16.24.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 05 May 2025 16:24:13 -0700 (PDT)
+ Mon, 05 May 2025 16:24:14 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, anjo@rev.ng,
@@ -68,17 +68,16 @@ Cc: richard.henderson@linaro.org, anjo@rev.ng,
  kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-arm@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v6 47/50] target/arm/helper: restrict define_tlb_insn_regs to
- system target
-Date: Mon,  5 May 2025 16:20:12 -0700
-Message-ID: <20250505232015.130990-48-pierrick.bouvier@linaro.org>
+Subject: [PATCH v6 48/50] target/arm/tcg/tlb-insns: compile file once (system)
+Date: Mon,  5 May 2025 16:20:13 -0700
+Message-ID: <20250505232015.130990-49-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250505232015.130990-1-pierrick.bouvier@linaro.org>
 References: <20250505232015.130990-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,27 +100,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allows to include target/arm/tcg/tlb-insns.c only for system targets.
+aarch64 specific code is guarded by cpu_isar_feature(aa64*), so it's
+safe to expose it.
 
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/arm/helper.c | 2 ++
- 1 file changed, 2 insertions(+)
+ target/arm/tcg/tlb-insns.c | 7 -------
+ target/arm/tcg/meson.build | 2 +-
+ 2 files changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index ef9594eec29..6eaf6b3a04e 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -7763,7 +7763,9 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-         define_arm_cp_regs(cpu, not_v8_cp_reginfo);
+diff --git a/target/arm/tcg/tlb-insns.c b/target/arm/tcg/tlb-insns.c
+index 0407ad5542d..95c26c6d463 100644
+--- a/target/arm/tcg/tlb-insns.c
++++ b/target/arm/tcg/tlb-insns.c
+@@ -35,7 +35,6 @@ static CPAccessResult access_ttlbis(CPUARMState *env, const ARMCPRegInfo *ri,
+     return CP_ACCESS_OK;
+ }
+ 
+-#ifdef TARGET_AARCH64
+ /* Check for traps from EL1 due to HCR_EL2.TTLB or TTLBOS. */
+ static CPAccessResult access_ttlbos(CPUARMState *env, const ARMCPRegInfo *ri,
+                                     bool isread)
+@@ -46,7 +45,6 @@ static CPAccessResult access_ttlbos(CPUARMState *env, const ARMCPRegInfo *ri,
      }
+     return CP_ACCESS_OK;
+ }
+-#endif
  
-+#ifndef CONFIG_USER_ONLY
-     define_tlb_insn_regs(cpu);
-+#endif
+ /* IS variants of TLB operations must affect all cores */
+ static void tlbiall_is_write(CPUARMState *env, const ARMCPRegInfo *ri,
+@@ -802,7 +800,6 @@ static const ARMCPRegInfo tlbi_el3_cp_reginfo[] = {
+       .writefn = tlbi_aa64_vae3_write },
+ };
  
-     if (arm_feature(env, ARM_FEATURE_V6)) {
-         /* The ID registers all have impdef reset values */
+-#ifdef TARGET_AARCH64
+ typedef struct {
+     uint64_t base;
+     uint64_t length;
+@@ -1270,8 +1267,6 @@ static const ARMCPRegInfo tlbi_rme_reginfo[] = {
+       .writefn = tlbi_aa64_paallos_write },
+ };
+ 
+-#endif
+-
+ void define_tlb_insn_regs(ARMCPU *cpu)
+ {
+     CPUARMState *env = &cpu->env;
+@@ -1299,7 +1294,6 @@ void define_tlb_insn_regs(ARMCPU *cpu)
+     if (arm_feature(env, ARM_FEATURE_EL3)) {
+         define_arm_cp_regs(cpu, tlbi_el3_cp_reginfo);
+     }
+-#ifdef TARGET_AARCH64
+     if (cpu_isar_feature(aa64_tlbirange, cpu)) {
+         define_arm_cp_regs(cpu, tlbirange_reginfo);
+     }
+@@ -1309,5 +1303,4 @@ void define_tlb_insn_regs(ARMCPU *cpu)
+     if (cpu_isar_feature(aa64_rme, cpu)) {
+         define_arm_cp_regs(cpu, tlbi_rme_reginfo);
+     }
+-#endif
+ }
+diff --git a/target/arm/tcg/meson.build b/target/arm/tcg/meson.build
+index 49c8f4390a1..5d326585401 100644
+--- a/target/arm/tcg/meson.build
++++ b/target/arm/tcg/meson.build
+@@ -34,7 +34,6 @@ arm_ss.add(files(
+   'mve_helper.c',
+   'op_helper.c',
+   'vec_helper.c',
+-  'tlb-insns.c',
+   'arith_helper.c',
+   'vfp_helper.c',
+ ))
+@@ -68,6 +67,7 @@ arm_common_system_ss.add(files(
+   'iwmmxt_helper.c',
+   'neon_helper.c',
+   'tlb_helper.c',
++  'tlb-insns.c',
+ ))
+ arm_user_ss.add(files(
+   'hflags.c',
 -- 
 2.47.2
 
