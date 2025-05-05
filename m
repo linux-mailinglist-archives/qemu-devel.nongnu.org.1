@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A560BAA9742
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 17:20:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07747AA97D6
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 17:48:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBxbf-0003m6-Gy; Mon, 05 May 2025 11:19:47 -0400
+	id 1uBy2F-0004qe-2I; Mon, 05 May 2025 11:47:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uBxbe-0003lx-88
- for qemu-devel@nongnu.org; Mon, 05 May 2025 11:19:46 -0400
-Received: from mgamail.intel.com ([192.198.163.17])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uBxbb-0008G1-LD
- for qemu-devel@nongnu.org; Mon, 05 May 2025 11:19:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746458383; x=1777994383;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=7GC1k68l50k5cSSxxSPhvYp3s4QfgioSkR4NaUvGao4=;
- b=FNE5Jd/U9ci3p5kHuhjic4dBkX8FwBkITS4P7cL6/L6OuZeRfhbMoazv
- DGbEjI9npd9eBMvFtKE18DiLUkQ53F2RfAfHGZYsB9mw0lPLrAyvW1Q3m
- LkT9rYkng32xf+d4sRm0ynhmWAOxKz0xcr0A1hBQ3YrzmqQeyJfC9vxL+
- wycZ9mKrYGvQXpaAtZ9UCsv9ylq24toAxf0npAgBnMsHLYtOHVcWSBp2A
- oSJ8hXbbs09uhdkZeIvO/7+HsfhSCfX5E+iJcTpJXYA2K9arlE4+Tm9sn
- 7jzWUDRQtLyVa6in+ex0OA0BJMcVVkv/J5kkHwrJ5oUDyxzxSgAkxo8yB Q==;
-X-CSE-ConnectionGUID: rlJUdFvMTAWoZZS9eO8zPw==
-X-CSE-MsgGUID: A5ztgS2LSmazbb1BHVvCGQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11424"; a="47973994"
-X-IronPort-AV: E=Sophos;i="6.15,262,1739865600"; d="scan'208";a="47973994"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 May 2025 08:19:40 -0700
-X-CSE-ConnectionGUID: BbQzuZ1WRYeZNWx/SeVpCg==
-X-CSE-MsgGUID: 50Oue0XzT+SUihxzcabaGw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,262,1739865600"; d="scan'208";a="139297657"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa003.fm.intel.com with ESMTP; 05 May 2025 08:19:38 -0700
-Date: Mon, 5 May 2025 23:40:38 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Francesco Lavra <francescolavra.fl@gmail.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH v8 52/55] i386/tdx: Don't treat SYSCALL as unavailable
-Message-ID: <aBjb9m+h3jL0/m65@intel.com>
-References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
- <20250401130205.2198253-53-xiaoyao.li@intel.com>
+ (Exim 4.90_1) (envelope-from <just4now666666@gmail.com>)
+ id 1uBy2D-0004qQ-GR
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 11:47:13 -0400
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <just4now666666@gmail.com>)
+ id 1uBy2B-0003Nx-W2
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 11:47:13 -0400
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-b0db0b6a677so4404625a12.2
+ for <qemu-devel@nongnu.org>; Mon, 05 May 2025 08:47:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1746460029; x=1747064829; darn=nongnu.org;
+ h=cc:subject:message-id:date:from:in-reply-to:references:mime-version
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=aJwo5ihlCf2/0azgSaDsT7cTIQ09gLWPDfaj9PyZek4=;
+ b=YJ7sCjdp4oRp7jDg92Es63DMLFA47io4F1aC985g9vGoeMz+Tt841Y8yZyb0Zjc9bV
+ PkhLy+nx0iNdPQQtW1L9A6xVLgYrkwFLQq0RLdgjhIPid4x2jPOGCcinMk+hS+mGrV6v
+ wKFgNXA3wtY7YWfEKkdpJQWicUkQX9AhgpQVSTA1NJYpwcG269LqW4yv/lXjmnpDQB3C
+ 9+w9kbWgpPQCK9M9t56gz4gg6yaJGlZly5bKcU1Guu/dgUdD5tMmQ/sMmzaAFXIx3G2n
+ gBlIVvWigdsTYngx7ZN7pP/MulOrNg+PpZFZ1/WGsHDeVTnfbTQYhRHxSUPVnF8gUzUK
+ WeAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1746460029; x=1747064829;
+ h=cc:subject:message-id:date:from:in-reply-to:references:mime-version
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=aJwo5ihlCf2/0azgSaDsT7cTIQ09gLWPDfaj9PyZek4=;
+ b=CGgwnUDehXm6HJpGiIYapjs1r4Qp/D1IxVFu99DpCriHQBYsdHAEt6HQVNz+p23VVq
+ Ft4ml+DWP4cNxONHW/CPDGt+2Fk/Z1PEdyLjZdYSduNC4QRfW3/T6q0CcWZz6B9U90jP
+ Fh5e2uAAYNz5cW+aZJjr/HQSL8o4DYvQEkHm/TFqzn1GvJuonjSygLoXs0nbPXr+puc+
+ RV4b0j2gqnrtw+g16mwN1+DzipT7AQCD13Eb/kKD2nTupAVNfRx2j115w5SzNxRfzD7e
+ K1L6wD7UEVjmVXHWpsi+ziTrOXUpUTNeRScN9pTec8v+FqiPzdjIwQVLu3+jq0b5tIgm
+ U2Ow==
+X-Gm-Message-State: AOJu0YzF/2H9DjI7e9xNK6Iq5V9F7RSy88oXpsWz27V1hJVt1WwLakD7
+ xbhLDaofIGg/3+D0ybkB7Hp4aEGYofR+GShiZSUEcLPZGNziu+jBSgq5+7uCHCW7NO5RwldWZGu
+ 8JWjuNGS2SxXhdvHeV9olAWnKfOYO+GFiuNU=
+X-Gm-Gg: ASbGnctofZt/blAbXMLz6zee4gNkbPYy1SnjiY2LZZkF0BqovcbIxJzgloxHZQpKH7U
+ 8X/uuaFHk74O5ATY+Hrarr/WD6zha7IhtcPhiFByWE/pEeeJ1/0TKMvAuceb9DPfCKmbaZ8XI+b
+ R0S4zzgIMFRj2BD6dxYjKEuUV8I1o5XurzMQXAyxPRrA==
+X-Google-Smtp-Source: AGHT+IEHtjsv6GN0p8pwoz66vcoepeQFLFMojkwdIyIjzVOP16Ehh2QSzyDBVMageOsr229NnWuNZFrKBMTfZW0cnpE=
+X-Received: by 2002:a17:90b:4ec7:b0:309:e351:2e3d with SMTP id
+ 98e67ed59e1d1-30a5ae132e5mr17831174a91.12.1746460029305; Mon, 05 May 2025
+ 08:47:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250401130205.2198253-53-xiaoyao.li@intel.com>
-Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -57
-X-Spam_score: -5.8
-X-Spam_bar: -----
-X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20250326161927.15572-1-just4now666666@gmail.com>
+In-Reply-To: <20250326161927.15572-1-just4now666666@gmail.com>
+From: Elisha Hollander <just4now666666@gmail.com>
+Date: Mon, 5 May 2025 18:46:57 +0300
+X-Gm-Features: ATxdqUFqAS6n3DpZrs9q8xawGLyFW-kT9fky2zC2Ruh-1NGYVnag5jZ_evjl00o
+Message-ID: <CACkyd_aAtKE9jta0rdBJ3orBejTJ-ErmM0zyVoxCDux+vj9vcA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] util/memfd: allow allocating 0 bytes
+Cc: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000a944f206346569ea"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=just4now666666@gmail.com; helo=mail-pg1-x52e.google.com
+X-Spam_score_int: 13
+X-Spam_score: 1.3
+X-Spam_bar: +
+X-Spam_report: (1.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
+ FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001, MALFORMED_FREEMAIL=2.16,
+ MISSING_HEADERS=1.021, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,25 +88,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Apr 01, 2025 at 09:02:02AM -0400, Xiaoyao Li wrote:
-> Date: Tue,  1 Apr 2025 09:02:02 -0400
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: [PATCH v8 52/55] i386/tdx: Don't treat SYSCALL as unavailable
-> X-Mailer: git-send-email 2.34.1
+--000000000000a944f206346569ea
+Content-Type: text/plain; charset="UTF-8"
 
-It's better to add the commit message (for example, your additional
-comment at v6 [1]).
+ping
 
-[1]: https://lore.kernel.org/qemu-devel/3345330e-c111-4d08-9852-9dede46957d2@intel.com/
+On Wed, Mar 26, 2025, 18:20 donno2048 <just4now666666@gmail.com> wrote:
 
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> This silently fixes issues resulting from trying to allocate 0 bytes.
+>
+> Fixes error, for example, for writing byte 0x20 to port 0x3c0, then word
+> 0xf09 to port 0x3b4 when CPU is initiated, which shouldn't break.
+>
+> Signed-off-by: donno2048 <just4now666666@gmail.com>
 > ---
-> Changes in v7:
->  - fix CPUID_EXT2_SYSCALL by adding it to actual;
-> ---
->  target/i386/kvm/tdx.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
+>  util/memfd.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
+>
+> diff --git a/util/memfd.c b/util/memfd.c
+> index 07beab174d..4f2c4ea1dd 100644
+> --- a/util/memfd.c
+> +++ b/util/memfd.c
+> @@ -131,9 +131,13 @@ void *qemu_memfd_alloc(const char *name, size_t size,
+> unsigned int seals,
+>          }
+>      }
+>
+> -    ptr = mmap(0, size, PROT_READ | PROT_WRITE, MAP_SHARED, mfd, 0);
+> -    if (ptr == MAP_FAILED) {
+> -        goto err;
+> +    if (size != 0) {
+> +        ptr = mmap(0, size, PROT_READ | PROT_WRITE, MAP_SHARED, mfd, 0);
+> +        if (ptr == MAP_FAILED) {
+> +            goto err;
+> +        }
+> +    } else {
+> +        ptr = fdopen(mfd, "rw");
+>      }
+>
+>      *fd = mfd;
+> --
+> 2.30.2
+>
+>
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+--000000000000a944f206346569ea
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+<div dir=3D"auto"><p dir=3D"ltr">ping</p></div>
+<br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Wed=
+, Mar 26, 2025, 18:20 donno2048 &lt;<a href=3D"mailto:just4now666666@gmail.=
+com" target=3D"_blank" rel=3D"noreferrer">just4now666666@gmail.com</a>&gt; =
+wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8e=
+x;border-left:1px #ccc solid;padding-left:1ex">This silently fixes issues r=
+esulting from trying to allocate 0 bytes.<br>
+<br>
+Fixes error, for example, for writing byte 0x20 to port 0x3c0, then word 0x=
+f09 to port 0x3b4 when CPU is initiated, which shouldn&#39;t break.<br>
+<br>
+Signed-off-by: donno2048 &lt;<a href=3D"mailto:just4now666666@gmail.com" re=
+l=3D"noreferrer noreferrer" target=3D"_blank">just4now666666@gmail.com</a>&=
+gt;<br>
+---<br>
+=C2=A0util/memfd.c | 10 +++++++---<br>
+=C2=A01 file changed, 7 insertions(+), 3 deletions(-)<br>
+<br>
+diff --git a/util/memfd.c b/util/memfd.c<br>
+index 07beab174d..4f2c4ea1dd 100644<br>
+--- a/util/memfd.c<br>
++++ b/util/memfd.c<br>
+@@ -131,9 +131,13 @@ void *qemu_memfd_alloc(const char *name, size_t size, =
+unsigned int seals,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+<br>
+-=C2=A0 =C2=A0 ptr =3D mmap(0, size, PROT_READ | PROT_WRITE, MAP_SHARED, mf=
+d, 0);<br>
+-=C2=A0 =C2=A0 if (ptr =3D=3D MAP_FAILED) {<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 goto err;<br>
++=C2=A0 =C2=A0 if (size !=3D 0) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 ptr =3D mmap(0, size, PROT_READ | PROT_WRITE, =
+MAP_SHARED, mfd, 0);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (ptr =3D=3D MAP_FAILED) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 goto err;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
++=C2=A0 =C2=A0 } else {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 ptr =3D fdopen(mfd, &quot;rw&quot;);<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0*fd =3D mfd;<br>
+-- <br>
+2.30.2<br>
+<br>
+</blockquote></div>
+
+--000000000000a944f206346569ea--
 
