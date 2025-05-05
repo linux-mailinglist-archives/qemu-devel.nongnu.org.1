@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2056AA8ABE
-	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 03:53:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06F4FAA8AD0
+	for <lists+qemu-devel@lfdr.de>; Mon,  5 May 2025 03:54:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uBl1A-0004Kw-Si; Sun, 04 May 2025 21:53:16 -0400
+	id 1uBl19-0004Jx-92; Sun, 04 May 2025 21:53:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uBl0k-0003w6-Uy
+ id 1uBl0l-0003wA-8g
  for qemu-devel@nongnu.org; Sun, 04 May 2025 21:52:55 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uBl0d-0002Wl-3G
+ id 1uBl0d-0002Wt-MU
  for qemu-devel@nongnu.org; Sun, 04 May 2025 21:52:50 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-2241053582dso57793655ad.1
- for <qemu-devel@nongnu.org>; Sun, 04 May 2025 18:52:42 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-73712952e1cso3714271b3a.1
+ for <qemu-devel@nongnu.org>; Sun, 04 May 2025 18:52:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746409961; x=1747014761; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746409962; x=1747014762; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4MSVLYsQ1aHRPUMsqKWeWNfiw/1OBObe6XUOYFWrKME=;
- b=SyjZjWgR5HwPkiuWN8CaP5ynaV3dJx4n+RLIQk6HhaRAKet1TJ4/kQOnKg2glO3lmx
- Wbg/tu83XaH+OXwgHyVHUpkRVIhubGlIDK+MmIfIFDL3XJw1qkJjksftg12ZtAfJ4Veo
- vv4UaTtr5UGryq5Fw1zX/hFJtq0zOqfee/AnW3T7Rn3hOBCTkLmRiFv+H2oVqKWeyxpc
- tgF/H8DwJVcUgBVx7iJE1/wgWQ5HzPgUs0MN056r/dnQAtyuKxLbpyaOkDgOs9G+Yc5c
- izG5W0D6UvY/wmh1Et8nLWVj+1frPwekZ5MfTRF0usvUbMG4fTuKhzIHLHZBBTpoSPLw
- iH/A==
+ bh=+dY2+B45FTbIh7DFuLp2IDYyX3GgPA0isTzUNUEtsE4=;
+ b=HcbC9sPV5Em+Q4914jN1gdCuxpaaCR1HBeka8IxwBpc/lqo64b7FkJAYYOOPO6/9HW
+ LiHY54/QuuAwh4fhCsRdwSzCWe4i2ModT7F9Rq8fb3PynH45rTntEPpT9kpqzEwgoTqW
+ LinY3VXZLFUV76hqFpDyrKqqwAEyooPQE2XiaW3qz3qYX2TsyHr7tkN1Lk5E16ad2640
+ aL1jRWdCS0YhqmWUiDuNcF/vVoXkN/nRtnZqEBcdLU8GPPNOAtC7brv2SXNB2KQd1pxl
+ K2r44pYj4OjGJJiuy4a+RzfmWUvLHkyZq9216L/L5pEqQdXfMxHp3/yF2rC21kRITVmu
+ STUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746409961; x=1747014761;
+ d=1e100.net; s=20230601; t=1746409962; x=1747014762;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4MSVLYsQ1aHRPUMsqKWeWNfiw/1OBObe6XUOYFWrKME=;
- b=NZZMuiy70Z9JBxkOmX3/2q2gXJVG3jFh2p4NlOcal8VmOKdZY+zr72W/UbcF8Bt6rD
- QxjCGUfkkJfNHJ1vWR/I6+APxpXN1OSFq0yLKxyktIL7LgywfWmr5H2QI7P1EczWXmjM
- oLsL4cavni8NJDhQDvPEY6o9NciT+7Rr9BS9iNeQDkSw40/yEggYGzLIlkq3FyiAtBq7
- p4MiYhgwLVY5ZP5mEUMuGf/euywjoOF3SiOmaKlOwZ4+qEp3JHPkkJSaNoIKr6UKI7SJ
- PQVIOsiow67TDsOF01DWjzlVOkVdMEAKcoN6t5pIqWErQm4TXe62mCmfwgTPNDmw/hwQ
- n2TQ==
-X-Gm-Message-State: AOJu0Yyn23OMO9+LUR+HZqRmXystxTU+EUdJxxzTHzmE6Na9In661/dg
- NVKozrw0AAn7Z1Q0NgJ0wdMzxU3HHKRkTs7LA3eEVfc/iOqBUMBa/6J6LZa/H6eTIE9JCWDUpfA
- qS/g=
-X-Gm-Gg: ASbGncv9o6nlu7ugtfLBU5WMxZdcRKKujHbiyB9+x9mtWBbpNwopWVklejf42tmWdz8
- Ih3D9yP8sOCKcYmyuNlb718fXTPgQbPTQk125fHsn+9gjpXkJNh2XfLp7P/8cXzyGVZmka1MVUh
- 6b5U5cvKaMJQm4Kr/ZMaoyjBlUOaO2CWYr4A973dPgCYGVpffT8FcF++QSb1DlX43eOE1ikYxrK
- 112iJMm+20kUl3AYVy7HGlCJGKs4IportJ90K0l1m6jy7nCsEki/yeeGVyBBprIYB3RrEtMKsy5
- 0T1TJnFIEeQPAFIKol+JHKxGetijNemrOYMR/gOv
-X-Google-Smtp-Source: AGHT+IFStReL3d3Chdl6PrC5O/ZzbLYNJcWT7xOxwxpCTNKHN0EosJJL26gYeCAolZHGa5+8q0WjYw==
-X-Received: by 2002:a17:903:1aa8:b0:224:1781:a947 with SMTP id
- d9443c01a7336-22e1e905660mr87815615ad.21.1746409961673; 
- Sun, 04 May 2025 18:52:41 -0700 (PDT)
+ bh=+dY2+B45FTbIh7DFuLp2IDYyX3GgPA0isTzUNUEtsE4=;
+ b=UuthWi8ofsT384YKQNGAag6l1dDe6rIVi+r1AC989QKBr3Loi9xpl0JpRdw7QPeUYg
+ cJnWUPRx94PNTFS1l+pVRPMva8pugkVmb4c85nUGvSGLuw53FHK0CN0BU3tk7Vsqvhd2
+ wqO94ittgFhi0fQZMPdiSeGD6RiMaEnLFYcJGLX6gbSNInT9e24iuuTMeFME2C/R0eik
+ o6EojRE0fxdK+9JovLXBGPlVDB/i+yrOgUOZHODZ/QzmNnpX5A3eTcxUZ0UKVmCgKQK6
+ dW8cwVRVtcR44LG+tTJn4W0oOb3Phft06F1dZ5MxrgB+5k3Am6Ghd/QeLPUFnon8fJD8
+ +eSA==
+X-Gm-Message-State: AOJu0YyaIlORBN+4mle+iG29forAy3tUviXSXuE6CB8zwnwn+2RD+s4r
+ vzR+joRs9YV1MgyU8SgVtBZxd33GFygekFex40RYA3+XT9IxVFKtxQbrz4ecWnR+iZApOFuxsnS
+ dxvI=
+X-Gm-Gg: ASbGncvoAI2hFFPA2iK/qmjHE+KdV5EVKbghtNKgUR5LGf9kHVAz1llnJu23WvYoMwH
+ x54VZbxdv5ifngUx+M0rW01FgG/f5tzupUxtvcayP+cKM+/Il5ZkqOW8UQMXaBPrlGkfBtExX90
+ PQSfnhEm1oisvoRGWLRg6uGjxwq3syQNCtVrC7vY/IzVcttJk5y2y08+trS4VsBWVS3nTPJT4ld
+ rjh/9GN1DWe+zP2zRa2vULM1uUF5jZInUb51r2xyP4qTHqImiipLlV9cA5oXbfPjkjxb4dowj+f
+ sEg8Qwmgb4PVbOnOWVEm4vfpXaDmQtG7wPGohZ46
+X-Google-Smtp-Source: AGHT+IGwGPzb6lFi2Op/Qg5QVCFLUtbbcfO9DQX2e8IUchkEKTdytp85tL6CL/OsVBWd1f+gFvvx/Q==
+X-Received: by 2002:a05:6a20:3d81:b0:1f5:9208:3ac7 with SMTP id
+ adf61e73a8af0-20e97ea6076mr7778420637.41.1746409962540; 
+ Sun, 04 May 2025 18:52:42 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b1fb3920074sm4462101a12.11.2025.05.04.18.52.40
+ 41be03b00d2f7-b1fb3920074sm4462101a12.11.2025.05.04.18.52.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 04 May 2025 18:52:41 -0700 (PDT)
+ Sun, 04 May 2025 18:52:42 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
@@ -68,17 +68,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
  Peter Maydell <peter.maydell@linaro.org>, anjo@rev.ng,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v5 15/48] target/arm/helper: use vaddr instead of target_ulong
- for exception_pc_alignment
-Date: Sun,  4 May 2025 18:51:50 -0700
-Message-ID: <20250505015223.3895275-16-pierrick.bouvier@linaro.org>
+Subject: [PATCH v5 16/48] target/arm/helper: use vaddr instead of target_ulong
+ for probe_access
+Date: Sun,  4 May 2025 18:51:51 -0700
+Message-ID: <20250505015223.3895275-17-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250505015223.3895275-1-pierrick.bouvier@linaro.org>
 References: <20250505015223.3895275-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,67 +101,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/arm/helper.h            | 2 +-
- target/arm/tcg/tlb_helper.c    | 2 +-
- target/arm/tcg/translate-a64.c | 2 +-
- target/arm/tcg/translate.c     | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+ target/arm/helper.h        | 2 +-
+ target/arm/tcg/op_helper.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/target/arm/helper.h b/target/arm/helper.h
-index 09075058391..95b9211c6f4 100644
+index 95b9211c6f4..0a4fc90fa8b 100644
 --- a/target/arm/helper.h
 +++ b/target/arm/helper.h
-@@ -49,7 +49,7 @@ DEF_HELPER_3(exception_with_syndrome, noreturn, env, i32, i32)
- DEF_HELPER_4(exception_with_syndrome_el, noreturn, env, i32, i32, i32)
- DEF_HELPER_2(exception_bkpt_insn, noreturn, env, i32)
- DEF_HELPER_2(exception_swstep, noreturn, env, i32)
--DEF_HELPER_2(exception_pc_alignment, noreturn, env, tl)
-+DEF_HELPER_2(exception_pc_alignment, noreturn, env, vaddr)
- DEF_HELPER_1(setend, void, env)
- DEF_HELPER_2(wfi, void, env, i32)
- DEF_HELPER_1(wfe, void, env)
-diff --git a/target/arm/tcg/tlb_helper.c b/target/arm/tcg/tlb_helper.c
-index 8841f039bc6..4e3e96a2af0 100644
---- a/target/arm/tcg/tlb_helper.c
-+++ b/target/arm/tcg/tlb_helper.c
-@@ -277,7 +277,7 @@ void arm_cpu_do_unaligned_access(CPUState *cs, vaddr vaddr,
-     arm_deliver_fault(cpu, vaddr, access_type, mmu_idx, &fi);
+@@ -104,7 +104,7 @@ DEF_HELPER_FLAGS_1(rebuild_hflags_a32_newel, TCG_CALL_NO_RWG, void, env)
+ DEF_HELPER_FLAGS_2(rebuild_hflags_a32, TCG_CALL_NO_RWG, void, env, int)
+ DEF_HELPER_FLAGS_2(rebuild_hflags_a64, TCG_CALL_NO_RWG, void, env, int)
+ 
+-DEF_HELPER_FLAGS_5(probe_access, TCG_CALL_NO_WG, void, env, tl, i32, i32, i32)
++DEF_HELPER_FLAGS_5(probe_access, TCG_CALL_NO_WG, void, env, vaddr, i32, i32, i32)
+ 
+ DEF_HELPER_1(vfp_get_fpscr, i32, env)
+ DEF_HELPER_2(vfp_set_fpscr, void, env, i32)
+diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
+index 38d49cbb9d8..33bc595c992 100644
+--- a/target/arm/tcg/op_helper.c
++++ b/target/arm/tcg/op_helper.c
+@@ -1222,7 +1222,7 @@ uint32_t HELPER(ror_cc)(CPUARMState *env, uint32_t x, uint32_t i)
+     }
  }
  
--void helper_exception_pc_alignment(CPUARMState *env, target_ulong pc)
-+void helper_exception_pc_alignment(CPUARMState *env, vaddr pc)
+-void HELPER(probe_access)(CPUARMState *env, target_ulong ptr,
++void HELPER(probe_access)(CPUARMState *env, vaddr ptr,
+                           uint32_t access_type, uint32_t mmu_idx,
+                           uint32_t size)
  {
-     ARMMMUFaultInfo fi = { .type = ARMFault_Alignment };
-     int target_el = exception_target_el(env);
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index d9305f9d269..4f94fe179b0 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -10243,7 +10243,7 @@ static void aarch64_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
-          * start of the TB.
-          */
-         assert(s->base.num_insns == 1);
--        gen_helper_exception_pc_alignment(tcg_env, tcg_constant_tl(pc));
-+        gen_helper_exception_pc_alignment(tcg_env, tcg_constant_vaddr(pc));
-         s->base.is_jmp = DISAS_NORETURN;
-         s->base.pc_next = QEMU_ALIGN_UP(pc, 4);
-         return;
-diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index 88df9c482ab..99f07047fe5 100644
---- a/target/arm/tcg/translate.c
-+++ b/target/arm/tcg/translate.c
-@@ -7790,7 +7790,7 @@ static void arm_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
-          * be possible after an indirect branch, at the start of the TB.
-          */
-         assert(dc->base.num_insns == 1);
--        gen_helper_exception_pc_alignment(tcg_env, tcg_constant_tl(pc));
-+        gen_helper_exception_pc_alignment(tcg_env, tcg_constant_vaddr(pc));
-         dc->base.is_jmp = DISAS_NORETURN;
-         dc->base.pc_next = QEMU_ALIGN_UP(pc, 4);
-         return;
 -- 
 2.47.2
 
