@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47439AAC820
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:36:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DE11AAC824
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:36:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCJOJ-0006RB-JE; Tue, 06 May 2025 10:35:27 -0400
+	id 1uCJOH-0006QL-GU; Tue, 06 May 2025 10:35:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJOH-0006Qc-G8
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:35:25 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJOF-0006Nb-FP
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:35:23 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJOF-00011q-7k
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:35:25 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-39c0dfad22aso3710068f8f.2
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:35:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJOD-000122-80
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:35:22 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-43d0359b1fcso36125135e9.0
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:35:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746542114; x=1747146914; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=8IJm7D/h+TTh6vMPLy4x/Ypy1SJR36i3aKLyqJFnHoM=;
- b=ID8TEdbu9fT2x+f/zFejoYfj9aQ7hadB4L5pMg/2q6hFj8Jc0ZNJ4P08arS1Z+HVxz
- bKIsSqOVBpwizNSKMmcLCKU8XaribjQ0mfDmUZi8wkdPpKCcDEFUijCrN77pMqmDFlHj
- 0M+unl9tOIympFKZIVH9QZPDJoKoEJCkDbYaBkukplMnMsJJf7LIjE+g5kBFO0XSLfr9
- 4xARmfRT+mLYhLEiSGXv21W40HxpZYl95Jjwwka/ep5WPWuETzkz/BwMCivrNpON3qAa
- Xx/a8vheUsQlMpYdgLF7QeFTbWqSz2br3SSO10QanDyJgQXvl/NhslXyOHfPOUNaOBif
- tidw==
+ d=linaro.org; s=google; t=1746542118; x=1747146918; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7fk0+zfQPUjhKJZd4fHUCreFdVkC6Nw3uJmVrWhWzRI=;
+ b=jTxYmF8jIUb2GdsQJNxGKhG2qGp5wE6WLdJxDnt0ytXKkOSudoDMwxjLbEAD/yeUzw
+ f7tMZtp5TBYTmcM34IbjnoNXmJRF1XFaycjrt7R44a6NKWl4+pZ8B5aGBp04Pw4tBI3L
+ oMNAiAX4jdBGDtOh0KZDlA+53NCR0g73VQzlNaJgvPseBCGm7FmdWZGtPPCi1qNgFlWD
+ 8BjNvyVowQG8k5uAD2KV8kzf/XcUcZCZds5pT6+gyUdCDfi03sPpEZ42+yd4ruPexSvS
+ TPbs4V+tPh9u+fCQml0pK/PajCAPc7XzvHt7TK7dxZDWcDD/0mla5mQQCFb/vd1KODI6
+ Pm2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746542114; x=1747146914;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=8IJm7D/h+TTh6vMPLy4x/Ypy1SJR36i3aKLyqJFnHoM=;
- b=LF3cKjU15ocOenZm+YqM9ZY/96sX/9gRktYERZayw8KYf3Ja/gT0+2oye1Z0ZsIyJ9
- 4qZSI3Oqh4aGYAjUnQbOgeVkrzCwdanUbs2v+JgOQ/food1+B0DNyTsisIAaDJaC+1b+
- BOoGQw26QoU1vsE3YRfixHo1gS8Ebs8rLBScFqIJvVYBJiuNuH/wf55xZap/ryfZ/wcR
- 6U5qqP4WbBw8vlqiFc5wAmE1/LujUk6tB5RBfvx93IV4gW8BKwEVgv7ZahpWIVtRt5JH
- Zh5RaBBgx9OUww/oVSWd8oKuG5F31u5D8pJgCDRzReKOCRlKKJl+y8B+P01x9Zm6ZU4b
- o7BQ==
-X-Gm-Message-State: AOJu0YzZEdmCssOCn0St6yOC8m6ErvHeQO+zbkzgPq8UIqcN7Ly+Q+3H
- AHo586yH6JVEsbkFmYii9KTky6/zawujLDR7HyD2yRBl9jqWNzOKceNdJNGU+SxGmRWzQvN3ajk
- G
-X-Gm-Gg: ASbGnctJ+Rg+gwYrU+UfJd8awJQ3N3BoiScOn22SI3gTRYa44mhFjQ4THuEzNXckMyl
- rLZjYVDUNQwD1fjHLVh02h4lScpbVy5XPT/4W6RgG2G/t8AVYSHemCLNAJxpQP8nEcwpjtsFvXm
- etoRhOjCIyoc+0KI44bKrho1Vg47VRYc/lDl6wk2YvO+89CMPjZlCPtipE57vVHsD0q5dHHdksr
- v7Ojy78YxjmGw9qq33VAd0Gazx5pmAj1uTAx5txXtrczBhWxNs851uSMCWxA0r3TgacLYXf/OM2
- mT91+scVJcInGL/qIpbFplCVogCgFmEiot2q44KB6Z0l7KvDiHFiKxMuaNG3ZPaaYPACKtTNSG8
- a+OjWmp/9EtVKvzLZ36hI
-X-Google-Smtp-Source: AGHT+IGU8UZlmPSIynqxPR0B9C9eM6Rkidj83nc66jqP8LQPDvasOCYAECnV7Qire/EHrgXvvVlGjw==
-X-Received: by 2002:a05:6000:2dc6:b0:3a0:8707:dad6 with SMTP id
- ffacd0b85a97d-3a099ad1ab2mr14732250f8f.3.1746542113661; 
- Tue, 06 May 2025 07:35:13 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1746542118; x=1747146918;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=7fk0+zfQPUjhKJZd4fHUCreFdVkC6Nw3uJmVrWhWzRI=;
+ b=M9vQW6yKBtMw6M2p125ce5xg0hW7T3L9jGuGZPTmfTrlak2aq+jecmYo4oMKE75D8d
+ WREw+2hT1fDMBjTgDJO3IKTWpjjOzvLqYyiFHDEvG6IR27E1hcLwg8emasU8zxk7dYkR
+ 1gcPvI6YwCNCyCHNYKnNcqem59kG4J+KcrnBkJdVPKp1W5dZ//WqnI72hJ+KNauOcEDg
+ wiUCTdgU0t2k/PmePaK6Oh+8Js6e0C3a7d40ax/tSjPETHofIJXS2L8fgscOhklF8FLf
+ 9QiMaljUCp6P2wJ2wiZeBLi8LFULF6MMkEVoG+MVzsoUVtmTmV33c80ril//Vs8qVsjB
+ bHlQ==
+X-Gm-Message-State: AOJu0YwuCcicnl6jFhG6G17vi0oMQZ5Abc9u004Td29O9Aexgz6YJrx1
+ scp6dGuPvM4Q+ZgrRsStett5fiKds1hySIWykPLU5OLnC67oC8FMKVU/YqrU9t1Qb2Hjbj3uzci
+ H
+X-Gm-Gg: ASbGncvgZ4oAuGjmKFV5V+tcONOHMsNfu7N7624uqai2CIw2Y2bHhLTu9g5NQQ/oMsh
+ PNuWukXL8/PwiPHLLHiWq6aVkYIxNaFCK9rU5zAvs6sY683SAgs84k65k2EHYvta6QiXkbPmf21
+ xQA80zdkrdTP/dFQDt5m4b0UdNS0QuvSyet927Tq0q05Gpk9xQSDr/yKNVs6GwUEHRPRvSKLKvS
+ 6HdcmCZBGeBKiMqNEFDkvH/A9zGpcCVdD/4jJ2spQ7460Bm0W6Nr0Ze+FcKWhvXb8YQneaFUTua
+ a7JYxMhNKyC/AR7j9V3Bno0hIrCBXMBoF7tHms1kzrke5AAGdAvcP0eEL4KN7A3NhYH+d1ToU4y
+ OC1fZPt4DuQCTLXkzfDUW
+X-Google-Smtp-Source: AGHT+IEzIwaQnMopyBzsoc+6NRSMSouI+uLIwGcL4kmv/ZiX1YqrLzUrAZfkKbM6JIy3WV0yKrJp6Q==
+X-Received: by 2002:a05:600c:c059:10b0:43c:f509:2bbf with SMTP id
+ 5b1f17b1804b1-441d0105d86mr21202865e9.15.1746542118116; 
+ Tue, 06 May 2025 07:35:18 -0700 (PDT)
 Received: from localhost.localdomain (91-163-26-170.subs.proxad.net.
  [91.163.26.170]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a099ae3403sm13797270f8f.28.2025.05.06.07.35.12
+ 5b1f17b1804b1-441b89d1636sm171373065e9.13.2025.05.06.07.35.17
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 06 May 2025 07:35:13 -0700 (PDT)
+ Tue, 06 May 2025 07:35:17 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 00/22] Misc HW patches for 2025-05-06
-Date: Tue,  6 May 2025 16:34:49 +0200
-Message-ID: <20250506143512.4315-1-philmd@linaro.org>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 01/22] bsd-user: add option to enable plugins
+Date: Tue,  6 May 2025 16:34:50 +0200
+Message-ID: <20250506143512.4315-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250506143512.4315-1-philmd@linaro.org>
+References: <20250506143512.4315-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,94 +98,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit a9e0c9c0f14e19d23443ac24c8080b4708d2eab8:
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-  Merge tag 'pull-9p-20250505' of https://github.com/cschoenebeck/qemu into staging (2025-05-05 11:26:59 -0400)
+Nothing prevent plugins to be enabled on this platform for user
+binaries, only the option in the driver is missing.
 
-are available in the Git repository at:
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250331234228.3475706-1-pierrick.bouvier@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ bsd-user/main.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-  https://github.com/philmd/qemu.git tags/hw-misc-20250506
-
-for you to fetch changes up to dc495b919f1d9d98e01aea22f545fdc7de07e28d:
-
-  hw/isa/ich9: Remove stray empty comment (2025-05-06 16:32:02 +0200)
-
-----------------------------------------------------------------
-Misc HW patches
-
-- Allow using plugins on BSD user-emulation
-- Inline VMSTATE_CPU() macro
-- Fix headear includes for HVF x86
-- Build hw/hyperv/ files once
-- Various typo fixed
-
-----------------------------------------------------------------
-
-Eric Auger (3):
-  hw/pci/pcie_port: Fix pcie_slot_is_hotpluggbale_bus typo
-  hw/acpi/ged: Fix wrong identation
-  hw/i386/acpi-build: Fix build_append_notfication_callback typo
-
-Gustavo Romero (6):
-  qom/object: Fix typo in comment
-  hw/core/machine: Fix indentation
-  hw/i386/acpi-build: Update document reference
-  hw/i386/acpi-build: Fix typo and grammar in comment
-  hw/acpi/pcihp: Fix typo in function name
-  hw/isa/ich9: Remove stray empty comment
-
-Philippe Mathieu-Daudé (4):
-  target/migration: Inline VMSTATE_CPU()
-  target/i386/hvf: Include missing 'exec/target_page.h' header
-  system/hvf: Avoid including 'cpu.h'
-  system/hvf: Expose hvf_enabled() to common code
-
-Pierrick Bouvier (8):
-  bsd-user: add option to enable plugins
-  hw/hyperv/hv-balloon-stub: common compilation unit
-  hw/hyperv/hyperv.h: header cleanup
-  hw/hyperv/vmbus: common compilation unit
-  hw/hyperv/syndbg: common compilation unit
-  hw/hyperv/balloon: common balloon compilation units
-  hw/hyperv/hyperv_testdev: common compilation unit
-  hw/hyperv/hyperv: common compilation unit
-
-Steve Sistare (1):
-  qom: Factor qom_resolve_path() out
-
- MAINTAINERS                     |  1 +
- hw/i386/acpi-build.h            |  2 +-
- include/hw/acpi/pcihp.h         |  2 +-
- include/hw/core/cpu.h           | 12 ------------
- include/hw/hyperv/hyperv.h      |  3 ++-
- include/system/hvf.h            | 17 +++++++++++------
- include/system/hvf_int.h        |  2 ++
- accel/stubs/hvf-stub.c          | 12 ++++++++++++
- bsd-user/main.c                 | 12 ++++++++++++
- hw/acpi/acpi-pci-hotplug-stub.c |  2 +-
- hw/acpi/generic_event_device.c  | 10 +++++-----
- hw/acpi/ich9.c                  |  2 +-
- hw/acpi/pcihp.c                 |  2 +-
- hw/acpi/piix4.c                 |  2 +-
- hw/core/machine.c               |  8 ++++----
- hw/hyperv/hyperv.c              |  3 ++-
- hw/hyperv/syndbg.c              |  9 ++++++---
- hw/hyperv/vmbus.c               |  2 +-
- hw/i386/acpi-build.c            | 10 +++++-----
- hw/isa/lpc_ich9.c               |  1 -
- hw/pci/pcie_port.c              |  4 ++--
- qom/object.c                    |  2 +-
- qom/qom-qmp-cmds.c              | 21 +++++++++++++++------
- target/alpha/machine.c          |  2 +-
- target/hppa/machine.c           |  2 +-
- target/i386/hvf/hvf.c           |  1 +
- target/microblaze/machine.c     |  2 +-
- target/openrisc/machine.c       |  2 +-
- accel/stubs/meson.build         |  1 +
- hw/hyperv/meson.build           | 11 ++++++-----
- 30 files changed, 99 insertions(+), 63 deletions(-)
- create mode 100644 accel/stubs/hvf-stub.c
-
+diff --git a/bsd-user/main.c b/bsd-user/main.c
+index fdb160bed0f..329bd1acc02 100644
+--- a/bsd-user/main.c
++++ b/bsd-user/main.c
+@@ -175,6 +175,9 @@ static void usage(void)
+            "-strace           log system calls\n"
+            "-trace            [[enable=]<pattern>][,events=<file>][,file=<file>]\n"
+            "                  specify tracing options\n"
++#ifdef CONFIG_PLUGIN
++           "-plugin           [file=]<file>[,<argname>=<argvalue>]\n"
++#endif
+            "\n"
+            "Environment variables:\n"
+            "QEMU_STRACE       Print system calls and arguments similar to the\n"
+@@ -225,6 +228,8 @@ static void init_task_state(TaskState *ts)
+     };
+ }
+ 
++static QemuPluginList plugins = QTAILQ_HEAD_INITIALIZER(plugins);
++
+ void gemu_log(const char *fmt, ...)
+ {
+     va_list ap;
+@@ -307,6 +312,7 @@ int main(int argc, char **argv)
+     cpu_model = NULL;
+ 
+     qemu_add_opts(&qemu_trace_opts);
++    qemu_plugin_add_opts();
+ 
+     optind = 1;
+     for (;;) {
+@@ -399,6 +405,11 @@ int main(int argc, char **argv)
+             do_strace = 1;
+         } else if (!strcmp(r, "trace")) {
+             trace_opt_parse(optarg);
++#ifdef CONFIG_PLUGIN
++        } else if (!strcmp(r, "plugin")) {
++            r = argv[optind++];
++            qemu_plugin_opt_parse(r, &plugins);
++#endif
+         } else if (!strcmp(r, "0")) {
+             argv0 = argv[optind++];
+         } else {
+@@ -433,6 +444,7 @@ int main(int argc, char **argv)
+         exit(1);
+     }
+     trace_init_file();
++    qemu_plugin_load_list(&plugins, &error_fatal);
+ 
+     /* Zero out regs */
+     memset(regs, 0, sizeof(struct target_pt_regs));
 -- 
 2.47.1
 
