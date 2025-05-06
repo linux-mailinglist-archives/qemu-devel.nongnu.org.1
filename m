@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A09EAAC99F
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 17:32:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85AA7AAC985
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 17:31:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCKGY-0006kd-Ai; Tue, 06 May 2025 11:31:31 -0400
+	id 1uCKFg-00045I-L5; Tue, 06 May 2025 11:30:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uCKFo-00050z-D7
- for qemu-devel@nongnu.org; Tue, 06 May 2025 11:30:44 -0400
+ id 1uCKF8-0003rE-WE
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 11:30:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uCKFl-0002Gd-2Q
- for qemu-devel@nongnu.org; Tue, 06 May 2025 11:30:43 -0400
+ id 1uCKF4-0001ys-TA
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 11:30:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746545440;
+ s=mimecast20190719; t=1746545397;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hQDtzIzmoV0HVk+AWYcmKi3lcOstOQ+i6JmBjXMM7wA=;
- b=WVG1MVCQvxzpomPd46XaqMndtfpsim8/2stRh9l3GTKcxDbLNx0BG3bgrF4ld3fo/q3N74
- uoVws8lEhih4LRoeoAyjqwwsTF3KT5XGAPefNWU4j5p7PjCBvAZyr7nzAI5XvHt5JcywCp
- bik0QDVyIDHNrI59n+fMx5oI5cgnFgA=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=gPd0oWdRc16ZPxIiLcZrURGcaj+pbKtzOTzYPdfX13s=;
+ b=PuOL2vJp33K9siFQtm9O/HbOqk8PZNlQWTqFOICA0TNsqgZkNN5lCt2EQjXXpK3UBEQjZS
+ +4G0oFOPMC8meSBoIKHCMRn/8P2dEnN0fW8fUbJvpV5KXvcpB1kvsaOyQMKDznBavPqdwx
+ 6zwAZgPcaJNwTSL+69F0c3chWI6wF9g=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-113-U8XgV25QPEGBtp38tYUTpg-1; Tue, 06 May 2025 11:29:54 -0400
-X-MC-Unique: U8XgV25QPEGBtp38tYUTpg-1
-X-Mimecast-MFC-AGG-ID: U8XgV25QPEGBtp38tYUTpg_1746545393
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3912fe32b08so2531602f8f.3
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 08:29:54 -0700 (PDT)
+ us-mta-115-DYscTFFFOL-vOXMZW_hLFg-1; Tue, 06 May 2025 11:29:56 -0400
+X-MC-Unique: DYscTFFFOL-vOXMZW_hLFg-1
+X-Mimecast-MFC-AGG-ID: DYscTFFFOL-vOXMZW_hLFg_1746545395
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-39ee4b91d1cso2611683f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 08:29:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746545393; x=1747150193;
+ d=1e100.net; s=20230601; t=1746545395; x=1747150195;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hQDtzIzmoV0HVk+AWYcmKi3lcOstOQ+i6JmBjXMM7wA=;
- b=FpXT840+oVJmBNW3Xdgx3vyYX0h32540HuJxs2BGEZm1m1xEsJKXQuIQcXD+odztC1
- +FD8a/2WLAMfQEk642VJGR4p8p5c7VIQ055aeKtSiDE793N/lH2ENot74+jWxSROV9A3
- 2B8GnGopGkWVLFRKMYk1XdRzbxGIRgRqRnngUKq4ap2vLFqQRY6Ft2zrnnWnW721prNw
- JyoNGoyBAiNUzS+r4YWchNPixA/R5RZIHCNiNKAYqYP9G+DXCR/07P+u5HR7sAgsGjYJ
- j4WyULc2A+LqOhJrUQgFty9w+H80oFWdeNTChGeYmGDJ1soBGFLxGMpvEO9ApORVOezv
- ls0A==
-X-Gm-Message-State: AOJu0YzA3nWDNqAJqpIiSrchz3fY3DpNt3/+Dbk+M7+DaLneqxafny6O
- IP1RLUlya81TA7cpnJF3iapVyLQ+dC8XH9uaFY3dOp1OxZeGU6Q8USUsyGAzF9dJXxzHFb5ZLJ8
- h7Zt8qnd1C2OjnTBGgOzBi8fWsOmNN7dEcTtjis7LbaMQ3IWSrqAlb6Pg0IPnNsgiu2edMDLhP0
- upPwI6k7ouGRE2qJ6KzXmJjV0KNOTgLRcRq2WI
-X-Gm-Gg: ASbGnctL8iUon9FiMYKNVbPkyx494l9KIGblpFbF0w3US0dVgDtOb/xzxNOos0N8T8l
- S8NNdQ3SfbkRId4SqIZnK1ShHw1g92ppVrYuls8Qap3cGNefCaODdYiANdVOsgHAx58owsf0MVq
- XhVBm3zvcTvaVCecGpgTlrmZrd7zqDczQkynEw+T0ysUbzvDnJLaUGEOBbOXrhAMHFMnJ+SHWUU
- Irzztc3B5HpBTMYNTvfPJLjG9FIzb4/uE+TKrRJJQgSuuwVT41TGO8TQ71nh6pJM+3tn70yHMmx
- 6UThLeXgfwGsywM=
-X-Received: by 2002:a05:6000:3111:b0:39f:28de:468 with SMTP id
- ffacd0b85a97d-3a0ac0ec337mr2875104f8f.28.1746545393204; 
- Tue, 06 May 2025 08:29:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHlefWrYqRW8bfaeB0bbklCCpIvTWlTckKIyqJeByvCnnxmYVqHyNBcN8USyknxN5IZo7uYXQ==
-X-Received: by 2002:a05:6000:3111:b0:39f:28de:468 with SMTP id
- ffacd0b85a97d-3a0ac0ec337mr2875093f8f.28.1746545392872; 
- Tue, 06 May 2025 08:29:52 -0700 (PDT)
+ bh=gPd0oWdRc16ZPxIiLcZrURGcaj+pbKtzOTzYPdfX13s=;
+ b=himweKNX20tTJRQCPuak1Nk6sxZIYop3atfHFie8py7RqvLYzUpgGCa96DfsTBXyVa
+ OUHFBGJgd6uaNKmwp9gSsFfYHpzWluSSvivHJo4cuihhY9rzKNuXV5Zw7PqxslXC4BIb
+ wQLigBSzLZ06PT9E/aQCkeAY34gj2X6LYgRt0hnRgBGALwqZUueHIbUP3hZvMVm3mkoJ
+ 9buIajs/C2Ozhi8Tntnslr9bhq1pO+jzZGXPD6JNH+wt9CntHv1ID00LKh6eeugKvY7N
+ D5FNLOjDRNmFYnVU91FfOxbyDecplZtmbKXD5O8YhaXHe1FGOaZLeh8kKgjQ+nUMhlJ5
+ Rmvg==
+X-Gm-Message-State: AOJu0YyYslblJMpIwlNI0etZ8xX8MEnjOHD/rbwyfPMxy00y4wkYPosr
+ BBatIu6wLG2RoDmRQDLEsoIq/0qstjGfay3kLWuAEirzdmnp7co7imUSN5YuuJD92W7lnDFa+lw
+ zD+vna7BeJTlMOcCZ/rBgHKac14Xv92OomzXgCEAKuwee52HDDb9ZDjWxUUkZMiH3zd8KEXklzQ
+ EFI3O/PYklZpEnM3/XglalpKyya0jvBb2vQ7bU
+X-Gm-Gg: ASbGnctgFcGc/Ov2VHTM8fC8cPHUrI6dBunjpqwlKQB7MvTc4nrD2Xj3VW7Kr2FsZ4H
+ DI4c8Rl7ubP7kBpCQWZKI3Rzg2oaRlu6fft+Boct+pZeUFw3RTRjuYrFUWebE+7YzxGq/znj5Yo
+ F7yBD9EtjfHUdC6m+rqQ+m097BhZ7MeXmyDCjpXtL3R1Z5DHDbuh3xhEpiUm7SjLbUK72xxEwoE
+ vv60lX1uf9M/qM2c0DXoc1QySRPjKDQ7F5WVWHXOMDQC8dtpxTUfwJb3+XVxQohq7CaZlut0ddu
+ torJEa6hrSWR7Eg=
+X-Received: by 2002:a5d:5987:0:b0:39c:2673:4f10 with SMTP id
+ ffacd0b85a97d-3a0b4429465mr192492f8f.23.1746545394721; 
+ Tue, 06 May 2025 08:29:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHvlF+iWADZBkhidJHkUCCYLKVlmtZz8J6sir8rL6TkYaQ7zgyOA7RRTspgjbnZ6q9Za6JEPQ==
+X-Received: by 2002:a5d:5987:0:b0:39c:2673:4f10 with SMTP id
+ ffacd0b85a97d-3a0b4429465mr192469f8f.23.1746545394342; 
+ Tue, 06 May 2025 08:29:54 -0700 (PDT)
 Received: from [192.168.122.1] ([151.95.54.106])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a099b17022sm13904205f8f.89.2025.05.06.08.29.50
+ 5b1f17b1804b1-441bc264e2dsm152580895e9.12.2025.05.06.08.29.53
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 May 2025 08:29:50 -0700 (PDT)
+ Tue, 06 May 2025 08:29:53 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 12/30] target/i386/emulate: fix target_ulong format strings
-Date: Tue,  6 May 2025 17:29:07 +0200
-Message-ID: <20250506152927.222671-13-pbonzini@redhat.com>
+Subject: [PULL 13/30] rust: clippy: enable uninlined_format_args lint
+Date: Tue,  6 May 2025 17:29:08 +0200
+Message-ID: <20250506152927.222671-14-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250506152927.222671-1-pbonzini@redhat.com>
 References: <20250506152927.222671-1-pbonzini@redhat.com>
@@ -106,40 +106,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not assume that TARGET_FMT_lx is %llx.
-
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/emulate/x86_decode.c | 2 +-
- target/i386/emulate/x86_emu.c    | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ rust/Cargo.toml                 |  1 +
+ rust/clippy.toml                |  1 +
+ rust/qemu-api-macros/src/lib.rs | 16 ++++++++--------
+ rust/qemu-api/build.rs          |  4 ++--
+ 4 files changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/target/i386/emulate/x86_decode.c b/target/i386/emulate/x86_decode.c
-index 7efa2f570ea..88be9479a82 100644
---- a/target/i386/emulate/x86_decode.c
-+++ b/target/i386/emulate/x86_decode.c
-@@ -26,7 +26,7 @@
+diff --git a/rust/Cargo.toml b/rust/Cargo.toml
+index 4f6fe17b50f..d9faeecb10b 100644
+--- a/rust/Cargo.toml
++++ b/rust/Cargo.toml
+@@ -89,6 +89,7 @@ suspicious_operation_groupings = "deny"
+ transmute_ptr_to_ptr = "deny"
+ transmute_undefined_repr = "deny"
+ type_repetition_in_bounds = "deny"
++uninlined_format_args = "deny"
+ used_underscore_binding = "deny"
  
- static void decode_invalid(CPUX86State *env, struct x86_decode *decode)
- {
--    printf("%llx: failed to decode instruction ", env->eip);
-+    printf(TARGET_FMT_lx ": failed to decode instruction ", env->eip);
-     for (int i = 0; i < decode->opcode_len; i++) {
-         printf("%x ", decode->opcode[i]);
+ # nice to have, but cannot be enabled yet
+diff --git a/rust/clippy.toml b/rust/clippy.toml
+index 933e46a2ffb..58a62c0e632 100644
+--- a/rust/clippy.toml
++++ b/rust/clippy.toml
+@@ -1,2 +1,3 @@
+ doc-valid-idents = ["PrimeCell", ".."]
++allow-mixed-uninlined-format-args = false
+ msrv = "1.77.0"
+diff --git a/rust/qemu-api-macros/src/lib.rs b/rust/qemu-api-macros/src/lib.rs
+index dc14cac4ffa..f97449bb304 100644
+--- a/rust/qemu-api-macros/src/lib.rs
++++ b/rust/qemu-api-macros/src/lib.rs
+@@ -18,13 +18,13 @@ fn get_fields<'a>(
+ ) -> Result<&'a Punctuated<Field, Comma>, MacroError> {
+     let Data::Struct(ref s) = &input.data else {
+         return Err(MacroError::Message(
+-            format!("Struct required for {}", msg),
++            format!("Struct required for {msg}"),
+             input.ident.span(),
+         ));
+     };
+     let Fields::Named(ref fs) = &s.fields else {
+         return Err(MacroError::Message(
+-            format!("Named fields required for {}", msg),
++            format!("Named fields required for {msg}"),
+             input.ident.span(),
+         ));
+     };
+@@ -34,19 +34,19 @@ fn get_fields<'a>(
+ fn get_unnamed_field<'a>(input: &'a DeriveInput, msg: &str) -> Result<&'a Field, MacroError> {
+     let Data::Struct(ref s) = &input.data else {
+         return Err(MacroError::Message(
+-            format!("Struct required for {}", msg),
++            format!("Struct required for {msg}"),
+             input.ident.span(),
+         ));
+     };
+     let Fields::Unnamed(FieldsUnnamed { ref unnamed, .. }) = &s.fields else {
+         return Err(MacroError::Message(
+-            format!("Tuple struct required for {}", msg),
++            format!("Tuple struct required for {msg}"),
+             s.fields.span(),
+         ));
+     };
+     if unnamed.len() != 1 {
+         return Err(MacroError::Message(
+-            format!("A single field is required for {}", msg),
++            format!("A single field is required for {msg}"),
+             s.fields.span(),
+         ));
      }
-diff --git a/target/i386/emulate/x86_emu.c b/target/i386/emulate/x86_emu.c
-index 26a4876aac0..7773b51b95e 100644
---- a/target/i386/emulate/x86_emu.c
-+++ b/target/i386/emulate/x86_emu.c
-@@ -1241,7 +1241,7 @@ static void init_cmd_handler(void)
- bool exec_instruction(CPUX86State *env, struct x86_decode *ins)
- {
-     if (!_cmd_handler[ins->cmd].handler) {
--        printf("Unimplemented handler (%llx) for %d (%x %x) \n", env->eip,
-+        printf("Unimplemented handler (" TARGET_FMT_lx ") for %d (%x %x) \n", env->eip,
-                 ins->cmd, ins->opcode[0],
-                 ins->opcode_len > 1 ? ins->opcode[1] : 0);
-         env->eip += ins->len;
+@@ -60,7 +60,7 @@ fn is_c_repr(input: &DeriveInput, msg: &str) -> Result<(), MacroError> {
+         Ok(())
+     } else {
+         Err(MacroError::Message(
+-            format!("#[repr(C)] required for {}", msg),
++            format!("#[repr(C)] required for {msg}"),
+             input.ident.span(),
+         ))
+     }
+@@ -73,7 +73,7 @@ fn is_transparent_repr(input: &DeriveInput, msg: &str) -> Result<(), MacroError>
+         Ok(())
+     } else {
+         Err(MacroError::Message(
+-            format!("#[repr(transparent)] required for {}", msg),
++            format!("#[repr(transparent)] required for {msg}"),
+             input.ident.span(),
+         ))
+     }
+@@ -168,7 +168,7 @@ fn get_repr_uN(input: &DeriveInput, msg: &str) -> Result<Path, MacroError> {
+     }
+ 
+     Err(MacroError::Message(
+-        format!("#[repr(u8/u16/u32/u64) required for {}", msg),
++        format!("#[repr(u8/u16/u32/u64) required for {msg}"),
+         input.ident.span(),
+     ))
+ }
+diff --git a/rust/qemu-api/build.rs b/rust/qemu-api/build.rs
+index 470be2a4d54..1e720641d2b 100644
+--- a/rust/qemu-api/build.rs
++++ b/rust/qemu-api/build.rs
+@@ -14,7 +14,7 @@ fn main() -> Result<()> {
+     let path = env::var("MESON_BUILD_ROOT")
+         .unwrap_or_else(|_| format!("{}/src", env!("CARGO_MANIFEST_DIR")));
+ 
+-    let file = format!("{}/bindings.inc.rs", path);
++    let file = format!("{path}/bindings.inc.rs");
+     let file = Path::new(&file);
+     if !Path::new(&file).exists() {
+         panic!(concat!(
+@@ -29,7 +29,7 @@ fn main() -> Result<()> {
+     }
+ 
+     let out_dir = env::var("OUT_DIR").unwrap();
+-    let dest_path = format!("{}/bindings.inc.rs", out_dir);
++    let dest_path = format!("{out_dir}/bindings.inc.rs");
+     let dest_path = Path::new(&dest_path);
+     if dest_path.symlink_metadata().is_ok() {
+         remove_file(dest_path)?;
 -- 
 2.49.0
 
