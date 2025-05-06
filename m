@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69FC1AAC997
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 17:32:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBB65AAC9A2
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 17:33:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCKEs-0003hR-Kv; Tue, 06 May 2025 11:29:46 -0400
+	id 1uCKEt-0003hx-MJ; Tue, 06 May 2025 11:29:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uCKEp-0003fW-LS
- for qemu-devel@nongnu.org; Tue, 06 May 2025 11:29:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uCKEr-0003h8-1O
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 11:29:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uCKEn-0001wd-JT
- for qemu-devel@nongnu.org; Tue, 06 May 2025 11:29:43 -0400
+ id 1uCKEo-0001wo-VA
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 11:29:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746545380;
+ s=mimecast20190719; t=1746545382;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nqAmlc5xorC7DUYYAMTvmDQnZIdhQQMyM8InBOMPed4=;
- b=WZS18ErlP/VCrAGj01LfsNMQw9S+utQnhBtZrTm4BoqrjYqJhGDAAGXAH10H6dEAfiRfcp
- R3XfSCBehMRweiZ7ySoV5r28HeWu5UBdJircm1xVigBg4vblgG89JcxbBxE2E5akPkwEMi
- HgvixdJ3hWS3aheVUwXJgV63hS4OqtQ=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=qV5jZjq5WmzYGnh8gNqYnniJTawdtt4+HmcKtmlbKmw=;
+ b=VHkGlQQSWAQ0Y44g/ZcrL1eyezlKhANvQvKOvDok56tXjGPc1YtlsuXCLcPyd/jaVI4tcy
+ YAi5glC+kk6rTF/fbSO2370RRxErfqsLxbJ9nYk7SCefqhC9k7PRvch8BBVBGAhxC/SbMQ
+ zfGT76tqyCI8EKVjo/2ID0qtvDFU3do=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-513-hleaDwvgMkWXYGGFgMIbIg-1; Tue, 06 May 2025 11:29:39 -0400
-X-MC-Unique: hleaDwvgMkWXYGGFgMIbIg-1
-X-Mimecast-MFC-AGG-ID: hleaDwvgMkWXYGGFgMIbIg_1746545378
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3a07a7b4298so2960590f8f.0
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 08:29:39 -0700 (PDT)
+ us-mta-52-hBXLblALMp6t9cszhAJt9Q-1; Tue, 06 May 2025 11:29:40 -0400
+X-MC-Unique: hBXLblALMp6t9cszhAJt9Q-1
+X-Mimecast-MFC-AGG-ID: hBXLblALMp6t9cszhAJt9Q_1746545379
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-391315098b2so2006877f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 08:29:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746545377; x=1747150177;
+ d=1e100.net; s=20230601; t=1746545378; x=1747150178;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nqAmlc5xorC7DUYYAMTvmDQnZIdhQQMyM8InBOMPed4=;
- b=JdRc0752miuo/Oys623PKTg2nn6vHH0+lK9ZL/uTKcztaM4XV7k9oYtVSsExNbJ9P8
- WUehZ+Van1weEx5vLIbCs2HfH/dRdCAi9Ige+so3pB2qWSc8WN5cRLcoxvqrzl5PzBSp
- eTj20J4J/rmmRy2cf/Af6ju4nvbOdHtdxyTV5BtqvYLTnfE5vcOrPA/A1dSL2WW7LyHN
- dbu86QVHqdHrI9FWCy71dpsIpO4bbR5Vp2va2jKN0HWZyjnKvX/iJ85l+r9O64eMXZZT
- RlQZwFUeUY6CzahjDJLXH3p0mdv1AwEebpP0Jup5r7a0kngzgXans4FjATA0l9EYnR/s
- TT8g==
-X-Gm-Message-State: AOJu0YyPFtPZ8YoosWBeo5g4uDuug3RJ43p9Sa3k3P8PfZuqRp+Or9DX
- +3gSjAADEybk/1OsWuau0gnENXDUpZfzEkKJkVpVvIA2pZZ9RzbjeG2WJdAWcaS0rO6/XWoxJbt
- yPT2auZEnhxH3CYDzHLv2tilUGwrSevyofKl+UHWDmfyrkjg3yyDyxzIQ8n/Q1QgGXWfF+zObOF
- bawvkQNzFUiG98kFHd0ZA7P56BJ4e1miv4rGV5
-X-Gm-Gg: ASbGnctk2w46bzLKEBNw4XRnOk+N1WG2Se1qcwbQQPDIg4UmJc1yNsE9xcgfRM4PHLS
- qb7jDd+gK5yNjngsxHxaS/zvmnHtyeIkHdxBjWq/oUzhypIt68WAlADaGN0S+EhoFVdbgbqp5rI
- vKNdyOxFFE+wsg6mWbDms3SJCskzrxajwu4O2J2itszsA8FGvzX4n7K9dIWNItfR7WFEvS6qOKK
- +ByJ+WM7Tas0PGLFIlIDs+pRF49v2QgpL+IszGgPHbnaMo5d0PPGQCDElEiZxntq0N9zV03QUzU
- 60KApqEQhA9wjOk=
-X-Received: by 2002:a05:6000:2902:b0:3a0:8c3e:5a4b with SMTP id
- ffacd0b85a97d-3a0ac0da235mr3274587f8f.16.1746545376845; 
- Tue, 06 May 2025 08:29:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFWiujdMwZ3Brl7RMktzF4M9/LToye1+nbmRVBodrtcPMJmkOiuA7vJC8DT2ybruBa/cm0d4Q==
-X-Received: by 2002:a05:6000:2902:b0:3a0:8c3e:5a4b with SMTP id
- ffacd0b85a97d-3a0ac0da235mr3274553f8f.16.1746545376266; 
- Tue, 06 May 2025 08:29:36 -0700 (PDT)
+ bh=qV5jZjq5WmzYGnh8gNqYnniJTawdtt4+HmcKtmlbKmw=;
+ b=vJKgJDgMcg2P7C+RyRQIv43FmFqAB9ZecBNhMlQxE8Udf7Ctc8I72mqnijBMXnaYar
+ U9YL9n24YxLzHaWe+1VfSHGm2P2Aje9Q8qTAi7xiJRVl5Qo+C1S+u60znqy6OBTLDeKP
+ eTcJyna8a/ZkoPOf/Gn91sf0liZyVBgbSRpJHwWDGBBYB2Bp9h1t+NalSPmPS7oaWyDh
+ DaBBrxhi+6tdmMWg9MzOYLUjgN8L6pth4fj8oLNlZznZyiYP+GOfyAdDUcypQGLWUlUb
+ 1V6ldTa36Pxur6eoQBOKbtz9hnzudsv9f3Iz9KJF/wmd9aKGzJudo7bDJvJCm+6k8dGK
+ TXFw==
+X-Gm-Message-State: AOJu0YyZngjJoh4LVKwh3vtYskVqCiOdXuAFevNFlL/p6VCx8/vpVsiZ
+ 9QduI3bRNjjcL12/S63VLGESSap8Jo7YZZCg1ib9v0XFstl65vNjpoZnTpWff+1geue4jNVZSBa
+ qwIUT5MM9wQEPqIs7sZgvcxueXpbdx688IvqcYY/pX/cvvngbUEX5N4vWAjpd6eRne15QTL6yma
+ 3rP2O1lrKrWVCIPwGL/1y1pJtJlNBX1gSoSWlo
+X-Gm-Gg: ASbGnctseDhYHnlscBDrgibEUhAaz2N1i8V85IbdED5qsejIhoUDCP6crJ1sal2zLbD
+ 9p+OptTJwSzp0nCZVvG+3gGES9bxH542HDqEQUHcB27Z3AI8e+NMnz6PbQXZ5WMP3JnRCAvyzRN
+ RX1rH2PzP6S0bVL1uPudWYmOF3FgGcBMRxW6uEsgpW0t7UU5z8cs/Wh3yEXh7+QFz9iZhaTAUnY
+ W+0mjdjlTglWAIBbd8T8q7VJy2bIG0Uk0Jd4FnhoFZOgMYxxgSqY3XKtNGOuvsU/V/odsvhZXYE
+ Mtqu84s7k0ktrnA=
+X-Received: by 2002:a5d:588a:0:b0:391:4ca:490 with SMTP id
+ ffacd0b85a97d-3a0ac0eaab8mr2267972f8f.29.1746545377725; 
+ Tue, 06 May 2025 08:29:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH8Q7mHYIEtKeCaHXU9f12f87Hox/yoSY4Oqhu/WDuPYTkUbVz7czWsq4g4yJoce1iYizpyog==
+X-Received: by 2002:a5d:588a:0:b0:391:4ca:490 with SMTP id
+ ffacd0b85a97d-3a0ac0eaab8mr2267954f8f.29.1746545377310; 
+ Tue, 06 May 2025 08:29:37 -0700 (PDT)
 Received: from [192.168.122.1] ([151.95.54.106])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-441bc264e2dsm152571775e9.12.2025.05.06.08.29.34
+ ffacd0b85a97d-3a099b1702dsm13785925f8f.88.2025.05.06.08.29.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 May 2025 08:29:34 -0700 (PDT)
+ Tue, 06 May 2025 08:29:36 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 04/30] rust: let bilge use "let ... else"
-Date: Tue,  6 May 2025 17:28:59 +0200
-Message-ID: <20250506152927.222671-5-pbonzini@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 05/30] rust: qemu_api_macros: make pattern matching more
+ readable and efficient
+Date: Tue,  6 May 2025 17:29:00 +0200
+Message-ID: <20250506152927.222671-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250506152927.222671-1-pbonzini@redhat.com>
 References: <20250506152927.222671-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -34
 X-Spam_score: -3.5
@@ -107,96 +107,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"let ... else" was stabilized in 1.65.0; bumping the minimum supported
-Rust version means we don't need to patch it out anymore.
+"let ... else" is useful when visiting syntax trees; it avoids multiple
+levels of indentation and places the error close to the pattern.
 
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+While at it, use "ref" to avoid moving the syntax tree objects.
+
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- docs/devel/rust.rst                           |  3 --
- subprojects/bilge-impl-0.2-rs.wrap            |  1 -
- .../packagefiles/bilge-impl-1.63.0.patch      | 45 -------------------
- 3 files changed, 49 deletions(-)
- delete mode 100644 subprojects/packagefiles/bilge-impl-1.63.0.patch
+ rust/qemu-api-macros/src/lib.rs | 84 +++++++++++++++------------------
+ 1 file changed, 37 insertions(+), 47 deletions(-)
 
-diff --git a/docs/devel/rust.rst b/docs/devel/rust.rst
-index c7dfba98de1..8167ff49aa9 100644
---- a/docs/devel/rust.rst
-+++ b/docs/devel/rust.rst
-@@ -76,9 +76,6 @@ are missing:
+diff --git a/rust/qemu-api-macros/src/lib.rs b/rust/qemu-api-macros/src/lib.rs
+index eda0d46d122..0bffd2691b4 100644
+--- a/rust/qemu-api-macros/src/lib.rs
++++ b/rust/qemu-api-macros/src/lib.rs
+@@ -16,50 +16,41 @@ fn get_fields<'a>(
+     input: &'a DeriveInput,
+     msg: &str,
+ ) -> Result<&'a Punctuated<Field, Comma>, MacroError> {
+-    if let Data::Struct(s) = &input.data {
+-        if let Fields::Named(fs) = &s.fields {
+-            Ok(&fs.named)
+-        } else {
+-            Err(MacroError::Message(
+-                format!("Named fields required for {}", msg),
+-                input.ident.span(),
+-            ))
+-        }
+-    } else {
+-        Err(MacroError::Message(
++    let Data::Struct(ref s) = &input.data else {
++        return Err(MacroError::Message(
+             format!("Struct required for {}", msg),
+             input.ident.span(),
+-        ))
+-    }
++        ));
++    };
++    let Fields::Named(ref fs) = &s.fields else {
++        return Err(MacroError::Message(
++            format!("Named fields required for {}", msg),
++            input.ident.span(),
++        ));
++    };
++    Ok(&fs.named)
+ }
  
- * ``cast_mut()``/``cast_const()`` (1.65.0).  Use ``as`` instead.
+ fn get_unnamed_field<'a>(input: &'a DeriveInput, msg: &str) -> Result<&'a Field, MacroError> {
+-    if let Data::Struct(s) = &input.data {
+-        let unnamed = match &s.fields {
+-            Fields::Unnamed(FieldsUnnamed {
+-                unnamed: ref fields,
+-                ..
+-            }) => fields,
+-            _ => {
+-                return Err(MacroError::Message(
+-                    format!("Tuple struct required for {}", msg),
+-                    s.fields.span(),
+-                ))
+-            }
+-        };
+-        if unnamed.len() != 1 {
+-            return Err(MacroError::Message(
+-                format!("A single field is required for {}", msg),
+-                s.fields.span(),
+-            ));
+-        }
+-        Ok(&unnamed[0])
+-    } else {
+-        Err(MacroError::Message(
++    let Data::Struct(ref s) = &input.data else {
++        return Err(MacroError::Message(
+             format!("Struct required for {}", msg),
+             input.ident.span(),
+-        ))
++        ));
++    };
++    let Fields::Unnamed(FieldsUnnamed { ref unnamed, .. }) = &s.fields else {
++        return Err(MacroError::Message(
++            format!("Tuple struct required for {}", msg),
++            s.fields.span(),
++        ));
++    };
++    if unnamed.len() != 1 {
++        return Err(MacroError::Message(
++            format!("A single field is required for {}", msg),
++            s.fields.span(),
++        ));
+     }
++    Ok(&unnamed[0])
+ }
  
--* "let ... else" (1.65.0).  Use ``if let`` instead.  This is currently patched
--  in QEMU's vendored copy of the bilge crate.
--
- * Generic Associated Types (1.65.0)
+ fn is_c_repr(input: &DeriveInput, msg: &str) -> Result<(), MacroError> {
+@@ -210,20 +201,19 @@ fn get_repr_uN(input: &DeriveInput, msg: &str) -> Result<Path, MacroError> {
+ }
  
- * ``CStr::from_bytes_with_nul()`` as a ``const`` function (1.72.0).
-diff --git a/subprojects/bilge-impl-0.2-rs.wrap b/subprojects/bilge-impl-0.2-rs.wrap
-index d14c3dc769b..4f84eca1ccd 100644
---- a/subprojects/bilge-impl-0.2-rs.wrap
-+++ b/subprojects/bilge-impl-0.2-rs.wrap
-@@ -5,7 +5,6 @@ source_filename = bilge-impl-0.2.0.tar.gz
- source_hash = feb11e002038ad243af39c2068c8a72bcf147acf05025dcdb916fcc000adb2d8
- #method = cargo
- patch_directory = bilge-impl-0.2-rs
--diff_files = bilge-impl-1.63.0.patch
+ fn get_variants(input: &DeriveInput) -> Result<&Punctuated<Variant, Comma>, MacroError> {
+-    if let Data::Enum(e) = &input.data {
+-        if let Some(v) = e.variants.iter().find(|v| v.fields != Fields::Unit) {
+-            return Err(MacroError::Message(
+-                "Cannot derive TryInto for enum with non-unit variants.".to_string(),
+-                v.fields.span(),
+-            ));
+-        }
+-        Ok(&e.variants)
+-    } else {
+-        Err(MacroError::Message(
++    let Data::Enum(ref e) = &input.data else {
++        return Err(MacroError::Message(
+             "Cannot derive TryInto for union or struct.".to_string(),
+             input.ident.span(),
+-        ))
++        ));
++    };
++    if let Some(v) = e.variants.iter().find(|v| v.fields != Fields::Unit) {
++        return Err(MacroError::Message(
++            "Cannot derive TryInto for enum with non-unit variants.".to_string(),
++            v.fields.span(),
++        ));
+     }
++    Ok(&e.variants)
+ }
  
- # bump this version number on every change to meson.build or the patches:
- # v2
-diff --git a/subprojects/packagefiles/bilge-impl-1.63.0.patch b/subprojects/packagefiles/bilge-impl-1.63.0.patch
-deleted file mode 100644
-index 987428a6d65..00000000000
---- a/subprojects/packagefiles/bilge-impl-1.63.0.patch
-+++ /dev/null
-@@ -1,45 +0,0 @@
----- a/src/shared/discriminant_assigner.rs
--+++ b/src/shared/discriminant_assigner.rs
--@@ -26,20 +26,20 @@
--         let discriminant_expr = &discriminant.1;
--         let variant_name = &variant.ident;
-- 
---        let Expr::Lit(ExprLit { lit: Lit::Int(int), .. }) = discriminant_expr else {
--+        if let Expr::Lit(ExprLit { lit: Lit::Int(int), .. }) = discriminant_expr {
--+            let discriminant_value: u128 = int.base10_parse().unwrap_or_else(unreachable);
--+            if discriminant_value > self.max_value() {
--+                abort!(variant, "Value of variant exceeds the given number of bits")
--+            }
--+
--+            Some(discriminant_value)
--+        } else {
--             abort!(
--                 discriminant_expr,
--                 "variant `{}` is not a number", variant_name;
--                 help = "only literal integers currently supported"
--             )
---        };
---
---        let discriminant_value: u128 = int.base10_parse().unwrap_or_else(unreachable);
---        if discriminant_value > self.max_value() {
---            abort!(variant, "Value of variant exceeds the given number of bits")
--         }
---
---        Some(discriminant_value)
--     }
-- 
--     fn assign(&mut self, variant: &Variant) -> u128 {
----- a/src/shared/fallback.rs
--+++ b/src/shared/fallback.rs
--@@ -22,8 +22,9 @@
--             }
--             Unnamed(fields) => {
--                 let variant_fields = fields.unnamed.iter();
---                let Ok(fallback_value) = variant_fields.exactly_one() else {
---                    abort!(variant, "fallback variant must have exactly one field"; help = "use only one field or change to a unit variant")
--+                let fallback_value = match variant_fields.exactly_one() {
--+                    Ok(ok) => ok,
--+                    _ => abort!(variant, "fallback variant must have exactly one field"; help = "use only one field or change to a unit variant")
--                 };
-- 
--                 if !is_last_variant {
+ #[rustfmt::skip::macros(quote)]
 -- 
 2.49.0
 
