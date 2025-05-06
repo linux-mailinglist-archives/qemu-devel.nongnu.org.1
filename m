@@ -2,51 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A04ECAABD4B
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 10:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 042EDAABCBC
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 10:12:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCDj2-0006gW-1X; Tue, 06 May 2025 04:32:28 -0400
+	id 1uCDOp-0002sV-Qi; Tue, 06 May 2025 04:11:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
- id 1uCDiv-0006fz-Bn
- for qemu-devel@nongnu.org; Tue, 06 May 2025 04:32:22 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <lixianglai@loongson.cn>) id 1uCDiq-0004nX-Es
- for qemu-devel@nongnu.org; Tue, 06 May 2025 04:32:20 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Ax3eICyRlo7oPWAA--.50967S3;
- Tue, 06 May 2025 16:32:02 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMCxbsX9yBlotW+2AA--.6028S2;
- Tue, 06 May 2025 16:32:00 +0800 (CST)
-From: Xianglai Li <lixianglai@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: Bibo Mao <maobibo@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Song Gao <gaosong@loongson.cn>
-Subject: [[PATCH V3] hw/loongarch/boot: Adjust the loading position of the
- initrd
-Date: Tue,  6 May 2025 16:09:46 +0800
-Message-Id: <20250506080946.817092-1-lixianglai@loongson.cn>
-X-Mailer: git-send-email 2.39.1
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCDOn-0002sB-KB
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 04:11:33 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCDOi-0002L5-HD
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 04:11:33 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-ac345bd8e13so874945866b.0
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 01:11:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1746519082; x=1747123882; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=/GIAWZC2t4dWOC0QcsFDibPEeRsNatWR+X/mfUVQl/A=;
+ b=uwfUWzhw0TbMiYkBdwwdBDrwxsTRi+at1jsLytU8TGMQSomphWIGcoM8sPjKlSgeU/
+ D5A9kGM0/hhG31t9ieJ7iGpKoUectnYDYHUrjH5f9lAeaEzns6DML8lCTlMD9HAF4oYU
+ Sfw44qmR6V/KIhsYqKVIaxpQIQqXcm2vKTqkjcOE6VoWXHTTku/G6B+gJKevc7mJt1gR
+ oM23iW0+Q17JrSv3oPcKVqpyd/mA8o+aKl08LUswu2eBm/6CI5l5sKCpdMUNX0yzsEvD
+ +hCjenOmGgundx+oCdTKLPo/C4L/nrwr4W3ocu2gzX1mih9/wxchjfg8uo250J8F0rRE
+ dbbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1746519082; x=1747123882;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=/GIAWZC2t4dWOC0QcsFDibPEeRsNatWR+X/mfUVQl/A=;
+ b=Ayry0qSofvRXlsUMdkVE/3LBG84qWkxMJKaJLvONmv+1vDgEhw+KGKbekuKjwlc4oK
+ CNX0q7Apmb6tpcwARxoo4xrJvwao8kDqnNp0kBAbjtSZwWAA73RBdUM4WxLVQaYwpdhD
+ UxxmIwhoWLyE/mjvf33XTDKPKxxb2hh78qTG7eAeoORVNPUGkIHWCf1M1W7BYEMgzaSb
+ NCc5kKLjniDCyNOoTEEeI0i5qpcAVDTypB73Xh09s5KAqLaESmuMF7NvDb7a9asZVNPx
+ 3rO2AQfEGeiYeVxCcT/z3ll2uibtnlcCb3LsG4GBy87i0QtE4FW/Dz/N2P8z4yimxSTj
+ FtfQ==
+X-Gm-Message-State: AOJu0Yx9mb9f+Ds6Z53YePriQstBK66NeDOR5H0fxVKwkWCDhwK3RUQA
+ ALTp0QndUX9z+m45Cqq0yucHYP+i2UpFWHuuZsaO6VfATFL3VgstZn+t06UYIBY=
+X-Gm-Gg: ASbGncvCuq5hdJp98YcLIcfpWj3LL9phZtfofTWi+zFA5cS9tElmJYDJbpQziahua1G
+ YZ573emA8yK5PIZhDuqNmf4oyVcgFf7JxQLgH7JhW4Q7nI3+BwTHSzJ7LOjMZCnff+GXUHew54B
+ 3jkp4T024fjekW3dCTwJHf8rKQotPe5t5bPxm3qxm9jqu2ZpiTI6qjxvovQsoiWZO9eKYk7Ys8T
+ SyHyaOTyUGx4cagehYJblwt84N/eKSIrQrLFENUAXHUegUaeNef6bCPsq7NOvDToK28luA9n/XZ
+ UmykH+LPNuJZp2knPsOJsGwjLkmgb6QjquciU5neMWf7XdwRC/mX+nJFiNpJ3og8RgS+kH/mQrm
+ f6nce7KlOLnZwIw==
+X-Google-Smtp-Source: AGHT+IECBQINNI4LKC133PnPB4V9RdX9gKcaNBAlgf/KLwJCZUBKrRsxJAXu72fScnuOEfPLidgmzg==
+X-Received: by 2002:a17:907:3f9f:b0:ac2:9683:ad25 with SMTP id
+ a640c23a62f3a-ad1d45aeb6dmr188504466b.34.1746519082278; 
+ Tue, 06 May 2025 01:11:22 -0700 (PDT)
+Received: from [10.194.152.213] (238.21.205.77.rev.sfr.net. [77.205.21.238])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ad18950928esm657765466b.143.2025.05.06.01.11.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 06 May 2025 01:11:21 -0700 (PDT)
+Message-ID: <d6c4e9f1-d801-4df2-8950-063bfa366316@linaro.org>
+Date: Tue, 6 May 2025 10:11:19 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/9] hw/s390x/s390-virtio-ccw: Remove the deprecated
+ 2.10 machine type
+To: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
+ Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+References: <20250506062148.306084-1-thuth@redhat.com>
+ <20250506062148.306084-2-thuth@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20250506062148.306084-2-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMCxbsX9yBlotW+2AA--.6028S2
-X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163;
- envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,109 +103,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When only the -kernel parameter is used to load the elf kernel, the initrd
-is loaded in the ram. If the initrd size is too large, the loading fails,
-resulting in a VM startup failure. This patch first loads initrd near
-the kernel.
+On 6/5/25 08:21, Thomas Huth wrote:
+> From: Thomas Huth <thuth@redhat.com>
+> 
+> The s390-ccw-virtio-2.10 machine is older than 6 years, so according
+> to our machine support policy, it can be removed now.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   hw/s390x/s390-virtio-ccw.c | 12 ------------
+>   1 file changed, 12 deletions(-)
 
-When the nearby memory space of the kernel is insufficient, it tries to
-load it to the starting position of high memory. If there is still not
-enough, qemu will report an error and ask the user to increase the memory
-space for the virtual machine to boot.
-
-Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
----
-Cc: Bibo Mao <maobibo@loongson.cn>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: Song Gao <gaosong@loongson.cn>
-Cc: Xianglai Li <lixianglai@loongson.cn>
-
-ChangeLog:
-V2->V3:
-1. Reduce the references to global variables related to intrd in the newly
-added functions
-2. Modify the format of the commit message
-3. Modify the name of the function find_initrd_loadoffset to
-alloc_initrd_memory
-
-V1->V2:
-If the low memory is insufficient, the initrd is directly loaded from the start
-address of the high memory, and the node0 memory space is not counted. 
-
- hw/loongarch/boot.c | 52 +++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 43 insertions(+), 9 deletions(-)
-
-diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
-index 354cf458c8..423c393f29 100644
---- a/hw/loongarch/boot.c
-+++ b/hw/loongarch/boot.c
-@@ -235,6 +235,45 @@ static int64_t load_loongarch_linux_image(const char *filename,
-     return size;
- }
- 
-+static ram_addr_t alloc_initrd_memory(struct loongarch_boot_info *info,
-+                uint64_t advice_start, ssize_t rd_size)
-+{
-+    hwaddr base, ram_size, gap, low_end;
-+    ram_addr_t initrd_end, initrd_start;
-+
-+    base = VIRT_LOWMEM_BASE;
-+    gap = VIRT_LOWMEM_SIZE;
-+    initrd_start = advice_start;
-+    initrd_end = initrd_start + rd_size;
-+
-+    ram_size = info->ram_size;
-+    low_end = base + MIN(ram_size, gap);
-+    if (initrd_end <= low_end) {
-+        return initrd_start;
-+    }
-+
-+    if (ram_size <= gap) {
-+        error_report("The low memory too small for initial ram disk '%s',"
-+             "You need to expand the ram",
-+             info->initrd_filename);
-+        exit(1);
-+    }
-+
-+    /*
-+     * Try to load initrd in the high memory
-+     */
-+    ram_size -= gap;
-+    initrd_start = VIRT_HIGHMEM_BASE;
-+    if (rd_size <= ram_size) {
-+        return initrd_start;
-+    }
-+
-+    error_report("The high memory too small for initial ram disk '%s',"
-+         "You need to expand the ram",
-+         info->initrd_filename);
-+    exit(1);
-+}
-+
- static int64_t load_kernel_info(struct loongarch_boot_info *info)
- {
-     uint64_t kernel_entry, kernel_low, kernel_high;
-@@ -262,15 +301,10 @@ static int64_t load_kernel_info(struct loongarch_boot_info *info)
-         initrd_size = get_image_size(info->initrd_filename);
-         if (initrd_size > 0) {
-             initrd_offset = ROUND_UP(kernel_high + 4 * kernel_size, 64 * KiB);
--
--            if (initrd_offset + initrd_size > info->ram_size) {
--                error_report("memory too small for initial ram disk '%s'",
--                             info->initrd_filename);
--                exit(1);
--            }
--
--            initrd_size = load_image_targphys(info->initrd_filename, initrd_offset,
--                                              info->ram_size - initrd_offset);
-+            initrd_offset = alloc_initrd_memory(info, initrd_offset,
-+                                                initrd_size);
-+            initrd_size = load_image_targphys(info->initrd_filename,
-+                                              initrd_offset, initrd_size);
-         }
- 
-         if (initrd_size == (target_ulong)-1) {
--- 
-2.39.1
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
