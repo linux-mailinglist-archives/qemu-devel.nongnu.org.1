@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 508BCAAC835
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:37:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22905AAC85A
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:43:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCJPA-0007nN-NI; Tue, 06 May 2025 10:36:20 -0400
+	id 1uCJPm-0008Ox-Vc; Tue, 06 May 2025 10:37:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJOw-0007XV-CK
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:36:06 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJP2-0007pq-5s
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:36:17 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJOt-00015f-Gq
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:36:05 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-43cfebc343dso38916695e9.2
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:36:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJOy-000161-RK
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:36:11 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-39ee623fe64so5945185f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:36:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746542161; x=1747146961; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746542166; x=1747146966; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RyLIfZxsmVP3PFHnzyMGQ582LpuVqxOjXPbqGRHcLQU=;
- b=HFDtun/8jXOYX7SIcNQbZUPbhvpaWSXMQxwieaCQ825Buw4OHi6ZhFwFJQweMGAX1Y
- xz0QaLDao9XZrMLRoJfnvDKiuUnBruIwHOptHYaiod1LFGr75U2l7tbF5EA/XCgR+kr1
- oMi8hwGYSWTn91phlrhaCSvax3hQytCNUFB+3I/HELW7KZcyRSHXetNpjY7NfKCGeZ92
- omWwERv9TViJPsINElowJttmrCh1RkXhxAJJfNV3lezVUwbWDNFHVg83piHax8KUgS1H
- oQ3kUjBH9f+WucBHlvfxkTUmodQ9uJ79LPWc379isTVAcgMPQdcG8g+R9rbl8ihRcrF7
- z4KQ==
+ bh=UJMsf8d9E7od1eerUg9AnKC8aiveIyxhwsrRajuSRCM=;
+ b=s5UumaTapMU27ohp56n5Oj0C5wIV3H5cF1xnAvLv7+HoMC8yPl1AD9Ge6936eRgk3U
+ O1X5qQCQqb3Hoh9RCcLCZ17su6SSt8P/+xse06ZovvkRX8ZCNQabSgWaWreiZ/AndK1e
+ ve8McUKB5fvN1PM0jzpzZhWfF+XGG6GzITPiOw4330RW8f4zUsRYrgSOPiMiAGFn9xSj
+ ydMM11InxRRz7B32rO4I3nMcWYjwkXWl5Z5VkvaQWyDNWsZMoBwQ8aQhcTuPLhN2rt6Z
+ tUy2Epa0IDIpx6ovUEMaZOF4Osrp8WzVrL3aBQ4O6ANSzVfpcGYB2kC2nvlGjL2OaGoQ
+ PRRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746542161; x=1747146961;
+ d=1e100.net; s=20230601; t=1746542166; x=1747146966;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RyLIfZxsmVP3PFHnzyMGQ582LpuVqxOjXPbqGRHcLQU=;
- b=qeGXZNvV/9N9FSkmB5zmWSgRMp1bz++JWwPspM9wjJtJfl2Fe65Da9UK6gGTyscc1y
- EaV0vJw1YVAWortrN4Wfx4ltBR0Zsa7UA/1h1qhkn4zq57/rk/NLC/eEJVSs73cYjmop
- BioyFgs0qcC/zLVw1mVDewbQu3jPpnSNQacFBFhWXM1SW2IfVKHoyZx7P/FgBmwkP289
- oX2T1INfgah4geFZemfQk36eMf4djB0pd+W97tb4yL8J7IVSXukMdm2ebf6X3pxb7srn
- 2+vsaK16tdmf2aqgWXxXXQA1H4rdY/pmz+3ljnyN574reXsl4Qb7KjjHV6ne95TqwX89
- QR+Q==
-X-Gm-Message-State: AOJu0YxHIMsgHQJMhVTqk1Ie/ODlJQ4itrkNCYS660W8Djim1gT87dQt
- Br7sQAzX6HvTfYwrWAtZsWWgRpUHjwIMVUAIt7e5YRWl3mWuksy+R3M+OkvzH79FIgCtfwD8ATx
- N
-X-Gm-Gg: ASbGnct59rgJKIntEe6WwIv7GXAJuhKZjimo7vmlkpXveo+eRjJ8++zAmwPI8pUXyzt
- cjjLyegDHQd65Tgv3PSxVBWJWEFJMukcR5q31h1AQn1Dju2OqUYRhWTlk52c9sIh9/x5Cr+aPmy
- YO+rn7Epb3pBt2Y2ucC1EyOWZAcuxi/Wvx2vzSE9VXFgr9Pd6fdxcZAduRTEs1dnm/wTVnwvYMg
- d3hHUZDAMFS4h4sHrh5hsd1HF5WuJwnWj4m65RpUHdhVm7TMiqHM7YvnSAcd84/4FQva6cXVsQv
- b/suWsKvnqs+8b8ftOVGVrFdc7JpX/rrXAqxkdvZYPKfEmpyDUO8wQsKNPQogEgnOcvqjq8g4Y+
- jUT4av0rFUBnK/enmWuzu
-X-Google-Smtp-Source: AGHT+IFacNYDFOm/bPeW17T9oXnwwCRhK0gwy3utXs3fd64bnWyFXBX2Yprcv/w5/+pODgDny1BiBQ==
-X-Received: by 2002:a05:600c:1d8d:b0:43c:e9d0:9ee5 with SMTP id
- 5b1f17b1804b1-441bbedbc36mr154773025e9.18.1746542161365; 
- Tue, 06 May 2025 07:36:01 -0700 (PDT)
+ bh=UJMsf8d9E7od1eerUg9AnKC8aiveIyxhwsrRajuSRCM=;
+ b=ZXrR1ZrntXrQw1JGgflfr7mR3GCqCXDsl3PxQ9LYRBjozgNowyGvrMvUwERJ6XTFfE
+ mqcMSsAY8TOZLcD2sDlHpz/UEtEXDqYqbw+xPyy44A76eJQ2gS3L8iqBQF0KlNoJWfl7
+ HNn261D+cmVvC/0JibPq0iKD6oqSeayaHWJZ72TMkKXQasANa4pHOduOm+AhCLelxb2X
+ 6f7K1TLLKlFAT0VuL4gBmLrdiA/7AOptdGk/pYCiqZHcwCuZIy5qzt7AO0MGiJPrzX7M
+ zfnMgfWus2G6+jU7SRpbBqN1MA1I4LfASPTiXrIUi6rleq2n5Hotb1iftP0yrRd8ijxA
+ tw9w==
+X-Gm-Message-State: AOJu0YyH3vidz9HnaIxx0GFMyCcvO/Wi0TLp1BJu4Psd3AHQ48YQjLqq
+ uFlySo/AeYV5tMsXGFJmsybFLKLtv+VbhpBQlUZpzoH6NeeybMpMmxylDtAsVZVjtE9zjRTeGBi
+ f
+X-Gm-Gg: ASbGncvzg5YasTXpxLfHi7H8aDxKNndYn/QmA/smSOO4A6cOLK6+ZXorHUwAY5dw0Lo
+ R/AT5RBcEjWaYiuVxvQrRhKNmQCBvjqgVnjPNSCc8XsvdbJtMKrpLnW13s7o0+la0kF7gex7kXy
+ fLZyavH1OWUR89HHPp6y/sFrlJmGde9Oc9rdAQy8waakR9+8zo3C7U22RVz/wqXy9aLOs1BXw2e
+ ecaEmZ43Z7ufmY+gBN6W2mAvSHRLsoHjfj0AWXw3YEb8t9+mj3hi9hrGdjm8b8tAJagPJaf7qJ0
+ HbrJvZvEPHJOFDyAbhWVOh84+g4bX1LAy2Zd/sSSFS4uG43N8NdRoFbYYhYWpMRnQHfe5NdB9E2
+ LVIAhhamAagV5T4NnzDI5
+X-Google-Smtp-Source: AGHT+IG8gdzcrLUK4hyzHzUlFZVKGNgKT1Bv1OcU+Tzdh6+VKGqHHpd7tfpkjF7i2jKkEmz41CEHtw==
+X-Received: by 2002:a5d:5f85:0:b0:38f:6287:6474 with SMTP id
+ ffacd0b85a97d-3a0ac0d976cmr2881628f8f.15.1746542166185; 
+ Tue, 06 May 2025 07:36:06 -0700 (PDT)
 Received: from localhost.localdomain (91-163-26-170.subs.proxad.net.
  [91.163.26.170]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a099b17017sm14123872f8f.92.2025.05.06.07.36.00
+ 5b1f17b1804b1-441b89ee39esm170797135e9.21.2025.05.06.07.36.05
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 06 May 2025 07:36:00 -0700 (PDT)
+ Tue, 06 May 2025 07:36:05 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 10/22] hw/hyperv/vmbus: common compilation unit
-Date: Tue,  6 May 2025 16:34:59 +0200
-Message-ID: <20250506143512.4315-11-philmd@linaro.org>
+Subject: [PULL 11/22] hw/hyperv/syndbg: common compilation unit
+Date: Tue,  6 May 2025 16:35:00 +0200
+Message-ID: <20250506143512.4315-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250506143512.4315-1-philmd@linaro.org>
 References: <20250506143512.4315-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,38 +101,72 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
+We assume that page size is 4KB only, to dimension buffer size for
+receiving message.
+
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-ID: <20250424232829.141163-4-pierrick.bouvier@linaro.org>
+Message-ID: <20250424232829.141163-5-pierrick.bouvier@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/hyperv/vmbus.c     | 2 +-
+ hw/hyperv/syndbg.c    | 9 ++++++---
  hw/hyperv/meson.build | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/hw/hyperv/vmbus.c b/hw/hyperv/vmbus.c
-index b147ea06d87..961406cdd6a 100644
---- a/hw/hyperv/vmbus.c
-+++ b/hw/hyperv/vmbus.c
-@@ -19,7 +19,7 @@
- #include "hw/hyperv/vmbus.h"
- #include "hw/hyperv/vmbus-bridge.h"
- #include "hw/sysbus.h"
+diff --git a/hw/hyperv/syndbg.c b/hw/hyperv/syndbg.c
+index ca291826a07..8b8a14750dd 100644
+--- a/hw/hyperv/syndbg.c
++++ b/hw/hyperv/syndbg.c
+@@ -10,11 +10,11 @@
+ #include "qemu/error-report.h"
+ #include "qemu/main-loop.h"
+ #include "qemu/sockets.h"
++#include "qemu/units.h"
+ #include "qapi/error.h"
+ #include "migration/vmstate.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/loader.h"
 -#include "cpu.h"
-+#include "exec/target_page.h"
- #include "trace.h"
+ #include "exec/target_page.h"
+ #include "hw/hyperv/hyperv.h"
+ #include "hw/hyperv/vmbus-bridge.h"
+@@ -184,12 +184,15 @@ static bool create_udp_pkt(HvSynDbg *syndbg, void *pkt, uint32_t pkt_len,
+     return true;
+ }
  
- enum {
++#define MSG_BUFSZ (4 * KiB)
++
+ static uint16_t handle_recv_msg(HvSynDbg *syndbg, uint64_t outgpa,
+                                 uint32_t count, bool is_raw, uint32_t options,
+                                 uint64_t timeout, uint32_t *retrieved_count)
+ {
+     uint16_t ret;
+-    uint8_t data_buf[TARGET_PAGE_SIZE - UDP_PKT_HEADER_SIZE];
++    g_assert(MSG_BUFSZ >= qemu_target_page_size());
++    uint8_t data_buf[MSG_BUFSZ];
+     hwaddr out_len;
+     void *out_data;
+     ssize_t recv_byte_count;
+@@ -202,7 +205,7 @@ static uint16_t handle_recv_msg(HvSynDbg *syndbg, uint64_t outgpa,
+         recv_byte_count = 0;
+     } else {
+         recv_byte_count = recv(syndbg->socket, data_buf,
+-                               MIN(sizeof(data_buf), count), MSG_WAITALL);
++                               MIN(MSG_BUFSZ, count), MSG_WAITALL);
+         if (recv_byte_count == -1) {
+             return HV_STATUS_INVALID_PARAMETER;
+         }
 diff --git a/hw/hyperv/meson.build b/hw/hyperv/meson.build
-index f4aa0a5ada9..c855fdcf04c 100644
+index c855fdcf04c..a9f2045a9af 100644
 --- a/hw/hyperv/meson.build
 +++ b/hw/hyperv/meson.build
 @@ -1,6 +1,6 @@
  specific_ss.add(when: 'CONFIG_HYPERV', if_true: files('hyperv.c'))
  specific_ss.add(when: 'CONFIG_HYPERV_TESTDEV', if_true: files('hyperv_testdev.c'))
--specific_ss.add(when: 'CONFIG_VMBUS', if_true: files('vmbus.c'))
-+system_ss.add(when: 'CONFIG_VMBUS', if_true: files('vmbus.c'))
- specific_ss.add(when: 'CONFIG_SYNDBG', if_true: files('syndbg.c'))
+ system_ss.add(when: 'CONFIG_VMBUS', if_true: files('vmbus.c'))
+-specific_ss.add(when: 'CONFIG_SYNDBG', if_true: files('syndbg.c'))
++system_ss.add(when: 'CONFIG_SYNDBG', if_true: files('syndbg.c'))
  specific_ss.add(when: 'CONFIG_HV_BALLOON', if_true: files('hv-balloon.c', 'hv-balloon-page_range_tree.c', 'hv-balloon-our_range_memslots.c'))
  system_ss.add(when: 'CONFIG_HV_BALLOON', if_false: files('hv-balloon-stub.c'))
 -- 
