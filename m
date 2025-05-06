@@ -2,92 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48F52AABD30
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 10:29:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4739AABCBE
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 10:12:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCDex-00051Q-Jb; Tue, 06 May 2025 04:28:15 -0400
+	id 1uCDPP-00031d-0V; Tue, 06 May 2025 04:12:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCDev-00050y-9B
- for qemu-devel@nongnu.org; Tue, 06 May 2025 04:28:13 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCDet-0004JU-CN
- for qemu-devel@nongnu.org; Tue, 06 May 2025 04:28:13 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-5e6f4b3ebe5so9356699a12.0
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 01:28:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746520089; x=1747124889; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=HwswrxH6SBsq7PVPAe/NgpnmfxJaQYszpTfcMj3HvF8=;
- b=acH3uGyHOISccKhy153snqlBNmi9LOnspFzIHzGnKqBc0NjN0RCfUtwNUkAKyr6kbC
- cAjiA9Y0006V3YBXuUfmKcRPZQDpsh/yQX9+/RrbB/04pTGcecpxvx5uwAqZw8QLTQFk
- /TS5n2lu74HdLjggIoGLnITQWCQkYtk5s/nZoFVZWxcF5pFZDCzgdFq3pNE1Zsp5a0Xy
- uaKe6ekmA++AcLCRZUdXcAcBEobZWKmcdjkXutQJP8yJxIn3DbkENc2wXKiIHj+fya9y
- YJgQuguqHzomg5e7ayYXmYaPbdhXmRbSsKiH2WPAmV+n2BmYGXIjeMHqdgz+musAI7JX
- KdDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746520089; x=1747124889;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HwswrxH6SBsq7PVPAe/NgpnmfxJaQYszpTfcMj3HvF8=;
- b=JS9sJMbF/Jq8pSrZspXjRvsRexvtPvjT1Nj4iFZ9DLquCRCTSQzoffJ+WZSgNS1qAO
- 3MIvVlIspzKmKJPGoP78c42FtZI3Be2qSGio4S1lp5LOCxCzt0aWZGPPVWhsR+ifuDlz
- KEfJQARIVVixJzi+W/jAccc93AdHH4/2aCE1RQOFYNea+cyj/RFggJB3z0F+ULKSSY94
- kXZiDOFsOPhxTFmswuMcauJ1k/mVKrXYlncVC66RRU9ai1CaucGldTUuQntegUJu6b+P
- MPebOV8D5l5gMA0rgYKzGW2a/iXUL7HSHdrgof77HCsk8ESC8zPtlqQq8/FsPSbJHWJ2
- 50+Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVZgQv7apiZgGl/qQJzx8CMrQ8lITHlnWWCjJsK3q+fyjkgUsLaE9x2nLJdaocrZptC831jdfc6Fvot@nongnu.org
-X-Gm-Message-State: AOJu0Yw+/o+rOCBBTmkTd1iAJd+XD/BRQZL4hfysjMHXsyC9nAzP/E2P
- dqK2hBAK+O6nGAIT9Kjngr0Vf4hSiP8WwKEyHP2mcXcIkiJTbK7gul2//PGkKu4=
-X-Gm-Gg: ASbGncuvqglRSjnIOItlSKJ/uzFEuVfQMiHp71Qt7rSSPHcoLxGgFmqmbtHzjTshAX0
- bh5BKkTsQ9zS6WRuy/uqoaDmqw4BYQwXmBjwpzJdWJ19jULheaGp6fVKg67CuVP3K84pHME3Mrm
- /gE7WB8MKtH6KiQ1lKlDCJNKRXS1BMyLcJuGi8RM+2Obn72n6diNxUMoMay9H6GZDsfY51y6qzH
- 1cI9dCsey8fZF626y/MsvQtPhWpiFvGyD7iqxHgUzvfkQdpo5J0dPh5e8l91RR9ZJS9Ex3RsCPB
- bbrvviMNKd+6Lw9eJrVfrX4JlDxAQBRIPniVbuFl2LBB4+U7ishoAMyLvx8EAnxhKpXIb4XSYFt
- 5+O4=
-X-Google-Smtp-Source: AGHT+IHwiCe0oPs5elfWErBBcVm06PuU+xYwrQvuUFAo5nHPUYxdz2wyeN5L0YYJfeaUwSrixkUtYA==
-X-Received: by 2002:a17:906:d542:b0:ace:d7af:15e1 with SMTP id
- a640c23a62f3a-ad1a49afd2dmr947322066b.28.1746520088793; 
- Tue, 06 May 2025 01:28:08 -0700 (PDT)
-Received: from [10.194.152.213] (238.21.205.77.rev.sfr.net. [77.205.21.238])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ad1891a5e1dsm668353066b.55.2025.05.06.01.28.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 May 2025 01:28:08 -0700 (PDT)
-Message-ID: <af2cf890-6a9b-4715-9fef-4ec7416baba6@linaro.org>
-Date: Tue, 6 May 2025 10:28:06 +0200
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uCDPL-0002xV-Fg; Tue, 06 May 2025 04:12:07 -0400
+Received: from mgamail.intel.com ([192.198.163.7])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uCDPG-0002NI-Q4; Tue, 06 May 2025 04:12:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1746519123; x=1778055123;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=Yd1/abJpO3rjSefg7BT4LMzLo4Y1N46ZWXlD7sWCN9Y=;
+ b=lfxHnuxN3dTuYoWZEnyq9gDqd8/3PH0eYd4MbmKh4g/w7v5Mo+q0UPD3
+ dpNskWKRYLcs06K/YfPDT3Cq3MC7GEDjgoojW8aFu53iobdlfNiH/Vxpz
+ YF8IaF8fk966b3ya+kITtI6bLM0iaWTpF9AKj1uRai7UwngTCkAKDHBdJ
+ 72zEy/VX41HMoxnsNXg3cb2PR2Kum7QR4odkV3SmDiaeugkyk3eh38C5b
+ FtVU9Db0adKBV/nO41amJBpITTu9bdH29OHVM/6D8vO0Z/DSRwgOTrUPE
+ bqRRQMmPoCalKPPGvB0QkNtcfbJPMRz2OWN7q9n4uKH3mVj7c6R2Weysr w==;
+X-CSE-ConnectionGUID: lZZSCY2WT+KwoT067E8dWQ==
+X-CSE-MsgGUID: qpKVUMUtR1CJcq+Xlcsyzw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11424"; a="73571275"
+X-IronPort-AV: E=Sophos;i="6.15,265,1739865600"; d="scan'208";a="73571275"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 May 2025 01:11:58 -0700
+X-CSE-ConnectionGUID: s+6Cp41rQRiBLEvB85E8vA==
+X-CSE-MsgGUID: X2DUpjw+Q2Ka3bUyXwqjkw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,265,1739865600"; d="scan'208";a="158794703"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa002.fm.intel.com with ESMTP; 06 May 2025 01:11:57 -0700
+Date: Tue, 6 May 2025 16:32:58 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, manos.pitsidianakis@linaro.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH 09/11] rust: remove offset_of replacement
+Message-ID: <aBnJOiX5o6Cl0KNB@intel.com>
+References: <20250505090438.24992-1-pbonzini@redhat.com>
+ <20250505090438.24992-10-pbonzini@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/qtest: Add qtest for NPCM8XX PSPI module
-To: Tim Lee <timlee660101@gmail.com>, Fabiano Rosas <farosas@suse.de>
-Cc: lvivier@redhat.com, pbonzini@redhat.com, wuhaotsh@google.com,
- kfting@nuvoton.com, chli30@nuvoton.com, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-References: <20250418091208.1888768-1-timlee660101@gmail.com>
- <874ixzgfc7.fsf@suse.de>
- <CAJG6D+hRQQq6DaoPVs+VU-sibTSA1OSwYkhgcNy2xy1Da3BtRw@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAJG6D+hRQQq6DaoPVs+VU-sibTSA1OSwYkhgcNy2xy1Da3BtRw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x532.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250505090438.24992-10-pbonzini@redhat.com>
+Received-SPF: pass client-ip=192.198.163.7; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -57
+X-Spam_score: -5.8
+X-Spam_bar: -----
+X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,54 +79,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Tim,
-
-On 6/5/25 04:14, Tim Lee wrote:
->> This fails on top of current master, please take a look:
->>
->> $ QTEST_LOG=1 QTEST_QEMU_BINARY=./qemu-system-aarch64 ./tests/qtest/npcm8xx_pspi-test
->> # random seed: R02S03f79fc48ba73b76c881f93f90b015e9
->> 1..3
->> # Start of aarch64 tests
->> # Start of npcm8xx_pspi tests
->> # starting QEMU: exec ./qemu-system-aarch64 -qtest
->>    unix:/tmp/qtest-32530.sock -qtest-log /dev/fd/2 -chardev
->>    socket,path=/tmp/qtest-32530.qmp,id=char0 -mon
->>    chardev=char0,mode=control -display none -audio none -machine
->>    npcm845-evb -accel qtest
->> [I 0.000000] OPENED
->> [R +0.034918] endianness
->> [S +0.034944] OK little
->> {"QMP": {"version": {"qemu": {"micro": 50, "minor": 0, "major": 10},
->> "package": "v10.0.0-530-g88d6459dae"}, "capabilities": ["oob"]}}
->> {"execute": "qmp_capabilities"}
->> {"return": {}}
->> [R +0.037373] writel 0xf0201002 0x1
->> [S +0.037396] OK
->> [R +0.037417] readl 0xf0201002
->> [S +0.037426] OK 0x0000000000000000
->> **
->> ERROR:../tests/qtest/npcm8xx_pspi-test.c:45:test_init: assertion failed
->> (pspi_read_ctl(qts, pspi) == CTL_SPIEN): (0x00000000 == 0x00000001)
->> Bail out!
->> [I +0.037909] CLOSED
->> Aborted (core dumped)
+On Mon, May 05, 2025 at 11:04:34AM +0200, Paolo Bonzini wrote:
+> Date: Mon,  5 May 2025 11:04:34 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 09/11] rust: remove offset_of replacement
+> X-Mailer: git-send-email 2.49.0
 > 
-> Thank you for testing it. I think the failure seems to be related to
-> the following commit which, has not been merged yet.
-> https://patchew.org/QEMU/20250414020629.1867106-1-timlee660101@gmail.com/
-> Here is our test result for reference. Thanks.
+> ---
+>  docs/devel/rust.rst                  |   6 -
+>  rust/Cargo.lock                      |   1 -
+>  rust/Cargo.toml                      |   2 +-
+>  rust/hw/char/pl011/src/device.rs     |   4 +-
+>  rust/hw/timer/hpet/src/hpet.rs       |   4 +-
+>  rust/qemu-api-macros/src/lib.rs      |  29 +----
+>  rust/qemu-api/Cargo.toml             |   3 -
+>  rust/qemu-api/build.rs               |   7 --
+>  rust/qemu-api/meson.build            |   4 -
+>  rust/qemu-api/src/lib.rs             |   4 -
+>  rust/qemu-api/src/offset_of.rs       | 168 ---------------------------
+>  rust/qemu-api/src/qdev.rs            |   6 +-
+>  rust/qemu-api/src/vmstate.rs         |  10 +-
+>  rust/qemu-api/tests/tests.rs         |   2 -
+>  rust/qemu-api/tests/vmstate_tests.rs |   5 +-
+>  15 files changed, 16 insertions(+), 239 deletions(-)
+>  delete mode 100644 rust/qemu-api/src/offset_of.rs
 
-It helps and saves maintainers' time if you group related / dependent
-patches as a series, i.e.: patch introducing a feature with the patch
-testing the feature.
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-Alternatively when big series are split, you can mention their
-dependence using the 'Based-on' tag:
-
-Based-on: 20250414020629.1867106-1-timlee660101@gmail.com
-
-Regards,
-
-Phil.
 
