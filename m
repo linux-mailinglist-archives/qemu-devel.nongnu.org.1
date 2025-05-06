@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 475E7AAB7F4
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 08:23:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E2BAAAB7F8
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 08:23:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCBh8-00081X-5p; Tue, 06 May 2025 02:22:22 -0400
+	id 1uCBhD-00083q-2F; Tue, 06 May 2025 02:22:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uCBh4-00080u-Oq
- for qemu-devel@nongnu.org; Tue, 06 May 2025 02:22:19 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uCBhA-00083H-Tu
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 02:22:24 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uCBh3-0005tr-4Z
- for qemu-devel@nongnu.org; Tue, 06 May 2025 02:22:18 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uCBh8-0005um-GW
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 02:22:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746512536;
+ s=mimecast20190719; t=1746512541;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IwQsvPRr9muU3nnMTfzOLXv/34O46QmI+0RUSaMzWpo=;
- b=dgOjx6WYm6gBgoFmCKAhSwgqjhCW7AkSrGVzZ13fmBEiBzmXu2Wg+pzzOq/O/Y0uFrI2S5
- Dd3QpvuGUiz3wCaAuLC+2ufrdx9gZu74Tec9FwhHDeE2CS5rJc6syO2LtfLCHgwPMBdeo/
- bdZQwcD+2FReNgpQIGiLqsgbPtdLk+0=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Ar9j5CQf0c2NoGVGaI1oUnEISybK1lyYMsDARiInHUg=;
+ b=CKJhiDCmO/+cSPr9Apjtrrlzd1B3KjdqW6BOy7qLGmlGllFYg4mbZdtzF4JvNc/jzfhnJk
+ rQkY747HUVDOoDlx1uXisMu3edd7dnGE+iHl3suzC5kY9NPbrX4q/NUwoj7zsZ5b5uxu6Q
+ ktFde/Fqx6/mL38LvL7WGCuRN7Rx8AU=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-610-0QhmKLsLPEuitd3VfcNOOQ-1; Tue,
- 06 May 2025 02:22:12 -0400
-X-MC-Unique: 0QhmKLsLPEuitd3VfcNOOQ-1
-X-Mimecast-MFC-AGG-ID: 0QhmKLsLPEuitd3VfcNOOQ_1746512531
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-684-tp7IZCSSNIiiQQW0g9W5Lw-1; Tue,
+ 06 May 2025 02:22:16 -0400
+X-MC-Unique: tp7IZCSSNIiiQQW0g9W5Lw-1
+X-Mimecast-MFC-AGG-ID: tp7IZCSSNIiiQQW0g9W5Lw_1746512535
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 58ACB195605F; Tue,  6 May 2025 06:22:11 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3EF981955E75; Tue,  6 May 2025 06:22:15 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.32.237])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 001691800352; Tue,  6 May 2025 06:22:07 +0000 (UTC)
+ id 0B05718001D5; Tue,  6 May 2025 06:22:11 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-s390x@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
  Christian Borntraeger <borntraeger@linux.ibm.com>,
  Eric Farman <farman@linux.ibm.com>
 Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 5/9] hw/s390x/s390-virtio-ccw: Remove the deprecated 2.12
+Subject: [PATCH v2 6/9] hw/s390x/s390-virtio-ccw: Remove the deprecated 3.0
  machine type
-Date: Tue,  6 May 2025 08:21:44 +0200
-Message-ID: <20250506062148.306084-6-thuth@redhat.com>
+Date: Tue,  6 May 2025 08:21:45 +0200
+Message-ID: <20250506062148.306084-7-thuth@redhat.com>
 In-Reply-To: <20250506062148.306084-1-thuth@redhat.com>
 References: <20250506062148.306084-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -85,35 +85,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-The s390-ccw-virtio-2.12 machine is older than 6 years, so according to
+The s390-ccw-virtio-3.0 machine is older than 6 years, so according to
 our machine support policy, it can be removed now.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/s390x/s390-virtio-ccw.c | 14 --------------
- 1 file changed, 14 deletions(-)
+ hw/s390x/s390-virtio-ccw.c | 15 ---------------
+ 1 file changed, 15 deletions(-)
 
 diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 2c90702d834..e612030bc18 100644
+index e612030bc18..8f01e68ef11 100644
 --- a/hw/s390x/s390-virtio-ccw.c
 +++ b/hw/s390x/s390-virtio-ccw.c
-@@ -1236,20 +1236,6 @@ static void ccw_machine_3_0_class_options(MachineClass *mc)
+@@ -1221,21 +1221,6 @@ static void ccw_machine_3_1_class_options(MachineClass *mc)
  }
- DEFINE_CCW_MACHINE(3, 0);
+ DEFINE_CCW_MACHINE(3, 1);
  
--static void ccw_machine_2_12_instance_options(MachineState *machine)
+-static void ccw_machine_3_0_instance_options(MachineState *machine)
 -{
--    ccw_machine_3_0_instance_options(machine);
--    s390_cpudef_featoff_greater(11, 1, S390_FEAT_PPA15);
--    s390_cpudef_featoff_greater(11, 1, S390_FEAT_BPB);
+-    ccw_machine_3_1_instance_options(machine);
 -}
 -
--static void ccw_machine_2_12_class_options(MachineClass *mc)
+-static void ccw_machine_3_0_class_options(MachineClass *mc)
 -{
--    ccw_machine_3_0_class_options(mc);
--    compat_props_add(mc->compat_props, hw_compat_2_12, hw_compat_2_12_len);
+-    S390CcwMachineClass *s390mc = S390_CCW_MACHINE_CLASS(mc);
+-
+-    s390mc->hpage_1m_allowed = false;
+-    ccw_machine_3_1_class_options(mc);
+-    compat_props_add(mc->compat_props, hw_compat_3_0, hw_compat_3_0_len);
 -}
--DEFINE_CCW_MACHINE(2, 12);
+-DEFINE_CCW_MACHINE(3, 0);
 -
  static void ccw_machine_register_types(void)
  {
