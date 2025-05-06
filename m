@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64BFEAAC8C6
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:54:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94F93AAC87F
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:46:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCJXN-0002g8-CS; Tue, 06 May 2025 10:44:49 -0400
+	id 1uCJYY-0007Nx-1Z; Tue, 06 May 2025 10:46:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uCJVT-00029G-Ga
+ id 1uCJVU-0002C1-NN
  for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:53 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uCJVR-0002BK-Qo
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:51 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-441d1ed827cso4608615e9.1
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:42:49 -0700 (PDT)
+ id 1uCJVS-0002BX-U1
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:52 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-43d0c18e84eso25467935e9.3
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:42:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746542568; x=1747147368; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746542569; x=1747147369; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=i+QMorwpUEytgCmmdGbZfkGf25KtJrpacfldZ2jwkgI=;
- b=va3hfedojbGZEG55KkKPi6X86tpfKHn8xSd1NJ1Vm+iWe0lb7rgFy1Q06vYjKcrhM7
- pnPTPs7QyQ4DPujkXvW//ngOpTzX015Q7DQrF7AgKEgp7dugNZWjw1Rll/qUQLFCV2id
- 8RdUWTHxa4+55k7O8PqCYYsP8iQPOMBIvbfZUQfDd6oBr875bcd1GnrvO7A4PWk7WhoP
- ue3JDW0ZDLpXwDjhLIJri7HAvsPo2ygaAo8P5sl+WexUdiRv/f7PTa7eWCLlGNk0Lgli
- 62HmC/qO/1XHJOXljuDtYbU0NsqOhFMz1e4SYDswtqGiWCzDaGSkyldE5JGIpHohJvhz
- SY6A==
+ :reply-to; bh=IsF/CSowd+jniSJy7riyQNMBm1JGaQMWj1ippYdOx1k=;
+ b=qPi0QCFg9qkRpp5zZoegQPTW7L/3j428P6QYkUB/Ab0pNN3waXOFsdxCanzr4DRXXy
+ sEMRWK1df7UF7MwBCus+dJN4bLh9RhFeRw6EgsTCD/cM5OpjLCyqPS8y3x66rZsciJCH
+ YePANTDMy9Kdu/78qspgief/StQUr1T2jN7JrQHc4U8h02svo74f5xlGXutP4SVW74JR
+ dKc5CgJjZYHx0JeDfvZ3SQZnit5TRiKVGteo1kSfrXdP3vUF1ns9A6Qg678OJn063xSO
+ /yUTCWhnWGEb37VI6l3f42uQz11CQ+f3Rtajf1GSwtNs5oolIofilwgiL8tpsyiE2hcV
+ usvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746542568; x=1747147368;
+ d=1e100.net; s=20230601; t=1746542569; x=1747147369;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=i+QMorwpUEytgCmmdGbZfkGf25KtJrpacfldZ2jwkgI=;
- b=M0geBT1+ElFyuaqxNDdBs0r5z6rZbul8HUC2xYHapuup94YtPZW0TVhOi3dsULUF5k
- dLM56cXkKE10rssrcKy/biGaOrQmgI58tB3mj+rBH1DzOQItGqnnyuyCbi8h5iowkdoC
- UtdU2uSoRK6wDJN5k0LArFD6K9DECaSNh9rftl+b2JIOFvGcyveqfn6gcNOp5LSJw2Wu
- pookqx+Jdo/EeBXthH90CBV8Iq+WB0zh/wZF98e2Z24aSLD7N3vcuUL9U0BGdlTExPYD
- TL4ICDF2g75/rrqtt5lMi0k+6bx+X/sx0EmvgrfvsoVlKaPn6ViARt4K19LB6Bv0Zjur
- +cvA==
-X-Gm-Message-State: AOJu0YyB6uXBt/IW7NTfur99DolRLwIEOLkx6xGNalm7Ggcqh8Khft7E
- LDjifx0K1eh63MEnZPW9sdxSiqKWN35k6ehXMrJhNpY7BD2+8oYBT5fDIXUGwCyNWA8MhKYoc40
- A
-X-Gm-Gg: ASbGncvKCuZRQfGV2Dx5SBXkbeGJqDrNIjPnduS9vjKVRCJ61T+P+yO21hwkP+3rY/A
- Pfm801TiW5vaRDBwvCS+XzV7HzQTs/BdB+fyKjzUxwTUkrBv+U+G7azM4ufZqcbRkJhp6ThQ7gG
- jp9LZzGVBhaWkgPV3EwTT/IcgbATm+s/lKxfnNQJ+flg46RZvmGQYfp8GlCckiZoIjiwzKAW+pQ
- GS+E8xZ9N4l0YSI0+Zn0R/gA+CRZJ4YDtGB05PJklPakFtk0fELV4stLv976O11+d+bdgOrPiAk
- 8sgkeqpJT116ppD9tl/ie0XOXFzJfUjLO6yVLnS9hHg4Y58=
-X-Google-Smtp-Source: AGHT+IHYjYmPDWNNSoIC0FCIcHtGwDQtwjwbtG5mel3nmwHWS3FR03xDr1+oO+/D3GT/86tjyvEv4A==
-X-Received: by 2002:a05:600c:a03:b0:439:9424:1b70 with SMTP id
- 5b1f17b1804b1-441d054c884mr33139045e9.30.1746542568421; 
- Tue, 06 May 2025 07:42:48 -0700 (PDT)
+ bh=IsF/CSowd+jniSJy7riyQNMBm1JGaQMWj1ippYdOx1k=;
+ b=eUEFEH7/drqTyvILrvHu5H+SOf85UNTAf6UP5RubBCyFFXpVvu4CjEZ3TWhAg/Xa6g
+ QBbBnVtQsxr7K8594Xk8R/eEoAvVnlMSAtYwYvTMJ+FGhkQcwsjYrANKMIiwmch7Jp7/
+ /CQ8T6ChphK68j1lfbCwm9zRjRh6VuW427DLjpDUfLFgWtyltTjriBcOmR12ePGmJsae
+ TpQvu7bjwOCg16u2V51pAiUKoOsMKQWrIeLwK5WtzihWNmT5nn8wh+bVHCSuqitQtvLZ
+ 80heaWP5OuGfp7JJy8yWtKzA5s5AtkK2G8Th7VLpyStOBaiNl62pWalUhDN+dRUSpsNV
+ dqAg==
+X-Gm-Message-State: AOJu0YxRL7TEmda3FzMK6UMksWPKnxqP4c0bAgNMAud130AOuPKgQSpP
+ +j4T69nXxOLBYMh7YAei6T/cHdpC4p4zJFlWHfGPrg7uBkjlxd4yjRZpqd9pzZrKnwqr8CR0tjR
+ B
+X-Gm-Gg: ASbGncv+zCO2b/n5ZBs4gelEcdGzYBKPvo+kow9KlhZyf6ygXsEaFvnRPCXab2CtI5e
+ hkblclH/mkYemxQ3gK7Cv4zwF+i1aYLQoIPnM4+zg5SiPtnMVtwWxyQewlT+R6oF4zdGorG3fdP
+ tXuzaTIytAEXq4sjDxUw0Fwyq5ie9YmTRWTcRaoLB/an/yR2aYI/T0b4VtDy5nbxsAw5tPovLS4
+ xCx7GJY283bCMfehoY/i8WXClDt1BTEMTNkef8EQz/ENYsOMjhNNsD89irqzvdyduqZ0NPmcu02
+ MaOh/0Wyt0o0+UVB3CvDqmC1yUAdksa81Cvv7X8dp6me9Kw=
+X-Google-Smtp-Source: AGHT+IH/zzU3EeHt17geySXSwgsJuzHuWNjfsmB8njaqPF5W8ytOjnB9IwbWaGKDBBpZJX0POLy1ZA==
+X-Received: by 2002:a05:600c:a413:b0:43a:ed4d:716c with SMTP id
+ 5b1f17b1804b1-441cbc3e6c1mr54232805e9.22.1746542569236; 
+ Tue, 06 May 2025 07:42:49 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-441b89edfc2sm169603435e9.20.2025.05.06.07.42.46
+ 5b1f17b1804b1-441b89edfc2sm169603435e9.20.2025.05.06.07.42.48
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 May 2025 07:42:47 -0700 (PDT)
+ Tue, 06 May 2025 07:42:48 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 28/32] hw/gpio/imx_gpio: Fix interpretation of GDIR polarity
-Date: Tue,  6 May 2025 15:42:10 +0100
-Message-ID: <20250506144214.1221450-29-peter.maydell@linaro.org>
+Subject: [PULL 29/32] hw/arm/virt: Update comment about Multiprocessor
+ Affinity Register
+Date: Tue,  6 May 2025 15:42:11 +0100
+Message-ID: <20250506144214.1221450-30-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250506144214.1221450-1-peter.maydell@linaro.org>
 References: <20250506144214.1221450-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,38 +98,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bernhard Beschow <shentey@gmail.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-According to the i.MX 8M Plus reference manual, a GPIO pin is
-configured as an output when the corresponding bit in the GDIR
-register is set.  The function imx_gpio_set_int_line() is intended to
-be a no-op if the pin is configured as an output, returning early in
-such cases.  However, it inverts the condition.  Fix this by
-returning early when the bit is set.
+Support on ARMv7 has been dropped in commit 82bf7ae84ce
+("target/arm: Remove KVM support for 32-bit Arm hosts").
+Update the comment in virt_cpu_mp_affinity() to avoid
+mentioning it.
 
-cc: qemu-stable@nongnu.org
-Fixes: f44272809779 ("i.MX: Add GPIO device")
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-id: 20250501183445.2389-4-shentey@gmail.com
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Suggested-by: Andrew Jones <ajones@ventanamicro.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20250429153907.31866-2-philmd@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/gpio/imx_gpio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/arm/virt.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/hw/gpio/imx_gpio.c b/hw/gpio/imx_gpio.c
-index f23c52af26d..450ece45482 100644
---- a/hw/gpio/imx_gpio.c
-+++ b/hw/gpio/imx_gpio.c
-@@ -72,7 +72,7 @@ static void imx_gpio_update_int(IMXGPIOState *s)
- static void imx_gpio_set_int_line(IMXGPIOState *s, int line, IMXGPIOLevel level)
- {
-     /* if this signal isn't configured as an input signal, nothing to do */
--    if (!extract32(s->gdir, line, 1)) {
-+    if (extract32(s->gdir, line, 1)) {
-         return;
-     }
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index bd1a68673a7..03fef07c9da 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -1766,12 +1766,7 @@ static uint64_t virt_cpu_mp_affinity(VirtMachineState *vms, int idx)
+     uint8_t clustersz;
  
+     /*
+-     * Adjust MPIDR like 64-bit KVM hosts, which incorporate the
+-     * GIC's target-list limitations. 32-bit KVM hosts currently
+-     * always create clusters of 4 CPUs, but that is expected to
+-     * change when they gain support for gicv3. When KVM is enabled
+-     * it will override the changes we make here, therefore our
+-     * purposes are to make TCG consistent (with 64-bit KVM hosts)
++     * Adjust MPIDR to make TCG consistent (with 64-bit KVM hosts)
+      * and to improve SGI efficiency.
+      */
+     if (vms->gic_version == VIRT_GIC_VERSION_2) {
 -- 
 2.43.0
 
