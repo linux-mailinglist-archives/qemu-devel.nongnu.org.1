@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A24AAB7F5
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 08:23:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFE9FAAB7FD
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 08:23:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCBhF-000850-Rd; Tue, 06 May 2025 02:22:29 -0400
+	id 1uCBhI-00085x-CH; Tue, 06 May 2025 02:22:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uCBhD-00084T-78
- for qemu-devel@nongnu.org; Tue, 06 May 2025 02:22:27 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uCBhG-00085e-WE
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 02:22:31 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uCBhB-0005vo-EG
- for qemu-devel@nongnu.org; Tue, 06 May 2025 02:22:26 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uCBhF-0005wc-Df
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 02:22:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746512544;
+ s=mimecast20190719; t=1746512548;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=g3cJkgFXgK3LTlw3ckwp1HepM2so4vHXarjCd9syzLs=;
- b=isGoVaHyPD1i/DAFqRAJmlr7DvRt7I6/wL56Ehj4l9a0xgd5e64k2QrVlhrA5Ye7tjMzCe
- /i7zvyuGzkJpFZpaltUad91g9pbSvRuoSRQrDHHuW5XHFukO6Xo+a+ThlLcnzqD4MFzdn8
- uMx7sZVZocxq6YxCukQ0VeAmYAYAS2k=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=3UlmcBcWSFQ/sobCSaYGjpW7mp5H76WoWAegDHjityI=;
+ b=bow5jTlBN8Z+o+TO4CmVN9+5HMij+rZ1JN3nFR5FCx9kFpOs++mKY6NfDTb4HlAs5HFY2Q
+ Ep4wdQQFWkHms1WzbmSWyNgNrYpowoNb3ayxs9DIN+OVx4UmGX6Gy/LDd+IfvRd4ZlfDP+
+ Wsxjw9wlifE9y/ZfZlb2L2xToQLmgqY=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-88-p7JO6RDWNN-O7TfSdQW3JA-1; Tue,
- 06 May 2025 02:22:21 -0400
-X-MC-Unique: p7JO6RDWNN-O7TfSdQW3JA-1
-X-Mimecast-MFC-AGG-ID: p7JO6RDWNN-O7TfSdQW3JA_1746512539
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-332-ZHbZ7s5LOfCHdLr32KJRDQ-1; Tue,
+ 06 May 2025 02:22:25 -0400
+X-MC-Unique: ZHbZ7s5LOfCHdLr32KJRDQ-1
+X-Mimecast-MFC-AGG-ID: ZHbZ7s5LOfCHdLr32KJRDQ_1746512544
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AE969180087F; Tue,  6 May 2025 06:22:19 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 149871955E7D; Tue,  6 May 2025 06:22:24 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.32.237])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0B2B118001D5; Tue,  6 May 2025 06:22:15 +0000 (UTC)
+ id 1B48B1800352; Tue,  6 May 2025 06:22:19 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-s390x@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
  Christian Borntraeger <borntraeger@linux.ibm.com>,
  Eric Farman <farman@linux.ibm.com>
 Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 7/9] hw/s390x: Remove the obsolete hpage_1m_allowed switch
-Date: Tue,  6 May 2025 08:21:46 +0200
-Message-ID: <20250506062148.306084-8-thuth@redhat.com>
+Subject: [PATCH v2 8/9] hw/s390x/s390-virtio-ccw: Remove the deprecated 3.1
+ machine type
+Date: Tue,  6 May 2025 08:21:47 +0200
+Message-ID: <20250506062148.306084-9-thuth@redhat.com>
 In-Reply-To: <20250506062148.306084-1-thuth@redhat.com>
 References: <20250506062148.306084-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -85,113 +85,65 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-The s390-ccw-virtio-3.0 machine was the last one that used the
-hpage_1m_allowed switch. Since we removed this machine type, we
-can now remove the switch and the related code, too. This allows
-us to get rid of the get_machine_class() hack and the big fat
-warning comment there.
+The s390-ccw-virtio-3.1 machine is older than 6 years, so according to
+our machine support policy, it can be removed now. The v3.1 CPU feature
+group gets merged into the minimum CPU feature group now.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- include/hw/s390x/s390-virtio-ccw.h |  4 ----
- hw/s390x/s390-virtio-ccw.c         | 35 ------------------------------
- target/s390x/kvm/kvm.c             |  6 -----
- 3 files changed, 45 deletions(-)
+ hw/s390x/s390-virtio-ccw.c  | 16 ----------------
+ target/s390x/gen-features.c |  4 ----
+ 2 files changed, 20 deletions(-)
 
-diff --git a/include/hw/s390x/s390-virtio-ccw.h b/include/hw/s390x/s390-virtio-ccw.h
-index 686d9497d20..321b26df308 100644
---- a/include/hw/s390x/s390-virtio-ccw.h
-+++ b/include/hw/s390x/s390-virtio-ccw.h
-@@ -53,11 +53,7 @@ struct S390CcwMachineClass {
-     MachineClass parent_class;
- 
-     /*< public >*/
--    bool hpage_1m_allowed;
-     int max_threads;
- };
- 
--/* 1M huge page mappings allowed by the machine */
--bool hpage_1m_allowed(void);
--
- #endif
 diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 8f01e68ef11..301668a0bff 100644
+index 301668a0bff..f08e0980b40 100644
 --- a/hw/s390x/s390-virtio-ccw.c
 +++ b/hw/s390x/s390-virtio-ccw.c
-@@ -746,39 +746,6 @@ static inline void machine_set_dea_key_wrap(Object *obj, bool value,
-     ms->dea_key_wrap = value;
+@@ -1170,22 +1170,6 @@ static void ccw_machine_4_0_class_options(MachineClass *mc)
  }
+ DEFINE_CCW_MACHINE(4, 0);
  
--static S390CcwMachineClass *current_mc;
--
--/*
-- * Get the class of the s390-ccw-virtio machine that is currently in use.
-- * Note: libvirt is using the "none" machine to probe for the features of the
-- * host CPU, so in case this is called with the "none" machine, the function
-- * returns the TYPE_S390_CCW_MACHINE base class. In this base class, all the
-- * various "*_allowed" variables are enabled, so that the *_allowed() wrappers
-- * below return the correct default value for the "none" machine.
-- *
-- * Attention! Do *not* add additional new wrappers for CPU features via this
-- * mechanism anymore. CPU features should be handled via the CPU models,
-- * i.e. checking with s390_has_feat() should be sufficient.
-- */
--static S390CcwMachineClass *get_machine_class(void)
+-static void ccw_machine_3_1_instance_options(MachineState *machine)
 -{
--    if (unlikely(!current_mc)) {
--        /*
--        * No s390 ccw machine was instantiated, we are likely to
--        * be called for the 'none' machine. The properties will
--        * have their after-initialization values.
--        */
--        current_mc = S390_CCW_MACHINE_CLASS(
--                     object_class_by_name(TYPE_S390_CCW_MACHINE));
--    }
--    return current_mc;
+-    static const S390FeatInit qemu_cpu_feat = { S390_FEAT_LIST_QEMU_V3_1 };
+-    ccw_machine_4_0_instance_options(machine);
+-    s390_cpudef_featoff_greater(14, 1, S390_FEAT_MULTIPLE_EPOCH);
+-    s390_cpudef_group_featoff_greater(14, 1, S390_FEAT_GROUP_MULTIPLE_EPOCH_PTFF);
+-    s390_set_qemu_cpu_model(0x2827, 12, 2, qemu_cpu_feat);
 -}
 -
--bool hpage_1m_allowed(void)
+-static void ccw_machine_3_1_class_options(MachineClass *mc)
 -{
--    return get_machine_class()->hpage_1m_allowed;
+-    ccw_machine_4_0_class_options(mc);
+-    compat_props_add(mc->compat_props, hw_compat_3_1, hw_compat_3_1_len);
 -}
+-DEFINE_CCW_MACHINE(3, 1);
 -
- static void machine_get_loadparm(Object *obj, Visitor *v,
-                                  const char *name, void *opaque,
-                                  Error **errp)
-@@ -812,7 +779,6 @@ static void ccw_machine_class_init(ObjectClass *oc, const void *data)
-     S390CcwMachineClass *s390mc = S390_CCW_MACHINE_CLASS(mc);
-     DumpSKeysInterface *dsi = DUMP_SKEYS_INTERFACE_CLASS(oc);
- 
--    s390mc->hpage_1m_allowed = true;
-     s390mc->max_threads = 1;
-     mc->reset = s390_machine_reset;
-     mc->block_default_type = IF_VIRTIO;
-@@ -886,7 +852,6 @@ static const TypeInfo ccw_machine_info = {
- #define DEFINE_CCW_MACHINE_IMPL(latest, ...)                                  \
-     static void MACHINE_VER_SYM(mach_init, ccw, __VA_ARGS__)(MachineState *mach) \
-     {                                                                         \
--        current_mc = S390_CCW_MACHINE_CLASS(MACHINE_GET_CLASS(mach));         \
-         MACHINE_VER_SYM(instance_options, ccw, __VA_ARGS__)(mach);            \
-         ccw_init(mach);                                                       \
-     }                                                                         \
-diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
-index b9f14221976..6cd2ebc5f1f 100644
---- a/target/s390x/kvm/kvm.c
-+++ b/target/s390x/kvm/kvm.c
-@@ -298,12 +298,6 @@ void kvm_s390_set_max_pagesize(uint64_t pagesize, Error **errp)
-         return;
-     }
- 
--    if (!hpage_1m_allowed()) {
--        error_setg(errp, "This QEMU machine does not support huge page "
--                   "mappings");
--        return;
--    }
+ static void ccw_machine_register_types(void)
+ {
+     type_register_static(&ccw_machine_info);
+diff --git a/target/s390x/gen-features.c b/target/s390x/gen-features.c
+index 754fc843d24..4346b92431b 100644
+--- a/target/s390x/gen-features.c
++++ b/target/s390x/gen-features.c
+@@ -849,9 +849,6 @@ static uint16_t qemu_MIN[] = {
+     S390_FEAT_GROUP_PLO,
+     S390_FEAT_ESAN3,
+     S390_FEAT_ZARCH,
+-};
 -
-     if (pagesize != 1 * MiB) {
-         error_setg(errp, "Memory backing with 2G pages was specified, "
-                    "but KVM does not support this memory backing");
+-static uint16_t qemu_V3_1[] = {
+     S390_FEAT_DAT_ENH,
+     S390_FEAT_IDTE_SEGMENT,
+     S390_FEAT_STFLE,
+@@ -1055,7 +1052,6 @@ static FeatGroupDefSpec FeatGroupDef[] = {
+  *******************************/
+ static FeatGroupDefSpec QemuFeatDef[] = {
+     QEMU_FEAT_INITIALIZER(MIN),
+-    QEMU_FEAT_INITIALIZER(V3_1),
+     QEMU_FEAT_INITIALIZER(V4_0),
+     QEMU_FEAT_INITIALIZER(V4_1),
+     QEMU_FEAT_INITIALIZER(V6_0),
 -- 
 2.49.0
 
