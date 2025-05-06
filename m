@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC028AAC8A1
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:50:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 919B9AAC8BD
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:53:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCJXW-0003P3-Tj; Tue, 06 May 2025 10:44:59 -0400
+	id 1uCJXI-0002MZ-Ph; Tue, 06 May 2025 10:44:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uCJVR-00027J-Jq
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:50 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1uCJVS-000298-Kd
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:53 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uCJVP-0002Al-PB
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:49 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-43cfa7e7f54so35759865e9.1
+ id 1uCJVQ-0002At-Ua
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:50 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-43cfe63c592so53798355e9.2
  for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:42:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746542566; x=1747147366; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746542567; x=1747147367; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=5dLkOrlPPy6RqMrdEp3suypMzxm+aI7FzNluDE4RITU=;
- b=MxK2lRUPSrsV0Nxj/SWnvmyrnLbHHzmObMNj+wo+FEopXoZtZrdb1oiDLrzk2KeysE
- X7bXfw0gPKoShMY2SDzF+BWk8hUkTgEut64lXQreetdGaVIUUPql+wAp6zIkJs05rCC7
- jD61DGhV0Fj65rLUdG9MATbYqwZhiinZVKtBHnU5kglTd4Kk51/ad2p9tmAIi8ADk/5P
- p2++y/1FCTy+TLVPGq/7tnOoarHOBhrVJEdZcsLKWI8qxaY+Y0h9OiZdGc8g8apjOzaQ
- dYDU+4mKABdZGzve6Y5p+MxUF8EKRBBrxl7d2UOyBvRy/+3s3NA0HeNGrFzKDMEcZWvi
- Iq4A==
+ :reply-to; bh=C/arDs4a2PREB5GkJNcLf5nVqZ2+fR+wYKKH36Jhrbk=;
+ b=eN7OGZq9kOeugwquBNackTCb7sC51ryGE2xlYIceA3kV2427mOJmLJHkcSVEMLcg9W
+ fYixywBuStqMnK8aYY/6YsqlVIIMtCKZqknOe1nFAHlnJU17va/Oc9g17YJpNwCLA5er
+ OAe6PakUDYaTA+ykbmJ4sCrsdw7X5CGoZhr7EsohPtefd/4Gcnj22Wc6ClpbZfjPuFUy
+ bjSIusrWnw00kFRxP764zCh2iWmrEoarwEVEzU3sMGeVEwF4Gh304Gtn9AUxIcezSOaJ
+ D0bz7mRUqbMQFLm5Y984kKW466FqshIUaDRmJe5DHWIJk5dZUUGdTzxS75uCQqJZhckv
+ tNkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746542566; x=1747147366;
+ d=1e100.net; s=20230601; t=1746542567; x=1747147367;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5dLkOrlPPy6RqMrdEp3suypMzxm+aI7FzNluDE4RITU=;
- b=lLiMHLmdFyIZ9Xs0lt1OMbkyvGgFoSV3WsOBWvcPmUt5mxSLkvC3o6FauMr1uXhZLv
- yoXckSde4y+WsYMbf4cbKj1squ3kCrd8DzK7iNYUAmO/FBxo8fVApBdOl3k8wyA/aASY
- 69S8KnDEjJxPPeUqeX6fflFpAl5WOPlbo1LDaFCjx77rIR34PqH1iahp+3CN7D4PCACe
- fpoRRMELNgSUfHQbehAxcKJJLqmL5HX44Jr3Ux3COBxEFxPKNJxMjbl/YAVlbzDC5mnr
- QFA0zUwL1zwGuX82RdEbyx2UY0faxzZmSgRb0BMDiIJ3DGqiSShuJzs08R0t2jFPujfG
- faiQ==
-X-Gm-Message-State: AOJu0YzjHBMisTUIywkq2n/FsuYmU1fNMsjAlp6aXwXPhXFsJwjkY+rL
- HLgnS8BP/BdB2Z7IKNBeMCg1Qy7wTWOnI4OHnw0aVdm9NGQKGzSRHMleaaStdGX64Ye1OQa58YH
- Z
-X-Gm-Gg: ASbGncvSk0oO0fwR4VSU9R3EqTXqz0hBlBgmyzJKbbCbeXrfF3tck6nyJLrOx/OvH8w
- 0UEUFGVgMDRzcGZ+X7EYaWPQ/8zprYp/W6NNGlDzZ0CmRwc4yWnqL0a5+H3zt8Djk8AT9RQnRVX
- fTfl9o6lCAjayb9vmVPxTLib8fKbLAKEhClDox+aMT1NqS1u+8Bhmr+21bpKPqXaLIhVEhPg7QY
- XRjuqdlxlwGJApFgodLj4SySHMWZCiKt7afbV4HlHp8rDfbuZBPjK8yJ7m5nYxD9sDD+k7KcH7q
- cRxR4bENmc3bfgVoZic/k0LHDJoH/e1AQjBdpl9nbxSMw4E=
-X-Google-Smtp-Source: AGHT+IGvtYQsl3VS9HxbyN20MES1ADFUhMX6SVJhDKVbWx2vFh4KadPHT6vlAxWE5yyJiy+xSyfKMA==
-X-Received: by 2002:a05:600c:a10:b0:43b:c6a7:ac60 with SMTP id
- 5b1f17b1804b1-441d3a6e29dmr204705e9.10.1746542565965; 
- Tue, 06 May 2025 07:42:45 -0700 (PDT)
+ bh=C/arDs4a2PREB5GkJNcLf5nVqZ2+fR+wYKKH36Jhrbk=;
+ b=GCg9iIaxZXyX/01Nzo/E1LMgF+QNV64ipbmg/tclkyBKn2Fou3fhcs+AD/B87mW2eH
+ jvWJ1ei1f1bOBxirTSKEAeByZD8On6qcyYB6gPaAOVsPY+U2Yf+NRyk/N2Ql0waVjGlY
+ EQAU2a6sVOiZPPpONR9LaalW3PhTaBaajp5rPWcDSKHUxpmUHIZtbnEQ5PX2mzQKazFe
+ uj2fUNYf3BvhMjLaKtpWpXKCJeJKQHuqzSmS/sCh1Ldt2/YPCRldydiE4TPsfYiUwbgy
+ AM/UDyv5XLIbKvUbAFs32DSwncYStj8U0QSO70honNA7ElY0eVgN/nV0zAxTv3NkeP0B
+ cOAA==
+X-Gm-Message-State: AOJu0YxjvaFsmnWojY7hL+d84KEI2ZXPBJ/NhaDo4J7uuviJYatkoaBV
+ y26hgOViAQygo4y3MZabld2/SDSa1Hpd4APG8LnESeY10uGJghC95YTU+Yv+1c+zHKkMBShyw0z
+ r
+X-Gm-Gg: ASbGnct7ea99o1X1+C70ZLQyAUjpxrLNa9oUIUo9Tg+W2uXuX+sh0LmXDmqmwTCqHXz
+ 4KBmg3ltDb9axlknHVBydU/zxSEMeZSe5AvMVHm+cxws4YNCHt3SEwpte8Y2fKfo2dBYjWrCk+g
+ vOuvKKw8UaxywBQjzMRIXHNIQbnK6Vei9Bc9ZvPCLncVcbpmv1kcYe+8p+SDkZ8gn/ex+srVV1B
+ dR060qq8W6yuCNkue5kO6wgfA0B5ouWbTdYlm/IuU4vUEBcIL/OrX4w41SjBhgMFkoEgdWLJ0Em
+ lClb0R5U2vYFgUwoMIfWizwuhzXDWOPuZH0j5esJy9IvDGM=
+X-Google-Smtp-Source: AGHT+IF3cHzYCabe2u6raDvFFfMaMrZXRpzs9qqGlYT0R9RLInd3SkQ0keguutCoE3rXOfhr9iQpbw==
+X-Received: by 2002:a05:600c:5285:b0:43c:fcbc:9680 with SMTP id
+ 5b1f17b1804b1-441c492376emr88401725e9.25.1746542566842; 
+ Tue, 06 May 2025 07:42:46 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-441b89edfc2sm169603435e9.20.2025.05.06.07.42.44
+ 5b1f17b1804b1-441b89edfc2sm169603435e9.20.2025.05.06.07.42.46
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 May 2025 07:42:44 -0700 (PDT)
+ Tue, 06 May 2025 07:42:46 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 26/32] hw/pci-host/designware: Remove unused include
-Date: Tue,  6 May 2025 15:42:08 +0100
-Message-ID: <20250506144214.1221450-27-peter.maydell@linaro.org>
+Subject: [PULL 27/32] hw/pci-host/designware: Fix viewport configuration
+Date: Tue,  6 May 2025 15:42:09 +0100
+Message-ID: <20250506144214.1221450-28-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250506144214.1221450-1-peter.maydell@linaro.org>
 References: <20250506144214.1221450-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,29 +99,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-The DEFINE_TYPES() macro doesn't need the qemu/module.h include.
+Commit 6970f91ac781, "hw/pci-host/designware: Use deposit/extract
+API" accidentally introduced a copy-and-paste error, causing Linux
+6.14 to hang when initializing the PCIe bridge on the imx8mp-evk
+machine.  This fix corrects the error.
 
-Fixes: 13a07eb146c8 ("hw/pci-host/designware: Declare CPU QOM types using DEFINE_TYPES() macro")
+Fixes: 6970f91ac781 ("hw/pci-host/designware: Use deposit/extract API")
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20250501183445.2389-2-shentey@gmail.com
+Message-id: 20250501183445.2389-3-shentey@gmail.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/pci-host/designware.c | 1 -
- 1 file changed, 1 deletion(-)
+ hw/pci-host/designware.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
-index 183f838392c..b4bff145794 100644
+index b4bff145794..f6e49ce9b8d 100644
 --- a/hw/pci-host/designware.c
 +++ b/hw/pci-host/designware.c
-@@ -20,7 +20,6 @@
+@@ -348,14 +348,14 @@ static void designware_pcie_root_config_write(PCIDevice *d, uint32_t address,
  
- #include "qemu/osdep.h"
- #include "qapi/error.h"
--#include "qemu/module.h"
- #include "qemu/log.h"
- #include "qemu/bitops.h"
- #include "hw/pci/msi.h"
+     case DESIGNWARE_PCIE_ATU_LOWER_BASE:
+     case DESIGNWARE_PCIE_ATU_UPPER_BASE:
+-        viewport->base = deposit64(root->msi.base,
++        viewport->base = deposit64(viewport->base,
+                                    address == DESIGNWARE_PCIE_ATU_LOWER_BASE
+                                    ? 0 : 32, 32, val);
+         break;
+ 
+     case DESIGNWARE_PCIE_ATU_LOWER_TARGET:
+     case DESIGNWARE_PCIE_ATU_UPPER_TARGET:
+-        viewport->target = deposit64(root->msi.base,
++        viewport->target = deposit64(viewport->target,
+                                      address == DESIGNWARE_PCIE_ATU_LOWER_TARGET
+                                      ? 0 : 32, 32, val);
+         break;
 -- 
 2.43.0
 
