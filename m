@@ -2,76 +2,194 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49BDBAAC224
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 13:11:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE0E1AAC2DD
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 13:40:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCGCJ-0000pm-SJ; Tue, 06 May 2025 07:10:51 -0400
+	id 1uCGdL-00015N-0u; Tue, 06 May 2025 07:38:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uCGCH-0000pM-Ks
- for qemu-devel@nongnu.org; Tue, 06 May 2025 07:10:49 -0400
-Received: from mgamail.intel.com ([198.175.65.19])
+ (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
+ id 1uCGdH-00014y-Pg; Tue, 06 May 2025 07:38:43 -0400
+Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uCGCD-0007uO-1R
- for qemu-devel@nongnu.org; Tue, 06 May 2025 07:10:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746529845; x=1778065845;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=134B174huVrNU1svq1lCpmS92R3Sb0w20q83eRIjDPI=;
- b=dRHsFsjfbLiPAWCfb7I72zNF3uxH/V8lRbTm5XnDzk6RIDO+LZ3SxLKW
- Bt41jgTZNNSwDkAVl1ronD/1caFLRBKu3avnl1KsmH2Qy7bIbT+RXJKLk
- UwjzRD/mWMGL8/ikw3xofnYPKJRQmhcLyuflIfItcyiCr9WkmcR2mac/r
- HTcHfKq1mw50qZ1JTMhHnUrJqGnD82yQcTlG2sVKxYICsssxb/ZyBVhFq
- cUS3wd7FvbMcZ2Aqzq0MjhUc1qLkqWkhooyfmabbdDq6Gs741+K1isoWz
- vmdWtob0gOR/IjquYFbra5+R1d226IacEzfQnIr1PeJrfCKtQWobYwtXI g==;
-X-CSE-ConnectionGUID: bgo+LBuwTiOttb6vFpVNoQ==
-X-CSE-MsgGUID: 0alpUygvTmGDnN7NA0wwug==
-X-IronPort-AV: E=McAfee;i="6700,10204,11424"; a="48062521"
-X-IronPort-AV: E=Sophos;i="6.15,266,1739865600"; d="scan'208";a="48062521"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2025 04:10:42 -0700
-X-CSE-ConnectionGUID: k85JMqPQTgeUa954l+4pcg==
-X-CSE-MsgGUID: 88cF80TSTNKirqJVfTgelg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,266,1739865600"; d="scan'208";a="166636880"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa001.fm.intel.com with ESMTP; 06 May 2025 04:10:39 -0700
-Date: Tue, 6 May 2025 19:31:39 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
+ (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
+ id 1uCGdF-0002fs-M2; Tue, 06 May 2025 07:38:43 -0400
+Received: from pps.filterd (m0127837.ppops.net [127.0.0.1])
+ by mx0a-002c1b01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 546A9EJ2016435;
+ Tue, 6 May 2025 04:38:35 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
+ cc:content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ proofpoint20171006; bh=Aqw8X79Pb1nPpxm8sKPSQE35gxiIU2KBV82k+N1Cz
+ ns=; b=DjSY4SUwdfWkVXmxe2TUazxE6s4smjiFY/+zhSRfN6z9A03R7Bm30yBxf
+ l95MG1zTZlz2M46IaDKL5YS8h7HKRRxGnFEnzM44Ylzrh7kA4+LdiTzaQDOamlq1
+ Qx140kccfF/0BR4I18x/X40Ee/B58IQiHEyYVUixgPKZvynCwNzvs4CHcKvjWPAp
+ mBIsuB/CllmFq2wXUEA+KQWI+ooqwaY31vgPHIvN/p7awG/EAPvlbGXoKh6iPY1r
+ A2R4PlrWD5SPLknFD8XDr6uBt0795LTJS6ST0p6mMn6TwnIinvxaFc8TAUiGBqXw
+ paR3voUAZEJ+nFzxlRHZcbzexBvWw==
+Received: from ch1pr05cu001.outbound.protection.outlook.com
+ (mail-northcentralusazlp17010007.outbound.protection.outlook.com
+ [40.93.20.7])
+ by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 46df295sps-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 06 May 2025 04:38:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=scxtNVZg419rwhXqDR8bnbE2fb4H/0Bg2n6peBl3XS3ICkUZxDoyEi6eycdZTG8FyxTdI881VDTRcY2XdMefcoJAfkwxSWaMey965B6y4eVAwmZlu1E4EKagEjCpM6plz/O6fnoP94x262vLwqZatG9BBkbLjG9gIbH07GJ+4ZKDwcRl9n3Po6cOPkQqo1Jy5+k3hSSw9bPY2w/KmOQPUVQ5gtrRUtBMvX+iZaK/uLJIzv7rh5O2eQK4FhiZyafSolskMkIH+rp6EiRZvQd+hWEZRKNMXXVSEuG3E4SC9lDY2/yeeG8cdm8eYDrEEsukV/uXWdAuvP+ZBMN6pRg9pw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ukzatl2XLuleSymUBYj2iuS1baYJpd+A4XHYhU80E1c=;
+ b=zTPgNOBObMzYOqoa+RbMe/U3Yp9VtcP4YPgS6SudPTxvT7tZjO54x/O1e2XotaqtIw/oPmcri8G3qSyuzUKYTXtbjdcTKdWG9QR+yUyMOBdmwNHUx8SSyxErOFndOQO9pxUZzvd3HtkkrkT7hMcMpXtHcRUNK6I6HHvEjtKONvjXzmGgLfTrjTVPrGkpuwRS1r8lgdO9bQK7apSGSIZ1J9GrY3sjtB8xXy+zcwsS0qVKBfkg6SdCGYtBDFfURp2s7jk2P0ahIMr+Xhpt/DHp6WWUOK3Qnzt2TF6TnN/+UioxWKw0WaOQmUWIYzKl4FCjppq0KJAcl4v2SEBpXmVYXQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
+ dkim=pass header.d=nutanix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ukzatl2XLuleSymUBYj2iuS1baYJpd+A4XHYhU80E1c=;
+ b=hvMpNBgR4QvZkUW4PTksOAPdJdQ3Pmc4dr9FFqRn5jRljq3dTsQ6fxmtg/ag8yXNXY7jmiVtMXT1KfrILyBkTkgN8A5P0EVYIZfNIE3VUUJKkCEX18kZ3gXOYEpXGqQ4+BYiUwKp3ZUQjI1pSTcLlSb8fJVVpEDv1uZcFRIycV54FU+3ht8/cfyjyQyCgmDL1iZava2tYTmO0xnGRfhFpHEi71vNwQZiQ34t2A2E4/FyTd8Jtydx0Q0IDKIG36tI9U9zxzFjvhd1vOZblVq2+pmZtmCMSdK28HS28uNbC4BM0WTnNGjL7mTKfLkPuMzP8XFI0hd58KQYAlHp2f3UfA==
+Received: from CH2PR02MB6760.namprd02.prod.outlook.com (2603:10b6:610:7f::9)
+ by PH0PR02MB7288.namprd02.prod.outlook.com (2603:10b6:510:9::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.19; Tue, 6 May
+ 2025 11:38:27 +0000
+Received: from CH2PR02MB6760.namprd02.prod.outlook.com
+ ([fe80::fd77:ea65:a159:ef51]) by CH2PR02MB6760.namprd02.prod.outlook.com
+ ([fe80::fd77:ea65:a159:ef51%5]) with mapi id 15.20.8722.011; Tue, 6 May 2025
+ 11:38:27 +0000
+Date: Tue, 6 May 2025 12:38:22 +0100
+From: John Levon <john.levon@nutanix.com>
+To: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, qemu-s390x@nongnu.org,
+ Jason Herne <jjherne@linux.ibm.com>, Tomita Moeko <tomitamoeko@gmail.com>,
  Markus Armbruster <armbru@redhat.com>,
- Francesco Lavra <francescolavra.fl@gmail.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>, David Hildenbrand <david@redhat.com>,
  Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH v8 46/55] i386/tdx: Add supported CPUID bits related to
- TD Attributes
-Message-ID: <aBnzG0e+Dea5S3sR@intel.com>
-References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
- <20250401130205.2198253-47-xiaoyao.li@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Tony Krowiak <akrowiak@linux.ibm.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Halil Pasic <pasic@linux.ibm.com>
+Subject: Re: [PATCH v2 04/15] vfio: add vfio_device_get_irq_info() helper
+Message-ID: <aBn0rtBxPyFDOaF2@lent>
+References: <20250430194003.2793823-1-john.levon@nutanix.com>
+ <20250430194003.2793823-5-john.levon@nutanix.com>
+ <21e7accb-f5e3-4f8c-aa76-e9e2f2094fb6@redhat.com>
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250401130205.2198253-47-xiaoyao.li@intel.com>
-Received-SPF: pass client-ip=198.175.65.19; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -57
-X-Spam_score: -5.8
-X-Spam_bar: -----
-X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <21e7accb-f5e3-4f8c-aa76-e9e2f2094fb6@redhat.com>
+X-Url: http://www.movementarian.org/
+X-ClientProxiedBy: AS4P251CA0019.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d3::7) To CH2PR02MB6760.namprd02.prod.outlook.com
+ (2603:10b6:610:7f::9)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR02MB6760:EE_|PH0PR02MB7288:EE_
+X-MS-Office365-Filtering-Correlation-Id: b1a7dffa-f56c-4c53-629f-08dd8c92843e
+x-proofpoint-crosstenant: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?llG9jnNclf0k1IVnXZnXGq4sKtkV+/biPhpkH5wOnaqAu5IBwLTffrt2mN?=
+ =?iso-8859-1?Q?//OlHPBlCq6IorXiI0lMBJxQoFmIxgq4aP5sKo/EiqxxvldoWz72Anni9k?=
+ =?iso-8859-1?Q?sC65h7m58JxnOwAS3/Ikmsw7EB5hOWvXtDVMLBhAiO6LRvcJCVNeDxU/IJ?=
+ =?iso-8859-1?Q?o/tyCWN9WwkvJ9WpiWZ4ST3WaKhc3PKAsFwfZVqb5ooMu8+R1eEpHOq/Bj?=
+ =?iso-8859-1?Q?FU6jTnjG4mttSX4919cP71OTQ8lEngKtdNRA0lJ9u/bBYuR/LDkHs05t4c?=
+ =?iso-8859-1?Q?OtUAPgXIHfdYmkhQCzrAaoe4Edg3cUBglRUMJRrnxUhHM6VxRzWXqPIlBF?=
+ =?iso-8859-1?Q?pU/p0OYNb3Njs/6JZ2B8psadCGorNR39HQzi+N5GV0O1ZBoqsMwAXJEab2?=
+ =?iso-8859-1?Q?e0k+2t8/rg0XbH+HfqL9BR9edl6s5zu0pqk1swTcwl8dYWRYcJhgRxTDp1?=
+ =?iso-8859-1?Q?p4wa11QnGa1KZVAiQCd36n1R7PgY7lKzQbbY06fZ2/XncnyUG3mUszI2vF?=
+ =?iso-8859-1?Q?N9SZeFMTJ6vBttL+I/v3wNdyNTfLAUp3BtNr8gfXgvf2t0LmfZr9AzoHY2?=
+ =?iso-8859-1?Q?n9Au4OumA38YXklFQ0IBjMTPaTaYI+hk33Z4uRNCr19UioAJQJGIQo9/tp?=
+ =?iso-8859-1?Q?cXFgMREDgbB5aVqAC9bl8zOje8wEDnXAvm3tDLtH/LQmpLHzJWi4V8w7SI?=
+ =?iso-8859-1?Q?qYBAG0BGwMr02JWoKX93bRKomqx2NSJ0SEWDy54liuVJALDR8tbOcjDTXp?=
+ =?iso-8859-1?Q?o7SXfDfOgzn7eBIef7kuxlecTceIN7MsmODLToCfkbkkNMCEpyyaNkWcOQ?=
+ =?iso-8859-1?Q?VFWb/4m/vr4NyJTE42W/lhw5hTuV8AGf+yuaL5DR9ls5BaoXjUt+cxeBey?=
+ =?iso-8859-1?Q?tuNGYgYEa7PZfpLU3XXJpiIOW14M+HIF1oBQ+4rRwUe/WT6VIqA7yHBnLF?=
+ =?iso-8859-1?Q?zFETUjOLzGENVq46Jp7pRE3IfzbinQ92ZkGvTMPMFSIZKWkhll2OACr8Mb?=
+ =?iso-8859-1?Q?70ZIWOiJXWuUE14uuBYKcEDsApYbp4WYSFN/XgKO1rChBA2GbDrFTPJaJ9?=
+ =?iso-8859-1?Q?LqEkO6pC3mQtSnmfFKy5LZyI1pzuAuUScCBp4U4h9HlaFPIvFHGacdFTxV?=
+ =?iso-8859-1?Q?9NNaeZIQTmwEl63ws99MpsB+htKCxkynnpKTvnKawPJS98byGMgTi0ngC+?=
+ =?iso-8859-1?Q?oEFsRUigxNp5RpjxVGYXLX/h7s7504NiAWvp7XNaOKnZ9OvzG5vM9HK+TS?=
+ =?iso-8859-1?Q?uJ87121FpXGiDOXjPgwkOflu7iCkbK+cSE9K+S45BYeBfgixRaEoG6eFO0?=
+ =?iso-8859-1?Q?EMJ0Gwusu0v+/iv1YT0D8Dj8LvbsVeFThz6/veb8vFLUV2mveidI5BRcCo?=
+ =?iso-8859-1?Q?EdeKQZAtV7EhOCUBV33YzdZrLdDG/L6Dq/leXJuMwoVAFy0jFLXGzzWc2X?=
+ =?iso-8859-1?Q?jZwW/cjhc83vU5aIlq09vJyVtNq04XfGW0USZggtRncYYUr7Ka+xMd6TAt?=
+ =?iso-8859-1?Q?E=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH2PR02MB6760.namprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(7416014)(376014)(366016); DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?kNbMZbMUYHWnPrdcWuN8BXBI45bhvoqaMkGEaubLix1a4VU2UtW1DJoPp9?=
+ =?iso-8859-1?Q?O8Ub+jxZlRT966oHUGbxBbSaIfPiTmWumMH4xg2sZD/6BgRVhDKqa+aEAg?=
+ =?iso-8859-1?Q?4Dyty/0ODse88YvJd0A6PB/rZj264JAHIvEpujoWW6dkxmP5vkOpSpZQxP?=
+ =?iso-8859-1?Q?ePsLVzm4XLtwRS5WkqoSamNf4RBv8dlzMv7QLDtdL93UVOIfMXG6TCACn6?=
+ =?iso-8859-1?Q?xdSR/2t68tmsQwQZz1mGND1Qw1sqpx8Ae5gdligYu7yjERamnlPkDHkhdT?=
+ =?iso-8859-1?Q?lAVv6dueM0uBbPpdnalT+MfxVF3KpbkG/Yr+T65xbBwOVpoGe+dmQGNvsG?=
+ =?iso-8859-1?Q?4vjue4ACaoCzh1itq+kDyMrR0HBgTsW4x/jmzngHCUqWoGAuZcIr6+8vW4?=
+ =?iso-8859-1?Q?g8LJnHofQf+nvYfK4+KZv41vsMc7dLk1Lipx74vZPbIIU/sSRF+A9vRAi6?=
+ =?iso-8859-1?Q?KQd2152Zf/KqkwE06kfGRIosEJGO39X4EWqtdk0cezFDwTedyg0XKNF/Cj?=
+ =?iso-8859-1?Q?3mLlAWUR5FI9bB0ntPXKLY/+uiApJMDqZCcwF+E6T6BqA4NwKDJt/Og7vS?=
+ =?iso-8859-1?Q?pcKzKhs2P9zIC0jN4cV1oXP+o9PZ7vN3QTF+Ls0rSjg2pBsFEtORU6IyH8?=
+ =?iso-8859-1?Q?SwHWZaAyEnUfMcJ1zJfs6P/2IYi0YF9kWGBtZdratU9OZK5KGgj9g0Y+fu?=
+ =?iso-8859-1?Q?sYJKRhe1D5ShRaJIg/XC3QmRVBz3yy3OBTAEb+ZVm7TvvCPKRpwUSRU3Ha?=
+ =?iso-8859-1?Q?ezDErUW9NvPyhUr2r8xXp65ASIGMkrTujzJgFxj30kPWUy2nWC5oPl/HkC?=
+ =?iso-8859-1?Q?s24kbqvxtXzolaBeFsBVCPPFh26HX1cIl1wCT9T8QLD0BsZC0gUeP5z5Gh?=
+ =?iso-8859-1?Q?xEJDaFfjHtPu2ucU/Zo7wi1k7MWPGusxn7arLEfaTCzk8wvRHJuibd/0nS?=
+ =?iso-8859-1?Q?1XYa5tE3yqOfafRonmm5UC9u7z9H/8xnGsExeBnjiyd2P4rYDpXxOk8hwe?=
+ =?iso-8859-1?Q?XhLK+lfJ/jIbQDpxK5K9q2hygkOVliMrQExPSWtovmP0OuIJymyAt+wmkz?=
+ =?iso-8859-1?Q?du7/rzZQe+7Kwe1iPr8xLLMPqc0KutgMJXvqD+iCvZrzjf/S0YgrluKgh9?=
+ =?iso-8859-1?Q?lXy978iJIeeUMVXcvq8f9mmRJJRc4OaEN3LGPDo35YAvsJrE6ZDjx1lJgA?=
+ =?iso-8859-1?Q?ZO69xeYSkDbBzJOwtw50ARGBEEuLZ/tGgD7bwfQAD5Ngq2IP0iQgeUmw1F?=
+ =?iso-8859-1?Q?tJ/bxTC5hhT65GsaXzWJ2vl9xm6wEKlYOVEAKLMrf0rBEMQqWXcTIT4MNE?=
+ =?iso-8859-1?Q?6oh4UmCmhlL6f31JGB7kNCZje1msBRLAa0IDYvjxc/neYsL0s8C1w7E2II?=
+ =?iso-8859-1?Q?x9VCDjKk8oo/Deeyz2tjhMJhuWrhLIuJ4i3UB1nZ83EANgK7hruqfGhREk?=
+ =?iso-8859-1?Q?ZSMZA+gc/i/uz+kM8KLd8djWixo1TFLJ+guVvQeODFNe8vXxS1fAX+O2GY?=
+ =?iso-8859-1?Q?Gw+wmNc6nY3RR4dtKDiu7Fq6JdSJMxeXl3Ugl9CHKbDvHGCeNRFiJd4njL?=
+ =?iso-8859-1?Q?+8K+apkknp2mqfjplpMQNsCf/wpd85t0b2l3U8QfHqs8xKFfGmh0Z8O+kG?=
+ =?iso-8859-1?Q?BLS/6J8XgIDyx2vPR5YKyegnI77Fd/omrJ?=
+X-OriginatorOrg: nutanix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b1a7dffa-f56c-4c53-629f-08dd8c92843e
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR02MB6760.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2025 11:38:27.2690 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2MHc96xHMy8uO7uybL/647wy5BDLEJqIwSJJLKM0VlpN2QHXQo2WiELgSUXyvjW8/NMGDOpRvWzqcLK1zQTX6A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR02MB7288
+X-Authority-Analysis: v=2.4 cv=WtErMcfv c=1 sm=1 tr=0 ts=6819f4bb cx=c_pps
+ a=2D6/CIrCIWs5X5ruZf5FWQ==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
+ a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10
+ a=dt9VzEwgFbYA:10 a=0kUYKlekyDsA:10 a=fftdXDaRshV6qFOD4U8A:9 a=3ZKOabzyN94A:10
+ a=wPNLvfGTeEIA:10 a=QYH75iMubAgA:10
+X-Proofpoint-GUID: tcFBtER5h6U_eioT1MRJGqAk8CNAelcB
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA2MDExMSBTYWx0ZWRfX08WGWeB6Dnkp
+ 9g8aU5hpgpIRYwQDVMQqvsf/ybPyVpy9N6dyOFtUr43N1ut6wDu3QyjqEj4tDDmzKpqVlZoVuZo
+ jNMEnyxDu38EKDdAPhZyeHmsgsxBps9A9OHyWwxajGZRz+67jxZhDxat7Jlq5ikkEXqSBWn8B7/
+ fvmok6rGcufO/mmL/7n4oWr1pmZwUYtsQp+LmRVBDysFVKCOs1CBlOcEIOBc3Mhlw3j9n7+xu7A
+ HNVCDenk1tqIeveiaoH+tlAK+lPhEIQ89WxiU7zOFAJJX0Di8yk1zIunUIkeUbSk79BfbGDAQjl
+ IXu9Ts5EZ5IFSq+17DvJ446hWLBIoG02zHcXdtn2boTsNBiV6NzyynwcYPBzrvxHzIDqX/n6+hh
+ WTBW+s2uSDT/VXhd28vUpADH5uzJlJDYi5EfKrNLuEXB4mAwkjVR78J///L0uiaEM9HsFflt
+X-Proofpoint-ORIG-GUID: tcFBtER5h6U_eioT1MRJGqAk8CNAelcB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-06_05,2025-05-05_01,2025-02-21_01
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=148.163.151.68;
+ envelope-from=john.levon@nutanix.com; helo=mx0a-002c1b01.pphosted.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -89,56 +207,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Apr 01, 2025 at 09:01:56AM -0400, Xiaoyao Li wrote:
-> Date: Tue,  1 Apr 2025 09:01:56 -0400
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: [PATCH v8 46/55] i386/tdx: Add supported CPUID bits related to TD
->  Attributes
-> X-Mailer: git-send-email 2.34.1
+On Mon, May 05, 2025 at 11:19:30AM +0200, Cédric Le Goater wrote:
+
+> > +int vfio_device_get_irq_info(VFIODevice *vbasedev, int index,
+> > +                                struct vfio_irq_info *info);
 > 
-> For TDX, some CPUID feature bit is configured via TD attributes. They
-> are not covered by tdx_caps.cpuid (which only contians the configurable
-> bits), but they are actually supported when the related attributre bit
-> is supported.
-> 
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> ---
->  target/i386/cpu.h     |  4 +++
->  target/i386/kvm/tdx.c | 59 +++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 63 insertions(+)
-> 
-> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index 115137279a1a..0e984ec42bb6 100644
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -903,6 +903,8 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
->  #define CPUID_7_0_ECX_LA57              (1U << 16)
->  /* Read Processor ID */
->  #define CPUID_7_0_ECX_RDPID             (1U << 22)
-> +/* KeyLocker */
-> +#define CPUID_7_0_ECX_KeyLocker         (1U << 23)
->  /* Bus Lock Debug Exception */
->  #define CPUID_7_0_ECX_BUS_LOCK_DETECT   (1U << 24)
->  /* Cache Line Demote Instruction */
-> @@ -963,6 +965,8 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
->  #define CPUID_7_1_EAX_AVX_VNNI          (1U << 4)
->  /* AVX512 BFloat16 Instruction */
->  #define CPUID_7_1_EAX_AVX512_BF16       (1U << 5)
-> +/* Linear address space separation */
-> +#define CPUID_7_1_EAX_LASS              (1U << 6)
->  /* CMPCCXADD Instructions */
->  #define CPUID_7_1_EAX_CMPCCXADD         (1U << 7)
->  /* Fast Zero REP MOVS */
+> This is breaking the windows build.
 
-The whole framework is very good for me. 
+Sorry, I forgot to set up cross-compile. I've done so now, and it was actually
+vfio_device_prepare() that was broken, I think, as it was outside of the linux
+ifdef.
 
-Since LASS/key locker are not yet supported, I think it's better to add
-the note (in the commit message or code) that they are helpful for
-future enabling. Of course, removing these two features would be best,
-as they cannot be covered by current testing.
-
-Regards,
-Zhao
-
-
+regards
+john
 
