@@ -2,103 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06CA8AABE14
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 11:02:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC37DAABE6A
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 11:08:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCEBD-0001GS-GY; Tue, 06 May 2025 05:01:35 -0400
+	id 1uCEH4-0003AR-1a; Tue, 06 May 2025 05:07:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=fu8x=XW=kaod.org=clg@ozlabs.org>)
- id 1uCEB9-0001Fn-MM; Tue, 06 May 2025 05:01:31 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1uCEGt-00038D-IP; Tue, 06 May 2025 05:07:27 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=fu8x=XW=kaod.org=clg@ozlabs.org>)
- id 1uCEB7-0000Gx-6y; Tue, 06 May 2025 05:01:31 -0400
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4ZsC7B3bwtz4x8f;
- Tue,  6 May 2025 19:01:26 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (Client did not present a certificate)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4ZsC764j8Vz4wbV;
- Tue,  6 May 2025 19:01:22 +1000 (AEST)
-Message-ID: <2043a4a4-a700-4562-8a46-846fb5a8e8b3@kaod.org>
-Date: Tue, 6 May 2025 11:01:20 +0200
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1uCEGq-0001P2-IV; Tue, 06 May 2025 05:07:27 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZsCCF3Jxfz6K5nM;
+ Tue,  6 May 2025 17:04:57 +0800 (CST)
+Received: from frapeml500005.china.huawei.com (unknown [7.182.85.13])
+ by mail.maildlp.com (Postfix) with ESMTPS id DACC314050C;
+ Tue,  6 May 2025 17:07:20 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (7.182.85.71) by
+ frapeml500005.china.huawei.com (7.182.85.13) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 6 May 2025 11:07:20 +0200
+Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
+ frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
+ Tue, 6 May 2025 11:07:20 +0200
+To: "eric.auger@redhat.com" <eric.auger@redhat.com>, Donald Dutile
+ <ddutile@redhat.com>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Markus Armbruster
+ <armbru@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, "Daniel P.
+ Berrange" <berrange@redhat.com>, =?utf-8?B?QWxleCBCZW5uw6ll?=
+ <alex.bennee@linaro.org>
+CC: "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
+ <nicolinc@nvidia.com>, "nathanc@nvidia.com" <nathanc@nvidia.com>,
+ "mochs@nvidia.com" <mochs@nvidia.com>, "smostafa@google.com"
+ <smostafa@google.com>, Linuxarm <linuxarm@huawei.com>, "Wangzhou (B)"
+ <wangzhou1@hisilicon.com>, jiangkunkun <jiangkunkun@huawei.com>, "Jonathan
+ Cameron" <jonathan.cameron@huawei.com>, "zhangfei.gao@linaro.org"
+ <zhangfei.gao@linaro.org>
+Subject: RE: [PATCH v2 1/6] hw/arm/smmuv3: Add support to associate a PCIe RC
+Thread-Topic: [PATCH v2 1/6] hw/arm/smmuv3: Add support to associate a PCIe RC
+Thread-Index: AQHbu1V0fvNxmQCU0kS/eGPfhGB2G7O/hJOAgAQP+QCAAbsnAA==
+Date: Tue, 6 May 2025 09:07:20 +0000
+Message-ID: <aa895207758d4515986fd6cfe05b5917@huawei.com>
+References: <20250502102707.110516-1-shameerali.kolothum.thodi@huawei.com>
+ <20250502102707.110516-2-shameerali.kolothum.thodi@huawei.com>
+ <03c31d89-ad24-4470-99d0-a77e693e3ba2@redhat.com>
+ <fd3219d3-bab3-4991-afbe-fd80549bbca4@redhat.com>
+In-Reply-To: <fd3219d3-bab3-4991-afbe-fd80549bbca4@redhat.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.203.177.241]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 01/22] hw/misc/aspeed_hace: Remove unused code for
- better readability
-To: Jamin Lin <jamin_lin@aspeedtech.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
- Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-Cc: Troy Lee <troy_lee@aspeedtech.com>
-References: <20250321092623.2097234-1-jamin_lin@aspeedtech.com>
- <20250321092623.2097234-2-jamin_lin@aspeedtech.com>
- <1c4176c4-6077-4260-b96d-69ab5b920afb@kaod.org>
- <SI2PR06MB5041C4C35CD83984D7A7FC5DFC8E2@SI2PR06MB5041.apcprd06.prod.outlook.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Autocrypt: addr=clg@kaod.org; keydata=
- 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
-In-Reply-To: <SI2PR06MB5041C4C35CD83984D7A7FC5DFC8E2@SI2PR06MB5041.apcprd06.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=fu8x=XW=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=shameerali.kolothum.thodi@huawei.com;
+ helo=frasgout.his.huawei.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
 X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,182 +82,113 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/5/25 05:28, Jamin Lin wrote:
-> Hi Cédric
-> 
->> Subject: Re: [PATCH v1 01/22] hw/misc/aspeed_hace: Remove unused code for
->> better readability
->>
->> On 3/21/25 10:25, Jamin Lin wrote:
->>> This cleanup follows significant changes in commit 4c1d0af4a28d,
->>> making the model more readable.
->>>
->>> - Deleted "iov_cache" and "iov_count" from "AspeedHACEState".
->>
->> It would be good to say why we can remove these. I think this is because
->> s->iov_count is always zero, right ?
->>
->>> - Removed "reconstruct_iov" function and related logic.
->>> - Simplified "do_hash_operation" by eliminating redundant checks.
->>>
->>> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
->>> ---
->>>    include/hw/misc/aspeed_hace.h |  2 --
->>>    hw/misc/aspeed_hace.c         | 35 -----------------------------------
->>>    2 files changed, 37 deletions(-)
->>>
->>> diff --git a/include/hw/misc/aspeed_hace.h
->>> b/include/hw/misc/aspeed_hace.h index 5d4aa19cfe..b69a038d35 100644
->>> --- a/include/hw/misc/aspeed_hace.h
->>> +++ b/include/hw/misc/aspeed_hace.h
->>> @@ -31,10 +31,8 @@ struct AspeedHACEState {
->>>        MemoryRegion iomem;
->>>        qemu_irq irq;
->>>
->>> -    struct iovec iov_cache[ASPEED_HACE_MAX_SG];
->>>        uint32_t regs[ASPEED_HACE_NR_REGS];
->>>        uint32_t total_req_len;
->>> -    uint32_t iov_count;
->>>
->>>        MemoryRegion *dram_mr;
->>>        AddressSpace dram_as;
->>> diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c index
->>> 32a5dbded3..8e7e8113a5 100644
->>> --- a/hw/misc/aspeed_hace.c
->>> +++ b/hw/misc/aspeed_hace.c
->>> @@ -137,25 +137,6 @@ static bool has_padding(AspeedHACEState *s,
->> struct iovec *iov,
->>>        return false;
->>>    }
->>>
->>> -static int reconstruct_iov(AspeedHACEState *s, struct iovec *iov, int id,
->>> -                           uint32_t *pad_offset)
->>> -{
->>> -    int i, iov_count;
->>> -    if (*pad_offset != 0) {
->>> -        s->iov_cache[s->iov_count].iov_base = iov[id].iov_base;
->>> -        s->iov_cache[s->iov_count].iov_len = *pad_offset;
->>> -        ++s->iov_count;
->>> -    }
->>> -    for (i = 0; i < s->iov_count; i++) {
->>> -        iov[i].iov_base = s->iov_cache[i].iov_base;
->>> -        iov[i].iov_len = s->iov_cache[i].iov_len;
->>> -    }
->>> -    iov_count = s->iov_count;
->>> -    s->iov_count = 0;
->>> -    s->total_req_len = 0;
->>> -    return iov_count;
->>> -}
->>> -
->>>    static void do_hash_operation(AspeedHACEState *s, int algo, bool
->> sg_mode,
->>>                                  bool acc_mode)
->>>    {
->>> @@ -237,19 +218,6 @@ static void do_hash_operation(AspeedHACEState *s,
->> int algo, bool sg_mode,
->>>            iov[0].iov_base = haddr;
->>>            iov[0].iov_len = len;
->>>            i = 1;
->>> -
->>> -        if (s->iov_count) {
->>> -            /*
->>> -             * In aspeed sdk kernel driver, sg_mode is disabled in
->> hash_final().
->>> -             * Thus if we received a request with sg_mode disabled, it is
->>> -             * required to check whether cache is empty. If no, we should
->>> -             * combine cached iov and the current iov.
->>> -             */
->>> -            s->total_req_len += len;
->>> -            if (has_padding(s, iov, len, &total_msg_len, &pad_offset)) {
->>> -                i = reconstruct_iov(s, iov, 0, &pad_offset);
->>> -            }
->>> -        }
->>>        }
->>>
->>>        if (acc_mode) {
->>> @@ -273,7 +241,6 @@ static void do_hash_operation(AspeedHACEState *s,
->> int algo, bool sg_mode,
->>>                qcrypto_hash_free(s->hash_ctx);
->>>
->>>                s->hash_ctx = NULL;
->>> -            s->iov_count = 0;
->>>                s->total_req_len = 0;
->>>            }
->>>        } else if (qcrypto_hash_bytesv(algo, iov, i, &digest_buf, @@
->>> -432,7 +399,6 @@ static void aspeed_hace_reset(DeviceState *dev)
->>>        }
->>>
->>>        memset(s->regs, 0, sizeof(s->regs));
->>> -    s->iov_count = 0;
->>>        s->total_req_len = 0;
->>>    }
->>>
->>> @@ -469,7 +435,6 @@ static const VMStateDescription
->> vmstate_aspeed_hace = {
->>>        .fields = (const VMStateField[]) {
->>>            VMSTATE_UINT32_ARRAY(regs, AspeedHACEState,
->> ASPEED_HACE_NR_REGS),
->>>            VMSTATE_UINT32(total_req_len, AspeedHACEState),
->>> -        VMSTATE_UINT32(iov_count, AspeedHACEState),
->>
->> This is a vmstate change which is breaking migration compatibility.
->> We could preserve compatibility [1] but I think this is overkill.
->> However, we should say so. Please add a comment in the commit log.
->>
-> 
-> How about the following commit log:
-> 
-> ```
-> hw/misc/aspeed_hace: Remove unused code for better readability
-> 
-> In the previous design of the hash framework, accumulative hashing was not
-> supported. To work around this limitation, commit 5cd7d85 introduced an
-> iov_cache array to store all the hash data from firmware.
-> Once the ASPEED HACE model collected all the data, it passed the iov_cache to
-> the hash API to calculate the final digest.
-> 
-> However, with commit e3c0752, the hash framework now supports accumulative
-> hashing. This allows us to refactor the ASPEED HACE model, removing redundant
-> logic and simplifying the implementation for better readability and
-> maintainability.
-> 
-> As a result, the iov_count variable is no longer needed—it was previously used
-> to track how many cached entries were used for hashing.
-> To maintain VMSTATE compatibility after removing this field, the VMSTATE_VERSION
-> is bumped to 2
-> 
-> This cleanup follows significant changes in commit 4c1d0af4a28d, making the
-> model more readable.
-> 
-> - Deleted "iov_cache" and "iov_count" from "AspeedHACEState".
-> - Removed "reconstruct_iov" function and related logic.
-> - Simplified "do_hash_operation" by eliminating redundant checks.
-> ```
-
-
-OK Let's see in v2.
-
-
-Thanks,
-
-C.
-
-
-> Thans-Jamin
-> 
->> Thanks,
->>
->> C.
->>
->> [1]
->> https://qemu.readthedocs.io/en/v9.2.0/devel/migration/main.html#vmstate
->>
->>>            VMSTATE_END_OF_LIST(),
->>>        }
->>>    };
-> 
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRXJpYyBBdWdlciA8ZXJp
+Yy5hdWdlckByZWRoYXQuY29tPg0KPiBTZW50OiBNb25kYXksIE1heSA1LCAyMDI1IDk6MTkgQU0N
+Cj4gVG86IERvbmFsZCBEdXRpbGUgPGRkdXRpbGVAcmVkaGF0LmNvbT47IFNoYW1lZXJhbGkgS29s
+b3RodW0gVGhvZGkNCj4gPHNoYW1lZXJhbGkua29sb3RodW0udGhvZGlAaHVhd2VpLmNvbT47IHFl
+bXUtYXJtQG5vbmdudS5vcmc7DQo+IHFlbXUtZGV2ZWxAbm9uZ251Lm9yZzsgTWFya3VzIEFybWJy
+dXN0ZXIgPGFybWJydUByZWRoYXQuY29tPjsNCj4gUGV0ZXIgTWF5ZGVsbCA8cGV0ZXIubWF5ZGVs
+bEBsaW5hcm8ub3JnPjsgRGFuaWVsIFAuIEJlcnJhbmdlDQo+IDxiZXJyYW5nZUByZWRoYXQuY29t
+PjsgQWxleCBCZW5uw6llIDxhbGV4LmJlbm5lZUBsaW5hcm8ub3JnPg0KPiBDYzogamdnQG52aWRp
+YS5jb207IG5pY29saW5jQG52aWRpYS5jb207IGJlcnJhbmdlQHJlZGhhdC5jb207DQo+IG5hdGhh
+bmNAbnZpZGlhLmNvbTsgbW9jaHNAbnZpZGlhLmNvbTsgc21vc3RhZmFAZ29vZ2xlLmNvbTsgTGlu
+dXhhcm0NCj4gPGxpbnV4YXJtQGh1YXdlaS5jb20+OyBXYW5nemhvdSAoQikgPHdhbmd6aG91MUBo
+aXNpbGljb24uY29tPjsNCj4gamlhbmdrdW5rdW4gPGppYW5na3Vua3VuQGh1YXdlaS5jb20+OyBK
+b25hdGhhbiBDYW1lcm9uDQo+IDxqb25hdGhhbi5jYW1lcm9uQGh1YXdlaS5jb20+OyB6aGFuZ2Zl
+aS5nYW9AbGluYXJvLm9yZw0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHYyIDEvNl0gaHcvYXJtL3Nt
+bXV2MzogQWRkIHN1cHBvcnQgdG8gYXNzb2NpYXRlIGENCj4gUENJZSBSQw0KPiANCj4gSGksDQo+
+IE9uIDUvMi8yNSA4OjE2IFBNLCBEb25hbGQgRHV0aWxlIHdyb3RlOg0KPiA+DQo+ID4NCj4gPiBP
+biA1LzIvMjUgNjoyNyBBTSwgU2hhbWVlciBLb2xvdGh1bSB3cm90ZToNCj4gPj4gQWx0aG91Z2gg
+dGhpcyBjaGFuZ2UgZG9lcyBub3QgYWZmZWN0IGZ1bmN0aW9uYWxpdHkgYXQgcHJlc2VudCwgaXQg
+bGF5cw0KPiA+PiB0aGUgZ3JvdW5kd29yayBmb3IgZW5hYmxpbmcgdXNlci1jcmVhdGVkIFNNTVV2
+MyBkZXZpY2VzIGluDQo+ID4+IGZ1dHVyZSBwYXRjaGVzDQo+ID4+DQo+ID4+IFNpZ25lZC1vZmYt
+Ynk6IFNoYW1lZXIgS29sb3RodW0NCj4gPHNoYW1lZXJhbGkua29sb3RodW0udGhvZGlAaHVhd2Vp
+LmNvbT4NCj4gPj4gLS0tDQo+ID4+IMKgIGh3L2FybS9zbW11djMuYyB8IDI2ICsrKysrKysrKysr
+KysrKysrKysrKysrKysrDQo+ID4+IMKgIGh3L2FybS92aXJ0LmPCoMKgIHzCoCAzICsrLQ0KPiA+
+PiDCoCAyIGZpbGVzIGNoYW5nZWQsIDI4IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkNCj4g
+Pj4NCj4gPj4gZGlmZiAtLWdpdCBhL2h3L2FybS9zbW11djMuYyBiL2h3L2FybS9zbW11djMuYw0K
+PiA+PiBpbmRleCBhYjY3OTcyMzUzLi42MDVkZTliNzIxIDEwMDY0NA0KPiA+PiAtLS0gYS9ody9h
+cm0vc21tdXYzLmMNCj4gPj4gKysrIGIvaHcvYXJtL3NtbXV2My5jDQo+ID4+IEBAIC0yNCw2ICsy
+NCw3IEBADQo+ID4+IMKgICNpbmNsdWRlICJody9xZGV2LXByb3BlcnRpZXMuaCINCj4gPj4gwqAg
+I2luY2x1ZGUgImh3L3FkZXYtY29yZS5oIg0KPiA+PiDCoCAjaW5jbHVkZSAiaHcvcGNpL3BjaS5o
+Ig0KPiA+PiArI2luY2x1ZGUgImh3L3BjaS9wY2lfYnJpZGdlLmgiDQo+ID4+IMKgICNpbmNsdWRl
+ICJjcHUuaCINCj4gPj4gwqAgI2luY2x1ZGUgImV4ZWMvdGFyZ2V0X3BhZ2UuaCINCj4gPj4gwqAg
+I2luY2x1ZGUgInRyYWNlLmgiDQo+ID4+IEBAIC0xODc0LDYgKzE4NzUsMjUgQEAgc3RhdGljIHZv
+aWQgc21tdV9yZXNldF9leGl0KE9iamVjdCAqb2JqLA0KPiA+PiBSZXNldFR5cGUgdHlwZSkNCj4g
+Pj4gwqDCoMKgwqDCoCBzbW11djNfaW5pdF9yZWdzKHMpOw0KPiA+PiDCoCB9DQo+ID4+IMKgICtz
+dGF0aWMgaW50IHNtbXV2M19wY2llX2J1cyhPYmplY3QgKm9iaiwgdm9pZCAqb3BhcXVlKQ0KPiA+
+PiArew0KPiA+PiArwqDCoMKgIERldmljZVN0YXRlICpkID0gb3BhcXVlOw0KPiA+PiArwqDCoMKg
+IFBDSUJ1cyAqYnVzOw0KPiA+PiArDQo+ID4+ICvCoMKgwqAgaWYgKCFvYmplY3RfZHluYW1pY19j
+YXN0KG9iaiwgVFlQRV9QQ0lfSE9TVF9CUklER0UpKSB7DQo+ID4+ICvCoMKgwqDCoMKgwqDCoCBy
+ZXR1cm4gMDsNCj4gPj4gK8KgwqDCoCB9DQo+ID4+ICsNCj4gPj4gK8KgwqDCoCBidXMgPSBQQ0lf
+SE9TVF9CUklER0Uob2JqKS0+YnVzOw0KPiA+PiArwqDCoMKgIGlmIChkLT5wYXJlbnRfYnVzICYm
+ICFzdHJjbXAoYnVzLT5xYnVzLm5hbWUsDQo+ID4+IGQtPnBhcmVudF9idXMtPm5hbWUpKSB7DQo+
+ID4+ICvCoMKgwqDCoMKgwqDCoCBvYmplY3RfcHJvcGVydHlfc2V0X2xpbmsoT0JKRUNUKGQpLCAi
+cHJpbWFyeS1idXMiLCBPQkpFQ1QoYnVzKSwNCj4gPj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgJmVycm9yX2Fib3J0KTsN
+Cj4gPj4gK8KgwqDCoMKgwqDCoMKgIC8qIFJldHVybiBub24temVybyBhcyB3ZSBnb3QgdGhlIGJ1
+cyBhbmQgZG9uJ3QgbmVlZCBmdXJ0aGVyDQo+ID4+IGl0ZXJhdGlvbi4qLw0KPiA+PiArwqDCoMKg
+wqDCoMKgwqAgcmV0dXJuIDE7DQo+ID4+ICvCoMKgwqAgfQ0KPiA+PiArwqDCoMKgIHJldHVybiAw
+Ow0KPiA+PiArfQ0KPiA+PiArDQo+ID4+IMKgIHN0YXRpYyB2b2lkIHNtbXVfcmVhbGl6ZShEZXZp
+Y2VTdGF0ZSAqZCwgRXJyb3IgKiplcnJwKQ0KPiA+PiDCoCB7DQo+ID4+IMKgwqDCoMKgwqAgU01N
+VVN0YXRlICpzeXMgPSBBUk1fU01NVShkKTsNCj4gPj4gQEAgLTE4ODIsNiArMTkwMiwxMCBAQCBz
+dGF0aWMgdm9pZCBzbW11X3JlYWxpemUoRGV2aWNlU3RhdGUgKmQsDQo+IEVycm9yDQo+ID4+ICoq
+ZXJycCkNCj4gPj4gwqDCoMKgwqDCoCBTeXNCdXNEZXZpY2UgKmRldiA9IFNZU19CVVNfREVWSUNF
+KGQpOw0KPiA+PiDCoMKgwqDCoMKgIEVycm9yICpsb2NhbF9lcnIgPSBOVUxMOw0KPiA+PiDCoCAr
+wqDCoMKgIGlmICghb2JqZWN0X3Byb3BlcnR5X2dldF9saW5rKE9CSkVDVChkKSwgInByaW1hcnkt
+YnVzIiwNCj4gPj4gJmVycm9yX2Fib3J0KSkgew0KPiA+PiArwqDCoMKgwqDCoMKgwqAgb2JqZWN0
+X2NoaWxkX2ZvcmVhY2hfcmVjdXJzaXZlKG9iamVjdF9nZXRfcm9vdCgpLA0KPiA+PiBzbW11djNf
+cGNpZV9idXMsIGQpOw0KPiA+PiArwqDCoMKgIH0NCj4gPj4gKw0KPiA+PiDCoMKgwqDCoMKgIGMt
+PnBhcmVudF9yZWFsaXplKGQsICZsb2NhbF9lcnIpOw0KPiA+PiDCoMKgwqDCoMKgIGlmIChsb2Nh
+bF9lcnIpIHsNCj4gPj4gwqDCoMKgwqDCoMKgwqDCoMKgIGVycm9yX3Byb3BhZ2F0ZShlcnJwLCBs
+b2NhbF9lcnIpOw0KPiA+PiBAQCAtMTk5Niw2ICsyMDIwLDggQEAgc3RhdGljIHZvaWQgc21tdXYz
+X2NsYXNzX2luaXQoT2JqZWN0Q2xhc3MNCj4gPj4gKmtsYXNzLCBjb25zdCB2b2lkICpkYXRhKQ0K
+PiA+PiDCoMKgwqDCoMKgIGRldmljZV9jbGFzc19zZXRfcGFyZW50X3JlYWxpemUoZGMsIHNtbXVf
+cmVhbGl6ZSwNCj4gPj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgJmMtPnBhcmVudF9yZWFsaXplKTsNCj4g
+Pj4gwqDCoMKgwqDCoCBkZXZpY2VfY2xhc3Nfc2V0X3Byb3BzKGRjLCBzbW11djNfcHJvcGVydGll
+cyk7DQo+ID4+ICvCoMKgwqAgZGMtPmhvdHBsdWdnYWJsZSA9IGZhbHNlOw0KPiA+PiArwqDCoMKg
+IGRjLT5idXNfdHlwZSA9IFRZUEVfUENJRV9CVVM7DQo+ID4gRG9lcyB0aGlzIGZvcmNlIGxlZ2Fj
+eSBTTU1VdjMgdG8gYmUgdGllZCB0byBhIFBDSWUgYnVzIG5vdz8NCj4gPiBpZiBzbywgd2lsbCB0
+aGF0IGJyZWFrIHNvbWUgZXhpc3RpbmcgbGVnYWN5IHNtbXV2MyBjb25maWdzPywgaS5lLiwNCj4g
+PiB2aXJ0aW8tc2NzaSBhdHRhY2hlZCB0byBhIGxlZ2FjeSBzbW11djMuDQo+IA0KPiBQcmV2aW91
+c2x5IHRoZSBTTU1VIHdhcyBhbHJlYWR5IGFsd2F5cyBhdHRhY2hlZCB0byBhIFBDSSBwcmltYXJ5
+LWJ1cw0KPiAodm1zLT5idXMgaWUuIHBjaTApLiB2aXJ0aW8tc2NzaS1wY2kgaXMgdGhlIGRldmlj
+ZSBiZWluZyBwcm90ZWN0ZWQuIFRoZQ0KPiBTTU1VIGlzIG5vdCBhYmxlIHRvIHByb3RlY3QgcGxh
+dGZvcm1zIGRldmljZXMgYXRtLg0KPiANCj4gTXkgb25seSBjb25jZXJuIGlzIHdlIGFyZSBoaWdo
+amFja2luZyB0aGUgImJ1cyIgcHJvcCB0byByZWNvcmQgdGhlIGJ1cw0KPiBoaWVyYXJjaHkgdGhl
+IFNNTVUgaXMgcHJvdGVjdGluZy4gV2hpbGUgdGhlIFNNTVUgaXMgYSBwbGF0Zm9ybSBkZXZpY2UN
+Cj4gYW5kIGRvZXMgbm90IGluaGVyaXQgdGhlIFBDSSBkZXZpY2UgYmFzZSBjbGFzcyBpdHMgYnVz
+IHR5cGUgYmVjb21lcw0KPiAiVFlQRV9QQ0lFX0JVUyIuIFNvIGluIHRlcm1zIG9mIHFvbSBoaWVy
+YWNoeSBpcyBpcyBzZWVuIGFzIGEgUENJIGRldmljZQ0KPiBub3c/IEkgZG9uJ3Qga25vdyBpZiBp
+dCBpcyBhIHByb2JsZW0uIEFuIGFsdGVybmF0aXZlIGNvdWxkIGJlIHRvIGtlZXANCj4gdGhlIGJ1
+cyBwb2ludGVyIGFuZCB0eXBlIGFzIGl0IHdhcyBiZWZvcmUgYW5kIGludHJvZHVjZSBhIHByaW1h
+cnktYnVzDQo+IHByb3BlcnR5LiBBZGRpbmcgTWFya3VzLCBQZXRlciwgRGFuaWVsIGFuZCBBbGV4
+IGluIHRvLg0KDQpZZXMuIFRoZSBTTU1VVjMgaXMgYSBwbGF0Zm9ybSBkZXZpY2UgYW5kIHdlIGFy
+ZSBtYWtpbmcgdGhlIGJ1cyB0eXBlDQpoZXJlIGFzIFBDSUUgd2hpY2ggaXMgYSBiaXQgb2RkLiBB
+cyByZXBsaWVkIGVsc2V3aGVyZSBpbiB0aGlzIHRocmVhZCwNCmluIHRoZSBpbml0aWFsIFJGQyB3
+ZSBoYWQgYSBzcGVjaWZpYyAicGNpLWJ1cyIgcHJvcGVydHkgYXNzb2NpYXRlZCB3aXRoIA0KU01N
+VXYzIGRldmljZSwgDQpFZzoNCi1kZXZpY2UgYXJtLXNtbXV2MyxwY2ktYnVzPXBjaWUuMCwuLi4N
+Cg0KQnV0IHRoZW4gdGhlcmUgd2VyZSBmZWVkYmFjayB0aGF0LCBpdCBpcyBtb3JlIGludHVpdGl2
+ZSBhbmQgZWFzeSBmb3IgbGlidmlydA0KaWYgd2UgY2FuIGp1c3QgdXNlIHRoZSBkZWZhdWx0ICJi
+dXMiIHByb3BlcnR5IGFzc29jaWF0ZWQgd2l0aCBhICBRZW11IGRldmljZS4NCkhlbmNlIHRoZSBj
+aGFuZ2UuDQoNCj4gDQo+IEF0IHNvbWUgcG9pbnQgaXQgd2FzIGVudmlzaW9ubmVkIHRvIHN1cHBv
+cnQgcHJvdGVjdGVkIHBsYXRmb3JtIGRldmljZXMNCj4gKEkgdGhpbmsgdGhpcyB3YXMgbmVlZCBm
+b3IgQ0NBKS4gTXkgZmVhciBpcyB0aGF0IGlmIHdlIHR1cm4gdGhlIGJ1cyB0eXBlDQo+IHRvIFBD
+SUUgaXQgbWF5IGJlIGRpZmZpY3VsdCB0byBleHRlbmQgdGhlIHN1cHBvcnQgdG8gbm9uIFBDSWUg
+cHJvdGVjdGVkDQo+IGRldmljZXMuIFRoZSBTTU1VIHNoYWxsIHJlbWFpbiBhIHBsYXRmb3JtIGRl
+dmljZSBiZWluZyBhYmxlIHRvIHByb3RlY3QNCj4gZWl0aGVyIFBDSSBkZXZpY2VzIGFuZCwgaW4g
+dGhlIGZ1dHVyZSwgcGxhdGZvcm0gZGV2aWNlcy4NCg0KT2suIFNvIGluIHRoZSBjYXNlIG9mIHBs
+YXRmb3JtIGRldmljZSBob3cgZG8gd2UgZW52aXNhZ2UgdG8gc3BlY2lmeSB0aGUgImJ1cyI/DQoN
+Ci1kZXZpY2UgYXJtLXNtbXYzLCBwcmltYXJ5LWJ1cz1zeXNidXMNCg0KT3Igc29tZXRoaW5nIGxp
+a2UgaGF2aW5nIGEgU01NVXYzIGRldiB3aXRob3V0IGFueSBidXMgYW5kIGVhY2ggcGxhdGZvcm0N
+CmRldmljZSBoYXMgdG8gc3BlY2lmeSB0aGUgU01NVXYzPw0KRWc6DQoNCi1kZXZpY2UgYXJtLXNt
+bXYzLGlkPXNtbXV2My4zDQotZGV2aWNlIHh4eHgsc21tdXYzPSBzbW11djMuMw0KDQpJZiBsYXRl
+ciwgSSB0aGluayB3ZSBjYW4gc3RpY2sgdG8gY3VycmVudCBvbmUuIA0KDQpUaGFua3MsDQpTaGFt
+ZWVyDQo=
 
