@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 046A7AAC98D
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 17:31:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66A78AAC984
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 17:31:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCKFj-0004YD-E6; Tue, 06 May 2025 11:30:39 -0400
+	id 1uCKFe-000451-66; Tue, 06 May 2025 11:30:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uCKFI-00043P-Hd
- for qemu-devel@nongnu.org; Tue, 06 May 2025 11:30:12 -0400
+ id 1uCKFF-0003v2-04
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 11:30:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uCKFF-0002CK-5V
- for qemu-devel@nongnu.org; Tue, 06 May 2025 11:30:12 -0400
+ id 1uCKFC-0002Bw-5a
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 11:30:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746545408;
+ s=mimecast20190719; t=1746545405;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5VHgMfIC+s9fuauMpobbaoWCfcNnRXx+9S3XMDvhKC0=;
- b=P3U4XgsdGxv4buHYxGag4pMe6724S1qMCg8a1TyGQZBjXGm/2VwYXwFweWhFK890kpz2YK
- yjNbeRdcMufbZsIOdY9yUrP7L1+xZr2CKR6Pjf7zhuKkJsLUq0QbeYYvBdx/LSvZWSZ5wY
- Qh2LnmvvveDrbQ9BL2u5oKCYnv6kZlI=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=9vSwA81SihvCRaCKXFvFqvfbb/E9O4HmkXwtQOqDzbM=;
+ b=Qh2KSiOFOKC3yQwcRfk+P4TKxTGCppm5Whw2DLsMJEMs0KTEd/COG2p9YUITOqWFXIeEJt
+ XvUqJnpzS0xqXFrMUNZMGHGC6zhDDRCpLyyr2EvBCWRH5gOg+12RyJdqMnfSwDPpCHXnDz
+ e3jlr1Wf4GG2X7XdzsUcgYOhNmGk7kI=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-104-AHhVQ6EWO52vFcneHNKBcg-1; Tue, 06 May 2025 11:30:06 -0400
-X-MC-Unique: AHhVQ6EWO52vFcneHNKBcg-1
-X-Mimecast-MFC-AGG-ID: AHhVQ6EWO52vFcneHNKBcg_1746545400
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-43d733063cdso42634275e9.0
+ us-mta-52-7YM5T6r4N8iQSR6bUbqPxw-1; Tue, 06 May 2025 11:30:04 -0400
+X-MC-Unique: 7YM5T6r4N8iQSR6bUbqPxw-1
+X-Mimecast-MFC-AGG-ID: 7YM5T6r4N8iQSR6bUbqPxw_1746545403
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-43cf446681cso34071135e9.1
  for <qemu-devel@nongnu.org>; Tue, 06 May 2025 08:30:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746545399; x=1747150199;
+ d=1e100.net; s=20230601; t=1746545402; x=1747150202;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5VHgMfIC+s9fuauMpobbaoWCfcNnRXx+9S3XMDvhKC0=;
- b=ecNtEzhyYRdd6pdA+KkWIYULT+7JHvgVWICzXuWd0Hotg066e81732/xHC6d+eApp0
- 2gN6rwp2rSWu74o70xd7IHke4HeLQiCoZgx2cKsu1O+PN3CKEiGqCl2JLjVJPNUJPN+H
- 3wLxSqsXPH6Il+OC1z+I98f+ybOMk3y5Wtgsf0n0xpTOPJJptg70Fhxs+LnXJT+lcOQY
- 63kU/x9hna3KXvh2eKfPaFqZV6rQYxx3qAKuuzmU2YhVrCWcRtSgYd08kj7QxAUgUIJg
- gKg3oKskGls9maWHJBSzM/eJkwmFE5B3B6xfCvuOO6UgbT0PdncxnEvt5sywcfAUlG9/
- RGYA==
-X-Gm-Message-State: AOJu0YwGNeaeyRoyWXmY6WKhRIe1No1Xe7GpP8QrFQL/SmxkK2YXZPph
- Cspca13uj0/MBC+/10SArsMo8bmDWZk/4YkZn55QIPnL+Ze1BmeBzrrwsAWd0kLZfty0Su3D6xh
- +pHM4u8WkztM+VpGnAZQihcUXPs/aF3UyACeL34TjjYz/ziEwQ7tGypRYa9Ddit4KJIY6Xj+Xw8
- Ahwi6lI58OlVcgvG+8G/vz4AD/16L/H5NhjUH9
-X-Gm-Gg: ASbGnctja762jElnxEBKtSYM37CkL90MQDG4+chylAdYlvK4KjprCDG7VlwYasp+mh+
- TIUEzMkRJ2cvukYMFsgUWYDu7epBKuJFhWzR7hMFzKI/Q1DA5hOf6cGGIhQIVVk4pDJSxarSEnv
- /+lqq01H0C1kUXjncVVAXID+qreoqTIdyf19XsWmRJn3/1C80bgKwNhsnj1X/KDnLiezKp1WiJV
- PjAPvPRrbwlcaJ4koiORwBU0ElwrRqIEMWHuvwOG+ER009+jMspqqoE48mwQGiUG0ceHgzZiJlq
- ZWe7Sz3naFfYSkE=
-X-Received: by 2002:a05:600c:1e04:b0:441:b00d:e9d1 with SMTP id
- 5b1f17b1804b1-441d0fbd63bmr32979165e9.2.1746545398933; 
- Tue, 06 May 2025 08:29:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEzQzgSsJL/M3vA4/N8LKSLVSy8CpsiURBHRgcQgpUV+k+zJrMmRvIg+FpYEUg+Sqof3gp2cQ==
-X-Received: by 2002:a05:600c:1e04:b0:441:b00d:e9d1 with SMTP id
- 5b1f17b1804b1-441d0fbd63bmr32978865e9.2.1746545398456; 
- Tue, 06 May 2025 08:29:58 -0700 (PDT)
+ bh=9vSwA81SihvCRaCKXFvFqvfbb/E9O4HmkXwtQOqDzbM=;
+ b=TQzhAnI/+UcfSlMfzT98Wi3K0TCEeRPN31S59UMeTqkbC1cqcCIKwbh7fj0TnP3bt3
+ ypgUVsaG4/xiic24Aj65fvJpTQ+Nwx4AOutZlzNRVivfQmtiQ6gExL/Il+VW1sw+ewwh
+ 69rHn2YlnCf3vgb7QVz5/ajR2ZnXJn40PQFE+0Ml8GwQ/lV4UUnCU6XYynZLFkZJRVEM
+ mOMbkZBEzyWZ1gp4u0Zr5xp8CdY942obnzheHmjOsxTUhwrHu3Kil4BxLO90gH0aD1EK
+ wYiXfW500GEfiI2w4TuvcEbfnAyZzYA3ApLf53C7CBJuQfyh1Pe1Rs0cfpQePu9Mzmhr
+ 5tHw==
+X-Gm-Message-State: AOJu0YyYe0POzUW41eiZC2EV1tzUNLwv+Rm9UgdkNjOcXOdF/GOLY/LQ
+ 61j0qfx+HADmXlo/4XjUxYSxp8ZpbwL42fmwRJhwjqiNfBI50Pcmv+gawuot/QKwfyoOURlcaM1
+ yBpN/G5Ju/pgHmAKXT4pjjfeGlfZlGNEYQoIMzVjOluGsARLWOTpyf1Y300P4oncC8KE3Vi5V0e
+ tac/WzDoqJdhf1p0RDYdmBYW5n47yfhmycXyR/
+X-Gm-Gg: ASbGncv6hhK6cER5xlsD3yL7T0abd06NTRRnV2O8Ok52m0jkWYeM4gJtiE0x4mF3Woh
+ rda58fkdESl9438KlYDvEioxcMCmGWgOnoPQ06pbfdcOzm/pcHG0OxYlvZuMxhleB6pYlBlbDvh
+ KYcH3ewRAgCQaA250x3MJwGYVmBB9Nb6RbGpjHeBVYzd9MHVjLg9WoOF1zfeNXP35v08vqUjvkN
+ 5kLHnHROjhclwqtWYCeCiV+ZThMT7THAhW2YyN6vUcIV0ghraZOTjV94zfqUbCK+DaH6geN7p0Y
+ B9Dz4a5SNrrZEmM=
+X-Received: by 2002:a05:600c:8419:b0:43d:db5:7af8 with SMTP id
+ 5b1f17b1804b1-441c49237c7mr95730745e9.21.1746545402298; 
+ Tue, 06 May 2025 08:30:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEsSj0CvmZ1L7+6M5xyZzR/YBrM73Onn3dY/HKTsX7hFhP3tinZQGgbNWwrFiHBQbuYJo/3jQ==
+X-Received: by 2002:a05:600c:8419:b0:43d:db5:7af8 with SMTP id
+ 5b1f17b1804b1-441c49237c7mr95730535e9.21.1746545401879; 
+ Tue, 06 May 2025 08:30:01 -0700 (PDT)
 Received: from [192.168.122.1] ([151.95.54.106])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-441b276052bsm219569375e9.0.2025.05.06.08.29.57
+ 5b1f17b1804b1-441b2af4546sm221953435e9.22.2025.05.06.08.29.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 May 2025 08:29:57 -0700 (PDT)
+ Tue, 06 May 2025 08:29:59 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 15/30] docs: build-system: fix typo
-Date: Tue,  6 May 2025 17:29:10 +0200
-Message-ID: <20250506152927.222671-16-pbonzini@redhat.com>
+Cc: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+Subject: [PULL 16/30] target/arm/helper.c: Fix type conflict of GLib function
+ pointers
+Date: Tue,  6 May 2025 17:29:11 +0200
+Message-ID: <20250506152927.222671-17-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250506152927.222671-1-pbonzini@redhat.com>
 References: <20250506152927.222671-1-pbonzini@redhat.com>
@@ -106,25 +107,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+
+On Emscripten, function pointer casts can result in runtime failures due to
+strict function signature checks. This affects the use of g_list_sort and
+g_slist_sort, which internally perform function pointer casts that are not
+supported by Emscripten. To avoid these issues, g_list_sort_with_data and
+g_slist_sort_with_data should be used instead, as they do not rely on
+function pointer casting.
+
+Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+Link: https://lore.kernel.org/r/7d56c82382e8b4f1694b6d7883b2ce3084fdc72d.1745820062.git.ktokunaga.mail@gmail.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- docs/devel/build-system.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/arm/helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/docs/devel/build-system.rst b/docs/devel/build-system.rst
-index 258cfad3fe7..2c884197a20 100644
---- a/docs/devel/build-system.rst
-+++ b/docs/devel/build-system.rst
-@@ -168,7 +168,7 @@ The required versions of the packages are stored in a configuration file
- ``pythondeps.toml``.  The format is custom to QEMU, but it is documented
- at the top of the file itself and it should be easy to understand.  The
- requirements should make it possible to use the version that is packaged
--that is provided by supported distros.
-+by QEMU's supported distros.
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 7fb6e886306..c7ff9f657ca 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -222,7 +222,7 @@ static void count_cpreg(gpointer key, gpointer opaque)
+     }
+ }
  
- When dependencies are downloaded, instead, ``configure`` uses a "known
- good" version that is also listed in ``pythondeps.toml``.  In this
+-static gint cpreg_key_compare(gconstpointer a, gconstpointer b)
++static gint cpreg_key_compare(gconstpointer a, gconstpointer b, gpointer d)
+ {
+     uint64_t aidx = cpreg_to_kvm_id((uintptr_t)a);
+     uint64_t bidx = cpreg_to_kvm_id((uintptr_t)b);
+@@ -246,7 +246,7 @@ void init_cpreg_list(ARMCPU *cpu)
+     int arraylen;
+ 
+     keys = g_hash_table_get_keys(cpu->cp_regs);
+-    keys = g_list_sort(keys, cpreg_key_compare);
++    keys = g_list_sort_with_data(keys, cpreg_key_compare, NULL);
+ 
+     cpu->cpreg_array_len = 0;
+ 
 -- 
 2.49.0
 
