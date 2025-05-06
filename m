@@ -2,92 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DEBFAABCDF
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 10:16:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C93FCAABD0A
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 10:26:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCDSy-0001Cc-8Z; Tue, 06 May 2025 04:15:52 -0400
+	id 1uCDbA-0003iR-Vm; Tue, 06 May 2025 04:24:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCDSo-0001BT-4z
- for qemu-devel@nongnu.org; Tue, 06 May 2025 04:15:42 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCDb6-0003hq-Rb
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 04:24:16 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCDSm-0002s6-5a
- for qemu-devel@nongnu.org; Tue, 06 May 2025 04:15:41 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-ac7bd86f637so1162905866b.1
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 01:15:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCDb4-0003sI-S2
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 04:24:16 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-ac345bd8e13so876566466b.0
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 01:24:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746519338; x=1747124138; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746519852; x=1747124652; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=KjrRtqVJLdO+vqnT52t4cWcpgZq2EdNjcrmMdn2l6Is=;
- b=OgoajrZt96nRolGX+W5n8gLii4ydgLF5+FvkSNxQR4DRHMEokkdyZtGAK5VHZQh+U4
- w5qQgNLo0NG7dNW7IpTSJ+MWXhaHU86Fk/L1izH2hXVpXVb1u4gDPemdM06gYBsa0hQI
- ElNtKUltyKvZb/nHIutK6x20YA896+wiZAEiwIPp60Hp1Nv57FBXOGRWup/c6f1B6SUe
- pMMWjcGWB36MTiUWCJtI2jRgXjuO1SyfflkGEOwR8WZKZWG27WDerRVmICZKLSuEzDI2
- gTgMeW43CRrN3nZmtzGg/UyK4l/q573cDaHLWQiOOtSdvEPMKOtTEzgYiBfCqx/RfY2L
- p3Tg==
+ bh=cq0N3criJDHU7BSJNCvrvSttnQ51DU8aN7mRbORYFks=;
+ b=fGL7T5d+p0FO54n7tOULzrejUuYGM3uqCeODQ3GfK02R5rHHm4KA7ABtesV1fW3r2K
+ wcqfEyDaCM9hr0sAzhX5MQmFQ9Q8EQUUGtbQPolY61enuLRzOsrar1e0AvC+vnJjSNm8
+ Xg3V949LUMnN0GTnWTU7Vpe0+v5GWP5FU1/L0rBXDepV2hpTRCpVV24HAHAVdl7CakhU
+ 28C4V8BlQtMKwyWofLa3X7BYtlJ7/JS08ThNtrXEYqccGPkhUxEPwURhIpPng8cHZRJA
+ eo0Uhc/nlj+tuoviu+PtzyvSp5vHnUhpMA+wwaV/39QV5ASv0peNLAkDJF0VlhrDZkuK
+ 1hgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746519338; x=1747124138;
+ d=1e100.net; s=20230601; t=1746519853; x=1747124653;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KjrRtqVJLdO+vqnT52t4cWcpgZq2EdNjcrmMdn2l6Is=;
- b=U8RuxBR7Q8vSUubrpFbJUjCb+rVYKUX6h9GZ3bvDYM/+hm7tBsclC8mQNI+tRFj3Em
- Y47JA+gq1hMbETOtyqW8pYjh+U8wuL7BjQeoXPOdgS2B/l+olixArcx9mEZhKpkUxli6
- PQvrn34522fnIj+2yl6pEEuwXOX2+qKKgZ6/7NVYmU02X2S65MRERltreTaTtXsL9ZsS
- b/OUwPz/AqRhWdF1bikDHWJkOGcCEEXkE6s1JnD690+hlhKc0MhgHSWoDrdvG07qK3NP
- c8VRVT77Q1qZ2XfEao4WBYvUXH6+rtRL0Bzh7IwswIcr7S0rBISE25wkLNhzj1b3HK8U
- K2+g==
-X-Gm-Message-State: AOJu0YyBPoOfYwbF324qtmHqffRQXhF3nMeMwqxtwsExPpm1q3iyonuP
- 0KndekoJw2f2S87MIKwCgMHUN6J8NmK1L1pKG5WNp7qzW+al9MWDsfxUvUI2XE0=
-X-Gm-Gg: ASbGncsXO+XcdQvmISZegXzaU+5MOemgPeiaMM+6vHGgF722G0mJWB4/8tkSyImXdiY
- mleOzxcvMmHpXSLe2af0p9NEcq53cauZRg6Wl6eWsCqqi60ofmmcjdl1f6V4cEH1V+RKCG+p3sc
- /QnQe8wYw+iLwCc4kYmbfJWHQxArhM5obKnHewcmyrz5ecndRsC5HlVkk/iGwe8VSll7TY2V7zG
- qjqb0ORiNukKTlzGFmzr+iNXYuVflwpEaB9re1L8+43ROvRwIXKHrmIDIXwl7WMeaGu61wQhPR5
- QzkgvluigFfiOvst4PQeMGI0IM58kJ7vPLnnIVGMfduBKzGrRj9PUkdjZcx2RaJBQwt/vGnDMR/
- JN2g=
-X-Google-Smtp-Source: AGHT+IG7lXwDYaAOwVwzYywWYNhhtL6WCgs5+DF4fyDxbcgjYw2P6bTy7yKMTU+MelcMq0no74CQOg==
-X-Received: by 2002:a17:907:97d0:b0:ad1:8e6f:3ad8 with SMTP id
- a640c23a62f3a-ad1d2edafddmr241776466b.14.1746519337908; 
- Tue, 06 May 2025 01:15:37 -0700 (PDT)
+ bh=cq0N3criJDHU7BSJNCvrvSttnQ51DU8aN7mRbORYFks=;
+ b=aT0HhVdRvk4VxQgzi+f8jc3Bu488/ELRFKcajws7ppz1QaNTZ8ZV1Ik/J5hLWwDtTZ
+ hCc5LOiLPnJBj3jfpeVOX3Q9VsgSR0N+O4B/F0yanxVZGu19k6BpakKZoZcIWNtxygvT
+ P+7nVZQQcvPioL56UrG8+QzY7tZpIdmRc4naIFavQk1Bz/7QYV2FfKna75EOdCBYMZ6m
+ +5Y+DcDEQ4/acSY19ESCR0Zk253xdk/TVLRMbs0lwqgkrfwJtk7OCxo0kMiFoA32vq3U
+ wm8EVcEMA5PbdpK5akDQcp2kzLtMgauMHcszjU1cX1WuyVywJb+6+UAeJaefWNPaAL4X
+ z3fg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX5gBxqtMZZLnOPkEk3dSUPTDE0PE2N5UGA2RJ6pp1fTxkFgNIMKYovlQ8Oz3wRBg21rsM/Frft9wZA@nongnu.org
+X-Gm-Message-State: AOJu0YwOo/txpSmruGVOooZyzq5Rkxqk0CVsRcauJN8TRfB3KjT/GksS
+ 5GJ8rTgwAwOf5IjOH6TW8AwMy38HboXTKGZvwp0xByemPutmf8nU0y1F0uch5N0=
+X-Gm-Gg: ASbGncsHguGxmGTx0SfaqNb5/4QEdwgR0trfDNU6nO8rZsSoA1i9J/9TFHegc3Cqy1B
+ AhStIct7ObXphGk+bt7Eva3f64CmL9ImCqaqVWjlWl0uAFGcEaHB3lhHGKHvo2AqroWlRpQy5oL
+ OpLSHiCaQv7teVbgXhahLyHiJ/Em4ICK2QZoSKk9cDsg1TKspgysumU5ZRqCcMWFjWUWq3uw/dh
+ nFoRExDfkUc5unSItjOO1pdRK/OamZI1x5RXCME2UJBUt46LhnEjtpyt3WPiGA/wAWuUug+ynxi
+ yEFKe05F/BGlv52gB74pQzGZ6HPGAjcbul+C9IpblVzvBjZ+RdjgjrRD8dQYlEx+wf0wvBVhzTi
+ q+3Y=
+X-Google-Smtp-Source: AGHT+IGt5txLqLtSp3+cU2gSSgyJlnUvTSYiBCOBY+5W/7nbeKOqVAo/CFoPl+08CP9SDWM0WurRpw==
+X-Received: by 2002:a17:907:7fa2:b0:ac6:d142:2c64 with SMTP id
+ a640c23a62f3a-ad1d454e258mr210203366b.18.1746519852598; 
+ Tue, 06 May 2025 01:24:12 -0700 (PDT)
 Received: from [10.194.152.213] (238.21.205.77.rev.sfr.net. [77.205.21.238])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ad18914736asm653456366b.7.2025.05.06.01.15.36
+ a640c23a62f3a-ad1891478fasm655909466b.26.2025.05.06.01.24.11
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 May 2025 01:15:37 -0700 (PDT)
-Message-ID: <32d75ea4-0638-4e3c-9db3-fe37144837e4@linaro.org>
-Date: Tue, 6 May 2025 10:15:35 +0200
+ Tue, 06 May 2025 01:24:11 -0700 (PDT)
+Message-ID: <56396829-cd35-4a96-bc7b-321eb01b91e4@linaro.org>
+Date: Tue, 6 May 2025 10:24:10 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/9] hw/s390x/event-facility: Remove the obsolete
- "allow_all_mask_sizes" code
-To: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org,
- Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>
-References: <20250506062148.306084-1-thuth@redhat.com>
- <20250506062148.306084-4-thuth@redhat.com>
+Subject: Re: [PATCH] bsd-user: add option to enable plugins
+To: Warner Losh <imp@bsdimp.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: Kyle Evans <kevans@freebsd.org>, qemu-devel@nongnu.org,
+ richard.henderson@linaro.org, alex.bennee@linaro.org
+References: <20250331234228.3475706-1-pierrick.bouvier@linaro.org>
+ <0a39e805-eb75-4b88-b316-189acad38efa@linaro.org>
+ <a7cc7e54-b84d-44e1-8c75-df39b44dd28f@FreeBSD.org>
+ <0a765d57-0c9a-4732-b560-203f03f903e9@linaro.org>
+ <CANCZdfpg6JEbDx3dJvCcdQNexcjW+zBYzjhrmtDDLJC8rm7meQ@mail.gmail.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250506062148.306084-4-thuth@redhat.com>
+In-Reply-To: <CANCZdfpg6JEbDx3dJvCcdQNexcjW+zBYzjhrmtDDLJC8rm7meQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,19 +105,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/5/25 08:21, Thomas Huth wrote:
-> From: Thomas Huth <thuth@redhat.com>
-> 
-> Now that the machine types 2.11 and older have been removed, we
-> don't need the "allow_all_mask_sizes" compatibility handling code
-> anymore and can remove it now.
-> 
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   hw/s390x/event-facility.c | 37 +------------------------------------
->   1 file changed, 1 insertion(+), 36 deletions(-)
+On 6/5/25 02:25, Warner Losh wrote:
+> I'm also ignorant of plugins, but (a) if not enabling plugins is a nop
+> and (b) plugins either work or fail completely, then I think we can
+> enable them. If they cause problems when not enabled by the user,
+> though, we'll likely have to revert.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Elsewhere in this thread Pierrick mentioned:
+
+"... system mode, which runs on BSD ... already has plugins enabled."
+
+> 
+> I don't know enough about them, though, to review.
+> 
+> Warner
+> 
+> On Mon, May 5, 2025 at 12:38 PM Pierrick Bouvier
+> <pierrick.bouvier@linaro.org> wrote:
+>>
+>> On 4/28/25 3:57 PM, Kyle Evans wrote:
+>>> On 4/28/25 14:36, Pierrick Bouvier wrote:
+>>>> On 3/31/25 4:42 PM, Pierrick Bouvier wrote:
+>>>>> Nothing prevent plugins to be enabled on this platform for user
+>>>>> binaries, only the option in the driver is missing.
+>>>>>
+>>>>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>>>>> ---
+>>>>>     bsd-user/main.c | 12 ++++++++++++
+>>>>>     1 file changed, 12 insertions(+)
 
 
