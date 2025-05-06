@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 306D0AAC8A3
+	by mail.lfdr.de (Postfix) with ESMTPS id BC5FDAAC8A4
 	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:51:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCJYT-00073c-4R; Tue, 06 May 2025 10:45:57 -0400
+	id 1uCJYm-0007ra-SL; Tue, 06 May 2025 10:46:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uCJVG-0001iO-Nu
+ id 1uCJVH-0001iT-6c
  for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:40 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uCJVD-000289-Sv
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:37 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-43cf848528aso43120915e9.2
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:42:35 -0700 (PDT)
+ id 1uCJVE-00028X-I8
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:38 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-43cfa7e7f54so35758345e9.1
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:42:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746542554; x=1747147354; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746542555; x=1747147355; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=SqPsRilVNteNXwBemBSBWzj+hYoVzuHn388bnHoTVPQ=;
- b=Sh636d58Iwf+chip0/vWRDdhq3FWyog0A6SmFvyiuynFtUozXSfKYnO2yHNWLgZICT
- cTN5/sOGmSFSYq6Ly7XERRkWy4t/MecKQJzCM27RztugSdV6mEvA/DnXt4WF4yVo4DOr
- hxoJJ3le4Zb3OTdW8+syQ41WcQCWomqO1SdWgSWYeIJKnpb8aqTOx6bqSHLFl+XtJOfO
- g7srmg6Uk5vt3HfxRK+KXrmFOnCv0sNiie6c+b9d64DSPa7/bRRQBK0cH2xU6UONFT0h
- FnKrUp05xaj4kiDXfl3l0G3JjRvYwwPKIlq4AnziwbvWEnft3HzuKh5arQkJS0qfeK6R
- 9G1w==
+ :reply-to; bh=K63s5sr9Xlf+KqacLl70oGl/JdebL8vSGbHbp6f9PWc=;
+ b=bUMACFPrPutxKovkIOgEol3VHvxgWA5Ts1YOpsfXtNwmOweSv7D0JtKfwYhc97mxnE
+ 9YXrmm+aW/3Gv0lIG1i6l+27wiE4Wzay1+2Y+l1jrrCAVi4hOfW1Smb/FLDY4Ym7pQSQ
+ ah+sH/REB1cDdHgq+CyOWc/GIaobgJBNenxJJs//On/n+mHjn72CQofzidAoAFm25ImV
+ 0fqFG/wOWPMyfrmnCeivmVd/nL7KENmnUBTETDxyK98QuL4TKGQ+pugjDZbnwFtWgUGY
+ iqmIsB3/7olBDH2PHGRfwkfPNgSsZVhEejgZvxm2xIxo6+VwUhOR77U0aS2d4sTvLUMx
+ uB8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746542554; x=1747147354;
+ d=1e100.net; s=20230601; t=1746542555; x=1747147355;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SqPsRilVNteNXwBemBSBWzj+hYoVzuHn388bnHoTVPQ=;
- b=ECg2mXXVRCYZ6GNOrTArixH1IhhNFCmFUfOwrD+pJceOOhaIJWP1P4g4xTQGEzwDDG
- nqhw5nDWutp5SEn07v+fqRpB3QYhfv5MOn/fagQmMh53meXh834TEJ1YtUg5wBWngRA6
- pdtOe+Vho2Ja9cfGwyqZXvZ2RKaeVICP7AG8FxDnT7p/46KQxc8LyEhtEhjL1T90vtTu
- nRObMFyUJ24pmxf04SnR32ToFMhdIiju3zRJkrblX32bep+ZmM8SlvIJVrhVzPnv33MW
- iOVtnsnxTvLNFrHfPCJCsQLyGh/FGEZMjcDTnEsmbqwDJPe1XKNWOMZic/QV+IJukfCN
- NMkw==
-X-Gm-Message-State: AOJu0YyduwTRIbcG/v6AF3S+UureKhB2MQb372aolxBBZDLAwtd9IpIJ
- faBPSx+h8WF2Fq3fxZT+tbBL53UCuPi06NH5y05GYwkeI7hr5ut6qyYjAAxQjD47jSOI1Sn50CB
- 5
-X-Gm-Gg: ASbGncvjwylIHaxvOh0TNljk5gi6FIBamJt+BAm4Y6uzwjwn6rlYwhQ8uTLYYGSuNxr
- gHm/kf6H/56JPHrz6t0O3L0QJ10iNxoMMQw4moiM+BlLPP5ujarC1/iWgPT2i3Oc31YMiAqvBww
- WcQ9maI1fRB0kxszUEpR8DiIXwsCM9tiKg5ujjBHLdrahcO8vQ2m7vzFu9gu0gRmMX90JVx9yIT
- 8p3U4rM151z56XxW1M/5ZERLi+AYXWibDl9gh2y40iOliwOoDWZw6ovteMiYcjsn0ify1vvC7Lo
- YOBbcopGo8ho4FVDZTXMh1PP1akPTHNcah8HAUn9dJlL0iE=
-X-Google-Smtp-Source: AGHT+IFguC+dqk6npzBXSrb9I00qFqHYpgsd6NIf3lqF/Q50SgUNi+a7FwGNM2P79sDRM3Zqn2saCQ==
-X-Received: by 2002:a05:600c:5105:b0:43c:e7a7:aea0 with SMTP id
- 5b1f17b1804b1-441d100a80emr30251455e9.26.1746542554054; 
+ bh=K63s5sr9Xlf+KqacLl70oGl/JdebL8vSGbHbp6f9PWc=;
+ b=cBba/7t9ziy3Ohs9m2RdqaBylKQFtbIK0KWaBBu3BwQ+N1gppn1MzE6hGqGhACKPC+
+ nfSAwFb4aY9qISOaGqK3MSTbEs7t6a0DdOCzM9lwpQ4ovABJaaJdcW4H227C8eLEXi/g
+ r5BgRBKryZ5aXBIoHNa9qarDX5aNtcZ5zubjd0JnpXODkDM33WE7Ojhsx7jeF0MwpFMr
+ 8IDCKGWF974NTeXr8mvhoLgYI7c66/Q5Ei9bmAS/c8xkMXy7w0YETfvwgmUX34XJIdf0
+ 9l+nV8zbBENZ2IcU3rNK/7Nb0yIbsnmxqqV1cB8vrMY7cD4gX51VeYKia8EbdqCF/4N0
+ UoMA==
+X-Gm-Message-State: AOJu0YzZEiWOXPJ+Cq5F6uXkgyVDuFVB2kVierFhr3DkH+SqUGbH3cTy
+ 9eAN0bZUUj9gIzUM2yadFHLkN1TIGc3TU5gcoQ1ASattuVlOSLTmhRitmurmtmPuvAazYUB3/+e
+ t
+X-Gm-Gg: ASbGncu/Zea2qNgTRM2hBHYX2LKuth2b+CzGQreLgTH10YySjEo17Gs+lYrxrwXZ7o3
+ LT3tDYcWPkhSQfCo+wqbw/Vtdtyq49HEjLLuNxfdegeCrItlje6+jjGBSOANxa8B6GhR1kyztXr
+ ods5VBejstFoA9hY5sJ8M8dDmHCxdQogl+5bXThq7hko4tP4Nu6Ul+QkcdXFqDShNbSssdFFIRP
+ D6o3BH/B8be+MpVphvDN65Iu7LrKz6ytqb/Kr0TtzZbeh3zloA+A0LRcVWAO8POPafYmuWOm0OI
+ d4vEbeUOzbIx09A97wrzpwOeUreqPOQwUMoZ8wnO1T5j2N4=
+X-Google-Smtp-Source: AGHT+IEuK6ifTfoI023ip3BuKYH8xZmfzMjyjwF09Kl6ENn2cY0krr4+wZ8x7q4KQ9v2XoxdDPjOAQ==
+X-Received: by 2002:a05:600c:3b90:b0:43d:1bf6:15e1 with SMTP id
+ 5b1f17b1804b1-441d3a375d9mr389935e9.1.1746542554982; 
  Tue, 06 May 2025 07:42:34 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-441b89edfc2sm169603435e9.20.2025.05.06.07.42.33
+ 5b1f17b1804b1-441b89edfc2sm169603435e9.20.2025.05.06.07.42.34
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 May 2025 07:42:33 -0700 (PDT)
+ Tue, 06 May 2025 07:42:34 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 15/32] hw/arm/virt: Remove deprecated virt-2.9 machine
-Date: Tue,  6 May 2025 15:41:57 +0100
-Message-ID: <20250506144214.1221450-16-peter.maydell@linaro.org>
+Subject: [PULL 16/32] hw/arm/virt: Remove deprecated virt-2.10 machine
+Date: Tue,  6 May 2025 15:41:58 +0100
+Message-ID: <20250506144214.1221450-17-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250506144214.1221450-1-peter.maydell@linaro.org>
 References: <20250506144214.1221450-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,24 +109,26 @@ Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/virt.c | 7 -------
- 1 file changed, 7 deletions(-)
+ hw/arm/virt.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
 diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 13cbd2275ef..1c84297fab9 100644
+index 1c84297fab9..6e10b2b0857 100644
 --- a/hw/arm/virt.c
 +++ b/hw/arm/virt.c
-@@ -3620,10 +3620,3 @@ static void virt_machine_2_10_options(MachineClass *mc)
-     mc->ignore_memory_transaction_failures = true;
+@@ -3611,12 +3611,3 @@ static void virt_machine_2_11_options(MachineClass *mc)
+     vmc->smbios_old_sys_ver = true;
  }
- DEFINE_VIRT_MACHINE(2, 10)
+ DEFINE_VIRT_MACHINE(2, 11)
 -
--static void virt_machine_2_9_options(MachineClass *mc)
+-static void virt_machine_2_10_options(MachineClass *mc)
 -{
--    virt_machine_2_10_options(mc);
--    compat_props_add(mc->compat_props, hw_compat_2_9, hw_compat_2_9_len);
+-    virt_machine_2_11_options(mc);
+-    compat_props_add(mc->compat_props, hw_compat_2_10, hw_compat_2_10_len);
+-    /* before 2.11 we never faulted accesses to bad addresses */
+-    mc->ignore_memory_transaction_failures = true;
 -}
--DEFINE_VIRT_MACHINE(2, 9)
+-DEFINE_VIRT_MACHINE(2, 10)
 -- 
 2.43.0
 
