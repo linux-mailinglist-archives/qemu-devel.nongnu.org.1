@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E047AAC834
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:37:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78683AAC852
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:42:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCJOW-0006lK-8W; Tue, 06 May 2025 10:35:40 -0400
+	id 1uCJOa-0006vu-71; Tue, 06 May 2025 10:35:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJOS-0006be-QR
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:35:37 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJOW-0006sY-UH
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:35:40 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJOQ-000134-OI
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:35:36 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-43cef035a3bso36575745e9.1
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:35:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJOV-00013p-5D
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:35:40 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-441c99459e9so19207775e9.3
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:35:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746542132; x=1747146932; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746542137; x=1747146937; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lCeRqTx0mhaZ0q9s1EL1ORmnDCtjAuDqQ8i9YX1QOyg=;
- b=JSbXXGpKXX7ad0vkDkDhH6ntFZeewhCHgmQGZRDXzPdRLqYpHrEuSO/wt0qTSb4UPI
- SFx0w482S/OS+PQpSK6f7kwc8AHVDxBEL0rmXiAyY6t6ffSxTQk3VDi2AWS0b5ud0mQK
- NyVXwrQl0qC32glI7eZoE3QFxEeZDjzMy7IxBP8S4ddJxIBorhoISFW63jAxYmygVS5n
- gW3momNmcKi/Ncat8NSNiPIq+mquMonfmcbpfNDLklgBmhwhdkiXaayBFzPaDzcLH/+5
- kXEcbwvaGAB0UVG9lUDzocZxJWIhr2spnDfT6/UN4dPkRwadwGvJI3URG1H+xphTmEuP
- nxVg==
+ bh=ufygZT8s60A1VbqI5u3oirvtlHFo9Kd6lcHx0GOiJXE=;
+ b=hpUrhw+2cC1h//DLPAnSQQUJL89Nmy4qJ1eqnv1AV8lbpvigSc+gO1yxW17a8U7Cuj
+ bGkqhuu2wzQU6cJW8p4QeV1wplmARwy2DqH1hgq3Ru6nV6o5DD2BlgjgdBFB7fm8w8YD
+ Q2WJvp0b3i4UK6IJEwyt7KcunEwGiCiUFz0euVeDfgPdlr/JAcTwoQQWR37zPRi9dOjY
+ vgJZPZPsphNcyDVRcsmaY6Y8OqLRZqJzyx8FB6TrOxKk51b4uVTcilRcUzIL0ASjz9F7
+ 1VtehEAYGlc5yV/cuhe/lh4hJK88U9qunn4Yv7MdOuiuYMHCmx+1IacqdSzK7uq3LTch
+ jNVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746542132; x=1747146932;
+ d=1e100.net; s=20230601; t=1746542137; x=1747146937;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lCeRqTx0mhaZ0q9s1EL1ORmnDCtjAuDqQ8i9YX1QOyg=;
- b=mzK7Ig6+aWc5FGG9Jkh7BJa6A+478V2cJHLHJ0JPDuJa3I4d/IJGtxDDu72JCumIaV
- G8LHB8ghqS+BLUA1pf8WGb0M3IQE73hynPz/8MYiS4agrSm1lKIOcNRArfnNjuQNnch5
- nt402iGw0JmvgaWLH/Hx3tNb/WLHZXqYZTPeco9REt6xDQ6lFNnSaXtozx0ltK4DfZHS
- exOhyXbzZjlK1hoMLFy0aFtgrjS1FG9C0d2+Br+aPvz0aoknYNRwvo8T3yQJFHvqIZwu
- UEpix0K2xBFm5PNmSLPjLLGm7Z95qcuKye3Ysm63F3yNhFoFAdMBD6KJ/TG0xVO4NQG6
- k40g==
-X-Gm-Message-State: AOJu0Yw8hpG8VnaDTr6pDuaWhFzrNNZMI+4HKgzU7LzEqpbzTCZWKTCx
- ROrMyMEGGlIoXSeqcP6FRYi49FiAcrnBaSo1VYm66IM04oAfneVBd895E40goyzm+emYybPqII/
- V
-X-Gm-Gg: ASbGncuRChTgUJ+7T3SertJ5A2CRaODKw6pFSbxLeVtBasFmqsogL5zJMSvQA60PB4l
- Li8pKAbGFbQmNkG2a2KInbKCR6ZlEirOj2AzmvLd1fBZz8BgGt1t3EXrdtjtheI3gXqbsj2lhgF
- H4NlixAtM93c+8OCw0uN6rSxsBTnMgCp8FTw1LwU1rznnjsaI74OXBwoAKdkKRotxH1VtU7IMHc
- OZwySyui6Ji7DYGuTzjnM6Eha7Op6jxW9YYoYnZfZAncm+2+HWSdiNMG2h6pC0pAKJMvtHDYNIK
- CFx0etCE4ggy9r+Y6wbs7TGYGM+PPeKrHcQ2bI9PwhSL4V3ssBJpCrPZavVNNGWTWMSWCz7CZCH
- JmhpAU/ThBzsUyjNq7/44
-X-Google-Smtp-Source: AGHT+IGyxPKdPvukJKTXf6ruUaT87ZzEzL6O8dLCqcTvoIwzktd9D4/V25yW65o62J9rxa/+7anu+A==
-X-Received: by 2002:a05:600c:1e88:b0:43c:f513:958a with SMTP id
- 5b1f17b1804b1-441c48bdf64mr94179155e9.13.1746542132340; 
- Tue, 06 May 2025 07:35:32 -0700 (PDT)
+ bh=ufygZT8s60A1VbqI5u3oirvtlHFo9Kd6lcHx0GOiJXE=;
+ b=tWKQklcsv/OpEz1lxRnEgt1QwcB5s9hRv+jrihv2ZXJxzHJHJTJS68F7LjJvXR/lty
+ fcm5DqIxyi9mY28WgJ8mqcu50xkI1mWCnVLwQ3hGYrW+/MiVnDN1iKEPHULG4uNK7R+U
+ aR9v3jwA09AoF5wzYcdvVln8gXTDS2i40Oiw+GvLagO9izE7X0kL5t/YKmJ9IvUr+sSb
+ 3+Yy2TZkd4ehTZa6MwwA/cCNo7XmRVFx2qOLVy8RM+3I5A0p1iOJz+xgfg16nTH5CACi
+ OvEppKwI52ivTeEqPQILyIc9XAgRDZ+DFUxxgNIgMOcITVe5XomiKe1JQt9sI+HuUh1v
+ L5bQ==
+X-Gm-Message-State: AOJu0YzmwD1+6uSyo9gnVlEaYgoOsaQwAikeJzF1hbdL7XX9/qWjhtYq
+ nvTwXM7otlIfK0xD/aOfChEMHTmA81dhZDP6qkyjOZxFf8cvN55giDJXgM0W0HGbPq1VSeQvsod
+ d
+X-Gm-Gg: ASbGncuh45t01FIFRwl7mYPo46DOySfo5DBnFX6ysnzDisJBomj4EkWZtIgS6DrhoN7
+ bq1hV7ARXTtm+5ipCCNYNhjwYrmbKAHNfhSFdWH3CUZBddc8k6FxWVKjdHHSwp90+6QKzHlcvdO
+ CCoCeTsuHzDbXJftg18175I7AlFAVLSJ7nYlKMQtZOToVU+THN6uTLKEAA63/+B1ESW6sMlRyw1
+ Rpm+8sU4r3bS5cWWbhZBm4Yx9nlku9EQHO4xksX2v/+HHcYlVSNGKYyS24vhWa+G9ZoVaTYiDfW
+ Ni2QvCvyLVT41p7btAsvCrVPj1YpAaV20FoQhpDpQRdJ/tdlZZ0XZatzyjpmXbLtudpBEp7FKo3
+ 9zQRoVa1UuJEC+PRPg0OP
+X-Google-Smtp-Source: AGHT+IGczfu/u4a3BdbAs+TMB6mBoMfLzu9PBRHyTMioPhXuuLwid8NLQR7UGiXaNqgYkyV9Hl71FQ==
+X-Received: by 2002:a05:600c:4fc9:b0:43b:cc3c:60bc with SMTP id
+ 5b1f17b1804b1-441bbed9ec1mr185259305e9.15.1746542137077; 
+ Tue, 06 May 2025 07:35:37 -0700 (PDT)
 Received: from localhost.localdomain (91-163-26-170.subs.proxad.net.
  [91.163.26.170]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a099ae7caasm14120803f8f.54.2025.05.06.07.35.31
+ 5b1f17b1804b1-441b2b28082sm215745915e9.34.2025.05.06.07.35.36
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 06 May 2025 07:35:31 -0700 (PDT)
+ Tue, 06 May 2025 07:35:36 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Xu <peterx@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 04/22] target/migration: Inline VMSTATE_CPU()
-Date: Tue,  6 May 2025 16:34:53 +0200
-Message-ID: <20250506143512.4315-5-philmd@linaro.org>
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Wei Liu <wei.liu@kernel.org>
+Subject: [PULL 05/22] target/i386/hvf: Include missing 'exec/target_page.h'
+ header
+Date: Tue,  6 May 2025 16:34:54 +0200
+Message-ID: <20250506143512.4315-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250506143512.4315-1-philmd@linaro.org>
 References: <20250506143512.4315-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,100 +100,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-VMSTATE_CPU() is only used in 4 places and doesn't provide
-much, directly inline it using VMSTATE_STRUCT().
+Include "exec/target_page.h" to be able to compile HVF on x86_64:
 
-This removes the last COMPILING_PER_TARGET in "hw/core/cpu.h".
+  ../target/i386/hvf/hvf.c:139:49: error: use of undeclared identifier 'TARGET_PAGE_SIZE'
+              uint64_t dirty_page_start = gpa & ~(TARGET_PAGE_SIZE - 1u);
+                                                ^
+  ../target/i386/hvf/hvf.c:141:45: error: use of undeclared identifier 'TARGET_PAGE_SIZE'
+              hv_vm_protect(dirty_page_start, TARGET_PAGE_SIZE,
 
+Fixes: 9c2ff9cdc9b ("exec/cpu-all: remove exec/target_page include")
+Reported-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reported-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20250429085148.11876-1-philmd@linaro.org>
+Message-Id: <20250425174310.70890-1-philmd@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- include/hw/core/cpu.h       | 12 ------------
- target/alpha/machine.c      |  2 +-
- target/hppa/machine.c       |  2 +-
- target/microblaze/machine.c |  2 +-
- target/openrisc/machine.c   |  2 +-
- 5 files changed, 4 insertions(+), 16 deletions(-)
+ target/i386/hvf/hvf.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 12b2ff1f7d2..1e87f7d393e 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -1121,20 +1121,8 @@ bool cpu_exec_realizefn(CPUState *cpu, Error **errp);
- void cpu_exec_unrealizefn(CPUState *cpu);
- void cpu_exec_reset_hold(CPUState *cpu);
+diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
+index 99e37a33e50..b16fb066758 100644
+--- a/target/i386/hvf/hvf.c
++++ b/target/i386/hvf/hvf.c
+@@ -50,6 +50,7 @@
+ #include "qemu/error-report.h"
+ #include "qemu/memalign.h"
+ #include "qapi/error.h"
++#include "exec/target_page.h"
+ #include "migration/blocker.h"
  
--#ifdef COMPILING_PER_TARGET
--
- extern const VMStateDescription vmstate_cpu_common;
- 
--#define VMSTATE_CPU() {                                                     \
--    .name = "parent_obj",                                                   \
--    .size = sizeof(CPUState),                                               \
--    .vmsd = &vmstate_cpu_common,                                            \
--    .flags = VMS_STRUCT,                                                    \
--    .offset = 0,                                                            \
--}
--
--#endif /* COMPILING_PER_TARGET */
--
- #define UNASSIGNED_CPU_INDEX -1
- #define UNASSIGNED_CLUSTER_INDEX -1
- 
-diff --git a/target/alpha/machine.c b/target/alpha/machine.c
-index f09834f635d..5f302b166da 100644
---- a/target/alpha/machine.c
-+++ b/target/alpha/machine.c
-@@ -74,7 +74,7 @@ static const VMStateDescription vmstate_env = {
- };
- 
- static const VMStateField vmstate_cpu_fields[] = {
--    VMSTATE_CPU(),
-+    VMSTATE_STRUCT(parent_obj, AlphaCPU, 0, vmstate_cpu_common, CPUState),
-     VMSTATE_STRUCT(env, AlphaCPU, 1, vmstate_env, CPUAlphaState),
-     VMSTATE_END_OF_LIST()
- };
-diff --git a/target/hppa/machine.c b/target/hppa/machine.c
-index bb47a2e689f..13e555151a6 100644
---- a/target/hppa/machine.c
-+++ b/target/hppa/machine.c
-@@ -216,7 +216,7 @@ static const VMStateDescription vmstate_env = {
- };
- 
- static const VMStateField vmstate_cpu_fields[] = {
--    VMSTATE_CPU(),
-+    VMSTATE_STRUCT(parent_obj, HPPACPU, 0, vmstate_cpu_common, CPUState),
-     VMSTATE_STRUCT(env, HPPACPU, 1, vmstate_env, CPUHPPAState),
-     VMSTATE_END_OF_LIST()
- };
-diff --git a/target/microblaze/machine.c b/target/microblaze/machine.c
-index 51705e4f5c9..a4cf38dc891 100644
---- a/target/microblaze/machine.c
-+++ b/target/microblaze/machine.c
-@@ -93,7 +93,7 @@ static const VMStateDescription vmstate_env = {
- };
- 
- static const VMStateField vmstate_cpu_fields[] = {
--    VMSTATE_CPU(),
-+    VMSTATE_STRUCT(parent_obj, MicroBlazeCPU, 0, vmstate_cpu_common, CPUState),
-     VMSTATE_STRUCT(env, MicroBlazeCPU, 1, vmstate_env, CPUMBState),
-     VMSTATE_END_OF_LIST()
- };
-diff --git a/target/openrisc/machine.c b/target/openrisc/machine.c
-index 3574e571cb2..081c706d02c 100644
---- a/target/openrisc/machine.c
-+++ b/target/openrisc/machine.c
-@@ -136,7 +136,7 @@ const VMStateDescription vmstate_openrisc_cpu = {
-     .minimum_version_id = 1,
-     .post_load = cpu_post_load,
-     .fields = (const VMStateField[]) {
--        VMSTATE_CPU(),
-+        VMSTATE_STRUCT(parent_obj, OpenRISCCPU, 0, vmstate_cpu_common, CPUState),
-         VMSTATE_STRUCT(env, OpenRISCCPU, 1, vmstate_env, CPUOpenRISCState),
-         VMSTATE_END_OF_LIST()
-     }
+ #include "system/hvf.h"
 -- 
 2.47.1
 
