@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D1E4AACD4D
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 20:31:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59312AACD4C
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 20:31:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCN4K-0003Y9-Qd; Tue, 06 May 2025 14:31:05 -0400
+	id 1uCN31-00020O-UM; Tue, 06 May 2025 14:29:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1uCN0V-0006gO-3G; Tue, 06 May 2025 14:27:10 -0400
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ id 1uCN0W-0006hQ-IU; Tue, 06 May 2025 14:27:10 -0400
+Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1uCN0S-0007g9-Pu; Tue, 06 May 2025 14:27:06 -0400
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-54acc0cd458so7031415e87.0; 
- Tue, 06 May 2025 11:27:02 -0700 (PDT)
+ id 1uCN0T-0007gQ-TF; Tue, 06 May 2025 14:27:08 -0400
+Received: by mail-lj1-x236.google.com with SMTP id
+ 38308e7fff4ca-30bfb6ab47cso53911231fa.3; 
+ Tue, 06 May 2025 11:27:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1746556019; x=1747160819; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1746556021; x=1747160821; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ulkQy97n87PM4Cu6oVIfWw2jKyekJRa0XlxEPEhm5IE=;
- b=FU3U3DbzVoInq2xcZRSkfXHQ/wTtybrCLKi0fCrMEsyzUThnIVsmp/EA050HIh757a
- B/tZt3PukNDGOlqlwYBRcwVGp3NEuwZsd4z/oJzDqMM22nme5xQxtG2idva2IGxXn5nJ
- acsAkDa/XPQAMNGSd4hC9K7od6qTBYfJbicXx9FyGyLFqpAnYmNOipnFLHoIkHk1In0Y
- 3S9+5piK5QrVCIzR5662BmVFmnQBPWRob9e/yIzwbaJfH0Fl+uWiYqqTJGR6xvfuBwdB
- PUM9sefouPVbbqK+vYbbv9a/odFhmymLIH7PxwioyW5D1nxf0NfHBLv8r2IUrFlNKsBi
- +Y3Q==
+ bh=zpP4TBaydimBJ+yCxRqJxX0SmD5odScGLmy0sP+rMAs=;
+ b=A7XR1Hw7/3XlMgzQveZkInZLDn8nL5FVDdlJkgQyp4W9GVQD4cr/4w196lXPunL7eW
+ GW/MO/h0H3js+/o+qdBjVNGispa6G9M9s5Szm0eERM5RVx8EgV4xX1OqdpVFLCSIW2Pc
+ 8J9bJjUKAfaTQxly8wKyqWZ91EzZyIWP4YPs7ZpQHh4FSC4tWkvkmi9yXUyAhxE7C7fI
+ 3VLclMp/KmceY7Htl39AEBKY3u3ib6NQ4bDA+I2unhmFedi8CIMPq2980p1kDfMl43Ed
+ WAHrwR2r2Gi4KmD5EMoiXTzAXZNDQj3r/ihb4MrUni+HbvnZJXTKmDLwU42qcwyj8SoX
+ Es+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746556019; x=1747160819;
+ d=1e100.net; s=20230601; t=1746556021; x=1747160821;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ulkQy97n87PM4Cu6oVIfWw2jKyekJRa0XlxEPEhm5IE=;
- b=vXsGcmQ39b3chF49dhbLn1n+BoRrE0HmUh6+IydEhCJlmQTHyhRM7dEIjiqlK4Nayw
- vRdIOxRpW9cmBxeBl6mHFM9FYhSMKeUq/rBTHylB7tPq9XinSIeEBMyWNvEJb1Ppsvrv
- sIsk1HTpVpSEjPL4nhtz4Nij7pQYlZG63BMsY9HL/Pz6q39dXScDLbVlW8yZsnJk369x
- q/l92arUQAn+/YIgkaiCzwaxlGn9NygTjyRN4YPTDYOvsEzbkplUPqHQE4CAVxeT1FQk
- 0nxFblIeVNhmTqnLRV64bsYY9FfjQTjnPO4MDvoL/8tSccMrnN+RlObhPYTCOtPibip/
- 8Efg==
-X-Gm-Message-State: AOJu0YxZd58jfJsTM5Ki2rrQjKNeffEDyGZSMympZ8Mb5DjLlLl8pdgp
- HMrC8wW7YP41B5dDfcHG9Kwj6Hhj9vihL7PGamtGKviw7c8mieyOvleTmb0Wzk4=
-X-Gm-Gg: ASbGnctcOHLbv0vmYIKJgXKmr8wxiYJN4IE/FD9B1tj1hkm0lbJRmX+ffiSldOoUcLh
- +8fkZsZer/u3POlG/hQwLqn/TLtlnBJbdiB7JcHC33RKoS1OZ+dwGRfeuSqqi9oVYYR84z61UQl
- KLJP9BKnW8xdLw2pCsfeaIexfAxgd4waG64WAgkJCAP9VppKrhOtyRgsrNAgwXlcxRr9lan3hXQ
- GTrcHNREbGYw/n4xslizhD6QXh/S6UxECv8TaNhg9Wus9Q0BWsmRwZ6o8w7q4YqDoFM1SI11JCQ
- JxUl2zvTlnyo6XKKjk7l1QJrthHo7bCL1UXE0KdA2XJGWE3p/3ZWrLFUDLD6X2T1tnvNUdO+yZy
- BY3PICh2ulyY2
-X-Google-Smtp-Source: AGHT+IHzaJIdUGZqVsMqaaLKD2N5KnA7xk6kTtRN63mmTk/vnTIZ/huHbnC5q5MQJQGLHrEoa/muAg==
-X-Received: by 2002:a05:6512:20d8:b0:54b:117b:952e with SMTP id
- 2adb3069b0e04-54fb95ba664mr159760e87.55.1746556019187; 
- Tue, 06 May 2025 11:26:59 -0700 (PDT)
+ bh=zpP4TBaydimBJ+yCxRqJxX0SmD5odScGLmy0sP+rMAs=;
+ b=JdlcCwSFnYrSPnwN8V6GWq9ctUHW5S6SFHNlI81jHEABjtXOMIbprgS8wsIb8Fh17v
+ TPnVyhiiDP2YGDeN39i1ktjh/UW1JhdkyJf1Ig65CDQEIL+3Xvxdx/SSKvQQliqsWciD
+ q4N/9bn/UpyObqyX1xI5D3rwcN869BWRk8CfcddCOy0Zvi0s5aBICo1KvstpKhRyZVdD
+ VvgmTC60CrMkiizyP3dxOwbqF8DOD+30KnWSTbiq1qt/ULD9Wbgyt/dC2pZ6vYEi35+V
+ bDBANGjrS8orThisksWiWczeQPLltJCW5tSTNV594EHxWH0+7rafFWcNIREVjPrN/A8g
+ qLmg==
+X-Gm-Message-State: AOJu0YzstaP6gmc6lnwgdrSsbT9IXduzKbdordm9NT3wnrarT22D2e3I
+ hwuZFgZEuIwlzb9MAMtR10ANgeg8zg6Fi/hdjDRzYsWiknJ/azEXRkES38quZwE=
+X-Gm-Gg: ASbGncss9TmdH6Bxn9IDrVAp6Q6e7o0AGOUWuhe3e7/Y0jEdwFcttaqrRjF0aGhc/VQ
+ 91Ep/mhUC30v1s9yAWepY5Y/1NXc69z1cZWWgcbtm6TxNKbvTstoNEH3BStR2CzLf6UH3i0GF25
+ g0PaXjQ5RpSwbLpE6DHSpeom9GPYxqIg47UnrOw0wtmFzpdh2v/udUuBVAeEVhI7m0g6yrP7FBC
+ zfo9OTgFnmMQtL6ob1TaMtv57kFyH3ObpQaNhidnoKcPbW35BVD0GwEvb8kx95M9RruDymBSbHX
+ mhuFfE63HLOYYM3cLev2XFysPHe/lZl3OFHfPHovUF1DlicumIZjOMxaLYgxtjPdTH3mVoSHtjo
+ Wvdb4rZTUFesJO9Mez8Iv1T0=
+X-Google-Smtp-Source: AGHT+IHBa9ho1ThyDkNxpwI0/3LxpQeg41uCA79/UXOH2n/099VZv3LAbpb5LyXBZ2fI612cdcWfAw==
+X-Received: by 2002:a2e:be1a:0:b0:30b:ed5a:6f3c with SMTP id
+ 38308e7fff4ca-326ad19a978mr314741fa.10.1746556021307; 
+ Tue, 06 May 2025 11:27:01 -0700 (PDT)
 Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
  by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-54ea94ee173sm2093370e87.127.2025.05.06.11.26.57
+ 38308e7fff4ca-3202a89ef11sm20952331fa.81.2025.05.06.11.26.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 May 2025 11:26:57 -0700 (PDT)
+ Tue, 06 May 2025 11:26:59 -0700 (PDT)
 From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, sstabellini@kernel.org, anthony@xenproject.org,
  paul@xen.org, alex.pentagrid@gmail.com, peter.maydell@linaro.org,
  edgar.iglesias@amd.com, xen-devel@lists.xenproject.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Subject: [PULL v1 1/2] xen: mapcache: Fix finding matching entry
-Date: Tue,  6 May 2025 20:26:46 +0200
-Message-ID: <20250506182647.302961-2-edgar.iglesias@gmail.com>
+Subject: [PULL v1 2/2] xen: mapcache: Split mapcache_grants by ro and rw
+Date: Tue,  6 May 2025 20:26:47 +0200
+Message-ID: <20250506182647.302961-3-edgar.iglesias@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250506182647.302961-1-edgar.iglesias@gmail.com>
 References: <20250506182647.302961-1-edgar.iglesias@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-lf1-x132.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::236;
+ envelope-from=edgar.iglesias@gmail.com; helo=mail-lj1-x236.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,43 +100,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Aleksandr Partanen <alex.pentagrid@gmail.com>
+From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
 
-If we have request without lock and hit unlocked or invalid
-entry during the search, we remap it immediately,
-even if we have matching entry in next entries in bucket.
-This leads to duplication of mappings of the same size,
-and to possibility of selecting the wrong element
-during invalidation and underflow it's entry->lock counter
+Today, we don't track write-abiliy in the cache, if a user
+requests a readable mapping followed by a writeable mapping
+on the same page, the second lookup will incorrectly hit
+the readable entry.
 
-Signed-off-by: Aleksandr Partanen <alex.pentagrid@gmail.com>
+Split mapcache_grants by ro and rw access. Grants will now
+have separate ways in the cache depending on writeability.
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 ---
- hw/xen/xen-mapcache.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ hw/xen/xen-mapcache.c | 26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
 diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c
-index 698b5c53ed..2c8f861fdb 100644
+index 2c8f861fdb..e31d379702 100644
 --- a/hw/xen/xen-mapcache.c
 +++ b/hw/xen/xen-mapcache.c
-@@ -376,12 +376,12 @@ tryagain:
+@@ -75,7 +75,8 @@ typedef struct MapCache {
+ } MapCache;
  
-     entry = &mc->entry[address_index % mc->nr_buckets];
+ static MapCache *mapcache;
+-static MapCache *mapcache_grants;
++static MapCache *mapcache_grants_ro;
++static MapCache *mapcache_grants_rw;
+ static xengnttab_handle *xen_region_gnttabdev;
  
--    while (entry && (lock || entry->lock) && entry->vaddr_base &&
--            (entry->paddr_index != address_index || entry->size != cache_size ||
-+    while (entry && (!entry->vaddr_base ||
-+            entry->paddr_index != address_index || entry->size != cache_size ||
-              !test_bits(address_offset >> XC_PAGE_SHIFT,
-                  test_bit_size >> XC_PAGE_SHIFT,
-                  entry->valid_mapping))) {
--        if (!free_entry && !entry->lock) {
-+        if (!free_entry && (!entry->lock || !entry->vaddr_base)) {
-             free_entry = entry;
-             free_pentry = pentry;
-         }
+ static inline void mapcache_lock(MapCache *mc)
+@@ -176,9 +177,12 @@ void xen_map_cache_init(phys_offset_to_gaddr_t f, void *opaque)
+      * Grant mappings must use XC_PAGE_SIZE granularity since we can't
+      * map anything beyond the number of pages granted to us.
+      */
+-    mapcache_grants = xen_map_cache_init_single(f, opaque,
+-                                                XC_PAGE_SHIFT,
+-                                                max_mcache_size);
++    mapcache_grants_ro = xen_map_cache_init_single(f, opaque,
++                                                   XC_PAGE_SHIFT,
++                                                   max_mcache_size);
++    mapcache_grants_rw = xen_map_cache_init_single(f, opaque,
++                                                   XC_PAGE_SHIFT,
++                                                   max_mcache_size);
+ 
+     setrlimit(RLIMIT_AS, &rlimit_as);
+ }
+@@ -456,9 +460,13 @@ uint8_t *xen_map_cache(MemoryRegion *mr,
+                        bool is_write)
+ {
+     bool grant = xen_mr_is_grants(mr);
+-    MapCache *mc = grant ? mapcache_grants : mapcache;
++    MapCache *mc = mapcache;
+     uint8_t *p;
+ 
++    if (grant) {
++        mc = is_write ? mapcache_grants_rw : mapcache_grants_ro;
++    }
++
+     if (grant && !lock) {
+         /*
+          * Grants are only supported via address_space_map(). Anything
+@@ -523,7 +531,10 @@ ram_addr_t xen_ram_addr_from_mapcache(void *ptr)
+ 
+     addr = xen_ram_addr_from_mapcache_single(mapcache, ptr);
+     if (addr == RAM_ADDR_INVALID) {
+-        addr = xen_ram_addr_from_mapcache_single(mapcache_grants, ptr);
++        addr = xen_ram_addr_from_mapcache_single(mapcache_grants_ro, ptr);
++    }
++    if (addr == RAM_ADDR_INVALID) {
++        addr = xen_ram_addr_from_mapcache_single(mapcache_grants_rw, ptr);
+     }
+ 
+     return addr;
+@@ -626,7 +637,8 @@ static void xen_invalidate_map_cache_entry_single(MapCache *mc, uint8_t *buffer)
+ static void xen_invalidate_map_cache_entry_all(uint8_t *buffer)
+ {
+     xen_invalidate_map_cache_entry_single(mapcache, buffer);
+-    xen_invalidate_map_cache_entry_single(mapcache_grants, buffer);
++    xen_invalidate_map_cache_entry_single(mapcache_grants_ro, buffer);
++    xen_invalidate_map_cache_entry_single(mapcache_grants_rw, buffer);
+ }
+ 
+ static void xen_invalidate_map_cache_entry_bh(void *opaque)
 -- 
 2.43.0
 
