@@ -2,107 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1D36AACA0F
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 17:51:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1D68AAC9AD
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 17:36:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCKYP-0001e0-8B; Tue, 06 May 2025 11:49:57 -0400
+	id 1uCKL0-0007Br-Kt; Tue, 06 May 2025 11:36:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1uCKY0-0001a2-CA
- for qemu-devel@nongnu.org; Tue, 06 May 2025 11:49:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uCKKx-00073X-1D; Tue, 06 May 2025 11:36:03 -0400
+Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1uCKXy-0004nX-Gr
- for qemu-devel@nongnu.org; Tue, 06 May 2025 11:49:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746546568;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=bkngm4xPW0h1Rul1XmIN8IYWuu6SW3zE+68bt6TipHg=;
- b=W/YARlgpbdKxt+AIu1M3H29+YWcdoaocchAZG/1t9xn5mxlez8Up9Y0urkz/4T/r6xijUz
- 94G8FSqjQlJ0vr8MuZjTaCDlhYKe0iu2fVTNzygdKFs1pg8L5bL2DKVemerZ76ZvoBdV7D
- LptWDv9Fso79fc2sIzw9qQfSGg44Ows=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-308-I6j3BEQBMKKfzYPGJ2DMNw-1; Tue, 06 May 2025 11:49:27 -0400
-X-MC-Unique: I6j3BEQBMKKfzYPGJ2DMNw-1
-X-Mimecast-MFC-AGG-ID: I6j3BEQBMKKfzYPGJ2DMNw_1746546566
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-39ac9b0cb6aso2434472f8f.2
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 08:49:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746546566; x=1747151366;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bkngm4xPW0h1Rul1XmIN8IYWuu6SW3zE+68bt6TipHg=;
- b=Qo1mwvVhxSs9Mk22mvrpg2ugYEY4joFKU0m2CT779ptdT4mmguf05KRhM6FAF3+kpa
- 2RFMezd17NtJ2C/qd9T3nM/RiYVkrCc0ksJNwCWAzurcacP2TgY8EXaiz5SqK4v1JC+k
- o7XoZXxWFA5YAh9H8O0tYNwf+1J1V2Q4x7BaddouYmAn++DsyAvDrkenB5t1sVJhRIAi
- 38GTr6nYtJRIKV3BiQp3YGnLUFgINtLdXI2Zl3it0qRDVvblYD+lHJuN1Vl8eTZAIGf7
- bxlU7iJ/pph014DgqHjcAEd3sC9DMOWOdh9J6dcP5Dzk+xiP8mzk7TblKKwtVaAoPOb/
- Ss6A==
-X-Gm-Message-State: AOJu0YypyHIkLcgHoTHt+Y+9pJra08jUa06z2cpD708JeBCTSJPXEfEW
- CPzHu0ZguatZU6UM4wo7kE/M22grZ16+AID5A4DHmsGtNgbXQEOKjO/zru1fkRbhgaGQ3g0/Fjv
- XKZew786niHGaPzWaJ+p2Zp4FBraiITYvrH3yCa6JXOsWJ+FG/Q0O
-X-Gm-Gg: ASbGncs3693NfLYXFYpTk5fV9Bqp1EnJQIrvy3Q10ZqmuzmiPsQavrov8c/bWz/mScK
- dSb5e9YcW4DAyWvfC6cbU4fPzobDMUynYM8AFDw3mo4kwzFk3JM2ZDQYvC5ro+KNFtw6IKJjY8J
- y77zMFmhivziSdH7lLkUCkauF8N0B2mJX4LJahWqYhnn+cfiJ6+FFmLqKQ6QgfEZqoaH0KM7dl4
- Plj3YV1ldouFt6RY80mK2nI8khdZtFOmYcul5MKA54DCOunjHojF80IRyjSden4eNsvDymxzVmd
- TM53UZYDQMhIaNTwDGaIJx1rQ1phGSFY
-X-Received: by 2002:a05:6000:178f:b0:39c:d05:3779 with SMTP id
- ffacd0b85a97d-3a0ac3eb17cmr2824051f8f.49.1746546566291; 
- Tue, 06 May 2025 08:49:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFUj74RFkjOoqcOq/gKjPK5QyKCPHVWxdIDd1/VNcSsrdTvrR4Dao1DMLULuuawVwr1AmpEyg==
-X-Received: by 2002:a05:6000:178f:b0:39c:d05:3779 with SMTP id
- ffacd0b85a97d-3a0ac3eb17cmr2824028f8f.49.1746546565814; 
- Tue, 06 May 2025 08:49:25 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com ([85.93.96.130])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a099b172b3sm14264980f8f.90.2025.05.06.08.49.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 May 2025 08:49:25 -0700 (PDT)
-Date: Tue, 6 May 2025 17:49:23 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, Gustavo Romero
- <gustavo.romero@linaro.org>, Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, Ani Sinha <anisinha@redhat.com>, Udo
- Steinberg <udo@hypervisor.org>, "Michael S. Tsirkin" <mst@redhat.com>,
- qemu-arm@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Jones
- <ajones@ventanamicro.com>, "Daniel P. =?UTF-8?B?QmVycmFuZ8Op?="
- <berrange@redhat.com>, Fabiano Rosas <farosas@suse.de>, Alex
- =?UTF-8?B?QmVubsOpZQ==?= <alex.bennee@linaro.org>, Shannon Zhao
- <shannon.zhaosl@gmail.com>
-Subject: Re: [PATCH-for-10.0? v2 13/14] hw/arm/virt-acpi: Do not advertise
- disabled GIC ITS
-Message-ID: <20250506174923.4fce914c@imammedo.users.ipa.redhat.com>
-In-Reply-To: <6b64af93-f542-4a0e-8e55-5bb235f42c83@linaro.org>
-References: <20250403151829.44858-1-philmd@linaro.org>
- <20250403151829.44858-14-philmd@linaro.org>
- <20250404124110.59c59dc3@imammedo.users.ipa.redhat.com>
- <6b64af93-f542-4a0e-8e55-5bb235f42c83@linaro.org>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uCKKu-00035P-3n; Tue, 06 May 2025 11:36:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1746545760; x=1778081760;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=mkJbEeRb1ENEByJ2b2sfLaOckdBgjLYuUO8APjrIq+8=;
+ b=mRxdK/6vwYB9/+XkLT4vVavjL9YrYANUw874zMFt8kE97SAHr+kScGws
+ PNXCYpIDUQ6IIkX/ZQDjFv1boPDcZU0cikG7g/ZQKy5zysgoEhimu0m9r
+ pcgjqNx5NMuIwv+kGuKsuBrMl2ldyyiDGy2MR/MLDsBdDElpBkDGV6FAK
+ 5rzeO0UKYYKxEZBU+lmnNsTyZGSOieg38aBhJATqiwbzHjDDKQfI2jp1t
+ raQyP9S0WKvo9LtGOS/iL5tzF10EnoZ5z4HDhMNcX+4rIHkoj+RLdY6bf
+ tLOKe7kmoxxs/N1AwzfhocASajnyO4mdDB16R48H6FKFRltDqN/ivu+r5 Q==;
+X-CSE-ConnectionGUID: C0oNv97NRPmSB1eXeC6n2w==
+X-CSE-MsgGUID: x0xMebhnRvW+WcoaNxm3tg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11425"; a="65756130"
+X-IronPort-AV: E=Sophos;i="6.15,266,1739865600"; d="scan'208";a="65756130"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 May 2025 08:35:55 -0700
+X-CSE-ConnectionGUID: QxeGqo/cSNmWUph0tfhNsw==
+X-CSE-MsgGUID: KxiJiujIRl66Nuy3vNfHEg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,266,1739865600"; d="scan'208";a="140499994"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa005.fm.intel.com with ESMTP; 06 May 2025 08:35:54 -0700
+Date: Tue, 6 May 2025 23:56:55 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH preview 0/5] rust: allow minimum version of 1.83
+Message-ID: <aBoxR2PXsaeNe1sF@intel.com>
+References: <20250505100854.73936-1-pbonzini@redhat.com>
+ <aBnOyhMawDaY9yyR@intel.com>
+ <CABgObfYDOAGKdRNO91bfXQ4MPjbc0wNZSrDfpDiQZsOkrL53RQ@mail.gmail.com>
+ <aBnVtNgdjQ9DlugK@intel.com> <aBnbC4-hov9gY3MF@redhat.com>
+ <CABgObfbzWDnntjLcshsBPfdEdbx-6iqxd6FxUDbQa--VOqan=A@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CABgObfbzWDnntjLcshsBPfdEdbx-6iqxd6FxUDbQa--VOqan=A@mail.gmail.com>
+Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -57
+X-Spam_score: -5.8
+X-Spam_bar: -----
+X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,61 +83,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 4 Apr 2025 14:49:45 +0200
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> wrote:
+> > If we're re-writing C devices in Rust, we need to be able to promptly
+> > drop the C impl once the Rust impl is feature complete. Keeping 2 impls
+> > is a general maint burden, as well as an ongoing vmstate compatibility
+> > danger if a change in one impl is not matched by an identical change
+> > in the other impl.
+> 
+> I agree. One more reason why "Let's Rewrite It In Rust" is more of a
+> necessary evil to bootstrap the creation of bindings, and not a good
+> idea in general.
 
-> On 4/4/25 12:41, Igor Mammedov wrote:
-> > On Thu,  3 Apr 2025 17:18:28 +0200
-> > Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> wrote:
-> >  =20
-> >> GIC ITS can be disabled at runtime using '-M its=3Doff',
-> >> which sets VirtMachineState::its =3D false. Check this
-> >> field to avoid advertising the ITS in the MADT table.
-> >>
-> >> Reported-by: Udo Steinberg <udo@hypervisor.org>
-> >> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2886
-> >> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> >> Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
-> >> ---
-> >>   hw/arm/virt-acpi-build.c | 2 +-
-> >>   1 file changed, 1 insertion(+), 1 deletion(-)
-> >>
-> >> diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-> >> index e7e27951cb9..38a9e6fe0c5 100644
-> >> --- a/hw/arm/virt-acpi-build.c
-> >> +++ b/hw/arm/virt-acpi-build.c
-> >> @@ -212,7 +212,7 @@ static bool its_enabled(VirtMachineState *vms)
-> >>   {
-> >>       VirtMachineClass *vmc =3D VIRT_MACHINE_GET_CLASS(vms);
-> >>  =20
-> >> -    return !vmc->no_its;
-> >> +    return !vmc->no_its && vms->its; =20
-> >=20
-> > It's confusing have both no_its and its,
-> > it would be better to lean this mess up (i.e dedup or rename if somethi=
-ng is poorly named) =20
->=20
-> What about:
->=20
-> class: s/no_its/!its_createable/ or !its_usable
-> state: s/its/its_created/ or its_used or its_in_use
+Hi Paolo and Daniel, about this point, what things can be done to help
+the community move towards dropping duplicate impl?
 
-looking at the code what we are essentially doing with variables in class,
-is selecting its device type. And then playing scattered if/then game to de=
-cide
-which 'its' to create or not create.
-can we make something like this instead:
+For example, about HPET, add test cases (similar to tests/qtest/m48t59-test.c)
+to check register read/write to prove that the two impls are consistent?
 
- machine_foo_class_init_vX():
-  vmc->its_type =3D NULL;
-
- machine_foo_class_init_vX+1():
-  vmc->its_type =3D accel_get_its_type()
-=20
-and then elsewhere:
-
-if(vmc->its_type && vms->its_enabled)
-    create_its(vmc->its_type)
-
+Thanks,
+Zhao
 
 
