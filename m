@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B67B1AAC797
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:14:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B398AAC79C
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:15:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCJ40-0000X0-6Y; Tue, 06 May 2025 10:14:29 -0400
+	id 1uCJ4n-0001jW-5q; Tue, 06 May 2025 10:15:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJ3v-0000W2-VZ
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:14:23 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uCJ4j-0001by-58
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:15:13 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJ3q-0005nJ-CS
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:14:20 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-43cec5cd73bso26413075e9.3
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:14:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uCJ4g-00066i-6S
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:15:12 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-22e4db05fe8so5461605ad.0
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:15:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746540856; x=1747145656; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
- :cc:subject:date:message-id:reply-to;
- bh=BWfS0SFSEGfz7yReYqyP8xLm+iKyuU10YGuK2J0WMjk=;
- b=l8aU/8BWfLe78onDdzahjjuz9CJfB8Cfm0biaxBPMHl9+8iMyOtG2ONioIlMaslfdc
- pUp8dUI6mfKrTQuWxbJIsNsPh5BplRwnEWY/Yir26ivXyBgnPUZ+r8aMHxuOtgW2wJhz
- nPG+OaDYoBQ4DS7m6ihAy/zz1ThCyXaW1r8QKrw7BEO3OTPLDLVS3gpKRm1wDEpCSBjR
- Zuz3L76L59RMCIAPBD4pl+ZLu8lZ32+rdPlsbVNj2nZ2WseZ8+0YYIIf84D6hY4+xcVx
- 4VZmJx0bt/5E5PDfavC1nHx+yxc5bqfJMY9MP7Yf6+4d+P4YPgMa60B5MTdToEB8+SHQ
- AWjg==
+ d=linaro.org; s=google; t=1746540908; x=1747145708; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=hwUdbDDXm0t3Gm52LFWIHP/6V7GrN24wZGDtv9al9gQ=;
+ b=c18As2xRDYqqdn10/CcjB6deC9hLDbGXL5uLmMUrqbJq//Q7OabGyZgaVizrGDBwDW
+ lCD/q3nFPSTJ52EMT70qLCL+U6b7t6pB3o3/NNnIMBy9umTmPKs9g/HnKDiwdrfTYXHc
+ 8Cc8b1tNTjpo6qxzmjlCJxQw8gZr7ojiXIEWSabXbwD8lIC++L6fJHcLpwxU3mNBf9Fb
+ QKgpwhmay2H5at7K7GqpZKNkDjPEu3Q2NtGQe1vIwOniBG+YBluphVWp8GulJKbOvWXB
+ /Th3tfXwR6XoaLKirGGS5xKIsbtOVouuUbNYwfFqkPxT/BDtHA7jNgYqDSr+KdF7e4xm
+ lVSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746540856; x=1747145656;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:from:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1746540908; x=1747145708;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BWfS0SFSEGfz7yReYqyP8xLm+iKyuU10YGuK2J0WMjk=;
- b=UVd1qlkULc9V/IqAodsAtXHObj/4f/YI//DseEA/4WeFbiO4CsVyuHeGNgj+hzojzc
- 5yoK3XV9fFhsFxyCYRE5ITDAEy9t7g+pUhoJaNLwTZUQkQCZaMG4Z0w+OYq5TZQ6/XS6
- 60dyXtJ9EEyX70SXrbHHq+sjT1iaVoe1T1Ye4fbviUyq1oxA19I5FPUJctLkmvr5vQw0
- YtV2vceZsGU4vrBUkKIzLlcmUF2m5gxczeKwNpiUFhhp5rHVS4LrkHulsISAFVKiKoMT
- Qtlw7Vrmja/C7klsOuDQouq2ByV9A4Jc/Lk7FbPoyfMyQ0+FydhThHDvuZKg3uhb7cFN
- s8wg==
-X-Gm-Message-State: AOJu0Yy/wovpYl0gKxZJfidrvD6d3x/NWs2yJ1C7GNRBDKanN6Dzkins
- 5d7ICQj0P0l8pfFD/ZB5jv+h7skuCWocn+JRTKG3jH6i7DoYxsFjRttBblYGNzH12MOhf+866vm
- A
-X-Gm-Gg: ASbGncuEAvyEueWDGxlqjsxjy6ZpeuNeJaltoZhVnahWL3oGvBm+a5IrvWcLq0NFRRi
- mKY8P+0hO5DJ3IBFPyKaCe8A0gBVR9oovLwu0hEa7oW+VD6K+B4XpEzjBhiXaUCyFUA+VevWyPB
- PkU7IJpVZnz6KlxO/IWG6Ai4HSgNfp7SBzqLyj08s7tRSil5edGy7vKo1rsMV1M+U50tJfpzgHe
- xASsgX2XFeKF7W02FzeGO9N6PEmKoD46OJ/9iLGyKBlLfzrWqmvBSDqQ2AZSzJEx9SYchPaeV9U
- lPchin/myjJfT2FDcOfwLj1LJq+GpIbNrOQPUh9uyFpIUJR7napY8DlZZxq8OjE9Z4X1asYgxtT
- AYUUt4A==
-X-Google-Smtp-Source: AGHT+IEfR1KzWxBflmQ40JzdhkwXYnU40/V6vFHTbssqDxt86gN9xWr2/py0x1+hB2AlQeU3SHLVLA==
-X-Received: by 2002:a05:600c:1e1d:b0:43d:cc9:b09d with SMTP id
- 5b1f17b1804b1-441d100ad8cmr25816445e9.20.1746540855768; 
- Tue, 06 May 2025 07:14:15 -0700 (PDT)
-Received: from [192.168.1.82] (91-163-26-170.subs.proxad.net. [91.163.26.170])
+ bh=hwUdbDDXm0t3Gm52LFWIHP/6V7GrN24wZGDtv9al9gQ=;
+ b=CzAWET0RZLBPRY/RwXAoQOo00P7Ta8oLrwsdIVsXj3A3zp5an4JkUAVmOvj+I0q0jF
+ mZHPVqcUzGnH+mR88hopAwQF5XvdIyPnub4hIx0lNAOy4csYlc6xn6JEzIPLYH2MosvO
+ 7cIJf4+9Wb6QqP5mtaSsScI8pXK8mSTXRhgpzRyETniRMFt7eczHmNG6nqGWR/kk0uZ5
+ ySi+5XN21Z0Uz0iu6GuFj+9Hkz4Hw47gu4mF8NGoxOvP0tlOmqjjNlzMrQJ/QSbHtNT2
+ jaZTsdUBlx6dHMFTa/2wUwEN2tEO5HxLrDDiDiozcIfCsE+Bky/y8L/DVD9OAb4hUWU8
+ 61TQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVNKRVbnuymih4aO2edU7zjzelLS8er3N4XxvOkHhR7ccv0hQcVYEX5vb30uf4Rfcs9VTTiQB43/X+w@nongnu.org
+X-Gm-Message-State: AOJu0YwjagO3fKy7eI1Re8P4tBMFhOQ6WqvgJLNCwlKdqOalkckTZCdr
+ yzv3J3Kasf6mw6f4m/dJR0VckhymU4i2yNkf4VeXXBj/e4n+844yhpvflIox7PPP7UfC0H0nJhm
+ M
+X-Gm-Gg: ASbGncvJrEr4y/qOdocoTRIHaCD2fLt6BIBiFuJo8gRT9P6EK3iPFGlOLP6jieKzojQ
+ w38bgQgTaXZhDFVs5v5nA5RLdSteE4t+qQYoj30ahAwxrSTMtg66pIW4UMlIYW2+UIrbysdsdR+
+ dB5Rb39+dIVE91xR9Sbg+syIVeG/GdafLSJzNw8kzVmHJVqLIal5tGZpANhf4xffeZ9O1igWSTb
+ ck2pY2vjJ94XaCB+BqCe6l7hxcnBWvmEEOSY5GVshVbS9d6SkAb+ex/6FuJqSGtNx3DhRyxV6rL
+ FlGYEKFHDG0kj5Vl4qYs+FGB1bLh4/FwBGP13L6RSLONrA3zbxNuiCt1xLTALfzXvpb7oLrvKUh
+ rNWHzdYY=
+X-Google-Smtp-Source: AGHT+IH0zy8y3Ko7HcebSwAIDUPK9GdcMvxl1KAAi5fvBteKA5fItESmHUDJUIyHkCMv+EwB7Hh3ew==
+X-Received: by 2002:a17:902:ce8c:b0:223:4c09:20b8 with SMTP id
+ d9443c01a7336-22e1eae3f54mr150027035ad.37.1746540908090; 
+ Tue, 06 May 2025 07:15:08 -0700 (PDT)
+Received: from [192.168.0.4] (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-441b8a286dasm170049085e9.31.2025.05.06.07.14.14
+ d9443c01a7336-22e1522a77dsm73649555ad.177.2025.05.06.07.15.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 May 2025 07:14:15 -0700 (PDT)
-Message-ID: <704012d9-cd54-489d-966b-99922774f2e8@linaro.org>
-Date: Tue, 6 May 2025 16:14:14 +0200
+ Tue, 06 May 2025 07:15:07 -0700 (PDT)
+Message-ID: <05e2dae2-5cc2-422d-999f-97ae70e2b4e1@linaro.org>
+Date: Tue, 6 May 2025 07:15:06 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH-for-10.1 26/39] system/hvf: Avoid including 'cpu.h'
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Markus Armbruster <armbru@redhat.com>
-References: <20250403235821.9909-1-philmd@linaro.org>
- <20250403235821.9909-27-philmd@linaro.org>
+Subject: Re: [PATCH 15/20] tcg/optimize: Build and use z_bits and o_bits in
+ fold_extract2
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20250505202751.3510517-1-richard.henderson@linaro.org>
+ <20250505202751.3510517-16-richard.henderson@linaro.org>
+ <6a880c79-f30e-4fe6-af98-1fccf334e2dd@redhat.com>
 Content-Language: en-US
-In-Reply-To: <20250403235821.9909-27-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <6a880c79-f30e-4fe6-af98-1fccf334e2dd@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,47 +104,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ping?
-
-On 4/4/25 01:58, Philippe Mathieu-Daudé wrote:
-> "system/hvf.h" doesn't need to include a full "cpu.h",
-> only "exec/vaddr.h" and "qemu/queue.h" are required.
+On 5/6/25 04:12, Paolo Bonzini wrote:
+> On 5/5/25 22:27, Richard Henderson wrote:
+>> +    uint64_t v1 = ti_const_val(t1);
+>> +    uint64_t v2 = ti_const_val(t2);
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   include/system/hvf.h     | 3 ++-
->   include/system/hvf_int.h | 2 ++
->   2 files changed, 4 insertions(+), 1 deletion(-)
+> Are v1 and v2 needed at all?
 > 
-> diff --git a/include/system/hvf.h b/include/system/hvf.h
-> index 730f927f034..d50049e1a1a 100644
-> --- a/include/system/hvf.h
-> +++ b/include/system/hvf.h
-> @@ -14,10 +14,11 @@
->   #define HVF_H
->   
->   #include "qemu/accel.h"
-> +#include "qemu/queue.h"
-> +#include "exec/vaddr.h"
->   #include "qom/object.h"
->   
->   #ifdef COMPILING_PER_TARGET
-> -#include "cpu.h"
->   
->   #ifdef CONFIG_HVF
->   extern bool hvf_allowed;
-> diff --git a/include/system/hvf_int.h b/include/system/hvf_int.h
-> index 42ae18433f0..8c8b84012d9 100644
-> --- a/include/system/hvf_int.h
-> +++ b/include/system/hvf_int.h
-> @@ -11,6 +11,8 @@
->   #ifndef HVF_INT_H
->   #define HVF_INT_H
->   
-> +#include "qemu/queue.h"
-> +
->   #ifdef __aarch64__
->   #include <Hypervisor/Hypervisor.h>
->   typedef hv_vcpu_t hvf_vcpuid;
+> If starting from z1==o1 and z2==o2, you will always end up with z1|z2 == o1|o2 after these:
+> 
+>> +        z1 = (uint32_t)z1 >> shr;
+>> +        o1 = (uint32_t)o1 >> shr;
+>> +        z2 = (uint64_t)((int32_t)z2 << (32 - shr));
+>> +        o2 = (uint64_t)((int32_t)o2 << (32 - shr));
+> 
+> or these:
+> 
+>> +        z1 >>= shr;
+>> +        o1 >>= shr;
+>> +        z2 <<= 64 - shr;
+>> +        o2 <<= 64 - shr;
+> 
+> so fold_masks_zo would do the job.
 
+Yes indeed, thanks again.
+
+r~
 
