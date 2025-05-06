@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17935AAC4F6
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 15:01:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2BF4AAC4EB
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 14:59:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCHrS-0003OI-TN; Tue, 06 May 2025 08:57:27 -0400
+	id 1uCHrU-0003QV-Qg; Tue, 06 May 2025 08:57:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uCHrO-0003Lf-Nt
+ id 1uCHrO-0003Lj-RV
  for qemu-devel@nongnu.org; Tue, 06 May 2025 08:57:22 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uCHrL-0003ov-1k
+ id 1uCHrL-0003p3-Bn
  for qemu-devel@nongnu.org; Tue, 06 May 2025 08:57:22 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-acb2faa9f55so746801266b.3
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-5e5e0caa151so353663a12.0
  for <qemu-devel@nongnu.org>; Tue, 06 May 2025 05:57:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746536236; x=1747141036; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746536237; x=1747141037; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=04euknF6hiqA68aLuG0ENQyvrvDpr8jpqKbpqudmzQg=;
- b=EyuQzSy6XqSFcBaBycfUQ7/1FCXDjdAySxnbj44O/VhgF5bKEeXxnEKL+3wvVOE3KQ
- SzyeExeCIRWM8wrBuwHejde6VhU2yQT47+dC6fAJXqT7sT0dSN4/WPPenKLS1WFcay5b
- pOsttJnJjIdWLWdAP2SSQ8Mcxis5YIz3MF/7+pYpJXnYop69Wbj3OPgIp+LsFMyZPZH6
- TWgaMrbxWsoKdopDgSKiEh70U//pRQ622FtJJOUq1mBaPrX88A83sPph5fiZ2mDzy3vW
- 3ROnzM6f1+aMRr9eSokpM9Y+8kzWBl7watxDKCyYd17P8dtLPs/K73XEntWokrUI1pRO
- 7YhA==
+ bh=xmmx2H+LdPuwPpPfTDalf+G1CH5iRie4jXtiEjHdkxA=;
+ b=tZs78EvooNHtfPJJaxiTgJ5RqoeQqYKoKTtycd9a2f/6oBMzU+YS0GDD7Fuetl2AUz
+ HYKkfGUHb1G/om+gIplMBx+e2SzxfI3NRoL5xjG6V5OQiheJOJdlgT6swdIEI+3XNzPE
+ 8ocLKvxJXWAAXPeIMP//FHa1NRaxfh52GliRYgmA58hRkuHPUtFHbkLuPWdhxaeJaJDV
+ CPhXXk2w0P0aJHQXenwyzpeHT4qnbFoor83dFLW8OeN/Kve8tkS4prg3JKStZVOtBjJa
+ e6tZssy5w2Ou9o88eLBSghXkwg0C8+R5C4J2+YQLBFa4gZH/JUFaY5gixIBkm7t1COoJ
+ i4gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746536236; x=1747141036;
+ d=1e100.net; s=20230601; t=1746536237; x=1747141037;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=04euknF6hiqA68aLuG0ENQyvrvDpr8jpqKbpqudmzQg=;
- b=Cc90VbF2HLNqkPJVZtiaaMV0JxtvXcJ9w9qhGliKWyEiJY652L9ZpYTdMpVVwPGRV3
- ogI4g2zAOhG8ZCV1WJ9PUhuIeePo8Tz2C9pHhL2xCoiDkBRtuQ/31WY79onO14i+35ky
- IoIQQUAK46AQeLlL/oUdasKPjxAiADMpqoGJpvTHNl1Lin56WzCVpJkO/IWWin/tK0hg
- SrdHTPWEBmYnmzSRy/SlxFHgRb6DCkN+YsEZHDZtCsHjKUSyGR57s2TDhiGfGXEWST35
- P4S/UPSgUUvcxhZ6TP2+Reg3yMBwMOzCeA+TgBdUBCaswMk05e2I4HY9mmhy5v9dMcG6
- omYw==
-X-Gm-Message-State: AOJu0YwtMwXaGPuPCW+id5eTt0JZf8WeMRaF8uIQJicVwPNXn6NbLAoA
- h2wllTtokmpIaOL1vIlkXQvOSE5rPyqcdZIJ8z6+WTqCEBGkyAphn3LcN4clkR4=
-X-Gm-Gg: ASbGnctsQlO9cDlAI3y/18q691ArL/qiBtPiupGUlDrxJdTXomViR+LJm38XQ6mqYj6
- luKlJr4sfOmdumXWZiq9fpFjz8UbA4HEPoAgy78Xy+csBcNjsAAzZrlWuzB2l4auXOd4jeZpiML
- xjhpWj6G+Tj9rhg8jTVNV72fcz+ASNtX3ES8W0FtILs5+Oa8iYo85TetkVif8xle6Rl8Oo+VO5G
- ULu0eQ8j8XJ4r9cwdRUqXKcGMz8O25g3ioKvFyep9lodX/agT8fW4GA7Y7W5u0cyOwY+AMkmTcC
- V84LL45C07RBpz7ilUbVtHilqQ2GMdE+rIZlbLAxrT4=
-X-Google-Smtp-Source: AGHT+IG8oOejUaa5cSdB9abs17+Bg2huR4Ig9dY2ZpZkMWO9AqovMeHZFgW/JB2viZ26riW6QFxCXA==
-X-Received: by 2002:a17:906:564a:b0:ad1:8e78:3d79 with SMTP id
- a640c23a62f3a-ad1d3466a76mr236444966b.1.1746536236541; 
- Tue, 06 May 2025 05:57:16 -0700 (PDT)
+ bh=xmmx2H+LdPuwPpPfTDalf+G1CH5iRie4jXtiEjHdkxA=;
+ b=ZNG/GwifBWtlUkPUP7HDAtVvZCG3Cb0le3X2ADMASLqqgY/w1K5/5Piym/XjzAFxPN
+ TeP/r0iMTVDxaNtUFjD5Zf2IHivkdoyrFCkzgEzNaWUPRSJxHeBm6CmH6VET6qSXw0IV
+ 3cYxgu/Khgm177JrOwFMV40HDUqsv3PU2FZh7NU6rTnbubMpCl7y4lRNGdJtB6aoTzR+
+ UGMpvGBRaOLBke8R25IBpgLnxNDdLVyz5fCU1NaHy86Es058vyBhRRJnrpTqvQRX7nqa
+ XU5skIQ7QseYfbpfBuzuIbsIDfq+L3SR82F6iPEVQoqKVZFfMXn4NLmD0yP3NF5E0hOT
+ lwtw==
+X-Gm-Message-State: AOJu0YwXRUcDOcT2YCGdoJXmekpaKCqXc+uT1Qyx3wjdDfIgLR4AJvt0
+ tqG97L9FiFv8L3HtLWzQKlv6nR+g96mVb5UFiI5F+tuzcJ8AUSOwU4tNW1ymBXw=
+X-Gm-Gg: ASbGnct4xxHEvdgbv9YOK8EDZzwHWpi2ltgKlb71+pb9L98ZVa95U/laTISHgwcZ7TJ
+ 07HJ7/fe9We06R01DK1vT7Sl4NkTOxjuX2Pi9QCK5FDpdSlbnPyz7hpqTje1rZCehfbuZlBTuyX
+ upCjRK7z4oLVmxfFfgeRkH7B923/C176lRWeRUhNFvku5oaGYch+vj1z/BRf6KkIuKVk6c1DdZK
+ WyZv8/Y/wEtJi2Un/izNV+PqQBf7N2CldM6FmBF82mpETFLmB30tKw2M6SjXDGpdTWrIgalXdSW
+ tRtIS9Luk1fGxpCWVlZD0gMAiZd3TFpUvVvyc1mFw2I=
+X-Google-Smtp-Source: AGHT+IGko9GfzrlLwI3TZ0Z4X3jop6RnSubKonMdlT8N6sh6w/haMXIrHhtaUDOzf/D5EaOxn7t62A==
+X-Received: by 2002:a05:6402:13ca:b0:5e5:b388:2a0d with SMTP id
+ 4fb4d7f45d1cf-5fab057ac43mr8713854a12.15.1746536237215; 
+ Tue, 06 May 2025 05:57:17 -0700 (PDT)
 Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5fa777c8b12sm7766567a12.24.2025.05.06.05.57.15
+ 4fb4d7f45d1cf-5fa777c5c3asm7512193a12.21.2025.05.06.05.57.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 06 May 2025 05:57:16 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 32BA35F947;
+ by draig.lan (Postfix) with ESMTP id 478CF5F9E0;
  Tue,  6 May 2025 13:57:15 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -83,18 +83,17 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Peter Maydell <peter.maydell@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>
-Subject: [PATCH v2 01/14] tests/docker: expose $HOME/.cache/qemu as docker
- volume
-Date: Tue,  6 May 2025 13:57:02 +0100
-Message-Id: <20250506125715.232872-2-alex.bennee@linaro.org>
+Subject: [PATCH v2 02/14] gitlab: disable debug info on CI builds
+Date: Tue,  6 May 2025 13:57:03 +0100
+Message-Id: <20250506125715.232872-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250506125715.232872-1-alex.bennee@linaro.org>
 References: <20250506125715.232872-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x632.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -117,54 +116,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If you want to run functional tests we should share .cache/qemu so we
-don't force containers to continually re-download images.
+Our default build enables debug info which adds hugely to the size of
+the builds as well as the size of cached objects. Disable debug info
+across the board to save space and reduce pressure on the CI system.
+We still have a number of builds which explicitly enable debug and
+related extra asserts like --enable-debug-tcg.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
-v2
-  - Share a whole .cache/qemu path.
----
- tests/docker/Makefile.include | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ .gitlab-ci.d/buildtest-template.yml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/docker/Makefile.include b/tests/docker/Makefile.include
-index fa1cbb6726..3959d8a028 100644
---- a/tests/docker/Makefile.include
-+++ b/tests/docker/Makefile.include
-@@ -185,8 +185,10 @@ docker:
- 
- docker-help: docker
- 
-+# Where QEMU caches build artefacts
-+DOCKER_QEMU_CACHE_DIR := $$HOME/.cache/qemu
- # Use a global constant ccache directory to speed up repetitive builds
--DOCKER_CCACHE_DIR := $$HOME/.cache/qemu-docker-ccache
-+DOCKER_QEMU_CCACHE_DIR := DOCKER_QEMU_CACHE_DIR/docker-ccache
- 
- # This rule if for directly running against an arbitrary docker target.
- # It is called by the expanded docker targets (e.g. make
-@@ -195,7 +197,7 @@ DOCKER_CCACHE_DIR := $$HOME/.cache/qemu-docker-ccache
- # For example: make docker-run TEST="test-quick" IMAGE="debian:arm64" EXECUTABLE=./aarch64-linux-user/qemu-aarch64
- #
- docker-run: docker-qemu-src
--	@mkdir -p "$(DOCKER_CCACHE_DIR)"
-+	@mkdir -p "$(DOCKER_QEMU_CCACHE_DIR)"
- 	@if test -z "$(IMAGE)" || test -z "$(TEST)"; \
- 		then echo "Invalid target $(IMAGE)/$(TEST)"; exit 1; \
- 	fi
-@@ -222,8 +224,8 @@ docker-run: docker-qemu-src
- 			-e V=$V -e J=$J -e DEBUG=$(DEBUG)		\
- 			-e SHOW_ENV=$(SHOW_ENV) 			\
- 			$(if $(NOUSER),,				\
--				-e CCACHE_DIR=/var/tmp/ccache 		\
--				-v $(DOCKER_CCACHE_DIR):/var/tmp/ccache:z \
-+				-v $(DOCKER_QEMU_CACHE_DIR):$(DOCKER_QEMU_CACHE_DIR) 	\
-+				-e CCACHE_DIR=$(DOCKER_QEMU_CCACHE_DIR)	\
- 			)						\
- 			-v $$(readlink -e $(DOCKER_SRC_COPY)):/var/tmp/qemu:z$(COMMA)ro \
- 			$(IMAGE) 					\
+diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
+index d4f145fdb5..d9e69c3237 100644
+--- a/.gitlab-ci.d/buildtest-template.yml
++++ b/.gitlab-ci.d/buildtest-template.yml
+@@ -24,6 +24,7 @@
+     - ccache --zero-stats
+     - section_start configure "Running configure"
+     - ../configure --enable-werror --disable-docs --enable-fdt=system
++          --disable-debug-info
+           ${TARGETS:+--target-list="$TARGETS"}
+           $CONFIGURE_ARGS ||
+       { cat config.log meson-logs/meson-log.txt && exit 1; }
 -- 
 2.39.5
 
