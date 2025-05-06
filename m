@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8F43AAC89B
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:49:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B655AAC8B7
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:52:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCJXE-0001w3-3d; Tue, 06 May 2025 10:44:40 -0400
+	id 1uCJYQ-0006tf-Gi; Tue, 06 May 2025 10:45:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uCJVO-00023w-Te
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:48 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1uCJVQ-00025U-41
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:49 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uCJVM-00029x-HE
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:46 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-441c99459e9so19289395e9.3
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:42:43 -0700 (PDT)
+ id 1uCJVN-0002AB-N6
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:47 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-43ede096d73so35084015e9.2
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:42:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746542562; x=1747147362; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746542563; x=1747147363; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=NIaSPaix7r679jzJntYchPOTlZ36RPzqbOenhGw4cwE=;
- b=S7C1oDxxtr14R+vykgGAmg2HclnVtH2vLyeCE/JR2plr2a6CXlNwr5O9WF/Bv8xnT/
- xe6nUUqwCbCeFtLvFBu9tF5yK2CnpvXA+Oj+EFRRHTNSP5pjObL8YtXnTgv12eyh0z0D
- 8E+SvfsewhQBHQNmRvPnS8vIC23Bh/7IsxZCYy+4RLa5HfBhGD73/+3gvI8MLFk11FtR
- eJ3PHYAEA/Q4sJEOqsyiZYOKVPvKRyy1MwcqyMJ8oVS3hF80GhehHfLpG1UQk9c0xATF
- IPwvvI2Our/Qty+hkRpMKV7cYPMoiw0H5owOmRXxXXg/EmQDt3bPVbXOMm075rsR4jyD
- NOAg==
+ :reply-to; bh=pBeKEajXSmAhb7LijWOPketZcw3p7yrO3ri2YB9hhOQ=;
+ b=GlW1+/I8Q9iTpcf/l6GEjro49Ckrl/VCGNrKGrjcs7cpch2B34wQcSHpeus/FPhYgP
+ z80X1ZDE68SMD4g5yRw4FfJYNR0CTeSWGOpt21SQtFXIHWAShWlBP6CGNI2M2Gx7tCMS
+ eilhZno9g5Zn2/oeB3srbcS0yZCIIY0N+hxlb/8AMUga5rsSgdxFmrlAx9MmQaQdZ/Zc
+ CDPGfkrJABLpg/9LiLKesHfg4R8I5B1P4wnz4aLleNjAMj2My+xqAbMUowHgr97TFGH8
+ tXLGLAQrrlMeVmMlCD9hRiE9itNXggGtWApTqqVMq47Ny2ti5sxcYZSPtPG22BYtQHOQ
+ tixg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746542562; x=1747147362;
+ d=1e100.net; s=20230601; t=1746542563; x=1747147363;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NIaSPaix7r679jzJntYchPOTlZ36RPzqbOenhGw4cwE=;
- b=VAUu7DCiDCgNKhEu8ALUAyDLL+wuQngRiZx8Z7m35imRW0h0rS+LZW8h+uSjDw+YGl
- UueaKZbE04rYkILuhmXUMEB3+BEM2Y3WvHuHexsK2zuCFxlfV/LP5VBcOfugmWcvL4FC
- HZQFE5MYBtStP6Wbw08mhtVvd181+/cvJMcU6loL3T5gt3uJY8pXyjTsiVbyX1Sfbr9T
- T/kXKdoPVMr64Hhe/capvgwun+s8MGhhJH3vN6qr6qGD92gUL3nVTvuijDsANly4E+yn
- 1dN9zlotE3bpYVM/bmh6pQ0qD//qgf8jw5xdRD1jH8J2p4JiHxV5dKyT2AleclCj8pww
- URDQ==
-X-Gm-Message-State: AOJu0YyJHZjZcDpnnk9nXv0ACtFkzBjpLPJhdJw5P98LRNN/VpukiFYJ
- 4wvjBKlZvEf0K5tfTdrJHZNqHtPZwdJYK7+dZ1V8vheHH1d3Ls+YKPVeprHaluf4d1yVB7UIMj6
- 7
-X-Gm-Gg: ASbGnctm2FcHjZGL29tYYASA9VpfRJqu0I9rMwfKoFfTuKHZfv411IMzCDdgjUQK25b
- kVRpGlwzys7vMhipR9Cxv2G/IS449RpfRCOVQJBEYANkW9QKj64pFV75A+4FQib1nAJCQd3swnB
- 0Rj12/1+X5S7Py5TmrLVhIiK+9/T1Yr4Mh4a06xsUUvSXwUFPaSQ6ib9DBfCwAanUyDw9tg78hM
- TPibtiAaDPj9KWeHTBKl6CzKHMgUKXpZq7Y9MjrqYhEp7NROaVc2b7JyNwin8iLFMfgMmYgc9pA
- yrPCBWJLBiMZR7cN2Q76meX9eIX0WlR8iAC07s+hrVv5aqM=
-X-Google-Smtp-Source: AGHT+IHZHLqbgPhzsWqMt7Ulkvn2BKGmK6YK8s1saDOm8cYYSdtX128W9pHaFVSErTDoxHqa4PKYUw==
-X-Received: by 2002:a05:600c:3155:b0:43b:cb12:ba6d with SMTP id
- 5b1f17b1804b1-441bbea0d49mr159933705e9.3.1746542562484; 
- Tue, 06 May 2025 07:42:42 -0700 (PDT)
+ bh=pBeKEajXSmAhb7LijWOPketZcw3p7yrO3ri2YB9hhOQ=;
+ b=gu4xofRZG6rvce235PwC2b4MqZWhYu1zHLt/XtjFFVYM9T7Pds+DOkHyNyelQ9BWlm
+ W8dt4t7jB2OSI8YOCTUiReA+fIUhmQK7IcdIxiaRo32B9HK7dpXS9MYV1PmoYvr+IP6U
+ TgZxsqPL18nf1di0qm0WMHgO2eY96Ybd1+0iK2PoxQTE4OYJwykmz5CsLFZVAB7nW50n
+ +uGoO7NwMTnoXmli5zOSROJJG4vZFeXlDu89U5a6XHwFGfctWyLXanVuvknOTcyxfUFi
+ jr68Bz6eVpkjF3IHKalF0SgpwSjgoCDK6uBm0wbSg7XI3KUA6iS5Xz1a9yLlLbafrfhY
+ 2bow==
+X-Gm-Message-State: AOJu0Ywi8Ab6fopgw8XLIRJTjLRjSUuQAIYaOi8Zq/fdQfAUggTBK1fz
+ FZgRZfPhjTjUdfEVtfpDbMoELr3PHEDVHRXMcMNb1KnUyXW5MzKS5mon7t5+b/WghLlE+DlCaij
+ P
+X-Gm-Gg: ASbGncuyNOJ5JKaZXo69+/ep7Wz8ztFTRcySxxgp8wcDDkz4dNtDqYk3dAYATKIsLsK
+ WH0xrXdRZP7K0lkP9GDdkMjHlo86n2TnHa6v2n77mkPqzY5nVsPgz2UavSPE1cfSFlSO2KG9onY
+ c39uUxkgfQVhuQvprMUau7zBl5ptJ6oOBIw70y3SQbFJfjt8TZVIk/x3ARg6TsV3nSGZp/gkdjX
+ a64aCXdJMICbUS/9IHgCIYZE2a7emX7j97sGE/9qQlaAUgpEltdKkDMvfPCX2WMcVKg63ptR2yO
+ +725BuDCTgEr980obE2nMnI8blxhwC6fpPvUO2kCwyWdPG5TJetOzhE61g==
+X-Google-Smtp-Source: AGHT+IGnAIz+wCx5wzhhb02rvAFrcs4AfTSGJL1QFLF3P8/cSCzhpf+iMVUuy+utdkDAMq+1lkiG6g==
+X-Received: by 2002:a05:600c:3c90:b0:43c:f44c:72b7 with SMTP id
+ 5b1f17b1804b1-441c48bdfdamr114573375e9.14.1746542563643; 
+ Tue, 06 May 2025 07:42:43 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-441b89edfc2sm169603435e9.20.2025.05.06.07.42.41
+ 5b1f17b1804b1-441b89edfc2sm169603435e9.20.2025.05.06.07.42.42
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 May 2025 07:42:41 -0700 (PDT)
+ Tue, 06 May 2025 07:42:42 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 23/32] target/arm: Don't assert() for ISB/SB inside IT block
-Date: Tue,  6 May 2025 15:42:05 +0100
-Message-ID: <20250506144214.1221450-24-peter.maydell@linaro.org>
+Subject: [PULL 24/32] docs: Don't define duplicate label in
+ qemu-block-drivers.rst.inc
+Date: Tue,  6 May 2025 15:42:06 +0100
+Message-ID: <20250506144214.1221450-25-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250506144214.1221450-1-peter.maydell@linaro.org>
 References: <20250506144214.1221450-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,76 +97,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If the guest code has an ISB or SB insn inside an IT block, we
-generate incorrect code which trips a TCG assertion:
+Sphinx requires that labels within documents are unique across the
+whole manual.  This is because the "create a hyperlink" directive
+specifies only the name of the label, not a filename+label.  Some
+Sphinx versions will warn about duplicate labels, but even if there
+is no warning there is still an ambiguity and no guarantee that the
+hyperlink will be created to the right target.
 
-qemu-system-arm: ../tcg/tcg-op.c:3343: void tcg_gen_goto_tb(unsigned int): Assertion `(tcg_ctx->goto_tb_issue_mask & (1 << idx)) == 0' failed.
+For QEMU this is awkward, because we have various .rst.inc fragments
+which we include into multiple .rst files.  If you define a label in
+the .rst.inc file then it will be a duplicate label.  We have mostly
+worked around this by not putting labels into those .rst.inc files,
+or by adding "insert a label" functionality into the hxtool extension
+(see commit 1eeb432a953b0 "doc/sphinx/hxtool.py: add optional label
+argument to SRST directive").
 
-This is because we call gen_goto_tb(dc, 1, ...) twice:
+Unfortunately in commit 7f6314427e78 ("docs/devel: add a codebase
+section") we accidentally added a duplicate label, because not all
+Sphinx versions warn about the mistake.
 
- brcond_i32 ZF,$0x0,ne,$L1
- add_i32 pc,pc,$0x4
- goto_tb $0x1
- exit_tb $0x73d948001b81
- set_label $L1
- add_i32 pc,pc,$0x4
- goto_tb $0x1
- exit_tb $0x73d948001b81
-
-Both calls are in arm_tr_tb_stop(), one for the
-DISAS_NEXT/DISAS_TOO_MANY handling, and one for the dc->condjump
-condition-failed codepath.  The DISAS_NEXT handling doesn't have this
-problem because arm_post_translate_insn() does the handling of "emit
-the label for the condition-failed conditional execution" and so
-arm_tr_tb_stop() doesn't have dc->condjump set.  But for
-DISAS_TOO_MANY we don't do that.
-
-Fix the bug by making arm_post_translate_insn() handle the
-DISAS_TOO_MANY case.  This only affects the SB and ISB insns when
-used in Thumb mode inside an IT block: only these insns specifically
-set is_jmp to TOO_MANY, and their A32 encodings are unconditional.
-
-For the major TOO_MANY case (breaking the TB because it would cross a
-page boundary) we do that check and set is_jmp to TOO_MANY only after
-the call to arm_post_translate_insn(); so arm_post_translate_insn()
-sees is_jmp == DISAS_NEXT, and  we emit the correct code for that
-situation.
-
-With this fix we generate the somewhat more sensible set of TCG ops:
- brcond_i32 ZF,$0x0,ne,$L1
- set_label $L1
- add_i32 pc,pc,$0x4
- goto_tb $0x1
- exit_tb $0x7c5434001b81
-
-(NB: the TCG optimizer doesn't optimize out the jump-to-next, but
-we can't really avoid emitting it because we don't know at the
-point we're emitting the handling for the condexec check whether
-this insn is going to happen to be a nop for us or not.)
+In this case the link was only from the developer docs codebase
+summary, so as the simplest fix for the stable branch, we drop
+the link entirely.
 
 Cc: qemu-stable@nongnu.org
-Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2942
+Fixes: 1eeb432a953b0 "doc/sphinx/hxtool.py: add optional label argument to SRST directive"
+Reported-by: Dario Faggioli <dfaggioli@suse.com>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250501125544.727038-1-peter.maydell@linaro.org
+Acked-by: Eric Blake <eblake@redhat.com>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-id: 20250501093126.716667-1-peter.maydell@linaro.org
 ---
- target/arm/tcg/translate.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ docs/devel/codebase.rst                | 2 +-
+ docs/system/qemu-block-drivers.rst.inc | 2 --
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index 88df9c482ab..e773ab72685 100644
---- a/target/arm/tcg/translate.c
-+++ b/target/arm/tcg/translate.c
-@@ -7760,7 +7760,8 @@ static bool arm_check_ss_active(DisasContext *dc)
+diff --git a/docs/devel/codebase.rst b/docs/devel/codebase.rst
+index 40273e7d31e..2a3143787a6 100644
+--- a/docs/devel/codebase.rst
++++ b/docs/devel/codebase.rst
+@@ -116,7 +116,7 @@ yet, so sometimes the source code is all you have.
+ * `monitor <https://gitlab.com/qemu-project/qemu/-/tree/master/monitor>`_:
+   `Monitor <QEMU monitor>` implementation (HMP & QMP).
+ * `nbd <https://gitlab.com/qemu-project/qemu/-/tree/master/nbd>`_:
+-  QEMU `NBD (Network Block Device) <nbd>` server.
++  QEMU NBD (Network Block Device) server.
+ * `net <https://gitlab.com/qemu-project/qemu/-/tree/master/net>`_:
+   Network (host) support.
+ * `pc-bios <https://gitlab.com/qemu-project/qemu/-/tree/master/pc-bios>`_:
+diff --git a/docs/system/qemu-block-drivers.rst.inc b/docs/system/qemu-block-drivers.rst.inc
+index cfe1acb78ae..384e95ba765 100644
+--- a/docs/system/qemu-block-drivers.rst.inc
++++ b/docs/system/qemu-block-drivers.rst.inc
+@@ -500,8 +500,6 @@ What you should *never* do:
+ - expect it to work when loadvm'ing
+ - write to the FAT directory on the host system while accessing it with the guest system
  
- static void arm_post_translate_insn(DisasContext *dc)
- {
--    if (dc->condjmp && dc->base.is_jmp == DISAS_NEXT) {
-+    if (dc->condjmp &&
-+        (dc->base.is_jmp == DISAS_NEXT || dc->base.is_jmp == DISAS_TOO_MANY)) {
-         if (dc->pc_save != dc->condlabel.pc_save) {
-             gen_update_pc(dc, dc->condlabel.pc_save - dc->pc_save);
-         }
+-.. _nbd:
+-
+ NBD access
+ ~~~~~~~~~~
+ 
 -- 
 2.43.0
 
