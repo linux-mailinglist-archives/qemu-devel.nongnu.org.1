@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7734AAB804
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 08:24:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32E5DAAB803
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 08:24:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCBh1-0007ze-Lb; Tue, 06 May 2025 02:22:15 -0400
+	id 1uCBh1-0007ym-00; Tue, 06 May 2025 02:22:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uCBgw-0007xy-Qs
- for qemu-devel@nongnu.org; Tue, 06 May 2025 02:22:10 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uCBgw-0007y3-VG
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 02:22:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uCBgt-0005rA-Ts
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uCBgv-0005rt-8K
  for qemu-devel@nongnu.org; Tue, 06 May 2025 02:22:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746512524;
+ s=mimecast20190719; t=1746512528;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7lsvq2l8fpqfDzQRtjnUzgpQNaIbBs7LgzXEwVT8Akk=;
- b=esnXf2LlIomYXyVDMqtdalF+Tz2+3BEhOf03a/1yRpgtEpdBJCs3gCABfYYOVplVVkwQyf
- Xu94VPF090qqDLBcDAiKky9SfvSWKa8NDhPAEGtXlP0JvwyRXLhlc6d/0VcgNtYE0KgC1g
- IDGcya7qJaKdL3oQRKC8qX8AlrI6xXg=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=BkBtL1JHK5PQgJ+gK3ghgX2FpY2c7m/hV4hes84TWb4=;
+ b=QADCWEl3eiyCRD8vAUPEO1yU8L7sf2E0tInBNO6/65l2jNlGq8859smACnkJJwhqbDzrtk
+ 7MNoTvlJR2GiEnPKYnMl4H20TypUgJ7kOxoovLs+jfTMyE8mJEuCeoCnXQ2sBUN7ikvrJW
+ tQsWYufMgjCQacBQ+lSKenydxa++3oI=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-513-9QuMce4bMACwOwxtMfSVNA-1; Tue,
- 06 May 2025 02:22:01 -0400
-X-MC-Unique: 9QuMce4bMACwOwxtMfSVNA-1
-X-Mimecast-MFC-AGG-ID: 9QuMce4bMACwOwxtMfSVNA_1746512520
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-sQ9dAbBCM-GVH7GOeKhCcw-1; Tue,
+ 06 May 2025 02:22:05 -0400
+X-MC-Unique: sQ9dAbBCM-GVH7GOeKhCcw-1
+X-Mimecast-MFC-AGG-ID: sQ9dAbBCM-GVH7GOeKhCcw_1746512524
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 552291955DCC; Tue,  6 May 2025 06:22:00 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E402E195606C; Tue,  6 May 2025 06:22:03 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.32.237])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 94ED318001D7; Tue,  6 May 2025 06:21:57 +0000 (UTC)
+ id 08DAB1800352; Tue,  6 May 2025 06:22:00 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-s390x@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
  Christian Borntraeger <borntraeger@linux.ibm.com>,
  Eric Farman <farman@linux.ibm.com>
 Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 2/9] hw/s390x/s390-virtio-ccw: Remove the deprecated 2.11
- machine type
-Date: Tue,  6 May 2025 08:21:41 +0200
-Message-ID: <20250506062148.306084-3-thuth@redhat.com>
+Subject: [PATCH v2 3/9] hw/s390x/event-facility: Remove the obsolete
+ "allow_all_mask_sizes" code
+Date: Tue,  6 May 2025 08:21:42 +0200
+Message-ID: <20250506062148.306084-4-thuth@redhat.com>
 In-Reply-To: <20250506062148.306084-1-thuth@redhat.com>
 References: <20250506062148.306084-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -85,50 +86,98 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-The s390-ccw-virtio-2.11 machine is older than 6 years, so according
-to our machine support policy, it can be removed now.
+Now that the machine types 2.11 and older have been removed, we
+don't need the "allow_all_mask_sizes" compatibility handling code
+anymore and can remove it now.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/s390x/s390-virtio-ccw.c | 25 -------------------------
- 1 file changed, 25 deletions(-)
+ hw/s390x/event-facility.c | 37 +------------------------------------
+ 1 file changed, 1 insertion(+), 36 deletions(-)
 
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 0813eb4ea47..2c90702d834 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -1250,31 +1250,6 @@ static void ccw_machine_2_12_class_options(MachineClass *mc)
- }
- DEFINE_CCW_MACHINE(2, 12);
+diff --git a/hw/s390x/event-facility.c b/hw/s390x/event-facility.c
+index 1afe3645730..7b7bf237fed 100644
+--- a/hw/s390x/event-facility.c
++++ b/hw/s390x/event-facility.c
+@@ -45,13 +45,6 @@ struct SCLPEventFacility {
+         uint32_t receive_mask_pieces[2];
+         sccb_mask_t receive_mask;
+     };
+-    /*
+-     * when false, we keep the same broken, backwards compatible behaviour as
+-     * before, allowing only masks of size exactly 4; when true, we implement
+-     * the architecture correctly, allowing all valid mask sizes. Needed for
+-     * migration toward older versions.
+-     */
+-    bool allow_all_mask_sizes;
+     /* length of the receive mask */
+     uint16_t mask_length;
+ };
+@@ -294,8 +287,7 @@ static void write_event_mask(SCLPEventFacility *ef, SCCB *sccb)
+     uint16_t mask_length = be16_to_cpu(we_mask->mask_length);
+     sccb_mask_t tmp_mask;
  
--#ifdef CONFIG_S390X_LEGACY_CPUS
--
--static void ccw_machine_2_11_instance_options(MachineState *machine)
+-    if (!mask_length || (mask_length > SCLP_EVENT_MASK_LEN_MAX) ||
+-        ((mask_length != 4) && !ef->allow_all_mask_sizes)) {
++    if (!mask_length || mask_length > SCLP_EVENT_MASK_LEN_MAX) {
+         sccb->h.response_code = cpu_to_be16(SCLP_RC_INVALID_MASK_LENGTH);
+         return;
+     }
+@@ -355,13 +347,6 @@ static bool vmstate_event_facility_mask64_needed(void *opaque)
+     return (ef->receive_mask & 0xFFFFFFFF) != 0;
+ }
+ 
+-static bool vmstate_event_facility_mask_length_needed(void *opaque)
 -{
--    static const S390FeatInit qemu_cpu_feat = { S390_FEAT_LIST_QEMU_V2_11 };
--    ccw_machine_2_12_instance_options(machine);
+-    SCLPEventFacility *ef = opaque;
 -
--    /* before 2.12 we emulated the very first z900 */
--    s390_set_qemu_cpu_model(0x2064, 7, 1, qemu_cpu_feat);
+-    return ef->allow_all_mask_sizes;
 -}
 -
--static void ccw_machine_2_11_class_options(MachineClass *mc)
+ static const VMStateDescription vmstate_event_facility_mask64 = {
+     .name = "vmstate-event-facility/mask64",
+     .version_id = 0,
+@@ -377,7 +362,6 @@ static const VMStateDescription vmstate_event_facility_mask_length = {
+     .name = "vmstate-event-facility/mask_length",
+     .version_id = 0,
+     .minimum_version_id = 0,
+-    .needed = vmstate_event_facility_mask_length_needed,
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINT16(mask_length, SCLPEventFacility),
+         VMSTATE_END_OF_LIST()
+@@ -399,31 +383,12 @@ static const VMStateDescription vmstate_event_facility = {
+      }
+ };
+ 
+-static void sclp_event_set_allow_all_mask_sizes(Object *obj, bool value,
+-                                                       Error **errp)
 -{
--    static GlobalProperty compat[] = {
--        { TYPE_SCLP_EVENT_FACILITY, "allow_all_mask_sizes", "off", },
--    };
+-    SCLPEventFacility *ef = (SCLPEventFacility *)obj;
 -
--    ccw_machine_2_12_class_options(mc);
--    compat_props_add(mc->compat_props, hw_compat_2_11, hw_compat_2_11_len);
--    compat_props_add(mc->compat_props, compat, G_N_ELEMENTS(compat));
+-    ef->allow_all_mask_sizes = value;
 -}
--DEFINE_CCW_MACHINE(2, 11);
 -
--#endif
+-static bool sclp_event_get_allow_all_mask_sizes(Object *obj, Error **errp)
+-{
+-    SCLPEventFacility *ef = (SCLPEventFacility *)obj;
 -
- static void ccw_machine_register_types(void)
+-    return ef->allow_all_mask_sizes;
+-}
+-
+ static void init_event_facility(Object *obj)
  {
-     type_register_static(&ccw_machine_info);
+     SCLPEventFacility *event_facility = EVENT_FACILITY(obj);
+     DeviceState *sdev = DEVICE(obj);
+ 
+     event_facility->mask_length = 4;
+-    event_facility->allow_all_mask_sizes = true;
+-    object_property_add_bool(obj, "allow_all_mask_sizes",
+-                             sclp_event_get_allow_all_mask_sizes,
+-                             sclp_event_set_allow_all_mask_sizes);
+ 
+     /* Spawn a new bus for SCLP events */
+     qbus_init(&event_facility->sbus, sizeof(event_facility->sbus),
 -- 
 2.49.0
 
