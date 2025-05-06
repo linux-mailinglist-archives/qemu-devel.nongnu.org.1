@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DB5DAAC862
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:43:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7AE0AAC87C
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:46:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCJUM-0000G9-IV; Tue, 06 May 2025 10:41:45 -0400
+	id 1uCJVN-0001RQ-Eb; Tue, 06 May 2025 10:42:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJSE-0006q1-QL
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJSI-0006rB-C7
  for qemu-devel@nongnu.org; Tue, 06 May 2025 10:39:34 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJS8-0001Nx-L7
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:39:29 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-43d2d952eb1so32603725e9.1
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:39:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJSE-0001PJ-GC
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:39:33 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-441d1ed82dbso5982555e9.0
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:39:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746542362; x=1747147162; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746542367; x=1747147167; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1rBTFzGlpmN0XM4Xhc9yiz4Q5nlS539l0QvdyVgqZAM=;
- b=b4ykbO+J15g+wh12lFCUrgh0juJ69bLqx7+6K/LtqNRF2pAqIrVK1g/pQ1FeFDGncR
- B6CiJE7uNc5KisVLX4xOWHmsZjM9sw95WO0xWXlhJXk+0MBqg/xPofxnoVc/60NJrJva
- WbnBYOVPPB1f31ojsigAK+ibAbioFpRfk9LWSDNvnhzEtbjVPOWcHak8yg/qZFZfghTE
- 5F/qsOdH1YKI9uTnTbg0Tr24AHgeedY83QE4yAdxGVyKVd4AHK5RktOfcnVwKCJxVFzc
- KCuScWS95RUWoXqNOeCftoLXbezSxi0+LyK73Xe3Ujub1m3sQVeBUkGb213t0ZdcnGNd
- AuCg==
+ bh=2TdK0KknkLOYwI+XSWuaAcvX7rG//eSaXjO5J4+I7ro=;
+ b=SxFyPsX5XyDtGBCPQaSr3SAMSF2n7DdAy6t/hSwzJCbQtBMmxgkzYpvOMKhhppKvbv
+ sjyCiNrF4IxrjopiGxpzHujPt8MwF2C1X/hZJe4vFBPxKmwIyu8U/mzxGJEiPvp8yeo4
+ e4xhcQI0bDqDdz+JadAZvNWmecNkSb0/o1f6vKhBQBmXSRzy5mlLPhB6MBrNsar0FErh
+ vdeF52FP4yzLU/6WiQLZ6EYt0gVlK1FUtjzWRLQkczC9L1J/glBQwRBtXH2fcbLRBzWd
+ HXgEHHUPGwkyhUU5FwHxDiiA0DpeCm3UDHlev6z0hQkebPptw3c2BdP3fPhaMTuUZmFJ
+ scZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746542362; x=1747147162;
+ d=1e100.net; s=20230601; t=1746542367; x=1747147167;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1rBTFzGlpmN0XM4Xhc9yiz4Q5nlS539l0QvdyVgqZAM=;
- b=qVN8MCV/df2GZNQte/TC7SvJ4lo6VQE1+k1N5l2jL3hPoYVD77UEAiU/Wwc5FzdU9I
- Kq7Tyg+hx0EyS4S/BtgGKAkXqtU9s/fQggiSPmeNokjd+2o7c1BO4Io8tIB/QQi3lqHP
- wtbhZiu9dyfMeBhQRhBbfLy0lI2mlJ9vWR0cnaXfQ2kLcoddlpJWKsUeiuAJdl4+vaeh
- 24+NpYvpweIG373yyR7GG+IAds0wtEufIna0KxPsvr0hA2n9w5PMmq1f93gbG+g38SB1
- UqQ56uGdhNX2fIsN03ik6BTXami24cEeYyc8poz1IUj55a+yDzy+UROGk+UxahZEyTbq
- 677w==
-X-Gm-Message-State: AOJu0YwlBJcec3aEkiTCOUeFWaDJNaTPbKnRrvyke7E39VKOAhchv+DR
- bdt0ERZXpIkK/E14n0inyUfpVHWYckt5rGKrtoWhCvlSb9p5oZgFhygemJ5pxhKWSPpv7gPGr6M
- f
-X-Gm-Gg: ASbGncsJmRFm6nBVflBFU5aBn9AfnGiVv8F7fzU9xjv/6PDqfeIFZCWhgAcMgg/zDFa
- IRHYx+IxDPa9GOJXrEi5XXLX8qX91Ydg5Jc05KUXwwLhRTjqgaNIEOsYZHrQvQv2fCkG2y++mK6
- XT9zG6HUKkcARhvhwKWhZYxuYxfGttMsLZXG9FJ6GXcCiUqbAVE6lbz5ZAlfPIagZuFASDFkeQl
- 2eJ4RVfiTTP0DeujXGbJ+ZntZctfEIm9ZSpZ9ZWtfYh1850e6OHgReVNaXwKYBjA3ixqjmt7dY2
- WUjae0xQQ30UvYX45kKatP6Iex10PVDgV9DhH3tuNqhWFfL8SrnBJXG/yUQHhIwJrvXTv+sJI24
- msXF6DT6EO8YLXoDEhext
-X-Google-Smtp-Source: AGHT+IE6/y5uBu17rar7px9vRhKXkctL2ZkIdhRKBudoNomYp5AK2/ZDL1DDqx96TjW3VJM2Zv283A==
-X-Received: by 2002:a05:600c:3ba2:b0:43b:c5a3:2e1a with SMTP id
- 5b1f17b1804b1-441d0fbd2demr34983385e9.2.1746542361997; 
- Tue, 06 May 2025 07:39:21 -0700 (PDT)
+ bh=2TdK0KknkLOYwI+XSWuaAcvX7rG//eSaXjO5J4+I7ro=;
+ b=sITGnr1C57KPYg9+wex3MobXNQcBoIEwlV6A+3TUkJrmcs5IRLrGfS4Kyi1GAkKLAn
+ AgZArUHXo2OO1hj3PxpFv+rnQg0s/rd5wLpEQh0YjaeQtfOVObT/9MnKlZ7q0PAfNXL1
+ rm3lBAvI2/TZI2bHJBqedNr5hC9Q2OaDXZKx4T1TweSNTaEiAowCZNKJwnfGGOZUzCxF
+ 9qZTgGosfa02szStpSq1LkVFfDmxll3fz6GDDuNrtBjXxnrWNgzw0ypWcTOkjFsi3/I7
+ tcWdHrgJzLVwfJrLgGaaGWSHt32ncrPOjE5MK3t/oJ0Qa8mMerUPYKUQ4JJXPQNFxc2R
+ yXeg==
+X-Gm-Message-State: AOJu0YywYrLTgoWDhT3DHNv3DMIpNG0scMLOHDkcnBLAWm7FO/Wmxrxk
+ k5I4QbmsKJtSh13Mj6dMWn/C3ev6L+fdZzk6c15cMNFFq0mg5pcmu+MR7Vu5N6rTJ6YQJVLUgGf
+ d
+X-Gm-Gg: ASbGnctExzoPnKdSDOUFmFfvDDMFlKNHRBwtp4DcQPDm+34qbEdXz7D5ZLH8Yj0OQ5a
+ Dqbt2wMfvwZhzdYooYn2/nH+9pjMLjpS7an9F6lxSuBJwBtFk6ag461/YLrwCqkxppyVZb9yEsX
+ emO36lVPI5rM8TlP8yqPF34/UZxor9IicVLaMtIwlofBAu++We+i1Sr9hB2lj3Oc18vZpSXwwWk
+ bvoAbvz7vQENuLIT1bQT6cHpsXMr0wPD4AALr9qAiMiTIjqZTo6mzZsHFvAK8iiG9Mf2ILZxPx3
+ Q9bKSlJ35tjZ5KYbjlQXNZc/Zi6OjCJfXDZD6rsTlLfMZjTrKbthGyQOVTnYWxHKj5iV4Hj+dug
+ HHzSLtnxYpFq66HtFDI6g
+X-Google-Smtp-Source: AGHT+IGK4tl6FNfKwSbMfTf4FkQ+0hMvuyfj8DUZkE2MqEgr0lYypj5K7EW7BkJnQ0gq7IJlWnzbGA==
+X-Received: by 2002:a05:600c:5297:b0:43d:49eb:9675 with SMTP id
+ 5b1f17b1804b1-441d100a85cmr27233975e9.22.1746542366860; 
+ Tue, 06 May 2025 07:39:26 -0700 (PDT)
 Received: from localhost.localdomain (91-163-26-170.subs.proxad.net.
  [91.163.26.170]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a099ae8377sm14138964f8f.59.2025.05.06.07.39.20
+ 5b1f17b1804b1-441b2af2a0csm216546445e9.18.2025.05.06.07.39.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 06 May 2025 07:39:21 -0700 (PDT)
+ Tue, 06 May 2025 07:39:26 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Kevin Wolf <kwolf@redhat.com>,
@@ -76,17 +76,17 @@ Cc: Kevin Wolf <kwolf@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
  Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v3 03/19] hw/i386/pc: Remove pc_compat_2_4[] array
-Date: Tue,  6 May 2025 16:38:49 +0200
-Message-ID: <20250506143905.4961-4-philmd@linaro.org>
+Subject: [PATCH v3 04/19] target/i386/cpu: Remove X86CPU::check_cpuid field
+Date: Tue,  6 May 2025 16:38:50 +0200
+Message-ID: <20250506143905.4961-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250506143905.4961-1-philmd@linaro.org>
 References: <20250506143905.4961-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,60 +109,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The pc_compat_2_4[] array was only used by the pc-q35-2.4
-and pc-i440fx-2.4 machines, which got removed. Remove it.
+The X86CPU::check_cpuid boolean was only set in the
+pc_compat_2_4[] array, via the 'check=off' property.
+We removed all machines using that array, lets remove
+that CPU property and simplify x86_cpu_realizefn().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- include/hw/i386/pc.h |  3 ---
- hw/i386/pc.c         | 19 -------------------
- 2 files changed, 22 deletions(-)
+ target/i386/cpu.h | 1 -
+ target/i386/cpu.c | 3 +--
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index f4a874b17fc..b34aa25fdce 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -301,9 +301,6 @@ extern const size_t pc_compat_2_6_len;
- extern GlobalProperty pc_compat_2_5[];
- extern const size_t pc_compat_2_5_len;
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 54bf9639f19..3a5e17e0741 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2168,7 +2168,6 @@ struct ArchCPU {
+     uint8_t hyperv_ver_id_sb;
+     uint32_t hyperv_ver_id_sn;
  
--extern GlobalProperty pc_compat_2_4[];
--extern const size_t pc_compat_2_4_len;
--
- #define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
-     static void pc_machine_##suffix##_class_init(ObjectClass *oc, \
-                                                  const void *data) \
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index c8bb4a3ee47..2b46714a5ac 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -262,25 +262,6 @@ const size_t pc_compat_2_6_len = G_N_ELEMENTS(pc_compat_2_6);
- GlobalProperty pc_compat_2_5[] = {};
- const size_t pc_compat_2_5_len = G_N_ELEMENTS(pc_compat_2_5);
+-    bool check_cpuid;
+     bool enforce_cpuid;
+     /*
+      * Force features to be enabled even if the host doesn't support them.
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 6f21d5ed222..49179f35812 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -8169,7 +8169,7 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
+         }
+     }
  
--GlobalProperty pc_compat_2_4[] = {
--    PC_CPU_MODEL_IDS("2.4.0")
--    { "Haswell-" TYPE_X86_CPU, "abm", "off" },
--    { "Haswell-noTSX-" TYPE_X86_CPU, "abm", "off" },
--    { "Broadwell-" TYPE_X86_CPU, "abm", "off" },
--    { "Broadwell-noTSX-" TYPE_X86_CPU, "abm", "off" },
--    { "host" "-" TYPE_X86_CPU, "host-cache-info", "on" },
--    { TYPE_X86_CPU, "check", "off" },
--    { "qemu64" "-" TYPE_X86_CPU, "sse4a", "on" },
--    { "qemu64" "-" TYPE_X86_CPU, "abm", "on" },
--    { "qemu64" "-" TYPE_X86_CPU, "popcnt", "on" },
--    { "qemu32" "-" TYPE_X86_CPU, "popcnt", "on" },
--    { "Opteron_G2" "-" TYPE_X86_CPU, "rdtscp", "on" },
--    { "Opteron_G3" "-" TYPE_X86_CPU, "rdtscp", "on" },
--    { "Opteron_G4" "-" TYPE_X86_CPU, "rdtscp", "on" },
--    { "Opteron_G5" "-" TYPE_X86_CPU, "rdtscp", "on", }
--};
--const size_t pc_compat_2_4_len = G_N_ELEMENTS(pc_compat_2_4);
--
- /*
-  * @PC_FW_DATA:
-  * Size of the chunk of memory at the top of RAM for the BIOS ACPI tables
+-    if (x86_cpu_filter_features(cpu, cpu->check_cpuid || cpu->enforce_cpuid)) {
++    if (x86_cpu_filter_features(cpu, cpu->enforce_cpuid)) {
+         if (cpu->enforce_cpuid) {
+             error_setg(&local_err,
+                        accel_uses_host_cpuid() ?
+@@ -8808,7 +8808,6 @@ static const Property x86_cpu_properties[] = {
+     DEFINE_PROP_UINT8("hv-version-id-sbranch", X86CPU, hyperv_ver_id_sb, 0),
+     DEFINE_PROP_UINT32("hv-version-id-snumber", X86CPU, hyperv_ver_id_sn, 0),
+ 
+-    DEFINE_PROP_BOOL("check", X86CPU, check_cpuid, true),
+     DEFINE_PROP_BOOL("enforce", X86CPU, enforce_cpuid, false),
+     DEFINE_PROP_BOOL("x-force-features", X86CPU, force_features, false),
+     DEFINE_PROP_BOOL("kvm", X86CPU, expose_kvm, true),
 -- 
 2.47.1
 
