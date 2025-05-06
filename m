@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F00D6AAC823
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:36:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF105AAC868
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:44:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCJOL-0006TV-Aa; Tue, 06 May 2025 10:35:29 -0400
+	id 1uCJOQ-0006XB-Fa; Tue, 06 May 2025 10:35:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJOJ-0006RA-2g
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:35:27 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJON-0006WV-Ci
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:35:31 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJOH-00012P-6U
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:35:26 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-43ede096d73so35016875e9.2
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:35:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJOL-00012n-P5
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:35:31 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3912fdddf8fso4202958f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:35:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746542123; x=1747146923; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746542128; x=1747146928; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EJbqmq9kFpuW6bFY3e+x+p51Q9qF9BEDYXcNOdMViWc=;
- b=iPTO/otqkRb6tjUGKURzcslD3umdH+x4gPgxKTLxIknMWiiiF2bphGKA5qhzjER2n6
- SYekeMSElo6GwRkaDrergG1bzbYCvUd4bg7LJ4VEtScQRvzdDGm3xr9fexSV4qAzFc2p
- k6bNHVNNe8zX7zHCXbpugaN2DrxZDw8kBv1enr9lshDd9+l3cmXZ9R5decsnhK4F2ckd
- VpBQPJCjGFtKeW+ATYl4bGwTGh4Y75pVsb0lQ23VFpOO/bTqUljOpFBPZ9tmLySpqJeU
- 8EUnYMD0HF9GmhZYL/+DSaHpV5TZ2zSfgTUeNrNjwDhvjQ/zOqPl7qhFAzZA3g/MYLgk
- QFmQ==
+ bh=ko9NrQnF0SFd6dLTc0vMfxfU32MTZU1FDAMfmJHWSSA=;
+ b=kyQZeT0yEh58+/y4f8ab8nnUmQFZp1wFOCrNuNHVVOlTbVBpVdNhHGehPw0MS2R51D
+ vSBCVXsaGtLLJT0GRZd+hc4+gV6zanJt1DM1PZZY4rBWZ0C1vRSTABmwY4DhJkThOqw3
+ 7xYDNyoAgLwucEV5oM4CGe6NVEsLqvgXNvA26JzhIbANj3atptuqdkgWMCPrd8M5r/pQ
+ Js0Z2ltJ4pBKJNufUHcjZ2X+F7ypjLzybfgnrUp8AA+DTbE+ybefnV7iECx0CDF7pT7K
+ cQu97IugLVvPTiLrbROkJwuHwtQgz5Uyhwi2gHmA47GPQuxo6pQE5iGOYKxW0wm0DYeW
+ c4mA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746542123; x=1747146923;
+ d=1e100.net; s=20230601; t=1746542128; x=1747146928;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EJbqmq9kFpuW6bFY3e+x+p51Q9qF9BEDYXcNOdMViWc=;
- b=wM4OleERnZi6OGEvhGAjTUIuJmzbyamrk0LlRWa0rztCMPIGYMtUWW94XELoae+zou
- A85+COCC//0qJ1tLtM6OsQLVz1ozWbvfMbjTsZsbsVDDaab+HJrRCRIaL7vTBaFQmL74
- X8kRkAgjPgPhMurg9wjJ1H7t0Q2MGJrUohGfHfGx8MUgPpV5orHL+vV9C34oPKHf80RS
- 8R99V9b317Z14quHJQBcuYhGI75HwNEaoFW9NEaihb4k7VvlZCQkxEiwtwL8mEb2QbKV
- 5VThfodpjcSnzyx8MU3xAYkcGKz5FvmKKAW5+C9sNm06eOmxUGAeWhkLg87MKIeyuS6v
- kqOw==
-X-Gm-Message-State: AOJu0YzXmFAuGnPCh9YwsegYtIRhVO1HpkxSG3qMoVu1Xr7zsGgtK9EN
- zc7LRr4zY7rX97E1cDLbrOxKNtKG6wKFjJ0vBlPsvN5GDQkFZejG09YuJ1fHEJ2FnnE/7jXH5LT
- 9
-X-Gm-Gg: ASbGncsfZyJTPzm1Go0yglBc9LkDMYCCXRxlPY+56/Wkd5xv95LOP9XvbEMcQMp6+Lv
- EQxJujufs1c9mP4sYCpAO7M+Wf1BNkEMJNb0I6YXsAvAGbRD7UzytpExmdBFD/8veALMdl+2Xpr
- b7DP69nKCKjmoVFRttsz2mX41Fde0hDnaXhyITHAf04LPBB+XFplGiBAl1PlA3RvcJ+SgZPcxD+
- jon2vccoqz4Zpaczz8GbPt6GyI24q252Y4m3/IV/aCAwfJm24r21IRHolQUMksR3dz4aPIjMBwk
- RVhAeIvq2Xb3re6mJtVPz75UZxJuumEGQ9QrlW3xKDM/J8fafIk1b6Sgm2BdLDt9qfm/uxwk5wJ
- OAcodQ01JGkh3a5RWkUo3
-X-Google-Smtp-Source: AGHT+IHm/TCOIjAoETc3x3haBoYu7LECfFiIq1TC+eypuHC82NlLojM17S94NK3HKMWrmc9G2jQCqw==
-X-Received: by 2002:a5d:6489:0:b0:3a0:b1ff:8542 with SMTP id
- ffacd0b85a97d-3a0b1ff88f7mr1739276f8f.8.1746542123326; 
- Tue, 06 May 2025 07:35:23 -0700 (PDT)
+ bh=ko9NrQnF0SFd6dLTc0vMfxfU32MTZU1FDAMfmJHWSSA=;
+ b=W4xoQVNcMXnA5CO1vEK+kijZBnxk8h0zhd8X5b8+Xb3MgxXQO76BqiW7LgwIsJ21/q
+ XH9NwqJ3H+j39kmMSi5B08/L4QStjS/nL6q0vInM5q2dJ/oRFke3wQZhPiB0Zxrd5jja
+ 3YVJxgPBdBi+uKjPysCcthRTkCCL+JaJ8tat2zoh6b0eSGUtMEQA/rG7gUTR6Re5kXHA
+ W1CFedbx9I1+g5OBtMxvDqZyTOlaT5VFIjpCUnZOB0HlCu83Dfe3bv5q5IEkY9sQEwxY
+ Wems0fl79W5FZlacMavsRvdSSzycRUlPHZlLbTrMv8p7L9EJQhsBM2MHRLQp2Ha2A8Ao
+ 91Pw==
+X-Gm-Message-State: AOJu0Yy0JhisK6HAnYK/UKwJ2g6eLBBJcphiwy8O1V/QVhENX62afv1v
+ It9uHFY1Ho7z9XhkZlwKlt6IgWuTjA+L6mjOa7W8BiWYarY88PSw2IEIbSGKWeSVpthpdcjqD0E
+ h
+X-Gm-Gg: ASbGncsbuzgPyyU75ilpgyoSzaCJEShP928Xj7l/A5fk/aO3VcbaQPDnBuOro3Ub2vo
+ L2KHY7OZmRdvNPXI4X+nIp/xQ0L+zjXmFozmTD8gOTVcMgmTM1eNt8OGb2KwNdBwi1c5w105GBp
+ 4q4vnBR4noELtT3hFB4egV+kjeNEabXeuYlS/fTVDA9NsWef/4B4caDklejEHAFZvZ3yRXG8D1j
+ HMEnuK2Q0D2rYMQTYJli+S8QLGEc4qDth2LtkY9cv93/uZDe8ODLo+WlBBusSqXasQN7oUDSrpw
+ Nu5FBj0Y+wPz+3WhkOyuSHZ+UCa9larm/HGd8NH4w2SkRxi2/mEFpQSoWEN0krD4hRhC1LSTXy+
+ kyw99zGuGZS4vNYAqRc+0
+X-Google-Smtp-Source: AGHT+IEA5pwXBKqHkKJLH9INhOqmWtkMf2jhnxzq5ph0VEt1k+m2qBKVUQCJM4MWvUTwVKc9LKNXmg==
+X-Received: by 2002:a05:6000:2204:b0:3a0:7c91:4aaf with SMTP id
+ ffacd0b85a97d-3a0ab5b10ecmr3175700f8f.19.1746542127776; 
+ Tue, 06 May 2025 07:35:27 -0700 (PDT)
 Received: from localhost.localdomain (91-163-26-170.subs.proxad.net.
  [91.163.26.170]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-441b89cc441sm174930805e9.3.2025.05.06.07.35.21
+ 5b1f17b1804b1-441b89d150fsm170630755e9.15.2025.05.06.07.35.27
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 06 May 2025 07:35:22 -0700 (PDT)
+ Tue, 06 May 2025 07:35:27 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Steve Sistare <steven.sistare@oracle.com>,
+Cc: Gustavo Romero <gustavo.romero@linaro.org>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 02/22] qom: Factor qom_resolve_path() out
-Date: Tue,  6 May 2025 16:34:51 +0200
-Message-ID: <20250506143512.4315-3-philmd@linaro.org>
+Subject: [PULL 03/22] qom/object: Fix typo in comment
+Date: Tue,  6 May 2025 16:34:52 +0200
+Message-ID: <20250506143512.4315-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250506143512.4315-1-philmd@linaro.org>
 References: <20250506143512.4315-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,61 +98,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Steve Sistare <steven.sistare@oracle.com>
+From: Gustavo Romero <gustavo.romero@linaro.org>
 
-Factor out a helper to resolve the user's path and print error messages.
-No functional change.
+Fix duplicate preposition in comment.
 
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <1741036202-265696-2-git-send-email-steven.sistare@oracle.com>
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20250504215639.54860-5-gustavo.romero@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- qom/qom-qmp-cmds.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ qom/object.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/qom/qom-qmp-cmds.c b/qom/qom-qmp-cmds.c
-index e8665476182..293755f409e 100644
---- a/qom/qom-qmp-cmds.c
-+++ b/qom/qom-qmp-cmds.c
-@@ -28,15 +28,11 @@
- #include "qom/object_interfaces.h"
- #include "qom/qom-qobject.h"
- 
--ObjectPropertyInfoList *qmp_qom_list(const char *path, Error **errp)
-+static Object *qom_resolve_path(const char *path, Error **errp)
- {
--    Object *obj;
-     bool ambiguous = false;
--    ObjectPropertyInfoList *props = NULL;
--    ObjectProperty *prop;
--    ObjectPropertyIterator iter;
-+    Object *obj = object_resolve_path(path, &ambiguous);
- 
--    obj = object_resolve_path(path, &ambiguous);
-     if (obj == NULL) {
-         if (ambiguous) {
-             error_setg(errp, "Path '%s' is ambiguous", path);
-@@ -44,6 +40,19 @@ ObjectPropertyInfoList *qmp_qom_list(const char *path, Error **errp)
-             error_set(errp, ERROR_CLASS_DEVICE_NOT_FOUND,
-                       "Device '%s' not found", path);
-         }
-+    }
-+    return obj;
-+}
-+
-+ObjectPropertyInfoList *qmp_qom_list(const char *path, Error **errp)
-+{
-+    Object *obj;
-+    ObjectPropertyInfoList *props = NULL;
-+    ObjectProperty *prop;
-+    ObjectPropertyIterator iter;
-+
-+    obj = qom_resolve_path(path, errp);
-+    if (obj == NULL) {
-         return NULL;
-     }
- 
+diff --git a/qom/object.c b/qom/object.c
+index 664f0f24ae8..7b013f40a0c 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -485,7 +485,7 @@ bool object_apply_global_props(Object *obj, const GPtrArray *props,
+  * Slot 0: accelerator's global property defaults
+  * Slot 1: machine's global property defaults
+  * Slot 2: global properties from legacy command line option
+- * Each is a GPtrArray of of GlobalProperty.
++ * Each is a GPtrArray of GlobalProperty.
+  * Applied in order, later entries override earlier ones.
+  */
+ static GPtrArray *object_compat_props[3];
 -- 
 2.47.1
 
