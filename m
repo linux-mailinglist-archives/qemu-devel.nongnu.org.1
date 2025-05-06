@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67463AACA56
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 18:01:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91915AACA58
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 18:01:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCKjB-0006f4-2d; Tue, 06 May 2025 12:01:05 -0400
+	id 1uCKjJ-0006k4-37; Tue, 06 May 2025 12:01:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uCKiw-0006Y8-LU
+ id 1uCKj2-0006YM-75
  for qemu-devel@nongnu.org; Tue, 06 May 2025 12:01:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uCKiu-0006NN-T1
- for qemu-devel@nongnu.org; Tue, 06 May 2025 12:00:50 -0400
+ id 1uCKix-0006Nd-6z
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 12:00:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746547247;
+ s=mimecast20190719; t=1746547250;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+NpR0xYOkKIQmVHmAyuyMZPnLq40++Dt46hOxtxCL3s=;
- b=Up1beXJ3kMXi6J3jMSS7DdDgwB2P5YBAja3MIu4xoU1+NMSRjTaFES0vUn+zAOnDGJ+CLe
- e0VtUORLCu5dUYGaiprTpeCDqgKISt2H9ptparl3brqxNgC70LxoEkFRthUKJkX+IoPlum
- LYTE6n49Guc8oqNacG9Y3wFZ3svobTs=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=kPLy8NKP7Tp6cI9RA6AHOioL2/HsHXmBgssyWkntyFA=;
+ b=fmykxFkrqfZ5kx/CeP/hwhgmOusi5wgQ3ug/jT31Phfhn/MQ2eQsGyhwzpB+1UXtxISwk6
+ nJ3BXx5VKdtGQSG4F8xSNVQOv26YDuGuTSCsgGxZlk2objurnA2PngssLCivGGROIo8sco
+ pRxbLRKw2K7clTSUZdlvAy+yRlrNC98=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-683-aHBNvdxMNvizjwLGPDdbxg-1; Tue,
- 06 May 2025 12:00:44 -0400
-X-MC-Unique: aHBNvdxMNvizjwLGPDdbxg-1
-X-Mimecast-MFC-AGG-ID: aHBNvdxMNvizjwLGPDdbxg_1746547241
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-625-CA29Nj_MMbKR2yj2jDb-8w-1; Tue,
+ 06 May 2025 12:00:46 -0400
+X-MC-Unique: CA29Nj_MMbKR2yj2jDb-8w-1
+X-Mimecast-MFC-AGG-ID: CA29Nj_MMbKR2yj2jDb-8w_1746547245
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4A6291955E94; Tue,  6 May 2025 16:00:41 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 4E7541801A1E; Tue,  6 May 2025 16:00:45 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.127])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 364B81956094; Tue,  6 May 2025 16:00:34 +0000 (UTC)
+ id D92AC1956094; Tue,  6 May 2025 16:00:41 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -54,10 +54,10 @@ Cc: Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, Thomas Huth <thuth@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, John Snow <jsnow@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v3 2/5] include/hw/boards: cope with dev/rc versions in
- deprecation checks
-Date: Tue,  6 May 2025 17:00:21 +0100
-Message-ID: <20250506160024.2380244-3-berrange@redhat.com>
+Subject: [PATCH v3 3/5] docs/about/deprecated: auto-generate a note for
+ versioned machine types
+Date: Tue,  6 May 2025 17:00:22 +0100
+Message-ID: <20250506160024.2380244-4-berrange@redhat.com>
 In-Reply-To: <20250506160024.2380244-1-berrange@redhat.com>
 References: <20250506160024.2380244-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -89,74 +89,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When VERSION is set to a development snapshot (micro >= 50), or a release
-candidate (micro >= 90) we have an off-by-1 in determining deprecation
-and deletion thresholds for versioned machine types. In such cases we need
-to use the next major/minor version in threshold checks.
-
-This adapts the deprecation macros to do "next version" prediction when
-seeing a dev/rc version number.
-
-This ensures users of release candidates get an accurate view of machines
-that will be deprecated/deleted in the final release.
-
-This requires hardcoding our current release policy of 3 releases per
-year, with a major bump at the start of each year, and that dev/rc
-versions have micro >= 50.
+We deprecate versioned machine types on a fixed schedule. This allows us
+to auto-generate a paragraph in the deprecated.rst document that always
+has accurate version info.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- include/hw/boards.h | 33 ++++++++++++++++++++++++++++++++-
- 1 file changed, 32 insertions(+), 1 deletion(-)
+ docs/about/deprecated.rst |  7 +++++++
+ docs/conf.py              | 33 ++++++++++++++++++++++++++++++++-
+ 2 files changed, 39 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index 74a8e96b2e..a6784fe984 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -650,11 +650,42 @@ struct MachineState {
-     " years old are subject to deletion after " \
-     stringify(MACHINE_VER_DELETION_MAJOR) " years"
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 05381441a9..1a1b423030 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -278,6 +278,13 @@ CPU implementation for a while before removing all support.
+ System emulator machines
+ ------------------------
  
--#define _MACHINE_VER_IS_EXPIRED_IMPL(cutoff, major, minor) \
-+#define _MACHINE_VER_IS_CURRENT_EXPIRED(cutoff, major, minor) \
-     (((QEMU_VERSION_MAJOR - major) > cutoff) || \
-      (((QEMU_VERSION_MAJOR - major) == cutoff) && \
-       (QEMU_VERSION_MINOR - minor) >= 0))
++Versioned machine types (aarch64, arm, i386, m68k, ppc64, s390x, x86_64)
++''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
++
++In accordance with our versioned machine type deprecation policy, all machine
++types with version |VER_MACHINE_DEPRECATION_VERSION|, or older, have been
++deprecated.
++
+ Arm ``virt`` machine ``dtb-kaslr-seed`` property (since 7.1)
+ ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
  
-+#define _MACHINE_VER_IS_NEXT_MINOR_EXPIRED(cutoff, major, minor) \
-+    (((QEMU_VERSION_MAJOR - major) > cutoff) || \
-+     (((QEMU_VERSION_MAJOR - major) == cutoff) && \
-+      ((QEMU_VERSION_MINOR + 1) - minor) >= 0))
+diff --git a/docs/conf.py b/docs/conf.py
+index 7b5712e122..60dcf2a541 100644
+--- a/docs/conf.py
++++ b/docs/conf.py
+@@ -117,6 +117,27 @@
+     else:
+         version = release = "unknown version"
+ 
++bits = version.split(".")
 +
-+#define _MACHINE_VER_IS_NEXT_MAJOR_EXPIRED(cutoff, major, minor) \
-+    ((((QEMU_VERSION_MAJOR + 1) - major) > cutoff) ||            \
-+     ((((QEMU_VERSION_MAJOR + 1) - major) == cutoff) &&          \
-+      (0 - minor) >= 0))
++major = int(bits[0])
++minor = int(bits[1])
++micro = int(bits[2])
 +
-+/*
-+ * - The first check applies to formal releases
-+ * - The second check applies to dev snapshots / release candidates
-+ *   where the next major version is the same.
-+ *   e.g. 9.0.50, 9.1.50, 9.0.90, 9.1.90
-+ * - The third check applies to dev snapshots / release candidates
-+ *   where the next major version will change.
-+ *   e.g. 9.2.50, 9.2.90
-+ *
-+ * NB: this assumes we do 3 minor releases per year, before bumping major,
-+ * and dev snapshots / release candidates are numbered with micro >= 50
-+ * If this ever changes the logic below will need modifying....
-+ */
-+#define _MACHINE_VER_IS_EXPIRED_IMPL(cutoff, major, minor) \
-+    ((QEMU_VERSION_MICRO < 50 && \
-+      _MACHINE_VER_IS_CURRENT_EXPIRED(cutoff, major, minor)) || \
-+     (QEMU_VERSION_MICRO >= 50 && QEMU_VERSION_MINOR < 2 && \
-+      _MACHINE_VER_IS_NEXT_MINOR_EXPIRED(cutoff, major, minor)) || \
-+     (QEMU_VERSION_MICRO >= 50 && QEMU_VERSION_MINOR == 2 && \
-+      _MACHINE_VER_IS_NEXT_MAJOR_EXPIRED(cutoff, major, minor)))
++# Check for a dev snapshot, so we can adjust to next
++# predicted release version.
++#
++# This assumes we do 3 releases per year, so must bump
++# major if minor == 2
++if micro >= 50:
++    micro = 0
++    if minor == 2:
++        major += 1
++        minor = 0
++    else:
++        minor += 1
 +
- #define _MACHINE_VER_IS_EXPIRED2(cutoff, major, minor) \
-     _MACHINE_VER_IS_EXPIRED_IMPL(cutoff, major, minor)
- #define _MACHINE_VER_IS_EXPIRED3(cutoff, major, minor, micro) \
++ver_machine_deprecation_version = "%d.%d.0" % (major - 3, minor)
++
+ # The language for content autogenerated by Sphinx. Refer to documentation
+ # for a list of supported languages.
+ #
+@@ -145,7 +166,17 @@
+ # environment variable is not set is for the benefit of readthedocs
+ # style document building; our Makefile always sets the variable.
+ confdir = os.getenv('CONFDIR', "/etc/qemu")
+-rst_epilog = ".. |CONFDIR| replace:: ``" + confdir + "``\n"
++
++vars = {
++    "CONFDIR": confdir,
++    "VER_MACHINE_DEPRECATION_VERSION": ver_machine_deprecation_version,
++}
++
++rst_epilog = "".join([
++    ".. |" + key + "| replace:: ``" + vars[key] + "``\n"
++    for key in vars.keys()
++])
++
+ # We slurp in the defs.rst.inc and literally include it into rst_epilog,
+ # because Sphinx's include:: directive doesn't work with absolute paths
+ # and there isn't any one single relative path that will work for all
 -- 
 2.49.0
 
