@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CBDEAAC892
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:49:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67214AAC879
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:45:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCJXV-0003M5-8A; Tue, 06 May 2025 10:44:57 -0400
+	id 1uCJXb-0003p1-9e; Tue, 06 May 2025 10:45:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uCJV3-0001SJ-RT
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:31 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1uCJV5-0001Sc-AG
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:32 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uCJUz-00025D-Iy
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:22 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-43d0359b1fcso36186925e9.0
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:42:20 -0700 (PDT)
+ id 1uCJV2-00025h-LV
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:26 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-43cfba466b2so48970045e9.3
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:42:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746542540; x=1747147340; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746542541; x=1747147341; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=laNSgZ2YaiiHIrfl+xZU7dbvVIxq1VzisjPBXcfl60o=;
- b=qf5jvsgBODS2lvieRoyzoG/TT5lQFacReP94OrBkQHI4X6zawTk395Ym72Z4/ZK4dx
- Zxs4idqMCy/eFzfkzKhqqABRGrF4HgSoyDSzzCGURa5HxMFGx16c5MJ1bguwSOOh7ePt
- JUQCXLlHQ4LCu87EXWrr5oNzSb26Sdmcs9nPbOACG+OnaF6I05AnKrF+pvo74yWHcYJ0
- xU3JZbq45uKJWXJZO/j4Kl6WwGUG8/bLQCdxAbKXew3xB1XuY72r4yQ1fNroC2M8CfyY
- nMkEUP6tYnW03S/XeGw76iuJ2VqaerLdLp/Jx5hPQxx0ecGb+vJ883ldwRy17gUeerzc
- DkNQ==
+ :reply-to; bh=VckgnWFHcXJaFRW3+b8g4WIpqvkRRSf9OGC46J//Dr8=;
+ b=Zyi5WTfniajaBpCXH/FETnfGyDigmWcwN786Yoo8tPMiQbajeRJUjPwH7he9hQt5/A
+ MFFAf05hh9+vLcKisnLOXf/9GiXyfJDYYx6MJbHJNSaX6zhZ2hwBc5In3otCR0/A+QR9
+ LFDuzK3HuaVK8voaph/tXvChPbhoYFltb7bmPO1Sik2hMeJb8M99rxUyS1FX/zeYCwbZ
+ nv2hMNuR1x+fh5492B5Y0NIkQiZzS1n+9YbhRKRiCylvAshzbiZW7UQwMOzZ7YFqSXaN
+ OHthF+Wl2nRZ44n6mbOgHx6RDXA3t7dUt2h4+CbBWd0m6KJCybab8MBFBop1g6PWVlLn
+ GW3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746542540; x=1747147340;
+ d=1e100.net; s=20230601; t=1746542541; x=1747147341;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=laNSgZ2YaiiHIrfl+xZU7dbvVIxq1VzisjPBXcfl60o=;
- b=GiXOix8TwFwcVAHvsrwppesAWp4s0amXWSLxRBGNY/aDu4W+bcqyQb0FjInWUIiZNl
- fzOaNZSN8zocnXBiPRye0dgbVKuCxQzZTC8ktOrYHEpKMDoHHD4W4LxGvs+mqEJKMZP2
- XmlClX7lksvA24I9NydAS9Sj4tjuoyEFGfjGhS8E/0dXdE2XsnUmBC4GCvzizQUZhVlw
- Ax0zyCqS/QmiqIZWRDFf4aMoyyB3kJ7Lydqrx/2L76Vqzb8hXORz9cP3AVS6qvc4sEUt
- /lCMqrNEk1DTQH1dQDcRv0pRkeK15E+6GnsLGEKUdBFajH7YMWO337J0vJ8nrUriNRA3
- KIjw==
-X-Gm-Message-State: AOJu0Yzus/ilVkwVQGiW+zjxVJQYCILrRAO/rDlI1acWFvVxC4SlKCYv
- 9XrJz/2qnMKbL/T1YDNG4ygqDuveFxdXmrfP6UXtZxaTVrjxG0qvHsFymS/zrgm/8WbFTE3P2jh
- o
-X-Gm-Gg: ASbGncvUDdFi48FbNSQEy+WyvjY3YmJKeTw0rVnNEJvyZW0vGkrePHwGld0vskSx0fX
- gIcbDMInttL3yg1zWhHNxCQWmgbhClUOsc7bnco80C9qZnF3tF/I7E7TaHdx6NLav0RKfTLUtn6
- h5zmK0c/Dun7p9zk32Bk3R4wXfVKiB7DEV9tQvQErPTJM7GCZC+xAYQ+5WZHRhmqQhlZeACdECL
- lIOUUeP++qRqT9wdXgubYXPNWUBrODHnCR5Gwo7pJVV4YjnCHKQos8fw86AZAh3Te0JmLTjCjHI
- EsLePJWDYBFMJSiQ6jf0OymeHPEFsiPc48mknv5dT4wA8HQ=
-X-Google-Smtp-Source: AGHT+IGDex9cnapkFYlxgfB7v+wp3Uh2hqKdnQYEdcIySjNLP0OzgI0COE8eKkArH2GQc88fS8wJyA==
-X-Received: by 2002:a05:600c:5487:b0:439:4c1e:d810 with SMTP id
- 5b1f17b1804b1-441d3a56bc7mr274155e9.9.1746542539779; 
- Tue, 06 May 2025 07:42:19 -0700 (PDT)
+ bh=VckgnWFHcXJaFRW3+b8g4WIpqvkRRSf9OGC46J//Dr8=;
+ b=qjzWZsKkF9lO0K/oeOOQZPJLtifEccNu7UQEdZopxjdS9Vi4cPRnu/7H9Z3mPOHDiV
+ FPP5bB+jljID1U7dz64nEtBz6dwokhaf98dWSbRSsptK8Ex4PQFohNlhaGBIpI4wsX42
+ nDQCeRyJOVFeDo+TJYX2WUJNZ258PPn7XemsqcsTAbZ9OpLOda2Qamv2ACfML+JOhbsW
+ NLY5c0rDOGQfTQHKJHpg+WTGZxJQl6DhZeD7TA5yE8QpQOH045Kw94xlBzfcoqvNrrz5
+ OX49CRRc0ASzJJ0B0D8LLpcmmGQVGrnN0JG6u5vkEBXJu+JuVtxSCr4vIZDOhV/C/1av
+ 4cuA==
+X-Gm-Message-State: AOJu0YyfQFsVv4+DYhCm6TG902UgL9zfSbnOlIm14ZI3MdQ0SdOLIMob
+ qpBoI80RVDiKIctNLM5BQfsqmpiKNY1mef5ERY4Q7v9px4Wqk8w7JUvdyUaRbCvLh2xBB4/+BDz
+ 0
+X-Gm-Gg: ASbGncvFYzJBeMZEVO2PW1IwstAlOT0wFKEElv8kdjiEooKE3BnKIBjNfQ8sQ+u/Tpz
+ tgV2TDsS+zZ9JjCDjD7+Y97KaMXgAO1vb47Ax3Su7XJGmuTduswZ/opArdasiCbqSfH5DJ8kPuT
+ IkqxwAgR/06gJzchygtz0PgFqwZT+dB2NB0MltgIa5VcAnrmmACIk+R7B5Bb3f/USh76J1K1/Sf
+ kT413RbYN1WcxmYar5bbOPmW7vGBiS/IZLh6TuyFUXZ+udFxpUw1jmW5aOp/PBVNrq5sdHmlSt/
+ D7PAP4QPYVikYvjJIzc1EVttz2CB9k85uJqmblnoOw5qfI4=
+X-Google-Smtp-Source: AGHT+IEY4kmvPge7QP88lEsJC3wayGEk6/6nwX6jr+KRTyViZO6KpMW+Z5IsFsuNyiA4L+BdLhaGBw==
+X-Received: by 2002:a05:600c:4690:b0:43d:762:e0c4 with SMTP id
+ 5b1f17b1804b1-441d054c744mr33025205e9.27.1746542541347; 
+ Tue, 06 May 2025 07:42:21 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-441b89edfc2sm169603435e9.20.2025.05.06.07.42.18
+ 5b1f17b1804b1-441b89edfc2sm169603435e9.20.2025.05.06.07.42.19
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 May 2025 07:42:19 -0700 (PDT)
+ Tue, 06 May 2025 07:42:20 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/32] hvf: only update sysreg from owning thread
-Date: Tue,  6 May 2025 15:41:45 +0100
-Message-ID: <20250506144214.1221450-4-peter.maydell@linaro.org>
+Subject: [PULL 04/32] target/arm/ptw: extract arm_mmu_idx_to_security_space
+Date: Tue,  6 May 2025 15:41:46 +0100
+Message-ID: <20250506144214.1221450-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250506144214.1221450-1-peter.maydell@linaro.org>
 References: <20250506144214.1221450-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,39 +97,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mads Ynddal <m.ynddal@samsung.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-hv_vcpu_set_sys_reg should only be called from the owning thread of the
-vCPU, so to avoid crashes, the call to hvf_update_guest_debug is
-dispatched to the individual threads.
+We'll reuse this function later.
 
-Tested-by: Daniel Gomez <da.gomez@samsung.com>
-Signed-off-by: Mads Ynddal <m.ynddal@samsung.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Message-id: 20250402135229.28143-3-mads@ynddal.dk
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-id: 20250414153027.1486719-2-pierrick.bouvier@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- accel/hvf/hvf-all.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ target/arm/ptw.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/accel/hvf/hvf-all.c b/accel/hvf/hvf-all.c
-index d404e01adef..3fc65d6b231 100644
---- a/accel/hvf/hvf-all.c
-+++ b/accel/hvf/hvf-all.c
-@@ -58,8 +58,13 @@ int hvf_sw_breakpoints_active(CPUState *cpu)
-     return !QTAILQ_EMPTY(&hvf_state->hvf_sw_breakpoints);
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index e0e82ae507f..bdb4de7c047 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -3551,13 +3551,9 @@ bool get_phys_addr_with_space_nogpc(CPUARMState *env, vaddr address,
+                                memop, result, fi);
  }
  
--int hvf_update_guest_debug(CPUState *cpu)
-+static void do_hvf_update_guest_debug(CPUState *cpu, run_on_cpu_data arg)
+-bool get_phys_addr(CPUARMState *env, vaddr address,
+-                   MMUAccessType access_type, MemOp memop, ARMMMUIdx mmu_idx,
+-                   GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
++static ARMSecuritySpace
++arm_mmu_idx_to_security_space(CPUARMState *env, ARMMMUIdx mmu_idx)
  {
-     hvf_arch_update_guest_debug(cpu);
+-    S1Translate ptw = {
+-        .in_mmu_idx = mmu_idx,
+-    };
+     ARMSecuritySpace ss;
+ 
+     switch (mmu_idx) {
+@@ -3618,7 +3614,18 @@ bool get_phys_addr(CPUARMState *env, vaddr address,
+         g_assert_not_reached();
+     }
+ 
+-    ptw.in_space = ss;
++    return ss;
 +}
 +
-+int hvf_update_guest_debug(CPUState *cpu)
++bool get_phys_addr(CPUARMState *env, vaddr address,
++                   MMUAccessType access_type, MemOp memop, ARMMMUIdx mmu_idx,
++                   GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
 +{
-+    run_on_cpu(cpu, do_hvf_update_guest_debug, RUN_ON_CPU_NULL);
-     return 0;
++    S1Translate ptw = {
++        .in_mmu_idx = mmu_idx,
++        .in_space = arm_mmu_idx_to_security_space(env, mmu_idx),
++    };
++
+     return get_phys_addr_gpc(env, &ptw, address, access_type,
+                              memop, result, fi);
  }
 -- 
 2.43.0
