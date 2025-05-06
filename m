@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32DA5AAC8C5
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:54:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A707AAC8C1
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:53:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCJXI-0002EX-C6; Tue, 06 May 2025 10:44:44 -0400
+	id 1uCJYJ-0006En-HM; Tue, 06 May 2025 10:45:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uCJVK-0001sc-BJ
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:43 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1uCJVM-0001tw-1y
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:45 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uCJVI-00029E-54
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:42 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-43ce71582e9so38495585e9.1
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:42:39 -0700 (PDT)
+ id 1uCJVJ-00029Z-LW
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:43 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-39c0dfad22aso3718440f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:42:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746542558; x=1747147358; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746542560; x=1747147360; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=aiQ7ZcnC+QYDI7GaGe0RXvbyxeI4m0Rk5zu7vlP04q8=;
- b=BzgCblwwFdTKb8zasqRrcM65zPAqX++X8ILW8O57r8VfLP5rNJGKds0dU6yb8kFqN/
- Ncge00MPJak6q3lHw7NDHei1kTe0oNz2OYKoNOq/y4SeJCx73XSibz+22MPMo7GvIOy8
- QDZF+a62MQAveLqk7sGo01cfcKAT1JvSCnudEQVBsnSLOopmxIwqwtyqKYRmFUmBvA8m
- Xg/kgq5oYdRUjfNOe+MnJyE+39I/qzQhfDdBLzhFFdEQ1pKacOmTQMGP397adeJtwF2J
- TXXmnvlpXUj2LaVx3uXdpdc0myUeHFjKvQZRyAzpdwm5H1t8Z1mhFQWxUbt1pv8kk3FC
- 7lWQ==
+ :reply-to; bh=56khE8Uaw81lXGUNJgzYq9SIPvkDB3r1al+lhASF9Ts=;
+ b=IpKcNZsOwzMDGNbrSFReIycomj8rLMzLknku1+mPhPpfUtoRCCzCHu6GebUODiU8zQ
+ NHMdKEmAjy2JwSDG139FvjjAKtdFn4I05pRs9mgyDSjuMq1Idyq5eBLvGP7KPe96JPqi
+ +5LjGIdSVsPx3Q857lO0K/oDahr6XMxpUFMY1VbC/8Hi0QSuL/FRuzp2YRl88ybLcYAt
+ uHWAuPGI4ozfXtQmnX7Tozv2V5oxIMaRgpzXGgz6MKDBQj+WrQ98lgfnM+m7cyYc74HZ
+ cnnIVZtm0WIJ7LuPnxj68MboyPcDQJfaWFESLtLmYkk/FgyeOhi22SRDhDiiPNEGcX9A
+ JSLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746542558; x=1747147358;
+ d=1e100.net; s=20230601; t=1746542560; x=1747147360;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aiQ7ZcnC+QYDI7GaGe0RXvbyxeI4m0Rk5zu7vlP04q8=;
- b=O4Nsz9k1rp02Z4FoPwrrOo7BHEneQ7Zo1RMapiLzs74kxz5kEiy84ehXP2YGxg8aq6
- Qw1K57Wfc3j2Cf9DdBM6YuUmciN9KN3jtKfIAIRKC7I2z77U0xzDpdphN7qyUvg14l1T
- 0oFKBsVM2EGQCDHCguwxRdiqJ13HU3pr8WkTis+M5sf9JPwmNn/t2EetJfZ4+rbZ3ZAV
- MPlSbxYAbVLl7W0UzyiHz+4jdrk07bWDto1a+d3uRxjoDlSYxL5vCIh8kjXMFyRG9A01
- nwIq7HpiNc9qF26YnSsJoAp44LdHszXBLARE7yHyvzTkvsTPuE2QoIw+S/+B2hfdbTkF
- EG2g==
-X-Gm-Message-State: AOJu0YwvzL7baH9vRmusXn19Xpu/1ryphfVbt7X1Cn1RdADgWJjs/yve
- hiJlFGkwpD4DK9WTrTsIHqpISzKDrEncOABGGPrgkYIGuq/fHun5GA1EC4Zo7FCUpPOaKBrckKC
- g
-X-Gm-Gg: ASbGncuCdh1cnXupBsAIP/yThshH5T8s/xmJgU2bcw9xUaKmvDp4wiWlRSdr9ieZUoc
- MENgKgcdVJis9GGQtoekI5mfRtBvPE96Gqk/zu//dKL/CBSSmL8a5o0Q742q8Yx6k48cV4PNaeg
- DpPU8Cfe8MXM2VXxt34Qx9WVVJBgME5Ybs2751LhidxsHNU7rF5lAna5qIqCK9sonr3K8NDq9Cw
- km0oJOX/8XK3YIAl/KKnoXRdvEeYh4IOfVkJMWlGiy38vZTVowNzw+XPDCqccQFhdkQrKUMijnV
- lsihiPmwx6h/BYpAye5Mb+MY2kAql5eFbqSK/5Ko0NbW6Pc=
-X-Google-Smtp-Source: AGHT+IFpCsc1zSewbcoLsXZJk+qdsf6yD2y960KwmCu4deGlg/YakmDXLUSJ+h1LNc1ggIA6o7MhAQ==
-X-Received: by 2002:a05:600c:1d07:b0:43c:fc04:6d48 with SMTP id
- 5b1f17b1804b1-441c47d393bmr99677685e9.0.1746542558414; 
- Tue, 06 May 2025 07:42:38 -0700 (PDT)
+ bh=56khE8Uaw81lXGUNJgzYq9SIPvkDB3r1al+lhASF9Ts=;
+ b=AI1j3LRA8Z0n1ivSvRCwRzoKqsttuu4f2EbWRBARKMozsua+bOmGCiojfZpkJCvYGj
+ 4elJls534qr7tNN1/APnk5C4f97aVD2F7kyFEhma4iXTtsdb3veF0u0EYUtgxPeoHdgX
+ FSOf3ofT8LYzA4RLHNRKoh8XgDPmT+tn0c7fGDHopOmjWXkKLQ2Wp/XPQJnu6q3MDLzE
+ HXwk3T2qo9S/TtKfwuzEt83e4gntO/HWuHhgLdQqlfyatr0eWTXvqWl2CzHKyaLEXYZ3
+ kB4eO8z9UkkyKuY5lLlvxpVIZG1i+dQ06dDL7e0Ic1VI3l1CtuK3WXcxxIYsF/9/a1ul
+ C5YQ==
+X-Gm-Message-State: AOJu0YzFbbSpPMrl6oPifaODLovbnMJlOdVav7a6cn15SB18B0B1Y1ns
+ 2TDVLWC3xJkMRxbyC4hiBaZ7frzCE/4Wb+yc1o2GYSZsXlvCQyChbha6lMdYU38sMKMU7W+IEYo
+ X
+X-Gm-Gg: ASbGncs4kY/cb8Dma9IVCV4zDlKVczZ047qmR63U+APAjyCi3z6BwEwAJFe2mEZhTaF
+ dXdP47Y2/jNT4VHxWkQ5pVA1pv7l6haOgFhsxMRypDwv4rlI2yU8NQJrI54s/KofAhaVvLwlCcN
+ i+9bALe3lnQzVoc4kibbYxG0RjpbJ6A4Hsetx8x6CFuPRDEp8K4j7tYt0SJXV1t5ffXN2VQUEph
+ F/WkRxlGFTNwkzyINd9clYH35BZ1tg0dmyohZINo3GQgGgTFz9gxUC1FwAmzuNQVDGtemOVENJQ
+ gTG0faCgrC+deW2Oe+zH5O6i9amz3pK7D4g+8yvVDuTRFeY=
+X-Google-Smtp-Source: AGHT+IGTUta68M4EfwFGQCal/dEDsNODrpxR5FWYiqbBOe9n+oGxKq2PJJRHvEK54zafPmiPV9Xwbg==
+X-Received: by 2002:adf:e30c:0:b0:3a0:9fe1:c298 with SMTP id
+ ffacd0b85a97d-3a09fe1c4aamr6459335f8f.18.1746542560059; 
+ Tue, 06 May 2025 07:42:40 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-441b89edfc2sm169603435e9.20.2025.05.06.07.42.37
+ 5b1f17b1804b1-441b89edfc2sm169603435e9.20.2025.05.06.07.42.38
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 May 2025 07:42:37 -0700 (PDT)
+ Tue, 06 May 2025 07:42:39 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 20/32] hw/arm/virt: Remove VirtMachineClass::no_highmem_ecam
- field
-Date: Tue,  6 May 2025 15:42:02 +0100
-Message-ID: <20250506144214.1221450-21-peter.maydell@linaro.org>
+Subject: [PULL 21/32] tests/functional: Add test for imx8mp-evk board with
+ USDHC coverage
+Date: Tue,  6 May 2025 15:42:03 +0100
+Message-ID: <20250506144214.1221450-22-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250506144214.1221450-1-peter.maydell@linaro.org>
 References: <20250506144214.1221450-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,46 +97,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Bernhard Beschow <shentey@gmail.com>
 
-The VirtMachineClass::no_highmem_ecam field was only
-used by virt-2.12 machine, which got removed. Remove it
-and simplify virt_instance_init().
+Introduce a functional test which boots Debian 12 on the imx8mp-evk board. Since
+the root filesystem resides on an SD card, the test also verifies the basic
+operation of the USDHC.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20250409202630.19667-1-shentey@gmail.com
+[PMM: added extra blank line as suggested by thuth;
+ set timeout to 240s]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- include/hw/arm/virt.h | 1 -
- hw/arm/virt.c         | 2 +-
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ MAINTAINERS                                 |  1 +
+ tests/functional/meson.build                |  2 +
+ tests/functional/test_aarch64_imx8mp_evk.py | 67 +++++++++++++++++++++
+ 3 files changed, 70 insertions(+)
+ create mode 100755 tests/functional/test_aarch64_imx8mp_evk.py
 
-diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
-index b2cc012a402..9a1b0f53d21 100644
---- a/include/hw/arm/virt.h
-+++ b/include/hw/arm/virt.h
-@@ -119,7 +119,6 @@ struct VirtMachineClass {
-     MachineClass parent;
-     bool no_tcg_its;
-     bool no_highmem_compact;
--    bool no_highmem_ecam;
-     bool no_ged;   /* Machines < 4.2 have no support for ACPI GED device */
-     bool kvm_no_adjvtime;
-     bool no_kvm_steal_time;
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index d047983c80e..bd1a68673a7 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -3336,7 +3336,7 @@ static void virt_instance_init(Object *obj)
-     vms->highmem_compact = !vmc->no_highmem_compact;
-     vms->gic_version = VIRT_GIC_VERSION_NOSEL;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e748b6375ee..ba702549466 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -843,6 +843,7 @@ F: include/hw/arm/fsl-imx8mp.h
+ F: include/hw/misc/imx8mp_*.h
+ F: include/hw/pci-host/fsl_imx8m_phy.h
+ F: docs/system/arm/imx8mp-evk.rst
++F: tests/functional/test_aarch64_imx8mp_evk.py
+ F: tests/qtest/rs5c372-test.c
  
--    vms->highmem_ecam = !vmc->no_highmem_ecam;
-+    vms->highmem_ecam = true;
-     vms->highmem_mmio = true;
-     vms->highmem_redists = true;
- 
+ MPS2 / MPS3
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index ab9df03b1f6..52b4706cfe8 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -13,6 +13,7 @@ endif
+ test_timeouts = {
+   'aarch64_aspeed_ast2700' : 600,
+   'aarch64_aspeed_ast2700fc' : 600,
++  'aarch64_imx8mp_evk' : 240,
+   'aarch64_raspi4' : 480,
+   'aarch64_reverse_debug' : 180,
+   'aarch64_rme_virt' : 1200,
+@@ -82,6 +83,7 @@ tests_aarch64_system_quick = [
+ tests_aarch64_system_thorough = [
+   'aarch64_aspeed_ast2700',
+   'aarch64_aspeed_ast2700fc',
++  'aarch64_imx8mp_evk',
+   'aarch64_raspi3',
+   'aarch64_raspi4',
+   'aarch64_replay',
+diff --git a/tests/functional/test_aarch64_imx8mp_evk.py b/tests/functional/test_aarch64_imx8mp_evk.py
+new file mode 100755
+index 00000000000..638bf9e1310
+--- /dev/null
++++ b/tests/functional/test_aarch64_imx8mp_evk.py
+@@ -0,0 +1,67 @@
++#!/usr/bin/env python3
++#
++# Functional test that boots a Linux kernel and checks the console
++#
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++from qemu_test import LinuxKernelTest, Asset
++
++
++class Imx8mpEvkMachine(LinuxKernelTest):
++
++    ASSET_IMAGE = Asset(
++        ('https://cloud.debian.org/images/cloud/bookworm/20231210-1590/'
++         'debian-12-generic-arm64-20231210-1590.tar.xz'),
++        '7ebf1577b32d5af6204df74b54ca2e4675de9b5a9fa14f3ff70b88eeb7b3b359')
++
++    KERNEL_OFFSET = 0x51000000
++    KERNEL_SIZE = 32622528
++    INITRD_OFFSET = 0x76000000
++    INITRD_SIZE = 30987766
++    DTB_OFFSET = 0x64F51000
++    DTB_SIZE = 45 * 1024
++
++    def extract(self, in_path, out_path, offset, size):
++        try:
++            with open(in_path, "rb") as source:
++                source.seek(offset)
++                data = source.read(size)
++            with open(out_path, "wb") as target:
++                target.write(data)
++        except (IOError, ValueError) as e:
++            self.log.error(f"Failed to extract {out_path}: {e}")
++            raise
++
++    def setUp(self):
++        super().setUp()
++
++        self.image_path = self.scratch_file("disk.raw")
++        self.kernel_path = self.scratch_file("linux")
++        self.initrd_path = self.scratch_file("initrd.zstd")
++        self.dtb_path = self.scratch_file("imx8mp-evk.dtb")
++
++        self.archive_extract(self.ASSET_IMAGE)
++        self.extract(self.image_path, self.kernel_path,
++                     self.KERNEL_OFFSET, self.KERNEL_SIZE)
++        self.extract(self.image_path, self.initrd_path,
++                     self.INITRD_OFFSET, self.INITRD_SIZE)
++        self.extract(self.image_path, self.dtb_path,
++                     self.DTB_OFFSET, self.DTB_SIZE)
++
++    def test_aarch64_imx8mp_evk_usdhc(self):
++        self.set_machine('imx8mp-evk')
++        self.vm.set_console(console_index=1)
++        self.vm.add_args('-m', '2G',
++                         '-smp', '4',
++                         '-kernel', self.kernel_path,
++                         '-initrd', self.initrd_path,
++                         '-dtb', self.dtb_path,
++                         '-append', 'root=/dev/mmcblk2p1',
++                         '-drive', f'file={self.image_path},if=sd,bus=2,'
++                                    'format=raw,id=mmcblk2,snapshot=on')
++
++        self.vm.launch()
++        self.wait_for_console_pattern('Welcome to ')
++
++if __name__ == '__main__':
++    LinuxKernelTest.main()
 -- 
 2.43.0
 
