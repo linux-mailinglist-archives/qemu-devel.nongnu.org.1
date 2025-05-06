@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4739AABCBE
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 10:12:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FC2BAABCD0
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 10:14:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCDPP-00031d-0V; Tue, 06 May 2025 04:12:11 -0400
+	id 1uCDR9-0006sI-1L; Tue, 06 May 2025 04:13:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uCDPL-0002xV-Fg; Tue, 06 May 2025 04:12:07 -0400
-Received: from mgamail.intel.com ([192.198.163.7])
+ id 1uCDR4-0006mY-3I; Tue, 06 May 2025 04:13:54 -0400
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uCDPG-0002NI-Q4; Tue, 06 May 2025 04:12:07 -0400
+ id 1uCDR2-0002Vp-BJ; Tue, 06 May 2025 04:13:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746519123; x=1778055123;
+ t=1746519232; x=1778055232;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=Yd1/abJpO3rjSefg7BT4LMzLo4Y1N46ZWXlD7sWCN9Y=;
- b=lfxHnuxN3dTuYoWZEnyq9gDqd8/3PH0eYd4MbmKh4g/w7v5Mo+q0UPD3
- dpNskWKRYLcs06K/YfPDT3Cq3MC7GEDjgoojW8aFu53iobdlfNiH/Vxpz
- YF8IaF8fk966b3ya+kITtI6bLM0iaWTpF9AKj1uRai7UwngTCkAKDHBdJ
- 72zEy/VX41HMoxnsNXg3cb2PR2Kum7QR4odkV3SmDiaeugkyk3eh38C5b
- FtVU9Db0adKBV/nO41amJBpITTu9bdH29OHVM/6D8vO0Z/DSRwgOTrUPE
- bqRRQMmPoCalKPPGvB0QkNtcfbJPMRz2OWN7q9n4uKH3mVj7c6R2Weysr w==;
-X-CSE-ConnectionGUID: lZZSCY2WT+KwoT067E8dWQ==
-X-CSE-MsgGUID: qpKVUMUtR1CJcq+Xlcsyzw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11424"; a="73571275"
-X-IronPort-AV: E=Sophos;i="6.15,265,1739865600"; d="scan'208";a="73571275"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2025 01:11:58 -0700
-X-CSE-ConnectionGUID: s+6Cp41rQRiBLEvB85E8vA==
-X-CSE-MsgGUID: X2DUpjw+Q2Ka3bUyXwqjkw==
+ bh=dE7zz7MA21loKwGBXqqSeiRszbbsWdpQQdjUHiCm7r0=;
+ b=l7+/tgiXdLmaAt+4CWPInYfHkUTxsITvbIiNTgEp9a//Yxa2AdaShn+I
+ eTNE3osqEKpUdpCSo1NO23+h9vz+xPAiDno/iuwLDQyStC0H7d87fkQrx
+ wTy4nB9kaI8lXXz3A7AHpxSdAErALtSY1w/DOjluoh7gHWQ7KDFvxLUH1
+ iWqlcanJbjCJ8fuBnePMn0XriXUcB2fIDPvUw/iJMWNGLfU+Moqdovg+D
+ 2680mRzFoEe1/ukrPp+LVf8S4jfDdqHs0e5LCsZBd/W/0CJlbXYAAZLQC
+ aptB3sOcm67UXaLjzxtjd5xZ/47nierQE2aI/QIOafrhof4Y3oI4r0/09 w==;
+X-CSE-ConnectionGUID: +m5NfzSMR/6CDCr+gqcO0Q==
+X-CSE-MsgGUID: e3OOSahMQGiCvnbPRda4og==
+X-IronPort-AV: E=McAfee;i="6700,10204,11424"; a="58833466"
+X-IronPort-AV: E=Sophos;i="6.15,265,1739865600"; d="scan'208";a="58833466"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 May 2025 01:13:50 -0700
+X-CSE-ConnectionGUID: WA7vYq6BQOS1xjUs/t7EVw==
+X-CSE-MsgGUID: nC88bKa2RSul+U+ZXIP3RA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,265,1739865600"; d="scan'208";a="158794703"
+X-IronPort-AV: E=Sophos;i="6.15,265,1739865600"; d="scan'208";a="135533716"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by fmviesa002.fm.intel.com with ESMTP; 06 May 2025 01:11:57 -0700
-Date: Tue, 6 May 2025 16:32:58 +0800
+ by fmviesa007.fm.intel.com with ESMTP; 06 May 2025 01:13:48 -0700
+Date: Tue, 6 May 2025 16:34:49 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, manos.pitsidianakis@linaro.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH 09/11] rust: remove offset_of replacement
-Message-ID: <aBnJOiX5o6Cl0KNB@intel.com>
+Subject: Re: [PATCH 10/11] rust: replace c_str! with c"" literals
+Message-ID: <aBnJqXXCjMZVPLRa@intel.com>
 References: <20250505090438.24992-1-pbonzini@redhat.com>
- <20250505090438.24992-10-pbonzini@redhat.com>
+ <20250505090438.24992-11-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250505090438.24992-10-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.7; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20250505090438.24992-11-pbonzini@redhat.com>
+Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -57
 X-Spam_score: -5.8
@@ -79,30 +79,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 05, 2025 at 11:04:34AM +0200, Paolo Bonzini wrote:
-> Date: Mon,  5 May 2025 11:04:34 +0200
+On Mon, May 05, 2025 at 11:04:35AM +0200, Paolo Bonzini wrote:
+> Date: Mon,  5 May 2025 11:04:35 +0200
 > From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 09/11] rust: remove offset_of replacement
+> Subject: [PATCH 10/11] rust: replace c_str! with c"" literals
 > X-Mailer: git-send-email 2.49.0
 > 
+> Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->  docs/devel/rust.rst                  |   6 -
->  rust/Cargo.lock                      |   1 -
->  rust/Cargo.toml                      |   2 +-
->  rust/hw/char/pl011/src/device.rs     |   4 +-
->  rust/hw/timer/hpet/src/hpet.rs       |   4 +-
->  rust/qemu-api-macros/src/lib.rs      |  29 +----
->  rust/qemu-api/Cargo.toml             |   3 -
->  rust/qemu-api/build.rs               |   7 --
->  rust/qemu-api/meson.build            |   4 -
->  rust/qemu-api/src/lib.rs             |   4 -
->  rust/qemu-api/src/offset_of.rs       | 168 ---------------------------
->  rust/qemu-api/src/qdev.rs            |   6 +-
->  rust/qemu-api/src/vmstate.rs         |  10 +-
->  rust/qemu-api/tests/tests.rs         |   2 -
->  rust/qemu-api/tests/vmstate_tests.rs |   5 +-
->  15 files changed, 16 insertions(+), 239 deletions(-)
->  delete mode 100644 rust/qemu-api/src/offset_of.rs
+>  docs/devel/rust.rst                    |  6 +--
+>  rust/hw/char/pl011/src/device_class.rs | 11 +++--
+>  rust/hw/char/pl011/src/lib.rs          |  6 +--
+>  rust/hw/timer/hpet/src/hpet.rs         | 19 ++++----
+>  rust/hw/timer/hpet/src/lib.rs          |  4 +-
+>  rust/qemu-api/meson.build              |  1 -
+>  rust/qemu-api/src/c_str.rs             | 61 --------------------------
+>  rust/qemu-api/src/cell.rs              |  4 +-
+>  rust/qemu-api/src/lib.rs               |  1 -
+>  rust/qemu-api/src/vmstate.rs           |  2 +-
+>  rust/qemu-api/tests/tests.rs           |  9 ++--
+>  rust/qemu-api/tests/vmstate_tests.rs   | 15 +++----
+>  12 files changed, 32 insertions(+), 107 deletions(-)
+>  delete mode 100644 rust/qemu-api/src/c_str.rs
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
