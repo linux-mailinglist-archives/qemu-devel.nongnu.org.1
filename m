@@ -2,134 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A025AAC230
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 13:12:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E3FAAC1FE
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 13:05:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCGE2-00025q-Pl; Tue, 06 May 2025 07:12:39 -0400
+	id 1uCG6Z-0005og-7m; Tue, 06 May 2025 07:04:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uCGDy-000257-Jd
- for qemu-devel@nongnu.org; Tue, 06 May 2025 07:12:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uCG6W-0005oT-Uk
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 07:04:53 -0400
+Received: from mgamail.intel.com ([198.175.65.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uCGDx-00081h-5W
- for qemu-devel@nongnu.org; Tue, 06 May 2025 07:12:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746529952;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=pcitEZccm1OdjF8D1Br6T8qqEBwds/7y7++4c5CW1hg=;
- b=G3gmi6prtpMpMcXgE4RlbFtEbp2uNiskqem2kGAMGs6HUoSOVfVwvvlMgEFnFkN+F5gxIy
- XPqEVlwqoFgDJ5PcSxiQrbMi6pL8vtd3LVJLDvSPbyVNTMNPvbyXcYFoVgCkFMOfviYva5
- 2qN885qbZDQR/o5wTD0VyjVNxkYEQts=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-691-JNkvNQqZM0GU-5HoFXdWSA-1; Tue, 06 May 2025 07:12:30 -0400
-X-MC-Unique: JNkvNQqZM0GU-5HoFXdWSA-1
-X-Mimecast-MFC-AGG-ID: JNkvNQqZM0GU-5HoFXdWSA_1746529949
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-43f405810b4so28306775e9.1
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 04:12:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746529948; x=1747134748;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pcitEZccm1OdjF8D1Br6T8qqEBwds/7y7++4c5CW1hg=;
- b=vUG5FNxz48/gAv5z3Ang4QcnY0GXwV6k6vAhzjlHXgAbvtxzvx6jO8pz/VUmuYrI3l
- iA+2EiFaU1stozV09vKQmkEyknqh1QzTNf8jrxFE92JHpAglWLDvNACJPBC8UZ6EiztG
- vXw6yCLUY0aP03Um/6Y8c8xGaf3CedTVLoJkomASz0ixH3C8ey2NyNd9z5yZJoK3vfYo
- kcGz0lmY4+xV9agQv1z2CIGcWPsd/5uPowo2dYz7EFWZEHPuDxCE6Q5xpWx5o1VT84cJ
- qLFlOApfhMOYp09n4BNSTCmJlDZlZ4rw7IZH9q7nJ227vmQyjlMJIwXOClIQm6MYLP4M
- KHqw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUe+jCn9DPpXmbz938vNWQWBqAyYR6DYP0rePOliQYEU6MFHo8ht+rCmfShqgOcVlb3DxEmvFmaMa5Z@nongnu.org
-X-Gm-Message-State: AOJu0YxGsLd5UW1mgMonm43I2n9B2sM4+zA3d4NELSk3TvXNFCHckTwH
- ioq48Bgs2DRQDTXEBNNVeuAJmQgMoQ+3oifRPSstkVERRHbT+fLU5EMICXhLiLNRDj4+/x/7vtV
- H48M8Jzizeg3RrnLcq8MBwpYNpFrRjypF/hy1ZcF8NfiS6pV5L6AwtYmg1jaW
-X-Gm-Gg: ASbGncso2K8rBPgYiP/0WhfPbxt13jXRsCPddxc63k/Vbgx71OZGScXzUeZcPgRPaXQ
- mhhAI7OMm0w16sZAj1yKFF76vZP5JBMnEmMhOA/4TbxpYSmg7zcP6ixXw9h/9RVLPnnc3ryrjzH
- j1RowZwBfUgfUV4zi5i4wNMcFlNSrn7GwFkM1nsu5dhnnsDZaLpkRPkPw/ZscBFasrqyDexQoHn
- PWhdCPJ/o/7AmkK5npKF5Yt/JrvyBhiBaXcguT3tLRHdPzuianSzRrYqDgbgCm1n9csrJXtCnA9
- jWzmaJwob1gUM+E=
-X-Received: by 2002:a05:6000:1f09:b0:3a0:9dfb:b001 with SMTP id
- ffacd0b85a97d-3a0ac3ea61emr1607095f8f.58.1746529948563; 
- Tue, 06 May 2025 04:12:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHcZWmA0YhP+saab9++//EMty3gyHlMUZ6yLqlEa40VxqoLXuF0jwQUNCsEoLModvATAoVGMA==
-X-Received: by 2002:a05:6000:1f09:b0:3a0:9dfb:b001 with SMTP id
- ffacd0b85a97d-3a0ac3ea61emr1607074f8f.58.1746529948134; 
- Tue, 06 May 2025 04:12:28 -0700 (PDT)
-Received: from [192.168.10.48] ([151.95.54.106])
- by smtp.googlemail.com with ESMTPSA id
- ffacd0b85a97d-3a099ae7cbbsm13547288f8f.53.2025.05.06.04.12.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 May 2025 04:12:27 -0700 (PDT)
-Message-ID: <6a880c79-f30e-4fe6-af98-1fccf334e2dd@redhat.com>
-Date: Tue, 6 May 2025 13:12:27 +0200
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uCG6V-00076Q-AN
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 07:04:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1746529491; x=1778065491;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=aL0LxQp0JFKmjhqvlD9pqaRxZ/mjT8+7XFUc+D4wktg=;
+ b=mGmhT1aAvmM04K8sRQHV6//ARhAbgTcdBf5D4ZFaM+yldSziXtYcdMOR
+ v6dLfmn9aIbVoDDlH5JAgRhzdOoPdstu6MGd5L/gbXEOQLptDcnd4zEEz
+ gjQl0+0YRjZ857eip9hhyOYEVP9LPLtsckDBfyCv4sn9oyBugsLJtcdrh
+ kozkTQHtv469ZRtTnHgZnJj+o7q42a4lOyjFn98N1USXidvuo0o2OqfjM
+ NE1vdlzfzZi2lwxHcYBntnM2DQfsGiT4rtLxojxGlQlueR74ai4oeUadv
+ wqKJf0qBNzfiIjvd7/Te9Eia1kjHf+4/UYY1R/LmzCuvOJG+bi+Rlz31V Q==;
+X-CSE-ConnectionGUID: vqSc0TMUTVy1bRcMW8HduQ==
+X-CSE-MsgGUID: eRULTAY3Q26cvqPAUCSfxA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11424"; a="59581187"
+X-IronPort-AV: E=Sophos;i="6.15,266,1739865600"; d="scan'208";a="59581187"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 May 2025 04:04:47 -0700
+X-CSE-ConnectionGUID: kieHtg/FQU674CAb3KtNWQ==
+X-CSE-MsgGUID: CgwhQ70fRqKYaVCV4ZX8ig==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,266,1739865600"; d="scan'208";a="139640562"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa003.fm.intel.com with ESMTP; 06 May 2025 04:04:45 -0700
+Date: Tue, 6 May 2025 19:25:45 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Francesco Lavra <francescolavra.fl@gmail.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+Subject: Re: [PATCH v8 48/55] i386/tdx: Add XFD to supported bit of TDX
+Message-ID: <aBnxuZD/Tn8zUmdR@intel.com>
+References: <20250401130205.2198253-1-xiaoyao.li@intel.com>
+ <20250401130205.2198253-49-xiaoyao.li@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 15/20] tcg/optimize: Build and use z_bits and o_bits in
- fold_extract2
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20250505202751.3510517-1-richard.henderson@linaro.org>
- <20250505202751.3510517-16-richard.henderson@linaro.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <20250505202751.3510517-16-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250401130205.2198253-49-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=198.175.65.12; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -57
+X-Spam_score: -5.8
+X-Spam_bar: -----
+X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -145,29 +88,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/5/25 22:27, Richard Henderson wrote:
-> +    uint64_t v1 = ti_const_val(t1);
-> +    uint64_t v2 = ti_const_val(t2);
+On Tue, Apr 01, 2025 at 09:01:58AM -0400, Xiaoyao Li wrote:
+> Date: Tue,  1 Apr 2025 09:01:58 -0400
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: [PATCH v8 48/55] i386/tdx: Add XFD to supported bit of TDX
+> X-Mailer: git-send-email 2.34.1
+> 
+> Just mark XFD as always supported for TDX. This simple solution relies
+> on the fact KVM will report XFD as 0 when it's not supported by the
+> hardware.
+> 
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> ---
+>  target/i386/cpu.h     | 1 +
+>  target/i386/kvm/tdx.c | 5 +++++
+>  2 files changed, 6 insertions(+)
 
-Are v1 and v2 needed at all?
-
-If starting from z1==o1 and z2==o2, you will always end up with z1|z2 == 
-o1|o2 after these:
-
-> +        z1 = (uint32_t)z1 >> shr;
-> +        o1 = (uint32_t)o1 >> shr;
-> +        z2 = (uint64_t)((int32_t)z2 << (32 - shr));
-> +        o2 = (uint64_t)((int32_t)o2 << (32 - shr));
-
-or these:
-
-> +        z1 >>= shr;
-> +        o1 >>= shr;
-> +        z2 <<= 64 - shr;
-> +        o2 <<= 64 - shr;
-
-so fold_masks_zo would do the job.
-
-Paolo
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
