@@ -2,79 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFB5BAAC8A0
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:50:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBBAAAAC8FF
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 17:01:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCJXm-0004ln-D4; Tue, 06 May 2025 10:45:14 -0400
+	id 1uCJmM-0005tU-Cu; Tue, 06 May 2025 11:00:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uCJVX-0002HE-7c
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:56 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uCJmH-0005pV-HK
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 11:00:14 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uCJVV-0002C6-FC
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:54 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-43d0c18e84eso25468245e9.3
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:42:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uCJmF-0006yc-0z
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 11:00:13 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-22e3b069f23so11001085ad.2
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 08:00:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746542572; x=1747147372; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=SO9Xgfyk1pTDBVZ7OMnTtvlGhHiuLgFtLd7XyJg4VAo=;
- b=LfG9PCFqmbG1S/g0urq5u4ZxnLk2Mo7s7IpnPGhUyRIZK4O8A2b28DOaeI2thdXKKY
- eRaxLvpOnWh+h2+3LZ+5MM6m65Pdc3/QVoux7ftYE75URe9jYBsPFiNr7LCkwtK6vVSi
- tu/Pwdfz4+yPa6VqB7V58vx2olyXRFit8wp34WJ/lQGol6YUpizgM91jxodJfNUoP/d6
- e2vEk+VIs9oDxbfWb/1ny+K3e/ZE90m/mKQk3joHkpfxOYRmYsROQHFf/mWBpU6IOjtX
- zBkq2EYD4t/+xoYcD+TnIueS4t7R63iSOyKaSGm4/ZJCLe1Fwbe+Ju3fRhDrGtALBMvY
- ktjQ==
+ d=linaro.org; s=google; t=1746543608; x=1747148408; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=pBIxnhAQsEILjZefujtHOHBQ1rBZl+8TQ64oVxp+eHs=;
+ b=HSnOdwOD5pWOzSUqzUC0Ra0i9Sji4fsNAWTuFTq3w9rD2skQ7ooy2piXxv2ap+LDdb
+ spqbUoX8f9zE9bgFitM5rq52yuffRbFOGThLRmdWoC7CHauVAnIhRTqACru7Jjm/LF5B
+ XZL3KzbNd+LQTIPV0eHN9IEig93OvGd1aFcvZevRqf9ulfGhIzNui4DI3EWr9nmJncCS
+ 6wNWLdWAjR2tyjnUuCreTIqG6zG1H8XcF84eP2tApMA5L/NjM86bi1nAuc3GUqcqf4Uf
+ pP5raVvgO7eosEJ4v7d6hDPN7tlMhY20BYV8KMJEgCX1De0GsNXb9XbUIHzZHteM8nKb
+ ab+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746542572; x=1747147372;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=SO9Xgfyk1pTDBVZ7OMnTtvlGhHiuLgFtLd7XyJg4VAo=;
- b=gC5hGLKVhetDnUNCTdFAbLrErTMu3rN+Ec4lEt81rfzW7ZtMeOhyI+tyOK0coQL/3i
- oYE6Kw7QovYHCU2BMGrNz5TFqjferX6l8ccKUc3lq+sNUCi17u+4mlApIvqL/eBwvNEJ
- Mm9KwMSeRBAmPW92qIkWaruTnXpPieDI9eLo99Z/l/PQ1YzK7tzXPYxoEDyxc75HeWod
- 3VQafpmsI6XofkUsl9Xnu6fLlwGf67hKOxRa3XML4I5eKJYjXRGRzD+fsWyqfVosFADT
- PnqTEmZG1XoklQqHTppjdvz3UZF8u4NmTDbawS/GtYS2EVtP1EmKiJghW2LsXxdUL3Yf
- 8Oqw==
-X-Gm-Message-State: AOJu0YzU8258NW6lgxpvwj/80+geAbSUDHO5grKpUEAciDqvLrzw1/FV
- CDcMLcUrC2AeW5EfVq0liBMBrcpKk66uLH1IWm9xLYk2mmyfnnLiUUPLRjp5b6sT2MJS2Q8XWGq
- 0
-X-Gm-Gg: ASbGncswg7ByIcZv1yfAIUxeO9Sk2lQQB7ZCijwv9cfuaVKPvunQseFE0dC/PPQNnsJ
- Wzk/GXk6r4Qtk0UwOiXMetas/8v05g1/z5p+n/100N+GHmO7xMMPzL51eFV5Oh7+orji5QmZuUE
- FlXjFvEOFZEKZxWZ+mVXQjjndDmsmkdCVpG+p/gwKqMmr9gsjrOVk2CCayjvwu8AsS/0pKBKyv1
- OuVh7CGxRL8qBvmbZ2SYdB0xX3/oneHdahs9H4C359V4XJYu3EDrzB4AUDOAYJSkIskiFaFCWr+
- LYTLikuTJOZHo1mRTJ4GGpyyoDC5EKQ1oViy/JAwDHWl+6w=
-X-Google-Smtp-Source: AGHT+IFBMzUNYz0r5XyFKF8EweUui3K2417hFuzcJ+x4ulHphILN8uLrUvE9oRr7Vwyq6eq3tUWmVQ==
-X-Received: by 2002:a05:600c:ccc:b0:440:61eb:2ce5 with SMTP id
- 5b1f17b1804b1-441c48dbf02mr109325575e9.17.1746542571763; 
- Tue, 06 May 2025 07:42:51 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ d=1e100.net; s=20230601; t=1746543608; x=1747148408;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=pBIxnhAQsEILjZefujtHOHBQ1rBZl+8TQ64oVxp+eHs=;
+ b=BrulJHOT/lk5w09DrHGEXlD7OCLp77fYxctOTjSup7U61hLflbU5XaIbfzKJ4MtUhV
+ 8HbhOCoMhMWprUkrsRPoha4oIhDOUZV5WLGr92bZRO3cpfDb2DJEXgvUAQheLssbU30K
+ Gsn2PIN/qGwacUo97k10pAd4PEO9houZTlZYY6XYOeB28j3CidN2JzAjmWXIHH8y5Yh7
+ xdHYB53K91yDW5xaTYlCEG310LzAYxGAZPz2K5dAC979h8CUN93blKY9exf7VIZjbfJM
+ 95FC+wFtp20+iAvsTl6TjTq3tohc1nkR8c/rS3YaEd6MaleyYCJCsw/KJnN8XwXVWG2x
+ xy0w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXVInUKN1CEPM3VYK5pLioijluArfLBUcP2GrcAY8JIFA2uZq3NtoNFsrwpJbN9aWh3uSzusI+l7WgK@nongnu.org
+X-Gm-Message-State: AOJu0YxxK6SWw08mZ2T44dGxG12Ol8Oe1XvT8c7+RD5FG9jwWTVJ/GqU
+ H0XLL6QNzs+C2TS/mTyENQ2/St+YQdJL74SO+yuBq9DfkPa73W75wi5JdsPDaaY=
+X-Gm-Gg: ASbGncvoou20WMg/kBNUyK/xvYbt279hbQ3hmHlxa9wuGkGlW9J+3OIyL71WTBeNI4R
+ 1rjj40oX2erjKWhOXSPrQ6wAE+9Hke3lKdZq5ZsV/+nCx2aGpAQRy1RlJeXUXmVcFCaEOHONxs6
+ 5FrTKqpfFWplDOjF4mHpBD7yM/l/33aQUQl6rHlfc8YK3XSlSkPme1HmX2HoKDNoSRgWMBRyDIQ
+ p4yZF8OrGkYE6xQzBfNPqHoSVd6MxRVuteSxeFUCeFTV6317aExxOGAyFQeeIceGi+QunsQGVKZ
+ p1cYWabYhXzelN06uunJ5pH2+puEpgQiqjCUmgKBua5hLvqD0O9f+A==
+X-Google-Smtp-Source: AGHT+IEUkHaF5E35Hnl3eCa2z4u5PqiWQSJv1iD2htSYzp8JYAWHWyYj0T8+ZrWuNwJs09Jp54Pkog==
+X-Received: by 2002:a17:903:124b:b0:21f:1202:f2f5 with SMTP id
+ d9443c01a7336-22e328a2987mr37432485ad.8.1746543608403; 
+ Tue, 06 May 2025 08:00:08 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-441b89edfc2sm169603435e9.20.2025.05.06.07.42.51
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 May 2025 07:42:51 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 32/32] hw/arm/virt: Remove deprecated virt-4.0 machine
-Date: Tue,  6 May 2025 15:42:14 +0100
-Message-ID: <20250506144214.1221450-33-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250506144214.1221450-1-peter.maydell@linaro.org>
-References: <20250506144214.1221450-1-peter.maydell@linaro.org>
+ d9443c01a7336-22e1522f966sm74381525ad.233.2025.05.06.08.00.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 06 May 2025 08:00:08 -0700 (PDT)
+Message-ID: <83592019-4f14-4fdc-80de-83474b2804e9@linaro.org>
+Date: Tue, 6 May 2025 08:00:07 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH-for-10.1 26/39] system/hvf: Avoid including 'cpu.h'
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>
+References: <20250403235821.9909-1-philmd@linaro.org>
+ <20250403235821.9909-27-philmd@linaro.org>
+ <704012d9-cd54-489d-966b-99922774f2e8@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <704012d9-cd54-489d-966b-99922774f2e8@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,37 +105,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+On 5/6/25 7:14 AM, Philippe Mathieu-Daudé wrote:
+> ping?
+> 
+> On 4/4/25 01:58, Philippe Mathieu-Daudé wrote:
+>> "system/hvf.h" doesn't need to include a full "cpu.h",
+>> only "exec/vaddr.h" and "qemu/queue.h" are required.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>    include/system/hvf.h     | 3 ++-
+>>    include/system/hvf_int.h | 2 ++
+>>    2 files changed, 4 insertions(+), 1 deletion(-)
 
-This machine has been supported for a period of more than 6 years.
-According to our versioned machine support policy (see commit
-ce80c4fa6ff "docs: document special exception for machine type
-deprecation & removal") it can now be removed.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250429153907.31866-5-philmd@linaro.org
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- hw/arm/virt.c | 7 -------
- 1 file changed, 7 deletions(-)
-
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 61fd8557683..9a6cd085a37 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -3562,10 +3562,3 @@ static void virt_machine_4_1_options(MachineClass *mc)
-     mc->auto_enable_numa_with_memhp = false;
- }
- DEFINE_VIRT_MACHINE(4, 1)
--
--static void virt_machine_4_0_options(MachineClass *mc)
--{
--    virt_machine_4_1_options(mc);
--    compat_props_add(mc->compat_props, hw_compat_4_0, hw_compat_4_0_len);
--}
--DEFINE_VIRT_MACHINE(4, 0)
--- 
-2.43.0
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
 
