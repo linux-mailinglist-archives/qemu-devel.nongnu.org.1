@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99CB3AAC993
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 17:31:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FE6BAAC9AB
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 17:36:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCKFq-00050k-9v; Tue, 06 May 2025 11:30:46 -0400
+	id 1uCKGD-0005mi-Qp; Tue, 06 May 2025 11:31:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uCKFf-0004SV-3T
+ id 1uCKFe-0004SE-G9
  for qemu-devel@nongnu.org; Tue, 06 May 2025 11:30:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uCKFc-0002FX-MG
- for qemu-devel@nongnu.org; Tue, 06 May 2025 11:30:34 -0400
+ id 1uCKFb-0002FQ-Qv
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 11:30:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746545431;
+ s=mimecast20190719; t=1746545430;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=C5Ju4evq2YqeHvMjiYaM16V7/xodF9usCN81W1Yk6wA=;
- b=W4wKIWRyyawPZI2e1URzf8QSxTQNzpBxFVlV1AVFakHRh86gfaiuZCMP+6rc5CKr84XXBj
- PLp37qZUHQBdqEl90PaFu5KdQBBo7j+IUGI94NOFzv0kn3u9cndvayhEqfXdSGFWP54QMS
- 9DqLKQwS8Ob6fx4pEQyFbeh7g8ZCi68=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=LHPitvNNyaabervLj5MUPkMguji4O/epz7bp+YMWz94=;
+ b=AgmCXWV92jnyudpK0ycb+FstNXDFXmffusDALySWbxUP3hXK4W6QkSpV9ZvmXQRPNRKNzA
+ O/GDxw6gxu6JQUth9UEDz9Qo+V+ord9VkH+mzhmxZkR49QTt98Y3Y5T8scouLDeka8Ac7d
+ L5CkpVI3uVXS87A46y1nw668z05XdsY=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-583-eIEWwCfyNwGDGDn7UVpVkg-1; Tue, 06 May 2025 11:30:27 -0400
-X-MC-Unique: eIEWwCfyNwGDGDn7UVpVkg-1
-X-Mimecast-MFC-AGG-ID: eIEWwCfyNwGDGDn7UVpVkg_1746545426
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-39c184b20a2so1889155f8f.1
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 08:30:26 -0700 (PDT)
+ us-mta-407-18rTPNnFO-SCdrOzyUqm8A-1; Tue, 06 May 2025 11:30:29 -0400
+X-MC-Unique: 18rTPNnFO-SCdrOzyUqm8A-1
+X-Mimecast-MFC-AGG-ID: 18rTPNnFO-SCdrOzyUqm8A_1746545428
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-43ce8f82e66so29968715e9.3
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 08:30:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746545425; x=1747150225;
+ d=1e100.net; s=20230601; t=1746545426; x=1747150226;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=C5Ju4evq2YqeHvMjiYaM16V7/xodF9usCN81W1Yk6wA=;
- b=nOowtAdzV343LgI1KFdR9GrW4/Iwj/hV4oxFPxyRaCiME2KL+dBo//LJVYOOFrd1M7
- TOh/gJWghF/I+CYHAoIHrNV+byTq8jYTE/n4ydB1qwJFXKuNEb6t29DKR+gJ7vJoYcUj
- tD6Jw5mRxmjc5IaHkekf/E4n5/cWJmI3wHr80Rk5++/OPYsPSnDBN0nlR0rLTJX3e/FU
- xzcwiqR95Hmq+6zoOqvSDyJ6fOq+tB8cIJY7ky0ouHv2YsL3N6Ah4yrt5QwIDLsoV8DY
- aX8pzPwwHEqrk3MD6oJ9kPNlvd3gnkCxkPelqnKSK8Lzm1WfGHs98JF0INPg5hWHoPCs
- aJZQ==
-X-Gm-Message-State: AOJu0YyqZdmdLHJQN+KfNzZQjHZy5Csuxp6ZJShI8aAkXgGCBr0YUjZA
- 7JXX+3i3BjQkMeM6e4h6qIaMB93mSLsqntDODBnFJap/XZ/w5A/URYvXEHxeG0WdxBLGXAEErzf
- bYZxzvcPuJV9oTvYJL5xVNJW5wG+grwEBrm1ozbMtfRLZvEim/cLNdNpLLN1cJnTLPgyjVxaF0t
- nJIkACsW3YEXXBl/MG2nuzekbydiZ3lTcnnG1p
-X-Gm-Gg: ASbGncs91SVBtBJoao365byu35A+DfY5okO3u32L9lva6448dbche4K5ZF72QL0jVqA
- fREAWEZmYLZh8mQZikP7FvMqVookTXWLoKz2dDiaAFHf0uW9/HKKq4OmAjoLa3REmScYqBbybeu
- qJbAXdWb3iic8crwQ17LcPYL31tFz0rLyPQOwXDMblDm957w5Ky5zpevgGIC8jEYvud2QbzN28X
- BtfuqKKbx2NQW8yaCS32xw4ar/ErXJDz6ua9+5iXYvv9jHTUsAwS382WMm/uxRmi/wyxFu3YEeF
- c9q3kyIS88cXtqk=
-X-Received: by 2002:a05:6000:3101:b0:38d:dd52:1b5d with SMTP id
- ffacd0b85a97d-3a0ac0c9a91mr2943485f8f.4.1746545424917; 
- Tue, 06 May 2025 08:30:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEE16vgCupAVsx+zqLbeSEVOxW4cFe8/A+G8Klk28WZ7FwcX6/VPuAd720PaslAVpdC+kcuaQ==
-X-Received: by 2002:a05:6000:3101:b0:38d:dd52:1b5d with SMTP id
- ffacd0b85a97d-3a0ac0c9a91mr2943453f8f.4.1746545424350; 
- Tue, 06 May 2025 08:30:24 -0700 (PDT)
+ bh=LHPitvNNyaabervLj5MUPkMguji4O/epz7bp+YMWz94=;
+ b=qYYFq0ncGsBfZ6oAbHA07TDY13GlPeq9eAGNgPdBGm+MYXiMLlciIyypppU389fuII
+ q0E+f/t92ioMhIkda17Nj48pzdeh3RKKgwglO01piScHiO2FL5SFpu1M73jaWwrMkxi4
+ RWcVRURyjAd6bup5uwy7QoSDfgykyKRc2BafyK5oI4kgpyrDkQH2CqgTKwwTxeX87A4p
+ xwqI5kik5QtmXWu0KSZdVMAKxt7EsQBuAQxWxJpv8hNe2tPfsxRjqMRHI/LSBsjTk255
+ Ag2Eev2x2dbdntzii8iicNwQdmi8fyL5yskuPQJkF2pC8LQpr8KOK8Q+dNoyQbc2si/h
+ phnQ==
+X-Gm-Message-State: AOJu0YwKqZ5dO1CWjtmZvkG/xprQoGlrp3usdiPfJDUkAdU6R+USDUrW
+ Q2suVF5WqKbKe8QFQfCFGmpoGD+lX3Ph/FOblenmVahVIZTnYi58TpydCFLcWAe4c54QOzzPbER
+ QugbB6yratlcUYbcmWILZdhxVlimQimPkjfLu0aND37P7pfzsPkKXZ4Rr4uORT267pb0ia7/YlD
+ z4vIoYS9e7JGmblrBCekTuLmwxtf8rMLztUQ9T
+X-Gm-Gg: ASbGncvzTxkWZyhip6vGKb48MAiWOwZvgRKs0smpWx4zSWQRsDOOxwXe1ii0nOBe0kS
+ 99v5aSxRUxmmqCj3L9dzAg0TyN6F9BreJzILVtgM3C/1G+Bdr9lJ+NMemKTdVnlH5Zo25rZsbBh
+ QwaeD64rAEjVfmIqo+Psu65nRKfwrnzMiOTLgV3CP+Xh7ixj8j/GlVXUf3S5gIHvgeec56W/L8f
+ 1cZwPfe55W6gmJeppxpAMm2o8e6e0yvZLwwMangCEVOCA8khVM5P4CNXk325otd+2ZChz11u8ef
+ Sx4kOBi7mUjYdsw=
+X-Received: by 2002:a05:600c:34c3:b0:43d:abd:ad1c with SMTP id
+ 5b1f17b1804b1-441c48b0347mr110511975e9.6.1746545426134; 
+ Tue, 06 May 2025 08:30:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE2pVkeIYVCnfHClsFHE46KXaBYuUbnyHAnyya85TtZWS1i6ZeKJuux8gLZ6QejW0e9cs2dCA==
+X-Received: by 2002:a05:600c:34c3:b0:43d:abd:ad1c with SMTP id
+ 5b1f17b1804b1-441c48b0347mr110511515e9.6.1746545425583; 
+ Tue, 06 May 2025 08:30:25 -0700 (PDT)
 Received: from [192.168.122.1] ([151.95.54.106])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a099b0f09dsm14163236f8f.63.2025.05.06.08.30.21
+ ffacd0b85a97d-3a099b17260sm14410090f8f.98.2025.05.06.08.30.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 May 2025 08:30:21 -0700 (PDT)
+ Tue, 06 May 2025 08:30:25 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Kohei Tokunaga <ktokunaga.mail@gmail.com>
-Subject: [PULL 26/30] util: exclude mmap-alloc.c from compilation target on
- Emscripten
-Date: Tue,  6 May 2025 17:29:21 +0200
-Message-ID: <20250506152927.222671-27-pbonzini@redhat.com>
+Cc: Kohei Tokunaga <ktokunaga.mail@gmail.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PULL 27/30] util: Add coroutine backend for emscripten
+Date: Tue,  6 May 2025 17:29:22 +0200
+Message-ID: <20250506152927.222671-28-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250506152927.222671-1-pbonzini@redhat.com>
 References: <20250506152927.222671-1-pbonzini@redhat.com>
@@ -109,181 +109,166 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 
-Emscripten does not support partial unmapping of mmapped memory
-regions[1]. This limitation prevents correct implementation of qemu_ram_mmap
-and qemu_ram_munmap, which rely on partial unmap behavior.
-
-As a workaround, this commit excludes mmap-alloc.c from the Emscripten
-build. Instead, for Emscripten build, this modifies qemu_anon_ram_alloc to
-use qemu_memalign in place of qemu_ram_mmap, and disable memory backends
-that rely on mmap, such as memory-backend-file and memory-backend-shm.
-
-[1] https://github.com/emscripten-core/emscripten/blob/d4a74336f23214bf3304d9eb0d03966786b30a36/system/lib/libc/emscripten_mmap.c#L61
+Emscripten does not support couroutine methods currently used by QEMU but
+provides a coroutine implementation called "fiber". This commit introduces a
+coroutine backend using fiber. Note that fiber does not support submitting
+coroutines to other threads.
 
 Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
-Link: https://lore.kernel.org/r/76834f933ee4f14eeb5289d21c59d306886e58e9.1745820062.git.ktokunaga.mail@gmail.com
+Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
+Link: https://lore.kernel.org/r/006b683fd578ed6303a2dc8679094da9a7e6dfb4.1745820062.git.ktokunaga.mail@gmail.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- system/memory.c      |  2 +-
- system/physmem.c     |  9 +++++----
- util/oslib-posix.c   | 28 ++++++++++++++++++++++++++++
- backends/meson.build |  6 ++++--
- util/meson.build     |  4 +++-
- 5 files changed, 41 insertions(+), 8 deletions(-)
+ MAINTAINERS           |   1 +
+ util/coroutine-wasm.c | 127 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 128 insertions(+)
+ create mode 100644 util/coroutine-wasm.c
 
-diff --git a/system/memory.c b/system/memory.c
-index 71434e7ad02..63b983efcdb 100644
---- a/system/memory.c
-+++ b/system/memory.c
-@@ -1627,7 +1627,7 @@ bool memory_region_init_resizeable_ram(MemoryRegion *mr,
-     return true;
- }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2e23dad4bc6..55c47fcd378 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -633,6 +633,7 @@ M: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+ S: Maintained
+ F: include/system/os-wasm.h
+ F: os-wasm.c
++F: util/coroutine-wasm.c
  
--#ifdef CONFIG_POSIX
-+#if defined(CONFIG_POSIX) && !defined(EMSCRIPTEN)
- bool memory_region_init_ram_from_file(MemoryRegion *mr,
-                                       Object *owner,
-                                       const char *name,
-diff --git a/system/physmem.c b/system/physmem.c
-index 16cf557d1a1..4a7a2e5e12b 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -1243,7 +1243,7 @@ long qemu_maxrampagesize(void)
-     return pagesize;
- }
- 
--#ifdef CONFIG_POSIX
-+#if defined(CONFIG_POSIX) && !defined(EMSCRIPTEN)
- static int64_t get_file_size(int fd)
- {
-     int64_t size;
-@@ -1978,7 +1978,7 @@ out_free:
-     }
- }
- 
--#ifdef CONFIG_POSIX
-+#if defined(CONFIG_POSIX) && !defined(EMSCRIPTEN)
- RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, ram_addr_t max_size,
-                                  qemu_ram_resize_cb resized, MemoryRegion *mr,
-                                  uint32_t ram_flags, int fd, off_t offset,
-@@ -2158,7 +2158,8 @@ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
-     assert(!host ^ (ram_flags & RAM_PREALLOC));
-     assert(max_size >= size);
- 
--#ifdef CONFIG_POSIX         /* ignore RAM_SHARED for Windows */
-+    /* ignore RAM_SHARED for Windows and emscripten*/
-+#if defined(CONFIG_POSIX) && !defined(EMSCRIPTEN)
-     if (!host) {
-         if (!share_flags && current_machine->aux_ram_share) {
-             ram_flags |= RAM_SHARED;
-@@ -2255,7 +2256,7 @@ static void reclaim_ramblock(RAMBlock *block)
-         ;
-     } else if (xen_enabled()) {
-         xen_invalidate_map_cache_entry(block->host);
--#ifndef _WIN32
-+#if !defined(_WIN32) && !defined(EMSCRIPTEN)
-     } else if (block->fd >= 0) {
-         qemu_ram_munmap(block->fd, block->host, block->max_length);
-         close(block->fd);
-diff --git a/util/oslib-posix.c b/util/oslib-posix.c
-index a697c602c60..4ff577e5de6 100644
---- a/util/oslib-posix.c
-+++ b/util/oslib-posix.c
-@@ -58,6 +58,7 @@
- #include <lwp.h>
- #endif
- 
-+#include "qemu/memalign.h"
- #include "qemu/mmap-alloc.h"
- 
- #define MAX_MEM_PREALLOC_THREAD_COUNT 16
-@@ -210,11 +211,21 @@ void *qemu_anon_ram_alloc(size_t size, uint64_t *alignment, bool shared,
-     const uint32_t qemu_map_flags = (shared ? QEMU_MAP_SHARED : 0) |
-                                     (noreserve ? QEMU_MAP_NORESERVE : 0);
-     size_t align = QEMU_VMALLOC_ALIGN;
-+#ifndef EMSCRIPTEN
-     void *ptr = qemu_ram_mmap(-1, size, align, qemu_map_flags, 0);
- 
-     if (ptr == MAP_FAILED) {
-         return NULL;
-     }
-+#else
-+    /*
-+     * qemu_ram_mmap is not implemented for Emscripten. Use qemu_memalign
-+     * for the anonymous allocation. noreserve is ignored as there is no swap
-+     * space on Emscripten, and shared is ignored as there is no other
-+     * processes on Emscripten.
-+     */
-+    void *ptr = qemu_memalign(align, size);
-+#endif
- 
-     if (alignment) {
-         *alignment = align;
-@@ -227,7 +238,16 @@ void *qemu_anon_ram_alloc(size_t size, uint64_t *alignment, bool shared,
- void qemu_anon_ram_free(void *ptr, size_t size)
- {
-     trace_qemu_anon_ram_free(ptr, size);
-+#ifndef EMSCRIPTEN
-     qemu_ram_munmap(-1, ptr, size);
-+#else
-+    /*
-+     * qemu_ram_munmap is not implemented for Emscripten and qemu_memalign
-+     * was used for the allocation. Use the corresponding freeing function
-+     * here.
-+     */
-+    qemu_vfree(ptr);
-+#endif
- }
- 
- void qemu_socket_set_block(int fd)
-@@ -588,7 +608,15 @@ bool qemu_prealloc_mem(int fd, char *area, size_t sz, int max_threads,
- {
-     static gsize initialized;
-     int ret;
-+#ifndef EMSCRIPTEN
-     size_t hpagesize = qemu_fd_getpagesize(fd);
-+#else
-+    /*
-+     * mmap-alloc.c is excluded from Emscripten build, so qemu_fd_getpagesize
-+     * is unavailable. Fallback to the lower level implementation.
-+     */
-+    size_t hpagesize = qemu_real_host_page_size();
-+#endif
-     size_t numpages = DIV_ROUND_UP(sz, hpagesize);
-     bool use_madv_populate_write;
-     struct sigaction act;
-diff --git a/backends/meson.build b/backends/meson.build
-index da714b93d1e..9b88d226851 100644
---- a/backends/meson.build
-+++ b/backends/meson.build
-@@ -12,8 +12,10 @@ system_ss.add([files(
- 
- if host_os != 'windows'
-   system_ss.add(files('rng-random.c'))
--  system_ss.add(files('hostmem-file.c'))
--  system_ss.add([files('hostmem-shm.c'), rt])
-+  if host_os != 'emscripten'
-+    system_ss.add(files('hostmem-file.c'))
-+    system_ss.add([files('hostmem-shm.c'), rt])
-+  endif
- endif
- if host_os == 'linux'
-   system_ss.add(files('hostmem-memfd.c'))
-diff --git a/util/meson.build b/util/meson.build
-index 780b5977a89..e5cd327e276 100644
---- a/util/meson.build
-+++ b/util/meson.build
-@@ -11,7 +11,9 @@ if host_os != 'windows'
-   endif
-   util_ss.add(files('compatfd.c'))
-   util_ss.add(files('event_notifier-posix.c'))
--  util_ss.add(files('mmap-alloc.c'))
-+  if host_os != 'emscripten'
-+    util_ss.add(files('mmap-alloc.c'))
-+  endif
-   freebsd_dep = []
-   if host_os == 'freebsd'
-     freebsd_dep = util
+ Alpha Machines
+ --------------
+diff --git a/util/coroutine-wasm.c b/util/coroutine-wasm.c
+new file mode 100644
+index 00000000000..cb1ec92509c
+--- /dev/null
++++ b/util/coroutine-wasm.c
+@@ -0,0 +1,127 @@
++/*
++ * emscripten fiber coroutine initialization code
++ * based on coroutine-ucontext.c
++ *
++ * Copyright (C) 2006  Anthony Liguori <anthony@codemonkey.ws>
++ * Copyright (C) 2011  Kevin Wolf <kwolf@redhat.com>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation; either
++ * version 2.0 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/coroutine_int.h"
++#include "qemu/coroutine-tls.h"
++
++#include <emscripten/fiber.h>
++
++typedef struct {
++    Coroutine base;
++    void *stack;
++    size_t stack_size;
++
++    void *asyncify_stack;
++    size_t asyncify_stack_size;
++
++    CoroutineAction action;
++
++    emscripten_fiber_t fiber;
++} CoroutineEmscripten;
++
++/**
++ * Per-thread coroutine bookkeeping
++ */
++QEMU_DEFINE_STATIC_CO_TLS(Coroutine *, current);
++QEMU_DEFINE_STATIC_CO_TLS(CoroutineEmscripten *, leader);
++size_t leader_asyncify_stack_size = COROUTINE_STACK_SIZE;
++
++static void coroutine_trampoline(void *co_)
++{
++    Coroutine *co = co_;
++
++    while (true) {
++        co->entry(co->entry_arg);
++        qemu_coroutine_switch(co, co->caller, COROUTINE_TERMINATE);
++    }
++}
++
++Coroutine *qemu_coroutine_new(void)
++{
++    CoroutineEmscripten *co;
++
++    co = g_malloc0(sizeof(*co));
++
++    co->stack_size = COROUTINE_STACK_SIZE;
++    co->stack = qemu_alloc_stack(&co->stack_size);
++
++    co->asyncify_stack_size = COROUTINE_STACK_SIZE;
++    co->asyncify_stack = g_malloc0(co->asyncify_stack_size);
++    emscripten_fiber_init(&co->fiber, coroutine_trampoline, &co->base,
++                          co->stack, co->stack_size, co->asyncify_stack,
++                          co->asyncify_stack_size);
++
++    return &co->base;
++}
++
++void qemu_coroutine_delete(Coroutine *co_)
++{
++    CoroutineEmscripten *co = DO_UPCAST(CoroutineEmscripten, base, co_);
++
++    qemu_free_stack(co->stack, co->stack_size);
++    g_free(co->asyncify_stack);
++    g_free(co);
++}
++
++CoroutineAction qemu_coroutine_switch(Coroutine *from_, Coroutine *to_,
++                      CoroutineAction action)
++{
++    CoroutineEmscripten *from = DO_UPCAST(CoroutineEmscripten, base, from_);
++    CoroutineEmscripten *to = DO_UPCAST(CoroutineEmscripten, base, to_);
++
++    set_current(to_);
++    to->action = action;
++    emscripten_fiber_swap(&from->fiber, &to->fiber);
++    return from->action;
++}
++
++Coroutine *qemu_coroutine_self(void)
++{
++    Coroutine *self = get_current();
++
++    if (!self) {
++        CoroutineEmscripten *leaderp = get_leader();
++        if (!leaderp) {
++            leaderp = g_malloc0(sizeof(*leaderp));
++            leaderp->asyncify_stack = g_malloc0(leader_asyncify_stack_size);
++            leaderp->asyncify_stack_size = leader_asyncify_stack_size;
++            emscripten_fiber_init_from_current_context(
++                &leaderp->fiber,
++                leaderp->asyncify_stack,
++                leaderp->asyncify_stack_size);
++            leaderp->stack = leaderp->fiber.stack_limit;
++            leaderp->stack_size =
++                leaderp->fiber.stack_base - leaderp->fiber.stack_limit;
++            set_leader(leaderp);
++        }
++        self = &leaderp->base;
++        set_current(self);
++    }
++    return self;
++}
++
++bool qemu_in_coroutine(void)
++{
++    Coroutine *self = get_current();
++
++    return self && self->caller;
++}
 -- 
 2.49.0
 
