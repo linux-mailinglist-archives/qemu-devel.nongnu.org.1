@@ -2,72 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB385AACA30
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 17:55:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0F4AACA69
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 18:04:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCKdP-0004GG-L9; Tue, 06 May 2025 11:55:07 -0400
+	id 1uCKjK-0006oz-Pd; Tue, 06 May 2025 12:01:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uCKdI-0004Df-51; Tue, 06 May 2025 11:55:03 -0400
-Received: from mgamail.intel.com ([192.198.163.15])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uCKio-0006XM-4i
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 12:01:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uCKdF-0005Zn-MH; Tue, 06 May 2025 11:54:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746546898; x=1778082898;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=MgaDTETiXzOz7MABvpwVlPfYt7SV2Bonf6PbPVxZqfQ=;
- b=CMzdgUZnwxc3Rnyl0N4wZPgaH/JpQRVPbtLpG4OEItqoNo34H8QjqvxB
- KWeG/ycqV5cFrWEFdPHhurQch05ga2gxLOBhfUzZdWmhUiWQR51kCrZjo
- YrMPHTJQzf8Pn9uKsm8Kq3GikBBRoBMpEjTIFz74jd6ocxQLxVIQhTnhk
- Tc2q/RxGbBxluW3VC8uwrc+kR8n0yKLqGv9gFfwGCT1V9yfYsXLunTfUm
- 4PuaIXqwtmc29RLs03XrALUtt5Pj+KB/Ym9bqu3e3YxtzVn4eN6v1wfvy
- AGqQ2XpIjyS1KEISv5lBgGGr0GMsjRM5ZCvlzgPH+x4KZQvnm5nTn/Kar A==;
-X-CSE-ConnectionGUID: ZWYKRUryRweMF6adc66ebQ==
-X-CSE-MsgGUID: vKjpI9YhT1OwjV1pNgYenA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11425"; a="48359977"
-X-IronPort-AV: E=Sophos;i="6.15,266,1739865600"; d="scan'208";a="48359977"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2025 08:54:54 -0700
-X-CSE-ConnectionGUID: ulIEHDOPRRiBqDmNm4yDtg==
-X-CSE-MsgGUID: EdrB+MZtRl+OWhUPZEj3Vw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,266,1739865600"; d="scan'208";a="172855632"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa001.jf.intel.com with ESMTP; 06 May 2025 08:54:52 -0700
-Date: Wed, 7 May 2025 00:15:52 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
- Markus Armbruster <armbru@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- qemu-s390x@nongnu.org, Eric Blake <eblake@redhat.com>,
- Yanan Wang <wangyanan55@huawei.com>
-Subject: Re: [RFC PATCH] qapi: Make CpuModelExpansionInfo::deprecated-props
- optional and generic
-Message-ID: <aBo1uNs65Ce6fXkJ@intel.com>
-References: <20250429100419.20427-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uCKil-0006ML-L3
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 12:00:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1746547238;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=kYS7R6zEdHl6MbeKrXmrsQiG55u3uarQSO6zcHZcyEU=;
+ b=Jf6c3zjcaaUQo8/MCs5UluJ7SmiKeFmfXB0dekkc4+9oGp1Sq5UrBiTJSmItRWBuN5NRif
+ KxKMeGHQPw3HPDnu5qVJQKKVwMpQ0V2MAnTtsHbKdzhSJqMYy87rWu6vlF/6GyO4Sd+xwB
+ lgIoPKMpTx4gipa2zuKIyt3J28Iehvc=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-335-Z_5klJdiMNGWuhL1H4NbKA-1; Tue,
+ 06 May 2025 12:00:37 -0400
+X-MC-Unique: Z_5klJdiMNGWuhL1H4NbKA-1
+X-Mimecast-MFC-AGG-ID: Z_5klJdiMNGWuhL1H4NbKA_1746547234
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 888F518011DD; Tue,  6 May 2025 16:00:34 +0000 (UTC)
+Received: from toolbx.redhat.com (unknown [10.42.28.127])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id E130F19560AB; Tue,  6 May 2025 16:00:30 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ devel@lists.libvirt.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Zhao Liu <zhao1.liu@intel.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Thomas Huth <thuth@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, John Snow <jsnow@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH v3 1/5] Revert "include/hw: temporarily disable deletion of
+ versioned machine types"
+Date: Tue,  6 May 2025 17:00:20 +0100
+Message-ID: <20250506160024.2380244-2-berrange@redhat.com>
+In-Reply-To: <20250506160024.2380244-1-berrange@redhat.com>
+References: <20250506160024.2380244-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250429100419.20427-1-philmd@linaro.org>
-Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -57
-X-Spam_score: -5.8
-X-Spam_bar: -----
-X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,93 +89,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Apr 29, 2025 at 12:04:19PM +0200, Philippe Mathieu-Daudé wrote:
-> Date: Tue, 29 Apr 2025 12:04:19 +0200
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [RFC PATCH] qapi: Make CpuModelExpansionInfo::deprecated-props
->  optional and generic
-> X-Mailer: git-send-email 2.47.1
-> 
-> We'd like to have some unified QAPI schema. Having a structure field
-> conditional to a target being built in is not very practical.
-> 
-> While @deprecated-props is only used by s390x target, it is generic
-> enough and could be used by other targets (assuming we expand
-> CpuModelExpansionType enum values).
-> 
-> Let's always include this field, regardless of the target, but
-> make it optional.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->  qapi/machine-target.json | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
-> 
-> diff --git a/qapi/machine-target.json b/qapi/machine-target.json
-> index 541f93eeb78..3b109b4af87 100644
-> --- a/qapi/machine-target.json
-> +++ b/qapi/machine-target.json
-> @@ -244,19 +244,18 @@
->  #
->  # @model: the expanded CpuModelInfo.
->  #
-> -# @deprecated-props: a list of properties that are flagged as
-> +# @deprecated-props: an optional list of properties that are flagged as
->  #     deprecated by the CPU vendor.  The list depends on the
->  #     CpuModelExpansionType: "static" properties are a subset of the
->  #     enabled-properties for the expanded model; "full" properties are
->  #     a set of properties that are deprecated across all models for
-> -#     the architecture.  (since: 9.1).
-> +#     the architecture.  (since: 10.1 -- since 9.1 on s390x --).
->  #
->  # Since: 2.8
->  ##
->  { 'struct': 'CpuModelExpansionInfo',
->    'data': { 'model': 'CpuModelInfo',
-> -            'deprecated-props' : { 'type': ['str'],
-> -                                   'if': 'TARGET_S390X' } },
-> +            '*deprecated-props' : { 'type': ['str'] } },
->    'if': { 'any': [ 'TARGET_S390X',
->                     'TARGET_I386',
->                     'TARGET_ARM',
+This reverts commit c9fd2d9a48ee3c195cf83cc611b87b09f02f0013.
 
-This changes CpuModelExpansionInfo from:
+When we introduced the specialized machine type deprecation policy, we
+allow automatic deprecation to take effect immediately, but blocked the
+automatic deletion of machine types for 2 releases. This ensured we
+complied with the historical deprecation policy during the transition
+window. Startnig with the 10.1.0 dev cycle, the old machine types would
+be candidates for removal under both the old and new deprecation
+policies.
 
-#if defined(TARGET_S390X) || defined(TARGET_I386) || defined(TARGET_ARM) || defined(TARGET_LOONGARCH64) || defined(TARGET_RISCV)
-struct CpuModelExpansionInfo {
-    CpuModelInfo *model;
-#if defined(TARGET_S390X)
-    strList *deprecated_props;
-#endif /* defined(TARGET_S390X) */
-};
-#endif
+Thus we can now enable automatic deletion of old machine types, which
+takes effect by skipping the QOM type registration. This prevents the
+machine types being listed with '-machine help', and blocks their
+creation. The actual code can be purged at a convenient time of the
+maintainer's choosing.
 
-to:
+In the case of the x86_64 target, this change results in the blocking
+of the following machine types:
 
-#if defined(TARGET_S390X) || defined(TARGET_I386) || defined(TARGET_ARM) || defined(TARGET_LOONGARCH64) || defined(TARGET_RISCV)
-struct CpuModelExpansionInfo {
-    CpuModelInfo *model;
-    bool has_deprecated_props;
-    strList *deprecated_props;
-};
-#endif
+  pc-i440fx-4.0        Standard PC (i440FX + PIIX, 1996) (deprecated)
+  pc-i440fx-3.1        Standard PC (i440FX + PIIX, 1996) (deprecated)
+  pc-i440fx-3.0        Standard PC (i440FX + PIIX, 1996) (deprecated)
+  pc-i440fx-2.9        Standard PC (i440FX + PIIX, 1996) (deprecated)
+  pc-i440fx-2.8        Standard PC (i440FX + PIIX, 1996) (deprecated)
+  pc-i440fx-2.7        Standard PC (i440FX + PIIX, 1996) (deprecated)
+  pc-i440fx-2.6        Standard PC (i440FX + PIIX, 1996) (deprecated)
+  pc-i440fx-2.5        Standard PC (i440FX + PIIX, 1996) (deprecated)
+  pc-i440fx-2.4        Standard PC (i440FX + PIIX, 1996) (deprecated)
+  pc-i440fx-2.12       Standard PC (i440FX + PIIX, 1996) (deprecated)
+  pc-i440fx-2.11       Standard PC (i440FX + PIIX, 1996) (deprecated)
+  pc-i440fx-2.10       Standard PC (i440FX + PIIX, 1996) (deprecated)
+  pc-q35-4.0.1         Standard PC (Q35 + ICH9, 2009) (deprecated)
+  pc-q35-4.0           Standard PC (Q35 + ICH9, 2009) (deprecated)
+  pc-q35-3.1           Standard PC (Q35 + ICH9, 2009) (deprecated)
+  pc-q35-3.0           Standard PC (Q35 + ICH9, 2009) (deprecated)
+  pc-q35-2.9           Standard PC (Q35 + ICH9, 2009) (deprecated)
+  pc-q35-2.8           Standard PC (Q35 + ICH9, 2009) (deprecated)
+  pc-q35-2.7           Standard PC (Q35 + ICH9, 2009) (deprecated)
+  pc-q35-2.6           Standard PC (Q35 + ICH9, 2009) (deprecated)
+  pc-q35-2.5           Standard PC (Q35 + ICH9, 2009) (deprecated)
+  pc-q35-2.4           Standard PC (Q35 + ICH9, 2009) (deprecated)
+  pc-q35-2.12          Standard PC (Q35 + ICH9, 2009) (deprecated)
+  pc-q35-2.11          Standard PC (Q35 + ICH9, 2009) (deprecated)
+  pc-q35-2.10          Standard PC (Q35 + ICH9, 2009) (deprecated)
 
-Do we need to set has_deprecated_props as true?
-
-diff --git a/target/s390x/cpu_models_system.c b/target/s390x/cpu_models_system.c
-index 4351182f7209..ab05cf99a214 100644
---- a/target/s390x/cpu_models_system.c
-+++ b/target/s390x/cpu_models_system.c
-@@ -252,6 +252,7 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
-
-     s390_feat_bitmap_to_ascii(deprecated_feats,
-                               &expansion_info->deprecated_props, list_add_feat);
-+    expansion_info->has_deprecated_props = true;
-     return expansion_info;
- }
-
+Signed-off-by: Daniel P. BerrangÃ© <berrange@redhat.com>
 ---
-Regards,
-Zhao
+ include/hw/boards.h | 19 +------------------
+ 1 file changed, 1 insertion(+), 18 deletions(-)
+
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index 765dc8dd35..74a8e96b2e 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -719,28 +719,11 @@ struct MachineState {
+  * suitable period of time has passed, it will cause
+  * execution of the method to return, avoiding registration
+  * of the machine
+- *
+- * The new deprecation and deletion policy for versioned
+- * machine types was introduced in QEMU 9.1.0.
+- *
+- * Under the new policy a number of old machine types (any
+- * prior to 2.12) would be liable for immediate deletion
+- * which would be a violation of our historical deprecation
+- * and removal policy
+- *
+- * Thus deletions are temporarily gated on existance of
+- * the env variable "QEMU_DELETE_MACHINES" / QEMU version
+- * number >= 10.1.0. This gate can be deleted in the 10.1.0
+- * dev cycle
+  */
+ #define MACHINE_VER_DELETION(...) \
+     do { \
+         if (MACHINE_VER_SHOULD_DELETE(__VA_ARGS__)) { \
+-            if (getenv("QEMU_DELETE_MACHINES") || \
+-                QEMU_VERSION_MAJOR > 10 || (QEMU_VERSION_MAJOR == 10 && \
+-                                            QEMU_VERSION_MINOR >= 1)) { \
+-                return; \
+-            } \
++            return; \
+         } \
+     } while (0)
+ 
+-- 
+2.49.0
 
 
