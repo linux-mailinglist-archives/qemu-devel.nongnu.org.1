@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0294DAAC203
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 13:06:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A025AAC230
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 13:12:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCG7R-000699-0c; Tue, 06 May 2025 07:05:49 -0400
+	id 1uCGE2-00025q-Pl; Tue, 06 May 2025 07:12:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uCG6y-0005xm-BD
- for qemu-devel@nongnu.org; Tue, 06 May 2025 07:05:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uCGDy-000257-Jd
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 07:12:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uCG6w-0007JR-Ah
- for qemu-devel@nongnu.org; Tue, 06 May 2025 07:05:20 -0400
+ id 1uCGDx-00081h-5W
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 07:12:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746529515;
+ s=mimecast20190719; t=1746529952;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=JWagUJEVdO7PSy41uXGS9AE0guddvEOG68XS01NfLfQ=;
- b=TNPGVcmIakJIMMCXcMgVDlD5p8Apjzmn0khjxNMJMM85Xzv61I59jVg0dxOXLKSGimhtqe
- KRM50Zg8wFWaTyOnvU4Lzkdsm92GL0ulGtxHs9DZri0Bc3tY0uurdN/zjqXkWBf4QrYecI
- HLvFkYwgJXEFMPGBToUeZzqcYk50Mqk=
+ bh=pcitEZccm1OdjF8D1Br6T8qqEBwds/7y7++4c5CW1hg=;
+ b=G3gmi6prtpMpMcXgE4RlbFtEbp2uNiskqem2kGAMGs6HUoSOVfVwvvlMgEFnFkN+F5gxIy
+ XPqEVlwqoFgDJ5PcSxiQrbMi6pL8vtd3LVJLDvSPbyVNTMNPvbyXcYFoVgCkFMOfviYva5
+ 2qN885qbZDQR/o5wTD0VyjVNxkYEQts=
 Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
  [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-30-RjMK3x9uNEq9v1q6ps20TQ-1; Tue, 06 May 2025 07:05:14 -0400
-X-MC-Unique: RjMK3x9uNEq9v1q6ps20TQ-1
-X-Mimecast-MFC-AGG-ID: RjMK3x9uNEq9v1q6ps20TQ_1746529513
+ us-mta-691-JNkvNQqZM0GU-5HoFXdWSA-1; Tue, 06 May 2025 07:12:30 -0400
+X-MC-Unique: JNkvNQqZM0GU-5HoFXdWSA-1
+X-Mimecast-MFC-AGG-ID: JNkvNQqZM0GU-5HoFXdWSA_1746529949
 Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-43d01024089so35733095e9.1
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 04:05:14 -0700 (PDT)
+ 5b1f17b1804b1-43f405810b4so28306775e9.1
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 04:12:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746529513; x=1747134313;
+ d=1e100.net; s=20230601; t=1746529948; x=1747134748;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JWagUJEVdO7PSy41uXGS9AE0guddvEOG68XS01NfLfQ=;
- b=NkuYhtJU8fI5AZVTAcnfs222WHQqqxlg3vYytiMA+fq2htrqgzDDV7dbwx9eujI6WA
- JqmYKtYc3p4LEmYBNsYXIwl64SO83vnB9ufaxPs+wYd5itH6fCOKMgSwpZ3omYcm441x
- EEMZsXXUgQU5VwOTF7WU+URloHLsME+jGVhfjydHwqmRV0tFsw9fRrXR2XPvsel3lkF7
- SW3/BjNea4Ngxl+qsjc0xRHlelbFqzAv/Tq4G+swwzXejxZrzUXJd0enylBGRMOJD6sm
- SztV83t0sGxP6s1bBpAkFSLcim5WZXBc4vTbeX1t5xqHmncq66dqt1CrbkQ+Wg6PrC05
- 6vbA==
+ bh=pcitEZccm1OdjF8D1Br6T8qqEBwds/7y7++4c5CW1hg=;
+ b=vUG5FNxz48/gAv5z3Ang4QcnY0GXwV6k6vAhzjlHXgAbvtxzvx6jO8pz/VUmuYrI3l
+ iA+2EiFaU1stozV09vKQmkEyknqh1QzTNf8jrxFE92JHpAglWLDvNACJPBC8UZ6EiztG
+ vXw6yCLUY0aP03Um/6Y8c8xGaf3CedTVLoJkomASz0ixH3C8ey2NyNd9z5yZJoK3vfYo
+ kcGz0lmY4+xV9agQv1z2CIGcWPsd/5uPowo2dYz7EFWZEHPuDxCE6Q5xpWx5o1VT84cJ
+ qLFlOApfhMOYp09n4BNSTCmJlDZlZ4rw7IZH9q7nJ227vmQyjlMJIwXOClIQm6MYLP4M
+ KHqw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXTpryZrLUJHW+AdFKeEWL5Ue4NvI576WONS+ZFXcaRF3fJDK1vH+PKt/v+w1vJIHyNTuLFATEdDU/J@nongnu.org
-X-Gm-Message-State: AOJu0YzvrRC5d6q2qE+1ahHIwjT5DAUqsbHNjdJJ+C3ukqByDLKWf0jH
- scCuPMyPBiSpyK835+p11Xo+4nSvzF/LtTJE7pHDGHOUrT7JTwmNsyGaDhiKRsYTT8+OumcJMrp
- wKJ7heX56Yg4+eGumFHF4cFW3/fuOO1O+cOk+QOWeZd59EamS6TcQdDwxZWrZ
-X-Gm-Gg: ASbGncsD7tJ9LRLQZNiXivUW9G/bL07nc8BUxuDdDGvBjjNXEliWi4+tPrPZjad9vM8
- sDm8KeDpsR0NRtLnyHriBTtVnu4L9366WCALL4TvHIgUYiOTRYNfymyNSy1ocBo5rgKV7o1s2hc
- F6kU25pHNiFJxSXqM+mbo/Z3vsj8L52CUJG3d7UTctxeCOci7QLLaBap9ronJ1T6835/oYPIC5r
- osDdJAfuvi2vSO50rfExhSoTVUVqofHseRTlE3US3B6UqRTbl3MKF74NqepAwDwnkfjC+bjrcot
- Hj37OCPnFZ15NBY=
-X-Received: by 2002:a05:600c:3d91:b0:43d:1f1:8cd with SMTP id
- 5b1f17b1804b1-441d0543095mr21303945e9.24.1746529512849; 
- Tue, 06 May 2025 04:05:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHE3gkYrM4uMvVX9Jp20+KEFRyr3eVqtJkGq2CI71oidprSzi5rzifhau7+bUBkBGsFgaraUw==
-X-Received: by 2002:a05:600c:3d91:b0:43d:1f1:8cd with SMTP id
- 5b1f17b1804b1-441d0543095mr21303775e9.24.1746529512527; 
- Tue, 06 May 2025 04:05:12 -0700 (PDT)
+ AJvYcCUe+jCn9DPpXmbz938vNWQWBqAyYR6DYP0rePOliQYEU6MFHo8ht+rCmfShqgOcVlb3DxEmvFmaMa5Z@nongnu.org
+X-Gm-Message-State: AOJu0YxGsLd5UW1mgMonm43I2n9B2sM4+zA3d4NELSk3TvXNFCHckTwH
+ ioq48Bgs2DRQDTXEBNNVeuAJmQgMoQ+3oifRPSstkVERRHbT+fLU5EMICXhLiLNRDj4+/x/7vtV
+ H48M8Jzizeg3RrnLcq8MBwpYNpFrRjypF/hy1ZcF8NfiS6pV5L6AwtYmg1jaW
+X-Gm-Gg: ASbGncso2K8rBPgYiP/0WhfPbxt13jXRsCPddxc63k/Vbgx71OZGScXzUeZcPgRPaXQ
+ mhhAI7OMm0w16sZAj1yKFF76vZP5JBMnEmMhOA/4TbxpYSmg7zcP6ixXw9h/9RVLPnnc3ryrjzH
+ j1RowZwBfUgfUV4zi5i4wNMcFlNSrn7GwFkM1nsu5dhnnsDZaLpkRPkPw/ZscBFasrqyDexQoHn
+ PWhdCPJ/o/7AmkK5npKF5Yt/JrvyBhiBaXcguT3tLRHdPzuianSzRrYqDgbgCm1n9csrJXtCnA9
+ jWzmaJwob1gUM+E=
+X-Received: by 2002:a05:6000:1f09:b0:3a0:9dfb:b001 with SMTP id
+ ffacd0b85a97d-3a0ac3ea61emr1607095f8f.58.1746529948563; 
+ Tue, 06 May 2025 04:12:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHcZWmA0YhP+saab9++//EMty3gyHlMUZ6yLqlEa40VxqoLXuF0jwQUNCsEoLModvATAoVGMA==
+X-Received: by 2002:a05:6000:1f09:b0:3a0:9dfb:b001 with SMTP id
+ ffacd0b85a97d-3a0ac3ea61emr1607074f8f.58.1746529948134; 
+ Tue, 06 May 2025 04:12:28 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.54.106])
  by smtp.googlemail.com with ESMTPSA id
- 5b1f17b1804b1-441b8a315d3sm166763705e9.36.2025.05.06.04.05.11
+ ffacd0b85a97d-3a099ae7cbbsm13547288f8f.53.2025.05.06.04.12.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 May 2025 04:05:12 -0700 (PDT)
-Message-ID: <b94f0dcf-6f55-45e9-866c-ad2e59ce85a7@redhat.com>
-Date: Tue, 6 May 2025 13:05:11 +0200
+ Tue, 06 May 2025 04:12:27 -0700 (PDT)
+Message-ID: <6a880c79-f30e-4fe6-af98-1fccf334e2dd@redhat.com>
+Date: Tue, 6 May 2025 13:12:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/20] tcg/optimize: Add one's mask to TempOptInfo
+Subject: Re: [PATCH 15/20] tcg/optimize: Build and use z_bits and o_bits in
+ fold_extract2
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 References: <20250505202751.3510517-1-richard.henderson@linaro.org>
- <20250505202751.3510517-3-richard.henderson@linaro.org>
+ <20250505202751.3510517-16-richard.henderson@linaro.org>
 From: Paolo Bonzini <pbonzini@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=pbonzini@redhat.com; keydata=
@@ -116,10 +117,10 @@ Autocrypt: addr=pbonzini@redhat.com; keydata=
  JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
  dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
  b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
-In-Reply-To: <20250505202751.3510517-3-richard.henderson@linaro.org>
+In-Reply-To: <20250505202751.3510517-16-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -34
 X-Spam_score: -3.5
@@ -145,22 +146,27 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 5/5/25 22:27, Richard Henderson wrote:
-> +    /* Bits that are known 1 and bits that are known 0 must not overlap. */
-> +    tcg_debug_assert((o_mask & ~z_mask) == 0);
-> +
-> +    /* All bits that are not known zero are known one is a constant. */
-> +    if (z_mask == o_mask) {
-> +        return tcg_opt_gen_movi(ctx, op, op->args[0], o_mask);
-> +    }
-> +    /* All bits known zero is zero. */
->       if (z_mask == 0) {
->           return tcg_opt_gen_movi(ctx, op, op->args[0], 0);
->       }
-Just a nit, but this second check is now redundant.  z_mask == 0 implies 
-that o_mask == 0 (otherwise o_mask & z_mask is not zero); therefore the 
-"if (z_mask == o_mask)" must have returned from fold_masks_zos().
+> +    uint64_t v1 = ti_const_val(t1);
+> +    uint64_t v2 = ti_const_val(t2);
 
-Really nice!
+Are v1 and v2 needed at all?
+
+If starting from z1==o1 and z2==o2, you will always end up with z1|z2 == 
+o1|o2 after these:
+
+> +        z1 = (uint32_t)z1 >> shr;
+> +        o1 = (uint32_t)o1 >> shr;
+> +        z2 = (uint64_t)((int32_t)z2 << (32 - shr));
+> +        o2 = (uint64_t)((int32_t)o2 << (32 - shr));
+
+or these:
+
+> +        z1 >>= shr;
+> +        o1 >>= shr;
+> +        z2 <<= 64 - shr;
+> +        o2 <<= 64 - shr;
+
+so fold_masks_zo would do the job.
 
 Paolo
 
