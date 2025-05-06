@@ -2,103 +2,141 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D49EAAC110
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 12:14:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 560B9AAC129
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 12:16:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCFIT-0006Se-4N; Tue, 06 May 2025 06:13:09 -0400
+	id 1uCFLm-00086n-7E; Tue, 06 May 2025 06:16:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uCFIQ-0006SG-Q7
- for qemu-devel@nongnu.org; Tue, 06 May 2025 06:13:06 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uCFIP-0000hf-5B
- for qemu-devel@nongnu.org; Tue, 06 May 2025 06:13:06 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-5e5e0caa151so16648a12.0
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 03:13:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746526383; x=1747131183; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JuuVejNo+bsYeezQ7cJzx8kVZCSuW9A1pxXWLBvCogA=;
- b=oGQJCyz71+nD6oKOR9x2VRgJ3UR5IZuJXgKVBSpgIx+AbzGpPvYWv+VzqezVDIZgS+
- 9SykcsS0g41JMhFpT5x0dqaQqzK74wr5l7X6+8PbgZUpCqAad52mjlkeXsj9ECxi/LYw
- 6aHpPZGz1qFAXVChLSl713X9EqaRpkooYAZDVTYlLQ9S03qykfceIZaH1v8L9oPIEeR0
- P3GKr1YlW+kjdEAyNacm2r6K67r2tCCO0ROoSm5jv4lB2jP81o2FKzD+7HbcPXeydyHF
- jJjZL0p8xUTse/D0GQ4EnwiFO0bYKInGyYw/rBmahIH16VY1qdJ0kDJ6MDjRFTku9t8Q
- oevw==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uCFLj-00086R-Pi
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 06:16:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uCFLh-0001Pg-Or
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 06:16:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1746526587;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=IWB21ABLApo27kaYevEaVKe/h8erk3F0zgB+ajhvB+c=;
+ b=V5svsFvL72QsIUuS+4GTrU2SpBLYXhumbAOaDJQelqckGBFq7vq5bAF/Me/c/JlKz7Ls00
+ s+fFnJFe4els9meJSjea8XaqhTV0We6XSj03qrAL0zUSv66V6zslDQ/DeDMLRhTzoVFWYv
+ p4RrvDq2wW0UkQEKm4f5ngoDNQwfrvE=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-609-1OhNHMjYPx6wm5b89emhJQ-1; Tue, 06 May 2025 06:16:26 -0400
+X-MC-Unique: 1OhNHMjYPx6wm5b89emhJQ-1
+X-Mimecast-MFC-AGG-ID: 1OhNHMjYPx6wm5b89emhJQ_1746526585
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-43d734da1a3so25037715e9.0
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 03:16:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746526383; x=1747131183;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=JuuVejNo+bsYeezQ7cJzx8kVZCSuW9A1pxXWLBvCogA=;
- b=AObClIeXNlRO9zuUq/G0U7fjxEb3P8oMwKnnsZhR5oXn05SCcjQRXxbYYcpY5t8d5m
- uz/vgEYXQkwY3kYzXF0VJid5cftkwJ+zfjVDdym+UdicXDn06gEWo4X6tZRe2xRL6m+f
- p1GSOinwhFmSUcOmLzWBX41XVtScXC6Edt3IHGy8MxA5G1VGrnVj/oUUtLFRIa6SCbN+
- dLuv0Engc9sf3NV6ILvXlVYTCtzjgjGNWfsrokS+1+8ZkmuotfnPFI+K3N48HHAapwph
- VJYkN3BC5gF+7KjZ5jsAkidbRiNIXFyphal+YcTfMlWy9GDxRAhbCW7S3aY373uPumPc
- aWNg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWN3awg9NUugj4X5AgaG5hIepuDiFlAH5gQuCxpC1NRqJzMRhH6jaWIeMaDhOyP1zCbVs8dHsH/ztYC@nongnu.org
-X-Gm-Message-State: AOJu0YzlS1KxnftQaI6+RysYOMYQq02F6T+Tg4LmbOugjaxXWax9p86+
- Z7zarZr1tThNd021k11wIPtr2Za35PEEgbR7DVfOT2/9+s+Y6UlXmGy0zfb+Yqo=
-X-Gm-Gg: ASbGncuV8ZYvWQHwXQ1Z/83e7RMy6BW9Zjwknc31T+ewvJfQdFmd2rM4RTGh6yarayK
- aLPTXEVBec6cQ/0TYyxxcYJwJmProekzYWyegkYxWOM1ARXnX9lgjW00AhXW5v+j46TSKFj1yhl
- FkyfBuHVFFZIVWtZyag2adVujTxHJojHIfutmIHG1paY+I1hN1H4J/dCRM/fb3mRl7NARzBEu34
- s/YeLQcVPhN+eVc3cL327wHOkuWcASm+RxxUHvIHeWaR0+l/DCG3hL2kyRTG/Edh7bFas3WltKY
- 2HjYvCjXw80U/Tlgp/ffjfCxRmsbcUCWZP9Zapm/3vE=
-X-Google-Smtp-Source: AGHT+IEvlIJ4Q71GUC7hAQNCRLYThccNyjAQlQ9UpNpVJkTwmzgl+xkXU8jOsZqIuzxV92o9kfd66g==
-X-Received: by 2002:a17:907:3fa3:b0:ace:c225:c723 with SMTP id
- a640c23a62f3a-ad1a48bc5efmr966691366b.12.1746526383558; 
- Tue, 06 May 2025 03:13:03 -0700 (PDT)
-Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5fa777c8bbesm7525601a12.22.2025.05.06.03.13.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 May 2025 03:13:03 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id A9FC55F8BD;
- Tue,  6 May 2025 11:13:01 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,  qemu-devel@nongnu.org,
- Thomas Huth <thuth@redhat.com>,  Alexandre Iooss <erdnaxe@crans.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,  Paolo Bonzini
- <pbonzini@redhat.com>,  David Hildenbrand <david@redhat.com>,  Pierrick
- Bouvier <pierrick.bouvier@linaro.org>,  qemu-arm@nongnu.org,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Peter Xu
- <peterx@redhat.com>,  Peter
- Maydell <peter.maydell@linaro.org>,  Mahmoud Mandour
- <ma.mandourr@gmail.com>
-Subject: Re: [PATCH 6/9] MAINTAINERS: add myself to virtio-gpu for Odd Fixes
-In-Reply-To: <2e72ddae-2198-41ca-a31f-aab583ea4be7@collabora.com> (Dmitry
- Osipenko's message of "Mon, 5 May 2025 19:07:56 +0300")
-References: <20250428125918.449346-1-alex.bennee@linaro.org>
- <20250428125918.449346-7-alex.bennee@linaro.org>
- <9115fa7c-ed94-449d-816b-a13125275dac@collabora.com>
- <cdc4d710-2b7a-44fc-b58c-78a81ca83b36@daynix.com>
- <2e72ddae-2198-41ca-a31f-aab583ea4be7@collabora.com>
-User-Agent: mu4e 1.12.10; emacs 30.1
-Date: Tue, 06 May 2025 11:13:01 +0100
-Message-ID: <87y0vanj2q.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1746526585; x=1747131385;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IWB21ABLApo27kaYevEaVKe/h8erk3F0zgB+ajhvB+c=;
+ b=FtJgPiboBFqfeGGCxAJ5tlXI+4DdyFW6tLG/t1O9qS2v0l56sm30MInDJcfSY3GBb+
+ H9GtOrWraMmeAarXV0z/CQwOgHuTPW12/+C6Y92JRi5u/m5V37UXuS8jnRoMSctWjaBc
+ aZhR+rXIlJEe38ax2ZiXEWkuDKulPcNHkNKaNhBqkfTpcwJ5E+J1k7fYoZHqshcWWr7I
+ rn+jvGRKpajMoA3T5HpFyfBIuKQwuOKxcYs4pD47SnRRZHz9Ht1V0+HI4P/q0j4WF/fS
+ wOyDQuwspV2vX1ddJD5cAmERvRda/xCe/L9P0dM36GT82lkXcLK4CWbaxwZoglVOwhgh
+ iRNw==
+X-Gm-Message-State: AOJu0Yw/1vbaxZpdx/3FjLpCow0zITEgYVJNW5Xw+Z2MR32Omr2NdopA
+ VHaxxU/D2mP0ZRw2rtOjmsgpkSQQhoxNXTLzK7pYASJAbISUnpipC2z/lrMLgnuL+CkiWuFM5o4
+ VLMMMLX0q62JFinkPTcJghUE89qvyO3QgJr0nnIRJY/tMMyvWzxGN
+X-Gm-Gg: ASbGncu9J5E3uPdPwwfHKKzmRiEdRTH1v3Jo/ZKi/OUFESpP5yXOnCFG3zyksCmlvEU
+ GpjItuYyOofMTZirSEyKySra8TLDkhxJFYw28qxQvqGlVDoFr4/fGiKoLpY7yKRD0hRwvEF/NLB
+ u2VtSSLfBFItpC8/fwuH666pUJpucagF4OnYyLv+rgYE3IRJKNDm8zXElfS4siwKj0i2gG5CcgI
+ iKZKwBBAIbpEssolZk349UFcdIe+gTtc5SOCPpHeHLC0V5gCK06NfbLagCSY39hly8R2w8ToIBM
+ mCKNxeMJsOWmCuJBJkInRE7ohJeroKhlwJMxqwd8RdJrQle3qOsh
+X-Received: by 2002:a05:600c:1e20:b0:43d:4e9:27ff with SMTP id
+ 5b1f17b1804b1-441d04f46bemr23508875e9.7.1746526585132; 
+ Tue, 06 May 2025 03:16:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IECopqV+eEP9qvC0CTa7/uNvU8eYMqRXIwfGTpyqFKRsdJgktmgV2ZmtYoW5cDb4etNcBTV4Q==
+X-Received: by 2002:a05:600c:1e20:b0:43d:4e9:27ff with SMTP id
+ 5b1f17b1804b1-441d04f46bemr23508575e9.7.1746526584766; 
+ Tue, 06 May 2025 03:16:24 -0700 (PDT)
+Received: from [192.168.0.7] (ltea-047-064-115-173.pools.arcor-ip.net.
+ [47.64.115.173]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a0b0f18accsm1064253f8f.41.2025.05.06.03.16.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 06 May 2025 03:16:24 -0700 (PDT)
+Message-ID: <2696db39-9e71-43ed-b504-fa4644d9a5f9@redhat.com>
+Date: Tue, 6 May 2025 12:16:17 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x535.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] meson: use thorough test setup as default
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
+ <marcandre.lureau@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20250503201806.3045723-1-pierrick.bouvier@linaro.org>
+ <aBnYBpAYjdgVpG8D@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <aBnYBpAYjdgVpG8D@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,60 +152,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Dmitry Osipenko <dmitry.osipenko@collabora.com> writes:
+On 06/05/2025 11.36, Daniel P. Berrangé wrote:
+> On Sat, May 03, 2025 at 01:18:06PM -0700, Pierrick Bouvier wrote:
+>> Allows all tests to be visible by default when using meson test
+>> directly.
+>>
+>> This has no impact on make check-* commands, which use SPEED=quick by
+>> default (see scripts/mtest2make.py).
+> 
+> IMHO it would be conceptually confusing if we cause 'make check' to
+> be running different stuff from 'meson test'. As long as we keep a
+> makefile wrapper around running tests, I think we should keep them
+> matching what they do by default.
 
-> On 5/4/25 10:20, Akihiko Odaki wrote:
->> On 2025/04/30 3:56, Dmitry Osipenko wrote:
->>> On 4/28/25 15:59, Alex Benn=C3=83=C2=A9e wrote:
->>>> Seeing as I've taken a few patches to here now I might as well put
->>>> myself forward to maintain virtio-gpu. I've marked it as Odd Fixes as
->>>> it's not my core focus. If someone with more GPU experience comes
->>>> forward we can always update again.
->>>>
->>>> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->>>> ---
->>>> =C2=A0 MAINTAINERS | 3 ++-
->>>> =C2=A0 1 file changed, 2 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/MAINTAINERS b/MAINTAINERS
->>>> index 661a47db5a..f67c8edcf6 100644
->>>> --- a/MAINTAINERS
->>>> +++ b/MAINTAINERS
->>>> @@ -2636,7 +2636,8 @@ F: hw/display/ramfb*.c
->>>> =C2=A0 F: include/hw/display/ramfb.h
->>>> =C2=A0 =C2=A0 virtio-gpu
->>>> -S: Orphan
->>>> +M: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->>>> +M: Odd Fixes
->>>> =C2=A0 F: hw/display/virtio-gpu*
->>>> =C2=A0 F: hw/display/virtio-vga.*
->>>> =C2=A0 F: include/hw/virtio/virtio-gpu.h
->>>
->>> Thanks a lot for stepping up!
->>>
->>> This reminded me that I wanted to propose myself as reviewer for the
->>> virtio-gpu patches. Will do it soon.
->>=20
->> Thank both of you for stepping up.
->>=20
->>>
->>> Akihiko Odaki is also good at reviewing virtio-gpu patches. Wondering if
->>> Akihiko would want to be added as reviewer or co-maintainer of virtio-
->>> gpu?
->>>
->>=20
->> Yes, please add me as a reviewer.
->>=20
->> I guess it would be better if Alex add you and me with the next version
->> of this patch or add follow-up patches to this to avoid change conflicts.
->
-> +1 Feel free to add us as reviewers in v2 of this patch. Otherwise I'll
-> send the separate maintainers-update patch along with nctx v12
-> patches.
+But what we should maybe do instead: Properly document in 
+docs/devel/testing/functional.rst how to get the list of all tests and how 
+to run a single test with the "meson test" way... I could do it later when 
+time permits (likely not this week), but if anybody else wants to have a 
+try, that would be welcome!
 
-I shall add you both ;-)
+  Thomas
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
