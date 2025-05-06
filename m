@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFB56AAC88F
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:48:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 769C1AAC869
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:44:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCJW8-0004Ai-8v; Tue, 06 May 2025 10:43:32 -0400
+	id 1uCJWe-0006sG-RG; Tue, 06 May 2025 10:44:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJTD-000885-8T
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:40:36 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJTI-0008DG-C3
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:40:40 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJTA-0001qU-Tf
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:40:30 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-39129fc51f8so3822244f8f.0
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:40:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCJTF-0001rT-Hi
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:40:35 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-3913d129c1aso3592093f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:40:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746542427; x=1747147227; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746542432; x=1747147232; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=j41fV/T5fVwdY4VDR58WCPqJo5aDoWrBkyOMJ4Dwydk=;
- b=wmpFEQURYW9fcrJGc4PuDjVX/XM/MlmA1avmYzmTiJ6wfdpWe/JhZNIEYnsilVGfkl
- vNoqBy/wFZzSNQty+iJBLXmyhOdwFWxHccICPqlHCHbv6cAKj6TTNgojf1VkbS4WVQA7
- PbEC8/IM+hclckm1UIgEPw2SwOU468C9a7d1hpo7SLmZkxhFY6f94AfChdhJXQWRTJnX
- vx7MW980FmO9KM/pNh05dVpuRTLQk7BBGQdteo1OsomVg8/SkBZJ/RAEdUQ8bCY3L4JN
- PiZN1EUdrJf98ydQyBQi2knqbPvuteD0qpaptfK8k/1PSdA/LZn+9GBUUrsnKPRFZ3iO
- 8ayw==
+ bh=+H9UYlRmqVO8yptjvYMIoxPGGH/04VbttZQFCTzfSSI=;
+ b=QD95Q3K25aBwrOqCje3E+BPf+9W7CGje6YPW6owQse39uhEFNnZdShaCdcyI0+jdms
+ 15ZfxyLk5d4rJER5D8UNXcwZw24ff6YxtupMK3LWjEWracdW8t4cSb1hmIRP5XxJblK+
+ ZKlrg5405kMEiUsJUfyisLKh4PZPohYYclz9fzmv+hdS8c1nwXCExD9RJmSA2rwY0lC0
+ FfeTO1+HpGkTxT9iLdPObY3jo9tVHsn7gEKP8LpsR/PYEpF/Z5QiXnpR+m5KDgytr53l
+ 6D802h+qaCmT04JiUzVI3qn4hDn9tn8p/ZD9VB3FKAaUK9YXnqom3TM8DDlfX4ylcn0K
+ bJDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746542427; x=1747147227;
+ d=1e100.net; s=20230601; t=1746542432; x=1747147232;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=j41fV/T5fVwdY4VDR58WCPqJo5aDoWrBkyOMJ4Dwydk=;
- b=Af+VYYGafEZGxmLqIsjR7SmvnMuwpMYh1Np70+EySOmTvAvMzFpOBeN3J1DWgGPUHz
- 5WtQ733ovWF2rXkF1j6ubGuMbFrhhYID2kXBLMek63Jg2YUzXS4plkKuu+7EiZgxrb9e
- JDJQlsnT5ABwqVYzBdg5IAyHyUCwr1klRFaBmb+KyKG7OsGwe9Quk+cqFqkboEoBlSJ+
- S1hNwREHo0rOaCquJJuVooDqWicP50xIm3bsVcLwpI0JfJmS+7DJnjQ9hNX0pAWAcFVV
- wIo0HHoejK4Pbjuz001BUfZJPRqt5BzmYT9TD3imugcuKKnTEVuao8U3uvhnNedMtawp
- M6Ow==
-X-Gm-Message-State: AOJu0YypirPAtlK1NpbEbkVP5dmC1yNzS7fQ0Y/8TVucwzk+eoY1mwND
- 2/Y6e5VzQYweMpWQYLn34axla4IjmrEti++7xIoAWEBwPlXUFP1K3FK3cTmTM5i6DFpoUjnSZoU
- 8
-X-Gm-Gg: ASbGncumSrGkVgHeCVn1nYCAObS8mGBigfs3/nEkaG+kSI9HTKef2tYjk4NXX+VU9Kq
- UbOadsXst6R9+cIcywiPNUppjhJIuEJRm4umFoOLBaLbwSWbZuATp5o//H4A9xtCn3Ajr7ktvy9
- NIcC8WDUQA5Ljiqe1ou/hL7N+4blz/EjLtL8KyKsN05j+sPeMcSTx5IsVHJ6LGHK300seqY1RKz
- cuP0XLNREo0LWc6HN3S7GryhO1XE3mz/SbFRyAD4aSROqeFn3vUqtTbXuCbklL+t6jNPhT7x0GT
- 59RceZhLJo9lupmgWLRI23dglcszv3rWPxNtQPezqWVFmaavx0MCAMjaNCcy09gvvRkJcYgvymz
- DRZOk+R0M8KsITkiBEOID
-X-Google-Smtp-Source: AGHT+IGJd63f1aBzGm2VOibTt2HPEM3GOrmBR1zXP7t/gMjPs+FDvA7wJ4kzunrvNPdanDzrOiYXjA==
-X-Received: by 2002:a5d:64e8:0:b0:3a0:83a2:1e79 with SMTP id
- ffacd0b85a97d-3a09fd79f80mr10257819f8f.11.1746542426955; 
- Tue, 06 May 2025 07:40:26 -0700 (PDT)
+ bh=+H9UYlRmqVO8yptjvYMIoxPGGH/04VbttZQFCTzfSSI=;
+ b=N5t0UYZCNq/eB62N6KagiBr2XN2nG6MuDkbOXIQjLbCcQcTjpNL7o9MLmUT7xyd03T
+ HVGXMFJI/MT4kQaIPMDnEBkGedg9zDylg+ORhsFsWdJKcaiAV8ts0bQOfeVsf7fYmXX5
+ C72XvK059x9dMXZbkGdW47glE9Ovd/v4qi92ezIpgIRPV+GnufrVDGobyOOUa4yTcg9t
+ Tqdhs33IKnxKj7nBLe+nRsrWckwR+7KBl6ebuNbzz3U+XgDbOXWQ+bScQKWMcX6avlgD
+ KQ0SUfiZrX3fygqrm9xpJZwle/s8r8C8uU0eJN/b2nXMjXAQ2taiTOICa2y0Jti6E3KB
+ P7RQ==
+X-Gm-Message-State: AOJu0YxJFesYPBTny/fBXuNP2XeRMrb5IGqpDzR+EhBCk20lIN50FKcA
+ zFjiY1VQiDQN9jePynq0xxm2cHY1jC2oYD/laLijlNg2ytcP0OE2ib+Zh8R3Qe+EogUeh8dfe3t
+ R
+X-Gm-Gg: ASbGncs+I3LRPRscPG+mDciQlTZd+LajPq/f8rQqnA9+IcDYvieLRcP0Qc3QLnJ/Uqz
+ 9YcK8ZtuqV7JMOIWz0odfK4EY2cL6oc4yVmLFVZ6il/LHr8llVvLV7llbKLOHlt6+ApHoWvmNjF
+ 0I8kNFXLgGXiYwLSxFNruhBcqF56Ma3xZvA11awnYz0cbEZ3zjYLJr3ApmVJuc5sNnewLHwirBK
+ BCQxUGrek6RVLbbyiTGbO4z4Y+lMnuIyP/Zb6j4cQmcNNSOqRNGgKViCEszcfR+ZXAxB+Tjr2fv
+ F0ShOAxw3d+Ty4GGbOA8HccDJvZC6VqxvBvyZ33AQtXEjenTb+cCZ7WrJDCZ53/Em1dpiejmVPM
+ I7lYOrlcrW/bqIR30qRt6
+X-Google-Smtp-Source: AGHT+IFbmlIt/t3s1h/1cSSNIcX03WX2J4CEhO5YpD9L8HMyaYX6Zq5g1inlzMRT4HtaZ2De9dkWRg==
+X-Received: by 2002:a05:6000:184f:b0:3a0:9dda:c2e2 with SMTP id
+ ffacd0b85a97d-3a0b43f8fc1mr7077f8f.22.1746542431760; 
+ Tue, 06 May 2025 07:40:31 -0700 (PDT)
 Received: from localhost.localdomain (91-163-26-170.subs.proxad.net.
  [91.163.26.170]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a099b16f92sm13639579f8f.81.2025.05.06.07.40.25
+ ffacd0b85a97d-3a099b107c4sm13919157f8f.76.2025.05.06.07.40.30
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 06 May 2025 07:40:26 -0700 (PDT)
+ Tue, 06 May 2025 07:40:31 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Kevin Wolf <kwolf@redhat.com>,
@@ -76,25 +76,25 @@ Cc: Kevin Wolf <kwolf@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
  Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v3 16/19] hw/scsi/vmw_pvscsi: Convert DeviceRealize ->
- InstanceInit
-Date: Tue,  6 May 2025 16:39:02 +0200
-Message-ID: <20250506143905.4961-17-philmd@linaro.org>
+Subject: [PATCH v3 17/19] hw/net/vmxnet3: Remove
+ VMXNET3_COMPAT_FLAG_OLD_MSI_OFFSETS definition
+Date: Tue,  6 May 2025 16:39:03 +0200
+Message-ID: <20250506143905.4961-18-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250506143905.4961-1-philmd@linaro.org>
 References: <20250506143905.4961-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,60 +110,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Simplify replacing pvscsi_realize() by pvscsi_instance_init(),
-removing the need for device_class_set_parent_realize().
+VMXNET3_COMPAT_FLAG_OLD_MSI_OFFSETS was only used by the
+hw_compat_2_5[] array, via the 'x-old-msi-offsets=on' property.
+We removed all machines using that array, lets remove all the
+code around VMXNET3_COMPAT_FLAG_OLD_MSI_OFFSETS.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- hw/scsi/vmw_pvscsi.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ hw/net/vmxnet3.c | 20 ++++++--------------
+ 1 file changed, 6 insertions(+), 14 deletions(-)
 
-diff --git a/hw/scsi/vmw_pvscsi.c b/hw/scsi/vmw_pvscsi.c
-index e163023d14c..7c98b1b8ea6 100644
---- a/hw/scsi/vmw_pvscsi.c
-+++ b/hw/scsi/vmw_pvscsi.c
-@@ -1267,21 +1267,15 @@ static const Property pvscsi_properties[] = {
-     DEFINE_PROP_UINT8("use_msg", PVSCSIState, use_msg, 1),
+diff --git a/hw/net/vmxnet3.c b/hw/net/vmxnet3.c
+index 83d942af179..3cf5d71f478 100644
+--- a/hw/net/vmxnet3.c
++++ b/hw/net/vmxnet3.c
+@@ -42,18 +42,13 @@
+ #define VMXNET3_MSIX_BAR_SIZE 0x2000
+ 
+ /* Compatibility flags for migration */
+-#define VMXNET3_COMPAT_FLAG_OLD_MSI_OFFSETS_BIT 0
+-#define VMXNET3_COMPAT_FLAG_OLD_MSI_OFFSETS \
+-    (1 << VMXNET3_COMPAT_FLAG_OLD_MSI_OFFSETS_BIT)
+ #define VMXNET3_COMPAT_FLAG_DISABLE_PCIE_BIT 1
+ #define VMXNET3_COMPAT_FLAG_DISABLE_PCIE \
+     (1 << VMXNET3_COMPAT_FLAG_DISABLE_PCIE_BIT)
+ 
+ #define VMXNET3_EXP_EP_OFFSET (0x48)
+-#define VMXNET3_MSI_OFFSET(s) \
+-    ((s)->compat_flags & VMXNET3_COMPAT_FLAG_OLD_MSI_OFFSETS ? 0x50 : 0x84)
+-#define VMXNET3_MSIX_OFFSET(s) \
+-    ((s)->compat_flags & VMXNET3_COMPAT_FLAG_OLD_MSI_OFFSETS ? 0 : 0x9c)
++#define VMXNET3_MSI_OFFSET    (0x84)
++#define VMXNET3_MSIX_OFFSET   (0x9c)
+ #define VMXNET3_DSN_OFFSET     (0x100)
+ 
+ #define VMXNET3_BAR0_IDX      (0)
+@@ -61,8 +56,7 @@
+ #define VMXNET3_MSIX_BAR_IDX  (2)
+ 
+ #define VMXNET3_OFF_MSIX_TABLE (0x000)
+-#define VMXNET3_OFF_MSIX_PBA(s) \
+-    ((s)->compat_flags & VMXNET3_COMPAT_FLAG_OLD_MSI_OFFSETS ? 0x800 : 0x1000)
++#define VMXNET3_OFF_MSIX_PBA   (0x1000)
+ 
+ /* Link speed in Mbps should be shifted by 16 */
+ #define VMXNET3_LINK_SPEED      (1000 << 16)
+@@ -2122,8 +2116,8 @@ vmxnet3_init_msix(VMXNET3State *s)
+                         &s->msix_bar,
+                         VMXNET3_MSIX_BAR_IDX, VMXNET3_OFF_MSIX_TABLE,
+                         &s->msix_bar,
+-                        VMXNET3_MSIX_BAR_IDX, VMXNET3_OFF_MSIX_PBA(s),
+-                        VMXNET3_MSIX_OFFSET(s), NULL);
++                        VMXNET3_MSIX_BAR_IDX, VMXNET3_OFF_MSIX_PBA,
++                        VMXNET3_MSIX_OFFSET, NULL);
+ 
+     if (0 > res) {
+         VMW_WRPRN("Failed to initialize MSI-X, error %d", res);
+@@ -2221,7 +2215,7 @@ static void vmxnet3_pci_realize(PCIDevice *pci_dev, Error **errp)
+     /* Interrupt pin A */
+     pci_dev->config[PCI_INTERRUPT_PIN] = 0x01;
+ 
+-    ret = msi_init(pci_dev, VMXNET3_MSI_OFFSET(s), VMXNET3_MAX_NMSIX_INTRS,
++    ret = msi_init(pci_dev, VMXNET3_MSI_OFFSET, VMXNET3_MAX_NMSIX_INTRS,
+                    VMXNET3_USE_64BIT, VMXNET3_PER_VECTOR_MASK, NULL);
+     /* Any error other than -ENOTSUP(board's MSI support is broken)
+      * is a programming error. Fall back to INTx silently on -ENOTSUP */
+@@ -2472,8 +2466,6 @@ static const VMStateDescription vmstate_vmxnet3 = {
+ 
+ static const Property vmxnet3_properties[] = {
+     DEFINE_NIC_PROPERTIES(VMXNET3State, conf),
+-    DEFINE_PROP_BIT("x-old-msi-offsets", VMXNET3State, compat_flags,
+-                    VMXNET3_COMPAT_FLAG_OLD_MSI_OFFSETS_BIT, false),
+     DEFINE_PROP_BIT("x-disable-pcie", VMXNET3State, compat_flags,
+                     VMXNET3_COMPAT_FLAG_DISABLE_PCIE_BIT, false),
  };
- 
--static void pvscsi_realize(DeviceState *qdev, Error **errp)
-+static void pvscsi_instance_init(Object *obj)
- {
--    PVSCSIClass *pvs_c = PVSCSI_GET_CLASS(qdev);
--    PCIDevice *pci_dev = PCI_DEVICE(qdev);
--
--    pci_dev->cap_present |= QEMU_PCI_CAP_EXPRESS;
--
--    pvs_c->parent_dc_realize(qdev, errp);
-+    PCI_DEVICE(obj)->cap_present |= QEMU_PCI_CAP_EXPRESS;
- }
- 
- static void pvscsi_class_init(ObjectClass *klass, const void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-     PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
--    PVSCSIClass *pvs_k = PVSCSI_CLASS(klass);
-     HotplugHandlerClass *hc = HOTPLUG_HANDLER_CLASS(klass);
- 
-     k->realize = pvscsi_realizefn;
-@@ -1290,8 +1284,6 @@ static void pvscsi_class_init(ObjectClass *klass, const void *data)
-     k->device_id = PCI_DEVICE_ID_VMWARE_PVSCSI;
-     k->class_id = PCI_CLASS_STORAGE_SCSI;
-     k->subsystem_id = 0x1000;
--    device_class_set_parent_realize(dc, pvscsi_realize,
--                                    &pvs_k->parent_dc_realize);
-     device_class_set_legacy_reset(dc, pvscsi_reset);
-     dc->vmsd = &vmstate_pvscsi;
-     device_class_set_props(dc, pvscsi_properties);
-@@ -1306,6 +1298,7 @@ static const TypeInfo pvscsi_info = {
-     .class_size    = sizeof(PVSCSIClass),
-     .instance_size = sizeof(PVSCSIState),
-     .class_init    = pvscsi_class_init,
-+    .instance_init = pvscsi_instance_init,
-     .interfaces = (const InterfaceInfo[]) {
-         { TYPE_HOTPLUG_HANDLER },
-         { INTERFACE_PCIE_DEVICE },
 -- 
 2.47.1
 
