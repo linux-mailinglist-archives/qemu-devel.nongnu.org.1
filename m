@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE6B6AAC89A
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:49:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC028AAC8A1
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:50:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCJXQ-00036J-M6; Tue, 06 May 2025 10:44:52 -0400
+	id 1uCJXW-0003P3-Tj; Tue, 06 May 2025 10:44:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uCJVQ-00025b-BG
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:49 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1uCJVR-00027J-Jq
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:50 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uCJVO-0002AI-5W
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:48 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-441d1ed82faso5315785e9.0
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:42:45 -0700 (PDT)
+ id 1uCJVP-0002Al-PB
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:49 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-43cfa7e7f54so35759865e9.1
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:42:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746542564; x=1747147364; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746542566; x=1747147366; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=aj1LInBRLZfeL0vVJ4DPx0VjONBgyKGAHZpqEc/4nFI=;
- b=xaGyxGgsSYh6BeXkp1Lv3toHDNVbgcc0oZ5XD7crkASP0Btf9QVaOEnUQHK4zs+wEg
- EPU+yECvD2hfuTMDiOLj3QOmQuZGt7OikSMeW6AluNMlF3fLkK7VOOCDZgD6X1s7Dvb0
- USx4YbTByKQbzCSUTH2OXW+tdq0X7fEoMHvkgSvzcwUcrHa4g1eMHC0E/ASPQr/JB/+i
- on2pjfxTc9JsgpDXp+VsQOxLmkZ7SojLgflui9oQJowgFj01TWPrY+9xnR6deztxiv5k
- qh+QEzqL0+uy1JwMpJznCcUYckcdZ/l3DoHuBOrVTeuxN3Sychsro3Q09iJBxMkWR0JP
- 3O5g==
+ :reply-to; bh=5dLkOrlPPy6RqMrdEp3suypMzxm+aI7FzNluDE4RITU=;
+ b=MxK2lRUPSrsV0Nxj/SWnvmyrnLbHHzmObMNj+wo+FEopXoZtZrdb1oiDLrzk2KeysE
+ X7bXfw0gPKoShMY2SDzF+BWk8hUkTgEut64lXQreetdGaVIUUPql+wAp6zIkJs05rCC7
+ jD61DGhV0Fj65rLUdG9MATbYqwZhiinZVKtBHnU5kglTd4Kk51/ad2p9tmAIi8ADk/5P
+ p2++y/1FCTy+TLVPGq/7tnOoarHOBhrVJEdZcsLKWI8qxaY+Y0h9OiZdGc8g8apjOzaQ
+ dYDU+4mKABdZGzve6Y5p+MxUF8EKRBBrxl7d2UOyBvRy/+3s3NA0HeNGrFzKDMEcZWvi
+ Iq4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746542564; x=1747147364;
+ d=1e100.net; s=20230601; t=1746542566; x=1747147366;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aj1LInBRLZfeL0vVJ4DPx0VjONBgyKGAHZpqEc/4nFI=;
- b=JAgI/0TQw6Isu7JT3ezLerkwqy/3MhSt/VhRq2GUR3r9fV6xfM9bZdHpICKz2VFrSn
- Om7k+lzie30/2j/+bKAE5172FlL/Y3hRObRVMR7mtqVIg9nAAoXE+krx39KTmbfzLf57
- D1iDgYTA6jEuXZc/e+Yg49FHfqZdAwb2vDuALHW08so5vwKwz3XojDjljqHd7IEq8lwt
- iEEDs7HYuP/h31uO8Edh1TL5Q/LsKPhHw7qjkEn5ULaY49UVpZSbMmiUinx8os5xoYSN
- QDywNI8eZXXDloMEBzxZwAy4/jd5OvAxCUYqKGlP/w/vznNF6zpBJBdyRXWGdCV/+Pb2
- StyA==
-X-Gm-Message-State: AOJu0YylG0aUzkMuYsqMEFXVOVv7cwg8YebYXQqtHaLEAdZoWidydlit
- CCycTSjs3RQJ9c0No0zuCO5sHyP7Qd1AxQZDzdb+3RQP7BIzidNXLy3PzHwu22ePiXwitTlwYP3
- s
-X-Gm-Gg: ASbGncuSuR8+hX1ZwEXMG7egIjNteBvjQAINOU7PEB19HH2wfSQOnlbhVRu9/v+AqTZ
- ASQDQIzDUlA7CLdg1gxafeZLKSnn8TXDp530gZBn7NUuaukbr5rvVm9lqzW+H5sPG9fVlsgZg0O
- V80VUlA1mUQYeCAbCIr5CsrmoHOS4vsjmqsv3Db8z23P1x08CVyTVGHwdOXGJ0LAKTKECgTGsGv
- O1Ihk2lPX7zrVfi1SgLOXs+Iml7okf1t0lOGasxl04WLCxwy2UmtwG5EJXA+2mZfbj71okwFXUB
- z6hqImpAQG5PxZkT8i6tU5P42cCkB/XNH5qNwCekIenx/6Y=
-X-Google-Smtp-Source: AGHT+IHUZk3kZTe0pQbAnoxc9PJ6nNfKBAwRvV/tqcspTe+M/X7XgiYgpFGMTgszz96ZL2XsDACoNw==
-X-Received: by 2002:a05:600c:528c:b0:43c:f3e4:d6f6 with SMTP id
- 5b1f17b1804b1-441c49473e7mr96300925e9.31.1746542564469; 
- Tue, 06 May 2025 07:42:44 -0700 (PDT)
+ bh=5dLkOrlPPy6RqMrdEp3suypMzxm+aI7FzNluDE4RITU=;
+ b=lLiMHLmdFyIZ9Xs0lt1OMbkyvGgFoSV3WsOBWvcPmUt5mxSLkvC3o6FauMr1uXhZLv
+ yoXckSde4y+WsYMbf4cbKj1squ3kCrd8DzK7iNYUAmO/FBxo8fVApBdOl3k8wyA/aASY
+ 69S8KnDEjJxPPeUqeX6fflFpAl5WOPlbo1LDaFCjx77rIR34PqH1iahp+3CN7D4PCACe
+ fpoRRMELNgSUfHQbehAxcKJJLqmL5HX44Jr3Ux3COBxEFxPKNJxMjbl/YAVlbzDC5mnr
+ QFA0zUwL1zwGuX82RdEbyx2UY0faxzZmSgRb0BMDiIJ3DGqiSShuJzs08R0t2jFPujfG
+ faiQ==
+X-Gm-Message-State: AOJu0YzjHBMisTUIywkq2n/FsuYmU1fNMsjAlp6aXwXPhXFsJwjkY+rL
+ HLgnS8BP/BdB2Z7IKNBeMCg1Qy7wTWOnI4OHnw0aVdm9NGQKGzSRHMleaaStdGX64Ye1OQa58YH
+ Z
+X-Gm-Gg: ASbGncvSk0oO0fwR4VSU9R3EqTXqz0hBlBgmyzJKbbCbeXrfF3tck6nyJLrOx/OvH8w
+ 0UEUFGVgMDRzcGZ+X7EYaWPQ/8zprYp/W6NNGlDzZ0CmRwc4yWnqL0a5+H3zt8Djk8AT9RQnRVX
+ fTfl9o6lCAjayb9vmVPxTLib8fKbLAKEhClDox+aMT1NqS1u+8Bhmr+21bpKPqXaLIhVEhPg7QY
+ XRjuqdlxlwGJApFgodLj4SySHMWZCiKt7afbV4HlHp8rDfbuZBPjK8yJ7m5nYxD9sDD+k7KcH7q
+ cRxR4bENmc3bfgVoZic/k0LHDJoH/e1AQjBdpl9nbxSMw4E=
+X-Google-Smtp-Source: AGHT+IGvtYQsl3VS9HxbyN20MES1ADFUhMX6SVJhDKVbWx2vFh4KadPHT6vlAxWE5yyJiy+xSyfKMA==
+X-Received: by 2002:a05:600c:a10:b0:43b:c6a7:ac60 with SMTP id
+ 5b1f17b1804b1-441d3a6e29dmr204705e9.10.1746542565965; 
+ Tue, 06 May 2025 07:42:45 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-441b89edfc2sm169603435e9.20.2025.05.06.07.42.43
+ 5b1f17b1804b1-441b89edfc2sm169603435e9.20.2025.05.06.07.42.44
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 May 2025 07:42:43 -0700 (PDT)
+ Tue, 06 May 2025 07:42:44 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 25/32] target/arm/kvm: Drop support for kernels without
- KVM_ARM_PREFERRED_TARGET
-Date: Tue,  6 May 2025 15:42:07 +0100
-Message-ID: <20250506144214.1221450-26-peter.maydell@linaro.org>
+Subject: [PULL 26/32] hw/pci-host/designware: Remove unused include
+Date: Tue,  6 May 2025 15:42:08 +0100
+Message-ID: <20250506144214.1221450-27-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250506144214.1221450-1-peter.maydell@linaro.org>
 References: <20250506144214.1221450-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,161 +97,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Our KVM code includes backwards compatibility support for ancient
-kernels which don't support the KVM_ARM_PREFERRED_TARGET ioctl.  This
-ioctl was introduced in kernel commit 42c4e0c77ac91 in September
-2013 and is in v3.12, so it's reasonable to assume it's present.
+From: Bernhard Beschow <shentey@gmail.com>
 
-(We already dropped support for kernels without KVM_CAP_DEVICE_CTRL,
-a feature added to the kernel in April 2013, in our commit
-84f298ea3e; so there are only about six months' worth of kernels,
-from v3.9 to v3.11, that we don't already fail to run on and that
-this commit is dropping handling for.)
+The DEFINE_TYPES() macro doesn't need the qemu/module.h include.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes: 13a07eb146c8 ("hw/pci-host/designware: Declare CPU QOM types using DEFINE_TYPES() macro")
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250318114222.1018200-1-peter.maydell@linaro.org
+Message-id: 20250501183445.2389-2-shentey@gmail.com
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/kvm_arm.h      |  7 +----
- target/arm/arm-qmp-cmds.c |  2 +-
- target/arm/kvm.c          | 55 ++++++---------------------------------
- 3 files changed, 10 insertions(+), 54 deletions(-)
+ hw/pci-host/designware.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-index 05c3de8cd46..5f17fc2f3d5 100644
---- a/target/arm/kvm_arm.h
-+++ b/target/arm/kvm_arm.h
-@@ -97,10 +97,6 @@ void kvm_arm_reset_vcpu(ARMCPU *cpu);
- #ifdef CONFIG_KVM
- /**
-  * kvm_arm_create_scratch_host_vcpu:
-- * @cpus_to_try: array of QEMU_KVM_ARM_TARGET_* values (terminated with
-- * QEMU_KVM_ARM_TARGET_NONE) to try as fallback if the kernel does not
-- * know the PREFERRED_TARGET ioctl. Passing NULL is the same as passing
-- * an empty array.
-  * @fdarray: filled in with kvmfd, vmfd, cpufd file descriptors in that order
-  * @init: filled in with the necessary values for creating a host
-  * vcpu. If NULL is provided, will not init the vCPU (though the cpufd
-@@ -113,8 +109,7 @@ void kvm_arm_reset_vcpu(ARMCPU *cpu);
-  * Returns: true on success (and fdarray and init are filled in),
-  * false on failure (and fdarray and init are not valid).
-  */
--bool kvm_arm_create_scratch_host_vcpu(const uint32_t *cpus_to_try,
--                                      int *fdarray,
-+bool kvm_arm_create_scratch_host_vcpu(int *fdarray,
-                                       struct kvm_vcpu_init *init);
+diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
+index 183f838392c..b4bff145794 100644
+--- a/hw/pci-host/designware.c
++++ b/hw/pci-host/designware.c
+@@ -20,7 +20,6 @@
  
- /**
-diff --git a/target/arm/arm-qmp-cmds.c b/target/arm/arm-qmp-cmds.c
-index 883c0a0e8cc..a1a944adb43 100644
---- a/target/arm/arm-qmp-cmds.c
-+++ b/target/arm/arm-qmp-cmds.c
-@@ -46,7 +46,7 @@ static inline void gic_cap_kvm_probe(GICCapability *v2, GICCapability *v3)
- #ifdef CONFIG_KVM
-     int fdarray[3];
- 
--    if (!kvm_arm_create_scratch_host_vcpu(NULL, fdarray, NULL)) {
-+    if (!kvm_arm_create_scratch_host_vcpu(fdarray, NULL)) {
-         return;
-     }
- 
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 97de8c7e939..9c62d12b233 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -100,8 +100,7 @@ static int kvm_arm_vcpu_finalize(ARMCPU *cpu, int feature)
-     return kvm_vcpu_ioctl(CPU(cpu), KVM_ARM_VCPU_FINALIZE, &feature);
- }
- 
--bool kvm_arm_create_scratch_host_vcpu(const uint32_t *cpus_to_try,
--                                      int *fdarray,
-+bool kvm_arm_create_scratch_host_vcpu(int *fdarray,
-                                       struct kvm_vcpu_init *init)
- {
-     int ret = 0, kvmfd = -1, vmfd = -1, cpufd = -1;
-@@ -150,40 +149,13 @@ bool kvm_arm_create_scratch_host_vcpu(const uint32_t *cpus_to_try,
-         struct kvm_vcpu_init preferred;
- 
-         ret = ioctl(vmfd, KVM_ARM_PREFERRED_TARGET, &preferred);
--        if (!ret) {
--            init->target = preferred.target;
-+        if (ret < 0) {
-+            goto err;
-         }
-+        init->target = preferred.target;
-     }
--    if (ret >= 0) {
--        ret = ioctl(cpufd, KVM_ARM_VCPU_INIT, init);
--        if (ret < 0) {
--            goto err;
--        }
--    } else if (cpus_to_try) {
--        /* Old kernel which doesn't know about the
--         * PREFERRED_TARGET ioctl: we know it will only support
--         * creating one kind of guest CPU which is its preferred
--         * CPU type.
--         */
--        struct kvm_vcpu_init try;
--
--        while (*cpus_to_try != QEMU_KVM_ARM_TARGET_NONE) {
--            try.target = *cpus_to_try++;
--            memcpy(try.features, init->features, sizeof(init->features));
--            ret = ioctl(cpufd, KVM_ARM_VCPU_INIT, &try);
--            if (ret >= 0) {
--                break;
--            }
--        }
--        if (ret < 0) {
--            goto err;
--        }
--        init->target = try.target;
--    } else {
--        /* Treat a NULL cpus_to_try argument the same as an empty
--         * list, which means we will fail the call since this must
--         * be an old kernel which doesn't support PREFERRED_TARGET.
--         */
-+    ret = ioctl(cpufd, KVM_ARM_VCPU_INIT, init);
-+    if (ret < 0) {
-         goto err;
-     }
- 
-@@ -259,17 +231,6 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
-     uint64_t features = 0;
-     int err;
- 
--    /* Old kernels may not know about the PREFERRED_TARGET ioctl: however
--     * we know these will only support creating one kind of guest CPU,
--     * which is its preferred CPU type. Fortunately these old kernels
--     * support only a very limited number of CPUs.
--     */
--    static const uint32_t cpus_to_try[] = {
--        KVM_ARM_TARGET_AEM_V8,
--        KVM_ARM_TARGET_FOUNDATION_V8,
--        KVM_ARM_TARGET_CORTEX_A57,
--        QEMU_KVM_ARM_TARGET_NONE
--    };
-     /*
-      * target = -1 informs kvm_arm_create_scratch_host_vcpu()
-      * to use the preferred target
-@@ -300,7 +261,7 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
-         features |= 1ULL << ARM_FEATURE_PMU;
-     }
- 
--    if (!kvm_arm_create_scratch_host_vcpu(cpus_to_try, fdarray, &init)) {
-+    if (!kvm_arm_create_scratch_host_vcpu(fdarray, &init)) {
-         return false;
-     }
- 
-@@ -1835,7 +1796,7 @@ uint32_t kvm_arm_sve_get_vls(ARMCPU *cpu)
- 
-         probed = true;
- 
--        if (!kvm_arm_create_scratch_host_vcpu(NULL, fdarray, &init)) {
-+        if (!kvm_arm_create_scratch_host_vcpu(fdarray, &init)) {
-             error_report("failed to create scratch VCPU with SVE enabled");
-             abort();
-         }
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+-#include "qemu/module.h"
+ #include "qemu/log.h"
+ #include "qemu/bitops.h"
+ #include "hw/pci/msi.h"
 -- 
 2.43.0
 
