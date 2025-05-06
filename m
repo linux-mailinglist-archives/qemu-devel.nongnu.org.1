@@ -2,87 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59312AACD4C
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 20:31:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D1EAACD57
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 20:34:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCN31-00020O-UM; Tue, 06 May 2025 14:29:44 -0400
+	id 1uCN7I-0007TY-0o; Tue, 06 May 2025 14:34:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1uCN0W-0006hQ-IU; Tue, 06 May 2025 14:27:10 -0400
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uCN20-0000qy-6M
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 14:28:41 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1uCN0T-0007gQ-TF; Tue, 06 May 2025 14:27:08 -0400
-Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-30bfb6ab47cso53911231fa.3; 
- Tue, 06 May 2025 11:27:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1uCN1y-00082L-F3
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 14:28:39 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-7403f3ece96so8019762b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 11:28:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1746556021; x=1747160821; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zpP4TBaydimBJ+yCxRqJxX0SmD5odScGLmy0sP+rMAs=;
- b=A7XR1Hw7/3XlMgzQveZkInZLDn8nL5FVDdlJkgQyp4W9GVQD4cr/4w196lXPunL7eW
- GW/MO/h0H3js+/o+qdBjVNGispa6G9M9s5Szm0eERM5RVx8EgV4xX1OqdpVFLCSIW2Pc
- 8J9bJjUKAfaTQxly8wKyqWZ91EzZyIWP4YPs7ZpQHh4FSC4tWkvkmi9yXUyAhxE7C7fI
- 3VLclMp/KmceY7Htl39AEBKY3u3ib6NQ4bDA+I2unhmFedi8CIMPq2980p1kDfMl43Ed
- WAHrwR2r2Gi4KmD5EMoiXTzAXZNDQj3r/ihb4MrUni+HbvnZJXTKmDLwU42qcwyj8SoX
- Es+A==
+ d=linaro.org; s=google; t=1746556116; x=1747160916; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=JIk6SVxImrntMFBsckaOJQeFarCaDJS5vu2HKcsBsYM=;
+ b=SlrDBQXgCYEU4Tz18XWhE2/b5XH9Mby+3TwhYstEtfrV4nBx7bzSbMYxWaSa5HLY1f
+ Tj+qiDbmbGJYGY1A05Elx/DA2y6cbHrHFZ0bMa3+fUqfkkD2YE+qc+MNdGBvKIHL0a71
+ 06Fs06h5lFfCsfdD9zafwDkvkF4F+IenkVrohO7x4Bl1KVvrRB2ZsEVpjM+HBuXhXgJt
+ bGaGyYB84zHt5WuUomfi/mwSwIElQ7Qhxt5t91F5RNa9Fxrd9+LR5WR4tH814zkTa5J+
+ Ba9WqrUwJbP3M983PKdb0wTGYOhF50BCoTcccvOhLk6nUHF0QYZCx+HZHqYEiZTDGDeo
+ hvJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746556021; x=1747160821;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zpP4TBaydimBJ+yCxRqJxX0SmD5odScGLmy0sP+rMAs=;
- b=JdlcCwSFnYrSPnwN8V6GWq9ctUHW5S6SFHNlI81jHEABjtXOMIbprgS8wsIb8Fh17v
- TPnVyhiiDP2YGDeN39i1ktjh/UW1JhdkyJf1Ig65CDQEIL+3Xvxdx/SSKvQQliqsWciD
- q4N/9bn/UpyObqyX1xI5D3rwcN869BWRk8CfcddCOy0Zvi0s5aBICo1KvstpKhRyZVdD
- VvgmTC60CrMkiizyP3dxOwbqF8DOD+30KnWSTbiq1qt/ULD9Wbgyt/dC2pZ6vYEi35+V
- bDBANGjrS8orThisksWiWczeQPLltJCW5tSTNV594EHxWH0+7rafFWcNIREVjPrN/A8g
- qLmg==
-X-Gm-Message-State: AOJu0YzstaP6gmc6lnwgdrSsbT9IXduzKbdordm9NT3wnrarT22D2e3I
- hwuZFgZEuIwlzb9MAMtR10ANgeg8zg6Fi/hdjDRzYsWiknJ/azEXRkES38quZwE=
-X-Gm-Gg: ASbGncss9TmdH6Bxn9IDrVAp6Q6e7o0AGOUWuhe3e7/Y0jEdwFcttaqrRjF0aGhc/VQ
- 91Ep/mhUC30v1s9yAWepY5Y/1NXc69z1cZWWgcbtm6TxNKbvTstoNEH3BStR2CzLf6UH3i0GF25
- g0PaXjQ5RpSwbLpE6DHSpeom9GPYxqIg47UnrOw0wtmFzpdh2v/udUuBVAeEVhI7m0g6yrP7FBC
- zfo9OTgFnmMQtL6ob1TaMtv57kFyH3ObpQaNhidnoKcPbW35BVD0GwEvb8kx95M9RruDymBSbHX
- mhuFfE63HLOYYM3cLev2XFysPHe/lZl3OFHfPHovUF1DlicumIZjOMxaLYgxtjPdTH3mVoSHtjo
- Wvdb4rZTUFesJO9Mez8Iv1T0=
-X-Google-Smtp-Source: AGHT+IHBa9ho1ThyDkNxpwI0/3LxpQeg41uCA79/UXOH2n/099VZv3LAbpb5LyXBZ2fI612cdcWfAw==
-X-Received: by 2002:a2e:be1a:0:b0:30b:ed5a:6f3c with SMTP id
- 38308e7fff4ca-326ad19a978mr314741fa.10.1746556021307; 
- Tue, 06 May 2025 11:27:01 -0700 (PDT)
-Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
+ d=1e100.net; s=20230601; t=1746556116; x=1747160916;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=JIk6SVxImrntMFBsckaOJQeFarCaDJS5vu2HKcsBsYM=;
+ b=uhfPjKR2/LWHIZxROZH0Xzn95VJTwBChTwDVuNILVXoBkX1x0xhqA71heYf5SOFsXy
+ tUTDqaX2CrR2QGi4PVxmCMuOdK+rSrqLhyDrE1D2WuXwdhF+u0Z9ErMYNN4EAxYeJt+M
+ ZLsO6+zajPUg+iq6A3yv4BJHZLwkzj7g7079Z+jLhxSrkdGNA17MoHe7yub/itmxbTxd
+ 2jXqJQ4Z1N9iq3p12rKFoPqoyWve1Y0NlugeJGcuzWtwqyTFHfNtKjxTY5WKvaqqfk3j
+ ap5+3wVrjemVH6UIfMPlmpYhNYGtnAkeqk6oLkQewwcw+fXBLMFVugGcCS8jPQRc5Sax
+ CoAw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWhoWX+fzXUSTkp0f/aPnJwjHlxbVQGoennH+HLqeNshUtNLb0MAOuBW7o+/K593iAfohWVxLdF7qAw@nongnu.org
+X-Gm-Message-State: AOJu0Yz6qyakjdmLM0z5cETI2BDIgWkfpft4BKfR7qZcfmwI9yq7/k50
+ YhWekAVppJha6RprGiKrcm213hFuEmrRrFWsvLuvAczHgdB8t1XoPpRLVpZ++nA=
+X-Gm-Gg: ASbGncuJq1nrrseFWNySo5gLXVzUatCSxthVejvcQiBRpBaXULsAp3Vv3XsyUBLWw4m
+ F3ZYLYWDIh5WMdyQmGBJT4SGRQqW5nP4QeXmdLcyxfUcpAZp9QbGTptfc6P7AGS9s7KMMLwort0
+ AZtefbjimp++a23rWuv5aoeQ+bHQgVP3VIEytXtu5FkcGLJNfPjjZLwpsppFqJtUvvynWuldmfu
+ OE/jJB7mqR699LMoMmm6kqejlhHJMUtaXxDxEB42PfQheg80ddnTDuA58fAiNjexxdbpvC+RRom
+ R5RCC5cC64+ILp6rPUqcYF0khyajWvm8LA6FNCUJ6Py6eF1dQMx1DqmDU/SWhSSZMHAeUtGYP1U
+ IeA5fv4w=
+X-Google-Smtp-Source: AGHT+IF7uHVIGyJf6y/eBUCqlim8FHfiprQgLwLXBYSbzZimLLRgxvu4uXHP+hdK0DYoYzjIZ2oWwA==
+X-Received: by 2002:a05:6a00:450f:b0:73e:23bb:e750 with SMTP id
+ d2e1a72fcca58-7409cfef42amr222768b3a.23.1746556116457; 
+ Tue, 06 May 2025 11:28:36 -0700 (PDT)
+Received: from [192.168.0.4] (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- 38308e7fff4ca-3202a89ef11sm20952331fa.81.2025.05.06.11.26.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 May 2025 11:26:59 -0700 (PDT)
-From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, sstabellini@kernel.org, anthony@xenproject.org,
- paul@xen.org, alex.pentagrid@gmail.com, peter.maydell@linaro.org,
- edgar.iglesias@amd.com, xen-devel@lists.xenproject.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Subject: [PULL v1 2/2] xen: mapcache: Split mapcache_grants by ro and rw
-Date: Tue,  6 May 2025 20:26:47 +0200
-Message-ID: <20250506182647.302961-3-edgar.iglesias@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250506182647.302961-1-edgar.iglesias@gmail.com>
-References: <20250506182647.302961-1-edgar.iglesias@gmail.com>
+ d2e1a72fcca58-74059063f7asm9246943b3a.150.2025.05.06.11.28.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 06 May 2025 11:28:36 -0700 (PDT)
+Message-ID: <4e9fb340-dafa-446d-9939-91614fc8191e@linaro.org>
+Date: Tue, 6 May 2025 11:28:34 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/loongarch: Fix incorrect rounding in fnm{add, sub}
+ under certain modes
+From: Richard Henderson <richard.henderson@linaro.org>
+To: WANG Rui <wangrui@loongson.cn>, Song Gao <gaosong@loongson.cn>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, qemu@hev.cc, mengqinggang <mengqinggang@loongson.cn>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20250506152600.2521399-1-wangrui@loongson.cn>
+ <f0c44965-e776-4450-859c-ef60b292fa48@linaro.org>
+Content-Language: en-US
+In-Reply-To: <f0c44965-e776-4450-859c-ef60b292fa48@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::236;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-lj1-x236.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,91 +105,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
+On 5/6/25 10:50, Richard Henderson wrote:
+>> +    *(uint64_t *)&x = 0x4ff0000000000000UL;
+>> +    *(uint64_t *)&y = 0x4ff0000000000000UL;
+> 
+>   0x1.0p256
+> 
+>> +    *(uint64_t *)&z = 0x2ff0000000000000UL;
+> 
+>   0x1.0p-256
+> 
+>> +
+>> +    fesetround(FE_DOWNWARD);
+>> +    asm("fnmsub.d %[x], %[x], %[y], %[z]\n\t"
+>> +        :[x]"+f"(x)
+>> +        :[y]"f"(y), [z]"f"(z));
+>> +
+>> +    assert(*(uint64_t *)&x == 0xdfefffffffffffffUL);
+> 
+>    -(0x1.0p512 - epsilon)
+> 
+> That really should have worked as-is.  I'll have a quick look.
 
-Today, we don't track write-abiliy in the cache, if a user
-requests a readable mapping followed by a writeable mapping
-on the same page, the second lookup will incorrectly hit
-the readable entry.
+The negate_result is applied early, so we're computing rounding on the -(1p512 - epsilon), 
+and since that's negative, round_down produces -1p512.  Whereas what the ISA wants is the 
+rounding on (1p512 - epsilon), rounding down to 1.fffffffffffffp511, and only afterward 
+negating.
 
-Split mapcache_grants by ro and rw access. Grants will now
-have separate ways in the cache depending on writeability.
+I'm thinking that the current placement of the float_muladd_negate_result test is 
+incorrect, since we're not negating the result, we're negating the unrounded intermediate.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
----
- hw/xen/xen-mapcache.c | 26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
+There are only 3 targets which use float_muladd_negate_result: loongarch, ppc, and sparc. 
+I will use this test case to test those other targets as well.
 
-diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c
-index 2c8f861fdb..e31d379702 100644
---- a/hw/xen/xen-mapcache.c
-+++ b/hw/xen/xen-mapcache.c
-@@ -75,7 +75,8 @@ typedef struct MapCache {
- } MapCache;
- 
- static MapCache *mapcache;
--static MapCache *mapcache_grants;
-+static MapCache *mapcache_grants_ro;
-+static MapCache *mapcache_grants_rw;
- static xengnttab_handle *xen_region_gnttabdev;
- 
- static inline void mapcache_lock(MapCache *mc)
-@@ -176,9 +177,12 @@ void xen_map_cache_init(phys_offset_to_gaddr_t f, void *opaque)
-      * Grant mappings must use XC_PAGE_SIZE granularity since we can't
-      * map anything beyond the number of pages granted to us.
-      */
--    mapcache_grants = xen_map_cache_init_single(f, opaque,
--                                                XC_PAGE_SHIFT,
--                                                max_mcache_size);
-+    mapcache_grants_ro = xen_map_cache_init_single(f, opaque,
-+                                                   XC_PAGE_SHIFT,
-+                                                   max_mcache_size);
-+    mapcache_grants_rw = xen_map_cache_init_single(f, opaque,
-+                                                   XC_PAGE_SHIFT,
-+                                                   max_mcache_size);
- 
-     setrlimit(RLIMIT_AS, &rlimit_as);
- }
-@@ -456,9 +460,13 @@ uint8_t *xen_map_cache(MemoryRegion *mr,
-                        bool is_write)
- {
-     bool grant = xen_mr_is_grants(mr);
--    MapCache *mc = grant ? mapcache_grants : mapcache;
-+    MapCache *mc = mapcache;
-     uint8_t *p;
- 
-+    if (grant) {
-+        mc = is_write ? mapcache_grants_rw : mapcache_grants_ro;
-+    }
-+
-     if (grant && !lock) {
-         /*
-          * Grants are only supported via address_space_map(). Anything
-@@ -523,7 +531,10 @@ ram_addr_t xen_ram_addr_from_mapcache(void *ptr)
- 
-     addr = xen_ram_addr_from_mapcache_single(mapcache, ptr);
-     if (addr == RAM_ADDR_INVALID) {
--        addr = xen_ram_addr_from_mapcache_single(mapcache_grants, ptr);
-+        addr = xen_ram_addr_from_mapcache_single(mapcache_grants_ro, ptr);
-+    }
-+    if (addr == RAM_ADDR_INVALID) {
-+        addr = xen_ram_addr_from_mapcache_single(mapcache_grants_rw, ptr);
-     }
- 
-     return addr;
-@@ -626,7 +637,8 @@ static void xen_invalidate_map_cache_entry_single(MapCache *mc, uint8_t *buffer)
- static void xen_invalidate_map_cache_entry_all(uint8_t *buffer)
- {
-     xen_invalidate_map_cache_entry_single(mapcache, buffer);
--    xen_invalidate_map_cache_entry_single(mapcache_grants, buffer);
-+    xen_invalidate_map_cache_entry_single(mapcache_grants_ro, buffer);
-+    xen_invalidate_map_cache_entry_single(mapcache_grants_rw, buffer);
- }
- 
- static void xen_invalidate_map_cache_entry_bh(void *opaque)
--- 
-2.43.0
 
+r~
 
