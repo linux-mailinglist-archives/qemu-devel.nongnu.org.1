@@ -2,95 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D21CFAAC992
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 17:31:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DDE2AAC9A1
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 17:33:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCKGQ-0006IE-3H; Tue, 06 May 2025 11:31:22 -0400
+	id 1uCKGm-0007Cs-8D; Tue, 06 May 2025 11:31:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uCKFl-0004oA-52
- for qemu-devel@nongnu.org; Tue, 06 May 2025 11:30:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uCKFh-0002G7-H3
- for qemu-devel@nongnu.org; Tue, 06 May 2025 11:30:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746545436;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=M5fPcSRenOtHMz4uaGFfKiF21+jzNjvCMF1Z6vLFTkY=;
- b=BAQYOukLgzHvFMuGX4c00YURfxCvrhohvonmwuWtdGp+lhz4mE3y5nsq9cqnU/x/xKNsg4
- TcQbY+NhaK/+cEdtSJxyKizDcRAG1yNMG+bOhmJdKqTLYdPfUEZ2pb3jQk9KMH4xIW7gtO
- Qi/qXWIHRRJqRh+E/jvbFbDhMXeCGqU=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-395-46O40VfDPKGIwRLHgsBBTA-1; Tue, 06 May 2025 11:30:35 -0400
-X-MC-Unique: 46O40VfDPKGIwRLHgsBBTA-1
-X-Mimecast-MFC-AGG-ID: 46O40VfDPKGIwRLHgsBBTA_1746545434
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3913b2d355fso1352646f8f.1
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 08:30:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uCKGI-0006Jh-Jc
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 11:31:19 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uCKGE-0002IW-Oc
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 11:31:14 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-2241053582dso90069195ad.1
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 08:31:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1746545469; x=1747150269; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=vv4zdKiLL1zuO/WYVUemEt/x+NwYhTVaTgOKeyQbBWw=;
+ b=ApSpQiPUljMBU/VQPzOiBIVxacy1j/yKil9m6Jua083m1dO2YJQ/sb13ynugFRDTsm
+ +9JUlhFRTjhflNtGyFOZb1M1Ye7tpxSeuRTRTY0ON/txeornBvoyw7XbRx1i53nnrs3u
+ NKXeasX+42xagOJNvw6D+iv9Tl8bPCdCbDNvrgHGmcJCstmfyWH3ZGpP2QF9lyLDddP0
+ mNDc3LXCa5pwvJVDz72muKsLl9FSdXKFGazq+hzKRNxMUCaRzMCh1h3Z9EsRyn+INa07
+ rAyfmjG381IYjfAhjxVwBeee0DNl7QOsEwCL2wdhYUw+4uOLRf7t9OpA/BlNxC+jb1rB
+ RqAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746545433; x=1747150233;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=M5fPcSRenOtHMz4uaGFfKiF21+jzNjvCMF1Z6vLFTkY=;
- b=K+AsKIm4Bh0wImC7hOCvgWcLfVSXW1p8jJ3SsLI6/HN9zKOKRoPHH8QXwiQ+oU1p9b
- 8s9qbluyYC1VwT+GYLidiLcCHg/8KyUqaw9JVpMbgXhhT1U/HEax2YkIkrlfUeRU9ryY
- 1U+XRNvFk7P/zzyDOPXAoEQIlJUgOkmFom+Gkrj0ow+nrJCmAYF55UnbNT4GzxtinYLE
- sodZUmh25M4lko/rT52bpsDAqUsOIoHv8dpoA4KpdZHTTRMM2yIrnI3SZR4cjwHEjh7V
- jtthyhiFy0HbRhalAabNmMgGDaRd75s7kkZQh+epIIgXuMahZwrLf9DpCVYmNnPAUTMO
- D7xA==
-X-Gm-Message-State: AOJu0YyghzbnD5cBuobv6OwbLBd1pNWWafrR5hTSNv3pQ/CcpPxgZgBR
- azoFqA5/o1j618RL+Mm34mFsqHimX4DMWvsL6h3Cn3gHHuw7gcQrD4w/9WZWds7xIz6DC+Gf9LA
- XkhsXpK/17rk/vhdCewZZ2LPiG4jzZ07t8hXw6F9zZxEG7WKDMTtCkz20jwRxbI9VWEiYGbRNbZ
- kRx8Z/FArlRZzeQ9Bu81E8aNnPDkrBCdgxplbE
-X-Gm-Gg: ASbGncsX4PIVHJxfcm8dU4xs0IC30kwffGyFMnk4WPqSbPPOBnWlzodcaSebuj/kvSI
- SU2fwKDlSCQEqgzX1276SbWMUsV9A3yPMN83Zps0sUt0dOl9ZkXrMbEjqWc3VrUO91RhbMgtQoZ
- uDKrh6Ezq9e0IY1+Ijkwywvw/8Y4j5he6laYWPE/ssl3Wf8xWJzrs2dVhA2xIR2TJdNqVM2YkUX
- 2ZIsQ7je4o2JCmDA6X5t9HRMvRI7sRnIkP6P5Qd/NBWc1aEzJ2bIy/uGH9pmNa0ZdfpgWeUdVQX
- 5u3c/f/M3XAhCxU=
-X-Received: by 2002:a5d:694d:0:b0:3a0:ad65:9e6f with SMTP id
- ffacd0b85a97d-3a0ad659ec0mr2116601f8f.57.1746545433331; 
- Tue, 06 May 2025 08:30:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF24BlWIhKY7bxi7BtQHFkxd+Hld185O9W4/8kE11PonoIj2z+em2DOggwYbe4QNh4jrB01iA==
-X-Received: by 2002:a5d:694d:0:b0:3a0:ad65:9e6f with SMTP id
- ffacd0b85a97d-3a0ad659ec0mr2116583f8f.57.1746545432962; 
- Tue, 06 May 2025 08:30:32 -0700 (PDT)
-Received: from [192.168.122.1] ([151.95.54.106])
+ d=1e100.net; s=20230601; t=1746545469; x=1747150269;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vv4zdKiLL1zuO/WYVUemEt/x+NwYhTVaTgOKeyQbBWw=;
+ b=Yq0MrP1LmWql1qixr/L7usEi1WfMFy2mUNfxtbieX82ChzcNJAcJ4+adfFKi4G+eDY
+ Rtk5o0uvXVv9GXvm7Y++aWfHfbk/wjKgdXPMVgBOPivg8Ol5AaqD5DNZxX5VdiUDYY5h
+ swkUUVMqvzt+77DcxSufzvFRIzZciIBk6OAayMnlyuPD/U0G8qATmzexUqPnZBOLjLHE
+ iX1H+izlTWDWgX7TZZxI/Kvo5eHAbACYbp3vi3NTlMXs9HS7DSxMvMY3+XzNZdgdzPzx
+ zOKVnt92p29AvHr1I+GzprrgPg+ZY9RTYZNp2gbBOvZ5Nd3lqnUVyM96MA7zzdY7q6W1
+ GrYw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWMJD1+b2c7FR8PZf8BOYR4BbJimZ52/Dj2mZU3COB+n/+cMwwdD1HutYRZud0UswsyoUbZu7Xm1MIH@nongnu.org
+X-Gm-Message-State: AOJu0Yx+nsFm8kwPue1IaNo0wSq+5WvjgBHMMh1be+Mo/vadjHrrmL33
+ fcIPDhf2Vu6EWz87rECNzhDeyeAjklSgM8YxS0aI0V74JQyLOpnCxF4Jv4rKh9U=
+X-Gm-Gg: ASbGncuN3Ux0o/rm5ZQRTvc7eiz8PqnhvJ1KvQZJe0Kiy+J3Jv+TJ01ARq4zF1SLYBI
+ 1ydCgZ2dJ7AEzTztde/EJUjsI3vDjMWZq9+VKemDiIEz8dWUzZAxwJ7wCMJcWmNaKuFHV5mATMu
+ O1N3xrAVgsZSEDxSK2mTYop3Mrff3++2eztHegt1SFj0wFraY2rmE3t4syxTz6CPut5IIP31kMw
+ PpbSNafWlOZzl9zusFFgfXkvgOHkodJv4wYRSS3D8wntBG3+VqlmxmYsxuCBMlcOqDlyCls065W
+ TV6CtUvkwfQ4TcJhVBY0RyZQ6kwi6lTsZjn584zNFQf8rLwgjRK+kA==
+X-Google-Smtp-Source: AGHT+IFEr+f9kmmUEKGS9lPeuY7rpKcN8zZ4qtqFvcesbfTCGNMm62UjXSCaWiLNobx6od0QyQiAJg==
+X-Received: by 2002:a17:902:d4cc:b0:216:2bd7:1c4a with SMTP id
+ d9443c01a7336-22e32ba6cf8mr46674685ad.26.1746545468644; 
+ Tue, 06 May 2025 08:31:08 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a099ae0bb5sm13803307f8f.7.2025.05.06.08.30.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 May 2025 08:30:30 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Kohei Tokunaga <ktokunaga.mail@gmail.com>
-Subject: [PULL 30/30] gitlab: Enable CI for wasm build
-Date: Tue,  6 May 2025 17:29:25 +0200
-Message-ID: <20250506152927.222671-31-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250506152927.222671-1-pbonzini@redhat.com>
-References: <20250506152927.222671-1-pbonzini@redhat.com>
+ d9443c01a7336-22e150eae74sm75602855ad.29.2025.05.06.08.31.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 06 May 2025 08:31:08 -0700 (PDT)
+Message-ID: <6a8d7703-e275-4566-bc38-b627cc597e9a@linaro.org>
+Date: Tue, 6 May 2025 08:31:07 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] meson: use thorough test setup as default
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20250503201806.3045723-1-pierrick.bouvier@linaro.org>
+ <f7da46dd-0e8f-42d8-b555-300c088f605e@redhat.com>
+ <91cc4370-163e-4bdd-ac1c-b0d6ea3c06cb@linaro.org>
+ <aBnXXC3ldqErl8ub@redhat.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <aBnXXC3ldqErl8ub@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,86 +106,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+On 5/6/25 2:33 AM, Daniel P. Berrangé wrote:
+> On Mon, May 05, 2025 at 10:46:52AM -0700, Pierrick Bouvier wrote:
+>> On 5/5/25 3:32 AM, Thomas Huth wrote:
+>>> On 03/05/2025 22.18, Pierrick Bouvier wrote:
+>>>> Allows all tests to be visible by default when using meson test
+>>>> directly.
+>>>>
+>>>> This has no impact on make check-* commands, which use SPEED=quick by
+>>>> default (see scripts/mtest2make.py).
+>>>>
+>>>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>>>> ---
+>>>>     meson.build | 5 +++--
+>>>>     1 file changed, 3 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/meson.build b/meson.build
+>>>> index f8bf6e7bb66..57ff3f722d8 100644
+>>>> --- a/meson.build
+>>>> +++ b/meson.build
+>>>> @@ -5,12 +5,13 @@ project('qemu', ['c'], meson_version: '>=1.5.0',
+>>>>     meson.add_devenv({ 'MESON_BUILD_ROOT' : meson.project_build_root() })
+>>>> -add_test_setup('quick', exclude_suites: ['slow', 'thorough'], is_default: true,
+>>>> +add_test_setup('quick', exclude_suites: ['slow', 'thorough'],
+>>>>                    env: ['RUST_BACKTRACE=1'])
+>>>>     add_test_setup('slow', exclude_suites: ['thorough'],
+>>>>                    env: ['G_TEST_SLOW=1', 'SPEED=slow', 'RUST_BACKTRACE=1'])
+>>>>     add_test_setup('thorough',
+>>>> -               env: ['G_TEST_SLOW=1', 'SPEED=thorough', 'RUST_BACKTRACE=1'])
+>>>> +               env: ['G_TEST_SLOW=1', 'SPEED=thorough', 'RUST_BACKTRACE=1'],
+>>>> +               is_default: true)
+>>>
+>>> I'd rather not make it the default: The thorough functional tests download a
+>>> lot of assets from the internet, so if someone just runs "meson test"
+>>> without further parameters, I think we should not trigger these downloads in
+>>> that case.
+>>>
+>>
+>> $ cat tests/Makefile.include
+>> ...
+>> check-functional:
+>> 	@$(NINJA) precache-functional
+>> 	@QEMU_TEST_NO_DOWNLOAD=1 $(MAKE) SPEED=thorough check-func
+>> ...
+>>
+>> What's the rationale to run check-func with SPEED=thorough and
+>> QEMU_TEST_NO_DOWNLOAD=1 with precache-functional having cached only quick
+>> tests by default?
+> 
+> Are you sure about that ? The precache logic uses custom_target() in
+> meson and so does not filters on "suites" used to define quick vs
+> thorough tests.
+> 
 
-Add GitLab CI job that builds QEMU using emscripten. The build runs in the
-container defined in tests/docker/dockerfiles/emsdk-wasm32-cross.docker.
+My bad, I missed the "foreach speed : ['quick', 'thorough']" wrapping 
+all this in tests/functional/meson.build.
 
-Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
-Link: https://lore.kernel.org/r/ade0deb2dc65618a91755590f6729485b4001b94.1745820062.git.ktokunaga.mail@gmail.com
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- .gitlab-ci.d/buildtest-template.yml | 27 +++++++++++++++++++++++++++
- .gitlab-ci.d/buildtest.yml          |  9 +++++++++
- .gitlab-ci.d/container-cross.yml    |  5 +++++
- 3 files changed, 41 insertions(+)
+> IOW, precache should always be downloading all assets.
+> 
 
-diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
-index d4f145fdb58..118371e377d 100644
---- a/.gitlab-ci.d/buildtest-template.yml
-+++ b/.gitlab-ci.d/buildtest-template.yml
-@@ -115,3 +115,30 @@
-     - du -chs ${CI_PROJECT_DIR}/*-cache
-   variables:
-     QEMU_JOB_FUNCTIONAL: 1
-+
-+.wasm_build_job_template:
-+  extends: .base_job_template
-+  stage: build
-+  image: $CI_REGISTRY_IMAGE/qemu/$IMAGE:$QEMU_CI_CONTAINER_TAG
-+  before_script:
-+    - source scripts/ci/gitlab-ci-section
-+    - section_start setup "Pre-script setup"
-+    - JOBS=$(expr $(nproc) + 1)
-+    - section_end setup
-+  script:
-+    - du -sh .git
-+    - mkdir build
-+    - cd build
-+    - section_start configure "Running configure"
-+    - emconfigure ../configure --disable-docs
-+          ${TARGETS:+--target-list="$TARGETS"}
-+          $CONFIGURE_ARGS ||
-+      { cat config.log meson-logs/meson-log.txt && exit 1; }
-+    - if test -n "$LD_JOBS";
-+      then
-+        pyvenv/bin/meson configure . -Dbackend_max_links="$LD_JOBS" ;
-+      fi || exit 1;
-+    - section_end configure
-+    - section_start build "Building QEMU"
-+    - emmake make -j"$JOBS"
-+    - section_end build
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 431bc07d8fb..248aaed1370 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -792,3 +792,12 @@ coverity:
-       when: never
-     # Always manual on forks even if $QEMU_CI == "2"
-     - when: manual
-+
-+build-wasm:
-+  extends: .wasm_build_job_template
-+  timeout: 2h
-+  needs:
-+    job: wasm-emsdk-cross-container
-+  variables:
-+    IMAGE: emsdk-wasm32-cross
-+    CONFIGURE_ARGS: --static --disable-tools --enable-debug --enable-tcg-interpreter
-diff --git a/.gitlab-ci.d/container-cross.yml b/.gitlab-ci.d/container-cross.yml
-index e45ea17cf15..8d3be53b75b 100644
---- a/.gitlab-ci.d/container-cross.yml
-+++ b/.gitlab-ci.d/container-cross.yml
-@@ -91,3 +91,8 @@ win64-fedora-cross-container:
-   extends: .container_job_template
-   variables:
-     NAME: fedora-win64-cross
-+
-+wasm-emsdk-cross-container:
-+  extends: .container_job_template
-+  variables:
-+    NAME: emsdk-wasm32-cross
--- 
-2.49.0
+Then I don't understand the previous argument from Thomas to not make 
+thorough the default: "The thorough functional tests download a
+lot of assets from the internet, so if someone just runs "meson test"
+without further parameters, I think we should not trigger these 
+downloads in that case". It's what precache-functional is doing.
+
+>> Either we should remove SPEED=thorough, or download all tests by default.
+>>
+>>>     Thomas
+>>>
+>>
+> 
+> With regards,
+> Daniel
 
 
