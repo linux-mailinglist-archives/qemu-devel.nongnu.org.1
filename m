@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC318AAC883
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:46:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDC89AAC86D
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 16:44:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCJYY-0007Wb-Mg; Tue, 06 May 2025 10:46:02 -0400
+	id 1uCJX9-0001Wn-7l; Tue, 06 May 2025 10:44:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uCJVH-0001ic-EQ
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:40 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1uCJVI-0001nJ-UQ
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:42 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uCJVF-00028i-Js
- for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:39 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-43d0c18e84eso25466545e9.3
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:42:36 -0700 (PDT)
+ id 1uCJVG-00028l-GF
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 10:42:40 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-43cfa7e7f54so35758605e9.1
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 07:42:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1746542556; x=1747147356; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=tQhWRsmeRZhJEPaGeSywzZPRJRyw52wiAKMOIfW054U=;
- b=SheFN0zYy97rk3X6MGdBhz5hoHj/uhx6wvV/9votxJMwdmEcMnKPaI+L6yF5FmNKjp
- y3f3f9o5WpciAn2GD5GvRmhSVCOQD/3LW9hC0Xt2qUdV1r6KTjfbwM9+2MstwCpBpiDt
- IDLYtdabysGBfDnpdwi+f8/MPX88Lh78/zMY/U+i+FbxJVRmSskS16hN8M8olknN/vGn
- APu+gaQwEpxc9W0UQVplXs3I7g0dpjqqdUVbKe2FzR/CNL7RyAyXZXFUHf/12dSXmSdM
- ibXIGLxgLaZfaDJ0GRK6KxWtnFa7/mTNgYDkRHWkKqYGVoktnKtbShIr+Ep20/3kj4+4
- 6tMw==
+ :reply-to; bh=A2xms1nxRmqWl4bVsTwmg4X2TDs1x1MpUAQTmcG45wI=;
+ b=LtISyPspAnKo+8slG46fu7QdSw9yguIUhchVBLtu64u5/26vn4qpIUNaPU5BDP3wgm
+ HCF9oJMW+Hkb3v7288ECVvS7gKv8Mt6/t0R951WldNk7bW8fzi4vazZWfYP/jbSozzum
+ jjZwm1ezYWv+ef0nbvC5jT8LuhINsZRcla948QqTdYR8dPmAjgzCCekGmY58X0WiTbPA
+ eHcHUHpgeOwgxaF/17SMOuSxLK6tB3g3KoQwOKzyloumMB4TKoFN5tu+/cdr3WQ4xVvW
+ cEFUy4SWGG9FkSwws74ATA0SnIz7506lkRIyyojQzbEaVAVNy5NFzCexF+wT1aSaXMLd
+ v5uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1746542556; x=1747147356;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tQhWRsmeRZhJEPaGeSywzZPRJRyw52wiAKMOIfW054U=;
- b=rK+SE+rJ4uSzd+mlLQfiwAysGtMfDWx7W0WNT1ha0RrAqJwY7X3XtHLud7lT80Sgs3
- G3EijdVD9+BbSXa59IfgOUuBdf5+SErwVPkHSQn61CcFvkVy3Eup4peetra2mI4+lQZz
- DtHaURFvLZZmiOt2DOXfUYnDyfcx2vo2wH/Qq+oYSsenh0bv+tzh4HQ2ZpXJSz+B1wOH
- k416KTZAGEep8C0W3wjJqJL9SZNlbKewJlnt9DQEaPELq8URqCwbMmOc3DQ1K7dGjhDB
- BpCmLEsKO9BXof/NtQXaXUfbu6giM4eRS4MX12Nkvs3vpzB0G7Ak40uEvuozdPRlOI5v
- akIA==
-X-Gm-Message-State: AOJu0YwKsYPQezUU01JYs8Lqy5UtW6Ic4FmCGvZpYaLEMrpAWEnnygtn
- rEgZ3mAiqNftmuxJoPhUBaoi0iz2kYEqI2dYWiFOohQDuCZlu3KVOl9q5FFUhFoS6bd60LvrXjt
- g
-X-Gm-Gg: ASbGncu0+08J+BpR94wPoDN6MjPGVruQ4mGWfMF9ZGHyCR5Thje0j3ZoRhXtn1SsHUN
- nNK56KA/6CYM1JJo4rLY4oEaPxiFqMxiRn0pbUQ1wQoohD9eBzWlTNfpWQl9yyd/xKI2yEOS4hN
- 38RycofnD6nv2TPAp0BfkgFEBUV2HaGMf/wTYMRK3JjG9/UhlK66FeA+Z8ldZ/gqMVGW/7pfpI2
- rG/KFtMs9N6f3ReyCPeLO1d6idETUvGjqgSCgrcz3cMnsWWZYy5vueMujvaWm34yuz0nLwGvzFs
- qo9JRtHvPDR2dhG1e1AoKF6DbkhT1vr8xJ94FcGFBeDCV20=
-X-Google-Smtp-Source: AGHT+IFavq25gzeD1IzK6if0lL9JUOXD9y8pm9Y2nZINZifJ4JaKC5b9v9i0xkuOxEeQkZ+GiYaGAw==
-X-Received: by 2002:a05:600c:3e05:b0:43e:bdf7:7975 with SMTP id
- 5b1f17b1804b1-441c49486cbmr84203585e9.32.1746542555916; 
- Tue, 06 May 2025 07:42:35 -0700 (PDT)
+ bh=A2xms1nxRmqWl4bVsTwmg4X2TDs1x1MpUAQTmcG45wI=;
+ b=qfBCIKCWh3nldo/lYGQO4/NAsKd3SKdtzGk83mpUYdMMVxZFtOR9jAbX3qPyCGHEF+
+ 9ybv77lZbZhIfbzlw4ilG/kmKI0x1ItHtr3D40X39yAu0i5kmkyiKzdNZtWmYLbB4rQW
+ t7k0y9uQixMjFHiqerXzbT5bW5WLWjuTJdwxKdBrPTW6amOdrAU3Cqll1zUnB9i18KYr
+ BeOryHNLp8IfXAaDCFSVeDD+P+y4tmw4q2FyvqxwwPnxJRbxzZW8P+126ox/Ap50CyCe
+ S5g64gDVI0oerTuU9wDV1ttl78lBs7xjuR6gVt5/3vSBRtyLxUtdmCQ5rAZ/zS3qgtHW
+ qn6A==
+X-Gm-Message-State: AOJu0Yx+30Gcoq2fgi3nBCB8USz5bI+MDTU2hqBqdff6BPHhEJOlIz6A
+ ekR7MHCLhJ8E1b5oP4SotUpcgPlT+37XK30ofcQXJo9GR19VDaw3iVkExzOM8DfBqAXl3OF9iGd
+ A
+X-Gm-Gg: ASbGncugUC28WKJfUzcjmpg51PvGQm5JvaMcALNLWDSxY6n054r3EDQsm2p/TKg9npL
+ LcaOQ0rAfKgbZZ2pDxxw3JUSSGGgoGgggdDaeY+4F0TRscZB9mKeb8WISUyP+7r+hpCOhPDiIZy
+ dzr3tWNtLYMC7qGW0o3lq1bHIlza4d8JXWnHTA+rQgdwRMbf0w3csJn6/+Yz2E2VDuPlTeTRx2V
+ Qqz+YyQHd7PernXo0wNddUV9ej5E97PmqmnEyZ5kWx8mZ9sWC8AKgVIYXTCzp8Bztuait4OpKiH
+ qs/YcZSpofVYl1xTCP24vHOMjofKQ9wtcuCVoSCNBvyuVQY=
+X-Google-Smtp-Source: AGHT+IFkHQaheap5aa6mq6/88aZDcGKlsOPhjJXyJ5lEAbo08iq8a6pMbzUTiq3ZvzVWBOKL1RvS9Q==
+X-Received: by 2002:a05:600c:1d0f:b0:441:d228:3a07 with SMTP id
+ 5b1f17b1804b1-441d3a78faemr141915e9.13.1746542556698; 
+ Tue, 06 May 2025 07:42:36 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-441b89edfc2sm169603435e9.20.2025.05.06.07.42.35
+ 5b1f17b1804b1-441b89edfc2sm169603435e9.20.2025.05.06.07.42.36
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 06 May 2025 07:42:35 -0700 (PDT)
+ Tue, 06 May 2025 07:42:36 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 17/32] hw/arm/virt: Remove deprecated virt-2.11 machine
-Date: Tue,  6 May 2025 15:41:59 +0100
-Message-ID: <20250506144214.1221450-18-peter.maydell@linaro.org>
+Subject: [PULL 18/32] hw/arm/virt: Remove VirtMachineClass::smbios_old_sys_ver
+ field
+Date: Tue,  6 May 2025 15:42:00 +0100
+Message-ID: <20250506144214.1221450-19-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250506144214.1221450-1-peter.maydell@linaro.org>
 References: <20250506144214.1221450-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,37 +100,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-This machine has been supported for a period of more than 6 years.
-According to our versioned machine support policy (see commit
-ce80c4fa6ff "docs: document special exception for machine type
-deprecation & removal") it can now be removed.
+The VirtMachineClass::smbios_old_sys_ver field was
+only used by virt-2.11 machine, which got removed.
+Remove it and simplify virt_build_smbios().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/virt.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ include/hw/arm/virt.h | 1 -
+ hw/arm/virt.c         | 4 +---
+ 2 files changed, 1 insertion(+), 4 deletions(-)
 
+diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
+index 9c531e28d04..b2cc012a402 100644
+--- a/include/hw/arm/virt.h
++++ b/include/hw/arm/virt.h
+@@ -118,7 +118,6 @@ typedef enum VirtGICType {
+ struct VirtMachineClass {
+     MachineClass parent;
+     bool no_tcg_its;
+-    bool smbios_old_sys_ver;
+     bool no_highmem_compact;
+     bool no_highmem_ecam;
+     bool no_ged;   /* Machines < 4.2 have no support for ACPI GED device */
 diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 6e10b2b0857..4b21f3226f9 100644
+index 4b21f3226f9..3488bc4fb9d 100644
 --- a/hw/arm/virt.c
 +++ b/hw/arm/virt.c
-@@ -3601,13 +3601,3 @@ static void virt_machine_2_12_options(MachineClass *mc)
-     mc->max_cpus = 255;
- }
- DEFINE_VIRT_MACHINE(2, 12)
--
--static void virt_machine_2_11_options(MachineClass *mc)
--{
--    VirtMachineClass *vmc = VIRT_MACHINE_CLASS(OBJECT_CLASS(mc));
--
--    virt_machine_2_12_options(mc);
--    compat_props_add(mc->compat_props, hw_compat_2_11, hw_compat_2_11_len);
--    vmc->smbios_old_sys_ver = true;
--}
--DEFINE_VIRT_MACHINE(2, 11)
+@@ -1699,7 +1699,6 @@ static void virt_build_smbios(VirtMachineState *vms)
+ {
+     MachineClass *mc = MACHINE_GET_CLASS(vms);
+     MachineState *ms = MACHINE(vms);
+-    VirtMachineClass *vmc = VIRT_MACHINE_GET_CLASS(vms);
+     uint8_t *smbios_tables, *smbios_anchor;
+     size_t smbios_tables_len, smbios_anchor_len;
+     struct smbios_phys_mem_area mem_array;
+@@ -1709,8 +1708,7 @@ static void virt_build_smbios(VirtMachineState *vms)
+         product = "KVM Virtual Machine";
+     }
+ 
+-    smbios_set_defaults("QEMU", product,
+-                        vmc->smbios_old_sys_ver ? "1.0" : mc->name);
++    smbios_set_defaults("QEMU", product, mc->name);
+ 
+     /* build the array of physical mem area from base_memmap */
+     mem_array.address = vms->memmap[VIRT_MEM].base;
 -- 
 2.43.0
 
