@@ -2,144 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50160AACBFC
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 19:13:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D52D3AACC4A
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 19:36:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCLqp-0003RE-C1; Tue, 06 May 2025 13:13:03 -0400
+	id 1uCMBf-0004tb-Eh; Tue, 06 May 2025 13:34:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uCLqn-0003Qz-I3
- for qemu-devel@nongnu.org; Tue, 06 May 2025 13:13:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uCLql-0006bj-G7
- for qemu-devel@nongnu.org; Tue, 06 May 2025 13:13:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746551578;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=lbSb1jVekFhLi/NBpXJ0FvYQt8Tsx1pf0qwJer4I7P8=;
- b=bkfQtM4If5IKbxsPhhC1+dFFCRud5/kyeVTKFuHYwVcQFzG2dcN4UDrXEHIf9WSgOFl8/Z
- UIIUquhZmQVp4KVHwkFusnfbak3SD0ofY3BfJXzMsPw0IVpF/51sZ+hg6YWMXpL10P7XAo
- LkAL7ynRrGgoJGP5xp+xxBIU4xXAacU=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-274-ZGZz-xt8NdKAxFZXHUTNxw-1; Tue, 06 May 2025 13:12:56 -0400
-X-MC-Unique: ZGZz-xt8NdKAxFZXHUTNxw-1
-X-Mimecast-MFC-AGG-ID: ZGZz-xt8NdKAxFZXHUTNxw_1746551575
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3a0b394504cso31673f8f.1
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 10:12:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jonwilson030981@googlemail.com>)
+ id 1uCMBZ-0004qQ-6g
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 13:34:29 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jonwilson030981@googlemail.com>)
+ id 1uCMBW-0001LV-Sz
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 13:34:28 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-43d0359b1fcso835235e9.0
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 10:34:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=googlemail.com; s=20230601; t=1746552864; x=1747157664; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=GGNEaRzmX7TwlAKBc+YmJmtRj/7EV7fnvkYFDLnHgmM=;
+ b=U3uA/8fWqGxtuL8BB0gs5EWCKTWZhupoRHzIrm32tfXIyxOuEtIJk/XrXRnmVLK7Dp
+ PhMNSEPU1V/rAnvECPYLN/ecMbD1pUHr2j6sa3bszy3OwnXmiQS9+S/3lW52kclItWMJ
+ lEGuGvSbIc+Qsm4KnkR6rR/8NaXh78dcCde1JD30TGF7y7VHP+t0o/ujlAu4JMmdEMrO
+ yQhSwomTJRa2I8JDyNBCfd4XFKFMz5R0sDCrg40tL3V4V42sCX9CwWqF6x1o5vEGIgrg
+ 6w+5IOgOo1p4l8OCz+8LM/2FPxKiZdR6EQILlE2PsoA5GolJpR3kcciiDb53ncwU+IiN
+ erNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746551575; x=1747156375;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1746552864; x=1747157664;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=lbSb1jVekFhLi/NBpXJ0FvYQt8Tsx1pf0qwJer4I7P8=;
- b=QQ24Yg8lbf0lvTQ5twqXC0pe1JoTN6FV9SD8TFAH4ZQRpPhhr2fgNP/xBM4vBUmKfL
- skUSjjmVUgPrEcIpU0VX3p/iSFErR5vMOziZoCYnzy7xeMhhQj6L897Ty5adXeBEifoo
- yV2HtD2rdUY7F5m2pKneb6ixXfg+QPxnHFt1c49G/uERmAqGyIaeA6c7z5+UxUedwfJ3
- e+oOLT3ugpqS99E3e6ufmMGjjdLOYz0Mi3pejmxAKFSjZohUZXZ9YsGF4/VP9a3aCnjK
- 70ZMFEXojuYpAQlUwz81up9g0RMPFePIBSsKRG5A6yiGmUXqnpireTu6XfEc9L3eBTBw
- svWQ==
-X-Gm-Message-State: AOJu0Yx756XxJOnD+aFN2m/nD3f3v2jvZ+8wSlHL5Utlg51dCR2OTIxh
- pNDh+zAvKhMplQtArvti3vGxLUlSrRVQvh7Dk8xR0RWgKIoZKbQY8MCOlKJ2x6Qbn7Yj1H4odap
- gX2aDEmgc7SvILy67L16ed8xaGTGplikx+7L4Rc8Tx+4U/CRSd9Nm
-X-Gm-Gg: ASbGncsfSL4umvmNRJjpPyeA+6/nlIUI2ksbmaBgLkSTR0KLmQixMwTFRxojghsqdMv
- d2PO6FvSt1KoNE5ZKZHRE8I9dRoYal9QsMxPQMQEngDwyC/OqeKXXUBVH+uqLvlLBnjexbNj15l
- Fg6JaGha9jXPULg2HNq0gk5CC0hCEbl/6gPmbkX0HcE2mn8TE+igzQ68n0hdrDpJ5RKezCmcPdo
- BvGHDukuNYw2BeYEuhazheM4hHyZGLvl7dEhyIJJ2DSBzoq1y/SSp1gA5YuhYRbfixqbRsSRcnl
- Flbl4xxTwpuaLLJCXSsSt7LjLnpJFE+QWoU4cuPaoZq6+3a714cl
-X-Received: by 2002:a5d:5f4f:0:b0:3a0:7afd:cbfd with SMTP id
- ffacd0b85a97d-3a0b43b6901mr599488f8f.7.1746551575310; 
- Tue, 06 May 2025 10:12:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE1OiRGnvZlrzxoewx4DGcoh0VU6pSlaCWNEezzT6GdUkYYvE9QvKnsOowD1InGcOmsYeFOgA==
-X-Received: by 2002:a5d:5f4f:0:b0:3a0:7afd:cbfd with SMTP id
- ffacd0b85a97d-3a0b43b6901mr599463f8f.7.1746551574910; 
- Tue, 06 May 2025 10:12:54 -0700 (PDT)
-Received: from [192.168.0.7] (ltea-047-064-115-173.pools.arcor-ip.net.
- [47.64.115.173]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a09a7ad055sm13875216f8f.11.2025.05.06.10.12.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 06 May 2025 10:12:54 -0700 (PDT)
-Message-ID: <e36633e2-e0de-422a-8ad3-1562e97926c6@redhat.com>
-Date: Tue, 6 May 2025 19:12:53 +0200
+ bh=GGNEaRzmX7TwlAKBc+YmJmtRj/7EV7fnvkYFDLnHgmM=;
+ b=uZgwZz/vMXFfbXmpOj+flPaKu0+6UE76BevcYuEhmfLhnMQ3gzAq9p2CKdzEqFxvrV
+ 9d33tNTc+VlqvrHCIRzUXVN1DWCnHnl9GIrpFT1jfRitrsKC862/LyDZaCydL4umDHjE
+ CKiqiUgnWCDcdUTjcX8y9lEowWzTRADPiD/XH1WnSx5Y/USu00DRSexcIrIn8tE4L2jk
+ 1KFTqaw3zOn6qiDKKR8FI82oaVB23e/YbkLLdfMUNDPrqMLlFeKABrTJ+7aFoReLJQsJ
+ UqRi0j/3sGeItz+yU1D5tZGA6djoOqaH9JPRNoV6gMlC24l4HcoCrixwg0+cvFsdTg5v
+ UpUA==
+X-Gm-Message-State: AOJu0YzXvAoq9c4yRhFdTnURdciivYxMXWrSbwmymPaNnfBSljnFW5EG
+ uSK7liMh1iwOyljZ9g49uc5oCMDlSdKvfqn6PcywrKigu/3+wG6zU60dCbCmavs=
+X-Gm-Gg: ASbGncuN1EMWclldE/PMFkvH/YRyBu0Ska3wvfqXoorZtIJUEq6AAvQv5s5Iw93BybL
+ +zzEbVRLz9mDnJ8Bd92La0rO8hXSNAVKGgw2fRQupfzTyYvh3MdBY7F+rE6oJseaNFikZQrb6xO
+ 9ygtoLVd0/nTv+dpHhz0SiwFD4t5rFmhbEm+PpGNH0qlakwXgO2vhbdhreR4JYoeJ55vj/Pt5QV
+ fjRiFs7WzPhH0RnWzkVByGamlzStG4ePQC7wUqhsmxf276cFaBLpI/f3aRESxi8x2C/cq2zshzC
+ 7WoBl1aX2YzbGmoXft3AEvPbmwpfpUENgSLAHfo9Ogl3S1rrWNHLZIgoPjorBwIAVXxaq0p0qRf
+ 6ZN3kYqDrx+A=
+X-Google-Smtp-Source: AGHT+IEKPdJ0xIuFdLe/TU9aF0LFrKP5Uj/ohpSH430qi8XlFdcyTknoxnpaueopNf7Qd1eghC6WEA==
+X-Received: by 2002:a7b:cbd3:0:b0:43d:174:2668 with SMTP id
+ 5b1f17b1804b1-441d39e27b4mr5745475e9.0.1746552863723; 
+ Tue, 06 May 2025 10:34:23 -0700 (PDT)
+Received: from outlast.lan (97e5422b.skybroadband.com. [151.229.66.43])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-441d434650bsm804115e9.13.2025.05.06.10.34.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 06 May 2025 10:34:23 -0700 (PDT)
+From: Jon Wilson <jonwilson030981@googlemail.com>
+X-Google-Original-From: Jon Wilson <jonwilson030981@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Jon Wilson <jonwilson030981@gmail.com>
+Subject: [PATCH v4] Support madvise(MADV_DONTDUMP) when creating core dumps
+ for qemu-user
+Date: Tue,  6 May 2025 18:34:22 +0100
+Message-ID: <20250506173423.1312788-1-jonwilson030981@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] meson: use thorough test setup as default
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
- <marcandre.lureau@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20250503201806.3045723-1-pierrick.bouvier@linaro.org>
- <f7da46dd-0e8f-42d8-b555-300c088f605e@redhat.com>
- <91cc4370-163e-4bdd-ac1c-b0d6ea3c06cb@linaro.org>
- <aBnXXC3ldqErl8ub@redhat.com>
- <6a8d7703-e275-4566-bc38-b627cc597e9a@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <6a8d7703-e275-4566-bc38-b627cc597e9a@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=jonwilson030981@googlemail.com; helo=mail-wm1-x32d.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -155,86 +99,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 06/05/2025 17.31, Pierrick Bouvier wrote:
-> On 5/6/25 2:33 AM, Daniel P. Berrangé wrote:
->> On Mon, May 05, 2025 at 10:46:52AM -0700, Pierrick Bouvier wrote:
->>> On 5/5/25 3:32 AM, Thomas Huth wrote:
->>>> On 03/05/2025 22.18, Pierrick Bouvier wrote:
->>>>> Allows all tests to be visible by default when using meson test
->>>>> directly.
->>>>>
->>>>> This has no impact on make check-* commands, which use SPEED=quick by
->>>>> default (see scripts/mtest2make.py).
->>>>>
->>>>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->>>>> ---
->>>>>     meson.build | 5 +++--
->>>>>     1 file changed, 3 insertions(+), 2 deletions(-)
->>>>>
->>>>> diff --git a/meson.build b/meson.build
->>>>> index f8bf6e7bb66..57ff3f722d8 100644
->>>>> --- a/meson.build
->>>>> +++ b/meson.build
->>>>> @@ -5,12 +5,13 @@ project('qemu', ['c'], meson_version: '>=1.5.0',
->>>>>     meson.add_devenv({ 'MESON_BUILD_ROOT' : meson.project_build_root() })
->>>>> -add_test_setup('quick', exclude_suites: ['slow', 'thorough'], 
->>>>> is_default: true,
->>>>> +add_test_setup('quick', exclude_suites: ['slow', 'thorough'],
->>>>>                    env: ['RUST_BACKTRACE=1'])
->>>>>     add_test_setup('slow', exclude_suites: ['thorough'],
->>>>>                    env: ['G_TEST_SLOW=1', 'SPEED=slow', 
->>>>> 'RUST_BACKTRACE=1'])
->>>>>     add_test_setup('thorough',
->>>>> -               env: ['G_TEST_SLOW=1', 'SPEED=thorough', 
->>>>> 'RUST_BACKTRACE=1'])
->>>>> +               env: ['G_TEST_SLOW=1', 'SPEED=thorough', 
->>>>> 'RUST_BACKTRACE=1'],
->>>>> +               is_default: true)
->>>>
->>>> I'd rather not make it the default: The thorough functional tests 
->>>> download a
->>>> lot of assets from the internet, so if someone just runs "meson test"
->>>> without further parameters, I think we should not trigger these 
->>>> downloads in
->>>> that case.
->>>>
->>>
->>> $ cat tests/Makefile.include
->>> ...
->>> check-functional:
->>>     @$(NINJA) precache-functional
->>>     @QEMU_TEST_NO_DOWNLOAD=1 $(MAKE) SPEED=thorough check-func
->>> ...
->>>
->>> What's the rationale to run check-func with SPEED=thorough and
->>> QEMU_TEST_NO_DOWNLOAD=1 with precache-functional having cached only quick
->>> tests by default?
->>
->> Are you sure about that ? The precache logic uses custom_target() in
->> meson and so does not filters on "suites" used to define quick vs
->> thorough tests.
->>
-> 
-> My bad, I missed the "foreach speed : ['quick', 'thorough']" wrapping all 
-> this in tests/functional/meson.build.
-> 
->> IOW, precache should always be downloading all assets.
->>
-> 
-> Then I don't understand the previous argument from Thomas to not make 
-> thorough the default: "The thorough functional tests download a
-> lot of assets from the internet, so if someone just runs "meson test"
-> without further parameters, I think we should not trigger these downloads in 
-> that case". It's what precache-functional is doing.
+When running applications which make large (sparsely populated) address ranges
+(e.g. when using address sanitizer with LibAFL) the inability to exclude these
+regions from any core dump can result in very large files which fill the disk.
+A coredump is obvously very useful for performing a post-mortem when fuzzing.
 
-precache-functional is *only* called when you run "make check-functional", 
-i.e. when you know that you want to run the functional tests that might 
-download assets from the internet. It's not called when you run the normal 
-"make check". I think "meson test" should by default also not download any 
-assets from the internet (e.g. in case someone is still on a metered 
-internet connection or tries to do air-gapped builds) - we should only 
-download if people really really want to run the functional tests consciously.
+Whilst the man pages state that madvise provides only a hint (and hence can be
+ignored), this patch adds support to handle MADV_DONTDUMP and set a
+corresponding flag in the page flags, thus allowing QEMU to exclude these
+regions from the core file.
 
-  Thomas
+Signed-off-by: Jon Wilson <jonwilson030981@gmail.com>
+---
+ include/exec/page-protection.h |  6 ++++++
+ linux-user/elfload.c           |  4 ++++
+ linux-user/mmap.c              | 18 ++++++++++++++++++
+ 3 files changed, 28 insertions(+)
+
+diff --git a/include/exec/page-protection.h b/include/exec/page-protection.h
+index c43231af8b..f8826d917e 100644
+--- a/include/exec/page-protection.h
++++ b/include/exec/page-protection.h
+@@ -38,4 +38,10 @@
+  */
+ #define PAGE_PASSTHROUGH 0x0800
+ 
++/*
++ * For linux-user, indicates that the page should not be included in a core 
++ * dump.
++ */
++#define PAGE_DONTDUMP   0x1000
++
+ #endif
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index fbfdec2f17..41c46da055 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -4067,6 +4067,10 @@ static size_t vma_dump_size(target_ulong start, target_ulong end,
+         return 0;
+     }
+ 
++    if (flags & PAGE_DONTDUMP) {
++        return 0;
++    }
++
+     /*
+      * Usually we don't dump executable pages as they contain
+      * non-writable code that debugger can read directly from
+diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+index f88a80c31e..016063a8cf 100644
+--- a/linux-user/mmap.c
++++ b/linux-user/mmap.c
+@@ -1247,6 +1247,24 @@ abi_long target_madvise(abi_ulong start, abi_ulong len_in, int advice)
+      */
+     mmap_lock();
+     switch (advice) {
++    case MADV_DONTDUMP:
++        if (len > 0) {
++            /*
++             * To set the page permissons, we must OR our new flags with the
++             * existing flags. Only mark the pages as PAGE_DONTDUMP if the
++             * entire range has the same flags. If any part of the range
++             * differs, we would need to process it one page at a time which
++             * might not be very performant. Since we are not obliged to respect
++             * this flag, we will support it for the most likely usage scenario.
++             * Note that we don't set PAGE_ANON, since this can only be set with
++             * new mappings.
++             */
++            int flg = page_get_flags(start);
++            if (page_check_range(start, len, flg)) {
++                page_set_flags(start, start + len - 1, PAGE_DONTDUMP | (flg & ~PAGE_ANON) );
++            }
++        }
++        break;
+     case MADV_WIPEONFORK:
+     case MADV_KEEPONFORK:
+         ret = -EINVAL;
+-- 
+2.43.0
 
 
