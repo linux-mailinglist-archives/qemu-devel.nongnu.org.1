@@ -2,66 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FC2BAABCD0
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 10:14:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C400AABD69
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 10:36:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCDR9-0006sI-1L; Tue, 06 May 2025 04:13:59 -0400
+	id 1uCDmi-0008Ll-IF; Tue, 06 May 2025 04:36:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uCDR4-0006mY-3I; Tue, 06 May 2025 04:13:54 -0400
-Received: from mgamail.intel.com ([192.198.163.9])
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1uCDme-0008Kv-AK; Tue, 06 May 2025 04:36:12 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uCDR2-0002Vp-BJ; Tue, 06 May 2025 04:13:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746519232; x=1778055232;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=dE7zz7MA21loKwGBXqqSeiRszbbsWdpQQdjUHiCm7r0=;
- b=l7+/tgiXdLmaAt+4CWPInYfHkUTxsITvbIiNTgEp9a//Yxa2AdaShn+I
- eTNE3osqEKpUdpCSo1NO23+h9vz+xPAiDno/iuwLDQyStC0H7d87fkQrx
- wTy4nB9kaI8lXXz3A7AHpxSdAErALtSY1w/DOjluoh7gHWQ7KDFvxLUH1
- iWqlcanJbjCJ8fuBnePMn0XriXUcB2fIDPvUw/iJMWNGLfU+Moqdovg+D
- 2680mRzFoEe1/ukrPp+LVf8S4jfDdqHs0e5LCsZBd/W/0CJlbXYAAZLQC
- aptB3sOcm67UXaLjzxtjd5xZ/47nierQE2aI/QIOafrhof4Y3oI4r0/09 w==;
-X-CSE-ConnectionGUID: +m5NfzSMR/6CDCr+gqcO0Q==
-X-CSE-MsgGUID: e3OOSahMQGiCvnbPRda4og==
-X-IronPort-AV: E=McAfee;i="6700,10204,11424"; a="58833466"
-X-IronPort-AV: E=Sophos;i="6.15,265,1739865600"; d="scan'208";a="58833466"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2025 01:13:50 -0700
-X-CSE-ConnectionGUID: WA7vYq6BQOS1xjUs/t7EVw==
-X-CSE-MsgGUID: nC88bKa2RSul+U+ZXIP3RA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,265,1739865600"; d="scan'208";a="135533716"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa007.fm.intel.com with ESMTP; 06 May 2025 01:13:48 -0700
-Date: Tue, 6 May 2025 16:34:49 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, manos.pitsidianakis@linaro.org, qemu-rust@nongnu.org
-Subject: Re: [PATCH 10/11] rust: replace c_str! with c"" literals
-Message-ID: <aBnJqXXCjMZVPLRa@intel.com>
-References: <20250505090438.24992-1-pbonzini@redhat.com>
- <20250505090438.24992-11-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1uCDmb-0005IK-6R; Tue, 06 May 2025 04:36:11 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZsBSm1nv3z6M569;
+ Tue,  6 May 2025 16:31:36 +0800 (CST)
+Received: from frapeml500006.china.huawei.com (unknown [7.182.85.219])
+ by mail.maildlp.com (Postfix) with ESMTPS id 879851400E3;
+ Tue,  6 May 2025 16:36:05 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (7.182.85.71) by
+ frapeml500006.china.huawei.com (7.182.85.219) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 6 May 2025 10:36:05 +0200
+Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
+ frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
+ Tue, 6 May 2025 10:36:05 +0200
+To: Nicolin Chen <nicolinc@nvidia.com>
+CC: "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "jgg@nvidia.com"
+ <jgg@nvidia.com>, "ddutile@redhat.com" <ddutile@redhat.com>,
+ "berrange@redhat.com" <berrange@redhat.com>, "nathanc@nvidia.com"
+ <nathanc@nvidia.com>, "mochs@nvidia.com" <mochs@nvidia.com>,
+ "smostafa@google.com" <smostafa@google.com>, Linuxarm <linuxarm@huawei.com>,
+ "Wangzhou (B)" <wangzhou1@hisilicon.com>, jiangkunkun
+ <jiangkunkun@huawei.com>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>
+Subject: RE: [PATCH v2 5/6] hw/arm/virt: Add support for smmuv3 device
+Thread-Topic: [PATCH v2 5/6] hw/arm/virt: Add support for smmuv3 device
+Thread-Index: AQHbu1jqYTsFj39vKkuQIG4UcJc6+bO/flOAgAXNP5A=
+Date: Tue, 6 May 2025 08:36:05 +0000
+Message-ID: <66d11898b79448b9876ac4d7b9e2ecf9@huawei.com>
+References: <20250502102707.110516-1-shameerali.kolothum.thodi@huawei.com>
+ <20250502102707.110516-6-shameerali.kolothum.thodi@huawei.com>
+ <aBUG34ZMbv+AspsR@Asurada-Nvidia>
+In-Reply-To: <aBUG34ZMbv+AspsR@Asurada-Nvidia>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.203.177.241]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250505090438.24992-11-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -57
-X-Spam_score: -5.8
-X-Spam_bar: -----
-X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=shameerali.kolothum.thodi@huawei.com;
+ helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -76,33 +79,59 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 05, 2025 at 11:04:35AM +0200, Paolo Bonzini wrote:
-> Date: Mon,  5 May 2025 11:04:35 +0200
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH 10/11] rust: replace c_str! with c"" literals
-> X-Mailer: git-send-email 2.49.0
-> 
-> Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  docs/devel/rust.rst                    |  6 +--
->  rust/hw/char/pl011/src/device_class.rs | 11 +++--
->  rust/hw/char/pl011/src/lib.rs          |  6 +--
->  rust/hw/timer/hpet/src/hpet.rs         | 19 ++++----
->  rust/hw/timer/hpet/src/lib.rs          |  4 +-
->  rust/qemu-api/meson.build              |  1 -
->  rust/qemu-api/src/c_str.rs             | 61 --------------------------
->  rust/qemu-api/src/cell.rs              |  4 +-
->  rust/qemu-api/src/lib.rs               |  1 -
->  rust/qemu-api/src/vmstate.rs           |  2 +-
->  rust/qemu-api/tests/tests.rs           |  9 ++--
->  rust/qemu-api/tests/vmstate_tests.rs   | 15 +++----
->  12 files changed, 32 insertions(+), 107 deletions(-)
->  delete mode 100644 rust/qemu-api/src/c_str.rs
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
+> -----Original Message-----
+> From: Nicolin Chen <nicolinc@nvidia.com>
+> Sent: Friday, May 2, 2025 6:55 PM
+> To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+> Cc: qemu-arm@nongnu.org; qemu-devel@nongnu.org;
+> eric.auger@redhat.com; peter.maydell@linaro.org; jgg@nvidia.com;
+> ddutile@redhat.com; berrange@redhat.com; nathanc@nvidia.com;
+> mochs@nvidia.com; smostafa@google.com; Linuxarm
+> <linuxarm@huawei.com>; Wangzhou (B) <wangzhou1@hisilicon.com>;
+> jiangkunkun <jiangkunkun@huawei.com>; Jonathan Cameron
+> <jonathan.cameron@huawei.com>; zhangfei.gao@linaro.org
+> Subject: Re: [PATCH v2 5/6] hw/arm/virt: Add support for smmuv3 device
+>=20
+> On Fri, May 02, 2025 at 11:27:06AM +0100, Shameer Kolothum wrote:
+> > @@ -2972,6 +3004,21 @@ static void
+> virt_machine_device_plug_cb(HotplugHandler *hotplug_dev,
+> >          virtio_md_pci_plug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev),
+> errp);
+> >      }
+> >
+> > +    if (object_dynamic_cast(OBJECT(dev), TYPE_ARM_SMMUV3)) {
+>=20
+> This seems to be on the path of a hotplug function? Mind elaborating
+> why, while PATCH-1 sets hotpluggable to false?
+
+Not really. Qemu has this path for both cold plug case(which is before the =
+Guest
+is booted, ie, -device arm-smmuv3, case) and for hot plug case (where we tr=
+y to
+add the device after Guest is booted, ie,  device_add arm-smmuv3, case).
+
+We are preventing only the hot plug case.
+
+>=20
+> > +        if (!vms->legacy_smmuv3_present && vms->platform_bus_dev) {
+> > +            VirtMachineClass *vmc =3D VIRT_MACHINE_GET_CLASS(vms);
+> > +
+> > +            create_smmuv3_dev_dtb(vms, dev);
+> > +            if (vms->iommu !=3D VIRT_IOMMU_SMMUV3) {
+>=20
+> Should this be VIRT_IOMMU_NONE only as the other cases are rejected?
+
+The check is basically to handle cases where we will have multiple SMMUv3 d=
+evices
+and to set this only once.
+
+Thanks,
+Shameer
 
