@@ -2,85 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFF07AAA48A
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 01:30:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE47AAAA668
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 02:12:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uC5EL-0003bi-Lw; Mon, 05 May 2025 19:28:13 -0400
+	id 1uC5tw-0004Yj-Q6; Mon, 05 May 2025 20:11:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uC5Db-0007tY-Aj
- for qemu-devel@nongnu.org; Mon, 05 May 2025 19:27:28 -0400
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1uC5tu-0004YM-SM
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 20:11:10 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uC5DY-0004Ox-HN
- for qemu-devel@nongnu.org; Mon, 05 May 2025 19:27:27 -0400
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-30863b48553so5653306a91.0
- for <qemu-devel@nongnu.org>; Mon, 05 May 2025 16:27:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1uC5ts-00008E-Cx
+ for qemu-devel@nongnu.org; Mon, 05 May 2025 20:11:10 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-2254e0b4b79so75544975ad.2
+ for <qemu-devel@nongnu.org>; Mon, 05 May 2025 17:11:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746487642; x=1747092442; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=DColEmLeOznk74rz9KqevCsTLWb7uFfsWuQwws4WyvU=;
- b=WD+UuSvnpeLes2Iy/FTAKPcVXPmY6B6Nujutl+7G10AMO5UexrW13F/NwjyoKvWvEa
- uS7sZg2hJFamweRmhL7KkVhT7Eal4M4YH8eFlFMSNBY7BPDqCNkszqYYfrJ9D3myL+Be
- Il9V201ZS3VSANZzj9lAxI2UjoZWePPdbXa6FY4PvNYEW3chGCQsEWlf9mk006h393MY
- 7+JTRqjngTcX7yMqylwF5qglYXhyJoqBAgGvfedEdS3XVmXsI8OrgMmJ7cQKBQqn+WV5
- SoDlE5JxlwKZkTKIAzry9/XnJvZHlFsa1fdujlO3BIbMA+w8DXj5CVTQeQzg2hlcGCGp
- R+gQ==
+ d=linaro.org; s=google; t=1746490265; x=1747095065; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=rMlrkoDSa1JV/ScygbYcd3JhEPUBHPR5an3220OLAoU=;
+ b=hrv+oGIYinvIpSi250ODmaWhDPpA0HIenKAeQpy1xtCLG17jv5qqrrVjkdKw21oKuD
+ i7dQxAbjfy2q06MvpKCSQIs7DLX1Byl75V0AKcuutiEPLrnVEM2hxccXBaOEHZ2YFh9U
+ e7je1bDKqYHgXlR6YP0XEoLayqrM+SLQKGIR1nq93pmztZnaiuDN8HC+fgOcDdMJBn8h
+ TcKlc92/KDZNoTRDDt0lsgRqjbLHf8RfCW8FM+uHZUTTLPs5wWkbQ1Tu4odiMNMSzAa+
+ 1m3Ozr0Nw3alCRwDlEfJ3rA8wQFd1eaTcjagummB72EiXCb4R4+QFGfL6MmbduYSiGp9
+ K67Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746487642; x=1747092442;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1746490265; x=1747095065;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:subject:from:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DColEmLeOznk74rz9KqevCsTLWb7uFfsWuQwws4WyvU=;
- b=VrMlLVQwRBGslKDYHBt243vfRaXXiIEB1Y0A8bTZ3aEStuy5eIlib5+39yWTP74c5P
- UnzgrO4FccN63gn0KgQK0z1CintHULn3KIdc/iF7dkDKCbQu+MbXwwWpJaNw2SdeYdD7
- Reo5gnC2kawpLv4Xta6AV+WdL14mXzlaECtxPTr3fgX519/2wvPSKQ9rB5g43LLpQPUd
- AGlcUUBMMOIc7TIHZBydDjYBMBId0ddEicG6xXbhi+F2SolUh+RG/nY5NsdkzyBIjMSM
- WpP/tx+yJ4v7uZFzZ2qUuKZvBq92sWbnkauF3FMoWSCBlSehKXhJ8UPJPwdRr4Kojw3Q
- v1JQ==
-X-Gm-Message-State: AOJu0YxPnWL+XrIWp1tCuk+NzDqVM8lQM2DPxPTBqRcM2HAjH1dWhpuP
- 9mWN5rVzWV/FqBzWwR4yQIO7BLffcFlOUVHEtaGenSwkSApiGIleO76T6xCef37jEmGe/r6Z/ci
- CxsU=
-X-Gm-Gg: ASbGncsHfoksU5lTFQYEZGR25t0IuGd6PNFHoufdAWPTD5jJDNhbsK0fNdiS2lZiVzx
- HQIPH/u9Es369rxO7AGSRFnlA+bOGvjTiYLLtP82K2EMYQJTyNdA3tT2dTvigHYYD+WNMZdOlJq
- LdvRiciONlOjLyI1bg/vIDSMQ1z34aInMj80cyUrrxGx5r6XB5Arp+2lEM72+Z1+EGtJtuLVWM/
- FxM0cbfWGomijMe5jvwUN38jKtEGQtFP1VeUgXsA8oytb4WvbsI++2dWrrHoSLbU/medK6ytgfU
- x3GiWk+iFvzmzQ+go98ABHZaiYuwDfHnto4spQSjWrYilqc0KT0mYw==
-X-Google-Smtp-Source: AGHT+IFgstfeaoCNVrbCHdFFeS0ZpKEX0NF2KwZsdipdG+8jwM/CES45trboYz2SF8VajkqqYc5+hw==
-X-Received: by 2002:a17:90b:544e:b0:2fa:3174:e344 with SMTP id
- 98e67ed59e1d1-30a7bb28833mr2046495a91.14.1746487642685; 
- Mon, 05 May 2025 16:27:22 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
+ bh=rMlrkoDSa1JV/ScygbYcd3JhEPUBHPR5an3220OLAoU=;
+ b=UHR3+oo2nNH0gQgbt3iYMduT2VUo4t6EjwBLJXmxNepRqUQPEwEcZrHqMzttCAJqB6
+ MGxirkxfcY0Ai2zXd67/6pDftCLi3yiCRIOZWfb17nkTgbN23elQk63OKVuPOVvJQRZA
+ FdJJjQNI0neBGXIO7aL8s4AjbRMbe/RerOtW7sCs8wsgU7TqidvJP8e+3saKR86w0ZIt
+ iu7w541DI7T3gxCjdTotKrcVmeQBxApnJJM99gApyNrOArEeMxH7CskWBrnm890diKBe
+ kCwWAw8B45/4mhXm+Ud2VimzedhaegXPGT9gh4OWyNWvS+ASClWeg5BiNFteNr7NhWx1
+ ZmqA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUd52rhFW+yqtkT4n3ILccKFMTScqb1C+En8EYa2/Xeslw9r0ZOymN/s88Cfeco2Xi222VoaYytVlOb@nongnu.org
+X-Gm-Message-State: AOJu0YxjCUd1ST0HIdsH0HHUL4Be8qYpqMiWq9DsP+0ld/ZNIXBNzhGK
+ pi+VuHjbI8lk3XjGkLFC0HFnRBAKPXELtIqPOfFB2zTYsq13milqWdgvdU3+Rj4=
+X-Gm-Gg: ASbGncsAgg8cHIwDoraPZj7P5qEErjKfnaLtX9BrMBlX4ofpJ4T3YWdZEEMJvTme5XP
+ Af/44JmGhRcPwJWN0NuF9m26GxfDlAPWctiUyVa+Ecy1x77UNgTZMhZkai2/PRFISCxJQzYra4K
+ 1IVrVNq2AbCAuu7kjhEaIV67M2XKUuMfHB0z3JxCR0n3eYnOaUiUntuy4ZMo/xPD7bVzhXjMyXn
+ HrtICVZIuLpbqZA7ltdMf9T8/waNI9/8wBb0fq2umVUyd40lkLROJ6sxnvpRZ2ON7iz2WdNUg2c
+ VyKTLgOo8jk5du++sgwh4bIAdurxsbQie5OUfcWGXo1ZbeFbxa1R03rhog1nc/fEy6ehp5c//1K
+ In4im1NWpu81jkspjD5I=
+X-Google-Smtp-Source: AGHT+IHbcYSIIohp615rCZ8MyauwJAEMni+aPPKpnDh0PCp8ZLxeT6rTMFGBjCPkhuPTkSolYSxcUA==
+X-Received: by 2002:a17:902:ce02:b0:223:536d:f67b with SMTP id
+ d9443c01a7336-22e1eaaf8ccmr172686835ad.38.1746490265450; 
+ Mon, 05 May 2025 17:11:05 -0700 (PDT)
+Received: from ?IPV6:2804:7f0:b400:8604:71fc:f75a:e2f5:e7b5?
+ ([2804:7f0:b400:8604:71fc:f75a:e2f5:e7b5])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-30a4745f920sm9649121a91.8.2025.05.05.16.27.21
+ d9443c01a7336-22e151e9f39sm61573215ad.84.2025.05.05.17.11.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 05 May 2025 16:27:22 -0700 (PDT)
-Message-ID: <c009277c-4777-4a80-94ed-922f40147700@linaro.org>
-Date: Mon, 5 May 2025 16:27:21 -0700
+ Mon, 05 May 2025 17:11:05 -0700 (PDT)
+Message-ID: <9d4514ad-5b23-44a9-9b3e-77fce9066092@linaro.org>
+Date: Mon, 5 May 2025 21:11:00 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 00/50] single-binary: compile target/arm twice
+From: Gustavo Romero <gustavo.romero@linaro.org>
+Subject: Re: [RFC 01/24] hw/pci/pcie_port: Fix pcie_slot_is_hotpluggbale_bus
+ typo
+To: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, peter.maydell@linaro.org,
+ imammedo@redhat.com, anisinha@redhat.com, mst@redhat.com,
+ shannon.zhaosl@gmail.com
+Cc: pbonzini@redhat.com, Jonathan.Cameron@huawei.com
+References: <20250428102628.378046-1-eric.auger@redhat.com>
+ <20250428102628.378046-2-eric.auger@redhat.com>
 Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, anjo@rev.ng,
- Peter Maydell <peter.maydell@linaro.org>, alex.bennee@linaro.org,
- kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-arm@nongnu.org
-References: <20250505232015.130990-1-pierrick.bouvier@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250505232015.130990-1-pierrick.bouvier@linaro.org>
+In-Reply-To: <20250428102628.378046-2-eric.auger@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,18 +107,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Patches left for review:
+Hi Eric,
 
-- [PATCH v6 04/50] meson: apply target config for picking files from 
-libsystem and libuser
-- [PATCH v6 41/50] target/arm/tcg/vec_internal: use forward declaration 
-for CPUARMState
-- [PATCH v6 42/50] target/arm/tcg/crypto_helper: compile file once
-- [PATCH v6 47/50] target/arm/helper: restrict define_tlb_insn_regs to 
-system target
-- [PATCH v6 50/50] target/arm/tcg/vfp_helper: compile file twice 
-(system, user)
+On 4/28/25 07:25, Eric Auger wrote:
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> ---
+>   hw/pci/pcie_port.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/pci/pcie_port.c b/hw/pci/pcie_port.c
+> index c73db30e98..072500ed34 100644
+> --- a/hw/pci/pcie_port.c
+> +++ b/hw/pci/pcie_port.c
+> @@ -188,7 +188,7 @@ int pcie_count_ds_ports(PCIBus *bus)
+>       return dsp_count;
+>   }
+>   
+> -static bool pcie_slot_is_hotpluggbale_bus(HotplugHandler *plug_handler,
+> +static bool pcie_slot_is_hotpluggable_bus(HotplugHandler *plug_handler,
+>                                             BusState *bus)
+>   {
+>       PCIESlot *s = PCIE_SLOT(bus->parent);
+> @@ -221,7 +221,7 @@ static void pcie_slot_class_init(ObjectClass *oc, void *data)
+>       hc->plug = pcie_cap_slot_plug_cb;
+>       hc->unplug = pcie_cap_slot_unplug_cb;
+>       hc->unplug_request = pcie_cap_slot_unplug_request_cb;
+> -    hc->is_hotpluggable_bus = pcie_slot_is_hotpluggbale_bus;
+> +    hc->is_hotpluggable_bus = pcie_slot_is_hotpluggable_bus;
+>   }
+>   
+>   static const TypeInfo pcie_slot_type_info = {
 
-Regards,
-Pierrick
+Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
+
+
+Cheers,
+Gustavo
 
