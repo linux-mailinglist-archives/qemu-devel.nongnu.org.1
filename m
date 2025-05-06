@@ -2,64 +2,135 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2969CAACBAF
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 18:59:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50160AACBFC
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 19:13:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCLcH-0007qE-5i; Tue, 06 May 2025 12:58:01 -0400
+	id 1uCLqp-0003RE-C1; Tue, 06 May 2025 13:13:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uCLcE-0007q2-FI
- for qemu-devel@nongnu.org; Tue, 06 May 2025 12:57:58 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uCLqn-0003Qz-I3
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 13:13:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uCLcC-000541-LK
- for qemu-devel@nongnu.org; Tue, 06 May 2025 12:57:58 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uCLql-0006bj-G7
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 13:13:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746550674;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=HNYKar3vW2DpHyoGXSUqrSE39ldWu9YWlou3Q6Fp8IA=;
- b=ASpFPHqSyGvpdTtaV99Vtvwg6P1z4ynhD9ava2QguuFp5ojk5uQ5nKM8Oy1TxEwDJc9c25
- QTwyGcJ2ZlDYx8FSjRuPGY4pEhIUbjrAZi53l3LWCPBwfw/WIzubRNviM4HDiSyZCZUo38
- Aze9vP+nBvWkmBVE8kiYJWtybpRZybM=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-322-PNi7-g-YP0SRGR7Im06ToA-1; Tue,
- 06 May 2025 12:57:51 -0400
-X-MC-Unique: PNi7-g-YP0SRGR7Im06ToA-1
-X-Mimecast-MFC-AGG-ID: PNi7-g-YP0SRGR7Im06ToA_1746550670
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5B6721955D52; Tue,  6 May 2025 16:57:50 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.127])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B94A01956096; Tue,  6 May 2025 16:57:48 +0000 (UTC)
-Date: Tue, 6 May 2025 17:57:45 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: WorksButNotTested <jonwilson030981@googlemail.com>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v3] Support madvise(MADV_DONTDUMP) when creating core
- dumps for qemu-user
-Message-ID: <aBo_HWA4nuY7FGul@redhat.com>
-References: <20250506164602.1292446-1-62701594+WorksButNotTested@users.noreply.github.com>
+ s=mimecast20190719; t=1746551578;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=lbSb1jVekFhLi/NBpXJ0FvYQt8Tsx1pf0qwJer4I7P8=;
+ b=bkfQtM4If5IKbxsPhhC1+dFFCRud5/kyeVTKFuHYwVcQFzG2dcN4UDrXEHIf9WSgOFl8/Z
+ UIIUquhZmQVp4KVHwkFusnfbak3SD0ofY3BfJXzMsPw0IVpF/51sZ+hg6YWMXpL10P7XAo
+ LkAL7ynRrGgoJGP5xp+xxBIU4xXAacU=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-274-ZGZz-xt8NdKAxFZXHUTNxw-1; Tue, 06 May 2025 13:12:56 -0400
+X-MC-Unique: ZGZz-xt8NdKAxFZXHUTNxw-1
+X-Mimecast-MFC-AGG-ID: ZGZz-xt8NdKAxFZXHUTNxw_1746551575
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3a0b394504cso31673f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 10:12:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1746551575; x=1747156375;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=lbSb1jVekFhLi/NBpXJ0FvYQt8Tsx1pf0qwJer4I7P8=;
+ b=QQ24Yg8lbf0lvTQ5twqXC0pe1JoTN6FV9SD8TFAH4ZQRpPhhr2fgNP/xBM4vBUmKfL
+ skUSjjmVUgPrEcIpU0VX3p/iSFErR5vMOziZoCYnzy7xeMhhQj6L897Ty5adXeBEifoo
+ yV2HtD2rdUY7F5m2pKneb6ixXfg+QPxnHFt1c49G/uERmAqGyIaeA6c7z5+UxUedwfJ3
+ e+oOLT3ugpqS99E3e6ufmMGjjdLOYz0Mi3pejmxAKFSjZohUZXZ9YsGF4/VP9a3aCnjK
+ 70ZMFEXojuYpAQlUwz81up9g0RMPFePIBSsKRG5A6yiGmUXqnpireTu6XfEc9L3eBTBw
+ svWQ==
+X-Gm-Message-State: AOJu0Yx756XxJOnD+aFN2m/nD3f3v2jvZ+8wSlHL5Utlg51dCR2OTIxh
+ pNDh+zAvKhMplQtArvti3vGxLUlSrRVQvh7Dk8xR0RWgKIoZKbQY8MCOlKJ2x6Qbn7Yj1H4odap
+ gX2aDEmgc7SvILy67L16ed8xaGTGplikx+7L4Rc8Tx+4U/CRSd9Nm
+X-Gm-Gg: ASbGncsfSL4umvmNRJjpPyeA+6/nlIUI2ksbmaBgLkSTR0KLmQixMwTFRxojghsqdMv
+ d2PO6FvSt1KoNE5ZKZHRE8I9dRoYal9QsMxPQMQEngDwyC/OqeKXXUBVH+uqLvlLBnjexbNj15l
+ Fg6JaGha9jXPULg2HNq0gk5CC0hCEbl/6gPmbkX0HcE2mn8TE+igzQ68n0hdrDpJ5RKezCmcPdo
+ BvGHDukuNYw2BeYEuhazheM4hHyZGLvl7dEhyIJJ2DSBzoq1y/SSp1gA5YuhYRbfixqbRsSRcnl
+ Flbl4xxTwpuaLLJCXSsSt7LjLnpJFE+QWoU4cuPaoZq6+3a714cl
+X-Received: by 2002:a5d:5f4f:0:b0:3a0:7afd:cbfd with SMTP id
+ ffacd0b85a97d-3a0b43b6901mr599488f8f.7.1746551575310; 
+ Tue, 06 May 2025 10:12:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE1OiRGnvZlrzxoewx4DGcoh0VU6pSlaCWNEezzT6GdUkYYvE9QvKnsOowD1InGcOmsYeFOgA==
+X-Received: by 2002:a5d:5f4f:0:b0:3a0:7afd:cbfd with SMTP id
+ ffacd0b85a97d-3a0b43b6901mr599463f8f.7.1746551574910; 
+ Tue, 06 May 2025 10:12:54 -0700 (PDT)
+Received: from [192.168.0.7] (ltea-047-064-115-173.pools.arcor-ip.net.
+ [47.64.115.173]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a09a7ad055sm13875216f8f.11.2025.05.06.10.12.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 06 May 2025 10:12:54 -0700 (PDT)
+Message-ID: <e36633e2-e0de-422a-8ad3-1562e97926c6@redhat.com>
+Date: Tue, 6 May 2025 19:12:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250506164602.1292446-1-62701594+WorksButNotTested@users.noreply.github.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] meson: use thorough test setup as default
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
+ <marcandre.lureau@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20250503201806.3045723-1-pierrick.bouvier@linaro.org>
+ <f7da46dd-0e8f-42d8-b555-300c088f605e@redhat.com>
+ <91cc4370-163e-4bdd-ac1c-b0d6ea3c06cb@linaro.org>
+ <aBnXXC3ldqErl8ub@redhat.com>
+ <6a8d7703-e275-4566-bc38-b627cc597e9a@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
+ yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
+ 4CflIyFqjCpfDM4MuTmzTjXq4Uov1giGE9X6viNo1pxyEpd7PanlKNnf4PqEQp06X4IgUacW
+ tSGj6Gcns1bCuHV8OPWLkf4hkRnu8hdL6i60Yxz4E6TqlrpxsfYwLXgEeswPHOA6Mn4Cso9O
+ 0lewVYfFfsmokfAVMKWzOl1Sr0KGI5T9CpmRfAiSHpthhHWnECcJFwl72NTi6kUcUzG4se81
+ O6n9d/kTj7pzTmBdfwuOZ0YUSqcqs0W+l1NcASSYZQaDoD3/SLk+nqVeCBB4OnYOGhgmIHNW
+ 0CwMRO/GK+20alxzk//V9GmIM2ACElbfF8+Uug3pqiHkVnKqM7W9/S1NH2qmxB6zMiJUHlTH
+ gnVeZX0dgH27mzstcF786uPcdEqS0KJuxh2kk5IvUSL3Qn3ZgmgdxBMyCPciD/1cb7/Ahazr
+ 3ThHQXSHXkH/aDXdfLsKVuwDzHLVSkdSnZdt5HHh75/NFHxwaTlydgfHmFFwodK8y/TjyiGZ
+ zg2Kje38xnz8zKn9iesFBCcONXS7txENTzX0z80WKBhK+XSFJwARAQABzR5UaG9tYXMgSHV0
+ aCA8dGh1dGhAcmVkaGF0LmNvbT7CwXgEEwECACIFAlVgX6oCGwMGCwkIBwMCBhUIAgkKCwQW
+ AgMBAh4BAheAAAoJEC7Z13T+cC21EbIP/ii9cvT2HHGbFRl8HqGT6+7Wkb+XLMqJBMAIGiQK
+ QIP3xk1HPTsLfVG0ao4hy/oYkGNOP8+ubLnZen6Yq3zAFiMhQ44lvgigDYJo3Ve59gfe99KX
+ EbtB+X95ODARkq0McR6OAsPNJ7gpEUzfkQUUJTXRDQXfG/FX303Gvk+YU0spm2tsIKPl6AmV
+ 1CegDljzjycyfJbk418MQmMu2T82kjrkEofUO2a24ed3VGC0/Uz//XCR2ZTo+vBoBUQl41BD
+ eFFtoCSrzo3yPFS+w5fkH9NT8ChdpSlbNS32NhYQhJtr9zjWyFRf0Zk+T/1P7ECn6gTEkp5k
+ ofFIA4MFBc/fXbaDRtBmPB0N9pqTFApIUI4vuFPPO0JDrII9dLwZ6lO9EKiwuVlvr1wwzsgq
+ zJTPBU3qHaUO4d/8G+gD7AL/6T4zi8Jo/GmjBsnYaTzbm94lf0CjXjsOX3seMhaE6WAZOQQG
+ tZHAO1kAPWpaxne+wtgMKthyPLNwelLf+xzGvrIKvLX6QuLoWMnWldu22z2ICVnLQChlR9d6
+ WW8QFEpo/FK7omuS8KvvopFcOOdlbFMM8Y/8vBgVMSsK6fsYUhruny/PahprPbYGiNIhKqz7
+ UvgyZVl4pBFjTaz/SbimTk210vIlkDyy1WuS8Zsn0htv4+jQPgo9rqFE4mipJjy/iboDzsFN
+ BFH7eUwBEAC2nzfUeeI8dv0C4qrfCPze6NkryUflEut9WwHhfXCLjtvCjnoGqFelH/PE9NF4
+ 4VPSCdvD1SSmFVzu6T9qWdcwMSaC+e7G/z0/AhBfqTeosAF5XvKQlAb9ZPkdDr7YN0a1XDfa
+ +NgA+JZB4ROyBZFFAwNHT+HCnyzy0v9Sh3BgJJwfpXHH2l3LfncvV8rgFv0bvdr70U+On2XH
+ 5bApOyW1WpIG5KPJlDdzcQTyptOJ1dnEHfwnABEfzI3dNf63rlxsGouX/NFRRRNqkdClQR3K
+ gCwciaXfZ7ir7fF0u1N2UuLsWA8Ei1JrNypk+MRxhbvdQC4tyZCZ8mVDk+QOK6pyK2f4rMf/
+ WmqxNTtAVmNuZIwnJdjRMMSs4W4w6N/bRvpqtykSqx7VXcgqtv6eqoDZrNuhGbekQA0sAnCJ
+ VPArerAZGArm63o39me/bRUQeQVSxEBmg66yshF9HkcUPGVeC4B0TPwz+HFcVhheo6hoJjLq
+ knFOPLRj+0h+ZL+D0GenyqD3CyuyeTT5dGcNU9qT74bdSr20k/CklvI7S9yoQje8BeQAHtdV
+ cvO8XCLrpGuw9SgOS7OP5oI26a0548M4KldAY+kqX6XVphEw3/6U1KTf7WxW5zYLTtadjISB
+ X9xsRWSU+Yqs3C7oN5TIPSoj9tXMoxZkCIHWvnqGwZ7JhwARAQABwsFfBBgBAgAJBQJR+3lM
+ AhsMAAoJEC7Z13T+cC21hPAQAIsBL9MdGpdEpvXs9CYrBkd6tS9mbaSWj6XBDfA1AEdQkBOn
+ ZH1Qt7HJesk+qNSnLv6+jP4VwqK5AFMrKJ6IjE7jqgzGxtcZnvSjeDGPF1h2CKZQPpTw890k
+ fy18AvgFHkVk2Oylyexw3aOBsXg6ukN44vIFqPoc+YSU0+0QIdYJp/XFsgWxnFIMYwDpxSHS
+ 5fdDxUjsk3UBHZx+IhFjs2siVZi5wnHIqM7eK9abr2cK2weInTBwXwqVWjsXZ4tq5+jQrwDK
+ cvxIcwXdUTLGxc4/Z/VRH1PZSvfQxdxMGmNTGaXVNfdFZjm4fz0mz+OUi6AHC4CZpwnsliGV
+ ODqwX8Y1zic9viSTbKS01ZNp175POyWViUk9qisPZB7ypfSIVSEULrL347qY/hm9ahhqmn17
+ Ng255syASv3ehvX7iwWDfzXbA0/TVaqwa1YIkec+/8miicV0zMP9siRcYQkyTqSzaTFBBmqD
+ oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
+ IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
+ yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
+In-Reply-To: <6a8d7703-e275-4566-bc38-b627cc597e9a@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -34
 X-Spam_score: -3.5
@@ -81,105 +152,89 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 06, 2025 at 05:46:02PM +0100, WorksButNotTested wrote:
-> When running applications which make large (sparsely populated) address ranges
-> (e.g. when using address sanitizer with LibAFL) the inability to exclude these
-> regions from any core dump can result in very large files which fill the disk.
-> A coredump is obvously very useful for performing a post-mortem when fuzzing.
+On 06/05/2025 17.31, Pierrick Bouvier wrote:
+> On 5/6/25 2:33 AM, Daniel P. Berrangé wrote:
+>> On Mon, May 05, 2025 at 10:46:52AM -0700, Pierrick Bouvier wrote:
+>>> On 5/5/25 3:32 AM, Thomas Huth wrote:
+>>>> On 03/05/2025 22.18, Pierrick Bouvier wrote:
+>>>>> Allows all tests to be visible by default when using meson test
+>>>>> directly.
+>>>>>
+>>>>> This has no impact on make check-* commands, which use SPEED=quick by
+>>>>> default (see scripts/mtest2make.py).
+>>>>>
+>>>>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>>>>> ---
+>>>>>     meson.build | 5 +++--
+>>>>>     1 file changed, 3 insertions(+), 2 deletions(-)
+>>>>>
+>>>>> diff --git a/meson.build b/meson.build
+>>>>> index f8bf6e7bb66..57ff3f722d8 100644
+>>>>> --- a/meson.build
+>>>>> +++ b/meson.build
+>>>>> @@ -5,12 +5,13 @@ project('qemu', ['c'], meson_version: '>=1.5.0',
+>>>>>     meson.add_devenv({ 'MESON_BUILD_ROOT' : meson.project_build_root() })
+>>>>> -add_test_setup('quick', exclude_suites: ['slow', 'thorough'], 
+>>>>> is_default: true,
+>>>>> +add_test_setup('quick', exclude_suites: ['slow', 'thorough'],
+>>>>>                    env: ['RUST_BACKTRACE=1'])
+>>>>>     add_test_setup('slow', exclude_suites: ['thorough'],
+>>>>>                    env: ['G_TEST_SLOW=1', 'SPEED=slow', 
+>>>>> 'RUST_BACKTRACE=1'])
+>>>>>     add_test_setup('thorough',
+>>>>> -               env: ['G_TEST_SLOW=1', 'SPEED=thorough', 
+>>>>> 'RUST_BACKTRACE=1'])
+>>>>> +               env: ['G_TEST_SLOW=1', 'SPEED=thorough', 
+>>>>> 'RUST_BACKTRACE=1'],
+>>>>> +               is_default: true)
+>>>>
+>>>> I'd rather not make it the default: The thorough functional tests 
+>>>> download a
+>>>> lot of assets from the internet, so if someone just runs "meson test"
+>>>> without further parameters, I think we should not trigger these 
+>>>> downloads in
+>>>> that case.
+>>>>
+>>>
+>>> $ cat tests/Makefile.include
+>>> ...
+>>> check-functional:
+>>>     @$(NINJA) precache-functional
+>>>     @QEMU_TEST_NO_DOWNLOAD=1 $(MAKE) SPEED=thorough check-func
+>>> ...
+>>>
+>>> What's the rationale to run check-func with SPEED=thorough and
+>>> QEMU_TEST_NO_DOWNLOAD=1 with precache-functional having cached only quick
+>>> tests by default?
+>>
+>> Are you sure about that ? The precache logic uses custom_target() in
+>> meson and so does not filters on "suites" used to define quick vs
+>> thorough tests.
+>>
 > 
-> Whilst the man pages state that madvise provides only a hint (and hence can be
-> ignored), this patch adds support to handle MADV_DONTDUMP and set a
-> corresponding flag in the page flags, thus allowing QEMU to exclude these
-> regions from the core file.
+> My bad, I missed the "foreach speed : ['quick', 'thorough']" wrapping all 
+> this in tests/functional/meson.build.
 > 
-> Signed-off-by: WorksButNotTested <62701594+WorksButNotTested@users.noreply.github.com>
+>> IOW, precache should always be downloading all assets.
+>>
+> 
+> Then I don't understand the previous argument from Thomas to not make 
+> thorough the default: "The thorough functional tests download a
+> lot of assets from the internet, so if someone just runs "meson test"
+> without further parameters, I think we should not trigger these downloads in 
+> that case". It's what precache-functional is doing.
 
-Any reason you've not used your "jonwilson030981@googlemail.com"
-address for this.
+precache-functional is *only* called when you run "make check-functional", 
+i.e. when you know that you want to run the functional tests that might 
+download assets from the internet. It's not called when you run the normal 
+"make check". I think "meson test" should by default also not download any 
+assets from the internet (e.g. in case someone is still on a metered 
+internet connection or tries to do air-gapped builds) - we should only 
+download if people really really want to run the functional tests consciously.
 
-This github alias rejects any mail delivery, so also should not
-be CC'd on the patch either, as that triggers failures when
-reviewers reply to this submission.
-
-> ---
->  include/exec/page-protection.h |  6 ++++++
->  linux-user/elfload.c           |  4 ++++
->  linux-user/mmap.c              | 18 ++++++++++++++++++
->  3 files changed, 28 insertions(+)
-> 
-> diff --git a/include/exec/page-protection.h b/include/exec/page-protection.h
-> index c43231af8b..f8826d917e 100644
-> --- a/include/exec/page-protection.h
-> +++ b/include/exec/page-protection.h
-> @@ -38,4 +38,10 @@
->   */
->  #define PAGE_PASSTHROUGH 0x0800
->  
-> +/*
-> + * For linux-user, indicates that the page should not be included in a core 
-> + * dump.
-> + */
-> +#define PAGE_DONTDUMP   0x1000
-> +
->  #endif
-> diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-> index fbfdec2f17..41c46da055 100644
-> --- a/linux-user/elfload.c
-> +++ b/linux-user/elfload.c
-> @@ -4067,6 +4067,10 @@ static size_t vma_dump_size(target_ulong start, target_ulong end,
->          return 0;
->      }
->  
-> +    if (flags & PAGE_DONTDUMP) {
-> +        return 0;
-> +    }
-> +
->      /*
->       * Usually we don't dump executable pages as they contain
->       * non-writable code that debugger can read directly from
-> diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-> index f88a80c31e..016063a8cf 100644
-> --- a/linux-user/mmap.c
-> +++ b/linux-user/mmap.c
-> @@ -1247,6 +1247,24 @@ abi_long target_madvise(abi_ulong start, abi_ulong len_in, int advice)
->       */
->      mmap_lock();
->      switch (advice) {
-> +    case MADV_DONTDUMP:
-> +        if (len > 0) {
-> +            /*
-> +             * To set the page permissons, we must OR our new flags with the
-> +             * existing flags. Only mark the pages as PAGE_DONTDUMP if the
-> +             * entire range has the same flags. If any part of the range
-> +             * differs, we would need to process it one page at a time which
-> +             * might not be very performant. Since we are not obliged to respect
-> +             * this flag, we will support it for the most likely usage scenario.
-> +             * Note that we don't set PAGE_ANON, since this can only be set with
-> +             * new mappings.
-> +             */
-> +            int flg = page_get_flags(start);
-> +            if (page_check_range(start, len, flg)) {
-> +                page_set_flags(start, start + len - 1, PAGE_DONTDUMP | (flg & ~PAGE_ANON) );
-> +            }
-> +        }
-> +        break;
->      case MADV_WIPEONFORK:
->      case MADV_KEEPONFORK:
->          ret = -EINVAL;
-> -- 
-> 2.43.0
-> 
-> 
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+  Thomas
 
 
