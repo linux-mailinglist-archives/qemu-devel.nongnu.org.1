@@ -2,81 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E172AAC4B1
-	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 14:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5F29AAC4DA
+	for <lists+qemu-devel@lfdr.de>; Tue,  6 May 2025 14:58:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCHoN-0001yF-Mu; Tue, 06 May 2025 08:54:15 -0400
+	id 1uCHrn-0003nb-AV; Tue, 06 May 2025 08:57:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uCHoL-0001xv-FI
- for qemu-devel@nongnu.org; Tue, 06 May 2025 08:54:13 -0400
-Received: from mail-yb1-xb2e.google.com ([2607:f8b0:4864:20::b2e])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uCHrQ-0003Nb-Mt
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 08:57:24 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uCHoH-0003TU-PV
- for qemu-devel@nongnu.org; Tue, 06 May 2025 08:54:13 -0400
-Received: by mail-yb1-xb2e.google.com with SMTP id
- 3f1490d57ef6-e733a6ff491so5312821276.2
- for <qemu-devel@nongnu.org>; Tue, 06 May 2025 05:54:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uCHrM-0003pp-O8
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 08:57:24 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-5e6f4b3ebe5so9860305a12.0
+ for <qemu-devel@nongnu.org>; Tue, 06 May 2025 05:57:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746536048; x=1747140848; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=ALvgerSZUNXUKPQczYhVZ1boHHltAdoW2Wo+YUbpVLM=;
- b=P96GujffA4+bl2ci1jgm6KiDK2hh+QcuXbzSmq1V9OOamE/gjhp1SmeBiClK26cDwV
- 4+seB+ZMPjUwfQ95tcQVdJnpeJYw9Qt1C1Jz8njtsf3llR+Vsfaac3VELOcX/TcAXC7b
- D0b7hd3UXcaK9/HAAJdNZ06C0L1B5oq3n5cXqSgzs0M7KIfjuHp0dWDmNLh33+A5snGy
- nF59YLFqkH7ZROw16LAdPvqFsvce9QSmNfoRz/jjtygI2aCagZgakcsze1NCQ/JgeIlj
- rzz7XqdIIUlIv2fcK+JE1d7j6zxYLoejJ3a2tclSdAtEclf4DPfS5aA3PGBpoyoi8y1A
- pglw==
+ d=linaro.org; s=google; t=1746536239; x=1747141039; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=UFjE6L84i2a3K/oGJog+4yJiix6X/UtL4ANXLscMNKY=;
+ b=Fn/AQyV99TnWV9MRfPGJIztlpygYwEcwl5Zn9VurSLusPo4LnePTx3g9LsinHiD5tA
+ soSmIMikkRVRHvIF2bogQH8A2/mvs3/ekvL5SXveOOpZPGRd5Ko6ODuf78Z8FCmTigRI
+ VE9arrxamKXSyVMWvogHLrIRCaicr0tiawA7bI5RgG//dqqLnr+NgB/BYLsfX+taow4A
+ XVu4YVA4O8jGn4nqgXexD2Ylss7fLVFBHCzqnGautlDpmjgWuu2RqoXSPYAK0HmtFhFA
+ mik3BktQF4GsJsRMtkEJdIeu0eKiAIY30Wfnq7W+4aWMGE/GR+Rpg0SEFVVP2XLAJlfg
+ yRJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746536048; x=1747140848;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1746536239; x=1747141039;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=ALvgerSZUNXUKPQczYhVZ1boHHltAdoW2Wo+YUbpVLM=;
- b=mnLVSfayKdetJpjS5wMDAn8V3zHVSB2WegNQ/30RB16R6bEFwsYD2q9HhoBjYRB+8F
- aZ/663+y2p6S0jigZoDdJE6iHPLkRq4jy/kBTfo+WeO4kPhowFZHWuzjS7KCzXfVHNQc
- 8ILV5oIX8kaanucUtUaDoMYe5lYVPoeG1QR5uZRcGWsVz671PRHNk663BBzYM1UbzikU
- qF5mtB+Daxvk5z8l7ogs2/JE1NIpheO75iv5kSwHRBTBPny+sdgasvUy78M48//dzgL2
- hT1iRC3PadRZ6U7QaDiSJDV+vHJksiEAUApMtAkyODLWsWKn6jJ/QJLa4n9n5kl6ckOb
- 7OYQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCV1vhGpIrG2bJSrHMdp3QzcEe9nKraaWvj1bSHNAnp0HH2hbYwT1ij0lfV8vzIAHazericC4nK0pQqs@nongnu.org
-X-Gm-Message-State: AOJu0Yx5QSBnMYt9oQO8/xwX0FH7IuVAO+cqbMuNWouYN9/C8XuOrvb1
- wWDcnF6j9NFlfr/7wRvAugGCYpR4ljb7fVddc1lgAA6R7HMtkJVrFqeaFlJK8J9SXQ0uQv/9XAZ
- 5OmdV0t089nX2RSO6to2RfHoculj4gozbBncU3g==
-X-Gm-Gg: ASbGncvMczpdcJxrJIPPvnNAoZxIoekJXRTfQ/i+5ifJkQhsmPX/l6FxDoOWOGh2C61
- 5cWAXoQSQNOEnKRiNYuYOIwjRZMNmpLGjV2gRxgfOM1dpuMVBdmL2W/A9CCgztrLDP/9xCzy3L2
- JwZFVJcl32UQv+OdpBTgMeiTY=
-X-Google-Smtp-Source: AGHT+IGivXYqaELCns2LzVprbOSUI9DXV8i3lWN/4TXqjkHCVY58UvP+t84jvGtisg6SrYFNHGqPwDlniSk2wIQi6lo=
-X-Received: by 2002:a05:6902:2512:b0:e72:e170:cb78 with SMTP id
- 3f1490d57ef6-e75bf479517mr4528402276.0.1746536048282; Tue, 06 May 2025
- 05:54:08 -0700 (PDT)
+ bh=UFjE6L84i2a3K/oGJog+4yJiix6X/UtL4ANXLscMNKY=;
+ b=CRCxLf7R40ywPuDxYlzjFRocg8JRWtFydkbueKXB98YItcGwATisJZ7NmhjzbIS34U
+ ORhi4L92J+ZATbb6nzQL2UF172Pkh2ZnQk5tUWS/adEyw7SM+G/ob5vQvbMzVcEm85m5
+ fN/5MCNXt39VIPrSF5xHuH2Ff7paPczUgRfq06nzrKraMUM4Uz7HQt7XtmXJ1SqSFQo6
+ RQhBb5+Vbhs/3LqVp5vNju/S7fF3v+q87DPr2MoghcidWcM0r2LLWo7a8X36XpVp1Lpd
+ ssBj5gwp1y3XbhNyPNb+4i9CJ5vFaWjZ6D/vD1QvoeBvw1wT0CT5h8Q7B41JofUVXUdF
+ wIAA==
+X-Gm-Message-State: AOJu0YwlgUGDGv/Tn75jhSLSylbme4fq3K1j5osCxjO4s5QLt+r2X7ia
+ yJcSTMhM47pj53q7nXS/8C8BOkdFq7B0QRfvY5jv5q1rVkUMzAxm7d7UHusNDM0=
+X-Gm-Gg: ASbGncsU2rZBsJ+RRnfluCTJnglsybVmUQ1sDFt2p6xVu2lCHnIS2Hlh88pEtjN4qne
+ X00CR5iwv6KZnRn+yET/1gJzSgvYYzEbX8QVbZdbizD3e0a9A5e/bjTeEWafgshfnEGMDIPY6lO
+ xDVzGum0dkHjoRHUvByc80ZdikiQRw6Vu49+036n/lojBRQ8wq6Q+iPHPQF9VRuSarThpylVvet
+ alo1OJKb/hyoFKzMnNzfUuzT5ov9ECUACyEuvFyUPZ91FTJJINSLUFC+NDgsLwXVzi3KYbEIz1Q
+ SBCxAXyqPntjxaOih2K/FZhlE6Ud2Cuw/V7cKZ5/HEY=
+X-Google-Smtp-Source: AGHT+IHuiSIipYpZKVfjR1a4L3Fg175lWW2ugsK+KdsJF61ysQuGwylESp/y58ilmB2q0tiejcANjg==
+X-Received: by 2002:a05:6402:26d5:b0:5e6:e842:f9d2 with SMTP id
+ 4fb4d7f45d1cf-5fab05e0922mr8977030a12.29.1746536238714; 
+ Tue, 06 May 2025 05:57:18 -0700 (PDT)
+Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5fa777557aesm7474495a12.12.2025.05.06.05.57.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 06 May 2025 05:57:16 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 1A6AE5F8BD;
+ Tue,  6 May 2025 13:57:15 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ David Hildenbrand <david@redhat.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Laurent Vivier <lvivier@redhat.com>, qemu-arm@nongnu.org,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Peter Xu <peterx@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ John Snow <jsnow@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>
+Subject: [PATCH v2 00/14] Maintainer updates for May (testing, plugins,
+ virtio-gpu)
+Date: Tue,  6 May 2025 13:57:01 +0100
+Message-Id: <20250506125715.232872-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-References: <20250414020629.1867106-1-timlee660101@gmail.com>
-In-Reply-To: <20250414020629.1867106-1-timlee660101@gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 6 May 2025 13:53:57 +0100
-X-Gm-Features: ATxdqUHG-3n6uetnsoUu9gYr8nH7UJrcwK88I9L6a8hzvlsluzADwXWScDjKif4
-Message-ID: <CAFEAcA8L4KzJZ+Ew-n+XNjHB3RmYnM1noq5nXo0=xzpMSBsrXw@mail.gmail.com>
-Subject: Re: [PATCH] hw/arm: Attach PSPI module to NPCM8XX SoC
-To: Tim Lee <timlee660101@gmail.com>
-Cc: wuhaotsh@google.com, kfting@nuvoton.com, chli30@nuvoton.com, 
- qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2e;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52e.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,17 +114,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 14 Apr 2025 at 03:07, Tim Lee <timlee660101@gmail.com> wrote:
->
-> Nuvoton's PSPI is a general purpose SPI module which enables
-> connections to SPI-based peripheral devices. Attach it to the NPCM8XX.
->
-> Tested:
-> NPCM8XX PSPI driver probed successfully from dmesg log.
->
-> Signed-off-by: Tim Lee <timlee660101@gmail.com>
+Now the tree is open here is the state of my current maintainer
+queues. I've tagged the virtio-gpu changes as Cc: qemu-stable but
+given how close to release we were it didn't seem worth rushing them
+in for 10.0. I've included a MAINTAINERS patch just to make sure I can
+route any more fixes until a more full time maintainer volunteers.
 
-Applied to target-arm.next; thanks to everybody who reviewed this.
+For v2
+  - addressed various comments (see bellow --- in commits)
+  - added Akihiko/Dmitry as virtio-gpu reviewers
 
--- PMM
+The following still need review:
+
+  MAINTAINERS: add Akihiko and Dmitry as reviewers
+  MAINTAINERS: add myself to virtio-gpu for Odd Fixes
+  tests/tcg: make aarch64 boot.S handle different starting modes
+  tests/docker: expose $HOME/.cache/qemu as docker volume
+
+Alex.
+
+Alex Bennée (8):
+  tests/docker: expose $HOME/.cache/qemu as docker volume
+  gitlab: disable debug info on CI builds
+  tests/tcg: make aarch64 boot.S handle different starting modes
+  contrib/plugins: add a scaling factor to the ips arg
+  contrib/plugins: allow setting of instructions per quantum
+  MAINTAINERS: add myself to virtio-gpu for Odd Fixes
+  MAINTAINERS: add Akihiko and Dmitry as reviewers
+  hw/display: re-arrange memory region tracking
+
+Dongwon Kim (1):
+  ui/gtk-gl-area: Remove extra draw call in refresh
+
+Manos Pitsidianakis (2):
+  virtio-gpu: fix hang under TCG when unmapping blob
+  virtio-gpu: refactor async blob unmapping
+
+Nabih Estefan (1):
+  Running with --enable-ubsan leads to a qtest failure
+
+Peter Maydell (2):
+  docs: Create a uniquelabel Sphinx extension
+  docs: Use uniquelabel in qemu-block-drivers.rst.inc
+
+ MAINTAINERS                               |   5 +-
+ docs/about/emulation.rst                  |   4 +
+ docs/conf.py                              |   1 +
+ docs/devel/codebase.rst                   |   2 +-
+ docs/sphinx/uniquelabel.py                |  74 ++++++++++++
+ docs/system/qemu-block-drivers.rst.inc    |   2 +-
+ include/system/memory.h                   |   1 +
+ contrib/plugins/ips.c                     |  46 +++++++-
+ hw/display/virtio-gpu-virgl.c             |  60 +++++-----
+ tests/qtest/libqos/igb.c                  |   4 +-
+ ui/gtk-gl-area.c                          |   1 -
+ .gitlab-ci.d/buildtest-template.yml       |   1 +
+ tests/docker/Makefile.include             |  10 +-
+ tests/tcg/aarch64/Makefile.softmmu-target |   3 +-
+ tests/tcg/aarch64/system/boot.S           | 135 +++++++++++++++++++++-
+ 15 files changed, 309 insertions(+), 40 deletions(-)
+ create mode 100644 docs/sphinx/uniquelabel.py
+
+-- 
+2.39.5
+
 
