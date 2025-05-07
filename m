@@ -2,80 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5599BAAD329
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 04:15:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAAFBAAD35D
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 04:38:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCUJU-0008TV-Qu; Tue, 06 May 2025 22:15:12 -0400
+	id 1uCUfd-0001Av-ED; Tue, 06 May 2025 22:38:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uCUJS-0008Rj-5k; Tue, 06 May 2025 22:15:10 -0400
-Received: from mgamail.intel.com ([192.198.163.19])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uCUJQ-000769-Kt; Tue, 06 May 2025 22:15:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746584109; x=1778120109;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=66onOpEZWQU5Y86v3c3fWry6V1VnHMhi3dWTVAqB1h4=;
- b=AAg3XRFkAQ4uVQgqfX7cg2PSGNsuHNaV0ts5BaeOeKLuHg3X5GkhuUNm
- PZ+MoCVwEWeBJYxWRAhYGrqbfz+AJialiM7p+KdFHpVA1LQysOjc0gA5l
- N2QMft+SUGI4Egnbdc0b+UAnbNRuekSR+aJj4858A2CDKb9sNwKZhuR7L
- h1F0wKb/t+mkeoXheSexqEg2fSph/fUYrEHrFCgNq2L6o+I9BP2xJPudy
- dTmgiiiWmQLry+AGRKvdyosuvlg9tIISVAgR311WxOhaAziUlNcCEkCy7
- eBxCwlVmqiiwTSxRhtTQmntn9rSxV3QnkOAXHRYwuq555Ds/K0ph1qb9L w==;
-X-CSE-ConnectionGUID: q3NwUUjdSzGvnfAXbR0k0w==
-X-CSE-MsgGUID: MIcT1EB5ThW2LQTxcRXfMg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11425"; a="47389942"
-X-IronPort-AV: E=Sophos;i="6.15,268,1739865600"; d="scan'208";a="47389942"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2025 19:15:06 -0700
-X-CSE-ConnectionGUID: mdoHl6a+STCDj9yEATScIg==
-X-CSE-MsgGUID: 87nWizQQQuWuUzjZUZwutw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,268,1739865600"; d="scan'208";a="140547567"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa003.jf.intel.com with ESMTP; 06 May 2025 19:15:01 -0700
-Date: Wed, 7 May 2025 10:36:02 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Yanan Wang <wangyanan55@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Fam Zheng <fam@euphon.net>,
- Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, John Snow <jsnow@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Subject: Re: [PATCH v3 05/19] hw/core/machine: Remove hw_compat_2_4[] array
-Message-ID: <aBrHEjvKdkgnJnqH@intel.com>
-References: <20250506143905.4961-1-philmd@linaro.org>
- <20250506143905.4961-6-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1uCUfa-0001Ad-LM
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 22:38:02 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1uCUfY-0001Ct-Js
+ for qemu-devel@nongnu.org; Tue, 06 May 2025 22:38:02 -0400
+Received: from loongson.cn (unknown [10.2.5.213])
+ by gateway (Coremail) with SMTP id _____8BxYa+ExxpopJ3XAA--.50850S3;
+ Wed, 07 May 2025 10:37:56 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+ by front1 (Coremail) with SMTP id qMiowMCxrhuDxxpoyuO4AA--.24683S2;
+ Wed, 07 May 2025 10:37:56 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Song Gao <gaosong@loongson.cn>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v4 12/16] hw/intc/loongarch_pch: Use generic write callback
+ for iomem8 region
+Date: Wed,  7 May 2025 10:37:50 +0800
+Message-Id: <20250507023754.1877445-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20250507023148.1877287-1-maobibo@loongson.cn>
+References: <20250507023148.1877287-1-maobibo@loongson.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250506143905.4961-6-philmd@linaro.org>
-Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -57
-X-Spam_score: -5.8
-X-Spam_bar: -----
-X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-CM-TRANSID: qMiowMCxrhuDxxpoyuO4AA--.24683S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,22 +64,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 06, 2025 at 04:38:51PM +0200, Philippe Mathieu-Daudé wrote:
-> Date: Tue,  6 May 2025 16:38:51 +0200
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH v3 05/19] hw/core/machine: Remove hw_compat_2_4[] array
-> X-Mailer: git-send-email 2.47.1
-> 
-> The hw_compat_2_4[] array was only used by the pc-q35-2.4 and
-> pc-i440fx-2.4 machines, which got removed. Remove it.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->  include/hw/boards.h | 3 ---
->  hw/core/machine.c   | 9 ---------
->  2 files changed, 12 deletions(-)
+Add iomem8 region register write operation emulation in generic write
+function loongarch_pch_pic_write(), and use this function for iomem8
+region.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+---
+ hw/intc/loongarch_pch_pic.c | 31 ++++++++++---------------------
+ 1 file changed, 10 insertions(+), 21 deletions(-)
+
+diff --git a/hw/intc/loongarch_pch_pic.c b/hw/intc/loongarch_pch_pic.c
+index 50bcc23d7d..556349a150 100644
+--- a/hw/intc/loongarch_pch_pic.c
++++ b/hw/intc/loongarch_pch_pic.c
+@@ -123,7 +123,7 @@ static void pch_pic_write(void *opaque, hwaddr addr, uint64_t value,
+ {
+     LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(opaque);
+     uint32_t offset;
+-    uint64_t old, mask, data;
++    uint64_t old, mask, data, *ptemp;
+ 
+     offset = addr & 7;
+     addr -= offset;
+@@ -161,6 +161,14 @@ static void pch_pic_write(void *opaque, hwaddr addr, uint64_t value,
+     case PCH_PIC_INT_POL:
+         s->int_polarity = (s->int_polarity & ~mask) | data;
+         break;
++    case PCH_PIC_HTMSI_VEC ... PCH_PIC_HTMSI_VEC_END:
++        ptemp = (uint64_t *)(s->htmsi_vector + addr - PCH_PIC_HTMSI_VEC);
++        *ptemp = (*ptemp & ~mask) | data;
++        break;
++    case PCH_PIC_ROUTE_ENTRY ... PCH_PIC_ROUTE_ENTRY_END:
++        ptemp = (uint64_t *)(s->route_entry + addr - PCH_PIC_ROUTE_ENTRY);
++        *ptemp = (*ptemp & ~mask) | data;
++        break;
+     default:
+         qemu_log_mask(LOG_GUEST_ERROR,
+                       "pch_pic_write: Bad address 0x%"PRIx64"\n", addr);
+@@ -269,28 +277,9 @@ static uint64_t loongarch_pch_pic_readb(void *opaque, hwaddr addr,
+ static void loongarch_pch_pic_writeb(void *opaque, hwaddr addr,
+                                      uint64_t data, unsigned size)
+ {
+-    LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(opaque);
+-    int32_t offset_tmp;
+-
+     addr += PCH_PIC_ROUTE_ENTRY;
+     trace_loongarch_pch_pic_writeb(size, addr, data);
+-
+-    switch (addr) {
+-    case PCH_PIC_HTMSI_VEC ... PCH_PIC_HTMSI_VEC_END:
+-        offset_tmp = addr - PCH_PIC_HTMSI_VEC;
+-        if (offset_tmp >= 0 && offset_tmp < 64) {
+-            s->htmsi_vector[offset_tmp] = (uint8_t)(data & 0xff);
+-        }
+-        break;
+-    case PCH_PIC_ROUTE_ENTRY ... PCH_PIC_ROUTE_ENTRY_END:
+-        offset_tmp = addr - PCH_PIC_ROUTE_ENTRY;
+-        if (offset_tmp >= 0 && offset_tmp < 64) {
+-            s->route_entry[offset_tmp] = (uint8_t)(data & 0xff);
+-        }
+-        break;
+-    default:
+-        break;
+-    }
++    loongarch_pch_pic_write(opaque, addr, data, size);
+ }
+ 
+ static const MemoryRegionOps loongarch_pch_pic_reg32_low_ops = {
+-- 
+2.39.3
 
 
