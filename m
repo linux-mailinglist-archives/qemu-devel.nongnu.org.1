@@ -2,73 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC8BBAADF74
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 14:44:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF10CAAE025
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 15:07:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCe7b-0003Gd-L1; Wed, 07 May 2025 08:43:35 -0400
+	id 1uCeTd-00057U-IV; Wed, 07 May 2025 09:06:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uCe7X-0003F7-Hd; Wed, 07 May 2025 08:43:31 -0400
-Received: from mgamail.intel.com ([192.198.163.8])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uCe7T-0005Nl-DC; Wed, 07 May 2025 08:43:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746621807; x=1778157807;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=RLal0QSny7MhpWsbU2LrAZCM4jg0TFU5MJHApMM6pvg=;
- b=KBrNkpVdDEarFcA4Fy3iSx4DROicFfrnXZJICIWQ6S419ATqUlgNIk3w
- i+3ykh47M7EZ6rPFAlb+ucJUTEFXgiD9ODpA1TU1tsUYkyw9ZIv+WlR6O
- bUPUukzBvZobC64GAKXuy9ektE6VRmAHescNCaqs5GHynQwYvWszQAh8A
- 8quiF3ly8zrwyApls6IEPUZegLKSf5r6i/XLQz9XKvg7calm4kqrozZ/Z
- k9TytwIHjZfqAEJqEmedunOxM6qwC3WOGwWVEbOOchbEwtIS8gmCuxgdI
- 0Ry8sz2EWDSpKKlpAZ24rcjqIEIh1kO7N5vFeg6dRS9OfrJaLJArKXv6b A==;
-X-CSE-ConnectionGUID: 6rF1yyIaSCqrDOVN4xs6Fg==
-X-CSE-MsgGUID: qsPvOmkIRcK1vfepGC2pmQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="65878854"
-X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="65878854"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2025 05:43:19 -0700
-X-CSE-ConnectionGUID: 21aa5MlvQbiMx9Vc/SVJDA==
-X-CSE-MsgGUID: +vGheIrIRHO3TxziUlV6LQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="135915271"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa006.fm.intel.com with ESMTP; 07 May 2025 05:43:17 -0700
-Date: Wed, 7 May 2025 21:04:18 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: Ewan Hai <ewanhai-oc@zhaoxin.com>, pbonzini@redhat.com,
- xiaoyao.li@intel.com, ewanhai@zhaoxin.com, cobechen@zhaoxin.com,
- qemu-devel@nongnu.org, qemu-stable <qemu-stable@nongnu.org>
-Subject: Re: [PATCH v4] target/i386: Fix model number of Zhaoxin YongFeng
- vCPU template
-Message-ID: <aBtaUkEnm3bdeW4U@intel.com>
-References: <20250415024545.517897-1-ewanhai-oc@zhaoxin.com>
- <8159d6e6-7de6-47ed-92ca-a6ec2721cf10@tls.msk.ru>
- <970df0f3-f26f-4f3c-8259-22f8508e57e8@zhaoxin.com>
- <cc878857-66e9-4599-9982-cf88fd1f320b@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <corey@minyard.net>) id 1uCeTb-000547-MB
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 09:06:19 -0400
+Received: from mail-oa1-x2c.google.com ([2001:4860:4864:20::2c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <corey@minyard.net>) id 1uCeTZ-0007mq-IG
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 09:06:19 -0400
+Received: by mail-oa1-x2c.google.com with SMTP id
+ 586e51a60fabf-2d5e5e21b92so4459440fac.0
+ for <qemu-devel@nongnu.org>; Wed, 07 May 2025 06:06:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=minyard-net.20230601.gappssmtp.com; s=20230601; t=1746623175; x=1747227975;
+ darn=nongnu.org; 
+ h=in-reply-to:content-disposition:mime-version:references:reply-to
+ :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=mdO84SBT+yzy9Vdl7PflEH11rZSK9840HXhCWIBmk2I=;
+ b=HaaaGTNhuJ7bxLkEuobxfVmFVjuiy2G6OAwvMpOI3Z2Nnl7fKUF53gNOaj0O6xHhhZ
+ j5WAAQwDBVqKKqwsUzyIxMazKoKnSdLQ5E9lVIAfIiQbrGyy8Mcfm6KtsFS0TAVUt3zy
+ qMLMej7ld0CF8JGEU3yKMBg1AYoN7U9F+KHH7snIr52vU41EvqioesfgheyFXo5/GXS/
+ 8HKgja0UcXaIu3j6VTYq0U9odH6LnV01bGGGpWJkiESsvYau6P2tRXqq09fyg+RR7bUD
+ 8KmqwxHgjGJWlwKmkzbfzIbUhUqHMsPeSUHSScikR0eNmst0LN0hx4nrZHZ8qHHhLI+W
+ 85fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1746623175; x=1747227975;
+ h=in-reply-to:content-disposition:mime-version:references:reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=mdO84SBT+yzy9Vdl7PflEH11rZSK9840HXhCWIBmk2I=;
+ b=WycvXHqu+MbH2f3E3cOTovbKRmhFRvAUGvh8nvyfTR0lH5BWKkyBdM4u1KLDQxdkT/
+ /PjrKHfsUpL34Mk2dCtCIBEmuwPE7KOMShA8NlATzm3OX7t0izAiVLjtnm0PunaIHOGJ
+ uyFdvfKH3wEpMgdXDrU41v9aUOXnXvm+xT4oR6R5v02MqaLH2Qzsc/qi+nMTssbB8wtV
+ ilH5JHKCqLFSMkADlOpATCtVyp6rrumUYeiyB8b3d4fALgErO7tJ5Sq+8mHd32pWRkmc
+ JuKCHRYXFR2oO7omjkcrjDrHSweKhlpReSkh5d1NZBxhgSsFcLS78vBfef9ANQEoQ7Vp
+ 59tQ==
+X-Gm-Message-State: AOJu0YzZQjWmBrTf4qegU2hB7bszlU7RAsqJT2qlinRZp3SAtSU6A85E
+ Zjf071HcW0wIMLKZlMeqbva36tISnLJPJtG1L3+MUFf1V57qDRj8LU8AnxxhXvw=
+X-Gm-Gg: ASbGncvx88DO9ScZe2KVnpizAhKxFbdGYH2xmeCXRxL6k6lz5igAnpJKq5ufLVqc07j
+ /HT7hIeVzD0fnZzkTMGXFbapjyuQn1r8QsrnlRGo4VRiUzMA0xdYbx+9jx9ik5BfBwnvLkyANsf
+ rK18V7HTErldk0v/KrrJRec48ZJ+r1Wpbb4Y3o1j2Va/eWKFYA7uBXiUklQ48UTDfFIoi2nHD4H
+ ND//CbKUQCPoIx/kFwrvDWsDtCTJ2C/maB4OY+uk4QT0qeqSWUFagSD4OzuDzEFGstFltImlT8L
+ IJwdpw34Q788TYemRw8MJYX9xGMvhpi+xQ4ixC6sbP52
+X-Google-Smtp-Source: AGHT+IGBatNMZ3LoYPLlzevng97lGmeUx8t1svako6Ux5+a8KZ3l8LkQxZufobGlZtC02tF732EDzQ==
+X-Received: by 2002:a05:6870:548f:b0:2d4:d9d6:c8c2 with SMTP id
+ 586e51a60fabf-2db5c114a03mr1906432fac.34.1746623175102; 
+ Wed, 07 May 2025 06:06:15 -0700 (PDT)
+Received: from mail.minyard.net ([2001:470:b8f6:1b:5eb9:1067:bea9:6bfe])
+ by smtp.gmail.com with ESMTPSA id
+ 586e51a60fabf-2db5d0dcd34sm570787fac.41.2025.05.07.06.06.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 07 May 2025 06:06:13 -0700 (PDT)
+Date: Wed, 7 May 2025 08:06:06 -0500
+From: Corey Minyard <corey@minyard.net>
+To: Bernhard Beschow <shentey@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH] hw/i2c/imx_i2c: Always set interrupt status bit if
+ interrupt condition occurs
+Message-ID: <aBtavpDt1yfoavj7@mail.minyard.net>
+References: <20250507124040.425773-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cc878857-66e9-4599-9982-cf88fd1f320b@tls.msk.ru>
-Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -57
-X-Spam_score: -5.8
-X-Spam_bar: -----
-X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <20250507124040.425773-1-shentey@gmail.com>
+Received-SPF: none client-ip=2001:4860:4864:20::2c;
+ envelope-from=corey@minyard.net; helo=mail-oa1-x2c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,54 +93,62 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: corey@minyard.net
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 07, 2025 at 02:30:50PM +0300, Michael Tokarev wrote:
-> Date: Wed, 7 May 2025 14:30:50 +0300
-> From: Michael Tokarev <mjt@tls.msk.ru>
-> Subject: Re: [PATCH v4] target/i386: Fix model number of Zhaoxin YongFeng
->  vCPU template
+On Wed, May 07, 2025 at 02:40:40PM +0200, Bernhard Beschow wrote:
+> According to the i.MX 8M Plus reference manual, the status flag I2C_I2SR[IIF]
+> continues to be set when an interrupt condition occurs even when I2C interrupts
+> are disabled (I2C_I2CR[IIEN] is clear). However, the device model only sets the
+> flag when I2C interrupts are enabled which causes U-Boot to loop forever. Fix
+> the device model by always setting the flag and let I2C_I2CR[IIEN] guard I2C
+> interrupts only.
 > 
-> On 25.04.2025 14:14, Ewan Hai wrote:
-> > On 4/24/25 3:25 PM, Michael Tokarev wrote:
-> > > 
-> > > On 15.04.2025 05:45, Ewan Hai wrote:
-> > > > The model number was mistakenly set to 0x0b (11) in commit ff04bc1ac4.
-> > > > The correct value is 0x5b. This mistake occurred because the extended
-> > > > model bits in cpuid[eax=0x1].eax were overlooked, and only the base
-> > > > model was used.
-> > > > 
-> > > > Using the wrong model number can affect guest behavior. One known issue
-> > > > is that vPMU (which relies on the model number) may fail to operate
-> > > > correctly.
-> > > > 
-> > > > This patch corrects the model field by introducing a new vCPU version.
-> > > > 
-> > > > Additionally, it adds a "Preferred CPU models for Zhaoxin x86 hosts"
-> > > > section in docs/system/cpu-models-x86.rst.inc to recommend the
-> > > > appropriate Zhaoxin CPU model(s).
-> > > > 
-> > > > Fixes: ff04bc1ac4 ("target/i386: Introduce Zhaoxin Yongfeng CPU model")
-> > > > Signed-off-by: Ewan Hai <ewanhai-oc@zhaoxin.com>
-> > > > Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-> > > 
-> > > Is it a qemu-stable material (for 10.0.x)?
-> > > 
-> > > I'm picking this one up, please let me know if I should not.
-> > 
-> > I'm not sure if this should go into qemu-stable. Maybe Paolo Bonzini or
-> > Zhao can answer?
+> Also remove the comment in the code since it merely stated the obvious and would
+> be outdated now.
+
+This looks good to me.  I can give you an:
+
+Acked-by: Corey Minyard <cminyard@mvista.com>
+
+or I can take it into my tree.
+
+-corey
+
 > 
-> Ping?  Paolo, Zhao, - can you comment please?
-
-Sorry for late. Though I didn't find the similar case, without this
-patch, the original model can't support vPMU function correctly.
-
-Therefore I think it makes sense to include this patch into stable QEMU,
-so that the Zhaoxin user could have a normal CPU model.
-
-Thanks,
-Zhao
-
+> Fixes: 20d0f9cf6a41 ("i.MX: Add I2C controller emulator")
+> cc: qemu-stable
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+> ---
+>  hw/i2c/imx_i2c.c | 11 +++++------
+>  1 file changed, 5 insertions(+), 6 deletions(-)
+> 
+> diff --git a/hw/i2c/imx_i2c.c b/hw/i2c/imx_i2c.c
+> index 91f84c2ad7..d26177c85d 100644
+> --- a/hw/i2c/imx_i2c.c
+> +++ b/hw/i2c/imx_i2c.c
+> @@ -79,13 +79,12 @@ static void imx_i2c_reset(DeviceState *dev)
+>  
+>  static inline void imx_i2c_raise_interrupt(IMXI2CState *s)
+>  {
+> -    /*
+> -     * raise an interrupt if the device is enabled and it is configured
+> -     * to generate some interrupts.
+> -     */
+> -    if (imx_i2c_is_enabled(s) && imx_i2c_interrupt_is_enabled(s)) {
+> +    if (imx_i2c_is_enabled(s)) {
+>          s->i2sr |= I2SR_IIF;
+> -        qemu_irq_raise(s->irq);
+> +
+> +        if (imx_i2c_interrupt_is_enabled(s)) {
+> +            qemu_irq_raise(s->irq);
+> +        }
+>      }
+>  }
+>  
+> -- 
+> 2.49.0
+> 
+> 
 
