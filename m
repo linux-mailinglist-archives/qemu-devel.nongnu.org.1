@@ -2,92 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E81AAAE904
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 20:24:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 310B4AAE9A1
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 20:47:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCjQg-0006rT-Uq; Wed, 07 May 2025 14:23:38 -0400
+	id 1uCjm9-0008Sv-5I; Wed, 07 May 2025 14:45:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uCjQf-0006rC-5J
- for qemu-devel@nongnu.org; Wed, 07 May 2025 14:23:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uCjQd-00029N-5k
- for qemu-devel@nongnu.org; Wed, 07 May 2025 14:23:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746642214;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=VOS4Py+5byH1ZINPqlue8nt6brSoEFYbR5RQEk2xzOk=;
- b=ggAWjbOExmpNN1vwlgNwhkSYd4I8xDJrF6HfoOdBPl36Eu0FrZmZ/M6CfDLNJN+tMvjSUB
- pfHlmVRKbOSlxYgZk/egdCtJxsmzqLXiVhvhiCgqMeflhkemjbLFRyNKRUozmVjyeK9HPd
- MYS3boABzgpQUpiN1xUw7Bic9JIURlw=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-287-cDD1m3QlOSOVmxBAJxFbxw-1; Wed, 07 May 2025 14:23:32 -0400
-X-MC-Unique: cDD1m3QlOSOVmxBAJxFbxw-1
-X-Mimecast-MFC-AGG-ID: cDD1m3QlOSOVmxBAJxFbxw_1746642211
-Received: by mail-pl1-f199.google.com with SMTP id
- d9443c01a7336-22e816139b8so1256185ad.3
- for <qemu-devel@nongnu.org>; Wed, 07 May 2025 11:23:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uCjm3-0008Lj-EN
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 14:45:44 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uCjm1-0004kq-FL
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 14:45:42 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-2264aefc45dso3460675ad.0
+ for <qemu-devel@nongnu.org>; Wed, 07 May 2025 11:45:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1746643539; x=1747248339; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=qxDPVCjfVtoNgCIZdN1lq3rjLY8i4XcwvaPrwsrEMQs=;
+ b=YxVtmmAJChKclk+RWM6ZsyH/klbohtIIsUtdtfBrvRqfQ7wiI6sk629sbUzFQb5KbJ
+ mKMYQfsvbwrHZVCe2NVJ4oOv1rt0dLzAmdvqWJdlSwsza/leSZABZZfMFZvGgMi9WMZa
+ thsssPKnA0yGOuYmcYmrsGRxSG4Qdt8SLQ/vJnxdvUugJHZfUBoyDxelMkKyzL69NSG+
+ Z7P2NDc+D6OE+i1CCw6h1v6TWluaxLRmJfwDVew7PwKokjfsCrKwnY36cx8/qZefp0zc
+ zF08Ribj/cma+pmbmAgbMyvhpzFPEnKEUn8yH5EUgb8n9txOOewMYnbRmS5qKFz0YUaV
+ ZrmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746642211; x=1747247011;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=VOS4Py+5byH1ZINPqlue8nt6brSoEFYbR5RQEk2xzOk=;
- b=SbvtcL6Ssnsiq3j/ZjCKYhOOefGoZF8MOqiQdOiXW2hExfPt41rTS5uk+89X8QuJf1
- 80rSiefWE1n9iBB94OghjZXXDpYE5Ur0UOgNFsyA98pxyfKv3a6XulDJfVQ/VAvHQMc4
- /ZB7YnQQxHkglcEoS/tHYifPuudSHXl3jahXiVo0fwim713B2veoLCw2hO4B4EKChYVT
- D9S2R/eEVDoQUE+yP9Gcaa+JBLwbi/2QX7e8K4kzsWW1xLY3YOugg3Emds+msZlw+9ko
- gSwMeKyNRSBzlQCa/M1T2JrcQ9+vVxqNw+Ylq15nWV0roFHSicu1piOA/XhrGoy6FZwj
- YUqg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVBpLr8I5RNiLGP5J1qab4d6akopNiHZz6lQfHO88/kNz45GCS19iFI/GVRgTAGKNJX/J5gd421kiC/@nongnu.org
-X-Gm-Message-State: AOJu0YxB2IjS75DX/BVXOGVFTy+teY0AUXMEVe7kDQ/IKo17XcXwaxYv
- dMiiA6p51R+oGpeacrSy66NJelUPWN/tRVaOMNjE23XGzHH1ZV9HYawqWJYrgJ9UpmdqaqquiYT
- +8W06ZEdI3cVizAi98+nMM0ZNJzB2A8VfZz6W2oJhYmSrxLU++2C/bTmBfI1uZziXJV6wA1ACyo
- pU6dez7gE12bzSgLlxe2kc149P9nU=
-X-Gm-Gg: ASbGncthDaSVTPouZffvQEp/mjdDt8/YkhlJETUk/IC7swIEg0MHwefBo1xIlfEv2ph
- iPZKbJMu88CWSdXBmSRD5JkZ/x52nLvsOH363bDpiH2S3frH92yQ2Gz0bFwdK6UCch+QH+VA51K
- 7PtRTFH2/cv0I/lFTABoJLrnWE
-X-Received: by 2002:a17:902:ecca:b0:224:fa0:36d2 with SMTP id
- d9443c01a7336-22e5ea9545bmr54259385ad.26.1746642211585; 
- Wed, 07 May 2025 11:23:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH1BzNZqPQJ5q6z60w/j2YgpU6hpwmcj+v+V8f1syxyBnW6RAAqfcmqgwq8oWQ4qy8AWS8WHUHOjuECrs7bvI8=
-X-Received: by 2002:a17:902:ecca:b0:224:fa0:36d2 with SMTP id
- d9443c01a7336-22e5ea9545bmr54259125ad.26.1746642211309; Wed, 07 May 2025
- 11:23:31 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1746643539; x=1747248339;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=qxDPVCjfVtoNgCIZdN1lq3rjLY8i4XcwvaPrwsrEMQs=;
+ b=IyM+JupSzcwjw57ipW+GTwGKjcaafYgXJY612dHmqeYXEU0W4du6FVFGFHTn6fAZF9
+ FBIdk64IkbbobPoyqxfAZwSjYAXtdKpED5BSZbxem8yFtnnHiG39JKg2fM5mz89SltSi
+ Xi1fHZDJvxIyg+OtfqBvArb2SV0ZqGZiI9d5xvsk8de7mfoYKdeQ2lFM1yXLkxOx1dSD
+ ipYF0eUHeMFO69gRWg6EjJNwiGKTxomUJ0daKbgGksKal+FnBcr1XyasJzEAnmnjyvpa
+ AtkUJpY+xXO3yqImTZh7okAABO0gdN5GC3xYFhTa7qSDwbYhZg/6LuabmfvuQa7aydGe
+ kwiA==
+X-Gm-Message-State: AOJu0Yx0mNIXSXbCQz7e8Buz9uVRAZi/lYGiIsmyyKNLCdNQ/IRQRsGt
+ AeqHb5cv/GA2BAxJQEzOT5vA5NmEitaO+gZDDjibWdnl4XvTedvMYwX0Ynw+4W5b7rHnbBh6t4z
+ zRyA7nA==
+X-Gm-Gg: ASbGncueajxttDzDjmtbyONgoLdFKEH2M8p/tRpHsAtIoF2Qn1n9KLLp8yM6WICrDIp
+ QtpPSCt+Ayz1u8f8BXfWIiR2DtN+8xuIh3d9XkzTiMpckCtmBgPaga//VBm0rqR2/Mca80fcqRa
+ DDt/6jc0WlOCa4/UIHSnK4CtWId8hOiEg8uTNOPoTIQooFwpZFu6cT9U3sUWpJIAuuIs5RqIeI6
+ CjdGLzXKPbfRhH53m66hpwER/XRErfUyxhc7ne1V4AYXpSVGbutaLYngyVdrwgbjDl/AZn9sVzc
+ hXtelXzbcyo0aVd8yW+5SAoRIrwuptotxW9qsPHSgHN8lEDiKEQ9NqrDEJ6Hd5g2
+X-Google-Smtp-Source: AGHT+IEsAog+MHtGX3z21n5EUDikknzrRG0EBU0DG/ehEfnU6AYRAhfonz8yLAb/4xitHKjA2gr9+A==
+X-Received: by 2002:a17:902:e744:b0:22e:53a2:554e with SMTP id
+ d9443c01a7336-22e85ed73edmr6794345ad.10.1746643539002; 
+ Wed, 07 May 2025 11:45:39 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-22e173b584csm93205485ad.16.2025.05.07.11.45.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 07 May 2025 11:45:38 -0700 (PDT)
+Message-ID: <0657578e-3825-407b-9837-1e29717f94e2@linaro.org>
+Date: Wed, 7 May 2025 11:45:37 -0700
 MIME-Version: 1.0
-References: <20250505-sphinx82-v1-0-85f2418b33b1@daynix.com>
- <20250505-sphinx82-v1-1-85f2418b33b1@daynix.com>
- <CAFn=p-bSMFVScSNewv_92-3u2FyyN5CYpUkABppazW53CUF-jw@mail.gmail.com>
- <871pt1ngeu.fsf@pond.sub.org>
-In-Reply-To: <871pt1ngeu.fsf@pond.sub.org>
-From: John Snow <jsnow@redhat.com>
-Date: Wed, 7 May 2025 14:23:19 -0400
-X-Gm-Features: ATxdqUEfCBAwIex4vDfs7-aYKyY9wrbMxzrFumIpg44Rb42o8x3-Ij_RxitLbwo
-Message-ID: <CAFn=p-YmggufG8c7no68sSBca0_cZNO=fqZbLR0hcf2Lm40n_Q@mail.gmail.com>
-Subject: Re: [PATCH 1/2] docs: Bump sphinx to 8.2.3
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- Peter Maydell <peter.maydell@linaro.org>, 
- qemu-devel@nongnu.org, devel@daynix.com
-Content-Type: multipart/alternative; boundary="0000000000008e302306348fd44c"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] meson: use thorough test setup as default
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
+ <marcandre.lureau@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20250503201806.3045723-1-pierrick.bouvier@linaro.org>
+ <f7da46dd-0e8f-42d8-b555-300c088f605e@redhat.com>
+ <91cc4370-163e-4bdd-ac1c-b0d6ea3c06cb@linaro.org>
+ <aBnXXC3ldqErl8ub@redhat.com>
+ <6a8d7703-e275-4566-bc38-b627cc597e9a@linaro.org>
+ <e36633e2-e0de-422a-8ad3-1562e97926c6@redhat.com>
+ <aBsISp5UvOLzFhqn@redhat.com>
+ <51c4e997-8ae4-43a5-81b7-561c035ba85c@redhat.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <51c4e997-8ae4-43a5-81b7-561c035ba85c@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,185 +109,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000008e302306348fd44c
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, May 7, 2025 at 1:22=E2=80=AFAM Markus Armbruster <armbru@redhat.com=
-> wrote:
-
-> John Snow <jsnow@redhat.com> writes:
->
-> > On Mon, May 5, 2025 at 8:19=E2=80=AFAM Akihiko Odaki <akihiko.odaki@day=
-nix.com>
-> > wrote:
-> >
-> >> sphinx 5.3.0 fails with Python 3.13.1:
-> >>
-> >> ../docs/meson.build:37: WARNING:
-> >> /home/me/qemu/build/pyvenv/bin/sphinx-build:
-> >> Extension error:
-> >> Could not import extension sphinx.builders.epub3 (exception: No module
-> >> named 'imghdr')
-> >>
-> >> ../docs/meson.build:39:6: ERROR: Problem encountered: Install a Python=
- 3
-> >> version of python-sphinx and the readthedoc theme
-> >>
-> >> Bump sphinx to 8.2.3 and also sphinx_rtd_theme as required for the new
-> >> sphinx version.
-> >>
-> >> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->
-> [...]
->
-> > Can we set our suggested version to 6.2.0 instead? This version removed
-> > reliance on 'imghdr' but merely requires Python 3.8+ which is our curre=
-nt
-> > stated minimum.
-> >
-> > If Thomas upgrades our minimum Python to 3.9, then we could use somethi=
-ng
-> > as new as 7.2.0 which requires 3.9+.
->
-> Thomas did: commit d64db833d6.
+On 5/7/25 12:39 AM, Thomas Huth wrote:
+>>>> Then I don't understand the previous argument from Thomas to not make
+>>>> thorough the default: "The thorough functional tests download a
+>>>> lot of assets from the internet, so if someone just runs "meson test"
+>>>> without further parameters, I think we should not trigger these
+>>>> downloads in that case". It's what precache-functional is doing.
+>>>
+>>> precache-functional is *only* called when you run "make check-functional",
+>>> i.e. when you know that you want to run the functional tests that might
+>>> download assets from the internet. It's not called when you run the normal
+>>> "make check".
+>>
+>> Are you sure ?  If that's the case it was *not* my intention when i
+>> added precaching - I thought that "make check"  would call
+>> "make check-functional" and thus trigger precaching ?
+> 
+> "check-functional" is not part of the normal "check" target - on purpose
+> since we don't want to trigger downloads by surprise when people just run
+> "make check". That's also why we have separate "functional" CI jobs in the
+> gitlab CI, since otherwise this would be handled by the normal "check" jobs
+> already.
 >
 
-OK, that being said, let's try setting both the preferred and minimum
-versions to *7.2.0*. We could theoretically aim higher, but let's start
-conservatively for now and see what, if anything, breaks before we get more
-adventurous.
+`make check` calls build/pyvenv/bin/meson test --no-rebuild -t 1, which 
+triggers func-quick by default, triggering associated downloads, since 
+QEMU_TEST_NO_DOWNLOAD=1 is not set for this target, except if I missed 
+another hidden hack somewhere.
+`meson test --no-suite func-quick --no-suite func-thorough` should be 
+what make check should do instead, or we need another "setup", to 
+exclude functional-quick from quick default.
 
-I think 7.2 is new enough that I can remove the vast majority of the
-compatibility crud in docs/sphinx/compat.py and it will make my life a lot
-easier, without being so new as to require a bleeding edge version of
-Python that may not be available on older platforms we still support for
-package building.
+It seems that we just have some confusion steaming from our own 
+"makefile abstraction layer", when we could simply use builtin meson 
+test command for that, which works for all workflows (single vs multiple 
+tests). It reinforces my opinion that setups are awkward and that's 
+better to use meson test directly with --setup thorough being the 
+default, for better or worse. In case a developer wants a specific 
+suite, it's also easy to select it with '--suite', and list them with 
+'--list'.
 
-I think it's not a huge deal to support Sphinx 7.x and 8.x for now. I am
-just reluctant to suggest that we should have a pinned (very modern) Sphinx
-version for doc building, because I do not know what the impact of that
-would be on downstream builds that offer documentation from SRPM (Red Hat,
-etc) which may not be able to procure a bleeding-edge Sphinx from PyPI from
-an isolated build environment.
+That said, I'm dropping this series, and won't pursue asking to change 
+the default, since this opinion is not the established consensus.
 
+>    Thomas
+> 
 
-> > I'd say 8.0.0 is too new (requires 3.10+) and conflicts with our stated
-> > minimums.
->
-> Requiring more recent versions of dependencies for optional parts of the
-> build can be okay, but the degradation must be graceful.
->
-> This makes sense only when the more recent dependencies save us enough
-> trouble to justify inconveniencing users stuck on older dependencies as
-> well as the additional build system complexity.
->
-> I have no opinion on whether that's the case here.  If you think it is,
-> make your argument :)
->
-> "Graceful" means that if we require Sphinx 8, which requires Python
-> 3.10, the build must still succeed when we have only Python 3.9 (our
-> stated minimum), but we don't build documentation then.  If the user
-> demands documentation with configure --enable-docs, the build fails.
->
-> [...]
->
->
-
---0000000000008e302306348fd44c
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote g=
-mail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, May 7, =
-2025 at 1:22=E2=80=AFAM Markus Armbruster &lt;<a href=3D"mailto:armbru@redh=
-at.com">armbru@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmai=
-l_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,20=
-4,204);padding-left:1ex">John Snow &lt;<a href=3D"mailto:jsnow@redhat.com" =
-target=3D"_blank">jsnow@redhat.com</a>&gt; writes:<br>
-<br>
-&gt; On Mon, May 5, 2025 at 8:19=E2=80=AFAM Akihiko Odaki &lt;<a href=3D"ma=
-ilto:akihiko.odaki@daynix.com" target=3D"_blank">akihiko.odaki@daynix.com</=
-a>&gt;<br>
-&gt; wrote:<br>
-&gt;<br>
-&gt;&gt; sphinx 5.3.0 fails with Python 3.13.1:<br>
-&gt;&gt;<br>
-&gt;&gt; ../docs/meson.build:37: WARNING:<br>
-&gt;&gt; /home/me/qemu/build/pyvenv/bin/sphinx-build:<br>
-&gt;&gt; Extension error:<br>
-&gt;&gt; Could not import extension sphinx.builders.epub3 (exception: No mo=
-dule<br>
-&gt;&gt; named &#39;imghdr&#39;)<br>
-&gt;&gt;<br>
-&gt;&gt; ../docs/meson.build:39:6: ERROR: Problem encountered: Install a Py=
-thon 3<br>
-&gt;&gt; version of python-sphinx and the readthedoc theme<br>
-&gt;&gt;<br>
-&gt;&gt; Bump sphinx to 8.2.3 and also sphinx_rtd_theme as required for the=
- new<br>
-&gt;&gt; sphinx version.<br>
-&gt;&gt;<br>
-&gt;&gt; Signed-off-by: Akihiko Odaki &lt;<a href=3D"mailto:akihiko.odaki@d=
-aynix.com" target=3D"_blank">akihiko.odaki@daynix.com</a>&gt;<br>
-<br>
-[...]<br>
-<br>
-&gt; Can we set our suggested version to 6.2.0 instead? This version remove=
-d<br>
-&gt; reliance on &#39;imghdr&#39; but merely requires Python 3.8+ which is =
-our current<br>
-&gt; stated minimum.<br>
-&gt;<br>
-&gt; If Thomas upgrades our minimum Python to 3.9, then we could use someth=
-ing<br>
-&gt; as new as 7.2.0 which requires 3.9+.<br>
-<br>
-Thomas did: commit d64db833d6.<br></blockquote><div><br></div><div>OK, that=
- being said, let&#39;s try setting both the preferred and minimum versions =
-to *7.2.0*. We could theoretically aim higher, but let&#39;s start conserva=
-tively for now and see what, if anything, breaks before we get more adventu=
-rous.</div><div><br></div><div>I think 7.2 is new enough that I can remove =
-the vast majority of the compatibility crud in docs/sphinx/compat.py and it=
- will make my life a lot easier, without being so new as to require a bleed=
-ing edge version of Python that may not be available on older platforms we =
-still support for package building.</div><div><br></div><div>I think it&#39=
-;s not a huge deal to support Sphinx 7.x and 8.x for now. I am just relucta=
-nt to suggest that we should have a pinned (very modern) Sphinx version for=
- doc building, because I do not know what the impact of that would be on do=
-wnstream builds that offer documentation from SRPM (Red Hat, etc) which may=
- not be able to procure a bleeding-edge Sphinx from PyPI from an isolated b=
-uild environment.</div><div><br></div><blockquote class=3D"gmail_quote" sty=
-le=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddi=
-ng-left:1ex">
-<br>
-&gt; I&#39;d say 8.0.0 is too new (requires 3.10+) and conflicts with our s=
-tated<br>
-&gt; minimums.<br>
-<br>
-Requiring more recent versions of dependencies for optional parts of the<br=
->
-build can be okay, but the degradation must be graceful.<br>
-<br>
-This makes sense only when the more recent dependencies save us enough<br>
-trouble to justify inconveniencing users stuck on older dependencies as<br>
-well as the additional build system complexity.<br>
-<br>
-I have no opinion on whether that&#39;s the case here.=C2=A0 If you think i=
-t is,<br>
-make your argument :)<br>
-<br>
-&quot;Graceful&quot; means that if we require Sphinx 8, which requires Pyth=
-on<br>
-3.10, the build must still succeed when we have only Python 3.9 (our<br>
-stated minimum), but we don&#39;t build documentation then.=C2=A0 If the us=
-er<br>
-demands documentation with configure --enable-docs, the build fails.<br>
-<br>
-[...]<br>
-<br>
-</blockquote></div></div>
-
---0000000000008e302306348fd44c--
-
+Regards,
+Pierrick
 
