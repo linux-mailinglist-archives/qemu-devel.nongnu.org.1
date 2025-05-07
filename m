@@ -2,87 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B7E0AAED4F
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 22:47:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D260AAAED52
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 22:47:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uClex-0006P4-Ph; Wed, 07 May 2025 16:46:31 -0400
+	id 1uClfS-0007Mc-4J; Wed, 07 May 2025 16:47:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uClet-0006Kz-FH
- for qemu-devel@nongnu.org; Wed, 07 May 2025 16:46:27 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1uClfP-0007HP-QY
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 16:46:59 -0400
+Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uCler-000361-MC
- for qemu-devel@nongnu.org; Wed, 07 May 2025 16:46:27 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-7396f13b750so391447b3a.1
- for <qemu-devel@nongnu.org>; Wed, 07 May 2025 13:46:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1uClfJ-00037Z-Kt
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 16:46:59 -0400
+Received: by mail-oi1-x22b.google.com with SMTP id
+ 5614622812f47-3f94b7bd964so315388b6e.1
+ for <qemu-devel@nongnu.org>; Wed, 07 May 2025 13:46:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746650784; x=1747255584; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=znLRp2OaQO+XQyL1geF9Vad6Q7qGDrE7+18ABJuo5EA=;
- b=E/nS9DbIMN11YLFkUHr4iovC26SqLSXhbDfjBFPeRrZyUcknufz8/q6qXAffg5rijY
- 1dPTfaqFH3jcJVEpzcohMuB7pto6KkRbQm3ukWy3QMptwOzAP4slsqJXUVlMWEH31vkH
- TEcfnItF4v0IRfZzajf83OHsK06oe2w5nCOrLtl6/nol1kmkFZYojaekE9xeBNEzxYi1
- q/2vgK9sjwjwVG2UaOCSCnYduQKAfgV61gi8rOlMQyyhSR2mSbb32TfYsH81nbikto9R
- Z86LfoKywxeRByvDoapxQ2mPF3nhhJ6xEnhCtApGXj2UXU465MkdsYya6+lCeDIXrTWI
- 38lg==
+ d=linaro.org; s=google; t=1746650811; x=1747255611; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=EhPrnWrrEa3D6POxudXMd7e4Z/b8W/qudNgP3sQ1aLE=;
+ b=vQFELfWQtJi+uqYsJ273wSSgYFHbfZZlAi91CbPHlbnlar8j6QaP/ypmW+kOXPwXDH
+ g90tnETYqWv6NTqgP6KoRYNFT1+RvktiVyMtKiOtWknlT1PEkZFptJX/hUeq06k6yUNS
+ iqETttIHUyyTqzYPDdoGfNW73cJjcsbVX59W3ixA9SAmz/Epx3F8oiqBolKjuj1PGQjJ
+ qpjv94zfMEpR+DE1UsoGe6+tuq2j3+aRq3NJiY4cdNhfCrhzdpp9GSAejJq8XGcBp0qT
+ lermtuhzLyKT+nXHFTRlZPHmxK0XquD3muZFVMvmwwkTDiyxa08NfuCrGg0a//otSsr4
+ HkwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746650784; x=1747255584;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=znLRp2OaQO+XQyL1geF9Vad6Q7qGDrE7+18ABJuo5EA=;
- b=rE5utu+3zr87hpBTpJFDbYvdjAgqVgxPex4+GwzLLi1rU6NvOK/B68vxYAxq9g1FT/
- 4ETwalYKYFBBbo11YFbPPxtKqk6OU+Jn6oV+VPWpoRR6EpT/pSF3hRoqbEw7i2wucGZV
- ul8vN8dKO3kO7GL/6zsr+LDWNoT5odZ08o2YDQggu/fVtp1jA25KLdZDSuJMx90v1uqs
- vvLJcJzjbSzsvW7IiDMQw4JfyTDSXPAA2ElquNLvjVjCTNUqunFW3l9tODXkTN236Ehp
- HIgBJBTVs1kb3ZCX/7TQHI3ekO9qZHlNHgvIojIuK8E5E0VRAPDOzzSaJ+3QkFVRIhdI
- +pcg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVTd7GvGIvI0z8KpKsRrzFb3oH0O+TE6YB/i8RjqbRCNf9IQ7HOsSw2NGadkI8FHNm6jVMRL23XNREE@nongnu.org
-X-Gm-Message-State: AOJu0YyHXhGynW590WnAOYetsNTCkgWhT/kSUTF5t3ElzC9ySjuNVKVv
- AF9EXEq2MIOl0Apkr9tmrqjWMvBB9SvnppJcaWhSFLmt0DkrONafdYmcdLyHpDg=
-X-Gm-Gg: ASbGncu15jVNapvR+T8lSBy45vayzAJ5DAuiIyZaBBdxtKcEWQwNHN8fAGcCrFQ6298
- ZR4wmz0mFeUcaAX/hgDbimuqpj8cGqLDjchqgkqdfqqZJVPGVJmE0BEUZry8X4KdTvjeZOIu8T3
- AAua/jOlGyCcFEyJhlxIKLvcWy68br/PxDkMgu0GF1HZ2do/TmgaDoXjrxwcnHTZONPsSHMT8oI
- NAtwQK+tsNyOcYg2Ov/SpnCa83kyzBS+tALo2ZbfvxlIqMr94OopzyQRK6tknbGkWN2ujyk0i1B
- cAPqeZZpjfzk+TN2j0+T5YJ1V4EqKtaHbwb8ZmhpdvMhZg9inPhFys6QW3i58P8w
-X-Google-Smtp-Source: AGHT+IF72mumXjYa2HKlpWWqae/xjBNEHG2EjQGG6+K6aRHVIdiz8Q1bmn7hSFxSjGwma8xXZD0GYA==
-X-Received: by 2002:a05:6a21:3510:b0:1f5:7c6f:6c96 with SMTP id
- adf61e73a8af0-2148c40dd17mr7330092637.22.1746650783874; 
- Wed, 07 May 2025 13:46:23 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74059065768sm11747647b3a.154.2025.05.07.13.46.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 07 May 2025 13:46:23 -0700 (PDT)
-Message-ID: <90178b05-9d5d-4834-a241-3f465573d314@linaro.org>
-Date: Wed, 7 May 2025 13:46:22 -0700
+ d=1e100.net; s=20230601; t=1746650811; x=1747255611;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=EhPrnWrrEa3D6POxudXMd7e4Z/b8W/qudNgP3sQ1aLE=;
+ b=QqVYLJqKnF+NJ3WT0TChzyUDrB7Y744sYZX1PJrg60MDsu7F2fEn35qLwXkfD2v8sU
+ MepFJyd3udqaAJK90ja94xjFLsQUv1Lx9/4UuK0AbIDb5O0JSNcaTzch5QCnqKg4lWgO
+ 4RuWHkYIduAP6IJv+FisddBul5sjwCi2OtQy+Sptybn0mDnK7Go/suNWw1T8KhI20zNU
+ FtLoFJRHWNqcFIRrWw4y978l1TFcnoe8cdpkAHzOpFkt0JG1riAbngPzyNwcIMEkdbpK
+ wEWS4z/f3QBwrhwdhWJzjqGS6i80GSLUKGYs8jbcY4dzf1VVTqP/akhyVdBI8XqN822S
+ EKrQ==
+X-Gm-Message-State: AOJu0YxZxjhouw9yTtjrfB14tavce+FONYmReWCJLW6UckeuI4mLT5U9
+ 7hpTRUWvX8ujgnOXsThF1HvdOUMb2Vunt4wHwaT9rqezgTvcAVDECHzS4CmWGn1m0nD0BL8yAzz
+ AQ/M=
+X-Gm-Gg: ASbGncs20hauaVZt7OuI/DQ7G2UIHGyyM/WrLj1ImEEtz9V0+AE4Rm2NRMMue1xNJpb
+ FFOwx52TnkwGXlkAH0X2oVRzqP26/J4BTi1Ftr3yb+srGMd8WceH5HKX3nmTyeDiKuMhT4FxHqI
+ C1qOvA8WnCbJtYsNPew5l93Pel0LjEv5wcpb18iMkeNN/3f+z2VHpoN7Zdso+W7ilZJ2cKdQxwt
+ bJB+JMV9isHXfoT6E+mghkNY7LhYg+yOW6oXHF27K0Vg9WIF412V+t48de6H1J89cyZm/7/5crf
+ x0HEkI/vhjdKol0vGJRlrISCI1gBqSCx/Rqm3qgpO+Ecvkh8
+X-Google-Smtp-Source: AGHT+IH7/ieVTBFFKIEGbzu2A6yU9xqQJKw8wAvcdGFHCv25joYaS7oXC37//qPBJNx37uLpjrfvVg==
+X-Received: by 2002:a05:687c:2246:b0:2b8:e6f2:ba7e with SMTP id
+ 586e51a60fabf-2db81400b71mr607967fac.12.1746650811089; 
+ Wed, 07 May 2025 13:46:51 -0700 (PDT)
+Received: from gromero0.. ([200.150.181.215]) by smtp.gmail.com with ESMTPSA id
+ 586e51a60fabf-2db5cbc7d1fsm920933fac.11.2025.05.07.13.46.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 07 May 2025 13:46:50 -0700 (PDT)
+From: Gustavo Romero <gustavo.romero@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org,
+	thuth@redhat.com,
+	gustavo.romero@linaro.org
+Subject: [PATCH 0/3] Fix typo in comments
+Date: Wed,  7 May 2025 20:46:23 +0000
+Message-Id: <20250507204626.139507-1-gustavo.romero@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] accel/hvf: Include missing 'hw/core/cpu.h' header
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Cameron Esfahani <dirty@apple.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>, qemu-arm@nongnu.org,
- Alexander Graf <agraf@csgraf.de>, Roman Bolshakov <rbolshakov@ddn.com>,
- Peter Maydell <peter.maydell@linaro.org>, Mads Ynddal
- <m.ynddal@samsung.com>, Stefan Hajnoczi <stefanha@redhat.com>
-References: <20250507204401.45379-1-philmd@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250507204401.45379-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-oi1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,41 +95,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/7/25 1:44 PM, Philippe Mathieu-Daudé wrote:
-> Since commit d5bd8d8267e ("hvf: only update sysreg from owning
-> thread") hvf-all.c accesses the run_on_cpu_data type and calls
-> run_on_cpu(), both defined in the "hw/core/cpu.h" header.
-> Fortunately, it is indirectly included via:
-> 
->    "system/hvf.h"
->      -> "target/arm/cpu.h"
->           -> "target/arm/cpu-qom.h"
->                -> "hw/core/cpu.h"
-> 
-> "system/hvf.h" however doesn't need "target/arm/cpu.h" and we
-> want to remove it there. In order to do that we first need to
-> include it in the hvf-all.c file.
-> 
-> Cc: Mads Ynddal <m.ynddal@samsung.com>
-> Reported-by: Stefan Hajnoczi <stefanha@redhat.com>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   accel/hvf/hvf-all.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/accel/hvf/hvf-all.c b/accel/hvf/hvf-all.c
-> index 3fc65d6b231..8c387fda24d 100644
-> --- a/accel/hvf/hvf-all.c
-> +++ b/accel/hvf/hvf-all.c
-> @@ -12,6 +12,7 @@
->   #include "qemu/error-report.h"
->   #include "system/hvf.h"
->   #include "system/hvf_int.h"
-> +#include "hw/core/cpu.h"
->   
->   const char *hvf_return_string(hv_return_t ret)
->   {
+Nothing exciting in this series, just typo fixes in comments.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+
+Cheers,
+Gustavo
+
+Gustavo Romero (3):
+  linux-user: Fix typo in comment
+  Fix typo in comments
+  Fix typo in comments
+
+ block.c                             | 4 ++--
+ hw/display/apple-gfx.m              | 2 +-
+ hw/xen/xen-hvm-common.c             | 2 +-
+ include/exec/cpu-common.h           | 2 +-
+ include/hw/xen/interface/io/blkif.h | 2 +-
+ linux-user/mmap.c                   | 2 +-
+ qapi/machine-target.json            | 2 +-
+ qapi/qom.json                       | 2 +-
+ 8 files changed, 9 insertions(+), 9 deletions(-)
+
+-- 
+2.34.1
 
 
