@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B233AAEF3A
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 01:17:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27C26AAEF34
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 01:17:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCnye-0000eY-Gj; Wed, 07 May 2025 19:15:00 -0400
+	id 1uCnyg-0000fD-1D; Wed, 07 May 2025 19:15:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uCnyc-0000dg-1S
- for qemu-devel@nongnu.org; Wed, 07 May 2025 19:14:58 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ id 1uCnyb-0000dZ-SY
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 19:14:57 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uCnyY-00079W-OR
+ id 1uCnyZ-00079d-Mp
  for qemu-devel@nongnu.org; Wed, 07 May 2025 19:14:57 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-b0b2d0b2843so229821a12.2
- for <qemu-devel@nongnu.org>; Wed, 07 May 2025 16:14:54 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-22fa28c761dso623645ad.2
+ for <qemu-devel@nongnu.org>; Wed, 07 May 2025 16:14:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746659693; x=1747264493; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746659694; x=1747264494; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hmVgZ2T/BR9KDwjoUJTnrLXEqdGiV/GeYJSs5v9aKiI=;
- b=fXmHNQ9nUXJt/3Ai9Da6fTB5b+Jw8UZz7YPehttkWh7TdDu0xNhvgJ40XYFVMa+u8F
- MZnONw04g3Su6CSFbgx+aus65C21k+UCTiX3vfrC58AXYw7xzXQ2SdqmSQxZfn83ZuOx
- 4EdA1i8I0uBP4MtNc5ruVPCaOAZaJSwqGF5eKVmQ4wlnFs48yeTke8jLK050OUQtC+IQ
- IDoPRCg1/CWBOTxJkM3AqIDLOGD197orkcUTsRbt2kFrDq0uXge+e07HRwDOep5ujnkT
- StIXJk1NWqtwnYyFHaPWJOdkIq+EbhL1XbFmLywAcZK8CQpYIBLm2exdPoEJyY6OKM52
- HXTA==
+ bh=VhiIRKHyUZ235NNHNWt0hyw55Q2IbZusuEz+nlETwVY=;
+ b=ibhAnEExR+slNbfTHAu2MEO4MhH1ZGVJok4kpnYuh+/56dsWq6YbLSkEH7Kh9swdCn
+ uzNqj5w4YiXFwJISHw+ivXOj3dNlV9kdG+4+PYfxsCUsaGYGhHESKydi7YwELD3HJv7V
+ UZzFXk0sCzrFuekzi5E2bEQ7WKouCaJfrDD+RbkzadKJc/4R6fwQ54kJOxqwXkZg97a3
+ MPrviia1WymUziV1DjoaWYAy2btVxN0oTOQA7gDhZeM26EGanwU6MJMnP1i+5YU9HqUg
+ a9ovw5YLpXO+bQEF4fNwPUZx6ACVZmkRWTXKpaGjywzk1o6jbgn1trMvbn+DwjfqDz5o
+ dZhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746659693; x=1747264493;
+ d=1e100.net; s=20230601; t=1746659694; x=1747264494;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hmVgZ2T/BR9KDwjoUJTnrLXEqdGiV/GeYJSs5v9aKiI=;
- b=Twkk7ntKYAlVpIhFO2gZKwEQXd1/9jy/A+S85jD1TVwokOd+ten7owqLmJLg82VNzZ
- w9J36bG062ZKx2IrDJuZ6cSnYa8sndQV0Bn0LpbtVkmis5tzssc1lwIRw/fqDozy2/x/
- vmqv4PlEaNzsDohqZuqmXUG1IFrF+YqX3UrlznDuSXS5Pleg4TKTHHf8BHc9uiujUXkD
- OonuManvNe/JBmRAmpBuhqfjnCWI/T8mXz57YIwFl5umIqa/NCMLBttIU49vIk6nQEcO
- eQZgjUsvlsl/cd81tffe7Q504X4a8CjiFsAwcCLxG+f81mpWqqivwv23aKaNZT6PFUKs
- wdLA==
-X-Gm-Message-State: AOJu0YzrcGuEOaph/iKaiFuBJvBEQ2Nl94HXOldcNa85mbBsoZNSaUpw
- +WXAn2/8z14VrSqO+5+e/xDgP304WtjECxchd1buZK75LVtewtVTbXSFI4kBqcH5PjG+vQ61jKr
- dFhgzDA==
-X-Gm-Gg: ASbGncvsKtDX3Im4U+txRNlOrIga5/oLZt6VQh0Gk1XUZqCxoUvNM43CZV9t+7E2cdB
- j1w0Y/vD3hy8q8T5qULz0TS39qmb+0WV7I3OPIVqGAFdhIV7nLRNmuukZLi1TL4GmrGYySAZ7Ps
- kPFDdVHkPpyFN5EePVNFBTZi8fP4O5obPTtGBE2tzeBsplwud5hDG4QzGipFxhYxV4pPskms2Lg
- IaNK5L7D8fMEK58jJbOzLReXDyn95XsXvJhjBWqGVro9aCPCzCFma5t1I6eadb3Zp9SxUcKy4Q/
- Q80HKLuBXsWSquVXVHORu8IbK7qbOFW8iF4+IscnKPc2bJtjmtc=
-X-Google-Smtp-Source: AGHT+IHiQkgsyoYL4DzZE0SLrS9XsTyACEsADCeyGYuWt88cAb0SIc6NpYgJoAQhy7sy0kOOe74IXw==
-X-Received: by 2002:a17:903:22cd:b0:224:26fd:82e5 with SMTP id
- d9443c01a7336-22e5ee1d5a3mr77165335ad.48.1746659693218; 
- Wed, 07 May 2025 16:14:53 -0700 (PDT)
+ bh=VhiIRKHyUZ235NNHNWt0hyw55Q2IbZusuEz+nlETwVY=;
+ b=jm4zZhcGFBolFGZcemfk7F/rZPd/anzzkNc7N71gDwDdlu4LalGwCPPR1UHetjd0nv
+ QtAB5HxOShQRJmutfj+dXokhy9tlaE2GbVpJRPRLepeXAdKSGj0J3OcrfgZbPDuGl5yQ
+ TpecA6DgzGx+0jnzrqpcTaUPxREjQ+mYvszEvgTKKFguI5uiP/7PjMdRQGsa8T022Rb8
+ DGrrRIDf5DM5EVUTctz8D7JlH3wBlC3HgyF9mM41v2rJNDAJVnzFRsL4jasZCnj+Fg+g
+ GUIIYgE9mKfijLL1ITbRJX2XCxCrJb9cDGEIGaRVHmZITDTUZJ7zIixdFZaNZXqY9XTB
+ 6nmw==
+X-Gm-Message-State: AOJu0YwwkCGhXA6KCKas3bsvf2j2hLnPFLgCLEB6hrYVEjtZOU0OWYXu
+ JCzZjPwEdGKm8LBoMU1ENm5L5hggL0/N/2tKSOFqvrTmZqB/soEjfov5b3BFEH+ZPq2mSc2i4Mf
+ lp9Dj1g==
+X-Gm-Gg: ASbGncs3B7fh8//6+zGT6GLEkmyS8SMeVJ81jysaDx0ct/UOAAUI3sRV3tkuZGxuavN
+ VKi/Jgx18XYHQP8u80ijk0wKNN3KzsUsagmGCEAv/Xj1bf2WcZ1huTlEzUj0Qxe4Lltkh0eUYMT
+ EjN7vHE747rZvFDPnpykKoJjV6sOVGG1DaYf3c/UMmMUbOJm4QiH4JG7O+gcqqdizVMFgpqnHMO
+ 5cTgJKvQnLBtJI4j89fllh41RfOCNlz9rBZgIQys+8dpYKkvViEV9iTNo2LkJh5NGCQVCyyEbvF
+ JT/Tw7Fg2jT2WtxLU0ZBToQ0gk5GuB6pjzi9x8+6
+X-Google-Smtp-Source: AGHT+IE+tqhb23NzcyLZrS8zszCOAEaHMps9EvfqBIE/hUipmu4OmI9TA2OFHfgklbeiJ1hUjkRxQg==
+X-Received: by 2002:a17:902:fc4e:b0:22f:a48f:7a99 with SMTP id
+ d9443c01a7336-22fa48f7dd7mr1053085ad.26.1746659694154; 
+ Wed, 07 May 2025 16:14:54 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22e421a7dafsm40103205ad.69.2025.05.07.16.14.52
+ d9443c01a7336-22e421a7dafsm40103205ad.69.2025.05.07.16.14.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 May 2025 16:14:52 -0700 (PDT)
+ Wed, 07 May 2025 16:14:53 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>, alex.bennee@linaro.org,
@@ -68,16 +68,16 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>, alex.bennee@linaro.org,
  Markus Armbruster <armbru@redhat.com>, richard.henderson@linaro.org,
  pbonzini@redhat.com, jsnow@redhat.com, philmd@linaro.org,
  berrange@redhat.com, thuth@redhat.com, Michael Roth <michael.roth@amd.com>
-Subject: [PATCH 02/13] qapi/introspect: generate schema as a QObject directly
-Date: Wed,  7 May 2025 16:14:32 -0700
-Message-ID: <20250507231442.879619-3-pierrick.bouvier@linaro.org>
+Subject: [PATCH 03/13] qobject/qlit: allow to hide dict or list entries
+Date: Wed,  7 May 2025 16:14:33 -0700
+Message-ID: <20250507231442.879619-4-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250507231442.879619-1-pierrick.bouvier@linaro.org>
 References: <20250507231442.879619-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x533.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,86 +100,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of defining a const QLitObject, we implement a function to
-directly return the QObject associated.
-
-The benefit is that we can now have a non static definition for the
-QLitObject, and so we can assign it using non static initializer.
-This will be used in next commits to initialize a .hidden field per
-element, at runtime.
+We add a new .hidden field to qlit entries, which gets ignored when
+creating the associated QObject.
+By default .hidden is 0, so it means the entry is visible. This way,
+only potentially hidden elements need to be assigned.
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- monitor/qmp-cmds-control.c              | 2 +-
- tests/unit/test-qobject-input-visitor.c | 6 +++---
- scripts/qapi/introspect.py              | 9 ++++++---
- 3 files changed, 10 insertions(+), 7 deletions(-)
+ include/qobject/qlit.h | 12 ++++++++++++
+ qobject/qlit.c         | 10 ++++++++--
+ 2 files changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/monitor/qmp-cmds-control.c b/monitor/qmp-cmds-control.c
-index 150ca9f5cb6..1d52d4ca8e9 100644
---- a/monitor/qmp-cmds-control.c
-+++ b/monitor/qmp-cmds-control.c
-@@ -203,7 +203,7 @@ static SchemaInfoList *zap_deprecated(SchemaInfoList *schema)
+diff --git a/include/qobject/qlit.h b/include/qobject/qlit.h
+index c0676d5daf2..3b66c22013c 100644
+--- a/include/qobject/qlit.h
++++ b/include/qobject/qlit.h
+@@ -28,25 +28,37 @@ struct QLitObject {
+         QLitDictEntry *qdict;
+         QLitObject *qlist;
+     } value;
++    bool hidden;
+ };
  
- SchemaInfoList *qmp_query_qmp_schema(Error **errp)
+ struct QLitDictEntry {
+     const char *key;
+     QLitObject value;
++    bool hidden;
+ };
+ 
+ #define QLIT_QNULL \
+     { .type = QTYPE_QNULL }
+ #define QLIT_QBOOL(val) \
+     { .type = QTYPE_QBOOL, .value.qbool = (val) }
++#define QLIT_QBOOL_HIDDEN(val, cond) \
++    { .type = QTYPE_QBOOL, .value.qbool = (val), .hidden = (cond) }
+ #define QLIT_QNUM(val) \
+     { .type = QTYPE_QNUM, .value.qnum = (val) }
++#define QLIT_QNUM_HIDDEN(val, cond) \
++    { .type = QTYPE_QNUM, .value.qnum = (val), .hidden = (cond) }
+ #define QLIT_QSTR(val) \
+     { .type = QTYPE_QSTRING, .value.qstr = (val) }
++#define QLIT_QSTR_HIDDEN(val, cond) \
++    { .type = QTYPE_QSTRING, .value.qstr = (val), .hidden = (cond) }
+ #define QLIT_QDICT(val) \
+     { .type = QTYPE_QDICT, .value.qdict = (val) }
++#define QLIT_QDICT_HIDDEN(val, cond) \
++    { .type = QTYPE_QDICT, .value.qdict = (val), .hidden = (cond) }
+ #define QLIT_QLIST(val) \
+     { .type = QTYPE_QLIST, .value.qlist = (val) }
++#define QLIT_QLIST_HIDDEN(val, cond) \
++    { .type = QTYPE_QLIST, .value.qlist = (val), .hidden = (cond) }
+ 
+ bool qlit_equal_qobject(const QLitObject *lhs, const QObject *rhs);
+ 
+diff --git a/qobject/qlit.c b/qobject/qlit.c
+index a44f47eaa57..7b372c5ebaa 100644
+--- a/qobject/qlit.c
++++ b/qobject/qlit.c
+@@ -90,6 +90,8 @@ bool qlit_equal_qobject(const QLitObject *lhs, const QObject *rhs)
+ 
+ QObject *qobject_from_qlit(const QLitObject *qlit)
  {
--    QObject *obj = qobject_from_qlit(&qmp_schema_qlit);
-+    QObject *obj = qmp_schema_qobject();
-     Visitor *v = qobject_input_visitor_new(obj);
-     SchemaInfoList *schema = NULL;
++    g_assert(!qlit->hidden);
++
+     switch (qlit->type) {
+     case QTYPE_QNULL:
+         return QOBJECT(qnull());
+@@ -102,7 +104,9 @@ QObject *qobject_from_qlit(const QLitObject *qlit)
+         QLitDictEntry *e;
  
-diff --git a/tests/unit/test-qobject-input-visitor.c b/tests/unit/test-qobject-input-visitor.c
-index 84bdcdf702e..5d961325f95 100644
---- a/tests/unit/test-qobject-input-visitor.c
-+++ b/tests/unit/test-qobject-input-visitor.c
-@@ -1184,10 +1184,10 @@ static void test_visitor_in_fail_alternate(TestInputVisitorData *data,
- }
+         for (e = qlit->value.qdict; e->key; e++) {
+-            qdict_put_obj(qdict, e->key, qobject_from_qlit(&e->value));
++            if (!e->hidden) {
++                qdict_put_obj(qdict, e->key, qobject_from_qlit(&e->value));
++            }
+         }
+         return QOBJECT(qdict);
+     }
+@@ -111,7 +115,9 @@ QObject *qobject_from_qlit(const QLitObject *qlit)
+         QLitObject *e;
  
- static void do_test_visitor_in_qmp_introspect(TestInputVisitorData *data,
--                                              const QLitObject *qlit)
-+                                              QObject *qlit)
- {
-     g_autoptr(SchemaInfoList) schema = NULL;
--    QObject *obj = qobject_from_qlit(qlit);
-+    QObject *obj = qlit;
-     Visitor *v;
- 
-     v = qobject_input_visitor_new(obj);
-@@ -1202,7 +1202,7 @@ static void do_test_visitor_in_qmp_introspect(TestInputVisitorData *data,
- static void test_visitor_in_qmp_introspect(TestInputVisitorData *data,
-                                            const void *unused)
- {
--    do_test_visitor_in_qmp_introspect(data, &test_qmp_schema_qlit);
-+    do_test_visitor_in_qmp_introspect(data, test_qmp_schema_qobject());
- }
- 
- int main(int argc, char **argv)
-diff --git a/scripts/qapi/introspect.py b/scripts/qapi/introspect.py
-index 89ee5d5f176..e0269bef0ce 100644
---- a/scripts/qapi/introspect.py
-+++ b/scripts/qapi/introspect.py
-@@ -193,15 +193,18 @@ def visit_end(self) -> None:
-         for typ in self._used_types:
-             typ.visit(self)
-         # generate C
--        name = c_name(self._prefix, protect=False) + 'qmp_schema_qlit'
-+        name = c_name(self._prefix, protect=False) + 'qmp_schema_qobject'
-         self._genh.add(mcgen('''
- #include "qobject/qlit.h"
- 
--extern const QLitObject %(c_name)s;
-+QObject *%(c_name)s(void);
- ''',
-                              c_name=c_name(name)))
-         self._genc.add(mcgen('''
--const QLitObject %(c_name)s = %(c_string)s;
-+QObject *%(c_name)s(void) {
-+    const QLitObject res = %(c_string)s;
-+    return qobject_from_qlit(&res);
-+}
- ''',
-                              c_name=c_name(name),
-                              c_string=_tree_to_qlit(self._trees)))
+         for (e = qlit->value.qlist; e->type != QTYPE_NONE; e++) {
+-            qlist_append_obj(qlist, qobject_from_qlit(e));
++            if (!e->hidden) {
++                qlist_append_obj(qlist, qobject_from_qlit(e));
++            }
+         }
+         return QOBJECT(qlist);
+     }
 -- 
 2.47.2
 
