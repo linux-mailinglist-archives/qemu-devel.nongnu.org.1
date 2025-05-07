@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0554AAAE862
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 20:06:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8492FAAE87F
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 20:08:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCj8o-0008Mg-8m; Wed, 07 May 2025 14:05:10 -0400
+	id 1uCj8r-000076-93; Wed, 07 May 2025 14:05:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uCj8J-0008Ds-LT; Wed, 07 May 2025 14:04:40 -0400
+ id 1uCj8j-0008Q2-3p; Wed, 07 May 2025 14:05:09 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uCj8G-0008C7-69; Wed, 07 May 2025 14:04:39 -0400
+ id 1uCj8a-0008CF-Rr; Wed, 07 May 2025 14:05:03 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6C67E11FEFF;
+ by isrv.corpit.ru (Postfix) with ESMTP id 7FE7411FF00;
  Wed, 07 May 2025 21:04:00 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 3EB4C206704;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 5158E206705;
  Wed,  7 May 2025 21:04:13 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Gustavo Romero <gustavo.romero@linaro.org>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 10/21] hw/net/e1000: Remove stray empty comment in header
-Date: Wed,  7 May 2025 21:04:01 +0300
-Message-Id: <20250507180412.182797-11-mjt@tls.msk.ru>
+Subject: [PULL 11/21] hw/pci-host/gpex-acpi: Fix typo in comment
+Date: Wed,  7 May 2025 21:04:02 +0300
+Message-Id: <20250507180412.182797-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250507180412.182797-1-mjt@tls.msk.ru>
 References: <20250507180412.182797-1-mjt@tls.msk.ru>
@@ -59,30 +59,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Gustavo Romero <gustavo.romero@linaro.org>
 
-In the header file, remove a stray empty comment in the Offload Context
-Descriptor struct.
+Fix typo in a comment about the creation of the ACPI CRS method.
 
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/net/e1000x_regs.h | 2 +-
+ hw/pci-host/gpex-acpi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/net/e1000x_regs.h b/hw/net/e1000x_regs.h
-index cd896fc0ca..e9a74de6f4 100644
---- a/hw/net/e1000x_regs.h
-+++ b/hw/net/e1000x_regs.h
-@@ -900,7 +900,7 @@ struct e1000_context_desc {
-             uint16_t tucse;     /* TCP checksum end */
-         } tcp_fields;
-     } upper_setup;
--    uint32_t cmd_and_length;    /* */
-+    uint32_t cmd_and_length;
-     union {
-         uint32_t data;
-         struct {
+diff --git a/hw/pci-host/gpex-acpi.c b/hw/pci-host/gpex-acpi.c
+index e8b4c64c5f..0aba47c71c 100644
+--- a/hw/pci-host/gpex-acpi.c
++++ b/hw/pci-host/gpex-acpi.c
+@@ -182,7 +182,7 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
+ 
+             /*
+              * Resources defined for PXBs are composed of the following parts:
+-             * 1. The resources the pci-brige/pcie-root-port need.
++             * 1. The resources the pci-bridge/pcie-root-port need.
+              * 2. The resources the devices behind pxb need.
+              */
+             crs = build_crs(PCI_HOST_BRIDGE(BUS(bus)->parent), &crs_range_set,
 -- 
 2.39.5
 
