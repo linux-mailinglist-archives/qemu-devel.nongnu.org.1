@@ -2,74 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21C8BAADAE5
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 11:11:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6949AAADA98
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 10:58:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCamo-00059U-PQ; Wed, 07 May 2025 05:09:54 -0400
+	id 1uCaaf-00038B-QR; Wed, 07 May 2025 04:57:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1uCako-0002JE-Hd; Wed, 07 May 2025 05:07:54 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1uCakj-0002sZ-VX; Wed, 07 May 2025 05:07:50 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZsprG3tStz6K9dp;
- Wed,  7 May 2025 16:50:38 +0800 (CST)
-Received: from frapeml500006.china.huawei.com (unknown [7.182.85.219])
- by mail.maildlp.com (Postfix) with ESMTPS id 9ED0D1400D9;
- Wed,  7 May 2025 16:50:51 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (7.182.85.71) by
- frapeml500006.china.huawei.com (7.182.85.219) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 7 May 2025 10:50:51 +0200
-Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
- frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
- Wed, 7 May 2025 10:50:51 +0200
-To: Markus Armbruster <armbru@redhat.com>, Donald Dutile <ddutile@redhat.com>
-CC: Shameer Kolothum via <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>, "eric.auger@redhat.com" <eric.auger@redhat.com>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "jgg@nvidia.com"
- <jgg@nvidia.com>, "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
- "berrange@redhat.com" <berrange@redhat.com>, "nathanc@nvidia.com"
- <nathanc@nvidia.com>, "mochs@nvidia.com" <mochs@nvidia.com>,
- "smostafa@google.com" <smostafa@google.com>, Linuxarm <linuxarm@huawei.com>,
- "Wangzhou (B)" <wangzhou1@hisilicon.com>, jiangkunkun
- <jiangkunkun@huawei.com>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>
-Subject: RE: [PATCH v2 1/6] hw/arm/smmuv3: Add support to associate a PCIe RC
-Thread-Topic: [PATCH v2 1/6] hw/arm/smmuv3: Add support to associate a PCIe RC
-Thread-Index: AQHbu1V0fvNxmQCU0kS/eGPfhGB2G7PFgqACgAB1wICAANEzi4AAFpHg
-Date: Wed, 7 May 2025 08:50:51 +0000
-Message-ID: <72f9043a73294bfc9b539ae9b94836d3@huawei.com>
-References: <20250502102707.110516-1-shameerali.kolothum.thodi@huawei.com>
- <20250502102707.110516-2-shameerali.kolothum.thodi@huawei.com>
- <877c2ut0zk.fsf@pond.sub.org>
- <e02e884b-0f3d-4426-8a67-2cbd23e80e8c@redhat.com>
- <87frhglwjl.fsf@pond.sub.org>
-In-Reply-To: <87frhglwjl.fsf@pond.sub.org>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.203.177.241]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1uCaac-00037y-Lk
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 04:57:18 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1uCaaZ-0001UX-To
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 04:57:18 -0400
+Received: from loongson.cn (unknown [10.20.42.62])
+ by gateway (Coremail) with SMTP id _____8AxTWtkIBto5fjXAA--.25867S3;
+ Wed, 07 May 2025 16:57:08 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+ by front1 (Coremail) with SMTP id qMiowMCxLcVZIBtoK6G5AA--.9215S3;
+ Wed, 07 May 2025 16:56:59 +0800 (CST)
+Subject: Re: [PATCH v3] tests/qtest/cpu-plug-test: Add cpu hotplug support for
+ LoongArch
+From: bibo mao <maobibo@loongson.cn>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org
+References: <20250314085130.4184272-1-maobibo@loongson.cn>
+Message-ID: <c66ea257-0449-cccb-ac13-518e42c9081f@loongson.cn>
+Date: Wed, 7 May 2025 16:55:49 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=shameerali.kolothum.thodi@huawei.com;
- helo=frasgout.his.huawei.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <20250314085130.4184272-1-maobibo@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowMCxLcVZIBtoK6G5AA--.9215S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxWw13Kw45Aw4xJF1UWFy5Jrc_yoW5AFyfpr
+ WDAw4FkFW8AFn8J3ZayF1UuryF9rnrC3WYvF4xtr10krZ8GryUGr48Ka1jq3ZxA3ykZF18
+ u3Wktrn5G3ZrtFcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+ GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
+ xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v2
+ 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
+ vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
+ wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUXVWUAwCIc4
+ 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
+ xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
+ 1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU25EfUUUU
+ U
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.85,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,122 +77,96 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Thomas,
 
+Can this patch be merged since qemu 10.0 is released already?
 
-> -----Original Message-----
-> From: Markus Armbruster <armbru@redhat.com>
-> Sent: Wednesday, May 7, 2025 8:17 AM
-> To: Donald Dutile <ddutile@redhat.com>
-> Cc: Shameer Kolothum via <qemu-devel@nongnu.org>; qemu-
-> arm@nongnu.org; Shameerali Kolothum Thodi
-> <shameerali.kolothum.thodi@huawei.com>; eric.auger@redhat.com;
-> peter.maydell@linaro.org; jgg@nvidia.com; nicolinc@nvidia.com;
-> berrange@redhat.com; nathanc@nvidia.com; mochs@nvidia.com;
-> smostafa@google.com; Linuxarm <linuxarm@huawei.com>; Wangzhou (B)
-> <wangzhou1@hisilicon.com>; jiangkunkun <jiangkunkun@huawei.com>;
-> Jonathan Cameron <jonathan.cameron@huawei.com>;
-> zhangfei.gao@linaro.org
-> Subject: Re: [PATCH v2 1/6] hw/arm/smmuv3: Add support to associate a
-> PCIe RC
->=20
-> Donald Dutile <ddutile@redhat.com> writes:
->=20
-> [...]
->=20
-> > In this series, an iommu/smmu needs to be placed -BETWEEN- a sysbus
-> and a PCIe-tree,
-> > or step-wise, plug an smmuv3 into a sysbus, and a pcie tree/domain/RC
-> into an SMMUv3.
->=20
-> RC =3D root complex?
+Regards
+Bibo Mao
 
-Yes.
+On 2025/3/14 下午4:51, Bibo Mao wrote:
+> Add cpu hotplug testcase support for LoongArch system, it passes to
+> run with command "make check-qtest-loongarch64" as following:
+>    qemu:qtest+qtest-loongarch64 / qtest-loongarch64/cpu-plug-test OK 0.38s 1 subtests passed
+> 
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> ---
+> v2 ... v3:
+>    1. Remove redundant check with machine type since it is constant
+>       string.
+> 
+> v1 ... v2:
+>    1. Call test function add_loongarch_test_case() directly rather than
+>       qtest_cb_for_every_machine() since compatible machine is not
+>       supported on LoongArch system.
+>    2. Add architecture specified test case in separate line.
+> ---
+>   tests/qtest/cpu-plug-test.c | 24 ++++++++++++++++++++++++
+>   tests/qtest/meson.build     |  3 ++-
+>   2 files changed, 26 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/qtest/cpu-plug-test.c b/tests/qtest/cpu-plug-test.c
+> index 6633abfc10..44d704680b 100644
+> --- a/tests/qtest/cpu-plug-test.c
+> +++ b/tests/qtest/cpu-plug-test.c
+> @@ -156,6 +156,28 @@ static void add_s390x_test_case(const char *mname)
+>       g_free(path);
+>   }
+>   
+> +static void add_loongarch_test_case(const char *mname)
+> +{
+> +    char *path;
+> +    PlugTestData *data;
+> +
+> +    data = g_new(PlugTestData, 1);
+> +    data->machine = g_strdup(mname);
+> +    data->cpu_model = "la464";
+> +    data->device_model = g_strdup("la464-loongarch-cpu");
+> +    data->sockets = 1;
+> +    data->cores = 3;
+> +    data->threads = 1;
+> +    data->maxcpus = data->sockets * data->cores * data->threads;
+> +
+> +    path = g_strdup_printf("cpu-plug/%s/device-add/%ux%ux%u&maxcpus=%u",
+> +                           mname, data->sockets, data->cores,
+> +                           data->threads, data->maxcpus);
+> +    qtest_add_data_func_full(path, data, test_plug_with_device_add,
+> +                             test_data_free);
+> +    g_free(path);
+> +}
+> +
+>   int main(int argc, char **argv)
+>   {
+>       const char *arch = qtest_get_arch();
+> @@ -168,6 +190,8 @@ int main(int argc, char **argv)
+>           qtest_cb_for_every_machine(add_pseries_test_case, g_test_quick());
+>       } else if (g_str_equal(arch, "s390x")) {
+>           qtest_cb_for_every_machine(add_s390x_test_case, g_test_quick());
+> +    } else if (g_str_equal(arch, "loongarch64")) {
+> +        add_loongarch_test_case("virt");
+>       }
+>   
+>       return g_test_run();
+> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+> index 5a8c1f102c..788093f744 100644
+> --- a/tests/qtest/meson.build
+> +++ b/tests/qtest/meson.build
+> @@ -149,7 +149,8 @@ qtests_hppa = \
+>   
+>   qtests_loongarch64 = qtests_filter + \
+>     (config_all_devices.has_key('CONFIG_LOONGARCH_VIRT') ? ['numa-test'] : []) + \
+> -  ['boot-serial-test']
+> +  ['boot-serial-test',
+> +   'cpu-plug-test']
+>   
+>   qtests_m68k = ['boot-serial-test'] + \
+>     qtests_filter
+> 
+> base-commit: 4c33c097f3a8a8093bcbaf097c3a178051e51b3e
+> 
 
->=20
-> > So, an smmu needs to be associated with a bus (tree), i.e., pcie.0, pci=
-e.1...
-> > One could model it as a PCIe device, attached at the pcie-RC ... but th=
-at's
-> not how it's modelled in ARM hw.
->=20
-> Physical ARM hardware?
->=20
-> Assuming the virtual devices and buses we're discussing model physical
-> devices and buses:
->=20
-> * What are the physical devices of interest?
->=20
-> * How are they wired together?  Which of the wires are buses, in
->   particular PCI buses?
-
-SMMUv3 is a platform device and its placement in a system is typically as b=
-elow
-for PCI devices,
-
-+------------------+
-|   PCIe Devices   |
-+------------------+
-         |
-         v
-  +-------------+      +---------------+
-  |  PCIe RC A  |<---->| Interconnect  |
-  +-------------+      +---------------+
-                               |
-                               |
-                        +------v---+
-                        | SMMUv3.A |
-                        | (IOMMU)  |
-                        +----+-----+
-                             |
-                             v
-                     +-------+--------+
-                     |   System RAM   |
-                     +----------------+
-=20
-This patch is attempting to establish that association between the PCIe RC =
-and=20
-the SMMUv3 device so that Qemu can build the ACPI tables/DT iommu mappings =
-=20
-for the SMMUv3 device.
-
-> > SMMU's are discovered via ACPI tables.
-> >
-> > That leaves us back to the 'how to associate an SMMUv3 to a PCIe
-> tree(RC)',
-> > and that leads me to the other discussion & format I saw btwn Eric &
-> Shameer:
-> >  -device arm-smmv3,id=3Dsmmuv3.3
-> >  -device xxxx,smmuv3=3D smmuv3.3
-> > where one tags a (PCIe) device to an smmuv3(id), which is needed to bui=
-ld
-> the (proper) IORT for (pcie-)device<->SMMUv3 associativity in a multi-
-> SMMUv3 configuration.
-> >
-> > We could keep the bus=3Dpcie.X option for the -device arm-smmuv3 to
-> indicate that all PCIe devices connected to the pcie.0 tree go through th=
-at
-> smmuv3;
-> > qdev would model/config as the smmuv3 is 'attached to pcie.0'... which =
-it
-> sorta is...  and I think the IORT build could associate all devices on pc=
-ie.0 to
-> be associated
-> > with the proper smmuv3.
->=20
-> Device property "bus" is strictly for specifying into which the bus the
-> device is to be plugged.  The device's type must match the bus: only a
-> PCI device can plug into a PCI bus, and so forth.
-
-The whole idea of reusing the "bus" property for SMMUv3 device was to make
-it easier for libvirt. As I mentioned earlier we could go back and use a di=
-fferent
-property name like "primary-bus" or "pci-bus" for SMMUv3 dev here.
-
-Thanks,
-Shameer
 
