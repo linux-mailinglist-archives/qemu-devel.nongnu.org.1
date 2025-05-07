@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E8B2AAE9BC
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 20:48:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7335CAAE9B8
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 20:48:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCjnm-000200-Tg; Wed, 07 May 2025 14:47:30 -0400
+	id 1uCjnr-00020b-2N; Wed, 07 May 2025 14:47:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1uCjnk-0001zo-VU
- for qemu-devel@nongnu.org; Wed, 07 May 2025 14:47:28 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ id 1uCjnm-000201-7k
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 14:47:30 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1uCjni-0004sx-Ti
- for qemu-devel@nongnu.org; Wed, 07 May 2025 14:47:28 -0400
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 547IbJoL032093;
- Wed, 7 May 2025 18:47:22 GMT
+ id 1uCjnj-0004t1-Dt
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 14:47:29 -0400
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 547IeVvr025473;
+ Wed, 7 May 2025 18:47:24 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
  :message-id:mime-version:references:subject:to; s=
- corp-2025-04-25; bh=wRVDFQOXmZbMZmR3HoHi1Kyr/y8yrgG2D0xYtgMWtVA=; b=
- TkbCT3P5uEfirTeMSO2Uebb529bwdvhShBnKP1kNHxlsEPpsJGW1FYJrec/jt8ve
- sewg1SByHeDODZkGT9AUVNkjxtda+D+N8DgfxqC+m2sJ3E8THs2+J9vaiSGR7loS
- lm0cFXI9KkkD0Cs3INJ88jv5QY/MP71ExYVaQ+wBv3hvzz8APHJ4g5+Z2kpio37m
- acaOTblxjPEVcgrCMqaUYuvH07mk6f+Ugo2Euxj7ucsd31F0BVQ1t+QlN+upYJB9
- iqSO5RobP42u0Q8VMP7YMBr6Ouvj1YQ58aIEEf7nTysVX4LRoKeOQhjYf4KqaJfW
- fu1Th3X/NRzUOrM/ru0qkQ==
+ corp-2025-04-25; bh=eDFDHUqAjFCL04udO/G2fse0c6xX/zUkm9hxNtYER7E=; b=
+ M5GR0SZwDHubKnkuHb4v/JOO++TgGuqUPEIWXyzTIoa2DkAI89G9ZdFWXU6+TNDL
+ JiD3ErV0HluKq0pjaOGX/cjPJ5pdV7KZwffAFyRz7AWNxjCMY0I97C0VH13t977B
+ aFEJ+6457S6xVG0lEFVf1Sl7FMqjkJOyoEZ/S6desXxSw3rQNxzPdBJxFf9c+t2L
+ +IZ6QtsSfQjjRLRqES5WhXE8HkZjDZD8d85p9j/xSoJGSTJGlwnVDXlr9XbbxCuC
+ z3jwMLF2YP1AF0RmNKGj/Iu+c3uj7/XIWLVGu++FCF2UhVS/qhAmt1fGCNt9UK6Y
+ ZDCiQYBvuaxvmxf1RhCZBg==
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46gcxx80m1-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46gcgn029x-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 07 May 2025 18:47:22 +0000 (GMT)
+ Wed, 07 May 2025 18:47:24 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 547IaIX6036083; Wed, 7 May 2025 18:47:21 GMT
+ with ESMTP id 547HVBuM036071; Wed, 7 May 2025 18:47:23 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 46d9kbhdfh-1
+ 46d9kbhdgk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 07 May 2025 18:47:21 +0000
+ Wed, 07 May 2025 18:47:23 +0000
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 547Il3j7029452;
- Wed, 7 May 2025 18:47:20 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 547Il3j9029452;
+ Wed, 7 May 2025 18:47:23 GMT
 Received: from dhcp-10-43-71-250.usdhcp.oraclecorp.com.com
  (dhcp-10-43-71-250.usdhcp.oraclecorp.com [10.43.71.250])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 46d9kbhd41-7; Wed, 07 May 2025 18:47:20 +0000
+ 46d9kbhd41-8; Wed, 07 May 2025 18:47:22 +0000
 From: Jonah Palmer <jonah.palmer@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: jonah.palmer@oracle.com, eperezma@redhat.com, peterx@redhat.com,
@@ -60,9 +60,9 @@ Cc: jonah.palmer@oracle.com, eperezma@redhat.com, peterx@redhat.com,
  dtatulea@nvidia.com, leiyang@redhat.com, parav@mellanox.com,
  sgarzare@redhat.com, si-wei.liu@oracle.com, lingshan.zhu@intel.com,
  boris.ostrovsky@oracle.com
-Subject: [PATCH v4 6/7] vdpa: move iova_tree allocation to net_vhost_vdpa_init
-Date: Wed,  7 May 2025 14:46:46 -0400
-Message-ID: <20250507184647.15580-7-jonah.palmer@oracle.com>
+Subject: [PATCH v4 7/7] vdpa: move memory listener register to vhost_vdpa_init
+Date: Wed,  7 May 2025 14:46:47 -0400
+Message-ID: <20250507184647.15580-8-jonah.palmer@oracle.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250507184647.15580-1-jonah.palmer@oracle.com>
 References: <20250507184647.15580-1-jonah.palmer@oracle.com>
@@ -77,22 +77,22 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  suspectscore=0 adultscore=0 phishscore=0 mlxscore=0 malwarescore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2504070000
  definitions=main-2505070170
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA3MDE3MCBTYWx0ZWRfX2haZOI8LKaIT
- 26JZsCZoq3oHvxHc+wgh63ODH6A43L1b5/rB9sUYP36bjNpecketH1GhwrGJJMwwSAyouvYK+rN
- stWRicVKOAfMxiSKScq0pDoDVuRTU09KtrcNMpVZOdeVKCvLulP+ydpTnpcveHAvXoYeJrLrEn4
- hhqWmrIW0vYCJuOjuUgYAtxkkNHeYTCT+SRW5Lt2G21QPZ11nkJQcq1TOHJGwMKEZfX5sKgKarH
- Zz/w9oJXPBEYdQ93qIArnSkzGjIqmqjeEGtWhc37Zf0f6BnKYWPjcV2Fos4V7jV1NwnYhqCuhlb
- Q4MKSviVcCgFqGjLEEB2og5uSYdfr5DKD0WDU6t+LsObwOOUOZZqrr/D+t+WYfXdEwTP/rYkr1F
- mt7IpNu3q8vcDcpo3UQUJulGid9ZxzX6JvQu9oBRngZnkcNsNqfaYoHkmw4NCUrGHB5UlXkg
-X-Authority-Analysis: v=2.4 cv=feqty1QF c=1 sm=1 tr=0 ts=681baaba cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA3MDE3MCBTYWx0ZWRfX82NvrhVbEZnF
+ frrXDF46lvUWWLZQUwifEn1TsgpqtXosfUgDwg2veROpzvHCD49EpS+jJtUuQQtzaIqRwdqieav
+ rfywtw00MPENxhu92yUuX52S2SddUAdhJ0BxeRd5yHHsrK0nbREMCiiDdZO0m2cqTbRjl6PLGz2
+ zG1wdEivD18lNKMVtfEbHP+4pRTX31Pudfs6M6E8v/QQxGGXxgUdoW0ssxJSHTwtMTnbmnCFjhR
+ K4pHfOARL8Jy3rhINk5RzLVKhgYF4Q8gkPqr5ZRJu6ADEjZUOF4iDWNrXemEl0DsmI4LGhKN3R5
+ km0ot6Z008mqSfpU6dxZNtl++feayf1O7ZqxDRghZzqpV+7ohlKSl60do2mm5MSKl8e5WwcOJzn
+ qmRZsI0qm4e0MgO6ZLVjfWZGnNFMdtnSDo4NctCddzv1INP3EZhqcAjcQl0DAEar+CiTgBem
+X-Proofpoint-ORIG-GUID: 0vp6MPvZFzXebBq-65pjCY_UTEOxaPuh
+X-Authority-Analysis: v=2.4 cv=GKcIEvNK c=1 sm=1 tr=0 ts=681baabc cx=c_pps
  a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
  a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=20KFwNOVAAAA:8 a=yPCof4ZbAAAA:8
- a=O3ABKvNJdirydfY1GWgA:9 a=3ZKOabzyN94A:10
+ a=okN2-_bYi-jDPBqWON8A:9 a=3ZKOabzyN94A:10
  a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: boe-Fy53Ooa2B3txG5UIM4Ch0GV7XAgo
-X-Proofpoint-ORIG-GUID: boe-Fy53Ooa2B3txG5UIM4Ch0GV7XAgo
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=jonah.palmer@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Proofpoint-GUID: 0vp6MPvZFzXebBq-65pjCY_UTEOxaPuh
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=jonah.palmer@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -32
 X-Spam_score: -3.3
 X-Spam_bar: ---
@@ -118,132 +118,137 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eugenio Pérez <eperezma@redhat.com>
 
-As we are moving to keep the mapping through all the vdpa device life
-instead of resetting it at VirtIO reset, we need to move all its
-dependencies to the initialization too.  In particular devices with
-x-svq=on need a valid iova_tree from the beginning.
+Current memory operations like pinning may take a lot of time at the
+destination.  Currently they are done after the source of the migration is
+stopped, and before the workload is resumed at the destination.  This is a
+period where neigher traffic can flow, nor the VM workload can continue
+(downtime).
 
-Simplify the code also consolidating the two creation points: the first
-data vq in case of SVQ active and CVQ start in case only CVQ uses it.
+We can do better as we know the memory layout of the guest RAM at the
+destination from the moment that all devices are initializaed.  So
+moving that operation allows QEMU to communicate the kernel the maps
+while the workload is still running in the source, so Linux can start
+mapping them.
 
-Suggested-by: Si-Wei Liu <si-wei.liu@oracle.com>
+As a small drawback, there is a time in the initialization where QEMU
+cannot respond to QMP etc.  By some testing, this time is about
+0.2seconds.  This may be further reduced (or increased) depending on the
+vdpa driver and the platform hardware, and it is dominated by the cost
+of memory pinning.
+
+This matches the time that we move out of the called downtime window.
+The downtime is measured as checking the trace timestamp from the moment
+the source suspend the device to the moment the destination starts the
+eight and last virtqueue pair.  For a 39G guest, it goes from ~2.2526
+secs to 2.0949.
+
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
 Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
----
- include/hw/virtio/vhost-vdpa.h | 16 ++++++++++++++-
- net/vhost-vdpa.c               | 36 +++-------------------------------
- 2 files changed, 18 insertions(+), 34 deletions(-)
 
-diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-vdpa.h
-index 221840987e..449bf5c840 100644
---- a/include/hw/virtio/vhost-vdpa.h
-+++ b/include/hw/virtio/vhost-vdpa.h
-@@ -43,7 +43,21 @@ typedef struct vhost_vdpa_shared {
-     struct vhost_vdpa_iova_range iova_range;
-     QLIST_HEAD(, vdpa_iommu) iommu_list;
+v3:
+---
+Move memory listener unregistration from vhost_vdpa_reset_status to
+vhost_vdpa_reset_device. By unregistering the listener here, we can
+guarantee that every reset leaves the device in an expected state.
+Also remove the duplicate call in vhost_vdpa_reset_status.
+
+Reported-by: Lei Yang <leiyang@redhat.com>
+Suggested-by: Si-Wei Liu <si-wei.liu@oracle.com>
+
+--
+v2:
+Move the memory listener registration to vhost_vdpa_set_owner function.
+In case of hotplug the vdpa device, the memory is already set up, and
+leaving memory listener register call in the init function made maps
+occur before set owner call.
+
+To be 100% safe, let's put it right after set_owner call.
+
+Reported-by: Lei Yang <leiyang@redhat.com>
+---
+ hw/virtio/vhost-vdpa.c | 35 ++++++++++++++++++++++++++++-------
+ 1 file changed, 28 insertions(+), 7 deletions(-)
+
+diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+index de834f2ebd..e20da95f30 100644
+--- a/hw/virtio/vhost-vdpa.c
++++ b/hw/virtio/vhost-vdpa.c
+@@ -894,8 +894,14 @@ static int vhost_vdpa_reset_device(struct vhost_dev *dev)
  
--    /* IOVA mapping used by the Shadow Virtqueue */
-+    /*
-+     * IOVA mapping used by the Shadow Virtqueue
-+     *
-+     * It is shared among all ASID for simplicity, whether CVQ shares ASID with
-+     * guest or not:
-+     * - Memory listener need access to guest's memory addresses allocated in
-+     *   the IOVA tree.
-+     * - There should be plenty of IOVA address space for both ASID not to
-+     *   worry about collisions between them.  Guest's translations are still
-+     *   validated with virtio virtqueue_pop so there is no risk for the guest
-+     *   to access memory that it shouldn't.
-+     *
-+     * To allocate a iova tree per ASID is doable but it complicates the code
-+     * and it is not worth it for the moment.
-+     */
-     VhostIOVATree *iova_tree;
+     ret = vhost_vdpa_call(dev, VHOST_VDPA_SET_STATUS, &status);
+     trace_vhost_vdpa_reset_device(dev);
++    if (ret) {
++        return ret;
++    }
++
++    memory_listener_unregister(&v->shared->listener);
++    v->shared->listener_registered = false;
+     v->suspended = false;
+-    return ret;
++    return 0;
+ }
  
-     /* Copy of backend features */
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index decb826868..58d738945d 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -235,6 +235,7 @@ static void vhost_vdpa_cleanup(NetClientState *nc)
+ static int vhost_vdpa_get_vq_index(struct vhost_dev *dev, int idx)
+@@ -1379,6 +1385,11 @@ static int vhost_vdpa_dev_start(struct vhost_dev *dev, bool started)
+                          "IOMMU and try again");
+             return -1;
+         }
++        if (v->shared->listener_registered &&
++            dev->vdev->dma_as != v->shared->listener.address_space) {
++            memory_listener_unregister(&v->shared->listener);
++            v->shared->listener_registered = false;
++        }
+         if (!v->shared->listener_registered) {
+             memory_listener_register(&v->shared->listener, dev->vdev->dma_as);
+             v->shared->listener_registered = true;
+@@ -1392,8 +1403,6 @@ static int vhost_vdpa_dev_start(struct vhost_dev *dev, bool started)
+ 
+ static void vhost_vdpa_reset_status(struct vhost_dev *dev)
+ {
+-    struct vhost_vdpa *v = dev->opaque;
+-
+     if (!vhost_vdpa_last_dev(dev)) {
          return;
      }
-     qemu_close(s->vhost_vdpa.shared->device_fd);
-+    g_clear_pointer(&s->vhost_vdpa.shared->iova_tree, vhost_iova_tree_delete);
-     g_free(s->vhost_vdpa.shared);
+@@ -1401,9 +1410,6 @@ static void vhost_vdpa_reset_status(struct vhost_dev *dev)
+     vhost_vdpa_reset_device(dev);
+     vhost_vdpa_add_status(dev, VIRTIO_CONFIG_S_ACKNOWLEDGE |
+                                VIRTIO_CONFIG_S_DRIVER);
+-    memory_listener_unregister(&v->shared->listener);
+-    v->shared->listener_registered = false;
+-
  }
  
-@@ -362,16 +363,8 @@ static int vdpa_net_migration_state_notifier(NotifierWithReturn *notifier,
+ static int vhost_vdpa_set_log_base(struct vhost_dev *dev, uint64_t base,
+@@ -1537,12 +1543,27 @@ static int vhost_vdpa_get_features(struct vhost_dev *dev,
  
- static void vhost_vdpa_net_data_start_first(VhostVDPAState *s)
+ static int vhost_vdpa_set_owner(struct vhost_dev *dev)
  {
--    struct vhost_vdpa *v = &s->vhost_vdpa;
--
-     migration_add_notifier(&s->migration_state,
-                            vdpa_net_migration_state_notifier);
--
--    /* iova_tree may be initialized by vhost_vdpa_net_load_setup */
--    if (v->shadow_vqs_enabled && !v->shared->iova_tree) {
--        v->shared->iova_tree = vhost_iova_tree_new(v->shared->iova_range.first,
--                                                   v->shared->iova_range.last);
--    }
- }
- 
- static int vhost_vdpa_net_data_start(NetClientState *nc)
-@@ -418,19 +411,12 @@ static int vhost_vdpa_net_data_load(NetClientState *nc)
- static void vhost_vdpa_net_client_stop(NetClientState *nc)
- {
-     VhostVDPAState *s = DO_UPCAST(VhostVDPAState, nc, nc);
--    struct vhost_dev *dev;
- 
-     assert(nc->info->type == NET_CLIENT_DRIVER_VHOST_VDPA);
- 
-     if (s->vhost_vdpa.index == 0) {
-         migration_remove_notifier(&s->migration_state);
-     }
--
--    dev = s->vhost_vdpa.dev;
--    if (dev->vq_index + dev->nvqs == dev->vq_index_end) {
--        g_clear_pointer(&s->vhost_vdpa.shared->iova_tree,
--                        vhost_iova_tree_delete);
--    }
- }
- 
- static NetClientInfo net_vhost_vdpa_info = {
-@@ -602,24 +588,6 @@ out:
++    int r;
++    struct vhost_vdpa *v;
++
+     if (!vhost_vdpa_first_dev(dev)) {
          return 0;
      }
  
--    /*
--     * If other vhost_vdpa already have an iova_tree, reuse it for simplicity,
--     * whether CVQ shares ASID with guest or not, because:
--     * - Memory listener need access to guest's memory addresses allocated in
--     *   the IOVA tree.
--     * - There should be plenty of IOVA address space for both ASID not to
--     *   worry about collisions between them.  Guest's translations are still
--     *   validated with virtio virtqueue_pop so there is no risk for the guest
--     *   to access memory that it shouldn't.
--     *
--     * To allocate a iova tree per ASID is doable but it complicates the code
--     * and it is not worth it for the moment.
--     */
--    if (!v->shared->iova_tree) {
--        v->shared->iova_tree = vhost_iova_tree_new(v->shared->iova_range.first,
--                                                   v->shared->iova_range.last);
--    }
--
-     r = vhost_vdpa_cvq_map_buf(&s->vhost_vdpa, s->cvq_cmd_out_buffer,
-                                vhost_vdpa_net_cvq_cmd_page_len(), false);
-     if (unlikely(r < 0)) {
-@@ -1728,6 +1696,8 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
-         s->vhost_vdpa.shared->device_fd = vdpa_device_fd;
-         s->vhost_vdpa.shared->iova_range = iova_range;
-         s->vhost_vdpa.shared->shadow_data = svq;
-+        s->vhost_vdpa.shared->iova_tree = vhost_iova_tree_new(iova_range.first,
-+                                                              iova_range.last);
-     } else if (!is_datapath) {
-         s->cvq_cmd_out_buffer = mmap(NULL, vhost_vdpa_net_cvq_cmd_page_len(),
-                                      PROT_READ | PROT_WRITE,
+     trace_vhost_vdpa_set_owner(dev);
+-    return vhost_vdpa_call(dev, VHOST_SET_OWNER, NULL);
++    r = vhost_vdpa_call(dev, VHOST_SET_OWNER, NULL);
++    if (unlikely(r < 0)) {
++        return r;
++    }
++
++    /*
++     * Being optimistic and listening address space memory. If the device
++     * uses vIOMMU, it is changed at vhost_vdpa_dev_start.
++     */
++    v = dev->opaque;
++    memory_listener_register(&v->shared->listener, &address_space_memory);
++    v->shared->listener_registered = true;
++    return 0;
+ }
+ 
+ static int vhost_vdpa_vq_get_addr(struct vhost_dev *dev,
 -- 
 2.43.5
 
