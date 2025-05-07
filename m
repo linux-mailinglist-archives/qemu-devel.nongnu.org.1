@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76C21AAD35F
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 04:39:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B4B1AAD35E
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 04:38:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCUfg-0001C5-Jz; Tue, 06 May 2025 22:38:08 -0400
+	id 1uCUff-0001Br-I7; Tue, 06 May 2025 22:38:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1uCUfd-0001B5-AW
+ id 1uCUfd-0001B4-AS
  for qemu-devel@nongnu.org; Tue, 06 May 2025 22:38:05 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1uCUfa-0001D4-Qe
+ (envelope-from <maobibo@loongson.cn>) id 1uCUfa-0001D8-UK
  for qemu-devel@nongnu.org; Tue, 06 May 2025 22:38:05 -0400
 Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8CxeXGFxxpoq53XAA--.25599S3;
- Wed, 07 May 2025 10:37:57 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8AxQK2Hxxporp3XAA--.9054S3;
+ Wed, 07 May 2025 10:37:59 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
- by front1 (Coremail) with SMTP id qMiowMCxrhuDxxpoyuO4AA--.24683S4;
+ by front1 (Coremail) with SMTP id qMiowMCxrhuDxxpoyuO4AA--.24683S5;
  Wed, 07 May 2025 10:37:57 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Song Gao <gaosong@loongson.cn>
 Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v4 14/16] hw/intc/loongarch_pch: Rename memory region
- iomem32_low with iomem
-Date: Wed,  7 May 2025 10:37:52 +0800
-Message-Id: <20250507023754.1877445-3-maobibo@loongson.cn>
+Subject: [PATCH v4 15/16] hw/intc/loongarch_pch: Set flexible memory access
+ size with iomem region
+Date: Wed,  7 May 2025 10:37:53 +0800
+Message-Id: <20250507023754.1877445-4-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20250507023754.1877445-1-maobibo@loongson.cn>
 References: <20250507023148.1877287-1-maobibo@loongson.cn>
  <20250507023754.1877445-1-maobibo@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMCxrhuDxxpoyuO4AA--.24683S4
+X-CM-TRANSID: qMiowMCxrhuDxxpoyuO4AA--.24683S5
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -65,88 +65,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename memory region iomem32_low with iomem, also change ops name
-as follows:
-  loongarch_pch_pic_reg32_low_ops  --> loongarch_pch_pic_ops
-  loongarch_pch_pic_low_readw      --> loongarch_pch_pic_read
-  loongarch_pch_pic_low_writew     --> loongarch_pch_pic_write
+The original iomem region only supports 4 bytes access size, set it ok
+with 1/2/4/8 bytes. Also unaligned memory access is not supported.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 Reviewed-by: Song Gao <gaosong@loongson.cn>
 ---
- hw/intc/loongarch_pch_pic.c            | 26 +++++++-------------------
- include/hw/intc/loongarch_pic_common.h |  2 +-
- 2 files changed, 8 insertions(+), 20 deletions(-)
+ hw/intc/loongarch_pch_pic.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
 diff --git a/hw/intc/loongarch_pch_pic.c b/hw/intc/loongarch_pch_pic.c
-index c06ef0df3f..076b984d93 100644
+index 076b984d93..e9126a0c1f 100644
 --- a/hw/intc/loongarch_pch_pic.c
 +++ b/hw/intc/loongarch_pch_pic.c
-@@ -230,18 +230,6 @@ static void loongarch_pch_pic_write(void *opaque, hwaddr addr,
-     }
- }
- 
--static uint64_t loongarch_pch_pic_low_readw(void *opaque, hwaddr addr,
--                                            unsigned size)
--{
--    return loongarch_pch_pic_read(opaque, addr, size);
--}
--
--static void loongarch_pch_pic_low_writew(void *opaque, hwaddr addr,
--                                         uint64_t value, unsigned size)
--{
--    loongarch_pch_pic_write(opaque, addr, value, size);
--}
--
- static uint64_t loongarch_pch_pic_high_readw(void *opaque, hwaddr addr,
-                                         unsigned size)
- {
-@@ -270,9 +258,9 @@ static void loongarch_pch_pic_writeb(void *opaque, hwaddr addr,
-     loongarch_pch_pic_write(opaque, addr, data, size);
- }
- 
--static const MemoryRegionOps loongarch_pch_pic_reg32_low_ops = {
--    .read = loongarch_pch_pic_low_readw,
--    .write = loongarch_pch_pic_low_writew,
-+static const MemoryRegionOps loongarch_pch_pic_ops = {
-+    .read = loongarch_pch_pic_read,
-+    .write = loongarch_pch_pic_write,
+@@ -262,12 +262,19 @@ static const MemoryRegionOps loongarch_pch_pic_ops = {
+     .read = loongarch_pch_pic_read,
+     .write = loongarch_pch_pic_write,
      .valid = {
-         .min_access_size = 4,
+-        .min_access_size = 4,
++        .min_access_size = 1,
          .max_access_size = 8,
-@@ -336,15 +324,15 @@ static void loongarch_pic_realize(DeviceState *dev, Error **errp)
- 
-     qdev_init_gpio_out(dev, s->parent_irq, s->irq_num);
-     qdev_init_gpio_in(dev, pch_pic_irq_handler, s->irq_num);
--    memory_region_init_io(&s->iomem32_low, OBJECT(dev),
--                          &loongarch_pch_pic_reg32_low_ops,
--                          s, PCH_PIC_NAME(.reg32_part1), 0x100);
-+    memory_region_init_io(&s->iomem, OBJECT(dev),
-+                          &loongarch_pch_pic_ops,
-+                          s, TYPE_LOONGARCH_PIC, 0x100);
-     memory_region_init_io(&s->iomem8, OBJECT(dev), &loongarch_pch_pic_reg8_ops,
-                           s, PCH_PIC_NAME(.reg8), 0x2a0);
-     memory_region_init_io(&s->iomem32_high, OBJECT(dev),
-                           &loongarch_pch_pic_reg32_high_ops,
-                           s, PCH_PIC_NAME(.reg32_part2), 0xc60);
--    sysbus_init_mmio(sbd, &s->iomem32_low);
-+    sysbus_init_mmio(sbd, &s->iomem);
-     sysbus_init_mmio(sbd, &s->iomem8);
-     sysbus_init_mmio(sbd, &s->iomem32_high);
- 
-diff --git a/include/hw/intc/loongarch_pic_common.h b/include/hw/intc/loongarch_pic_common.h
-index 7a9a2bdd46..dc03056227 100644
---- a/include/hw/intc/loongarch_pic_common.h
-+++ b/include/hw/intc/loongarch_pic_common.h
-@@ -65,7 +65,7 @@ struct LoongArchPICCommonState {
-     uint8_t route_entry[64];  /* 0x100 - 0x138 */
-     uint8_t htmsi_vector[64]; /* 0x200 - 0x238 */
- 
--    MemoryRegion iomem32_low;
-+    MemoryRegion iomem;
-     MemoryRegion iomem32_high;
-     MemoryRegion iomem8;
-     unsigned int irq_num;
++        /*
++         * PCH PIC device would not work correctly if the guest was doing
++         * unaligned access. This might not be a limitation on the real
++         * device but in practice there is no reason for a guest to access
++         * this device unaligned.
++         */
++        .unaligned = false,
+     },
+     .impl = {
+-        .min_access_size = 4,
+-        .max_access_size = 4,
++        .min_access_size = 1,
++        .max_access_size = 8,
+     },
+     .endianness = DEVICE_LITTLE_ENDIAN,
+ };
 -- 
 2.39.3
 
