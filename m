@@ -2,34 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C0D2AAE866
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 20:07:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 992B9AAE881
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 20:09:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCj9P-00010r-RF; Wed, 07 May 2025 14:05:48 -0400
+	id 1uCj9T-0001e5-Tn; Wed, 07 May 2025 14:05:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uCj9H-0000ms-R5; Wed, 07 May 2025 14:05:39 -0400
+ id 1uCj9J-0000um-GQ; Wed, 07 May 2025 14:05:41 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uCj9F-0008RM-Ey; Wed, 07 May 2025 14:05:38 -0400
+ id 1uCj9H-0008Rn-6w; Wed, 07 May 2025 14:05:41 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DFB8D11FF06;
+ by isrv.corpit.ru (Postfix) with ESMTP id F11E211FF07;
  Wed, 07 May 2025 21:04:00 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id B2DBA20670B;
+ by tsrv.corpit.ru (Postfix) with ESMTP id C455120670C;
  Wed,  7 May 2025 21:04:13 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>,
 	qemu-trivial@nongnu.org
-Subject: [PULL 17/21] include/hw/xen/interface/io/blkif.h: fix "the the" typo
- in comment
-Date: Wed,  7 May 2025 21:04:08 +0300
-Message-Id: <20250507180412.182797-18-mjt@tls.msk.ru>
+Subject: [PULL 18/21] qapi/qom.json: fix "the the" typo in comment
+Date: Wed,  7 May 2025 21:04:09 +0300
+Message-Id: <20250507180412.182797-19-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250507180412.182797-1-mjt@tls.msk.ru>
 References: <20250507180412.182797-1-mjt@tls.msk.ru>
@@ -61,22 +60,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Suggested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- include/hw/xen/interface/io/blkif.h | 2 +-
+ qapi/qom.json | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/xen/interface/io/blkif.h b/include/hw/xen/interface/io/blkif.h
-index 22f1eef0c0..c5527999d1 100644
---- a/include/hw/xen/interface/io/blkif.h
-+++ b/include/hw/xen/interface/io/blkif.h
-@@ -324,7 +324,7 @@
-  *      access (even when it should be read-only). If the frontend hits the
-  *      maximum number of allowed persistently mapped grants, it can fallback
-  *      to non persistent mode. This will cause a performance degradation,
-- *      since the the backend driver will still try to map those grants
-+ *      since the backend driver will still try to map those grants
-  *      persistently. Since the persistent grants protocol is compatible with
-  *      the previous protocol, a frontend driver can choose to work in
-  *      persistent mode even when the backend doesn't support it.
+diff --git a/qapi/qom.json b/qapi/qom.json
+index 28ce24cd8d..04c118e4d6 100644
+--- a/qapi/qom.json
++++ b/qapi/qom.json
+@@ -871,7 +871,7 @@
+ #     link characteristics read from PCIe Configuration space.
+ #     To get the full path latency from CPU to CXL attached DRAM
+ #     CXL device:  Add the latency from CPU to Generic Port (from
+-#     HMAT indexed via the the node ID in this SRAT structure) to
++#     HMAT indexed via the node ID in this SRAT structure) to
+ #     that for CXL bus links, the latency across intermediate switches
+ #     and from the EP port to the actual memory.  Bandwidth is more
+ #     complex as there may be interleaving across multiple devices
 -- 
 2.39.5
 
