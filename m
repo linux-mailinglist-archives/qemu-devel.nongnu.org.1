@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30813AAEDB9
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 23:15:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89EF2AAEDC0
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 23:17:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCm5J-0006Fj-Ev; Wed, 07 May 2025 17:13:46 -0400
+	id 1uCm5V-0006Vk-Dy; Wed, 07 May 2025 17:13:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uCm4u-0006C6-L6
- for qemu-devel@nongnu.org; Wed, 07 May 2025 17:13:22 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1uCm4z-0006D8-0p
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 17:13:26 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uCm4q-0006Ek-1n
- for qemu-devel@nongnu.org; Wed, 07 May 2025 17:13:17 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-7399a2dc13fso456808b3a.2
- for <qemu-devel@nongnu.org>; Wed, 07 May 2025 14:13:15 -0700 (PDT)
+ id 1uCm4q-0006F1-U7
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 17:13:24 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-73bf1cef6ceso441887b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 07 May 2025 14:13:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746652394; x=1747257194; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746652395; x=1747257195; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=adKWgBvOzEaae5wZJaPVcOHVkh8QC4Zfl7HlNy4ELvw=;
- b=AHG98q+HYV17MBQXvBJ7TlYNp6udwWZ4JhgpaTyCNPa20Wudu+/QlIa7Wb3kM2ovOo
- zxUgRPiNs2jZCHsO4OLAthBp7esf+5y/bWDyjS5AvRmWD6kCMEpKPxTBNVvt2FWUSt1v
- PMCP8xEMSFt1kXUQbN6V3McnkWgt0QzF1chXJvHatZaBTQubFjBr4irozDXw7XZMBZU6
- BH//36gDZMMveEDTDNp0Z07/4/Gn+hT2qiZgfUnQRImedvVXbc8b4iGnETk8sSRET0TZ
- PsyYSDqkCUVf7IVSB/pcnuDiZhBy1UtcJgQnPk62RiIkuuY1lpAqsLs2ziwEQQyZEIe3
- HQDQ==
+ bh=bxfiiPxt49JXkREiZvO4xdKZkNdecV2hsS2X2asILJM=;
+ b=rmlosf/RYP++w51tbJy77dzK27AU2u/lgJr8B+YucWiCQvs8kFQKLEaOlX1gICPFp6
+ 7DPWMFM/WLXUd25RlDr9VAwMuHcFUWtBVXHWelLCapTybDrVbg+mLZ7CoYZ1i0YZLZ8y
+ FmnEoi/GHUR6bWy4HlDK42BKUJunxri0W0WgED9ESuiHs4LyqkZ1J2M/mIsoZWjHHHq/
+ Ut/ivgEkOrVYwJsUfpsH/dD5A1cLAoHvSoeyvZ9dJh83lMxoE2CQPAeq1h+bSjxCrtQe
+ Ukqn0dYiGDJYy2/RkPCdmH792x+7x1qIxRtjemOpgeo0y58h2jQ2xH8qfFA4TKhpdCNU
+ iHXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746652394; x=1747257194;
+ d=1e100.net; s=20230601; t=1746652395; x=1747257195;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=adKWgBvOzEaae5wZJaPVcOHVkh8QC4Zfl7HlNy4ELvw=;
- b=fijXDxi3FcCLuO805K5EsxEfbbACxqLW69Tu/86i0mLZ/18G45oQvoI9gCPCJB7J3C
- UbOtZ5RIGQoOgRWXIrgvELZGE6Tf4AsCcj4kYPWtycPnPPpaVtjEhFKq3wg74t1o7TOa
- wDRVvE79+9ytMzGQ4/D0QfgrjFmJ3UgXj7E+h6hCpHWCe/U3kUWectdh9iFV2evFqNV5
- MBj2b47HEdRX4CCCUe+aXVN6d8Dd2eWMvfsho+2WQBYuB2mPv383CXA09BZpN/fxRMgW
- ABjwGvEl0QwA8ldBhqylrwnrp/WQ+HtLvxMk8wLyqOYeaLgOac3ClJLMS7H06sixokig
- NhwQ==
-X-Gm-Message-State: AOJu0YyKpl5ZoMFWt7kqc39zNZNM9S5/a74DWN/Krkwn9ShXB0arNREt
- Ot/mBAW2yekYFtREKp2olozdwqS/FXjfq7TZ2zTTQjMwxnjMLjHZ6RI2Sr318UueVnkvIYba4QB
- f
-X-Gm-Gg: ASbGncvRs5QFxmeJXMC6O4o22Pw1EP3m5NLLFbFzLagpteK6jNfvQ3r+46CPhHLuSIu
- o6De9nONAWJst4wX04QRgEQ2+UqduzM/Jo8caWYqs/GQWuZbOIZ7sH+qVMaBcqmjh7RgPllwb2Z
- 7o/WIvcGg8BatUK49nlqdQfocOQixR75QiFJGIQSCIl84faKd1zCYAZvwhUaaO/4Gc2pMd8FBjP
- sUZR5fnDzlADj84wfl9rbkV/dkYWMQGauQSCNhvWa6Kq/JqnmqjJbxtLgd6G2NblzSj2UIfb1KR
- 4GBFKXCRffLjJMvkZewTeb5IigcSz2yHHMfns7pqwYex3WmW86ID0cn83RaSSE/UUmXdY69eTyV
- fYR399cA09Q==
-X-Google-Smtp-Source: AGHT+IH6OzrOXfoqvyyk5/dYePVr0V7bOMiCve8kreRJubsdo2aEfmldmrkwzs4hm80eVJDGeG7pMg==
-X-Received: by 2002:a05:6a21:e91:b0:20e:4f4b:944a with SMTP id
- adf61e73a8af0-2148d0116ebmr8847839637.32.1746652394540; 
- Wed, 07 May 2025 14:13:14 -0700 (PDT)
+ bh=bxfiiPxt49JXkREiZvO4xdKZkNdecV2hsS2X2asILJM=;
+ b=uMMWtA0mPaH7Vi70jpmVubb3sEO/ftizpn38fX/nVbXv4PiHoVMkVSSdurXfCtqiAk
+ sJPwIq5ULDMhuFFsjC7wnZEHSGF27Ei5+cWqQW5oGXQ2E4eoFFbNZPqjx75gcVWhP87Q
+ EoX4dfF5u+IqkT1D62jjuzl7uARW1v8/Wq01R3r217uPVqunW0y+rlANB0C+QC5pwAeB
+ 4GvFIoDWFQ1ZG8robfF3PV6c0ODo/95R57SEe8DInnqU0IgVfmFrIrOCZR/TMp93biMz
+ 7cxFfmPkzEhFIsii4VejNgl3gdjO6UZqqvWJcexfz75rjW2XG6GwsMW0YTfsInyUyT9y
+ zLmQ==
+X-Gm-Message-State: AOJu0YzFbtbXqkuwRHzy7sWQxQvtFiRFZDBgP+gWCX9yLGeSdkHbn0sp
+ vALXLMXnO6WMV/OC+wsOvpRfYpETQrRta9LzWH+rx2BGNiAGWY0H6GKNf82dzuLJaD6JD9hBE/v
+ 5
+X-Gm-Gg: ASbGnct4UEmJNmRm5/5/eUyN4R27WjoEPXrmIe/RjbGSP0W6SF+bzvR7fYgjSPZMwmf
+ HaHUbUdGpJeFafLaS6B1Ruh/bpS5lRtvP7eiibncT0gOlUk9HObyavQ4lA40OOvBV3P2CutgDfJ
+ t7oma+UB1llnSO49Nt7CGkxdAjuIFzN6P6mw7Mx2m9u4/jBXiNvXHQWUJmq8dnGXYc6vebMPlzc
+ VqAhCjz0VcbxBGZ2zD8HGONsLTOykRX9ShEh9vxqxit1cNiXcXTkPorlmFi85TiALVZj7RWTGB8
+ s9eva4xVzcPbMbHOk4yOkLOQW1QdE/zKVqH91wqudRqR8jG3dkUZw3fJJ6af+jxyWj/any8yZM4
+ =
+X-Google-Smtp-Source: AGHT+IEd7N1B6qrU2+CLfQRPFjwsqvf0srGoyGovvm2b5kYQz3kwlKVP5fw9064D49q+X1+4naHxMQ==
+X-Received: by 2002:a05:6a00:2985:b0:736:8c0f:7758 with SMTP id
+ d2e1a72fcca58-7409cefdfb0mr6689320b3a.10.1746652395370; 
+ Wed, 07 May 2025 14:13:15 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7405902154dsm12255251b3a.90.2025.05.07.14.13.13
+ d2e1a72fcca58-7405902154dsm12255251b3a.90.2025.05.07.14.13.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 07 May 2025 14:13:14 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: laurent@vivier.eu,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v5 15/24] target/m68k: Remove env argument to gen_store_mode
-Date: Wed,  7 May 2025 14:12:50 -0700
-Message-ID: <20250507211300.9735-16-richard.henderson@linaro.org>
+Subject: [PATCH v5 16/24] target/m68k: Remove env argument to gen_ea_mode_fp
+Date: Wed,  7 May 2025 14:12:51 -0700
+Message-ID: <20250507211300.9735-17-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250507211300.9735-1-richard.henderson@linaro.org>
 References: <20250507211300.9735-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,50 +105,75 @@ Use the env pointer in DisasContext.
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/m68k/translate.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ target/m68k/translate.c | 21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
 diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index ac48329674..dba415acf1 100644
+index dba415acf1..2694620375 100644
 --- a/target/m68k/translate.c
 +++ b/target/m68k/translate.c
-@@ -844,8 +844,7 @@ static TCGv gen_load_mode(DisasContext *s, int mode, int reg0, int opsize,
-     return ret;
+@@ -1012,9 +1012,8 @@ static void gen_ldst_fp(DisasContext *s, int opsize, TCGv addr,
+     }
  }
  
--static bool gen_store_mode(CPUM68KState *env, DisasContext *s,
--                           int mode, int reg0, int opsize,
-+static bool gen_store_mode(DisasContext *s, int mode, int reg0, int opsize,
-                            TCGv val, TCGv addr, int index)
+-static int gen_ea_mode_fp(CPUM68KState *env, DisasContext *s, int mode,
+-                          int reg0, int opsize, TCGv_ptr fp, ea_what what,
+-                          int index)
++static int gen_ea_mode_fp(DisasContext *s, int mode, int reg0, int opsize,
++                          TCGv_ptr fp, ea_what what, int index)
  {
-     TCGv reg;
-@@ -1335,7 +1334,7 @@ static void gen_exit_tb(DisasContext *s)
- #define DEST_EA(env, insn, opsize, val, addrp)                          \
-     do {                                                                \
-         TCGv *addrp_ = (addrp);                                         \
--        if (!gen_store_mode(env, s, extract32(insn, 3, 3),              \
-+        if (!gen_store_mode(s, extract32(insn, 3, 3),                   \
-                             REG(insn, 0), opsize, val,                  \
-                             addrp_ ? *addrp_ : NULL, IS_USER(s))) {     \
-             gen_addr_fault(s);                                          \
-@@ -1704,7 +1703,7 @@ DISAS_INSN(abcd_mem)
- 
-     bcd_add(dest, src);
- 
--    gen_store_mode(env, s, 4, REG(insn, 9), OS_BYTE, dest, addr, IS_USER(s));
-+    gen_store_mode(s, 4, REG(insn, 9), OS_BYTE, dest, addr, IS_USER(s));
- 
-     bcd_flags(dest);
+     TCGv reg, addr, tmp;
+     TCGv_i64 t64;
+@@ -1059,23 +1058,23 @@ static int gen_ea_mode_fp(CPUM68KState *env, DisasContext *s, int mode,
+         if (reg0 == 4 && what != EA_STORE) {
+             switch (opsize) {
+             case OS_BYTE:
+-                tmp = tcg_constant_i32((int8_t)read_im8(env, s));
++                tmp = tcg_constant_i32((int8_t)read_im8(s->env, s));
+                 gen_helper_exts32(tcg_env, fp, tmp);
+                 break;
+             case OS_WORD:
+-                tmp = tcg_constant_i32((int16_t)read_im16(env, s));
++                tmp = tcg_constant_i32((int16_t)read_im16(s->env, s));
+                 gen_helper_exts32(tcg_env, fp, tmp);
+                 break;
+             case OS_LONG:
+-                tmp = tcg_constant_i32(read_im32(env, s));
++                tmp = tcg_constant_i32(read_im32(s->env, s));
+                 gen_helper_exts32(tcg_env, fp, tmp);
+                 break;
+             case OS_SINGLE:
+-                tmp = tcg_constant_i32(read_im32(env, s));
++                tmp = tcg_constant_i32(read_im32(s->env, s));
+                 gen_helper_extf32(tcg_env, fp, tmp);
+                 break;
+             case OS_DOUBLE:
+-                t64 = tcg_constant_i64(read_im64(env, s));
++                t64 = tcg_constant_i64(read_im64(s->env, s));
+                 gen_helper_extf64(tcg_env, fp, t64);
+                 break;
+             case OS_EXTENDED:
+@@ -1083,9 +1082,9 @@ static int gen_ea_mode_fp(CPUM68KState *env, DisasContext *s, int mode,
+                     gen_exception(s, s->base.pc_next, EXCP_FP_UNIMP);
+                     break;
+                 }
+-                tmp = tcg_constant_i32(read_im32(env, s) >> 16);
++                tmp = tcg_constant_i32(read_im32(s->env, s) >> 16);
+                 tcg_gen_st16_i32(tmp, fp, offsetof(FPReg, l.upper));
+-                t64 = tcg_constant_i64(read_im64(env, s));
++                t64 = tcg_constant_i64(read_im64(s->env, s));
+                 tcg_gen_st_i64(t64, fp, offsetof(FPReg, l.lower));
+                 break;
+             case OS_PACKED:
+@@ -1122,7 +1121,7 @@ static int gen_ea_fp(CPUM68KState *env, DisasContext *s, uint16_t insn,
+ {
+     int mode = extract32(insn, 3, 3);
+     int reg0 = REG(insn, 0);
+-    return gen_ea_mode_fp(env, s, mode, reg0, opsize, fp, what, index);
++    return gen_ea_mode_fp(s, mode, reg0, opsize, fp, what, index);
  }
-@@ -1738,7 +1737,7 @@ DISAS_INSN(sbcd_mem)
  
-     bcd_sub(dest, src);
- 
--    gen_store_mode(env, s, 4, REG(insn, 9), OS_BYTE, dest, addr, IS_USER(s));
-+    gen_store_mode(s, 4, REG(insn, 9), OS_BYTE, dest, addr, IS_USER(s));
- 
-     bcd_flags(dest);
- }
+ typedef struct {
 -- 
 2.43.0
 
