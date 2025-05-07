@@ -2,34 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B047AAE872
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 20:07:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93007AAE85B
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 20:05:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCj84-00086u-G3; Wed, 07 May 2025 14:04:24 -0400
+	id 1uCj88-000889-Cz; Wed, 07 May 2025 14:04:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uCj7z-00085E-Ni; Wed, 07 May 2025 14:04:19 -0400
+ id 1uCj83-00086t-AZ; Wed, 07 May 2025 14:04:23 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uCj7x-00088u-1Z; Wed, 07 May 2025 14:04:19 -0400
+ id 1uCj81-00089l-Ct; Wed, 07 May 2025 14:04:23 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D8C1111FEF6;
+ by isrv.corpit.ru (Postfix) with ESMTP id E112811FEF7;
  Wed, 07 May 2025 21:03:59 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id B55CB2066FB;
+ by tsrv.corpit.ru (Postfix) with ESMTP id BDA7A2066FC;
  Wed,  7 May 2025 21:04:12 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Zixing Liu <liushuyu@aosc.io>, qemu-trivial@nongnu.org,
+Cc: Gustavo Romero <gustavo.romero@linaro.org>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 01/21] linux-user/syscall.c: add translation logic for
- epoll_pwait2 syscall
-Date: Wed,  7 May 2025 21:03:52 +0300
-Message-Id: <20250507180412.182797-2-mjt@tls.msk.ru>
+Subject: [PULL 02/21] hw/pci/pci.c: Turn DPRINTF into trace events
+Date: Wed,  7 May 2025 21:03:53 +0300
+Message-Id: <20250507180412.182797-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250507180412.182797-1-mjt@tls.msk.ru>
 References: <20250507180412.182797-1-mjt@tls.msk.ru>
@@ -58,94 +57,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zixing Liu <liushuyu@aosc.io>
+From: Gustavo Romero <gustavo.romero@linaro.org>
 
-Signed-off-by: Zixing Liu <liushuyu@aosc.io>
+Remove PCI_DPRINTF() macro and use trace events instead.
+
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- linux-user/syscall.c | 36 ++++++++++++++++++++++++++++++++----
- 1 file changed, 32 insertions(+), 4 deletions(-)
+ hw/pci/pci.c        | 19 ++++++-------------
+ hw/pci/trace-events |  4 ++++
+ 2 files changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 23b901b713..d2335cb823 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -712,6 +712,11 @@ safe_syscall5(int, ppoll, struct pollfd *, ufds, unsigned int, nfds,
- safe_syscall6(int, epoll_pwait, int, epfd, struct epoll_event *, events,
-               int, maxevents, int, timeout, const sigset_t *, sigmask,
-               size_t, sigsetsize)
-+#if defined(__NR_epoll_pwait2)
-+safe_syscall6(int, epoll_pwait2, int, epfd, struct epoll_event *, events,
-+              int, maxevents, struct timespec *, timeout, const sigset_t *, sigmask,
-+              size_t, sigsetsize)
-+#endif
- #if defined(__NR_futex)
- safe_syscall6(int,futex,int *,uaddr,int,op,int,val, \
-               const struct timespec *,timeout,int *,uaddr2,int,val3)
-@@ -13364,19 +13369,22 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index fe38c4c028..352b3d12c8 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -54,13 +54,6 @@
+ #include "hw/xen/xen.h"
+ #include "hw/i386/kvm/xen_evtchn.h"
+ 
+-//#define DEBUG_PCI
+-#ifdef DEBUG_PCI
+-# define PCI_DPRINTF(format, ...)       printf(format, ## __VA_ARGS__)
+-#else
+-# define PCI_DPRINTF(format, ...)       do { } while (0)
+-#endif
+-
+ bool pci_available = true;
+ 
+ static char *pcibus_get_dev_path(DeviceState *dev);
+@@ -2439,12 +2432,12 @@ static void pci_patch_ids(PCIDevice *pdev, uint8_t *ptr, uint32_t size)
+     /* Only a valid rom will be patched. */
+     rom_magic = pci_get_word(ptr);
+     if (rom_magic != 0xaa55) {
+-        PCI_DPRINTF("Bad ROM magic %04x\n", rom_magic);
++        trace_pci_bad_rom_magic(rom_magic, 0xaa55);
+         return;
      }
- #endif
+     pcir_offset = pci_get_word(ptr + 0x18);
+     if (pcir_offset + 8 >= size || memcmp(ptr + pcir_offset, "PCIR", 4)) {
+-        PCI_DPRINTF("Bad PCIR offset 0x%x or signature\n", pcir_offset);
++        trace_pci_bad_pcir_offset(pcir_offset);
+         return;
+     }
  
--#if defined(TARGET_NR_epoll_wait) || defined(TARGET_NR_epoll_pwait)
-+#if defined(TARGET_NR_epoll_wait) || defined(TARGET_NR_epoll_pwait) || defined(TARGET_NR_epoll_pwait2)
- #if defined(TARGET_NR_epoll_wait)
-     case TARGET_NR_epoll_wait:
- #endif
- #if defined(TARGET_NR_epoll_pwait)
-     case TARGET_NR_epoll_pwait:
-+#endif
-+#if defined(TARGET_NR_epoll_pwait2)
-+    case TARGET_NR_epoll_pwait2:
- #endif
-     {
-         struct target_epoll_event *target_ep;
-         struct epoll_event *ep;
-         int epfd = arg1;
-         int maxevents = arg3;
--        int timeout = arg4;
-+        abi_long timeout = arg4;
+@@ -2453,8 +2446,8 @@ static void pci_patch_ids(PCIDevice *pdev, uint8_t *ptr, uint32_t size)
+     rom_vendor_id = pci_get_word(ptr + pcir_offset + 4);
+     rom_device_id = pci_get_word(ptr + pcir_offset + 6);
  
-         if (maxevents <= 0 || maxevents > TARGET_EP_MAX_EVENTS) {
-             return -TARGET_EINVAL;
-@@ -13397,6 +13405,9 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-         switch (num) {
- #if defined(TARGET_NR_epoll_pwait)
-         case TARGET_NR_epoll_pwait:
-+#if defined(TARGET_NR_epoll_pwait2)
-+        case TARGET_NR_epoll_pwait2:
-+#endif
-         {
-             sigset_t *set = NULL;
+-    PCI_DPRINTF("%s: ROM id %04x%04x / PCI id %04x%04x\n", pdev->romfile,
+-                vendor_id, device_id, rom_vendor_id, rom_device_id);
++    trace_pci_rom_and_pci_ids(pdev->romfile, vendor_id, device_id,
++                              rom_vendor_id, rom_device_id);
  
-@@ -13407,8 +13418,25 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-                 }
-             }
+     checksum = ptr[6];
  
--            ret = get_errno(safe_epoll_pwait(epfd, ep, maxevents, timeout,
--                                             set, SIGSET_T_SIZE));
-+            if (num == TARGET_NR_epoll_pwait) {
-+                ret = get_errno(safe_epoll_pwait(epfd, ep, maxevents, (int)timeout,
-+                                                 set, SIGSET_T_SIZE));
-+            } else {
-+#if defined(TARGET_NR_epoll_pwait2)
-+                struct timespec hspec;
-+                struct timespec *ts_arg = NULL;
-+                if (timeout) {
-+                    if (target_to_host_timespec(&hspec, (abi_ulong)timeout)) {
-+                        return -TARGET_EFAULT;
-+                    }
-+                    ts_arg = &hspec;
-+                }
-+                ret = get_errno(safe_epoll_pwait2(epfd, ep, maxevents, ts_arg,
-+                                              set, SIGSET_T_SIZE));
-+#else
-+                return -TARGET_ENOSYS;
-+#endif
-+            }
+@@ -2462,7 +2455,7 @@ static void pci_patch_ids(PCIDevice *pdev, uint8_t *ptr, uint32_t size)
+         /* Patch vendor id and checksum (at offset 6 for etherboot roms). */
+         checksum += (uint8_t)rom_vendor_id + (uint8_t)(rom_vendor_id >> 8);
+         checksum -= (uint8_t)vendor_id + (uint8_t)(vendor_id >> 8);
+-        PCI_DPRINTF("ROM checksum %02x / %02x\n", ptr[6], checksum);
++        trace_pci_rom_checksum_change(ptr[6], checksum);
+         ptr[6] = checksum;
+         pci_set_word(ptr + pcir_offset + 4, vendor_id);
+     }
+@@ -2471,7 +2464,7 @@ static void pci_patch_ids(PCIDevice *pdev, uint8_t *ptr, uint32_t size)
+         /* Patch device id and checksum (at offset 6 for etherboot roms). */
+         checksum += (uint8_t)rom_device_id + (uint8_t)(rom_device_id >> 8);
+         checksum -= (uint8_t)device_id + (uint8_t)(device_id >> 8);
+-        PCI_DPRINTF("ROM checksum %02x / %02x\n", ptr[6], checksum);
++        trace_pci_rom_checksum_change(ptr[6], checksum);
+         ptr[6] = checksum;
+         pci_set_word(ptr + pcir_offset + 6, device_id);
+     }
+diff --git a/hw/pci/trace-events b/hw/pci/trace-events
+index 6a9968962f..02c80d3ec8 100644
+--- a/hw/pci/trace-events
++++ b/hw/pci/trace-events
+@@ -6,6 +6,10 @@ pci_pm_transition(const char *dev, uint32_t bus, uint32_t slot, uint32_t func, u
+ pci_update_mappings_del(const char *dev, uint32_t bus, uint32_t slot, uint32_t func, int bar, uint64_t addr, uint64_t size) "%s %02x:%02x.%x %d,0x%"PRIx64"+0x%"PRIx64
+ pci_update_mappings_add(const char *dev, uint32_t bus, uint32_t slot, uint32_t func, int bar, uint64_t addr, uint64_t size) "%s %02x:%02x.%x %d,0x%"PRIx64"+0x%"PRIx64
+ pci_route_irq(int dev_irq, const char *dev_path, int parent_irq, const char *parent_path) "IRQ %d @%s -> IRQ %d @%s"
++pci_bad_rom_magic(uint16_t bad_rom_magic, uint16_t good_rom_magic) "Bad ROM magic number: %04"PRIX16". Should be: %04"PRIX16
++pci_bad_pcir_offset(uint16_t pcir_offset) "Bad PCIR offset 0x%"PRIx16" or signature"
++pci_rom_and_pci_ids(char *romfile, uint16_t vendor_id, uint16_t device_id, uint16_t rom_vendor_id, uint16_t rom_device_id) "%s: ROM ID %04"PRIx16":%04"PRIx16" | PCI ID %04"PRIx16":%04"PRIx16
++pci_rom_checksum_change(uint8_t old_checksum, uint8_t new_checksum) "ROM checksum changed from %02"PRIx8" to %02"PRIx8
  
-             if (set) {
-                 finish_sigsuspend_mask(ret);
+ # pci_host.c
+ pci_cfg_read(const char *dev, uint32_t bus, uint32_t slot, uint32_t func, unsigned offs, unsigned val) "%s %02x:%02x.%x @0x%x -> 0x%x"
 -- 
 2.39.5
 
