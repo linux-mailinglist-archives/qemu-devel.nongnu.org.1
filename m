@@ -2,85 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7370EAAD54E
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 07:36:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3178AAD55E
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 07:41:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCXRC-0000H0-W1; Wed, 07 May 2025 01:35:23 -0400
+	id 1uCXWj-000712-Mp; Wed, 07 May 2025 01:41:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uCXRA-0000Gq-M4
- for qemu-devel@nongnu.org; Wed, 07 May 2025 01:35:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <SRS0=ybBK=XX=kaod.org=clg@ozlabs.org>)
+ id 1uCXWe-0006yi-EY; Wed, 07 May 2025 01:41:00 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uCXR9-0003Cs-3m
- for qemu-devel@nongnu.org; Wed, 07 May 2025 01:35:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746596116;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=i4x+1/5Eo/Y7WQtRO2ysyT2YXhKNX42md/QhevOUiBg=;
- b=FcqIi4kBdCzjjlgHGGLPUzdkSKBLO0a+m+nuLPlXVHXVIMYxEMHfe6ZyOZI5wOgyw4l03e
- Wpnlsj8AhCcOamvHX7eXxAW5WfZZ9aIec51pZnl3yYPqxel3ORyMkXiX+nrvhZj/Pmq0zN
- vs6JcRqNvlw13jtoxsstrpg0PeoV3qQ=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-642-KKpcIGWAP6CAiIGX1raixg-1; Wed,
- 07 May 2025 01:35:13 -0400
-X-MC-Unique: KKpcIGWAP6CAiIGX1raixg-1
-X-Mimecast-MFC-AGG-ID: KKpcIGWAP6CAiIGX1raixg_1746596112
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (Exim 4.90_1) (envelope-from <SRS0=ybBK=XX=kaod.org=clg@ozlabs.org>)
+ id 1uCXWb-00041T-GY; Wed, 07 May 2025 01:41:00 -0400
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4ZskdD5VXdz4x8f;
+ Wed,  7 May 2025 15:40:48 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3B5251805ECE; Wed,  7 May 2025 05:35:12 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.27])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B23C61800368; Wed,  7 May 2025 05:35:11 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 33CB221E66C9; Wed, 07 May 2025 07:35:09 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: Thomas Huth <thuth@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,  qemu-devel@nongnu.org,  Paolo Bonzini
- <pbonzini@redhat.com>,  Alex =?utf-8?Q?Benn=C3=A9e?=
- <alex.bennee@linaro.org>,  Michael
- Roth <michael.roth@amd.com>,  Daniel =?utf-8?Q?P=2EBerrang=C3=A9?=
- <berrange@redhat.com>, Stefan Hajnoczi <stefanha@gmail.com>
-Subject: Re: [PATCH] Drop support for Python 3.8
-In-Reply-To: <CAFn=p-Y3xOo95XMRNC-pSrcoD6858bkzu0cpCUqXn1MZs1vAmA@mail.gmail.com>
- (John Snow's message of "Tue, 6 May 2025 15:49:38 -0400")
-References: <20250425120710.879518-1-thuth@redhat.com>
- <57f21448-79c1-4d46-9a8e-f9109eb67dcd@linaro.org>
- <87jz78b7fh.fsf@pond.sub.org>
- <5d0e0b69-cbbc-4fa4-a847-fdc8603a8122@redhat.com>
- <875ximdj2i.fsf@pond.sub.org>
- <CAFn=p-ZZgRg_A=nXOLGd=S8b2g9K3FNm-hqG1Rv1F=uy4PLqEQ@mail.gmail.com>
- <67ceeed9-75e1-489d-a750-dcf1beac703f@redhat.com>
- <CAFn=p-Y3xOo95XMRNC-pSrcoD6858bkzu0cpCUqXn1MZs1vAmA@mail.gmail.com>
-Date: Wed, 07 May 2025 07:35:09 +0200
-Message-ID: <87wmatm19u.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (Client did not present a certificate)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4ZskdB6FPtz4wyh;
+ Wed,  7 May 2025 15:40:46 +1000 (AEST)
+Message-ID: <49699465-cee9-4a8d-b135-89f8073c9c90@kaod.org>
+Date: Wed, 7 May 2025 07:40:43 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/3] ppc/spapr: remove deprecated machines till pseries-4.0
+To: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: npiggin@gmail.com, danielhb413@gmail.com
+References: <20250507052048.90559-1-harshpb@linux.ibm.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <20250507052048.90559-1-harshpb@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=ybBK=XX=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,37 +104,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-John Snow <jsnow@redhat.com> writes:
+On 5/7/25 07:20, Harsh Prateek Bora wrote:
+> pseries-3.0, 3.1 and 4.0 had been deprecated and due for removal now.
+> Also removing pre-4.1 backward compatibility hacks that aren't needed
+> anymore.
+> 
+> Harsh Prateek Bora (3):
+>    ppc/spapr: remove deprecated machine pseries-3.0
+>    ppc/spapr: remove deprecated machine pseries-3.1
+>    ppc/spapr: remove deprecated machine pseries-4.0
+> 
+>   include/hw/ppc/spapr.h     |   5 --
+>   include/hw/ppc/spapr_irq.h |   1 -
+>   hw/ppc/spapr.c             | 118 +++----------------------------------
+>   hw/ppc/spapr_caps.c        |  12 +---
+>   hw/ppc/spapr_events.c      |   8 ---
+>   hw/ppc/spapr_hcall.c       |   5 --
+>   hw/ppc/spapr_irq.c         |  16 +----
+>   hw/ppc/spapr_pci.c         |  32 ++--------
+>   hw/ppc/spapr_vio.c         |   9 ---
+>   9 files changed, 13 insertions(+), 193 deletions(-)
+> 
 
-> On Tue, May 6, 2025 at 10:17=E2=80=AFAM Thomas Huth <thuth@redhat.com> wr=
-ote:
->
->> On 06/05/2025 00.49, John Snow wrote:
->> ...
->> > If there are no objections to moving to 3.9 as the minimum, I certainly
->> > don't mind. Go right ahead and I'll clean up afterwards as part of my
->> > "delint qapi" series in which I'd like to fix quite a few other things=
- that
->> > are currently wonky. In fact, moving to 3.9 as a minimum might make al=
-l of
->> > that much easier for me and allow deeper cleanings.
->>
->>   Hi John!
->>
->> It has just been merged:
->>
->
-> Yay! Thanks a lot for doing this. I lost my appetite for arguing for Pyth=
-on
-> version bumps, but when other people do it, I am always cheering :) Sorry
-> to have been MIA while you were submitting this.
 
-I'm cheering, too!
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
-Supporting a wide range of Python versions has been costly.  Most
-recently, it made John write docs/sphinx/compat.py, which looks like
-every line of code there was bought with blood, sweat, and tears.
+Thanks,
 
-[...]
+C.
+
 
 
