@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D986BAAEF38
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 01:17:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFBCDAAEF30
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 01:16:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCnyl-0000iD-39; Wed, 07 May 2025 19:15:07 -0400
+	id 1uCnym-0000jY-MZ; Wed, 07 May 2025 19:15:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uCnyh-0000hQ-Gk
- for qemu-devel@nongnu.org; Wed, 07 May 2025 19:15:03 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1uCnyj-0000iE-6n
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 19:15:05 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uCnyf-0007B5-LM
- for qemu-devel@nongnu.org; Wed, 07 May 2025 19:15:03 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-22e4d235811so6191155ad.2
- for <qemu-devel@nongnu.org>; Wed, 07 May 2025 16:15:01 -0700 (PDT)
+ id 1uCnyh-0007BW-DM
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 19:15:04 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-2264aefc45dso6270915ad.0
+ for <qemu-devel@nongnu.org>; Wed, 07 May 2025 16:15:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746659700; x=1747264500; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746659701; x=1747264501; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jPYvM/Yfcpm+cjpevJkSeWtzrQnOVm30pMe7ne9zBMA=;
- b=pZknOLXa7L6Nf5pqGgQszSuXJ/LWxk+YGxHRrh13f2mdOtfM3HHHYOaSr5w4tf+Oiv
- AAK44zhjoCmV5FpsHFxmnHjTxU04nXsIlEgtoy2Pk0kR7mwSatVTrV3985NGiOHVfTSF
- yyV+fClvvhjjnKQDIrZDQaNMYh1JdTaLw6rgAFNd7et8iNmYc4Dzh11Pu800VY5lFITh
- 6csoZNtRUxtGbHMdv/TiW0fBGN2Jbw+jUELznLBDfO8oEhls/MJX787m7GknVFOE61eJ
- REWUAtaX6VZCv5CGIrioO97ESqLTAlXGJI3m2GtcLDgHXAbEgkwwaGnxxO8nsge0gDT+
- F8VQ==
+ bh=0OQrmhMkBbkRAe+AcaFWJpAW3Ke/6y++HEbniG6kC24=;
+ b=TWFe/eB7WTi0O55ObIAdj6hN2eiRF9yegOlUbqKRLOJ6iqVJftEi/p9QQDYOU2xTZ9
+ UjdfGUoNx/7Aag0SfVT4MAvLOqCwcoe8sJGmRUSwCIMWFjowTCtH0JDXMWdLSNDjC6xN
+ tgqQwZMxVSUG69vCoPLa9UuSAqqWSLHurSa1NiEYOAbIUhGTvOi7F2A3LHoem5PwIIZK
+ no6y2Lffk29W/1rht/IvMs+Uy4atWbhGZJo5kbQBvJkCOdr8O8MAW5Jkr1cPOkOiFO8K
+ gYxQHU0fLBtlVd17oLgevhLREZ91vIvXUCi06j1Dn7dulaJwvWfXMU9h5J2nPbtMK/rq
+ XscQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746659700; x=1747264500;
+ d=1e100.net; s=20230601; t=1746659701; x=1747264501;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jPYvM/Yfcpm+cjpevJkSeWtzrQnOVm30pMe7ne9zBMA=;
- b=K1TVXcMf/9i4RFnxCMUfW/SnZMLqxRqh/UpLxQ+jdi21IkDf6G9RzGRikyaWsn1QAb
- Mo+fDuYGYAgUahAJl0gHF8davYS5lLkyZd2TAIB25C+CodCz3Z47UUs0n3/owlIIrhef
- +VT17iQYvhq7bVkskJbC0ars30+7LDinDaS3ah2t63oBdVWzXnkar0AaEUKUr7tc6NZ8
- y5Vrhzk8So5a8XLuVIvERnSLPGLEk0NcXRJAR7Is4mdjKEgmLH+s2a6KUecjXMK/qj1i
- QlSXsLckDuMzYONzRlfJNsRPpEUXuHaUT3WkjdgdvzrqI0oaqSmeif4xzO1TgOs3c4yM
- r1gg==
-X-Gm-Message-State: AOJu0YzuKbEOU9gQHYCqR12dkm17TO2/oJMoAZM74kO/z7TKwvxoVMGl
- LaQ2lJHGvKlKMohjOx05M+akXR9nF5hMSSsfcPozqJl0y/buuC8Era767iIDqfmvAMl/G0Vj6SW
- q7h2wiA==
-X-Gm-Gg: ASbGncv/BnITn/iafRjhe1OcQ3MRbXjL6mGxZb/a9Vh8BxdSASStSsijj9czDWDFOrn
- 16WYdo7slpzVgvimKLSngnjGIqLFVmNAzRd7x0yAKsv13BnLn7QuloiSpkvef/MtATws0rvQ9FD
- ci9AKntieAOXNh9mJbvtPXs19tu5azUVyhXKKZo9FKbC5s7CuykXhTyR74sgvV+4moRS2OS1bbm
- 1dyv2Da0VmPlFohgCtvc9pmKT/PKX67bkngjtzPqYtRHs3m7fX9Fg+InQ/DOfWrvaVbB4k6/oUa
- 6RNG1nSPgLA8E6GkUM2/+KoxpeJWcJ65h9Q01wsy
-X-Google-Smtp-Source: AGHT+IHepp6V73X3BRL3UlYuNN4CcKjmh718S2khwadIUiCkZF8HHu75OX6j7e215kH83aFiIK0IBA==
-X-Received: by 2002:a17:903:3bcf:b0:224:24d5:f20a with SMTP id
- d9443c01a7336-22e8f0b62b7mr16441615ad.48.1746659700371; 
- Wed, 07 May 2025 16:15:00 -0700 (PDT)
+ bh=0OQrmhMkBbkRAe+AcaFWJpAW3Ke/6y++HEbniG6kC24=;
+ b=jlvVLfUSgHYFFlG4QoWl9oRxCQSU8My9BzxSKlJhWR1baC/sz3A4iYF1RA1SOik5+p
+ OWWESqVktMJpHG9/92wRvUQFm//XtR+p+hQUxyQYSCZ4RbTYAAroRK+6nx/7T+IKsMXG
+ UH70uFxPUPoO6xiA/hg7y/jQ8gxyiXXV5IJN6p5uMzEZo7ZtRfjaPIfjZvFLevorfIqk
+ zl/x4/bO/y/v93HvQS1RVJQDZlOuM8Iy4cU2sceGlZZySsfXeE23FaBS64a0EoQi1r1t
+ +Ari+WqhtgpL/sGLK6ZMoEGobkX5/mODQZxxI6oxnJTHQGdKz6P2P4m8cWF0A2IBTv+8
+ i7Qg==
+X-Gm-Message-State: AOJu0YyC129nZsrCd/c6V00jT5iRrTZGKwn456TilmlYZ7WZnr8GZnj4
+ ndzorBs9RNEv6QznJUw6YyHB2Asz5amT8SMtVJJ6kN1ODdMbxpf/5Hh4pLXDqp32i3KRkzfNXVn
+ yIIl+eg==
+X-Gm-Gg: ASbGncuXFea5cd3s5Lycc21lbv7/dXiZ0NioPeyfCJrXpFCtVTa5qp6N5HaD18+9kCj
+ oCedY/cDKVzaR3OBgyxm9aOOrrw7eIvfQSWd9oJtZyrOg2Xcnpi1sxaBoHG1026SyjM+LI9j59h
+ 2N/oekycTn0P+/t+zVjA/babTCY+hxulrxjXea/vd9edL7WAHdNAOVV0DGOjuBd8BbQO6E6q8UM
+ 8JTha6sTa5oUJmhUpNWu/qUH4HAiLr5DiQO/6piqkyxQUAXtJqzHSEi3zc8ng9oIf1TQd66wiEK
+ xhOS2Ow018uuAlXaQX2y0CrHtgLeuZPHIVkI0uae
+X-Google-Smtp-Source: AGHT+IG+cLuyPBEBE6aCAH9b7LPAbekby9wzqk444JvrOJITMXNwzzJmL0XyNhpUZAFNtYLfOOfWvw==
+X-Received: by 2002:a17:903:287:b0:223:536d:f67b with SMTP id
+ d9443c01a7336-22e8dc8f2f0mr17748245ad.38.1746659701254; 
+ Wed, 07 May 2025 16:15:01 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22e421a7dafsm40103205ad.69.2025.05.07.16.14.59
+ d9443c01a7336-22e421a7dafsm40103205ad.69.2025.05.07.16.15.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 07 May 2025 16:15:00 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
@@ -68,16 +68,16 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>, alex.bennee@linaro.org,
  Markus Armbruster <armbru@redhat.com>, richard.henderson@linaro.org,
  pbonzini@redhat.com, jsnow@redhat.com, philmd@linaro.org,
  berrange@redhat.com, thuth@redhat.com, Michael Roth <michael.roth@amd.com>
-Subject: [PATCH 10/13] qapi: add weak stubs for target specific commands
-Date: Wed,  7 May 2025 16:14:40 -0700
-Message-ID: <20250507231442.879619-11-pierrick.bouvier@linaro.org>
+Subject: [PATCH 11/13] qapi: make all generated files common
+Date: Wed,  7 May 2025 16:14:41 -0700
+Message-ID: <20250507231442.879619-12-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250507231442.879619-1-pierrick.bouvier@linaro.org>
 References: <20250507231442.879619-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,73 +100,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We are about to expose various target specific commands for all targets,
-so we need to stub not implemented qmp_* functions.
-
-MinGW does not support weak symbols without at least one strong
-definition, so we'll have to detail stubs per target. Sad.
-
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- qapi/commands-weak-stubs.c | 38 ++++++++++++++++++++++++++++++++++++++
- qapi/meson.build           |  2 ++
- 2 files changed, 40 insertions(+)
- create mode 100644 qapi/commands-weak-stubs.c
+ qapi/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/qapi/commands-weak-stubs.c b/qapi/commands-weak-stubs.c
-new file mode 100644
-index 00000000000..9734263c32e
---- /dev/null
-+++ b/qapi/commands-weak-stubs.c
-@@ -0,0 +1,38 @@
-+/*
-+ * Weak symbols for target specific commands
-+ *
-+ * Copyright Linaro, 2025
-+ *
-+ * This work is licensed under the terms of the GNU LGPL, version 2.1 or later.
-+ * See the COPYING.LIB file in the top-level directory.
-+ *
-+ */
-+
-+#include "qemu/osdep.h"
-+#include <glib.h>
-+
-+#define NOT_REACHABLE(symbol)                                                  \
-+void __attribute__((weak)) symbol(void);                                       \
-+void __attribute__((weak)) symbol(void) { g_assert_not_reached(); }
-+
-+#define WEAK_STUB(command)                                                     \
-+NOT_REACHABLE(qmp_marshal_##command)                                           \
-+NOT_REACHABLE(qmp_##command)
-+
-+WEAK_STUB(query_cpu_model_comparison);
-+WEAK_STUB(query_cpu_model_baseline);
-+WEAK_STUB(set_cpu_topology);
-+WEAK_STUB(query_s390x_cpu_polarization);
-+WEAK_STUB(rtc_reset_reinjection);
-+WEAK_STUB(query_sev);
-+WEAK_STUB(query_sev_launch_measure);
-+WEAK_STUB(query_sev_capabilities);
-+WEAK_STUB(sev_inject_launch_secret);
-+WEAK_STUB(query_sev_attestation_report);
-+WEAK_STUB(query_sgx);
-+WEAK_STUB(query_sgx_capabilities);
-+WEAK_STUB(xen_event_list);
-+WEAK_STUB(xen_event_inject);
-+WEAK_STUB(query_cpu_model_expansion);
-+WEAK_STUB(query_cpu_definitions);
-+WEAK_STUB(query_gic_capabilities);
 diff --git a/qapi/meson.build b/qapi/meson.build
-index eadde4db307..60fc958ec10 100644
+index 60fc958ec10..b8aa33ec9db 100644
 --- a/qapi/meson.build
 +++ b/qapi/meson.build
-@@ -147,3 +147,5 @@ foreach output : qapi_specific_outputs + qapi_nonmodule_outputs
-   specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: qapi_files[i])
+@@ -144,7 +144,7 @@ foreach output : qapi_specific_outputs + qapi_nonmodule_outputs
+   if output.endswith('.trace-events')
+     qapi_trace_events += qapi_files[i]
+   endif
+-  specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: qapi_files[i])
++  system_ss.add(if_true: qapi_files[i])
    i = i + 1
  endforeach
-+
-+system_ss.add(files('commands-weak-stubs.c'))
+ 
 -- 
 2.47.2
 
