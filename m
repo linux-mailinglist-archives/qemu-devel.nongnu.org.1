@@ -2,98 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 310B4AAE9A1
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 20:47:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9779BAAE9CA
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 20:48:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCjm9-0008Sv-5I; Wed, 07 May 2025 14:45:49 -0400
+	id 1uCjne-0001vJ-Ts; Wed, 07 May 2025 14:47:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uCjm3-0008Lj-EN
- for qemu-devel@nongnu.org; Wed, 07 May 2025 14:45:44 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uCjm1-0004kq-FL
- for qemu-devel@nongnu.org; Wed, 07 May 2025 14:45:42 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-2264aefc45dso3460675ad.0
- for <qemu-devel@nongnu.org>; Wed, 07 May 2025 11:45:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746643539; x=1747248339; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=qxDPVCjfVtoNgCIZdN1lq3rjLY8i4XcwvaPrwsrEMQs=;
- b=YxVtmmAJChKclk+RWM6ZsyH/klbohtIIsUtdtfBrvRqfQ7wiI6sk629sbUzFQb5KbJ
- mKMYQfsvbwrHZVCe2NVJ4oOv1rt0dLzAmdvqWJdlSwsza/leSZABZZfMFZvGgMi9WMZa
- thsssPKnA0yGOuYmcYmrsGRxSG4Qdt8SLQ/vJnxdvUugJHZfUBoyDxelMkKyzL69NSG+
- Z7P2NDc+D6OE+i1CCw6h1v6TWluaxLRmJfwDVew7PwKokjfsCrKwnY36cx8/qZefp0zc
- zF08Ribj/cma+pmbmAgbMyvhpzFPEnKEUn8yH5EUgb8n9txOOewMYnbRmS5qKFz0YUaV
- ZrmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746643539; x=1747248339;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qxDPVCjfVtoNgCIZdN1lq3rjLY8i4XcwvaPrwsrEMQs=;
- b=IyM+JupSzcwjw57ipW+GTwGKjcaafYgXJY612dHmqeYXEU0W4du6FVFGFHTn6fAZF9
- FBIdk64IkbbobPoyqxfAZwSjYAXtdKpED5BSZbxem8yFtnnHiG39JKg2fM5mz89SltSi
- Xi1fHZDJvxIyg+OtfqBvArb2SV0ZqGZiI9d5xvsk8de7mfoYKdeQ2lFM1yXLkxOx1dSD
- ipYF0eUHeMFO69gRWg6EjJNwiGKTxomUJ0daKbgGksKal+FnBcr1XyasJzEAnmnjyvpa
- AtkUJpY+xXO3yqImTZh7okAABO0gdN5GC3xYFhTa7qSDwbYhZg/6LuabmfvuQa7aydGe
- kwiA==
-X-Gm-Message-State: AOJu0Yx0mNIXSXbCQz7e8Buz9uVRAZi/lYGiIsmyyKNLCdNQ/IRQRsGt
- AeqHb5cv/GA2BAxJQEzOT5vA5NmEitaO+gZDDjibWdnl4XvTedvMYwX0Ynw+4W5b7rHnbBh6t4z
- zRyA7nA==
-X-Gm-Gg: ASbGncueajxttDzDjmtbyONgoLdFKEH2M8p/tRpHsAtIoF2Qn1n9KLLp8yM6WICrDIp
- QtpPSCt+Ayz1u8f8BXfWIiR2DtN+8xuIh3d9XkzTiMpckCtmBgPaga//VBm0rqR2/Mca80fcqRa
- DDt/6jc0WlOCa4/UIHSnK4CtWId8hOiEg8uTNOPoTIQooFwpZFu6cT9U3sUWpJIAuuIs5RqIeI6
- CjdGLzXKPbfRhH53m66hpwER/XRErfUyxhc7ne1V4AYXpSVGbutaLYngyVdrwgbjDl/AZn9sVzc
- hXtelXzbcyo0aVd8yW+5SAoRIrwuptotxW9qsPHSgHN8lEDiKEQ9NqrDEJ6Hd5g2
-X-Google-Smtp-Source: AGHT+IEsAog+MHtGX3z21n5EUDikknzrRG0EBU0DG/ehEfnU6AYRAhfonz8yLAb/4xitHKjA2gr9+A==
-X-Received: by 2002:a17:902:e744:b0:22e:53a2:554e with SMTP id
- d9443c01a7336-22e85ed73edmr6794345ad.10.1746643539002; 
- Wed, 07 May 2025 11:45:39 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22e173b584csm93205485ad.16.2025.05.07.11.45.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 07 May 2025 11:45:38 -0700 (PDT)
-Message-ID: <0657578e-3825-407b-9837-1e29717f94e2@linaro.org>
-Date: Wed, 7 May 2025 11:45:37 -0700
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1uCjnW-0001s2-8d
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 14:47:15 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1uCjnS-0004py-Vn
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 14:47:12 -0400
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 547IeVWr025463;
+ Wed, 7 May 2025 18:47:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=corp-2025-04-25; bh=za0hYpX4TfnF3z1+
+ rI+iYxKfu29+UjmJYC3u4pi94NA=; b=IWuv3u5QvXVeNRwG4wLXnouDSMPUKzDY
+ caLM0bf8qaFQ+XGygwaE8b/uZgE4IfazqMC8tnGJ/ys3eiD+rojFRuZzt/u74z5R
+ 3MvJRMfxaGF7yY+SLGc/eQtmadUF93y/XntMK1GNcD4GrMF7u7MIAuMxJ6WFQgxS
+ GyVef9L73MM44ulSIWMRNe9odYXlg63lARomymAHLnfEotXXsYJma7bHrknZrWp1
+ q+iYARzYsQGP2ZHxeMjl42y6eii5ETXpKxIEAQM/CweW32RcDpmgRwoCJJcVcNNa
+ ec8wGiGzQXAotmBafhEla7ytqEWxoQqFcElghgbK04OMDSZwVRZtXw==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46gcgn028s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 07 May 2025 18:47:04 +0000 (GMT)
+Received: from pps.filterd
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 547HtMYp036036; Wed, 7 May 2025 18:47:03 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 46d9kbhd62-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 07 May 2025 18:47:03 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 547Il3it029452;
+ Wed, 7 May 2025 18:47:03 GMT
+Received: from dhcp-10-43-71-250.usdhcp.oraclecorp.com.com
+ (dhcp-10-43-71-250.usdhcp.oraclecorp.com [10.43.71.250])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
+ 46d9kbhd41-1; Wed, 07 May 2025 18:47:02 +0000
+From: Jonah Palmer <jonah.palmer@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: jonah.palmer@oracle.com, eperezma@redhat.com, peterx@redhat.com,
+ mst@redhat.com, jasowang@redhat.com, lvivier@redhat.com,
+ dtatulea@nvidia.com, leiyang@redhat.com, parav@mellanox.com,
+ sgarzare@redhat.com, si-wei.liu@oracle.com, lingshan.zhu@intel.com,
+ boris.ostrovsky@oracle.com
+Subject: [PATCH v4 0/7] Move memory listener register to vhost_vdpa_init
+Date: Wed,  7 May 2025 14:46:40 -0400
+Message-ID: <20250507184647.15580-1-jonah.palmer@oracle.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] meson: use thorough test setup as default
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
- <marcandre.lureau@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20250503201806.3045723-1-pierrick.bouvier@linaro.org>
- <f7da46dd-0e8f-42d8-b555-300c088f605e@redhat.com>
- <91cc4370-163e-4bdd-ac1c-b0d6ea3c06cb@linaro.org>
- <aBnXXC3ldqErl8ub@redhat.com>
- <6a8d7703-e275-4566-bc38-b627cc597e9a@linaro.org>
- <e36633e2-e0de-422a-8ad3-1562e97926c6@redhat.com>
- <aBsISp5UvOLzFhqn@redhat.com>
- <51c4e997-8ae4-43a5-81b7-561c035ba85c@redhat.com>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <51c4e997-8ae4-43a5-81b7-561c035ba85c@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-07_06,2025-05-06_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ bulkscore=0 mlxlogscore=999
+ suspectscore=0 adultscore=0 phishscore=0 mlxscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2504070000
+ definitions=main-2505070170
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA3MDE3MCBTYWx0ZWRfX9zYeo4L84gmz
+ YPcfH7k3MKbf77OyVdPIr86RqJNWLvxDxLpjQ1yshYemVxlMPsIqA+PDd2WrOKOMz/Ku4224xLo
+ Dlw4BtJvUZbTKUqka0r/qep9PazPTlKWz0pC8XLEbxr6n0sKj4IwQQN/OsPV0EH9lv3YG+GFiEX
+ Swf5072J9queQrOtCnEknaUWCi5L8zoXBdMqk580u3MFjUDtypVY0pcEIB3s7ALRJ5EbRQ1wo92
+ 64vFL2gQPUC5g63I145gMkI9MZCfDtzqjVOOvWANqN1KYj1aMvE3JEdhB/HAJvz3ef52ufcEWMx
+ rSHpcm0pgumfFDtVNP9jZ2XKes967JdOWeK4Mnqohsv3KE0TE9RnqE6lpE9cV5CCFOAFlj475oG
+ q7pZ2kPw8CoNCafyxBCQ8Lay6G51O8OZOz3zTFMlO6Qfwzfm/oVmQWwUD5qHRrSBzSReDf/o
+X-Proofpoint-ORIG-GUID: yY8Yf6h6k_rsiku5Q5dzDwFpuyvPUEaL
+X-Authority-Analysis: v=2.4 cv=GKcIEvNK c=1 sm=1 tr=0 ts=681baaa8 cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=mDV3o1hIAAAA:8 a=VwQbUJbxAAAA:8
+ a=20KFwNOVAAAA:8 a=yPCof4ZbAAAA:8
+ a=WQgBD-38X1HkX1-ZmYAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=5WABlXvFAscA:10
+ a=n0c7R5xxTHgA:10
+X-Proofpoint-GUID: yY8Yf6h6k_rsiku5Q5dzDwFpuyvPUEaL
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=jonah.palmer@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.499,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,52 +114,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/7/25 12:39 AM, Thomas Huth wrote:
->>>> Then I don't understand the previous argument from Thomas to not make
->>>> thorough the default: "The thorough functional tests download a
->>>> lot of assets from the internet, so if someone just runs "meson test"
->>>> without further parameters, I think we should not trigger these
->>>> downloads in that case". It's what precache-functional is doing.
->>>
->>> precache-functional is *only* called when you run "make check-functional",
->>> i.e. when you know that you want to run the functional tests that might
->>> download assets from the internet. It's not called when you run the normal
->>> "make check".
->>
->> Are you sure ?  If that's the case it was *not* my intention when i
->> added precaching - I thought that "make check"  would call
->> "make check-functional" and thus trigger precaching ?
-> 
-> "check-functional" is not part of the normal "check" target - on purpose
-> since we don't want to trigger downloads by surprise when people just run
-> "make check". That's also why we have separate "functional" CI jobs in the
-> gitlab CI, since otherwise this would be handled by the normal "check" jobs
-> already.
->
+Current memory operations like pinning may take a lot of time at the
+destination.  Currently they are done after the source of the migration is
+stopped, and before the workload is resumed at the destination.  This is a
+period where neigher traffic can flow, nor the VM workload can continue
+(downtime).
 
-`make check` calls build/pyvenv/bin/meson test --no-rebuild -t 1, which 
-triggers func-quick by default, triggering associated downloads, since 
-QEMU_TEST_NO_DOWNLOAD=1 is not set for this target, except if I missed 
-another hidden hack somewhere.
-`meson test --no-suite func-quick --no-suite func-thorough` should be 
-what make check should do instead, or we need another "setup", to 
-exclude functional-quick from quick default.
+We can do better as we know the memory layout of the guest RAM at the
+destination from the moment that all devices are initializaed.  So
+moving that operation allows QEMU to communicate the kernel the maps
+while the workload is still running in the source, so Linux can start
+mapping them.
 
-It seems that we just have some confusion steaming from our own 
-"makefile abstraction layer", when we could simply use builtin meson 
-test command for that, which works for all workflows (single vs multiple 
-tests). It reinforces my opinion that setups are awkward and that's 
-better to use meson test directly with --setup thorough being the 
-default, for better or worse. In case a developer wants a specific 
-suite, it's also easy to select it with '--suite', and list them with 
-'--list'.
+As a small drawback, there is a time in the initialization where QEMU
+cannot respond to QMP etc.  By some testing, this time is about
+0.2seconds.  This may be further reduced (or increased) depending on the
+vdpa driver and the platform hardware, and it is dominated by the cost
+of memory pinning.
 
-That said, I'm dropping this series, and won't pursue asking to change 
-the default, since this opinion is not the established consensus.
+This matches the time that we move out of the called downtime window.
+The downtime is measured as checking the trace timestamp from the moment
+the source suspend the device to the moment the destination starts the
+eight and last virtqueue pair.  For a 39G guest, it goes from ~2.2526
+secs to 2.0949.
 
->    Thomas
-> 
+Future directions on top of this series may include to move more things ahead
+of the migration time, like set DRIVER_OK or perform actual iterative migration
+of virtio-net devices.
 
-Regards,
-Pierrick
+Comments are welcome.
+
+This series is a different approach of series [1]. As the title does not
+reflect the changes anymore, please refer to the previous one to know the
+series history.
+
+This series is based on [2], it must be applied after it.
+
+[Jonah Palmer]
+This series was rebased after [3] was pulled in, as [3] was a prerequisite
+fix for this series.
+
+v4:
+---
+* Add memory listener unregistration to vhost_vdpa_reset_device.
+* Remove memory listener unregistration from vhost_vdpa_reset_status.
+
+v3:
+---
+* Rebase
+
+v2:
+---
+* Move the memory listener registration to vhost_vdpa_set_owner function.
+* Move the iova_tree allocation to net_vhost_vdpa_init.
+
+v1 at https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg02136.html.
+
+[1] https://patchwork.kernel.org/project/qemu-devel/cover/20231215172830.2540987-1-eperezma@redhat.com/
+[2] https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg05910.html
+[3] https://lore.kernel.org/qemu-devel/20250217144936.3589907-1-jonah.palmer@oracle.com/
+
+Jonah - note: I'll be on vacation from May 10-19. Will respond to
+              comments when I return.
+
+Eugenio Pérez (7):
+  vdpa: check for iova tree initialized at net_client_start
+  vdpa: reorder vhost_vdpa_set_backend_cap
+  vdpa: set backend capabilities at vhost_vdpa_init
+  vdpa: add listener_registered
+  vdpa: reorder listener assignment
+  vdpa: move iova_tree allocation to net_vhost_vdpa_init
+  vdpa: move memory listener register to vhost_vdpa_init
+
+ hw/virtio/vhost-vdpa.c         | 107 +++++++++++++++++++++------------
+ include/hw/virtio/vhost-vdpa.h |  22 ++++++-
+ net/vhost-vdpa.c               |  34 +----------
+ 3 files changed, 93 insertions(+), 70 deletions(-)
+
+-- 
+2.43.5
+
 
