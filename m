@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D5EAAEF33
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 01:17:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF56AAEF2D
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 01:16:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCnyl-0000ip-3W; Wed, 07 May 2025 19:15:07 -0400
+	id 1uCnyi-0000hV-Vn; Wed, 07 May 2025 19:15:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uCnyd-0000eR-Jk
- for qemu-devel@nongnu.org; Wed, 07 May 2025 19:14:59 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1uCnye-0000fJ-O0
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 19:15:00 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uCnyb-0007A3-Vi
- for qemu-devel@nongnu.org; Wed, 07 May 2025 19:14:59 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-2241053582dso7311445ad.1
- for <qemu-devel@nongnu.org>; Wed, 07 May 2025 16:14:57 -0700 (PDT)
+ id 1uCnyd-0007AR-0h
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 19:15:00 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-22c33677183so4516875ad.2
+ for <qemu-devel@nongnu.org>; Wed, 07 May 2025 16:14:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1746659697; x=1747264497; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KhAM5TzWr84Jlzb5Lb6xETas9izeZHd6MMPISYifZW8=;
- b=i0zJrJ28vh+Gc9l4Xc5q17Xgc9jg6vJkUGB+HlgYlKIznO1e+7UxhZFmdqUcBGkmzC
- cURx90F4Mn8/hGGDFEjxGTFzN8D59nY7Xk3u3QrahDXRZj8aMEGd2gQnx8twRmZboxsI
- hrH7jWhy0QZkf528Rv4M9WS2mm0+ehNegYX/Qy24PbRGf3mDStNLahQgvJgwfu2o4035
- YPSaw6diV1BZdXz0tE3Mno76g99hava21FhrMhRCGfj7fAolyabJOROs/ofVvxX33GD2
- 1P6Wfpts/+rlSO0ZrhgFjISUatw7ZjrxSOpXBv7BhR5mRlbl5H1ZXycxRHMHKXzgoFcC
- gzxQ==
+ bh=QGmrC9Lpdjuz6pj+NV/O+8IjV/h+/Pk7pyNiZqlJEW0=;
+ b=eyBRZDObxziNIhXqd0qHGWpxIxAU72VjVm/DVVx47QLC2mTqopv4Kt1k/+niwuI2Ns
+ 0tg9QrIh3PjmGvaJRF+P62Ars4JpY74lgvHK2gGPQak6/wVlLszzfFHoOv1jM0KdTjgC
+ FJ3ynU7aEKOdOMhuhgJ/HsJstsFrG7i/1pNxuYhAs8GfXM8jAU7CdS34z7pcYIj9TYD6
+ niBqtMUCxWqmkg+bdHsk+oLzh6M/uvDHbtIaUHg67xaMrfznRl1m06MQ7bPeicAzkl+i
+ 0Qt0The++7p5OLTwN/iV+vH2tbveXXndQrxpHRFcR2SYojwoUFELcKrfgN3nd0Y1c61P
+ Aj5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1746659697; x=1747264497;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KhAM5TzWr84Jlzb5Lb6xETas9izeZHd6MMPISYifZW8=;
- b=GJWCrPd5M6Ok2Yc15uqdlleZWC9BoHSn9cQMW7xN4BG0O5ust2Ap51lAhjcGznts+x
- LTnQ0beycBZ/ULCoZVe1Z9e537fNpOs9fkhWML8tdRxluLVNW/fBVllq0OzTy6uRTotq
- Opadr5CrzWdhFrQ1RDvbV2iR69tVl6oeK3n6hpghmCQ5VSZO3ndOd5G0TpU8miT4UgBR
- aLO9UGVZPSXOJfMNlC6s8nmFaoRp5JURLT+QJ7tV6Da8d2VqYdTflqXBBkkW1/Aewjl5
- 3Agm3N6QuDXrlDj3FQPhlOrdYYyL5m/xTuMg7Im+zU23L/T2+P1VQestw27RlPorV3X2
- UXhQ==
-X-Gm-Message-State: AOJu0Yz7hxqQCPNfSu6f2NOHqzbed5n+EUDProGIHVvZnWohrqAcrknK
- nVzMlkuGn7DO09DjKyXztYU+dsrRwB1dP3j+qWB9jYCOOFNpKnMo0DwSlWhTfG4BGsJY1GPkRe7
- PevE+pg==
-X-Gm-Gg: ASbGncsiSAZyDuDgt5woSoNpn/zK/IKhyAP1ThqqQXw56elPFGa3M0nJM+fwVYgnbC/
- UwD3BkrHFX7pa5poBPejno4h+8JT1wiF1aXAtIyukwDkZYYST8QubrhtxX55Yp0dWHu+fF6RV/G
- FsF/wibmaRywVShhupL2/7Nmp3FP5pa5E/SY71FZh3vW/H931Nb2cXPKDEpealDbbGfW/ptxzbE
- oIWVmYf3Zf+6oyGX7+FgQGkhJCEOsrs5mY3yKbESX+60n/Z8lX5MHtgV+7ZlDaKx15r382lA3Uj
- K5xdnGulBld+xCIVaeDwhtLcFcD17P1CGrguwcfX
-X-Google-Smtp-Source: AGHT+IFbl3oXn+4IyyLr7TL1pI/3M1qe92Rlc4/DbiYJmIYf2f3XQwk6p4sL2kZIVUisrCqfX7mENQ==
-X-Received: by 2002:a17:903:4410:b0:22e:56f4:e187 with SMTP id
- d9443c01a7336-22e5ec9d666mr74958625ad.22.1746659696800; 
- Wed, 07 May 2025 16:14:56 -0700 (PDT)
+ bh=QGmrC9Lpdjuz6pj+NV/O+8IjV/h+/Pk7pyNiZqlJEW0=;
+ b=Cg+PpMVVEyKTVnncynSGt9mXyjXGK0JIuufPWlDEj7gZTtGaShUygkqrsiPAY8HEZ3
+ 4dBLJXdZrmqqHLyXmruxVpeBOckUQKuPNA93zw9NGfaBRIpuL1zJTjBLYApEiRVi5xav
+ xTXSYA+4om1OCJnHK29k7A6bdPeHxhhZr1CGiJ0dMFoITAGDmgd1rdECCelAENDf+VWD
+ BmfkxtM4vU0RWdWgUYOBxcYgfErPsK7EnEtPHDPZegvBA1I6mGiNPn+D1eX2SdYWN8NI
+ ZY9vh6ToqvrMQE55TM+w8zQ7RMCi7zFUoHQZUKdAA7OtIWfFGiFOlNjJ/uESVZfo9pnL
+ e6XA==
+X-Gm-Message-State: AOJu0YwfK0rE8JoxpbH5UYcmMgvfJZJcJ47hG2+bU6oL6seRZgg28tXP
+ WxtMF0SMCPV4cKk6nkdRaKRMB7xGhpULVEvTRqD7UryJVepXSVzqFVutz5ujVQ/B0JjsZjSLiqX
+ LA+bePA==
+X-Gm-Gg: ASbGncvsCPAKP18skToB2CbGTUNVyi6uNmkzHw5Rj2SxsBgXrvY+pKn8AwJlTvoLvfm
+ Ueb3jWxyD2iTAv1EUnruQ0RcdDeQoEFJxUQLkkSGx3e+XEdNk2zmyUZ5Mgusqf8cO+WkeH7JoTf
+ AJl2RgSpPDxB3HPF+4UwpJtbyLy4dhhbDCyWYBzybOzFk5Tya3kEpRzwMis7atotWXgdrqK5KAQ
+ QAjfY1nD9Op9BrW+sJrRDQyIyxmRuUk0TA30owgsjtAnN72pRaFi3lGP8rwwIFy8X0ZRXM5/PMG
+ gKISpuxWMsgYnPi5zPf7QgiMDvUYI+PEFPiHXCk3
+X-Google-Smtp-Source: AGHT+IEani3JSVOhs5Z5oWh2cz6RTifIrIFSNJCuEeLYVx7K6r7hOXxD8yE6NX3/bdvZ2VnDbsVIvA==
+X-Received: by 2002:a17:902:e743:b0:21f:61a9:be7d with SMTP id
+ d9443c01a7336-22e5edfa34bmr75155445ad.49.1746659697678; 
+ Wed, 07 May 2025 16:14:57 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
  d9443c01a7336-22e421a7dafsm40103205ad.69.2025.05.07.16.14.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 May 2025 16:14:56 -0700 (PDT)
+ Wed, 07 May 2025 16:14:57 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>, alex.bennee@linaro.org,
@@ -68,16 +68,16 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>, alex.bennee@linaro.org,
  Markus Armbruster <armbru@redhat.com>, richard.henderson@linaro.org,
  pbonzini@redhat.com, jsnow@redhat.com, philmd@linaro.org,
  berrange@redhat.com, thuth@redhat.com, Michael Roth <michael.roth@amd.com>
-Subject: [PATCH 06/13] qapi/visit: hide fields in JSON marshalling
-Date: Wed,  7 May 2025 16:14:36 -0700
-Message-ID: <20250507231442.879619-7-pierrick.bouvier@linaro.org>
+Subject: [PATCH 07/13] qapi: add access to qemu/target-info.h
+Date: Wed,  7 May 2025 16:14:37 -0700
+Message-ID: <20250507231442.879619-8-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250507231442.879619-1-pierrick.bouvier@linaro.org>
 References: <20250507231442.879619-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,36 +100,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We modify gen_visit_object_members to hide elements based on the
-specified conditional.
-This allows to hide those elements in input/output json, even though
-they still exist in C code.
+Add a default include qemu/target-info.h in QAPI generated code. This
+allows runtime conditionals to use any function defined in this header.
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- scripts/qapi/visit.py | 2 ++
- 1 file changed, 2 insertions(+)
+ scripts/qapi/commands.py   | 2 ++
+ scripts/qapi/introspect.py | 1 +
+ scripts/qapi/visit.py      | 2 ++
+ 3 files changed, 5 insertions(+)
 
+diff --git a/scripts/qapi/commands.py b/scripts/qapi/commands.py
+index 7b172f7c081..7776c84fe64 100644
+--- a/scripts/qapi/commands.py
++++ b/scripts/qapi/commands.py
+@@ -319,6 +319,7 @@ def _begin_user_module(self, name: str) -> None:
+         visit = self._module_basename('qapi-visit', name)
+         self._genc.add(mcgen('''
+ #include "qemu/osdep.h"
++#include "qemu/target-info.h"
+ #include "qapi/compat-policy.h"
+ #include "qapi/visitor.h"
+ #include "qobject/qdict.h"
+@@ -354,6 +355,7 @@ def visit_begin(self, schema: QAPISchema) -> None:
+                              c_prefix=c_name(self._prefix, protect=False)))
+         self._genc.add(mcgen('''
+ #include "qemu/osdep.h"
++#include "qemu/target-info.h"
+ #include "%(prefix)sqapi-commands.h"
+ #include "%(prefix)sqapi-init-commands.h"
+ #include "%(prefix)sqapi-features.h"
+diff --git a/scripts/qapi/introspect.py b/scripts/qapi/introspect.py
+index c70b97a455d..a16d6bad012 100644
+--- a/scripts/qapi/introspect.py
++++ b/scripts/qapi/introspect.py
+@@ -190,6 +190,7 @@ def __init__(self, prefix: str, unmask: bool):
+         self._name_map: Dict[str, str] = {}
+         self._genc.add(mcgen('''
+ #include "qemu/osdep.h"
++#include "qemu/target-info.h"
+ #include "%(prefix)sqapi-introspect.h"
+ 
+ ''',
 diff --git a/scripts/qapi/visit.py b/scripts/qapi/visit.py
-index 36e240967b6..82caf8c5f0b 100644
+index 82caf8c5f0b..6836eb8ed60 100644
 --- a/scripts/qapi/visit.py
 +++ b/scripts/qapi/visit.py
-@@ -90,6 +90,7 @@ def gen_visit_object_members(name: str,
- 
-     for memb in members:
-         ret += memb.ifcond.gen_if()
-+        ret += memb.ifcond.gen_runtime_if()
-         if memb.optional:
-             has = 'has_' + c_name(memb.name)
-             if memb.need_has():
-@@ -126,6 +127,7 @@ def gen_visit_object_members(name: str,
-             ret += mcgen('''
-     }
- ''')
-+        ret += memb.ifcond.gen_runtime_endif()
-         ret += memb.ifcond.gen_endif()
- 
-     if branches:
+@@ -342,6 +342,7 @@ def __init__(self, prefix: str):
+     def _begin_builtin_module(self) -> None:
+         self._genc.preamble_add(mcgen('''
+ #include "qemu/osdep.h"
++#include "qemu/target-info.h"
+ #include "qapi/error.h"
+ #include "qapi/qapi-builtin-visit.h"
+ '''))
+@@ -356,6 +357,7 @@ def _begin_user_module(self, name: str) -> None:
+         visit = self._module_basename('qapi-visit', name)
+         self._genc.preamble_add(mcgen('''
+ #include "qemu/osdep.h"
++#include "qemu/target-info.h"
+ #include "qapi/error.h"
+ #include "%(visit)s.h"
+ #include "%(prefix)sqapi-features.h"
 -- 
 2.47.2
 
