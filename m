@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0819AAE86E
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 20:07:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 970E0AAE85D
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 20:05:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCj8e-0008FR-1x; Wed, 07 May 2025 14:05:01 -0400
+	id 1uCj8H-0008AM-M6; Wed, 07 May 2025 14:04:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uCj8B-00089O-NK; Wed, 07 May 2025 14:04:31 -0400
+ id 1uCj8B-00089P-NP; Wed, 07 May 2025 14:04:31 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uCj89-0008Ay-Th; Wed, 07 May 2025 14:04:31 -0400
+ id 1uCj8A-0008B8-1u; Wed, 07 May 2025 14:04:31 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 36AD911FEFB;
+ by isrv.corpit.ru (Postfix) with ESMTP id 3EB8311FEFC;
  Wed, 07 May 2025 21:04:00 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 09157206700;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 1B7CB206701;
  Wed,  7 May 2025 21:04:13 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Gustavo Romero <gustavo.romero@linaro.org>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 06/21] hw/acpi/ich9: Remove ICH9_DEBUG macro
-Date: Wed,  7 May 2025 21:03:57 +0300
-Message-Id: <20250507180412.182797-7-mjt@tls.msk.ru>
+Subject: [PULL 07/21] hw/i386/acpi-build: Fix typo in function name
+Date: Wed,  7 May 2025 21:03:58 +0300
+Message-Id: <20250507180412.182797-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250507180412.182797-1-mjt@tls.msk.ru>
 References: <20250507180412.182797-1-mjt@tls.msk.ru>
@@ -59,46 +59,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Gustavo Romero <gustavo.romero@linaro.org>
 
-Remove the ICH9_DEBUG macro, which is only used to dump the value of the
-pm_io_base parameter, passed to ich9_pm_iospace_update(). It provides
-little to no value and is not worth converting to a trace event.
+Fix missing "i" in the name of the function responsible for adding the call to
+the PCI notification method (PCNT) in the ACPI table.
 
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/acpi/ich9.c | 11 -----------
- 1 file changed, 11 deletions(-)
+ hw/i386/acpi-build.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/acpi/ich9.c b/hw/acpi/ich9.c
-index c7a735bf64..9c0b7437b7 100644
---- a/hw/acpi/ich9.c
-+++ b/hw/acpi/ich9.c
-@@ -41,15 +41,6 @@
- #include "hw/mem/pc-dimm.h"
- #include "hw/mem/nvdimm.h"
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index b5836417a0..f40ad062f9 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -589,8 +589,8 @@ void build_append_pci_bus_devices(Aml *parent_scope, PCIBus *bus)
+     }
+ }
  
--//#define DEBUG
--
--#ifdef DEBUG
--#define ICH9_DEBUG(fmt, ...) \
--do { printf("%s "fmt, __func__, ## __VA_ARGS__); } while (0)
--#else
--#define ICH9_DEBUG(fmt, ...)    do { } while (0)
--#endif
--
- static void ich9_pm_update_sci_fn(ACPIREGS *regs)
+-static bool build_append_notfication_callback(Aml *parent_scope,
+-                                              const PCIBus *bus)
++static bool build_append_notification_callback(Aml *parent_scope,
++                                               const PCIBus *bus)
  {
-     ICH9LPCPMRegs *pm = container_of(regs, ICH9LPCPMRegs, acpi_regs);
-@@ -135,8 +126,6 @@ static const MemoryRegionOps ich9_smi_ops = {
+     Aml *method;
+     PCIBus *sec;
+@@ -604,7 +604,7 @@ static bool build_append_notfication_callback(Aml *parent_scope,
+             continue;
+         }
+         nr_notifiers = nr_notifiers +
+-                       build_append_notfication_callback(br_scope, sec);
++                       build_append_notification_callback(br_scope, sec);
+         /*
+          * add new child scope to parent
+          * and keep track of bus that have PCNT,
+@@ -1773,7 +1773,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+         PCIBus *b = PCI_HOST_BRIDGE(pci_host)->bus;
  
- void ich9_pm_iospace_update(ICH9LPCPMRegs *pm, uint32_t pm_io_base)
- {
--    ICH9_DEBUG("to 0x%x\n", pm_io_base);
--
-     assert((pm_io_base & ICH9_PMIO_MASK) == 0);
- 
-     pm->pm_io_base = pm_io_base;
+         scope = aml_scope("\\_SB.PCI0");
+-        has_pcnt = build_append_notfication_callback(scope, b);
++        has_pcnt = build_append_notification_callback(scope, b);
+         if (has_pcnt) {
+             aml_append(dsdt, scope);
+         }
 -- 
 2.39.5
 
