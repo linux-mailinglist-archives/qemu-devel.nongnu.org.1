@@ -2,56 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9779BAAE9CA
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 20:48:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D491EAAE9BF
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 20:48:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCjne-0001vJ-Ts; Wed, 07 May 2025 14:47:22 -0400
+	id 1uCjne-0001vW-Tj; Wed, 07 May 2025 14:47:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1uCjnW-0001s2-8d
+ id 1uCjnW-0001s3-8u
  for qemu-devel@nongnu.org; Wed, 07 May 2025 14:47:15 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1uCjnS-0004py-Vn
- for qemu-devel@nongnu.org; Wed, 07 May 2025 14:47:12 -0400
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 547IeVWr025463;
- Wed, 7 May 2025 18:47:04 GMT
+ id 1uCjnT-0004q9-Ex
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 14:47:13 -0400
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 547ILxJ3020552;
+ Wed, 7 May 2025 18:47:07 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:content-type:date:from:message-id
- :mime-version:subject:to; s=corp-2025-04-25; bh=za0hYpX4TfnF3z1+
- rI+iYxKfu29+UjmJYC3u4pi94NA=; b=IWuv3u5QvXVeNRwG4wLXnouDSMPUKzDY
- caLM0bf8qaFQ+XGygwaE8b/uZgE4IfazqMC8tnGJ/ys3eiD+rojFRuZzt/u74z5R
- 3MvJRMfxaGF7yY+SLGc/eQtmadUF93y/XntMK1GNcD4GrMF7u7MIAuMxJ6WFQgxS
- GyVef9L73MM44ulSIWMRNe9odYXlg63lARomymAHLnfEotXXsYJma7bHrknZrWp1
- q+iYARzYsQGP2ZHxeMjl42y6eii5ETXpKxIEAQM/CweW32RcDpmgRwoCJJcVcNNa
- ec8wGiGzQXAotmBafhEla7ytqEWxoQqFcElghgbK04OMDSZwVRZtXw==
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ corp-2025-04-25; bh=vfcEeH9KjcjHYG0umNVUq6ajQHnTZXWzx9BSMYQP59o=; b=
+ OX1YlgJeI+qSafMiBZxPCGWKAySau98bWTUNxbjzxu0xVx/9Mewx3x0vdKqb65cI
+ lM+JHxP7b8I2PmtiPVx7dFb047RL/2hJ5ZONLQtfpgVWZNysibj8mOS6aZnbpHgy
+ tLVFsipDIJN44qAjojVfemMwblQyHjoz72daqnHouSSrHzHO21s4nVCOMheGXwpN
+ H3e9yTjIEDU95UMW9GyuRywHXHKZme2ojlolM2QGWzUnJHF5pOKhINXIygtqXOYa
+ ph8IpHh62m+pIcmoh1RYms8+F2ZD3MkMXTrZZjF0n8yqke8kXxcp/QwJV/PVT3pQ
+ 0LgTfg6hah/zKTVBur/jTg==
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46gcgn028s-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46gcqrg236-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 07 May 2025 18:47:04 +0000 (GMT)
+ Wed, 07 May 2025 18:47:07 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 547HtMYp036036; Wed, 7 May 2025 18:47:03 GMT
+ with ESMTP id 547H2xdr036101; Wed, 7 May 2025 18:47:07 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 46d9kbhd62-1
+ 46d9kbhd83-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 07 May 2025 18:47:03 +0000
+ Wed, 07 May 2025 18:47:07 +0000
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 547Il3it029452;
- Wed, 7 May 2025 18:47:03 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 547Il3iv029452;
+ Wed, 7 May 2025 18:47:06 GMT
 Received: from dhcp-10-43-71-250.usdhcp.oraclecorp.com.com
  (dhcp-10-43-71-250.usdhcp.oraclecorp.com [10.43.71.250])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 46d9kbhd41-1; Wed, 07 May 2025 18:47:02 +0000
+ 46d9kbhd41-2; Wed, 07 May 2025 18:47:05 +0000
 From: Jonah Palmer <jonah.palmer@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: jonah.palmer@oracle.com, eperezma@redhat.com, peterx@redhat.com,
@@ -59,10 +60,13 @@ Cc: jonah.palmer@oracle.com, eperezma@redhat.com, peterx@redhat.com,
  dtatulea@nvidia.com, leiyang@redhat.com, parav@mellanox.com,
  sgarzare@redhat.com, si-wei.liu@oracle.com, lingshan.zhu@intel.com,
  boris.ostrovsky@oracle.com
-Subject: [PATCH v4 0/7] Move memory listener register to vhost_vdpa_init
-Date: Wed,  7 May 2025 14:46:40 -0400
-Message-ID: <20250507184647.15580-1-jonah.palmer@oracle.com>
+Subject: [PATCH v4 1/7] vdpa: check for iova tree initialized at
+ net_client_start
+Date: Wed,  7 May 2025 14:46:41 -0400
+Message-ID: <20250507184647.15580-2-jonah.palmer@oracle.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250507184647.15580-1-jonah.palmer@oracle.com>
+References: <20250507184647.15580-1-jonah.palmer@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -74,21 +78,20 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  suspectscore=0 adultscore=0 phishscore=0 mlxscore=0 malwarescore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2504070000
  definitions=main-2505070170
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA3MDE3MCBTYWx0ZWRfX9zYeo4L84gmz
- YPcfH7k3MKbf77OyVdPIr86RqJNWLvxDxLpjQ1yshYemVxlMPsIqA+PDd2WrOKOMz/Ku4224xLo
- Dlw4BtJvUZbTKUqka0r/qep9PazPTlKWz0pC8XLEbxr6n0sKj4IwQQN/OsPV0EH9lv3YG+GFiEX
- Swf5072J9queQrOtCnEknaUWCi5L8zoXBdMqk580u3MFjUDtypVY0pcEIB3s7ALRJ5EbRQ1wo92
- 64vFL2gQPUC5g63I145gMkI9MZCfDtzqjVOOvWANqN1KYj1aMvE3JEdhB/HAJvz3ef52ufcEWMx
- rSHpcm0pgumfFDtVNP9jZ2XKes967JdOWeK4Mnqohsv3KE0TE9RnqE6lpE9cV5CCFOAFlj475oG
- q7pZ2kPw8CoNCafyxBCQ8Lay6G51O8OZOz3zTFMlO6Qfwzfm/oVmQWwUD5qHRrSBzSReDf/o
-X-Proofpoint-ORIG-GUID: yY8Yf6h6k_rsiku5Q5dzDwFpuyvPUEaL
-X-Authority-Analysis: v=2.4 cv=GKcIEvNK c=1 sm=1 tr=0 ts=681baaa8 cx=c_pps
+X-Proofpoint-GUID: MiZ6B7PfO4A3sIis3ERdHPYZDm1p6xL9
+X-Authority-Analysis: v=2.4 cv=aJHwqa9m c=1 sm=1 tr=0 ts=681baaab cx=c_pps
  a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=mDV3o1hIAAAA:8 a=VwQbUJbxAAAA:8
- a=20KFwNOVAAAA:8 a=yPCof4ZbAAAA:8
- a=WQgBD-38X1HkX1-ZmYAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=5WABlXvFAscA:10
- a=n0c7R5xxTHgA:10
-X-Proofpoint-GUID: yY8Yf6h6k_rsiku5Q5dzDwFpuyvPUEaL
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=20KFwNOVAAAA:8 a=yPCof4ZbAAAA:8
+ a=_qgkVcge0i2d_SHi9Q8A:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: MiZ6B7PfO4A3sIis3ERdHPYZDm1p6xL9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA3MDE3MCBTYWx0ZWRfX2p7MD79IUygj
+ NGRqgmmckgYi5iujPgTtfa96XE5f2+QwJOq3nFq2Jx96PnAyEutSY4BZSHz+PYkqnrohcKIR+Xw
+ KGaKJoIf7vBMnEsNSJjaVFsM83wEtOJaL+4Fs3C0Itd0f5EZyv5QLAkSjCpovl5Qvpu47bX9iV9
+ HNEwlPVK4b4zKBMZ9AHUInzMkE8CxGsEaNH6FQnHazwAWQqNF+BDYXmekYC9wqQTmZH0Hek3iVE
+ IgnMmiZrrObmnKqWZe9rpfXMvdpEoglFHrCjggE8NLybDLuZYAldMYjPhw1BibQxR2TXckvJPE8
+ TZ6PkTkwPmBaFN8nM93Oq8fFR/PcslxdTX3C74Mm9fYC0xy4VnxLLuHfBmAugEPja6twwjNbXQm
+ OCX3u9+DikGHwsn1kQgKOBtk0e9Ww7xgITiS3TqJbVdAxmrDadZFqGpiqc1Lk9FTLNICnsJR
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=jonah.palmer@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -32
@@ -114,83 +117,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Current memory operations like pinning may take a lot of time at the
-destination.  Currently they are done after the source of the migration is
-stopped, and before the workload is resumed at the destination.  This is a
-period where neigher traffic can flow, nor the VM workload can continue
-(downtime).
+From: Eugenio Pérez <eperezma@redhat.com>
 
-We can do better as we know the memory layout of the guest RAM at the
-destination from the moment that all devices are initializaed.  So
-moving that operation allows QEMU to communicate the kernel the maps
-while the workload is still running in the source, so Linux can start
-mapping them.
+To map the guest memory while it is migrating we need to create the
+iova_tree, as long as the destination uses x-svq=on. Checking to not
+override it.
 
-As a small drawback, there is a time in the initialization where QEMU
-cannot respond to QMP etc.  By some testing, this time is about
-0.2seconds.  This may be further reduced (or increased) depending on the
-vdpa driver and the platform hardware, and it is dominated by the cost
-of memory pinning.
+The function vhost_vdpa_net_client_stop clear it if the device is
+stopped. If the guest starts the device again, the iova tree is
+recreated by vhost_vdpa_net_data_start_first or vhost_vdpa_net_cvq_start
+if needed, so old behavior is kept.
 
-This matches the time that we move out of the called downtime window.
-The downtime is measured as checking the trace timestamp from the moment
-the source suspend the device to the moment the destination starts the
-eight and last virtqueue pair.  For a 39G guest, it goes from ~2.2526
-secs to 2.0949.
-
-Future directions on top of this series may include to move more things ahead
-of the migration time, like set DRIVER_OK or perform actual iterative migration
-of virtio-net devices.
-
-Comments are welcome.
-
-This series is a different approach of series [1]. As the title does not
-reflect the changes anymore, please refer to the previous one to know the
-series history.
-
-This series is based on [2], it must be applied after it.
-
-[Jonah Palmer]
-This series was rebased after [3] was pulled in, as [3] was a prerequisite
-fix for this series.
-
-v4:
+Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
+Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
 ---
-* Add memory listener unregistration to vhost_vdpa_reset_device.
-* Remove memory listener unregistration from vhost_vdpa_reset_status.
+ net/vhost-vdpa.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-v3:
----
-* Rebase
-
-v2:
----
-* Move the memory listener registration to vhost_vdpa_set_owner function.
-* Move the iova_tree allocation to net_vhost_vdpa_init.
-
-v1 at https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg02136.html.
-
-[1] https://patchwork.kernel.org/project/qemu-devel/cover/20231215172830.2540987-1-eperezma@redhat.com/
-[2] https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg05910.html
-[3] https://lore.kernel.org/qemu-devel/20250217144936.3589907-1-jonah.palmer@oracle.com/
-
-Jonah - note: I'll be on vacation from May 10-19. Will respond to
-              comments when I return.
-
-Eugenio Pérez (7):
-  vdpa: check for iova tree initialized at net_client_start
-  vdpa: reorder vhost_vdpa_set_backend_cap
-  vdpa: set backend capabilities at vhost_vdpa_init
-  vdpa: add listener_registered
-  vdpa: reorder listener assignment
-  vdpa: move iova_tree allocation to net_vhost_vdpa_init
-  vdpa: move memory listener register to vhost_vdpa_init
-
- hw/virtio/vhost-vdpa.c         | 107 +++++++++++++++++++++------------
- include/hw/virtio/vhost-vdpa.h |  22 ++++++-
- net/vhost-vdpa.c               |  34 +----------
- 3 files changed, 93 insertions(+), 70 deletions(-)
-
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 7ca8b46eee..decb826868 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -366,7 +366,9 @@ static void vhost_vdpa_net_data_start_first(VhostVDPAState *s)
+ 
+     migration_add_notifier(&s->migration_state,
+                            vdpa_net_migration_state_notifier);
+-    if (v->shadow_vqs_enabled) {
++
++    /* iova_tree may be initialized by vhost_vdpa_net_load_setup */
++    if (v->shadow_vqs_enabled && !v->shared->iova_tree) {
+         v->shared->iova_tree = vhost_iova_tree_new(v->shared->iova_range.first,
+                                                    v->shared->iova_range.last);
+     }
 -- 
 2.43.5
 
