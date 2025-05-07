@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8492FAAE87F
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 20:08:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD1BFAAE880
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 20:08:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCj8r-000076-93; Wed, 07 May 2025 14:05:13 -0400
+	id 1uCj8r-0000A3-P7; Wed, 07 May 2025 14:05:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uCj8j-0008Q2-3p; Wed, 07 May 2025 14:05:09 -0400
+ id 1uCj8j-0008Q3-3b; Wed, 07 May 2025 14:05:09 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uCj8a-0008CF-Rr; Wed, 07 May 2025 14:05:03 -0400
+ id 1uCj8g-0008Cs-3c; Wed, 07 May 2025 14:05:03 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7FE7411FF00;
+ by isrv.corpit.ru (Postfix) with ESMTP id 88EC411FF01;
  Wed, 07 May 2025 21:04:00 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 5158E206705;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 656A8206706;
  Wed,  7 May 2025 21:04:13 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Gustavo Romero <gustavo.romero@linaro.org>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 11/21] hw/pci-host/gpex-acpi: Fix typo in comment
-Date: Wed,  7 May 2025 21:04:02 +0300
-Message-Id: <20250507180412.182797-12-mjt@tls.msk.ru>
+Subject: [PULL 12/21] hw/acpi/pcihp: Fix typo in function name
+Date: Wed,  7 May 2025 21:04:03 +0300
+Message-Id: <20250507180412.182797-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250507180412.182797-1-mjt@tls.msk.ru>
 References: <20250507180412.182797-1-mjt@tls.msk.ru>
@@ -59,29 +59,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Gustavo Romero <gustavo.romero@linaro.org>
 
-Fix typo in a comment about the creation of the ACPI CRS method.
+Fix typo in QEMU's ACPI PCI hotplug API function name that checks
+whether a given bus is hotplug-capable.
 
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/pci-host/gpex-acpi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/acpi/acpi-pci-hotplug-stub.c | 2 +-
+ hw/acpi/ich9.c                  | 2 +-
+ hw/acpi/pcihp.c                 | 2 +-
+ hw/acpi/piix4.c                 | 2 +-
+ include/hw/acpi/pcihp.h         | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/hw/pci-host/gpex-acpi.c b/hw/pci-host/gpex-acpi.c
-index e8b4c64c5f..0aba47c71c 100644
---- a/hw/pci-host/gpex-acpi.c
-+++ b/hw/pci-host/gpex-acpi.c
-@@ -182,7 +182,7 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
+diff --git a/hw/acpi/acpi-pci-hotplug-stub.c b/hw/acpi/acpi-pci-hotplug-stub.c
+index b67b4a92da..b7bc6e40a1 100644
+--- a/hw/acpi/acpi-pci-hotplug-stub.c
++++ b/hw/acpi/acpi-pci-hotplug-stub.c
+@@ -34,7 +34,7 @@ void acpi_pcihp_reset(AcpiPciHpState *s)
+ {
+ }
  
-             /*
-              * Resources defined for PXBs are composed of the following parts:
--             * 1. The resources the pci-brige/pcie-root-port need.
-+             * 1. The resources the pci-bridge/pcie-root-port need.
-              * 2. The resources the devices behind pxb need.
-              */
-             crs = build_crs(PCI_HOST_BRIDGE(BUS(bus)->parent), &crs_range_set,
+-bool acpi_pcihp_is_hotpluggbale_bus(AcpiPciHpState *s, BusState *bus)
++bool acpi_pcihp_is_hotpluggable_bus(AcpiPciHpState *s, BusState *bus)
+ {
+     return true;
+ }
+diff --git a/hw/acpi/ich9.c b/hw/acpi/ich9.c
+index 9c0b7437b7..967b67485e 100644
+--- a/hw/acpi/ich9.c
++++ b/hw/acpi/ich9.c
+@@ -559,7 +559,7 @@ void ich9_pm_device_unplug_cb(HotplugHandler *hotplug_dev, DeviceState *dev,
+ bool ich9_pm_is_hotpluggable_bus(HotplugHandler *hotplug_dev, BusState *bus)
+ {
+     ICH9LPCState *lpc = ICH9_LPC_DEVICE(hotplug_dev);
+-    return acpi_pcihp_is_hotpluggbale_bus(&lpc->pm.acpi_pci_hotplug, bus);
++    return acpi_pcihp_is_hotpluggable_bus(&lpc->pm.acpi_pci_hotplug, bus);
+ }
+ 
+ void ich9_pm_ospm_status(AcpiDeviceIf *adev, ACPIOSTInfoList ***list)
+diff --git a/hw/acpi/pcihp.c b/hw/acpi/pcihp.c
+index 5f79c9016b..aac90013d4 100644
+--- a/hw/acpi/pcihp.c
++++ b/hw/acpi/pcihp.c
+@@ -371,7 +371,7 @@ void acpi_pcihp_device_unplug_request_cb(HotplugHandler *hotplug_dev,
+     acpi_send_event(DEVICE(hotplug_dev), ACPI_PCI_HOTPLUG_STATUS);
+ }
+ 
+-bool acpi_pcihp_is_hotpluggbale_bus(AcpiPciHpState *s, BusState *bus)
++bool acpi_pcihp_is_hotpluggable_bus(AcpiPciHpState *s, BusState *bus)
+ {
+     Object *o = OBJECT(bus->parent);
+ 
+diff --git a/hw/acpi/piix4.c b/hw/acpi/piix4.c
+index b16d45f03e..d98b80df6d 100644
+--- a/hw/acpi/piix4.c
++++ b/hw/acpi/piix4.c
+@@ -406,7 +406,7 @@ static bool piix4_is_hotpluggable_bus(HotplugHandler *hotplug_dev,
+                                       BusState *bus)
+ {
+     PIIX4PMState *s = PIIX4_PM(hotplug_dev);
+-    return acpi_pcihp_is_hotpluggbale_bus(&s->acpi_pci_hotplug, bus);
++    return acpi_pcihp_is_hotpluggable_bus(&s->acpi_pci_hotplug, bus);
+ }
+ 
+ static void piix4_pm_machine_ready(Notifier *n, void *opaque)
+diff --git a/include/hw/acpi/pcihp.h b/include/hw/acpi/pcihp.h
+index ac21a95913..a97904bada 100644
+--- a/include/hw/acpi/pcihp.h
++++ b/include/hw/acpi/pcihp.h
+@@ -58,7 +58,7 @@ typedef struct AcpiPciHpState {
+ void acpi_pcihp_init(Object *owner, AcpiPciHpState *, PCIBus *root,
+                      MemoryRegion *io, uint16_t io_base);
+ 
+-bool acpi_pcihp_is_hotpluggbale_bus(AcpiPciHpState *s, BusState *bus);
++bool acpi_pcihp_is_hotpluggable_bus(AcpiPciHpState *s, BusState *bus);
+ void acpi_pcihp_device_pre_plug_cb(HotplugHandler *hotplug_dev,
+                                    DeviceState *dev, Error **errp);
+ void acpi_pcihp_device_plug_cb(HotplugHandler *hotplug_dev, AcpiPciHpState *s,
 -- 
 2.39.5
 
