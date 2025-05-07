@@ -2,84 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5819AADA6E
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 10:47:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21C8BAADAE5
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 11:11:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCaQJ-0007tk-1S; Wed, 07 May 2025 04:46:39 -0400
+	id 1uCamo-00059U-PQ; Wed, 07 May 2025 05:09:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <timlee660101@gmail.com>)
- id 1uCaQG-0007sq-A1; Wed, 07 May 2025 04:46:36 -0400
-Received: from mail-oa1-x30.google.com ([2001:4860:4864:20::30])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <timlee660101@gmail.com>)
- id 1uCaQE-0000RG-E4; Wed, 07 May 2025 04:46:36 -0400
-Received: by mail-oa1-x30.google.com with SMTP id
- 586e51a60fabf-2d09d495c6cso1769755fac.3; 
- Wed, 07 May 2025 01:46:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1746607592; x=1747212392; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gnn2Vq4mb6y5HITMbTlLn96B2uBq2q4paLMypMJGpAI=;
- b=AE6isCGbsg1L9CwgCY4MGfBC4vH4MvE/8OhHcy5t1NROBQaSsReCx3Dx3U0gtDiXNX
- aqfANSvk263TkczPNDbJiUfkctungTfSihz6tLuVYtuBWVaomXBmbMCFgosqg57KKxTE
- 3MNcuzJe68vjwwKb+k0UwWv+ZNJ29WT+jAncU4gM8YOILqzSrIoOqRx+md0n5+zis9Qu
- 7VsAfc0wsdB7XmEjJhZroxSc7pOKu0KsUcyh+djsH6Tq1jKRNkpF9oq1vTctQfNPdu0t
- Kxxeze33MYHZ6yzQr2nFHk7rDqVAKKnNIgnZZE1qOv6nGIcXdy+OrMLSk5O01w94XNit
- 7LMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746607592; x=1747212392;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=gnn2Vq4mb6y5HITMbTlLn96B2uBq2q4paLMypMJGpAI=;
- b=wm4cvwWouPo1OuyvohGZVbMwUV0XTbr2Xc0YwwGAfN2VnSbvYySvCu3izP/lup3wyd
- E1darD7wnWuSDhwuU0s+pEQUGYQsgenUhQsRjBHhOkScwW8GXisnKK7gr4aOW5cZzXbY
- RNi/6L3Bn31TA36VnEWJauDt//Ekb9Ub2sNomSWQM3Snhl+Dbggq8BIafijubXT4NUQl
- r4SN1BwnjJgg6ueGdE//0DyEQfsNjRwo9MNp8UOXOQeyZxK9tfg9brUvPhYV2+AVrWMm
- w0HAvgcUO6tGoKImPRFIjBZ9Rto6Rbhw9fNFGTEAa+r2d21ceM1Hik25loVeWaUvyhS6
- DAuQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUtFwGMj0Uj5DHbJQvqrz9j+GsXY17p1uRHhN1+sVPNSOe7xWsRP+tXsJYW3gxQrqIS/eveAPF3eyUj/Q==@nongnu.org,
- AJvYcCWoYDWPIxKPR4l8PNQwI4dDH7U9Z5pHkpQ7uI5m0LfJyddf2fo+WkqUn/2AXd6rZwmAztPJarpKMQ==@nongnu.org
-X-Gm-Message-State: AOJu0Yzt8ZpkQ8bhv03OTcvfogHfOF1GtlaDuBZSa6UbBQURlABg2Z+t
- NKuguCr6JkyLn3bD0D9M/R7vKPfFC8Hcbws5eFjkbfyIFkkLnKtKopOQzhLzE1rDkNZ+NgsqE06
- XjALlEOcPelyojpqSKAnqTwIHC/8=
-X-Gm-Gg: ASbGncsHAbgT0lU2oLuXTtuTaSH1DV0gf5vkZ0V5ek4Dq7x0InuCa8DczwYLGCt243r
- YAagiZgeQl3Ot2C4l7Zm/a8529I0/b8AW16kMgF4f26ujoaWg9LXxdEZTr9BKKiS/dbw6Y0HxYY
- 8O3BwrZEZ+5sCMhjZq7m/Qc+s=
-X-Google-Smtp-Source: AGHT+IFQOgpNB0obkG03QTu6CpAJ72MJxAg4BcfIqz65PWg0WgIkd+q/+b2Zw14fjBkLTDg7RnGSMMYr3h+RHIUQ9Qo=
-X-Received: by 2002:a05:6870:891c:b0:2bd:456c:92a with SMTP id
- 586e51a60fabf-2db5be369e8mr1380426fac.10.1746607591769; Wed, 07 May 2025
- 01:46:31 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250418091208.1888768-1-timlee660101@gmail.com>
- <CAFEAcA_O1B7oXbK3RHLvSJHZaMSM-aVG_CD9Y7dH0OpAs7sibg@mail.gmail.com>
-In-Reply-To: <CAFEAcA_O1B7oXbK3RHLvSJHZaMSM-aVG_CD9Y7dH0OpAs7sibg@mail.gmail.com>
-From: Tim Lee <timlee660101@gmail.com>
-Date: Wed, 7 May 2025 16:46:20 +0800
-X-Gm-Features: ATxdqUGRxlYMsQyce2DuWwyKelYvna9Ur6BlQScs3BxuI_DWfa36HhgIuXTXtk8
-Message-ID: <CAJG6D+hbqbLqQhqGA0sb4ngkuvC00ex7iR3p9UP-kWatoCGqUA@mail.gmail.com>
-Subject: Re: [PATCH] tests/qtest: Add qtest for NPCM8XX PSPI module
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: farosas@suse.de, lvivier@redhat.com, pbonzini@redhat.com, 
- wuhaotsh@google.com, kfting@nuvoton.com, chli30@nuvoton.com, 
- qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1uCako-0002JE-Hd; Wed, 07 May 2025 05:07:54 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
+ id 1uCakj-0002sZ-VX; Wed, 07 May 2025 05:07:50 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZsprG3tStz6K9dp;
+ Wed,  7 May 2025 16:50:38 +0800 (CST)
+Received: from frapeml500006.china.huawei.com (unknown [7.182.85.219])
+ by mail.maildlp.com (Postfix) with ESMTPS id 9ED0D1400D9;
+ Wed,  7 May 2025 16:50:51 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (7.182.85.71) by
+ frapeml500006.china.huawei.com (7.182.85.219) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 7 May 2025 10:50:51 +0200
+Received: from frapeml500008.china.huawei.com ([7.182.85.71]) by
+ frapeml500008.china.huawei.com ([7.182.85.71]) with mapi id 15.01.2507.039;
+ Wed, 7 May 2025 10:50:51 +0200
+To: Markus Armbruster <armbru@redhat.com>, Donald Dutile <ddutile@redhat.com>
+CC: Shameer Kolothum via <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>, "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "jgg@nvidia.com"
+ <jgg@nvidia.com>, "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
+ "berrange@redhat.com" <berrange@redhat.com>, "nathanc@nvidia.com"
+ <nathanc@nvidia.com>, "mochs@nvidia.com" <mochs@nvidia.com>,
+ "smostafa@google.com" <smostafa@google.com>, Linuxarm <linuxarm@huawei.com>,
+ "Wangzhou (B)" <wangzhou1@hisilicon.com>, jiangkunkun
+ <jiangkunkun@huawei.com>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ "zhangfei.gao@linaro.org" <zhangfei.gao@linaro.org>
+Subject: RE: [PATCH v2 1/6] hw/arm/smmuv3: Add support to associate a PCIe RC
+Thread-Topic: [PATCH v2 1/6] hw/arm/smmuv3: Add support to associate a PCIe RC
+Thread-Index: AQHbu1V0fvNxmQCU0kS/eGPfhGB2G7PFgqACgAB1wICAANEzi4AAFpHg
+Date: Wed, 7 May 2025 08:50:51 +0000
+Message-ID: <72f9043a73294bfc9b539ae9b94836d3@huawei.com>
+References: <20250502102707.110516-1-shameerali.kolothum.thodi@huawei.com>
+ <20250502102707.110516-2-shameerali.kolothum.thodi@huawei.com>
+ <877c2ut0zk.fsf@pond.sub.org>
+ <e02e884b-0f3d-4426-8a67-2cbd23e80e8c@redhat.com>
+ <87frhglwjl.fsf@pond.sub.org>
+In-Reply-To: <87frhglwjl.fsf@pond.sub.org>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.203.177.241]
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2001:4860:4864:20::30;
- envelope-from=timlee660101@gmail.com; helo=mail-oa1-x30.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+MIME-Version: 1.0
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=shameerali.kolothum.thodi@huawei.com;
+ helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,169 +82,122 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+From:  Shameerali Kolothum Thodi via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Peter,
-Thanks for your suggestion. Those changes will be included in v2.
 
-Peter Maydell <peter.maydell@linaro.org> =E6=96=BC 2025=E5=B9=B45=E6=9C=886=
-=E6=97=A5 =E9=80=B1=E4=BA=8C =E4=B8=8B=E5=8D=888:52=E5=AF=AB=E9=81=93=EF=BC=
-=9A
->
-> On Fri, 18 Apr 2025 at 10:12, Tim Lee <timlee660101@gmail.com> wrote:
+
+> -----Original Message-----
+> From: Markus Armbruster <armbru@redhat.com>
+> Sent: Wednesday, May 7, 2025 8:17 AM
+> To: Donald Dutile <ddutile@redhat.com>
+> Cc: Shameer Kolothum via <qemu-devel@nongnu.org>; qemu-
+> arm@nongnu.org; Shameerali Kolothum Thodi
+> <shameerali.kolothum.thodi@huawei.com>; eric.auger@redhat.com;
+> peter.maydell@linaro.org; jgg@nvidia.com; nicolinc@nvidia.com;
+> berrange@redhat.com; nathanc@nvidia.com; mochs@nvidia.com;
+> smostafa@google.com; Linuxarm <linuxarm@huawei.com>; Wangzhou (B)
+> <wangzhou1@hisilicon.com>; jiangkunkun <jiangkunkun@huawei.com>;
+> Jonathan Cameron <jonathan.cameron@huawei.com>;
+> zhangfei.gao@linaro.org
+> Subject: Re: [PATCH v2 1/6] hw/arm/smmuv3: Add support to associate a
+> PCIe RC
+>=20
+> Donald Dutile <ddutile@redhat.com> writes:
+>=20
+> [...]
+>=20
+> > In this series, an iommu/smmu needs to be placed -BETWEEN- a sysbus
+> and a PCIe-tree,
+> > or step-wise, plug an smmuv3 into a sysbus, and a pcie tree/domain/RC
+> into an SMMUv3.
+>=20
+> RC =3D root complex?
+
+Yes.
+
+>=20
+> > So, an smmu needs to be associated with a bus (tree), i.e., pcie.0, pci=
+e.1...
+> > One could model it as a PCIe device, attached at the pcie-RC ... but th=
+at's
+> not how it's modelled in ARM hw.
+>=20
+> Physical ARM hardware?
+>=20
+> Assuming the virtual devices and buses we're discussing model physical
+> devices and buses:
+>=20
+> * What are the physical devices of interest?
+>=20
+> * How are they wired together?  Which of the wires are buses, in
+>   particular PCI buses?
+
+SMMUv3 is a platform device and its placement in a system is typically as b=
+elow
+for PCI devices,
+
++------------------+
+|   PCIe Devices   |
++------------------+
+         |
+         v
+  +-------------+      +---------------+
+  |  PCIe RC A  |<---->| Interconnect  |
+  +-------------+      +---------------+
+                               |
+                               |
+                        +------v---+
+                        | SMMUv3.A |
+                        | (IOMMU)  |
+                        +----+-----+
+                             |
+                             v
+                     +-------+--------+
+                     |   System RAM   |
+                     +----------------+
+=20
+This patch is attempting to establish that association between the PCIe RC =
+and=20
+the SMMUv3 device so that Qemu can build the ACPI tables/DT iommu mappings =
+=20
+for the SMMUv3 device.
+
+> > SMMU's are discovered via ACPI tables.
 > >
-> > - Created qtest to check initialization of registers in PSPI Module
-> > - Implemented test into Build File
+> > That leaves us back to the 'how to associate an SMMUv3 to a PCIe
+> tree(RC)',
+> > and that leads me to the other discussion & format I saw btwn Eric &
+> Shameer:
+> >  -device arm-smmv3,id=3Dsmmuv3.3
+> >  -device xxxx,smmuv3=3D smmuv3.3
+> > where one tags a (PCIe) device to an smmuv3(id), which is needed to bui=
+ld
+> the (proper) IORT for (pcie-)device<->SMMUv3 associativity in a multi-
+> SMMUv3 configuration.
 > >
-> > Tested:
-> > ./build/tests/qtest/npcm8xx-pspi_test
-> >
-> > Signed-off-by: Tim Lee <timlee660101@gmail.com>
-> > ---
-> >  MAINTAINERS                     |   1 +
-> >  tests/qtest/meson.build         |   3 +
-> >  tests/qtest/npcm8xx_pspi-test.c | 104 ++++++++++++++++++++++++++++++++
-> >  3 files changed, 108 insertions(+)
-> >  create mode 100644 tests/qtest/npcm8xx_pspi-test.c
-> >
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index d54b5578f8..0162f59bf7 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -892,6 +892,7 @@ F: hw/sensor/adm1266.c
-> >  F: include/hw/*/npcm*
-> >  F: tests/qtest/npcm*
-> >  F: tests/qtest/adm1266-test.c
-> > +F: tests/qtest/npcm8xx_pspi-test.c
->
-> This file is already matched as being in this section by the
-> wildcard two lines earlier.
+> > We could keep the bus=3Dpcie.X option for the -device arm-smmuv3 to
+> indicate that all PCIe devices connected to the pcie.0 tree go through th=
+at
+> smmuv3;
+> > qdev would model/config as the smmuv3 is 'attached to pcie.0'... which =
+it
+> sorta is...  and I think the IORT build could associate all devices on pc=
+ie.0 to
+> be associated
+> > with the proper smmuv3.
+>=20
+> Device property "bus" is strictly for specifying into which the bus the
+> device is to be plugged.  The device's type must match the bus: only a
+> PCI device can plug into a PCI bus, and so forth.
 
-MAINTAINERS file keep no change.
->
-> >  F: pc-bios/npcm7xx_bootrom.bin
-> >  F: pc-bios/npcm8xx_bootrom.bin
-> >  F: roms/vbootrom
->
-> > diff --git a/tests/qtest/npcm8xx_pspi-test.c b/tests/qtest/npcm8xx_pspi=
--test.c
-> > new file mode 100644
-> > index 0000000000..107bce681f
-> > --- /dev/null
-> > +++ b/tests/qtest/npcm8xx_pspi-test.c
-> > @@ -0,0 +1,104 @@
-> > +#include "qemu/osdep.h"
-> > +#include "libqtest.h"
-> > +#include "qemu/module.h"
->
-> Every source file needs to start with the usual brief
-> comment giving its copyright/license information (and we
-> like that to include an SPDX-license-Identifier these days
-> for new source files).
->
+The whole idea of reusing the "bus" property for SMMUv3 device was to make
+it easier for libvirt. As I mentioned earlier we could go back and use a di=
+fferent
+property name like "primary-bus" or "pci-bus" for SMMUv3 dev here.
 
-Add comment for copyright/license information.
-> > +
-> > +#define DATA_OFFSET 0x00
-> > +#define CTL_SPIEN   0x01
-> > +#define CTL_OFFSET  0x02
-> > +#define CTL_MOD     0x04
-> > +
-> > +typedef struct PSPI {
-> > +    uint64_t base_addr;
-> > +} PSPI;
-> > +
-> > +PSPI pspi_defs =3D {
-> > +    .base_addr  =3D 0xf0201000
-> > +};
-> > +
-> > +static uint16_t pspi_read_data(QTestState *qts, const PSPI *pspi)
-> > +{
-> > +    return qtest_readw(qts, pspi->base_addr + DATA_OFFSET);
-> > +}
-> > +
-> > +static void pspi_write_data(QTestState *qts, const PSPI *pspi, uint16_=
-t value)
-> > +{
-> > +    qtest_writew(qts, pspi->base_addr + DATA_OFFSET, value);
-> > +}
-> > +
-> > +static uint32_t pspi_read_ctl(QTestState *qts, const PSPI *pspi)
-> > +{
-> > +    return qtest_readl(qts, pspi->base_addr + CTL_OFFSET);
-> > +}
-> > +
-> > +static void pspi_write_ctl(QTestState *qts, const PSPI *pspi, uint32_t=
- value)
-> > +{
-> > +    qtest_writel(qts, pspi->base_addr + CTL_OFFSET, value);
-> > +}
->
-> If I'm reading the implementation correctly, it makes both
-> the DATA and CTL registers 16 bits, but this code has the
-> data register 16 bits and the control register 32 bits.
-> Which is correct ?
->
-
-Yes, you are right! DATA and CLT registers both use 16 bits.
-> > +/* Check PSPI can be reset to default value */
-> > +static void test_init(gconstpointer pspi_p)
-> > +{
-> > +    const PSPI *pspi =3D pspi_p;
-> > +
-> > +    QTestState *qts =3D qtest_init("-machine npcm845-evb");
-> > +    pspi_write_ctl(qts, pspi, CTL_SPIEN);
-> > +    g_assert_cmphex(pspi_read_ctl(qts, pspi), =3D=3D, CTL_SPIEN);
-> > +
-> > +    qtest_quit(qts);
-> > +}
-> > +
-> > +/* Check PSPI can be r/w data register */
-> > +static void test_data(gconstpointer pspi_p)
-> > +{
-> > +    const PSPI *pspi =3D pspi_p;
-> > +    uint16_t test =3D 0x1234;
-> > +    uint16_t output;
-> > +
-> > +    QTestState *qts =3D qtest_init("-machine npcm845-evb");
-> > +
-> > +    /* Write to data register */
-> > +    pspi_write_data(qts, pspi, test);
-> > +    printf("Wrote 0x%x to data register\n", test);
->
-> Don't put printf()s in test cases, please. The test
-> output is supposed to be TAP test protocol format, and
-> the printfs insert random junk into that.
->
-> If you need to output some kind of message, you can use
-> g_test_message(), but for simple stuff like this I don't think
-> the printfs are really adding anything, because the test is
-> so short.
->
-
-Remove printf() in test cases.
-> > +
-> > +    /* Read from data register */
-> > +    output =3D pspi_read_data(qts, pspi);
-> > +    printf("Read 0x%x from data register\n", output);
->
-> Can we assert something useful here about what we read
-> (e.g. that it's the same as what we wrote) ?
->
-
-Currently, I just write test data to data register then read data from
-it and verify it.
-> > +
-> > +    qtest_quit(qts);
-> > +}
->
-> thanks
-> -- PMM
-
-
-
---=20
-Best regards,
-Tim Lee
+Thanks,
+Shameer
 
