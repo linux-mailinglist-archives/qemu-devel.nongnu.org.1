@@ -2,77 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96B15AAEDC1
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 23:17:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFE7BAAEDC4
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 23:17:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCm52-0006CN-5V; Wed, 07 May 2025 17:13:28 -0400
+	id 1uCm4n-00069k-Vu; Wed, 07 May 2025 17:13:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uCm4k-00068X-EG
- for qemu-devel@nongnu.org; Wed, 07 May 2025 17:13:10 -0400
+ id 1uCm4k-00068x-SL
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 17:13:11 -0400
 Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uCm4h-0006C3-OT
+ id 1uCm4i-0006CT-L2
  for qemu-devel@nongnu.org; Wed, 07 May 2025 17:13:10 -0400
 Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-73bf1cef6ceso441768b3a.0
- for <qemu-devel@nongnu.org>; Wed, 07 May 2025 14:13:07 -0700 (PDT)
+ d2e1a72fcca58-739525d4e12so368239b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 07 May 2025 14:13:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746652386; x=1747257186; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746652387; x=1747257187; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aIvXrHcg71Zxao4OnBZBdLddOM/XHAwRxf7Qh2NnRSQ=;
- b=x6UTs173Zsg+PyAW7Gq+KApfI5/CoV8rgHHOhkxh186zlX+j1JqOE4MluSfriSqUSX
- R8LImXYlx2ba6NvwvL2VD3GoXuqcS1+sgyWVWJAjimSvENQd8OGWM4QcFyIMqJNX+5km
- 0TmkP332+pjgC2JzHmjKkBOt+JIHRXPA5DvXpqeY4BU7euvYQoJ34iBiK+uqUplIQcCm
- ANbX7tc5Dkpm4AhRcYb9p725/bOApvea/NbecWl6Tb7oqLzoAWWhwyHkjdCOQ3ZiPxw1
- 4C54mHVzrKa61ba8Y4/1vTUifsWatKUZeBG49beNAMmTthSXyLgEh6z+ELoTKkSSTT8e
- 603w==
+ bh=Acco64j8AohVk0U3GZiX+hk+MPR+Ymqfvr9WRzFbhZc=;
+ b=ix/MEJ4VC2IYGfAjrorKwGRQRrztW/Aw0srLO5NZXWf4lQkJfIbkn0fz6ZUv7YfJdr
+ eWv0Z6p+yFsM4S31CJs9V6W5zQs+rzHq4KDyITJeYuTEFPPkHCJloPrmYIf3gcyKpQHw
+ 8Hu1MMN4FT2AciwTO5u6ASfs+iKgpxTVDDeojvCOpniZpJw+eUqZoG40581UdGD8WToA
+ 9O8K4TYrrsnR/U9fLPJJW5fSvy82D0sMscw3kgpfz06IDHLnv3Q8KUlPNv0KF14OuINQ
+ edgIPwVsNSnJMtsvzBjyM+3exyVZCulanrwuzsE2ryx2jWuFCBB3n67KQolG1UwcJNvh
+ P6kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746652386; x=1747257186;
+ d=1e100.net; s=20230601; t=1746652387; x=1747257187;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aIvXrHcg71Zxao4OnBZBdLddOM/XHAwRxf7Qh2NnRSQ=;
- b=tqs5FhnFLqhIrcgZd7C0Wttio9V9EHQPA4CnlhtHqTDxxIkM16ZpRevq7Mw/bntnRB
- 34GW6cvc7xHY2nHvGq5IqY/fI6V4/n+HhtyYWrkCmQHNUzFBsDZsv8PDfiQnAfpj1Xcm
- vE1uZUrCr/wyZ+xog2I96wGX7UiBUfeCQBXVoCY1z/4yoEx4yliDe4PDfVt9GIaXKJu0
- wQlZKEL7gV7My83sSiaXCaJ+gBaLAslY+oh0k6FM2l+c/8LwRNgSpwyLWRqREJvfrjmE
- A50U32i0B5l0fQCvUHOIVTmoLajw7Sfe9Opb73ISq9OnKZk/tsgXMEtbxUIpRuD0uMY7
- 8F+A==
-X-Gm-Message-State: AOJu0YxzTDki1AXlv4MQYCfS39Wyd2D7Fm6ltm9wkWk8FhY9qNbi7FwU
- 264GaDN2jwHr26+pOgkeDO4ftlBACGTJuQIGq5zqClSPWyzAfcJd7OHdVCxPNp0exAtlcJ2Aa8W
- 4
-X-Gm-Gg: ASbGnctICzxlvUCziaNF+MtNMcy3ltKdEABCwFTieefCLmpQ/KxnjCyeL24bMJF/5if
- diNuG8HGs6EqA2bqzs0xCTw8NmyBD0WKSH29kazEmtZ7Y1pG5MaYQGyV75avLavMRq8tQVEIQcy
- 7cqx1aPUSa2vbkUUgVHxBat+UpPg1QNfY1FIteALszx1SoEl3H4TliVBR6DXZH38qTs3C/kzO96
- jF/O0IH77xTme47O8oJCbR2YUjV/YGH4jaagrLd8wreUzNUrGYTUsEyMN4umQgkYx/bZLQ54BfD
- olG3By9br1YjdYx1wTFvzz/+sGnFscXpmSlZCCPgo7Ooeyk4+UQARF1/jY9F+zk0W1iHQeWu7Au
- I+rV+ZlWftg==
-X-Google-Smtp-Source: AGHT+IGK9ZZNU2vHyKqGTp/0VgQf0BUI3E/xlBtqr+1LNFKjnAxmzfSatpSpj5QunAs5HGlN6ujNlQ==
-X-Received: by 2002:a05:6a21:3946:b0:1f0:e42e:fb1d with SMTP id
- adf61e73a8af0-2148d312247mr7721982637.36.1746652386230; 
- Wed, 07 May 2025 14:13:06 -0700 (PDT)
+ bh=Acco64j8AohVk0U3GZiX+hk+MPR+Ymqfvr9WRzFbhZc=;
+ b=HgXyxlUUOmIy7JVvPnEzYhkuS1+cQ8kvxCTAyeW8r0Kcg1N0emtv3ZAEoaUNkL2wIN
+ vOyUHMf17uUGUsLRvNqEy8eUzJhFM8iTvV/1YmNoz1yjSlnWv2u4tXOUtRvWRVv7zSRp
+ p4o56rLl3f/grZef0hq81M0Sj4F2bwkApJXS04Vl3vPmjbABie3XJbDtgz3cBOARMatC
+ O4aAW6QCopd9FABepNdBFl7fzC9wkrOtQIbQJA2PrUWbg/0conw4eDUWXunIm9yTj18a
+ atyUplWUdm6L+G5T/NrUbsMjvfInJZg3KpH14HCy2UER1bzG6d1v4Vom3w8EKeFVmacg
+ eo+w==
+X-Gm-Message-State: AOJu0Yz3KhJUt6qaxAIyV+NFr9pHxqpa+4KMopFmL+Zmjgea/UXpXVWy
+ wdAFXY/X8kj0P249nqYr3qcJHxnTgn5zvC7bS8fASV49otqgCzY6wj/Y1bFvTR2NEmJnvYs8hrm
+ P
+X-Gm-Gg: ASbGnctEkeD87BpZMu/HwOBePVWSHlTzCFYy1wIFAwEqN3hSGUnTEzD0jW5HEiSX6L9
+ GcfGsfigYFHUx83T+P2fntf4P55Mli9N/DLHhjYfvyHoeqhQo8rrpxecQABlruyGiNVJesGgouu
+ SDJXXSw4G10R7qQ8PLQy/CKD38lEJBHZAWh5VfOoK4+CH7HRCwujKpPCPWYDzSZRsP9QmTBKaLx
+ /CYagIrG0unP5zaTfFvoLK3lkED7WoKLy0uVSf9pXzLkDF3FfI80DUP4a4xq0bjfS9s10M0fndO
+ V6zQUmIcTsbhhClj3YQjyuEqotMLgApx9+kxmAHvJf8+QVWq+6002z/Jdgz7YqbNwd2mPaQkams
+ =
+X-Google-Smtp-Source: AGHT+IEHXwV+vyhmuFjS6nYMZ/hQKNGOo6It6lrHbXKCv3ab0bpl+YT0Ou795FwS8ERGLyvpE/XRyw==
+X-Received: by 2002:a05:6a00:600b:b0:736:33fd:f57d with SMTP id
+ d2e1a72fcca58-7409cfa68cemr6620398b3a.17.1746652387136; 
+ Wed, 07 May 2025 14:13:07 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7405902154dsm12255251b3a.90.2025.05.07.14.13.05
+ d2e1a72fcca58-7405902154dsm12255251b3a.90.2025.05.07.14.13.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 May 2025 14:13:05 -0700 (PDT)
+ Wed, 07 May 2025 14:13:06 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: laurent@vivier.eu
-Subject: [PATCH v5 05/24] target/m68k: Update FPSR for FMOVECR
-Date: Wed,  7 May 2025 14:12:40 -0700
-Message-ID: <20250507211300.9735-6-richard.henderson@linaro.org>
+Cc: laurent@vivier.eu,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v5 06/24] target/m68k: Introduce
+ M68K_FEATURE_FPU_PACKED_DECIMAL
+Date: Wed,  7 May 2025 14:12:41 -0700
+Message-ID: <20250507211300.9735-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250507211300.9735-1-richard.henderson@linaro.org>
 References: <20250507211300.9735-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
  envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
@@ -98,27 +101,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This instruction sets CC and EXC bits just like any other.
-So far we do not properly emulate inexact for the various
-rom entries, but we can certainly update CC correctly.
+Set for 68020 and 68030, but does nothing so far.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/m68k/fpu_helper.c | 1 +
- 1 file changed, 1 insertion(+)
+ target/m68k/cpu.h | 2 ++
+ target/m68k/cpu.c | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/target/m68k/fpu_helper.c b/target/m68k/fpu_helper.c
-index deae94b0ee..e63fd3ec11 100644
---- a/target/m68k/fpu_helper.c
-+++ b/target/m68k/fpu_helper.c
-@@ -425,6 +425,7 @@ void HELPER(ftst)(CPUM68KState *env, FPReg *val)
- void HELPER(fconst)(CPUM68KState *env, FPReg *val, uint32_t offset)
- {
-     val->d = fpu_rom[offset];
-+    HELPER(ftst)(env, val);
+diff --git a/target/m68k/cpu.h b/target/m68k/cpu.h
+index 0630eb26c2..8adb1c6515 100644
+--- a/target/m68k/cpu.h
++++ b/target/m68k/cpu.h
+@@ -574,6 +574,8 @@ enum m68k_features {
+     M68K_FEATURE_MOVEFROMSR_PRIV,
+     /* Exception frame with format+vector (from 68010) */
+     M68K_FEATURE_EXCEPTION_FORMAT_VEC,
++    /* FPU supports packed decimal real format */
++    M68K_FEATURE_FPU_PACKED_DECIMAL,
+ };
+ 
+ static inline bool m68k_feature(CPUM68KState *env, int feature)
+diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
+index e898156403..866d32fc9f 100644
+--- a/target/m68k/cpu.c
++++ b/target/m68k/cpu.c
+@@ -260,6 +260,7 @@ static void m68020_cpu_initfn(Object *obj)
+     m68k_set_feature(env, M68K_FEATURE_MSP);
+     m68k_set_feature(env, M68K_FEATURE_UNALIGNED_DATA);
+     m68k_set_feature(env, M68K_FEATURE_TRAPCC);
++    m68k_set_feature(env, M68K_FEATURE_FPU_PACKED_DECIMAL);
  }
  
- typedef int (*float_access)(CPUM68KState *env, uint32_t addr, FPReg *fp,
+ /*
+@@ -302,6 +303,7 @@ static void m68040_cpu_initfn(Object *obj)
+ 
+     m68030_cpu_initfn(obj);
+     m68k_unset_feature(env, M68K_FEATURE_M68030);
++    m68k_unset_feature(env, M68K_FEATURE_FPU_PACKED_DECIMAL);
+     m68k_set_feature(env, M68K_FEATURE_M68040);
+ }
+ 
 -- 
 2.43.0
 
