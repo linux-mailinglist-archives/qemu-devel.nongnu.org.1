@@ -2,133 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D61D2AAE885
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 20:10:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A2CFAAE905
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 20:24:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCjDg-00064t-Mf; Wed, 07 May 2025 14:10:12 -0400
+	id 1uCjQT-0006oS-WF; Wed, 07 May 2025 14:23:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uCjDe-000638-LC
- for qemu-devel@nongnu.org; Wed, 07 May 2025 14:10:10 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uCjQR-0006o7-E6
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 14:23:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uCjDc-0000WT-Le
- for qemu-devel@nongnu.org; Wed, 07 May 2025 14:10:10 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uCjQP-00027x-1i
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 14:23:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746641405;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1746642199;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=KYtji/e6/3OspXTLj2p2HxrAay+1j99Hy/76LgoF2TQ=;
- b=hYBkhqRY6VO7028xjoJo5NxCAWZLUlIcpqw+9OhmaDwUtjVojn9mCxCmDt0WVQVHARpX8C
- +8q9MHJovQeTvfiMG6Qc/JW3ML1WYoBDkEqempFHGfp06DUt9WC2L3N3oPlZ04KIrGVSMX
- dowYKRTPm8qB54M8t4T42bCN7EMttAg=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-591-BcdTEcAHMsGaDF9YrP6sHw-1; Wed, 07 May 2025 14:10:02 -0400
-X-MC-Unique: BcdTEcAHMsGaDF9YrP6sHw-1
-X-Mimecast-MFC-AGG-ID: BcdTEcAHMsGaDF9YrP6sHw_1746641401
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-441c122fa56so593635e9.2
- for <qemu-devel@nongnu.org>; Wed, 07 May 2025 11:10:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746641401; x=1747246201;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=KYtji/e6/3OspXTLj2p2HxrAay+1j99Hy/76LgoF2TQ=;
- b=KckW5DIGIoIT2PTDageaULKXoGRxtUkvkFjZoywH8JC8g+tWtlF7K5LxovPYBioIQW
- R47/ul7VCC2jVtXAX7l1R5WdiW3D0SM4IiVdiRXLv2/3L8Akhou8cNwhqHNDp4eiJpvR
- oxMpi6S3sPoLIO91B1elkYl93pK1Pk8NqVbc3CqiiFQAl7h1dlIdpqPKG3a9Rg71ptlh
- IkgB0ybKBAWKUS88Z2i9mKhtZHisbVL+hrBFmzk8luokyTrlUEAx8gGDuUpd4kYrnu0H
- fJ8cyyW6nn3gvqlo+SQqLf+StR3FFZGWRGToDBzrtITnN29QdEcl4Ls7M+s0Gv4rbozo
- 7R3w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVuu35x78WecyGTBcF+Q7Qy3/XtVB+/zwbEv8XVn76x9+cB35LFlO6m8R/68KZIa4BUWUZm4ZI8maFn@nongnu.org
-X-Gm-Message-State: AOJu0YynE8ZiTQFQ0ad7MfgDQkO5qruV90vIUUEUtgPb3N2ALsHEPNHl
- JWWKyHEGOCPrT558s7CuGKnlqf/eRk517KDgx8ncJuETZmxQKIXGG+cBiY+AXrwhX5UlM+Z/q7L
- Fqf4wuqP3x4w5S/PAsO77SppTJnBRVrOcAA7FPiNEd5KIgQfCq5Kq
-X-Gm-Gg: ASbGnctr6ryTECyChMDoZPsYO4NQz13/mqddrNETdyv4dFIjJFjoJKwmKkfad5JOVPS
- C69SdJW5skyrV6S2szMrxMPCnF/kSt8TX4uLQj5BQ3yjAGp4vpbl+6hNxg4mPKyqexEtk62KbVh
- 8FZng8DLk96Kzu8uVyWKT8lqMa7mK1k1BZo84ENxPFITGLpBgvM6SHM/Bk6bvIICgwNQkhqe5Rt
- CA+vMREqBt+JrB3LHcikjskKDH0nVswQ2gD89Yox5ld4OakzYGUmeJrAJIp75PkmuBN32D8D8pX
- vb5G8w0Z/kc/irXYdse1HE4cykQj69yT/XmxPGxPVpt39LGwVoDQ
-X-Received: by 2002:a05:600c:a47:b0:43c:e2dd:98ea with SMTP id
- 5b1f17b1804b1-441d44dc067mr35416035e9.22.1746641401216; 
- Wed, 07 May 2025 11:10:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF6uyePdIR9XNV31B8j4+YTfChHzx8t5CY04fG+aQZBCHahG9cdl3UggvtuH6KnPrRsw+zdcg==
-X-Received: by 2002:a05:600c:a47:b0:43c:e2dd:98ea with SMTP id
- 5b1f17b1804b1-441d44dc067mr35415815e9.22.1746641400824; 
- Wed, 07 May 2025 11:10:00 -0700 (PDT)
-Received: from [192.168.0.7] (ltea-047-064-115-173.pools.arcor-ip.net.
- [47.64.115.173]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a0b695dd16sm2171909f8f.87.2025.05.07.11.09.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 07 May 2025 11:10:00 -0700 (PDT)
-Message-ID: <2dfcf252-99e2-45f9-b958-770d14a1ab7b@redhat.com>
-Date: Wed, 7 May 2025 20:09:58 +0200
+ in-reply-to:in-reply-to:references:references;
+ bh=R0MJ1fACUa8aT/myQKyr2llpV7mLrlFzTPMPx1cAk0U=;
+ b=fZM9NINf2/QZPHfo4NLxvKY3NW66fIl+1wxulLOizYLCY/+zO0b6GJJ4bsGaG9NoS/nA/9
+ o5QXxVj5HGKgYo60nuhWwONwYB4dMZH5bJDG4KXkWvdPuB0XmqgYh2i0oNkP/hD2LFd58v
+ PDl0xaunArjY69gCsvTmoGPuWB8hL7s=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-481-9EmSthmuNg62A3tqjVqTdA-1; Wed,
+ 07 May 2025 14:23:16 -0400
+X-MC-Unique: 9EmSthmuNg62A3tqjVqTdA-1
+X-Mimecast-MFC-AGG-ID: 9EmSthmuNg62A3tqjVqTdA_1746642195
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F3E70180056F; Wed,  7 May 2025 18:23:14 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.63])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7EAC430001A1; Wed,  7 May 2025 18:23:12 +0000 (UTC)
+Date: Wed, 7 May 2025 19:23:08 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Nir Soffer <nirsof@gmail.com>
+Cc: qemu-devel@nongnu.org, Richard Jones <rjones@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eric Blake <eblake@redhat.com>
+Subject: Re: [PATCH v3 1/2] io: Increase unix socket buffers size on macOS
+Message-ID: <aBulDPx3h02280i2@redhat.com>
+References: <20250427165029.9072-1-nirsof@gmail.com>
+ <20250427165029.9072-2-nirsof@gmail.com>
+ <aBuMQSEm9f8JsdoQ@redhat.com>
+ <FAF66BF6-176E-43A8-B097-85960D81ADCE@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/3] util: Add functions for s390x mmio read/write
-To: Farhan Ali <alifm@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, stefanha@redhat.com, mjrosato@linux.ibm.com,
- schnelle@linux.ibm.com, philmd@linaro.org, kwolf@redhat.com,
- hreitz@redhat.com, fam@euphon.net
-References: <20250430185012.2303-1-alifm@linux.ibm.com>
- <20250430185012.2303-2-alifm@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20250430185012.2303-2-alifm@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <FAF66BF6-176E-43A8-B097-85960D81ADCE@gmail.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -34
 X-Spam_score: -3.5
@@ -150,31 +87,191 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/04/2025 20.50, Farhan Ali wrote:
-> Starting with z15 (or newer) we can execute mmio
-> instructions from userspace. On older platforms
-> where we don't have these instructions available
-> we can fallback to using system calls to access
-> the PCI mapped resources.
+On Wed, May 07, 2025 at 08:17:19PM +0300, Nir Soffer wrote:
 > 
-> This patch adds helper functions for mmio reads
-> and writes for s390x.
 > 
-> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-> Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
-> ---
->   include/qemu/s390x_pci_mmio.h |  24 ++++++
->   util/meson.build              |   2 +
->   util/s390x_pci_mmio.c         | 146 ++++++++++++++++++++++++++++++++++
->   3 files changed, 172 insertions(+)
->   create mode 100644 include/qemu/s390x_pci_mmio.h
->   create mode 100644 util/s390x_pci_mmio.c
+> > On 7 May 2025, at 19:37, Daniel P. Berrangé <berrange@redhat.com> wrote:
+> > 
+> > On Sun, Apr 27, 2025 at 07:50:28PM +0300, Nir Soffer wrote:
+> >> On macOS we need to increase unix stream socket buffers size on the
+> >> client and server to get good performance. We set socket buffers on
+> >> macOS after connecting or accepting a client connection.  For unix
+> >> datagram socket we need different configuration that can be done later.
+> >> 
+> >> Testing shows that setting socket receive buffer size (SO_RCVBUF) has no
+> >> effect on performance, so we set only the send buffer size (SO_SNDBUF).
+> >> It seems to work like Linux but not documented.
+> >> 
+> >> Testing shows that optimal buffer size is 512k to 4 MiB, depending on
+> >> the test case. The difference is very small, so I chose 2 MiB.
+> >> 
+> >> I tested reading from qemu-nbd and writing to qemu-nbd with qemu-img and
+> >> computing a blkhash with nbdcopy and blksum.
+> >> 
+> >> To focus on NBD communication and get less noisy results, I tested
+> >> reading and writing to null-co driver. I added a read-pattern option to
+> >> the null-co driver to return data full of 0xff:
+> >> 
+> >>    NULL="json:{'driver': 'raw', 'file': {'driver': 'null-co', 'size': '10g', 'read-pattern': -1}}"
+> >> 
+> >> For testing buffer size I added an environment variable for setting the
+> >> socket buffer size.
+> >> 
+> >> Read from qemu-nbd via qemu-img convert. In this test buffer size of 2m
+> >> is optimal (12.6 times faster).
+> >> 
+> >>    qemu-nbd -r -t -e 0 -f raw -k /tmp/nbd.sock "$NULL" &
+> >>    qemu-img convert -f raw -O raw -W -n "nbd+unix:///?socket=/tmp/nbd.sock" "$NULL"
+> >> 
+> >> | buffer size | time    | user    | system  |
+> >> |-------------|---------|---------|---------|
+> >> |     default |  13.361 |   2.653 |   5.702 |
+> >> |       65536 |   2.283 |   0.204 |   1.318 |
+> >> |      131072 |   1.673 |   0.062 |   1.008 |
+> >> |      262144 |   1.592 |   0.053 |   0.952 |
+> >> |      524288 |   1.496 |   0.049 |   0.887 |
+> >> |     1048576 |   1.234 |   0.047 |   0.738 |
+> >> |     2097152 |   1.060 |   0.080 |   0.602 |
+> >> |     4194304 |   1.061 |   0.076 |   0.604 |
+> >> 
+> >> Write to qemu-nbd with qemu-img convert. In this test buffer size of 2m
+> >> is optimal (9.2 times faster).
+> >> 
+> >>    qemu-nbd -t -e 0 -f raw -k /tmp/nbd.sock "$NULL" &
+> >>    qemu-img convert -f raw -O raw -W -n "$NULL" "nbd+unix:///?socket=/tmp/nbd.sock"
+> >> 
+> >> | buffer size | time    | user    | system  |
+> >> |-------------|---------|---------|---------|
+> >> |     default |   8.063 |   2.522 |   4.184 |
+> >> |       65536 |   1.472 |   0.430 |   0.867 |
+> >> |      131072 |   1.071 |   0.297 |   0.654 |
+> >> |      262144 |   1.012 |   0.239 |   0.587 |
+> >> |      524288 |   0.970 |   0.201 |   0.514 |
+> >> |     1048576 |   0.895 |   0.184 |   0.454 |
+> >> |     2097152 |   0.877 |   0.174 |   0.440 |
+> >> |     4194304 |   0.944 |   0.231 |   0.535 |
+> >> 
+> >> Compute a blkhash with nbdcopy, using 4 NBD connections and 256k request
+> >> size. In this test buffer size of 4m is optimal (5.1 times faster).
+> >> 
+> >>    qemu-nbd -r -t -e 0 -f raw -k /tmp/nbd.sock "$NULL" &
+> >>    nbdcopy --blkhash "nbd+unix:///?socket=/tmp/nbd.sock" null:
+> >> 
+> >> | buffer size | time    | user    | system  |
+> >> |-------------|---------|---------|---------|
+> >> |     default |   8.624 |   5.727 |   6.507 |
+> >> |       65536 |   2.563 |   4.760 |   2.498 |
+> >> |      131072 |   1.903 |   4.559 |   2.093 |
+> >> |      262144 |   1.759 |   4.513 |   1.935 |
+> >> |      524288 |   1.729 |   4.489 |   1.924 |
+> >> |     1048576 |   1.696 |   4.479 |   1.884 |
+> >> |     2097152 |   1.710 |   4.480 |   1.763 |
+> >> |     4194304 |   1.687 |   4.479 |   1.712 |
+> >> 
+> >> Compute a blkhash with blksum, using 1 NBD connection and 256k read
+> >> size. In this test buffer size of 512k is optimal (10.3 times faster).
+> >> 
+> >>    qemu-nbd -r -t -e 0 -f raw -k /tmp/nbd.sock "$NULL" &
+> >>    blksum "nbd+unix:///?socket=/tmp/nbd.sock"
+> >> 
+> >> | buffer size | time    | user    | system  |
+> >> |-------------|---------|---------|---------|
+> >> |     default |  13.085 |   5.664 |   6.461 |
+> >> |       65536 |   3.299 |   5.106 |   2.515 |
+> >> |      131072 |   2.396 |   4.989 |   2.069 |
+> >> |      262144 |   1.607 |   4.724 |   1.555 |
+> >> |      524288 |   1.271 |   4.528 |   1.224 |
+> >> |     1048576 |   1.294 |   4.565 |   1.333 |
+> >> |     2097152 |   1.299 |   4.569 |   1.344 |
+> >> |     4194304 |   1.291 |   4.559 |   1.327 |
+> >> 
+> >> Signed-off-by: Nir Soffer <nirsof@gmail.com>
+> >> ---
+> >> io/channel-socket.c | 32 ++++++++++++++++++++++++++++++++
+> >> 1 file changed, 32 insertions(+)
+> >> 
+> >> diff --git a/io/channel-socket.c b/io/channel-socket.c
+> >> index 608bcf066e..06901ab694 100644
+> >> --- a/io/channel-socket.c
+> >> +++ b/io/channel-socket.c
+> >> @@ -21,6 +21,7 @@
+> >> #include "qapi/error.h"
+> >> #include "qapi/qapi-visit-sockets.h"
+> >> #include "qemu/module.h"
+> >> +#include "qemu/units.h"
+> >> #include "io/channel-socket.h"
+> >> #include "io/channel-util.h"
+> >> #include "io/channel-watch.h"
+> >> @@ -37,6 +38,33 @@
+> >> 
+> >> #define SOCKET_MAX_FDS 16
+> >> 
+> >> +/*
+> >> + * Testing shows that 2m send buffer gives best throuput and lowest cpu usage.
+> >> + * Changing the receive buffer size has no effect on performance.
+> >> + */
+> >> +#ifdef __APPLE__
+> >> +#define UNIX_STREAM_SOCKET_SEND_BUFFER_SIZE (2 * MiB)
+> >> +#endif /* __APPLE__ */
+> >> +
+> >> +static void qio_channel_socket_set_buffers(QIOChannelSocket *ioc)
+> >> +{
+> >> +    if (ioc->localAddr.ss_family == AF_UNIX) {
+> >> +        int type;
+> >> +        socklen_t type_len = sizeof(type);
+> >> +
+> >> +        if (getsockopt(ioc->fd, SOL_SOCKET, SO_TYPE, &type, &type_len) == -1) {
+> >> +            return;
+> >> +        }
+> >> +
+> >> +#ifdef UNIX_STREAM_SOCKET_SEND_BUFFER_SIZE
+> >> +        if (type == SOCK_STREAM) {
+> >> +            const int value = UNIX_STREAM_SOCKET_SEND_BUFFER_SIZE;
+> >> +            setsockopt(ioc->fd, SOL_SOCKET, SO_SNDBUF, &value, sizeof(value));
+> >> +        }
+> >> +#endif /* UNIX_STREAM_SOCKET_SEND_BUFFER_SIZE */
+> >> +    }
+> >> +}
+> > 
+> > While I'm not doubting your benchmark results, I'm a little uneasy about
+> > setting this unconditionally for *all* UNIX sockets QEMU creates. The
+> > benchmarks show NBD benefits from this, but I'm not convinced that all
+> > the other scenarios QEMU creates UNIX sockets for justify it.
+> > 
+> > On Linux, whatever value you set with SO_SNDBUF appears to get doubled
+> > internally by the kernel.
+> > 
+> > IOW, this is adding 4 MB fixed overhead for every UNIX socket that
+> > QEMU creates. It doesn't take many UNIX sockets in QEMU for that to
+> > become a significant amount of extra memory overhead on a host.
+> > 
+> > I'm thinking we might be better with a helper
+> > 
+> >  qio_channel_socket_set_send_buffer(QIOChannelSocket *ioc, size_t size)
+> > 
+> > that we call from the NBD code, to limit the impact. Also I think this
+> > helper ought not to filter on AF_UNIX - the caller can see the socket
+> > type via qio_channel_socket_get_local_address if it does not already
+> > have a record of the address, and selectively set the buffer size.
+> 
+> So you suggest to move also UNIX_STREAM_SOCKET_SEND_BUFFER_SIZE to nbd?
+> 
+> If we use this only for nbd this is fine, but once we add another caller we will
+> to duplicate the code selecting the right size for the OS. But I guess we can 
+> reconsider this when have this problem.
 
-FWIW,
-Acked-by: Thomas Huth <thuth@redhat.com>
+Yeah, lets worry about that aspect another day and focus on NBD.
+
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
