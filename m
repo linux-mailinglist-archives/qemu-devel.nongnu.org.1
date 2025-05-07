@@ -2,108 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A3EFAAE5AD
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 17:59:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09596AAE64C
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 18:16:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uChAm-0004ow-Ah; Wed, 07 May 2025 11:59:04 -0400
+	id 1uChPt-0002A5-Sz; Wed, 07 May 2025 12:14:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uChAk-0004oK-1c
- for qemu-devel@nongnu.org; Wed, 07 May 2025 11:59:02 -0400
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <lebrongandalf@gmail.com>)
+ id 1uCgrn-0005ij-9g; Wed, 07 May 2025 11:39:27 -0400
+Received: from mail-yb1-xb32.google.com ([2607:f8b0:4864:20::b32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uChAc-0003Iz-2w
- for qemu-devel@nongnu.org; Wed, 07 May 2025 11:59:01 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id A6BC71F441;
- Wed,  7 May 2025 15:58:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1746633524; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=93rumMTr624m2fb7gcTv6Fvs61zqZ25TaSAxaNcNA9g=;
- b=VYnqCXuw90PFn+CfAAWD7Y4oRkLt68d8Bqq1OnLZ9uA76dw9ZjbkRnqNx7XBkEDXpnUdhq
- H73MLn+p69hKjHyfTZvXYI7amh/xis2iCnnJpHRCnBy7I76nR+po2P33pSb79md7CN4Y3q
- 4uCc3ofuqkqcNqdNx15Z+3RaQsPt0a8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1746633524;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=93rumMTr624m2fb7gcTv6Fvs61zqZ25TaSAxaNcNA9g=;
- b=5hzanwwbOKBH/XR2Fj6VsaIq2tM+BFwiyRN/SokqSB5qSGmbu/2Xwxp1EgLZTBW2FbChtl
- rU5HSylfRb7b4FAg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1746633524; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=93rumMTr624m2fb7gcTv6Fvs61zqZ25TaSAxaNcNA9g=;
- b=VYnqCXuw90PFn+CfAAWD7Y4oRkLt68d8Bqq1OnLZ9uA76dw9ZjbkRnqNx7XBkEDXpnUdhq
- H73MLn+p69hKjHyfTZvXYI7amh/xis2iCnnJpHRCnBy7I76nR+po2P33pSb79md7CN4Y3q
- 4uCc3ofuqkqcNqdNx15Z+3RaQsPt0a8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1746633524;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=93rumMTr624m2fb7gcTv6Fvs61zqZ25TaSAxaNcNA9g=;
- b=5hzanwwbOKBH/XR2Fj6VsaIq2tM+BFwiyRN/SokqSB5qSGmbu/2Xwxp1EgLZTBW2FbChtl
- rU5HSylfRb7b4FAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8AA48139D9;
- Wed,  7 May 2025 15:58:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id OAMIEjODG2gncQAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 07 May 2025 15:58:43 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>
-Subject: [PATCH 3/3] ci: Reduce the size of artifacts for build-previous-qemu
-Date: Wed,  7 May 2025 12:58:35 -0300
-Message-Id: <20250507155835.31074-4-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20250507155835.31074-1-farosas@suse.de>
-References: <20250507155835.31074-1-farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <lebrongandalf@gmail.com>)
+ id 1uCgrk-0000LO-H1; Wed, 07 May 2025 11:39:27 -0400
+Received: by mail-yb1-xb32.google.com with SMTP id
+ 3f1490d57ef6-e6e1cd3f1c5so30994276.0; 
+ Wed, 07 May 2025 08:39:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1746632362; x=1747237162; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=Xuf152WHysRq+Z/dYsErZxczCzfSa1/+B94t6hcxHpU=;
+ b=gXewaCcEAddckr+cf6EHWDXUgu+rybjR8AMd1Q7tKn8pr8xy8ZD7ZnTcfu4KXu3EeT
+ OCU5Blvce0QywbwWHjpTlAv+7QaCia0Ld53cg3UIPqzG1zO5rRtfMVKVbVEpvVysFBWW
+ O0cEQ93xou1EZnVcGgph80Pt2kZFf3UYoHd/scARtlY/PvyzLQSKDJk71s9+s8cEF5Tv
+ 6jU3XE/5Xeg7NfEyoDXns6iUyu8P4WR+7ctB49myHpGy0Ao31NJG3Q1uOn9ornTrgPy6
+ P35EAOeW4pVAKXAJV5DKA6hZUm4J5NVfz6kdevj2xpvA9vDO8n71bAzSLEonfemGvjQV
+ PGkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1746632362; x=1747237162;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Xuf152WHysRq+Z/dYsErZxczCzfSa1/+B94t6hcxHpU=;
+ b=gxHBAs2TaL1MN3OWcShpnulQYmSNxBW6DEpvOpC0QTfxveIazk9quwdzH+Gct7IFw8
+ 79UJFtF5LZLfhCvT9L+w5twzo4jjYj+gDBX/byTimtPW+jYzhLBXKRXg6vsoZnNeJUEU
+ pK4FQ1eZlfK0INrT46LPqNkrr1f+C/JGrDlXHYYVulJb3cjrfZguMQZwJt0NOu/vw2GV
+ uE7bWKHf4v2PNdzuzG5tsGpw8iDkNJglAFLaxkNh5dFdNT/B6IxcWg6JwASHFlAo5cR7
+ rvZ3AWz8uOX0Ut0lxupAhtLmuXjKfmdA5cxA7l7IbjMSIql2aSJJy49GHXzTYSHxo5g7
+ k/Ag==
+X-Gm-Message-State: AOJu0Yx4SST5/7b8/u+Sk9U5yrQzXJa5yplVEG4YoPIZWqlsMgZU6Raa
+ bht8hEkhCHNtmB4URC20rjm1vHROlzm6pLEL0uPw+bq93+VneDGsa51TpaxTehTIy+sFXM61v2t
+ vQRs08RNCVDjI0ONWkChdbypakEzPgwhQQg==
+X-Gm-Gg: ASbGncvxFB6kuoMJi7QQKEY9051mhR7zXkihk2uO7Bl7BBTr3n+7dRNsquflEzkIlFk
+ QJhrZuijCjwbH/tibdmd5K6DyQjOJKlk53TMsvbyleuhv/qCRYO023SRto7E4tnuGq24hIXkYFy
+ NtuN72vpMdVY0YQ5/H3H02
+X-Google-Smtp-Source: AGHT+IG0kv6g2lyOF+VfiREYc7MvBQ8MzhsOK76+6wVLfEOFg23UDv49DdTopwvgdBylNHJiMRkT30fz1/cvkFumu6M=
+X-Received: by 2002:a25:f449:0:b0:e78:d3db:7e11 with SMTP id
+ 3f1490d57ef6-e78d3db8ab2mr2706685276.10.1746632361867; Wed, 07 May 2025
+ 08:39:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_TWO(0.00)[2];
- RCVD_VIA_SMTP_AUTH(0.00)[]; MIME_TRACE(0.00)[0:+];
- ARC_NA(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email];
- RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -2.80
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+From: GanDalf LeBron <lebrongandalf@gmail.com>
+Date: Wed, 7 May 2025 23:39:11 +0800
+X-Gm-Features: ATxdqUEWTtV-j2xG-mwcdJmbs9Oa9ek--qlyiXJGYC9JMRznQTjPO8Rz3TyNkeA
+Message-ID: <CA+V5jYUjqDc-UWKvQrX24c+MKtm+zdx4YCWU036180A4rX4ybQ@mail.gmail.com>
+Subject: The current implementation status of ARM Secure SMMU in QEMU
+To: qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="0000000000007b808506348d8911"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b32;
+ envelope-from=lebrongandalf@gmail.com; helo=mail-yb1-xb32.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 07 May 2025 12:14:40 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -118,38 +85,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The build-previous-qemu job is intented to produce a build of the
-previous QEMU release for consumption by the migration-compat-*
-jobs. Keep only the pieces of the build that are necessary.
+--0000000000007b808506348d8911
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- .gitlab-ci.d/buildtest.yml | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+Hi there!
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 159bdde2e8..a85c8cefa9 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -188,12 +188,11 @@ build-previous-qemu:
-     when: on_success
-     expire_in: 2 days
-     paths:
--      - build-previous
--    exclude:
--      - build-previous/**/*.p
--      - build-previous/**/*.a.p
--      - build-previous/**/*.c.o
--      - build-previous/**/*.c.o.d
-+      - build-previous/qemu-bundle
-+      - build-previous/qemu-system-aarch64
-+      - build-previous/qemu-system-x86_64
-+      - build-previous/tests/qtest/migration-test
-+      - build-previous/scripts
-   needs:
-     job: amd64-opensuse-leap-container
-   variables:
--- 
-2.35.3
+I am writing to inquire about the current implementation status of Secure
+SMMU features in QEMU.
 
+I understand that non-secure SMMU emulation for general peripheral DMA
+(IOVA to PA translation and protection managed by the Normal World) is
+well-established in QEMU. However, my current understanding is that
+specific *Secure SMMU* functionality=E2=80=94where the SMMU's configuration=
+ and
+page tables are managed by Secure World software (e.g., at *Secure EL2)* to
+protect DMA for secure peripherals or confidential VMs=E2=80=94may not yet =
+be fully
+implemented.
+
+Could you please confirm or clarify this? Specifically, I'm interested in
+whether QEMU supports management of SMMU page tables and configurations by
+software running in Secure EL2?
+
+Any pointers to existing support, relevant discussions, patches, or roadmap
+information regarding Secure SMMU capabilities would be greatly appreciated=
+.
+
+Thank you for your time and efforts.
+
+LeBronGanDalf
+
+--0000000000007b808506348d8911
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><p><br></p><p>Hi there!</p><p>I am writing to inquire abou=
+t the current implementation status of Secure SMMU features in QEMU.</p><p>=
+I understand that non-secure SMMU emulation for general peripheral DMA (IOV=
+A to PA translation and protection managed by the Normal World) is well-est=
+ablished in QEMU. However, my current understanding is that specific <stron=
+g>Secure SMMU</strong> functionality=E2=80=94where the SMMU&#39;s configura=
+tion and page tables are managed by Secure World software (e.g., at <b>Secu=
+re EL2)</b> to protect DMA for secure peripherals or confidential VMs=E2=80=
+=94may not yet be fully implemented.</p><p>Could you please confirm or clar=
+ify this? Specifically, I&#39;m interested in whether QEMU supports managem=
+ent of SMMU page tables and configurations by software running in Secure EL=
+2?</p><p>Any pointers to existing support, relevant discussions, patches, o=
+r roadmap information regarding Secure SMMU capabilities would be greatly a=
+ppreciated.</p><p>Thank you for your time and efforts.</p><p>LeBronGanDalf<=
+/p></div>
+
+--0000000000007b808506348d8911--
 
