@@ -2,85 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16E53AAD932
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 09:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3072AAD864
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 09:40:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCZcp-0001Uq-LG; Wed, 07 May 2025 03:55:31 -0400
+	id 1uCZN0-0007TJ-RG; Wed, 07 May 2025 03:39:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uCZck-0001UB-3L
- for qemu-devel@nongnu.org; Wed, 07 May 2025 03:55:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uCZMo-0007Sr-QY; Wed, 07 May 2025 03:38:59 -0400
+Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uCZci-0001lk-8l
- for qemu-devel@nongnu.org; Wed, 07 May 2025 03:55:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746604522;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=p3TgzwexWi3Tl59TeP0/GgXQsKq/utGNxlw9hk6Zz2U=;
- b=I1rR1KITifPB9W+qIHioVo7EDg5eCS3Kq62n415A6Myf2Jm+tIsXQOZ6UUnekZc+J5ChJA
- JtbWbByV0Ouqx4ailwGQr2Ce9zSsL5jRjg/hBbcvg6MdUex83l35kod8zFJjJtWf53YycJ
- Zr4W0FKVW+Ij9/OUefINNE5AKGGO66E=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-586-Zej7C2D4MsKrnun75S9e9A-1; Wed,
- 07 May 2025 03:55:18 -0400
-X-MC-Unique: Zej7C2D4MsKrnun75S9e9A-1
-X-Mimecast-MFC-AGG-ID: Zej7C2D4MsKrnun75S9e9A_1746604517
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D1A2F1800446; Wed,  7 May 2025 07:55:16 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.27])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5D62119560A7; Wed,  7 May 2025 07:55:16 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id ACAFB21E66C9; Wed, 07 May 2025 09:55:13 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: qemu-devel@nongnu.org,  richard.henderson@linaro.org,
- stefanha@redhat.com,  Michael Roth <michael.roth@amd.com>,
- pbonzini@redhat.com,  berrange@redhat.com,  peter.maydell@linaro.org,
- thuth@redhat.com,  jsnow@redhat.com,  philmd@linaro.org,  Alex
- =?utf-8?Q?Benn=C3=A9e?=
- <alex.bennee@linaro.org>,  devel@lists.libvirt.org,  Victor Toso
- <victortoso@redhat.com>
-Subject: Re: [RFC PATCH 0/3] single-binary: make QAPI generated files common
-In-Reply-To: <f2972cb4-4266-4835-9548-706983dc611f@linaro.org> (Pierrick
- Bouvier's message of "Tue, 29 Apr 2025 12:15:39 -0700")
-References: <20250424183350.1798746-1-pierrick.bouvier@linaro.org>
- <87a584b69n.fsf@pond.sub.org>
- <5b21965d-2428-454c-9dd7-266987495abd@linaro.org>
- <87a583789z.fsf@pond.sub.org>
- <25bb4527-f145-4d9c-8f91-a962bfa14a6f@linaro.org>
- <8734drpg4j.fsf@pond.sub.org>
- <f2972cb4-4266-4835-9548-706983dc611f@linaro.org>
-Date: Wed, 07 May 2025 09:55:13 +0200
-Message-ID: <87msbokg7y.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uCZMm-00088O-1z; Wed, 07 May 2025 03:38:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1746603536; x=1778139536;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=eSdAWIL9QwmGd2sJcWiQDIS/aNUqKJGlmNZtHMw8g5g=;
+ b=PjFvk4CKgUyJkT6eqcoy+kfMOBc7RoxGWQ3ypEAOQJkODpQsd3AAk0Cv
+ FLoxWI1NsuAX4eA7kpPy9KT3AzuZegPgwlSwj0w8Q0ebRXIqNBJIEM6VZ
+ wwi9Thyq6Cxm0FKSAiaVaQ/tjbKbwL5aU4cPCoofIWt0zJBoDFmMdgita
+ Urjl+5GzoXFf52U4gjUZ1UPv8FGuQdC3nDbeA+rrFL6Yhqf+9qopy52rR
+ asHRSDbwIbY2lFt09BEaa7I59bJ1Bje5EVelSx6wwoTJlx/ocRi5S93AA
+ L5S+ysV/3yLRpyjlh6wYCRBGzIzsuXwfUMn0gOslqfDGgJg/ASB94mBC5 g==;
+X-CSE-ConnectionGUID: PrrHvwzsT6uKSjKHjlmtgw==
+X-CSE-MsgGUID: p0Vb9M46QV+EyHXV43bHpg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11425"; a="65724608"
+X-IronPort-AV: E=Sophos;i="6.15,268,1739865600"; d="scan'208";a="65724608"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2025 00:38:51 -0700
+X-CSE-ConnectionGUID: 5xgkbUMWSYuibA6qZJP28Q==
+X-CSE-MsgGUID: 26B2PJQ8SJW4mYmpQm993A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,268,1739865600"; d="scan'208";a="136880282"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa009.fm.intel.com with ESMTP; 07 May 2025 00:38:48 -0700
+Date: Wed, 7 May 2025 15:59:50 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org
+Subject: Re: [PATCH 4/5] rust: vmstate: use const_refs_to_static
+Message-ID: <aBsS9tmqold+tMMu@intel.com>
+References: <20250505100854.73936-1-pbonzini@redhat.com>
+ <20250505100854.73936-5-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250505100854.73936-5-pbonzini@redhat.com>
+Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -57
+X-Spam_score: -5.8
+X-Spam_bar: -----
+X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,50 +79,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
+> @@ -998,7 +1000,7 @@ impl ObjectImpl for HPETState {
+>              vmstate_of!(HPETState, counter),
+>              vmstate_of!(HPETState, num_timers_save).with_version_id(2),
+>              vmstate_validate!(HPETState, VALIDATE_TIMERS_NAME, HPETState::validate_num_timers),
+> -            vmstate_struct!(HPETState, timers[0 .. num_timers], &VMSTATE_HPET_TIMER, BqlRefCell<HPETTimer>, HPETState::validate_num_timers).with_version_id(0),
+> +            vmstate_of!(HPETState, timers[0 .. num_timers], HPETState::validate_num_timers).with_version_id(0),
+>          })
 
-[...]
-
-> I don't think we should think too much ahead for languages other than C,=
-=20
-> for one, two, and even three reasons :)
-
-I agree that thinking ahead too much is a bad habit.  So is thinking
-ahead too little :)
-
-> - First, it's already broken because we rely on ifdef that won't be=20
-> there in Rust or Go.
-
-I don't think it's broken.  QAPI 'if' translates straightforwardly to C
-#if, but that doesn't mean it cannot be translated to conditional
-compilation / metaprogramming in other languages.
-
-In fact, the value of 'if' used to be C constant expressions suitable
-for use with #if, and we changed it to its current form specifically to
-enable Rust work, in merge commit c83fcfaf8a5.  Marc-Andr=C3=A9's was trying
-to develop Rust bindings back then, and if I remember correctly this
-change was enough to let him implement 'if' with Rust.
-
-> - Second, it's code, we can just change it later if needed.
-
-True!
-
-> - Third, those json are consumed only by QEMU (right?), so we are free=20
-> to write/modify them as we want.
-
-Also true.=20=20
-
-> The only thing that must stay the same is what we expose to the consumer=
-=20
-> in the schema, and which commands we expose in qemu.
-
-We may evolve the external interface as long as we honor our
-compatibility promise.
-
-You're aiming for "no change at all" there.  I understand why that's
-desirable.  But if it should turn out that a bit of compatible change
-simplifies the job, we can take the simpler route.
-
-[...]
+The unified vmstate_of is indeed clean... it's more concise and easier
+to use than the C version.
 
 
