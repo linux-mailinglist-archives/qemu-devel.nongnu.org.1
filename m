@@ -2,76 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0AC3AAE5AE
+	by mail.lfdr.de (Postfix) with ESMTPS id 32BCFAAE5AB
 	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 17:59:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uChAU-0004mu-Sk; Wed, 07 May 2025 11:58:46 -0400
+	id 1uChAh-0004o7-2p; Wed, 07 May 2025 11:58:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uChAS-0004mW-NJ
- for qemu-devel@nongnu.org; Wed, 07 May 2025 11:58:44 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uChAf-0004nd-I4
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 11:58:57 -0400
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uChAQ-0003Hn-Ur
- for qemu-devel@nongnu.org; Wed, 07 May 2025 11:58:44 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uChAZ-0003In-FW
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 11:58:57 -0400
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 8C9A9211C6;
- Wed,  7 May 2025 15:58:39 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 2A9ED211CA;
+ Wed,  7 May 2025 15:58:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1746633519; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=yD+1WuEozqBURcWyzAB0aKwnMWfR5gjTvYfAjfbit8U=;
- b=mOmo8V0mvpJn9nTjCnNx688rCr7OmR4VwjZsiIbXKaAUzPa4K74DYnFhNpRHPKmwqnuk5C
- icck2XaGLZgOFPG8HBDkYM1ZIrXHNcVyItrkyOdI6hFc9kjtKwDdTfzVaagTlLMBfvh2jW
- 5lyrJs6fHjUZilU+pxdzPYfxtm+jzZ8=
+ t=1746633521; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Bq1vzpuEoohtdtFqzEJTfy3+fQFScKZxsZ2cGfOiP/c=;
+ b=QVgciK7Gm/tzl3ONIBSwFGxP+VqTvOoaA6VN8t2aofWi63Vw8av5t5SztFj7fk7GO64Efu
+ bSRswkqS9J1C0Dvju43SBoanDOdlTdC9DnffLxF78TcdcEEcFzjGLoZBd528Iy3eleH1eh
+ WSNpv8rMQp8B+oNSDSDHr+kXJtGchMc=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1746633519;
+ s=susede2_ed25519; t=1746633521;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=yD+1WuEozqBURcWyzAB0aKwnMWfR5gjTvYfAjfbit8U=;
- b=XZFPk+wdgMOngm2sIjdDq1BAXgHnRlvUjEjUld/kWhv2TFmRXe+LO/IONt98+MN25aLzPS
- qD1wX179KXlEk0Dg==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Bq1vzpuEoohtdtFqzEJTfy3+fQFScKZxsZ2cGfOiP/c=;
+ b=VJmiUXfCCKbIiTVlWpMDxZJlIZiwVHTpf3CofIhHLiZnkXDErsSsj/ZYurzU2Q5MjyGrBY
+ e5+tcVRju13uSZCg==
 Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1746633519; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=yD+1WuEozqBURcWyzAB0aKwnMWfR5gjTvYfAjfbit8U=;
- b=mOmo8V0mvpJn9nTjCnNx688rCr7OmR4VwjZsiIbXKaAUzPa4K74DYnFhNpRHPKmwqnuk5C
- icck2XaGLZgOFPG8HBDkYM1ZIrXHNcVyItrkyOdI6hFc9kjtKwDdTfzVaagTlLMBfvh2jW
- 5lyrJs6fHjUZilU+pxdzPYfxtm+jzZ8=
+ t=1746633521; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Bq1vzpuEoohtdtFqzEJTfy3+fQFScKZxsZ2cGfOiP/c=;
+ b=QVgciK7Gm/tzl3ONIBSwFGxP+VqTvOoaA6VN8t2aofWi63Vw8av5t5SztFj7fk7GO64Efu
+ bSRswkqS9J1C0Dvju43SBoanDOdlTdC9DnffLxF78TcdcEEcFzjGLoZBd528Iy3eleH1eh
+ WSNpv8rMQp8B+oNSDSDHr+kXJtGchMc=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1746633519;
+ s=susede2_ed25519; t=1746633521;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=yD+1WuEozqBURcWyzAB0aKwnMWfR5gjTvYfAjfbit8U=;
- b=XZFPk+wdgMOngm2sIjdDq1BAXgHnRlvUjEjUld/kWhv2TFmRXe+LO/IONt98+MN25aLzPS
- qD1wX179KXlEk0Dg==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Bq1vzpuEoohtdtFqzEJTfy3+fQFScKZxsZ2cGfOiP/c=;
+ b=VJmiUXfCCKbIiTVlWpMDxZJlIZiwVHTpf3CofIhHLiZnkXDErsSsj/ZYurzU2Q5MjyGrBY
+ e5+tcVRju13uSZCg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 64875139D9;
- Wed,  7 May 2025 15:58:38 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 11344139D9;
+ Wed,  7 May 2025 15:58:39 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id dD06CC6DG2gncQAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 07 May 2025 15:58:38 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id qFMGMC+DG2gncQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 07 May 2025 15:58:39 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>
-Subject: [PATCH 0/3] migration, ci: Tweaks to migration-compat jobs
-Date: Wed,  7 May 2025 12:58:32 -0300
-Message-Id: <20250507155835.31074-1-farosas@suse.de>
+Subject: [PATCH 1/3] ci: Re-enable python subtests in qtest migration suite
+Date: Wed,  7 May 2025 12:58:33 -0300
+Message-Id: <20250507155835.31074-2-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20250507155835.31074-1-farosas@suse.de>
+References: <20250507155835.31074-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.98%];
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
  R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
  MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_TWO(0.00)[2];
@@ -81,16 +90,19 @@ X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.98%];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
  FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
  RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email];
  RCVD_TLS_ALL(0.00)[]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam-Score: -2.80
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,17 +118,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A couple of cleanups to the migration jobs, plus a fix for an issue
-that may happen during the QEMU release.
+The migration compatibility tests have been running with the PYTHON
+variable unset to avoid running a broken test. The faulty test has
+since been removed, so we can enable the python tests once again.
 
-Fabiano Rosas (3):
-  ci: Re-enable python subtests in qtest migration suite
-  ci: Fix build-previous-qemu when the version tag is absent
-  ci: Reduce the size of artifacts for build-previous-qemu
+Aside from the broken test, only one other test uses python and I have
+been running it locally ever since, so this commit should not expose
+any new bug.
 
- .gitlab-ci.d/buildtest.yml | 27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+ .gitlab-ci.d/buildtest.yml | 8 --------
+ 1 file changed, 8 deletions(-)
 
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index 431bc07d8f..ccf69fb8dd 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -227,14 +227,6 @@ build-previous-qemu:
+     # testing an old QEMU against new features/tests that it is not
+     # compatible with.
+     - cd build-previous
+-    # Don't allow python-based tests to run. The
+-    # vmstate-checker-script test has a race that causes it to fail
+-    # sometimes. It cannot be fixed it because this job runs the test
+-    # from the old QEMU version. The test will be removed on master,
+-    # but this job will only see the change in the next release.
+-    #
+-    # TODO: remove this line after 9.2 release
+-    - unset PYTHON
+     # old to new
+     - QTEST_QEMU_BINARY_SRC=./qemu-system-${TARGET}
+           QTEST_QEMU_BINARY=../build/qemu-system-${TARGET} ./tests/qtest/migration-test
 -- 
 2.35.3
 
