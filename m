@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9017BAAEF37
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 01:17:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23425AAEF2F
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 01:16:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCnyl-0000iF-1D; Wed, 07 May 2025 19:15:07 -0400
+	id 1uCnym-0000jX-N4; Wed, 07 May 2025 19:15:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uCnyf-0000gQ-TU
- for qemu-devel@nongnu.org; Wed, 07 May 2025 19:15:01 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1uCnyh-0000hX-RO
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 19:15:04 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uCnyd-0007Ai-SD
- for qemu-devel@nongnu.org; Wed, 07 May 2025 19:15:01 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-22e6344326dso4944775ad.1
- for <qemu-devel@nongnu.org>; Wed, 07 May 2025 16:14:59 -0700 (PDT)
+ id 1uCnye-0007Aw-Tq
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 19:15:03 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-2264aefc45dso6270645ad.0
+ for <qemu-devel@nongnu.org>; Wed, 07 May 2025 16:15:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746659698; x=1747264498; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746659699; x=1747264499; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7AD0wBkIB6INtnwcEFWKK+z4tJ5aOGPeiDtfz2k1oSg=;
- b=UW3dIm98PBw35sXFTNGIRrAaqzPv76CJou4gKKQHfQjfFUNqchPdvStDbjycr2m8e1
- DcYY95iPQ8JdsBjn7fOuGQhbHb1LhxEhJJAjlFq1TFK+FAC3sUd+nFTOsPxvemlvws8f
- xRuDcSZDUHEON6JDKnHtuNlJaay5lwyvS8pqWTdG5CaQ9Wyv2TLPrpRSvrF/6Iq+6WKV
- wK6thHYDMwdDos4zdpRNPXHResc7xirrP8+7CAEsAgWDJ14w3RwN9Y8Gt6YjH411C6BT
- +rv9Kzu0neNLMxx4qHcH36k+WhYrNQde/ZEBFw6ljGTORXdKcAy6LD/HWSetbi2SE5lg
- 7G8g==
+ bh=GQFNYs+5MBLEhk/YpwGvftpZAYeWxZFFM99PsEI42kc=;
+ b=T6oEGNuDa5xqFlDDTr9rHQBB6+3cOEoeGgJN5z84UvIq1fQWnHlvURZcj0zfO++Qfb
+ F12daF1cI1gzaELysnhKoHQYtlkf6nIO4oYQaznaUCou97LiAQBhQI9Ij4+MPxU9qwvw
+ /bag4OUFRUs3bSvRgDU9me3Co8I5Ofubby6Y98tr7u8bkG8p1MU4MKETu4yQOdijGoM7
+ BImvsvZ6pckMpLIPHDOe44Nz+qOsvqgASqG+me7LvVZG8HpdLuyqGaw2l4lW2d5qZfH4
+ IX/xtxGtQko1+XDkE5dEnmuRvkDcUN56wW6YGdxG/Zk+3C3ePgle4iFYeQBZqiqGh2Pp
+ e1xA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746659698; x=1747264498;
+ d=1e100.net; s=20230601; t=1746659699; x=1747264499;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7AD0wBkIB6INtnwcEFWKK+z4tJ5aOGPeiDtfz2k1oSg=;
- b=inH1bEb7RTnAB+w2p0/6UETgQHwbZ/iNoDXPRB3ZqQ4g+8PrmYshs9SuyjKtT2dcMA
- 6VzOKfCH5txAc+Ki1OwkK2OyZtFnTr3mua3PaHvZSin+ObQMfSjRNqZlPPidLZMrOC6w
- A+H5RL6YlzB7A7TYR+ywUE47fhLOxniqHUVMkvTBoK0mddJyWoJab26YEqDcl6cBxArl
- esxsaQ2l7O7ZGQgCLT+X6Ta/s28Qv6l+A1/8522NAmqRXEENuMSKxjUcsV9FZEJxSQG7
- DGUesjgEnbjfsO7nOSZvV5aG+Mo6bqsMCU6EORChqiS95ISNfGR8IGRAABbmqkYUF5y/
- zJ3w==
-X-Gm-Message-State: AOJu0Yyan9CMfoPRlZt0oGB354+LxdDj7al7ea9Zg9EmGU8YGefVLmG9
- eTsiw0JGrzr4YMyR4D3BwAF1uV22UUMU11GkN0VD1Yx6HDCpI7bUUcO8eDNq65W9fvJ+YBwN0+m
- fWP+Upw==
-X-Gm-Gg: ASbGncsTBWdc9R4A1lqXFlVvIQQzUKr1lVSRyATvvmtpVQxMJ1B2mkZ/RYYh8Zi0qm4
- 0Tue8292Y8xToaF8uR1yz3pHNZZkl+kQ9BYcSWntODPef1KS10i6/kjfx1QaAlj3YoNDDzZHsIk
- HR43kYc2FLW+sKvfstNvOKno3H5jpEm2M4OA4Yv02lBrL5n6WQb8R8Jt2sMkRM0RM1Atta7nUzz
- xli3cMSZQd8aPCw5PIrxxP5HLyHyEZce/86p/eobka7Gg48fdP/59Dq+o3HGU9fT6Lp18a3ztQO
- SXSKlz5dzoRp1Thk9xB1gbUq/HYcmN0kvfi57ZZN
-X-Google-Smtp-Source: AGHT+IHkDxb/3QSYuqNyRMa7hBtpzZgcEsi99M+TX6miRHQQw6JxuczqtQjbR06TbHOaXWPjR+k02A==
-X-Received: by 2002:a17:902:c94f:b0:21a:8300:b9d5 with SMTP id
- d9443c01a7336-22e861d5e25mr16823395ad.23.1746659698562; 
- Wed, 07 May 2025 16:14:58 -0700 (PDT)
+ bh=GQFNYs+5MBLEhk/YpwGvftpZAYeWxZFFM99PsEI42kc=;
+ b=tpdYLyKbUGxPjE38UKlIHV31yzExlB/yc4U5ZrRfhD0QB8cXWi8BPTAS2kVfdWrkTi
+ X2g69F8jcwGea9ue6m7Znt7dHM38hiIXo7/BhDlbPBP8z6wiXgQITcVvpSP+xDxBsc9p
+ oR8QX9siawoGWYcfzoLGYrnfPz80euEsou9ICHk0R3CPU8aOD1JcwnAC9sAHi6sEcY9t
+ SSF5Xg9W4OkniGWWYOCRKX8YGYfsq52g2g6OjbIqS+heqfIFpAlGN0R9VRR9DI0xpeif
+ JZyz8eb2LDT54pLaDWKvbS7JDaSBurn8quwFDpT+plV9WRGHHJlEB6XS7/Sbs4cDC/Ft
+ Feog==
+X-Gm-Message-State: AOJu0Yy08/ixty0R8uvloLr/yyWjHUEFHQWW9eq+Ywg+V/HuYMtRDXJ0
+ K1wrGV07FAcUTwNSzxIbDbhha9IxT7n5RRgIKg+lXZtMLqLDubIcfklDe7NPin1IXGBd17Ll/Jz
+ s+LqHow==
+X-Gm-Gg: ASbGncuJhgerMg3IG01AVudtz2S448rrWujxhHTo+u8kM3NTqRXB3oReri5a8xLmb8B
+ wErtDlUTVjPCH8Zb341JKgZ9S+2iVn2/16+ChVWTiAsxQyIhQOvEubROYeQZYafFsuepHqArMx0
+ gNcKFIfR/S9rYMY7av6x3CaN+KlGFXG+2ITK9KvItFbTXT+1AgQzchSahaBTs5p74ojMNMU/MAq
+ Z2P7oTdQ+KKuzpsQEIi3z6dD9fGO9FkW/nNDGNiPqLeH4xgy60t9N805wQat+Ms9ChKvMu9AZD5
+ dIzj0hjDFXuSvYISQQmgGu/G+lTkaUZt6vHYHNeC
+X-Google-Smtp-Source: AGHT+IFEoRfQsYrvh8/50kwwZBMMzjb0S1mqp/fy8lbubOgUdWtR4vUsb970fbOPikIFeUQYSPrv1A==
+X-Received: by 2002:a17:902:d487:b0:227:ac2a:2472 with SMTP id
+ d9443c01a7336-22e865f7ea1mr17243255ad.28.1746659699493; 
+ Wed, 07 May 2025 16:14:59 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22e421a7dafsm40103205ad.69.2025.05.07.16.14.57
+ d9443c01a7336-22e421a7dafsm40103205ad.69.2025.05.07.16.14.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 May 2025 16:14:58 -0700 (PDT)
+ Wed, 07 May 2025 16:14:59 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>, alex.bennee@linaro.org,
@@ -68,16 +68,16 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>, alex.bennee@linaro.org,
  Markus Armbruster <armbru@redhat.com>, richard.henderson@linaro.org,
  pbonzini@redhat.com, jsnow@redhat.com, philmd@linaro.org,
  berrange@redhat.com, thuth@redhat.com, Michael Roth <michael.roth@amd.com>
-Subject: [PATCH 08/13] qemu/target-info: implement missing helpers
-Date: Wed,  7 May 2025 16:14:38 -0700
-Message-ID: <20250507231442.879619-9-pierrick.bouvier@linaro.org>
+Subject: [PATCH 09/13] qapi: transform target specific 'if' in runtime checks
+Date: Wed,  7 May 2025 16:14:39 -0700
+Message-ID: <20250507231442.879619-10-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250507231442.879619-1-pierrick.bouvier@linaro.org>
 References: <20250507231442.879619-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,181 +100,434 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add runtime helpers for target and config queries.
-
-Note: This will be reimplemented later [1] using proper information in
-TargetInfo. Meanwhile, just add a simple implementation.
-
-[1] https://patchew.org/QEMU/20250424222112.36194-1-philmd@linaro.org/20250424222112.36194-19-philmd@linaro.org/
-
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- meson.build                |   2 +-
- include/qemu/target-info.h |  14 +++++
- target-info.c              | 117 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 132 insertions(+), 1 deletion(-)
+ qapi/machine-target.json | 84 ++++++++++++++++++++++++----------------
+ qapi/misc-target.json    | 48 ++++++++++++-----------
+ scripts/qapi/expr.py     |  9 +++--
+ 3 files changed, 81 insertions(+), 60 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 6b235b291dc..7094832c3e2 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3822,7 +3822,7 @@ endif
- common_ss.add(pagevary)
- specific_ss.add(files('page-target.c', 'page-vary-target.c'))
+diff --git a/qapi/machine-target.json b/qapi/machine-target.json
+index 541f93eeb78..6174b7291ca 100644
+--- a/qapi/machine-target.json
++++ b/qapi/machine-target.json
+@@ -96,7 +96,7 @@
+ ##
+ { 'struct': 'CpuModelBaselineInfo',
+   'data': { 'model': 'CpuModelInfo' },
+-  'if': 'TARGET_S390X' }
++  'runtime_if': 'target_s390x()' }
  
--common_ss.add(files('target-info.c'))
-+specific_ss.add(files('target-info.c'))
- specific_ss.add(files('target-info-stub.c'))
+ ##
+ # @CpuModelCompareInfo:
+@@ -120,7 +120,7 @@
+ { 'struct': 'CpuModelCompareInfo',
+   'data': { 'result': 'CpuModelCompareResult',
+             'responsible-properties': ['str'] },
+-  'if': 'TARGET_S390X' }
++  'runtime_if': 'target_s390x()' }
  
- subdir('backends')
-diff --git a/include/qemu/target-info.h b/include/qemu/target-info.h
-index 850a2958b9c..d9c0df10c53 100644
---- a/include/qemu/target-info.h
-+++ b/include/qemu/target-info.h
-@@ -38,4 +38,18 @@ const char *target_machine_typename(void);
-  */
- const char *target_cpu_type(void);
+ ##
+ # @query-cpu-model-comparison:
+@@ -179,7 +179,7 @@
+ { 'command': 'query-cpu-model-comparison',
+   'data': { 'modela': 'CpuModelInfo', 'modelb': 'CpuModelInfo' },
+   'returns': 'CpuModelCompareInfo',
+-  'if': 'TARGET_S390X' }
++  'runtime_if': 'target_s390x()' }
  
-+bool target_i386(void);
-+bool target_x86_64(void);
-+bool target_arm(void);
-+bool target_aarch64(void);
-+bool target_s390x(void);
-+bool target_mips(void);
-+bool target_mips64(void);
-+bool target_loongarch64(void);
-+bool target_riscv32(void);
-+bool target_riscv64(void);
-+bool target_ppc(void);
-+bool target_ppc64(void);
-+bool target_has_kvm(void);
-+
- #endif
-diff --git a/target-info.c b/target-info.c
-index 16fdca7aaaf..f2bdae18f4f 100644
---- a/target-info.c
-+++ b/target-info.c
-@@ -29,3 +29,120 @@ const char *target_machine_typename(void)
- {
-     return target_info()->machine_typename;
+ ##
+ # @query-cpu-model-baseline:
+@@ -235,7 +235,7 @@
+   'data': { 'modela': 'CpuModelInfo',
+             'modelb': 'CpuModelInfo' },
+   'returns': 'CpuModelBaselineInfo',
+-  'if': 'TARGET_S390X' }
++  'runtime_if': 'target_s390x()' }
+ 
+ ##
+ # @CpuModelExpansionInfo:
+@@ -256,12 +256,15 @@
+ { 'struct': 'CpuModelExpansionInfo',
+   'data': { 'model': 'CpuModelInfo',
+             'deprecated-props' : { 'type': ['str'],
+-                                   'if': 'TARGET_S390X' } },
+-  'if': { 'any': [ 'TARGET_S390X',
+-                   'TARGET_I386',
+-                   'TARGET_ARM',
+-                   'TARGET_LOONGARCH64',
+-                   'TARGET_RISCV' ] } }
++                                   'runtime_if': 'target_s390x()'} },
++  'runtime_if': { 'any': [ 'target_s390x()',
++                           'target_i386()',
++                           'target_x86_64()',
++                           'target_arm()',
++                           'target_aarch64()',
++                           'target_loongarch64()',
++                           'target_riscv32()',
++                           'target_riscv64()' ] } }
+ 
+ ##
+ # @query-cpu-model-expansion:
+@@ -311,11 +314,14 @@
+   'data': { 'type': 'CpuModelExpansionType',
+             'model': 'CpuModelInfo' },
+   'returns': 'CpuModelExpansionInfo',
+-  'if': { 'any': [ 'TARGET_S390X',
+-                   'TARGET_I386',
+-                   'TARGET_ARM',
+-                   'TARGET_LOONGARCH64',
+-                   'TARGET_RISCV' ] } }
++  'runtime_if': { 'any': [ 'target_s390x()',
++                           'target_i386()',
++                           'target_x86_64()',
++                           'target_arm()',
++                           'target_aarch64()',
++                           'target_loongarch64()',
++                           'target_riscv32()',
++                           'target_riscv64()' ] } }
+ 
+ ##
+ # @CpuDefinitionInfo:
+@@ -378,13 +384,18 @@
+             'typename': 'str',
+             '*alias-of' : 'str',
+             'deprecated' : 'bool' },
+-  'if': { 'any': [ 'TARGET_PPC',
+-                   'TARGET_ARM',
+-                   'TARGET_I386',
+-                   'TARGET_S390X',
+-                   'TARGET_MIPS',
+-                   'TARGET_LOONGARCH64',
+-                   'TARGET_RISCV' ] } }
++  'runtime_if': { 'any': [ 'target_ppc()',
++                           'target_ppc64()',
++                           'target_arm()',
++                           'target_aarch64()',
++                           'target_i386()',
++                           'target_x86_64()',
++                           'target_s390x()',
++                           'target_mips()',
++                           'target_mips64()',
++                           'target_loongarch64()',
++                           'target_riscv32()',
++                           'target_riscv64()' ] } }
+ 
+ ##
+ # @query-cpu-definitions:
+@@ -396,13 +407,18 @@
+ # Since: 1.2
+ ##
+ { 'command': 'query-cpu-definitions', 'returns': ['CpuDefinitionInfo'],
+-  'if': { 'any': [ 'TARGET_PPC',
+-                   'TARGET_ARM',
+-                   'TARGET_I386',
+-                   'TARGET_S390X',
+-                   'TARGET_MIPS',
+-                   'TARGET_LOONGARCH64',
+-                   'TARGET_RISCV' ] } }
++  'runtime_if': { 'any': [ 'target_ppc()',
++                           'target_ppc64()',
++                           'target_arm()',
++                           'target_aarch64()',
++                           'target_i386()',
++                           'target_x86_64()',
++                           'target_s390x()',
++                           'target_mips()',
++                           'target_mips64()',
++                           'target_loongarch64()',
++                           'target_riscv32()',
++                           'target_riscv64()' ] } }
+ 
+ ##
+ # @S390CpuPolarization:
+@@ -414,7 +430,7 @@
+ ##
+ { 'enum': 'S390CpuPolarization',
+   'data': [ 'horizontal', 'vertical' ],
+-  'if': 'TARGET_S390X'
++  'runtime_if': 'target_s390x()'
  }
-+
-+bool target_i386(void)
-+{
-+#ifdef TARGET_I386
-+    return true;
-+#else
-+    return false;
-+#endif
-+}
-+
-+bool target_x86_64(void)
-+{
-+#ifdef TARGET_X86_64
-+    return true;
-+#else
-+    return false;
-+#endif
-+}
-+
-+bool target_arm(void)
-+{
-+#ifdef TARGET_ARM
-+    return true;
-+#else
-+    return false;
-+#endif
-+}
-+
-+bool target_aarch64(void)
-+{
-+#ifdef TARGET_AARCH64
-+    return true;
-+#else
-+    return false;
-+#endif
-+}
-+
-+bool target_s390x(void)
-+{
-+#ifdef TARGET_S390X
-+    return true;
-+#else
-+    return false;
-+#endif
-+}
-+
-+bool target_mips(void)
-+{
-+#ifdef TARGET_MIPS
-+    return true;
-+#else
-+    return false;
-+#endif
-+}
-+
-+bool target_mips64(void)
-+{
-+#ifdef TARGET_MIPS64
-+    return true;
-+#else
-+    return false;
-+#endif
-+}
-+
-+bool target_loongarch64(void)
-+{
-+#ifdef TARGET_LOONGARCH64
-+    return true;
-+#else
-+    return false;
-+#endif
-+}
-+
-+bool target_riscv32(void)
-+{
-+#ifdef TARGET_RISCV32
-+    return true;
-+#else
-+    return false;
-+#endif
-+}
-+
-+bool target_riscv64(void)
-+{
-+#ifdef TARGET_RISCV64
-+    return true;
-+#else
-+    return false;
-+#endif
-+}
-+
-+bool target_ppc(void)
-+{
-+#ifdef TARGET_PPC
-+    return true;
-+#else
-+    return false;
-+#endif
-+}
-+
-+bool target_ppc64(void)
-+{
-+#ifdef TARGET_ppc64
-+    return true;
-+#else
-+    return false;
-+#endif
-+}
-+
-+bool target_has_kvm(void)
-+{
-+#ifdef CONFIG_KVM
-+    return true;
-+#else
-+    return false;
-+#endif
-+}
+ 
+ ##
+@@ -453,7 +469,7 @@
+       '*dedicated': 'bool'
+   },
+   'features': [ 'unstable' ],
+-  'if': { 'all': [ 'TARGET_S390X' , 'CONFIG_KVM' ] }
++  'runtime_if': { 'all': [ 'target_s390x()' , 'target_has_kvm()' ] }
+ }
+ 
+ ##
+@@ -489,7 +505,7 @@
+ { 'event': 'CPU_POLARIZATION_CHANGE',
+   'data': { 'polarization': 'S390CpuPolarization' },
+   'features': [ 'unstable' ],
+-  'if': { 'all': [ 'TARGET_S390X', 'CONFIG_KVM' ] }
++  'runtime_if': { 'all': [ 'target_s390x()' , 'target_has_kvm()' ] }
+ }
+ 
+ ##
+@@ -503,7 +519,7 @@
+ ##
+ { 'struct': 'CpuPolarizationInfo',
+   'data': { 'polarization': 'S390CpuPolarization' },
+-  'if': { 'all': [ 'TARGET_S390X', 'CONFIG_KVM' ] }
++  'runtime_if': { 'all': [ 'target_s390x()' , 'target_has_kvm()' ] }
+ }
+ 
+ ##
+@@ -519,5 +535,5 @@
+ ##
+ { 'command': 'query-s390x-cpu-polarization', 'returns': 'CpuPolarizationInfo',
+   'features': [ 'unstable' ],
+-  'if': { 'all': [ 'TARGET_S390X', 'CONFIG_KVM' ] }
++  'runtime_if': { 'all': [ 'target_s390x()' , 'target_has_kvm()' ] }
+ }
+diff --git a/qapi/misc-target.json b/qapi/misc-target.json
+index 42e4a7417dc..54500533e5b 100644
+--- a/qapi/misc-target.json
++++ b/qapi/misc-target.json
+@@ -17,7 +17,7 @@
+ #     <- { "return": {} }
+ ##
+ { 'command': 'rtc-reset-reinjection',
+-  'if': 'TARGET_I386' }
++  'runtime_if': { 'any': [ 'target_i386()', 'target_x86_64()' ] } }
+ 
+ ##
+ # @SevState:
+@@ -45,7 +45,7 @@
+ { 'enum': 'SevState',
+   'data': ['uninit', 'launch-update', 'launch-secret', 'running',
+            'send-update', 'receive-update' ],
+-  'if': 'TARGET_I386' }
++  'runtime_if': { 'any': [ 'target_i386()', 'target_x86_64()' ] } }
+ 
+ ##
+ # @SevGuestType:
+@@ -60,7 +60,7 @@
+ ##
+ { 'enum': 'SevGuestType',
+   'data': [ 'sev', 'sev-snp' ],
+-  'if': 'TARGET_I386' }
++  'runtime_if': { 'any': [ 'target_i386()', 'target_x86_64()' ] } }
+ 
+ ##
+ # @SevGuestInfo:
+@@ -76,7 +76,7 @@
+ { 'struct': 'SevGuestInfo',
+   'data': { 'policy': 'uint32',
+             'handle': 'uint32' },
+-  'if': 'TARGET_I386' }
++  'runtime_if': { 'any': [ 'target_i386()', 'target_x86_64()' ] } }
+ 
+ ##
+ # @SevSnpGuestInfo:
+@@ -89,7 +89,7 @@
+ ##
+ { 'struct': 'SevSnpGuestInfo',
+   'data': { 'snp-policy': 'uint64' },
+-  'if': 'TARGET_I386' }
++  'runtime_if': { 'any': [ 'target_i386()', 'target_x86_64()' ] } }
+ 
+ ##
+ # @SevInfo:
+@@ -121,7 +121,7 @@
+   'data': {
+       'sev': 'SevGuestInfo',
+       'sev-snp': 'SevSnpGuestInfo' },
+-  'if': 'TARGET_I386' }
++  'runtime_if': { 'any': [ 'target_i386()', 'target_x86_64()' ] } }
+ 
+ 
+ ##
+@@ -141,7 +141,7 @@
+ #                      "handle" : 1 } }
+ ##
+ { 'command': 'query-sev', 'returns': 'SevInfo',
+-  'if': 'TARGET_I386' }
++  'runtime_if': { 'any': [ 'target_i386()', 'target_x86_64()' ] } }
+ 
+ ##
+ # @SevLaunchMeasureInfo:
+@@ -153,7 +153,7 @@
+ # Since: 2.12
+ ##
+ { 'struct': 'SevLaunchMeasureInfo', 'data': {'data': 'str'},
+-  'if': 'TARGET_I386' }
++  'runtime_if': { 'any': [ 'target_i386()', 'target_x86_64()' ] } }
+ 
+ ##
+ # @query-sev-launch-measure:
+@@ -170,7 +170,7 @@
+ #     <- { "return": { "data": "4l8LXeNlSPUDlXPJG5966/8%YZ" } }
+ ##
+ { 'command': 'query-sev-launch-measure', 'returns': 'SevLaunchMeasureInfo',
+-  'if': 'TARGET_I386' }
++  'runtime_if': { 'any': [ 'target_i386()', 'target_x86_64()' ] } }
+ 
+ ##
+ # @SevCapability:
+@@ -197,7 +197,7 @@
+             'cpu0-id': 'str',
+             'cbitpos': 'int',
+             'reduced-phys-bits': 'int'},
+-  'if': 'TARGET_I386' }
++  'runtime_if': { 'any': [ 'target_i386()', 'target_x86_64()' ] } }
+ 
+ ##
+ # @query-sev-capabilities:
+@@ -217,7 +217,7 @@
+ #                      "cbitpos": 47, "reduced-phys-bits": 1}}
+ ##
+ { 'command': 'query-sev-capabilities', 'returns': 'SevCapability',
+-  'if': 'TARGET_I386' }
++  'runtime_if': { 'any': [ 'target_i386()', 'target_x86_64()' ] } }
+ 
+ ##
+ # @sev-inject-launch-secret:
+@@ -234,7 +234,7 @@
+ ##
+ { 'command': 'sev-inject-launch-secret',
+   'data': { 'packet-header': 'str', 'secret': 'str', '*gpa': 'uint64' },
+-  'if': 'TARGET_I386' }
++  'runtime_if': { 'any': [ 'target_i386()', 'target_x86_64()' ] } }
+ 
+ ##
+ # @SevAttestationReport:
+@@ -248,7 +248,7 @@
+ ##
+ { 'struct': 'SevAttestationReport',
+   'data': { 'data': 'str'},
+-  'if': 'TARGET_I386' }
++  'runtime_if': { 'any': [ 'target_i386()', 'target_x86_64()' ] } }
+ 
+ ##
+ # @query-sev-attestation-report:
+@@ -272,7 +272,7 @@
+ { 'command': 'query-sev-attestation-report',
+   'data': { 'mnonce': 'str' },
+   'returns': 'SevAttestationReport',
+-  'if': 'TARGET_I386' }
++  'runtime_if': { 'any': [ 'target_i386()', 'target_x86_64()' ] } }
+ 
+ ##
+ # @GICCapability:
+@@ -297,7 +297,7 @@
+   'data': { 'version': 'int',
+             'emulated': 'bool',
+             'kernel': 'bool' },
+-  'if': 'TARGET_ARM' }
++  'runtime_if': { 'any': [ 'target_arm()', 'target_aarch64()' ] } }
+ 
+ ##
+ # @query-gic-capabilities:
+@@ -316,7 +316,7 @@
+ #                     { "version": 3, "emulated": false, "kernel": true } ] }
+ ##
+ { 'command': 'query-gic-capabilities', 'returns': ['GICCapability'],
+-  'if': 'TARGET_ARM' }
++  'runtime_if': { 'any': [ 'target_arm()', 'target_aarch64()' ] } }
+ 
+ ##
+ # @SGXEPCSection:
+@@ -356,7 +356,7 @@
+             'sgx2': 'bool',
+             'flc': 'bool',
+             'sections': ['SGXEPCSection']},
+-   'if': 'TARGET_I386' }
++   'runtime_if': { 'any': [ 'target_i386()', 'target_x86_64()' ] } }
+ 
+ ##
+ # @query-sgx:
+@@ -375,7 +375,8 @@
+ #                      "sections": [{"node": 0, "size": 67108864},
+ #                      {"node": 1, "size": 29360128}]} }
+ ##
+-{ 'command': 'query-sgx', 'returns': 'SGXInfo', 'if': 'TARGET_I386' }
++{ 'command': 'query-sgx', 'returns': 'SGXInfo',
++  'runtime_if': { 'any': [ 'target_i386()', 'target_x86_64()' ] } }
+ 
+ ##
+ # @query-sgx-capabilities:
+@@ -394,7 +395,8 @@
+ #                      "section" : [{"node": 0, "size": 67108864},
+ #                      {"node": 1, "size": 29360128}]} }
+ ##
+-{ 'command': 'query-sgx-capabilities', 'returns': 'SGXInfo', 'if': 'TARGET_I386' }
++{ 'command': 'query-sgx-capabilities', 'returns': 'SGXInfo',
++  'runtime_if': { 'any': [ 'target_i386()', 'target_x86_64()' ] } }
+ 
+ 
+ ##
+@@ -418,7 +420,7 @@
+ ##
+ { 'enum': 'EvtchnPortType',
+   'data': ['closed', 'unbound', 'interdomain', 'pirq', 'virq', 'ipi'],
+-  'if': 'TARGET_I386' }
++  'runtime_if': { 'any': [ 'target_i386()', 'target_x86_64()' ] } }
+ 
+ ##
+ # @EvtchnInfo:
+@@ -449,7 +451,7 @@
+            'target': 'uint16',
+            'pending': 'bool',
+            'masked': 'bool'},
+-  'if': 'TARGET_I386' }
++  'runtime_if': { 'any': [ 'target_i386()', 'target_x86_64()' ] } }
+ 
+ 
+ ##
+@@ -488,7 +490,7 @@
+ ##
+ { 'command': 'xen-event-list',
+   'returns': ['EvtchnInfo'],
+-  'if': 'TARGET_I386' }
++  'runtime_if': { 'any': [ 'target_i386()', 'target_x86_64()' ] } }
+ 
+ ##
+ # @xen-event-inject:
+@@ -506,4 +508,4 @@
+ ##
+ { 'command': 'xen-event-inject',
+   'data': { 'port': 'uint32' },
+-  'if': 'TARGET_I386' }
++  'runtime_if': { 'any': [ 'target_i386()', 'target_x86_64()' ] } }
+diff --git a/scripts/qapi/expr.py b/scripts/qapi/expr.py
+index 5ae26395964..f31f28ecb10 100644
+--- a/scripts/qapi/expr.py
++++ b/scripts/qapi/expr.py
+@@ -638,7 +638,8 @@ def check_exprs(exprs: List[QAPIExpression]) -> List[QAPIExpression]:
+ 
+         if meta == 'enum':
+             check_keys(expr, info, meta,
+-                       ['enum', 'data'], ['if', 'features', 'prefix'])
++                       ['enum', 'data'], ['if', 'runtime_if', 'features',
++                                          'prefix'])
+             check_enum(expr)
+         elif meta == 'union':
+             check_keys(expr, info, meta,
+@@ -654,7 +655,8 @@ def check_exprs(exprs: List[QAPIExpression]) -> List[QAPIExpression]:
+             check_alternate(expr)
+         elif meta == 'struct':
+             check_keys(expr, info, meta,
+-                       ['struct', 'data'], ['base', 'if', 'features'])
++                       ['struct', 'data'], ['base', 'if', 'runtime_if',
++                                            'features'])
+             normalize_members(expr['data'])
+             check_struct(expr)
+         elif meta == 'command':
+@@ -667,7 +669,8 @@ def check_exprs(exprs: List[QAPIExpression]) -> List[QAPIExpression]:
+             check_command(expr)
+         elif meta == 'event':
+             check_keys(expr, info, meta,
+-                       ['event'], ['data', 'boxed', 'if', 'features'])
++                       ['event'], ['data', 'boxed', 'if', 'runtime_if',
++                                   'features'])
+             normalize_members(expr.get('data'))
+             check_event(expr)
+         else:
 -- 
 2.47.2
 
