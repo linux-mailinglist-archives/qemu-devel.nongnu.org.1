@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3132AADFC9
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 14:52:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55977AAE07E
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 15:18:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCeFi-0000BC-8N; Wed, 07 May 2025 08:51:58 -0400
+	id 1uCeeb-0002xE-8Q; Wed, 07 May 2025 09:17:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uCeFg-0000Aa-2R
- for qemu-devel@nongnu.org; Wed, 07 May 2025 08:51:56 -0400
-Received: from mgamail.intel.com ([192.198.163.17])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uCeeV-0002wm-6j
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 09:17:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uCeFe-0006Jw-86
- for qemu-devel@nongnu.org; Wed, 07 May 2025 08:51:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746622314; x=1778158314;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=u7gGagi+UA8FI7CxgiDR/Io6Lb2t24L/iv1V75g400w=;
- b=SUzZEViVW8OAk5mUeCP5bGknv2UKOQ0INGVm6Tv7j4JbFzcWa5LE0FV4
- qihve1pbVxruSvMSx9a0ft06DckaE/tfXgkMKIotX3WxYonTuiQqUdeha
- XgqAqKBPDO7orku3vqWd2Wl+g2rclznd431ATBA34r2njsNCqGO3NDXlC
- l4GRx2LBFUwSqvu2OncNm1OzUb3cEY3C0s0yztw4ALVT4/J5vjSHgygAd
- 7fzF+DcZcH4bsSBCjTcCAG1cvF96Yh4uINzMUo0F9uT4a5lDQIZC03siJ
- d2kyzumzUWgRWvx0VE0MifqAnDkygfBjkYT4ZkUR7ax2QgmRJDBH/bMIN w==;
-X-CSE-ConnectionGUID: TFCAWFcJScKIX5BDEPGcpQ==
-X-CSE-MsgGUID: 0s8bS65pTmyGTBKJrFAVHQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="48250685"
-X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="48250685"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2025 05:51:52 -0700
-X-CSE-ConnectionGUID: 9uMFJ/RqS9S8qbK04j8Rlw==
-X-CSE-MsgGUID: pRKy3hJ1QBOpfU+3v86h7w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; d="scan'208";a="136344015"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa008.fm.intel.com with ESMTP; 07 May 2025 05:51:51 -0700
-Date: Wed, 7 May 2025 21:12:51 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: [PATCH 2/4] target/i386: Use correct type for
- get_float_exception_flags() values
-Message-ID: <aBtcU6c+UTyvbt13@intel.com>
-References: <20250213142613.151308-1-peter.maydell@linaro.org>
- <20250213142613.151308-3-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uCeeT-00013a-51
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 09:17:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1746623849;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=TlIuvzcrYlkrRBvDYUvlcYpSvxQF+KhtAH454Igf3XE=;
+ b=CKiLoGGPqsLRmiefus3Ho3wXa0sHFw05zb28vYTWbHJEVPRNOCxccaQHhEajWCBG6EF4Cq
+ RCaXs2qclgtcH1F6bNZGyX9W4HYhndT/AHHJwUS310A3kp8HGj2hjgjtRDWSgDTExhZYZw
+ zWLW2ZsExv1ctaNvYDKoev4B5zlJJrI=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-223-yIPfYLM4P0eq2EIRV6oz2Q-1; Wed,
+ 07 May 2025 09:17:27 -0400
+X-MC-Unique: yIPfYLM4P0eq2EIRV6oz2Q-1
+X-Mimecast-MFC-AGG-ID: yIPfYLM4P0eq2EIRV6oz2Q_1746623846
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1214F18007E1; Wed,  7 May 2025 13:17:26 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.163])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 9B767180049D; Wed,  7 May 2025 13:17:25 +0000 (UTC)
+Date: Wed, 7 May 2025 09:17:24 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PULL v2 00/59] tcg patch queue
+Message-ID: <20250507131724.GA10883@fedora>
+References: <20250505195001.3479169-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="ywgYgNBBCLVrzbrJ"
 Content-Disposition: inline
-In-Reply-To: <20250213142613.151308-3-peter.maydell@linaro.org>
-Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -57
-X-Spam_score: -5.8
-X-Spam_bar: -----
-X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
+In-Reply-To: <20250505195001.3479169-1-richard.henderson@linaro.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,31 +82,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Feb 13, 2025 at 02:26:11PM +0000, Peter Maydell wrote:
-> Date: Thu, 13 Feb 2025 14:26:11 +0000
-> From: Peter Maydell <peter.maydell@linaro.org>
-> Subject: [PATCH 2/4] target/i386: Use correct type for
->  get_float_exception_flags() values
-> X-Mailer: git-send-email 2.43.0
-> 
-> The softfloat get_float_exception_flags() function returns 'int', but
-> in various places in target/i386 we incorrectly store the returned
-> value into a uint8_t.  This currently has no ill effects because i386
-> doesn't care about any of the float_flag enum values above 0x40.
-> However, we want to start using float_flag_input_denormal_used, which
-> is 0x4000.
-> 
-> Switch to using 'int' so that we can handle all the possible valid
-> float_flag_* values. This includes changing the return type of
-> save_exception_flags() and the argument to merge_exception_flags().
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  target/i386/ops_sse.h        | 16 +++----
->  target/i386/tcg/fpu_helper.c | 82 ++++++++++++++++++------------------
->  2 files changed, 49 insertions(+), 49 deletions(-)
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+--ywgYgNBBCLVrzbrJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+Applied, thanks.
+
+Please update the changelog at https://wiki.qemu.org/ChangeLog/10.1 for any user-visible changes.
+
+--ywgYgNBBCLVrzbrJ
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmgbXWMACgkQnKSrs4Gr
+c8gPIgf+NpRo8K4JoXof3MWFzMotsiSxpgpZEGZyLaBOdv+cxOl9p/C9PkxYVUnh
+gio5e9iBSWxstf8Qhk0jhqgAE99AKt2TxZm9va9QNXGgMdfnArceXfEuD83c/7Bn
+eLJG5bm+8dpNAdrfzT0SZVY4EXICzgdYTjglTE9VBX/uewe3jKtxXsJLdMFUlY6S
+pWG5a+HsKjOVsCroMZie+kN2AHZUY7+w7vqY9FBeXMs88adDgBIpugzBveD3SzZI
+YY7C+Znhh+jnC6mgY9FQg5yuVYvMx/QeN6UpaZ90f330of7ptyqairLxTPAqocQW
+ng1sEdnZwldIKq1DLevd2AdtViU9hA==
+=iIRN
+-----END PGP SIGNATURE-----
+
+--ywgYgNBBCLVrzbrJ--
 
 
