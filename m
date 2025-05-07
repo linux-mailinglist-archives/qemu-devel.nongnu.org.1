@@ -2,54 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEB36AAD633
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 08:37:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59172AAD5D4
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 08:17:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCYNc-0000wc-WA; Wed, 07 May 2025 02:35:45 -0400
+	id 1uCY4h-0002Qn-Ne; Wed, 07 May 2025 02:16:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wei.liu@kernel.org>)
- id 1uCYNa-0000tp-Ku
- for qemu-devel@nongnu.org; Wed, 07 May 2025 02:35:42 -0400
-Received: from nyc.source.kernel.org ([147.75.193.91])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uCY4e-0002QD-HK
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 02:16:08 -0400
+Received: from mgamail.intel.com ([198.175.65.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wei.liu@kernel.org>)
- id 1uCYNZ-0001GD-5C
- for qemu-devel@nongnu.org; Wed, 07 May 2025 02:35:42 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by nyc.source.kernel.org (Postfix) with ESMTP id 2D59EA4D49D;
- Wed,  7 May 2025 06:35:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51E0C4CEE7;
- Wed,  7 May 2025 06:35:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1746599732;
- bh=l1J+yu/udDUI/mMMp6c3ZkSHRSKvfdoXZZ+RGOaCt3o=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=eASQR1m0eTvttMBVnnIz/iUqpE5yZ+aPjDBVyurrHVAMOOySgLp5kj8tMkSv6hkbh
- 8z2CG1dXaZkqs1bhxGC8/Tvr2+WIj41LgN36LUTCaa+GdqpDjrSWJG0H8WKzyVQjr1
- yLPWofImyMa9uJkdQmC6Vy/5D2tMgNdQsLt79pxdqR9rZ1dws/tRKjS0TzO80VpKfl
- KW5beXBP7BvmLXo/pag6qF5ughUY2cHC0fyAFRrvyyIQQCS8br0yJd6hPKApvdT5Yc
- 0//6ab7cdu2B6ztRpCSCfgPBssvAFKeokUEzDjZzvl5oPlPjTAj6EhFeu+nG0C7Knr
- SWq3rkqwucC+w==
-Date: Wed, 7 May 2025 06:35:31 +0000
-From: Wei Liu <wei.liu@kernel.org>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uCY4c-0007RY-5m
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 02:16:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1746598566; x=1778134566;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=toK8JBayB+qMbxO0Sa+do0Oe6ClHwS1jvRr9XyrUsWc=;
+ b=MREXBKFZLhREy8lvOWuUSzOrRvs8bWNIgepgCY33d7Fm/XpD5PW6rugC
+ 4CF8I8QWKtrgR2X/HmWDVKpeH5D4VYATBQZb2SVNH4zq6pKxgjs2yHiuq
+ z3T1RdmtqJDeKWAyG0XrPY5bmG5+KLx/hh3upJK436i6tB+lB0QKoGL5D
+ 1zkjLkhGg0TjxVH5yI5EOSH1BIcxt5OaHfBNsYMq7mgy1yIC8NO3PLz1q
+ LNoDJupvC75NOQXz4h5GgM37Zx5IxKybyHBNnA0j99pxwwCmlUdlfUw2+
+ 1B23X7VILQDpRv5Z2pBvLkFb6sLxYcb+/7PVR8EvHrZlI1Eb9XNJDywZ+ A==;
+X-CSE-ConnectionGUID: I4vELF2/S+emoynHmWZJzA==
+X-CSE-MsgGUID: HbOo7QsyQy6hdvBGfDzwaQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11425"; a="52124562"
+X-IronPort-AV: E=Sophos;i="6.15,268,1739865600"; d="scan'208";a="52124562"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 May 2025 23:16:02 -0700
+X-CSE-ConnectionGUID: pQ/Dpfd5Siu2Rkfp3d43Jg==
+X-CSE-MsgGUID: mifFJOiySfSf/sUm/awUfQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,268,1739865600"; d="scan'208";a="140587428"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa003.jf.intel.com with ESMTP; 06 May 2025 23:15:58 -0700
+Date: Wed, 7 May 2025 14:36:59 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
 To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Wei Liu <wei.liu@kernel.org>
-Subject: Re: [PULL 05/22] target/i386/hvf: Include missing
- 'exec/target_page.h' header
-Message-ID: <aBr_MzqaoGwN7gpQ@liuwe-devbox-ubuntu-v2.tail21d00.ts.net>
-References: <20250506143512.4315-1-philmd@linaro.org>
- <20250506143512.4315-6-philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Huacai Chen <chenhuacai@kernel.org>, Amit Shah <amit@kernel.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Sergio Lopez <slp@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Jason Wang <jasowang@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ =?iso-8859-1?Q?Cl=E9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Yi Liu <yi.l.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH v3 04/19] hw/nvram/fw_cfg: Factor
+ fw_cfg_init_mem_internal() out
+Message-ID: <aBr/i95gBcTDH3xN@intel.com>
+References: <20250502185652.67370-1-philmd@linaro.org>
+ <20250502185652.67370-5-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250506143512.4315-6-philmd@linaro.org>
-Received-SPF: pass client-ip=147.75.193.91; envelope-from=wei.liu@kernel.org;
- helo=nyc.source.kernel.org
+In-Reply-To: <20250502185652.67370-5-philmd@linaro.org>
+Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
 X-Spam_score_int: -57
 X-Spam_score: -5.8
 X-Spam_bar: -----
@@ -73,43 +94,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 06, 2025 at 04:34:54PM +0200, Philippe Mathieu-Daudé wrote:
-> Include "exec/target_page.h" to be able to compile HVF on x86_64:
+On Fri, May 02, 2025 at 08:56:36PM +0200, Philippe Mathieu-Daudé wrote:
+> Date: Fri,  2 May 2025 20:56:36 +0200
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: [PATCH v3 04/19] hw/nvram/fw_cfg: Factor
+>  fw_cfg_init_mem_internal() out
+> X-Mailer: git-send-email 2.47.1
 > 
->   ../target/i386/hvf/hvf.c:139:49: error: use of undeclared identifier 'TARGET_PAGE_SIZE'
->               uint64_t dirty_page_start = gpa & ~(TARGET_PAGE_SIZE - 1u);
->                                                 ^
->   ../target/i386/hvf/hvf.c:141:45: error: use of undeclared identifier 'TARGET_PAGE_SIZE'
->               hv_vm_protect(dirty_page_start, TARGET_PAGE_SIZE,
+> Factor fw_cfg_init_mem_internal() out of fw_cfg_init_mem_wide().
+> In fw_cfg_init_mem_wide(), assert DMA arguments are provided.
+> Callers without DMA have to use the fw_cfg_init_mem() helper.
 > 
-> Fixes: 9c2ff9cdc9b ("exec/cpu-all: remove exec/target_page include")
-> Reported-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> Reported-by: Wei Liu <wei.liu@kernel.org>
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Message-Id: <20250425174310.70890-1-philmd@linaro.org>
-> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-
-FYI Paolo merged a patch from me that does the same thing. My patch is
-already in the master branch.
-
-Wei.
-
 > ---
->  target/i386/hvf/hvf.c | 1 +
->  1 file changed, 1 insertion(+)
+>  hw/nvram/fw_cfg.c | 20 ++++++++++++++------
+>  1 file changed, 14 insertions(+), 6 deletions(-)
 > 
-> diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
-> index 99e37a33e50..b16fb066758 100644
-> --- a/target/i386/hvf/hvf.c
-> +++ b/target/i386/hvf/hvf.c
-> @@ -50,6 +50,7 @@
->  #include "qemu/error-report.h"
->  #include "qemu/memalign.h"
->  #include "qapi/error.h"
-> +#include "exec/target_page.h"
->  #include "migration/blocker.h"
+> diff --git a/hw/nvram/fw_cfg.c b/hw/nvram/fw_cfg.c
+> index 54cfa07d3f5..d119c10d308 100644
+> --- a/hw/nvram/fw_cfg.c
+> +++ b/hw/nvram/fw_cfg.c
+> @@ -1053,9 +1053,9 @@ FWCfgState *fw_cfg_init_io_dma(uint32_t iobase, uint32_t dma_iobase,
+>      return s;
+>  }
 >  
->  #include "system/hvf.h"
+> -FWCfgState *fw_cfg_init_mem_wide(hwaddr ctl_addr,
+> -                                 hwaddr data_addr, uint32_t data_width,
+> -                                 hwaddr dma_addr, AddressSpace *dma_as)
+> +static FWCfgState *fw_cfg_init_mem_internal(hwaddr ctl_addr,
+> +                                         hwaddr data_addr, uint32_t data_width,
+> +                                         hwaddr dma_addr, AddressSpace *dma_as)
+>  {
+>      DeviceState *dev;
+>      SysBusDevice *sbd;
+> @@ -1087,11 +1087,19 @@ FWCfgState *fw_cfg_init_mem_wide(hwaddr ctl_addr,
+>      return s;
+>  }
+>  
+> +FWCfgState *fw_cfg_init_mem_wide(hwaddr ctl_addr,
+> +                                 hwaddr data_addr, uint32_t data_width,
+> +                                 hwaddr dma_addr, AddressSpace *dma_as)
+
+How about mentioning DMA in the name? fw_cfg_init_mem_dma.
+
+> +{
+> +    assert(dma_iobase && dma_as);
+> +    fw_cfg_init_mem_internal(ctl_addr, data_addr, data_addr, dma_addr, dma_as);
+> +}
+> +
+>  FWCfgState *fw_cfg_init_mem(hwaddr ctl_addr, hwaddr data_addr)
+
+OK, now I'm sure fw_cfg_init_mem() only accepts 2 arguments. :-)
+
+>  {
+> -    return fw_cfg_init_mem_wide(ctl_addr, data_addr,
+> -                                fw_cfg_data_mem_ops.valid.max_access_size,
+> -                                0, NULL);
+> +    return fw_cfg_init_mem_internal(ctl_addr, data_addr,
+> +                                    fw_cfg_data_mem_ops.valid.max_access_size,
+> +                                    0, NULL);
+>  }
+>  
+>  
 > -- 
 > 2.47.1
 > 
