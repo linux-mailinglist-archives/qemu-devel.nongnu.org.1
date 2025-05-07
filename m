@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 970E0AAE85D
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 20:05:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC417AAE877
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 20:07:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCj8H-0008AM-M6; Wed, 07 May 2025 14:04:39 -0400
+	id 1uCj8d-0008FQ-NL; Wed, 07 May 2025 14:04:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uCj8B-00089P-NP; Wed, 07 May 2025 14:04:31 -0400
+ id 1uCj8E-0008CQ-Nm; Wed, 07 May 2025 14:04:35 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uCj8A-0008B8-1u; Wed, 07 May 2025 14:04:31 -0400
+ id 1uCj8D-0008Bb-3d; Wed, 07 May 2025 14:04:34 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3EB8311FEFC;
+ by isrv.corpit.ru (Postfix) with ESMTP id 474D411FEFD;
  Wed, 07 May 2025 21:04:00 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 1B7CB206701;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 23C8F206702;
  Wed,  7 May 2025 21:04:13 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Gustavo Romero <gustavo.romero@linaro.org>, qemu-trivial@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 07/21] hw/i386/acpi-build: Fix typo in function name
-Date: Wed,  7 May 2025 21:03:58 +0300
-Message-Id: <20250507180412.182797-8-mjt@tls.msk.ru>
+Subject: [PULL 08/21] hw/core/machine: Fix indentation
+Date: Wed,  7 May 2025 21:03:59 +0300
+Message-Id: <20250507180412.182797-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250507180412.182797-1-mjt@tls.msk.ru>
 References: <20250507180412.182797-1-mjt@tls.msk.ru>
@@ -59,50 +59,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Gustavo Romero <gustavo.romero@linaro.org>
 
-Fix missing "i" in the name of the function responsible for adding the call to
-the PCI notification method (PCNT) in the ACPI table.
+Fix indentation for some elements in the hardware compat arrays.
 
 Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/i386/acpi-build.c | 8 ++++----
+ hw/core/machine.c | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index b5836417a0..f40ad062f9 100644
---- a/hw/i386/acpi-build.c
-+++ b/hw/i386/acpi-build.c
-@@ -589,8 +589,8 @@ void build_append_pci_bus_devices(Aml *parent_scope, PCIBus *bus)
-     }
- }
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index ed01798d37..b8ae155dfa 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -41,7 +41,7 @@ GlobalProperty hw_compat_10_0[] = {};
+ const size_t hw_compat_10_0_len = G_N_ELEMENTS(hw_compat_10_0);
  
--static bool build_append_notfication_callback(Aml *parent_scope,
--                                              const PCIBus *bus)
-+static bool build_append_notification_callback(Aml *parent_scope,
-+                                               const PCIBus *bus)
- {
-     Aml *method;
-     PCIBus *sec;
-@@ -604,7 +604,7 @@ static bool build_append_notfication_callback(Aml *parent_scope,
-             continue;
-         }
-         nr_notifiers = nr_notifiers +
--                       build_append_notfication_callback(br_scope, sec);
-+                       build_append_notification_callback(br_scope, sec);
-         /*
-          * add new child scope to parent
-          * and keep track of bus that have PCNT,
-@@ -1773,7 +1773,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
-         PCIBus *b = PCI_HOST_BRIDGE(pci_host)->bus;
+ GlobalProperty hw_compat_9_2[] = {
+-    {"arm-cpu", "backcompat-pauth-default-use-qarma5", "true"},
++    { "arm-cpu", "backcompat-pauth-default-use-qarma5", "true"},
+     { "virtio-balloon-pci", "vectors", "0" },
+     { "virtio-balloon-pci-transitional", "vectors", "0" },
+     { "virtio-balloon-pci-non-transitional", "vectors", "0" },
+@@ -58,12 +58,12 @@ GlobalProperty hw_compat_9_1[] = {
+ const size_t hw_compat_9_1_len = G_N_ELEMENTS(hw_compat_9_1);
  
-         scope = aml_scope("\\_SB.PCI0");
--        has_pcnt = build_append_notfication_callback(scope, b);
-+        has_pcnt = build_append_notification_callback(scope, b);
-         if (has_pcnt) {
-             aml_append(dsdt, scope);
-         }
+ GlobalProperty hw_compat_9_0[] = {
+-    {"arm-cpu", "backcompat-cntfrq", "true" },
++    { "arm-cpu", "backcompat-cntfrq", "true" },
+     { "scsi-hd", "migrate-emulated-scsi-request", "false" },
+     { "scsi-cd", "migrate-emulated-scsi-request", "false" },
+-    {"vfio-pci", "skip-vsc-check", "false" },
++    { "vfio-pci", "skip-vsc-check", "false" },
+     { "virtio-pci", "x-pcie-pm-no-soft-reset", "off" },
+-    {"sd-card", "spec_version", "2" },
++    { "sd-card", "spec_version", "2" },
+ };
+ const size_t hw_compat_9_0_len = G_N_ELEMENTS(hw_compat_9_0);
+ 
 -- 
 2.39.5
 
