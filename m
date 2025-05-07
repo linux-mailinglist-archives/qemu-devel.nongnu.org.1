@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC5E1AAD56F
-	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 07:45:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 064B2AAD573
+	for <lists+qemu-devel@lfdr.de>; Wed,  7 May 2025 07:46:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCXaw-00048h-KN; Wed, 07 May 2025 01:45:26 -0400
+	id 1uCXc5-00078P-LK; Wed, 07 May 2025 01:46:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uCXam-0003xA-Jw; Wed, 07 May 2025 01:45:18 -0400
-Received: from mgamail.intel.com ([192.198.163.17])
+ id 1uCXby-0006u8-BQ; Wed, 07 May 2025 01:46:30 -0400
+Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uCXag-0004Vm-Dh; Wed, 07 May 2025 01:45:12 -0400
+ id 1uCXbv-0004cJ-D5; Wed, 07 May 2025 01:46:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746596711; x=1778132711;
+ t=1746596787; x=1778132787;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=WizKcMFJapuRgjOqvCIabAqOzrcCdgMuQc73TY0LOzE=;
- b=dyM2KXRt2FmzA4du2fSJXzI8HXZPP6tzBHJv6cRhintCUv3ivAFTcE1v
- U+gF/UouuFzLCN0nU22C8w4A+/M0KQQZrdj9jmJJ41fCs5sQEIVaQegyX
- FYPBKfoRYYY38VtAtSkKWpwRQ0pplLH1JMqq5Wt7ORdt+0dMR3iVPofhm
- zDciKgXJ/a5bABqPig5p+nrqb1lAV96rBzAtDW0tE+GNeIeHT2mWbLL3A
- WgfOjADeevKIvy+tzVC8yvlHOZf/D+Snzgxy5MNI+QF7KGeV5LTDJL6MQ
- dnUnnC+Lt3nbQOBXryO+KPzVTp8xSiiNdhNpna8ACKuozISPfhuQnWo/j w==;
-X-CSE-ConnectionGUID: 41Cz2BA4T9CGt354u0D5cQ==
-X-CSE-MsgGUID: TMDJE2SST6aKWuLlsJxKBA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11425"; a="48202594"
-X-IronPort-AV: E=Sophos;i="6.15,268,1739865600"; d="scan'208";a="48202594"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2025 22:45:06 -0700
-X-CSE-ConnectionGUID: x9wl0gjhTge7VcYEANSrBw==
-X-CSE-MsgGUID: qkuyVnmfQ0WT9SM9wJqa5w==
+ bh=bquH8AjGmSKwsdIcMZeW7ONXaUT5sbDCKkWtx3FV0IA=;
+ b=FwnQ9KvWeJ0WfNULoZPu1PFzboscVd2Cw10zWo0+26m61cUz0iPUrsqR
+ KxrqrRz7Um26B5BodCIPlkYB8iGCXgNqCg3e8YKh0f1szGSeVzy+cvLY+
+ HtzCVQc7deZuXYrR+Z7SHr2Q6Rh9xCz+pjCBkwfS0J9jGlRQHcm7WDlK3
+ TxezXsqDK21dbH95qqoxg87dWr+90F1nnCnR1U3J4h0WSV/Mggo7EZbvo
+ iJwf18f5RgbR25rDqeHVLZsASD9kTA61xpmkx8GCQbNroayxffBjS8K9I
+ Gb6LPh1p+oygxPu76W9pSzOs2yhxESjK3gArpk9nI+m6BDCuv3Wprny7h g==;
+X-CSE-ConnectionGUID: hGnVXLthQpO0JpI2AbeYDw==
+X-CSE-MsgGUID: 8V2ITIzTSyu9PB3HCv+MKQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11425"; a="47403772"
+X-IronPort-AV: E=Sophos;i="6.15,268,1739865600"; d="scan'208";a="47403772"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 May 2025 22:46:24 -0700
+X-CSE-ConnectionGUID: 9TKW+n4oQR6kbDuxTgXvCg==
+X-CSE-MsgGUID: GsYoo8YlSXuBE+ExbpZJQA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,268,1739865600"; d="scan'208";a="135844103"
+X-IronPort-AV: E=Sophos;i="6.15,268,1739865600"; d="scan'208";a="173039969"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by fmviesa007.fm.intel.com with ESMTP; 06 May 2025 22:45:02 -0700
-Date: Wed, 7 May 2025 14:06:03 +0800
+ by orviesa001.jf.intel.com with ESMTP; 06 May 2025 22:46:20 -0700
+Date: Wed, 7 May 2025 14:07:21 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
@@ -57,17 +57,17 @@ Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Subject: Re: [PATCH v3 16/19] hw/scsi/vmw_pvscsi: Convert DeviceRealize ->
- InstanceInit
-Message-ID: <aBr4S64gDxmkRXbB@intel.com>
+Subject: Re: [PATCH v3 17/19] hw/net/vmxnet3: Remove
+ VMXNET3_COMPAT_FLAG_OLD_MSI_OFFSETS definition
+Message-ID: <aBr4mX7QDPhtTLZf@intel.com>
 References: <20250506143905.4961-1-philmd@linaro.org>
- <20250506143905.4961-17-philmd@linaro.org>
+ <20250506143905.4961-18-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250506143905.4961-17-philmd@linaro.org>
-Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20250506143905.4961-18-philmd@linaro.org>
+Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -57
 X-Spam_score: -5.8
@@ -92,21 +92,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 06, 2025 at 04:39:02PM +0200, Philippe Mathieu-Daudé wrote:
-> Date: Tue,  6 May 2025 16:39:02 +0200
+On Tue, May 06, 2025 at 04:39:03PM +0200, Philippe Mathieu-Daudé wrote:
+> Date: Tue,  6 May 2025 16:39:03 +0200
 > From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH v3 16/19] hw/scsi/vmw_pvscsi: Convert DeviceRealize ->
->  InstanceInit
+> Subject: [PATCH v3 17/19] hw/net/vmxnet3: Remove
+>  VMXNET3_COMPAT_FLAG_OLD_MSI_OFFSETS definition
 > X-Mailer: git-send-email 2.47.1
 > 
-> Simplify replacing pvscsi_realize() by pvscsi_instance_init(),
-> removing the need for device_class_set_parent_realize().
+> VMXNET3_COMPAT_FLAG_OLD_MSI_OFFSETS was only used by the
+> hw_compat_2_5[] array, via the 'x-old-msi-offsets=on' property.
+> We removed all machines using that array, lets remove all the
+> code around VMXNET3_COMPAT_FLAG_OLD_MSI_OFFSETS.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 > ---
->  hw/scsi/vmw_pvscsi.c | 13 +++----------
->  1 file changed, 3 insertions(+), 10 deletions(-)
+>  hw/net/vmxnet3.c | 20 ++++++--------------
+>  1 file changed, 6 insertions(+), 14 deletions(-)
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
