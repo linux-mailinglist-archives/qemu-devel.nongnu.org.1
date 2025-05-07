@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37289AAEFB1
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 01:50:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36864AAEFC3
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 01:52:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCoPi-0008Hm-Im; Wed, 07 May 2025 19:42:59 -0400
+	id 1uCoPm-0008NO-Oi; Wed, 07 May 2025 19:43:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uCoPd-00088W-8R
+ id 1uCoPd-00088Y-IX
  for qemu-devel@nongnu.org; Wed, 07 May 2025 19:42:55 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uCoPa-0002Rn-RA
- for qemu-devel@nongnu.org; Wed, 07 May 2025 19:42:52 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-22e4d235811so6440145ad.2
- for <qemu-devel@nongnu.org>; Wed, 07 May 2025 16:42:50 -0700 (PDT)
+ id 1uCoPb-0002SN-Qh
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 19:42:53 -0400
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-306b78ae2d1so414040a91.3
+ for <qemu-devel@nongnu.org>; Wed, 07 May 2025 16:42:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746661369; x=1747266169; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746661370; x=1747266170; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Gch+3DQ1xFSIgoe8nsFHA95PeotLzKWriKqshNx+4Kc=;
- b=CBsJ3j+2QyuNivehi+xB9P43lk8g5PotT8KJAxCgXTh8AguqIx5InrLLJxgzLr+Pa3
- 5Hk/4Uq87RZ1DQHhRmrg81ByYnKEam/uQawAdbGBfUxFT+dsdJfEQUpsWj9HvuRayzEr
- 9ZsPHjcDHTTgLuJwJo6MnwWM4Nhm0dYs3qw2N/s6Pe37kRW6IZZAuFtRO4nvsIRhrffQ
- WNAeGMQtMVGI14hRY9WQECw1OIPABOuSATsWZomUueDYyZdee119V8nPYaKnnNA95p+P
- AX/po2M7UOFH5PD277F9WxO5NKlh+1TDd9ygdG3jCNvZU6QQqRSjIf1lA/CqCKkn2Iln
- Pltg==
+ bh=sgtD9a+F/fV1o8g6sPaSIZoYXGKqR0qNW17PKpxFW74=;
+ b=eXXUk4osx3knQqH9LIt9XKqiB1LrhaTlR7s0okWeFLhCOk1NSX6Jmd0Rwio8ZMVAhY
+ Y+mYwCWp1DSJMqik+aLS7ofbBRkOAIkmugp/z4rLutIjIQwe+/GN9Mq6aaEpWXZlVZDI
+ G735xBvqu3ujcNzq1gDs0NKhnFdc1/Q2ZWwcIt/HTeKfsC/lJfS9LZXBmQ9IEm/rgrQ3
+ X2yjHzacePVL0S4ZjT8JIAblU0DU3TbhjfT+KTTj0k7Bp+37jgZBIron99qhv/1z+zBT
+ F17yko+fQbAytuNh0TW5NI6y9+DU51EZPNFKPssezbqEmXpHIN6YisX9Noizg30X3aNn
+ vjTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746661369; x=1747266169;
+ d=1e100.net; s=20230601; t=1746661370; x=1747266170;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Gch+3DQ1xFSIgoe8nsFHA95PeotLzKWriKqshNx+4Kc=;
- b=oJAN6QGSu8zztvdmSXPytkfvmozAR1LxsoVJiFNWV6jRM7IfjKVZHtEqG/0mWoc4qN
- kr+OUUOU192uc6nDVgF3Flw8YrI07WB2uodsW3VQVEplZsIwzI05F/AsYW50/LxhQE1v
- 1sRYpZkvTiL/5YAs0BSx2oJPv5XZ8QtABdpSvyNMTYMAEETyQ2VpRzJ1Yiw34JXZEFi8
- B9zWjs3RZqsQuYrMsIeVfN0tXvys76e7T+DfYiXIfIRTsgKF/6s2eQPwmtNi9UzLFBTC
- /iY4MwzBkOzec8rwLlTyVMClbe4pFb1sN+4LkdL/26nWChrae4GtRLLmdjpZ2vG3bTXR
- tqzw==
-X-Gm-Message-State: AOJu0Ywu2OFox2uAj5llP6Lbt/xubHNDePjojkBSZmccV6kfQDSRnmjL
- W6aIHIvWOp2+M6eLx7F9th9WaiZqj0CkRKOenSa+DxJ3SXZYdkE7Ez8gq41GpgU/d+2Dw8Nki+J
- sKzY5rQ==
-X-Gm-Gg: ASbGnctVt94hvcJp/7ssxHaBEYyxEBg4kfz/T3snpPgaQZy9G490JUZGufVFwT1mfBi
- 09p/q2w+5zs0WPcWhRkihDRKXPBoBUJ7Nw29J+jEkBFTd5wZWc1rf7HFxhTAvkN/AHVGMvLPBYl
- +s8IsS/nc+kr8YTNrnEPLAyPmgAFAh8CmyI89T26Gnsyp3tvybRxLR7nkUYNR+uMicvvowd9PIi
- Z1F3gbRLtvXIiEp37lDltZxippDT80Nv171ONApQETM62NCC3Y94nBD5XlGXfNntS9pdnEdHQ76
- atOHa2yrRbUmCWW2/KmcCoY36njESlBcEphDNm2M
-X-Google-Smtp-Source: AGHT+IHHvc0EvNKRFKpNtmu7GMOzbaEWqTdnUSZ8fl16d0tlW8oALJDg56XL2EyLWt0yNIiyINpabA==
-X-Received: by 2002:a17:903:fab:b0:227:e709:f71 with SMTP id
- d9443c01a7336-22e8660497fmr17618375ad.29.1746661369557; 
- Wed, 07 May 2025 16:42:49 -0700 (PDT)
+ bh=sgtD9a+F/fV1o8g6sPaSIZoYXGKqR0qNW17PKpxFW74=;
+ b=NZvRB1bVAjRtbQpZ8ljmXE6mfD6zVX4hJ8zGRyV+RLW2lQhqx3UGHV5SbpZ+MO7sc9
+ sZMkWGWYLxKOYCIhXTD6kSKd5yhG9cdjZbhYcSJU7hP/BEtMwTdTczp7FIAGB2qX7ttO
+ JrQOZnixTgPuYBaAlcQ7wqY3RCQ4lBStvhzk6EQWDYOTssvUSyesNto7YC9t0hdE8Apb
+ BCCGYnO65vSE5a7LNSaqWtzH3xtVRs8zY+Yex4+z1jsdzewkjTtsb6OOvOD4B2eOZi68
+ moRUXxUt0qzP6dj8WGqPhkGA7kemjSiOBE+l+XwUPuNF/Ugq4vDr1PYu1helqXrlZJDu
+ H6Zw==
+X-Gm-Message-State: AOJu0YwVhj/cN1yRn5hZf+mps7GeqDB7CLtqy9RMWE4QsVB7dyyBQm9Y
+ xacwZIwJS5P2qJvie5dboueReRaHkWL6KldetIfBnAfG0pnQM7zWjqsU6D8AwEnBpY589HAYldY
+ I54wg4Q==
+X-Gm-Gg: ASbGncvRxhuAK7PjQnO3gks2aNUeuwEUAoE83Z/V2s+EDZPfBtt15zQX+pQK3+dcZEw
+ hqWgKML7Hb3K8k6Tu/IA2AuaHEAUnw5qOz7kMRtf9Uz6pBQSABpbfLBWXmWIOyKUJ7wTUPHxvtd
+ BRVMNrIBGMyiB620F4SmL2LEKSVXwv1B6L+FUp56MIfezye0qOmoQf+qUT/n9XNuxXk+pp4YHOY
+ G+d5GyJ2z/9B04EcAHfdHNc7puFSFMXiz8PRRtnRsLzyQWl1ZNbuoyUzquN6R7iL0hWszLYkn+z
+ BO9sYMmGKWKfnjGpgGohGxSE732Vilbgz9zZ14C2
+X-Google-Smtp-Source: AGHT+IFpfXF464QoGLu/+GuZuBU0TJX3a3vlbSAcU4c68XYKCA5Jxjh3FLDVc+LLIUs1T7RyGLYtfw==
+X-Received: by 2002:a17:90b:5105:b0:301:1bce:c26f with SMTP id
+ 98e67ed59e1d1-30aac183ba0mr7012520a91.3.1746661370425; 
+ Wed, 07 May 2025 16:42:50 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22e815806fdsm6491325ad.17.2025.05.07.16.42.48
+ d9443c01a7336-22e815806fdsm6491325ad.17.2025.05.07.16.42.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 May 2025 16:42:49 -0700 (PDT)
+ Wed, 07 May 2025 16:42:50 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, anjo@rev.ng, Peter Maydell <peter.maydell@linaro.org>,
@@ -68,16 +68,16 @@ Cc: qemu-arm@nongnu.org, anjo@rev.ng, Peter Maydell <peter.maydell@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v7 07/49] accel/hvf: add hvf_enabled() for common code
-Date: Wed,  7 May 2025 16:41:58 -0700
-Message-ID: <20250507234241.957746-8-pierrick.bouvier@linaro.org>
+Subject: [PATCH v7 08/49] target/arm/cpu: remove TARGET_BIG_ENDIAN dependency
+Date: Wed,  7 May 2025 16:41:59 -0700
+Message-ID: <20250507234241.957746-9-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250507234241.957746-1-pierrick.bouvier@linaro.org>
 References: <20250507234241.957746-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1031.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,69 +100,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Other accelerators define a CONFIG_{accel}_IS_POSSIBLE when
-COMPILING_PER_TARGET is not defined, except hvf.
-
-Without this change, target/arm/cpu.c can't find hvf_enabled.
-
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Anton Johansson <anjo@rev.ng>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- include/system/hvf.h  | 14 +++++++++-----
- accel/hvf/hvf-stub.c  |  5 +++++
- accel/hvf/meson.build |  1 +
- 3 files changed, 15 insertions(+), 5 deletions(-)
- create mode 100644 accel/hvf/hvf-stub.c
+ target/arm/cpu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/system/hvf.h b/include/system/hvf.h
-index 356fced63e3..1ee2a4177d9 100644
---- a/include/system/hvf.h
-+++ b/include/system/hvf.h
-@@ -19,15 +19,19 @@
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index d062829ec14..b0eb02c88ba 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -23,6 +23,7 @@
+ #include "qemu/timer.h"
+ #include "qemu/log.h"
+ #include "exec/page-vary.h"
++#include "exec/tswap.h"
+ #include "target/arm/idau.h"
+ #include "qemu/module.h"
+ #include "qapi/error.h"
+@@ -1171,7 +1172,7 @@ static void arm_disas_set_info(CPUState *cpu, disassemble_info *info)
  
- #ifdef COMPILING_PER_TARGET
- #include "cpu.h"
-+# ifdef CONFIG_HVF
-+#  define CONFIG_HVF_IS_POSSIBLE
-+# endif
-+#else
-+# define CONFIG_HVF_IS_POSSIBLE
-+#endif
- 
--#ifdef CONFIG_HVF
-+#ifdef CONFIG_HVF_IS_POSSIBLE
- extern bool hvf_allowed;
- #define hvf_enabled() (hvf_allowed)
--#else /* !CONFIG_HVF */
-+#else
- #define hvf_enabled() 0
--#endif /* !CONFIG_HVF */
--
--#endif /* COMPILING_PER_TARGET */
-+#endif /* CONFIG_HVF_IS_POSSIBLE */
- 
- #define TYPE_HVF_ACCEL ACCEL_CLASS_NAME("hvf")
- 
-diff --git a/accel/hvf/hvf-stub.c b/accel/hvf/hvf-stub.c
-new file mode 100644
-index 00000000000..7f8eaa59099
---- /dev/null
-+++ b/accel/hvf/hvf-stub.c
-@@ -0,0 +1,5 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+#include "qemu/osdep.h"
-+
-+bool hvf_allowed;
-diff --git a/accel/hvf/meson.build b/accel/hvf/meson.build
-index fc52cb78433..7745b94e50f 100644
---- a/accel/hvf/meson.build
-+++ b/accel/hvf/meson.build
-@@ -5,3 +5,4 @@ hvf_ss.add(files(
- ))
- 
- specific_ss.add_all(when: 'CONFIG_HVF', if_true: hvf_ss)
-+common_ss.add(when: 'CONFIG_HVF', if_false: files('hvf-stub.c'))
+     info->endian = BFD_ENDIAN_LITTLE;
+     if (bswap_code(sctlr_b)) {
+-        info->endian = TARGET_BIG_ENDIAN ? BFD_ENDIAN_LITTLE : BFD_ENDIAN_BIG;
++        info->endian = target_big_endian() ? BFD_ENDIAN_LITTLE : BFD_ENDIAN_BIG;
+     }
+     info->flags &= ~INSN_ARM_BE32;
+ #ifndef CONFIG_USER_ONLY
 -- 
 2.47.2
 
