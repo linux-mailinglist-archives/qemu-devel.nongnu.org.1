@@ -2,75 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49C39AAF5F1
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 10:44:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31EF6AAF6C6
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 11:29:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCwqq-0007Zi-TS; Thu, 08 May 2025 04:43:32 -0400
+	id 1uCxXs-00013i-UU; Thu, 08 May 2025 05:28:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uCwqm-0007Yc-HR
- for qemu-devel@nongnu.org; Thu, 08 May 2025 04:43:28 -0400
-Received: from mgamail.intel.com ([198.175.65.10])
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1uCxXr-0000zI-6P
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 05:27:59 -0400
+Received: from p-east1-cluster1-host9-snip6-4.eps.apple.com
+ ([2a01:b747:3005:205::57] helo=outbound.ci.icloud.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uCwqk-0001WY-LY
- for qemu-devel@nongnu.org; Thu, 08 May 2025 04:43:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746693807; x=1778229807;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=47N7/5hbDRSZqNUgkGm7luIjBLHEUhSBxhLFH2Pvrrc=;
- b=Xl5w03ki6MwqCsFmNfN6eSBE9o6HqyStDJvcVwUGchkSHtqDEMuU+Ld1
- +GVRPpZCa2Wd/RJFcbRPCI2eIS1/jyIp5tktUXJzS6mOS2n/VWj9IIrQA
- oXYhy36Eg7aiO84gVXgFQ0rjCv5eGjgpaNVeghMSKOTAiqBkNm8lfQNd/
- qMB7wB/vRI2mP4+0ELbkfAhErnfl9u2ShDzqxZD096QgAZ7wqjhDQopos
- LbhMQzs6Sg6uVSwaJT2eSB5XKR81CLm4VEQqFm72iO/GZXbMJr+A1viiK
- lsKRU9Rdkwkps8kjuuO3Q79Vxy+5Xl2OApa0Wb1dGZOKATn+L6xbutK9p A==;
-X-CSE-ConnectionGUID: II0/v5EcQK295W7osICl4g==
-X-CSE-MsgGUID: NO6nBKTJR2qoM2ZSCtWbLQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="65877967"
-X-IronPort-AV: E=Sophos;i="6.15,271,1739865600"; d="scan'208";a="65877967"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2025 01:43:23 -0700
-X-CSE-ConnectionGUID: vySyN8tqQ/6y6dWgu0pLZQ==
-X-CSE-MsgGUID: 52j0XdXJQGqvLtWbydndlg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,271,1739865600"; d="scan'208";a="173425416"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa001.jf.intel.com with ESMTP; 08 May 2025 01:43:19 -0700
-Date: Thu, 8 May 2025 17:04:21 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Ewan Hai <ewanhai-oc@zhaoxin.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- yeeli@zhaoxin.com, cobechen@zhaoxin.com, ewanhai@zhaoxin.com,
- MaryFeng@zhaoxin.com, Runaguo@zhaoxin.com, Xanderchen@zhaoxin.com,
- Alansong@zhaoxin.com, qemu-devel@nongnu.org
-Subject: Re: [Bug] QEMU TCG warnings after commit c6bd2dd63420 - HTT /
- CMP_LEG bits
-Message-ID: <aBxzlUFqYj1Ltc+4@intel.com>
-References: <c111d9f9-2914-4b41-811a-b3a9ad0d83a9@zhaoxin.com>
- <006111a2-8406-46ed-a6bd-71d0c68edf4b@zhaoxin.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <006111a2-8406-46ed-a6bd-71d0c68edf4b@zhaoxin.com>
-Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -57
-X-Spam_score: -5.8
-X-Spam_bar: -----
-X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1uCxXo-0006ow-EB
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 05:27:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
+ bh=pNnZojqF3a9NZoaujxV8u4HPCQhjeEZIMyS/7jjyNxo=;
+ h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme;
+ b=YMxLCr+McctQOpvjM+JC2RWDifQQYJij6TrL37D6/J0Vbgagjlluq2107LslXfN08
+ jcYbukkgsz8zRCMiFWTaYZf7ttz8SJPyrMDaetpXW0WQoMNifJf+He25TKXo+4wQIo
+ Tkf+v25A1snu+khuzyl/JicDz8VGQCtinHQus+N4i0HwI8EzsX0nBjTln4p3S30nJJ
+ ZFJFtpE8ocUt4/qyWhs+J2ypMICMBWCe64cONoaB1jj0PcH08Sx6QcCErbbJxcF3nF
+ CD8Tx1t1vhpUkKFu7PcAuvBSj6MwHGPY0aC4ewZt8kTA8ruXy9njyAHMomkgKTxryI
+ y8JU+Rau2ZAkA==
+Received: from smtpclient.apple (unknown [17.57.156.36])
+ by outbound.ci.icloud.com (Postfix) with ESMTPSA id 486861800424;
+ Thu,  8 May 2025 09:27:47 +0000 (UTC)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
+Subject: Re: [PATCH] accel/hvf: Include missing 'hw/core/cpu.h' header
+From: Mads Ynddal <mads@ynddal.dk>
+In-Reply-To: <20250507204401.45379-1-philmd@linaro.org>
+Date: Thu, 8 May 2025 11:27:34 +0200
+Cc: qemu-devel@nongnu.org, Cameron Esfahani <dirty@apple.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>, qemu-arm@nongnu.org,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Alexander Graf <agraf@csgraf.de>, Roman Bolshakov <rbolshakov@ddn.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Mads Ynddal <m.ynddal@samsung.com>, Stefan Hajnoczi <stefanha@redhat.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <40DDAA59-7BB7-41DA-B390-A4072D387940@ynddal.dk>
+References: <20250507204401.45379-1-philmd@linaro.org>
+To: =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+X-Mailer: Apple Mail (2.3826.500.181.1.5)
+X-Proofpoint-ORIG-GUID: W-XUTD8smeDODxyXYKwZCgx-Q0LUP65-
+X-Proofpoint-GUID: W-XUTD8smeDODxyXYKwZCgx-Q0LUP65-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-08_03,2025-05-07_02,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1030
+ spamscore=0 adultscore=0
+ phishscore=0 bulkscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2505080085
+Received-SPF: pass client-ip=2a01:b747:3005:205::57;
+ envelope-from=mads@ynddal.dk; helo=outbound.ci.icloud.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,23 +80,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> > [3] My colleague Alan noticed what appears to be a related problem: if
-> > we launch a guest with '-cpu <model>,-ht --enable-kvm', which means
-> > explicitly removing the ht flag, but the guest still reports HT(cat
-> > /proc/cpuinfo in linux guest) enabled. In other words, under KVM the ht
-> > bit seems to be forced on even when the user tries to disable it.
-> 
-> XiaoYao reminded me that issue [3] stems from a different patch. Please
-> ignore it for now—I'll start a separate thread to discuss that one
-> independently.
 
-I haven't found any other thread :-).
+> Since commit d5bd8d8267e ("hvf: only update sysreg from owning
+> thread") hvf-all.c accesses the run_on_cpu_data type and calls
+> run_on_cpu(), both defined in the "hw/core/cpu.h" header.
+> Fortunately, it is indirectly included via:
+>=20
+>  "system/hvf.h"
+>    -> "target/arm/cpu.h"
+>         -> "target/arm/cpu-qom.h"
+>              -> "hw/core/cpu.h"
+>=20
+> "system/hvf.h" however doesn't need "target/arm/cpu.h" and we
+> want to remove it there. In order to do that we first need to
+> include it in the hvf-all.c file.
+>=20
+> Cc: Mads Ynddal <m.ynddal@samsung.com>
+> Reported-by: Stefan Hajnoczi <stefanha@redhat.com>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+> accel/hvf/hvf-all.c | 1 +
+> 1 file changed, 1 insertion(+)
+>=20
+> diff --git a/accel/hvf/hvf-all.c b/accel/hvf/hvf-all.c
+> index 3fc65d6b231..8c387fda24d 100644
+> --- a/accel/hvf/hvf-all.c
+> +++ b/accel/hvf/hvf-all.c
+> @@ -12,6 +12,7 @@
+> #include "qemu/error-report.h"
+> #include "system/hvf.h"
+> #include "system/hvf_int.h"
+> +#include "hw/core/cpu.h"
+>=20
+> const char *hvf_return_string(hv_return_t ret)
+> {
 
-By the way, just curious, in what cases do you need to disbale the HT
-flag? "-smp 4" means 4 cores with 1 thread per core, and is it not
-enough?
+Good catch, I should have included that in the initial patch.
 
-As for the “-ht” behavior, I'm also unsure whether this should be fixed
-or not - one possible consideration is whether “-ht” would be useful.
-
+Reviewed-by: Mads Ynddal <mads@ynddal.dk <mailto:mads@ynddal.dk>>=
 
