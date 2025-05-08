@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B0F7AAFE8A
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 17:11:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E312AAFE66
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 17:09:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uD2qu-0000L3-3f; Thu, 08 May 2025 11:08:00 -0400
+	id 1uD2qp-0008QB-Qi; Thu, 08 May 2025 11:07:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uD2qf-0007oB-A7
- for qemu-devel@nongnu.org; Thu, 08 May 2025 11:07:46 -0400
+ id 1uD2qf-0007mJ-0M
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 11:07:45 -0400
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uD2qX-0007RF-Iu
+ id 1uD2qZ-0007RW-IW
  for qemu-devel@nongnu.org; Thu, 08 May 2025 11:07:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746716857; x=1778252857;
+ t=1746716859; x=1778252859;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=DpskWjBVasOF9ARPGBQ/sP2V4yk+GIJr+iINMUhtc+I=;
- b=ANIpDHjD2kyoZ3hgn/Ku6xqGStmH/buOZ6HutPQXRjiUcPWZNtIK49YK
- Rc3u3keh976m6/Zv2ynmW6N686zz67mrW0+qrF7/HGIXe/lpgV5/j61BN
- zfpzpZfKHRvCAPT+8jAvr0fMCOR/KNsRxxGLRzNTlOR2hxiPmxb2Hw2H6
- eux05Sh0YR3KeqwaL8qUyQ0s5uZ0stzdRL22ORaN2kcaaPs4xBgSNjP0S
- n1GfYMIv68+73dWclFtnB9mscPk+u8pjimddJ832uTHaC4Su5IYGrQPnA
- d0X8SeY6aXDSrzOHxIY5TjO1sWGvAI6H/ZQPOtKVm4/h/N7fGKbOJjfM0 Q==;
-X-CSE-ConnectionGUID: ScipNjAHTMynPbSsLyuzbw==
-X-CSE-MsgGUID: 0rZTePfeQ3aj2P5l7ISXVA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="73888333"
-X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="73888333"
+ bh=nPB+X3gAjskQD6x6nk5Fs5ZTRPuUkDL2ErdsB5rE8l0=;
+ b=ihLM29PZ5AWDptUbgQ5uTeyPszQIDhJ870OWe+Wh9fRMZ9YDO2ibehHD
+ qY/rqT1ki5fgHJmfSju7xvSeFZ+vDJU+Z/gBXqb1V/aOSTjhAeEKpC3b2
+ 9Ij4XHPG0p0/bNtRiqeuzmAgd9RzXp3d61MWGGOBqUa4GOt+pOg/fhmvn
+ hbt+69GBpGR+iDu6o7QdCk759OFBvsYYQqxC5ZskQ6fsgHQ9B3/m5NIGT
+ kqFoPhjEs1FYLdvchrQfGj20k+kql5piryS7Uy4/q5mOWW0GKZtwVQAKW
+ 74WdSgapIkim76RBHhWLnqZk5PuVkmO0yfApyuZoSRqUSkEZNc5+Y1hHD Q==;
+X-CSE-ConnectionGUID: HL2KsC+1T9yV57GZgsXiOg==
+X-CSE-MsgGUID: LuajjXaGT0G6+NSAzUhrsQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="73888345"
+X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="73888345"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2025 08:06:49 -0700
-X-CSE-ConnectionGUID: mBiE+rTkSlOhWDl6wL4ABA==
-X-CSE-MsgGUID: JPk3EyxQQdCt78Pmb3kM+g==
+ 08 May 2025 08:06:52 -0700
+X-CSE-ConnectionGUID: BcxlXAESSUaOfjafgGbhbg==
+X-CSE-MsgGUID: pXOQZjApSimy2sPq6+eUSw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="141440273"
+X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="141440295"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa005.jf.intel.com with ESMTP; 08 May 2025 08:06:46 -0700
+ by orviesa005.jf.intel.com with ESMTP; 08 May 2025 08:06:49 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
@@ -55,9 +55,9 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  Zhao Liu <zhao1.liu@intel.com>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PATCH v9 37/55] i386/tdx: Disable PIC for TDX VMs
-Date: Thu,  8 May 2025 10:59:43 -0400
-Message-ID: <20250508150002.689633-38-xiaoyao.li@intel.com>
+Subject: [PATCH v9 38/55] i386/tdx: Set and check kernel_irqchip mode for TDX
+Date: Thu,  8 May 2025 10:59:44 -0400
+Message-ID: <20250508150002.689633-39-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250508150002.689633-1-xiaoyao.li@intel.com>
 References: <20250508150002.689633-1-xiaoyao.li@intel.com>
@@ -89,33 +89,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Legacy PIC (8259) cannot be supported for TDX VMs since TDX module
-doesn't allow directly interrupt injection.  Using posted interrupts
-for the PIC is not a viable option as the guest BIOS/kernel will not
-do EOI for PIC IRQs, i.e. will leave the vIRR bit set.
+KVM mandates kernel_irqchip to be split mode.
 
-Hence disable PIC for TDX VMs and error out if user wants PIC.
+Set it to split mode automatically when users don't provide an explicit
+value, otherwise check it to be the split mode.
 
+Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- target/i386/kvm/tdx.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ target/i386/kvm/tdx.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 744c5cde3636..4cb767668a3a 100644
+index 4cb767668a3a..0e1fd3e3ffa1 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -388,6 +388,13 @@ static int tdx_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+@@ -16,6 +16,7 @@
+ #include "qapi/error.h"
+ #include "qom/object_interfaces.h"
+ #include "crypto/hash.h"
++#include "system/kvm_int.h"
+ #include "system/runstate.h"
+ #include "system/system.h"
+ #include "exec/ramblock.h"
+@@ -395,6 +396,13 @@ static int tdx_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
          return -EINVAL;
      }
  
-+    if (x86ms->pic == ON_OFF_AUTO_AUTO) {
-+        x86ms->pic = ON_OFF_AUTO_OFF;
-+    } else if (x86ms->pic == ON_OFF_AUTO_ON) {
-+        error_setg(errp, "TDX VM doesn't support PIC");
++    if (kvm_state->kernel_irqchip_split == ON_OFF_AUTO_AUTO) {
++        kvm_state->kernel_irqchip_split = ON_OFF_AUTO_ON;
++    } else if (kvm_state->kernel_irqchip_split != ON_OFF_AUTO_ON) {
++        error_setg(errp, "TDX VM requires kernel_irqchip to be split");
 +        return -EINVAL;
 +    }
 +
