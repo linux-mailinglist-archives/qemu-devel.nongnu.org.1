@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEC30AAFC7D
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 16:11:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E053AAFC7F
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 16:11:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uD1wm-0001zs-4H; Thu, 08 May 2025 10:10:00 -0400
+	id 1uD1wk-0001y2-6a; Thu, 08 May 2025 10:09:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uD1wi-0001xE-Do; Thu, 08 May 2025 10:09:56 -0400
+ id 1uD1wg-0001pi-6m; Thu, 08 May 2025 10:09:54 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uD1wg-0008U5-Gd; Thu, 08 May 2025 10:09:56 -0400
+ id 1uD1wd-0008RR-In; Thu, 08 May 2025 10:09:53 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id E7CE8436E1;
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id DF46A43662;
  Thu,  8 May 2025 16:09:41 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
  andrey.drobyshev@virtuozzo.com, hreitz@redhat.com, stefanha@redhat.com,
  eblake@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru
-Subject: [PATCH 05/11] block: move drain outside of read-locked
- bdrv_inactivate_recurse()
-Date: Thu,  8 May 2025 16:09:30 +0200
-Message-Id: <20250508140936.3344485-6-f.ebner@proxmox.com>
+Subject: [PATCH 06/11] blockdev: drain while unlocked in
+ internal_snapshot_action()
+Date: Thu,  8 May 2025 16:09:31 +0200
+Message-Id: <20250508140936.3344485-7-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250508140936.3344485-1-f.ebner@proxmox.com>
 References: <20250508140936.3344485-1-f.ebner@proxmox.com>
@@ -56,82 +56,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is in preparation to mark bdrv_drained_begin() as GRAPH_UNLOCKED.
-
-More granular draining is not trivially possible, because
-bdrv_inactivate_recurse() can recursively call itself.
-
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
- block.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/block.c b/block.c
-index c7c26533c9..10052027cd 100644
---- a/block.c
-+++ b/block.c
-@@ -6991,6 +6991,8 @@ bdrv_inactivate_recurse(BlockDriverState *bs, bool top_level)
-     int ret;
-     uint64_t cumulative_perms, cumulative_shared_perms;
- 
-+    assert(qatomic_read(&bs->quiesce_counter) > 0);
-+
-     GLOBAL_STATE_CODE();
- 
-     if (!bs->drv) {
-@@ -7036,9 +7038,7 @@ bdrv_inactivate_recurse(BlockDriverState *bs, bool top_level)
-         return -EPERM;
-     }
- 
--    bdrv_drained_begin(bs);
-     bs->open_flags |= BDRV_O_INACTIVE;
--    bdrv_drained_end(bs);
- 
-     /*
-      * Update permissions, they may differ for inactive nodes.
-@@ -7063,14 +7063,20 @@ int bdrv_inactivate(BlockDriverState *bs, Error **errp)
-     int ret;
+Could the bs associated to the device change because of polling
+when draining? If yes, does that mean we need to drain all in the
+beginning and not temporarily unlock?
+
+ blockdev.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/blockdev.c b/blockdev.c
+index 1272b9a745..f2b4fdf1b3 100644
+--- a/blockdev.c
++++ b/blockdev.c
+@@ -1216,7 +1216,7 @@ static void internal_snapshot_action(BlockdevSnapshotInternal *internal,
+     int ret1;
  
      GLOBAL_STATE_CODE();
 -    GRAPH_RDLOCK_GUARD_MAINLOOP();
-+
-+    bdrv_drain_all_begin();
 +    bdrv_graph_rdlock_main_loop();
  
-     if (bdrv_has_bds_parent(bs, true)) {
-         error_setg(errp, "Node has active parent node");
+     tran_add(tran, &internal_snapshot_drv, state);
+ 
+@@ -1225,14 +1225,18 @@ static void internal_snapshot_action(BlockdevSnapshotInternal *internal,
+ 
+     bs = qmp_get_root_bs(device, errp);
+     if (!bs) {
 +        bdrv_graph_rdunlock_main_loop();
-+        bdrv_drain_all_end();
-         return -EPERM;
+         return;
      }
  
-     ret = bdrv_inactivate_recurse(bs, true);
+     state->bs = bs;
+ 
 +    bdrv_graph_rdunlock_main_loop();
-+    bdrv_drain_all_end();
-     if (ret < 0) {
-         error_setg_errno(errp, -ret, "Failed to inactivate node");
-         return ret;
-@@ -7086,7 +7092,9 @@ int bdrv_inactivate_all(void)
-     int ret = 0;
+     /* Paired with .clean() */
+     bdrv_drained_begin(bs);
  
-     GLOBAL_STATE_CODE();
--    GRAPH_RDLOCK_GUARD_MAINLOOP();
++    GRAPH_RDLOCK_GUARD_MAINLOOP();
 +
-+    bdrv_drain_all_begin();
-+    bdrv_graph_rdlock_main_loop();
- 
-     for (bs = bdrv_first(&it); bs; bs = bdrv_next(&it)) {
-         /* Nodes with BDS parents are covered by recursion from the last
-@@ -7102,6 +7110,9 @@ int bdrv_inactivate_all(void)
-         }
+     if (bdrv_op_is_blocked(bs, BLOCK_OP_TYPE_INTERNAL_SNAPSHOT, errp)) {
+         return;
      }
- 
-+    bdrv_graph_rdunlock_main_loop();
-+    bdrv_drain_all_end();
-+
-     return ret;
- }
- 
 -- 
 2.39.5
 
