@@ -2,90 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C8FAAAEFA2
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 01:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C75BFAAEFE3
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 02:19:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCoVJ-0003Se-BH; Wed, 07 May 2025 19:48:45 -0400
+	id 1uCoyB-0005vO-VO; Wed, 07 May 2025 20:18:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uCoTe-0000cL-Iz
- for qemu-devel@nongnu.org; Wed, 07 May 2025 19:47:03 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <anisa.su887@gmail.com>)
+ id 1uCoy8-0005vC-8W
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 20:18:32 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uCoTc-0003AV-Uy
- for qemu-devel@nongnu.org; Wed, 07 May 2025 19:47:02 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-22fa48f7cb2so349765ad.1
- for <qemu-devel@nongnu.org>; Wed, 07 May 2025 16:47:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <anisa.su887@gmail.com>)
+ id 1uCoy6-0006tw-6l
+ for qemu-devel@nongnu.org; Wed, 07 May 2025 20:18:32 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-736e52948ebso562964b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 07 May 2025 17:18:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746661619; x=1747266419; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=h9+0A2smB/xfpAp/1FKWxfsvzCeqir2otJn6Vwgzfpo=;
- b=Co1OrU4veQnpKXk8rrKX964urj+7paZxiZRDdbODWSvW2d4brDwT4JXz37vbGbUI+S
- lu+HtqxedbBxbamh/KL4V/E9gubfqn/Lg4Yx5LL4d4bIHC409IdubSqPlG9hplocIht5
- oQeahf7WLAy8oITBpi2oTQK3TZ3Bh/qoAy9ACd4FsPqqNVTxxmVD7RCS66X1hcswWNER
- dgGTdun/rUGQh6kk1TRGzOFveFULOkK+4lq42A3Itxf4Lsu284KBypajAg2B60SKgBCr
- zokK+cVAM+iPv6U42MvcTqpj/uxT0cnjzgYOmOn+83NevtZAzGW5NqJ1dxdA+7ptqoUZ
- LHDA==
+ d=gmail.com; s=20230601; t=1746663507; x=1747268307; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=1DUUdafSg3gAWNrrjVpbMbgAbVF/N0VART/pBT07PSM=;
+ b=PTijOaeWpDJ3EPFtRLaW546cfjuthNr+nSDkIPAE7ohrZvcr4YQwSnBmkezQX1aXjf
+ rkrXdtG3sv0aTIx+MzRe1Nk5+TK1JKV2hYGZD5fvmowbvvM3hG383pXtwYdpGuth0e1e
+ jUJ8gC10WHvhU7t2IT1jeDm+JAOdJwYno53RHiicj5I8FgYy86KXKVX+1XC9iUjiZ9rO
+ IYLSOOMbKk9zpe5rxXC7PdcguUPp7hAilW++BQWi/ZxqFY5dtS/nMVITYVfy0uL2k9b8
+ V3/XVQFUuFDy9sLkyLZ8wgW5dZhKPpeeMfu1/QCra66u9op/whth6ZokoLnV8A0sAZkt
+ N/Eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746661619; x=1747266419;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=h9+0A2smB/xfpAp/1FKWxfsvzCeqir2otJn6Vwgzfpo=;
- b=ndb4MIKfiGDiOUt2RPmvfTP3nHKYAgr6prUP6t/4P6KzZoZZp2Ad9DT1rPIxtRgbiX
- F2UPv2b6pu979wZIjaHoyp9ccKg2LH5At2loS5UrGzH5rsA/PC+BsDx8M8Fc6cMOKEb9
- rDoxczp08mMTynFNje57k7sQDLqJbOOOBDxPBv9HwXJC1nU1S0iXeq9IBBX2Qz9g1Qel
- a2OMK5cdbDIqWb7BENuj0EppfJmOqgqrlM1cigILF392S5U2NzRJfc26rNoHPhgoUXoY
- ZIq9ni4/uBYCbtOEUlo1CoNcuPqXpiQDLMB60epkokbovtkMHfTWjYg1m/kixgxjosPy
- TUHw==
-X-Gm-Message-State: AOJu0Yxskn8SVz208nRqGpO1rPNS/mtrrMeHqW5Ratt+0aRIcxbG+SmJ
- ZGZ6jYA3D/ZKfyy9dkYWl5t5eRT1quqN8RDACV/SQQmPTxJdrPRMIAAHiVXkkdwCLUnirinTFVj
- gnZ/cqA==
-X-Gm-Gg: ASbGnctDykQ+eem7CGtWF79J8cuxezoQFPRTZuZxvbG7uy90AAE62qKlYnLLT8hzwmW
- mECGLH2mR+Rc5ZgGTf0CnDhnSt/LY2OERpcOhRxEvBzofOVII/VgTXIlMwRvKFkKXirw3IGURhE
- fxC68X1/YW0hUdPeENyPxNtV2z3PBn94uZjwROy5kbjwdLPTtStQfkSNZCp2vmob0ow5e7HnGij
- IqU9Vt+0O8OJ5Y3K59FWZhELYj+6oqBrW3kdpQ0tcqmhre7uYVEFpOPKDUhQxl53r4x7tuy4XeH
- VMOIZ4dzlEvX1fptrkZojy7JnW1/myP150N9sBeG
-X-Google-Smtp-Source: AGHT+IFD7JLl7PMkprSB+gonsSnigWdQwt5Gm7vQMOymA5jKMQ8arRw0rvIvBHmHIJgyHjopluQ80A==
-X-Received: by 2002:a17:903:166e:b0:224:c47:cbd with SMTP id
- d9443c01a7336-22e5e98947fmr80767545ad.0.1746661619500; 
- Wed, 07 May 2025 16:46:59 -0700 (PDT)
-Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22e151e97absm100792435ad.62.2025.05.07.16.46.58
+ d=1e100.net; s=20230601; t=1746663507; x=1747268307;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=1DUUdafSg3gAWNrrjVpbMbgAbVF/N0VART/pBT07PSM=;
+ b=LF/Z+AS2u0pZMX65IL7YP8w2qVzwapr9cMuFnd+yJmLOaDacuZdxRyz8AHB5LNGAz0
+ phivv5hI5hNk9sLUHtYaccVzVEj5CrL2BelbL8xqZ/jmscOTEoorXXnIwrFp8//K/DcN
+ wB47Or6tuQxOi1FD49AOFVwUImH5Jn9m+rTUFb67GGduy1I+3CN7POws3s8OZ6GNJTMX
+ PgrWvwm7uXoCdZSkR3deCUaBpqBQRkd5lPd2Lj9sOjjNmbG4jz/RUYAE1qX36x00E2tS
+ lfYLwHucCINPgBIOW5SgI9k+LSBIT81IN1qb7fZO10arDpqGYoiMD5qUt+VQBg28sEl5
+ sX+g==
+X-Gm-Message-State: AOJu0YzmsVjI/kShgkuZ0SyJCoG4Xgmc+Pn8/lJtXNwM+oFDOs9yQgK7
+ uGzAZue/GyZKfEgOhsFpJCx13z032H8N7R1lQBn/x51fdsFVmMn2RJYrYw==
+X-Gm-Gg: ASbGncvNjtRA4ELcNv5DOIyH4EGCUInpSORNzJxhtNSXK0MFL65NDPTLLi4mxF/XTdP
+ Xgg60Cb+47JVAD7t/0o4wiqkb5AvXMxyozkZq+BfB3LbmJLZHYT4zIMXReNMpDHpGb46kURPIDH
+ RdbC2lvW5pYV9/apDdUGzhjcx+OaJoRsmVlWrutCakPO+U2j8OvOKtDf5m+M0OkiOAnlR5jFIzs
+ zKfFwXO1C2c6Mp/KuvR9iKReFQfhPINqYFv+4tHAwCJpF6Lth26Y1Qv0TwPpWg1sYzUfNDUKXaj
+ 2K+lL9jeyGEI+dfFjhO7aoTqmPL4oh2ji7TfngBcRkQM2o/S/mLpY+DwfX5AJA==
+X-Google-Smtp-Source: AGHT+IEB0JXt6z8w2I6N2UYJl/ixcQnuaXs/9O6VqQ8Uf85PMo1g4X9kfpaFz6eYJTPAnFwaeV4U5Q==
+X-Received: by 2002:a05:6a20:12d4:b0:204:4573:d854 with SMTP id
+ adf61e73a8af0-2159af312d9mr1699263637.9.1746663506886; 
+ Wed, 07 May 2025 17:18:26 -0700 (PDT)
+Received: from deb-101020-bm01.dtc.local ([149.97.161.244])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-7405902167csm12378724b3a.98.2025.05.07.17.18.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 07 May 2025 16:46:59 -0700 (PDT)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+ Wed, 07 May 2025 17:18:26 -0700 (PDT)
+From: anisa.su887@gmail.com
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, anjo@rev.ng, Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>, alex.bennee@linaro.org,
- Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v7 49/49] target/arm/tcg/vfp_helper: compile file twice
- (system, user)
-Date: Wed,  7 May 2025 16:42:40 -0700
-Message-ID: <20250507234241.957746-50-pierrick.bouvier@linaro.org>
+Cc: Jonathan.Cameron@huawei.com, nifan.cxl@gmail.com, dave@stgolabs.net,
+ linux-cxl@vger.kernel.org, Anisa Su <anisa.su@samsung.com>
+Subject: [PATCH v2 00/10] CXL: FMAPI DCD Management Commands 0x5600-0x5605
+Date: Thu,  8 May 2025 00:00:56 +0000
+Message-ID: <20250508001754.122180-1-anisa.su887@gmail.com>
 X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250507234241.957746-1-pierrick.bouvier@linaro.org>
-References: <20250507234241.957746-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=anisa.su887@gmail.com; helo=mail-pf1-x42d.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,58 +95,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- target/arm/tcg/vfp_helper.c | 4 +++-
- target/arm/tcg/meson.build  | 3 ++-
- 2 files changed, 5 insertions(+), 2 deletions(-)
+From: Anisa Su <anisa.su@samsung.com>
 
-diff --git a/target/arm/tcg/vfp_helper.c b/target/arm/tcg/vfp_helper.c
-index b32e2f4e27c..b1324c5c0a6 100644
---- a/target/arm/tcg/vfp_helper.c
-+++ b/target/arm/tcg/vfp_helper.c
-@@ -19,12 +19,14 @@
- 
- #include "qemu/osdep.h"
- #include "cpu.h"
--#include "exec/helper-proto.h"
- #include "internals.h"
- #include "cpu-features.h"
- #include "fpu/softfloat.h"
- #include "qemu/log.h"
- 
-+#define HELPER_H "tcg/helper.h"
-+#include "exec/helper-proto.h.inc"
-+
- /*
-  * Set the float_status behaviour to match the Arm defaults:
-  *  * tininess-before-rounding
-diff --git a/target/arm/tcg/meson.build b/target/arm/tcg/meson.build
-index 7502c5cded6..2d1502ba882 100644
---- a/target/arm/tcg/meson.build
-+++ b/target/arm/tcg/meson.build
-@@ -34,7 +34,6 @@ arm_ss.add(files(
-   'mve_helper.c',
-   'op_helper.c',
-   'vec_helper.c',
--  'vfp_helper.c',
- ))
- 
- arm_ss.add(when: 'TARGET_AARCH64', if_true: files(
-@@ -68,10 +67,12 @@ arm_common_system_ss.add(files(
-   'neon_helper.c',
-   'tlb_helper.c',
-   'tlb-insns.c',
-+  'vfp_helper.c',
- ))
- arm_user_ss.add(files(
-   'hflags.c',
-   'iwmmxt_helper.c',
-   'neon_helper.c',
-   'tlb_helper.c',
-+  'vfp_helper.c',
- ))
+This patchset adds support for 6 FM API DCD Management commands (0x5600-0x5605)
+according to the CXL r3.2 Spec. It is based on the following branch:
+https://gitlab.com/jic23/qemu/-/tree/cxl-2025-02-20.
+
+The code was tested with libcxlmi, which runs in the QEMU VM and sends 56xxh
+commands to the device (QEMU emulated) through MCTP messages over I2C
+bus. To perform end-to-end tests, both MCTP and DCD support are needed
+for the kernel, so the needed MCTP patches are applied on top of Ira's DCD
+branch https://github.com/weiny2/linux-kernel/tree/dcd-v4-2024-12-11.
+
+For the tests of commands 0x5600 (Get DCD Info), 0x5601 (Get Host DC Region
+Config), and 0x5603 (Get DC Region Extent Lists), DCD kernel code is not involved.
+The libcxlmi test program is used to send the command to the device and results
+are collected and verified.
+
+For command 0x5602 (Set DC Region Config): device creates an event record with type
+DC_EVENT_REGION_CONFIG_UPDATED and triggers an interrupt to the host
+if the configuration changes as a result of the command. Currently, the kernel
+version used to test this only supports Add/Release type events. Thus, this
+request essentially gets ignored but did not cause problems besides the host
+not knowing about the configuration change when tested.
+
+For the command 0x5604 (Initiate DC Add) and 0x5605 (Initiate DC Release), the
+tests involve libcxlmi test program (acting as the FM), kernel DCD
+code (host) and QEMU device. The test workflow follows that in cxl r3.2 section
+7.6.7.6.5 and 7.6.7.6.6. More specifically, the tests involve following
+steps,
+1. Start a VM with CXL topology: https://github.com/moking/cxl-test-tool/blob/main/utils/cxl.py#L54.
+2. Load the CXL related drivers in the VM;
+3. Create a DC region for the DCD device attached.
+4. add/release DC extents by sending 0x5604 and 0x5605 respectively through
+the out-of-tree libcxlmi test program
+(https://github.com/anisa-su993/libcxlmi/blob/dcd_management_cmds/tests/test-fmapi.c).
+5. Check and verify the extents by retrieving the extents list through
+command 0x5603 in the test program.
+
+The remaining 3 commands in this series (0x5606-0x5608) are related to tags
+and sharing, thus have not been implemented.
+
+Changes
+================================================================================
+v1 -> v2:
+1. Feedback from Jonathan Cameron on v1
+Addressed general style concerns (newlines/spacing, minor refactoring, etc.)
+1.1. Changes Related to 0x5600 - FMAPI Get DCD Info
+    - Squashed prepatory patch adding supported_blk_sizes_bitmask
+    - Added new prepatory patch moving opcodes enum from cxl-mailbox-utils.c to
+    new header file opcodes.h
+    Needed for the check in i2c_mctp_cxl.c to ensure the FMAPI Commands
+    (0x51 - 0x59) are bound with MCTP_MT_CXL_FMAPI. By moving the enum,
+    the hardcoded values (0x51, 0x59) can be replaced with their
+    enumerators.
+    - Bug fix to return Add/Release Extent Selection Policy bitmasks
+      correctly
+1.2. Changes Related to 0x5601 - FMAPI Get Host Region Config
+    - Prepatory patch to add dsmas_flags to CXLDCRegion struct was modified to
+    store the booleans dsmas_flags is made up of instead of copying it from the
+    CDAT for that region. Values hardcoded for unsupported flags.
+    - Build the returned dsmas_flags from the new booleans.
+1.3. Changes Related to 0x5602 - FMAPI Set DC Region Config
+    - Added locking for CXLDCRegion bitmap for the case that extents are being
+    added/released via a different CCI than that of the FM-enabled CCI.
+    - Prepatory patch created for the above (quite short, can be squashed if
+    preferred)
+    - Added a check to verify that the requested block_size is supported by the
+    region by looking at region->supported_blk_sizes_bitmask
+    - Instead of event_record validity flag being cleared, set to 1
+    - Fixed bug of forgetting to update region->block_size
+1.4. Changes Related to 0x5603 - FMAPI Get DC Region Extents
+    - Minor refactoring of loop filling in response payload extents
+
+2. Feedback from Fan Ni and Jonathan Cameron on v1
+2.1. Changes Related to 0x5604 - FMAPI Initiate DC Add
+    - Remove redundant storage of extents in event_rec_exts
+    - Refactor event record creation into helper function for re-use by release
+    - Return event_record.available_extents
+    (total_extents_available - num_pending - num_accepted) instead of
+    leaving it blank
+2.2. Changes Related to 0x5605 - FMAPI Initiate DC Release
+    - Remove redundant storage of extents in event_rec_exts/redundant 2nd loop
+    - Add #define for removal_policy_bitmask instead of hardcoding 0x7
+
+Anisa Su (10):
+  cxl-mailbox-utils: Move opcodes enum to new header file
+  cxl-mailbox-utils: 0x5600 - FMAPI Get DCD Info
+  cxl/type3: Add dsmas_flags to CXLDCRegion struct
+  cxl-mailbox-utils: 0x5601 - FMAPI Get Host Region Config
+  cxl_events.h: Move definition for dynamic_capacity_uuid and enum for
+    DC event types
+  hw/cxl_type3: Add DC Region bitmap lock
+  cxl-mailbox-utils: 0x5602 - FMAPI Set DC Region Config
+  cxl-mailbox-utils: 0x5603 - FMAPI Get DC Region Extent Lists
+  cxl-mailbox-utils: 0x5604 - FMAPI Initiate DC Add
+  cxl-mailbox-utils: 0x5605 - FMAPI Initiate DC Release
+
+ hw/cxl/cxl-mailbox-utils.c   | 649 +++++++++++++++++++++++++++++++----
+ hw/cxl/i2c_mctp_cxl.c        |   6 +-
+ hw/mem/cxl_type3.c           |  41 ++-
+ include/hw/cxl/cxl_device.h  |  24 ++
+ include/hw/cxl/cxl_events.h  |  15 +
+ include/hw/cxl/cxl_mailbox.h |   6 +
+ include/hw/cxl/cxl_opcodes.h |  72 ++++
+ 7 files changed, 724 insertions(+), 89 deletions(-)
+ create mode 100644 include/hw/cxl/cxl_opcodes.h
+
 -- 
 2.47.2
 
