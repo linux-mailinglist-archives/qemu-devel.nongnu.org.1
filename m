@@ -2,48 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10CF4AB000D
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 18:17:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15CE7AB0014
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 18:17:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uD3ui-00089o-Fc; Thu, 08 May 2025 12:16:00 -0400
+	id 1uD3uj-00089p-VM; Thu, 08 May 2025 12:16:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uD3ua-00089J-Nc
- for qemu-devel@nongnu.org; Thu, 08 May 2025 12:15:52 -0400
+ id 1uD3ue-00089a-P5
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 12:15:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uD3uY-0007YM-IF
- for qemu-devel@nongnu.org; Thu, 08 May 2025 12:15:52 -0400
+ id 1uD3ud-0007by-62
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 12:15:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746720946;
+ s=mimecast20190719; t=1746720954;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=ZcJjDLYILksVF3OyFPPTQMnJuERNkmPbZFUXpPTzQ+o=;
- b=OI2dRqRe/ypmtmINqJgzrwjWk+dUpJaIQ/1/0D43zp+BkGnFW48pbpX4VqYeJXue0pIYP+
- fARYkju71ZQpFaBMd9uEod0xkik1T5GL9An/5rJSVMA3Hb9CyfPD+WvmZPcplU1kvQpaHC
- 60mpjva6ofOH9F5/kvpYhsg7TtOVs7c=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=N3cKX666Bi8FN5j4sXz69W+1rVvNDKX62XzUMC75xX0=;
+ b=S4zQcQnmU48mig25NFBoaTMl2MkRihTv4sjWgxWfTHdllzWwKG/j776hwmPYJStML6qPVQ
+ HJ7MrT3g7BpM4LXmYQWEklyME4A2zkB6RNhSP0Adl+zvTl1TLqUv9zFSo5gAInBGisNfUX
+ QL4JVB6PJBEep/BPAlEhnUMnkdW8/8I=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-534-Axhgb3NyNWy8Fwo41ynIlg-1; Thu,
- 08 May 2025 12:15:44 -0400
-X-MC-Unique: Axhgb3NyNWy8Fwo41ynIlg-1
-X-Mimecast-MFC-AGG-ID: Axhgb3NyNWy8Fwo41ynIlg_1746720943
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-494-Ds6sSIvAPnu47t7Lc-zc-A-1; Thu,
+ 08 May 2025 12:15:50 -0400
+X-MC-Unique: Ds6sSIvAPnu47t7Lc-zc-A-1
+X-Mimecast-MFC-AGG-ID: Ds6sSIvAPnu47t7Lc-zc-A_1746720948
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DCF461800256; Thu,  8 May 2025 16:15:42 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 41828180045C; Thu,  8 May 2025 16:15:48 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.138])
  by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 00ADB180049D; Thu,  8 May 2025 16:15:37 +0000 (UTC)
+ id 53477180049D; Thu,  8 May 2025 16:15:43 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Yanan Wang <wangyanan55@huawei.com>, devel@lists.libvirt.org,
@@ -55,11 +56,14 @@ Cc: Yanan Wang <wangyanan55@huawei.com>, devel@lists.libvirt.org,
  Eduardo Habkost <eduardo@habkost.net>, John Snow <jsnow@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 0/6] Versioned machine type deprecation policy patches
-Date: Thu,  8 May 2025 17:15:30 +0100
-Message-ID: <20250508161536.865866-1-berrange@redhat.com>
+Subject: [PULL 1/6] tests/qtest/q35-test: Remove the obsolete
+ test_without_smram_base test
+Date: Thu,  8 May 2025 17:15:31 +0100
+Message-ID: <20250508161536.865866-2-berrange@redhat.com>
+In-Reply-To: <20250508161536.865866-1-berrange@redhat.com>
+References: <20250508161536.865866-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
@@ -87,51 +91,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 57b6f8d07f1478375f85a4593a207e936c63ff59:
+From: Thomas Huth <thuth@redhat.com>
 
-  Merge tag 'pull-target-arm-20250506' of https://git.linaro.org/people/pmaydell/qemu-arm into staging (2025-05-07 14:28:20 -0400)
+With the release of QEMU 10.1, the pc-q35-4.1 machine will be older
+than 6 years and thus will get disabled automatically by the
+MACHINE_VER_DELETION() macro. Remove the related test to avoid
+that the q35-test is failing when the machine is not available anymore.
 
-are available in the Git repository at:
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ tests/qtest/q35-test.c | 37 +------------------------------------
+ 1 file changed, 1 insertion(+), 36 deletions(-)
 
-  https://gitlab.com/berrange/qemu tags/docs-dep-pull-request
-
-for you to fetch changes up to 3fbb0a1397a9acea523f3c8062df8c6f8032788d:
-
-  include/hw/boards: add warning about changing deprecation logic (2025-05-08 17:11:16 +0100)
-
-----------------------------------------------------------------
-
-* Remove test relying on 4.1 machine type that is about to
-  be disabled
-* Fix off-by-1 in deprecation/removal logic for versioned
-  machine types to cope with dev/rc versions
-* Enable logic for disabling registration of versioned machine
-  types which have exceeded the deprecation lifetime policy.
-* Add automated version information to documentation about which
-  versioned machine types are deprecated and removed
-
-----------------------------------------------------------------
-
-Daniel P. Berrangé (5):
-  Revert "include/hw: temporarily disable deletion of versioned machine
-    types"
-  include/hw/boards: cope with dev/rc versions in deprecation checks
-  docs/about/deprecated: auto-generate a note for versioned machine
-    types
-  docs/about/removed-features: auto-generate a note for versioned
-    machine types
-  include/hw/boards: add warning about changing deprecation logic
-
-Thomas Huth (1):
-  tests/qtest/q35-test: Remove the obsolete test_without_smram_base test
-
- docs/about/deprecated.rst       |  7 ++++
- docs/about/removed-features.rst | 10 +++---
- docs/conf.py                    | 39 +++++++++++++++++++++-
- include/hw/boards.h             | 58 +++++++++++++++++++++------------
- tests/qtest/q35-test.c          | 37 +--------------------
- 5 files changed, 90 insertions(+), 61 deletions(-)
-
+diff --git a/tests/qtest/q35-test.c b/tests/qtest/q35-test.c
+index 75d4078b79..62fff49fc8 100644
+--- a/tests/qtest/q35-test.c
++++ b/tests/qtest/q35-test.c
+@@ -246,41 +246,6 @@ static void test_smram_smbase_lock(void)
+     qtest_quit(qts);
+ }
+ 
+-static void test_without_smram_base(void)
+-{
+-    QPCIBus *pcibus;
+-    QPCIDevice *pcidev;
+-    QTestState *qts;
+-    int i;
+-
+-    qts = qtest_init("-M pc-q35-4.1");
+-
+-    pcibus = qpci_new_pc(qts, NULL);
+-    g_assert(pcibus != NULL);
+-
+-    pcidev = qpci_device_find(pcibus, 0);
+-    g_assert(pcidev != NULL);
+-
+-    /* check that RAM is accessible */
+-    qtest_writeb(qts, SMBASE, SMRAM_TEST_PATTERN);
+-    g_assert_cmpint(qtest_readb(qts, SMBASE), ==, SMRAM_TEST_PATTERN);
+-
+-    /* check that writing to 0x9c succeeds */
+-    for (i = 0; i <= 0xff; i++) {
+-        qpci_config_writeb(pcidev, MCH_HOST_BRIDGE_F_SMBASE, i);
+-        g_assert(qpci_config_readb(pcidev, MCH_HOST_BRIDGE_F_SMBASE) == i);
+-    }
+-
+-    /* check that RAM is still accessible */
+-    qtest_writeb(qts, SMBASE, SMRAM_TEST_PATTERN + 1);
+-    g_assert_cmpint(qtest_readb(qts, SMBASE), ==, (SMRAM_TEST_PATTERN + 1));
+-
+-    g_free(pcidev);
+-    qpci_free_pc(pcibus);
+-
+-    qtest_quit(qts);
+-}
+-
+ int main(int argc, char **argv)
+ {
+     g_test_init(&argc, &argv, NULL);
+@@ -293,6 +258,6 @@ int main(int argc, char **argv)
+     qtest_add_data_func("/q35/tseg-size/ext/16mb", &tseg_ext_16mb,
+                         test_tseg_size);
+     qtest_add_func("/q35/smram/smbase_lock", test_smram_smbase_lock);
+-    qtest_add_func("/q35/smram/legacy_smbase", test_without_smram_base);
++
+     return g_test_run();
+ }
 -- 
 2.49.0
 
