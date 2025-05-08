@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E053AAFC7F
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 16:11:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 440A4AAFC79
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 16:11:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uD1wk-0001y2-6a; Thu, 08 May 2025 10:09:58 -0400
+	id 1uD1x7-0002Yi-B1; Thu, 08 May 2025 10:10:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uD1wg-0001pi-6m; Thu, 08 May 2025 10:09:54 -0400
+ id 1uD1x2-0002T7-Sk; Thu, 08 May 2025 10:10:18 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uD1wd-0008RR-In; Thu, 08 May 2025 10:09:53 -0400
+ id 1uD1x0-0008UD-UF; Thu, 08 May 2025 10:10:16 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id DF46A43662;
- Thu,  8 May 2025 16:09:41 +0200 (CEST)
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 251EA432CA;
+ Thu,  8 May 2025 16:09:42 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
  andrey.drobyshev@virtuozzo.com, hreitz@redhat.com, stefanha@redhat.com,
  eblake@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru
-Subject: [PATCH 06/11] blockdev: drain while unlocked in
- internal_snapshot_action()
-Date: Thu,  8 May 2025 16:09:31 +0200
-Message-Id: <20250508140936.3344485-7-f.ebner@proxmox.com>
+Subject: [PATCH 07/11] blockdev: drain while unlocked in
+ external_snapshot_action()
+Date: Thu,  8 May 2025 16:09:32 +0200
+Message-Id: <20250508140936.3344485-8-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250508140936.3344485-1-f.ebner@proxmox.com>
 References: <20250508140936.3344485-1-f.ebner@proxmox.com>
@@ -63,41 +63,37 @@ Could the bs associated to the device change because of polling
 when draining? If yes, does that mean we need to drain all in the
 beginning and not temporarily unlock?
 
- blockdev.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ blockdev.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/blockdev.c b/blockdev.c
-index 1272b9a745..f2b4fdf1b3 100644
+index f2b4fdf1b3..4a672f9bac 100644
 --- a/blockdev.c
 +++ b/blockdev.c
-@@ -1216,7 +1216,7 @@ static void internal_snapshot_action(BlockdevSnapshotInternal *internal,
-     int ret1;
+@@ -1368,7 +1368,7 @@ static void external_snapshot_action(TransactionAction *action,
+     uint64_t perm, shared;
  
-     GLOBAL_STATE_CODE();
+     /* TODO We'll eventually have to take a writer lock in this function */
 -    GRAPH_RDLOCK_GUARD_MAINLOOP();
 +    bdrv_graph_rdlock_main_loop();
  
-     tran_add(tran, &internal_snapshot_drv, state);
+     tran_add(tran, &external_snapshot_drv, state);
  
-@@ -1225,14 +1225,18 @@ static void internal_snapshot_action(BlockdevSnapshotInternal *internal,
+@@ -1401,11 +1401,14 @@ static void external_snapshot_action(TransactionAction *action,
  
-     bs = qmp_get_root_bs(device, errp);
-     if (!bs) {
+     state->old_bs = bdrv_lookup_bs(device, node_name, errp);
+     if (!state->old_bs) {
 +        bdrv_graph_rdunlock_main_loop();
          return;
      }
  
-     state->bs = bs;
- 
 +    bdrv_graph_rdunlock_main_loop();
      /* Paired with .clean() */
-     bdrv_drained_begin(bs);
- 
+     bdrv_drained_begin(state->old_bs);
 +    GRAPH_RDLOCK_GUARD_MAINLOOP();
-+
-     if (bdrv_op_is_blocked(bs, BLOCK_OP_TYPE_INTERNAL_SNAPSHOT, errp)) {
-         return;
-     }
+ 
+     if (!bdrv_is_inserted(state->old_bs)) {
+         error_setg(errp, "Device '%s' has no medium",
 -- 
 2.39.5
 
