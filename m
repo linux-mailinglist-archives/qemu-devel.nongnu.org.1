@@ -2,71 +2,136 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0433AB0363
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 21:09:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8643FAB0453
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 22:03:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uD6cH-0007at-UP; Thu, 08 May 2025 15:09:10 -0400
+	id 1uD7Ss-0003p1-6y; Thu, 08 May 2025 16:03:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+d31471cf15689795913f+7928+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1uD6cF-0007ad-8x
- for qemu-devel@nongnu.org; Thu, 08 May 2025 15:09:07 -0400
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+ (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
+ id 1uD7Sm-0003nJ-RN
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 16:03:24 -0400
+Received: from mail-bn7nam10on2063.outbound.protection.outlook.com
+ ([40.107.92.63] helo=NAM10-BN7-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <BATV+d31471cf15689795913f+7928+infradead.org+dwmw2@desiato.srs.infradead.org>)
- id 1uD6cD-0003Sm-9N
- for qemu-devel@nongnu.org; Thu, 08 May 2025 15:09:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
- In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=JDZk3OpUkFlTrqNl3uufHrSdYGJeMC03cIugyHNCueY=; b=a06anaKmbgmzi9W6m+QwK/D1XS
- Mh+AKu+TW1NrNnqX4QDs4VaG7mShxmkDfM33r79dC1HLbyPZGnSgfwLYmYpa64a4B9omjQe3FcqsH
- gELB/as9nZUsFUcnDN8eEI2guYRwAYWNg9KwWA+DfQdwuw/LbBAbnq/A2TvrXDwwAcYzlmirbfqdG
- GA8PvaKJjrVg6mGOfnCJ1a0ybG+wVM2BDW8llg1Nakhkh6mA7A/ilTe2ns6TyU1KTJ2jynX1QsEpN
- iNi95sT0NDnio+zUEI+hSfYkF3mMkBMdzxvqjcBtWOc6s4JLmN4H5Qt8CFlXtGsnTv04CVAYunyzT
- q457lIIg==;
-Received: from [15.248.7.68] (helo=u09cd745991455d.ant.amazon.com)
- by desiato.infradead.org with esmtpsa (Exim 4.98.1 #2 (Red Hat Linux))
- id 1uD6c7-0000000G8qt-3YpE; Thu, 08 May 2025 19:09:00 +0000
-Message-ID: <30b8ae14c6fa1f35d5edd0e8daa4571131f204be.camel@infradead.org>
-Subject: Re: [PATCH 06/10] qapi: make Xen event commands unconditionally
- available
-From: David Woodhouse <dwmw2@infradead.org>
-To: "Daniel P." =?ISO-8859-1?Q?Berrang=E9?= <berrange@redhat.com>
-Cc: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>, Paolo
- Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, Richard Henderson
- <richard.henderson@linaro.org>,  Zhao Liu <zhao1.liu@intel.com>
-Date: Thu, 08 May 2025 12:08:57 -0700
-In-Reply-To: <aBzvojVlYZbhgFH5@redhat.com>
-References: <20250508135816.673087-1-berrange@redhat.com>
- <20250508135816.673087-7-berrange@redhat.com>
- <053d4bb5-a532-4133-9459-cb05a46a43db@linaro.org>
- <4534c279c6ffdefd7449f7ca114cf11d5c904c32.camel@infradead.org>
- <aBzvojVlYZbhgFH5@redhat.com>
-Content-Type: multipart/signed; micalg="sha-256";
- protocol="application/pkcs7-signature"; 
- boundary="=-SrklFvBehDgX1O0DhhLY"
-User-Agent: Evolution 3.52.3-0ubuntu1 
+ (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
+ id 1uD7Sj-0002fa-Va
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 16:03:24 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gWFnlR5Ii3ZOtv0i1nSD7/oSCkzmgBrz7Cp6CqpUW3JDJ3Y8V9NZ57XzxvL3+cJvGwilAJo+l4ROMdRtxD+l1ISb9BXvR3WZqH1yLeHLfs7Wc+VmB9yP51LA+L6Cy+l4GhG4tRZ6pQhzYrExIj0yzKTP9fVSIKUvpTzUQQ4Xwk4uOYU3dx1LRY5vrnuTzNlHwKcwIs7tjCiWvmZE4n72tP1ydE1p34jfB2mzKFSxHM8pHyNysST4JZkpw6YCBtalg2C3WqYPPW6APZaT9+XoTikiUPrjCEsQWfFu2yQWZCPkLrkxGS4vLIRWvvvPeboTAf5swu92ZoCrqQ60LG344A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pTArx6Mys2RVs23mpZD3+xGaMla9YOvxmvCJPZFOwj0=;
+ b=EDfHQ4X6ew+Ct2qHdhG0NWp13RSNxfjLfFuLlnC3mGQcVddjpVqpe8YUS5/78wSNyp0Wb1G9N0ztx23PgJ/CA9Xz0Iz63c4h5HsDiq1URSXj/NAZDQ1YgnogtgebEOlwoxKpuFB+NuvwG8FBboQE/BmjiehN5DxL+GQTjQvWYQPt/camk2dGiKFv88pIUXBSL0YlaYZ9av48s2GPKfR+JmX7VLCLJSYYqfIukpRrPLtPEYUBRkG7IfUuXY8bQOeKho1NExJibZju0no90ZR8iIFph52dbuJ/iqEVhr6P0+6SEXhKylnip5fCUC381vp4ftX6IU4mG0prSOSlbZZyAg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pTArx6Mys2RVs23mpZD3+xGaMla9YOvxmvCJPZFOwj0=;
+ b=0S86tBJmnUc+OUfqaUg7Ceh6ggVUUmRPu3To6Z3lUkAO+FR7tY9NfMd9Ncwziqj3AcTsx3BRVovN+3VVRFGvfC9qxkJhSYYfJGY3N0PhuuFIIovOyiQudutMq/u3h3TG/ke7lretAmjmS8lZwT5UWmYq4MVGUa1PlIpk5PXPiqQ=
+Received: from CH5PR02CA0002.namprd02.prod.outlook.com (2603:10b6:610:1ed::14)
+ by SN7PR12MB6790.namprd12.prod.outlook.com (2603:10b6:806:269::15)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.24; Thu, 8 May
+ 2025 19:58:11 +0000
+Received: from DS3PEPF000099D5.namprd04.prod.outlook.com
+ (2603:10b6:610:1ed:cafe::49) by CH5PR02CA0002.outlook.office365.com
+ (2603:10b6:610:1ed::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8722.23 via Frontend Transport; Thu,
+ 8 May 2025 19:58:11 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DS3PEPF000099D5.mail.protection.outlook.com (10.167.17.6) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8722.18 via Frontend Transport; Thu, 8 May 2025 19:58:10 +0000
+Received: from bmoger-ubuntu.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 8 May
+ 2025 14:58:09 -0500
+From: Babu Moger <babu.moger@amd.com>
+To: <pbonzini@redhat.com>
+CC: <zhao1.liu@intel.com>, <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>,
+ <davydov-max@yandex-team.ru>
+Subject: [PATCH v7 0/6] target/i386: Update EPYC CPU models for Cache property, RAS,
+ SVM feature and add EPYC-Turin CPU model
+Date: Thu, 8 May 2025 14:57:58 -0500
+Message-ID: <cover.1746734284.git.babu.moger@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- desiato.infradead.org. See http://www.infradead.org/rpr.html
-Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
- envelope-from=BATV+d31471cf15689795913f+7928+infradead.org+dwmw2@desiato.srs.infradead.org;
- helo=desiato.infradead.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS3PEPF000099D5:EE_|SN7PR12MB6790:EE_
+X-MS-Office365-Filtering-Correlation-Id: 42a16802-5aa4-4d41-7862-08dd8e6aa8f1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|36860700013|1800799024|82310400026|376014; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?MOfmwmnMSjAyDONvI5nr42aNxD+5q4tLhj/IJD61o/ETaUaqFEoEIHWTyuOY?=
+ =?us-ascii?Q?Bkw7N93d3CBxw2VJUZD8dYIm0cYKa8Qgg1y30gtxwTZSFFF5oMVZpnNmad6r?=
+ =?us-ascii?Q?ifQmzxGLd3pR/Y0BRdjsXm6w5BjaHvuhgDaUe90QBZOdI4grLwPU8iSz7ozV?=
+ =?us-ascii?Q?NRkroCGozaKzXsMdiQb9FIB+Oalo/kBJ9QtAifrIYvTNSIxCe33NDgLQ+vcK?=
+ =?us-ascii?Q?hwl7zEV7V7HVP1Og4zC+Mjai/ONPCT00IMrZw882IHMqnE9J7daJ5B21mca9?=
+ =?us-ascii?Q?Z02aybm/P0ZztSN62xpDFSmg6EWnJ0QcWHU6jff2N1BKWmczIXskOzOzMPV8?=
+ =?us-ascii?Q?iN9KBDS268TjAI+w9duGUDqDVxbu/3BgDCFw61xjkIn/fn9yIjCGIzHRIXHg?=
+ =?us-ascii?Q?I9spe7m+H1+e3JUtasG2gvaV5L3cmaN38mzrLqoY1kYV5aCVNcRVuIucZY/Z?=
+ =?us-ascii?Q?OU5e9HS5tLqutjVSEQAGcZfR48rEg5Y8IOOmCUvzLOQLk5tnxe2YYTyHkpcZ?=
+ =?us-ascii?Q?/NbRIp0K+WQE+cERA3klQQI/nFjvKLNqBK0EtjOaO5OBb+MW5hplAjt+eZd6?=
+ =?us-ascii?Q?eBotZLz4OmZ7njfqVy52lqW1Xtw84nNXjMu+aI4bkfqX8h0EJLXq4CuvM+7m?=
+ =?us-ascii?Q?mWvcYHg2IUZrBz91IBypDXDM2q5jW6R/tW5URmuOX+ZHYC+1Zhmj5y23WBK8?=
+ =?us-ascii?Q?8qkQNfkgVrlCoHFRZhvmDzUgqWglx9PXSjDwbKPn0bKJVYSD3dyW6rTrrt2W?=
+ =?us-ascii?Q?BjllD4NDoyzPJiXBrQzwRCjiqd4pUIFh3j54Zq5X2bLmLy6r3gsOpHwq5bLB?=
+ =?us-ascii?Q?FvzR4TXw7W3ipuZcbWrfhFTtpN3kvfKdILF2Rqh/r5laWdZ4NJuDjI9pG2qA?=
+ =?us-ascii?Q?+N0hFRn2nu0jPpHsWASoLdJAREhtL91MD7K0DOyaVrmRqmxhGMR8BPK+u2TT?=
+ =?us-ascii?Q?q6uuswMX3OvgqtGIkiZA/jCUZ9GM1lWNliZFyDk5Zos5TAH0MnUdBS7iEl8F?=
+ =?us-ascii?Q?so+ytRrddkL+IExtCnOc2JyXGgsIcnWBkg0fpn8ItvkByAoJfzLuUtizCe2a?=
+ =?us-ascii?Q?Gh22u0yitLqJodfcRqDYXJM+HS1bJGWW8H3Hkin4qqJ2AaH61x650dmxs6Fo?=
+ =?us-ascii?Q?4oUcYifo4GFExZ1OcSnFxHcnquUm2XfewO4OGgeOilhCR5MWI817RNiQFlFe?=
+ =?us-ascii?Q?xTGH0M2WEKDEV0W6ESCHE46FP6Kjnu3d7Siqpc9vScATAmlTAOtqBaq3mi75?=
+ =?us-ascii?Q?wEx6e/5sRJxicnaeVoyR0YCCSF1roSmY9MdBdC5LfAvukGCBoUzMogjjDZ3r?=
+ =?us-ascii?Q?aipl1J7/qusL0rHu7d06+SUKT+0eRigBN6IT4LZf3a0AFMG3cytWIbaM9pzj?=
+ =?us-ascii?Q?BTsC1WUcqpqRo00CtEcz+qi3cfefDp2eerSjdZxBTgYRh2Jkf9/BQC/RALnS?=
+ =?us-ascii?Q?Rjy7Hk7SxFS/Uo4+1I8nJSsUKD6tMjQfw5qRKGwWNvPq/LF66Iu010tx2p73?=
+ =?us-ascii?Q?qCPvZTwXXVVFyc4=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2025 19:58:10.7708 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 42a16802-5aa4-4d41-7862-08dd8e6aa8f1
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DS3PEPF000099D5.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6790
+Received-SPF: permerror client-ip=40.107.92.63;
+ envelope-from=Babu.Moger@amd.com;
+ helo=NAM10-BN7-obe.outbound.protection.outlook.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.416,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,125 +148,76 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---=-SrklFvBehDgX1O0DhhLY
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Following changes are implemented in this series.
 
-On Thu, 2025-05-08 at 18:53 +0100, Daniel P. Berrang=C3=A9 wrote:
-> =C2=A0
-> > This patch moves those stubs from hw/i386/kvm/xen-stubs.c which was
-> > built if !CONFIG_XEN_EMU, and moves them elsewhere if !CONFIG_KVM? So
-> > at first glance I think it might fail for KVM && !XEN_EMU builds... ?
->=20
-> The files in the top level 'stubs/' directory get built into
-> libqemuutil.a, and thus those stubs are available to every
-> system binary, in every configuration scenario.
->=20
-> If the real impl of these methods is present in any binary, the stubs
-> file impl should get discarded by the linker automatically, avoiding
-> a duplicate symbols problem.
+1. Fixed the cache(L2,L3) property details in all the EPYC models.
+2. Add RAS feature bits (SUCCOR, McaOverflowRecov) on all EPYC models
+3. Add missing SVM feature bits required for nested guests on all EPYC models
+4. Add the missing feature bit fs-gs-base-ns(WRMSR to {FS,GS,KERNEL_G}S_BASE is
+   non-serializing). This bit is added in EPYC-Genoa and EPYC-Turin models.
+5. Add RAS, SVM, fs-gs-base-ns and perfmon-v2 on EPYC-Genoa and EPYC-Turin models.
+6. Add support for EPYC-Turin. 
+   (Add all the above feature bits and few additional bits movdiri, movdir64b,
+    avx512-vp2intersect, avx-vnni, prefetchi, sbpb, ibpb-brtype, srso-user-kernel-no).
 
-Thanks.
+Link: https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/programmer-references/57238.zip
+Link: https://www.amd.com/content/dam/amd/en/documents/corporate/cr/speculative-return-stack-overflow-whitepaper.pdf
+---
+v7: Rebased on top latest 57b6f8d07f14 (upstream/master) Merge tag 'pull-target-arm-20250506'
+    Added new feature bit PREFETCHI. KVM support for the bit is added recently.
+    https://github.com/kvm-x86/linux/commit/d88bb2ded2ef
+    Paolo, These patches have been pending for a while. Please consider merging when you get a chance.
 
-In that case,
+v6: Initialized the boolean feature bits to true where applicable.
+    Added Reviewed-by tag from Zhao.
 
-Acked-by: David Woodhouse <dwmw@amazon.co.uk>
+v5: Add EPYC-Turin CPU model
+    Dropped ERAPS and RAPSIZE bits from EPYC-Turin models as kernel support for
+    these bits are not done yet. Users can still use the options +eraps,+rapsize
+    to test these featers.
+    Add Reviewed-by tag from Maksim for the patches already reviewed.
 
---=-SrklFvBehDgX1O0DhhLY
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+v4: Some of the patches in v3 are already merged. Posting the rest of the patches.
+    Dropped EPYC-Turin model for now. Will post them later.
+    Added SVM feature bit as discussed in
+    https://lore.kernel.org/kvm/b4b7abae-669a-4a86-81d3-d1f677a82929@redhat.com/
+    Fixed the cache property details as discussed in
+    https://lore.kernel.org/kvm/20230504205313.225073-8-babu.moger@amd.com/
+    Thanks to Maksim and Paolo for their feedback.
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MDUwODE5MDg1
-N1owLwYJKoZIhvcNAQkEMSIEID6o9A0DEyaISgdocOfR9Qu094aYz6JgLjQ4RgEBfEmIMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAJTJg6kkbd/mE
-a0uR0uKeN4gwrqqSgVkP/h4btSck9WPX0HNWw4UCHVKSiHpTLQKKXM2+UgIXutLvsUY16QxNrOAq
-snlIqhwD4Yy3MBJZUBRJWDG+Y5upHCgXsSup6A7sUNfH9ON3lF0kE1gLzM2UyKroDoCOA3mMShO7
-1HEcgsZICzWYt0bYUs2/f3czNqhEDJ318fN38YfKdl68hSaSgQjsOpgdHBex51yRbgpRvQJvIoM0
-CxX4EgusOAV6x6pj/r5GZwfQOuyQ3oEmoVrwYjw5a8a+J9NM1t1WiVoQgTPnwEey5oc2c1aN6b9M
-IkTH4f2ty9QOz+gSklJbwWlNX7aYQ+nVUnDNI97pequut3ANi6irb9Z3SRYDyyAmYj89l92sG8wk
-fs8EPX7594jg0ZQ750+pezGCfwbmFqfUnY2QxhJWfrfQavr39R1vOVgMk2ArIVGHrefiq9D0en5n
-zMKchLsB+FLdxCK4WcNm/qT+S6wvuPi18kOsO5tnF4rSfHd1/0bopobEUv3ObBe9GFCh8pbuNl5x
-FqA6RT6PKuEzcd96S83fwOD9Ll2Im9GYDjFyCZJne+63wxs9FM4VVr4DoxiPSw4LsnrNjAJSBi/S
-P2uG3ZVbVwn868SCh+EtPS0QZKynoC+KIHVZpqI8XfU87762LVRzDp0pIUUgKnMAAAAAAAA=
+v3: Added SBPB, IBPB_BRTYPE, SRSO_USER_KERNEL_NO, ERAPS and RAPSIZE bits
+    to EPYC-Turin.
+    Added new patch(1) to fix a minor typo.
 
+v2: Fixed couple of typos.
+    Added Reviewed-by tag from Zhao.
+    Rebased on top of 6d00c6f98256 ("Merge tag 'for-upstream' of https://repo.or.cz/qemu/kevin into staging")
 
---=-SrklFvBehDgX1O0DhhLY--
+Previous revisions:
+v6: https://lore.kernel.org/kvm/cover.1740766026.git.babu.moger@amd.com/
+v5: https://lore.kernel.org/kvm/cover.1738869208.git.babu.moger@amd.com/
+v4: https://lore.kernel.org/kvm/cover.1731616198.git.babu.moger@amd.com/
+v3: https://lore.kernel.org/kvm/cover.1729807947.git.babu.moger@amd.com/
+v2: https://lore.kernel.org/kvm/cover.1723068946.git.babu.moger@amd.com/
+v1: https://lore.kernel.org/qemu-devel/cover.1718218999.git.babu.moger@amd.com/
+
+Babu Moger (6):
+  target/i386: Update EPYC CPU model for Cache property, RAS, SVM
+    feature bits
+  target/i386: Update EPYC-Rome CPU model for Cache property, RAS, SVM
+    feature bits
+  target/i386: Update EPYC-Milan CPU model for Cache property, RAS, SVM
+    feature bits
+  target/i386: Add couple of feature bits in CPUID_Fn80000021_EAX
+  target/i386: Update EPYC-Genoa for Cache property, perfmon-v2, RAS and
+    SVM feature bits
+  target/i386: Add support for EPYC-Turin model
+
+ target/i386/cpu.c | 439 +++++++++++++++++++++++++++++++++++++++++++++-
+ target/i386/cpu.h |   4 +
+ 2 files changed, 441 insertions(+), 2 deletions(-)
+
+-- 
+2.34.1
+
 
