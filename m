@@ -2,105 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CD69AAF5DB
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 10:39:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37387AAF5A9
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 10:28:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCwlH-0002hd-K3; Thu, 08 May 2025 04:37:47 -0400
+	id 1uCwaV-0006Vg-Kv; Thu, 08 May 2025 04:26:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uCwlF-0002hN-3D
- for qemu-devel@nongnu.org; Thu, 08 May 2025 04:37:45 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uCwlC-0000hY-JN
- for qemu-devel@nongnu.org; Thu, 08 May 2025 04:37:44 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-22fb33898bbso2298175ad.3
- for <qemu-devel@nongnu.org>; Thu, 08 May 2025 01:37:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1746693461; x=1747298261;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=KKBjg0KfK1xBsSW92KZcrdd0nJsWQnOMpHvUQnXJW4o=;
- b=vJxWuUJwGX7igwI3shEA3Ck/pTveTWO6GMDZUG3XdsanfHFhcpM9U+WyZ3FQhFvhEe
- yFce4lNviDrSgH+AIJLH3SZRLv15S+lZaRAIHYFoX/58GH4X0Bs4nb3BBxtAmKYCJ9Np
- myV8C0e5516sD9Leq00RwOXD7X3WzOKH5Q+rcmuhlASGq8oxim+X8shkAWhaWyYjqVLI
- +jBgchchBFHS5gXwOAOIoHyPTf8tuSLeg3ePal+E4avkZ+WTRgcM1j1VGEOUik6BFCnj
- Ki1NIAe9iEKiywYsiQtPuEm3i05gZN9AmvVlUgDhYUM4OIvgBTdJkSEEZv+jFRjyEuCH
- N5hQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746693461; x=1747298261;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KKBjg0KfK1xBsSW92KZcrdd0nJsWQnOMpHvUQnXJW4o=;
- b=syrXkzUJyAnylzxTiEso/FDIT6TR0DGzfzExEaJ99PF7ExEfUmFsR/lYquvopf1//6
- C5dKBEvpo5cUmQ5tmy5W/vemWYY0tTMTyOFZNSNZfz8kDcfxeQ50rGzcg9W5Z+0N7lSa
- poYeOzXDGRnx4KAHnObytyJsFdJCibij3068JesVOB4Nzp4tsw/oUpHIDZTAd5i2RIqb
- ICAgtSlzj/JuT53JZKE/g/43oU41VQGFSkkr0gkji5EU2BJsevLBPDXKrzUJxPbexW3j
- WTaYmsGgiiXyc1xaQl3CG3Fm/HTnfViKlfDero0S3j8oRVyuuARVUxQgSatGF5T7g26U
- lMEQ==
-X-Gm-Message-State: AOJu0Yzevq0JNyE+MBknXRUV2EjFr+38hWMm6D/4opE7KnxjNYN7gQPq
- V2Bt+i0tlVogjRRoIR2zf7ypuH6SMh872ekikmAWo0zlp5FJ5HzxX3Iq+b7GsDk=
-X-Gm-Gg: ASbGncuN2L3FCciJucAIgeIUeOmJyU4WAh1fIMJD0IpPQCGQ1B/GuU+icglCpoZaPgz
- 6BHIi/Cve7oZ/2mDTPfokLmLdDdNr5iI5dAMeh7rK6X6q+f+OwdUguM2dMbOvSWORAl0A4f02Ko
- CSHMdbkm86tqS+TE0lVqvFcDjY6qMaJER6u6USehGVSGBOMEXX+JIMQxFu8sORMErRla3PdbPbm
- omdcnC+i5zeV7F783oRD/Ci97kCe8bPIADZKFZP5r2c8mOqVVXGvuEF5t9qmmQJOIz/JoutXT8H
- XV+zTZ0VX5BUtfIbPssj4BW25l+4Kk1U4jFVCgfP2p1IpqlUWa8=
-X-Google-Smtp-Source: AGHT+IHsDHwVelASjO1XWFYiZGLgmttX06RCgxVCP8Uji4ecUpUhtjUb41ybwOPYhOHZKBaddi2UyA==
-X-Received: by 2002:a17:903:46d0:b0:22f:a1b4:b2b6 with SMTP id
- d9443c01a7336-22fa1b4b588mr27141855ad.52.1746693460783; 
- Thu, 08 May 2025 01:37:40 -0700 (PDT)
-Received: from [10.100.116.185] ([157.82.128.1])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22e150ebfa4sm107737995ad.13.2025.05.08.01.37.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 08 May 2025 01:37:40 -0700 (PDT)
-Message-ID: <6af5a9ec-a197-49d8-880f-cdd88621e180@daynix.com>
-Date: Thu, 8 May 2025 17:37:33 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] hw/virtio: Introduce CONFIG_VIRTIO_LEGACY to disable
- legacy support
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- David Hildenbrand <david@redhat.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Jonah Palmer <jonah.palmer@oracle.com>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Jason Wang <jasowang@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- qemu-ppc@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- Anton Johansson <anjo@rev.ng>, Pierrick Bouvier
- <pierrick.bouvier@linaro.org>, qemu-arm@nongnu.org,
- Mark Cave-Ayland <mark.caveayland@nutanix.com>,
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uCwaT-0006SZ-Co
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 04:26:37 -0400
+Received: from mgamail.intel.com ([198.175.65.13])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uCwaP-0007gM-UG
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 04:26:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1746692794; x=1778228794;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=j9w5RAXLNqtonoshyUaBzo7N5QRsOFAt4LXyfk5+g+I=;
+ b=kQ4M1q5wVgl0yg/LQV9KrYaQq4FMCrAHtrYKsgHLtMA+r2ABTkuJVFX9
+ d2Cu+J9NtyFhb4sBWU63eiLXJdxfel3GJNpWyABuBkpYMZgd0hjalf35k
+ u585WP6DFZlIW1FDB3vgv98Ez5B5VzQFapQfe5aQeDbVjFT3wfekCQWuI
+ YgjRMIK03GEY00C8jv17YONM/NXK9YPfFLy5DFDPwdffsNdcTpH+nR3bi
+ m2TcHdFVJN5qGOKIERSiCYzgBTdsMUMrIZ+kEsiBw1TqOpqyP3UDAsz3M
+ f5RM1HsON6wlxqQsu0beBq3vaRX24p7Jl/wbQyzGQfOoF4v8VG6p6i7yH A==;
+X-CSE-ConnectionGUID: rqnND+NuTXidxkQ8s2DqIw==
+X-CSE-MsgGUID: pCf+L3CYQ3CA9rmfgXDgnA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="59449480"
+X-IronPort-AV: E=Sophos;i="6.15,271,1739865600"; d="scan'208";a="59449480"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 May 2025 01:26:29 -0700
+X-CSE-ConnectionGUID: MgDNbu7aRKC2J+PMs/bmLA==
+X-CSE-MsgGUID: 14H8LvYUSZicaY97HJYKnw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,271,1739865600"; d="scan'208";a="140257621"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa003.fm.intel.com with ESMTP; 08 May 2025 01:26:19 -0700
+Date: Thu, 8 May 2025 16:47:21 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Mark Burton <mburton@qti.qualcomm.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Alessandro Di Federico <ale@rev.ng>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Anton Johansson <anjo@rev.ng>, Brian Cain <bcain@quicinc.com>,
+ "Daniel P. Berrange" <berrange@redhat.com>,
+ Chao Peng <chao.p.peng@linux.intel.com>, Neo Jia <cjia@nvidia.com>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ "Wedgwood, Chris" <cw@f00f.org>, dhedde@kalrayinc.com,
+ Eric Blake <eblake@redhat.com>, eblot@rivosinc.com,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ Auger Eric <eric.auger@redhat.com>,
+ Felipe Franciosi <felipe@nutanix.com>, iggy@theiggy.com,
+ Warner Losh <imp@bsdimp.com>, Jan Kiszka <jan.kiszka@web.de>,
+ Jason Gunthorpe <jgg@nvidia.com>,
+ Jidong Xiao <jidong.xiao@gmail.com>, Jim Shu <jim.shu@sifive.com>,
+ Joao Martins <joao.m.martins@oracle.com>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Luc Michel <luc@lmichel.fr>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Max Chou <max.chou@sifive.com>, Meirav Dean <mdean@redhat.com>,
+ mimu@linux.vnet.ibm.com, "Ho, Nelson" <nelson.ho@windriver.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>,
  Peter Maydell <peter.maydell@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-References: <20250502132441.64723-1-philmd@linaro.org>
- <aBnCk2WE_SNkRgSH@redhat.com> <20250506040903-mutt-send-email-mst@kernel.org>
- <59c4d557-2f73-4b56-8650-f16ed3cd7bb2@linaro.org>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <59c4d557-2f73-4b56-8650-f16ed3cd7bb2@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ QEMU Developers <qemu-devel@nongnu.org>, Roberto Campesato <rbc@meta.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+ Bernhard Beschow <shentey@gmail.com>, Stefan Hajnoczi <stefanha@gmail.com>,
+ Thomas Huth <thuth@redhat.com>, Wei Wang <wei.w.wang@intel.com>,
+ z.huo@139.com, LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ "Wu, Zhiyong" <zwu.kernel@gmail.com>
+Subject: Re: KVM/QEMU Community call 29/04/2025 agenda items?
+Message-ID: <aBxvmV7F+lI6YDGn@intel.com>
+References: <874iy85yx2.fsf@draig.linaro.org>
+ <eefb308b-5cd8-4b30-bc32-e37f601cb07b@linaro.org>
+ <CABgObfYmm2RgFUuViDJA_cuqeCUOh_DV5Qar8YLnrbfYVV39VQ@mail.gmail.com>
+ <87a57ydj8y.fsf@pond.sub.org>
+ <5ce00003-4105-40c7-954b-63336a4325d5@linaro.org>
+ <87plgkihg4.fsf@pond.sub.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62e.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+In-Reply-To: <87plgkihg4.fsf@pond.sub.org>
+Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -57
+X-Spam_score: -5.8
+X-Spam_bar: -----
+X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -117,101 +119,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/05/06 17:55, Philippe Mathieu-Daudé wrote:
-> On 6/5/25 10:12, Michael S. Tsirkin wrote:
->> On Tue, May 06, 2025 at 09:04:50AM +0100, Daniel P. Berrangé wrote:
->>> On Fri, May 02, 2025 at 03:24:41PM +0200, Philippe Mathieu-Daudé wrote:
->>>> Legacy VirtIO devices don't have their endianness clearly defined.
->>>> QEMU infers it taking the endianness of the (target) binary, or,
->>>> when a target support switching endianness at runtime, taking the
->>>> endianness of the vCPU accessing the device.
->>>>
->>>> Devices modelling shouldn't really change depending on a property
->>>> of a CPU accessing it.
->>>>
->>>> For heterogeneous systems, it is simpler to break such dev <-> cpu
+On Wed, May 07, 2025 at 05:11:39PM +0200, Markus Armbruster wrote:
+> Date: Wed, 07 May 2025 17:11:39 +0200
+> From: Markus Armbruster <armbru@redhat.com>
+> Subject: Re: KVM/QEMU Community call 29/04/2025 agenda items?
 > 
->          ^^^^^^^^^^^^^
+> Philippe Mathieu-Daud� <philmd@linaro.org> writes:
 > 
->>>> dependency, only allowing generic device models, with no knowledge
->>>> of CPU (or DMA controller) accesses.
->>>>
->>>> Therefore we introduce the VIRTIO_LEGACY Kconfig key. We keep the
->>>> current default (enabled).
->>>> New binaries can set CONFIG_VIRTIO_LEGACY=n to restrict models to
->>>> the VirtIO version 1 spec.
->>>
->>> IMHO that isn't acceptable. In order to be able to provide an
->>> upgrade path from the old binaries, we need the need the new
->>> binaries to be able to serve the same use cases & disabling
->>> virtio 0.9 support prevents that.
+> > On 30/4/25 12:41, Markus Armbruster wrote:
 > 
-> This isn't for the single binary effort, there we are taking a
-> lot of care to not introduce any change.
+> [...]
 > 
-> This is for after it; once we have a single binary (one architecture
-> run by an instance) we can start testing heterogeneous emulation
-> (different architectures in the same instance).
+> >> Pierrick's stated goal is to have no noticable differences between the
+> >> single binary and the qemu-system-<target> it covers.
+> >> 
+> >> We have two external interfaces to worry about: QMP and the command
+> >> line.  Let's ignore the latter for now.
+> >> 
+> >> Target-specific differences in *syntax* come from QAPI schema
+> >> conditionals with target-specific conditions.  Example:
+> >> 
+> >>      { 'command': 'query-cpu-definitions', 'returns': ['CpuDefinitionInfo'],
+> >>        'if': { 'any': [ 'TARGET_PPC',
+> >>                         'TARGET_ARM',
+> >>                         'TARGET_I386',
+> >>                         'TARGET_S390X',
+> >>                         'TARGET_MIPS',
+> >>                         'TARGET_LOONGARCH64',
+> >>                         'TARGET_RISCV' ] } }
+> >> 
+> >> This command is only defined for some targets.
+> >> 
+> >> The value of query-qmp-schema reflects this: it has
+> >> query-cpu-definitions exactly when the condition is satisfied.  The
+> >> condition is evaluated at compile-time, because that's how QAPI schema
+> >> 'if' works.
+> >> 
+> >> Say we drop the condition and instead add an equivalent run-time
+> >> condition to command registration.  This preserves behavior of command
+> >> execution.  But query-qmp-schema now has query-cpu-definitions *always*.
+> >> This is a noticable difference.  It may break management applications
+> >> that use query-qmp-schema to probe for the command.
+> >> 
+> >> Moreover, conditionals aren't limited to commands.  Example:
+> >> 
+> >>      { 'struct': 'CpuModelExpansionInfo',
+> >>        'data': { 'model': 'CpuModelInfo',
+> >>                  'deprecated-props' : { 'type': ['str'],
+> >> --->                                   'if': 'TARGET_S390X' } },
+> >>        'if': { 'any': [ 'TARGET_S390X',
+> >>                         'TARGET_I386',
+> >>                         'TARGET_ARM',
+> >>                         'TARGET_LOONGARCH64',
+> >>                         'TARGET_RISCV' ] } }
+> >> 
+> >> Here we have a conditional member.
 > 
->>> I don't see a compelling
->>> technical reason why we can't support virtio 0.9 from this
->>> endian point.
+> [...]
 > 
-> VirtIO 0.9 needs knowledge of the vCPU architecture to get its
-> endianness. So we need to somehow propagate that at creation
-> time, guarantying which vCPU (or set of vCPUs) will access a
-> virtio device.
+> > IMHO conditionals should only depend on host / static configuration
+> > features, not features modifiable from the command line.
 > 
-> The use case I'd like to figure out is how should we model
-> plugging a virtio 0.9 device in into a fully emulated
-> ZynqMP machine, which has little-endian ARM cores and big
-> endian MicroBlaze cores.
+> This is how the QAPI schema works now.
 > 
-> Alex said this is unlikely to happen, and better is to
-> ignore this case by not allowing virtio pre-1.0 devices in
-> our future heterogeneous emulator.
+> >                                                          (I'm always
+> > confused by KVM features published in the schema, but then you start
+> > your binary with -accel=tcg and still can run KVM specific commands
+> > via QMP, returning errors).
 > 
-> In this same thread Pierrick pointed me to the reference in
-> the spec: '2.4.3 Legacy Interfaces: A Note on Virtqueue Endianness',
-> "It is assumed that the host is already aware of the guest endian."
+> Not exactly a ringing endorsement for keeping the QAPI schema work the
+> way it does now, isn't it?  ;)
 > 
-> I suppose this means a pre-1.0 virtio device expect to be used by
-> a single guest OS, but it is not clear the guest OS as fixed
-> endianness, because the code path checks vCPU endianness at
-> runtime, so passing guest endianness as a property to pre-1.0
-> devices isn't really an option.
+> The problem at hand is QAPI-generated files in a single binary.
 > 
-> Anyway I think 1/ I posted this too early, "speculating" as Pierrick
-> noticed, and confuse the community w.r.t. "single binary" and
-> 2/ I don' t understand legacy virtio and its endianness handling
-> enough to figure a clever idea to keep using it heterogeneous
-> setup, so I'll let this task to someone more familiar with that tech.
-It may not be too early as QEMU may already support heterogeneous 
-endianness.
+> Pierrick posted "[RFC PATCH 0/3] single-binary: make QAPI generated
+> files common".  The patches are flawed, but that's alright for RFC.
+> 
+> In review, I pointed out three possible solutions, and discussed their
+> pros and cons:
+> 
+> (1) Drop target-specific conditionals.
+> 
+> (2) Replace them by run-time checks.
+> 
+> (3) Have target-specific QAPI-generated code for multiple targets
+>     coexist in the single binary.
 
-An Arm CPU have a register to switch the endianness, which depends on 
-the current Exception level, and QEMU already implements it at least 
-enough to switch the endianness for virtio if I read the code correctly.
+Thank you Markus for your nice summary! I also apologize to you and
+Philippe if I didn't understand correctly (I tried to look at
+Pierrick's and Philippe's work, but still worry about I may have wrong
+understanding :-) )
 
-This means QEMU should already be able to handle cases where the 
-endianness changes depending on:
-- timing (due to writes to SCLR or switches among Exception levels) or
-- vCPUs (as each vCPU has its own register instance).
+> Both (1) and (3) keep the QAPI schema work as it does now.
+> 
+> Pierrick's patches are an incomplete attempt at (2).
 
-If virtio has a problem with heterogeneous endianness, I'm afraid that 
-it matters even now for Arm emulation.
+I see.
 
-In my understanding, the virtio code is written carefully enough to 
-avoid breaking migration and I found no other obvious problems like 
-crashes and memory leaks with heterogeneous endianness, so I can 
-conclude that the virtio code requires no change.
+> Daniel made a case for (1).  You and I actually discussed (1) before,
+> and I encouraged you to explore it.
 
-However, allowing to have legacy devices with heterogeneous endianness 
-may still lead to mismatches between QEMU and user's expectations as the 
-spec is not clear. Deprecating the combination of legacy devices with 
-CPUs that can switch endianness (and other heterogeneous endianness 
-scenarios in the future) may be a good idea to avoid that.
+And I notice Philippe has 2 patches:
+
+(1) For QAPI, this is to drop target-specific cond:
+
+https://lore.kernel.org/qemu-devel/20250429100419.20427-1-philmd@linaro.org/
+
+I feel it's a smart way to make it optional.
+
+(2) Not for QAPI, but this is try to add runtime check:
+
+https://lore.kernel.org/qemu-devel/20250502214551.80401-5-philmd@linaro.org/
+
+I am thinking about how kvm-pmu-filter could be aligned with these
+current efforts in mail list.
+
+I can drop all the target conditions for KvmPmuEventFormat:
+
+    { 'enum': 'KvmPmuEventFormat',
+      'data': ['raw', 'x86-select-umask', 'x86-masked-entry'] }
+
+This is what you listed before and it is similar to the way in (1). But
+only (1) is not enough because I can't make these formats as optional
+(pls educate me if I'm wrong :-) ).
+
+Therefore, I think I need run-time check like Philippe did in (2), in
+my kvm-pmu.c file. Do you think so?
+
+An additional question - about CONFIG_KVM - is that I see that it's all
+currently focused on solving target-specific problems, and I understand
+that it's not yet kvm-specific's turn.
+
+But kvm-pmu-filter does (or, may :-) ) need CONFIG_KVM. My initial
+thought is, is it possible to remove the CONFIG_KVM condition for
+kvm-pmu-filter in QAPI and use the same runtime check? But this would
+require accel-info as Philippe's work on target-info in [2]).
+
+> We can certainly discuss this some more, but I'd prefer to review a
+> working solution instead.
+
+With so many options on the table, I'm a bit confused about the fate of
+kvm-pmu-filter. Should this case wait for the most appropriate option to
+come along, or could it move forward based on the status quo, and then
+consider the refactoring later with the final optimal option?
 
 Regards,
-Akihiko Odaki
+Zhao
+
 
