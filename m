@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22E1FAAFE43
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 17:07:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22AC8AAFE7B
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 17:10:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uD2oS-0001Ll-85; Thu, 08 May 2025 11:05:28 -0400
+	id 1uD2oU-0001Nr-L3; Thu, 08 May 2025 11:05:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uD2oQ-0001L4-7d
- for qemu-devel@nongnu.org; Thu, 08 May 2025 11:05:26 -0400
+ id 1uD2oS-0001MP-Dl
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 11:05:28 -0400
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uD2oN-0007RF-GU
- for qemu-devel@nongnu.org; Thu, 08 May 2025 11:05:25 -0400
+ id 1uD2oQ-0007RW-0Y
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 11:05:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746716723; x=1778252723;
+ t=1746716726; x=1778252726;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=oFZQqpDNFHH2b1vDaIjPFpNVtZre5LHwzMWRdwDhm8o=;
- b=etStJYSolw3XOwKt6iWZO9fQk9J3Bj9qAlidBcbkx9VoY68eiy1iprtS
- reipIEg3TcgaFFAhX/2NIPd0guZX4kk3C1U6kQueB8YqfcBQYl2FAla1m
- HnwWA08cKHFzuGNr/sTpKHI8pOFzS+PkMrPpuRVbGlW1dDfe9Gphm23/3
- EOpE+v17dbkyj1BQcwj/F3yXVCcSdRmyKMu2IOVLEO8ViZwWIPPHC2Yf4
- xjMAsvEfnIojqGqxb/BkX+/6CGyOKKtr0Htc7r5HtBcf0N90u2DPHW6vq
- Nz9WbR2JjtIdUa8pps6rYbQi5BC9UYvs0aVtj7KqGWyUzmOX3gMUuqf9W A==;
-X-CSE-ConnectionGUID: q46CaMB3Q8iNL4duriBzlg==
-X-CSE-MsgGUID: zrvAbro8TOattYKPNoQrxg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="73888056"
-X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="73888056"
+ bh=DTR2reLVr32ztLRUsZ/63i5tZqMftT2NNn7Lh3AoxvM=;
+ b=T+KUgTewvf9mLwUbzmtv01VuDBOXTpbybS0liTpqCYiGwUbAIyatn98d
+ 2V3ktAEqdT9W43WPZC2UI7Krq93z36nBP/7ULlZxYkD85izKOeF0eLYuG
+ 8wwUHAAEYgbj8hsrOrn+yHkGGJ9DUK6luV/B+ZTZIHsuAGEsK7au+hMPp
+ zxsTQZ6Uq0rGo+WRUuar1iDVIwfy2735AUcRnsmGCw8+zS/2CIMJMnkqN
+ 9dQRnYBqxDhhFFr0/m4PdYwd5JE4e5gGXWe5SMUEj7BuzYcg8pkioEalW
+ QWNcm3+Y0ZzH1cnFR0Z+GySBF4xejkKPr4foonPBheu9EJD81mUPDql97 A==;
+X-CSE-ConnectionGUID: QcATBpbZStyXBOVBTBnurg==
+X-CSE-MsgGUID: E9d8qFfcQgGj3deLs2ONFQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="73888068"
+X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="73888068"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2025 08:05:22 -0700
-X-CSE-ConnectionGUID: pxRpgHDYRjmXtpGf6DR3Jg==
-X-CSE-MsgGUID: j26A5cH1RC6d82Jqoeb9pg==
+ 08 May 2025 08:05:24 -0700
+X-CSE-ConnectionGUID: 9+IEfk3jSKuT4w3K01M9PQ==
+X-CSE-MsgGUID: 4R7sHZGTQ66gN4T/eXJBdQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="141439845"
+X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="141439857"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa005.jf.intel.com with ESMTP; 08 May 2025 08:05:18 -0700
+ by orviesa005.jf.intel.com with ESMTP; 08 May 2025 08:05:22 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
@@ -55,10 +55,9 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  Zhao Liu <zhao1.liu@intel.com>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PATCH v9 09/55] i386/tdx: Add property sept-ve-disable for tdx-guest
- object
-Date: Thu,  8 May 2025 10:59:15 -0400
-Message-ID: <20250508150002.689633-10-xiaoyao.li@intel.com>
+Subject: [PATCH v9 10/55] i386/tdx: Make sept_ve_disable set by default
+Date: Thu,  8 May 2025 10:59:16 -0400
+Message-ID: <20250508150002.689633-11-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250508150002.689633-1-xiaoyao.li@intel.com>
 References: <20250508150002.689633-1-xiaoyao.li@intel.com>
@@ -90,102 +89,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Bit 28 of TD attribute, named SEPT_VE_DISABLE. When set to 1, it disables
-EPT violation conversion to #VE on guest TD access of PENDING pages.
+From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Some guest OS (e.g., Linux TD guest) may require this bit as 1.
-Otherwise refuse to boot.
+For TDX KVM use case, Linux guest is the most major one.  It requires
+sept_ve_disable set.  Make it default for the main use case.  For other use
+case, it can be enabled/disabled via qemu command line.
 
-Add sept-ve-disable property for tdx-guest object, for user to configure
-this bit.
-
+Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
-Acked-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 ---
-Changes in v4:
-- collect Acked-by from Markus
+ target/i386/kvm/tdx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Changes in v3:
-- update the comment of property @sept-ve-disable to make it more
-  descriptive and use new format. (Daniel and Markus)
----
- qapi/qom.json         |  8 +++++++-
- target/i386/kvm/tdx.c | 23 +++++++++++++++++++++++
- 2 files changed, 30 insertions(+), 1 deletion(-)
-
-diff --git a/qapi/qom.json b/qapi/qom.json
-index c0b61df964ef..f229bb07aaec 100644
---- a/qapi/qom.json
-+++ b/qapi/qom.json
-@@ -1055,10 +1055,16 @@
- # @attributes: The 'attributes' of a TD guest that is passed to
- #     KVM_TDX_INIT_VM
- #
-+# @sept-ve-disable: toggle bit 28 of TD attributes to control disabling
-+#     of EPT violation conversion to #VE on guest TD access of PENDING
-+#     pages.  Some guest OS (e.g., Linux TD guest) may require this to
-+#     be set, otherwise they refuse to boot.
-+#
- # Since: 10.1
- ##
- { 'struct': 'TdxGuestProperties',
--  'data': { '*attributes': 'uint64' } }
-+  'data': { '*attributes': 'uint64',
-+            '*sept-ve-disable': 'bool' } }
- 
- ##
- # @ThreadContextProperties:
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 8f02c762495c..370bd86f2ca7 100644
+index 370bd86f2ca7..2ed40b76141a 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -18,6 +18,8 @@
- #include "kvm_i386.h"
- #include "tdx.h"
+@@ -288,7 +288,7 @@ static void tdx_guest_init(Object *obj)
+     qemu_mutex_init(&tdx->lock);
  
-+#define TDX_TD_ATTRIBUTES_SEPT_VE_DISABLE   BIT_ULL(28)
-+
- static TdxGuest *tdx_guest;
- 
- static struct kvm_tdx_capabilities *tdx_caps;
-@@ -252,6 +254,24 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
-     return 0;
- }
- 
-+static bool tdx_guest_get_sept_ve_disable(Object *obj, Error **errp)
-+{
-+    TdxGuest *tdx = TDX_GUEST(obj);
-+
-+    return !!(tdx->attributes & TDX_TD_ATTRIBUTES_SEPT_VE_DISABLE);
-+}
-+
-+static void tdx_guest_set_sept_ve_disable(Object *obj, bool value, Error **errp)
-+{
-+    TdxGuest *tdx = TDX_GUEST(obj);
-+
-+    if (value) {
-+        tdx->attributes |= TDX_TD_ATTRIBUTES_SEPT_VE_DISABLE;
-+    } else {
-+        tdx->attributes &= ~TDX_TD_ATTRIBUTES_SEPT_VE_DISABLE;
-+    }
-+}
-+
- /* tdx guest */
- OBJECT_DEFINE_TYPE_WITH_INTERFACES(TdxGuest,
-                                    tdx_guest,
-@@ -272,6 +292,9 @@ static void tdx_guest_init(Object *obj)
+     cgs->require_guest_memfd = true;
+-    tdx->attributes = 0;
++    tdx->attributes = TDX_TD_ATTRIBUTES_SEPT_VE_DISABLE;
  
      object_property_add_uint64_ptr(obj, "attributes", &tdx->attributes,
                                     OBJ_PROP_FLAG_READWRITE);
-+    object_property_add_bool(obj, "sept-ve-disable",
-+                             tdx_guest_get_sept_ve_disable,
-+                             tdx_guest_set_sept_ve_disable);
- }
- 
- static void tdx_guest_finalize(Object *obj)
 -- 
 2.43.0
 
