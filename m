@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B886AB061A
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 00:52:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EE92AB0615
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 00:52:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDA5K-000421-Mb; Thu, 08 May 2025 18:51:22 -0400
+	id 1uDA5f-0004B9-Ov; Thu, 08 May 2025 18:51:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
- id 1uDA5F-00040z-Ll; Thu, 08 May 2025 18:51:17 -0400
+ id 1uDA5M-00042V-8f; Thu, 08 May 2025 18:51:24 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
- id 1uDA5D-0006RR-OC; Thu, 08 May 2025 18:51:17 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 548KqED6007933;
- Thu, 8 May 2025 22:51:13 GMT
+ id 1uDA5F-0006Rp-Pf; Thu, 08 May 2025 18:51:23 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 548LgOkx031808;
+ Thu, 8 May 2025 22:51:16 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=T1njN+1h0Dt+G73Cj
- jUulqlzoVE0BClxke4GWnRhMPg=; b=Ncu17KG1o7wYc4T7Q+im1wzviWDpptgUM
- WKOySZU0MdqyoEwyWVQBFj//Xxv3+spcQ21W3X5XIuoC+7nH7WGp3+3D7HjiIY7P
- tH4KEJbIvYrUuo5IRmojmSYE6eE6XD1E0z2XprZ5iwvtHYlpvFzQFMMKEyq57OUd
- TW52OUoep9dpSz3z292Ip6/oM+eEHCX36UohPURz/mUftG0uo9Z079FzpCXxcvxt
- 2khfcFMvM9gOhEiPnqgqY9/LGqRa75wsM8n0Q7kAsa00vRdi9qhr+qYbdCE196hC
- P4Ssh+e6Isrd+vYYW/GDxw2OENHsa2fC+R68YzVPh48TIpga4egxw==
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46ghg2drg0-1
+ :mime-version:references:subject:to; s=pp1; bh=wlwDnIR3QsT2T/X2a
+ oP7EFGRUXEETI9in93kt6MGQSg=; b=N5sWE0Xp5+vGbkkoiJ8aZ8HK0i1Oi2OSE
+ LLj1rzqqvvnQLEwTrZiKNFI1dBI8839bDOfoID7C+t1uyQ/JAIlOZw/h3lXw9tn2
+ F6uEfrA+xPBSObNxxkEmKroI97AA65ZZmqYBQqVtEW1RTc89IvnWgODhBYT95wHx
+ 30kprnUYeJ126xExV4o/Erq7Wqjj5c+l2xODCVHbc4ujN66sms7fFTT+qL1ftxMd
+ KW9/z48LWnnYU+KTllDaqr0Em4utDnbwnCz3CkdCFx6NlWCjdNGe/0Tp6uspMbTQ
+ aAr0HJQMY3yfSsFG/sKxVVCs47TQB9CGrW2X26a+PPZfL59Yl9EUA==
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46h4rw87x9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 08 May 2025 22:51:13 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 548KWBrt001313;
- Thu, 8 May 2025 22:51:12 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 46dwftr930-1
+ Thu, 08 May 2025 22:51:15 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 548MoVu7013880;
+ Thu, 8 May 2025 22:51:15 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 46e062qrf2-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 08 May 2025 22:51:12 +0000
+ Thu, 08 May 2025 22:51:15 +0000
 Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
  [10.39.53.228])
- by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 548MpAfw24838620
+ by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 548MpDSr28836474
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 8 May 2025 22:51:10 GMT
+ Thu, 8 May 2025 22:51:14 GMT
 Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B5B3758065;
- Thu,  8 May 2025 22:51:10 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id CCADD5805B;
+ Thu,  8 May 2025 22:51:13 +0000 (GMT)
 Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 455DA58063;
- Thu,  8 May 2025 22:51:09 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 614655804B;
+ Thu,  8 May 2025 22:51:12 +0000 (GMT)
 Received: from fedora-workstation.ibmuc.com (unknown [9.61.11.238])
  by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu,  8 May 2025 22:51:09 +0000 (GMT)
+ Thu,  8 May 2025 22:51:12 +0000 (GMT)
 From: Zhuoying Cai <zycai@linux.ibm.com>
 To: thuth@redhat.com, richard.henderson@linaro.org, david@redhat.com,
  pbonzini@redhat.com
@@ -62,37 +62,37 @@ Cc: walling@linux.ibm.com, jjherne@linux.ibm.com, jrossi@linux.ibm.com,
  fiuczy@linux.ibm.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
  farman@linux.ibm.com, iii@linux.ibm.com, qemu-s390x@nongnu.org,
  qemu-devel@nongnu.org, zycai@linux.ibm.com
-Subject: [PATCH v2 03/25] s390x: Guest support for Certificate Store Facility
- (CS)
-Date: Thu,  8 May 2025 18:50:19 -0400
-Message-ID: <20250508225042.313672-4-zycai@linux.ibm.com>
+Subject: [PATCH v2 04/25] s390x/diag: Introduce DIAG 320 for certificate store
+ facility
+Date: Thu,  8 May 2025 18:50:20 -0400
+Message-ID: <20250508225042.313672-5-zycai@linux.ibm.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250508225042.313672-1-zycai@linux.ibm.com>
 References: <20250508225042.313672-1-zycai@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: zWMZ9uOvjKsN0R9d0q95Sw64TsLl2x17
-X-Authority-Analysis: v=2.4 cv=VJLdn8PX c=1 sm=1 tr=0 ts=681d3561 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=N6PdpXqogauZlk4tBwoA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA4MDIwNSBTYWx0ZWRfX9ps4T0CeEuPv
- Zt+7O3Tusw1BhKtN79LTiZeaM+lYXmNYSKxDFUVB8FDN/ygGQTOjRIaJSKDUuUI+QomQvuoFk21
- yUgiJ5Zk42c5TPCo3X5Le/C1Mfd5261i4+AjJsv7TwjlyaiJJZGjXjzUmTnlbYMkbp4s4GkNoAS
- aa9qqu45jx5O23IY0xcT+wOalK/HR8bzGkBBXVMzDX0UuHVX7USR8jscJop0TRzw5bhLnLVDLj/
- SIsPxXEh5e+TYSvFN//beD4Lkaed8cDzZFGDX0awIFcO6yhdtYi6dh7oyeF1q1MYOb6JxNXMWT9
- Te/0U0jH7j2xSxoj5ArF1X8dU8g51cnQjVhPwU5CN3L/b8m0TaY8/HZAEOZd18IvaCs0MkHZ1YI
- BbCC/cDZ6JUN4PQG4p7UxKIcsG7iC0vXAaFVXBlJta8bWI+evaEqv24PctJ1Wyqxj/mXLIw9
-X-Proofpoint-ORIG-GUID: zWMZ9uOvjKsN0R9d0q95Sw64TsLl2x17
+X-Authority-Analysis: v=2.4 cv=QIxoRhLL c=1 sm=1 tr=0 ts=681d3563 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=_5qUkosOvRWCt7dKJYMA:9
+X-Proofpoint-GUID: fSB1Vvh-2oMlQDofr942Lq30ZvcEET_H
+X-Proofpoint-ORIG-GUID: fSB1Vvh-2oMlQDofr942Lq30ZvcEET_H
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA4MDIwNSBTYWx0ZWRfX7qWpiF0Zg50X
+ 9NcTOHpqXRJSe2X0JP/ow2jp4R9gIO89RvMQ20R/laCwYj01baclZ6LFWE6bcDbasWGWgrT9Ogb
+ pgO/kTQ1AK7DBaKiEtEtNV3vfLAga3S5nEqK2OxHZBd+1pwqb9y9wPBbQvmWxofSnRcwb84MPSk
+ V8HYxFb/m9E54TgCeOilml7Orsl3tUY7crMwJYi0O1fEG9ogNOT+6B34Th4jQFY4kVAO8UrbJtA
+ nOHd4PU1n0y24FNj4JeVK1puANTbm1N97fU24Vhu/wRxGIg7lUh+gMgkJ5dgudIEq4vZC3Ngoe7
+ LkLYVVm06ASCGudMKqLJyg7m1nqhAmvrRdSniMaT6kqZMe8ymavKJ5T4vWpZuls3q5Z7WKjNMd8
+ DOAGMGvImr2+7j4tB7a/+nJUlOc3f9FZUCR/9rMRUJ86exJHw777X1UERiqUm8Nn8nrl9K+7
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-08_07,2025-05-08_04,2025-02-21_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 suspectscore=0
- mlxlogscore=999 malwarescore=0 lowpriorityscore=0 spamscore=0 adultscore=0
- priorityscore=1501 clxscore=1015 bulkscore=0 impostorscore=0 mlxscore=0
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2504070000
+ impostorscore=0 mlxscore=0
+ suspectscore=0 lowpriorityscore=0 phishscore=0 clxscore=1015
+ malwarescore=0 bulkscore=0 adultscore=0 mlxlogscore=899 spamscore=0
+ priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
  definitions=main-2505080205
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=zycai@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
@@ -119,96 +119,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DIAG 320 is supported when the certificate-store (CS) facility
-is installed.
+DIAGNOSE 320 is introduced to support certificate store facility,
+which includes operations such as query certificate storage
+information and provide certificates in the certificate store.
 
-Availability of CS facility is determined by byte 134 bit 5 of the
-SCLP Read Info block. Byte 134's facilities cannot be represented
-without the availability of the extended-length-SCCB, so add it as
-a check for consistency.
-
-Note: secure IPL is not available for Secure Execution (SE) guests,
-as their images are already integrity protected, and an additional
-protection of the kernel by secure IPL is not necessary.
+Currently, only subcode 0 is supported with this patch, which is
+used to query a bitmap of which subcodes are supported.
 
 Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
 ---
- target/s390x/cpu_features.c         | 1 +
- target/s390x/cpu_features_def.h.inc | 1 +
- target/s390x/cpu_models.c           | 2 ++
- target/s390x/gen-features.c         | 1 +
- target/s390x/kvm/kvm.c              | 2 ++
- 5 files changed, 7 insertions(+)
+ hw/s390x/ipl.h                 |  1 +
+ include/hw/s390x/ipl/diag320.h | 17 +++++++++++++++
+ target/s390x/diag.c            | 40 ++++++++++++++++++++++++++++++++++
+ target/s390x/kvm/kvm.c         | 14 ++++++++++++
+ target/s390x/s390x-internal.h  |  2 ++
+ 5 files changed, 74 insertions(+)
+ create mode 100644 include/hw/s390x/ipl/diag320.h
 
-diff --git a/target/s390x/cpu_features.c b/target/s390x/cpu_features.c
-index 4b5be6798e..99089ab3f5 100644
---- a/target/s390x/cpu_features.c
-+++ b/target/s390x/cpu_features.c
-@@ -147,6 +147,7 @@ void s390_fill_feat_block(const S390FeatBitmap features, S390FeatType type,
+diff --git a/hw/s390x/ipl.h b/hw/s390x/ipl.h
+index ac1f7517ea..d9c089928e 100644
+--- a/hw/s390x/ipl.h
++++ b/hw/s390x/ipl.h
+@@ -19,6 +19,7 @@
+ #include "system/address-spaces.h"
+ #include "system/memory.h"
+ #include "hw/qdev-core.h"
++#include "hw/s390x/ipl/diag320.h"
+ #include "hw/s390x/ipl/qipl.h"
+ #include "qom/object.h"
+ #include "target/s390x/kvm/pv.h"
+diff --git a/include/hw/s390x/ipl/diag320.h b/include/hw/s390x/ipl/diag320.h
+new file mode 100644
+index 0000000000..713570545d
+--- /dev/null
++++ b/include/hw/s390x/ipl/diag320.h
+@@ -0,0 +1,17 @@
++/*
++ * S/390 DIAGNOSE 320 definitions and structures
++ *
++ * Copyright 2025 IBM Corp.
++ * Author(s): Zhuoying Cai <zycai@linux.ibm.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef S390X_DIAG320_H
++#define S390X_DIAG320_H
++
++#define DIAG_320_SUBC_QUERY_ISM     0
++
++#define DIAG_320_RC_OK              0x0001
++
++#endif
+diff --git a/target/s390x/diag.c b/target/s390x/diag.c
+index da44b0133e..21129dbc91 100644
+--- a/target/s390x/diag.c
++++ b/target/s390x/diag.c
+@@ -192,3 +192,43 @@ out:
          break;
-     case S390_FEAT_TYPE_SCLP_FAC134:
-         clear_be_bit(s390_feat_def(S390_FEAT_DIAG_318)->bit, data);
-+        clear_be_bit(s390_feat_def(S390_FEAT_DIAG_320)->bit, data);
-         break;
-     default:
-         return;
-diff --git a/target/s390x/cpu_features_def.h.inc b/target/s390x/cpu_features_def.h.inc
-index e23e603a79..65d38f546d 100644
---- a/target/s390x/cpu_features_def.h.inc
-+++ b/target/s390x/cpu_features_def.h.inc
-@@ -138,6 +138,7 @@ DEF_FEAT(SIE_IBS, "ibs", SCLP_CONF_CHAR_EXT, 10, "SIE: Interlock-and-broadcast-s
- 
- /* Features exposed via SCLP SCCB Facilities byte 134 (bit numbers relative to byte-134) */
- DEF_FEAT(DIAG_318, "diag318", SCLP_FAC134, 0, "Control program name and version codes")
-+DEF_FEAT(DIAG_320, "diag320", SCLP_FAC134, 5, "Provide Certificate Store functions")
- 
- /* Features exposed via SCLP CPU info. */
- DEF_FEAT(SIE_F2, "sief2", SCLP_CPU, 4, "SIE: interception format 2 (Virtual SIE)")
-diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
-index 8951f1b36f..ab38fc9882 100644
---- a/target/s390x/cpu_models.c
-+++ b/target/s390x/cpu_models.c
-@@ -248,6 +248,7 @@ bool s390_has_feat(S390Feat feat)
-     if (s390_is_pv()) {
-         switch (feat) {
-         case S390_FEAT_DIAG_318:
-+        case S390_FEAT_DIAG_320:
-         case S390_FEAT_HPMA2:
-         case S390_FEAT_SIE_F2:
-         case S390_FEAT_SIE_SKEY:
-@@ -505,6 +506,7 @@ static void check_consistency(const S390CPUModel *model)
-         { S390_FEAT_PTFF_STOUE, S390_FEAT_MULTIPLE_EPOCH },
-         { S390_FEAT_AP_QUEUE_INTERRUPT_CONTROL, S390_FEAT_AP },
-         { S390_FEAT_DIAG_318, S390_FEAT_EXTENDED_LENGTH_SCCB },
-+        { S390_FEAT_DIAG_320, S390_FEAT_EXTENDED_LENGTH_SCCB },
-         { S390_FEAT_NNPA, S390_FEAT_VECTOR },
-         { S390_FEAT_RDP, S390_FEAT_LOCAL_TLB_CLEARING },
-         { S390_FEAT_UV_FEAT_AP, S390_FEAT_AP },
-diff --git a/target/s390x/gen-features.c b/target/s390x/gen-features.c
-index 41840677ce..3d9fbe62ea 100644
---- a/target/s390x/gen-features.c
-+++ b/target/s390x/gen-features.c
-@@ -720,6 +720,7 @@ static uint16_t full_GEN16_GA1[] = {
-     S390_FEAT_PAIE,
-     S390_FEAT_UV_FEAT_AP,
-     S390_FEAT_UV_FEAT_AP_INTR,
-+    S390_FEAT_DIAG_320,
- };
- 
- static uint16_t full_GEN17_GA1[] = {
+     }
+ }
++
++void handle_diag_320(CPUS390XState *env, uint64_t r1, uint64_t r3, uintptr_t ra)
++{
++    S390CPU *cpu = env_archcpu(env);
++    uint64_t subcode = env->regs[r3];
++    uint64_t addr = env->regs[r1];
++    int rc;
++
++    if (env->psw.mask & PSW_MASK_PSTATE) {
++        s390_program_interrupt(env, PGM_PRIVILEGED, ra);
++        return;
++    }
++
++    if (!s390_has_feat(S390_FEAT_DIAG_320)) {
++        s390_program_interrupt(env, PGM_SPECIFICATION, ra);
++        return;
++    }
++
++    if (r1 & 1) {
++        s390_program_interrupt(env, PGM_SPECIFICATION, ra);
++        return;
++    }
++
++    switch (subcode) {
++    case DIAG_320_SUBC_QUERY_ISM:
++        uint64_t ism =  0;
++
++        if (s390_cpu_virt_mem_write(cpu, addr, r1, &ism, sizeof(ism))) {
++            s390_cpu_virt_mem_handle_exc(cpu, ra);
++            return;
++        }
++
++        rc = DIAG_320_RC_OK;
++        break;
++    default:
++        s390_program_interrupt(env, PGM_SPECIFICATION, ra);
++        return;
++    }
++    env->regs[r1 + 1] = rc;
++}
 diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
-index b9f1422197..6bad1713d2 100644
+index 6bad1713d2..3ae00b9a6d 100644
 --- a/target/s390x/kvm/kvm.c
 +++ b/target/s390x/kvm/kvm.c
-@@ -2487,6 +2487,8 @@ bool kvm_s390_get_host_cpu_model(S390CPUModel *model, Error **errp)
-         set_bit(S390_FEAT_DIAG_318, model->features);
+@@ -98,6 +98,7 @@
+ #define DIAG_TIMEREVENT                 0x288
+ #define DIAG_IPL                        0x308
+ #define DIAG_SET_CONTROL_PROGRAM_CODES  0x318
++#define DIAG_CERT_STORE                 0x320
+ #define DIAG_KVM_HYPERCALL              0x500
+ #define DIAG_KVM_BREAKPOINT             0x501
+ 
+@@ -1561,6 +1562,16 @@ static void handle_diag_318(S390CPU *cpu, struct kvm_run *run)
      }
+ }
  
-+    set_bit(S390_FEAT_DIAG_320, model->features);
++static void kvm_handle_diag_320(S390CPU *cpu, struct kvm_run *run)
++{
++    uint64_t r1, r3;
 +
-     /* Test for Ultravisor features that influence secure guest behavior */
-     query_uv_feat_guest(model->features);
++    r1 = (run->s390_sieic.ipa & 0x00f0) >> 4;
++    r3 = run->s390_sieic.ipa & 0x000f;
++
++    handle_diag_320(&cpu->env, r1, r3, RA_IGNORED);
++}
++
+ #define DIAG_KVM_CODE_MASK 0x000000000000ffff
  
+ static int handle_diag(S390CPU *cpu, struct kvm_run *run, uint32_t ipb)
+@@ -1591,6 +1602,9 @@ static int handle_diag(S390CPU *cpu, struct kvm_run *run, uint32_t ipb)
+     case DIAG_KVM_BREAKPOINT:
+         r = handle_sw_breakpoint(cpu, run);
+         break;
++    case DIAG_CERT_STORE:
++        kvm_handle_diag_320(cpu, run);
++        break;
+     default:
+         trace_kvm_insn_diag(func_code);
+         kvm_s390_program_interrupt(cpu, PGM_SPECIFICATION);
+diff --git a/target/s390x/s390x-internal.h b/target/s390x/s390x-internal.h
+index a4ba6227ab..86a652f833 100644
+--- a/target/s390x/s390x-internal.h
++++ b/target/s390x/s390x-internal.h
+@@ -400,6 +400,8 @@ int mmu_translate_real(CPUS390XState *env, target_ulong raddr, int rw,
+ int handle_diag_288(CPUS390XState *env, uint64_t r1, uint64_t r3);
+ void handle_diag_308(CPUS390XState *env, uint64_t r1, uint64_t r3,
+                      uintptr_t ra);
++void handle_diag_320(CPUS390XState *env, uint64_t r1, uint64_t r3,
++                     uintptr_t ra);
+ 
+ 
+ /* translate.c */
 -- 
 2.49.0
 
