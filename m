@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6774AAB0635
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 00:54:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B25CCAB0620
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 00:52:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDA5x-0004gT-1C; Thu, 08 May 2025 18:52:01 -0400
+	id 1uDA5u-0004bd-Rl; Thu, 08 May 2025 18:51:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
- id 1uDA5j-0004II-8m; Thu, 08 May 2025 18:51:47 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1uDA5l-0004Mf-55; Thu, 08 May 2025 18:51:49 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
- id 1uDA5g-0006Vr-Hw; Thu, 08 May 2025 18:51:45 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 548IkZ4n025963;
- Thu, 8 May 2025 22:51:42 GMT
+ id 1uDA5h-0006W6-Gs; Thu, 08 May 2025 18:51:48 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 548L7xBY008209;
+ Thu, 8 May 2025 22:51:44 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=90g9DFNKT+dYssY4f
- HWb4xFMe5c7/mmXx+n7/8U/B/Q=; b=lII6mGMhdIooUniIJQReuT41254EI4Ieu
- SbJA/iAIFhbnnQg5tj4I3nG2a7PQRKGk/BtnfwglPSI2j1FcGl4YuHqBstvEBVtm
- 0vXmFDLUbV/9TSWbQltA0/Sa2qggwD74M2ZaHduSRsSaYeg/fZyPsKvwA5dfcV14
- 7kw9knysgAnLSXlk2Sc2aq6JWq97PnjxaOwHmhbGD3UUAos69DSKGdjMQpLsvO4D
- UXWM5OHu2EdRQRiV6lwtkQ744eCQ/tLAVUkSzbX/INDvWxYzoyBC1jObQFmu3XK3
- c/K6BoFf0G/DFAnhvclmAEEs9xMTfLx7vckEUzSLCf6uoydlUPPkg==
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46gthkbhb0-1
+ :mime-version:references:subject:to; s=pp1; bh=Kn9RYm3PbwVgi/E6Y
+ pONTvVC8xfDNj+W4Qo22B3fGPQ=; b=Fg2f/CnrzSC4DUx6Rfw24Dn57fr4zbokd
+ hC+CoGbjui5WdZeT9j7USkY8DO+Ij6BG72l/5Xn3U/Ycnt1c47QVIJN1M6nClkQu
+ NFFIi59hcS8l9jy1Y7phj1BN9TzveIME7H1z4yTS0bGR/W9Fi9h5woOa2ORFIJkZ
+ 8iYCcaoXXjS9PIW0KwV+rUFMSrhDOcAXjeWKU0iEykhJlOXceFrlVxXRex3HxQUA
+ L3FiATYNGsSSnizoCUzaun5GtFsx1qiFkCOz8CJcl58e4E5uXfQZXyu/lP5qgqhs
+ FDF1S/4QOkeQ/ajyrS7vRMB0N5IaA2lZFa1bJxVRoat4TjAtI0Jbw==
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46ghg2drh2-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 08 May 2025 22:51:41 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 548LCJcP002728;
- Thu, 8 May 2025 22:51:40 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46dxfp837w-1
+ Thu, 08 May 2025 22:51:43 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 548MDjGo014097;
+ Thu, 8 May 2025 22:51:43 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 46dypkyuxu-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 08 May 2025 22:51:40 +0000
+ Thu, 08 May 2025 22:51:42 +0000
 Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
  [10.39.53.228])
- by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 548Mpd4D13632148
+ by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 548MpfKa36045332
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 8 May 2025 22:51:39 GMT
+ Thu, 8 May 2025 22:51:41 GMT
 Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F299A5805B;
- Thu,  8 May 2025 22:51:38 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 459E55804B;
+ Thu,  8 May 2025 22:51:41 +0000 (GMT)
 Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 779AE5804B;
- Thu,  8 May 2025 22:51:37 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id CAB165805B;
+ Thu,  8 May 2025 22:51:39 +0000 (GMT)
 Received: from fedora-workstation.ibmuc.com (unknown [9.61.11.238])
  by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu,  8 May 2025 22:51:37 +0000 (GMT)
+ Thu,  8 May 2025 22:51:39 +0000 (GMT)
 From: Zhuoying Cai <zycai@linux.ibm.com>
 To: thuth@redhat.com, richard.henderson@linaro.org, david@redhat.com,
  pbonzini@redhat.com
@@ -62,40 +62,39 @@ Cc: walling@linux.ibm.com, jjherne@linux.ibm.com, jrossi@linux.ibm.com,
  fiuczy@linux.ibm.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
  farman@linux.ibm.com, iii@linux.ibm.com, qemu-s390x@nongnu.org,
  qemu-devel@nongnu.org, zycai@linux.ibm.com
-Subject: [PATCH v2 13/25] hw/s390x/ipl: Set iplb->len to maximum length of IPL
- Parameter Block
-Date: Thu,  8 May 2025 18:50:29 -0400
-Message-ID: <20250508225042.313672-14-zycai@linux.ibm.com>
+Subject: [PATCH v2 14/25] s390x: Guest support for Secure-IPL Facility
+Date: Thu,  8 May 2025 18:50:30 -0400
+Message-ID: <20250508225042.313672-15-zycai@linux.ibm.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250508225042.313672-1-zycai@linux.ibm.com>
 References: <20250508225042.313672-1-zycai@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA4MDIwNSBTYWx0ZWRfX0BDiPJPt0+Qj
- L5cD4CoUhPtrunLhZJErDAMtqiXJLf7gq/qKg4o1Fi2V59Q6jdjuPfVVkn60OTl7UBictOy1txF
- qgLt8kAz2UBxHgDNMx2XJlUKbF5VrHJ2BkOXdeRp+4mxXDyM4PIiP8BQynTk1nJSZSTQRY3erjx
- DQoGnRgq+Ax8MDSOGPjOSQWA8FuVpzTZ2TEDZBQ3Sgoc8mpZLe0QbL5FWPpdmMtABtF4nFA6j0d
- dS6leor5xJOYIEwCZF66dSqYbwoYFDnKA7q25R0vcH8dZBM4aHRr4uB3aFejtB1QWQeHcDQrJ+H
- kda/PJ8zlqy9gHcFRNLpd7UcLsupArOsudSLuSqfEXwckFVWGuVdcKc1H/TkfiKNB/j8m6HWgEN
- nzAUvBUaaiaAP3J1bki1dTyE8iH7OXsR3zhm45hIGDGIlfljvSM0mp1ryVpnMTke4p16MQQW
-X-Proofpoint-ORIG-GUID: 2j5MQm2-q5N59tIh46lBsijcaxF7kiDZ
-X-Authority-Analysis: v=2.4 cv=PvCTbxM3 c=1 sm=1 tr=0 ts=681d357d cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=MJvGgyB-O-neVO77w_cA:9
-X-Proofpoint-GUID: 2j5MQm2-q5N59tIh46lBsijcaxF7kiDZ
+X-Proofpoint-GUID: TpL9URERWLl_LLjZ3DDwHmL4FLc5SGGb
+X-Authority-Analysis: v=2.4 cv=VJLdn8PX c=1 sm=1 tr=0 ts=681d357f cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=c4FJ2arq-s_u2TxWmaEA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA4MDIwNSBTYWx0ZWRfX8LMpUnisHstK
+ bTocaR7orJ2QJadM/f1xo2QeeO+8FyugYUiul2zEC0cxS4F2Z4+mWbAXvDZ9oiVL42VBlT23Pd0
+ SMebQKgHM2XvVoW1P5G9nnye2WfrIk4hMr0NvsmmHdhWTcGGuR11k2TguFg9wBhmXg9p1Hsz99D
+ xBXqylBWhfzHrwkdDBw7OtcUguOvvI77jnDPxVy0f4P5cV+3CI/NgsT7mP3do6jPk2gmztlmEjV
+ q9/sbGZ5GvLVUyiv3j48uz2WlkNSWu+eknVliZnINtkF5FAe7r4jP6MMRdjT1bxOcbWU5FtHrOK
+ 97YAabhUIdSP/ejChKL0qClmF6lXtmxGAwl9ACrcGx7wEYMRoqzRZylFJPT13Oinwh8Ju2u/yG/
+ 4LpY17a0VMTv5ajc1xLi5FQLduTnVuOTpQURAFtayt52FlEF99RofV9oVNEohH/kOUl9gTgK
+X-Proofpoint-ORIG-GUID: TpL9URERWLl_LLjZ3DDwHmL4FLc5SGGb
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-08_07,2025-05-08_04,2025-02-21_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- phishscore=0 spamscore=0 clxscore=1015 mlxlogscore=819 bulkscore=0
- impostorscore=0 suspectscore=0 mlxscore=0 malwarescore=0 adultscore=0
- priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ phishscore=0 suspectscore=0
+ mlxlogscore=999 malwarescore=0 lowpriorityscore=0 spamscore=0 adultscore=0
+ priorityscore=1501 clxscore=1015 bulkscore=0 impostorscore=0 mlxscore=0
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2504070000
  definitions=main-2505080205
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=zycai@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=zycai@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -119,64 +118,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The IPL Information Report Block (IIRB) immediately follows the IPL
-Parameter Block (IPLB).
+Introduce Secure-IPL (SIPL) facility.
 
-The IPLB struct is allocated 4KB in memory, and iplb->len indicates
-the amount of memory currently used by the IPLB.
+Use fac_ipl to represent bytes 136 and 137 for IPL device facilities
+of the SCLP Read Info block.
 
-To ensure proper alignment of the IIRB and prevent overlap, set
-iplb->len to the maximum length of the IPLB, allowing alignment
-constraints to be determined based on its size.
+Availability of SIPL facility is determined by byte 136 bit 1 of the
+SCLP Read Info block. Byte 136's facilities cannot be represented
+without the availability of the extended-length-SCCB, so add it as a
+check for consistency.
+
+When SIPL facility is installed, the IPL Parameter Block length must
+contains value that is multiple of 8 bytes.
 
 Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
 ---
- hw/s390x/ipl.c | 6 +++---
- hw/s390x/ipl.h | 1 +
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ hw/s390x/sclp.c                     | 2 ++
+ include/hw/s390x/sclp.h             | 4 +++-
+ target/s390x/cpu_features.c         | 3 +++
+ target/s390x/cpu_features.h         | 1 +
+ target/s390x/cpu_features_def.h.inc | 3 +++
+ target/s390x/cpu_models.c           | 2 ++
+ target/s390x/gen-features.c         | 1 +
+ target/s390x/kvm/kvm.c              | 3 +++
+ 8 files changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
-index 8ac0cee73d..d1a972ac8d 100644
---- a/hw/s390x/ipl.c
-+++ b/hw/s390x/ipl.c
-@@ -459,7 +459,7 @@ static bool s390_build_iplb(DeviceState *dev_st, IplParameterBlock *iplb)
-             if (scsi_lp && strlen(scsi_lp) > 0) {
-                 lp = scsi_lp;
-             }
--            iplb->len = cpu_to_be32(S390_IPLB_MIN_QEMU_SCSI_LEN);
-+            iplb->len = cpu_to_be32(S390_IPLB_MAX_LEN);
-             iplb->blk0_len =
-                 cpu_to_be32(S390_IPLB_MIN_QEMU_SCSI_LEN - S390_IPLB_HEADER_LEN);
-             iplb->pbt = S390_IPL_TYPE_QEMU_SCSI;
-@@ -470,14 +470,14 @@ static bool s390_build_iplb(DeviceState *dev_st, IplParameterBlock *iplb)
-             iplb->scsi.ssid = ccw_dev->sch->ssid & 3;
-             break;
-         case CCW_DEVTYPE_VFIO:
--            iplb->len = cpu_to_be32(S390_IPLB_MIN_CCW_LEN);
-+            iplb->len = cpu_to_be32(S390_IPLB_MAX_LEN);
-             iplb->pbt = S390_IPL_TYPE_CCW;
-             iplb->ccw.devno = cpu_to_be16(ccw_dev->sch->devno);
-             iplb->ccw.ssid = ccw_dev->sch->ssid & 3;
-             break;
-         case CCW_DEVTYPE_VIRTIO_NET:
-         case CCW_DEVTYPE_VIRTIO:
--            iplb->len = cpu_to_be32(S390_IPLB_MIN_CCW_LEN);
-+            iplb->len = cpu_to_be32(S390_IPLB_MAX_LEN);
-             iplb->blk0_len =
-                 cpu_to_be32(S390_IPLB_MIN_CCW_LEN - S390_IPLB_HEADER_LEN);
-             iplb->pbt = S390_IPL_TYPE_CCW;
-diff --git a/hw/s390x/ipl.h b/hw/s390x/ipl.h
-index 3e7190c7d8..ed29881dfa 100644
---- a/hw/s390x/ipl.h
-+++ b/hw/s390x/ipl.h
-@@ -101,6 +101,7 @@ QEMU_BUILD_BUG_MSG(offsetof(S390IPLState, iplb) & 3, "alignment of iplb wrong");
- #define S390_IPLB_MIN_CCW_LEN 200
- #define S390_IPLB_MIN_FCP_LEN 384
- #define S390_IPLB_MIN_QEMU_SCSI_LEN 200
-+#define S390_IPLB_MAX_LEN 4096
+diff --git a/hw/s390x/sclp.c b/hw/s390x/sclp.c
+index 9718564fa4..69d3328a3d 100644
+--- a/hw/s390x/sclp.c
++++ b/hw/s390x/sclp.c
+@@ -145,6 +145,8 @@ static void read_SCP_info(SCLPDevice *sclp, SCCB *sccb)
+     if (s390_has_feat(S390_FEAT_EXTENDED_LENGTH_SCCB)) {
+         s390_get_feat_block(S390_FEAT_TYPE_SCLP_FAC134,
+                             &read_info->fac134);
++        s390_get_feat_block(S390_FEAT_TYPE_SCLP_FAC_IPL,
++                            read_info->fac_ipl);
+     }
  
- static inline bool diag_parm_addr_valid(uint64_t addr, size_t size, bool write)
- {
+     read_info->facilities = cpu_to_be64(SCLP_HAS_CPU_INFO |
+diff --git a/include/hw/s390x/sclp.h b/include/hw/s390x/sclp.h
+index d32f6180e0..bfd330c340 100644
+--- a/include/hw/s390x/sclp.h
++++ b/include/hw/s390x/sclp.h
+@@ -136,7 +136,9 @@ typedef struct ReadInfo {
+     uint32_t hmfai;
+     uint8_t  _reserved7[134 - 128];     /* 128-133 */
+     uint8_t  fac134;
+-    uint8_t  _reserved8[144 - 135];     /* 135-143 */
++    uint8_t  _reserved8;
++    uint8_t  fac_ipl[2];                /* 136-137 */
++    uint8_t  _reserved9[144 - 137];     /* 138-143 */
+     struct CPUEntry entries[];
+     /*
+      * When the Extended-Length SCCB (ELS) feature is enabled the
+diff --git a/target/s390x/cpu_features.c b/target/s390x/cpu_features.c
+index 99089ab3f5..3f3d6a80af 100644
+--- a/target/s390x/cpu_features.c
++++ b/target/s390x/cpu_features.c
+@@ -149,6 +149,9 @@ void s390_fill_feat_block(const S390FeatBitmap features, S390FeatType type,
+         clear_be_bit(s390_feat_def(S390_FEAT_DIAG_318)->bit, data);
+         clear_be_bit(s390_feat_def(S390_FEAT_DIAG_320)->bit, data);
+         break;
++    case S390_FEAT_TYPE_SCLP_FAC_IPL:
++        clear_be_bit(s390_feat_def(S390_FEAT_SIPL)->bit, data);
++        break;
+     default:
+         return;
+     }
+diff --git a/target/s390x/cpu_features.h b/target/s390x/cpu_features.h
+index 5635839d03..b038198555 100644
+--- a/target/s390x/cpu_features.h
++++ b/target/s390x/cpu_features.h
+@@ -24,6 +24,7 @@ typedef enum {
+     S390_FEAT_TYPE_SCLP_CONF_CHAR,
+     S390_FEAT_TYPE_SCLP_CONF_CHAR_EXT,
+     S390_FEAT_TYPE_SCLP_FAC134,
++    S390_FEAT_TYPE_SCLP_FAC_IPL,
+     S390_FEAT_TYPE_SCLP_CPU,
+     S390_FEAT_TYPE_MISC,
+     S390_FEAT_TYPE_PLO,
+diff --git a/target/s390x/cpu_features_def.h.inc b/target/s390x/cpu_features_def.h.inc
+index 65d38f546d..516d65d245 100644
+--- a/target/s390x/cpu_features_def.h.inc
++++ b/target/s390x/cpu_features_def.h.inc
+@@ -140,6 +140,9 @@ DEF_FEAT(SIE_IBS, "ibs", SCLP_CONF_CHAR_EXT, 10, "SIE: Interlock-and-broadcast-s
+ DEF_FEAT(DIAG_318, "diag318", SCLP_FAC134, 0, "Control program name and version codes")
+ DEF_FEAT(DIAG_320, "diag320", SCLP_FAC134, 5, "Provide Certificate Store functions")
+ 
++/* Features exposed via SCLP SCCB Facilities byte 136 - 137 (bit numbers relative to byte-136) */
++DEF_FEAT(SIPL, "sipl", SCLP_FAC_IPL, 1, "Secure-IPL facility")
++
+ /* Features exposed via SCLP CPU info. */
+ DEF_FEAT(SIE_F2, "sief2", SCLP_CPU, 4, "SIE: interception format 2 (Virtual SIE)")
+ DEF_FEAT(SIE_SKEY, "skey", SCLP_CPU, 5, "SIE: Storage-key facility")
+diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
+index ab38fc9882..63d4120640 100644
+--- a/target/s390x/cpu_models.c
++++ b/target/s390x/cpu_models.c
+@@ -263,6 +263,7 @@ bool s390_has_feat(S390Feat feat)
+         case S390_FEAT_SIE_CMMA:
+         case S390_FEAT_SIE_PFMFI:
+         case S390_FEAT_SIE_IBS:
++        case S390_FEAT_SIPL:
+         case S390_FEAT_CONFIGURATION_TOPOLOGY:
+             return false;
+             break;
+@@ -507,6 +508,7 @@ static void check_consistency(const S390CPUModel *model)
+         { S390_FEAT_AP_QUEUE_INTERRUPT_CONTROL, S390_FEAT_AP },
+         { S390_FEAT_DIAG_318, S390_FEAT_EXTENDED_LENGTH_SCCB },
+         { S390_FEAT_DIAG_320, S390_FEAT_EXTENDED_LENGTH_SCCB },
++        { S390_FEAT_SIPL, S390_FEAT_EXTENDED_LENGTH_SCCB },
+         { S390_FEAT_NNPA, S390_FEAT_VECTOR },
+         { S390_FEAT_RDP, S390_FEAT_LOCAL_TLB_CLEARING },
+         { S390_FEAT_UV_FEAT_AP, S390_FEAT_AP },
+diff --git a/target/s390x/gen-features.c b/target/s390x/gen-features.c
+index 3d9fbe62ea..638a1cef3b 100644
+--- a/target/s390x/gen-features.c
++++ b/target/s390x/gen-features.c
+@@ -721,6 +721,7 @@ static uint16_t full_GEN16_GA1[] = {
+     S390_FEAT_UV_FEAT_AP,
+     S390_FEAT_UV_FEAT_AP_INTR,
+     S390_FEAT_DIAG_320,
++    S390_FEAT_SIPL,
+ };
+ 
+ static uint16_t full_GEN17_GA1[] = {
+diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
+index 9bf3ed694b..c4b6cc1809 100644
+--- a/target/s390x/kvm/kvm.c
++++ b/target/s390x/kvm/kvm.c
+@@ -2517,6 +2517,9 @@ bool kvm_s390_get_host_cpu_model(S390CPUModel *model, Error **errp)
+ 
+     set_bit(S390_FEAT_DIAG_320, model->features);
+ 
++    /* Secure-IPL facility is handled entirely within QEMU */
++    set_bit(S390_FEAT_SIPL, model->features);
++
+     /* Test for Ultravisor features that influence secure guest behavior */
+     query_uv_feat_guest(model->features);
+ 
 -- 
 2.49.0
 
