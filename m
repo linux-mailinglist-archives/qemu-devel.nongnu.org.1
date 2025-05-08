@@ -2,56 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46604AAFD72
+	by mail.lfdr.de (Postfix) with ESMTPS id B2B60AAFD73
 	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 16:42:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uD2RQ-0005X7-2N; Thu, 08 May 2025 10:41:40 -0400
+	id 1uD2RZ-0005YS-A5; Thu, 08 May 2025 10:41:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uD2RL-0005Vo-C9
- for qemu-devel@nongnu.org; Thu, 08 May 2025 10:41:35 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uD2RO-0005XA-Mg
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 10:41:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uD2RI-0004xi-TQ
- for qemu-devel@nongnu.org; Thu, 08 May 2025 10:41:34 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uD2RN-0004yG-0C
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 10:41:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746715292;
+ s=mimecast20190719; t=1746715295;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=7rOrt0arOj0AsEmDcAxQS8lpsa38MnnGCY/U+gFk0Dg=;
- b=Iq/qnasWIu8f/kxafEf/I0vDLIJHc9uhPQxhAnGxAbBF5iW90yn7u+NmK8WbRexECLrPFV
- xlc8vUlSxJODDzQEJqUpTEysM7zA6/3CIBdbPnCbtWp5RkUAcO8sqUxAWDR9QQQmk+chqb
- 6uJ1mHj1bkwkqZeA3TRT+mHTGBzfvLk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=eNH+9+7QTXRWk+e3bpZ/v+MuL5PpL0qfimiWv+KO3fY=;
+ b=QIEVMovucV5+8Gxq+DGknbWSY6uJX/yZqiAsigHZe3/MmyhX+EFVkyaHcLrBnz3OnYREkY
+ KwhoYrVybdlZt4TwxdT6xsTaKr7SSAmzqNNZaUZOvQZthG83sM10Cl4l0+gPECEP83573Y
+ U2QjWVlyZu5kNBYSoqAOLEkJVanCwjA=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-641-noSU3-3iO8-S5KTVh1gacg-1; Thu,
- 08 May 2025 10:41:29 -0400
-X-MC-Unique: noSU3-3iO8-S5KTVh1gacg-1
-X-Mimecast-MFC-AGG-ID: noSU3-3iO8-S5KTVh1gacg_1746715288
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-687-Ed3tA8PePQGQViqNanhrMQ-1; Thu,
+ 08 May 2025 10:41:32 -0400
+X-MC-Unique: Ed3tA8PePQGQViqNanhrMQ-1
+X-Mimecast-MFC-AGG-ID: Ed3tA8PePQGQViqNanhrMQ_1746715291
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 159A2180899E; Thu,  8 May 2025 14:41:27 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AC7BE1955DE7; Thu,  8 May 2025 14:41:31 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.32.200])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0685219560AE; Thu,  8 May 2025 14:41:22 +0000 (UTC)
+ id F1CF219560AE; Thu,  8 May 2025 14:41:27 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  Brad Smith <brad@comstyle.com>, qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH RESEND 0/5] Fix dependencies in arm machines and update
- OpenBSD to 7.7
-Date: Thu,  8 May 2025 16:41:15 +0200
-Message-ID: <20250508144120.163009-1-thuth@redhat.com>
+Subject: [PATCH 1/5] include/hw/dma/xlnx_dpdma: Remove dependency on console.h
+Date: Thu,  8 May 2025 16:41:16 +0200
+Message-ID: <20250508144120.163009-2-thuth@redhat.com>
+In-Reply-To: <20250508144120.163009-1-thuth@redhat.com>
+References: <20250508144120.163009-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
@@ -80,42 +82,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I accidentally only sent this to qemu-arm, not to the qemu-devel mailing
-list, so this is a resend, sorry if you've got it twice.
-Note that there was already some discussion on the qemu-arm mailing list,
-see the archive here (i.e. I'll try to rework the third patch and
-postpone the last one):
+From: Thomas Huth <thuth@redhat.com>
 
- https://lists.libreplanet.org/archive/html/qemu-arm/2025-05/msg00549.html
+console.h brings a dependency on the <epoxy/opengl.h> and the pixman
+header file (if available), so we should avoid to include this file
+if it is not really necessary (otherwise we have to specify the
+dependency in the meson.build file, too, to get the right include
+paths everywhere). console.h does not seem to be necessary for the
+xlnx_dpdma code, so drop the include here.
 
-Original cover letter message follows:
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ include/hw/dma/xlnx_dpdma.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-At the end of April, OpenBSD 7.7 has been released, so we could update
-our test VM to that version now. However, I noticed that some arm machines
-now fail to compile since they fail to include the <epoxy/gl.h> header.
-This header resides in /usr/X11R6/include instead of /usr/include in
-OpenBSD, so we have to make sure that the machines are compiled with the
-right CFLAGS (or don't include the header at all if it is not really
-necessary). Thus the first patches of this series clean up this first
-before we can finally switch to OpenBSD 7.7. The last patch then
-also reverts a hack for OpenBSD in the main meson.build file since the
-related problem has finally been fixed there.
-
-Thomas Huth (5):
-  include/hw/dma/xlnx_dpdma: Remove dependency on console.h
-  hw/display/bcm2835_fb: Move inclusion of console.h to the .c file
-  hw/arm: Compile musicpal and the xlnx machines with the right CFLAGS
-  tests/vm: Update OpenBSD to 7.7
-  Revert "meson.build: Disable -fzero-call-used-regs on OpenBSD"
-
- meson.build                     | 6 +-----
- include/hw/display/bcm2835_fb.h | 1 -
- include/hw/dma/xlnx_dpdma.h     | 1 -
- hw/display/bcm2835_fb.c         | 1 +
- hw/arm/meson.build              | 4 ++--
- tests/vm/openbsd                | 4 ++--
- 6 files changed, 6 insertions(+), 11 deletions(-)
-
+diff --git a/include/hw/dma/xlnx_dpdma.h b/include/hw/dma/xlnx_dpdma.h
+index 1ec0d265be2..484b2e377f0 100644
+--- a/include/hw/dma/xlnx_dpdma.h
++++ b/include/hw/dma/xlnx_dpdma.h
+@@ -26,7 +26,6 @@
+ #define XLNX_DPDMA_H
+ 
+ #include "hw/sysbus.h"
+-#include "ui/console.h"
+ #include "system/dma.h"
+ #include "qom/object.h"
+ 
 -- 
 2.49.0
 
