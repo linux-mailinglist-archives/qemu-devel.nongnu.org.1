@@ -2,61 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26EFCAAFC26
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 15:55:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37103AAFABC
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 14:58:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uD1iD-0006tl-31; Thu, 08 May 2025 09:54:57 -0400
+	id 1uD0oB-0002Qw-NW; Thu, 08 May 2025 08:57:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <daniel@iogearbox.net>)
- id 1uD0Sj-0006xI-68
- for qemu-devel@nongnu.org; Thu, 08 May 2025 08:34:53 -0400
-Received: from www62.your-server.de ([213.133.104.62])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <daniel@iogearbox.net>)
- id 1uD0Sf-0003ko-N6
- for qemu-devel@nongnu.org; Thu, 08 May 2025 08:34:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
- Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:In-Reply-To:References;
- bh=pdD4e+0YvwbK4M2mw+D7atifPTn7nNDSvWZ/aczH990=; b=lN5o8QdpHfkL+nGOGfwFCgXVMv
- AMF3ENwo+dDmAeSEPXEV/rTi+P7HGUyIiuYXAsyBwGZJA4KSRTbU5RDZN44kNMiDNxhb3Rk34Bfwj
- sUynF0Yf6w2yhP3+yEMolsUVlwoRE0X1d0qcAkfED9wrM0ow7Lo/UlA//NxRqYfTdOkHUpGHHcOS9
- oRO/gE+AACSOhoc1agTF5ljyjUvCBlJX44mzrBOPw8xscdw0q3X09fSn2DiXQ+5aYmzn2SEtxdwDG
- QUuoKz4Viwpym4+lR33EOEmNDjFTAZzkng3qLZ8w9S2qoNDl87DLaV9WMQ79/vHowtKfhmRyl/Nxn
- FoUYT2gA==;
-Received: from 85-195-247-12.fiber7.init7.net ([85.195.247.12] helo=localhost)
- by www62.your-server.de with esmtpsa (TLS1.3) tls
- TLS_AES_256_GCM_SHA384 (Exim 4.96.2)
- (envelope-from <daniel@iogearbox.net>) id 1uD0ST-000HjY-06;
- Thu, 08 May 2025 14:34:37 +0200
-To: qemu-devel@nongnu.org
-Cc: daniel@iogearbox.net, Ilya Maximets <i.maximets@ovn.org>,
- Jason Wang <jasowang@redhat.com>, Anton Protopopov <aspsk@isovalent.com>
-Subject: [PATCH] net/af-xdp: Support pinned map path for AF_XDP sockets
-Date: Thu,  8 May 2025 14:34:36 +0200
-Message-ID: <20250508123436.461030-1-daniel@iogearbox.net>
-X-Mailer: git-send-email 2.43.0
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uD0o8-0002QQ-Fc
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 08:57:00 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uD0o6-000714-Kg
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 08:57:00 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-22e033a3a07so10991885ad.0
+ for <qemu-devel@nongnu.org>; Thu, 08 May 2025 05:56:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1746709017; x=1747313817; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=9pJjdoekuhc4yMSxtr3j+KnXmQZ6lV5ZboD4CrHy7xU=;
+ b=az3tbm6Bmf0K00ko1+dEIf6W0CeziiPGb6WfzK2uAQ3Z4s3i3NtiHfymlq/9b9Nl8F
+ C+tuJVCxvHac65Ipor9+TKBDvqzd+HQp4RSCl5Osn7xmCKW7RFRZ7XgwzHhQ4JVlsoxi
+ P/2UaVNJ+PTbbWv6NqpsFDH0zAxDVF4vHQNDtmqhWdxNnHAfzEj3xcWngOmEV30rDW8H
+ L5gvEUPdm3D9PddpFy8ypCCATdrHaRiikDoPbxWlLVSbvq96fZD5iBqxID+gbILf7/Ok
+ MLD/ep3fSjwJCG3khTUbTvoSyV2dcM/Ipc+QGa19gMTvDM/5Jp/I+3U0PBLSHYka0mL3
+ R3Gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1746709017; x=1747313817;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9pJjdoekuhc4yMSxtr3j+KnXmQZ6lV5ZboD4CrHy7xU=;
+ b=aPO9Gt6Wqd0XY/RTtF+iPvoYY1HUp0qjeaRkMJJcAw5bxkPZVNSVABWAeQ8y1Vvlgo
+ Q4m92CNmqKPZUmKmoJHhhTLFkHB2Ma90AUCUEZViqkn61HbEFudmLReGQm9/2OqFypHo
+ dEeJpqANhRcd1M1vkQ4Lc1jP9OrkvKjwChTMTK/wCni6kOjljMv0a+Q/4iTHWrBf3gjA
+ WE3ldKwSi0Pq+83wAmmQi8caS6zP0qTyFsb4EHkB0kOCr9i4owd+2O+UrNzh/LJElP9H
+ b+1bNZPBjCZ/43vQEnok9E744x8EP8hjv0T3bLdla5bZMtlv85RFTPaVwqjCckRSkOfM
+ CeUw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVwmtTS02VjxEs9vbGwzIBtMM+67QumqjEDRZepae5KJRVPw7gOhZdWX1bvuslhW/oqEtFirH9Jl9kr@nongnu.org
+X-Gm-Message-State: AOJu0YzC3WhKAbglv/Us/qho4fMSQeT9u/PtyJJASAL7C4iW4obuwPUv
+ b1hC6aZPt0yFDaFgKLRR7tlc18D83dmv7Zi6NktSZp3b2lU5cM7sI+I3b+y15Iw=
+X-Gm-Gg: ASbGncs6UFpZcephmeLQL07Q5PtjetegFB9YoQFMu2XwrpbfPZrkh47VA3Bi2eUp2Vn
+ zGXOtcW2WqJBA0DTcfg/UVP7yJohQAglcnp2tkRTwDF9NU4slvTcHxKGBGNQIGqyTQCBpXCla9O
+ 4TDDjZAXDtjQmIfvKB0ILfDQsMxuFNH1Am1IiJuzFMFdluqnOQPgDBrQZK8kCnbzH39/2MgmauX
+ sH50/LwzJJ4VUSYwSK8vcOIQQUeumcnOCyqraevz8+RxNT0cqqfv/oG9LNiCSGuvTaYCslfH7O1
+ A/DOy22Zpoy/H0hy2GkSWw9IN79lHo9JeTDHzexyDr90AF5I+t2ozcSoUuLfnH9G0upwSMat2Aw
+ JSJ/oRCsK
+X-Google-Smtp-Source: AGHT+IGZpcx63wuPU1bRAh1qPdu9aqbL5NgEYwwxIg6K0jsxzLMLTJKWnbrbAPz7BUBUAQHaL6wFyQ==
+X-Received: by 2002:a17:903:4091:b0:22e:1791:2e5a with SMTP id
+ d9443c01a7336-22e5eaa70demr98224355ad.35.1746709016620; 
+ Thu, 08 May 2025 05:56:56 -0700 (PDT)
+Received: from [192.168.69.244] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-22e6265945fsm33740185ad.134.2025.05.08.05.56.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 08 May 2025 05:56:56 -0700 (PDT)
+Message-ID: <a829863c-33d2-42c9-8068-431c60540ba2@linaro.org>
+Date: Thu, 8 May 2025 14:56:40 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 03/16] hw/i386/x86: Remove
+ X86MachineClass::fwcfg_dma_enabled field
+To: Thomas Huth <thuth@redhat.com>,
+ Mark Cave-Ayland <mark.caveayland@nutanix.com>, qemu-devel@nongnu.org,
+ Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: Igor Mammedov <imammedo@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?Q?Cl=C3=A9ment_Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
+ Yi Liu <yi.l.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Amit Shah <amit@kernel.org>, Zhao Liu <zhao1.liu@intel.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Sergio Lopez <slp@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Ani Sinha <anisinha@redhat.com>
+References: <20250501183628.87479-1-philmd@linaro.org>
+ <20250501183628.87479-4-philmd@linaro.org>
+ <2acc8c0c-f563-4d27-b73d-ce4c0f8ef424@nutanix.com>
+ <54d72848-9108-4b04-a46c-1f82492e06cb@linaro.org>
+ <bd23ff1c-d1a2-4967-b8bb-a6eda6a4ca33@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <bd23ff1c-d1a2-4967-b8bb-a6eda6a4ca33@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27631/Thu May  8 10:35:15 2025)
-Received-SPF: pass client-ip=213.133.104.62; envelope-from=daniel@iogearbox.net;
- helo=www62.your-server.de
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=philmd@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 08 May 2025 09:54:54 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,202 +115,83 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Daniel Borkmann <daniel@iogearbox.net>
-From:  Daniel Borkmann via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extend inhibit=on setting with the option to specify a pinned XSK map
-path along with a starting index (default 0) to push the created XSK
-sockets into. Example usage:
+On 5/5/25 11:06, Thomas Huth wrote:
+> On 02/05/2025 12.45, Philippe Mathieu-Daudé wrote:
+>> On 2/5/25 11:08, Mark Cave-Ayland wrote:
+>>> On 01/05/2025 19:36, Philippe Mathieu-Daudé wrote:
+>>>
+>>>> The X86MachineClass::fwcfg_dma_enabled boolean was only used
+>>>> by the pc-q35-2.6 and pc-i440fx-2.6 machines, which got
+>>>> removed. Remove it and simplify.
+>>>>
+>>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>>> ---
+>>>>   include/hw/i386/x86.h | 2 --
+>>>>   hw/i386/microvm.c     | 3 ---
+>>>>   hw/i386/multiboot.c   | 7 +------
+>>>>   hw/i386/x86-common.c  | 3 +--
+>>>>   hw/i386/x86.c         | 2 --
+>>>>   5 files changed, 2 insertions(+), 15 deletions(-)
+>>>>
+>>>> diff --git a/include/hw/i386/x86.h b/include/hw/i386/x86.h
+>>>> index fc460b82f82..29d37af11e6 100644
+>>>> --- a/include/hw/i386/x86.h
+>>>> +++ b/include/hw/i386/x86.h
+>>>> @@ -29,8 +29,6 @@
+>>>>   struct X86MachineClass {
+>>>>       MachineClass parent;
+>>>> -    /* use DMA capable linuxboot option rom */
+>>>> -    bool fwcfg_dma_enabled;
+>>>>       /* CPU and apic information: */
+>>>>       bool apic_xrupt_override;
+>>>>   };
+>>
+>>
+>>>> diff --git a/hw/i386/multiboot.c b/hw/i386/multiboot.c
+>>>> index 6e6b96bc345..bfa7e8f1e83 100644
+>>>> --- a/hw/i386/multiboot.c
+>>>> +++ b/hw/i386/multiboot.c
+>>>> @@ -153,7 +153,6 @@ int load_multiboot(X86MachineState *x86ms,
+>>>>                      int kernel_file_size,
+>>>>                      uint8_t *header)
+>>>>   {
+>>>> -    bool multiboot_dma_enabled = X86_MACHINE_GET_CLASS(x86ms)- 
+>>>> >fwcfg_dma_enabled;
+>>>>       int i, is_multiboot = 0;
+>>>>       uint32_t flags = 0;
+>>>>       uint32_t mh_entry_addr;
+>>>> @@ -402,11 +401,7 @@ int load_multiboot(X86MachineState *x86ms,
+>>>>       fw_cfg_add_bytes(fw_cfg, FW_CFG_INITRD_DATA, mb_bootinfo_data,
+>>>>                        sizeof(bootinfo));
+>>>> -    if (multiboot_dma_enabled) {
+>>>> -        option_rom[nb_option_roms].name = "multiboot_dma.bin";
+>>>> -    } else {
+>>>> -        option_rom[nb_option_roms].name = "multiboot.bin";
+>>>> -    }
+>>>> +    option_rom[nb_option_roms].name = "multiboot_dma.bin";
+>>>
+>>> Question: now that all machines support DMA-capable fw_cfg, does that 
+>>> mean that the non-DMA options roms above can also be removed?
+>>
+>> All x86 machines, but there are still 2 not supporting it: HPPA and
+>> MIPS Loongson-3:
+>>
+>> hw/hppa/machine.c:204:    fw_cfg = fw_cfg_init_mem(addr, addr + 4);
+>>
+>> hw/mips/loongson3_virt.c:289:    fw_cfg = 
+>> fw_cfg_init_mem_wide(cfg_addr, cfg_addr + 8, 8, 0, NULL);
+>>
+> 
+> But these don't use "multiboot.bin", do they? So I think you could 
+> remove pc-bios/multiboot.bin now from the repo?
+> 
+> Same question for "linuxboot.bin" : All users in hw/i386 seem to enable 
+> DMA, so fw_cfg_dma_enabled() should always return true here? If so, I 
+> think the normal "linuxboot.bin" could go away, too?
 
-  # ./build/qemu-system-x86_64 [...] \
-    -netdev af-xdp,ifname=eth0,id=net0,mode=native,queues=2,inhibit=on,map-path=/sys/fs/bpf/foo,map-start-index=2
-    -device virtio-net-pci,netdev=net0 [...]
-
-This is useful for the case where an existing XDP program with XSK map
-is present on the AF_XDP supported phys device and the XSK map not yet
-populated. Qemu will then push the XSK sockets into the specified map.
-
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Ilya Maximets <i.maximets@ovn.org>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Anton Protopopov <aspsk@isovalent.com>
----
- net/af-xdp.c  | 63 +++++++++++++++++++++++++++++++++++++++++++++------
- qapi/net.json | 24 +++++++++++++-------
- 2 files changed, 72 insertions(+), 15 deletions(-)
-
-diff --git a/net/af-xdp.c b/net/af-xdp.c
-index 01c5fb914e..ddc52f1307 100644
---- a/net/af-xdp.c
-+++ b/net/af-xdp.c
-@@ -51,6 +51,8 @@ typedef struct AFXDPState {
- 
-     uint32_t             n_queues;
-     uint32_t             xdp_flags;
-+    char                 *map_path;
-+    uint32_t             map_start_index;
-     bool                 inhibit;
- } AFXDPState;
- 
-@@ -261,6 +263,7 @@ static void af_xdp_send(void *opaque)
- static void af_xdp_cleanup(NetClientState *nc)
- {
-     AFXDPState *s = DO_UPCAST(AFXDPState, nc, nc);
-+    int pin_fd, idx;
- 
-     qemu_purge_queued_packets(nc);
- 
-@@ -282,6 +285,22 @@ static void af_xdp_cleanup(NetClientState *nc)
-                 "af-xdp: unable to remove XDP program from '%s', ifindex: %d\n",
-                 s->ifname, s->ifindex);
-     }
-+    if (s->map_path) {
-+        pin_fd = bpf_obj_get(s->map_path);
-+        if (pin_fd < 0) {
-+            fprintf(stderr,
-+                "af-xdp: unable to remove %s's XSK sockets from '%s', ifindex: %d\n",
-+                s->ifname, s->map_path, s->ifindex);
-+        } else {
-+            idx = nc->queue_index;
-+            if (s->map_start_index > 0) {
-+                idx += s->map_start_index;
-+            }
-+            bpf_map_delete_elem(pin_fd, &idx);
-+            close(pin_fd);
-+        }
-+    }
-+    g_free(s->map_path);
- }
- 
- static int af_xdp_umem_create(AFXDPState *s, int sock_fd, Error **errp)
-@@ -343,7 +362,7 @@ static int af_xdp_socket_create(AFXDPState *s,
-         .bind_flags = XDP_USE_NEED_WAKEUP,
-         .xdp_flags = XDP_FLAGS_UPDATE_IF_NOEXIST,
-     };
--    int queue_id, error = 0;
-+    int queue_id, pin_fd, xsk_fd, idx, error = 0;
- 
-     s->inhibit = opts->has_inhibit && opts->inhibit;
-     if (s->inhibit) {
-@@ -384,6 +403,23 @@ static int af_xdp_socket_create(AFXDPState *s,
-         }
-     }
- 
-+    if (!error && s->map_path) {
-+        pin_fd = bpf_obj_get(s->map_path);
-+        if (pin_fd < 0) {
-+            error = errno;
-+        } else {
-+	    xsk_fd = xsk_socket__fd(s->xsk);
-+            idx = s->nc.queue_index;
-+            if (s->map_start_index) {
-+                idx += s->map_start_index;
-+            }
-+            if (bpf_map_update_elem(pin_fd, &idx, &xsk_fd, 0)) {
-+                error = errno;
-+            }
-+            close(pin_fd);
-+        }
-+    }
-+
-     if (error) {
-         error_setg_errno(errp, error,
-                          "failed to create AF_XDP socket for %s queue_id: %d",
-@@ -465,8 +501,8 @@ int net_init_af_xdp(const Netdev *netdev,
-         return -1;
-     }
- 
--    if ((opts->has_inhibit && opts->inhibit) != !!opts->sock_fds) {
--        error_setg(errp, "'inhibit=on' requires 'sock-fds' and vice versa");
-+    if ((opts->has_inhibit && opts->inhibit) != !!(opts->sock_fds || opts->map_path)) {
-+        error_setg(errp, "'inhibit=on' requires 'sock-fds' or 'map-path' and vice versa");
-         return -1;
-     }
- 
-@@ -491,6 +527,12 @@ int net_init_af_xdp(const Netdev *netdev,
-         pstrcpy(s->ifname, sizeof(s->ifname), opts->ifname);
-         s->ifindex = ifindex;
-         s->n_queues = queues;
-+        if (opts->map_path) {
-+            s->map_path = g_strdup(opts->map_path);
-+            if (opts->has_map_start_index && opts->map_start_index > 0) {
-+                s->map_start_index = opts->map_start_index;
-+            }
-+        }
- 
-         if (af_xdp_umem_create(s, sock_fds ? sock_fds[i] : -1, errp)
-             || af_xdp_socket_create(s, opts, errp)) {
-@@ -504,10 +546,17 @@ int net_init_af_xdp(const Netdev *netdev,
-     if (nc0) {
-         s = DO_UPCAST(AFXDPState, nc, nc0);
-         if (bpf_xdp_query_id(s->ifindex, s->xdp_flags, &prog_id) || !prog_id) {
--            error_setg_errno(errp, errno,
--                             "no XDP program loaded on '%s', ifindex: %d",
--                             s->ifname, s->ifindex);
--            goto err;
-+            if (!s->map_path) {
-+                error_setg_errno(errp, errno,
-+                                 "no XDP program loaded on '%s', ifindex: %d",
-+                                 s->ifname, s->ifindex);
-+                goto err;
-+	    } else {
-+                warn_report("no XDP program loaded on '%s', ifindex: %d, "
-+			    "only %"PRIi64" XSK socket%s loaded into map %s at this point",
-+			    s->ifname, s->ifindex, queues, queues > 1 ? "s" : "",
-+			    s->map_path);
-+            }
-         }
-     }
- 
-diff --git a/qapi/net.json b/qapi/net.json
-index 310cc4fd19..c750b805e8 100644
---- a/qapi/net.json
-+++ b/qapi/net.json
-@@ -454,7 +454,7 @@
- #     (default: 0).
- #
- # @inhibit: Don't load a default XDP program, use one already loaded
--#     to the interface (default: false).  Requires @sock-fds.
-+#     to the interface (default: false).  Requires @sock-fds or @map-path.
- #
- # @sock-fds: A colon (:) separated list of file descriptors for
- #     already open but not bound AF_XDP sockets in the queue order.
-@@ -462,17 +462,25 @@
- #     into XDP socket map for corresponding queues.  Requires
- #     @inhibit.
- #
-+# @map-path: The path to a pinned xsk map to push file descriptors
-+#     for bound AF_XDP sockets into. Requires @inhibit.
-+#
-+# @map-start-index: Use @map-path to insert xsk sockets starting from
-+#     this index number (default: 0). Requires @map-path.
-+#
- # Since: 8.2
- ##
- { 'struct': 'NetdevAFXDPOptions',
-   'data': {
--    'ifname':       'str',
--    '*mode':        'AFXDPMode',
--    '*force-copy':  'bool',
--    '*queues':      'int',
--    '*start-queue': 'int',
--    '*inhibit':     'bool',
--    '*sock-fds':    'str' },
-+    'ifname':           'str',
-+    '*mode':            'AFXDPMode',
-+    '*force-copy':      'bool',
-+    '*queues':          'int',
-+    '*start-queue':     'int',
-+    '*inhibit':         'bool',
-+    '*sock-fds':        'str',
-+    '*map-path':        'str',
-+    '*map-start-index': 'int' },
-   'if': 'CONFIG_AF_XDP' }
- 
- ##
--- 
-2.43.0
+You are right!
 
 
