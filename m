@@ -2,32 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 440A4AAFC79
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 16:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08C82AAFC84
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 16:12:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uD1x7-0002Yi-B1; Thu, 08 May 2025 10:10:21 -0400
+	id 1uD1wo-00021C-JF; Thu, 08 May 2025 10:10:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uD1x2-0002T7-Sk; Thu, 08 May 2025 10:10:18 -0400
+ id 1uD1wi-0001xH-F0; Thu, 08 May 2025 10:09:56 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uD1x0-0008UD-UF; Thu, 08 May 2025 10:10:16 -0400
+ id 1uD1wg-0008U4-Fp; Thu, 08 May 2025 10:09:56 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 251EA432CA;
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 14EC742C43;
  Thu,  8 May 2025 16:09:42 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
  andrey.drobyshev@virtuozzo.com, hreitz@redhat.com, stefanha@redhat.com,
  eblake@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru
-Subject: [PATCH 07/11] blockdev: drain while unlocked in
- external_snapshot_action()
-Date: Thu,  8 May 2025 16:09:32 +0200
-Message-Id: <20250508140936.3344485-8-f.ebner@proxmox.com>
+Subject: [PATCH 08/11] block: mark bdrv_drained_begin() as GRAPH_UNLOCKED
+Date: Thu,  8 May 2025 16:09:33 +0200
+Message-Id: <20250508140936.3344485-9-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250508140936.3344485-1-f.ebner@proxmox.com>
 References: <20250508140936.3344485-1-f.ebner@proxmox.com>
@@ -56,44 +55,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+bdrv_drained_begin() polls and is not allowed to be called with the
+block graph lock held. Mark the function as such.
+
+Suggested-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
 
-Could the bs associated to the device change because of polling
-when draining? If yes, does that mean we need to drain all in the
-beginning and not temporarily unlock?
+This does not catch the issue reported by Andrey, because there
+is a bdrv_graph_rdunlock_main_loop() before bdrv_drained_begin() in
+the function bdrv_change_aio_context(). That unlock is of course
+ineffective if the exclusive lock is held, but it seems to prevent TSA
+from finiding the issue.
 
- blockdev.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+The next patch is concerned with that.
 
-diff --git a/blockdev.c b/blockdev.c
-index f2b4fdf1b3..4a672f9bac 100644
---- a/blockdev.c
-+++ b/blockdev.c
-@@ -1368,7 +1368,7 @@ static void external_snapshot_action(TransactionAction *action,
-     uint64_t perm, shared;
+ include/block/block-io.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/include/block/block-io.h b/include/block/block-io.h
+index b49e0537dd..34b9f1cbfc 100644
+--- a/include/block/block-io.h
++++ b/include/block/block-io.h
+@@ -429,7 +429,8 @@ bdrv_drain_poll(BlockDriverState *bs, BdrvChild *ignore_parent,
+  *
+  * This function can be recursive.
+  */
+-void bdrv_drained_begin(BlockDriverState *bs);
++void GRAPH_UNLOCKED
++bdrv_drained_begin(BlockDriverState *bs);
  
-     /* TODO We'll eventually have to take a writer lock in this function */
--    GRAPH_RDLOCK_GUARD_MAINLOOP();
-+    bdrv_graph_rdlock_main_loop();
- 
-     tran_add(tran, &external_snapshot_drv, state);
- 
-@@ -1401,11 +1401,14 @@ static void external_snapshot_action(TransactionAction *action,
- 
-     state->old_bs = bdrv_lookup_bs(device, node_name, errp);
-     if (!state->old_bs) {
-+        bdrv_graph_rdunlock_main_loop();
-         return;
-     }
- 
-+    bdrv_graph_rdunlock_main_loop();
-     /* Paired with .clean() */
-     bdrv_drained_begin(state->old_bs);
-+    GRAPH_RDLOCK_GUARD_MAINLOOP();
- 
-     if (!bdrv_is_inserted(state->old_bs)) {
-         error_setg(errp, "Device '%s' has no medium",
+ /**
+  * bdrv_do_drained_begin_quiesce:
 -- 
 2.39.5
 
