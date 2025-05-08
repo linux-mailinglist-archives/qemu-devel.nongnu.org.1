@@ -2,57 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6217AAAFD74
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 16:42:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0ABEAAFD79
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 16:43:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uD2Rd-0005gZ-EL; Thu, 08 May 2025 10:41:53 -0400
+	id 1uD2S3-0006M0-Tb; Thu, 08 May 2025 10:42:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uD2RW-0005cb-5q
- for qemu-devel@nongnu.org; Thu, 08 May 2025 10:41:46 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uD2Rg-0005pz-28
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 10:41:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uD2RT-0004z2-R8
- for qemu-devel@nongnu.org; Thu, 08 May 2025 10:41:45 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uD2Rd-000502-53
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 10:41:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746715302;
+ s=mimecast20190719; t=1746715312;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tHyyoI2eXMXaL7BAlXVr1M7eUE65B35IC5CIRU66uIk=;
- b=KNMjwMfHgZwmWSHtYTqTaGZsunvKONjWqXnuT5/dJY3MGkEokVvvuIDBdEn2sFmlIVru82
- hvMhHP6fyKxbrkdy6HImKjtXxA+iIzyrogBAGYoFCFP6b1njlgUAizt7qpWXLl0MqUTjW7
- TjOwL993ryQnG4Ad1j5Sx6SEnL+ax9w=
+ bh=UOqIO1CEm9qmOLzRB/pCK+LThTMuOpcZYyDIO1qxp7c=;
+ b=Q3+dnltu7yIFApXBsnn13e8ieWNQU7woRceqsooj+XWYbAcmyHfFVfS2D/Br9wY3UrATDx
+ u5BSRO9nVEW2onr+/LZvSs4+PN+kcYLmvHz3m6VVY+oQpEoJj2uK9JXo8KEwRJyxZeRFnf
+ 16i5svpr64tOI4aYPo45icfZL1qqfIo=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-609-PToQqRGGNDi0liAlK39GSw-1; Thu,
- 08 May 2025 10:41:41 -0400
-X-MC-Unique: PToQqRGGNDi0liAlK39GSw-1
-X-Mimecast-MFC-AGG-ID: PToQqRGGNDi0liAlK39GSw_1746715300
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-465-MTXY0f4yPRCwHUc1hxCV-g-1; Thu,
+ 08 May 2025 10:41:49 -0400
+X-MC-Unique: MTXY0f4yPRCwHUc1hxCV-g-1
+X-Mimecast-MFC-AGG-ID: MTXY0f4yPRCwHUc1hxCV-g_1746715305
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 15AA819560B0; Thu,  8 May 2025 14:41:40 +0000 (UTC)
+ id DD6DF1955D84; Thu,  8 May 2025 14:41:44 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.44.32.200])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3BCE519560AD; Thu,  8 May 2025 14:41:35 +0000 (UTC)
+ id E4DE719560AD; Thu,  8 May 2025 14:41:40 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  Brad Smith <brad@comstyle.com>, qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [RFC PATCH 3/5] hw/arm: Compile musicpal and the xlnx machines with
- the right CFLAGS
-Date: Thu,  8 May 2025 16:41:18 +0200
-Message-ID: <20250508144120.163009-4-thuth@redhat.com>
+Subject: [PATCH 4/5] tests/vm: Update OpenBSD to 7.7
+Date: Thu,  8 May 2025 16:41:19 +0200
+Message-ID: <20250508144120.163009-5-thuth@redhat.com>
 In-Reply-To: <20250508144120.163009-1-thuth@redhat.com>
 References: <20250508144120.163009-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -67,7 +66,7 @@ X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.416,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,42 +84,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-These machines include ui/console.h, which in turn includes the
-pixman headers and <epoxy/gl.h> via ui/surface.h. If these library
-headers are located outside of /usr/include (like gl.h on OpenBSD 7.7),
-we must make sure to compile this code with the right CFLAGS so that
-the headers can be found.
+OpenBSD 7.7 has been released at the end of April 2025, so let's
+update to that version.
 
+Reported-by: Brad Smith <brad@comstyle.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- Note: Paolo had a better suggestion here:
- https://lists.libreplanet.org/archive/html/qemu-arm/2025-05/msg00571.html
-
- hw/arm/meson.build | 4 ++--
+ tests/vm/openbsd | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-index 5098795f61d..51d0c055abf 100644
---- a/hw/arm/meson.build
-+++ b/hw/arm/meson.build
-@@ -8,7 +8,7 @@ arm_common_ss.add(when: 'CONFIG_HIGHBANK', if_true: files('highbank.c'))
- arm_common_ss.add(when: 'CONFIG_INTEGRATOR', if_true: files('integratorcp.c'))
- arm_common_ss.add(when: 'CONFIG_MICROBIT', if_true: files('microbit.c'))
- arm_common_ss.add(when: 'CONFIG_MPS3R', if_true: files('mps3r.c'))
--arm_common_ss.add(when: 'CONFIG_MUSICPAL', if_true: [pixman, files('musicpal.c')])
-+arm_common_ss.add(when: 'CONFIG_MUSICPAL', if_true: [files('musicpal.c'), pixman, opengl])
- arm_common_ss.add(when: 'CONFIG_NETDUINOPLUS2', if_true: files('netduinoplus2.c'))
- arm_common_ss.add(when: 'CONFIG_OLIMEX_STM32_H405', if_true: files('olimex-stm32-h405.c'))
- arm_common_ss.add(when: 'CONFIG_NPCM7XX', if_true: files('npcm7xx.c', 'npcm7xx_boards.c'))
-@@ -34,7 +34,7 @@ arm_common_ss.add(when: 'CONFIG_STM32F205_SOC', if_true: files('stm32f205_soc.c'
- arm_common_ss.add(when: 'CONFIG_STM32F405_SOC', if_true: files('stm32f405_soc.c'))
- arm_common_ss.add(when: 'CONFIG_B_L475E_IOT01A', if_true: files('b-l475e-iot01a.c'))
- arm_common_ss.add(when: 'CONFIG_STM32L4X5_SOC', if_true: files('stm32l4x5_soc.c'))
--arm_common_ss.add(when: 'CONFIG_XLNX_ZYNQMP_ARM', if_true: files('xlnx-zynqmp.c', 'xlnx-zcu102.c'))
-+arm_common_ss.add(when: 'CONFIG_XLNX_ZYNQMP_ARM', if_true: [files('xlnx-zynqmp.c', 'xlnx-zcu102.c'), pixman, opengl])
- arm_common_ss.add(when: 'CONFIG_XLNX_VERSAL', if_true: files('xlnx-versal.c', 'xlnx-versal-virt.c'))
- arm_common_ss.add(when: 'CONFIG_FSL_IMX25', if_true: files('fsl-imx25.c', 'imx25_pdk.c'))
- arm_common_ss.add(when: 'CONFIG_FSL_IMX31', if_true: files('fsl-imx31.c', 'kzm.c'))
+diff --git a/tests/vm/openbsd b/tests/vm/openbsd
+index 5e4f76f3988..2ea86a01bad 100755
+--- a/tests/vm/openbsd
++++ b/tests/vm/openbsd
+@@ -22,8 +22,8 @@ class OpenBSDVM(basevm.BaseVM):
+     name = "openbsd"
+     arch = "x86_64"
+ 
+-    link = "https://cdn.openbsd.org/pub/OpenBSD/7.6/amd64/install76.iso"
+-    csum = "60cba8cb391b50bba8fa10fc768bd0529636f5345d82133c93e22c798d8e5269"
++    link = "https://cdn.openbsd.org/pub/OpenBSD/7.7/amd64/install77.iso"
++    csum = "da0106e39463f015524dca806f407c37a9bdd17e6dfffe533b06a2dd2edd8a27"
+     size = "20G"
+     pkgs = [
+         # tools
 -- 
 2.49.0
 
