@@ -2,84 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EF9CAAF91D
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 13:49:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3981AAF959
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 14:08:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCzjp-0007IR-Rx; Thu, 08 May 2025 07:48:29 -0400
+	id 1uD02h-0001Os-Jg; Thu, 08 May 2025 08:07:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uCzjn-0007II-57
- for qemu-devel@nongnu.org; Thu, 08 May 2025 07:48:27 -0400
-Received: from mgamail.intel.com ([192.198.163.8])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uCzjl-0006tX-7u
- for qemu-devel@nongnu.org; Thu, 08 May 2025 07:48:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746704905; x=1778240905;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=1uyG16FIdzJvVtC7hjq7yIsugtDMo+Kie/Zj81E2f+o=;
- b=NQE5ftqmCXkSm+jk8RPsIxEX4TSNlqhvVY4MiIlNedzCRAgg2dMwv3ki
- iwQtnIuzUjfaQyvNOVWFAJ82m88I9H5k/quNvZOwB6fUzHvB9j5KuoQ1e
- Q+lRosK0B6Y/lgmCOZ00dQ5Dfi/aSwZpYE01/SflNsfCft8okCb1T4deL
- W2dr1WEL5nPWJ+W0EeCrY5a1MmgnkSBFE3kiVLDH2V+nyee8M1xMEaCId
- mtpU1Cu9pty12JtvYqJiix6C2MOP9MwPpy7z1ZJQlp21gQtWPe/EF0GRR
- J5zQIBQGPj5/OBWqeKBQBRBDBOwADaeNgyvB7BMsg5uOhikw7tC+F46hK A==;
-X-CSE-ConnectionGUID: YuAnA2RhTrKA72+iIzSn5Q==
-X-CSE-MsgGUID: oOMsr1DmSGmI4vkkyf0wTA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="66014855"
-X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="66014855"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2025 04:48:05 -0700
-X-CSE-ConnectionGUID: eRixBp4XTQ6mft2czjJcfA==
-X-CSE-MsgGUID: 41jMWdpNQNK1SdyI89EKmg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="137260064"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa009.fm.intel.com with ESMTP; 08 May 2025 04:48:00 -0700
-Date: Thu, 8 May 2025 20:09:02 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Laurent Vivier <lvivier@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Huacai Chen <chenhuacai@kernel.org>, Amit Shah <amit@kernel.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sergio Lopez <slp@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Jason Wang <jasowang@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Gerd Hoffmann <kraxel@redhat.com>,
- =?iso-8859-1?Q?Cl=E9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Yi Liu <yi.l.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Subject: Re: [PATCH v3 12/19] hw/i386/pc: Remove pc_compat_2_7[] array
-Message-ID: <aBye3pzw6LLJ1rgt@intel.com>
-References: <20250502185652.67370-1-philmd@linaro.org>
- <20250502185652.67370-13-philmd@linaro.org>
- <2e2f4b39-d7f1-4817-947f-106558c1621c@redhat.com>
- <1bd065b9-32ff-46d9-8131-b06e75017243@linaro.org>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uD02d-0001OV-VD
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 08:07:55 -0400
+Received: from mail-yb1-xb2e.google.com ([2607:f8b0:4864:20::b2e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uD02c-0000im-6E
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 08:07:55 -0400
+Received: by mail-yb1-xb2e.google.com with SMTP id
+ 3f1490d57ef6-e78f44034ffso426968276.1
+ for <qemu-devel@nongnu.org>; Thu, 08 May 2025 05:07:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1746706073; x=1747310873; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=YL87FuhWDvRyv0KfIzORqijLk934LJSUMog7volKFdc=;
+ b=oH2Il1FX4ZO9zRvppNOtiSK8d/0fJwSqUhhdZsZNqcH+oUrtiabfxbRkoY1o349TQE
+ TNIWKbloIvXjqLPGOBCrSxVVJP/TR+dWP8tWCtWc5FpU+kPT5j2+bpwuUtzWQWTzLWTI
+ DFa9kJWlc5VznKaDdj68FkON/mTMtdL+iQvmfpc+c3ij0O92B6lvAp3A1a1itXQP+QrL
+ gY2r32J3/BuJc5EkoTLUFBZYcc1O+8zsGQn8NKt6QgWyF8aGU6M7SXECKORtCWo34DfK
+ ZFiiA7yVXOUm27LJIUuICFFAdkfrK4NYUQcWD1Lv0loEw1aoKnZxbHoEdeQ5kJKFE0JT
+ 9QIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1746706073; x=1747310873;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=YL87FuhWDvRyv0KfIzORqijLk934LJSUMog7volKFdc=;
+ b=avq37x4yTKqlWkk6LNf/W+sqCOuL8ldLFBFWXwDALZ6U+EJYQeaLM2Zr9X6LAyBQvL
+ 45yRiXfTT4UtpM8wsa5tIAxIrTb76x8hDx+1VLjbyLUwpTMJV3Q29xN+KZqdpTdFBZgm
+ hc+pb60NVssuWEO3IRDBL/e6FIhRTTOy0bNjS1I4u8Ng2nv8KRMLTh7G9ZrY+HJJfUSM
+ J9QJL2EDaFAUK/uDyvpeie+vgbtnD/Amg1WL1AqPA3lwi2JlKZKuLJZ3I2Lnw6sEBQWR
+ 3nl3jNDJjx7NRf2pxuudh0JutOo0z/CyCcZn76UJiGeymkpUjBE9JiGDUybZqHtfSn1U
+ wJHw==
+X-Gm-Message-State: AOJu0YzhHtSNr7Cr+Nggxp9iaKV9ZediapXqvOtInp214bYf+AqCxirh
+ sIuvh1UMSmtDp93UqpYd8PxQFUCP33FztqN014esfWpzEIdGqoP0GX00jxFl5sU3sHUOR0rqBvz
+ eov8HYy9cmsOtpZwFDNYRWnnt3QMFlHisHefsgg==
+X-Gm-Gg: ASbGncvZ+OiBOWu1TwDEZAbsE8GFvigJkuSzuE26LxuJX2efqGW22u8lGezz5niSYzS
+ ZnmXiYE2VOIztwn8TxILwjIgRAH5KB9oLCHOBmFE4V5VCC/YAZj0Ll0xnbwYndu3uEePW70oiHh
+ YbPTM6RvbLmv24cn/+uHsrVFk=
+X-Google-Smtp-Source: AGHT+IE5s+nuYHd6x2a6aCI7dtUK2PdHv+gp2usVJxorITTM1P4EYvIoJcl9QwMcbO2gplMF/xxze1IqiTWVweuX+Cg=
+X-Received: by 2002:a05:6902:2b84:b0:e78:6954:49f1 with SMTP id
+ 3f1490d57ef6-e78ef5efa6dmr3846126276.4.1746706072667; Thu, 08 May 2025
+ 05:07:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1bd065b9-32ff-46d9-8131-b06e75017243@linaro.org>
-Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -57
-X-Spam_score: -5.8
-X-Spam_bar: -----
-X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.416,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+References: <20250507165840.401623-1-alex.bennee@linaro.org>
+ <CAFEAcA_0cf=XEbH9VQdTHqu1wekSmFDLdqnnzpcwnshCT-UUCg@mail.gmail.com>
+ <87zffnmidy.fsf@draig.linaro.org>
+In-Reply-To: <87zffnmidy.fsf@draig.linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 8 May 2025 13:07:40 +0100
+X-Gm-Features: ATxdqUHvqCH0dZwizDr8EfdhDc4AqOMpAhinqOWIMw7rKJfMVDevOb_UT-kHgyk
+Message-ID: <CAFEAcA80-CWEQYwTQPziUxm5V1K93VZstLh2r9mTGkD5QueKoA@mail.gmail.com>
+Subject: Re: [RFC PATCH] target/arm: allow gdb to read ARM_CP_NORAW regs
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Julian Armistead <julian.armistead@linaro.org>, 
+ "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,72 +94,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 08, 2025 at 12:40:35PM +0200, Philippe Mathieu-Daudé wrote:
-> Date: Thu, 8 May 2025 12:40:35 +0200
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: Re: [PATCH v3 12/19] hw/i386/pc: Remove pc_compat_2_7[] array
-> 
-> Hi Thomas,
-> 
-> On 8/5/25 09:55, Thomas Huth wrote:
-> > On 02/05/2025 20.56, Philippe Mathieu-Daudé wrote:
-> > > The pc_compat_2_7[] array was only used by the pc-q35-2.7
-> > > and pc-i440fx-2.7 machines, which got removed. Remove it.
-> > > 
-> > > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> > > Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
-> > > ---
-> > >   include/hw/i386/pc.h |  3 ---
-> > >   hw/i386/pc.c         | 10 ----------
-> > >   2 files changed, 13 deletions(-)
-> > > 
-> > > diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-> > > index 4fb2033bc54..319ec82f709 100644
-> > > --- a/include/hw/i386/pc.h
-> > > +++ b/include/hw/i386/pc.h
-> > > @@ -289,9 +289,6 @@ extern const size_t pc_compat_2_9_len;
-> > >   extern GlobalProperty pc_compat_2_8[];
-> > >   extern const size_t pc_compat_2_8_len;
-> > > -extern GlobalProperty pc_compat_2_7[];
-> > > -extern const size_t pc_compat_2_7_len;
-> > > -
-> > >   #define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
-> > >       static void pc_machine_##suffix##_class_init(ObjectClass *oc, \
-> > >                                                    const void *data) \
-> > > diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-> > > index 7573b880905..ee7095c89a8 100644
-> > > --- a/hw/i386/pc.c
-> > > +++ b/hw/i386/pc.c
-> > > @@ -241,16 +241,6 @@ GlobalProperty pc_compat_2_8[] = {
-> > >   };
-> > >   const size_t pc_compat_2_8_len = G_N_ELEMENTS(pc_compat_2_8);
-> > > -GlobalProperty pc_compat_2_7[] = {
-> > > -    { TYPE_X86_CPU, "l3-cache", "off" },
-> > > -    { TYPE_X86_CPU, "full-cpuid-auto-level", "off" },
-> > > -    { "Opteron_G3" "-" TYPE_X86_CPU, "family", "15" },
-> > > -    { "Opteron_G3" "-" TYPE_X86_CPU, "model", "6" },
-> > > -    { "Opteron_G3" "-" TYPE_X86_CPU, "stepping", "1" },
-> > > -    { "isa-pcspk", "migrate", "off" },
-> > > -};
-> > > -const size_t pc_compat_2_7_len = G_N_ELEMENTS(pc_compat_2_7);
-> > 
-> > I'd really appreciate if you could provide clean-up patches for
-> > TYPE_X86_CPU, too. Otherwise I'm pretty sure we'll forget that there is
-> > some clean up possibility here.
-> 
-> Well TBH it is too exhausting to keep rebasing these patches without
-> feedback from maintainers. I'll respin a v4 with Zhao and your comments
-> addressed but without touching the TYPE_X86_CPU properties. If
-> maintainers prefer to remove dead code in one go -- something I
-> certainly understand from a maintainer PoV -- I'll let someone else
-> do it, taking over my series.
+On Thu, 8 May 2025 at 12:50, Alex Benn=C3=A9e <alex.bennee@linaro.org> wrot=
+e:
+>
+> Peter Maydell <peter.maydell@linaro.org> writes:
+>
+> > On Wed, 7 May 2025 at 17:58, Alex Benn=C3=A9e <alex.bennee@linaro.org> =
+wrote:
+> >>
+> >> Before this we suppress all ARM_CP_NORAW registers being listed under
+> >> GDB. This includes useful registers like CurrentEL which gets tagged
+> >> as ARM_CP_NO_RAW because it is one of the ARM_CP_SPECIAL_MASK
+> >> registers. These are registers TCG can directly compute because we
+> >> have the information at compile time but until now with no readfn.
+> >>
+> >> Add a .readfn to return the CurrentEL and then loosen the restrictions
+> >> in arm_register_sysreg_for_feature to allow ARM_CP_NORAW registers to
+> >> be read if there is a readfn available.
+> >
+> > The primary use case for NO_RAW is "system instructions" like
+> > the TLB maintenance insns. These don't make sense to expose
+> > to a debugger.
+>
+> I think we could re-think the logic:
+>
+>     /*
+>      * By convention, for wildcarded registers only the first
+>      * entry is used for migration; the others are marked as
+>      * ALIAS so we don't try to transfer the register
+>      * multiple times. Special registers (ie NOP/WFI) are
+>      * never migratable and not even raw-accessible.
+>      */
+>     if (r2->type & ARM_CP_SPECIAL_MASK) {
+>         r2->type |=3D ARM_CP_NO_RAW;
+>     }
 
-Hi Philippe, I think I could volunteer help you to revisit the history
-of these properties (they're also too old for me :-)), and help identify
-if these properties should be removed or at least list the potential
-issues. Hopefully I can do this.
+Well, we definitely don't want WFI or the DC ZVA etc
+"registers" to be exposed to GDB or for us to try to handle
+them in KVM state sync or migration... ARM_CP_NOP is less
+clear because we use it pretty widely for more than one
+purpose. The main one is "system instruction that we don't
+need to implement". (CP_NOP + a readable register is a
+questionable combination since the guest will expect it to
+update the general-purpose destreg, not leave it untouched,
+but we do have some.)
 
-Thanks,
-Zhao
+> > If we want the gdbstub access to system registers to be
+> > more than our current "we provide the ones that are easy",
+> > then I think I'd like to see a bit more up-front analysis of
+> > what the gdbstub needs and whether we've got into a bit of
+> > a mess with our ARM_CP_* flags that we could straighten out.
+>
+> Yeah - hence the RFC. CurrentEL is a super useful one to expose though
+> when you are debugging complex hypervisor setups.
 
+One problem with this patch is the one that the reporter of
+https://gitlab.com/qemu-project/qemu/-/issues/2760 noted
+in the conversation there: it will allow the debugger to
+read registers which have a side-effect on read, like
+ICC_IAR1_EL1: we almost certainly do not want to allow
+the debugger to acknowledge an interrupt by doing a sysreg
+read.
+
+thanks
+-- PMM
 
