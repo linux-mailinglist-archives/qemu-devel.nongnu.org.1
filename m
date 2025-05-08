@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6075AAFE4A
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 17:07:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4A48AAFE53
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 17:08:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uD2qJ-0005Yx-CE; Thu, 08 May 2025 11:07:23 -0400
+	id 1uD2qJ-0005Vq-BA; Thu, 08 May 2025 11:07:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uD2q8-0005FN-Bx
+ id 1uD2q8-0005FM-B1
  for qemu-devel@nongnu.org; Thu, 08 May 2025 11:07:12 -0400
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uD2q2-0007RF-Vn
+ id 1uD2q4-0007UR-FQ
  for qemu-devel@nongnu.org; Thu, 08 May 2025 11:07:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746716827; x=1778252827;
+ t=1746716828; x=1778252828;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=kcNZXKELI150GHQdC8+dN8KzuEUlLn8C0fwinm/hIEo=;
- b=QA1iqMlpi2sjwzB7z7r9ha9K4HioLYUDUEwFsnaPM9iNK7y+ouEO/FGe
- wgt6zalp0Z/JE43mKbEYUibSrUsN8ADLpEVqU37y6m5u8Dz2961qilAG8
- rWzy4Ebvc7qCX0WA7ph+GtVrkSGFw95bMaRbyqleZ4Xd2L3Qu+mcq/XuX
- tItptzJBg5z7ZcWMWi7coCUUS+fEBHY9NuVANYY0NENadM5aFsMsBqKx5
- 6VPFPfi1ppISVbfWTL2+/63AVlmPZCW3WAu025n3Xu9pk3g608M6sjyDu
- P7HU9RZxA/cByfu0kMYbQsa99nlDLAmsg70M+zWHE1Cmkzv/nF9fIztK/ A==;
-X-CSE-ConnectionGUID: nTPj9wdTQcyL2hjc/epMng==
-X-CSE-MsgGUID: aYp3+x8XR4uXBE6Yz44wQQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="73888270"
-X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="73888270"
+ bh=Ua3ZETS+iT290H+LO2Dg9TnqZFRwIQnJNoMCWUzIJ38=;
+ b=bptNU+D10jjAceN7fZ2Ndnqtlkc1L8PKnrvdfkbsmfz1yJz/fbBJEwOx
+ kVxG5x79gisqzmBT7z51pAIi6/PRYkDh3+bHI1UQpWsZnvveBY9OoeY6s
+ lq5Q30ZV7JLHzt57GEF1PNzPtEXZgnGwzOsiuYEJfGaEsxhjTz8/5lShN
+ OyYVvryFF/TKGH1y1wCayjM/FtgwSuQQplen/3klsoJKGJ68+AR4bW7yk
+ PFM2aqIkzIqvdWEpTpBFhczRITNu9BVR+qceDG6fNJ/bgOku8K1L/PVn5
+ KdFf405jZwIzOv+O8ec2eLp3JajZbRDHoA/Au49hZemwunEPVxi+hqUt9 Q==;
+X-CSE-ConnectionGUID: UV4pWU+JQ7WhjKTN/pj0uQ==
+X-CSE-MsgGUID: wsitzCJORB2E8oJZft295Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="73888276"
+X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="73888276"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2025 08:06:28 -0700
-X-CSE-ConnectionGUID: meB6+S9FSNuOXaTjGAxwGQ==
-X-CSE-MsgGUID: I+OWwCUzS2WzW8SKiQ5M1A==
+ 08 May 2025 08:06:31 -0700
+X-CSE-ConnectionGUID: OJjJQfX8Q62hzqaYYfem4Q==
+X-CSE-MsgGUID: HS8g275/QTS3WHFg59Vvxg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="141440115"
+X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="141440129"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa005.jf.intel.com with ESMTP; 08 May 2025 08:06:25 -0700
+ by orviesa005.jf.intel.com with ESMTP; 08 May 2025 08:06:28 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
@@ -55,9 +55,10 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  Zhao Liu <zhao1.liu@intel.com>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PATCH v9 30/55] kvm: Check KVM_CAP_MAX_VCPUS at vm level
-Date: Thu,  8 May 2025 10:59:36 -0400
-Message-ID: <20250508150002.689633-31-xiaoyao.li@intel.com>
+Subject: [PATCH v9 31/55] i386/cpu: introduce
+ x86_confidential_guest_cpu_instance_init()
+Date: Thu,  8 May 2025 10:59:37 -0400
+Message-ID: <20250508150002.689633-32-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250508150002.689633-1-xiaoyao.li@intel.com>
 References: <20250508150002.689633-1-xiaoyao.li@intel.com>
@@ -88,31 +89,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-KVM with TDX support starts to report different KVM_CAP_MAX_VCPUS per
-different VM types. So switch to check the KVM_CAP_MAX_VCPUS at vm level.
-
-KVM still returns the global KVM_CAP_MAX_VCPUS when the KVM is old that
-doesn't report different value at vm level.
+To allow execute confidential guest specific cpu init operations.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- accel/kvm/kvm-all.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v9:
+ - use current_machine instead of qdev_get_machine(); (Zhao Liu)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index df9840e53a35..5835d840f3ad 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -2425,7 +2425,7 @@ static int kvm_recommended_vcpus(KVMState *s)
+Changes in v6:
+ - new patch;
+---
+ target/i386/confidential-guest.h | 11 +++++++++++
+ target/i386/cpu.c                |  8 ++++++++
+ 2 files changed, 19 insertions(+)
+
+diff --git a/target/i386/confidential-guest.h b/target/i386/confidential-guest.h
+index 164be7633a20..a86c42a47558 100644
+--- a/target/i386/confidential-guest.h
++++ b/target/i386/confidential-guest.h
+@@ -39,6 +39,7 @@ struct X86ConfidentialGuestClass {
  
- static int kvm_max_vcpus(KVMState *s)
- {
--    int ret = kvm_check_extension(s, KVM_CAP_MAX_VCPUS);
-+    int ret = kvm_vm_check_extension(s, KVM_CAP_MAX_VCPUS);
-     return (ret) ? ret : kvm_recommended_vcpus(s);
+     /* <public> */
+     int (*kvm_type)(X86ConfidentialGuest *cg);
++    void (*cpu_instance_init)(X86ConfidentialGuest *cg, CPUState *cpu);
+     uint32_t (*mask_cpuid_features)(X86ConfidentialGuest *cg, uint32_t feature, uint32_t index,
+                                     int reg, uint32_t value);
+ };
+@@ -59,6 +60,16 @@ static inline int x86_confidential_guest_kvm_type(X86ConfidentialGuest *cg)
+     }
  }
  
++static inline void x86_confidential_guest_cpu_instance_init(X86ConfidentialGuest *cg,
++                                                            CPUState *cpu)
++{
++    X86ConfidentialGuestClass *klass = X86_CONFIDENTIAL_GUEST_GET_CLASS(cg);
++
++    if (klass->cpu_instance_init) {
++        klass->cpu_instance_init(cg, cpu);
++    }
++}
++
+ /**
+  * x86_confidential_guest_mask_cpuid_features:
+  *
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index add6430f7edd..ea73b2225282 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -36,6 +36,7 @@
+ #include "hw/qdev-properties.h"
+ #include "hw/i386/topology.h"
+ #ifndef CONFIG_USER_ONLY
++#include "confidential-guest.h"
+ #include "system/reset.h"
+ #include "qapi/qapi-commands-machine-target.h"
+ #include "exec/address-spaces.h"
+@@ -8504,6 +8505,13 @@ static void x86_cpu_post_initfn(Object *obj)
+     }
+ 
+     accel_cpu_instance_init(CPU(obj));
++
++#ifndef CONFIG_USER_ONLY
++    if (current_machine && current_machine->cgs) {
++        x86_confidential_guest_cpu_instance_init(
++            X86_CONFIDENTIAL_GUEST(current_machine->cgs), (CPU(obj)));
++    }
++#endif
+ }
+ 
+ static void x86_cpu_init_default_topo(X86CPU *cpu)
 -- 
 2.43.0
 
