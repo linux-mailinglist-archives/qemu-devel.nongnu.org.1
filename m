@@ -2,83 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48926AAF618
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 10:55:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 386DEAAF5C2
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 10:34:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCx18-0001bq-JI; Thu, 08 May 2025 04:54:10 -0400
+	id 1uCwi9-0008O3-5y; Thu, 08 May 2025 04:34:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uCx16-0001bb-KF
- for qemu-devel@nongnu.org; Thu, 08 May 2025 04:54:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uCwi6-0008Ll-If
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 04:34:30 -0400
+Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uCx14-0002k4-Qr
- for qemu-devel@nongnu.org; Thu, 08 May 2025 04:54:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746694444;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=CLRKe0/dHE+hc4LWPJK1wOSiSCneWhe7npArK/IXs08=;
- b=Z2OlzBhmq+XJX62CZiM7ynplH69jz7gGOWqTpx7phz09DGLV6UkMyZYhjVNz98v1AMIHlw
- uAo4ohYlPuuaE8OCE7i747jY5P9kmkozpFtC3EcCH/th/jtOWqzlru8RQxgs0E+H0Dblun
- R+ihsm/9IOlpjR/c97a5Oe4zn8lj1As=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-340-tFMItBbLPw2PBsGgd0mMpA-1; Thu,
- 08 May 2025 04:54:00 -0400
-X-MC-Unique: tFMItBbLPw2PBsGgd0mMpA-1
-X-Mimecast-MFC-AGG-ID: tFMItBbLPw2PBsGgd0mMpA_1746694439
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8AAA01956094; Thu,  8 May 2025 08:53:58 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.138])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 808931956055; Thu,  8 May 2025 08:53:54 +0000 (UTC)
-Date: Thu, 8 May 2025 09:53:50 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, Yanan Wang <wangyanan55@huawei.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, devel@lists.libvirt.org,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Zhao Liu <zhao1.liu@intel.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Peter Maydell <peter.maydell@linaro.org>, John Snow <jsnow@redhat.com>
-Subject: Re: [PATCH v3 2/5] include/hw/boards: cope with dev/rc versions in
- deprecation checks
-Message-ID: <aBxxHob9MK0BYHLw@redhat.com>
-References: <20250506160024.2380244-1-berrange@redhat.com>
- <20250506160024.2380244-3-berrange@redhat.com>
- <09b0a1cf-afac-4308-89a2-cc22aba5699d@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uCwi3-0000KW-VC
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 04:34:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1746693268; x=1778229268;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=/l0AhjEEqojGSZ/D5qgHtK6wzDpY2Qe3A81fX8qNpHE=;
+ b=jLLgG9TqzhM6CO7XvishxzjOZtvLNgis8TLHv96JgGgrKHhl24UxUOYG
+ z9Epabosc/CVeRB437IADgZyrS3KTBYNmOR1rwvAA7egJdkCa4WmtorOW
+ FcADVKBoktUv6xRB0UvGd+YgZfH6ubLG4WsLxrxaOPukNeErC8frGyKpy
+ qAMJQfyW2/bbLkGhOxdo3pAmG9c7ygNBF/CUP/0aMmrrVjTnQcYEzOWqY
+ fKp6Oq5yNi4hiirAceCbrH1pHUhDh0pvVj/t1LXB3obMbJtoQqkQmL/CK
+ TRnaXm/Fyh40muEUD0f6nCYeCLdWTX+R9Ry8C7SHqTYHfPDP9DIcQ6Bcy A==;
+X-CSE-ConnectionGUID: A9c1cqbHQSKLalR5VMNWhA==
+X-CSE-MsgGUID: 0aFVUKNCSpOUBmNetmGlMA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="47564701"
+X-IronPort-AV: E=Sophos;i="6.15,271,1739865600"; d="scan'208";a="47564701"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 May 2025 01:34:24 -0700
+X-CSE-ConnectionGUID: WIpIa8hQQ1qqC07YVMQgbQ==
+X-CSE-MsgGUID: wlbvpXm/QOqbYq6l/Aelaw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,271,1739865600"; d="scan'208";a="136717295"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa010.fm.intel.com with ESMTP; 08 May 2025 01:34:21 -0700
+Date: Thu, 8 May 2025 16:55:23 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Ewan Hai <ewanhai-oc@zhaoxin.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ yeeli@zhaoxin.com, cobechen@zhaoxin.com, ewanhai@zhaoxin.com,
+ MaryFeng@zhaoxin.com, Runaguo@zhaoxin.com, Xanderchen@zhaoxin.com,
+ Alansong@zhaoxin.com, qemu-devel@nongnu.org
+Subject: Re: [Bug] QEMU TCG warnings after commit c6bd2dd63420 - HTT /
+ CMP_LEG bits
+Message-ID: <aBxxe3lsIFs0/xNP@intel.com>
+References: <c111d9f9-2914-4b41-811a-b3a9ad0d83a9@zhaoxin.com>
+ <4a1cfda7-4077-4754-b5a5-40db744419b4@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <09b0a1cf-afac-4308-89a2-cc22aba5699d@redhat.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
+In-Reply-To: <4a1cfda7-4077-4754-b5a5-40db744419b4@intel.com>
+Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -57
+X-Spam_score: -5.8
+X-Spam_bar: -----
+X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,45 +83,90 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 08, 2025 at 09:45:50AM +0200, Thomas Huth wrote:
-> On 06/05/2025 18.00, Daniel P. Berrang√© wrote:
-> > When VERSION is set to a development snapshot (micro >= 50), or a release
-> > candidate (micro >= 90) we have an off-by-1 in determining deprecation
-> > and deletion thresholds for versioned machine types. In such cases we need
-> > to use the next major/minor version in threshold checks.
-> > 
-> > This adapts the deprecation macros to do "next version" prediction when
-> > seeing a dev/rc version number.
-> > 
-> > This ensures users of release candidates get an accurate view of machines
-> > that will be deprecated/deleted in the final release.
-> > 
-> > This requires hardcoding our current release policy of 3 releases per
-> > year, with a major bump at the start of each year, and that dev/rc
-> > versions have micro >= 50.
-> > 
-> > Signed-off-by: Daniel P. Berrang√© <berrange@redhat.com>
-> > ---
-> >   include/hw/boards.h | 33 ++++++++++++++++++++++++++++++++-
-> >   1 file changed, 32 insertions(+), 1 deletion(-)
+On Tue, Apr 29, 2025 at 01:55:59PM +0800, Xiaoyao Li wrote:
+> Date: Tue, 29 Apr 2025 13:55:59 +0800
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: Re: [Bug] QEMU TCG warnings after commit c6bd2dd63420 - HTT /
+>  CMP_LEG bits
 > 
-> FYI, this causes a failure in the CI now:
+> On 4/29/2025 11:02 AM, Ewan Hai wrote:
+> > Hi Community,
+> > 
+> > This email contains 3 bugs appear to share the same root cause.
+> > 
+> > [1] We ran into the following warnings when running QEMU v10.0.0 in TCG
+> > mode:
+> > 
+> > qemu-system-x86_64 \
+> >  † -machine q35 \
+> >  † -m 4G -smp 4 \
+> >  † -kernel ./arch/x86/boot/bzImage \
+> >  † -bios /usr/share/ovmf/OVMF.fd \
+> >  † -drive file=~/kernel/rootfs.ext4,index=0,format=raw,media=disk \
+> >  † -drive file=~/kernel/swap.img,index=1,format=raw,media=disk \
+> >  † -nographic \
+> >  † -append 'root=/dev/sda rw resume=/dev/sdb console=ttyS0 nokaslr'
+> > 
+> > qemu-system-x86_64: warning: TCG doesn't support requested feature:
+> > CPUID.01H:EDX.ht [bit 28]
+> > qemu-system-x86_64: warning: TCG doesn't support requested feature:
+> > CPUID.80000001H:ECX.cmp-legacy [bit 1]
+> > (repeats 4 times, once per vCPU)
+> > 
+> > Tracing the history shows that commit c6bd2dd63420 "i386/cpu: Set up
+> > CPUID_HT in x86_cpu_expand_features() instead of cpu_x86_cpuid()" is
+> > what introduced the warnings.
+> > 
+> > Since that commit, TCG unconditionally advertises HTT (CPUID 1 EDX[28])
+> > and CMP_LEG (CPUID 8000_0001 ECX[1]). Because TCG itself has no SMT
+> > support, these bits trigger the warnings above.
+> > 
+> > [2] Also, Zhao pointed me to a similar report on GitLab:
+> > https://gitlab.com/qemu-project/qemu/-/issues/2894
+> > The symptoms there look identical to what we're seeing.
+> > 
+> > By convention we file one issue per email, but these two appear to share
+> > the same root cause, so I'm describing them together here.
 > 
->  https://gitlab.com/thuth/qemu/-/jobs/9965651507#L163
+> It was caused by my two patches. I think the fix can be as follow.
+> If no objection from the community, I can submit the formal patch.
 > 
-> Looks like we have to remove the related subtest now?
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index 1f970aa4daa6..fb95aadd6161 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -776,11 +776,12 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t
+> vendor1,
+>            CPUID_PAE | CPUID_MCE | CPUID_CX8 | CPUID_APIC | CPUID_SEP | \
+>            CPUID_MTRR | CPUID_PGE | CPUID_MCA | CPUID_CMOV | CPUID_PAT | \
+>            CPUID_PSE36 | CPUID_CLFLUSH | CPUID_ACPI | CPUID_MMX | \
+> -          CPUID_FXSR | CPUID_SSE | CPUID_SSE2 | CPUID_SS | CPUID_DE)
+> +          CPUID_FXSR | CPUID_SSE | CPUID_SSE2 | CPUID_SS | CPUID_DE | \
+> +          CPUID_HT)
+>            /* partly implemented:
+>            CPUID_MTRR, CPUID_MCA, CPUID_CLFLUSH (needed for Win64) */
+>            /* missing:
+> -          CPUID_VME, CPUID_DTS, CPUID_SS, CPUID_HT, CPUID_TM, CPUID_PBE */
+> +          CPUID_VME, CPUID_DTS, CPUID_SS, CPUID_TM, CPUID_PBE */
+> 
+>  /*
+>   * Kernel-only features that can be shown to usermode programs even if
+> @@ -848,7 +849,8 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t
+> vendor1,
+> 
+>  #define TCG_EXT3_FEATURES (CPUID_EXT3_LAHF_LM | CPUID_EXT3_SVM | \
+>            CPUID_EXT3_CR8LEG | CPUID_EXT3_ABM | CPUID_EXT3_SSE4A | \
+> -          CPUID_EXT3_3DNOWPREFETCH | CPUID_EXT3_KERNEL_FEATURES)
+> +          CPUID_EXT3_3DNOWPREFETCH | CPUID_EXT3_KERNEL_FEATURES | \
+> +          CPUID_EXT3_CMP_LEG)
+> 
+>  #define TCG_EXT4_FEATURES 0
 
-Oh indeed yes.
+This fix is fine for me...at least from SDM, HTT depends on topology and
+it should exist when user sets "-smp 4".
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
