@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 386DEAAF5C2
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 10:34:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49C39AAF5F1
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 10:44:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCwi9-0008O3-5y; Thu, 08 May 2025 04:34:33 -0400
+	id 1uCwqq-0007Zi-TS; Thu, 08 May 2025 04:43:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uCwi6-0008Ll-If
- for qemu-devel@nongnu.org; Thu, 08 May 2025 04:34:30 -0400
-Received: from mgamail.intel.com ([192.198.163.19])
+ id 1uCwqm-0007Yc-HR
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 04:43:28 -0400
+Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uCwi3-0000KW-VC
- for qemu-devel@nongnu.org; Thu, 08 May 2025 04:34:30 -0400
+ id 1uCwqk-0001WY-LY
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 04:43:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746693268; x=1778229268;
+ t=1746693807; x=1778229807;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=/l0AhjEEqojGSZ/D5qgHtK6wzDpY2Qe3A81fX8qNpHE=;
- b=jLLgG9TqzhM6CO7XvishxzjOZtvLNgis8TLHv96JgGgrKHhl24UxUOYG
- z9Epabosc/CVeRB437IADgZyrS3KTBYNmOR1rwvAA7egJdkCa4WmtorOW
- FcADVKBoktUv6xRB0UvGd+YgZfH6ubLG4WsLxrxaOPukNeErC8frGyKpy
- qAMJQfyW2/bbLkGhOxdo3pAmG9c7ygNBF/CUP/0aMmrrVjTnQcYEzOWqY
- fKp6Oq5yNi4hiirAceCbrH1pHUhDh0pvVj/t1LXB3obMbJtoQqkQmL/CK
- TRnaXm/Fyh40muEUD0f6nCYeCLdWTX+R9Ry8C7SHqTYHfPDP9DIcQ6Bcy A==;
-X-CSE-ConnectionGUID: A9c1cqbHQSKLalR5VMNWhA==
-X-CSE-MsgGUID: 0aFVUKNCSpOUBmNetmGlMA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="47564701"
-X-IronPort-AV: E=Sophos;i="6.15,271,1739865600"; d="scan'208";a="47564701"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2025 01:34:24 -0700
-X-CSE-ConnectionGUID: WIpIa8hQQ1qqC07YVMQgbQ==
-X-CSE-MsgGUID: wlbvpXm/QOqbYq6l/Aelaw==
+ bh=47N7/5hbDRSZqNUgkGm7luIjBLHEUhSBxhLFH2Pvrrc=;
+ b=Xl5w03ki6MwqCsFmNfN6eSBE9o6HqyStDJvcVwUGchkSHtqDEMuU+Ld1
+ +GVRPpZCa2Wd/RJFcbRPCI2eIS1/jyIp5tktUXJzS6mOS2n/VWj9IIrQA
+ oXYhy36Eg7aiO84gVXgFQ0rjCv5eGjgpaNVeghMSKOTAiqBkNm8lfQNd/
+ qMB7wB/vRI2mP4+0ELbkfAhErnfl9u2ShDzqxZD096QgAZ7wqjhDQopos
+ LbhMQzs6Sg6uVSwaJT2eSB5XKR81CLm4VEQqFm72iO/GZXbMJr+A1viiK
+ lsKRU9Rdkwkps8kjuuO3Q79Vxy+5Xl2OApa0Wb1dGZOKATn+L6xbutK9p A==;
+X-CSE-ConnectionGUID: II0/v5EcQK295W7osICl4g==
+X-CSE-MsgGUID: NO6nBKTJR2qoM2ZSCtWbLQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="65877967"
+X-IronPort-AV: E=Sophos;i="6.15,271,1739865600"; d="scan'208";a="65877967"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 May 2025 01:43:23 -0700
+X-CSE-ConnectionGUID: vySyN8tqQ/6y6dWgu0pLZQ==
+X-CSE-MsgGUID: 52j0XdXJQGqvLtWbydndlg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,271,1739865600"; d="scan'208";a="136717295"
+X-IronPort-AV: E=Sophos;i="6.15,271,1739865600"; d="scan'208";a="173425416"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by fmviesa010.fm.intel.com with ESMTP; 08 May 2025 01:34:21 -0700
-Date: Thu, 8 May 2025 16:55:23 +0800
+ by orviesa001.jf.intel.com with ESMTP; 08 May 2025 01:43:19 -0700
+Date: Thu, 8 May 2025 17:04:21 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Ewan Hai <ewanhai-oc@zhaoxin.com>, Paolo Bonzini <pbonzini@redhat.com>,
+To: Ewan Hai <ewanhai-oc@zhaoxin.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
  yeeli@zhaoxin.com, cobechen@zhaoxin.com, ewanhai@zhaoxin.com,
  MaryFeng@zhaoxin.com, Runaguo@zhaoxin.com, Xanderchen@zhaoxin.com,
  Alansong@zhaoxin.com, qemu-devel@nongnu.org
 Subject: Re: [Bug] QEMU TCG warnings after commit c6bd2dd63420 - HTT /
  CMP_LEG bits
-Message-ID: <aBxxe3lsIFs0/xNP@intel.com>
+Message-ID: <aBxzlUFqYj1Ltc+4@intel.com>
 References: <c111d9f9-2914-4b41-811a-b3a9ad0d83a9@zhaoxin.com>
- <4a1cfda7-4077-4754-b5a5-40db744419b4@intel.com>
+ <006111a2-8406-46ed-a6bd-71d0c68edf4b@zhaoxin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <4a1cfda7-4077-4754-b5a5-40db744419b4@intel.com>
-Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <006111a2-8406-46ed-a6bd-71d0c68edf4b@zhaoxin.com>
+Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -57
 X-Spam_score: -5.8
@@ -86,87 +86,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Apr 29, 2025 at 01:55:59PM +0800, Xiaoyao Li wrote:
-> Date: Tue, 29 Apr 2025 13:55:59 +0800
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: Re: [Bug] QEMU TCG warnings after commit c6bd2dd63420 - HTT /
->  CMP_LEG bits
+> > [3] My colleague Alan noticed what appears to be a related problem: if
+> > we launch a guest with '-cpu <model>,-ht --enable-kvm', which means
+> > explicitly removing the ht flag, but the guest still reports HT(cat
+> > /proc/cpuinfo in linux guest) enabled. In other words, under KVM the ht
+> > bit seems to be forced on even when the user tries to disable it.
 > 
-> On 4/29/2025 11:02 AM, Ewan Hai wrote:
-> > Hi Community,
-> > 
-> > This email contains 3 bugs appear to share the same root cause.
-> > 
-> > [1] We ran into the following warnings when running QEMU v10.0.0 in TCG
-> > mode:
-> > 
-> > qemu-system-x86_64 \
-> >  † -machine q35 \
-> >  † -m 4G -smp 4 \
-> >  † -kernel ./arch/x86/boot/bzImage \
-> >  † -bios /usr/share/ovmf/OVMF.fd \
-> >  † -drive file=~/kernel/rootfs.ext4,index=0,format=raw,media=disk \
-> >  † -drive file=~/kernel/swap.img,index=1,format=raw,media=disk \
-> >  † -nographic \
-> >  † -append 'root=/dev/sda rw resume=/dev/sdb console=ttyS0 nokaslr'
-> > 
-> > qemu-system-x86_64: warning: TCG doesn't support requested feature:
-> > CPUID.01H:EDX.ht [bit 28]
-> > qemu-system-x86_64: warning: TCG doesn't support requested feature:
-> > CPUID.80000001H:ECX.cmp-legacy [bit 1]
-> > (repeats 4 times, once per vCPU)
-> > 
-> > Tracing the history shows that commit c6bd2dd63420 "i386/cpu: Set up
-> > CPUID_HT in x86_cpu_expand_features() instead of cpu_x86_cpuid()" is
-> > what introduced the warnings.
-> > 
-> > Since that commit, TCG unconditionally advertises HTT (CPUID 1 EDX[28])
-> > and CMP_LEG (CPUID 8000_0001 ECX[1]). Because TCG itself has no SMT
-> > support, these bits trigger the warnings above.
-> > 
-> > [2] Also, Zhao pointed me to a similar report on GitLab:
-> > https://gitlab.com/qemu-project/qemu/-/issues/2894
-> > The symptoms there look identical to what we're seeing.
-> > 
-> > By convention we file one issue per email, but these two appear to share
-> > the same root cause, so I'm describing them together here.
-> 
-> It was caused by my two patches. I think the fix can be as follow.
-> If no objection from the community, I can submit the formal patch.
-> 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index 1f970aa4daa6..fb95aadd6161 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -776,11 +776,12 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t
-> vendor1,
->            CPUID_PAE | CPUID_MCE | CPUID_CX8 | CPUID_APIC | CPUID_SEP | \
->            CPUID_MTRR | CPUID_PGE | CPUID_MCA | CPUID_CMOV | CPUID_PAT | \
->            CPUID_PSE36 | CPUID_CLFLUSH | CPUID_ACPI | CPUID_MMX | \
-> -          CPUID_FXSR | CPUID_SSE | CPUID_SSE2 | CPUID_SS | CPUID_DE)
-> +          CPUID_FXSR | CPUID_SSE | CPUID_SSE2 | CPUID_SS | CPUID_DE | \
-> +          CPUID_HT)
->            /* partly implemented:
->            CPUID_MTRR, CPUID_MCA, CPUID_CLFLUSH (needed for Win64) */
->            /* missing:
-> -          CPUID_VME, CPUID_DTS, CPUID_SS, CPUID_HT, CPUID_TM, CPUID_PBE */
-> +          CPUID_VME, CPUID_DTS, CPUID_SS, CPUID_TM, CPUID_PBE */
-> 
->  /*
->   * Kernel-only features that can be shown to usermode programs even if
-> @@ -848,7 +849,8 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t
-> vendor1,
-> 
->  #define TCG_EXT3_FEATURES (CPUID_EXT3_LAHF_LM | CPUID_EXT3_SVM | \
->            CPUID_EXT3_CR8LEG | CPUID_EXT3_ABM | CPUID_EXT3_SSE4A | \
-> -          CPUID_EXT3_3DNOWPREFETCH | CPUID_EXT3_KERNEL_FEATURES)
-> +          CPUID_EXT3_3DNOWPREFETCH | CPUID_EXT3_KERNEL_FEATURES | \
-> +          CPUID_EXT3_CMP_LEG)
-> 
->  #define TCG_EXT4_FEATURES 0
+> XiaoYao reminded me that issue [3] stems from a different patch. Please
+> ignore it for now‚ÄîI'll start a separate thread to discuss that one
+> independently.
 
-This fix is fine for me...at least from SDM, HTT depends on topology and
-it should exist when user sets "-smp 4".
+I haven't found any other thread :-).
 
+By the way, just curious, in what cases do you need to disbale the HT
+flag? "-smp 4" means 4 cores with 1 thread per core, and is it not
+enough?
+
+As for the ‚Äú-ht‚Äù behavior, I'm also unsure whether this should be fixed
+or not - one possible consideration is whether ‚Äú-ht‚Äù would be useful.
 
 
