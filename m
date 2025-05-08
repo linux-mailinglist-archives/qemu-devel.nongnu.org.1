@@ -2,84 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B09EAAF7BE
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 12:24:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CB7CAAF7DE
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 12:33:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCyPe-000830-0q; Thu, 08 May 2025 06:23:34 -0400
+	id 1uCyYm-0005k9-MW; Thu, 08 May 2025 06:33:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uCyPZ-00082W-By
- for qemu-devel@nongnu.org; Thu, 08 May 2025 06:23:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uCyPX-0004k6-JY
- for qemu-devel@nongnu.org; Thu, 08 May 2025 06:23:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746699805;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=GscHLCL+LwuKkOa1ZCyj9Y+ZdNjmPUuW6VDPzihSLUw=;
- b=hmgS4vZDYkKb44I6Q70wKg7d2UmimF0MWMsJStkS0I/Smw94TdoUETEV2m6khJmeMMVtlu
- nbEEDoRF4X/azGgjcY/Xm6ae/rYSQ31Rxxahtg5n7jFxpOzHeAnSLXWRF6ibRsYA9sCLPj
- K9y++It/sPcLkugRRDHfPd2sXgKCZ/4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-680-A0j5GCKOPvy8_CbuE-9meA-1; Thu,
- 08 May 2025 06:23:22 -0400
-X-MC-Unique: A0j5GCKOPvy8_CbuE-9meA-1
-X-Mimecast-MFC-AGG-ID: A0j5GCKOPvy8_CbuE-9meA_1746699800
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 65B78195608B; Thu,  8 May 2025 10:23:20 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.138])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6291C18003FD; Thu,  8 May 2025 10:23:16 +0000 (UTC)
-Date: Thu, 8 May 2025 11:23:12 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, devel@lists.libvirt.org,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Zhao Liu <zhao1.liu@intel.com>, Eduardo Habkost <eduardo@habkost.net>,
- Peter Maydell <peter.maydell@linaro.org>, John Snow <jsnow@redhat.com>
-Subject: Re: [PATCH v3 2/5] include/hw/boards: cope with dev/rc versions in
- deprecation checks
-Message-ID: <aByGENuj1O-SJ_xG@redhat.com>
-References: <20250506160024.2380244-1-berrange@redhat.com>
- <20250506160024.2380244-3-berrange@redhat.com>
- <09b0a1cf-afac-4308-89a2-cc22aba5699d@redhat.com>
- <aBxxHob9MK0BYHLw@redhat.com>
- <3b92958c-c99f-4c9c-96b6-c5fbaaec06fc@linaro.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCyYj-0005gs-Uj
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 06:32:58 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uCyYi-00063J-6c
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 06:32:57 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-22e45088d6eso11956465ad.0
+ for <qemu-devel@nongnu.org>; Thu, 08 May 2025 03:32:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1746700374; x=1747305174; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=I+Tibim8Q4APBLsB3Yy7KZpXtD4KpS6syUMFUyzU9U4=;
+ b=QSXKRX2XjBGzqfyvHU+Gcf0Lb8RizJL99yOTMdV0m3HQMoAuOJZmfhaUEvt24R64Pb
+ PtnjG7e6tPaPyYu3yd/+DvnwquscUX1UZy7Wb+gt5+X/ugp9galD/yx1MOyT+BHXv4q6
+ ijfQQgfa0wQhS5Kk4AvPA3SinUkLdkpk6I6Vir49BqNVruSQiL3Rp2CdVfuufiGtvf3U
+ LF7V+786hcP5sLyuUbTuJuKTWjPPMLx/k7xO9ab/xLWLB2l49NmGMgrMY4QwJnVSLqCk
+ IJvMSPVdVD1qDSVCVI3Xm7o9IR8flfRy/zvassC+sWG3Ai1xer1GTbNQl8e5RKPQJ1pb
+ HhNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1746700374; x=1747305174;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=I+Tibim8Q4APBLsB3Yy7KZpXtD4KpS6syUMFUyzU9U4=;
+ b=pe/MLNyO3ez6gzB/unAtsXX3030WJPGKtvJ4B8EyuG0vtWarc3HbMI8K9pnvFR3wPE
+ KInK0uZMVgueTx7HqrjwiO/N6HusUZLYQPp5qb/eEqYkU/vHEgdNTnMk+3INPmmijFA2
+ qlL092G6xGz09PWbg41NjQCSA0c++rygGuVu+62jTCltFj1CSFzZyot47iPV32s0kp4t
+ DtaIyI+UmGsRMA08zdL6z9p9nocSNCaHaThSveOOhe+qX8lWHS4b0DN7LRV8Z6hDiY+G
+ +wVK+Fauwn+/O1fzx4B6JOU5ztFc/6DcI+dwkxD+E1yKMqOCQNoiSMomQDYuZXl7zgfh
+ 64uA==
+X-Gm-Message-State: AOJu0YzZqINhd8yAeFNYqZ5h99OPintcyNlj0DBpEHS0HspB5f3pq9ZA
+ vOfA5CF4R8savkgEZPqJSR6qAlVqLoJalhcJivqC+FIYQShMgw+MhOLep2ykXMWMdGV6Uk6JC+1
+ +CgXVaQ==
+X-Gm-Gg: ASbGncuW/KQtU+RvUt1Myrp0b7X/qf8JEhnPtHRvze0NOC16vLZpfO/yqEvONGb36df
+ SPWRp9RmVI6a3oYjavVCrVkcfe+xwoD1gNdb5AMBuntSJ28KkWZmESWRu5FrP6pJ+zfYf+8gF8s
+ 9OSfeqhUK4s6pJN4LRuii4XW7EKBKYZVeGE3xFTgJefjWrRKkyQxsAgJN/I//yRw/HhBGE/Nk1u
+ UA/HGQoZD3ekSSpSQgMxW01qpmUL9VugrscBVFFOE1zaG3fRMdFDdncN7vmLRaoLpZTMgsC6fvc
+ ecDsPgzGPVATF7kzecvvkbAfxh7+LQ62EFbC4r1CYQS8e3POdrWX3kRquyXqLvdwezh0uiSh+7k
+ IGvXHkUOwNcagpUFs6xU=
+X-Google-Smtp-Source: AGHT+IGb9B7ZIkai1Dip9stDnbhnzk+4NJBq9YsZ0BlLt+TregYC9wLs6ejulzL7qIAwkzJNnIwxaw==
+X-Received: by 2002:a17:903:40ce:b0:223:6180:1bea with SMTP id
+ d9443c01a7336-22e5ecccb3emr84448785ad.37.1746700374046; 
+ Thu, 08 May 2025 03:32:54 -0700 (PDT)
+Received: from [192.168.69.244] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-22e1522947fsm109633945ad.170.2025.05.08.03.32.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 08 May 2025 03:32:53 -0700 (PDT)
+Message-ID: <b0737130-fc97-40e0-8488-3daaca23552d@linaro.org>
+Date: Thu, 8 May 2025 12:32:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/i2c/imx_i2c: Always set interrupt status bit if
+ interrupt condition occurs
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: corey@minyard.net, Bernhard Beschow <shentey@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20250507124040.425773-1-shentey@gmail.com>
+ <aBtavpDt1yfoavj7@mail.minyard.net>
+ <8a5893be-7217-4c58-838c-01370db5d6bf@linaro.org>
+Content-Language: en-US
+In-Reply-To: <8a5893be-7217-4c58-838c-01370db5d6bf@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <3b92958c-c99f-4c9c-96b6-c5fbaaec06fc@linaro.org>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.414,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=philmd@linaro.org; helo=mail-pl1-x62c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,58 +99,42 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 08, 2025 at 12:21:20PM +0200, Philippe Mathieu-Daudé wrote:
-> On 8/5/25 10:53, Daniel P. Berrangé wrote:
-> > On Thu, May 08, 2025 at 09:45:50AM +0200, Thomas Huth wrote:
-> > > On 06/05/2025 18.00, Daniel P. Berrangé wrote:
-> > > > When VERSION is set to a development snapshot (micro >= 50), or a release
-> > > > candidate (micro >= 90) we have an off-by-1 in determining deprecation
-> > > > and deletion thresholds for versioned machine types. In such cases we need
-> > > > to use the next major/minor version in threshold checks.
-> > > > 
-> > > > This adapts the deprecation macros to do "next version" prediction when
-> > > > seeing a dev/rc version number.
-> > > > 
-> > > > This ensures users of release candidates get an accurate view of machines
-> > > > that will be deprecated/deleted in the final release.
-> > > > 
-> > > > This requires hardcoding our current release policy of 3 releases per
-> > > > year, with a major bump at the start of each year, and that dev/rc
-> > > > versions have micro >= 50.
-> > > > 
-> > > > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> > > > ---
-> > > >    include/hw/boards.h | 33 ++++++++++++++++++++++++++++++++-
-> > > >    1 file changed, 32 insertions(+), 1 deletion(-)
-> > > 
-> > > FYI, this causes a failure in the CI now:
-> > > 
-> > >   https://gitlab.com/thuth/qemu/-/jobs/9965651507#L163
+On 8/5/25 09:14, Philippe Mathieu-Daudé wrote:
+> On 7/5/25 15:06, Corey Minyard wrote:
+>> On Wed, May 07, 2025 at 02:40:40PM +0200, Bernhard Beschow wrote:
+>>> According to the i.MX 8M Plus reference manual, the status flag 
+>>> I2C_I2SR[IIF]
+>>> continues to be set when an interrupt condition occurs even when I2C 
+>>> interrupts
+>>> are disabled (I2C_I2CR[IIEN] is clear). However, the device model 
+>>> only sets the
+>>> flag when I2C interrupts are enabled which causes U-Boot to loop 
+>>> forever. Fix
+>>> the device model by always setting the flag and let I2C_I2CR[IIEN] 
+>>> guard I2C
+>>> interrupts only.
+>>>
+>>> Also remove the comment in the code since it merely stated the 
+>>> obvious and would
+>>> be outdated now.
+>>
+>> This looks good to me.  I can give you an:
+>>
+>> Acked-by: Corey Minyard <cminyard@mvista.com>
+>>
+>> or I can take it into my tree.
 > 
-> Ah, just noticed the same error msg:
+> I have to respin my hw-misc PR so I'll squeeze this.
 > 
->   qemu-system-x86_64: unsupported machine type: "pc-q35-4.1"
+> Thanks!
 > 
-> > > 
-> > > Looks like we have to remove the related subtest now?
-> 
-> Hmmm shouldn't we merge this series on top of up-to-4.1 machines
-> removal?
+> Phil.
 
-There's no dependency on that series in general, just removal of the
-test case. We need to remove that test case regardless, because our
-machines will automatically remove registration of the machine type,
-regardless of whether the code is deleted.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+FWIW I noticed the patch subject is truncated to my default git-view
+because it is over 72 chars. Since there is no enforcement on patch
+subject / description lines length in checkpatch.pl I suppose nobody
+really cares about that so I'll merge as is.
 
