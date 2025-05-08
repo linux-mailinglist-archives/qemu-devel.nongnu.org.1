@@ -2,108 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5715EAAFBEA
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 15:46:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC667AAFB93
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 15:38:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uD1Zy-0005GP-E6; Thu, 08 May 2025 09:46:26 -0400
+	id 1uD1Rw-000892-0K; Thu, 08 May 2025 09:38:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uD1Zp-00053j-Ll
- for qemu-devel@nongnu.org; Thu, 08 May 2025 09:46:17 -0400
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uD1RQ-0007gY-4k
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 09:37:40 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uD1Zm-0005Iy-VS
- for qemu-devel@nongnu.org; Thu, 08 May 2025 09:46:17 -0400
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-b1a1930a922so631098a12.3
- for <qemu-devel@nongnu.org>; Thu, 08 May 2025 06:46:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uD1RL-0003o4-8v
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 09:37:34 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-ac2ab99e16eso205036566b.0
+ for <qemu-devel@nongnu.org>; Thu, 08 May 2025 06:37:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746711972; x=1747316772; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1746711449; x=1747316249; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dAEnpROpQK6DxM6uJJQ1bpWzbrmSzQalAkAVB3r0tgU=;
- b=KdqjNB3v2TPCkIeePrVgdcO+TaS/pmxH4S/VN+EWl6FW+iwYPIeTS/9DbO0I1cMNuT
- 83WSZGtNDnAOGnGhgqCQQV26qbQA+M7cYtj9rSjEjnE/tgMbJbg+YSipsXdLABzbR+3V
- Cu14WErV7D4G2B4GzSrYrAHH21CDgOu4zbQf21ZGMhb7L+m1rLAYjfLbSz1sHY3e0vxj
- 9ZQmYW/rwBo0VaatHNupxDyahJM9nc8hVUhgnAref1Xz5iEvqyuqviuTbpxjkcDi6GBx
- 9filnkk70SP8l0Vvyz6gZ1DzbSl8jiX+aENC6uM7NcDA3EXgimTaRSsExWEOtxuFb/ic
- jSWw==
+ bh=+jbxqI9YoX3yFI2KB0O83dxnlleOQaSlcM5QbcjVntg=;
+ b=ANZMXXvCl3yclrt/f1HGnsGuFXHT+98i5hmBwEIOs1TNZH2N0EH72XFujoCqLR9hra
+ h/N9/ths81QghwyCVozZuuqqb26eWrhctA7rH/+776oX96kTJtxXhSdWsvaDawJTPyCz
+ Cnw7lbh7H+PRc//b5KqStznDL0Y41gA6Nl3IU0mH3/0rmmRLoSbPqEgUZtqgxFHFUsmA
+ nrGwYNLparC7VU4SBVyJma0kRku3am7YX4S/JDHiFu5VJoxD8O2FG7tzYwbV/ddMOP2l
+ Z0zeJOR7Wxe0XtKW5ZB1YwYgzSfmQ92dq2QDB6yw7nBYwka31mJZphXuq0xXJ1CKp05+
+ oasA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746711972; x=1747316772;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=dAEnpROpQK6DxM6uJJQ1bpWzbrmSzQalAkAVB3r0tgU=;
- b=GtViSBTRLmy0V2P+nUJ+U/+Wsx0dC2i+hA1KxOtJvEx7zO1os+yMqjpUHmqyzUcSRY
- rusKooxXAVEy9Pqgs/F7nnLmDcWLQkiL8CzC6MoGY+/OYGZWudpl10DYo7DtLjP21Ji3
- /k32MEgl164C7KGT7bXNSRIA1M4hhMdcVKo0wgvvYkAIIo1HzQjyTN4E3Y41MIsTH67o
- eTUe7770lT8tQxx7TZMn7ywNJ+B5UbZma4QuhY7UN6VIsSW40wwexZOxBvGxB6EEICnY
- y9rqBaG8/OJ6MuE1giJn9vFoXN3oI00WGwHim0C8tJ4WW6OV+7UR1m+fhcCODhtpNDgQ
- ZwHA==
-X-Gm-Message-State: AOJu0YyWyzWTpxcOtHrlRQVhxior4iueSF9s2ApjfYvZxHBU/du6NtXO
- zClqs/Olqzej8n7MY0sY02SFUzcjjhtz0af4EbQR/xviffcRzQKexs1WQWEi+ZQJYMonOUNHIfW
- 5LV3UVw==
-X-Gm-Gg: ASbGncvDyF2ivaHQGoYBcs9bQV1eEErK4MH5r/b0knod2DXQV0oPcY/ECxNK9PxpFpY
- vvrTDH7o3VKarS6Ew1iKoQwLaGYYOKA4C/m3EV3k8ik0uIGgh3HSNoZul7KwPUttyMAEh3JPTV3
- ORZJqmPUan/iEHybBftFITelY5rMrGUP2mGIGOHp5yuIwKM9fI9BRdfo2gb5U+CrkLLUGSW+M5s
- xAAkB3n2asnRWvh90Uj0a1OyRk+xeDiSdf+QmG6wwIcwOy5KicLCCOEVMacxSjz89rDRKTxbpRi
- XiPKD8XPqYzlnRquDLHfEeU28A3Agpy1r4p++DEWuLEGx37a8lYRiDh90o+PZKErTjV6Q5HUlvW
- 1OpZxmn6mWLzVZw0=
-X-Google-Smtp-Source: AGHT+IG9WzoCZnHzGx/rhe5MQGTbfwj2jk9eAlMQ107yUfErvTrwEaQ0R1H/OfqPr8whvcSNPiejCQ==
-X-Received: by 2002:a05:6a20:9f8f:b0:1f5:5ca4:2744 with SMTP id
- adf61e73a8af0-2148ba256e3mr9499152637.17.1746711972638; 
- Thu, 08 May 2025 06:46:12 -0700 (PDT)
-Received: from localhost.localdomain (88-187-86-199.subs.proxad.net.
- [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74058d7a397sm13221110b3a.28.2025.05.08.06.45.56
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 08 May 2025 06:46:12 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>, kvm@vger.kernel.org,
- Sergio Lopez <slp@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Yi Liu <yi.l.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-riscv@nongnu.org,
- Weiwei Li <liwei1518@gmail.com>, Amit Shah <amit@kernel.org>,
- Zhao Liu <zhao1.liu@intel.com>, Yanan Wang <wangyanan55@huawei.com>,
- Helge Deller <deller@gmx.de>, Palmer Dabbelt <palmer@dabbelt.com>,
- Ani Sinha <anisinha@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- =?UTF-8?q?Cl=C3=A9ment=20Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
- qemu-arm@nongnu.org,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Huacai Chen <chenhuacai@kernel.org>, Jason Wang <jasowang@redhat.com>,
- Mark Cave-Ayland <mark.caveayland@nutanix.com>
-Subject: [PATCH v4 27/27] hw/virtio/virtio-pci: Remove
- VIRTIO_PCI_FLAG_PAGE_PER_VQ definition
-Date: Thu,  8 May 2025 15:35:50 +0200
-Message-ID: <20250508133550.81391-28-philmd@linaro.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250508133550.81391-1-philmd@linaro.org>
-References: <20250508133550.81391-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1746711449; x=1747316249;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=+jbxqI9YoX3yFI2KB0O83dxnlleOQaSlcM5QbcjVntg=;
+ b=hwDMUh/4g8CezJK2T1Ng39YXw5QAOVnwbh9fpuP0jqnnRWB42qQp5SroaA14vgZfNH
+ u0vFcW8iw+nbre/folCx15Vyio24DXq4VfFZf8CJfGpGh/KXzObaDEaEngeeGqq8TJa4
+ 2El9tc0F2L+W8yUGCR907LLTGPebGPLekAvZEvZHUI6Fh9/0qyhOGiFbu2im99/PK4M7
+ 9yJjhImzF5fDG5DKx1FTLY9FSJSMXbb9x2LWpb8M/niWXAPzWWLeSvhNISaGEgewoB4m
+ 0yG6LQf9nPxbdfmrrtI0VVKleNmE9QsonLkzYB6pkxrf1xYeJBXwTQelJrGLibCvbOWL
+ 8MEg==
+X-Gm-Message-State: AOJu0YyKfkpNFdTnmSak+tRJkeY4puHtX/txkWlNBA4Xc0KvTLlwxGW3
+ U7u9id+NBMAKCwh4i+2JP8U+Cf+iIRDDktSFI4VjciaaOT9b1KbgNSBViVEjvtE=
+X-Gm-Gg: ASbGnctKo783MyOpH7OKoi+vmOccSuTHB/MByxnoaVzooscpbhOOHJX/DsRUV1RJMIq
+ YyxLMDln1pQNi1yi4MNfLKY82mxS02KgbQ7ghu+uKe1IRKgEJm8ARV7S5p9irZ4RYQT07ti/JzA
+ LtXWNlzn2BqKJ+3sARRQT71dgmZ0X0TUahNh81pyU0KzdA5pZH8VM+JnPUP8/pYvZu8IXOBUm5R
+ RuI5tazj6d3GXoKUvuoLsoDdijKBDmtquE5ZKy7kvFpnb+qWpSxpN8ak8P0AUqQgHcaSrncL99I
+ 1BobRLxIc+UXBgeCfBkwNiFB6+lZM8tiQBbKEkBD1cg=
+X-Google-Smtp-Source: AGHT+IGwYCeu6ipx8SnIuvLN53t0q2TvGVEWPOzxBDeL/rq61IJqfJp7cA6hJ9cOuPR2PJlRzgDKrQ==
+X-Received: by 2002:a17:907:c296:b0:ace:d883:3aaf with SMTP id
+ a640c23a62f3a-ad1fe6f62e7mr326991566b.29.1746711449042; 
+ Thu, 08 May 2025 06:37:29 -0700 (PDT)
+Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5fa7781b1d2sm11139496a12.39.2025.05.08.06.37.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 08 May 2025 06:37:28 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 0A8E45F767;
+ Thu,  8 May 2025 14:37:27 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org,  Julian Armistead <julian.armistead@linaro.org>,
+ "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
+Subject: Re: [RFC PATCH] target/arm: allow gdb to read ARM_CP_NORAW regs
+In-Reply-To: <CAFEAcA80-CWEQYwTQPziUxm5V1K93VZstLh2r9mTGkD5QueKoA@mail.gmail.com>
+ (Peter Maydell's message of "Thu, 8 May 2025 13:07:40 +0100")
+References: <20250507165840.401623-1-alex.bennee@linaro.org>
+ <CAFEAcA_0cf=XEbH9VQdTHqu1wekSmFDLdqnnzpcwnshCT-UUCg@mail.gmail.com>
+ <87zffnmidy.fsf@draig.linaro.org>
+ <CAFEAcA80-CWEQYwTQPziUxm5V1K93VZstLh2r9mTGkD5QueKoA@mail.gmail.com>
+User-Agent: mu4e 1.12.10; emacs 30.1
+Date: Thu, 08 May 2025 14:37:26 +0100
+Message-ID: <87o6w3mdex.fsf@draig.linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
- envelope-from=philmd@linaro.org; helo=mail-pg1-x534.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,81 +104,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-VIRTIO_PCI_FLAG_PAGE_PER_VQ was only used by the hw_compat_2_7[]
-array, via the 'page-per-vq=on' property. We removed all
-machines using that array, lets remove all the code around
-VIRTIO_PCI_FLAG_PAGE_PER_VQ (see commit 9a4c0e220d8 for similar
-VIRTIO_PCI_FLAG_* enum removal).
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
----
- include/hw/virtio/virtio-pci.h |  1 -
- hw/display/virtio-vga.c        | 10 ----------
- hw/virtio/virtio-pci.c         |  7 +------
- 3 files changed, 1 insertion(+), 17 deletions(-)
+> On Thu, 8 May 2025 at 12:50, Alex Benn=C3=A9e <alex.bennee@linaro.org> wr=
+ote:
+>>
+>> Peter Maydell <peter.maydell@linaro.org> writes:
+>>
+>> > On Wed, 7 May 2025 at 17:58, Alex Benn=C3=A9e <alex.bennee@linaro.org>=
+ wrote:
+>> >>
+>> >> Before this we suppress all ARM_CP_NORAW registers being listed under
+>> >> GDB. This includes useful registers like CurrentEL which gets tagged
+>> >> as ARM_CP_NO_RAW because it is one of the ARM_CP_SPECIAL_MASK
+>> >> registers. These are registers TCG can directly compute because we
+>> >> have the information at compile time but until now with no readfn.
+>> >>
+>> >> Add a .readfn to return the CurrentEL and then loosen the restrictions
+>> >> in arm_register_sysreg_for_feature to allow ARM_CP_NORAW registers to
+>> >> be read if there is a readfn available.
+>> >
+>> > The primary use case for NO_RAW is "system instructions" like
+>> > the TLB maintenance insns. These don't make sense to expose
+>> > to a debugger.
+>>
+>> I think we could re-think the logic:
+>>
+>>     /*
+>>      * By convention, for wildcarded registers only the first
+>>      * entry is used for migration; the others are marked as
+>>      * ALIAS so we don't try to transfer the register
+>>      * multiple times. Special registers (ie NOP/WFI) are
+>>      * never migratable and not even raw-accessible.
+>>      */
+>>     if (r2->type & ARM_CP_SPECIAL_MASK) {
+>>         r2->type |=3D ARM_CP_NO_RAW;
+>>     }
+>
+> Well, we definitely don't want WFI or the DC ZVA etc
+> "registers" to be exposed to GDB or for us to try to handle
+> them in KVM state sync or migration... ARM_CP_NOP is less
+> clear because we use it pretty widely for more than one
+> purpose. The main one is "system instruction that we don't
+> need to implement". (CP_NOP + a readable register is a
+> questionable combination since the guest will expect it to
+> update the general-purpose destreg, not leave it untouched,
+> but we do have some.)
+>
+>> > If we want the gdbstub access to system registers to be
+>> > more than our current "we provide the ones that are easy",
+>> > then I think I'd like to see a bit more up-front analysis of
+>> > what the gdbstub needs and whether we've got into a bit of
+>> > a mess with our ARM_CP_* flags that we could straighten out.
+>>
+>> Yeah - hence the RFC. CurrentEL is a super useful one to expose though
+>> when you are debugging complex hypervisor setups.
+>
+> One problem with this patch is the one that the reporter of
+> https://gitlab.com/qemu-project/qemu/-/issues/2760 noted
+> in the conversation there: it will allow the debugger to
+> read registers which have a side-effect on read, like
+> ICC_IAR1_EL1: we almost certainly do not want to allow
+> the debugger to acknowledge an interrupt by doing a sysreg
+> read.
 
-diff --git a/include/hw/virtio/virtio-pci.h b/include/hw/virtio/virtio-pci.h
-index 9838e8650a6..8abc5f8f20d 100644
---- a/include/hw/virtio/virtio-pci.h
-+++ b/include/hw/virtio/virtio-pci.h
-@@ -33,7 +33,6 @@ enum {
-     VIRTIO_PCI_FLAG_BUS_MASTER_BUG_MIGRATION_BIT,
-     VIRTIO_PCI_FLAG_USE_IOEVENTFD_BIT,
-     VIRTIO_PCI_FLAG_MODERN_PIO_NOTIFY_BIT,
--    VIRTIO_PCI_FLAG_PAGE_PER_VQ_BIT,
-     VIRTIO_PCI_FLAG_ATS_BIT,
-     VIRTIO_PCI_FLAG_INIT_DEVERR_BIT,
-     VIRTIO_PCI_FLAG_INIT_LNKCTL_BIT,
-diff --git a/hw/display/virtio-vga.c b/hw/display/virtio-vga.c
-index 40e60f70fcd..83d01f089b5 100644
---- a/hw/display/virtio-vga.c
-+++ b/hw/display/virtio-vga.c
-@@ -141,16 +141,6 @@ static void virtio_vga_base_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
-                                VIRTIO_GPU_SHM_ID_HOST_VISIBLE);
-     }
- 
--    if (!(vpci_dev->flags & VIRTIO_PCI_FLAG_PAGE_PER_VQ)) {
--        /*
--         * with page-per-vq=off there is no padding space we can use
--         * for the stdvga registers.  Make the common and isr regions
--         * smaller then.
--         */
--        vpci_dev->common.size /= 2;
--        vpci_dev->isr.size /= 2;
--    }
--
-     offset = memory_region_size(&vpci_dev->modern_bar);
-     offset -= vpci_dev->notify.size;
-     vpci_dev->notify.offset = offset;
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index 7c965771907..4e0d4bda6ed 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -314,12 +314,9 @@ static bool virtio_pci_ioeventfd_enabled(DeviceState *d)
-     return (proxy->flags & VIRTIO_PCI_FLAG_USE_IOEVENTFD) != 0;
- }
- 
--#define QEMU_VIRTIO_PCI_QUEUE_MEM_MULT 0x1000
--
- static inline int virtio_pci_queue_mem_mult(struct VirtIOPCIProxy *proxy)
- {
--    return (proxy->flags & VIRTIO_PCI_FLAG_PAGE_PER_VQ) ?
--        QEMU_VIRTIO_PCI_QUEUE_MEM_MULT : 4;
-+    return 4;
- }
- 
- static int virtio_pci_ioeventfd_assign(DeviceState *d, EventNotifier *notifier,
-@@ -2348,8 +2345,6 @@ static const Property virtio_pci_properties[] = {
-                     VIRTIO_PCI_FLAG_BUS_MASTER_BUG_MIGRATION_BIT, false),
-     DEFINE_PROP_BIT("modern-pio-notify", VirtIOPCIProxy, flags,
-                     VIRTIO_PCI_FLAG_MODERN_PIO_NOTIFY_BIT, false),
--    DEFINE_PROP_BIT("page-per-vq", VirtIOPCIProxy, flags,
--                    VIRTIO_PCI_FLAG_PAGE_PER_VQ_BIT, false),
-     DEFINE_PROP_BIT("ats", VirtIOPCIProxy, flags,
-                     VIRTIO_PCI_FLAG_ATS_BIT, false),
-     DEFINE_PROP_BIT("x-ats-page-aligned", VirtIOPCIProxy, flags,
--- 
-2.47.1
+Doesn't raw_readfn offer these semantics?
 
+    /*
+     * Function for doing a "raw" read; used when we need to copy
+     * coprocessor state to the kernel for KVM or out for
+     * migration. This only needs to be provided if there is also a
+     * readfn and it has side effects (for instance clear-on-read bits).
+     */
+    CPReadFn *raw_readfn;
+
+So maybe:
+
+        /* We can only read ARM_CP_NO_RAW regs without side effects */
+        if ((ri->type & ARM_CP_NO_RAW) && !ri->raw_readfn) {
+            return;
+        }
+
+And I guess we can strengthen the gdb helper to NOP any writes to such
+registers.
+
+>
+> thanks
+> -- PMM
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
