@@ -2,82 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79732AB0611
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 00:46:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FC9FAB061E
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 00:52:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uD9za-0001tj-83; Thu, 08 May 2025 18:45:26 -0400
+	id 1uDA5C-0003zg-Id; Thu, 08 May 2025 18:51:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3_zMdaAwKCiQNABIHESTEFANGOOGLE.COMQEMU-DEVELNONGNU.ORG@flex--nabihestefan.bounces.google.com>)
- id 1uD9zX-0001tP-Mt
- for qemu-devel@nongnu.org; Thu, 08 May 2025 18:45:23 -0400
-Received: from mail-pg1-x54a.google.com ([2607:f8b0:4864:20::54a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3_zMdaAwKCiQNABIHESTEFANGOOGLE.COMQEMU-DEVELNONGNU.ORG@flex--nabihestefan.bounces.google.com>)
- id 1uD9zV-00060g-PB
- for qemu-devel@nongnu.org; Thu, 08 May 2025 18:45:23 -0400
-Received: by mail-pg1-x54a.google.com with SMTP id
- 41be03b00d2f7-b115383fcecso908029a12.1
- for <qemu-devel@nongnu.org>; Thu, 08 May 2025 15:45:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1746744319; x=1747349119; darn=nongnu.org;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=iPhyc5RnomaCnosM779271Ijb1GRqVeoX1PThq56qjo=;
- b=Nv1PcGQyo4oilBjqMfanTJZoXZku0NLgHddZt5XZpCrv/h8mSUOhG2T3V8R+XiK0rA
- dSkdzKEXkG3YIcLR68j2eVmhsoOOu+ZbqO5RybutkFmDjrKAiouA79CgDhFFshJbH9PF
- 8sP2/ZN/uPTe84eYNQyBH0yaDXlanWJu/e1olUkMy1PkTVarm1X6KrmxK/qmD0WMeuME
- EFxJpg1RaV+XxzYS2s60Xyt/caXVxjzBKiKS0xVfsf9eJmoqoEJzdbfa74aOtXXWN0Ev
- 8mPqqaT7N6K3TqzuzRlcacQLx9VTDI4EBcRfQXnPE8vAQXIWF0PcgqZ4l0nbRHGAU+Sh
- Kbmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746744319; x=1747349119;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iPhyc5RnomaCnosM779271Ijb1GRqVeoX1PThq56qjo=;
- b=rR0xqmKLDEDFwFb9io/NPsfcTj1ajEADsVK2RlniQilD4/WwQpD2FPeeESmc6kLIeC
- s6ZwfpY4b/TDEVW3IsPX6byAEIokR+CGVgX7k6Op9BjG1JzEm1XsxV1P8qeAssxkQ2AK
- e7L+CAEGNcxJ/3W/R9U5MqVicQY1Aqfur45o+oOxeKsjf7+Wc1mIQOu4UbWQGoSRXn+6
- eIYhm2mkRqH+6MU14L2xRqreLmmS2nTqN3kzDW6pk/ectoORVqWeqF+YAeqms2LPecVM
- 0vJek0M5Y4kyqV5fEzYXHXJAiIo43qeLlDc52VcI60/QP5m1hTqRHNjzzReG7Q15L1Xp
- hhzQ==
-X-Gm-Message-State: AOJu0YxdwMmDbhzjFH4/8b7e9tyHpgptX6RSFsz1/JqNDc0goYZJW4EO
- sl5CCuTRqMOMP5dq1aVzrn3zqaGWpBPemc+ioGOUM6asdiTstXqB8fmhBTzT/OELRQXcF5ng1aW
- 6ohpkCfXTzaC/THB6J96cMWMD9Aw5+/8UcJT4wirI+kxds/OmpJp9KNAwO2FeK0gVVzJPLIey4r
- VwlTdGzpcusHjAm227aKvrJ2I1XHyJYoKwNSeLcCPQwrY3ZzPKuyRVe8be25FsrJg=
-X-Google-Smtp-Source: AGHT+IEF5h2dGMRSFB/3qt1MWY/CT6+09vIORKHY5GfqLKOfkuEu2ik60AX2rn5BrQmN0PMtDJlb2l5G5nna2AvsRNc=
-X-Received: from pgbdo14.prod.google.com ([2002:a05:6a02:e8e:b0:b14:9a53:2226])
- (user=nabihestefan job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:d48d:b0:1ee:c7c8:ca4 with SMTP id
- adf61e73a8af0-215abc730d9mr1433032637.36.1746744319421; 
- Thu, 08 May 2025 15:45:19 -0700 (PDT)
-Date: Thu,  8 May 2025 22:45:14 +0000
-In-Reply-To: <20250508224514.805456-1-nabihestefan@google.com>
-Mime-Version: 1.0
-References: <20250508224514.805456-1-nabihestefan@google.com>
-X-Mailer: git-send-email 2.49.0.1015.ga840276032-goog
-Message-ID: <20250508224514.805456-3-nabihestefan@google.com>
-Subject: [PATCH 2/2] gdbstub: Apply breakpoints only to the selected PID
-From: Nabih Estefan <nabihestefan@google.com>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, pbonzini@redhat.com, alex.bennee@linaro.org, 
- philmd@linaro.org, Roque Arcudia Hernandez <roqueh@google.com>, 
- Nabih Estefan <nabihestefan@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::54a;
- envelope-from=3_zMdaAwKCiQNABIHESTEFANGOOGLE.COMQEMU-DEVELNONGNU.ORG@flex--nabihestefan.bounces.google.com;
- helo=mail-pg1-x54a.google.com
-X-Spam_score_int: -100
-X-Spam_score: -10.1
-X-Spam_bar: ----------
-X-Spam_report: (-10.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.499,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
+ id 1uDA58-0003z0-JV; Thu, 08 May 2025 18:51:10 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
+ id 1uDA52-0006QO-Vy; Thu, 08 May 2025 18:51:09 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 548LdHlF005371;
+ Thu, 8 May 2025 22:51:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=pp1; bh=5UcX51uz6ksyGBRAlya9az7nACgE
+ YKbpZw2y1lTLRvw=; b=e+sOEk80pLvddWUpYTK8Jyl8W4/s/3ZcS6pczLp92Zm/
+ Wfb5H5cD3O6hofAqpt1EddrXY6nN+hUIiQ8tsM9ZqsjBeJMB96yUWVekhX/8vyUQ
+ 5N4K4rWwVC8FyZ6OKHNDsbp3AbmGPLSbcEyXiEr9bA2Zk1d4MvVAIIzfvkxo42Pq
+ lXqL1zb1NiF5kT1WZeGpISvcmxLdA/mss+yraKhPg+QD2W9GrVuaA0Ted9YvMpPL
+ bAAoKKjakOi1WG9/SAP7LVCbJ+ZshvqGbuNJnPpoCwKOGa+XbRhwqKtDVQ3sdJ6W
+ paB0duJOjMwmGy/YKQtMpy8h6RN5tg9QjAG3DJSaWg==
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46h4q8r8ce-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 08 May 2025 22:50:59 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 548L3gGk002765;
+ Thu, 8 May 2025 22:50:58 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46dxfp835b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 08 May 2025 22:50:58 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
+ [10.39.53.228])
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 548Mov2i26411492
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 8 May 2025 22:50:57 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7D03C58055;
+ Thu,  8 May 2025 22:50:57 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 093F05804B;
+ Thu,  8 May 2025 22:50:56 +0000 (GMT)
+Received: from fedora-workstation.ibmuc.com (unknown [9.61.11.238])
+ by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Thu,  8 May 2025 22:50:55 +0000 (GMT)
+From: Zhuoying Cai <zycai@linux.ibm.com>
+To: thuth@redhat.com, richard.henderson@linaro.org, david@redhat.com,
+ pbonzini@redhat.com
+Cc: walling@linux.ibm.com, jjherne@linux.ibm.com, jrossi@linux.ibm.com,
+ fiuczy@linux.ibm.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
+ farman@linux.ibm.com, iii@linux.ibm.com, qemu-s390x@nongnu.org,
+ qemu-devel@nongnu.org, zycai@linux.ibm.com
+Subject: [PATCH v2 00/25] Secure IPL Support for SCSI Scheme of
+ virtio-blk/virtio-scsi Devices
+Date: Thu,  8 May 2025 18:50:16 -0400
+Message-ID: <20250508225042.313672-1-zycai@linux.ibm.com>
+X-Mailer: git-send-email 2.49.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=N6spF39B c=1 sm=1 tr=0 ts=681d3554 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=GBR_YEU_Uo71KFJdXP4A:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: ShnB9l4clnPQxSDwd4HRsfiVlRRcgHoQ
+X-Proofpoint-ORIG-GUID: ShnB9l4clnPQxSDwd4HRsfiVlRRcgHoQ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA4MDIwNSBTYWx0ZWRfXxtCwEVVQkR2g
+ ztHyXEH6m7lEO8EkG/KF5NurMppGPgWWnCiOPKmtcXM0E44xRtkt1xClyeUW9uTSOz/XTqEGpHl
+ rBluSWw7/WdLEslsOa458wgwK8iPU1VQVh9fvGKjsfPss/h33ieebrzJhGX8kVI1jJYd76pMyng
+ dLvQEVIOVMGfJyyeBrNdksqZ7ZVAsNs0y0VJNjD5vyY1hR3VdM/0UGEAnnwZ0MPZApD8coxLlIy
+ pZ+c2XTZeIyTIqokHqf3+B/7Uae3f+QrODTM4A3nUlYJZN0HPOorIk7hGVs0erUcLB3w2nMi2Gv
+ Lc+AHj6ZGHTa+Y0YUm7JMxm7Dsjt7Xn2S7qjTRVBvgh2WZtXP8yEqeUGWK0nLhfBludGOuRjwSO
+ pn9FEcSxn5b9hzWZsnaeBBtPNBQPHt/DwiaR9NC2mcZvTp8ptkCtMnTBaMXUJIcALaQOU9YF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-08_07,2025-05-08_04,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0
+ adultscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
+ impostorscore=0 mlxlogscore=999 clxscore=1015 bulkscore=0 phishscore=0
+ mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2505080205
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=zycai@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,189 +119,309 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Roque Arcudia Hernandez <roqueh@google.com>
+Changelog v1->v2:
 
-In the context of using the remote gdb with multiple
-processes/inferiors (multi cluster machine) a given breakpoint will
-target an specific inferior. Current implementation of
-tcg_insert_breakpoint and tcg_remove_breakpoint apply a given
-breakpoint to all the cpus available in the system.
+- Fix typos in patches
+- Edit cover letter
+- Add secure IPL documentation
 
-This is not how gdb expects the remote protocol to behave. If we
-refer to the current source of gdb, in the function
-remote_target::insert_breakpoint in the file gdb/remote.c we can see
-the intention to have the right process selected before breakpoint
-insertion:
+QEMU Command-Line Interface:
+- Move boot-certificates under the machine-type option for s390x-virtio-ccw
+- Move secure-boot under the machine-type option for s390x-virtio-ccw
 
-int
-remote_target::insert_breakpoint (struct gdbarch *gdbarch,
-                                  struct bp_target_info *bp_tgt)
-{
-...
-  /* Make sure the remote is pointing at the right process, if
-     necessary.  */
-  if (!gdbarch_has_global_breakpoints (current_inferior ()->arch ()))
-    set_general_process ();
-...
-}
+hw/s390x/ipl: Create Certificate Store
+- Define internal GNUTLS-related APIs
+- Add check to only accept certificates using SHA-256 hashing
+- Recalculate data_buf_size to ensure word alignment
+- Clean up memory allocation
+- Refactor functions for clarity
 
-Since most platforms do not have global breakpoints, this typically
-will result in an 'Hg' Packet sent before 'z/Z', if gdb is not
-pointing to the desired process.
+s390x: Guest Support for Certificate Store Facility (CS)
+- Update patch description to clarify:
+    - Why Secure IPL is not available with Secure Execution
+    - Why this feature requires S390_FEAT_EXTENDED_LENGTH_SCCB
+-Restrict features to z16 due to additional layers requiring z16
 
-For instance this is a concrete example obtained with a trace dump:
+s390x/diag: Implement DIAG 320 Subcode 1
+- Rename VerificationCertificate prefix to VC
+- Byte-swap written values for endianness correctness
 
-gdbstub_io_command Received: Hgp2.2
-gdbstub_io_command Received: Z0,4000ded0,4
+s390x/diag: Implement DIAG 320 Subcode 2
+- Edit commit message for clarity
+- Define internal GNUTLS-related APIs
+- Rename data structure variables
+- Ensure length fields in VCE are word-aligned
+- Handle the VC index 0 case
+- General refactoring
 
-Only the CPUs associated with the selected process ID should insert
-or remove the breakpoint. It is important to apply it to all the CPUs
-in the process ID regardless of the particular thread selected by the
-'Hg' packet because even in the case of a thread specific breakpoint.
-A breakpoint on a specific thread is treated as a conditional break
-similar to a 'break if'. This can be read in the code and comments of
-function bpstat_check_breakpoint_conditions in the file
-gdb/breakpoint.c
+s390x/diag: Implement DIAG 508 Subcode 2 for Signature Verification
+- Define subcode from 2 to 1
+- Remove unused error codes
+- Define internal GNUTLS-related APIs
+- Byte-swap read values
 
-/* For breakpoints that are currently marked as telling gdb to stop,
-   check conditions (condition proper, frame, thread and ignore count)
-   of breakpoint referred to by BS.  If we should not stop for this
-   breakpoint, set BS->stop to 0.  */
+hw/s390x/ipl: Add IPIB Flags to IPL Parameter Block
+- Move DIAG308 flags to a new header file
 
-static void
-bpstat_check_breakpoint_conditions (bpstat *bs, thread_info *thread)
+s390x: Guest Support for Secure-IPL Facility
+- Rename SCLP variable from cbl to fac_ipl
 
-The patch needs to expose the currently private function
-gdb_get_cpu_pid to the TCG and also expose the value of
-gdbserver_state.multiprocess. The PID filtering will only be
-applicable to multiprocess gdb because the PIDs are only defined in
-that context.
+pc-bios/s390-ccw: Add Signature Verification for Secure Boot (Audit Mode)
+- Move Secure IPL-related functions to pc-bios/s390-ccw/secure-ip.c|h
+- Refactor code for clarity
 
-Signed-off-by: Roque Arcudia Hernandez <roqueh@google.com>
-Signed-off-by: Nabih Estefan <nabihestefan@google.com>
----
- accel/tcg/tcg-accel-ops.c | 37 +++++++++++++++++++++++--------------
- gdbstub/gdbstub.c         |  6 ++++++
- include/exec/gdbstub.h    | 12 ++++++++++++
- 3 files changed, 41 insertions(+), 14 deletions(-)
+-----------------------------------------------------------------------------
 
-diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
-index b24d6a7562..aca476cdf5 100644
---- a/accel/tcg/tcg-accel-ops.c
-+++ b/accel/tcg/tcg-accel-ops.c
-@@ -34,6 +34,7 @@
- #include "qemu/guest-random.h"
- #include "qemu/timer.h"
- #include "exec/cputlb.h"
-+#include "exec/gdbstub.h"
- #include "exec/hwaddr.h"
- #include "exec/tb-flush.h"
- #include "exec/translation-block.h"
-@@ -139,9 +140,11 @@ static int tcg_insert_breakpoint(CPUState *cs, int type, vaddr addr, vaddr len)
-     case GDB_BREAKPOINT_SW:
-     case GDB_BREAKPOINT_HW:
-         CPU_FOREACH(cpu) {
--            err = cpu_breakpoint_insert(cpu, addr, BP_GDB, NULL);
--            if (err) {
--                break;
-+            if (gdb_cpu_in_source_group(cs, cpu)) {
-+                err = cpu_breakpoint_insert(cpu, addr, BP_GDB, NULL);
-+                if (err) {
-+                    break;
-+                }
-             }
-         }
-         return err;
-@@ -149,10 +152,12 @@ static int tcg_insert_breakpoint(CPUState *cs, int type, vaddr addr, vaddr len)
-     case GDB_WATCHPOINT_READ:
-     case GDB_WATCHPOINT_ACCESS:
-         CPU_FOREACH(cpu) {
--            err = cpu_watchpoint_insert(cpu, addr, len,
--                                        xlat_gdb_type(cpu, type), NULL);
--            if (err) {
--                break;
-+            if (gdb_cpu_in_source_group(cs, cpu)) {
-+                err = cpu_watchpoint_insert(cpu, addr, len,
-+                                            xlat_gdb_type(cpu, type), NULL);
-+                if (err) {
-+                    break;
-+                }
-             }
-         }
-         return err;
-@@ -170,9 +175,11 @@ static int tcg_remove_breakpoint(CPUState *cs, int type, vaddr addr, vaddr len)
-     case GDB_BREAKPOINT_SW:
-     case GDB_BREAKPOINT_HW:
-         CPU_FOREACH(cpu) {
--            err = cpu_breakpoint_remove(cpu, addr, BP_GDB);
--            if (err) {
--                break;
-+            if (gdb_cpu_in_source_group(cs, cpu)) {
-+                err = cpu_breakpoint_remove(cpu, addr, BP_GDB);
-+                if (err) {
-+                    break;
-+                }
-             }
-         }
-         return err;
-@@ -180,10 +187,12 @@ static int tcg_remove_breakpoint(CPUState *cs, int type, vaddr addr, vaddr len)
-     case GDB_WATCHPOINT_READ:
-     case GDB_WATCHPOINT_ACCESS:
-         CPU_FOREACH(cpu) {
--            err = cpu_watchpoint_remove(cpu, addr, len,
--                                        xlat_gdb_type(cpu, type));
--            if (err) {
--                break;
-+            if (gdb_cpu_in_source_group(cs, cpu)) {
-+                err = cpu_watchpoint_remove(cpu, addr, len,
-+                                            xlat_gdb_type(cpu, type));
-+                if (err) {
-+                    break;
-+                }
-             }
-         }
-         return err;
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 0e2e10fbaa..652e0e768f 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -492,6 +492,12 @@ const GDBFeature *gdb_find_static_feature(const char *xmlname)
-     g_assert_not_reached();
- }
- 
-+bool gdb_cpu_in_source_group(CPUState *cs, CPUState *cpu)
-+{
-+    return !gdbserver_state.multiprocess ||
-+           (gdb_get_cpu_pid(cs) == gdb_get_cpu_pid(cpu));
-+}
-+
- GArray *gdb_get_register_list(CPUState *cpu)
- {
-     GArray *results = g_array_new(true, true, sizeof(GDBRegDesc));
-diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
-index 0675b0b646..f92641793c 100644
---- a/include/exec/gdbstub.h
-+++ b/include/exec/gdbstub.h
-@@ -114,6 +114,18 @@ void gdb_feature_builder_end(const GDBFeatureBuilder *builder);
-  */
- const GDBFeature *gdb_find_static_feature(const char *xmlname);
- 
-+/**
-+ * Tests if the CPUs belong to the same group for the purposes of breakpoint
-+ * insertion and deletion when running multiprocesses gdb. The test is only
-+ * valid for multiprocess gdb and should not affect the insertion or deletion of
-+ * breakpoints when we are not running in that mode.
-+ * @cs: The CPU used as reference
-+ * @cpu: The CPU to test
-+ *
-+ * Return: True if they belong to the same group or it is not a multiprocess gdb
-+ */
-+bool gdb_cpu_in_source_group(CPUState *cs, CPUState *cpu);
-+
- /**
-  * gdb_read_register() - Read a register associated with a CPU.
-  * @cpu: The CPU associated with the register.
+# Description
+
+This patch series is an external requirement by Linux distribution
+partners to verify secure IPL process. Additional secure IPL checks are
+also included in this series to address security holes in the original
+secure IPL design to prevent malicious actors to boot modified or
+unsigned code despite secure IPL being enforced.
+
+Secure IPL is enabled when the QEMU options for secure IPL are specified
+in the command line.
+
+During this process, additional security checks are performed to ensure
+system integrity.
+
+As components are loaded from disk, DIAG 508 subcode 2 performs
+signature verification if a signature entry is identified. Upon
+successful verification, DIAG 320 subcode 2 will request the
+corresponding certificate from QEMU key store to the BIOS.
+
+Secure IPL will continue until all the components are loaded if no error
+occurs during True secure IPL mode or in Audit mode (see explanation below).
+
+After that, an IPL Information report block (IIRB) is initialized
+immediately following an IPL Parameter Information Block. The IIRB is
+populated with information about the components, verification results
+and certificate data.
+
+Finally, the guest system proceeds to boot.
+
+Only List-Directed-IPL contains the relevant zIPL data structures to
+perform secure IPL. This patch series only adds support for the SCSI
+scheme of virtio-blk/virtio-scsi devices. Secure IPL for other device
+types will be considered as follow-up work at a later date.
+
+** Note: "secure IPL" and "secure boot" are used interchangeably
+throughout the design. **
+
+# True Secure IPL Mode and Audit Mode
+
+## True Secure IPL Mode
+
+When secure IPL is enabled and certificates are provided, all the secure
+IPL checks will performed. The boot process will abort if any error
+occurs during the secure IPL checks.
+
+## Audit Mode
+
+When the secure IPL option is not selected and certificates are
+provided, all the secure IPL checks will still be performed. However,
+the boot process will continue if any errors occur, with messages logged
+to the console during the secure IPL checks.
+
+The audit mode is also considered as simulated secure IPL because it is
+less pervasive, and allows the guest to boot regardless of the secure
+checking results.
+
+# How to Enable Secure IPL
+
+## QEMU Build Notes
+
+When building QEMU, enable the cryptographic libraries.
+
+Run configure script in QEMU repository with either parameter:
+
+	./configure … --enable-gnutls
+
+## Create Certificates via Openssl
+
+	openssl req -new -x509 -newkey rsa:2048 -keyout mykey.priv
+	-outform DER -out mycert.der -days 36500 -subj "/CN=My Name/"
+	-nodes
+
+Use an RSA private key for signing.
+
+It is recommended to store the certificate(s) in the /…/qemu/certs
+directory for easy identification.
+
+## Sign Kernel and Prepare zipl
+
+All actions must be performed on a KVM guest.
+
+Copy the sign-file script (located in Linux source repository),
+generated private key(s), and certificate(s) to guest's file system.
+
+Sign guest image(s) and stage3 binary:
+
+	./sign-file sha256 mykey.priv mycert.der /boot/vmlinuz-…
+
+	./sign-file sha256 mykey.priv mycert.der /usr/lib/s390-tools/stage3.bin
+
+Run zipl with secure boot enabled.
+
+	zipl --secure 1 -V
+
+Guest image(s) are now signed, stored on disk, and can be verified.
+
+## New QEMU Command Options for Secure IPL
+
+New parameters have been added to the s390-ccw-virtio machine type to
+enable Secure IPL and provide certificates for signature verification.
+
+This parameter enables or disables Secure IPL/boot. If not specified, it
+defaults to off.
+
+	qemu-system-s390x -machine s390-ccw-virtio,secure-boot=on|off
+
+This parameter specifies one or more paths to boot certificates, used
+for signature verification. You can provide a single certificate file or
+a directory. Multiple paths can be separated by a colon (:).
+
+	qemu-system-s390x -machine s390-ccw-virtio, \
+        boot-certificates=/.../qemu/certs:/another/path/cert.der
+
+Example:
+	qemu-system-s390x -machine s390-ccw-virtio,secure-boot=on, \
+        boot-certificates=/.../qemu/certs:/another/path/cert.der
+
+Secure IPL command options overview:
+
+If neither the -secure-boot nor the -boot-certificates options are
+specified, the guest will boot in normal mode, and no security checks
+will be conducted.
+
+If the -secure-boot option is not specified or is set to off, and the
+-boot-certificates option is provided, the guest will boot in audit
+mode. In this mode, all security checks are performed; however, any
+errors encountered will not interrupt the boot process.
+
+If the -secure-boot option is set to on and the -boot-certificates
+option is provided, the guest will boot in true secure IPL mode. In this
+mode, all security checks are performed, and any errors encountered will
+terminate the boot process.
+  - If the -boot-certificates option is not provided in true secure IPL
+    mode, the boot process will fail for the corresponding device.
+
+## Constraints
+
+- z16 CPU model
+
+- certificates must be in X.509 DER format
+
+- only sha256 encryption is supported
+
+- only support for SCSI scheme of virtio-blk/virtio-scsi devices
+    - The boot process will terminate if secure boot is enabled without
+specifying a boot device.
+    - If enabling secure boot with multiple boot devices, any
+unsupported devices or non-eligible devices will cause the entire boot
+process terminating early with an error logged to the console.
+
+- attempting to perform secure IPL outside of these constraints will
+result in a failure.
+
+# DIAGNOSE 508 - KVM IPL Extensions
+
+Signature verification is performed during IPL via DIAG 508. Component
+address, component length, signature address and signature length are
+obtained in the BIOS and pass to DIAG 508 subcode 2 to perform signature
+verification in QEMU. If verification succeeds, DIAG 508 subcode 2
+(signature verification) will return the length and index of the
+certificate in the QemuCertificateStore that was used for verification.
+
+## Data Structures
+
+Diag508SignatureVerificationBlock (SVB) — stores addresses and
+lengths of the component and signature to be used for signature
+verification. Upon verification, an index and the length of the
+certificate used is stored.
+
+Collin L. Walling (2):
+  s390x/diag: Introduce DIAG 508 for secure IPL operations
+  s390x/diag: Implement DIAG 508 subcode 1 for signature verification
+
+Zhuoying Cai (23):
+  Add -boot-certificates to s390-ccw-virtio machine type option
+  hw/s390x/ipl: Create certificate store
+  s390x: Guest support for Certificate Store Facility (CS)
+  s390x/diag: Introduce DIAG 320 for certificate store facility
+  s390x/diag: Refactor address validation check from diag308_parm_check
+  s390x/diag: Implement DIAG 320 subcode 1
+  s390x/diag: Implement DIAG 320 subcode 2
+  pc-bios/s390-ccw: Introduce IPL Information Report Block (IIRB)
+  pc-bios/s390-ccw: Define memory for IPLB and convert IPLB to pointers
+  hw/s390x/ipl: Add IPIB flags to IPL Parameter Block
+  hw/s390x/ipl: Set iplb->len to maximum length of IPL Parameter Block
+  s390x: Guest support for Secure-IPL Facility
+  pc-bios/s390-ccw: Refactor zipl_run()
+  pc-bios/s390-ccw: Refactor zipl_load_segment function
+  pc-bios/s390-ccw: Add signature verification for secure IPL in audit
+    mode
+  s390x: Guest support for Secure-IPL Code Loading Attributes Facility
+    (SCLAF)
+  pc-bios/s390-ccw: Add additional security checks for secure boot
+  Add -secure-boot to s390-ccw-virtio machine type option
+  hw/s390x/ipl: Set IPIB flags for secure IPL
+  pc-bios/s390-ccw: Handle true secure IPL mode
+  pc-bios/s390-ccw: Handle secure boot with multiple boot devices
+  hw/s390x/ipl: Handle secure boot without specifying a boot device
+  docs/system/s390x: Add secure IPL documentation
+
+ crypto/meson.build                  |   5 +-
+ crypto/x509-utils.c                 | 421 +++++++++++++++++++++++++++-
+ docs/system/s390x/secure-ipl.rst    | 249 ++++++++++++++++
+ hw/s390x/cert-store.c               | 242 ++++++++++++++++
+ hw/s390x/cert-store.h               |  39 +++
+ hw/s390x/ipl.c                      |  61 +++-
+ hw/s390x/ipl.h                      |  29 +-
+ hw/s390x/meson.build                |   1 +
+ hw/s390x/s390-virtio-ccw.c          |  44 +++
+ hw/s390x/sclp.c                     |   2 +
+ include/crypto/x509-utils.h         |  20 ++
+ include/hw/s390x/ipl/diag308.h      |  34 +++
+ include/hw/s390x/ipl/diag320.h      |  89 ++++++
+ include/hw/s390x/ipl/diag508.h      |  37 +++
+ include/hw/s390x/ipl/qipl.h         |   8 +-
+ include/hw/s390x/s390-virtio-ccw.h  |   2 +
+ include/hw/s390x/sclp.h             |   4 +-
+ pc-bios/s390-ccw/Makefile           |   3 +-
+ pc-bios/s390-ccw/bootmap.c          | 306 ++++++++++++++++++--
+ pc-bios/s390-ccw/bootmap.h          |   9 +
+ pc-bios/s390-ccw/iplb.h             | 113 +++++++-
+ pc-bios/s390-ccw/jump2ipl.c         |   6 +-
+ pc-bios/s390-ccw/main.c             | 111 +++++++-
+ pc-bios/s390-ccw/netmain.c          |   8 +-
+ pc-bios/s390-ccw/s390-ccw.h         |  18 ++
+ pc-bios/s390-ccw/sclp.c             |  52 ++++
+ pc-bios/s390-ccw/sclp.h             |   7 +
+ pc-bios/s390-ccw/secure-ipl.c       | 412 +++++++++++++++++++++++++++
+ pc-bios/s390-ccw/secure-ipl.h       | 131 +++++++++
+ qapi/crypto.json                    | 100 +++++++
+ qemu-options.hx                     |  11 +-
+ target/s390x/cpu_features.c         |   5 +
+ target/s390x/cpu_features.h         |   1 +
+ target/s390x/cpu_features_def.h.inc |   5 +
+ target/s390x/cpu_models.c           |   6 +
+ target/s390x/diag.c                 | 410 ++++++++++++++++++++++++++-
+ target/s390x/gen-features.c         |   3 +
+ target/s390x/kvm/kvm.c              |  36 +++
+ target/s390x/s390x-internal.h       |   4 +
+ 39 files changed, 2964 insertions(+), 80 deletions(-)
+ create mode 100644 docs/system/s390x/secure-ipl.rst
+ create mode 100644 hw/s390x/cert-store.c
+ create mode 100644 hw/s390x/cert-store.h
+ create mode 100644 include/hw/s390x/ipl/diag308.h
+ create mode 100644 include/hw/s390x/ipl/diag320.h
+ create mode 100644 include/hw/s390x/ipl/diag508.h
+ create mode 100644 pc-bios/s390-ccw/secure-ipl.c
+ create mode 100644 pc-bios/s390-ccw/secure-ipl.h
+
 -- 
-2.49.0.1015.ga840276032-goog
+2.49.0
 
 
