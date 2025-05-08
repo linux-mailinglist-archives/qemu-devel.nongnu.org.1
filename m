@@ -2,93 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC667AAFB93
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 15:38:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB991AAFBB8
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 15:42:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uD1Rw-000892-0K; Thu, 08 May 2025 09:38:08 -0400
+	id 1uD1Vb-00028m-7k; Thu, 08 May 2025 09:41:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uD1RQ-0007gY-4k
- for qemu-devel@nongnu.org; Thu, 08 May 2025 09:37:40 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uD1VY-00021l-1o
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 09:41:52 -0400
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uD1RL-0003o4-8v
- for qemu-devel@nongnu.org; Thu, 08 May 2025 09:37:34 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-ac2ab99e16eso205036566b.0
- for <qemu-devel@nongnu.org>; Thu, 08 May 2025 06:37:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746711449; x=1747316249; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+jbxqI9YoX3yFI2KB0O83dxnlleOQaSlcM5QbcjVntg=;
- b=ANZMXXvCl3yclrt/f1HGnsGuFXHT+98i5hmBwEIOs1TNZH2N0EH72XFujoCqLR9hra
- h/N9/ths81QghwyCVozZuuqqb26eWrhctA7rH/+776oX96kTJtxXhSdWsvaDawJTPyCz
- Cnw7lbh7H+PRc//b5KqStznDL0Y41gA6Nl3IU0mH3/0rmmRLoSbPqEgUZtqgxFHFUsmA
- nrGwYNLparC7VU4SBVyJma0kRku3am7YX4S/JDHiFu5VJoxD8O2FG7tzYwbV/ddMOP2l
- Z0zeJOR7Wxe0XtKW5ZB1YwYgzSfmQ92dq2QDB6yw7nBYwka31mJZphXuq0xXJ1CKp05+
- oasA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746711449; x=1747316249;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=+jbxqI9YoX3yFI2KB0O83dxnlleOQaSlcM5QbcjVntg=;
- b=hwDMUh/4g8CezJK2T1Ng39YXw5QAOVnwbh9fpuP0jqnnRWB42qQp5SroaA14vgZfNH
- u0vFcW8iw+nbre/folCx15Vyio24DXq4VfFZf8CJfGpGh/KXzObaDEaEngeeGqq8TJa4
- 2El9tc0F2L+W8yUGCR907LLTGPebGPLekAvZEvZHUI6Fh9/0qyhOGiFbu2im99/PK4M7
- 9yJjhImzF5fDG5DKx1FTLY9FSJSMXbb9x2LWpb8M/niWXAPzWWLeSvhNISaGEgewoB4m
- 0yG6LQf9nPxbdfmrrtI0VVKleNmE9QsonLkzYB6pkxrf1xYeJBXwTQelJrGLibCvbOWL
- 8MEg==
-X-Gm-Message-State: AOJu0YyKfkpNFdTnmSak+tRJkeY4puHtX/txkWlNBA4Xc0KvTLlwxGW3
- U7u9id+NBMAKCwh4i+2JP8U+Cf+iIRDDktSFI4VjciaaOT9b1KbgNSBViVEjvtE=
-X-Gm-Gg: ASbGnctKo783MyOpH7OKoi+vmOccSuTHB/MByxnoaVzooscpbhOOHJX/DsRUV1RJMIq
- YyxLMDln1pQNi1yi4MNfLKY82mxS02KgbQ7ghu+uKe1IRKgEJm8ARV7S5p9irZ4RYQT07ti/JzA
- LtXWNlzn2BqKJ+3sARRQT71dgmZ0X0TUahNh81pyU0KzdA5pZH8VM+JnPUP8/pYvZu8IXOBUm5R
- RuI5tazj6d3GXoKUvuoLsoDdijKBDmtquE5ZKy7kvFpnb+qWpSxpN8ak8P0AUqQgHcaSrncL99I
- 1BobRLxIc+UXBgeCfBkwNiFB6+lZM8tiQBbKEkBD1cg=
-X-Google-Smtp-Source: AGHT+IGwYCeu6ipx8SnIuvLN53t0q2TvGVEWPOzxBDeL/rq61IJqfJp7cA6hJ9cOuPR2PJlRzgDKrQ==
-X-Received: by 2002:a17:907:c296:b0:ace:d883:3aaf with SMTP id
- a640c23a62f3a-ad1fe6f62e7mr326991566b.29.1746711449042; 
- Thu, 08 May 2025 06:37:29 -0700 (PDT)
-Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5fa7781b1d2sm11139496a12.39.2025.05.08.06.37.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 08 May 2025 06:37:28 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 0A8E45F767;
- Thu,  8 May 2025 14:37:27 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org,  Julian Armistead <julian.armistead@linaro.org>,
- "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
-Subject: Re: [RFC PATCH] target/arm: allow gdb to read ARM_CP_NORAW regs
-In-Reply-To: <CAFEAcA80-CWEQYwTQPziUxm5V1K93VZstLh2r9mTGkD5QueKoA@mail.gmail.com>
- (Peter Maydell's message of "Thu, 8 May 2025 13:07:40 +0100")
-References: <20250507165840.401623-1-alex.bennee@linaro.org>
- <CAFEAcA_0cf=XEbH9VQdTHqu1wekSmFDLdqnnzpcwnshCT-UUCg@mail.gmail.com>
- <87zffnmidy.fsf@draig.linaro.org>
- <CAFEAcA80-CWEQYwTQPziUxm5V1K93VZstLh2r9mTGkD5QueKoA@mail.gmail.com>
-User-Agent: mu4e 1.12.10; emacs 30.1
-Date: Thu, 08 May 2025 14:37:26 +0100
-Message-ID: <87o6w3mdex.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uD1VW-0004di-2L
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 09:41:51 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 740491F456;
+ Thu,  8 May 2025 13:41:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1746711707; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZYlHCsvyVPDGhkLiqv88lDes1dkEu/Suwopay/eR2sE=;
+ b=FloPTHvDRasDiw1u46TeAtrpzJDrYx0Ye5KJrWeU592Tv009zCJKVN08bHuhkRjWxJZ4Fy
+ mJM5OzMQaRGnPmf5c3rVrGzqNdfH2j0WU2ctK8LyYbQ57Ua6dq4N4i2KvZ9/X2DzS76cDZ
+ gsP0bYXt1Pp5ufDk3Et1VNAy88fyyHM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1746711707;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZYlHCsvyVPDGhkLiqv88lDes1dkEu/Suwopay/eR2sE=;
+ b=b1V3xo12MAwFeuwfDG6gmScSsAEOPFlrYGuQI55txheheqGfw0L8hzR0oejAHkMuPgiefx
+ M8Z9ORX9npD94+CQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1746711707; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZYlHCsvyVPDGhkLiqv88lDes1dkEu/Suwopay/eR2sE=;
+ b=FloPTHvDRasDiw1u46TeAtrpzJDrYx0Ye5KJrWeU592Tv009zCJKVN08bHuhkRjWxJZ4Fy
+ mJM5OzMQaRGnPmf5c3rVrGzqNdfH2j0WU2ctK8LyYbQ57Ua6dq4N4i2KvZ9/X2DzS76cDZ
+ gsP0bYXt1Pp5ufDk3Et1VNAy88fyyHM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1746711707;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZYlHCsvyVPDGhkLiqv88lDes1dkEu/Suwopay/eR2sE=;
+ b=b1V3xo12MAwFeuwfDG6gmScSsAEOPFlrYGuQI55txheheqGfw0L8hzR0oejAHkMuPgiefx
+ M8Z9ORX9npD94+CQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D2BF813687;
+ Thu,  8 May 2025 13:41:46 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id adJBI5q0HGjDPAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 08 May 2025 13:41:46 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org, =?utf-8?Q?Danie?=
+ =?utf-8?Q?l_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+Subject: Re: [PATCH] tests/qtest/q35-test: Remove the obsolete
+ test_without_smram_base test
+In-Reply-To: <20250508095122.144807-1-thuth@redhat.com>
+References: <20250508095122.144807-1-thuth@redhat.com>
+Date: Thu, 08 May 2025 10:41:43 -0300
+Message-ID: <87h61vfcdk.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain
+X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ FUZZY_BLOCKED(0.00)[rspamd.com];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; TO_DN_SOME(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ MISSING_XM_UA(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ RCPT_COUNT_FIVE(0.00)[6]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -4.30
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,95 +117,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Maydell <peter.maydell@linaro.org> writes:
+Thomas Huth <thuth@redhat.com> writes:
 
-> On Thu, 8 May 2025 at 12:50, Alex Benn=C3=A9e <alex.bennee@linaro.org> wr=
-ote:
->>
->> Peter Maydell <peter.maydell@linaro.org> writes:
->>
->> > On Wed, 7 May 2025 at 17:58, Alex Benn=C3=A9e <alex.bennee@linaro.org>=
- wrote:
->> >>
->> >> Before this we suppress all ARM_CP_NORAW registers being listed under
->> >> GDB. This includes useful registers like CurrentEL which gets tagged
->> >> as ARM_CP_NO_RAW because it is one of the ARM_CP_SPECIAL_MASK
->> >> registers. These are registers TCG can directly compute because we
->> >> have the information at compile time but until now with no readfn.
->> >>
->> >> Add a .readfn to return the CurrentEL and then loosen the restrictions
->> >> in arm_register_sysreg_for_feature to allow ARM_CP_NORAW registers to
->> >> be read if there is a readfn available.
->> >
->> > The primary use case for NO_RAW is "system instructions" like
->> > the TLB maintenance insns. These don't make sense to expose
->> > to a debugger.
->>
->> I think we could re-think the logic:
->>
->>     /*
->>      * By convention, for wildcarded registers only the first
->>      * entry is used for migration; the others are marked as
->>      * ALIAS so we don't try to transfer the register
->>      * multiple times. Special registers (ie NOP/WFI) are
->>      * never migratable and not even raw-accessible.
->>      */
->>     if (r2->type & ARM_CP_SPECIAL_MASK) {
->>         r2->type |=3D ARM_CP_NO_RAW;
->>     }
+> From: Thomas Huth <thuth@redhat.com>
 >
-> Well, we definitely don't want WFI or the DC ZVA etc
-> "registers" to be exposed to GDB or for us to try to handle
-> them in KVM state sync or migration... ARM_CP_NOP is less
-> clear because we use it pretty widely for more than one
-> purpose. The main one is "system instruction that we don't
-> need to implement". (CP_NOP + a readable register is a
-> questionable combination since the guest will expect it to
-> update the general-purpose destreg, not leave it untouched,
-> but we do have some.)
+> With the release of QEMU 10.1, the pc-q35-4.1 machine will be older
+> than 6 years and thus will get disabled automatically by the
+> MACHINE_VER_DELETION() macro. Remove the related test to avoid
+> that the q35-test is failing when the machine is not available anymore.
 >
->> > If we want the gdbstub access to system registers to be
->> > more than our current "we provide the ones that are easy",
->> > then I think I'd like to see a bit more up-front analysis of
->> > what the gdbstub needs and whether we've got into a bit of
->> > a mess with our ARM_CP_* flags that we could straighten out.
->>
->> Yeah - hence the RFC. CurrentEL is a super useful one to expose though
->> when you are debugging complex hypervisor setups.
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>  tests/qtest/q35-test.c | 37 +------------------------------------
+>  1 file changed, 1 insertion(+), 36 deletions(-)
 >
-> One problem with this patch is the one that the reporter of
-> https://gitlab.com/qemu-project/qemu/-/issues/2760 noted
-> in the conversation there: it will allow the debugger to
-> read registers which have a side-effect on read, like
-> ICC_IAR1_EL1: we almost certainly do not want to allow
-> the debugger to acknowledge an interrupt by doing a sysreg
-> read.
+> diff --git a/tests/qtest/q35-test.c b/tests/qtest/q35-test.c
+> index 75d4078b790..62fff49fc89 100644
+> --- a/tests/qtest/q35-test.c
+> +++ b/tests/qtest/q35-test.c
+> @@ -246,41 +246,6 @@ static void test_smram_smbase_lock(void)
+>      qtest_quit(qts);
+>  }
+>  
+> -static void test_without_smram_base(void)
+> -{
+> -    QPCIBus *pcibus;
+> -    QPCIDevice *pcidev;
+> -    QTestState *qts;
+> -    int i;
+> -
+> -    qts = qtest_init("-M pc-q35-4.1");
+> -
+> -    pcibus = qpci_new_pc(qts, NULL);
+> -    g_assert(pcibus != NULL);
+> -
+> -    pcidev = qpci_device_find(pcibus, 0);
+> -    g_assert(pcidev != NULL);
+> -
+> -    /* check that RAM is accessible */
+> -    qtest_writeb(qts, SMBASE, SMRAM_TEST_PATTERN);
+> -    g_assert_cmpint(qtest_readb(qts, SMBASE), ==, SMRAM_TEST_PATTERN);
+> -
+> -    /* check that writing to 0x9c succeeds */
+> -    for (i = 0; i <= 0xff; i++) {
+> -        qpci_config_writeb(pcidev, MCH_HOST_BRIDGE_F_SMBASE, i);
+> -        g_assert(qpci_config_readb(pcidev, MCH_HOST_BRIDGE_F_SMBASE) == i);
+> -    }
+> -
+> -    /* check that RAM is still accessible */
+> -    qtest_writeb(qts, SMBASE, SMRAM_TEST_PATTERN + 1);
+> -    g_assert_cmpint(qtest_readb(qts, SMBASE), ==, (SMRAM_TEST_PATTERN + 1));
+> -
+> -    g_free(pcidev);
+> -    qpci_free_pc(pcibus);
+> -
+> -    qtest_quit(qts);
+> -}
+> -
+>  int main(int argc, char **argv)
+>  {
+>      g_test_init(&argc, &argv, NULL);
+> @@ -293,6 +258,6 @@ int main(int argc, char **argv)
+>      qtest_add_data_func("/q35/tseg-size/ext/16mb", &tseg_ext_16mb,
+>                          test_tseg_size);
+>      qtest_add_func("/q35/smram/smbase_lock", test_smram_smbase_lock);
+> -    qtest_add_func("/q35/smram/legacy_smbase", test_without_smram_base);
+> +
+>      return g_test_run();
+>  }
 
-Doesn't raw_readfn offer these semantics?
-
-    /*
-     * Function for doing a "raw" read; used when we need to copy
-     * coprocessor state to the kernel for KVM or out for
-     * migration. This only needs to be provided if there is also a
-     * readfn and it has side effects (for instance clear-on-read bits).
-     */
-    CPReadFn *raw_readfn;
-
-So maybe:
-
-        /* We can only read ARM_CP_NO_RAW regs without side effects */
-        if ((ri->type & ARM_CP_NO_RAW) && !ri->raw_readfn) {
-            return;
-        }
-
-And I guess we can strengthen the gdb helper to NOP any writes to such
-registers.
-
->
-> thanks
-> -- PMM
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Queued, thanks!
 
