@@ -2,60 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48917AAF9F9
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 14:30:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8614AAF9EF
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 14:29:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uD0NT-00006X-8y; Thu, 08 May 2025 08:29:27 -0400
+	id 1uD0NQ-00005V-9A; Thu, 08 May 2025 08:29:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1uD0NB-0008Uq-7U
- for qemu-devel@nongnu.org; Thu, 08 May 2025 08:29:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uD0NE-0008Uz-45
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 08:29:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1uD0N8-0002zN-Px
- for qemu-devel@nongnu.org; Thu, 08 May 2025 08:29:08 -0400
+ id 1uD0NC-0002zY-3g
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 08:29:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746707344;
+ s=mimecast20190719; t=1746707347;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=Nt05dX6zMdnO9hBoGk5k21NzeCUoVwJDMckBgENds5A=;
- b=BXAPBKWU/AV/pJ5YKJIFxjH911/Bh1EdN78RyEJiPktJPUMDofdcTlAwA3XNHzzgv7Gs+W
- EXeEtJG507Ueh9MAZ8DAZ+HoR81hRgH3uQpleXDdARKd8TeR8FSIo8g7O29pjRoBBmdXqV
- U3hTsbayUBFapRJ3L7iCrVEgSTp+sPY=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=T/fMKLzDqk7k0/dxS2NZktfXwY2AOt9xTn21/ms5mwc=;
+ b=a5xK7Tsum6oHlZVJpD+5gUsVfzwygug4+wKBocWRiZGcnjaeeimBKfsUM4BtcGHN/iQ8AH
+ vy6weaxnBknhWxrRxpjCNG1LfHqX4Ely2efp3V/GTzrGuO9r0IoZo1UO4ZpP2J1t4EYpDa
+ fC+rOf8Qx0Hqds47hU4XTFqSFMqAzwI=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-186-B6cM_mP_MM2EvWtoBgN4jQ-1; Thu,
- 08 May 2025 08:29:01 -0400
-X-MC-Unique: B6cM_mP_MM2EvWtoBgN4jQ-1
-X-Mimecast-MFC-AGG-ID: B6cM_mP_MM2EvWtoBgN4jQ_1746707340
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-599-pXMmY2mJM6G4fs69lqudAA-1; Thu,
+ 08 May 2025 08:29:05 -0400
+X-MC-Unique: pXMmY2mJM6G4fs69lqudAA-1
+X-Mimecast-MFC-AGG-ID: pXMmY2mJM6G4fs69lqudAA_1746707344
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 25517180048E; Thu,  8 May 2025 12:29:00 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id A0739180034A; Thu,  8 May 2025 12:29:04 +0000 (UTC)
 Received: from kaapi.redhat.com (unknown [10.74.64.196])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 034D9180045B; Thu,  8 May 2025 12:28:55 +0000 (UTC)
+ id 2667B18003FD; Thu,  8 May 2025 12:29:00 +0000 (UTC)
 From: Prasad Pandit <ppandit@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com, farosas@suse.de, berrange@redhat.com,
  Prasad Pandit <pjp@fedoraproject.org>
-Subject: [PATCH v10 0/3] Allow to enable multifd and postcopy migration
- together
-Date: Thu,  8 May 2025 17:58:46 +0530
-Message-ID: <20250508122849.207213-1-ppandit@redhat.com>
+Subject: [PATCH v10 1/3] migration: enable multifd and postcopy together
+Date: Thu,  8 May 2025 17:58:47 +0530
+Message-ID: <20250508122849.207213-2-ppandit@redhat.com>
+In-Reply-To: <20250508122849.207213-1-ppandit@redhat.com>
+References: <20250508122849.207213-1-ppandit@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=ppandit@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -34
 X-Spam_score: -3.5
@@ -82,149 +84,101 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Prasad Pandit <pjp@fedoraproject.org>
 
-Hello,
+Enable Multifd and Postcopy migration together.
+The migration_ioc_process_incoming() routine checks
+magic value sent on each channel and helps to properly
+setup multifd and postcopy channels.
 
+The Precopy and Multifd threads work during the initial
+guest RAM transfer. When migration moves to the Postcopy
+phase, the multifd threads cease to send data on multifd
+channels and Postcopy threads on the destination
+request/pull data from the source side.
 
-* This series (v10) fixes the migration hang issue caused by optimised
-  writing of the zero pages during multifd phase. It also fixes the qtest
-  failure caused by missing 'env->has_uffd' check before running a postcopy
-  test.
-
-  Some of the patches from v9 series were pulled upstream. This series
-  has the remaining few patches.
-===
-67/67 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test                 OK             191.80s   81 subtests passed
-===
-
-
-v9: https://lore.kernel.org/qemu-devel/20250411114534.3370816-1-ppandit@redhat.com/T/#t
-* This series (v9) does minor refactoring and reordering changes as
-  suggested in the review of earlier series (v8). Also tried to
-  reproduce/debug a qtest hang issue, but it could not be reproduced.
-  From the shared stack traces it looked like Postcopy thread was
-  preparing to finish before migrating all the pages.
-===
-67/67 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test                 OK             170.50s   81 subtests passed
-===
-
-
-v8: https://lore.kernel.org/qemu-devel/20250318123846.1370312-1-ppandit@redhat.com/T/#t
-* This series (v8) splits earlier patch-2 which enabled multifd and
-  postcopy options together into two separate patches. One modifies
-  the channel discovery in migration_ioc_process_incoming() function,
-  and second one enables the multifd and postcopy migration together.
-
-  It also adds the 'save_postcopy_prepare' savevm_state handler to
-  enable different sections to take an action just before the Postcopy
-  phase starts. Thank you Peter for these patches.
-===
-67/67 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test                 OK             152.66s   81 subtests passed
-===
-
-
-v7: https://lore.kernel.org/qemu-devel/20250228121749.553184-1-ppandit@redhat.com/T/#t
-* This series (v7) adds 'MULTIFD_RECV_SYNC' migration command. It is used
-  to notify the destination migration thread to synchronise with the Multifd
-  threads. This allows Multifd ('mig/dst/recv_x') threads on the destination
-  to receive all their data, before they are shutdown.
-
-  This series also updates the channel discovery function and qtests as
-  suggested in the previous review comments.
-===
-67/67 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test                 OK             147.84s   81 subtests passed
-===
-
-
-v6: https://lore.kernel.org/qemu-devel/20250215123119.814345-1-ppandit@redhat.com/T/#t
-* This series (v6) shuts down Multifd threads before starting Postcopy
-  migration. It helps to avoid an issue of multifd pages arriving late
-  at the destination during Postcopy phase and corrupting the vCPU
-  state. It also reorders the qtest patches and does some refactoring
-  changes as suggested in previous review.
-===
-67/67 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test                 OK             161.35s   73 subtests passed
-===
-
-
-v5: https://lore.kernel.org/qemu-devel/20250205122712.229151-1-ppandit@redhat.com/T/#t
-* This series (v5) consolidates migration capabilities setting in one
-  'set_migration_capabilities()' function, thus simplifying test sources.
-  It passes all migration tests.
-===
-66/66 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test                 OK             143.66s   71 subtests passed
-===
-
-
-v4: https://lore.kernel.org/qemu-devel/20250127120823.144949-1-ppandit@redhat.com/T/#t
-* This series (v4) adds more 'multifd+postcopy' qtests which test
-  Precopy migration with 'postcopy-ram' attribute set. And run
-  Postcopy migrations with 'multifd' channels enabled.
-===
-$ ../qtest/migration-test --tap -k -r '/x86_64/migration/multifd+postcopy' | grep -i 'slow test'
-# slow test /x86_64/migration/multifd+postcopy/plain executed in 1.29 secs
-# slow test /x86_64/migration/multifd+postcopy/recovery/tls/psk executed in 2.48 secs
-# slow test /x86_64/migration/multifd+postcopy/preempt/plain executed in 1.49 secs
-# slow test /x86_64/migration/multifd+postcopy/preempt/recovery/tls/psk executed in 2.52 secs
-# slow test /x86_64/migration/multifd+postcopy/tcp/tls/psk/match executed in 3.62 secs
-# slow test /x86_64/migration/multifd+postcopy/tcp/plain/zstd executed in 1.34 secs
-# slow test /x86_64/migration/multifd+postcopy/tcp/plain/cancel executed in 2.24 secs
-...
-66/66 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test                 OK             148.41s   71 subtests passed
-===
-
-
-v3: https://lore.kernel.org/qemu-devel/20250121131032.1611245-1-ppandit@redhat.com/T/#t
-* This series (v3) passes all existing 'tests/qtest/migration/*' tests
-  and adds a new one to enable multifd channels with postcopy migration.
-
-
-v2: https://lore.kernel.org/qemu-devel/20241129122256.96778-1-ppandit@redhat.com/T/#u
-* This series (v2) further refactors the 'ram_save_target_page'
-  function to make it independent of the multifd & postcopy change.
-
-
-v1: https://lore.kernel.org/qemu-devel/20241126115748.118683-1-ppandit@redhat.com/T/#u
-* This series removes magic value (4-bytes) introduced in the
-  previous series for the Postcopy channel.
-
-
-v0: https://lore.kernel.org/qemu-devel/20241029150908.1136894-1-ppandit@redhat.com/T/#u
-* Currently Multifd and Postcopy migration can not be used together.
-  QEMU shows "Postcopy is not yet compatible with multifd" message.
-
-  When migrating guests with large (100's GB) RAM, Multifd threads
-  help to accelerate migration, but inability to use it with the
-  Postcopy mode delays guest start up on the destination side.
-
-* This patch series allows to enable both Multifd and Postcopy
-  migration together. Precopy and Multifd threads work during
-  the initial guest (RAM) transfer. When migration moves to the
-  Postcopy phase, Multifd threads are restrained and the Postcopy
-  threads start to request pages from the source side.
-
-* This series introduces magic value (4-bytes) to be sent on the
-  Postcopy channel. It helps to differentiate channels and properly
-  setup incoming connections on the destination side.
-
-
-Thank you.
+Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
 ---
-Prasad Pandit (3):
-  migration: enable multifd and postcopy together
-  tests/qtest/migration: add postcopy tests with multifd
-  migration: write zero pages when postcopy enabled
+ migration/multifd-nocomp.c | 3 ++-
+ migration/multifd.c        | 7 +++++++
+ migration/options.c        | 5 -----
+ migration/ram.c            | 5 ++---
+ 4 files changed, 11 insertions(+), 9 deletions(-)
 
- migration/multifd-nocomp.c                |  3 +-
- migration/multifd-zero-page.c             | 22 +++++++++-
- migration/multifd.c                       |  7 ++++
- migration/options.c                       |  5 ---
- migration/ram.c                           |  5 +--
- tests/qtest/migration/compression-tests.c | 18 ++++++++
- tests/qtest/migration/postcopy-tests.c    | 27 ++++++++++++
- tests/qtest/migration/precopy-tests.c     | 22 ++++++++++
- tests/qtest/migration/tls-tests.c         | 50 +++++++++++++++++++++++
- 9 files changed, 148 insertions(+), 11 deletions(-)
+v10: no change
 
+v9:
+- https://lore.kernel.org/qemu-devel/20250411114534.3370816-6-ppandit@redhat.com/
+
+diff --git a/migration/multifd-nocomp.c b/migration/multifd-nocomp.c
+index 88fe0f99f2..b48eae3d86 100644
+--- a/migration/multifd-nocomp.c
++++ b/migration/multifd-nocomp.c
+@@ -17,6 +17,7 @@
+ #include "migration-stats.h"
+ #include "multifd.h"
+ #include "options.h"
++#include "migration.h"
+ #include "qapi/error.h"
+ #include "qemu/cutils.h"
+ #include "qemu/error-report.h"
+@@ -398,7 +399,7 @@ int multifd_ram_flush_and_sync(QEMUFile *f)
+     MultiFDSyncReq req;
+     int ret;
+ 
+-    if (!migrate_multifd()) {
++    if (!migrate_multifd() || migration_in_postcopy()) {
+         return 0;
+     }
+ 
+diff --git a/migration/multifd.c b/migration/multifd.c
+index ec108af624..f18b166bcf 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -1379,6 +1379,13 @@ static void *multifd_recv_thread(void *opaque)
+         }
+ 
+         if (has_data) {
++            /*
++             * multifd thread should not be active and receive data
++             * when migration is in the Postcopy phase. Two threads
++             * writing the same memory area could easily corrupt
++             * the guest state.
++             */
++            assert(!migration_in_postcopy());
+             if (is_device_state) {
+                 assert(use_packets);
+                 ret = multifd_device_state_recv(p, &local_err);
+diff --git a/migration/options.c b/migration/options.c
+index b6ae95358d..3fcd577cd7 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -509,11 +509,6 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+             error_setg(errp, "Postcopy is not compatible with ignore-shared");
+             return false;
+         }
+-
+-        if (new_caps[MIGRATION_CAPABILITY_MULTIFD]) {
+-            error_setg(errp, "Postcopy is not yet compatible with multifd");
+-            return false;
+-        }
+     }
+ 
+     if (new_caps[MIGRATION_CAPABILITY_BACKGROUND_SNAPSHOT]) {
+diff --git a/migration/ram.c b/migration/ram.c
+index e12913b43e..d26dbd37c4 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -1993,9 +1993,8 @@ static int ram_save_target_page(RAMState *rs, PageSearchStatus *pss)
+         }
+     }
+ 
+-    if (migrate_multifd()) {
+-        RAMBlock *block = pss->block;
+-        return ram_save_multifd_page(block, offset);
++    if (migrate_multifd() && !migration_in_postcopy()) {
++        return ram_save_multifd_page(pss->block, offset);
+     }
+ 
+     return ram_save_page(rs, pss);
 --
 2.49.0
 
