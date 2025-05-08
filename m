@@ -2,73 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B766EAAF951
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 14:04:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EF9CAAF91D
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 13:49:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCzym-00059o-JR; Thu, 08 May 2025 08:03:56 -0400
+	id 1uCzjp-0007IR-Rx; Thu, 08 May 2025 07:48:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uCzyj-00054I-J7
- for qemu-devel@nongnu.org; Thu, 08 May 2025 08:03:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uCzjn-0007II-57
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 07:48:27 -0400
+Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uCzyg-0000BZ-MH
- for qemu-devel@nongnu.org; Thu, 08 May 2025 08:03:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746705828;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=dUMv4IIJrXqwyw8Je7U3SOqPI7g2SJSTqw2tPLjLHwk=;
- b=RhkkIVEwkFKmp7tt7cpxDGBmUd0eS/NrTYdvbMHt0Z3B/IrmBvcuHAcXZL2oVa4WneJrpJ
- K8F0oG0/joKcsgUl6eCwdPrwI3HRHOyq3o8sdhrkTZFTuG+soleZ/Ek9MdgzsMvTyYRwJc
- DQ9K1XDhHbbzAjoj0bUWI4e2dteD6YQ=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-54-NQPSugJyOAyG3_F1N9ScNg-1; Thu,
- 08 May 2025 08:03:47 -0400
-X-MC-Unique: NQPSugJyOAyG3_F1N9ScNg-1
-X-Mimecast-MFC-AGG-ID: NQPSugJyOAyG3_F1N9ScNg_1746705826
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8148A19560AA; Thu,  8 May 2025 12:03:45 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.27])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CE7A219560A7; Thu,  8 May 2025 12:03:44 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 68C8021E66C9; Thu, 08 May 2025 14:03:42 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Mario Fleischmann <mario.fleischmann@lauterbach.com>
-Cc: qemu-devel@nongnu.org,  alex.bennee@linaro.org,  philmd@linaro.org,
- christian.boenig@lauterbach.com
-Subject: Re: [PATCH v2 07/20] mcd: Implement target initialization API
-In-Reply-To: <20250430052741.21145-8-mario.fleischmann@lauterbach.com> (Mario
- Fleischmann's message of "Wed, 30 Apr 2025 07:27:28 +0200")
-References: <20250430052741.21145-1-mario.fleischmann@lauterbach.com>
- <20250430052741.21145-8-mario.fleischmann@lauterbach.com>
-Date: Thu, 08 May 2025 14:03:42 +0200
-Message-ID: <87jz6re2ch.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uCzjl-0006tX-7u
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 07:48:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1746704905; x=1778240905;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=1uyG16FIdzJvVtC7hjq7yIsugtDMo+Kie/Zj81E2f+o=;
+ b=NQE5ftqmCXkSm+jk8RPsIxEX4TSNlqhvVY4MiIlNedzCRAgg2dMwv3ki
+ iwQtnIuzUjfaQyvNOVWFAJ82m88I9H5k/quNvZOwB6fUzHvB9j5KuoQ1e
+ Q+lRosK0B6Y/lgmCOZ00dQ5Dfi/aSwZpYE01/SflNsfCft8okCb1T4deL
+ W2dr1WEL5nPWJ+W0EeCrY5a1MmgnkSBFE3kiVLDH2V+nyee8M1xMEaCId
+ mtpU1Cu9pty12JtvYqJiix6C2MOP9MwPpy7z1ZJQlp21gQtWPe/EF0GRR
+ J5zQIBQGPj5/OBWqeKBQBRBDBOwADaeNgyvB7BMsg5uOhikw7tC+F46hK A==;
+X-CSE-ConnectionGUID: YuAnA2RhTrKA72+iIzSn5Q==
+X-CSE-MsgGUID: oOMsr1DmSGmI4vkkyf0wTA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="66014855"
+X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="66014855"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 May 2025 04:48:05 -0700
+X-CSE-ConnectionGUID: eRixBp4XTQ6mft2czjJcfA==
+X-CSE-MsgGUID: 41jMWdpNQNK1SdyI89EKmg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="137260064"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa009.fm.intel.com with ESMTP; 08 May 2025 04:48:00 -0700
+Date: Thu, 8 May 2025 20:09:02 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Laurent Vivier <lvivier@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Huacai Chen <chenhuacai@kernel.org>, Amit Shah <amit@kernel.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Sergio Lopez <slp@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Jason Wang <jasowang@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ =?iso-8859-1?Q?Cl=E9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Yi Liu <yi.l.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Mark Cave-Ayland <mark.caveayland@nutanix.com>
+Subject: Re: [PATCH v3 12/19] hw/i386/pc: Remove pc_compat_2_7[] array
+Message-ID: <aBye3pzw6LLJ1rgt@intel.com>
+References: <20250502185652.67370-1-philmd@linaro.org>
+ <20250502185652.67370-13-philmd@linaro.org>
+ <2e2f4b39-d7f1-4817-947f-106558c1621c@redhat.com>
+ <1bd065b9-32ff-46d9-8131-b06e75017243@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.416,
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1bd065b9-32ff-46d9-8131-b06e75017243@linaro.org>
+Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -57
+X-Spam_score: -5.8
+X-Spam_bar: -----
+X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.416,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,560 +96,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Mario Fleischmann <mario.fleischmann@lauterbach.com> writes:
+On Thu, May 08, 2025 at 12:40:35PM +0200, Philippe Mathieu-Daudé wrote:
+> Date: Thu, 8 May 2025 12:40:35 +0200
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: Re: [PATCH v3 12/19] hw/i386/pc: Remove pc_compat_2_7[] array
+> 
+> Hi Thomas,
+> 
+> On 8/5/25 09:55, Thomas Huth wrote:
+> > On 02/05/2025 20.56, Philippe Mathieu-Daudé wrote:
+> > > The pc_compat_2_7[] array was only used by the pc-q35-2.7
+> > > and pc-i440fx-2.7 machines, which got removed. Remove it.
+> > > 
+> > > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> > > Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+> > > ---
+> > >   include/hw/i386/pc.h |  3 ---
+> > >   hw/i386/pc.c         | 10 ----------
+> > >   2 files changed, 13 deletions(-)
+> > > 
+> > > diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+> > > index 4fb2033bc54..319ec82f709 100644
+> > > --- a/include/hw/i386/pc.h
+> > > +++ b/include/hw/i386/pc.h
+> > > @@ -289,9 +289,6 @@ extern const size_t pc_compat_2_9_len;
+> > >   extern GlobalProperty pc_compat_2_8[];
+> > >   extern const size_t pc_compat_2_8_len;
+> > > -extern GlobalProperty pc_compat_2_7[];
+> > > -extern const size_t pc_compat_2_7_len;
+> > > -
+> > >   #define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
+> > >       static void pc_machine_##suffix##_class_init(ObjectClass *oc, \
+> > >                                                    const void *data) \
+> > > diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> > > index 7573b880905..ee7095c89a8 100644
+> > > --- a/hw/i386/pc.c
+> > > +++ b/hw/i386/pc.c
+> > > @@ -241,16 +241,6 @@ GlobalProperty pc_compat_2_8[] = {
+> > >   };
+> > >   const size_t pc_compat_2_8_len = G_N_ELEMENTS(pc_compat_2_8);
+> > > -GlobalProperty pc_compat_2_7[] = {
+> > > -    { TYPE_X86_CPU, "l3-cache", "off" },
+> > > -    { TYPE_X86_CPU, "full-cpuid-auto-level", "off" },
+> > > -    { "Opteron_G3" "-" TYPE_X86_CPU, "family", "15" },
+> > > -    { "Opteron_G3" "-" TYPE_X86_CPU, "model", "6" },
+> > > -    { "Opteron_G3" "-" TYPE_X86_CPU, "stepping", "1" },
+> > > -    { "isa-pcspk", "migrate", "off" },
+> > > -};
+> > > -const size_t pc_compat_2_7_len = G_N_ELEMENTS(pc_compat_2_7);
+> > 
+> > I'd really appreciate if you could provide clean-up patches for
+> > TYPE_X86_CPU, too. Otherwise I'm pretty sure we'll forget that there is
+> > some clean up possibility here.
+> 
+> Well TBH it is too exhausting to keep rebasing these patches without
+> feedback from maintainers. I'll respin a v4 with Zhao and your comments
+> addressed but without touching the TYPE_X86_CPU properties. If
+> maintainers prefer to remove dead code in one go -- something I
+> certainly understand from a maintainer PoV -- I'll let someone else
+> do it, taking over my series.
 
-> The target initialization API ensures that the requested and provided
-> MCD versions are compatible.
->
-> * implement mcd_initialize_f and mcd_qry_error_info_f in mcdserver
-> * implement QMP stub functionality
-> * add QTest
->
-> Thanks to the QMP integration in QTest, function arguments and results
-> can be (de)serialized automatically.
->
-> Signed-off-by: Mario Fleischmann <mario.fleischmann@lauterbach.com>
-> ---
->  mcd/mcd_qapi.c          |  66 +++++++++++++++
->  mcd/mcd_qapi.h          |  26 ++++++
->  mcd/mcd_server.c        |  44 +++++++++-
->  mcd/mcd_stub.c          |  35 ++++++++
->  mcd/meson.build         |  49 +++++++----
->  qapi/mcd.json           | 183 ++++++++++++++++++++++++++++++++++++++++
->  tests/qtest/mcd-test.c  |  62 ++++++++++++++
->  tests/qtest/mcd-util.c  |  99 ++++++++++++++++++++++
->  tests/qtest/mcd-util.h  |   6 ++
->  tests/qtest/meson.build |   2 +-
->  10 files changed, 554 insertions(+), 18 deletions(-)
->  create mode 100644 mcd/mcd_qapi.c
->  create mode 100644 mcd/mcd_qapi.h
->  create mode 100644 tests/qtest/mcd-util.c
->
-> diff --git a/mcd/mcd_qapi.c b/mcd/mcd_qapi.c
-> new file mode 100644
-> index 0000000..9a99866
-> --- /dev/null
-> +++ b/mcd/mcd_qapi.c
-> @@ -0,0 +1,66 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +/*
-> + * QAPI marshalling helpers for structures of the MCD API
-> + *
-> + * Copyright (c) 2025 Lauterbach GmbH
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
-> + * See the COPYING file in the top-level directory.
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "mcd_qapi.h"
-> +
-> +MCDAPIVersion *marshal_mcd_api_version(const mcd_api_version_st *api_version)
-> +{
-> +    MCDAPIVersion *marshal = g_malloc0(sizeof(*marshal));
-> +
-> +    *marshal = (MCDAPIVersion) {
-> +        .v_api_major = api_version->v_api_major,
-> +        .v_api_minor = api_version->v_api_minor,
-> +        .author = g_strdup(api_version->author),
-> +    };
-> +
-> +    return marshal;
-> +}
-> +
-> +mcd_api_version_st unmarshal_mcd_api_version(MCDAPIVersion *api_version)
-> +{
-> +    mcd_api_version_st unmarshal =  {
-> +        .v_api_major = api_version->v_api_major,
-> +        .v_api_minor = api_version->v_api_minor,
-> +    };
-> +    strncpy(unmarshal.author, api_version->author, MCD_API_IMP_VENDOR_LEN - 1);
+Hi Philippe, I think I could volunteer help you to revisit the history
+of these properties (they're also too old for me :-)), and help identify
+if these properties should be removed or at least list the potential
+issues. Hopefully I can do this.
 
-Have you considered sizeof(unmarshal.author) - 1 ?
-
-pstrcpy() from qemu/cutils.h is easier to use safely.
-
-> +    return unmarshal;
-> +}
-> +
-> +MCDImplVersionInfo *marshal_mcd_impl_version_info(
-> +    const mcd_impl_version_info_st *impl_info)
-> +{
-> +    MCDImplVersionInfo *marshal = g_malloc0(sizeof(*marshal));
-> +
-> +    *marshal = (MCDImplVersionInfo) {
-> +        .v_api = marshal_mcd_api_version(&impl_info->v_api),
-> +        .v_imp_major = impl_info->v_imp_major,
-> +        .v_imp_minor = impl_info->v_imp_minor,
-> +        .v_imp_build = impl_info->v_imp_build,
-> +        .vendor = g_strdup(impl_info->vendor),
-> +        .date = g_strdup(impl_info->date),
-> +    };
-> +
-> +    return marshal;
-> +}
-> +
-> +MCDErrorInfo *marshal_mcd_error_info(const mcd_error_info_st *error_info)
-> +{
-> +    MCDErrorInfo *marshal = g_malloc0(sizeof(*marshal));
-> +
-> +    *marshal = (MCDErrorInfo) {
-> +        .return_status = error_info->return_status,
-> +        .error_code = error_info->error_code,
-> +        .error_events = error_info->error_events,
-> +        .error_str = g_strdup(error_info->error_str),
-> +    };
-> +
-> +    return marshal;
-> +}
-> diff --git a/mcd/mcd_qapi.h b/mcd/mcd_qapi.h
-> new file mode 100644
-> index 0000000..47f4e16
-> --- /dev/null
-> +++ b/mcd/mcd_qapi.h
-> @@ -0,0 +1,26 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +/*
-> + * QAPI marshalling helpers for structures of the MCD API
-> + *
-> + * Copyright (c) 2025 Lauterbach GmbH
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
-> + * See the COPYING file in the top-level directory.
-> + */
-> +
-> +#ifndef MCD_QAPI_H
-> +#define MCD_QAPI_H
-> +
-> +#include "mcd_api.h"
-> +#include "mcd/mcd-qapi-types.h"
-> +
-> +MCDAPIVersion *marshal_mcd_api_version(const mcd_api_version_st *api_version);
-> +
-> +MCDImplVersionInfo *marshal_mcd_impl_version_info(
-> +    const mcd_impl_version_info_st *impl_info);
-> +
-> +MCDErrorInfo *marshal_mcd_error_info(const mcd_error_info_st *error_info);
-> +
-> +mcd_api_version_st unmarshal_mcd_api_version(MCDAPIVersion *api_version);
-> +
-> +#endif /* MCD_QAPI_H */
-> diff --git a/mcd/mcd_server.c b/mcd/mcd_server.c
-> index a20708d..6e941f0 100644
-> --- a/mcd/mcd_server.c
-> +++ b/mcd/mcd_server.c
-> @@ -8,6 +8,7 @@
->   * See the COPYING file in the top-level directory.
->   */
->  
-> +#include "qemu/osdep.h"
->  #include "mcd_api.h"
->  
->  static const mcd_error_info_st MCD_ERROR_NOT_IMPLEMENTED = {
-> @@ -17,6 +18,13 @@ static const mcd_error_info_st MCD_ERROR_NOT_IMPLEMENTED = {
->      .error_str = "",
->  };
->  
-> +static const mcd_error_info_st MCD_ERROR_INVALID_NULL_PARAM = {
-> +    .return_status = MCD_RET_ACT_HANDLE_ERROR,
-> +    .error_code = MCD_ERR_PARAM,
-> +    .error_events = MCD_ERR_EVT_NONE,
-> +    .error_str = "null was invalidly passed as a parameter",
-> +};
-> +
->  static const mcd_error_info_st MCD_ERROR_NONE = {
->      .return_status = MCD_RET_ACT_NONE,
->      .error_code = MCD_ERR_NONE,
-> @@ -24,6 +32,9 @@ static const mcd_error_info_st MCD_ERROR_NONE = {
->      .error_str = "",
->  };
->  
-> +/* reserves memory for custom errors */
-> +static mcd_error_info_st custom_mcd_error;
-> +
->  /**
->   * struct mcdserver_state - State of the MCD server
->   *
-> @@ -40,12 +51,43 @@ static mcdserver_state g_server_state = {
->  mcd_return_et mcd_initialize_f(const mcd_api_version_st *version_req,
->                                 mcd_impl_version_info_st *impl_info)
->  {
-> -    g_server_state.last_error = &MCD_ERROR_NOT_IMPLEMENTED;
-> +    if (!version_req || !impl_info) {
-> +        g_server_state.last_error = &MCD_ERROR_INVALID_NULL_PARAM;
-> +        return g_server_state.last_error->return_status;
-> +    }
-> +
-> +    *impl_info = (mcd_impl_version_info_st) {
-> +        .v_api = (mcd_api_version_st) {
-> +            .v_api_major = MCD_API_VER_MAJOR,
-> +            .v_api_minor = MCD_API_VER_MINOR,
-> +            .author = MCD_API_VER_AUTHOR,
-> +        },
-> +        .v_imp_major = QEMU_VERSION_MAJOR,
-> +        .v_imp_minor = QEMU_VERSION_MINOR,
-> +        .v_imp_build = 0,
-> +        .vendor = "QEMU",
-> +        .date = __DATE__,
-> +    };
-> +
-> +    if (version_req->v_api_major == MCD_API_VER_MAJOR &&
-> +        version_req->v_api_minor <= MCD_API_VER_MINOR) {
-> +        g_server_state.last_error = &MCD_ERROR_NONE;
-> +    } else {
-> +        custom_mcd_error = (mcd_error_info_st) {
-> +            .return_status = MCD_RET_ACT_HANDLE_ERROR,
-> +            .error_code = MCD_ERR_GENERAL,
-> +            .error_events = MCD_ERR_EVT_NONE,
-> +            .error_str = "incompatible versions",
-> +        };
-> +        g_server_state.last_error = &custom_mcd_error;
-> +    }
-> +
->      return g_server_state.last_error->return_status;
->  }
->  
->  void mcd_exit_f(void)
->  {
-> +    g_server_state.last_error = &MCD_ERROR_NONE;
->      return;
->  }
->  
-> diff --git a/mcd/mcd_stub.c b/mcd/mcd_stub.c
-> index de679a4..23db1cf 100644
-> --- a/mcd/mcd_stub.c
-> +++ b/mcd/mcd_stub.c
-> @@ -8,4 +8,39 @@
->   * See the COPYING file in the top-level directory.
->   */
->  
-> +#include "qemu/osdep.h"
->  #include "mcd_api.h"
-> +#include "mcd_qapi.h"
-> +#include "mcd/mcd-qapi-commands.h"
-> +
-> +MCDInitializeResult *qmp_mcd_initialize(MCDAPIVersion *version_req,
-> +                                        Error **errp)
-> +{
-> +    mcd_impl_version_info_st impl_info;
-> +    MCDInitializeResult *result = g_malloc0(sizeof(*result));
-> +    mcd_api_version_st version_req_unmarshalled =
-> +        unmarshal_mcd_api_version(version_req);
-> +
-> +    result->return_status = mcd_initialize_f(&version_req_unmarshalled,
-> +                                             &impl_info);
-> +
-> +    if (result->return_status == MCD_RET_ACT_NONE) {
-> +        result->impl_info = marshal_mcd_impl_version_info(&impl_info);
-> +    }
-> +
-> +    return result;
-> +}
-> +
-> +void qmp_mcd_exit(Error **errp)
-> +{
-> +    mcd_exit_f();
-> +}
-> +
-> +MCDErrorInfo *qmp_mcd_qry_error_info(Error **errp)
-> +{
-> +    MCDErrorInfo *result;
-> +    mcd_error_info_st error_info;
-> +    mcd_qry_error_info_f(NULL, &error_info);
-> +    result = marshal_mcd_error_info(&error_info);
-> +    return result;
-> +}
-> diff --git a/mcd/meson.build b/mcd/meson.build
-> index 191f0cc..2adaa1b 100644
-> --- a/mcd/meson.build
-> +++ b/mcd/meson.build
-> @@ -1,14 +1,10 @@
->  mcd_qapi_outputs = [
-> -  'mcd-qapi-commands.c',
-> -  'mcd-qapi-commands.h',
->    'mcd-qapi-emit-events.c',
->    'mcd-qapi-emit-events.h',
->    'mcd-qapi-events.c',
->    'mcd-qapi-events.h',
->    'mcd-qapi-features.c',
->    'mcd-qapi-features.h',
-> -  'mcd-qapi-init-commands.c',
-> -  'mcd-qapi-init-commands.h',
->    'mcd-qapi-introspect.c',
->    'mcd-qapi-introspect.h',
->    'mcd-qapi-types.c',
-> @@ -17,27 +13,48 @@ mcd_qapi_outputs = [
->    'mcd-qapi-visit.h',
->  ]
->  
-> +# QAPI outputs that will only be used by the MCD server
-> +mcd_qapi_server_outputs = [
-> +  'mcd-qapi-commands.c',
-> +  'mcd-qapi-commands.h',
-> +  'mcd-qapi-init-commands.c',
-> +  'mcd-qapi-init-commands.h'
-> +]
-> +
->  mcd_qapi_files = custom_target('MCD QAPI files',
-> -                               output: mcd_qapi_outputs,
-> +                               output: mcd_qapi_outputs + mcd_qapi_server_outputs,
->                                 input: '../qapi/mcd.json',
->                                 command: [ qapi_gen, '-p', 'mcd-', '-o', 'mcd',
->                                            '--suppress-tracing','@INPUT0@'],
->                                 depend_files: qapi_gen_depends)
->  
-> -mcd_ss = ss.source_set()
-> +mcd_qapi_ss = ss.source_set()
->  
-> -mcd_ss.add(mcd_qapi_files.to_list())
-> -mcd_ss.add(files(
-> -  'mcd_server.c',
-> -  'mcd_stub.c',
-> -  'mcd_monitor.c'))
-> +foreach f : mcd_qapi_files.to_list()
-> +  if mcd_qapi_outputs.contains(fs.name(f))
-> +    mcd_qapi_ss.add([f])
-> +  endif
-> +endforeach
->  
-> -mcd_ss = mcd_ss.apply({})
-> +mcd_qapi_ss.add(files('mcd_qapi.c'))
-> +mcd_qapi_ss = mcd_qapi_ss.apply({})
->  
-> -libmcd = static_library('mcd_system',
-> -                        mcd_ss.sources() + genh,
-> +libmcd_qapi = static_library('mcd_qapi',
-> +                        mcd_qapi_ss.sources() + genh,
->                          build_by_default: false)
->  
-> -mcd = declare_dependency(objects: libmcd.extract_all_objects(recursive: false))
-> +mcd_qapi = declare_dependency(
-> +    objects: libmcd_qapi.extract_all_objects(recursive: false))
-> +
-> +foreach f : mcd_qapi_files.to_list()
-> +  if mcd_qapi_server_outputs.contains(fs.name(f))
-> +    libsystem_ss.add([f])
-> +  endif
-> +endforeach
-> +
-> +libsystem_ss.add(files(
-> +  'mcd_server.c',
-> +  'mcd_stub.c',
-> +  'mcd_monitor.c'))
->  
-> -system_ss.add(mcd)
-> +libsystem_ss.add(mcd_qapi)
-
-The commit message did not prepare me for such changes to meson.build.
-What are you doing here?
-
-> diff --git a/qapi/mcd.json b/qapi/mcd.json
-> index 701fd03..7b42a74 100644
-> --- a/qapi/mcd.json
-> +++ b/qapi/mcd.json
-> @@ -4,3 +4,186 @@
->  ##
->  # = Multi-Core Debug (MCD) API
->  ##
-> +
-> +
-> +##
-> +# == Definition of Structures
-> +##
-> +
-> +
-> +##
-> +# @MCDAPIVersion:
-> +#
-> +# Structure type containing the MCD API version information of the tool.
-> +#
-> +# @v-api-major: API major version.
-> +# @v-api-minor: API minor version.
-> +# @author:      API name of the author of this MCD API version.
-> +#
-> +# Since: 9.1
-> +##
-> +{ 'struct': 'MCDAPIVersion',
-> +  'data': {
-> +    'v-api-major': 'uint16',
-> +    'v-api-minor': 'uint16',
-> +    'author':      'str' } }
-> +
-> +
-> +##
-> +# @MCDImplVersionInfo:
-> +#
-> +# Structure type containing the MCD API implementation information.
-> +#
-> +# @v-api:       Implemented API version.
-> +# @v-imp-major: Major version number of this implementation.
-> +# @v-imp-minor: Minor version number of this implementation.
-> +# @v-imp-build: Build number of this implementation.
-> +# @vendor:      Name of vendor of the implementation.
-> +# @date:        String from __DATE__ macro at compile time.
-> +#
-> +# Since: 9.1
-> +##
-> +{ 'struct': 'MCDImplVersionInfo',
-> +  'data': {
-> +    'v-api'      : 'MCDAPIVersion',
-> +    'v-imp-major': 'uint16',
-> +    'v-imp-minor': 'uint16',
-> +    'v-imp-build': 'uint16',
-> +    'vendor'     : 'str',
-> +    'date'       : 'str' } }
-> +
-> +
-> +##
-> +# @MCDErrorInfo:
-> +#
-> +# Structure type containing the error status and error event notification.
-> +#
-> +# @return-status: Return status from the last API call.
-> +# @error-code:    Detailed error code from the last API call.
-> +# @error-events:  Detailed event code from the last API call.
-> +# @error-str:     Detailed error text string from the last API call.
-> +#
-> +# Since: 9.1
-> +##
-> +{ 'struct': 'MCDErrorInfo',
-> +  'data': {
-> +    'return-status': 'uint32',
-> +    'error-code'   : 'uint32',
-> +    'error-events' : 'uint32',
-> +    'error-str'    : 'str' }}
-> +
-> +
-> +##
-> +# == Target Initialization API
-> +##
-> +
-> +
-> +##
-> +# @MCDInitializeResult:
-> +#
-> +# Return value of @mcd-initialize.
-> +#
-> +# @return-status: Return code.
-> +#
-> +# @impl-info: Information about the QEMU build, its version and the version of
-> +#             the implemented MCD API.
-> +#
-> +# Since: 9.1
-> +##
-> +{ 'struct': 'MCDInitializeResult',
-> +  'data': {
-> +    'return-status': 'uint32',
-> +    '*impl-info'   : 'MCDImplVersionInfo' } }
-> +
-> +
-> +##
-> +# @mcd-initialize:
-> +#
-> +# Function initializing the interaction between a tool-side implementation and
-> +# target-side implementation.
-> +#
-> +# @version-req: MCD API version as requested by an upper layer.
-> +#
-> +# Returns: @MCDInitializeResult
-> +#
-> +# Since: 9.1
-> +#
-> +# .. qmp-example::
-> +#    :title: Check compatibility with MCD server
-> +#
-> +#     -> { "execute": "mcd-initialize",
-> +#          "arguments": { "version-req": { "v-api-major": 1,
-> +#                                          "v-api-minor": 1,
-> +#                                          "author": "" } } }
-> +#     <- {
-> +#            "return": {
-> +#                "impl-info": {
-> +#                    "v-api": {
-> +#                        "v-api-minor": 1,
-> +#                        "v-api-major": 1,
-> +#                        "author": "QEMU Release"
-> +#                    },
-> +#                    "vendor": "QEMU",
-> +#                    "v-imp-minor": 2,
-> +#                    "v-imp-major": 9,
-> +#                    "v-imp-build": 0,
-> +#                    "date": "Dec 18 2024"
-> +#                },
-> +#                "return-status": 0
-> +#            }
-> +#        }
-> +##
-> +{ 'command': 'mcd-initialize',
-> +  'data': { 'version-req': 'MCDAPIVersion' },
-> +  'returns': 'MCDInitializeResult' }
-> +
-> +
-> +##
-> +# @mcd-exit:
-> +#
-> +# Function cleaning up all core and server connections from a tool.
-> +#
-> +# Since: 9.1
-> +##
-> +{ 'command': 'mcd-exit' }
-> +
-> +
-> +##
-> +# == Core Connection API
-> +##
-> +
-> +
-> +##
-> +# @mcd-qry-error-info:
-> +#
-> +# Function allowing the access to detailed error and/or event information after
-> +# an API call.
-> +#
-> +# Returns: @MCDErrorInfo
-> +#
-> +# Since: 9.1
-> +#
-> +# .. qmp-example::
-> +#    :title: Incompatible MCD versions
-> +#
-> +#     -> { "execute": "mcd-initialize",
-> +#          "arguments": { "version-req": { "v-api-major": 2,
-> +#                                          "v-api-minor": 0,
-> +#                                          "author": "" } } }
-> +#     <- {
-> +#            "return": {
-> +#                "return-status": 3
-> +#            }
-> +#        }
-> +#     -> { "execute": "mcd-qry-error-info" }
-> +#     <- {
-> +#            "return": {
-> +#                "error-str": "incompatible versions",
-> +#                "error-code": 3840,
-> +#                "error-events": 0,
-> +#                "return-status": 3
-> +#            }
-> +#        }
-> +##
-> +{ 'command': 'mcd-qry-error-info',
-> +  'returns': 'MCDErrorInfo' }
-
-You need "Since: 10.0" now.
-
-From docs/devel/qapi-code-gen.rst:
-
-    For legibility, wrap text paragraphs so every line is at most 70
-    characters long.
-
-and
-
-    Descriptions start with '\@name:'.  The description text must be
-    indented like this::
-
-     # @name: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-     #     do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-
-[...]
+Thanks,
+Zhao
 
 
