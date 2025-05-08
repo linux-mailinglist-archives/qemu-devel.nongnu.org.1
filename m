@@ -2,101 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82B9AAAFC71
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 16:10:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89E2BAAFCCA
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 16:23:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uD1xM-00035C-Pu; Thu, 08 May 2025 10:10:36 -0400
+	id 1uD286-0004PT-Pi; Thu, 08 May 2025 10:21:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uD1xJ-00031r-JL
- for qemu-devel@nongnu.org; Thu, 08 May 2025 10:10:33 -0400
+ id 1uD282-0004Oc-RP
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 10:21:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uD1xH-0000Lt-9V
- for qemu-devel@nongnu.org; Thu, 08 May 2025 10:10:33 -0400
+ id 1uD280-00029C-OD
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 10:21:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746713425;
+ s=mimecast20190719; t=1746714093;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=FLCDMHa14a32Sk0pqdB3/vFUzLcHBco+wmsb/NHdj8Y=;
- b=QiitBr7ycmipG3N6EPmnLwwYCEHQe8shszxX/tjc+7kVQfZba5oIWBD4tcu0mGfNEkj79n
- NwkAVTYFAo5QDhlTm4X7opvV9ONUKa0dBdgyBIQjfptY38YPdGSoRD5fbxF955WlVEaeoD
- K6Zo0vaTF2wIh9MmNsQjSWeDcCnmEZ4=
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=kiSrQW58eFNaPziWORRpwOQ4lMXT8a4bS9W7ZZ7NHa4=;
+ b=Ce8pIyQ5TDQPRGbSmjD1feOBx5bZ6CP4Cxd8Qfvvhe5J1uylwKfyRbh9VQEuQBRJrEk/nP
+ J8PCBPkoXyQj6ryt36TWpq+tAydrWTaJ/373unhfHzOC4jURg970zrk8RcnSv2rF2g4MZ3
+ iYMC3SLlWhNIlUmqkBXvPVQe4zCV8Zg=
 Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-679-N8LlvmSfPnmTS-Gk0SqKWA-1; Thu,
- 08 May 2025 10:10:21 -0400
-X-MC-Unique: N8LlvmSfPnmTS-Gk0SqKWA-1
-X-Mimecast-MFC-AGG-ID: N8LlvmSfPnmTS-Gk0SqKWA_1746713417
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-169-a8o8cdyTOseidK4Ko-Wn4A-1; Thu,
+ 08 May 2025 10:21:29 -0400
+X-MC-Unique: a8o8cdyTOseidK4Ko-Wn4A-1
+X-Mimecast-MFC-AGG-ID: a8o8cdyTOseidK4Ko-Wn4A_1746714088
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 60A261955BCC; Thu,  8 May 2025 14:10:14 +0000 (UTC)
+ id 2D9FE1955D60; Thu,  8 May 2025 14:21:28 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.138])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A509B19560B3; Thu,  8 May 2025 14:09:57 +0000 (UTC)
-Date: Thu, 8 May 2025 15:09:54 +0100
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B969A18004A7; Thu,  8 May 2025 14:21:23 +0000 (UTC)
+Date: Thu, 8 May 2025 15:21:20 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, Mark Burton <mburton@qti.qualcomm.com>,
- Eduardo Habkost <eduardo@habkost.net>, Alessandro Di Federico <ale@rev.ng>,
- Alistair Francis <alistair.francis@wdc.com>,
- Anton Johansson <anjo@rev.ng>, Brian Cain <bcain@quicinc.com>,
- Chao Peng <chao.p.peng@linux.intel.com>, Neo Jia <cjia@nvidia.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
- "Wedgwood, Chris" <cw@f00f.org>, dhedde@kalrayinc.com,
- Eric Blake <eblake@redhat.com>, eblot@rivosinc.com,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Auger Eric <eric.auger@redhat.com>,
- Felipe Franciosi <felipe@nutanix.com>, iggy@theiggy.com,
- Warner Losh <imp@bsdimp.com>, Jan Kiszka <jan.kiszka@web.de>,
- Jason Gunthorpe <jgg@nvidia.com>,
- Jidong Xiao <jidong.xiao@gmail.com>, Jim Shu <jim.shu@sifive.com>,
- Joao Martins <joao.m.martins@oracle.com>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- Luc Michel <luc@lmichel.fr>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Max Chou <max.chou@sifive.com>, Meirav Dean <mdean@redhat.com>,
- mimu@linux.vnet.ibm.com, "Ho, Nelson" <nelson.ho@windriver.com>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- QEMU Developers <qemu-devel@nongnu.org>, Roberto Campesato <rbc@meta.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
- Bernhard Beschow <shentey@gmail.com>, Stefan Hajnoczi <stefanha@gmail.com>,
- Thomas Huth <thuth@redhat.com>, Wei Wang <wei.w.wang@intel.com>,
- z.huo@139.com, LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
- "Wu, Zhiyong" <zwu.kernel@gmail.com>
-Subject: Re: KVM/QEMU Community call 29/04/2025 agenda items?
-Message-ID: <aBy7MsOIyWfXdaWk@redhat.com>
-References: <874iy85yx2.fsf@draig.linaro.org>
- <eefb308b-5cd8-4b30-bc32-e37f601cb07b@linaro.org>
- <CABgObfYmm2RgFUuViDJA_cuqeCUOh_DV5Qar8YLnrbfYVV39VQ@mail.gmail.com>
- <87a57ydj8y.fsf@pond.sub.org>
- <5ce00003-4105-40c7-954b-63336a4325d5@linaro.org>
- <87plgkihg4.fsf@pond.sub.org>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-devel@nongnu.org, alex.bennee@linaro.org, stefanha@redhat.com,
+ peter.maydell@linaro.org, Markus Armbruster <armbru@redhat.com>,
+ richard.henderson@linaro.org, pbonzini@redhat.com, jsnow@redhat.com,
+ philmd@linaro.org, thuth@redhat.com, Michael Roth <michael.roth@amd.com>
+Subject: Re: [PATCH 03/13] qobject/qlit: allow to hide dict or list entries
+Message-ID: <aBy94N6JSwDj53mb@redhat.com>
+References: <20250507231442.879619-1-pierrick.bouvier@linaro.org>
+ <20250507231442.879619-4-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87plgkihg4.fsf@pond.sub.org>
+In-Reply-To: <20250507231442.879619-4-pierrick.bouvier@linaro.org>
 User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -34
@@ -123,106 +87,105 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 07, 2025 at 05:11:39PM +0200, Markus Armbruster wrote:
-> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
-> 
-> > On 30/4/25 12:41, Markus Armbruster wrote:
-> 
-> [...]
-> 
-> >> Pierrick's stated goal is to have no noticable differences between the
-> >> single binary and the qemu-system-<target> it covers.
-> >> 
-> >> We have two external interfaces to worry about: QMP and the command
-> >> line.  Let's ignore the latter for now.
-> >> 
-> >> Target-specific differences in *syntax* come from QAPI schema
-> >> conditionals with target-specific conditions.  Example:
-> >> 
-> >>      { 'command': 'query-cpu-definitions', 'returns': ['CpuDefinitionInfo'],
-> >>        'if': { 'any': [ 'TARGET_PPC',
-> >>                         'TARGET_ARM',
-> >>                         'TARGET_I386',
-> >>                         'TARGET_S390X',
-> >>                         'TARGET_MIPS',
-> >>                         'TARGET_LOONGARCH64',
-> >>                         'TARGET_RISCV' ] } }
-> >> 
-> >> This command is only defined for some targets.
-> >> 
-> >> The value of query-qmp-schema reflects this: it has
-> >> query-cpu-definitions exactly when the condition is satisfied.  The
-> >> condition is evaluated at compile-time, because that's how QAPI schema
-> >> 'if' works.
-> >> 
-> >> Say we drop the condition and instead add an equivalent run-time
-> >> condition to command registration.  This preserves behavior of command
-> >> execution.  But query-qmp-schema now has query-cpu-definitions *always*.
-> >> This is a noticable difference.  It may break management applications
-> >> that use query-qmp-schema to probe for the command.
-> >> 
-> >> Moreover, conditionals aren't limited to commands.  Example:
-> >> 
-> >>      { 'struct': 'CpuModelExpansionInfo',
-> >>        'data': { 'model': 'CpuModelInfo',
-> >>                  'deprecated-props' : { 'type': ['str'],
-> >> --->                                   'if': 'TARGET_S390X' } },
-> >>        'if': { 'any': [ 'TARGET_S390X',
-> >>                         'TARGET_I386',
-> >>                         'TARGET_ARM',
-> >>                         'TARGET_LOONGARCH64',
-> >>                         'TARGET_RISCV' ] } }
-> >> 
-> >> Here we have a conditional member.
-> 
-> [...]
-> 
-> > IMHO conditionals should only depend on host / static configuration
-> > features, not features modifiable from the command line.
-> 
-> This is how the QAPI schema works now.
-> 
-> >                                                          (I'm always
-> > confused by KVM features published in the schema, but then you start
-> > your binary with -accel=tcg and still can run KVM specific commands
-> > via QMP, returning errors).
-> 
-> Not exactly a ringing endorsement for keeping the QAPI schema work the
-> way it does now, isn't it?  ;)
-> 
-> The problem at hand is QAPI-generated files in a single binary.
-> 
-> Pierrick posted "[RFC PATCH 0/3] single-binary: make QAPI generated
-> files common".  The patches are flawed, but that's alright for RFC.
-> 
-> In review, I pointed out three possible solutions, and discussed their
-> pros and cons:
-> 
-> (1) Drop target-specific conditionals.
-> 
-> (2) Replace them by run-time checks.
-> 
-> (3) Have target-specific QAPI-generated code for multiple targets
->     coexist in the single binary.
-> 
-> Both (1) and (3) keep the QAPI schema work as it does now.
-> 
-> Pierrick's patches are an incomplete attempt at (2).
-> 
-> Daniel made a case for (1).  You and I actually discussed (1) before,
-> and I encouraged you to explore it.
->
-> We can certainly discuss this some more, but I'd prefer to review a
-> working solution instead.
+On Wed, May 07, 2025 at 04:14:33PM -0700, Pierrick Bouvier wrote:
+> We add a new .hidden field to qlit entries, which gets ignored when
+> creating the associated QObject.
+> By default .hidden is 0, so it means the entry is visible. This way,
+> only potentially hidden elements need to be assigned.
 
-I've posted a minimal effort PoC for (1). It addresses the QAPI side of
-the problem, but doesn't magically make "single binary" buildable as is.
-It just removes QAPI from being a blocker for "single binary", and so
-the remaining work is more of the boring refactoring to introduce virtual
-methods on machines, so the QMP cmd impl behaviour  switches at runtime
-based on what is configured & being run.
+IMHO this feels like a somewhat dubious concept to have in the
+qobject code, as it is quite specialized to a single use case.
+A more general purpose approach would be to have some mechanism
+for cloning while applying a data filter, though I admit that
+may be more tedious to actually use.
 
-https://lists.nongnu.org/archive/html/qemu-devel/2025-05/msg01915.html
+> 
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> ---
+>  include/qobject/qlit.h | 12 ++++++++++++
+>  qobject/qlit.c         | 10 ++++++++--
+>  2 files changed, 20 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/qobject/qlit.h b/include/qobject/qlit.h
+> index c0676d5daf2..3b66c22013c 100644
+> --- a/include/qobject/qlit.h
+> +++ b/include/qobject/qlit.h
+> @@ -28,25 +28,37 @@ struct QLitObject {
+>          QLitDictEntry *qdict;
+>          QLitObject *qlist;
+>      } value;
+> +    bool hidden;
+>  };
+>  
+>  struct QLitDictEntry {
+>      const char *key;
+>      QLitObject value;
+> +    bool hidden;
+>  };
+>  
+>  #define QLIT_QNULL \
+>      { .type = QTYPE_QNULL }
+>  #define QLIT_QBOOL(val) \
+>      { .type = QTYPE_QBOOL, .value.qbool = (val) }
+> +#define QLIT_QBOOL_HIDDEN(val, cond) \
+> +    { .type = QTYPE_QBOOL, .value.qbool = (val), .hidden = (cond) }
+>  #define QLIT_QNUM(val) \
+>      { .type = QTYPE_QNUM, .value.qnum = (val) }
+> +#define QLIT_QNUM_HIDDEN(val, cond) \
+> +    { .type = QTYPE_QNUM, .value.qnum = (val), .hidden = (cond) }
+>  #define QLIT_QSTR(val) \
+>      { .type = QTYPE_QSTRING, .value.qstr = (val) }
+> +#define QLIT_QSTR_HIDDEN(val, cond) \
+> +    { .type = QTYPE_QSTRING, .value.qstr = (val), .hidden = (cond) }
+>  #define QLIT_QDICT(val) \
+>      { .type = QTYPE_QDICT, .value.qdict = (val) }
+> +#define QLIT_QDICT_HIDDEN(val, cond) \
+> +    { .type = QTYPE_QDICT, .value.qdict = (val), .hidden = (cond) }
+>  #define QLIT_QLIST(val) \
+>      { .type = QTYPE_QLIST, .value.qlist = (val) }
+> +#define QLIT_QLIST_HIDDEN(val, cond) \
+> +    { .type = QTYPE_QLIST, .value.qlist = (val), .hidden = (cond) }
+>  
+>  bool qlit_equal_qobject(const QLitObject *lhs, const QObject *rhs);
+>  
+> diff --git a/qobject/qlit.c b/qobject/qlit.c
+> index a44f47eaa57..7b372c5ebaa 100644
+> --- a/qobject/qlit.c
+> +++ b/qobject/qlit.c
+> @@ -90,6 +90,8 @@ bool qlit_equal_qobject(const QLitObject *lhs, const QObject *rhs)
+>  
+>  QObject *qobject_from_qlit(const QLitObject *qlit)
+>  {
+> +    g_assert(!qlit->hidden);
+> +
+>      switch (qlit->type) {
+>      case QTYPE_QNULL:
+>          return QOBJECT(qnull());
+> @@ -102,7 +104,9 @@ QObject *qobject_from_qlit(const QLitObject *qlit)
+>          QLitDictEntry *e;
+>  
+>          for (e = qlit->value.qdict; e->key; e++) {
+> -            qdict_put_obj(qdict, e->key, qobject_from_qlit(&e->value));
+> +            if (!e->hidden) {
+> +                qdict_put_obj(qdict, e->key, qobject_from_qlit(&e->value));
+> +            }
+>          }
+>          return QOBJECT(qdict);
+>      }
+> @@ -111,7 +115,9 @@ QObject *qobject_from_qlit(const QLitObject *qlit)
+>          QLitObject *e;
+>  
+>          for (e = qlit->value.qlist; e->type != QTYPE_NONE; e++) {
+> -            qlist_append_obj(qlist, qobject_from_qlit(e));
+> +            if (!e->hidden) {
+> +                qlist_append_obj(qlist, qobject_from_qlit(e));
+> +            }
+>          }
+>          return QOBJECT(qlist);
+>      }
+> -- 
+> 2.47.2
+> 
 
 With regards,
 Daniel
