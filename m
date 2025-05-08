@@ -2,22 +2,22 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 746D7AAF7D1
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 12:31:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4061DAAF7CF
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 12:31:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uCyXV-00030g-Qn; Thu, 08 May 2025 06:31:41 -0400
+	id 1uCyWS-0000Uw-Bi; Thu, 08 May 2025 06:30:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
- id 1uCyXU-0002xQ-01
- for qemu-devel@nongnu.org; Thu, 08 May 2025 06:31:40 -0400
+ id 1uCyWP-0000S4-JC
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 06:30:33 -0400
 Received: from mx1.zhaoxin.com ([210.0.225.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
- id 1uCyXR-0005vn-Pk
- for qemu-devel@nongnu.org; Thu, 08 May 2025 06:31:39 -0400
+ id 1uCyWM-0005q1-D6
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 06:30:33 -0400
 X-ASG-Debug-ID: 1746700202-086e234ccf239f70001-jgbH7p
 Received: from ZXSHMBX2.zhaoxin.com (ZXSHMBX2.zhaoxin.com [10.28.252.164]) by
  mx1.zhaoxin.com with ESMTP id 9ZLpbX4ztsD20uoG (version=TLSv1.2
@@ -73,7 +73,7 @@ X-Barracuda-Spam-Score: -2.02
 X-Barracuda-Spam-Status: No,
  SCORE=-2.02 using global scores of TAG_LEVEL=1000.0
  QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.141088
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.141087
  Rule breakdown below
  pts rule name              description
  ---- ---------------------- --------------------------------------------------
@@ -84,7 +84,7 @@ X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
