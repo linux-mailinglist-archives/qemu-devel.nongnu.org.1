@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 973ECAAFE59
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 17:08:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3DFEAAFE95
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 17:12:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uD2r2-0001QX-Dl; Thu, 08 May 2025 11:08:08 -0400
+	id 1uD2qv-0000ay-HW; Thu, 08 May 2025 11:08:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uD2qf-0007mv-30
- for qemu-devel@nongnu.org; Thu, 08 May 2025 11:07:45 -0400
+ id 1uD2qg-0007rU-Im
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 11:07:47 -0400
 Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uD2qb-0007cp-6E
- for qemu-devel@nongnu.org; Thu, 08 May 2025 11:07:44 -0400
+ id 1uD2qc-0007cH-HL
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 11:07:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746716861; x=1778252861;
+ t=1746716863; x=1778252863;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=b1SbeFmnllB8wUgT5dzRNfABN3PxHQ5LHq5YrQk93vk=;
- b=edLkpiINGtsJxViM3z8XneVpy08HMeHDpNgitoPAUCeX6m9Luuw5Ph/2
- I0jLDRgE0c11qammkjReuT85eA1kAyPEUEo3hpYusGcopfXA6B1CiiEGB
- 9sM2Q0CXVFxPp+YI4lX32llocDblmyMdSZWxXnVz2Pme4KM+K3qNj91aP
- IPBsBRJlIaQddmJSjVcMEM8zvjCNE8CaQghmAVBw0rMsLegCp1IcDhOH4
- KYS+wGL47ylGxQRCtvCt+cUyCfTCMAzDBNpeHpcxhehc0sEZbk8C0BSTM
- KDyr+Z84dYQx1QnOnkzfSS2rfzyrxO/6Lhm4pdjJKILh73BfDQDSvlfU6 A==;
-X-CSE-ConnectionGUID: Qwn5GnDIRVGod/9VDVcYlw==
-X-CSE-MsgGUID: PC3EeVu7TkueJYxe75+TXg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="58716551"
-X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="58716551"
+ bh=RnPUkkVptiBkzoG1PZzbzX6SNfcRkotJXQDy/R78Sro=;
+ b=PeQN1C5lQiVLZJqDNA3oZD8CcY3Pjo8YVkxkGLGyE+ONGFe1LY/Da36q
+ wCEJQJbtiH2Sn3pm5SAWCzGIUlenAzNUmc5dJxbvbn66EiU2jiQs3EJhw
+ L7eYuxYi3ipfHgDl2jKx7M5UntahzkJjRCJLJBx71tAjwboooznUsOaIk
+ 2O97dsWpWr4BmUjToQi8yWBm8tqF8kxdOHa3ZzcazxN06z0SLZrBcE6gq
+ zjNQ/8Q1V703OcqiXzdMt5J8dX6mQAYlHYghcvKS9FzAF2jqxozXDcRcR
+ amEMsvDLJULNZ1t29AKBeowQVsXElYTgBiMlTEPpfC1nT8bI4p8X8XEBQ Q==;
+X-CSE-ConnectionGUID: GrRboBjDQ82tL+dgPbpUWA==
+X-CSE-MsgGUID: Y10+rMQgTMayXoxXysJNwA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="58716567"
+X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="58716567"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2025 08:07:36 -0700
-X-CSE-ConnectionGUID: eKOy1hEIQEef4f1/Gas8og==
-X-CSE-MsgGUID: ABm/70Z8T+C7RvPtmtfJsA==
+ 08 May 2025 08:07:39 -0700
+X-CSE-ConnectionGUID: Ar4o2wnjSGqd0GLgwhsxrw==
+X-CSE-MsgGUID: xqj2rnT5QPC72IKLc5lneA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="141440560"
+X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="141440575"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa005.jf.intel.com with ESMTP; 08 May 2025 08:07:33 -0700
+ by orviesa005.jf.intel.com with ESMTP; 08 May 2025 08:07:35 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
@@ -55,9 +55,9 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  Zhao Liu <zhao1.liu@intel.com>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PATCH v9 52/55] i386/tdx: Don't treat SYSCALL as unavailable
-Date: Thu,  8 May 2025 10:59:58 -0400
-Message-ID: <20250508150002.689633-53-xiaoyao.li@intel.com>
+Subject: [PATCH v9 53/55] i386/tdx: Make invtsc default on
+Date: Thu,  8 May 2025 10:59:59 -0400
+Message-ID: <20250508150002.689633-54-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250508150002.689633-1-xiaoyao.li@intel.com>
 References: <20250508150002.689633-1-xiaoyao.li@intel.com>
@@ -88,52 +88,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Intel CPU, the value of CPUID_EXT2_SYSCALL depends on the mode of
-the vcpu. It's 0 outside 64-bit mode and 1 in 64-bit mode.
-
-The initial state of TDX vcpu is 32-bit protected mode. At the time of
-calling KVM_TDX_GET_CPUID, vcpu hasn't started running so the value read
-is 0.
-
-In reality, 64-bit mode should always be supported. So mark
-CPUID_EXT2_SYSCALL always supported to avoid false warning.
+Because it's fixed1 bit that enforced by TDX module.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 ---
-Changes in v9:
- - Add commit message;
-
-Changes in v7:
- - fix CPUID_EXT2_SYSCALL by adding it to actual;
----
- target/i386/kvm/tdx.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ target/i386/kvm/tdx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index aa1bab644352..e9c680b74040 100644
+index e9c680b74040..6aeb4fcc4975 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -852,6 +852,19 @@ static int tdx_check_features(X86ConfidentialGuest *cg, CPUState *cs)
-             continue;
-         }
+@@ -749,6 +749,9 @@ static void tdx_cpu_instance_init(X86ConfidentialGuest *cg, CPUState *cpu)
  
-+        /* Fixup for special cases */
-+        switch (w) {
-+        case FEAT_8000_0001_EDX:
-+            /*
-+             * Intel enumerates SYSCALL bit as 1 only when processor in 64-bit
-+             * mode and before vcpu running it's not in 64-bit mode.
-+             */
-+            actual |= CPUID_EXT2_SYSCALL;
-+            break;
-+        default:
-+            break;
-+        }
+     object_property_set_bool(OBJECT(cpu), "pmu", false, &error_abort);
+ 
++    /* invtsc is fixed1 for TD guest */
++    object_property_set_bool(OBJECT(cpu), "invtsc", true, &error_abort);
 +
-         requested = env->features[w];
-         unavailable = requested & ~actual;
-         mark_unavailable_features(cpu, w, unavailable, unav_prefix);
+     x86cpu->enable_cpuid_0x1f = true;
+ }
+ 
 -- 
 2.43.0
 
