@@ -2,79 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E91BCAAFE03
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 17:00:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F573AAFE36
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 17:06:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uD2iY-0004G3-2T; Thu, 08 May 2025 10:59:22 -0400
+	id 1uD2o3-0000v0-2r; Thu, 08 May 2025 11:05:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uD2iV-0004Eb-Cd
- for qemu-devel@nongnu.org; Thu, 08 May 2025 10:59:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1uD2nz-0000tj-NV
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 11:04:59 -0400
+Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uD2iM-0006hN-AD
- for qemu-devel@nongnu.org; Thu, 08 May 2025 10:59:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746716347;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=jkckZQ7A47rF7nDMT1xmaMeDJjIA+q/cWHG+zJuPU+o=;
- b=Z2U7gQ2KOqXvlKovGj2vJn67w/uoLM/cF98ECah4as2lsM+u5aFmS/Fsq1TtCiT19kqAwa
- x7DdzyY+d4dInighV7117Sph8xCVJCsvDRjyIrrRSugK5KFSaQoWynpnx2ki7WDHPyD5SG
- mRxhY8SYTDXN/QEvdpR04/teT2fOSGM=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-61-qJRToraoOmOq_akblziQ4w-1; Thu,
- 08 May 2025 10:59:04 -0400
-X-MC-Unique: qJRToraoOmOq_akblziQ4w-1
-X-Mimecast-MFC-AGG-ID: qJRToraoOmOq_akblziQ4w_1746716343
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2180019560AF; Thu,  8 May 2025 14:59:03 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.138])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 85F2418004A7; Thu,  8 May 2025 14:59:00 +0000 (UTC)
-Date: Thu, 8 May 2025 15:58:56 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [PATCH RFC 00/10] qapi: remove all TARGET_* conditionals from
- the schema
-Message-ID: <aBzGsKcvIeGUlIaw@redhat.com>
-References: <20250508135816.673087-1-berrange@redhat.com>
- <a0b57e48-e826-4376-aa69-8db92c939064@linaro.org>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1uD2nw-0007Ez-GG
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 11:04:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1746716696; x=1778252696;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=bkw4Py6irLcip5aAViuEMT8U9DSXtLABWaXuQIhgQwY=;
+ b=fJC0i6iHaaD0rrZEoLlpIWpnwW7m574Mu+4cIybq6diPCssWo68qD+2C
+ Be3k0107ly/3Hme+tIjmpxR51jJMslF1MThItxHDUSj+3vwGpKSWhZWN3
+ WMB3+5swV+UuH1oLuceCmlXIk44cmKpqWBnqno7yKPsaZQSXSs0/Zw3yq
+ MrMMX2jwfEdTr6a/657IwQ2gkI9ghuklECgYCA6l7OJMVy6Gycbn5ls7T
+ E3S2u0bcMcovwdBq/jqUOSQxbAEIkwPeh5cVVa6xeceQoSrRvOBnygzGL
+ kddXkAukA203hPWoxZGAqISNrBa1BBfuD66C/p21kjvajy5v4SAdVHBQP A==;
+X-CSE-ConnectionGUID: hU9vlEYuRCyFR5z3CuTX+g==
+X-CSE-MsgGUID: 7s3jNRSqRDu48tL3aosjVw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="73887963"
+X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="73887963"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 May 2025 08:04:53 -0700
+X-CSE-ConnectionGUID: 3hbi2tHARpKVF0Y9bC1Jsw==
+X-CSE-MsgGUID: GhipiGHrQyquJBle8FYwhA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="141439634"
+Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
+ by orviesa005.jf.intel.com with ESMTP; 08 May 2025 08:04:50 -0700
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Francesco Lavra <francescolavra.fl@gmail.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org,
+ qemu-devel@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>
+Subject: [PATCH v9 00/55] QEMU TDX support
+Date: Thu,  8 May 2025 10:59:06 -0400
+Message-ID: <20250508150002.689633-1-xiaoyao.li@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <a0b57e48-e826-4376-aa69-8db92c939064@linaro.org>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.416,
+Received-SPF: pass client-ip=192.198.163.7; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.416,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,58 +84,173 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 08, 2025 at 04:56:03PM +0200, Philippe Mathieu-Daudé wrote:
-> On 8/5/25 15:58, Daniel P. Berrangé wrote:
-> > Pierrick has proposed a series that introduces a concept of runtime
-> > conditionals to the QAPI schema, in order to adapt the TARGET_*
-> > conditionals currently used at build time:
-> > 
-> >    https://lists.nongnu.org/archive/html/qemu-devel/2025-05/msg01699.html
-> > 
-> > For the sake of comparison & evaluation, this series illustrates the
-> > alternative approach that we've discussed of entirely removing any
-> > concept of TARGET_* conditionals.
-> > 
-> > With this the QAPI schema varies solely based on CONFIG_* conditionals,
-> > and is thus invariant across different target emulators.
-> > 
-> > In this PoC I've taken the minimal effort approach to the problem.
-> > 
-> > The QAPI schema has removed the TARGET_* conditionals and in order to
-> > make all the emulators then compile, the stubs/ directory is populated
-> > with a bunch of files to provide dummy impls of the target specific QMP
-> > commands.
-> > 
-> > This is sufficient to make the current QEMU binaries build successfully.
-> > 
-> > To make the "single binary" concept work, however, would require
-> > additional followup work to eliminate the stubs.
-> > 
-> > Instead of having stubs we would need to de-couple the QMP command
-> > impl from the machine internals. This would likely require greater
-> > use of interfaces and/or virtual method dispatchers on the machine
-> > class. This would enable the 'qmp_XXXXX' command impls to exist
-> > once. Then they call out to virtual methods on the machine to provide
-> > the real impl, and/or generate an error if the virtual method is not
-> > implemented for the machine.
-> 
-> Note,  I don't see commands "per machine", but per device (including
-> CPU). When not specified, we iterate over device implementations / CPUs.
+This is the v9 series of TDX QEMU enabling. The series is also available
+at github:
+https://github.com/intel-staging/qemu-tdx/tree/tdx-qemu-upstream-v9
 
-Yep, that makes sense. If its not abstracted via machines, we'll need
-to abstract it in some other place in our object model. The right answer
-probably varies depending on each feature/command we're considering
+Note, this series has a dependency on
+https://lore.kernel.org/qemu-devel/20241217123932.948789-1-xiaoyao.li@intel.com/
+
+=============
+Changes in v9
+
+Comparing to v8, no big change in v9.
+
+V9 mainly collects Reviewed-by tags from Daniel and Zhao Liu (Thanks to
+their review!) and v9 does some small change according to the review
+feedback of them. Please see the individual patch for the detailed
+change history.
+
+===========
+future work
+
+- CPU model
+
+  It now only supports booting TD VM with "-cpu host". It is the only
+  case that is not supposed to hit any warning/error.
+
+  When using named CPU model, even the same model as host, it likely
+  hits warning like some feature not supported or some feature enforced
+  on. It's a future work to decide if needs to introduce TDX specific
+  named CPU models.
+
+- Attestation support
+
+  Atttestation support will be submitted separately since it depends on
+  the GHCI clarification on the format of the `datai` filed of the
+  shared buffer of <GetQuote>.[1]
+
+- gdb support
+
+  gdb support to debug a TD in off-debug mode is left as future work.
+
+[1] https://lore.kernel.org/qemu-devel/f1b0c905-3804-4c34-bc17-e437a8ae86d6@intel.com/
+  
+=======
+history
+
+v8: https://lore.kernel.org/qemu-devel/20250401130205.2198253-1-xiaoyao.li@intel.com/
+
+v7: https://lore.kernel.org/qemu-devel/20250124132048.3229049-1-xiaoyao.li@intel.com/
+
+Chao Peng (1):
+  i386/tdx: load TDVF for TD guest
+
+Isaku Yamahata (5):
+  i386/tdx: Make sept_ve_disable set by default
+  i386/tdx: Support user configurable mrconfigid/mrowner/mrownerconfig
+  i386/tdvf: Introduce function to parse TDVF metadata
+  i386/tdx: Add TDVF memory via KVM_TDX_INIT_MEM_REGION
+  i386/tdx: Don't synchronize guest tsc for TDs
+
+Xiaoyao Li (49):
+  *** HACK *** linux-headers: Update headers to pull in TDX API changes
+  i386: Introduce tdx-guest object
+  i386/tdx: Implement tdx_kvm_type() for TDX
+  i386/tdx: Implement tdx_kvm_init() to initialize TDX VM context
+  i386/tdx: Get tdx_capabilities via KVM_TDX_CAPABILITIES
+  i386/tdx: Introduce is_tdx_vm() helper and cache tdx_guest object
+  kvm: Introduce kvm_arch_pre_create_vcpu()
+  i386/tdx: Initialize TDX before creating TD vcpus
+  i386/tdx: Add property sept-ve-disable for tdx-guest object
+  i386/tdx: Wire CPU features up with attributes of TD guest
+  i386/tdx: Validate TD attributes
+  i386/tdx: Set APIC bus rate to match with what TDX module enforces
+  i386/tdx: Implement user specified tsc frequency
+  i386/tdx: Parse TDVF metadata for TDX VM
+  i386/tdx: Don't initialize pc.rom for TDX VMs
+  i386/tdx: Track mem_ptr for each firmware entry of TDVF
+  i386/tdx: Track RAM entries for TDX VM
+  headers: Add definitions from UEFI spec for volumes, resources, etc...
+  i386/tdx: Setup the TD HOB list
+  i386/tdx: Call KVM_TDX_INIT_VCPU to initialize TDX vcpu
+  i386/tdx: Finalize TDX VM
+  i386/tdx: Enable user exit on KVM_HC_MAP_GPA_RANGE
+  i386/tdx: Handle KVM_SYSTEM_EVENT_TDX_FATAL
+  i386/tdx: Wire TDX_REPORT_FATAL_ERROR with GuestPanic facility
+  kvm: Check KVM_CAP_MAX_VCPUS at vm level
+  i386/cpu: introduce x86_confidential_guest_cpu_instance_init()
+  i386/tdx: implement tdx_cpu_instance_init()
+  i386/cpu: Introduce enable_cpuid_0x1f to force exposing CPUID 0x1f
+  i386/tdx: Force exposing CPUID 0x1f
+  i386/tdx: Set kvm_readonly_mem_enabled to false for TDX VM
+  i386/tdx: Disable SMM for TDX VMs
+  i386/tdx: Disable PIC for TDX VMs
+  i386/tdx: Set and check kernel_irqchip mode for TDX
+  i386/tdx: Only configure MSR_IA32_UCODE_REV in kvm_init_msrs() for TDs
+  i386/apic: Skip kvm_apic_put() for TDX
+  cpu: Don't set vcpu_dirty when guest_state_protected
+  i386/cgs: Rename *mask_cpuid_features() to *adjust_cpuid_features()
+  i386/tdx: Implement adjust_cpuid_features() for TDX
+  i386/tdx: Add TDX fixed1 bits to supported CPUIDs
+  i386/tdx: Add supported CPUID bits related to TD Attributes
+  i386/tdx: Add supported CPUID bits relates to XFAM
+  i386/tdx: Add XFD to supported bit of TDX
+  i386/tdx: Define supported KVM features for TDX
+  i386/cgs: Introduce x86_confidential_guest_check_features()
+  i386/tdx: Fetch and validate CPUID of TD guest
+  i386/tdx: Don't treat SYSCALL as unavailable
+  i386/tdx: Make invtsc default on
+  i386/tdx: Validate phys_bits against host value
+  docs: Add TDX documentation
+
+ accel/kvm/kvm-all.c                        |   11 +-
+ configs/devices/i386-softmmu/default.mak   |    1 +
+ docs/system/confidential-guest-support.rst |    1 +
+ docs/system/i386/tdx.rst                   |  161 +++
+ docs/system/target-i386.rst                |    1 +
+ hw/i386/Kconfig                            |    6 +
+ hw/i386/kvm/apic.c                         |    5 +
+ hw/i386/meson.build                        |    1 +
+ hw/i386/pc.c                               |   29 +-
+ hw/i386/pc_sysfw.c                         |    7 +
+ hw/i386/tdvf-hob.c                         |  130 ++
+ hw/i386/tdvf-hob.h                         |   26 +
+ hw/i386/tdvf.c                             |  188 +++
+ hw/i386/x86-common.c                       |    6 +-
+ include/hw/i386/tdvf.h                     |   45 +
+ include/standard-headers/uefi/uefi.h       |  187 +++
+ include/system/kvm.h                       |    1 +
+ linux-headers/asm-x86/kvm.h                |   69 ++
+ linux-headers/linux/kvm.h                  |    1 +
+ qapi/qom.json                              |   35 +
+ qapi/run-state.json                        |   31 +-
+ system/runstate.c                          |   65 +
+ target/arm/kvm.c                           |    5 +
+ target/i386/confidential-guest.h           |   44 +-
+ target/i386/cpu.c                          |   69 +-
+ target/i386/cpu.h                          |   40 +
+ target/i386/host-cpu.c                     |    2 +-
+ target/i386/host-cpu.h                     |    1 +
+ target/i386/kvm/kvm.c                      |  114 +-
+ target/i386/kvm/kvm_i386.h                 |   15 +
+ target/i386/kvm/meson.build                |    2 +
+ target/i386/kvm/tdx-stub.c                 |   20 +
+ target/i386/kvm/tdx.c                      | 1296 ++++++++++++++++++++
+ target/i386/kvm/tdx.h                      |   65 +
+ target/i386/sev.c                          |   12 +-
+ target/loongarch/kvm/kvm.c                 |    4 +
+ target/mips/kvm.c                          |    5 +
+ target/ppc/kvm.c                           |    5 +
+ target/riscv/kvm/kvm-cpu.c                 |    5 +
+ target/s390x/kvm/kvm.c                     |    5 +
+ 40 files changed, 2620 insertions(+), 96 deletions(-)
+ create mode 100644 docs/system/i386/tdx.rst
+ create mode 100644 hw/i386/tdvf-hob.c
+ create mode 100644 hw/i386/tdvf-hob.h
+ create mode 100644 hw/i386/tdvf.c
+ create mode 100644 include/hw/i386/tdvf.h
+ create mode 100644 include/standard-headers/uefi/uefi.h
+ create mode 100644 target/i386/kvm/tdx-stub.c
+ create mode 100644 target/i386/kvm/tdx.c
+ create mode 100644 target/i386/kvm/tdx.h
 
 
-With regards,
-Daniel
+base-commit: 7c949c53e936aa3a658d84ab53bae5cadaa5d59c
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.43.0
 
 
