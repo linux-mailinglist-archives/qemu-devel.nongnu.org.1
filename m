@@ -2,84 +2,115 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DE2BAAFC12
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 15:52:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B2B1AAFC2E
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 15:58:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uD1eh-00040O-9G; Thu, 08 May 2025 09:51:19 -0400
+	id 1uD1ks-0001Cw-3H; Thu, 08 May 2025 09:57:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uD1ee-0003zd-1S
- for qemu-devel@nongnu.org; Thu, 08 May 2025 09:51:16 -0400
-Received: from mail-yw1-x1129.google.com ([2607:f8b0:4864:20::1129])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uD1ki-0001BQ-7J
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 09:57:33 -0400
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uD1eb-0005zR-Ew
- for qemu-devel@nongnu.org; Thu, 08 May 2025 09:51:15 -0400
-Received: by mail-yw1-x1129.google.com with SMTP id
- 00721157ae682-708b31650ffso10385697b3.0
- for <qemu-devel@nongnu.org>; Thu, 08 May 2025 06:51:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746712270; x=1747317070; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Lr2FKoznQd1dzrXOA3k8dGjH+BUO8/I3at7g4/YAiok=;
- b=xkh1uKvRTNd5sAcovVRzVhlUVqYDfHllnJdxE3e5uJ3sTnWx/TG2TvDuiBCPuOMHfe
- mROtzj9ixAUeS2WXv5FNRBkXqsjBbIyygL4ss2AOAReFJdsoHWldnvMbZf25gDA/eeux
- 2RymYRLIb12J2I9iGA+UDLcT3Je3etQ2zg153dUrx4J8kLNgzovl+GwaklCNWenkuHwG
- GCHjp+VdeaThUucKMrmBcTC45mFAcy1O4SczRfZCUKlxNKP00wKD3e7ukvUk/npfZEnc
- dcgNla0ODZvJojTsx4Qz6a8aaOnYcSUmngcU7i7Jt97yPVK0RrdQlKnAPbGnbuwo1DGp
- r5gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746712270; x=1747317070;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Lr2FKoznQd1dzrXOA3k8dGjH+BUO8/I3at7g4/YAiok=;
- b=dn2S0HFbVfaK2+Vz6GAYodZHGoB1cqm24kjk9UnoAm9KYjKlm1efL8BWKWTM6g4F50
- uMPxEye/6PObFS3fpLwCVM/XrDT9TERWCNRlxWhx/ISeSdeyHA1MViyNF1PR+2NrjGe9
- roGt0GMnoIBSSQv2v2ApFSqa48d5I5x1iNQKkI+zuPkg8qc88q9MdSgnGN+j/bIVcIBR
- 0V5WlriBB0wVZkN7C9rNwO2RYmyHYtPwtMY5J2y01q/CDyURGtc/zha032vsvvY9Kb0R
- 65yB1OpdJoXkAhxNkFEYckBObxqylJAYiJYAbvaUVpk4Mfaovb95ZfLfQNzC63O/gfxF
- YPLQ==
-X-Gm-Message-State: AOJu0YxMG7v3B35c+f9dI8eTiMNngfYWtWwD5HSpMoRiyepYpZ2y1vXl
- sOWXVIOAEgnsxKvJDQp4cyiHV6uaMgUq7iCrDfq675I0HAke6oJs7ExaT+5EmswHDwaZeuRUo8E
- A9AuLcZIaDRXmMtNS22xk+XyoJ+b8KDMsmUVYIA==
-X-Gm-Gg: ASbGncvJrcbIR3jhbkMMdRUkq9KB6rZboZT7ow+9T9j1wU6z0jYWLjaqDJ1UNUUVd+L
- NYKEcRouZr6TZYJw/u++Jr+4YhyBQRsg2MOJfeUmhIBvfBqcnhRh1lyEAnBLKbxV9Roq1Yn52Ev
- P2rfZTas1WysjDmgtnxQG5MQ4=
-X-Google-Smtp-Source: AGHT+IEdlnDkIEQSZSpMBMXc5pv6kz/G3AH6tgDXwpDFS2x21qayM3rmbg6uuxVD5pILbmvilJQSlhIXrUlIKzrkplE=
-X-Received: by 2002:a05:690c:3749:b0:708:bfc6:c7cd with SMTP id
- 00721157ae682-70a2ce85c22mr53693097b3.6.1746712269882; Thu, 08 May 2025
- 06:51:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uD1kf-00073Z-C5
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 09:57:31 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id C41C51F393;
+ Thu,  8 May 2025 13:57:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1746712643; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=SIlC/dCkyfEPciaP6goXwgNI1ZiNZ4pD8KSyW6jOb6g=;
+ b=MBgWiyo2tte4fSWhWSoTKSrsE2R0VTXSYTNc1rIhk9/qyFwsHYjadWPwGGoCypio7TIMBM
+ OE1R872ulXmgnJZtneS06uNVpN80NckfcRBBrvQbYx8AICPoIzQEiRJdvcfeB14P0+AK2Z
+ mdJUec36FVO6E33wyDx3M5FtC0kYOYc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1746712643;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=SIlC/dCkyfEPciaP6goXwgNI1ZiNZ4pD8KSyW6jOb6g=;
+ b=Yhr0Dl9hcZZn3a/VoWB5eRWZkK7mALikJ+4oWPX87qYhD/fJvBeiW1WMy9yXxlpY41EtMR
+ +nwJv5YKtU6szxBQ==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=UwUMaGrQ;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=KpVEXO1v
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1746712642; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=SIlC/dCkyfEPciaP6goXwgNI1ZiNZ4pD8KSyW6jOb6g=;
+ b=UwUMaGrQAytRY/0vhrymmyya/ITzOEFejhtJLpwrOXTDL4VWyjEZ/XCyx8KuNE87mR8Y2k
+ /92h39PqQ69tT6NXVUwG7deX4iof/xw63DFnJB91uPtqUQvQQ4nYte5ehzQo/n5Ld+/9UH
+ 9GlXG7bTZXV8A7lXTL4PgOO9dpC3wtg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1746712642;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=SIlC/dCkyfEPciaP6goXwgNI1ZiNZ4pD8KSyW6jOb6g=;
+ b=KpVEXO1vO3AAbYcxH6R9xlNBfvP8obDHy6UV5Xk/kw/4Y4RPZIg5brAAPiGzVtWIJ7+fYQ
+ Qm8crmCdr2eKpXBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2C7AF13712;
+ Thu,  8 May 2025 13:57:21 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id VjWlNkG4HGjlQAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 08 May 2025 13:57:21 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Prasad Pandit <ppandit@redhat.com>, qemu-devel@nongnu.org
+Cc: peterx@redhat.com, berrange@redhat.com, Prasad Pandit
+ <pjp@fedoraproject.org>
+Subject: Re: [PATCH v10 3/3] migration: write zero pages when postcopy enabled
+In-Reply-To: <20250508122849.207213-4-ppandit@redhat.com>
+References: <20250508122849.207213-1-ppandit@redhat.com>
+ <20250508122849.207213-4-ppandit@redhat.com>
+Date: Thu, 08 May 2025 10:57:19 -0300
+Message-ID: <87ecwzfbnk.fsf@suse.de>
 MIME-Version: 1.0
-References: <20250507165840.401623-1-alex.bennee@linaro.org>
- <CAFEAcA_0cf=XEbH9VQdTHqu1wekSmFDLdqnnzpcwnshCT-UUCg@mail.gmail.com>
- <87zffnmidy.fsf@draig.linaro.org>
- <CAFEAcA80-CWEQYwTQPziUxm5V1K93VZstLh2r9mTGkD5QueKoA@mail.gmail.com>
- <87o6w3mdex.fsf@draig.linaro.org>
-In-Reply-To: <87o6w3mdex.fsf@draig.linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 8 May 2025 14:50:58 +0100
-X-Gm-Features: ATxdqUFyTo5XkBldfiqYzeGRzhmXruF_k_USSFHUxSU1OMWV1ed0ohn-cyX4ss0
-Message-ID: <CAFEAcA-hgkPM_PXsD_q_SjNDyLCX3hVA=rVpTg9AWCdihK8fSg@mail.gmail.com>
-Subject: Re: [RFC PATCH] target/arm: allow gdb to read ARM_CP_NORAW regs
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Julian Armistead <julian.armistead@linaro.org>, 
- "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1129;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1129.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+X-Rspamd-Queue-Id: C41C51F393
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_HAS_DN(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ RCVD_TLS_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
+ MID_RHS_MATCH_FROM(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ FROM_EQ_ENVFROM(0.00)[]; RCPT_COUNT_FIVE(0.00)[5];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; MISSING_XM_UA(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid, suse.de:dkim,
+ imap1.dmz-prg2.suse.org:helo, imap1.dmz-prg2.suse.org:rdns,
+ fedoraproject.org:email]
+X-Spam-Score: -4.51
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,104 +127,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 8 May 2025 at 14:37, Alex Benn=C3=A9e <alex.bennee@linaro.org> wrot=
-e:
->
-> Peter Maydell <peter.maydell@linaro.org> writes:
->
-> > On Thu, 8 May 2025 at 12:50, Alex Benn=C3=A9e <alex.bennee@linaro.org> =
-wrote:
-> >>
-> >> Peter Maydell <peter.maydell@linaro.org> writes:
-> >>
-> >> > On Wed, 7 May 2025 at 17:58, Alex Benn=C3=A9e <alex.bennee@linaro.or=
-g> wrote:
-> >> >>
-> >> >> Before this we suppress all ARM_CP_NORAW registers being listed und=
-er
-> >> >> GDB. This includes useful registers like CurrentEL which gets tagge=
-d
-> >> >> as ARM_CP_NO_RAW because it is one of the ARM_CP_SPECIAL_MASK
-> >> >> registers. These are registers TCG can directly compute because we
-> >> >> have the information at compile time but until now with no readfn.
-> >> >>
-> >> >> Add a .readfn to return the CurrentEL and then loosen the restricti=
-ons
-> >> >> in arm_register_sysreg_for_feature to allow ARM_CP_NORAW registers =
-to
-> >> >> be read if there is a readfn available.
-> >> >
-> >> > The primary use case for NO_RAW is "system instructions" like
-> >> > the TLB maintenance insns. These don't make sense to expose
-> >> > to a debugger.
-> >>
-> >> I think we could re-think the logic:
-> >>
-> >>     /*
-> >>      * By convention, for wildcarded registers only the first
-> >>      * entry is used for migration; the others are marked as
-> >>      * ALIAS so we don't try to transfer the register
-> >>      * multiple times. Special registers (ie NOP/WFI) are
-> >>      * never migratable and not even raw-accessible.
-> >>      */
-> >>     if (r2->type & ARM_CP_SPECIAL_MASK) {
-> >>         r2->type |=3D ARM_CP_NO_RAW;
-> >>     }
-> >
-> > Well, we definitely don't want WFI or the DC ZVA etc
-> > "registers" to be exposed to GDB or for us to try to handle
-> > them in KVM state sync or migration... ARM_CP_NOP is less
-> > clear because we use it pretty widely for more than one
-> > purpose. The main one is "system instruction that we don't
-> > need to implement". (CP_NOP + a readable register is a
-> > questionable combination since the guest will expect it to
-> > update the general-purpose destreg, not leave it untouched,
-> > but we do have some.)
-> >
-> >> > If we want the gdbstub access to system registers to be
-> >> > more than our current "we provide the ones that are easy",
-> >> > then I think I'd like to see a bit more up-front analysis of
-> >> > what the gdbstub needs and whether we've got into a bit of
-> >> > a mess with our ARM_CP_* flags that we could straighten out.
-> >>
-> >> Yeah - hence the RFC. CurrentEL is a super useful one to expose though
-> >> when you are debugging complex hypervisor setups.
-> >
-> > One problem with this patch is the one that the reporter of
-> > https://gitlab.com/qemu-project/qemu/-/issues/2760 noted
-> > in the conversation there: it will allow the debugger to
-> > read registers which have a side-effect on read, like
-> > ICC_IAR1_EL1: we almost certainly do not want to allow
-> > the debugger to acknowledge an interrupt by doing a sysreg
-> > read.
->
-> Doesn't raw_readfn offer these semantics?
->
->     /*
->      * Function for doing a "raw" read; used when we need to copy
->      * coprocessor state to the kernel for KVM or out for
->      * migration. This only needs to be provided if there is also a
->      * readfn and it has side effects (for instance clear-on-read bits).
->      */
->     CPReadFn *raw_readfn;
->
-> So maybe:
->
->         /* We can only read ARM_CP_NO_RAW regs without side effects */
->         if ((ri->type & ARM_CP_NO_RAW) && !ri->raw_readfn) {
->             return;
->         }
->
-> And I guess we can strengthen the gdb helper to NOP any writes to such
-> registers.
+Prasad Pandit <ppandit@redhat.com> writes:
 
-This seems to be continuing down the path of "oh, if we just
-tweak this condition here it seems to whack this particular
-mole on the head". What I'm asking for is a more holistic
-view of what we're trying to achieve and what the "right"
-design for that ought to be, not for small patches that
-add more ad-hoc adjustments to where we are currently.
+> From: Prasad Pandit <pjp@fedoraproject.org>
+>
+> During multifd migration, zero pages are are written if
+> they are migrated more than ones.
 
-thanks
--- PMM
+s/ones/once/
+
+>
+> This may result in a migration hang issue when Multifd
+> and Postcopy are enabled together.
+>
+> When Postcopy is enabled, always write zero pages as and
+> when they are migrated.
+>
+> Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
+
+This patch should come before 1/3, otherwise it'll break bisect.
+
+> ---
+>  migration/multifd-zero-page.c | 22 ++++++++++++++++++++--
+>  1 file changed, 20 insertions(+), 2 deletions(-)
+>
+> v10: new patch, not present in v9 or earlier versions.
+>
+> diff --git a/migration/multifd-zero-page.c b/migration/multifd-zero-page.c
+> index dbc1184921..9bfb3ef803 100644
+> --- a/migration/multifd-zero-page.c
+> +++ b/migration/multifd-zero-page.c
+> @@ -85,9 +85,27 @@ void multifd_recv_zero_page_process(MultiFDRecvParams *p)
+>  {
+>      for (int i = 0; i < p->zero_num; i++) {
+>          void *page = p->host + p->zero[i];
+> -        if (ramblock_recv_bitmap_test_byte_offset(p->block, p->zero[i])) {
+> +
+> +        /*
+> +         * During multifd migration zero page is written to the memory
+> +         * only if it is migrated more than ones.
+
+s/ones/once/
+
+> +         *
+> +         * It becomes a problem when both Multifd & Postcopy options are
+> +         * enabled. If the zero page which was skipped during multifd phase,
+> +         * is accessed during the Postcopy phase of the migration, a page
+> +         * fault occurs. But this page fault is not served because the
+> +         * 'receivedmap' says the zero page is already received. Thus the
+> +         * migration hangs.
+> +         *
+> +         * When Postcopy is enabled, always write the zero page as and when
+> +         * it is migrated.
+> +         *
+
+extra blank line here^
+
+> +         */
+
+nit: Inconsistent use of capitalization for the feature names. I'd keep
+it all lowercase.
+
+> +        if (migrate_postcopy_ram() ||
+> +            ramblock_recv_bitmap_test_byte_offset(p->block, p->zero[i])) {
+>              memset(page, 0, multifd_ram_page_size());
+> -        } else {
+> +        }
+> +        if (!ramblock_recv_bitmap_test_byte_offset(p->block, p->zero[i])) {
+>              ramblock_recv_bitmap_set_offset(p->block, p->zero[i]);
+>          }
+>      }
 
