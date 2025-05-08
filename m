@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7492FAAFE3B
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 17:06:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3073AAFE7E
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 17:10:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uD2oH-0001CA-71; Thu, 08 May 2025 11:05:17 -0400
+	id 1uD2oN-0001GU-H1; Thu, 08 May 2025 11:05:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uD2oE-0001A0-3Z
- for qemu-devel@nongnu.org; Thu, 08 May 2025 11:05:14 -0400
+ id 1uD2oK-0001F4-BY
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 11:05:20 -0400
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1uD2oB-0007RW-7u
- for qemu-devel@nongnu.org; Thu, 08 May 2025 11:05:13 -0400
+ id 1uD2oD-0007RF-FS
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 11:05:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746716711; x=1778252711;
+ t=1746716713; x=1778252713;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=6zjzxZ36ZpLCHxUaVNTeoqy3IP35XZo69poU2bBv4ZI=;
- b=GSmIr3QuNaXQ7l0n/pmctIZA/Dll0d7rulSKc+530hZivI3dRPOd4zxk
- kxD4N0VHNzZcIModes2pfwGENWawDTZhO2hhIKo3wUkzw6GxaeFkWed3L
- 0C44Bdf2DZn/9BgrdySeZ4L5AN5sz7pBk70v9Gq6+lHzpRY54tmx7oDxq
- YATZt7nbRQYI/xSd5CQof/IcJ2OOavFiOvAhGk6kWOiw2AeIow8NjisH/
- WYM9JL1LlJ8LG1WTz3sdzWs9cuasqe2CpaeZAvkN1SrwgZYt2N1siZ8nL
- s24/2yvCJuF9O+svEzLsUU6DuoA4MRVzUrkuDIiH3NY/TqSnNpQdOrJmT Q==;
-X-CSE-ConnectionGUID: 358AgvyERT+8lygZSE/aag==
-X-CSE-MsgGUID: XO1wDzmAQmm0BMPetoSHOw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="73888015"
-X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="73888015"
+ bh=lkJDVh6f4q0rfLhOwSxloLSzBCDY8EWkflSfQc5PpZ0=;
+ b=aAPdzvwQeuutzvxzIfeJ71OyJsQnrrsbU6TXDHJ8AyhDD9zB+8vrUPtD
+ 2JPkq/uR3AknehSUzZCM7adIutFR+JoLxPrPBg2bVdYEU8CVEJiFsGY6r
+ N9beO5PaxpTCUU48lssK+hXe9m33tDinnbYe860XbuIX4tOvHVJnNe3wD
+ PM/cM2oYVftnSws1wwnm7GLTSO21Pymgy7KCZ6n5eK7COY8Ooegn848+4
+ rhEomK+J4QkYp6SH/+eA3nKIgK/4nrZlpf0qntFl+bO+O4c08SB4g6rz3
+ 3sCjtPOwwP0E5ZZr7SwniKk/k63b9DlR4B/twlJcvwZjkIiX1uajBrf1R Q==;
+X-CSE-ConnectionGUID: 8BgLGMzuQ1CV98XB3SAb9Q==
+X-CSE-MsgGUID: kdCCCxn+RreRkNW5LJ7GxQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="73888022"
+X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="73888022"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2025 08:05:09 -0700
-X-CSE-ConnectionGUID: O/oI6tobTZ6eweq2gxSJdQ==
-X-CSE-MsgGUID: 8TS4X2uVRKmjAYa18PEBLA==
+ 08 May 2025 08:05:12 -0700
+X-CSE-ConnectionGUID: cPmVxdEDTTmT0h1mJS9/jw==
+X-CSE-MsgGUID: sAmPp/ArR0i78udXMGPg+Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="141439797"
+X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; d="scan'208";a="141439812"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by orviesa005.jf.intel.com with ESMTP; 08 May 2025 08:05:05 -0700
+ by orviesa005.jf.intel.com with ESMTP; 08 May 2025 08:05:09 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
@@ -55,10 +55,10 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  Zhao Liu <zhao1.liu@intel.com>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PATCH v9 05/55] i386/tdx: Get tdx_capabilities via
- KVM_TDX_CAPABILITIES
-Date: Thu,  8 May 2025 10:59:11 -0400
-Message-ID: <20250508150002.689633-6-xiaoyao.li@intel.com>
+Subject: [PATCH v9 06/55] i386/tdx: Introduce is_tdx_vm() helper and cache
+ tdx_guest object
+Date: Thu,  8 May 2025 10:59:12 -0400
+Message-ID: <20250508150002.689633-7-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250508150002.689633-1-xiaoyao.li@intel.com>
 References: <20250508150002.689633-1-xiaoyao.li@intel.com>
@@ -89,201 +89,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-KVM provides TDX capabilities via sub command KVM_TDX_CAPABILITIES of
-IOCTL(KVM_MEMORY_ENCRYPT_OP). Get the capabilities when initializing
-TDX context. It will be used to validate user's setting later.
+It will need special handling for TDX VMs all around the QEMU.
+Introduce is_tdx_vm() helper to query if it's a TDX VM.
 
-Since there is no interface reporting how many cpuid configs contains in
-KVM_TDX_CAPABILITIES, QEMU chooses to try starting with a known number
-and abort when it exceeds KVM_MAX_CPUID_ENTRIES.
-
-Besides, introduce the interfaces to invoke TDX "ioctls" at VCPU scope
-in preparation.
+Cache tdx_guest object thus no need to cast from ms->cgs every time.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+Reviewed-by: Isaku Yamahata <isaku.yamahata@intel.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 ---
-Changes in v7:
-- refine and unifiy the error handling; (Daniel)
-
-Changes in v6:
-- Pass CPUState * to tdx_vcpu_ioctl();
-- update commit message to remove platform scope thing;
-- dump hw_error when it's non-zero to help debug;
-
-Changes in v4:
-- use {} to initialize struct kvm_tdx_cmd, to avoid memset();
-- remove tdx_platform_ioctl() because no user;
-
-Changes in v3:
-- rename __tdx_ioctl() to tdx_ioctl_internal()
-- Pass errp in get_tdx_capabilities();
-
-changes in v2:
-  - Make the error message more clear;
-
-changes in v1:
-  - start from nr_cpuid_configs = 6 for the loop;
-  - stop the loop when nr_cpuid_configs exceeds KVM_MAX_CPUID_ENTRIES;
+changes in v3:
+- replace object_dynamic_cast with TDX_GUEST();
 ---
- target/i386/kvm/kvm.c      |   2 -
- target/i386/kvm/kvm_i386.h |   2 +
- target/i386/kvm/tdx.c      | 107 ++++++++++++++++++++++++++++++++++++-
- 3 files changed, 108 insertions(+), 3 deletions(-)
+ target/i386/kvm/tdx.c | 15 ++++++++++++++-
+ target/i386/kvm/tdx.h | 10 ++++++++++
+ 2 files changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 1af4710556ad..b4fa35405fe1 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -1779,8 +1779,6 @@ static int hyperv_init_vcpu(X86CPU *cpu)
- 
- static Error *invtsc_mig_blocker;
- 
--#define KVM_MAX_CPUID_ENTRIES  100
--
- static void kvm_init_xsave(CPUX86State *env)
- {
-     if (has_xsave2) {
-diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
-index 88565e8dbac1..ed1e61fb8ba9 100644
---- a/target/i386/kvm/kvm_i386.h
-+++ b/target/i386/kvm/kvm_i386.h
-@@ -13,6 +13,8 @@
- 
- #include "system/kvm.h"
- 
-+#define KVM_MAX_CPUID_ENTRIES  100
-+
- /* always false if !CONFIG_KVM */
- #define kvm_pit_in_kernel() \
-     (kvm_irqchip_in_kernel() && !kvm_irqchip_is_split())
 diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 4ff94860815d..c67be5e618e2 100644
+index c67be5e618e2..16f67e18ae78 100644
 --- a/target/i386/kvm/tdx.c
 +++ b/target/i386/kvm/tdx.c
-@@ -10,17 +10,122 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "qemu/error-report.h"
-+#include "qapi/error.h"
- #include "qom/object_interfaces.h"
- 
- #include "hw/i386/x86.h"
+@@ -18,8 +18,16 @@
  #include "kvm_i386.h"
  #include "tdx.h"
  
-+static struct kvm_tdx_capabilities *tdx_caps;
++static TdxGuest *tdx_guest;
 +
-+enum tdx_ioctl_level {
-+    TDX_VM_IOCTL,
-+    TDX_VCPU_IOCTL,
-+};
-+
-+static int tdx_ioctl_internal(enum tdx_ioctl_level level, void *state,
-+                              int cmd_id, __u32 flags, void *data,
-+                              Error **errp)
+ static struct kvm_tdx_capabilities *tdx_caps;
+ 
++/* Valid after kvm_arch_init()->confidential_guest_kvm_init()->tdx_kvm_init() */
++bool is_tdx_vm(void)
 +{
-+    struct kvm_tdx_cmd tdx_cmd = {};
-+    int r;
-+
-+    const char *tdx_ioctl_name[] = {
-+        [KVM_TDX_CAPABILITIES] = "KVM_TDX_CAPABILITIES",
-+        [KVM_TDX_INIT_VM] = "KVM_TDX_INIT_VM",
-+        [KVM_TDX_INIT_VCPU] = "KVM_TDX_INIT_VCPU",
-+        [KVM_TDX_INIT_MEM_REGION] = "KVM_TDX_INIT_MEM_REGION",
-+        [KVM_TDX_FINALIZE_VM] = "KVM_TDX_FINALIZE_VM",
-+        [KVM_TDX_GET_CPUID] = "KVM_TDX_GET_CPUID",
-+    };
-+
-+    tdx_cmd.id = cmd_id;
-+    tdx_cmd.flags = flags;
-+    tdx_cmd.data = (__u64)(unsigned long)data;
-+
-+    switch (level) {
-+    case TDX_VM_IOCTL:
-+        r = kvm_vm_ioctl(kvm_state, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd);
-+        break;
-+    case TDX_VCPU_IOCTL:
-+        r = kvm_vcpu_ioctl(state, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd);
-+        break;
-+    default:
-+        error_setg(errp, "Invalid tdx_ioctl_level %d", level);
-+        return -EINVAL;
-+    }
-+
-+    if (r < 0) {
-+        error_setg_errno(errp, -r, "TDX ioctl %s failed, hw_errors: 0x%llx",
-+                         tdx_ioctl_name[cmd_id], tdx_cmd.hw_error);
-+    }
-+    return r;
++    return !!tdx_guest;
 +}
 +
-+static inline int tdx_vm_ioctl(int cmd_id, __u32 flags, void *data,
-+                               Error **errp)
-+{
-+    return tdx_ioctl_internal(TDX_VM_IOCTL, NULL, cmd_id, flags, data, errp);
-+}
-+
-+static inline int tdx_vcpu_ioctl(CPUState *cpu, int cmd_id, __u32 flags,
-+                                 void *data, Error **errp)
-+{
-+    return  tdx_ioctl_internal(TDX_VCPU_IOCTL, cpu, cmd_id, flags, data, errp);
-+}
-+
-+static int get_tdx_capabilities(Error **errp)
-+{
-+    struct kvm_tdx_capabilities *caps;
-+    /* 1st generation of TDX reports 6 cpuid configs */
-+    int nr_cpuid_configs = 6;
-+    size_t size;
-+    int r;
-+
-+    do {
-+        Error *local_err = NULL;
-+        size = sizeof(struct kvm_tdx_capabilities) +
-+                      nr_cpuid_configs * sizeof(struct kvm_cpuid_entry2);
-+        caps = g_malloc0(size);
-+        caps->cpuid.nent = nr_cpuid_configs;
-+
-+        r = tdx_vm_ioctl(KVM_TDX_CAPABILITIES, 0, caps, &local_err);
-+        if (r == -E2BIG) {
-+            g_free(caps);
-+            nr_cpuid_configs *= 2;
-+            if (nr_cpuid_configs > KVM_MAX_CPUID_ENTRIES) {
-+                error_report("KVM TDX seems broken that number of CPUID entries"
-+                             " in kvm_tdx_capabilities exceeds limit: %d",
-+                             KVM_MAX_CPUID_ENTRIES);
-+                error_propagate(errp, local_err);
-+                return r;
-+            }
-+            error_free(local_err);
-+        } else if (r < 0) {
-+            g_free(caps);
-+            error_propagate(errp, local_err);
-+            return r;
-+        }
-+    } while (r == -E2BIG);
-+
-+    tdx_caps = caps;
-+
-+    return 0;
-+}
-+
+ enum tdx_ioctl_level {
+     TDX_VM_IOCTL,
+     TDX_VCPU_IOCTL,
+@@ -117,15 +125,20 @@ static int get_tdx_capabilities(Error **errp)
+ 
  static int tdx_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
  {
-+    int r = 0;
-+
++    TdxGuest *tdx = TDX_GUEST(cgs);
+     int r = 0;
+ 
      kvm_mark_guest_state_protected();
  
--    return 0;
-+    if (!tdx_caps) {
-+        r = get_tdx_capabilities(errp);
-+    }
-+
-+    return r;
+     if (!tdx_caps) {
+         r = get_tdx_capabilities(errp);
++        if (r) {
++            return r;
++        }
+     }
+ 
+-    return r;
++    tdx_guest = tdx;
++    return 0;
  }
  
  static int tdx_kvm_type(X86ConfidentialGuest *cg)
+diff --git a/target/i386/kvm/tdx.h b/target/i386/kvm/tdx.h
+index f3b725336161..de8ae9196163 100644
+--- a/target/i386/kvm/tdx.h
++++ b/target/i386/kvm/tdx.h
+@@ -3,6 +3,10 @@
+ #ifndef QEMU_I386_TDX_H
+ #define QEMU_I386_TDX_H
+ 
++#ifndef CONFIG_USER_ONLY
++#include CONFIG_DEVICES /* CONFIG_TDX */
++#endif
++
+ #include "confidential-guest.h"
+ 
+ #define TYPE_TDX_GUEST "tdx-guest"
+@@ -18,4 +22,10 @@ typedef struct TdxGuest {
+     uint64_t attributes;    /* TD attributes */
+ } TdxGuest;
+ 
++#ifdef CONFIG_TDX
++bool is_tdx_vm(void);
++#else
++#define is_tdx_vm() 0
++#endif /* CONFIG_TDX */
++
+ #endif /* QEMU_I386_TDX_H */
 -- 
 2.43.0
 
