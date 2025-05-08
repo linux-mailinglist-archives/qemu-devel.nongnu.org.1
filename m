@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67ECFAAFC85
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 16:12:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8D89AAFC7B
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 16:11:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uD1wn-00020T-72; Thu, 08 May 2025 10:10:01 -0400
+	id 1uD1wl-0001z3-2h; Thu, 08 May 2025 10:09:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uD1wk-0001yi-70; Thu, 08 May 2025 10:09:58 -0400
+ id 1uD1wg-0001qQ-AM; Thu, 08 May 2025 10:09:54 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uD1wg-0008UA-Qf; Thu, 08 May 2025 10:09:57 -0400
+ id 1uD1wd-0008RB-Kx; Thu, 08 May 2025 10:09:53 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 2FA424332E;
- Thu,  8 May 2025 16:09:42 +0200 (CEST)
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 17B9643470;
+ Thu,  8 May 2025 16:09:41 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
  andrey.drobyshev@virtuozzo.com, hreitz@redhat.com, stefanha@redhat.com,
  eblake@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru
-Subject: [PATCH 03/11] block/snapshot: move drain outside of read-locked
- bdrv_snapshot_delete()
-Date: Thu,  8 May 2025 16:09:28 +0200
-Message-Id: <20250508140936.3344485-4-f.ebner@proxmox.com>
+Subject: [PATCH 04/11] block: drain while unlocked in
+ bdrv_reopen_parse_file_or_backing()
+Date: Thu,  8 May 2025 16:09:29 +0200
+Message-Id: <20250508140936.3344485-5-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250508140936.3344485-1-f.ebner@proxmox.com>
 References: <20250508140936.3344485-1-f.ebner@proxmox.com>
@@ -58,196 +58,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This is in preparation to mark bdrv_drained_begin() as GRAPH_UNLOCKED.
 
-More granular draining is not trivially possible, because
-bdrv_snapshot_delete() can recursively call itself.
-
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
- block/snapshot.c | 18 ++++++++++++------
- blockdev.c       | 25 +++++++++++++++++--------
- qemu-img.c       |  2 ++
- 3 files changed, 31 insertions(+), 14 deletions(-)
+ block.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/block/snapshot.c b/block/snapshot.c
-index 22567f1fb9..7788e1130b 100644
---- a/block/snapshot.c
-+++ b/block/snapshot.c
-@@ -327,7 +327,7 @@ int bdrv_snapshot_goto(BlockDriverState *bs,
+diff --git a/block.c b/block.c
+index 0085dbfa74..c7c26533c9 100644
+--- a/block.c
++++ b/block.c
+@@ -4805,10 +4805,11 @@ bdrv_reopen_parse_file_or_backing(BDRVReopenState *reopen_state,
  
- /**
-  * Delete an internal snapshot by @snapshot_id and @name.
-- * @bs: block device used in the operation
-+ * @bs: block device used in the operation, needs to be drained
-  * @snapshot_id: unique snapshot ID, or NULL
-  * @name: snapshot name, or NULL
-  * @errp: location to store error
-@@ -356,6 +356,8 @@ int bdrv_snapshot_delete(BlockDriverState *bs,
-     BlockDriverState *fallback_bs = bdrv_snapshot_fallback(bs);
-     int ret;
- 
-+    assert(qatomic_read(&bs->quiesce_counter) > 0);
-+
-     GLOBAL_STATE_CODE();
- 
-     if (!drv) {
-@@ -368,9 +370,6 @@ int bdrv_snapshot_delete(BlockDriverState *bs,
-         return -EINVAL;
-     }
- 
--    /* drain all pending i/o before deleting snapshot */
--    bdrv_drained_begin(bs);
--
-     if (drv->bdrv_snapshot_delete) {
-         ret = drv->bdrv_snapshot_delete(bs, snapshot_id, name, errp);
-     } else if (fallback_bs) {
-@@ -382,7 +381,6 @@ int bdrv_snapshot_delete(BlockDriverState *bs,
-         ret = -ENOTSUP;
-     }
- 
--    bdrv_drained_end(bs);
-     return ret;
- }
- 
-@@ -573,9 +571,13 @@ int bdrv_all_delete_snapshot(const char *name,
-     GList *iterbdrvs;
- 
-     GLOBAL_STATE_CODE();
--    GRAPH_RDLOCK_GUARD_MAINLOOP();
-+
-+    bdrv_drain_all_begin();
-+    bdrv_graph_rdlock_main_loop();
- 
-     if (bdrv_all_get_snapshot_devices(has_devices, devices, &bdrvs, errp) < 0) {
+     if (old_child_bs) {
+         bdrv_ref(old_child_bs);
 +        bdrv_graph_rdunlock_main_loop();
-+        bdrv_drain_all_end();
-         return -1;
+         bdrv_drained_begin(old_child_bs);
++    } else {
++        bdrv_graph_rdunlock_main_loop();
      }
+-
+-    bdrv_graph_rdunlock_main_loop();
+     bdrv_graph_wrlock();
  
-@@ -594,12 +596,16 @@ int bdrv_all_delete_snapshot(const char *name,
-         if (ret < 0) {
-             error_prepend(errp, "Could not delete snapshot '%s' on '%s': ",
-                           name, bdrv_get_device_or_node_name(bs));
-+            bdrv_graph_rdunlock_main_loop();
-+            bdrv_drain_all_end();
-             return -1;
-         }
- 
-         iterbdrvs = iterbdrvs->next;
-     }
- 
-+    bdrv_graph_rdunlock_main_loop();
-+    bdrv_drain_all_end();
-     return 0;
- }
- 
-diff --git a/blockdev.c b/blockdev.c
-index 1d1f27cfff..1272b9a745 100644
---- a/blockdev.c
-+++ b/blockdev.c
-@@ -1132,39 +1132,41 @@ SnapshotInfo *qmp_blockdev_snapshot_delete_internal_sync(const char *device,
-     int ret;
- 
-     GLOBAL_STATE_CODE();
--    GRAPH_RDLOCK_GUARD_MAINLOOP();
-+
-+    bdrv_drain_all_begin();
-+    bdrv_graph_rdlock_main_loop();
- 
-     bs = qmp_get_root_bs(device, errp);
-     if (!bs) {
--        return NULL;
-+        goto error;
-     }
- 
-     if (!id && !name) {
-         error_setg(errp, "Name or id must be provided");
--        return NULL;
-+        goto error;
-     }
- 
-     if (bdrv_op_is_blocked(bs, BLOCK_OP_TYPE_INTERNAL_SNAPSHOT_DELETE, errp)) {
--        return NULL;
-+        goto error;
-     }
- 
-     ret = bdrv_snapshot_find_by_id_and_name(bs, id, name, &sn, &local_err);
-     if (local_err) {
-         error_propagate(errp, local_err);
--        return NULL;
-+        goto error;
-     }
-     if (!ret) {
-         error_setg(errp,
-                    "Snapshot with id '%s' and name '%s' does not exist on "
-                    "device '%s'",
-                    STR_OR_NULL(id), STR_OR_NULL(name), device);
--        return NULL;
-+        goto error;
-     }
- 
-     bdrv_snapshot_delete(bs, id, name, &local_err);
-     if (local_err) {
-         error_propagate(errp, local_err);
--        return NULL;
-+        goto error;
-     }
- 
-     info = g_new0(SnapshotInfo, 1);
-@@ -1180,6 +1182,9 @@ SnapshotInfo *qmp_blockdev_snapshot_delete_internal_sync(const char *device,
-         info->has_icount = true;
-     }
- 
-+error:
-+    bdrv_graph_rdunlock_main_loop();
-+    bdrv_drain_all_end();
-     return info;
- }
- 
-@@ -1295,12 +1300,14 @@ static void internal_snapshot_abort(void *opaque)
-     Error *local_error = NULL;
- 
-     GLOBAL_STATE_CODE();
--    GRAPH_RDLOCK_GUARD_MAINLOOP();
- 
-     if (!state->created) {
-         return;
-     }
- 
-+    bdrv_drain_all_begin();
-+    bdrv_graph_rdlock_main_loop();
-+
-     if (bdrv_snapshot_delete(bs, sn->id_str, sn->name, &local_error) < 0) {
-         error_reportf_err(local_error,
-                           "Failed to delete snapshot with id '%s' and "
-@@ -1308,6 +1315,8 @@ static void internal_snapshot_abort(void *opaque)
-                           sn->id_str, sn->name,
-                           bdrv_get_device_name(bs));
-     }
-+    bdrv_graph_rdunlock_main_loop();
-+    bdrv_drain_all_end();
- }
- 
- static void internal_snapshot_clean(void *opaque)
-diff --git a/qemu-img.c b/qemu-img.c
-index 76ac5d3028..e81b0fbb6c 100644
---- a/qemu-img.c
-+++ b/qemu-img.c
-@@ -3505,6 +3505,7 @@ static int img_snapshot(int argc, char **argv)
-         break;
- 
-     case SNAPSHOT_DELETE:
-+        bdrv_drain_all_begin();
-         bdrv_graph_rdlock_main_loop();
-         ret = bdrv_snapshot_find(bs, &sn, snapshot_name);
-         if (ret < 0) {
-@@ -3520,6 +3521,7 @@ static int img_snapshot(int argc, char **argv)
-             }
-         }
-         bdrv_graph_rdunlock_main_loop();
-+        bdrv_drain_all_end();
-         break;
-     }
- 
+     ret = bdrv_set_file_or_backing_noperm(bs, new_child_bs, is_backing,
 -- 
 2.39.5
 
