@@ -2,83 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3981AAF959
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 14:08:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1104AAF9A9
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 14:20:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uD02h-0001Os-Jg; Thu, 08 May 2025 08:07:59 -0400
+	id 1uD0DS-0003FL-VF; Thu, 08 May 2025 08:19:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uD02d-0001OV-VD
- for qemu-devel@nongnu.org; Thu, 08 May 2025 08:07:55 -0400
-Received: from mail-yb1-xb2e.google.com ([2607:f8b0:4864:20::b2e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uD02c-0000im-6E
- for qemu-devel@nongnu.org; Thu, 08 May 2025 08:07:55 -0400
-Received: by mail-yb1-xb2e.google.com with SMTP id
- 3f1490d57ef6-e78f44034ffso426968276.1
- for <qemu-devel@nongnu.org>; Thu, 08 May 2025 05:07:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746706073; x=1747310873; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=YL87FuhWDvRyv0KfIzORqijLk934LJSUMog7volKFdc=;
- b=oH2Il1FX4ZO9zRvppNOtiSK8d/0fJwSqUhhdZsZNqcH+oUrtiabfxbRkoY1o349TQE
- TNIWKbloIvXjqLPGOBCrSxVVJP/TR+dWP8tWCtWc5FpU+kPT5j2+bpwuUtzWQWTzLWTI
- DFa9kJWlc5VznKaDdj68FkON/mTMtdL+iQvmfpc+c3ij0O92B6lvAp3A1a1itXQP+QrL
- gY2r32J3/BuJc5EkoTLUFBZYcc1O+8zsGQn8NKt6QgWyF8aGU6M7SXECKORtCWo34DfK
- ZFiiA7yVXOUm27LJIUuICFFAdkfrK4NYUQcWD1Lv0loEw1aoKnZxbHoEdeQ5kJKFE0JT
- 9QIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746706073; x=1747310873;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=YL87FuhWDvRyv0KfIzORqijLk934LJSUMog7volKFdc=;
- b=avq37x4yTKqlWkk6LNf/W+sqCOuL8ldLFBFWXwDALZ6U+EJYQeaLM2Zr9X6LAyBQvL
- 45yRiXfTT4UtpM8wsa5tIAxIrTb76x8hDx+1VLjbyLUwpTMJV3Q29xN+KZqdpTdFBZgm
- hc+pb60NVssuWEO3IRDBL/e6FIhRTTOy0bNjS1I4u8Ng2nv8KRMLTh7G9ZrY+HJJfUSM
- J9QJL2EDaFAUK/uDyvpeie+vgbtnD/Amg1WL1AqPA3lwi2JlKZKuLJZ3I2Lnw6sEBQWR
- 3nl3jNDJjx7NRf2pxuudh0JutOo0z/CyCcZn76UJiGeymkpUjBE9JiGDUybZqHtfSn1U
- wJHw==
-X-Gm-Message-State: AOJu0YzhHtSNr7Cr+Nggxp9iaKV9ZediapXqvOtInp214bYf+AqCxirh
- sIuvh1UMSmtDp93UqpYd8PxQFUCP33FztqN014esfWpzEIdGqoP0GX00jxFl5sU3sHUOR0rqBvz
- eov8HYy9cmsOtpZwFDNYRWnnt3QMFlHisHefsgg==
-X-Gm-Gg: ASbGncvZ+OiBOWu1TwDEZAbsE8GFvigJkuSzuE26LxuJX2efqGW22u8lGezz5niSYzS
- ZnmXiYE2VOIztwn8TxILwjIgRAH5KB9oLCHOBmFE4V5VCC/YAZj0Ll0xnbwYndu3uEePW70oiHh
- YbPTM6RvbLmv24cn/+uHsrVFk=
-X-Google-Smtp-Source: AGHT+IE5s+nuYHd6x2a6aCI7dtUK2PdHv+gp2usVJxorITTM1P4EYvIoJcl9QwMcbO2gplMF/xxze1IqiTWVweuX+Cg=
-X-Received: by 2002:a05:6902:2b84:b0:e78:6954:49f1 with SMTP id
- 3f1490d57ef6-e78ef5efa6dmr3846126276.4.1746706072667; Thu, 08 May 2025
- 05:07:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uD0DP-0003F4-R5
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 08:19:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uD0DO-0001zB-19
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 08:19:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1746706740;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=aRlUij8/HxhbNOyeA3KBfqL/+BCuaFEr9TB35/unyhI=;
+ b=XBrNumBz3wHDxuGLuBfPv3FJ5YW3MymCCb4q1wuQ8t4BJNmpLmcPttVFOSKnoSJ+Q5YA/g
+ 9Qx0LSLn9BGEoXqr2KgiG6a4KbnRTNzU1x3C2vHg4fDTIV+bISkRQmuOR4qr5ksne3z2nO
+ 2+vvh+++mD+13WJ/Vfeb4nGGJHDIkT0=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-225-qo8y7RBDMt22dWhEEApfMQ-1; Thu,
+ 08 May 2025 08:18:57 -0400
+X-MC-Unique: qo8y7RBDMt22dWhEEApfMQ-1
+X-Mimecast-MFC-AGG-ID: qo8y7RBDMt22dWhEEApfMQ_1746706735
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 90CBD19560AB; Thu,  8 May 2025 12:18:55 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.27])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9B55B180049D; Thu,  8 May 2025 12:18:54 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 1431F21E6768; Thu, 08 May 2025 14:18:52 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,  Eduardo Habkost <eduardo@habkost.net>,  Marcel
+ Apfelbaum <marcel.apfelbaum@gmail.com>,  Daniel P . =?utf-8?Q?Berrang?=
+ =?utf-8?Q?=C3=A9?=
+ <berrange@redhat.com>,  qemu-s390x@nongnu.org,  Eric Blake
+ <eblake@redhat.com>,  Zhao Liu <zhao1.liu@intel.com>,  Yanan Wang
+ <wangyanan55@huawei.com>
+Subject: Re: [RFC PATCH] qapi: Make CpuModelExpansionInfo::deprecated-props
+ optional and generic
+In-Reply-To: <20250429100419.20427-1-philmd@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Tue, 29 Apr 2025 12:04:19
+ +0200")
+References: <20250429100419.20427-1-philmd@linaro.org>
+Date: Thu, 08 May 2025 14:18:52 +0200
+Message-ID: <87v7qbcn2r.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-References: <20250507165840.401623-1-alex.bennee@linaro.org>
- <CAFEAcA_0cf=XEbH9VQdTHqu1wekSmFDLdqnnzpcwnshCT-UUCg@mail.gmail.com>
- <87zffnmidy.fsf@draig.linaro.org>
-In-Reply-To: <87zffnmidy.fsf@draig.linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 8 May 2025 13:07:40 +0100
-X-Gm-Features: ATxdqUHvqCH0dZwizDr8EfdhDc4AqOMpAhinqOWIMw7rKJfMVDevOb_UT-kHgyk
-Message-ID: <CAFEAcA80-CWEQYwTQPziUxm5V1K93VZstLh2r9mTGkD5QueKoA@mail.gmail.com>
-Subject: Re: [RFC PATCH] target/arm: allow gdb to read ARM_CP_NORAW regs
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Julian Armistead <julian.armistead@linaro.org>, 
- "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2e;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.416,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,68 +91,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 8 May 2025 at 12:50, Alex Benn=C3=A9e <alex.bennee@linaro.org> wrot=
-e:
->
-> Peter Maydell <peter.maydell@linaro.org> writes:
->
-> > On Wed, 7 May 2025 at 17:58, Alex Benn=C3=A9e <alex.bennee@linaro.org> =
-wrote:
-> >>
-> >> Before this we suppress all ARM_CP_NORAW registers being listed under
-> >> GDB. This includes useful registers like CurrentEL which gets tagged
-> >> as ARM_CP_NO_RAW because it is one of the ARM_CP_SPECIAL_MASK
-> >> registers. These are registers TCG can directly compute because we
-> >> have the information at compile time but until now with no readfn.
-> >>
-> >> Add a .readfn to return the CurrentEL and then loosen the restrictions
-> >> in arm_register_sysreg_for_feature to allow ARM_CP_NORAW registers to
-> >> be read if there is a readfn available.
-> >
-> > The primary use case for NO_RAW is "system instructions" like
-> > the TLB maintenance insns. These don't make sense to expose
-> > to a debugger.
->
-> I think we could re-think the logic:
->
->     /*
->      * By convention, for wildcarded registers only the first
->      * entry is used for migration; the others are marked as
->      * ALIAS so we don't try to transfer the register
->      * multiple times. Special registers (ie NOP/WFI) are
->      * never migratable and not even raw-accessible.
->      */
->     if (r2->type & ARM_CP_SPECIAL_MASK) {
->         r2->type |=3D ARM_CP_NO_RAW;
->     }
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-Well, we definitely don't want WFI or the DC ZVA etc
-"registers" to be exposed to GDB or for us to try to handle
-them in KVM state sync or migration... ARM_CP_NOP is less
-clear because we use it pretty widely for more than one
-purpose. The main one is "system instruction that we don't
-need to implement". (CP_NOP + a readable register is a
-questionable combination since the guest will expect it to
-update the general-purpose destreg, not leave it untouched,
-but we do have some.)
-
-> > If we want the gdbstub access to system registers to be
-> > more than our current "we provide the ones that are easy",
-> > then I think I'd like to see a bit more up-front analysis of
-> > what the gdbstub needs and whether we've got into a bit of
-> > a mess with our ARM_CP_* flags that we could straighten out.
+> We'd like to have some unified QAPI schema. Having a structure field
+> conditional to a target being built in is not very practical.
 >
-> Yeah - hence the RFC. CurrentEL is a super useful one to expose though
-> when you are debugging complex hypervisor setups.
+> While @deprecated-props is only used by s390x target, it is generic
+> enough and could be used by other targets (assuming we expand
+> CpuModelExpansionType enum values).
+>
+> Let's always include this field, regardless of the target, but
+> make it optional.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  qapi/machine-target.json | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
+>
+> diff --git a/qapi/machine-target.json b/qapi/machine-target.json
+> index 541f93eeb78..3b109b4af87 100644
+> --- a/qapi/machine-target.json
+> +++ b/qapi/machine-target.json
+> @@ -244,19 +244,18 @@
+>  #
+>  # @model: the expanded CpuModelInfo.
+>  #
+> -# @deprecated-props: a list of properties that are flagged as
+> +# @deprecated-props: an optional list of properties that are flagged as
+>  #     deprecated by the CPU vendor.  The list depends on the
+>  #     CpuModelExpansionType: "static" properties are a subset of the
+>  #     enabled-properties for the expanded model; "full" properties are
+>  #     a set of properties that are deprecated across all models for
+> -#     the architecture.  (since: 9.1).
+> +#     the architecture.  (since: 10.1 -- since 9.1 on s390x --).
+>  #
+>  # Since: 2.8
+>  ##
+>  { 'struct': 'CpuModelExpansionInfo',
+>    'data': { 'model': 'CpuModelInfo',
+> -            'deprecated-props' : { 'type': ['str'],
+> -                                   'if': 'TARGET_S390X' } },
+> +            '*deprecated-props' : { 'type': ['str'] } },
 
-One problem with this patch is the one that the reporter of
-https://gitlab.com/qemu-project/qemu/-/issues/2760 noted
-in the conversation there: it will allow the debugger to
-read registers which have a side-effect on read, like
-ICC_IAR1_EL1: we almost certainly do not want to allow
-the debugger to acknowledge an interrupt by doing a sysreg
-read.
+Make this
 
-thanks
--- PMM
+               '*deprecated-props' : ['str'] },
+
+please.
+
+>    'if': { 'any': [ 'TARGET_S390X',
+>                     'TARGET_I386',
+>                     'TARGET_ARM',
+
 
