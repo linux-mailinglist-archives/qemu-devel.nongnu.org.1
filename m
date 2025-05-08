@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FE51AAFBF1
-	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 15:47:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DE2BAAFC12
+	for <lists+qemu-devel@lfdr.de>; Thu,  8 May 2025 15:52:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uD1aI-0006YC-It; Thu, 08 May 2025 09:46:46 -0400
+	id 1uD1eh-00040O-9G; Thu, 08 May 2025 09:51:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uD1aD-0006TX-VP
- for qemu-devel@nongnu.org; Thu, 08 May 2025 09:46:42 -0400
-Received: from mail-yb1-xb34.google.com ([2607:f8b0:4864:20::b34])
+ id 1uD1ee-0003zd-1S
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 09:51:16 -0400
+Received: from mail-yw1-x1129.google.com ([2607:f8b0:4864:20::1129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uD1aB-0005LM-Ic
- for qemu-devel@nongnu.org; Thu, 08 May 2025 09:46:41 -0400
-Received: by mail-yb1-xb34.google.com with SMTP id
- 3f1490d57ef6-e732386e4b7so1042645276.1
- for <qemu-devel@nongnu.org>; Thu, 08 May 2025 06:46:38 -0700 (PDT)
+ id 1uD1eb-0005zR-Ew
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 09:51:15 -0400
+Received: by mail-yw1-x1129.google.com with SMTP id
+ 00721157ae682-708b31650ffso10385697b3.0
+ for <qemu-devel@nongnu.org>; Thu, 08 May 2025 06:51:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746711998; x=1747316798; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746712270; x=1747317070; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=icZBIvI1UBMMGilMqLbnwCDH5oPRY55BMuvb3dIFfEE=;
- b=lbI340gqIYDE4ll6/IlMfdYPyNh/fvgpuaZk/r/EYb3rOQsqJBcUoW7aFLg52OKUP8
- wmSmwVv6eqvrtsBlUQELU9SGpiiGpZn27CsBq1wmk1PblXCHIrt4MeM/AXWx0GzMU3ve
- PDYNp8yQqBptRC4kDxWuzD/ST7tu6lgh+VEAbvJnqg44E9xnHMfYc7kPoDOmqhZSuMKI
- 6hlBIM6fODJgPFbkXnVWDxwsU2R0I94+QHK/+8Oa0bU0mAhah8NJ8vS+WxjdJ6HIOMfk
- hvU7hdJielbStOQ/kbovGYvXaDnIh6gkZVtpNAbiPYXyhK34oElUtQG2DfptWuDZW3Oa
- iEOg==
+ bh=Lr2FKoznQd1dzrXOA3k8dGjH+BUO8/I3at7g4/YAiok=;
+ b=xkh1uKvRTNd5sAcovVRzVhlUVqYDfHllnJdxE3e5uJ3sTnWx/TG2TvDuiBCPuOMHfe
+ mROtzj9ixAUeS2WXv5FNRBkXqsjBbIyygL4ss2AOAReFJdsoHWldnvMbZf25gDA/eeux
+ 2RymYRLIb12J2I9iGA+UDLcT3Je3etQ2zg153dUrx4J8kLNgzovl+GwaklCNWenkuHwG
+ GCHjp+VdeaThUucKMrmBcTC45mFAcy1O4SczRfZCUKlxNKP00wKD3e7ukvUk/npfZEnc
+ dcgNla0ODZvJojTsx4Qz6a8aaOnYcSUmngcU7i7Jt97yPVK0RrdQlKnAPbGnbuwo1DGp
+ r5gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746711998; x=1747316798;
+ d=1e100.net; s=20230601; t=1746712270; x=1747317070;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=icZBIvI1UBMMGilMqLbnwCDH5oPRY55BMuvb3dIFfEE=;
- b=tcUQ1NHKNeNGIx7q8Wj5CAApDiGmYYYLDLPGHRd0b4if2zCfyrx9zY1R30cAiLYszW
- Ay0ldLXWFPjA4GpdIj3EBywqlY2R7Tjsem6FL/SnItnNlYPEP9MdBgevPUXPTUXeGHTt
- DfZ1agf8mPxZ2GjAVfwW5wDKsD3NgzliGFL8CzEq1JkEGlg01WgiZJe3upj4Fnlm4mbW
- CMeL72rhGlNTVzMwKZt/gLNK+buceyulLeDkGeJmwejdVyoxRhQGklncOrPGE3UUJYHP
- iccHtpBfhg+Ku4aM00bB4ldvwVF9Gx2djZyCAB0fpcn7yV3u76Rz7Qjv5SyuFeUkpy1c
- hoow==
-X-Gm-Message-State: AOJu0YwvWjslrIzsKpdVDPIlJ16PnokD39Rjt0ZKxp0YvrpD64IomVF/
- SGgq4bZrz2DM1G7sXPD+wk5O8tnqPVCGsmp+Dped/le8NH4QZfuxSHtO9ChCzq4q+NQu3jsgNbe
- gL8zdhunAepqv3J4DXIAx1wQYKM8ZKM0mj2kZhg==
-X-Gm-Gg: ASbGnctGlUxl7eoWG43yaeLHfiqtaQeHcWjJW5NUd9KdkmdYaV30iPXKkgR9uV+KkdD
- inn3KnXNxL5VNyH7TKPchyxf2QQ4lT5CXKXqayFjKGOKc5HS4mPwRJaMFSpmGBMgcSyp4vhsKnJ
- Y35lAMP6JbcWOu1rHPGp0EAI8=
-X-Google-Smtp-Source: AGHT+IG8itxaIIgqSrLT+0VR5Cs4av7+PpQbqzwtlb5+gfp+gQwPsSkY0a8hRuoyHpLHAKCO6/rJ1PwmqUVorGUGkP4=
-X-Received: by 2002:a05:6902:268a:b0:e75:bcba:aae2 with SMTP id
- 3f1490d57ef6-e78814436e2mr8642702276.34.1746711997674; Thu, 08 May 2025
- 06:46:37 -0700 (PDT)
+ bh=Lr2FKoznQd1dzrXOA3k8dGjH+BUO8/I3at7g4/YAiok=;
+ b=dn2S0HFbVfaK2+Vz6GAYodZHGoB1cqm24kjk9UnoAm9KYjKlm1efL8BWKWTM6g4F50
+ uMPxEye/6PObFS3fpLwCVM/XrDT9TERWCNRlxWhx/ISeSdeyHA1MViyNF1PR+2NrjGe9
+ roGt0GMnoIBSSQv2v2ApFSqa48d5I5x1iNQKkI+zuPkg8qc88q9MdSgnGN+j/bIVcIBR
+ 0V5WlriBB0wVZkN7C9rNwO2RYmyHYtPwtMY5J2y01q/CDyURGtc/zha032vsvvY9Kb0R
+ 65yB1OpdJoXkAhxNkFEYckBObxqylJAYiJYAbvaUVpk4Mfaovb95ZfLfQNzC63O/gfxF
+ YPLQ==
+X-Gm-Message-State: AOJu0YxMG7v3B35c+f9dI8eTiMNngfYWtWwD5HSpMoRiyepYpZ2y1vXl
+ sOWXVIOAEgnsxKvJDQp4cyiHV6uaMgUq7iCrDfq675I0HAke6oJs7ExaT+5EmswHDwaZeuRUo8E
+ A9AuLcZIaDRXmMtNS22xk+XyoJ+b8KDMsmUVYIA==
+X-Gm-Gg: ASbGncvJrcbIR3jhbkMMdRUkq9KB6rZboZT7ow+9T9j1wU6z0jYWLjaqDJ1UNUUVd+L
+ NYKEcRouZr6TZYJw/u++Jr+4YhyBQRsg2MOJfeUmhIBvfBqcnhRh1lyEAnBLKbxV9Roq1Yn52Ev
+ P2rfZTas1WysjDmgtnxQG5MQ4=
+X-Google-Smtp-Source: AGHT+IEdlnDkIEQSZSpMBMXc5pv6kz/G3AH6tgDXwpDFS2x21qayM3rmbg6uuxVD5pILbmvilJQSlhIXrUlIKzrkplE=
+X-Received: by 2002:a05:690c:3749:b0:708:bfc6:c7cd with SMTP id
+ 00721157ae682-70a2ce85c22mr53693097b3.6.1746712269882; Thu, 08 May 2025
+ 06:51:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250408185538.85538-1-philmd@linaro.org>
- <20250408185538.85538-3-philmd@linaro.org>
-In-Reply-To: <20250408185538.85538-3-philmd@linaro.org>
+References: <20250507165840.401623-1-alex.bennee@linaro.org>
+ <CAFEAcA_0cf=XEbH9VQdTHqu1wekSmFDLdqnnzpcwnshCT-UUCg@mail.gmail.com>
+ <87zffnmidy.fsf@draig.linaro.org>
+ <CAFEAcA80-CWEQYwTQPziUxm5V1K93VZstLh2r9mTGkD5QueKoA@mail.gmail.com>
+ <87o6w3mdex.fsf@draig.linaro.org>
+In-Reply-To: <87o6w3mdex.fsf@draig.linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 8 May 2025 14:46:26 +0100
-X-Gm-Features: ATxdqUHdu0R1-dV4m7puis-pmrl1EFnhaUXGKgp__cSk4_lQy9BJaTEjdEjOBVw
-Message-ID: <CAFEAcA-uDSs3eGQTPd5mGUEUJ15Ny-=c0AQioVza2j3FtxDeVA@mail.gmail.com>
-Subject: Re: [PULL 2/8] hw/core/machine: Fix -machine dumpdtb=file.dtb
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Joel Stanley <joel@jms.id.au>, 
- Alistair Francis <alistair.francis@wdc.com>,
- qemu-stable <qemu-stable@nongnu.org>
+Date: Thu, 8 May 2025 14:50:58 +0100
+X-Gm-Features: ATxdqUFyTo5XkBldfiqYzeGRzhmXruF_k_USSFHUxSU1OMWV1ed0ohn-cyX4ss0
+Message-ID: <CAFEAcA-hgkPM_PXsD_q_SjNDyLCX3hVA=rVpTg9AWCdihK8fSg@mail.gmail.com>
+Subject: Re: [RFC PATCH] target/arm: allow gdb to read ARM_CP_NORAW regs
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Julian Armistead <julian.armistead@linaro.org>, 
+ "open list:ARM TCG CPUs" <qemu-arm@nongnu.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b34;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb34.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1129;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1129.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,35 +96,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 8 Apr 2025 at 19:57, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
-> wrote:
+On Thu, 8 May 2025 at 14:37, Alex Benn=C3=A9e <alex.bennee@linaro.org> wrot=
+e:
 >
-> From: Joel Stanley <joel@jms.id.au>
+> Peter Maydell <peter.maydell@linaro.org> writes:
 >
-> In commit 8fd2518ef2f8 ("hw: Centralize handling of -machine dumpdtb
-> option") the call to dump was moved with respect to the init of the
-> machine.  This resulted in the device tree missing parts of the machine
-> description, depending on how they construct their device tree.
+> > On Thu, 8 May 2025 at 12:50, Alex Benn=C3=A9e <alex.bennee@linaro.org> =
+wrote:
+> >>
+> >> Peter Maydell <peter.maydell@linaro.org> writes:
+> >>
+> >> > On Wed, 7 May 2025 at 17:58, Alex Benn=C3=A9e <alex.bennee@linaro.or=
+g> wrote:
+> >> >>
+> >> >> Before this we suppress all ARM_CP_NORAW registers being listed und=
+er
+> >> >> GDB. This includes useful registers like CurrentEL which gets tagge=
+d
+> >> >> as ARM_CP_NO_RAW because it is one of the ARM_CP_SPECIAL_MASK
+> >> >> registers. These are registers TCG can directly compute because we
+> >> >> have the information at compile time but until now with no readfn.
+> >> >>
+> >> >> Add a .readfn to return the CurrentEL and then loosen the restricti=
+ons
+> >> >> in arm_register_sysreg_for_feature to allow ARM_CP_NORAW registers =
+to
+> >> >> be read if there is a readfn available.
+> >> >
+> >> > The primary use case for NO_RAW is "system instructions" like
+> >> > the TLB maintenance insns. These don't make sense to expose
+> >> > to a debugger.
+> >>
+> >> I think we could re-think the logic:
+> >>
+> >>     /*
+> >>      * By convention, for wildcarded registers only the first
+> >>      * entry is used for migration; the others are marked as
+> >>      * ALIAS so we don't try to transfer the register
+> >>      * multiple times. Special registers (ie NOP/WFI) are
+> >>      * never migratable and not even raw-accessible.
+> >>      */
+> >>     if (r2->type & ARM_CP_SPECIAL_MASK) {
+> >>         r2->type |=3D ARM_CP_NO_RAW;
+> >>     }
+> >
+> > Well, we definitely don't want WFI or the DC ZVA etc
+> > "registers" to be exposed to GDB or for us to try to handle
+> > them in KVM state sync or migration... ARM_CP_NOP is less
+> > clear because we use it pretty widely for more than one
+> > purpose. The main one is "system instruction that we don't
+> > need to implement". (CP_NOP + a readable register is a
+> > questionable combination since the guest will expect it to
+> > update the general-purpose destreg, not leave it untouched,
+> > but we do have some.)
+> >
+> >> > If we want the gdbstub access to system registers to be
+> >> > more than our current "we provide the ones that are easy",
+> >> > then I think I'd like to see a bit more up-front analysis of
+> >> > what the gdbstub needs and whether we've got into a bit of
+> >> > a mess with our ARM_CP_* flags that we could straighten out.
+> >>
+> >> Yeah - hence the RFC. CurrentEL is a super useful one to expose though
+> >> when you are debugging complex hypervisor setups.
+> >
+> > One problem with this patch is the one that the reporter of
+> > https://gitlab.com/qemu-project/qemu/-/issues/2760 noted
+> > in the conversation there: it will allow the debugger to
+> > read registers which have a side-effect on read, like
+> > ICC_IAR1_EL1: we almost certainly do not want to allow
+> > the debugger to acknowledge an interrupt by doing a sysreg
+> > read.
 >
-> The arm virt machine is missing some PSCI nodes, while the riscv one
-> is missing most of its content.
+> Doesn't raw_readfn offer these semantics?
 >
-> Move the dump to after the notifiers have been run, allowing
-> virt_machine_done to be called and the device tree to be fully
-> populated.
+>     /*
+>      * Function for doing a "raw" read; used when we need to copy
+>      * coprocessor state to the kernel for KVM or out for
+>      * migration. This only needs to be provided if there is also a
+>      * readfn and it has side effects (for instance clear-on-read bits).
+>      */
+>     CPReadFn *raw_readfn;
 >
-> Fixes: 8fd2518ef2f8 ("hw: Centralize handling of -machine dumpdtb option"=
-)
-> Signed-off-by: Joel Stanley <joel@jms.id.au>
-> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Message-ID: <20250401041509.719153-1-joel@jms.id.au>
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> So maybe:
+>
+>         /* We can only read ARM_CP_NO_RAW regs without side effects */
+>         if ((ri->type & ARM_CP_NO_RAW) && !ri->raw_readfn) {
+>             return;
+>         }
+>
+> And I guess we can strengthen the gdb helper to NOP any writes to such
+> registers.
 
-I just noticed that this (which is now commit 15a9fe6e35369d6e4
-in master) didn't get tagged for stable. I think it's worth
-picking up in the 10.0.x branch, as the commit it's fixing
-is in the 10.0 release.
+This seems to be continuing down the path of "oh, if we just
+tweak this condition here it seems to whack this particular
+mole on the head". What I'm asking for is a more holistic
+view of what we're trying to achieve and what the "right"
+design for that ought to be, not for small patches that
+add more ad-hoc adjustments to where we are currently.
 
 thanks
 -- PMM
