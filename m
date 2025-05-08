@@ -2,110 +2,125 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F437AB0626
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 00:53:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51460AB0634
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 00:54:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDA6G-0005pW-KM; Thu, 08 May 2025 18:52:21 -0400
+	id 1uDA7X-0003so-14; Thu, 08 May 2025 18:53:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
- id 1uDA6A-0005Wc-Lm; Thu, 08 May 2025 18:52:15 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zycai@linux.ibm.com>)
- id 1uDA67-0006gd-Qj; Thu, 08 May 2025 18:52:14 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 548JZMS2026259;
- Thu, 8 May 2025 22:52:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=2GfruC
- 9tAUcV6rj/cU/TRHpVRr9FRR7nPB6X0ZouKxA=; b=As61iF5R+kuL3hXWlUk9tN
- hxNcvnIc0J7zJyQKvStyMRf6yA9PwpiaXUZqdU2fOjZ2hjQEB34xnwodR9dyl6IX
- PReFZz0YniO7NtR8PsDSjCzC883t6QPsJfMYV9bztey0SklJR/s1yrXyG4ju8Q6H
- 4627uBUsx7+XdWGohnP1lHsashsxhEXGmjW3ofEswvuOgL+2SFeNo41QrKyhFMui
- zPIg2P4a70wTN9OGMCY7E8hhZBwxK4amC5aJcKEMENBYmk3nfRXz1Y7K1YdQseX4
- pe8xIMRm3hd707r1+rk9SH3QL3tl0wZXEqyTf/B2DELn312VPPwP0wt2+/7lI+fg
- ==
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46gthkbhbt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 08 May 2025 22:52:08 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 548L33XT001324;
- Thu, 8 May 2025 22:52:07 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 46dwftr96c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 08 May 2025 22:52:07 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
- [10.39.53.228])
- by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 548Mq6L133686132
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 8 May 2025 22:52:07 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 884E25804B;
- Thu,  8 May 2025 22:52:06 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1499058055;
- Thu,  8 May 2025 22:52:05 +0000 (GMT)
-Received: from fedora-workstation.ibmuc.com (unknown [9.61.11.238])
- by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu,  8 May 2025 22:52:04 +0000 (GMT)
-From: Zhuoying Cai <zycai@linux.ibm.com>
-To: thuth@redhat.com, richard.henderson@linaro.org, david@redhat.com,
- pbonzini@redhat.com
-Cc: walling@linux.ibm.com, jjherne@linux.ibm.com, jrossi@linux.ibm.com,
- fiuczy@linux.ibm.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
- farman@linux.ibm.com, iii@linux.ibm.com, qemu-s390x@nongnu.org,
- qemu-devel@nongnu.org, zycai@linux.ibm.com
-Subject: [PATCH v2 25/25] docs/system/s390x: Add secure IPL documentation
-Date: Thu,  8 May 2025 18:50:41 -0400
-Message-ID: <20250508225042.313672-26-zycai@linux.ibm.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250508225042.313672-1-zycai@linux.ibm.com>
-References: <20250508225042.313672-1-zycai@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <i.maximets.ovn@gmail.com>)
+ id 1uDA7Q-0003dS-RI
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 18:53:33 -0400
+Received: from mail-ed1-f67.google.com ([209.85.208.67])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <i.maximets.ovn@gmail.com>)
+ id 1uDA7N-0006jy-Ue
+ for qemu-devel@nongnu.org; Thu, 08 May 2025 18:53:32 -0400
+Received: by mail-ed1-f67.google.com with SMTP id
+ 4fb4d7f45d1cf-5fbee929e83so2274059a12.3
+ for <qemu-devel@nongnu.org>; Thu, 08 May 2025 15:53:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1746744807; x=1747349607;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:to:subject:cc:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=g9e/fC6fU2lh9c7GzUuH09/jCREzNc81OgSNbCgdXcQ=;
+ b=XfuokHB28v0+LMLlNsDd9L8AKnSNr3WmrNRsypYqUkJCCBPw2/acqdkCR3abwbSJ+z
+ cne0mtsGsPGjK9c163/JBGACZ/a1vPjH3n8pDBsfDkXIn0oxeI9/Tpe4VEfPSCEAehLo
+ tBfWA1UKrYg+iIg/9lEbEWqQVqWKvtmo/fC5kycnYmx/6T+i1dwAhVho5klDX4XXxcT+
+ AfPmYdD57vKsdXYXY4JBlTl+SnmO/H9HPTvE7lL5OB+/ygfQ3x33lolqzdZuMs1jB/Gy
+ H4bvunD8RdL49e9eOyOIV5Egq54NGXDvSww7h97Bl4eZ3gpOKLwIMCHz4ieJHxutos/P
+ NdWA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCViOTTiXmWXfQgyaniWc9YORqNTZiDHXXbsGIJkiCQFsXWNVWby5z6rlhl2V2LAnRwSfLpuHa4dnHXo@nongnu.org
+X-Gm-Message-State: AOJu0YyiwnVAFI6zoB5XkMrrwCrAFipF4tRp0a8jsMqT3assqLFimDip
+ 7v4KoVSL92aoqJ0YyXNAc459slNt4ggj+vsmtOgzVQ6xj7ye/pb+
+X-Gm-Gg: ASbGncsJczPbYHEKL7SMwHVZ/JzYA728voufzjKFmTezLyiZ9S8VzLknRtcHh+UPV6F
+ aq0tJWqhNWsn4Sh5TQ6FHFjYyHoDDIqrpbvV7UYZPIu/YuOVcSN4AGWe+nvXvKqjv+3nYchNX1i
+ Hv/v7l0+RfexcyLAPyfm2dbf7RBDUsD540XnnsjV6Fgl+IEFGEDF8d62xOdf9IR8ZVYbun6jZfs
+ knnnb6uyxXd2YOdILzFu1rVJxlu+XjUeqp58vq38nf/V4La65h6E8A9Ge+Eq8gIduCNlfhVuksF
+ 1v+wKlT1QbXoUVA4EpAoRbypx+94PdoN0zmqW2Z/Skchv+qjNQyQFFcTuyGvufEJi2QYdiHCT/I
+ H4JEsbAw=
+X-Google-Smtp-Source: AGHT+IHJM+lCiZ2vhvVRIlbITWEf7Izk9/j7f3d0CGYn8KSO7+yyv6Rk8y/Svw2hv8VLqt6slfGo8g==
+X-Received: by 2002:a05:6402:13d4:b0:5fb:1eed:cdb1 with SMTP id
+ 4fb4d7f45d1cf-5fca0793ecfmr823609a12.18.1746744807314; 
+ Thu, 08 May 2025 15:53:27 -0700 (PDT)
+Received: from [192.168.88.252] (194-212-251-179.customers.tmcz.cz.
+ [194.212.251.179]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5fc9cc261e9sm510663a12.23.2025.05.08.15.53.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 08 May 2025 15:53:27 -0700 (PDT)
+Message-ID: <f044b02b-3b7a-4a64-ab38-3298f96955a9@ovn.org>
+Date: Fri, 9 May 2025 00:53:25 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: i.maximets@ovn.org, Jason Wang <jasowang@redhat.com>,
+ Anton Protopopov <aspsk@isovalent.com>
+Subject: Re: [PATCH] net/af-xdp: Support pinned map path for AF_XDP sockets
+To: Daniel Borkmann <daniel@iogearbox.net>, qemu-devel@nongnu.org
+References: <20250508123436.461030-1-daniel@iogearbox.net>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <20250508123436.461030-1-daniel@iogearbox.net>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA4MDIwNSBTYWx0ZWRfX45l1ciwDtF2u
- OlvNqYaJlAAg3pFdpqJzq8bd3IWUQsh+1PjmEUp+Nws1NvNHKK2L2A/SEMaf7shKTtTz0wFh4+p
- gDCo6uqIB2qkb9q6zDdBhIWCwZblLIFenofuVVAhMyDcnZ6jWy0lhkrwS6oUCUV7TFiQDRxImtq
- 2NtQ19tsX7oAZqsfVmQjxbp4Rf+I4X7GuS68iPmyIOArKADuUf0rHFiMfCPUu0y4PPxRc3NZETx
- M1/U9OX58y06GegnMDz9a1gNRzBWUn5a7rJ8T+qVgWka897590d5w3ZHktXX3AHhoF8GBx/HC9X
- Z7H+0+QmhVDQej7Ghin/wZgsokRKr7RlTSqTuqqPUIEJNuAHdgav+9SPpSALSeXXl5jExXsu9jB
- 6rSFkxbJl3DMapsHDSlbiWPhULwf/iv/KFHWvtY9WqZa5DdFJmuRgOcRxPjRDV1A64ix+P+U
-X-Proofpoint-ORIG-GUID: nKSV87ASkvxPvvIIHDSwN1-bgqo6cjKw
-X-Authority-Analysis: v=2.4 cv=PvCTbxM3 c=1 sm=1 tr=0 ts=681d3598 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=Ho5SfNA0nnoc-0um1icA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: nKSV87ASkvxPvvIIHDSwN1-bgqo6cjKw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-08_07,2025-05-08_04,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- phishscore=0 spamscore=0 clxscore=1015 mlxlogscore=999 bulkscore=0
- impostorscore=0 suspectscore=0 mlxscore=0 malwarescore=0 adultscore=0
- priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2505080205
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=zycai@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=209.85.208.67;
+ envelope-from=i.maximets.ovn@gmail.com; helo=mail-ed1-f67.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,271 +136,235 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add documentation for secure IPL.
+On 5/8/25 2:34 PM, Daniel Borkmann wrote:
+> Extend inhibit=on setting with the option to specify a pinned XSK map
+> path along with a starting index (default 0) to push the created XSK
+> sockets into. Example usage:
+> 
+>   # ./build/qemu-system-x86_64 [...] \
+>     -netdev af-xdp,ifname=eth0,id=net0,mode=native,queues=2,inhibit=on,map-path=/sys/fs/bpf/foo,map-start-index=2
+>     -device virtio-net-pci,netdev=net0 [...]
+> 
+> This is useful for the case where an existing XDP program with XSK map
+> is present on the AF_XDP supported phys device and the XSK map not yet
+> populated. Qemu will then push the XSK sockets into the specified map.
 
-Signed-off-by: Collin Walling <walling@linux.ibm.com>
-Signed-off-by: Zhuoying Cai <zycai@linux.ibm.com>
----
- docs/system/s390x/secure-ipl.rst | 249 +++++++++++++++++++++++++++++++
- 1 file changed, 249 insertions(+)
- create mode 100644 docs/system/s390x/secure-ipl.rst
+Hi, Daniel.
 
-diff --git a/docs/system/s390x/secure-ipl.rst b/docs/system/s390x/secure-ipl.rst
-new file mode 100644
-index 0000000000..4f80d7741e
---- /dev/null
-+++ b/docs/system/s390x/secure-ipl.rst
-@@ -0,0 +1,249 @@
-+.. SPDX-License-Identifier: GPL-2.0-or-later
-+
-+s390 Secure IPL
-+===============
-+
-+Secure IPL, also known as secure boot, enables s390-ccw virtual machines to
-+leverage qcrypto libraries and z/Arch implementations to verify the integrity of
-+guest kernels. These operations are rely on userspace invocations and QEMU
-+interpretation. The user provides one or more certificates via the command line
-+options, which populates a certificate store. DIAGNOSE 'X'320' is invoked by
-+userspace to query cert store info and retrieve specific certificates from QEMU.
-+DIAGNOSE 'X'508' is used by userspace to leverage qcrypto libraries to perform
-+signature-verification in QEMU. Lastly, userspace generates and appends an
-+IPL Information Report Block (IIRB) at the end of the IPL Parameter Block.
-+
-+The steps are as follows:
-+
-+- Userspace retrieves data payload from disk (e.g. stage3 boot loader, kernel)
-+- Userspace checks the validity of the SCLAB
-+- Userspace invokes DIAG 508 subcode 1 and provides it the payload
-+- QEMU handles DIAG 508 request by reading the payload and retrieving the
-+  certificate store
-+- QEMU DIAG 508 utilizes qcrypto libraries to perform signature-verification on
-+  the payload, attempting with each cert in the store (until success or 
-+  exhausted)
-+- QEMU DIAG 508 returns:
-+
-+  - success: index of cert used to verify payload
-+  - failure: error code
-+
-+- Userspace responds to this operation:
-+
-+  - success: retrieves cert from store via DIAG 320 using returned index
-+  - failure: reports with warning (audit mode), aborts with error (secure mode)
-+
-+- Userspace appends IIRB at the end of the IPLB
-+- Userspace kicks off IPL
-+
-+
-+Constraints
-+-----------
-+
-+The following constraints apply when attempting to secure IPL an s390 guest:
-+
-+- z16 CPU model
-+- certificates must be in X.509 DER format
-+- only sha256 encryption is supported
-+- only support for SCSI scheme of virtio-blk/virtio-scsi devices
-+- a boot device must be specified
-+- any unsupported devices (e.g., ECKD and VFIO) or non-eligible devices (e.g.,
-+  Net) will cause the entire boot process terminating early with an error 
-+  logged to the console.
-+
-+
-+s390 Certificate Store
-+======================
-+
-+Secure boot relies on user certificates for signature-verification. Normally, 
-+these certificates would be stored somewhere on the LPAR. Instead, for virtual
-+guests, a certificate store is implemented within QEMU. This store will read
-+any certificates provided by the user via command-line, which are expected to
-+be stored somewhere on the host file system. Once these certificates are
-+stored, they are ready to be queried/requested by DIAGNOSE 'X'320' or used for
-+verification by DIAGNOSE 'X'508'.
-+
-+The certificate store can be populated by supplying a comma-delimited list of
-+certificates on the command-line:
-+
-+.. code-block:: shell
-+
-+    qemu-system-s390x -machine s390-ccw-virtio, \
-+    boot-certificates=/.../qemu/certs:/another/path/cert.der
-+
-+
-+DIAGNOSE function code 'X'320' - Certificate Store Facility
-+-----------------------------------------------------------
-+
-+DIAGNOSE 'X'320' is used to provide support to query the certificate store.
-+
-+Subcode 0 - query installed subcodes
-+    Returns a 256-bit installed subcodes mask (ISM) stored in the installed
-+    subcodes block (ISB). This mask indicates which sucodes are currently
-+    installed and available for use.
-+
-+Subcode 1 - query verification certificate storage information
-+    Provides the information required to determine the amount of memory needed to
-+    store one or more verification-certificates (VCs) from the certificate store (CS).
-+
-+    Upon successful completion, this subcode returns various storage size values for
-+    verification-certificate blocks (VCBs).
-+
-+    The output is returned in the verification-certificate-storage-size block (VCSSB).
-+
-+Subcode 2 - store verification certificates
-+    Provides VCs that are in the certificate store.
-+
-+    The output is provided in a VCB, which includes a common header followed by zero
-+    or more verification-certificate entries (VCEs).
-+
-+    The first-VC index and last-VC index fields of VCB specify the range of VCs 
-+    to be stored by subcode 2. Stored count and remained count fields specify the 
-+    number of VCs stored and could not be stored in the VCB due to insufficient 
-+    storage specified in the VCB input length field.
-+
-+    VCE contains various information of a VC from the CS.
-+
-+
-+IPL Modes
-+=========
-+
-+Different IPL modes may be toggled with the following command line option:
-+
-+.. code-block:: shell
-+
-+    qemu-system-s390x -machine s390-ccw-virtio,secure-boot=on|off
-+
-+Additionally, the provision of certificates affect the mode.
-+
-+
-+Normal Mode
-+-----------
-+
-+The absence of both certificates and the ``secure-boot`` option will attempt to
-+IPL a guest without secure IPL operations. No checks are performed, and no
-+warnings/errors are reported.  This is the default mode, and can be explicitly
-+enabled with ``secure-boot=off``.
-+
-+
-+Audit Mode
-+----------
-+
-+With *only* the presence of certificates in the store, it is assumed that secure
-+boot operations should be performed with errors reported as warnings. As such,
-+the secure IPL operations will be performed, and any errors that stem from these
-+operations will report a warning via the SCLP console.
-+
-+
-+Secure Mode
-+-----------
-+
-+With *both* the presence of certificates in the store and the ``secure-boot=on``
-+option, it is understood that secure boot should be performed with errors
-+reported and boot will abort.
-+
-+
-+Secure IPL Functions
-+====================
-+
-+IPL Information Report Block
-+----------------------------
-+
-+The IPL Parameter Block (IPLPB), utilized for IPL operation, is extended with an
-+IPL Information Report Block (IIRB), which contains the results from secure IPL
-+operations such as:
-+
-+* component data
-+* verification results
-+* certificate data
-+
-+
-+Secure Code Loading Attributes Facility
-+---------------------------------
-+
-+Secure Code Loading Attributes Facility (SCLAF) provides additional security during IPL.
-+
-+When SCLAF is available, its behavior depends on the IPL Modes.
-+
-+* secure mode: IPL will terminate on any errors detected by this facility. 
-+* audit mode:  IPL may proceed regardless of any errors detected by this facility.
-+
-+Errors detected by the SCLAF are reported in IIRB.
-+
-+Unsigned components may only be loaded at absolute storage address x’2000’ or higher.
-+
-+Signed components must include a Secure Code Loading Attribute Block (SCLAB),
-+which is located at the very end of the signed component.
-+
-+**Secure Code Loading Attribute Block (SCLAB)**
-+
-+The SCLAB is located at the end of each signed component. It defines the code loading
-+attributes for the component and may:
-+
-+* Provide direction on how to process the rest of the component.
-+
-+* Provide further validation of information on where to load the signed binary code
-+  from the load device.
-+
-+* Specify where to start the execution of the loaded OS code.
-+
-+
-+DIAGNOSE function code 'X'508' - KVM IPL extensions
-+---------------------------------------------------
-+
-+DIAGNOSE 'X'508' is reserved for KVM guest use in order to facilitate 
-+communication of additional IPL operations that cannot be handled by userspace,
-+such as signature verification for secure IPL.
-+
-+If the function code specifies 0x508, KVM IPL extension functions are performed.
-+These functions are meant to provide extended functionality for s390 guest boot
-+that requires assistance from QEMU.
-+
-+Subcode 0 - query installed subcodes
-+    Returns a 64-bit mask indicating which subcodes are supported.
-+
-+Subcode 1 - perform signature verification
-+    Used to perform signature-verification on a signed component, leveraging
-+    qcrypto libraries to perform this operation and pulling from the certificate
-+    store.
-+
-+
-+Secure IPL Quickstart
-+=====================
-+
-+Build QEMU with gnutls enabled:
-+
-+.. code-block:: shell
-+
-+    ./configure … --enable-gnutls
-+
-+Generate certificate (e.g. via openssl):
-+
-+.. code-block:: shell
-+
-+    openssl req -new -x509 -newkey rsa:2048 -keyout mykey.priv \
-+                -outform DER -out mycert.der -days 36500 \
-+                -subj "/CN=My Name/" -nodes
-+
-+Sign Images (e.g. via sign-file):
-+
-+- signing must be performed on a KVM guest filesystem
-+- sign-file script used in the example below is located within the kernel source
-+  repo
-+
-+.. code-block:: shell
-+
-+    ./sign-file sha256 mykey.priv mycert.der /boot/vmlinuz-…
-+    ./sign-file sha256 mykey.priv mycert.der /usr/lib/s390-tools/stage3.bin
-+
-+Run zipl with secure boot enabled
-+
-+.. code-block:: shell
-+
-+    zipl --secure 1 -V
-+
-+Start Guest with Cmd Options:
-+
-+.. code-block:: shell
-+
-+    qemu-system-s390x -machine s390-ccw-virtio,secure-boot=on,boot-certificates=mycert.der ...
--- 
-2.49.0
+Thanks for the patch!
+
+Could you, please, explain the use case a little more?  Is this patch
+aiming to improve usability?  Do you have a specific use case in mind?
+
+The main idea behind 'inhibit' is that the qemu doesn't need to have a lot
+of privileges to use the pre-loaded program and the pre-created sockets.
+But creating the sockets and setting them into a map doesn't allow us to
+run without privileges, IIUC.  May be worth mentioning at least in the
+commit message.
+
+Also, isn't map-start-index the same thing as start-queue ?  Do we need
+both of them?
+
+I didn't read much into the code yet, but this patch is missing a few
+bits of documentation, e.g. it's missing an update for qemu-options.hx.
+
+See a few other quick comment below.
+
+Best regards, Ilya Maximets.
+
+> 
+> Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+> Cc: Ilya Maximets <i.maximets@ovn.org>
+> Cc: Jason Wang <jasowang@redhat.com>
+> Cc: Anton Protopopov <aspsk@isovalent.com>
+> ---
+>  net/af-xdp.c  | 63 +++++++++++++++++++++++++++++++++++++++++++++------
+>  qapi/net.json | 24 +++++++++++++-------
+>  2 files changed, 72 insertions(+), 15 deletions(-)
+> 
+> diff --git a/net/af-xdp.c b/net/af-xdp.c
+> index 01c5fb914e..ddc52f1307 100644
+> --- a/net/af-xdp.c
+> +++ b/net/af-xdp.c
+> @@ -51,6 +51,8 @@ typedef struct AFXDPState {
+>  
+>      uint32_t             n_queues;
+>      uint32_t             xdp_flags;
+> +    char                 *map_path;
+> +    uint32_t             map_start_index;
+>      bool                 inhibit;
+>  } AFXDPState;
+>  
+> @@ -261,6 +263,7 @@ static void af_xdp_send(void *opaque)
+>  static void af_xdp_cleanup(NetClientState *nc)
+>  {
+>      AFXDPState *s = DO_UPCAST(AFXDPState, nc, nc);
+> +    int pin_fd, idx;
+>  
+>      qemu_purge_queued_packets(nc);
+>  
+> @@ -282,6 +285,22 @@ static void af_xdp_cleanup(NetClientState *nc)
+>                  "af-xdp: unable to remove XDP program from '%s', ifindex: %d\n",
+>                  s->ifname, s->ifindex);
+>      }
+> +    if (s->map_path) {
+> +        pin_fd = bpf_obj_get(s->map_path);
+> +        if (pin_fd < 0) {
+> +            fprintf(stderr,
+> +                "af-xdp: unable to remove %s's XSK sockets from '%s', ifindex: %d\n",
+> +                s->ifname, s->map_path, s->ifindex);
+> +        } else {
+> +            idx = nc->queue_index;
+> +            if (s->map_start_index > 0) {
+> +                idx += s->map_start_index;
+> +            }
+> +            bpf_map_delete_elem(pin_fd, &idx);
+> +            close(pin_fd);
+> +        }
+> +    }
+> +    g_free(s->map_path);
+>  }
+>  
+>  static int af_xdp_umem_create(AFXDPState *s, int sock_fd, Error **errp)
+> @@ -343,7 +362,7 @@ static int af_xdp_socket_create(AFXDPState *s,
+>          .bind_flags = XDP_USE_NEED_WAKEUP,
+>          .xdp_flags = XDP_FLAGS_UPDATE_IF_NOEXIST,
+>      };
+> -    int queue_id, error = 0;
+> +    int queue_id, pin_fd, xsk_fd, idx, error = 0;
+>  
+>      s->inhibit = opts->has_inhibit && opts->inhibit;
+>      if (s->inhibit) {
+> @@ -384,6 +403,23 @@ static int af_xdp_socket_create(AFXDPState *s,
+>          }
+>      }
+>  
+> +    if (!error && s->map_path) {
+> +        pin_fd = bpf_obj_get(s->map_path);
+> +        if (pin_fd < 0) {
+> +            error = errno;
+> +        } else {
+> +	    xsk_fd = xsk_socket__fd(s->xsk);
+
+Indentation is off.  Tbas mixed with spaces here and in some other
+places in the patch.
+
+> +            idx = s->nc.queue_index;
+> +            if (s->map_start_index) {
+> +                idx += s->map_start_index;
+> +            }
+> +            if (bpf_map_update_elem(pin_fd, &idx, &xsk_fd, 0)) {
+> +                error = errno;
+> +            }
+> +            close(pin_fd);
+> +        }
+> +    }
+> +
+>      if (error) {
+>          error_setg_errno(errp, error,
+>                           "failed to create AF_XDP socket for %s queue_id: %d",
+> @@ -465,8 +501,8 @@ int net_init_af_xdp(const Netdev *netdev,
+>          return -1;
+>      }
+>  
+> -    if ((opts->has_inhibit && opts->inhibit) != !!opts->sock_fds) {
+> -        error_setg(errp, "'inhibit=on' requires 'sock-fds' and vice versa");
+> +    if ((opts->has_inhibit && opts->inhibit) != !!(opts->sock_fds || opts->map_path)) {
+> +        error_setg(errp, "'inhibit=on' requires 'sock-fds' or 'map-path' and vice versa");
+
+This may need some re-wording as 'A requires B or C or vice versa' is
+a little hard to understand.
+
+>          return -1;
+>      }
+>  
+> @@ -491,6 +527,12 @@ int net_init_af_xdp(const Netdev *netdev,
+>          pstrcpy(s->ifname, sizeof(s->ifname), opts->ifname);
+>          s->ifindex = ifindex;
+>          s->n_queues = queues;
+> +        if (opts->map_path) {
+> +            s->map_path = g_strdup(opts->map_path);
+> +            if (opts->has_map_start_index && opts->map_start_index > 0) {
+> +                s->map_start_index = opts->map_start_index;
+> +            }
+> +        }
+>  
+>          if (af_xdp_umem_create(s, sock_fds ? sock_fds[i] : -1, errp)
+>              || af_xdp_socket_create(s, opts, errp)) {
+> @@ -504,10 +546,17 @@ int net_init_af_xdp(const Netdev *netdev,
+>      if (nc0) {
+>          s = DO_UPCAST(AFXDPState, nc, nc0);
+>          if (bpf_xdp_query_id(s->ifindex, s->xdp_flags, &prog_id) || !prog_id) {
+> -            error_setg_errno(errp, errno,
+> -                             "no XDP program loaded on '%s', ifindex: %d",
+> -                             s->ifname, s->ifindex);
+> -            goto err;
+> +            if (!s->map_path) {
+> +                error_setg_errno(errp, errno,
+> +                                 "no XDP program loaded on '%s', ifindex: %d",
+> +                                 s->ifname, s->ifindex);
+> +                goto err;
+> +	    } else {
+> +                warn_report("no XDP program loaded on '%s', ifindex: %d, "
+> +			    "only %"PRIi64" XSK socket%s loaded into map %s at this point",
+> +			    s->ifname, s->ifindex, queues, queues > 1 ? "s" : "",
+> +			    s->map_path);
+
+How a missing program is not an error?  Seems strange.
+
+> +            }
+>          }
+>      }
+>  
+> diff --git a/qapi/net.json b/qapi/net.json
+> index 310cc4fd19..c750b805e8 100644
+> --- a/qapi/net.json
+> +++ b/qapi/net.json
+> @@ -454,7 +454,7 @@
+>  #     (default: 0).
+>  #
+>  # @inhibit: Don't load a default XDP program, use one already loaded
+> -#     to the interface (default: false).  Requires @sock-fds.
+> +#     to the interface (default: false).  Requires @sock-fds or @map-path.
+>  #
+>  # @sock-fds: A colon (:) separated list of file descriptors for
+>  #     already open but not bound AF_XDP sockets in the queue order.
+> @@ -462,17 +462,25 @@
+>  #     into XDP socket map for corresponding queues.  Requires
+>  #     @inhibit.
+>  #
+> +# @map-path: The path to a pinned xsk map to push file descriptors
+> +#     for bound AF_XDP sockets into. Requires @inhibit.
+> +#
+> +# @map-start-index: Use @map-path to insert xsk sockets starting from
+> +#     this index number (default: 0). Requires @map-path.
+
+These are new fields that do not exist in the older versions, so
+they will need their own 'since' qualifiers.
+
+> +#
+>  # Since: 8.2
+>  ##
+>  { 'struct': 'NetdevAFXDPOptions',
+>    'data': {
+> -    'ifname':       'str',
+> -    '*mode':        'AFXDPMode',
+> -    '*force-copy':  'bool',
+> -    '*queues':      'int',
+> -    '*start-queue': 'int',
+> -    '*inhibit':     'bool',
+> -    '*sock-fds':    'str' },
+> +    'ifname':           'str',
+> +    '*mode':            'AFXDPMode',
+> +    '*force-copy':      'bool',
+> +    '*queues':          'int',
+> +    '*start-queue':     'int',
+> +    '*inhibit':         'bool',
+> +    '*sock-fds':        'str',
+> +    '*map-path':        'str',
+> +    '*map-start-index': 'int' },
+>    'if': 'CONFIG_AF_XDP' }
+>  
+>  ##
 
 
