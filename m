@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52092AB1491
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 15:14:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3850AB14BA
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 15:18:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDNY0-0001kq-RC; Fri, 09 May 2025 09:13:53 -0400
+	id 1uDNXz-0001k5-Ur; Fri, 09 May 2025 09:13:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNXo-0001hw-Mc
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNXq-0001i0-1i
  for qemu-devel@nongnu.org; Fri, 09 May 2025 09:13:42 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNXk-0006x3-U0
- for qemu-devel@nongnu.org; Fri, 09 May 2025 09:13:40 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNXo-0006xS-0E
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 09:13:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746796415;
+ s=mimecast20190719; t=1746796419;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mMnZaqscNTKV+8L0HlcgKdjLzi6vxS856e3Tmw05Uv8=;
- b=WY+GCmutpurQL1nx+T2NBIyKNs/8sX/w6mhITV9CleOJoCRul3sSEFUr+q6mIaCEy1HEe9
- 4AXVylW3LHTk0jzoVIVe3lteTDGKRG1xh0sm0hfo59Y1RrQ5R2ds6z4y4RZLTDgGphS7Tx
- zeiP5KZlqHWxlQgaRNHcRjIbza1xw5s=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ bh=TzGye/MLmPKxKAPIljfhMJ7poocLepPP6GDibNB0t5A=;
+ b=fo+Thg74r3LFWjdEI3B6z54rjjEvCYMirIbDBs1VNT5opzql174eNQWbc/2P89GjITo/2x
+ yDBEA+rmGroRPkFxlPhlNHMtOytF9Aot4CmUe1Kv3Rc41ropsBH32qum9bm+k0/GqvQ74r
+ +zmzDwSufvE/N64D6xvw4yC0yuVeZu4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-175-gSywlvffPd20ncnU1qbnVA-1; Fri,
- 09 May 2025 09:13:32 -0400
-X-MC-Unique: gSywlvffPd20ncnU1qbnVA-1
-X-Mimecast-MFC-AGG-ID: gSywlvffPd20ncnU1qbnVA_1746796411
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-251-xDPyiTDQNb2T5_QPr34FxQ-1; Fri,
+ 09 May 2025 09:13:36 -0400
+X-MC-Unique: xDPyiTDQNb2T5_QPr34FxQ-1
+X-Mimecast-MFC-AGG-ID: xDPyiTDQNb2T5_QPr34FxQ_1746796415
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5D441195608B; Fri,  9 May 2025 13:13:31 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E7A881956053; Fri,  9 May 2025 13:13:34 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.18])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 8D2FE180045B; Fri,  9 May 2025 13:13:29 +0000 (UTC)
+ id 0C45818003FD; Fri,  9 May 2025 13:13:31 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- Steve Sistare <steven.sistare@oracle.com>,
- Cedric Le Goater <clg@redhat.com>
-Subject: [PULL 03/28] vfio/container: vfio_container_group_add
-Date: Fri,  9 May 2025 15:12:52 +0200
-Message-ID: <20250509131317.164235-4-clg@redhat.com>
+ Tomita Moeko <tomitamoeko@gmail.com>,
+ =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 04/28] vfio/igd: Restrict legacy mode to Gen6-9 devices
+Date: Fri,  9 May 2025 15:12:53 +0200
+Message-ID: <20250509131317.164235-5-clg@redhat.com>
 In-Reply-To: <20250509131317.164235-1-clg@redhat.com>
 References: <20250509131317.164235-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -82,117 +83,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Steve Sistare <steven.sistare@oracle.com>
+From: Tomita Moeko <tomitamoeko@gmail.com>
 
-Add vfio_container_group_add to de-dup some code.  No functional change.
+Intel only provides legacy VBIOS for IGD up to Gen9, and there is no
+CSM support on later devices. Additionally, Seabios can only handle
+32-bit BDSM register used until Gen9. Since legacy mode requires VGA
+capability, restrict it to Gen6 through Gen9 devices.
 
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Reviewed-by: Cedric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/1746195760-101443-4-git-send-email-steven.sistare@oracle.com
-[ clg: vfio_attach_discard_disable() -> vfio_container_attach_discard_disable() ]
+Link: https://lore.kernel.org/qemu-devel/20250325172239.27926-1-tomitamoeko@gmail.com/T/
+Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
+Reviewed-by: Corvin Köhne <c.koehne@beckhoff.com>
+Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
+Tested-by: Alex Williamson <alex.williamson@redhat.com>
+Link: https://lore.kernel.org/qemu-devel/20250505170305.23622-2-tomitamoeko@gmail.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/container.c | 47 ++++++++++++++++++++++++---------------------
- 1 file changed, 25 insertions(+), 22 deletions(-)
+ docs/igd-assign.txt | 1 +
+ hw/vfio/igd.c       | 6 +++++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 4b2864cfa85d815fb67f2465b7544eb9de1664d3..a761f0958b71de39093d8849b49c55e3662e096f 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -558,6 +558,26 @@ static bool vfio_container_attach_discard_disable(VFIOContainer *container,
-     return !ret;
- }
+diff --git a/docs/igd-assign.txt b/docs/igd-assign.txt
+index 3aed7956d5d4fbc763d52c0f6ae0288c9a423679..95beb7681279ca97fc2b4b390045847dcd59eabd 100644
+--- a/docs/igd-assign.txt
++++ b/docs/igd-assign.txt
+@@ -47,6 +47,7 @@ Intel document [1] shows how to dump VBIOS to file. For UEFI Option ROM, see
  
-+static bool vfio_container_group_add(VFIOContainer *container, VFIOGroup *group,
-+                                     Error **errp)
-+{
-+    if (!vfio_container_attach_discard_disable(container, group, errp)) {
-+        return false;
-+    }
-+    group->container = container;
-+    QLIST_INSERT_HEAD(&container->group_list, group, container_next);
-+    vfio_group_add_kvm_device(group);
-+    return true;
-+}
-+
-+static void vfio_container_group_del(VFIOContainer *container, VFIOGroup *group)
-+{
-+    QLIST_REMOVE(group, container_next);
-+    group->container = NULL;
-+    vfio_group_del_kvm_device(group);
-+    vfio_ram_block_discard_disable(container, false);
-+}
-+
- static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
-                                    Error **errp)
- {
-@@ -568,20 +588,13 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
-     VFIOIOMMUClass *vioc = NULL;
-     bool new_container = false;
-     bool group_was_added = false;
--    bool discard_disabled = false;
+ QEMU also provides a "Legacy" mode that implicitly enables full functionality
+ on IGD, it is automatically enabled when
++* IGD generation is 6 to 9 (Sandy Bridge to Comet Lake)
+ * Machine type is i440fx
+ * IGD is assigned to guest BDF 00:02.0
+ * ROM BAR or romfile is present
+diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
+index d7e4728fdc84a0d91086f224c889f24120e1ce14..e06484c9112f104b87c18bb7b2d0a2cd2de1992e 100644
+--- a/hw/vfio/igd.c
++++ b/hw/vfio/igd.c
+@@ -517,11 +517,13 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
  
-     space = vfio_address_space_get(as);
- 
-     QLIST_FOREACH(bcontainer, &space->containers, next) {
-         container = container_of(bcontainer, VFIOContainer, bcontainer);
-         if (!ioctl(group->fd, VFIO_GROUP_SET_CONTAINER, &container->fd)) {
--            if (!vfio_container_attach_discard_disable(container, group, errp)) {
--                return false;
--            }
--            group->container = container;
--            QLIST_INSERT_HEAD(&container->group_list, group, container_next);
--            vfio_group_add_kvm_device(group);
--            return true;
-+            return vfio_container_group_add(container, group, errp);
-         }
+     /*
+      * For backward compatibility, enable legacy mode when
++     * - Device geneation is 6 to 9 (including both)
+      * - Machine type is i440fx (pc_piix)
+      * - IGD device is at guest BDF 00:02.0
+      * - Not manually disabled by x-igd-legacy-mode=off
+      */
+     if ((vdev->igd_legacy_mode != ON_OFF_AUTO_OFF) &&
++        (gen >= 6 && gen <= 9) &&
+         !strcmp(MACHINE_GET_CLASS(qdev_get_machine())->family, "pc_piix") &&
+         (&vdev->pdev == pci_find_device(pci_device_root_bus(&vdev->pdev),
+         0, PCI_DEVFN(0x2, 0)))) {
+@@ -566,7 +568,9 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
+         vdev->features |= VFIO_FEATURE_ENABLE_IGD_LPC;
+     } else if (vdev->igd_legacy_mode == ON_OFF_AUTO_ON) {
+         error_setg(&err,
+-                   "Machine is not i440fx or assigned BDF is not 00:02.0");
++                   "Machine is not i440fx, assigned BDF is not 00:02.0, "
++                   "or device %04x (gen %d) doesn't support legacy mode",
++                   vdev->device_id, gen);
+         goto error;
      }
  
-@@ -608,11 +621,6 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
-         goto fail;
-     }
- 
--    if (!vfio_container_attach_discard_disable(container, group, errp)) {
--        goto fail;
--    }
--    discard_disabled = true;
--
-     vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
-     assert(vioc->setup);
- 
-@@ -620,12 +628,11 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
-         goto fail;
-     }
- 
--    vfio_group_add_kvm_device(group);
--
-     vfio_address_space_insert(space, bcontainer);
- 
--    group->container = container;
--    QLIST_INSERT_HEAD(&container->group_list, group, container_next);
-+    if (!vfio_container_group_add(container, group, errp)) {
-+        goto fail;
-+    }
-     group_was_added = true;
- 
-     if (!vfio_listener_register(bcontainer, errp)) {
-@@ -640,15 +647,11 @@ fail:
-     vfio_listener_unregister(bcontainer);
- 
-     if (group_was_added) {
--        QLIST_REMOVE(group, container_next);
--        vfio_group_del_kvm_device(group);
-+        vfio_container_group_del(container, group);
-     }
-     if (vioc && vioc->release) {
-         vioc->release(bcontainer);
-     }
--    if (discard_disabled) {
--        vfio_ram_block_discard_disable(container, false);
--    }
-     if (new_container) {
-         vfio_cpr_unregister_container(bcontainer);
-         object_unref(container);
 -- 
 2.49.0
 
