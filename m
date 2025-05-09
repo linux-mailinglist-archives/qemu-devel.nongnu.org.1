@@ -2,88 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A8C1AB1A81
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 18:31:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76ABEAB1AB0
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 18:39:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDQcR-0005sb-49; Fri, 09 May 2025 12:30:39 -0400
+	id 1uDQio-0002Ba-CN; Fri, 09 May 2025 12:37:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiangxueqian@gmail.com>)
- id 1uDQcL-0005s8-Vb
- for qemu-devel@nongnu.org; Fri, 09 May 2025 12:30:34 -0400
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jiangxueqian@gmail.com>)
- id 1uDQcJ-0007y8-RQ
- for qemu-devel@nongnu.org; Fri, 09 May 2025 12:30:33 -0400
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-30828fc17adso2377654a91.1
- for <qemu-devel@nongnu.org>; Fri, 09 May 2025 09:30:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1746808230; x=1747413030; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Jfq80ZQtlerh3tsfBXzzSab1yGg9ZH7g5AReSzq5Vek=;
- b=mT4PGQQAEYgUwaeaJnQfMqASmyL9geqsp2oN80DKu4bGaISLRxh+CkCrJqLFpJ7k8n
- VHRlR+43ZqyAEO6EYmY/hpd42UnZTfdRVwbafcUGGFg9yNspXH8qpN5HbMnhtQBq/1Pb
- 23mFoc8LfuA7tNqHTn5GefmdTjIBHVDG8AY+bTPtOP/f34y1VrLK4COlj837jPgOrodr
- ZGsccIvPuBqq+X7AdO+n/BKDQnoZL9S21f8J3SDA3XsYh5huFFmgTlTJThKKaphILP9F
- CMttG6+aCf70gYerZuHKwC+pal6cDFFjbXjgErUERKqKFa0rjqgduAhN+k/hqd5qfKee
- CD6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746808230; x=1747413030;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Jfq80ZQtlerh3tsfBXzzSab1yGg9ZH7g5AReSzq5Vek=;
- b=PdF5zUr2OKWvYi6XaWFVlTca40N5ISUCJkv4Q2h7KzYQW08YRu/Ivzo+Cy8/vDcE/S
- xh9UGQpbZ3xn3p5ZvYU+1bGHY8+vsRTsHoBA9wmXfgH3LuBTgK6bzYE7UrmLJsuhm6/Y
- M/Nh2g5UJ0uBMjIxXiObKWKUV4a2+F3qHnz7RdIIfYUr6JbSbjIGceqPuQlbmO7dZEvZ
- jg5MIb6pT+jjGzSaLdRj8L/1Sf16U/8d8NcDKU5kTxHO2GxYvQQWHBgI2RILSBGlnSBj
- E7a4rHVvd5K3yfBgSG+JYqq39r89zzCq3OawmwvL3cAUWBDYyVlJhvaVdQhZ0ICNgFYG
- Y/Ng==
-X-Gm-Message-State: AOJu0Yx+qqD7VdnZbIAIBn5IUNb5YTjae60QpFKtOIMrTVbrbgtsgZrj
- /gzs0+9Iw5hq31+Yk1FtIM8u+VqMwYSTDfuZFXYmz8Oxmlap4ttSQRyeX41OzGs=
-X-Gm-Gg: ASbGncuwENSUIrXZG8Kw5mVOftOdurbsKvCOfgIjwTNTgqN0MnutIUqiMWV5n1ebsUS
- NVK2k/fVjD53ggQnjutx5uzN5cnJkcIrisiHpEMN1X+JP0HJcA6aILqpqq2gtxWenOLQwx8P50g
- 9gRCZeSg9niAw8QqHyM8UzJEZ2nonC5xxKdxnctTxAbqGSEZHMF+uWDO5agn5CuqHuVPKqbs2rI
- Sd80JFB3885ORVhBXcHbRuG16kKXaRIg983jCtkGq+RE0jcf22b6GGR4ElYwlPq3HHo1TS3bKQn
- 5SRUSZ4MDkNWOF9IEThvIOf1Fu3xLt8isluSQrZf8hrLGuMQY0+LiWvIRGc=
-X-Google-Smtp-Source: AGHT+IFYcV9tT1TnoovNXspCxHLjuzOgGa95+tQRQCWoZEfD/7npfWCz0SEmGXnop6lNzhkU9lp06w==
-X-Received: by 2002:a17:90b:3d82:b0:2ee:f80c:6889 with SMTP id
- 98e67ed59e1d1-30c3d661528mr8046136a91.33.1746808229495; 
- Fri, 09 May 2025 09:30:29 -0700 (PDT)
-Received: from [192.168.11.20] ([74.48.121.150])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-30ad4ffb4a0sm4266707a91.46.2025.05.09.09.30.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 09 May 2025 09:30:29 -0700 (PDT)
-Message-ID: <093aee8f-030d-472e-865c-bf2f20eae87c@gmail.com>
-Date: Sat, 10 May 2025 00:30:25 +0800
+ (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
+ id 1uDQic-00024u-5O; Fri, 09 May 2025 12:37:03 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
+ id 1uDQiU-0000Bl-JB; Fri, 09 May 2025 12:36:58 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 549D6PGg031537;
+ Fri, 9 May 2025 16:36:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=2ji6DIMFZu6obA+EgFagMCy3b+RoXt6DPFqpVRchg
+ bg=; b=LuTGP+3F3GzxgECZ9vImM1flGmS48ZfHBmGcPy9H6xEuNd/x8DjPKuBdZ
+ pgwDvesY679l50oC9sD0eBuTCCKlu+Entl7oT/wLSbFJZUCMwley97QxS46EIDgF
+ cyZIWq2CcAs5L4+4/J4A8sCDIPuGc+ifiqhKZi0bC8l0c6DgRBimSEGLrx88Uruw
+ FHeXjPPTfpNzx7v3tuQFOH74moYKugG9XLIdimVGz8fZDyN2uWJ0+j2tsDnUoc8v
+ /MWmM7g13u66wBiKtSuX36zWdbcmMLiqGqP4c5kAHhYELT5xV5NSyaHCzWACwb+H
+ eSmWbkD/Z0sEP6y6QY/F4qliXAt6Q==
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46h4rwd261-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 09 May 2025 16:36:48 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 549F6Uel004221;
+ Fri, 9 May 2025 16:36:48 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46fjb2h3am-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 09 May 2025 16:36:48 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
+ [10.241.53.105])
+ by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 549Gakbh27722406
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 9 May 2025 16:36:46 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 472EC58043;
+ Fri,  9 May 2025 16:36:46 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7F0DF5805D;
+ Fri,  9 May 2025 16:36:45 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.61.241.92])
+ by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Fri,  9 May 2025 16:36:45 +0000 (GMT)
+From: Rorie Reyes <rreyes@linux.ibm.com>
+To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
+Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
+ jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
+ alex.williamson@redhat.com, clg@redhat.com, thuth@redhat.com,
+ akrowiak@linux.ibm.com, rreyes@linux.ibm.com
+Subject: [RFC PATCH v8 0/6] Report vfio-ap configuration changes
+Date: Fri,  9 May 2025 12:36:39 -0400
+Message-ID: <20250509163645.33050-1-rreyes@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] virtio-gpu-gl: Add 'serverfd' property
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>
-References: <20250403155129.3396821-1-jiangxueqian@gmail.com>
- <87tt5vmhx9.fsf@draig.linaro.org>
-Content-Language: en-US
-From: Jiang XueQian <jiangxueqian@gmail.com>
-In-Reply-To: <87tt5vmhx9.fsf@draig.linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=jiangxueqian@gmail.com; helo=mail-pj1-x1030.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=QIxoRhLL c=1 sm=1 tr=0 ts=681e2f20 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=dt9VzEwgFbYA:10 a=v06zkurBhH7fz-2jiH4A:9
+X-Proofpoint-GUID: 2uecBFTHGlty0iYYSap1Fvp_f9lVnlZW
+X-Proofpoint-ORIG-GUID: 2uecBFTHGlty0iYYSap1Fvp_f9lVnlZW
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA5MDE2NCBTYWx0ZWRfX4UASMuA+3kwM
+ Qsf7nl5RzBSGMthpmkRNBYSuFzk5xYSsvyKRt3S2hGzrnbk2hhsbnLgIghOb7JXONzfxuKLFbVW
+ RpZJhJy5K3GI0J7JPz1kaV5jndxaEfoaD3wuESjGgD3JnsXwbyE7GJMd4AFHyN+KO3bVFVs8AhE
+ NLJLxP82Y0NqBZdJR5YXT+ianX41nRyC2jrurOXWZSpKoxX4SKvOVY72dJ/nG/rG1jDx3XMlra1
+ sC+3o/rwVRO0RYJ0+e/UUJtjKCmM3vyRhVkrrjuMB3EHae6bDcoKJWEtKFMy1/agFXzhSi8+iA4
+ G3jx0b3kpmpm52QNDytUgiUjK8VDkUL5vaSUHYTAT88hyOobOeS2GNven07dE4ebnFA/stXIl1g
+ 0WCoD39gvfEawLEw7oSj887qzKq2JuwzSWIS9dUPFjK9PwOhID/ugWF5sNEb3/iygq/MZWu8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-09_06,2025-05-09_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 mlxscore=0
+ suspectscore=0 lowpriorityscore=0 phishscore=0 clxscore=1015
+ malwarescore=0 bulkscore=0 adultscore=0 mlxlogscore=999 spamscore=0
+ priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2505090164
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=rreyes@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,161 +115,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Changelog:
+v8:
+- fixed windows cross-compile build
+- moved /hw/vfio/ap-stub.c to /hw/s390x/ap-stub.c
+- updated the use of stub file to MAINTAINERS to reflect new location
+- removed if_false for 'CONFIG_VFIO_AP' statement from /hw/vfio/meson.build
+- added if_false for 'CONFIG_VFIO_AP' to use ap-stub.c in /hw/s390x/meson.build
+- all those changes still address '--without-default-devices' issue from v5
 
+v7:
+- Dropped initial commit for linux-header file vfio.h since I created two new commits
+to address the changes made in v6
+- Moved patches 6 and 7 to the beginning of the series after dropping the first patch
+   - Because I dropped the initial commit for linux-header file vfio.h, I had to add
+VFIO_AP_CFG_CHG_IRQ_INDEX
+- Resyncing latest to v6.15-rc3
+- Still need Thomas Huth's review of v5 changes for patch 6/6
 
-On 5/8/25 8:00 PM, Alex Bennée wrote:
-> Jiang XueQian <jiangxueqian@gmail.com> writes:
-> 
->> This property passes socket of a externally started virgl_render_server
->> to virglrenderer, so that it won't try to spawn new process and get
->> killed by seccomp, allowing virtio-gpu-gl venus and sandbox to enable
->> at the same time.
-> 
-> Do we have an example of how to start such a virgl server?
-> docs/syste,/devices/virtio-gpu.rst could be expanded with some example
-> invocations of the various modes.
-> 
+v6:
+- Updating the update-linux-headers script to address kernel commit change 8a14
+- Update headers to retrieve uapi information for vfio-ap for update to Linux v6.15-rc1
+- Still need Thomas Huth's review of v5 changes for patch 7/7 (see below)
 
-virgl_render_server can be started like `path/to/virgl_render_server 
---socket-fd <seqpacket-socketpair-fd>`.
+v5:
+- configuring using the '--without-default-devices' fails when building the code
+- created a stub file for functions ap_chsc_sei_nt0_get_event and ap_chsc_sei_nt0_have_event
+- add if_false for 'CONFIG_VFIO_AP' use ap-stub.c in meson.build
+- add the use of the stub file to MAINTAINERS since it's a new file
 
-It is spawned by virgl_render_init function without this patch, so I 
-used that 
-(https://gitlab.freedesktop.org/virgl/virglrenderer/-/blob/1.1.1/src/proxy/proxy_server.c?ref_type=tags#L73) 
-as a reference during development.
+v4:
+- allocating cfg_chg_event before inserting into the queue
+- calling nt0_have_event in if loop to check if there are any
+elemenets in the queue, then calling QTAILQ_FIRST when the check
+passes
+- moving memset() after the check
 
-Thank you for the advice. I'll add some examples and docs.
+v3:
+- changes that were made to patch 3/5 should have been made in
+patch 2/5
 
->>
->> Signed-off-by: Jiang XueQian <jiangxueqian@gmail.com>
->> ---
->>   hw/display/virtio-gpu-gl.c     | 15 +++++++++++++++
->>   hw/display/virtio-gpu-virgl.c  | 17 +++++++++++++++++
->>   include/hw/virtio/virtio-gpu.h |  2 ++
->>   3 files changed, 34 insertions(+)
->>
->> diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
->> index 683fad3bf8..e7c89f7c29 100644
->> --- a/hw/display/virtio-gpu-gl.c
->> +++ b/hw/display/virtio-gpu-gl.c
->> @@ -22,6 +22,7 @@
->>   #include "hw/virtio/virtio-gpu-bswap.h"
->>   #include "hw/virtio/virtio-gpu-pixman.h"
->>   #include "hw/qdev-properties.h"
->> +#include "monitor/monitor.h"
->>   
->>   #include <virglrenderer.h>
->>   
->> @@ -143,6 +144,17 @@ static void virtio_gpu_gl_device_realize(DeviceState *qdev, Error **errp)
->>           return;
->>       }
->>   
->> +#if VIRGL_RENDERER_CALLBACKS_VERSION >= 3
->> +    if (g->parent_obj.conf.serverfd) {
->> +        g->parent_obj.conf.serverfd_parsed =
->> +            monitor_fd_param(monitor_cur(),
->> g->parent_obj.conf.serverfd, errp);
-> 
-> I think the right place to validate we have a valid serverfd is in a
-> property setter function.
-> 
+v2:
+- removed warnings that weren't needed
+- added unregister function
+- removed whitelines
+- changed variable names for consistency
+- removed rc variable and returning 1 or 0 outright
+- reversed logics for if statements
+- using g_free() instead of free()
+- replaced hardcoded numeric values by defining them with #define
+in the header
 
-I see your point, but I prefer to keep it simple.
+--------------------------------------------------------------------------
+This patch series creates and registers a handler that is called when
+userspace is notified by the kernel that a guest's AP configuration has
+changed. The handler in turn notifies the guest that its AP configuration
+has changed. This allows the guest to immediately respond to AP
+configuration changes rather than relying on polling or some other
+inefficient mechanism for detecting config changes.
 
-Using both variables is confusing and worth improving. This code is not 
-only used to validate serverfd.
+Rorie Reyes (6):
+  linux-header: update-linux-header script changes
+  linux-headers: Update to Linux v6.15-rc3
+  hw/vfio/ap: notification handler for AP config changed event
+  hw/vfio/ap: store object indicating AP config changed in a queue
+  hw/vfio/ap: Storing event information for an AP configuration change
+    event
+  s390: implementing CHSC SEI for AP config change
 
-Here monitor_fd_param find the fd by its symbolic name or by parsing 
-digits, and take ownership of it. The fd is stored and later pass to 
-virglrenderer.
+ MAINTAINERS                                   |   1 +
+ hw/s390x/ap-stub.c                            |  23 ++++
+ hw/s390x/meson.build                          |   1 +
+ hw/vfio/ap.c                                  |  82 +++++++++++
+ include/hw/s390x/ap-bridge.h                  |  22 +++
+ include/standard-headers/asm-x86/setup_data.h |   4 +-
+ include/standard-headers/drm/drm_fourcc.h     |  41 ++++++
+ include/standard-headers/linux/const.h        |   2 +-
+ include/standard-headers/linux/ethtool.h      |  22 +++
+ include/standard-headers/linux/fuse.h         |  12 +-
+ include/standard-headers/linux/pci_regs.h     |  13 +-
+ include/standard-headers/linux/virtio_net.h   |  13 ++
+ include/standard-headers/linux/virtio_snd.h   |   2 +-
+ linux-headers/asm-arm64/kvm.h                 |  11 ++
+ linux-headers/asm-arm64/unistd_64.h           |   1 +
+ linux-headers/asm-generic/mman-common.h       |   1 +
+ linux-headers/asm-generic/unistd.h            |   4 +-
+ linux-headers/asm-loongarch/unistd_64.h       |   1 +
+ linux-headers/asm-mips/unistd_n32.h           |   1 +
+ linux-headers/asm-mips/unistd_n64.h           |   1 +
+ linux-headers/asm-mips/unistd_o32.h           |   1 +
+ linux-headers/asm-powerpc/unistd_32.h         |   1 +
+ linux-headers/asm-powerpc/unistd_64.h         |   1 +
+ linux-headers/asm-riscv/kvm.h                 |   2 +
+ linux-headers/asm-riscv/unistd_32.h           |   1 +
+ linux-headers/asm-riscv/unistd_64.h           |   1 +
+ linux-headers/asm-s390/unistd_32.h            |   1 +
+ linux-headers/asm-s390/unistd_64.h            |   1 +
+ linux-headers/asm-x86/kvm.h                   |   3 +
+ linux-headers/asm-x86/unistd_32.h             |   1 +
+ linux-headers/asm-x86/unistd_64.h             |   1 +
+ linux-headers/asm-x86/unistd_x32.h            |   1 +
+ linux-headers/linux/bits.h                    |   8 +-
+ linux-headers/linux/const.h                   |   2 +-
+ linux-headers/linux/iommufd.h                 | 129 +++++++++++++++++-
+ linux-headers/linux/kvm.h                     |   1 +
+ linux-headers/linux/psp-sev.h                 |  21 ++-
+ linux-headers/linux/stddef.h                  |   2 +
+ linux-headers/linux/vfio.h                    |  30 ++--
+ scripts/update-linux-headers.sh               |   2 +-
+ target/s390x/ioinst.c                         |  11 +-
+ 41 files changed, 440 insertions(+), 39 deletions(-)
+ create mode 100644 hw/s390x/ap-stub.c
 
-After this, .serverfd is only used as a boolean, indicating whether 
-.serverfd_parsed is valid.
+-- 
+2.48.1
 
-Many devices accept fd but most of them do so by accepting a chardev, 
-which is not suitable in this case. Only a few devices accept fd 
-directly, I found vhost-scsi and vhost-vsock, and they are using 
-monitor_fd_param. I believe abstracting it further is unnecessary.
-
->> +        if (g->parent_obj.conf.serverfd_parsed < 0) {
->> +            error_prepend(errp, "unable to parse serverfd: ");
->> +            return;
->> +        }
->> +    }
->> +#endif
->> +
->>       g->parent_obj.conf.flags |= (1 << VIRTIO_GPU_FLAG_VIRGL_ENABLED);
->>       g->capset_ids = virtio_gpu_virgl_get_capsets(g);
->>       VIRTIO_GPU_BASE(g)->virtio_config.num_capsets = g->capset_ids->len;
->> @@ -159,6 +171,9 @@ static const Property virtio_gpu_gl_properties[] = {
->>                       VIRTIO_GPU_FLAG_STATS_ENABLED, false),
->>       DEFINE_PROP_BIT("venus", VirtIOGPU, parent_obj.conf.flags,
->>                       VIRTIO_GPU_FLAG_VENUS_ENABLED, false),
->> +#if VIRGL_RENDERER_CALLBACKS_VERSION >= 3
->> +    DEFINE_PROP_STRING("serverfd", VirtIOGPU,
->> parent_obj.conf.serverfd),
-> 
-> Use DEFINE_PROP with a PropertyInfo structure.
-> 
->> +#endif
->>   };
->>   
->>   static void virtio_gpu_gl_device_unrealize(DeviceState *qdev)
->> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
->> index 145a0b3879..420aae3b05 100644
->> --- a/hw/display/virtio-gpu-virgl.c
->> +++ b/hw/display/virtio-gpu-virgl.c
->> @@ -1030,6 +1030,19 @@ static int virgl_make_context_current(void *opaque, int scanout_idx,
->>                                      qctx);
->>   }
->>   
->> +#if VIRGL_RENDERER_CALLBACKS_VERSION >= 3
->> +static int virgl_get_server_fd(void *opaque, uint32_t version)
->> +{
->> +    VirtIOGPU *g = opaque;
->> +
->> +    if (g->parent_obj.conf.serverfd) {
->> +        return g->parent_obj.conf.serverfd_parsed;
->> +    }
->> +
->> +    return -1;
->> +}
->> +#endif
->> +
->>   static struct virgl_renderer_callbacks virtio_gpu_3d_cbs = {
->>       .version             = 1,
->>       .write_fence         = virgl_write_fence,
->> @@ -1097,6 +1110,10 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
->>       uint32_t flags = 0;
->>       VirtIOGPUGL *gl = VIRTIO_GPU_GL(g);
->>   
->> +#if VIRGL_RENDERER_CALLBACKS_VERSION >= 3
->> +    virtio_gpu_3d_cbs.version = 3;
->> +    virtio_gpu_3d_cbs.get_server_fd = virgl_get_server_fd;
->> +#endif
->>   #if VIRGL_RENDERER_CALLBACKS_VERSION >= 4
->>       if (qemu_egl_display) {
->>           virtio_gpu_3d_cbs.version = 4;
->> diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
->> index a42957c4e2..40a81f500c 100644
->> --- a/include/hw/virtio/virtio-gpu.h
->> +++ b/include/hw/virtio/virtio-gpu.h
->> @@ -128,6 +128,8 @@ struct virtio_gpu_base_conf {
->>       uint32_t xres;
->>       uint32_t yres;
->>       uint64_t hostmem;
->> +    char *serverfd;
->> +    int serverfd_parsed;
-> 
-> And we can drop char serverfd and have an explicit place for the fd. Is
-> 0 a valid fd or do we need a initialise to -1?
-> 
-
-I'll improve this by always giving .serverfd_parsed a value, so that 
-later code don't have to check .serverfd.
-
->>   };
->>   
->>   struct virtio_gpu_ctrl_command {
-> 
 
