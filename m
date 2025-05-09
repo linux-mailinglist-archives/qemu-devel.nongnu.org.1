@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14B36AB1494
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 15:14:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 445A6AB14AE
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 15:17:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDNYF-0001nK-Lf; Fri, 09 May 2025 09:14:07 -0400
+	id 1uDNYd-0001oH-0T; Fri, 09 May 2025 09:14:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNYD-0001nC-UV
- for qemu-devel@nongnu.org; Fri, 09 May 2025 09:14:05 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNYG-0001nc-Lo
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 09:14:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNYA-00072Y-V1
- for qemu-devel@nongnu.org; Fri, 09 May 2025 09:14:05 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNYE-00073m-ES
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 09:14:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746796441;
+ s=mimecast20190719; t=1746796445;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EgX52XnmIkBlF15up3p+eVDztujVWFimpqqDzgYI5l0=;
- b=ek0Q6M6iyDFnjiFV0Zj+/t8u7hdDpiQNa37bAC3rMZYFkTSq8fBLYaNNwh44tgqsJbdpY5
- GFRnCJNev7f8uLO2Hxqjqq9Z1xCKoOCzGV6LnjaTcXVaW23OavvCAdToVuMbqTyapAQOtY
- zzEEmkqI/HvBsfMGBY96Gv11bsiUoxk=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=suQwsuILrtRb07/uWbc2/shPRu3zUyBZpeF2Kznj17A=;
+ b=a4LL5dnnMdidDQjLLrNNR9O1krjmM6DaQl0itD7z1/HeaR2CfHblVGpUTRC3t2DrBFlPYW
+ KCcsYAa+wwpSuvBb+as2ADHx3gMakB3l6gQWo3p3WHUgNi5Dh9CPq59yEh4UjFBQYsk/Sw
+ h78uZQ3x7hif2Hr1Rn2Me7/rEv+oAbU=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-263-Uq-xfJtNMeew1sCqcrPhNA-1; Fri,
- 09 May 2025 09:13:57 -0400
-X-MC-Unique: Uq-xfJtNMeew1sCqcrPhNA-1
-X-Mimecast-MFC-AGG-ID: Uq-xfJtNMeew1sCqcrPhNA_1746796435
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-311-6YxE6aP4PD-PgwwImFFUcQ-1; Fri,
+ 09 May 2025 09:14:00 -0400
+X-MC-Unique: 6YxE6aP4PD-PgwwImFFUcQ-1
+X-Mimecast-MFC-AGG-ID: 6YxE6aP4PD-PgwwImFFUcQ_1746796439
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 80576195605B; Fri,  9 May 2025 13:13:55 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2078819560B0; Fri,  9 May 2025 13:13:59 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.18])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9AA5318003FD; Fri,  9 May 2025 13:13:52 +0000 (UTC)
+ id 372D71800EC9; Fri,  9 May 2025 13:13:55 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Tomita Moeko <tomitamoeko@gmail.com>,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 10/28] vfio/igd: Allow overriding GMS with 0xf0 to 0xfe on Gen9+
-Date: Fri,  9 May 2025 15:12:59 +0200
-Message-ID: <20250509131317.164235-11-clg@redhat.com>
+Subject: [PULL 11/28] vfio/igd: Only emulate GGC register when x-igd-gms is set
+Date: Fri,  9 May 2025 15:13:00 +0200
+Message-ID: <20250509131317.164235-12-clg@redhat.com>
 In-Reply-To: <20250509131317.164235-1-clg@redhat.com>
 References: <20250509131317.164235-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -85,97 +85,95 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Tomita Moeko <tomitamoeko@gmail.com>
 
-On Gen9 and later IGD devices, GMS 0xf0 to 0xfe represents 4MB to 60MB
-pre-allocated memory size in 4MB increments. Allow users overriding
-GMS with these values.
+x-igd-gms is used for overriding DSM region size in GGC register in
+both config space and MMIO BAR0, by default host value is used.
+There is no need to emulate it in default case.
 
 Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
 Reviewed-by: Corvin Köhne <c.koehne@beckhoff.com>
 Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
 Tested-by: Alex Williamson <alex.williamson@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250505170305.23622-8-tomitamoeko@gmail.com
+Link: https://lore.kernel.org/qemu-devel/20250505170305.23622-9-tomitamoeko@gmail.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/igd.c | 59 +++++++++++++++++++++++++++++++++++----------------
- 1 file changed, 41 insertions(+), 18 deletions(-)
+ hw/vfio/igd.c | 49 ++++++++++++++++++++++++++-----------------------
+ 1 file changed, 26 insertions(+), 23 deletions(-)
 
 diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 9dec32818c91f2021f6dc0c4bbe1fc0682df1a55..8ad9d723e29cd4d63e12346b6e40604ac020e747 100644
+index 8ad9d723e29cd4d63e12346b6e40604ac020e747..886d44f017f415d5f82c892e630ae2de1637677c 100644
 --- a/hw/vfio/igd.c
 +++ b/hw/vfio/igd.c
-@@ -412,6 +412,44 @@ static bool vfio_pci_igd_setup_lpc_bridge(VFIOPCIDevice *vdev, Error **errp)
-     return true;
- }
+@@ -478,22 +478,24 @@ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
+         return;
+     }
  
-+static bool vfio_pci_igd_override_gms(int gen, uint32_t gms, uint32_t *gmch)
-+{
-+    bool ret = false;
+-    ggc_quirk = vfio_quirk_alloc(1);
+-    ggc_mirror = ggc_quirk->data = g_malloc0(sizeof(*ggc_mirror));
+-    ggc_mirror->mem = ggc_quirk->mem;
+-    ggc_mirror->vdev = vdev;
+-    ggc_mirror->bar = nr;
+-    ggc_mirror->offset = IGD_GGC_MMIO_OFFSET;
+-    ggc_mirror->config_offset = IGD_GMCH;
+-
+-    memory_region_init_io(ggc_mirror->mem, OBJECT(vdev),
+-                          &vfio_generic_mirror_quirk, ggc_mirror,
+-                          "vfio-igd-ggc-quirk", 2);
+-    memory_region_add_subregion_overlap(vdev->bars[nr].region.mem,
+-                                        ggc_mirror->offset, ggc_mirror->mem,
+-                                        1);
++    if (vdev->igd_gms) {
++        ggc_quirk = vfio_quirk_alloc(1);
++        ggc_mirror = ggc_quirk->data = g_malloc0(sizeof(*ggc_mirror));
++        ggc_mirror->mem = ggc_quirk->mem;
++        ggc_mirror->vdev = vdev;
++        ggc_mirror->bar = nr;
++        ggc_mirror->offset = IGD_GGC_MMIO_OFFSET;
++        ggc_mirror->config_offset = IGD_GMCH;
+ 
+-    QLIST_INSERT_HEAD(&vdev->bars[nr].quirks, ggc_quirk, next);
++        memory_region_init_io(ggc_mirror->mem, OBJECT(vdev),
++                              &vfio_generic_mirror_quirk, ggc_mirror,
++                              "vfio-igd-ggc-quirk", 2);
++        memory_region_add_subregion_overlap(vdev->bars[nr].region.mem,
++                                            ggc_mirror->offset, ggc_mirror->mem,
++                                            1);
 +
-+    if (gen == -1) {
-+        error_report("x-igd-gms is not supported on this device");
-+    } else if (gen < 8) {
-+        if (gms <= 0x10) {
-+            *gmch &= ~(IGD_GMCH_GEN6_GMS_MASK << IGD_GMCH_GEN6_GMS_SHIFT);
-+            *gmch |= gms << IGD_GMCH_GEN6_GMS_SHIFT;
-+            ret = true;
-+        } else {
-+            error_report(QERR_INVALID_PARAMETER_VALUE, "x-igd-gms", "0~0x10");
-+        }
-+    } else if (gen == 8) {
-+        if (gms <= 0x40) {
-+            *gmch &= ~(IGD_GMCH_GEN8_GMS_MASK << IGD_GMCH_GEN8_GMS_SHIFT);
-+            *gmch |= gms << IGD_GMCH_GEN8_GMS_SHIFT;
-+            ret = true;
-+        } else {
-+            error_report(QERR_INVALID_PARAMETER_VALUE, "x-igd-gms", "0~0x40");
-+        }
-+    } else {
-+        /* 0x0  to 0x40: 32MB increments starting at 0MB */
-+        /* 0xf0 to 0xfe: 4MB increments starting at 4MB */
-+        if ((gms <= 0x40) || (gms >= 0xf0 && gms <= 0xfe)) {
-+            *gmch &= ~(IGD_GMCH_GEN8_GMS_MASK << IGD_GMCH_GEN8_GMS_SHIFT);
-+            *gmch |= gms << IGD_GMCH_GEN8_GMS_SHIFT;
-+            ret = true;
-+        } else {
-+            error_report(QERR_INVALID_PARAMETER_VALUE,
-+                         "x-igd-gms", "0~0x40 or 0xf0~0xfe");
-+        }
++        QLIST_INSERT_HEAD(&vdev->bars[nr].quirks, ggc_quirk, next);
 +    }
-+
-+    return ret;
-+}
-+
- #define IGD_GGC_MMIO_OFFSET     0x108040
- #define IGD_BDSM_MMIO_OFFSET    0x1080C0
  
-@@ -594,24 +632,9 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
+     bdsm_quirk = vfio_quirk_alloc(1);
+     bdsm_mirror = bdsm_quirk->data = g_malloc0(sizeof(*bdsm_mirror));
+@@ -632,9 +634,15 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
       * 32MiB. This option should only be used when the desired size cannot be
       * set from DVMT Pre-Allocated option in host BIOS.
       */
--    if (vdev->igd_gms) {
--        if (gen < 8) {
--            if (vdev->igd_gms <= 0x10) {
--                gmch &= ~(IGD_GMCH_GEN6_GMS_MASK << IGD_GMCH_GEN6_GMS_SHIFT);
--                gmch |= vdev->igd_gms << IGD_GMCH_GEN6_GMS_SHIFT;
--            } else {
--                error_report(QERR_INVALID_PARAMETER_VALUE,
--                             "x-igd-gms", "0~0x10");
--            }
--        } else {
--            if (vdev->igd_gms <= 0x40) {
--                gmch &= ~(IGD_GMCH_GEN8_GMS_MASK << IGD_GMCH_GEN8_GMS_SHIFT);
--                gmch |= vdev->igd_gms << IGD_GMCH_GEN8_GMS_SHIFT;
--            } else {
--                error_report(QERR_INVALID_PARAMETER_VALUE,
--                             "x-igd-gms", "0~0x40");
--            }
--        }
-+    if (vdev->igd_gms &&
-+        !vfio_pci_igd_override_gms(gen, vdev->igd_gms, &gmch)) {
-+        return false;
+-    if (vdev->igd_gms &&
+-        !vfio_pci_igd_override_gms(gen, vdev->igd_gms, &gmch)) {
+-        return false;
++    if (vdev->igd_gms) {
++        if (!vfio_pci_igd_override_gms(gen, vdev->igd_gms, &gmch)) {
++            return false;
++        }
++
++        /* GMCH is read-only, emulated */
++        pci_set_long(vdev->pdev.config + IGD_GMCH, gmch);
++        pci_set_long(vdev->pdev.wmask + IGD_GMCH, 0);
++        pci_set_long(vdev->emulated_config_bits + IGD_GMCH, ~0);
      }
  
      gms_size = igd_stolen_memory_size(gen, gmch);
+@@ -652,11 +660,6 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
+     fw_cfg_add_file(fw_cfg_find(), "etc/igd-bdsm-size",
+                     bdsm_size, sizeof(*bdsm_size));
+ 
+-    /* GMCH is read-only, emulated */
+-    pci_set_long(vdev->pdev.config + IGD_GMCH, gmch);
+-    pci_set_long(vdev->pdev.wmask + IGD_GMCH, 0);
+-    pci_set_long(vdev->emulated_config_bits + IGD_GMCH, ~0);
+-
+     /* BDSM is read-write, emulated.  The BIOS needs to be able to write it */
+     if (gen < 11) {
+         pci_set_long(vdev->pdev.config + IGD_BDSM, 0);
 -- 
 2.49.0
 
