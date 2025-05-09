@@ -2,91 +2,146 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2177AB0A68
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 08:17:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45392AB0AED
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 08:51:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDH2A-0001HL-49; Fri, 09 May 2025 02:16:34 -0400
+	id 1uDHZr-0002Ko-2W; Fri, 09 May 2025 02:51:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uDH24-0001Fo-5H; Fri, 09 May 2025 02:16:29 -0400
-Received: from mgamail.intel.com ([192.198.163.8])
+ (Exim 4.90_1) (envelope-from <Sairaj.ArunKodilkar@amd.com>)
+ id 1uDHZm-0002HI-Ed
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 02:51:20 -0400
+Received: from mail-sn1nam02on2055.outbound.protection.outlook.com
+ ([40.107.96.55] helo=NAM02-SN1-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uDH21-0004YM-91; Fri, 09 May 2025 02:16:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1746771385; x=1778307385;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=ggqJ1IiHFWvnWutr4RX9vZ4PtcAAvKkNUvCBk+pjK5I=;
- b=QJUiOsRPprBTx5heJ1iPMiCKx+ZgoVAIP8zLubZ9NWTVPKT6RubBr4kS
- Bnf90PhKHQcNSXhNKLjYGRo393CUNGnpCRAydIG5T8KpFkuhWhMCU9Q0J
- rXJCwCYqMH6WY5JhmppppFhZHvwCbtmIZxABE326W91inaZMBSye+rTt4
- 5eX8ytA6B9XvPaM1Wbmohw8+XgIOIh5pk1gWlHSt4LPnjeLPUeAiaxapU
- OOZfVXTVqcz8PBKAc6lURESQ21vXg/Iqx4UwPxvzE6MZKbRP7/reyzK3n
- jpEHeHzH7Hy9tsDSjPKIFyOE8KMIEdjQjOTsV7sW3fUZSygVh18Ze4fDZ g==;
-X-CSE-ConnectionGUID: mTQD+J7OTZ6qHGOSrTMVVA==
-X-CSE-MsgGUID: 7PYn5Jv5SCaXLZU51jO1Uw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="66119786"
-X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; d="scan'208";a="66119786"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2025 23:16:20 -0700
-X-CSE-ConnectionGUID: EShOvyRJSeCCU7P6Wp2LEQ==
-X-CSE-MsgGUID: a3tZ14YNSzus0U3OwlV/+g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; d="scan'208";a="137043614"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa007.jf.intel.com with ESMTP; 08 May 2025 23:16:13 -0700
-Date: Fri, 9 May 2025 14:37:15 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- kvm@vger.kernel.org, Sergio Lopez <slp@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Yi Liu <yi.l.liu@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-riscv@nongnu.org,
- Weiwei Li <liwei1518@gmail.com>, Amit Shah <amit@kernel.org>,
- Yanan Wang <wangyanan55@huawei.com>, Helge Deller <deller@gmx.de>,
- Palmer Dabbelt <palmer@dabbelt.com>, Ani Sinha <anisinha@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- =?iso-8859-1?Q?Cl=E9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
- qemu-arm@nongnu.org,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Huacai Chen <chenhuacai@kernel.org>, Jason Wang <jasowang@redhat.com>
-Subject: Re: [PATCH v4 09/27] hw/nvram/fw_cfg: Remove
- fw_cfg_io_properties::dma_enabled
-Message-ID: <aB2imx1sp9sgMs3c@intel.com>
-References: <20250508133550.81391-1-philmd@linaro.org>
- <20250508133550.81391-10-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <Sairaj.ArunKodilkar@amd.com>)
+ id 1uDHZi-0000Bb-U4
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 02:51:17 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TllB56OpWGwMmdAXLOJd8ZS95RQLSUylcsU081Lusn+nkOjha6kbFdLvEcxPBAuiSTd/Y6BfbmlzRu1SmlUb4M1yuNBL14lIuX7s9ubvJqTOFIIWVBefy4Gi1SZU9yBR4tWjzqykBhe6AlOe/D01Bu3PSsI20oOyqKqls2zZiV+gaSBWyB3uucGoMAk1t6K6LkoB4M0k8zceArhqmdOFxTf5H+7176I7hc/TCbgOTNpxYEcBXkaP5Ka0wnKCjoarvRz5nPLhLkhRtDD9+N1dXW+cZHEqfMz2jQKmc+xVuloTLEmRmBawpq/by5zo4qDCkwknVMvamFhL4fQ2DQVbgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DlZSp5WBVPfAc5mXHgsIDBui1zYGPfeL4bRztPR1jDU=;
+ b=N5iL4XS5QSWkOZKO24+iUyLmOzaRZKWvEqNKA2tCJhGF+ZkYlXTLfdHMF8h6yMyUaQtoBkbeosrk3LDxxIA80xLvGkoxWobFunLEz6OxdF8ZpJMqQFQ2lE3enwhOrdsiiMd+uFbxY7oWTZXRiQNntxofLTM2ySSFUyrHJ5nGiEHWWBIjKGqbCMGkev125602zsZmj8DZAp1mCLl8dCO73QWblUit/NZz9/k+W24hCtiQWlZoUsd9uLjRdw1Ekgs3TNZnbAnOHoZYvvrZ+zPClNjyWdLdz/ppTxyYKKlN4aKB+UOe6Ffd58iKZtto/xFN5Z2auzj6N+C22AyTuUfWzQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DlZSp5WBVPfAc5mXHgsIDBui1zYGPfeL4bRztPR1jDU=;
+ b=y1pdNxbZmKugOv4dn6Jt6n5LLCGzGCKSbkXrLhVyUuws5kdkd0tN9Xf+lr+6+mC1WQAAXom3uth8LbqZbFRQaqv/O8jyaY7N9n5kmt1ilKg4XXo+iRuyUQJqR0MaXu0w3P0f12IUVsz4DcCKfc83DqF/z7Snn/zJly/KU6+L1qM=
+Received: from CH2PR18CA0012.namprd18.prod.outlook.com (2603:10b6:610:4f::22)
+ by DS0PR12MB7995.namprd12.prod.outlook.com (2603:10b6:8:14e::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.23; Fri, 9 May
+ 2025 06:46:04 +0000
+Received: from CH2PEPF0000013B.namprd02.prod.outlook.com
+ (2603:10b6:610:4f:cafe::29) by CH2PR18CA0012.outlook.office365.com
+ (2603:10b6:610:4f::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8722.20 via Frontend Transport; Fri,
+ 9 May 2025 06:46:04 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CH2PEPF0000013B.mail.protection.outlook.com (10.167.244.68) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8722.18 via Frontend Transport; Fri, 9 May 2025 06:46:04 +0000
+Received: from BLR-L1-SARUNKOD.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 9 May
+ 2025 01:46:00 -0500
+From: Sairaj Kodilkar <sarunkod@amd.com>
+To: <qemu-devel@nongnu.org>
+CC: <mst@redhat.com>, <marcel.apfelbaum@gmail.com>, <pbonzini@redhat.com>,
+ <richard.henderson@linaro.org>, <eduardo@habkost.net>,
+ <suravee.suthikulpanit@amd.com>, <alejandro.j.jimenez@oracle.com>,
+ <joao.m.martins@oracle.com>, <sarunkod@amd.com>
+Subject: [PATCH v2 0/2] amd_iommu: Fixes
+Date: Fri, 9 May 2025 12:15:24 +0530
+Message-ID: <20250509064526.15500-1-sarunkod@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250508133550.81391-10-philmd@linaro.org>
-Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -57
-X-Spam_score: -5.8
-X-Spam_bar: -----
-X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.416,
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF0000013B:EE_|DS0PR12MB7995:EE_
+X-MS-Office365-Filtering-Correlation-Id: c3a65801-770f-40a3-5e94-08dd8ec52b34
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|82310400026|1800799024|376014|36860700013; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?QW9yMHVsVWFwdmNHM1dETW00dEI5ZkhtMmFGM28wVzRGZGlyck9UMFJLNTVY?=
+ =?utf-8?B?QUFKQkJlZW9BaWMyM0VxdGxwVkN3cjFLUWZWYkRuYlJ6RFRDcGZiS201ejNi?=
+ =?utf-8?B?aFpWRU9sNXllVjRyU3dzQmJRWlA0S2JJNXRmSGJoUXk2ZEJoVVhSTHNBdDYy?=
+ =?utf-8?B?b0dWb24vNFBPL2h0WmE4b3pTNVR0S3psbHlSZWpncjk1NkRFUVk5MS95dUsz?=
+ =?utf-8?B?MkxJWEZPMHViaXdKbkdEL0NQMlNhdFhCeFdaZXN3dUNJL08vak9oOXRlRnpB?=
+ =?utf-8?B?enJKcy9NYk5JcjhDd0F4cEl5Z2R3bW9Sb05RSWIxMjBsbFhjb1ZOZXZkc2di?=
+ =?utf-8?B?Tk5HR3RlS0p5anJ1VUJ3V0xQajNkZ2NSSHFnR01vSUsrY0sza095TlQ4dE9Q?=
+ =?utf-8?B?T202cVBhdEpsczY0NlhxeWNkMkgxNEhEa3lRSVVGWFZlRXV1eEVqVkJzVElv?=
+ =?utf-8?B?d3F2Wk5NUzYzeHF2QW9ubjBuUWdTZHBaYTMvN01kdkMwMkMxd2hjdHdxUk9X?=
+ =?utf-8?B?b1hpOWphZ1czWDVVTncvN1JFVmtORzhKV3hlYWFwVnFZSCt6M0UydGs0MlpK?=
+ =?utf-8?B?YTlzbmpKUFVua2hwRXJ3eWU5Skw3cTJFOHNKSko0L01TM1JtVzVpWmNqNDB1?=
+ =?utf-8?B?WGo4Q1ZyQkpJVE9wMGpMcjBYVWl6aXNYR01zV2d3VnpiZ3cvSVZkS3RhanJT?=
+ =?utf-8?B?TmtWMWJXR0lqa1VwNnpMRGl3TVpUTjhTOHd3N3ppaVhvVmRQb1JIblVIUDBZ?=
+ =?utf-8?B?c1ZNcC93akZseGRMV3YxakxrVkFnY1MrUWZxZXh6ZUZYZ3hjWWhEQkNkY1NL?=
+ =?utf-8?B?YncvMW44clRNTy8xSVkrWk52bWpyQmxzaWVsbnJKMC9QOFVNYWh5RXI4N3hR?=
+ =?utf-8?B?WkkxVldZTEUxd280SGkvYXFUT21XT3I5OXFJdEo1bDNiZnd5MVhvYXNHcGo4?=
+ =?utf-8?B?dVhVL2tBYzdWS2V2dCt5c2RZazZsb1hsbHhBQkVzbnJxN1lFckhHaFNRNDlF?=
+ =?utf-8?B?VTZwaCsvNzBkTE5nVkdMTzN3SVJlQWpOZXlMOFExL2E2OGl6NGUxSzVteSt5?=
+ =?utf-8?B?cnk1WmdhNEl0aUlMbmt6WGZIWGxFRWdqTTVMUTl2Z0NQd3pSblpHc1RXNWlj?=
+ =?utf-8?B?V2ZsWUdxUTBYZzEzWFNPNndQLzhpZllKYWNRSDYxazRoemV0dzBTV2dkV2lX?=
+ =?utf-8?B?dU80OE5CcDBDeG1US2hBc1luVXVQZVVaTjhnV0RSOFg4UTlrbTRRbHpSZGRB?=
+ =?utf-8?B?RWQrNGUyUXFIMWpkM2x5TVFKaklGNUN5VTh0Z2UxK3Bsc3FRVk9NeHU2UFg4?=
+ =?utf-8?B?dzQzTHVZUDNLSDZ2OS9mMlp0azJxWHZOclVESGRWR0orZEtEeHlTM0hpU1Z1?=
+ =?utf-8?B?SldKR2tBZHA2VlFvbUthN0U1TW4ydmhBQmpPMTFtSnhtdGFFTWR5WUt4N1NR?=
+ =?utf-8?B?OC9ITzlOcGxCQ2Mzb2l6UFNnVmdRWmxXemNSU0pLUTdRZVpFYVV6N2Y1Qk5r?=
+ =?utf-8?B?TnRodWVid0pkL1p3MVE4VkxTOU1ma1BFclNXaUJVUXM5N1VLNmZwUUErbnh5?=
+ =?utf-8?B?ZVBIN0ZBZks3WmF3ejVORnZHWkgrWExSR3EwaU1MT0dDMCs4eTVJWFNHaEs3?=
+ =?utf-8?B?Z2pRditVY3AwdWdBeHRadU93a3dEbmc4cktHM0xIZ2czb1djNnpPQzkzcFg3?=
+ =?utf-8?B?eFlhQ0RRbFlMUmpSMkx6WTd3MEpXZ21EbmZxU2M4MWZyMHQycFBHVXMyNVN5?=
+ =?utf-8?B?SVFBcFlDRWxxcnVKM2Eyc0dyMG9CVnhmQ05nZjBXY0ZPazRHdkpwaFFJY3p1?=
+ =?utf-8?B?TlhrekR4TjBnQVJCZlRsMk1BaXNkMFRxWFQ0L1UxR2pTZ2l6eHBxeTVtZzlM?=
+ =?utf-8?B?Qm9xMWYvcVl4bkkxbnBjdFNaaUdWckd2cTVxL0piL1V4dFd3SW1vNnVrU0ox?=
+ =?utf-8?B?VStkanJDU0lwTENrNWhlVEVJVXRMNGxxL3VnTlluY1FHNDVPd3lJQi91TjFo?=
+ =?utf-8?B?TnQxSU9Lb0o4MStyaEJueXF0d2QyK2dHUTBBb2hCL05rUjNXYjZSMzM5UTNk?=
+ =?utf-8?Q?wzNm5L?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(82310400026)(1800799024)(376014)(36860700013); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 May 2025 06:46:04.0477 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c3a65801-770f-40a3-5e94-08dd8ec52b34
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CH2PEPF0000013B.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7995
+Received-SPF: permerror client-ip=40.107.96.55;
+ envelope-from=Sairaj.ArunKodilkar@amd.com;
+ helo=NAM02-SN1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.416,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,83 +157,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 08, 2025 at 03:35:32PM +0200, Philippe Mathieu-Daudé wrote:
-> Date: Thu,  8 May 2025 15:35:32 +0200
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH v4 09/27] hw/nvram/fw_cfg: Remove
->  fw_cfg_io_properties::dma_enabled
-> X-Mailer: git-send-email 2.47.1
-> 
-> Now than all calls to fw_cfg_init_io_dma() pass DMA arguments,
-> the 'dma_enabled' of the TYPE_FW_CFG_IO type is not used anymore.
-> Remove it, simplifying fw_cfg_init_io_dma() and fw_cfg_io_realize().
-> 
-> Note, we can not remove the equivalent in fw_cfg_mem_properties[]
-> because it is still used in HPPA and MIPS Loongson3 machines:
-> 
->   $ git grep -w fw_cfg_init_mem_nodma
->   hw/hppa/machine.c:204:    fw_cfg = fw_cfg_init_mem_nodma(addr, addr + 4, 1);
->   hw/mips/loongson3_virt.c:289:    fw_cfg = fw_cfg_init_mem_nodma(cfg_addr, cfg_addr + 8, 8);
-> 
-> 'linuxboot.bin' isn't used anymore, we'll remove it in the
-> next commit.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-> ---
->  hw/i386/fw_cfg.c     |  5 +----
->  hw/i386/x86-common.c |  5 +----
->  hw/nvram/fw_cfg.c    | 26 ++++++++------------------
->  3 files changed, 10 insertions(+), 26 deletions(-)
-> 
-> diff --git a/hw/i386/fw_cfg.c b/hw/i386/fw_cfg.c
-> index 5c0bcd5f8a9..1fe084fd720 100644
-> --- a/hw/i386/fw_cfg.c
-> +++ b/hw/i386/fw_cfg.c
-> @@ -221,10 +221,7 @@ void fw_cfg_add_acpi_dsdt(Aml *scope, FWCfgState *fw_cfg)
->       * of the i/o region used is FW_CFG_CTL_SIZE; when using DMA, the
->       * DMA control register is located at FW_CFG_DMA_IO_BASE + 4
->       */
-> -    Object *obj = OBJECT(fw_cfg);
-> -    uint8_t io_size = object_property_get_bool(obj, "dma_enabled", NULL) ?
-> -        ROUND_UP(FW_CFG_CTL_SIZE, 4) + sizeof(dma_addr_t) :
-> -        FW_CFG_CTL_SIZE;
-> +    uint8_t io_size = ROUND_UP(FW_CFG_CTL_SIZE, 4) + sizeof(dma_addr_t);
->      Aml *dev = aml_device("FWCF");
->      Aml *crs = aml_resource_template();
->  
-> diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
-> index 27254a0e9f1..ee594364415 100644
-> --- a/hw/i386/x86-common.c
-> +++ b/hw/i386/x86-common.c
-> @@ -991,10 +991,7 @@ void x86_load_linux(X86MachineState *x86ms,
->      }
->  
->      option_rom[nb_option_roms].bootindex = 0;
-> -    option_rom[nb_option_roms].name = "linuxboot.bin";
-> -    if (fw_cfg_dma_enabled(fw_cfg)) {
-> -        option_rom[nb_option_roms].name = "linuxboot_dma.bin";
-> -    }
-> +    option_rom[nb_option_roms].name = "linuxboot_dma.bin";
->      nb_option_roms++;
->  }
->  
-> diff --git a/hw/nvram/fw_cfg.c b/hw/nvram/fw_cfg.c
-> index 51b028b5d0a..ef976a4bce2 100644
-> --- a/hw/nvram/fw_cfg.c
-> +++ b/hw/nvram/fw_cfg.c
-> @@ -1026,12 +1026,9 @@ FWCfgState *fw_cfg_init_io_dma(uint32_t iobase, uint32_t dma_iobase,
->      FWCfgIoState *ios;
->      FWCfgState *s;
->      MemoryRegion *iomem = get_system_io();
-> -    bool dma_requested = dma_iobase && dma_as;
->  
-> +    assert(dma_iobase);
+Fix following two issues in the amd viommu
+1. The guest fails to setup the passthrough device when for following setup
+   because amd iommu enables the no DMA memory region even when guest is 
+   using DMA remapping mode.
 
-Maybe a rebase nit? In v3, it is:
+    -device amd-iommu,intremap=on,xtsup=on,pt=on \
+    -device vfio-pci,host=<DEVID> \
 
-assert(dma_iobase && dma_as);
+    and guest forcing DMA remap mode e.g. 'iommu.passthrough=0'
 
-Others are fine for me.
+    which will cause failures from QEMU:
+
+    qemu-system-x86_64: AHCI: Failed to start DMA engine: bad command list buffer address
+    qemu-system-x86_64: AHCI: Failed to start FIS receive engine: bad FIS receive buffer address
+    qemu-system-x86_64: AHCI: Failed to start DMA engine: bad command list buffer address
+    qemu-system-x86_64: AHCI: Failed to start FIS receive engine: bad FIS receive buffer address
+    qemu-system-x86_64: AHCI: Failed to start DMA engine: bad command list buffer address
+
+
+2. The guest fails to boot with xtsup=on and <= 255 vCPUs, because amd_iommu
+   does not enable x2apic mode.
+
+base commit 56c6e249b6988c1b6edc2dd34ebb0f1e570a1365 (v10.0.0-rc3)
+
+Sairaj Kodilkar (1):
+  hw/i386/amd_iommu: Fix device setup failure when PT is on.
+
+Vasant Hegde (1):
+  hw/i386/amd_iommu: Fix xtsup when vcpus < 255
+
+ hw/i386/amd_iommu.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+-- 
+2.34.1
 
 
