@@ -2,154 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 844E2AB10B1
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 12:29:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF619AB1004
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 12:11:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDKy0-000892-Gs; Fri, 09 May 2025 06:28:32 -0400
+	id 1uDKhL-0007YY-3N; Fri, 09 May 2025 06:11:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDKxy-00088R-I3
- for qemu-devel@nongnu.org; Fri, 09 May 2025 06:28:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uDKhH-0007Wo-El; Fri, 09 May 2025 06:11:15 -0400
+Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDKxw-00048v-Q2
- for qemu-devel@nongnu.org; Fri, 09 May 2025 06:28:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746786507;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=8f2ErRdWdW+7bmFG5OqyDsOuTmFi2airyVQZZdgowvc=;
- b=SLdydOHYgSwPGbU6azO4j6ckjJyTct3vDO0VJv0UffWN8IxzbBqsz8R74dTfCRrsgm/kMJ
- iawEyqPfpZwzgPUwmd3OE/caTppHR/Df1snCKKFx0eFjE88eCkASWs4xzOUbbyCkBP9U3g
- tkgs1EzR1aCuVE0IP/fbDTOu9nXTFyQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-636-uWoLlTY9Oym1ibpLtfT4iQ-1; Fri, 09 May 2025 06:28:27 -0400
-X-MC-Unique: uWoLlTY9Oym1ibpLtfT4iQ-1
-X-Mimecast-MFC-AGG-ID: uWoLlTY9Oym1ibpLtfT4iQ_1746786506
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-43efa869b0aso13462195e9.3
- for <qemu-devel@nongnu.org>; Fri, 09 May 2025 03:28:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746786505; x=1747391305;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8f2ErRdWdW+7bmFG5OqyDsOuTmFi2airyVQZZdgowvc=;
- b=M4989gWmb/Eai06IAl6uGpJlaPTuhf/Z1u58q50if5nusvDtgXfDFSN0rHgy6I1R6m
- eX+SfeVVdU48GhGZhRKgd6i0HaJUkmrKbdQ9zFV8gaV0ZWKV8Z3UnrsWjZxyfBm5Ue7P
- OE6cxe3wbWTOqnFJ6S+qAo785i1FsDWxhIyYn2T4IP5gbmhk3X+BBvF6EPh9NbqE06Q5
- SJ4E51Qjg/73FRerWrOhNA06S5zGnxdsN08kt5aqnKYlk/r1G9wUfoiL2BXfjJlThHiK
- YBZpdskUm9Dw+5IQ7JfhdheciPefWs9MC39sYrn+70+zDCfjO3M/P1crDcrY3ooAW1hQ
- 6cQQ==
-X-Gm-Message-State: AOJu0YxDsgy1jguie7pF+e/41sWeagp0eHNIBKBAJ2o2S8dwnBVpvCzO
- VsvD3pQiOOqBpYIozs1K0EtBYsggys4Fd7ij2ucF/7zsyC42OUiZSP0p7fhqkSGfqA0YdZeI5ct
- R9RvKWHJC9JDsoQc7Oq4tjsUXCDopc7LiVMJZkS7neLz4SVHVQ5INKlNafftlcok=
-X-Gm-Gg: ASbGncuWRmDoeU38baJtHJqoM37s5gYntX48zsrDoZAdJBXpW10aZi8koa7iTjl3j6D
- VfiU7EiFnq7VLK2SCUY+sxV9G5wODWtXDFk0+BIevczUptwr9LvppLnIvBXLaxq0FaGrWYqQRVs
- 7OFNXGKzvFFff8MFaMDb3HC5q5lIvlgivSNcN6OpLpfyWWIL6TgbHUHGPJPOa1spmxMJfmX8YOX
- 1QvR6Av73vRvftf6XITLGAzeS0qGWCKTeF9T9DjTDQSOW8W8igYzXm6FajndyFpoEePaQev6kJZ
- x2yq4k2x6bsnwpwG2tFxZxhVRTFDrb/AFTwKO1Q9Ek/rI3p36UkyeJk=
-X-Received: by 2002:a05:600c:3b26:b0:43c:fbbf:7bf1 with SMTP id
- 5b1f17b1804b1-442d6dd4ccdmr20805555e9.30.1746786505326; 
- Fri, 09 May 2025 03:28:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFqzSmj+piCIBRdq6nG4bDpAhLdm0OQ5IwfWwS/aIHz0K6VGPB5Iv+FT8fqCOToZbSKAJumzQ==
-X-Received: by 2002:a05:600c:3b26:b0:43c:fbbf:7bf1 with SMTP id
- 5b1f17b1804b1-442d6dd4ccdmr20805255e9.30.1746786504897; 
- Fri, 09 May 2025 03:28:24 -0700 (PDT)
-Received: from ?IPV6:2a01:cb1d:89d7:6e00:da58:edc2:d8ef:4b9f?
- ([2a01:cb1d:89d7:6e00:da58:edc2:d8ef:4b9f])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442cd3aeca5sm68794745e9.26.2025.05.09.03.28.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 09 May 2025 03:28:24 -0700 (PDT)
-Message-ID: <f9d34a79-9eeb-4946-a120-35db26b20379@redhat.com>
-Date: Fri, 9 May 2025 12:28:23 +0200
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uDKhF-0001b8-N2; Fri, 09 May 2025 06:11:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1746785474; x=1778321474;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=DYzgfmr2nHUFnRtfKx2VUV7W2FkMFo4CpLIHKoL2k0I=;
+ b=LCwinC2BbEhFPn4fpJFHI11N/cD/mejWq6aKk6qeb6xHU9iikF/Qd/Dl
+ pXLKtmWQd/of8Q9sWphsv5MAsd19gVhozzGws2XScj5dYhzbyCqCRdy8/
+ BZ67/zy6snE1wfGMJYvuW8usFIGh4RHz+TxgvoSPVDkTyvUgqNM/hQWWG
+ HXWx7EJUd3EDUjwzCflmrHsu5foDMUGAyE0acC13wFTfvpCSOZQlDyuzm
+ cYxmjMm34WtOltdbGzhuIz0HwLALIepVAKuZz6xbRjm33SF/NDvr3e583
+ Qz0bVaOKnhxbwdbEdpKnVC89y0CCYSskcoLaG9CRsvZtTjhefx5M4/bF0 g==;
+X-CSE-ConnectionGUID: Xpb41upyQ1yAvxMVCkmF9g==
+X-CSE-MsgGUID: 0AaCUsluRaWIG7TKWM0XeA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="66013414"
+X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; d="scan'208";a="66013414"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 May 2025 03:11:10 -0700
+X-CSE-ConnectionGUID: HKEkuJfoTV22rXlvJht/zw==
+X-CSE-MsgGUID: 34wmXNVFQ0SpQaxijdq0mQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; d="scan'208";a="137577882"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa009.fm.intel.com with ESMTP; 09 May 2025 03:11:02 -0700
+Date: Fri, 9 May 2025 18:32:05 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ kvm@vger.kernel.org, Sergio Lopez <slp@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Yi Liu <yi.l.liu@intel.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-riscv@nongnu.org,
+ Weiwei Li <liwei1518@gmail.com>, Amit Shah <amit@kernel.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Helge Deller <deller@gmx.de>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Ani Sinha <anisinha@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ =?iso-8859-1?Q?Cl=E9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
+ qemu-arm@nongnu.org,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Huacai Chen <chenhuacai@kernel.org>, Jason Wang <jasowang@redhat.com>,
+ Mark Cave-Ayland <mark.caveayland@nutanix.com>
+Subject: Re: [PATCH v4 24/27] hw/intc/ioapic: Remove
+ IOAPICCommonState::version field
+Message-ID: <aB3Zpc45+/OZ7hq2@intel.com>
+References: <20250508133550.81391-1-philmd@linaro.org>
+ <20250508133550.81391-25-philmd@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 15/15] vfio/container: pass MemoryRegion to DMA
- operations
-To: John Levon <john.levon@nutanix.com>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
- qemu-s390x@nongnu.org, Jason Herne <jjherne@linux.ibm.com>,
- Tomita Moeko <tomitamoeko@gmail.com>, Markus Armbruster <armbru@redhat.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
- David Hildenbrand <david@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Tony Krowiak
- <akrowiak@linux.ibm.com>, Alex Williamson <alex.williamson@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- John Johnson <john.g.johnson@oracle.com>,
- Jagannathan Raman <jag.raman@oracle.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>
-References: <20250430194003.2793823-1-john.levon@nutanix.com>
- <20250430194003.2793823-16-john.levon@nutanix.com>
- <94e51ea2-d598-4c41-8498-eabe32349788@redhat.com> <aBtnGKxF6ij1z9EW@lent>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <aBtnGKxF6ij1z9EW@lent>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.416,
+In-Reply-To: <20250508133550.81391-25-philmd@linaro.org>
+Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -57
+X-Spam_score: -5.8
+X-Spam_bar: -----
+X-Spam_report: (-5.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.416,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -165,49 +103,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/7/25 15:58, John Levon wrote:
-> On Mon, May 05, 2025 at 02:46:12PM +0200, CÃ©dric Le Goater wrote:
+On Thu, May 08, 2025 at 03:35:47PM +0200, Philippe Mathieu-Daudé wrote:
+> Date: Thu,  8 May 2025 15:35:47 +0200
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: [PATCH v4 24/27] hw/intc/ioapic: Remove IOAPICCommonState::version
+>  field
+> X-Mailer: git-send-email 2.47.1
 > 
->> !-------------------------------------------------------------------|
->>   CAUTION: External Email
->>
->> |-------------------------------------------------------------------!
->>
->> On 4/30/25 21:40, John Levon wrote:
->>> Pass through the MemoryRegion to DMA operation handlers of vfio
->>> containers. The vfio-user container will need this later.
->>>
->>> Originally-by: John Johnson <john.g.johnson@oracle.com>
->>> Signed-off-by: Jagannathan Raman <jag.raman@oracle.com>
->>> Signed-off-by: Elena Ufimtseva <elena.ufimtseva@oracle.com>
->>> Signed-off-by: John Levon <john.levon@nutanix.com>
->>
->> You should add the system/memory maintainers as Cc: entries in this
->> patch.
+> The IOAPICCommonState::version integer was only set
+> in the hw_compat_2_7[] array, via the 'version=0x11'
+> property. We removed all machines using that array,
+> lets remove that property, simplify by only using the
+> default version (defined as IOAPIC_VER_DEF).
 > 
-> Double-checked, and they are already:
+> For the record, this field was introduced in commit
+> 20fd4b7b6d9 ("x86: ioapic: add support for explicit EOI"):
 > 
-> $ ./scripts/get_maintainer.pl -f system/memory.c
-> Paolo Bonzini <pbonzini@redhat.com> (supporter:Memory API)
-> Peter Xu <peterx@redhat.com> (supporter:Memory API)
-> David Hildenbrand <david@redhat.com> (supporter:Memory API)
-> "Philippe Mathieu-DaudÃ©" <philmd@linaro.org> (reviewer:Memory API)
-> qemu-devel@nongnu.org (open list:All patches CC here)
-
-Adding them on the Cc: list of the patch only is more likely to get
-their attention. Subject should be changed too bc this is not a VFIO
-but a system/memory change.
-
-
-Thanks,
-
-C.
-
-
-  
+>  >   Some old Linux kernels (upstream before v4.0), or any released RHEL
+>  >   kernels has problem in sending APIC EOI when IR is enabled.
+>  >   Meanwhile, many of them only support explicit EOI for IOAPIC, which
+>  >   is only introduced in IOAPIC version 0x20. This patch provide a way
+>  >   to boost QEMU IOAPIC to version 0x20, in order for QEMU to correctly
+>  >   receive EOI messages.
+>  >
+>  >   Without boosting IOAPIC version to 0x20, kernels before commit
+>  >   d32932d ("x86/irq: Convert IOAPIC to use hierarchical irqdomain
+>  >   interfaces") will have trouble enabling both IR and level-triggered
+>  >   interrupt devices (like e1000).
+>  >
+>  >   To upgrade IOAPIC to version 0x20, we need to specify:
+>  >
+>  >     -global ioapic.version=0x20
+>  >
+>  >   To be compatible with old systems, 0x11 will still be the default
+>  >   IOAPIC version. Here 0x11 and 0x20 are the only versions to be
+>  >   supported.
+>  >
+>  >   One thing to mention: this patch only applies to emulated IOAPIC. It
+>  >   does not affect kernel IOAPIC behavior.
 > 
-> regards
-> john
-> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Mark Cave-Ayland <mark.caveayland@nutanix.com>
+> ---
+>  hw/intc/ioapic_internal.h |  3 +--
+>  hw/intc/ioapic.c          | 18 ++----------------
+>  hw/intc/ioapic_common.c   |  2 +-
+>  3 files changed, 4 insertions(+), 19 deletions(-)
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
