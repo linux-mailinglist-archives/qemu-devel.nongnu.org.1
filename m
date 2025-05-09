@@ -2,58 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF103AB149D
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 15:16:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 822CDAB14BF
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 15:20:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDNaJ-0004XJ-Tr; Fri, 09 May 2025 09:16:16 -0400
+	id 1uDNa0-0003D4-LU; Fri, 09 May 2025 09:15:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNZ1-0002Pe-OE
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNZ1-0002PR-N2
  for qemu-devel@nongnu.org; Fri, 09 May 2025 09:15:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNYw-0007EN-Tz
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNYy-0007Ec-SK
  for qemu-devel@nongnu.org; Fri, 09 May 2025 09:14:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746796489;
+ s=mimecast20190719; t=1746796491;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zNkOj8OQpBDthVO+0t/oNssdHasHoaIWKjOmrWA2SGc=;
- b=Ax50KoUTfBNUV8RwGbKCMvxC6twtS6GuoXUpX+snaqXUJ28fsyz2+FsszQDbqQzgca4wwg
- yA4PX/hKn6pQ2vjlJq+ainMFgHRnbOc4w0GNzsWwqJ8bJO+ek88F3RAJefS7DHEj6IiyUl
- i262a9M7YdblOq807eLfK3v7r4Mm0lg=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=HisD7F+n0YQRQAJHKMQy689CXMethJ5xHSYlbFgCquc=;
+ b=DhR5qj73N9qFSQ2EQxRBVasOU//t0wF5NOVl9R08YMjCov6GZIXMuO5CouQQhcuLHkbRwT
+ s0Ec8zoDwR8HR4mjmSASH3mg5x+DMLZbrQQeESwJzcq47M3f/yk/w+Y6GDLKP3ZufHDIgb
+ mNbgXhFIy5hRqnurb5wci04AgcJO/V8=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-352-k5Q-Ne1ENP-vMIScules5w-1; Fri,
- 09 May 2025 09:14:46 -0400
-X-MC-Unique: k5Q-Ne1ENP-vMIScules5w-1
-X-Mimecast-MFC-AGG-ID: k5Q-Ne1ENP-vMIScules5w_1746796485
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-572-qhEVWJynNXaLEXNI9MEY7g-1; Fri,
+ 09 May 2025 09:14:48 -0400
+X-MC-Unique: qhEVWJynNXaLEXNI9MEY7g-1
+X-Mimecast-MFC-AGG-ID: qhEVWJynNXaLEXNI9MEY7g_1746796487
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D7C40195608B; Fri,  9 May 2025 13:14:44 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 52BDE180087F; Fri,  9 May 2025 13:14:47 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.18])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3BE9918003FD; Fri,  9 May 2025 13:14:40 +0000 (UTC)
+ id 85663180045B; Fri,  9 May 2025 13:14:45 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  John Levon <john.levon@nutanix.com>,
- John Johnson <john.g.johnson@oracle.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Jagannathan Raman <jag.raman@oracle.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 25/28] vfio: add region info cache
-Date: Fri,  9 May 2025 15:13:14 +0200
-Message-ID: <20250509131317.164235-26-clg@redhat.com>
+Subject: [PULL 26/28] vfio: add read/write to device IO ops vector
+Date: Fri,  9 May 2025 15:13:15 +0200
+Message-ID: <20250509131317.164235-27-clg@redhat.com>
 In-Reply-To: <20250509131317.164235-1-clg@redhat.com>
 References: <20250509131317.164235-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -87,250 +84,202 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Levon <john.levon@nutanix.com>
 
-Instead of requesting region information on demand with
-VFIO_DEVICE_GET_REGION_INFO, maintain a cache: this will become
-necessary for performance for vfio-user, where this call becomes a
-message over the control socket, so is of higher overhead than the
-traditional path.
+Now we have the region info cache, add ->region_read/write device I/O
+operations instead of explicit pread()/pwrite() system calls.
 
-We will also need it to generalize region accesses, as that means we
-can't use ->config_offset for configuration space accesses, but must
-look up the region offset (if relevant) each time.
-
-Originally-by: John Johnson <john.g.johnson@oracle.com>
-Signed-off-by: Elena Ufimtseva <elena.ufimtseva@oracle.com>
-Signed-off-by: Jagannathan Raman <jag.raman@oracle.com>
 Signed-off-by: John Levon <john.levon@nutanix.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250507152020.1254632-12-john.levon@nutanix.com
+Link: https://lore.kernel.org/qemu-devel/20250507152020.1254632-13-john.levon@nutanix.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-device.h |  1 +
- hw/vfio/ccw.c                 |  5 -----
- hw/vfio/device.c              | 25 +++++++++++++++++++++----
- hw/vfio/igd.c                 | 10 +++++-----
- hw/vfio/pci.c                 |  6 +++---
- hw/vfio/region.c              |  2 +-
- 6 files changed, 31 insertions(+), 18 deletions(-)
+ include/hw/vfio/vfio-device.h | 18 ++++++++++++++++++
+ hw/vfio/device.c              | 34 ++++++++++++++++++++++++++++++++++
+ hw/vfio/pci.c                 | 28 ++++++++++++++--------------
+ hw/vfio/region.c              | 17 +++++++++++------
+ 4 files changed, 77 insertions(+), 20 deletions(-)
 
 diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.h
-index 7e1e81e76bd2b484108282f7147ff7a0793360cf..4fff3dcee3b4a2a3c8a4bd6fa017cf822a16668e 100644
+index 4fff3dcee3b4a2a3c8a4bd6fa017cf822a16668e..8bcb3c19f62b5a47c835e10149c04a9bd7536520 100644
 --- a/include/hw/vfio/vfio-device.h
 +++ b/include/hw/vfio/vfio-device.h
-@@ -83,6 +83,7 @@ typedef struct VFIODevice {
-     IOMMUFDBackend *iommufd;
-     VFIOIOASHwpt *hwpt;
-     QLIST_ENTRY(VFIODevice) hwpt_next;
-+    struct vfio_region_info **reginfo;
- } VFIODevice;
+@@ -188,6 +188,24 @@ struct VFIODeviceIOOps {
+      * Configure IRQs as defined by @irqs.
+      */
+     int (*set_irqs)(VFIODevice *vdev, struct vfio_irq_set *irqs);
++
++    /**
++     * @region_read
++     *
++     * Read @size bytes from the region @nr at offset @off into the buffer
++     * @data.
++     */
++    int (*region_read)(VFIODevice *vdev, uint8_t nr, off_t off, uint32_t size,
++                       void *data);
++
++    /**
++     * @region_write
++     *
++     * Write @size bytes to the region @nr at offset @off from the buffer
++     * @data.
++     */
++    int (*region_write)(VFIODevice *vdev, uint8_t nr, off_t off, uint32_t size,
++                        void *data);
+ };
  
- struct VFIODeviceOps {
-diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
-index ab3fabf991c35abb6c40d925f526c2a2d8955aef..cea9d6e00562c241832184cafe862005fcdc992b 100644
---- a/hw/vfio/ccw.c
-+++ b/hw/vfio/ccw.c
-@@ -504,7 +504,6 @@ static bool vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
- 
-     vcdev->io_region_offset = info->offset;
-     vcdev->io_region = g_malloc0(info->size);
--    g_free(info);
- 
-     /* check for the optional async command region */
-     ret = vfio_device_get_region_info_type(vdev, VFIO_REGION_TYPE_CCW,
-@@ -517,7 +516,6 @@ static bool vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
-         }
-         vcdev->async_cmd_region_offset = info->offset;
-         vcdev->async_cmd_region = g_malloc0(info->size);
--        g_free(info);
-     }
- 
-     ret = vfio_device_get_region_info_type(vdev, VFIO_REGION_TYPE_CCW,
-@@ -530,7 +528,6 @@ static bool vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
-         }
-         vcdev->schib_region_offset = info->offset;
-         vcdev->schib_region = g_malloc(info->size);
--        g_free(info);
-     }
- 
-     ret = vfio_device_get_region_info_type(vdev, VFIO_REGION_TYPE_CCW,
-@@ -544,7 +541,6 @@ static bool vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
-         }
-         vcdev->crw_region_offset = info->offset;
-         vcdev->crw_region = g_malloc(info->size);
--        g_free(info);
-     }
- 
-     return true;
-@@ -554,7 +550,6 @@ out_err:
-     g_free(vcdev->schib_region);
-     g_free(vcdev->async_cmd_region);
-     g_free(vcdev->io_region);
--    g_free(info);
-     return false;
- }
- 
+ void vfio_device_prepare(VFIODevice *vbasedev, VFIOContainerBase *bcontainer,
 diff --git a/hw/vfio/device.c b/hw/vfio/device.c
-index 40a196bfb9a86656610863d4f064db383c7072e0..77b0675abe7b4f4155ea79cf3fd0e3ab4b21f8ea 100644
+index 77b0675abe7b4f4155ea79cf3fd0e3ab4b21f8ea..0b2cd90d64dc797bb2f20c60c57ff49706816aed 100644
 --- a/hw/vfio/device.c
 +++ b/hw/vfio/device.c
-@@ -202,6 +202,12 @@ int vfio_device_get_region_info(VFIODevice *vbasedev, int index,
-     size_t argsz = sizeof(struct vfio_region_info);
-     int ret;
- 
-+    /* check cache */
-+    if (vbasedev->reginfo[index] != NULL) {
-+        *info = vbasedev->reginfo[index];
-+        return 0;
-+    }
-+
-     *info = g_malloc0(argsz);
- 
-     (*info)->index = index;
-@@ -222,6 +228,9 @@ retry:
-         goto retry;
-     }
- 
-+    /* fill cache */
-+    vbasedev->reginfo[index] = *info;
-+
-     return 0;
+@@ -505,9 +505,43 @@ static int vfio_device_io_set_irqs(VFIODevice *vbasedev,
+     return ret < 0 ? -errno : ret;
  }
  
-@@ -240,7 +249,6 @@ int vfio_device_get_region_info_type(VFIODevice *vbasedev, uint32_t type,
- 
-         hdr = vfio_get_region_info_cap(*info, VFIO_REGION_INFO_CAP_TYPE);
-         if (!hdr) {
--            g_free(*info);
-             continue;
-         }
- 
-@@ -252,8 +260,6 @@ int vfio_device_get_region_info_type(VFIODevice *vbasedev, uint32_t type,
-         if (cap_type->type == type && cap_type->subtype == subtype) {
-             return 0;
-         }
--
--        g_free(*info);
-     }
- 
-     *info = NULL;
-@@ -262,7 +268,7 @@ int vfio_device_get_region_info_type(VFIODevice *vbasedev, uint32_t type,
- 
- bool vfio_device_has_region_cap(VFIODevice *vbasedev, int region, uint16_t cap_type)
- {
--    g_autofree struct vfio_region_info *info = NULL;
-+    struct vfio_region_info *info = NULL;
-     bool ret = false;
- 
-     if (!vfio_device_get_region_info(vbasedev, region, &info)) {
-@@ -435,10 +441,21 @@ void vfio_device_prepare(VFIODevice *vbasedev, VFIOContainerBase *bcontainer,
-     QLIST_INSERT_HEAD(&bcontainer->device_list, vbasedev, container_next);
- 
-     QLIST_INSERT_HEAD(&vfio_device_list, vbasedev, global_next);
++static int vfio_device_io_region_read(VFIODevice *vbasedev, uint8_t index,
++                                      off_t off, uint32_t size, void *data)
++{
++    struct vfio_region_info *info;
++    int ret;
 +
-+    vbasedev->reginfo = g_new0(struct vfio_region_info *,
-+                               vbasedev->num_regions);
- }
- 
- void vfio_device_unprepare(VFIODevice *vbasedev)
- {
-+    int i;
-+
-+    for (i = 0; i < vbasedev->num_regions; i++) {
-+        g_free(vbasedev->reginfo[i]);
++    ret = vfio_device_get_region_info(vbasedev, index, &info);
++    if (ret != 0) {
++        return ret;
 +    }
-+    g_free(vbasedev->reginfo);
-+    vbasedev->reginfo = NULL;
 +
-     QLIST_REMOVE(vbasedev, container_next);
-     QLIST_REMOVE(vbasedev, global_next);
-     vbasedev->bcontainer = NULL;
-diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 3ee1a73b57c57563f661a246e6dd7e505231be91..e7952d15a014f28fe302cab312ab8e60a414c679 100644
---- a/hw/vfio/igd.c
-+++ b/hw/vfio/igd.c
-@@ -349,8 +349,8 @@ static int vfio_pci_igd_lpc_init(VFIOPCIDevice *vdev,
- 
- static bool vfio_pci_igd_setup_lpc_bridge(VFIOPCIDevice *vdev, Error **errp)
- {
--    g_autofree struct vfio_region_info *host = NULL;
--    g_autofree struct vfio_region_info *lpc = NULL;
-+    struct vfio_region_info *host = NULL;
-+    struct vfio_region_info *lpc = NULL;
-     PCIDevice *lpc_bridge;
-     int ret;
- 
-@@ -510,7 +510,7 @@ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
- 
- static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
- {
--    g_autofree struct vfio_region_info *opregion = NULL;
-+    struct vfio_region_info *opregion = NULL;
-     int ret, gen;
-     uint64_t gms_size = 0;
-     uint64_t *bdsm_size;
-@@ -551,7 +551,7 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
-          * - OpRegion
-          * - Same LPC bridge and Host bridge VID/DID/SVID/SSID as host
-          */
--        g_autofree struct vfio_region_info *rom = NULL;
-+        struct vfio_region_info *rom = NULL;
- 
-         legacy_mode_enabled = true;
-         info_report("IGD legacy mode enabled, "
-@@ -681,7 +681,7 @@ error:
-  */
- static bool vfio_pci_kvmgt_config_quirk(VFIOPCIDevice *vdev, Error **errp)
- {
--    g_autofree struct vfio_region_info *opregion = NULL;
-+    struct vfio_region_info *opregion = NULL;
-     int gen;
- 
-     if (!vfio_pci_is(vdev, PCI_VENDOR_ID_INTEL, PCI_ANY_ID) ||
++    ret = pread(vbasedev->fd, data, size, info->offset + off);
++
++    return ret < 0 ? -errno : ret;
++}
++
++static int vfio_device_io_region_write(VFIODevice *vbasedev, uint8_t index,
++                                       off_t off, uint32_t size, void *data)
++{
++    struct vfio_region_info *info;
++    int ret;
++
++    ret = vfio_device_get_region_info(vbasedev, index, &info);
++    if (ret != 0) {
++        return ret;
++    }
++
++    ret = pwrite(vbasedev->fd, data, size, info->offset + off);
++
++    return ret < 0 ? -errno : ret;
++}
++
+ static VFIODeviceIOOps vfio_device_io_ops_ioctl = {
+     .device_feature = vfio_device_io_device_feature,
+     .get_region_info = vfio_device_io_get_region_info,
+     .get_irq_info = vfio_device_io_get_irq_info,
+     .set_irqs = vfio_device_io_set_irqs,
++    .region_read = vfio_device_io_region_read,
++    .region_write = vfio_device_io_region_write,
+ };
 diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index da2ffc9bf36778fb61a7decf345391caee528b2a..9136cf52c82711939db01c09a8a1277327bc484f 100644
+index 9136cf52c82711939db01c09a8a1277327bc484f..1236de315d1a73aa408c108e2e650a37b037b93e 100644
 --- a/hw/vfio/pci.c
 +++ b/hw/vfio/pci.c
-@@ -883,8 +883,8 @@ static void vfio_update_msi(VFIOPCIDevice *vdev)
+@@ -918,18 +918,22 @@ static void vfio_pci_load_rom(VFIOPCIDevice *vdev)
+     memset(vdev->rom, 0xff, size);
  
- static void vfio_pci_load_rom(VFIOPCIDevice *vdev)
+     while (size) {
+-        bytes = pread(vbasedev->fd, vdev->rom + off,
+-                      size, vdev->rom_offset + off);
++        bytes = vbasedev->io_ops->region_read(vbasedev,
++                                              VFIO_PCI_ROM_REGION_INDEX,
++                                              off, size, vdev->rom + off);
++
+         if (bytes == 0) {
+             break;
+         } else if (bytes > 0) {
+             off += bytes;
+             size -= bytes;
+         } else {
+-            if (errno == EINTR || errno == EAGAIN) {
++            if (bytes == -EINTR || bytes == -EAGAIN) {
+                 continue;
+             }
+-            error_report("vfio: Error reading device ROM: %m");
++            error_report("vfio: Error reading device ROM: %s",
++                         strreaderror(bytes));
++
+             break;
+         }
+     }
+@@ -969,22 +973,18 @@ static void vfio_pci_load_rom(VFIOPCIDevice *vdev)
+ static int vfio_pci_config_space_read(VFIOPCIDevice *vdev, off_t offset,
+                                       uint32_t size, void *data)
  {
--    g_autofree struct vfio_region_info *reg_info = NULL;
-     VFIODevice *vbasedev = &vdev->vbasedev;
-+    struct vfio_region_info *reg_info = NULL;
-     uint64_t size;
-     off_t off = 0;
-     ssize_t bytes;
-@@ -2710,7 +2710,7 @@ static VFIODeviceOps vfio_pci_ops = {
- bool vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp)
- {
-     VFIODevice *vbasedev = &vdev->vbasedev;
--    g_autofree struct vfio_region_info *reg_info = NULL;
-+    struct vfio_region_info *reg_info = NULL;
-     int ret;
+-    ssize_t ret;
+-
+-    ret = pread(vdev->vbasedev.fd, data, size, vdev->config_offset + offset);
+-
+-    return ret < 0 ? -errno : (int)ret;
++    return vdev->vbasedev.io_ops->region_read(&vdev->vbasedev,
++                                              VFIO_PCI_CONFIG_REGION_INDEX,
++                                              offset, size, data);
+ }
  
-     ret = vfio_device_get_region_info(vbasedev, VFIO_PCI_VGA_REGION_INDEX, &reg_info);
-@@ -2775,7 +2775,7 @@ bool vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp)
- static bool vfio_populate_device(VFIOPCIDevice *vdev, Error **errp)
+ /* "Raw" write of underlying config space. */
+ static int vfio_pci_config_space_write(VFIOPCIDevice *vdev, off_t offset,
+                                        uint32_t size, void *data)
  {
-     VFIODevice *vbasedev = &vdev->vbasedev;
--    g_autofree struct vfio_region_info *reg_info = NULL;
-+    struct vfio_region_info *reg_info = NULL;
-     struct vfio_irq_info irq_info;
-     int i, ret = -1;
+-    ssize_t ret;
+-
+-    ret = pwrite(vdev->vbasedev.fd, data, size, vdev->config_offset + offset);
+-
+-    return ret < 0 ? -errno : (int)ret;
++    return vdev->vbasedev.io_ops->region_write(&vdev->vbasedev,
++                                               VFIO_PCI_CONFIG_REGION_INDEX,
++                                               offset, size, data);
+ }
  
+ static uint64_t vfio_rom_read(void *opaque, hwaddr addr, unsigned size)
 diff --git a/hw/vfio/region.c b/hw/vfio/region.c
-index 04bf9eb0987c0ac460e0a1c3ba5abdf4a87f7499..ef2630cac3924fef200b2ece1be0dbad219dd67d 100644
+index ef2630cac3924fef200b2ece1be0dbad219dd67d..34752c3f65c4b43fc961754657b18f5269c01ef1 100644
 --- a/hw/vfio/region.c
 +++ b/hw/vfio/region.c
-@@ -182,7 +182,7 @@ static int vfio_setup_region_sparse_mmaps(VFIORegion *region,
- int vfio_region_setup(Object *obj, VFIODevice *vbasedev, VFIORegion *region,
-                       int index, const char *name)
- {
--    g_autofree struct vfio_region_info *info = NULL;
-+    struct vfio_region_info *info = NULL;
-     int ret;
+@@ -45,6 +45,7 @@ void vfio_region_write(void *opaque, hwaddr addr,
+         uint32_t dword;
+         uint64_t qword;
+     } buf;
++    int ret;
  
-     ret = vfio_device_get_region_info(vbasedev, index, &info);
+     switch (size) {
+     case 1:
+@@ -64,11 +65,13 @@ void vfio_region_write(void *opaque, hwaddr addr,
+         break;
+     }
+ 
+-    if (pwrite(vbasedev->fd, &buf, size, region->fd_offset + addr) != size) {
++    ret = vbasedev->io_ops->region_write(vbasedev, region->nr,
++                                         addr, size, &buf);
++    if (ret != size) {
+         error_report("%s(%s:region%d+0x%"HWADDR_PRIx", 0x%"PRIx64
+-                     ",%d) failed: %m",
++                     ",%d) failed: %s",
+                      __func__, vbasedev->name, region->nr,
+-                     addr, data, size);
++                     addr, data, size, strwriteerror(ret));
+     }
+ 
+     trace_vfio_region_write(vbasedev->name, region->nr, addr, data, size);
+@@ -96,11 +99,13 @@ uint64_t vfio_region_read(void *opaque,
+         uint64_t qword;
+     } buf;
+     uint64_t data = 0;
++    int ret;
+ 
+-    if (pread(vbasedev->fd, &buf, size, region->fd_offset + addr) != size) {
+-        error_report("%s(%s:region%d+0x%"HWADDR_PRIx", %d) failed: %m",
++    ret = vbasedev->io_ops->region_read(vbasedev, region->nr, addr, size, &buf);
++    if (ret != size) {
++        error_report("%s(%s:region%d+0x%"HWADDR_PRIx", %d) failed: %s",
+                      __func__, vbasedev->name, region->nr,
+-                     addr, size);
++                     addr, size, strreaderror(ret));
+         return (uint64_t)-1;
+     }
+     switch (size) {
 -- 
 2.49.0
 
