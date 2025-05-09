@@ -2,83 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A623BAB19A9
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 18:03:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DB9BAB19B7
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 18:05:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDQAr-0001LI-Bu; Fri, 09 May 2025 12:02:09 -0400
+	id 1uDQDO-0006UX-RV; Fri, 09 May 2025 12:04:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1uDQAl-0001GO-P4
- for qemu-devel@nongnu.org; Fri, 09 May 2025 12:02:03 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1uDQAi-00047C-4J
- for qemu-devel@nongnu.org; Fri, 09 May 2025 12:02:01 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-5fc5bc05f99so4008029a12.3
- for <qemu-devel@nongnu.org>; Fri, 09 May 2025 09:01:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1746806518; x=1747411318; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vaX0uy9IjfHygrfN5w330lKGejmUbRLIU5zry6e12xE=;
- b=ZUdWxAPgH28RnVv01Gl3FmFJ36ESrKFgJQxqWLZ7Uj3Bmmfz4znrT+oKmikmwknVl6
- c6MUeY4aE49AHpXWvG0DzjX+4Gc0m42QQfw5uQwS30CaUuyy5Una/s74drjhXDNku1/T
- 2MRjLVIdyHPhU0vh2EKbcJKzhjyX1fNjLdQztQyllGqbyYTWoVR4JG8rO4UE2M8x9udc
- avN1AIWcUOOpCAM/k4K+PDdSC5KUAHKAcF1h7Q/NwD7jh9FvBYVwSeBxXbnX2DsN4qpU
- UtaxlYG5G55G0Gg0Uo+YjU3LuODJWYJqkS1HAknOCX9nuk57ws+6YSr/dAQsXrgxG6WM
- 26rw==
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1uDQD5-0006CD-6s
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 12:04:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1uDQCz-0004Xl-Cw
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 12:04:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1746806660;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=T9SGTty9vioSZ28fB68+a+8ZO7FqN4j+nQiW9zGlb68=;
+ b=ad5kkB4KMIAsGVx71rn6vhE7F2OfbEQkahAZdL8JSQ31P/i58RwW/crQZx4rHh5GRJPWs5
+ J4SVzq2KLsbZzXGt/7+1TBDJ35v7xU/FniI9139WVyLfzkjvGjA5rwINV2/A2XlxiE2NF/
+ Zq9rkY1lNqJZO/9YNmGoj59rSUDrWB4=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-119-H4lHrAhAOK6vNF3BZblFRQ-1; Fri, 09 May 2025 12:04:17 -0400
+X-MC-Unique: H4lHrAhAOK6vNF3BZblFRQ-1
+X-Mimecast-MFC-AGG-ID: H4lHrAhAOK6vNF3BZblFRQ_1746806657
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3a0b7c8b3e2so1469546f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 09 May 2025 09:04:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746806518; x=1747411318;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1746806656; x=1747411456;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vaX0uy9IjfHygrfN5w330lKGejmUbRLIU5zry6e12xE=;
- b=fZh4+p7u6rlH/udTUywVpHp8hXsN3I6CAJDBAy3smeVwSjKy18l79kZsxC5681Gf9a
- mrKPZhDmEhrJF6kDgPSHW1Af11TfY10AVafCic5iV3CAYsn8Ux4Pihn5uygC80pVStvm
- dBveKXcCM4ROd2NbJw8Atk7ki1BuhRv9mh1Rppl4cTgK8+VUHR9qOrSkqexDgIziLiYM
- qdxh7uV/uWq5kEl3bBLKY1W2Ws+Wr4k+PMRNCEOmiZYP0khpDv7nTtnuQxwNTJBRdnHo
- VLyrR5/SkpnAK7zVWH/tAkzVafoA1Y0UaB6LpLFYh2qB/E/p1XKo+u2Ew9cyeTJmoWC5
- yvtg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXagAB2nqXNdqq9U6YP7RWgDEJvlbOOaV5hb2MYI+xLtm5q9sNmHXnqGROoJ4YS9Txp+5BGzydVpqQR@nongnu.org
-X-Gm-Message-State: AOJu0YxInqNcm7oddC3hWE8iCiKCzbwbtVX1vYkLtwN4kNVb3IN7Fs/P
- 6sxzhSQ4Eyal+rZcAXXyENv/yD4XCNG0U+4d6BDtM4I9g8wK07TGE66dMr6s8M8WxHBHbCdJwvd
- Os6iuQnNM76Vdxu4m2A2VkUQktpxjLwkX
-X-Gm-Gg: ASbGncs4Ivyaaaj/Pll8+ui49dXkxmZiN152AN92R7NtWqw2pZFCCWdttXrUNsEyxjU
- pmmyGc74ELiOWJWLjLYjf12mFoho1feF8OlIB7MXtZHQbYSdBYv18v2UThQyPBPRuo5pqdlK3IE
- J51K+U+PWX2G66NWust4wa
-X-Google-Smtp-Source: AGHT+IFfxQszHP8CGHa/B6Fv4dM05WpMvqS/wi3tEOQqTlSwWwREGGYN0rweYtkb0n2oYtCQ5Nf2Q45zzRL728elI2Y=
-X-Received: by 2002:a05:6402:34c6:b0:5fb:9f73:d0dd with SMTP id
- 4fb4d7f45d1cf-5fca07708b2mr3471335a12.15.1746806516917; Fri, 09 May 2025
- 09:01:56 -0700 (PDT)
+ bh=T9SGTty9vioSZ28fB68+a+8ZO7FqN4j+nQiW9zGlb68=;
+ b=sqF78Pn7cSlExeubz7S8fKGP1NrESOI/BRpuJ6pn7YbR9hplKUSkEQIytTJErNZI/K
+ lU0XQnXEIERTDkQgLRTjd5SQfDyX5pVbAuwl648nxqns6YllLcxr2wJ8m/FtjfaRZ1nb
+ Gzy2C5N9iDS07+MPz+OPIv33MjsAtE7UUBzN5P1+Q9FHEGF3zVB99Olhqz1tdewwu1kJ
+ 4bslNhlxi1V4MX3dxRou8bLcYuGT4TZRyZmkI3J3CfvWPNc80yc3fEtKEpLJ9SbeERY+
+ lERK5QYiLGf+1/CZy6dhqqYyKbECd8mVYE40F6cSwjOo1muRl93xzeeCraNXPcRkUqnX
+ 2u2A==
+X-Gm-Message-State: AOJu0YyQsHCIaSV1vFRGnrIM6YgLPAqLJf9Au3xn7wK0Ec+Uxs7u9/Su
+ Q2NmgWf1XqvoHCQgUJYsH1AQt7erSBXZDHEEFd9trg6AgmafvPjXgE7bc+mMwcsQ5HhY8myzHcc
+ Vw1uwlH9Y05dgD90YBuQF41vxe1XztpIUYYMetrIPOuxueRz81S1C
+X-Gm-Gg: ASbGncv47THHWf1ewSAAJvAMw1FOKUKbfa769gWtZvO6nlfjIuZlHivFKwU0EbO3FW7
+ k6/U0gaHOiCZ97bVFGNxiLg/LlJrTCTqdUehf47Yww1e9Op+lPjsVZ4r/ZOqsrQnmMVxAe8LLA5
+ CaRrVkUMiOormNY0uIa4Nyw+XsoVyGn5MAKlDulEIszR7fwyyDq57Bnsb9f5vHJIGpdKwBC2664
+ GNrfDpJzQ61TfZ0zxpwhHzsZTBZg9tmfdVeqvb0HP7oeupZtgmhHIt2lMMTj+BTNmPfMIEqwP8R
+ dySPJ26ujFP9zXq4YLKY/0IAMctJXkm4
+X-Received: by 2002:a05:6000:3113:b0:39c:1f0e:95af with SMTP id
+ ffacd0b85a97d-3a1f64279d3mr3602036f8f.3.1746806656259; 
+ Fri, 09 May 2025 09:04:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG6cQYF6EWJWz+6FcQdM7QsRdpFYn7ZHkZ4Tmns/dMEuuVwt/TrFHlK5zhhQj3FktvxJlzsog==
+X-Received: by 2002:a05:6000:3113:b0:39c:1f0e:95af with SMTP id
+ ffacd0b85a97d-3a1f64279d3mr3601929f8f.3.1746806655504; 
+ Fri, 09 May 2025 09:04:15 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com ([85.93.96.130])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a1f5a2d2d3sm3674769f8f.63.2025.05.09.09.04.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 09 May 2025 09:04:15 -0700 (PDT)
+Date: Fri, 9 May 2025 18:04:11 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ kvm@vger.kernel.org, Sergio Lopez <slp@redhat.com>, Gerd Hoffmann
+ <kraxel@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, Laurent
+ Vivier <lvivier@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, Yi Liu
+ <yi.l.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>, Eduardo
+ Habkost <eduardo@habkost.net>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, Marcelo Tosatti
+ <mtosatti@redhat.com>, qemu-riscv@nongnu.org, Weiwei Li
+ <liwei1518@gmail.com>, Amit Shah <amit@kernel.org>, Zhao Liu
+ <zhao1.liu@intel.com>, Yanan Wang <wangyanan55@huawei.com>, Helge Deller
+ <deller@gmx.de>, Palmer Dabbelt <palmer@dabbelt.com>, Ani Sinha
+ <anisinha@redhat.com>, Fabiano Rosas <farosas@suse.de>, Paolo Bonzini
+ <pbonzini@redhat.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ =?UTF-8?B?Q2zDqW1lbnQ=?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
+ qemu-arm@nongnu.org, =?UTF-8?B?TWFyYy1BbmRyw6k=?= Lureau
+ <marcandre.lureau@redhat.com>, Huacai Chen <chenhuacai@kernel.org>, Jason
+ Wang <jasowang@redhat.com>, Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v4 10/27] hw/i386/pc: Remove linuxboot.bin
+Message-ID: <20250509180411.10f6e683@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20250508133550.81391-11-philmd@linaro.org>
+References: <20250508133550.81391-1-philmd@linaro.org>
+ <20250508133550.81391-11-philmd@linaro.org>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20250508155439.512349-1-pbonzini@redhat.com>
- <20250509141302.GA82958@fedora>
- <CABgObfYUdYHg0ZJXCwjTvjxUK4gDXaE3-S0uvSMye4AcNn5GEA@mail.gmail.com>
-In-Reply-To: <CABgObfYUdYHg0ZJXCwjTvjxUK4gDXaE3-S0uvSMye4AcNn5GEA@mail.gmail.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Fri, 9 May 2025 12:01:45 -0400
-X-Gm-Features: AX0GCFvXLqfLi2R7YxXZfXsVQLx9Ck11xIBsuHipTOlNw81zwGW-TYxMvFw8uyc
-Message-ID: <CAJSP0QX+DvmErwsBp3PYhzBXtDr6K93uv4afx9PoAxx+xyw8+A@mail.gmail.com>
-Subject: Re: [PULL v2, part1 00/15] Rust changes for 2025-05-06
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel <qemu-devel@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=stefanha@gmail.com; helo=mail-ed1-x52b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.413,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ LOTS_OF_MONEY=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,22 +125,274 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 9, 2025 at 10:55=E2=80=AFAM Paolo Bonzini <pbonzini@redhat.com>=
- wrote:
-> Il ven 9 mag 2025, 16:13 Stefan Hajnoczi <stefanha@redhat.com> ha scritto=
-:
->>
->> Hi Paolo,
->> v1 is already merged. I'm not sure what the purpose of v2 is. It looks
->> like you dropped the wasm patches but the reason is unclear to me?
->
->
-> Sorry about the confusion, I sent this before I found a reproducer for th=
-e bug (as a kind of "bisection").
->
-> You can drop this.
+On Thu,  8 May 2025 15:35:33 +0200
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> wrote:
 
-Good. Thanks!
+> All PC machines now use the linuxboot_dma.bin binary,
+> we can remove the non-DMA version (linuxboot.bin).
+>=20
+> Suggested-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  hw/i386/pc.c                  |   3 +-
 
-Stefan
+
+linuxboot.bin is referenced in a few more files:
+
+hw/i386/x86-common.c:    option_rom[nb_option_roms].name =3D "linuxboot.bin=
+";
+hw/nvram/fw_cfg.c:    { "genroms/linuxboot.bin", 60 },
+
+are you sure we should keep it there?
+
+>  pc-bios/meson.build           |   1 -
+>  pc-bios/optionrom/Makefile    |   2 +-
+>  pc-bios/optionrom/linuxboot.S | 195 ----------------------------------
+>  4 files changed, 2 insertions(+), 199 deletions(-)
+>  delete mode 100644 pc-bios/optionrom/linuxboot.S
+>=20
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index 524d2fd98e8..4e6fe68e2e0 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -654,8 +654,7 @@ void xen_load_linux(PCMachineState *pcms)
+> =20
+>      x86_load_linux(x86ms, fw_cfg, PC_FW_DATA, pcmc->pvh_enabled);
+>      for (i =3D 0; i < nb_option_roms; i++) {
+> -        assert(!strcmp(option_rom[i].name, "linuxboot.bin") ||
+> -               !strcmp(option_rom[i].name, "linuxboot_dma.bin") ||
+> +        assert(!strcmp(option_rom[i].name, "linuxboot_dma.bin") ||
+>                 !strcmp(option_rom[i].name, "pvh.bin") ||
+>                 !strcmp(option_rom[i].name, "multiboot_dma.bin"));
+>          rom_add_option(option_rom[i].name, option_rom[i].bootindex);
+> diff --git a/pc-bios/meson.build b/pc-bios/meson.build
+> index f2d4dc416a4..39a7fea332e 100644
+> --- a/pc-bios/meson.build
+> +++ b/pc-bios/meson.build
+> @@ -63,7 +63,6 @@ blobs =3D [
+>    'efi-vmxnet3.rom',
+>    'qemu-nsis.bmp',
+>    'multiboot_dma.bin',
+> -  'linuxboot.bin',
+>    'linuxboot_dma.bin',
+>    'kvmvapic.bin',
+>    'pvh.bin',
+> diff --git a/pc-bios/optionrom/Makefile b/pc-bios/optionrom/Makefile
+> index 1183ef88922..e694c7aac00 100644
+> --- a/pc-bios/optionrom/Makefile
+> +++ b/pc-bios/optionrom/Makefile
+> @@ -2,7 +2,7 @@ include config.mak
+>  SRC_DIR :=3D $(TOPSRC_DIR)/pc-bios/optionrom
+>  VPATH =3D $(SRC_DIR)
+> =20
+> -all: multiboot_dma.bin linuxboot.bin linuxboot_dma.bin kvmvapic.bin pvh.=
+bin
+> +all: multiboot_dma.bin linuxboot_dma.bin kvmvapic.bin pvh.bin
+>  # Dummy command so that make thinks it has done something
+>  	@true
+> =20
+> diff --git a/pc-bios/optionrom/linuxboot.S b/pc-bios/optionrom/linuxboot.S
+> deleted file mode 100644
+> index ba821ab922d..00000000000
+> --- a/pc-bios/optionrom/linuxboot.S
+> +++ /dev/null
+> @@ -1,195 +0,0 @@
+> -/*
+> - * Linux Boot Option ROM
+> - *
+> - * This program is free software; you can redistribute it and/or modify
+> - * it under the terms of the GNU General Public License as published by
+> - * the Free Software Foundation; either version 2 of the License, or
+> - * (at your option) any later version.
+> - *
+> - * This program is distributed in the hope that it will be useful,
+> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+> - * GNU General Public License for more details.
+> - *
+> - * You should have received a copy of the GNU General Public License
+> - * along with this program; if not, see <http://www.gnu.org/licenses/>.
+> - *
+> - * Copyright Novell Inc, 2009
+> - *   Authors: Alexander Graf <agraf@suse.de>
+> - *
+> - * Based on code in hw/pc.c.
+> - */
+> -
+> -#include "optionrom.h"
+> -
+> -#define BOOT_ROM_PRODUCT "Linux loader"
+> -
+> -BOOT_ROM_START
+> -
+> -run_linuxboot:
+> -
+> -	cli
+> -	cld
+> -
+> -	jmp		copy_kernel
+> -boot_kernel:
+> -
+> -	read_fw		FW_CFG_SETUP_ADDR
+> -
+> -	mov		%eax, %ebx
+> -	shr		$4, %ebx
+> -
+> -	/* All segments contain real_addr */
+> -	mov		%bx, %ds
+> -	mov		%bx, %es
+> -	mov		%bx, %fs
+> -	mov		%bx, %gs
+> -	mov		%bx, %ss
+> -
+> -	/* CX =3D CS we want to jump to */
+> -	add		$0x20, %bx
+> -	mov		%bx, %cx
+> -
+> -	/* SP =3D cmdline_addr-real_addr-16 */
+> -	read_fw		FW_CFG_CMDLINE_ADDR
+> -	mov		%eax, %ebx
+> -	read_fw		FW_CFG_SETUP_ADDR
+> -	sub		%eax, %ebx
+> -	sub		$16, %ebx
+> -	mov		%ebx, %esp
+> -
+> -	/* Build indirect lret descriptor */
+> -	pushw		%cx		/* CS */
+> -	xor		%ax, %ax
+> -	pushw		%ax		/* IP =3D 0 */
+> -
+> -	/* Clear registers */
+> -	xor		%eax, %eax
+> -	xor		%ebx, %ebx
+> -	xor		%ecx, %ecx
+> -	xor		%edx, %edx
+> -	xor		%edi, %edi
+> -	xor		%ebp, %ebp
+> -
+> -	/* Jump to Linux */
+> -	lret
+> -
+> -
+> -copy_kernel:
+> -	/* Read info block in low memory (0x10000 or 0x90000) */
+> -	read_fw		FW_CFG_SETUP_ADDR
+> -	shr		$4, %eax
+> -	mov		%eax, %es
+> -	xor		%edi, %edi
+> -	read_fw_blob_addr32_edi(FW_CFG_SETUP)
+> -
+> -	cmpw            $0x203, %es:0x206      // if protocol >=3D 0x203
+> -	jae             1f                     // have initrd_max
+> -	movl            $0x37ffffff, %es:0x22c // else assume 0x37ffffff
+> -1:
+> -
+> -	/* Check if using kernel-specified initrd address */
+> -	read_fw		FW_CFG_INITRD_ADDR
+> -	mov		%eax, %edi             // (load_kernel wants it in %edi)
+> -	read_fw		FW_CFG_INITRD_SIZE     // find end of initrd
+> -	add		%edi, %eax
+> -	xor		%es:0x22c, %eax        // if it matches es:0x22c
+> -	and		$-4096, %eax           // (apart from padding for page)
+> -	jz		load_kernel            // then initrd is not at top
+> -					       // of memory
+> -
+> -	/* pc.c placed the initrd at end of memory.  Compute a better
+> -	 * initrd address based on e801 data.
+> -	 */
+> -	mov		$0xe801, %ax
+> -	xor		%cx, %cx
+> -	xor		%dx, %dx
+> -	int		$0x15
+> -
+> -	/* Output could be in AX/BX or CX/DX */
+> -	or		%cx, %cx
+> -	jnz		1f
+> -	or		%dx, %dx
+> -	jnz		1f
+> -	mov		%ax, %cx
+> -	mov		%bx, %dx
+> -1:
+> -
+> -	or		%dx, %dx
+> -	jnz		2f
+> -	addw		$1024, %cx            /* add 1 MB */
+> -	movzwl		%cx, %edi
+> -	shll		$10, %edi             /* convert to bytes */
+> -	jmp		3f
+> -
+> -2:
+> -	addw		$16777216 >> 16, %dx  /* add 16 MB */
+> -	movzwl		%dx, %edi
+> -	shll		$16, %edi             /* convert to bytes */
+> -
+> -3:
+> -	read_fw         FW_CFG_INITRD_SIZE
+> -	subl            %eax, %edi
+> -	andl            $-4096, %edi          /* EDI =3D start of initrd */
+> -	movl		%edi, %es:0x218       /* put it in the header */
+> -
+> -load_kernel:
+> -	/* We need to load the kernel into memory we can't access in 16 bit
+> -	   mode, so let's get into 32 bit mode, write the kernel and jump
+> -	   back again. */
+> -
+> -	/* Reserve space on the stack for our GDT descriptor. */
+> -	mov             %esp, %ebp
+> -	sub             $16, %esp
+> -
+> -	/* Now create the GDT descriptor */
+> -	movw		$((3 * 8) - 1), -16(%bp)
+> -	mov		%cs, %eax
+> -	movzwl		%ax, %eax
+> -	shl		$4, %eax
+> -	addl		$gdt, %eax
+> -	movl		%eax, -14(%bp)
+> -
+> -	/* And load the GDT */
+> -	data32 lgdt	-16(%bp)
+> -	mov		%ebp, %esp
+> -
+> -	/* Get us to protected mode now */
+> -	mov		$1, %eax
+> -	mov		%eax, %cr0
+> -
+> -	/* So we can set ES to a 32-bit segment */
+> -	mov		$0x10, %eax
+> -	mov		%eax, %es
+> -
+> -	/* We're now running in 16-bit CS, but 32-bit ES! */
+> -
+> -	/* Load kernel and initrd */
+> -	read_fw_blob_addr32_edi(FW_CFG_INITRD)
+> -	read_fw_blob_addr32(FW_CFG_KERNEL)
+> -	read_fw_blob_addr32(FW_CFG_CMDLINE)
+> -
+> -	/* And now jump into Linux! */
+> -	mov		$0, %eax
+> -	mov		%eax, %cr0
+> -
+> -	/* ES =3D CS */
+> -	mov		%cs, %ax
+> -	mov		%ax, %es
+> -
+> -	jmp		boot_kernel
+> -
+> -/* Variables */
+> -
+> -.align 4, 0
+> -gdt:
+> -	/* 0x00 */
+> -.byte	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+> -
+> -	/* 0x08: code segment (base=3D0, limit=3D0xfffff, type=3D32bit code exe=
+c/read, DPL=3D0, 4k) */
+> -.byte	0xff, 0xff, 0x00, 0x00, 0x00, 0x9a, 0xcf, 0x00
+> -
+> -	/* 0x10: data segment (base=3D0, limit=3D0xfffff, type=3D32bit data rea=
+d/write, DPL=3D0, 4k) */
+> -.byte	0xff, 0xff, 0x00, 0x00, 0x00, 0x92, 0xcf, 0x00
+> -
+> -BOOT_ROM_END
+
 
