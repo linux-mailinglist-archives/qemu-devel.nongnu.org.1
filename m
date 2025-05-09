@@ -2,67 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9FD2AB1EC6
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 23:16:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DB02AB1ED7
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 23:19:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDV3R-0002bt-B8; Fri, 09 May 2025 17:14:49 -0400
+	id 1uDV74-0004s6-In; Fri, 09 May 2025 17:18:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Marco.Cavenati@eurecom.fr>)
- id 1uDV3O-0002ZJ-Oe
- for qemu-devel@nongnu.org; Fri, 09 May 2025 17:14:46 -0400
-Received: from smtp.eurecom.fr ([193.55.113.210])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Marco.Cavenati@eurecom.fr>)
- id 1uDV3M-0003iU-GE
- for qemu-devel@nongnu.org; Fri, 09 May 2025 17:14:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=eurecom.fr; i=@eurecom.fr; q=dns/txt; s=default;
- t=1746825284; x=1778361284;
- h=from:in-reply-to:references:date:cc:to:mime-version:
- message-id:subject:content-transfer-encoding;
- bh=iQqRefYE6NZz7OjOZAjgKaOjIhd4yg593OcmbVd26KM=;
- b=XZTfWvtuOAGwvscmt/t2VXkIh66DQg/1OnP6ppYCc944NDF9CGkH5QZS
- WyOXKkP97n/Pek6ldE/IaP5z0msoZmuqN3nrOc0p9fXH+bmDHQ0vEYVi2
- 15pW3AdIsjxWe9Trdkq/BoPQefd56bqDLXaCCGER8F2A/dMIBkDz5Gd44 U=;
-X-CSE-ConnectionGUID: GrPdYT9+Ql2Tkp4jYLOhGA==
-X-CSE-MsgGUID: 3wUeaCccRDW/rfQyuCGF9Q==
-X-IronPort-AV: E=Sophos;i="6.15,276,1739833200"; 
-   d="scan'208";a="1247564"
-Received: from quovadis.eurecom.fr ([10.3.2.233])
- by drago1i.eurecom.fr with ESMTP; 09 May 2025 23:14:41 +0200
-From: "Marco Cavenati" <Marco.Cavenati@eurecom.fr>
-In-Reply-To: <aB4rhlVGCSk7IwoE@x1.local>
-Content-Type: text/plain; charset="utf-8"
-X-Forward: 80.215.234.36
-References: <87jz7rhjzq.fsf@suse.de> <4caa0-67f8d780-a89-60718600@156698708>
- <87ecxyhon3.fsf@suse.de> <7cd3c-67fe3180-3d9-10622a60@195384178>
- <87plhdfs9o.fsf@suse.de> <7cd3c-6800c580-4b5-10622a60@195456151>
- <871ptqg6u9.fsf@suse.de> <151d8c-680a4080-15-6f9ea10@196998929>
- <aB0Swile4IjxTUsd@x1.local>
- <193e5a-681dfa80-3af-701c0f80@227192887> <aB4rhlVGCSk7IwoE@x1.local>
-Date: Fri, 09 May 2025 23:14:41 +0200
-Cc: "Fabiano Rosas" <farosas@suse.de>, qemu-devel@nongnu.org,
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- "Prasad Pandit" <ppandit@redhat.com>
-To: "Peter Xu" <peterx@redhat.com>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uDV70-0004rS-S1
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 17:18:30 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uDV6y-0004Jv-Rm
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 17:18:30 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 5AAC62117D
+ for <qemu-devel@nongnu.org>; Fri,  9 May 2025 21:18:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1746825505; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=yDAgfpoOgY9w8u6REk7l88gsk9cb05562YbJb1Hi3uo=;
+ b=z/lE1bYIAkxqpOmgkrCwDjzicoQ84lFHVMPApHi5LFoW+pJa0AsCubppTp7zO+NQELd3me
+ cB6s2W0OPeSEIo3z9RoU7tft+dn2Tn567tne1iaHmiGr4R7JPZTGK0U3U2zKTUM9qXZmM+
+ a+HUn57CRaIegOJ6ynVr9RCbRNn1Si4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1746825505;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=yDAgfpoOgY9w8u6REk7l88gsk9cb05562YbJb1Hi3uo=;
+ b=SKn7nEe84Rfdqmf6xdU2IyPEP7JtTmsF5J7rWTyq1O2F4RQuVaOvyt+9j+2DH4/l8IhQod
+ HaVcn0b+14VPJFDg==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1746825505; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=yDAgfpoOgY9w8u6REk7l88gsk9cb05562YbJb1Hi3uo=;
+ b=z/lE1bYIAkxqpOmgkrCwDjzicoQ84lFHVMPApHi5LFoW+pJa0AsCubppTp7zO+NQELd3me
+ cB6s2W0OPeSEIo3z9RoU7tft+dn2Tn567tne1iaHmiGr4R7JPZTGK0U3U2zKTUM9qXZmM+
+ a+HUn57CRaIegOJ6ynVr9RCbRNn1Si4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1746825505;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=yDAgfpoOgY9w8u6REk7l88gsk9cb05562YbJb1Hi3uo=;
+ b=SKn7nEe84Rfdqmf6xdU2IyPEP7JtTmsF5J7rWTyq1O2F4RQuVaOvyt+9j+2DH4/l8IhQod
+ HaVcn0b+14VPJFDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7808713931
+ for <qemu-devel@nongnu.org>; Fri,  9 May 2025 21:18:24 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id KgIFDSBxHmjkNwAAD6G6ig
+ (envelope-from <farosas@suse.de>)
+ for <qemu-devel@nongnu.org>; Fri, 09 May 2025 21:18:24 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Subject: [PULL 0/3] QTest patches for 2025-05-09
+Date: Fri,  9 May 2025 18:18:18 -0300
+Message-Id: <20250509211821.23684-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Message-ID: <1b54a0-681e7080-273-3299e580@146025174>
-Subject: =?utf-8?q?Re=3A?= [PATCH] =?utf-8?q?migration=3A?= add 
- =?utf-8?q?FEATURE=5FSEEKABLE?= to QIOChannelBlock
-User-Agent: SOGoMail 5.12.0
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=193.55.113.210;
- envelope-from=Marco.Cavenati@eurecom.fr; helo=smtp.eurecom.fr
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-3.30 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ RCVD_TLS_ALL(0.00)[]; ARC_NA(0.00)[]; RCPT_COUNT_ONE(0.00)[1];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; MIME_TRACE(0.00)[0:+];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ PREVIOUSLY_DELIVERED(0.00)[qemu-devel@nongnu.org];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_COUNT_TWO(0.00)[2];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; TO_DN_NONE(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid]
+X-Spam-Score: -3.30
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,89 +110,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Friday, May 09, 2025 18:21 CEST, Peter Xu <peterx@redhat.com> wrote:
-=20
-> So you don't really need to take sequence of snapshots?  Hmm, that so=
-unds
-> like a completely different use case that I originally thought.
+The following changes since commit 4b1f5b73e060971c434e70694d571adfee553027:
 
-Correct
+  tests/functional: Use -no-shutdown in the hppa_seabios test (2025-05-08 15:38:40 -0400)
 
-> Have you thought of leveraging ignore-shared and MAP=5FPRIVATE for th=
-e major
-> chunk of guest mem?
->=20
-> Let me explain; it's a very rough idea, but maybe you can collect som=
-ething
-> useful.
->=20
-> So.. if you keep reloading one VM state thousands of times, it's bett=
-er
-> first that you have some shmem file (let's imagine that's enough.. yo=
-u
-> could have more backends) keeping the major chunk of the VM RAM image=
- that
-> you migrated before into a file.
->=20
-> Say, the major part of guest mem is stored here:
->=20
->   PATH=5FRAM=3D/dev/shm/XXX
->=20
-> Then you migrate (with ignore-shared=3Don) to a file here (NOTE: I =5F=
-think=5F
-> you really can use file migration in this case with VM stopped first,=
- not
-> snapshot save/load):
->=20
->   PATH=5FVM=5FIMAGE=3D/tmp/VM=5FIMAGE=5FYYY
->=20
-> Then, the two files above should contain all info you need to start a=
- new
-> VM.
->=20
-> When you want to recover that VM state, boot a VM using this cmdline:
->=20
->   $qemu ... \
->   -object memory-backend-file,mem-path=3D$PATH=5FRAM,share=3Doff
->   -incoming file:$PATH=5FVM=5FIMAGE
->=20
-> That'll boot a VM, directly loading the shmem page cache (always pres=
-ent on
-> the host, occupying RAM, though, outside of VM lifecycle, but it's pa=
-rt of
-> the design..), loading VM image would be lightning fast because it's =
-tiny
-> when there's almost no RAM inside.  No concern on mapped-ram at all a=
-s the
-> rest RAMs are too trivial to just be a stream.
->=20
-> The important bit is share=3Doff - that will mmap() the VM major RAM =
-as
-> MAP=5FPRIVATE, then it'll do CoW on the "snapshot" you made before, w=
-henever
-> you writes to some guest pages during fuzzing some functions, it copi=
-es the
-> shmem page cache over.  shmem page cache should never change its cont=
-ent.
->=20
-> Sounds working to you?
+are available in the Git repository at:
 
-I didn't know much about these options, cool, thanks for the explanatio=
-n.
+  https://gitlab.com/farosas/qemu.git tags/qtest-20250509-pull-request
 
-My only concern is that I'd have to restart the QEMU process for each i=
-teration.
-Honestly I've never measured the impact it would have but I fear that i=
-t would=20
-be noticeable since the goal is to restore many times a second. What do=
- you
-think?
-(Also, snapshots conveniently take care of the disk as well, but this s=
-houldn't=20
-be too big of a deal.)
+for you to fetch changes up to 98008aa41b93b2477782205dcbd9ce5978f26a7e:
 
-Thanks,
-Best
-Marco
+  tests/qtest/cpu-plug-test: Add cpu hotplug support for LoongArch (2025-05-09 16:14:31 -0300)
+
+----------------------------------------------------------------
+Qtest pull request
+
+- Fix migration-test invocation of qtest_init
+- Simplify byte-swapping for virtio in libqos
+- New cpu hotplug test for loongarch64
+
+----------------------------------------------------------------
+
+Bibo Mao (1):
+  tests/qtest/cpu-plug-test: Add cpu hotplug support for LoongArch
+
+Thomas Huth (1):
+  tests/qtest/libqos: Avoid double swapping when using modern virtio
+
+Vladimir Sementsov-Ogievskiy (1):
+  qtest: introduce qtest_init_ext
+
+ tests/qtest/cpu-plug-test.c       | 24 +++++++++++++++++
+ tests/qtest/libqos/virtio.c       | 44 ++++++++++++++++++++-----------
+ tests/qtest/libqtest.c            | 18 ++++---------
+ tests/qtest/libqtest.h            | 30 +++++----------------
+ tests/qtest/meson.build           |  3 ++-
+ tests/qtest/migration/framework.c |  7 +++--
+ 6 files changed, 70 insertions(+), 56 deletions(-)
+
+-- 
+2.35.3
 
 
