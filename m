@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 342D9AB125E
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 13:39:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EE40AB1260
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 13:40:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDM3n-0003jX-3z; Fri, 09 May 2025 07:38:35 -0400
+	id 1uDM59-00059V-8W; Fri, 09 May 2025 07:39:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uDM3i-0003dW-9y
- for qemu-devel@nongnu.org; Fri, 09 May 2025 07:38:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uDM50-00052I-A3
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 07:39:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uDM3e-0004Zn-7E
- for qemu-devel@nongnu.org; Fri, 09 May 2025 07:38:28 -0400
+ id 1uDM4w-0004eW-FF
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 07:39:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746790701;
+ s=mimecast20190719; t=1746790784;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RtMeqUsFa2tN6I7M5z4Vk+JxQJ5sgjmGCcCNUBh3Www=;
- b=LiGBrfzjG2mxsXZw05HkpY4r6/+nHLBE4Zq/ieJw2Am07hk1gO5NA74dp/Wjx6FX2hW8Hs
- ts+P5/cvN8127aBBgCiG6r1lTNrq/GfceY+hqJGbKsIKpyTPcNl6nqV5C8zjQqbFvQvGW3
- B/gQj3P0oynm4DErRRx/ndKQ0ZBiR6I=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ bh=pbeJ/CkD2Bk//7iyzzJgO5EifrhiF6Er2da8PxWgeEo=;
+ b=COCOuamO4nXqfGqnMfmt0wQKutyghrYhipYH+cCM7UM9hX5Sb54rccvhQ9Yu9oLliG/Gb7
+ ky7VFVL5m0VApXEsAyolUCwvKFST4T22S5OX7s2G66f80t6VA33OAsqUJNa+uiJuaLvgvr
+ LzWQDEDdM4yNtkQyJSEu46d/U7nBjOg=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-655-ig8wMUdsNoOIG2Fl3I3ryA-1; Fri,
- 09 May 2025 07:38:20 -0400
-X-MC-Unique: ig8wMUdsNoOIG2Fl3I3ryA-1
-X-Mimecast-MFC-AGG-ID: ig8wMUdsNoOIG2Fl3I3ryA_1746790699
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-80-_5Xh_nWNMCCG4wtESEx3Kw-1; Fri,
+ 09 May 2025 07:39:43 -0400
+X-MC-Unique: _5Xh_nWNMCCG4wtESEx3Kw-1
+X-Mimecast-MFC-AGG-ID: _5Xh_nWNMCCG4wtESEx3Kw_1746790782
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A46CD1955DE8
- for <qemu-devel@nongnu.org>; Fri,  9 May 2025 11:38:19 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 7A3FA195608C
+ for <qemu-devel@nongnu.org>; Fri,  9 May 2025 11:39:42 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.100])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E2BF31956058; Fri,  9 May 2025 11:38:17 +0000 (UTC)
-Date: Fri, 9 May 2025 12:38:13 +0100
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C21C91955F24; Fri,  9 May 2025 11:39:40 +0000 (UTC)
+Date: Fri, 9 May 2025 12:39:36 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: marcandre.lureau@redhat.com
 Cc: qemu-devel@nongnu.org, kraxel@redhat.com
-Subject: Re: [PATCH for-10.1 09/10] ui/vdagent: add migration support
-Message-ID: <aB3pJXHoHsJz2p5Y@redhat.com>
+Subject: Re: [PATCH for-10.1 10/10] ui/vdagent: remove migration blocker
+Message-ID: <aB3peAtHwFRX3lC2@redhat.com>
 References: <20250311155932.1472092-1-marcandre.lureau@redhat.com>
- <20250311155932.1472092-10-marcandre.lureau@redhat.com>
+ <20250311155932.1472092-11-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250311155932.1472092-10-marcandre.lureau@redhat.com>
+In-Reply-To: <20250311155932.1472092-11-marcandre.lureau@redhat.com>
 User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -34
 X-Spam_score: -3.5
@@ -88,80 +88,14 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Mar 11, 2025 at 07:59:31PM +0400, marcandre.lureau@redhat.com wrote:
+On Tue, Mar 11, 2025 at 07:59:32PM +0400, marcandre.lureau@redhat.com wrote:
 > From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
+> Fixes: https://issues.redhat.com/browse/RHEL-81894
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->  ui/vdagent.c | 139 +++++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 139 insertions(+)
-> 
-> diff --git a/ui/vdagent.c b/ui/vdagent.c
-> index 125c659af7..cc5738a6ea 100644
-> --- a/ui/vdagent.c
-> +++ b/ui/vdagent.c
-> @@ -10,6 +10,7 @@
->  #include "ui/clipboard.h"
->  #include "ui/console.h"
->  #include "ui/input.h"
-> +#include "migration/vmstate.h"
->  #include "trace.h"
-
-
-> +static int put_cbinfo(QEMUFile *f, void *pv, size_t size,
-> +                      const VMStateField *field, JSONWriter *vmdesc)
-> +{
-> +    VDAgentChardev *vd = QEMU_VDAGENT_CHARDEV(pv);
-> +    struct CBInfoArray cbinfo = { 0, };
-
-Just ' = {}' should be sufficient to initialize all fields.
-
-> +    int i;
-> +
-> +    if (!have_clipboard(vd)) {
-> +        return 0;
-> +    }
-> +
-> +    for (i = 0; i < QEMU_CLIPBOARD_SELECTION__COUNT; i++) {
-> +        if (qemu_clipboard_peer_owns(&vd->cbpeer, i)) {
-> +             cbinfo.cbinfo[cbinfo.n++] = *qemu_clipboard_info(i);
-> +        }
-> +    }
-> +
-> +    return vmstate_save_state(f, &vmstate_cbinfo_array, &cbinfo, vmdesc);
-> +}
-> +
-> +static int get_cbinfo(QEMUFile *f, void *pv, size_t size,
-> +                      const VMStateField *field)
-> +{
-> +    VDAgentChardev *vd = QEMU_VDAGENT_CHARDEV(pv);
-> +    struct CBInfoArray cbinfo = { 0, };
-
-Likewise.
-
-> +    int i, ret;
-> +
-> +    if (!have_clipboard(vd)) {
-> +        return 0;
-> +    }
-> +
-> +    vdagent_clipboard_peer_register(vd);
-> +
-> +    ret = vmstate_load_state(f, &vmstate_cbinfo_array, &cbinfo, 0);
-> +    if (ret) {
-> +        return ret;
-> +    }
-> +
-> +    for (i = 0; i < cbinfo.n; i++) {
-> +        g_autoptr(QemuClipboardInfo) info = qemu_clipboard_info_new(&vd->cbpeer, cbinfo.cbinfo[i].selection);
-> +        /* this will steal clipboard data pointer from cbinfo.types */
-> +        memcpy(info->types, cbinfo.cbinfo[i].types, sizeof(cbinfo.cbinfo[i].types));
-> +        qemu_clipboard_update(info);
-> +    }
-> +
-> +    return 0;
-> +}
-
+>  ui/vdagent.c | 11 -----------
+>  1 file changed, 11 deletions(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
