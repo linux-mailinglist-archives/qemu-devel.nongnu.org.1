@@ -2,44 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 573ABAB1E9A
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 22:58:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9FD2AB1EC6
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 23:16:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDUm8-00077O-9q; Fri, 09 May 2025 16:56:56 -0400
+	id 1uDV3R-0002bt-B8; Fri, 09 May 2025 17:14:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uDUm2-0006yM-Pb; Fri, 09 May 2025 16:56:50 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <Marco.Cavenati@eurecom.fr>)
+ id 1uDV3O-0002ZJ-Oe
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 17:14:46 -0400
+Received: from smtp.eurecom.fr ([193.55.113.210])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uDUlz-00027d-Tc; Fri, 09 May 2025 16:56:49 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 80AFB120673;
- Fri, 09 May 2025 23:56:34 +0300 (MSK)
-Received: from localhost.localdomain (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id F32332081C7;
- Fri,  9 May 2025 23:56:36 +0300 (MSK)
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: Gustavo Romero <gustavo.romero@linaro.org>, qemu-trivial@nongnu.org,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 21/21] docs/devel/testing/functional: Fix typo
-Date: Fri,  9 May 2025 23:56:29 +0300
-Message-Id: <20250509205629.674225-2-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250509205629.674225-1-mjt@tls.msk.ru>
-References: <20250509205629.674225-1-mjt@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <Marco.Cavenati@eurecom.fr>)
+ id 1uDV3M-0003iU-GE
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 17:14:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+ d=eurecom.fr; i=@eurecom.fr; q=dns/txt; s=default;
+ t=1746825284; x=1778361284;
+ h=from:in-reply-to:references:date:cc:to:mime-version:
+ message-id:subject:content-transfer-encoding;
+ bh=iQqRefYE6NZz7OjOZAjgKaOjIhd4yg593OcmbVd26KM=;
+ b=XZTfWvtuOAGwvscmt/t2VXkIh66DQg/1OnP6ppYCc944NDF9CGkH5QZS
+ WyOXKkP97n/Pek6ldE/IaP5z0msoZmuqN3nrOc0p9fXH+bmDHQ0vEYVi2
+ 15pW3AdIsjxWe9Trdkq/BoPQefd56bqDLXaCCGER8F2A/dMIBkDz5Gd44 U=;
+X-CSE-ConnectionGUID: GrPdYT9+Ql2Tkp4jYLOhGA==
+X-CSE-MsgGUID: 3wUeaCccRDW/rfQyuCGF9Q==
+X-IronPort-AV: E=Sophos;i="6.15,276,1739833200"; 
+   d="scan'208";a="1247564"
+Received: from quovadis.eurecom.fr ([10.3.2.233])
+ by drago1i.eurecom.fr with ESMTP; 09 May 2025 23:14:41 +0200
+From: "Marco Cavenati" <Marco.Cavenati@eurecom.fr>
+In-Reply-To: <aB4rhlVGCSk7IwoE@x1.local>
+Content-Type: text/plain; charset="utf-8"
+X-Forward: 80.215.234.36
+References: <87jz7rhjzq.fsf@suse.de> <4caa0-67f8d780-a89-60718600@156698708>
+ <87ecxyhon3.fsf@suse.de> <7cd3c-67fe3180-3d9-10622a60@195384178>
+ <87plhdfs9o.fsf@suse.de> <7cd3c-6800c580-4b5-10622a60@195456151>
+ <871ptqg6u9.fsf@suse.de> <151d8c-680a4080-15-6f9ea10@196998929>
+ <aB0Swile4IjxTUsd@x1.local>
+ <193e5a-681dfa80-3af-701c0f80@227192887> <aB4rhlVGCSk7IwoE@x1.local>
+Date: Fri, 09 May 2025 23:14:41 +0200
+Cc: "Fabiano Rosas" <farosas@suse.de>, qemu-devel@nongnu.org,
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ "Prasad Pandit" <ppandit@redhat.com>
+To: "Peter Xu" <peterx@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+Message-ID: <1b54a0-681e7080-273-3299e580@146025174>
+Subject: =?utf-8?q?Re=3A?= [PATCH] =?utf-8?q?migration=3A?= add 
+ =?utf-8?q?FEATURE=5FSEEKABLE?= to QIOChannelBlock
+User-Agent: SOGoMail 5.12.0
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=193.55.113.210;
+ envelope-from=Marco.Cavenati@eurecom.fr; helo=smtp.eurecom.fr
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -57,32 +78,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gustavo Romero <gustavo.romero@linaro.org>
+On Friday, May 09, 2025 18:21 CEST, Peter Xu <peterx@redhat.com> wrote:
+=20
+> So you don't really need to take sequence of snapshots?  Hmm, that so=
+unds
+> like a completely different use case that I originally thought.
 
-Fix the duplication of the word 'run'.
+Correct
 
-Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
----
- docs/devel/testing/functional.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Have you thought of leveraging ignore-shared and MAP=5FPRIVATE for th=
+e major
+> chunk of guest mem?
+>=20
+> Let me explain; it's a very rough idea, but maybe you can collect som=
+ething
+> useful.
+>=20
+> So.. if you keep reloading one VM state thousands of times, it's bett=
+er
+> first that you have some shmem file (let's imagine that's enough.. yo=
+u
+> could have more backends) keeping the major chunk of the VM RAM image=
+ that
+> you migrated before into a file.
+>=20
+> Say, the major part of guest mem is stored here:
+>=20
+>   PATH=5FRAM=3D/dev/shm/XXX
+>=20
+> Then you migrate (with ignore-shared=3Don) to a file here (NOTE: I =5F=
+think=5F
+> you really can use file migration in this case with VM stopped first,=
+ not
+> snapshot save/load):
+>=20
+>   PATH=5FVM=5FIMAGE=3D/tmp/VM=5FIMAGE=5FYYY
+>=20
+> Then, the two files above should contain all info you need to start a=
+ new
+> VM.
+>=20
+> When you want to recover that VM state, boot a VM using this cmdline:
+>=20
+>   $qemu ... \
+>   -object memory-backend-file,mem-path=3D$PATH=5FRAM,share=3Doff
+>   -incoming file:$PATH=5FVM=5FIMAGE
+>=20
+> That'll boot a VM, directly loading the shmem page cache (always pres=
+ent on
+> the host, occupying RAM, though, outside of VM lifecycle, but it's pa=
+rt of
+> the design..), loading VM image would be lightning fast because it's =
+tiny
+> when there's almost no RAM inside.  No concern on mapped-ram at all a=
+s the
+> rest RAMs are too trivial to just be a stream.
+>=20
+> The important bit is share=3Doff - that will mmap() the VM major RAM =
+as
+> MAP=5FPRIVATE, then it'll do CoW on the "snapshot" you made before, w=
+henever
+> you writes to some guest pages during fuzzing some functions, it copi=
+es the
+> shmem page cache over.  shmem page cache should never change its cont=
+ent.
+>=20
+> Sounds working to you?
 
-diff --git a/docs/devel/testing/functional.rst b/docs/devel/testing/functional.rst
-index 8030cb4299..9e56dd1b11 100644
---- a/docs/devel/testing/functional.rst
-+++ b/docs/devel/testing/functional.rst
-@@ -274,7 +274,7 @@ speed mode in the meson.build file, while the "quick" speed mode is
- fine for functional tests that can be run without downloading files.
- ``make check`` then only runs the quick functional tests along with
- the other quick tests from the other test suites. If you choose to
--run only run ``make check-functional``, the "thorough" tests will be
-+run only ``make check-functional``, the "thorough" tests will be
- executed, too. And to run all functional tests along with the others,
- you can use something like::
- 
--- 
-2.39.5
+I didn't know much about these options, cool, thanks for the explanatio=
+n.
+
+My only concern is that I'd have to restart the QEMU process for each i=
+teration.
+Honestly I've never measured the impact it would have but I fear that i=
+t would=20
+be noticeable since the goal is to restore many times a second. What do=
+ you
+think?
+(Also, snapshots conveniently take care of the disk as well, but this s=
+houldn't=20
+be too big of a deal.)
+
+Thanks,
+Best
+Marco
 
 
