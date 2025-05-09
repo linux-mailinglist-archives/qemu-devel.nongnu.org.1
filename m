@@ -2,54 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 468BEAB14CF
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 15:21:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 893BBAB1492
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 15:14:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDNXx-0001hp-0S; Fri, 09 May 2025 09:13:49 -0400
+	id 1uDNXy-0001j9-FY; Fri, 09 May 2025 09:13:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNXe-0001hC-Qc
- for qemu-devel@nongnu.org; Fri, 09 May 2025 09:13:31 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNXg-0001hJ-RG
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 09:13:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNXc-0006tc-9d
- for qemu-devel@nongnu.org; Fri, 09 May 2025 09:13:30 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNXf-0006uL-5y
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 09:13:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746796405;
+ s=mimecast20190719; t=1746796410;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=CqTRzT3dkKLjY3Tep0+sbwtvInPdUnlQzJjxVXaI74M=;
- b=YyeDO9cpHD1ejwMm9eApwwdGjOtPectNd4DtUxdaXJxsnJ4rUprQMTdZkM2bzRpYSDynkf
- zy401CHq4PgcArfwyN+kS/RVkiEqx0Bk76l3WYkeb9vI6WiSAx/hweMVjG8ekQ2sFO2arQ
- MZg7LNLgLS6tGR8UkDX2yht43ya6jkY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=x2pHcWRzgK7CfAVlWHGCaEKN81lEH/YxskuMde7uZqg=;
+ b=ZwrmTCEWfPRfKY14gHJBrURRmtwtbAVO9QApH5wn8CRUZSqHA/24Lbp6hsKdwNayKJy/mK
+ qYJu9RLRZxKZ/b9BRljDEws72pqqACPgYKBezyimMJ4TLbTUfSvfuKBTjW1+kh1xCLkoTR
+ mpF24qubx90w7W/7fog5r4lRfTToe+k=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-678-LIwTya1NO8Cc70BpyOlPlA-1; Fri,
- 09 May 2025 09:13:24 -0400
-X-MC-Unique: LIwTya1NO8Cc70BpyOlPlA-1
-X-Mimecast-MFC-AGG-ID: LIwTya1NO8Cc70BpyOlPlA_1746796403
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-584-Acf_IxVpPuebjhtLHM2kIA-1; Fri,
+ 09 May 2025 09:13:26 -0400
+X-MC-Unique: Acf_IxVpPuebjhtLHM2kIA-1
+X-Mimecast-MFC-AGG-ID: Acf_IxVpPuebjhtLHM2kIA_1746796406
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3A54019560AF
- for <qemu-devel@nongnu.org>; Fri,  9 May 2025 13:13:23 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DEE1B19560BB; Fri,  9 May 2025 13:13:25 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.18])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1B22C18003FD; Fri,  9 May 2025 13:13:20 +0000 (UTC)
+ id D17C51800EC9; Fri,  9 May 2025 13:13:23 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 00/28] vfio queue
-Date: Fri,  9 May 2025 15:12:49 +0200
-Message-ID: <20250509131317.164235-1-clg@redhat.com>
+ Steve Sistare <steven.sistare@oracle.com>,
+ Cedric Le Goater <clg@redhat.com>
+Subject: [PULL 01/28] vfio/container: ram discard disable helper
+Date: Fri,  9 May 2025 15:12:50 +0200
+Message-ID: <20250509131317.164235-2-clg@redhat.com>
+In-Reply-To: <20250509131317.164235-1-clg@redhat.com>
+References: <20250509131317.164235-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -79,113 +82,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 4b1f5b73e060971c434e70694d571adfee553027:
+From: Steve Sistare <steven.sistare@oracle.com>
 
-  tests/functional: Use -no-shutdown in the hppa_seabios test (2025-05-08 15:38:40 -0400)
+Define a helper to set ram discard disable, generate error messages,
+and cleanup on failure.  The second vfio_ram_block_discard_disable
+call site now performs VFIO_GROUP_UNSET_CONTAINER immediately on failure,
+instead of relying on the close of the container fd to do so in the kernel,
+but this is equivalent.
 
-are available in the Git repository at:
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Reviewed-by: Cedric Le Goater <clg@redhat.com>
+Link: https://lore.kernel.org/qemu-devel/1746195760-101443-2-git-send-email-steven.sistare@oracle.com
+[ clg: vfio_attach_discard_disable() -> vfio_container_attach_discard_disable() ]
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+---
+ hw/vfio/container.c | 48 +++++++++++++++++++++++++--------------------
+ 1 file changed, 27 insertions(+), 21 deletions(-)
 
-  https://github.com/legoater/qemu/ tags/pull-vfio-20250509
-
-for you to fetch changes up to d9b7d8b6993b5193480e5a972902e3e9bbc4d8a1:
-
-  vfio/container: pass listener_begin/commit callbacks (2025-05-09 12:42:28 +0200)
-
-----------------------------------------------------------------
-vfio queue:
-
-* Preparatory changes for the introduction of CPR support
-* Automatic enablement of OpRegion for IGD device passthrough
-* Linux headers update
-* Preparatory changes for the introduction of vfio-user
-
-----------------------------------------------------------------
-John Levon (14):
-      vfio: add vfio_device_prepare()
-      vfio: add vfio_device_unprepare()
-      vfio: add vfio_attach_device_by_iommu_type()
-      vfio: add vfio_device_get_irq_info() helper
-      vfio: consistently handle return value for helpers
-      vfio: add strread/writeerror()
-      vfio: add vfio_pci_config_space_read/write()
-      vfio: add unmap_all flag to DMA unmap callback
-      vfio: implement unmap all for DMA unmap callbacks
-      vfio: add device IO ops vector
-      vfio: add region info cache
-      vfio: add read/write to device IO ops vector
-      vfio: add vfio-pci-base class
-      vfio/container: pass listener_begin/commit callbacks
-
-Rorie Reyes (2):
-      linux-header: update-linux-header script changes
-      linux-headers: Update to Linux v6.15-rc3
-
-Steve Sistare (3):
-      vfio/container: ram discard disable helper
-      vfio/container: reform vfio_container_connect cleanup
-      vfio/container: vfio_container_group_add
-
-Tomita Moeko (9):
-      vfio/igd: Restrict legacy mode to Gen6-9 devices
-      vfio/igd: Always emulate ASLS (OpRegion) register
-      vfio/igd: Detect IGD device by OpRegion
-      vfio/igd: Check vendor and device ID on GVT-g mdev
-      vfio/igd: Check OpRegion support on GVT-g mdev
-      vfio/igd: Enable OpRegion by default
-      vfio/igd: Allow overriding GMS with 0xf0 to 0xfe on Gen9+
-      vfio/igd: Only emulate GGC register when x-igd-gms is set
-      vfio/igd: Remove generation limitation for IGD passthrough
-
- docs/igd-assign.txt                           |  11 +-
- hw/vfio/pci.h                                 |  10 +-
- include/hw/vfio/vfio-container-base.h         |  17 +-
- include/hw/vfio/vfio-device.h                 |  82 ++++++++
- include/standard-headers/asm-x86/setup_data.h |   4 +-
- include/standard-headers/drm/drm_fourcc.h     |  41 ++++
- include/standard-headers/linux/const.h        |   2 +-
- include/standard-headers/linux/ethtool.h      |  22 +++
- include/standard-headers/linux/fuse.h         |  12 +-
- include/standard-headers/linux/pci_regs.h     |  13 +-
- include/standard-headers/linux/virtio_net.h   |  13 ++
- include/standard-headers/linux/virtio_snd.h   |   2 +-
- linux-headers/asm-arm64/kvm.h                 |  11 ++
- linux-headers/asm-arm64/unistd_64.h           |   1 +
- linux-headers/asm-generic/mman-common.h       |   1 +
- linux-headers/asm-generic/unistd.h            |   4 +-
- linux-headers/asm-loongarch/unistd_64.h       |   1 +
- linux-headers/asm-mips/unistd_n32.h           |   1 +
- linux-headers/asm-mips/unistd_n64.h           |   1 +
- linux-headers/asm-mips/unistd_o32.h           |   1 +
- linux-headers/asm-powerpc/unistd_32.h         |   1 +
- linux-headers/asm-powerpc/unistd_64.h         |   1 +
- linux-headers/asm-riscv/kvm.h                 |   2 +
- linux-headers/asm-riscv/unistd_32.h           |   1 +
- linux-headers/asm-riscv/unistd_64.h           |   1 +
- linux-headers/asm-s390/unistd_32.h            |   1 +
- linux-headers/asm-s390/unistd_64.h            |   1 +
- linux-headers/asm-x86/kvm.h                   |   3 +
- linux-headers/asm-x86/unistd_32.h             |   1 +
- linux-headers/asm-x86/unistd_64.h             |   1 +
- linux-headers/asm-x86/unistd_x32.h            |   1 +
- linux-headers/linux/bits.h                    |   8 +-
- linux-headers/linux/const.h                   |   2 +-
- linux-headers/linux/iommufd.h                 | 129 ++++++++++++-
- linux-headers/linux/kvm.h                     |   1 +
- linux-headers/linux/psp-sev.h                 |  21 ++-
- linux-headers/linux/stddef.h                  |   2 +
- linux-headers/linux/vfio.h                    |  30 ++-
- hw/vfio/ap.c                                  |  19 +-
- hw/vfio/ccw.c                                 |  25 ++-
- hw/vfio/container-base.c                      |  10 +-
- hw/vfio/container.c                           | 190 +++++++++++--------
- hw/vfio/device.c                              | 183 ++++++++++++++++--
- hw/vfio/igd.c                                 | 226 ++++++++++++----------
- hw/vfio/iommufd.c                             |  32 ++--
- hw/vfio/listener.c                            |  64 +++++--
- hw/vfio/pci.c                                 | 259 ++++++++++++++++----------
- hw/vfio/platform.c                            |   6 +-
- hw/vfio/region.c                              |  19 +-
- scripts/update-linux-headers.sh               |   2 +-
- 50 files changed, 1085 insertions(+), 407 deletions(-)
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index 77ff56b43f0a906167a3c7c8d8ae6376552762f7..2ea137fb024fedd2b8d578f2fb5a7eea2b11e4fa 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -511,16 +511,10 @@ static bool vfio_legacy_setup(VFIOContainerBase *bcontainer, Error **errp)
+     return true;
+ }
+ 
+-static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
+-                                   Error **errp)
++static bool vfio_container_attach_discard_disable(VFIOContainer *container,
++                                            VFIOGroup *group, Error **errp)
+ {
+-    VFIOContainer *container;
+-    VFIOContainerBase *bcontainer;
+-    int ret, fd;
+-    VFIOAddressSpace *space;
+-    VFIOIOMMUClass *vioc;
+-
+-    space = vfio_address_space_get(as);
++    int ret;
+ 
+     /*
+      * VFIO is currently incompatible with discarding of RAM insofar as the
+@@ -553,18 +547,32 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
+      * details once we know which type of IOMMU we are using.
+      */
+ 
++    ret = vfio_ram_block_discard_disable(container, true);
++    if (ret) {
++        error_setg_errno(errp, -ret, "Cannot set discarding of RAM broken");
++        if (ioctl(group->fd, VFIO_GROUP_UNSET_CONTAINER, &container->fd)) {
++            error_report("vfio: error disconnecting group %d from"
++                         " container", group->groupid);
++        }
++    }
++    return !ret;
++}
++
++static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
++                                   Error **errp)
++{
++    VFIOContainer *container;
++    VFIOContainerBase *bcontainer;
++    int ret, fd;
++    VFIOAddressSpace *space;
++    VFIOIOMMUClass *vioc;
++
++    space = vfio_address_space_get(as);
++
+     QLIST_FOREACH(bcontainer, &space->containers, next) {
+         container = container_of(bcontainer, VFIOContainer, bcontainer);
+         if (!ioctl(group->fd, VFIO_GROUP_SET_CONTAINER, &container->fd)) {
+-            ret = vfio_ram_block_discard_disable(container, true);
+-            if (ret) {
+-                error_setg_errno(errp, -ret,
+-                                 "Cannot set discarding of RAM broken");
+-                if (ioctl(group->fd, VFIO_GROUP_UNSET_CONTAINER,
+-                          &container->fd)) {
+-                    error_report("vfio: error disconnecting group %d from"
+-                                 " container", group->groupid);
+-                }
++            if (!vfio_container_attach_discard_disable(container, group, errp)) {
+                 return false;
+             }
+             group->container = container;
+@@ -596,9 +604,7 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
+         goto free_container_exit;
+     }
+ 
+-    ret = vfio_ram_block_discard_disable(container, true);
+-    if (ret) {
+-        error_setg_errno(errp, -ret, "Cannot set discarding of RAM broken");
++    if (!vfio_container_attach_discard_disable(container, group, errp)) {
+         goto unregister_container_exit;
+     }
+ 
+-- 
+2.49.0
 
 
