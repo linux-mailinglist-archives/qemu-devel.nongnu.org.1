@@ -2,55 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 822CDAB14BF
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 15:20:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 288AFAB14B6
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 15:18:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDNa0-0003D4-LU; Fri, 09 May 2025 09:15:57 -0400
+	id 1uDNaU-0005bn-Br; Fri, 09 May 2025 09:16:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNZ1-0002PR-N2
- for qemu-devel@nongnu.org; Fri, 09 May 2025 09:15:00 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNZ8-0002YL-4n
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 09:15:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNYy-0007Ec-SK
- for qemu-devel@nongnu.org; Fri, 09 May 2025 09:14:54 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNZ3-0007FP-JP
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 09:15:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746796491;
+ s=mimecast20190719; t=1746796497;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HisD7F+n0YQRQAJHKMQy689CXMethJ5xHSYlbFgCquc=;
- b=DhR5qj73N9qFSQ2EQxRBVasOU//t0wF5NOVl9R08YMjCov6GZIXMuO5CouQQhcuLHkbRwT
- s0Ec8zoDwR8HR4mjmSASH3mg5x+DMLZbrQQeESwJzcq47M3f/yk/w+Y6GDLKP3ZufHDIgb
- mNbgXhFIy5hRqnurb5wci04AgcJO/V8=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Ys3qOynr15iU3/cY1MqMnRMEH2ypZ9+oxIAafs8Z5RE=;
+ b=Ma+sz+ut2AtkZY9xRFYTVk0neskHXXnWpTbwVzGM9z61qTNw4yqnef5We2wSgxy9K+rarO
+ rfxDjnNjOChce57myBBy1uroMfn14lwWfbVKQi9hMFFd9mSGbYzGKw6I4iNSQzEOCdqA5A
+ v/RVnVbgqOCyZvJXmzjymcvu3i4i2XI=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-572-qhEVWJynNXaLEXNI9MEY7g-1; Fri,
- 09 May 2025 09:14:48 -0400
-X-MC-Unique: qhEVWJynNXaLEXNI9MEY7g-1
-X-Mimecast-MFC-AGG-ID: qhEVWJynNXaLEXNI9MEY7g_1746796487
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-568-SuqhNPgAM_aSKPjnAJSUNQ-1; Fri,
+ 09 May 2025 09:14:52 -0400
+X-MC-Unique: SuqhNPgAM_aSKPjnAJSUNQ-1
+X-Mimecast-MFC-AGG-ID: SuqhNPgAM_aSKPjnAJSUNQ_1746796491
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 52BDE180087F; Fri,  9 May 2025 13:14:47 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 8277F180035C; Fri,  9 May 2025 13:14:51 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.18])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 85663180045B; Fri,  9 May 2025 13:14:45 +0000 (UTC)
+ id 07DC3180045B; Fri,  9 May 2025 13:14:47 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  John Levon <john.levon@nutanix.com>,
+ John Johnson <john.g.johnson@oracle.com>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ Jagannathan Raman <jag.raman@oracle.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 26/28] vfio: add read/write to device IO ops vector
-Date: Fri,  9 May 2025 15:13:15 +0200
-Message-ID: <20250509131317.164235-27-clg@redhat.com>
+Subject: [PULL 27/28] vfio: add vfio-pci-base class
+Date: Fri,  9 May 2025 15:13:16 +0200
+Message-ID: <20250509131317.164235-28-clg@redhat.com>
 In-Reply-To: <20250509131317.164235-1-clg@redhat.com>
 References: <20250509131317.164235-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -84,202 +87,245 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Levon <john.levon@nutanix.com>
 
-Now we have the region info cache, add ->region_read/write device I/O
-operations instead of explicit pread()/pwrite() system calls.
+Split out parts of TYPE_VFIO_PCI into a base TYPE_VFIO_PCI_BASE,
+although we have not yet introduced another subclass, so all the
+properties have remained in TYPE_VFIO_PCI.
 
+Note that currently there is no need for additional data for
+TYPE_VFIO_PCI, so it shares the same C struct type as
+TYPE_VFIO_PCI_BASE, VFIOPCIDevice.
+
+Originally-by: John Johnson <john.g.johnson@oracle.com>
+Signed-off-by: Elena Ufimtseva <elena.ufimtseva@oracle.com>
+Signed-off-by: Jagannathan Raman <jag.raman@oracle.com>
 Signed-off-by: John Levon <john.levon@nutanix.com>
-Link: https://lore.kernel.org/qemu-devel/20250507152020.1254632-13-john.levon@nutanix.com
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Link: https://lore.kernel.org/qemu-devel/20250507152020.1254632-14-john.levon@nutanix.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-device.h | 18 ++++++++++++++++++
- hw/vfio/device.c              | 34 ++++++++++++++++++++++++++++++++++
- hw/vfio/pci.c                 | 28 ++++++++++++++--------------
- hw/vfio/region.c              | 17 +++++++++++------
- 4 files changed, 77 insertions(+), 20 deletions(-)
+ hw/vfio/pci.h    | 10 +++++++-
+ hw/vfio/device.c |  2 +-
+ hw/vfio/pci.c    | 62 +++++++++++++++++++++++++++++++-----------------
+ 3 files changed, 50 insertions(+), 24 deletions(-)
 
-diff --git a/include/hw/vfio/vfio-device.h b/include/hw/vfio/vfio-device.h
-index 4fff3dcee3b4a2a3c8a4bd6fa017cf822a16668e..8bcb3c19f62b5a47c835e10149c04a9bd7536520 100644
---- a/include/hw/vfio/vfio-device.h
-+++ b/include/hw/vfio/vfio-device.h
-@@ -188,6 +188,24 @@ struct VFIODeviceIOOps {
-      * Configure IRQs as defined by @irqs.
-      */
-     int (*set_irqs)(VFIODevice *vdev, struct vfio_irq_set *irqs);
-+
-+    /**
-+     * @region_read
-+     *
-+     * Read @size bytes from the region @nr at offset @off into the buffer
-+     * @data.
-+     */
-+    int (*region_read)(VFIODevice *vdev, uint8_t nr, off_t off, uint32_t size,
-+                       void *data);
-+
-+    /**
-+     * @region_write
-+     *
-+     * Write @size bytes to the region @nr at offset @off from the buffer
-+     * @data.
-+     */
-+    int (*region_write)(VFIODevice *vdev, uint8_t nr, off_t off, uint32_t size,
-+                        void *data);
- };
+diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+index f835b1dbc2b1e8aab820924900e1eb6c36613d16..5ce0fb916f3896a448b59fc0b99e892c11c3a9e1 100644
+--- a/hw/vfio/pci.h
++++ b/hw/vfio/pci.h
+@@ -118,8 +118,16 @@ typedef struct VFIOMSIXInfo {
+     bool noresize;
+ } VFIOMSIXInfo;
  
- void vfio_device_prepare(VFIODevice *vbasedev, VFIOContainerBase *bcontainer,
++/*
++ * TYPE_VFIO_PCI_BASE is an abstract type used to share code
++ * between VFIO implementations that use a kernel driver
++ * with those that use user sockets.
++ */
++#define TYPE_VFIO_PCI_BASE "vfio-pci-base"
++OBJECT_DECLARE_SIMPLE_TYPE(VFIOPCIDevice, VFIO_PCI_BASE)
++
+ #define TYPE_VFIO_PCI "vfio-pci"
+-OBJECT_DECLARE_SIMPLE_TYPE(VFIOPCIDevice, VFIO_PCI)
++/* TYPE_VFIO_PCI shares struct VFIOPCIDevice. */
+ 
+ struct VFIOPCIDevice {
+     PCIDevice pdev;
 diff --git a/hw/vfio/device.c b/hw/vfio/device.c
-index 77b0675abe7b4f4155ea79cf3fd0e3ab4b21f8ea..0b2cd90d64dc797bb2f20c60c57ff49706816aed 100644
+index 0b2cd90d64dc797bb2f20c60c57ff49706816aed..9fba2c7272f207f2fe870fc97b46c342bd57dc0a 100644
 --- a/hw/vfio/device.c
 +++ b/hw/vfio/device.c
-@@ -505,9 +505,43 @@ static int vfio_device_io_set_irqs(VFIODevice *vbasedev,
-     return ret < 0 ? -errno : ret;
- }
- 
-+static int vfio_device_io_region_read(VFIODevice *vbasedev, uint8_t index,
-+                                      off_t off, uint32_t size, void *data)
-+{
-+    struct vfio_region_info *info;
-+    int ret;
-+
-+    ret = vfio_device_get_region_info(vbasedev, index, &info);
-+    if (ret != 0) {
-+        return ret;
-+    }
-+
-+    ret = pread(vbasedev->fd, data, size, info->offset + off);
-+
-+    return ret < 0 ? -errno : ret;
-+}
-+
-+static int vfio_device_io_region_write(VFIODevice *vbasedev, uint8_t index,
-+                                       off_t off, uint32_t size, void *data)
-+{
-+    struct vfio_region_info *info;
-+    int ret;
-+
-+    ret = vfio_device_get_region_info(vbasedev, index, &info);
-+    if (ret != 0) {
-+        return ret;
-+    }
-+
-+    ret = pwrite(vbasedev->fd, data, size, info->offset + off);
-+
-+    return ret < 0 ? -errno : ret;
-+}
-+
- static VFIODeviceIOOps vfio_device_io_ops_ioctl = {
-     .device_feature = vfio_device_io_device_feature,
-     .get_region_info = vfio_device_io_get_region_info,
-     .get_irq_info = vfio_device_io_get_irq_info,
-     .set_irqs = vfio_device_io_set_irqs,
-+    .region_read = vfio_device_io_region_read,
-+    .region_write = vfio_device_io_region_write,
- };
+@@ -392,7 +392,7 @@ bool vfio_device_hiod_create_and_realize(VFIODevice *vbasedev,
+ VFIODevice *vfio_get_vfio_device(Object *obj)
+ {
+     if (object_dynamic_cast(obj, TYPE_VFIO_PCI)) {
+-        return &VFIO_PCI(obj)->vbasedev;
++        return &VFIO_PCI_BASE(obj)->vbasedev;
+     } else {
+         return NULL;
+     }
 diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 9136cf52c82711939db01c09a8a1277327bc484f..1236de315d1a73aa408c108e2e650a37b037b93e 100644
+index 1236de315d1a73aa408c108e2e650a37b037b93e..a1bfdfe3751fdf171b0b96d78d0b51853d8e7838 100644
 --- a/hw/vfio/pci.c
 +++ b/hw/vfio/pci.c
-@@ -918,18 +918,22 @@ static void vfio_pci_load_rom(VFIOPCIDevice *vdev)
-     memset(vdev->rom, 0xff, size);
+@@ -241,7 +241,7 @@ static void vfio_intx_update(VFIOPCIDevice *vdev, PCIINTxRoute *route)
  
-     while (size) {
--        bytes = pread(vbasedev->fd, vdev->rom + off,
--                      size, vdev->rom_offset + off);
-+        bytes = vbasedev->io_ops->region_read(vbasedev,
-+                                              VFIO_PCI_ROM_REGION_INDEX,
-+                                              off, size, vdev->rom + off);
-+
-         if (bytes == 0) {
-             break;
-         } else if (bytes > 0) {
-             off += bytes;
-             size -= bytes;
-         } else {
--            if (errno == EINTR || errno == EAGAIN) {
-+            if (bytes == -EINTR || bytes == -EAGAIN) {
-                 continue;
-             }
--            error_report("vfio: Error reading device ROM: %m");
-+            error_report("vfio: Error reading device ROM: %s",
-+                         strreaderror(bytes));
-+
-             break;
-         }
-     }
-@@ -969,22 +973,18 @@ static void vfio_pci_load_rom(VFIOPCIDevice *vdev)
- static int vfio_pci_config_space_read(VFIOPCIDevice *vdev, off_t offset,
-                                       uint32_t size, void *data)
+ static void vfio_intx_routing_notifier(PCIDevice *pdev)
  {
--    ssize_t ret;
--
--    ret = pread(vdev->vbasedev.fd, data, size, vdev->config_offset + offset);
--
--    return ret < 0 ? -errno : (int)ret;
-+    return vdev->vbasedev.io_ops->region_read(&vdev->vbasedev,
-+                                              VFIO_PCI_CONFIG_REGION_INDEX,
-+                                              offset, size, data);
+-    VFIOPCIDevice *vdev = VFIO_PCI(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
+     PCIINTxRoute route;
+ 
+     if (vdev->interrupt != VFIO_INT_INTx) {
+@@ -514,7 +514,7 @@ static void vfio_update_kvm_msi_virq(VFIOMSIVector *vector, MSIMessage msg,
+ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
+                                    MSIMessage *msg, IOHandler *handler)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
+     VFIOMSIVector *vector;
+     int ret;
+     bool resizing = !!(vdev->nr_vectors < nr + 1);
+@@ -620,7 +620,7 @@ static int vfio_msix_vector_use(PCIDevice *pdev,
+ 
+ static void vfio_msix_vector_release(PCIDevice *pdev, unsigned int nr)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
+     VFIOMSIVector *vector = &vdev->msi_vectors[nr];
+ 
+     trace_vfio_msix_vector_release(vdev->vbasedev.name, nr);
+@@ -1196,7 +1196,7 @@ static const MemoryRegionOps vfio_vga_ops = {
+  */
+ static void vfio_sub_page_bar_update_mapping(PCIDevice *pdev, int bar)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
+     VFIORegion *region = &vdev->bars[bar].region;
+     MemoryRegion *mmap_mr, *region_mr, *base_mr;
+     PCIIORegion *r;
+@@ -1242,7 +1242,7 @@ static void vfio_sub_page_bar_update_mapping(PCIDevice *pdev, int bar)
+  */
+ uint32_t vfio_pci_read_config(PCIDevice *pdev, uint32_t addr, int len)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
+     VFIODevice *vbasedev = &vdev->vbasedev;
+     uint32_t emu_bits = 0, emu_val = 0, phys_val = 0, val;
+ 
+@@ -1276,7 +1276,7 @@ uint32_t vfio_pci_read_config(PCIDevice *pdev, uint32_t addr, int len)
+ void vfio_pci_write_config(PCIDevice *pdev,
+                            uint32_t addr, uint32_t val, int len)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
+     VFIODevice *vbasedev = &vdev->vbasedev;
+     uint32_t val_le = cpu_to_le32(val);
+     int ret;
+@@ -3129,7 +3129,7 @@ static bool vfio_interrupt_setup(VFIOPCIDevice *vdev, Error **errp)
+ static void vfio_realize(PCIDevice *pdev, Error **errp)
+ {
+     ERRP_GUARD();
+-    VFIOPCIDevice *vdev = VFIO_PCI(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
+     VFIODevice *vbasedev = &vdev->vbasedev;
+     int i, ret;
+     char uuid[UUID_STR_LEN];
+@@ -3300,7 +3300,7 @@ error:
+ 
+ static void vfio_instance_finalize(Object *obj)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI(obj);
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(obj);
+ 
+     vfio_display_finalize(vdev);
+     vfio_bars_finalize(vdev);
+@@ -3318,7 +3318,7 @@ static void vfio_instance_finalize(Object *obj)
+ 
+ static void vfio_exitfn(PCIDevice *pdev)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
+     VFIODevice *vbasedev = &vdev->vbasedev;
+ 
+     vfio_unregister_req_notifier(vdev);
+@@ -3342,7 +3342,7 @@ static void vfio_exitfn(PCIDevice *pdev)
+ 
+ static void vfio_pci_reset(DeviceState *dev)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI(dev);
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(dev);
+ 
+     trace_vfio_pci_reset(vdev->vbasedev.name);
+ 
+@@ -3382,7 +3382,7 @@ post_reset:
+ static void vfio_instance_init(Object *obj)
+ {
+     PCIDevice *pci_dev = PCI_DEVICE(obj);
+-    VFIOPCIDevice *vdev = VFIO_PCI(obj);
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(obj);
+     VFIODevice *vbasedev = &vdev->vbasedev;
+ 
+     device_add_bootindex_property(obj, &vdev->bootindex,
+@@ -3403,6 +3403,31 @@ static void vfio_instance_init(Object *obj)
+     pci_dev->cap_present |= QEMU_PCI_CAP_EXPRESS;
  }
  
- /* "Raw" write of underlying config space. */
- static int vfio_pci_config_space_write(VFIOPCIDevice *vdev, off_t offset,
-                                        uint32_t size, void *data)
++static void vfio_pci_base_dev_class_init(ObjectClass *klass, const void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    PCIDeviceClass *pdc = PCI_DEVICE_CLASS(klass);
++
++    dc->desc = "VFIO PCI base device";
++    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
++    pdc->exit = vfio_exitfn;
++    pdc->config_read = vfio_pci_read_config;
++    pdc->config_write = vfio_pci_write_config;
++}
++
++static const TypeInfo vfio_pci_base_dev_info = {
++    .name = TYPE_VFIO_PCI_BASE,
++    .parent = TYPE_PCI_DEVICE,
++    .instance_size = 0,
++    .abstract = true,
++    .class_init = vfio_pci_base_dev_class_init,
++    .interfaces = (const InterfaceInfo[]) {
++        { INTERFACE_PCIE_DEVICE },
++        { INTERFACE_CONVENTIONAL_PCI_DEVICE },
++        { }
++    },
++};
++
+ static PropertyInfo vfio_pci_migration_multifd_transfer_prop;
+ 
+ static const Property vfio_pci_dev_properties[] = {
+@@ -3473,7 +3498,8 @@ static const Property vfio_pci_dev_properties[] = {
+ #ifdef CONFIG_IOMMUFD
+ static void vfio_pci_set_fd(Object *obj, const char *str, Error **errp)
  {
--    ssize_t ret;
--
--    ret = pwrite(vdev->vbasedev.fd, data, size, vdev->config_offset + offset);
--
--    return ret < 0 ? -errno : (int)ret;
-+    return vdev->vbasedev.io_ops->region_write(&vdev->vbasedev,
-+                                               VFIO_PCI_CONFIG_REGION_INDEX,
-+                                               offset, size, data);
+-    vfio_device_set_fd(&VFIO_PCI(obj)->vbasedev, str, errp);
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(obj);
++    vfio_device_set_fd(&vdev->vbasedev, str, errp);
  }
+ #endif
  
- static uint64_t vfio_rom_read(void *opaque, hwaddr addr, unsigned size)
-diff --git a/hw/vfio/region.c b/hw/vfio/region.c
-index ef2630cac3924fef200b2ece1be0dbad219dd67d..34752c3f65c4b43fc961754657b18f5269c01ef1 100644
---- a/hw/vfio/region.c
-+++ b/hw/vfio/region.c
-@@ -45,6 +45,7 @@ void vfio_region_write(void *opaque, hwaddr addr,
-         uint32_t dword;
-         uint64_t qword;
-     } buf;
-+    int ret;
+@@ -3488,11 +3514,7 @@ static void vfio_pci_dev_class_init(ObjectClass *klass, const void *data)
+     object_class_property_add_str(klass, "fd", NULL, vfio_pci_set_fd);
+ #endif
+     dc->desc = "VFIO-based PCI device assignment";
+-    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+     pdc->realize = vfio_realize;
+-    pdc->exit = vfio_exitfn;
+-    pdc->config_read = vfio_pci_read_config;
+-    pdc->config_write = vfio_pci_write_config;
  
-     switch (size) {
-     case 1:
-@@ -64,11 +65,13 @@ void vfio_region_write(void *opaque, hwaddr addr,
-         break;
-     }
+     object_class_property_set_description(klass, /* 1.3 */
+                                           "host",
+@@ -3617,16 +3639,11 @@ static void vfio_pci_dev_class_init(ObjectClass *klass, const void *data)
  
--    if (pwrite(vbasedev->fd, &buf, size, region->fd_offset + addr) != size) {
-+    ret = vbasedev->io_ops->region_write(vbasedev, region->nr,
-+                                         addr, size, &buf);
-+    if (ret != size) {
-         error_report("%s(%s:region%d+0x%"HWADDR_PRIx", 0x%"PRIx64
--                     ",%d) failed: %m",
-+                     ",%d) failed: %s",
-                      __func__, vbasedev->name, region->nr,
--                     addr, data, size);
-+                     addr, data, size, strwriteerror(ret));
-     }
+ static const TypeInfo vfio_pci_dev_info = {
+     .name = TYPE_VFIO_PCI,
+-    .parent = TYPE_PCI_DEVICE,
++    .parent = TYPE_VFIO_PCI_BASE,
+     .instance_size = sizeof(VFIOPCIDevice),
+     .class_init = vfio_pci_dev_class_init,
+     .instance_init = vfio_instance_init,
+     .instance_finalize = vfio_instance_finalize,
+-    .interfaces = (const InterfaceInfo[]) {
+-        { INTERFACE_PCIE_DEVICE },
+-        { INTERFACE_CONVENTIONAL_PCI_DEVICE },
+-        { }
+-    },
+ };
  
-     trace_vfio_region_write(vbasedev->name, region->nr, addr, data, size);
-@@ -96,11 +99,13 @@ uint64_t vfio_region_read(void *opaque,
-         uint64_t qword;
-     } buf;
-     uint64_t data = 0;
-+    int ret;
+ static const Property vfio_pci_dev_nohotplug_properties[] = {
+@@ -3673,6 +3690,7 @@ static void register_vfio_pci_dev_type(void)
+     vfio_pci_migration_multifd_transfer_prop = qdev_prop_on_off_auto;
+     vfio_pci_migration_multifd_transfer_prop.realized_set_allowed = true;
  
--    if (pread(vbasedev->fd, &buf, size, region->fd_offset + addr) != size) {
--        error_report("%s(%s:region%d+0x%"HWADDR_PRIx", %d) failed: %m",
-+    ret = vbasedev->io_ops->region_read(vbasedev, region->nr, addr, size, &buf);
-+    if (ret != size) {
-+        error_report("%s(%s:region%d+0x%"HWADDR_PRIx", %d) failed: %s",
-                      __func__, vbasedev->name, region->nr,
--                     addr, size);
-+                     addr, size, strreaderror(ret));
-         return (uint64_t)-1;
-     }
-     switch (size) {
++    type_register_static(&vfio_pci_base_dev_info);
+     type_register_static(&vfio_pci_dev_info);
+     type_register_static(&vfio_pci_nohotplug_dev_info);
+ }
 -- 
 2.49.0
 
