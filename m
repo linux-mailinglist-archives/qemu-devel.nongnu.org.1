@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81172AB149F
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 15:16:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0FBAAB1493
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 15:14:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDNY2-0001l5-AZ; Fri, 09 May 2025 09:13:54 -0400
+	id 1uDNY3-0001lL-7H; Fri, 09 May 2025 09:13:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNXv-0001ic-5a
- for qemu-devel@nongnu.org; Fri, 09 May 2025 09:13:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNXy-0001k4-NI
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 09:13:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNXt-0006yx-12
- for qemu-devel@nongnu.org; Fri, 09 May 2025 09:13:46 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNXw-00070I-Tv
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 09:13:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746796423;
+ s=mimecast20190719; t=1746796426;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RYeG22mCeiTacQ8DiSx9KTLVQyfLuPSeREmUytrZTGI=;
- b=Faz5jzDdEZksyfqDZWYEiYIQQucdMEOiudj8atcPqw77Mm16M2vgzwFOnKg4memcThZLNI
- p82t79F5o3TzAFGE12wqDVo4WUfChenQ1jLMea6tmLudN1/DJiixmflq2n5555oNGz7Ltn
- jBU4JBRUjTEByCJuVwN4ikEcsOeEgmo=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=qjmL/N/97mMGevtU7uF4An+9crQQMESgHemcuPP65zc=;
+ b=S94FL/6ClvZix3llYmFaSI4eNUUpqVBpgExaVEPMk+t1LOFdtv2JVEVekGShXl4pP4jlIX
+ H0PMOr1N7m/KM1ePALukZG1vrq5ewfKP6gnMhjub035sre9qrElpTAZNBvwniY3JOoPYPm
+ K0VTE+LQQxLXkXeizQorwlhH99VvMvk=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-393-fqk0K2CVMJ6Xnu-yrYyTMg-1; Fri,
- 09 May 2025 09:13:42 -0400
-X-MC-Unique: fqk0K2CVMJ6Xnu-yrYyTMg-1
-X-Mimecast-MFC-AGG-ID: fqk0K2CVMJ6Xnu-yrYyTMg_1746796421
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-80-QYW0BDM5OlOvyyg36zbxGg-1; Fri,
+ 09 May 2025 09:13:45 -0400
+X-MC-Unique: QYW0BDM5OlOvyyg36zbxGg-1
+X-Mimecast-MFC-AGG-ID: QYW0BDM5OlOvyyg36zbxGg_1746796424
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9F041180035C; Fri,  9 May 2025 13:13:41 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 9529D1955DDA; Fri,  9 May 2025 13:13:44 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.18])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3773418003FD; Fri,  9 May 2025 13:13:38 +0000 (UTC)
+ id 259BC18003FD; Fri,  9 May 2025 13:13:41 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Tomita Moeko <tomitamoeko@gmail.com>,
  =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 06/28] vfio/igd: Detect IGD device by OpRegion
-Date: Fri,  9 May 2025 15:12:55 +0200
-Message-ID: <20250509131317.164235-7-clg@redhat.com>
+Subject: [PULL 07/28] vfio/igd: Check vendor and device ID on GVT-g mdev
+Date: Fri,  9 May 2025 15:12:56 +0200
+Message-ID: <20250509131317.164235-8-clg@redhat.com>
 In-Reply-To: <20250509131317.164235-1-clg@redhat.com>
 References: <20250509131317.164235-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -34
 X-Spam_score: -3.5
@@ -85,111 +85,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Tomita Moeko <tomitamoeko@gmail.com>
 
-There is currently no straightforward way to distinguish if a Intel
-graphics device is IGD or discrete GPU. However, only IGD devices have
-OpRegion. Use the presence of VFIO_REGION_SUBTYPE_INTEL_IGD_OPREGION
-to identify IGD devices. Still, OpRegion on hotplugged IGD device is
-not supported.
+Check the vendor and device ID on GVT-g mdev to ensure it is a supported
+device [1]. This extra check is required for automatically enabling
+OpRegion access later.
+
+Note that Cherryview and Gemini Lake are marked as supported here since
+current code cannot distinguish them with other Gen8 and Gen9 devices.
+Since mdev cannot be created on these devices, this has no functional
+impact.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpu/drm/i915/intel_gvt.c?h=v6.14#n52
 
 Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
 Reviewed-by: Corvin Köhne <c.koehne@beckhoff.com>
 Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
 Tested-by: Alex Williamson <alex.williamson@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/20250505170305.23622-4-tomitamoeko@gmail.com
+Link: https://lore.kernel.org/qemu-devel/20250505170305.23622-5-tomitamoeko@gmail.com
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/igd.c | 30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ hw/vfio/igd.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
 diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index b1fce76f7250c2b2185cc259ac673d0d595832e8..347253d08ce594d46cafb674ebbd9ca8878200e0 100644
+index 347253d08ce594d46cafb674ebbd9ca8878200e0..f5dd4750282920a71c52ca59f9ca42899d895c1e 100644
 --- a/hw/vfio/igd.c
 +++ b/hw/vfio/igd.c
-@@ -185,9 +185,10 @@ static bool vfio_pci_igd_opregion_init(VFIOPCIDevice *vdev,
-     return true;
- }
- 
--static bool vfio_pci_igd_setup_opregion(VFIOPCIDevice *vdev, Error **errp)
-+static bool vfio_pci_igd_opregion_detect(VFIOPCIDevice *vdev,
-+                                         struct vfio_region_info **opregion,
-+                                         Error **errp)
- {
--    g_autofree struct vfio_region_info *opregion = NULL;
-     int ret;
- 
-     /* Hotplugging is not supported for opregion access */
-@@ -198,17 +199,13 @@ static bool vfio_pci_igd_setup_opregion(VFIOPCIDevice *vdev, Error **errp)
- 
-     ret = vfio_device_get_region_info_type(&vdev->vbasedev,
-                     VFIO_REGION_TYPE_PCI_VENDOR_TYPE | PCI_VENDOR_ID_INTEL,
--                    VFIO_REGION_SUBTYPE_INTEL_IGD_OPREGION, &opregion);
-+                    VFIO_REGION_SUBTYPE_INTEL_IGD_OPREGION, opregion);
-     if (ret) {
-         error_setg_errno(errp, -ret,
-                          "Device does not supports IGD OpRegion feature");
-         return false;
-     }
- 
--    if (!vfio_pci_igd_opregion_init(vdev, opregion, errp)) {
--        return false;
--    }
--
-     return true;
- }
- 
-@@ -480,6 +477,7 @@ void vfio_probe_igd_bar0_quirk(VFIOPCIDevice *vdev, int nr)
- 
- static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
- {
-+    g_autofree struct vfio_region_info *opregion = NULL;
-     int ret, gen;
-     uint64_t gms_size;
-     uint64_t *bdsm_size;
-@@ -487,16 +485,17 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
-     bool legacy_mode_enabled = false;
-     Error *err = NULL;
- 
--    /*
--     * This must be an Intel VGA device at address 00:02.0 for us to even
--     * consider enabling legacy mode.  The vBIOS has dependencies on the
--     * PCI bus address.
--     */
-     if (!vfio_pci_is(vdev, PCI_VENDOR_ID_INTEL, PCI_ANY_ID) ||
-         !vfio_is_vga(vdev)) {
-         return true;
-     }
- 
-+    /* IGD device always comes with OpRegion */
-+    if (!vfio_pci_igd_opregion_detect(vdev, &opregion, errp)) {
-+        return true;
-+    }
-+    info_report("OpRegion detected on Intel display %x.", vdev->device_id);
-+
-     /*
-      * IGD is not a standard, they like to change their specs often.  We
-      * only attempt to support back to SandBridge and we hope that newer
-@@ -572,7 +571,7 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
- 
-     /* Setup OpRegion access */
-     if ((vdev->features & VFIO_FEATURE_ENABLE_IGD_OPREGION) &&
--        !vfio_pci_igd_setup_opregion(vdev, errp)) {
-+        !vfio_pci_igd_opregion_init(vdev, opregion, errp)) {
-         goto error;
-     }
- 
-@@ -672,8 +671,11 @@ error:
-  */
+@@ -672,6 +672,18 @@ error:
  static bool vfio_pci_kvmgt_config_quirk(VFIOPCIDevice *vdev, Error **errp)
  {
-+    g_autofree struct vfio_region_info *opregion = NULL;
+     g_autofree struct vfio_region_info *opregion = NULL;
++    int gen;
 +
-     if ((vdev->features & VFIO_FEATURE_ENABLE_IGD_OPREGION) &&
--        !vfio_pci_igd_setup_opregion(vdev, errp)) {
-+        (!vfio_pci_igd_opregion_detect(vdev, &opregion, errp) ||
-+         !vfio_pci_igd_opregion_init(vdev, opregion, errp))) {
-         return false;
-     }
++    if (!vfio_pci_is(vdev, PCI_VENDOR_ID_INTEL, PCI_ANY_ID) ||
++        !vfio_is_vga(vdev)) {
++        return true;
++    }
++
++    /* FIXME: Cherryview is Gen8, but don't support GVT-g */
++    gen = igd_gen(vdev);
++    if (gen != 8 && gen != 9) {
++        return true;
++    }
  
+     if ((vdev->features & VFIO_FEATURE_ENABLE_IGD_OPREGION) &&
+         (!vfio_pci_igd_opregion_detect(vdev, &opregion, errp) ||
 -- 
 2.49.0
 
