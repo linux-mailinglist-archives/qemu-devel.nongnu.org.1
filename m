@@ -2,124 +2,149 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51460AB0634
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 00:54:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E08FAB0760
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 03:09:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDA7X-0003so-14; Thu, 08 May 2025 18:53:39 -0400
+	id 1uDCDV-0001s6-Fk; Thu, 08 May 2025 21:07:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <i.maximets.ovn@gmail.com>)
- id 1uDA7Q-0003dS-RI
- for qemu-devel@nongnu.org; Thu, 08 May 2025 18:53:33 -0400
-Received: from mail-ed1-f67.google.com ([209.85.208.67])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <i.maximets.ovn@gmail.com>)
- id 1uDA7N-0006jy-Ue
- for qemu-devel@nongnu.org; Thu, 08 May 2025 18:53:32 -0400
-Received: by mail-ed1-f67.google.com with SMTP id
- 4fb4d7f45d1cf-5fbee929e83so2274059a12.3
- for <qemu-devel@nongnu.org>; Thu, 08 May 2025 15:53:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746744807; x=1747349607;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:to:subject:cc:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=g9e/fC6fU2lh9c7GzUuH09/jCREzNc81OgSNbCgdXcQ=;
- b=XfuokHB28v0+LMLlNsDd9L8AKnSNr3WmrNRsypYqUkJCCBPw2/acqdkCR3abwbSJ+z
- cne0mtsGsPGjK9c163/JBGACZ/a1vPjH3n8pDBsfDkXIn0oxeI9/Tpe4VEfPSCEAehLo
- tBfWA1UKrYg+iIg/9lEbEWqQVqWKvtmo/fC5kycnYmx/6T+i1dwAhVho5klDX4XXxcT+
- AfPmYdD57vKsdXYXY4JBlTl+SnmO/H9HPTvE7lL5OB+/ygfQ3x33lolqzdZuMs1jB/Gy
- H4bvunD8RdL49e9eOyOIV5Egq54NGXDvSww7h97Bl4eZ3gpOKLwIMCHz4ieJHxutos/P
- NdWA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCViOTTiXmWXfQgyaniWc9YORqNTZiDHXXbsGIJkiCQFsXWNVWby5z6rlhl2V2LAnRwSfLpuHa4dnHXo@nongnu.org
-X-Gm-Message-State: AOJu0YyiwnVAFI6zoB5XkMrrwCrAFipF4tRp0a8jsMqT3assqLFimDip
- 7v4KoVSL92aoqJ0YyXNAc459slNt4ggj+vsmtOgzVQ6xj7ye/pb+
-X-Gm-Gg: ASbGncsJczPbYHEKL7SMwHVZ/JzYA728voufzjKFmTezLyiZ9S8VzLknRtcHh+UPV6F
- aq0tJWqhNWsn4Sh5TQ6FHFjYyHoDDIqrpbvV7UYZPIu/YuOVcSN4AGWe+nvXvKqjv+3nYchNX1i
- Hv/v7l0+RfexcyLAPyfm2dbf7RBDUsD540XnnsjV6Fgl+IEFGEDF8d62xOdf9IR8ZVYbun6jZfs
- knnnb6uyxXd2YOdILzFu1rVJxlu+XjUeqp58vq38nf/V4La65h6E8A9Ge+Eq8gIduCNlfhVuksF
- 1v+wKlT1QbXoUVA4EpAoRbypx+94PdoN0zmqW2Z/Skchv+qjNQyQFFcTuyGvufEJi2QYdiHCT/I
- H4JEsbAw=
-X-Google-Smtp-Source: AGHT+IHJM+lCiZ2vhvVRIlbITWEf7Izk9/j7f3d0CGYn8KSO7+yyv6Rk8y/Svw2hv8VLqt6slfGo8g==
-X-Received: by 2002:a05:6402:13d4:b0:5fb:1eed:cdb1 with SMTP id
- 4fb4d7f45d1cf-5fca0793ecfmr823609a12.18.1746744807314; 
- Thu, 08 May 2025 15:53:27 -0700 (PDT)
-Received: from [192.168.88.252] (194-212-251-179.customers.tmcz.cz.
- [194.212.251.179]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5fc9cc261e9sm510663a12.23.2025.05.08.15.53.26
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 08 May 2025 15:53:27 -0700 (PDT)
-Message-ID: <f044b02b-3b7a-4a64-ab38-3298f96955a9@ovn.org>
-Date: Fri, 9 May 2025 00:53:25 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: i.maximets@ovn.org, Jason Wang <jasowang@redhat.com>,
- Anton Protopopov <aspsk@isovalent.com>
-Subject: Re: [PATCH] net/af-xdp: Support pinned map path for AF_XDP sockets
-To: Daniel Borkmann <daniel@iogearbox.net>, qemu-devel@nongnu.org
-References: <20250508123436.461030-1-daniel@iogearbox.net>
+ (Exim 4.90_1) (envelope-from <KFTING@nuvoton.com>)
+ id 1uDCDO-0001rL-KE; Thu, 08 May 2025 21:07:50 -0400
+Received: from mail-japaneastazlp170130007.outbound.protection.outlook.com
+ ([2a01:111:f403:c405::7] helo=TYDPR03CU002.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <KFTING@nuvoton.com>)
+ id 1uDCDM-0003Fh-A1; Thu, 08 May 2025 21:07:50 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PNK6zVRqk44905ae33u/M8PWQna4hQwOlwUArEauxuG44ujmyB5Bu34FDF+x1L4jfynD7G+Aj6s+MbUuV0MXRf3cvNJL8eBPQbKP4mw4IJCM40YNCwal42IWRe/PLDTnvZ2/hCTzuIj/hL+S0sxf0WfQ+RdpT/+cYYdX3jriDB8K1oQoaT2/5oD64Sccr9yL1/2gTVX4NjHg1/8TrmYM+VKEhULJFt3QA3hfXEyeEnSbkItj0uJyOBbdoaW0JGRDTs8GDBXdfWk8G+mQDGjssVWCSQg0unRivb6uaCfavXkqakVmO+Fpu0IPWVNYuWuHkIhONRfs0yx5ya2/DjICwg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wGNe1tOjU1MkpdrGEfM/CsPZU4C6RElvUMLww3wmWBk=;
+ b=chpmfGBTrGRQeO3lQLPnrsG3oya7qfKDmFKmAHN/katITDj9iCwQ+Hiayz4BPG7A5WhpGnSZWRYrePu7cZWdP7PSVNxDmGP/eSI/OFRz2bVb9tC0dnfgX5lmhfF0JsMkZmoFSZ5bCqUvxY2wpqPd73ja9kNuriJSHkFlODupyiZNNgMpqYn2yqKfNjMe/uZqkqhh2GISLRlW7H34358cGD4iqKPAotWoI5G1Eht13U6p2sOvEVpoqnUfcqbQpEuJeD6yKUJfeIcwyz9g9+75C2e61bI+9jzxdocJCBozGBCb5feeBwBXgdxO1rbHqbFqDdykDr9PQDawhiGlS1+uJw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nuvoton.com; dmarc=pass action=none header.from=nuvoton.com;
+ dkim=pass header.d=nuvoton.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nuvoton.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wGNe1tOjU1MkpdrGEfM/CsPZU4C6RElvUMLww3wmWBk=;
+ b=aUSHH9YtxACf8MxDSTl8VX46hfYbR4t4ygeI2EjmuUrzvhfAv3TRAOjggwZOF6CM11BxYjFbVn4IjnYXMga6k0DzYQ6DKJd29SNNcli/QIDzAplwp4T80Bp/UFrE4SFHlG9GG4iS3BT7PspTJFCwvwDBj3X1/N6j9TO6LlZUPzo=
+Received: from TYZPR03MB6896.apcprd03.prod.outlook.com (2603:1096:400:289::14)
+ by TYZPR03MB8190.apcprd03.prod.outlook.com (2603:1096:405:25::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.31; Fri, 9 May
+ 2025 01:07:40 +0000
+Received: from TYZPR03MB6896.apcprd03.prod.outlook.com
+ ([fe80::ac4e:718:3b03:3123]) by TYZPR03MB6896.apcprd03.prod.outlook.com
+ ([fe80::ac4e:718:3b03:3123%6]) with mapi id 15.20.8699.026; Fri, 9 May 2025
+ 01:07:39 +0000
+From: "KFTING@nuvoton.com" <KFTING@nuvoton.com>
+To: Tim Lee <timlee660101@gmail.com>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, "wuhaotsh@google.com" <wuhaotsh@google.com>,
+ "CHLI30@nuvoton.com" <CHLI30@nuvoton.com>
+CC: "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+Subject: RE: [v2] hw/arm/npcm8xx_boards: Add auto zero flash image and device
+ part number
+Thread-Topic: [v2] hw/arm/npcm8xx_boards: Add auto zero flash image and device
+ part number
+Thread-Index: AQHbv78SS00M65miW0SL9hgmvHv+lrPJfcbQ
+Date: Fri, 9 May 2025 01:07:39 +0000
+Message-ID: <TYZPR03MB6896AFFE1901AC461C4939AFDB8AA@TYZPR03MB6896.apcprd03.prod.outlook.com>
+References: <20250508021510.2959328-1-timlee660101@gmail.com>
+In-Reply-To: <20250508021510.2959328-1-timlee660101@gmail.com>
+Accept-Language: zh-TW, en-US
 Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <20250508123436.461030-1-daniel@iogearbox.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=209.85.208.67;
- envelope-from=i.maximets.ovn@gmail.com; helo=mail-ed1-f67.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H2=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nuvoton.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TYZPR03MB6896:EE_|TYZPR03MB8190:EE_
+x-ms-office365-filtering-correlation-id: a2e4d568-40f6-486d-95f4-08dd8e95e4c6
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|366016|376014|38070700018;
+x-microsoft-antispam-message-info: =?us-ascii?Q?WQQHeH1ExcbNqC9VHlYOQ9P2RBag9hQCp15f5eH++LsfL+q3rr6KENIqmZXT?=
+ =?us-ascii?Q?Cn6J+oOtW2RhjwlgWl2zOvAW3AkAXXcrzD7K1dtXPA1CuOKXcsP69YVYgGnf?=
+ =?us-ascii?Q?KAYUsAdhgkDOxEnvPx/jF3IoAadJG6ywDBVHR9VMPB+QwYDl3ycEjTi5nhQh?=
+ =?us-ascii?Q?2w87qGhh8xPfZiYcrTTuW9Wv2MOOYe0r60DTwSdFrYPZpBA4VRmB1ThQhCPe?=
+ =?us-ascii?Q?2hSW7WaTIuHs/U+Ba3LuZxGyIfn0xuh7robmZeichjYEfTBzQxV4o2BTK3eC?=
+ =?us-ascii?Q?Htcg/aaYC8FdsuZcn+XcHLf/oxbhkoW7hVT1UrJ3dQBQriyEcgAeRUjVNrwG?=
+ =?us-ascii?Q?kyR/5VHUpQ4+uE+zwtXvdtGE1wg1CThYbXM3BoJqeQvngqIG0Svw3Aeq+RUt?=
+ =?us-ascii?Q?uDaKHH8k3ijvIQnkIzvrrxVhdNKQh/cOqsWOOA+7D4M+NAbWuP+AjVNGSrWL?=
+ =?us-ascii?Q?wdjMVC/pjwuqVSg3ZOk0e75hdiSONlymH8HE9yL5cOUU+HmbhTEf0aCVivJZ?=
+ =?us-ascii?Q?iBIDbVmjf5iWCoqm8bz7Jjs+Cpot0S0ObuHYs6qPugLOcVDNC0Zqz4icuNCG?=
+ =?us-ascii?Q?xTQRkGZGbbI1eZOENMPlA8JGKQcU/MtS+KHLomgUVWzWXsAmpC2NhN4x+Jf6?=
+ =?us-ascii?Q?XiFjmCEZ5rK3+ugFmqXDlSDRgZJgRUzALdsJkQ6cAlsWkpFI6QU3DCUbAY6Z?=
+ =?us-ascii?Q?j1Vps8uhWufkZpzm29h1yRwwsilMLflWFva7iFklUbizQz0jRKrFnPofTbbs?=
+ =?us-ascii?Q?HL8o971lrW6hGFkbFy/u+gJMNichQCh0Q0lBGOKMORa0skIX6mOJMr/fIAKe?=
+ =?us-ascii?Q?yATtQeLt8EnkuHwkb0fzZ2I73OEq0ZVkRpVnQ+5WMw6KNj83H9po4aaJAtwH?=
+ =?us-ascii?Q?mbKybvYrMfzlt5qEGIfboe1Z6efEbqcmEswS3+LHl5GmAhaQ5bXTGymobggt?=
+ =?us-ascii?Q?2JluUJCD4D++ESuXg5xW2126BzSJ78qsAu4VbfvfVoRUkG0wSePmP+3dA4GD?=
+ =?us-ascii?Q?kC2fHwUxYYnvkbZLxLIPJsYbvcSE63t3dAReHLezlBUgrbLzSoV1eoRwLZVw?=
+ =?us-ascii?Q?+LkZrzt6jyTZngVs8+KHWcqGKAtps84YnZ4/vkYbE2JaMDh4kj2kd5UxrrC9?=
+ =?us-ascii?Q?plYCqap+Qz+k20cdtregtp2iHTLWAYE8iTEcfuAqoCDCTV7fXMB1kUmaRBck?=
+ =?us-ascii?Q?kk3FnPo57XydkCYef4rVaqGlJeWd1lvaXSzZCS9bGK2iTpuBwzDzJo87C3rM?=
+ =?us-ascii?Q?qqKgxoy2jLT8XgtBXwHhjYjneRrOuutt7tOL/ZYjn2B1YZgLyVvdoKFr0jlg?=
+ =?us-ascii?Q?i/7M6WlPawIpUIUyzosZvdMZIAfIPDZN+Z8ZDDXk8nosGNptQVDithB7iy5X?=
+ =?us-ascii?Q?MZYSvTowr18aQVNOLRMYnx9tkxMBkLpEN+aM87CcAP2WjUC08HMpnKeMoau0?=
+ =?us-ascii?Q?sqams5RwI1Vgs8zd+Zqcc/loDqCWmb03SRCQIUF16hhVQ3uzTXRlhw=3D=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:TYZPR03MB6896.apcprd03.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(38070700018); DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?XAV2R1PsbLJ/EVxSD7mGf5QeDRphsDnMu3Raj4eFStNkwihju3jQkKuqIhpU?=
+ =?us-ascii?Q?afMPSpaJmSLfWkNyTHn8WJkAIPQNCahUvJwOYivWF/53jtXJFV2WEJtrzE8g?=
+ =?us-ascii?Q?XNuWTK8nTvCuXHz+Wox3t70mVM8wX9PLPkN9YMEx8HwXSx4ospedG0p/1GYU?=
+ =?us-ascii?Q?cCM99rRNII/c+3DRTYUB4L69CouUbRxussqMOvgNw49glsAdRbgTU6eAqovi?=
+ =?us-ascii?Q?KccmO3T2AawHzF/KqDY5W6/y+waFPvtYAetOQmBZcVzqJHPdo8XyeE0wzpqC?=
+ =?us-ascii?Q?Qes2JtRQudSSR2pdrlR6Q6Ip7XVe9odvsF3pzzmdMndZgPLoHgdXN/otZ05N?=
+ =?us-ascii?Q?rozyFQSMtlzcOGIpbo+dfpxsRWqRKXGwVCVaBiLKS1XwgRE3zMG+oZhbEyVN?=
+ =?us-ascii?Q?0aiXvoTcvmC69bgZuukUCaejSRvVRNlhB+a4UFZ7xx186Z8n4ssvjVGM101p?=
+ =?us-ascii?Q?OXaga+3u/iuV2yOkh0wzUbe6gf8BxFl2VOB8pQHiNC7BwSbb4hQoVaw57fVz?=
+ =?us-ascii?Q?5jMfNtxV85W4/59ya6J1YY6zI0cUD3UxSPIupXk2vDvf9ENiPdjVIGI4x/A7?=
+ =?us-ascii?Q?m7YIoRSNMhrtQM0t28Asr+wVwmN6nvMqmUs1NxARJanQjfXGa3yITyyBIz0J?=
+ =?us-ascii?Q?oJYzQsMcL71j5Af7SStLkgTeybBgtgGH2cdzOjgXwi4WoNXCz0QzIQRPRBfN?=
+ =?us-ascii?Q?oTR4Wg86ehs8YM5+wuKgys+3B268iMqpGi9ySPaV8HaDR9/hBcqEEkWlluDt?=
+ =?us-ascii?Q?WmeEBET6TTPYN6YwMxQcefpc5JC+gEK/vI3D8peU2jAt1FFNmfwgaEUzKMaq?=
+ =?us-ascii?Q?DYi22Ev2bZFyYSXdZG9wCkRa+X8syXBsArk5W2L6NsZcKDas2PD+JgnRa/0y?=
+ =?us-ascii?Q?TdS/mXERXF+5/oxGKTObLu0Zqlse5mlggd0s/PJTliI2iyqbGb4cDKtNzJbJ?=
+ =?us-ascii?Q?bEefq/SkbQKOPqyIF8bX9Iq9eDDq9aNNDsq/TwBsDEAxBSxFLPr6GYyj9Ctx?=
+ =?us-ascii?Q?c63pI6SOQmNRnqNx6uw3Y8hE+1zluQFJOAnUDyulYsMsP23ZuKIMYtBUFIkl?=
+ =?us-ascii?Q?OQVuanZ2tWdAx+o7Vmv6gspJ8E0vN4LNtZzAVmgBA8hpEtkmo9HPkiFjLNv9?=
+ =?us-ascii?Q?9q1eb4WC0LyG4ng/hwKowMBWhxmxsieg347czbJWT5aAObp8x6t/x0CfoQwy?=
+ =?us-ascii?Q?EKgSEpsmPULoI09XWWKJZ4NQ5OJXV9lJuL7iNBl7zOFkIRMHBeG6TCZ68mhk?=
+ =?us-ascii?Q?J0TqQtIvb2R0FRnFIygiJUZ/W0g2C5v7KcYwqYjZh/vh5yhM2DEnSF9NjXwd?=
+ =?us-ascii?Q?ZkJ259pO/hjOAVqceWQep/uCbj5mdzzlh6p4LsxP15dE2mI0n0ee6Ve1JRMq?=
+ =?us-ascii?Q?eigMAdy/rKPLbv1fn9UxzR2wpmX2qYZg7ddjdcOTyXC3QH+UlQyGa24dBW7Y?=
+ =?us-ascii?Q?J6Bm45zjMkf2lycPCjR+2hYnkFEKFkzcsfL6ksE+B00GhPY3lVpH6XrRLs7S?=
+ =?us-ascii?Q?1BdN9a2nnZT5dyVcrNDmBU03fIUZKYktxXMQIN0WzO5X5ANak8+HghfduP2r?=
+ =?us-ascii?Q?enQeLKNqQ0dt5v86pX5YATaMqi7sr2eHc0uAXASc?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: nuvoton.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TYZPR03MB6896.apcprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a2e4d568-40f6-486d-95f4-08dd8e95e4c6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 May 2025 01:07:39.5343 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a3f24931-d403-4b4a-94f1-7d83ac638e07
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: yuzsaxoEOU8qg5yAsmI3oxZs1ZUk0LqV6Sa33MhfYA243/tP9ELYKtnw/g4omJt4GuvaL0GgfJcsYQ+GXlAgMA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR03MB8190
+Received-SPF: pass client-ip=2a01:111:f403:c405::7;
+ envelope-from=KFTING@nuvoton.com;
+ helo=TYDPR03CU002.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -136,235 +161,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/8/25 2:34 PM, Daniel Borkmann wrote:
-> Extend inhibit=on setting with the option to specify a pinned XSK map
-> path along with a starting index (default 0) to push the created XSK
-> sockets into. Example usage:
-> 
->   # ./build/qemu-system-x86_64 [...] \
->     -netdev af-xdp,ifname=eth0,id=net0,mode=native,queues=2,inhibit=on,map-path=/sys/fs/bpf/foo,map-start-index=2
->     -device virtio-net-pci,netdev=net0 [...]
-> 
-> This is useful for the case where an existing XDP program with XSK map
-> is present on the AF_XDP supported phys device and the XSK map not yet
-> populated. Qemu will then push the XSK sockets into the specified map.
+From: Tim Lee <timlee660101@gmail.com>
+Sent: Thursday, May 8, 2025 10:15 AM
+To: peter.maydell@linaro.org; wuhaotsh@google.com; CS20 KFTing <KFTING@nuvo=
+ton.com>; CS20 CHLi30 <CHLI30@nuvoton.com>
+Cc: qemu-arm@nongnu.org; qemu-devel@nongnu.org; Tim Lee <timlee660101@gmail=
+.com>
+Subject: [v2] hw/arm/npcm8xx_boards: Add auto zero flash image and device p=
+art number
 
-Hi, Daniel.
 
-Thanks for the patch!
+Fix flash device part number to `mx66l1g45g` according image-bmc run on npc=
+m8xx evb board (SPIFlash...SF: Detected mx66l1g45g, total 128 MiB)
 
-Could you, please, explain the use case a little more?  Is this patch
-aiming to improve usability?  Do you have a specific use case in mind?
+And add auto zero flash image size to resolve error below after executing
+`./qemu-system-aarch64 -machine npcm845-evb -drive file=3Dimage-bmc`
 
-The main idea behind 'inhibit' is that the qemu doesn't need to have a lot
-of privileges to use the pre-loaded program and the pre-created sockets.
-But creating the sockets and setting them into a map doesn't allow us to
-run without privileges, IIUC.  May be worth mentioning at least in the
-commit message.
+Error message:
+qemu-system-aarch64: mx66l1g45g device '/machine/unattached/device[73]'
+requires 134217728 bytes, mtd0 block backend provides 67108864 bytes
 
-Also, isn't map-start-index the same thing as start-queue ?  Do we need
-both of them?
+Tested:
+Build passes and runs ./qemu-system-aarch64 -machine npcm845-evb normally
 
-I didn't read much into the code yet, but this patch is missing a few
-bits of documentation, e.g. it's missing an update for qemu-options.hx.
+Signed-off-by: Tim Lee <timlee660101@gmail.com>
+---
+Changes since v1:
+- Add a statement that checks whether the storage is writable
 
-See a few other quick comment below.
+ hw/arm/npcm8xx_boards.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-Best regards, Ilya Maximets.
+diff --git a/hw/arm/npcm8xx_boards.c b/hw/arm/npcm8xx_boards.c index 3fb847=
+8e72..79295a586c 100644
+--- a/hw/arm/npcm8xx_boards.c
++++ b/hw/arm/npcm8xx_boards.c
+@@ -27,6 +27,7 @@
+ #include "qemu/error-report.h"
+ #include "qemu/datadir.h"
+ #include "qemu/units.h"
++#include "system/block-backend.h"
 
-> 
-> Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-> Cc: Ilya Maximets <i.maximets@ovn.org>
-> Cc: Jason Wang <jasowang@redhat.com>
-> Cc: Anton Protopopov <aspsk@isovalent.com>
-> ---
->  net/af-xdp.c  | 63 +++++++++++++++++++++++++++++++++++++++++++++------
->  qapi/net.json | 24 +++++++++++++-------
->  2 files changed, 72 insertions(+), 15 deletions(-)
-> 
-> diff --git a/net/af-xdp.c b/net/af-xdp.c
-> index 01c5fb914e..ddc52f1307 100644
-> --- a/net/af-xdp.c
-> +++ b/net/af-xdp.c
-> @@ -51,6 +51,8 @@ typedef struct AFXDPState {
->  
->      uint32_t             n_queues;
->      uint32_t             xdp_flags;
-> +    char                 *map_path;
-> +    uint32_t             map_start_index;
->      bool                 inhibit;
->  } AFXDPState;
->  
-> @@ -261,6 +263,7 @@ static void af_xdp_send(void *opaque)
->  static void af_xdp_cleanup(NetClientState *nc)
->  {
->      AFXDPState *s = DO_UPCAST(AFXDPState, nc, nc);
-> +    int pin_fd, idx;
->  
->      qemu_purge_queued_packets(nc);
->  
-> @@ -282,6 +285,22 @@ static void af_xdp_cleanup(NetClientState *nc)
->                  "af-xdp: unable to remove XDP program from '%s', ifindex: %d\n",
->                  s->ifname, s->ifindex);
->      }
-> +    if (s->map_path) {
-> +        pin_fd = bpf_obj_get(s->map_path);
-> +        if (pin_fd < 0) {
-> +            fprintf(stderr,
-> +                "af-xdp: unable to remove %s's XSK sockets from '%s', ifindex: %d\n",
-> +                s->ifname, s->map_path, s->ifindex);
-> +        } else {
-> +            idx = nc->queue_index;
-> +            if (s->map_start_index > 0) {
-> +                idx += s->map_start_index;
-> +            }
-> +            bpf_map_delete_elem(pin_fd, &idx);
-> +            close(pin_fd);
-> +        }
-> +    }
-> +    g_free(s->map_path);
->  }
->  
->  static int af_xdp_umem_create(AFXDPState *s, int sock_fd, Error **errp)
-> @@ -343,7 +362,7 @@ static int af_xdp_socket_create(AFXDPState *s,
->          .bind_flags = XDP_USE_NEED_WAKEUP,
->          .xdp_flags = XDP_FLAGS_UPDATE_IF_NOEXIST,
->      };
-> -    int queue_id, error = 0;
-> +    int queue_id, pin_fd, xsk_fd, idx, error = 0;
->  
->      s->inhibit = opts->has_inhibit && opts->inhibit;
->      if (s->inhibit) {
-> @@ -384,6 +403,23 @@ static int af_xdp_socket_create(AFXDPState *s,
->          }
->      }
->  
-> +    if (!error && s->map_path) {
-> +        pin_fd = bpf_obj_get(s->map_path);
-> +        if (pin_fd < 0) {
-> +            error = errno;
-> +        } else {
-> +	    xsk_fd = xsk_socket__fd(s->xsk);
+ #define NPCM845_EVB_POWER_ON_STRAPS 0x000017ff
 
-Indentation is off.  Tbas mixed with spaces here and in some other
-places in the patch.
+@@ -59,10 +60,26 @@ static void npcm8xx_connect_flash(NPCM7xxFIUState *fiu,=
+ int cs_no,  {
+     DeviceState *flash;
+     qemu_irq flash_cs;
++    BlockBackend *blk;
++    BlockDriverState *bs;
++    uint64_t blk_size, perm, shared_perm;
 
-> +            idx = s->nc.queue_index;
-> +            if (s->map_start_index) {
-> +                idx += s->map_start_index;
-> +            }
-> +            if (bpf_map_update_elem(pin_fd, &idx, &xsk_fd, 0)) {
-> +                error = errno;
-> +            }
-> +            close(pin_fd);
-> +        }
-> +    }
-> +
->      if (error) {
->          error_setg_errno(errp, error,
->                           "failed to create AF_XDP socket for %s queue_id: %d",
-> @@ -465,8 +501,8 @@ int net_init_af_xdp(const Netdev *netdev,
->          return -1;
->      }
->  
-> -    if ((opts->has_inhibit && opts->inhibit) != !!opts->sock_fds) {
-> -        error_setg(errp, "'inhibit=on' requires 'sock-fds' and vice versa");
-> +    if ((opts->has_inhibit && opts->inhibit) != !!(opts->sock_fds || opts->map_path)) {
-> +        error_setg(errp, "'inhibit=on' requires 'sock-fds' or 'map-path' and vice versa");
+     flash =3D qdev_new(flash_type);
+     if (dinfo) {
+         qdev_prop_set_drive(flash, "drive", blk_by_legacy_dinfo(dinfo));
++        blk =3D blk_by_legacy_dinfo(dinfo);
++        bs =3D blk_bs(blk);
++        blk_size =3D blk_getlength(blk);
++
++        if (!bdrv_is_read_only(bs)) {
++            if (blk_size < fiu->flash_size) {
++                blk_get_perm(blk, &perm, &shared_perm);
++                blk_set_perm(blk, BLK_PERM_ALL, BLK_PERM_ALL, &error_abort=
+);
++                blk_truncate(blk, fiu->flash_size, true, PREALLOC_MODE_OFF=
+,
++                             BDRV_REQ_ZERO_WRITE, &error_abort);
++                blk_set_perm(blk, perm, shared_perm, &error_abort);
++            }
++        }
+     }
+     qdev_realize_and_unref(flash, BUS(fiu->spi), &error_fatal);
 
-This may need some re-wording as 'A requires B or C or vice versa' is
-a little hard to understand.
+@@ -194,7 +211,8 @@ static void npcm845_evb_init(MachineState *machine)
+     qdev_realize(DEVICE(soc), NULL, &error_fatal);
 
->          return -1;
->      }
->  
-> @@ -491,6 +527,12 @@ int net_init_af_xdp(const Netdev *netdev,
->          pstrcpy(s->ifname, sizeof(s->ifname), opts->ifname);
->          s->ifindex = ifindex;
->          s->n_queues = queues;
-> +        if (opts->map_path) {
-> +            s->map_path = g_strdup(opts->map_path);
-> +            if (opts->has_map_start_index && opts->map_start_index > 0) {
-> +                s->map_start_index = opts->map_start_index;
-> +            }
-> +        }
->  
->          if (af_xdp_umem_create(s, sock_fds ? sock_fds[i] : -1, errp)
->              || af_xdp_socket_create(s, opts, errp)) {
-> @@ -504,10 +546,17 @@ int net_init_af_xdp(const Netdev *netdev,
->      if (nc0) {
->          s = DO_UPCAST(AFXDPState, nc, nc0);
->          if (bpf_xdp_query_id(s->ifindex, s->xdp_flags, &prog_id) || !prog_id) {
-> -            error_setg_errno(errp, errno,
-> -                             "no XDP program loaded on '%s', ifindex: %d",
-> -                             s->ifname, s->ifindex);
-> -            goto err;
-> +            if (!s->map_path) {
-> +                error_setg_errno(errp, errno,
-> +                                 "no XDP program loaded on '%s', ifindex: %d",
-> +                                 s->ifname, s->ifindex);
-> +                goto err;
-> +	    } else {
-> +                warn_report("no XDP program loaded on '%s', ifindex: %d, "
-> +			    "only %"PRIi64" XSK socket%s loaded into map %s at this point",
-> +			    s->ifname, s->ifindex, queues, queues > 1 ? "s" : "",
-> +			    s->map_path);
+     npcm8xx_load_bootrom(machine, soc);
+-    npcm8xx_connect_flash(&soc->fiu[0], 0, "w25q256", drive_get(IF_MTD, 0,=
+ 0));
++    npcm8xx_connect_flash(&soc->fiu[0], 0, "mx66l1g45g",
++                          drive_get(IF_MTD, 0, 0));
+     npcm845_evb_i2c_init(soc);
+     npcm845_evb_fan_init(NPCM8XX_MACHINE(machine), soc);
+     npcm8xx_load_kernel(machine, soc);
+--
+2.34.1
 
-How a missing program is not an error?  Seems strange.
-
-> +            }
->          }
->      }
->  
-> diff --git a/qapi/net.json b/qapi/net.json
-> index 310cc4fd19..c750b805e8 100644
-> --- a/qapi/net.json
-> +++ b/qapi/net.json
-> @@ -454,7 +454,7 @@
->  #     (default: 0).
->  #
->  # @inhibit: Don't load a default XDP program, use one already loaded
-> -#     to the interface (default: false).  Requires @sock-fds.
-> +#     to the interface (default: false).  Requires @sock-fds or @map-path.
->  #
->  # @sock-fds: A colon (:) separated list of file descriptors for
->  #     already open but not bound AF_XDP sockets in the queue order.
-> @@ -462,17 +462,25 @@
->  #     into XDP socket map for corresponding queues.  Requires
->  #     @inhibit.
->  #
-> +# @map-path: The path to a pinned xsk map to push file descriptors
-> +#     for bound AF_XDP sockets into. Requires @inhibit.
-> +#
-> +# @map-start-index: Use @map-path to insert xsk sockets starting from
-> +#     this index number (default: 0). Requires @map-path.
-
-These are new fields that do not exist in the older versions, so
-they will need their own 'since' qualifiers.
-
-> +#
->  # Since: 8.2
->  ##
->  { 'struct': 'NetdevAFXDPOptions',
->    'data': {
-> -    'ifname':       'str',
-> -    '*mode':        'AFXDPMode',
-> -    '*force-copy':  'bool',
-> -    '*queues':      'int',
-> -    '*start-queue': 'int',
-> -    '*inhibit':     'bool',
-> -    '*sock-fds':    'str' },
-> +    'ifname':           'str',
-> +    '*mode':            'AFXDPMode',
-> +    '*force-copy':      'bool',
-> +    '*queues':          'int',
-> +    '*start-queue':     'int',
-> +    '*inhibit':         'bool',
-> +    '*sock-fds':        'str',
-> +    '*map-path':        'str',
-> +    '*map-start-index': 'int' },
->    'if': 'CONFIG_AF_XDP' }
->  
->  ##
-
+Reviewed-by: Tyrone Ting <kfting@nuvoton.com>
+________________________________
+________________________________
+ The privileged confidential information contained in this email is intende=
+d for use only by the addressees as indicated by the original sender of thi=
+s email. If you are not the addressee indicated in this email or are not re=
+sponsible for delivery of the email to such a person, please kindly reply t=
+o the sender indicating this fact and delete all copies of it from your com=
+puter and network server immediately. Your cooperation is highly appreciate=
+d. It is advised that any unauthorized use of confidential information of N=
+uvoton is strictly prohibited; and any information in this email irrelevant=
+ to the official business of Nuvoton shall be deemed as neither given nor e=
+ndorsed by Nuvoton.
 
