@@ -2,119 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C7E1AB1EE2
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 23:19:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC7B2AB1FA1
+	for <lists+qemu-devel@lfdr.de>; Sat, 10 May 2025 00:06:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDV7H-0004ti-62; Fri, 09 May 2025 17:18:47 -0400
+	id 1uDVqC-0003Yn-Ju; Fri, 09 May 2025 18:05:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uDV7C-0004tP-Px
- for qemu-devel@nongnu.org; Fri, 09 May 2025 17:18:43 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uDV7B-0004Ki-3Y
- for qemu-devel@nongnu.org; Fri, 09 May 2025 17:18:42 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 94C8421172;
- Fri,  9 May 2025 21:18:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1746825511; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uDVq4-0003Pi-1d
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 18:05:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uDVq1-0001Cy-5c
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 18:05:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1746828299;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=kzR+LOf8Lq0PribY6vuOyjE5WquQhVAel4jTNq9tMRA=;
- b=MP955axpTYUJ8iNStPU8bBFzqGi/Kq2UDX5XDCazaUsRcgbRaAGp1ZBoVLy54UgtdeDP9J
- EopBQW+G6ZuLomsfcUMuSTavWV7qnOW3QA3BaNA2h0PsQKpDsnCxrxpGxE3c8ltsKfs3Ou
- ZVOO9QJs8lbJ1/faTFDawR5QAUK245k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1746825511;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kzR+LOf8Lq0PribY6vuOyjE5WquQhVAel4jTNq9tMRA=;
- b=jZIBIweLy6SjAgjtjTavPUADHyLvG13WRSiD//64wbpgsEB2aAeWzhQdkX+qzcHMn3U+iz
- TLwF2Q9jo1846NAQ==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=MP955axp;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jZIBIweL
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1746825511; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kzR+LOf8Lq0PribY6vuOyjE5WquQhVAel4jTNq9tMRA=;
- b=MP955axpTYUJ8iNStPU8bBFzqGi/Kq2UDX5XDCazaUsRcgbRaAGp1ZBoVLy54UgtdeDP9J
- EopBQW+G6ZuLomsfcUMuSTavWV7qnOW3QA3BaNA2h0PsQKpDsnCxrxpGxE3c8ltsKfs3Ou
- ZVOO9QJs8lbJ1/faTFDawR5QAUK245k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1746825511;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kzR+LOf8Lq0PribY6vuOyjE5WquQhVAel4jTNq9tMRA=;
- b=jZIBIweLy6SjAgjtjTavPUADHyLvG13WRSiD//64wbpgsEB2aAeWzhQdkX+qzcHMn3U+iz
- TLwF2Q9jo1846NAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3783E13931;
- Fri,  9 May 2025 21:18:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id QLUIOSVxHmjkNwAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 09 May 2025 21:18:29 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: Bibo Mao <maobibo@loongson.cn>,
-	Thomas Huth <thuth@redhat.com>
-Subject: [PULL 3/3] tests/qtest/cpu-plug-test: Add cpu hotplug support for
- LoongArch
-Date: Fri,  9 May 2025 18:18:21 -0300
-Message-Id: <20250509211821.23684-4-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20250509211821.23684-1-farosas@suse.de>
-References: <20250509211821.23684-1-farosas@suse.de>
+ bh=Z6LuaFaZgXuWiIhpkLgPcqYZV30Fra1paV1GNpnnc54=;
+ b=AOzww9+Ob6EupQX4oGcxNWR5N4W7rdHL7XBsr/ZaaiL6zztGLnTo9OsbYKcHTscGgBXcI8
+ w25rlmUfQoKVhny9KBGtvgGuxJzwmoZcxgdoETbXcEGRGUCD0/zqyXulej09kaS8+IxrJ+
+ tc3atRJo7zSUcKQ0AlgNsOnZ2QwXc38=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-543-Cbt-p4A1NUqvqDKV0Ajhig-1; Fri, 09 May 2025 18:04:57 -0400
+X-MC-Unique: Cbt-p4A1NUqvqDKV0Ajhig-1
+X-Mimecast-MFC-AGG-ID: Cbt-p4A1NUqvqDKV0Ajhig_1746828297
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-7c5c82c6d72so453480885a.2
+ for <qemu-devel@nongnu.org>; Fri, 09 May 2025 15:04:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1746828297; x=1747433097;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Z6LuaFaZgXuWiIhpkLgPcqYZV30Fra1paV1GNpnnc54=;
+ b=JqRcrEwK0Tt1mKCwVpLYcXtvoL7nmHQ3UDrFJACiTebecKprYMlRW65+VkqgcJrIa7
+ qWuGD1xXJfAryKZePIUrXwPqpv5R5HnpT363BJk7P5LYIBUTOImXFp1Yco2tdW3U9jD2
+ jyU8poIymuA7rBKwenkA+W6zrTo5Q9/FJqRWo0OvK3RYMVVQhI8NmT37eR2GSFrY7Dq+
+ prUYXcOwanWVXZVb9mTnMiGrwe0DTU5S9Ifiuz5+Ym1OzM6Tr8QEehvmXuJd4lJ+ju9Z
+ IzWxVb900N/f4X9SLDtwwr9frGgH+mo6lX4CSJQNodT76VXWKHjb+MzjSKDvfcSil3DL
+ Tk2g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW8hvJk0RJp22Udcy63VDVOJ6tqZZGSS42NEszebc7ikPNnfDccX9aiF/eedoX/O3PcuZcXrN5wiScP@nongnu.org
+X-Gm-Message-State: AOJu0YykhJbotzBdQJe1VVC8xAzyqFv/1kIrO0TSEy/GKAXF6cdYmmv2
+ 4HL4P07ollCbHDuP1C0j7lq4D0pN0CgTwNhad3AmrC5RtY9nKH2Jpx6NgK7FrGv0L5TYnialqo2
+ zMTTJQ8oyxyKzt2dm5N8JaMp1/nq/eyHVWgoGcS4v4xTIFPEcawnT
+X-Gm-Gg: ASbGnctqZ1wk+YkaTLf3mzZBPMYtMrRZ5HrGRGNFMMFPsoMLxYJjRGb6YYHKPZ9ANc2
+ leIhpcEh9RQaAEA/8lLeizaLNy1PuWYEZo43Fhcg6/b3hBLGG9XN6+VHKdbbpEMT1N5+LwvC7lg
+ rJg529cR0TW7LTp4cifhsTepvQC5WRVAMXOEDF3niY3w9hfLGUCGh9jWKXul7K3C3B/rAkoW4s+
+ /2vKTAamQZHR0cKgSe4j9bb9tiXCVL3v7FXJuzc6gJVoK6a4uOZcI9VVvp4xw9h4hlf1Gz00xP1
+ KBo=
+X-Received: by 2002:a05:620a:4556:b0:7ca:bdbe:c5af with SMTP id
+ af79cd13be357-7cd010f3f30mr714956885a.10.1746828297378; 
+ Fri, 09 May 2025 15:04:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEyFmF0HAqsMoNaOEkV/cE6s0zGTKUms3DPBhuCBMew07wj+WrRon5Wmnt3DjN5l+zMSXg2mA==
+X-Received: by 2002:a05:620a:4556:b0:7ca:bdbe:c5af with SMTP id
+ af79cd13be357-7cd010f3f30mr714953485a.10.1746828297007; 
+ Fri, 09 May 2025 15:04:57 -0700 (PDT)
+Received: from x1.local ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7cd00f63ba2sm193642885a.44.2025.05.09.15.04.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 09 May 2025 15:04:56 -0700 (PDT)
+Date: Fri, 9 May 2025 18:04:53 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Marco Cavenati <Marco.Cavenati@eurecom.fr>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ Prasad Pandit <ppandit@redhat.com>
+Subject: Re: [PATCH] migration: add FEATURE_SEEKABLE to QIOChannelBlock
+Message-ID: <aB58BQQ12aosCalh@x1.local>
+References: <87ecxyhon3.fsf@suse.de> <7cd3c-67fe3180-3d9-10622a60@195384178>
+ <87plhdfs9o.fsf@suse.de> <7cd3c-6800c580-4b5-10622a60@195456151>
+ <871ptqg6u9.fsf@suse.de> <151d8c-680a4080-15-6f9ea10@196998929>
+ <aB0Swile4IjxTUsd@x1.local>
+ <193e5a-681dfa80-3af-701c0f80@227192887>
+ <aB4rhlVGCSk7IwoE@x1.local>
+ <1b54a0-681e7080-273-3299e580@146025174>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 94C8421172
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; MIME_TRACE(0.00)[0:+];
- FUZZY_BLOCKED(0.00)[rspamd.com];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- ARC_NA(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
- TO_DN_SOME(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- DKIM_TRACE(0.00)[suse.de:+];
- DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
- ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,suse.de:dkim]
-X-Spam-Score: -3.01
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1b54a0-681e7080-273-3299e580@146025174>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.413,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -130,78 +111,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bibo Mao <maobibo@loongson.cn>
+On Fri, May 09, 2025 at 11:14:41PM +0200, Marco Cavenati wrote:
+> On Friday, May 09, 2025 18:21 CEST, Peter Xu <peterx@redhat.com> wrote:
+>  
+> > So you don't really need to take sequence of snapshots?  Hmm, that sounds
+> > like a completely different use case that I originally thought.
+> 
+> Correct
+> 
+> > Have you thought of leveraging ignore-shared and MAP_PRIVATE for the major
+> > chunk of guest mem?
+> > 
+> > Let me explain; it's a very rough idea, but maybe you can collect something
+> > useful.
+> > 
+> > So.. if you keep reloading one VM state thousands of times, it's better
+> > first that you have some shmem file (let's imagine that's enough.. you
+> > could have more backends) keeping the major chunk of the VM RAM image that
+> > you migrated before into a file.
+> > 
+> > Say, the major part of guest mem is stored here:
+> > 
+> >   PATH_RAM=/dev/shm/XXX
+> > 
+> > Then you migrate (with ignore-shared=on) to a file here (NOTE: I _think_
+> > you really can use file migration in this case with VM stopped first, not
+> > snapshot save/load):
+> > 
+> >   PATH_VM_IMAGE=/tmp/VM_IMAGE_YYY
+> > 
+> > Then, the two files above should contain all info you need to start a new
+> > VM.
+> > 
+> > When you want to recover that VM state, boot a VM using this cmdline:
+> > 
+> >   $qemu ... \
+> >   -object memory-backend-file,mem-path=$PATH_RAM,share=off
+> >   -incoming file:$PATH_VM_IMAGE
+> > 
+> > That'll boot a VM, directly loading the shmem page cache (always present on
+> > the host, occupying RAM, though, outside of VM lifecycle, but it's part of
+> > the design..), loading VM image would be lightning fast because it's tiny
+> > when there's almost no RAM inside.  No concern on mapped-ram at all as the
+> > rest RAMs are too trivial to just be a stream.
+> > 
+> > The important bit is share=off - that will mmap() the VM major RAM as
+> > MAP_PRIVATE, then it'll do CoW on the "snapshot" you made before, whenever
+> > you writes to some guest pages during fuzzing some functions, it copies the
+> > shmem page cache over.  shmem page cache should never change its content.
+> > 
+> > Sounds working to you?
+> 
+> I didn't know much about these options, cool, thanks for the explanation.
+> 
+> My only concern is that I'd have to restart the QEMU process for each iteration.
+> Honestly I've never measured the impact it would have but I fear that it would 
+> be noticeable since the goal is to restore many times a second. What do you
+> think?
 
-Add cpu hotplug testcase support for LoongArch system, it passes to
-run with command "make check-qtest-loongarch64" as following:
-  qemu:qtest+qtest-loongarch64 / qtest-loongarch64/cpu-plug-test OK 0.38s 1 subtests passed
+It may depends on how "many times" are defined. :) IIUC, booting QEMU could
+still be pretty fast, but yes, worth measuring.
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20250314085130.4184272-1-maobibo@loongson.cn>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- tests/qtest/cpu-plug-test.c | 24 ++++++++++++++++++++++++
- tests/qtest/meson.build     |  3 ++-
- 2 files changed, 26 insertions(+), 1 deletion(-)
+If that works at least functionally (which also needs some double checking
+I guess..), it would be great if you would compare the perf difference
+v.s. your solution, that'll be very helpful material for reviewers to read
+when/if you're going to propose the feature.
 
-diff --git a/tests/qtest/cpu-plug-test.c b/tests/qtest/cpu-plug-test.c
-index 6633abfc10..44d704680b 100644
---- a/tests/qtest/cpu-plug-test.c
-+++ b/tests/qtest/cpu-plug-test.c
-@@ -156,6 +156,28 @@ static void add_s390x_test_case(const char *mname)
-     g_free(path);
- }
- 
-+static void add_loongarch_test_case(const char *mname)
-+{
-+    char *path;
-+    PlugTestData *data;
-+
-+    data = g_new(PlugTestData, 1);
-+    data->machine = g_strdup(mname);
-+    data->cpu_model = "la464";
-+    data->device_model = g_strdup("la464-loongarch-cpu");
-+    data->sockets = 1;
-+    data->cores = 3;
-+    data->threads = 1;
-+    data->maxcpus = data->sockets * data->cores * data->threads;
-+
-+    path = g_strdup_printf("cpu-plug/%s/device-add/%ux%ux%u&maxcpus=%u",
-+                           mname, data->sockets, data->cores,
-+                           data->threads, data->maxcpus);
-+    qtest_add_data_func_full(path, data, test_plug_with_device_add,
-+                             test_data_free);
-+    g_free(path);
-+}
-+
- int main(int argc, char **argv)
- {
-     const char *arch = qtest_get_arch();
-@@ -168,6 +190,8 @@ int main(int argc, char **argv)
-         qtest_cb_for_every_machine(add_pseries_test_case, g_test_quick());
-     } else if (g_str_equal(arch, "s390x")) {
-         qtest_cb_for_every_machine(add_s390x_test_case, g_test_quick());
-+    } else if (g_str_equal(arch, "loongarch64")) {
-+        add_loongarch_test_case("virt");
-     }
- 
-     return g_test_run();
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 3136d15e0f..7daf619845 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -148,7 +148,8 @@ qtests_hppa = \
- 
- qtests_loongarch64 = qtests_filter + \
-   (config_all_devices.has_key('CONFIG_LOONGARCH_VIRT') ? ['numa-test'] : []) + \
--  ['boot-serial-test']
-+  ['boot-serial-test',
-+   'cpu-plug-test']
- 
- qtests_m68k = ['boot-serial-test'] + \
-   qtests_filter
+> (Also, snapshots conveniently take care of the disk as well, but this shouldn't 
+> be too big of a deal.)
+
+True, I didn't take disks into consideration.  Maybe disk files can be
+snapshotted and recovered separately using either qcow2's snapshots, or
+using snapshots on modern file systems like btrfs.  Good to know you seem
+to have ways to work it out in all cases.
+
 -- 
-2.35.3
+Peter Xu
 
 
