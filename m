@@ -2,89 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9E52AB0A43
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 08:06:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1EE8AB0A85
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 08:22:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDGqk-0004oN-13; Fri, 09 May 2025 02:04:46 -0400
+	id 1uDH77-0007t1-BS; Fri, 09 May 2025 02:21:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1uDGqV-0004je-D3
- for qemu-devel@nongnu.org; Fri, 09 May 2025 02:04:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1uDH6z-0007sR-G6
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 02:21:35 -0400
+Received: from mgamail.intel.com ([198.175.65.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1uDGqT-0003Dy-LB
- for qemu-devel@nongnu.org; Fri, 09 May 2025 02:04:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746770667;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=HjAoYaLhZpqMCjPL/iLBw0WthQv1l6BPcZV2ENe3NGs=;
- b=IEjFhksvYv83gSQeHzLPec5M/trpwef7gAHLdUmYG0vL7x7i94htu2+317atk3/8duV2/E
- c+pZSi9B/rAqdL3//TRuivy1YAgpwVET2EWWTPFjgCXRqV/ivoHnS5PwujI2NuBjRJlM32
- HufzrdHt7KCpe+T5nwwZNgEBvWSfo4o=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-517-FJs8mqSDP7mbEuVD9qPpgw-1; Fri, 09 May 2025 02:04:25 -0400
-X-MC-Unique: FJs8mqSDP7mbEuVD9qPpgw-1
-X-Mimecast-MFC-AGG-ID: FJs8mqSDP7mbEuVD9qPpgw_1746770664
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-44059976a1fso6225465e9.1
- for <qemu-devel@nongnu.org>; Thu, 08 May 2025 23:04:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746770664; x=1747375464;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=HjAoYaLhZpqMCjPL/iLBw0WthQv1l6BPcZV2ENe3NGs=;
- b=b/cSkOPfNLNZRytskeT/5YKd2ARtCSEHbBLC1F5JNC7HXQPPmr1qO2f71Jh0Zn0mHL
- fk2RTQKed3kskZo3Qdzqd29Vh9FqkcZCxykIk39cgKZRjxPbh7AC/1RRQBTVfUYDlVYm
- uGbHiG/E23SRZXSYqn2AzeHNIiE92Piu2OOyamCaq5z03NlNdmNXSWxgA56zKFoJNPzc
- TuMyOGuTkkDNISjpziVMsZeT+sWE4PQH2kVayMX8TXNFZqa71CkDWn3Ppc7P1rfrJEEO
- 8GuGmt47ok85Cd/teOUtPnyVYUYCwKA8pKCENHaQiIxtqhn+nQkLEuVFkAPQEApt0YuW
- eX4g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWRMpps+jL3rTfRL2mVjiKxmZPrGOLb2Ra2BZfUZfYIMxwPLK/3y2RmTsriJGCujGQLjNv71sjaL/j5@nongnu.org
-X-Gm-Message-State: AOJu0YyBYSP6k91JWp4qU6eNw3+vs/97Qsn8O6UPX1qajjafcqMmzqqq
- 0ncItHB1luPGYbolFDmOjyK2UGP9Ym3ZAR2hAJgEcViM1D8oRzay/xSbG0MH2Yabf2LRub7g+Jl
- br7xhtAjtF6+88OIJBBOxdM0Lhr2xRu0SY68zSrTIS3fYtG9N5u1v8fh1P6GO15qLC640Q7on2c
- TBSYBrTlJW97IY/a0L/bKw4E0pKIc=
-X-Gm-Gg: ASbGncv0ApxIKHEjD0YhJVS1xAe2CtT2kg6Tn42lL1v5PLxaCzfDg/r6w9poSUYPqHp
- /SjQEM/YG5/E1wuwiy22utl180xZ+w6PDSPGrKVA6gsQXGe6ct7hRQTbIuESCCzodQRRbVVc=
-X-Received: by 2002:a05:600c:3c87:b0:43c:e9f7:d6a3 with SMTP id
- 5b1f17b1804b1-442d6d44d1cmr16882115e9.13.1746770663765; 
- Thu, 08 May 2025 23:04:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHR7udclj5IOldEE0yngowZHah6KJ2dOvJvq0k/U7eo49EZIG/L9oFPoAu5zv9FHAzKbhGNvdMsFsDTAD/EGOs=
-X-Received: by 2002:a05:600c:3c87:b0:43c:e9f7:d6a3 with SMTP id
- 5b1f17b1804b1-442d6d44d1cmr16881845e9.13.1746770663392; Thu, 08 May 2025
- 23:04:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1uDH6x-0005Ak-EU
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 02:21:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1746771691; x=1778307691;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=jRUZzy/hdvsaJ7n/Y9b2uRRC/3g/EzCJMvS+AN5xPOc=;
+ b=K+sJ/9SxuciJp/4QhGgbM24mR6xBVaEvRRBwhXs6vIsx2qGjz545nYHN
+ r3uUPBwTmeOCwhF/IZtmserL0v+GRYQGrJoVmDMvv5U7+d/enEKaYZCox
+ FnMme1MwImO0ZOg4j7qAZqvGuoStSDy9DJBXW8uinIyDaA/V/aH+yFagB
+ +X0d+/BxGNRbMObk4dlvbUdWQSS5vZtyyde3y7gfnVVerL+UojVhblcHu
+ wuAPgsD7krqLUvKYmyylrHIqPURtCqEQQ2ttDwa5HD9hQYJo0oCKbFf2v
+ 8AWygYMJMSKyOtCxwyKUQHu77j/47sQbQEOuNX05Tq2RujWIfbIRn4DtJ A==;
+X-CSE-ConnectionGUID: sWbLp3L3Q9+Tlw7QQc8cRw==
+X-CSE-MsgGUID: S/yOvYn6Q/eeSY3Vj/8Z6g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="59989669"
+X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; d="scan'208";a="59989669"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 May 2025 23:21:28 -0700
+X-CSE-ConnectionGUID: Ofn2lzZERguaK2Pli/8GGg==
+X-CSE-MsgGUID: leDuIIUmThi90JuIFA4hVw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; d="scan'208";a="141296842"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
+ ([10.124.247.1])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 May 2025 23:21:24 -0700
+Message-ID: <13e47cae-8519-4e08-9530-87a48201ed2e@intel.com>
+Date: Fri, 9 May 2025 14:21:21 +0800
 MIME-Version: 1.0
-References: <20250508122849.207213-1-ppandit@redhat.com>
- <20250508122849.207213-4-ppandit@redhat.com>
- <87ecwzfbnk.fsf@suse.de> <aBzQYslYtUZgXjgO@x1.local>
-In-Reply-To: <aBzQYslYtUZgXjgO@x1.local>
-From: Prasad Pandit <ppandit@redhat.com>
-Date: Fri, 9 May 2025 11:34:06 +0530
-X-Gm-Features: AX0GCFsx6lAnxGKiUaJbbkTQHI6N1neFetE_-XK7op0fuahoZuEm9XFQapfbpEg
-Message-ID: <CAE8KmOzi8Zzy5hE2SMdTbMZJQD5_XH34rfEP_B85jstUF9E08g@mail.gmail.com>
-Subject: Re: [PATCH v10 3/3] migration: write zero pages when postcopy enabled
-To: Peter Xu <peterx@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org, berrange@redhat.com,
- Prasad Pandit <pjp@fedoraproject.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.416,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 13/55] i386/tdx: Support user configurable
+ mrconfigid/mrowner/mrownerconfig
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Francesco Lavra <francescolavra.fl@gmail.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org,
+ qemu-devel@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Zhao Liu <zhao1.liu@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+References: <20250508150002.689633-1-xiaoyao.li@intel.com>
+ <20250508150002.689633-14-xiaoyao.li@intel.com> <aBzT3TrdldaN-uqx@redhat.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <aBzT3TrdldaN-uqx@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.12; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.416,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -102,89 +91,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> > This patch should come before 1/3, otherwise it'll break bisect.
-> We could squash the two together, IMHO.
+On 5/8/2025 11:55 PM, Daniel P. Berrangé wrote:
+> On Thu, May 08, 2025 at 10:59:19AM -0400, Xiaoyao Li wrote:
+>> From: Isaku Yamahata <isaku.yamahata@intel.com>
+>>
+>> Three sha384 hash values, mrconfigid, mrowner and mrownerconfig, of a TD
+>> can be provided for TDX attestation. Detailed meaning of them can be
+>> found: https://lore.kernel.org/qemu-devel/31d6dbc1-f453-4cef-ab08-4813f4e0ff92@intel.com/
+>>
+>> Allow user to specify those values via property mrconfigid, mrowner and
+>> mrownerconfig. They are all in base64 format.
+>>
+>> example
+>> -object tdx-guest, \
+>>    mrconfigid=ASNFZ4mrze8BI0VniavN7wEjRWeJq83vASNFZ4mrze8BI0VniavN7wEjRWeJq83v,\
+>>    mrowner=ASNFZ4mrze8BI0VniavN7wEjRWeJq83vASNFZ4mrze8BI0VniavN7wEjRWeJq83v,\
+>>    mrownerconfig=ASNFZ4mrze8BI0VniavN7wEjRWeJq83vASNFZ4mrze8BI0VniavN7wEjRWeJq83v
+>>
+>> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+>> Co-developed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>> Acked-by: Markus Armbruster <armbru@redhat.com>
+>> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+>> ---
+>> Changes in v9:
+>>   - return -1 directly when qbase64_decode() return NULL; (Daniel)
+>>
+>> Changes in v8:
+>>   - it gets squashed into previous patch in v7. So split it out in v8;
+>>
+>> Changes in v6:
+>>   - refine the doc comment of QAPI properties;
+>>
+>> Changes in v5:
+>>   - refine the description of QAPI properties and add description of
+>>     default value when not specified;
+>>
+>> Changes in v4:
+>>   - describe more of there fields in qom.json
+>>   - free the old value before set new value to avoid memory leak in
+>>     _setter(); (Daniel)
+>>
+>> Changes in v3:
+>>   - use base64 encoding instread of hex-string;
+>> ---
+>>   qapi/qom.json         | 16 +++++++-
+>>   target/i386/kvm/tdx.c | 95 +++++++++++++++++++++++++++++++++++++++++++
+>>   target/i386/kvm/tdx.h |  3 ++
+>>   3 files changed, 113 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/qapi/qom.json b/qapi/qom.json
+>> index f229bb07aaec..a8379bac1719 100644
+>> --- a/qapi/qom.json
+>> +++ b/qapi/qom.json
+>> @@ -1060,11 +1060,25 @@
+>>   #     pages.  Some guest OS (e.g., Linux TD guest) may require this to
+>>   #     be set, otherwise they refuse to boot.
+>>   #
+>> +# @mrconfigid: ID for non-owner-defined configuration of the guest TD,
+>> +#     e.g., run-time or OS configuration (base64 encoded SHA384 digest).
+>> +#     Defaults to all zeros.
+>> +#
+>> +# @mrowner: ID for the guest TD’s owner (base64 encoded SHA384 digest).
+>> +#     Defaults to all zeros.
+>> +#
+>> +# @mrownerconfig: ID for owner-defined configuration of the guest TD,
+>> +#     e.g., specific to the workload rather than the run-time or OS
+>> +#     (base64 encoded SHA384 digest).  Defaults to all zeros.
+>> +#
+>>   # Since: 10.1
+>>   ##
+>>   { 'struct': 'TdxGuestProperties',
+>>     'data': { '*attributes': 'uint64',
+>> -            '*sept-ve-disable': 'bool' } }
+>> +            '*sept-ve-disable': 'bool',
+>> +            '*mrconfigid': 'str',
+>> +            '*mrowner': 'str',
+>> +            '*mrownerconfig': 'str' } }
+>>   
+>>   ##
+>>   # @ThreadContextProperties:
+>> diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+>> index 3de3b5fa6a49..39fd964c6b27 100644
+>> --- a/target/i386/kvm/tdx.c
+>> +++ b/target/i386/kvm/tdx.c
+>> @@ -11,8 +11,10 @@
+>>   
+>>   #include "qemu/osdep.h"
+>>   #include "qemu/error-report.h"
+>> +#include "qemu/base64.h"
+>>   #include "qapi/error.h"
+>>   #include "qom/object_interfaces.h"
+>> +#include "crypto/hash.h"
+>>   
+>>   #include "hw/i386/x86.h"
+>>   #include "kvm_i386.h"
+>> @@ -240,6 +242,7 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
+>>       CPUX86State *env = &x86cpu->env;
+>>       g_autofree struct kvm_tdx_init_vm *init_vm = NULL;
+>>       Error *local_err = NULL;
+>> +    size_t data_len;
+>>       int retry = 10000;
+>>       int r = 0;
+>>   
+>> @@ -251,6 +254,45 @@ int tdx_pre_create_vcpu(CPUState *cpu, Error **errp)
+>>       init_vm = g_malloc0(sizeof(struct kvm_tdx_init_vm) +
+>>                           sizeof(struct kvm_cpuid_entry2) * KVM_MAX_CPUID_ENTRIES);
+>>   
+>> +    if (tdx_guest->mrconfigid) {
+>> +        g_autofree uint8_t *data = qbase64_decode(tdx_guest->mrconfigid,
+>> +                              strlen(tdx_guest->mrconfigid), &data_len, errp);
+>> +        if (!data) {
+>> +            return -1;
+>> +        }
+>> +        if (data_len != QCRYPTO_HASH_DIGEST_LEN_SHA384) {
+>> +            error_setg(errp, "TDX: failed to decode mrconfigid");
+> 
+> As a general guideline I'd always suggest including both the received
+> and expected values, when reporting an length check failure. Also
+> the error message is misleading - we successfully decoded the data,
+> the decoded data was simply the wrong length.
+> 
+> eg
+> 
+>              error_setg(errp, "TDX mrconfigid sha386 digest was %d bytes, expected %d bytes")
 
-* It is adjusting the specific optimisation behaviour for the use case
-of when Multifd and Postcopy are enabled together. I think it's better
-as a separate patch. It'll help to see how that optimization
-changed/evolved over time.
+s/sha386/sha384
 
-> > s/ones/once/
-> >
-> > > +         *
-> > > +         * It becomes a problem when both Multifd & Postcopy options are
-> > > +         * enabled. If the zero page which was skipped during multifd phase,
-> > > +         * is accessed during the Postcopy phase of the migration, a page
-> > > +         * fault occurs. But this page fault is not served because the
-> > > +         * 'receivedmap' says the zero page is already received. Thus the
-> > > +         * migration hangs.
->
-> More accurate version could be: "the thread accessing the page may hang".
-> As discussed previously, in most cases IIUC it won't hang migration when
-> accessed in vcpu contexts, and will move again when all pages migrated
-> (triggers uffd unregistrations).
+> 	               data_len, QCRYPTO_HASH_DIGEST_LEN_SHA384);
 
-* Okay.
+good advice!
 
-> Meanwhile when at it.. for postcopy if we want we don't need to set all
-> zeros.. just fault it in either using one inst.  Summary:
->
-> void multifd_recv_zero_page_process(MultiFDRecvParams *p)
-> {
->     bool received;
->
->     for (int i = 0; i < p->zero_num; i++) {
->         void *page = p->host + p->zero[i];
->
->         received = ramblock_recv_bitmap_test_byte_offset(p->block, p->zero[i]);
->         if (!received) {
->             ramblock_recv_bitmap_set_offset(p->block, p->zero[i]);
->         }
+(If it needs another version, I will fix it. If this version is going to 
+be picked by Paolo, I will leave it to Paolo to fix.)
 
-* Okay.
-
->         if (received) {
->             /* If it has an older version, we must clear the whole page */
->             memset(page, 0, multifd_ram_page_size());
->         } else if (migrate_postcopy_ram()) {
->             /*
->              * If postcopy is enabled, we must fault in the page because
->              * XXX (please fill in..).  Here we don't necessarily need to
->              * zero the whole page because we know it must be pre-filled
->              * with zeros anyway.
->              */
->             *(uint8_t *)page = 0;
->
-> We could also use MADV_POPULATE_WRITE but not sure which one is faster, and
-> this might still be easier to follow anyway..
-
-* Not sure how this is to work; During Multifd phase (Postcopy not
-running), when migrate_postcopy_ram() returns true, we shall raise a
-page fault here?
-
-* Could we zero-initialise the destination guest memory when migration
-starts? And not migrate the zero pages from the source at all? ie. we
-mark the page received in the 'receivedmap' as is done now, but page
-fault should also not happen for that guest address, because the
-memory was already zero-initialised at the beginning. I think there
-might be some scope to send zero-page entries piggy-backed with
-non-zero pages, whose contents are migrated anyway.
-
-* Say there are 10 pages (4KB each, Total: 40KB). Of these 10 pages:
-
-        Non-zero pages: 1, 2, 4, 7, 9, 10
-               Zero Pages: 3, 5-6 and 8
-
-* We only migrate/send non-zero pages from source to the destination.
-When non-zero page-4 is migrated, an entry/hint of page-3 being zero
-one is piggy-backed with it. When non-zero page-7 is sent an
-entry/hint of pages-5-6 being zero pages is sent with it. Similarly a
-hint of page-8 being zero page is sent along with page-9. (thinking
-aloud)
-
-Thank you.
----
-  - Prasad
+> 
+> With regards,
+> Daniel
 
 
