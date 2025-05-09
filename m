@@ -2,79 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56514AB1BA9
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 19:36:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CAEEAB1BBB
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 19:46:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDRcN-0005bc-13; Fri, 09 May 2025 13:34:39 -0400
+	id 1uDRn1-0004gV-MX; Fri, 09 May 2025 13:45:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uDRcI-0005ao-JY
- for qemu-devel@nongnu.org; Fri, 09 May 2025 13:34:34 -0400
-Received: from mail-yb1-xb35.google.com ([2607:f8b0:4864:20::b35])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uDRmt-0004ds-JG
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 13:45:33 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uDRcG-0007Ve-OS
- for qemu-devel@nongnu.org; Fri, 09 May 2025 13:34:34 -0400
-Received: by mail-yb1-xb35.google.com with SMTP id
- 3f1490d57ef6-e740a09eb00so2395054276.0
- for <qemu-devel@nongnu.org>; Fri, 09 May 2025 10:34:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uDRmr-0000Wh-BN
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 13:45:31 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5fab81d6677so4492614a12.1
+ for <qemu-devel@nongnu.org>; Fri, 09 May 2025 10:45:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746812071; x=1747416871; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=5POo5JTMEcXvcliahFXEcisESlZvcsj3wN5QlvfIxSg=;
- b=yym6UKsxxHEneJlH4oLJWXQGqo8EFcSZ31AvhQJ9cyiMc7YtmNBzilExzz+CtCayHg
- Uod6aBKv5gpfQ5ZHHb/H3MUP6prWwugI+j+eYreXzI4JVB3WFZOomK/zBIvdnLyIY9L3
- oAmXMHGezsvupbvN76Ss8gqa9a//AR1DtyiaXTQFmAMLDidruhbhQQBvG8CgR3bR2Fch
- NhOcUD9q5g69RdcaIOesf7xSrZ3uk61U8FtLvAQqtN5frkcpq9nHz126KbPpqaOHWLPY
- D69Xm7sCRpKpR2416f9Taw19nU1I2UaabLdOdsJYTe2b3Tzgz90quTP5kIA5eIemNecp
- 57Ww==
+ d=linaro.org; s=google; t=1746812727; x=1747417527; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=AtqHVaNm7DM2Bot1NJNpgHHouE3xCmaMu7viybNMw78=;
+ b=oDQ0cUtV1zyQvEwAnyAvgPl3OLM0lC4XIW20Cu+mEMAtEqk2kLfVz5ENG5s9sDwZMX
+ nZofU1SATAGzGTVDTB1l/kY1D/9k5znjfPm2wni/2OBSIMNEB0bBB4/VOOpz1WIM1Xh9
+ G8BJLLvvt+IxG7VPHbsly5LwWlxQTbUOZUTPPJtwrJ7VPPn+f5NgJsyHynYtZnzh2fnH
+ cCrs1EXC16I5a+cWe9uZr6KRSF6DgTu7STMWW3sPr3sTG1MjfIHfLZQv/hDZWV1TQIG4
+ FziF0psqOzO6NT5KYIyj29DiZZ+bJLReOfE824EqmfH+Aq+RfQN8ESoumXgqY0ywPOGp
+ 0Ywg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746812071; x=1747416871;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1746812727; x=1747417527;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=5POo5JTMEcXvcliahFXEcisESlZvcsj3wN5QlvfIxSg=;
- b=ddWEhuIr6Fktz9swY9l/TF7gek1SRAgevUJ6tiaZCokXfU9uCnHu98+uOiY6leK1v3
- UhA2rDyZ/3YzUCJwJoeHUIHlxWGy6z8ThVWc71M5juMTpF5VyCTd7OtlVXqjMlmtFKqq
- PPjRsRL3VzA7UaJuue/nXCHcy/u2b1/coanJHf5MjB6gnY+DQrNAi773P3wkHhvbDd0m
- m6hrIbqw9Wflif8IeFew4UFYV6vtPK9JDdUw+ui5r2joAryB8mQvPEHviOfXZVLOy0+4
- D7tNkLCr9BI/RmIC2bvpyi4onxOYFHFhz/xnvO+1Ov8FJFMyYIT6cfctARaS7+cYT1tS
- Itbg==
-X-Gm-Message-State: AOJu0YzM3ZsdZgDTmHmTmBB2netNe/PKSsFYEftn+tBG9HUsJalhDNjE
- u2gRfJGlXOhDNYhGIPvItRV8yuiCoN1PZslK8qi2CuCHWTOtjFwkf9wdeq0SGwaY8Y8Qxo1Dv7L
- iSKXJDGGOxvsKW4y49coLYxjF0cRN8RJJXlfVyw==
-X-Gm-Gg: ASbGncuuz6yE6ychATe5FCMh3b+EfbxtG8/yU4Rm16//PtkP2dYhbraRyrRA7zz/+Mx
- JPlrJUNJR75EsBYMuPzXmgCOcJSNQKSggjVOmJAsMeRS9nd+lXcHLmBqV6m6k/baWKJtLY2V4kf
- bxJuofuVsQz9MpsCLUGwrKEsLQe4js6GBCMA==
-X-Google-Smtp-Source: AGHT+IFfu59pl3Tv3E/3PvhEg+VSUrGaAoXIvbzZyoLLZijBYOGkNqFoHbWNc9/56kcSUDeyRscaihkyFWd2SqOOb4c=
-X-Received: by 2002:a05:6902:228d:b0:e78:f3ea:200b with SMTP id
- 3f1490d57ef6-e78fdc71abamr5857607276.22.1746812070986; Fri, 09 May 2025
- 10:34:30 -0700 (PDT)
+ bh=AtqHVaNm7DM2Bot1NJNpgHHouE3xCmaMu7viybNMw78=;
+ b=QdqWzFprjMzjM34dm5RTbN9Ji4hf1extUYuNquN7Y//i9zB+90MOA+qRSpvuR+1YfZ
+ UUAhTpI+ta2vvKFp2Aw4/sJHt7UAr0SJhOB4rt2OFoT5HTBOKQ8bhRyPdoZKC7F6fv0b
+ JVYCq8rpcHxatOd5qbuyzHTTqhS4jadWpE2/NHZhpHW4G5kMqNGZ5HLh3q+55yWdYGJA
+ Tbrj+rdinCL5k29rdx1kDypCctGjtp6AS9Y8PDR8E/ZTUTWyZmNxSUrIShlHmnkGQXfC
+ QjmpOJkjKD9Xfnyo7/7fELqWg7TomwBJcCSXokDQEJHxBxI2UTSkjuAh+DJYo7AEh91E
+ UnFw==
+X-Gm-Message-State: AOJu0YzWb+6YQfz1IOpPzLh4DBxBenvdPuxeqY3k1ijR0HTBwgUFZj4u
+ zad1RBX9aL8eVEV1sUiFggaoFFU42m2HjQVh2QwgEKH3/Jtc9122nDgarQ+/lps=
+X-Gm-Gg: ASbGnct6JnH9ufJRz2+SkAI49//cvGtWxW3gGh6SfR7pBbvZqWJMY4+7hwBqIy5+wO/
+ qEHf2uaUCGeZLBbqhdEBdOxvvKHIfKpHk5Z24KbMOXfYx5jmAfhctOSzAUw9TjpX8w6uB2sV2dD
+ nhuxpe2bboOEeyUWncxIX15Vi8O/bQdNWcYk4cVmG4TCNka3zggh4q4KOMnHIMJ7sdUmnhD2hPJ
+ xCrim2oSVvI81O+ylBfnOeRxeEiOBlVaZp+xUKLzlCHPX8pCoAN9FFt7d2okSFOFkvvT79j5fJt
+ 7tnWdxhvtLGKhMN5u++1xK59HVPfv3lfYUET2Nag8IE=
+X-Google-Smtp-Source: AGHT+IHnlw9ZRWAKwgdjiKlv1AD4q5iM9OFrWYlIwRyjBWOKi1yUzHKqYhlHE/LAVx4VZIHlrQekrQ==
+X-Received: by 2002:a05:6402:1ecb:b0:5fc:bb1d:71e4 with SMTP id
+ 4fb4d7f45d1cf-5fcbb1d76efmr749614a12.6.1746812726581; 
+ Fri, 09 May 2025 10:45:26 -0700 (PDT)
+Received: from draig.lan ([185.126.160.109]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5fc9d70d55bsm1642672a12.65.2025.05.09.10.45.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 09 May 2025 10:45:25 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 428A75F8C7;
+ Fri,  9 May 2025 18:45:24 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ qemu-s390x@nongnu.org (open list:S390 TCG CPUs)
+Subject: [RFC PATCH] hw/s390x: add vhost-user-device-ccw stub (!WIP)
+Date: Fri,  9 May 2025 18:45:02 +0100
+Message-Id: <20250509174502.1689585-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-References: <20250505131130.82206-1-santimonserr@gmail.com>
-In-Reply-To: <20250505131130.82206-1-santimonserr@gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 9 May 2025 18:34:19 +0100
-X-Gm-Features: ATxdqUGY75Fo6psiRVX78ErX6GDtG6GXy41vQPQSl3qZFWHKXiWnZ0GYDGLJ10A
-Message-ID: <CAFEAcA_754T6Aucak+MimuaP0gO8mtUoAmq5wNj1N9oDmpa5eQ@mail.gmail.com>
-Subject: Re: [PATCH v2] hw/arm: Replace TABs for spaces
-To: Santiago Monserrat Campanello <santimonserr@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, thuth@redhat.com, 
- sw@weilnetz.de
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b35;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb35.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x534.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,44 +104,188 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 5 May 2025 at 14:11, Santiago Monserrat Campanello
-<santimonserr@gmail.com> wrote:
->
-> replaced all TABs for spaces for arm code
->
-> Signed-off-by: Santiago Monserrat Campanello <santimonserr@gmail.com>
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/373
->
-> ---
-> replaced all tabs with spaces using vim :retab
-> used 4 spaces except in some defines and comments where I tried to
-> put everything alinged in the same column for better readability
->
-> fixed the alignment of the previous version
-> ---
->  hw/arm/omap1.c           | 1016 +++++++++++++++++++-------------------
->  hw/arm/omap_sx1.c        |    2 +-
->  hw/dma/omap_dma.c        |  334 ++++++-------
->  hw/gpio/omap_gpio.c      |   28 +-
->  hw/i2c/omap_i2c.c        |  178 +++----
->  hw/intc/omap_intc.c      |  154 +++---
->  hw/misc/omap_clk.c       |  470 +++++++++---------
->  hw/timer/pxa2xx_timer.c  |   76 +--
->  include/hw/arm/omap.h    |  534 ++++++++++----------
->  include/hw/arm/sharpsl.h |    2 +-
->  include/hw/arm/soc_dma.h |    4 +-
->  11 files changed, 1399 insertions(+), 1399 deletions(-)
+This Friday hack was driven by wanting to review some virtiofsd
+changes. However I discovered that while virtiofsd support
+VHOST_USER_PROTOCOL_F_CONFIG the current virtiofs stubs still assume
+QEMU controls the config space.
 
-Hi; thanks for this patch. As a general note, this is a really
-big patch, even though it's only doing tab-to-space conversion.
+Ahh I thought, but we have vhost-user-base which both supports this
+and provides for a very minimal boilerplate implementation of the
+various VirtIO devices. However s390x being a special beast doesn't
+use mmio or pci transports but has its own special ccw transport.
+Perhaps I could just follow the existing ccw devices and implement the
+wrapper. So here we are:
 
-If it were touching more than one kind of Arm related code
-I would ask to split it up into multiple patches, but since
-all of these are basically related to the same OMAP board
-and it happens to apply cleanly and I can confirm it's
-only changing whitespace characters and not anything else,
-I've applied it to target-arm.next.
+  ./qemu-system-s390x -serial mon:stdio \
+      -M s390-ccw-virtio -m 2048M -smp 2 \
+      -drive file=/home/alex/lsrc/tests/buildroot.git/builds/s390x/images/rootfs.ext4,if=virtio,format=raw -snapshot \
+      -kernel /home/alex/lsrc/linux.git/builds/s390x/arch/s390/boot/bzImage \
+      -append "root=/dev/vda console=ttyS0" -display none \
+      -chardev socket,id=vfs,path=/tmp/virtiofsd.sock \
+      -device vhost-user-device-ccw,chardev=vfs,virtio-id=26,config_size=44,num_vqs=1 -s -S
 
-thanks
--- PMM
+with:
+
+  ./target/debug/virtiofsd --shared-dir $HOME \
+    --socket-path /tmp/virtiofsd.sock --tag home --log-level debug
+
+and the kernel gets surprisingly far before oopsing:
+
+  [    2.084873] virtio_blk virtio1: 1/0/0 default/read/poll queues
+  [    2.097845] virtiofs virtio2: discovered new tag: home
+
+heh I think GET_CONFIG worked because the tag can only have come from
+the daemon.
+
+  [    2.101920] Segment Routing with IPv6
+  [    2.102040] RPL Segment Routing with IPv6
+  [    2.102326] In-situ OAM (IOAM) with IPv6
+  [    2.103443] NET: Registered PF_PACKET protocol family
+  [    2.103848] virtio_blk virtio1: [vda] 122880 512-byte logical blocks (62.9 MB/60.0 MiB)
+  [    2.104918] Key type dns_resolver registered
+  [    2.106171] virtiofs virtio2: probe with driver virtiofs failed with error -2
+
+Hmm disappointing...
+
+  [    2.113538] Unable to handle kernel pointer dereference in virtual kernel address space
+  [    2.113650] Failing address: 766461000242c000 TEID: 766461000242c803
+  [    2.113697] Fault in home space mode while using kernel ASCE.
+  [    2.113881] AS:0000000001e08007 R3:0000000000000024
+  [    2.114679] Oops: 0038 ilc:3 [#1] SMP
+  [    2.114837] Modules linked in:
+  [    2.115351] CPU: 1 UID: 0 PID: 30 Comm: kworker/u10:1 Not tainted 6.14.5-ajb #8
+  [    2.115629] Hardware name: QEMU 8561 QEMU (KVM/Linux)
+  [    2.115850] Workqueue: async async_run_entry_fn
+
+At which point my attempts to debug the s390 kernel failed because the
+debug symbols don't seem to match where the kernel lives. Also its
+Friday and I have a cold beer waiting for me in the fridge.
+
+So it seems frustratingly close to being functional but as I'm going
+to be away for a week I thought it was worth posting as an RFC in case
+anyone wants to take a closer look.
+
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ hw/s390x/vhost-user-device-ccw.c | 75 ++++++++++++++++++++++++++++++++
+ hw/s390x/meson.build             | 18 +++++---
+ 2 files changed, 88 insertions(+), 5 deletions(-)
+ create mode 100644 hw/s390x/vhost-user-device-ccw.c
+
+diff --git a/hw/s390x/vhost-user-device-ccw.c b/hw/s390x/vhost-user-device-ccw.c
+new file mode 100644
+index 0000000000..03881efc02
+--- /dev/null
++++ b/hw/s390x/vhost-user-device-ccw.c
+@@ -0,0 +1,75 @@
++/*
++ * Vhost-user generic device virtio-ccw glue
++ *
++ * Copyright (c) 2025 Linaro Ltd.
++ * Author: Alex Bennée <alex.bennee@linaro.org>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "hw/qdev-properties.h"
++#include "hw/virtio/vhost-user-base.h"
++#include "virtio-ccw.h"
++
++struct VHostUserDeviceCCW {
++    VirtioCcwDevice parent_obj;
++
++    VHostUserBase vub;
++};
++
++static const Property vhost_user_ccw_properties[] = {
++    DEFINE_PROP_BIT("ioeventfd", VirtioCcwDevice, flags,
++                    VIRTIO_CCW_FLAG_USE_IOEVENTFD_BIT, true),
++    DEFINE_PROP_UINT32("max_revision", VirtioCcwDevice, max_rev,
++                       VIRTIO_CCW_MAX_REV),
++};
++
++#define TYPE_VHOST_USER_DEVICE_CCW "vhost-user-device-ccw"
++
++OBJECT_DECLARE_SIMPLE_TYPE(VHostUserDeviceCCW, VHOST_USER_DEVICE_CCW)
++
++static void vhost_user_device_ccw_realize(VirtioCcwDevice *ccw_dev, Error **errp)
++{
++    VHostUserDeviceCCW *dev = VHOST_USER_DEVICE_CCW(ccw_dev);
++    DeviceState *vdev = DEVICE(&dev->vub);
++
++    qdev_realize(vdev, BUS(&ccw_dev->bus), errp);
++}
++
++static void vhost_user_device_ccw_instance_init(Object *obj)
++{
++    VHostUserDeviceCCW *dev = VHOST_USER_DEVICE_CCW(obj);
++    VirtioCcwDevice *ccw_dev = VIRTIO_CCW_DEVICE(obj);
++
++    ccw_dev->force_revision_1 = true;
++    virtio_instance_init_common(obj, &dev->vub, sizeof(dev->vub),
++                                TYPE_VHOST_USER_DEVICE);
++}
++
++static void vhost_user_device_ccw_class_init(ObjectClass *klass, const void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    VirtIOCCWDeviceClass *k = VIRTIO_CCW_DEVICE_CLASS(klass);
++
++    /* Reason: stop users confusing themselves */
++    /* dc->user_creatable = false; */
++
++    k->realize = vhost_user_device_ccw_realize;
++    device_class_set_props(dc, vhost_user_ccw_properties);
++}
++
++static const TypeInfo vhost_user_device_ccw = {
++    .name          = TYPE_VHOST_USER_DEVICE_CCW,
++    .parent        = TYPE_VIRTIO_CCW_DEVICE,
++    .instance_size = sizeof(VHostUserDeviceCCW),
++    .instance_init = vhost_user_device_ccw_instance_init,
++    .class_init    = vhost_user_device_ccw_class_init,
++};
++
++static void vhost_user_device_ccw_register(void)
++{
++    type_register_static(&vhost_user_device_ccw);
++}
++
++type_init(vhost_user_device_ccw_register)
+diff --git a/hw/s390x/meson.build b/hw/s390x/meson.build
+index 3bbebfd817..a311ccca8d 100644
+--- a/hw/s390x/meson.build
++++ b/hw/s390x/meson.build
+@@ -44,14 +44,22 @@ virtio_ss.add(when: 'CONFIG_VIRTIO_NET', if_true: files('virtio-ccw-net.c'))
+ virtio_ss.add(when: 'CONFIG_VIRTIO_RNG', if_true: files('virtio-ccw-rng.c'))
+ virtio_ss.add(when: 'CONFIG_VIRTIO_SCSI', if_true: files('virtio-ccw-scsi.c'))
+ virtio_ss.add(when: 'CONFIG_VIRTIO_SERIAL', if_true: files('virtio-ccw-serial.c'))
++virtio_ss.add(when: 'CONFIG_VIRTIO_MD', if_true: files('virtio-ccw-md.c'))
++virtio_ss.add(when: 'CONFIG_VIRTIO_MEM', if_true: files('virtio-ccw-mem.c'))
+ if have_virtfs
+   virtio_ss.add(when: 'CONFIG_VIRTIO_9P', if_true: files('virtio-ccw-9p.c'))
+ endif
+-virtio_ss.add(when: 'CONFIG_VHOST_SCSI', if_true: files('vhost-scsi-ccw.c'))
+-virtio_ss.add(when: 'CONFIG_VHOST_VSOCK', if_true: files('vhost-vsock-ccw.c'))
+-virtio_ss.add(when: 'CONFIG_VHOST_USER_FS', if_true: files('vhost-user-fs-ccw.c'))
+-virtio_ss.add(when: 'CONFIG_VIRTIO_MD', if_true: files('virtio-ccw-md.c'))
+-virtio_ss.add(when: 'CONFIG_VIRTIO_MEM', if_true: files('virtio-ccw-mem.c'))
++
++if have_vhost
++  virtio_ss.add(when: 'CONFIG_VHOST_SCSI', if_true: files('vhost-scsi-ccw.c'))
++  virtio_ss.add(when: 'CONFIG_VHOST_VSOCK', if_true: files('vhost-vsock-ccw.c'))
++
++  if have_vhost_user
++    virtio_ss.add(files('vhost-user-device-ccw.c'))
++    virtio_ss.add(when: 'CONFIG_VHOST_USER_FS', if_true: files('vhost-user-fs-ccw.c'))
++  endif
++endif
++
+ s390x_ss.add_all(when: 'CONFIG_VIRTIO_CCW', if_true: virtio_ss)
+ 
+ s390x_ss.add(when: 'CONFIG_VIRTIO_MD', if_false: files('virtio-ccw-md-stubs.c'))
+-- 
+2.39.5
+
 
