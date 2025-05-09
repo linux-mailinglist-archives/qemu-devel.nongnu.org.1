@@ -2,57 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D949AB1E8A
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 22:49:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C106AB1E83
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 22:48:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDUZi-0004ES-Hn; Fri, 09 May 2025 16:44:06 -0400
+	id 1uDUZq-0004Hb-2W; Fri, 09 May 2025 16:44:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uDUZe-0004Dx-CE
- for qemu-devel@nongnu.org; Fri, 09 May 2025 16:44:02 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uDUZl-0004Fb-4u
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 16:44:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uDUZc-0000hD-I8
- for qemu-devel@nongnu.org; Fri, 09 May 2025 16:44:02 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uDUZh-0000hu-WC
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 16:44:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746823439;
+ s=mimecast20190719; t=1746823444;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6BQxZ6FJ3EQlHyvOe7o5rrZaEAzgB+2EDVxpzR0s6To=;
- b=XNbr1bpxOIGoxpN7S66oD4fvpJmmscbV7DZHnJtkESXV2B9tpNizfuPGUaqgLGe3S4ZyeM
- 77bKJ4J1IgtUGGaIzjdfZjPGushGlwLytYMpwRkzZBTId100NMup3S1DxJvDHim2WFZ0nK
- 3fYsbbgNdplosgI9kloWyeXSvLsyL2o=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ bh=gRgsP7Q/YouQ2ycZc+yTuQ3bZy2Y3AbRG2jM6CQb33w=;
+ b=AtEX89fSDAQ2vnC39SBq9Ia045YoGKvNOy4AR3oRbSl9kqIrhYzcrcOf4ue16tdEkKoUiB
+ n2FJYyqW6/OrzZRurXXjU7CmzqJoDdEpcf7jiby018mTZ2vfUYq2Oby4lhLoFrggfVYvmL
+ Hd+XptFHD+vybnunc9UT8I762mMhJ2w=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-458-vZngiIQGMaWbFZNlIxmLWA-1; Fri,
- 09 May 2025 16:43:57 -0400
-X-MC-Unique: vZngiIQGMaWbFZNlIxmLWA-1
-X-Mimecast-MFC-AGG-ID: vZngiIQGMaWbFZNlIxmLWA_1746823436
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-368-vXtW3EpPPEOBlneI9KbIjA-1; Fri,
+ 09 May 2025 16:44:00 -0400
+X-MC-Unique: vXtW3EpPPEOBlneI9KbIjA-1
+X-Mimecast-MFC-AGG-ID: vXtW3EpPPEOBlneI9KbIjA_1746823439
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BABEB195608A; Fri,  9 May 2025 20:43:56 +0000 (UTC)
+ by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1853819560AE; Fri,  9 May 2025 20:43:59 +0000 (UTC)
 Received: from green.redhat.com (unknown [10.2.16.43])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BD9D13000221; Fri,  9 May 2025 20:43:54 +0000 (UTC)
+ id 22BEB30001A1; Fri,  9 May 2025 20:43:56 +0000 (UTC)
 From: Eric Blake <eblake@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, sunnyzhyy@qq.com, stefanha@redhat.com,
- vsementsov@yandex-team.ru, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>,
- integration@gluster.org (open list:GLUSTER)
-Subject: [PATCH v4 02/13] file-posix,
- gluster: Handle zero block status hint better
-Date: Fri,  9 May 2025 15:40:19 -0500
-Message-ID: <20250509204341.3553601-17-eblake@redhat.com>
+ vsementsov@yandex-team.ru, Fam Zheng <fam@euphon.net>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
+Subject: [PATCH v4 03/13] block: Let bdrv_co_is_zero_fast consolidate adjacent
+ extents
+Date: Fri,  9 May 2025 15:40:20 -0500
+Message-ID: <20250509204341.3553601-18-eblake@redhat.com>
 In-Reply-To: <20250509204341.3553601-15-eblake@redhat.com>
 References: <20250509204341.3553601-15-eblake@redhat.com>
 MIME-Version: 1.0
@@ -84,49 +83,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Although the previous patch to change 'bool want_zero' into a bitmask
-made no semantic change, it is now time to differentiate.  When the
-caller specifically wants to know what parts of the file read as zero,
-we need to use lseek and actually reporting holes, rather than
-short-circuiting and advertising full allocation.
+Some BDS drivers have a cap on how much block status they can supply
+in one query (for example, NBD talking to an older server cannot
+inspect more than 4G per query; and qcow2 tends to cap its answers
+rather than cross a cluster boundary of an L1 table).  Although the
+existing callers of bdrv_co_is_zero_fast are not passing in that large
+of a 'bytes' parameter, an upcoming caller wants to query the entire
+image at once, and will thus benefit from being able to treat adjacent
+zero regions in a coalesced manner, rather than claiming the region is
+non-zero merely because pnum was truncated and didn't match the
+incoming bytes.
 
-This change will be utilized in later patches to let mirroring
-optimize for the case when the destination already reads as zeroes.
+While refactoring this into a loop, note that there is no need to
+assign pnum prior to calling bdrv_co_common_block_status_above() (it
+is guaranteed to be assigned deeper in the callstack).
 
 Signed-off-by: Eric Blake <eblake@redhat.com>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+
 ---
- block/file-posix.c | 3 ++-
- block/gluster.c    | 2 +-
- 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/block/file-posix.c b/block/file-posix.c
-index 805a1a2949b..ec95b748696 100644
---- a/block/file-posix.c
-+++ b/block/file-posix.c
-@@ -3289,7 +3289,8 @@ static int coroutine_fn raw_co_block_status(BlockDriverState *bs,
-         return ret;
+v3: also tweak function comment
+---
+ block/io.c | 29 ++++++++++++++++-------------
+ 1 file changed, 16 insertions(+), 13 deletions(-)
+
+diff --git a/block/io.c b/block/io.c
+index b5b143cd1b0..50dc0e193f0 100644
+--- a/block/io.c
++++ b/block/io.c
+@@ -2751,28 +2751,31 @@ int coroutine_fn bdrv_co_block_status(BlockDriverState *bs, int64_t offset,
+  * by @offset and @bytes is known to read as zeroes.
+  * Return 1 if that is the case, 0 otherwise and -errno on error.
+  * This test is meant to be fast rather than accurate so returning 0
+- * does not guarantee non-zero data.
++ * does not guarantee non-zero data; but a return of 1 is reliable.
+  */
+ int coroutine_fn bdrv_co_is_zero_fast(BlockDriverState *bs, int64_t offset,
+                                       int64_t bytes)
+ {
+     int ret;
+-    int64_t pnum = bytes;
++    int64_t pnum;
+     IO_CODE();
+
+-    if (!bytes) {
+-        return 1;
++    while (bytes) {
++        ret = bdrv_co_common_block_status_above(bs, NULL, false,
++                                                BDRV_WANT_ZERO, offset, bytes,
++                                                &pnum, NULL, NULL, NULL);
++
++        if (ret < 0) {
++            return ret;
++        }
++        if (!(ret & BDRV_BLOCK_ZERO)) {
++            return 0;
++        }
++        offset += pnum;
++        bytes -= pnum;
      }
 
--    if (mode != BDRV_WANT_PRECISE) {
-+    if (!(mode & BDRV_WANT_ZERO)) {
-+        /* There is no backing file - all bytes are allocated in this file.  */
-         *pnum = bytes;
-         *map = offset;
-         *file = bs;
-diff --git a/block/gluster.c b/block/gluster.c
-index 1a2ef53e9b0..89abd40f313 100644
---- a/block/gluster.c
-+++ b/block/gluster.c
-@@ -1478,7 +1478,7 @@ static int coroutine_fn qemu_gluster_co_block_status(BlockDriverState *bs,
-         return ret;
-     }
+-    ret = bdrv_co_common_block_status_above(bs, NULL, false, BDRV_WANT_ZERO,
+-                                            offset, bytes, &pnum, NULL, NULL,
+-                                            NULL);
+-
+-    if (ret < 0) {
+-        return ret;
+-    }
+-
+-    return (pnum == bytes) && (ret & BDRV_BLOCK_ZERO);
++    return 1;
+ }
 
--    if (mode != BDRV_WANT_PRECISE) {
-+    if (!(mode & BDRV_WANT_ZERO)) {
-         *pnum = bytes;
-         *map = offset;
-         *file = bs;
+ int coroutine_fn bdrv_co_is_allocated(BlockDriverState *bs, int64_t offset,
 -- 
 2.49.0
 
