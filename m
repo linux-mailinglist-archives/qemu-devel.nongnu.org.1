@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF11AB19AA
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 18:03:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A623BAB19A9
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 18:03:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDQAT-0000pF-Cl; Fri, 09 May 2025 12:01:45 -0400
+	id 1uDQAr-0001LI-Bu; Fri, 09 May 2025 12:02:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1uDQAO-0000iu-JL; Fri, 09 May 2025 12:01:40 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ id 1uDQAl-0001GO-P4
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 12:02:03 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1uDQAL-00045C-VU; Fri, 09 May 2025 12:01:40 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-5fbed53b421so3467684a12.0; 
- Fri, 09 May 2025 09:01:35 -0700 (PDT)
+ id 1uDQAi-00047C-4J
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 12:02:01 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-5fc5bc05f99so4008029a12.3
+ for <qemu-devel@nongnu.org>; Fri, 09 May 2025 09:01:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1746806494; x=1747411294; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1746806518; x=1747411318; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/IMwc7g0gPuHpf710a69q+fyDXuR4UXONr4b3md0hTM=;
- b=mFu4i147/7mPC8V25y4bZdzAKl5GegnE6IXoo3UGLE1xWa3rWwvG3kUz0hwpH4eQgy
- y8m27yykFDu/loPPGZ5m3Pc53r9RJwmIlnynqdY6qJFb3HMFA54VX6OSo9lza1BZSWbH
- OHAZ7eOgdDwGORtKUN67kBkSOui1j8VfV3S1xP9ea0Fcr4S91jmXEeCPlLI+wk3wPB5G
- +zQGYGAzOtjeYtGOaHK4H9b2i0cynMf87EYRaN8EL61D/nCbiTS+Op55Yn50pzL6tbvT
- UdySaQpZ98UgQqLF65g+tus+sxkNx9lSRkZj1k+G3wppS70bnZdqQG4v334Dy8JLk07Z
- 5W/Q==
+ bh=vaX0uy9IjfHygrfN5w330lKGejmUbRLIU5zry6e12xE=;
+ b=ZUdWxAPgH28RnVv01Gl3FmFJ36ESrKFgJQxqWLZ7Uj3Bmmfz4znrT+oKmikmwknVl6
+ c6MUeY4aE49AHpXWvG0DzjX+4Gc0m42QQfw5uQwS30CaUuyy5Una/s74drjhXDNku1/T
+ 2MRjLVIdyHPhU0vh2EKbcJKzhjyX1fNjLdQztQyllGqbyYTWoVR4JG8rO4UE2M8x9udc
+ avN1AIWcUOOpCAM/k4K+PDdSC5KUAHKAcF1h7Q/NwD7jh9FvBYVwSeBxXbnX2DsN4qpU
+ UtaxlYG5G55G0Gg0Uo+YjU3LuODJWYJqkS1HAknOCX9nuk57ws+6YSr/dAQsXrgxG6WM
+ 26rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746806494; x=1747411294;
+ d=1e100.net; s=20230601; t=1746806518; x=1747411318;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/IMwc7g0gPuHpf710a69q+fyDXuR4UXONr4b3md0hTM=;
- b=ggb5o64lGOlk5Eog2xg9Crv43XS6uJLs7xYFOEVh8Qaz9BO11N6eFTRHFp8dJ3nLIL
- uWf62Dbrr1517aF1uKcplH2AAirZJ4z44SwT0ctk1Z5PfkhZAW8TJaCnvbjGeY3Z6HUv
- BNAkTl8ofnELsQM5MpNmnKqF3P210E+QxHi4eiBMe49oUvuDOFe7H1moPhrawZKlj0yQ
- aMe6WpLPuqyMXgJ7JKp5b+EHsTGF0rS6pnWtxuI3gBNWMTEeXsVcOa4IHiN3t5PpUsSz
- 14RqtKKXgkpiUVk7WQoTkkKWSlYxe6L1oA0Engz3UN2wNka167W5ncIuGg5Moh0PIXS0
- VgFg==
+ bh=vaX0uy9IjfHygrfN5w330lKGejmUbRLIU5zry6e12xE=;
+ b=fZh4+p7u6rlH/udTUywVpHp8hXsN3I6CAJDBAy3smeVwSjKy18l79kZsxC5681Gf9a
+ mrKPZhDmEhrJF6kDgPSHW1Af11TfY10AVafCic5iV3CAYsn8Ux4Pihn5uygC80pVStvm
+ dBveKXcCM4ROd2NbJw8Atk7ki1BuhRv9mh1Rppl4cTgK8+VUHR9qOrSkqexDgIziLiYM
+ qdxh7uV/uWq5kEl3bBLKY1W2Ws+Wr4k+PMRNCEOmiZYP0khpDv7nTtnuQxwNTJBRdnHo
+ VLyrR5/SkpnAK7zVWH/tAkzVafoA1Y0UaB6LpLFYh2qB/E/p1XKo+u2Ew9cyeTJmoWC5
+ yvtg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWLOaVp4oliSXS66bHCbWLIrKb9O+mB0/3fAi2fv5uJwhY9HrZ6LN8rbIBlREis/GspsSGDqCuzS3LClq0=@nongnu.org
-X-Gm-Message-State: AOJu0YzNRldDdzV4cWM3JCk9cVHESvneb+fPZkAXIIIpc8kvcVNq09s/
- WF5ycwJGYp/FZJX9SG9DbA7rC813HKA356Vek57O9oMuBeobfYIR1774NTwXCesAD6gHyylPrXr
- 8M7u3yJpVp7PXxY26aj1oobn1ckNTPAlCeCs=
-X-Gm-Gg: ASbGncta/7O7JIB7j+Fih9rphN5/a0h0CozQ5/qAmruY2APTxNsWRMjaBh4+8m4RPE3
- 5dV3K+DK6cVxuW3W/OJpgtQNpLMfnyNsG63QlwHphSbFcgrZR3qVfbNCP0zMge9c7X5N/ZVHskk
- S7wQJnc1oATj3zaAnmlC99
-X-Google-Smtp-Source: AGHT+IGz3DTqRN29qluUtEYMGXXMv6eN82AAi3HjzwTdvlIjkX1KjzDHIBbupgYGiGGJ4Li0LyYxnSqMU95HUhhzfbU=
-X-Received: by 2002:a05:6402:3591:b0:5f8:30c2:8650 with SMTP id
- 4fb4d7f45d1cf-5fca078ee00mr3315814a12.14.1746806493851; Fri, 09 May 2025
- 09:01:33 -0700 (PDT)
+ AJvYcCXagAB2nqXNdqq9U6YP7RWgDEJvlbOOaV5hb2MYI+xLtm5q9sNmHXnqGROoJ4YS9Txp+5BGzydVpqQR@nongnu.org
+X-Gm-Message-State: AOJu0YxInqNcm7oddC3hWE8iCiKCzbwbtVX1vYkLtwN4kNVb3IN7Fs/P
+ 6sxzhSQ4Eyal+rZcAXXyENv/yD4XCNG0U+4d6BDtM4I9g8wK07TGE66dMr6s8M8WxHBHbCdJwvd
+ Os6iuQnNM76Vdxu4m2A2VkUQktpxjLwkX
+X-Gm-Gg: ASbGncs4Ivyaaaj/Pll8+ui49dXkxmZiN152AN92R7NtWqw2pZFCCWdttXrUNsEyxjU
+ pmmyGc74ELiOWJWLjLYjf12mFoho1feF8OlIB7MXtZHQbYSdBYv18v2UThQyPBPRuo5pqdlK3IE
+ J51K+U+PWX2G66NWust4wa
+X-Google-Smtp-Source: AGHT+IFfxQszHP8CGHa/B6Fv4dM05WpMvqS/wi3tEOQqTlSwWwREGGYN0rweYtkb0n2oYtCQ5Nf2Q45zzRL728elI2Y=
+X-Received: by 2002:a05:6402:34c6:b0:5fb:9f73:d0dd with SMTP id
+ 4fb4d7f45d1cf-5fca07708b2mr3471335a12.15.1746806516917; Fri, 09 May 2025
+ 09:01:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250507180737.183147-1-mjt@tls.msk.ru>
-In-Reply-To: <20250507180737.183147-1-mjt@tls.msk.ru>
+References: <20250508155439.512349-1-pbonzini@redhat.com>
+ <20250509141302.GA82958@fedora>
+ <CABgObfYUdYHg0ZJXCwjTvjxUK4gDXaE3-S0uvSMye4AcNn5GEA@mail.gmail.com>
+In-Reply-To: <CABgObfYUdYHg0ZJXCwjTvjxUK4gDXaE3-S0uvSMye4AcNn5GEA@mail.gmail.com>
 From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Fri, 9 May 2025 12:01:21 -0400
-X-Gm-Features: AX0GCFv7rd7A9Qb1cdoFhpGhbcJAqwjKeU7YpXJaO8X4Yne-z_9zMz2oTVzTQ0M
-Message-ID: <CAJSP0QVz2OwZdzA7t5P93vGg0zkpW=ebsJ+gWF64nYS4oxQiew@mail.gmail.com>
-Subject: Re: [PULL v2 00/21] Trivial patches for 2025-05-07
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org, 
- Zixing Liu <liushuyu@aosc.io>
+Date: Fri, 9 May 2025 12:01:45 -0400
+X-Gm-Features: AX0GCFvXLqfLi2R7YxXZfXsVQLx9Ck11xIBsuHipTOlNw81zwGW-TYxMvFw8uyc
+Message-ID: <CAJSP0QX+DvmErwsBp3PYhzBXtDr6K93uv4afx9PoAxx+xyw8+A@mail.gmail.com>
+Subject: Re: [PULL v2, part1 00/15] Rust changes for 2025-05-06
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel <qemu-devel@nongnu.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=stefanha@gmail.com; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=stefanha@gmail.com; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,144 +95,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 7, 2025 at 2:08=E2=80=AFPM Michael Tokarev <mjt@tls.msk.ru> wro=
-te:
+On Fri, May 9, 2025 at 10:55=E2=80=AFAM Paolo Bonzini <pbonzini@redhat.com>=
+ wrote:
+> Il ven 9 mag 2025, 16:13 Stefan Hajnoczi <stefanha@redhat.com> ha scritto=
+:
+>>
+>> Hi Paolo,
+>> v1 is already merged. I'm not sure what the purpose of v2 is. It looks
+>> like you dropped the wasm patches but the reason is unclear to me?
 >
-> The following changes since commit c5e2c4042e3c50b96cc5eaa9683325c5a96913=
-b0:
 >
->   Merge tag 'pull-loongarch-20250506' of https://github.com/bibo-mao/qemu=
- into staging (2025-05-06 11:03:45 -0400)
+> Sorry about the confusion, I sent this before I found a reproducer for th=
+e bug (as a kind of "bisection").
 >
-> are available in the Git repository at:
->
->   https://gitlab.com/mjt0k/qemu.git tags/pull-trivial-patches
->
-> for you to fetch changes up to 40d2aa5a7199f783e12818505857c3fd4663080f:
->
->   docs: replace `-hda` with `-drive` & update `root=3D` kernel parameter =
-(2025-05-07 21:05:10 +0300)
->
-> ----------------------------------------------------------------
-> trivial patches for 2025-05-07
->
-> Mostly typos in comments by Gustavo Romero,
-> plus changing -hda in examples to -drive,
-> plus single linux-user update (new syscall variant)
->
-> v2: update the last patch Author (it was "via qemu-trivial")
-> ----------------------------------------------------------------
-> Gustavo Romero (11):
->       hw/pci/pci.c: Turn DPRINTF into trace events
->       hw/isa/ich9: Remove stray empty comment
->       hw/i386/acpi-build: Fix typo and grammar in comment
->       hw/i386/acpi-build: Update document reference
->       hw/acpi/ich9: Remove ICH9_DEBUG macro
->       hw/i386/acpi-build: Fix typo in function name
->       hw/core/machine: Fix indentation
->       qom/object: Fix typo in comment
->       hw/net/e1000: Remove stray empty comment in header
->       hw/pci-host/gpex-acpi: Fix typo in comment
->       hw/acpi/pcihp: Fix typo in function name
->
-> Integral (1):
->       docs: replace `-hda` with `-drive` & update `root=3D` kernel parame=
-ter
->
-> Michael Tokarev (8):
->       linux-user/mmap.c: fix "of of" typo in comment
->       block.c: fix "the the" typo in comment
->       hw/xen/xen-hvm-common.c: fix "the the" typo in comment
->       include/exec/cpu-common.h: fix "the the" typo in comment
->       include/hw/xen/interface/io/blkif.h: fix "the the" typo in comment
->       qapi/qom.json: fix "the the" typo in comment
->       hw/display/apple-gfx.m: fix "in in" typo in comment
->       qapi/machine-target.json: fix "in in" typo in comment
->
-> Zixing Liu (1):
->       linux-user/syscall.c: add translation logic for epoll_pwait2 syscal=
-l
+> You can drop this.
 
-Hi Michael and Zixing Liu,
-Please take a look at the following build failure in the CI system:
+Good. Thanks!
 
-arm-linux-gnueabihf-gcc -Ilibqemu-arm-linux-user.a.p -I. -I..
--Itarget/arm -I../target/arm -I../common-user/host/arm
--I../linux-user/include/host/arm -I../linux-user/include -Ilinux-user
--I../linux-user -Ilinux-user/arm -I../linux-user/arm -Iqapi -Itrace
--Iui/shader -I/usr/include/capstone -I/usr/include/glib-2.0
--I/usr/lib/arm-linux-gnueabihf/glib-2.0/include
--fdiagnostics-color=3Dauto -Wall -Winvalid-pch -Werror -std=3Dgnu11 -O2 -g
--fstack-protector-strong -Wempty-body -Wendif-labels
--Wexpansion-to-defined -Wformat-security -Wformat-y2k
--Wignored-qualifiers -Wimplicit-fallthrough=3D2 -Winit-self
--Wmissing-format-attribute -Wmissing-prototypes -Wnested-externs
--Wold-style-declaration -Wold-style-definition -Wredundant-decls
--Wshadow=3Dlocal -Wstrict-prototypes -Wtype-limits -Wundef -Wvla
--Wwrite-strings -Wno-missing-include-dirs -Wno-psabi
--Wno-shift-negative-value -isystem
-/builds/qemu-project/qemu/linux-headers -isystem linux-headers -iquote
-. -iquote /builds/qemu-project/qemu -iquote
-/builds/qemu-project/qemu/include -iquote
-/builds/qemu-project/qemu/host/include/generic -iquote
-/builds/qemu-project/qemu/tcg/arm -pthread -D_GNU_SOURCE
--D_FILE_OFFSET_BITS=3D64 -D_LARGEFILE_SOURCE -fno-strict-aliasing
--fno-common -fwrapv -ftrivial-auto-var-init=3Dzero
--fzero-call-used-regs=3Dused-gpr -fPIE -isystem../linux-headers
--isystemlinux-headers -DCOMPILING_PER_TARGET
-'-DCONFIG_TARGET=3D"arm-linux-user-config-target.h"' -MD -MQ
-libqemu-arm-linux-user.a.p/linux-user_syscall.c.o -MF
-libqemu-arm-linux-user.a.p/linux-user_syscall.c.o.d -o
-libqemu-arm-linux-user.a.p/linux-user_syscall.c.o -c
-../linux-user/syscall.c
-../linux-user/syscall.c: In function =E2=80=98do_syscall1=E2=80=99:
-../linux-user/syscall.c:13434:33: error: implicit declaration of
-function =E2=80=98safe_epoll_pwait2=E2=80=99; did you mean =E2=80=98safe_ep=
-oll_pwait=E2=80=99?
-[-Werror=3Dimplicit-function-declaration]
-13434 | ret =3D get_errno(safe_epoll_pwait2(epfd, ep, maxevents, ts_arg,
-| ^~~~~~~~~~~~~~~~~
-| safe_epoll_pwait
-../linux-user/syscall.c:13434:33: error: nested extern declaration of
-=E2=80=98safe_epoll_pwait2=E2=80=99 [-Werror=3Dnested-externs]
-
-https://gitlab.com/qemu-project/qemu/-/jobs/9987233462
-
-Michael: Once the issue is resolved, please send a v2 pull request
-(either without the commit in question or with an updated version of
-the commit).
-
-Thanks,
 Stefan
-
->
->  block.c                             |  2 +-
->  docs/system/gdb.rst                 |  2 +-
->  docs/system/linuxboot.rst           |  6 +++---
->  docs/system/target-mips.rst         |  2 +-
->  hw/acpi/acpi-pci-hotplug-stub.c     |  2 +-
->  hw/acpi/ich9.c                      | 13 +------------
->  hw/acpi/pcihp.c                     |  2 +-
->  hw/acpi/piix4.c                     |  2 +-
->  hw/core/machine.c                   |  8 ++++----
->  hw/display/apple-gfx.m              |  2 +-
->  hw/i386/acpi-build.c                | 10 +++++-----
->  hw/i386/acpi-build.h                |  2 +-
->  hw/isa/lpc_ich9.c                   |  1 -
->  hw/net/e1000x_regs.h                |  2 +-
->  hw/pci-host/gpex-acpi.c             |  2 +-
->  hw/pci/pci.c                        | 19 ++++++-------------
->  hw/pci/trace-events                 |  4 ++++
->  hw/xen/xen-hvm-common.c             |  2 +-
->  include/exec/cpu-common.h           |  2 +-
->  include/hw/acpi/pcihp.h             |  2 +-
->  include/hw/xen/interface/io/blkif.h |  2 +-
->  linux-user/mmap.c                   |  2 +-
->  linux-user/syscall.c                | 36 +++++++++++++++++++++++++++++++=
-+----
->  qapi/machine-target.json            |  2 +-
->  qapi/qom.json                       |  2 +-
->  qom/object.c                        |  2 +-
->  26 files changed, 73 insertions(+), 60 deletions(-)
->
 
