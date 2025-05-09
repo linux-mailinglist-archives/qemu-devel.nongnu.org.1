@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 893BBAB1492
-	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 15:14:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8DCAAB1496
+	for <lists+qemu-devel@lfdr.de>; Fri,  9 May 2025 15:15:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDNXy-0001j9-FY; Fri, 09 May 2025 09:13:50 -0400
+	id 1uDNXz-0001k3-UJ; Fri, 09 May 2025 09:13:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNXg-0001hJ-RG
- for qemu-devel@nongnu.org; Fri, 09 May 2025 09:13:33 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNXh-0001hX-PL
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 09:13:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNXf-0006uL-5y
- for qemu-devel@nongnu.org; Fri, 09 May 2025 09:13:32 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uDNXf-0006v8-TG
+ for qemu-devel@nongnu.org; Fri, 09 May 2025 09:13:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1746796410;
+ s=mimecast20190719; t=1746796411;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=x2pHcWRzgK7CfAVlWHGCaEKN81lEH/YxskuMde7uZqg=;
- b=ZwrmTCEWfPRfKY14gHJBrURRmtwtbAVO9QApH5wn8CRUZSqHA/24Lbp6hsKdwNayKJy/mK
- qYJu9RLRZxKZ/b9BRljDEws72pqqACPgYKBezyimMJ4TLbTUfSvfuKBTjW1+kh1xCLkoTR
- mpF24qubx90w7W/7fog5r4lRfTToe+k=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=VXb16+SWDtGTMqOFx7cd7siZrZEqo7VNKvbo7fCKcSs=;
+ b=Lt2b7tRXm+DEfVBye0kTIa9OrR394h1G8k4cT+0kgEOiybrIZszYFN0H2KCDLZHDywCWil
+ nloZ5GEEeUTcaoyvDRXkD4rGTxDGl/AF7iEd4wnINlNqFg9E7K+Q2zWReJGIqwgyCG64l5
+ +IpSSjdWvvlS7+tVw3+DR8XTNXty65E=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-584-Acf_IxVpPuebjhtLHM2kIA-1; Fri,
- 09 May 2025 09:13:26 -0400
-X-MC-Unique: Acf_IxVpPuebjhtLHM2kIA-1
-X-Mimecast-MFC-AGG-ID: Acf_IxVpPuebjhtLHM2kIA_1746796406
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-176-GwMFvgVhNNKJwJFq-WEGcQ-1; Fri,
+ 09 May 2025 09:13:29 -0400
+X-MC-Unique: GwMFvgVhNNKJwJFq-WEGcQ-1
+X-Mimecast-MFC-AGG-ID: GwMFvgVhNNKJwJFq-WEGcQ_1746796409
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id DEE1B19560BB; Fri,  9 May 2025 13:13:25 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C183B1800264; Fri,  9 May 2025 13:13:28 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.45.224.18])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D17C51800EC9; Fri,  9 May 2025 13:13:23 +0000 (UTC)
+ id B49A818003FD; Fri,  9 May 2025 13:13:26 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>,
  Cedric Le Goater <clg@redhat.com>
-Subject: [PULL 01/28] vfio/container: ram discard disable helper
-Date: Fri,  9 May 2025 15:12:50 +0200
-Message-ID: <20250509131317.164235-2-clg@redhat.com>
+Subject: [PULL 02/28] vfio/container: reform vfio_container_connect cleanup
+Date: Fri,  9 May 2025 15:12:51 +0200
+Message-ID: <20250509131317.164235-3-clg@redhat.com>
 In-Reply-To: <20250509131317.164235-1-clg@redhat.com>
 References: <20250509131317.164235-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -84,98 +84,137 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Steve Sistare <steven.sistare@oracle.com>
 
-Define a helper to set ram discard disable, generate error messages,
-and cleanup on failure.  The second vfio_ram_block_discard_disable
-call site now performs VFIO_GROUP_UNSET_CONTAINER immediately on failure,
-instead of relying on the close of the container fd to do so in the kernel,
-but this is equivalent.
+Replace the proliferation of exit labels in vfio_container_connect with
+conditionals for cleaning each piece of state.  No functional change.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 Reviewed-by: Cedric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/qemu-devel/1746195760-101443-2-git-send-email-steven.sistare@oracle.com
+Link: https://lore.kernel.org/qemu-devel/1746195760-101443-3-git-send-email-steven.sistare@oracle.com
 [ clg: vfio_attach_discard_disable() -> vfio_container_attach_discard_disable() ]
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/container.c | 48 +++++++++++++++++++++++++--------------------
- 1 file changed, 27 insertions(+), 21 deletions(-)
+ hw/vfio/container.c | 60 +++++++++++++++++++++++++--------------------
+ 1 file changed, 33 insertions(+), 27 deletions(-)
 
 diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 77ff56b43f0a906167a3c7c8d8ae6376552762f7..2ea137fb024fedd2b8d578f2fb5a7eea2b11e4fa 100644
+index 2ea137fb024fedd2b8d578f2fb5a7eea2b11e4fa..4b2864cfa85d815fb67f2465b7544eb9de1664d3 100644
 --- a/hw/vfio/container.c
 +++ b/hw/vfio/container.c
-@@ -511,16 +511,10 @@ static bool vfio_legacy_setup(VFIOContainerBase *bcontainer, Error **errp)
-     return true;
- }
- 
--static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
--                                   Error **errp)
-+static bool vfio_container_attach_discard_disable(VFIOContainer *container,
-+                                            VFIOGroup *group, Error **errp)
+@@ -563,9 +563,12 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
  {
--    VFIOContainer *container;
--    VFIOContainerBase *bcontainer;
+     VFIOContainer *container;
+     VFIOContainerBase *bcontainer;
 -    int ret, fd;
--    VFIOAddressSpace *space;
++    int ret, fd = -1;
+     VFIOAddressSpace *space;
 -    VFIOIOMMUClass *vioc;
--
--    space = vfio_address_space_get(as);
-+    int ret;
++    VFIOIOMMUClass *vioc = NULL;
++    bool new_container = false;
++    bool group_was_added = false;
++    bool discard_disabled = false;
  
-     /*
-      * VFIO is currently incompatible with discarding of RAM insofar as the
-@@ -553,18 +547,32 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
-      * details once we know which type of IOMMU we are using.
-      */
+     space = vfio_address_space_get(as);
  
-+    ret = vfio_ram_block_discard_disable(container, true);
-+    if (ret) {
-+        error_setg_errno(errp, -ret, "Cannot set discarding of RAM broken");
-+        if (ioctl(group->fd, VFIO_GROUP_UNSET_CONTAINER, &container->fd)) {
-+            error_report("vfio: error disconnecting group %d from"
-+                         " container", group->groupid);
-+        }
+@@ -584,35 +587,37 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
+ 
+     fd = qemu_open("/dev/vfio/vfio", O_RDWR, errp);
+     if (fd < 0) {
+-        goto put_space_exit;
++        goto fail;
+     }
+ 
+     ret = ioctl(fd, VFIO_GET_API_VERSION);
+     if (ret != VFIO_API_VERSION) {
+         error_setg(errp, "supported vfio version: %d, "
+                    "reported version: %d", VFIO_API_VERSION, ret);
+-        goto close_fd_exit;
++        goto fail;
+     }
+ 
+     container = vfio_create_container(fd, group, errp);
+     if (!container) {
+-        goto close_fd_exit;
++        goto fail;
+     }
++    new_container = true;
+     bcontainer = &container->bcontainer;
+ 
+     if (!vfio_cpr_register_container(bcontainer, errp)) {
+-        goto free_container_exit;
++        goto fail;
+     }
+ 
+     if (!vfio_container_attach_discard_disable(container, group, errp)) {
+-        goto unregister_container_exit;
++        goto fail;
+     }
++    discard_disabled = true;
+ 
+     vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
+     assert(vioc->setup);
+ 
+     if (!vioc->setup(bcontainer, errp)) {
+-        goto enable_discards_exit;
++        goto fail;
+     }
+ 
+     vfio_group_add_kvm_device(group);
+@@ -621,35 +626,36 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
+ 
+     group->container = container;
+     QLIST_INSERT_HEAD(&container->group_list, group, container_next);
++    group_was_added = true;
+ 
+     if (!vfio_listener_register(bcontainer, errp)) {
+-        goto listener_release_exit;
++        goto fail;
+     }
+ 
+     bcontainer->initialized = true;
+ 
+     return true;
+-listener_release_exit:
+-    QLIST_REMOVE(group, container_next);
+-    vfio_group_del_kvm_device(group);
++
++fail:
+     vfio_listener_unregister(bcontainer);
+-    if (vioc->release) {
++
++    if (group_was_added) {
++        QLIST_REMOVE(group, container_next);
++        vfio_group_del_kvm_device(group);
 +    }
-+    return !ret;
-+}
-+
-+static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
-+                                   Error **errp)
-+{
-+    VFIOContainer *container;
-+    VFIOContainerBase *bcontainer;
-+    int ret, fd;
-+    VFIOAddressSpace *space;
-+    VFIOIOMMUClass *vioc;
-+
-+    space = vfio_address_space_get(as);
-+
-     QLIST_FOREACH(bcontainer, &space->containers, next) {
-         container = container_of(bcontainer, VFIOContainer, bcontainer);
-         if (!ioctl(group->fd, VFIO_GROUP_SET_CONTAINER, &container->fd)) {
--            ret = vfio_ram_block_discard_disable(container, true);
--            if (ret) {
--                error_setg_errno(errp, -ret,
--                                 "Cannot set discarding of RAM broken");
--                if (ioctl(group->fd, VFIO_GROUP_UNSET_CONTAINER,
--                          &container->fd)) {
--                    error_report("vfio: error disconnecting group %d from"
--                                 " container", group->groupid);
--                }
-+            if (!vfio_container_attach_discard_disable(container, group, errp)) {
-                 return false;
-             }
-             group->container = container;
-@@ -596,9 +604,7 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
-         goto free_container_exit;
++    if (vioc && vioc->release) {
+         vioc->release(bcontainer);
      }
+-
+-enable_discards_exit:
+-    vfio_ram_block_discard_disable(container, false);
+-
+-unregister_container_exit:
+-    vfio_cpr_unregister_container(bcontainer);
+-
+-free_container_exit:
+-    object_unref(container);
+-
+-close_fd_exit:
+-    close(fd);
+-
+-put_space_exit:
++    if (discard_disabled) {
++        vfio_ram_block_discard_disable(container, false);
++    }
++    if (new_container) {
++        vfio_cpr_unregister_container(bcontainer);
++        object_unref(container);
++    }
++    if (fd >= 0) {
++        close(fd);
++    }
+     vfio_address_space_put(space);
  
--    ret = vfio_ram_block_discard_disable(container, true);
--    if (ret) {
--        error_setg_errno(errp, -ret, "Cannot set discarding of RAM broken");
-+    if (!vfio_container_attach_discard_disable(container, group, errp)) {
-         goto unregister_container_exit;
-     }
- 
+     return false;
 -- 
 2.49.0
 
