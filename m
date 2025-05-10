@@ -2,81 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D9EFAB21AA
-	for <lists+qemu-devel@lfdr.de>; Sat, 10 May 2025 09:25:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96C59AB2260
+	for <lists+qemu-devel@lfdr.de>; Sat, 10 May 2025 10:53:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDeZD-0001gX-I1; Sat, 10 May 2025 03:24:15 -0400
+	id 1uDfwB-0006DL-8B; Sat, 10 May 2025 04:52:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uDeZA-0001gE-I3
- for qemu-devel@nongnu.org; Sat, 10 May 2025 03:24:12 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1uDfw9-0006DC-46
+ for qemu-devel@nongnu.org; Sat, 10 May 2025 04:52:01 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uDeZ8-00055u-3z
- for qemu-devel@nongnu.org; Sat, 10 May 2025 03:24:12 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-22fa414c497so33975355ad.0
- for <qemu-devel@nongnu.org>; Sat, 10 May 2025 00:24:09 -0700 (PDT)
+ id 1uDfw6-0005bw-SH
+ for qemu-devel@nongnu.org; Sat, 10 May 2025 04:52:00 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-73972a54919so2957912b3a.3
+ for <qemu-devel@nongnu.org>; Sat, 10 May 2025 01:51:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1746861848; x=1747466648;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1746867116; x=1747471916;
  darn=nongnu.org; 
- h=cc:to:message-id:content-transfer-encoding:mime-version:subject
- :date:from:from:to:cc:subject:date:message-id:reply-to;
- bh=e+pMRAggeuPhoe9yc9U1qTNLL1hFaDIp/gWZePmc9Yg=;
- b=KnKt1ds91XNtd6YMX3CW59Vz5YmKGXYsM1OoQiEzxhw2xlMU971yeeYFX62ZsHS6+q
- whLSow+wucsg4ROUkizIHmnkzQnH4FG1zaMZf4nzGPZ1MXv/biiWuwssXq0O+WZX22G+
- rNzQakSRUxh04ZGgapbrO0n85+oteek01zjKixK6mRkzYIW61+youTzwePzETwWfduxU
- +RXcIl/LpbSUJNZ7E9HsyZElUx0/i7pev1HhVqP6fJdmxGe1eTDvvOmQ6QSOGQoBzRY9
- OOYdGCQmHm2ut5O1ED5pZqvMD2LFI5GamuBZcAsDiepjHFceiKRuoBIxHRn1W4qWGxRb
- vLow==
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=6zUq0GiWqUMNT77WbT5wkKw+w/zwWIbdY/JyE9n7hgc=;
+ b=hqBLvnYMW4+Gq2OfR07X6caWqYtOkojHH8jSobWGjK/uiIhgvTHIKORLMf5dpQlSHm
+ vLJURch+8bC5dWGAntO1uBN23+jLr1atfHTk6ZmA80rQZ55BNgrswMIi5/VQNWImgWtH
+ ftS7oQc1DLdeJhco5B1zohkpLC3o6b1yaLxBSa5vdi8fzZ4gsLxW7nyQ4dkbjm6lIAEg
+ +mnKwURppP6lXtVkfVb+2iWv1V+AxvfpA4HDTz0HN5RgieE852zLcSBVtRg7DOuJDdFT
+ 9led6pmG5goDxa9RHAdwTjjzC+MdNkSijdH4VScWYr0RB2rx7fZg4/LGKQ+sp3/uvdW3
+ whNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746861848; x=1747466648;
- h=cc:to:message-id:content-transfer-encoding:mime-version:subject
- :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1746867116; x=1747471916;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=e+pMRAggeuPhoe9yc9U1qTNLL1hFaDIp/gWZePmc9Yg=;
- b=ZSnIZj+qZVxluX3UmNcaS30TrZnWO/l1xNoThwn7EB5QgUAkKl8grF17TyruOOUNNv
- YuIsSpy2mlfwZnD7zOCIhhb9uhfvg08RhXd3/sPI6xXeKTVNKH0u5KU3leJDi7J2AtJO
- sZ0dTWwNaoJDx3m0aZ/PKkeCUEyWuhVMhR52CXlS/iiQkMA8QCLeVobtNyWjzn2uJ23V
- 1ar/pbEIQTuKjm9ygDZZp9H56SBaBXY3doKE0GRCMGs2LkMTLGC4f0EyEiMgCGHpXfAg
- OmJ7jatSW3noQwcf50zreWm5WiYZw90norLhaleuBf3Uh/kUQOTP5m4wVkKq/IhrTxBa
- hm5A==
-X-Gm-Message-State: AOJu0YzfkBKJxOg1G9x1u9856pTNdYzbYC6giY9tAJauNakBQCDHMuek
- Q7Wr9iRBRhfjhlSpO6M8Jm49KLI0qvH8AmrIqh1ob4ZbktBteGYSJ0soXXIeXQI=
-X-Gm-Gg: ASbGnctMeFw5op/wSPCTmiR5R565I2zkYnZv1LLsj5vijBWsafoERwIwbNeYvUb2jgk
- 6HsghocvW+N23nRQ5sivpwVYIwvo6ye9DbET9woDqE2DtoN/ruEGxZwKHyYuWmA9z5AIeVJ3PCP
- OAEn49opXuw327hoUSGhhs/qR+9MGlxmwlYlXMIb82uja7XrjNapt2XyBcl7mpndrh5/4sZmPH6
- 6EtEEyPw5cbYzq8BWXBf4d2Ymi51VWAUax+juefhFvRpGclsMsqeUbv69o23tMSf41cKevR/bZj
- B2COf7y5Zc2CIXdJlhiW/pW42Xf0gZQ3U1ZmPC1FNpg3hFTn2CQj
-X-Google-Smtp-Source: AGHT+IFSA1lXFkASjtF5ZtMbojEPwIccDD5TkL3Tc3SLZ+f1xGXl9LyheXMK/0HKSGTeNL4HAEiLWQ==
-X-Received: by 2002:a17:902:cccc:b0:22e:50fa:50d6 with SMTP id
- d9443c01a7336-22fc9185df4mr89252625ad.37.1746861848177; 
- Sat, 10 May 2025 00:24:08 -0700 (PDT)
-Received: from localhost ([157.82.128.1]) by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-22fc82a2e4fsm27977615ad.232.2025.05.10.00.24.06
+ bh=6zUq0GiWqUMNT77WbT5wkKw+w/zwWIbdY/JyE9n7hgc=;
+ b=xBk8fe5vwm39Yqb3EHQu/woYCvjHKictn/nHuANQyZm6jDPBc1aMv/wWfODdFFf2YF
+ 8d7kHMGoDz26Kg0E2cu78S4DTH8eK00vgWMkHEUA+pw5ck6kk36ndYAArYtLOFDCTv1C
+ bnvfp0im/UmdyoyqkWTQAGS/gSiWTfuXQz+w+Eey1hI/pcmJZBy+LjSN7G8fvMMJp01G
+ 5EtsTrIKshN8Kn/Nt5c26xvaWnrF8Ul9P8B1uU2dY5Aii4Rmr3K4jNZV1tmOkzMhAbDB
+ dZstby9NiEWA9gjBoLQbIIre2TZ20EW9ARCEfYjgl70eCDqFRWa+GBjnGtKrbG7TDNEX
+ aubA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVgEFM3xT6oBNfiHSpT8OZhRFFTZr71BY2M6ZILlT7XGNQknvd8G/+RwOO/2dSbyYwPJRLJ17nVgZhs@nongnu.org
+X-Gm-Message-State: AOJu0YyfylUJ3xGg1wrFDVGQT7OLO6DUL68xerVhMkwuOgYO/h6nBVEM
+ yy5+M6TpN3J+tgoajLxfaKyyvBPT28rZb59bM1rj1u/G308kTmxeuuFLomFuXS9caWX48BzoVTS
+ x
+X-Gm-Gg: ASbGncv6FVDca4Sfvo1JOmvA5VxLjGaA1b8zI5AuLFuJOSqsgghmkGsYiHrhGQOdUIl
+ bbDG+Ns5Bx4Zhh93hbcM5o+0jYjQA+lr/rUzaOxv9u01uM2TwvDH0nMztxnG82hzDm5H56hHRQK
+ ZnJydmXRE/caPalfZtzgIhCkDefwmZB+9sr4+ZPV7RpnSYt2aC6qivvOS0tTbnJeRt0NF6fh2Rg
+ +7j2PEIW3dKs/yy4mlWz39xq6n8cZN/b0MzXP/rG5GFbeFJg4VFp8vxj6U3dj4Y8wxMqJyoznD7
+ v5PMO9vF0jJIZx9/Txhz+a+C9KUFmxozRp+ypY0Pco5cXFdx5Cl1W7A=
+X-Google-Smtp-Source: AGHT+IEyvqYqrWsGNDHjTare65+q+UQc9CkAneex2hKIl2/i3ko3XBUKGVNUDq+c1l3o7CEzmV4CKg==
+X-Received: by 2002:a05:6a00:a16:b0:732:5164:3cc with SMTP id
+ d2e1a72fcca58-7423bffde33mr9623270b3a.19.1746867116096; 
+ Sat, 10 May 2025 01:51:56 -0700 (PDT)
+Received: from localhost ([157.82.203.223])
+ by smtp.gmail.com with UTF8SMTPSA id
+ d2e1a72fcca58-7423770447asm2851260b3a.32.2025.05.10.01.51.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 10 May 2025 00:24:07 -0700 (PDT)
+ Sat, 10 May 2025 01:51:55 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sat, 10 May 2025 16:24:01 +0900
-Subject: [PATCH] virtio-net: Add queues for RSS during migration
+Subject: [PATCH v2 0/9] Improve futex usage
+Date: Sat, 10 May 2025 17:51:45 +0900
+Message-Id: <20250510-event-v2-0-7953177ce1b8@daynix.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250510-n-v1-1-19ee26ac3ca6@daynix.com>
-X-B4-Tracking: v=1; b=H4sIABD/HmgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDEwMz3TzdxFTzpFQDYwtLYwsjJaC6gqLUtMwKsBnRsbW1APzHcwBTAAA
- A
-X-Change-ID: 20250406-n-ae7be0389382
-To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
- devel@daynix.com, Akihiko Odaki <akihiko.odaki@daynix.com>
+X-B4-Tracking: v=1; b=H4sIAKETH2gC/y3MQQ7CIBCF4as0sxYD02KJK+9hukCY2llIDTSkT
+ cPdxeryf3n5dkgUmRJcmx0iZU48hxp4asBNNjxJsK8NKLFTslWCMoVF9EZbHKX3trNQv+9II6+
+ Hcx9qT5yWOW4Hm9V3/QmI+i9kJaSw2jjjLy09ennzdgu8nt38gqGU8gH5pK3gmwAAAA==
+X-Change-ID: 20241031-event-785a2f0dda4a
+To: Paolo Bonzini <pbonzini@redhat.com>, Stefan Weil <sw@weilnetz.de>, 
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
+ Hailiang Zhang <zhanghailiang@xfusion.com>
+Cc: Phil Dennis-Jordan <phil@philjordan.eu>, qemu-devel@nongnu.org, 
+ devel@daynix.com, 
+ =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.15-dev-edae6
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,110 +108,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-virtio_net_pre_load_queues() inspects vdev->guest_features to tell if
-VIRTIO_NET_F_RSS or VIRTIO_NET_F_MQ is enabled to infer the required
-number of queues. This works for VIRTIO_NET_F_MQ but it doesn't for
-VIRTIO_NET_F_RSS because only the lowest 32 bits of vdev->guest_features
-is set at the point and VIRTIO_NET_F_RSS uses bit 60 while
-VIRTIO_NET_F_MQ uses bit 22.
+In a recent discussion, Phil Dennis-Jordan pointed out a quirk in
+QemuEvent destruction due to futex-like abstraction, which prevented
+the usage of QemuEvent in new and existing code[1]. With some more
+thoughts after this discussion, I also found other problem and room
+of improvement in futex usage. Here is a stack of patches to resolve
+them.
 
-Instead of inferring the required number of queues from
-vdev->guest_features, use the number loaded from the vm state.
+Patch "futex: Check value after qemu_futex_wait()" ensures
+qemu_futex_wait() is used in loops as suggested in the man page.
 
-Fixes: 8c49756825da ("virtio-net: Add only one queue pair when realizing")
+Patch "futex: Support Windows" implements futex functions for Windows.
+
+Patch "qemu-thread: Avoid futex abstraction for non-Linux" and
+"qemu-thread: Use futex for QemuEvent on Windows" enable destroying
+QemuEvent immediately after qemu_event_wait().
+
+Patch "qemu-thread: Use futex for QemuEvent on Windows" and
+"qemu-thread: Use futex if available for QemuLockCnt" make the use of
+futex functions added for Windows.
+
+Patches "migration: Replace QemuSemaphore with QemuEvent",
+"migration/colo: Replace QemuSemaphore with QemuEvent",
+"migration/postcopy: Replace QemuSemaphore with QemuEvent", and
+"hw/display/apple-gfx: Replace QemuSemaphore with QemuEvent" replace
+some QemuSemaphores with QemuEvents, which can utilize futex. Some of
+them rely on that QemuEvent can be destroyed immediately after
+qemu_event_wait().
+
+[1]: https://lore.kernel.org/r/CAAibmn3HZeDeK8FrYhHa1GGwc+N8rBuB2VvMRm7LCt0mUGmsYQ@mail.gmail.com
+
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- include/hw/virtio/virtio.h |  2 +-
- hw/net/virtio-net.c        | 11 ++++-------
- hw/virtio/virtio.c         | 14 +++++++-------
- 3 files changed, 12 insertions(+), 15 deletions(-)
-
-diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
-index 638691028050..af52580c1e63 100644
---- a/include/hw/virtio/virtio.h
-+++ b/include/hw/virtio/virtio.h
-@@ -211,7 +211,7 @@ struct VirtioDeviceClass {
-     int (*start_ioeventfd)(VirtIODevice *vdev);
-     void (*stop_ioeventfd)(VirtIODevice *vdev);
-     /* Called before loading queues. Useful to add queues before loading. */
--    int (*pre_load_queues)(VirtIODevice *vdev);
-+    int (*pre_load_queues)(VirtIODevice *vdev, uint32_t n);
-     /* Saving and loading of a device; trying to deprecate save/load
-      * use vmsd for new devices.
-      */
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index de87cfadffe1..c25c6cf54183 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -3026,11 +3026,10 @@ static void virtio_net_del_queue(VirtIONet *n, int index)
-     virtio_del_queue(vdev, index * 2 + 1);
- }
- 
--static void virtio_net_change_num_queue_pairs(VirtIONet *n, int new_max_queue_pairs)
-+static void virtio_net_change_num_queues(VirtIONet *n, int new_num_queues)
- {
-     VirtIODevice *vdev = VIRTIO_DEVICE(n);
-     int old_num_queues = virtio_get_num_queues(vdev);
--    int new_num_queues = new_max_queue_pairs * 2 + 1;
-     int i;
- 
-     assert(old_num_queues >= 3);
-@@ -3066,16 +3065,14 @@ static void virtio_net_set_multiqueue(VirtIONet *n, int multiqueue)
-     int max = multiqueue ? n->max_queue_pairs : 1;
- 
-     n->multiqueue = multiqueue;
--    virtio_net_change_num_queue_pairs(n, max);
-+    virtio_net_change_num_queues(n, max * 2 + 1);
- 
-     virtio_net_set_queue_pairs(n);
- }
- 
--static int virtio_net_pre_load_queues(VirtIODevice *vdev)
-+static int virtio_net_pre_load_queues(VirtIODevice *vdev, uint32_t n)
- {
--    virtio_net_set_multiqueue(VIRTIO_NET(vdev),
--                              virtio_has_feature(vdev->guest_features, VIRTIO_NET_F_RSS) ||
--                              virtio_has_feature(vdev->guest_features, VIRTIO_NET_F_MQ));
-+    virtio_net_change_num_queues(VIRTIO_NET(vdev), n);
- 
-     return 0;
- }
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 85110bce3744..286648fe9b60 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -3255,13 +3255,6 @@ virtio_load(VirtIODevice *vdev, QEMUFile *f, int version_id)
-         config_len--;
-     }
- 
--    if (vdc->pre_load_queues) {
--        ret = vdc->pre_load_queues(vdev);
--        if (ret) {
--            return ret;
--        }
--    }
--
-     num = qemu_get_be32(f);
- 
-     if (num > VIRTIO_QUEUE_MAX) {
-@@ -3269,6 +3262,13 @@ virtio_load(VirtIODevice *vdev, QEMUFile *f, int version_id)
-         return -1;
-     }
- 
-+    if (vdc->pre_load_queues) {
-+        ret = vdc->pre_load_queues(vdev, num);
-+        if (ret) {
-+            return ret;
-+        }
-+    }
-+
-     for (i = 0; i < num; i++) {
-         vdev->vq[i].vring.num = qemu_get_be32(f);
-         if (k->has_variable_vring_alignment) {
+Changes in v2:
+- Rebased.
+- Added patch
+  "hw/display/apple-gfx: Replace QemuSemaphore with QemuEvent".
+- Link to v1: https://lore.kernel.org/r/20241225-event-v1-0-a58c8d63eb70@daynix.com
 
 ---
-base-commit: 825b96dbcee23d134b691fc75618b59c5f53da32
-change-id: 20250406-n-ae7be0389382
+Akihiko Odaki (9):
+      futex: Check value after qemu_futex_wait()
+      futex: Support Windows
+      qemu-thread: Avoid futex abstraction for non-Linux
+      qemu-thread: Use futex for QemuEvent on Windows
+      qemu-thread: Use futex if available for QemuLockCnt
+      migration: Replace QemuSemaphore with QemuEvent
+      migration/colo: Replace QemuSemaphore with QemuEvent
+      migration/postcopy: Replace QemuSemaphore with QemuEvent
+      hw/display/apple-gfx: Replace QemuSemaphore with QemuEvent
+
+ meson.build                       |   2 +
+ include/qemu/futex.h              |  43 ++++++++++-
+ include/qemu/lockcnt.h            |   2 +-
+ include/qemu/thread-posix.h       |   9 ---
+ include/qemu/thread-win32.h       |   6 --
+ include/qemu/thread.h             |  11 ++-
+ migration/migration.h             |  16 ++---
+ migration/colo.c                  |  20 +++---
+ migration/migration.c             |  29 ++++----
+ migration/postcopy-ram.c          |  10 +--
+ migration/savevm.c                |   2 +-
+ tests/unit/test-aio-multithread.c |   6 +-
+ util/event.c                      | 144 +++++++++++++++++++++++++++++++++++++
+ util/lockcnt.c                    |   9 +--
+ util/qemu-thread-posix.c          | 148 --------------------------------------
+ util/qemu-thread-win32.c          | 129 ---------------------------------
+ hw/display/apple-gfx.m            |  10 +--
+ util/meson.build                  |   3 +-
+ 18 files changed, 250 insertions(+), 349 deletions(-)
+---
+base-commit: 4b1f5b73e060971c434e70694d571adfee553027
+change-id: 20241031-event-785a2f0dda4a
 
 Best regards,
 -- 
