@@ -2,84 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB99AAB2176
-	for <lists+qemu-devel@lfdr.de>; Sat, 10 May 2025 08:18:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A01C0AB2173
+	for <lists+qemu-devel@lfdr.de>; Sat, 10 May 2025 08:17:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDdWK-0002Qd-R5; Sat, 10 May 2025 02:17:13 -0400
+	id 1uDdWN-0002bj-2B; Sat, 10 May 2025 02:17:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uDdWD-0002MD-B9
- for qemu-devel@nongnu.org; Sat, 10 May 2025 02:17:05 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1uDdWG-0002Qm-HL
+ for qemu-devel@nongnu.org; Sat, 10 May 2025 02:17:09 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uDdWB-0007oh-37
- for qemu-devel@nongnu.org; Sat, 10 May 2025 02:17:05 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-73712952e1cso2946031b3a.1
- for <qemu-devel@nongnu.org>; Fri, 09 May 2025 23:17:02 -0700 (PDT)
+ id 1uDdWE-0007oy-9G
+ for qemu-devel@nongnu.org; Sat, 10 May 2025 02:17:08 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-739525d4e12so2758081b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 09 May 2025 23:17:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1746857821; x=1747462621;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1746857825; x=1747462625;
  darn=nongnu.org; 
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=N4FShxfcJM9DtMoDONTqc75Lc831Q8bi5xNbRuMVJHk=;
- b=lkVzI7zwIH33OHkR/lpOpVL1MRSmzdD2jRuePeFkZNSGTax1yBr5EohplACrthZ79R
- aXVSEJDdmpe6muJ9/7JrRVODhJ7sci7e+Zr5TB7jvWLdHS2kDuQFbBAMKBUkB0/tqQ9O
- tJMqe0ENRmcOl4MtDjaYg2hmescRhftdr40+A/TZnCt4ZukWiDk07dEWM6NusaHwwYqR
- N46+8zbWP+Uaex05KngV7ny1sblIop7PIpR3kx5M9OYkLw6tCGAADlm7pYZrpjNMxLfh
- n2kHLB7f67QPUimKQL6Kt23O7eEb3XcAcHouaRqcj9ivmYVlb12KFtUdYFsNGh7KhEiN
- /wrA==
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=snxR6Tf4837ucEUccRrRLlGIQOdYmeLTDj3OfwCYzvQ=;
+ b=zcjWY8+PljIiKnnrTP4423vBxcg4eh2GgKNbTGebffx5/m4bwAMHmV9tmhI7RTMgxb
+ 1tsicxX3ftTfWxMeqBNl8YS9VwyOOkdlmF03rZU6gJSjRwPOsLpLYSkFUsBkJE6tIGwT
+ DOmpQM5fEsyi2ko/rKCG+z7u1hqJm71dKJtq5SiLVYJQhqXAeTPAwA4cBQRbx1ugUNde
+ QTZCP9Ct2rgCS8kPDVGtix+zzUZDTPXp/vQlVwKwzTbzy0ej+K+qdpsBFYHYm4S9Vovy
+ lCw73Wzset0YETmy8HfUDS45/m72UzqfwYY9/ySUkiTeSRsixWAcNSl+w1jiPRzLHI1S
+ HqVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746857821; x=1747462621;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=N4FShxfcJM9DtMoDONTqc75Lc831Q8bi5xNbRuMVJHk=;
- b=HT6ltx6JO+55R1AddmbFPNS/GafTn9bmeKf13ZcDhoGH2YuSyc10Rhf5rX4ToMRV2r
- LaVgKHorz9nFu+JM+fNVX/fwTYnSUziF7vXIHqnQMXjPjuZEA3agmwGmULIbd6sYycpy
- NPm6Z7j+6ve8VrxLWh2EDUd4GvyVjFuIg5LN44MtoNr0OV0AsyF5fwt40ywBWnrrGnVh
- mEDtxRTg8vAskFZLHJy61UKKvOuoCr5HivV88MO+M2iXhYSBU0xl6tjf5WAEuVDGKC86
- gnrP64Dx4Tda8h/mTI7c8M1IeFtHQUOFJ33TYRwutDwYqfqoUTsaBw029So8/OltAdGG
- DSeA==
+ d=1e100.net; s=20230601; t=1746857825; x=1747462625;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=snxR6Tf4837ucEUccRrRLlGIQOdYmeLTDj3OfwCYzvQ=;
+ b=DTX/UPNsNf3QXWeyE2Hn1t67uYGa56aJZ24IubYeqQgdB7hJW5JMn18RlJRQAJXvrK
+ j3Ny92UFWPU9JK5x6QeMbzob1U2mXM3JJZ68y5be9WLbtuPuEfEr7/0FpO4mgnVCddiz
+ H4Uhd2QdGntgMnVhZighmiMux2go8wxfTDzxyMe+LLFhz5HZGaw1lNhhxXoSZJ3yDP/L
+ 9ps2/5cCK8KbHX+Oa45eKgDElzJHsw6upIDOYQVhLNp7+kl1cejdsjJ94kyCD/D9fFGB
+ PlY65PwjQjSTKB0HVw7eZDuwWe9lXfdeFUmEy1qL8gn8o6rF2Q/zcFzt6GBBzFj0qQ7q
+ 27Fg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWJWOSfIxHsw6aIfWhOLiSWBMpFsddbbsp8TlKTVw/lRPvBMBQUIqvKoFZr2+GrNL1FgXJExN8HVpWU@nongnu.org
-X-Gm-Message-State: AOJu0YxO+TJ/9bT6Wm6wIEnE3O64jVOR3cbH/NABda/wFB3mng/mnCl2
- 34+JmOPtIENPUUX7nSRmEqAt2/TK5q4S6aXlolkGIC0xbAWB/MjMZLz7l4USLjk5Iu86gvjl7Kb
- S
-X-Gm-Gg: ASbGncuX5Z/IhX3e2v8tcpi22sFNnLHAn/nll1wkAVS/zgsO7glUxQsYltNo1qOpDxH
- A8chDPxsw2ROH8R5Oqr+jO9Vi0qrJctgx1W8g3PaUHoHydKwCVbZVjHHxuDw31BN+wtXLVwal6D
- Ih3FBciniUDAbzhpixidx4CFbXYMwXCS9GAUe1bKhdDOeRdLXoCB2XBf/uxKitN9G3Utbgddcn9
- dqKx0P1tS2N/OmfHSXp78LdZaQcDIbSfqnUmCAA6KNFWHGxZ20z8a13hAPQ5JR/j623teooflCy
- E2K1tN+0SaQYGE2qyKkXHDU+A3JSKfnJagiAZjqCwgxN/6sLIPwTl9DD4GLnLJQ=
-X-Google-Smtp-Source: AGHT+IFK6dAwqvWr8sl3mDXUIGJMdg711XaiqHwNZJ37ZCyZUNUBRlVmWDxftW3CSVk2XQHu4IotIg==
-X-Received: by 2002:a05:6a21:3483:b0:1f5:839e:ece8 with SMTP id
- adf61e73a8af0-215abab9c4emr10227898637.2.1746857821147; 
- Fri, 09 May 2025 23:17:01 -0700 (PDT)
+ AJvYcCVCgmXZl3jT+SnwYsMPS8cNONUOKs14Qd7DF0lX9zoSoEcM8BasJ/TBII8OjNKrKdM1sGV6Bw8xMoLw@nongnu.org
+X-Gm-Message-State: AOJu0YxCt6KoEUfQCIeE2jK8BJmgneOJLTwyqU9Q1jyZUOJD3a3HXBzs
+ 2xoI/Jr9rneZYJnpotOp5HtNctllF8MAnjrGGdXAY6gQYk7/fTJ9uZKmYMNQ004=
+X-Gm-Gg: ASbGncuRidM5tvQMAJk6XLXjzPUFpj2fIZWnyCMIdkh5fMZCtfOUMRsqtpWilMYfk/c
+ 50EX4AVuZtgJtJSE7z/vGsD0Zn5gYIj8YflYQDZTtjcGJwHgxfo/37N44HiYvMe+9qjNlC2pZ6k
+ PkX6QOTrxLQDOPtorV1fD0EpGBeZ0t/pvUVpoaudNmAXJFqZ7xOmNWHRRD/JjPGmWesHVtvwaKc
+ YXbRHKxjgc5JSrqdO0YFahvLpeCfTi8OOJsa6ExMWjkZqEYLl9Lid4j5s96TmCRnpmJ3kcRuyF9
+ JAcIjXf5mZDoAi4gOE971ufzYynEaZhO7HcPv4IpSkee9IRLLZgHZmjpI2LF/FE=
+X-Google-Smtp-Source: AGHT+IFh1/oOgfS7SNz4V7zoZb0gZlfOWG28cRtJW3u1nO686uWLgIQnlm7ChFZCCKRjXRxq8X8AKw==
+X-Received: by 2002:a05:6a00:190f:b0:736:a6e0:e66d with SMTP id
+ d2e1a72fcca58-7423bc58f29mr8051247b3a.6.1746857824283; 
+ Fri, 09 May 2025 23:17:04 -0700 (PDT)
 Received: from localhost ([157.82.128.1]) by smtp.gmail.com with UTF8SMTPSA id
- d2e1a72fcca58-74237704dc0sm2667706b3a.7.2025.05.09.23.16.59
+ d2e1a72fcca58-74237a10867sm2656035b3a.110.2025.05.09.23.17.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 09 May 2025 23:17:00 -0700 (PDT)
+ Fri, 09 May 2025 23:17:04 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 0/3] docs: Bump sphinx to 6.2.1
-Date: Sat, 10 May 2025 15:16:53 +0900
-Message-Id: <20250510-sphinx72-v1-0-2358e0c68bbe@daynix.com>
+Date: Sat, 10 May 2025 15:16:54 +0900
+Subject: [PATCH 1/3] docs: Bump sphinx to 6.2.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAFXvHmgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDUwML3eKCjMy8CnMjXRMDg2RTI8PENHNDAyWg8oKi1LTMCrBR0bG1tQA
- gid3oWgAAAA==
-X-Change-ID: 20250508-sphinx72-400c521af710
+Message-Id: <20250510-sphinx72-v1-1-2358e0c68bbe@daynix.com>
+References: <20250510-sphinx72-v1-0-2358e0c68bbe@daynix.com>
+In-Reply-To: <20250510-sphinx72-v1-0-2358e0c68bbe@daynix.com>
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
 Cc: devel@daynix.com, John Snow <jsnow@redhat.com>, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.15-dev-edae6
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -101,9 +98,6 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Supersedes: <20250505-sphinx82-v1-0-85f2418b33b1@daynix.com>
-("[PATCH 0/2] docs: Bump sphinx to 8.2.3")
-
 sphinx 5.3.0 fails with Python 3.13.1:
 
 ../docs/meson.build:37: WARNING: /home/me/qemu/build/pyvenv/bin/sphinx-build:
@@ -117,23 +111,39 @@ sphinx version.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
-Akihiko Odaki (3):
-      docs: Bump sphinx to 6.2.1
-      docs: Require sphinx>=6.2
-      MAINTAINERS: Add docs/requirements.txt
+ docs/requirements.txt | 4 ++--
+ pythondeps.toml       | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
- MAINTAINERS                |   1 +
- docs/requirements.txt      |   4 +-
- docs/sphinx/compat.py      | 230 ---------------------------------------------
- docs/sphinx/qapi_domain.py |  33 +++----
- pythondeps.toml            |   4 +-
- 5 files changed, 20 insertions(+), 252 deletions(-)
----
-base-commit: 1da8f3a3c53b604edfe0d55e475102640490549e
-change-id: 20250508-sphinx72-400c521af710
+diff --git a/docs/requirements.txt b/docs/requirements.txt
+index 02583f209aa6..87f7afcb2e79 100644
+--- a/docs/requirements.txt
++++ b/docs/requirements.txt
+@@ -1,5 +1,5 @@
+ # Used by readthedocs.io
+ # Should be in sync with the "installed" key of pythondeps.toml
+ 
+-sphinx==5.3.0
+-sphinx_rtd_theme==1.1.1
++sphinx==6.2.1
++sphinx_rtd_theme==1.2.2
+diff --git a/pythondeps.toml b/pythondeps.toml
+index c03c9df81b5c..4f6b6f01e0d0 100644
+--- a/pythondeps.toml
++++ b/pythondeps.toml
+@@ -24,8 +24,8 @@ pycotap = { accepted = ">=1.1.0", installed = "1.3.1" }
+ 
+ [docs]
+ # Please keep the installed versions in sync with docs/requirements.txt
+-sphinx = { accepted = ">=3.4.3", installed = "5.3.0", canary = "sphinx-build" }
+-sphinx_rtd_theme = { accepted = ">=0.5", installed = "1.1.1" }
++sphinx = { accepted = ">=3.4.3", installed = "6.2.1", canary = "sphinx-build" }
++sphinx_rtd_theme = { accepted = ">=0.5", installed = "1.2.2" }
+ 
+ [avocado]
+ # Note that qemu.git/python/ is always implicitly installed.
 
-Best regards,
 -- 
-Akihiko Odaki <akihiko.odaki@daynix.com>
+2.49.0
 
 
