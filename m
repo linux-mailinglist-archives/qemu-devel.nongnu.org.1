@@ -2,63 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B361AB24B6
-	for <lists+qemu-devel@lfdr.de>; Sat, 10 May 2025 18:37:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B224BAB24FD
+	for <lists+qemu-devel@lfdr.de>; Sat, 10 May 2025 20:38:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDnBx-0004mv-DE; Sat, 10 May 2025 12:36:49 -0400
+	id 1uDp51-0002xj-HP; Sat, 10 May 2025 14:37:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <whitebox@nefkom.net>)
- id 1uDnBu-0004mi-Sj
- for qemu-devel@nongnu.org; Sat, 10 May 2025 12:36:46 -0400
-Received: from mail-out.m-online.net ([2001:a60:0:28:0:1:25:1])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uDp4k-0002om-KS
+ for qemu-devel@nongnu.org; Sat, 10 May 2025 14:37:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <whitebox@nefkom.net>)
- id 1uDnBs-0003ZF-Ey
- for qemu-devel@nongnu.org; Sat, 10 May 2025 12:36:46 -0400
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
- by mail-out.m-online.net (Postfix) with ESMTP id 4Zvs2Y5R6Fz1sFNS;
- Sat, 10 May 2025 18:36:37 +0200 (CEST)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.68])
- by mail.m-online.net (Postfix) with ESMTP id 4Zvs2Y4hxlz1qqlW;
- Sat, 10 May 2025 18:36:37 +0200 (CEST)
-X-Virus-Scanned: amavis at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
- by localhost (dynscan1.mail.m-online.net [192.168.6.68]) (amavis, port 10024)
- with ESMTP id USUquRbOHs4S; Sat, 10 May 2025 18:36:27 +0200 (CEST)
-X-Auth-Info: 5CDLlVmWbkMV3dPEGnz1QMyxbNmvNtzGb4t07QcR2l+wviQu5kFhQrMyQ+dMMEgi
-Received: from igel.home (aftr-82-135-83-241.dynamic.mnet-online.de
- [82.135.83.241])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uDp4i-0007dn-MX
+ for qemu-devel@nongnu.org; Sat, 10 May 2025 14:37:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1746902246;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZwFEh6TeQ/8H51vJTIhIozvJpz7tQ/a2+PVeDJq/CUE=;
+ b=c3vckzzOoSDvIyFaBzUMSGm71LUaEQPEiOUZkYVGvK9cS/aFymbRfiYTlO7+QTgpBDk+Sx
+ xLjcBrUiOXf/cGtzNjob/NOc4EXwiWzNJUMsHItvaL0PyrlP6f5cXI7aiKS3b+P1cN46tp
+ pSi29UlBLFuqu6vxlUqkwk1wbvj0lYk=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-462-RsyE8OITNZmsNK-Eh3G34g-1; Sat,
+ 10 May 2025 14:37:23 -0400
+X-MC-Unique: RsyE8OITNZmsNK-Eh3G34g-1
+X-Mimecast-MFC-AGG-ID: RsyE8OITNZmsNK-Eh3G34g_1746902241
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.mnet-online.de (Postfix) with ESMTPSA;
- Sat, 10 May 2025 18:36:27 +0200 (CEST)
-Received: by igel.home (Postfix, from userid 1000)
- id BE03E2C1955; Sat, 10 May 2025 18:36:26 +0200 (CEST)
-From: Andreas Schwab <schwab@linux-m68k.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org,  laurent@vivier.eu
-Subject: Re: [PATCH v5 21/24] target/m68k: Implement packed decimal real
- loads and stores
-In-Reply-To: <20250507211300.9735-22-richard.henderson@linaro.org> (Richard
- Henderson's message of "Wed, 7 May 2025 14:12:56 -0700")
-References: <20250507211300.9735-1-richard.henderson@linaro.org>
- <20250507211300.9735-22-richard.henderson@linaro.org>
-Date: Sat, 10 May 2025 18:36:26 +0200
-Message-ID: <875xi8zalx.fsf@igel.home>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E7B83180035E; Sat, 10 May 2025 18:37:20 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.39])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id D9D9F19560B0; Sat, 10 May 2025 18:37:19 +0000 (UTC)
+Date: Sat, 10 May 2025 14:35:30 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org, sstabellini@kernel.org,
+ anthony@xenproject.org, paul@xen.org, alex.pentagrid@gmail.com,
+ peter.maydell@linaro.org, edgar.iglesias@amd.com,
+ xen-devel@lists.xenproject.org
+Subject: Re: [PULL v1 0/2] xen: mapcache: Fixes
+Message-ID: <20250510183530.GA116869@fedora>
+References: <20250506182647.302961-1-edgar.iglesias@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=2001:a60:0:28:0:1:25:1;
- envelope-from=whitebox@nefkom.net; helo=mail-out.m-online.net
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_LOW=-0.7,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="/i3kukPHmWcJP39C"
+Content-Disposition: inline
+In-Reply-To: <20250506182647.302961-1-edgar.iglesias@gmail.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.413,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -75,38 +85,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mai 07 2025, Richard Henderson wrote:
 
-> +    /* Convert the 3 digit decimal exponent to binary. */
-> +    exp = ((hi >> 24) & 0xf)
-> +        + ((hi >> 20) & 0xf) * 10
-> +        + ((hi >> 16) & 0xf) * 100;
+--/i3kukPHmWcJP39C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This is backwards.  An exponent of 123 is stored as 0x01230000, not
-0x03210000.
+Applied, thanks.
 
-> +    for (int i = 24; exp10; i -= 4, exp10 /= 10) {
-> +        res_hi |= (exp10 % 10) << i;
+Please update the changelog at https://wiki.qemu.org/ChangeLog/10.1 for any user-visible changes.
 
-Again, this is backwards.  Also, the decimal exponent of an extended
-precision number can be as big as 4951.  From the fpsp040:
+--/i3kukPHmWcJP39C
+Content-Type: application/pgp-signature; name=signature.asc
 
-| A15. Convert the exponent to bcd.
-|      As in A14 above, the exp is converted to bcd and the
-|      digits are stored in the final string.
-|
-|      Digits are stored in L_SCR1(a6) on return from BINDEC as:
-|
-|	 32               16 15                0
-|	-----------------------------------------
-|	|  0 | e3 | e2 | e1 | e4 |  X |  X |  X |
-|	-----------------------------------------
+-----BEGIN PGP SIGNATURE-----
 
-That is, the fourth digit of the exponent is stored in the upper 4 bits
-of the padding (OPERR is set if e4 is non-zero).
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmgfnHEACgkQnKSrs4Gr
+c8j8tggAvnRrQweJgUw6K7reSq12P9b9XzUcjumibOgBBolATBPlplHyEtE9ACvB
+NRsd6Bs/yfcCpKc8elPDC0jhrWC/Ii9d/a7xOLpSJpb4X6Jvmvl2LIC2IYmbMQ7x
+zJGZuKSQ39p8RqpHQbS8Lc7vM83susWIiV6o6N0ErjvCUbQ/0h5iCCd4t0GPszWE
+tT/7YXlCnpdR/S4e7E9W51+JKdD+r+rgFayQjvZb+oJZaMkB3u6laSeGkbicsWh4
+JgDmRN6jagWI03mSTK111WVYR40uXtKVxEKCHxCMQzE3YLzGvFcS567KLMuRLfIQ
+oWxSrz3tDIpJLDUdKz31VOHzLm6y/Q==
+=+iw6
+-----END PGP SIGNATURE-----
 
--- 
-Andreas Schwab, schwab@linux-m68k.org
-GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
-"And now for something completely different."
+--/i3kukPHmWcJP39C--
+
 
