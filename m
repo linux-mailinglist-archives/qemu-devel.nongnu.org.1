@@ -2,24 +2,24 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9287AB2866
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 15:18:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EB66AB286E
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 15:19:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uE6WI-0006Uk-C9; Sun, 11 May 2025 09:15:06 -0400
+	id 1uE6WL-0006dK-PC; Sun, 11 May 2025 09:15:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uE6WD-0006Q9-7b
- for qemu-devel@nongnu.org; Sun, 11 May 2025 09:15:01 -0400
-Received: from mailgate02.uberspace.is ([2a00:d0c0:200:0:1c7b:a6ff:fee0:8ea4])
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uE6WE-0006RT-Qw
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 09:15:02 -0400
+Received: from mailgate02.uberspace.is ([185.26.156.114])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uE6WB-0006p4-En
- for qemu-devel@nongnu.org; Sun, 11 May 2025 09:15:00 -0400
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uE6WD-0006pn-0g
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 09:15:02 -0400
 Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate02.uberspace.is (Postfix) with ESMTPS id 4569F180058
+ by mailgate02.uberspace.is (Postfix) with ESMTPS id AB5A7180059
  for <qemu-devel@nongnu.org>; Sun, 11 May 2025 15:14:48 +0200 (CEST)
-Received: (qmail 25999 invoked by uid 990); 11 May 2025 13:14:48 -0000
+Received: (qmail 26014 invoked by uid 990); 11 May 2025 13:14:48 -0000
 Authentication-Results: skiff.uberspace.de;
 	auth=pass (plain)
 Received: from unknown (HELO unkown) (::1)
@@ -28,40 +28,42 @@ Received: from unknown (HELO unkown) (::1)
 From: Julian Ganz <neither@nut.email>
 To: qemu-devel@nongnu.org
 Cc: Julian Ganz <neither@nut.email>,
-	Michael Rolnik <mrolnik@gmail.com>
-Subject: [PATCH v4 07/23] target/avr: call plugin trap callbacks
-Date: Sun, 11 May 2025 15:13:59 +0200
-Message-ID: <14eda53c7aa554a2bfc566931d99819adf2ece74.1746968215.git.neither@nut.email>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Helge Deller <deller@gmx.de>
+Subject: [PATCH v4 08/23] target/hppa: call plugin trap callbacks
+Date: Sun, 11 May 2025 15:14:00 +0200
+Message-ID: <6c9c98627a21c77f66e12c25b3a4f44d9e7b4bdc.1746968215.git.neither@nut.email>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1746968215.git.neither@nut.email>
 References: <cover.1746968215.git.neither@nut.email>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Bar: -----
-X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.995075) MID_CONTAINS_FROM(1)
+X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.999422) MID_CONTAINS_FROM(1)
  MIME_GOOD(-0.1) R_MISSING_CHARSET(0.5)
-X-Rspamd-Score: -5.595075
+X-Rspamd-Score: -5.599422
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
  h=from:to:cc:subject:date;
- bh=uFv4wgxu+WxZG2jJrkSSQ5VTa7ZJ5m7C8K8D/fGnRDA=;
- b=yUHl0ePZFWUMjlWs+w993j0Fe3nUNPbZHuaU/D3X3XHjrmYZZzxuSljrAzQP31kkxdWurxPukU
- /Wz1OMng+GKkbjPTB0sUBea2IUAZ6rnvxjR8Ogae+og8V82xjhLPivHIfGUGIrL0qA44xuWPh1mz
- PASesKzxXAVUcPQRQNIcFkZS3NzcUVlRrEo0kQ4Oj7L1oupn6VJA3ggqS0PlkA9boBtdxOziJ8rd
- 9104NHofjYkFqdH16vlN48/4JrLssRv3qv2CKX+5D4tHG9meR4XLUxSEqNoSu6yUjNbVK5Ok07Ki
- i4PPr4NyhRfME4I38rQP8NVu5HFXfzzz2+gSH2126WdghRoh1IcxsDJLUuFUe6A+AcDLm5t8gfmZ
- 6OIgVqKSP2Fau7gaQdvqfKdaXEu6TKXYed7ZTojPn2qgDXr5D8ZAEsNhOZmXatTYrE5+0uLGIq+q
- erFchZtkIIZAJTFsuYVEespcScAM3UJ+4mddNUfEsXdJ2jvY3kBJQhv77LKj+DiW4LKa/ZS53sG/
- Xn94IFkNDSwbM6kErknMg9jiyr1sRFWfSt+8xquvzBX878m8eORpNJHFPLm0KVk3tvK8DhtEHBP9
- 9dOqaa+sg9NZ5rKHDmzfDeK8HaWp2FDriI9+/KTA8S/EUHFhKENJEuRxUl1VuU6AJ3k2skbYX6dC
- I=
-Received-SPF: pass client-ip=2a00:d0c0:200:0:1c7b:a6ff:fee0:8ea4;
- envelope-from=neither@nut.email; helo=mailgate02.uberspace.is
+ bh=W6dAuA1iLdBCbnZJz/uIyyL1KNX/P3H4QkX0p21d6Ks=;
+ b=EbrbQOH6amy3lcTw2tqduNhtmt1OuqUfGU/8/PhkZTYnE+repZlsoYMAprPsrvr3yeVWR1iNZ7
+ ird2sso9oE2rNelySAe1KbNQIdkI/DMtlfIFyIMQfg4rXObcyzhosVO6nEoxrJ1exf0jSjkros2O
+ iodQ6XOTP3lMDUK++MFVOZSNfQpFcI+lKJXEaigV5UNPXsJVcDlJdA7zS7TLvSsvvsNsTpyA2kHK
+ bYLuuzUmmGGoQ+5AsHzwiDQQUxMVNrm9WdZsRrhIjmAdODdFDKVJKnswMr/VdXuu7XjRL0PTF6tL
+ u8UB5z5tMpf9v2sl6x2chKhEFDR/wRReP3b/TGbA6ACBWW/r8QOW5AekS00b4oZlXhOd0B62Rent
+ 5yYLKSlNn41gTNteRNi9V06ZI7FvyxvgFyrRP/ktS2EAuq2ECTrW2ouVc5Il3KIwZIWEnNRMBurk
+ rcddvrQFyzI3+qXEQ9VMalFg/vv84ZYY/EriKETwjKeFK64TrGPNkiKKhIwrUALN4TzsSOhBS0Jw
+ /e4S+C4Tc74PGbzcfvBMeIsaBkyiQ+TkQHJVJ8pm03CPVLBLVsgRxYeRm+PpLd6GA+9cQSfEZtjo
+ kPJEUKM2yWs17l5z8a1YN1Er6CJ4L5GsSpPXipryuM+8tGF+Q81WmpPhYNKbWUeKYl+9Z6MC41Gy
+ 8=
+Received-SPF: pass client-ip=185.26.156.114; envelope-from=neither@nut.email;
+ helo=mailgate02.uberspace.is
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,40 +79,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We recently introduced API for registering callbacks for trap related
-events as well as the corresponding hook functions. Due to differences
-between architectures, the latter need to be called from target specific
-code.
+We identified a number of exceptions as interrupts, and we assume any
+unknown exception is also an interrupt. HPPA appears to not have any
+form of host-call.
 
-This change places the hook for AVR targets. That architecture appears
-to only know interrupts.
+This change places the hook for PA-RISC targets.
 
 Signed-off-by: Julian Ganz <neither@nut.email>
 ---
- target/avr/helper.c | 3 +++
- 1 file changed, 3 insertions(+)
+ target/hppa/int_helper.c | 44 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
-diff --git a/target/avr/helper.c b/target/avr/helper.c
-index b9cd6d5ef2..f28cc08637 100644
---- a/target/avr/helper.c
-+++ b/target/avr/helper.c
-@@ -28,6 +28,7 @@
- #include "exec/target_page.h"
- #include "accel/tcg/cpu-ldst.h"
+diff --git a/target/hppa/int_helper.c b/target/hppa/int_helper.c
+index 7d48643bb6..e9325319a7 100644
+--- a/target/hppa/int_helper.c
++++ b/target/hppa/int_helper.c
+@@ -24,6 +24,7 @@
  #include "exec/helper-proto.h"
+ #include "hw/core/cpu.h"
+ #include "hw/hppa/hppa_hardware.h"
 +#include "qemu/plugin.h"
  
- bool avr_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
+ static void eval_interrupt(HPPACPU *cpu)
  {
-@@ -102,6 +103,8 @@ void avr_cpu_do_interrupt(CPUState *cs)
-     env->sregI = 0; /* clear Global Interrupt Flag */
+@@ -95,6 +96,7 @@ void hppa_cpu_do_interrupt(CPUState *cs)
+     CPUHPPAState *env = &cpu->env;
+     int i = cs->exception_index;
+     uint64_t old_psw, old_gva_offset_mask;
++    uint64_t last_pc = cs->cc->get_pc(cs);
  
-     cs->exception_index = -1;
+     /* As documented in pa2.0 -- interruption handling.  */
+     /* step 1 */
+@@ -208,6 +210,48 @@ void hppa_cpu_do_interrupt(CPUState *cs)
+     env->iasq_f = 0;
+     env->iasq_b = 0;
+ 
++    switch (i) {
++    case EXCP_HPMC:
++    case EXCP_POWER_FAIL:
++    case EXCP_RC:
++    case EXCP_EXT_INTERRUPT:
++    case EXCP_LPMC:
++    case EXCP_PER_INTERRUPT:
++    case EXCP_TOC:
++        qemu_plugin_vcpu_exception_cb(cs, last_pc);
++        break;
++    case EXCP_ITLB_MISS:
++    case EXCP_IMP:
++    case EXCP_ILL:
++    case EXCP_BREAK:
++    case EXCP_PRIV_OPR:
++    case EXCP_PRIV_REG:
++    case EXCP_OVERFLOW:
++    case EXCP_COND:
++    case EXCP_ASSIST:
++    case EXCP_DTLB_MISS:
++    case EXCP_NA_ITLB_MISS:
++    case EXCP_NA_DTLB_MISS:
++    case EXCP_DMP:
++    case EXCP_DMB:
++    case EXCP_TLB_DIRTY:
++    case EXCP_PAGE_REF:
++    case EXCP_ASSIST_EMU:
++    case EXCP_HPT:
++    case EXCP_LPT:
++    case EXCP_TB:
++    case EXCP_DMAR:
++    case EXCP_DMPI:
++    case EXCP_UNALIGN:
++    case EXCP_SYSCALL:
++    case EXCP_SYSCALL_LWS:
++        qemu_plugin_vcpu_exception_cb(cs, last_pc);
++        break;
++    default:
++        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
++        break;
++    }
 +
-+    qemu_plugin_vcpu_interrupt_cb(cs, ret);
- }
- 
- hwaddr avr_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
+     if (qemu_loglevel_mask(CPU_LOG_INT)) {
+         static const char * const names[] = {
+             [EXCP_HPMC]          = "high priority machine check",
 -- 
 2.49.0
 
