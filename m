@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 519C9AB2AE8
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 22:36:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6600CAB2AFB
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 22:39:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEDP3-0003A3-4L; Sun, 11 May 2025 16:36:05 -0400
+	id 1uEDP0-0002yp-EJ; Sun, 11 May 2025 16:36:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uEDOw-0002eb-4W
- for qemu-devel@nongnu.org; Sun, 11 May 2025 16:35:58 -0400
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
+ id 1uEDOx-0002ly-GQ
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 16:35:59 -0400
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uEDOu-0006Kz-Gi
- for qemu-devel@nongnu.org; Sun, 11 May 2025 16:35:57 -0400
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-30a93117e1bso5100499a91.1
- for <qemu-devel@nongnu.org>; Sun, 11 May 2025 13:35:55 -0700 (PDT)
+ id 1uEDOv-0006LG-2S
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 16:35:59 -0400
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-b1fcb97d209so4205374a12.1
+ for <qemu-devel@nongnu.org>; Sun, 11 May 2025 13:35:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1746995755; x=1747600555; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+UxEDBljyfqsOJ/6sF4OYF0K5MA05WdNFxTdb/zwknQ=;
- b=hqr8ohCm+cQIV3g+wUlHqT/xM+yjsf9PNFd8OVltyjOfdjdkdSUXVQsEIFWMRGIdiY
- EBM7Et2LAPz2i5D2DXK6Y03eNyBlPlEei9+zzTCHLnaF9mrIm2o3w2HlwO2jlbnKI/gy
- eaZobzoKg8qo7+UUF9njY2dSHrjXiHVBcEpMHS/49+kYcD10ncFmWDPqDcWpVzLqE5QJ
- 3g6mT/N1GldX37ufSLE4Si/pGfeEluLyVBmkwNq4e6s7oAFNGGUu5o5ZsxVepZe6Ke0h
- AS6QTzbt35Tdo4kJLjdIiVZtG5fik1ehMPrTYoRTrMSq/ApwIXlwH+B+eTUB+UpDcL3G
- yRHw==
+ bh=HCkIdDSY0crVuCGfVkZY/TkUQKO0hTHMo7T3lmMlX/c=;
+ b=PcOWZG5OJ83wR9Vk2BLebIrPIj9D7Q4Z2RlEqEMz2oOBwKezIawqcQEW+MeIUe8vvD
+ SZ61k4m1GzgU7Q0GS26SXj1W2DpFBiiHuRa5n6kyJJxtd3zBtxV+NODAj4pgAZhIxN8C
+ O17RQ96673/pQhx6jeB13VvkwvTExQT50CSf5G8U4c0HXzeIOJTS/BWNcxq0v8NUdngC
+ A08+RsiChPeXOuMqIhRMpfUr1fhASkfppt02zF41nqRYAKMdvSA7W2Ue2O/0zDEZb4MR
+ RkoIoDD/IupqF2pETjbiPLjwBx3eF0MMx+esB+EJ27k/DmzRGtVPbxNXbY+6kKpWZWlt
+ vAvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1746995755; x=1747600555;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+UxEDBljyfqsOJ/6sF4OYF0K5MA05WdNFxTdb/zwknQ=;
- b=pqT7q+KSEtm37u+BkGlPjni10mIGrjTJ2HQLmbSJAHNvtd2nfx3+Y1fyAC7cFdqaUj
- K/tMCr2voOnI3VBpELdqbRXgWUQHFFNqLIO3PGh8LQZJi2wuDqV7oJVXZHkkj/Sc/n24
- n+6oP4unRMuwl8qgv9ygiI7+9EbJOlbQxnNv9vOukIIotAZMZyKo2DfW7MM8bAblqSj8
- taQl1rvgcZlGe5MQojl3/LMDLIWPTf0w+GJALWnQKvbM1OEgaW7/AGpjUhQ3pd4OlNoG
- 59Ha4AbSNYqTCAqNgsCaOH5/fFtVFmoUJ7cIdCH9nhzESXQrsapD2jjWkvqF80NLzPRD
- K52A==
-X-Gm-Message-State: AOJu0Yy0YFqnyCy3QN2VCgWTveaHEyQ2Hua6/+HezeN1u8oxMJt7Rz7v
- TAbgVwZzEC6GvXpkkDo7X+3/vsGiCUoptDwqFbg6uTGky7srHE8vEOzNe91hucKC5Yq+xcFhUvz
- +
-X-Gm-Gg: ASbGnctSDnGrZtc6ku1yyHM+h++bIISbspv8SWRAzuPGFwstmMQO45bNFo/e+/UOWlR
- UYB5QKkkICqjvPl87ZvKYIqADesxfre7BmWgCvzEOVXbpC41yOVFiEd5RV4uUEwsK+zqqygcxEU
- 0Q8ZyZvYQeiY/iAhEMSbcMAvEV9XsMQHd3FKZDqyZEXjbTsidwQNFLZUz+KYSBg+PqRX8hmiEhH
- M6uD5vZASvGldVwhOra/B+dYSzxCVYoLyOoLa6xxAl7B5xpS1Zcg3QazL7mw/wyR0Mrle2F5h7E
- HApWc1pw0fE5DAU00krb2CMVInJJyN+UKN2ayvKRmwZ5xw/wi+ncNNOaiBmhHw+Hb1McdmpUG9S
- V2SXj3U0uaw==
-X-Google-Smtp-Source: AGHT+IGxcPMJgMcJye/f1uRQKFTkFGTdGL4Et1kt+5cCo1KgtvvFT0PzAYoeXLMwLp28E7poA4uk5w==
-X-Received: by 2002:a17:902:ced0:b0:223:90ec:80f0 with SMTP id
- d9443c01a7336-22fc8b339a8mr183093355ad.22.1746995754861; 
- Sun, 11 May 2025 13:35:54 -0700 (PDT)
+ bh=HCkIdDSY0crVuCGfVkZY/TkUQKO0hTHMo7T3lmMlX/c=;
+ b=GDQWh7JcFPL4h0gGT5RZlngINTxVQzgS936pw67zAzZcp1ubGMd0TY7jhJQt+rtjkF
+ h/Je9WdY30eDzJnoeCLiRmLO1xJkkYKotWkrhyWtpbkv1+nogF7gwOQRyjAnT6/Z2Y4x
+ YuzKF/tmicwtZbgB2mZX5OZfDmk9eNHqMf4gs0X21LUZZOveQO3LZYaYw958y35nzTiB
+ 50/yQtAbSZHIAHe53edzYGYJUYmK9ChP+Rp544LUMlyjJqqsMHR9w5JspvU93mt0NsNg
+ 1vYEZpVHDmkPFKiyp5+STN5wKLkWsECNQh+pFpkQHcU6ZJNPCxAXzRpJVufypGuYaLyw
+ 262w==
+X-Gm-Message-State: AOJu0YxgJhjpFgF62sAhGJ8Js6gFc+RVfn+XX//lSFbZrEAZR8KCtXls
+ FGlNYRqk48DSYiUsbl2yLsvwT0VNULf8QnIyrOgTZWZ0dMcTRFfcLxvlysn/HlQ/2ZMLiUq0gD/
+ X
+X-Gm-Gg: ASbGncuEmk9DRGOvubkamTGYudr6BmudOdxmwT0cbdm9kxEk1WqHuAA8g5xYGMoHs3C
+ pnLsdLxZoNe3qDGL/S0pcaAXg1m+nBH0kQDWe/VqIMyPRK5bkb3aMFpUuvLgUtmM2f2flbRTxOV
+ Lwobm9raVS8jqnuQunWrjLDg8v0qd4IYQN4VSjz6aRAMR5u1cxoj8EE0J3trp5svAy6v6nuVQSs
+ 1fzBtuogKAtLV0kJFA2DGEJnU9EN5SLLlSYMLN5T46zTZO9BqOwc+ujSGshWq/QJElxn4VICV+G
+ kgJpre4QghEYNj4J6hX2e1G7BQ2F+JS1yKfTZwvyEuFVx28LaNjYqauGZI9DtF6d1C9ImmbPa1B
+ vlrzd5eAyCg==
+X-Google-Smtp-Source: AGHT+IFn5H14sBACARKq5VF8pHgDrnvfzhPr8FXiVxe7LkaP9x36rvA6jHtROE83AgxK7YlIqOv+vA==
+X-Received: by 2002:a17:902:fc8d:b0:22e:457d:3989 with SMTP id
+ d9443c01a7336-22e845bcb87mr238429085ad.0.1746995755540; 
+ Sun, 11 May 2025 13:35:55 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22fc7544d86sm49955095ad.47.2025.05.11.13.35.54
+ d9443c01a7336-22fc7544d86sm49955095ad.47.2025.05.11.13.35.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 11 May 2025 13:35:54 -0700 (PDT)
+ Sun, 11 May 2025 13:35:55 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: laurent@vivier.eu,
 	schwab@linux-m68k.org
-Subject: [PATCH v6 09/24] target/m68k: Use OS_UNSIZED in LEA, PEA, JMP
-Date: Sun, 11 May 2025 13:35:31 -0700
-Message-ID: <20250511203546.139788-10-richard.henderson@linaro.org>
+Subject: [PATCH v6 10/24] target/m68k: Move pre-dec/post-inc to gen_lea_mode
+Date: Sun, 11 May 2025 13:35:32 -0700
+Message-ID: <20250511203546.139788-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250511203546.139788-1-richard.henderson@linaro.org>
 References: <20250511203546.139788-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,47 +99,438 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For LEA and PEA, while the manual says "size = (long)", it also says
-that the pre-decrement and post-increment addressing modes are illegal.
-For JMP, the manual says "unsized".  OS_UNSIZED is the way to signal
-gen_lea_mode to reject those addressing modes.
+Move autoinc down the call chain so that it happens in one place,
+more or less.  This unifies code from gen_ea_mode and gen_ea_mode_fp,
+as well as the by-hand autoinc from CAS, TAS, MOVES, and MAC.
+In FMOVE_FCR and FMOVEM, use delay_set_areg to update the value
+to be stored at the end of the insn.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/m68k/translate.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ target/m68k/translate.c | 264 +++++++++++++++-------------------------
+ 1 file changed, 95 insertions(+), 169 deletions(-)
 
 diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index f87eff3b10..b6d46c3bdb 100644
+index b6d46c3bdb..593ff9ba2d 100644
 --- a/target/m68k/translate.c
 +++ b/target/m68k/translate.c
-@@ -2561,7 +2561,7 @@ DISAS_INSN(lea)
-     TCGv tmp;
+@@ -699,15 +699,23 @@ static void gen_partset_reg(int opsize, TCGv reg, TCGv val)
+     }
+ }
  
-     reg = AREG(insn, 9);
--    tmp = gen_lea(env, s, insn, OS_LONG);
-+    tmp = gen_lea(env, s, insn, OS_UNSIZED);
-     if (IS_NULL_QREG(tmp)) {
-         gen_addr_fault(s);
-         return;
-@@ -2658,7 +2658,7 @@ DISAS_INSN(pea)
++static int addr_inc_size(DisasContext *s, int reg0, int opsize)
++{
++    if (reg0 == 7
++        && opsize == OS_BYTE
++        && m68k_feature(s->env, M68K_FEATURE_M68K)) {
++        return 2;
++    }
++    return opsize_bytes(opsize);
++}
++
+ /*
+- * Generate code for an "effective address".  Does not adjust the base
+- * register for autoincrement addressing modes.
++ * Generate code for an "effective address".
+  */
+ static TCGv gen_lea_mode(CPUM68KState *env, DisasContext *s,
+                          int mode, int reg0, int opsize)
  {
-     TCGv tmp;
+-    TCGv reg;
+-    TCGv tmp;
++    TCGv reg, addr, tmp;
+     uint16_t ext;
+     uint32_t offset;
  
--    tmp = gen_lea(env, s, insn, OS_LONG);
-+    tmp = gen_lea(env, s, insn, OS_UNSIZED);
-     if (IS_NULL_QREG(tmp)) {
-         gen_addr_fault(s);
-         return;
-@@ -2909,7 +2909,7 @@ DISAS_INSN(jump)
-      * Load the target address first to ensure correct exception
-      * behavior.
-      */
--    tmp = gen_lea(env, s, insn, OS_LONG);
-+    tmp = gen_lea(env, s, insn, OS_UNSIZED);
-     if (IS_NULL_QREG(tmp)) {
-         gen_addr_fault(s);
-         return;
+@@ -715,34 +723,37 @@ static TCGv gen_lea_mode(CPUM68KState *env, DisasContext *s,
+     case 0: /* Data register direct.  */
+     case 1: /* Address register direct.  */
+         return NULL_QREG;
++    case 2: /* Indirect register */
++        reg = get_areg(s, reg0);
++        addr = tcg_temp_new();
++        tcg_gen_mov_i32(addr, reg);
++        return addr;
+     case 3: /* Indirect postincrement.  */
+         if (opsize == OS_UNSIZED) {
+             return NULL_QREG;
+         }
+-        /* fallthru */
+-    case 2: /* Indirect register */
++        reg = get_areg(s, reg0);
++        addr = tcg_temp_new();
++        tcg_gen_mov_i32(addr, get_areg(s, reg0));
+         tmp = tcg_temp_new();
+-        tcg_gen_mov_i32(tmp, get_areg(s, reg0));
+-        return tmp;
++        tcg_gen_addi_i32(tmp, reg, addr_inc_size(s, reg0, opsize));
++        delay_set_areg(s, reg0, tmp, true);
++        return addr;
+     case 4: /* Indirect predecrememnt.  */
+         if (opsize == OS_UNSIZED) {
+             return NULL_QREG;
+         }
+         reg = get_areg(s, reg0);
+-        tmp = tcg_temp_new();
+-        if (reg0 == 7 && opsize == OS_BYTE &&
+-            m68k_feature(s->env, M68K_FEATURE_M68K)) {
+-            tcg_gen_subi_i32(tmp, reg, 2);
+-        } else {
+-            tcg_gen_subi_i32(tmp, reg, opsize_bytes(opsize));
+-        }
+-        return tmp;
++        addr = tcg_temp_new();
++        tcg_gen_subi_i32(addr, reg, addr_inc_size(s, reg0, opsize));
++        delay_set_areg(s, reg0, addr, false);
++        return addr;
+     case 5: /* Indirect displacement.  */
+         reg = get_areg(s, reg0);
+-        tmp = tcg_temp_new();
++        addr = tcg_temp_new();
+         ext = read_im16(env, s);
+-        tcg_gen_addi_i32(tmp, reg, (int16_t)ext);
+-        return tmp;
++        tcg_gen_addi_i32(addr, reg, (int16_t)ext);
++        return addr;
+     case 6: /* Indirect index + displacement.  */
+         reg = get_areg(s, reg0);
+         return gen_lea_indexed(env, s, reg);
+@@ -788,7 +799,7 @@ static TCGv gen_ea_mode(CPUM68KState *env, DisasContext *s, int mode, int reg0,
+                         int opsize, TCGv val, TCGv *addrp, ea_what what,
+                         int index)
+ {
+-    TCGv reg, tmp, result;
++    TCGv reg, ret, addr = NULL;
+     int32_t offset;
+ 
+     switch (mode) {
+@@ -796,76 +807,25 @@ static TCGv gen_ea_mode(CPUM68KState *env, DisasContext *s, int mode, int reg0,
+         reg = cpu_dregs[reg0];
+         if (what == EA_STORE) {
+             gen_partset_reg(opsize, reg, val);
+-            return store_dummy;
++            ret = store_dummy;
+         } else {
+-            return gen_extend(s, reg, opsize, what == EA_LOADS);
++            ret = gen_extend(s, reg, opsize, what == EA_LOADS);
+         }
++        break;
++
+     case 1: /* Address register direct.  */
+         reg = get_areg(s, reg0);
+         if (what == EA_STORE) {
+             tcg_gen_mov_i32(reg, val);
+-            return store_dummy;
++            ret = store_dummy;
+         } else {
+-            return gen_extend(s, reg, opsize, what == EA_LOADS);
++            ret = gen_extend(s, reg, opsize, what == EA_LOADS);
+         }
+-    case 2: /* Indirect register */
+-        reg = get_areg(s, reg0);
+-        return gen_ldst(s, opsize, reg, val, what, index);
+-    case 3: /* Indirect postincrement.  */
+-        reg = get_areg(s, reg0);
+-        result = gen_ldst(s, opsize, reg, val, what, index);
+-        if (what == EA_STORE || !addrp) {
+-            tmp = tcg_temp_new();
+-            if (reg0 == 7 && opsize == OS_BYTE &&
+-                m68k_feature(s->env, M68K_FEATURE_M68K)) {
+-                tcg_gen_addi_i32(tmp, reg, 2);
+-            } else {
+-                tcg_gen_addi_i32(tmp, reg, opsize_bytes(opsize));
+-            }
+-            delay_set_areg(s, reg0, tmp, true);
+-        }
+-        return result;
+-    case 4: /* Indirect predecrememnt.  */
+-        if (addrp && what == EA_STORE) {
+-            tmp = *addrp;
+-        } else {
+-            tmp = gen_lea_mode(env, s, mode, reg0, opsize);
+-            if (IS_NULL_QREG(tmp)) {
+-                return tmp;
+-            }
+-            if (addrp) {
+-                *addrp = tmp;
+-            }
+-        }
+-        result = gen_ldst(s, opsize, tmp, val, what, index);
+-        if (what == EA_STORE || !addrp) {
+-            delay_set_areg(s, reg0, tmp, false);
+-        }
+-        return result;
+-    case 5: /* Indirect displacement.  */
+-    case 6: /* Indirect index + displacement.  */
+-    do_indirect:
+-        if (addrp && what == EA_STORE) {
+-            tmp = *addrp;
+-        } else {
+-            tmp = gen_lea_mode(env, s, mode, reg0, opsize);
+-            if (IS_NULL_QREG(tmp)) {
+-                return tmp;
+-            }
+-            if (addrp) {
+-                *addrp = tmp;
+-            }
+-        }
+-        return gen_ldst(s, opsize, tmp, val, what, index);
++        break;
++
+     case 7: /* Other */
+-        switch (reg0) {
+-        case 0: /* Absolute short.  */
+-        case 1: /* Absolute long.  */
+-        case 2: /* pc displacement  */
+-        case 3: /* pc index+displacement.  */
+-            goto do_indirect;
+-        case 4: /* Immediate.  */
+-            /* Sign extend values for consistency.  */
++        if (reg0 == 4 && what != EA_STORE) {
++            /* Immediate: sign extend values for consistency.  */
+             switch (opsize) {
+             case OS_BYTE:
+                 if (what == EA_LOADS) {
+@@ -887,12 +847,37 @@ static TCGv gen_ea_mode(CPUM68KState *env, DisasContext *s, int mode, int reg0,
+             default:
+                 g_assert_not_reached();
+             }
+-            return tcg_constant_i32(offset);
+-        default:
+-            return NULL_QREG;
++            ret = tcg_constant_i32(offset);
++            break;
+         }
++        /* fall through */
++
++    case 2: /* Indirect register */
++    case 3: /* Indirect postincrement.  */
++    case 4: /* Indirect predecrememnt.  */
++    case 5: /* Indirect displacement.  */
++    case 6: /* Indirect index + displacement.  */
++        if (what == EA_STORE && addrp && *addrp) {
++            addr = *addrp;
++        } else {
++            addr = gen_lea_mode(env, s, mode, reg0, opsize);
++            if (IS_NULL_QREG(addr)) {
++                ret = addr;
++                addr = NULL;
++                break;
++            }
++        }
++        ret = gen_ldst(s, opsize, addr, val, what, index);
++        break;
++
++    default:
++        g_assert_not_reached();
+     }
+-    g_assert_not_reached();
++
++    if (addrp) {
++        *addrp = addr;
++    }
++    return ret;
+ }
+ 
+ static TCGv_ptr gen_fp_ptr(int freg)
+@@ -1069,43 +1054,9 @@ static int gen_ea_mode_fp(CPUM68KState *env, DisasContext *s, int mode,
+         return 0;
+     case 1: /* Address register direct.  */
+         return -1;
+-    case 2: /* Indirect register */
+-        addr = get_areg(s, reg0);
+-        gen_ldst_fp(s, opsize, addr, fp, what, index);
+-        return 0;
+-    case 3: /* Indirect postincrement.  */
+-        addr = cpu_aregs[reg0];
+-        gen_ldst_fp(s, opsize, addr, fp, what, index);
+-        tcg_gen_addi_i32(addr, addr, opsize_bytes(opsize));
+-        return 0;
+-    case 4: /* Indirect predecrememnt.  */
+-        addr = gen_lea_mode(env, s, mode, reg0, opsize);
+-        if (IS_NULL_QREG(addr)) {
+-            return -1;
+-        }
+-        gen_ldst_fp(s, opsize, addr, fp, what, index);
+-        tcg_gen_mov_i32(cpu_aregs[reg0], addr);
+-        return 0;
+-    case 5: /* Indirect displacement.  */
+-    case 6: /* Indirect index + displacement.  */
+-    do_indirect:
+-        addr = gen_lea_mode(env, s, mode, reg0, opsize);
+-        if (IS_NULL_QREG(addr)) {
+-            return -1;
+-        }
+-        gen_ldst_fp(s, opsize, addr, fp, what, index);
+-        return 0;
++
+     case 7: /* Other */
+-        switch (reg0) {
+-        case 0: /* Absolute short.  */
+-        case 1: /* Absolute long.  */
+-        case 2: /* pc displacement  */
+-        case 3: /* pc index+displacement.  */
+-            goto do_indirect;
+-        case 4: /* Immediate.  */
+-            if (what == EA_STORE) {
+-                return -1;
+-            }
++        if (reg0 == 4 && what != EA_STORE) {
+             switch (opsize) {
+             case OS_BYTE:
+                 tmp = tcg_constant_i32((int8_t)read_im8(env, s));
+@@ -1148,11 +1099,22 @@ static int gen_ea_mode_fp(CPUM68KState *env, DisasContext *s, int mode,
+                 g_assert_not_reached();
+             }
+             return 0;
+-        default:
++        }
++        /* fall through */
++
++    case 2: /* Indirect register */
++    case 3: /* Indirect postincrement.  */
++    case 4: /* Indirect predecrememnt.  */
++    case 5: /* Indirect displacement.  */
++    case 6: /* Indirect index + displacement.  */
++        addr = gen_lea_mode(env, s, mode, reg0, opsize);
++        if (IS_NULL_QREG(addr)) {
+             return -1;
+         }
++        gen_ldst_fp(s, opsize, addr, fp, what, index);
++        return 0;
+     }
+-    return -1;
++    g_assert_not_reached();
+ }
+ 
+ static int gen_ea_fp(CPUM68KState *env, DisasContext *s, uint16_t insn,
+@@ -1360,8 +1322,12 @@ static void gen_exit_tb(DisasContext *s)
+ 
+ #define SRC_EA(env, result, opsize, op_sign, addrp)                     \
+     do {                                                                \
++        TCGv *addrp_ = (addrp);                                         \
++        if (addrp_) {                                                   \
++            *addrp_ = NULL;                                             \
++        }                                                               \
+         result = gen_ea_mode(env, s, extract32(insn, 3, 3),             \
+-                             REG(insn, 0), opsize, NULL_QREG, addrp,    \
++                             REG(insn, 0), opsize, NULL_QREG, addrp_,   \
+                              op_sign ? EA_LOADS : EA_LOADU, IS_USER(s)); \
+         if (IS_NULL_QREG(result)) {                                     \
+             gen_addr_fault(s);                                          \
+@@ -1730,7 +1696,7 @@ DISAS_INSN(abcd_reg)
+ 
+ DISAS_INSN(abcd_mem)
+ {
+-    TCGv src, dest, addr;
++    TCGv src, dest, addr = NULL;
+ 
+     gen_flush_flags(s); /* !Z is sticky */
+ 
+@@ -1767,7 +1733,7 @@ DISAS_INSN(sbcd_reg)
+ 
+ DISAS_INSN(sbcd_mem)
+ {
+-    TCGv src, dest, addr;
++    TCGv src, dest, addr = NULL;
+ 
+     gen_flush_flags(s); /* !Z is sticky */
+ 
+@@ -2356,15 +2322,6 @@ DISAS_INSN(cas)
+     /* update flags before setting cmp to load */
+     gen_update_cc_cmp(s, load, cmp, opsize);
+     gen_partset_reg(opsize, DREG(ext, 0), load);
+-
+-    switch (extract32(insn, 3, 3)) {
+-    case 3: /* Indirect postincrement.  */
+-        tcg_gen_addi_i32(AREG(insn, 0), addr, opsize_bytes(opsize));
+-        break;
+-    case 4: /* Indirect predecrememnt.  */
+-        tcg_gen_mov_i32(AREG(insn, 0), addr);
+-        break;
+-    }
+ }
+ 
+ DISAS_INSN(cas2w)
+@@ -2728,15 +2685,6 @@ DISAS_INSN(tas)
+         tcg_gen_atomic_fetch_or_tl(src1, addr, tcg_constant_tl(0x80),
+                                    IS_USER(s), MO_SB);
+         gen_logic_cc(s, src1, OS_BYTE);
+-
+-        switch (mode) {
+-        case 3: /* Indirect postincrement.  */
+-            tcg_gen_addi_i32(AREG(insn, 0), addr, 1);
+-            break;
+-        case 4: /* Indirect predecrememnt.  */
+-            tcg_gen_mov_i32(AREG(insn, 0), addr);
+-            break;
+-        }
+     }
+ }
+ 
+@@ -4453,17 +4401,6 @@ DISAS_INSN(moves)
+             gen_partset_reg(opsize, reg, tmp);
+         }
+     }
+-    switch (extract32(insn, 3, 3)) {
+-    case 3: /* Indirect postincrement.  */
+-        tcg_gen_addi_i32(AREG(insn, 0), addr,
+-                         REG(insn, 0) == 7 && opsize == OS_BYTE
+-                         ? 2
+-                         : opsize_bytes(opsize));
+-        break;
+-    case 4: /* Indirect predecrememnt.  */
+-        tcg_gen_mov_i32(AREG(insn, 0), addr);
+-        break;
+-    }
+ }
+ 
+ DISAS_INSN(move_to_sr)
+@@ -4846,7 +4783,7 @@ static void gen_op_fmove_fcr(CPUM68KState *env, DisasContext *s,
+                 }
+             }
+        }
+-       tcg_gen_mov_i32(AREG(insn, 0), addr);
++       delay_set_areg(s, REG(insn, 0), addr, true);
+     } else {
+         for (i = 0; i < 3; i++, mask >>= 1) {
+             if (mask & 1) {
+@@ -4861,7 +4798,7 @@ static void gen_op_fmove_fcr(CPUM68KState *env, DisasContext *s,
+             }
+         }
+         if (mode == 3) {
+-            tcg_gen_mov_i32(AREG(insn, 0), addr);
++            delay_set_areg(s, REG(insn, 0), addr, true);
+         }
+     }
+ }
+@@ -4922,7 +4859,7 @@ static void gen_op_fmovem(CPUM68KState *env, DisasContext *s,
+         }
+     }
+     if ((insn & 070) == 030 || (insn & 070) == 040) {
+-        tcg_gen_mov_i32(AREG(insn, 0), tmp);
++        delay_set_areg(s, REG(insn, 0), tmp, true);
+     }
+ }
+ 
+@@ -5572,17 +5509,6 @@ DISAS_INSN(mac)
+         TCGv rw;
+         rw = (insn & 0x40) ? AREG(insn, 9) : DREG(insn, 9);
+         tcg_gen_mov_i32(rw, loadval);
+-        /*
+-         * FIXME: Should address writeback happen with the masked or
+-         * unmasked value?
+-         */
+-        switch ((insn >> 3) & 7) {
+-        case 3: /* Post-increment.  */
+-            tcg_gen_addi_i32(AREG(insn, 0), addr, 4);
+-            break;
+-        case 4: /* Pre-decrement.  */
+-            tcg_gen_mov_i32(AREG(insn, 0), addr);
+-        }
+     }
+ }
+ 
 -- 
 2.43.0
 
