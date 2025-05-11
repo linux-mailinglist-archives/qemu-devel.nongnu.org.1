@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BED4AB2AE9
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 22:36:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2048FAB2AFC
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 22:39:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEDOw-0002dz-Ix; Sun, 11 May 2025 16:35:58 -0400
+	id 1uEDP1-00032x-P6; Sun, 11 May 2025 16:36:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uEDOt-0002Sa-RN
- for qemu-devel@nongnu.org; Sun, 11 May 2025 16:35:55 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1uEDOu-0002Uw-J3
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 16:35:56 -0400
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uEDOr-0006KW-R2
- for qemu-devel@nongnu.org; Sun, 11 May 2025 16:35:55 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-7424ccbef4eso1129143b3a.2
- for <qemu-devel@nongnu.org>; Sun, 11 May 2025 13:35:53 -0700 (PDT)
+ id 1uEDOs-0006Kf-Pt
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 16:35:56 -0400
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-b170c99aa49so2464171a12.1
+ for <qemu-devel@nongnu.org>; Sun, 11 May 2025 13:35:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746995752; x=1747600552; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746995753; x=1747600553; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Acco64j8AohVk0U3GZiX+hk+MPR+Ymqfvr9WRzFbhZc=;
- b=G+aF8OGZaloef7l2mDxAJlCH8WfJAETEhF5x/W8e44ygT40pbF+vQ9EkZLfXYbVh90
- FmkhaztEB7UG9B3kBTkGNiMYEKS/7dDwibRT0ry94j5hg30WaZDTmKV/KCH1RsUDz6ND
- IwJpbfAR7n7T7JzrtIeBN/O5qU7fsYV4Zy2USCV31xXJlMv/34gbfKFWGrUwQ8SSTpOU
- seyBLtZG5GchdheEjuStiwB9aU1a/zSZEJTWtaDkaVmA7lsm1Lp+NaJ9dCiir3OlhzfP
- kTrD+dX8j0BoNjXo7mxfDFTXNxJLVXekt3nvfIAynGWMxy5akLIpZayjKValUB8u6+Lk
- YCCw==
+ bh=EprzNqSDVLOk3XX3wLzyS3Mr8if5bv8/i0zNJtnFHWU=;
+ b=G0qLZVxnZfyFUtlyLVH7xa3RCTedxfb/INRTokgNxOX/e6xgWKNAL7Nzhf+e49VETx
+ TwZK/5IgDQ4uUVYwUBNXaWxjh5W+OLiTcVMOWX96wc03F7wRhk1uC8lsdcAsO9k0D0A4
+ 72GshtJNTVPPwpscgNaFOCuD99gdogAyGhnDcd9pdMyIMRIlrqscdytbT2Wy+7kQz2GX
+ dvivdpdwOCKgEX/ExBGY7LUohMtutvDtCGPnDJ+3I4+pxvzCtuyHf6CCoNmE+2PDPmot
+ QLrJFW+yevAz3mOdGxwh6BNDmH2gdtaiEsuCp2w9KlwwHv2J7QoKesnalydsjJN7zhSS
+ FxOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746995752; x=1747600552;
+ d=1e100.net; s=20230601; t=1746995753; x=1747600553;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Acco64j8AohVk0U3GZiX+hk+MPR+Ymqfvr9WRzFbhZc=;
- b=MdamLGTqLO0KOFvfE8hh4qmP5SIoS/UyCdpeduHScf7OKu7Wxd79z83rhynEZtI7k/
- h/iGjTQd8F3fz5+1r8l2jnxeXNggYBprXhpYGDz7C5RnNb4740hpdHxQE/5vxQwTnao1
- saZQYNNLJ7yi4icx4itnOwnRkk1H6gNV9vKTDm+Q98e33YhEaW5YIeOgSgAYYXizv9bz
- urAZ51c0ud9shHdflPiKuuEoUHpO51xctL4LRIiNu6sY3Db8CtElGwr05/+b1b7VlnTa
- 3URMgHuMEBjaeSDtfsL7YPrl+z1tysEn15p7uJrEdTL+SF0qSFtqhR6xXhlhj+kZE+3M
- 7CMw==
-X-Gm-Message-State: AOJu0Yzv/6r/CSsun5KehyHCASzi7xVoAS9vOsCeBRh82O8lsVxl2a3K
- srLGf0bbMiogPjL8bGkt3hjhySX0jT/w2xog0ADiamgA/Vx0ELD0Xebfq+mlgx1HMeCN9owfXXw
- 7
-X-Gm-Gg: ASbGncvxSBz0XZW+sZbt+mTKEb93+KoHHYpBGkLuTqcRQAqBHn67SFT3hW2ihsd6ZYB
- QWdRrWardPm3IhpkYuBo+Ui4hOPkfhfivIJ6E/tE/Vh9loDObm7TZ5vOaLTpaKoYZ9dK3/lMReV
- eRbDT/lOIPxt5FW+2MRpTJpmwpUvFyhKO1ixn7IwCzd62l+1MKWrLjX+o7Jbtq5lh6qhCwxJoyo
- Nkf1WFTIXNaqYVcWijr6k3qMF4Z1NoafVyhJFeXXrCI39xdOV5nzQNbddsGn3hy9PFfS3Ol8X6c
- mNqr6nUx0BfnfosSWR4pi9n6iDyIpjjrlmSVw5xglThduL4fsVK727H9n1IR7RvT/1J2XRu7295
- aexewMkUzWA==
-X-Google-Smtp-Source: AGHT+IH5Cr/8BEwRFX4OuAvvqGkgPr9LFKqoqtfdZPhomNeHVKxzzRUBx/XW0OZLXefHhrFG7Ss5bw==
-X-Received: by 2002:a17:902:fc8d:b0:226:30f6:1639 with SMTP id
- d9443c01a7336-22fc91c9f97mr146853915ad.51.1746995752417; 
- Sun, 11 May 2025 13:35:52 -0700 (PDT)
+ bh=EprzNqSDVLOk3XX3wLzyS3Mr8if5bv8/i0zNJtnFHWU=;
+ b=pinhFWbVtTcsIp+beCIm5DkK53vituPt0OVVhZbxB+F9XjFVk24gDjg1a2xJ5J69GX
+ xFHwA8CZUK7NhheNt51INuXhB7bbkMYatUI3isl6+N5Bn42T6/43bXyPNMvLm2WhkH+q
+ S+owUpsTttvuUgvA1oWXro9+sGHWWRGslazrpnHAov2PHlsmlIQpjPEKN+RK7NmW7keW
+ eq7O7mr87xj+JUkdxD6E9Ydx/1/9XIS9cXf9rNh2d8Y7sC7DEG0ayWXJRiadjMRCwPpA
+ ZJ8wTqA2Sam3N3hGN8GhP/j+0clW8eHdrst12mmyDUFAclYic4JdA/UIxQNZCL1j2gFX
+ wSew==
+X-Gm-Message-State: AOJu0YzavfsiRAT4JNXfi7k/vkr5PQzsjmHcOjJiCW6dRu/347qBbPRr
+ Ww8G2LnqggQMwB8+1IuUWM9iMFc/gtQEyEB60BStNcRQMype4FUatL0c6hXDFsEhWVJhXLphg0+
+ K
+X-Gm-Gg: ASbGncuilBArEAVYuqOuhpvF8tozavxhImFi99Vr066ioPg2IJYk/4hzjtE5bfjiROp
+ GGsyi23YgSSBWFHucFR32K4SqkXHyppyYqAxMqf1tiZKmWdfhmxyRSQqBFClr7xkKjk7wupvf1n
+ LTFFSqa4UaZiEzcSmpqNeqlb+nQYymF3gDP00+QgtHiPWiK/6Zgb2ZfJtOLpyTEx2gxZ/13iPJX
+ i3ffwFONREhwjVKGXZPCqmCVJ6zp262c9ntP8VMB5LIzxdg7DcJxj1fGuM5orrGjcdXCCFOhsFg
+ WaMD1iIX8Q+uFmh2kRdcE7j1xQ9yd0UZovd4LJIiPXuEEnFafooaxyIO6YEmoKEbFuU3DS8KHrF
+ vtdWtCFexCA==
+X-Google-Smtp-Source: AGHT+IELtr+Tp+7OZxEB98qkw1B8Dqgujo3clBqvHOmwmvtNuURD4m2OSpDh9fTeWyWMPFPrZGlHUA==
+X-Received: by 2002:a17:903:2f89:b0:224:1eaa:5de1 with SMTP id
+ d9443c01a7336-22fc8b51ac5mr129235385ad.18.1746995753236; 
+ Sun, 11 May 2025 13:35:53 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22fc7544d86sm49955095ad.47.2025.05.11.13.35.51
+ d9443c01a7336-22fc7544d86sm49955095ad.47.2025.05.11.13.35.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sun, 11 May 2025 13:35:52 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: laurent@vivier.eu, schwab@linux-m68k.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v6 06/24] target/m68k: Introduce
- M68K_FEATURE_FPU_PACKED_DECIMAL
-Date: Sun, 11 May 2025 13:35:28 -0700
-Message-ID: <20250511203546.139788-7-richard.henderson@linaro.org>
+Subject: [PATCH v6 07/24] target/m68k: Merge gen_ea into SRC_EA and DEST_EA
+Date: Sun, 11 May 2025 13:35:29 -0700
+Message-ID: <20250511203546.139788-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250511203546.139788-1-richard.henderson@linaro.org>
 References: <20250511203546.139788-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,48 +100,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Set for 68020 and 68030, but does nothing so far.
+This will enable further cleanups further down the call chain.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/m68k/cpu.h | 2 ++
- target/m68k/cpu.c | 2 ++
- 2 files changed, 4 insertions(+)
+ target/m68k/translate.c | 24 ++++++++++--------------
+ 1 file changed, 10 insertions(+), 14 deletions(-)
 
-diff --git a/target/m68k/cpu.h b/target/m68k/cpu.h
-index 0630eb26c2..8adb1c6515 100644
---- a/target/m68k/cpu.h
-+++ b/target/m68k/cpu.h
-@@ -574,6 +574,8 @@ enum m68k_features {
-     M68K_FEATURE_MOVEFROMSR_PRIV,
-     /* Exception frame with format+vector (from 68010) */
-     M68K_FEATURE_EXCEPTION_FORMAT_VEC,
-+    /* FPU supports packed decimal real format */
-+    M68K_FEATURE_FPU_PACKED_DECIMAL,
- };
- 
- static inline bool m68k_feature(CPUM68KState *env, int feature)
-diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
-index e898156403..866d32fc9f 100644
---- a/target/m68k/cpu.c
-+++ b/target/m68k/cpu.c
-@@ -260,6 +260,7 @@ static void m68020_cpu_initfn(Object *obj)
-     m68k_set_feature(env, M68K_FEATURE_MSP);
-     m68k_set_feature(env, M68K_FEATURE_UNALIGNED_DATA);
-     m68k_set_feature(env, M68K_FEATURE_TRAPCC);
-+    m68k_set_feature(env, M68K_FEATURE_FPU_PACKED_DECIMAL);
+diff --git a/target/m68k/translate.c b/target/m68k/translate.c
+index 340d72bc4f..b9633e06da 100644
+--- a/target/m68k/translate.c
++++ b/target/m68k/translate.c
+@@ -897,14 +897,6 @@ static TCGv gen_ea_mode(CPUM68KState *env, DisasContext *s, int mode, int reg0,
+     return NULL_QREG;
  }
  
- /*
-@@ -302,6 +303,7 @@ static void m68040_cpu_initfn(Object *obj)
- 
-     m68030_cpu_initfn(obj);
-     m68k_unset_feature(env, M68K_FEATURE_M68030);
-+    m68k_unset_feature(env, M68K_FEATURE_FPU_PACKED_DECIMAL);
-     m68k_set_feature(env, M68K_FEATURE_M68040);
+-static TCGv gen_ea(CPUM68KState *env, DisasContext *s, uint16_t insn,
+-                   int opsize, TCGv val, TCGv *addrp, ea_what what, int index)
+-{
+-    int mode = extract32(insn, 3, 3);
+-    int reg0 = REG(insn, 0);
+-    return gen_ea_mode(env, s, mode, reg0, opsize, val, addrp, what, index);
+-}
+-
+ static TCGv_ptr gen_fp_ptr(int freg)
+ {
+     TCGv_ptr fp = tcg_temp_new_ptr();
+@@ -1368,18 +1360,22 @@ static void gen_exit_tb(DisasContext *s)
+     s->base.is_jmp = DISAS_EXIT;
  }
  
+-#define SRC_EA(env, result, opsize, op_sign, addrp) do {                \
+-        result = gen_ea(env, s, insn, opsize, NULL_QREG, addrp,         \
+-                        op_sign ? EA_LOADS : EA_LOADU, IS_USER(s));     \
++#define SRC_EA(env, result, opsize, op_sign, addrp)                     \
++    do {                                                                \
++        result = gen_ea_mode(env, s, extract32(insn, 3, 3),             \
++                             REG(insn, 0), opsize, NULL_QREG, addrp,    \
++                             op_sign ? EA_LOADS : EA_LOADU, IS_USER(s)); \
+         if (IS_NULL_QREG(result)) {                                     \
+             gen_addr_fault(s);                                          \
+             return;                                                     \
+         }                                                               \
+     } while (0)
+ 
+-#define DEST_EA(env, insn, opsize, val, addrp) do {                     \
+-        TCGv ea_result = gen_ea(env, s, insn, opsize, val, addrp,       \
+-                                EA_STORE, IS_USER(s));                  \
++#define DEST_EA(env, insn, opsize, val, addrp)                          \
++    do {                                                                \
++        TCGv ea_result = gen_ea_mode(env, s, extract32(insn, 3, 3),     \
++                                     REG(insn, 0), opsize, val, addrp,  \
++                                     EA_STORE, IS_USER(s));             \
+         if (IS_NULL_QREG(ea_result)) {                                  \
+             gen_addr_fault(s);                                          \
+             return;                                                     \
 -- 
 2.43.0
 
