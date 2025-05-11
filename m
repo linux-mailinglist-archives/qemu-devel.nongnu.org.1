@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 339BEAB2AF8
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 22:38:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BED4AB2AE9
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 22:36:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEDOx-0002jG-W4; Sun, 11 May 2025 16:36:00 -0400
+	id 1uEDOw-0002dz-Ix; Sun, 11 May 2025 16:35:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uEDOt-0002SZ-RG
+ id 1uEDOt-0002Sa-RN
  for qemu-devel@nongnu.org; Sun, 11 May 2025 16:35:55 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uEDOr-0006KL-Dm
+ id 1uEDOr-0006KW-R2
  for qemu-devel@nongnu.org; Sun, 11 May 2025 16:35:55 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-23035b3edf1so1718015ad.3
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-7424ccbef4eso1129143b3a.2
  for <qemu-devel@nongnu.org>; Sun, 11 May 2025 13:35:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1746995752; x=1747600552; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aIvXrHcg71Zxao4OnBZBdLddOM/XHAwRxf7Qh2NnRSQ=;
- b=tP+RTKgwLc9hiNgK6pzd5C/YshgcZ++sqagAMALZYFh/9NyqMv6yAmVEDvh+2biG5E
- GnAyJ6T+ohdaD+J72Y4/bFN5WIHMFNo1hKRSmK9p/X1z3WSNW5HwXW2q3J5vQJUfdop/
- jO+ZZFTzg4gjTK/GF9XTs3Kt4d33Fsx3Jyh4IRvwuXK11fB5maSdlYugyRmtZcpWetI0
- JFRRDOnyWvPD3Sx40OXuPudp5jbkx+g7Eiu2jaEM15hdSvLcJ43niP3H11WGNF70WnWf
- g6go83tlHEeX5rFHrzjxndj18TXkUHnZDFq5ROBsNE0IvzExNnkDmM/CGbOHFIHmWyV0
- bH1A==
+ bh=Acco64j8AohVk0U3GZiX+hk+MPR+Ymqfvr9WRzFbhZc=;
+ b=G+aF8OGZaloef7l2mDxAJlCH8WfJAETEhF5x/W8e44ygT40pbF+vQ9EkZLfXYbVh90
+ FmkhaztEB7UG9B3kBTkGNiMYEKS/7dDwibRT0ry94j5hg30WaZDTmKV/KCH1RsUDz6ND
+ IwJpbfAR7n7T7JzrtIeBN/O5qU7fsYV4Zy2USCV31xXJlMv/34gbfKFWGrUwQ8SSTpOU
+ seyBLtZG5GchdheEjuStiwB9aU1a/zSZEJTWtaDkaVmA7lsm1Lp+NaJ9dCiir3OlhzfP
+ kTrD+dX8j0BoNjXo7mxfDFTXNxJLVXekt3nvfIAynGWMxy5akLIpZayjKValUB8u6+Lk
+ YCCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1746995752; x=1747600552;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aIvXrHcg71Zxao4OnBZBdLddOM/XHAwRxf7Qh2NnRSQ=;
- b=uHXOkUNIwvAAVsYK40kRjdA+jZLMbaLUuEYR38m7Rvfo5z/8O3gr/MCd+GKqPHBceh
- jSxvBAcotq76179fZViSR9OLRxnVg5zK53rBHIXxppWqi3dJ97m0Ye6M90jEAVWI0e4H
- HRzFO05QOkCthvU6DrCiCHRtycBAozL25pIjkKKfmI7t4RQfcpJcqAp2ZhNDpEDjnEbg
- tVrvXrYycXvlBWhcvIaYeY1dctwyz8zm4Gt2iYv1ZmBdbrY88GqPxtZZoF3lxin2rg8f
- F2B80DGzkLkX2xxx6NcnSJgwvDwn6eO6j+SECmqGzPIxEoOrX3BZqeIOAZrjXU5Ap4hk
- Qkew==
-X-Gm-Message-State: AOJu0YxLoDED4m3YMLTiIS1GTzdyKnoI/xTdyEgL2TR6rSJiSM53NKCy
- AxlQTL0TlfcJrReC0h0LPwoe1Fttheqj4jqBUlRPcPQyLtGrbrhflnIFZOWrkOz++lV7Rlgw2gI
- f
-X-Gm-Gg: ASbGncvmjxjxfXts7gRVrSCFr7zoFy2tyrJUtZ36hdzenUFMVK1ydG/WL7RKU5AdvsZ
- U+9tBGEML3gcSUkHMd/NyZEbDFPdshHPHfryqRQKIpllo0FT8L/xUsBDqrS7tw3D5hTZb5NKKna
- wQwZ3/lruiUzv9I3JNJZ8nCgTtOQk+ix2wp1nJOI8N49BavlswzCApIhER4hau1nF5SwtdoyFpM
- f7c7DH6KqvHH3yhq8jSpQui5f6X4PbN01wnb9Dc9VbYIZw1ztVKnGfCZjS5WXWvobtvCXv9t3f5
- pCGpP2t5/TfQtjSdiKfuPhg9RHX7gsaLvwseGyMVD8vP6z20v7cyv3G3BHNaXe9ZdX/OigNcicV
- S+F+FnmeSNg==
-X-Google-Smtp-Source: AGHT+IG15KMAb0m7Zp6pNOBGxJDgGsCleF9bWFfE2fuAo+HS23GmNTKF3Ko98zkOP7VopHfl2adPIQ==
-X-Received: by 2002:a17:902:d48a:b0:220:ca39:d453 with SMTP id
- d9443c01a7336-22fc8b6131amr177999475ad.17.1746995751826; 
- Sun, 11 May 2025 13:35:51 -0700 (PDT)
+ bh=Acco64j8AohVk0U3GZiX+hk+MPR+Ymqfvr9WRzFbhZc=;
+ b=MdamLGTqLO0KOFvfE8hh4qmP5SIoS/UyCdpeduHScf7OKu7Wxd79z83rhynEZtI7k/
+ h/iGjTQd8F3fz5+1r8l2jnxeXNggYBprXhpYGDz7C5RnNb4740hpdHxQE/5vxQwTnao1
+ saZQYNNLJ7yi4icx4itnOwnRkk1H6gNV9vKTDm+Q98e33YhEaW5YIeOgSgAYYXizv9bz
+ urAZ51c0ud9shHdflPiKuuEoUHpO51xctL4LRIiNu6sY3Db8CtElGwr05/+b1b7VlnTa
+ 3URMgHuMEBjaeSDtfsL7YPrl+z1tysEn15p7uJrEdTL+SF0qSFtqhR6xXhlhj+kZE+3M
+ 7CMw==
+X-Gm-Message-State: AOJu0Yzv/6r/CSsun5KehyHCASzi7xVoAS9vOsCeBRh82O8lsVxl2a3K
+ srLGf0bbMiogPjL8bGkt3hjhySX0jT/w2xog0ADiamgA/Vx0ELD0Xebfq+mlgx1HMeCN9owfXXw
+ 7
+X-Gm-Gg: ASbGncvxSBz0XZW+sZbt+mTKEb93+KoHHYpBGkLuTqcRQAqBHn67SFT3hW2ihsd6ZYB
+ QWdRrWardPm3IhpkYuBo+Ui4hOPkfhfivIJ6E/tE/Vh9loDObm7TZ5vOaLTpaKoYZ9dK3/lMReV
+ eRbDT/lOIPxt5FW+2MRpTJpmwpUvFyhKO1ixn7IwCzd62l+1MKWrLjX+o7Jbtq5lh6qhCwxJoyo
+ Nkf1WFTIXNaqYVcWijr6k3qMF4Z1NoafVyhJFeXXrCI39xdOV5nzQNbddsGn3hy9PFfS3Ol8X6c
+ mNqr6nUx0BfnfosSWR4pi9n6iDyIpjjrlmSVw5xglThduL4fsVK727H9n1IR7RvT/1J2XRu7295
+ aexewMkUzWA==
+X-Google-Smtp-Source: AGHT+IH5Cr/8BEwRFX4OuAvvqGkgPr9LFKqoqtfdZPhomNeHVKxzzRUBx/XW0OZLXefHhrFG7Ss5bw==
+X-Received: by 2002:a17:902:fc8d:b0:226:30f6:1639 with SMTP id
+ d9443c01a7336-22fc91c9f97mr146853915ad.51.1746995752417; 
+ Sun, 11 May 2025 13:35:52 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
  d9443c01a7336-22fc7544d86sm49955095ad.47.2025.05.11.13.35.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 11 May 2025 13:35:51 -0700 (PDT)
+ Sun, 11 May 2025 13:35:52 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: laurent@vivier.eu,
-	schwab@linux-m68k.org
-Subject: [PATCH v6 05/24] target/m68k: Update FPSR for FMOVECR
-Date: Sun, 11 May 2025 13:35:27 -0700
-Message-ID: <20250511203546.139788-6-richard.henderson@linaro.org>
+Cc: laurent@vivier.eu, schwab@linux-m68k.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v6 06/24] target/m68k: Introduce
+ M68K_FEATURE_FPU_PACKED_DECIMAL
+Date: Sun, 11 May 2025 13:35:28 -0700
+Message-ID: <20250511203546.139788-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250511203546.139788-1-richard.henderson@linaro.org>
 References: <20250511203546.139788-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,27 +101,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This instruction sets CC and EXC bits just like any other.
-So far we do not properly emulate inexact for the various
-rom entries, but we can certainly update CC correctly.
+Set for 68020 and 68030, but does nothing so far.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/m68k/fpu_helper.c | 1 +
- 1 file changed, 1 insertion(+)
+ target/m68k/cpu.h | 2 ++
+ target/m68k/cpu.c | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/target/m68k/fpu_helper.c b/target/m68k/fpu_helper.c
-index deae94b0ee..e63fd3ec11 100644
---- a/target/m68k/fpu_helper.c
-+++ b/target/m68k/fpu_helper.c
-@@ -425,6 +425,7 @@ void HELPER(ftst)(CPUM68KState *env, FPReg *val)
- void HELPER(fconst)(CPUM68KState *env, FPReg *val, uint32_t offset)
- {
-     val->d = fpu_rom[offset];
-+    HELPER(ftst)(env, val);
+diff --git a/target/m68k/cpu.h b/target/m68k/cpu.h
+index 0630eb26c2..8adb1c6515 100644
+--- a/target/m68k/cpu.h
++++ b/target/m68k/cpu.h
+@@ -574,6 +574,8 @@ enum m68k_features {
+     M68K_FEATURE_MOVEFROMSR_PRIV,
+     /* Exception frame with format+vector (from 68010) */
+     M68K_FEATURE_EXCEPTION_FORMAT_VEC,
++    /* FPU supports packed decimal real format */
++    M68K_FEATURE_FPU_PACKED_DECIMAL,
+ };
+ 
+ static inline bool m68k_feature(CPUM68KState *env, int feature)
+diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
+index e898156403..866d32fc9f 100644
+--- a/target/m68k/cpu.c
++++ b/target/m68k/cpu.c
+@@ -260,6 +260,7 @@ static void m68020_cpu_initfn(Object *obj)
+     m68k_set_feature(env, M68K_FEATURE_MSP);
+     m68k_set_feature(env, M68K_FEATURE_UNALIGNED_DATA);
+     m68k_set_feature(env, M68K_FEATURE_TRAPCC);
++    m68k_set_feature(env, M68K_FEATURE_FPU_PACKED_DECIMAL);
  }
  
- typedef int (*float_access)(CPUM68KState *env, uint32_t addr, FPReg *fp,
+ /*
+@@ -302,6 +303,7 @@ static void m68040_cpu_initfn(Object *obj)
+ 
+     m68030_cpu_initfn(obj);
+     m68k_unset_feature(env, M68K_FEATURE_M68030);
++    m68k_unset_feature(env, M68K_FEATURE_FPU_PACKED_DECIMAL);
+     m68k_set_feature(env, M68K_FEATURE_M68040);
+ }
+ 
 -- 
 2.43.0
 
