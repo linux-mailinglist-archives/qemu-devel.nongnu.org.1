@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D264AAB28A0
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 15:41:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7953DAB28AB
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 15:42:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uE6uo-0006Tr-Ke; Sun, 11 May 2025 09:40:26 -0400
+	id 1uE6wv-0000Ag-Ks; Sun, 11 May 2025 09:42:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uE6ul-0006T2-QE
- for qemu-devel@nongnu.org; Sun, 11 May 2025 09:40:23 -0400
-Received: from mail-yb1-xb2e.google.com ([2607:f8b0:4864:20::b2e])
+ id 1uE6wt-0000AO-Ih
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 09:42:35 -0400
+Received: from mail-yw1-x112c.google.com ([2607:f8b0:4864:20::112c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uE6uk-0002Gi-6E
- for qemu-devel@nongnu.org; Sun, 11 May 2025 09:40:23 -0400
-Received: by mail-yb1-xb2e.google.com with SMTP id
- 3f1490d57ef6-e733e25bfc7so3437149276.3
- for <qemu-devel@nongnu.org>; Sun, 11 May 2025 06:40:20 -0700 (PDT)
+ id 1uE6wr-0002VN-IC
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 09:42:35 -0400
+Received: by mail-yw1-x112c.google.com with SMTP id
+ 00721157ae682-70a2b85aeb7so28892967b3.1
+ for <qemu-devel@nongnu.org>; Sun, 11 May 2025 06:42:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746970820; x=1747575620; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746970952; x=1747575752; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=tQYCAYnSnMLVlXmM6Q3dpe1j9yqTGHdnD9s/TU+XfR0=;
- b=HotpwRbW36NuNVSfGe1axXApmQ3iOu8AoY9Ot4r1LdfUBkBfH3KGXmdpxipYCUouqc
- YorHR+XQHffhN5C2b+Ki/pZ0Sk7AEjUjwTNfJDWpgQEZuebUOn+C/jSh3K1+gefsYymm
- v7OAyZ2M6kWhGfmazhEdW1izdTeRRxlxxbBi0CDg2aBlkstY/AuU/e6yHVmQF508u8XR
- VIFPFgRZ7cJmz0dIAxb1QO250jpNAIR/8HvokOckm3/dc1mab/keZaM68MtkAxlyQkkd
- xNJESAkkjsWMB0lU7OCTm2ehwXkeYbEXlXlKOteQc0G/SLtd9S1PSNYdTbElnVzsB8am
- 8kzA==
+ bh=c8QV6w8cr2EJNiCqD8Y9EVvczLMeIeIzR3zKiEmzbhE=;
+ b=IrIyET3Lx3cwWV5tEJOhrn3MZVXGoVQgomKXgXGQTaB0mMRjdBA9XYfvDZsiOloDwl
+ Hqljqw/UoAkWwN4gnD4L4y6zNwlYv02jt/zyz3c+g5TaGXOcKhcrCP+ThEI9dM/KEzNp
+ CZzPyQmcNB4rzhIq1SQS5rFjJtZ5b1KhM/E7gzOGMg/pVO/bQNkCP8edo2fNk76061Z8
+ qRn9dryUvD1nrEKoAxpvAgLl3EB4xFfzu3L8Yv6dY2rXDLPXM+AnWZ//zKd9bnhz76uK
+ H6MJmGPW56A2c1lvv0m+1OXVvUNt0w1yiHkn72PbK8+wKBjkcO8yMpmCtUDt8nwgteX4
+ 7RPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746970820; x=1747575620;
+ d=1e100.net; s=20230601; t=1746970952; x=1747575752;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=tQYCAYnSnMLVlXmM6Q3dpe1j9yqTGHdnD9s/TU+XfR0=;
- b=sRE9BQNv7GgvMWVUvLJ/8GHDUpDHMtuNrKdrYSKNtstKwkM9aQntV/YeYlRi5ulHiC
- BntCCW6RGiZGu3Pz23EnnE7HPM0u79ptiG8crKuG97DPcRe4mOSVVxmgwr3FWO+p8vfX
- rIoUEjzrvbu+3kDUZZRu3o0VNHV1Tq4I+Ko5KMNE4fAPRLUO0sPDcYVuYskr3s3aAGOg
- 2WLQK9HemGLMdVpHN40dgyTguSav6uH1d4Vw1xzW/m5qOtJwpc2uXbbZqd6QRofm/lPM
- Dn3cemglR1pqfqxxlBVx4JeLXtPxMD1UXtTf7iKdP3qukEBsr9Ur1ML9hclfCUofNYK3
- 05Ag==
-X-Gm-Message-State: AOJu0YxCU/TwJ0YAolCGewquvUM1RvJKOlMBtyILjifH8GlOvFtv21Ls
- z399gL0rmZjRKxqgizgksK0/jFPVhHPJQrc1Yae3pcc2ZrPkwvp4gQmKJhEHoxeDB0fq1tnxCbr
- ivvRJ6ypiv2/mj9emGj9MX/ECv/kXJcYJHCptdA==
-X-Gm-Gg: ASbGncvuuVi937iy3mynCac/Q82a1X6oMLS1EdW07c3I9otURIt+GTolE+mcTiXyt5T
- i46ZHDomTVnTGFSMVVz1eWRHVGZWVyFVP3BHWnv1FVdfMSVU/ZlVb2XD2CZ7dTiaWpN8uOvB71U
- bmZDG7L7KSeQnGdMYnHrHHC7WOu/OMhUQV4A==
-X-Google-Smtp-Source: AGHT+IE0KyLbfrS2S6y6k0L5Sv5Y/BL7XPKyq9u/1NkOPd9IMbHcYOljv/+I7+C94CfPc8CC+GuYQ3cEH7yDPqKhrqM=
-X-Received: by 2002:a05:6902:2503:b0:e78:f4df:8441 with SMTP id
- 3f1490d57ef6-e78fd9be186mr13405339276.0.1746970820155; Sun, 11 May 2025
- 06:40:20 -0700 (PDT)
+ bh=c8QV6w8cr2EJNiCqD8Y9EVvczLMeIeIzR3zKiEmzbhE=;
+ b=KDqyLN6ClKrvZZrD0hoyNb6GyO9LzuqTGQIWyyj2B7OGjFnboBxzwQH/LnGqsSgYnk
+ tYsSsMrVA564F8GkUf4CnZoasJ83WtuEm51cVcTGsHNLaVUmLGyefUn4+M0NXFVtkqkB
+ VKgahrjkcjtDILNTz0f6oimU92OjYUnmVu9Tq+yAvjGiOlfJSQvq7WAiCVUwxc26IiwX
+ 3CtAMYjbYX7htcyHPv5SH+Pp2PQyOiKzcrz3HAt7lalVyGIqo+A0xi1EUhZrh5Bx+wCb
+ 7FlBPIWsePegeD8QdJ3gwkQzZTvJVcAJoeJUq99vZXFXBd0LM9/IsdYCmMFwiFa46xW8
+ 12qQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUunRwVmGNg+msoOPh1hxLykr1iEBTTHW3fgxtNOil68+Fp7TENvVsdu3TPtz9VQJxcy8Ka2A6rkPPm@nongnu.org
+X-Gm-Message-State: AOJu0Yw1jpXEiCDl61FzQi6s19yQ/mZaObGB7tNfcuHRo1tzZopu0Sjk
+ F9+17zb1J74/4xLDYoHXX1rvVfQfZHPh6GuLMgDCyBxbPVfxYKOVS8TSuE2qUzWSV9u+Y81bipX
+ okTqr6iIiCNcRVTYzCtkMxIgTNYzl1rPzJ3i6g0+7ecHdPLHY
+X-Gm-Gg: ASbGncu9Mldw5DPGJjBbw9p5mWsDbIyirP/DJ4URpjCxj3ucfs7vPpWvidRURHBhCX6
+ 2zbQ5klQ1l7zw4o48kguL3wp0aaLKGsQNwG6dkiovIplDl3R4vw0a5nA4NBzjWoaBDoYRjHdknc
+ 91Q4KK3zdMTdGfrL5qhRreMz3kFMSxcbv3MQ==
+X-Google-Smtp-Source: AGHT+IG1VrEz6I59vmbbCenQVLUqlKXEbF7YtHhyIFFdzysMNA5Fjdh3+/IQ1AbW1HfQs6Y2Er341UH4rc8SgrazJrg=
+X-Received: by 2002:a05:690c:9b02:b0:6f7:5a46:fe5f with SMTP id
+ 00721157ae682-70a3f9f1baemr133419117b3.1.1746970951726; Sun, 11 May 2025
+ 06:42:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250507234241.957746-1-pierrick.bouvier@linaro.org>
-In-Reply-To: <20250507234241.957746-1-pierrick.bouvier@linaro.org>
+References: <20250315142050.3642741-1-linux@roeck-us.net>
+ <CAFEAcA-zPwJrq3oQk3MRp9ZCyTzDOg2-Je00v20pVzrKe8he6w@mail.gmail.com>
+ <5d350a95-886e-420c-8b0d-a3be57b9490d@roeck-us.net>
+In-Reply-To: <5d350a95-886e-420c-8b0d-a3be57b9490d@roeck-us.net>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Sun, 11 May 2025 14:40:09 +0100
-X-Gm-Features: AX0GCFthFJShMwduZaRe8unlmupmQOaRCZ993P7xtVVqY51NCVV1-mxoKOxg2B0
-Message-ID: <CAFEAcA_NgJw=eu+M5WJty0gsq240b8gK3-ZcJ1znwYZz5WC=wA@mail.gmail.com>
-Subject: Re: [PATCH v7 00/49] single-binary: compile target/arm twice
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, anjo@rev.ng, 
- Richard Henderson <richard.henderson@linaro.org>, alex.bennee@linaro.org, 
- Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Date: Sun, 11 May 2025 14:42:19 +0100
+X-Gm-Features: AX0GCFvYQrK_dqdtJp97tVMCTi_d9IIIX4A80GO-0yS9aEeHNHqdB2U0i6Pq22E
+Message-ID: <CAFEAcA-9MCRfHb+O-qdMHAOgSVEUY26h7dUzF-yaF81oFZHs4w@mail.gmail.com>
+Subject: Re: [PATCH] hw/arm: Add missing psci_conduit to NPCM8XX SoC boot info
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: Tyrone Ting <kfting@nuvoton.com>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org, Hao Wu <wuhaotsh@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2e;
- envelope-from=peter.maydell@linaro.org; helo=mail-yb1-xb2e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x112c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,28 +94,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 8 May 2025 at 00:42, Pierrick Bouvier
-<pierrick.bouvier@linaro.org> wrote:
+On Tue, 18 Mar 2025 at 19:54, Guenter Roeck <linux@roeck-us.net> wrote:
 >
-> More work toward single-binary.
+> On 3/18/25 09:59, Peter Maydell wrote:
+> > On Sat, 15 Mar 2025 at 14:20, Guenter Roeck <linux@roeck-us.net> wrote:
+> >>
+> >> Without psci_conduit, the Linux kernel crashes almost immediately.
+> >>
+> >>      psci: probing for conduit method from DT.
+> >>      Internal error: Oops - Undefined instruction: 0000000002000000 [#1] PREEMPT SMP
+> >>
+> >> Fixes: ae0c4d1a1290 ("hw/arm: Add NPCM8XX SoC")
+> >> Cc: Hao Wu <wuhaotsh@google.com>
+> >> Cc: Peter Maydell <peter.maydell@linaro.org>
+> >> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> >> ---
+> >>   hw/arm/npcm8xx.c | 1 +
+> >>   1 file changed, 1 insertion(+)
+> >>
+> >> diff --git a/hw/arm/npcm8xx.c b/hw/arm/npcm8xx.c
+> >> index f182accc47..e5a1929ed7 100644
+> >> --- a/hw/arm/npcm8xx.c
+> >> +++ b/hw/arm/npcm8xx.c
+> >> @@ -346,6 +346,7 @@ static struct arm_boot_info npcm8xx_binfo = {
+> >>       .secure_boot            = false,
+> >>       .board_id               = -1,
+> >>       .board_setup_addr       = NPCM8XX_BOARD_SETUP_ADDR,
+> >> +    .psci_conduit           = QEMU_PSCI_CONDUIT_SMC,
+> >>   };
+> >
+> > Why do we need this for npcm8xx when we don't need it
+> > for npcm7xx? Or is it also broken on 7xx?
+> >
 >
-> Some files have external dependencies for the single-binary:
-> - target/arm/gdbstub.c: gdbhelpers
-> - target/arm/arm-qmp-cmds.c: qapi
-> - target/arm/tcg/translate*: need deep cleanup in include/tcg
-> - target/arm/tcg/cpu*: need TargetInfo implemented for arm/aarch64
-> - target/arm/tcg/*-helper*: need deeper split between aarch64 and arm code
-> They will not be ported in this series.
+> I don't see a reference to psci in npcm7xx devicetree files
+> in the upstream Linux kernel.
 >
-> Built on {linux, windows, macos} x {x86_64, aarch64}
-> Fully tested on linux x {x86_64, aarch64}
->
-> Series is now tested and fully reviewed. Thanks for pulling it.
+> $ git grep psci arch/arm64/boot/dts/nuvoton/ arch/arm/boot/dts/nuvoton/
+> arch/arm64/boot/dts/nuvoton/ma35d1.dtsi:                        enable-method = "psci";
+> arch/arm64/boot/dts/nuvoton/ma35d1.dtsi:                        enable-method = "psci";
+> arch/arm64/boot/dts/nuvoton/ma35d1.dtsi:        psci {
+> arch/arm64/boot/dts/nuvoton/ma35d1.dtsi:                compatible = "arm,psci-0.2";
+> arch/arm64/boot/dts/nuvoton/nuvoton-npcm845.dtsi:                       enable-method = "psci";
+> arch/arm64/boot/dts/nuvoton/nuvoton-npcm845.dtsi:                       enable-method = "psci";
+> arch/arm64/boot/dts/nuvoton/nuvoton-npcm845.dtsi:                       enable-method = "psci";
+> arch/arm64/boot/dts/nuvoton/nuvoton-npcm845.dtsi:                       enable-method = "psci";
+> arch/arm64/boot/dts/nuvoton/nuvoton-npcm845.dtsi:       psci {
+> arch/arm64/boot/dts/nuvoton/nuvoton-npcm845.dtsi:               compatible      = "arm,psci-1.0";
 
-Do you/Philippe have a plan for how you want this to go into
-the tree? I know Philippe has been taking a lot of the
-single-binary related patches. Let me know if you want me
-to pick it up via target-arm.
+I guess the aarch32 versions of the board don't use psci and
+the aarch64 one does.
 
+Would any of the Nuvoton folks like to comment on this patch?
+It looks like a correct fix to me.
+
+thanks
 -- PMM
 
