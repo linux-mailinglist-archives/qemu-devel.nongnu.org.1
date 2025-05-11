@@ -2,24 +2,24 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B99CAAB285D
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 15:16:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77EA6AB285E
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 15:16:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uE6WO-0006mE-9O; Sun, 11 May 2025 09:15:12 -0400
+	id 1uE6WW-0007JY-NG; Sun, 11 May 2025 09:15:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uE6WH-0006V4-Ht
- for qemu-devel@nongnu.org; Sun, 11 May 2025 09:15:05 -0400
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uE6WR-00073I-MR
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 09:15:15 -0400
 Received: from mailgate02.uberspace.is ([185.26.156.114])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uE6WF-0006s9-Oc
- for qemu-devel@nongnu.org; Sun, 11 May 2025 09:15:05 -0400
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uE6WP-0006sA-RI
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 09:15:15 -0400
 Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate02.uberspace.is (Postfix) with ESMTPS id 554D318007D
+ by mailgate02.uberspace.is (Postfix) with ESMTPS id 8AC98180080
  for <qemu-devel@nongnu.org>; Sun, 11 May 2025 15:14:52 +0200 (CEST)
-Received: (qmail 26194 invoked by uid 990); 11 May 2025 13:14:52 -0000
+Received: (qmail 26206 invoked by uid 990); 11 May 2025 13:14:52 -0000
 Authentication-Results: skiff.uberspace.de;
 	auth=pass (plain)
 Received: from unknown (HELO unkown) (::1)
@@ -28,33 +28,32 @@ Received: from unknown (HELO unkown) (::1)
 From: Julian Ganz <neither@nut.email>
 To: qemu-devel@nongnu.org
 Cc: Julian Ganz <neither@nut.email>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: [PATCH v4 19/23] target/sparc: call plugin trap callbacks
-Date: Sun, 11 May 2025 15:14:11 +0200
-Message-ID: <1b29c619ab576ae39e7d73a27bfc6e414871b596.1746968215.git.neither@nut.email>
+	Max Filippov <jcmvbkbc@gmail.com>
+Subject: [PATCH v4 20/23] target/xtensa: call plugin trap callbacks
+Date: Sun, 11 May 2025 15:14:12 +0200
+Message-ID: <26b7c748557fb8dc655eb003758789263705d736.1746968215.git.neither@nut.email>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1746968215.git.neither@nut.email>
 References: <cover.1746968215.git.neither@nut.email>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Bar: -----
-X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.999617) MID_CONTAINS_FROM(1)
+X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.999795) MID_CONTAINS_FROM(1)
  MIME_GOOD(-0.1) R_MISSING_CHARSET(0.5)
-X-Rspamd-Score: -5.599617
+X-Rspamd-Score: -5.599795
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
  h=from:to:cc:subject:date;
- bh=IdC88N99+YM4YmCWx53I/KZhBjRliJfCHy+BVZ5q4+g=;
- b=uqKpcgSyxc17Bxj80hHKyX+Wzxr/FgRRfIoG0NN0fbHULL7QXLw0m+CW0wL3wRH+9un9Myy6EB
- me+ERJpgntLeggA0qrFXVzQ9JQvj7RsApqcoS7Tr4FXqPtnNm1PcjunjZ5/GhJU7Iwb9mZgougfA
- XbsIkpVo8DxGgG/zAoKdC8GEomqVDFuvnk6PJGbU7Q+qi/GwzSFWs2YeniSi3jEWZ2p0eHAMaYyO
- WiNDq/LuRGpq36LT/YirboAhf6KVwg/8LfdMP7bEFypJhdpJwZ5PRQUC2o1X6K6aWkTZRQzOn3u1
- mjUc7fWosfWVQ0JFViRHcm8F1lGnmJmFoY2T3WWeeFoiipy7FeSwMLZP52V5dLj1Tg6+REtD7nTm
- B2aW4COJ8351lilWiVO/9vFQ0b+DAJmPDk9TGYbGKMw5Dx6Zb6zUlXhIJoMzyRP6MEfvEcubhLd8
- Fujp40b8/LzSROhqR5kkuVt/J6rEhhZZdc5ErrXds0JL7W9WXcszxDU16SZxSEEm56iJwJos47Gm
- vvZrHagX1l4H1zeG4Lc3m18D87Yvtk8Ljyc/fIfZk3e32X8qA+kOFjt8kA4NaD5B//ik1FCX+fV1
- 42r2X38WtERtW45dU4sv7JyFLDVIdeMIwkHL1rLSGNlNTtidTcCEGjYXlcSNtAPTAwIWeOcUSXb9
- g=
+ bh=O9OOWZjnGiK8Xl9Lei0yPEHEK29KFW4jkknqvzRxMpg=;
+ b=j9CNaADfUfB2QnQHapyoPgakY8/l+op315iFCBUW7iFyEhRnGWHtTB3HPTbkAGZJc4dY/Yty0h
+ mjbdCgxAP4t55m6juvfZArg6pBDb2+4upwdLBj6olfQ9lvhFJDR0nzJv1BEdbwmzIHHz1Ut5+eFb
+ V0ANYbTBVz6UahY2RFbVNtmpNEzVrv1emUE3Ve9sKQpS9lh3l1L+4RmcNvTkjgGIIkCtHqnTRj9D
+ TQkFhUiREdAe511C02HzxMqPSDHnwgMppBxWK9l+xXxBbK+AgfXyeRtpB2tE4QEIrP/lnXWknfxU
+ B2Rfk3fOhqs6PEgQ0R6G8cQQD+LRCzHAOVasgkOM9B/Vz0AIlAmj8nG5hYKGJ2rh+bwUFui9qDj5
+ +zCLdVVx+bymaRSGC+4dvfpnRFPAMy1Vctom7PZUa+3jcc+BRs4/Zy2a6J3fMssftB9COr3+LzXp
+ 8us9pUbMeTfc5gMfTK9NgUX6femVOADAfxjCi2TrWOsHgdU9r4enmMa31TFzqcVqE62lrzPucLoE
+ KGLQ05jsdaQSs7i3wAkJSFc1LfwRMZysIW9ZMiG02lZvzAnFwKSZnUVEH0IaywnDwwvw/9RlZCgp
+ HIU/5tkB1iqav/pBylzxlDtyk07JOCgB2wBIjXQ/zNV5w2ydBPo5MXNswte29JpVfIC6U7W4atif
+ Q=
 Received-SPF: pass client-ip=185.26.156.114; envelope-from=neither@nut.email;
  helo=mailgate02.uberspace.is
 X-Spam_score_int: -20
@@ -84,67 +83,54 @@ events as well as the corresponding hook functions. Due to differences
 between architectures, the latter need to be called from target specific
 code.
 
-This change places hooks for SPARC (32bit and 64bit) targets. We treat
-any interrupt other than EXTINT and IVEC as exceptions as they appear to
-be synchroneous events.
+This change places hooks for xtensa targets.
 
 Signed-off-by: Julian Ganz <neither@nut.email>
 ---
- target/sparc/int32_helper.c |  7 +++++++
- target/sparc/int64_helper.c | 10 ++++++++++
- 2 files changed, 17 insertions(+)
+ target/xtensa/exc_helper.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/target/sparc/int32_helper.c b/target/sparc/int32_helper.c
-index 39db4ffa70..634439ab2a 100644
---- a/target/sparc/int32_helper.c
-+++ b/target/sparc/int32_helper.c
-@@ -24,6 +24,7 @@
- #include "accel/tcg/cpu-ldst.h"
- #include "exec/log.h"
- #include "system/runstate.h"
-+#include "qemu/plugin.h"
- 
- static const char * const excp_names[0x80] = {
-     [TT_TFAULT] = "Instruction Access Fault",
-@@ -172,4 +173,10 @@ void sparc_cpu_do_interrupt(CPUState *cs)
-         env->qemu_irq_ack(env, intno);
-     }
- #endif
-+
-+    if (intno == TT_EXTINT) {
-+        qemu_plugin_vcpu_interrupt_cb(cs, env->regwptr[9]);
-+    } else {
-+        qemu_plugin_vcpu_exception_cb(cs, env->regwptr[9]);
-+    }
- }
-diff --git a/target/sparc/int64_helper.c b/target/sparc/int64_helper.c
-index bd14c7a0db..9868a80669 100644
---- a/target/sparc/int64_helper.c
-+++ b/target/sparc/int64_helper.c
-@@ -23,6 +23,7 @@
+diff --git a/target/xtensa/exc_helper.c b/target/xtensa/exc_helper.c
+index b611c9bf97..fdc522698d 100644
+--- a/target/xtensa/exc_helper.c
++++ b/target/xtensa/exc_helper.c
+@@ -32,6 +32,7 @@
  #include "exec/helper-proto.h"
- #include "exec/log.h"
- #include "trace.h"
+ #include "qemu/host-utils.h"
+ #include "qemu/atomic.h"
 +#include "qemu/plugin.h"
  
- #define DEBUG_PCALL
+ void HELPER(exception)(CPUXtensaState *env, uint32_t excp)
+ {
+@@ -207,6 +208,8 @@ void xtensa_cpu_do_interrupt(CPUState *cs)
+     CPUXtensaState *env = cpu_env(cs);
  
-@@ -253,6 +254,15 @@ void sparc_cpu_do_interrupt(CPUState *cs)
-     }
-     env->npc = env->pc + 4;
-     cs->exception_index = -1;
+     if (cs->exception_index == EXC_IRQ) {
++        uint64_t last_pc = env->pc;
 +
-+    switch (intno) {
-+    case TT_EXTINT:
-+    case TT_IVEC:
-+        qemu_plugin_vcpu_interrupt_cb(cs, tsptr->tpc);
-+        break;
-+    default:
-+        qemu_plugin_vcpu_exception_cb(cs, tsptr->tpc);
-+    }
- }
+         qemu_log_mask(CPU_LOG_INT,
+                       "%s(EXC_IRQ) level = %d, cintlevel = %d, "
+                       "pc = %08x, a0 = %08x, ps = %08x, "
+@@ -218,6 +221,7 @@ void xtensa_cpu_do_interrupt(CPUState *cs)
+                       env->sregs[INTSET], env->sregs[INTENABLE],
+                       env->sregs[CCOUNT]);
+         handle_interrupt(env);
++        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
+     }
  
- trap_state *cpu_tsptr(CPUSPARCState* env)
+     switch (cs->exception_index) {
+@@ -238,9 +242,11 @@ void xtensa_cpu_do_interrupt(CPUState *cs)
+                       env->sregs[CCOUNT]);
+         if (env->config->exception_vector[cs->exception_index]) {
+             uint32_t vector;
++            uint64_t last_pc = env->pc;
+ 
+             vector = env->config->exception_vector[cs->exception_index];
+             env->pc = relocated_vector(env, vector);
++            qemu_plugin_vcpu_exception_cb(cs, last_pc);
+         } else {
+             qemu_log_mask(CPU_LOG_INT,
+                           "%s(pc = %08x) bad exception_index: %d\n",
 -- 
 2.49.0
 
