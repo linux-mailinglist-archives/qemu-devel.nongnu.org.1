@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77B1AAB2AF4
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 22:37:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 519C9AB2AE8
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 22:36:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEDOz-0002qe-1h; Sun, 11 May 2025 16:36:01 -0400
+	id 1uEDP3-0003A3-4L; Sun, 11 May 2025 16:36:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uEDOv-0002dX-T5
- for qemu-devel@nongnu.org; Sun, 11 May 2025 16:35:57 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1uEDOw-0002eb-4W
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 16:35:58 -0400
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uEDOu-0006Ks-2v
+ id 1uEDOu-0006Kz-Gi
  for qemu-devel@nongnu.org; Sun, 11 May 2025 16:35:57 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-22e09f57ed4so49971115ad.0
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-30a93117e1bso5100499a91.1
  for <qemu-devel@nongnu.org>; Sun, 11 May 2025 13:35:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746995754; x=1747600554; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746995755; x=1747600555; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jk4EjQefaC29HViyknRVvmNGslUguEBFOQzXT/8c2wA=;
- b=f2u/68wdvkgnNKYyXRGD5KH1kdIe9VcyzRm3k9JJe4yAIkgi9fqBw4wkaoWee+8Ota
- 5h1KRqfGbJ6SsPPrIbvI5VkHodXv0AJZrUui3CjYa0aTMamHyUS9Aj/oIuugKca4cwRS
- BxRP/utGPbCwYC5qc3TDWZhF9B5hfpSdDkEO1bG3aJWbhtIOfuIhfzHdWIUFZio059Qz
- V6DrfwC9SYCYiAMnHx4jnxt8ljFN1jDSfSHbwc9rKPiCQ9QVOTCwBlIskwCwUEFrCExK
- XbqE7qg5JOXxyX4TaLx9DMmLfzTGC9KKr89nJIp74nNUFGXSkiWW4AdcT8pb3u0TFqSV
- Gvqw==
+ bh=+UxEDBljyfqsOJ/6sF4OYF0K5MA05WdNFxTdb/zwknQ=;
+ b=hqr8ohCm+cQIV3g+wUlHqT/xM+yjsf9PNFd8OVltyjOfdjdkdSUXVQsEIFWMRGIdiY
+ EBM7Et2LAPz2i5D2DXK6Y03eNyBlPlEei9+zzTCHLnaF9mrIm2o3w2HlwO2jlbnKI/gy
+ eaZobzoKg8qo7+UUF9njY2dSHrjXiHVBcEpMHS/49+kYcD10ncFmWDPqDcWpVzLqE5QJ
+ 3g6mT/N1GldX37ufSLE4Si/pGfeEluLyVBmkwNq4e6s7oAFNGGUu5o5ZsxVepZe6Ke0h
+ AS6QTzbt35Tdo4kJLjdIiVZtG5fik1ehMPrTYoRTrMSq/ApwIXlwH+B+eTUB+UpDcL3G
+ yRHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746995754; x=1747600554;
+ d=1e100.net; s=20230601; t=1746995755; x=1747600555;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jk4EjQefaC29HViyknRVvmNGslUguEBFOQzXT/8c2wA=;
- b=H4fmx5LNJRB1gYnr5XL9fRuyTR8QBtSEI6+t2MkURySWIo34HBJDKuNvs8Ez8DKAxz
- jQvpFCRZDlu/rmC0iHv9lLStNW7O/6PpM5JLuu1modJlKW/BbRQDN9kkMYODeaD4TFGY
- 6K3ZvhDUDkC2JAIK3oIZ/dEvVJPMtFHkM19kkgGmgBPsvU1w9E2dH61/tEUmMVB5ce4A
- bLkeNGkhG8Rw7TzNJS1mHX46boFpLHDWT11Wp+Auk42j8GQLWM64iSAvmF9GEiVkdQ2X
- E4UoWMJPrCRIGZ2/nhvQbPyHxeMBlmIKbqiNcMVy1yGZ2Dz+iEmXQGiHpLq8hDfLPyX8
- UdhA==
-X-Gm-Message-State: AOJu0Ywy56T5nAc2lFAcpOy71ubPb9WJQL2DR3XM7lukWvoWmobPALk/
- 4xbpN0hFlI2Emz80WvylTkpMtntKj5Lu3/FnLgkUtaWasft/3VPrpSibeX3/xqW8WSXAJRvZHtN
- j
-X-Gm-Gg: ASbGncupA5ECRvr8nFNtP8LKJkLMkpySRFggBtmYu9m4eIQxhHVJta3G7SZybhS+Kxt
- veNU5HNh6KFn9hos0+6rTXm5EVInLvIJy4s+rtbynyc6gPMV5sUMJHkBqtyihcRyqvM2U/SWPtu
- ZY8HsvGsfcCp7aYMnok9G9Vy+FW4a2wFxvcjzwZ+3VsS+SX4wkqgruFwFI7w0CO/WozC4kKvB+b
- m2geaqQIzlZzuJ8haK0fL+E5CUakUAp396DY1+5luYPnK0SppEXxnHS4lq8Sfxs7ElxBytCyvoa
- ZvuMgkGjYC/8WSBea6fxFv6QXb1zNKKS1kyT0kO1UDJRVUIeb8A2re+01AHj89jwDcdyP65xwSS
- 6f8U8Mq667Q==
-X-Google-Smtp-Source: AGHT+IHbZYEls01FOEBAyHgDzuKukBMGTonDQtuCq5T+5aoAwsmH9nh5Ssxj6ULPtd1zzUAvZupE3g==
-X-Received: by 2002:a17:903:2311:b0:21a:7e04:7021 with SMTP id
- d9443c01a7336-22fc93ef210mr149446695ad.24.1746995754055; 
+ bh=+UxEDBljyfqsOJ/6sF4OYF0K5MA05WdNFxTdb/zwknQ=;
+ b=pqT7q+KSEtm37u+BkGlPjni10mIGrjTJ2HQLmbSJAHNvtd2nfx3+Y1fyAC7cFdqaUj
+ K/tMCr2voOnI3VBpELdqbRXgWUQHFFNqLIO3PGh8LQZJi2wuDqV7oJVXZHkkj/Sc/n24
+ n+6oP4unRMuwl8qgv9ygiI7+9EbJOlbQxnNv9vOukIIotAZMZyKo2DfW7MM8bAblqSj8
+ taQl1rvgcZlGe5MQojl3/LMDLIWPTf0w+GJALWnQKvbM1OEgaW7/AGpjUhQ3pd4OlNoG
+ 59Ha4AbSNYqTCAqNgsCaOH5/fFtVFmoUJ7cIdCH9nhzESXQrsapD2jjWkvqF80NLzPRD
+ K52A==
+X-Gm-Message-State: AOJu0Yy0YFqnyCy3QN2VCgWTveaHEyQ2Hua6/+HezeN1u8oxMJt7Rz7v
+ TAbgVwZzEC6GvXpkkDo7X+3/vsGiCUoptDwqFbg6uTGky7srHE8vEOzNe91hucKC5Yq+xcFhUvz
+ +
+X-Gm-Gg: ASbGnctSDnGrZtc6ku1yyHM+h++bIISbspv8SWRAzuPGFwstmMQO45bNFo/e+/UOWlR
+ UYB5QKkkICqjvPl87ZvKYIqADesxfre7BmWgCvzEOVXbpC41yOVFiEd5RV4uUEwsK+zqqygcxEU
+ 0Q8ZyZvYQeiY/iAhEMSbcMAvEV9XsMQHd3FKZDqyZEXjbTsidwQNFLZUz+KYSBg+PqRX8hmiEhH
+ M6uD5vZASvGldVwhOra/B+dYSzxCVYoLyOoLa6xxAl7B5xpS1Zcg3QazL7mw/wyR0Mrle2F5h7E
+ HApWc1pw0fE5DAU00krb2CMVInJJyN+UKN2ayvKRmwZ5xw/wi+ncNNOaiBmhHw+Hb1McdmpUG9S
+ V2SXj3U0uaw==
+X-Google-Smtp-Source: AGHT+IGxcPMJgMcJye/f1uRQKFTkFGTdGL4Et1kt+5cCo1KgtvvFT0PzAYoeXLMwLp28E7poA4uk5w==
+X-Received: by 2002:a17:902:ced0:b0:223:90ec:80f0 with SMTP id
+ d9443c01a7336-22fc8b339a8mr183093355ad.22.1746995754861; 
  Sun, 11 May 2025 13:35:54 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22fc7544d86sm49955095ad.47.2025.05.11.13.35.53
+ d9443c01a7336-22fc7544d86sm49955095ad.47.2025.05.11.13.35.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 11 May 2025 13:35:53 -0700 (PDT)
+ Sun, 11 May 2025 13:35:54 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: laurent@vivier.eu, schwab@linux-m68k.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v6 08/24] target/m68k: Use g_assert_not_reached in
- gen_lea_mode and gen_ea_mode
-Date: Sun, 11 May 2025 13:35:30 -0700
-Message-ID: <20250511203546.139788-9-richard.henderson@linaro.org>
+Cc: laurent@vivier.eu,
+	schwab@linux-m68k.org
+Subject: [PATCH v6 09/24] target/m68k: Use OS_UNSIZED in LEA, PEA, JMP
+Date: Sun, 11 May 2025 13:35:31 -0700
+Message-ID: <20250511203546.139788-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250511203546.139788-1-richard.henderson@linaro.org>
 References: <20250511203546.139788-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,38 +99,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The mode argument is extracted from 3 bits, and all cases are covered.
+For LEA and PEA, while the manual says "size = (long)", it also says
+that the pre-decrement and post-increment addressing modes are illegal.
+For JMP, the manual says "unsized".  OS_UNSIZED is the way to signal
+gen_lea_mode to reject those addressing modes.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/m68k/translate.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ target/m68k/translate.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index b9633e06da..f87eff3b10 100644
+index f87eff3b10..b6d46c3bdb 100644
 --- a/target/m68k/translate.c
 +++ b/target/m68k/translate.c
-@@ -768,8 +768,7 @@ static TCGv gen_lea_mode(CPUM68KState *env, DisasContext *s,
-         tcg_gen_movi_i32(tmp, offset);
-         return tmp;
-     }
--    /* Should never happen.  */
--    return NULL_QREG;
-+    g_assert_not_reached();
- }
+@@ -2561,7 +2561,7 @@ DISAS_INSN(lea)
+     TCGv tmp;
  
- static TCGv gen_lea(CPUM68KState *env, DisasContext *s, uint16_t insn,
-@@ -893,8 +892,7 @@ static TCGv gen_ea_mode(CPUM68KState *env, DisasContext *s, int mode, int reg0,
-             return NULL_QREG;
-         }
-     }
--    /* Should never happen.  */
--    return NULL_QREG;
-+    g_assert_not_reached();
- }
+     reg = AREG(insn, 9);
+-    tmp = gen_lea(env, s, insn, OS_LONG);
++    tmp = gen_lea(env, s, insn, OS_UNSIZED);
+     if (IS_NULL_QREG(tmp)) {
+         gen_addr_fault(s);
+         return;
+@@ -2658,7 +2658,7 @@ DISAS_INSN(pea)
+ {
+     TCGv tmp;
  
- static TCGv_ptr gen_fp_ptr(int freg)
+-    tmp = gen_lea(env, s, insn, OS_LONG);
++    tmp = gen_lea(env, s, insn, OS_UNSIZED);
+     if (IS_NULL_QREG(tmp)) {
+         gen_addr_fault(s);
+         return;
+@@ -2909,7 +2909,7 @@ DISAS_INSN(jump)
+      * Load the target address first to ensure correct exception
+      * behavior.
+      */
+-    tmp = gen_lea(env, s, insn, OS_LONG);
++    tmp = gen_lea(env, s, insn, OS_UNSIZED);
+     if (IS_NULL_QREG(tmp)) {
+         gen_addr_fault(s);
+         return;
 -- 
 2.43.0
 
