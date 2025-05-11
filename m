@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99756AB2703
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 09:36:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDED2AB2705
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 09:36:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uE1D9-0003yT-Bc; Sun, 11 May 2025 03:34:59 -0400
+	id 1uE1D9-0003yY-I4; Sun, 11 May 2025 03:34:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <weifeng.liu.z@gmail.com>)
- id 1uE1D2-0003s8-Rf
- for qemu-devel@nongnu.org; Sun, 11 May 2025 03:34:53 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1uE1D6-0003xd-Gn
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 03:34:56 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <weifeng.liu.z@gmail.com>)
- id 1uE1D1-0003ff-A8
- for qemu-devel@nongnu.org; Sun, 11 May 2025 03:34:52 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-22e09f57ed4so47507645ad.0
- for <qemu-devel@nongnu.org>; Sun, 11 May 2025 00:34:50 -0700 (PDT)
+ id 1uE1D4-0003fy-Oi
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 03:34:56 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-7376e311086so4901075b3a.3
+ for <qemu-devel@nongnu.org>; Sun, 11 May 2025 00:34:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1746948889; x=1747553689; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1746948893; x=1747553693; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=b8/qrbN8SL3D7304Ebsbfdho9U8Wr6YNdQY2YgeEWjw=;
- b=LdPQNJujfrRv3jUmvKieRXHXCvP2+1+Q1nrurOX4MSmyz2npkevhjvUQl/E5RYUszF
- i2m4WtlLEETfWgAT8I5zv/cpPaAKKwbDK7rIgqvceU1uj1JfMTBCT5I/hUSvAtv5K6OZ
- 7NcZKi8N5CCtCPc7o6AvWdYX0J1NGkxMmhlmQYiQZo01xhVvHWiv5maEkyWaAnkAIRxK
- Y7vH7GsETkpVIuJlhnrxkN84rOy06rzp0vH7rpXw3Hxb2kBwGabo+xVNr2aTpS7IX7Rq
- vbXuoFpL8Tfi+3ASN7yZT8use0Fl27ADSMv1oche6IUpmfhkHTVavtKnnka6mobHLdDC
- EKjg==
+ bh=UxPTXyprH05ofk3pDVq1pDkXDfg1+LVWQQzpYzVenik=;
+ b=BmqhtfBLgQKEryb2NAg5xdvSsSkDmKot0kY7VVJh153nUqkb0V1VjfauVV4JpBrlHG
+ qb1M42Y41uECnGYAA9/YxAalR8LD8sZUFOc68YfgWOl6lQajJ+Kl9vwWyrDTjQLU7/eu
+ 96LtW0WyrlS9zkt18BiXpcOIv90eoqGb3OS/krDD8JXQMi1AiVngaVC6rtKEwS6Y23TG
+ L+QxZHJlzZi/lrovHaUWrVchf0DqDHvkQ3yfMvQz63EtejW3K2z34aGDVr1HBsvjZoBJ
+ +Cj3hrquzqd0EULTU14PQMxSEYrCsoBANGPiULK2UURPpdySmJJ/YYXCfD6uG/D37Z07
+ bIVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746948889; x=1747553689;
+ d=1e100.net; s=20230601; t=1746948893; x=1747553693;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=b8/qrbN8SL3D7304Ebsbfdho9U8Wr6YNdQY2YgeEWjw=;
- b=opzerny8BndsniOIGEkAI/rbfW28HngaWGSu+CW88N17qVNUJueSz32JsbKJFSVVlb
- I5iZMkDgre54/3gA0PcQR8EgMxMSsOEXMJ5rnCxUNrg3kcGtAnqSAh9RC6CAnlIdzLxS
- 9697ZIRBE40JQiGK/8O6ZM6HGWG1+NTZq70FAsUJxMuKFE9sg41GWy0DWILPEoOiMmQo
- muK1CytqwekgltFYumWpncbOr8kDRkBHdM0ZzBubEpv+QS3FlMglCLqBtYpNatxjd5Ly
- 1cMEsGwq6jgRZCqdrWr16jZsn7TaP7unt0VR03qo8HnvjwQ7oPvmXfd1UKOzM1iorg1y
- ZCbw==
-X-Gm-Message-State: AOJu0YyCs4ENut+gUDPl8YA9NTXrYTRtwFwRXPGxOabnGLXBQDbt+ncr
- seVDumC7OicJ9VRaC8UVQY9MjZNsHUeQfQHKpBA9vQUGttm1k6d1PFGpbdQO
-X-Gm-Gg: ASbGncssx8y6Vai57URVP/yPt2saLrkceixHQ4QQkF3W6f18/ZLDhytZplZ51OO0HHV
- Ad55fDY+huKDgVB9cINJyWM2hN2DJSEeRKTtzRcSJSTANfO6k7jZZgb9Cf3o4wGoBKYRLs9T53n
- mpu6bgiC6nqbVvcODaQZGMgFtE34pR7fPdQdwjwqjWlvrupi5Lg0CyutoWLJFBJscQNuMsqA91h
- V0uh4/EnZjon9FegPhhS06ekAwdKrOxWfdChrtYpP0sPCTI4s8XP2fDOkZRoIZNpbVW/4l1nraE
- xvH++7dGgdkIXLQHIAz+LBV9AQj9VvbnRIDHKhVjzQys1APrW4i1Lng=
-X-Google-Smtp-Source: AGHT+IFPfyFaq+GzSPb1tTf3XZql8JcfUh5W6+WHNZynBDt6ScBKYP8BH1bBec401PDsV0NryiE6AA==
-X-Received: by 2002:a17:902:e84c:b0:215:58be:3349 with SMTP id
- d9443c01a7336-22fc937b1f5mr160639745ad.14.1746948889480; 
- Sun, 11 May 2025 00:34:49 -0700 (PDT)
+ bh=UxPTXyprH05ofk3pDVq1pDkXDfg1+LVWQQzpYzVenik=;
+ b=OTr930X1lqd0MpbjI/EXxbkCL5tcT9JzqBfYGUJBS6ZT37WYigwswlFMv9bHBefi5X
+ BdT+PRo+78vk0Yi+VtqjHvhv2AGq8M90iz7p2JxrZnsnLTGvtR4G4mHMjLjmBiCQ0VCe
+ q/d0uIdaDT9GRXhEx7X5Y2sBvzFJ8slJh+rsuWR4Gzkc/eC6AZ4jAnQUNiMteYFcBX8C
+ H989a3ypNnB6jmzY9VKXnCs1mKtrXfra8G9aaIKu7FuTgbzzwOyE8/TB1JzBW8dRC0qe
+ pV+v0qgitu3zcu7ajTYxkRlRSeWCaSAuSgelymIASpvygqfWVf+qhunugfLAvjD/wwaY
+ opog==
+X-Gm-Message-State: AOJu0Yw09ZF+2KuqC5EXC+/2ll6eERSCIfHkex9ogyH3nuEGytlJWWRS
+ cxyOAjJlMsA5JkM1UoQQzJCK8wvzWJe0lDw8YIwIP9RZZsZlwCPygSnAAD3C
+X-Gm-Gg: ASbGncu6NKQZUOTb2FJu22sOiW65GFByKDpNZkB8PZ4GWEAHx8dj/GDcS3Hct8g9vDZ
+ fz/dnaSWnK1qY6B+Ysjv2cTb51Xa4xSMHCFETGZsMGfaS5oECVrpT+dWTLgaa4vZJecrYDyNzcG
+ Xj6XbXXeypbBI9RdUT/GL5thRyph2OCMS1Pu2svBbL+GgMIC4Bbd41KXfolAp/k6rCjwt2osNkp
+ ClWda6Whf0AOjVJcMc+SHN9GI6BGY1ZLj4urmGcfpoX3jkfqBgrBYlu0IMpY3Ru7ys4hRw9qbsd
+ g8J4udgZ/y74dzFzBuAwhd4RgEzcRlIFaLoEkHtCacw77Xjh8NEqyo4gFriRmjwtuw==
+X-Google-Smtp-Source: AGHT+IEvZVbcNEFh5WRMsKlP6EsYIiRmw/y7kVqcRh0TZ3orQ4ciHvkWYlfwqXHH8VoA6EH2xx1LMA==
+X-Received: by 2002:a05:6a00:2313:b0:736:692e:129 with SMTP id
+ d2e1a72fcca58-7423c0421e7mr13911846b3a.24.1746948892731; 
+ Sun, 11 May 2025 00:34:52 -0700 (PDT)
 Received: from localhost ([103.192.227.12]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22fc75498b2sm42483605ad.13.2025.05.11.00.34.48
+ d2e1a72fcca58-74237a10867sm4112348b3a.110.2025.05.11.00.34.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 11 May 2025 00:34:48 -0700 (PDT)
+ Sun, 11 May 2025 00:34:52 -0700 (PDT)
 From: Weifeng Liu <weifeng.liu.z@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Weifeng Liu <weifeng.liu.z@gmail.com>
-Subject: [PATCH 6/9] ui/gtk: Don't update scale in fixed scale mode in
- gtk-egl.c
-Date: Sun, 11 May 2025 15:33:16 +0800
-Message-ID: <20250511073337.876650-7-weifeng.liu.z@gmail.com>
+Subject: [PATCH 7/9] ui/gtk: Consider scaling when propagating ui info
+Date: Sun, 11 May 2025 15:33:17 +0800
+Message-ID: <20250511073337.876650-8-weifeng.liu.z@gmail.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250511073337.876650-1-weifeng.liu.z@gmail.com>
 References: <20250511073337.876650-1-weifeng.liu.z@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=weifeng.liu.z@gmail.com; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=weifeng.liu.z@gmail.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,43 +95,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Scale shouldn't be changed until user explicitly requests it in fixed
-scale mode (full-screen=false and free-scale=false). Use function
-gd_update_scale to complete scale updating instead.
+The ui width and height sent to guest is supposed to be in buffer
+coordinate. Hence conversion is required.
+
+If scaling (global window scale and zooming scale) is not respected in
+non-free-scale mode, window size could keep changing because of the
+existence of the iteration of the following steps:
+
+1. In resize event or configure event, a size larger (or smaller) than
+   the currently used one might be calculated due to not considering
+   scaling.
+2. On reception of the display size change event in guest, the guest
+   might decide to do a mode setting and use the larger (or smaller)
+   mode.
+3. When the new guest scan-out command arrives, QEMU would request the
+   window size to change to fit the new buffer size. This will trigger a
+   resize event or a configure event, making us go back to step 1.
 
 Signed-off-by: Weifeng Liu <weifeng.liu.z@gmail.com>
 ---
- ui/gtk-egl.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ ui/gtk.c | 25 +++++++++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
 
-diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
-index 947c99334b..f8e4f4bc70 100644
---- a/ui/gtk-egl.c
-+++ b/ui/gtk-egl.c
-@@ -95,8 +95,9 @@ void gd_egl_draw(VirtualConsole *vc)
+diff --git a/ui/gtk.c b/ui/gtk.c
+index 47af49e387..8c4a94c8f6 100644
+--- a/ui/gtk.c
++++ b/ui/gtk.c
+@@ -772,8 +772,21 @@ static void gd_resize_event(GtkGLArea *area,
+                             gint width, gint height, gpointer *opaque)
+ {
+     VirtualConsole *vc = (void *)opaque;
++    double pw = width, ph = height;
++    double sx = vc->gfx.scale_x, sy = vc->gfx.scale_y;
++    GdkWindow *window = gtk_widget_get_window(GTK_WIDGET(area));
++    const int gs = gdk_window_get_scale_factor(window);
+ 
+-    gd_set_ui_size(vc, width, height);
++    if (!vc->s->free_scale && !vc->s->full_screen) {
++        pw /= sx;
++        ph /= sy;
++    }
++
++    /**
++     * width and height here are in pixel coordinate, so we must divide it
++     * by global window scale (gs)
++     */
++    gd_set_ui_size(vc, pw / gs, ph / gs);
+ }
+ 
  #endif
-         gd_egl_scanout_flush(&vc->gfx.dcl, 0, 0, vc->gfx.w, vc->gfx.h);
+@@ -1836,8 +1849,16 @@ static gboolean gd_configure(GtkWidget *widget,
+                              GdkEventConfigure *cfg, gpointer opaque)
+ {
+     VirtualConsole *vc = opaque;
++    const double sx = vc->gfx.scale_x, sy = vc->gfx.scale_y;
++    double width = cfg->width, height = cfg->height;
++
++    if (!vc->s->free_scale && !vc->s->full_screen) {
++        width /= sx;
++        height /= sy;
++    }
++
++    gd_set_ui_size(vc, width, height);
  
--        vc->gfx.scale_x = (double)ww / surface_width(vc->gfx.ds);
--        vc->gfx.scale_y = (double)wh / surface_height(vc->gfx.ds);
-+        gd_update_scale(vc, ww, wh,
-+                        surface_width(vc->gfx.ds),
-+                        surface_height(vc->gfx.ds));
+-    gd_set_ui_size(vc, cfg->width, cfg->height);
+     return FALSE;
+ }
  
-         glFlush();
- #ifdef CONFIG_GBM
-@@ -122,8 +123,9 @@ void gd_egl_draw(VirtualConsole *vc)
- 
-         eglSwapBuffers(qemu_egl_display, vc->gfx.esurface);
- 
--        vc->gfx.scale_x = (double)ww / surface_width(vc->gfx.ds);
--        vc->gfx.scale_y = (double)wh / surface_height(vc->gfx.ds);
-+        gd_update_scale(vc, ww, wh,
-+                        surface_width(vc->gfx.ds),
-+                        surface_height(vc->gfx.ds));
- 
-         glFlush();
-     }
 -- 
 2.49.0
 
