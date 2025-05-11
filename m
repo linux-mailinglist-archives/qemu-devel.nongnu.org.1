@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 796BEAB26DC
+	by mail.lfdr.de (Postfix) with ESMTPS id A037AAB26DE
 	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 08:10:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDzsG-0002Fb-Q3; Sun, 11 May 2025 02:09:20 -0400
+	id 1uDzsL-0002Ft-L0; Sun, 11 May 2025 02:09:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uDzsE-0002FF-Kh
- for qemu-devel@nongnu.org; Sun, 11 May 2025 02:09:18 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1uDzsK-0002Fl-7r
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 02:09:24 -0400
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uDzsC-0003wY-Sw
- for qemu-devel@nongnu.org; Sun, 11 May 2025 02:09:18 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-7376dd56f8fso4557488b3a.2
- for <qemu-devel@nongnu.org>; Sat, 10 May 2025 23:09:16 -0700 (PDT)
+ id 1uDzsI-0003xr-D2
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 02:09:23 -0400
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-30c47918d84so1973551a91.3
+ for <qemu-devel@nongnu.org>; Sat, 10 May 2025 23:09:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1746943755; x=1747548555;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1746943760; x=1747548560;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=sHD+2pGYZBM1saUJBRZKECLnePiyCMT+xoiE17eX2xk=;
- b=nC8vqENRA47aLmfDjRnXlnASzh3592o/dGJf2cHN13BdM59gNddeA2LGxTkwGl4RRP
- LQ4Igb9WQNFOJeBh9LCJMDIyWEQpuQE5dy5kMPUE8605Q2rW+8CH10l0j3z0rpEtDFds
- DHU2Nuzv2y3lWpvyvkI/XgllFh0Wu8DvXkp67YTAY+JDM4+vqiWXsq0A+gSvKmGQdQZ9
- wOBcpHJKxHCS1bP0R/Qxa/umjVV6N591hvcfatMqXLy58Soocc95XBlfFFaGRD79TfLo
- Hha2lIwwiyeHUQZGs0ArW4mpq1F2fg4t8mD3d0dzAl4WbKJ+tcDS5Va077gR+V/Pui6U
- JBNg==
+ :reply-to; bh=d+CWIIiX3AaFzlSwGIwDouhtsC/hNwkjMU2nYYnMRMQ=;
+ b=GPMRoUJPCQIfoWkKHCmW+o46WPOwfkbk1hg80GG4spqrbNNbdoGDL1//MZZcY++L1l
+ XqUso+Nqrfafb0sLTZg5bWHepELAb1NjNTq+TIrQV9A2tQRxi3RNaHEa00XbhsDUIIqR
+ dZa8immgI49k9N57uaF456eDdBz1UvL/7q6KmCaSFSiSmOHf6RauZBf3Krhsn/k0Heql
+ fychpO6GZFEkGXtL+DcmRC53vgmehSXSGSK+Em19gdep6MoJnQaOGGvtdS9HomvLGO8s
+ dhv9a1Zxclg6nt1rBXiVAgK5exXMarB65Efq+J1R9x6Xroh86cwl85jH8ssniyE9DyQr
+ 0bmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746943755; x=1747548555;
+ d=1e100.net; s=20230601; t=1746943760; x=1747548560;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sHD+2pGYZBM1saUJBRZKECLnePiyCMT+xoiE17eX2xk=;
- b=b/n6UF0m0fUG9AvUBWPNvNV4ecuShs1VLTlQnqXwKhdvIZyQ0XCXvAYAzlV2DaLOs7
- 0nym1JZ4wTBUUSpgzQ1StuBcUDIFv1FDdGX6eUSxN02eqliL7pswu2uK2VycUVJBybFK
- V1lpp+rY7pm3UGfpcDgY4B7Hd2NJnixJg7mqmLwF65nFh1xJFJMCsRAQ7xrMMgqhLPiz
- LGiY+8p1Zok1zpTmPunnkUgrds0c8jUQtw64aLAUQjaMn6VtLp86hth/Yc4DF6EKR254
- NOLbtFXTgrqdq+IZxWIlT4wGI3tzXMOxWCATW2/5l5kgDdtZs63zkrhe2V+aeXW0dsm7
- 6LpQ==
+ bh=d+CWIIiX3AaFzlSwGIwDouhtsC/hNwkjMU2nYYnMRMQ=;
+ b=Jc1YEz1ae2Bo6y84724EFujc4EqsIbLLT+h3LZp7D0/UiXa8J1oVZzX1/tR8LfMPJm
+ O+xRghhViIKthO4+DeCEZ4Ofo8yeT9pBAqYyUgzkLiKOuXfZt9JY4IXvG8OdZ2EXTDWN
+ YRdIJu3y6tg4BOjQESZPbZyz2y390nCF6TVnm/iuHWlZUyXylmtKjTvd8xL+h8HwaxPO
+ alDYM+TN5yb83b2cD8U/hTbw7bMih5ZQLSk890OODstiNLtSver7rWk4UmI2gl53xJTo
+ hZ/xux+w9mUXw0R0tt3Iq2V2RTuHD/3HfAb6Kqi/9/0QG3A9+N1yPFClrg1gU+/5rh7q
+ a4ug==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU/nGO+ziYhhNpHSpBScAyB2t2ZQwlk0a4UW5elnZ2w0rII5gV5nPw85jxHuU+CwGhauyxO1vWAj5PC@nongnu.org
-X-Gm-Message-State: AOJu0Yz3gsNu/HFMBnGjor/iE6Can3N13Dq1j7FCnnsY15Qp8nd0UXk4
- U3+vOPSXyAwiViL93iCbgeGJ/bnS1hUidFsLZb7rt4awCHMvbNL7qSl9vgV9y08=
-X-Gm-Gg: ASbGnctyHQ1HPCrSToaRy9OvPdewyIpKpe8QwgvuRM2nndOMisX2kPSJ08B0NxcvH8P
- xeMTWwgsYv4qe5DGZyCvriEpOzWw/Pr28vma3g6XIY+4jhELGX26Stuq8xgwBUC5F4iZbux1dzc
- 4mUhvMnh9RFYVpY0SUxrct1ybyOzT8ll2WTAb33hKsjoKyECQOZBAAzWNsljVxwFQOXY5GC5fYE
- j/jTgRj+xpLeuAfhQuJG2qIRDzTIPBJJZB8IOtVROZf4Qqo51aXv0nt5dIOmrFqI9MY7ATnwJs6
- URf8RdwvMKwWeubKdjgAYPCmZn2ChHSYknmrSc5GrEEhA40Vn76W0Wc=
-X-Google-Smtp-Source: AGHT+IHZZz4gZgd+2wrBtj9/WMk8CBB6cYGLc0h8iYz2WetG7IYGYAQBvKFpjrkBXPzWOx3dtU8PfQ==
-X-Received: by 2002:a05:6a00:1915:b0:740:a52f:9652 with SMTP id
- d2e1a72fcca58-7423bbf0b49mr11717917b3a.6.1746943755562; 
- Sat, 10 May 2025 23:09:15 -0700 (PDT)
+ AJvYcCWqG3ROKAR5DEzxNZgABSIjwNi/AN41xz4PQoe7DpAIQwWrEVCybMSaNJhNFUYX8W7FGE3gaWevp9y4@nongnu.org
+X-Gm-Message-State: AOJu0Ywbe8JskU7/Q1x7j+MBWNwRJOnWUHCPT/kxob4gi4UUOmkbAJW0
+ KgTUMPqYFjbt7G7MUXE+OjVwFFT/hhXAtOzk2a2MvroPxGl+Qo2zY4d4uL+vIXw=
+X-Gm-Gg: ASbGncsoabhwEOJWwMmfb22pAaOa1luKOc9/1Owz2EW9Xl2hVg9t1aRpMeSaD04neDI
+ aTVbOj/q772DlpBwFLrVJni4NDibn9/zL5uF1uP7QHMPwQNrs6WmILmQ52w4s3HFghosvd1tnQp
+ Dh5x+8COoqTMrudVEn6AcQYy8UKZYyctnWboSzDwZUfhnH9o9cB9MOSwobJmsqj+HnT/D4C5Wph
+ wsK8uINQGK0DZyBAYt0szCB7YowCo2U/uUiSlpd5DM0ytcqWO+rHHD5kxg/nk1HXafAns5HEOqN
+ +YH6iosvFd5p0+D+t5+le5JwKAlbsBNM7f8IhOQZfl43UWzHeWWj11c=
+X-Google-Smtp-Source: AGHT+IF9me/4K9/JPE1nqK8IuOo+BPJKkWaZeC3sbcpmOq4AlIy3/O86X2RNtHch/97NDiUUjf6wGQ==
+X-Received: by 2002:a17:90b:4acb:b0:2ee:f677:aa14 with SMTP id
+ 98e67ed59e1d1-30c3cefb8f0mr14611394a91.13.1746943760499; 
+ Sat, 10 May 2025 23:09:20 -0700 (PDT)
 Received: from localhost ([157.82.203.223])
  by smtp.gmail.com with UTF8SMTPSA id
- 41be03b00d2f7-b234ad4205dsm3634139a12.44.2025.05.10.23.09.12
+ 98e67ed59e1d1-30c39df09dbsm4360974a91.26.2025.05.10.23.09.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 10 May 2025 23:09:15 -0700 (PDT)
+ Sat, 10 May 2025 23:09:20 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sun, 11 May 2025 15:08:24 +0900
-Subject: [PATCH v3 07/10] migration: Replace QemuSemaphore with QemuEvent
+Date: Sun, 11 May 2025 15:08:25 +0900
+Subject: [PATCH v3 08/10] migration/colo: Replace QemuSemaphore with QemuEvent
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250511-event-v3-7-f7f69247d303@daynix.com>
+Message-Id: <20250511-event-v3-8-f7f69247d303@daynix.com>
 References: <20250511-event-v3-0-f7f69247d303@daynix.com>
 In-Reply-To: <20250511-event-v3-0-f7f69247d303@daynix.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Stefan Weil <sw@weilnetz.de>, 
@@ -82,8 +82,8 @@ Cc: Phil Dennis-Jordan <phil@philjordan.eu>, qemu-devel@nongnu.org,
  =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.15-dev-edae6
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1030.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -105,142 +105,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-rp_pong_acks tells if it has ever received one pong. QemuEvent is
-better suited for this usage because it represents a boolean rather
-than integer and will not decrement with the wait operation.
-
-pause_event can utilize qemu_event_reset() to discard events.
+colo_exit_sem and colo_incoming_sem represent one-shot events so they
+can be converted into QemuEvent, which is more lightweight.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
  migration/migration.h |  6 +++---
- migration/migration.c | 29 +++++++++++++----------------
- 2 files changed, 16 insertions(+), 19 deletions(-)
+ migration/colo.c      | 20 ++++++++++----------
+ 2 files changed, 13 insertions(+), 13 deletions(-)
 
 diff --git a/migration/migration.h b/migration/migration.h
-index d53f7cad84d8..11dba5f4da77 100644
+index 11dba5f4da77..eec49bf3f893 100644
 --- a/migration/migration.h
 +++ b/migration/migration.h
-@@ -342,11 +342,11 @@ struct MigrationState {
-          */
-         QemuSemaphore rp_sem;
-         /*
--         * We post to this when we got one PONG from dest. So far it's an
-+         * We set this when we got one PONG from dest. So far it's an
-          * easy way to know the main channel has successfully established
-          * on dest QEMU.
-          */
--        QemuSemaphore rp_pong_acks;
-+        QemuEvent rp_pong_acks;
-     } rp_state;
+@@ -186,7 +186,7 @@ struct MigrationIncomingState {
  
-     double mbps;
-@@ -379,7 +379,7 @@ struct MigrationState {
-     QemuSemaphore wait_unplug_sem;
+     /* The coroutine we should enter (back) after failover */
+     Coroutine *colo_incoming_co;
+-    QemuSemaphore colo_incoming_sem;
++    QemuEvent colo_incoming_event;
  
+     /* Optional load threads pool and its thread exit request flag */
+     ThreadPool *load_threads;
+@@ -381,8 +381,8 @@ struct MigrationState {
      /* Migration is paused due to pause-before-switchover */
--    QemuSemaphore pause_sem;
-+    QemuEvent pause_event;
+     QemuEvent pause_event;
  
-     /* The semaphore is used to notify COLO thread that failover is finished */
-     QemuSemaphore colo_exit_sem;
-diff --git a/migration/migration.c b/migration/migration.c
-index 4697732bef91..053c23c58d82 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1630,7 +1630,7 @@ void migration_cancel(void)
-         }
-         /* If the migration is paused, kick it out of the pause */
-         if (old_state == MIGRATION_STATUS_PRE_SWITCHOVER) {
--            qemu_sem_post(&s->pause_sem);
-+            qemu_event_set(&s->pause_event);
-         }
-         migrate_set_state(&s->state, old_state, MIGRATION_STATUS_CANCELLING);
-     } while (s->state != MIGRATION_STATUS_CANCELLING);
-@@ -2342,7 +2342,7 @@ void qmp_migrate_continue(MigrationStatus state, Error **errp)
-                    MigrationStatus_str(s->state));
+-    /* The semaphore is used to notify COLO thread that failover is finished */
+-    QemuSemaphore colo_exit_sem;
++    /* The event is used to notify COLO thread that failover is finished */
++    QemuEvent colo_exit_event;
+ 
+     /* The event is used to notify COLO thread to do checkpoint */
+     QemuEvent colo_checkpoint_event;
+diff --git a/migration/colo.c b/migration/colo.c
+index c976b3ff344d..e0f713c837f5 100644
+--- a/migration/colo.c
++++ b/migration/colo.c
+@@ -146,7 +146,7 @@ static void secondary_vm_do_failover(void)
          return;
      }
--    qemu_sem_post(&s->pause_sem);
-+    qemu_event_set(&s->pause_event);
- }
+     /* Notify COLO incoming thread that failover work is finished */
+-    qemu_sem_post(&mis->colo_incoming_sem);
++    qemu_event_set(&mis->colo_incoming_event);
  
- int migration_rp_wait(MigrationState *s)
-@@ -2550,7 +2550,7 @@ static void *source_return_path_thread(void *opaque)
-         case MIG_RP_MSG_PONG:
-             tmp32 = ldl_be_p(buf);
-             trace_source_return_path_thread_pong(tmp32);
--            qemu_sem_post(&ms->rp_state.rp_pong_acks);
-+            qemu_event_set(&ms->rp_state.rp_pong_acks);
-             break;
- 
-         case MIG_RP_MSG_REQ_PAGES:
-@@ -2693,7 +2693,7 @@ static inline void
- migration_wait_main_channel(MigrationState *ms)
- {
-     /* Wait until one PONG message received */
--    qemu_sem_wait(&ms->rp_state.rp_pong_acks);
-+    qemu_event_wait(&ms->rp_state.rp_pong_acks);
- }
- 
- /*
-@@ -2911,21 +2911,18 @@ static bool migration_switchover_prepare(MigrationState *s)
-         return true;
+     /* For Secondary VM, jump to incoming co */
+     if (mis->colo_incoming_co) {
+@@ -195,7 +195,7 @@ static void primary_vm_do_failover(void)
      }
  
--    /* Since leaving this state is not atomic with posting the semaphore
-+    /*
-+     * Since leaving this state is not atomic with setting the event
-      * it's possible that someone could have issued multiple migrate_continue
--     * and the semaphore is incorrectly positive at this point;
--     * the docs say it's undefined to reinit a semaphore that's already
--     * init'd, so use timedwait to eat up any existing posts.
-+     * and the event is incorrectly set at this point so reset it.
-      */
--    while (qemu_sem_timedwait(&s->pause_sem, 1) == 0) {
--        /* This block intentionally left blank */
--    }
-+    qemu_event_reset(&s->pause_event);
- 
-     /* Update [POSTCOPY_]ACTIVE to PRE_SWITCHOVER */
-     migrate_set_state(&s->state, s->state, MIGRATION_STATUS_PRE_SWITCHOVER);
-     bql_unlock();
- 
--    qemu_sem_wait(&s->pause_sem);
-+    qemu_event_wait(&s->pause_event);
- 
-     bql_lock();
-     /*
-@@ -4057,10 +4054,10 @@ static void migration_instance_finalize(Object *obj)
-     qemu_mutex_destroy(&ms->qemu_file_lock);
-     qemu_sem_destroy(&ms->wait_unplug_sem);
-     qemu_sem_destroy(&ms->rate_limit_sem);
--    qemu_sem_destroy(&ms->pause_sem);
-+    qemu_event_destroy(&ms->pause_event);
-     qemu_sem_destroy(&ms->postcopy_pause_sem);
-     qemu_sem_destroy(&ms->rp_state.rp_sem);
--    qemu_sem_destroy(&ms->rp_state.rp_pong_acks);
-+    qemu_event_destroy(&ms->rp_state.rp_pong_acks);
-     qemu_sem_destroy(&ms->postcopy_qemufile_src_sem);
-     error_free(ms->error);
+     /* Notify COLO thread that failover work is finished */
+-    qemu_sem_post(&s->colo_exit_sem);
++    qemu_event_set(&s->colo_exit_event);
  }
-@@ -4072,14 +4069,14 @@ static void migration_instance_init(Object *obj)
-     ms->state = MIGRATION_STATUS_NONE;
-     ms->mbps = -1;
-     ms->pages_per_second = -1;
--    qemu_sem_init(&ms->pause_sem, 0);
-+    qemu_event_init(&ms->pause_event, false);
-     qemu_mutex_init(&ms->error_mutex);
  
-     migrate_params_init(&ms->parameters);
+ COLOMode get_colo_mode(void)
+@@ -620,8 +620,8 @@ out:
+     }
  
-     qemu_sem_init(&ms->postcopy_pause_sem, 0);
-     qemu_sem_init(&ms->rp_state.rp_sem, 0);
--    qemu_sem_init(&ms->rp_state.rp_pong_acks, 0);
-+    qemu_event_init(&ms->rp_state.rp_pong_acks, false);
-     qemu_sem_init(&ms->rate_limit_sem, 0);
-     qemu_sem_init(&ms->wait_unplug_sem, 0);
-     qemu_sem_init(&ms->postcopy_qemufile_src_sem, 0);
+     /* Hope this not to be too long to wait here */
+-    qemu_sem_wait(&s->colo_exit_sem);
+-    qemu_sem_destroy(&s->colo_exit_sem);
++    qemu_event_wait(&s->colo_exit_event);
++    qemu_event_destroy(&s->colo_exit_event);
+ 
+     /*
+      * It is safe to unregister notifier after failover finished.
+@@ -651,7 +651,7 @@ void migrate_start_colo_process(MigrationState *s)
+     s->colo_delay_timer =  timer_new_ms(QEMU_CLOCK_HOST,
+                                 colo_checkpoint_notify_timer, NULL);
+ 
+-    qemu_sem_init(&s->colo_exit_sem, 0);
++    qemu_event_init(&s->colo_exit_event, false);
+     colo_process_checkpoint(s);
+     bql_lock();
+ }
+@@ -808,11 +808,11 @@ void colo_shutdown(void)
+     case COLO_MODE_PRIMARY:
+         s = migrate_get_current();
+         qemu_event_set(&s->colo_checkpoint_event);
+-        qemu_sem_post(&s->colo_exit_sem);
++        qemu_event_set(&s->colo_exit_event);
+         break;
+     case COLO_MODE_SECONDARY:
+         mis = migration_incoming_get_current();
+-        qemu_sem_post(&mis->colo_incoming_sem);
++        qemu_event_set(&mis->colo_incoming_event);
+         break;
+     default:
+         break;
+@@ -827,7 +827,7 @@ static void *colo_process_incoming_thread(void *opaque)
+     Error *local_err = NULL;
+ 
+     rcu_register_thread();
+-    qemu_sem_init(&mis->colo_incoming_sem, 0);
++    qemu_event_init(&mis->colo_incoming_event, false);
+ 
+     migrate_set_state(&mis->state, MIGRATION_STATUS_ACTIVE,
+                       MIGRATION_STATUS_COLO);
+@@ -923,8 +923,8 @@ out:
+     }
+ 
+     /* Hope this not to be too long to loop here */
+-    qemu_sem_wait(&mis->colo_incoming_sem);
+-    qemu_sem_destroy(&mis->colo_incoming_sem);
++    qemu_event_wait(&mis->colo_incoming_event);
++    qemu_event_destroy(&mis->colo_incoming_event);
+ 
+     rcu_unregister_thread();
+     return NULL;
 
 -- 
 2.49.0
