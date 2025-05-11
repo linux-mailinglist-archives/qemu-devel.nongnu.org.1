@@ -2,69 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AD30AB2861
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 15:17:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B16A5AB286A
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 15:19:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uE6WW-0007I4-GU; Sun, 11 May 2025 09:15:20 -0400
+	id 1uE6ZH-0003oZ-Oy; Sun, 11 May 2025 09:18:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uE6WT-00078H-Am
- for qemu-devel@nongnu.org; Sun, 11 May 2025 09:15:17 -0400
-Received: from mailgate02.uberspace.is ([185.26.156.114])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uE6WP-0006sF-RS
- for qemu-devel@nongnu.org; Sun, 11 May 2025 09:15:17 -0400
-Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate02.uberspace.is (Postfix) with ESMTPS id E1729180076
- for <qemu-devel@nongnu.org>; Sun, 11 May 2025 15:14:52 +0200 (CEST)
-Received: (qmail 26222 invoked by uid 990); 11 May 2025 13:14:52 -0000
-Authentication-Results: skiff.uberspace.de;
-	auth=pass (plain)
-Received: from unknown (HELO unkown) (::1)
- by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
- Sun, 11 May 2025 15:14:52 +0200
-From: Julian Ganz <neither@nut.email>
-To: qemu-devel@nongnu.org
-Cc: Julian Ganz <neither@nut.email>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v4 21/23] tests: add plugin asserting correctness of discon
- event's to_pc
-Date: Sun, 11 May 2025 15:14:13 +0200
-Message-ID: <e212e53b98c264366458654493e2fa2e2cdecdcc.1746968215.git.neither@nut.email>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <cover.1746968215.git.neither@nut.email>
-References: <cover.1746968215.git.neither@nut.email>
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uE6Z3-0003P7-Pt
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 09:18:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uE6Z0-0007fq-7q
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 09:17:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1746969472;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=MlM/mB2p583nl12ibez+I+eFFUE0estwQg9vKZ8UuQk=;
+ b=W/bpq/v4d6pgfgW9LeiQtH8kkxOEPoL6PB023Crh9zrIG7c5jN6WgQrT7oZ4MPwuPjhphd
+ DvuXHRRH3BujpComaul/CqxW8YHUl776qOz8/vZ5+cxU9Tc/IdiQvS/eAELisiXD5g54qB
+ jXOxKYo/UclsKKbAOQnOkz6QBoZY+Go=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-387-RJxtlk4IO2W8T9aubXwbxA-1; Sun, 11 May 2025 09:17:50 -0400
+X-MC-Unique: RJxtlk4IO2W8T9aubXwbxA-1
+X-Mimecast-MFC-AGG-ID: RJxtlk4IO2W8T9aubXwbxA_1746969469
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3a0b7c8b3e2so2238769f8f.1
+ for <qemu-devel@nongnu.org>; Sun, 11 May 2025 06:17:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1746969469; x=1747574269;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=MlM/mB2p583nl12ibez+I+eFFUE0estwQg9vKZ8UuQk=;
+ b=ZMCirSiG46g3RxKDrUrpyrCLiw0WO9JTQ2QQRl3nbjxEnbam4YdUPrOVVg/rp4ng4L
+ YQJINOwXISUUiYs8ndtJtzsqaL7aSjbXjsXYFzhc5OyN6/AC7LFcCcagc4pvNyu2ZHcP
+ 9TDNbi/umZ8EXjFnfFet7RffZ0mW15lP7fVwQE3BevNQMy2GkfWunNqqAd7xw6OsTYwa
+ fuyu2PeAvN4GgavSCLZawX/+VETFcWbchrjwg/Ex8J2n22jqggzsgSxpM2RSkQuE0AvE
+ zfa2FX/uG4z1YQGhPs1KrfBOQ5j+Pwum1/7bhWzUq/QCOlnT6Md45JnZih07MnSTkU0P
+ hTCQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVITiVw/5i66DRyMmzv28zxXqw3Y2v0yq9xX4tILrwWGTalku+Z0i3pX3TY4IrS2XSeW5W+JhRcoee7@nongnu.org
+X-Gm-Message-State: AOJu0YzmWZwNhH/gLrN77qaOvVEywpLsPamd3OngnRvYggq387+uL2LL
+ KCL+ziPFRS1dSqa1XjRFw4GJ4UZ0SCwE/9g+Z3kPVH0JMk8WOyCfi6q9wdPXZ865db2axKVq4KF
+ 9GAjLufnM0U9TD1vTszbKwoQlrXutX3bGGQH2dEWH/ggf/LRDk9Du
+X-Gm-Gg: ASbGncsJSh41U+8sJHkJVc1g4ZDPgTx9iVQPHfkCok7BjfntgtPvfhstcllE0HWw66Z
+ bvrxV6WQFNEILitMdhBqwvjZW0Wcaaej6onopqjRaoOP3ocvw6U5BES726mTLl635+imfUwet1y
+ dtcZ9NWklvwVasi565sJe3hnjrwss8pCuWpjvStwHEr/acMJb0tUIbHFvEm5PZtQdN4A3/wn0BR
+ 5oSvefenrNeq7lCQyw7NHeWfRjUecj0hCJUZW5LNBQFdwjhmMo25GsDcft93zW7/iDrY+1PPOzA
+ 8knPFw==
+X-Received: by 2002:a05:6000:40e1:b0:39e:cc5e:147 with SMTP id
+ ffacd0b85a97d-3a1f64acc2bmr8965212f8f.55.1746969469471; 
+ Sun, 11 May 2025 06:17:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGRw9lFPG98NUg39B4iKJl8h61Rat8yD8ay4FCzPWsnUl6vmjkrT6ovwlHAmWHLyalQLhYAJA==
+X-Received: by 2002:a05:6000:40e1:b0:39e:cc5e:147 with SMTP id
+ ffacd0b85a97d-3a1f64acc2bmr8965179f8f.55.1746969468759; 
+ Sun, 11 May 2025 06:17:48 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a1f5a4d0dbsm9101172f8f.88.2025.05.11.06.17.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 11 May 2025 06:17:47 -0700 (PDT)
+Date: Sun, 11 May 2025 09:17:44 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH 0/6] Add bios-tables-test for LoongArch64 system
+Message-ID: <20250511091725-mutt-send-email-mst@kernel.org>
+References: <20250228092729.543097-1-maobibo@loongson.cn>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Bar: ----
-X-Rspamd-Report: REPLY(-4) SUSPICIOUS_RECIPS(1.5) MID_CONTAINS_FROM(1)
- MIME_GOOD(-0.1) BAYES_HAM(-3) R_MISSING_CHARSET(0.5)
-X-Rspamd-Score: -4.1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
- h=from:to:cc:subject:date;
- bh=TDT0V7CtuWjwKP9/qcbxUMFvzfBRMDmCmSbWL0Z6dCI=;
- b=J8aTdmeg3BRQT6dRXKMToove4U+En5wLD8HykpsFSbAZH8bUmL8DHD8klJnXtkK/GR27iOQk7g
- 4wpcM7La/dSd9O1jRUu6hp6QngaNQTcWuW/d3GQSBPtglC2j1JWM9UiC2q//53PqfyKaA+h5e3v4
- 2T2hh/Pt8ah+5WYpfGqt/bXNcivTEpDRV6io/2Xwc3qCCPHOmpCACpoIhM/bzq0OXXRLUotSu9cT
- Ny8gYNupai14wiJIVY6tIcJhfsiH+Ka1NinGXJl2OlT+yPkezbNrwjPU4yUZmJiYl6uROGVSQvwc
- yY8tRDL11KJ+FpALLvoFI5LuHNtGjZgVEGFKlbJk1Vjz+jPzWQ0mXXAAuZCJZ0F0u/lQpEVHgnKo
- SH6PCygH06xpWQuB/Ar9gy7iufDGMlQYrabtOPxqK7LpGYXCuZKJjhrZmpCgfV2Rswpy8S+ehjKU
- 7KXnf9LTvix37mCp02CuZ8249ojk3b8sTUXUsMonSzwEn7kqpPO8FkqUQQexpXRvR+44ledL4G7Q
- BPCkhZrRADb6zG0XhXtfS5h4rQW5bajQ4lcBZ3CxcwVxp4NRsNzRyxSywbPquV0DIMnb4pRHsWhb
- a8Os9rp5VPKLBjBwz2rs8euLuRKzBBhUHzGDPmG+Jz/qckiDhPAV0azdd/5oGY3sHKRy5Oz93ax3
- g=
-Received-SPF: pass client-ip=185.26.156.114; envelope-from=neither@nut.email;
- helo=mailgate02.uberspace.is
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250228092729.543097-1-maobibo@loongson.cn>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.587,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -82,263 +108,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We recently introduced plugin API for the registration of callbacks for
-discontinuity events, specifically for interrupts, exceptions and host
-call events. The callback receives various bits of information,
-including the VCPU index and PCs.
+On Fri, Feb 28, 2025 at 05:27:23PM +0800, Bibo Mao wrote:
+> This patchset add bios-tables-test for LoongArch64 virt machine
+> system. It works with UEFI bios, with uefi-test-tools LoongArch64
+> support is added to build bios-tables-test.loongarch64.iso.
+> 
+> Also with test case bios-tables-test, LoongArch64 support is added
+> and some basic ACPI tables is added here. It passes with command
+> make check-qtest-loongarch64 with the result:
+>  qtest-loongarch64/bios-tables-test OK 29.52s 4 subtests passed
 
-This change introduces a test plugin asserting the correctness of that
-behaviour in cases where this is possible with reasonable effort. Since
-instruction PCs are recorded at translation blocks translation time and
-a TB may be used in multiple processes running in distinct virtual
-memory, the plugin allows comparing not full addresses but a subset of
-address bits via the `compare-addr-bits` option.
+Still waiting for Igor's comment on this to be addressed.
 
-Signed-off-by: Julian Ganz <neither@nut.email>
----
- tests/tcg/plugins/discons.c   | 219 ++++++++++++++++++++++++++++++++++
- tests/tcg/plugins/meson.build |   2 +-
- 2 files changed, 220 insertions(+), 1 deletion(-)
- create mode 100644 tests/tcg/plugins/discons.c
 
-diff --git a/tests/tcg/plugins/discons.c b/tests/tcg/plugins/discons.c
-new file mode 100644
-index 0000000000..3f6c9a96d4
---- /dev/null
-+++ b/tests/tcg/plugins/discons.c
-@@ -0,0 +1,219 @@
-+/*
-+ * Copyright (C) 2025, Julian Ganz <neither@nut.email>
-+ *
-+ * License: GNU GPL, version 2 or later.
-+ *   See the COPYING file in the top-level directory.
-+ *
-+ * This plugin exercises the discontinuity plugin API and asserts some
-+ * of its behaviour regarding reported program counters.
-+ */
-+#include <stdio.h>
-+
-+#include <qemu-plugin.h>
-+
-+QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
-+
-+struct cpu_state {
-+    uint64_t last_pc;
-+    uint64_t from_pc;
-+    uint64_t next_pc;
-+    bool has_last;
-+    bool has_from;
-+    bool has_next;
-+    enum qemu_plugin_discon_type next_type;
-+};
-+
-+struct insn_data {
-+    uint64_t addr;
-+    uint64_t next_pc;
-+    bool next_valid;
-+};
-+
-+static struct qemu_plugin_scoreboard *states;
-+
-+static bool abort_on_mismatch;
-+static bool trace_all_insns;
-+static uint64_t compare_addr_mask;
-+
-+static bool addr_eq(uint64_t a, uint64_t b)
-+{
-+    return ((a ^ b) & compare_addr_mask) == 0;
-+}
-+
-+static void report_mismatch(const char *pc_name, unsigned int vcpu_index,
-+                            enum qemu_plugin_discon_type type, uint64_t last,
-+                            uint64_t expected, uint64_t encountered)
-+{
-+    GString *report;
-+    const char *discon_type_name = "unknown";
-+
-+    if (addr_eq(expected, encountered)) {
-+        return;
-+    }
-+
-+    switch (type) {
-+    case QEMU_PLUGIN_DISCON_INTERRUPT:
-+        discon_type_name = "interrupt";
-+        break;
-+    case QEMU_PLUGIN_DISCON_EXCEPTION:
-+        discon_type_name = "exception";
-+        break;
-+    case QEMU_PLUGIN_DISCON_HOSTCALL:
-+        discon_type_name = "hostcall";
-+        break;
-+    default:
-+        break;
-+    }
-+
-+    report = g_string_new(NULL);
-+    g_string_append_printf(report,
-+                           "Discon %s PC mismatch on VCPU %d\nExpected:      %"
-+                           PRIx64"\nEncountered:   %"PRIx64"\nExecuted Last: %"
-+                           PRIx64"\nEvent type:    %s\n",
-+                           pc_name, vcpu_index, expected, encountered, last,
-+                           discon_type_name);
-+    qemu_plugin_outs(report->str);
-+    if (abort_on_mismatch) {
-+        g_abort();
-+    }
-+    g_string_free(report, true);
-+}
-+
-+static void vcpu_discon(qemu_plugin_id_t id, unsigned int vcpu_index,
-+                        enum qemu_plugin_discon_type type, uint64_t from_pc,
-+                        uint64_t to_pc)
-+{
-+    struct cpu_state *state = qemu_plugin_scoreboard_find(states, vcpu_index);
-+
-+    switch (type) {
-+    case QEMU_PLUGIN_DISCON_EXCEPTION:
-+        /*
-+         * For some types of exceptions, insn_exec will be called for the
-+         * instruction that caused the exception.
-+         */
-+        if (addr_eq(state->last_pc, from_pc)) {
-+            break;
-+        }
-+        __attribute__((fallthrough));
-+    default:
-+        if (state->has_next) {
-+            /*
-+             * We may encounter discontinuity chains without any instructions
-+             * being executed in between.
-+             */
-+            report_mismatch("source", vcpu_index, type, state->last_pc,
-+                            state->next_pc, from_pc);
-+        } else if (state->has_from) {
-+            report_mismatch("source", vcpu_index, type, state->last_pc,
-+                            state->from_pc, from_pc);
-+        }
-+    }
-+
-+    state->has_from = false;
-+
-+    state->next_pc = to_pc;
-+    state->next_type = type;
-+    state->has_next = true;
-+}
-+
-+static void insn_exec(unsigned int vcpu_index, void *userdata)
-+{
-+    struct cpu_state *state = qemu_plugin_scoreboard_find(states, vcpu_index);
-+    struct insn_data* insn = (struct insn_data *) userdata;
-+
-+    state->last_pc = insn->addr;
-+    state->has_last = true;
-+
-+    if (insn->next_valid) {
-+        state->from_pc = insn->next_pc;
-+    }
-+    state->has_from = insn->next_valid;
-+
-+    if (state->has_next) {
-+        report_mismatch("target", vcpu_index, state->next_type, state->last_pc,
-+                        state->next_pc, insn->addr);
-+        state->has_next = false;
-+    }
-+
-+    if (trace_all_insns) {
-+        g_autoptr(GString) report = g_string_new(NULL);
-+        g_string_append_printf(report, "Exec insn at %"PRIx64" on VCPU %d\n",
-+                               insn->addr, vcpu_index);
-+        qemu_plugin_outs(report->str);
-+    }
-+}
-+
-+static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-+{
-+    size_t i;
-+    size_t n_insns = qemu_plugin_tb_n_insns(tb);
-+    struct insn_data *udata = calloc(n_insns, sizeof(struct insn_data));
-+
-+    for (i = 0; i < n_insns; i++) {
-+        struct qemu_plugin_insn *insn = qemu_plugin_tb_get_insn(tb, i);
-+        uint64_t pc = qemu_plugin_insn_vaddr(insn);
-+        udata[i].addr = pc;
-+        udata[i].next_pc = pc + qemu_plugin_insn_size(insn);
-+        udata[i].next_valid = true;
-+        qemu_plugin_register_vcpu_insn_exec_cb(insn, insn_exec,
-+                                               QEMU_PLUGIN_CB_NO_REGS,
-+                                               &udata[i]);
-+    }
-+
-+    udata[n_insns - 1].next_valid = false;
-+}
-+
-+QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-+                                           const qemu_info_t *info,
-+                                           int argc, char **argv)
-+{
-+    /* Set defaults */
-+    abort_on_mismatch = true;
-+    trace_all_insns = false;
-+    compare_addr_mask = -1;
-+
-+    int i;
-+
-+    for (i = 0; i < argc; i++) {
-+        char *opt = argv[i];
-+        g_auto(GStrv) tokens = g_strsplit(opt, "=", 2);
-+        if (g_strcmp0(tokens[0], "abort") == 0) {
-+            if (!qemu_plugin_bool_parse(tokens[0], tokens[1],
-+                                        &abort_on_mismatch)) {
-+                fprintf(stderr, "boolean argument parsing failed: %s\n", opt);
-+                return -1;
-+            }
-+        } else if (g_strcmp0(tokens[0], "trace-all") == 0) {
-+            if (!qemu_plugin_bool_parse(tokens[0], tokens[1],
-+                                        &trace_all_insns)) {
-+                fprintf(stderr, "boolean argument parsing failed: %s\n", opt);
-+                return -1;
-+            }
-+        } else if (g_strcmp0(tokens[0], "compare-addr-bits") == 0) {
-+            if (g_strcmp0(tokens[1], "full") == 0) {
-+                compare_addr_mask = -1;
-+            } else {
-+                char *end = tokens[1];
-+                guint64 bits = g_ascii_strtoull(tokens[1], &end, 10);
-+                if (bits == 0 || bits > 64 || *end) {
-+                    fprintf(stderr,
-+                            "integer parsing failed or out of range: %s\n",
-+                            opt);
-+                    return -1;
-+                }
-+                compare_addr_mask = ~(((uint64_t) -1) << bits);
-+            }
-+        } else {
-+            fprintf(stderr, "option parsing failed: %s\n", opt);
-+            return -1;
-+        }
-+    }
-+
-+    states = qemu_plugin_scoreboard_new(sizeof(struct cpu_state));
-+
-+    qemu_plugin_register_vcpu_discon_cb(id, QEMU_PLUGIN_DISCON_ALL,
-+                                        vcpu_discon);
-+    qemu_plugin_register_vcpu_tb_trans_cb(id, vcpu_tb_trans);
-+
-+    return 0;
-+}
-diff --git a/tests/tcg/plugins/meson.build b/tests/tcg/plugins/meson.build
-index 41f02f2c7f..1b13d6e614 100644
---- a/tests/tcg/plugins/meson.build
-+++ b/tests/tcg/plugins/meson.build
-@@ -1,6 +1,6 @@
- t = []
- if get_option('plugins')
--  foreach i : ['bb', 'empty', 'inline', 'insn', 'mem', 'reset', 'syscall']
-+  foreach i : ['bb', 'discons', 'empty', 'inline', 'insn', 'mem', 'reset', 'syscall']
-     if host_os == 'windows'
-       t += shared_module(i, files(i + '.c') + '../../../contrib/plugins/win32_linker.c',
-                         include_directories: '../../../include/qemu',
--- 
-2.49.0
+> Bibo Mao (6):
+>   uefi-test-tools:: Add LoongArch64 support
+>   tests/data/uefi-boot-images: Add ISO image for LoongArch system
+>   tests/qtest/bios-tables-test: Add basic testing for LoongArch64
+>   tests/acpi: Add empty ACPI data files for LoongArch64
+>   tests/acpi: Fill acpi table data for LoongArch
+>   tests/qtest: Enable bios-tables-test for LoongArch
+> 
+>  tests/data/acpi/loongarch64/virt/APIC         | Bin 0 -> 108 bytes
+>  .../data/acpi/loongarch64/virt/APIC.topology  | Bin 0 -> 213 bytes
+>  tests/data/acpi/loongarch64/virt/DSDT         | Bin 0 -> 3614 bytes
+>  tests/data/acpi/loongarch64/virt/DSDT.memhp   | Bin 0 -> 4951 bytes
+>  tests/data/acpi/loongarch64/virt/FACP         | Bin 0 -> 268 bytes
+>  tests/data/acpi/loongarch64/virt/MCFG         | Bin 0 -> 60 bytes
+>  tests/data/acpi/loongarch64/virt/PPTT         | Bin 0 -> 76 bytes
+>  .../data/acpi/loongarch64/virt/PPTT.topology  | Bin 0 -> 296 bytes
+>  tests/data/acpi/loongarch64/virt/SLIT         |   0
+>  tests/data/acpi/loongarch64/virt/SLIT.memhp   | Bin 0 -> 48 bytes
+>  tests/data/acpi/loongarch64/virt/SPCR         | Bin 0 -> 80 bytes
+>  tests/data/acpi/loongarch64/virt/SRAT         | Bin 0 -> 104 bytes
+>  tests/data/acpi/loongarch64/virt/SRAT.memhp   | Bin 0 -> 184 bytes
+>  .../data/acpi/loongarch64/virt/SRAT.topology  | Bin 0 -> 216 bytes
+>  .../bios-tables-test.loongarch64.iso.qcow2    | Bin 0 -> 12800 bytes
+>  tests/qtest/bios-tables-test.c                |  62 ++++++++++++++++++
+>  tests/qtest/meson.build                       |   3 +-
+>  tests/uefi-test-tools/Makefile                |   5 +-
+>  .../UefiTestToolsPkg/UefiTestToolsPkg.dsc     |   6 +-
+>  tests/uefi-test-tools/uefi-test-build.config  |  10 +++
+>  20 files changed, 82 insertions(+), 4 deletions(-)
+>  create mode 100644 tests/data/acpi/loongarch64/virt/APIC
+>  create mode 100644 tests/data/acpi/loongarch64/virt/APIC.topology
+>  create mode 100644 tests/data/acpi/loongarch64/virt/DSDT
+>  create mode 100644 tests/data/acpi/loongarch64/virt/DSDT.memhp
+>  create mode 100644 tests/data/acpi/loongarch64/virt/FACP
+>  create mode 100644 tests/data/acpi/loongarch64/virt/MCFG
+>  create mode 100644 tests/data/acpi/loongarch64/virt/PPTT
+>  create mode 100644 tests/data/acpi/loongarch64/virt/PPTT.topology
+>  create mode 100644 tests/data/acpi/loongarch64/virt/SLIT
+>  create mode 100644 tests/data/acpi/loongarch64/virt/SLIT.memhp
+>  create mode 100644 tests/data/acpi/loongarch64/virt/SPCR
+>  create mode 100644 tests/data/acpi/loongarch64/virt/SRAT
+>  create mode 100644 tests/data/acpi/loongarch64/virt/SRAT.memhp
+>  create mode 100644 tests/data/acpi/loongarch64/virt/SRAT.topology
+>  create mode 100644 tests/data/uefi-boot-images/bios-tables-test.loongarch64.iso.qcow2
+> 
+> 
+> base-commit: b69801dd6b1eb4d107f7c2f643adf0a4e3ec9124
+> -- 
+> 2.39.3
 
 
