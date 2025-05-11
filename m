@@ -2,94 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A04DAB26E3
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 08:10:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2F81AB2701
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 09:36:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDzsb-0002r3-Os; Sun, 11 May 2025 02:09:42 -0400
+	id 1uE1Co-0003qQ-Gs; Sun, 11 May 2025 03:34:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uDzsW-0002cQ-Fn
- for qemu-devel@nongnu.org; Sun, 11 May 2025 02:09:38 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <weifeng.liu.z@gmail.com>)
+ id 1uE1Cj-0003q9-AJ
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 03:34:34 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uDzsS-00040s-5T
- for qemu-devel@nongnu.org; Sun, 11 May 2025 02:09:35 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-b0b2d0b2843so2555679a12.2
- for <qemu-devel@nongnu.org>; Sat, 10 May 2025 23:09:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <weifeng.liu.z@gmail.com>)
+ id 1uE1Ch-0003cy-08
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 03:34:32 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-7410c18bb00so3662734b3a.3
+ for <qemu-devel@nongnu.org>; Sun, 11 May 2025 00:34:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1746943770; x=1747548570;
- darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=lXkLBQVBnrrMrhsmOOZFkEPfxHy4LeQpaKTeFVKaZdI=;
- b=uA5/0uVL2tTWlSg8AkvcA2ANWgnKXQqEnMwfnGdpFlW+81raWVzJrcg1Q8O2ln/V+B
- ax0V+ayusc0ChzfsMCtqeCd/LKNMl5s0P0GSk5HlCRWHjmhFfeIa87k6EbfzVhMum4X0
- JQuCApCyvcnADfzYMMjWAXRuqlDSKN3pooalTFVT8dtpRRiUcfD3vJYP+xwvPuG0Cvas
- PCConrD7Utm2/sS+QXXfJJRKf/MnSQFhx0YwvPVjZTKhORqDKze1pH83YcWvILrcVWeT
- ABh4siwB9/5XGDJQY8dDLfYgBSTWi3oQ2QL0G68DIs6s4WnxDlTl2ldKGESSycfGvbpV
- vh0g==
+ d=gmail.com; s=20230601; t=1746948868; x=1747553668; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=bqAFcM0mocguuOJJgtADKFvDV5IEcmLyJztG0xkJMwo=;
+ b=BWagDD6QYLBOzNxchVs+jCztlGb08gxe2HC/zdHB/Kc8asp7cSqUFqFQed0xA7qtJU
+ p8bIro2/eH7bd4qyywzAuq408Fe2xQU7laf+ajsw+hVJYFylJTiH4ZI/YQ3o6yWjsv0p
+ Y2qMl1b1mFk54b/PB0jQZm0v68eDBpjCKqDr8bf87ajO+W0TQJevoO0a5XL7kwfRWKUH
+ +WwWGZXj23YhVSG6tfL1AVZC4jYiGBm0Hh3/+3GbmOeP8Nma/txqPXQt0fyS0vS18Kfs
+ DvB4TVQ7hjEw8+ACTcU59AThnG3A2TKsyHUgaTKAudMkRNx2AiZe31ljQVrrkzQUIbsn
+ OYEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746943770; x=1747548570;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=lXkLBQVBnrrMrhsmOOZFkEPfxHy4LeQpaKTeFVKaZdI=;
- b=PSEeyobPS9VrgjUs0uixaj5TgjiQwv/XBnZAIR58nDbvaHBStDgAfiLqGkQ5Qqzknv
- cOkFIwy4CI6iw8uVa5Y8KZJ859AKuCoh0AOCDClE6zmDnN1ewWQM8p6lkrBiinqsiMbT
- V+cvC4qERviamp2XMcViFGMlKBlGNjPYwSKvwbUy4+fKwdYwV2d7JnB/yNJuk1Q6Zh9w
- T+Gyu6vP6vIOFomj51IA6KB8Es4QhrOifvml/cl/BivyQnC5jcUvG+aYbEpabl3cqaaC
- JwiDoyhwmtATGd6vqAVE/ONoPQGtQyYBItBRpUwSvxSvnPEQNBcodGHXljWcQ+m4tTUb
- aVxQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUq4l4+3fgfuvPr2f3fjzVTDeygvYFxVxZj6doQRBMYmtx7NxHyxmDoeeOabNgYZkFshvyNY+ClHDdy@nongnu.org
-X-Gm-Message-State: AOJu0YyJ7yXFM9xTa2Y8NXdur9mSvRussBjm8r2swW3R+3DStIptzrOs
- KQKnEETjsRfJiKE93adt8UKPkLzc4wGPALwSM8aT92EUiBU1wy2RaXPQo+1EujI=
-X-Gm-Gg: ASbGncu3lobOlM8RUZGVM5cOWn2b9s9pEp/LRF+b9aymmh+kISS3Tk06iA67nI3gnFJ
- JkjwzDkNS9kPRi+DxPPVpatw1N8y6noiqhTg88h1dt/obsuz/t8oI38w0tgy0raFklbvy5DCqpv
- t5giIWkxe1Zzo7ZpFy1yFlghOc8jYxHsmwV9U0BElNxUcSQ1p7QL/dqAZth4wdICKlr7BBV8cY4
- KEi4f3S1p6G4Ntlhgep4Xp5gtfF1vh9wdcHZvLZLJc2pqPFsWW4flg40U9sO4H+D422J1Eq8/GO
- Bo8LngQ4xJZivRRSAXodE5jmdlbw+lvNEEjxgpDI7rtbJVW6W9jZtqU=
-X-Google-Smtp-Source: AGHT+IH/AL0oBu44MfYJFMrxE5lgUniLBxUqRlo3+i3cimp5xsDQNb3GXroJw/cK+d/bLUuDtij+4g==
-X-Received: by 2002:a17:902:e887:b0:22e:61dd:8900 with SMTP id
- d9443c01a7336-22fc8c90a71mr125081725ad.29.1746943770007; 
- Sat, 10 May 2025 23:09:30 -0700 (PDT)
-Received: from localhost ([157.82.203.223])
- by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-22fc829d668sm41246475ad.201.2025.05.10.23.09.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 10 May 2025 23:09:29 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sun, 11 May 2025 15:08:27 +0900
-Subject: [PATCH v3 10/10] hw/display/apple-gfx: Replace QemuSemaphore with
- QemuEvent
+ d=1e100.net; s=20230601; t=1746948868; x=1747553668;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=bqAFcM0mocguuOJJgtADKFvDV5IEcmLyJztG0xkJMwo=;
+ b=UtjGy5cwz7u4+oALkEh9ZpdjpVG89aenRcXH4h0T43v9qIUUE4saqyxJfk+tu0oV0Z
+ MdoJ0OJcA+OSTnsirgNbinW4kaE3Z0sdDaIGySrdYawZhiMd1oFSwSo6oNlWsiIC3zIz
+ aHlCjAWAOKtXWZrobcE3x52XvnjYUWdMUXrUCeDT9stzg2xgrqILADZCBMVBd8ws8DqB
+ hQ4K9615I+aUeg4Vny37wqiELMpucSnol2J0AVX0yTjd7yWTmdnIm29k0gT43VAOGJXJ
+ zk7Pb8sfeDerL9lyMnaHJkjt8J0vcXmmLj06Px2UC8BllhjXmQxdwzxeVtwGEXDlSApe
+ 3uVA==
+X-Gm-Message-State: AOJu0Ywb52ZnZtpKIq0UY82HLTw0IYq2gQNu9vaU/xGyMHNokrsn7L97
+ YARkBBq9KzHurTwRp10FoFj1h0/9h4wGx+HyBKkksUqSwkD7slhL2lZtKbNo
+X-Gm-Gg: ASbGncvAxQDzPXVk3IC64QwuPlrQLahD8oG3jYPbli/3TRkn7hVIQ90TBkLDWl0jaX/
+ 7FY5uaAHB938J5EPvTAzu1yhcMgmpfz46gXnMd+tyX7oDMC+6BjMfUkV9wFZHygkF4JFfCDREC2
+ eOHcfyKXzV4GGyj68Y/IF6yUYO+0WSuZuO4OzjOgkQtvSdBQGEsCV9mQ3M2j0sHY+krHlPYZB+f
+ 9MKQD68ydEUU1c0M5Hj8lqWfpupx0TioZVoLk5FwYZFVAwTHVWlBKpfLg8XIWcOUPNsE894ki4P
+ o0nRsefwx9hP25RGPVY8sEVWYV7lLgPfRvyzQnT7JJrMyDrlwYAIhSE=
+X-Google-Smtp-Source: AGHT+IGyHJlTpGv/wvRkU6Fpv+Pao6vQORr6CD1jqLBYPb2+q/lglgFykagzzQDoxhV0whk73+NRFQ==
+X-Received: by 2002:a05:6a00:1254:b0:736:34a2:8a18 with SMTP id
+ d2e1a72fcca58-7423c030959mr14987126b3a.24.1746948868516; 
+ Sun, 11 May 2025 00:34:28 -0700 (PDT)
+Received: from localhost ([103.192.227.12]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-74237a0ce8asm4101759b3a.88.2025.05.11.00.34.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 11 May 2025 00:34:27 -0700 (PDT)
+From: Weifeng Liu <weifeng.liu.z@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Weifeng Liu <weifeng.liu.z@gmail.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ Dongwon Kim <dongwon.kim@intel.com>
+Subject: [PATCH 0/9] ui: Improve scale handling
+Date: Sun, 11 May 2025 15:33:10 +0800
+Message-ID: <20250511073337.876650-1-weifeng.liu.z@gmail.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250511-event-v3-10-f7f69247d303@daynix.com>
-References: <20250511-event-v3-0-f7f69247d303@daynix.com>
-In-Reply-To: <20250511-event-v3-0-f7f69247d303@daynix.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, Stefan Weil <sw@weilnetz.de>, 
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
- Hailiang Zhang <zhanghailiang@xfusion.com>
-Cc: Phil Dennis-Jordan <phil@philjordan.eu>, qemu-devel@nongnu.org, 
- devel@daynix.com, 
- =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.15-dev-edae6
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=weifeng.liu.z@gmail.com; helo=mail-pf1-x42c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,51 +99,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-sem in AppleGFXReadMemoryJob is an one-shot event so it can be converted
-into QemuEvent, which is more specialized for such a use case.
+Hi all,
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- hw/display/apple-gfx.m | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Now we have quite a lot of display backends for different use cases.
+Even in the context of gtk, we have various implementations (e.g., gl=on
+vs gl=off, X11 vs Wayland). However, behaviors to users are not aligned
+across the backends, especially in the part of scale handling. This
+patch set attempts to improve scale handling.
 
-diff --git a/hw/display/apple-gfx.m b/hw/display/apple-gfx.m
-index 2ff1c90df71a..173fffc86ef1 100644
---- a/hw/display/apple-gfx.m
-+++ b/hw/display/apple-gfx.m
-@@ -454,7 +454,7 @@ static void set_cursor_glyph(void *opaque)
- /* ------ DMA (device reading system memory) ------ */
- 
- typedef struct AppleGFXReadMemoryJob {
--    QemuSemaphore sem;
-+    QemuEvent event;
-     hwaddr physical_address;
-     uint64_t length;
-     void *dst;
-@@ -470,7 +470,7 @@ static void apple_gfx_do_read_memory(void *opaque)
-                         job->dst, job->length, MEMTXATTRS_UNSPECIFIED);
-     job->success = (r == MEMTX_OK);
- 
--    qemu_sem_post(&job->sem);
-+    qemu_event_set(&job->event);
- }
- 
- static bool apple_gfx_read_memory(AppleGFXState *s, hwaddr physical_address,
-@@ -483,11 +483,11 @@ static bool apple_gfx_read_memory(AppleGFXState *s, hwaddr physical_address,
-     trace_apple_gfx_read_memory(physical_address, length, dst);
- 
-     /* Performing DMA requires BQL, so do it in a BH. */
--    qemu_sem_init(&job.sem, 0);
-+    qemu_event_init(&job.event, 0);
-     aio_bh_schedule_oneshot(qemu_get_aio_context(),
-                             apple_gfx_do_read_memory, &job);
--    qemu_sem_wait(&job.sem);
--    qemu_sem_destroy(&job.sem);
-+    qemu_event_wait(&job.event);
-+    qemu_event_destroy(&job.event);
-     return job.success;
- }
- 
+We have to deal with various coordinates due to the existence of scaling
+in different level. Firstly, in desktop level, we could have a global
+window scale factor. Secondly, users might set a zooming factor to
+adjust the size of guest content in scan-out level. Consequently, 1) the
+buffer from guest, 2) the host window and 3) OpenGl drawing area inside
+the host window are in distinct coordinates. It's important to define
+these coordinates and scales unambiguously and use a consistent naming
+convention for variables representing different concepts. The first
+patch in this set tries to achieve this goal by adding a document in
+gtk.c, and the next patch (PATCH 2) attempts to align the code with the
+document.
+
+PATCH 3 - 5 fix bugs in mouse position calculation due to not handling
+scale properly, for both gtk and sdl.
+
+PATCH 6 align scale update logic in gtk-egl with other implementations.
+
+PATCH 7 fix an issue that gtk window might keep enlarging/shrinking because 
+ui info propagating to guest not considering scale.
+
+PATCH 8 and 9 align fixed-scale mode behavior in gtk-gl-area and gtk-egl with
+other implementations by adding appropriate padding to the window to preserve
+the scale.
+
+Tested cases:
+
+- qemu-kvm -display gtk,gl=on (free scale mode, fixed scale mode, full
+  screen mode)
+- qemu-kvm -display gtk,gl=off (free scale mode, fixed scale mode, full
+  screen mode)
+- GDK_BACKEND=x11 qemu-kvm -display gtk,gl=off (free scale mode, fixed
+  scale mode, full screen mode)
+- qemu-kvm -display sdl,gl=off
+- qemu-kvm -display sdl,gl=on
+
+Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc: Alex Bennée <alex.bennee@linaro.org>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Cc: Dongwon Kim <dongwon.kim@intel.com>
+
+Best regards,
+Weifeng
+
+Weifeng Liu (9):
+  ui/gtk: Document scale and coordinate handling
+  ui/gtk: Use consistent naming for variables in different coordinates
+  gtk/ui: Introduce helper gd_update_scale
+  ui/gtk: Update scales in fixed-scale mode when rendering GL area
+  ui/sdl: Consider scaling in mouse event handling
+  ui/gtk: Don't update scale in fixed scale mode in gtk-egl.c
+  ui/gtk: Consider scaling when propagating ui info
+  ui/gtk-gl-area: Render guest content with padding in fixed-scale mode
+  ui/gtk-egl: Render guest content with padding in fixed-scale mode
+
+ include/ui/egl-helpers.h |   4 +-
+ include/ui/gtk.h         |   2 +
+ ui/egl-helpers.c         |  10 +-
+ ui/gtk-egl.c             |  58 ++++++---
+ ui/gtk-gl-area.c         |  53 +++++++--
+ ui/gtk.c                 | 245 +++++++++++++++++++++++++++------------
+ ui/sdl2-gl.c             |   2 +-
+ ui/sdl2.c                |  20 +++-
+ 8 files changed, 290 insertions(+), 104 deletions(-)
 
 -- 
 2.49.0
