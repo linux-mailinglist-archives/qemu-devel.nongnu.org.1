@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A31CFAB2AFA
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 22:38:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D738AB2AED
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 22:37:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEDP3-0003A7-2n; Sun, 11 May 2025 16:36:05 -0400
+	id 1uEDP4-0003F4-Qd; Sun, 11 May 2025 16:36:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uEDP0-00032N-Hz
- for qemu-devel@nongnu.org; Sun, 11 May 2025 16:36:02 -0400
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+ id 1uEDP1-00036G-HJ
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 16:36:03 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uEDOy-0006M3-Uc
- for qemu-devel@nongnu.org; Sun, 11 May 2025 16:36:02 -0400
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-7fd581c2bf4so3134641a12.3
- for <qemu-devel@nongnu.org>; Sun, 11 May 2025 13:36:00 -0700 (PDT)
+ id 1uEDOz-0006MJ-O8
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 16:36:03 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-22fb33898bbso45013775ad.3
+ for <qemu-devel@nongnu.org>; Sun, 11 May 2025 13:36:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1746995759; x=1747600559; darn=nongnu.org;
+ d=linaro.org; s=google; t=1746995760; x=1747600560; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+47xY6VgImnNTtip66i9o8+87NnKPnRUllE3fysFtMc=;
- b=L/RI92aW195uuoBbiLA5tPPEqaSb32ljH90dOK7doMnSR7MtXA+o34L6W+t/jzTlHq
- e/x/eVbC70+2OKGqAiL32AbFwhTO7b6IvUZ5d45b6+eF4B0tIlsRpdZ6wSd2/Mn6/gYI
- t/nh5iNEH/mTvQBL6kGuBX7SyQz0PBcKUAXpgjf/YuF5wPGbZbUhj26sD5I/p5kakdGi
- eTgj3wQXE1cSsvseowfNSRsncY7TcR1OuD156rNrBtfJXN1t30KtYa2MN9vljvYxWHw5
- YVsmI7cOtcMHnk12MXuvuMwsVLD5xKn+ulwCLP7+J4Mia3y/WbqnEDwIvJTDWQO7zRov
- EIKQ==
+ bh=QWbmGVAs1ZD9rubpd6cvwq4CGTb/LrxmBUpkdFa6TBU=;
+ b=hHN3Oq7mbTi6t301VvogwtjROzHtBsgHOMFWz++JYp+Sazk2qAPsDn+5mCQLp1xhsh
+ 3Ch/3iB29HTjXuX2Om+ilbuSR1sFIzkPMfaORvb0U9t5of3iZ5SNy5fz1xJV5Mv0+GU1
+ nlRBW24EFJAzbn7uAnmyg/NLZWHiURHurJOfO1KQGzwa0/dj+O3pHNHfqxRX73nGR+Ow
+ PDdbza3/W233CoSJYoqVzHJ8JDzQwn/9Swbb5AEKdvsmogv8cj6mLZhX/+3JkZPoIn2V
+ UY3Cx2/pcCGD1Hj/ZtZJsBUoTrMPBOT1FpzHeQUs3SjsZYnaNbxW7XwbtfMlkLIxv5Xz
+ 9BiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746995759; x=1747600559;
+ d=1e100.net; s=20230601; t=1746995760; x=1747600560;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+47xY6VgImnNTtip66i9o8+87NnKPnRUllE3fysFtMc=;
- b=e9tYTyUZBBk7OMSPiEwzoyaBBRt8p/xfET+2f0CUO0eqlQeN4LQdTrl0MDOvMzOnKa
- bX5Le2AeDBUH5ZpG7/l8ZTlKBoin0hnDqnMoyEFEvPvBfqzNdtYUWZTfK6P4ePzqyre6
- jz9IeP9qbKN13QJDnnqWxaV4i7OFwTT4lcRCnCpAPwgQi14/Nov5xt8DSNWaUoBSEvqT
- krJKkJihPkDWf3L+hyvdkgcEQGDmhIO2+oYCkAqd2ynlPW18nDLGMLTSuGWUFnA4o3TT
- V36186+u4XUh4GVHFrCcJKwehbXcbfy0BUHnIBYHsj7gdjmf3V3/9q/jj0XJcy8IvcbQ
- zoNg==
-X-Gm-Message-State: AOJu0Yyk9vb+O13EvmVdKSup+MCBSE76nNJge3hSACdt9kMG3gifQ83h
- HC3tPZOeNR9bB30WuqhJXhvC9pUST/lLO5jEblaUK29azosTBOYqDiVf2qa2taQ4BoIF9nzeQ8z
- G
-X-Gm-Gg: ASbGncu3BC1voecaVD9blQK/c6fRLTJfQnkAAm+X0+uCsWPtYAmOdyUPH1Hv1c2+as+
- f7P7uouJ0tiq/OCwSsab9gKkpeayuovnBSDOSysm1kPzrUaRTUZWXtJ6VrwYg9e7SnrI+XmIknR
- k/RbtO8FQNkU20lT/uBfGfQGdKQOLFOYNUPCaehMKmVoeyXRO374APiqjF0TozHTn4Pj6IeImyr
- txl9cWX68T638xMrN2PUrRSHwnxcOVtIHWCn1UNb+X3fHeTeCHy2lIbPP/SBi8fc2ywBqlmk9ci
- jJULsZXpuULAlEVCl+gv3OPSithPeVaotIV9RU0FHPUsyir4MM2sAOLOu4UlSN4MBt5BJe/GJyx
- RXltrFYGYNg==
-X-Google-Smtp-Source: AGHT+IGkB0wwBZ24UZNz2jvUGzulmwKupcuTfGeLc3zEByCsduGwunpWgt6ERZdHkwxsWxKjP3i6Lw==
-X-Received: by 2002:a17:902:d492:b0:21f:bd66:cafa with SMTP id
- d9443c01a7336-22fc8b40cb9mr160315155ad.17.1746995759394; 
- Sun, 11 May 2025 13:35:59 -0700 (PDT)
+ bh=QWbmGVAs1ZD9rubpd6cvwq4CGTb/LrxmBUpkdFa6TBU=;
+ b=q1LMNqB4Lj+M+JiSz/03d4Xp8eeJv+TmB9E/bP8lj1K5BlmlP6tRY7nxczc4mhWRM7
+ n2J4ZE/vkkQV8RR8INWD/tXpwAz5S1+HvFMgUHa65NI99YHczxM3EEIw+XDJHJ81w2lR
+ 7tbeVpgfbtXgsDUaz08nTh+z7yz/AeCw4lAA3LcsS5OY0zHF/R+BYb2MMkUyzWcUXRC7
+ AbIsRL0tg3hvUKGdz/h3CSpFh92hD1t2l74uDjg3xvPzyxMQxLMY2syeHshM+TZ1MfMy
+ BPsggjrdq5ngNoRhMHWhHAtj2ImkeuCK9eGncb4/VTtI32UsonVTE3hltcU76O/UxWUY
+ W6Rg==
+X-Gm-Message-State: AOJu0Yx4cXyBaqDL+5i1ZSSzpfQj67EAiYMcZ7jS3gYiWEr6JntwvHK7
+ 1w30aTMvMhA6aSaEc1QTCZwN+KsSSz03CxfNG/bQzU/mnXiJa1MOn7IPAYMYFd8iwtBu18kEmtE
+ P
+X-Gm-Gg: ASbGncsFXLZrhejdb29nnoEJDX/uOscEoyy0vY2aFoRGQHWTkQfMFjxoeyrlHAOsdCz
+ EF8R8EUhDf4nFm3yGbcyZ2DNzlQ5U11BRCwt5xXVD2OrXG02MFdOAzmXO1XzjWy/mfxuzENpt1/
+ EtM611jt1Iz1n94+eebiqBUmexmNgld+aEmEn8CigJdqk/JyNSJyw9l2GeV/dICt79/ykaNXYxI
+ YPrtx8FvsTbJLqaGLgmaotUpR50RhY2mRu+8Go+LtBFRRYA/f2RHjRnBYpDqfRwTaZSIBR737G+
+ 1dN9Cm8El49BSn6INMXuHAinM9GZlYOIQP6xq0gjS5VNaZ9lhyYLt9oki14me6Uhx0ERGtI/ty4
+ yCT+vNPp5rw==
+X-Google-Smtp-Source: AGHT+IEnpovCWJW8mHRIto2omqCrwa0b8ofpzK7lJc6Iavp8U+SpQgZ8eH5huQnHFKPmx6ZrBUKSSQ==
+X-Received: by 2002:a17:902:ce11:b0:223:5c33:56a8 with SMTP id
+ d9443c01a7336-22fc9185dffmr189726695ad.35.1746995760290; 
+ Sun, 11 May 2025 13:36:00 -0700 (PDT)
 Received: from stoup.. (71-212-47-143.tukw.qwest.net. [71.212.47.143])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22fc7544d86sm49955095ad.47.2025.05.11.13.35.58
+ d9443c01a7336-22fc7544d86sm49955095ad.47.2025.05.11.13.35.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sun, 11 May 2025 13:35:59 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: laurent@vivier.eu, schwab@linux-m68k.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v6 15/24] target/m68k: Remove env argument to gen_store_mode
-Date: Sun, 11 May 2025 13:35:37 -0700
-Message-ID: <20250511203546.139788-16-richard.henderson@linaro.org>
+Subject: [PATCH v6 16/24] target/m68k: Remove env argument to gen_ea_mode_fp
+Date: Sun, 11 May 2025 13:35:38 -0700
+Message-ID: <20250511203546.139788-17-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250511203546.139788-1-richard.henderson@linaro.org>
 References: <20250511203546.139788-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,50 +105,75 @@ Use the env pointer in DisasContext.
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/m68k/translate.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ target/m68k/translate.c | 21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
 diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index c3cf1c9f91..2c2d83e61b 100644
+index 2c2d83e61b..779890d3d3 100644
 --- a/target/m68k/translate.c
 +++ b/target/m68k/translate.c
-@@ -844,8 +844,7 @@ static TCGv gen_load_mode(DisasContext *s, int mode, int reg0, int opsize,
-     return ret;
+@@ -1012,9 +1012,8 @@ static void gen_ldst_fp(DisasContext *s, int opsize, TCGv addr,
+     }
  }
  
--static bool gen_store_mode(CPUM68KState *env, DisasContext *s,
--                           int mode, int reg0, int opsize,
-+static bool gen_store_mode(DisasContext *s, int mode, int reg0, int opsize,
-                            TCGv val, TCGv addr, int index)
+-static int gen_ea_mode_fp(CPUM68KState *env, DisasContext *s, int mode,
+-                          int reg0, int opsize, TCGv_ptr fp, ea_what what,
+-                          int index)
++static int gen_ea_mode_fp(DisasContext *s, int mode, int reg0, int opsize,
++                          TCGv_ptr fp, ea_what what, int index)
  {
-     TCGv reg;
-@@ -1335,7 +1334,7 @@ static void gen_exit_tb(DisasContext *s)
- #define DEST_EA(env, insn, opsize, val, addrp)                          \
-     do {                                                                \
-         TCGv *addrp_ = (addrp);                                         \
--        if (!gen_store_mode(env, s, extract32(insn, 3, 3),              \
-+        if (!gen_store_mode(s, extract32(insn, 3, 3),                   \
-                             REG(insn, 0), opsize, val,                  \
-                             addrp_ ? *addrp_ : NULL, IS_USER(s))) {     \
-             gen_addr_fault(s);                                          \
-@@ -1704,7 +1703,7 @@ DISAS_INSN(abcd_mem)
- 
-     bcd_add(dest, src);
- 
--    gen_store_mode(env, s, 4, REG(insn, 9), OS_BYTE, dest, addr, IS_USER(s));
-+    gen_store_mode(s, 4, REG(insn, 9), OS_BYTE, dest, addr, IS_USER(s));
- 
-     bcd_flags(dest);
+     TCGv reg, addr, tmp;
+     TCGv_i64 t64;
+@@ -1059,23 +1058,23 @@ static int gen_ea_mode_fp(CPUM68KState *env, DisasContext *s, int mode,
+         if (reg0 == 4 && what != EA_STORE) {
+             switch (opsize) {
+             case OS_BYTE:
+-                tmp = tcg_constant_i32((int8_t)read_im8(env, s));
++                tmp = tcg_constant_i32((int8_t)read_im8(s->env, s));
+                 gen_helper_exts32(tcg_env, fp, tmp);
+                 break;
+             case OS_WORD:
+-                tmp = tcg_constant_i32((int16_t)read_im16(env, s));
++                tmp = tcg_constant_i32((int16_t)read_im16(s->env, s));
+                 gen_helper_exts32(tcg_env, fp, tmp);
+                 break;
+             case OS_LONG:
+-                tmp = tcg_constant_i32(read_im32(env, s));
++                tmp = tcg_constant_i32(read_im32(s->env, s));
+                 gen_helper_exts32(tcg_env, fp, tmp);
+                 break;
+             case OS_SINGLE:
+-                tmp = tcg_constant_i32(read_im32(env, s));
++                tmp = tcg_constant_i32(read_im32(s->env, s));
+                 gen_helper_extf32(tcg_env, fp, tmp);
+                 break;
+             case OS_DOUBLE:
+-                t64 = tcg_constant_i64(read_im64(env, s));
++                t64 = tcg_constant_i64(read_im64(s->env, s));
+                 gen_helper_extf64(tcg_env, fp, t64);
+                 break;
+             case OS_EXTENDED:
+@@ -1083,9 +1082,9 @@ static int gen_ea_mode_fp(CPUM68KState *env, DisasContext *s, int mode,
+                     gen_exception(s, s->base.pc_next, EXCP_FP_UNIMP);
+                     break;
+                 }
+-                tmp = tcg_constant_i32(read_im32(env, s) >> 16);
++                tmp = tcg_constant_i32(read_im32(s->env, s) >> 16);
+                 tcg_gen_st16_i32(tmp, fp, offsetof(FPReg, l.upper));
+-                t64 = tcg_constant_i64(read_im64(env, s));
++                t64 = tcg_constant_i64(read_im64(s->env, s));
+                 tcg_gen_st_i64(t64, fp, offsetof(FPReg, l.lower));
+                 break;
+             case OS_PACKED:
+@@ -1122,7 +1121,7 @@ static int gen_ea_fp(CPUM68KState *env, DisasContext *s, uint16_t insn,
+ {
+     int mode = extract32(insn, 3, 3);
+     int reg0 = REG(insn, 0);
+-    return gen_ea_mode_fp(env, s, mode, reg0, opsize, fp, what, index);
++    return gen_ea_mode_fp(s, mode, reg0, opsize, fp, what, index);
  }
-@@ -1738,7 +1737,7 @@ DISAS_INSN(sbcd_mem)
  
-     bcd_sub(dest, src);
- 
--    gen_store_mode(env, s, 4, REG(insn, 9), OS_BYTE, dest, addr, IS_USER(s));
-+    gen_store_mode(s, 4, REG(insn, 9), OS_BYTE, dest, addr, IS_USER(s));
- 
-     bcd_flags(dest);
- }
+ typedef struct {
 -- 
 2.43.0
 
