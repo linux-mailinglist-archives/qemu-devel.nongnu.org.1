@@ -2,48 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1270AB270A
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 09:37:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F1F3AB270E
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 09:39:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uE1F5-0001az-Ut; Sun, 11 May 2025 03:37:00 -0400
+	id 1uE1H2-0005HR-Ja; Sun, 11 May 2025 03:39:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1uE1F1-0001Vo-Uk
- for qemu-devel@nongnu.org; Sun, 11 May 2025 03:36:55 -0400
-Received: from mailout05.t-online.de ([194.25.134.82])
+ (Exim 4.90_1) (envelope-from <volker.ruemelin@t-online.de>)
+ id 1uE1Gx-0005Gv-GJ
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 03:38:55 -0400
+Received: from mailout02.t-online.de ([194.25.134.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1uE1Ez-0003xX-Vm
- for qemu-devel@nongnu.org; Sun, 11 May 2025 03:36:55 -0400
-Received: from fwd77.aul.t-online.de (fwd77.aul.t-online.de [10.223.144.103])
- by mailout05.t-online.de (Postfix) with SMTP id CFCE51EE;
- Sun, 11 May 2025 09:36:49 +0200 (CEST)
-Received: from [192.168.211.200] ([84.175.230.13]) by fwd77.t-online.de
+ (Exim 4.90_1) (envelope-from <volker.ruemelin@t-online.de>)
+ id 1uE1Gv-00042c-Gc
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 03:38:55 -0400
+Received: from fwd70.aul.t-online.de (fwd70.aul.t-online.de [10.223.144.96])
+ by mailout02.t-online.de (Postfix) with SMTP id 5B72313A5;
+ Sun, 11 May 2025 09:38:49 +0200 (CEST)
+Received: from linpower.localnet ([84.175.230.13]) by fwd70.t-online.de
  with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
- esmtp id 1uE1Ev-4IuRFJ0; Sun, 11 May 2025 09:36:49 +0200
-Message-ID: <d456c188-0463-4dc2-9178-469f840eaebe@t-online.de>
-Date: Sun, 11 May 2025 09:36:48 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>
-Subject: [PATCH 0/7] audio related fixes for 10.1
+ esmtp id 1uE1Gp-1dgnLd0; Sun, 11 May 2025 09:38:47 +0200
+Received: by linpower.localnet (Postfix, from userid 1000)
+ id 04C402002C2; Sun, 11 May 2025 09:38:47 +0200 (CEST)
+From: =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>
 To: Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Content-Language: en-US
+ Thomas Huth <thuth@redhat.com>
+Subject: [PATCH 1/7] tests/functional: use 'none' audio driver for q800 tests
+Date: Sun, 11 May 2025 09:38:40 +0200
+Message-ID: <20250511073846.8713-1-vr_qemu@t-online.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <d456c188-0463-4dc2-9178-469f840eaebe@t-online.de>
+References: <d456c188-0463-4dc2-9178-469f840eaebe@t-online.de>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TOI-EXPURGATEID: 150726::1746949009-9FFFD4B3-EA16A2A3/0/0 CLEAN NORMAL
-X-TOI-MSGID: d9110ff8-cde4-4fbc-91af-7127750a29c9
-Received-SPF: pass client-ip=194.25.134.82; envelope-from=vr_qemu@t-online.de;
- helo=mailout05.t-online.de
+X-TOI-EXPURGATEID: 150726::1746949127-51127547-D9683718/10/29118861210 SUSPECT
+ URL
+X-TOI-MSGID: 9667be69-169b-4de8-8fce-0433afa77dc6
+Received-SPF: pass client-ip=194.25.134.17;
+ envelope-from=volker.ruemelin@t-online.de; helo=mailout02.t-online.de
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
@@ -66,30 +70,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A few audio related fixes for 10.1.
+Since commit ac13a6b3fd ("audio: add Apple Sound Chip (ASC)
+emulation") the Quadra 800 machine has an audio device. It is
+not guaranteed that the default audio driver of the audio
+subsystem will work correctly on all host systems. Therefore,
+the 'none' audio driver should be used in all q800 tests.
 
-The virtio-sound device is the first QEMU audio front end that supports floating point samples. The audio subsystem is only partially prepared for this. The commit message of patch 7/7 "audio: add float sample endianness converters" has the details. The new code paths in patch 7/7 are only compile tested. I don't have a big endian host to test.
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2812
+Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
+---
+ tests/functional/test_m68k_q800.py   | 3 ++-
+ tests/functional/test_m68k_replay.py | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-checkpatch.pl complains about missing space characters in the type punning macros in patch 7/7. I don't agree.
-
-Volker Rümelin (7):
-  tests/functional: use 'none' audio driver for q800 tests
-  audio: fix SIGSEGV in AUD_get_buffer_size_out()
-  audio: fix size calculation in AUD_get_buffer_size_out()
-  hw/audio/asc: fix SIGSEGV in asc_realize()
-  hw/audio/asc: replace g_malloc0() with g_malloc()
-  audio/mixeng: remove unnecessary pointer type casts
-  audio: add float sample endianness converters
-
- audio/audio.c                        | 11 +++-
- audio/audio_template.h               | 12 ++--
- audio/mixeng.c                       | 83 ++++++++++++++++++++++++----
- audio/mixeng.h                       |  6 +-
- hw/audio/asc.c                       |  9 ++-
- tests/functional/test_m68k_q800.py   |  3 +-
- tests/functional/test_m68k_replay.py |  3 +-
- 7 files changed, 106 insertions(+), 21 deletions(-)
-
+diff --git a/tests/functional/test_m68k_q800.py b/tests/functional/test_m68k_q800.py
+index 400b7aeb5d..b3e655346c 100755
+--- a/tests/functional/test_m68k_q800.py
++++ b/tests/functional/test_m68k_q800.py
+@@ -25,7 +25,8 @@ def test_m68k_q800(self):
+         kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+                                'console=ttyS0 vga=off')
+         self.vm.add_args('-kernel', kernel_path,
+-                         '-append', kernel_command_line)
++                         '-append', kernel_command_line,
++                         '-audio', 'none')
+         self.vm.launch()
+         console_pattern = 'Kernel command line: %s' % kernel_command_line
+         self.wait_for_console_pattern(console_pattern)
+diff --git a/tests/functional/test_m68k_replay.py b/tests/functional/test_m68k_replay.py
+index 18c1db539c..213d6ae07e 100755
+--- a/tests/functional/test_m68k_replay.py
++++ b/tests/functional/test_m68k_replay.py
+@@ -24,7 +24,8 @@ def test_q800(self):
+         kernel_command_line = (self.KERNEL_COMMON_COMMAND_LINE +
+                                'console=ttyS0 vga=off')
+         console_pattern = 'No filesystem could mount root'
+-        self.run_rr(kernel_path, kernel_command_line, console_pattern)
++        self.run_rr(kernel_path, kernel_command_line, console_pattern,
++                    args=('-audio', 'none'))
+ 
+     ASSET_MCF5208 = Asset(
+        'https://qemu-advcal.gitlab.io/qac-best-of-multiarch/download/day07.tar.xz',
 -- 
 2.43.0
 
