@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD6C9AB26DF
+	by mail.lfdr.de (Postfix) with ESMTPS id D0DA4AB26E1
 	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 08:10:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uDzrw-0002CH-EX; Sun, 11 May 2025 02:09:00 -0400
+	id 1uDzrx-0002Cn-FR; Sun, 11 May 2025 02:09:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uDzro-0002Bd-Ew
- for qemu-devel@nongnu.org; Sun, 11 May 2025 02:08:53 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1uDzru-0002CD-8x
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 02:08:59 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uDzrl-0003qn-RP
- for qemu-devel@nongnu.org; Sun, 11 May 2025 02:08:51 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-7399a2dc13fso4794247b3a.2
- for <qemu-devel@nongnu.org>; Sat, 10 May 2025 23:08:49 -0700 (PDT)
+ id 1uDzrr-0003s3-IF
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 02:08:57 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-22fa414c497so40362325ad.0
+ for <qemu-devel@nongnu.org>; Sat, 10 May 2025 23:08:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1746943728; x=1747548528;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1746943733; x=1747548533;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=pmNZ7ppKIZvWL/zBQGiJLjC96XIPRx7qmwliG7uE764=;
- b=Yxe7PdEKhvOYLpaxSrxd/eDG/XiaXcD1hs9sOzT0A5fVI1nmXzqMqb0gTChwT993LM
- bNKpOuSxz6mxGdMK4W7zjX/Yk3WJ8X9Z/SPqDnFlINwExQ/a/nc+jCaGmpwsVIhUM0eD
- pjV4NMYHSjx4xqvtPDgnSgKfgRnd42E20jRLjCctIwnzDMMHdg7/8ZA8fx39NCttVk9I
- +9Mg8OlFM1qBgj7do2Zja28p0y5xChm98WZROWdEvhpY4182Y7UAoGjynVjJtMSjwzjk
- kVvyxU7MJfsswRtyj/92QtgHbjcj4fFhWPCTIrEBVwgmeRGkUj6WIEf/YbbgYilK+zkF
- dAZQ==
+ :reply-to; bh=zveZBuPtk3zGBEEgYVqGSXDbx7e0Rl6JL+tYwpwf9WU=;
+ b=3KUOOYvnKU2ZOzgyNgFps0cohLiPBYx0ay/w2j00AUpNwE8u9124LRwvzL52ZXl2+S
+ r8P+nWZMPEeqjPG9sOewZm+KG0fqKNXE8jCZrOfLNxGByJrDOjoi3E/rAJ9cWv7Xe86O
+ m4EPbsl3KPa22BQ7SmvYpmOMDChPU1Bmji22Md+ckxzt4CA4yhEzP4+RXYm9ckjhP2BY
+ mkawrm8ze55UZ0WqPxx3eG2XYrjImFie+RQNblh7biNEskx5zV6ybhRqhYwrIWRE+Qqb
+ RLcrvHHOfojA/+RrKY6IemDkCcMLz3n0gOkmb5LMKAhEDzihtgQeRptrFoNewE5AcCFY
+ diEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746943728; x=1747548528;
+ d=1e100.net; s=20230601; t=1746943733; x=1747548533;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pmNZ7ppKIZvWL/zBQGiJLjC96XIPRx7qmwliG7uE764=;
- b=Z+brGvQHK/lj2Tp54Rxp7c++E5X+z3EhSpIwoF7P8U5mYZdo0c2oQyE+Cg+OBHYTV9
- lHES8uDdouY/9MHdzGm+2UR/LHHHfw9iSTfBKZUtxunI2yJfB3aWaXp3W7elWIvJ2wy1
- 3FbOt++UhACYj0UTx91WHjHr7uySB9YKMExjcPyS6YGVcMdxJL4gkhToaVTk4xlTzqYk
- SYgoyMcRI6pi827WiDZcPyF67VeT2R39uqofbM1RdvzgKwSMyi4JCoL0AeSTHBSYZueS
- /gwF8secbOWxU16n6EUWap3pRplnA+ASIu0YqRihGUyxAc1gdW7Yd4zDAHr2R+8qLIAk
- DB+g==
+ bh=zveZBuPtk3zGBEEgYVqGSXDbx7e0Rl6JL+tYwpwf9WU=;
+ b=HRbFWUVKHvGJX4j9eDkmDAJl2MjYHVJ7pOU6hxH/m3V3joDHxPjTr5rlphj6xBE3tl
+ BdWCHku02nIXjcNZKvNhJMDXRAZ1g9fL1x88FxnTCb2H/urAR3+TK3IkK7iYk1RhkrJx
+ m7Q29+fAnYlxn46v/L+PrIIqZpRoMVYlfi0KKM264jaoZIWcuF9k3XNeqGwbGPjs+ytb
+ aGM2xJmwm1OKrG0N2l07iIzEHCh6Qj7oU1wCH4dtvjG6qmzqGsuDMpvtEEvdneepy3LP
+ DxUkFl1RcSVWkkGYUqGD4MdnCEusZeCAIDSkwIM+htgQ5GUTEt4N1gC+Sz0azw4tC0da
+ Dt5A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVFNWkGWe+5RcxqUlirmh5PamMK3Rd9kdVs9J4s0ppZdyQhRA+1uOWJMA2dUOyPKCkqZzGVqfinvy/L@nongnu.org
-X-Gm-Message-State: AOJu0YzteKzcL79ZjoYKCQcsDMdM5yh77H/hXsD8fb99ZQbHyO6O7Fsc
- j/7ympRrY0fnpJHojkWXztaluLmdSods22hzCC5t57psaRVZ0GtOMG3NmQ8AOWbHo29rLIgKnCS
- h
-X-Gm-Gg: ASbGncuKWolbCVXccrhVtXtoiGYEl2wa8X3plqh9EiBWtwApPJGRbkUms2+YREwJBsM
- 9tQFq+v3WfMlYNFEcOkzLGUBSLfI0WNpW9jWBlUenBzS1oYzPTam7rbumXsWKS/UbyS6osU+Kv3
- hAOmBaavGZ0g46C9Vja6bY/DbKZvN+NlcD7HfTe8DZlmv72S3RwwBOfv7vhahVBwCNk8/Mwe4g9
- Zsa1M4K0QQJMMCrQcjcEaf8XCbT+Q0T6ouMd63htOOU+BanDir6z4he2tf50GRsXRH6DXaFAPqC
- +3OEO6Ek8WomdzUb422RDBSJLiwXLzaztXguRWtL4DqwbXuDYsylskI=
-X-Google-Smtp-Source: AGHT+IGhiGar9OwyhY+ygUb8vTkxAw0bcB6qj1JAfzXLfvUFVIerZxb051yOUyjlqkbLOwYAh7XAww==
-X-Received: by 2002:a05:6a20:9c88:b0:1ee:d418:f764 with SMTP id
- adf61e73a8af0-215abc6f679mr12701252637.38.1746943728512; 
- Sat, 10 May 2025 23:08:48 -0700 (PDT)
+ AJvYcCUdVrh5bNpObWAxdJnztZDqiplkoNiuxpvUyKWN3NBram+RSrT0vlC1u/GbC1DSA1xPxu1D1ewdtFCi@nongnu.org
+X-Gm-Message-State: AOJu0YxgDO3xwYfQXzIyOmI8LHBnD8VrwJRYrpn8/fmC9SSZ/PvFglQV
+ qUPN1wbF8jYLDYQNgyz7LkNXw8rKfk7VAPyLsK5aThkSmexrAyDPshex9ME8lsw=
+X-Gm-Gg: ASbGncvCAhzmdYNvYwYLqKLdr0E34l41L1dU4zQUbJhxFfMh/MGE7sVXyFAATfZSTSV
+ LdvSjEZ/QEAEvJSaGv6rmbt1KQegPw9SZskw1NNgf87WzxnBYh9VFN6tgs6C75ILO3p9gsw2BE5
+ UOYcxhx3Xzz8UWGl6n7xP8P3CIqBza04KdN3EwEAlxd4HwG2OuWjJbOfzfzBS+zjUdy3PRboJLi
+ lR7dE1ISVjdCI8XBtBixP8wOUZxYsSiYv7pZfLF/JznUkk9ATNY+cwIiLLc7DqEYdh6gsJKnXV9
+ vvffRE7Kzzuv1wqepodc2b4rp92XN2UDHu6c4G6lVZsGcdfQvvHldgSea2d+2JSL4Q==
+X-Google-Smtp-Source: AGHT+IHDXS5CY88ycLwY3Fq5oMAx4VJgHuJJ2Jr7OqWlVPS/ade/D03qb/ggsHTFKz8d1VespOlxkg==
+X-Received: by 2002:a17:902:cf06:b0:21f:564:80a4 with SMTP id
+ d9443c01a7336-22fc9185dcfmr111730615ad.33.1746943733315; 
+ Sat, 10 May 2025 23:08:53 -0700 (PDT)
 Received: from localhost ([157.82.203.223])
  by smtp.gmail.com with UTF8SMTPSA id
- 98e67ed59e1d1-30ad4d2e499sm6638795a91.16.2025.05.10.23.08.45
+ d9443c01a7336-22fc828b4d9sm40986955ad.191.2025.05.10.23.08.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 10 May 2025 23:08:48 -0700 (PDT)
+ Sat, 10 May 2025 23:08:53 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sun, 11 May 2025 15:08:18 +0900
-Subject: [PATCH v3 01/10] futex: Check value after qemu_futex_wait()
+Date: Sun, 11 May 2025 15:08:19 +0900
+Subject: [PATCH v3 02/10] futex: Support Windows
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250511-event-v3-1-f7f69247d303@daynix.com>
+Message-Id: <20250511-event-v3-2-f7f69247d303@daynix.com>
 References: <20250511-event-v3-0-f7f69247d303@daynix.com>
 In-Reply-To: <20250511-event-v3-0-f7f69247d303@daynix.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Stefan Weil <sw@weilnetz.de>, 
@@ -83,8 +82,8 @@ Cc: Phil Dennis-Jordan <phil@philjordan.eu>, qemu-devel@nongnu.org,
  =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
  Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.15-dev-edae6
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -106,105 +105,184 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-futex(2) - Linux manual page
-https://man7.org/linux/man-pages/man2/futex.2.html
-> Note that a wake-up can also be caused by common futex usage patterns
-> in unrelated code that happened to have previously used the futex
-> word's memory location (e.g., typical futex-based implementations of
-> Pthreads mutexes can cause this under some conditions).  Therefore,
-> callers should always conservatively assume that a return value of 0
-> can mean a spurious wake-up, and use the futex word's value (i.e.,
-> the user-space synchronization scheme) to decide whether to continue
-> to block or not.
+Windows supports futex-like APIs since Windows 8 and Windows Server
+2012.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- include/qemu/futex.h              |  9 +++++++++
- tests/unit/test-aio-multithread.c |  4 +++-
- util/qemu-thread-posix.c          | 28 ++++++++++++++++------------
- 3 files changed, 28 insertions(+), 13 deletions(-)
+ meson.build                       |  2 ++
+ include/qemu/futex.h              | 53 ++++++++++++++++++++++++++++++---------
+ tests/unit/test-aio-multithread.c |  2 +-
+ util/lockcnt.c                    |  2 +-
+ util/qemu-thread-posix.c          |  4 +--
+ util/meson.build                  |  2 +-
+ 6 files changed, 48 insertions(+), 17 deletions(-)
 
+diff --git a/meson.build b/meson.build
+index 27f115015285..11d42e4a7d39 100644
+--- a/meson.build
++++ b/meson.build
+@@ -835,11 +835,13 @@ emulator_link_args = []
+ midl = not_found
+ widl = not_found
+ pathcch = not_found
++synchronization = not_found
+ host_dsosuf = '.so'
+ if host_os == 'windows'
+   midl = find_program('midl', required: false)
+   widl = find_program('widl', required: false)
+   pathcch = cc.find_library('pathcch')
++  synchronization = cc.find_library('Synchronization')
+   socket = cc.find_library('ws2_32')
+   winmm = cc.find_library('winmm')
+ 
 diff --git a/include/qemu/futex.h b/include/qemu/futex.h
-index 91ae88966e12..f57774005330 100644
+index f57774005330..607613eec835 100644
 --- a/include/qemu/futex.h
 +++ b/include/qemu/futex.h
-@@ -24,6 +24,15 @@ static inline void qemu_futex_wake(void *f, int n)
-     qemu_futex(f, FUTEX_WAKE, n, NULL, NULL, 0);
- }
+@@ -1,5 +1,5 @@
+ /*
+- * Wrappers around Linux futex syscall
++ * Wrappers around Linux futex syscall and similar
+  *
+  * Copyright Red Hat, Inc. 2017
+  *
+@@ -11,28 +11,37 @@
+  *
+  */
  
 +/*
 + * Note that a wake-up can also be caused by common futex usage patterns in
 + * unrelated code that happened to have previously used the futex word's
 + * memory location (e.g., typical futex-based implementations of Pthreads
-+ * mutexes can cause this under some conditions).  Therefore, callers should
-+ * always conservatively assume that it is a spurious wake-up, and use the futex
-+ * word's value (i.e., the user-space synchronization scheme) to decide whether
-+ * to continue to block or not.
++ * mutexes can cause this under some conditions).  Therefore, qemu_futex_wait()
++ * callers should always conservatively assume that it is a spurious wake-up,
++ * and use the futex word's value (i.e., the user-space synchronization scheme)
++ * to decide whether to continue to block or not.
 + */
++
+ #ifndef QEMU_FUTEX_H
+ #define QEMU_FUTEX_H
+ 
++#define HAVE_FUTEX
++
++#ifdef CONFIG_LINUX
+ #include <sys/syscall.h>
+ #include <linux/futex.h>
+ 
+ #define qemu_futex(...)              syscall(__NR_futex, __VA_ARGS__)
+ 
+-static inline void qemu_futex_wake(void *f, int n)
++static inline void qemu_futex_wake_all(void *f)
+ {
+-    qemu_futex(f, FUTEX_WAKE, n, NULL, NULL, 0);
++    qemu_futex(f, FUTEX_WAKE, INT_MAX, NULL, NULL, 0);
++}
++
++static inline void qemu_futex_wake_single(void *f)
++{
++    qemu_futex(f, FUTEX_WAKE, 1, NULL, NULL, 0);
+ }
+ 
+-/*
+- * Note that a wake-up can also be caused by common futex usage patterns in
+- * unrelated code that happened to have previously used the futex word's
+- * memory location (e.g., typical futex-based implementations of Pthreads
+- * mutexes can cause this under some conditions).  Therefore, callers should
+- * always conservatively assume that it is a spurious wake-up, and use the futex
+- * word's value (i.e., the user-space synchronization scheme) to decide whether
+- * to continue to block or not.
+- */
  static inline void qemu_futex_wait(void *f, unsigned val)
  {
      while (qemu_futex(f, FUTEX_WAIT, (int) val, NULL, NULL, 0)) {
-diff --git a/tests/unit/test-aio-multithread.c b/tests/unit/test-aio-multithread.c
-index 08d4570ccb14..8c2e41545a29 100644
---- a/tests/unit/test-aio-multithread.c
-+++ b/tests/unit/test-aio-multithread.c
-@@ -305,7 +305,9 @@ static void mcs_mutex_lock(void)
-     prev = qatomic_xchg(&mutex_head, id);
-     if (prev != -1) {
-         qatomic_set(&nodes[prev].next, id);
--        qemu_futex_wait(&nodes[id].locked, 1);
-+        while (qatomic_read(&nodes[id].locked) == 1) {
-+            qemu_futex_wait(&nodes[id].locked, 1);
-+        }
+@@ -46,5 +55,25 @@ static inline void qemu_futex_wait(void *f, unsigned val)
+         }
      }
  }
++#elif defined(CONFIG_WIN32)
++#include <synchapi.h>
++
++static inline void qemu_futex_wake_all(void *f)
++{
++    WakeByAddressAll(f);
++}
++
++static inline void qemu_futex_wake_single(void *f)
++{
++    WakeByAddressSingle(f);
++}
++
++static inline void qemu_futex_wait(void *f, unsigned val)
++{
++    WaitOnAddress(f, &val, sizeof(val), INFINITE);
++}
++#else
++#undef HAVE_FUTEX
++#endif
  
+ #endif /* QEMU_FUTEX_H */
+diff --git a/tests/unit/test-aio-multithread.c b/tests/unit/test-aio-multithread.c
+index 8c2e41545a29..0ead6bf34ad1 100644
+--- a/tests/unit/test-aio-multithread.c
++++ b/tests/unit/test-aio-multithread.c
+@@ -330,7 +330,7 @@ static void mcs_mutex_unlock(void)
+     /* Wake up the next in line.  */
+     next = qatomic_read(&nodes[id].next);
+     nodes[next].locked = 0;
+-    qemu_futex_wake(&nodes[next].locked, 1);
++    qemu_futex_wake_single(&nodes[next].locked);
+ }
+ 
+ static void test_multi_fair_mutex_entry(void *opaque)
+diff --git a/util/lockcnt.c b/util/lockcnt.c
+index d07c6cc5cee4..ca27d8e61a5c 100644
+--- a/util/lockcnt.c
++++ b/util/lockcnt.c
+@@ -106,7 +106,7 @@ static bool qemu_lockcnt_cmpxchg_or_wait(QemuLockCnt *lockcnt, int *val,
+ static void lockcnt_wake(QemuLockCnt *lockcnt)
+ {
+     trace_lockcnt_futex_wake(lockcnt);
+-    qemu_futex_wake(&lockcnt->count, 1);
++    qemu_futex_wake_single(&lockcnt->count);
+ }
+ 
+ void qemu_lockcnt_inc(QemuLockCnt *lockcnt)
 diff --git a/util/qemu-thread-posix.c b/util/qemu-thread-posix.c
-index b2e26e21205b..eade5311d175 100644
+index eade5311d175..13459e44c768 100644
 --- a/util/qemu-thread-posix.c
 +++ b/util/qemu-thread-posix.c
-@@ -428,17 +428,21 @@ void qemu_event_wait(QemuEvent *ev)
+@@ -345,7 +345,7 @@ static inline void qemu_futex_wait(QemuEvent *ev, unsigned val)
  
-     assert(ev->initialized);
- 
--    /*
--     * qemu_event_wait must synchronize with qemu_event_set even if it does
--     * not go down the slow path, so this load-acquire is needed that
--     * synchronizes with the first memory barrier in qemu_event_set().
--     *
--     * If we do go down the slow path, there is no requirement at all: we
--     * might miss a qemu_event_set() here but ultimately the memory barrier in
--     * qemu_futex_wait() will ensure the check is done correctly.
--     */
--    value = qatomic_load_acquire(&ev->value);
--    if (value != EV_SET) {
-+    while (true) {
-+        /*
-+         * qemu_event_wait must synchronize with qemu_event_set even if it does
-+         * not go down the slow path, so this load-acquire is needed that
-+         * synchronizes with the first memory barrier in qemu_event_set().
-+         *
-+         * If we do go down the slow path, there is no requirement at all: we
-+         * might miss a qemu_event_set() here but ultimately the memory barrier
-+         * in qemu_futex_wait() will ensure the check is done correctly.
-+         */
-+        value = qatomic_load_acquire(&ev->value);
-+        if (value == EV_SET) {
-+            break;
-+        }
-+
-         if (value == EV_FREE) {
-             /*
-              * Leave the event reset and tell qemu_event_set that there are
-@@ -452,7 +456,7 @@ void qemu_event_wait(QemuEvent *ev)
-              * like the load above.
-              */
-             if (qatomic_cmpxchg(&ev->value, EV_FREE, EV_BUSY) == EV_SET) {
--                return;
-+                break;
-             }
+ /* Valid transitions:
+  * - free->set, when setting the event
+- * - busy->set, when setting the event, followed by qemu_futex_wake
++ * - busy->set, when setting the event, followed by qemu_futex_wake_all
+  * - set->free, when resetting the event
+  * - free->busy, when waiting
+  *
+@@ -400,7 +400,7 @@ void qemu_event_set(QemuEvent *ev)
+         smp_mb__after_rmw();
+         if (old == EV_BUSY) {
+             /* There were waiters, wake them up.  */
+-            qemu_futex_wake(ev, INT_MAX);
++            qemu_futex_wake_all(ev);
          }
- 
+     }
+ }
+diff --git a/util/meson.build b/util/meson.build
+index e5cd327e2767..c756558d6763 100644
+--- a/util/meson.build
++++ b/util/meson.build
+@@ -27,7 +27,7 @@ else
+   util_ss.add(files('event_notifier-win32.c'))
+   util_ss.add(files('oslib-win32.c'))
+   util_ss.add(files('qemu-thread-win32.c'))
+-  util_ss.add(winmm, pathcch)
++  util_ss.add(winmm, pathcch, synchronization)
+ endif
+ util_ss.add(when: linux_io_uring, if_true: files('fdmon-io_uring.c'))
+ if glib_has_gslice
 
 -- 
 2.49.0
