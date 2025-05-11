@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A331FAB2708
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 09:36:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99756AB2703
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 09:36:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uE1D8-0003xr-9Q; Sun, 11 May 2025 03:34:58 -0400
+	id 1uE1D9-0003yT-Bc; Sun, 11 May 2025 03:34:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <weifeng.liu.z@gmail.com>)
- id 1uE1D0-0003rw-Gb
- for qemu-devel@nongnu.org; Sun, 11 May 2025 03:34:50 -0400
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+ id 1uE1D2-0003s8-Rf
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 03:34:53 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <weifeng.liu.z@gmail.com>)
- id 1uE1Cy-0003fK-Nc
- for qemu-devel@nongnu.org; Sun, 11 May 2025 03:34:50 -0400
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-30aa3980af5so4332379a91.0
- for <qemu-devel@nongnu.org>; Sun, 11 May 2025 00:34:48 -0700 (PDT)
+ id 1uE1D1-0003ff-A8
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 03:34:52 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-22e09f57ed4so47507645ad.0
+ for <qemu-devel@nongnu.org>; Sun, 11 May 2025 00:34:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1746948886; x=1747553686; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1746948889; x=1747553689; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6sFHBWAVIFh8hI8jbeBWhK/gCidi77zyIaDSI38tXyQ=;
- b=eC/qaHwR8BgR1omD1V3p+1c2Ozh96aeVGMH1oBf0WXwjpz+q70gQnuYVKk0NSJTuHS
- Edvxfg8ajKOfHhcLSV8gbBpAuHzxiLCHxsMVX5pZhfCyNZrQRTvKfnzekFGavhHFbax+
- dgz030RwKjXq6jAn69/xqNQ/CeUKSKBJUlitkAO6iBLa122Sa+sW2qvJHGnsqLPRh+Zw
- bVivKgpE02HyRcyJt90/ds9eHEKkHA1diEbeWbjMoQu7gbuwccfH7OEYkepwPB8Jf+mY
- 6MpGXj4dM7E9apQARR1pIbjrDRXy40Lr01j8fZWa2gjpfhC6ov8S9FOaOOv7qGcsw5WX
- S69g==
+ bh=b8/qrbN8SL3D7304Ebsbfdho9U8Wr6YNdQY2YgeEWjw=;
+ b=LdPQNJujfrRv3jUmvKieRXHXCvP2+1+Q1nrurOX4MSmyz2npkevhjvUQl/E5RYUszF
+ i2m4WtlLEETfWgAT8I5zv/cpPaAKKwbDK7rIgqvceU1uj1JfMTBCT5I/hUSvAtv5K6OZ
+ 7NcZKi8N5CCtCPc7o6AvWdYX0J1NGkxMmhlmQYiQZo01xhVvHWiv5maEkyWaAnkAIRxK
+ Y7vH7GsETkpVIuJlhnrxkN84rOy06rzp0vH7rpXw3Hxb2kBwGabo+xVNr2aTpS7IX7Rq
+ vbXuoFpL8Tfi+3ASN7yZT8use0Fl27ADSMv1oche6IUpmfhkHTVavtKnnka6mobHLdDC
+ EKjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1746948886; x=1747553686;
+ d=1e100.net; s=20230601; t=1746948889; x=1747553689;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6sFHBWAVIFh8hI8jbeBWhK/gCidi77zyIaDSI38tXyQ=;
- b=j9uuYAE3EGqJe9TBEWLFts5SHgtpGVmULWxYGhizpFrinXP3lFwCgC24mXdiVy0Dmt
- IFaFY2pzdkBefYgJYfdhtg0bfD3BqF+gshSFvNt6G0i5zJ1r7qjg1k+mB5QUGHdbibYy
- y8LsU1vUwelGmoobCbFmU93HvpaBwP4IAUzS52K18yM8Rx/bzT2wwcc6k9scRl5Z/kcV
- NQXuiwNuZJhKjRuQ/dC/rs0PN5cYPW5+tLJgchQAxv+P0K4XloPHSzUFsq+3DEZ7KBJ0
- B9yEMorks2wxkDbZ+09vsyto279/aBKfvbrbnrssBjguBhloPEdvSMLDx4qAq5QleWL1
- CxqA==
-X-Gm-Message-State: AOJu0YyMnGUrBT6oApZqTsYwlOWvem2yxS2MrB8F5g3Vea08BsLhcVmr
- wsRJ52mTwarLEfhr731GyBnESS1IMSg3tDY+/s6qNpA2/ICwpVwm9YxqlM0O
-X-Gm-Gg: ASbGncutcB/GKHaWEiTMJi60r7aDgD0bKQh9GBFgsbkh5AV6rnz0Wgds9O6DGf+JLfY
- /BHD7wQWNcLwu/Mfa5SIMvIPGVCP6a1/YX662MO5Np4v6qxA6iECpzzT2qDmKhJ//6Mbdq+yCS+
- huJE6lV+DXX1d7VCp36k2qUcjb7Qh36SNi6u0LYbwrRvx+PhnlEhQ3Wgc8g0lyy4iNpTCHiQWab
- mN4qBDhMNM/NARlYtWWBYi4RUZP64oO5yazS9jXzrSKkMhkeAuls3FMINm+o5U0tTEijiHkAVH9
- 7hGABYSIuJRbf2YlhMM/tmy+C29g1PkgYGqkzaqMhNWjeqP95po56IE=
-X-Google-Smtp-Source: AGHT+IGttMqI9Kg3Zx/gHkQC95PLDH1RaCsfUaGRjch7zvSNY/t74kjiD0TqIYmGkk5cCHe0mdpbMw==
-X-Received: by 2002:a17:90b:1c05:b0:30a:2173:9f0b with SMTP id
- 98e67ed59e1d1-30c3d62e5b8mr14580542a91.28.1746948886425; 
- Sun, 11 May 2025 00:34:46 -0700 (PDT)
+ bh=b8/qrbN8SL3D7304Ebsbfdho9U8Wr6YNdQY2YgeEWjw=;
+ b=opzerny8BndsniOIGEkAI/rbfW28HngaWGSu+CW88N17qVNUJueSz32JsbKJFSVVlb
+ I5iZMkDgre54/3gA0PcQR8EgMxMSsOEXMJ5rnCxUNrg3kcGtAnqSAh9RC6CAnlIdzLxS
+ 9697ZIRBE40JQiGK/8O6ZM6HGWG1+NTZq70FAsUJxMuKFE9sg41GWy0DWILPEoOiMmQo
+ muK1CytqwekgltFYumWpncbOr8kDRkBHdM0ZzBubEpv+QS3FlMglCLqBtYpNatxjd5Ly
+ 1cMEsGwq6jgRZCqdrWr16jZsn7TaP7unt0VR03qo8HnvjwQ7oPvmXfd1UKOzM1iorg1y
+ ZCbw==
+X-Gm-Message-State: AOJu0YyCs4ENut+gUDPl8YA9NTXrYTRtwFwRXPGxOabnGLXBQDbt+ncr
+ seVDumC7OicJ9VRaC8UVQY9MjZNsHUeQfQHKpBA9vQUGttm1k6d1PFGpbdQO
+X-Gm-Gg: ASbGncssx8y6Vai57URVP/yPt2saLrkceixHQ4QQkF3W6f18/ZLDhytZplZ51OO0HHV
+ Ad55fDY+huKDgVB9cINJyWM2hN2DJSEeRKTtzRcSJSTANfO6k7jZZgb9Cf3o4wGoBKYRLs9T53n
+ mpu6bgiC6nqbVvcODaQZGMgFtE34pR7fPdQdwjwqjWlvrupi5Lg0CyutoWLJFBJscQNuMsqA91h
+ V0uh4/EnZjon9FegPhhS06ekAwdKrOxWfdChrtYpP0sPCTI4s8XP2fDOkZRoIZNpbVW/4l1nraE
+ xvH++7dGgdkIXLQHIAz+LBV9AQj9VvbnRIDHKhVjzQys1APrW4i1Lng=
+X-Google-Smtp-Source: AGHT+IFPfyFaq+GzSPb1tTf3XZql8JcfUh5W6+WHNZynBDt6ScBKYP8BH1bBec401PDsV0NryiE6AA==
+X-Received: by 2002:a17:902:e84c:b0:215:58be:3349 with SMTP id
+ d9443c01a7336-22fc937b1f5mr160639745ad.14.1746948889480; 
+ Sun, 11 May 2025 00:34:49 -0700 (PDT)
 Received: from localhost ([103.192.227.12]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-30c394a2467sm4551957a91.0.2025.05.11.00.34.45
+ d9443c01a7336-22fc75498b2sm42483605ad.13.2025.05.11.00.34.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 11 May 2025 00:34:45 -0700 (PDT)
+ Sun, 11 May 2025 00:34:48 -0700 (PDT)
 From: Weifeng Liu <weifeng.liu.z@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: Weifeng Liu <weifeng.liu@intel.com>
-Subject: [PATCH 5/9] ui/sdl: Consider scaling in mouse event handling
-Date: Sun, 11 May 2025 15:33:15 +0800
-Message-ID: <20250511073337.876650-6-weifeng.liu.z@gmail.com>
+Cc: Weifeng Liu <weifeng.liu.z@gmail.com>
+Subject: [PATCH 6/9] ui/gtk: Don't update scale in fixed scale mode in
+ gtk-egl.c
+Date: Sun, 11 May 2025 15:33:16 +0800
+Message-ID: <20250511073337.876650-7-weifeng.liu.z@gmail.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250511073337.876650-1-weifeng.liu.z@gmail.com>
 References: <20250511073337.876650-1-weifeng.liu.z@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
- envelope-from=weifeng.liu.z@gmail.com; helo=mail-pj1-x1034.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=weifeng.liu.z@gmail.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,83 +96,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Weifeng Liu <weifeng.liu@intel.com>
+Scale shouldn't be changed until user explicitly requests it in fixed
+scale mode (full-screen=false and free-scale=false). Use function
+gd_update_scale to complete scale updating instead.
 
-When using sdl display backend, if the window is scaled, incorrect mouse
-positions will be reported since scaling is not properly handled. Fix it
-by transforming the positions from window coordinate to guest buffer
-coordinate.
-
-Signed-off-by: Weifeng Liu <weifeng.liu@intel.com>
+Signed-off-by: Weifeng Liu <weifeng.liu.z@gmail.com>
 ---
- ui/sdl2.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ ui/gtk-egl.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/ui/sdl2.c b/ui/sdl2.c
-index cda4293a53..b00e421f7f 100644
---- a/ui/sdl2.c
-+++ b/ui/sdl2.c
-@@ -488,14 +488,14 @@ static void handle_mousemotion(SDL_Event *ev)
- {
-     int max_x, max_y;
-     struct sdl2_console *scon = get_scon_from_window(ev->motion.windowID);
-+    int scr_w, scr_h, surf_w, surf_h, x, y, dx, dy;
+diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
+index 947c99334b..f8e4f4bc70 100644
+--- a/ui/gtk-egl.c
++++ b/ui/gtk-egl.c
+@@ -95,8 +95,9 @@ void gd_egl_draw(VirtualConsole *vc)
+ #endif
+         gd_egl_scanout_flush(&vc->gfx.dcl, 0, 0, vc->gfx.w, vc->gfx.h);
  
-     if (!scon || !qemu_console_is_graphic(scon->dcl.con)) {
-         return;
+-        vc->gfx.scale_x = (double)ww / surface_width(vc->gfx.ds);
+-        vc->gfx.scale_y = (double)wh / surface_height(vc->gfx.ds);
++        gd_update_scale(vc, ww, wh,
++                        surface_width(vc->gfx.ds),
++                        surface_height(vc->gfx.ds));
+ 
+         glFlush();
+ #ifdef CONFIG_GBM
+@@ -122,8 +123,9 @@ void gd_egl_draw(VirtualConsole *vc)
+ 
+         eglSwapBuffers(qemu_egl_display, vc->gfx.esurface);
+ 
+-        vc->gfx.scale_x = (double)ww / surface_width(vc->gfx.ds);
+-        vc->gfx.scale_y = (double)wh / surface_height(vc->gfx.ds);
++        gd_update_scale(vc, ww, wh,
++                        surface_width(vc->gfx.ds),
++                        surface_height(vc->gfx.ds));
+ 
+         glFlush();
      }
- 
-+    SDL_GetWindowSize(scon->real_window, &scr_w, &scr_h);
-     if (qemu_input_is_absolute(scon->dcl.con) || absolute_enabled) {
--        int scr_w, scr_h;
--        SDL_GetWindowSize(scon->real_window, &scr_w, &scr_h);
-         max_x = scr_w - 1;
-         max_y = scr_h - 1;
-         if (gui_grab && !gui_fullscreen
-@@ -509,9 +509,14 @@ static void handle_mousemotion(SDL_Event *ev)
-             sdl_grab_start(scon);
-         }
-     }
-+    surf_w = surface_width(scon->surface);
-+    surf_h = surface_height(scon->surface);
-+    x = (int64_t)ev->motion.x * surf_w / scr_w;
-+    y = (int64_t)ev->motion.y * surf_h / scr_h;
-+    dx = (int64_t)ev->motion.xrel * surf_w / scr_w;
-+    dy = (int64_t)ev->motion.yrel * surf_h / scr_h;
-     if (gui_grab || qemu_input_is_absolute(scon->dcl.con) || absolute_enabled) {
--        sdl_send_mouse_event(scon, ev->motion.xrel, ev->motion.yrel,
--                             ev->motion.x, ev->motion.y, ev->motion.state);
-+        sdl_send_mouse_event(scon, dx, dy, x, y, ev->motion.state);
-     }
- }
- 
-@@ -520,12 +525,17 @@ static void handle_mousebutton(SDL_Event *ev)
-     int buttonstate = SDL_GetMouseState(NULL, NULL);
-     SDL_MouseButtonEvent *bev;
-     struct sdl2_console *scon = get_scon_from_window(ev->button.windowID);
-+    int scr_w, scr_h, x, y;
- 
-     if (!scon || !qemu_console_is_graphic(scon->dcl.con)) {
-         return;
-     }
- 
-     bev = &ev->button;
-+    SDL_GetWindowSize(scon->real_window, &scr_w, &scr_h);
-+    x = (int64_t)bev->x * surface_width(scon->surface) / scr_w;
-+    y = (int64_t)bev->y * surface_height(scon->surface) / scr_h;
-+
-     if (!gui_grab && !qemu_input_is_absolute(scon->dcl.con)) {
-         if (ev->type == SDL_MOUSEBUTTONUP && bev->button == SDL_BUTTON_LEFT) {
-             /* start grabbing all events */
-@@ -537,7 +547,7 @@ static void handle_mousebutton(SDL_Event *ev)
-         } else {
-             buttonstate &= ~SDL_BUTTON(bev->button);
-         }
--        sdl_send_mouse_event(scon, 0, 0, bev->x, bev->y, buttonstate);
-+        sdl_send_mouse_event(scon, 0, 0, x, y, buttonstate);
-     }
- }
- 
 -- 
 2.49.0
 
