@@ -2,24 +2,24 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77EA6AB285E
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 15:16:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AD30AB2861
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 15:17:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uE6WW-0007JY-NG; Sun, 11 May 2025 09:15:20 -0400
+	id 1uE6WW-0007I4-GU; Sun, 11 May 2025 09:15:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uE6WR-00073I-MR
- for qemu-devel@nongnu.org; Sun, 11 May 2025 09:15:15 -0400
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uE6WT-00078H-Am
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 09:15:17 -0400
 Received: from mailgate02.uberspace.is ([185.26.156.114])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uE6WP-0006sA-RI
- for qemu-devel@nongnu.org; Sun, 11 May 2025 09:15:15 -0400
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uE6WP-0006sF-RS
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 09:15:17 -0400
 Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate02.uberspace.is (Postfix) with ESMTPS id 8AC98180080
+ by mailgate02.uberspace.is (Postfix) with ESMTPS id E1729180076
  for <qemu-devel@nongnu.org>; Sun, 11 May 2025 15:14:52 +0200 (CEST)
-Received: (qmail 26206 invoked by uid 990); 11 May 2025 13:14:52 -0000
+Received: (qmail 26222 invoked by uid 990); 11 May 2025 13:14:52 -0000
 Authentication-Results: skiff.uberspace.de;
 	auth=pass (plain)
 Received: from unknown (HELO unkown) (::1)
@@ -28,32 +28,36 @@ Received: from unknown (HELO unkown) (::1)
 From: Julian Ganz <neither@nut.email>
 To: qemu-devel@nongnu.org
 Cc: Julian Ganz <neither@nut.email>,
-	Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH v4 20/23] target/xtensa: call plugin trap callbacks
-Date: Sun, 11 May 2025 15:14:12 +0200
-Message-ID: <26b7c748557fb8dc655eb003758789263705d736.1746968215.git.neither@nut.email>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH v4 21/23] tests: add plugin asserting correctness of discon
+ event's to_pc
+Date: Sun, 11 May 2025 15:14:13 +0200
+Message-ID: <e212e53b98c264366458654493e2fa2e2cdecdcc.1746968215.git.neither@nut.email>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1746968215.git.neither@nut.email>
 References: <cover.1746968215.git.neither@nut.email>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Bar: -----
-X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.999795) MID_CONTAINS_FROM(1)
- MIME_GOOD(-0.1) R_MISSING_CHARSET(0.5)
-X-Rspamd-Score: -5.599795
+X-Rspamd-Bar: ----
+X-Rspamd-Report: REPLY(-4) SUSPICIOUS_RECIPS(1.5) MID_CONTAINS_FROM(1)
+ MIME_GOOD(-0.1) BAYES_HAM(-3) R_MISSING_CHARSET(0.5)
+X-Rspamd-Score: -4.1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
  h=from:to:cc:subject:date;
- bh=O9OOWZjnGiK8Xl9Lei0yPEHEK29KFW4jkknqvzRxMpg=;
- b=j9CNaADfUfB2QnQHapyoPgakY8/l+op315iFCBUW7iFyEhRnGWHtTB3HPTbkAGZJc4dY/Yty0h
- mjbdCgxAP4t55m6juvfZArg6pBDb2+4upwdLBj6olfQ9lvhFJDR0nzJv1BEdbwmzIHHz1Ut5+eFb
- V0ANYbTBVz6UahY2RFbVNtmpNEzVrv1emUE3Ve9sKQpS9lh3l1L+4RmcNvTkjgGIIkCtHqnTRj9D
- TQkFhUiREdAe511C02HzxMqPSDHnwgMppBxWK9l+xXxBbK+AgfXyeRtpB2tE4QEIrP/lnXWknfxU
- B2Rfk3fOhqs6PEgQ0R6G8cQQD+LRCzHAOVasgkOM9B/Vz0AIlAmj8nG5hYKGJ2rh+bwUFui9qDj5
- +zCLdVVx+bymaRSGC+4dvfpnRFPAMy1Vctom7PZUa+3jcc+BRs4/Zy2a6J3fMssftB9COr3+LzXp
- 8us9pUbMeTfc5gMfTK9NgUX6femVOADAfxjCi2TrWOsHgdU9r4enmMa31TFzqcVqE62lrzPucLoE
- KGLQ05jsdaQSs7i3wAkJSFc1LfwRMZysIW9ZMiG02lZvzAnFwKSZnUVEH0IaywnDwwvw/9RlZCgp
- HIU/5tkB1iqav/pBylzxlDtyk07JOCgB2wBIjXQ/zNV5w2ydBPo5MXNswte29JpVfIC6U7W4atif
- Q=
+ bh=TDT0V7CtuWjwKP9/qcbxUMFvzfBRMDmCmSbWL0Z6dCI=;
+ b=J8aTdmeg3BRQT6dRXKMToove4U+En5wLD8HykpsFSbAZH8bUmL8DHD8klJnXtkK/GR27iOQk7g
+ 4wpcM7La/dSd9O1jRUu6hp6QngaNQTcWuW/d3GQSBPtglC2j1JWM9UiC2q//53PqfyKaA+h5e3v4
+ 2T2hh/Pt8ah+5WYpfGqt/bXNcivTEpDRV6io/2Xwc3qCCPHOmpCACpoIhM/bzq0OXXRLUotSu9cT
+ Ny8gYNupai14wiJIVY6tIcJhfsiH+Ka1NinGXJl2OlT+yPkezbNrwjPU4yUZmJiYl6uROGVSQvwc
+ yY8tRDL11KJ+FpALLvoFI5LuHNtGjZgVEGFKlbJk1Vjz+jPzWQ0mXXAAuZCJZ0F0u/lQpEVHgnKo
+ SH6PCygH06xpWQuB/Ar9gy7iufDGMlQYrabtOPxqK7LpGYXCuZKJjhrZmpCgfV2Rswpy8S+ehjKU
+ 7KXnf9LTvix37mCp02CuZ8249ojk3b8sTUXUsMonSzwEn7kqpPO8FkqUQQexpXRvR+44ledL4G7Q
+ BPCkhZrRADb6zG0XhXtfS5h4rQW5bajQ4lcBZ3CxcwVxp4NRsNzRyxSywbPquV0DIMnb4pRHsWhb
+ a8Os9rp5VPKLBjBwz2rs8euLuRKzBBhUHzGDPmG+Jz/qckiDhPAV0azdd/5oGY3sHKRy5Oz93ax3
+ g=
 Received-SPF: pass client-ip=185.26.156.114; envelope-from=neither@nut.email;
  helo=mailgate02.uberspace.is
 X-Spam_score_int: -20
@@ -78,59 +82,262 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We recently introduced API for registering callbacks for trap related
-events as well as the corresponding hook functions. Due to differences
-between architectures, the latter need to be called from target specific
-code.
+We recently introduced plugin API for the registration of callbacks for
+discontinuity events, specifically for interrupts, exceptions and host
+call events. The callback receives various bits of information,
+including the VCPU index and PCs.
 
-This change places hooks for xtensa targets.
+This change introduces a test plugin asserting the correctness of that
+behaviour in cases where this is possible with reasonable effort. Since
+instruction PCs are recorded at translation blocks translation time and
+a TB may be used in multiple processes running in distinct virtual
+memory, the plugin allows comparing not full addresses but a subset of
+address bits via the `compare-addr-bits` option.
 
 Signed-off-by: Julian Ganz <neither@nut.email>
 ---
- target/xtensa/exc_helper.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tests/tcg/plugins/discons.c   | 219 ++++++++++++++++++++++++++++++++++
+ tests/tcg/plugins/meson.build |   2 +-
+ 2 files changed, 220 insertions(+), 1 deletion(-)
+ create mode 100644 tests/tcg/plugins/discons.c
 
-diff --git a/target/xtensa/exc_helper.c b/target/xtensa/exc_helper.c
-index b611c9bf97..fdc522698d 100644
---- a/target/xtensa/exc_helper.c
-+++ b/target/xtensa/exc_helper.c
-@@ -32,6 +32,7 @@
- #include "exec/helper-proto.h"
- #include "qemu/host-utils.h"
- #include "qemu/atomic.h"
-+#include "qemu/plugin.h"
- 
- void HELPER(exception)(CPUXtensaState *env, uint32_t excp)
- {
-@@ -207,6 +208,8 @@ void xtensa_cpu_do_interrupt(CPUState *cs)
-     CPUXtensaState *env = cpu_env(cs);
- 
-     if (cs->exception_index == EXC_IRQ) {
-+        uint64_t last_pc = env->pc;
+diff --git a/tests/tcg/plugins/discons.c b/tests/tcg/plugins/discons.c
+new file mode 100644
+index 0000000000..3f6c9a96d4
+--- /dev/null
++++ b/tests/tcg/plugins/discons.c
+@@ -0,0 +1,219 @@
++/*
++ * Copyright (C) 2025, Julian Ganz <neither@nut.email>
++ *
++ * License: GNU GPL, version 2 or later.
++ *   See the COPYING file in the top-level directory.
++ *
++ * This plugin exercises the discontinuity plugin API and asserts some
++ * of its behaviour regarding reported program counters.
++ */
++#include <stdio.h>
 +
-         qemu_log_mask(CPU_LOG_INT,
-                       "%s(EXC_IRQ) level = %d, cintlevel = %d, "
-                       "pc = %08x, a0 = %08x, ps = %08x, "
-@@ -218,6 +221,7 @@ void xtensa_cpu_do_interrupt(CPUState *cs)
-                       env->sregs[INTSET], env->sregs[INTENABLE],
-                       env->sregs[CCOUNT]);
-         handle_interrupt(env);
-+        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
-     }
- 
-     switch (cs->exception_index) {
-@@ -238,9 +242,11 @@ void xtensa_cpu_do_interrupt(CPUState *cs)
-                       env->sregs[CCOUNT]);
-         if (env->config->exception_vector[cs->exception_index]) {
-             uint32_t vector;
-+            uint64_t last_pc = env->pc;
- 
-             vector = env->config->exception_vector[cs->exception_index];
-             env->pc = relocated_vector(env, vector);
-+            qemu_plugin_vcpu_exception_cb(cs, last_pc);
-         } else {
-             qemu_log_mask(CPU_LOG_INT,
-                           "%s(pc = %08x) bad exception_index: %d\n",
++#include <qemu-plugin.h>
++
++QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
++
++struct cpu_state {
++    uint64_t last_pc;
++    uint64_t from_pc;
++    uint64_t next_pc;
++    bool has_last;
++    bool has_from;
++    bool has_next;
++    enum qemu_plugin_discon_type next_type;
++};
++
++struct insn_data {
++    uint64_t addr;
++    uint64_t next_pc;
++    bool next_valid;
++};
++
++static struct qemu_plugin_scoreboard *states;
++
++static bool abort_on_mismatch;
++static bool trace_all_insns;
++static uint64_t compare_addr_mask;
++
++static bool addr_eq(uint64_t a, uint64_t b)
++{
++    return ((a ^ b) & compare_addr_mask) == 0;
++}
++
++static void report_mismatch(const char *pc_name, unsigned int vcpu_index,
++                            enum qemu_plugin_discon_type type, uint64_t last,
++                            uint64_t expected, uint64_t encountered)
++{
++    GString *report;
++    const char *discon_type_name = "unknown";
++
++    if (addr_eq(expected, encountered)) {
++        return;
++    }
++
++    switch (type) {
++    case QEMU_PLUGIN_DISCON_INTERRUPT:
++        discon_type_name = "interrupt";
++        break;
++    case QEMU_PLUGIN_DISCON_EXCEPTION:
++        discon_type_name = "exception";
++        break;
++    case QEMU_PLUGIN_DISCON_HOSTCALL:
++        discon_type_name = "hostcall";
++        break;
++    default:
++        break;
++    }
++
++    report = g_string_new(NULL);
++    g_string_append_printf(report,
++                           "Discon %s PC mismatch on VCPU %d\nExpected:      %"
++                           PRIx64"\nEncountered:   %"PRIx64"\nExecuted Last: %"
++                           PRIx64"\nEvent type:    %s\n",
++                           pc_name, vcpu_index, expected, encountered, last,
++                           discon_type_name);
++    qemu_plugin_outs(report->str);
++    if (abort_on_mismatch) {
++        g_abort();
++    }
++    g_string_free(report, true);
++}
++
++static void vcpu_discon(qemu_plugin_id_t id, unsigned int vcpu_index,
++                        enum qemu_plugin_discon_type type, uint64_t from_pc,
++                        uint64_t to_pc)
++{
++    struct cpu_state *state = qemu_plugin_scoreboard_find(states, vcpu_index);
++
++    switch (type) {
++    case QEMU_PLUGIN_DISCON_EXCEPTION:
++        /*
++         * For some types of exceptions, insn_exec will be called for the
++         * instruction that caused the exception.
++         */
++        if (addr_eq(state->last_pc, from_pc)) {
++            break;
++        }
++        __attribute__((fallthrough));
++    default:
++        if (state->has_next) {
++            /*
++             * We may encounter discontinuity chains without any instructions
++             * being executed in between.
++             */
++            report_mismatch("source", vcpu_index, type, state->last_pc,
++                            state->next_pc, from_pc);
++        } else if (state->has_from) {
++            report_mismatch("source", vcpu_index, type, state->last_pc,
++                            state->from_pc, from_pc);
++        }
++    }
++
++    state->has_from = false;
++
++    state->next_pc = to_pc;
++    state->next_type = type;
++    state->has_next = true;
++}
++
++static void insn_exec(unsigned int vcpu_index, void *userdata)
++{
++    struct cpu_state *state = qemu_plugin_scoreboard_find(states, vcpu_index);
++    struct insn_data* insn = (struct insn_data *) userdata;
++
++    state->last_pc = insn->addr;
++    state->has_last = true;
++
++    if (insn->next_valid) {
++        state->from_pc = insn->next_pc;
++    }
++    state->has_from = insn->next_valid;
++
++    if (state->has_next) {
++        report_mismatch("target", vcpu_index, state->next_type, state->last_pc,
++                        state->next_pc, insn->addr);
++        state->has_next = false;
++    }
++
++    if (trace_all_insns) {
++        g_autoptr(GString) report = g_string_new(NULL);
++        g_string_append_printf(report, "Exec insn at %"PRIx64" on VCPU %d\n",
++                               insn->addr, vcpu_index);
++        qemu_plugin_outs(report->str);
++    }
++}
++
++static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
++{
++    size_t i;
++    size_t n_insns = qemu_plugin_tb_n_insns(tb);
++    struct insn_data *udata = calloc(n_insns, sizeof(struct insn_data));
++
++    for (i = 0; i < n_insns; i++) {
++        struct qemu_plugin_insn *insn = qemu_plugin_tb_get_insn(tb, i);
++        uint64_t pc = qemu_plugin_insn_vaddr(insn);
++        udata[i].addr = pc;
++        udata[i].next_pc = pc + qemu_plugin_insn_size(insn);
++        udata[i].next_valid = true;
++        qemu_plugin_register_vcpu_insn_exec_cb(insn, insn_exec,
++                                               QEMU_PLUGIN_CB_NO_REGS,
++                                               &udata[i]);
++    }
++
++    udata[n_insns - 1].next_valid = false;
++}
++
++QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
++                                           const qemu_info_t *info,
++                                           int argc, char **argv)
++{
++    /* Set defaults */
++    abort_on_mismatch = true;
++    trace_all_insns = false;
++    compare_addr_mask = -1;
++
++    int i;
++
++    for (i = 0; i < argc; i++) {
++        char *opt = argv[i];
++        g_auto(GStrv) tokens = g_strsplit(opt, "=", 2);
++        if (g_strcmp0(tokens[0], "abort") == 0) {
++            if (!qemu_plugin_bool_parse(tokens[0], tokens[1],
++                                        &abort_on_mismatch)) {
++                fprintf(stderr, "boolean argument parsing failed: %s\n", opt);
++                return -1;
++            }
++        } else if (g_strcmp0(tokens[0], "trace-all") == 0) {
++            if (!qemu_plugin_bool_parse(tokens[0], tokens[1],
++                                        &trace_all_insns)) {
++                fprintf(stderr, "boolean argument parsing failed: %s\n", opt);
++                return -1;
++            }
++        } else if (g_strcmp0(tokens[0], "compare-addr-bits") == 0) {
++            if (g_strcmp0(tokens[1], "full") == 0) {
++                compare_addr_mask = -1;
++            } else {
++                char *end = tokens[1];
++                guint64 bits = g_ascii_strtoull(tokens[1], &end, 10);
++                if (bits == 0 || bits > 64 || *end) {
++                    fprintf(stderr,
++                            "integer parsing failed or out of range: %s\n",
++                            opt);
++                    return -1;
++                }
++                compare_addr_mask = ~(((uint64_t) -1) << bits);
++            }
++        } else {
++            fprintf(stderr, "option parsing failed: %s\n", opt);
++            return -1;
++        }
++    }
++
++    states = qemu_plugin_scoreboard_new(sizeof(struct cpu_state));
++
++    qemu_plugin_register_vcpu_discon_cb(id, QEMU_PLUGIN_DISCON_ALL,
++                                        vcpu_discon);
++    qemu_plugin_register_vcpu_tb_trans_cb(id, vcpu_tb_trans);
++
++    return 0;
++}
+diff --git a/tests/tcg/plugins/meson.build b/tests/tcg/plugins/meson.build
+index 41f02f2c7f..1b13d6e614 100644
+--- a/tests/tcg/plugins/meson.build
++++ b/tests/tcg/plugins/meson.build
+@@ -1,6 +1,6 @@
+ t = []
+ if get_option('plugins')
+-  foreach i : ['bb', 'empty', 'inline', 'insn', 'mem', 'reset', 'syscall']
++  foreach i : ['bb', 'discons', 'empty', 'inline', 'insn', 'mem', 'reset', 'syscall']
+     if host_os == 'windows'
+       t += shared_module(i, files(i + '.c') + '../../../contrib/plugins/win32_linker.c',
+                         include_directories: '../../../include/qemu',
 -- 
 2.49.0
 
