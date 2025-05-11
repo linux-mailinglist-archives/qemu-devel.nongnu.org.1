@@ -2,29 +2,29 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD44AB2864
-	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 15:18:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31C01AB2859
+	for <lists+qemu-devel@lfdr.de>; Sun, 11 May 2025 15:16:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uE6WE-0006Qm-Uk; Sun, 11 May 2025 09:15:02 -0400
+	id 1uE6WD-0006Q8-WE; Sun, 11 May 2025 09:15:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uE6WC-0006PV-1c
- for qemu-devel@nongnu.org; Sun, 11 May 2025 09:15:00 -0400
-Received: from mailgate02.uberspace.is ([185.26.156.114])
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uE6WA-0006P7-Ko
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 09:14:58 -0400
+Received: from mailgate02.uberspace.is ([2a00:d0c0:200:0:1c7b:a6ff:fee0:8ea4])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uE6W8-0006mF-Fe
- for qemu-devel@nongnu.org; Sun, 11 May 2025 09:14:59 -0400
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uE6W8-0006mL-Dc
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 09:14:58 -0400
 Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate02.uberspace.is (Postfix) with ESMTPS id 1F5D0180050
+ by mailgate02.uberspace.is (Postfix) with ESMTPS id 75463180057
  for <qemu-devel@nongnu.org>; Sun, 11 May 2025 15:14:47 +0200 (CEST)
-Received: (qmail 25941 invoked by uid 990); 11 May 2025 13:14:47 -0000
+Received: (qmail 25958 invoked by uid 990); 11 May 2025 13:14:47 -0000
 Authentication-Results: skiff.uberspace.de;
 	auth=pass (plain)
 Received: from unknown (HELO unkown) (::1)
  by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
- Sun, 11 May 2025 15:14:46 +0200
+ Sun, 11 May 2025 15:14:47 +0200
 From: Julian Ganz <neither@nut.email>
 To: qemu-devel@nongnu.org
 Cc: Julian Ganz <neither@nut.email>,
@@ -32,10 +32,10 @@ Cc: Julian Ganz <neither@nut.email>,
  Alexandre Iooss <erdnaxe@crans.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v4 03/23] plugins: add hooks for new discontinuity related
- callbacks
-Date: Sun, 11 May 2025 15:13:55 +0200
-Message-ID: <de35ba0200017bef2126899f918b6be8830851ea.1746968215.git.neither@nut.email>
+Subject: [PATCH v4 04/23] contrib/plugins: add plugin showcasing new
+ dicontinuity related API
+Date: Sun, 11 May 2025 15:13:56 +0200
+Message-ID: <4ed6d35c186719fd20d4abe5c73b80b0901a96fa.1746968215.git.neither@nut.email>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1746968215.git.neither@nut.email>
 References: <cover.1746968215.git.neither@nut.email>
@@ -47,26 +47,25 @@ X-Rspamd-Report: REPLY(-4) SUSPICIOUS_RECIPS(1.5) MID_CONTAINS_FROM(1)
 X-Rspamd-Score: -4.1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
  h=from:to:cc:subject:date;
- bh=xnmTchtKkuBxSt7akDwvVFkTIUBDMW6NONxwKe7Ga2g=;
- b=N/eD+7/tY8q2HkeiMTjOxeCdnqowtZMW09CJcmYWm/DeZB+O7TyN3Xbss/jtxHTyEkM0ql/3JF
- AMlX18eR6VOuH0LN7pACMValhUWWgqih3woYYoiL6FnhoEnLu0AXGM95mFUaa/VPcTcgM5jMPRu/
- tsMqrf8KwwrKE94718b82nVZj6+8KUntLDaF4F3Ew/dbBBQRJniQf7n30N/0qCZqOJI/Wt4ES0x3
- T0b+I0D9jjB7nFnVYN8kmvxM8YtnarFTz9EO19+WtdtcRK3KjBsIWMPuq8QWJpf6YK8qSqx5gQku
- U0nikf1TC7kFcCEOPpM/r5UTA0/wx7HYAr2AfdMzywmir7LwQbeDv9t7tfzubP7F2b02gpGjQ3bV
- LFgrggMOSWdXIASofu1wGr86iwvuGYFAgLzztOmkEKHfmKD+L29Ee5GAkcm/3KHGHkt/01SDXSdH
- kyS8HwolI4jGuJVV8HfTd8xASMSd6/BjdEU0dfSa4TMY5nrIDu14U5Q6JPEMMkMEeO8hjQRjnIp4
- rDsU6O4+TZNsGJN26OjhAKFuo+Ox7rwV7ykwFrJ2eaE/GZHYjysx2WNSy2VE/O7j2ocb0MB3JP0q
- y+72d2SIn1Ic++2nNmRnDGeoQzk2Osb6F9nhBjItw1l++0zCzefE1PmgkRWCCziG27gizCl5GSkz
- c=
-Received-SPF: pass client-ip=185.26.156.114; envelope-from=neither@nut.email;
- helo=mailgate02.uberspace.is
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ bh=7wLwP/GmvMZE+Nx/zxGdT34rel9HqnYnj6QSDKPryA4=;
+ b=jWAhDfKN5N8fFugm/hEoIt5X5khi8VoNowGXVNs0u7Ul37gddrWJl3KiqROSfbQ/Ka+5yKO+l+
+ zrjV6BB8p9zmlD2CTNRnE7Y8R7aYs4/asZswBUSpldmOvwEPADVZ+51eWPlOrV7ZOxSoPDoUVgUe
+ jc/fRYx+5XPjsCmSS3oy8MBiEOOLdtJoLGsLMzui7wfm/GPaIi5Ffg30wexWEvlQVXpo0dtb0lIn
+ GCJSTnD2BbkdTTOpKYfiUqvUU5Wbu/wFakxnS0Lzq+8+jM616Fby0Vj9TlWxURU8eulDeLaU9V0d
+ at7h2HQojvDbrnNDyMHN2YAVRr8pxnWL7WMiYJpV52Qb5ReC9yP6t943KMHIiYmhXX/3bteYPWOY
+ T/qxiwO4rXtC9mqWuu3M+RPFxIo5BT6FSa+KzkX4V4TfQi6G4Z0TBGnUzsTmLSt4/DKnhoZzCNXU
+ g/UtcLy/pkBKZoioW6ivN/GM4WOEM7hrAY41ykajq3Q5U8mwfdRvCeHMqprGW1Lct9JD3auI9b9a
+ sVixz2xSUZR2eS2CIlcPdlqeagjeE38tJ5ZD14yWvDccwQ6rpuI5YSNlWZijiILEHQfZ6WMG83fR
+ +XU1q49SgVMttp5voHqGdj//34jrQ2wvsWAMsGFBfIGMFcDSG4uhToSVCSvN6FZ+mKOU2aKKVv7H
+ Q=
+Received-SPF: pass client-ip=2a00:d0c0:200:0:1c7b:a6ff:fee0:8ea4;
+ envelope-from=neither@nut.email; helo=mailgate02.uberspace.is
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NEW_PRODUCTS=1.249,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,121 +81,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The plugin API allows registration of callbacks for a variety of VCPU
-related events, such as VCPU reset, idle and resume. In addition, we
-recently introduced API for registering callbacks for discontinuity
-events, specifically for interrupts, exceptions and host calls.
-
-This change introduces the corresponding hooks called from target
-specific code inside qemu.
+We recently introduced new plugin API for registration of discontinuity
+related callbacks. This change introduces a minimal plugin showcasing
+the new API. It simply counts the occurances of interrupts, exceptions
+and host calls per CPU and reports the counts when exitting.
 
 Signed-off-by: Julian Ganz <neither@nut.email>
 ---
- include/qemu/plugin.h | 12 ++++++++++
- plugins/core.c        | 53 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 65 insertions(+)
+ contrib/plugins/meson.build |   3 +-
+ contrib/plugins/traps.c     | 100 ++++++++++++++++++++++++++++++++++++
+ docs/about/emulation.rst    |   8 +++
+ 3 files changed, 110 insertions(+), 1 deletion(-)
+ create mode 100644 contrib/plugins/traps.c
 
-diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
-index 27a176b631..3494325039 100644
---- a/include/qemu/plugin.h
-+++ b/include/qemu/plugin.h
-@@ -161,6 +161,9 @@ void qemu_plugin_vcpu_exit_hook(CPUState *cpu);
- void qemu_plugin_tb_trans_cb(CPUState *cpu, struct qemu_plugin_tb *tb);
- void qemu_plugin_vcpu_idle_cb(CPUState *cpu);
- void qemu_plugin_vcpu_resume_cb(CPUState *cpu);
-+void qemu_plugin_vcpu_interrupt_cb(CPUState *cpu, uint64_t from);
-+void qemu_plugin_vcpu_exception_cb(CPUState *cpu, uint64_t from);
-+void qemu_plugin_vcpu_hostcall_cb(CPUState *cpu, uint64_t from);
- void
- qemu_plugin_vcpu_syscall(CPUState *cpu, int64_t num, uint64_t a1,
-                          uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5,
-@@ -243,6 +246,15 @@ static inline void qemu_plugin_vcpu_idle_cb(CPUState *cpu)
- static inline void qemu_plugin_vcpu_resume_cb(CPUState *cpu)
- { }
- 
-+static inline void qemu_plugin_vcpu_interrupt_cb(CPUState *cpu, uint64_t from)
-+{ }
-+
-+static inline void qemu_plugin_vcpu_exception_cb(CPUState *cpu, uint64_t from)
-+{ }
-+
-+static inline void qemu_plugin_vcpu_hostcall_cb(CPUState *cpu, uint64_t from)
-+{ }
-+
- static inline void
- qemu_plugin_vcpu_syscall(CPUState *cpu, int64_t num, uint64_t a1, uint64_t a2,
-                          uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6,
-diff --git a/plugins/core.c b/plugins/core.c
-index dc1f5cb4d8..f07813d588 100644
---- a/plugins/core.c
-+++ b/plugins/core.c
-@@ -104,6 +104,44 @@ static void plugin_vcpu_cb__simple(CPUState *cpu, enum qemu_plugin_event ev)
-     }
- }
- 
+diff --git a/contrib/plugins/meson.build b/contrib/plugins/meson.build
+index fa8a426c8b..327b48c888 100644
+--- a/contrib/plugins/meson.build
++++ b/contrib/plugins/meson.build
+@@ -1,5 +1,6 @@
+ contrib_plugins = ['bbv', 'cache', 'cflow', 'drcov', 'execlog', 'hotblocks',
+-                   'hotpages', 'howvec', 'hwprofile', 'ips', 'stoptrigger']
++                   'hotpages', 'howvec', 'hwprofile', 'ips', 'stoptrigger',
++                   'traps']
+ if host_os != 'windows'
+   # lockstep uses socket.h
+   contrib_plugins += 'lockstep'
+diff --git a/contrib/plugins/traps.c b/contrib/plugins/traps.c
+new file mode 100644
+index 0000000000..5fa5a853ee
+--- /dev/null
++++ b/contrib/plugins/traps.c
+@@ -0,0 +1,100 @@
 +/*
-+ * Disable CFI checks.
-+ * The callback function has been loaded from an external library so we do not
-+ * have type information
++ * Copyright (C) 2025, Julian Ganz <neither@nut.email>
++ *
++ * Traps - count traps
++ *
++ * Count the number of interrupts (asyncronous events), exceptions (synchronous
++ * events) and host calls (e.g. semihosting) per cpu and report those counts on
++ * exit.
++ *
++ * License: GNU GPL, version 2 or later.
++ *   See the COPYING file in the top-level directory.
 + */
-+QEMU_DISABLE_CFI
-+static void plugin_vcpu_cb__discon(CPUState *cpu,
-+                                   enum qemu_plugin_discon_type type,
-+                                   uint64_t from)
++
++#include <stdio.h>
++
++#include <qemu-plugin.h>
++
++QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
++
++typedef struct {
++    uint64_t interrupts;
++    uint64_t exceptions;
++    uint64_t hostcalls;
++    bool active;
++} TrapCounters;
++
++static struct qemu_plugin_scoreboard *traps;
++static size_t max_vcpus;
++
++static void vcpu_init(qemu_plugin_id_t id, unsigned int vcpu_index)
 +{
-+    struct qemu_plugin_cb *cb, *next;
-+    enum qemu_plugin_event ev;
-+    uint64_t to = cpu->cc->get_pc(cpu);
++    TrapCounters *rec = qemu_plugin_scoreboard_find(traps, vcpu_index);
++    rec->active = true;
++}
 +
-+    if (cpu->cpu_index < plugin.num_vcpus) {
-+        switch (type) {
-+        case QEMU_PLUGIN_DISCON_INTERRUPT:
-+            ev = QEMU_PLUGIN_EV_VCPU_INTERRUPT;
-+            break;
-+        case QEMU_PLUGIN_DISCON_EXCEPTION:
-+            ev = QEMU_PLUGIN_EV_VCPU_EXCEPTION;
-+            break;
-+        case QEMU_PLUGIN_DISCON_HOSTCALL:
-+            ev = QEMU_PLUGIN_EV_VCPU_HOSTCALL;
-+            break;
-+        default:
-+            g_assert_not_reached();
-+        }
-+
-+        /* iterate safely; plugins might uninstall themselves at any time */
-+        QLIST_FOREACH_SAFE_RCU(cb, &plugin.cb_lists[ev], entry, next) {
-+            qemu_plugin_vcpu_discon_cb_t func = cb->f.vcpu_discon;
-+
-+            func(cb->ctx->id, cpu->cpu_index, type, from, to);
-+        }
++static void vcpu_discon(qemu_plugin_id_t id, unsigned int vcpu_index,
++                        enum qemu_plugin_discon_type type, uint64_t from_pc,
++                        uint64_t to_pc)
++{
++    TrapCounters *rec = qemu_plugin_scoreboard_find(traps, vcpu_index);
++    switch (type) {
++    case QEMU_PLUGIN_DISCON_INTERRUPT:
++        rec->interrupts++;
++        break;
++    case QEMU_PLUGIN_DISCON_EXCEPTION:
++        rec->exceptions++;
++        break;
++    case QEMU_PLUGIN_DISCON_HOSTCALL:
++        rec->hostcalls++;
++        break;
++    default:
++        g_assert_not_reached();
++        break;
 +    }
 +}
 +
- /*
-  * Disable CFI checks.
-  * The callback function has been loaded from an external library so we do not
-@@ -539,6 +577,21 @@ void qemu_plugin_vcpu_resume_cb(CPUState *cpu)
-     }
- }
++static void plugin_exit(qemu_plugin_id_t id, void *p)
++{
++    g_autoptr(GString) report;
++    report = g_string_new("VCPU, interrupts, exceptions, hostcalls\n");
++    int vcpu;
++
++    for (vcpu = 0; vcpu < max_vcpus; vcpu++) {
++        TrapCounters *rec = qemu_plugin_scoreboard_find(traps, vcpu);
++        if (rec->active) {
++            g_string_append_printf(report,
++                                   "% 4d, % 10"PRId64", % 10"PRId64", % 10"
++                                   PRId64"\n",
++                                   vcpu,
++                                   rec->interrupts, rec->exceptions,
++                                   rec->hostcalls);
++        }
++    }
++
++    qemu_plugin_outs(report->str);
++    qemu_plugin_scoreboard_free(traps);
++}
++
++QEMU_PLUGIN_EXPORT
++int qemu_plugin_install(qemu_plugin_id_t id, const qemu_info_t *info,
++                        int argc, char **argv)
++{
++    if (!info->system_emulation) {
++        fputs("trap plugin can only be used in system emulation mode.\n",
++              stderr);
++        return -1;
++    }
++
++    max_vcpus = info->system.max_vcpus;
++    traps = qemu_plugin_scoreboard_new(sizeof(TrapCounters));
++    qemu_plugin_register_vcpu_init_cb(id, vcpu_init);
++    qemu_plugin_vcpu_for_each(id, vcpu_init);
++
++    qemu_plugin_register_vcpu_discon_cb(id, QEMU_PLUGIN_DISCON_ALL,
++                                        vcpu_discon);
++
++    qemu_plugin_register_atexit_cb(id, plugin_exit, NULL);
++
++    return 0;
++}
+diff --git a/docs/about/emulation.rst b/docs/about/emulation.rst
+index a72591ee4d..f985fce8ec 100644
+--- a/docs/about/emulation.rst
++++ b/docs/about/emulation.rst
+@@ -812,6 +812,14 @@ This plugin can limit the number of Instructions Per Second that are executed::
+     - Maximum number of instructions per cpu that can be executed in one second.
+       The plugin will sleep when the given number of instructions is reached.
  
-+void qemu_plugin_vcpu_interrupt_cb(CPUState *cpu, uint64_t from)
-+{
-+    plugin_vcpu_cb__discon(cpu, QEMU_PLUGIN_DISCON_INTERRUPT, from);
-+}
++Count traps
++...........
 +
-+void qemu_plugin_vcpu_exception_cb(CPUState *cpu, uint64_t from)
-+{
-+    plugin_vcpu_cb__discon(cpu, QEMU_PLUGIN_DISCON_EXCEPTION, from);
-+}
++``contrib/plugins/traps.c``
 +
-+void qemu_plugin_vcpu_hostcall_cb(CPUState *cpu, uint64_t from)
-+{
-+    plugin_vcpu_cb__discon(cpu, QEMU_PLUGIN_DISCON_HOSTCALL, from);
-+}
++This plugin counts the number of interrupts (asyncronous events), exceptions
++(synchronous events) and host calls (e.g. semihosting) per cpu.
 +
- void qemu_plugin_register_vcpu_idle_cb(qemu_plugin_id_t id,
-                                        qemu_plugin_vcpu_simple_cb_t cb)
- {
+ Other emulation features
+ ------------------------
+ 
 -- 
 2.49.0
 
