@@ -2,84 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 089E7AB4440
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 21:04:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 770CFAB445F
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 21:07:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEYQh-0003p4-Pb; Mon, 12 May 2025 15:03:11 -0400
+	id 1uEYT1-0005LB-5M; Mon, 12 May 2025 15:05:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uEYQe-0003oo-ST
- for qemu-devel@nongnu.org; Mon, 12 May 2025 15:03:09 -0400
+ id 1uEYSz-0005L2-3T
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 15:05:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uEYQY-0006pu-No
- for qemu-devel@nongnu.org; Mon, 12 May 2025 15:03:07 -0400
+ id 1uEYSw-0007TR-7g
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 15:05:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747076580;
+ s=mimecast20190719; t=1747076729;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=C9JD1Nu3JmfWRC5/S8nZ8mn1ezcFc41GJw8wqDaIDQXS9NiXx6QLby6jCL1MkoiiZVXnl7
- huaTemnvBicynQB7eDvhEsMUBKG+7Z9haGslvLJsqrOJYC0a/SgTpgSVjEbhmYv9RYc+cg
- Bt6rr3yluRjq2Xrk67UhCXR6v3EMiGc=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=/lv1O+Ic+miCqVDpB+5Xdy095FdO5xc4IkFRnyXMrgQ=;
+ b=gqzuX60cuzbBYqTK7otQOmNAUIY13PyMNmiK9dwhyeCEAkOHREG31Sf0IhZ3lMjo7l0cwo
+ vsJAq7pyvfUCtYQLsStyB8SKJvsYyWGdawj1/pIE8yUm3ldH2cWiwDad2G1/SVT+DFFG9x
+ GYo+NToHE8D1RQu+Hw1FC0nqhceOBrA=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-619-fKXNIOceNmG5SsvGOUT1dQ-1; Mon, 12 May 2025 15:02:59 -0400
-X-MC-Unique: fKXNIOceNmG5SsvGOUT1dQ-1
-X-Mimecast-MFC-AGG-ID: fKXNIOceNmG5SsvGOUT1dQ_1747076578
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3a0bcaf5f45so1411751f8f.1
- for <qemu-devel@nongnu.org>; Mon, 12 May 2025 12:02:59 -0700 (PDT)
+ us-mta-425-bm0qt9mjNymGn2FKCeUNfw-1; Mon, 12 May 2025 15:05:27 -0400
+X-MC-Unique: bm0qt9mjNymGn2FKCeUNfw-1
+X-Mimecast-MFC-AGG-ID: bm0qt9mjNymGn2FKCeUNfw_1747076727
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3a205227595so675186f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 12 May 2025 12:05:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747076578; x=1747681378;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
- b=keYsNMjBX9XxqBc3m0ZByoAQvxdXxJmLPNb27y3fGlP2g1sxji66tseFapjGEA9S+N
- 9EOuEzx32pAbJE6TciSoo4RZEXSS6CeombprVy9fH9bbobjSQekSoJRfJFnnk/rI8RIl
- 5O270/wOjzT7VeBnNnuTK7KseaHec6RHdbP9wd/Q5TFXs7Ww1AtAXwvjbEJeokvT/uB7
- 0abSVIuX7EBokuTvqkuvZOrI/XeRZ/1V2Xrf/bzrXlDBqDK6X6YZg4dWynG1FxyDFHol
- qwhqP+xYyx7B9Eyms8OBmRjfb5onMZ6O2HzzmUq0tlCKQC3CBtLUuia2KADC0d7VBhna
- fe4A==
-X-Gm-Message-State: AOJu0YwhHlmF2k5nWfKkK6aO13iFnobzmb207UqSHj9zSlxxcFJyvb6C
- E0xZN6MGaSpQ914wlz6/S/9C7zzpZKBaU8eu/fk+DOgwzb1sruDTmxS+iRnRGKyglUbuZPlgJ8/
- H9jYYh79zoTgK4Y31DrN14/Lw+xtDnstkOC0JWCogPRWYTJBbvy9vcULsMX++
-X-Gm-Gg: ASbGnctnqR8U4HvwYmXndC7f8B5J46CGWJCNAli8CL6I6oFhuriSzULEsG73u4O93+5
- nDG8QT0+sNSWR6LvCqb5p3fxerhmAuBO6hE911hz0Sc6DWQ0cl/DcMpl6bI5XlYy8zdDgEWmeoV
- yjs7snMiaX7bZDImplD36Fzka9HBKO1FDVMAAHm4kWGANEwkFep89+RHocaF2hyJHb1CRanG+5K
- sVySFI7MpOAHFV1VRlzdjNvVEJLNMTzDeC6o71BEob8eg9VNvqVreRZBo3654DsjD/yx5aekzse
- QteBUFDlmYpFI5Q=
-X-Received: by 2002:a05:6000:2902:b0:3a0:aed9:e34 with SMTP id
- ffacd0b85a97d-3a1f64eecc6mr9768160f8f.48.1747076577948; 
- Mon, 12 May 2025 12:02:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH/+HGER5LTUacggyNiy4HFGeNGthHzqFlbXskYNxH2Ol9w4LcB3g6Cqyu29GN0k/OwyNiLpA==
-X-Received: by 2002:a05:6000:2902:b0:3a0:aed9:e34 with SMTP id
- ffacd0b85a97d-3a1f64eecc6mr9768127f8f.48.1747076577524; 
- Mon, 12 May 2025 12:02:57 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1747076726; x=1747681526;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=/lv1O+Ic+miCqVDpB+5Xdy095FdO5xc4IkFRnyXMrgQ=;
+ b=eo3rIh01xGkiRFNc2VHSSaNOmKXXKdSiq8teveuJ713fYa2+FJx3ETciHgMdrPLcjW
+ MftkKBfp+iHYuCyUr/HWX14u0luIcFRx/hJ9XRq7PL19d9VB/QpQvBrO2MAtVqOQ7JiZ
+ vbnAkoyAbcQJ2MCaiyaSzKVynrgU+xaI7ShBOXOLGugM95LBXuWMZxQUJwROX+Th4Q1d
+ a0no5OSgzulEniNCw4X8EAdJaC8W+chFSFAD4NkQdK2t0O4E0G8lW4UMeiLocw3pFqOg
+ YRc2ztc9lyU0p6sohjXgy5gGt43+ArrsgfH/FpheGZ0w5hZ5TEdv5RXmsWHzET5M1dCy
+ icXQ==
+X-Gm-Message-State: AOJu0YwvGOH+O8ijNLXVydQticolcrPNP1jsgIAdJRQEBC4kvsEvXxF1
+ PgT6X3Bos+EWgZxHNZc7o8+JeHRk161jp4vtp6WYFPrZz/u8stYbl+iBqsDIKCxpCl+zsnMTuBd
+ rZUfkYtX3RA2vjFpIVrGPpaEbTQ161y/LSoQIWC4TctWc5Ovt3AyBNkSmCBlgHm5SFES86V5JFZ
+ tX251au6NzA1OTKfDs3dyffGgVHdh4ywyXPFTh
+X-Gm-Gg: ASbGncut8PLvMFyPqNLR3eOYqooB7ll5yZ6RdG+KnHntwIw1hthdjycqRgoRYmKoh6e
+ 9BX2tFXcNFJp5UgWyRJ9DqXtOLTfotF7VNQ8ddS4xAX+MTdouj802F+61KciqRiH5OjKrkjTfVC
+ gkpM1kmIILAty3KAzfrr6WaYwu+8OxU49ks/gC1QC0s/RBGf0abX12BJT2chV4ZCAug7p/Pbywx
+ Gn+xjtWjaAGdz4V+DBsuSFPiEfJEXrMsS5nNYZqf6r2S7kkLbaLj6JxBSmKMZ4xKl6aUGkV7ghA
+ OiFJYxDsUUvz8gU=
+X-Received: by 2002:a05:6000:4304:b0:3a0:b294:ccf2 with SMTP id
+ ffacd0b85a97d-3a1f649cc02mr12657075f8f.52.1747076725860; 
+ Mon, 12 May 2025 12:05:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGdQGsBoAkKxXYBSTjmTkRuRT74mhDAvhFAnfrU5xT5odj4S2V59k4lx+HCw5aUU4g3/y3Xew==
+X-Received: by 2002:a05:6000:4304:b0:3a0:b294:ccf2 with SMTP id
+ ffacd0b85a97d-3a1f649cc02mr12657054f8f.52.1747076725342; 
+ Mon, 12 May 2025 12:05:25 -0700 (PDT)
 Received: from [192.168.122.1] ([151.95.45.141])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a1f58f2a79sm13183019f8f.48.2025.05.12.12.02.56
+ ffacd0b85a97d-3a1f5a2d30asm13306247f8f.76.2025.05.12.12.05.24
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 May 2025 12:02:57 -0700 (PDT)
+ Mon, 12 May 2025 12:05:24 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
-To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc: qemu-devel@nongnu.org,
-	Chao Gao <chao.gao@intel.com>
-Subject: Re: [PATCH] target/i386: Make ITS_NO available to guests
-Date: Mon, 12 May 2025 21:02:54 +0200
-Message-ID: <20250512190255.178968-1-pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/16] Meson, x86, Rust patches for 2025-05-12
+Date: Mon, 12 May 2025 21:05:08 +0200
+Message-ID: <20250512190524.179419-1-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <8c1797e488b42650f62d816f25c58726eb522fad.1745946029.git.pawan.kumar.gupta@linux.intel.com>
-References: 
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -106,8 +103,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Queued, thanks.
+The following changes since commit 7be29f2f1a3f5b037d27eedbd5df9f441e8c8c16:
 
-Paolo
+  Merge tag 'pull-vfio-20250509' of https://github.com/legoater/qemu into staging (2025-05-09 12:04:35 -0400)
+
+are available in the Git repository at:
+
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
+
+for you to fetch changes up to 74978391b2da0116b9109d52931f342118d5a122:
+
+  target/i386: Make ITS_NO available to guests (2025-05-12 21:02:51 +0200)
+
+----------------------------------------------------------------
+* meson: small old patches (one from 2022)
+* rust: pl011: forward port some changes from C version
+* target/i386: small improvements to TCG emulation
+* target/i386: HVF emulation cleanups
+* target/i386: add its_no feature
+* cs4231a: fix assertion failure
+* update Linux headers
+
+----------------------------------------------------------------
+Paolo Bonzini (14):
+      meson: drop --enable-avx* options
+      meson: do not check supported TCG architecture if no emulators built
+      meson: remove unnecessary dependencies from specific_ss
+      modinfo: lookup compile_commands.json by object
+      rust: pl011: Rename RX FIFO methods
+      rust: pl011: Really use RX FIFO depth
+      target/i386: ignore misplaced REX prefixes
+      target/i386: list TCG-supported features for CPUID[80000021h].EAX
+      target/i386: move push of error code to switch_tss_ra
+      target/i386: implement TSS trap bit
+      target/i386/emulate: stop overloading decode->op[N].ptr
+      target/i386/emulate: mostly rewrite flags handling
+      target/i386: remove lflags
+      linux-headers: update from 6.15 + kvm/next
+
+Pawan Gupta (1):
+      target/i386: Make ITS_NO available to guests
+
+Zheng Huang (1):
+      hw/audio/cs4231a: fix assertion error in isa_bus_get_irq
+
+ docs/devel/rust.rst              |   2 +-
+ meson.build                      |  54 ++++++-----
+ linux-headers/asm-x86/kvm.h      |  71 ++++++++++++++
+ linux-headers/linux/kvm.h        |   1 +
+ target/i386/cpu.h                |   6 --
+ target/i386/emulate/x86_decode.h |   9 +-
+ target/i386/emulate/x86_emu.h    |   8 +-
+ target/i386/emulate/x86_flags.h  |  12 +--
+ hw/audio/cs4231a.c               |   4 +
+ target/i386/cpu.c                |  21 ++++-
+ target/i386/emulate/x86_decode.c |  74 +++++++--------
+ target/i386/emulate/x86_emu.c    | 123 ++++++++++++------------
+ target/i386/emulate/x86_flags.c  | 198 ++++++++++++++++-----------------------
+ target/i386/tcg/seg_helper.c     |  81 +++++++++-------
+ target/i386/tcg/decode-new.c.inc |  36 +++++--
+ accel/tcg/meson.build            |   2 +-
+ meson_options.txt                |   4 -
+ rust/hw/char/pl011/src/device.rs |  25 +++--
+ scripts/meson-buildoptions.sh    |   6 --
+ scripts/modinfo-collect.py       |  23 +++--
+ tcg/meson.build                  |   2 +-
+ ui/meson.build                   |   3 -
+ 22 files changed, 423 insertions(+), 342 deletions(-)
+-- 
+2.49.0
 
 
