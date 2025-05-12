@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20791AB3C44
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 17:36:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E061EAB3C6A
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 17:42:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEV9X-000401-Jf; Mon, 12 May 2025 11:33:15 -0400
+	id 1uEV9e-0004OB-Dm; Mon, 12 May 2025 11:33:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uEV9Q-0003nm-Bu
- for qemu-devel@nongnu.org; Mon, 12 May 2025 11:33:08 -0400
+ id 1uEV9a-0004GR-5i
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 11:33:18 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uEV9N-0006f2-FU
- for qemu-devel@nongnu.org; Mon, 12 May 2025 11:33:07 -0400
+ id 1uEV9X-0006fA-VL
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 11:33:17 -0400
 Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54CC9fn8018644;
- Mon, 12 May 2025 15:33:02 GMT
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54CCA0DC018776;
+ Mon, 12 May 2025 15:33:03 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2025-04-25; bh=2Nb8bmabzDuslm4J3z3Uoi4G2LWVc8CHTNEG0QfCqT4=; b=
- JjddceXrCbR9ebk6+o2BsFHaQS9dsyfWjApYAjtxwkUkp4Y63MtIngFlIFmWg+Qg
- aVJJUpLozTu0A+3cuCFyO5fO0JsHjjlBtcsI9NO+eizouRSobx0EFsFxuMG4YdP0
- C0FGoRaaIqp5ZUPqULZn8MqT7KvI0Z7yRzMkwdWO/SoBNyds1WS8+UubYNfv4AT+
- FM1oA57x7Zc5Bux+NY8b9lPzQOuaDCB832nOW6V5+6Im5Q+uhpgzVqk1+zTgKQOe
- SHPPAqelahLQU5spxEXicgwwiS/f/4wswmH59gDKzWzQlaRk/10K5xX8nbvFq5D3
- g9qmopr8SZ1zV/2yYyjKVQ==
+ corp-2025-04-25; bh=yVN76vltI4t6ZE993sEnFd8vU1OWcqQeDKje3+tGCfM=; b=
+ c7NvDXB4vKZcA+sFT1jgpyTiPnb35BuS4+OKomoko/SkTcce1zm3LdOMG5ParZnk
+ 0XDpK8FYsd08W2r5qhAK8zjWUKl73O7aKHdn3h4csm/1iXtZ8JzioSmexm7mn/CM
+ DjqWvB37dXmZDAev9xsPvw79+HTSbxVeT9O5rMwgpD6wKLcbenVj3x7sknTfABiZ
+ TCUiT/4ucMJeKyDJxUyfXtsMvoPLfBLjtw4CbezE/r/x8RXd/XxW5SV78Y0YeOV8
+ iYXya2Cy39oz8aSouExLVmdTE8Mbl10zQgcsyQM9TeugeH1orudjabrkkLvqvbDm
+ og68FBwtFBZ7jA6QnK6ZMw==
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46j13r2sd6-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46j13r2sd8-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 May 2025 15:33:02 +0000 (GMT)
+ Mon, 12 May 2025 15:33:03 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 54CEDUb1002426; Mon, 12 May 2025 15:33:01 GMT
+ with ESMTP id 54CFGGRH002411; Mon, 12 May 2025 15:33:02 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 46jwx3668c-1
+ 46jwx3668y-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 May 2025 15:33:01 +0000
+ Mon, 12 May 2025 15:33:02 +0000
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54CFWk4u030605;
- Mon, 12 May 2025 15:33:01 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54CFWk4w030605;
+ Mon, 12 May 2025 15:33:02 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 46jwx36627-10; Mon, 12 May 2025 15:33:01 +0000
+ ESMTP id 46jwx36627-11; Mon, 12 May 2025 15:33:01 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -61,9 +61,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V3 09/42] vfio/container: discard old DMA vaddr
-Date: Mon, 12 May 2025 08:32:20 -0700
-Message-Id: <1747063973-124548-10-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V3 10/42] vfio/container: restore DMA vaddr
+Date: Mon, 12 May 2025 08:32:21 -0700
+Message-Id: <1747063973-124548-11-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1747063973-124548-1-git-send-email-steven.sistare@oracle.com>
 References: <1747063973-124548-1-git-send-email-steven.sistare@oracle.com>
@@ -75,18 +75,18 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
  bulkscore=0 suspectscore=0 phishscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2504070000
  definitions=main-2505120161
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDE2MSBTYWx0ZWRfX3X9pFBcWVhjV
- NvAjV9/ghRyK9gY7+XADmVXekpm4kC7qEVCH+ve1/xVfQKx9ZHySlHsSw7QlN9Nj8r+8HUiEmRn
- fu52kXoCL1v2xUDgH5JkGTR8AjSmO+QBHmLG3NAJQmvVVecpI3bjGGjlkiSuJllDamVnavB2TT5
- LHwSzzXq4KxHe72V8ZL1dIg2yC7yefmglijNoI+yFfzMtwwKoez1QBuk0IqXYxVa6+IeplKfgEf
- r2xkYBcWsQ8YQM5GsKQf2J4795t4j8PMSCcH9povJzBiv9CxTTJfQnHZOYKvCuPpLHyBF5FPPo/
- jB5bZ87ggPvkygM9h1vfla/mBYaLLjHFG44fHNhku4/r9CDFyQZMAC0Pcwteu/5fD8sR2cH0BW5
- oMCp1zxnOxcRgJdfETBxpbDdWL3BpkmlyR8lnwhCzjHvBNuVcqulkikADHFvvddeOFRrrDS5
-X-Proofpoint-GUID: T8MnjLAQowMigMRNS7iiG5L9qec_PL3u
-X-Proofpoint-ORIG-GUID: T8MnjLAQowMigMRNS7iiG5L9qec_PL3u
-X-Authority-Analysis: v=2.4 cv=M6hNKzws c=1 sm=1 tr=0 ts=682214ae b=1 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDE2MSBTYWx0ZWRfXxv5ybnRu8iAn
+ srotXXOnYPvVNyP0+SQH7sHG8SUygMD/jD5NcGjBsEvZbdCaWig/t46XJc5BkXGAc9xyXRJDlqI
+ 1d7WWI3EHsi/DGr6fqncflLEohQnDSYWcetQZQI/uHLxrDIa1BGn8w65wN8TbjZLTIQ4k9QRYIV
+ 1+Xy/KmTCQ97niuJNh0j5+7JTx1SDWVaQB2/PJ1j0mVq02Oe0BBp4SQP6uYj2Z/VogKPtkP0cLu
+ 0PPGQ/aM9ftuEkztPcRO2tnx3ftZBlgLqE7Tjgd6VtouLxnwFYXiJZpicgDGHJ8ec1BkGcdGgU2
+ 0TX1RcJevEjglv+ljalfw7H81aw3izyFpUceKgSZv3z1t+FA2IX3qGB5hxz2V9jHEsYNlo6zUVB
+ h5mxpkIi8T6R+Fh33RY8Tw5vvSXBf0qxHxKtiTX2ALvBqJHRBLTOLdfuyFqSXuGcLjvE61WS
+X-Proofpoint-GUID: RZ8oPU63l2izSkLrm-GH3cKgym8KfJeF
+X-Proofpoint-ORIG-GUID: RZ8oPU63l2izSkLrm-GH3cKgym8KfJeF
+X-Authority-Analysis: v=2.4 cv=M6hNKzws c=1 sm=1 tr=0 ts=682214af b=1 cx=c_pps
  a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=l9kVofuoYc9qIq1kHw0A:9
+ a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=GhJuAjOf1PyZR_944Y0A:9
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -32
@@ -112,70 +112,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the container pre_save handler, discard the virtual addresses in DMA
-mappings with VFIO_DMA_UNMAP_FLAG_VADDR, because guest RAM will be
-remapped at a different VA after in new QEMU.  DMA to already-mapped
-pages continues.
+In new QEMU, do not register the memory listener at device creation time.
+Register it later, in the container post_load handler, after all vmstate
+that may affect regions and mapping boundaries has been loaded.  The
+post_load registration will cause the listener to invoke its callback on
+each flat section, and the calls will match the mappings remembered by the
+kernel.
+
+The listener calls a special dma_map handler that passes the new VA of each
+section to the kernel using VFIO_DMA_MAP_FLAG_VADDR.  Restore the normal
+handler at the end.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- hw/vfio/cpr-legacy.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ hw/vfio/container.c  | 15 +++++++++++++--
+ hw/vfio/cpr-legacy.c | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 61 insertions(+), 2 deletions(-)
 
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index a554683..0e02726 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -137,6 +137,8 @@ static int vfio_legacy_dma_unmap_one(const VFIOContainerBase *bcontainer,
+     int ret;
+     Error *local_err = NULL;
+ 
++    assert(!container->cpr.reused);
++
+     if (iotlb && vfio_container_dirty_tracking_is_started(bcontainer)) {
+         if (!vfio_container_devices_dirty_tracking_is_supported(bcontainer) &&
+             bcontainer->dirty_pages_supported) {
+@@ -691,8 +693,17 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
+     }
+     group_was_added = true;
+ 
+-    if (!vfio_listener_register(bcontainer, errp)) {
+-        goto fail;
++    /*
++     * If reused, register the listener later, after all state that may
++     * affect regions and mapping boundaries has been cpr load'ed.  Later,
++     * the listener will invoke its callback on each flat section and call
++     * dma_map to supply the new vaddr, and the calls will match the mappings
++     * remembered by the kernel.
++     */
++    if (!cpr_reused) {
++        if (!vfio_listener_register(bcontainer, errp)) {
++            goto fail;
++        }
+     }
+ 
+     bcontainer->initialized = true;
 diff --git a/hw/vfio/cpr-legacy.c b/hw/vfio/cpr-legacy.c
-index 638a8e0..519d772 100644
+index 519d772..bbcf71e 100644
 --- a/hw/vfio/cpr-legacy.c
 +++ b/hw/vfio/cpr-legacy.c
-@@ -17,6 +17,22 @@
+@@ -11,11 +11,13 @@
+ #include "hw/vfio/vfio-container.h"
+ #include "hw/vfio/vfio-cpr.h"
+ #include "hw/vfio/vfio-device.h"
++#include "hw/vfio/vfio-listener.h"
+ #include "migration/blocker.h"
+ #include "migration/cpr.h"
+ #include "migration/migration.h"
  #include "migration/vmstate.h"
  #include "qapi/error.h"
++#include "qemu/error-report.h"
  
-+static bool vfio_dma_unmap_vaddr_all(VFIOContainer *container, Error **errp)
-+{
-+    struct vfio_iommu_type1_dma_unmap unmap = {
-+        .argsz = sizeof(unmap),
-+        .flags = VFIO_DMA_UNMAP_FLAG_VADDR | VFIO_DMA_UNMAP_FLAG_ALL,
-+        .iova = 0,
-+        .size = 0,
-+    };
-+    if (ioctl(container->fd, VFIO_IOMMU_UNMAP_DMA, &unmap)) {
-+        error_setg_errno(errp, errno, "vfio_dma_unmap_vaddr_all");
-+        return false;
-+    }
-+    return true;
-+}
-+
-+
- static bool vfio_cpr_supported(VFIOContainer *container, Error **errp)
+ static bool vfio_dma_unmap_vaddr_all(VFIOContainer *container, Error **errp)
  {
-     if (!ioctl(container->fd, VFIO_CHECK_EXTENSION, VFIO_UPDATE_VADDR)) {
-@@ -32,6 +48,18 @@ static bool vfio_cpr_supported(VFIOContainer *container, Error **errp)
-     }
+@@ -32,6 +34,34 @@ static bool vfio_dma_unmap_vaddr_all(VFIOContainer *container, Error **errp)
+     return true;
  }
  
-+static int vfio_container_pre_save(void *opaque)
++/*
++ * Set the new @vaddr for any mappings registered during cpr load.
++ * Reused is cleared thereafter.
++ */
++static int vfio_legacy_cpr_dma_map(const VFIOContainerBase *bcontainer,
++                                   hwaddr iova, ram_addr_t size, void *vaddr,
++                                   bool readonly)
 +{
-+    VFIOContainer *container = opaque;
-+    Error *err = NULL;
++    const VFIOContainer *container = container_of(bcontainer, VFIOContainer,
++                                                  bcontainer);
++    struct vfio_iommu_type1_dma_map map = {
++        .argsz = sizeof(map),
++        .flags = VFIO_DMA_MAP_FLAG_VADDR,
++        .vaddr = (__u64)(uintptr_t)vaddr,
++        .iova = iova,
++        .size = size,
++    };
 +
-+    if (!vfio_dma_unmap_vaddr_all(container, &err)) {
-+        error_report_err(err);
-+        return -1;
++    assert(container->cpr.reused);
++
++    if (ioctl(container->fd, VFIO_IOMMU_MAP_DMA, &map)) {
++        error_report("vfio_legacy_cpr_dma_map (iova %lu, size %ld, va %p): %s",
++                     iova, size, vaddr, strerror(errno));
++        return -errno;
 +    }
++
 +    return 0;
 +}
-+
+ 
+ static bool vfio_cpr_supported(VFIOContainer *container, Error **errp)
+ {
+@@ -63,12 +93,24 @@ static int vfio_container_pre_save(void *opaque)
  static int vfio_container_post_load(void *opaque, int version_id)
  {
      VFIOContainer *container = opaque;
-@@ -52,6 +80,7 @@ static const VMStateDescription vfio_container_vmstate = {
++    VFIOContainerBase *bcontainer = &container->bcontainer;
+     VFIOGroup *group;
+     VFIODevice *vbasedev;
++    Error *err = NULL;
++
++    if (!vfio_listener_register(bcontainer, &err)) {
++        error_report_err(err);
++        return -1;
++    }
+ 
+     container->cpr.reused = false;
+ 
+     QLIST_FOREACH(group, &container->group_list, container_next) {
++        VFIOIOMMUClass *vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
++
++        /* Restore original dma_map function */
++        vioc->dma_map = vfio_legacy_dma_map;
++
+         QLIST_FOREACH(vbasedev, &group->device_list, next) {
+             vbasedev->cpr.reused = false;
+         }
+@@ -80,6 +122,7 @@ static const VMStateDescription vfio_container_vmstate = {
      .name = "vfio-container",
      .version_id = 0,
      .minimum_version_id = 0,
-+    .pre_save = vfio_container_pre_save,
++    .priority = MIG_PRI_LOW,  /* Must happen after devices and groups */
+     .pre_save = vfio_container_pre_save,
      .post_load = vfio_container_post_load,
      .needed = cpr_needed_for_reuse,
-     .fields = (VMStateField[]) {
+@@ -104,6 +147,11 @@ bool vfio_legacy_cpr_register_container(VFIOContainer *container, Error **errp)
+ 
+     vmstate_register(NULL, -1, &vfio_container_vmstate, container);
+ 
++    /* During incoming CPR, divert calls to dma_map. */
++    if (container->cpr.reused) {
++        VFIOIOMMUClass *vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
++        vioc->dma_map = vfio_legacy_cpr_dma_map;
++    }
+     return true;
+ }
+ 
 -- 
 1.8.3.1
 
