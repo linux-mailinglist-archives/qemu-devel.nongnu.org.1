@@ -2,95 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 452FFAB2D7A
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 04:26:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C6C8AB2DC8
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 05:11:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEIqm-0003SB-Ko; Sun, 11 May 2025 22:25:04 -0400
+	id 1uEJZT-0006sJ-K2; Sun, 11 May 2025 23:11:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uEIqd-0003R6-U9; Sun, 11 May 2025 22:24:56 -0400
-Received: from mgamail.intel.com ([198.175.65.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uEIqb-0002fF-6n; Sun, 11 May 2025 22:24:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747016693; x=1778552693;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=z7qhnh/wiUvOpKBKk84OgMz6hz8R1PuKuj0Ro9Ok98M=;
- b=Il4RtjogniuZ1Vc47Rt4Z9LOQPhjE66PNjCWylTwcnuwMZ13Up4THUCO
- N4J2UabTWRTP4IUWHf+hcO+J+sg9dteiKfFurjllb3ibVTd9HatngOl+p
- H4MiRfxIdeG7J9lo1wwHcJhtCWdxqH2eK8ZSBA8r83uXKcsiqT8zhwlAT
- XN21uAkOI8PHt2fOh8UR9RNSUtfKmIxhnBdJOsMuigZ6RAoFTHUjgzkPZ
- xmknITFlhIMKga+4ZYMfASP5Zy1uak9rAyhkqfd/jQBeHtC44glUjL3UX
- x9Xgu49SRMsQ7pLifBoIMNetLWQlnYoLWh9TkZDIeZ2WWFXukUQbKjRAI A==;
-X-CSE-ConnectionGUID: SBrb44oPSjuOXuV1jV5MCQ==
-X-CSE-MsgGUID: 3Tcd+DZISQy1hwd49i0lug==
-X-IronPort-AV: E=McAfee;i="6700,10204,11430"; a="60202903"
-X-IronPort-AV: E=Sophos;i="6.15,281,1739865600"; d="scan'208";a="60202903"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 May 2025 19:24:47 -0700
-X-CSE-ConnectionGUID: MOgSV+puRlO3gTTA58Sv+Q==
-X-CSE-MsgGUID: nX5TD5wBSsGv9x37LRRe2Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,281,1739865600"; d="scan'208";a="137094374"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa010.jf.intel.com with ESMTP; 11 May 2025 19:24:40 -0700
-Date: Mon, 12 May 2025 10:45:42 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "Daniel P. Berrange" <berrange@redhat.com>, qemu-devel@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- kvm@vger.kernel.org, Gerd Hoffmann <kraxel@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Yi Liu <yi.l.liu@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-riscv@nongnu.org,
- Weiwei Li <liwei1518@gmail.com>, Amit Shah <amit@kernel.org>,
- Yanan Wang <wangyanan55@huawei.com>, Helge Deller <deller@gmx.de>,
- Palmer Dabbelt <palmer@dabbelt.com>, Ani Sinha <anisinha@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- =?iso-8859-1?Q?Cl=E9ment?= Mathieu--Drif <clement.mathieu--drif@eviden.com>,
- qemu-arm@nongnu.org,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Huacai Chen <chenhuacai@kernel.org>, Jason Wang <jasowang@redhat.com>
-Subject: Re: How to mark internal properties (was: Re: [PATCH v4 12/27]
- target/i386/cpu: Remove CPUX86State::enable_cpuid_0xb field)
-Message-ID: <aCFg1hr1wpNZIcL3@intel.com>
-References: <20250508133550.81391-1-philmd@linaro.org>
- <20250508133550.81391-13-philmd@linaro.org>
- <23260c74-01ba-45bc-bf2f-b3e19c28ec8a@intel.com>
- <aB2vjuT07EuO6JSQ@intel.com>
- <2f526570-7ab0-479c-967c-b3f95f9f19e3@redhat.com>
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1uEJZR-0006rb-3X; Sun, 11 May 2025 23:11:13 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1uEJZP-0006h3-A8; Sun, 11 May 2025 23:11:12 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-74248a3359fso1774436b3a.2; 
+ Sun, 11 May 2025 20:11:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1747019469; x=1747624269; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=u9r2yyKX/u9ldGgI8SjiWAY0cx5O7JLkzSvZL9g2Zs4=;
+ b=bCHlm7ZKm0sBir5OvYjnqXOxMXHpFzlBoMadhif2BNOAC1hTuXBPK8LZ2cWwyYSHQ/
+ AxRm4+V5OwMcoXPML6vIIStIYYNy4B+lsUlQVHzWMp6SUG/v7M1Q11BSi2B8jzkztF8z
+ KvjgKI2hMF0YcqBqF/wIyS8JbCmHAHUNaR/v7kHru4VZ7v3Os+Xb4xAiKwDIHiXaEqqt
+ tyPMlFFsdK1gZfZDRc7T/IvONgZJ+sObPAk9o2PtR2lK2192A6wGac2hj/38Y60Sr/ps
+ 1r3s6e2lkrR4Nzuetl2jyGtoojik90hNzpCxsw3DtI+usim+twnRqvuIFcG5ZzlBCJtp
+ JROg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747019469; x=1747624269;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=u9r2yyKX/u9ldGgI8SjiWAY0cx5O7JLkzSvZL9g2Zs4=;
+ b=UfN38/w2BIUhRqbQnI825G/LAxrXKn//cOUd33ixizDASfW+fOB3NIiALSAPf+l+Yl
+ WX2Qh7AqUfEThweybKH9ee+QLdr2rTI+OH+i1au9TTj76I8TykedAiosZb4swXF277M2
+ I4UfmJlGMsPtEWypvMX+52PhlxniR+Cco/BEuIXN2+CWqdClwKRuOMdjDIqubgg+FkVg
+ TO2nv2PH6xwv81R72g7F0HPBuOD5eL92YxtGeKJ3Xd4uhcS/i1HhmMahwdRUYPJFq2LB
+ Qs7BULtEQo3BWmb1w92b3pazlql98gRqMvSuWhSxwtgEcujdALIFikG9gCIUDS351sv9
+ jBXA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW+Pf5B9SOPDVPbl4PU19xldyGCdqpgHAgaCw1kYuBto6FVFeQvAklatKBU4nV4IPRluOtFR0jNzKGb@nongnu.org
+X-Gm-Message-State: AOJu0Yw6D7fLDwOLGmzxRC81A67zZdv2GKCNEweeLenifCvpSOEY/0M/
+ 5VpqnG6cwOWa8/Xus3zIk7h3Be6SI59X3OBv6MCDBukHD06EKK/kdSyP9A==
+X-Gm-Gg: ASbGncvAVlr/n3du1bLrJoiNkt/AV6IU+lMGQiEjF4ul9SBK+dcZNCfBNql94TkG0HV
+ R+n1UJxcLRUwIDFGJXgBn/KL6ZiF9+z/k5eOm/wszeTpNwQ4Rc9nYQkf+c241hoNp4I92ijqnSZ
+ P7wfXDetwHFAahZ7JxZEP4fQESO5iz2AMA7nYmPphmNPt/PnWArNXbZIuKqvdj7JfAyB2Gh7LGY
+ jsp+j7wMjlVqcBEi2VGQtvn5H+LtynwMOlcEo5r9avDI4W0+7FXB2FJY9x6bZeNSdKN6ADIh9Bw
+ KTgTOqifEN7bkdtMkEngjl/CaAkKoAfsqKJ7u+vhE2GZZeKIiHJF2x7Qvg==
+X-Google-Smtp-Source: AGHT+IEXrRHXyRkFD9CJEcbVP/3HjPj+bqxbFqBiQOcCoE7xei/PLoIzKcDmuHMHoJswHxUFU0YyYg==
+X-Received: by 2002:a05:6a20:c991:b0:1f0:e706:1370 with SMTP id
+ adf61e73a8af0-215abd306ffmr19979291637.35.1747019468731; 
+ Sun, 11 May 2025 20:11:08 -0700 (PDT)
+Received: from wheely.local0.net ([118.209.229.237])
+ by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-b234951024csm4750069a12.5.2025.05.11.20.11.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 11 May 2025 20:11:08 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
+ =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
+ Glenn Miles <milesg@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>,
+ Caleb Schlossin <calebs@linux.vnet.ibm.com>
+Subject: [PATCH 00/50] ppc/xive: updates for PowerVM
+Date: Mon, 12 May 2025 13:10:09 +1000
+Message-ID: <20250512031100.439842-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=gb2312
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2f526570-7ab0-479c-967c-b3f95f9f19e3@redhat.com>
-Received-SPF: pass client-ip=198.175.65.12; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -59
-X-Spam_score: -6.0
-X-Spam_bar: ------
-X-Spam_report: (-6.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.587,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,105 +96,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 09, 2025 at 12:04:19PM +0200, Thomas Huth wrote:
-> Date: Fri, 9 May 2025 12:04:19 +0200
-> From: Thomas Huth <thuth@redhat.com>
-> Subject: How to mark internal properties (was: Re: [PATCH v4 12/27]
->  target/i386/cpu: Remove CPUX86State::enable_cpuid_0xb field)
-> 
-> On 09/05/2025 09.32, Zhao Liu wrote:
-> > On Fri, May 09, 2025 at 02:49:27PM +0800, Xiaoyao Li wrote:
-> > > Date: Fri, 9 May 2025 14:49:27 +0800
-> > > From: Xiaoyao Li <xiaoyao.li@intel.com>
-> > > Subject: Re: [PATCH v4 12/27] target/i386/cpu: Remove
-> > >   CPUX86State::enable_cpuid_0xb field
-> > > 
-> > > On 5/8/2025 9:35 PM, Philippe Mathieu-Daud¨¦ wrote:
-> > > > The CPUX86State::enable_cpuid_0xb boolean was only disabled
-> > > > for the pc-q35-2.6 and pc-i440fx-2.6 machines, which got
-> > > > removed. Being now always %true, we can remove it and simplify
-> > > > cpu_x86_cpuid().
-> > > > 
-> > > > Signed-off-by: Philippe Mathieu-Daud¨¦ <philmd@linaro.org>
-> > > > ---
-> > > >    target/i386/cpu.h | 3 ---
-> > > >    target/i386/cpu.c | 6 ------
-> > > >    2 files changed, 9 deletions(-)
-> > > > 
-> > > > diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> > > > index 0db70a70439..06817a31cf9 100644
-> > > > --- a/target/i386/cpu.h
-> > > > +++ b/target/i386/cpu.h
-> > > > @@ -2241,9 +2241,6 @@ struct ArchCPU {
-> > > >         */
-> > > >        bool legacy_multi_node;
-> > > > -    /* Compatibility bits for old machine types: */
-> > > > -    bool enable_cpuid_0xb;
-> > > > -
-> > > >        /* Enable auto level-increase for all CPUID leaves */
-> > > >        bool full_cpuid_auto_level;
-> > > > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> > > > index 49179f35812..6fe37f71b1e 100644
-> > > > --- a/target/i386/cpu.c
-> > > > +++ b/target/i386/cpu.c
-> > > > @@ -6982,11 +6982,6 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> > > >            break;
-> > > >        case 0xB:
-> > > >            /* Extended Topology Enumeration Leaf */
-> > > > -        if (!cpu->enable_cpuid_0xb) {
-> > > > -                *eax = *ebx = *ecx = *edx = 0;
-> > > > -                break;
-> > > > -        }
-> > > > -
-> > > >            *ecx = count & 0xff;
-> > > >            *edx = cpu->apic_id;
-> > > > @@ -8828,7 +8823,6 @@ static const Property x86_cpu_properties[] = {
-> > > >        DEFINE_PROP_UINT64("ucode-rev", X86CPU, ucode_rev, 0),
-> > > >        DEFINE_PROP_BOOL("full-cpuid-auto-level", X86CPU, full_cpuid_auto_level, true),
-> > > >        DEFINE_PROP_STRING("hv-vendor-id", X86CPU, hyperv_vendor),
-> > > > -    DEFINE_PROP_BOOL("cpuid-0xb", X86CPU, enable_cpuid_0xb, true),
-> > > 
-> > > It's deprecating the "cpuid-0xb" property.
-> > > 
-> > > I think we need go with the standard process to deprecate it.
-> > 
-> > Thanks! I got your point.
-> > 
-> > Though this property is introduced for compatibility, as its comment
-> > said "Compatibility bits for old machine types", it is also useful for
-> > somer users.
-> 
-> Thanks for your clarifications, Zhao! But I think this shows again the
-> problem that we have hit a couple of times in the past already: Properties
-> are currently used for both, config knobs for the users and internal
-> switches for configuration of the machine. We lack a proper way to say "this
-> property is usable for the user" and "this property is meant for internal
-> configuration only".
+These changes gets the powernv xive2 to the point it is able to run
+PowerVM with good stability.
 
-Hi Thomas, thank you.
+* Various bug fixes around lost interrupts particularly.
+* Major group interrupt work, in particular around redistributing
+  interrupts. Upstream group support is not in a complete or usable
+  state as it is.
+* Significant context push/pull improvements, particularly pool and
+  phys context handling was quite incomplete beyond trivial OPAL
+  case that pushes at boot.
+* Improved tracing and checking for unimp and guest error situations.
+* Various other missing feature support.
 
-AFAIK, there are two ways to configure whether an object/device is
-allowed to be created by user or not:
+The ordering and grouping of patches in the series is not perfect,
+because it had been an ongoing development, and PowerVM only started
+to become stable toward the end. I did try to rearrange and improve
+things, but some were not worth rebasing cost (e.g., some of the
+pool/phys pull redistribution patches should have ideally been squashed
+or moved together), so please bear that in mind.  Suggestions for
+further rearranging the series are fine, but I might just find they are
+too much effort to be worthwhile.
 
-* TYPE_USER_CREATABLE
-* DeviceClass: user_creatable
+Thanks,
+Nick
 
-So, it looks like it would be tricky to change the infrastructure around
-object_property_add because it's not easy to be compatible with both of the
-above user creation ways.
+Glenn Miles (12):
+  ppc/xive2: Fix calculation of END queue sizes
+  ppc/xive2: Use fair irq target search algorithm
+  ppc/xive2: Fix irq preempted by lower priority group irq
+  ppc/xive2: Fix treatment of PIPR in CPPR update
+  pnv/xive2: Support ESB Escalation
+  ppc/xive2: add interrupt priority configuration flags
+  ppc/xive2: Support redistribution of group interrupts
+  ppc/xive: Add more interrupt notification tracing
+  ppc/xive2: Improve pool regs variable name
+  ppc/xive2: Implement "Ack OS IRQ to even report line" TIMA op
+  ppc/xive2: Redistribute group interrupt precluded by CPPR update
+  ppc/xive2: redistribute irqs for pool and phys ctx pull
 
-> I wonder whether we could maybe come up with a naming scheme to better
-> distinguish the two sets, e.g. by using a prefix similar to the "x-" prefix
-> for experimental properties? We could e.g. say that all properties starting
-> with a "q-" are meant for QEMU-internal configuration only or something
-> similar (and maybe even hide those from the default help output when running
-> "-device xyz,help" ?)? Anybody any opinions or better ideas on this?
+Michael Kowal (4):
+  ppc/xive2: Remote VSDs need to match on forwarding address
+  ppc/xive2: Reset Generation Flipped bit on END Cache Watch
+  pnv/xive2: Print value in invalid register write logging
+  pnv/xive2: Permit valid writes to VC/PC Flush Control registers
 
-Therefore, I think the ¡°q-¡± prefix might be a good way, simple and effective.
+Nicholas Piggin (34):
+  ppc/xive: Fix xive trace event output
+  ppc/xive: Report access size in XIVE TM operation error logs
+  ppc/xive2: fix context push calculation of IPB priority
+  ppc/xive: Fix PHYS NSR ring matching
+  ppc/xive2: Do not present group interrupt on OS-push if precluded by
+    CPPR
+  ppc/xive2: Set CPPR delivery should account for group priority
+  ppc/xive: tctx_notify should clear the precluded interrupt
+  ppc/xive: Explicitly zero NSR after accepting
+  ppc/xive: Move NSR decoding into helper functions
+  ppc/xive: Fix pulling pool and phys contexts
+  pnv/xive2: VC_ENDC_WATCH_SPEC regs should read back WATCH_FULL
+  ppc/xive: Change presenter .match_nvt to match not present
+  ppc/xive2: Redistribute group interrupt preempted by higher priority
+    interrupt
+  ppc/xive: Add xive_tctx_pipr_present() to present new interrupt
+  ppc/xive: Fix high prio group interrupt being preempted by low prio VP
+  ppc/xive: Split xive recompute from IPB function
+  ppc/xive: tctx signaling registers rework
+  ppc/xive: tctx_accept only lower irq line if an interrupt was
+    presented
+  ppc/xive: Add xive_tctx_pipr_set() helper function
+  ppc/xive2: split tctx presentation processing from set CPPR
+  ppc/xive2: Consolidate presentation processing in context push
+  ppc/xive2: Avoid needless interrupt re-check on CPPR set
+  ppc/xive: Assert group interrupts were redistributed
+  ppc/xive2: implement NVP context save restore for POOL ring
+  ppc/xive2: Prevent pulling of pool context losing phys interrupt
+  ppc/xive: Redistribute phys after pulling of pool context
+  ppc/xive: Check TIMA operations validity
+  ppc/xive2: Implement pool context push TIMA op
+  ppc/xive2: redistribute group interrupts on context push
+  ppc/xive2: Implement set_os_pending TIMA op
+  ppc/xive2: Implement POOL LGS push TIMA op
+  ppc/xive2: Implement PHYS ring VP push TIMA op
+  ppc/xive: Split need_resend into restore_nvp
+  ppc/xive2: Enable lower level contexts on VP push
 
-Let's see if any other maintainers have a better idea.
+ hw/intc/pnv_xive.c          |  16 +-
+ hw/intc/pnv_xive2.c         | 139 +++++--
+ hw/intc/pnv_xive2_regs.h    |   1 +
+ hw/intc/spapr_xive.c        |  18 +-
+ hw/intc/trace-events        |  12 +-
+ hw/intc/xive.c              | 555 ++++++++++++++++++----------
+ hw/intc/xive2.c             | 717 +++++++++++++++++++++++++++---------
+ hw/ppc/pnv.c                |  48 +--
+ hw/ppc/spapr.c              |  21 +-
+ include/hw/ppc/xive.h       |  66 +++-
+ include/hw/ppc/xive2.h      |  22 +-
+ include/hw/ppc/xive2_regs.h |  22 +-
+ 12 files changed, 1145 insertions(+), 492 deletions(-)
 
-Regards,
-Zhao
+-- 
+2.47.1
 
 
