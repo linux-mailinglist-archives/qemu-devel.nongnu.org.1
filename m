@@ -2,101 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BBF1AB3972
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 15:38:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 413DFAB39A0
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 15:48:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uETLe-00069C-Ta; Mon, 12 May 2025 09:37:39 -0400
+	id 1uETVK-0002EC-Cs; Mon, 12 May 2025 09:47:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uETLN-000684-KU
- for qemu-devel@nongnu.org; Mon, 12 May 2025 09:37:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1uETV9-0002CL-5y
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 09:47:28 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uETLK-0001eS-A2
- for qemu-devel@nongnu.org; Mon, 12 May 2025 09:37:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747057034;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=im2priDzq+pkcpThck918RmJAbTX7P5Kr7irLUHLzRE=;
- b=Z3pbzwvlI9UV5QjeXJussni/BF6eTekPcdRDqt5RZ3iD2Dtu+oOjscIhVS9IHC7bjrTnoA
- A5gCAboMwivTa4kkhNmxWFRbdwY/nnTBrdCM9yABM1c+hZMTPzO9o/twzaXiCtCSoxZOBa
- 5XrKeTABRPiNFhNgnzVWrNfEKCNfUJs=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-349-18ZXEf3UPDq3MG0Yo8d8DA-1; Mon, 12 May 2025 09:37:12 -0400
-X-MC-Unique: 18ZXEf3UPDq3MG0Yo8d8DA-1
-X-Mimecast-MFC-AGG-ID: 18ZXEf3UPDq3MG0Yo8d8DA_1747057031
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3a202744565so671152f8f.0
- for <qemu-devel@nongnu.org>; Mon, 12 May 2025 06:37:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747057031; x=1747661831;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=im2priDzq+pkcpThck918RmJAbTX7P5Kr7irLUHLzRE=;
- b=E+7aPoZ7HnUxONVGtAXREFXQn0AatFEF8ygcN89Hn/da7L0Kc50tizr08b7dGpHxOc
- a3MSAz10HAOCLYHCiIsr4TBGNCXIZyOV/04zLOrN7Oa7AJhKmJU30ZGm2UO+lEOUThNA
- Wu1xYAwKbwlifG54FeICtMbi3T/+ercH6+q+4KX0bwgBzgDkqMaSCDN0EmsLqBSfTvmu
- 7FsCJDGVm4Y2ENoSLQDPyhiHOxK46BSAO09noT8HKpwtLquaG2ilcXqshlAuNCHeJ2RJ
- DNpRbmOdaCNRWcHbLcxJrVytTA4akoY7QXdH5ji/Qx8aDqKiGc5sihVLk9H4fS2A2vSK
- /56A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUHoIg6Orvz7OvnufRgbh1z75LWIR+9Ik/YKtN8CxuyzupwamgcZTZOlYpXH7RnS6PTLyx3S5lTSSwA@nongnu.org
-X-Gm-Message-State: AOJu0Yyao1PU9cVJvet9CciLUzDIUQsxlmnoGaOxRpjx8zS+PWTHNqSf
- 1dCeE/SZ9/AIs9n8OzqUNSeh1z3AZobuu6y952ZHMUB98sTsDt6lIR6aKY8u4pDSPVeHcK327UA
- 0H6oh74YvGMzHG9FgwHs2qEzwvB/m1UNYqL8WuGCKU3tmBybtiM62
-X-Gm-Gg: ASbGncsbx373ql1NklA8rInKYesuOiq3cLVNeoxiDxQH4GbCzo+PDHd9P0bzyZ/Eqj1
- lT+yMlKCXRBaiohaoRVrG1vgxfBCU+p07Z3i39mC8vtuIJCAJjPjtiwkiaCYDZKP19OtXRChtJV
- lxfjRYaffcJXfMWVyJ4ngwYru5f39zEa2HNB5/SjzrhmrR5r1ynJqWCpdVHf0tW6ZMbSbOTZ5ZK
- zOxZx2FsglEzp6sHh08nZ71y2puwLNE83QWEwhT7q9JFBZYcvCBB8qn0M1wNAavMCRaWzOSiayG
- gfZSIA==
-X-Received: by 2002:a05:6000:250c:b0:3a0:b978:1f2b with SMTP id
- ffacd0b85a97d-3a1f6a1bfdbmr8558665f8f.11.1747057031452; 
- Mon, 12 May 2025 06:37:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE9oxB26TDqEQml7vAcXA48mdbt76wIvmRn7LZGaxI+9vpw60XhpWIBsUJa5v4T7ff4zHDBRw==
-X-Received: by 2002:a05:6000:250c:b0:3a0:b978:1f2b with SMTP id
- ffacd0b85a97d-3a1f6a1bfdbmr8558644f8f.11.1747057031076; 
- Mon, 12 May 2025 06:37:11 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a1f58f3369sm12638807f8f.57.2025.05.12.06.37.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 May 2025 06:37:10 -0700 (PDT)
-Date: Mon, 12 May 2025 09:37:07 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: linux-cxl@vger.kernel.org, qemu-devel@nongnu.org, linuxarm@huawei.com,
- fan.ni@samsung.com, Yuquan Wang <wangyuquan1236@phytium.com.cn>,
- Arpit Kumar <arpit1.kumar@samsung.com>,
- Sweta Kumari <s5.kumari@samsung.com>,
- Vinayak Holikatti <vinayak.kh@samsung.com>,
- Davidlohr Bueso <dave@stgolabs.net>, Ajay Joshi <ajay.opensrc@micron.com>
-Subject: Re: [PATCH qemu 7/8] hw/cxl/cxl-mailbox-utils: Added support for Get
- Log Capabilities (Opcode 0402h)
-Message-ID: <20250512093638-mutt-send-email-mst@kernel.org>
-References: <20250305092501.191929-1-Jonathan.Cameron@huawei.com>
- <20250305092501.191929-8-Jonathan.Cameron@huawei.com>
- <20250512043011-mutt-send-email-mst@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250512043011-mutt-send-email-mst@kernel.org>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1uETV5-0002SB-0G
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 09:47:26 -0400
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54CC9d2p027149;
+ Mon, 12 May 2025 13:47:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :date:from:message-id:subject:to; s=corp-2025-04-25; bh=uk8O9Xsn
+ Fnk4mEfeCRTjWhdUIbLrfGhFFZUv5J6qlZo=; b=XP8dqghrUrSerf0reC+Xoyib
+ CjwKoYHEbiTyR9UxVteOkfeCdiO4NRZ5py1ozVQKOqVDgRQjhmrYWQ2FiHth4e2b
+ LAd6av+O1szPOgFIJaV1gOJksKxZAL0cUARBhrtdsfNF2RL2SlWVVSkpq/yL1igg
+ sEJ0MzgrLeQZKLwbPNWxUdoHQABpIHxyOnTnqxklOKVBiFi9n/hWGAR3xOzLiTU1
+ KnqaOx3UxjRs3xEOUrHJFZ8ucEqMytnl1u1IjdldrpLKooLPX+nQgs0OQwuZjJM8
+ O55tiWzyiVC5KIao/XZzv6dIJQLKngMIpc69ca6H0+cCrk/nbhGg2fQ6oMldOQ==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46j1jnjjap-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 12 May 2025 13:47:18 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 54CC3P8a033100; Mon, 12 May 2025 13:47:17 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 46hw8ddfa9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 12 May 2025 13:47:17 +0000
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54CDlHVb001568;
+ Mon, 12 May 2025 13:47:17 GMT
+Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
+ ESMTP id 46hw8ddf9k-1; Mon, 12 May 2025 13:47:17 +0000
+From: Steve Sistare <steven.sistare@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Daniel P. Berrange" <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Fabiano Rosas <farosas@suse.de>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Steve Sistare <steven.sistare@oracle.com>
+Subject: [PATCH V2 0/5] fast qom tree get
+Date: Mon, 12 May 2025 06:47:10 -0700
+Message-Id: <1747057635-124298-1-git-send-email-steven.sistare@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-12_04,2025-05-09_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ mlxlogscore=979
+ malwarescore=0 phishscore=0 bulkscore=0 adultscore=0 mlxscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2504070000 definitions=main-2505120143
+X-Proofpoint-GUID: 53GHB2XSa_Dm-5S7ZDgBWcDZUFeXanZU
+X-Authority-Analysis: v=2.4 cv=PeH/hjhd c=1 sm=1 tr=0 ts=6821fbe6 b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=dt9VzEwgFbYA:10 a=PaH2gP4kqpskryv8OzkA:9 cc=ntf awl=host:14694
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDE0NCBTYWx0ZWRfX6xdVxjdvwG6H
+ BpBteGlfUOEuNG9sLj+ZBNScSznuUAnLoOd9JhgBPOMY66ppCGgnb+pTYfOAjW3ssqzVYTLzBhR
+ qnKuDt7wwaYArwFzO5tcmoS4w7spF6etvE/0VHxhEKonKNOKpERkizPG7ux/sOFBB5YmKT20+QG
+ Ssp4LIJoJ4BgwAHLJ+PlNl4kkQBInKKOZIcy+3NpyIyQdY4VJFjsEt9zNDGSq4MxiAZoq93iZKY
+ AMY+wHJ8MEfIEgKnR/8Bu0W1Lfr5FUyCbXm6CdvQ1y2n/vEzgGyNY/uo87B+xMovUFJTUwJ3iON
+ pcVlsC/PxRywECQNjRmbFhDcaahg/HuNYDuTrGAI8qjxd4DQjmr5RlVvxsS2ClIn8Jf+CEMhSsR
+ pW0iE2UHsbkUV6iJKfEzvlQFhx54xZcZzTg+oFY2MlkHfzuWIMWoASsWjV49FqGZSivsNDI1
+X-Proofpoint-ORIG-GUID: 53GHB2XSa_Dm-5S7ZDgBWcDZUFeXanZU
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -32
+X-Spam_score: -3.3
 X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.551,
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.499,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -114,208 +108,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 12, 2025 at 04:42:41AM -0400, Michael S. Tsirkin wrote:
-> On Wed, Mar 05, 2025 at 09:24:58AM +0000, Jonathan Cameron wrote:
-> > From: Arpit Kumar <arpit1.kumar@samsung.com>
-> > 
-> > CXL spec 3.2 section 8.2.10.5.3 describes Get Log Capabilities.
-> > It provides log capabilities supported by specified log.
-> > 
-> > Signed-off-by: Arpit Kumar <arpit1.kumar@samsung.com>
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > ---
-> >  include/hw/cxl/cxl_device.h  | 20 ++++++++++++++++
-> >  include/hw/cxl/cxl_mailbox.h |  5 ++++
-> >  hw/cxl/cxl-mailbox-utils.c   | 45 ++++++++++++++++++++++++++++++++++++
-> >  3 files changed, 70 insertions(+)
-> > 
-> > diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-> > index ed6cd50c67..87a376c982 100644
-> > --- a/include/hw/cxl/cxl_device.h
-> > +++ b/include/hw/cxl/cxl_device.h
-> > @@ -133,6 +133,18 @@ typedef enum {
-> >      CXL_MBOX_MAX = 0x20
-> >  } CXLRetCode;
-> >  
-> > +/* types of logs */
-> > +typedef enum {
-> > +    CXL_LOG_COMMAND_EFFECT,
-> > +    CXL_LOG_VENDOR_DEBUG,
-> > +    CXL_LOG_COMPONENT_STATE_DUMP,
-> > +    CXL_LOG_ERROR_CHECK_SCRUB,
-> > +    CXL_LOG_MEDIA_TEST_CAPABILITY,
-> > +    CXL_LOG_MEDIA_TEST_RESULTS_SHORT,
-> > +    CXL_LOG_MEDIA_TEST_RESULTS_LONG,
-> > +    MAX_LOG_TYPE
-> > +} CXLLogType;
-> > +
-> >  typedef struct CXLCCI CXLCCI;
-> >  typedef struct cxl_device_state CXLDeviceState;
-> >  struct cxl_cmd;
-> > @@ -163,6 +175,11 @@ typedef struct CXLEventLog {
-> >      QSIMPLEQ_HEAD(, CXLEvent) events;
-> >  } CXLEventLog;
-> >  
-> > +typedef struct CXLLogCapabilities {
-> > +    uint32_t param_flags;
-> > +    QemuUUID uuid;
-> > +} CXLLogCapabilities;
-> > +
-> >  typedef struct CXLCCI {
-> >      struct cxl_cmd cxl_cmd_set[256][256];
-> >      struct cel_log {
-> > @@ -171,6 +188,9 @@ typedef struct CXLCCI {
-> >      } cel_log[1 << 16];
-> >      size_t cel_size;
-> >  
-> > +    /* get log capabilities */
-> > +    const CXLLogCapabilities *supported_log_cap;
-> > +
-> >      /* background command handling (times in ms) */
-> >      struct {
-> >          uint16_t opcode;
-> > diff --git a/include/hw/cxl/cxl_mailbox.h b/include/hw/cxl/cxl_mailbox.h
-> > index 9008402d1c..8e1c7c5f15 100644
-> > --- a/include/hw/cxl/cxl_mailbox.h
-> > +++ b/include/hw/cxl/cxl_mailbox.h
-> > @@ -16,4 +16,9 @@
-> >  #define CXL_MBOX_BACKGROUND_OPERATION (1 << 6)
-> >  #define CXL_MBOX_BACKGROUND_OPERATION_ABORT (1 << 7)
-> >  
-> > +#define CXL_LOG_CAP_CLEAR_SUPPORTED (1 << 0)
-> > +#define CXL_LOG_CAP_POPULATE_SUPPORTED (1 << 1)
-> > +#define CXL_LOG_CAP_AUTO_POPULATE_SUPPORTED (1 << 2)
-> > +#define CXL_LOG_CAP_PERSISTENT_COLD_RESET_SUPPORTED (1 << 3)
-> > +
-> >  #endif
-> > diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-> > index 299f232f26..f35fc4f112 100644
-> > --- a/hw/cxl/cxl-mailbox-utils.c
-> > +++ b/hw/cxl/cxl-mailbox-utils.c
-> > @@ -81,6 +81,7 @@ enum {
-> >      LOGS        = 0x04,
-> >          #define GET_SUPPORTED 0x0
-> >          #define GET_LOG       0x1
-> > +        #define GET_LOG_CAPABILITIES   0x2
-> >      FEATURES    = 0x05,
-> >          #define GET_SUPPORTED 0x0
-> >          #define GET_FEATURE   0x1
-> > @@ -1068,6 +1069,43 @@ static CXLRetCode cmd_logs_get_log(const struct cxl_cmd *cmd,
-> >      return CXL_MBOX_SUCCESS;
-> >  }
-> >  
-> > +static const struct CXLLogCapabilities *find_log_index(QemuUUID *uuid, CXLCCI *cci)
-> > +{
-> > +    for (int i = CXL_LOG_COMMAND_EFFECT; i < MAX_LOG_TYPE; i++) {
-> > +        if (qemu_uuid_is_equal(uuid,
-> > +            &cci->supported_log_cap[i].uuid)) {
-> > +                return &cci->supported_log_cap[i];
-> > +        }
-> > +    }
-> > +    return NULL;
-> > +}
-> > +
-> > +/* CXL r3.2 Section 8.2.10.5.3: Get Log Capabilities (Opcode 0402h) */
-> > +static CXLRetCode cmd_logs_get_log_capabilities(const struct cxl_cmd *cmd,
-> > +                                                uint8_t *payload_in,
-> > +                                                size_t len_in,
-> > +                                                uint8_t *payload_out,
-> > +                                                size_t *len_out,
-> > +                                                CXLCCI *cci)
-> > +{
-> > +    const CXLLogCapabilities *cap;
-> > +    struct {
-> > +        QemuUUID uuid;
-> > +    } QEMU_PACKED QEMU_ALIGNED(8) *get_log_capabilities_in = (void *)payload_in;
-> > +
-> > +    uint32_t *get_log_capabilities_out = (uint32_t *)payload_out;
-> > +
-> > +    cap = find_log_index(&get_log_capabilities_in->uuid, cci);
-> > +    if (!cap) {
-> > +        return CXL_MBOX_INVALID_LOG;
-> > +    }
-> > +
-> > +    memcpy(get_log_capabilities_out, &cap->param_flags,
-> > +           sizeof(cap->param_flags));
-> > +    *len_out = sizeof(*get_log_capabilities_out);
-> > +    return CXL_MBOX_SUCCESS;
-> > +}
-> > +
-> >  /* CXL r3.1 section 8.2.9.6: Features */
-> >  /*
-> >   * Get Supported Features output payload
-> > @@ -3253,6 +3291,8 @@ static const struct cxl_cmd cxl_cmd_set[256][256] = {
-> >      [LOGS][GET_SUPPORTED] = { "LOGS_GET_SUPPORTED", cmd_logs_get_supported,
-> >                                0, 0 },
-> >      [LOGS][GET_LOG] = { "LOGS_GET_LOG", cmd_logs_get_log, 0x18, 0 },
-> > +    [LOGS][GET_LOG_CAPABILITIES] = { "LOGS_GET_LOG_CAPABILITIES",
-> > +                                     cmd_logs_get_log_capabilities, 0x10, 0 },
-> >      [FEATURES][GET_SUPPORTED] = { "FEATURES_GET_SUPPORTED",
-> >                                    cmd_features_get_supported, 0x8, 0 },
-> >      [FEATURES][GET_FEATURE] = { "FEATURES_GET_FEATURE",
-> > @@ -3512,10 +3552,15 @@ static void cxl_rebuild_cel(CXLCCI *cci)
-> >      }
-> >  }
-> >  
-> > +static const struct CXLLogCapabilities cxl_get_log_cap[MAX_LOG_TYPE] = {
-> > +    [CXL_LOG_COMMAND_EFFECT] = { .param_flags = 0, .uuid = cel_uuid },
-> > +};
-> > +
-> 
-> 
-> causes ci build failures:
-> 
-> https://gitlab.com/mstredhat/qemu/-/jobs/9999980051
-> 
-> ../hw/cxl/cxl-mailbox-utils.c:3556:60: error: initializer element is not constant
->      [CXL_LOG_COMMAND_EFFECT] = { .param_flags = 0, .uuid = cel_uuid },
->                                                             ^~~~~~~~
-> ../hw/cxl/cxl-mailbox-utils.c:3556:60: note: (near initialization for ‘cxl_get_log_cap[0].uuid’)
-> 
-> 
-> Fixed it up like this:
-> 
-> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-> index f35fc4f112..13d26e391b 100644
-> --- a/hw/cxl/cxl-mailbox-utils.c
-> +++ b/hw/cxl/cxl-mailbox-utils.c
-> @@ -992,9 +992,10 @@ static CXLRetCode cmd_timestamp_set(const struct cxl_cmd *cmd,
->  }
->  
->  /* CXL r3.1 Section 8.2.9.5.2.1: Command Effects Log (CEL) */
-> -static const QemuUUID cel_uuid = {
-> -    .data = UUID(0x0da9c0b5, 0xbf41, 0x4b78, 0x8f, 0x79,
-> +#define CEL_UUID UUID(0x0da9c0b5, 0xbf41, 0x4b78, 0x8f, 0x79, \
->                   0x96, 0xb1, 0x62, 0x3b, 0x3f, 0x17)
-> +static const QemuUUID cel_uuid = {
-> +    .data = CEL_UUID
->  };
->  
->  /* CXL r3.1 Section 8.2.9.5.1: Get Supported Logs (Opcode 0400h) */
-> @@ -3553,7 +3554,7 @@ static void cxl_rebuild_cel(CXLCCI *cci)
->  }
->  
->  static const struct CXLLogCapabilities cxl_get_log_cap[MAX_LOG_TYPE] = {
-> -    [CXL_LOG_COMMAND_EFFECT] = { .param_flags = 0, .uuid = cel_uuid },
-> +    [CXL_LOG_COMMAND_EFFECT] = { .param_flags = 0, .uuid = CEL_UUID },
->  };
->  
->  void cxl_init_cci(CXLCCI *cci, size_t payload_max)
-> 
+Using qom-list and qom-get to get all the nodes and property values in a
+QOM tree can take multiple seconds because it requires 1000's of individual
+QOM requests.  Some managers fetch the entire tree or a large subset
+of it when starting a new VM, and this cost is a substantial fraction of
+start up time.
 
+To reduce this cost, consider QAPI calls that fetch more information in
+each call:
+  * qom-list-get: given a path, return a list of properties and values.
+  * qom-list-getv: given a list of paths, return a list of properties and
+    values for each path.
+  * qom-tree-get: given a path, return all descendant nodes rooted at that
+    path, with properties and values for each.
 
-Actually no, does not help either. Dropped for now.
-Next patch does not depend on this one, right?
+In all cases, a returned property is represented by ObjectPropertyValue,
+with fields name, type, and value.  If an error occurs when reading a value
+the value field is omitted.  Thus an error for one property will not cause a
+bulk fetch operation to fail.
 
-> >  void cxl_init_cci(CXLCCI *cci, size_t payload_max)
-> >  {
-> >      cci->payload_max = payload_max;
-> >      cxl_rebuild_cel(cci);
-> > +    cci->supported_log_cap = cxl_get_log_cap;
-> >  
-> >      cci->bg.complete_pct = 0;
-> >      cci->bg.starttime = 0;
-> > -- 
-> > 2.43.0
+To evaluate each method, I modified scripts/qmp/qom-tree to use the method,
+verified all methods produce the same output, and timed each using:
+
+  qemu-system-x86_64 -display none \
+    -chardev socket,id=monitor0,path=/tmp/vm1.sock,server=on,wait=off \
+    -mon monitor0,mode=control &
+
+  time qom-tree -s /tmp/vm1.sock > /dev/null
+
+I only measured once per method, but the variation is low after a warm up run.
+The 'real - user - sys' column is a proxy for QEMU CPU time.
+
+method               real(s)   user(s)   sys(s)  (real - user - sys)(s)
+qom-list / qom-get   2.048     0.932     0.057   1.059
+qom-list-get         0.402     0.230     0.029   0.143
+qom-list-getv        0.200     0.132     0.015   0.053
+qom-tree-get         0.143     0.123     0.012   0.008
+
+qom-tree-get is the clear winner, reducing elapsed time by a factor of 14X,
+and reducing QEMU CPU time by 132X.
+
+qom-list-getv is slower when fetching the entire tree, but can beat
+qom-tree-get when only a subset of the tree needs to be fetched (not shown).
+qom-list-get is shown for comparison only, and is not included in this series.
+
+Changes in V2:
+  * removed "qom: qom_resolve_path", which was pulled separately
+  * dropped the error member
+  * fixed missing _list_tree in qom.py
+  * updated 10.0 to 10.1
+
+Steve Sistare (5):
+  qom: qom-tree-get
+  python: use qom-tree-get
+  tests/qtest/qom-test: unit test for qom-tree-get
+  qom: qom-list-getv
+  tests/qtest/qom-test: unit test for qom-list-getv
+
+ python/qemu/utils/qom.py        |  36 ++++++-------
+ python/qemu/utils/qom_common.py |  48 +++++++++++++++++
+ qapi/qom.json                   |  90 ++++++++++++++++++++++++++++++++
+ qom/qom-qmp-cmds.c              | 112 +++++++++++++++++++++++++++++++++++++++
+ tests/qtest/qom-test.c          | 113 ++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 381 insertions(+), 18 deletions(-)
+
+base-commit: 7be29f2f1a3f5b037d27eedbd5df9f441e8c8c16
+
+-- 
+1.8.3.1
 
 
