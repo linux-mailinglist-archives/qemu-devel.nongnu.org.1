@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B0FEAB2DE6
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 05:16:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9146DAB2DE0
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 05:15:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEJcQ-0006s0-Oh; Sun, 11 May 2025 23:14:19 -0400
+	id 1uEJcn-0007iB-0k; Sun, 11 May 2025 23:14:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1uEJcD-00060P-H1; Sun, 11 May 2025 23:14:05 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1uEJcG-0006H8-Pd; Sun, 11 May 2025 23:14:09 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1uEJcB-00075U-Sz; Sun, 11 May 2025 23:14:05 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-7376e311086so5554029b3a.3; 
- Sun, 11 May 2025 20:14:02 -0700 (PDT)
+ id 1uEJcE-000764-Vg; Sun, 11 May 2025 23:14:08 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-7424c24f88bso2014977b3a.1; 
+ Sun, 11 May 2025 20:14:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747019641; x=1747624441; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1747019645; x=1747624445; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3aq6xHzxMbY76ahwW7NMoS3wuliK3baz43I33HUj9BE=;
- b=UNKusvHi5vO2Dr3KBWUsie/TD17/Cosc5wWLzEC36UNJFmIk1BZunCK2H4mFwZFTZt
- UGiIRAReke4iKr4peVqjCPSWXk7lfC01WLFp7k8kE/vUdDljJPAvXcwxQEJlc/N3NYZ8
- /iko9iKLFg0gt61tN/GHqU7ANZoqjOwGBpX62BsbuhmpkxKxwp9cNgB1RRlSAytxwz6c
- EIiqlKrVSta2BXDhSIGqyQzkIh2KTGzdVSg8zXr7ewFLVfkH9wV33VoiGTY0ZZz+lXWX
- 6afUbDA7vhVqTTd1NZ9RIGeeRinW2STNIoPn7F0jrPOfXvKcZmgeYgJACkyccmxOe5L6
- XPYA==
+ bh=UUw/jR/I8I0+AFMo0tGeDW6W8FMqM4T9heGR9rWhRLg=;
+ b=Wdaw+0uP1Z73KHvsP0dgLe5mcsSrQoZHDbwiDusfmETJLVGSOKH61mps1/pl1WfJBi
+ 5Vzd3NV9YwUlj5b9p7GHs0+js2wzZAoma2o1VF6MTrQkPl/RJylM8I2kqa6JmBEBP3/r
+ QZovSIrINPnpR6bZ+cOBl3SMnNQi2456hh76AkYx8MoHLhmbf4yRWOku1dNFAWJlUY9R
+ mxr/JvsZzBD770GuPM4jozxyc5kjlX3vOtCzADUVkusGeY1rmbBwj5lY40PfZNp9iu8M
+ SSqGyeLrAMFP9NrQONR5m+LhnjnS2tx/I0r3mV/7+OMYcnUw5POIY2WPbHokAPLZ5mIV
+ VsAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747019641; x=1747624441;
+ d=1e100.net; s=20230601; t=1747019645; x=1747624445;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3aq6xHzxMbY76ahwW7NMoS3wuliK3baz43I33HUj9BE=;
- b=K9a3TtkDg/XqnRmbp7jCC5vewg8iMmDV6wm/uMCRXgMQ8nj+CZD9Og7v1/MC9YoZu8
- omz6MeHfodfFN1vdsLO11fQlVLUZYUx5WrFYKNCMTAODeFawoyCP/ct8pwEjTV2QvZns
- 3HvfEzDpLkUdi6KNC+4YDQ2KzFMC8ZdHZEgTU8g/NThTGbTMv+gbOw1CW6e0rezmu/rO
- KnSv/DQmr7W4FDokw2R/VoRWh2EoczdUYCaZIRFgK/zvpAcXNovl2WQ1bBPC0Y7U0a8x
- gjYz2xLDfHmtKBwmd4P01GZxFsgNcBm0XUq2FewUV+eZZuNyZhCVMJZ1UIHpjFk6JpEM
- ejuQ==
+ bh=UUw/jR/I8I0+AFMo0tGeDW6W8FMqM4T9heGR9rWhRLg=;
+ b=JwVe/z+nMIhi3i0WeOsuk8SCTBLZnpsCZN4dvdEqjLQma/cZ/khkdoF/dFiReCJUpg
+ IO785Vg2OoVTxBwtdOXYYBd1q5oFtqbwUFoF9iB55QH68yTiVBH6JOBk1cgocxCru1UQ
+ Z4km9ATd+fe2NWs22ylt9liYM0iBA8EEXacHylRk3PMU/gz+BAORjT2aIJQIBdceBAVT
+ eaQGYJv3RKkd8XWQAj1ivIfz7hTuegZZm97BN0hpfBLkLKCcPWUBfMLhnNYGGPa6A5FL
+ x1VOzr2BUjT5L1YQ8GFWeIq7SDUJS1jpPbCukHgYap9wvphTuNlYKIsV8M1ZPZRaduaj
+ F7Dw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU+WZFoI0HLuGFA1tTXiFp2QlOJDvRjP5xqIQLV1+Ri0rWOm/4JT5a0Z7a3XitAi75JRErbV4g9bAEq@nongnu.org
-X-Gm-Message-State: AOJu0Yw0PUiaAYJk/44ynfz2TzwectT8doCirMp0qV+Hg1h9DJ4baKfj
- 0Ep6qp+RMupMUraZWWoPvPAUhoJ9OKnHFPz2IQl6F81894STXVJFmxFRSw==
-X-Gm-Gg: ASbGncsNJEyWgxRrV74UbRe7+8N4qHYNRI1gUz7Mfn6Ip0Hrhx0lrmA604bOVyp6IXm
- TulP5FAZoJVrpnZ9P2QmGvDLrGMYJxNKqs032QGfFZkOk5i3AtHj951eiaBk+65Ono618uZe4St
- nn1bBpRp1cwm9b+qrbw3tmM/v6bqLt1WqDLavE6xqb54/t/P5Ie5VCoE2BKd/rcFgCI1N9/AvAw
- +ynI+jwQ99Aec+Vp4hGl24ezuD0L/VKnO94BS/vcLJCaQ7eNs1eB6Jxc/UfEhzH8DvL6JKBHVy5
- WhLpowaeXmkIz0QdCWyHDCwe6Rox9BHI8OlJbAkmlt7RXcdW8VUSfqI1uA==
-X-Google-Smtp-Source: AGHT+IHUhNS1jnJThKR55wIbiafTkUucHr+yBXA3/LBxoomIXmRrUpsA2TlZ+2EZ+oHe/28KWOpQFQ==
-X-Received: by 2002:a05:6a20:2450:b0:1f5:6c94:2cc9 with SMTP id
- adf61e73a8af0-215abc22f24mr17498125637.22.1747019641430; 
- Sun, 11 May 2025 20:14:01 -0700 (PDT)
+ AJvYcCWskYcEh0XfR26J6jlb3jxo9ioic3rrJ0CO5Ks6ZsGuVwvQIMHLlpq+KALAVqZ23xkVWDB9IBL93Pyl@nongnu.org
+X-Gm-Message-State: AOJu0Yz9itfde6KF7Xo25TJnV2IPAEJ1PIa8maa6ipXSzxGfTgmN2CH6
+ UctkKtPe1IdPvN/oH5Gc2vwhMkuivS8YK/SratebdA3ams1D3t8xKiFa+A==
+X-Gm-Gg: ASbGncv/HuWnFXNytHMITs5YegiPBJE/fQKpeqCRF80NFe9tGFiU9o4VLkDba4fSOWb
+ k1Va7/MGcJTVfvlnc8a6Oxc/gvtv2/91C6uSTOLZygeXytPMfy7nuXJs3jFZURKkwye06EcTdWs
+ vgAkhb0JdcVAsQ1BdlCr56EzoxBk+ngNGbKrFqwceJ2WMXrVqy7w3CmHxMa/fsb1269+Z6hq2KM
+ cWvfzElm5cUmiMwbEhGtroZcEXOxfhQPFP0IF36tPeuLdsZL2MzKOgn9EXfKQoNeoOYHJzkbpxV
+ lDhqBXNPpavfcKMM4KeFPIA24MUllxeg7W73xbwlUzqI9a1qG8eYgFRXZw==
+X-Google-Smtp-Source: AGHT+IHqBoAxuIIpmM5WRKvzLPE1EgGpVr0IqawJULwTaJ+edhe/j9sBbaUN/UcVwDkxinO4MLScCA==
+X-Received: by 2002:a05:6a21:6d82:b0:1f5:72eb:8b62 with SMTP id
+ adf61e73a8af0-215abb3ba6dmr15368692637.20.1747019645016; 
+ Sun, 11 May 2025 20:14:05 -0700 (PDT)
 Received: from wheely.local0.net ([118.209.229.237])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b234951024csm4750069a12.5.2025.05.11.20.13.58
+ 41be03b00d2f7-b234951024csm4750069a12.5.2025.05.11.20.14.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 11 May 2025 20:14:01 -0700 (PDT)
+ Sun, 11 May 2025 20:14:04 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
  Glenn Miles <milesg@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>,
  Caleb Schlossin <calebs@linux.vnet.ibm.com>
-Subject: [PATCH 47/50] ppc/xive2: Implement POOL LGS push TIMA op
-Date: Mon, 12 May 2025 13:10:56 +1000
-Message-ID: <20250512031100.439842-48-npiggin@gmail.com>
+Subject: [PATCH 48/50] ppc/xive2: Implement PHYS ring VP push TIMA op
+Date: Mon, 12 May 2025 13:10:57 +1000
+Message-ID: <20250512031100.439842-49-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250512031100.439842-1-npiggin@gmail.com>
 References: <20250512031100.439842-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,39 +99,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement set LGS for the POOL ring.
+Implement the phys (aka hard) VP push. PowerVM uses this operation.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/intc/xive.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ hw/intc/xive.c         |  2 ++
+ hw/intc/xive2.c        | 11 +++++++++++
+ include/hw/ppc/xive2.h |  2 ++
+ 3 files changed, 15 insertions(+)
 
 diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-index dc64edf13d..807a1c1c34 100644
+index 807a1c1c34..69118999e6 100644
 --- a/hw/intc/xive.c
 +++ b/hw/intc/xive.c
-@@ -532,6 +532,12 @@ static void xive_tm_set_os_lgs(XivePresenter *xptr, XiveTCTX *tctx,
-     xive_tctx_set_lgs(tctx, TM_QW1_OS, value & 0xff);
- }
- 
-+static void xive_tm_set_pool_lgs(XivePresenter *xptr, XiveTCTX *tctx,
-+                          hwaddr offset, uint64_t value, unsigned size)
-+{
-+    xive_tctx_set_lgs(tctx, TM_QW2_HV_POOL, value & 0xff);
-+}
-+
- /*
-  * Adjust the PIPR to allow a CPU to process event queues of other
-  * priorities during one physical interrupt cycle.
-@@ -737,6 +743,8 @@ static const XiveTmOp xive2_tm_operations[] = {
-       xive2_tm_push_pool_ctx, NULL },
-     { XIVE_TM_HV_PAGE, TM_QW2_HV_POOL + TM_WORD2, 8, true, true,
-       xive2_tm_push_pool_ctx, NULL },
-+    { XIVE_TM_HV_PAGE, TM_QW2_HV_POOL + TM_LGS,   1, true, true,
-+      xive_tm_set_pool_lgs, NULL },
+@@ -747,6 +747,8 @@ static const XiveTmOp xive2_tm_operations[] = {
+       xive_tm_set_pool_lgs, NULL },
      { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_CPPR,  1, true, true,
        xive2_tm_set_hv_cppr, NULL },
++    { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_WORD2, 1, false, true,
++      xive2_tm_push_phys_ctx, NULL },
      { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_WORD2, 1, true, true,
+       NULL, xive_tm_vt_poll },
+     { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_T,     1, true, true,
+diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
+index de1ccad685..a9b188b909 100644
+--- a/hw/intc/xive2.c
++++ b/hw/intc/xive2.c
+@@ -1005,6 +1005,11 @@ static void xive2_tm_push_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+ 
+     /* First update the thead context */
+     switch (size) {
++    case 1:
++        tctx->regs[ring + TM_WORD2] = value & 0xff;
++        cam = xive2_tctx_hw_cam_line(xptr, tctx);
++        cam |= ((value & 0xc0) << 24); /* V and H bits */
++        break;
+     case 4:
+         cam = value;
+         w2 = cpu_to_be32(cam);
+@@ -1040,6 +1045,12 @@ void xive2_tm_push_pool_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+     xive2_tm_push_ctx(xptr, tctx, offset, value, size, TM_QW2_HV_POOL);
+ }
+ 
++void xive2_tm_push_phys_ctx(XivePresenter *xptr, XiveTCTX *tctx,
++                            hwaddr offset, uint64_t value, unsigned size)
++{
++    xive2_tm_push_ctx(xptr, tctx, offset, value, size, TM_QW3_HV_PHYS);
++}
++
+ /* returns -1 if ring is invalid, but still populates block and index */
+ static int xive2_tctx_get_nvp_indexes(XiveTCTX *tctx, uint8_t ring,
+                                       uint8_t *nvp_blk, uint32_t *nvp_idx)
+diff --git a/include/hw/ppc/xive2.h b/include/hw/ppc/xive2.h
+index 45266c2a8b..f4437e2c79 100644
+--- a/include/hw/ppc/xive2.h
++++ b/include/hw/ppc/xive2.h
+@@ -146,6 +146,8 @@ void xive2_tm_push_pool_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+                             hwaddr offset, uint64_t value, unsigned size);
+ uint64_t xive2_tm_pull_pool_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+                                 hwaddr offset, unsigned size);
++void xive2_tm_push_phys_ctx(XivePresenter *xptr, XiveTCTX *tctx,
++                            hwaddr offset, uint64_t value, unsigned size);
+ uint64_t xive2_tm_pull_phys_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+                                 hwaddr offset, unsigned size);
+ void xive2_tm_pull_phys_ctx_ol(XivePresenter *xptr, XiveTCTX *tctx,
 -- 
 2.47.1
 
