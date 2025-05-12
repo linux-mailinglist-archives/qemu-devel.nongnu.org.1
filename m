@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5453AB3205
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 10:45:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5F14AB3204
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 10:45:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEOlq-0004WZ-RE; Mon, 12 May 2025 04:44:22 -0400
+	id 1uEOlj-0003ga-Kx; Mon, 12 May 2025 04:44:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uEOjT-0008Lm-5w
- for qemu-devel@nongnu.org; Mon, 12 May 2025 04:41:57 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uEOjX-0000Hw-Tn
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 04:42:00 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uEOjM-0001oq-OC
- for qemu-devel@nongnu.org; Mon, 12 May 2025 04:41:54 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-441d1ed82dbso44926305e9.0
- for <qemu-devel@nongnu.org>; Mon, 12 May 2025 01:41:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uEOjV-0001pM-TW
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 04:41:59 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3a0bdcd7357so2829548f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 12 May 2025 01:41:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747039307; x=1747644107; darn=nongnu.org;
+ d=linaro.org; s=google; t=1747039316; x=1747644116; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DxDElVV2Vn4WLDsSj0otIlxNm5IFXNud0/Q6aYpzZPw=;
- b=riW86SrPScdQsmfSEg5dJ56NCU6Ioa/B1+ntXLH9ZAzgTqLxv6a11YuZtnH9Lbbkvh
- 7bv/WpmKSWPocFCTGYkd8tpi/019bMNnyhiTsBJRKgGbPGjkwr2Ux0EmlVX+4uwzRNDQ
- fV73Rqm0BEa72O2k2kNpQ0foUV/XL1tbBKYkn9wZewbkZ+nQh8sK6pt4pgQCjETaxjcD
- FkJEgRMw+938iJEk9dEDl/NpCs1WKdnHtgXE/CcmRDz9/5oWIFLWaJi8IfV9OMCQqMP9
- 3Y0uZNnXqgF5hDRIzqmMPKmfZ9Ge+0B4mKkbUOtxMf0OvctDnD82xANs9LZ3k2bgHrkC
- Dr+A==
+ bh=Rm74PrW1PtvYLNFl6+XPtcJ/DOMNe0H9WpC4Rf0Ae0s=;
+ b=K/ksHgrCoz+mj5AjjLIC94e2i1cv/iQRbL3tSUdq+03ztX7XUcxLi19C2dDZjUCmHO
+ PT2Bzq9NZlWFWOEoQ3l6AcmhEShfF6Lz9lYbmihMGdjaV2ZIZ/3HgYHbqX1MqksMpj4n
+ NM8SeAv4vHfnDRBF0uyw9H9+1Dpg3EQjEICQKcYrxLigLawYIKL1Wo2iCfpE9ECU4qAR
+ zCcf/4QA6A+tTl+aM0Rl/lf/k32hOg2o/qXntt8AS4awxvDg4bdkn0c3AAs4ooH0829U
+ BAytiWFaIICqo39Q5nCUK7iWaUeUgxyeEf3lYwbtC/JdBK1TsuuPqdnsh4IiTcLxguEc
+ HvXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747039307; x=1747644107;
+ d=1e100.net; s=20230601; t=1747039316; x=1747644116;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DxDElVV2Vn4WLDsSj0otIlxNm5IFXNud0/Q6aYpzZPw=;
- b=KPwc9UNsPpIMQDBma7FteDn5eTIQIKyY/+8JRUIwPBvTpYyx6YlZIgrUiPcwPLm/Xi
- 22JdQf2neCJHPOUe8ic6A6SRpc3NXrJVkaw4HaBqk77M8g/IAo+5cnzBvYZPg1AydNrK
- ZPp36cfSbd08qVHFoXJKnrj7iNh5z60RoRNQx3B/6xnOwh5gMfFHTzBc0vBm6+J+U2z9
- 3Jp4UPWcV2SgkdFWPGBGxkpwomYKcDXxagZzEutY1yERWRO0sFgPSqg3BCKD4h2si/MF
- sjanJtF3aLI2EMH2i7tgRegkRIkwOhIuXhUGzIhd09wvvAC6oAtWRkseWL7t7ZVeJKyC
- oCxA==
-X-Gm-Message-State: AOJu0YwIf0McvhHxkNV2CO2tYCR7oK5ph4lQVNk0TaX7qsQF+K0zKKI+
- bFCLpmy1ibIn53Jhb6NAKTI/lpYCUQo7m39Vytn/lExJvApyisn24B3C2UpL3EOFmkMpnrLrq4S
- a4r0ILg==
-X-Gm-Gg: ASbGncsqJzyWnlj1syonU8A3h/1ST9mOVugDWBYpERQGTxG+Ht2/pYGZR4nwoTRZTyi
- RKLHYzLxl+EKgfoY0vrmqD8d0RrBBMcpR6R1o9FMeW2Jl0z/Ir0vss0HOd+mSmfFfkNPvWtrHct
- i+cGcfYm4YFqhI670Wkh5VXLPDWxpnDl8Ex1+aSpVLXSqDsImFEWXRYD1QKQ7PG95wwsTDg/pWP
- w3rDM9LxIfNglGvHjtun1R3prz4nSPEdkQm4vtOcb5tcj0xWFF8HtQpmIkpoKfKMsjgufoisuZh
- +j+1vwnqJGvo5zNquxKRxTSdlrmy9IrHYBST+5H92zWMRFCLApXuqTyiNjgvhcmjphB8nZ+cveo
- 6CVXlMQy8g7z2CSMujaiiMPA=
-X-Google-Smtp-Source: AGHT+IHSZn0j1/bf5F0GUy7+IWxg3oZ/kwTXbk+ouvCctlO35s5rZukw3vE5WG25jrFh4RpxhEPxiQ==
-X-Received: by 2002:a05:600c:34ca:b0:43c:f8fc:f6a6 with SMTP id
- 5b1f17b1804b1-442d6d37115mr115193495e9.9.1747039306695; 
- Mon, 12 May 2025 01:41:46 -0700 (PDT)
+ bh=Rm74PrW1PtvYLNFl6+XPtcJ/DOMNe0H9WpC4Rf0Ae0s=;
+ b=Qjmp6oylvE/nUcHFXUUQxCIjLeDWZLyzrEnVaAcx6a6KpX4O6oB6nMiNKvsyLN6+F4
+ kucu+o+o9edavMJMKcG+h/U+AjsHCn7IWgH6aRa2lO2RWiPF2G6xh8BrFfxefo2oGTKE
+ 8Orbasfqj4jB4wrDcyRJtXwbL/qLWylxyExdzDgxk7cCA4leFrGMW2sWYZFpLXC7FIUr
+ cAP7V5je3QbjuyOheCFgSkrwhZe+0CnQlnKfkmcm+wV/m4uidwtrJVGPqQUnZQFYHhIA
+ e2kdV02iJsQuILIYXu+eN3OkFq8LnrnieLDo9HiGdKc2teD9siKM4GqAtBAhRn+9dQEM
+ etrA==
+X-Gm-Message-State: AOJu0YycISEwiPF25SG1WtcnMpTtnLbtGHNmRPMmlzlM6SUeAMuiYiw/
+ C04Oy7ULiHLr7w5RS9aaZZsBqWWPLjFeMXYRBeOSZGeehXzT1wp6mYAQatYpXVSYEV+KCqegVXq
+ g1GWh1A==
+X-Gm-Gg: ASbGnctln+rvZtO+sYFl5iI6DecRh9k+mCLUX2LOGNL4Pwv4VGDBF1K21QyF5BDvWhC
+ iGhPMqkkFx5pqhzXHSKDHecD/s553oGH7eI2EcWObs0c3DtRQdK5R7jcHzP6zeVitUdW5UMZgNA
+ UnsqMh4/sjX4Qe753+9aryo/fU+9zmAjEF7em0D/0qewZSwYftL7/jdsofaT93Owv2JMbDz+WqW
+ xyvZYsZ/lugk4C/IA8XkOCfJ/Qgkj7FX322XOyOXbJcE/a861ejIABLBUeyDGyAWCkABHR5VmQ+
+ ys4fL7TPsLS0rrIo6CT0kHqcetbusS6//Glcm+cLCbP99lShBdpU1JKsZgkaxDEoyjO7+S9ilpD
+ v6aB/bsyLuqyC2DmKZUOdRqQ=
+X-Google-Smtp-Source: AGHT+IHOvxp5PWodlRrYrd7HkwKanZWHT0N5VYlXzjODG19TjaIXD8v3LKPWQNqpN0qMNKOq3gPilg==
+X-Received: by 2002:a05:6000:2289:b0:3a0:6c62:8169 with SMTP id
+ ffacd0b85a97d-3a1f646a66amr9345580f8f.25.1747039316005; 
+ Mon, 12 May 2025 01:41:56 -0700 (PDT)
 Received: from localhost.localdomain (129.163.185.81.rev.sfr.net.
  [81.185.163.129]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442cd3af15bsm161173755e9.30.2025.05.12.01.41.43
+ ffacd0b85a97d-3a1f57ddfd6sm11498123f8f.4.2025.05.12.01.41.52
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 12 May 2025 01:41:46 -0700 (PDT)
+ Mon, 12 May 2025 01:41:55 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Yanan Wang <wangyanan55@huawei.com>, Kevin Wolf <kwolf@redhat.com>,
@@ -74,18 +74,20 @@ Cc: Yanan Wang <wangyanan55@huawei.com>, Kevin Wolf <kwolf@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, Hanna Reitz <hreitz@redhat.com>,
  Zhao Liu <zhao1.liu@intel.com>, John Snow <jsnow@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v4 13/19] hw/block/fdc-isa: Remove 'fallback' property
-Date: Mon, 12 May 2025 10:39:42 +0200
-Message-ID: <20250512083948.39294-14-philmd@linaro.org>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PATCH v4 14/19] hw/scsi/vmw_pvscsi: Remove
+ PVSCSI_COMPAT_OLD_PCI_CONFIGURATION definition
+Date: Mon, 12 May 2025 10:39:43 +0200
+Message-ID: <20250512083948.39294-15-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250512083948.39294-1-philmd@linaro.org>
 References: <20250512083948.39294-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,40 +110,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The "fallback" property was only used by the hw_compat_2_5[] array,
-as 'fallback=144'. We removed all machines using that array, lets
-remove ISA floppy drive 'fallback' property, manually setting the
-default value in isabus_fdc_realize().
+PVSCSI_COMPAT_OLD_PCI_CONFIGURATION was only used by the
+hw_compat_2_5[] array, via the 'x-old-pci-configuration=on'
+property. We removed all machines using that array, lets remove
+all the code around PVSCSI_COMPAT_OLD_PCI_CONFIGURATION.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/block/fdc-isa.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ hw/scsi/vmw_pvscsi.c | 26 +++++++-------------------
+ 1 file changed, 7 insertions(+), 19 deletions(-)
 
-diff --git a/hw/block/fdc-isa.c b/hw/block/fdc-isa.c
-index 6d1790e0e61..5d746d73165 100644
---- a/hw/block/fdc-isa.c
-+++ b/hw/block/fdc-isa.c
-@@ -97,6 +97,7 @@ static void isabus_fdc_realize(DeviceState *dev, Error **errp)
-                              isa->iobase, fdc_portio_list, fdctrl,
-                              "fdc");
+diff --git a/hw/scsi/vmw_pvscsi.c b/hw/scsi/vmw_pvscsi.c
+index d5825b67868..34de59a7cf6 100644
+--- a/hw/scsi/vmw_pvscsi.c
++++ b/hw/scsi/vmw_pvscsi.c
+@@ -69,17 +69,11 @@ OBJECT_DECLARE_TYPE(PVSCSIState, PVSCSIClass, PVSCSI)
  
-+    fdctrl->fallback = FLOPPY_DRIVE_TYPE_288;
-     fdctrl->irq = isa_bus_get_irq(bus, isa->irq);
-     fdctrl->dma_chann = isa->dma;
-     if (fdctrl->dma_chann != -1) {
-@@ -293,9 +294,6 @@ static const Property isa_fdc_properties[] = {
-     DEFINE_PROP_SIGNED("fdtypeB", FDCtrlISABus, state.qdev_for_drives[1].type,
-                         FLOPPY_DRIVE_TYPE_AUTO, qdev_prop_fdc_drive_type,
-                         FloppyDriveType),
--    DEFINE_PROP_SIGNED("fallback", FDCtrlISABus, state.fallback,
--                        FLOPPY_DRIVE_TYPE_288, qdev_prop_fdc_drive_type,
--                        FloppyDriveType),
+ 
+ /* Compatibility flags for migration */
+-#define PVSCSI_COMPAT_OLD_PCI_CONFIGURATION_BIT 0
+-#define PVSCSI_COMPAT_OLD_PCI_CONFIGURATION \
+-    (1 << PVSCSI_COMPAT_OLD_PCI_CONFIGURATION_BIT)
+ #define PVSCSI_COMPAT_DISABLE_PCIE_BIT 1
+ #define PVSCSI_COMPAT_DISABLE_PCIE \
+     (1 << PVSCSI_COMPAT_DISABLE_PCIE_BIT)
+ 
+-#define PVSCSI_USE_OLD_PCI_CONFIGURATION(s) \
+-    ((s)->compat_flags & PVSCSI_COMPAT_OLD_PCI_CONFIGURATION)
+-#define PVSCSI_MSI_OFFSET(s) \
+-    (PVSCSI_USE_OLD_PCI_CONFIGURATION(s) ? 0x50 : 0x7c)
++#define PVSCSI_MSI_OFFSET    (0x7c)
+ #define PVSCSI_EXP_EP_OFFSET (0x40)
+ 
+ typedef struct PVSCSIRingInfo {
+@@ -1110,7 +1104,7 @@ pvscsi_init_msi(PVSCSIState *s)
+     int res;
+     PCIDevice *d = PCI_DEVICE(s);
+ 
+-    res = msi_init(d, PVSCSI_MSI_OFFSET(s), PVSCSI_MSIX_NUM_VECTORS,
++    res = msi_init(d, PVSCSI_MSI_OFFSET, PVSCSI_MSIX_NUM_VECTORS,
+                    PVSCSI_USE_64BIT, PVSCSI_PER_VECTOR_MASK, NULL);
+     if (res < 0) {
+         trace_pvscsi_init_msi_fail(res);
+@@ -1158,15 +1152,11 @@ pvscsi_realizefn(PCIDevice *pci_dev, Error **errp)
+     trace_pvscsi_state("init");
+ 
+     /* PCI subsystem ID, subsystem vendor ID, revision */
+-    if (PVSCSI_USE_OLD_PCI_CONFIGURATION(s)) {
+-        pci_set_word(pci_dev->config + PCI_SUBSYSTEM_ID, 0x1000);
+-    } else {
+-        pci_set_word(pci_dev->config + PCI_SUBSYSTEM_VENDOR_ID,
+-                     PCI_VENDOR_ID_VMWARE);
+-        pci_set_word(pci_dev->config + PCI_SUBSYSTEM_ID,
+-                     PCI_DEVICE_ID_VMWARE_PVSCSI);
+-        pci_config_set_revision(pci_dev->config, 0x2);
+-    }
++    pci_set_word(pci_dev->config + PCI_SUBSYSTEM_VENDOR_ID,
++                 PCI_VENDOR_ID_VMWARE);
++    pci_set_word(pci_dev->config + PCI_SUBSYSTEM_ID,
++                 PCI_DEVICE_ID_VMWARE_PVSCSI);
++    pci_config_set_revision(pci_dev->config, 0x2);
+ 
+     /* PCI latency timer = 255 */
+     pci_dev->config[PCI_LATENCY_TIMER] = 0xff;
+@@ -1298,8 +1288,6 @@ static const VMStateDescription vmstate_pvscsi = {
+ 
+ static const Property pvscsi_properties[] = {
+     DEFINE_PROP_UINT8("use_msg", PVSCSIState, use_msg, 1),
+-    DEFINE_PROP_BIT("x-old-pci-configuration", PVSCSIState, compat_flags,
+-                    PVSCSI_COMPAT_OLD_PCI_CONFIGURATION_BIT, false),
+     DEFINE_PROP_BIT("x-disable-pcie", PVSCSIState, compat_flags,
+                     PVSCSI_COMPAT_DISABLE_PCIE_BIT, false),
  };
- 
- static void isabus_fdc_class_init(ObjectClass *klass, const void *data)
 -- 
 2.47.1
 
