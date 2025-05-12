@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAD29AB3C45
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 17:36:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 449F3AB3C6D
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 17:42:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEV9S-0003oW-0f; Mon, 12 May 2025 11:33:10 -0400
+	id 1uEV9T-0003tK-Gz; Mon, 12 May 2025 11:33:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uEV9L-0003hP-Us
- for qemu-devel@nongnu.org; Mon, 12 May 2025 11:33:04 -0400
+ id 1uEV9L-0003hQ-Uy
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 11:33:05 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uEV9J-0006eF-Sq
+ id 1uEV9J-0006eD-E2
  for qemu-devel@nongnu.org; Mon, 12 May 2025 11:33:03 -0400
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54CC9gSa027378;
- Mon, 12 May 2025 15:32:58 GMT
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54CCAADk019736;
+ Mon, 12 May 2025 15:32:59 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2025-04-25; bh=FfGaPWkw5+fA+BbPzNjjZN7wkjCtFXBTDQqfy4/oqCU=; b=
- ILO88azr/bppsDhU8NTJ1LY0zpsr1f+XwupL3PqcGsLC8LmbMKn/CD2jHbr2L5pI
- 7zI5a1DX6ToJmzujAVHmF54cssYq8ZP2OyuV8n59Cy3eWPCeBllK/ewMngo4uo0W
- RhR3dhSSw3JOwg09kw6LqqPj9VXTC9Rl0htsLZQpALwisLRc/ynMJ9DlB47TjF1J
- wmMz6rP9AFP0OXrLxv93Eb2CFmiKjIrIaOwXWxUhMnjZeWLTXRRexkr//iVkEjpa
- 67lz65XD0eZUaZDMt14oIGgYr05iaoSworK64tq2EDt3R8bXk6Arxa7s5nUZMoeB
- phyzv/Cvdcl5kSJPDsvG0w==
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=
+ corp-2025-04-25; bh=coxxrO3jwCxhvRTGFRerp9PEWUUZTdEqNuK6uBtf+kg=; b=
+ sYq9T30gy3A/Y6oP0bUF2mFPmZz0rqopYZazd4RSYwLcxjbZyBJKiKVJNobpjZId
+ IE8nsephM6bQZ9ZQSv1ZiAgMzedGEJHbl3bmrM2ZK4iQtoQ/lIrp7bOxbcavO+RM
+ 30mri7XgDeu49XU51x5i19utaWN0GmelRedrJdoDtlIQ4lHFcFihFRejX6stm2wg
+ swo12VAP+iDC5enyCTW5aJBcBL2iPQCbPwAgnkXDcyWV0GOsvHk2wCjfUlanr8DH
+ Z9lOQr3yszI6a9NQ6Gl8t14a0BTySc8TJtXBjfjXZy9MYui7EhFy1naZB7Brw8MV
+ gyvXG6W6xaNbvFBIjHTl/A==
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46j1662ur2-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46j13r2scv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Mon, 12 May 2025 15:32:58 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 54CE0xHZ002520; Mon, 12 May 2025 15:32:57 GMT
+ with ESMTP id 54CE0rdG002876; Mon, 12 May 2025 15:32:58 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 46jwx3664w-1
+ 46jwx3665a-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 May 2025 15:32:57 +0000
+ Mon, 12 May 2025 15:32:58 +0000
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54CFWk4i030605;
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54CFWk4k030605;
  Mon, 12 May 2025 15:32:57 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 46jwx36627-4; Mon, 12 May 2025 15:32:56 +0000
+ ESMTP id 46jwx36627-5; Mon, 12 May 2025 15:32:57 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -61,12 +62,15 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V3 03/42] migration: lower handler priority
-Date: Mon, 12 May 2025 08:32:14 -0700
-Message-Id: <1747063973-124548-4-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V3 04/42] vfio: vfio_find_ram_discard_listener
+Date: Mon, 12 May 2025 08:32:15 -0700
+Message-Id: <1747063973-124548-5-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1747063973-124548-1-git-send-email-steven.sistare@oracle.com>
 References: <1747063973-124548-1-git-send-email-steven.sistare@oracle.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-12_05,2025-05-09_01,2025-02-21_01
@@ -75,18 +79,20 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
  bulkscore=0 suspectscore=0 phishscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2504070000
  definitions=main-2505120161
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDE2MSBTYWx0ZWRfX3xt/tISZiCso
- Gsa4+iWX1leklgBUD+kPDM9BUJ5QI2snY8a/rPG6XX80uJ7lazubp5AdTcpknjxPyLQBKNltb8w
- aqOuOij71wdFNNq9EsAMxKJOBlRMgymZJBsprcYioeYpk+7Z02HX5Db+dA/G8YHqGtmhwd3qLd0
- k4G7WfVDHLCrGBJVNyBlnLGHHs1E6k/ENgNljce47MZms/mFgz/gvqjYRjzump74GnieBeXFCiZ
- WUncBb5iu1m3c708UZDcgAIfV+O/I1Wlz6gDOMq7o8c/Z2VvLsjrSGRcdLi5KfYBiAxzavSGKon
- fTs8wmakmkCLiNmIjzmwjW31cV6roZmCZat/K2EYRB+rWiBHCVzyoaudxTnhYjzMRlrl5JhlOO/
- SNpXalfCyHff9L2D2MMwQoZ37TL2Hp5nMAc+2fYbEgAfhtROuy2F0RnTeiY5oH3DK97JmsKh
-X-Authority-Analysis: v=2.4 cv=VMDdn8PX c=1 sm=1 tr=0 ts=682214aa b=1 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDE2MSBTYWx0ZWRfX2hwWOQEQs6fd
+ OWrd8BLNJTWCSuVK04Q+vb7wDW84Y4FDfwg5i4E7DqhxlrwsIbpTQ+dS7FN0Rt5URPQPLw7hICd
+ cLjvjVSXoWSMn+wqX5Apzedyh4GzEwsxLe2TBuTqlMFRfusTK5PMQ8U4OxAv+NBJp9fXAnDtONH
+ bYj068IoMzxdotTNU1WdLAGrRlyCeGPqtU1jq4SnUFoPxKq4wiF9wIJUDFwjQc8WkYsB3It02yX
+ 6/PKjAejYRj0iJKevm6R4cov46MD9J9anVIPKyTbiOQCKbSW6RF7t6wh/sIAKaSKAe/Mq9TTwvw
+ eakm1QnG6fpPVEZ/WT3HalNIvxz7leiggiMy0mSbH2TbJ3fe5Ob6qnoBPVRtpxc7Cl6P2REd9xU
+ HYSFEHX0g5IGatAsh38LguKa1pnAP2iRBnB+kA6n0ULFkFuWuGTLE7BwM2HIHYjYkp/ICUo2
+X-Proofpoint-GUID: UdW-DEIlY82_yuSMv9tmIkqR75I8_jsE
+X-Proofpoint-ORIG-GUID: UdW-DEIlY82_yuSMv9tmIkqR75I8_jsE
+X-Authority-Analysis: v=2.4 cv=M6hNKzws c=1 sm=1 tr=0 ts=682214aa b=1 cx=c_pps
  a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=20KFwNOVAAAA:8 a=AmUmXUaXWCDEmLEOI0wA:9
-X-Proofpoint-ORIG-GUID: Bacmh-tutYyaLDv0HrQKwXAtjyfAseTg
-X-Proofpoint-GUID: Bacmh-tutYyaLDv0HrQKwXAtjyfAseTg
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=20KFwNOVAAAA:8
+ a=MtPhzGyV-s5HnW-BJbUA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -32
@@ -112,60 +118,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Define a vmstate priority that is lower than the default, so its handlers
-run after all default priority handlers.  Since 0 is no longer the default
-priority, translate an uninitialized priority of 0 to MIG_PRI_DEFAULT.
-
-CPR for vfio will use this to install handlers for containers that run
-after handlers for the devices that they contain.
+Define vfio_find_ram_discard_listener as a subroutine so additional calls to
+it may be added in a subsequent patch.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/migration/vmstate.h | 6 +++++-
- migration/savevm.c          | 4 ++--
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ hw/vfio/listener.c                    | 35 ++++++++++++++++++++++-------------
+ include/hw/vfio/vfio-container-base.h |  3 +++
+ 2 files changed, 25 insertions(+), 13 deletions(-)
 
-diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
-index a1dfab4..1ff7bd9 100644
---- a/include/migration/vmstate.h
-+++ b/include/migration/vmstate.h
-@@ -155,7 +155,11 @@ enum VMStateFlags {
- };
- 
- typedef enum {
--    MIG_PRI_DEFAULT = 0,
-+    MIG_PRI_UNINITIALIZED = 0,  /* An uninitialized priority field maps to */
-+                                /* MIG_PRI_DEFAULT in save_state_priority */
-+
-+    MIG_PRI_LOW,                /* Must happen after default */
-+    MIG_PRI_DEFAULT,
-     MIG_PRI_IOMMU,              /* Must happen before PCI devices */
-     MIG_PRI_PCI_BUS,            /* Must happen before IOMMU */
-     MIG_PRI_VIRTIO_MEM,         /* Must happen before IOMMU */
-diff --git a/migration/savevm.c b/migration/savevm.c
-index 006514c..7e87815 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -266,7 +266,7 @@ typedef struct SaveState {
- 
- static SaveState savevm_state = {
-     .handlers = QTAILQ_HEAD_INITIALIZER(savevm_state.handlers),
--    .handler_pri_head = { [MIG_PRI_DEFAULT ... MIG_PRI_MAX] = NULL },
-+    .handler_pri_head = { [0 ... MIG_PRI_MAX] = NULL },
-     .global_section_id = 0,
- };
- 
-@@ -737,7 +737,7 @@ static int calculate_compat_instance_id(const char *idstr)
- 
- static inline MigrationPriority save_state_priority(SaveStateEntry *se)
- {
--    if (se->vmsd) {
-+    if (se->vmsd && se->vmsd->priority) {
-         return se->vmsd->priority;
+diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
+index bfacb3d..5642d04 100644
+--- a/hw/vfio/listener.c
++++ b/hw/vfio/listener.c
+@@ -449,6 +449,26 @@ static void vfio_device_error_append(VFIODevice *vbasedev, Error **errp)
      }
-     return MIG_PRI_DEFAULT;
+ }
+ 
++VFIORamDiscardListener *vfio_find_ram_discard_listener(
++    VFIOContainerBase *bcontainer, MemoryRegionSection *section)
++{
++    VFIORamDiscardListener *vrdl = NULL;
++
++    QLIST_FOREACH(vrdl, &bcontainer->vrdl_list, next) {
++        if (vrdl->mr == section->mr &&
++            vrdl->offset_within_address_space ==
++            section->offset_within_address_space) {
++            break;
++        }
++    }
++
++    if (!vrdl) {
++        hw_error("vfio: Trying to sync missing RAM discard listener");
++        /* does not return */
++    }
++    return vrdl;
++}
++
+ static void vfio_listener_region_add(MemoryListener *listener,
+                                      MemoryRegionSection *section)
+ {
+@@ -1075,19 +1095,8 @@ vfio_sync_ram_discard_listener_dirty_bitmap(VFIOContainerBase *bcontainer,
+                                             MemoryRegionSection *section)
+ {
+     RamDiscardManager *rdm = memory_region_get_ram_discard_manager(section->mr);
+-    VFIORamDiscardListener *vrdl = NULL;
+-
+-    QLIST_FOREACH(vrdl, &bcontainer->vrdl_list, next) {
+-        if (vrdl->mr == section->mr &&
+-            vrdl->offset_within_address_space ==
+-            section->offset_within_address_space) {
+-            break;
+-        }
+-    }
+-
+-    if (!vrdl) {
+-        hw_error("vfio: Trying to sync missing RAM discard listener");
+-    }
++    VFIORamDiscardListener *vrdl =
++        vfio_find_ram_discard_listener(bcontainer, section);
+ 
+     /*
+      * We only want/can synchronize the bitmap for actually mapped parts -
+diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
+index 3d392b0..1dc760f 100644
+--- a/include/hw/vfio/vfio-container-base.h
++++ b/include/hw/vfio/vfio-container-base.h
+@@ -183,4 +183,7 @@ struct VFIOIOMMUClass {
+     void (*release)(VFIOContainerBase *bcontainer);
+ };
+ 
++VFIORamDiscardListener *vfio_find_ram_discard_listener(
++    VFIOContainerBase *bcontainer, MemoryRegionSection *section);
++
+ #endif /* HW_VFIO_VFIO_CONTAINER_BASE_H */
 -- 
 1.8.3.1
 
