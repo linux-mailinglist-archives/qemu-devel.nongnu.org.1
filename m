@@ -2,99 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 498A0AB3C76
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 17:42:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96AF1AB3C7D
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 17:43:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEVBm-0000Cb-J7; Mon, 12 May 2025 11:35:34 -0400
+	id 1uEVBr-0000Mw-8q; Mon, 12 May 2025 11:35:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uEV9y-00050B-8W
- for qemu-devel@nongnu.org; Mon, 12 May 2025 11:33:42 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uEVA3-0005LC-0X
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 11:33:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uEV9w-0006m0-D9
- for qemu-devel@nongnu.org; Mon, 12 May 2025 11:33:41 -0400
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54CC9eAg024086;
- Mon, 12 May 2025 15:33:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2025-04-25; bh=+WcY3I7bDmEPWHLMdoe23B8LTUR7SlNnbIABTazXPsw=; b=
- Z9Wsm1lvaNFsa1pbJd6/+j4hJw2nS518ZewIR23jhiPorgXmw8c+2+1G7/T45svR
- hm1PDtV4daQQhW5HWVvR72s6uqU6lVEIHOIdwf1grZnugA70oiU2mS0JjoUF4ozz
- 6A9Fx4Fd0gMcXUbcCUdJnIZ8twVzczH8vaQimOmSuu0uItPjuJ0IRthsojXBL35H
- Dc77euOZ/rfgLQmzX/Fh5fl61bLCwzs0uiPXFwGZ3a+Oy5qoMfvdlGuGXCAxbwRQ
- gDVFogzF8ixn654ANHnclSnh3/b1WlSK9BmoHJ1v4EvoXBU59jGmqxGQ58EOShSu
- +vQlUwwsOH+Dwjcu0CZt9w==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46j1d2aqs5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 May 2025 15:33:27 +0000 (GMT)
-Received: from pps.filterd
- (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 54CE0xI4002520; Mon, 12 May 2025 15:33:26 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 46jwx366wf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 May 2025 15:33:26 +0000
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54CFWk62030605;
- Mon, 12 May 2025 15:33:25 GMT
-Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
- by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 46jwx36627-43; Mon, 12 May 2025 15:33:25 +0000
-From: Steve Sistare <steven.sistare@oracle.com>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uEVA1-0006oI-0n
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 11:33:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747064024;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Sp5AOlAAcMe/731mdhhjEGgBdH68SBKAgsxg0jZtfC0=;
+ b=ZLhV6s6TKppuRuLYenE6+nl3ZJI7631kcnglxmT27u0I7ikIxJVXOvoEyWfHjehpK6kF72
+ uysOdzlHmW67hCINvihnemJbXGQ1t1Vool6SobguwgpRg+UGUKwsMeEA/EkOJ10gATQIKf
+ vjSqedISiPrT+rWQfZ8VNN6ChyaQkSI=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-610-ZVxMY9kaM3CA2JORIXWMew-1; Mon, 12 May 2025 11:33:43 -0400
+X-MC-Unique: ZVxMY9kaM3CA2JORIXWMew-1
+X-Mimecast-MFC-AGG-ID: ZVxMY9kaM3CA2JORIXWMew_1747064022
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-43cec217977so22774215e9.0
+ for <qemu-devel@nongnu.org>; Mon, 12 May 2025 08:33:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747064020; x=1747668820;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Sp5AOlAAcMe/731mdhhjEGgBdH68SBKAgsxg0jZtfC0=;
+ b=sS9Q9SPzBu3Tq9EcDBxrrSw2htVCgEQdqOZm324SvC361jNlipmCYIk6dFi1lwjI+x
+ nCqYoOvO34w09TEtVqMBk+BrxKx9xMKwgJS9pLYL1SVUh+57Akpi/wjmNBRyLCSAfh1O
+ ewRd+0N0mdmcLEsAPjj45N+3LaBm+CXQ6ucSYJHcJkDNWErpcSb2PnbVSMqGKxbPmZ3B
+ Wg+mCTnoFdK22DaU+BOpS9ZM/ey0cHvquMfh4kvRsqpvsiMccLp0k9948y+fmMxUO+iR
+ ohd3AUj0GhzgxBs41qrmgpoI5O4eD3SrrcuxHvkbPjaJTcnuAPxSWEiEMjdPJ8qTWmOu
+ 5KfQ==
+X-Gm-Message-State: AOJu0YyvSZoIh7wtIdLjfBuqLw/n4hmLMllwevuC3SsCcS7iPG19PMXW
+ 3cEnwJm1eRvoFfu9iGcz45m9By39R9ROITCSsVqJNHyZUIAsQWeKhQBrt/I0dlAw753Py7w4VCZ
+ 1yeUjz976zjULL3ClNL4CUu0O/Adq0XpZNHLS4VKAVuwmK6+KJFY63kJl57hrEpv0rc6etSd84f
+ uBPsp+eoLxwg/yicPlUg4fyd74HDx2kE+y2jgK
+X-Gm-Gg: ASbGncvpE1TDMITrGkz3kdxGcaxpu74IzKzfBhsvZf/L7K4sHPEVGFRQWKGB8UAq3l5
+ 7qmvC8M5TTE8eCEXugZbjl++v5YPoq0ikYNJBMijLLfc4prSxWG29h1DzfeEeMz1PigASzRmINU
+ cSrXuV1FvYCo3iAf0sHrWySqFG2rKpzd8eD168DIz7wCibIqAJZSZknLZd5714uxv9z7fEygRx2
+ Z6FERjtJOA1RnaEcOoFR/ZlYHiNzxs3k/ryF9uXIOqzCcwqbvv5pV4dNKqi56Fs3tn3YSnFnI/b
+ ySH8qJLaMBICh4o=
+X-Received: by 2002:a05:600c:34d3:b0:43c:e2dd:98f3 with SMTP id
+ 5b1f17b1804b1-442d6dd21b4mr99989825e9.21.1747064019941; 
+ Mon, 12 May 2025 08:33:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFDIDSPNojxEA+YEREVIMoYzu/jSAWEdBb4SQz5359tn58loyctgmLk16cCw/EsEEHGpsY4fg==
+X-Received: by 2002:a05:600c:34d3:b0:43c:e2dd:98f3 with SMTP id
+ 5b1f17b1804b1-442d6dd21b4mr99989545e9.21.1747064019520; 
+ Mon, 12 May 2025 08:33:39 -0700 (PDT)
+Received: from [192.168.122.1] ([151.95.45.141])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-442d68585d1sm130686745e9.31.2025.05.12.08.33.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 12 May 2025 08:33:38 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
- Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V3 42/42] vfio/container: delete old cpr register
-Date: Mon, 12 May 2025 08:32:53 -0700
-Message-Id: <1747063973-124548-43-git-send-email-steven.sistare@oracle.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1747063973-124548-1-git-send-email-steven.sistare@oracle.com>
-References: <1747063973-124548-1-git-send-email-steven.sistare@oracle.com>
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-12_05,2025-05-09_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- mlxscore=0 spamscore=0
- bulkscore=0 suspectscore=0 phishscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2504070000
- definitions=main-2505120161
-X-Proofpoint-ORIG-GUID: sgx1uGSReI--4-HN3qhKuLSjQR5Lsp61
-X-Proofpoint-GUID: sgx1uGSReI--4-HN3qhKuLSjQR5Lsp61
-X-Authority-Analysis: v=2.4 cv=XNcwSRhE c=1 sm=1 tr=0 ts=682214c7 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=wb1fy916W68PL7SXvpoA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDE2MSBTYWx0ZWRfX/wsXsq2/V2/E
- 4O55vpGBJVfivVMjAWRIchAXVoYfrKMekAo5cqb/vwA3pwMjbMwVWkrnZa8gH+UgpxE9ycvQYDU
- 8iN/p+rMmXu+esYR/q+n4BJPXXoMU1hPsa7iHUa8FIV3lJdQhAfRRmJG6fyFd2u7Fa3Z2boigXz
- VszkclrPBlbOE8msInujpdJwWFCYbL5EuJ2WBYMBvar0F8RiiTx+JJME4hRnHjdgnYMLm5iT/pV
- +QTjkOmgKMAY2/p961wm9sz7HuEFvNZ14u6kRtShkGWGORyJI6wkYoG7canQoWo3qLRVd0SKDrR
- aBX+d4OP9ljQULgm32/pIFEhbSeiJLR6ipcShx4nHdVFc2AVJ4sqS3NYJbdO5ervi/g0NOFc+Lt
- hPL77QY5JwRgNgoWNPfkWAFp0M2VCLds0+VGXtMx3ESnSJuPME/8JZzb/g4SZ1rahx285oHn
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
+Cc: philmd@linaro.org,
+	peter.maydell@linaro.org
+Subject: [PATCH v2 0/2] rust: pl011: really use RX FIFO depth
+Date: Mon, 12 May 2025 17:33:35 +0200
+Message-ID: <20250512153337.153954-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.49.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
 X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.499,
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.551,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -112,55 +104,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vfio_cpr_[un]register_container is no longer used since they were
-subsumed by container type-specific registration.  Delete them.
+Forward port a couple more commits from the C version and reintroduce
+a comment that was lost.
 
-Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
----
- hw/vfio/cpr.c              | 13 -------------
- include/hw/vfio/vfio-cpr.h |  4 ----
- 2 files changed, 17 deletions(-)
+Paolo Bonzini (2):
+  migrate: allow smaller types
+  rust: ci: do not enable full lint groups
 
-diff --git a/hw/vfio/cpr.c b/hw/vfio/cpr.c
-index 7609c62..ea1773e 100644
---- a/hw/vfio/cpr.c
-+++ b/hw/vfio/cpr.c
-@@ -30,19 +30,6 @@ int vfio_cpr_reboot_notifier(NotifierWithReturn *notifier,
-     return 0;
- }
- 
--bool vfio_cpr_register_container(VFIOContainerBase *bcontainer, Error **errp)
--{
--    migration_add_notifier_mode(&bcontainer->cpr_reboot_notifier,
--                                vfio_cpr_reboot_notifier,
--                                MIG_MODE_CPR_REBOOT);
--    return true;
--}
--
--void vfio_cpr_unregister_container(VFIOContainerBase *bcontainer)
--{
--    migration_remove_notifier(&bcontainer->cpr_reboot_notifier);
--}
--
- #define STRDUP_VECTOR_FD_NAME(vdev, name)   \
-     g_strdup_printf("%s_%s", (vdev)->vbasedev.name, (name))
- 
-diff --git a/include/hw/vfio/vfio-cpr.h b/include/hw/vfio/vfio-cpr.h
-index b98c247..601037b 100644
---- a/include/hw/vfio/vfio-cpr.h
-+++ b/include/hw/vfio/vfio-cpr.h
-@@ -41,10 +41,6 @@ void vfio_legacy_cpr_unregister_container(struct VFIOContainer *container);
- int vfio_cpr_reboot_notifier(NotifierWithReturn *notifier, MigrationEvent *e,
-                              Error **errp);
- 
--bool vfio_cpr_register_container(struct VFIOContainerBase *bcontainer,
--                                 Error **errp);
--void vfio_cpr_unregister_container(struct VFIOContainerBase *bcontainer);
--
- bool vfio_iommufd_cpr_register_container(struct VFIOIOMMUFDContainer *container,
-                                          Error **errp);
- void vfio_iommufd_cpr_unregister_container(
+ meson.build               |   3 ++
+ migration/vmstate-types.c | 103 +++++++++++++++++++++++++-------------
+ rust/Cargo.toml           |  45 ++++++++++++++++-
+ 3 files changed, 116 insertions(+), 35 deletions(-)
+
 -- 
-1.8.3.1
+2.49.0
 
 
