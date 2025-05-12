@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14203AB2DCF
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 05:12:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B08DAB2DD0
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 05:13:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEJZw-00074x-6n; Sun, 11 May 2025 23:11:44 -0400
+	id 1uEJa1-0007I0-64; Sun, 11 May 2025 23:11:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1uEJZu-00074V-8K; Sun, 11 May 2025 23:11:42 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1uEJZy-0007A6-3m; Sun, 11 May 2025 23:11:46 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1uEJZs-0006kg-JZ; Sun, 11 May 2025 23:11:41 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-7406c6dd2b1so4453046b3a.0; 
- Sun, 11 May 2025 20:11:39 -0700 (PDT)
+ id 1uEJZw-0006lG-AO; Sun, 11 May 2025 23:11:45 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-74237a74f15so3935386b3a.0; 
+ Sun, 11 May 2025 20:11:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747019498; x=1747624298; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1747019502; x=1747624302; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tRvTAYNmL8RyPffLRzrCxFQw869umWAXeoSjF7/UghA=;
- b=bwFKNI/Q5BV8w88DPQmqfqrNPwWFsq4eQMSipw46JwLYJMh3wwf8XI4tpohGaH6B4g
- 30KMOkVD+6ccufieOtExJrl8McNLOy2IU+NsYI0badjBuC+E5GLiZKOnIhMs6eom/EFE
- IPVTpPQffoqrL0owCBjkxCcVI37+6NINzQ8/qdDcoDPvFuJzEs2Y7qeNmjwwt7EXX7rn
- sWXhMg/m3yDtUi4L5xoozBtomPoQQ4/Ud6YvUa0KkwangGW0N6CcZbVS5nGKBGFmEnqU
- tKdqy+y5WaDluP0IDy1uIbTXJWnEEXCbbhOJJwDBryQ69+uLwbvEjDKsIonIQyl1Hf8K
- ok+g==
+ bh=46zU+Eevw+f9Q2ci1zPiJorYU6o9xpCISdJakU0GPXw=;
+ b=a8N+gPBO9ms8kN098YgM5f+DULe0O+V8BZfBy1bqArDqZvXTQUKyqji2cNYzoVBwy0
+ lQWYhyiiFKDAtyBHe++sJDOuX7RZCbfn16WK6qouocuS3BQDF9YT94OE7KAP9CfhDhVI
+ dltNn0dcX9MkDDpX+JAj/twCtc3pHOtvBBZhfmmk2p7Yfr5671KLVGYIk2sbJZ9SUDfC
+ l105CzIQ3/E+WcVf/gO1z7KXEDrbpoPMthThc4++OFN56a2xa4F9qjFhNv8ngiPLpMfA
+ rIW60ECjnylREhxjWg0XUW8AIdWiIi+7UapNH7CSSOks8l7KWPdK+u5XRzVY+CJIHnEc
+ 3KwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747019498; x=1747624298;
+ d=1e100.net; s=20230601; t=1747019502; x=1747624302;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tRvTAYNmL8RyPffLRzrCxFQw869umWAXeoSjF7/UghA=;
- b=ekHMv9ksrN1n4XaxpP0aOJbdbYTOt05NiFsLUFnMJZZ0drpVhdPC1FGXYn6f/WF87t
- qe203cGZv22Eu65MvbfvRIxmiplsvUZIdogzQ1Eg+ycXsOEjOKVNAZRnBd9s66H+BQXB
- /K3XKXjwYc8KYHEyJLQyI3+O3el7nBOy4JWJrv9XSfPAeeoFtGSyvjw9YE6S4FSrUoeO
- k9WntcKYrlsQBCl1KvD/jaD26uH5TiAMWI8qYrL5tpsfAO/o97Ye5zSMRSizbI9hD8Pv
- jFbY+LIbKKbFt84Zomx8HVD3CcTXjKVLpS++2cRLXsxtzqEc2UcWMF/uqNWMXP8UHhtl
- qujg==
+ bh=46zU+Eevw+f9Q2ci1zPiJorYU6o9xpCISdJakU0GPXw=;
+ b=QWPjo7rX+HrhCB8Yd73UViirPUd8OdKfOiEPtvAePFJYN6HNJPY6mi+tJHv2flSjio
+ nOiikXQN4y+G139fhRzyPhWs4DcKwviLUef1+o4oHHMFDW06kNoqw+P0Jw142wd/HxKo
+ 8fhxiOIn2jl6FFogmdgaWPpO1WGQSugpW5BQBWHFCPvBD7cSM6Rn/b1EczWdn0tdw+ns
+ 6Ob6sR+oOrDgb5eydF1/Up4g0BepeyVUFDeZphg3Zib82vWRh5CgBwMaRKpfeUbxmVpA
+ Qlgi2xr8j3dx9BlNtJdOSxOhTE5IN6jM3qo0HdYD8oPjgZRMpl+yRNI0e5kHCFUhnxdu
+ lB3A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUZYITxMDfajCenZ4ToxG3uUD1qZJERTKwpFmb9t9GiGczEiKGg2zfaDhobIHuA8HqbY90qVjq5Xhi3@nongnu.org
-X-Gm-Message-State: AOJu0YzteyLjinbX8bHieaKWGOYmeNXYb3/OBE/NilewuqZ0BQ7Hzb6Z
- DWqpzNjUEvTnuL/tbSiotIKz7OwYkNLQOFg6KWnNY5inSQXVMnJrI7QPnA==
-X-Gm-Gg: ASbGncuNYw11PR0pXHPVHjsvScqBiyrTkNDfkqnFn3rKLQ0vhdNhI6KxbEmdSEwj/11
- QpaW+9SHKBp124J+992wx6kemWBOT28tYRw+5z/sdhQfqJg8YgOSpWdeg4JDJZ183pvR5lO2xEG
- pxvON3Lwqag6bgbwz97cTZbQM77+ZR+8JuchMxwNel4h/wmyu2rCvFloVnJhDLr9A+8rNP2CKWw
- nZizRIC2WaNyZ3JIsgDtQQBLqxY9T4LJ4SzcvuCspweMitw5lgxt1WN1Hw8TCczrPWAFG7lWz0m
- L9zZfEbNmkbDXKuXBfiuNf2SmNSbcFG1C8ZkfXwRkJ5lLM1AFOgFMuGThQ==
-X-Google-Smtp-Source: AGHT+IGLwW1vyGKDTdqFLuL2vb+elJ+wgQX6pM6InVmSMMxUtheXR9B6y9C/Y6FCrnI8TfqqlegGqA==
-X-Received: by 2002:a05:6a20:d48d:b0:1fd:f4df:ab67 with SMTP id
- adf61e73a8af0-215ab6db883mr16330950637.21.1747019498305; 
- Sun, 11 May 2025 20:11:38 -0700 (PDT)
+ AJvYcCU+G4VPsYgkgyduNS2ZefBqpjLEuExIH9auQu9sNrBVRYgFQioKUCglQVxfdREmK+pfdMAbJ3n5b8e3@nongnu.org
+X-Gm-Message-State: AOJu0YyLJRfHVF25fBPkkVTbzEQrVxil7qrEFaWbieGdXgGiQmiQ71hT
+ TTpP2aWuWognDI02ulbE6JxtlEaMLSOCVoqaAFhfxguPVu+y2ry8bbaNeg==
+X-Gm-Gg: ASbGncuW/jmBjb0OApLv4QTWM19M3yOFlGPZQKUowqgtb65QBijGoCwsmtTSJmMsRZP
+ Cfd3mMFaKelhlt7gdwJubFnvBN4RUFQv1eqRPGsiuzMWl5/9COXxW4xvuPXPHnsyxLxI+CbKB6R
+ vk0S83NU7+KFIRLTCwU4lZdtPV2F6pQ8tBoZ9rBxe59fp+/Sm40EJYDMa05lfJ7Al1Rff4h/zMb
+ 40PuNbLpLWbHWCU71d56xISQrBCeuwh9gO7Zv2IrxONqe+jveTdaWo5k2/zPqjXzVvJK5g63dad
+ LRVQ9hc2woM3vyEI3oX1Ms86y3geE5STVxNW0P/rTTsP6QC5TOZ4/uvLqg==
+X-Google-Smtp-Source: AGHT+IE2ps8ftIZSRMxb1WjRJs4JG36OM3SRChua5ItOaV6LvOZJEmkSgklnXt+pBJDhoYzNDTfDPg==
+X-Received: by 2002:a05:6a00:2313:b0:73c:c11:b42e with SMTP id
+ d2e1a72fcca58-7423c0176f2mr15546994b3a.20.1747019501989; 
+ Sun, 11 May 2025 20:11:41 -0700 (PDT)
 Received: from wheely.local0.net ([118.209.229.237])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b234951024csm4750069a12.5.2025.05.11.20.11.35
+ 41be03b00d2f7-b234951024csm4750069a12.5.2025.05.11.20.11.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 11 May 2025 20:11:37 -0700 (PDT)
+ Sun, 11 May 2025 20:11:41 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
  Glenn Miles <milesg@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>,
  Caleb Schlossin <calebs@linux.vnet.ibm.com>
-Subject: [PATCH 08/50] ppc/xive2: Use fair irq target search algorithm
-Date: Mon, 12 May 2025 13:10:17 +1000
-Message-ID: <20250512031100.439842-9-npiggin@gmail.com>
+Subject: [PATCH 09/50] ppc/xive2: Fix irq preempted by lower priority group irq
+Date: Mon, 12 May 2025 13:10:18 +1000
+Message-ID: <20250512031100.439842-10-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250512031100.439842-1-npiggin@gmail.com>
 References: <20250512031100.439842-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,64 +101,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Glenn Miles <milesg@linux.ibm.com>
 
-The current xive algorithm for finding a matching group vCPU
-target always uses the first vCPU found.  And, since it always
-starts the search with thread 0 of a core, thread 0 is almost
-always used to handle group interrupts.  This can lead to additional
-interrupt latency and poor performance for interrupt intensive
-work loads.
+A problem was seen where uart interrupts would be lost resulting in the
+console hanging. Traces showed that a lower priority interrupt was
+preempting a higher priority interrupt, which would result in the higher
+priority interrupt never being handled.
 
-Changing this to use a simple round-robin algorithm for deciding which
-thread number to use when starting a search, which leads to a more
-distributed use of threads for handling group interrupts.
+The new interrupt's priority was being compared against the CPPR
+(Current Processor Priority Register) instead of the PIPR (Post
+Interrupt Priority Register), as was required by the XIVE spec.
+This allowed for a window between raising an interrupt and ACK'ing
+the interrupt where a lower priority interrupt could slip in.
 
-[npiggin: Also round-robin among threads, not just cores]
+Fixes: 26c55b99418 ("ppc/xive2: Process group backlog when updating the CPPR")
 Signed-off-by: Glenn Miles <milesg@linux.ibm.com>
 ---
- hw/intc/pnv_xive2.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ hw/intc/xive2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-index 72cdf0f20c..d7ca97ecbb 100644
---- a/hw/intc/pnv_xive2.c
-+++ b/hw/intc/pnv_xive2.c
-@@ -643,13 +643,18 @@ static int pnv_xive2_match_nvt(XivePresenter *xptr, uint8_t format,
-     int i, j;
-     bool gen1_tima_os =
-         xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_GEN1_TIMA_OS;
-+    static int next_start_core;
-+    static int next_start_thread;
-+    int start_core = next_start_core;
-+    int start_thread = next_start_thread;
- 
-     for (i = 0; i < chip->nr_cores; i++) {
--        PnvCore *pc = chip->cores[i];
-+        PnvCore *pc = chip->cores[(i + start_core) % chip->nr_cores];
-         CPUCore *cc = CPU_CORE(pc);
- 
-         for (j = 0; j < cc->nr_threads; j++) {
--            PowerPCCPU *cpu = pc->threads[j];
-+            /* Start search for match with different thread each call */
-+            PowerPCCPU *cpu = pc->threads[(j + start_thread) % cc->nr_threads];
-             XiveTCTX *tctx;
-             int ring;
- 
-@@ -694,6 +699,15 @@ static int pnv_xive2_match_nvt(XivePresenter *xptr, uint8_t format,
-                     if (!match->tctx) {
-                         match->ring = ring;
-                         match->tctx = tctx;
-+
-+                        next_start_thread = j + start_thread + 1;
-+                        if (next_start_thread >= cc->nr_threads) {
-+                            next_start_thread = 0;
-+                            next_start_core = i + start_core + 1;
-+                            if (next_start_core >= chip->nr_cores) {
-+                                next_start_core = 0;
-+                            }
-+                        }
-                     }
-                     count++;
-                 }
+diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
+index 453fe37f18..2b4d0f51be 100644
+--- a/hw/intc/xive2.c
++++ b/hw/intc/xive2.c
+@@ -1283,7 +1283,7 @@ bool xive2_tm_irq_precluded(XiveTCTX *tctx, int ring, uint8_t priority)
+      * priority to know if the thread can take the interrupt now or if
+      * it is precluded.
+      */
+-    if (priority < alt_regs[TM_CPPR]) {
++    if (priority < alt_regs[TM_PIPR]) {
+         return false;
+     }
+     return true;
 -- 
 2.47.1
 
