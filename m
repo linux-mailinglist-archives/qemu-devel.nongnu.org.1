@@ -2,95 +2,144 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47BE0AB37D5
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 14:53:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1AACAB37F5
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 14:59:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uESdP-0008Uz-8z; Mon, 12 May 2025 08:51:55 -0400
+	id 1uESkB-0005WC-Gh; Mon, 12 May 2025 08:58:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1uESdL-0008Rh-TF
- for qemu-devel@nongnu.org; Mon, 12 May 2025 08:51:51 -0400
-Received: from mail-ua1-x92c.google.com ([2607:f8b0:4864:20::92c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1uESdJ-0005cQ-UP
- for qemu-devel@nongnu.org; Mon, 12 May 2025 08:51:51 -0400
-Received: by mail-ua1-x92c.google.com with SMTP id
- a1e0cc1a2514c-8783d2bf386so1136993241.0
- for <qemu-devel@nongnu.org>; Mon, 12 May 2025 05:51:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1747054307; x=1747659107; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=0dMbmUTO+d1NfmxBMkSxF5qFgaq9PUVR8zKUYgXgECo=;
- b=aDJSu2J0pscQJZbaAgf8lCorpYX//wwQs3No3uotuIBNeyv+PDjrzjawRV7wpHIHQN
- NShUVWQzuI8UAe16FSXotPY/6nYNKu5y2us0n8SVGEce3Tp685lpKrPikIVXHtCuEjXt
- E2bFqAMICFdtHJ/L/auTTHdYqZlSp9rkUpxqh1+iekLLoa9/ztzhgtJmz9iy2ksA0ORz
- zMzRgZAQzYUxfg4aPrO7zIpcMn4RW1zPMJfWcdOYezim/GQLdGmJaQQ3D6z++0PqsL4F
- rovhD4hZ7WB4InqHxE/aSOm6WSIzY/RuCV1w43caI0d4dO4N+F7ML1qtMXd9LOsQ8/xe
- 29og==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uESk9-0005Vl-N9
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 08:58:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uESk7-0006Mp-4V
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 08:58:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747054727;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=nM98FbfVfhRUb+CPai3Ww1cSP1t8RxNywjF/o33H0ZM=;
+ b=HBG0AO5T8s8fI3gYYvQSp63XeYaGlLgs77AAA32OuBDCQydfb8nmUrJuiyvOd6+mMpMWIy
+ 23S4BypvMMjLsz87BaIovy+/B9WxfRmfTYnN8UiMJcAKQ77HzakUCFVU119gDEXuZhSzaL
+ BtSF4dZ6ScKOvwOLbvaqvXyR1JlT33I=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-475-izQhE5QtMhSMLBDMlxV7uA-1; Mon, 12 May 2025 08:58:45 -0400
+X-MC-Unique: izQhE5QtMhSMLBDMlxV7uA-1
+X-Mimecast-MFC-AGG-ID: izQhE5QtMhSMLBDMlxV7uA_1747054725
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3a1f6c5f4f2so1066033f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 12 May 2025 05:58:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747054307; x=1747659107;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0dMbmUTO+d1NfmxBMkSxF5qFgaq9PUVR8zKUYgXgECo=;
- b=tD6ptkvYj2MOFIFVQZraCJ9qvzxHEfpxXIHvj6g0OQDm4ohbAevXGQuQQxFxYXfU+A
- e7OpT+ymvpzw/OYPXB10GNntILa/QFWj7jT4/fagWELr2iOqBxBEpRC1aWHG2yyCWdPf
- GJ30yFjft8+FPcd7UVE5ybQT6+I5ZBrqyPBJFPCrbRqsHe3FWN8to6ree2KHwyRLoEPG
- eUiZGHJxePkFvQZPbzVZ7OcJiYZRLKyjEI7vm7XIgSYMVTdesilrIHnw3OfFuDYswltx
- 9K60SzQKkOv5syx/8EZsct05ZoLdlwQFD+CjIvoRgQxct7pSlbVEC+tafrWRal/sYYB8
- zJUw==
+ d=1e100.net; s=20230601; t=1747054724; x=1747659524;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=nM98FbfVfhRUb+CPai3Ww1cSP1t8RxNywjF/o33H0ZM=;
+ b=gv3FTIZxccxpqkCCs2fn5lFpY5LgWYg76CBL4H1Qqz2pIwhVSKCKeJmyZCty/sJmyU
+ 3fCKrzrBIG2wWYE5MG/h5XCDmsaoh2dGySWZzfEY6JCH9wfpoLGgKh3pVPSwfgS2HvW8
+ FgqhQ0/51Hpiti+o/LEgpPDxg+TSVu7cAQsWLijuxYLQuP8pRJjZq31kwNKtLfOc2AfQ
+ MwJMJLdx+mQ6IlRUddF0bfZKKkLjD6W8tXF180MwtZe5ZObLhmbfeD1h2StJWsJ/AU4y
+ q/cB1Mshrm89ImNyDtvPCmtdFA+3C9G/QJsLr759LiQ8sqj++6TqdfmiM5LPDeXrm33z
+ uDGw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUrTPUpbTfBIiARRQ9mr62KCTop/nOz4cWJAxwMTOe4u9XBb6F+hKLFSvpK4RvhofnzN44p7La6l9AO@nongnu.org
-X-Gm-Message-State: AOJu0YwBVKIvbJMVzTo4gsdBvLCjVC1I/08C98AfZgHL5NVV3kWQHkak
- FjixfYbdklETKeCiNK4DpO4gaYZQgu8B5kAhWr2CHzm9FiXTZgBbyQvSs5KzeI4=
-X-Gm-Gg: ASbGncu0yeBdUsS4HO/8CgjrqK/xRD+rGmL5E8Ua8Y0BlHRVqEonZrD/4Yc58o2b9HY
- CwbviyJCIziDWmKgoVKaMbiwYqfMf9zy6SR6G8ToHHhZwfj65zc7t4pBDfARfxGRhCsJyU/56jA
- f2zavcliA5Gh2vcBd9yNH9aFt244T+hKOk2voRTHnkuA2W1TUzA6lwuytpqX90JiBkABq5sX/jz
- hnhxZLt7OGsO+DL3jAxordE2zXwmPWS8bwdAZPqr5O5m0rLQH8gZNx7giXihTAYk/BGnEdKRRP7
- 10snAp06XEtGyF1/GBXHWZSkCZQMI/PeYCDtC3qdixqCAFgcjHO4XA1juL+L1MTsIoOXh8Ms51e
- L
-X-Google-Smtp-Source: AGHT+IG47Wb+tkjW1BSM/M92+Qe2QP7JWTBypFWGjiwzlXM5kWvqICfu5AVo6+NOE7JTxz6ERVIalw==
-X-Received: by 2002:a05:6102:15a0:b0:4dd:b9bc:df71 with SMTP id
- ada2fe7eead31-4deed3552b0mr9757958137.10.1747054307161; 
- Mon, 12 May 2025 05:51:47 -0700 (PDT)
-Received: from [192.168.68.110] ([152.234.125.33])
- by smtp.gmail.com with ESMTPSA id
- a1e0cc1a2514c-879f613b5d0sm5012615241.6.2025.05.12.05.51.44
+ AJvYcCUXWs3Bsn5PVqn8I9RufxLDPCbj2Mk/9HoMNZm4dH5Ncsem86BpbT9KllKH5h+xQY0uJ8eVxMeySN6g@nongnu.org
+X-Gm-Message-State: AOJu0YwcQp+SAIpu9+fp0gRTTyAanEOp+fgSNkNeJqQEmM2L6ess7gBL
+ yormW+n78BAEs8UFi9w4/kMnLRnhuUFtVK3LoRBS2WWuvUGWGJ9OX+Re6uJk7HtL66N5rHLPuRE
+ FU0AQCCy9MiprFqGF+8h7oQSsFc6RPP524ot/4jMXACDvjr6S5M6yMYP1xUXl
+X-Gm-Gg: ASbGncv2RwriH4dF7yRZy/1ZnnWormtbEflXY/XqGF97veHgsrFzAKIIMq7pyRhS+sY
+ ElQCByoV3csxX4n9P8rk87Ap6Xk6InlVQU+sRlf2+NTkEwOheJ2qcHOk9pZBLQ0WN22PFIZz8oM
+ ouW2MzicID9gl5M1g2iR2sr0XJjC7+Ibiv6wG7hZlUOtik2vOFVUwxmCqElruZPte4RsSB69XYn
+ Hc1CPOQF+9Xo7N2/pLoo4g2B8kwkCxw27mT7ERzAwOAyFRGiAogGukrsJ1uN7ZfuYHnYNOlNjvH
+ 1ytfSxOXxZiBh35mp7EJn32eRSewIzWSwFzx5CJDlZAMHq3KlgJ+
+X-Received: by 2002:a05:6000:3101:b0:3a0:b53a:7b3b with SMTP id
+ ffacd0b85a97d-3a1f646d9a0mr8973656f8f.12.1747054724685; 
+ Mon, 12 May 2025 05:58:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFSXCewcuBb1hmWOuIw8I0ssj04ABCFQOOJaSTK94gVMCQa5K+cfJCFA0VXk/KzoXG4Qoz+vQ==
+X-Received: by 2002:a05:6000:3101:b0:3a0:b53a:7b3b with SMTP id
+ ffacd0b85a97d-3a1f646d9a0mr8973640f8f.12.1747054724372; 
+ Mon, 12 May 2025 05:58:44 -0700 (PDT)
+Received: from [192.168.0.7] (ltea-047-064-115-173.pools.arcor-ip.net.
+ [47.64.115.173]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a1f5a4c5a4sm12317668f8f.81.2025.05.12.05.58.43
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 12 May 2025 05:51:46 -0700 (PDT)
-Message-ID: <76f367f0-c92d-46e3-97a4-daa8c594b5ad@ventanamicro.com>
-Date: Mon, 12 May 2025 09:51:43 -0300
+ Mon, 12 May 2025 05:58:43 -0700 (PDT)
+Message-ID: <8ef01b37-bd99-4bc5-997e-df197f7f7c3f@redhat.com>
+Date: Mon, 12 May 2025 14:58:42 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 23/23] tests: add test with interrupted memory accesses
- on rv64
-To: Julian Ganz <neither@nut.email>, qemu-devel@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Weiwei Li
- <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
-References: <cover.1746968215.git.neither@nut.email>
- <1e94b1c43e90ec21333dcf5ddcf5130090cabfe3.1746968215.git.neither@nut.email>
+Subject: Re: [PATCH] tests/functional: Add PCI hotplug test for aarch64
+To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org,
+ peter.maydell@linaro.org
+Cc: eric.auger@redhat.com, alex.bennee@linaro.org, philmd@linaro.org
+References: <20250509232156.106465-1-gustavo.romero@linaro.org>
+ <80e7eacc-0b71-4e1c-981e-607a4ce8a7bd@redhat.com>
+ <e25812d6-cc1d-4727-b24e-208dbbe54afa@linaro.org>
+ <b3c9413d-971e-4ac9-8314-93b88b349495@redhat.com>
+ <d6cf5356-4cac-448c-9078-f5bbe5d2de84@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <1e94b1c43e90ec21333dcf5ddcf5130090cabfe3.1746968215.git.neither@nut.email>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <d6cf5356-4cac-448c-9078-f5bbe5d2de84@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92c;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-ua1-x92c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.551,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,121 +155,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 5/11/25 10:22 AM, Julian Ganz wrote:
-> This test aims at catching API misbehaviour w.r.t. the interaction
-> between interrupts and memory accesses, such as the bug fixed in
+On 12/05/2025 14.46, Gustavo Romero wrote:
+> Hi Thomas,
 > 
->      27f347e6a1d269c533633c812321cabb249eada8
+> On 5/12/25 09:37, Thomas Huth wrote:
+>> On 12/05/2025 14.08, Gustavo Romero wrote:
+>>> Hi Thomas,
+>>>
+>>> Thanks for the review.
+>>>
+>>> On 5/12/25 04:59, Thomas Huth wrote:
+>>>>   Hi!
+>>>>
+>>>> On 10/05/2025 01.19, Gustavo Romero wrote:
+>>>>> Add a functional test, aarch64_hotplug_pci, to exercise PCI hotplug and
+>>>>> hot-unplug on arm64. Currently, the aarch64 'virt' machine uses the PCIe
+>>>>> native controller and does not support ACPI-based hotplugging. However,
+>>>>> since support is planned, this test sets 'acpi=force' and specifies an
+>>>>> EDK2 firmware image in advance. This is harmless and prepares for future
+>>>>> ACPI support.
+>>>>>
+>>>>> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+>>>>> ---
+>>>>>   tests/functional/meson.build                 |  1 +
+>>>>>   tests/functional/test_aarch64_hotplug_pci.py | 73 ++++++++++++++++++++
+>>>>>   2 files changed, 74 insertions(+)
+>>>>>   create mode 100755 tests/functional/test_aarch64_hotplug_pci.py
+>>>>
+>>>> Could you also add the test file to one of the sections in the 
+>>>> MAINTAINERS file, please?
+>>>
+>>> Any idea under which section I should add this test?
+>>>
+>>> Currently, it's only TCG, but in the future probably there will be
+>>> 1) a variant with --enable-kvm option and 2) it will have a variant
+>>> with ACPI enabled. Hence, currently it doesn't seem to fit neither
+>>> under "PCI" nor under "ARM ACPI Subsystem", I think I can create a
+>>> section tho? Maybe "ARM PCI Hotplug"? Could you please advise?
+>>
+>> A separate section likely only makes sense if there are other files that 
+>> you could add there. Otherwise, simply add it to the arm "Virt" machine 
+>> section?
 > 
-> Because the condition for triggering misbehaviour may not be
-> deterministic and the cross-section between memory accesses and
-> interrupt handlers may be small, we have to place our trust in large
-> numbers. Instead of guessing/trying an arbitrary, fixed loop-bound, we
-> decided to loop for a fixed amount of real-time. This avoids the test
-> running into a time-out on slower machines while enabling a high number
-> of possible interactions on faster machines.
-> 
-> Signed-off-by: Julian Ganz <neither@nut.email>
-> ---
+> hm but in this case wouldn't I be kind "forcing" Peter to maintain
+> this test? And, otoh, if I add me to "Virt" section then I'm saying that
+> I'll maintain all the other tests as well?
 
+Ok, in that case a separate section makes sense ... Peter, do you have any 
+preferences?
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-
->   tests/tcg/riscv64/Makefile.softmmu-target |  6 ++
->   tests/tcg/riscv64/interruptedmemory.S     | 67 +++++++++++++++++++++++
->   2 files changed, 73 insertions(+)
->   create mode 100644 tests/tcg/riscv64/interruptedmemory.S
-> 
-> diff --git a/tests/tcg/riscv64/Makefile.softmmu-target b/tests/tcg/riscv64/Makefile.softmmu-target
-> index 5fba973e18..5d07755964 100644
-> --- a/tests/tcg/riscv64/Makefile.softmmu-target
-> +++ b/tests/tcg/riscv64/Makefile.softmmu-target
-> @@ -26,5 +26,11 @@ run-plugin-doubletrap: doubletrap
->   	  $(QEMU) -plugin ../plugins/libdiscons.so -d plugin -D $*.pout \
->   	  $(QEMU_OPTS)$<)
->   
-> +EXTRA_RUNS += run-plugin-interruptedmemory
-> +run-plugin-interruptedmemory: interruptedmemory
-> +	$(call run-test, $<, \
-> +	  $(QEMU) -plugin ../plugins/libdiscons.so -d plugin -D $*.pout \
-> +	  $(QEMU_OPTS)$<)
-> +
->   # We don't currently support the multiarch system tests
->   undefine MULTIARCH_TESTS
-> diff --git a/tests/tcg/riscv64/interruptedmemory.S b/tests/tcg/riscv64/interruptedmemory.S
-> new file mode 100644
-> index 0000000000..a32d672849
-> --- /dev/null
-> +++ b/tests/tcg/riscv64/interruptedmemory.S
-> @@ -0,0 +1,67 @@
-> +	.option norvc
-> +
-> +	.text
-> +	.global _start
-> +_start:
-> +	# Set up trap vector
-> +	lla	t0, trap
-> +	csrw	mtvec, t0
-> +
-> +	# Set up timer
-> +	lui	t1, 0x02004
-> +	sd	zero, 0(t1) # MTIMECMP0
-> +
-> +	# Enable timer interrupts
-> +	li	t0, 0x80
-> +	csrrs	zero, mie, t0
-> +	csrrsi	zero, mstatus, 0x8
-> +
-> +	# Find out when to stop
-> +	call	rtc_get
-> +	li	t0, 60
-> +	slli	t0, t0, 30 # Approx. 10e9 ns
-> +	add	t0, t0, a0
-> +
-> +	# Loop with memory accesses
-> +	la	t1, semiargs
-> +0:
-> +	ld	t2, 0(t1)
-> +	sd	t2, 0(t1)
-> +	call	rtc_get
-> +	bltu	a0, t0, 0b
-> +
-> +	li	a0, 0
-> +	lla	a1, semiargs
-> +	li	t0, 0x20026	# ADP_Stopped_ApplicationExit
-> +	sd	t0, 0(a1)
-> +	sd	a0, 8(a1)
-> +	li	a0, 0x20	# TARGET_SYS_EXIT_EXTENDED
-> +
-> +	# Semihosting call sequence
-> +	.balign	16
-> +	slli	zero, zero, 0x1f
-> +	ebreak
-> +	srai	zero, zero, 0x7
-> +	j	.
-> +
-> +rtc_get:
-> +	# Get current time from the goldfish RTC
-> +	lui	t3, 0x0101
-> +	lw	a0, 0(t3)
-> +	lw	t3, 4(t3)
-> +	slli	t3, t3, 32
-> +	add	a0, a0, t3
-> +	ret
-> +
-> +trap:
-> +	lui	t5, 0x0200c
-> +	ld	t6, -0x8(t5) # MTIME
-> +	addi	t6, t6, 100
-> +	lui	t5, 0x02004
-> +	sd	t6, 0(t5) # MTIMECMP
-> +	mret
-> +
-> +	.data
-> +	.balign	16
-> +semiargs:
-> +	.space	16
+  Thomas
 
 
