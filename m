@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1067AAB2DD1
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 05:13:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E980AB2E00
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 05:19:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEJbM-0000bv-5X; Sun, 11 May 2025 23:13:12 -0400
+	id 1uEJbi-0002iC-1z; Sun, 11 May 2025 23:13:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1uEJad-000889-EF; Sun, 11 May 2025 23:12:27 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1uEJag-0008Lo-Uf; Sun, 11 May 2025 23:12:33 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1uEJab-0006ql-OK; Sun, 11 May 2025 23:12:27 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-22fb33898bbso47266055ad.3; 
- Sun, 11 May 2025 20:12:24 -0700 (PDT)
+ id 1uEJaf-0006r9-73; Sun, 11 May 2025 23:12:30 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-736c277331eso4294936b3a.1; 
+ Sun, 11 May 2025 20:12:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747019543; x=1747624343; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1747019547; x=1747624347; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kDqoWuZwIRvGFlMJ4dv35HlEIf/ra31t+mGO69ly2tI=;
- b=kD5RNsCAIYjqvPx0A+xjjt98EShZDlkTF5BynNO0U8f5tcfZ0ay4oCihtCOt+5bK0i
- yKlQeG1942NwwPSIifcnQpVrYP0RfwkfgUj3imvbaySm0/hZcFN2Ba2c8b4WRO3NRxE6
- 8KLHUaiHdbhXjCG/sdK7safM7t8OIlFQ9qrQivg0w7F/7YhbR9mvJHxQKzVajdMjYYqE
- Ot3uGqXGV09hBhhsEJlXh+pgaeXypHQhfJIBjDrJFUNYnIKAQAah6N+7cnWrDSPI+lBL
- O21mOfGkhrTiDlJBIBAoWrTUf3GAXPYjY9+J2UtgbPGqeWYvwEaLjo0DlZrcipVNfZyz
- qWZA==
+ bh=JvKWlAOv6gqOYnMANheHLFdxZjIYTAVqhgBLtzwasVg=;
+ b=XO1HNrZ3svyn/dpU/5sIndVx9XA8ak5ufW0Bes5F11cIP5IAzw3y6HiPoXqz9uaKYv
+ DfJyiMWRmA6xG/21KFM/K4S8cDGOU/TKZ/j9lFEFVPEb6N6xLP4HYoU+I2TJ3noSwnbg
+ 09m5t9e2ecUAPcQBwlHhO3YGO/+RlKKrHzmo6hu7KQizgMJ21Wce/QiCr2jtBKdM/Smn
+ BkM0YiQDOtAqpE4VYoLAYHJOtKV58dWUGmQmjYhKit3RJYKuuF1B+V/t1yo3fZxswUKy
+ o+urEwpbHZ+4pmJPGzUv9Fv4Q7tVP5/BI8pyvXbIGsYwHFvyLLFNRqigsq01TCuUnnFI
+ AVrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747019543; x=1747624343;
+ d=1e100.net; s=20230601; t=1747019547; x=1747624347;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kDqoWuZwIRvGFlMJ4dv35HlEIf/ra31t+mGO69ly2tI=;
- b=FNt4/cfCGsUoXEUCD2PR+fkP9d7HVf8t5zwIUUGJOk2qwskl5/6HLloniKNKLAawQh
- zrbn+h3fUWUJI53DKcf4n+F85KSIfE2GVqX3/+5Rx8OCCQEgEgJOWSxdAOi1sb2dTz+8
- r6YNdEelf0jfXYcaSgHxNsO3O3Ya1YCkowHuYXmGlvYiyeYABw+QQial3rrrwTEbkhKL
- 887J/E6EWhOo4stZJldTiQOF9ouUSA2j07EYIcp7e8kY3N5VpWRU1K5JEIa/sqG5TA/X
- z13/04OPA5AULmrfvU0O8UYDwTNFpPbISp5Kjth/PexFScE9OdSlZwI8M+3CzWuHFc34
- 7p4w==
+ bh=JvKWlAOv6gqOYnMANheHLFdxZjIYTAVqhgBLtzwasVg=;
+ b=wATXxAEtp1iZpGFzIXnxwhD77Pdv6Ov7kV1uhJ6k3MlTYR7a0CcPVUMoiaZeFguTkc
+ QhmsT3FdBt8Ffz6uHYaUijCyG2297zAhOf2iGbJ22oB4CE9g2cf9JuzmrOLEMK8ND3cL
+ iIvlnFZ9l45KnTOXMRvRG6rpxNlXMdbGbnJ2PgCFiztz6GYJxcvY5rqNMGhhafriO5+L
+ YwhmHhuLsTC4PSUbl9d4M4LApPskltwZvofnH9yztMZF2EORYinzmctSUAY9q/mFsjCl
+ iw+aVELpb5YFsI2AfalgS10lnbOUlCU0VIdNAP0V5wFIZt22I/a8aJM02h5HyDP1/Rxl
+ txEg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXuA4Sfed3csQmiPZtBxbOQ/YEuXubNTC6ccl+PH06aMlW7Xs5fQehS7DLJpJNcLtdGDnOyXYO2Iffs@nongnu.org
-X-Gm-Message-State: AOJu0YzF1rVg8UUPoW9JD701ioxVWZnltk72ZaL+Iqs36B97DmCqdV98
- GA5tPYN+rP9LT+1ks7jd9QHb/iB1AtY/sKzNdNmJJUvtyZe2H2JYfeAGfw==
-X-Gm-Gg: ASbGncshfsPE+p5nVoUVvRs+kY/1OETPyppsS0kwEiUoAPxTxpoYThYL6Rkwt53HWhG
- JB/skmJ+1b9P3vODwolO8+V9aQCjajz4dnLH8L7deVWPuL5SuqG3vOTUh+gSsexR3gNCUm9URtH
- nXvOOGCM++FxLpdRMEIm/if9gY8MSr3/dZFdtzf99J4mlDR21R/kbnVvlqTsnoxC1253LRAg8D9
- nsT41ZPxtpCsAhkuZjkcFMiLnwY9hDrJLtf/OP50PkIsnnM3LM6AoW+wDs7Pabl+dW8K4namAZa
- QuiZJV6piQdC0N2I96ZcHWVLk9T/L8Lpa6XTeavaMu/zbG1M70oCHpVCsrMQnYSp1vX6
-X-Google-Smtp-Source: AGHT+IF1pZ1sGAYPbHdP1EgKQy/1oo/aC1LUr0zUbte5hf3oiq8UI5NE1jDF7FVs0GmFeKCO5qZVSg==
-X-Received: by 2002:a17:902:f706:b0:22e:6ea8:8a14 with SMTP id
- d9443c01a7336-22fc8b76adbmr210783205ad.24.1747019543184; 
- Sun, 11 May 2025 20:12:23 -0700 (PDT)
+ AJvYcCXnigiXtLVs6jQVxGYemiR0I0baH8ZXhr732MmvOFpM9Yhp5L/xFuOgxJm/ZPUC17KCy0k9fVxSp+7A@nongnu.org
+X-Gm-Message-State: AOJu0Ywli9VMyD6nTXLpmbwQ9Xw0dg7SO2ZwHGFX469sJnvO1wXsLndp
+ U5zC0hE4gJnNynwsQtJRjdQz6bVJSl4ZgpMKIcCi0ch5ctmTAQtS+le+xA==
+X-Gm-Gg: ASbGnctXl8JQSefIn1RPsBnRL7Vb4oShnNLzQbpj6z4oSvkcKi96D/XxQdt0Iwpq52Q
+ 1r6pGFsd3o2jcj7c2nN5rzD8mCwXHDKRVoMv5MDvIpkl/iUorPiCHzt31JVkviMNA137GjdqryQ
+ REv6mn+uf3P6YEBVDNLfzCyPti+h8E8s/PrFVqqmksgGn607c7db8YEv3WkxPur79/hi0cqX1bB
+ CpRZy4GbECzxntuyTlt/uYwKVjL7AF1OIhjCnUtzSXVXzpMEWKXMoJnljMo5qpJJ13ref96au6b
+ ura4jXVIc6egMiqI0VKAicso7Xpdd0UInAZfILQsgiTLdlrDPbqbI8rStA==
+X-Google-Smtp-Source: AGHT+IFxnzSkJ2TdGyPjE56rzR0H91u1E65jH6DGz5p4eXhTCDzSrH14ENJ/x+2vFQKW2vComJkgDw==
+X-Received: by 2002:a05:6a21:6481:b0:1ee:ba29:d8fa with SMTP id
+ adf61e73a8af0-21599fb5cdamr23657763637.6.1747019546888; 
+ Sun, 11 May 2025 20:12:26 -0700 (PDT)
 Received: from wheely.local0.net ([118.209.229.237])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b234951024csm4750069a12.5.2025.05.11.20.12.19
+ 41be03b00d2f7-b234951024csm4750069a12.5.2025.05.11.20.12.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 11 May 2025 20:12:22 -0700 (PDT)
+ Sun, 11 May 2025 20:12:26 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
  Glenn Miles <milesg@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>,
  Caleb Schlossin <calebs@linux.vnet.ibm.com>
-Subject: [PATCH 20/50] pnv/xive2: Permit valid writes to VC/PC Flush Control
- registers
-Date: Mon, 12 May 2025 13:10:29 +1000
-Message-ID: <20250512031100.439842-21-npiggin@gmail.com>
+Subject: [PATCH 21/50] ppc/xive2: add interrupt priority configuration flags
+Date: Mon, 12 May 2025 13:10:30 +1000
+Message-ID: <20250512031100.439842-22-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250512031100.439842-1-npiggin@gmail.com>
 References: <20250512031100.439842-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,85 +99,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Michael Kowal <kowal@linux.ibm.com>
+From: Glenn Miles <milesg@linux.ibm.com>
 
-Writes to the Flush Control registers were logged as invalid
-when they are allowed. Clearing the unsupported want_cache_disable
-feature is supported, so don't log an error in that case.
+Adds support for extracting additional configuration flags from
+the XIVE configuration register that are needed for redistribution
+of group interrupts.
 
-Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
+Signed-off-by: Glenn Miles <milesg@linux.ibm.com>
 ---
- hw/intc/pnv_xive2.c | 36 ++++++++++++++++++++++++++++++++----
- 1 file changed, 32 insertions(+), 4 deletions(-)
+ hw/intc/pnv_xive2.c      | 16 ++++++++++++----
+ hw/intc/pnv_xive2_regs.h |  1 +
+ include/hw/ppc/xive2.h   |  8 +++++---
+ 3 files changed, 18 insertions(+), 7 deletions(-)
 
 diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-index 3c26cd6b77..c9374f0eee 100644
+index c9374f0eee..96b8851b7e 100644
 --- a/hw/intc/pnv_xive2.c
 +++ b/hw/intc/pnv_xive2.c
-@@ -1411,7 +1411,14 @@ static void pnv_xive2_ic_vc_write(void *opaque, hwaddr offset,
-     /*
-      * ESB cache updates (not modeled)
-      */
--    /* case VC_ESBC_FLUSH_CTRL: */
-+    case VC_ESBC_FLUSH_CTRL:
-+        if (val & VC_ESBC_FLUSH_CTRL_WANT_CACHE_DISABLE) {
-+            xive2_error(xive, "VC: unsupported write @0x%"HWADDR_PRIx
-+                        " value 0x%"PRIx64" bit[2] poll_want_cache_disable",
-+                        offset, val);
-+            return;
-+        }
-+        break;
-     case VC_ESBC_FLUSH_POLL:
-         xive->vc_regs[VC_ESBC_FLUSH_CTRL >> 3] |= VC_ESBC_FLUSH_CTRL_POLL_VALID;
-         /* ESB update */
-@@ -1427,7 +1434,14 @@ static void pnv_xive2_ic_vc_write(void *opaque, hwaddr offset,
-     /*
-      * EAS cache updates (not modeled)
-      */
--    /* case VC_EASC_FLUSH_CTRL: */
-+    case VC_EASC_FLUSH_CTRL:
-+        if (val & VC_EASC_FLUSH_CTRL_WANT_CACHE_DISABLE) {
-+            xive2_error(xive, "VC: unsupported write @0x%"HWADDR_PRIx
-+                        " value 0x%"PRIx64" bit[2] poll_want_cache_disable",
-+                        offset, val);
-+            return;
-+        }
-+        break;
-     case VC_EASC_FLUSH_POLL:
-         xive->vc_regs[VC_EASC_FLUSH_CTRL >> 3] |= VC_EASC_FLUSH_CTRL_POLL_VALID;
-         /* EAS update */
-@@ -1466,7 +1480,14 @@ static void pnv_xive2_ic_vc_write(void *opaque, hwaddr offset,
-         break;
+@@ -605,20 +605,28 @@ static uint32_t pnv_xive2_get_config(Xive2Router *xrtr)
+ {
+     PnvXive2 *xive = PNV_XIVE2(xrtr);
+     uint32_t cfg = 0;
++    uint64_t reg = xive->cq_regs[CQ_XIVE_CFG >> 3];
  
+-    if (xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_GEN1_TIMA_OS) {
++    if (reg & CQ_XIVE_CFG_GEN1_TIMA_OS) {
+         cfg |= XIVE2_GEN1_TIMA_OS;
+     }
  
--    /* case VC_ENDC_FLUSH_CTRL: */
-+    case VC_ENDC_FLUSH_CTRL:
-+        if (val & VC_ENDC_FLUSH_CTRL_WANT_CACHE_DISABLE) {
-+            xive2_error(xive, "VC: unsupported write @0x%"HWADDR_PRIx
-+                        " value 0x%"PRIx64" bit[2] poll_want_cache_disable",
-+                        offset, val);
-+            return;
-+        }
-+        break;
-     case VC_ENDC_FLUSH_POLL:
-         xive->vc_regs[VC_ENDC_FLUSH_CTRL >> 3] |= VC_ENDC_FLUSH_CTRL_POLL_VALID;
-         break;
-@@ -1687,7 +1708,14 @@ static void pnv_xive2_ic_pc_write(void *opaque, hwaddr offset,
-         pnv_xive2_nxc_update(xive, watch_engine);
-         break;
+-    if (xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_EN_VP_SAVE_RESTORE) {
++    if (reg & CQ_XIVE_CFG_EN_VP_SAVE_RESTORE) {
+         cfg |= XIVE2_VP_SAVE_RESTORE;
+     }
  
--   /* case PC_NXC_FLUSH_CTRL: */
-+    case PC_NXC_FLUSH_CTRL:
-+        if (val & PC_NXC_FLUSH_CTRL_WANT_CACHE_DISABLE) {
-+            xive2_error(xive, "VC: unsupported write @0x%"HWADDR_PRIx
-+                        " value 0x%"PRIx64" bit[2] poll_want_cache_disable",
-+                        offset, val);
-+            return;
-+        }
-+        break;
-     case PC_NXC_FLUSH_POLL:
-         xive->pc_regs[PC_NXC_FLUSH_CTRL >> 3] |= PC_NXC_FLUSH_CTRL_POLL_VALID;
-         break;
+-    if (GETFIELD(CQ_XIVE_CFG_HYP_HARD_RANGE,
+-              xive->cq_regs[CQ_XIVE_CFG >> 3]) == CQ_XIVE_CFG_THREADID_8BITS) {
++    if (GETFIELD(CQ_XIVE_CFG_HYP_HARD_RANGE, reg) ==
++                      CQ_XIVE_CFG_THREADID_8BITS) {
+         cfg |= XIVE2_THREADID_8BITS;
+     }
+ 
++    if (reg & CQ_XIVE_CFG_EN_VP_GRP_PRIORITY) {
++        cfg |= XIVE2_EN_VP_GRP_PRIORITY;
++    }
++
++    cfg = SETFIELD(XIVE2_VP_INT_PRIO, cfg,
++                   GETFIELD(CQ_XIVE_CFG_VP_INT_PRIO, reg));
++
+     return cfg;
+ }
+ 
+diff --git a/hw/intc/pnv_xive2_regs.h b/hw/intc/pnv_xive2_regs.h
+index e8b87b3d2c..d53300f709 100644
+--- a/hw/intc/pnv_xive2_regs.h
++++ b/hw/intc/pnv_xive2_regs.h
+@@ -66,6 +66,7 @@
+ #define    CQ_XIVE_CFG_GEN1_TIMA_HYP_BLK0       PPC_BIT(26) /* 0 if bit[25]=0 */
+ #define    CQ_XIVE_CFG_GEN1_TIMA_CROWD_DIS      PPC_BIT(27) /* 0 if bit[25]=0 */
+ #define    CQ_XIVE_CFG_GEN1_END_ESX             PPC_BIT(28)
++#define    CQ_XIVE_CFG_EN_VP_GRP_PRIORITY       PPC_BIT(32) /* 0 if bit[25]=1 */
+ #define    CQ_XIVE_CFG_EN_VP_SAVE_RESTORE       PPC_BIT(38) /* 0 if bit[25]=1 */
+ #define    CQ_XIVE_CFG_EN_VP_SAVE_REST_STRICT   PPC_BIT(39) /* 0 if bit[25]=1 */
+ 
+diff --git a/include/hw/ppc/xive2.h b/include/hw/ppc/xive2.h
+index 2436ddb5e5..760b94a962 100644
+--- a/include/hw/ppc/xive2.h
++++ b/include/hw/ppc/xive2.h
+@@ -29,9 +29,11 @@ OBJECT_DECLARE_TYPE(Xive2Router, Xive2RouterClass, XIVE2_ROUTER);
+  * Configuration flags
+  */
+ 
+-#define XIVE2_GEN1_TIMA_OS      0x00000001
+-#define XIVE2_VP_SAVE_RESTORE   0x00000002
+-#define XIVE2_THREADID_8BITS    0x00000004
++#define XIVE2_GEN1_TIMA_OS          0x00000001
++#define XIVE2_VP_SAVE_RESTORE       0x00000002
++#define XIVE2_THREADID_8BITS        0x00000004
++#define XIVE2_EN_VP_GRP_PRIORITY    0x00000008
++#define XIVE2_VP_INT_PRIO           0x00000030
+ 
+ typedef struct Xive2RouterClass {
+     SysBusDeviceClass parent;
 -- 
 2.47.1
 
