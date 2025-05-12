@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E0AAAB341B
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 11:55:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DE38AB3457
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 12:01:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEPsP-0001Yo-Cd; Mon, 12 May 2025 05:55:14 -0400
+	id 1uEPtD-0002Em-II; Mon, 12 May 2025 05:56:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uEPry-0001OB-GI
- for qemu-devel@nongnu.org; Mon, 12 May 2025 05:54:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uEPs3-0001cY-Nd
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 05:54:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uEPrw-0000mn-Je
- for qemu-devel@nongnu.org; Mon, 12 May 2025 05:54:46 -0400
+ id 1uEPs1-0000n3-48
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 05:54:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747043684;
+ s=mimecast20190719; t=1747043688;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KJlzhz5dO36OXTaYh7DzN25fe/RsFEswKsqZ/vbJmVM=;
- b=eKJoc/cuoJURgwxorSsyZ3hftdoDllAHUp49929alqw5W/UylwLrt/cZsVR+DnGVKdEuAE
- NRcSLb2XYjPyS+lF5iXOHOAZ12NevOP7nE8w5Q1UbcZE6nRhNI5jHY2PjRi96bxk8QCnrw
- 5F7J42u1U81tF21ysfD5HR351Ff3vK8=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=jdaC8CylyRYZPT4hMii7mRMfkhJIDtIRNdk7B/XN+Ec=;
+ b=azU9RxkFK5wJMkYLRGdFyDmMemC9yblQKQQDR4eCrwm8D8KCX9mieu2l84lM0/tbmRiqR6
+ Ugiq3DQXE3LUJADg5trMK2LpMHlY78Fzr9aGfYtuThsE/kpjPpzMfNchUlBmFj7A1Z0ib/
+ frQWOke5Zt4MNUjdZy/0c11Ns2AAcKs=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-692-mmXVl7e3OAqFnjHuTpsL2Q-1; Mon, 12 May 2025 05:54:42 -0400
-X-MC-Unique: mmXVl7e3OAqFnjHuTpsL2Q-1
-X-Mimecast-MFC-AGG-ID: mmXVl7e3OAqFnjHuTpsL2Q_1747043681
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-ad21aba2147so347371566b.3
- for <qemu-devel@nongnu.org>; Mon, 12 May 2025 02:54:42 -0700 (PDT)
+ us-mta-671-DJAGUQ0mPf6WH7T8dg0BMg-1; Mon, 12 May 2025 05:54:45 -0400
+X-MC-Unique: DJAGUQ0mPf6WH7T8dg0BMg-1
+X-Mimecast-MFC-AGG-ID: DJAGUQ0mPf6WH7T8dg0BMg_1747043684
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-ad225698c20so252515566b.3
+ for <qemu-devel@nongnu.org>; Mon, 12 May 2025 02:54:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747043680; x=1747648480;
+ d=1e100.net; s=20230601; t=1747043684; x=1747648484;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KJlzhz5dO36OXTaYh7DzN25fe/RsFEswKsqZ/vbJmVM=;
- b=G7RASrs196KNb0wF33E3oyna+3EJG0cOpTySQgKVxw8Ju2xXNITkoY8XSwghlzac2e
- +HI3HgkwVvq5bg3Mz715GJTfTOBvc/+vbUTMqE4jaVdd2SJxSzyfF6iWuGO9Uhi3DIa9
- wli57+RdgxopTk+p08god8JnZ2MCQtla+f9o2Lv4RkhYcp6a5xArkgHp47dGt34jyKRN
- OiHbQi8q40eEFNGXgt13XDKS300pOdzGZzlqQn24M9CvN7y7p0VUXWLUxzhG3ayjv1Vh
- 9ADt4wFSKBU95EINXSmspgjs0GSfsJaioHVk5Kghl39ldDzEgy2YKTDz+8hhz0at+78G
- eF+w==
-X-Gm-Message-State: AOJu0YxMj7zk7zS5qqgquXsibCkqrzpezWvv1m77D0yeNV1qDKWWcGra
- F6Rqpap1ATbL3+9MUwNSirVi+m9rtySb+6493hA+EbV8OhmaXp8saU+Eh23iuhJC3zp6KbCuKWO
- aNwemn/9JDynn3y68SrPhyTlof03UnN0CetxEeLWW1iP3DTILXJ+ZMZgx4MwYeFry0NZ5Jps3t9
- BgrQdCrL8ufrT/kARRpYkI2cev9GGYX/AFvBU8
-X-Gm-Gg: ASbGncv6JSx8YH6xO4DuHhUJP22EawW9KbOminjGOQ13X4QDDS0RYgvoKHOfxUNFzDw
- E4zlE4idEcYbbPk8gsCvqsmZeZBEUDaySD8tBwrlO2DBBICKTyFFGyJ0WiEEgNgRS8q71EcO4Gw
- RmKe6O2nG6V9NGsfOLkNwdmXpdeFvT/6Zpc0yxlMQTgS0Fp5L2cM1IlicECFQR9Zr/pAW1RILbL
- RCyKbwYjRe19SbrhGrXpHEOSCqbWrpAPFZQsfurAB+ekJ1YXrIuK0yUHpOfwQhebC0Trgb3RE/M
- 5X9CHvXgdCrZjq+OmmQSpY0B82b2Q40ARZq7bkf23cSC+Tw=
-X-Received: by 2002:a17:907:7da2:b0:acf:b9bd:300b with SMTP id
- a640c23a62f3a-ad218e95dcfmr1098503666b.11.1747043680471; 
- Mon, 12 May 2025 02:54:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHxE/H9RiVWtIXVVwtT+eeFzpI7UHx0S+2islAHR8frRe4nA3j2pXtkcrh0yNTqYBuqXKkOqw==
-X-Received: by 2002:a17:907:7da2:b0:acf:b9bd:300b with SMTP id
- a640c23a62f3a-ad218e95dcfmr1098501466b.11.1747043679980; 
- Mon, 12 May 2025 02:54:39 -0700 (PDT)
+ bh=jdaC8CylyRYZPT4hMii7mRMfkhJIDtIRNdk7B/XN+Ec=;
+ b=r3xtiwaAUwoKvxmKAL4IkXdsbeGM7VVyiDllPnrSoIOlBmgMmSV+vrkAkv7HvvzCka
+ 5+x872s1sAFZGgV/mm5/PZXmbiQpPbrxun80v2n7v12VekRyXoEdEi28S2aTmxDxv8Eb
+ 65cUyhr4PaYoVsab6sX/F7baLZZw9tTnE0owxrv9MuSLxWk5JM6g8zYo+hDpeYW9jcIL
+ 2X2AvC5Tvpyb+rZ658I2xhCZYTK5vT4DRj5a/S/vfxNFL13sb99PiBjz8g/TazHotdYz
+ WY3nwJ9J4D0chTNyIsSbsZpDfDYbLurf+cE86kTmIhZpW+2ukXH+JpvIM9f+qogua9xm
+ IdVA==
+X-Gm-Message-State: AOJu0YzXFwOmeLRRPzkncAFk2ClGN8KWmxNJY077vAow/lDmjiEalXGS
+ Uij0lQE8xpfqt++WnH+/xRiGYrwAcBp5UMI19E8pLA63XpfZkNiZKBCC3sy+Qx45e6NRKoRPgrk
+ 0HeBU/buSlZrBidDMbO+fMynebfx/aN2fg6mQB0AY/y38VsdHgqFH8jugX8YJYp0cYSlSfm2bpT
+ uu8zc5nJn9XmjF3UhTtBXpeuvStC6Lj0E/YSKB
+X-Gm-Gg: ASbGncsdyEjsqU94M9m/Ep56FuntEocEOBenDaa5Sf0uwieKr7eRhtaPL4dJjZL1VS6
+ +yyV0o+BDHPG67jWQcfAYrzSDjMd9cpTSlyrzAa8FQgFnwK/NhJkMBek/5p96pPo1Zh/Ndpm4X6
+ YEQPKkOf+rV1nKzp9BcwIYx07ME2XzMiEsfywrT/oNNzxG0y/bW2fLWBECmSYj8FbO49+DPLnBm
+ 4PbGEuaC4ltB82gXet0YBfXM9Z/SHsFRcc3zt7qXDtZKYebfKoinVf4l3Y5/Olsyu/+mianfBSK
+ O6DkWpMe6+9XHBfiGDXZgVbzLTGeEuAFEOP6X0PIX3hNhkg=
+X-Received: by 2002:a17:906:750:b0:ad2:2146:3b89 with SMTP id
+ a640c23a62f3a-ad2214645f4mr821347866b.47.1747043684078; 
+ Mon, 12 May 2025 02:54:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHvNtg/4ti+qx2Kv7i5DJIy0ZCh7nbE3vgqk6Hx9fnYp9yEElSb97Qw7oAiDkcRBhqoKIXm0Q==
+X-Received: by 2002:a17:906:750:b0:ad2:2146:3b89 with SMTP id
+ a640c23a62f3a-ad2214645f4mr821346066b.47.1747043683637; 
+ Mon, 12 May 2025 02:54:43 -0700 (PDT)
 Received: from [192.168.122.1] (93-40-56-213.ip37.fastwebnet.it.
  [93.40.56.213]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ad2197bd432sm586750466b.129.2025.05.12.02.54.37
+ a640c23a62f3a-ad2231ac35bsm526198266b.34.2025.05.12.02.54.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 May 2025 02:54:39 -0700 (PDT)
+ Mon, 12 May 2025 02:54:43 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: dbarboza@ventanamicro.com, alistair23@gmail.com,
  richard.henderson@linaro.org
-Subject: [PATCH 22/26] target/riscv: convert TT Ascalon to RISCVCPUDef
-Date: Mon, 12 May 2025 11:52:22 +0200
-Message-ID: <20250512095226.93621-23-pbonzini@redhat.com>
+Subject: [PATCH 23/26] target/riscv: convert Ventana V1 to RISCVCPUDef
+Date: Mon, 12 May 2025 11:52:23 +0200
+Message-ID: <20250512095226.93621-24-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512095226.93621-1-pbonzini@redhat.com>
 References: <20250512095226.93621-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -46
 X-Spam_score: -4.7
@@ -109,154 +109,102 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/riscv/cpu.c | 127 +++++++++++++++++++++------------------------
- 1 file changed, 60 insertions(+), 67 deletions(-)
+ target/riscv/cpu.c | 75 ++++++++++++++++++++++------------------------
+ 1 file changed, 35 insertions(+), 40 deletions(-)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index dbfd8c7a348..18b60428d14 100644
+index 18b60428d14..c884e09d869 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -539,72 +539,6 @@ static void rv64_veyron_v1_cpu_init(Object *obj)
+@@ -499,45 +499,6 @@ static void riscv_register_custom_csrs(RISCVCPU *cpu, const RISCVCSR *csr_list)
  #endif
- }
  
--/* Tenstorrent Ascalon */
--static void rv64_tt_ascalon_cpu_init(Object *obj)
+ #if defined(TARGET_RISCV64)
+-static void rv64_veyron_v1_cpu_init(Object *obj)
 -{
 -    CPURISCVState *env = &RISCV_CPU(obj)->env;
 -    RISCVCPU *cpu = RISCV_CPU(obj);
 -
--    riscv_cpu_set_misa_ext(env, RVG | RVC | RVS | RVU | RVH | RVV);
--    env->priv_ver = PRIV_VERSION_1_13_0;
+-    riscv_cpu_set_misa_ext(env, RVG | RVC | RVS | RVU | RVH);
+-    env->priv_ver = PRIV_VERSION_1_12_0;
 -
 -    /* Enable ISA extensions */
 -    cpu->cfg.mmu = true;
--    cpu->cfg.vlenb = 256 >> 3;
--    cpu->cfg.elen = 64;
--    cpu->env.vext_ver = VEXT_VERSION_1_00_0;
--    cpu->cfg.rvv_ma_all_1s = true;
--    cpu->cfg.rvv_ta_all_1s = true;
--    cpu->cfg.misa_w = true;
--    cpu->cfg.pmp = true;
--    cpu->cfg.cbom_blocksize = 64;
--    cpu->cfg.cbop_blocksize = 64;
--    cpu->cfg.cboz_blocksize = 64;
--    cpu->cfg.ext_zic64b = true;
--    cpu->cfg.ext_zicbom = true;
--    cpu->cfg.ext_zicbop = true;
--    cpu->cfg.ext_zicboz = true;
--    cpu->cfg.ext_zicntr = true;
--    cpu->cfg.ext_zicond = true;
--    cpu->cfg.ext_zicsr = true;
 -    cpu->cfg.ext_zifencei = true;
--    cpu->cfg.ext_zihintntl = true;
--    cpu->cfg.ext_zihintpause = true;
--    cpu->cfg.ext_zihpm = true;
--    cpu->cfg.ext_zimop = true;
--    cpu->cfg.ext_zawrs = true;
--    cpu->cfg.ext_zfa = true;
--    cpu->cfg.ext_zfbfmin = true;
--    cpu->cfg.ext_zfh = true;
--    cpu->cfg.ext_zfhmin = true;
--    cpu->cfg.ext_zcb = true;
--    cpu->cfg.ext_zcmop = true;
--    cpu->cfg.ext_zba = true;
--    cpu->cfg.ext_zbb = true;
--    cpu->cfg.ext_zbs = true;
--    cpu->cfg.ext_zkt = true;
--    cpu->cfg.ext_zvbb = true;
--    cpu->cfg.ext_zvbc = true;
--    cpu->cfg.ext_zvfbfmin = true;
--    cpu->cfg.ext_zvfbfwma = true;
--    cpu->cfg.ext_zvfh = true;
--    cpu->cfg.ext_zvfhmin = true;
--    cpu->cfg.ext_zvkng = true;
+-    cpu->cfg.ext_zicsr = true;
+-    cpu->cfg.pmp = true;
+-    cpu->cfg.ext_zicbom = true;
+-    cpu->cfg.cbom_blocksize = 64;
+-    cpu->cfg.cboz_blocksize = 64;
+-    cpu->cfg.ext_zicboz = true;
 -    cpu->cfg.ext_smaia = true;
--    cpu->cfg.ext_smstateen = true;
 -    cpu->cfg.ext_ssaia = true;
 -    cpu->cfg.ext_sscofpmf = true;
 -    cpu->cfg.ext_sstc = true;
--    cpu->cfg.ext_svade = true;
 -    cpu->cfg.ext_svinval = true;
 -    cpu->cfg.ext_svnapot = true;
 -    cpu->cfg.ext_svpbmt = true;
+-    cpu->cfg.ext_smstateen = true;
+-    cpu->cfg.ext_zba = true;
+-    cpu->cfg.ext_zbb = true;
+-    cpu->cfg.ext_zbc = true;
+-    cpu->cfg.ext_zbs = true;
+-    cpu->cfg.ext_XVentanaCondOps = true;
+-
+-    cpu->cfg.mvendorid = VEYRON_V1_MVENDORID;
+-    cpu->cfg.marchid = VEYRON_V1_MARCHID;
+-    cpu->cfg.mimpid = VEYRON_V1_MIMPID;
 -
 -#ifndef CONFIG_USER_ONLY
--    set_satp_mode_max_supported(cpu, VM_1_10_SV57);
+-    set_satp_mode_max_supported(cpu, VM_1_10_SV48);
 -#endif
 -}
--
+ 
  static void rv64_xiangshan_nanhu_cpu_init(Object *obj)
  {
-     CPURISCVState *env = &RISCV_CPU(obj)->env;
-@@ -3213,7 +3147,66 @@ static const TypeInfo riscv_cpu_type_infos[] = {
- #endif
+@@ -3207,7 +3168,41 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+         .cfg.max_satp_mode = VM_1_10_SV57,
      ),
  
--    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_TT_ASCALON, MXL_RV64,  rv64_tt_ascalon_cpu_init),
-+    DEFINE_RISCV_CPU(TYPE_RISCV_CPU_TT_ASCALON, TYPE_RISCV_VENDOR_CPU,
+-    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_VEYRON_V1,  MXL_RV64,  rv64_veyron_v1_cpu_init),
++    DEFINE_RISCV_CPU(TYPE_RISCV_CPU_VEYRON_V1, TYPE_RISCV_VENDOR_CPU,
 +        .misa_mxl_max = MXL_RV64,
-+        .misa_ext = RVG | RVC | RVS | RVU | RVH | RVV,
-+        .priv_spec = PRIV_VERSION_1_13_0,
-+        .vext_spec = VEXT_VERSION_1_00_0,
++        .misa_ext = RVG | RVC | RVS | RVU | RVH,
++        .priv_spec = PRIV_VERSION_1_12_0,
 +
 +        /* ISA extensions */
 +        .cfg.mmu = true,
-+        .cfg.vlenb = 256 >> 3,
-+        .cfg.elen = 64,
-+        .cfg.rvv_ma_all_1s = true,
-+        .cfg.rvv_ta_all_1s = true,
-+        .cfg.misa_w = true,
-+        .cfg.pmp = true,
-+        .cfg.cbom_blocksize = 64,
-+        .cfg.cbop_blocksize = 64,
-+        .cfg.cboz_blocksize = 64,
-+        .cfg.ext_zic64b = true,
-+        .cfg.ext_zicbom = true,
-+        .cfg.ext_zicbop = true,
-+        .cfg.ext_zicboz = true,
-+        .cfg.ext_zicntr = true,
-+        .cfg.ext_zicond = true,
-+        .cfg.ext_zicsr = true,
 +        .cfg.ext_zifencei = true,
-+        .cfg.ext_zihintntl = true,
-+        .cfg.ext_zihintpause = true,
-+        .cfg.ext_zihpm = true,
-+        .cfg.ext_zimop = true,
-+        .cfg.ext_zawrs = true,
-+        .cfg.ext_zfa = true,
-+        .cfg.ext_zfbfmin = true,
-+        .cfg.ext_zfh = true,
-+        .cfg.ext_zfhmin = true,
-+        .cfg.ext_zcb = true,
-+        .cfg.ext_zcmop = true,
-+        .cfg.ext_zba = true,
-+        .cfg.ext_zbb = true,
-+        .cfg.ext_zbs = true,
-+        .cfg.ext_zkt = true,
-+        .cfg.ext_zvbb = true,
-+        .cfg.ext_zvbc = true,
-+        .cfg.ext_zvfbfmin = true,
-+        .cfg.ext_zvfbfwma = true,
-+        .cfg.ext_zvfh = true,
-+        .cfg.ext_zvfhmin = true,
-+        .cfg.ext_zvkng = true,
++        .cfg.ext_zicsr = true,
++        .cfg.pmp = true,
++        .cfg.ext_zicbom = true,
++        .cfg.cbom_blocksize = 64,
++        .cfg.cboz_blocksize = 64,
++        .cfg.ext_zicboz = true,
 +        .cfg.ext_smaia = true,
-+        .cfg.ext_smstateen = true,
 +        .cfg.ext_ssaia = true,
 +        .cfg.ext_sscofpmf = true,
 +        .cfg.ext_sstc = true,
-+        .cfg.ext_svade = true,
 +        .cfg.ext_svinval = true,
 +        .cfg.ext_svnapot = true,
 +        .cfg.ext_svpbmt = true,
++        .cfg.ext_smstateen = true,
++        .cfg.ext_zba = true,
++        .cfg.ext_zbb = true,
++        .cfg.ext_zbc = true,
++        .cfg.ext_zbs = true,
++        .cfg.ext_XVentanaCondOps = true,
 +
-+        .cfg.max_satp_mode = VM_1_10_SV57,
++        .cfg.mvendorid = VEYRON_V1_MVENDORID,
++        .cfg.marchid = VEYRON_V1_MARCHID,
++        .cfg.mimpid = VEYRON_V1_MIMPID,
++
++        .cfg.max_satp_mode = VM_1_10_SV48,
 +    ),
 +
-     DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_VEYRON_V1,  MXL_RV64,  rv64_veyron_v1_cpu_init),
      DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_XIANGSHAN_NANHU,
                                                   MXL_RV64, rv64_xiangshan_nanhu_cpu_init),
+ #if defined(CONFIG_TCG) && !defined(CONFIG_USER_ONLY)
 -- 
 2.49.0
 
