@@ -2,25 +2,25 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EAFCAB2F3B
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 07:59:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24630AB2F3A
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 07:59:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEMBE-00077E-SD; Mon, 12 May 2025 01:58:24 -0400
+	id 1uEMB8-00076H-TD; Mon, 12 May 2025 01:58:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xb@ultrarisc.com>) id 1uEHt6-0005uX-GM
- for qemu-devel@nongnu.org; Sun, 11 May 2025 21:23:25 -0400
+ (Exim 4.90_1) (envelope-from <xb@ultrarisc.com>) id 1uEIya-0005Lb-Up
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 22:33:09 -0400
 Received: from [218.76.62.146] (helo=ultrarisc.com)
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <xb@ultrarisc.com>) id 1uEHt2-0005po-Cu
- for qemu-devel@nongnu.org; Sun, 11 May 2025 21:23:24 -0400
+ (envelope-from <xb@ultrarisc.com>) id 1uEIyY-0003Q6-4O
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 22:33:08 -0400
 Received: from xb$ultrarisc.com ( [192.168.100.1] ) by
- ajax-webmail-localhost.localdomain (Coremail) ; Mon, 12 May 2025 09:17:10
+ ajax-webmail-localhost.localdomain (Coremail) ; Mon, 12 May 2025 10:34:02
  +0800 (GMT+08:00)
 X-Originating-IP: [192.168.100.1]
-Date: Mon, 12 May 2025 09:17:10 +0800 (GMT+08:00)
+Date: Mon, 12 May 2025 10:34:02 +0800 (GMT+08:00)
 X-CM-HeaderCharset: UTF-8
 From: =?UTF-8?B?6LCi5rOi?= <xb@ultrarisc.com>
 To: qemu-devel@nongnu.org
@@ -31,13 +31,13 @@ X-Mailer: Coremail Webmail Server Version 2024.1-cmXT6 build
  20240625(a75f206e) Copyright (c) 2002-2025 www.mailtech.cn
  mispb-8cc425bc-7df6-4523-bb46-a48cc1a964e6-ultrarisc.com
 Content-Transfer-Encoding: base64
-X-CM-CTRLDATA: tLTOPmZvb3Rlcl90eHQ9MjM4Mzo4NDA=
+X-CM-CTRLDATA: M/FBZmZvb3Rlcl90eHQ9MjM4NDo4NDA=
 Content-Type: text/plain; charset=UTF-8
 MIME-Version: 1.0
-Message-ID: <6863aff8.bc1.196c21139a6.Coremail.xb@ultrarisc.com>
+Message-ID: <6fa2f902.bd6.196c2579816.Coremail.xb@ultrarisc.com>
 X-Coremail-Locale: zh_CN
-X-CM-TRANSID: AQAAfwBHhxAXTCFoJ6QVAA--.951W
-X-CM-SenderInfo: l0e63zxwud2x1vfou0bp/1tbiAQARB2gdgHsAFgADsM
+X-CM-TRANSID: AQAAfwAHRxAaXiFoG60VAA--.919W
+X-CM-SenderInfo: l0e63zxwud2x1vfou0bp/1tbiAQAAB2ggI3sAJAAAsy
 X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VW3Jw
  CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
  daVFxhVjvjDU=
@@ -49,10 +49,10 @@ X-Spam_score: 0.8
 X-Spam_bar: /
 X-Spam_report: (0.8 / 5.0 requ) BAYES_40=-0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=no autolearn_force=no
+ RDNS_NONE=0.793, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 12 May 2025 01:58:09 -0400
+X-Mailman-Approved-At: Mon, 12 May 2025 01:58:10 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,26 +108,26 @@ IChjcy0+Y3B1X2luZGV4ICE9IDApKXsKKyAgICAgICBSSVNDVkNQVSAqY3B1ID0gUklTQ1ZfQ1BV
 KGNzKTsKKyAgICAgICByZXQgPSBrdm1fcmlzY3Zfc3luY19tcHN0YXRlX3RvX2t2bShjcHUsIEtW
 TV9NUF9TVEFURV9SVU5OQUJMRSk7CisgICAgICAgfQorCiAgICAgaWYgKEtWTV9QVVRfUkVTRVRf
 U1RBVEUgPT0gbGV2ZWwpIHsKICAgICAgICAgUklTQ1ZDUFUgKmNwdSA9IFJJU0NWX0NQVShjcyk7
-CiAgICAgICAgIGlmIChjcy0+Y3B1X2luZGV4ID09IDApIHsKLS0KMi4zNC4xCg0KDQpfX19fX19f
-X19fX19fX19fX19fX19fd3d3LnVsdHJhcmlzYy5jb20NCumHjeimgeaPkOekuu+8muacrOmCruS7
-tuWMheaLrOmZhOS7tueahOWGheWuueaYr+WPl+azleW+i+S/neaKpOeahOS/neWvhuS/oeaBr++8
-jOWmguaenOaCqOS4jeaYr+aMh+WumuaUtuS7tuS6uu+8jOivt+eri+WNs+WwhuacrOmCruS7tuWI
-oOmZpO+8jOazleW+i+emgeatouS7u+S9lemdnuazleeahOaKq+mcsuOAgeWkjeWItuOAgeS8oOaS
-reaIluS7peS7u+S9leaWueW8j+S9v+eUqOacrOmCruS7tuOAguacrOmCruS7tuS4reWMheWQq+ea
-hOaEj+ingeOAgeW7uuiuruaYr+WfuuS6juaIluWPl+WIsOaIkeaWueihqOi+vuWSjOWumuS5ieea
-hOadoeasvuWPiuadoeS7tueahOmZkOWumu+8jOWmguaXoOaIkeaWueeahOato+W8j+S5pumdoua+
-hOa4heaIluaOiOadg++8jOS4jeWPr+iiq+WNleeLrOS9nOS4uuS7u+S9leaDheW9ouS4i+eahOiv
-geaNruaIluS+neaNruOAguaEn+iwouaCqOeahOeQhuino+S4jumFjeWQiOOAgueJiOadg+aJgOac
-ieOAgklNUE9SVEFOVCBOT1RJQ0U6IFRoaXMgZW1haWwsIGluY2x1ZGluZyBpdHMgYXR0YWNobWVu
-dCBpZiBhbnksIGlzIGNvbmZpZGVudGlhbC4gSWYgeW91IGFyZSBub3QgdGhlIGludGVuZGVkIHJl
-Y2lwaWVudCwgcGxlYXNlIGRlbGV0ZSBpdCBmcm9tIHlvdXIgY29tcHV0ZXIgaW1tZWRpYXRlbHku
-IEFueSBkaXNjbG9zdXJlLCBjb3B5aW5nLCBvciBkaXN0cmlidXRpb24gb2YgdGhpcyBtZXNzYWdl
-LCBvciB0YWtpbmcgb2YgYW55IGFjdGlvbiBiYXNlZCBvbiBpdCBpcyBzdHJpY3RseSBwcm9oaWJp
-dGVkLiAgQW55IG9waW5pb25zIGFuZCBzdWdnZXN0aW9ucyBjb250YWluZWQgaW4gdGhpcyBlbWFp
-bCBhcmUgc3ViamVjdCB0byB0aGUgdGVybXMgYW5kIGNvbmRpdGlvbnMgZXhwcmVzc2VkIGFuZCBk
-ZWZpbmVkIGJ5IHVzIGFuZCBzaG91bGQgbm90IGJlIHJlbGllZCB1cG9uIHVuY29uZGl0aW9uYWxs
-eSB1bmRlciBhbnkgY2lyY3Vtc3RhbmNlcyB1bmxlc3MgdGhleSBhcmUgY29uZmlybWVkIGluIG9m
-ZmljaWFsIHdyaXR0ZW4gY2xhcmlmaWNhdGlvbiBvciBhdXRob3JpemF0aW9uIGZyb20gdXMuICBU
-aGFuayB5b3UgZm9yIHlvdXIgdW5kZXJzdGFuZGluZyBhbmQgY29vcGVyYXRpb24uQWxsIHJpZ2h0
-cyByZXNlcnZlZC4=
+CiAgICAgICAgIGlmIChjcy0+Y3B1X2luZGV4ID09IDApIHsKLS0KMi4zNC4xCgoNCg0KX19fX19f
+X19fX19fX19fX19fX19fX3d3dy51bHRyYXJpc2MuY29tDQrph43opoHmj5DnpLrvvJrmnKzpgq7k
+u7bljIXmi6zpmYTku7bnmoTlhoXlrrnmmK/lj5fms5Xlvovkv53miqTnmoTkv53lr4bkv6Hmga/v
+vIzlpoLmnpzmgqjkuI3mmK/mjIflrprmlLbku7bkurrvvIzor7fnq4vljbPlsIbmnKzpgq7ku7bl
+iKDpmaTvvIzms5XlvovnpoHmraLku7vkvZXpnZ7ms5XnmoTmiqvpnLLjgIHlpI3liLbjgIHkvKDm
+kq3miJbku6Xku7vkvZXmlrnlvI/kvb/nlKjmnKzpgq7ku7bjgILmnKzpgq7ku7bkuK3ljIXlkKvn
+moTmhI/op4HjgIHlu7rorq7mmK/ln7rkuo7miJblj5fliLDmiJHmlrnooajovr7lkozlrprkuYnn
+moTmnaHmrL7lj4rmnaHku7bnmoTpmZDlrprvvIzlpoLml6DmiJHmlrnnmoTmraPlvI/kuabpnaLm
+voTmuIXmiJbmjojmnYPvvIzkuI3lj6/ooqvljZXni6zkvZzkuLrku7vkvZXmg4XlvaLkuIvnmoTo
+r4Hmja7miJbkvp3mja7jgILmhJ/osKLmgqjnmoTnkIbop6PkuI7phY3lkIjjgILniYjmnYPmiYDm
+nInjgIJJTVBPUlRBTlQgTk9USUNFOiBUaGlzIGVtYWlsLCBpbmNsdWRpbmcgaXRzIGF0dGFjaG1l
+bnQgaWYgYW55LCBpcyBjb25maWRlbnRpYWwuIElmIHlvdSBhcmUgbm90IHRoZSBpbnRlbmRlZCBy
+ZWNpcGllbnQsIHBsZWFzZSBkZWxldGUgaXQgZnJvbSB5b3VyIGNvbXB1dGVyIGltbWVkaWF0ZWx5
+LiBBbnkgZGlzY2xvc3VyZSwgY29weWluZywgb3IgZGlzdHJpYnV0aW9uIG9mIHRoaXMgbWVzc2Fn
+ZSwgb3IgdGFraW5nIG9mIGFueSBhY3Rpb24gYmFzZWQgb24gaXQgaXMgc3RyaWN0bHkgcHJvaGli
+aXRlZC4gIEFueSBvcGluaW9ucyBhbmQgc3VnZ2VzdGlvbnMgY29udGFpbmVkIGluIHRoaXMgZW1h
+aWwgYXJlIHN1YmplY3QgdG8gdGhlIHRlcm1zIGFuZCBjb25kaXRpb25zIGV4cHJlc3NlZCBhbmQg
+ZGVmaW5lZCBieSB1cyBhbmQgc2hvdWxkIG5vdCBiZSByZWxpZWQgdXBvbiB1bmNvbmRpdGlvbmFs
+bHkgdW5kZXIgYW55IGNpcmN1bXN0YW5jZXMgdW5sZXNzIHRoZXkgYXJlIGNvbmZpcm1lZCBpbiBv
+ZmZpY2lhbCB3cml0dGVuIGNsYXJpZmljYXRpb24gb3IgYXV0aG9yaXphdGlvbiBmcm9tIHVzLiAg
+VGhhbmsgeW91IGZvciB5b3VyIHVuZGVyc3RhbmRpbmcgYW5kIGNvb3BlcmF0aW9uLkFsbCByaWdo
+dHMgcmVzZXJ2ZWQu
 
