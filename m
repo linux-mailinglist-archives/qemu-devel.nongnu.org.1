@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FCA9AB4463
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 21:07:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96CA6AB445C
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 21:07:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEYTp-0006M8-09; Mon, 12 May 2025 15:06:25 -0400
+	id 1uEYTr-0006bG-S4; Mon, 12 May 2025 15:06:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uEYTb-0005e9-AL
- for qemu-devel@nongnu.org; Mon, 12 May 2025 15:06:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uEYTn-0006Mb-7B
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 15:06:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uEYTZ-0007Xy-JV
- for qemu-devel@nongnu.org; Mon, 12 May 2025 15:06:11 -0400
+ id 1uEYTl-0007Yw-H3
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 15:06:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747076768;
+ s=mimecast20190719; t=1747076781;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0h/gsHrUKk47zq1WT//raH3haROpL8GFhxMEDhMKQnc=;
- b=EJm7EgU86LlTf62dpgw7k1SU9gawJKNQv4s8dlQ4bgWfAOwJkhgc2SDMnRgA6GDlTRQr7C
- FRcC8kHTU3TJHD6s3hE6SSm1rwkmwe3QjIn/zFSVRoIq3YJAJJZ6bRpIyIbyVkHEKzjgEa
- KaFSPlI3N8XyR8PUt64H2fPejaW8d24=
+ bh=baUoSc/kcICrDzWC2euzR8VyUVJ2vhHKTO2IbuR51/s=;
+ b=DoB2Fw6tWpm8qKrqCz28v0Dx/0lwfX8T9SlnZza4F/idNDN+6yYCvWaTZ6AKQHhaNev2if
+ Uv/WDu9HUF0vd60MJoGSUM/V0OOXALMdxmnqchegPNjky03AX+VnG1U98kxxM1mFN20XdN
+ qjQ9K+QmJMwvxPWxpHFhUVCgTr/Da3s=
 Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
  [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-117-tC2pHSomM9GuWNSrouWwkg-1; Mon, 12 May 2025 15:06:06 -0400
-X-MC-Unique: tC2pHSomM9GuWNSrouWwkg-1
-X-Mimecast-MFC-AGG-ID: tC2pHSomM9GuWNSrouWwkg_1747076765
+ us-mta-14-qRqWN6TNMS2G09mKyH6kUw-1; Mon, 12 May 2025 15:06:19 -0400
+X-MC-Unique: qRqWN6TNMS2G09mKyH6kUw-1
+X-Mimecast-MFC-AGG-ID: qRqWN6TNMS2G09mKyH6kUw_1747076778
 Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3a0ba24d233so1523963f8f.2
- for <qemu-devel@nongnu.org>; Mon, 12 May 2025 12:06:06 -0700 (PDT)
+ ffacd0b85a97d-3a1f9ddf04bso1843542f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 12 May 2025 12:06:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747076764; x=1747681564;
+ d=1e100.net; s=20230601; t=1747076778; x=1747681578;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0h/gsHrUKk47zq1WT//raH3haROpL8GFhxMEDhMKQnc=;
- b=FJOiT8sM9A7lY8TIQj6Uonep6jrwYLH1YhTnGfXAbUat5eFR/OQuMP8ymlXXDZThCj
- ErocfhQ01Ksw6l4+yRy8Y5et3xCX7VdreXRcvzvMBMUs/f7WXUO4Vyj+UgdL3NdJbE0o
- KMzTwdSFgFa4vpm+TbzYMsLDCrmdr47UQOW3EqETS1tkvwiJty4U+eMKVYCEvck2htLh
- UqF4Ma0+tCG3UlmkYcalpaP4oAPgxNhEH67b4AThJnH7gS92yRDqimwte3YnPBXox960
- 5hemiRJAifYjLj0qvWpK0+nB5EHIlINj2X2FOw51wfhS9KjEsqAG8Co3SgUG+04pWE2t
- CLWg==
-X-Gm-Message-State: AOJu0YxFOkaa5gccqHJc0ZCg4mX5Ev9TxH4+Dua2dV+xIezj1jj792jS
- NzZEO8evEgYihc/hk5P/dvtdHWmLuj18yTm+TNPqdV1mDZqYlZMm+1oOIXLPpA2NvwbANyKyv+e
- 6Zf/J/KmstBbqj9FCySD94/LP/BUmBR9rRqDxtLnpmXAcBvLOFBMKgSc6CRcibVDZ0424l4jTEk
- gYJiJpUFQWQON0jYG0L3IiNVdmTwmY1+j6L3pK
-X-Gm-Gg: ASbGncv4MsEPK+3LfgehSdB8ut4LyU/+5MT5u4AtE4YWN/Zxk2zirRi0x9XdHCNyd9h
- e72FOFqeg5JrCfh3duLW+aVCrN7WpLTK71zuHfEzL4dfdX1b+YkFU8IUPrkyrTjL+hxQ3obVjie
- Z0UIMIFSUXV7ARPTV0MynwTFkCgHsNr7p/ZKmYWD3PljNpiXflF6iWOb8EiBd/gRo0He79/c/YW
- oQornH2/Qy/W/r3z1bmR/l1QlfvXCgdxZR2HRjo6jflOf+NToA+7kcp4RMkPw4R9I7FCv53RRmM
- s8L2DYaQfjWh4k8=
-X-Received: by 2002:a05:6000:18a9:b0:391:2f2f:818 with SMTP id
- ffacd0b85a97d-3a1f64277dcmr12428765f8f.9.1747076764358; 
- Mon, 12 May 2025 12:06:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFulrY6SKCEYcsb8AWWqOODyA/rMFRtgL66RIy569xK602uFf2vVKZLFfmeTEguGPCLnU/qnA==
-X-Received: by 2002:a05:6000:18a9:b0:391:2f2f:818 with SMTP id
- ffacd0b85a97d-3a1f64277dcmr12428745f8f.9.1747076763944; 
- Mon, 12 May 2025 12:06:03 -0700 (PDT)
+ bh=baUoSc/kcICrDzWC2euzR8VyUVJ2vhHKTO2IbuR51/s=;
+ b=J43JKZEjHTJKNyNSQsfPVyPWIB/B1OwglM3p4VAFmIe4kMl768eF6TFE/W7kUAYFbt
+ XN4fbXYrO/0lO5gcUM/9mf2Wztd7suVok/UvbrAfZF3b1tXXh1XDX/O2Ysa5gAdgCm0F
+ Z8Dxtqog8OK4Bdegx8EhUpxRJ1+6hw5Za5M71tvR2/MlJ4gscveWeJWVQzaVVa7vIrQf
+ LEf1TSV5AV0PZpQn8Y/rTxuwi8vFwojWbPL8AlWbU1obZaSdNkYXfXn/nqfw6TNIcz1T
+ 7JIJPSdOjApwI2k9H9H5S098kFv+jrIyuC44cwLChZtIrdK/4lc0JRBfAQvhxn2xd7ok
+ sQjA==
+X-Gm-Message-State: AOJu0YyZYKJb3RairaUng7odmX+6HTvoGTo4qH3vcc40XHQBUOW0coQU
+ pjFfnC6RKroqvCNCfnVikSXfII4f90zT4xkC0yLGE3F9gxr5xv4qT8kaa8FKWeLxEaIUi9vFDeU
+ VB4xNqFaEWZ6Rc9HO/ZIgTSoOe0/zEIrNLyTpvQaP6jFSYaI7fA9z3g/q5eUwI9/N8EK645fSvy
+ elFwttgVExfthyJOhIXzduISGONC/gb2zVl1A/
+X-Gm-Gg: ASbGncuKKsAKVAk8Ysh0lWEToM6YhHql289SVv0FnhcWB/mQKd7vrHEHZtWJMlsRHYq
+ 0C0bYayOhu+J9cXwisiWd3NqwghnP9zWZxo0vhucoQIGDbR1b1DqgfsJ8vOOtzZw/Gb1nSooNo6
+ 4ZcliIdZ0nOdsX2pFy+6YZpW6V5G+6TIZxGJBnjvc+28AGQXfiWfbCqDBu/851Ae+gTx5FWAh9s
+ act+PzuTyv/Xtje8JpssWns6KjUq0ubAmjN7QES3i2m+mDFJ+y1QTAKVzPduoSinVEZEKJgZIb7
+ nX51qX99jxMGpX0=
+X-Received: by 2002:a5d:64c3:0:b0:3a0:b807:7426 with SMTP id
+ ffacd0b85a97d-3a1f64ac686mr12218720f8f.52.1747076777783; 
+ Mon, 12 May 2025 12:06:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEo0HVKPDzY13pgpgy5EhEg6k3QqCZBYRLyeYxNFU0EFuuu43EHOBXT5lCY4klSOM+J5VS3Jg==
+X-Received: by 2002:a05:600c:cca:b0:43c:f597:d582 with SMTP id
+ 5b1f17b1804b1-442d6cfa8d8mr107304095e9.1.1747076766603; 
+ Mon, 12 May 2025 12:06:06 -0700 (PDT)
 Received: from [192.168.122.1] ([151.95.45.141])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a1f5a2cf43sm13426521f8f.70.2025.05.12.12.06.02
+ 5b1f17b1804b1-442d6bf96bfsm135718365e9.6.2025.05.12.12.06.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 May 2025 12:06:02 -0700 (PDT)
+ Mon, 12 May 2025 12:06:04 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Zheng Huang <hz1624917200@gmail.com>
-Subject: [PULL 15/16] hw/audio/cs4231a: fix assertion error in isa_bus_get_irq
-Date: Mon, 12 May 2025 21:05:23 +0200
-Message-ID: <20250512190524.179419-16-pbonzini@redhat.com>
+Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Subject: [PULL 16/16] target/i386: Make ITS_NO available to guests
+Date: Mon, 12 May 2025 21:05:24 +0200
+Message-ID: <20250512190524.179419-17-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512190524.179419-1-pbonzini@redhat.com>
 References: <20250512190524.179419-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
@@ -106,34 +106,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zheng Huang <hz1624917200@gmail.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-This patch fixes an assertion error in isa_bus_get_irq() in
-/hw/isa/isa-bus.c by adding a constraint to the irq property.
-Patch v1 misused ISA_NUM_IRQS, pls ignore that.
+When a system is not affected by Indirect Target Selection (ITS)
+vulnerability, VMMs set ITS_NO bit in MSR IA32_ARCH_CAPABILITIES to let the
+guest know that it is not affected.
 
-Signed-off-by: Zheng Huang <hz1624917200@gmail.com>
-Link: https://lore.kernel.org/r/6d228069-e38f-4c46-813f-edcccc5c47e4@gmail.com
+Make it available to guests.
+
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Link: https://lore.kernel.org/r/8c1797e488b42650f62d816f25c58726eb522fad.1745946029.git.pawan.kumar.gupta@linux.intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/audio/cs4231a.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ target/i386/cpu.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/hw/audio/cs4231a.c b/hw/audio/cs4231a.c
-index 06b44da8690..eb9a45805b7 100644
---- a/hw/audio/cs4231a.c
-+++ b/hw/audio/cs4231a.c
-@@ -682,6 +682,10 @@ static void cs4231a_realizefn (DeviceState *dev, Error **errp)
-         return;
-     }
- 
-+    if (s->irq >= ISA_NUM_IRQS) {
-+        error_setg(errp, "Invalid IRQ %d (max %d)", s->irq, ISA_NUM_IRQS - 1);
-+        return;
-+    }
-     s->pic = isa_bus_get_irq(bus, s->irq);
-     k = ISADMA_GET_CLASS(s->isa_dma);
-     k->register_channel(s->isa_dma, s->dma, cs_dma_read, s);
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 1656de3dcca..ec908d7d360 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1383,6 +1383,14 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+             "bhi-no", NULL, NULL, NULL,
+             "pbrsb-no", NULL, "gds-no", "rfds-no",
+             "rfds-clear", NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, "its-no", NULL,
+         },
+         .msr = {
+             .index = MSR_IA32_ARCH_CAPABILITIES,
 -- 
 2.49.0
 
