@@ -2,86 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0636AB444E
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 21:06:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE2A9AB445E
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 21:07:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEYT4-0005PQ-Rr; Mon, 12 May 2025 15:05:38 -0400
+	id 1uEYTh-0005jp-No; Mon, 12 May 2025 15:06:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uEYT0-0005LD-QP
- for qemu-devel@nongnu.org; Mon, 12 May 2025 15:05:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uEYTF-0005Tb-0T
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 15:05:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uEYSz-0007Tg-17
- for qemu-devel@nongnu.org; Mon, 12 May 2025 15:05:34 -0400
+ id 1uEYTB-0007V9-Lr
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 15:05:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747076731;
+ s=mimecast20190719; t=1747076745;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uIXuZiZ9l8l1+2kKqvwfb3vC3OPO6dOzGvsREz22T5c=;
- b=A/vVzYVAxgieCmjSkR9bcFhNvjq5tsh+YmESCRLCKnO+lR5/F+ro2C0kKqQsrhI+oBpPmq
- TQz6tBeB9KDoX7K5Bn2I8JEoTkzC4DhQfZEegGRFR9+L5X/f9G5jM+Lw4Ye63O3MfKnxGm
- arCUCClEyXv2YGh8JlKySAhkPhCqqkY=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=hkMjV1RCdSvZc3UqwgDRzKPR4GFZsy1t1ux2ynl8Z10=;
+ b=IeW4fZOZ+xeZgZTR1uNHcqKhqIwGbx1AzOaqH6JET5BEh9nESyxjZXKrxAOdZqp7nF5Brp
+ OETveJVZAKIRtRvyHSukSg160VbRUiMbdx2X8WalQenmYAtT5mR5u8kKukldbxDnA9rq79
+ qjfKZrBb8UlSlkggOhqqMtPyB0fcBQk=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-13-qzjMuYRkOxejG_iTBCVVEA-1; Mon, 12 May 2025 15:05:29 -0400
-X-MC-Unique: qzjMuYRkOxejG_iTBCVVEA-1
-X-Mimecast-MFC-AGG-ID: qzjMuYRkOxejG_iTBCVVEA_1747076729
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-442d472cf7fso27620465e9.3
- for <qemu-devel@nongnu.org>; Mon, 12 May 2025 12:05:29 -0700 (PDT)
+ us-mta-680-NtFOSWBbOHGThgW4o39Zhw-1; Mon, 12 May 2025 15:05:43 -0400
+X-MC-Unique: NtFOSWBbOHGThgW4o39Zhw-1
+X-Mimecast-MFC-AGG-ID: NtFOSWBbOHGThgW4o39Zhw_1747076742
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-326c70002d0so19829531fa.1
+ for <qemu-devel@nongnu.org>; Mon, 12 May 2025 12:05:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747076728; x=1747681528;
+ d=1e100.net; s=20230601; t=1747076741; x=1747681541;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uIXuZiZ9l8l1+2kKqvwfb3vC3OPO6dOzGvsREz22T5c=;
- b=m/cVBZu+g73ITE1nPQa2DcR5tnEbNH5Hk+VHTuCvPArkDOD6lwUlPZBzTGzAPe2pGI
- qzAef0XcnkineW+nsfHM+6H/4MirpEXqIg1CkQ9zTJq4JCMPlL8kiQYBEzQlutRzfz21
- R/JZcZ0I3EwxM+egGJom1G1elD1L5if3QbfS3blDnaomuEE3JyJWN+3E7Tb9n62/1OFD
- eJMjQNJvxWjMAKl4kOOjPBq2/boWNxWSC0iG4FD4lFrEZylBIB/nH43EYyFpGxVbvODI
- yt1o8aDHCdERuZ09qpUmJfstPwBcr0xWQMrTyyXCu93wMnREfM3czCNTQnG2oEt6ij7Z
- pvoQ==
-X-Gm-Message-State: AOJu0YxPVDVG9h9MLFVIhqd3L0cj5ihgFBrEwGgMHq6IhYTThoMJrAYp
- nTxcHErS8NygAdsxKhBkETjsqJJC6nujzh5L0hySO65wCV6IId5wUKfNuHSVnVmiIYIjSby39rL
- pcvsNe9bOJohToq62m6dfP4RximVKgilicmMg95xh9R4xa07rvY+iSS2Mu3AjYSbrhuZd8b07Uk
- DuZEqLR7623gcEoMYs0VeMqfqKOmvpJDXHhpmu
-X-Gm-Gg: ASbGncuVSg2aQNr4MBzuDa26cccLznv3lkX6r5+OThOMFZbxqzthvJmHsbVHGawjM1S
- fddQM1rgcSKSNURfkIKtSu8Dl2y7BTvUlMs0NFOJvKLpJ2GlXYMDyG1VjqBQrCr0JKp9j3z09jT
- DsUVtWLhPqYEIXgPIvORjdviL3HKxdXBc2hwYGUPV1YeP6C5E2/R6qGmlF6RNeroBpaONAEbqdk
- SbYlSI9NrcwcCO7hOK9pYiz3+55jvN3H7gcftynu+JVZLDAatrjb3ybER5jxoMOLBvRLsOlNFMN
- IZUzo3hzfkDKwZ0=
-X-Received: by 2002:a05:600c:3d05:b0:440:6a37:be09 with SMTP id
- 5b1f17b1804b1-442d6dbd4f3mr141644615e9.16.1747076728311; 
- Mon, 12 May 2025 12:05:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGZ2uy9cpn23eFjIVFEX3ZCymSkFgbnjeQOcETVnRr0L3Hkg4ap4H3EnadgfeSosppZM3fiyg==
-X-Received: by 2002:a05:600c:3d05:b0:440:6a37:be09 with SMTP id
- 5b1f17b1804b1-442d6dbd4f3mr141644365e9.16.1747076727895; 
- Mon, 12 May 2025 12:05:27 -0700 (PDT)
+ bh=hkMjV1RCdSvZc3UqwgDRzKPR4GFZsy1t1ux2ynl8Z10=;
+ b=ENr83XhD1Xk3uzObM3i4MHDeB8uawugJ+QEGen6PgN7UJbvtKQ8wdKZnkW01YehUEr
+ sZAxC6BUmeACA+cXkZpxglgPnAIBisrclrnuBd8v7jcA0wTCzyHCaQwYWO9j5EAAM3al
+ B1/lkd4qCHJVw/Rr8WfugAy9b1VKLunQ8Te01mzGJgdkyUsE/HrCeuCsAw0yuy0hfcUe
+ vgxEMRtD1FfJllVpXVt0P4KtUrEj4FYuL0TOR2nASnGUf1gnLhdit6TEl7tHLXMMO+dh
+ TOekDKroQpPxpCDukkmatjHo850y+wUnYdndwPJ9QvAr4sKLOo10i184fV13AWR/n8KN
+ 4nKA==
+X-Gm-Message-State: AOJu0YxT3Fo1td3xH5PCdECwK7n2X0GiuRgRDYQTvi9nm0E3bcotScgP
+ cflOozc6SKRaPrn5angpyVKVapS7poxacUxrvhYH9ojYiVa6pPSZ7QnDuN5hdz3300/NcrO11+7
+ NBnFQQGO/3XGP9keb1e/4SiPqaVRiyH1T8mf5yKO34UltYXzssZJlZsYQH2k5g9e0f90e3saCdk
+ 2/tIBDJPbyJkjT5SsWB2BkwCfmbK2jEGF/zUN6
+X-Gm-Gg: ASbGncvcnprJB0CLelzZfDltnE4ixC9DMAdzXkIF/zX/OE6+yc1JPjJJYFj5UxsNSfm
+ DWf9x4RUmhXj74vd6E5HOpIjU06ZIRkLeeK4S8K0Fnp/WX/FERRn9HZ9JNoVO+EhiNXqMPGo6I4
+ O5vQyv8THTOxYJPqqu5DGVgAJV3lNm1cZVsGv8VOmrY86RSHRtlRmUTdwVuj7EqPD0U85NDLGhR
+ XtuHq2IInMGepfFecZRNsFUiYsLY5CYyTlnOKoKtIHKMxgg8yRXgDsqVJptfsuKpr+V56ss2FVg
+ gslOxgMBvfny9bY=
+X-Received: by 2002:a05:651c:211b:b0:30b:b7c3:ea4d with SMTP id
+ 38308e7fff4ca-326c457b321mr53831271fa.12.1747076741265; 
+ Mon, 12 May 2025 12:05:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHBagYP3U/AIInxvHPx8D2AYQidcBM0jf/W6zRUqMq8SRfLNlWmpa80jPGA3ylh1981LtUiWw==
+X-Received: by 2002:a05:600c:5118:b0:43c:fcb1:528a with SMTP id
+ 5b1f17b1804b1-442d6cf30fbmr114230625e9.6.1747076730001; 
+ Mon, 12 May 2025 12:05:30 -0700 (PDT)
 Received: from [192.168.122.1] ([151.95.45.141])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a1f58f396asm13642884f8f.59.2025.05.12.12.05.26
+ 5b1f17b1804b1-442d67d5c35sm136078075e9.5.2025.05.12.12.05.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 May 2025 12:05:26 -0700 (PDT)
+ Mon, 12 May 2025 12:05:28 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 01/16] meson: drop --enable-avx* options
-Date: Mon, 12 May 2025 21:05:09 +0200
-Message-ID: <20250512190524.179419-2-pbonzini@redhat.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 02/16] meson: do not check supported TCG architecture if no
+ emulators built
+Date: Mon, 12 May 2025 21:05:10 +0200
+Message-ID: <20250512190524.179419-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512190524.179419-1-pbonzini@redhat.com>
 References: <20250512190524.179419-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
@@ -106,112 +109,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Just detect compiler support and always enable the optimizations if
-it is avilable; warn if the user did request AVX2/AVX512 use via
--Dx86_version= but the intrinsics are not available.
+Errors about TCI are pointless if only tools are being built; suppress
+them even if the user did not specify --disable-tcg.
 
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build                   | 30 +++++++++++++++++++-----------
- meson_options.txt             |  4 ----
- scripts/meson-buildoptions.sh |  6 ------
- 3 files changed, 19 insertions(+), 21 deletions(-)
+ meson.build           | 10 ++++++----
+ accel/tcg/meson.build |  2 +-
+ tcg/meson.build       |  2 +-
+ 3 files changed, 8 insertions(+), 6 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index e819a7084ca..f20a172299b 100644
+index f20a172299b..a2cebd44656 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -3097,22 +3097,16 @@ config_host_data.set('CONFIG_ASM_HWPROBE_H',
-                      cc.has_header_symbol('asm/hwprobe.h',
-                                           'RISCV_HWPROBE_EXT_ZBA'))
+@@ -247,6 +247,8 @@ have_vhost_net_vdpa = have_vhost_vdpa and get_option('vhost_net').allowed()
+ have_vhost_net_kernel = have_vhost_kernel and get_option('vhost_net').allowed()
+ have_vhost_net = have_vhost_net_kernel or have_vhost_net_user or have_vhost_net_vdpa
  
--config_host_data.set('CONFIG_AVX2_OPT', get_option('avx2') \
--  .require(have_cpuid_h, error_message: 'cpuid.h not available, cannot enable AVX2') \
--  .require(cc.links('''
--    #include <cpuid.h>
-+if have_cpuid_h
-+  have_avx2 = cc.links('''
-     #include <immintrin.h>
-     static int __attribute__((target("avx2"))) bar(void *a) {
-       __m256i x = *(__m256i *)a;
-       return _mm256_testz_si256(x, x);
-     }
-     int main(int argc, char *argv[]) { return bar(argv[argc - 1]); }
--  '''), error_message: 'AVX2 not available').allowed())
--
--config_host_data.set('CONFIG_AVX512BW_OPT', get_option('avx512bw') \
--  .require(have_cpuid_h, error_message: 'cpuid.h not available, cannot enable AVX512BW') \
--  .require(cc.links('''
--    #include <cpuid.h>
-+  ''')
-+  have_avx512bw = cc.links('''
-     #include <immintrin.h>
-     static int __attribute__((target("avx512bw"))) bar(void *a) {
-       __m512i *x = a;
-@@ -3120,7 +3114,21 @@ config_host_data.set('CONFIG_AVX512BW_OPT', get_option('avx512bw') \
-       return res[1];
-     }
-     int main(int argc, char *argv[]) { return bar(argv[0]); }
--  '''), error_message: 'AVX512BW not available').allowed())
-+  ''')
-+  if get_option('x86_version') >= '3' and not have_avx2
-+    error('Cannot enable AVX optimizations due to missing intrinsics')
-+  elif get_option('x86_version') >= '4' and not have_avx512bw
-+    error('Cannot enable AVX512 optimizations due to missing intrinsics')
-+  endif
-+else
-+  have_avx2 = false
-+  have_avx512bw = false
-+  if get_option('x86_version') >= '3'
-+    error('Cannot enable AVX optimizations due to missing cpuid.h')
-+  endif
-+endif
-+config_host_data.set('CONFIG_AVX2_OPT', have_avx2)
-+config_host_data.set('CONFIG_AVX512BW_OPT', have_avx512bw)
++have_tcg = get_option('tcg').allowed() and (have_system or have_user)
++
+ have_tools = get_option('tools') \
+   .disable_auto_if(not have_system) \
+   .allowed()
+@@ -863,7 +865,7 @@ elif host_os == 'haiku'
+             cc.find_library('network'),
+             cc.find_library('bsd')]
+ elif host_os == 'openbsd'
+-  if get_option('tcg').allowed() and target_dirs.length() > 0
++  if have_tcg
+     # Disable OpenBSD W^X if available
+     emulator_link_args = cc.get_supported_link_arguments('-Wl,-z,wxneeded')
+   endif
+@@ -904,7 +906,7 @@ if host_os == 'netbsd'
+ endif
  
- # For both AArch64 and AArch32, detect if builtins are available.
- config_host_data.set('CONFIG_ARM_AES_BUILTIN', cc.compiles('''
-diff --git a/meson_options.txt b/meson_options.txt
-index cc66b46c636..a442be29958 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -123,10 +123,6 @@ option('valgrind', type : 'feature', value: 'auto',
- option('membarrier', type: 'feature', value: 'disabled',
-        description: 'membarrier system call (for Linux 4.14+ or Windows')
+ tcg_arch = host_arch
+-if get_option('tcg').allowed()
++if have_tcg
+   if host_arch == 'unknown'
+     if not get_option('tcg_interpreter')
+       error('Unsupported CPU @0@, try --enable-tcg-interpreter'.format(cpu))
+@@ -2534,7 +2536,7 @@ config_host_data.set('CONFIG_PIXMAN', pixman.found())
+ config_host_data.set('CONFIG_SLIRP', slirp.found())
+ config_host_data.set('CONFIG_SNAPPY', snappy.found())
+ config_host_data.set('CONFIG_SOLARIS', host_os == 'sunos')
+-if get_option('tcg').allowed()
++if have_tcg
+   config_host_data.set('CONFIG_TCG', 1)
+   config_host_data.set('CONFIG_TCG_INTERPRETER', tcg_arch == 'tci')
+ endif
+@@ -4959,7 +4961,7 @@ if host_arch == 'unknown'
+   message('compile or work on this host CPU. You can help by volunteering')
+   message('to maintain it and providing a build host for our continuous')
+   message('integration setup.')
+-  if get_option('tcg').allowed() and target_dirs.length() > 0
++  if have_tcg
+     message()
+     message('configure has succeeded and you can continue to build, but')
+     message('QEMU will use a slow interpreter to emulate the target CPU.')
+diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
+index d6f533f9a1f..97d5e5a7112 100644
+--- a/accel/tcg/meson.build
++++ b/accel/tcg/meson.build
+@@ -1,4 +1,4 @@
+-if not get_option('tcg').allowed()
++if not have_tcg
+    subdir_done()
+ endif
  
--option('avx2', type: 'feature', value: 'auto',
--       description: 'AVX2 optimizations')
--option('avx512bw', type: 'feature', value: 'auto',
--       description: 'AVX512BW optimizations')
- option('keyring', type: 'feature', value: 'auto',
-        description: 'Linux keyring support')
- option('libkeyutils', type: 'feature', value: 'auto',
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index 8a67a14e2e2..f09ef9604f0 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -97,8 +97,6 @@ meson_options_help() {
-   printf "%s\n" '  alsa            ALSA sound support'
-   printf "%s\n" '  attr            attr/xattr support'
-   printf "%s\n" '  auth-pam        PAM access control'
--  printf "%s\n" '  avx2            AVX2 optimizations'
--  printf "%s\n" '  avx512bw        AVX512BW optimizations'
-   printf "%s\n" '  blkio           libblkio block device driver'
-   printf "%s\n" '  bochs           bochs image format support'
-   printf "%s\n" '  bpf             eBPF support'
-@@ -244,10 +242,6 @@ _meson_option_parse() {
-     --audio-drv-list=*) quote_sh "-Daudio_drv_list=$2" ;;
-     --enable-auth-pam) printf "%s" -Dauth_pam=enabled ;;
-     --disable-auth-pam) printf "%s" -Dauth_pam=disabled ;;
--    --enable-avx2) printf "%s" -Davx2=enabled ;;
--    --disable-avx2) printf "%s" -Davx2=disabled ;;
--    --enable-avx512bw) printf "%s" -Davx512bw=enabled ;;
--    --disable-avx512bw) printf "%s" -Davx512bw=disabled ;;
-     --enable-gcov) printf "%s" -Db_coverage=true ;;
-     --disable-gcov) printf "%s" -Db_coverage=false ;;
-     --enable-lto) printf "%s" -Db_lto=true ;;
+diff --git a/tcg/meson.build b/tcg/meson.build
+index 7df378d7735..bd2821e4b54 100644
+--- a/tcg/meson.build
++++ b/tcg/meson.build
+@@ -1,4 +1,4 @@
+-if not get_option('tcg').allowed()
++if not have_tcg
+    subdir_done()
+ endif
+ 
 -- 
 2.49.0
 
