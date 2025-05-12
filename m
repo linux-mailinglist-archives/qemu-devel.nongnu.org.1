@@ -2,57 +2,141 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24630AB2F3A
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 07:59:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54320AB2E57
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 06:21:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEMB8-00076H-TD; Mon, 12 May 2025 01:58:18 -0400
+	id 1uEKeN-0005RB-4Q; Mon, 12 May 2025 00:20:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xb@ultrarisc.com>) id 1uEIya-0005Lb-Up
- for qemu-devel@nongnu.org; Sun, 11 May 2025 22:33:09 -0400
-Received: from [218.76.62.146] (helo=ultrarisc.com)
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <xb@ultrarisc.com>) id 1uEIyY-0003Q6-4O
- for qemu-devel@nongnu.org; Sun, 11 May 2025 22:33:08 -0400
-Received: from xb$ultrarisc.com ( [192.168.100.1] ) by
- ajax-webmail-localhost.localdomain (Coremail) ; Mon, 12 May 2025 10:34:02
- +0800 (GMT+08:00)
-X-Originating-IP: [192.168.100.1]
-Date: Mon, 12 May 2025 10:34:02 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: =?UTF-8?B?6LCi5rOi?= <xb@ultrarisc.com>
-To: qemu-devel@nongnu.org
-Subject: [PATCH] target/riscv/kvm/kvm-cpu: Fixed the issue of resume after
- QEMU+KVM migration
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2024.1-cmXT6 build
- 20240625(a75f206e) Copyright (c) 2002-2025 www.mailtech.cn
- mispb-8cc425bc-7df6-4523-bb46-a48cc1a964e6-ultrarisc.com
-Content-Transfer-Encoding: base64
-X-CM-CTRLDATA: M/FBZmZvb3Rlcl90eHQ9MjM4NDo4NDA=
-Content-Type: text/plain; charset=UTF-8
+ (Exim 4.90_1) (envelope-from <Sairaj.ArunKodilkar@amd.com>)
+ id 1uEKVI-00048O-Tj
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 00:11:07 -0400
+Received: from mail-bn8nam12on2055.outbound.protection.outlook.com
+ ([40.107.237.55] helo=NAM12-BN8-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Sairaj.ArunKodilkar@amd.com>)
+ id 1uEKVF-0004UQ-9t
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 00:11:00 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mKlCJ8fYGKIA0osB9vG+DyzRUF30BFGyFdDW8eGUcbcHzJ+2UaKU6DhwcTV0dpG1xj0i0mSU5K3p3bbzV868IXDkdaBEux8uOe5jAMM3G75sLJOuyOZ6bB8aycVK61k+am9ZNHYGqfj6tW22RPHQONuceJAVwj8aj2dwmH0+EKiXtcTEUy0DIAHUAmfclKpU9JsfZh4gUWJ6iSunJ2mvZfbnrPR61sefYZr7NU4GHn7dx5mimjZC4fHZjcrLuVhGBFvt5s4wDwtY+wc8NCHOlia8+zpZOTZAiZubTu/JNl0LSDXVFobuQsx8/SdJdsbbP3fNy5ke7WCPBP74uDuzcA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+RrZUM8jblRswFVZN0NYpda3fW+fg6tMd9awM8EiahM=;
+ b=Hx7qxo1uH2YkDkqBn16urzOC/C7DFs2BibBOHo/pTPr7/Yn38zwpO1YM3L9a/RVKbf+jGEHfR2pr3CKtSOZ9dj3O9WVFp5MK9n89g92QRHYhG8RjRTvpnaPjuHaJhDQOcPSJCzmw2QUqfQf2AsCEvtHq520Dj931jkxtC1q08DB15+OwWJQSjC4l4WWhNNIVuTvyQAwjAmnywnlp+MQwjhrdvuMPbaVmVsy1b9aOhPYvPKiSdiwNt3vm7CJ7fZXqRJuoCNtk+bnEuniBTP0F2EnNU0YZnOVFNigTGR6psf5c9DQzD//HJTIu0oC+gpMcth6kNo5s4T+O1N8yLKUC/g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+RrZUM8jblRswFVZN0NYpda3fW+fg6tMd9awM8EiahM=;
+ b=grnVCcB5EXiThorxwPPC7hN6X5Gwnan4iz7cWSWEohoY/4R0oeAzxc7N3ujYEZndnAVerx2fsr1uNMwojMo7HcayYBGA9NC+dX/Ngq9UqrAKoiKzTotxyfUPWKqsiWHivrXWIvpzpBLBfpKbEDXXkpBECullhQ75EIV61P5hHZc=
+Received: from BN9PR03CA0190.namprd03.prod.outlook.com (2603:10b6:408:f9::15)
+ by IA1PR12MB7517.namprd12.prod.outlook.com (2603:10b6:208:41a::19)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.28; Mon, 12 May
+ 2025 04:05:52 +0000
+Received: from BL02EPF0001A0FE.namprd03.prod.outlook.com
+ (2603:10b6:408:f9:cafe::55) by BN9PR03CA0190.outlook.office365.com
+ (2603:10b6:408:f9::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8722.29 via Frontend Transport; Mon,
+ 12 May 2025 04:05:52 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BL02EPF0001A0FE.mail.protection.outlook.com (10.167.242.105) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8722.18 via Frontend Transport; Mon, 12 May 2025 04:05:51 +0000
+Received: from BLR-L1-SARUNKOD.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Sun, 11 May
+ 2025 23:05:48 -0500
+From: Sairaj Kodilkar <sarunkod@amd.com>
+To: <qemu-devel@nongnu.org>
+CC: <mst@redhat.com>, <marcel.apfelbaum@gmail.com>, <pbonzini@redhat.com>,
+ <richard.henderson@linaro.org>, <eduardo@habkost.net>,
+ <suravee.suthikulpanit@amd.com>, <alejandro.j.jimenez@oracle.com>,
+ <joao.m.martins@oracle.com>, <sarunkod@amd.com>
+Subject: [PATCH v2 1/2] hw/i386/amd_iommu: Fix device setup failure when PT is
+ on.
+Date: Mon, 12 May 2025 09:35:37 +0530
+Message-ID: <20250512040537.15557-1-sarunkod@amd.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250509064526.15500-1-sarunkod@amd.com>
+References: <20250509064526.15500-1-sarunkod@amd.com>
 MIME-Version: 1.0
-Message-ID: <6fa2f902.bd6.196c2579816.Coremail.xb@ultrarisc.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: AQAAfwAHRxAaXiFoG60VAA--.919W
-X-CM-SenderInfo: l0e63zxwud2x1vfou0bp/1tbiAQAAB2ggI3sAJAAAsy
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VW3Jw
- CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
- daVFxhVjvjDU=
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 218.76.62.146 (failed)
-Received-SPF: pass client-ip=218.76.62.146; envelope-from=xb@ultrarisc.com;
- helo=ultrarisc.com
-X-Spam_score_int: 8
-X-Spam_score: 0.8
-X-Spam_bar: /
-X-Spam_report: (0.8 / 5.0 requ) BAYES_40=-0.001,
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FE:EE_|IA1PR12MB7517:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3c10b91e-5829-48a1-8fd6-08dd910a4925
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|82310400026|36860700013|1800799024|376014; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?OktpWFvA1/qJYNJVfjyNvUzgE7q+8d70Pm1lR8k7AdJNfvCXPZsHLNUYZIUq?=
+ =?us-ascii?Q?jUSNBqxwLkIuxrLPBBYERjszNIASB/clhVquDRzl7/1XTMnsubuEk7faL9jM?=
+ =?us-ascii?Q?sXu9YXyY7HXK7bKpv48quKWL/w2vIhdDULNM1t+89qs5rWR/L8D1CfI219gP?=
+ =?us-ascii?Q?iValB9GS+P7UeccUeVRiUfC9WTOB/vEhO+QQb28T8Mmw7n+xvV8Jxbwns4HC?=
+ =?us-ascii?Q?pFfXh/l2wRQo/+rj1A0PwyZA3WmNZtPJnH/wjDeR0vJEuI/KYs0SxRwnftYZ?=
+ =?us-ascii?Q?ys5Qvyn5YY2j8wKDdWzQGHFxc/5ZVsq4KRD8UhMh5gBv5Z9dgDI82U01NrZz?=
+ =?us-ascii?Q?U4bj4NXdMFvRgPI/Ho75KtgsNwlUQls0hMarqfMm5ayMP8oTjAd4bhbl5y26?=
+ =?us-ascii?Q?vBqbDazGzXfGyY2igaMDw0EAQJ/myXDIRxT5P7jg6drk5WGvgdIQbtoC40RD?=
+ =?us-ascii?Q?YSxRKCAEIur8QLRfmN1bdvhaYhCsgYEKbDjlpuLw3e15c1g1+/nsSqhylUpj?=
+ =?us-ascii?Q?SWOUS1S/PZVVpB/m40fNFdG58c3LJRgoP74hdT3Oo3lU2DO/Rl3S56tuURqz?=
+ =?us-ascii?Q?SXtMdcjtJ36Xt0hD1vnbt4S3GTMF+9zOS+NH8PYNW+36gVKVwTaflFzIuKf/?=
+ =?us-ascii?Q?j2oitMRz3nPjU419KGIFjgdB6+YcavwBtj7gpR87MMjKYlrbgK/B8O0l0wxY?=
+ =?us-ascii?Q?Y5EsPmcNx8U1/wko1TFjSqoq2Dj8n6QpuTEKw6dhJZU0u7eFUmYIxjktXCsI?=
+ =?us-ascii?Q?5AtzFs2HfF3rXamS4iqP0JnSONMmizYHKGunmWWyxcrVM2koDgTkLJXrdNIu?=
+ =?us-ascii?Q?rfxjfP2W5vKH+O69f+CwsMUYsBqS2UVhLsvikZWyJwSR+ZpivrhS85YUQdRu?=
+ =?us-ascii?Q?WEKqt0Go6hCGTSiv3km0sPhXp4Rl0XDrFJNpR73m3vap3y1bWi4zTvNBRaL+?=
+ =?us-ascii?Q?GBnLEpsnvQiZL9Zk9P8GYSO6hDunrGKjGT05XB9PgeZlLxQ3CJRyM5kA2cJC?=
+ =?us-ascii?Q?PWw7lTxfKuCFADygCYJGoMZQg4uxdTAEaWXiiSIH2t1GZ3qVXB8DRpdQhGpy?=
+ =?us-ascii?Q?svuTdKZg2VfasOHhHrtJMDhxFWcddVG5gzn4UgG/H0KKBuNUTQQDBvpSdrZD?=
+ =?us-ascii?Q?deRfA5xBOzUyWHgIfRr/BrPyTj7NAHe8kb6m7Iymb8XDDkxBZeyfWnUuzk7n?=
+ =?us-ascii?Q?ORydyuMxdEV5CuWjie5IacQ6vXCGZeGtQBACDy4I5Q9fa9/uI4L/7h7Z5bkd?=
+ =?us-ascii?Q?dj5W3GuUfS2HZL5+IwYF9ao5TPgaErEbKNowtsuTh5hakF9GDcIzSEkArZb+?=
+ =?us-ascii?Q?tH4x619hREIROuQXHq+BGPDJsPQEZ+JkxU7IL6zBrCaSyzti+4KesLhFVyD3?=
+ =?us-ascii?Q?r6RbfN5yUkn6fUGnEGoVwIHyCZtHdV5ZamMqLNyuijfsWGNsMmz0UZm/Ox1g?=
+ =?us-ascii?Q?lvSf9qjqnKMEJB1zI//gB+aWzGMKhv3iZbtunFVV1JSUPMt6hHfmJ2XijzBU?=
+ =?us-ascii?Q?/rhXpThbra6cMQRx6pXgFq8MZ7YieFWdY29+?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2025 04:05:51.8923 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3c10b91e-5829-48a1-8fd6-08dd910a4925
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL02EPF0001A0FE.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7517
+Received-SPF: permerror client-ip=40.107.237.55;
+ envelope-from=Sairaj.ArunKodilkar@amd.com;
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -36
+X-Spam_score: -3.7
+X-Spam_bar: ---
+X-Spam_report: (-3.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.587,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.01,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 12 May 2025 01:58:10 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,67 +151,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-VGhpcyBwYXRjaCBmaXhlcyB0d28gY3JpdGljYWwgaXNzdWVzIGluIFFFTVUgd2l0aCBLVk06ClBv
-c3QtTWlncmF0aW9uIEZhaWx1cmUgaW4gVXNlciBNb2RlOiBXaGVuIFFFTVUgd2l0aCBLVk0gaXMg
-cnVubmluZyBpbiB1c2VyIG1vZGUsIHRoZSBndWVzdCBtYXkgZmFpbCB0byBmdW5jdGlvbiBjb3Jy
-ZWN0bHkgYWZ0ZXIgbWlncmF0aW9uLgpNdWx0aS1Db3JlIEd1ZXN0IEluY29uc2lzdGVuY3k6IEFm
-dGVyIG1pZ3JhdGlvbiwgb25seSB0aGUgZmlyc3QgQ1BVIChjb3JlIDApIHJlbWFpbnMgZnVuY3Rp
-b25hbCwgd2hpbGUgYWxsIG90aGVyIGNvcmVzIGJlY29tZSB1bnJlc3BvbnNpdmUuClRoaXMgcGF0
-Y2ggYWRkcmVzc2VzIGJvdGggcHJvYmxlbXMgdG8gZW5zdXJlIHN0YWJsZSBndWVzdCBvcGVyYXRp
-b24gYWZ0ZXIgbWlncmF0aW9uLgoKU2lnbmVkLW9mZi1ieTogeGllYm8taGFvMTIzIDx4YkB1bHRy
-YXJpc2MuY29tPgotLS0KIHRhcmdldC9yaXNjdi9rdm0va3ZtLWNwdS5jIHwgMjMgKysrKysrKysr
-KysrKysrKysrKysrKysKIDEgZmlsZSBjaGFuZ2VkLCAyMyBpbnNlcnRpb25zKCspCgpkaWZmIC0t
-Z2l0IGEvdGFyZ2V0L3Jpc2N2L2t2bS9rdm0tY3B1LmMgYi90YXJnZXQvcmlzY3Yva3ZtL2t2bS1j
-cHUuYwppbmRleCA3NTcyNGI2YWY0Li5hMTVjYWEyMGNlIDEwMDY0NAotLS0gYS90YXJnZXQvcmlz
-Y3Yva3ZtL2t2bS1jcHUuYworKysgYi90YXJnZXQvcmlzY3Yva3ZtL2t2bS1jcHUuYwpAQCAtNTc2
-LDYgKzU3NiwxNCBAQCBzdGF0aWMgaW50IGt2bV9yaXNjdl9nZXRfcmVnc19jb3JlKENQVVN0YXRl
-ICpjcykKICAgICB9CiAgICAgZW52LT5wYyA9IHJlZzsKCisgICAgICAgLypSZXN0b3JlIHRoZSBn
-dWVzdCdzIHByaXZpbGVnZWQgc3RhdGUgdG8gZml4IHRoZSBndWVzdCdzIHByaXZpbGVnZWQgc3Rh
-dGUgZXJyb3IgYWZ0ZXIgbWlncmF0aW9uKi8KKyAgICAgICByZXQgPSBrdm1fZ2V0X29uZV9yZWco
-Y3MsIFJJU0NWX0NPUkVfUkVHKGVudiwgbW9kZSksICZyZWcpOworICAgIGlmIChyZXQpIHsKKyAg
-ICAgICAgcmV0dXJuIHJldDsKKyAgICB9CisgICAgaWYocmVnICE9IDMpCisgICAgICAgIGVudi0+
-cHJpdiA9IHJlZzsKKwogICAgIGZvciAoaSA9IDE7IGkgPCAzMjsgaSsrKSB7CiAgICAgICAgIHVp
-bnQ2NF90IGlkID0ga3ZtX3Jpc2N2X3JlZ19pZF91bG9uZyhlbnYsIEtWTV9SRUdfUklTQ1ZfQ09S
-RSwgaSk7CiAgICAgICAgIHJldCA9IGt2bV9nZXRfb25lX3JlZyhjcywgaWQsICZyZWcpOwpAQCAt
-NjAxLDYgKzYwOSwxNSBAQCBzdGF0aWMgaW50IGt2bV9yaXNjdl9wdXRfcmVnc19jb3JlKENQVVN0
-YXRlICpjcykKICAgICAgICAgcmV0dXJuIHJldDsKICAgICB9CgorICAgICAgIC8qU2F2ZSB0aGUg
-Z3Vlc3QncyBwcml2aWxlZ2VkIHN0YXRlIHRvIGZpeCB0aGUgcHJvYmxlbSBvZiB0aGUgZ3Vlc3Qn
-cyBwcml2aWxlZ2VkIHN0YXRlIGVycm9yIGFmdGVyIG1pZ3JhdGlvbiovCisgICAgICAgcmVnID0g
-ZW52LT5wcml2OworICAgICAgIGlmKHJlZyAhPSAzKSB7CisgICAgICAgcmV0ID0ga3ZtX3NldF9v
-bmVfcmVnKGNzLCBSSVNDVl9DT1JFX1JFRyhlbnYsIG1vZGUpLCAmcmVnKTsKKyAgICAgICBpZiAo
-cmV0KSB7CisgICAgICAgICAgIHJldHVybiByZXQ7CisgICAgICAgIH0KKyAgICB9CisKICAgICBm
-b3IgKGkgPSAxOyBpIDwgMzI7IGkrKykgewogICAgICAgICB1aW50NjRfdCBpZCA9IGt2bV9yaXNj
-dl9yZWdfaWRfdWxvbmcoZW52LCBLVk1fUkVHX1JJU0NWX0NPUkUsIGkpOwogICAgICAgICByZWcg
-PSBlbnYtPmdwcltpXTsKQEAgLTEyODksNiArMTMwNiwxMiBAQCBpbnQga3ZtX2FyY2hfcHV0X3Jl
-Z2lzdGVycyhDUFVTdGF0ZSAqY3MsIGludCBsZXZlbCwgRXJyb3IgKiplcnJwKQogICAgICAgICBy
-ZXR1cm4gcmV0OwogICAgIH0KCisgICAgICAgLypTZXQgb3RoZXIgY29yZXMgZXhjZXB0IGd1ZXN0
-IGNvcmUgMCB0byBydW5uaW5nIHN0YXRlLCBmaXggdGhlIHByb2JsZW0gdGhhdCBvdGhlciBjb3Jl
-cyBleGNlcHQgY29yZSAwIGNhbm5vdCBydW4gbm9ybWFsbHkgYWZ0ZXIgZ3Vlc3QgbXVsdGktY29y
-ZSBtaWdyYXRpb24qLworICAgICAgIGlmKChsZXZlbCA9PSBLVk1fUFVUX0ZVTExfU1RBVEUpICYm
-IChjcy0+Y3B1X2luZGV4ICE9IDApKXsKKyAgICAgICBSSVNDVkNQVSAqY3B1ID0gUklTQ1ZfQ1BV
-KGNzKTsKKyAgICAgICByZXQgPSBrdm1fcmlzY3Zfc3luY19tcHN0YXRlX3RvX2t2bShjcHUsIEtW
-TV9NUF9TVEFURV9SVU5OQUJMRSk7CisgICAgICAgfQorCiAgICAgaWYgKEtWTV9QVVRfUkVTRVRf
-U1RBVEUgPT0gbGV2ZWwpIHsKICAgICAgICAgUklTQ1ZDUFUgKmNwdSA9IFJJU0NWX0NQVShjcyk7
-CiAgICAgICAgIGlmIChjcy0+Y3B1X2luZGV4ID09IDApIHsKLS0KMi4zNC4xCgoNCg0KX19fX19f
-X19fX19fX19fX19fX19fX3d3dy51bHRyYXJpc2MuY29tDQrph43opoHmj5DnpLrvvJrmnKzpgq7k
-u7bljIXmi6zpmYTku7bnmoTlhoXlrrnmmK/lj5fms5Xlvovkv53miqTnmoTkv53lr4bkv6Hmga/v
-vIzlpoLmnpzmgqjkuI3mmK/mjIflrprmlLbku7bkurrvvIzor7fnq4vljbPlsIbmnKzpgq7ku7bl
-iKDpmaTvvIzms5XlvovnpoHmraLku7vkvZXpnZ7ms5XnmoTmiqvpnLLjgIHlpI3liLbjgIHkvKDm
-kq3miJbku6Xku7vkvZXmlrnlvI/kvb/nlKjmnKzpgq7ku7bjgILmnKzpgq7ku7bkuK3ljIXlkKvn
-moTmhI/op4HjgIHlu7rorq7mmK/ln7rkuo7miJblj5fliLDmiJHmlrnooajovr7lkozlrprkuYnn
-moTmnaHmrL7lj4rmnaHku7bnmoTpmZDlrprvvIzlpoLml6DmiJHmlrnnmoTmraPlvI/kuabpnaLm
-voTmuIXmiJbmjojmnYPvvIzkuI3lj6/ooqvljZXni6zkvZzkuLrku7vkvZXmg4XlvaLkuIvnmoTo
-r4Hmja7miJbkvp3mja7jgILmhJ/osKLmgqjnmoTnkIbop6PkuI7phY3lkIjjgILniYjmnYPmiYDm
-nInjgIJJTVBPUlRBTlQgTk9USUNFOiBUaGlzIGVtYWlsLCBpbmNsdWRpbmcgaXRzIGF0dGFjaG1l
-bnQgaWYgYW55LCBpcyBjb25maWRlbnRpYWwuIElmIHlvdSBhcmUgbm90IHRoZSBpbnRlbmRlZCBy
-ZWNpcGllbnQsIHBsZWFzZSBkZWxldGUgaXQgZnJvbSB5b3VyIGNvbXB1dGVyIGltbWVkaWF0ZWx5
-LiBBbnkgZGlzY2xvc3VyZSwgY29weWluZywgb3IgZGlzdHJpYnV0aW9uIG9mIHRoaXMgbWVzc2Fn
-ZSwgb3IgdGFraW5nIG9mIGFueSBhY3Rpb24gYmFzZWQgb24gaXQgaXMgc3RyaWN0bHkgcHJvaGli
-aXRlZC4gIEFueSBvcGluaW9ucyBhbmQgc3VnZ2VzdGlvbnMgY29udGFpbmVkIGluIHRoaXMgZW1h
-aWwgYXJlIHN1YmplY3QgdG8gdGhlIHRlcm1zIGFuZCBjb25kaXRpb25zIGV4cHJlc3NlZCBhbmQg
-ZGVmaW5lZCBieSB1cyBhbmQgc2hvdWxkIG5vdCBiZSByZWxpZWQgdXBvbiB1bmNvbmRpdGlvbmFs
-bHkgdW5kZXIgYW55IGNpcmN1bXN0YW5jZXMgdW5sZXNzIHRoZXkgYXJlIGNvbmZpcm1lZCBpbiBv
-ZmZpY2lhbCB3cml0dGVuIGNsYXJpZmljYXRpb24gb3IgYXV0aG9yaXphdGlvbiBmcm9tIHVzLiAg
-VGhhbmsgeW91IGZvciB5b3VyIHVuZGVyc3RhbmRpbmcgYW5kIGNvb3BlcmF0aW9uLkFsbCByaWdo
-dHMgcmVzZXJ2ZWQu
+Current amd_iommu enables the iommu_nodma address space when pt_supported
+flag is on. This causes device to bypass the IOMMU and use untranslated
+address to perform DMA when guest kernel uses DMA mode, resulting in
+failure to setup the devices in the guest.
+
+Fix the issue by always enabling amdvi_dev_as->iommu, which is explicitly
+created as an IOMMU memory region (i.e. a memory region with mr->is_iommu
+== true), and it is meant to support DMA remapping. It is relying on the
+"side effect" that VFIO will try to register notifiers for memory regions
+that are an "IOMMU" (i.e. pass the check in memory_region_is_iommu()),
+and later fail when trying to register the notifier.
+
+Fixes: c1f46999ef506 ("amd_iommu: Add support for pass though mode")
+Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+---
+ hw/i386/amd_iommu.c | 12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
+
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index 5f9b95279997..df8ba5d39ada 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -1426,7 +1426,6 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
+     AMDVIState *s = opaque;
+     AMDVIAddressSpace **iommu_as, *amdvi_dev_as;
+     int bus_num = pci_bus_num(bus);
+-    X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
+ 
+     iommu_as = s->address_spaces[bus_num];
+ 
+@@ -1486,15 +1485,8 @@ static AddressSpace *amdvi_host_dma_iommu(PCIBus *bus, void *opaque, int devfn)
+                                             AMDVI_INT_ADDR_FIRST,
+                                             &amdvi_dev_as->iommu_ir, 1);
+ 
+-        if (!x86_iommu->pt_supported) {
+-            memory_region_set_enabled(&amdvi_dev_as->iommu_nodma, false);
+-            memory_region_set_enabled(MEMORY_REGION(&amdvi_dev_as->iommu),
+-                                      true);
+-        } else {
+-            memory_region_set_enabled(MEMORY_REGION(&amdvi_dev_as->iommu),
+-                                      false);
+-            memory_region_set_enabled(&amdvi_dev_as->iommu_nodma, true);
+-        }
++        memory_region_set_enabled(&amdvi_dev_as->iommu_nodma, false);
++        memory_region_set_enabled(MEMORY_REGION(&amdvi_dev_as->iommu), true);
+     }
+     return &iommu_as[devfn]->as;
+ }
+-- 
+2.34.1
+
 
