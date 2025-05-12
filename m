@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 449F3AB3C6D
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 17:42:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B43F9AB3C24
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 17:33:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEV9T-0003tK-Gz; Mon, 12 May 2025 11:33:11 -0400
+	id 1uEV9R-0003oH-So; Mon, 12 May 2025 11:33:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uEV9L-0003hQ-Uy
+ id 1uEV9N-0003je-Fv
  for qemu-devel@nongnu.org; Mon, 12 May 2025 11:33:05 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uEV9J-0006eD-E2
- for qemu-devel@nongnu.org; Mon, 12 May 2025 11:33:03 -0400
+ id 1uEV9K-0006eK-Jg
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 11:33:05 -0400
 Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54CCAADk019736;
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54CC9x3T018773;
  Mon, 12 May 2025 15:32:59 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=
- corp-2025-04-25; bh=coxxrO3jwCxhvRTGFRerp9PEWUUZTdEqNuK6uBtf+kg=; b=
- sYq9T30gy3A/Y6oP0bUF2mFPmZz0rqopYZazd4RSYwLcxjbZyBJKiKVJNobpjZId
- IE8nsephM6bQZ9ZQSv1ZiAgMzedGEJHbl3bmrM2ZK4iQtoQ/lIrp7bOxbcavO+RM
- 30mri7XgDeu49XU51x5i19utaWN0GmelRedrJdoDtlIQ4lHFcFihFRejX6stm2wg
- swo12VAP+iDC5enyCTW5aJBcBL2iPQCbPwAgnkXDcyWV0GOsvHk2wCjfUlanr8DH
- Z9lOQr3yszI6a9NQ6Gl8t14a0BTySc8TJtXBjfjXZy9MYui7EhFy1naZB7Brw8MV
- gyvXG6W6xaNbvFBIjHTl/A==
+ :date:from:in-reply-to:message-id:references:subject:to; s=
+ corp-2025-04-25; bh=o2BPSyk4hmWf/SpdNWGBZh4xxcS8+0kbf3G56bavgP0=; b=
+ pElGkKQXdASvmvWk2/6rqrI5kfVHeOcWZYVf8kAZBM6h2aMABxkz6GJ3P3XdPpZf
+ TushtfIM7bgYxBN0s9x6lPwKliWdNYeh8agxLUsIea4TGxZVTNrvfi2EfDbRLS1+
+ 9wOyTiqdfiJXAifjg52kcyxsek5E6chr4LV3jYLMEnPuvjkkEXBShtvDdKAclSrY
+ i5pDC0zdxvKXC+V1kryUg6hUEqfN73nVAUQPR3QrHpU4eibh9Ooc/kQaJ5TOP9tH
+ FTW7EWD9IONMp0E7liUE5s+buUYgvJBzbCeqSqQN9WkE1ux49OUc4jtDH1HCO7Qs
+ eFYw18Yj0rjnln4ecPyd+Q==
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46j13r2scv-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46j13r2sd0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 May 2025 15:32:58 +0000 (GMT)
+ Mon, 12 May 2025 15:32:59 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 54CE0rdG002876; Mon, 12 May 2025 15:32:58 GMT
+ with ESMTP id 54CEDx3g002961; Mon, 12 May 2025 15:32:59 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 46jwx3665a-1
+ 46jwx3665v-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 May 2025 15:32:58 +0000
+ Mon, 12 May 2025 15:32:59 +0000
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54CFWk4k030605;
- Mon, 12 May 2025 15:32:57 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54CFWk4m030605;
+ Mon, 12 May 2025 15:32:58 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 46jwx36627-5; Mon, 12 May 2025 15:32:57 +0000
+ ESMTP id 46jwx36627-6; Mon, 12 May 2025 15:32:58 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -62,15 +61,12 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V3 04/42] vfio: vfio_find_ram_discard_listener
-Date: Mon, 12 May 2025 08:32:15 -0700
-Message-Id: <1747063973-124548-5-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V3 05/42] vfio: move vfio-cpr.h
+Date: Mon, 12 May 2025 08:32:16 -0700
+Message-Id: <1747063973-124548-6-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1747063973-124548-1-git-send-email-steven.sistare@oracle.com>
 References: <1747063973-124548-1-git-send-email-steven.sistare@oracle.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-12_05,2025-05-09_01,2025-02-21_01
@@ -79,20 +75,18 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
  bulkscore=0 suspectscore=0 phishscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2504070000
  definitions=main-2505120161
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDE2MSBTYWx0ZWRfX2hwWOQEQs6fd
- OWrd8BLNJTWCSuVK04Q+vb7wDW84Y4FDfwg5i4E7DqhxlrwsIbpTQ+dS7FN0Rt5URPQPLw7hICd
- cLjvjVSXoWSMn+wqX5Apzedyh4GzEwsxLe2TBuTqlMFRfusTK5PMQ8U4OxAv+NBJp9fXAnDtONH
- bYj068IoMzxdotTNU1WdLAGrRlyCeGPqtU1jq4SnUFoPxKq4wiF9wIJUDFwjQc8WkYsB3It02yX
- 6/PKjAejYRj0iJKevm6R4cov46MD9J9anVIPKyTbiOQCKbSW6RF7t6wh/sIAKaSKAe/Mq9TTwvw
- eakm1QnG6fpPVEZ/WT3HalNIvxz7leiggiMy0mSbH2TbJ3fe5Ob6qnoBPVRtpxc7Cl6P2REd9xU
- HYSFEHX0g5IGatAsh38LguKa1pnAP2iRBnB+kA6n0ULFkFuWuGTLE7BwM2HIHYjYkp/ICUo2
-X-Proofpoint-GUID: UdW-DEIlY82_yuSMv9tmIkqR75I8_jsE
-X-Proofpoint-ORIG-GUID: UdW-DEIlY82_yuSMv9tmIkqR75I8_jsE
-X-Authority-Analysis: v=2.4 cv=M6hNKzws c=1 sm=1 tr=0 ts=682214aa b=1 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDE2MSBTYWx0ZWRfX10RN49o8b1za
+ 7USi/sj10tMpS5BnwQbGWp9EEDYPDs7XI7kpPkOpwX7f1BNqUZenkq3Cz1mg9lICjD+91K8raRc
+ j5t1WxhFVZoazBdj1H1rS/zjGj18JBhxAHz0+FIxOOhkTLIr9V69SwnZMvi3lJHJ871/SkpfJuD
+ cCtSWs5cx0rTxDb2RCCXwcyeI2ovLOdpWJH69P6LzZ0pl8LHEEc0kxXCLYFjl79iFarLTqQIJ2H
+ umhKGNRR/mPHE1uObUbpyLGdUG2cTgHhyHk+BpaIp/rY4wVWKl7Q2MtraNikGXA2s6Aii8dMmkU
+ +uJ5PcseF/lonp6bDmcW2TIni8WF+hup7XPndhxyEblAZAhoKs+Qva3qbnzYNNVhKboHqCcc2U5
+ 2pAoXAynluho36LcqUmfc6w806Bm19MIO/cxnLc5qu31C/CIqquUXBt8IkH1oRtPRE5yzE0L
+X-Proofpoint-GUID: Nwy5Zgh6LzjP9si8dhSvbS_mv1rIsmoS
+X-Proofpoint-ORIG-GUID: Nwy5Zgh6LzjP9si8dhSvbS_mv1rIsmoS
+X-Authority-Analysis: v=2.4 cv=M6hNKzws c=1 sm=1 tr=0 ts=682214ab b=1 cx=c_pps
  a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=20KFwNOVAAAA:8
- a=MtPhzGyV-s5HnW-BJbUA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10
+ a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=AbqfWwymkoT623_jBzUA:9
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -32
@@ -118,81 +112,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Define vfio_find_ram_discard_listener as a subroutine so additional calls to
-it may be added in a subsequent patch.
+Move vfio-cpr.h to include/hw/vfio, because it will need to be included by
+other files there.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/listener.c                    | 35 ++++++++++++++++++++++-------------
- include/hw/vfio/vfio-container-base.h |  3 +++
- 2 files changed, 25 insertions(+), 13 deletions(-)
+ MAINTAINERS                |  1 +
+ hw/vfio/container.c        |  2 +-
+ hw/vfio/cpr.c              |  2 +-
+ hw/vfio/iommufd.c          |  2 +-
+ hw/vfio/vfio-cpr.h         | 15 ---------------
+ include/hw/vfio/vfio-cpr.h | 18 ++++++++++++++++++
+ 6 files changed, 22 insertions(+), 18 deletions(-)
+ delete mode 100644 hw/vfio/vfio-cpr.h
+ create mode 100644 include/hw/vfio/vfio-cpr.h
 
-diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
-index bfacb3d..5642d04 100644
---- a/hw/vfio/listener.c
-+++ b/hw/vfio/listener.c
-@@ -449,6 +449,26 @@ static void vfio_device_error_append(VFIODevice *vbasedev, Error **errp)
-     }
- }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index d54a532..9bee3cf 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3023,6 +3023,7 @@ CheckPoint and Restart (CPR)
+ R: Steve Sistare <steven.sistare@oracle.com>
+ S: Supported
+ F: hw/vfio/cpr*
++F: include/hw/vfio/vfio-cpr.h
+ F: include/migration/cpr.h
+ F: migration/cpr*
+ F: tests/qtest/migration/cpr*
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index a9f0dba..eb56f00 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -33,8 +33,8 @@
+ #include "qapi/error.h"
+ #include "pci.h"
+ #include "hw/vfio/vfio-container.h"
++#include "hw/vfio/vfio-cpr.h"
+ #include "vfio-helpers.h"
+-#include "vfio-cpr.h"
+ #include "vfio-listener.h"
  
-+VFIORamDiscardListener *vfio_find_ram_discard_listener(
-+    VFIOContainerBase *bcontainer, MemoryRegionSection *section)
-+{
-+    VFIORamDiscardListener *vrdl = NULL;
-+
-+    QLIST_FOREACH(vrdl, &bcontainer->vrdl_list, next) {
-+        if (vrdl->mr == section->mr &&
-+            vrdl->offset_within_address_space ==
-+            section->offset_within_address_space) {
-+            break;
-+        }
-+    }
-+
-+    if (!vrdl) {
-+        hw_error("vfio: Trying to sync missing RAM discard listener");
-+        /* does not return */
-+    }
-+    return vrdl;
-+}
-+
- static void vfio_listener_region_add(MemoryListener *listener,
-                                      MemoryRegionSection *section)
- {
-@@ -1075,19 +1095,8 @@ vfio_sync_ram_discard_listener_dirty_bitmap(VFIOContainerBase *bcontainer,
-                                             MemoryRegionSection *section)
- {
-     RamDiscardManager *rdm = memory_region_get_ram_discard_manager(section->mr);
--    VFIORamDiscardListener *vrdl = NULL;
+ #define TYPE_HOST_IOMMU_DEVICE_LEGACY_VFIO TYPE_HOST_IOMMU_DEVICE "-legacy-vfio"
+diff --git a/hw/vfio/cpr.c b/hw/vfio/cpr.c
+index 3214184..0210e76 100644
+--- a/hw/vfio/cpr.c
++++ b/hw/vfio/cpr.c
+@@ -8,9 +8,9 @@
+ #include "qemu/osdep.h"
+ #include "hw/vfio/vfio-device.h"
+ #include "migration/misc.h"
++#include "hw/vfio/vfio-cpr.h"
+ #include "qapi/error.h"
+ #include "system/runstate.h"
+-#include "vfio-cpr.h"
+ 
+ static int vfio_cpr_reboot_notifier(NotifierWithReturn *notifier,
+                                     MigrationEvent *e, Error **errp)
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index af1c7ab..167bda4 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -21,13 +21,13 @@
+ #include "qapi/error.h"
+ #include "system/iommufd.h"
+ #include "hw/qdev-core.h"
++#include "hw/vfio/vfio-cpr.h"
+ #include "system/reset.h"
+ #include "qemu/cutils.h"
+ #include "qemu/chardev_open.h"
+ #include "pci.h"
+ #include "vfio-iommufd.h"
+ #include "vfio-helpers.h"
+-#include "vfio-cpr.h"
+ #include "vfio-listener.h"
+ 
+ #define TYPE_HOST_IOMMU_DEVICE_IOMMUFD_VFIO             \
+diff --git a/hw/vfio/vfio-cpr.h b/hw/vfio/vfio-cpr.h
+deleted file mode 100644
+index 134b83a..0000000
+--- a/hw/vfio/vfio-cpr.h
++++ /dev/null
+@@ -1,15 +0,0 @@
+-/*
+- * VFIO CPR
+- *
+- * Copyright (c) 2025 Oracle and/or its affiliates.
+- *
+- * SPDX-License-Identifier: GPL-2.0-or-later
+- */
 -
--    QLIST_FOREACH(vrdl, &bcontainer->vrdl_list, next) {
--        if (vrdl->mr == section->mr &&
--            vrdl->offset_within_address_space ==
--            section->offset_within_address_space) {
--            break;
--        }
--    }
+-#ifndef HW_VFIO_CPR_H
+-#define HW_VFIO_CPR_H
 -
--    if (!vrdl) {
--        hw_error("vfio: Trying to sync missing RAM discard listener");
--    }
-+    VFIORamDiscardListener *vrdl =
-+        vfio_find_ram_discard_listener(bcontainer, section);
- 
-     /*
-      * We only want/can synchronize the bitmap for actually mapped parts -
-diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-index 3d392b0..1dc760f 100644
---- a/include/hw/vfio/vfio-container-base.h
-+++ b/include/hw/vfio/vfio-container-base.h
-@@ -183,4 +183,7 @@ struct VFIOIOMMUClass {
-     void (*release)(VFIOContainerBase *bcontainer);
- };
- 
-+VFIORamDiscardListener *vfio_find_ram_discard_listener(
-+    VFIOContainerBase *bcontainer, MemoryRegionSection *section);
+-bool vfio_cpr_register_container(VFIOContainerBase *bcontainer, Error **errp);
+-void vfio_cpr_unregister_container(VFIOContainerBase *bcontainer);
+-
+-#endif /* HW_VFIO_CPR_H */
+diff --git a/include/hw/vfio/vfio-cpr.h b/include/hw/vfio/vfio-cpr.h
+new file mode 100644
+index 0000000..750ea5b
+--- /dev/null
++++ b/include/hw/vfio/vfio-cpr.h
+@@ -0,0 +1,18 @@
++/*
++ * VFIO CPR
++ *
++ * Copyright (c) 2025 Oracle and/or its affiliates.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
 +
- #endif /* HW_VFIO_VFIO_CONTAINER_BASE_H */
++#ifndef HW_VFIO_VFIO_CPR_H
++#define HW_VFIO_VFIO_CPR_H
++
++struct VFIOContainerBase;
++
++bool vfio_cpr_register_container(struct VFIOContainerBase *bcontainer,
++                                 Error **errp);
++void vfio_cpr_unregister_container(struct VFIOContainerBase *bcontainer);
++
++#endif /* HW_VFIO_VFIO_CPR_H */
 -- 
 1.8.3.1
 
