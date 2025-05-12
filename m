@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86623AB4238
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 20:20:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E690AB420E
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 20:17:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEXdY-00059I-Mf; Mon, 12 May 2025 14:12:25 -0400
+	id 1uEXce-0003a5-HR; Mon, 12 May 2025 14:11:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uEXaG-0001aF-De
- for qemu-devel@nongnu.org; Mon, 12 May 2025 14:09:01 -0400
+ id 1uEXaH-0001fB-VH
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 14:09:02 -0400
 Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uEXaE-0000Ta-1g
- for qemu-devel@nongnu.org; Mon, 12 May 2025 14:08:59 -0400
+ id 1uEXaF-0000Tu-81
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 14:09:01 -0400
 Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-7398d65476eso3974562b3a.1
- for <qemu-devel@nongnu.org>; Mon, 12 May 2025 11:08:57 -0700 (PDT)
+ d2e1a72fcca58-7426c44e014so1245027b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 12 May 2025 11:08:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747073336; x=1747678136; darn=nongnu.org;
+ d=linaro.org; s=google; t=1747073337; x=1747678137; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=A9pY26zaQMqZMR17IM27tzI2vbhn1j1ig8REcOyHb8s=;
- b=fMS/j54WjuFfY+QmkRLJD1GHWqBX7WKDrdAed8LB7kgUPEYieWRpfIiXlT0YLSJYtC
- 2mjDHo8L1NxGVb7EiJN+Gzt3nQpoB++7ehTX9u//Bk7aSdC2mR3oIJSVco2X2Sb30L/0
- iobCijvtO5Jv8Z2Y6LHYZxEskrPJb1i0B1U4+IndPtOVJmuIZ+tML+Wf7pTjjOmF3C3K
- xRh3Uuxf9MtWBv+WNKQra2PkhDhwdOf+qRWChz4aHtGw8jqLiLMB1LsLchxSKMWyqaO6
- TXvPqkogW+yku7+bXjjH6bDJDISE/vVszubUicujaJmnxyL8Z+BcfKiPA4vuBRNaC/5G
- Qhzg==
+ bh=ZWI42H1mGpC+qtJnGTlft49SFGxWloHLdh6QbAbdhzc=;
+ b=cNLSHBU8ArKVyTy8heEkxobhItu2aMFPAlD/UrEOwwM2+Ic/dnkFo5r2ngdan0zbC6
+ zrNo8+lF7L6bG3vVHCwm38OimB5AdtQzIqvfkHd3pL8BqD3wdd3WDAPEoyqoyuhC6BmH
+ DYyncFcvwxJAUWU45w37ICHOdTo6cA+KZBGp7pR+uf6eh20qymokn54venz3JfCVzj/o
+ 8SIETJmbxyVrTcytdB0o+wVW4IZfaH3YnP5mqnxEIQmQG4Xi4FT56gBL7gDlsL7yh9gA
+ EVklVjT8x13HWfiI3WSX+CAUNDKrRmmR5+D7c8Py9m4ZE+rYFt6YlBpsg4iI/ixBuMpz
+ uJBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747073336; x=1747678136;
+ d=1e100.net; s=20230601; t=1747073337; x=1747678137;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=A9pY26zaQMqZMR17IM27tzI2vbhn1j1ig8REcOyHb8s=;
- b=YiX3MPE6twp8egXQehaplOzdJzNZolBrPuOkaNlszkivkeISeGAnG8nnocLgQgVopn
- WAqBJK2TTKcJykuBEzZesnB5w7asLOES1BLYKQrMxPSOwLb3TiVACs3Db95xZ6V5rck5
- F9fHyY21nDX/1dqLaNNy86V7Oj92XlMEhzYfcg3YCWG56EjdcW5+D/h7DVaS4QemTIJR
- CjHtiX5tJShU6cg566gqBgmsUDUMjO7Yach5ILrsCzfgfImWs8TB+QpgZh4xq59WyHRG
- knDeElZtQToWFkHYBUwCKMQSXzzy9jiD02XWL58ejlOwhV4fTOU5d34tYro411i5xfDe
- m79A==
-X-Gm-Message-State: AOJu0YypMa4sQbJwXbX3+n3Rn+k8GSQRfCtl+Z1G4LNSoRMtOhJiz0oU
- W2hTboMCWpqBVDBRq5AkIGFROm9OydDEDsfr7Nlfh5r+8YFlEMjWFJvuqiJPj3MleM4pP1fggTh
- k
-X-Gm-Gg: ASbGncsKP3vj/lTFxuJ4qanrJ9gt9tSLGOz/tjOdVAKVQs8eDBHQmQ+GgZPnAFIq3ac
- CLz6y/uVnkgysRMLj85S9CTUUJsz/8sImf6RJPLfhUcwh3cIJK7laxLojN4jUOC/gl/0vSueu1U
- 9syccKycCSAid8wJXTuhQQgaEbkyH4ai87DIu1mz2di9f9T2eojh35feKfoYmyS05su5aexodtp
- noCYayvj23RxuyM3+DFshP5aqqP59x6/nqT+MMDo6whIr2x/2CvW8nUruPvirP57GMXoPB5lWu7
- ia9zMJoawSpmO+KE9Ms+PmtHsJ9ZuS1Ir65/Q7QBhunUx+hMShw=
-X-Google-Smtp-Source: AGHT+IEpgv+2XV0Zbgxq0jroyNZr0Hhc8tUXZJKtGzmiJs+oD+973KGXRHevMub/LwmkpCtxJP8WNw==
-X-Received: by 2002:a05:6a00:4d8f:b0:732:706c:c4ff with SMTP id
- d2e1a72fcca58-742791784dbmr459306b3a.7.1747073336612; 
- Mon, 12 May 2025 11:08:56 -0700 (PDT)
+ bh=ZWI42H1mGpC+qtJnGTlft49SFGxWloHLdh6QbAbdhzc=;
+ b=tR0fInw5rbrI+iWGJ2iqxzU+AaXDqq9yc3eTAXZuTF4FL7AIkIG4bDvBEDitrY3I0d
+ uRb2NGbkWRmNbgpzoUb2mPdumkAp6PIugHK4lI4iIPSTSk4fbLCcnGWDR7LVr223zjo+
+ VTyv1hewSTHmAae+An2bszfExfYTuJNhZLvjgW8FCAXz/Wvn6ROZE9Smzw0uHb75f11R
+ rCQAcuMClqUg2oReOsMp+W1iEg4mUsbvfUZsr1SmXMQZiRf4Vbrqz7ZNGvrBzrgZ63cv
+ Zk34FqrNTaXgfqhLHCXlw83jJ5Rswzh8YA5YjKoNGNzjwU3o7B2wxoGBpA/QdeDmkzvi
+ xqPw==
+X-Gm-Message-State: AOJu0YyaGvpqTJNgU2sgXBP7u5/I9IF4y5sRFVdrjvgSsdVdU+TsxwQL
+ TMVWMQqD7HB4E9x3JIRI0F7QMXt/TsaFu6aWQutPVt2HW9cDwq+Lm/ISjhbX7Qe5uMYzabRSPGn
+ y
+X-Gm-Gg: ASbGncvYc18VtqV66wMjOROaJBjE2H2qhnW9xZjEI+oWOU7hdTRv7tQSKn5QlVAHw+I
+ RoFzT3v+7XUJJioh57C/BMHA5Aa8e62aZeyRlztMKFVcVqjrlSmNCn/XOrHNY19bWlhZAphe+TZ
+ qjkpqosap59d2+9ugeUTKWLpmEhX+9MPthtRMwJ0udo0JASaim+oPHFKJUfovsEgck4QlsgU+JH
+ v5mMmRkSeF5Zna3vEWtPZIEJ6XQwMAtvR25WOgsQnnfrgVTR8Nz2Owz6bHjky0WAsGroD/dfZOj
+ WqlQ0GrdqsbNVqt/iRE4Vbb9rlIV5Xojiiz0E//pG4XLmDnNKV8=
+X-Google-Smtp-Source: AGHT+IHtnl15XBTtEr1mY8dLt6bXrBUqTmVSSEupohhsnj2Dz63VmmRIZJFm31uUpKt4D1dkYmWtPw==
+X-Received: by 2002:a05:6a00:23c8:b0:737:9b:582a with SMTP id
+ d2e1a72fcca58-7423c087158mr22392781b3a.24.1747073337534; 
+ Mon, 12 May 2025 11:08:57 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-74237705499sm6438580b3a.33.2025.05.12.11.08.55
+ d2e1a72fcca58-74237705499sm6438580b3a.33.2025.05.12.11.08.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 May 2025 11:08:56 -0700 (PDT)
+ Mon, 12 May 2025 11:08:57 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -69,10 +69,9 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v8 45/48] target/arm/helper: restrict define_tlb_insn_regs to
- system target
-Date: Mon, 12 May 2025 11:04:59 -0700
-Message-ID: <20250512180502.2395029-46-pierrick.bouvier@linaro.org>
+Subject: [PATCH v8 46/48] target/arm/tcg/tlb-insns: compile file once (system)
+Date: Mon, 12 May 2025 11:05:00 -0700
+Message-ID: <20250512180502.2395029-47-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250512180502.2395029-1-pierrick.bouvier@linaro.org>
 References: <20250512180502.2395029-1-pierrick.bouvier@linaro.org>
@@ -102,28 +101,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allows to include target/arm/tcg/tlb-insns.c only for system targets.
+aarch64 specific code is guarded by cpu_isar_feature(aa64*), so it's
+safe to expose it.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/arm/helper.c | 2 ++
- 1 file changed, 2 insertions(+)
+ target/arm/tcg/tlb-insns.c | 7 -------
+ target/arm/tcg/meson.build | 2 +-
+ 2 files changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index aae8554e8f2..76312102879 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -7764,7 +7764,9 @@ void register_cp_regs_for_features(ARMCPU *cpu)
-         define_arm_cp_regs(cpu, not_v8_cp_reginfo);
+diff --git a/target/arm/tcg/tlb-insns.c b/target/arm/tcg/tlb-insns.c
+index 0407ad5542d..95c26c6d463 100644
+--- a/target/arm/tcg/tlb-insns.c
++++ b/target/arm/tcg/tlb-insns.c
+@@ -35,7 +35,6 @@ static CPAccessResult access_ttlbis(CPUARMState *env, const ARMCPRegInfo *ri,
+     return CP_ACCESS_OK;
+ }
+ 
+-#ifdef TARGET_AARCH64
+ /* Check for traps from EL1 due to HCR_EL2.TTLB or TTLBOS. */
+ static CPAccessResult access_ttlbos(CPUARMState *env, const ARMCPRegInfo *ri,
+                                     bool isread)
+@@ -46,7 +45,6 @@ static CPAccessResult access_ttlbos(CPUARMState *env, const ARMCPRegInfo *ri,
      }
+     return CP_ACCESS_OK;
+ }
+-#endif
  
-+#ifndef CONFIG_USER_ONLY
-     define_tlb_insn_regs(cpu);
-+#endif
+ /* IS variants of TLB operations must affect all cores */
+ static void tlbiall_is_write(CPUARMState *env, const ARMCPRegInfo *ri,
+@@ -802,7 +800,6 @@ static const ARMCPRegInfo tlbi_el3_cp_reginfo[] = {
+       .writefn = tlbi_aa64_vae3_write },
+ };
  
-     if (arm_feature(env, ARM_FEATURE_V6)) {
-         /* The ID registers all have impdef reset values */
+-#ifdef TARGET_AARCH64
+ typedef struct {
+     uint64_t base;
+     uint64_t length;
+@@ -1270,8 +1267,6 @@ static const ARMCPRegInfo tlbi_rme_reginfo[] = {
+       .writefn = tlbi_aa64_paallos_write },
+ };
+ 
+-#endif
+-
+ void define_tlb_insn_regs(ARMCPU *cpu)
+ {
+     CPUARMState *env = &cpu->env;
+@@ -1299,7 +1294,6 @@ void define_tlb_insn_regs(ARMCPU *cpu)
+     if (arm_feature(env, ARM_FEATURE_EL3)) {
+         define_arm_cp_regs(cpu, tlbi_el3_cp_reginfo);
+     }
+-#ifdef TARGET_AARCH64
+     if (cpu_isar_feature(aa64_tlbirange, cpu)) {
+         define_arm_cp_regs(cpu, tlbirange_reginfo);
+     }
+@@ -1309,5 +1303,4 @@ void define_tlb_insn_regs(ARMCPU *cpu)
+     if (cpu_isar_feature(aa64_rme, cpu)) {
+         define_arm_cp_regs(cpu, tlbi_rme_reginfo);
+     }
+-#endif
+ }
+diff --git a/target/arm/tcg/meson.build b/target/arm/tcg/meson.build
+index 49c8f4390a1..5d326585401 100644
+--- a/target/arm/tcg/meson.build
++++ b/target/arm/tcg/meson.build
+@@ -34,7 +34,6 @@ arm_ss.add(files(
+   'mve_helper.c',
+   'op_helper.c',
+   'vec_helper.c',
+-  'tlb-insns.c',
+   'arith_helper.c',
+   'vfp_helper.c',
+ ))
+@@ -68,6 +67,7 @@ arm_common_system_ss.add(files(
+   'iwmmxt_helper.c',
+   'neon_helper.c',
+   'tlb_helper.c',
++  'tlb-insns.c',
+ ))
+ arm_user_ss.add(files(
+   'hflags.c',
 -- 
 2.47.2
 
