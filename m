@@ -2,87 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7D63AB3447
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 11:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDBFEAB3437
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 11:57:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEPsj-0001yy-Ts; Mon, 12 May 2025 05:55:38 -0400
+	id 1uEPtZ-0002cC-Mw; Mon, 12 May 2025 05:56:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uEPs7-0001g8-UA
+ id 1uEPsC-0001jY-FX
  for qemu-devel@nongnu.org; Mon, 12 May 2025 05:55:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uEPs6-0000nW-E5
- for qemu-devel@nongnu.org; Mon, 12 May 2025 05:54:55 -0400
+ id 1uEPsA-0000nq-H8
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 05:55:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747043693;
+ s=mimecast20190719; t=1747043696;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RZA5SCwWHXAhyr4Kf82ZD+UAmXzefk5lJ18SLFdHgZg=;
- b=GYu5DuqwMpPzsTmTjRajdo86ktY/uBW4w3B8247Sf3Bpi0DDU3f8gRqmdpISOHOBqDCV02
- YNaILrdN0jSIAFoJ1NEHLLMHmRUpU/BnvyG5TZ2NMRTa74JAUkLbssSmdCwRxsXW7dideF
- NX0TkCNvJIBlbaqAARFZ1ZFIET/pftQ=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=YxOoNxhd5stUGLfgJ3v0gRchSts8AHfkfMqBe6/lwIg=;
+ b=frJgqVVppyTw0QriDcMOpNhe82q/WK1JtkX0E6DFnEiFy9g0rjrlSO44fc2cFynD0xQl1T
+ /SahPM3DR48FUr3JSIwqVdAu3b1UAyEZVINxJHn+1F2tmIV3EolZel6EwLz/1RFCXJZOYT
+ zhnnCQCEocGwDjIFTuqlzTHlot4o3OY=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-34-CFQ6WhFwN32OqH0Ryynt9A-1; Mon, 12 May 2025 05:54:51 -0400
-X-MC-Unique: CFQ6WhFwN32OqH0Ryynt9A-1
-X-Mimecast-MFC-AGG-ID: CFQ6WhFwN32OqH0Ryynt9A_1747043691
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-5fc86ce3c54so3182775a12.0
- for <qemu-devel@nongnu.org>; Mon, 12 May 2025 02:54:51 -0700 (PDT)
+ us-mta-345-Zsdi47OEPLGXkEzHhGmULA-1; Mon, 12 May 2025 05:54:55 -0400
+X-MC-Unique: Zsdi47OEPLGXkEzHhGmULA-1
+X-Mimecast-MFC-AGG-ID: Zsdi47OEPLGXkEzHhGmULA_1747043694
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-ac79e4764e5so378361066b.0
+ for <qemu-devel@nongnu.org>; Mon, 12 May 2025 02:54:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747043690; x=1747648490;
+ d=1e100.net; s=20230601; t=1747043693; x=1747648493;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RZA5SCwWHXAhyr4Kf82ZD+UAmXzefk5lJ18SLFdHgZg=;
- b=jkZa57LpwFymDpcSuiCCTUr3EsFl5lGtjf4GWg2OE2YZ7K5q4XVj3HIDWUFZamq/KA
- yrZiIYiVKRCjrDEfdHg3wONYDCqymhkg+28sqgui6h891bMc9xm0DsdQijzcq+dK0NEE
- vVRdV9kELbYJVQb0irIJtJkVroPdWY/wn84J4F+Pq9Y3ub+HsL4pdUeM5lwQ3lITJ1af
- nAFnPYE/rHOhqi7cEfhtScBpCDFtekX5yDr+dbeoL32ve4RKhdqWtOcPgMS8KIvjthKN
- ZO631kp1ABBiDleoD7Oy6kwjqxcxJUmMTX2bJDdSnpM5ALp9HGme88AdU/eK16kxuTUn
- eGpQ==
-X-Gm-Message-State: AOJu0YyKWKHg3I4T1SLn0aBRJIIxDxIaHcj74XTlxqM1C4mGfGdXlXFW
- tKskuZDUiX01ZaV2ywOPjQ2eIxFjmy5TkMi1wiEeO7I4fy/cXDu6A5xob+5XA28Fa37FIOkC/Kc
- VY22OtvXGgKyGpP5R6FY6FMaOgPF2qAsXepHfSl3MxlWDyVzKYu7JNpFTQlQQp1oIjWQJkypYHy
- hqvXKv7i3M1N6v9JGb8FWZ24qEqy1/0B0HHu2p
-X-Gm-Gg: ASbGncvUP1/YUQwRlYbH7N+TE0olYYr7+iV5/+GGjfGcpnSIp/SKSZYi0z5u4M5t3HS
- fz+vMeIHMySIV1wvVQpGcsfOaw3+qX0kuazDNjsSRhYsHRMJ2IcEU4xyLhh4a83dR2F/bKm4CPA
- +hyGXOrNB7SCVjgA2kqCmHeYbVcqriL+3EkUP925nkXnjwgoySwMCWYrhN/C4UmpoMCiZDVvA/D
- bA3juDUOuf9C9UesC8OeFBZcQ9wrk7iAey8GjG7PdV6vkBd+m2GJAPbSwRRP0M8AcmGcTHXBAUx
- +DYOJRqGZmNgglSHOfRBaGgLipCPL8vqDGovgSlZTNehHCA=
-X-Received: by 2002:a05:6402:520a:b0:5f3:857f:2b38 with SMTP id
- 4fb4d7f45d1cf-5fca079cfa2mr10997927a12.17.1747043689772; 
- Mon, 12 May 2025 02:54:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF9N3qFXgyGh2a41TpQ5w1/ZAa4dlBDHyTki4sj35gA5jCcraNVFU3aiECXwXJu9Lu5TeFNTA==
-X-Received: by 2002:a05:6402:520a:b0:5f3:857f:2b38 with SMTP id
- 4fb4d7f45d1cf-5fca079cfa2mr10997905a12.17.1747043689316; 
- Mon, 12 May 2025 02:54:49 -0700 (PDT)
+ bh=YxOoNxhd5stUGLfgJ3v0gRchSts8AHfkfMqBe6/lwIg=;
+ b=t8YEl+VH2D9kk3C6Ql4DzOngPGcvCNF9FhQicO+04oDDONnSDqtUfQFFWcJgk26vbP
+ jrnVFAIbVw7I8e2jZ4cjD5KPiRCKecYswFfB/Yfr0jn4yExQYmv58mRI1pSNVU1RYDwP
+ PYGLhuBx1+PZVPOLHVznxAEHx6EncQ/W4I1biBKX/PAEPqeKZdFTiOcx5xePimew1E6R
+ zavI205iDd98U6Wt/r+2xRLqw4RkN+0qNj1osdN4WVkaF+feZSN7OIk7KCcfZ/Ev2mMT
+ 3rqniXc4mgimyUvAg4stkYGDXhLKjPWrvclb+KybdK5fro3WqIVfoXuvupyc9lX5WsTr
+ GB/w==
+X-Gm-Message-State: AOJu0Yxt0IRlzqA6bwoyqoXjNQ8rqXCYvGz51famD5oC1d5B7xmhrIwA
+ 9nwP4yIKCOYCEScJsGMJiv3Xc2wm6ZVY6U6fzys1j8CUN6IGrHQtOHllcsxYH2XFydzoRq8MZxd
+ 0ArEZ2L5K8CAZYUIyt5Xvly6HM6YfGTtxGj+GGHY1YX/OBh6l/br6mjPdoaRAXR6tGS4zG35cTS
+ MjwyZ0UTk3/gaufJjqX5YD6uoHTs4T0M4ECN3I
+X-Gm-Gg: ASbGnctsxzNScCyyt0DA7Tf4QjUprJQBUrxWzUmWxoTvZlnsiuif9aqxvzU/lus/7w7
+ kauwrhjJXdVNadIPut7Zd7ZezeRO3jzaZCGYiJGj30XyHAqsqjZrnfi9IIqbEGMd1TRCZFi7+8z
+ 2KxbbdDsCZunAc5ETUM6VUaHTpg8S/RCxcYtGJH2jYad6tVUtPB8MImSfakrVcI0L6qrtlGYjZp
+ JwfHBG2VPQH6KUr7NTSRevO6iFzs6B1JYKVZxsjxBHWHmzdR+QMIUq/O4yv5AUErtzSR3N0qqCE
+ r8ROah4wb5hSJYCFIu4V7RUT4bC9hzuTk+DxJYWPS5Dtgec=
+X-Received: by 2002:a17:906:750:b0:ad2:2146:3b89 with SMTP id
+ a640c23a62f3a-ad2214645f4mr821381466b.47.1747043693406; 
+ Mon, 12 May 2025 02:54:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH9WeTl0Gkn0vveJ0D04fLBB8/zrDyh9Bi5wsxbGoAQOCBlb1P8dQXVGM/BEKzew6RFxUIdVQ==
+X-Received: by 2002:a17:906:750:b0:ad2:2146:3b89 with SMTP id
+ a640c23a62f3a-ad2214645f4mr821378566b.47.1747043692888; 
+ Mon, 12 May 2025 02:54:52 -0700 (PDT)
 Received: from [192.168.122.1] (93-40-56-213.ip37.fastwebnet.it.
  [93.40.56.213]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5fc9cc26614sm5534537a12.25.2025.05.12.02.54.48
+ a640c23a62f3a-ad22fccc23esm433202866b.4.2025.05.12.02.54.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 May 2025 02:54:48 -0700 (PDT)
+ Mon, 12 May 2025 02:54:52 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: dbarboza@ventanamicro.com, alistair23@gmail.com,
- richard.henderson@linaro.org
-Subject: [PATCH 25/26] target/riscv: remove .instance_post_init
-Date: Mon, 12 May 2025 11:52:25 +0200
-Message-ID: <20250512095226.93621-26-pbonzini@redhat.com>
+ richard.henderson@linaro.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 26/26] qom: reverse order of instance_post_init calls
+Date: Mon, 12 May 2025 11:52:26 +0200
+Message-ID: <20250512095226.93621-27-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512095226.93621-1-pbonzini@redhat.com>
 References: <20250512095226.93621-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -46
 X-Spam_score: -4.7
@@ -107,51 +109,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Unlike other uses of .instance_post_init, accel_cpu_instance_init()
-*registers* properties, and therefore must be run before
-device_post_init() which sets them to their values from -global.
+Currently, the instance_post_init calls are performed from the leaf
+class and all the way up to Object.  This is incorrect because the
+leaf class cannot observe property values applied by the superclasses;
+for example, a compat property will be set on a device *after*
+the class's post_init callback has run.
 
-In order to move all registration of properties to .instance_init,
-call accel_cpu_instance_init() at the end of riscv_cpu_init().
+In particular this makes it impossible for implementations of
+accel_cpu_instance_init() to operate based on the actual values of
+the properties, though it seems that cxl_dsp_instance_post_init and
+rp_instance_post_init might have similar issues.
 
+Follow instead the same order as instance_init, starting with Object
+and running the child class's instance_post_init after the parent.
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/riscv/cpu.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ include/qom/object.h | 3 ++-
+ qom/object.c         | 8 ++++----
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index f4d4abada75..2437d53d4bc 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1083,11 +1083,6 @@ static bool riscv_cpu_is_dynamic(Object *cpu_obj)
-     return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) != NULL;
- }
+diff --git a/include/qom/object.h b/include/qom/object.h
+index 1d5b0337242..26df6137b91 100644
+--- a/include/qom/object.h
++++ b/include/qom/object.h
+@@ -445,7 +445,8 @@ struct Object
+  *   class will have already been initialized so the type is only responsible
+  *   for initializing its own members.
+  * @instance_post_init: This function is called to finish initialization of
+- *   an object, after all @instance_init functions were called.
++ *   an object, after all @instance_init functions were called, as well as
++ *   @instance_post_init functions for the parent classes.
+  * @instance_finalize: This function is called during object destruction.  This
+  *   is called before the parent @instance_finalize function has been called.
+  *   An object should only free the members that are unique to its type in this
+diff --git a/qom/object.c b/qom/object.c
+index 664f0f24ae8..c819136eecb 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -431,13 +431,13 @@ static void object_init_with_type(Object *obj, TypeImpl *ti)
  
--static void riscv_cpu_post_init(Object *obj)
--{
--    accel_cpu_instance_init(CPU(obj));
--}
--
- static void riscv_cpu_init(Object *obj)
+ static void object_post_init_with_type(Object *obj, TypeImpl *ti)
  {
-     RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(obj);
-@@ -1143,6 +1138,8 @@ static void riscv_cpu_init(Object *obj)
-         riscv_register_custom_csrs(cpu, mcc->def->custom_csrs);
+-    if (ti->instance_post_init) {
+-        ti->instance_post_init(obj);
+-    }
+-
+     if (type_has_parent(ti)) {
+         object_post_init_with_type(obj, type_get_parent(ti));
      }
- #endif
 +
-+    accel_cpu_instance_init(CPU(obj));
++    if (ti->instance_post_init) {
++        ti->instance_post_init(obj);
++    }
  }
  
- typedef struct misa_ext_info {
-@@ -2885,7 +2882,6 @@ static const TypeInfo riscv_cpu_type_infos[] = {
-         .instance_size = sizeof(RISCVCPU),
-         .instance_align = __alignof(RISCVCPU),
-         .instance_init = riscv_cpu_init,
--        .instance_post_init = riscv_cpu_post_init,
-         .abstract = true,
-         .class_size = sizeof(RISCVCPUClass),
-         .class_init = riscv_cpu_common_class_init,
+ bool object_apply_global_props(Object *obj, const GPtrArray *props,
 -- 
 2.49.0
 
