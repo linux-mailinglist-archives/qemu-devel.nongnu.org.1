@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4022FAB2DF6
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 05:18:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14203AB2DCF
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 05:12:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEJZu-000745-5z; Sun, 11 May 2025 23:11:42 -0400
+	id 1uEJZw-00074x-6n; Sun, 11 May 2025 23:11:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1uEJZq-00072F-TY; Sun, 11 May 2025 23:11:38 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1uEJZu-00074V-8K; Sun, 11 May 2025 23:11:42 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1uEJZo-0006k9-Qq; Sun, 11 May 2025 23:11:38 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-74237a74f15so3935287b3a.0; 
- Sun, 11 May 2025 20:11:36 -0700 (PDT)
+ id 1uEJZs-0006kg-JZ; Sun, 11 May 2025 23:11:41 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-7406c6dd2b1so4453046b3a.0; 
+ Sun, 11 May 2025 20:11:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747019495; x=1747624295; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1747019498; x=1747624298; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mFGaQPUZduu5nfpuN+avlrzyXYFKI26S6yw/0fquOwI=;
- b=DtBLes2gPg/41ARbUsCMVrTGYZC5ieP+UIu0Wld9ZZ2itYWpPEvDE44yvGFcrtg2dv
- sqZso981ygwWWIKQw0bCZSWXPzu+5a/dwrZ1H3xBtBrOSO2njBZ9Z4PpiRwdidvkrBNF
- jUGlrueiqH9yUW8SNCk0sgKfHHSYMgrWHTJj9PuvDoSe1zfyGcncmCfH7FwKfo3dt5pc
- 57aczOXoZH46M5l4cZ9vX8CxYY8gFekVYJ4hkOMiInUCpKZL2SIjy63m1qEvv37sxZCY
- s1jyXKmwEDNOnTGm8eV73qzCyg1UGnPQE5AxNs71r6EYeli4AbZnLpKkjK928bCYk4zU
- CF6w==
+ bh=tRvTAYNmL8RyPffLRzrCxFQw869umWAXeoSjF7/UghA=;
+ b=bwFKNI/Q5BV8w88DPQmqfqrNPwWFsq4eQMSipw46JwLYJMh3wwf8XI4tpohGaH6B4g
+ 30KMOkVD+6ccufieOtExJrl8McNLOy2IU+NsYI0badjBuC+E5GLiZKOnIhMs6eom/EFE
+ IPVTpPQffoqrL0owCBjkxCcVI37+6NINzQ8/qdDcoDPvFuJzEs2Y7qeNmjwwt7EXX7rn
+ sWXhMg/m3yDtUi4L5xoozBtomPoQQ4/Ud6YvUa0KkwangGW0N6CcZbVS5nGKBGFmEnqU
+ tKdqy+y5WaDluP0IDy1uIbTXJWnEEXCbbhOJJwDBryQ69+uLwbvEjDKsIonIQyl1Hf8K
+ ok+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747019495; x=1747624295;
+ d=1e100.net; s=20230601; t=1747019498; x=1747624298;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mFGaQPUZduu5nfpuN+avlrzyXYFKI26S6yw/0fquOwI=;
- b=ozKI95xZnmuT5ujbjQKHlYtwczmqmJ8u+t7qXA31NgUgU+rvqPqHbpgiugxpXKURHU
- r9BcuTtu3e6Ym0duK42avZV07nP/YOjZ+Jmw++T8qjsmPtG2L6BugTCVBtMQAr6jWtr5
- fUCSrL2enKLlr5UuneoEacc5Inz9QNwyBhJM7lXp1mALJlbH4QJFhOF9COtuNIodTOFz
- 6lhs6ybdseLP1KW7XIY1IEENeqFUy/VWGQVjGTHzfZkhDgSuzLn/+OaotFpPysc/Y8vg
- Yx8HWsS1SQGfkqDLmWmpcZYDzX13CdvfZ6Fp2V+hHjJLStjTZJrIlsFcx/MVuN+iGcDR
- FQvw==
+ bh=tRvTAYNmL8RyPffLRzrCxFQw869umWAXeoSjF7/UghA=;
+ b=ekHMv9ksrN1n4XaxpP0aOJbdbYTOt05NiFsLUFnMJZZ0drpVhdPC1FGXYn6f/WF87t
+ qe203cGZv22Eu65MvbfvRIxmiplsvUZIdogzQ1Eg+ycXsOEjOKVNAZRnBd9s66H+BQXB
+ /K3XKXjwYc8KYHEyJLQyI3+O3el7nBOy4JWJrv9XSfPAeeoFtGSyvjw9YE6S4FSrUoeO
+ k9WntcKYrlsQBCl1KvD/jaD26uH5TiAMWI8qYrL5tpsfAO/o97Ye5zSMRSizbI9hD8Pv
+ jFbY+LIbKKbFt84Zomx8HVD3CcTXjKVLpS++2cRLXsxtzqEc2UcWMF/uqNWMXP8UHhtl
+ qujg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUi3SNGMmIKvND7tSMdFlV5+Og4V+ZD8onlrV+SORAeOR41CRwbqcviB6ebEz4TFd/JETu5ZwUvOAZN@nongnu.org
-X-Gm-Message-State: AOJu0Yz3kPcs6Gk/LEbXmiwwFYFg1t/EAePWKtvm4XYbxa5uYyGn6hwL
- 7eEWiXYGwj4FnYZXgNZrhZARu1FAD/mE0g3Fk+b9BMBSdBv9BbBSFE/t2Q==
-X-Gm-Gg: ASbGnct0NwO8tQM5PNa2OVqZ2DUn76cF5wjfWzHsqve2Eb0a6rQEzPMtVZf//sbyNF6
- 8njRBcI0soC2RnNXIb9zU/8f1/HU24DuP5ybz2Ph1kb3SFd0COeItqAW/CmmrQOQ5KCv4xfrX1T
- g4/thVBNH4xxnVRt0E0sASn2tz/+XIaxvP5p8cxG1476NulYCA2feKdjwf4Mq05+LfYNIINCJnv
- bCU5drGMC9zbeZj5JLAdvJ+4Qrq48zmeBrTlZUVXdISdrs6+m/iNrYu4ShUwET2SICubBxKMced
- 1BRJMJwAf1K0ECwwTdFMHHXHH29TtwZSb3OErbItHSPpmOjeHKyBTq7C8lr3yDRv+NR4
-X-Google-Smtp-Source: AGHT+IHpnlvHs8SfBKScp9xwSxiYUrwcIHVMtwCoEjMUzCco69mxixK9PdOi7JzkGUwsN0/ie7M2uQ==
-X-Received: by 2002:a05:6a20:918a:b0:1f5:7873:3052 with SMTP id
- adf61e73a8af0-215abafbd7bmr16658809637.11.1747019494676; 
- Sun, 11 May 2025 20:11:34 -0700 (PDT)
+ AJvYcCUZYITxMDfajCenZ4ToxG3uUD1qZJERTKwpFmb9t9GiGczEiKGg2zfaDhobIHuA8HqbY90qVjq5Xhi3@nongnu.org
+X-Gm-Message-State: AOJu0YzteyLjinbX8bHieaKWGOYmeNXYb3/OBE/NilewuqZ0BQ7Hzb6Z
+ DWqpzNjUEvTnuL/tbSiotIKz7OwYkNLQOFg6KWnNY5inSQXVMnJrI7QPnA==
+X-Gm-Gg: ASbGncuNYw11PR0pXHPVHjsvScqBiyrTkNDfkqnFn3rKLQ0vhdNhI6KxbEmdSEwj/11
+ QpaW+9SHKBp124J+992wx6kemWBOT28tYRw+5z/sdhQfqJg8YgOSpWdeg4JDJZ183pvR5lO2xEG
+ pxvON3Lwqag6bgbwz97cTZbQM77+ZR+8JuchMxwNel4h/wmyu2rCvFloVnJhDLr9A+8rNP2CKWw
+ nZizRIC2WaNyZ3JIsgDtQQBLqxY9T4LJ4SzcvuCspweMitw5lgxt1WN1Hw8TCczrPWAFG7lWz0m
+ L9zZfEbNmkbDXKuXBfiuNf2SmNSbcFG1C8ZkfXwRkJ5lLM1AFOgFMuGThQ==
+X-Google-Smtp-Source: AGHT+IGLwW1vyGKDTdqFLuL2vb+elJ+wgQX6pM6InVmSMMxUtheXR9B6y9C/Y6FCrnI8TfqqlegGqA==
+X-Received: by 2002:a05:6a20:d48d:b0:1fd:f4df:ab67 with SMTP id
+ adf61e73a8af0-215ab6db883mr16330950637.21.1747019498305; 
+ Sun, 11 May 2025 20:11:38 -0700 (PDT)
 Received: from wheely.local0.net ([118.209.229.237])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b234951024csm4750069a12.5.2025.05.11.20.11.31
+ 41be03b00d2f7-b234951024csm4750069a12.5.2025.05.11.20.11.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 11 May 2025 20:11:34 -0700 (PDT)
+ Sun, 11 May 2025 20:11:37 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
  Glenn Miles <milesg@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>,
  Caleb Schlossin <calebs@linux.vnet.ibm.com>
-Subject: [PATCH 07/50] ppc/xive2: Reset Generation Flipped bit on END Cache
- Watch
-Date: Mon, 12 May 2025 13:10:16 +1000
-Message-ID: <20250512031100.439842-8-npiggin@gmail.com>
+Subject: [PATCH 08/50] ppc/xive2: Use fair irq target search algorithm
+Date: Mon, 12 May 2025 13:10:17 +1000
+Message-ID: <20250512031100.439842-9-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250512031100.439842-1-npiggin@gmail.com>
 References: <20250512031100.439842-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,53 +99,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Michael Kowal <kowal@linux.ibm.com>
+From: Glenn Miles <milesg@linux.ibm.com>
 
-When the END Event Queue wraps the END EQ Generation bit is flipped and the
-Generation Flipped bit is set to one.  On a END cache Watch read operation,
-the Generation Flipped bit needs to be reset.
+The current xive algorithm for finding a matching group vCPU
+target always uses the first vCPU found.  And, since it always
+starts the search with thread 0 of a core, thread 0 is almost
+always used to handle group interrupts.  This can lead to additional
+interrupt latency and poor performance for interrupt intensive
+work loads.
 
-While debugging an error modified END not valid error messages to include
-the method since all were the same.
+Changing this to use a simple round-robin algorithm for deciding which
+thread number to use when starting a search, which leads to a more
+distributed use of threads for handling group interrupts.
 
-Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
+[npiggin: Also round-robin among threads, not just cores]
+Signed-off-by: Glenn Miles <milesg@linux.ibm.com>
 ---
- hw/intc/pnv_xive2.c | 3 ++-
- hw/intc/xive2.c     | 4 ++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ hw/intc/pnv_xive2.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
 diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-index 30b4ab2efe..72cdf0f20c 100644
+index 72cdf0f20c..d7ca97ecbb 100644
 --- a/hw/intc/pnv_xive2.c
 +++ b/hw/intc/pnv_xive2.c
-@@ -1325,10 +1325,11 @@ static uint64_t pnv_xive2_ic_vc_read(void *opaque, hwaddr offset,
-     case VC_ENDC_WATCH3_DATA0:
-         /*
-          * Load DATA registers from cache with data requested by the
--         * SPEC register
-+         * SPEC register.  Clear gen_flipped bit in word 1.
-          */
-         watch_engine = (offset - VC_ENDC_WATCH0_DATA0) >> 6;
-         pnv_xive2_end_cache_load(xive, watch_engine);
-+        xive->vc_regs[reg] &= ~(uint64_t)END2_W1_GEN_FLIPPED;
-         val = xive->vc_regs[reg];
-         break;
+@@ -643,13 +643,18 @@ static int pnv_xive2_match_nvt(XivePresenter *xptr, uint8_t format,
+     int i, j;
+     bool gen1_tima_os =
+         xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_GEN1_TIMA_OS;
++    static int next_start_core;
++    static int next_start_thread;
++    int start_core = next_start_core;
++    int start_thread = next_start_thread;
  
-diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-index 4dd04a0398..453fe37f18 100644
---- a/hw/intc/xive2.c
-+++ b/hw/intc/xive2.c
-@@ -374,8 +374,8 @@ static void xive2_end_enqueue(Xive2End *end, uint32_t data)
-         qgen ^= 1;
-         end->w1 = xive_set_field32(END2_W1_GENERATION, end->w1, qgen);
+     for (i = 0; i < chip->nr_cores; i++) {
+-        PnvCore *pc = chip->cores[i];
++        PnvCore *pc = chip->cores[(i + start_core) % chip->nr_cores];
+         CPUCore *cc = CPU_CORE(pc);
  
--        /* TODO(PowerNV): reset GF bit on a cache watch operation */
--        end->w1 = xive_set_field32(END2_W1_GEN_FLIPPED, end->w1, qgen);
-+        /* Set gen flipped to 1, it gets reset on a cache watch operation */
-+        end->w1 = xive_set_field32(END2_W1_GEN_FLIPPED, end->w1, 1);
-     }
-     end->w1 = xive_set_field32(END2_W1_PAGE_OFF, end->w1, qindex);
- }
+         for (j = 0; j < cc->nr_threads; j++) {
+-            PowerPCCPU *cpu = pc->threads[j];
++            /* Start search for match with different thread each call */
++            PowerPCCPU *cpu = pc->threads[(j + start_thread) % cc->nr_threads];
+             XiveTCTX *tctx;
+             int ring;
+ 
+@@ -694,6 +699,15 @@ static int pnv_xive2_match_nvt(XivePresenter *xptr, uint8_t format,
+                     if (!match->tctx) {
+                         match->ring = ring;
+                         match->tctx = tctx;
++
++                        next_start_thread = j + start_thread + 1;
++                        if (next_start_thread >= cc->nr_threads) {
++                            next_start_thread = 0;
++                            next_start_core = i + start_core + 1;
++                            if (next_start_core >= chip->nr_cores) {
++                                next_start_core = 0;
++                            }
++                        }
+                     }
+                     count++;
+                 }
 -- 
 2.47.1
 
