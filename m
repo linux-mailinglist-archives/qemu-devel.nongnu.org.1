@@ -2,177 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08AB0AB3209
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 10:46:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55D4AAB3225
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 10:48:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEOkd-0002ou-Ne; Mon, 12 May 2025 04:43:11 -0400
+	id 1uEOlm-0003sa-V4; Mon, 12 May 2025 04:44:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1uEOit-0007vc-Sy; Mon, 12 May 2025 04:41:25 -0400
-Received: from mail-eastasiaazlp170110003.outbound.protection.outlook.com
- ([2a01:111:f403:c400::3] helo=HK3PR03CU002.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uEOkK-0002TG-74
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 04:42:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1uEOin-0001lp-08; Mon, 12 May 2025 04:41:18 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nUsIJYPGFnrmd9dwHj9BXoqwygsm7tCHr5LklUU52v0ZqLfvWh0rKo+IMwGdsls2gv8kUtB9jqZrOrK5yjH0PLlVRX/uh2fdNRTDofz1Sv4OZLrPB8obGPrxysLW/pmLkdhPAoSzSnF2s6lbyhBAduJNC7FMZHlZ6XwXpRUUDM54UJFMGxZ6veZQeR9fIjPdU214jYsUa+uI1Lx7CPe2wa7sh1YXnidd/UjVgpxkAmZBzw34ukxTPPtVwIYhZxzGKbpyLAehwV8wOLxQqje+DPPiKFbU44osXBLxqdTH+1PwY539AScAQhqnOWfwhId+0fNkIqTW6HiwMV7Tw0NgYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VI0WFiS9nu+NoGv0FUDlUbHXEB48uCGB51GbNrmCiLM=;
- b=xBXgZvc/5SuAdWyqalfnj1oIO4lN7ymv54CjWQzeEI+QUDXM37pf26X30MNNg996eNCZrBQeg4Ym3z9znF86g/yoiqLfDetsLfkRgCTEe5hnFkJKSrN3maw+1n/xNDJNLJJ7HPSROxRh9UBgbFj1cqY5QoDz3f1iufWl9M1fecjUFNXFgOwxRibLS+DOArNigCI+msZ8tTsqH3zfJz5u7Wh/CPC8hg/Bqd7i+p9prK/8NxfMQWMMw35b18P4jvd/Hflp+TSi+l54bQRKQORySUC93v3IQ9ZEBNSUL6+T/EMA+Z/1rQFuX8SgCntO5nFfS0nuHchNERW5rPgTDg3rmw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=aspeedtech.com; dmarc=pass action=none
- header.from=aspeedtech.com; dkim=pass header.d=aspeedtech.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aspeedtech.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VI0WFiS9nu+NoGv0FUDlUbHXEB48uCGB51GbNrmCiLM=;
- b=J3yV09hbb73lWgpUdA1GuQJa91yRGrWqs8C13MaRCnpKe0ylxtyqc07yL/JuMN9pEjZODsOsd+gtC5JKGXZHYNC9U0joQnqypVdiN58trEBqEQOWw+01vm1L/ie5MIiNls9NpXx+sPyfCvPlvhwluOCtzb6trccU2XfGUVMi/xQ8EKpSogS8+5DGdrKAgyQbnrO9TMbDxjiid4HtSUCiw6+qKWIqDTxqb8RbSCRqtemQxAxytiMAW72U5CGsjOaQU7qt+hUfRTA5Bvqn/rFoqFoK3GI1BNTzi5qtQkSRPaop6tqIuBXy5FjZZ7VluIj3/ITufW593XpuDPoksQ4rfA==
-Received: from SI2PR06MB5041.apcprd06.prod.outlook.com (2603:1096:4:1a4::6) by
- SEYPR06MB5913.apcprd06.prod.outlook.com (2603:1096:101:da::16) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8722.21; Mon, 12 May 2025 08:41:01 +0000
-Received: from SI2PR06MB5041.apcprd06.prod.outlook.com
- ([fe80::705a:352a:7564:8e56]) by SI2PR06MB5041.apcprd06.prod.outlook.com
- ([fe80::705a:352a:7564:8e56%4]) with mapi id 15.20.8722.027; Mon, 12 May 2025
- 08:41:01 +0000
-From: Jamin Lin <jamin_lin@aspeedtech.com>
-To: =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Joel
- Stanley <joel@jms.id.au>, Fabiano Rosas <farosas@suse.de>, Laurent Vivier
- <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, "open list:ASPEED
- BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>
-CC: Troy Lee <troy_lee@aspeedtech.com>
-Subject: RE: [PATCH v1 08/22] hw/misc/aspeed_hace: Support DMA 64 bits dram
- address.
-Thread-Topic: [PATCH v1 08/22] hw/misc/aspeed_hace: Support DMA 64 bits dram
- address.
-Thread-Index: AQHbmkNXc4tSzAUgS0eQdreGXV1+FbOQEMwAgDoaPGCAAYZDAIADS7lg
-Date: Mon, 12 May 2025 08:41:00 +0000
-Message-ID: <SI2PR06MB5041A336D11A710AB57F057FFC97A@SI2PR06MB5041.apcprd06.prod.outlook.com>
-References: <20250321092623.2097234-1-jamin_lin@aspeedtech.com>
- <20250321092623.2097234-9-jamin_lin@aspeedtech.com>
- <ff5e84c5-4714-4897-90b6-40df76746443@kaod.org>
- <SI2PR06MB504194D74CCFCBB9403B7214FC8AA@SI2PR06MB5041.apcprd06.prod.outlook.com>
- <ba12c8bd-2d9e-46f1-a89e-fa3692e1098a@kaod.org>
-In-Reply-To: <ba12c8bd-2d9e-46f1-a89e-fa3692e1098a@kaod.org>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=aspeedtech.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SI2PR06MB5041:EE_|SEYPR06MB5913:EE_
-x-ms-office365-filtering-correlation-id: dfe3f841-4860-44ad-14ce-08dd9130b945
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|7416014|366016|1800799024|376014|921020|38070700018; 
-x-microsoft-antispam-message-info: =?utf-8?B?cTFrT0JoWldlVTg0VVc0VEs1NWtadjdxRStmTWhxNHI5SHJ6S0dFQmxVYW1N?=
- =?utf-8?B?NGoveGRSY0ZuR3d6ZWljUHBwQkZVRDA1ckM0b2lTVEdvYkZpVmlSdzg5ZTNn?=
- =?utf-8?B?K01YZlVrN09vRzFHK0R6ZG5SckwyOEY2cUFYZ3lLUndvRVpQSDYvam0rb2Zi?=
- =?utf-8?B?RHZnM2NEYktScUVOa1IyTmpZWFBlUjloWGhjTVF6U1U0TUhMUDMwNVprNGw5?=
- =?utf-8?B?R3BTOWdpazVtUXV0OVdpOFJYbG5sZkVLb05VeHArY0djUExjOTFlTytQU3dj?=
- =?utf-8?B?cmxGTytTbEt2aGprTHNnaEhwVmxWUzNZaVVhYXNrUlJqWk9vK2RDU0IwUWtK?=
- =?utf-8?B?RGhXeUE4aUlac0U0ckFuN0RKbHNlcGJhTVdzWkJTRmVWMVlVZGx3cFJXRWwx?=
- =?utf-8?B?NVhVTEIxa3YyMklZYTVqOXhRaVdiQ0pCUm9Bb2p2ZFMwQXFYMHlTc0hIRUc5?=
- =?utf-8?B?djM1ZFBONmNDVnBubEJDRzJDS2VmQ09yaVdPNytyblV0d2d5ZG55V2FXMjQx?=
- =?utf-8?B?bWt0MlNqdWV1ZUQwWjdaclBLY1lkRVhvNGJaTUFnMzBpWEprTTlwSFE2OWpy?=
- =?utf-8?B?Wk9yc0pBS01sRFRyeGhtWUdhWXNJRnBTN21uMTRoZjJBclRGdDBzY3gyU1NX?=
- =?utf-8?B?UDRPdG9xV001SmxxM1pJVEZoOHMzTktHdHpDVWYyYjRMZVNwUzdHSmwvQzhD?=
- =?utf-8?B?TlJsZmk3QkRFWVh5cndIMTFaMlhscHhwVmJvUEdqZkMwT0x4akl0NmtUa0dY?=
- =?utf-8?B?a05FRTV4V1o0YzhzZ3ZML2h4TDQ0anhWcVg4Q0dVOVVGVXdlNVJLNVVBTTJO?=
- =?utf-8?B?MGRYM1Blb1lCcTVUemVXdFN4aVpHYmFPRThXWWhCMDNpTjJhK3VMN0M4c1B0?=
- =?utf-8?B?bGFMSWswUVF0ODYwMHBFSmtmWnViTjJhSWJTRDc5RDlqSTJQcW45cVJ1eXZI?=
- =?utf-8?B?SisycmFrczJWVmxQMnMwQzkrYzR2SDBNZmRWQUc4UDgxRDgzWk9VZ3U5c3dh?=
- =?utf-8?B?RnBEclhVSVQyNW1nZlRXVThLVGt4NVY5SlNTUW5tK1Fwa3dDTnYzTU5oS0NC?=
- =?utf-8?B?SS8vZGQ1RHdPNzIyWGI1WFFrS2FKSXhKcDRoY2djMmNkdjM1OEpDVVhxMzEx?=
- =?utf-8?B?ZWtmTHBCbGJsWlJ4RjA4dUROUjArdjYxNUcrQys2WGZVQkczV0xMck1uRDh1?=
- =?utf-8?B?M0p6Y0FuRjFyWUdTL2IyU1ZNbkVUWElnQWFYU0RBZEJOZTJsNXl2ZFNVMkxi?=
- =?utf-8?B?UHdTY3dINnV5aGp4ZjhDT21yMnJHdFltRFV5K0dmeE90aUJRQWJXcVZEU2VG?=
- =?utf-8?B?bEVHaThYVWd2MjlsNVJEZlA4SXQ5V0Fha2cwRnl0OGRHY1hFQnpkd3Fhd3U3?=
- =?utf-8?B?K3p0SEFjYTlVcitmM0ZYT2tKZFFRVWhISVlaUTFPb05jK3NtR0liQ1FTYXFF?=
- =?utf-8?B?YWhnTjFzcW5wVmZwUTJ2VE9PQVNDaUxNbGRoWGtYb016NHVDMnhCUVhUSnJ4?=
- =?utf-8?B?ZzV1OXdYTTBaS1l6TmZBMkwrUVRGc25NbHFsVXVvelB0QW0yaVpOR00wNGdv?=
- =?utf-8?B?MVdjUUEvSnVjOEtGdnI4dXpHeWQ3N1VsaXZDMWdyTTVsTjF0RW1vYitqTEdE?=
- =?utf-8?B?dUlXRVlSeHB2cS96Qmx4SjZ6Z0x4bUNLMUFWN01LMDRoYlNSeXZ4MHlhcjQx?=
- =?utf-8?B?Z3Z5Q3M4K2czWEdaRUoyTW5MSVYyMVBPbjM3bXdFYUN2bTBuL1R2dnJkL0xD?=
- =?utf-8?B?cDdXQWU1dUpWV0hKdlNvdjEwV2JabHFlbmFTdmVseXpyZGJWQkZzZWRXWmJZ?=
- =?utf-8?B?Ty9PbEdjYnRPNzlDcyttRkxLaDhXUGxHNVIwUDl3ZnplMUtxa2Zhb1pIbEZo?=
- =?utf-8?B?cVN6RHhxaWlQR0FLVTluVjZQT0toTHRpaEVwSzk0NFdBdWJ5UzNyM05lbDBh?=
- =?utf-8?Q?XZwBnv8wTZRqfMWBXPsmigytIYhC12/F?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:zh-tw; SCL:1;
- SRV:; IPV:NLI; SFV:NSPM; H:SI2PR06MB5041.apcprd06.prod.outlook.com; PTR:;
- CAT:NONE;
- SFS:(13230040)(7416014)(366016)(1800799024)(376014)(921020)(38070700018);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?U1FvK3B2ejhaYlhZcWFnWml3WFJreGk3Q3J4MHZtcGFTczhseXorZEZWUDVz?=
- =?utf-8?B?V3RmbTN0SjVpbHBZRXp3NTc5dVRkbVdTQVF1VmxSKys2dU4vL1Fpei9RZGRs?=
- =?utf-8?B?V0xWYzhZZFJnVXJ6UmVTS0EwRUF2UjJkOU1HU3ZUcFl0eHpyYWJ6alkwcFQw?=
- =?utf-8?B?V3htU0VkYWY3TzF1eTd4cHJjQ3UvYUptR01aMjhTc3crdWI0akFBZ29MSG1U?=
- =?utf-8?B?L1EvNkhzSS80cW5VTllxeFFxZE9tNVErbmFuQ0hvN1lpL2l1VnA2ZzZIVTVa?=
- =?utf-8?B?K1hpeVdlbHFKSDNzWnpnamhuUWJzeW5TL0M2RnI1S09lNmFHTW1BQ1ZRNG1x?=
- =?utf-8?B?YXRrckcvaUlFcnRlRHFYalVGTW1KeDkyYy8yMHlkRlhwMmxEZDRFSWVCZmpu?=
- =?utf-8?B?aTQrQi8wdHV1NVZEdWVxQjNQcWZ2OWtpbm9ZLzhVb0c4RHNhYXp6RHRTYnla?=
- =?utf-8?B?VmxqN2NHVCtHV0dzTnpvcmN5aXFteW5VazlCT2owS2JYWHFFQnpkc0V4MHJL?=
- =?utf-8?B?QWVSNy9UemdkMXBqaXBJOElUUnpkRkdscHU5RSszMHZTOHlMNk1yUWptTFc4?=
- =?utf-8?B?VWhONVQ0REh1NUxsdFJRLzRWbzVhVFBlWUx4VFdFbWRsQnZFOTczQ21raHpk?=
- =?utf-8?B?aVZXVmRCQURiUGt2MjlxQWg4eE5hMUNPbDBvM3czeTRyNisxZDdCTDUyYWtp?=
- =?utf-8?B?RUNSa0RUdWlpblZjbEdYUkNzM1R3ZmVqeFkxZVhZK0RoUjZMTElDbjdJRzRB?=
- =?utf-8?B?ZmU1eUM2clMzeVhtTUZXWmZiT21QbDROUklFZVlkbUQva1gvZVFUUUhnYXg2?=
- =?utf-8?B?SlNJQ1JCK2MzZzB2L1N5ZXhwcXgvYnRGM2w4d1RUYTFGbGtFczdFeWxsU0wy?=
- =?utf-8?B?OGtxdUJnVnFmYi9lcU50NXJWVzF0dWRUalhTK3BQRFpxdnRNWWEvSmgvUEhH?=
- =?utf-8?B?cWlPeWZHcmRBdXlzM2hCNUcrYkJpejFzMy9IcEVyRHM3M1VVN3BWMnU1R2Q1?=
- =?utf-8?B?QkU0L0MrSVY5RS9qRmczWkthU3RkSFNjNS9JeVQwak5DL3hKSWRVNThTY3dt?=
- =?utf-8?B?NkFySUVucjBhR1hITHdNRkVxUWIwSTZBeUx1akFuc0JLZHN0VzBmWjBKT0dF?=
- =?utf-8?B?UWNuQTFTWkFibVNGOHVyNHQrZ3VsN2hMUXhzSEJ3ZW5leDA1anNjQ2pEck9t?=
- =?utf-8?B?S3BBYmF6Ukl4RmRlemxta3JyOVNPV3pNYzZQSFVoajkrM0haZDhqdzNBbzBx?=
- =?utf-8?B?UG5OZWF3YlNaSjdUamFaand2QnhIaUI4VkttMVhub1NXNGg2c2lYa2xCa0g2?=
- =?utf-8?B?a1ZDNXJ4OXljcFAwd3pmL3N1MUJabVBFMWNhci9iT1lqbTlGVEVrYTlmNSs5?=
- =?utf-8?B?TFYxakM5QW1ZdFVzN3VlVEttbUJSUG1JaUFzbUxiaXdCeElNcVV6QmhaWDMx?=
- =?utf-8?B?cDRZN0t5WUR0d0NlSWVENWwzWkF0YTM5dVNNVURNWnlvZnZrMGpqMWlYS0Z4?=
- =?utf-8?B?K0M3V0lpL1VwR1VKTy9GSnVtTWFSTWt4Y080Q3lWWlBYSFA5L3p0blg1K3VS?=
- =?utf-8?B?eEgvdmxWdFI1V29rSXZndlV3eERGUFFteXlmeDNEK0hYcUlhNG1zbmw5NmxV?=
- =?utf-8?B?Y1BHRU4xRmtycnB3MG1RRHk4ajhWMC9XYlpERm9ROUtBekZTRlZKZncya2F4?=
- =?utf-8?B?Q2RMY0owUmNhWE1ERm1OMTFDNE9lbXRKZkJlY25jUzIvOFljb3A4d3FSOStS?=
- =?utf-8?B?Q2IwZm04Wmp5bXoxTzMvT2RFYXN2RmJGeEl5dXVBUUVqWUd1bWJsTUt3ek1R?=
- =?utf-8?B?cmlhY2RReDkra24yWjl0QkF3R29KdnZ0WXNHQ0xVSUsyZUNwUzc0Z01xMkVk?=
- =?utf-8?B?TWg2RE1xT25pdWVQa1FYY25WMDJtZFVPYWxlaGgzekdxdUlVVDJ4UzZ1ZHEz?=
- =?utf-8?B?OWVJbHUwWU0rTkFzdDNEeEE1VHdmcXplRFQ4YWZEUHJvSkRSRUl5YUIzZmUy?=
- =?utf-8?B?MTBFV2tBKzNHU2Ftb242VkVJVm1pNmRjcEYrbkJ4VytpcWRZaHFJeTZyanda?=
- =?utf-8?B?QW1BamVwWlRWY3VuaEZJbW55cldtaUFqNi9Oc3MxREhMcW04VktRZ1NWOXdV?=
- =?utf-8?Q?647cpDbMQWPJyA+8wOAb62rak?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uEOkH-0001sc-JA
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 04:42:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747039364;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=b6ohPqMOJcmTNEQKajOFANKaCxzi/ZzXJ8BO28MUwXQ=;
+ b=NGgt0BHvhSW8RaU+9wx8BJSQwsBcM53NMRLliHwY2aEeEG6qrybF/SscoqZmgrgzDhERNO
+ 4ReSAfITigYh6vI/j0hSpWtU1SJb5lDCy9KcFXgZSKL/298Km4kZcEKzZq6Q235tcGqdZi
+ PA+NesmtFYD4FiBKeB/YcRShETh/hwg=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-131-y_ORvoJRMuOrAeC_MrkJNg-1; Mon, 12 May 2025 04:42:43 -0400
+X-MC-Unique: y_ORvoJRMuOrAeC_MrkJNg-1
+X-Mimecast-MFC-AGG-ID: y_ORvoJRMuOrAeC_MrkJNg_1747039362
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-43cf5196c25so20420165e9.0
+ for <qemu-devel@nongnu.org>; Mon, 12 May 2025 01:42:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747039361; x=1747644161;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=b6ohPqMOJcmTNEQKajOFANKaCxzi/ZzXJ8BO28MUwXQ=;
+ b=aYNRbfHehUk8rBdzC0gMN7Foup7FGNV5JhJJavqZUSgRPv01sKfR8w24QPaiHWAuZ0
+ 6pXyj217MPikecITq4dYLH333/6Epqjj+T7bOIepIqaSPcMlrpg2Rkwrslw8qvlfkQNX
+ dIQLBuHKkYdv+i2tYqDIZFD4wNOEUR4jXu/nTgZnd5ynOz3nwPpT2EvWAkQ/LarYb1cS
+ nmRf0KLVIB4k+2ahW61zB7o81Vpo+2dh8fIzZ40WYsh4/A8O43cnRiiUMs0sjQcmXfGB
+ SrUaZ/mxfIyWFduGeKN2B34T09MZSLrfCb/Mi6PGPT1+uUiXS0xSUVcI4qH1usyRnH6T
+ WKlw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUaa0Kx4VsbscNIu7GrLxasw0INvz3JfLHgYbnj0w+Ze6dkhJanGq8FB7aj6Q3hFY1n/+MIFt8AKYwi@nongnu.org
+X-Gm-Message-State: AOJu0YxMc5q5BmgGqB4w2lnK1urOkc89rbcxfUiKME4MQACSpXbAIfpW
+ 5wxtxyAu25lCV0inVLprzXmIMbG4CK2AwOGrR0C0T8/aEAz2KRiBV6hswcg6Ce5GrUL3tq13c75
+ BruN+Q705U/DvI4osm0K0TYTnXLCEQXenC+kNr9+o3aW1FKOopUU4P/c/0DNo
+X-Gm-Gg: ASbGncv7jpy6eK560/SFMuHHt1nOQ8hgdrkdX9fJrKkr4GeQ3NFdU4bKdcmyIgZHFxm
+ LbDsqrx1iOYAL5VSSr98Vfz1Zk2qXFIDdeiZMF5L4A1DuUlw5sKI0qiSTXu3UOH19WDBltwFVu2
+ NaiunEE4TWVU8z738wTIwaMhL/GxFuPIDkwVwvoxH9MxIfc6jyLZxfAoQNEpqFe7G1aH6N/Z187
+ VJpb+ZAgKb0J8+/O2B11PBdPD7Iu9jUMBJz/6ZRUESe3WYJj/W6e2Hj7tGhgCK4YQwJhxJK5wmM
+ HAi3zg==
+X-Received: by 2002:a05:600c:6612:b0:43d:36c:f24 with SMTP id
+ 5b1f17b1804b1-442d6d44830mr105920965e9.13.1747039361499; 
+ Mon, 12 May 2025 01:42:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGrFFICCMjlfgRZPh+HswsHits6mww/NovwFZZRp4J19jWEWy4aqUMXbOv5GZaynkA7NY+h+Q==
+X-Received: by 2002:a05:600c:6612:b0:43d:36c:f24 with SMTP id
+ 5b1f17b1804b1-442d6d44830mr105920555e9.13.1747039361024; 
+ Mon, 12 May 2025 01:42:41 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-442d67d5c2asm118205725e9.1.2025.05.12.01.42.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 12 May 2025 01:42:40 -0700 (PDT)
+Date: Mon, 12 May 2025 04:42:37 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: linux-cxl@vger.kernel.org, qemu-devel@nongnu.org, linuxarm@huawei.com,
+ fan.ni@samsung.com, Yuquan Wang <wangyuquan1236@phytium.com.cn>,
+ Arpit Kumar <arpit1.kumar@samsung.com>,
+ Sweta Kumari <s5.kumari@samsung.com>,
+ Vinayak Holikatti <vinayak.kh@samsung.com>,
+ Davidlohr Bueso <dave@stgolabs.net>, Ajay Joshi <ajay.opensrc@micron.com>
+Subject: Re: [PATCH qemu 7/8] hw/cxl/cxl-mailbox-utils: Added support for Get
+ Log Capabilities (Opcode 0402h)
+Message-ID: <20250512043011-mutt-send-email-mst@kernel.org>
+References: <20250305092501.191929-1-Jonathan.Cameron@huawei.com>
+ <20250305092501.191929-8-Jonathan.Cameron@huawei.com>
 MIME-Version: 1.0
-X-OriginatorOrg: aspeedtech.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SI2PR06MB5041.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dfe3f841-4860-44ad-14ce-08dd9130b945
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 May 2025 08:41:00.9008 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43d4aa98-e35b-4575-8939-080e90d5a249
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: pDDlAQdHnedKnPa/sLSyaeXhkkD2UjHndUZlf5jU+YTLbEy9ReXPFDWxUMvqdgZ2GC9Jl9t6ryMQIKiEZ0vHpb19o+DE8KMzvUgK95k5sNs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEYPR06MB5913
-Received-SPF: pass client-ip=2a01:111:f403:c400::3;
- envelope-from=jamin_lin@aspeedtech.com;
- helo=HK3PR03CU002.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250305092501.191929-8-Jonathan.Cameron@huawei.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.587,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -188,112 +113,203 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGkgQ8OpZHJpYw0KDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggdjEgMDgvMjJdIGh3L21pc2MvYXNw
-ZWVkX2hhY2U6IFN1cHBvcnQgRE1BIDY0IGJpdHMNCj4gZHJhbSBhZGRyZXNzLg0KPiANCj4gT24g
-NS85LzI1IDA5OjA0LCBKYW1pbiBMaW4gd3JvdGU6DQo+ID4gSGkgQ8OpZHJpYw0KPiA+DQo+ID4+
-IFN1YmplY3Q6IFJlOiBbUEFUQ0ggdjEgMDgvMjJdIGh3L21pc2MvYXNwZWVkX2hhY2U6IFN1cHBv
-cnQgRE1BIDY0DQo+ID4+IGJpdHMgZHJhbSBhZGRyZXNzLg0KPiA+Pg0KPiA+PiBPbiAzLzIxLzI1
-IDEwOjI2LCBKYW1pbiBMaW4gd3JvdGU6DQo+ID4+PiBBY2NvcmRpbmcgdG8gdGhlIEFTVDI3MDAg
-ZGVzaWduLCB0aGUgZGF0YSBzb3VyY2UgYWRkcmVzcyBpcyA2NC1iaXQsDQo+ID4+PiB3aXRoIFJf
-SEFTSF9TUkNfSEkgc3RvcmluZyBiaXRzIFs2MzozMl0gYW5kIFJfSEFTSF9TUkMgc3RvcmluZyBi
-aXRzDQo+ID4+IFszMTowXS4NCj4gPj4+DQo+ID4+PiBTaW1pbGFybHksIHRoZSBkaWdlc3QgYWRk
-cmVzcyBpcyA2NC1iaXQsIHdpdGggUl9IQVNIX0RFU1RfSEkgc3RvcmluZw0KPiA+Pj4gYml0cyBb
-NjM6MzJdIGFuZCBSX0hBU0hfREVTVCBzdG9yaW5nIGJpdHMgWzMxOjBdLg0KPiA+Pj4NCj4gPj4+
-IElkZWFsbHksIHNnX2FkZHIgc2hvdWxkIGJlIDY0LWJpdCBmb3IgdGhlIEFTVDI3MDAsIHVzaW5n
-IHRoZQ0KPiA+Pj4gZm9sbG93aW5nIHByb2dyYW0gdG8gb2J0YWluIHRoZSA2NC1iaXQgc2dfYWRk
-ciBhbmQgY29udmVydCBpdCB0byBhIERSQU0NCj4gb2Zmc2V0Og0KPiA+Pj4NCj4gPj4+IGBgYA0K
-PiA+Pj4gc2dfYWRkciA9IGRlcG9zaXQ2NChzZ19hZGRyLCAzMiwgMzIsDQo+ID4+PiAgICAgICAg
-ICAgICAgICAgICAgICAgYWRkcmVzc19zcGFjZV9sZGxfbGUoJnMtPmRyYW1fYXMsIHNyYyArDQo+
-ID4+IFNHX0xJU1RfQUREUl9TSVpFLA0KPiA+Pj4NCj4gPj4gTUVNVFhBVFRSU19VTlNQRUNJRklF
-RCwNCj4gPj4+IE5VTEwpOyBzZ19hZGRyIC09IDB4NDAwMDAwMDAwOyBgYGANCj4gPj4NCj4gPj4g
-SSBkb24ndCB0aGluayB0aGUgY29kZSBleHRyYWN0IGFib3ZlIGlzIHVzZWZ1bC4NCj4gPj4NCj4g
-Pj4+IFRvIG1haW50YWluIGNvbXBhdGliaWxpdHkgd2l0aCBvbGRlciBTb0NzIHN1Y2ggYXMgdGhl
-IEFTVDI2MDAsIHRoZQ0KPiA+Pj4gQVNUMjcwMCBIVyBIQUNFIGNvbnRyb2xsZXJzIGF1dG9tYXRp
-Y2FsbHkgc2V0IGJpdCAzNCBvZiB0aGUgNjQtYml0DQo+IHNnX2FkZHIuDQo+ID4+DQo+ID4+IEkg
-c3VwcG9zZSB0aGF0J3Mgd2hhdCBiaXRzIFszMDoyOF0gb2YgdGhlIGZpcnN0IHdvcmQgb2YgdGhl
-DQo+ID4+IHNjYXR0ZXItZ2F0aGVyIGVudHJ5IGFyZSBmb3IgPw0KPiA+Pg0KPiA+Pj4gQXMgYSBy
-ZXN1bHQsDQo+ID4+PiB0aGUgZmlybXdhcmUgb25seSBuZWVkcyB0byBwcm92aWRlIGEgMzItYml0
-IHNnX2FkZHIgY29udGFpbmluZyBiaXRzIFszMTowXS4NCj4gPj4+IFRoaXMgaXMgc3VmZmljaWVu
-dCBmb3IgdGhlIEFTVDI3MDAsIGFzIGl0IHVzZXMgYSBEUkFNIG9mZnNldCByYXRoZXINCj4gPj4+
-IHRoYW4gYSBEUkFNIGFkZHJlc3MuDQo+ID4+DQo+ID4+IHllcyB0aGUgSEFDRSBtb2RlbCBjYW4g
-dXNlIGEgcmVsYXRpdmUgYWRkcmVzcyBiZWNhdXNlIHRoZSBEUkFNIG1lbW9yeQ0KPiA+PiByZWdp
-b24gaXMgZGlyZWN0bHkgYXZhaWxhYmxlLiBUaGVyZSBpcyBubyBuZWVkIHRvIGNvbnN0cnVjdCBh
-IHBoeXNpY2FsIGFkZHJlc3MuDQo+ID4+DQo+ID4+PiBJbnRyb2R1Y2UgYSBoYXNfZG1hNjQgY2xh
-c3MgYXR0cmlidXRlIGFuZCBzZXQgaXQgdG8gdHJ1ZSBmb3IgdGhlIEFTVDI3MDAuDQo+ID4+Pg0K
-PiA+Pj4gU2lnbmVkLW9mZi1ieTogSmFtaW4gTGluIDxqYW1pbl9saW5AYXNwZWVkdGVjaC5jb20+
-DQo+ID4+PiAtLS0NCj4gPj4+ICAgIGluY2x1ZGUvaHcvbWlzYy9hc3BlZWRfaGFjZS5oIHwgIDEg
-Kw0KPiA+Pj4gICAgaHcvbWlzYy9hc3BlZWRfaGFjZS5jICAgICAgICAgfCAyNw0KPiArKysrKysr
-KysrKysrKysrKysrKysrKysrKy0NCj4gPj4+ICAgIDIgZmlsZXMgY2hhbmdlZCwgMjcgaW5zZXJ0
-aW9ucygrKSwgMSBkZWxldGlvbigtKQ0KPiA+Pj4NCj4gPj4+IGRpZmYgLS1naXQgYS9pbmNsdWRl
-L2h3L21pc2MvYXNwZWVkX2hhY2UuaA0KPiA+Pj4gYi9pbmNsdWRlL2h3L21pc2MvYXNwZWVkX2hh
-Y2UuaCBpbmRleCBhNDQ3OWJkMzgzLi41OGZiNjYwMDlhIDEwMDY0NA0KPiA+Pj4gLS0tIGEvaW5j
-bHVkZS9ody9taXNjL2FzcGVlZF9oYWNlLmgNCj4gPj4+ICsrKyBiL2luY2x1ZGUvaHcvbWlzYy9h
-c3BlZWRfaGFjZS5oDQo+ID4+PiBAQCAtNTIsNiArNTIsNyBAQCBzdHJ1Y3QgQXNwZWVkSEFDRUNs
-YXNzIHsNCj4gPj4+ICAgICAgICB1aW50MzJfdCBzcmNfaGlfbWFzazsNCj4gPj4+ICAgICAgICB1
-aW50MzJfdCBkZXN0X2hpX21hc2s7DQo+ID4+PiAgICAgICAgdWludDMyX3Qga2V5X2hpX21hc2s7
-DQo+ID4+PiArICAgIGJvb2wgaGFzX2RtYTY0Ow0KPiA+Pj4gICAgfTsNCj4gPj4+DQo+ID4+PiAg
-ICAjZW5kaWYgLyogQVNQRUVEX0hBQ0VfSCAqLw0KPiA+Pj4gZGlmZiAtLWdpdCBhL2h3L21pc2Mv
-YXNwZWVkX2hhY2UuYyBiL2h3L21pc2MvYXNwZWVkX2hhY2UuYyBpbmRleA0KPiA+Pj4gNTFjNjUy
-M2ZhYi4uOGYzMzNmYzk3ZSAxMDA2NDQNCj4gPj4+IC0tLSBhL2h3L21pc2MvYXNwZWVkX2hhY2Uu
-Yw0KPiA+Pj4gKysrIGIvaHcvbWlzYy9hc3BlZWRfaGFjZS5jDQo+ID4+PiBAQCAtMTQ4LDYgKzE0
-OCw3IEBAIHN0YXRpYyBib29sIGhhc19wYWRkaW5nKEFzcGVlZEhBQ0VTdGF0ZSAqcywNCj4gPj4+
-IHN0cnVjdA0KPiA+PiBpb3ZlYyAqaW92LA0KPiA+Pj4gICAgc3RhdGljIHZvaWQgZG9faGFzaF9v
-cGVyYXRpb24oQXNwZWVkSEFDRVN0YXRlICpzLCBpbnQgYWxnbywgYm9vbA0KPiA+PiBzZ19tb2Rl
-LA0KPiA+Pj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYm9vbCBhY2NfbW9kZSkN
-Cj4gPj4+ICAgIHsNCj4gPj4+ICsgICAgQXNwZWVkSEFDRUNsYXNzICphaGMgPSBBU1BFRURfSEFD
-RV9HRVRfQ0xBU1Mocyk7DQo+ID4+PiAgICAgICAgYm9vbCBzZ19hY2NfbW9kZV9maW5hbF9yZXF1
-ZXN0ID0gZmFsc2U7DQo+ID4+PiAgICAgICAgZ19hdXRvZnJlZSB1aW50OF90ICpkaWdlc3RfYnVm
-ID0gTlVMTDsNCj4gPj4+ICAgICAgICBzdHJ1Y3QgaW92ZWMgaW92W0FTUEVFRF9IQUNFX01BWF9T
-R107IEBAIC0xODIsNiArMTgzLDkNCj4gQEANCj4gPj4gc3RhdGljDQo+ID4+PiB2b2lkIGRvX2hh
-c2hfb3BlcmF0aW9uKEFzcGVlZEhBQ0VTdGF0ZSAqcywgaW50IGFsZ28sIGJvb2wgc2dfbW9kZSwN
-Cj4gPj4+ICAgICAgICAgICAgICAgIH0NCj4gPj4+DQo+ID4+PiAgICAgICAgICAgICAgICBzcmMg
-PSBkZXBvc2l0NjQoc3JjLCAwLCAzMiwgcy0+cmVnc1tSX0hBU0hfU1JDXSk7DQo+ID4+PiArICAg
-ICAgICAgICAgaWYgKGFoYy0+aGFzX2RtYTY0KSB7DQo+ID4+PiArICAgICAgICAgICAgICAgIHNy
-YyA9IGRlcG9zaXQ2NChzcmMsIDMyLCAzMiwgcy0+cmVnc1tSX0hBU0hfU1JDX0hJXSk7DQo+ID4+
-PiArICAgICAgICAgICAgfQ0KPiA+Pg0KPiA+PiBUaGF0J3Mgd2hlcmUgYSBsaXR0bGUgaGVscGVy
-IHdvdWxkIGJlIG5pY2UgdG8gaGF2ZS4NCj4gPj4NCj4gPiBJIGFkZCBoYXNoX2dldF9zb3VyY2Vf
-YWRkciBoZWxwIGZ1bmN0aW9uLg0KPiA+IFBsZWFzZSBzZWUgcGF0Y2ggNiBjb21tZW50cy4NCj4g
-Pg0KPiA+Pj4gICAgICAgICAgICAgICAgc3JjICs9IGkgKiBTR19MSVNUX0VOVFJZX1NJWkU7DQo+
-ID4+Pg0KPiA+Pj4gICAgICAgICAgICAgICAgbGVuID0gYWRkcmVzc19zcGFjZV9sZGxfbGUoJnMt
-PmRyYW1fYXMsIHNyYywgQEANCj4gPj4+IC0xOTAsNg0KPiA+Pj4gKzE5NCwyMSBAQCBzdGF0aWMg
-dm9pZCBkb19oYXNoX29wZXJhdGlvbihBc3BlZWRIQUNFU3RhdGUgKnMsIGludA0KPiA+Pj4gK2Fs
-Z28sDQo+ID4+IGJvb2wgc2dfbW9kZSwNCj4gPj4+ICAgICAgICAgICAgICAgIHNnX2FkZHIgPSBh
-ZGRyZXNzX3NwYWNlX2xkbF9sZSgmcy0+ZHJhbV9hcywgc3JjICsNCj4gPj4gU0dfTElTVF9MRU5f
-U0laRSwNCj4gPj4+DQo+ID4+IE1FTVRYQVRUUlNfVU5TUEVDSUZJRUQsIE5VTEwpOw0KPiA+Pj4g
-ICAgICAgICAgICAgICAgc2dfYWRkciAmPSBTR19MSVNUX0FERFJfTUFTSzsNCj4gPj4+ICsgICAg
-ICAgICAgICAvKg0KPiA+Pj4gKyAgICAgICAgICAgICAqIElkZWFsbHksIHNnX2FkZHIgc2hvdWxk
-IGJlIDY0LWJpdCBmb3IgdGhlIEFTVDI3MDAsDQo+ID4+PiArIHVzaW5nDQo+ID4+IHRoZQ0KPiA+
-Pj4gKyAgICAgICAgICAgICAqIGZvbGxvd2luZyBwcm9ncmFtIHRvIG9idGFpbiB0aGUgNjQtYml0
-IHNnX2FkZHIgYW5kDQo+ID4+IGNvbnZlcnQgaXQNCj4gPj4+ICsgICAgICAgICAgICAgKiB0byBh
-IERSQU0gb2Zmc2V0Og0KPiA+Pj4gKyAgICAgICAgICAgICAqIHNnX2FkZHIgPSBkZXBvc2l0NjQo
-c2dfYWRkciwgMzIsIDMyLA0KPiA+Pj4gKyAgICAgICAgICAgICAqICAgICAgYWRkcmVzc19zcGFj
-ZV9sZGxfbGUoJnMtPmRyYW1fYXMsIHNyYyArDQo+ID4+IFNHX0FERFJfTEVOX1NJWkUsDQo+ID4+
-PiArICAgICAgICAgICAgICoNCj4gPj4gTUVNVFhBVFRSU19VTlNQRUNJRklFRCwgTlVMTCk7DQo+
-ID4+PiArICAgICAgICAgICAgICogc2dfYWRkciAtPSAweDQwMDAwMDAwMDsNCj4gPj4+ICsgICAg
-ICAgICAgICAgKg0KPiA+Pg0KPiA+PiBJIGRvbid0IHRoaW5rIHRoZSBhYm92ZSBjb21tZW50IGlz
-IHVzZWZ1bC4gUGxlYXNlIGtlZXAgdGhlIG9uZSBiZWxvdy4NCj4gPj4NCj4gPj4+ICsgICAgICAg
-ICAgICAgKiBUbyBtYWludGFpbiBjb21wYXRpYmlsaXR5IHdpdGggb2xkZXIgU29DcyBzdWNoIGFz
-DQo+ID4+PiArIHRoZQ0KPiA+PiBBU1QyNjAwLA0KPiA+Pj4gKyAgICAgICAgICAgICAqIHRoZSBB
-U1QyNzAwIEhXIGF1dG9tYXRpY2FsbHkgc2V0IGJpdCAzNCBvZiB0aGUNCj4gPj4+ICsgNjQtYml0
-DQo+ID4+IHNnX2FkZHIuDQo+ID4+PiArICAgICAgICAgICAgICogQXMgYSByZXN1bHQsIHRoZSBm
-aXJtd2FyZSBvbmx5IG5lZWRzIHRvIHByb3ZpZGUgYQ0KPiA+Pj4gKyAzMi1iaXQNCj4gPj4gc2df
-YWRkcg0KPiA+Pj4gKyAgICAgICAgICAgICAqIGNvbnRhaW5pbmcgYml0cyBbMzE6MF0uIFRoaXMg
-aXMgc3VmZmljaWVudCBmb3IgdGhlDQo+ID4+PiArIEFTVDI3MDAsDQo+ID4+IGFzDQo+ID4+PiAr
-ICAgICAgICAgICAgICogaXQgdXNlcyBhIERSQU0gb2Zmc2V0IHJhdGhlciB0aGFuIGEgRFJBTSBh
-ZGRyZXNzLg0KPiA+Pj4gKyAgICAgICAgICAgICAqLw0KPiA+Pg0KPiA+DQo+ID4gVGhhbmtzIGZv
-ciBzdWdnZXN0aW9uIHdpbGwgdXBkYXRlIHRoZW0uDQo+ID4NCj4gPj4gVGhlIFNHX0xJU1RfQURE
-Ul9NQVNLIG5lZWRzIGFuIHVwZGF0ZSB0aG91Z2guIEFGQUlDVCwgaXQncyBiaWdnZXIgb24NCj4g
-Pj4gQVNUMjcwMC4NCj4gPg0KPiA+IFRoZSB2YWx1ZSBvZiBTR19MSVNUX0FERFJfTUFTSyB3YXMg
-d3JvbmcgZm9yIEFTVDI3MDAsIEFTVDI2MDAgYW5kDQo+IEFTVDEwMzAuDQo+ID4gVGhlIGNvcnJl
-Y3QgdmFsdWUgc2hvdWxkIGJlIDB4N0ZGRkZGRjguDQo+ID4gV2lsbCBjcmVhdGUgYSBuZXcgcGF0
-Y2ggdG8gZml4IGl0Lg0KPiA+IFBsZWFzZSBzZWUgcGF0Y2ggNCBjb21tZW50cy4NCj4gPiBCeSB0
-aGUgd2F5LCBBU1QyNTAwIGRvIG5vdCBzdXBwb3J0IFNHIG1vZGUuDQo+IA0KPiBTaG91bGQgd2Ug
-aW50cm9kdWNlIGEgY2xhc3MgYXR0cmlidXRlIHRoZW4gPw0KPiANCkNhbiBJIG1vZGlmeSBTR19M
-SVNUX0FERFJfTUFTSyBkaXJlY3RseT8NCg0KSW4gdGhpcyBtb2RlbCwgaGFzaF9tYXNrIGlzIHNl
-dCB0byAweDAwMDAwM2ZmIGZvciBBU1QyNTAwLCB3aGljaCBkaXNhYmxlcyBzdXBwb3J0IGZvciBT
-RyBtb2RlIGFuZCBTSEE1MTI6DQpBcyBhIHJlc3VsdCwgdGhlIG1vZGVsIGRvZXMgbm90IGhhbmRs
-ZSBTRyBtb2RlIGZvciBBU1QyNTAwLg0KDQpodHRwczovL2dpdGh1Yi5jb20vcWVtdS9xZW11L2Js
-b2IvbWFzdGVyL2h3L21pc2MvYXNwZWVkX2hhY2UuYyNMNTI5DQphaGMtPmhhc2hfbWFzayA9IDB4
-MDAwMDAzZmY7IC8qIE5vIFNHIG9yIFNIQTUxMiBtb2RlcyAqLw0KDQpUaGFua3MtSmFtaW4NCj4g
-VGhhbmtzLA0KPiANCj4gQy4NCg==
+On Wed, Mar 05, 2025 at 09:24:58AM +0000, Jonathan Cameron wrote:
+> From: Arpit Kumar <arpit1.kumar@samsung.com>
+> 
+> CXL spec 3.2 section 8.2.10.5.3 describes Get Log Capabilities.
+> It provides log capabilities supported by specified log.
+> 
+> Signed-off-by: Arpit Kumar <arpit1.kumar@samsung.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+>  include/hw/cxl/cxl_device.h  | 20 ++++++++++++++++
+>  include/hw/cxl/cxl_mailbox.h |  5 ++++
+>  hw/cxl/cxl-mailbox-utils.c   | 45 ++++++++++++++++++++++++++++++++++++
+>  3 files changed, 70 insertions(+)
+> 
+> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+> index ed6cd50c67..87a376c982 100644
+> --- a/include/hw/cxl/cxl_device.h
+> +++ b/include/hw/cxl/cxl_device.h
+> @@ -133,6 +133,18 @@ typedef enum {
+>      CXL_MBOX_MAX = 0x20
+>  } CXLRetCode;
+>  
+> +/* types of logs */
+> +typedef enum {
+> +    CXL_LOG_COMMAND_EFFECT,
+> +    CXL_LOG_VENDOR_DEBUG,
+> +    CXL_LOG_COMPONENT_STATE_DUMP,
+> +    CXL_LOG_ERROR_CHECK_SCRUB,
+> +    CXL_LOG_MEDIA_TEST_CAPABILITY,
+> +    CXL_LOG_MEDIA_TEST_RESULTS_SHORT,
+> +    CXL_LOG_MEDIA_TEST_RESULTS_LONG,
+> +    MAX_LOG_TYPE
+> +} CXLLogType;
+> +
+>  typedef struct CXLCCI CXLCCI;
+>  typedef struct cxl_device_state CXLDeviceState;
+>  struct cxl_cmd;
+> @@ -163,6 +175,11 @@ typedef struct CXLEventLog {
+>      QSIMPLEQ_HEAD(, CXLEvent) events;
+>  } CXLEventLog;
+>  
+> +typedef struct CXLLogCapabilities {
+> +    uint32_t param_flags;
+> +    QemuUUID uuid;
+> +} CXLLogCapabilities;
+> +
+>  typedef struct CXLCCI {
+>      struct cxl_cmd cxl_cmd_set[256][256];
+>      struct cel_log {
+> @@ -171,6 +188,9 @@ typedef struct CXLCCI {
+>      } cel_log[1 << 16];
+>      size_t cel_size;
+>  
+> +    /* get log capabilities */
+> +    const CXLLogCapabilities *supported_log_cap;
+> +
+>      /* background command handling (times in ms) */
+>      struct {
+>          uint16_t opcode;
+> diff --git a/include/hw/cxl/cxl_mailbox.h b/include/hw/cxl/cxl_mailbox.h
+> index 9008402d1c..8e1c7c5f15 100644
+> --- a/include/hw/cxl/cxl_mailbox.h
+> +++ b/include/hw/cxl/cxl_mailbox.h
+> @@ -16,4 +16,9 @@
+>  #define CXL_MBOX_BACKGROUND_OPERATION (1 << 6)
+>  #define CXL_MBOX_BACKGROUND_OPERATION_ABORT (1 << 7)
+>  
+> +#define CXL_LOG_CAP_CLEAR_SUPPORTED (1 << 0)
+> +#define CXL_LOG_CAP_POPULATE_SUPPORTED (1 << 1)
+> +#define CXL_LOG_CAP_AUTO_POPULATE_SUPPORTED (1 << 2)
+> +#define CXL_LOG_CAP_PERSISTENT_COLD_RESET_SUPPORTED (1 << 3)
+> +
+>  #endif
+> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+> index 299f232f26..f35fc4f112 100644
+> --- a/hw/cxl/cxl-mailbox-utils.c
+> +++ b/hw/cxl/cxl-mailbox-utils.c
+> @@ -81,6 +81,7 @@ enum {
+>      LOGS        = 0x04,
+>          #define GET_SUPPORTED 0x0
+>          #define GET_LOG       0x1
+> +        #define GET_LOG_CAPABILITIES   0x2
+>      FEATURES    = 0x05,
+>          #define GET_SUPPORTED 0x0
+>          #define GET_FEATURE   0x1
+> @@ -1068,6 +1069,43 @@ static CXLRetCode cmd_logs_get_log(const struct cxl_cmd *cmd,
+>      return CXL_MBOX_SUCCESS;
+>  }
+>  
+> +static const struct CXLLogCapabilities *find_log_index(QemuUUID *uuid, CXLCCI *cci)
+> +{
+> +    for (int i = CXL_LOG_COMMAND_EFFECT; i < MAX_LOG_TYPE; i++) {
+> +        if (qemu_uuid_is_equal(uuid,
+> +            &cci->supported_log_cap[i].uuid)) {
+> +                return &cci->supported_log_cap[i];
+> +        }
+> +    }
+> +    return NULL;
+> +}
+> +
+> +/* CXL r3.2 Section 8.2.10.5.3: Get Log Capabilities (Opcode 0402h) */
+> +static CXLRetCode cmd_logs_get_log_capabilities(const struct cxl_cmd *cmd,
+> +                                                uint8_t *payload_in,
+> +                                                size_t len_in,
+> +                                                uint8_t *payload_out,
+> +                                                size_t *len_out,
+> +                                                CXLCCI *cci)
+> +{
+> +    const CXLLogCapabilities *cap;
+> +    struct {
+> +        QemuUUID uuid;
+> +    } QEMU_PACKED QEMU_ALIGNED(8) *get_log_capabilities_in = (void *)payload_in;
+> +
+> +    uint32_t *get_log_capabilities_out = (uint32_t *)payload_out;
+> +
+> +    cap = find_log_index(&get_log_capabilities_in->uuid, cci);
+> +    if (!cap) {
+> +        return CXL_MBOX_INVALID_LOG;
+> +    }
+> +
+> +    memcpy(get_log_capabilities_out, &cap->param_flags,
+> +           sizeof(cap->param_flags));
+> +    *len_out = sizeof(*get_log_capabilities_out);
+> +    return CXL_MBOX_SUCCESS;
+> +}
+> +
+>  /* CXL r3.1 section 8.2.9.6: Features */
+>  /*
+>   * Get Supported Features output payload
+> @@ -3253,6 +3291,8 @@ static const struct cxl_cmd cxl_cmd_set[256][256] = {
+>      [LOGS][GET_SUPPORTED] = { "LOGS_GET_SUPPORTED", cmd_logs_get_supported,
+>                                0, 0 },
+>      [LOGS][GET_LOG] = { "LOGS_GET_LOG", cmd_logs_get_log, 0x18, 0 },
+> +    [LOGS][GET_LOG_CAPABILITIES] = { "LOGS_GET_LOG_CAPABILITIES",
+> +                                     cmd_logs_get_log_capabilities, 0x10, 0 },
+>      [FEATURES][GET_SUPPORTED] = { "FEATURES_GET_SUPPORTED",
+>                                    cmd_features_get_supported, 0x8, 0 },
+>      [FEATURES][GET_FEATURE] = { "FEATURES_GET_FEATURE",
+> @@ -3512,10 +3552,15 @@ static void cxl_rebuild_cel(CXLCCI *cci)
+>      }
+>  }
+>  
+> +static const struct CXLLogCapabilities cxl_get_log_cap[MAX_LOG_TYPE] = {
+> +    [CXL_LOG_COMMAND_EFFECT] = { .param_flags = 0, .uuid = cel_uuid },
+> +};
+> +
+
+
+causes ci build failures:
+
+https://gitlab.com/mstredhat/qemu/-/jobs/9999980051
+
+../hw/cxl/cxl-mailbox-utils.c:3556:60: error: initializer element is not constant
+     [CXL_LOG_COMMAND_EFFECT] = { .param_flags = 0, .uuid = cel_uuid },
+                                                            ^~~~~~~~
+../hw/cxl/cxl-mailbox-utils.c:3556:60: note: (near initialization for ‘cxl_get_log_cap[0].uuid’)
+
+
+Fixed it up like this:
+
+diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+index f35fc4f112..13d26e391b 100644
+--- a/hw/cxl/cxl-mailbox-utils.c
++++ b/hw/cxl/cxl-mailbox-utils.c
+@@ -992,9 +992,10 @@ static CXLRetCode cmd_timestamp_set(const struct cxl_cmd *cmd,
+ }
+ 
+ /* CXL r3.1 Section 8.2.9.5.2.1: Command Effects Log (CEL) */
+-static const QemuUUID cel_uuid = {
+-    .data = UUID(0x0da9c0b5, 0xbf41, 0x4b78, 0x8f, 0x79,
++#define CEL_UUID UUID(0x0da9c0b5, 0xbf41, 0x4b78, 0x8f, 0x79, \
+                  0x96, 0xb1, 0x62, 0x3b, 0x3f, 0x17)
++static const QemuUUID cel_uuid = {
++    .data = CEL_UUID
+ };
+ 
+ /* CXL r3.1 Section 8.2.9.5.1: Get Supported Logs (Opcode 0400h) */
+@@ -3553,7 +3554,7 @@ static void cxl_rebuild_cel(CXLCCI *cci)
+ }
+ 
+ static const struct CXLLogCapabilities cxl_get_log_cap[MAX_LOG_TYPE] = {
+-    [CXL_LOG_COMMAND_EFFECT] = { .param_flags = 0, .uuid = cel_uuid },
++    [CXL_LOG_COMMAND_EFFECT] = { .param_flags = 0, .uuid = CEL_UUID },
+ };
+ 
+ void cxl_init_cci(CXLCCI *cci, size_t payload_max)
+
+
+>  void cxl_init_cci(CXLCCI *cci, size_t payload_max)
+>  {
+>      cci->payload_max = payload_max;
+>      cxl_rebuild_cel(cci);
+> +    cci->supported_log_cap = cxl_get_log_cap;
+>  
+>      cci->bg.complete_pct = 0;
+>      cci->bg.starttime = 0;
+> -- 
+> 2.43.0
+
 
