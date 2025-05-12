@@ -2,87 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C8DBAB3438
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 11:57:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5466AB3412
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 11:55:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEPre-0008KG-FU; Mon, 12 May 2025 05:54:26 -0400
+	id 1uEPrk-0000Hf-Us; Mon, 12 May 2025 05:54:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uEPrS-0007tq-Aw
- for qemu-devel@nongnu.org; Mon, 12 May 2025 05:54:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uEPrW-00082t-Rg
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 05:54:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uEPrQ-0000kF-C3
- for qemu-devel@nongnu.org; Mon, 12 May 2025 05:54:13 -0400
+ id 1uEPrU-0000kP-Jf
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 05:54:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747043651;
+ s=mimecast20190719; t=1747043655;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Pqqz4iQZNsh9z8LoBVDu2K6N+1uOhBIWgEvt8IVeXaQ=;
- b=XXJdQYVEoRioyS9RuS99iWvR55rMAVamjcK26cUwq18mO+Jf1bvFaTQeXBGu8X8IV7Wh6m
- wB+MTf8xv3uzGDeGE0JhO2PnNj4aQi8DrzOAsnVr3mAZR0BncwpFvYb4gyeuNYhsoHt302
- nGDlTie+/XFKOGZnwVV+e5MDdjUzfdQ=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=5XJUJRnrTiscZ1lpipSP6/oXqKd/h2Mos+s1lv9QW+I=;
+ b=M0FdAfxmlnpxzz38ITjCZWHc2tdo+/N4+opQHxk3k/zmjyiLFOc1QYsn5utfKetJS+Pg2p
+ bZHoedzicjww3gkJRlFc8GXDA2FZyILpydYp0hNXc57bkw4xmrpQUIn4OIk+Pr2paCHToB
+ 85+JNJ9Gu/raUITJL0WiYsjQ+9AOWjg=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-102-FleuRbPANPyD7XQDlqiQzw-1; Mon, 12 May 2025 05:54:10 -0400
-X-MC-Unique: FleuRbPANPyD7XQDlqiQzw-1
-X-Mimecast-MFC-AGG-ID: FleuRbPANPyD7XQDlqiQzw_1747043649
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-ac37ed2b99fso387072766b.3
- for <qemu-devel@nongnu.org>; Mon, 12 May 2025 02:54:10 -0700 (PDT)
+ us-mta-447-aZ7zCe2KNaOXo4j-_zD9kg-1; Mon, 12 May 2025 05:54:13 -0400
+X-MC-Unique: aZ7zCe2KNaOXo4j-_zD9kg-1
+X-Mimecast-MFC-AGG-ID: aZ7zCe2KNaOXo4j-_zD9kg_1747043652
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-acb98b5b0bdso441475866b.1
+ for <qemu-devel@nongnu.org>; Mon, 12 May 2025 02:54:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747043648; x=1747648448;
+ d=1e100.net; s=20230601; t=1747043651; x=1747648451;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Pqqz4iQZNsh9z8LoBVDu2K6N+1uOhBIWgEvt8IVeXaQ=;
- b=lslEqHtuPyoeIwKi3XSjua12NvIQT48xlbmj5wZ9PMuUFcq8kOIh3ghKyHNVUuQgXW
- /FtHNWoA2c4+p1HHMc3EbZlD2hsKwEirk2MtacY3srjJqjrpLbuhNCZx+Y7Ck4dGYrM/
- cVA//rorKjrU7UYOmsf8XQjhZNP7ejJh2bFva7DOI8RCZNHVXps7wSLjyP8nDHlTKOBH
- 11hFe9QjnLwdFkSRw+VamYDdazufHv+3Bit4WITt+V9Zmwn0MFKQZMzSlVhV/VrjmTAq
- ZKduMIGv8gd2/qw/eYy3p7KUo2wYQcgEx6FM/6TdhCmnkrT1kIuCI9G0urTwfIvo3fP2
- mrfw==
-X-Gm-Message-State: AOJu0Yw3aIeOwww1DRvkRW0EAfssEuTYau7fgxf9Fnwj4o5Ia5NxfBZD
- 7TH5i1zeHT1/KXLhBeMGXWkVxNfJXY9k6hAoG/4sjrY7AcfuN4wBAkwkBr5Upa6Z4dGp7hLTkHT
- CZLkKa8PYCNYWvQiXjEOSdVA14ale6Je4OPG9bMJQwg+5BZlr/hopgpVRxV0s7/wPdo0CBjU7RR
- 5RlMnHYePZ4RsR9qD89BNduwSQ7pQjbL8pK+gZ
-X-Gm-Gg: ASbGncv9rJPeb2bKvAf4LzKq7g8oCwulGMStTJkl/3K+/Q3keVHjKMOnD0o8hkP9uhP
- T5KEiK7HF9PvlgOY4AkFQuV8fu9B1DOE/1QKAnL2TswPAqMObm9uQt4KNuOrT8H0lTa0cTkN06O
- Ns1fEdD6UthGGi7jhU3pGfmvzWqt88yrXntz88+s53BTXvRPRB7OWHV2jBLoZ4FSZlDKviQYw93
- xcJdpopaTK9fRVY/FIHWKDS4rUujeLI16JNJzJmAP3Oar4RX1CA25MFklWsmUMUep3O/aFHe7Yw
- NkdE4ymbcXacVHk+xE/o6jWCB0tZc0E+yQ6sJhYLeXOAEbw=
-X-Received: by 2002:a17:907:7b04:b0:ac2:6910:a12f with SMTP id
- a640c23a62f3a-ad2191681e0mr1052671866b.46.1747043648423; 
- Mon, 12 May 2025 02:54:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHfEQZ48qk9wKQd7x9C04YZ1CrDjHIh/3kG3bGVgbsNT3K2As71mBPqFCGgYDsr3zV9lpkf8A==
-X-Received: by 2002:a17:907:7b04:b0:ac2:6910:a12f with SMTP id
- a640c23a62f3a-ad2191681e0mr1052670266b.46.1747043647927; 
- Mon, 12 May 2025 02:54:07 -0700 (PDT)
+ bh=5XJUJRnrTiscZ1lpipSP6/oXqKd/h2Mos+s1lv9QW+I=;
+ b=sRNA2NCz6jPiqMgZJSZ1YI/9cgrXd9xApUqh50Ssotze4wiSe5AHNHYuWBhjVkQ247
+ 1UfvN/kzsOs5ZT9Xcv/KEX3jElqaMloCqzmQua5qbKZzn13dz29Eo2iJv81uTcLDiMFI
+ YvgoE2xxgC1X8Jdf4Mp/uDj3Il2Iuln42Vd+YSI1ZsDmd/cA3w46dXqrLvrrpGdGeCxO
+ c1+GoVLhE2ubnLEj14fi4DNDWXywn5B4wKx4HqcW43HuSHR7+uYgNFnkW3cuG/NlaPbB
+ d32GznaKfVOKocBOuFkuQQN4edlzqziPDQNu7bL9wpVZqTAHHblf991eh2PtYSZ7v2Pt
+ YQtA==
+X-Gm-Message-State: AOJu0YzgGcrsS8oG2Dlb8hNM8gT1xfyNATHjFiKUJPQaoKw0vFSwjBiO
+ sLwiKzS2hA4t6UmEBqTLM+h5vzz0AbRU9Oc1hFltXLMgkj/0K5t1bAiATxnEhc7W101NcKorUUp
+ ReG3+BJcyDbMcFsySXu4GOqPv1Zax0YZO31fpp7jVt7fg9g4i4slvWUMYgRoAmjHGm/bJfjQe8m
+ eML5Aq/hQ0RHK2sI1AIE5FlE+qYoByKIbhlwtH
+X-Gm-Gg: ASbGnctYqnrrMfEmhJziVwUzSukCmgeLtkQopvkDz44mJBhT3biafJn4/XJ64MaMFCd
+ MYnMLtptxpUpUdFuRprqc994K8xO41P13AHOGKtT6rnGhgnL/oNXoiXGlI2NXm1/ieug95pa6FY
+ pmrszitJMyI3W7DmllOgHWCtH5kkU9DWuNWoaJaK3nkjO05O64xUv5cCfmRWwKl9UrsTQEfsZds
+ ZFAjue8nlhr7jQs2C25dAFbUYZQp1u7ChvyYy+vM2HJwzNtUnwc7EH5kU9RquvSGrlh8k/Mya2s
+ 9i/eW8GzRzFOJxeBucP42M1nGvm8eEFZtwV3JPoKcVB/nMs=
+X-Received: by 2002:a17:907:948f:b0:ad2:4ac1:abe3 with SMTP id
+ a640c23a62f3a-ad24ac1b354mr485991266b.40.1747043651563; 
+ Mon, 12 May 2025 02:54:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGdC245fZAFpmHPHYbfAQso5gidLEms+OJIVR320hyx46oAT3IlF3m+W0+F7EoDJihuRJkoGQ==
+X-Received: by 2002:a17:907:948f:b0:ad2:4ac1:abe3 with SMTP id
+ a640c23a62f3a-ad24ac1b354mr485988766b.40.1747043651157; 
+ Mon, 12 May 2025 02:54:11 -0700 (PDT)
 Received: from [192.168.122.1] (93-40-56-213.ip37.fastwebnet.it.
  [93.40.56.213]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ad2192c83e4sm600070366b.11.2025.05.12.02.54.05
+ a640c23a62f3a-ad2197bd398sm590349066b.152.2025.05.12.02.54.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 May 2025 02:54:07 -0700 (PDT)
+ Mon, 12 May 2025 02:54:10 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: dbarboza@ventanamicro.com, alistair23@gmail.com,
  richard.henderson@linaro.org
-Subject: [PATCH 18/26] target/riscv: convert SiFive U models to RISCVCPUDef
-Date: Mon, 12 May 2025 11:52:18 +0200
-Message-ID: <20250512095226.93621-19-pbonzini@redhat.com>
+Subject: [PATCH 19/26] target/riscv: th: make CSR insertion test a bit more
+ intuitive
+Date: Mon, 12 May 2025 11:52:19 +0200
+Message-ID: <20250512095226.93621-20-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512095226.93621-1-pbonzini@redhat.com>
 References: <20250512095226.93621-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -46
 X-Spam_score: -4.7
@@ -107,156 +108,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+In preparation for generalizing the custom CSR functionality,
+make the test return bool instead of int.  Make the insertion_test
+optional, too.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/riscv/cpu-qom.h |  1 +
- target/riscv/cpu.c     | 79 +++++++++++++++++++-----------------------
- 2 files changed, 37 insertions(+), 43 deletions(-)
+ target/riscv/th_csr.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
-index 0f9be15e47b..1ee05eb393d 100644
---- a/target/riscv/cpu-qom.h
-+++ b/target/riscv/cpu-qom.h
-@@ -48,6 +48,7 @@
- #define TYPE_RISCV_CPU_SIFIVE_E31       RISCV_CPU_TYPE_NAME("sifive-e31")
- #define TYPE_RISCV_CPU_SIFIVE_E34       RISCV_CPU_TYPE_NAME("sifive-e34")
- #define TYPE_RISCV_CPU_SIFIVE_E51       RISCV_CPU_TYPE_NAME("sifive-e51")
-+#define TYPE_RISCV_CPU_SIFIVE_U         RISCV_CPU_TYPE_NAME("sifive-u")
- #define TYPE_RISCV_CPU_SIFIVE_U34       RISCV_CPU_TYPE_NAME("sifive-u34")
- #define TYPE_RISCV_CPU_SIFIVE_U54       RISCV_CPU_TYPE_NAME("sifive-u54")
- #define TYPE_RISCV_CPU_THEAD_C906       RISCV_CPU_TYPE_NAME("thead-c906")
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 661b2384d82..171f27fdd87 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -440,8 +440,8 @@ const char *satp_mode_str(uint8_t satp_mode, bool is_32_bit)
-     g_assert_not_reached();
+diff --git a/target/riscv/th_csr.c b/target/riscv/th_csr.c
+index 6c970d4e813..969a9fe3c80 100644
+--- a/target/riscv/th_csr.c
++++ b/target/riscv/th_csr.c
+@@ -29,7 +29,7 @@
+ 
+ typedef struct {
+     int csrno;
+-    int (*insertion_test)(RISCVCPU *cpu);
++    bool (*insertion_test)(RISCVCPU *cpu);
+     riscv_csr_operations csr_ops;
+ } riscv_csr;
+ 
+@@ -42,13 +42,9 @@ static RISCVException smode(CPURISCVState *env, int csrno)
+     return RISCV_EXCP_ILLEGAL_INST;
  }
  
--static void set_satp_mode_max_supported(RISCVCPU *cpu,
--                                        int satp_mode)
-+static void __attribute__((unused))
-+set_satp_mode_max_supported(RISCVCPU *cpu, int satp_mode)
+-static int test_thead_mvendorid(RISCVCPU *cpu)
++static bool test_thead_mvendorid(RISCVCPU *cpu)
  {
-     bool rv32 = riscv_cpu_mxl(&cpu->env) == MXL_RV32;
-     const bool *valid_vm = rv32 ? valid_vm_1_10_32 : valid_vm_1_10_64;
-@@ -486,23 +486,6 @@ static void set_satp_mode_default_map(RISCVCPU *cpu)
- #endif
+-    if (cpu->cfg.mvendorid != THEAD_VENDOR_ID) {
+-        return -1;
+-    }
+-
+-    return 0;
++    return cpu->cfg.mvendorid == THEAD_VENDOR_ID;
+ }
  
- #if defined(TARGET_RISCV64)
--static void rv64_sifive_u_cpu_init(Object *obj)
--{
--    RISCVCPU *cpu = RISCV_CPU(obj);
--    CPURISCVState *env = &cpu->env;
--    riscv_cpu_set_misa_ext(env, RVI | RVM | RVA | RVF | RVD | RVC | RVS | RVU);
--    env->priv_ver = PRIV_VERSION_1_10_0;
--#ifndef CONFIG_USER_ONLY
--    set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV39);
--#endif
+ static RISCVException read_th_sxstatus(CPURISCVState *env, int csrno,
+@@ -66,13 +62,12 @@ static riscv_csr th_csr_list[] = {
+         .csr_ops = { "th.sxstatus", smode, read_th_sxstatus }
+     }
+ };
 -
--    /* inherited from parent obj via riscv_cpu_init() */
--    cpu->cfg.ext_zifencei = true;
--    cpu->cfg.ext_zicsr = true;
--    cpu->cfg.mmu = true;
--    cpu->cfg.pmp = true;
--}
--
- static void rv64_thead_c906_cpu_init(Object *obj)
+ void th_register_custom_csrs(RISCVCPU *cpu)
  {
-     CPURISCVState *env = &RISCV_CPU(obj)->env;
-@@ -671,27 +654,6 @@ static void rv64_xiangshan_nanhu_cpu_init(Object *obj)
- 
- #endif /* !TARGET_RISCV64 */
- 
--#if defined(TARGET_RISCV32) || \
--    (defined(TARGET_RISCV64) && !defined(CONFIG_USER_ONLY))
--
--static void rv32_sifive_u_cpu_init(Object *obj)
--{
--    RISCVCPU *cpu = RISCV_CPU(obj);
--    CPURISCVState *env = &cpu->env;
--    riscv_cpu_set_misa_ext(env, RVI | RVM | RVA | RVF | RVD | RVC | RVS | RVU);
--    env->priv_ver = PRIV_VERSION_1_10_0;
--#ifndef CONFIG_USER_ONLY
--    set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV32);
--#endif
--
--    /* inherited from parent obj via riscv_cpu_init() */
--    cpu->cfg.ext_zifencei = true;
--    cpu->cfg.ext_zicsr = true;
--    cpu->cfg.mmu = true;
--    cpu->cfg.pmp = true;
--}
--#endif
--
- static ObjectClass *riscv_cpu_class_by_name(const char *cpu_model)
- {
-     ObjectClass *oc;
-@@ -2921,6 +2883,17 @@ static void riscv_cpu_class_base_init(ObjectClass *c, const void *data)
-         if (def->misa_mxl_max) {
-             assert(def->misa_mxl_max <= MXL_RV128);
-             mcc->def->misa_mxl_max = def->misa_mxl_max;
-+
-+#ifndef CONFIG_USER_ONLY
-+            /*
-+             * Hack to simplify CPU class hierarchies that include both 32- and
-+             * 64-bit models: reduce SV39/48/57/64 to SV32 for 32-bit models.
-+             */
-+            if (mcc->def->misa_mxl_max == MXL_RV32 &&
-+                !valid_vm_1_10_32[mcc->def->cfg.max_satp_mode]) {
-+                mcc->def->cfg.max_satp_mode = VM_1_10_SV32;
-+            }
-+#endif
+     for (size_t i = 0; i < ARRAY_SIZE(th_csr_list); i++) {
+         int csrno = th_csr_list[i].csrno;
+         riscv_csr_operations *csr_ops = &th_csr_list[i].csr_ops;
+-        if (!th_csr_list[i].insertion_test(cpu)) {
++        if (!th_csr_list[i].insertion_test || th_csr_list[i].insertion_test(cpu)) {
+             riscv_set_csr_ops(csrno, csr_ops);
          }
-         if (def->priv_spec != RISCV_PROFILE_ATTR_UNUSED) {
-             assert(def->priv_spec <= PRIV_VERSION_LATEST);
-@@ -3140,6 +3113,17 @@ static const TypeInfo riscv_cpu_type_infos[] = {
-         .cfg.pmp = true
-     ),
- 
-+    DEFINE_ABSTRACT_RISCV_CPU(TYPE_RISCV_CPU_SIFIVE_U, TYPE_RISCV_VENDOR_CPU,
-+        .misa_ext = RVI | RVM | RVA | RVF | RVD | RVC | RVS | RVU,
-+        .priv_spec = PRIV_VERSION_1_10_0,
-+
-+        .cfg.max_satp_mode = VM_1_10_SV39,
-+        .cfg.ext_zifencei = true,
-+        .cfg.ext_zicsr = true,
-+        .cfg.mmu = true,
-+        .cfg.pmp = true
-+    ),
-+
- #if defined(TARGET_RISCV32) || \
-     (defined(TARGET_RISCV64) && !defined(CONFIG_USER_ONLY))
-     DEFINE_RISCV_CPU(TYPE_RISCV_CPU_BASE32, TYPE_RISCV_DYNAMIC_CPU,
-@@ -3171,7 +3155,9 @@ static const TypeInfo riscv_cpu_type_infos[] = {
-         .misa_ext = RVF,  /* IMAFCU */
-     ),
- 
--    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_SIFIVE_U34, MXL_RV32,  rv32_sifive_u_cpu_init),
-+    DEFINE_RISCV_CPU(TYPE_RISCV_CPU_SIFIVE_U34, TYPE_RISCV_CPU_SIFIVE_U,
-+        .misa_mxl_max = MXL_RV32,
-+    ),
- 
-     DEFINE_RISCV_CPU(TYPE_RISCV_CPU_RV32I, TYPE_RISCV_BARE_CPU,
-         .misa_mxl_max = MXL_RV32,
-@@ -3199,8 +3185,15 @@ static const TypeInfo riscv_cpu_type_infos[] = {
-     DEFINE_RISCV_CPU(TYPE_RISCV_CPU_SIFIVE_E51, TYPE_RISCV_CPU_SIFIVE_E,
-         .misa_mxl_max = MXL_RV64
-     ),
--    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_SIFIVE_U54, MXL_RV64,  rv64_sifive_u_cpu_init),
--    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_SHAKTI_C,   MXL_RV64,  rv64_sifive_u_cpu_init),
-+
-+    DEFINE_RISCV_CPU(TYPE_RISCV_CPU_SIFIVE_U54, TYPE_RISCV_CPU_SIFIVE_U,
-+        .misa_mxl_max = MXL_RV64,
-+    ),
-+
-+    DEFINE_RISCV_CPU(TYPE_RISCV_CPU_SHAKTI_C, TYPE_RISCV_CPU_SIFIVE_U,
-+        .misa_mxl_max = MXL_RV64,
-+    ),
-+
-     DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_THEAD_C906, MXL_RV64,  rv64_thead_c906_cpu_init),
-     DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_TT_ASCALON, MXL_RV64,  rv64_tt_ascalon_cpu_init),
-     DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_VEYRON_V1,  MXL_RV64,  rv64_veyron_v1_cpu_init),
+     }
 -- 
 2.49.0
 
