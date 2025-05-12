@@ -2,79 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0820CAB2DB5
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 05:05:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EAFCAB2F3B
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 07:59:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEJSJ-0003aS-Ps; Sun, 11 May 2025 23:03:51 -0400
+	id 1uEMBE-00077E-SD; Mon, 12 May 2025 01:58:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uEJSG-0003aF-Gd
- for qemu-devel@nongnu.org; Sun, 11 May 2025 23:03:48 -0400
-Received: from mgamail.intel.com ([192.198.163.18])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uEJSD-0005wL-Sh
- for qemu-devel@nongnu.org; Sun, 11 May 2025 23:03:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747019026; x=1778555026;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Bj/tH68dQzsGdHRJBEGcFc/YadVXSQUdHnDga7hlP4w=;
- b=RaBHF8Lf0zY6lcMdGCyZMXxDT0FsKtemVb9m3RgAWybCfnJNVARLZVzQ
- 2SYpzBMKx5mqhINHPBgfxBECJNZv/J/+Qey1hsC7dIQQnTXbNesbYloB9
- ov8zGupYzRdmVEvgkVDP3I9RdjagwvXwayGvbh2NKhgj/U5IZSkA0G5SR
- +l200a0tWrZRvNTLZziz2sVHwVBhlThOmKvKwNgaKKy6WTj8abijIvVQy
- VsBXBUP7N4Sh3HT3WJlyGezcUU3AVYwGod2nXkFwOJNrompxT0vjpOfVN
- A+NLYLSND8FV39iT2pmkTQLIoApVLW4ZWUBXdZq0BLeEWyoJ8MFxNawKW A==;
-X-CSE-ConnectionGUID: TK7G+TzkT1O48HJzKEeuOw==
-X-CSE-MsgGUID: OLR702/3SdeRlfcdzWTDcA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11430"; a="48046374"
-X-IronPort-AV: E=Sophos;i="6.15,281,1739865600"; d="scan'208";a="48046374"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 May 2025 20:03:42 -0700
-X-CSE-ConnectionGUID: aPnosXKGSIyf29dDBkqrjA==
-X-CSE-MsgGUID: 5W4UljGCQ/amyVe+XVUeIg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,281,1739865600"; d="scan'208";a="137717132"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa010.fm.intel.com with ESMTP; 11 May 2025 20:03:39 -0700
-Date: Mon, 12 May 2025 11:24:42 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Chenyi Qiang <chenyi.qiang@intel.com>
-Cc: David Hildenbrand <david@redhat.com>,
- Alexey Kardashevskiy <aik@amd.com>, Peter Xu <peterx@redhat.com>,
- Gupta Pankaj <pankaj.gupta@amd.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
- Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
- Xu Yilun <yilun.xu@intel.com>, Li Xiaoyao <xiaoyao.li@intel.com>
-Subject: Re: [PATCH v4 01/13] memory: Export a helper to get intersection of
- a MemoryRegionSection with a given range
-Message-ID: <aCFp+oLcypJEh71X@intel.com>
-References: <20250407074939.18657-1-chenyi.qiang@intel.com>
- <20250407074939.18657-2-chenyi.qiang@intel.com>
+ (Exim 4.90_1) (envelope-from <xb@ultrarisc.com>) id 1uEHt6-0005uX-GM
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 21:23:25 -0400
+Received: from [218.76.62.146] (helo=ultrarisc.com)
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <xb@ultrarisc.com>) id 1uEHt2-0005po-Cu
+ for qemu-devel@nongnu.org; Sun, 11 May 2025 21:23:24 -0400
+Received: from xb$ultrarisc.com ( [192.168.100.1] ) by
+ ajax-webmail-localhost.localdomain (Coremail) ; Mon, 12 May 2025 09:17:10
+ +0800 (GMT+08:00)
+X-Originating-IP: [192.168.100.1]
+Date: Mon, 12 May 2025 09:17:10 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: =?UTF-8?B?6LCi5rOi?= <xb@ultrarisc.com>
+To: qemu-devel@nongnu.org
+Subject: [PATCH] target/riscv/kvm/kvm-cpu: Fixed the issue of resume after
+ QEMU+KVM migration
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2024.1-cmXT6 build
+ 20240625(a75f206e) Copyright (c) 2002-2025 www.mailtech.cn
+ mispb-8cc425bc-7df6-4523-bb46-a48cc1a964e6-ultrarisc.com
+Content-Transfer-Encoding: base64
+X-CM-CTRLDATA: tLTOPmZvb3Rlcl90eHQ9MjM4Mzo4NDA=
+Content-Type: text/plain; charset=UTF-8
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250407074939.18657-2-chenyi.qiang@intel.com>
-Received-SPF: pass client-ip=192.198.163.18; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -59
-X-Spam_score: -6.0
-X-Spam_bar: ------
-X-Spam_report: (-6.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.587,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Message-ID: <6863aff8.bc1.196c21139a6.Coremail.xb@ultrarisc.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: AQAAfwBHhxAXTCFoJ6QVAA--.951W
+X-CM-SenderInfo: l0e63zxwud2x1vfou0bp/1tbiAQARB2gdgHsAFgADsM
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VW3Jw
+ CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+ daVFxhVjvjDU=
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 218.76.62.146 (failed)
+Received-SPF: pass client-ip=218.76.62.146; envelope-from=xb@ultrarisc.com;
+ helo=ultrarisc.com
+X-Spam_score_int: 8
+X-Spam_score: 0.8
+X-Spam_bar: /
+X-Spam_report: (0.8 / 5.0 requ) BAYES_40=-0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 12 May 2025 01:58:09 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,38 +67,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Apr 07, 2025 at 03:49:21PM +0800, Chenyi Qiang wrote:
-> Date: Mon,  7 Apr 2025 15:49:21 +0800
-> From: Chenyi Qiang <chenyi.qiang@intel.com>
-> Subject: [PATCH v4 01/13] memory: Export a helper to get intersection of a
->  MemoryRegionSection with a given range
-> X-Mailer: git-send-email 2.43.5
-> 
-> Rename the helper to memory_region_section_intersect_range() to make it
-> more generic. Meanwhile, define the @end as Int128 and replace the
-> related operations with Int128_* format since the helper is exported as
-> a wider API.
-> 
-> Suggested-by: Alexey Kardashevskiy <aik@amd.com>
-> Reviewed-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
-> ---
-> Changes in v4:
->     - No change.
-> 
-> Changes in v3:
->     - No change
-> 
-> Changes in v2:
->     - Make memory_region_section_intersect_range() an inline function.
->     - Add Reviewed-by from David
->     - Define the @end as Int128 and use the related Int128_* ops as a wilder
->       API (Alexey)
-> ---
->  hw/virtio/virtio-mem.c | 32 +++++---------------------------
->  include/exec/memory.h  | 27 +++++++++++++++++++++++++++
->  2 files changed, 32 insertions(+), 27 deletions(-)
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
+VGhpcyBwYXRjaCBmaXhlcyB0d28gY3JpdGljYWwgaXNzdWVzIGluIFFFTVUgd2l0aCBLVk06ClBv
+c3QtTWlncmF0aW9uIEZhaWx1cmUgaW4gVXNlciBNb2RlOiBXaGVuIFFFTVUgd2l0aCBLVk0gaXMg
+cnVubmluZyBpbiB1c2VyIG1vZGUsIHRoZSBndWVzdCBtYXkgZmFpbCB0byBmdW5jdGlvbiBjb3Jy
+ZWN0bHkgYWZ0ZXIgbWlncmF0aW9uLgpNdWx0aS1Db3JlIEd1ZXN0IEluY29uc2lzdGVuY3k6IEFm
+dGVyIG1pZ3JhdGlvbiwgb25seSB0aGUgZmlyc3QgQ1BVIChjb3JlIDApIHJlbWFpbnMgZnVuY3Rp
+b25hbCwgd2hpbGUgYWxsIG90aGVyIGNvcmVzIGJlY29tZSB1bnJlc3BvbnNpdmUuClRoaXMgcGF0
+Y2ggYWRkcmVzc2VzIGJvdGggcHJvYmxlbXMgdG8gZW5zdXJlIHN0YWJsZSBndWVzdCBvcGVyYXRp
+b24gYWZ0ZXIgbWlncmF0aW9uLgoKU2lnbmVkLW9mZi1ieTogeGllYm8taGFvMTIzIDx4YkB1bHRy
+YXJpc2MuY29tPgotLS0KIHRhcmdldC9yaXNjdi9rdm0va3ZtLWNwdS5jIHwgMjMgKysrKysrKysr
+KysrKysrKysrKysrKysKIDEgZmlsZSBjaGFuZ2VkLCAyMyBpbnNlcnRpb25zKCspCgpkaWZmIC0t
+Z2l0IGEvdGFyZ2V0L3Jpc2N2L2t2bS9rdm0tY3B1LmMgYi90YXJnZXQvcmlzY3Yva3ZtL2t2bS1j
+cHUuYwppbmRleCA3NTcyNGI2YWY0Li5hMTVjYWEyMGNlIDEwMDY0NAotLS0gYS90YXJnZXQvcmlz
+Y3Yva3ZtL2t2bS1jcHUuYworKysgYi90YXJnZXQvcmlzY3Yva3ZtL2t2bS1jcHUuYwpAQCAtNTc2
+LDYgKzU3NiwxNCBAQCBzdGF0aWMgaW50IGt2bV9yaXNjdl9nZXRfcmVnc19jb3JlKENQVVN0YXRl
+ICpjcykKICAgICB9CiAgICAgZW52LT5wYyA9IHJlZzsKCisgICAgICAgLypSZXN0b3JlIHRoZSBn
+dWVzdCdzIHByaXZpbGVnZWQgc3RhdGUgdG8gZml4IHRoZSBndWVzdCdzIHByaXZpbGVnZWQgc3Rh
+dGUgZXJyb3IgYWZ0ZXIgbWlncmF0aW9uKi8KKyAgICAgICByZXQgPSBrdm1fZ2V0X29uZV9yZWco
+Y3MsIFJJU0NWX0NPUkVfUkVHKGVudiwgbW9kZSksICZyZWcpOworICAgIGlmIChyZXQpIHsKKyAg
+ICAgICAgcmV0dXJuIHJldDsKKyAgICB9CisgICAgaWYocmVnICE9IDMpCisgICAgICAgIGVudi0+
+cHJpdiA9IHJlZzsKKwogICAgIGZvciAoaSA9IDE7IGkgPCAzMjsgaSsrKSB7CiAgICAgICAgIHVp
+bnQ2NF90IGlkID0ga3ZtX3Jpc2N2X3JlZ19pZF91bG9uZyhlbnYsIEtWTV9SRUdfUklTQ1ZfQ09S
+RSwgaSk7CiAgICAgICAgIHJldCA9IGt2bV9nZXRfb25lX3JlZyhjcywgaWQsICZyZWcpOwpAQCAt
+NjAxLDYgKzYwOSwxNSBAQCBzdGF0aWMgaW50IGt2bV9yaXNjdl9wdXRfcmVnc19jb3JlKENQVVN0
+YXRlICpjcykKICAgICAgICAgcmV0dXJuIHJldDsKICAgICB9CgorICAgICAgIC8qU2F2ZSB0aGUg
+Z3Vlc3QncyBwcml2aWxlZ2VkIHN0YXRlIHRvIGZpeCB0aGUgcHJvYmxlbSBvZiB0aGUgZ3Vlc3Qn
+cyBwcml2aWxlZ2VkIHN0YXRlIGVycm9yIGFmdGVyIG1pZ3JhdGlvbiovCisgICAgICAgcmVnID0g
+ZW52LT5wcml2OworICAgICAgIGlmKHJlZyAhPSAzKSB7CisgICAgICAgcmV0ID0ga3ZtX3NldF9v
+bmVfcmVnKGNzLCBSSVNDVl9DT1JFX1JFRyhlbnYsIG1vZGUpLCAmcmVnKTsKKyAgICAgICBpZiAo
+cmV0KSB7CisgICAgICAgICAgIHJldHVybiByZXQ7CisgICAgICAgIH0KKyAgICB9CisKICAgICBm
+b3IgKGkgPSAxOyBpIDwgMzI7IGkrKykgewogICAgICAgICB1aW50NjRfdCBpZCA9IGt2bV9yaXNj
+dl9yZWdfaWRfdWxvbmcoZW52LCBLVk1fUkVHX1JJU0NWX0NPUkUsIGkpOwogICAgICAgICByZWcg
+PSBlbnYtPmdwcltpXTsKQEAgLTEyODksNiArMTMwNiwxMiBAQCBpbnQga3ZtX2FyY2hfcHV0X3Jl
+Z2lzdGVycyhDUFVTdGF0ZSAqY3MsIGludCBsZXZlbCwgRXJyb3IgKiplcnJwKQogICAgICAgICBy
+ZXR1cm4gcmV0OwogICAgIH0KCisgICAgICAgLypTZXQgb3RoZXIgY29yZXMgZXhjZXB0IGd1ZXN0
+IGNvcmUgMCB0byBydW5uaW5nIHN0YXRlLCBmaXggdGhlIHByb2JsZW0gdGhhdCBvdGhlciBjb3Jl
+cyBleGNlcHQgY29yZSAwIGNhbm5vdCBydW4gbm9ybWFsbHkgYWZ0ZXIgZ3Vlc3QgbXVsdGktY29y
+ZSBtaWdyYXRpb24qLworICAgICAgIGlmKChsZXZlbCA9PSBLVk1fUFVUX0ZVTExfU1RBVEUpICYm
+IChjcy0+Y3B1X2luZGV4ICE9IDApKXsKKyAgICAgICBSSVNDVkNQVSAqY3B1ID0gUklTQ1ZfQ1BV
+KGNzKTsKKyAgICAgICByZXQgPSBrdm1fcmlzY3Zfc3luY19tcHN0YXRlX3RvX2t2bShjcHUsIEtW
+TV9NUF9TVEFURV9SVU5OQUJMRSk7CisgICAgICAgfQorCiAgICAgaWYgKEtWTV9QVVRfUkVTRVRf
+U1RBVEUgPT0gbGV2ZWwpIHsKICAgICAgICAgUklTQ1ZDUFUgKmNwdSA9IFJJU0NWX0NQVShjcyk7
+CiAgICAgICAgIGlmIChjcy0+Y3B1X2luZGV4ID09IDApIHsKLS0KMi4zNC4xCg0KDQpfX19fX19f
+X19fX19fX19fX19fX19fd3d3LnVsdHJhcmlzYy5jb20NCumHjeimgeaPkOekuu+8muacrOmCruS7
+tuWMheaLrOmZhOS7tueahOWGheWuueaYr+WPl+azleW+i+S/neaKpOeahOS/neWvhuS/oeaBr++8
+jOWmguaenOaCqOS4jeaYr+aMh+WumuaUtuS7tuS6uu+8jOivt+eri+WNs+WwhuacrOmCruS7tuWI
+oOmZpO+8jOazleW+i+emgeatouS7u+S9lemdnuazleeahOaKq+mcsuOAgeWkjeWItuOAgeS8oOaS
+reaIluS7peS7u+S9leaWueW8j+S9v+eUqOacrOmCruS7tuOAguacrOmCruS7tuS4reWMheWQq+ea
+hOaEj+ingeOAgeW7uuiuruaYr+WfuuS6juaIluWPl+WIsOaIkeaWueihqOi+vuWSjOWumuS5ieea
+hOadoeasvuWPiuadoeS7tueahOmZkOWumu+8jOWmguaXoOaIkeaWueeahOato+W8j+S5pumdoua+
+hOa4heaIluaOiOadg++8jOS4jeWPr+iiq+WNleeLrOS9nOS4uuS7u+S9leaDheW9ouS4i+eahOiv
+geaNruaIluS+neaNruOAguaEn+iwouaCqOeahOeQhuino+S4jumFjeWQiOOAgueJiOadg+aJgOac
+ieOAgklNUE9SVEFOVCBOT1RJQ0U6IFRoaXMgZW1haWwsIGluY2x1ZGluZyBpdHMgYXR0YWNobWVu
+dCBpZiBhbnksIGlzIGNvbmZpZGVudGlhbC4gSWYgeW91IGFyZSBub3QgdGhlIGludGVuZGVkIHJl
+Y2lwaWVudCwgcGxlYXNlIGRlbGV0ZSBpdCBmcm9tIHlvdXIgY29tcHV0ZXIgaW1tZWRpYXRlbHku
+IEFueSBkaXNjbG9zdXJlLCBjb3B5aW5nLCBvciBkaXN0cmlidXRpb24gb2YgdGhpcyBtZXNzYWdl
+LCBvciB0YWtpbmcgb2YgYW55IGFjdGlvbiBiYXNlZCBvbiBpdCBpcyBzdHJpY3RseSBwcm9oaWJp
+dGVkLiAgQW55IG9waW5pb25zIGFuZCBzdWdnZXN0aW9ucyBjb250YWluZWQgaW4gdGhpcyBlbWFp
+bCBhcmUgc3ViamVjdCB0byB0aGUgdGVybXMgYW5kIGNvbmRpdGlvbnMgZXhwcmVzc2VkIGFuZCBk
+ZWZpbmVkIGJ5IHVzIGFuZCBzaG91bGQgbm90IGJlIHJlbGllZCB1cG9uIHVuY29uZGl0aW9uYWxs
+eSB1bmRlciBhbnkgY2lyY3Vtc3RhbmNlcyB1bmxlc3MgdGhleSBhcmUgY29uZmlybWVkIGluIG9m
+ZmljaWFsIHdyaXR0ZW4gY2xhcmlmaWNhdGlvbiBvciBhdXRob3JpemF0aW9uIGZyb20gdXMuICBU
+aGFuayB5b3UgZm9yIHlvdXIgdW5kZXJzdGFuZGluZyBhbmQgY29vcGVyYXRpb24uQWxsIHJpZ2h0
+cyByZXNlcnZlZC4=
 
