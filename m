@@ -2,86 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 427A7AB3F7B
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 19:43:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2323AB4149
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 20:04:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEXBN-0007VV-Tb; Mon, 12 May 2025 13:43:17 -0400
+	id 1uEXUK-0006TQ-Jk; Mon, 12 May 2025 14:02:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1uEXBD-0007U3-La
- for qemu-devel@nongnu.org; Mon, 12 May 2025 13:43:07 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1uEXBB-0005lM-Bd
- for qemu-devel@nongnu.org; Mon, 12 May 2025 13:43:07 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-5fbfdf7d353so6261923a12.0
- for <qemu-devel@nongnu.org>; Mon, 12 May 2025 10:43:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747071783; x=1747676583; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=iLCCZwU1fpn9UUMYzsI8IvsGIFCdQYUqQRR94oJylXY=;
- b=dRiZ2HTnMb9PPj6+zWMmwVbOmrYSf+al/ZJHHArULZFqtJEXjOpuzb3yluZsRLW9uR
- JbMCHC+fy1VMQueHfqzj8GTPMN1wzNAGR32Jsmw6abMZRKRyvvnHKNW5iATDE66yy4q+
- 3EZdHA0aITXWXz4U94eoo9Xw6muRIlG4cqWfBbTfCYjyyPVYFbW6kICSUFXXyMx03Mlk
- gKNF7qFyaWF9xzY97I1eb75WkimAB+aN9UD//irwIC2G1TpiWBnglD9b4du81Ld8Cb+O
- 5Gp8i59qUF8i0f0lCIgE4XrJGxpKGd7zd0iYQuXBXnPD6kadA20Jn8Hkys2B0AmSzCuO
- lJgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747071783; x=1747676583;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=iLCCZwU1fpn9UUMYzsI8IvsGIFCdQYUqQRR94oJylXY=;
- b=Qgf1hnMqpcXdys1xBl6XZ33sEQxn7rp6T9Mi/fPxGk+8d48seBE3TPQ5Mvo0kmvZ4/
- Mc1mwV4JXjL9ITY1mb62sK6P6nbikl/+43eGX7Pn00gIv5Y41rMqqP6GUveqBdMQVmyy
- QyxJfeQ3bREkGpkbKcwiAoxoIj/speS8vcbA0z8uFYN8C7xkMHooS0/1ZxTEa4W5zby9
- 42ahlR55+wlFTsmbDQnrFlAgxsCIq9xLJ+fww+Q07R5IyUlXgfIeU5fcy1L88bjB2zc3
- xPZPQ40eixOTkYHxNJlWkn0/jsnotz1Zrf0CRauoJ7k1EY7cyYe1G0uvNkXxAxNc1tU6
- vgFw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXmkaibzoRhrVHQOV1TQy5QZmdv54y1mizyEM71MJdogg4iWgfx8eHBOYUAaLC0S4nSWkDHhnXrAg3N@nongnu.org
-X-Gm-Message-State: AOJu0YzLpWfKkHR+8MZlukgfFeMz6d+uKrtYCvXdklggSgj+/eVW+CEv
- mIrNGsuCQa6iqaJvw2zWyMS53wpxASTqUq5FBHtEU1BwBIxHQ/6zE81hNPvtXh/0vVUs2EbNXYN
- hbKPBwdwgeIFcDzTZNDPlxR5atnc=
-X-Gm-Gg: ASbGncsqkkdLJhTpv3JjCL0PVyasky4AdX5KyySmhGe2NQ+BZ6NH2aQXyLkxozcbIOH
- W/LzZKCIDGI3JlYWtWAcCdkA06kkaXUaYSSwCEOKfVChHDzX5wopHD/JQVwO2HQ8BGYy+9eAXuh
- HpJLoH2z5BV9LXESwiQ+eotL9C1zSzioU=
-X-Google-Smtp-Source: AGHT+IG4SA27J9kx6WR6EQ5vrwFGYxvJX1zcs30cfCqR8njC1O2kkZxJyHS0ECKhmrHnfwp9qj5eBudSadP5eKdb65I=
-X-Received: by 2002:a05:6402:13d4:b0:5f3:7f49:a4b6 with SMTP id
- 4fb4d7f45d1cf-5fca080a80amr10298700a12.23.1747071782912; Mon, 12 May 2025
- 10:43:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
+ id 1uEXUD-0006Q8-77; Mon, 12 May 2025 14:02:45 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
+ id 1uEXU9-0007wL-P1; Mon, 12 May 2025 14:02:44 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54CFq22n024635;
+ Mon, 12 May 2025 18:02:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=OdDU+IsfUyB3rk3mZPTgu+qE9HG5yK8DPYIaWNbJ8
+ pw=; b=ULOOVRqdxTfWTbgYVEFfdIm5KcglYJf28BULaiA0K1mDLWysf22CCV4x7
+ OwGjqyLRSsyxY4S30TH9xQmk3g6JVxQvljV/2SzhFDNnRYjD1bJ3DhT5bg7fdoZG
+ e6TbUKrQC5WSNjo3/bSKB7lX523JWn5o4e9DuJHCh5BEuouYaEaD0ijApCgCxX7M
+ g/WmBlFAp9giQaB/NaBLcIonR5F8sMDtxJXoGDj9C176eWT/EYTuIbyNKXgZIPpJ
+ 6qJJ/KLiH/mABqND4Gj6BWA7lhyPVXPK0+CPrM/0pGL1KWfaBbKb7bP9J5OtczM/
+ PsvsLRjOX0mw9l8WheAfVIFDmL8Qg==
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46kbksu78a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 12 May 2025 18:02:34 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54CEBDjJ024478;
+ Mon, 12 May 2025 18:02:33 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46jjmky2qf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 12 May 2025 18:02:33 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 54CI2VjN17105600
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 12 May 2025 18:02:32 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D97E658058;
+ Mon, 12 May 2025 18:02:31 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 13F6D58057;
+ Mon, 12 May 2025 18:02:31 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.61.251.19])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 12 May 2025 18:02:30 +0000 (GMT)
+From: Rorie Reyes <rreyes@linux.ibm.com>
+To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
+Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
+ jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
+ alex.williamson@redhat.com, clg@redhat.com, thuth@redhat.com,
+ akrowiak@linux.ibm.com, rreyes@linux.ibm.com
+Subject: [RFC PATCH v9 0/4] Report vfio-ap configuration changes
+Date: Mon, 12 May 2025 14:02:26 -0400
+Message-ID: <20250512180230.50129-1-rreyes@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-References: <20250508122522.73786-1-philmd@linaro.org>
- <20250510183552.GA116934@fedora>
- <CAFEAcA9mav8B+u1-C47KZtc-cnUBGY-f7OZG0QAwtb0uGMdxPg@mail.gmail.com>
-In-Reply-To: <CAFEAcA9mav8B+u1-C47KZtc-cnUBGY-f7OZG0QAwtb0uGMdxPg@mail.gmail.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Mon, 12 May 2025 13:42:50 -0400
-X-Gm-Features: AX0GCFtMK3Z8tB5PQ6Tl3ejYkdxHiiwm0u96_-2rFHbe-ng0yz1wiDt41rxnHSA
-Message-ID: <CAJSP0QX2sSqGEn_Wx9+pT0D-JOwc4WdtcZN2o3M3cin07dSUEg@mail.gmail.com>
-Subject: Re: [PULL 00/19] Misc HW patches for 2025-05-08
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=stefanha@gmail.com; helo=mail-ed1-x531.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=DrhW+H/+ c=1 sm=1 tr=0 ts=682237ba cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=dt9VzEwgFbYA:10 a=b-2j7H-tuh0H-JaNz4oA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDE4MSBTYWx0ZWRfX21V9jGILZxBc
+ gpABStoe99ZMBZrGkPWMeq8wgvN51vDMPUMsNu3zNc5JqiQOUZhVSh0y8GZhPGYtxnV17IbgzAZ
+ S6EocF1cyJ31SVy6u5JY0aTnJ9O7VXdwv/K3UW8PXggCAiKWgDpfaKslvmFIix9fq/HoEZfMkS+
+ Kt0XvWN3cD2jhTUkl0w/bMiA2xLq/HwRuHXeabxpYjpRe0nigFmtbcRLWkZs83Ig1RDPcgiH+aQ
+ X00TIpnhKvx35SlbQ6Smo7kEz92DIy8HzIzCGN02+L7uj4fW7qgE6fxxUopLAIL31i5F+Id5Yzy
+ 22yngucgsv+xqcqEJkOiaqjLdh5Q9ShEci3HFkqWaWx8I5uxf3YNo9fxEXWGyNCjeRUeANCtNt+
+ d24CQ763qQmcn7CIqu+pxm6UocZeJy3HGu47YDvucB04AC3TjJzQKSof+vxK1e2QPD1qRjrL
+X-Proofpoint-GUID: hiX8mdtaXYwj8s2hkMVYHWOuin6ZuVZT
+X-Proofpoint-ORIG-GUID: hiX8mdtaXYwj8s2hkMVYHWOuin6ZuVZT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-12_06,2025-05-09_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0
+ priorityscore=1501 clxscore=1015 impostorscore=0 phishscore=0 bulkscore=0
+ mlxscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0 mlxlogscore=999
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2505120181
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=rreyes@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,31 +115,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 12, 2025 at 1:05=E2=80=AFPM Peter Maydell <peter.maydell@linaro=
-.org> wrote:
->
-> On Sat, 10 May 2025 at 19:38, Stefan Hajnoczi <stefanha@redhat.com> wrote=
-:
-> >
-> > Applied, thanks.
-> >
-> > Please update the changelog at https://wiki.qemu.org/ChangeLog/10.1 for=
- any user-visible changes.
->
-> This pullreq from Philippe doesn't seem to be in upstream git:
-> did you forget to push it?
+Changelog:
+v9:
+- added SPDX licensing to newly created file 'hw/s390x/ap-stub.c'
 
-I probably forgot to push staging to master. It's there now because I
-just pushed some more merged pull requests:
+v8:
+- fixed windows cross-compile build
+- moved /hw/vfio/ap-stub.c to /hw/s390x/ap-stub.c
+- updated the use of stub file to MAINTAINERS to reflect new location
+- removed if_false for 'CONFIG_VFIO_AP' statement from /hw/vfio/meson.build
+- added if_false for 'CONFIG_VFIO_AP' to use ap-stub.c in /hw/s390x/meson.build
+- all those changes still address '--without-default-devices' issue from v5
 
-https://gitlab.com/qemu-project/qemu/-/commit/f9bb7e53a341d08fd4ec8d7e810eb=
-fd4f6f936bd
+v7:
+- Dropped initial commit for linux-header file vfio.h since I created two new commits
+to address the changes made in v6
+- Moved patches 6 and 7 to the beginning of the series after dropping the first patch
+   - Because I dropped the initial commit for linux-header file vfio.h, I had to add
+VFIO_AP_CFG_CHG_IRQ_INDEX
+- Resyncing latest to v6.15-rc3
+- Still need Thomas Huth's review of v5 changes for patch 6/6
 
-commit f9bb7e53a341d08fd4ec8d7e810ebfd4f6f936bd
-Merge: 3e1210e8b0 54e54e594b
-Author: Stefan Hajnoczi <stefanha@redhat.com>
-Date:   Fri May 9 12:04:10 2025 -0400
+v6:
+- Updating the update-linux-headers script to address kernel commit change 8a14
+- Update headers to retrieve uapi information for vfio-ap for update to Linux v6.15-rc1
+- Still need Thomas Huth's review of v5 changes for patch 7/7 (see below)
 
-    Merge tag 'hw-misc-20250508' of https://github.com/philmd/qemu into sta=
-ging
+v5:
+- configuring using the '--without-default-devices' fails when building the code
+- created a stub file for functions ap_chsc_sei_nt0_get_event and ap_chsc_sei_nt0_have_event
+- add if_false for 'CONFIG_VFIO_AP' use ap-stub.c in meson.build
+- add the use of the stub file to MAINTAINERS since it's a new file
+
+v4:
+- allocating cfg_chg_event before inserting into the queue
+- calling nt0_have_event in if loop to check if there are any
+elemenets in the queue, then calling QTAILQ_FIRST when the check
+passes
+- moving memset() after the check
+
+v3:
+- changes that were made to patch 3/5 should have been made in
+patch 2/5
+
+v2:
+- removed warnings that weren't needed
+- added unregister function
+- removed whitelines
+- changed variable names for consistency
+- removed rc variable and returning 1 or 0 outright
+- reversed logics for if statements
+- using g_free() instead of free()
+- replaced hardcoded numeric values by defining them with #define
+in the header
+
+--------------------------------------------------------------------------
+This patch series creates and registers a handler that is called when
+userspace is notified by the kernel that a guest's AP configuration has
+changed. The handler in turn notifies the guest that its AP configuration
+has changed. This allows the guest to immediately respond to AP
+configuration changes rather than relying on polling or some other
+inefficient mechanism for detecting config changes.
+
+Rorie Reyes (4):
+  hw/vfio/ap: notification handler for AP config changed event
+  hw/vfio/ap: store object indicating AP config changed in a queue
+  hw/vfio/ap: Storing event information for an AP configuration change
+    event
+  s390: implementing CHSC SEI for AP config change
+
+ MAINTAINERS                  |  1 +
+ hw/s390x/ap-stub.c           | 25 +++++++++++
+ hw/s390x/meson.build         |  1 +
+ hw/vfio/ap.c                 | 82 ++++++++++++++++++++++++++++++++++++
+ include/hw/s390x/ap-bridge.h | 22 ++++++++++
+ target/s390x/ioinst.c        | 11 ++++-
+ 6 files changed, 140 insertions(+), 2 deletions(-)
+ create mode 100644 hw/s390x/ap-stub.c
+
+-- 
+2.48.1
+
 
