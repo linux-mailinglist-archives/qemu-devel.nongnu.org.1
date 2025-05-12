@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D29D2AB3C5D
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 17:40:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06434AB3C57
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 17:39:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEVCg-0001W0-Nn; Mon, 12 May 2025 11:36:32 -0400
+	id 1uEVA8-0005Rz-3P; Mon, 12 May 2025 11:33:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uEV9p-0004oc-6t
+ id 1uEV9p-0004pC-Oz
  for qemu-devel@nongnu.org; Mon, 12 May 2025 11:33:36 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uEV9l-0006iC-L3
- for qemu-devel@nongnu.org; Mon, 12 May 2025 11:33:32 -0400
+ id 1uEV9l-0006iG-Lo
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 11:33:33 -0400
 Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54CCA29J004289;
- Mon, 12 May 2025 15:33:16 GMT
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54CC9gUM003877;
+ Mon, 12 May 2025 15:33:17 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2025-04-25; bh=ssDd7gkWszH+ccxZvhRlbNT9aL2gqVkN7Gx6ZQ5No7U=; b=
- F70P1toeersPj1OZOIx+IlfzGnKOw30qE7t9wOz0/WvXuqxhH3XdcdfvqEkJXbkU
- Xy4HcxP37LLAPtmUOOw3n8xA1nLTwrrai4ChcilAq5NWNTubZz1K3xIXOOA3+9Pj
- peuynkwehR5lyyCAVnyFvSQUOABjC+qlKc8+nEc66ZzIv/HUsuf8QVK+U++YNMGg
- 1KK13p8e6HS4kPKiBx1d6dYsKghYeSPu5m6D10iXuUwKKula4QF9AcjqIYzXEMXN
- /bQQtEeVIqoc0jiQjgaVKiHzdlswCVHkDAlEL7f+5AoNds3ctET/1xyTrV4CwHTR
- DqgcRA/ot1T2yRqxSSdHxg==
+ corp-2025-04-25; bh=jjITDnlRw8hcan9JA1uT1MjM0sRa0i3dCqyVL+KoUFw=; b=
+ O5QegXKwH17JKGua/C/ONPx/Z8+Ez+LRnghcbYRNdIqQm9g/4sRU3jkbjnAki57J
+ jXdneYpdguIRTr9zK7XdZyfHUD2pxnLfyzXlQd2phXP12SAqB4IwhEamYrXUEBFb
+ PNDtO2yEVyvsq6SOOB1dI5IxodeRMKVNUcCFAQ6YDgpBXIOfklvLwLQWCunl55jm
+ 3atQDeyGV5nGTcO0M417eHU35toV1iRNFgQ5VbsFCrP3311oREfKfwJFrS1g0e6P
+ c2dbYr4RPOWaD6VTAAy5P7HwFUS1koxY8chVnJ8wbGAJEeYwS4Iop/LeKLeNNx5X
+ JJ9nYpjTaYru/SluPjRLsQ==
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46j0epjscd-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46j0epjsce-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 May 2025 15:33:16 +0000 (GMT)
+ Mon, 12 May 2025 15:33:17 +0000 (GMT)
 Received: from pps.filterd
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 54CE4mR1002503; Mon, 12 May 2025 15:33:15 GMT
+ with ESMTP id 54CEEdwq002446; Mon, 12 May 2025 15:33:16 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 46jwx366p1-1
+ 46jwx366pj-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 May 2025 15:33:15 +0000
+ Mon, 12 May 2025 15:33:16 +0000
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54CFWk5W030605;
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54CFWk5Y030605;
  Mon, 12 May 2025 15:33:15 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 46jwx36627-28; Mon, 12 May 2025 15:33:15 +0000
+ ESMTP id 46jwx36627-29; Mon, 12 May 2025 15:33:15 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -61,9 +61,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V3 27/42] vfio: pass ramblock to vfio_container_dma_map
-Date: Mon, 12 May 2025 08:32:38 -0700
-Message-Id: <1747063973-124548-28-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V3 28/42] backends/iommufd: iommufd_backend_map_file_dma
+Date: Mon, 12 May 2025 08:32:39 -0700
+Message-Id: <1747063973-124548-29-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1747063973-124548-1-git-send-email-steven.sistare@oracle.com>
 References: <1747063973-124548-1-git-send-email-steven.sistare@oracle.com>
@@ -75,18 +75,18 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
  bulkscore=0 suspectscore=0 phishscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2504070000
  definitions=main-2505120161
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDE2MSBTYWx0ZWRfX9Qs5IAGBsoNk
- uXHOGwbKPPlIbnwL4YzwUGbXkU41FdXsANeUCuJl8ufnshCw8ykVKbwkPICXLtq8sEVPeKvmr26
- Xbwk/fpI7w05mGzYtNmFNanTyblJzkT4pThfTNawUQN7zrzXMVTIJiECU6vu2sju0QnnGh5kmI4
- wUVt2X2Ys+ezIhMIXsKciWdM+r+LQqgnxwNMh6cE8rbwEe/6dmt0EyIg9+bWWAnKJg3iZiHLzwG
- an43Nx2mVTYulG21PCanavNkRjcc0LDp1Z/35/yGYMnCgMXmCZLXWvhfM4ODeEMLttikQm21R80
- VOczYMwRAGcJKG1LyNbG6lmbMSK9b8Lh7z1eZ4dTlYLROMCBgWOFv0fcGSJus5de2h5Frsp1Fvj
- LN/xNt2dRaO6KFuvJprjzlXMT1EQU4ILBfcNR1ZdcHTfMQ1ChakCOWRad91m+eyNUfQ2qiTG
-X-Authority-Analysis: v=2.4 cv=DO6P4zNb c=1 sm=1 tr=0 ts=682214bc b=1 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDE2MSBTYWx0ZWRfX/cdwOiZ5Qy2l
+ Sv6Pu95KSIYNLL9g/TE/kCgUEsWVcCGt5EZh6ALVuNkI4Ozmm1PF7wnd+/Y/D5B/Gq4IXaYYOp6
+ WWNTVDQPUb7vU/fN+Z31bpOJeCVCDKTWKHvJ3FsPxabgfLgMgDrBLySYbBOkyylZj50W0g0ye3x
+ PUNwhAmqyaG6alBcHCwK3ooC/QqB3ZHzCWPYL0Nd064E5L+ATGj1T2I/1IfizVc7/mbpGB8nmaC
+ CFQAAueSxU67yOYnJrcvR1yK39jihmNtuGPb2+Se4XjZ95Zl7h6717uuEyxFq2W/MnrhGAgHxc3
+ X1Ey65UMqUdjk5lJX8Z3WQbYmLZHA1UVlLX915qTO6pRJhrcw9CEMx9BS8tc4eGeb0sHaraUi5n
+ atM0DWuGm42BHAnFCoyjYCvfH2BZ0yvax7SLSalXsxNs8iTeczrKK0IKfmhK7ttNQ9YqTTNm
+X-Authority-Analysis: v=2.4 cv=DO6P4zNb c=1 sm=1 tr=0 ts=682214bd b=1 cx=c_pps
  a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=Wx9cOkiF3HRH0-cl4e0A:9
-X-Proofpoint-ORIG-GUID: VYHPcibroSX9sTnal6uO-LmVI2xlLqzj
-X-Proofpoint-GUID: VYHPcibroSX9sTnal6uO-LmVI2xlLqzj
+ a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=uB58oH_1KMGY2pLkT90A:9
+X-Proofpoint-ORIG-GUID: NfOww3-_YNfbpt8q5Vk-uw2jGfb6L7ta
+X-Proofpoint-GUID: NfOww3-_YNfbpt8q5Vk-uw2jGfb6L7ta
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -32
@@ -112,78 +112,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pass ramblock to vfio_container_dma_map for use in a subsequent patch.
-The ramblock's attributes will be needed to map the block using
-IOMMU_IOAS_MAP_FILE.  No functional change.
+Define iommufd_backend_map_file_dma to implement IOMMU_IOAS_MAP_FILE.
+This will be called as a substitute for iommufd_backend_map_dma, so
+the error conditions for BARs are copied as-is from that function.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- hw/vfio/container-base.c              | 3 ++-
- hw/vfio/listener.c                    | 8 +++++---
- include/hw/vfio/vfio-container-base.h | 3 ++-
- 3 files changed, 9 insertions(+), 5 deletions(-)
+ backends/iommufd.c       | 36 ++++++++++++++++++++++++++++++++++++
+ backends/trace-events    |  1 +
+ include/system/iommufd.h |  3 +++
+ 3 files changed, 40 insertions(+)
 
-diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
-index 1c6ca94..8f43bc8 100644
---- a/hw/vfio/container-base.c
-+++ b/hw/vfio/container-base.c
-@@ -75,7 +75,8 @@ void vfio_address_space_insert(VFIOAddressSpace *space,
+diff --git a/backends/iommufd.c b/backends/iommufd.c
+index b73f75c..5c1958f 100644
+--- a/backends/iommufd.c
++++ b/backends/iommufd.c
+@@ -172,6 +172,42 @@ int iommufd_backend_map_dma(IOMMUFDBackend *be, uint32_t ioas_id, hwaddr iova,
+     return ret;
+ }
  
- int vfio_container_dma_map(VFIOContainerBase *bcontainer,
-                            hwaddr iova, ram_addr_t size,
--                           void *vaddr, bool readonly)
-+                           void *vaddr, bool readonly,
-+                           RAMBlock *rb)
++int iommufd_backend_map_file_dma(IOMMUFDBackend *be, uint32_t ioas_id,
++                                 hwaddr iova, ram_addr_t size,
++                                 int mfd, unsigned long start, bool readonly)
++{
++    int ret, fd = be->fd;
++    struct iommu_ioas_map_file map = {
++        .size = sizeof(map),
++        .flags = IOMMU_IOAS_MAP_READABLE |
++                 IOMMU_IOAS_MAP_FIXED_IOVA,
++        .ioas_id = ioas_id,
++        .fd = mfd,
++        .start = start,
++        .iova = iova,
++        .length = size,
++    };
++
++    if (!readonly) {
++        map.flags |= IOMMU_IOAS_MAP_WRITEABLE;
++    }
++
++    ret = ioctl(fd, IOMMU_IOAS_MAP_FILE, &map);
++    trace_iommufd_backend_map_file_dma(fd, ioas_id, iova, size, mfd, start,
++                                       readonly, ret);
++    if (ret) {
++        ret = -errno;
++
++        /* TODO: Not support mapping hardware PCI BAR region for now. */
++        if (errno == EFAULT) {
++            warn_report("IOMMU_IOAS_MAP_FILE failed: %m, PCI BAR?");
++        } else {
++            error_report("IOMMU_IOAS_MAP_FILE failed: %m");
++        }
++    }
++    return ret;
++}
++
+ int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
+                               hwaddr iova, ram_addr_t size)
  {
-     VFIOIOMMUClass *vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
- 
-diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
-index 87b7a3c..653c6fb 100644
---- a/hw/vfio/listener.c
-+++ b/hw/vfio/listener.c
-@@ -169,7 +169,7 @@ static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
-          */
-         ret = vfio_container_dma_map(bcontainer, iova,
-                                      iotlb->addr_mask + 1, vaddr,
--                                     read_only);
-+                                     read_only, mr->ram_block);
-         if (ret) {
-             error_report("vfio_container_dma_map(%p, 0x%"HWADDR_PRIx", "
-                          "0x%"HWADDR_PRIx", %p) = %d (%s)",
-@@ -239,7 +239,8 @@ static int vfio_ram_discard_notify_populate(RamDiscardListener *rdl,
-         vaddr = memory_region_get_ram_ptr(section->mr) + start;
- 
-         ret = vfio_container_dma_map(bcontainer, iova, next - start,
--                                     vaddr, section->readonly);
-+                                     vaddr, section->readonly,
-+                                     section->mr->ram_block);
-         if (ret) {
-             /* Rollback */
-             vfio_ram_discard_notify_discard(rdl, section);
-@@ -600,7 +601,8 @@ void vfio_container_region_add(VFIOContainerBase *bcontainer,
-     }
- 
-     ret = vfio_container_dma_map(bcontainer, iova, int128_get64(llsize),
--                                 vaddr, section->readonly);
-+                                 vaddr, section->readonly,
-+                                 section->mr->ram_block);
-     if (ret) {
-         error_setg(&err, "vfio_container_dma_map(%p, 0x%"HWADDR_PRIx", "
-                    "0x%"HWADDR_PRIx", %p) = %d (%s)",
-diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-index 5776fd7..03b3f9c 100644
---- a/include/hw/vfio/vfio-container-base.h
-+++ b/include/hw/vfio/vfio-container-base.h
-@@ -78,7 +78,8 @@ void vfio_address_space_insert(VFIOAddressSpace *space,
- 
- int vfio_container_dma_map(VFIOContainerBase *bcontainer,
-                            hwaddr iova, ram_addr_t size,
--                           void *vaddr, bool readonly);
-+                           void *vaddr, bool readonly,
-+                           RAMBlock *rb);
- int vfio_container_dma_unmap(VFIOContainerBase *bcontainer,
-                              hwaddr iova, ram_addr_t size,
-                              IOMMUTLBEntry *iotlb, bool unmap_all);
+diff --git a/backends/trace-events b/backends/trace-events
+index 40811a3..f478e18 100644
+--- a/backends/trace-events
++++ b/backends/trace-events
+@@ -11,6 +11,7 @@ iommufd_backend_connect(int fd, bool owned, uint32_t users) "fd=%d owned=%d user
+ iommufd_backend_disconnect(int fd, uint32_t users) "fd=%d users=%d"
+ iommu_backend_set_fd(int fd) "pre-opened /dev/iommu fd=%d"
+ iommufd_backend_map_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, void *vaddr, bool readonly, int ret) " iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" addr=%p readonly=%d (%d)"
++iommufd_backend_map_file_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, int fd, unsigned long start, bool readonly, int ret) " iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" fd=%d start=%ld readonly=%d (%d)"
+ iommufd_backend_unmap_dma_non_exist(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, int ret) " Unmap nonexistent mapping: iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" (%d)"
+ iommufd_backend_unmap_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, int ret) " iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" (%d)"
+ iommufd_backend_alloc_ioas(int iommufd, uint32_t ioas) " iommufd=%d ioas=%d"
+diff --git a/include/system/iommufd.h b/include/system/iommufd.h
+index cbab75b..ac700b8 100644
+--- a/include/system/iommufd.h
++++ b/include/system/iommufd.h
+@@ -43,6 +43,9 @@ void iommufd_backend_disconnect(IOMMUFDBackend *be);
+ bool iommufd_backend_alloc_ioas(IOMMUFDBackend *be, uint32_t *ioas_id,
+                                 Error **errp);
+ void iommufd_backend_free_id(IOMMUFDBackend *be, uint32_t id);
++int iommufd_backend_map_file_dma(IOMMUFDBackend *be, uint32_t ioas_id,
++                                 hwaddr iova, ram_addr_t size, int fd,
++                                 unsigned long start, bool readonly);
+ int iommufd_backend_map_dma(IOMMUFDBackend *be, uint32_t ioas_id, hwaddr iova,
+                             ram_addr_t size, void *vaddr, bool readonly);
+ int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
 -- 
 1.8.3.1
 
