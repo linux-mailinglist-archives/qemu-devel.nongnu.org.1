@@ -2,58 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A580AB48D9
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 03:36:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FD39AB4A40
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 05:52:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEeYl-0002Go-BB; Mon, 12 May 2025 21:35:55 -0400
+	id 1uEgfz-0005zP-7N; Mon, 12 May 2025 23:51:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.zhadchenko@virtuozzo.com>)
- id 1uEeYi-0002Ey-8J; Mon, 12 May 2025 21:35:52 -0400
-Received: from relay.virtuozzo.com ([130.117.225.111])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.zhadchenko@virtuozzo.com>)
- id 1uEeYg-00021Z-6k; Mon, 12 May 2025 21:35:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
- Content-Type; bh=t1AoeW5+yWy2YGfiL3VknobGzbBoiHSM2roimpSm4Xc=; b=FEhJgPZGgukQ
- aiUOT9l8c0zq61uLDwXRtl9hLV9N3DbJUjrsmvBvsApfN/5uH3iL7etV3cQN+SNAXTO79NrpVh4vP
- buUMblYHQ5Q6V4h29HS5GHgQiNVGc27MDNPsdu+IS1QSK5oNxmX7PQRZpP/nQ7N9h1P2m3xhJYFMh
- B3J4lzy8zDOBeewsDb75+JQa8FDBKa9BYgiB44gYEJPcgHgLydm6q1VJ27PSqR8HahsWq6jSRgt4C
- x4vJwKtPQ+RajpHMCFjrMDRN5MlJwxeoUSrggjN1KcfngrIcer84+MYzZT/jMtOBxQij48Q2Djvtc
- JWAHFojyFavTWkCY9W38pQ==;
-Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=debian.fritz.box)
- by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <andrey.zhadchenko@virtuozzo.com>)
- id 1uEeUf-00DboQ-18; Tue, 13 May 2025 03:35:38 +0200
-From: Andrey Zhadchenko <andrey.zhadchenko@virtuozzo.com>
-To: qemu-block@nongnu.org,
-	vsementsov@yandex-team.ru,
-	eblake@redhat.com
-Cc: jsnow@redhat.com, kwolf@redhat.com, hreitz@redhat.com,
- qemu-devel@nongnu.org, andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
-Subject: [PATCH 4/4] block/copy-before-write: report partial block status to
- snapshot
-Date: Tue, 13 May 2025 03:32:38 +0200
-Message-ID: <20250513013238.1213539-5-andrey.zhadchenko@virtuozzo.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250513013238.1213539-1-andrey.zhadchenko@virtuozzo.com>
-References: <20250513013238.1213539-1-andrey.zhadchenko@virtuozzo.com>
+ (Exim 4.90_1) (envelope-from <patch@thomaslambertz.de>)
+ id 1uEb7O-0006Q0-8C
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 17:55:26 -0400
+Received: from mail-108-mta159.mxroute.com ([136.175.108.159])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <patch@thomaslambertz.de>)
+ id 1uEb7M-0002Za-G9
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 17:55:25 -0400
+Received: from filter006.mxroute.com ([136.175.111.3] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta159.mxroute.com (ZoneMTA) with ESMTPSA id
+ 196c67a2c490008631.001 for <qemu-devel@nongnu.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Mon, 12 May 2025 21:50:17 +0000
+X-Zone-Loop: 4a8c17801246378e1bcf90c447d68273f70d7f99ff33
+X-Originating-IP: [136.175.111.3]
+Message-ID: <7fb0245b-7221-4cca-abb6-111095f7eea5@thomaslambertz.de>
+Date: Mon, 12 May 2025 23:50:10 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=130.117.225.111;
- envelope-from=andrey.zhadchenko@virtuozzo.com; helo=relay.virtuozzo.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: qemu-devel@nongnu.org, qemu-trivial@nongnu.org, philmd@linaro.org
+From: Thomas Lambertz <patch@thomaslambertz.de>
+Subject: [PATCH] hw/usb/dev-hid: Support side and extra mouse buttons for
+ usb-tablet
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse,
+ please include it with any abuse report
+X-AntiAbuse: Primary Hostname - aus.mxroute.com
+X-AntiAbuse: Original Domain - nongnu.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - thomaslambertz.de
+X-Get-Message-Sender-Via: aus.mxroute.com: authenticated_id:
+ mail@thomaslambertz.de
+X-Authenticated-Sender: aus.mxroute.com: mail@thomaslambertz.de
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Received-SPF: pass client-ip=136.175.108.159;
+ envelope-from=patch@thomaslambertz.de; helo=mail-108-mta159.mxroute.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 12 May 2025 23:51:27 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,66 +73,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-until the non-accessible area
+The necessary plumbing for side- and extra mouse buttons to reach
+usb-tablet is already done. But the descriptor advertises three buttons
+max. Increase this to 5. Buttons are now identical to usb-mouse.
 
-Signed-off-by: Andrey Zhadchenko <andrey.zhadchenko@virtuozzo.com>
+Signed-off-by: Thomas Lambertz <patch@thomaslambertz.de>
 ---
- block/copy-before-write.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+  hw/usb/dev-hid.c | 6 +++---
+  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/block/copy-before-write.c b/block/copy-before-write.c
-index 5f5b3e7515..81d7f40b13 100644
---- a/block/copy-before-write.c
-+++ b/block/copy-before-write.c
-@@ -207,10 +207,11 @@ static int coroutine_fn GRAPH_RDLOCK cbw_co_flush(BlockDriverState *bs)
-  */
- static BlockReq * coroutine_fn GRAPH_RDLOCK
- cbw_snapshot_read_lock(BlockDriverState *bs, int64_t offset, int64_t bytes,
--                       int64_t *pnum, BdrvChild **file)
-+                       int64_t *pnum, BdrvChild **file, bool query)
- {
-     BDRVCopyBeforeWriteState *s = bs->opaque;
-     BlockReq *req = g_new(BlockReq, 1);
-+    int64_t next_dirty;
-     bool done;
- 
-     QEMU_LOCK_GUARD(&s->lock);
-@@ -220,9 +221,13 @@ cbw_snapshot_read_lock(BlockDriverState *bs, int64_t offset, int64_t bytes,
-         return NULL;
-     }
- 
--    if (bdrv_dirty_bitmap_next_dirty(s->access_bitmap, offset, bytes) != -1) {
--        g_free(req);
--        return NULL;
-+    next_dirty = bdrv_dirty_bitmap_next_dirty(s->access_bitmap, offset, bytes);
-+    if (next_dirty != -1) {
-+        if (!query || next_dirty == offset) {
-+            g_free(req);
-+            return NULL;
-+        }
-+        bytes = offset + bytes - next_dirty;
-     }
- 
-     done = bdrv_dirty_bitmap_status(s->done_bitmap, offset, bytes, pnum);
-@@ -270,7 +275,8 @@ cbw_co_preadv_snapshot(BlockDriverState *bs, int64_t offset, int64_t bytes,
-     while (bytes) {
-         int64_t cur_bytes;
- 
--        req = cbw_snapshot_read_lock(bs, offset, bytes, &cur_bytes, &file);
-+        req = cbw_snapshot_read_lock(bs, offset, bytes, &cur_bytes, &file,
-+                                     false);
-         if (!req) {
-             return -EACCES;
-         }
-@@ -302,7 +308,7 @@ cbw_co_snapshot_block_status(BlockDriverState *bs,
-     int64_t cur_bytes;
-     BdrvChild *child;
- 
--    req = cbw_snapshot_read_lock(bs, offset, bytes, &cur_bytes, &child);
-+    req = cbw_snapshot_read_lock(bs, offset, bytes, &cur_bytes, &child, true);
-     if (!req) {
-         return -EACCES;
-     }
+diff --git a/hw/usb/dev-hid.c b/hw/usb/dev-hid.c
+index 54d064e54e..96623aa322 100644
+--- a/hw/usb/dev-hid.c
++++ b/hw/usb/dev-hid.c
+@@ -491,14 +491,14 @@ static const uint8_t qemu_tablet_hid_report_descriptor[] = {
+      0xa1, 0x00,		/*   Collection (Physical) */
+      0x05, 0x09,		/*     Usage Page (Button) */
+      0x19, 0x01,		/*     Usage Minimum (1) */
+-    0x29, 0x03,		/*     Usage Maximum (3) */
++    0x29, 0x05,		/*     Usage Maximum (5) */
+      0x15, 0x00,		/*     Logical Minimum (0) */
+      0x25, 0x01,		/*     Logical Maximum (1) */
+-    0x95, 0x03,		/*     Report Count (3) */
++    0x95, 0x05,		/*     Report Count (5) */
+      0x75, 0x01,		/*     Report Size (1) */
+      0x81, 0x02,		/*     Input (Data, Variable, Absolute) */
+      0x95, 0x01,		/*     Report Count (1) */
+-    0x75, 0x05,		/*     Report Size (5) */
++    0x75, 0x03,		/*     Report Size (3) */
+      0x81, 0x01,		/*     Input (Constant) */
+      0x05, 0x01,		/*     Usage Page (Generic Desktop) */
+      0x09, 0x30,		/*     Usage (X) */
 -- 
 2.43.0
 
