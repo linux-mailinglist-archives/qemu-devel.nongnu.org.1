@@ -2,106 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE438AB4143
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 20:03:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B504EAB4183
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 20:07:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEXUL-0006ZL-Vx; Mon, 12 May 2025 14:02:54 -0400
+	id 1uEXWm-0002IS-Iz; Mon, 12 May 2025 14:05:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
- id 1uEXUE-0006Qn-H6; Mon, 12 May 2025 14:02:46 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
- id 1uEXU9-0007wq-P1; Mon, 12 May 2025 14:02:46 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54CA5u85018642;
- Mon, 12 May 2025 18:02:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:date:from:in-reply-to:message-id
- :mime-version:references:subject:to; s=pp1; bh=r/yylGKp+Ls7eKR7A
- 1kCIEIXbE4MHcZoZTAMPHghzPs=; b=f3MCHios5ogMzIno5Fm7k/D6GGqhZ1wpc
- yv62tbuNQEMyIFu9gT204X0a7MQFh+MWXUAQc0yOkws8eR24kiKRF9F3x425DNFe
- Y7bOWarUSYQ75WwVm810ou546nVciJBgiUHhE/dExgqzq2q8MFyYG5l7FD6526cK
- 9a6kNG/umUeyWQn18/o1OexiFGA7lFcLTzdJxLtw6F6dGRFidPHjV0peCWBZiaT1
- oOTI7+KG+1q6U9FvOsVb56JZhh8hQK6aHDf5tfx22Rm2Xvg0M2nCpKuB1p6YTr5M
- e14Jyf+LwLvaPM5yy7Py40ikIvlsDee25yz2uN0Oha/cPiTcBAC0g==
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46k1h8cwuc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 May 2025 18:02:38 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54CI2WBI024470;
- Mon, 12 May 2025 18:02:36 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46jjmky2qq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 12 May 2025 18:02:36 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 54CI2ZhZ63701264
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 May 2025 18:02:35 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 563EC58058;
- Mon, 12 May 2025 18:02:35 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 94D8658063;
- Mon, 12 May 2025 18:02:34 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.61.251.19])
- by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 12 May 2025 18:02:34 +0000 (GMT)
-From: Rorie Reyes <rreyes@linux.ibm.com>
-To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
-Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
- jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
- alex.williamson@redhat.com, clg@redhat.com, thuth@redhat.com,
- akrowiak@linux.ibm.com, rreyes@linux.ibm.com
-Subject: [RFC PATCH v9 4/4] s390: implementing CHSC SEI for AP config change
-Date: Mon, 12 May 2025 14:02:30 -0400
-Message-ID: <20250512180230.50129-5-rreyes@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250512180230.50129-1-rreyes@linux.ibm.com>
-References: <20250512180230.50129-1-rreyes@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uEXWg-000279-1I
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 14:05:18 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uEXWc-0008QQ-7s
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 14:05:17 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-740b3a18e26so4015992b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 12 May 2025 11:05:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1747073112; x=1747677912; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=4MW56a2N9JGW8XiFvlXolamnMWHQl+hL453c6R1PReI=;
+ b=GJtkrsRX0lL/t7pMXOKQ4tEKv7s07KSmJv3S5DHxm43CiaAE0VWOr3Ue6I1xigKMfV
+ A/SvWbtbLtvL+iSoKkO1Feskum8IdIckZnIERD3jHRYXvE4ohlZhmfk/hhgPKG7QrY40
+ br3R1IpJDL6e25Xa8zIZuIhYoC5HaVMJrFJh5N1ZSUm2AgIsUgeLZSztFkreYlSSmf/W
+ mVhHPFzj8k2SAX9b+VrFotv1rnLtkDFu5I1AEMCy+JBHe1AvckdRdOKPtTyos6ehuy5C
+ XN91Ng1jpmAoTWLtlhhXoZOvgKPIt6R8qOp+qsoyTesLtzs6HJQgHUi0+Pze1EAQr6KC
+ QvfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747073112; x=1747677912;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=4MW56a2N9JGW8XiFvlXolamnMWHQl+hL453c6R1PReI=;
+ b=Si53+rK4A9oH3y2xVOPA35ql4v7kbrzOSJuIsxFk42MsW0MTH+4V5lBK4mju0YkPY9
+ 0g4onJbawHIzoaX0+suDNutanr6p+aPHlQnyN4hKnPMcCGhmQOBpBthOuAmK2OMXrWzN
+ Y9qnWRQhRZGbCbBpkxH/+zRZDjYMKvuU/Abouw3UiS7Mudgpgs9qr0+hvn7hbMAHE0LL
+ 0IKgeauyXjhzL3DUvQJdX8oWnM4tiBE3OuYyxXgPIm+VDIl0wszppBFnumaYzH39yDhh
+ dfOCMCifnR72bQ0nea+7Z3PHQae0zqdUWokxMaCUGwTQ1kDqQ847ha9IAtUbllTOyLLY
+ sJ9A==
+X-Gm-Message-State: AOJu0YwP15uJHvHJpOP5TWfQyOaQHkgdPO8WO71EWwoJUGILyY8rfPOb
+ 3S2DSiepJZQt1KDfunhIyOywbHZE9CP7KSfqG9KV7UHtxs/Ij84fSnxgh8FcoFZ9lkGFFSiOb+B
+ Z
+X-Gm-Gg: ASbGncuLjqOBnLiiX5zT/Dj4TVLmfViF+4kn8IZ+d+N7gAX7iSfCI6vNPlHJa1Bkidw
+ BPSAH5FufNOwQONHV8rQ13E7FmEzgS7CT9Bu4WVX3XKM9QmwSfqCY0blN7FDdHnOzYO3LtUBclO
+ NUV7vlyB6pKHcXe3BChMQN02Bj2uf1mMqLNJxj7KzAMcT6uPzDM6f7pib1T13CiB8IagiLg/25W
+ ymwIyIX/iebYhc8zo8mBOwagWFYzanBDxjog0sgWZNfrKoBMcQU4Ne6ijgkxXd50rNQsFhU5A6+
+ r4yYeharb0Q2T2QI0jpLlFxnOxZ+EN6u/808sHMWS7QudMuREGo=
+X-Google-Smtp-Source: AGHT+IHn+seSlUHxe/d++qBkY4dNL7LDRkrQjITqXqKQ+r5hF6/emBo0ZXMFZkXSOu8uzP134zkiFQ==
+X-Received: by 2002:a17:902:f68f:b0:223:66a1:4503 with SMTP id
+ d9443c01a7336-22fc8b73d0emr172327945ad.30.1747073111863; 
+ Mon, 12 May 2025 11:05:11 -0700 (PDT)
+Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-22fc82a2e4fsm65792005ad.232.2025.05.12.11.05.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 12 May 2025 11:05:11 -0700 (PDT)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ kvm@vger.kernel.org, alex.bennee@linaro.org, anjo@rev.ng,
+ qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH v8 00/48] single-binary: compile target/arm twice
+Date: Mon, 12 May 2025 11:04:14 -0700
+Message-ID: <20250512180502.2395029-1-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=fq3cZE4f c=1 sm=1 tr=0 ts=682237be cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=BcS6lGtn7vpLOzzWGCAA:9
-X-Proofpoint-GUID: 6bKiOUFkaIrkqbB4fl7zUkPrUdmY6VSe
-X-Proofpoint-ORIG-GUID: 6bKiOUFkaIrkqbB4fl7zUkPrUdmY6VSe
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDE4MSBTYWx0ZWRfX4urj6bK1wy7m
- bz8RtszxkhNoufj3UZr2DjgZeV0/EHcZOkRt0bDxxcKeYvoL96vfK7+MXSWgETktzmY1yFPWLn6
- 33QrPU6mHLwjLgHQk6qp1uUNCW0UXhoX9XUb1AH5RLu+9kqzvCuw1fPtWdfiw5KC6Eun11SFTGL
- r70m5oBw4dC6hJahpo+4HFDKO5+1tTdFq4bqDwpvelIxGya6lqmZ/afbllLFnMlraOuR1STZQe5
- j5OKPZZzzSSMlNAcQ71t6somEeXd/eN83XgwfTeYLR4G2sw0o/g16hgFrCIjoLTq282B2uGREfu
- +QVo/aOK4wyOejIWSpwHPHxmvL1+z1cxgGDGh812AeN3qexxoX1z66/aw6lI03qEvxI1Wkk29O0
- Qk23Jvt3doMmTaBkOdBNE1Jg8n8lLafel4eRLDKmQ6NcLzWBrj0eOxr2YngYDt2Lo7Ay8cpl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-12_06,2025-05-09_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- lowpriorityscore=0 mlxlogscore=999 phishscore=0 clxscore=1015 spamscore=0
- suspectscore=0 impostorscore=0 adultscore=0 bulkscore=0 priorityscore=1501
- mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2505120181
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=rreyes@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,113 +99,192 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Handle interception of the CHSC SEI instruction for requests
-indicating the guest's AP configuration has changed.
+More work toward single-binary.
 
-If configuring --without-default-devices, hw/s390x/ap-stub.c
-was created to handle such circumstance. Also added the
-following to hw/s390x/meson.build if CONFIG_VFIO_AP is
-false, it will use the stub file.
+Some files have external dependencies for the single-binary:
+- target/arm/gdbstub.c: gdbhelpers
+- target/arm/arm-qmp-cmds.c: qapi
+- target/arm/tcg/translate*: need deep cleanup in include/tcg
+- target/arm/tcg/cpu*: need TargetInfo implemented for arm/aarch64
+- target/arm/tcg/*-helper*: need deeper split between aarch64 and arm code
+They will not be ported in this series.
 
-Signed-off-by: Rorie Reyes <rreyes@linux.ibm.com>
----
- MAINTAINERS           |  1 +
- hw/s390x/ap-stub.c    | 25 +++++++++++++++++++++++++
- hw/s390x/meson.build  |  1 +
- target/s390x/ioinst.c | 11 +++++++++--
- 4 files changed, 36 insertions(+), 2 deletions(-)
- create mode 100644 hw/s390x/ap-stub.c
+Built on {linux, windows, macos} x {x86_64, aarch64}
+Fully tested on linux x {x86_64, aarch64}
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 23174b4ca7..070c746c69 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -112,6 +112,7 @@ F: hw/intc/s390_flic.c
- F: hw/intc/s390_flic_kvm.c
- F: hw/s390x/
- F: hw/vfio/ap.c
-+F: hw/s390x/ap-stub.c
- F: hw/vfio/ccw.c
- F: hw/watchdog/wdt_diag288.c
- F: include/hw/s390x/
-diff --git a/hw/s390x/ap-stub.c b/hw/s390x/ap-stub.c
-new file mode 100644
-index 0000000000..e2dacff959
---- /dev/null
-+++ b/hw/s390x/ap-stub.c
-@@ -0,0 +1,25 @@
-+/*
-+ * VFIO based AP matrix device assignment
-+ *
-+ * Copyright 2025 IBM Corp.
-+ * Author(s): Rorie Reyes <rreyes@linux.ibm.com>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or (at
-+ * your option) any later version. See the COPYING file in the top-level
-+ * directory.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/s390x/ap-bridge.h"
-+
-+int ap_chsc_sei_nt0_get_event(void *res)
-+{
-+    return 0;
-+}
-+
-+int ap_chsc_sei_nt0_have_event(void)
-+{
-+    return 0;
-+}
-diff --git a/hw/s390x/meson.build b/hw/s390x/meson.build
-index 3bbebfd817..99cbcbd7d6 100644
---- a/hw/s390x/meson.build
-+++ b/hw/s390x/meson.build
-@@ -33,6 +33,7 @@ s390x_ss.add(when: 'CONFIG_S390_CCW_VIRTIO', if_true: files(
- ))
- s390x_ss.add(when: 'CONFIG_TERMINAL3270', if_true: files('3270-ccw.c'))
- s390x_ss.add(when: 'CONFIG_VFIO', if_true: files('s390-pci-vfio.c'))
-+s390x_ss.add(when: 'CONFIG_VFIO_AP', if_false: files('ap-stub.c'))
- 
- virtio_ss = ss.source_set()
- virtio_ss.add(files('virtio-ccw.c'))
-diff --git a/target/s390x/ioinst.c b/target/s390x/ioinst.c
-index fe62ba5b06..2320dd4c12 100644
---- a/target/s390x/ioinst.c
-+++ b/target/s390x/ioinst.c
-@@ -18,6 +18,7 @@
- #include "trace.h"
- #include "hw/s390x/s390-pci-bus.h"
- #include "target/s390x/kvm/pv.h"
-+#include "hw/s390x/ap-bridge.h"
- 
- /* All I/O instructions but chsc use the s format */
- static uint64_t get_address_from_regs(CPUS390XState *env, uint32_t ipb,
-@@ -574,13 +575,19 @@ out:
- 
- static int chsc_sei_nt0_get_event(void *res)
- {
--    /* no events yet */
-+    if (s390_has_feat(S390_FEAT_AP)) {
-+        return ap_chsc_sei_nt0_get_event(res);
-+    }
-+
-     return 1;
- }
- 
- static int chsc_sei_nt0_have_event(void)
- {
--    /* no events yet */
-+    if (s390_has_feat(S390_FEAT_AP)) {
-+        return ap_chsc_sei_nt0_have_event();
-+    }
-+
-     return 0;
- }
- 
+Series is now tested and fully reviewed. Thanks for pulling it.
+
+v8
+--
+
+- rebase on top of master
+
+v7
+--
+
+- rebase on top of master
+- removed patch to apply target config for picking files in libsystem/libuser,
+  since it was the only one not reviewed.
+
+v6
+--
+
+CI: https://github.com/pbo-linaro/qemu/actions/runs/14844742069/job/41675865456
+- Replace target_ulong -> vaddr for HWBreakpoint (Philippe)
+- build target/arm/tcg/crypto_helper.c once (Richard)
+- build target/arm/tcg/tlb-insns for system only (Richard)
+- build target/arm/tcg/arith_helper once (Richard)
+
+v5
+--
+
+CI: https://github.com/pbo-linaro/qemu/actions/runs/14825451208/job/41617949501
+- Do not define a separate vaddr type in tcg, simply alias to i32/i64 (Richard)
+- target/arm/tcg/crypto_helper.c
+- target/arm/tcg/hflags.c
+- target/arm/tcg/iwmmxt_helper.c
+- target/arm/tcg/neon_helper.c
+- target/arm/tcg/tlb_helper.c
+- target/arm/tcg/tlb-insns.c
+- target/arm/tcg/arith_helper.c
+- target/arm/tcg/vfp_helper.c
+
+v4
+--
+
+CI: https://github.com/pbo-linaro/qemu/actions/runs/14816460393/job/41597560792
+- add patch to apply target config for picking files in libsystem/libuser
+  Useful for Philippe series for semihosting:
+  https://lore.kernel.org/qemu-devel/20250502220524.81548-1-philmd@linaro.org/T/#me750bbaeeba4d16791121fe98b44202afaec4068
+- update some patches description (Philippe & Richard)
+- tcg: introduce vaddr type (Richard)
+- modify concerned helpers to use vaddr instead of i64 (Richard)
+- use int64_t instead of uint64_t for top_bits in ptw.c (Philippe)
+- arm_casq_ptw: use CONFIG_ATOMIC64 instead of TARGET_AARCH64 and comment why
+  (Richard)
+- target/arm/machine.c
+
+v3
+--
+
+CI: https://github.com/pbo-linaro/qemu/actions/runs/14765763846/job/41456754153
+- Add missing license for new files (Richard)
+- target/arm/debug_helper.c
+- target/arm/helper.c
+- target/arm/vfp_fpscr.c
+- target/arm/arch_dump.c
+- target/arm/arm-powerctl.c
+- target/arm/cortex-regs.c
+- target/arm/ptw.c
+- target/arm/kvm-stub.c
+
+v2
+--
+
+- Remove duplication of kvm struct and constant (Alex)
+- Use target_big_endian() (Anton)
+
+v1
+--
+
+- target/arm/cpu.c
+
+Philippe Mathieu-Daudé (1):
+  target/arm: Replace target_ulong -> vaddr for HWBreakpoint
+
+Pierrick Bouvier (47):
+  include/system/hvf: missing vaddr include
+  meson: add common libs for target and target_system
+  target/arm: move kvm stubs and remove CONFIG_KVM from kvm_arm.h
+  target/arm/kvm-stub: add kvm_arm_reset_vcpu stub
+  target/arm/cpu: move arm_cpu_kvm_set_irq to kvm.c
+  target/arm/cpu: remove TARGET_BIG_ENDIAN dependency
+  target/arm/cpu: remove TARGET_AARCH64 around aarch64_cpu_dump_state
+    common
+  target/arm/cpu: remove TARGET_AARCH64 in arm_cpu_finalize_features
+  target/arm/cpu: compile file twice (user, system) only
+  target/arm/cpu32-stubs.c: compile file twice (user, system)
+  tcg: add vaddr type for helpers
+  target/arm/helper: use vaddr instead of target_ulong for
+    exception_pc_alignment
+  target/arm/helper: use vaddr instead of target_ulong for probe_access
+  target/arm/helper: extract common helpers
+  target/arm/debug_helper: only include common helpers
+  target/arm/debug_helper: remove target_ulong
+  target/arm/debug_helper: compile file twice (user, system)
+  target/arm/helper: restrict include to common helpers
+  target/arm/helper: replace target_ulong by vaddr
+  target/arm/helper: expose aarch64 cpu registration
+  target/arm/helper: remove remaining TARGET_AARCH64
+  target/arm/helper: compile file twice (user, system)
+  target/arm/vfp_fpscr: compile file twice (user, system)
+  target/arm/arch_dump: remove TARGET_AARCH64 conditionals
+  target/arm/arch_dump: compile file once (system)
+  target/arm/arm-powerctl: compile file once (system)
+  target/arm/cortex-regs: compile file once (system)
+  target/arm/ptw: replace target_ulong with int64_t
+  target/arm/ptw: replace TARGET_AARCH64 by CONFIG_ATOMIC64 from
+    arm_casq_ptw
+  target/arm/ptw: compile file once (system)
+  target/arm/meson: accelerator files are not needed in user mode
+  target/arm/kvm-stub: compile file once (system)
+  target/arm/machine: reduce migration include to avoid target specific
+    definitions
+  target/arm/machine: remove TARGET_AARCH64 from migration state
+  target/arm/machine: move cpu_post_load kvm bits to
+    kvm_arm_cpu_post_load function
+  target/arm/kvm-stub: add missing stubs
+  target/arm/machine: compile file once (system)
+  target/arm/tcg/vec_internal: use forward declaration for CPUARMState
+  target/arm/tcg/crypto_helper: compile file once
+  target/arm/tcg/hflags: compile file twice (system, user)
+  target/arm/tcg/iwmmxt_helper: compile file twice (system, user)
+  target/arm/tcg/neon_helper: compile file twice (system, user)
+  target/arm/tcg/tlb_helper: compile file twice (system, user)
+  target/arm/helper: restrict define_tlb_insn_regs to system target
+  target/arm/tcg/tlb-insns: compile file once (system)
+  target/arm/tcg/arith_helper: compile file once
+  target/arm/tcg/vfp_helper: compile file twice (system, user)
+
+ meson.build                    |   78 ++-
+ include/system/hvf.h           |    1 +
+ include/tcg/tcg-op-common.h    |    1 +
+ include/tcg/tcg.h              |   14 +
+ target/arm/helper.h            | 1152 +------------------------------
+ target/arm/internals.h         |    6 +-
+ target/arm/kvm_arm.h           |   87 +--
+ target/arm/tcg/helper.h        | 1153 ++++++++++++++++++++++++++++++++
+ target/arm/tcg/vec_internal.h  |    2 +
+ include/exec/helper-head.h.inc |   11 +
+ target/arm/arch_dump.c         |    6 -
+ target/arm/cpu.c               |   47 +-
+ target/arm/cpu32-stubs.c       |   26 +
+ target/arm/debug_helper.c      |    6 +-
+ target/arm/helper.c            |   24 +-
+ target/arm/hyp_gdbstub.c       |    6 +-
+ target/arm/kvm-stub.c          |   97 +++
+ target/arm/kvm.c               |   42 +-
+ target/arm/machine.c           |   15 +-
+ target/arm/ptw.c               |    6 +-
+ target/arm/tcg/arith_helper.c  |    5 +-
+ target/arm/tcg/crypto_helper.c |    6 +-
+ target/arm/tcg/hflags.c        |    4 +-
+ target/arm/tcg/iwmmxt_helper.c |    4 +-
+ target/arm/tcg/neon_helper.c   |    4 +-
+ target/arm/tcg/op_helper.c     |    2 +-
+ target/arm/tcg/tlb-insns.c     |    7 -
+ target/arm/tcg/tlb_helper.c    |    5 +-
+ target/arm/tcg/translate-a64.c |    2 +-
+ target/arm/tcg/translate.c     |    2 +-
+ target/arm/tcg/vfp_helper.c    |    4 +-
+ tcg/tcg.c                      |    5 +
+ target/arm/meson.build         |   41 +-
+ target/arm/tcg/meson.build     |   29 +-
+ 34 files changed, 1519 insertions(+), 1381 deletions(-)
+ create mode 100644 target/arm/tcg/helper.h
+ create mode 100644 target/arm/cpu32-stubs.c
+
 -- 
-2.48.1
+2.47.2
 
 
