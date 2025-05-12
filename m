@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D55FAB399F
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 15:48:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD3CFAB399D
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 15:48:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uETVL-0002EG-IO; Mon, 12 May 2025 09:47:39 -0400
+	id 1uETVK-0002EE-Px; Mon, 12 May 2025 09:47:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uETVB-0002CV-3s
+ id 1uETVB-0002CT-36
  for qemu-devel@nongnu.org; Mon, 12 May 2025 09:47:30 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uETV6-0002ST-T8
+ id 1uETV6-0002Sk-TA
  for qemu-devel@nongnu.org; Mon, 12 May 2025 09:47:28 -0400
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54CC9eoL029137;
- Mon, 12 May 2025 13:47:21 GMT
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54CC9etB024086;
+ Mon, 12 May 2025 13:47:22 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2025-04-25; bh=4eN4C9eEc9s6E6jZPCtPOrAOeaCHgKWGsoNHkcKgh5I=; b=
- QLv0DV+w9mDYRifG4/8j1AMRLaEDFYbxufBtoqwteGrMA5VTV07/wfJYm3x7+JUs
- xbQnNRWPrXZ6FBqUo6GX8/FWDymPHLBpUOjapvrNkWx9bYAZdyFM1/nIC40RTnHV
- TSMKy/R2qVdLjzx4jLeKmMKBE6tDeUBtJfVh3O3xefWe1tJOAns5cAFY7VuEdr9R
- Akj72sD7icTUbpU7/+MRzUb5Yt0NvFVIwW1uOQwilFrGGFRGslpeO8B2+J2N/cvZ
- LUC5vnSBUR6aS+vrkCTZdvlFFyzCcAnLYnue3lntulyC8L73gBwM+b9SgGViAqP7
- UbWcS8/FAX7NniTGBcFI7g==
+ corp-2025-04-25; bh=T2hzi8iEVL34CA8o3O1EbEuB4mKyIX2uch2o7TJcJ20=; b=
+ DbaKIL0EiowoCxM2dCkm+Thm81he/mFfA3vr9O0Cs2uuKmZxB7tieK8PPk86IfiR
+ NmwXip/iU4/4dLsh80e+dghwsa/CApbY9eUHVnD/YrK6nOijUUxJHv0dUeWmOiU2
+ AkoA46HuLzN7Wx5o7zjZboxz0plSyEaBKvDneAu99A2wOQ/2GOutkmfDvqlafbcL
+ k8AFXXjP4nPrtY5M0axKdu902di1b3Vl3FIPu7W2HkIpDxZE9/xGRMzUXjVy86vZ
+ anhvytLQf09pDdb/7ww/XTM8gJeDCMtGJiMGEgJ7MKqdAqHfd/3OBd28kn8KZN6s
+ whPhjZTIbi4VCW5RZIipTQ==
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46j0gwjken-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46j1d2afy5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 May 2025 13:47:21 +0000 (GMT)
+ Mon, 12 May 2025 13:47:22 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 54CCpe5a033194; Mon, 12 May 2025 13:47:20 GMT
+ with ESMTP id 54CCea5T033277; Mon, 12 May 2025 13:47:21 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 46hw8ddfba-1
+ 46hw8ddfby-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 May 2025 13:47:20 +0000
+ Mon, 12 May 2025 13:47:21 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54CDlHVf001568;
- Mon, 12 May 2025 13:47:19 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54CDlHVh001568;
+ Mon, 12 May 2025 13:47:21 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 46hw8ddf9k-3; Mon, 12 May 2025 13:47:19 +0000
+ ESMTP id 46hw8ddf9k-4; Mon, 12 May 2025 13:47:21 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
@@ -60,9 +60,9 @@ Cc: John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, Fabiano Rosas <farosas@suse.de>,
  Laurent Vivier <lvivier@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V2 2/5] python: use qom-tree-get
-Date: Mon, 12 May 2025 06:47:12 -0700
-Message-Id: <1747057635-124298-3-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V2 3/5] tests/qtest/qom-test: unit test for qom-tree-get
+Date: Mon, 12 May 2025 06:47:13 -0700
+Message-Id: <1747057635-124298-4-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1747057635-124298-1-git-send-email-steven.sistare@oracle.com>
 References: <1747057635-124298-1-git-send-email-steven.sistare@oracle.com>
@@ -74,19 +74,19 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  malwarescore=0 phishscore=0 bulkscore=0 adultscore=0 mlxscore=0
  suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2504070000 definitions=main-2505120143
-X-Authority-Analysis: v=2.4 cv=M8hNKzws c=1 sm=1 tr=0 ts=6821fbe9 b=1 cx=c_pps
+X-Proofpoint-ORIG-GUID: aNQwkARuhBwnD9mjMCiU92x74PzYwnoK
+X-Proofpoint-GUID: aNQwkARuhBwnD9mjMCiU92x74PzYwnoK
+X-Authority-Analysis: v=2.4 cv=XNcwSRhE c=1 sm=1 tr=0 ts=6821fbea b=1 cx=c_pps
  a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=RXQK8gpASe9cUJZfEHoA:9 cc=ntf
+ a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=EXJkLREwFe9pvE9t1A4A:9 cc=ntf
  awl=host:14694
-X-Proofpoint-GUID: _ErVZj3JYSnuoGiyVZgShdTX2mhXHWpE
-X-Proofpoint-ORIG-GUID: _ErVZj3JYSnuoGiyVZgShdTX2mhXHWpE
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDE0NCBTYWx0ZWRfX2QaTYCbGW/wr
- a6CQ5ca+PkLqfKqZyLtCaPmIrKYkRkcNUbzZZKLifEYAZ5HQyEjh3Xh8aKmfoj8N08dRSW5AqOO
- Phmk4lvE+ZPDcRIhd5uXFBp/LBfSbNCLHmj3jayCPf0LEAc3VwpKsoAlJBxPuUSgZu4MuHAhupk
- FvIWRMRYTJEqBrOSuDeXGy+oaBVzPFHjQdFMZBv/ElUFpwSmcxz/rrm8tiodpluutJCe1uiOYeY
- f7sAI4kMEyZ21Aby2nrgTfK4MgpPC5VAGGVl19xB3AQJGn5uf9VnGmj8q27nEp9V6FjpZ9OMNIU
- dstyVrbCioDb+O/xupyEjT0gbnsSDOabTLYVMtYAfWIXxfKaKKSxKd3P8M+MsF26SdLTO5ew1yQ
- DyjRF3T4Dqy4LHVhdyrMYNF5UkUEdeRV/puc4L48/X0z7EehXJxL/8EMlkMTJcFuE1Tafv+T
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDE0NCBTYWx0ZWRfX9UysMMC0tzJ6
+ lMe9QAlKoQMC5Mwm0jgMuWwPCQbD3r30ruwFtP7PW1RsiF8HJECjpGIVJ6uRCCf+OeRUoh2BfIS
+ mmNxPJUsV0Qd3hsCIRrQpcSQjHN7QnikyS1NQs11mEzWHGjEONLkhZqFY/mm5EWlxtXqGTNGk1n
+ gU6Ywdp3+7bm+LDd8K7/zzaVPql9NTwKQz7TcOtkLYyRA/TzgHsr2oY4YhoXmPvbeeTiNgZKqZd
+ IOKBPdyUs6Q+9Vj+0C/mir7IuQGZnxYRfxEl2bBOQ3sEclvNUtQSuMIgoGpx5sybTn70E9DhE5z
+ ZQq0FKxvr8bgfVY8vbvU7DUqF0wODFsQutC4oepoo76gWdi34JOJWyz/1UpRgO9zIkDkc3ZVxSn
+ F+3xVmjRgFz1AtrOkgaccz6o2wOXBJ6z8U19lkvKH2LotbiHwBfmA6yX3Pq/ZLTByofzXKPJ
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -32
@@ -112,138 +112,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use qom-tree-get to speed up the qom-tree command.
+Add a unit test for qom-tree-get
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- python/qemu/utils/qom.py        | 36 +++++++++++++++----------------
- python/qemu/utils/qom_common.py | 48 +++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 66 insertions(+), 18 deletions(-)
+ tests/qtest/qom-test.c | 49 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 49 insertions(+)
 
-diff --git a/python/qemu/utils/qom.py b/python/qemu/utils/qom.py
-index 426a0f2..33d0a60 100644
---- a/python/qemu/utils/qom.py
-+++ b/python/qemu/utils/qom.py
-@@ -35,6 +35,7 @@
- from qemu.qmp import ExecuteError
+diff --git a/tests/qtest/qom-test.c b/tests/qtest/qom-test.c
+index 27d70bc..d8792bd 100644
+--- a/tests/qtest/qom-test.c
++++ b/tests/qtest/qom-test.c
+@@ -16,6 +16,54 @@
  
- from .qom_common import QOMCommand
-+from .qom_common import ObjectNode
+ static int verbosity_level;
  
++static void test_tree_node(QDict *node)
++{
++    QDict *prop, *child;
++    QList *props, *children;
++    QListEntry *entry;
++
++    g_assert(qdict_haskey(node, "name"));
++    g_assert(qdict_haskey(node, "properties"));
++
++    if (verbosity_level >= 3) {
++        g_test_message("%s", qdict_get_str(node, "name"));
++    }
++
++    props = qobject_to(QList, qdict_get(node, "properties"));
++    QLIST_FOREACH_ENTRY(props, entry) {
++        prop = qobject_to(QDict, qlist_entry_obj(entry));
++        g_assert(qdict_haskey(prop, "name"));
++        g_assert(qdict_haskey(prop, "type"));
++    }
++
++    if (!qdict_haskey(node, "children")) {
++        return;
++    }
++
++    children = qobject_to(QList, qdict_get(node, "children"));
++    QLIST_FOREACH_ENTRY(children, entry) {
++        child = qobject_to(QDict, qlist_entry_obj(entry));
++        test_tree_node(child);
++    }
++}
++
++static void test_tree(QTestState *qts, const char *path)
++{
++    g_autoptr(QDict) response = NULL;
++    QDict *node;
++
++    if (verbosity_level >= 2) {
++        g_test_message("Obtaining tree at %s", path);
++    }
++    response = qtest_qmp(qts, "{ 'execute': 'qom-tree-get',"
++                              "  'arguments': { 'path': %s } }", path);
++    g_assert(response);
++
++    g_assert(qdict_haskey(response, "return"));
++    node = qobject_to(QDict, qdict_get(response, "return"));
++    test_tree_node(node);
++}
++
+ static void test_properties(QTestState *qts, const char *path, bool recurse)
+ {
+     char *child_path;
+@@ -100,6 +148,7 @@ static void test_machine(gconstpointer data)
+     }
  
- try:
-@@ -224,28 +225,27 @@ def __init__(self, args: argparse.Namespace):
-         super().__init__(args)
-         self.path = args.path
+     test_properties(qts, "/machine", true);
++    test_tree(qts, "/machine");
  
--    def _list_node(self, path: str) -> None:
-+    def _list_tree(self, node: ObjectNode, path: str) -> None:
-         print(path)
--        items = self.qom_list(path)
--        for item in items:
--            if item.child:
--                continue
--            try:
--                rsp = self.qmp.cmd('qom-get', path=path,
--                                   property=item.name)
--                print(f"  {item.name}: {rsp} ({item.type})")
--            except ExecuteError as err:
--                print(f"  {item.name}: <EXCEPTION: {err!s}> ({item.type})")
-+
-+        for item in node.properties:
-+            value = item.value
-+            if value == None:
-+                value = f"<EXCEPTION: property could not be read>"
-+            print(f"  {item.name}: {value} ({item.type})")
-+
-         print('')
--        for item in items:
--            if not item.child:
--                continue
--            if path == '/':
--                path = ''
--            self._list_node(f"{path}/{item.name}")
-+        if path == '/':
-+            path = ''
-+
-+        for child in node.children:
-+            self._list_tree(child, f"{path}/{child.name}")
-+
- 
-     def run(self) -> int:
--        self._list_node(self.path)
-+        root = self.qom_tree_get(self.path)
-+        self._list_tree(root, self.path)
-+
-         return 0
- 
- 
-diff --git a/python/qemu/utils/qom_common.py b/python/qemu/utils/qom_common.py
-index dd2c8b1..8c242cc 100644
---- a/python/qemu/utils/qom_common.py
-+++ b/python/qemu/utils/qom_common.py
-@@ -65,6 +65,47 @@ def link(self) -> bool:
-         return self.type.startswith('link<')
- 
- 
-+class ObjectPropertyValue:
-+    """
-+    Represents a property return from e.g. qom-tree-get
-+    """
-+    def __init__(self, name: str, type_: str, value: object):
-+        self.name = name
-+        self.type = type_
-+        self.value = value
-+
-+    @classmethod
-+    def make(cls, value: Dict[str, Any]) -> 'ObjectPropertyValue':
-+        """
-+        Build an ObjectPropertyValue from a Dict with an unknown shape.
-+        """
-+        assert value.keys() >= {'name', 'type'}
-+        assert value.keys() <= {'name', 'type', 'value'}
-+        return cls(value['name'], value['type'], value.get('value'))
-+
-+
-+class ObjectNode:
-+    """
-+    Represents the return type from e.g. qom-tree-get
-+    """
-+    def __init__(self, name: str, children: List['ObjectNode'],
-+                 properties: List[ObjectPropertyValue]):
-+        self.name = name
-+        self.children = children
-+        self.properties = properties
-+
-+    @classmethod
-+    def make(cls, value: Dict[str, Any]) -> 'ObjectNode':
-+        """
-+        Build an ObjectNode from a Dict with an unknown shape.
-+        """
-+        assert value.keys() == {'name', 'children', 'properties'}
-+
-+        props = [ObjectPropertyValue.make(x) for x in value['properties']]
-+        children = [ObjectNode.make(x) for x in value['children']]
-+        return cls(value['name'], children, props)
-+
-+
- CommandT = TypeVar('CommandT', bound='QOMCommand')
- 
- 
-@@ -145,6 +186,13 @@ def qom_list(self, path: str) -> List[ObjectPropertyInfo]:
-         assert isinstance(rsp, list)
-         return [ObjectPropertyInfo.make(x) for x in rsp]
- 
-+    def qom_tree_get(self, path: str) -> ObjectNode:
-+        """
-+        :return: a strongly typed root node from the 'qom-tree-get' command.
-+        """
-+        rsp = self.qmp.cmd('qom-tree-get', path=path)
-+        return ObjectNode.make(rsp)
-+
-     @classmethod
-     def command_runner(
-             cls: Type[CommandT],
+     response = qtest_qmp(qts, "{ 'execute': 'quit' }");
+     g_assert(qdict_haskey(response, "return"));
 -- 
 1.8.3.1
 
