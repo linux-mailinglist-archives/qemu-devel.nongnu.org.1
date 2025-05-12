@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6D78AB2DE7
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 05:16:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE5ABAB2DF2
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 05:18:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEJc5-0004y8-4X; Sun, 11 May 2025 23:13:57 -0400
+	id 1uEJcQ-0006oS-OD; Sun, 11 May 2025 23:14:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1uEJbi-00031h-05; Sun, 11 May 2025 23:13:34 -0400
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
+ id 1uEJbg-0002s0-PX; Sun, 11 May 2025 23:13:33 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1uEJbb-0006zL-Jr; Sun, 11 May 2025 23:13:33 -0400
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-b2093aef78dso3744538a12.0; 
- Sun, 11 May 2025 20:13:26 -0700 (PDT)
+ id 1uEJbe-0006zx-S0; Sun, 11 May 2025 23:13:32 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-73c17c770a7so4730426b3a.2; 
+ Sun, 11 May 2025 20:13:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747019605; x=1747624405; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1747019609; x=1747624409; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aBBc3gBSAPDnNv4nVmf2AY8a5QMWS3hGn8r/WqWYuvo=;
- b=TgihwTszCcTPy4OC7i+Q38+VIhPPCLZv+KX3Itiidmv733kleI1LVKUHx8g8NOqIR+
- IY2x8AoU5Z5/JR4YOtsB5V60XPBCbATRD02tAGclHeONApRjj9UFaLpatrWEozcB3AGP
- 9QkErkIe4PPd9RZrTNI10R6enCVIXzMo0yC00nqlxohY5Gf4N5AlfZoe0QaQbtrg2vzD
- JtuP1ck5HzydpbFmRKXyZ2qec6TjJyauKhHfiumApL/06X3pqfhOaa5gyHdwZfmL0pKN
- +U8ULEg7i6KWTdTVfux5cK7TD6NEdJuo9P0P/hxPh/TFSniHvCHUZUa8r0UexdOuQpaY
- Owtg==
+ bh=g9+8HrVEPnYNTSg+zbNsTgA2+OAQPBPqGzjvgGq7Of4=;
+ b=XHcnyXAeEIkAmmMXjtl9iycWzox+JntJAMD3hPrvMkQ3OnF8GdAQc+mNcQ7cRXKVD4
+ RTDEkkGUMtYNewQCFAniEVk7/oiBqHI793clAbnrlc1TqkxsmyzlxF6ReleZqJkfsKe2
+ KSivalCT8qh3KoNSuA2tcWubsg6sVjN1B+9he38Cd8jzfA6GhjnKa3QmpvNCw0BCCDMf
+ inplUYpPRIlYkM2lv7qqMUVg8HsvMggKPmKbz3MTWXq/Tsa11hahx/BG9QF/o9AhtHb5
+ Y4IvqtrzO4Or8hf8Necztgyw09ijNQmqISkdOaroQgUnvLyojJ9jRSj7s3zhWUKZ2tQZ
+ bLSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747019605; x=1747624405;
+ d=1e100.net; s=20230601; t=1747019609; x=1747624409;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aBBc3gBSAPDnNv4nVmf2AY8a5QMWS3hGn8r/WqWYuvo=;
- b=TIOluXt8KpjTwWf/RuCbQZjrn16z78r5pIy1Oks74G1d4OtcDv8Q9RtYPfG/9uCLyK
- isALq4pmfKkNSXPvstzbT55A6/DK2WqWKjRmX1TP+uQS0m+1dXFzi24p3gynM44ScPtD
- 8y237kNNY0CuabIR+bgMsM+H8N2sQB9fH0tsAy+GvUvtLY5NgAiJQiexkxkrMgGfh9KU
- Mnd9o4RlTAV/ZD5FVsDlOtbIcc3M1dfeOhppVF+fwGWr5V6syr1X+ihl2nvrhcfvD7kE
- nXrIlOwMyHAl797k481hkefi1XFQycAAaTSlQbO6NcOPgPTbB/f6ksrEs6EHZbQmQLJe
- Co4Q==
+ bh=g9+8HrVEPnYNTSg+zbNsTgA2+OAQPBPqGzjvgGq7Of4=;
+ b=Tz5aIU4WiBR6x5Oy8OXZhxc1Evc/wDwtT9u0+77zNrOlPD6JENz0Rj8HOJWKzRFl/W
+ MZhw3hj13oeKeMkAFFp6Q/AQPKOHxwoHHLLoE/xsgwcNvdlopjkm3dxLikYTynTLL85Q
+ iE3trAXUDcywtj74f9zezJIKYaCLWewBRD3VoRlgaNNhvUVfzQNzwP60aybIuorTPtGQ
+ NpQ9fj8UBHjaFOrmxmHd7M6jhw/GqcE+YC5CZBPx9fSwedySwrH22AbOmC4hIYC2o1us
+ po9o0asgx8cT2HMhQve1N83cT7HFhWsWFmk210UgNaUGbdNUolHCqhJYB7A+fK+5rWfa
+ xVkQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVDQvC/ipAkIdDw1AD8TkBMXn19b0od//FAd69HWXjecb6s9VXu9WtUk2m3P0ewP4U8uctCg76J8SuH@nongnu.org
-X-Gm-Message-State: AOJu0Yz0Xn0MT864Jd+8x2+zylFIQ/k8KuJvdHaSFBQzd9UlV0eklzkD
- EOdpGfqqtoS8ifoVwzghiONL5yQbUICRAeB5pbeUW0ZDJndbAWKhl9yW6g==
-X-Gm-Gg: ASbGnctnXlERKVdO3VCFX44qCfR0SpcGsA0ENgKsRwx+zXC/g/a0zVZVE7yZgdrrm8W
- d8E128+fWwe2waHpKcP/YA6jCfbUqXtP0Qs3jpmEJJhyIJxLZO6c86NzMBf6VxXhO796VpBWWHJ
- Aq9eNTkLAIyiIL8AkRjKOT918j+wP6IutsQj3vDhbE2BdLD3xOdhWqopCLfQXXhRuBFtULMVRJj
- TUWB6sonU8QhP0a5RJc/gKVgcjqjNs7TdGGo+EA2KQEn5Quamkgqu8GELfxnujhJ5LiHA+x3XTo
- xr7aFKAs4NVbt10FG5kk0fKRTJ1JVHstebPACwoAMQAR4pCSRnKzFaSByUMtC6KFRZrg
-X-Google-Smtp-Source: AGHT+IE8wylHgtW8xErfxRVDM1hoRtPCJiS9t25V1Ek0ziDogUv26/gJ6y/x7g8NtOmBrIsGb5WwdQ==
-X-Received: by 2002:a17:902:e74b:b0:22e:663f:c4b with SMTP id
- d9443c01a7336-22fc8b7eac4mr178758225ad.26.1747019605184; 
- Sun, 11 May 2025 20:13:25 -0700 (PDT)
+ AJvYcCX1UL7frYk0k31RqqUoCcjXh/wSbrIIbN4TZxjjiQ5YnjAkWldWMkeR1xqf/B2UoKhlRnf2bsD6eq7j@nongnu.org
+X-Gm-Message-State: AOJu0Yws+LQ3M+Rl/uaTZnST7JHNFTvKffzscCoZlWWlT9ESNdWD9NYh
+ ubkRKmi9jTkMdFh6Qdq3YMGB8BcN8lwxGNR5uxTMmKwp2QwyZYNmUhlkwA==
+X-Gm-Gg: ASbGncuKuDo0CVnTeJ4BSthuoIILK4tK9o255eEzlSfJ42k7IAmr+82HTXLdbODCh49
+ PsuMtIM1nqsXmnrBXmPt8L64LoUWgAsEqVQOXLrgHI6deNWjYH2byoceSqElSrtev5DT9DRrH8e
+ czKybQTj2lP1C/Q55tzmggUyor0iioZvRFchUbKDn3jV27xHIlGuSqkC5I3kD1B0xV1mWow6UqS
+ 0yJgye9hrpOKDU0h5UDYFNo45lz1561W0G78yf8Yj3C6n18VUE+iEZ50/NBO1NpJs7GDqazEIJt
+ bmaQtq7N2/CewS/+c759MJeAAJuT8l4+Ku9mAWpGJ4J4wdzUKFaAN2R9rA==
+X-Google-Smtp-Source: AGHT+IFVtcJdk5bhW1kaA4yoknlCcpnNzB6XUCz/+HcSfa7GMxPjFIXr79GSG8P5YLoCCsx68V9A4g==
+X-Received: by 2002:a05:6a20:6a13:b0:1f5:a3e8:64d3 with SMTP id
+ adf61e73a8af0-215abc227a7mr15266775637.21.1747019608784; 
+ Sun, 11 May 2025 20:13:28 -0700 (PDT)
 Received: from wheely.local0.net ([118.209.229.237])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b234951024csm4750069a12.5.2025.05.11.20.13.21
+ 41be03b00d2f7-b234951024csm4750069a12.5.2025.05.11.20.13.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 11 May 2025 20:13:24 -0700 (PDT)
+ Sun, 11 May 2025 20:13:28 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
  Glenn Miles <milesg@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>,
  Caleb Schlossin <calebs@linux.vnet.ibm.com>
-Subject: [PATCH 37/50] ppc/xive2: Consolidate presentation processing in
- context push
-Date: Mon, 12 May 2025 13:10:46 +1000
-Message-ID: <20250512031100.439842-38-npiggin@gmail.com>
+Subject: [PATCH 38/50] ppc/xive2: Avoid needless interrupt re-check on CPPR set
+Date: Mon, 12 May 2025 13:10:47 +1000
+Message-ID: <20250512031100.439842-39-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250512031100.439842-1-npiggin@gmail.com>
 References: <20250512031100.439842-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x52a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,88 +99,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-OS-push operation must re-present pending interrupts. Use the
-newly created xive2_tctx_process_pending() function instead of
-duplicating the logic.
+When CPPR priority is decreased, pending interrupts do not need to be
+re-checked if one is already presented because by definition that will
+be the highest priority.
+
+This prevents a presented group interrupt from being lost.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/intc/xive2.c | 42 ++++++++++--------------------------------
- 1 file changed, 10 insertions(+), 32 deletions(-)
+ hw/intc/xive2.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-index aa06bfda77..0fdf6a4f20 100644
+index 0fdf6a4f20..ace5871706 100644
 --- a/hw/intc/xive2.c
 +++ b/hw/intc/xive2.c
-@@ -903,18 +903,14 @@ static uint8_t xive2_tctx_restore_os_ctx(Xive2Router *xrtr, XiveTCTX *tctx,
-     return cppr;
- }
- 
-+static void xive2_tctx_process_pending(XiveTCTX *tctx, uint8_t sig_ring);
-+
- static void xive2_tctx_need_resend(Xive2Router *xrtr, XiveTCTX *tctx,
-                                    uint8_t nvp_blk, uint32_t nvp_idx,
-                                    bool do_restore)
- {
--    XivePresenter *xptr = XIVE_PRESENTER(xrtr);
--    uint8_t ipb;
--    uint8_t backlog_level;
--    uint8_t group_level;
--    uint8_t first_group;
--    uint8_t backlog_prio;
--    uint8_t group_prio;
-     uint8_t *regs = &tctx->regs[TM_QW1_OS];
-+    uint8_t ipb;
-     Xive2Nvp nvp;
- 
-     /*
-@@ -946,30 +942,8 @@ static void xive2_tctx_need_resend(Xive2Router *xrtr, XiveTCTX *tctx,
+@@ -1250,7 +1250,9 @@ static void xive2_tctx_set_cppr(XiveTCTX *tctx, uint8_t sig_ring, uint8_t cppr)
      }
-     /* IPB bits in the backlog are merged with the TIMA IPB bits */
-     regs[TM_IPB] |= ipb;
--    backlog_prio = xive_ipb_to_pipr(regs[TM_IPB]);
--    backlog_level = 0;
--
--    first_group = xive_get_field32(NVP2_W0_PGOFIRST, nvp.w0);
--    if (first_group && regs[TM_LSMFB] < backlog_prio) {
--        group_prio = xive2_presenter_backlog_scan(xptr, nvp_blk, nvp_idx,
--                                                  first_group, &group_level);
--        regs[TM_LSMFB] = group_prio;
--        if (regs[TM_LGS] && group_prio < backlog_prio &&
--            group_prio < regs[TM_CPPR]) {
--
--            /* VP can take a group interrupt */
--            xive2_presenter_backlog_decr(xptr, nvp_blk, nvp_idx,
--                                         group_prio, group_level);
--            backlog_prio = group_prio;
--            backlog_level = group_level;
--        }
--    }
  
--    /*
--     * Set the PIPR/NSR based on the restored state.
--     * It will raise the External interrupt signal if needed.
--     */
--    xive_tctx_pipr_set(tctx, TM_QW1_OS, backlog_prio, backlog_level);
-+    xive2_tctx_process_pending(tctx, TM_QW1_OS);
+     /* CPPR priority decreased (higher value) */
+-    xive2_tctx_process_pending(tctx, sig_ring);
++    if (!xive_nsr_indicates_exception(sig_ring, nsr)) {
++        xive2_tctx_process_pending(tctx, sig_ring);
++    }
  }
  
- /*
-@@ -1103,8 +1077,12 @@ static void xive2_tctx_process_pending(XiveTCTX *tctx, uint8_t sig_ring)
- {
-     uint8_t *sig_regs = &tctx->regs[sig_ring];
-     Xive2Router *xrtr = XIVE2_ROUTER(tctx->xptr);
--    uint8_t backlog_prio, first_group, group_level;
--    uint8_t pipr_min, lsmfb_min, ring_min;
-+    uint8_t backlog_prio;
-+    uint8_t first_group;
-+    uint8_t group_level;
-+    uint8_t pipr_min;
-+    uint8_t lsmfb_min;
-+    uint8_t ring_min;
-     uint8_t cppr = sig_regs[TM_CPPR];
-     bool group_enabled;
-     Xive2Nvp nvp;
+ void xive2_tm_set_hv_cppr(XivePresenter *xptr, XiveTCTX *tctx,
 -- 
 2.47.1
 
