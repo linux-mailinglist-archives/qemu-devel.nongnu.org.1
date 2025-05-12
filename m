@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1871AB2DD3
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 05:13:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62BFBAB2DF3
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 05:18:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEJau-0008KG-TA; Sun, 11 May 2025 23:12:45 -0400
+	id 1uEJbR-000156-8W; Sun, 11 May 2025 23:13:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1uEJaU-0007xp-Eu; Sun, 11 May 2025 23:12:19 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1uEJaW-0007zh-Dv; Sun, 11 May 2025 23:12:21 -0400
+Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1uEJaS-0006p8-56; Sun, 11 May 2025 23:12:18 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-7424ccbef4eso1283481b3a.2; 
- Sun, 11 May 2025 20:12:13 -0700 (PDT)
+ id 1uEJaT-0006pX-Rk; Sun, 11 May 2025 23:12:19 -0400
+Received: by mail-pg1-x529.google.com with SMTP id
+ 41be03b00d2f7-b268e4bfd0dso1514820a12.2; 
+ Sun, 11 May 2025 20:12:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747019532; x=1747624332; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1747019536; x=1747624336; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ez2P7YkVqE8UhmrvzuTG/CN/hYwfRFuvoKT/P29BPa8=;
- b=Xeyu3afTxKwUHonEbGSQbZ2BjaLqMwisujdA590Gx2/SQdlhF1Q3gQwNgxQvEHwf86
- sFO2pNvHnSJq34PqLMrVx1eDiciHu+sLnFZwJ4LhMx+LeYqmRqifChGvb85xuw6SLmHd
- O1lAY/WvztBit2pLO3pw1TI5AUzBqiXbMWKO7plQjwQMBUjudhukhjG7c8FTHJ9hplyV
- yVchQtxLshJBIr7iojXPUKnpYGaP1sud4G0p3IjoqFM8YnN6fJV0hvFFdkQUfUcr2iGK
- 1rC2i5dZ+6/gl67a5xaIunzNgclR1iXAfX6U5y2VnDLIJT6F3OrZh3LSj815rNNEXppq
- Cq+Q==
+ bh=Qw3QOgjxIAcD1Na4MRTwlaGEnVGZvj86P2/EE8eX4Is=;
+ b=g/vJrsuRKYPnemeD/L0qQ8Ok5yfxjSFCsiakNtxuURr39tp1wjkezt/lzMxj519Xny
+ CF18QorZePtN0Pz7CESOC5DtfeCIjaj98rFOnTVV4CtsOJtIv480hcv/b3osBEF9GqDi
+ d/oKmNjm0RSX2m7gozEbU2XOZPuuae6vhCH/9ozcCuGG6CGHBwL7AtEziLoHNhbWF1AE
+ UuQXglPEhBOL5rAVm6UdOz+eNwXa+kvbKvjNRVRxJnFuww6r93EZcpoCQ+wyhFMQ0GWv
+ v2Bh9d4h5kkmb7aEVurbr0wUgagiK5iN0yeuGAvGgUAUT4qjONRxPCU2ukRaphRGaIRl
+ r7tA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747019532; x=1747624332;
+ d=1e100.net; s=20230601; t=1747019536; x=1747624336;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ez2P7YkVqE8UhmrvzuTG/CN/hYwfRFuvoKT/P29BPa8=;
- b=dIHYCFk6ye/uM1BJolzuePv6G3hdy6tsvzBhlI89OV8+06wboPxU+QtcmQ2DXcokHF
- K89E8SlfAyqttFUuSMdRyw+OCKHpRuavvCxh3lP9PKRCc/H+8TnxFaonO7txKL7RHcJs
- WlYD+PT4PmDLt9K0lRnuzJt3tv4rPA6AGeuepPB76lvnYGdddmAqhWbdp5mtfyoxkTsi
- WWOFZNk0PqEHnhZuz0RnK7IOoChQy6Fnxz8E1KlhvxIOwMquBG3bD2LtlEihekL/8Caj
- P9v0oRdetU6lcrPkgy03CBdIQKNR4282sSearMCIUj4qZEqbQUalNXPcHsBPnME0eCBB
- f4fQ==
+ bh=Qw3QOgjxIAcD1Na4MRTwlaGEnVGZvj86P2/EE8eX4Is=;
+ b=srAW0IoWUQB4rPUTgkVRmiHjBPISLNeCS/jAO3h6pglzt8GPpZ6U7rNOjIfo0dS4YU
+ PxhFNn9JG3UaILlz3w4hjUvr1bL91szkSL+hgI4XgrVRgkJyjgkljH4wZ1sPUzf6o9GZ
+ cX5YZC3YtYGIhRGQspiUiDAA5eYxpKU4tF50mZw8pLNsZmO97SqvkgUUtKh8nJDrwqi+
+ IiqdBC7dDHB1PA/yuZfRWGpw2sGus7ETRY/bkvkyg8QnrgYWqJxmSOVp0RBsp90Uz50u
+ CaJU4TVDj0KhEhOU+22U/PQLkt9wTjq0oK1oLb18LmoybU+IdrKCLvfdcN8D2rsRTdLV
+ NkWg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVj0E5Pxb1dwJ3is3F14RJRDjHTS0lJGMwhruEky9Pc6hV5XZSBJI4nq4ri9/7T494d4Lq4l6pMj5VV@nongnu.org
-X-Gm-Message-State: AOJu0YzmoUsrLcZ602pgnOXvkkbJscivZW2EFtsTj4s5z507uIEfiRPW
- vHcQF641RpwZLkHXnF+xNnez5ia5XreKghcvE2JXxv6jo9yFPiKtOiZVvg==
-X-Gm-Gg: ASbGncuatoWZQfk3K9TSD/MgFpc3+UpMyDKp/S7skwkITSaHe6YIhdqOZ5IWB1o3ANX
- Nh81AALeA4HtYmSeUaPi4u1N+c0ao8f3HRNjZQ/y2vbefGJ3TQ+W253WZh3jk8dQCH24BOW/3d6
- wITXv1tCBrqtcGyWuPJdFVgN+2jV5839AHR3dp+Tfi6S1xf/NzDA6JPcgb6bvfc4MJn3w7/5C6l
- VCVn7+/WcgRzChK7/wAGczBFozV2Tv4AGvIyDVwd6XW6Jsy0jitvjnb2Oaf1WJ6xIw4+WvftcHR
- eJ71yvgtP8zodgId7aUU8cnX/IgVc7Blzxeo6q/yI+xx5sOSg5wjcDzDuQ==
-X-Google-Smtp-Source: AGHT+IEuvxpis682XCpzEUjhwWiDFCZ5dgrIf0wyoRUaopVmgha3xS7zPP+66FBSoLmAngGUkqSfSw==
-X-Received: by 2002:a05:6a21:3183:b0:206:ad2b:aa9a with SMTP id
- adf61e73a8af0-215abc78d33mr18893060637.36.1747019532148; 
- Sun, 11 May 2025 20:12:12 -0700 (PDT)
+ AJvYcCWtAufXuNO4iujx9uTmI58h+POkZVzyRi+CRSpirCL50S/hDNsNL5m3XSJIwMJA0ooV1zqHHTIIUDfo@nongnu.org
+X-Gm-Message-State: AOJu0YxxLYEQOazNmSwO8gEph9ZqQmw+Qm/HHOODX4vOm8v+LFydReqw
+ oT6Ga8Y4dbYFTEaNblUI6WOO0QhDt1zSTFPNJMoT68wu38qk6ssU2Woqgg==
+X-Gm-Gg: ASbGncsAL8cqyyPWbr9qDK8k9loX6yJiXCelFT5JfbIR2HQOI0hhBm6jDkFyyOytui+
+ BsvBWR4vyQhl+QkG4AKZNsvmRhUT/4rY3WZvDbSdtPiUkagOj7L9wHUctieM0QGZevccbb/ufPL
+ Ya71QddomViICM+2sRbgPUucU6B5uKFHgKnmFxCKwoeKUQ/l2sm90NeMPYyPq3Spbhq7d2EwWA5
+ L87PJKxyxLstIc1cjCADBaYxu6XayfWEdvJWoe7xQtxa0fmlotuxHTwlgjqJyPmlz6aqEW+pm3D
+ BOftNtBYXpO1WMpl2VEr33UHSCcHvBlsRKWQQWkLFDDc9sW8N4nIlaZv3w==
+X-Google-Smtp-Source: AGHT+IElrI0fI2u7v9Ew/kl/laYL81jTHnafLU8w0dl2MG4G0nZdjgl5eMBnjpmvvNxx8PaUOXL/og==
+X-Received: by 2002:a05:6a21:1788:b0:1f5:8655:3287 with SMTP id
+ adf61e73a8af0-215abd23189mr17862362637.40.1747019535760; 
+ Sun, 11 May 2025 20:12:15 -0700 (PDT)
 Received: from wheely.local0.net ([118.209.229.237])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b234951024csm4750069a12.5.2025.05.11.20.12.08
+ 41be03b00d2f7-b234951024csm4750069a12.5.2025.05.11.20.12.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 11 May 2025 20:12:11 -0700 (PDT)
+ Sun, 11 May 2025 20:12:15 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
  Glenn Miles <milesg@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>,
- Caleb Schlossin <calebs@linux.vnet.ibm.com>,
- Glenn Miles <milesg@linux.vnet.ibm.com>
-Subject: [PATCH 17/50] pnv/xive2: Support ESB Escalation
-Date: Mon, 12 May 2025 13:10:26 +1000
-Message-ID: <20250512031100.439842-18-npiggin@gmail.com>
+ Caleb Schlossin <calebs@linux.vnet.ibm.com>
+Subject: [PATCH 18/50] pnv/xive2: Print value in invalid register write logging
+Date: Mon, 12 May 2025 13:10:27 +1000
+Message-ID: <20250512031100.439842-19-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250512031100.439842-1-npiggin@gmail.com>
 References: <20250512031100.439842-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,145 +99,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Glenn Miles <milesg@linux.vnet.ibm.com>
+From: Michael Kowal <kowal@linux.ibm.com>
 
-Add support for XIVE ESB Interrupt Escalation.
+This can make it easier to see what the target system is trying to
+do.
 
-Suggested-by: Michael Kowal <kowal@linux.ibm.com>
-[This change was taken from a patch provided by Michael Kowal.]
-Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+[npiggin: split from larger patch]
+Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
 ---
- hw/intc/xive2.c             | 62 ++++++++++++++++++++++++++++++-------
- include/hw/ppc/xive2.h      |  1 +
- include/hw/ppc/xive2_regs.h | 13 +++++---
- 3 files changed, 59 insertions(+), 17 deletions(-)
+ hw/intc/pnv_xive2.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-index de139dcfbf..0993e792cc 100644
---- a/hw/intc/xive2.c
-+++ b/hw/intc/xive2.c
-@@ -1552,18 +1552,39 @@ do_escalation:
-         }
-     }
- 
--    /*
--     * The END trigger becomes an Escalation trigger
--     */
--    xive2_router_end_notify(xrtr,
--                           xive_get_field32(END2_W4_END_BLOCK,     end.w4),
--                           xive_get_field32(END2_W4_ESC_END_INDEX, end.w4),
--                           xive_get_field32(END2_W5_ESC_END_DATA,  end.w5));
-+    if (xive2_end_is_escalate_end(&end)) {
-+        /*
-+         * Perform END Adaptive escalation processing
-+         * The END trigger becomes an Escalation trigger
-+         */
-+        xive2_router_end_notify(xrtr,
-+                               xive_get_field32(END2_W4_END_BLOCK,     end.w4),
-+                               xive_get_field32(END2_W4_ESC_END_INDEX, end.w4),
-+                               xive_get_field32(END2_W5_ESC_END_DATA,  end.w5));
-+    } /* end END adaptive escalation */
-+
-+    else {
-+        uint32_t lisn;              /* Logical Interrupt Source Number */
-+
-+        /*
-+         *  Perform ESB escalation processing
-+         *      E[N] == 1 --> N
-+         *      Req[Block] <- E[ESB_Block]
-+         *      Req[Index] <- E[ESB_Index]
-+         *      Req[Offset] <- 0x000
-+         *      Execute <ESB Store> Req command
-+         */
-+        lisn = XIVE_EAS(xive_get_field32(END2_W4_END_BLOCK,     end.w4),
-+                        xive_get_field32(END2_W4_ESC_END_INDEX, end.w4));
-+
-+        xive2_notify(xrtr, lisn, true /* pq_checked */);
-+    }
-+
-+    return;
- }
- 
--void xive2_router_notify(XiveNotifier *xn, uint32_t lisn, bool pq_checked)
-+void xive2_notify(Xive2Router *xrtr , uint32_t lisn, bool pq_checked)
- {
--    Xive2Router *xrtr = XIVE2_ROUTER(xn);
-     uint8_t eas_blk = XIVE_EAS_BLOCK(lisn);
-     uint32_t eas_idx = XIVE_EAS_INDEX(lisn);
-     Xive2Eas eas;
-@@ -1606,13 +1627,30 @@ void xive2_router_notify(XiveNotifier *xn, uint32_t lisn, bool pq_checked)
+diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
+index d7ca97ecbb..fcf5b2e75c 100644
+--- a/hw/intc/pnv_xive2.c
++++ b/hw/intc/pnv_xive2.c
+@@ -1197,7 +1197,8 @@ static void pnv_xive2_ic_cq_write(void *opaque, hwaddr offset,
+     case CQ_FIRMASK_OR: /* FIR error reporting */
+         break;
+     default:
+-        xive2_error(xive, "CQ: invalid write 0x%"HWADDR_PRIx, offset);
++        xive2_error(xive, "CQ: invalid write 0x%"HWADDR_PRIx" value 0x%"PRIx64,
++                    offset, val);
          return;
      }
  
-+    /* TODO: add support for EAS resume */
-+    if (xive2_eas_is_resume(&eas)) {
-+        qemu_log_mask(LOG_UNIMP,
-+                      "XIVE: EAS resume processing unimplemented - LISN %x\n",
-+                      lisn);
-+        return;
-+    }
-+
-     /*
-      * The event trigger becomes an END trigger
-      */
-     xive2_router_end_notify(xrtr,
--                             xive_get_field64(EAS2_END_BLOCK, eas.w),
--                             xive_get_field64(EAS2_END_INDEX, eas.w),
--                             xive_get_field64(EAS2_END_DATA,  eas.w));
-+                            xive_get_field64(EAS2_END_BLOCK, eas.w),
-+                            xive_get_field64(EAS2_END_INDEX, eas.w),
-+                            xive_get_field64(EAS2_END_DATA,  eas.w));
-+    return;
-+}
-+
-+void xive2_router_notify(XiveNotifier *xn, uint32_t lisn, bool pq_checked)
-+{
-+    Xive2Router *xrtr = XIVE2_ROUTER(xn);
-+
-+    xive2_notify(xrtr, lisn, pq_checked);
-+    return;
+@@ -1495,7 +1496,8 @@ static void pnv_xive2_ic_vc_write(void *opaque, hwaddr offset,
+         break;
+ 
+     default:
+-        xive2_error(xive, "VC: invalid write @%"HWADDR_PRIx, offset);
++        xive2_error(xive, "VC: invalid write @0x%"HWADDR_PRIx" value 0x%"PRIx64,
++                    offset, val);
+         return;
+     }
+ 
+@@ -1703,7 +1705,8 @@ static void pnv_xive2_ic_pc_write(void *opaque, hwaddr offset,
+         break;
+ 
+     default:
+-        xive2_error(xive, "PC: invalid write @%"HWADDR_PRIx, offset);
++        xive2_error(xive, "PC: invalid write @0x%"HWADDR_PRIx" value 0x%"PRIx64,
++                    offset, val);
+         return;
+     }
+ 
+@@ -1790,7 +1793,8 @@ static void pnv_xive2_ic_tctxt_write(void *opaque, hwaddr offset,
+         xive->tctxt_regs[reg] = val;
+         break;
+     default:
+-        xive2_error(xive, "TCTXT: invalid write @%"HWADDR_PRIx, offset);
++        xive2_error(xive, "TCTXT: invalid write @0x%"HWADDR_PRIx
++                    " data 0x%"PRIx64, offset, val);
+         return;
+     }
+ }
+@@ -1861,7 +1865,8 @@ static void pnv_xive2_xscom_write(void *opaque, hwaddr offset,
+         pnv_xive2_ic_tctxt_write(opaque, mmio_offset, val, size);
+         break;
+     default:
+-        xive2_error(xive, "XSCOM: invalid write @%"HWADDR_PRIx, offset);
++        xive2_error(xive, "XSCOM: invalid write @%"HWADDR_PRIx
++                    " value 0x%"PRIx64, offset, val);
+     }
  }
  
- static const Property xive2_router_properties[] = {
-diff --git a/include/hw/ppc/xive2.h b/include/hw/ppc/xive2.h
-index 8cdf819174..2436ddb5e5 100644
---- a/include/hw/ppc/xive2.h
-+++ b/include/hw/ppc/xive2.h
-@@ -80,6 +80,7 @@ int xive2_router_write_nvgc(Xive2Router *xrtr, bool crowd,
- uint32_t xive2_router_get_config(Xive2Router *xrtr);
+@@ -1929,7 +1934,8 @@ static void pnv_xive2_ic_notify_write(void *opaque, hwaddr offset,
+         break;
  
- void xive2_router_notify(XiveNotifier *xn, uint32_t lisn, bool pq_checked);
-+void xive2_notify(Xive2Router *xrtr, uint32_t lisn, bool pq_checked);
+     default:
+-        xive2_error(xive, "NOTIFY: invalid write @%"HWADDR_PRIx, offset);
++        xive2_error(xive, "NOTIFY: invalid write @%"HWADDR_PRIx
++                    " value 0x%"PRIx64, offset, val);
+     }
+ }
  
- /*
-  * XIVE2 Presenter (POWER10)
-diff --git a/include/hw/ppc/xive2_regs.h b/include/hw/ppc/xive2_regs.h
-index 3c28de8a30..2c535ec0d0 100644
---- a/include/hw/ppc/xive2_regs.h
-+++ b/include/hw/ppc/xive2_regs.h
-@@ -39,15 +39,18 @@
+@@ -1971,7 +1977,8 @@ static void pnv_xive2_ic_lsi_write(void *opaque, hwaddr offset,
+ {
+     PnvXive2 *xive = PNV_XIVE2(opaque);
  
- typedef struct Xive2Eas {
-         uint64_t       w;
--#define EAS2_VALID                 PPC_BIT(0)
--#define EAS2_END_BLOCK             PPC_BITMASK(4, 7) /* Destination EQ block# */
--#define EAS2_END_INDEX             PPC_BITMASK(8, 31) /* Destination EQ index */
--#define EAS2_MASKED                PPC_BIT(32) /* Masked                 */
--#define EAS2_END_DATA              PPC_BITMASK(33, 63) /* written to the EQ */
-+#define EAS2_VALID         PPC_BIT(0)
-+#define EAS2_QOS           PPC_BIT(1, 2)       /* Quality of Service(unimp) */
-+#define EAS2_RESUME        PPC_BIT(3)          /* END Resume(unimp) */
-+#define EAS2_END_BLOCK     PPC_BITMASK(4, 7)   /* Destination EQ block# */
-+#define EAS2_END_INDEX     PPC_BITMASK(8, 31)  /* Destination EQ index */
-+#define EAS2_MASKED        PPC_BIT(32)         /* Masked */
-+#define EAS2_END_DATA      PPC_BITMASK(33, 63) /* written to the EQ */
- } Xive2Eas;
+-    xive2_error(xive, "LSI: invalid write @%"HWADDR_PRIx, offset);
++    xive2_error(xive, "LSI: invalid write @%"HWADDR_PRIx" value 0x%"PRIx64,
++                offset, val);
+ }
  
- #define xive2_eas_is_valid(eas)   (be64_to_cpu((eas)->w) & EAS2_VALID)
- #define xive2_eas_is_masked(eas)  (be64_to_cpu((eas)->w) & EAS2_MASKED)
-+#define xive2_eas_is_resume(eas)  (be64_to_cpu((eas)->w) & EAS2_RESUME)
- 
- void xive2_eas_pic_print_info(Xive2Eas *eas, uint32_t lisn, GString *buf);
+ static const MemoryRegionOps pnv_xive2_ic_lsi_ops = {
+@@ -2074,7 +2081,8 @@ static void pnv_xive2_ic_sync_write(void *opaque, hwaddr offset,
+         inject_type = PNV_XIVE2_QUEUE_NXC_ST_RMT_CI;
+         break;
+     default:
+-        xive2_error(xive, "SYNC: invalid write @%"HWADDR_PRIx, offset);
++        xive2_error(xive, "SYNC: invalid write @%"HWADDR_PRIx" value 0x%"PRIx64,
++                    offset, val);
+         return;
+     }
  
 -- 
 2.47.1
