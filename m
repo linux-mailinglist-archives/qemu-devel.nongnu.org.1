@@ -2,97 +2,125 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC38AB3C43
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 17:36:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45F36AB3C39
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 17:35:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEVBv-0000PY-55; Mon, 12 May 2025 11:35:44 -0400
+	id 1uEVB9-0006x2-PP; Mon, 12 May 2025 11:34:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uEVAC-0005n9-87
- for qemu-devel@nongnu.org; Mon, 12 May 2025 11:33:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uEVAA-0006p7-Ja
- for qemu-devel@nongnu.org; Mon, 12 May 2025 11:33:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747064033;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uEVA2-0005Jm-Rj
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 11:33:48 -0400
+Received: from smtp-out2.suse.de ([195.135.223.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uEVA0-0006oG-Q6
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 11:33:46 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id AF7E01F38A;
+ Mon, 12 May 2025 15:33:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1747064022; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=znEBQxzlAL8gu1qD1XOCfyAh4AmHH10qm/I+OrDLQQs=;
- b=hqg0oweWKvkHMMQFGwOnsyz1XzzE1v7sRwYLsO8TYVzoiXtQzdHFRaJqqr+AjhrqGvFIA8
- L2F4HHrzeaqb+BaGYv3hfOOAxDNAhKtnopEOD1gk9tZEOJvD0MITIvHOPsfsX8KbR9wkAk
- TxJ1Cj2HII7UIWJt/KepR7X1Kj7HuUw=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-314-eId11g9QOR-YcldxvX7Zmg-1; Mon, 12 May 2025 11:33:52 -0400
-X-MC-Unique: eId11g9QOR-YcldxvX7Zmg-1
-X-Mimecast-MFC-AGG-ID: eId11g9QOR-YcldxvX7Zmg_1747064031
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3a0b7c8b3e2so2899855f8f.1
- for <qemu-devel@nongnu.org>; Mon, 12 May 2025 08:33:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747064029; x=1747668829;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=znEBQxzlAL8gu1qD1XOCfyAh4AmHH10qm/I+OrDLQQs=;
- b=gRgBz9UPxpJQKTDFehfCaK8Oh4niAJED1+3AtqgPmNGIMqHpz7jX3tZ4xT76hW8l0y
- SXm6S0HW+GLQWxy6ZtwZICVEDnGcCt7YY9ik6QnonufmnefWOvzkCyGUiC+8MMyTPRoZ
- IJyaNupdWP+Kq20hZGJdOCBl0f16k8wfm4iFeI9meNhiRmDR5HHGNo7Gz6Kx5fbzeS+Y
- Ew482m6a6ZXqsVVoZO6wGgO0W60BB+gxaovKf2icUavhofz7SzHhQoytw9a+sX7wDydE
- VJVYX3qehwntxPBYuJLn11D78kVfX6xH8kN2J/YuF64WMUy1YSgrmNZ/0z35xEsnUPwY
- jYlw==
-X-Gm-Message-State: AOJu0YwqamY4H9T6nEEtI3yoSpuxsm/TewStJJJYBujmkBs6EvrI1XYw
- h1YDV48/ozx8RuYYrqhOCGo7j8Pxyol/xJg600EltLZPWVJOB/T4K4Dmz1NNQDKvPPEX6AD+Ei6
- HRDYSiyLdKp1Kv77CAbIygR09AaB0bq+70b4OhpRGsfRDVC9zMwLRapOHVQrJOwbgDJfcBzq96b
- HRV45uMitJP+rJcnVkt48tcnBfDbo+0pKMaA0P
-X-Gm-Gg: ASbGncvOGDnQ8/SeEl1bPm2fxquZJuLn1PzOCNTAH5Lai8dIBDCFVMBTwtF2dbXaddC
- SkvN8ii0cWwySuAhcCrs7ZrhCLgn5PrR5pW+CRtRFJmnH7GFxsGDau27anBxexslXOYSj4TF/jy
- odSd+8DkjVxcnwmqQGn9aiv/flF34x4oQUmvrAPjPXJLQtqZ0UcCIDKtClSEt4lCQ20ug6SyP/M
- Tjhvk+UFOeKFgt9DxZzyYfv9ac2nSuKhf16qX+ZcuNF1Jx1XdpYFmAzWJSVBmlg75D90EjJ2CMC
- 46nNSnRUXRFBi6k=
-X-Received: by 2002:a5d:64af:0:b0:3a0:8598:8e7c with SMTP id
- ffacd0b85a97d-3a1f6427c6cmr11206223f8f.6.1747064029293; 
- Mon, 12 May 2025 08:33:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEqR7PpJXl6Mbf03GwHIgfV7+3n4CS7oNWv0vk+O1RK730cmUbRJY8v8ky3k8LZVpcljYxoKw==
-X-Received: by 2002:a5d:64af:0:b0:3a0:8598:8e7c with SMTP id
- ffacd0b85a97d-3a1f6427c6cmr11206195f8f.6.1747064028861; 
- Mon, 12 May 2025 08:33:48 -0700 (PDT)
-Received: from [192.168.122.1] ([151.95.45.141])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442cd3aeccdsm169975945e9.32.2025.05.12.08.33.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 May 2025 08:33:46 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: philmd@linaro.org,
-	peter.maydell@linaro.org
-Subject: [PATCH 2/2] rust: pl011: Really use RX FIFO depth
-Date: Mon, 12 May 2025 17:33:37 +0200
-Message-ID: <20250512153337.153954-3-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512153337.153954-1-pbonzini@redhat.com>
-References: <20250512153337.153954-1-pbonzini@redhat.com>
+ bh=+2Hwodhp35T11MPXcJZli19P+KVAl/XPeRthO1NKrko=;
+ b=Ddue1M/V2xZGsoJYa+/af8B6avPrRoYSwXH5pNMeSNmC3R88IgBegh8SthzuXiGUHQre/3
+ yipv04zx9gzVD1HgzbTx/Xd4m8QUpInYT9OWjLl0jxfTC5/QfNEgPOU/3/jqWHYF3V7Jnr
+ HLBWDAfwuCDZo82IGFg/KvVVnfgvlbY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1747064022;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+2Hwodhp35T11MPXcJZli19P+KVAl/XPeRthO1NKrko=;
+ b=bKlao+h5LEzH67Af3Nkg3urW9Rdj2qvAg0brOnlWSvSb+5ya+uD1wfUlZ39c60m7wU6OPv
+ b1NZtrkDy6hTlFDA==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Ddue1M/V";
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=bKlao+h5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1747064022; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+2Hwodhp35T11MPXcJZli19P+KVAl/XPeRthO1NKrko=;
+ b=Ddue1M/V2xZGsoJYa+/af8B6avPrRoYSwXH5pNMeSNmC3R88IgBegh8SthzuXiGUHQre/3
+ yipv04zx9gzVD1HgzbTx/Xd4m8QUpInYT9OWjLl0jxfTC5/QfNEgPOU/3/jqWHYF3V7Jnr
+ HLBWDAfwuCDZo82IGFg/KvVVnfgvlbY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1747064022;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+2Hwodhp35T11MPXcJZli19P+KVAl/XPeRthO1NKrko=;
+ b=bKlao+h5LEzH67Af3Nkg3urW9Rdj2qvAg0brOnlWSvSb+5ya+uD1wfUlZ39c60m7wU6OPv
+ b1NZtrkDy6hTlFDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 223E0137D2;
+ Mon, 12 May 2025 15:33:41 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id csIHNdUUImhXUgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 12 May 2025 15:33:41 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Maydell <peter.maydell@linaro.org>, Kevin Wolf <kwolf@redhat.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, "Michael S.
+ Tsirkin" <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Laurent Vivier <lvivier@redhat.com>, Phil Dennis-Jordan
+ <phil@philjordan.eu>, Bernhard Beschow <shentey@gmail.com>, Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH v4 00/22] usb/xhci and usb/msd improvements and tests
+In-Reply-To: <CAFEAcA_giWU5xC8GqjbvQUV7K-M_1iKrKoQBvB9Xj3qtLRZtxg@mail.gmail.com>
+References: <20250502033047.102465-1-npiggin@gmail.com>
+ <D9NUVWSVJKHN.3T7M6OPALIGYC@gmail.com> <aBh-tXqR6RqXvx9D@redhat.com>
+ <CAFEAcA_giWU5xC8GqjbvQUV7K-M_1iKrKoQBvB9Xj3qtLRZtxg@mail.gmail.com>
+Date: Mon, 12 May 2025 12:33:39 -0300
+Message-ID: <87v7q5etd8.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.551,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: AF7E01F38A
+X-Spam-Score: -3.01
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ SUSPICIOUS_RECIPS(1.50)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; FREEMAIL_ENVRCPT(0.00)[gmail.com];
+ TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; ARC_NA(0.00)[];
+ RCPT_COUNT_TWELVE(0.00)[12];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ MIME_TRACE(0.00)[0:+];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ FREEMAIL_CC(0.00)[gmail.com,redhat.com,nongnu.org,philjordan.eu,linaro.org];
+ RCVD_TLS_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
+ RCVD_COUNT_TWO(0.00)[2];
+ DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ TO_DN_SOME(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ TAGGED_RCPT(0.00)[]; MISSING_XM_UA(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,suse.de:mid,suse.de:dkim]
+X-Rspamd-Action: no action
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,76 +136,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While we model a 16-elements RX FIFO since the PL011 model was
-introduced in commit cdbdb648b7c ("ARM Versatile Platform Baseboard
-emulation"), we only read 1 char at a time!
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-Have can_receive() return how many elements are available, and use that
-in receive().
+> On Mon, 5 May 2025 at 10:03, Kevin Wolf <kwolf@redhat.com> wrote:
+>>
+>> Am 05.05.2025 um 04:03 hat Nicholas Piggin geschrieben:
+>> > I would like to get this series merged, but I realize the mass storage
+>> > change to relax packet ordering of a command particularly is quite
+>> > complicated and under-reviewed.
+>>
+>> I can try to find the time to have a look at the series, but given that
+>> I'll have to familiarise myself with the specs again, it might take a
+>> while.
+>>
+>> > Would there be objection if I made a pull request for Guenter's
+>> > patches, the hcd stuff, the qtests, and some of the easier / reviewed
+>> > bits of msd?
+>>
+>> That makes sense to me. I suppose I can also give a quick review for the
+>> initial part of the msd patches, at lot of which seems to be more or
+>> less just refactoring.
+>
+> I've now reviewed the hw/usb/xhci patches, so I think you
+> now have reviews for everything here except the tests/qtest/
+> patches (3, 4, 5, 7, 8, 21).
+>
 
-This is the Rust version of commit 3e0f118f825 ("hw/char/pl011: Really
-use RX FIFO depth"); but it also adds back a comment that is present
-in commit f576e0733cc ("hw/char/pl011: Add support for loopback") and
-absent in the Rust code.
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- docs/devel/rust.rst              |  2 +-
- rust/hw/char/pl011/src/device.rs | 19 +++++++++++++------
- 2 files changed, 14 insertions(+), 7 deletions(-)
-
-diff --git a/docs/devel/rust.rst b/docs/devel/rust.rst
-index 4de86375021..171d908e0b0 100644
---- a/docs/devel/rust.rst
-+++ b/docs/devel/rust.rst
-@@ -119,7 +119,7 @@ QEMU includes four crates:
-   for the ``hw/char/pl011.c`` and ``hw/timer/hpet.c`` files.
- 
- .. [#issues] The ``pl011`` crate is synchronized with ``hw/char/pl011.c``
--   as of commit 02b1f7f61928.  The ``hpet`` crate is synchronized as of
-+   as of commit 3e0f118f82.  The ``hpet`` crate is synchronized as of
-    commit 1433e38cc8.  Both are lacking tracing functionality.
- 
- This section explains how to work with them.
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index 94b31659849..bde3be65c5b 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -580,19 +580,26 @@ fn write(&self, offset: hwaddr, value: u64, _size: u32) {
-     fn can_receive(&self) -> u32 {
-         let regs = self.regs.borrow();
-         // trace_pl011_can_receive(s->lcr, s->read_count, r);
--        u32::from(regs.read_count < regs.fifo_depth())
-+        regs.fifo_depth() - regs.read_count
-     }
- 
-     fn receive(&self, buf: &[u8]) {
--        if buf.is_empty() {
-+        let mut regs = self.regs.borrow_mut();
-+        if regs.loopback_enabled() {
-+            // In loopback mode, the RX input signal is internally disconnected
-+            // from the entire receiving logics; thus, all inputs are ignored,
-+            // and BREAK detection on RX input signal is also not performed.
-             return;
-         }
--        let mut regs = self.regs.borrow_mut();
--        let c: u32 = buf[0].into();
--        let update_irq = !regs.loopback_enabled() && regs.fifo_rx_put(c.into());
-+
-+        let mut update_irq = false;
-+        for &c in buf {
-+            let c: u32 = c.into();
-+            update_irq |= regs.fifo_rx_put(c.into());
-+        }
-+
-         // Release the BqlRefCell before calling self.update()
-         drop(regs);
--
-         if update_irq {
-             self.update();
-         }
--- 
-2.49.0
-
+I'll get to them this week. It'd be nice to see the new version of the
+pending dependency series that's mentioned in the cover letter. For
+these subsystems I'm not familiar with, most of my qtest review will
+rely on putting the series through asan and tests on a loaded
+machine. If there's latent bugs in qtest, it gets super confusing.
 
