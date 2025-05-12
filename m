@@ -2,86 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DA99AB444A
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 21:06:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1241AB4452
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 21:06:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEYTA-0005Rd-5O; Mon, 12 May 2025 15:05:45 -0400
+	id 1uEYTd-0005Ta-HT; Mon, 12 May 2025 15:06:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uEYT6-0005R7-FT
- for qemu-devel@nongnu.org; Mon, 12 May 2025 15:05:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uEYT8-0005Rx-EX
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 15:05:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uEYT1-0007U8-Bx
- for qemu-devel@nongnu.org; Mon, 12 May 2025 15:05:40 -0400
+ id 1uEYT5-0007UN-8l
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 15:05:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747076734;
+ s=mimecast20190719; t=1747076738;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6ljvXYz3Ammv9IyTNCcBI9y3hT6/YYDHfD78BUikWg4=;
- b=Kttov9wuB/QuHojRn18DIQN7lzzdWHOqVAdkF64bqWLUSh2jCeMJvV02jYj2ReKdy4JuCu
- YntlLJ7N5r/7o/vsvYyd68RqC6U8cQ2OsBGYDyhjUnKkPUJB8+oIXr4iKPrAcNz3LgKoxG
- rw3xSwOHnrPHnCuakivj96DQpOGoOR8=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=0ehf2YgaMXoxb+fwp0uJKFVwZBOJsson/HPg8rmycXI=;
+ b=dT8r8fHY+mvQOV83yyBjiB3470tnlkjsGriS1lNMSm8QtsEhWG5af/uPy1y8Pok1/hnV4/
+ AXtqCY2B2KEVTYlcl9iLmsFpVNWlE28N+imHB6OvTrblVljugaVfEg11VHL6LJQcsJ8WnZ
+ H5Me3sT3p2xIs4bE31UcYHQdI4yz2zc=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-357-UIJ6T0w5P2e8NwBxJ3-Btg-1; Mon, 12 May 2025 15:05:33 -0400
-X-MC-Unique: UIJ6T0w5P2e8NwBxJ3-Btg-1
-X-Mimecast-MFC-AGG-ID: UIJ6T0w5P2e8NwBxJ3-Btg_1747076732
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3a0b7120290so2131918f8f.2
- for <qemu-devel@nongnu.org>; Mon, 12 May 2025 12:05:33 -0700 (PDT)
+ us-mta-454-9m9jfK4dNpC5eJphH3B6RQ-1; Mon, 12 May 2025 15:05:36 -0400
+X-MC-Unique: 9m9jfK4dNpC5eJphH3B6RQ-1
+X-Mimecast-MFC-AGG-ID: 9m9jfK4dNpC5eJphH3B6RQ_1747076736
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3a0b7ceaa20so1569796f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 12 May 2025 12:05:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747076731; x=1747681531;
+ d=1e100.net; s=20230601; t=1747076735; x=1747681535;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6ljvXYz3Ammv9IyTNCcBI9y3hT6/YYDHfD78BUikWg4=;
- b=Qn5l55g4kCEIauFKwdaNUZ6aL+k+fbBN5rRsGZ99PmYpumf4Mdw5+40y6cYCzxrlaN
- L+b36kiPWFn3KiYKbf7pEq77KKqqGjj6Vnt56bYLRKSkUnb462u+oTubHcv3o3lttmkX
- 3zJ4ESCOvDzYaANIm+XFoS5nwPDixK0OG9rKz6++LX5KoKfmWD6bsrZWAzmK0oHgbN+U
- nAhL591rVVla2lqeQ2Z2GLbbHeQ2zS+FQXqNFZWNwVeQFdpwhsifOSLu9j3cGbFMT9iK
- TFWn6/mL/Bp9cdAZf9VV04NtY8/OiywtGeUBs36EkBH49T7qJ4kI8MQ4SYyXTTyiA+XI
- OKGw==
-X-Gm-Message-State: AOJu0YwGqNgTO8jndGaaBc7KAYNHN240A7n/6+CFn9z/tWtLdmkF2u46
- i6QftsPZT8+wvOGHLBRt7jWCXscvqf8rgC+1HQtVzVjTm0V7wdhYYUhgqNNS5luBeAnJ/ptKjFn
- FRSuOO2/dGZfpOKoZ+UhRHAWFiQSlD2NddQeAW/e+iEPwzzgkZb8c97c3V0Uv6Masn0Ki492U83
- TicKg0eIskSLnYNQayvrje4MGYipZ4t/D08hTr
-X-Gm-Gg: ASbGnctEynaOThJ+wh2UssHiETBR5bnBs4OoZl5QmCWvpQff9xC2FsqxhzxZVtQoDua
- g4lAYZQZib5KpdEoNVYjYMkVqP/w6mnUt6LOb3REESaU5wirTZdlSZsAKPQvSk8h/PfVZiI0ApH
- 4Jrp70BKPoDf0PzHYtbeJsYjejglYin78r6wU3Ho1yneh2uoRHZPlYbictnhmgFf2uALitlNx53
- nS1Sps4VBpyNF9KEkAPuA8i1j1nXGrvdTlVxOpeC5uqpOcgehwPDcpd3moG9bFdcupDfR4P32W5
- 0YJ375tvZidha3s=
-X-Received: by 2002:adf:8b53:0:b0:3a0:b1de:1be0 with SMTP id
- ffacd0b85a97d-3a1f6466002mr9694988f8f.31.1747076731707; 
- Mon, 12 May 2025 12:05:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE84NcwA5CvHlZGtaWIVO3t4VNDgnXS2RG7niBBGP5Nt+hG6B0d0DHgHWLBEb0dopAdiPXrEA==
-X-Received: by 2002:adf:8b53:0:b0:3a0:b1de:1be0 with SMTP id
- ffacd0b85a97d-3a1f6466002mr9694971f8f.31.1747076731325; 
- Mon, 12 May 2025 12:05:31 -0700 (PDT)
+ bh=0ehf2YgaMXoxb+fwp0uJKFVwZBOJsson/HPg8rmycXI=;
+ b=TnGegcU5vox6UALmToVL++IdcCw84DWge1Mz76BrmoLaigMQiRrUfJ30lHh39RUoD0
+ /dY+QBVyndZji+N5zTNUy6pjryEGwn0uRfh4WJzbB+CZS8yvrKDB7YraqGL3v6QCcmHw
+ 4n0TBhF1wGsiW/ScCzXKKIP5+089RKPO/ZaVj58wr0s0IzhzUcFBMI4VI9zjGn4u9K87
+ sLwFsSyTLtduCpI+mbY0cBzKh16ersNL1RNXt9OngrO9Q30D93gY6bNXsnZChEd9K2aj
+ NAwqwfpnLZ8KaqPFk78yDauxqvPj82Ls0MRuXZb7yLFG8Yr2VxYFEvkw03YODTTZXrYL
+ NJPQ==
+X-Gm-Message-State: AOJu0YxpTr35QizE/neoSUXle9O5uigS0rNOPOKFkWiFq9JW9vU0mgnC
+ D/7YE0B8goLpAMRXyyLCMSUFGQhZlCKUQfUeUqSqxS6MjZ2yWiJssIOl8OaszbUH1VrBXEGQJZI
+ AiY5o0yzEkexhFus49E0TMuxvi91NyoHI64asdjAxIhY1Hex1GgwxIm3gtBoKahRjbiErCuvPv/
+ 5ekUBa3H/FNWimodFQZ60PXWAgmz8b8GKOhRDQ
+X-Gm-Gg: ASbGncsyh6nEyII5x3tTRsqXqj/V2wv7KNAbaVhgIvsiSWWZyZ6GXNUURjFYagDKviv
+ QGtz4ANhJlMaQJfV1LnXCQL3FHVsbl6An6CUHSTgfLemLyJpWVIGiRYlYS2ccrzfLjy2+O/YtpY
+ woPxk5iMeoGYXZ9b26BWnddP2naic9bh/8S3Elvxo/u9ijNq+TsLMCo6jpKramBLFPB4DkxXUbs
+ WPPwnj/DtsW91hAbV7XMQKUKZZ0VE6gGWA6HHm2Hzu7MhF0310cFz8lgC+K7Xs6kFr2S3gIxMRz
+ NG8OOrfDpehHIlY=
+X-Received: by 2002:a5d:64c3:0:b0:3a0:b84c:7dab with SMTP id
+ ffacd0b85a97d-3a1f6421db3mr11717083f8f.4.1747076735246; 
+ Mon, 12 May 2025 12:05:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGW8Liwga4/tnsWeFSOBmclzDh3G/rvAefR3Es7wI0TZLg5k88r2e7qnWyCOrphUuQ+XwIRyw==
+X-Received: by 2002:a5d:64c3:0:b0:3a0:b84c:7dab with SMTP id
+ ffacd0b85a97d-3a1f6421db3mr11717060f8f.4.1747076734867; 
+ Mon, 12 May 2025 12:05:34 -0700 (PDT)
 Received: from [192.168.122.1] ([151.95.45.141])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a1f5a2cf0esm13435348f8f.79.2025.05.12.12.05.30
- for <qemu-devel@nongnu.org>
+ ffacd0b85a97d-3a1f5a4cc39sm13200196f8f.100.2025.05.12.12.05.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 May 2025 12:05:30 -0700 (PDT)
+ Mon, 12 May 2025 12:05:34 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/16] meson: remove unnecessary dependencies from specific_ss
-Date: Mon, 12 May 2025 21:05:11 +0200
-Message-ID: <20250512190524.179419-4-pbonzini@redhat.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PULL 04/16] modinfo: lookup compile_commands.json by object
+Date: Mon, 12 May 2025 21:05:12 +0200
+Message-ID: <20250512190524.179419-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512190524.179419-1-pbonzini@redhat.com>
 References: <20250512190524.179419-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
@@ -106,29 +108,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All dependencies that are in common_ss (which includes system_ss) automatically
-have their include path added when building the target-specific files.  So the
-hack in ui/meson.build is not needed anymore since commit 727bb5b477e ("meson:
-pick libfdt from common_ss when building target-specific files", 2024-05-10);
-drop it.
+Since modinfo support was added, Meson fixed several issues with
+extract_objects and compile_commands.json lookups can be simplified.
+If the lookup uses the object file as key, there is no need to use the
+command line to distinguish among all entries for a given source.
 
+Ninja 1.9 is required in order to produce the 'output' key in
+compile_commands.json; it is available in CentOS Stream 9, Debian 11, SLES
+15.2, Ubuntu 20.04 and in all recent BSD distros.  Samurai also has it.
+
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- ui/meson.build | 3 ---
- 1 file changed, 3 deletions(-)
+ meson.build                | 14 ++++----------
+ scripts/modinfo-collect.py | 23 +++++++++++------------
+ 2 files changed, 15 insertions(+), 22 deletions(-)
 
-diff --git a/ui/meson.build b/ui/meson.build
-index 35fb04cadf3..6371422c460 100644
---- a/ui/meson.build
-+++ b/ui/meson.build
-@@ -1,7 +1,4 @@
- system_ss.add(pixman)
--specific_ss.add(when: ['CONFIG_SYSTEM_ONLY'], if_true: pixman)   # for the include path
--specific_ss.add(when: ['CONFIG_SYSTEM_ONLY'], if_true: opengl)   # for the include path
+diff --git a/meson.build b/meson.build
+index a2cebd44656..7f91500bb73 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3903,16 +3903,11 @@ foreach d, list : modules
+                     install: true,
+                     install_dir: qemu_moddir)
+       if module_ss.sources() != []
+-        # FIXME: Should use sl.extract_all_objects(recursive: true) as
+-        # input. Sources can be used multiple times but objects are
+-        # unique when it comes to lookup in compile_commands.json.
+-        # Depnds on a mesion version with
+-        # https://github.com/mesonbuild/meson/pull/8900
+         modinfo_files += custom_target(d + '-' + m + '.modinfo',
+                                        output: d + '-' + m + '.modinfo',
+-                                       input: module_ss.sources() + genh,
++                                       input: sl.extract_all_objects(recursive: true),
+                                        capture: true,
+-                                       command: [modinfo_collect, module_ss.sources()])
++                                       command: [modinfo_collect, '@INPUT@'])
+       endif
+     else
+       if d == 'block'
+@@ -3951,12 +3946,11 @@ foreach d, list : target_modules
+                     dependencies: target_module_ss.dependencies(),
+                     install: true,
+                     install_dir: qemu_moddir)
+-            # FIXME: Should use sl.extract_all_objects(recursive: true) too.
+             modinfo_files += custom_target(module_name + '.modinfo',
+                                            output: module_name + '.modinfo',
+-                                           input: target_module_ss.sources() + genh,
++                                           input: sl.extract_all_objects(recursive: true),
+                                            capture: true,
+-                                           command: [modinfo_collect, '--target', target, target_module_ss.sources()])
++                                           command: [modinfo_collect, '--target', target, '@INPUT@'])
+           endif
+         endif
+       endforeach
+diff --git a/scripts/modinfo-collect.py b/scripts/modinfo-collect.py
+index 4e7584df667..48bd92bd618 100644
+--- a/scripts/modinfo-collect.py
++++ b/scripts/modinfo-collect.py
+@@ -7,15 +7,6 @@
+ import shlex
+ import subprocess
+ 
+-def find_command(src, target, compile_commands):
+-    for command in compile_commands:
+-        if command['file'] != src:
+-            continue
+-        if target != '' and command['command'].find(target) == -1:
+-            continue
+-        return command['command']
+-    return 'false'
 -
- system_ss.add(png)
- system_ss.add(files(
-   'clipboard.c',
+ def process_command(src, command):
+     skip = False
+     out = []
+@@ -43,14 +34,22 @@ def main(args):
+         print("MODINFO_DEBUG target %s" % target)
+         arch = target[:-8] # cut '-softmmu'
+         print("MODINFO_START arch \"%s\" MODINFO_END" % arch)
++
+     with open('compile_commands.json') as f:
+-        compile_commands = json.load(f)
+-    for src in args:
++        compile_commands_json = json.load(f)
++    compile_commands = { x['output']: x for x in compile_commands_json }
++
++    for obj in args:
++        entry = compile_commands.get(obj, None)
++        if not entry:
++            sys.stderr.print('modinfo: Could not find object file', obj)
++            sys.exit(1)
++        src = entry['file']
+         if not src.endswith('.c'):
+             print("MODINFO_DEBUG skip %s" % src)
+             continue
++        command = entry['command']
+         print("MODINFO_DEBUG src %s" % src)
+-        command = find_command(src, target, compile_commands)
+         cmdline = process_command(src, command)
+         print("MODINFO_DEBUG cmd", cmdline)
+         result = subprocess.run(cmdline, stdout = subprocess.PIPE,
 -- 
 2.49.0
 
