@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 944E2AB41EC
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 20:15:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9140DAB419C
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 20:08:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEXYQ-0004Ut-Jx; Mon, 12 May 2025 14:07:06 -0400
+	id 1uEXYs-0005Hh-Rn; Mon, 12 May 2025 14:07:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uEXWs-0002Rn-Hv
- for qemu-devel@nongnu.org; Mon, 12 May 2025 14:05:39 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1uEXWu-0002Uo-E7
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 14:05:40 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uEXWq-0008W8-7f
- for qemu-devel@nongnu.org; Mon, 12 May 2025 14:05:30 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-2317d94c9cdso54095ad.2
- for <qemu-devel@nongnu.org>; Mon, 12 May 2025 11:05:27 -0700 (PDT)
+ id 1uEXWr-00004t-Pv
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 14:05:31 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-22fa47f295aso31234195ad.0
+ for <qemu-devel@nongnu.org>; Mon, 12 May 2025 11:05:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747073126; x=1747677926; darn=nongnu.org;
+ d=linaro.org; s=google; t=1747073127; x=1747677927; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kfHS+52V3f05Qs2m5d7Nh2wTK+yUmoJBcA8DI59GOAc=;
- b=ztXkEiv30RQAedCBYdectJnOgOvWhFRUhEtAKA/43rPcKrVrs696zB6F2ojBRXww7h
- FhpoeYv5R356pon/syy9bzAQ9vzXx2G/9Xp5K9OI5PpfOOaSkmpAM07qwrl9u6IHEUL/
- qhAik2PUH+dLqQTNwbZHAG4blcdH+iUYh79AYpHYpIcBDOZ840trAivEHBodt/Ft37iq
- A8lqNGwT6mz63VZvKcGBOImx7IwSS0oRLnjVAjLGZQCviH11MtefKhCRx2bpbfdOYhd6
- Hn3Wt/IpCtnaieS3asHJrFlnGnY1Xa/mjVRVh5Lap1Gv4mPEA8XAnMhgSU9eiA7BGGWo
- 3L+w==
+ bh=fgtSyivanfJoltGbQqPmVVFicsFn6el5hIn8rUX6RjU=;
+ b=iAFOlYFfUEL6B7I/K7OwvRlYdYnIUF17UN8DpcKVtDP6xJOFH7R1grLgif0MvsQ5nL
+ FHuP4QzFtzuJBjrAcJy25IyRzeynzAsHeAr93U+1x8Dnqi8CvPkvrOMPn1U3q6wu5Lj1
+ 1GnCoq2kEBhpKo5xE+agKlJxHTYbauSE38nd7ZJ/Pcu2Ogw2noZKRdkmPnwks0ym71L/
+ lZowHRiFzA6kuhM5EdEMU/C29FRv6TtAa0p2qDMT8BMb0AbdepTAk/jfNUI4/UQfAI/x
+ jTeNguraQjKD2Q52dc/o92CUPhC1AxoUGpc6VLloeH54KSFgwoia3gefb3uEV91Awqfo
+ W4AA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747073126; x=1747677926;
+ d=1e100.net; s=20230601; t=1747073127; x=1747677927;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kfHS+52V3f05Qs2m5d7Nh2wTK+yUmoJBcA8DI59GOAc=;
- b=voNoRZwB9fwkgBMsCc45r4D5CsHuFMGq3IEp5aUKAMX4wpifZaueR5A4+Sx+YD2ipJ
- dTgcPcv2kd7252zV7QqToW12dDUwpyDyfoGInmpayRGzCRP+6loG7FFUhZzpXffWMGNB
- 0BbJ6PwicqZ6+CGOK74OfcWSeCblaHni5WYzemXz+cIhX60hbIkcVIiSSmdH8XuPEAEf
- TxvMwuX+j+g3eqY6xbQ/AkteG3wEwBqqlU2uKF3K6gCI8lzBcC5EAuyx7qXubIpPDhFB
- yo259ZRJME7Y5n05HteTX0IbTPfWo9rDKmyDYUki45SMgfsdAEMV09eNt9icq0p0/BAi
- zRpg==
-X-Gm-Message-State: AOJu0Yx5BtOm99OQMBavyQAO7os3PQ0yVyZ0c5Q19sm4XqP9ptziJ2Sq
- HhpoglWR9gzGZj2D23S5lc3DYfVfTqwQXQqB3raccoiRmMvC2BW5wTI234g+6EdFWM9KbFypoPf
- x
-X-Gm-Gg: ASbGnctlz7pqzLnxjtfU+HyVI1wD1fTMTrEfnuMcCAVEzJQ2HsbolYVYwn5jz4Ewv6t
- TuYMnRrBryMUIeTNIoV0w3EgaRSi2JsW8YZZFkHuYJdKOnCNVRO0M06iRM3SxulkkGU6QLqul/V
- VL+43xm5/hF//xIVtLty/vUh2TemVqXuwgph6Ewev1E+NKq5Kn5Znnt8x6qMhZrMF8m0pElP6ve
- eK/LVK73d465l4MyuoKmuE1YEoV5HOsL8yAalU7Gb5j05CwLfgn1eKAHIlY47BHGLeQEotWiQcH
- ++CPjU4OCAdrnvrInTn3Mq2T4/798hNuYRC1MRf9I9wMHW4DL+Rus6k6lIL6Bw==
-X-Google-Smtp-Source: AGHT+IEEH7iAqqDA68fuoaWPuS79K3+C1FsiPNsaDzF/9dqgyPWdEGPHvdAfcxmHtZcyfQ1XFCuGtg==
-X-Received: by 2002:a17:902:ccc4:b0:22e:50f2:1451 with SMTP id
- d9443c01a7336-22fc918fd2bmr202795785ad.37.1747073126314; 
- Mon, 12 May 2025 11:05:26 -0700 (PDT)
+ bh=fgtSyivanfJoltGbQqPmVVFicsFn6el5hIn8rUX6RjU=;
+ b=YrV7Wss4w+/B4jNME/zpiD43o0weCG+CbotpG20f2CYiCUPrU6wuqetB8WZCcYPEEn
+ AXy6YJJcAClF0xzTi6cBFK6gJkAi2mDKCqu44j4yWBz+NhRSaXyxSafKVGkXSMXmNgk7
+ HAt8xpvIZTVwsh5B8b0HPBl5hMD7Stjv1pcs51lbRb0Pr+ZO9mNeqvqLkP2/oi8dhirH
+ uZYYCiiR3VAYDkSmBdzOtom02Ngu3XFv8OgWYfdP/vyBJMXupy69BsFUHD7xLsJOWlZN
+ 7KCuTvIDWPSy4WxVBMRO63rRNQkaoZSzE1S47VdNiBkbIE1F74laJ6Q4J+WBQRKXaj+B
+ gVCw==
+X-Gm-Message-State: AOJu0Yy1ZhQw/z2x145YWviAO8FqlkwkJNYMi0gT9FsMplShUKP0bUdb
+ mwNUn5q4GLtTD4DV/qrqJ3wJVmkpTYol2+5gXVV5opVI7SMjdjk3IwerTMKoM8DnJQJ1R2BI4a7
+ G
+X-Gm-Gg: ASbGncsAjiNn4MKG6nwphK/DWHjnAUzKUeTBYjhRFMM0KqxSBDwo4CSNz6j6bGV7Vmr
+ J5VfC0/2z+gAZU3px9vjrKi0XnxH5JUglKdJB+spy37VkS22cGDxONcr4oBkS7HyYEQoJWu7pVz
+ oexO/NIQRWpBwpOxCTq35KmGb9tI6uem/acCPl9S2wVLZMrcSEzpOExWfw0MSSinGoYpL3KYz0o
+ B04E6n0FGgzgH1iIlw6P/rwu7pzyocGwlFCHC+egbwLPSnmh1l/4FN0AGFVGZ4QVQ3KtLnI2dgf
+ fMLAoy6iB7wWEYpFnZdpbsreMcs8C+sxG4yJajxjREB/xolKlfk=
+X-Google-Smtp-Source: AGHT+IFPFtd54s+F2aR6e/s2yggvKE9L9W2oRHkbhnFg6B45F2gxHU/Non/U4k/+HSNVb7YPTjYCXA==
+X-Received: by 2002:a17:902:d581:b0:223:3b76:4e22 with SMTP id
+ d9443c01a7336-22fc8b0b618mr179655835ad.6.1747073127211; 
+ Mon, 12 May 2025 11:05:27 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22fc82a2e4fsm65792005ad.232.2025.05.12.11.05.25
+ d9443c01a7336-22fc82a2e4fsm65792005ad.232.2025.05.12.11.05.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 May 2025 11:05:25 -0700 (PDT)
+ Mon, 12 May 2025 11:05:26 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -69,16 +69,17 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v8 16/48] target/arm/debug_helper: only include common helpers
-Date: Mon, 12 May 2025 11:04:30 -0700
-Message-ID: <20250512180502.2395029-17-pierrick.bouvier@linaro.org>
+Subject: [PATCH v8 17/48] target/arm/debug_helper: remove target_ulong
+Date: Mon, 12 May 2025 11:04:31 -0700
+Message-ID: <20250512180502.2395029-18-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250512180502.2395029-1-pierrick.bouvier@linaro.org>
 References: <20250512180502.2395029-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,32 +102,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Avoid pulling helper.h which contains TARGET_AARCH64.
-
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/arm/debug_helper.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ target/arm/debug_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/target/arm/debug_helper.c b/target/arm/debug_helper.c
-index de7999f6a94..cad0a5db707 100644
+index cad0a5db707..69fb1d0d9ff 100644
 --- a/target/arm/debug_helper.c
 +++ b/target/arm/debug_helper.c
-@@ -11,10 +11,12 @@
- #include "internals.h"
- #include "cpu-features.h"
- #include "cpregs.h"
--#include "exec/helper-proto.h"
- #include "exec/watchpoint.h"
- #include "system/tcg.h"
+@@ -380,7 +380,7 @@ bool arm_debug_check_breakpoint(CPUState *cs)
+ {
+     ARMCPU *cpu = ARM_CPU(cs);
+     CPUARMState *env = &cpu->env;
+-    target_ulong pc;
++    vaddr pc;
+     int n;
  
-+#define HELPER_H "tcg/helper.h"
-+#include "exec/helper-proto.h.inc"
-+
- #ifdef CONFIG_TCG
- /* Return the Exception Level targeted by debug exceptions. */
- static int arm_debug_target_el(CPUARMState *env)
+     /*
 -- 
 2.47.2
 
