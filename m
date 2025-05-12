@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD3CFAB399D
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 15:48:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88B91AB39A5
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 15:49:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uETVK-0002EE-Px; Mon, 12 May 2025 09:47:39 -0400
+	id 1uETVN-0002FB-1q; Mon, 12 May 2025 09:47:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uETVB-0002CT-36
- for qemu-devel@nongnu.org; Mon, 12 May 2025 09:47:30 -0400
+ id 1uETVD-0002Cm-6x
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 09:47:31 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uETV6-0002Sk-TA
- for qemu-devel@nongnu.org; Mon, 12 May 2025 09:47:28 -0400
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54CC9etB024086;
- Mon, 12 May 2025 13:47:22 GMT
+ id 1uETV8-0002TD-SG
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 09:47:29 -0400
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54CC9dxQ027138;
+ Mon, 12 May 2025 13:47:24 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :date:from:in-reply-to:message-id:references:subject:to; s=
- corp-2025-04-25; bh=T2hzi8iEVL34CA8o3O1EbEuB4mKyIX2uch2o7TJcJ20=; b=
- DbaKIL0EiowoCxM2dCkm+Thm81he/mFfA3vr9O0Cs2uuKmZxB7tieK8PPk86IfiR
- NmwXip/iU4/4dLsh80e+dghwsa/CApbY9eUHVnD/YrK6nOijUUxJHv0dUeWmOiU2
- AkoA46HuLzN7Wx5o7zjZboxz0plSyEaBKvDneAu99A2wOQ/2GOutkmfDvqlafbcL
- k8AFXXjP4nPrtY5M0axKdu902di1b3Vl3FIPu7W2HkIpDxZE9/xGRMzUXjVy86vZ
- anhvytLQf09pDdb/7ww/XTM8gJeDCMtGJiMGEgJ7MKqdAqHfd/3OBd28kn8KZN6s
- whPhjZTIbi4VCW5RZIipTQ==
+ corp-2025-04-25; bh=AS0mjd/WHO7b8BuOkIN1vTjhxVZ0MwywGHg+4PLzdPc=; b=
+ WUQk6H2jEIGFbGUSJ5wPX+bAuWtMMQfumpdK7XBu9megaOJx7mlWwcnxyp1ZVVD4
+ dsZSthS/jDGfZyuHhKv2ax2UOntOzKy/XZn2TK7gmdgmQ6xuBjreCsL7mkvQfWqR
+ tjBd9drspExT+3AW+a0SUpErSe+jnwkrgZYgZs1kkMbO2j/R66b9Kn6ZNcV4ziTV
+ lTk3KQySBcCjsJADJWS6uTIqBuXwiVnSOMsHrGcCDazl2LDxlQHBzLXAyO7W2vPv
+ 1dZHPOzHtd1iTU2fhSG5OJbGYqKBks/x/znQjxLLcuNVVkloTD+c5r8MYMLpPzVf
+ fWDNJrSD2qpetX2s0UvGNQ==
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46j1d2afy5-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46j1jnjjax-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 May 2025 13:47:22 +0000 (GMT)
+ Mon, 12 May 2025 13:47:23 +0000 (GMT)
 Received: from pps.filterd
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 54CCea5T033277; Mon, 12 May 2025 13:47:21 GMT
+ with ESMTP id 54CCtiVs033245; Mon, 12 May 2025 13:47:23 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 46hw8ddfby-1
+ 46hw8ddfck-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 12 May 2025 13:47:21 +0000
+ Mon, 12 May 2025 13:47:23 +0000
 Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54CDlHVh001568;
- Mon, 12 May 2025 13:47:21 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54CDlHVj001568;
+ Mon, 12 May 2025 13:47:22 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
- ESMTP id 46hw8ddf9k-4; Mon, 12 May 2025 13:47:21 +0000
+ ESMTP id 46hw8ddf9k-5; Mon, 12 May 2025 13:47:22 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
@@ -60,9 +60,9 @@ Cc: John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, Fabiano Rosas <farosas@suse.de>,
  Laurent Vivier <lvivier@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V2 3/5] tests/qtest/qom-test: unit test for qom-tree-get
-Date: Mon, 12 May 2025 06:47:13 -0700
-Message-Id: <1747057635-124298-4-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V2 4/5] qom: qom-list-getv
+Date: Mon, 12 May 2025 06:47:14 -0700
+Message-Id: <1747057635-124298-5-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1747057635-124298-1-git-send-email-steven.sistare@oracle.com>
 References: <1747057635-124298-1-git-send-email-steven.sistare@oracle.com>
@@ -74,19 +74,19 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
  malwarescore=0 phishscore=0 bulkscore=0 adultscore=0 mlxscore=0
  suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2504070000 definitions=main-2505120143
-X-Proofpoint-ORIG-GUID: aNQwkARuhBwnD9mjMCiU92x74PzYwnoK
-X-Proofpoint-GUID: aNQwkARuhBwnD9mjMCiU92x74PzYwnoK
-X-Authority-Analysis: v=2.4 cv=XNcwSRhE c=1 sm=1 tr=0 ts=6821fbea b=1 cx=c_pps
+X-Proofpoint-GUID: LobwhYbD1KFkBCUWHpKYFANEYr_vpxxO
+X-Authority-Analysis: v=2.4 cv=PeH/hjhd c=1 sm=1 tr=0 ts=6821fbec b=1 cx=c_pps
  a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=EXJkLREwFe9pvE9t1A4A:9 cc=ntf
+ a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=YZ2zgiMlwQMHeJ-iOZUA:9 cc=ntf
  awl=host:14694
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDE0NCBTYWx0ZWRfX9UysMMC0tzJ6
- lMe9QAlKoQMC5Mwm0jgMuWwPCQbD3r30ruwFtP7PW1RsiF8HJECjpGIVJ6uRCCf+OeRUoh2BfIS
- mmNxPJUsV0Qd3hsCIRrQpcSQjHN7QnikyS1NQs11mEzWHGjEONLkhZqFY/mm5EWlxtXqGTNGk1n
- gU6Ywdp3+7bm+LDd8K7/zzaVPql9NTwKQz7TcOtkLYyRA/TzgHsr2oY4YhoXmPvbeeTiNgZKqZd
- IOKBPdyUs6Q+9Vj+0C/mir7IuQGZnxYRfxEl2bBOQ3sEclvNUtQSuMIgoGpx5sybTn70E9DhE5z
- ZQq0FKxvr8bgfVY8vbvU7DUqF0wODFsQutC4oepoo76gWdi34JOJWyz/1UpRgO9zIkDkc3ZVxSn
- F+3xVmjRgFz1AtrOkgaccz6o2wOXBJ6z8U19lkvKH2LotbiHwBfmA6yX3Pq/ZLTByofzXKPJ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDE0NCBTYWx0ZWRfX22qQJCV1SQKS
+ maeg8LpO3/W+tMSFBHuuKZblW/2Fue0b1okCzdhLtaEr1dROn50gatLlszBrFQgIoHR+qjQZlhd
+ 2+oB+dZpsO2oZZ7T/OS/beA2B/qNRYfZ8Wipto1Y7WKXkzW9Eg+hzKNz+CwYpB3bQrTK6HtCHn8
+ nmg6wtFrww6MDH7bCYpSeX+6RP6waIxwVGifNTpouDRp/eZsu2B/VOezq1eEv1vMx30PP14JZ8q
+ jWN9OQxFgyDWCd4oByeoD8RtvbQODUu8C+0RPgz9bIemNjEJDrSpdGLazoAQ8FOdkT/GCfZwXA6
+ eRmhnUa8LFlhe5GKjjeVKs6l/pVIJZnBVscqq40S3fEf5dHVuOLQg05vuJSCa0Vc6+lrtmav4nr
+ 24rGb1oviI8ElDIzEiWMLErw1dop4XVt7ZVoXxSsCP0nC+z5JO7/HOZFHWGxkTF/lOTECw+M
+X-Proofpoint-ORIG-GUID: LobwhYbD1KFkBCUWHpKYFANEYr_vpxxO
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -32
@@ -112,80 +112,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a unit test for qom-tree-get
+Define the qom-list-getv command, which fetches all the properties and
+values for a list of paths.  This is faster than qom-tree-get when
+fetching a subset of the QOM tree.  See qom.json for details.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- tests/qtest/qom-test.c | 49 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 49 insertions(+)
+ qapi/qom.json      | 34 ++++++++++++++++++++++++++++++++++
+ qom/qom-qmp-cmds.c | 40 ++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 74 insertions(+)
 
-diff --git a/tests/qtest/qom-test.c b/tests/qtest/qom-test.c
-index 27d70bc..d8792bd 100644
---- a/tests/qtest/qom-test.c
-+++ b/tests/qtest/qom-test.c
-@@ -16,6 +16,54 @@
+diff --git a/qapi/qom.json b/qapi/qom.json
+index 94662ad..dc710d6 100644
+--- a/qapi/qom.json
++++ b/qapi/qom.json
+@@ -62,6 +62,16 @@
+             '*value': 'any' } }
  
- static int verbosity_level;
+ ##
++# @ObjectPropertiesValues:
++#
++# @properties: a list of properties.
++#
++# Since 10.1
++##
++{ 'struct': 'ObjectPropertiesValues',
++  'data': { 'properties': [ 'ObjectPropertyValue' ] }}
++
++##
+ # @ObjectNode:
+ #
+ # @name: the name of the node
+@@ -158,6 +168,30 @@
+   'allow-preconfig': true }
  
-+static void test_tree_node(QDict *node)
-+{
-+    QDict *prop, *child;
-+    QList *props, *children;
-+    QListEntry *entry;
+ ##
++# @qom-list-getv:
++#
++# This command returns a list of properties and their values for
++# each object path in the input list.
++#
++# @paths: The absolute or partial path for each object, as described
++#     in @qom-get
++#
++# Errors:
++#     - If any path is not valid or is ambiguous, returns an error.
++#     - If a property cannot be read, the value field is omitted in
++#       the corresponding @ObjectPropertyValue.
++#
++# Returns: A list of @ObjectPropertiesValues.  Each element contains
++#     the properties of the corresponding element in @paths.
++#
++# Since 10.1
++##
++{ 'command': 'qom-list-getv',
++  'data': { 'paths': [ 'str' ] },
++  'returns': [ 'ObjectPropertiesValues' ],
++  'allow-preconfig': true }
 +
-+    g_assert(qdict_haskey(node, "name"));
-+    g_assert(qdict_haskey(node, "properties"));
-+
-+    if (verbosity_level >= 3) {
-+        g_test_message("%s", qdict_get_str(node, "name"));
-+    }
-+
-+    props = qobject_to(QList, qdict_get(node, "properties"));
-+    QLIST_FOREACH_ENTRY(props, entry) {
-+        prop = qobject_to(QDict, qlist_entry_obj(entry));
-+        g_assert(qdict_haskey(prop, "name"));
-+        g_assert(qdict_haskey(prop, "type"));
-+    }
-+
-+    if (!qdict_haskey(node, "children")) {
-+        return;
-+    }
-+
-+    children = qobject_to(QList, qdict_get(node, "children"));
-+    QLIST_FOREACH_ENTRY(children, entry) {
-+        child = qobject_to(QDict, qlist_entry_obj(entry));
-+        test_tree_node(child);
-+    }
-+}
-+
-+static void test_tree(QTestState *qts, const char *path)
-+{
-+    g_autoptr(QDict) response = NULL;
-+    QDict *node;
-+
-+    if (verbosity_level >= 2) {
-+        g_test_message("Obtaining tree at %s", path);
-+    }
-+    response = qtest_qmp(qts, "{ 'execute': 'qom-tree-get',"
-+                              "  'arguments': { 'path': %s } }", path);
-+    g_assert(response);
-+
-+    g_assert(qdict_haskey(response, "return"));
-+    node = qobject_to(QDict, qdict_get(response, "return"));
-+    test_tree_node(node);
-+}
-+
- static void test_properties(QTestState *qts, const char *path, bool recurse)
- {
-     char *child_path;
-@@ -100,6 +148,7 @@ static void test_machine(gconstpointer data)
++##
+ # @qom-tree-get:
+ #
+ # This command returns a tree of objects and their properties,
+diff --git a/qom/qom-qmp-cmds.c b/qom/qom-qmp-cmds.c
+index b876681..1f05956 100644
+--- a/qom/qom-qmp-cmds.c
++++ b/qom/qom-qmp-cmds.c
+@@ -90,6 +90,46 @@ static void qom_list_add_property_value(Object *obj, ObjectProperty *prop,
      }
+ }
  
-     test_properties(qts, "/machine", true);
-+    test_tree(qts, "/machine");
- 
-     response = qtest_qmp(qts, "{ 'execute': 'quit' }");
-     g_assert(qdict_haskey(response, "return"));
++static ObjectPropertyValueList *qom_get_property_value_list(const char *path,
++                                                            Error **errp)
++{
++    Object *obj;
++    ObjectProperty *prop;
++    ObjectPropertyIterator iter;
++    ObjectPropertyValueList *props = NULL;
++
++    obj = qom_resolve_path(path, errp);
++    if (obj == NULL) {
++        return NULL;
++    }
++
++    object_property_iter_init(&iter, obj);
++    while ((prop = object_property_iter_next(&iter))) {
++        qom_list_add_property_value(obj, prop, &props);
++    }
++
++    return props;
++}
++
++ObjectPropertiesValuesList *qmp_qom_list_getv(strList *paths, Error **errp)
++{
++    ObjectPropertiesValuesList *head = NULL, **tail = &head;
++
++    for ( ; paths ; paths = paths->next) {
++        ObjectPropertiesValues *item = g_new0(ObjectPropertiesValues, 1);
++
++        QAPI_LIST_APPEND(tail, item);
++
++        item->properties = qom_get_property_value_list(paths->value, errp);
++        if (!item->properties) {
++            qapi_free_ObjectPropertiesValuesList(head);
++            return NULL;
++        }
++    }
++
++    return head;
++}
++
+ static ObjectNode *qom_tree_get(const char *path, Error **errp)
+ {
+     Object *obj;
 -- 
 1.8.3.1
 
