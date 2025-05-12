@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90BB2AB4453
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 21:06:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7514EAB445D
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 21:07:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEYTu-0006lM-6g; Mon, 12 May 2025 15:06:30 -0400
+	id 1uEYTl-0006BL-BU; Mon, 12 May 2025 15:06:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uEYTW-0005bF-8k
+ id 1uEYTY-0005bj-FM
  for qemu-devel@nongnu.org; Mon, 12 May 2025 15:06:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uEYTU-0007Wz-Fl
- for qemu-devel@nongnu.org; Mon, 12 May 2025 15:06:06 -0400
+ id 1uEYTW-0007XS-JZ
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 15:06:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747076763;
+ s=mimecast20190719; t=1747076766;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PIOkXYxL2sKbGG6NEJXzvPXTFuLMkskmWg4bD0UDnoY=;
- b=dha9MiSz9jyRmqy1vjwP6IRikG7AGP/VaPf9CMCcWsRCRBtZD366sWrea534f+PSMRRSot
- Ih44O3zWhJWgYlOwfEN7qXHIQxJlpRNjeTOdue7aRNc6Hr2XXpP+/8Ez4wRw6vSpyrLul+
- Opt9eDqOAk4ZpwCOTRHr09K6oUJGTro=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=cR7VRKsHk1LFUjL/CPvD6Ba0DjnC+4MB5W2eiGKedTs=;
+ b=Mau/saVXmfTIVCSxQL6WMp6mMfXDeeO4zl1I2xz7pTyycybuWI2wDJY40HenB0A4Q9JCh1
+ 0pFIZThzxc9ryMR/cuSxE+dGarIkPiq8HggYXeMx4E/8JHHx6QIFUswLmnFwxv9exutTfj
+ 1Fio4I9z3NkedFp4qeaq0130FNUklkE=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-524-TL7QBh6aPcGnNfHDtUsKeQ-1; Mon, 12 May 2025 15:06:02 -0400
-X-MC-Unique: TL7QBh6aPcGnNfHDtUsKeQ-1
-X-Mimecast-MFC-AGG-ID: TL7QBh6aPcGnNfHDtUsKeQ_1747076761
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-43d5ca7c86aso22698015e9.0
- for <qemu-devel@nongnu.org>; Mon, 12 May 2025 12:06:02 -0700 (PDT)
+ us-mta-66-jhY53pU9M-C6_M-wa611fQ-1; Mon, 12 May 2025 15:06:04 -0400
+X-MC-Unique: jhY53pU9M-C6_M-wa611fQ-1
+X-Mimecast-MFC-AGG-ID: jhY53pU9M-C6_M-wa611fQ_1747076763
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-43d5ca7c86aso22698085e9.0
+ for <qemu-devel@nongnu.org>; Mon, 12 May 2025 12:06:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747076760; x=1747681560;
+ d=1e100.net; s=20230601; t=1747076762; x=1747681562;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PIOkXYxL2sKbGG6NEJXzvPXTFuLMkskmWg4bD0UDnoY=;
- b=Dzg4d1Z4J1xyiuT1UwuaAnLXbL9p1Fji4RgKMK2g6kf6fI4TPtcDMHuzOd64SVsica
- 6aZqjZn9kbgTCQfte6/tcA5hOmXzrit2AoJt+XYIJbTIjaBI44P05L3kDfmOF8OquriV
- ziGncvvaTPMU3WQr9blEc9xyJqzc0mHZljAAe6rY1xgww0Zu3DO0AdpczqamQ/DP6Z2+
- fWezclz6Tn4bLn1AeE5nSy6a1rmJGjdAb7qZjvWCjFJA8k/4lTIodoDl+GdLlsYQjJiY
- YJUem2lzRAkd6p/gW0baRN/CYW6G6JpBPkJbfEPLfWUxaZjz9cgkTy42iWMvaTiUg+CW
- SvUg==
-X-Gm-Message-State: AOJu0YxTEH4pF9B46hg77XuYheYdxqXu7NuBx6kdk00DkCEMqYlwBEiG
- KnrtthPCBUEWdTmiVFXQtVL05OnGi5pG1CdLM+FKtiWWBREyXve2nh8ghQniwRShLgMff3EeoYC
- xzqEbSFe8aa3/yhepBd+Zu4Ymzg7vzqDd57O7MoHxYZRmsb8tuM4I/FxWCVJLR2RhKXn2sRh8bm
- OD9ZjQYFkaIO82f+b/odvgIFqB+K5TqEtBqcuy
-X-Gm-Gg: ASbGncv+ORSYaGUn46rHdBX++PVqsrIcIQrba0qY7dvQq+kmTlK9uUM13jvpa2cHl9C
- g6ufoDXXMXgQHzzAK6S5QuxSJtsmJF4BULf8WGkQNMk/eAJdZKjnSnTV4hYc3r3yLzwabEl2Zh6
- jwIDqQu1kVgXGXM4E1hqytJbTIo3Xns5flex1MFlv3AyGD/fgRNyfud0DyL1xWKAio0fn1W7FkU
- gSWN5DOlF9afQnFBYAsoWqHFHLfVpPWDmFwGqgMkWGllzDKaxvpkMdFE02TwgC4lbiJCbdakagt
- 5DegHqn9Jxxy9D8=
-X-Received: by 2002:a05:600c:8211:b0:43b:c0fa:f9dd with SMTP id
- 5b1f17b1804b1-442d6dd22edmr102455475e9.25.1747076760449; 
- Mon, 12 May 2025 12:06:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGqDYoS4+yF2xInpWEdM+EQU848BdZDvOveeRScvKQD7pFfW2odX0m8DCQGlyXLMxwNwk0S5A==
-X-Received: by 2002:a05:600c:8211:b0:43b:c0fa:f9dd with SMTP id
- 5b1f17b1804b1-442d6dd22edmr102455295e9.25.1747076759832; 
- Mon, 12 May 2025 12:05:59 -0700 (PDT)
+ bh=cR7VRKsHk1LFUjL/CPvD6Ba0DjnC+4MB5W2eiGKedTs=;
+ b=AAEZTs5UjdTDI6fmmvER6cp5Gfy+2DQaPdeotDF0P1l5Fujq73DMrzpQYm2CUld1LF
+ oFgpNmN0AhgnFT7qszNYmu0OiooHxOyWV4AqPELsPVXJKg+DbNVtGK8386wp4K24j7WP
+ 9sYmtYI/Tg46gTWSCRjTZN44pUuvYrd/Yy9j1sFQuZ4jQJBNggPdQJAtpqWSkzno2Ma2
+ 9eWoST34QhJZ0StCbgWaFavvUYiew4msNPf5sL7Hu+n79nU9nrc7hdJIaOIyg4DcOCOP
+ p5zkXSfRQ/K/K6Wo2MF1Ez5LwVyVnBp5lt5mHOZ0RiG6wRnDH5yLV5IH8kP/+bYC0vcj
+ 0SIw==
+X-Gm-Message-State: AOJu0YzxG3AITm6eohTzOym7Y3XBbaF1OJpJ24VgpgjEUUikl/V/FHPH
+ O8C5QzXJEjBlH0XZHAQH+LYRsYiUX9vWOhGGD7zZ/S8pKTcNQ3+Z0sTZ/nFgcxQz58Jz9Z4E3cf
+ gCG7Cafg8udUr2d8+5yf0KPvs2OqI0JvZ1bBfA8kAw60aDffRR7WbigO4UWc/IdXw7yFIr+hr+q
+ ASKX2853lOCRq6/+e8QFzXfgm22Nm3DIbr6Upe
+X-Gm-Gg: ASbGnctAwMC5JcYVBgAbzoTf3VE0tAeWisVwxPa47qxB+PC9o/KKVWR3fB3Qoxw5uaN
+ ooPkSzaVIKA89smBzsUBpZfCsEcVkWvn5zSAvsNfZIWENFskW1Kn9S4eOCWFut86nEVyXxYwU5h
+ n8PE9hcmU4IikAOPc0z1BU6AGu/hkmC53QxXvwAjJuaZfWYNfAK7gln32SDfyt+vLtN05Ti4BqD
+ BnDyvqxgx3zJVQBqBAtViROIRslyY1BilsRQME08krVGfXrmdQE2h7dof+ArAGpYx13aeK6oGYo
+ rp9hpmEnZ/bu4zY=
+X-Received: by 2002:a05:6000:4205:b0:3a0:8c45:d30e with SMTP id
+ ffacd0b85a97d-3a1f6469589mr10456954f8f.35.1747076762332; 
+ Mon, 12 May 2025 12:06:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGni/cwRNmpwKHVO8icBuN8dguPNC+hZ0jXxCUvop6UXHbGyM54Kizi0SGYRV/Up1Ejf7vloQ==
+X-Received: by 2002:a05:6000:4205:b0:3a0:8c45:d30e with SMTP id
+ ffacd0b85a97d-3a1f6469589mr10456945f8f.35.1747076761850; 
+ Mon, 12 May 2025 12:06:01 -0700 (PDT)
 Received: from [192.168.122.1] ([151.95.45.141])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442d687adc0sm134770065e9.35.2025.05.12.12.05.57
- for <qemu-devel@nongnu.org>
+ ffacd0b85a97d-3a1f5a2d2ffsm13566379f8f.66.2025.05.12.12.06.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 12 May 2025 12:05:57 -0700 (PDT)
+ Mon, 12 May 2025 12:06:01 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/16] target/i386: remove lflags
-Date: Mon, 12 May 2025 21:05:21 +0200
-Message-ID: <20250512190524.179419-14-pbonzini@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+Subject: [PULL 14/16] linux-headers: update from 6.15 + kvm/next
+Date: Mon, 12 May 2025 21:05:22 +0200
+Message-ID: <20250512190524.179419-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512190524.179419-1-pbonzini@redhat.com>
 References: <20250512190524.179419-1-pbonzini@redhat.com>
@@ -106,204 +106,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Just use cc_dst and cc_src for the same purpose.
+This brings in the userspace TDX API.
 
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h               |  6 ----
- target/i386/emulate/x86_emu.c   |  4 +--
- target/i386/emulate/x86_flags.c | 55 ++++++++++++++++-----------------
- 3 files changed, 29 insertions(+), 36 deletions(-)
+ linux-headers/asm-x86/kvm.h | 71 +++++++++++++++++++++++++++++++++++++
+ linux-headers/linux/kvm.h   |  1 +
+ 2 files changed, 72 insertions(+)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 4f8ed8868e9..c51e0a43d0b 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -1805,11 +1805,6 @@ typedef struct CPUCaches {
-         CPUCacheInfo *l3_cache;
- } CPUCaches;
+diff --git a/linux-headers/asm-x86/kvm.h b/linux-headers/asm-x86/kvm.h
+index dc591fb17e5..7fb57ccb2a7 100644
+--- a/linux-headers/asm-x86/kvm.h
++++ b/linux-headers/asm-x86/kvm.h
+@@ -439,6 +439,7 @@ struct kvm_sync_regs {
+ #define KVM_X86_QUIRK_MWAIT_NEVER_UD_FAULTS	(1 << 6)
+ #define KVM_X86_QUIRK_SLOT_ZAP_ALL		(1 << 7)
+ #define KVM_X86_QUIRK_STUFF_FEATURE_MSRS	(1 << 8)
++#define KVM_X86_QUIRK_IGNORE_GUEST_PAT		(1 << 9)
  
--typedef struct X86LazyFlags {
--    target_ulong result;
--    target_ulong auxbits;
--} X86LazyFlags;
--
- typedef struct CPUArchState {
-     /* standard registers */
-     target_ulong regs[CPU_NB_REGS];
-@@ -2102,7 +2097,6 @@ typedef struct CPUArchState {
-     QemuMutex xen_timers_lock;
- #endif
- #if defined(CONFIG_HVF)
--    X86LazyFlags lflags;
-     void *emu_mmio_buf;
- #endif
+ #define KVM_STATE_NESTED_FORMAT_VMX	0
+ #define KVM_STATE_NESTED_FORMAT_SVM	1
+@@ -928,4 +929,74 @@ struct kvm_hyperv_eventfd {
+ #define KVM_X86_SNP_VM		4
+ #define KVM_X86_TDX_VM		5
  
-diff --git a/target/i386/emulate/x86_emu.c b/target/i386/emulate/x86_emu.c
-index 61bd5af5bb1..4890e0a4e5e 100644
---- a/target/i386/emulate/x86_emu.c
-+++ b/target/i386/emulate/x86_emu.c
-@@ -474,10 +474,10 @@ static inline void string_rep(CPUX86State *env, struct x86_decode *decode,
-     while (rcx--) {
-         func(env, decode);
-         write_reg(env, R_ECX, rcx, decode->addressing_size);
--        if ((PREFIX_REP == rep) && !env->lflags.result) {
-+        if ((PREFIX_REP == rep) && !env->cc_dst) {
-             break;
-         }
--        if ((PREFIX_REPN == rep) && env->lflags.result) {
-+        if ((PREFIX_REPN == rep) && env->cc_dst) {
-             break;
-         }
-     }
-diff --git a/target/i386/emulate/x86_flags.c b/target/i386/emulate/x86_flags.c
-index 42f11d7de16..47bc19778c2 100644
---- a/target/i386/emulate/x86_flags.c
-+++ b/target/i386/emulate/x86_flags.c
-@@ -31,10 +31,10 @@
- 
- /*
-  * The algorithms here are similar to those in Bochs.  After an ALU
-- * operation, RESULT can be used to compute ZF, SF and PF, whereas
-- * AUXBITS is used to compute AF, CF and OF.  In reality, SF and PF are the
-- * XOR of the value computed from RESULT and the value found in bits 7 and 2
-- * of AUXBITS; this way the same logic can be used to compute the flags
-+ * operation, CC_DST can be used to compute ZF, SF and PF, whereas
-+ * CC_SRC is used to compute AF, CF and OF.  In reality, SF and PF are the
-+ * XOR of the value computed from CC_DST and the value found in bits 7 and 2
-+ * of CC_SRC; this way the same logic can be used to compute the flags
-  * both before and after an ALU operation.
-  *
-  * Compared to the TCG CC_OP codes, this avoids conditionals when converting
-@@ -65,14 +65,14 @@
-  * place PO and CF in the top two bits.
-  */
- #define SET_FLAGS_OSZAPC_SIZE(size, lf_carries, lf_result) { \
--    env->lflags.result = (target_ulong)(int##size##_t)(lf_result); \
-+    env->cc_dst = (target_ulong)(int##size##_t)(lf_result); \
-     target_ulong temp = (lf_carries); \
-     if ((size) == TARGET_LONG_BITS) { \
-         temp = temp & ~(LF_MASK_PD | LF_MASK_SD); \
-     } else { \
-         temp = (temp & LF_MASK_AF) | (temp << (TARGET_LONG_BITS - (size))); \
-     } \
--    env->lflags.auxbits = temp; \
-+    env->cc_src = temp; \
- }
- 
- /* carries, result */
-@@ -89,15 +89,15 @@
- /* same as setting OSZAPC, but preserve CF and flip PO if the old value of CF
-  * did not match the high bit of lf_carries. */
- #define SET_FLAGS_OSZAP_SIZE(size, lf_carries, lf_result) { \
--    env->lflags.result = (target_ulong)(int##size##_t)(lf_result); \
-+    env->cc_dst = (target_ulong)(int##size##_t)(lf_result); \
-     target_ulong temp = (lf_carries); \
-     if ((size) == TARGET_LONG_BITS) { \
-         temp = (temp & ~(LF_MASK_PD | LF_MASK_SD)); \
-     } else { \
-         temp = (temp & LF_MASK_AF) | (temp << (TARGET_LONG_BITS - (size))); \
-     } \
--    target_ulong cf_changed = ((target_long)(env->lflags.auxbits ^ temp)) < 0; \
--    env->lflags.auxbits = temp ^ (cf_changed * (LF_MASK_PO | LF_MASK_CF)); \
-+    target_ulong cf_changed = ((target_long)(env->cc_src ^ temp)) < 0; \
-+    env->cc_src = temp ^ (cf_changed * (LF_MASK_PO | LF_MASK_CF)); \
- }
- 
- /* carries, result */
-@@ -110,9 +110,9 @@
- 
- void SET_FLAGS_OxxxxC(CPUX86State *env, bool new_of, bool new_cf)
- {
--    env->lflags.auxbits &= ~(LF_MASK_PO | LF_MASK_CF);
--    env->lflags.auxbits |= (-(target_ulong)new_cf << LF_BIT_PO);
--    env->lflags.auxbits ^= ((target_ulong)new_of << LF_BIT_PO);
-+    env->cc_src &= ~(LF_MASK_PO | LF_MASK_CF);
-+    env->cc_src |= (-(target_ulong)new_cf << LF_BIT_PO);
-+    env->cc_src ^= ((target_ulong)new_of << LF_BIT_PO);
- }
- 
- void SET_FLAGS_OSZAPC_SUB32(CPUX86State *env, uint32_t v1, uint32_t v2,
-@@ -208,37 +208,36 @@ void SET_FLAGS_OSZAPC_LOGIC8(CPUX86State *env, uint8_t v1, uint8_t v2,
- 
- static inline uint32_t get_PF(CPUX86State *env)
- {
--    uint8_t temp = env->lflags.result;
--    return ((parity8(temp) - 1) ^ env->lflags.auxbits) & CC_P;
-+    return ((parity8(env->cc_dst) - 1) ^ env->cc_src) & CC_P;
- }
- 
- static inline uint32_t get_OF(CPUX86State *env)
- {
--    return ((env->lflags.auxbits >> (LF_BIT_CF - 11)) + CC_O / 2) & CC_O;
-+    return ((env->cc_src >> (LF_BIT_CF - 11)) + CC_O / 2) & CC_O;
- }
- 
- bool get_CF(CPUX86State *env)
- {
--    return ((target_long)env->lflags.auxbits) < 0;
-+    return ((target_long)env->cc_src) < 0;
- }
- 
- void set_CF(CPUX86State *env, bool val)
- {
-     /* If CF changes, flip PO and CF */
-     target_ulong temp = -(target_ulong)val;
--    target_ulong cf_changed = ((target_long)(env->lflags.auxbits ^ temp)) < 0;
--    env->lflags.auxbits ^= cf_changed * (LF_MASK_PO | LF_MASK_CF);
-+    target_ulong cf_changed = ((target_long)(env->cc_src ^ temp)) < 0;
-+    env->cc_src ^= cf_changed * (LF_MASK_PO | LF_MASK_CF);
- }
- 
- static inline uint32_t get_ZF(CPUX86State *env)
- {
--    return env->lflags.result ? 0 : CC_Z;
-+    return env->cc_dst ? 0 : CC_Z;
- }
- 
- static inline uint32_t get_SF(CPUX86State *env)
- {
--    return ((env->lflags.result >> (LF_SIGN_BIT - LF_BIT_SD)) ^
--            env->lflags.auxbits) & CC_S;
-+    return ((env->cc_dst >> (LF_SIGN_BIT - LF_BIT_SD)) ^
-+            env->cc_src) & CC_S;
- }
- 
- void lflags_to_rflags(CPUX86State *env)
-@@ -246,8 +245,8 @@ void lflags_to_rflags(CPUX86State *env)
-     env->eflags &= ~(CC_C|CC_P|CC_A|CC_Z|CC_S|CC_O);
-     /* rotate left by one to move carry-out bits into CF and AF */
-     env->eflags |= (
--        (env->lflags.auxbits << 1) |
--        (env->lflags.auxbits >> (TARGET_LONG_BITS - 1))) & (CC_C | CC_A);
-+        (env->cc_src << 1) |
-+        (env->cc_src >> (TARGET_LONG_BITS - 1))) & (CC_C | CC_A);
-     env->eflags |= get_SF(env);
-     env->eflags |= get_PF(env);
-     env->eflags |= get_ZF(env);
-@@ -258,17 +257,17 @@ void rflags_to_lflags(CPUX86State *env)
- {
-     target_ulong cf_xor_of;
- 
--    env->lflags.auxbits = CC_P;
--    env->lflags.auxbits ^= env->eflags & (CC_S | CC_P);
-+    env->cc_src = CC_P;
-+    env->cc_src ^= env->eflags & (CC_S | CC_P);
- 
-     /* rotate right by one to move CF and AF into the carry-out positions */
--    env->lflags.auxbits |= (
-+    env->cc_src |= (
-         (env->eflags >> 1) |
-         (env->eflags << (TARGET_LONG_BITS - 1))) & (CC_C | CC_A);
- 
-     cf_xor_of = (env->eflags & (CC_C | CC_O)) + (CC_O - CC_C);
--    env->lflags.auxbits |= -cf_xor_of & LF_MASK_PO;
-+    env->cc_src |= -cf_xor_of & LF_MASK_PO;
- 
-     /* Leave the low byte zero so that parity is not affected.  */
--    env->lflags.result = !(env->eflags & CC_Z) << 8;
-+    env->cc_dst = !(env->eflags & CC_Z) << 8;
- }
++/* Trust Domain eXtension sub-ioctl() commands. */
++enum kvm_tdx_cmd_id {
++	KVM_TDX_CAPABILITIES = 0,
++	KVM_TDX_INIT_VM,
++	KVM_TDX_INIT_VCPU,
++	KVM_TDX_INIT_MEM_REGION,
++	KVM_TDX_FINALIZE_VM,
++	KVM_TDX_GET_CPUID,
++
++	KVM_TDX_CMD_NR_MAX,
++};
++
++struct kvm_tdx_cmd {
++	/* enum kvm_tdx_cmd_id */
++	__u32 id;
++	/* flags for sub-commend. If sub-command doesn't use this, set zero. */
++	__u32 flags;
++	/*
++	 * data for each sub-command. An immediate or a pointer to the actual
++	 * data in process virtual address.  If sub-command doesn't use it,
++	 * set zero.
++	 */
++	__u64 data;
++	/*
++	 * Auxiliary error code.  The sub-command may return TDX SEAMCALL
++	 * status code in addition to -Exxx.
++	 */
++	__u64 hw_error;
++};
++
++struct kvm_tdx_capabilities {
++	__u64 supported_attrs;
++	__u64 supported_xfam;
++	__u64 reserved[254];
++
++	/* Configurable CPUID bits for userspace */
++	struct kvm_cpuid2 cpuid;
++};
++
++struct kvm_tdx_init_vm {
++	__u64 attributes;
++	__u64 xfam;
++	__u64 mrconfigid[6];	/* sha384 digest */
++	__u64 mrowner[6];	/* sha384 digest */
++	__u64 mrownerconfig[6];	/* sha384 digest */
++
++	/* The total space for TD_PARAMS before the CPUIDs is 256 bytes */
++	__u64 reserved[12];
++
++	/*
++	 * Call KVM_TDX_INIT_VM before vcpu creation, thus before
++	 * KVM_SET_CPUID2.
++	 * This configuration supersedes KVM_SET_CPUID2s for VCPUs because the
++	 * TDX module directly virtualizes those CPUIDs without VMM.  The user
++	 * space VMM, e.g. qemu, should make KVM_SET_CPUID2 consistent with
++	 * those values.  If it doesn't, KVM may have wrong idea of vCPUIDs of
++	 * the guest, and KVM may wrongly emulate CPUIDs or MSRs that the TDX
++	 * module doesn't virtualize.
++	 */
++	struct kvm_cpuid2 cpuid;
++};
++
++#define KVM_TDX_MEASURE_MEMORY_REGION   _BITULL(0)
++
++struct kvm_tdx_init_mem_region {
++	__u64 source_addr;
++	__u64 gpa;
++	__u64 nr_pages;
++};
++
+ #endif /* _ASM_X86_KVM_H */
+diff --git a/linux-headers/linux/kvm.h b/linux-headers/linux/kvm.h
+index e5f3e8b5a02..99cc82a275c 100644
+--- a/linux-headers/linux/kvm.h
++++ b/linux-headers/linux/kvm.h
+@@ -369,6 +369,7 @@ struct kvm_run {
+ #define KVM_SYSTEM_EVENT_WAKEUP         4
+ #define KVM_SYSTEM_EVENT_SUSPEND        5
+ #define KVM_SYSTEM_EVENT_SEV_TERM       6
++#define KVM_SYSTEM_EVENT_TDX_FATAL      7
+ 			__u32 type;
+ 			__u32 ndata;
+ 			union {
 -- 
 2.49.0
 
