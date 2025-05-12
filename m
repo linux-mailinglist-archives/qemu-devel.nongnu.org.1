@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0924AB2DDC
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 05:15:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F8FAB2DE5
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 05:16:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEJcG-0005wz-5Z; Sun, 11 May 2025 23:14:08 -0400
+	id 1uEJc1-0004QP-6M; Sun, 11 May 2025 23:13:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1uEJbS-0001Xh-5r; Sun, 11 May 2025 23:13:18 -0400
-Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
+ id 1uEJbW-000255-CL; Sun, 11 May 2025 23:13:22 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1uEJbQ-0006yO-Hd; Sun, 11 May 2025 23:13:17 -0400
-Received: by mail-pj1-x102b.google.com with SMTP id
- 98e67ed59e1d1-306b6ae4fb2so3614546a91.3; 
- Sun, 11 May 2025 20:13:15 -0700 (PDT)
+ id 1uEJbU-0006yt-6F; Sun, 11 May 2025 23:13:21 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-22e6344326dso39843505ad.1; 
+ Sun, 11 May 2025 20:13:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747019594; x=1747624394; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1747019598; x=1747624398; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HsBj22uLdU+RqO7TIsmV1n+sWxv+uojwlrhxC1hIb4I=;
- b=MNUTHLO6NiDYJQfeg3120yU8HK8eQdIFpfAzuumgKfOoHUaRAcSjQXwWkVQBlBk8Fi
- Ks//bLoHUH8IGEpTQkVMFLLymRnArrT8UuOv9GkczoSzUtbmiv9ul96+qlwp1sUqEPC6
- 8qb9xy63n/1WnsA8kud3JemxZyz5Rc+X6i6B1Hol+T5CD5MccPBrLHy3x32bR5olSHDb
- yZWNKDdDTBl/LVjvbkuMVa3OUwS0DnjcEwm3gkrLevRwBGdJ6A4XEcpjBmkjbRTWUbGV
- sKL3eaIBguX9fuCXia9dbpW37w5wHmml4Ona1dLg5rOEfno2Utv9sfh007HbZvkG8ICe
- GRJQ==
+ bh=KWhWRZATIJ3bSZKLCT4T6wltmeKQkbW20fOvUpjd3GE=;
+ b=A3o8U6g9b6GWaPwaZZtx3Zp0mv54d9fndElZ4JMP+lCH/+V/p08UFMk/mjB8tRFDXZ
+ 62AsuUhkRwJgj2LKB7jyzYVw91jxFz63TxWnQ8Dm6FzVygG90yLaBzviec3piqXu8Kxs
+ E0wk9rxivfl3py/2Cm/4YKClffvJakWbKSTfUm/MuvV5hcEgtd/HoadYavZDtCCS4k0r
+ tIbpDwYzZXztCFh4UVFTDbnll/YuWQi8XJwgMb6GN8oMArE0NGaVx7B6taO1Ka2P8Loh
+ bI2/DnM0iXaR05WRU9DG5Ept6svBSbsMY5ZrzLFG+Te/6XVYwD40XIcHY97p4Du3RE7m
+ cZgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747019594; x=1747624394;
+ d=1e100.net; s=20230601; t=1747019598; x=1747624398;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HsBj22uLdU+RqO7TIsmV1n+sWxv+uojwlrhxC1hIb4I=;
- b=vKuBnxstI+p6SQl65H9B0VSVxyB/4kkrnCDgPFZls3P8X/SKHQuZQlVvI+LsOYJdy8
- 7UdZzwrAAlCOGt7g/juWHpKt/4i7bhThnU+x1uDuU11eOiX7RJZP8OsxcS86PCqsSyXk
- e2bWgi41xED7gYNP7h3zKmOqZWJKamehie5iDFW3ZRPDWTwuyaqL8g8CdC3h3EOuq1zd
- 5yNkT0yPJE2ZeL5im2+tMv7F1cRxnlMTDwZGq3+EwXzijmHj4gcYDb//nPcFQmuozO7K
- bEFQdUybGZL3xLgwdtYERYYbkKr3oQu43NkiwZhr0xyRIlx3iUAbYpajaB+hnshmHGCD
- UXdQ==
+ bh=KWhWRZATIJ3bSZKLCT4T6wltmeKQkbW20fOvUpjd3GE=;
+ b=RfGOzzFiVRqwE2puQWMECDKsBRmp9qYZWderj21pRmPt34CdoQ25vdUEEKQpWBMCwx
+ SXg0GDiPEBPY3VSJGNd+S9nXyeTec3gWnDorcljnEtMHuCqvNHZbFHkxGJfv4sM/3h94
+ jS2M3BiHl7eFZeCSlXCCOMk2CzP045G0+OkTlQBXXoZsnGslTACaNikGMIdyJsIJo6ik
+ /qAx/Fbgj54NQDfhq8zcgfDrnbMYhx9vbQ9sGwJY/9SIlBSXTi9SSkN7EjgWbh/dmEMh
+ UjqLv5wjMQ1UepkWcV6TIFZbmql6JxU8xoUNmKOn8a/kdVVRLBMVirBOGWIF9/D5M5y6
+ VYng==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVlGJje7d552Nv6piQ/20FHKLke5cpTHuXwWoeOcF+mf2rpcqC2yauMQTzo6pfvIye8McZZmst4XbpX@nongnu.org
-X-Gm-Message-State: AOJu0YwFzOzhhb3ia+Rpz+Z2ixT/5NWXnJpPqhu18RX1Wp24neGCBo6k
- +4yl3T5RfOGzr9wJSXKkXzfQpZbQJP+8/n85//V7mHkJmCg6/wtqi++03w==
-X-Gm-Gg: ASbGnctG4sbzFE3XfC5O+aLzw4CVIeTeE/tqUceVBzsoxpe0QieEoJRg167hZkcKqZU
- 2JAumG7NJCJJjeshBd29Kp3+E/1tpFemKbL24m9e/3Y6Y4d4Rzxy/nRi9HO2bGqLD6I1MmCOgTe
- VeusDhoProdGZgVohCv81luIBvD9f+6fATAsryVMVFucjIwLM4rOWTAI5seCKWQsuYYCXUCB5yI
- TrE12g0HgEuEHyz+GghFxskpVEb53r7T4SwV7elb1A4RwLEq/o970pmzlWF4sf5Hz4Yg+95Aq96
- 8qwDnCYmwhHk+oIgu0mlIQRwZbGirtWgw3pZal/TQfOgMPrdMwCkDCBAgQ==
-X-Google-Smtp-Source: AGHT+IEO+OygOxG8AC8s/T+p2vJHBvk8f9gmzreYgrWlAwHECp9Hm0uNFZAKYrrusMc1lGq1+WhJMQ==
-X-Received: by 2002:a17:90b:17c6:b0:2ff:502e:62d4 with SMTP id
- 98e67ed59e1d1-30c3d653aafmr15267972a91.32.1747019594237; 
- Sun, 11 May 2025 20:13:14 -0700 (PDT)
+ AJvYcCVluTlDjftHy5NgPz7HOxLKrQiCf1D7kzRHdiaprfTc5pNMzankAeJakrWXe+XYnJg74ArS96gl3IiM@nongnu.org
+X-Gm-Message-State: AOJu0YyGP7DF0aInz95cmdRPYhUyYtB3gAqbxp7dr6DmjR4uOQycd9+a
+ I3OOrl+GAlCMKb+rJXNSxl7yrbAXTOcgBdv7poOlkc+ZJUyAhHcaRjmTmw==
+X-Gm-Gg: ASbGncvnAVwyqkku5HO27nwdwRDIPKOIqWr3TGyMx1RCaO0VhpGK93XNkJwt1i7dMWB
+ 0cXVHngsatf+wpmqeFiusuXQTSc1H4qvDR8DMoyiNsSNA3qCgGKpzXGMklMwaTzCxh6d3wtpPlv
+ ivd0SvnYd9dPA5yjSeZCr/FDB5uXNqZiALoCNWONQJnFy6bXgxxRr0SLFi936qSSlmlGGd2nNnm
+ icJYwVZhllfbSV5AvEJ4RhIxHZXHrL54UGu7sTOrQAoDxK4QPuw42F5nTh2Wavv+ZdQz/kgWPT3
+ tVF5ISxrQOkVIOhENhooGWgoIQzZAj6soG4dMYkjmmieaM+Wj40cSzPLMw==
+X-Google-Smtp-Source: AGHT+IGN08/5LZZ9pJZdWEB26MS5egKXpU6W7RA+u0IAlVCNooWJ/56clRMNWhjYj9viHA06lq/4Zw==
+X-Received: by 2002:a17:903:41d2:b0:220:c4e8:3b9d with SMTP id
+ d9443c01a7336-22fc8d98a2dmr154378255ad.37.1747019597877; 
+ Sun, 11 May 2025 20:13:17 -0700 (PDT)
 Received: from wheely.local0.net ([118.209.229.237])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b234951024csm4750069a12.5.2025.05.11.20.13.11
+ 41be03b00d2f7-b234951024csm4750069a12.5.2025.05.11.20.13.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 11 May 2025 20:13:13 -0700 (PDT)
+ Sun, 11 May 2025 20:13:17 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
  Glenn Miles <milesg@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>,
  Caleb Schlossin <calebs@linux.vnet.ibm.com>
-Subject: [PATCH 34/50] ppc/xive: tctx_accept only lower irq line if an
- interrupt was presented
-Date: Mon, 12 May 2025 13:10:43 +1000
-Message-ID: <20250512031100.439842-35-npiggin@gmail.com>
+Subject: [PATCH 35/50] ppc/xive: Add xive_tctx_pipr_set() helper function
+Date: Mon, 12 May 2025 13:10:44 +1000
+Message-ID: <20250512031100.439842-36-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250512031100.439842-1-npiggin@gmail.com>
 References: <20250512031100.439842-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x102b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,37 +99,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The relationship between an interrupt signaled in the TIMA and the QEMU
-irq line to the processor to be 1:1, so they should be raised and
-lowered together and "just in case" lowering should be avoided (it could
-mask
+Have xive_tctx_notify() also set the new PIPR value and rename it to
+xive_tctx_pipr_set(). This can replace the last xive_tctx_pipr_update()
+caller because it does not need to update IPB (it already sets it).
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/intc/xive.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ hw/intc/xive.c        | 39 +++++++++++----------------------------
+ hw/intc/xive2.c       | 16 +++++++---------
+ include/hw/ppc/xive.h |  5 ++---
+ 3 files changed, 20 insertions(+), 40 deletions(-)
 
 diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-index 4e0c71d684..d5dbeab6bd 100644
+index d5dbeab6bd..4659821d4a 100644
 --- a/hw/intc/xive.c
 +++ b/hw/intc/xive.c
-@@ -95,8 +95,6 @@ uint64_t xive_tctx_accept(XiveTCTX *tctx, uint8_t sig_ring)
-     g_assert(tctx->regs[TM_QW2_HV_POOL + TM_PIPR] == 0);
-     g_assert(tctx->regs[TM_QW2_HV_POOL + TM_CPPR] == 0);
+@@ -125,12 +125,16 @@ uint64_t xive_tctx_accept(XiveTCTX *tctx, uint8_t sig_ring)
+     return ((uint64_t)nsr << 8) | sig_regs[TM_CPPR];
+ }
  
--    qemu_irq_lower(xive_tctx_output(tctx, sig_ring));
+-void xive_tctx_notify(XiveTCTX *tctx, uint8_t ring, uint8_t group_level)
++/* Change PIPR and calculate NSR and irq based on PIPR, CPPR, group */
++void xive_tctx_pipr_set(XiveTCTX *tctx, uint8_t ring, uint8_t pipr,
++                        uint8_t group_level)
+ {
+     uint8_t *sig_regs = xive_tctx_signal_regs(tctx, ring);
+     uint8_t *regs = &tctx->regs[ring];
+ 
+-    if (sig_regs[TM_PIPR] < sig_regs[TM_CPPR]) {
++    sig_regs[TM_PIPR] = pipr;
++
++    if (pipr < sig_regs[TM_CPPR]) {
+         switch (ring) {
+         case TM_QW1_OS:
+             sig_regs[TM_NSR] = TM_QW1_NSR_EO | (group_level & 0x3F);
+@@ -145,7 +149,7 @@ void xive_tctx_notify(XiveTCTX *tctx, uint8_t ring, uint8_t group_level)
+             g_assert_not_reached();
+         }
+         trace_xive_tctx_notify(tctx->cs->cpu_index, ring,
+-                               regs[TM_IPB], sig_regs[TM_PIPR],
++                               regs[TM_IPB], pipr,
+                                sig_regs[TM_CPPR], sig_regs[TM_NSR]);
+         qemu_irq_raise(xive_tctx_output(tctx, ring));
+     } else {
+@@ -213,29 +217,10 @@ static void xive_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
+         }
+     }
+ 
+-    sig_regs[TM_PIPR] = pipr_min;
 -
-     if (xive_nsr_indicates_exception(sig_ring, nsr)) {
-         uint8_t cppr = sig_regs[TM_PIPR];
-         uint8_t ring;
-@@ -117,6 +115,7 @@ uint64_t xive_tctx_accept(XiveTCTX *tctx, uint8_t sig_ring)
+-    /* CPPR has changed, check if we need to raise a pending exception */
+-    xive_tctx_notify(tctx, ring_min, 0);
++    /* CPPR has changed, this may present or preclude a pending exception */
++    xive_tctx_pipr_set(tctx, ring_min, pipr_min, 0);
+ }
  
-         /* Clear the exception from NSR */
-         sig_regs[TM_NSR] = 0;
-+        qemu_irq_lower(xive_tctx_output(tctx, sig_ring));
+-void xive_tctx_pipr_update(XiveTCTX *tctx, uint8_t ring, uint8_t priority,
+-                           uint8_t group_level)
+-{
+-    uint8_t *sig_regs = xive_tctx_signal_regs(tctx, ring);
+-    uint8_t *regs = &tctx->regs[ring];
+-
+-    if (group_level == 0) {
+-        /* VP-specific */
+-        regs[TM_IPB] |= xive_priority_to_ipb(priority);
+-        sig_regs[TM_PIPR] = xive_ipb_to_pipr(regs[TM_IPB]);
+-    } else {
+-        /* VP-group */
+-        sig_regs[TM_PIPR] = xive_priority_to_pipr(priority);
+-    }
+-    xive_tctx_notify(tctx, ring, group_level);
+- }
+-
+ static void xive_tctx_pipr_recompute_from_ipb(XiveTCTX *tctx, uint8_t ring)
+ {
+     uint8_t *sig_regs = xive_tctx_signal_regs(tctx, ring);
+@@ -244,8 +229,7 @@ static void xive_tctx_pipr_recompute_from_ipb(XiveTCTX *tctx, uint8_t ring)
+     /* Does not support a presented group interrupt */
+     g_assert(!xive_nsr_indicates_group_exception(ring, sig_regs[TM_NSR]));
  
-         trace_xive_tctx_accept(tctx->cs->cpu_index, ring,
-                                regs[TM_IPB], sig_regs[TM_PIPR],
+-    sig_regs[TM_PIPR] = xive_ipb_to_pipr(regs[TM_IPB]);
+-    xive_tctx_notify(tctx, ring, 0);
++    xive_tctx_pipr_set(tctx, ring, xive_ipb_to_pipr(regs[TM_IPB]), 0);
+ }
+ 
+ void xive_tctx_pipr_present(XiveTCTX *tctx, uint8_t ring, uint8_t priority,
+@@ -264,8 +248,7 @@ void xive_tctx_pipr_present(XiveTCTX *tctx, uint8_t ring, uint8_t priority,
+     }
+     g_assert(pipr <= xive_ipb_to_pipr(regs[TM_IPB]));
+     g_assert(pipr < sig_regs[TM_PIPR]);
+-    sig_regs[TM_PIPR] = pipr;
+-    xive_tctx_notify(tctx, ring, group_level);
++    xive_tctx_pipr_set(tctx, ring, pipr, group_level);
+ }
+ 
+ /*
+diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
+index b9ee8c9e9f..8c8dab3aa2 100644
+--- a/hw/intc/xive2.c
++++ b/hw/intc/xive2.c
+@@ -966,10 +966,10 @@ static void xive2_tctx_need_resend(Xive2Router *xrtr, XiveTCTX *tctx,
+     }
+ 
+     /*
+-     * Compute the PIPR based on the restored state.
++     * Set the PIPR/NSR based on the restored state.
+      * It will raise the External interrupt signal if needed.
+      */
+-    xive_tctx_pipr_update(tctx, TM_QW1_OS, backlog_prio, backlog_level);
++    xive_tctx_pipr_set(tctx, TM_QW1_OS, backlog_prio, backlog_level);
+ }
+ 
+ /*
+@@ -1144,8 +1144,7 @@ static void xive2_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
+             }
+ 
+             /* interrupt is VP directed, pending in IPB */
+-            sig_regs[TM_PIPR] = cppr;
+-            xive_tctx_notify(tctx, ring, 0); /* Ensure interrupt is cleared */
++            xive_tctx_pipr_set(tctx, ring, cppr, 0);
+             return;
+         } else {
+             /* CPPR was lowered, but still above PIPR. No action needed. */
+@@ -1255,11 +1254,10 @@ again:
+         pipr_min = backlog_prio;
+     }
+ 
+-    /* PIPR should not be set to a value greater than CPPR */
+-    sig_regs[TM_PIPR] = (pipr_min > cppr) ? cppr : pipr_min;
+-
+-    /* CPPR has changed, check if we need to raise a pending exception */
+-    xive_tctx_notify(tctx, ring_min, group_level);
++    if (pipr_min > cppr) {
++        pipr_min = cppr;
++    }
++    xive_tctx_pipr_set(tctx, ring_min, pipr_min, group_level);
+ }
+ 
+ void xive2_tm_set_hv_cppr(XivePresenter *xptr, XiveTCTX *tctx,
+diff --git a/include/hw/ppc/xive.h b/include/hw/ppc/xive.h
+index a3c2f50ece..2372d1014b 100644
+--- a/include/hw/ppc/xive.h
++++ b/include/hw/ppc/xive.h
+@@ -584,12 +584,11 @@ void xive_tctx_pic_print_info(XiveTCTX *tctx, GString *buf);
+ Object *xive_tctx_create(Object *cpu, XivePresenter *xptr, Error **errp);
+ void xive_tctx_reset(XiveTCTX *tctx);
+ void xive_tctx_destroy(XiveTCTX *tctx);
+-void xive_tctx_pipr_update(XiveTCTX *tctx, uint8_t ring, uint8_t priority,
+-                           uint8_t group_level);
++void xive_tctx_pipr_set(XiveTCTX *tctx, uint8_t ring, uint8_t priority,
++                        uint8_t group_level);
+ void xive_tctx_pipr_present(XiveTCTX *tctx, uint8_t ring, uint8_t priority,
+                             uint8_t group_level);
+ void xive_tctx_reset_signal(XiveTCTX *tctx, uint8_t ring);
+-void xive_tctx_notify(XiveTCTX *tctx, uint8_t ring, uint8_t group_level);
+ uint64_t xive_tctx_accept(XiveTCTX *tctx, uint8_t ring);
+ 
+ /*
 -- 
 2.47.1
 
