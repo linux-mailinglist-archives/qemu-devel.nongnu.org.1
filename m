@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C4E4AB3A46
-	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 16:16:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56867AB3A79
+	for <lists+qemu-devel@lfdr.de>; Mon, 12 May 2025 16:25:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uETwu-00084S-EV; Mon, 12 May 2025 10:16:08 -0400
+	id 1uEU4Y-0001uO-7n; Mon, 12 May 2025 10:24:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uETwm-00083F-TU
- for qemu-devel@nongnu.org; Mon, 12 May 2025 10:16:03 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1uEU4O-0001to-V7
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 10:23:53 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uETwj-0005cI-Ks
- for qemu-devel@nongnu.org; Mon, 12 May 2025 10:15:59 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-43cfebc343dso30315115e9.2
- for <qemu-devel@nongnu.org>; Mon, 12 May 2025 07:15:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1uEU4M-0006TF-PL
+ for qemu-devel@nongnu.org; Mon, 12 May 2025 10:23:52 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-43cf628cb14so37976055e9.1
+ for <qemu-devel@nongnu.org>; Mon, 12 May 2025 07:23:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747059354; x=1747664154; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=aTAGveobMVXL/UqyzsFhZ1pybaTAQ1fC0YSWIiTwOb4=;
- b=ellKcAYJhidG9ZpphaOFEd0JSaKYDHC6Fe+rNHnx6FkGBsFTpaLlvle2HcQdD30Sna
- P098t3QkrTPaOBGu3jobd/gdVCVzAVQFK4mHVugR/NwAFcAo7Rycim4xbj/b/ThUSgXW
- InECpn6k7noYXNxjjiXEvonZsh94vt6N+S0Q7W7ECmFn6LDqbGW2cPG+PYKyvsmMwHV+
- 8S+L9cd/YxpVSa2CwoPOPuX6nbjmMhiNArf2cRkzCWQww+iDI7MmCeL6sQ6nbXXFEo9+
- KoMVLADG8hBy137mKZ/uAkos2wyVT6qwUeN7K0C9MW/t6z3D5WBO6KQm8T/js36QEUpX
- PZUA==
+ d=linaro.org; s=google; t=1747059828; x=1747664628; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZoyqA4/3ub1McfI/VtMSnnTsDusnutY8ftzaVytS2Ck=;
+ b=YQ5LXyd0LYzq8InyvqXFq2RVKk+t9bD0F8xR25UvbY3l8jZrk/po4NWfkEZhi4Fe7H
+ pgbB2Tesp1hmbM6SP91MVvKJ7X1Q4XzRUnhPWGCl7SknGACeGzmAlPSB50Qz0UtU6qX1
+ VfdMW51u4atYOjLFco5lNvmi4WAkjFG1+CK4XF8zJFN7FBhb2AJSBXhDcHfGbstdBtIB
+ gsBC5BlLX/paxf8RWS19ekZk5JcAnbpbYBOouxJ8Fce3oe6BsV28g3tYdVySc/okMx1H
+ pymYKqHh3JHq2A3IUH3O/UHMHsalXngA3ycPGgxRKT8pPVmxtn0m+fPwRsVXxI2mJPbe
+ napQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747059354; x=1747664154;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=aTAGveobMVXL/UqyzsFhZ1pybaTAQ1fC0YSWIiTwOb4=;
- b=XkcsDsZqfrTpIkDJZgtLJWiBK8tMfrLwqA0ImoxNLuLlOptvNKGoq1HVPg1Nl0zNYC
- +qToh0CaDxFEokzKnA6+xIpE0qO+6rkNiiZtmc0Ero2lP8YAQxlz2lyIhekFkvmpWL2K
- FfnxpGSUnyDKuZBg5ylXY6SEu8swnyLursoGRtrJhzpDRfzJxsoY4mjEsY9Y6X2QJipB
- aPphoM4/BK9J10/zoRt/D7DJU4ZbpfvSXM7+OLa0pX9zfHaHDfPXQ96PKKFG7T1X4KVq
- vsxoqxgv4vKem+RZ6PVxih94D3Mls+7ld9Y+/LR9Z7YYynBMLBnJqG3XXKD3yQ8iIoyF
- SO5g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXye/Bq//csBDYJeGSV09OdkSzKrH3xqt99uO3Aoqz2IFrNHbkXqqtQP+PpJq/edCEd8D39hH5UBAPR@nongnu.org
-X-Gm-Message-State: AOJu0Yy7qSVFuKdtR9KpcnI1xcPu6JOmoko5oRSqFjT5Gt5u6Hjs8RK4
- uVObIjzTT0aMPGbaV1YPvA+oeXgQce3ioBJiB6uTS78CCrJVwtrXo0MVZuxRzY4=
-X-Gm-Gg: ASbGncu4stXcXRm2SMzm6Hm8gUPemWKH5Brh8XKO15T6P124gIeNKHAX6HVToAjE+5s
- 6cbJ8tp8h5jMSVRW7E6tann5UQdN1QV003Jm4mEiivreLDOFcQEU/5yweSFiOpkB9eY2CiyDCpN
- 24UggHiLo9Quu+CaejUcyNv6qqdj+ZGtvQoLvnV4nZxnWDOB/cteAvevgXzJJ3uke9XhMTMYQZ+
- 7ArzJ0JPzuTrj+KGQvbTG0qtLRC4mSSlKeYqYTsKfCp4GnX1CnDuqfGvLOzQbwUke1XDYgxHv7o
- fmYzQvNJIWBkScYm7hNNbBMKC7mOkFIkfjiINvYYCTgu1FsFl3OhQ6eE/+VnXbOCP/dZFfrl+nN
- R2vbn9nghbFTsMlYzGjjnu0hcopLF
-X-Google-Smtp-Source: AGHT+IHLD+KR4eQadi3Gx4ZKSctbLcnOfa7f1NEAB/FxoDfcH+1qT9P3NQQULJv+WfRW14vaCSaNDA==
-X-Received: by 2002:a05:600c:528e:b0:43d:7413:cb3e with SMTP id
- 5b1f17b1804b1-442d6d17f7cmr97859585e9.1.1747059353924; 
- Mon, 12 May 2025 07:15:53 -0700 (PDT)
-Received: from [172.19.170.213] (90.red-88-28-30.dynamicip.rima-tde.net.
- [88.28.30.90]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442d67d5c2asm127762345e9.1.2025.05.12.07.15.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 12 May 2025 07:15:53 -0700 (PDT)
-Message-ID: <3b7f61dc-8708-459c-b48b-db955ad462bf@linaro.org>
-Date: Mon, 12 May 2025 16:15:51 +0200
+ d=1e100.net; s=20230601; t=1747059828; x=1747664628;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ZoyqA4/3ub1McfI/VtMSnnTsDusnutY8ftzaVytS2Ck=;
+ b=QSXV6hGagJ76epEemVTD//tACh9PbIQwyuDAu+OG/MlaNLBQBu7vo1a+GA7xYs3Eqt
+ IwXfZ77Stxy6A0R7+x3T/zjQNrTfYhie4Ht56m/0I0+GUmTeiorMoDpDR+Zxqm08SIYI
+ GlIfdlR0ojsxlIGR8m9gc/z0rNKKkhuc9V69t4pxgQAueCpW+j5uqKGtFayayhAY5B3D
+ lZsgTU/kQcMmkdvDFMGy7wJpcZHf4HRlImAj4STltN+AJTjOVi3xRIxP9p+iJ5vZ6s9h
+ DqYxqY/shrk/5rLf53yQP8/cHilvaz+F+s49YM7qQIR1AdYs7P4vR+H8opUrkhjZlcwO
+ rwKA==
+X-Gm-Message-State: AOJu0YwCywNjqJrIhzjqWFhBRpWIeq9NlpEnU5xYr8tvkgbo5UrGlLs2
+ sYb8JPKUWk+LqX0TJTL1cbVch792d5zoi7Du7p3trjwS7ZaD3yig0cekmc1nZUwaN9em3ekldWF
+ 5
+X-Gm-Gg: ASbGncvSjxTFl/osPrVR7MIXIFfEfXfDL/Hox7IJd5t8KyfWZxmmGlv7L4/7vFty/ml
+ 76IF6gYsKoQpChq0qlQyqwjnR+BokZ6j+hcO326mSACojaT0gZIGop5JuBL68gFiF6KkHzDjU9S
+ Ykvv27QKtWCk6qn5wlNF4NytVdUFZ5RHx8GJkXNnrYfBHqmNE/A2rsuj9+mOQ5ya3LAE3JPt09a
+ 3g/52pFpujRHdQ+HaQovwU9i3LxVPBfsCgIqGGtH1YHbHSuwxZ+fGxB0b3nBGrPhqlpBW9EZR9h
+ bTIJ53N8gx7ACeOIf6RoKCWEabSiKDJ3/qTHg+3ev8wUKU8RziR2suh1psWT0w6F86P7YA2gCSG
+ 4sjwAR7PHar+xYxxpoGA7NeXeE8IRIU8z
+X-Google-Smtp-Source: AGHT+IHGqCroQ3f4wU2wRmK1gSspBwzBJ7L9nIhkPWkDkHTsKZ1fvE+zD7CFJXEeKn3SRQgp09yexQ==
+X-Received: by 2002:a05:6000:1888:b0:3a0:b8bd:608 with SMTP id
+ ffacd0b85a97d-3a0b99076d7mr14483026f8f.7.1747059828354; 
+ Mon, 12 May 2025 07:23:48 -0700 (PDT)
+Received: from xps13.c.hoisthospitality.com (110.8.30.213.rev.vodafone.pt.
+ [213.30.8.110]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-442cd3aeb6esm172597005e9.25.2025.05.12.07.23.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 12 May 2025 07:23:47 -0700 (PDT)
+From: Gustavo Romero <gustavo.romero@linaro.org>
+To: qemu-devel@nongnu.org,
+	thuth@redhat.com,
+	berrange@redhat.com
+Cc: gustavo.romero@linaro.org, eric.auger@redhat.com, alex.bennee@linaro.org,
+ philmd@linaro.org, peter.maydell@linaro.org, qemu-arm@nongnu.org
+Subject: [PATCH v3] tests/functional: Add PCI hotplug test for aarch64
+Date: Mon, 12 May 2025 15:23:25 +0100
+Message-ID: <20250512142336.181080-1-gustavo.romero@linaro.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] tests/functional: Add PCI hotplug test for aarch64
-To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org,
- thuth@redhat.com
-Cc: eric.auger@redhat.com, alex.bennee@linaro.org, peter.maydell@linaro.org
-References: <20250512123646.157447-1-gustavo.romero@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250512123646.157447-1-gustavo.romero@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,39 +98,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/5/25 14:36, Gustavo Romero wrote:
-> Add a functional test, aarch64_hotplug_pci, to exercise PCI hotplug and
-> hot-unplug on arm64. Currently, the aarch64 'virt' machine uses the PCIe
-> native controller and does not support ACPI-based hotplugging. However,
-> since support is planned, this test sets 'acpi=force' and specifies an
-> EDK2 firmware image in advance. This is harmless and prepares for future
-> ACPI support.
-> 
-> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
-> ---
->   MAINTAINERS                                  |  5 ++
->   tests/functional/meson.build                 |  1 +
->   tests/functional/test_aarch64_hotplug_pci.py | 73 ++++++++++++++++++++
->   3 files changed, 79 insertions(+)
->   create mode 100755 tests/functional/test_aarch64_hotplug_pci.py
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 23174b4ca7..9ebb768214 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -2065,6 +2065,11 @@ S: Supported
->   F: include/hw/pci/pcie_doe.h
->   F: hw/pci/pcie_doe.c
->   
-> +ARM PCI Hotplug
-> +M: Gustavo Romero <gustavo.romero@linaro.org>
+Add a functional test, aarch64_hotplug_pci, to exercise PCI hotplug and
+hot-unplug on arm64.
 
-Cc: qemu-arm@?
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+---
+ MAINTAINERS                                  |  5 ++
+ tests/functional/meson.build                 |  1 +
+ tests/functional/test_aarch64_hotplug_pci.py | 72 ++++++++++++++++++++
+ 3 files changed, 78 insertions(+)
+ create mode 100755 tests/functional/test_aarch64_hotplug_pci.py
 
-> +S: Supported
-> +F: tests/functional/test_aarch64_hotplug_pci.py
-> +
->   ACPI/SMBIOS
->   M: Michael S. Tsirkin <mst@redhat.com>
->   M: Igor Mammedov <imammedo@redhat.com>
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 23174b4ca7..9ebb768214 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2065,6 +2065,11 @@ S: Supported
+ F: include/hw/pci/pcie_doe.h
+ F: hw/pci/pcie_doe.c
+ 
++ARM PCI Hotplug
++M: Gustavo Romero <gustavo.romero@linaro.org>
++S: Supported
++F: tests/functional/test_aarch64_hotplug_pci.py
++
+ ACPI/SMBIOS
+ M: Michael S. Tsirkin <mst@redhat.com>
+ M: Igor Mammedov <imammedo@redhat.com>
+diff --git a/tests/functional/meson.build b/tests/functional/meson.build
+index 52b4706cfe..2d68840fa2 100644
+--- a/tests/functional/meson.build
++++ b/tests/functional/meson.build
+@@ -83,6 +83,7 @@ tests_aarch64_system_quick = [
+ tests_aarch64_system_thorough = [
+   'aarch64_aspeed_ast2700',
+   'aarch64_aspeed_ast2700fc',
++  'aarch64_hotplug_pci',
+   'aarch64_imx8mp_evk',
+   'aarch64_raspi3',
+   'aarch64_raspi4',
+diff --git a/tests/functional/test_aarch64_hotplug_pci.py b/tests/functional/test_aarch64_hotplug_pci.py
+new file mode 100755
+index 0000000000..f4a05de39e
+--- /dev/null
++++ b/tests/functional/test_aarch64_hotplug_pci.py
+@@ -0,0 +1,72 @@
++#!/usr/bin/env python3
++#
++# The test hotplugs a PCI device and checks it on a Linux guest.
++#
++# Copyright (c) 2025 Linaro Ltd.
++#
++# Author:
++#  Gustavo Romero <gustavo.romero@linaro.org>
++#
++# This work is licensed under the terms of the GNU GPL, version 2 or
++# later.  See the COPYING file in the top-level directory.
++
++from qemu_test import LinuxKernelTest, Asset, exec_command_and_wait_for_pattern
++from qemu_test import BUILD_DIR
++
++class HotplugPCI(LinuxKernelTest):
++
++    ASSET_KERNEL = Asset(
++        ('https://ftp.debian.org/debian/dists/stable/main/installer-arm64/'
++         'current/images/netboot/debian-installer/arm64/linux'),
++        '3821d4db56d42c6a4eac62f31846e35465940afd87746b4cfcdf5c9eca3117b2')
++
++    ASSET_INITRD = Asset(
++        ('https://ftp.debian.org/debian/dists/stable/main/installer-arm64/'
++         'current/images/netboot/debian-installer/arm64/initrd.gz'),
++        '2583ec22b45265ad69e82f198674f53d4cd85be124fe012eedc2fd91156bc4b4')
++
++    def test_hotplug_pci(self):
++
++        self.set_machine('virt')
++        self.vm.add_args('-m', '512M')
++        self.vm.add_args('-cpu', 'cortex-a57')
++        self.vm.add_args('-append',
++                         'console=ttyAMA0,115200 init=/bin/sh')
++        self.vm.add_args('-device',
++                         'pcie-root-port,bus=pcie.0,chassis=1,slot=1,id=pcie.1')
++        self.vm.add_args('-bios', self.build_file('pc-bios',
++                                                  'edk2-aarch64-code.fd'))
++
++        # BusyBox prompt
++        prompt = "~ #"
++        self.launch_kernel(self.ASSET_KERNEL.fetch(),
++                           self.ASSET_INITRD.fetch(),
++                           wait_for=prompt)
++
++        # Check for initial state: 2 network adapters, lo and enp0s1.
++        exec_command_and_wait_for_pattern(self,
++                                          'ls -l /sys/class/net | wc -l',
++                                          '2')
++
++        # Hotplug one network adapter to the root port, i.e. pcie.1 bus.
++        self.vm.cmd('device_add',
++                    driver='virtio-net-pci',
++                    bus='pcie.1',
++                    addr=0,
++                    id='na')
++        # Wait for the kernel to recognize the new device.
++        self.wait_for_console_pattern('virtio-pci')
++        self.wait_for_console_pattern('virtio_net')
++
++        # Check if there is a new network adapter.
++        exec_command_and_wait_for_pattern(self,
++                                          'ls -l /sys/class/net | wc -l',
++                                          '3')
++
++        self.vm.cmd('device_del', id='na')
++        exec_command_and_wait_for_pattern(self,
++                                          'ls -l /sys/class/net | wc -l',
++                                          '2')
++
++if __name__ == '__main__':
++    LinuxKernelTest.main()
+-- 
+2.43.0
+
 
