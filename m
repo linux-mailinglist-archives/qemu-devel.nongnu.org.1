@@ -2,91 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8D87AB56D5
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 16:16:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FC58AB56E8
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 16:21:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEqQZ-00046T-7I; Tue, 13 May 2025 10:16:23 -0400
+	id 1uEqUl-0007qv-Ua; Tue, 13 May 2025 10:20:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1uEqQ4-00043k-Qc
- for qemu-devel@nongnu.org; Tue, 13 May 2025 10:15:47 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1uEqQ2-0005bX-Sb
- for qemu-devel@nongnu.org; Tue, 13 May 2025 10:15:44 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-43d2d952eb1so42104685e9.1
- for <qemu-devel@nongnu.org>; Tue, 13 May 2025 07:15:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1747145741; x=1747750541; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=98OOmrWk25E/kwedxRasvOoS2mo+ShZuSOIhL7Rf3TY=;
- b=UbA1purcJ66oyDt1g9lAjt1woRnpsgNUKH0XeXK58Niy8zCqdYLFHO7WP53zMEFfmV
- MdcezDKEM1fD0ZZNJnStZX/sJfcAv+p3Rgh4u6rNAG1XBTvuOZwCWRJk/+EygJsCasIH
- mKCOrc8ihCONWH9SpI61oELGW9yvkvmLu1Se+6hsKnUfFXfmfpf8HH9ACvIMWTdGEDIZ
- MLQ47FYW/BrpBFS8+gEx7Z2XUXY44E8+iyj2VSm2aiY6AKQClzIydGocuxH8XOhMTlqD
- asVLDabsSxT72ICZSQam5YUjPOgI9UtKfWiHx2sCLNVIKDAYyodNrKpJ0OAOR92UWRxP
- XW0g==
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1uEqUe-0007ms-MX
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 10:20:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1uEqUa-0006Ev-OD
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 10:20:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747146021;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=eyscc4t3yNl1uSrVJZkh3Y4b61e+bOq9gii8cVcyfdc=;
+ b=ZdikAzTahXhYYnth9sL17oyMtKMesOMdl0aONlOJ8DwRGuxi8REPq0ijZAbybdbdiiS+0D
+ y0EWdPHdPML79yVdDa35OwVOsC3u7GlnQRC3lYZ8fuYptUz98ADBuzcZtCvvFVk21NNOlo
+ lnMUcg/lv//iILJSuh31opMWpoRwtIM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-54-V5FshCKPPcK0awLcTepTaA-1; Tue, 13 May 2025 10:20:17 -0400
+X-MC-Unique: V5FshCKPPcK0awLcTepTaA-1
+X-Mimecast-MFC-AGG-ID: V5FshCKPPcK0awLcTepTaA_1747146014
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-442cdf07ad9so23951625e9.2
+ for <qemu-devel@nongnu.org>; Tue, 13 May 2025 07:20:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747145741; x=1747750541;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=98OOmrWk25E/kwedxRasvOoS2mo+ShZuSOIhL7Rf3TY=;
- b=ePHfaERiXdtxEGKJVqR7lcAVfyUX6UkXykRcrn17EqE+KPiHhbTksI05C2d9UqgJDR
- hvw0+ad+AaoY72/XuXlO+0IIA8NTSlhdSTAL2Wu+2AZq//+BR6pUcPtv/ekMLQNTH34I
- 8R6aOTh5tep1IK3opZH2g0Jn42OTS1Naljsj8aEseYKhRUWyfBFupyJW4HQYHd/hKpZ/
- Zi1WU34iwPyWS64/N+H+hOSdtAm6nFaktEijFYrIzLycayqmTmjsz+Gv1tia7QXtnv+e
- sUVorVASaHLFYK+nGaqfg6BTEjvKDvRW5JTrKsGQjlcbfkRmMkG5B4C6fd2SgqzoyEtR
- 7Glg==
-X-Gm-Message-State: AOJu0YysiLnxI9dzZ7kb9ELM2xj7pWAPqh0FW4ACUrUf9pp7miT5b3Av
- c1pPeQydl8vt6uCi9MJlZ9PLECkWJ16slAwSJDxcxX9c312CCnPGQdIzu9dfJ89wPGLYOLoNZH4
- =
-X-Gm-Gg: ASbGncua7uSuMzxPld5E+rXzoXBpYmb5U+fxK9DhJASxooAX8Eod2kZLgNfyIr2K/9F
- djalpOSegCdduw1iN9ByeGaTJgFK02G8SOrHCStKcrfjb+Z5PaJIPcInWhqS7jH/dUHS2gv3fK0
- azrP6DasFWvOt+s82fFrmsbz6d1wv7zb44/ZwYVFSCwrdsVdWLj8pfIhguSA0WcOkeRTDQ7C4as
- Y9jUzeV+kOrHcJUDd6olh8xQgbwfQpIC2to6BCZbcksyNKleUlkPo1AoLR1aFWq012zrxLX+ZUs
- poawfUz5264rVNw6mZ6ZEsZnQvFCNChZawJvpW/dZf6uI/C/+qd3n24Z05l9myvdds3rwRy5UEK
- RUcwCZfK2/PLQ7et21b5EBX+eMOBhxtQl6XD0hmgv1l3L5gJsH9ZIgpM+dNc=
-X-Google-Smtp-Source: AGHT+IGvqRaK+FTGLRpircEGGo5AQcMitbUzwfvXykGemkI2WAM7g40PBcwY8T4rzfABAay2k9Lp5w==
-X-Received: by 2002:a05:600c:4451:b0:43d:526:e0ce with SMTP id
- 5b1f17b1804b1-442d6dc51e8mr128437535e9.21.1747145740789; 
- Tue, 13 May 2025 07:15:40 -0700 (PDT)
-Received: from chigot-Dell.telnowedge.local
- (lmontsouris-659-1-24-67.w81-250.abo.wanadoo.fr. [81.250.175.67])
+ d=1e100.net; s=20230601; t=1747146014; x=1747750814;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=eyscc4t3yNl1uSrVJZkh3Y4b61e+bOq9gii8cVcyfdc=;
+ b=r1EF0MMRCIDiwmDgly+WWpkVGSiKB8BKk9DzrSCzv4yweO2jxwl1qtK+BXkBbhpopL
+ KwXGqCncgH1+BkRwSoiV33T/3wAL1QbtQqpLAgUGM7l3dqBjUH1jSr56Lr5+xaUuQto/
+ GjosfDqEerY2MJr7F39X7WvlQhHZU0lAnvj6qO1TK41b7TnJrFO/YT+e5NxmT6+VbDqS
+ pAVjQoDkBYBDbFUmZZubXWXJmWXK/LjCTyYrc//PCpRCJITj01O8a/+Q9QbRJByV81Fr
+ ZGKHrWfzz51CAtJh/ipt8cP2gP0tDQM6t1WFuagySj89eO+ZnW2O6URqr+JA45hRVWRm
+ xWMg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV8qO6Jofig4wOf4UStZJQwqgPCNRpoZoSn4m0i1FMCbGQkXA7Qe3Cs9O9cIoxudkXwgElv9zKx3OUc@nongnu.org
+X-Gm-Message-State: AOJu0YxcoUqTJjmXSAFYQv1M0/oeK3FhYk6au1axGV3LPYnUUwLEjfkB
+ arvEXx2zl3awuK0kt3piRE9ZItryP/byJGhTGGf75n1lBfMaD9fp+KI7nZ9rM2qgkHTCNwXoybK
+ ahvgTxMKBKoe8YDkGmShbY/gK/bzfT2GovlTI9PyNgg9et2Xbfi8V
+X-Gm-Gg: ASbGncshiJLHEF4yuS0XzqJ81E36g0RY9FrbbdbilLT8dO/Qts9Lp31zjSU1/fJb3O4
+ OsLLGGkxaXxNZcP/uGewYtQoKEv1Axd2OSQXx9dMQma66LDik8GuDqgoM8FQ/HFyzbkEtbsqh6L
+ 24D+ulWV78wEysyiuMWf/vvHs9bWCHn2YUeQ2Q7HjvTghUCBbNg/YAykW4A9kJyizsMQTzC7nCq
+ Qlkb+xY/DzN3fKStZ+SIWDFAoC6CQVJiKKJfhWlB/8qzl3f5+XtzL0H4MwLPSgbW/RXUWcYcSrg
+ U8L3u7CQAUr11aVq/MNBl0Y3PLHP7gmCbmP4vAz2pHYFye/h4/UOt3W23fk=
+X-Received: by 2002:a05:600c:8887:b0:440:6a37:be0d with SMTP id
+ 5b1f17b1804b1-442d6d6ac34mr142266745e9.15.1747146013767; 
+ Tue, 13 May 2025 07:20:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGMJd0Y4ol20KqwlD/xjV97DJlvepa/eAx0yECTHw2Xv6k+BGIX3yLcJJl1tDp+QEbkSi1Nbw==
+X-Received: by 2002:a05:600c:8887:b0:440:6a37:be0d with SMTP id
+ 5b1f17b1804b1-442d6d6ac34mr142266335e9.15.1747146013344; 
+ Tue, 13 May 2025 07:20:13 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
+ ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442cd3b7e7fsm213438805e9.39.2025.05.13.07.15.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 May 2025 07:15:40 -0700 (PDT)
-From: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, peter.maydell@linaro.org, edgar.iglesias@gmail.com,
- alistair@alistair23.me,
- =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
-Subject: [PATCH 4/4] hw/arm/xlnx-zynqmp: adapt cluster-id based on the boot cpu
-Date: Tue, 13 May 2025 16:14:48 +0200
-Message-Id: <20250513141448.297946-5-chigot@adacore.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250513141448.297946-1-chigot@adacore.com>
-References: <20250513141448.297946-1-chigot@adacore.com>
+ 5b1f17b1804b1-442cd3285f9sm215246655e9.8.2025.05.13.07.20.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 13 May 2025 07:20:12 -0700 (PDT)
+Message-ID: <4f370fae-8234-48ca-97e2-3b7038092974@redhat.com>
+Date: Tue, 13 May 2025 16:20:10 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 04/10] kvm: kvm_get_writable_id_regs
+Content-Language: en-US
+To: Cornelia Huck <cohuck@redhat.com>, eric.auger.pro@gmail.com,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvmarm@lists.linux.dev,
+ peter.maydell@linaro.org, richard.henderson@linaro.org,
+ alex.bennee@linaro.org, maz@kernel.org, oliver.upton@linux.dev,
+ sebott@redhat.com, shameerali.kolothum.thodi@huawei.com, armbru@redhat.com,
+ berrange@redhat.com, abologna@redhat.com, jdenemar@redhat.com
+Cc: agraf@csgraf.de, shahuang@redhat.com, mark.rutland@arm.com,
+ philmd@linaro.org, pbonzini@redhat.com
+References: <20250414163849.321857-1-cohuck@redhat.com>
+ <20250414163849.321857-5-cohuck@redhat.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20250414163849.321857-5-cohuck@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=chigot@adacore.com; helo=mail-wm1-x333.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.549,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,74 +116,153 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When gdb is being connected to QEmu, it will be attached to the first
-CPU cluster. However, the ZynqMP board has two clusters, those being of
-two different architectures.
-Therefore, when gdb is connecting to the ZynqMP, it receives the target
-descriptor of the first CPU cluster. Up to now, it was always the APU
-cluster, which is AARCH64.
+Hi Connie,
 
-When booting on a RPU, gdb will still connect to the APU. If gdb is
-supporting only ARM32, it will receive the APU target descriptor,
-resulting in:
-  | (gdb) target remote :1234
-  | warning: while parsing target description (at line 1): Target
-  | description specified unknown architecture "aarch64"
+On 4/14/25 6:38 PM, Cornelia Huck wrote:
+> Add an helper to retrieve the writable id reg bitmask. The
+> status of the query is stored in the CPU struct so that an
+> an error, if any, can be reported on vcpu realize().
+>
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> Signed-off-by: Cornelia Huck <cohuck@redhat.com>
+> ---
+>  target/arm/cpu.h     | 26 ++++++++++++++++++++++++++
+>  target/arm/kvm.c     | 32 ++++++++++++++++++++++++++++++++
+>  target/arm/kvm_arm.h |  7 +++++++
+>  3 files changed, 65 insertions(+)
+>
+> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+> index d27134f4a025..bbee7ff2414a 100644
+> --- a/target/arm/cpu.h
+> +++ b/target/arm/cpu.h
+> @@ -856,6 +856,26 @@ typedef struct {
+>      uint32_t map, init, supported;
+>  } ARMVQMap;
+>  
+> +typedef enum ARMIdRegsState {
+> +    WRITABLE_ID_REGS_UNKNOWN,
+> +    WRITABLE_ID_REGS_NOT_DISCOVERABLE,
+> +    WRITABLE_ID_REGS_FAILED,
+> +    WRITABLE_ID_REGS_AVAIL,
+> +} ARMIdRegsState;
+> +
+> +/*
+> + * The following structures are for the purpose of mapping the output of
+> + * KVM_ARM_GET_REG_WRITABLE_MASKS that also may cover id registers we do
+> + * not support in QEMU
+> + * ID registers in op0==3, op1=={0,1,3}, crn=0, crm=={0-7}, op2=={0-7},
+> + * as used by the KVM_ARM_GET_REG_WRITABLE_MASKS ioctl call.
+> + */
+> +#define NR_ID_REGS (3 * 8 * 8)
+We may rename this define to better associate to the KVM API. I tend to
+mix it with NUM_ID_IDX now ;-)
+maybe something like KVM_NR_EXPOSED_ID_REGS
+> +
+> +typedef struct IdRegMap {
+> +    uint64_t regs[NR_ID_REGS];
+> +} IdRegMap;
+I would add a comment saying this is the mask array, just to prevent the
+reading from thinking it is the actual reg content.
+> +
+>  /* REG is ID_XXX */
+>  #define FIELD_DP64_IDREG(ISAR, REG, FIELD, VALUE)                       \
+>      ({                                                                  \
+> @@ -1044,6 +1064,12 @@ struct ArchCPU {
+>       */
+>      bool host_cpu_probe_failed;
+>  
+> +    /*
+> +     * state of writable id regs query used to report an error, if any,
+> +     * on KVM custom vcpu model realize
+> +     */
+> +    ARMIdRegsState writable_id_regs;
+maybe rename into writable_id_reg_status that would better reflect what
+it is.
+> +
+>      /* QOM property to indicate we should use the back-compat CNTFRQ default */
+>      bool backcompat_cntfrq;
+>  
+> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+> index 8491f42a18d2..6e3cd06e9bc5 100644
+> --- a/target/arm/kvm.c
+> +++ b/target/arm/kvm.c
+> @@ -50,6 +50,7 @@ const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
+>  static bool cap_has_mp_state;
+>  static bool cap_has_inject_serror_esr;
+>  static bool cap_has_inject_ext_dabt;
+> +static int cap_writable_id_regs;
+>  
+>  /**
+>   * ARMHostCPUFeatures: information about the host CPU (identified
+> @@ -488,6 +489,37 @@ void kvm_arm_set_cpu_features_from_host(ARMCPU *cpu)
+>      env->features = arm_host_cpu_features.features;
+>  }
+>  
+> +int kvm_arm_get_writable_id_regs(ARMCPU *cpu, IdRegMap *idregmap)
+> +{
+> +    struct reg_mask_range range = {
+> +        .range = 0, /* up to now only a single range is supported */
+> +        .addr = (uint64_t)idregmap,
+> +    };
+> +    int ret;
+> +
+> +    if (!kvm_enabled()) {
+> +        cpu->writable_id_regs = WRITABLE_ID_REGS_NOT_DISCOVERABLE;
+> +        return -ENOSYS;
+> +    }
+> +
+> +    cap_writable_id_regs =
+> +        kvm_check_extension(kvm_state, KVM_CAP_ARM_SUPPORTED_REG_MASK_RANGES);
+> +
+> +    if (!cap_writable_id_regs ||
+> +        !(cap_writable_id_regs & (1 << KVM_ARM_FEATURE_ID_RANGE))) {
+> +        cpu->writable_id_regs = WRITABLE_ID_REGS_NOT_DISCOVERABLE;
+> +        return -ENOSYS;
+> +    }
+> +
+> +    ret = kvm_vm_ioctl(kvm_state, KVM_ARM_GET_REG_WRITABLE_MASKS, &range);
+> +    if (ret) {
+> +        cpu->writable_id_regs = WRITABLE_ID_REGS_FAILED;
+> +        return ret;
+> +     }
+> +    cpu->writable_id_regs = WRITABLE_ID_REGS_AVAIL;
+> +    return ret;
+> +}
+> +
+>  static bool kvm_no_adjvtime_get(Object *obj, Error **errp)
+>  {
+>      return !ARM_CPU(obj)->kvm_adjvtime;
+> diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
+> index 05c3de8cd46e..8d1f20ca8d89 100644
+> --- a/target/arm/kvm_arm.h
+> +++ b/target/arm/kvm_arm.h
+> @@ -221,6 +221,8 @@ int kvm_arm_set_irq(int cpu, int irqtype, int irq, int level);
+>  
+>  void kvm_arm_enable_mte(Object *cpuobj, Error **errp);
+>  
+> +int kvm_arm_get_writable_id_regs(ARMCPU *cpu, IdRegMap *idregmap);
+> +
+>  #else
+>  
+>  /*
+> @@ -247,6 +249,11 @@ static inline bool kvm_arm_mte_supported(void)
+>      return false;
+>  }
+>  
+> +static inline int kvm_arm_get_writable_id_regs(ARMCPU *cpu, IdRegMap *idregmap)
+> +{
+> +    return -ENOSYS;
+> +}
+> +
+>  /*
+>   * These functions should never actually be called without KVM support.
+>   */
+Cheers
 
-Adjust the cluster-id based on the boot cpu will resolve the above
-issue; allowing a pure ARM32 toolchain to debug programs running on
-RPUs.
-
-Signed-off-by: Clément Chigot <chigot@adacore.com>
----
- hw/arm/xlnx-zynqmp.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
-
-diff --git a/hw/arm/xlnx-zynqmp.c b/hw/arm/xlnx-zynqmp.c
-index be33669f87..f23ace6446 100644
---- a/hw/arm/xlnx-zynqmp.c
-+++ b/hw/arm/xlnx-zynqmp.c
-@@ -221,7 +221,13 @@ static void xlnx_zynqmp_create_rpu(MachineState *ms, XlnxZynqMPState *s,
- 
-     object_initialize_child(OBJECT(s), "rpu-cluster", &s->rpu_cluster,
-                             TYPE_CPU_CLUSTER);
--    qdev_prop_set_uint32(DEVICE(&s->rpu_cluster), "cluster-id", 1);
-+
-+    /* In order to connect gdb to the boot cpu, adjust the cluster-id.  */
-+    if (!strncmp(boot_cpu, "rpu-cpu", 7)) {
-+        qdev_prop_set_uint32(DEVICE(&s->rpu_cluster), "cluster-id", 0);
-+    } else {
-+        qdev_prop_set_uint32(DEVICE(&s->rpu_cluster), "cluster-id", 1);
-+    }
- 
-     for (i = 0; i < num_rpus; i++) {
-         const char *name;
-@@ -380,7 +386,6 @@ static void xlnx_zynqmp_init(Object *obj)
- 
-     object_initialize_child(obj, "apu-cluster", &s->apu_cluster,
-                             TYPE_CPU_CLUSTER);
--    qdev_prop_set_uint32(DEVICE(&s->apu_cluster), "cluster-id", 0);
- 
-     for (i = 0; i < num_apus; i++) {
-         object_initialize_child(OBJECT(&s->apu_cluster), "apu-cpu[*]",
-@@ -475,6 +480,13 @@ static void xlnx_zynqmp_realize(DeviceState *dev, Error **errp)
- 
-     ram_size = memory_region_size(s->ddr_ram);
- 
-+    /* In order to connect gdb to the boot cpu, adjust the cluster-id.  */
-+    if (!strncmp(boot_cpu, "apu-cpu", 7)) {
-+        qdev_prop_set_uint32(DEVICE(&s->apu_cluster), "cluster-id", 0);
-+    } else {
-+        qdev_prop_set_uint32(DEVICE(&s->apu_cluster), "cluster-id", 1);
-+    }
-+
-     /*
-      * Create the DDR Memory Regions. User friendly checks should happen at
-      * the board level
--- 
-2.34.1
+Eric
 
 
