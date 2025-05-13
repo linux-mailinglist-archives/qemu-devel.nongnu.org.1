@@ -2,60 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA1D3AB5662
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 15:43:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2BC8AB5682
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 15:53:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEpuP-0006K7-Jt; Tue, 13 May 2025 09:43:01 -0400
+	id 1uEq3F-0001Hr-9x; Tue, 13 May 2025 09:52:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uEpuM-0006JT-5f
- for qemu-devel@nongnu.org; Tue, 13 May 2025 09:42:58 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uEq37-0001Gw-LW
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 09:52:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uEpuF-0000YV-Dy
- for qemu-devel@nongnu.org; Tue, 13 May 2025 09:42:57 -0400
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id AD5CC55BC03;
- Tue, 13 May 2025 15:42:47 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id y-ITAtu91qKk; Tue, 13 May 2025 15:42:45 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id A136155BC02; Tue, 13 May 2025 15:42:45 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 9EA9E745682;
- Tue, 13 May 2025 15:42:45 +0200 (CEST)
-Date: Tue, 13 May 2025 15:42:45 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Weifeng Liu <weifeng.liu.z@gmail.com>
-cc: "Kim, Dongwon" <dongwon.kim@intel.com>, 
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: Re: [PATCH 8/9] ui/gtk-gl-area: Render guest content with padding
- in fixed-scale mode
-In-Reply-To: <014499c850a828e2e8b0b55376c36b9f8e7a7c1e.camel@gmail.com>
-Message-ID: <508f7281-9657-7db6-2778-b85f8c8cca2e@eik.bme.hu>
-References: <20250511073337.876650-1-weifeng.liu.z@gmail.com>
- <20250511073337.876650-9-weifeng.liu.z@gmail.com>
- <PH8PR11MB6879607C14D7E5BB7FCDAAD1FA96A@PH8PR11MB6879.namprd11.prod.outlook.com>
- <ffa687c30c11429767d48c9d1358c729d1e49e8f.camel@gmail.com> 
- <66a308eb-6ab3-c51c-bcdb-fe5c79811914@eik.bme.hu>
- <014499c850a828e2e8b0b55376c36b9f8e7a7c1e.camel@gmail.com>
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uEq32-0001kr-1F
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 09:51:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747144313;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=u71QUGF+wv5hJ6F1s1Mid1pdlzn9vihyorwuiVBmgvc=;
+ b=gUVsNlMQwlwAB7yQe+wqeO75iOnGvv13IckSSOJWH2iJ59zTgSQ4ioFVpGVD7A77/gnHBF
+ LOsUWF32MwdbDGC0ZMGfne3oRNXh9+7nvj0AeP96w3/0AyyUvBedgkgSH74Gr5p8ZyxyOg
+ 53LkjwKamOY427inlKknKo80By+0Wb0=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-353-6sudEH2DNraB5TuMurKFdQ-1; Tue,
+ 13 May 2025 09:51:52 -0400
+X-MC-Unique: 6sudEH2DNraB5TuMurKFdQ-1
+X-Mimecast-MFC-AGG-ID: 6sudEH2DNraB5TuMurKFdQ_1747144311
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 07B6E180087F; Tue, 13 May 2025 13:51:51 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.166])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 2A8661955E74; Tue, 13 May 2025 13:51:49 +0000 (UTC)
+Date: Tue, 13 May 2025 09:51:48 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-block@nongnu.org, hreitz@redhat.com, pbonzini@redhat.com,
+ bmarzins@redhat.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH] file-posix: Probe paths and retry SG_IO on potential
+ path errors
+Message-ID: <20250513135148.GB227327@fedora>
+References: <20250513113730.37404-1-kwolf@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-1732745282-1747143765=:27020"
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="Tb0TCTHDk9mdm4rt"
+Content-Disposition: inline
+In-Reply-To: <20250513113730.37404-1-kwolf@redhat.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.549,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,86 +84,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
 
---3866299591-1732745282-1747143765=:27020
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+--Tb0TCTHDk9mdm4rt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 13 May 2025, Weifeng Liu wrote:
-> Hi,
->
-> On Tue, 2025-05-13 at 11:52 +0200, BALATON Zoltan wrote:
->> On Tue, 13 May 2025, Weifeng Liu wrote:
->>> Hi,
->>>
->>> On Tue, 2025-05-13 at 00:37 +0000, Kim, Dongwon wrote:
->>>> Hi,
->>>>
->>>>> Subject: [PATCH 8/9] ui/gtk-gl-area: Render guest content with
->>>>> padding in
->>>>> fixed-scale mode
->>>>>
->>>>> In fixed-scale mode (zoom-to-fit=false), we expect that scale
->>>>> should not
->>>>> change, meaning that if window size is larger than guest surface,
->>>>> padding is
->>>>
->>>> # @zoom-to-fit: Zoom guest display to fit into the host window.  When
->>>> #     turned off the host window will be resized instead.  In case
->>>> the
->>>> #     display device can notify the guest on window resizes
->>>> #     (virtio-gpu) this will default to "on", assuming the guest will
->>>> #     resize the display to match the window size then.  Otherwise it
->>>> #     defaults to "off".  (Since 3.1)
->>>>
->>>> Current definition says the host window should be resized to fit the
->>>> size of the guest surface instead. Wouldn't padding accommodate this?
->>>>
->>>
->>> Yeah, window will be resized to fit the size of guest surface in fixed-
->>> scale mode. However, users are still allowed to resize the window to a
->>> larger size and this is case where padding is required, otherwise the
->>> fixed-scale assumption is broken. In fact, gl=off mode employs padding
->>> to preserve scale already but gl=on mode doesn't follow this behavior,
->>> which, IMO, is a defect that this patch is trying to correct.
->>
->> I think current set of switches is not enough to describe all possible
->> configs and this leads to inconsistency between display backends. Each
->> display backend has different idea on how zoom-to-fit should work now.
->> Maybe we need a new keep-aspect=off or similar option to make it explicit
->> then these can be set independently to decide if a full-screen zoom-to-fit
->> window should be stretched or padded. Currently it behaves differently
->> depending on display backend or even options of one display backend as you
->> say above. Fixing just one place won't solve the problem with other
->> backends so maybe separating this option into a new one would end this
->> inconsistency. I got requests from people for both padded or stretched
->> behaviour so it seems some prefer one or the other and just zoom-to-fit
->> can't set both.
->>
->
-> Thank you for pointing out the demand for both stretched and padded
-> behavior — allowing users to choose their preferred display makes a lot
-> of sense. With the changes in this patch set, we can at least ensure
-> that all GTK-based backends behave consistently with regard to aspect
-> ratio. I’ll follow up with a separate patch set to introduce the new
-> keep-aspect=off (or similar) option you suggested.
->
-> By the way, I’ve also been working on a “scale” option to let users
-> specify an exact zoom level. I deliberately left it out of this patch
-> set because I wanted to keep its scope narrowly focused on refactoring.
-> Once this set is merged, I’ll submit the new patch set with these
-> changes.
+On Tue, May 13, 2025 at 01:37:30PM +0200, Kevin Wolf wrote:
+> When scsi-block is used on a host multipath device, it runs into the
+> problem that the kernel dm-mpath doesn't know anything about SCSI or
+> SG_IO and therefore can't decide if a SG_IO request returned an error
+> and needs to be retried on a different path. Instead of getting working
+> failover, an error is returned to scsi-block and handled according to
+> the configured error policy. Obviously, this is not what users want,
+> they want working failover.
+>=20
+> QEMU can parse the SG_IO result and determine whether this could have
+> been a path error, but just retrying the same request could just send it
+> to the same failing path again and result in the same error.
+>=20
+> With a kernel that supports the DM_MPATH_PROBE_PATHS ioctl on dm-mpath
+> block devices (queued in the device mapper tree for Linux 6.16), we can
+> tell the kernel to probe all paths and tell us if any usable paths
+> remained. If so, we can now retry the SG_IO ioctl and expect it to be
+> sent to a working path.
+>=20
+> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> ---
+>  block/file-posix.c | 82 +++++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 81 insertions(+), 1 deletion(-)
 
-A scale option would be a welcome change as well. I thought about that too 
-but did not try to implement it. One problem left may be that different 
-backends may be still inconsistent so if you only fix gtk others may need 
-to be adapted as well at some point (not necessarily by you but if you can 
-look at that and keep it consistent when making changes that would be 
-nice).
+Maybe the probability of retry success would be higher with a delay so
+that intermittent issues have time to resolve themselves. Either way,
+the patch looks good.
 
-Regards,
-BALATON Zoltan
---3866299591-1732745282-1747143765=:27020--
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+
+--Tb0TCTHDk9mdm4rt
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmgjTnQACgkQnKSrs4Gr
+c8gLcwgAspZ6tFEEB/fdfpGq32m61kemzNqjOSGk0SgFDeCn1yIrctb+fNCxmJW6
+r9PqyXaEr3rY9jwxYOnQ5t6Pera4u/se7mX4M1Pfr4aqjDMf//NhfN+oW9tn1hhz
+EtDUsPP1pa2PaCc0hwlZJRSzD7Tf2dIUZCx6Gi3EdLYDUk4wlcWeexB8XTtv9PH6
+jR3DzkPzYNxF8uJ+0UE4ONHGqZjBFToy+qeFR5d8lmpZ38sQbZEK5mrBBrOzTqWL
+bjvrT1D9IfiXlDgsmufo3hC0MfSDm7qJqcJEmWWQXw6Kvov8BTpEqMK6/7y6sNJ/
+t6KhuBn9Ih8yi4PbszKRmV8DekoGIw==
+=nMDJ
+-----END PGP SIGNATURE-----
+
+--Tb0TCTHDk9mdm4rt--
+
 
