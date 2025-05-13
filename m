@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE11CAB5BD4
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 19:53:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F9ADAB5B90
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 19:46:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEtnd-0000Ve-Cm; Tue, 13 May 2025 13:52:17 -0400
+	id 1uEtfx-0003Zs-Fs; Tue, 13 May 2025 13:44:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uEtc7-0000KL-S4
- for qemu-devel@nongnu.org; Tue, 13 May 2025 13:40:27 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uEtcC-0000Mi-U4
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 13:40:33 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uEtc5-0003OG-Rl
- for qemu-devel@nongnu.org; Tue, 13 May 2025 13:40:23 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-43cec5cd73bso40319495e9.3
- for <qemu-devel@nongnu.org>; Tue, 13 May 2025 10:40:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uEtcB-0003Ot-9T
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 13:40:28 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3a0b308856fso4358695f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 13 May 2025 10:40:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747158020; x=1747762820; darn=nongnu.org;
+ d=linaro.org; s=google; t=1747158025; x=1747762825; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=q8SAO3KJ++XWvDWuMU/h8ZGGLKmYxZ6lrHNEHZshFbA=;
- b=jk5opCxDYvg+OpOi7DsKan8Y9t/h/AH1xmNn9y0VMuXot0TOdBvmUnMxUrNar9Lki9
- YLFC6+9KYVXZSKpIPcqcplUUCimNBBZ4tjWiK/XibW7UjOU/Lw57I1dZUhqk1sdR5Qwt
- XOPv53ueQJUPUPum6nwIuz1QfC27f7U6Og666Qje7uXcSQq1R5Zmcmv9psPvm+nyr8mb
- 61LM/HcRzP1capKNZtKjy2PMCPR6kBB2C2JSs8d+rJQ2Gbme3kaSw3djZ7xBcSnR98eX
- h9bOiGNhXEEygVVe/9LN7qE97zOyCWR7htM4s7aGg86oAcRrIPelNaeeTEh2o1nhmqjj
- aj8g==
+ bh=92ChZ6jllY23UsU7xWSaP8Ezg849uhqSbkL7GZUJKKA=;
+ b=K5qP7nqSsfpimFKRLUffM1g3YV1TFnyjuoQVwqaTdGPeFCbGBY3BI5mpepY6ole922
+ 54gGNUEmpm5N6yQnwUAxK5Q+zT9G+cFjYfR3r07nLNK3ZMCZ0UQ3f4/g1qZb1LwhDhvM
+ UYqI4Y3SG7wZCUbkwgGA1TDK6PIUYue0qhQQoK6H2HMbXlMZhq7x20MH9uzmz9/SGxPn
+ siXSYtHHd7BlyQvNavV5Z9DQj9tKjCBQDxBKWJlL2d/ggjmhIF8KXPsUcmMtZI5JNz/f
+ omZbnKzAdhJg+rlGzDldP089qXXOCq1Nz3VETalsPJOYJMJ56yCCIOJHSHy6dU2KUNOP
+ GReQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747158020; x=1747762820;
+ d=1e100.net; s=20230601; t=1747158025; x=1747762825;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=q8SAO3KJ++XWvDWuMU/h8ZGGLKmYxZ6lrHNEHZshFbA=;
- b=qVF2GdeFoHaz+1mGncFQ4cJKo8gzZiebG99MP5zshvCY3RXEz9so2ipOtljnYaKB4E
- g8OEYGkXwWXgEq9MYH0w/u9LZBi8BB4kbI0tihgitgnfk+GRSg+/PyNOOHXud2xSptwb
- pX4fshroHLRX05kICcH977jX2ayfGnDTZqBr6kZLCkklUGoKmQlemqVry/WuA0/eQFhj
- XRSSmCq22rAJC4oRX4xlagk4H/QSDGrB+qRA3KO2nJjwU6ZIQmOt5rV4uySL59m7iecO
- LPptWZQUcgPScciWsfO1wiik2tPkyCdNiFs9OVGWTzWTcUTdPTh8XnXeDdaHh6hY36Kx
- FCEg==
-X-Gm-Message-State: AOJu0YygwHoA8JLFVc4Shf9RwycSv757omV7IHBJt4cLwSniyFyqIGSK
- gW2RhOkc9BzkeHmtqBSHoARgSHCeZ0OpZWvwtIYhj1aEN3G5t6ywvmL5eAClCySDeoXz4nnrCjg
- PjtY=
-X-Gm-Gg: ASbGncux+LRaBzM4y//vu3MbyrnvJ4tkeRVx6xULPDeUgAPT3yw9ho7qd5WW05LZ1Rv
- jsLjvjzcs84n3BE9fiehZZf4VM7ZDl6k5MXljPsEycx0K1MIRztngx9sUHmMdyLb8kwdr1gLBsv
- fyY9P/ZygeU59sExbTA6BLLu9nDDLOhbXpuMadhIEgXCxIBaTQFsymWOKj9TZvt9P+fiOaQLuP4
- MbdVnLiclb+/Shl2spcxhSpwAbiPmKe33TAvuUR7H76r+lyAWbpgWoJ4eJ38fGdrSxHDPZnlr6B
- VWB+CYtoHvFlGR1SjYXKfksQl+qAl20GsqJgUuIpEIbkd6yI+Tc3cFVRuI4dTc2bKPCTbHsZJKV
- EpLAYoM/j4HxU2ZPxF5hkCmrswEKy
-X-Google-Smtp-Source: AGHT+IHf6GTd3RZvjMBcv+Yhn08GoRM2N7nM/a3ZlvK36HyHaGGsR3rJGytbA/WJOlLm4MjHcQxKnQ==
-X-Received: by 2002:a05:600c:5128:b0:43c:ec4c:25b1 with SMTP id
- 5b1f17b1804b1-442f2169795mr1791695e9.23.1747158019825; 
- Tue, 13 May 2025 10:40:19 -0700 (PDT)
+ bh=92ChZ6jllY23UsU7xWSaP8Ezg849uhqSbkL7GZUJKKA=;
+ b=PE3oVndeEYlHjIxcZX43kGArH7iV2A0i/39aRqHM4nRrdz98h5lpMRCSrJJpO43DIj
+ h1DzHCn12Z0igOfWZ99LvBHqpoRmw/K9/yu6ZvSOwpMMqQis/VTHonU1sav3GNpUD18+
+ v15vQYfYR8ubQ2lhoiBHrOyeoNJbIT4UVIfSiDO8RWJz/AuAMbzx1Y20+LPNnkpsifok
+ PQV4eZmfBSDYRWqqEb46kUFWRbIM3DAN8WVYl1HY6vTfJ1VroTEV4pCVSexPcPIxZC84
+ FQglMTyehNmxFLjKmxvue7cEWV6fFQDumSei8Q4uggoW9TWTERdMiYAEyIfcWVU8bAva
+ mZrg==
+X-Gm-Message-State: AOJu0YyCXvGgUP2u/vI3QIxhWjVyibxcStD8RRP3EqYZXvbQBXrRPKVa
+ VQGIBUsUPqT2pm4TxJgW5+4FB21VLVj+Rp4ymyaKB+AtU+5ICC0DWQjmRMaPCtGsxSaxmDTWu2Q
+ d4+c=
+X-Gm-Gg: ASbGnctrrHokzjgnbvmmPbGTxz+kOoRNs1elex4Q0KGTqgFNhOc5xJ6w/uRwTWnEo2L
+ Ij/lNkqXwQp61jJEb6bdrhO1MK49Z4RVrbxC+bJtQIY11GvNrggOY6rPvvlk3hq7OIs6eBj4kO3
+ M4FScTukQVwwQ+xHaXTc0oYQIQ8JB3MfmLv1hPu4eQilg+W2W0mAhMsnm2943TaCHKKwg2hB254
+ P4kU3FPbAGm7DhE1SzDMGPdDzonz4jpHiMm23QGTJ3vhMh8nPvQAp86ChaA70tTWQNsl3vBf9TL
+ 6LuhcEmunQklKua44d8CKdxL2vRkS6o5DN1QegDPIc1Fsq1YPKmqUPB7v28Smotr9HdwByYA8SO
+ sKFhJuWQI0cDMkk7dnjZJctEIYR43
+X-Google-Smtp-Source: AGHT+IFshrQYl1U3kKoLzK40YgUYcGKoO/bFrt2vl9sEolbpYVxs0eaqJ1sjPgplzwcSrVy5f92OuA==
+X-Received: by 2002:a05:6000:22c2:b0:3a1:f561:6894 with SMTP id
+ ffacd0b85a97d-3a34992266cmr132178f8f.44.1747158025410; 
+ Tue, 13 May 2025 10:40:25 -0700 (PDT)
 Received: from localhost.localdomain (110.8.30.213.rev.vodafone.pt.
  [213.30.8.110]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442d67ed1bcsm173216355e9.18.2025.05.13.10.40.18
+ 5b1f17b1804b1-442cd3b7c89sm215849815e9.38.2025.05.13.10.40.23
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 13 May 2025 10:40:19 -0700 (PDT)
+ Tue, 13 May 2025 10:40:24 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 10/19] hw/arm: Remove unnecessary 'cpu.h' header
-Date: Tue, 13 May 2025 18:39:19 +0100
-Message-ID: <20250513173928.77376-11-philmd@linaro.org>
+Subject: [PATCH 11/19] target/arm: Restrict inclusion of 'multiprocessing.h'
+Date: Tue, 13 May 2025 18:39:20 +0100
+Message-ID: <20250513173928.77376-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250513173928.77376-1-philmd@linaro.org>
 References: <20250513173928.77376-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,63 +100,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Only cpu.c requires "multiprocessing.h" definitions so far.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- hw/arm/exynos4210.c | 1 -
- hw/arm/highbank.c   | 1 -
- hw/arm/mps3r.c      | 1 -
- hw/arm/smmuv3.c     | 1 -
- 4 files changed, 4 deletions(-)
+ target/arm/cpu.h | 1 -
+ target/arm/cpu.c | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/arm/exynos4210.c b/hw/arm/exynos4210.c
-index 76001ff0dfc..56267ec2bd2 100644
---- a/hw/arm/exynos4210.c
-+++ b/hw/arm/exynos4210.c
-@@ -24,7 +24,6 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "exec/tswap.h"
--#include "cpu.h"
- #include "hw/cpu/a9mpcore.h"
- #include "hw/irq.h"
- #include "system/blockdev.h"
-diff --git a/hw/arm/highbank.c b/hw/arm/highbank.c
-index 3ae26ebebdc..5b2719555af 100644
---- a/hw/arm/highbank.c
-+++ b/hw/arm/highbank.c
-@@ -35,7 +35,6 @@
- #include "hw/cpu/a15mpcore.h"
- #include "qemu/log.h"
- #include "qom/object.h"
--#include "cpu.h"
- #include "target/arm/cpu-qom.h"
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 6ed6409cb7a..33ac0c9f818 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -30,7 +30,6 @@
+ #include "exec/gdbstub.h"
+ #include "exec/page-protection.h"
+ #include "qapi/qapi-types-common.h"
+-#include "target/arm/multiprocessing.h"
+ #include "target/arm/gtimer.h"
  
- #define SMP_BOOT_ADDR           0x100
-diff --git a/hw/arm/mps3r.c b/hw/arm/mps3r.c
-index 48c73acc62e..889d291401e 100644
---- a/hw/arm/mps3r.c
-+++ b/hw/arm/mps3r.c
-@@ -29,7 +29,6 @@
- #include "qapi/error.h"
- #include "qobject/qlist.h"
- #include "system/address-spaces.h"
--#include "cpu.h"
- #include "system/system.h"
- #include "hw/boards.h"
- #include "hw/or-irq.h"
-diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
-index ab679723533..37b39c9f84f 100644
---- a/hw/arm/smmuv3.c
-+++ b/hw/arm/smmuv3.c
-@@ -24,7 +24,6 @@
- #include "hw/qdev-properties.h"
- #include "hw/qdev-core.h"
- #include "hw/pci/pci.h"
--#include "cpu.h"
- #include "exec/target_page.h"
- #include "trace.h"
- #include "qemu/log.h"
+ #define EXCP_UDEF            1   /* undefined instruction */
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index a604e4ccac8..8c9d161f2ef 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -52,6 +52,7 @@
+ #include "cpregs.h"
+ #include "target/arm/cpu-qom.h"
+ #include "target/arm/gtimer.h"
++#include "target/arm/multiprocessing.h"
+ 
+ static void arm_cpu_set_pc(CPUState *cs, vaddr value)
+ {
 -- 
 2.47.1
 
