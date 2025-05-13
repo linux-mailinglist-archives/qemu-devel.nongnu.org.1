@@ -2,42 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B47FAB48D8
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 03:36:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A9BAB48DA
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 03:36:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEeYm-0002Hh-F9; Mon, 12 May 2025 21:35:56 -0400
+	id 1uEeYn-0002If-Af; Mon, 12 May 2025 21:35:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.zhadchenko@virtuozzo.com>)
- id 1uEeYi-0002F5-DT; Mon, 12 May 2025 21:35:52 -0400
+ id 1uEeYi-0002F1-Cy; Mon, 12 May 2025 21:35:52 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.zhadchenko@virtuozzo.com>)
- id 1uEeYf-00021R-VL; Mon, 12 May 2025 21:35:52 -0400
+ id 1uEeYf-00021T-Vp; Mon, 12 May 2025 21:35:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
- Content-Type; bh=zwEMbmSFTjMvk+Wblmd/B55xjOZPc62J//7lW5rGbRk=; b=BfVdvFR52Zfh
- jL58m61oGJr6oXsVVpwY9PComauiKjrFytxmlDelfMBiVrj0lPcKHNHx9eiTbM9MrPZ6jRBMyh8qE
- 3LJXryuo2bMKcNNl9oM0LP9OWjUtnzEZko5AFsAVTdayAUGdgxqo0wCJ7XDJXnsWXS98kIgYJEfvw
- k3G1LVRicI/P/xLyqwku+EuaCSWh2/rwIhDHmLqVrPRBranxKIFZYMhA12umu4/t/yHVgg4gzh/oF
- LxnwY9WJXN2JlZQk3bNFjD+SaNPkZGtlUnx+k1sEvgC2By+cS2ojwU1aOsGx3A7vI/QVGiSmEWWjP
- eG+fhWEI/JGe2zzkaiYmhQ==;
+ Content-Type; bh=o76L16+85oXwxINpy+kttS3ujUGzFeqh/Z5rK6Yd30A=; b=sYq6qqZJtCIi
+ mob/IlvSIwTcwVRxDbI2ZBcogj/VFPV27TEIVL2GpW/Ybg/MQlnE9Ax5z0j2VN46VokneLb9CKyAc
+ oowjJ6K0Wxolize8ytDSwdaQBcHv6UeOAJ04jmD9y0up9yyzig0I2J2FR1uEeDRUm0ypk3YB0ehb6
+ EoWpmjAEgC7+ZRiva5VJVTwqK8xp/rBrgPwPu4RG/mQmt0wQOOCbGIwtyZAjzK7L04qdsjKEZwPMV
+ mbMYbajDft+Zmd4psP+DzcFw7Oau67H3zkgDJDmihiNEYgWWqw36+lDzrwHj/znYK/H41EetFVolQ
+ MKeaLjmQhLfL+hU0zs/4Wg==;
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=debian.fritz.box)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
  (envelope-from <andrey.zhadchenko@virtuozzo.com>)
- id 1uEeUd-00DboQ-2l; Tue, 13 May 2025 03:35:36 +0200
+ id 1uEeUe-00DboQ-0k; Tue, 13 May 2025 03:35:36 +0200
 From: Andrey Zhadchenko <andrey.zhadchenko@virtuozzo.com>
 To: qemu-block@nongnu.org,
 	vsementsov@yandex-team.ru,
 	eblake@redhat.com
 Cc: jsnow@redhat.com, kwolf@redhat.com, hreitz@redhat.com,
  qemu-devel@nongnu.org, andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
-Subject: [PATCH 0/4] improve block_status() for cbw + snapshot setup
-Date: Tue, 13 May 2025 03:32:34 +0200
-Message-ID: <20250513013238.1213539-1-andrey.zhadchenko@virtuozzo.com>
+Subject: [PATCH 1/4] hbitmap: drop meta bitmap leftovers
+Date: Tue, 13 May 2025 03:32:35 +0200
+Message-ID: <20250513013238.1213539-2-andrey.zhadchenko@virtuozzo.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250513013238.1213539-1-andrey.zhadchenko@virtuozzo.com>
+References: <20250513013238.1213539-1-andrey.zhadchenko@virtuozzo.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=130.117.225.111;
@@ -65,66 +67,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Recently we had some reports about stuck full backups: running backup
-job had 0 progress for more than an hour. This reproduced only on big
-images, at least 30TB of allocated space.
-We are using snapshot filter + cbw filter + blockdev-backup. The
-discovered problem lies in access bitmap in cbw filter.
-To build bcs bitmap for backup, the job repeatedly asks for block
-status with a range (X, virtual_size). As we are accessing the disk
-via snapshot filter, we end up in cbw_co_snapshot_block_status()->
-cbw_snapshot_read_lock(). Here we check that access bitmap does not
-have any zeroes in this range. After that, we ask the disk.
-Firstly, we always look for zero in access bitmap for the whole
-range. This is rather slow, because it is full and we need to scan
-every bit in a lower level. Secondly, the following block status call
-to the disk may return not-very-high amount of continious clusters,
-for example 512 (empirical value, guessing for the 'full' image it is
-4K/clu_addr_size for qcow2 driver).
-This way we are doomed to re-scan access bitmap on the next block
-status request (X + 512, virtual_size).
+API to manipulate meta bitmap was removed with commit 0c88f1970c76
 
-perf tracing example:
-  96.67%          9581  qemu-kvm         qemu-kvm                    [.] hbitmap_next_zero
-   0.33%            32  qemu-kvm         qemu-kvm                    [.] qcow2_cache_do_get.lto_priv.0
-   0.10%            10  qemu-kvm         [kernel.vmlinux]            [k] perf_adjust_freq_unthr_context
-   0.08%             8  qemu-kvm         qemu-kvm                    [.] qcow2_get_host_offset
+Signed-off-by: Andrey Zhadchenko <andrey.zhadchenko@virtuozzo.com>
+---
+ util/hbitmap.c | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
-This can be clearly observed on the image with small clu_size=65536
-and preallocated metadata.
-size                   10T   11T
-blockdev-backup        52s   57s
-cbw + snap             325s  413s
-cbw + snap + patches   55s   61s
-
-The growth is also non-linear in this case, +10% size results in
-+20% time.
-
-This patchset changes access-bitmap into 'deny' bitmap by reversing
-the bits within and making the code look for set bits. It is much
-faster due to hbitmap levels.
-
-Also
- - update iotest 257: now access bitmap on the cbw filter is empty,
-so count is 0 instead of 67108864 (which is the image size)
- - remove meta betmap leftovers
- - report block_status() until the end of accessible section to
-snapshot filter, instead of returning EINVAL on big requests
-
-Andrey Zhadchenko (4):
-  hbitmap: drop meta bitmap leftovers
-  hbitmap: introduce hbitmap_reverse()
-  block/copy-before-write: reverse access bitmap
-  block/copy-before-write: report partial block status to snapshot
-
- block/copy-before-write.c    | 33 +++++++++++++++++++++------------
- block/dirty-bitmap.c         |  9 +++++++++
- include/block/block_int-io.h |  1 +
- include/qemu/hbitmap.h       |  8 ++++++++
- tests/qemu-iotests/257.out   | 28 ++++++++++++++--------------
- util/hbitmap.c               | 32 +++++++++++++++++---------------
- 6 files changed, 70 insertions(+), 41 deletions(-)
-
+diff --git a/util/hbitmap.c b/util/hbitmap.c
+index d9a1dabc63..16674f33e4 100644
+--- a/util/hbitmap.c
++++ b/util/hbitmap.c
+@@ -84,9 +84,6 @@ struct HBitmap {
+      */
+     int granularity;
+ 
+-    /* A meta dirty bitmap to track the dirtiness of bits in this HBitmap. */
+-    HBitmap *meta;
+-
+     /* A number of progressively less coarse bitmaps (i.e. level 0 is the
+      * coarsest).  Each bit in level N represents a word in level N+1 that
+      * has a set bit, except the last level where each bit represents the
+@@ -480,10 +477,7 @@ void hbitmap_set(HBitmap *hb, uint64_t start, uint64_t count)
+     n = last - first + 1;
+ 
+     hb->count += n - hb_count_between(hb, first, last);
+-    if (hb_set_between(hb, HBITMAP_LEVELS - 1, first, last) &&
+-        hb->meta) {
+-        hbitmap_set(hb->meta, start, count);
+-    }
++    hb_set_between(hb, HBITMAP_LEVELS - 1, first, last);
+ }
+ 
+ /* Resetting works the other way round: propagate up if the new
+@@ -577,10 +571,7 @@ void hbitmap_reset(HBitmap *hb, uint64_t start, uint64_t count)
+     assert(last < hb->size);
+ 
+     hb->count -= hb_count_between(hb, first, last);
+-    if (hb_reset_between(hb, HBITMAP_LEVELS - 1, first, last) &&
+-        hb->meta) {
+-        hbitmap_set(hb->meta, start, count);
+-    }
++    hb_reset_between(hb, HBITMAP_LEVELS - 1, first, last);
+ }
+ 
+ void hbitmap_reset_all(HBitmap *hb)
+@@ -784,7 +775,6 @@ void hbitmap_deserialize_finish(HBitmap *bitmap)
+ void hbitmap_free(HBitmap *hb)
+ {
+     unsigned i;
+-    assert(!hb->meta);
+     for (i = HBITMAP_LEVELS; i-- > 0; ) {
+         g_free(hb->levels[i]);
+     }
+@@ -868,9 +858,6 @@ void hbitmap_truncate(HBitmap *hb, uint64_t size)
+                    (size - old) * sizeof(*hb->levels[i]));
+         }
+     }
+-    if (hb->meta) {
+-        hbitmap_truncate(hb->meta, hb->size << hb->granularity);
+-    }
+ }
+ 
+ /**
 -- 
 2.43.0
 
