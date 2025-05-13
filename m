@@ -2,101 +2,146 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C03AB5596
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 15:07:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56C97AB55B0
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 15:13:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEpL3-0008RW-5R; Tue, 13 May 2025 09:06:29 -0400
+	id 1uEpQq-0001qS-BH; Tue, 13 May 2025 09:12:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=uZst=X5=kaod.org=clg@ozlabs.org>)
- id 1uEpJa-00087v-76; Tue, 13 May 2025 09:05:01 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1uEpQm-0001q8-B6
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 09:12:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=uZst=X5=kaod.org=clg@ozlabs.org>)
- id 1uEpJX-0003Ga-8i; Tue, 13 May 2025 09:04:57 -0400
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4ZxcBj3jtDz4xQW;
- Tue, 13 May 2025 23:04:45 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (Client did not present a certificate)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4ZxcBd1qWlz4xQN;
- Tue, 13 May 2025 23:04:40 +1000 (AEST)
-Message-ID: <e05b8809-3e64-456e-8b88-0026b0e14588@kaod.org>
-Date: Tue, 13 May 2025 15:04:37 +0200
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1uEpQj-0004su-MU
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 09:12:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747141936;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=HRsdhSthzE4HJRcMruTsVkrSKyQw+16tWar4GJTP75s=;
+ b=JDzVerhMnD1158x+Ed/uaOv1dbkL9ZMrVSNLKjVVUDBUmD7pHRA/Hvo9X0LXfwDIE23/hz
+ Mhy9Xw4/rH7+SHo0gM/20YlJKoxtNO/1ak8hw7/RB4b1qgYnqv0Vyf5ae+8t2RuS6QNzTV
+ Ea+R8dvozf1Hh5ZJfav3/WufVQ/AElk=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-100-WGkOOyh_NSKEH56QprYThw-1; Tue, 13 May 2025 09:12:14 -0400
+X-MC-Unique: WGkOOyh_NSKEH56QprYThw-1
+X-Mimecast-MFC-AGG-ID: WGkOOyh_NSKEH56QprYThw_1747141934
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-43cf172ff63so25411365e9.3
+ for <qemu-devel@nongnu.org>; Tue, 13 May 2025 06:12:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747141934; x=1747746734;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt
+ :content-language:from:references:cc:to:subject:user-agent
+ :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=HRsdhSthzE4HJRcMruTsVkrSKyQw+16tWar4GJTP75s=;
+ b=cLJL9RyQ+EG2CyhXXMcKs8OKPrgjQd7+pDY2L7EZ+cXhQvbr2pYTodg5W0OerlKIri
+ NBRgIDX/43gFvNixiTrCVX3A5/dHcuUWNSBUxa+FQ9mhP2a6zdQfz72D9isR+48R95zv
+ /ABa45KANm7ExSAYGZjMz1aPS1mI5sZt3Ks1Gi4BCXbt4wdUgOjPQp+AlzCoDBMpi6Ci
+ ter9YvFYcUAwBvz9sCSEagD5EIoBZewlISO95ITzGklWXydyW3e+DTBwqrJa6jK332O4
+ wX8cbIRVX/je+f+jHJSxr6+YSvgc0WI5S7Q/iTo5tOOw4d0oqSe9hpyYtnmx9Ki7sLoF
+ 4n1Q==
+X-Gm-Message-State: AOJu0YxLxZRq7UIcNDF2/J5XbgdYvvsDXpf1COe34jZQ6KLxlU8URcqA
+ URVF2siyo/poE0mUEURff5BoeFSObR6cYRTAhpevPFU9A6nLblPTdVMqeAbKnkGVlA2i97WtU05
+ DKDPWRpnm+lY3tz7fEJQ9SQARTTs6UG/bRAcsZsO7cauyrNS+ZySD
+X-Gm-Gg: ASbGncsMOx9c5smHWBYpf2VwBE23HykPyaO81vcd3X0thGeb8zL5laJ1tl3O2Ro73uv
+ OajEERUpMtRdt9e650xLQo4lUstKZzQtImrIWBBYubxR+O6E4xFBpI273uTYo2WxNFMvonmPttQ
+ DeAXyeuJXha7ynvBbpJr7L0P/+6RwiS95UflypXQWo1PdRI1pRT3rQJ+dXVKIJ0TbvdWTMBA3DA
+ cFmLxHnlwLL1zA2LDC41g5BmqLXOczMtyLahOeGrzKszT17kHdgRGV83oqxePhiqx0LrWwCvAFy
+ 0RqUEC5Y3bgyG7RnMzvXmxrqM9oVY/C4Gt3vHhx1PQNwKgsxdolW3D20AbRxABwnI80I1A/7jkU
+ 1MRyhnl8dLfMCMqxtv/D0jZZfW0HRfpdTvsHbz2w=
+X-Received: by 2002:a05:600c:8012:b0:43b:cc42:c54f with SMTP id
+ 5b1f17b1804b1-442d6d3e6e8mr170465545e9.14.1747141933739; 
+ Tue, 13 May 2025 06:12:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGLWZxmUovKr/xo9o+lOG9f6HpASzmkWeEIUriyP1zwENgilmHeG5byawF+qV0NJmEWXrnNGw==
+X-Received: by 2002:a05:600c:8012:b0:43b:cc42:c54f with SMTP id
+ 5b1f17b1804b1-442d6d3e6e8mr170465255e9.14.1747141933291; 
+ Tue, 13 May 2025 06:12:13 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f4d:1a00:4fdf:53e2:1a36:ba34?
+ (p200300d82f4d1a004fdf53e21a36ba34.dip0.t-ipconnect.de.
+ [2003:d8:2f4d:1a00:4fdf:53e2:1a36:ba34])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-442cd3b7d2bsm212687895e9.36.2025.05.13.06.12.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 13 May 2025 06:12:12 -0700 (PDT)
+Message-ID: <36d6672a-6d06-4af2-bdc6-4349df570662@redhat.com>
+Date: Tue, 13 May 2025 15:12:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/25] hw/misc/aspeed_hace: Split hash execution into
- helper functions for clarity
-To: Jamin Lin <jamin_lin@aspeedtech.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Steven Lee <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
- Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-Cc: troy_lee@aspeedtech.com
-References: <20250513062901.2256865-1-jamin_lin@aspeedtech.com>
- <20250513062901.2256865-6-jamin_lin@aspeedtech.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Autocrypt: addr=clg@kaod.org; keydata=
- xsFNBFu8o3UBEADP+oJVJaWm5vzZa/iLgpBAuzxSmNYhURZH+guITvSySk30YWfLYGBWQgeo
- 8NzNXBY3cH7JX3/a0jzmhDc0U61qFxVgrPqs1PQOjp7yRSFuDAnjtRqNvWkvlnRWLFq4+U5t
- yzYe4SFMjFb6Oc0xkQmaK2flmiJNnnxPttYwKBPd98WfXMmjwAv7QfwW+OL3VlTPADgzkcqj
- 53bfZ4VblAQrq6Ctbtu7JuUGAxSIL3XqeQlAwwLTfFGrmpY7MroE7n9Rl+hy/kuIrb/TO8n0
- ZxYXvvhT7OmRKvbYuc5Jze6o7op/bJHlufY+AquYQ4dPxjPPVUT/DLiUYJ3oVBWFYNbzfOrV
- RxEwNuRbycttMiZWxgflsQoHF06q/2l4ttS3zsV4TDZudMq0TbCH/uJFPFsbHUN91qwwaN/+
- gy1j7o6aWMz+Ib3O9dK2M/j/O/Ube95mdCqN4N/uSnDlca3YDEWrV9jO1mUS/ndOkjxa34ia
- 70FjwiSQAsyIwqbRO3CGmiOJqDa9qNvd2TJgAaS2WCw/TlBALjVQ7AyoPEoBPj31K74Wc4GS
- Rm+FSch32ei61yFu6ACdZ12i5Edt+To+hkElzjt6db/UgRUeKfzlMB7PodK7o8NBD8outJGS
- tsL2GRX24QvvBuusJdMiLGpNz3uqyqwzC5w0Fd34E6G94806fwARAQABzSBDw6lkcmljIExl
- IEdvYXRlciA8Y2xnQGthb2Qub3JnPsLBeAQTAQIAIgUCW7yjdQIbAwYLCQgHAwIGFQgCCQoL
- BBYCAwECHgECF4AACgkQUaNDx8/77KGRSxAAuMJJMhJdj7acTcFtwof7CDSfoVX0owE2FJdd
- M43hNeTwPWlV5oLCj1BOQo0MVilIpSd9Qu5wqRD8KnN2Bv/rllKPqK2+i8CXymi9hsuzF56m
- 76wiPwbsX54jhv/VYY9Al7NBknh6iLYJiC/pgacRCHtSj/wofemSCM48s61s1OleSPSSvJE/
- jYRa0jMXP98N5IEn8rEbkPua/yrm9ynHqi4dKEBCq/F7WDQ+FfUaFQb4ey47A/aSHstzpgsl
- TSDTJDD+Ms8y9x2X5EPKXnI3GRLaCKXVNNtrvbUd9LsKymK3WSbADaX7i0gvMFq7j51P/8yj
- neaUSKSkktHauJAtBNXHMghWm/xJXIVAW8xX5aEiSK7DNp5AM478rDXn9NZFUdLTAScVf7LZ
- VzMFKR0jAVG786b/O5vbxklsww+YXJGvCUvHuysEsz5EEzThTJ6AC5JM2iBn9/63PKiS3ptJ
- QAqzasT6KkZ9fKLdK3qtc6yPaSm22C5ROM3GS+yLy6iWBkJ/nEYh/L/du+TLw7YNbKejBr/J
- ml+V3qZLfuhDjW0GbeJVPzsENuxiNiBbyzlSnAvKlzda/sBDvxmvWhC+nMRQCf47mFr8Xx3w
- WtDSQavnz3zTa0XuEucpwfBuVdk4RlPzNPri6p2KTBhPEvRBdC9wNOdRBtsP9rAPjd52d73O
- wU0EW7yjdQEQALyDNNMw/08/fsyWEWjfqVhWpOOrX2h+z4q0lOHkjxi/FRIRLfXeZjFfNQNL
- SoL8j1y2rQOs1j1g+NV3K5hrZYYcMs0xhmrZKXAHjjDx7FW3sG3jcGjFW5Xk4olTrZwFsZVU
- cP8XZlArLmkAX3UyrrXEWPSBJCXxDIW1hzwpbV/nVbo/K9XBptT/wPd+RPiOTIIRptjypGY+
- S23HYBDND3mtfTz/uY0Jytaio9GETj+fFis6TxFjjbZNUxKpwftu/4RimZ7qL+uM1rG1lLWc
- 9SPtFxRQ8uLvLOUFB1AqHixBcx7LIXSKZEFUCSLB2AE4wXQkJbApye48qnZ09zc929df5gU6
- hjgqV9Gk1rIfHxvTsYltA1jWalySEScmr0iSYBZjw8Nbd7SxeomAxzBv2l1Fk8fPzR7M616d
- tb3Z3HLjyvwAwxtfGD7VnvINPbzyibbe9c6gLxYCr23c2Ry0UfFXh6UKD83d5ybqnXrEJ5n/
- t1+TLGCYGzF2erVYGkQrReJe8Mld3iGVldB7JhuAU1+d88NS3aBpNF6TbGXqlXGF6Yua6n1c
- OY2Yb4lO/mDKgjXd3aviqlwVlodC8AwI0SdujWryzL5/AGEU2sIDQCHuv1QgzmKwhE58d475
- KdVX/3Vt5I9kTXpvEpfW18TjlFkdHGESM/JxIqVsqvhAJkalABEBAAHCwV8EGAECAAkFAlu8
- o3UCGwwACgkQUaNDx8/77KEhwg//WqVopd5k8hQb9VVdk6RQOCTfo6wHhEqgjbXQGlaxKHoX
- ywEQBi8eULbeMQf5l4+tHJWBxswQ93IHBQjKyKyNr4FXseUI5O20XVNYDJZUrhA4yn0e/Af0
- IX25d94HXQ5sMTWr1qlSK6Zu79lbH3R57w9jhQm9emQEp785ui3A5U2Lqp6nWYWXz0eUZ0Ta
- d2zC71Gg9VazU9MXyWn749s0nXbVLcLS0yops302Gf3ZmtgfXTX/W+M25hiVRRKCH88yr6it
- +OMJBUndQVAA/fE9hYom6t/zqA248j0QAV/pLHH3hSirE1mv+7jpQnhMvatrwUpeXrOiEw1n
- HzWCqOJUZ4SY+HmGFW0YirWV2mYKoaGO2YBUwYF7O9TI3GEEgRMBIRT98fHa0NPwtlTktVIS
- l73LpgVscdW8yg9Gc82oe8FzU1uHjU8b10lUXOMHpqDDEV9//r4ZhkKZ9C4O+YZcTFu+mvAY
- 3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
- ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
- KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250513062901.2256865-6-jamin_lin@aspeedtech.com>
+Subject: Re: [PATCH 1/1] vhost: do not reset used_memslots when destroying
+ vhost dev
+To: Igor Mammedov <imammedo@redhat.com>, yuanminghao <yuanmh12@chinatelecom.cn>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>
+References: <1741024937-37164-1-git-send-email-yuanmh12@chinatelecom.cn>
+ <20250513141341.5f3ffa57@imammedo.users.ipa.redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20250513141341.5f3ffa57@imammedo.users.ipa.redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=uZst=X5=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.549,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,203 +157,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Jamin
-
-On 5/13/25 08:28, Jamin Lin wrote:
-> Refactor "do_hash_operation()" by extracting hash execution and result handling
-> into dedicated helper functions:
+On 13.05.25 14:13, Igor Mammedov wrote:
+> On Mon,  3 Mar 2025 13:02:17 -0500
+> yuanminghao <yuanmh12@chinatelecom.cn> wrote:
 > 
-> - "hash_write_digest_and_unmap_iov()": Writes the digest result to memory and
->    unmaps IOVs after processing.
-> - "hash_execute_non_acc_mode()": Handles one-shot (non-accumulated) hash
->    operations.
-> - "hash_execute_acc_mode()": Handles accumulated hashing, including update and
->    finalize logic.
+>>>> Global used_memslots or used_shared_memslots is updated to 0 unexpectly
+>>>
+>>> it shouldn't be 0 in practice, as it comes from number of RAM regions VM has.
+>>> It's likely a bug somewhere else.
 > 
-> No functional changes introduced.
-
-This patch is breaking 'check-qtest-arm'
-
-   
-   stderr:
-   **
-   ERROR:../tests/qtest/aspeed_hace-test.c:254:test_sha512: assertion failed (digest == test_result_sha512)
-
-
-Thanks,
-
-C.
-
-   
-
+> I haven't touched this code for a long time, but I'd say if we consider multiple
+> devices, we shouldn't do following:
 > 
-> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-> ---
->   hw/misc/aspeed_hace.c | 133 ++++++++++++++++++++++++++----------------
->   1 file changed, 83 insertions(+), 50 deletions(-)
+> static void vhost_commit(MemoryListener *listener)
+>      ...
+>      if (dev->vhost_ops->vhost_backend_no_private_memslots &&
+>          dev->vhost_ops->vhost_backend_no_private_memslots(dev)) {
+>          used_shared_memslots = dev->mem->nregions;
+>      } else {
+>          used_memslots = dev->mem->nregions;
+>      }
 > 
-> diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c
-> index 22eea62693..eb513ba00f 100644
-> --- a/hw/misc/aspeed_hace.c
-> +++ b/hw/misc/aspeed_hace.c
-> @@ -228,26 +228,96 @@ static int hash_prepare_sg_iov(AspeedHACEState *s, struct iovec *iov,
->       return iov_idx;
->   }
->   
-> -static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
-> -                              bool acc_mode)
-> +static void hash_write_digest_and_unmap_iov(AspeedHACEState *s,
-> +                                            struct iovec *iov,
-> +                                            int iov_idx,
-> +                                            uint8_t *digest_buf,
-> +                                            size_t digest_len)
-> +{
-> +    if (address_space_write(&s->dram_as, s->regs[R_HASH_DEST],
-> +                            MEMTXATTRS_UNSPECIFIED, digest_buf, digest_len)) {
-> +        qemu_log_mask(LOG_GUEST_ERROR,
-> +                      "%s: Failed to write digest to 0x%x\n",
-> +                      __func__, s->regs[R_HASH_DEST]);
-> +    }
-> +
-> +    for (; iov_idx > 0; iov_idx--) {
-> +        address_space_unmap(&s->dram_as, iov[iov_idx - 1].iov_base,
-> +                            iov[iov_idx - 1].iov_len, false,
-> +                            iov[iov_idx - 1].iov_len);
-> +    }
-> +}
-> +
-> +static void hash_execute_non_acc_mode(AspeedHACEState *s, int algo,
-> +                                      struct iovec *iov, int iov_idx)
->   {
->       g_autofree uint8_t *digest_buf = NULL;
-> -    struct iovec iov[ASPEED_HACE_MAX_SG];
-> -    bool acc_final_request = false;
->       Error *local_err = NULL;
-> -    size_t digest_len = 0;
-> -    int iov_idx = -1;
-> +    size_t digest_len;
-> +
-> +    if (qcrypto_hash_bytesv(algo, iov, iov_idx, &digest_buf,
-> +                            &digest_len, &local_err) < 0) {
-> +        qemu_log_mask(LOG_GUEST_ERROR,
-> +                      "%s: qcrypto hash bytesv failed : %s",
-> +                      __func__, error_get_pretty(local_err));
-> +        error_free(local_err);
-> +        return;
-> +    }
-> +
-> +    hash_write_digest_and_unmap_iov(s, iov, iov_idx, digest_buf, digest_len);
-> +}
-> +
-> +static void hash_execute_acc_mode(AspeedHACEState *s, int algo,
-> +                                  struct iovec *iov, int iov_idx,
-> +                                  bool final_request)
-> +{
-> +    g_autofree uint8_t *digest_buf = NULL;
-> +    Error *local_err = NULL;
-> +    size_t digest_len;
->   
-> -    if (acc_mode && s->hash_ctx == NULL) {
-> +    if (s->hash_ctx == NULL) {
->           s->hash_ctx = qcrypto_hash_new(algo, &local_err);
->           if (s->hash_ctx == NULL) {
-> -            qemu_log_mask(LOG_GUEST_ERROR, "qcrypto hash failed : %s",
-> -                          error_get_pretty(local_err));
-> +            qemu_log_mask(LOG_GUEST_ERROR, "%s: qcrypto hash new failed : %s",
-> +                          __func__, error_get_pretty(local_err));
->               error_free(local_err);
->               return;
->           }
->       }
->   
-> +    if (qcrypto_hash_updatev(s->hash_ctx, iov, iov_idx, &local_err) < 0) {
-> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: qcrypto hash updatev failed : %s",
-> +                      __func__, error_get_pretty(local_err));
-> +        error_free(local_err);
-> +        return;
-> +    }
-> +
-> +    if (final_request) {
-> +        if (qcrypto_hash_finalize_bytes(s->hash_ctx, &digest_buf,
-> +                                        &digest_len, &local_err)) {
-> +            qemu_log_mask(LOG_GUEST_ERROR,
-> +                          "%s: qcrypto hash finalize bytes failed : %s",
-> +                          __func__, error_get_pretty(local_err));
-> +            error_free(local_err);
-> +            local_err = NULL;
-> +        }
-> +
-> +        qcrypto_hash_free(s->hash_ctx);
-> +
-> +        s->hash_ctx = NULL;
-> +        s->total_req_len = 0;
-> +    }
-> +
-> +    hash_write_digest_and_unmap_iov(s, iov, iov_idx, digest_buf, digest_len);
-> +}
-> +
-> +static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
-> +                              bool acc_mode)
-> +{
-> +    struct iovec iov[ASPEED_HACE_MAX_SG];
-> +    bool acc_final_request = false;
-> +    int iov_idx = -1;
-> +
->       /* Prepares the iov for hashing operations based on the selected mode */
->       if (sg_mode) {
->           iov_idx = hash_prepare_sg_iov(s, iov, acc_mode, &acc_final_request);
-> @@ -261,48 +331,11 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
->            return;
->       }
->   
-> +    /* Executes the hash operation */
->       if (acc_mode) {
-> -        if (qcrypto_hash_updatev(s->hash_ctx, iov, iov_idx, &local_err) < 0) {
-> -            qemu_log_mask(LOG_GUEST_ERROR, "qcrypto hash update failed : %s",
-> -                          error_get_pretty(local_err));
-> -            error_free(local_err);
-> -            return;
-> -        }
-> -
-> -        if (acc_final_request) {
-> -            if (qcrypto_hash_finalize_bytes(s->hash_ctx, &digest_buf,
-> -                                            &digest_len, &local_err)) {
-> -                qemu_log_mask(LOG_GUEST_ERROR,
-> -                              "qcrypto hash finalize failed : %s",
-> -                              error_get_pretty(local_err));
-> -                error_free(local_err);
-> -                local_err = NULL;
-> -            }
-> -
-> -            qcrypto_hash_free(s->hash_ctx);
-> -
-> -            s->hash_ctx = NULL;
-> -            s->total_req_len = 0;
-> -        }
-> -    } else if (qcrypto_hash_bytesv(algo, iov, iov_idx, &digest_buf,
-> -                                   &digest_len, &local_err) < 0) {
-> -        qemu_log_mask(LOG_GUEST_ERROR, "qcrypto hash bytesv failed : %s",
-> -                      error_get_pretty(local_err));
-> -        error_free(local_err);
-> -        return;
-> -    }
-> -
-> -    if (address_space_write(&s->dram_as, s->regs[R_HASH_DEST],
-> -                            MEMTXATTRS_UNSPECIFIED,
-> -                            digest_buf, digest_len)) {
-> -        qemu_log_mask(LOG_GUEST_ERROR,
-> -                      "aspeed_hace: address space write failed\n");
-> -    }
-> -
-> -    for (; iov_idx > 0; iov_idx--) {
-> -        address_space_unmap(&s->dram_as, iov[iov_idx - 1].iov_base,
-> -                            iov[iov_idx - 1].iov_len, false,
-> -                            iov[iov_idx - 1].iov_len);
-> +        hash_execute_acc_mode(s, algo, iov, iov_idx, acc_final_request);
-> +    } else {
-> +        hash_execute_non_acc_mode(s, algo, iov, iov_idx);
->       }
->   }
->   
+> where value dev->mem->nregions gets is well hidden/obscured
+> and hard to trace where tail ends => fragile.
+> 
+> CCing David (accidental victim) who rewrote this part the last time,
+> perhaps he can suggest a better way to fix the issue.
+
+I think the original idea is that all devices (of on type: private vs. 
+non-private memslots) have the same number of memslots.
+
+This avoids having to loop over all devices to figure out the number of 
+memslots.
+
+... but in vhost_get_free_memslots() we already loop over all devices.
+
+The check in vhost_dev_init() needs to be taken care of.
+
+So maybe we can get rid of both variables completely?
+
+-- 
+Cheers,
+
+David / dhildenb
 
 
