@@ -2,82 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21529AB56B7
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 16:07:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A3AFAB56CA
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 16:11:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEqGF-0000jf-A8; Tue, 13 May 2025 10:05:35 -0400
+	id 1uEqLC-00071M-W3; Tue, 13 May 2025 10:10:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uEqGB-0000iq-Ed
- for qemu-devel@nongnu.org; Tue, 13 May 2025 10:05:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
+ id 1uEqLA-0006rq-N8; Tue, 13 May 2025 10:10:40 -0400
+Received: from apollo.dupie.be ([2001:bc8:3f2a:101::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uEqG9-0003OA-AP
- for qemu-devel@nongnu.org; Tue, 13 May 2025 10:05:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747145127;
+ (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
+ id 1uEqL8-0004YT-8j; Tue, 13 May 2025 10:10:40 -0400
+Received: from [IPV6:2a00:1c98:fff1:1001:aee7:ee9c:3ae8:78e2] (unknown
+ [IPv6:2a00:1c98:fff1:1001:aee7:ee9c:3ae8:78e2])
+ by apollo.dupie.be (Postfix) with ESMTPSA id A946C1520BB6;
+ Tue, 13 May 2025 16:10:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dupond.be; s=dkim;
+ t=1747145433;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Uk82EjzJtnyar56E26L6uDoZS2+bPln9a7V28aPdNsM=;
- b=BlX7XblMcrSm0WXJavtHND4pfziY9/56Jv8GCbfBohbtLfsh6wkwS0bKkjMQa+mO0draG3
- FC7PvLRuM7xg0WSdk8DbfsZS4gRxqLFa/shBvDK2Ff03JHcPVe5hLiljv1AQwpxEosUreM
- 3n/+I/qeOJ4X8PFwdyho6QQgTqBNTJg=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-91-l9mYAlONNdeqolyRROXIag-1; Tue,
- 13 May 2025 10:05:24 -0400
-X-MC-Unique: l9mYAlONNdeqolyRROXIag-1
-X-Mimecast-MFC-AGG-ID: l9mYAlONNdeqolyRROXIag_1747145122
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id EDD37195DE5B; Tue, 13 May 2025 14:05:20 +0000 (UTC)
-Received: from localhost (dhcp-192-216.str.redhat.com [10.33.192.216])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D8CEE19373EB; Tue, 13 May 2025 14:05:18 +0000 (UTC)
-From: Cornelia Huck <cohuck@redhat.com>
-To: eric.auger@redhat.com, eric.auger.pro@gmail.com, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, kvmarm@lists.linux.dev, peter.maydell@linaro.org,
- richard.henderson@linaro.org, alex.bennee@linaro.org, maz@kernel.org,
- oliver.upton@linux.dev, sebott@redhat.com,
- shameerali.kolothum.thodi@huawei.com, armbru@redhat.com,
- berrange@redhat.com, abologna@redhat.com, jdenemar@redhat.com
-Cc: agraf@csgraf.de, shahuang@redhat.com, mark.rutland@arm.com,
- philmd@linaro.org, pbonzini@redhat.com
-Subject: Re: [PATCH v3 01/10] arm/cpu: Add infra to handle generated ID
- register definitions
-In-Reply-To: <6c06a198-1608-4919-8b6e-68e3c28c2526@redhat.com>
-Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
- Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
- 153243,
- =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
- Michael O'Neill, Amy Ross"
-References: <20250414163849.321857-1-cohuck@redhat.com>
- <20250414163849.321857-2-cohuck@redhat.com>
- <6c06a198-1608-4919-8b6e-68e3c28c2526@redhat.com>
-User-Agent: Notmuch/0.38.3 (https://notmuchmail.org)
-Date: Tue, 13 May 2025 16:05:16 +0200
-Message-ID: <87bjrwppwj.fsf@redhat.com>
+ bh=baTydLlSChKzG8EXUBjO5O4UVqzYCyK06ZNMp/qJWK0=;
+ b=GDnXTBCd0I2t0TNiZ62wEUs5kjPALp22XhtB2h+JGKaSwESmjMJyg1WLBO0AvZOU0RDYGQ
+ fHbccCR3hQCJWXnoIjYHtKQ79idsmQ3MBSX5Zit5v/O/GloNPmQqHVu7PEfhBNU/54Z/v4
+ nj/rT2AqianWFf3kkXbFaMsKSwVDR6V+gkeA/x04uv4TrUXF7TDST3nolnEbuXV0x4/JKc
+ bMi7abpOUoeeaxAKt7tzqh0IXlfdE0TR0NOSM3nHMaTM3bcznsoWfxJhDiZinRYlhpMfXQ
+ 0y8xHIk6DNEq6/Q9+5TJCsaj2N0bwDIVBtbHYlLavYJ+Eqrzht4O485iGvYNuQ==
+Message-ID: <bd78687d-2be5-4ad1-9493-2513af223f6d@dupond.be>
+Date: Tue, 13 May 2025 16:10:33 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=cohuck@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.549,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] block: add for_commit option to measure
+To: Hanna Czenczek <hreitz@redhat.com>, qemu-devel@nongnu.org
+Cc: Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org
+References: <20250416071654.978264-1-jean-louis@dupond.be>
+ <20250416071654.978264-2-jean-louis@dupond.be>
+ <a1aa1173-5362-44f6-8b64-6d44f1b5eb82@redhat.com>
+Content-Language: en-US
+From: Jean-Louis Dupond <jean-louis@dupond.be>
+In-Reply-To: <a1aa1173-5362-44f6-8b64-6d44f1b5eb82@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2001:bc8:3f2a:101::1;
+ envelope-from=jean-louis@dupond.be; helo=apollo.dupie.be
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,129 +71,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 13 2025, Eric Auger <eric.auger@redhat.com> wrote:
 
-> Hi Connie,
+On 5/12/25 13:16, Hanna Czenczek wrote:
+> On 16.04.25 09:16, Jean-Louis Dupond wrote:
+>> To specify we use measure call for commit size calculations, we add a
+>> new 'for_commit' option to the measure call.
+>> This will be used in following commit to do a different measurement.
 >
-> On 4/14/25 6:38 PM, Cornelia Huck wrote:
->> From: Eric Auger <eric.auger@redhat.com>
->>
->> The known ID regs are described in a new initialization function
->> dubbed initialize_cpu_sysreg_properties(). That code will be
->> automatically generated from linux arch/arm64/tools/sysreg. For the
->> time being let's just describe a single id reg, CTR_EL0. In this
->> description we only care about non RES/RAZ fields, ie. named fields.
->>
->> The registers are populated in an array indexed by ARMIDRegisterIdx
->> and their fields are added in a sorted list.
->>
->> [CH: adapted to reworked register storage]
->> Signed-off-by: Eric Auger <eric.auger@redhat.com>
->> Signed-off-by: Cornelia Huck <cohuck@redhat.com>
+> Why not allow specifying the node name (or filename) of the commit 
+> target instead of this just being a boolean?
+Honestly didn't even thought about that option :)
+>
+> (That was my main problem with the original series, that it wasn’t 
+> possible to specify the commit target (in an obvious way at least). 
+> I’m not a fan of deferring to JSON parameters for this, although I’m 
+> aware that to specify the node name of the commit target you would 
+> have to use JSON again, unless qemu-img can do some translation on 
+> behalf of the user: Looking at `commit -b`, that takes a filename; it 
+> could make sense to have the internal QAPI parameter use a node name, 
+> and qemu-img translating the filename parameter into a node name.  
+> Actually, `measure` could just accept the same `-b` option as 
+> `commit`, which it would then translate into the QAPI 
+> `for-commit=<node-name>` option.)
+And you will need to use JSON parameters if you want to specify 
+something special, like for example to note that the commit target has 
+discard-no-unref enabled.
+I think not many people will call the command with the for_commit 
+option, but it will be (always) called from code where the JSON 
+parameters give much more flexibility to add some additional options 
+(like discard-no-unref).
+
+We could of course support both (JSON + for-commit=<node-name>).
+But then we will also need to validate somehow that the for-commit 
+node-name is equal to the target specified in the JSON somehow.
+Or have something like for-commit=true/false + json or 
+for-commit-node=<node-name> if you don't use a JSON?
+
+Do you think it's worth the effort ? :)
+>
+> Hanna
+>
+>
+Thanks for the review!
+Jean-Louis
+>
+>> Signed-off-by: Jean-Louis Dupond <jean-louis@dupond.be>
 >> ---
->>  target/arm/cpu-custom.h            | 60 ++++++++++++++++++++++++++++++
->>  target/arm/cpu-sysreg-properties.c | 41 ++++++++++++++++++++
->>  target/arm/cpu64.c                 |  2 +
->>  target/arm/meson.build             |  1 +
->>  4 files changed, 104 insertions(+)
->>  create mode 100644 target/arm/cpu-custom.h
-> do we still want reference to the "custom" terminology, following
-> initial comments?
-
-Hm, maybe 'cpu-idregs.h'?
-
->>  create mode 100644 target/arm/cpu-sysreg-properties.c
->>
->> diff --git a/target/arm/cpu-custom.h b/target/arm/cpu-custom.h
->> new file mode 100644
->> index 000000000000..615347376e56
->> --- /dev/null
->> +++ b/target/arm/cpu-custom.h
->> @@ -0,0 +1,60 @@
->> +/*
->> + * handle ID registers and their fields
->> + *
->> + * SPDX-License-Identifier: GPL-2.0-or-later
->> + */
->> +#ifndef ARM_CPU_CUSTOM_H
->> +#define ARM_CPU_CUSTOM_H
->> +
->> +#include "qemu/osdep.h"
->> +#include "qemu/error-report.h"
->> +#include "cpu.h"
->> +#include "cpu-sysregs.h"
->> +
->> +typedef struct ARM64SysRegField {
->> +    const char *name; /* name of the field, for instance CTR_EL0_IDC */
->> +    int index;
-> worth to add a comment saying this is the ARMIDRegisterIdx of the parent
-> sysreg.
-
-ok
-
->> +    int lower;
->> +    int upper;
->> +} ARM64SysRegField;
->> +
->> +typedef struct ARM64SysReg {
->> +    const char *name;   /* name of the sysreg, for instance CTR_EL0 */
->> +    ARMSysRegs sysreg;
->> +    int index;
-> now that we have different kinds of indexing, may be worth adding a
-> comment to explain which one is being used.
-> I guess here it is ARMIDRegisterIdx. So you could even change the data type.
-
-Yeah, comments are good, I'll add some.
-
->> +    GList *fields; /* list of named fields, excluding RES* */
->> +} ARM64SysReg;
->> +
->> +void initialize_cpu_sysreg_properties(void);
->> +
->> +/*
->> + * List of exposed ID regs (automatically populated from linux
->> + * arch/arm64/tools/sysreg)
->> + */
->> +extern ARM64SysReg arm64_id_regs[NUM_ID_IDX];
->> +
->> +/* Allocate a new field and insert it at the head of the @reg list */
->> +static inline GList *arm64_sysreg_add_field(ARM64SysReg *reg, const char *name,
->> +                                     uint8_t min, uint8_t max) {
->> +
->> +     ARM64SysRegField *field = g_new0(ARM64SysRegField, 1);
->> +
->> +     field->name = name;
->> +     field->lower = min;
->> +     field->upper = max;
->> +     field->index = reg->index;
->> +
->> +     reg->fields = g_list_append(reg->fields, field);
->> +     return reg->fields;
->> +}
->> +
->> +static inline ARM64SysReg *arm64_sysreg_get(ARMIDRegisterIdx index)
->> +{
->> +        ARM64SysReg *reg = &arm64_id_regs[index];
->> +
->> +        reg->index = index;
->> +        reg->sysreg = id_register_sysreg[index];
->> +        return reg;
->> +}
->> +
->> +#endif
->> diff --git a/target/arm/cpu-sysreg-properties.c b/target/arm/cpu-sysreg-properties.c
->> new file mode 100644
->> index 000000000000..8b7ef5badfb9
->> --- /dev/null
->> +++ b/target/arm/cpu-sysreg-properties.c
->> @@ -0,0 +1,41 @@
->> +/*
->> + * QEMU ARM CPU SYSREG PROPERTIES
->> + * to be generated from linux sysreg
->> + *
->> + * Copyright (c) Red Hat, Inc. 2024
-> maybe increment the year now ;-)
-
-Wait, it is 2025 already? :)
-
+>>   block/qcow2.c                    | 16 +++++++++++++
+>>   include/block/block_int-common.h |  4 ++++
+>>   qapi/block-core.json             | 28 ++++++++++++++++++++++
+>>   qemu-img.c                       | 40 ++++++++++++++++++++++++++++----
+>>   4 files changed, 83 insertions(+), 5 deletions(-)
+>
 
