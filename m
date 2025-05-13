@@ -2,95 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FBA2AB5FB0
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 00:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46E31AB5FB5
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 00:59:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEyXX-00061z-MO; Tue, 13 May 2025 18:55:59 -0400
+	id 1uEya5-0006sk-1i; Tue, 13 May 2025 18:58:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uEyXV-00061M-0d
- for qemu-devel@nongnu.org; Tue, 13 May 2025 18:55:57 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ id 1uEyZR-0006qe-8v
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 18:57:58 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uEyXT-0003lq-CT
- for qemu-devel@nongnu.org; Tue, 13 May 2025 18:55:56 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-b24f986674fso327122a12.0
- for <qemu-devel@nongnu.org>; Tue, 13 May 2025 15:55:54 -0700 (PDT)
+ id 1uEyZP-0003p8-ID
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 18:57:57 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-7399838db7fso312736b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 13 May 2025 15:57:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747176954; x=1747781754; darn=nongnu.org;
+ d=linaro.org; s=google; t=1747177069; x=1747781869; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=LBJDbb+g+rnG8821hA+sNUH+3t1umps8kf5QOmsN0dM=;
- b=eEekhJ6WlQnt0wZusp+z9QV5rvDfaZixX2XBij8byAbVug9ZUYkdxg+iC3TR2FnqJz
- nhhtDqm4gz4+3atXMou1zLaU1lxouPnDCt/cTtCXwsNlBSJoyTZlTKtgHs0iSO187rqe
- St4KnFz+rPQQ0DhEYzjwOHrPiTrPZ4PTzt9CjQTYYqaTak4tofbI1nXQ6vFio/MrlMDS
- gKKxNSealfRH3a9k99rXvgIsH4i3kDMa9z/n+0ZI/teUjPBAc7qvtSWOYpUsfp0BtS4u
- 6WcF3DcKVHg3DrREToanBaNNTkIHb0Aihn5UUH+QuGJisg8elG/F7AyBxVYPn3fc+oMr
- Y4Kw==
+ bh=M5rf1bjtht6iyReBakuEvnzGJtZo85rGyibPhgpM2fA=;
+ b=KmSTRAyyxDepSllxeclrcuTsfRilvv2ppqYkTo/TejvvhtKD9qfmd1yhcrhfOSgzou
+ qS8v4HBtSX5X8cjxxu1QxfuAjUlwhVfor7h6W3kw10B6dU1y+nknPuNweZiyZcYF0iw+
+ Ur0k8wrkYtAJRCDJUSKC96cH5BtW8zcgSyUezCURteIxX0N4G/xw4y+xdoVrw8Ztc3Gm
+ dOcgg9NYCl7lIj95QWAVXairJ3I0olWLPH3t46YcbeAYOKw7xzimDBE9tqy+6S67nROg
+ uAKkknwlmt6DxBazTSQyTOJT1QWnsPJU6/6pqb/5wnLawh4N6q7eoVwg8PBxDwYqaVWR
+ qQCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747176954; x=1747781754;
+ d=1e100.net; s=20230601; t=1747177069; x=1747781869;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LBJDbb+g+rnG8821hA+sNUH+3t1umps8kf5QOmsN0dM=;
- b=kc52KB0n+dXBhcJM0ds76CAJVx6eBGzns6EL5yMHo0Z1ahnOj2mv7NfsHaMD19XQeR
- Zf9eekkcQntqPMHmGsd5+DORqfCPK5MH8RuipeS6PCxXcd4eOLLC3VpedjE573MeB8nI
- /kZWlDK7fFahD8opuACXK8qrZIGOD2e368KHW6yOP6Ri5IHd69aPZ4gaYyvTCP6bQq2o
- pYylkODa/MuDAJnG5uaHxYj3H+cEf32/vup3eSkVTcxitFFeRpJsi8uUIpC2udzPot+S
- biAklC3H1dQ4YgmmOU0785DbgBMXHWcYs5JbuUYv2WkHjk0s9XBJLtIsXkzGjhSLWbhv
- rFfQ==
+ bh=M5rf1bjtht6iyReBakuEvnzGJtZo85rGyibPhgpM2fA=;
+ b=W9EeGphteE5L/LgzyPjONWqNADPa3XWr6pVdr6/jvibyDQ1KaDldytzy6Eh51lsdUC
+ /Xbx36cRLgpo/VNnDn9YP70706CuO0dtuuh97IiG+zRGHxO3hEomxPI+89sfFHt70clP
+ pWcJU9LOLO4OWG93Gdc1cvoObTGaZcAib3h98AATe6iyVQZus8A3h7lG9Hj79Ec/tRUO
+ 4fKYfKqcN7I7t6sHztcABAx6Au7fyXC8R9AJyRMvFLcjnTmJ4ii0XDZpJR5kGh9hdSmh
+ XTOILvtzValHFStxpPJMRoccj3+0/HGGHyqfiEI14V4gq2mx3MPI78lWpYp9+8S+ILLx
+ xqwg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWsiwOgrStldgstXbFOc2LKZLcF/C0tSqNIXlk5ZvjtMqRn+M5g8XOHXzHdRwNG3LI63IKoT4CUVrAd@nongnu.org
-X-Gm-Message-State: AOJu0YxPvo8RqyUjuEDK+yerDg4umXGzXjNBpWdHqM3H1CYqw7XqLMZ4
- W/aggfm6ZvLLTtL1mkqhghLTvGVo0jylDTuYwS5s42lTlLAzA/ngOj57B0xm2js=
-X-Gm-Gg: ASbGncsep1SVe9gFtlYsQOuMXFFst/I9SRaMTLbHIzPfKDUPUhwYn0Wm6bwUC4lqO3/
- 2HUOkliaePsdXdogDO0xBLBV6kpEb/xu9GyCRV/1u+WgIEFa5AEr5VDjuzUAtzjyN7dzmI6z6S8
- L8nJ6w4dg7A1rDMr8xQP+vn643MgCXUf5yfvuZtuspRBbaLyB7IvLVkmPDrJFuifND5SmkYggm0
- kBGtKMjSyS/UHm2+9NKklIH6bJH+AWSqx7m5Be5fLSn3qW8iJ8TCY4sVfiSGAggpjTBaVNNi+AF
- g5expXJRAwYDMa960kTvDzWnyDc+IAEYYabxhcxQ3Y+KrcgjpidQdbrVqxGPlIGp
-X-Google-Smtp-Source: AGHT+IHdeevlFHLxUccT1xfjG6u5tqxbZV9hv1bsXOwnio3wriSr/+Avu60k8tk0djcNq0ykX0Xh9w==
-X-Received: by 2002:a17:90b:33c8:b0:2fa:2268:1af4 with SMTP id
- 98e67ed59e1d1-30e0db01419mr7180936a91.7.1747176953809; 
- Tue, 13 May 2025 15:55:53 -0700 (PDT)
+ AJvYcCWzhp0cOgu1cUpCekxo0HxtHbaQB0eRkbR0t/xYpM8LGOJp9een7lG1YwJRIaHCFuZWZX2vJfzrSSiG@nongnu.org
+X-Gm-Message-State: AOJu0YynjrYJNmmX5c2x3BW1erkycp7XEm21fHmsUwukJ54V0oQZ7zAU
+ YTFXqK6kwZasw2wjFdu6vPT/Chr+yaaOcB0T4cNJ7mZq7ZSwVrekRr59GArnZX8=
+X-Gm-Gg: ASbGnct7dNWRZsNEnIrldwLA0Zy29AHREDkVcFSEFcSPPq+SKM7Wd60jbzBg0T5KNV8
+ 265O8yYvyTaR8vojPDw7w5NHa/u63DSI+OL/Dg4YKrPwCB1IjIxWCWyBwmKrFBGbxo2RJnueMk0
+ Xv/did8GnMerwqYvNPwVmNKsQvTlqXHAjALK/fzXTNKSJHTEFQtIFLX6XgdLpZP7Vh4cRekx01B
+ mfUerY4Yfiaj3VwRYB4yKjSKSJr+TVwBdGi7R0DvWz22KWCgm6xe4fiGvI2PqKxjBf+M1faKzJ2
+ 5E5csr3BWxdyxT3PBKSxD2sI3bYaeY8DDeCtljejWgxiNxMpDNJe5Hs4B5wyBQHK
+X-Google-Smtp-Source: AGHT+IGbdmOidwaG78zAYmPVfpTa0K4HwjSI4uAbk8hLcu0guRW9J5cBZhajYlXzilrFXLLg9dYG0g==
+X-Received: by 2002:a05:6a00:6115:b0:736:b3cb:5db with SMTP id
+ d2e1a72fcca58-742791a6a0cmr6088258b3a.11.1747177068922; 
+ Tue, 13 May 2025 15:57:48 -0700 (PDT)
 Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-30e33482fd3sm136941a91.37.2025.05.13.15.55.52
+ d2e1a72fcca58-74273ca9230sm2774162b3a.24.2025.05.13.15.57.48
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 May 2025 15:55:53 -0700 (PDT)
-Message-ID: <d7e3158c-2115-4a74-96a1-aec7fa99e172@linaro.org>
-Date: Tue, 13 May 2025 15:55:52 -0700
+ Tue, 13 May 2025 15:57:48 -0700 (PDT)
+Message-ID: <b83ec39b-cb77-4df6-8b02-7de46461eedc@linaro.org>
+Date: Tue, 13 May 2025 15:57:47 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/xen/arch_hvm: Unify x86 and ARM variants
+Subject: Re: [PATCH 19/19] target/arm: Always include full path to 'cpu.h'
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- xen-devel@lists.xenproject.org, Anthony PERARD <anthony@xenproject.org>,
- David Woodhouse <dwmw@amazon.co.uk>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, qemu-arm@nongnu.org,
- Stefano Stabellini <sstabellini@kernel.org>, Paul Durrant <paul@xen.org>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20250513171737.74386-1-philmd@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20250513173928.77376-1-philmd@linaro.org>
+ <20250513173928.77376-20-philmd@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20250513171737.74386-1-philmd@linaro.org>
+In-Reply-To: <20250513173928.77376-20-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x533.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,84 +103,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/13/25 10:17 AM, Philippe Mathieu-Daudé wrote:
-> As each target declares the same prototypes, we can
-> use a single header, removing the TARGET_XXX uses.
+On 5/13/25 10:39 AM, Philippe Mathieu-Daudé wrote:
+> Some files include "cpu.h", others "target/arm/cpu.h".
+> Unify by using the latter which is more explicit.
 > 
+> Suggested-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   include/hw/arm/xen_arch_hvm.h  |  9 ---------
->   include/hw/i386/xen_arch_hvm.h | 11 -----------
->   include/hw/xen/arch_hvm.h      | 14 ++++++++++----
->   hw/arm/xen-pvh.c               |  1 -
->   4 files changed, 10 insertions(+), 25 deletions(-)
->   delete mode 100644 include/hw/arm/xen_arch_hvm.h
->   delete mode 100644 include/hw/i386/xen_arch_hvm.h
-> 
-> diff --git a/include/hw/arm/xen_arch_hvm.h b/include/hw/arm/xen_arch_hvm.h
-> deleted file mode 100644
-> index 8fd645e7232..00000000000
-> --- a/include/hw/arm/xen_arch_hvm.h
-> +++ /dev/null
-> @@ -1,9 +0,0 @@
-> -#ifndef HW_XEN_ARCH_ARM_HVM_H
-> -#define HW_XEN_ARCH_ARM_HVM_H
-> -
-> -#include <xen/hvm/ioreq.h>
-> -void arch_handle_ioreq(XenIOState *state, ioreq_t *req);
-> -void arch_xen_set_memory(XenIOState *state,
-> -                         MemoryRegionSection *section,
-> -                         bool add);
-> -#endif
-> diff --git a/include/hw/i386/xen_arch_hvm.h b/include/hw/i386/xen_arch_hvm.h
-> deleted file mode 100644
-> index 1000f8f5433..00000000000
-> --- a/include/hw/i386/xen_arch_hvm.h
-> +++ /dev/null
-> @@ -1,11 +0,0 @@
-> -#ifndef HW_XEN_ARCH_I386_HVM_H
-> -#define HW_XEN_ARCH_I386_HVM_H
-> -
-> -#include <xen/hvm/ioreq.h>
-> -#include "hw/xen/xen-hvm-common.h"
-> -
-> -void arch_handle_ioreq(XenIOState *state, ioreq_t *req);
-> -void arch_xen_set_memory(XenIOState *state,
-> -                         MemoryRegionSection *section,
-> -                         bool add);
-> -#endif
-> diff --git a/include/hw/xen/arch_hvm.h b/include/hw/xen/arch_hvm.h
-> index df39c819c8f..8bacaa4ec41 100644
-> --- a/include/hw/xen/arch_hvm.h
-> +++ b/include/hw/xen/arch_hvm.h
-> @@ -1,5 +1,11 @@
-> -#if defined(TARGET_I386) || defined(TARGET_X86_64)
-> -#include "hw/i386/xen_arch_hvm.h"
-> -#elif defined(TARGET_ARM) || defined(TARGET_AARCH64)
-> -#include "hw/arm/xen_arch_hvm.h"
-> +#ifndef HW_XEN_ARCH_HVM_H
-> +#define HW_XEN_ARCH_HVM_H
-> +
-> +#include <xen/hvm/ioreq.h>
-> +#include "hw/xen/xen-hvm-common.h"
-> +
-> +void arch_handle_ioreq(XenIOState *state, ioreq_t *req);
-> +void arch_xen_set_memory(XenIOState *state,
-> +                         MemoryRegionSection *section,
-> +                         bool add);
->   #endif
-> diff --git a/hw/arm/xen-pvh.c b/hw/arm/xen-pvh.c
-> index 4b26bcff7a5..1a9eeb01c8e 100644
-> --- a/hw/arm/xen-pvh.c
-> +++ b/hw/arm/xen-pvh.c
-> @@ -10,7 +10,6 @@
->   #include "hw/boards.h"
->   #include "system/system.h"
->   #include "hw/xen/xen-pvh-common.h"
-> -#include "hw/xen/arch_hvm.h"
->   
->   #define TYPE_XEN_ARM  MACHINE_TYPE_NAME("xenpvh")
->   
+>   target/arm/cpregs.h            | 2 +-
+>   target/arm/cpu-features.h      | 2 +-
+>   target/arm/tcg/translate.h     | 2 +-
+>   target/arm/arch_dump.c         | 2 +-
+>   target/arm/arm-powerctl.c      | 2 +-
+>   target/arm/arm-qmp-cmds.c      | 2 +-
+>   target/arm/cortex-regs.c       | 2 +-
+>   target/arm/cpu.c               | 2 +-
+>   target/arm/cpu64.c             | 2 +-
+>   target/arm/debug_helper.c      | 2 +-
+>   target/arm/gdbstub.c           | 2 +-
+>   target/arm/gdbstub64.c         | 2 +-
+>   target/arm/helper.c            | 2 +-
+>   target/arm/hyp_gdbstub.c       | 2 +-
+>   target/arm/kvm-stub.c          | 2 +-
+>   target/arm/kvm.c               | 2 +-
+>   target/arm/machine.c           | 2 +-
+>   target/arm/ptw.c               | 2 +-
+>   target/arm/tcg-stubs.c         | 2 +-
+>   target/arm/tcg/cpu-v7m.c       | 2 +-
+>   target/arm/tcg/cpu32.c         | 2 +-
+>   target/arm/tcg/cpu64.c         | 2 +-
+>   target/arm/tcg/helper-a64.c    | 2 +-
+>   target/arm/tcg/hflags.c        | 2 +-
+>   target/arm/tcg/iwmmxt_helper.c | 2 +-
+>   target/arm/tcg/m_helper.c      | 2 +-
+>   target/arm/tcg/mte_helper.c    | 2 +-
+>   target/arm/tcg/mve_helper.c    | 2 +-
+>   target/arm/tcg/neon_helper.c   | 2 +-
+>   target/arm/tcg/op_helper.c     | 2 +-
+>   target/arm/tcg/pauth_helper.c  | 2 +-
+>   target/arm/tcg/psci.c          | 2 +-
+>   target/arm/tcg/sme_helper.c    | 2 +-
+>   target/arm/tcg/sve_helper.c    | 2 +-
+>   target/arm/tcg/tlb-insns.c     | 2 +-
+>   target/arm/tcg/tlb_helper.c    | 2 +-
+>   target/arm/tcg/vec_helper.c    | 2 +-
+>   target/arm/tcg/vfp_helper.c    | 2 +-
+>   target/arm/vfp_fpscr.c         | 2 +-
+>   39 files changed, 39 insertions(+), 39 deletions(-)
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
