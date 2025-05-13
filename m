@@ -2,93 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68095AB5109
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 12:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2444AB510C
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 12:08:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEmYV-0000Nc-0L; Tue, 13 May 2025 06:08:11 -0400
+	id 1uEmYq-0000u6-JC; Tue, 13 May 2025 06:08:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uEmYM-0000I9-2p
- for qemu-devel@nongnu.org; Tue, 13 May 2025 06:08:03 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uEmYJ-0007uN-Ex
- for qemu-devel@nongnu.org; Tue, 13 May 2025 06:08:00 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-43cf06eabdaso54161525e9.2
- for <qemu-devel@nongnu.org>; Tue, 13 May 2025 03:07:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747130878; x=1747735678; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=q5InSWHz49sEJKfoQ2QNQ6ZQPGuqc5C2fmBxgyhIp60=;
- b=ZFnEXPCjVPUD5cCedfvBVxFJvEvwoUiJt7+UXmi+t3ntXd9uPWvJyc3WEshCj108y/
- zU+i7GlX4oOXSHeZTJczc1dLS2gku/WeQ0qgWwXtkgruEiz9/EXcOcX94KTb775QOUR0
- cGfOh0adC0qrdGxEuYhMGfwYYVEjyBatasSkhqiNADpC3kGubV2D7emPpNjIays9G3T6
- EUSc9yNSLdIeahfCbGZJvFIREtvjERt9UKKPZuI8DUq47QlH53eamq9Q0r1yNZCSqOFS
- lyrlMPh3HmCoCL/+0DTWfoIp/c6564/uOdjCPHlQGiecGpA7mwEEpm0lYYCbwLVo6wgX
- VKzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747130878; x=1747735678;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=q5InSWHz49sEJKfoQ2QNQ6ZQPGuqc5C2fmBxgyhIp60=;
- b=EbfDkbJNud9uka7EnyC+QTQLVLlAxT3eWYv0kLQOVkGIO6qqxCBvAsHjmHKpAN6oen
- mA+Lg5nTe558qxI0+4DpfTjAAFW9BGBYuQciBZjQZRt4ItBIDiRaYWvN5un+cHg4mjK6
- EUGrDcVmwg2OeSXU9HrBDLRjeL7e3uIn4M2JRM0G6gp2ZFnqU1c1Si0tZBUABI/eCP+E
- 1L3pLFbdRnIgfWJiWOFqTBcgbWTAReUy6yZKlCptQd0vSJ+Kl8YYMpmfbuSxdv0vxvMy
- NxHWmuuKHQzhWciNmZgf/lsnISaVRU/7nD6txeyUNtou6jv+QXMI7fxl6zNOIYbVjyOh
- gY6g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWwODaSOxZWMq7aUj+IwzejQmSwcDbC2V9uzQMDOfjS1oCA3pS50CP5k8pJrNFJgoC7d05IQAXmTTQP@nongnu.org
-X-Gm-Message-State: AOJu0YwgIoV0Tfg9yR5DfU1piqAyHOW/uvasojlUNeZaXw5K2ioSxuNb
- eDTmMkcjhD2qIRhvYnD5BR94CAQ7wBshjUhuawf3cK6zU9Xn+TDNaXxRVLrFGCY=
-X-Gm-Gg: ASbGncsAvgXpaWMaKCdHsQuTBJafjZOQpGbMTwgakL+4EZygQvbXdqKqgA+UuJGk3DQ
- yVkovsI7aAJnjwOpz9a7bi5Q7u1Gn+plQJWaoeDSz7Fbw1XK4BWFTDkQUYbqUROgbspop1nl2jc
- V0j+rOaCgbsFgtiKIXYjK5gQ8ul9f0QbXArJzml69Xd0rJ13a321nsLJV3bocmWJ4VxQoEDqBVo
- cz6VeWtBWDDxTCgCq7p+kM4g1Z2nTnlUkJxvWwfXVAM0ZbwlZKhqa/3rpBeKDjaXp0OGnDJ6KqU
- MIcFQzTw/FozZl4hbQF1EgyxGOqrZnlRy60y3hTJ3xsEVXXsktDMHhXZ5JJXZINHSJk8HxNuTkP
- eIYgqYJ+LiLVpBzTsFf3y70oiXnmj
-X-Google-Smtp-Source: AGHT+IGVl3rC7KK+BwwSzbsyoT3gT98jHfPfE5lBvTNtcTCODedbnoCbc3sTwSrgs84c28D80Z+Seg==
-X-Received: by 2002:a05:600c:608b:b0:43c:efed:732d with SMTP id
- 5b1f17b1804b1-442d6d6ab7cmr158700585e9.16.1747130877943; 
- Tue, 13 May 2025 03:07:57 -0700 (PDT)
-Received: from [10.61.1.197] (110.8.30.213.rev.vodafone.pt. [213.30.8.110])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442cd328455sm209323035e9.2.2025.05.13.03.07.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 May 2025 03:07:57 -0700 (PDT)
-Message-ID: <09194fbf-a2a3-4166-8f28-9a43f02b0df8@linaro.org>
-Date: Tue, 13 May 2025 11:07:56 +0100
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uEmYo-0000qO-48
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 06:08:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uEmYl-0007w0-2u
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 06:08:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747130904;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=nwrPNDMk/ikYJQeg8zdv5DeOIxVvyaxFEGUYmCXti9c=;
+ b=UXK/eoOjQkENIvXrl0yEiLZkUb2giw5tWRFVBfHGeDkDVMJHORByJoHe5BWW8xXqF/jPag
+ xRfxgDkQtfUN49HgocxMzW7AXvKGjS82jSxd3rwEAWMqIHQDzRxH8FndC9yM25uDoaa/QP
+ iu+FnVC8grxs3cJgI52Z0Wf07dUqMWc=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-629-O4w0_z4VPMKH-XAAIfr0fQ-1; Tue,
+ 13 May 2025 06:08:23 -0400
+X-MC-Unique: O4w0_z4VPMKH-XAAIfr0fQ-1
+X-Mimecast-MFC-AGG-ID: O4w0_z4VPMKH-XAAIfr0fQ_1747130902
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 92F1219560AB
+ for <qemu-devel@nongnu.org>; Tue, 13 May 2025 10:08:22 +0000 (UTC)
+Received: from toolbx.redhat.com (unknown [10.42.28.110])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 260D51955F56; Tue, 13 May 2025 10:08:20 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH 0/3] ui/vnc: fix some endian problems
+Date: Tue, 13 May 2025 11:08:16 +0100
+Message-ID: <20250513100819.1179249-1-berrange@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 27/48] target/arm/arm-powerctl: compile file once
- (system)
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: kvm@vger.kernel.org, alex.bennee@linaro.org, anjo@rev.ng,
- qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20250512180502.2395029-1-pierrick.bouvier@linaro.org>
- <20250512180502.2395029-28-pierrick.bouvier@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20250512180502.2395029-28-pierrick.bouvier@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.551,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,13 +81,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/5/25 20:04, Pierrick Bouvier wrote:
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> ---
->   target/arm/meson.build | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+This fixes some edge cases in endian handling in the VNC server. These
+bugs are rarely going to be visible by default, since most servers will
+negotiate encoding formats / framebuffer formats that avoid hitting
+the problem scenarios.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Daniel P. Berrangé (3):
+  ui/vnc.c: replace big endian flag with byte order value
+  ui/vnc: take account of client byte order in pixman format
+  ui/vnc: fix tight palette pixel encoding for 8/16-bpp formats
+
+ include/ui/qemu-pixman.h |  4 ++--
+ ui/qemu-pixman.c         | 15 ++++++++-------
+ ui/vnc-enc-tight.c       | 16 ++++++++++------
+ ui/vnc-enc-zrle.c        |  2 +-
+ ui/vnc-jobs.c            |  2 +-
+ ui/vnc.c                 |  9 +++++----
+ ui/vnc.h                 |  2 +-
+ 7 files changed, 28 insertions(+), 22 deletions(-)
+
+-- 
+2.49.0
 
 
