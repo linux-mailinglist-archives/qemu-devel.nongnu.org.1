@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 502B6AB5F12
+	by mail.lfdr.de (Postfix) with ESMTPS id 593A6AB5F13
 	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 00:10:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uExok-0005yY-2K; Tue, 13 May 2025 18:09:42 -0400
+	id 1uExoq-00061K-TA; Tue, 13 May 2025 18:09:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uExob-0005yD-KF
- for qemu-devel@nongnu.org; Tue, 13 May 2025 18:09:33 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uExoc-0005yS-Rm
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 18:09:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uExoY-0006Fa-Vc
- for qemu-devel@nongnu.org; Tue, 13 May 2025 18:09:32 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uExoa-0006Fs-6T
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 18:09:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747174169;
+ s=mimecast20190719; t=1747174171;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=Zu3c3yQaJI0eTdrhBLkZbEuJZdjCafKQO0sgBG9wQOg=;
- b=JvcldTcj1yXMc10uuOswJ4k6oEnk7QjpIKHC7QO1MmFH7/C8csdS7bV2mBdnuzexnqRD/E
- Bf4mJN3pH1cdNkyGgvyFcuY8gKXqMihiDJASqS+bTnmpDMy7CzS53svtm1K7m15daiq99l
- ACzXq6VQDcxBY0/mowmXT3QDf74Gw18=
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jt4JB+/eyLHSTi7aofMxYcpO1aDa+89PDt9ClOTPYVM=;
+ b=c5kszyvdAJBzqf0tAgURxIwvEIliIYNrllINf7+VfE0/JyeDuoJ4PS1tGPKBKTHLrrYal9
+ mqaegvKYCyhVZ2CLE8vaH2w42+kKiaRhAlRFmCt8Ls2h6RhenT1CpF6zfnNn8TG0IXNcqL
+ ZJBUEficriEL/Foi5RxXez0prhzcRFU=
 Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
  [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-425-mm8ebHdoN3C_qr2xUxyf9Q-1; Tue, 13 May 2025 18:09:28 -0400
-X-MC-Unique: mm8ebHdoN3C_qr2xUxyf9Q-1
-X-Mimecast-MFC-AGG-ID: mm8ebHdoN3C_qr2xUxyf9Q_1747174168
+ us-mta-333-M0qrB1BEPPitQy9RcRvcgg-1; Tue, 13 May 2025 18:09:30 -0400
+X-MC-Unique: M0qrB1BEPPitQy9RcRvcgg-1
+X-Mimecast-MFC-AGG-ID: M0qrB1BEPPitQy9RcRvcgg_1747174169
 Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-6f53f748240so151207426d6.3
- for <qemu-devel@nongnu.org>; Tue, 13 May 2025 15:09:28 -0700 (PDT)
+ 6a1803df08f44-6f54fe13562so101863656d6.3
+ for <qemu-devel@nongnu.org>; Tue, 13 May 2025 15:09:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747174167; x=1747778967;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Zu3c3yQaJI0eTdrhBLkZbEuJZdjCafKQO0sgBG9wQOg=;
- b=woMndpv1RLdUhXoJH3tZ1nl4bTZffjml656dR9UQ1/3zU0SNBt++4vGpJkLQesSVLq
- 7KVoMGnDvALRm6/Hd48S+zgmWM5wWUliAmoZgaJGJPyBk1fjBMe4BRZuEp3wzQyrpX76
- 5tDfLJod6zDF6Q7U3yKobtzRQJOyLcIatFSQBqP7IgwrVP2fevxq4Bm0dOxyV7ib1+5H
- u0p5hMJ+aIQVhkcMm+ITPH5sX7jrsYg7ENNyGXEDl0TAfiILmGGgfwwKfiuddyxBNy0U
- 9yeTInW8OjHM7W8coCNQkUzA1tUihGAYbXBdy41RYX+KeuOOkkUa//rtldDb1JhFZsjE
- lOJQ==
-X-Gm-Message-State: AOJu0YyeAi5HDVrK0ucVqziK2a+YP5X2U04kQPmCEqV5ox0l4r67t9B4
- vBOaN41aA1PgOv2rMdQJrq8GHUAs5XeO0AGN4HKW0RJE8zGJrm+ssoRP3vy5Eo5EboTkzc8Eyjg
- Pa1w+6IVOxChBYmD9Y0z0suGi7iLJ3KiJA5S0A03K5heLdWH6syi7p3oV+Y3rCzZAR/CkHEno2z
- DgipvKic5VT5ssNAaINKoa0SaIB8QFtLEw4w==
-X-Gm-Gg: ASbGncv7x/S7DXGAoQsprXF29+nOttvPywfDDcNCkObQhV7bbc0tGhGzEICskHln3za
- PP51BX12mIq1yugmXDqyaYvFFa0hOYONmRqW1QpVCPikwdeeKUSVhupWvGswKIEj13D3q+jAX0A
- G/vckXxS8YEeKJvTaElK2mjR4Be9w9jTqdpoPs31GX4jfevRFP1buZhWyqerGpynT5rem993chv
- 3yZrihkaf+F0NJ9QLtWhwvz4IWd0i6S8n/tXZwW4K+8FBGnTC4paRjxbgouP2P/2oUmXIABgsA5
-X-Received: by 2002:a05:6214:400c:b0:6e4:4011:9df7 with SMTP id
- 6a1803df08f44-6f896e3fdc3mr18536606d6.16.1747174166924; 
- Tue, 13 May 2025 15:09:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGIIz44PsQdxAa3TgeblnHt6ptETuqLhTvM0mqdmS5gVzZIrMelq2ZObxcEy8vbkp/lOrQFHw==
-X-Received: by 2002:a05:6214:400c:b0:6e4:4011:9df7 with SMTP id
- 6a1803df08f44-6f896e3fdc3mr18536136d6.16.1747174166461; 
- Tue, 13 May 2025 15:09:26 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1747174169; x=1747778969;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jt4JB+/eyLHSTi7aofMxYcpO1aDa+89PDt9ClOTPYVM=;
+ b=IQl+k6F5+ajXxfE1qp2efNk/D8ll44Er8Zl7Slb2xnGJaietOf9MygGvHgs6XLgBUJ
+ GOylQtTzk+CXJ/yqaw2o2HXS9sYFGgPSr/5kW1O4S5btT3Ra1NrBWN5WPGeaFCkMdXDY
+ FDNVYRMEDALWGZ02lEqTGAy8nZcN6p+y2hmcjC+cowqweQS4KyNqY0b1UR+zuBRt3mOQ
+ rQ66khHKqkzVaWZSGNHaPmK1EdLs9XTzVem0Ned6u4Nd7YuaMlvX7Zvg1/kpZT+ioHdV
+ mOAWm1m8+0AXusNeDKCbqkVBNZ1FVg5qah5wdBNdipywe8FVRPKDLyRKk4ufYF5EmGLH
+ BD7w==
+X-Gm-Message-State: AOJu0YxLLy9d2nhZ5i3PugJ8sRxOXsvgrdz874Q5CfmDMfMUMSIxkkFK
+ ba1vT6gr1gpmt9F9ethIpwYvokTDMLl9QsCM9/oSXGpHFhv0demvC+YlhAX1HazYPTO1LQWm3oz
+ 9PQ/tKCMvi2LXPj3xFSbxJo+v1wWVVBIY4u4hSXOhi8wl31K0Vj+43E/tZCJBDgEpJ77XzX2vg7
+ OHvKnzO4hMcgAzZe9W9fVBe/2/oTxeQzBchg==
+X-Gm-Gg: ASbGncsPIfxshyj1AnOzD3+wPt8cqY8roaJw288TViQIAuhFFwS8NrzytNyIfqaPuhg
+ D7e6U8DuhBPs8hMMreb85ZPgVnjHHUqxd2HYlWC3aZZggvlNsubG5N2pbZiZeX2quhjAl+2Z+kW
+ GmkvS8fq10SkMyQKDvOyDLRRrPfJLtNamUNDB7Nu1RcrPFG8K8Mraz6xMI6SkVXCChL5NqNWkaz
+ JZjzUBBO7clR5WyXOUA12vv9Ic32m1OteDuBIEwt09DCQKNB8E8xtUJkXW2ukw2PaEJHrOxXtmR
+X-Received: by 2002:a05:6214:48b:b0:6f5:3e38:612b with SMTP id
+ 6a1803df08f44-6f896ec06f3mr15740496d6.41.1747174168913; 
+ Tue, 13 May 2025 15:09:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEcpuO0TnVb/usDEEYL9kHzBURNazRpwFiplAFSkPLEXB5RzK9oaRRYqVaAb7F3mL7dBZvxDg==
+X-Received: by 2002:a05:6214:48b:b0:6f5:3e38:612b with SMTP id
+ 6a1803df08f44-6f896ec06f3mr15740116d6.41.1747174168532; 
+ Tue, 13 May 2025 15:09:28 -0700 (PDT)
 Received: from x1.com ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6f6e3a0c5e3sm71708616d6.63.2025.05.13.15.09.25
+ 6a1803df08f44-6f6e3a0c5e3sm71708616d6.63.2025.05.13.15.09.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 13 May 2025 15:09:25 -0700 (PDT)
+ Tue, 13 May 2025 15:09:26 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Prasad Pandit <ppandit@redhat.com>,
  Juraj Marcin <jmarcin@redhat.com>,
  "Dr . David Alan Gilbert" <dave@treblig.org>, peterx@redhat.com
-Subject: [PATCH 0/3] migration: Some fix and enhancements to HMP "info migrate"
-Date: Tue, 13 May 2025 18:09:20 -0400
-Message-ID: <20250513220923.518025-1-peterx@redhat.com>
+Subject: [PATCH 1/3] migration: Allow caps to be set when preempt or multifd
+ cap enabled
+Date: Tue, 13 May 2025 18:09:21 -0400
+Message-ID: <20250513220923.518025-2-peterx@redhat.com>
 X-Mailer: git-send-email 2.49.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20250513220923.518025-1-peterx@redhat.com>
+References: <20250513220923.518025-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
@@ -102,38 +105,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Patch 1 was a bug I found set capabilities, so it's pretty separate issue.
+With commit 82137e6c8c ("migration: enforce multifd and postcopy preempt to
+be set before incoming"), and if postcopy preempt / multifd is enabled, one
+cannot setup any capability because these checks would always fail.
 
-Patch 2-3 was an attempt that I made the HMP "info migrate" looks slightly
-easier to read.  For me, it was almost never able to show correctly on what
-I cared before in the current screen but I'll always need to scroll, as
-it's normally very long.
+(qemu) migrate_set_capability xbzrle off
+Error: Postcopy preempt must be set before incoming starts
 
-I made it pretty condensed here, the new one looks like this now:
+To fix it, check existing cap and only raise an error if the specific cap
+changed.
 
-(qemu) info migrate
-Status: postcopy-active
-Time (ms): total=40504, setup=14, down=145
-RAM info:
-  Bandwidth (mbps): 6102.65
-  Sizes (KB): psize=4, total=16777992
-    transferred=37673019, remain=2136404,
-    precopy=3, multifd=26108780, postcopy=11563855
-  Pages: normal=9394288, zero=600672, rate_per_sec=185875
-  Others: dirty_syncs=3, dirty_pages_rate=278378, postcopy_req=4078
+Fixes: 82137e6c8c ("migration: enforce multifd and postcopy preempt to be set before incoming")
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ migration/options.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Comments welcomed, thanks.
-
-Peter Xu (3):
-  migration: Allow caps to be set when preempt or multifd cap enabled
-  migration/hmp: Dump global in "info migrate_parameters" instead
-  migration/hmp: Add "info migrate -a", reorg the dump
-
- migration/migration-hmp-cmds.c | 162 +++++++++++++++++----------------
- migration/options.c            |   4 +-
- hmp-commands-info.hx           |   6 +-
- 3 files changed, 89 insertions(+), 83 deletions(-)
-
+diff --git a/migration/options.c b/migration/options.c
+index 3fcd577cd7..162c72cda4 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -568,7 +568,7 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+             return false;
+         }
+ 
+-        if (migrate_incoming_started()) {
++        if (!migrate_postcopy_preempt() && migrate_incoming_started()) {
+             error_setg(errp,
+                        "Postcopy preempt must be set before incoming starts");
+             return false;
+@@ -576,7 +576,7 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+     }
+ 
+     if (new_caps[MIGRATION_CAPABILITY_MULTIFD]) {
+-        if (migrate_incoming_started()) {
++        if (!migrate_multifd() && migrate_incoming_started()) {
+             error_setg(errp, "Multifd must be set before incoming starts");
+             return false;
+         }
 -- 
 2.49.0
 
