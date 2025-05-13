@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B8F9AB5B98
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 19:48:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87B29AB5B8E
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 19:45:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEtfu-0003Ub-1m; Tue, 13 May 2025 13:44:18 -0400
+	id 1uEtfv-0003WR-EG; Tue, 13 May 2025 13:44:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uEtbp-0008UM-0q
- for qemu-devel@nongnu.org; Tue, 13 May 2025 13:40:05 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uEtbt-0000B5-3T
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 13:40:09 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uEtbm-0003A5-Hv
- for qemu-devel@nongnu.org; Tue, 13 May 2025 13:40:04 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-440685d6afcso65667055e9.0
- for <qemu-devel@nongnu.org>; Tue, 13 May 2025 10:40:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uEtbr-0003MG-2m
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 13:40:08 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3a108684f90so3622659f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 13 May 2025 10:40:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747158000; x=1747762800; darn=nongnu.org;
+ d=linaro.org; s=google; t=1747158005; x=1747762805; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1DnV5Hp0tmpiDlfH4Mi6kMgDb46uwa+8Kt5FmKdT51M=;
- b=lRWrR187na1dm6eToYjimuxUggZNOr26rlpqJJL9Kp7H335QxStUoQkf3bpNTij4CI
- fvDS+qvMin7BcS9futLRJ4YGuvOJ96pw1MYO7UW795A0bPAZnDf11PQsyve+8dCyz8Lc
- 47qBz0M0Dg9Cl+BwuHQ2CLhMgJJVSLa0BjsN3yCds8naAXZhYWixO8NuxGE5b49AbxlD
- l1ldrHdPOwuU20zgDgkn77U6cngQxUx3wune4zcFh9fvYUGSUPuSm2Hi08DNPouMIkJH
- fc1IRwq4pTWzV9m9NOyhhlPBbZeSzZ7znSFBQhEhSA5RsZQ8igSSVATOmm5qSp/Vj3ge
- rkiw==
+ bh=j/lGVjd8P+mmHimB41hBIfndruizKSfZ7N3NnHpeffY=;
+ b=njWLMuxO+4sD9GurbFKevQDfEvqow/KgyTXQdILXrVE8P2mLN7E+57M6cGQGUVPT6K
+ ddRSxijVudA/l4jXCfO+Uz7173r5h1Z+kWEAgEV53JLd93bTfUwCpnkwSM4U9Z0Fkm4n
+ 3ePAVI7gSILFr3qLJybp/1sNbwJRijWatJgNEn7LQWAROukNr4x2tlfZnLAgchQPMyMR
+ 3teQwyxRg7nkIfKIRsV+iVKQTsFnDNJyOh24FHh2i2T1tGD51XyeAxHWu56kc5KvwtsK
+ 7+3v4LU2fUjzJeX3Fi9vOK5XTE0aZ7550kqAY/6RCZNdLgD6okEG4UhAfXK9LAqZWoth
+ HWFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747158000; x=1747762800;
+ d=1e100.net; s=20230601; t=1747158005; x=1747762805;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1DnV5Hp0tmpiDlfH4Mi6kMgDb46uwa+8Kt5FmKdT51M=;
- b=jopH7KuQNEYIuKEC+fqCxlkjH5r7trjFJ6QSQAY0R6iRYKGtaPaHi0DEKXxy/04n4y
- z9Pp09DrPdlDW/dDE6UdO++977F90+UIVEUu1p2PxLYeifYfiS2RXoz2q46vfTu0qXsk
- +WSEaNbDAABUyMVcEH8jQoxzhQmhqSd/6ghqbCBRBrm0eH/po8xA1hO5tZ/jjsKb3vA5
- zkqxkBkYWSYIAUrgwumRpASNPsvryEHxzOaLd/rYsKUN9dE8HuDBOTAO1q1cJyRjwoTR
- DTAtUiORlZYVjMxqosowQ6M+xeYPLlBWRJSWZK+rzOp9+BuPF32wLpG5fFd6QOOh2v3A
- 10sw==
-X-Gm-Message-State: AOJu0YzCNhnpNUNCocy6KhqAf96JghoWGQ5CeeI6baW7EckDqSe0wOMu
- XBkFfP5XHQvV2MdNnlXp6Zw1vtuHKLC0AW/IH4thPyyL7cdk+lt1gs9qUMNCEuKbhXNmcZJzIFA
- 1bi8=
-X-Gm-Gg: ASbGnctQ6E3E5vAxn1z8m24jb8+kZBmwavUvRrAueOqG62Q9/VFdCKB3b9h3hg2CRGB
- KSTsgaP39rq6AQcK+pnKNpKvylwoo15QPW2RwdD4HRZZvT6rOslShWW4YAIPxqGDOsRxmmhrBCK
- Rxl9lAYlZDdJm4cgb0ex2Dw26HBQLD+UGFr71eaWa5C2rOyhzBTtBqUIcD2wKNlBLpEpq0m/me5
- XvMkcblJ5lcKqZheqJbNU4I8FV7KVTblSaGJM/Jcf5UtBjbJBSiVPE7MJbeMffv0LEzn1XqfTCM
- Jlh2gHf/9gulVBtjSA6E90oe1WwkdM8Vwj5gNqgNhfN664xZ60UQ8rbGw8cpdOtaxi50pXyPq8g
- a3q6/UsrhV/r7G89pHZ/QgODJ4kwN
-X-Google-Smtp-Source: AGHT+IGQeeZDlYq6FJ3MZYSkYtfllKnIIuMpqyGsRTi2GY8s89Zwl+oiF9PcJhWWCqTAb2XLOhbYDA==
-X-Received: by 2002:a05:600c:4454:b0:442:e109:3032 with SMTP id
- 5b1f17b1804b1-442f2161883mr1705145e9.24.1747158000373; 
- Tue, 13 May 2025 10:40:00 -0700 (PDT)
+ bh=j/lGVjd8P+mmHimB41hBIfndruizKSfZ7N3NnHpeffY=;
+ b=XDYhIyzoBozNSAjZVlfR7pZr9+zh1xTIdiNzdOfql80QxjH7aGO6yrujPbQW5WQONY
+ 8dqNRxDI61UpNGr0Qv3z6JvfqkwhFV9+ISGLtSoEC7DJL1YNbr9ITyzWv/Cyv4JdrOxn
+ r6442pq3LSDSMxX5b0YB5SYYPc8v3HXhZqYurCmb0C1r0gEhwuXwNOo01LvTZ02kH1s+
+ XaQPc7oCHxema+pO2Rx5ZqfP1tqoxzUjsAmMYqBY6B/6uHcnVnP4HZj+06h6EXrlwSVB
+ bAYZCKFb/qokmRxtvlnn4dSPBUUzecxvWuFyJm2RgnyV3EZkoh89ZXlygqZ6DoW/sROq
+ pQdA==
+X-Gm-Message-State: AOJu0Yx4Iaam3ZADWjatkiuSgFq6mbtk71jSpqRECf66GEnjXo8f2xR5
+ 9gIJNL45y4VS43cxQ5MixNLBDBYcqgIwIolHSeeVIXQ1k3DwUPMGaC9oeKcw64qZdlfxILHfxwb
+ erOw=
+X-Gm-Gg: ASbGncuiKgOeoANy8DVf/TpdfRB6qLHwDplbD8FCLCcDxOIHg7z5sEZwP3NZ/Zlj0M/
+ e8dGesO/Cnxvx263tZizhgKm6cMZa/mFKwFSKN/uPAciuebL+YMacfP9hyXJMhk7af6DNHCxpqX
+ CDHDY+V1Dmk0lHqlmGv1zJneQ2pv9KgxQyA+3Vbme++6Dc+GMTGwZPewmV7mibBQs6ZQJ7/YZ75
+ pW7dyWkr7ffj3SnRZKWPMPXDwlLgtSNM5z4XnGlByifssP3giqnFM5/lflCLOjdthKhlcq+gEJO
+ DmQey/X7pJpVQhhBHDiVGhCULaesmd1MVT3ged5669xHFwb5v2R8Qi0tizU+5u8lh17gJEV2WYy
+ yBzQV7oRklM+y8+LaDKTjsaHHEKg/
+X-Google-Smtp-Source: AGHT+IG9y8FnZ4DTIwP5cv7o0bemgUVC+qrov40VGxMdsOYpK3LQnzpYsbkjEf5uY/e+8hZJ3o9UwQ==
+X-Received: by 2002:a5d:59ae:0:b0:3a0:8495:cb75 with SMTP id
+ ffacd0b85a97d-3a3496997d7mr196089f8f.9.1747158005233; 
+ Tue, 13 May 2025 10:40:05 -0700 (PDT)
 Received: from localhost.localdomain (110.8.30.213.rev.vodafone.pt.
  [213.30.8.110]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442cd32835dsm220888235e9.6.2025.05.13.10.39.59
+ ffacd0b85a97d-3a1f57ee95asm17105644f8f.11.2025.05.13.10.40.04
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 13 May 2025 10:39:59 -0700 (PDT)
+ Tue, 13 May 2025 10:40:04 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 06/19] target/arm/cpu-features: Include missing 'cpu.h' header
-Date: Tue, 13 May 2025 18:39:15 +0100
-Message-ID: <20250513173928.77376-7-philmd@linaro.org>
+Subject: [PATCH 07/19] target/arm/qmp: Include missing 'cpu.h' header
+Date: Tue, 13 May 2025 18:39:16 +0100
+Message-ID: <20250513173928.77376-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250513173928.77376-1-philmd@linaro.org>
 References: <20250513173928.77376-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,36 +100,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"target/arm/cpu-features.h" dereferences the ARMISARegisters
-structure, which is defined in "cpu.h". Include the latter to
-avoid when refactoring unrelated headers:
+arm-qmp-cmds.c uses ARM_MAX_VQ, which is defined in "cpu.h".
+Include the latter to avoid when refactoring unrelated headers:
 
-  In file included from target/arm/internals.h:33:
-  target/arm/cpu-features.h:45:54: error: unknown type name 'ARMISARegisters'
-     45 | static inline bool isar_feature_aa32_thumb_div(const ARMISARegisters *id)
-        |                                                      ^
-  target/arm/cpu-features.h:47:12: error: use of undeclared identifier 'R_ID_ISAR0_DIVIDE_SHIFT'
-     47 |     return FIELD_EX32(id->id_isar0, ID_ISAR0, DIVIDE) != 0;
-        |            ^
+  target/arm/arm-qmp-cmds.c:83:19: error: use of undeclared identifier 'ARM_MAX_VQ'
+     83 | QEMU_BUILD_BUG_ON(ARM_MAX_VQ > 16);
+        |                   ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- target/arm/cpu-features.h | 1 +
+ target/arm/arm-qmp-cmds.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
-index 525e4cee12f..4452e7c21e3 100644
---- a/target/arm/cpu-features.h
-+++ b/target/arm/cpu-features.h
-@@ -22,6 +22,7 @@
- 
- #include "hw/registerfields.h"
- #include "qemu/host-utils.h"
+diff --git a/target/arm/arm-qmp-cmds.c b/target/arm/arm-qmp-cmds.c
+index a1a944adb43..930ec37413d 100644
+--- a/target/arm/arm-qmp-cmds.c
++++ b/target/arm/arm-qmp-cmds.c
+@@ -30,6 +30,7 @@
+ #include "qapi/qapi-commands-misc-target.h"
+ #include "qobject/qdict.h"
+ #include "qom/qom-qobject.h"
 +#include "cpu.h"
  
- /*
-  * Naming convention for isar_feature functions:
+ static GICCapability *gic_cap_new(int version)
+ {
 -- 
 2.47.1
 
