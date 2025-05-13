@@ -2,53 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91E1BAB4C18
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 08:37:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 539A4AB4C24
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 08:41:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEjEc-0003Ti-O2; Tue, 13 May 2025 02:35:27 -0400
+	id 1uEjK2-0008DK-BJ; Tue, 13 May 2025 02:41:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1uEjC2-0006Kr-PQ; Tue, 13 May 2025 02:32:51 -0400
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1uEjJw-0008CY-RX; Tue, 13 May 2025 02:40:56 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1uEjC1-0002Ee-07; Tue, 13 May 2025 02:32:46 -0400
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Tue, 13 May
- 2025 14:29:11 +0800
-Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Tue, 13 May 2025 14:29:11 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Steven Lee <steven_lee@aspeedtech.com>, Troy Lee
- <leetroy@gmail.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, "Joel
- Stanley" <joel@jms.id.au>, Fabiano Rosas <farosas@suse.de>, Laurent Vivier
- <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, "open list:ASPEED
- BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>
-CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v2 25/25] test/qtest/hace: Add tests for AST2700
-Date: Tue, 13 May 2025 14:28:55 +0800
-Message-ID: <20250513062901.2256865-26-jamin_lin@aspeedtech.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250513062901.2256865-1-jamin_lin@aspeedtech.com>
-References: <20250513062901.2256865-1-jamin_lin@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1uEjJu-0003I6-Q7; Tue, 13 May 2025 02:40:56 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 58EE8121287;
+ Tue, 13 May 2025 09:40:44 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 05FB220A240;
+ Tue, 13 May 2025 09:40:52 +0300 (MSK)
+Message-ID: <16ac7bdb-9df1-4951-bf3b-0b6cddbee358@tls.msk.ru>
+Date: Tue, 13 May 2025 09:40:51 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/7] audio related fixes for 10.1
+To: =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ qemu-stable <qemu-stable@nongnu.org>
+References: <d456c188-0463-4dc2-9178-469f840eaebe@t-online.de>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+In-Reply-To: <d456c188-0463-4dc2-9178-469f840eaebe@t-online.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_FAIL=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,152 +105,38 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
-From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The HACE models in AST2600 and AST2700 are nearly identical. Based on the
-AST2600 test cases, new tests have been added for AST2700.
+11.05.2025 10:36, Volker Rümelin wrote:
+> A few audio related fixes for 10.1.
+> 
+> The virtio-sound device is the first QEMU audio front end that supports floating point samples. The audio subsystem is only partially prepared for this. The commit message of patch 7/7 "audio: add float sample endianness converters" has the details. The new code paths in patch 7/7 are only compile tested. I don't have a big endian host to test.
+> 
+> checkpatch.pl complains about missing space characters in the type punning macros in patch 7/7. I don't agree.
+> 
+> Volker Rümelin (7):
+>    tests/functional: use 'none' audio driver for q800 tests
+>    audio: fix SIGSEGV in AUD_get_buffer_size_out()
+>    audio: fix size calculation in AUD_get_buffer_size_out()
+>    hw/audio/asc: fix SIGSEGV in asc_realize()
+>    hw/audio/asc: replace g_malloc0() with g_malloc()
+>    audio/mixeng: remove unnecessary pointer type casts
+>    audio: add float sample endianness converters
+> 
+>   audio/audio.c                        | 11 +++-
+>   audio/audio_template.h               | 12 ++--
+>   audio/mixeng.c                       | 83 ++++++++++++++++++++++++----
+>   audio/mixeng.h                       |  6 +-
+>   hw/audio/asc.c                       |  9 ++-
+>   tests/functional/test_m68k_q800.py   |  3 +-
+>   tests/functional/test_m68k_replay.py |  3 +-
+>   7 files changed, 106 insertions(+), 21 deletions(-)
 
-Implemented test functions for SHA-256, SHA-384, SHA-512, and MD5.
-Added scatter-gather and accumulation test variants.
-For AST2700, the HACE controller base address starts at "0x12070000", and
-the DRAM start address is "0x4_00000000".
+It looks like (some of) these patches should go to 10.0-stable too,
+what do you think?
 
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
----
- tests/qtest/ast2700-hace-test.c | 98 +++++++++++++++++++++++++++++++++
- tests/qtest/meson.build         |  2 +
- 2 files changed, 100 insertions(+)
- create mode 100644 tests/qtest/ast2700-hace-test.c
+Thanks,
 
-diff --git a/tests/qtest/ast2700-hace-test.c b/tests/qtest/ast2700-hace-test.c
-new file mode 100644
-index 0000000000..a400e2962b
---- /dev/null
-+++ b/tests/qtest/ast2700-hace-test.c
-@@ -0,0 +1,98 @@
-+/*
-+ * QTest testcase for the ASPEED Hash and Crypto Engine
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ * Copyright (C) 2025 ASPEED Technology Inc.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "libqtest.h"
-+#include "qemu/bitops.h"
-+#include "aspeed-hace-utils.h"
-+
-+static const struct AspeedMasks as2700_masks = {
-+    .src  = 0x7fffffff,
-+    .dest = 0x7ffffff8,
-+    .key = 0x7ffffff8,
-+    .len  = 0x0fffffff,
-+    .src_hi  = 0x00000003,
-+    .dest_hi = 0x00000003,
-+    .key_hi = 0x00000003,
-+};
-+
-+/* ast2700 */
-+static void test_md5_ast2700(void)
-+{
-+    aspeed_test_md5("-machine ast2700a1-evb", 0x12070000, 0x400000000);
-+}
-+
-+static void test_sha256_ast2700(void)
-+{
-+    aspeed_test_sha256("-machine ast2700a1-evb", 0x12070000, 0x400000000);
-+}
-+
-+static void test_sha256_sg_ast2700(void)
-+{
-+    aspeed_test_sha256_sg("-machine ast2700a1-evb", 0x12070000, 0x400000000);
-+}
-+
-+static void test_sha384_ast2700(void)
-+{
-+    aspeed_test_sha384("-machine ast2700a1-evb", 0x12070000, 0x400000000);
-+}
-+
-+static void test_sha384_sg_ast2700(void)
-+{
-+    aspeed_test_sha384_sg("-machine ast2700a1-evb", 0x12070000, 0x400000000);
-+}
-+
-+static void test_sha512_ast2700(void)
-+{
-+    aspeed_test_sha512("-machine ast2700a1-evb", 0x12070000, 0x400000000);
-+}
-+
-+static void test_sha512_sg_ast2700(void)
-+{
-+    aspeed_test_sha512_sg("-machine ast2700a1-evb", 0x12070000, 0x400000000);
-+}
-+
-+static void test_sha256_accum_ast2700(void)
-+{
-+    aspeed_test_sha256_accum("-machine ast2700a1-evb", 0x12070000, 0x400000000);
-+}
-+
-+static void test_sha384_accum_ast2700(void)
-+{
-+    aspeed_test_sha384_accum("-machine ast2700a1-evb", 0x12070000, 0x400000000);
-+}
-+
-+static void test_sha512_accum_ast2700(void)
-+{
-+    aspeed_test_sha512_accum("-machine ast2700a1-evb", 0x12070000, 0x400000000);
-+}
-+
-+static void test_addresses_ast2700(void)
-+{
-+    aspeed_test_addresses("-machine ast2700a1-evb", 0x12070000, &as2700_masks);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+
-+    qtest_add_func("ast2700/hace/addresses", test_addresses_ast2700);
-+    qtest_add_func("ast2700/hace/sha512", test_sha512_ast2700);
-+    qtest_add_func("ast2700/hace/sha384", test_sha384_ast2700);
-+    qtest_add_func("ast2700/hace/sha256", test_sha256_ast2700);
-+    qtest_add_func("ast2700/hace/md5", test_md5_ast2700);
-+
-+    qtest_add_func("ast2700/hace/sha512_sg", test_sha512_sg_ast2700);
-+    qtest_add_func("ast2700/hace/sha384_sg", test_sha384_sg_ast2700);
-+    qtest_add_func("ast2700/hace/sha256_sg", test_sha256_sg_ast2700);
-+
-+    qtest_add_func("ast2700/hace/sha512_accum", test_sha512_accum_ast2700);
-+    qtest_add_func("ast2700/hace/sha384_accum", test_sha384_accum_ast2700);
-+    qtest_add_func("ast2700/hace/sha256_accum", test_sha256_accum_ast2700);
-+
-+    return g_test_run();
-+}
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index bb14a22ebe..c587688f67 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -216,6 +216,7 @@ qtests_aspeed = \
-    'aspeed_smc-test']
- qtests_aspeed64 = \
-   ['ast2700-gpio-test',
-+   'ast2700-hace-test',
-    'ast2700-smc-test']
- 
- qtests_stm32l4x5 = \
-@@ -362,6 +363,7 @@ endif
- qtests = {
-   'aspeed_hace-test': files('aspeed-hace-utils.c', 'aspeed_hace-test.c'),
-   'aspeed_smc-test': files('aspeed-smc-utils.c', 'aspeed_smc-test.c'),
-+  'ast2700-hace-test': files('aspeed-hace-utils.c', 'ast2700-hace-test.c'),
-   'ast2700-smc-test': files('aspeed-smc-utils.c', 'ast2700-smc-test.c'),
-   'bios-tables-test': [io, 'boot-sector.c', 'acpi-utils.c', 'tpm-emu.c'],
-   'cdrom-test': files('boot-sector.c'),
--- 
-2.43.0
-
+/mjt
 
