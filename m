@@ -2,60 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78DB7AB53AD
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 13:18:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A7C6AB53A6
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 13:16:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEndi-0001A9-9I; Tue, 13 May 2025 07:17:38 -0400
+	id 1uEncM-000747-Qy; Tue, 13 May 2025 07:16:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uEndg-00016R-8V
- for qemu-devel@nongnu.org; Tue, 13 May 2025 07:17:36 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1uEnde-0006xd-Ar
- for qemu-devel@nongnu.org; Tue, 13 May 2025 07:17:35 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZxYlp2r1zz6L4yM;
- Tue, 13 May 2025 19:14:46 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
- by mail.maildlp.com (Postfix) with ESMTPS id 668081400C8;
- Tue, 13 May 2025 19:17:32 +0800 (CST)
-Received: from SecurePC-101-06.china.huawei.com (10.122.19.247) by
- frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 13 May 2025 13:17:31 +0200
-To: <qemu-devel@nongnu.org>, Fan Ni <fan.ni@samsung.com>, Peter Maydell
- <peter.maydell@linaro.org>, <mst@redhat.com>
-CC: <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>, <qemu-arm@nongnu.org>, 
- Yuquan Wang <wangyuquan1236@phytium.com.cn>, Itaru Kitayama
- <itaru.kitayama@linux.dev>, =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-Subject: [PATCH v13 5/5] qtest/cxl: Add aarch64 virt test for CXL
-Date: Tue, 13 May 2025 12:14:55 +0100
-Message-ID: <20250513111455.128266-6-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250513111455.128266-1-Jonathan.Cameron@huawei.com>
-References: <20250513111455.128266-1-Jonathan.Cameron@huawei.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uEncH-0006va-Hv
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 07:16:11 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uEncF-0006oB-SO
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 07:16:09 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-43cfba466b2so62247185e9.3
+ for <qemu-devel@nongnu.org>; Tue, 13 May 2025 04:16:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1747134966; x=1747739766; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=9j+grCFN2YLTvFGeoAhWMRZ/PDA3UQbbHpvz0Ebxvpo=;
+ b=jkuVbq09hWA9SK0ie/DjaeSmatK5w9JyU9jHIlO0Y+8zPjnO8WoMCt3vBjrobDlk9J
+ lraevGF/iOMdPGpi4zIdHQnKT0LL8jZPMeeKM1ih6xOz15N/TFsQ+tVz9viOQcfwsGdT
+ dSHMn3ODsU41AqRzRuS4HHp841+GraPYVHI7PB+1GJQ/+mtud8pTX3jF7iliaqHXl79p
+ jpvI9jx6B79tq9uMudkvUC7cx8UFNfY98l5xKuFKYrsRRgocosvfu1TyR41/R3GfEWCJ
+ i4PzAjvRE/hs5wYQG6UTH6W+MO1RD1NVDc6xd91ZmqUMpmfEZb1QzIjKIfpkIfUKe7oQ
+ BH7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747134966; x=1747739766;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9j+grCFN2YLTvFGeoAhWMRZ/PDA3UQbbHpvz0Ebxvpo=;
+ b=i35bNF/Y4oXZwhSeiIaTmF/aKzK7YHRbpg9u2Cb+m9ZKrMCtvOAljKDSVrLJmEtU2j
+ B1c5mrZpSN9DiqpnZXbMldJmFo1RA4J/23NbaimA7lBv8zXgwcTbyFw3yhMaC6HRIM4Q
+ rm6vKMasPJwtoeEeFARBJFAgtaynto6qOVIPMH2vYs4oBvyJqpD5qssJWo1HFid7yycJ
+ JR6TZ++A+5So7KSfZDX5KrdnGbjPAqAH+mB7XaW6msmoChp9pXIuwp0nfgUQ6KyI0/7s
+ 6DG3Sk4cPOwXJ314bWYudsx3L5xHzQoUpxUSEE0GZm37SH9kzf63FaurY9EHPgzXZe95
+ bs+Q==
+X-Gm-Message-State: AOJu0YwQ++4+RcR0JqFJcyXVzodud/IFM86weHoKZoGEyKCXH2xzk2XI
+ HYljp8Evg62nftrX1hLryvO51PY1AW8ma9892wQixarglOMiCdtlhsRbTgiWq0w=
+X-Gm-Gg: ASbGncuT6uIYOWE80PAXPa2MCiYVZ2sdgnhZlFplOrYLFA0Knmgcl4tlSksU6GW11MW
+ K2YgvZPQBiSRpjup4F26eqop0KWQNYqbLsBzESwZw4FrCbOQRgtyaKsvPCDHixzpx7TkG7fnWre
+ lp9SPq+0W4FDEXFAk7RxjL9xlNfxDy1PU0GRLk95V8sjyziu+f0S9cG7vZ97FzGbLyJH+l7061t
+ 4SKxIn+krxyIKq3ogDetpeAjIciGclGdFhZyt0fH6fHRxyJwfUUJRKvmV2jqQALD4Awdns++wVS
+ NEAPupgrCiZlLxyh2w3E6hDhL5clVF4dfaqFaLTixz+khPNoDe0CCbMNSYh7Wt77aMOXY4S/Lvj
+ JChzxfaY+2uvl
+X-Google-Smtp-Source: AGHT+IGmD7d/jAN7Fjk8DsSW+LYm+ArV9QCgUlEqxO57dl4eJZyrAtkDcMuM0nM46wnmIMBrZkwfJA==
+X-Received: by 2002:a05:600c:37cd:b0:43d:fa59:be38 with SMTP id
+ 5b1f17b1804b1-442d6ddf676mr124720185e9.32.1747134966150; 
+ Tue, 13 May 2025 04:16:06 -0700 (PDT)
+Received: from [10.61.1.197] (110.8.30.213.rev.vodafone.pt. [213.30.8.110])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-442ebdc362fsm16637015e9.1.2025.05.13.04.16.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 13 May 2025 04:16:05 -0700 (PDT)
+Message-ID: <a06e389a-1d72-4f33-bae6-7b13c0ac6612@linaro.org>
+Date: Tue, 13 May 2025 12:16:04 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] ui/vnc.c: replace big endian flag with byte order
+ value
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
+ <marcandre.lureau@redhat.com>
+References: <20250513100819.1179249-1-berrange@redhat.com>
+ <20250513100819.1179249-2-berrange@redhat.com>
+ <6c9f7141-8b2e-4b58-9ade-134a7289cff6@linaro.org>
+ <caf9f1e2-fe92-48bb-92d9-17e5a5f61476@linaro.org>
+ <aCMpU_n2GK1_a8UJ@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <aCMpU_n2GK1_a8UJ@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.122.19.247]
-X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
- frapeml500008.china.huawei.com (7.182.85.71)
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -69,118 +100,46 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a single complex case for aarch64 virt machine.
-Given existing much more comprehensive tests for x86 cover the
-common functionality, a single test should be enough to verify
-that the aarch64 part continue to work.
+On 13/5/25 13:13, Daniel P. Berrangé wrote:
+> On Tue, May 13, 2025 at 12:11:05PM +0100, Philippe Mathieu-Daudé wrote:
+>> On 13/5/25 13:08, Philippe Mathieu-Daudé wrote:
+>>> On 13/5/25 12:08, Daniel P. Berrangé wrote:
+>>>> From: Daniel P. Berrangé <berrange@redhat.com>
+>>>>
+>>>> It will make it easier to do certain comparisons in future if we
+>>>> store G_BIG_ENDIAN/G_LITTLE_ENDIAN directly, instead of a boolean
+>>>> flag.
+>>>>
+>>>> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+>>>> ---
+>>>>    ui/vnc-enc-tight.c | 2 +-
+>>>>    ui/vnc-enc-zrle.c  | 2 +-
+>>>>    ui/vnc-jobs.c      | 2 +-
+>>>>    ui/vnc.c           | 6 +++---
+>>>>    ui/vnc.h           | 2 +-
+>>>>    5 files changed, 7 insertions(+), 7 deletions(-)
+>>>
+>>>
+>>>> diff --git a/ui/vnc.h b/ui/vnc.h
+>>>> index acc53a2cc1..f2a627dcdf 100644
+>>>> --- a/ui/vnc.h
+>>>> +++ b/ui/vnc.h
+>>>> @@ -323,7 +323,7 @@ struct VncState
+>>>>        VncWritePixels *write_pixels;
+>>>>        PixelFormat client_pf;
+>>>>        pixman_format_code_t client_format;
+>>>> -    bool client_be;
+>>>> +    int client_bo; /* G_LITTLE_ENDIAN or G_BIG_ENDIAN */
+>>
+>> 'bo' = 'big order'?
+> 
+> bo == byte order.
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- tests/qtest/cxl-test.c  | 59 ++++++++++++++++++++++++++++++++---------
- tests/qtest/meson.build |  1 +
- 2 files changed, 47 insertions(+), 13 deletions(-)
+Oh of course. Since no GLib endian enum, preferably:
 
-diff --git a/tests/qtest/cxl-test.c b/tests/qtest/cxl-test.c
-index a600331843..c7189d6222 100644
---- a/tests/qtest/cxl-test.c
-+++ b/tests/qtest/cxl-test.c
-@@ -19,6 +19,12 @@
-     "-device pxb-cxl,id=cxl.1,bus=pcie.0,bus_nr=53 " \
-     "-M cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.targets.1=cxl.1,cxl-fmw.0.size=4G "
- 
-+#define QEMU_VIRT_2PXB_CMD \
-+    "-machine virt,cxl=on -cpu max " \
-+    "-device pxb-cxl,id=cxl.0,bus=pcie.0,bus_nr=52 " \
-+    "-device pxb-cxl,id=cxl.1,bus=pcie.0,bus_nr=53 " \
-+    "-M cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.targets.1=cxl.1,cxl-fmw.0.size=4G "
-+
- #define QEMU_RP \
-     "-device cxl-rp,id=rp0,bus=cxl.0,chassis=0,slot=0 "
- 
-@@ -197,25 +203,52 @@ static void cxl_2pxb_4rp_4t3d(void)
-     qtest_end();
-     rmdir(tmpfs);
- }
-+
-+static void cxl_virt_2pxb_4rp_4t3d(void)
-+{
-+    g_autoptr(GString) cmdline = g_string_new(NULL);
-+    char template[] = "/tmp/cxl-test-XXXXXX";
-+    const char *tmpfs;
-+
-+    tmpfs = mkdtemp(template);
-+
-+    g_string_printf(cmdline, QEMU_VIRT_2PXB_CMD QEMU_4RP QEMU_4T3D,
-+                    tmpfs, tmpfs, tmpfs, tmpfs, tmpfs, tmpfs,
-+                    tmpfs, tmpfs);
-+
-+    qtest_start(cmdline->str);
-+    qtest_end();
-+    rmdir(tmpfs);
-+}
- #endif /* CONFIG_POSIX */
- 
- int main(int argc, char **argv)
- {
--    g_test_init(&argc, &argv, NULL);
-+    const char *arch = qtest_get_arch();
- 
--    qtest_add_func("/pci/cxl/basic_hostbridge", cxl_basic_hb);
--    qtest_add_func("/pci/cxl/basic_pxb", cxl_basic_pxb);
--    qtest_add_func("/pci/cxl/pxb_with_window", cxl_pxb_with_window);
--    qtest_add_func("/pci/cxl/pxb_x2_with_window", cxl_2pxb_with_window);
--    qtest_add_func("/pci/cxl/rp", cxl_root_port);
--    qtest_add_func("/pci/cxl/rp_x2", cxl_2root_port);
-+    g_test_init(&argc, &argv, NULL);
-+    if (strcmp(arch, "i386") == 0 || strcmp(arch, "x86_64") == 0) {
-+        qtest_add_func("/pci/cxl/basic_hostbridge", cxl_basic_hb);
-+        qtest_add_func("/pci/cxl/basic_pxb", cxl_basic_pxb);
-+        qtest_add_func("/pci/cxl/pxb_with_window", cxl_pxb_with_window);
-+        qtest_add_func("/pci/cxl/pxb_x2_with_window", cxl_2pxb_with_window);
-+        qtest_add_func("/pci/cxl/rp", cxl_root_port);
-+        qtest_add_func("/pci/cxl/rp_x2", cxl_2root_port);
- #ifdef CONFIG_POSIX
--    qtest_add_func("/pci/cxl/type3_device", cxl_t3d_deprecated);
--    qtest_add_func("/pci/cxl/type3_device_pmem", cxl_t3d_persistent);
--    qtest_add_func("/pci/cxl/type3_device_vmem", cxl_t3d_volatile);
--    qtest_add_func("/pci/cxl/type3_device_vmem_lsa", cxl_t3d_volatile_lsa);
--    qtest_add_func("/pci/cxl/rp_x2_type3_x2", cxl_1pxb_2rp_2t3d);
--    qtest_add_func("/pci/cxl/pxb_x2_root_port_x4_type3_x4", cxl_2pxb_4rp_4t3d);
-+        qtest_add_func("/pci/cxl/type3_device", cxl_t3d_deprecated);
-+        qtest_add_func("/pci/cxl/type3_device_pmem", cxl_t3d_persistent);
-+        qtest_add_func("/pci/cxl/type3_device_vmem", cxl_t3d_volatile);
-+        qtest_add_func("/pci/cxl/type3_device_vmem_lsa", cxl_t3d_volatile_lsa);
-+        qtest_add_func("/pci/cxl/rp_x2_type3_x2", cxl_1pxb_2rp_2t3d);
-+        qtest_add_func("/pci/cxl/pxb_x2_root_port_x4_type3_x4",
-+                       cxl_2pxb_4rp_4t3d);
- #endif
-+    } else if (strcmp(arch, "aarch64") == 0) {
-+#ifdef CONFIG_POSIX
-+        qtest_add_func("/pci/cxl/virt/pxb_x2_root_port_x4_type3_x4",
-+                       cxl_virt_2pxb_4rp_4t3d);
-+#endif
-+    }
-+
-     return g_test_run();
- }
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 7daf619845..361000267a 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -258,6 +258,7 @@ qtests_aarch64 = \
-   (config_all_accel.has_key('CONFIG_TCG') and                                            \
-    config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? ['tpm-tis-i2c-test'] : []) + \
-   (config_all_devices.has_key('CONFIG_ASPEED_SOC') ? qtests_aspeed64 : []) + \
-+  qtests_cxl +                                                                                  \
-   ['arm-cpu-features',
-    'numa-test',
-    'boot-serial-test',
--- 
-2.43.0
+   int client_bo; /* byte order: G_LITTLE_ENDIAN or G_BIG_ENDIAN */
 
 
