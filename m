@@ -2,108 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0243FAB5633
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 15:35:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5903EAB5643
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 15:38:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEpmE-0001ho-Tt; Tue, 13 May 2025 09:34:34 -0400
+	id 1uEppT-0004ZF-HC; Tue, 13 May 2025 09:37:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uEpm8-0001hQ-Tb
- for qemu-devel@nongnu.org; Tue, 13 May 2025 09:34:30 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uEpm6-0007yk-TI
- for qemu-devel@nongnu.org; Tue, 13 May 2025 09:34:28 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 20D6E211F8;
- Tue, 13 May 2025 13:34:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1747143242; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uEppA-0004Z1-Oc
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 09:37:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uEpp7-0008RF-Q4
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 09:37:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747143450;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=zTtvBJB97Erg9BMKeOMZwlfTIUYnRf6ZaPjp7thBFOA=;
- b=KuH6YjAH+k9Rcz1quAXlpkswzHn5L2iRC/v2792DxVK89i/Hcno8+e1ggMTvVkLuxXFg1F
- QOwyaAbO+ua+V5oFmkLZ60K21AYKd3c1P7UIfPFj0TLY4FqsAfz+0IfShpA2FIjAsEPlac
- 7mMz0whZecR8VIcWunC6QAYceyqInj0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1747143242;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zTtvBJB97Erg9BMKeOMZwlfTIUYnRf6ZaPjp7thBFOA=;
- b=OHLhteixFaW6AG7vLU3qhkJ/WAUJydDF7GO6b7XPSUSOrKM6juG6+IQFVvx0lTFqogB4RH
- GSm0Jg4k25ds+FBw==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1747143242; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zTtvBJB97Erg9BMKeOMZwlfTIUYnRf6ZaPjp7thBFOA=;
- b=KuH6YjAH+k9Rcz1quAXlpkswzHn5L2iRC/v2792DxVK89i/Hcno8+e1ggMTvVkLuxXFg1F
- QOwyaAbO+ua+V5oFmkLZ60K21AYKd3c1P7UIfPFj0TLY4FqsAfz+0IfShpA2FIjAsEPlac
- 7mMz0whZecR8VIcWunC6QAYceyqInj0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1747143242;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zTtvBJB97Erg9BMKeOMZwlfTIUYnRf6ZaPjp7thBFOA=;
- b=OHLhteixFaW6AG7vLU3qhkJ/WAUJydDF7GO6b7XPSUSOrKM6juG6+IQFVvx0lTFqogB4RH
- GSm0Jg4k25ds+FBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1BF301365D;
- Tue, 13 May 2025 13:34:00 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id WIewM0hKI2gMXgAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 13 May 2025 13:34:00 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>
-Subject: [PATCH v2 3/3] ci: Reduce the size of artifacts for
- build-previous-qemu
-Date: Tue, 13 May 2025 10:33:53 -0300
-Message-Id: <20250513133353.23022-4-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20250513133353.23022-1-farosas@suse.de>
-References: <20250513133353.23022-1-farosas@suse.de>
+ bh=RoQkIKa2sSS7r7/SkJ/WHHLHLJgEglvh+zU88h7tJGg=;
+ b=JRYdqxiHTaiv1cMw8RmPPNBAh4ABdyeS4EjbiQf2Jw+TtdAJqIw9jxdqwCqRJFS6B/NrrX
+ PaLjrLQ/xs80h63tQ3Gwn7UdKekwu/fhsrDFEdf7b/KEztod6vOFX6WItdIlfMSm+o8H2h
+ 5ojutHly4bJ3eMA55tF5otQ5GWvx+NU=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-534-UvmIfrIvOr6ODWkv_pLtKg-1; Tue, 13 May 2025 09:37:29 -0400
+X-MC-Unique: UvmIfrIvOr6ODWkv_pLtKg-1
+X-Mimecast-MFC-AGG-ID: UvmIfrIvOr6ODWkv_pLtKg_1747143449
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-6f6f06890e2so103352326d6.3
+ for <qemu-devel@nongnu.org>; Tue, 13 May 2025 06:37:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747143449; x=1747748249;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=RoQkIKa2sSS7r7/SkJ/WHHLHLJgEglvh+zU88h7tJGg=;
+ b=ezEOUEE9eKSRgC6iRgEUx4gYl5b5l/aaufadBjLt29MPyjjVpFcZe2vGmDrKUDKcCJ
+ QdOYqiV/eBO2N93RVKWXJOyZ6M57ha3K7TxjGE+Qmb0NyphP9Xf4mlMv8a1CSiJ51Kix
+ yxBwj1NRp4oq0Eig+cMXTWFs8AEFRibrG91nOy1XS9DCiNfnC5auHcaTBw0erJbrwDuA
+ BFhPDrmt8t3/KrDGGgy7wfJM65pMtraf8xSZDVmnFoR7CE76630CcVzn8iIDcvBxQhyC
+ NovFYXZquyb7T/PQwDMWvldkCbTc5YbCtgJMyiQmTQYCqlRF8ezmO1l6VsWsjzISMPJB
+ J9fw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWGzq8XpobW2pLL7/VihZTs5WXBKVztg2zkNz2hE43n3HML4u/Zd08x1qX8lCUmWqbtnVq6Ce7upVvF@nongnu.org
+X-Gm-Message-State: AOJu0Yz5054wSvoQouZ7OHFIN+txkUwcSI6yYhUomT6qmOyNM7JYfR0r
+ NTW3dUUGvw1puz7d+Y1YQOb37QisnQfY+QOqpQ9hmcvxig3XVTODnYEwtOgFMQVF7BaXt48uTD/
+ OY8wKMaz3mrIfcEHori5kV8OYyVpvAblI2KAsjfV2aE7ABwVbSVv4
+X-Gm-Gg: ASbGncvSEONQc/QiCcsBgaTZoTvbXcbTgQqjXZ+VVoq0G+CMXEAFSDHDT3z5uPRCdQ4
+ MdgYmeWGbGb4yzuoPjLRXnCvIdvnWebAVQlFmNZNpbApeq+guLEKysCKQDeXGbDmgYH3TksNbO+
+ 0nEyA+FF4AFyUJa0D1q0jwhWdjhswQjBpRXOAwvwlXQpgF0sxtXTN2VNIw/leRst3DcJsZJAFCj
+ w8+GvPyRQ/iaUvPNQKDEHHrBi0KSFkoDZP0YZXCveqIJhfZSMSK5YONyWe8oxoYzLMDVTkx6hjF
+ feQ=
+X-Received: by 2002:a05:620a:2a14:b0:7c5:5e05:df33 with SMTP id
+ af79cd13be357-7cd01155600mr2103449885a.51.1747143449042; 
+ Tue, 13 May 2025 06:37:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHXf7HMJvrnkJtA541MBg8LXygImQrO7fLD4eBJvoRej2JrTgooFjp3ok5OzPgnG/nu09q3/w==
+X-Received: by 2002:a05:620a:2a14:b0:7c5:5e05:df33 with SMTP id
+ af79cd13be357-7cd01155600mr2103448485a.51.1747143448736; 
+ Tue, 13 May 2025 06:37:28 -0700 (PDT)
+Received: from x1.local ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7cd00f63bb0sm707380085a.38.2025.05.13.06.37.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 13 May 2025 06:37:28 -0700 (PDT)
+Date: Tue, 13 May 2025 09:37:25 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Li Zhijian <lizhijian@fujitsu.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Jack Wang <jinpu.wang@ionos.com>,
+ "Michael R . Galaxy" <mrgalaxy@nvidia.com>, Yu Zhang <yu.zhang@ionos.com>
+Subject: Re: [PATCH v4] qtest/migration/rdma: Add test for rdma migration
+ with ipv6
+Message-ID: <aCNLFWEgolUViugY@x1.local>
+References: <20250513012207.2867069-1-lizhijian@fujitsu.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_TWO(0.00)[2];
- RCVD_VIA_SMTP_AUTH(0.00)[]; MIME_TRACE(0.00)[0:+];
- ARC_NA(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo];
- RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -2.80
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250513012207.2867069-1-lizhijian@fujitsu.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.549,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,39 +107,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The build-previous-qemu job is intented to produce a build of the
-previous QEMU release for consumption by the migration-compat-*
-jobs. Keep only the pieces of the build that are necessary.
+On Tue, May 13, 2025 at 09:22:07AM +0800, Li Zhijian wrote:
+> Recently, we removed ipv6 restriction[0] from RDMA migration, add a
+> test for it.
+> 
+> [0] https://lore.kernel.org/qemu-devel/20250326095224.9918-1-jinpu.wang@ionos.com/
+> 
+> Cc: Jack Wang <jinpu.wang@ionos.com>
+> Cc: Michael R. Galaxy <mrgalaxy@nvidia.com>
+> Cc: Peter Xu <peterx@redhat.com>
+> Cc: Yu Zhang <yu.zhang@ionos.com>
+> Reviewed-by: Jack Wang <jinpu.wang@ionos.com>
+> Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+> ---
+> V4:
+>   adjust the address format per its ipv6 address type
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- .gitlab-ci.d/buildtest.yml | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+I used this one, thank you!
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index b4e39fd7c1..ca1a9c6f70 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -188,12 +188,11 @@ build-previous-qemu:
-     when: on_success
-     expire_in: 2 days
-     paths:
--      - build-previous
--    exclude:
--      - build-previous/**/*.p
--      - build-previous/**/*.a.p
--      - build-previous/**/*.c.o
--      - build-previous/**/*.c.o.d
-+      - build-previous/qemu-bundle
-+      - build-previous/qemu-system-aarch64
-+      - build-previous/qemu-system-x86_64
-+      - build-previous/tests/qtest/migration-test
-+      - build-previous/scripts
-   needs:
-     job: amd64-opensuse-leap-container
-   variables:
 -- 
-2.35.3
+Peter Xu
 
 
