@@ -2,80 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD2ECAB4DB5
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 10:10:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 563F2AB4E32
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 10:35:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEkiK-0006gR-0l; Tue, 13 May 2025 04:10:12 -0400
+	id 1uEl5P-0005Y4-OV; Tue, 13 May 2025 04:34:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uEkiH-0006fD-7Q
- for qemu-devel@nongnu.org; Tue, 13 May 2025 04:10:09 -0400
-Received: from mgamail.intel.com ([198.175.65.16])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uEl5M-0005RH-M6
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 04:34:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uEkiE-0003iz-5q
- for qemu-devel@nongnu.org; Tue, 13 May 2025 04:10:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747123807; x=1778659807;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=ToqcWH2DwjjzvKTkbb1scAhC6W2tO35kLWOPSwlRmpE=;
- b=desnd5IWaEAVUqOCgWE9nn/cPNdPpgquKLOZe2PqM9pJY57DVKvo4fat
- 9/4Zi1F8g/oSak2WK+t0JXzsbmpujtTqtqjm4AzWzxeZK7Owka20tyro3
- 8PHftIIkntAd8G+32QXhn/65EDMN6EO1i8R+wCtEEwMVuBavsqPpgvyxH
- ak2PX+rOnq1ySMDUsRYGoQDk7aRn7b7gBlsOtYFjlwZJaLSeiFTzmp3fm
- i3d8LbiwL6nMKhHuSVQ6TmbCJGaGDcVq+zQcl2c9w5pjpvEo8hJEG3PSv
- lEOwbHHAkQRiiRnMM5sAnP3v7wJm1YOLvoc6xctJVPl9I3ywYmhDKU1D6 w==;
-X-CSE-ConnectionGUID: /1W1zyvQQbuXtQshQdQ7BQ==
-X-CSE-MsgGUID: +XIkKmJ5QIuHKfCm/CX7Sw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11431"; a="49034919"
-X-IronPort-AV: E=Sophos;i="6.15,284,1739865600"; d="scan'208";a="49034919"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2025 01:10:03 -0700
-X-CSE-ConnectionGUID: MUpUFQM5THe9jefW5Bax/A==
-X-CSE-MsgGUID: VbGTNf04T8mj1oFR5jCDlA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,284,1739865600"; d="scan'208";a="160900961"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa002.fm.intel.com with ESMTP; 13 May 2025 01:09:58 -0700
-Date: Tue, 13 May 2025 16:31:02 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Chenyi Qiang <chenyi.qiang@intel.com>
-Cc: David Hildenbrand <david@redhat.com>,
- Alexey Kardashevskiy <aik@amd.com>, Peter Xu <peterx@redhat.com>,
- Gupta Pankaj <pankaj.gupta@amd.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
- Peng Chao P <chao.p.peng@intel.com>, Gao Chao <chao.gao@intel.com>,
- Xu Yilun <yilun.xu@intel.com>, Li Xiaoyao <xiaoyao.li@intel.com>
-Subject: Re: [PATCH v4 07/13] ram-block-attribute: Introduce
- RamBlockAttribute to manage RAMBLock with guest_memfd
-Message-ID: <aCMDRoHcoV2PM34W@intel.com>
-References: <20250407074939.18657-1-chenyi.qiang@intel.com>
- <20250407074939.18657-8-chenyi.qiang@intel.com>
- <aCGsPh/A3sh0dDlI@intel.com>
- <3c4405f4-8d2a-48aa-b92a-f8fee223f1cb@intel.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uEl5I-0006Qa-LA
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 04:34:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747125235;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=TqM99o8hq6ejXQr8Ag8go9dDfz10eSysRHw7IIJ+3sg=;
+ b=FqLixeSpmxYsaG9KVKWzp1y/El++rer19D8BOIqVi+z4oyBm0rTpQiZRF8BNwIbdwmZx5I
+ PdWh88Q005Tjq1HvGkhzn9WYlcFLEKLUDA0ZcMX/tjZZabuMaDh15+PLPGgr/NDPvE8cuO
+ SlBw/rULx6v3PzAwXcIQAnqimNNejBw=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-397-lpSzAbdyMqalurRxKN1qBg-1; Tue,
+ 13 May 2025 04:33:51 -0400
+X-MC-Unique: lpSzAbdyMqalurRxKN1qBg-1
+X-Mimecast-MFC-AGG-ID: lpSzAbdyMqalurRxKN1qBg_1747125230
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6363A180056F; Tue, 13 May 2025 08:33:50 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.44.32.62])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 8CCFF1943282; Tue, 13 May 2025 08:33:45 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-arm@nongnu.org, Brad Smith <brad@comstyle.com>
+Subject: [PATCH] meson.build: Compile common_ss files with right system header
+ include paths
+Date: Tue, 13 May 2025 10:33:43 +0200
+Message-ID: <20250513083343.148497-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3c4405f4-8d2a-48aa-b92a-f8fee223f1cb@intel.com>
-Received-SPF: pass client-ip=198.175.65.16; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -58
-X-Spam_score: -5.9
-X-Spam_bar: -----
-X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.551,
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.551,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,122 +81,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> >> diff --git a/include/exec/ramblock.h b/include/exec/ramblock.h
-> >> index 0babd105c0..b8b5469db9 100644
-> >> --- a/include/exec/ramblock.h
-> >> +++ b/include/exec/ramblock.h
-> >> @@ -23,6 +23,10 @@
-> >>  #include "cpu-common.h"
-> >>  #include "qemu/rcu.h"
-> >>  #include "exec/ramlist.h"
-> >> +#include "system/hostmem.h"
-> >> +
-> >> +#define TYPE_RAM_BLOCK_ATTRIBUTE "ram-block-attribute"
-> >> +OBJECT_DECLARE_TYPE(RamBlockAttribute, RamBlockAttributeClass, RAM_BLOCK_ATTRIBUTE)
-> > 
-> > Could we use "OBJECT_DECLARE_SIMPLE_TYPE" here? Since I find class
-> > doesn't have any virtual method.
-> 
-> Yes, we can. Previously, I defined the state_change() method for the
-> class (MemoryAttributeManagerClass) [1] instead of parent
-> PrivateSharedManagerClass. And leave it unchanged in this version.
-> 
-> In next version, I will drop PrivateShareManager and revert to use
-> RamDiscardManager. Then, maybe I should also use
-> OBJECT_DECLARE_SIMPLE_TYPE and make state_change() an exported function
-> instead of a virtual method since no derived class for RamBlockAttribute.
+From: Thomas Huth <thuth@redhat.com>
 
-Thank you! I see. I don't have an opinion on whether to add virtual
-method or not, if you feel it's appropriate then adding class is fine.
-(My comment may be outdated, it's just for the fact that there is no
-need to add class in this patch.) Looking forward to your next version.
+Since commit 6f4e8a92bbd ("hw/arm: make most of the compilation units
+common"), compilation of some arm machines (like musicpal) fails on
+certain host systems like OpenBSD 7.6/7.7 since headers like <epoxy/gl.h>
+don't reside in /usr/include and we currently don't add the right
+CFLAGS for the common files to include the additional header search
+paths. Add a loop similar to what we already did in commit 727bb5b477e6
+to fix it.
 
-> [1]
-> https://lore.kernel.org/qemu-devel/20250310081837.13123-6-chenyi.qiang@intel.com/
-> 
-> > 
-> >>  struct RAMBlock {
-> >>      struct rcu_head rcu;
-> >> @@ -90,5 +94,25 @@ struct RAMBlock {
-> >>       */
-> >>      ram_addr_t postcopy_length;
-> >>  };
-> >> +
+With this fix applied, we can now also drop the explicit dependency
+on pixman for the arm musicpal machine.
 
-[snip]
+Fixes: 6f4e8a92bbd ("hw/arm: make most of the compilation units common")
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+[thuth: Add commit message + changes in hw/arm/meson.build]
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ meson.build        | 27 ++++++++++++++++-----------
+ hw/arm/meson.build |  2 +-
+ 2 files changed, 17 insertions(+), 12 deletions(-)
 
-> >> +static size_t ram_block_attribute_get_block_size(const RamBlockAttribute *attr)
-> >> +{
-> >> +    /*
-> >> +     * Because page conversion could be manipulated in the size of at least 4K or 4K aligned,
-> >> +     * Use the host page size as the granularity to track the memory attribute.
-> >> +     */
-> >> +    g_assert(attr && attr->mr && attr->mr->ram_block);
-> >> +    g_assert(attr->mr->ram_block->page_size == qemu_real_host_page_size());
-> >> +    return attr->mr->ram_block->page_size;
-> > 
-> > What about using qemu_ram_pagesize() instead of accessing
-> > ram_block->page_size directly?
-> 
-> Make sense!
-> 
-> > 
-> > Additionally, maybe we can add a simple helper to get page size from
-> > RamBlockAttribute.
-> 
-> Do you mean introduce a new field page_size and related helper? That was
-> my first version and but suggested with current implementation
-> (https://lore.kernel.org/qemu-devel/b55047fd-7b73-4669-b6d2-31653064f27f@intel.com/)
+diff --git a/meson.build b/meson.build
+index 5ac64075be7..7131aa2b21d 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3228,6 +3228,7 @@ config_devices_mak_list = []
+ config_devices_h = {}
+ config_target_h = {}
+ config_target_mak = {}
++config_base_arch_mak = {}
+ 
+ disassemblers = {
+   'alpha' : ['CONFIG_ALPHA_DIS'],
+@@ -3419,6 +3420,11 @@ foreach target : target_dirs
+     config_all_devices += config_devices
+   endif
+   config_target_mak += {target: config_target}
++
++  # build a merged config for all targets with the same TARGET_BASE_ARCH
++  target_base_arch = config_target['TARGET_BASE_ARCH']
++  config_base_arch = config_base_arch_mak.get(target_base_arch, {}) + config_target
++  config_base_arch_mak += {target_base_arch: config_base_arch}
+ endforeach
+ target_dirs = actual_target_dirs
+ 
+@@ -4099,28 +4105,27 @@ common_all = static_library('common',
+ 
+ # construct common libraries per base architecture
+ hw_common_arch_libs = {}
+-foreach target : target_dirs
+-  config_target = config_target_mak[target]
+-  target_base_arch = config_target['TARGET_BASE_ARCH']
++foreach target_base_arch, config_base_arch : config_base_arch_mak
++  if target_base_arch in hw_common_arch
++    base_arch_hw = hw_common_arch[target_base_arch].apply(config_base_arch, strict: false)
++    base_arch_common = common_ss.apply(config_base_arch, strict: false)
+ 
+-  # check if already generated
+-  if target_base_arch in hw_common_arch_libs
+-    continue
+-  endif
++    lib_deps = base_arch_hw.dependencies()
++    foreach dep : base_arch_common.dependencies()
++      lib_deps += dep.partial_dependency(compile_args: true, includes: true)
++    endforeach
+ 
+-  if target_base_arch in hw_common_arch
+     target_inc = [include_directories('target' / target_base_arch)]
+-    src = hw_common_arch[target_base_arch]
+     lib = static_library(
+       'hw_' + target_base_arch,
+       build_by_default: false,
+-      sources: src.all_sources() + genh,
++      sources: base_arch_hw.sources() + genh,
+       include_directories: common_user_inc + target_inc,
+       implicit_include_directories: false,
+       # prevent common code to access cpu compile time
+       # definition, but still allow access to cpu.h
+       c_args: ['-DCPU_DEFS_H', '-DCOMPILING_SYSTEM_VS_USER', '-DCONFIG_SOFTMMU'],
+-      dependencies: src.all_dependencies())
++      dependencies: lib_deps)
+     hw_common_arch_libs += {target_base_arch: lib}
+   endif
+ endforeach
+diff --git a/hw/arm/meson.build b/hw/arm/meson.build
+index 5098795f61d..8e3bf495dbf 100644
+--- a/hw/arm/meson.build
++++ b/hw/arm/meson.build
+@@ -8,7 +8,7 @@ arm_common_ss.add(when: 'CONFIG_HIGHBANK', if_true: files('highbank.c'))
+ arm_common_ss.add(when: 'CONFIG_INTEGRATOR', if_true: files('integratorcp.c'))
+ arm_common_ss.add(when: 'CONFIG_MICROBIT', if_true: files('microbit.c'))
+ arm_common_ss.add(when: 'CONFIG_MPS3R', if_true: files('mps3r.c'))
+-arm_common_ss.add(when: 'CONFIG_MUSICPAL', if_true: [pixman, files('musicpal.c')])
++arm_common_ss.add(when: 'CONFIG_MUSICPAL', if_true: files('musicpal.c'))
+ arm_common_ss.add(when: 'CONFIG_NETDUINOPLUS2', if_true: files('netduinoplus2.c'))
+ arm_common_ss.add(when: 'CONFIG_OLIMEX_STM32_H405', if_true: files('olimex-stm32-h405.c'))
+ arm_common_ss.add(when: 'CONFIG_NPCM7XX', if_true: files('npcm7xx.c', 'npcm7xx_boards.c'))
+-- 
+2.49.0
 
-Yes, that's exactly my point. It's up to you if it's really necessary :-).
-
-> > 
-> >> +}
-> >> +
-> > 
-> > [snip]
-> > 
-> >> +static void ram_block_attribute_psm_register_listener(GenericStateManager *gsm,
-> >> +                                                      StateChangeListener *scl,
-> >> +                                                      MemoryRegionSection *section)
-> >> +{
-> >> +    RamBlockAttribute *attr = RAM_BLOCK_ATTRIBUTE(gsm);
-> >> +    PrivateSharedListener *psl = container_of(scl, PrivateSharedListener, scl);
-> >> +    int ret;
-> >> +
-> >> +    g_assert(section->mr == attr->mr);
-> >> +    scl->section = memory_region_section_new_copy(section);
-> >> +
-> >> +    QLIST_INSERT_HEAD(&attr->psl_list, psl, next);
-> >> +
-> >> +    ret = ram_block_attribute_for_each_shared_section(attr, section, scl,
-> >> +                                                      ram_block_attribute_notify_shared_cb);
-> >> +    if (ret) {
-> >> +        error_report("%s: Failed to register RAM discard listener: %s", __func__,
-> >> +                     strerror(-ret));
-> > 
-> > There will be 2 error messages: one is the above, and another is from
-> > ram_block_attribute_for_each_shared_section().
-> > 
-> > Could we just exit to handle this error?
-> 
-> Sure, will remove this message as well as the below one.
-
-   if (ret) {
-       error_report("%s: Failed to register RAM discard listener: %s", __func__,
-                    strerror(-ret);
-       exit(1);
-   }
-
-I mean adding a exit() here. When there's the error, if we expect it not to
-break the QEMU, then perhaps warning is better. Otherwise, it's better to
-handle this error. Direct exit() feels like an option.
-
-Thanks,
-Zhao
-
-> > 
-> >> +    }
-> >> +}
-> >> +
 
