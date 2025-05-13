@@ -2,81 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ACABAB5519
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 14:43:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5873AAB5522
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 14:45:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEoxx-0002pi-LH; Tue, 13 May 2025 08:42:38 -0400
+	id 1uEp0P-0005Tz-DG; Tue, 13 May 2025 08:45:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uEoxj-0002fN-Ox
- for qemu-devel@nongnu.org; Tue, 13 May 2025 08:42:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uEoxd-0000Hu-Ce
- for qemu-devel@nongnu.org; Tue, 13 May 2025 08:42:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747140134;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=VgHGMLPQICELdIKohFxpnm4aLvWvct1m551lpryXFQs=;
- b=RPc28cmqjIC8LevJeL/JZo65scfL+W7DEnaFCECpXXFs3tJ3HUEchOl6khAs3kfGukTm/7
- gavzWBIiA6mI4bUH7HbrAuzJrMvZ4U3zVymibfZ8EcpdvTtAOw2p/sA3zjpO1mB2qEzKBJ
- ZugHkVdU0aMtgjmoSAG8EljigTSGzys=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-460-PNaNUxofNJOirhBHVEewlw-1; Tue,
- 13 May 2025 08:42:11 -0400
-X-MC-Unique: PNaNUxofNJOirhBHVEewlw-1
-X-Mimecast-MFC-AGG-ID: PNaNUxofNJOirhBHVEewlw_1747140130
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 1112B19560A7; Tue, 13 May 2025 12:42:10 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.110])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CC6DB1953B82; Tue, 13 May 2025 12:42:00 +0000 (UTC)
-Date: Tue, 13 May 2025 13:41:52 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [PATCH 08/10] qapi: Make CpuModelExpansionInfo::deprecated-props
- optional and generic
-Message-ID: <aCM-ECjLAPjr5ITz@redhat.com>
-References: <20250508135816.673087-1-berrange@redhat.com>
- <20250508135816.673087-9-berrange@redhat.com>
- <87r00sd6sv.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <weifeng.liu.z@gmail.com>)
+ id 1uEp0C-0005Nu-85
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 08:44:57 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <weifeng.liu.z@gmail.com>)
+ id 1uEp05-0000TL-T0
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 08:44:55 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-73712952e1cso5475418b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 13 May 2025 05:44:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1747140287; x=1747745087; darn=nongnu.org;
+ h=mime-version:user-agent:content-transfer-encoding:references
+ :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=30nM6y+HW1Zl6sJjnOuhtlFcxyZxgvEMvZRIk4Nvlps=;
+ b=Ex/tHahXTSEI93vwCHFoQO2EbtRBGGtt5IMiZjcMl2P7wG0jAKyAQsY2JzoOD0NZP9
+ Emoby51YN2EeNHUDdeT380QZglGvsmzDdfngx5Hv3JqS0So+8OPE9byv5TQmnf3Eiuvy
+ RP1vVErFrYoDrJMgIjwPqQJzRuLwqzrEQwn08RL69vMuE8LEI1tuNLfEioTB11iavQNu
+ 0acd3e3QxQxw8RBnYnCRja7GFyRqkYLJfgsBETDRpYxhGvO7Q4BkBGVHM6A4AIRbAJ9B
+ mtQtvklQ/iMZWJAw16qh5TFxaMqBfYL/xUa0qfXuuSGldW08PQligDn78d1dfpoNG7u7
+ 7qtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747140287; x=1747745087;
+ h=mime-version:user-agent:content-transfer-encoding:references
+ :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=30nM6y+HW1Zl6sJjnOuhtlFcxyZxgvEMvZRIk4Nvlps=;
+ b=V3636QlcsfMegSeiS0if5lbxWfXUqHApmsXZKEXgWGuhafWO4BB/A8Nq2Ej1cgB8h+
+ 7mMADkvDx/ZLRXtHtTygpgcFSfw8KuHItlZ4A5eLUrM+i0XxSjOOuN8s3dmmtzM95oFO
+ bVpmu97jFzcPtT6eAsKSrwcZm3h/xoHtwezUf/PKlMSLPFbQZBA4MEuoWLyKchhSC4fR
+ n2fpEi68g3xCwsyKy4HPryYCnRR5E+nbPrusNvnTGIEl2dz94zoXliTPM56CiJbf3aVr
+ 2Bqy7tYd0nNm4/F/7ldH+DcqFNy6OtTSy8V44C6WcsiKzg96wPTsqLRclBOffG02XZUP
+ a2Lw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXrSFk6E9VFRpRLMg275rt0swOCAPINXdlilAwYl6L5hqogr8nsCGB29M/4h44pm8ClQrcy2YaCJhl3@nongnu.org
+X-Gm-Message-State: AOJu0Yzoq/o5kdxy+SDK5bTAxOrKQxNuw+31LeTbyLWKFDUMzB285vhq
+ ds+fuTl/9/n5a4Vzu0pKcriXVnx7ygHGaJ/jS1u1cvfRZ0RfF60F8J1QNupf/Zg=
+X-Gm-Gg: ASbGnctBVYpkYxW3Jm6M69OYGgnz/HJC86uCxfPBZSDKux2qpFK5TnQCHUKLBPXpSeH
+ LFOxexJBZApii9kjY+6kJMnSOPPG0mDRZLl3mdVdOK07qIp8ThsoJR5f0+XTks+AQbqLKQHwOiP
+ qAEyPqxYz9TnCONCh5OVQHRGvAutsLQ2+2advlFV4oeOSYZGqbflWZpt+ywPQmKEaZxbLbtKEgA
+ a6qoUnM0EhUcUtjtoxDGIgKAVc8Vpg9+mgRXG65/RwAOJrQkPmy8FWLfm24hojbhoZ1uw4l8j1w
+ muToXg3klc4O1buVIrCSLXvRK7eWGz9IUxtOYsDmsdcIfwm5wiKlDnDfSJBHZBwEtSZc+89F0q0
+ =
+X-Google-Smtp-Source: AGHT+IHUmDONQ0TNQh6LIqxk4FiyU/P/nk3RD1g0QqoUbO53HMHve+MCiujYExotgKftmjD/UbM+Mw==
+X-Received: by 2002:a05:6a20:6f0e:b0:1f5:97c3:41b9 with SMTP id
+ adf61e73a8af0-215abab9166mr23340621637.5.1747140287447; 
+ Tue, 13 May 2025 05:44:47 -0700 (PDT)
+Received: from [192.168.31.160] ([117.143.176.130])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-74237704619sm7545043b3a.20.2025.05.13.05.44.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 13 May 2025 05:44:46 -0700 (PDT)
+Message-ID: <014499c850a828e2e8b0b55376c36b9f8e7a7c1e.camel@gmail.com>
+Subject: Re: [PATCH 8/9] ui/gtk-gl-area: Render guest content with padding
+ in fixed-scale mode
+From: Weifeng Liu <weifeng.liu.z@gmail.com>
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: "Kim, Dongwon" <dongwon.kim@intel.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+Date: Tue, 13 May 2025 20:44:24 +0800
+In-Reply-To: <66a308eb-6ab3-c51c-bcdb-fe5c79811914@eik.bme.hu>
+References: <20250511073337.876650-1-weifeng.liu.z@gmail.com>
+ <20250511073337.876650-9-weifeng.liu.z@gmail.com>
+ <PH8PR11MB6879607C14D7E5BB7FCDAAD1FA96A@PH8PR11MB6879.namprd11.prod.outlook.com>
+ <ffa687c30c11429767d48c9d1358c729d1e49e8f.camel@gmail.com>
+ <66a308eb-6ab3-c51c-bcdb-fe5c79811914@eik.bme.hu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1 (3.56.1-1.fc42) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87r00sd6sv.fsf@pond.sub.org>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.549,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=weifeng.liu.z@gmail.com; helo=mail-pf1-x42e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,77 +103,96 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 13, 2025 at 02:38:40PM +0200, Markus Armbruster wrote:
-> Copying my review from the initial posting:
-> 
-> Daniel P. Berrangé <berrange@redhat.com> writes:
-> 
-> > From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> >
-> > We'd like to have some unified QAPI schema. Having a structure field
-> > conditional to a target being built in is not very practical.
-> >
-> > While @deprecated-props is only used by s390x target, it is generic
-> > enough and could be used by other targets (assuming we expand
-> > CpuModelExpansionType enum values).
-> >
-> > Let's always include this field, regardless of the target, but
-> > make it optional.
-> >
-> > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> > ---
-> >  qapi/machine-target.json | 7 +++----
-> >  1 file changed, 3 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/qapi/machine-target.json b/qapi/machine-target.json
-> > index 541f93eeb7..3b109b4af8 100644
-> > --- a/qapi/machine-target.json
-> > +++ b/qapi/machine-target.json
-> > @@ -244,19 +244,18 @@
-> >  #
-> >  # @model: the expanded CpuModelInfo.
-> >  #
-> > -# @deprecated-props: a list of properties that are flagged as
-> > +# @deprecated-props: an optional list of properties that are flagged as
-> >  #     deprecated by the CPU vendor.  The list depends on the
-> >  #     CpuModelExpansionType: "static" properties are a subset of the
-> >  #     enabled-properties for the expanded model; "full" properties are
-> >  #     a set of properties that are deprecated across all models for
-> > -#     the architecture.  (since: 9.1).
-> > +#     the architecture.  (since: 10.1 -- since 9.1 on s390x --).
-> >  #
-> >  # Since: 2.8
-> >  ##
-> >  { 'struct': 'CpuModelExpansionInfo',
-> >    'data': { 'model': 'CpuModelInfo',
-> > -            'deprecated-props' : { 'type': ['str'],
-> > -                                   'if': 'TARGET_S390X' } },
-> > +            '*deprecated-props' : { 'type': ['str'] } },
-> 
-> Make this
-> 
->                '*deprecated-props' : ['str'] },
-> 
-> please.
-> 
-> When I see "optional array", I wonder about the difference between
-> "absent" and "present and empty".  The doc comment doesn't quite explain
-> it.  I figure "present and empty" means empty, while "absent" means we
-> don't know / not implemented.
-> 
-> Is the difference useful?
+Hi,
 
-I'm doubtful that the difference is useful.
+On Tue, 2025-05-13 at 11:52 +0200, BALATON Zoltan wrote:
+> On Tue, 13 May 2025, Weifeng Liu wrote:
+> > Hi,
+> >=20
+> > On Tue, 2025-05-13 at 00:37 +0000, Kim, Dongwon wrote:
+> > > Hi,
+> > >=20
+> > > > Subject: [PATCH 8/9] ui/gtk-gl-area: Render guest content with
+> > > > padding in
+> > > > fixed-scale mode
+> > > >=20
+> > > > In fixed-scale mode (zoom-to-fit=3Dfalse), we expect that scale
+> > > > should not
+> > > > change, meaning that if window size is larger than guest surface,
+> > > > padding is
+> > >=20
+> > > # @zoom-to-fit: Zoom guest display to fit into the host window.=C2=A0=
+ When
+> > > #=C2=A0=C2=A0=C2=A0=C2=A0 turned off the host window will be resized =
+instead.=C2=A0 In case
+> > > the
+> > > #=C2=A0=C2=A0=C2=A0=C2=A0 display device can notify the guest on wind=
+ow resizes
+> > > #=C2=A0=C2=A0=C2=A0=C2=A0 (virtio-gpu) this will default to "on", ass=
+uming the guest will
+> > > #=C2=A0=C2=A0=C2=A0=C2=A0 resize the display to match the window size=
+ then.=C2=A0 Otherwise it
+> > > #=C2=A0=C2=A0=C2=A0=C2=A0 defaults to "off".=C2=A0 (Since 3.1)
+> > >=20
+> > > Current definition says the host window should be resized to fit the
+> > > size of the guest surface instead. Wouldn't padding accommodate this?
+> > >=20
+> >=20
+> > Yeah, window will be resized to fit the size of guest surface in fixed-
+> > scale mode. However, users are still allowed to resize the window to a
+> > larger size and this is case where padding is required, otherwise the
+> > fixed-scale assumption is broken. In fact, gl=3Doff mode employs paddin=
+g
+> > to preserve scale already but gl=3Don mode doesn't follow this behavior=
+,
+> > which, IMO, is a defect that this patch is trying to correct.
+>=20
+> I think current set of switches is not enough to describe all possible=
+=20
+> configs and this leads to inconsistency between display backends. Each=
+=20
+> display backend has different idea on how zoom-to-fit should work now.=
+=20
+> Maybe we need a new keep-aspect=3Doff or similar option to make it explic=
+it=20
+> then these can be set independently to decide if a full-screen zoom-to-fi=
+t=20
+> window should be stretched or padded. Currently it behaves differently=
+=20
+> depending on display backend or even options of one display backend as yo=
+u=20
+> say above. Fixing just one place won't solve the problem with other=20
+> backends so maybe separating this option into a new one would end this=
+=20
+> inconsistency. I got requests from people for both padded or stretched=
+=20
+> behaviour so it seems some prefer one or the other and just zoom-to-fit=
+=20
+> can't set both.
+>=20
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Thank you for pointing out the demand for both stretched and padded
+behavior =E2=80=94 allowing users to choose their preferred display makes a=
+ lot
+of sense. With the changes in this patch set, we can at least ensure
+that all GTK-based backends behave consistently with regard to aspect
+ratio. I=E2=80=99ll follow up with a separate patch set to introduce the ne=
+w
+keep-aspect=3Doff (or similar) option you suggested.
 
+By the way, I=E2=80=99ve also been working on a =E2=80=9Cscale=E2=80=9D opt=
+ion to let users
+specify an exact zoom level. I deliberately left it out of this patch
+set because I wanted to keep its scope narrowly focused on refactoring.
+Once this set is merged, I=E2=80=99ll submit the new patch set with these
+changes.
+
+Best regards,
+Weifeng
+
+> Regards,
+> BALATON Zoltan
 
