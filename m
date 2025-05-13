@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A7C6AB53A6
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 13:16:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91609AB53AC
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 13:18:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEncM-000747-Qy; Tue, 13 May 2025 07:16:15 -0400
+	id 1uEndY-0000xw-Uw; Tue, 13 May 2025 07:17:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uEncH-0006va-Hv
- for qemu-devel@nongnu.org; Tue, 13 May 2025 07:16:11 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uEndR-0000tL-TT
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 07:17:22 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uEncF-0006oB-SO
- for qemu-devel@nongnu.org; Tue, 13 May 2025 07:16:09 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-43cfba466b2so62247185e9.3
- for <qemu-devel@nongnu.org>; Tue, 13 May 2025 04:16:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uEndQ-0006wJ-9c
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 07:17:21 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-442ccf0e1b3so63225625e9.3
+ for <qemu-devel@nongnu.org>; Tue, 13 May 2025 04:17:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747134966; x=1747739766; darn=nongnu.org;
+ d=linaro.org; s=google; t=1747135038; x=1747739838; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=9j+grCFN2YLTvFGeoAhWMRZ/PDA3UQbbHpvz0Ebxvpo=;
- b=jkuVbq09hWA9SK0ie/DjaeSmatK5w9JyU9jHIlO0Y+8zPjnO8WoMCt3vBjrobDlk9J
- lraevGF/iOMdPGpi4zIdHQnKT0LL8jZPMeeKM1ih6xOz15N/TFsQ+tVz9viOQcfwsGdT
- dSHMn3ODsU41AqRzRuS4HHp841+GraPYVHI7PB+1GJQ/+mtud8pTX3jF7iliaqHXl79p
- jpvI9jx6B79tq9uMudkvUC7cx8UFNfY98l5xKuFKYrsRRgocosvfu1TyR41/R3GfEWCJ
- i4PzAjvRE/hs5wYQG6UTH6W+MO1RD1NVDc6xd91ZmqUMpmfEZb1QzIjKIfpkIfUKe7oQ
- BH7A==
+ bh=of2UgCTXvLgTa0aXpiAXjOZGoG/s2RbBRQPK5Qn2GtQ=;
+ b=MHqiyIOW5PcvUOu2+rlQk1c3VTKKv4FOnZF2xkrhfNKNQBLlPZiGL2HQt7tXvGLhHV
+ iz8eGb145t6uL0Wo+trsuKdwApTwmw+5baBS8Z7x8v3ihSiSzYI6wwMc0WywIKy+CwOi
+ Ck3kPM4Src/5rQxNQzFtaMB03E4d6R1NWTpi90sZMm3dKcVMEPC5VMJ3MqlatzG2YXmq
+ 1TIrHFC5smavO78/1gccXIAzyCYiggwUhfBkRPCAyrV/tMjJvv2g24XaQAQif6R7mJxe
+ mROw6/Wp76SkXgUKWM00bV4r+S2RPw+nlp7uu6JvEJ2MOYS/PHRZlNYnICTPunWLh38q
+ Ryzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747134966; x=1747739766;
+ d=1e100.net; s=20230601; t=1747135038; x=1747739838;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9j+grCFN2YLTvFGeoAhWMRZ/PDA3UQbbHpvz0Ebxvpo=;
- b=i35bNF/Y4oXZwhSeiIaTmF/aKzK7YHRbpg9u2Cb+m9ZKrMCtvOAljKDSVrLJmEtU2j
- B1c5mrZpSN9DiqpnZXbMldJmFo1RA4J/23NbaimA7lBv8zXgwcTbyFw3yhMaC6HRIM4Q
- rm6vKMasPJwtoeEeFARBJFAgtaynto6qOVIPMH2vYs4oBvyJqpD5qssJWo1HFid7yycJ
- JR6TZ++A+5So7KSfZDX5KrdnGbjPAqAH+mB7XaW6msmoChp9pXIuwp0nfgUQ6KyI0/7s
- 6DG3Sk4cPOwXJ314bWYudsx3L5xHzQoUpxUSEE0GZm37SH9kzf63FaurY9EHPgzXZe95
- bs+Q==
-X-Gm-Message-State: AOJu0YwQ++4+RcR0JqFJcyXVzodud/IFM86weHoKZoGEyKCXH2xzk2XI
- HYljp8Evg62nftrX1hLryvO51PY1AW8ma9892wQixarglOMiCdtlhsRbTgiWq0w=
-X-Gm-Gg: ASbGncuT6uIYOWE80PAXPa2MCiYVZ2sdgnhZlFplOrYLFA0Knmgcl4tlSksU6GW11MW
- K2YgvZPQBiSRpjup4F26eqop0KWQNYqbLsBzESwZw4FrCbOQRgtyaKsvPCDHixzpx7TkG7fnWre
- lp9SPq+0W4FDEXFAk7RxjL9xlNfxDy1PU0GRLk95V8sjyziu+f0S9cG7vZ97FzGbLyJH+l7061t
- 4SKxIn+krxyIKq3ogDetpeAjIciGclGdFhZyt0fH6fHRxyJwfUUJRKvmV2jqQALD4Awdns++wVS
- NEAPupgrCiZlLxyh2w3E6hDhL5clVF4dfaqFaLTixz+khPNoDe0CCbMNSYh7Wt77aMOXY4S/Lvj
- JChzxfaY+2uvl
-X-Google-Smtp-Source: AGHT+IGmD7d/jAN7Fjk8DsSW+LYm+ArV9QCgUlEqxO57dl4eJZyrAtkDcMuM0nM46wnmIMBrZkwfJA==
-X-Received: by 2002:a05:600c:37cd:b0:43d:fa59:be38 with SMTP id
- 5b1f17b1804b1-442d6ddf676mr124720185e9.32.1747134966150; 
- Tue, 13 May 2025 04:16:06 -0700 (PDT)
+ bh=of2UgCTXvLgTa0aXpiAXjOZGoG/s2RbBRQPK5Qn2GtQ=;
+ b=QtkGnqZ7WneYQQ4NbZFTfRU2YswupTfjYM3Ed4VZi6QjkM0YnObafoUNqptsg7S+r9
+ qB55dJVbe+o3neciZzTc29bW45P0fiUOcU9t4AE7UpOXamnAB2ecVGGJUgUoIzQ+vpcy
+ V2OTJab2j91UMbl2+CtGOaT9Sdxb7WNYyVugdaKX81cIXzOdZeC0WpkAoH0DR7bk1+YW
+ vDgcOGMfzrpeM01VtKxamto6XnMRzqqY9Ky+lgfQQ80JFffODQ7d1Xm/VgYVf7FFUzpU
+ JpmVNBQUDVV0BqfHWI2TmcHcM01Rf7xNXV5wyjNnBeKFtbbe4wkAeN802NHYyrf+H+2/
+ wp0g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXrflcQf5R52a3W9CBJC6jncGbc0rhf2rJFW4aMesrQofxvrrqZ33qs9pAWMKXH+YU53BwcgJdKN1L8@nongnu.org
+X-Gm-Message-State: AOJu0Yw0UBcKpyziOrerPIMLSvRw0KmUrvSMrRp2mfOz5nY0yZ5OD/iA
+ okAuaZxlfoJNQbVAOH3r55NHnfa+pVf0x7JpK8HDvkbSU3ih7Ez9QjK3A1wr5+A=
+X-Gm-Gg: ASbGncsSS/S9LzHzMeC+9bVTslaAJZZ280AgFyFSvm5iowVG81SOx1u/22Pvjx73prq
+ ttW3RNPwSf3hNXVTKz7WRTFPSVqma3QHM7BLnq5oShCU0wjsUnndn+Abr/tfe0/gRP4+cTZ7i43
+ F43n3e1fOhw+SEQWRkj1Kp0Lv+y8SyPm6lxgplwHYHKTdB3zrY2QKVAbRSHd8SXsRqeSUq+EpNQ
+ ElTv8dFcHBS+fsk4nuX5yZYnNbCniQzEfMc4DbXIa7MFcMIbvdbfyJidpPhQfJehuJjr0HN19nm
+ CwymE+LDilzxLv/riKHsPPQCYpXrib2sB2KiPjA2Lb3GcgUP10fbJ8oHmZMOtI8tV67sRAjVzmi
+ s1grn3NuMsFOU
+X-Google-Smtp-Source: AGHT+IFM7cFYHJRk2aHFsAkOMIRrK3/kt6YDlsnLVo1TC3ZDPZhdPNDnZ6KPTeZirJ2CX3sPZwUKow==
+X-Received: by 2002:a05:6000:1889:b0:3a2:377:500c with SMTP id
+ ffacd0b85a97d-3a203775382mr8284545f8f.16.1747135038606; 
+ Tue, 13 May 2025 04:17:18 -0700 (PDT)
 Received: from [10.61.1.197] (110.8.30.213.rev.vodafone.pt. [213.30.8.110])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442ebdc362fsm16637015e9.1.2025.05.13.04.16.05
+ ffacd0b85a97d-3a1f58f2b02sm16071599f8f.51.2025.05.13.04.17.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 13 May 2025 04:16:05 -0700 (PDT)
-Message-ID: <a06e389a-1d72-4f33-bae6-7b13c0ac6612@linaro.org>
-Date: Tue, 13 May 2025 12:16:04 +0100
+ Tue, 13 May 2025 04:17:18 -0700 (PDT)
+Message-ID: <5617a3fc-3178-4661-a179-aca628cdfcb9@linaro.org>
+Date: Tue, 13 May 2025 12:17:17 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] ui/vnc.c: replace big endian flag with byte order
- value
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
- <marcandre.lureau@redhat.com>
+Subject: Re: [PATCH 3/3] ui/vnc: fix tight palette pixel encoding for 8/16-bpp
+ formats
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
 References: <20250513100819.1179249-1-berrange@redhat.com>
- <20250513100819.1179249-2-berrange@redhat.com>
- <6c9f7141-8b2e-4b58-9ade-134a7289cff6@linaro.org>
- <caf9f1e2-fe92-48bb-92d9-17e5a5f61476@linaro.org>
- <aCMpU_n2GK1_a8UJ@redhat.com>
+ <20250513100819.1179249-4-berrange@redhat.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <aCMpU_n2GK1_a8UJ@redhat.com>
+In-Reply-To: <20250513100819.1179249-4-berrange@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,43 +102,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/5/25 13:13, Daniel P. Berrangé wrote:
-> On Tue, May 13, 2025 at 12:11:05PM +0100, Philippe Mathieu-Daudé wrote:
->> On 13/5/25 13:08, Philippe Mathieu-Daudé wrote:
->>> On 13/5/25 12:08, Daniel P. Berrangé wrote:
->>>> From: Daniel P. Berrangé <berrange@redhat.com>
->>>>
->>>> It will make it easier to do certain comparisons in future if we
->>>> store G_BIG_ENDIAN/G_LITTLE_ENDIAN directly, instead of a boolean
->>>> flag.
->>>>
->>>> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
->>>> ---
->>>>    ui/vnc-enc-tight.c | 2 +-
->>>>    ui/vnc-enc-zrle.c  | 2 +-
->>>>    ui/vnc-jobs.c      | 2 +-
->>>>    ui/vnc.c           | 6 +++---
->>>>    ui/vnc.h           | 2 +-
->>>>    5 files changed, 7 insertions(+), 7 deletions(-)
->>>
->>>
->>>> diff --git a/ui/vnc.h b/ui/vnc.h
->>>> index acc53a2cc1..f2a627dcdf 100644
->>>> --- a/ui/vnc.h
->>>> +++ b/ui/vnc.h
->>>> @@ -323,7 +323,7 @@ struct VncState
->>>>        VncWritePixels *write_pixels;
->>>>        PixelFormat client_pf;
->>>>        pixman_format_code_t client_format;
->>>> -    bool client_be;
->>>> +    int client_bo; /* G_LITTLE_ENDIAN or G_BIG_ENDIAN */
->>
->> 'bo' = 'big order'?
+On 13/5/25 12:08, Daniel P. Berrangé wrote:
+> From: Daniel P. Berrangé <berrange@redhat.com>
 > 
-> bo == byte order.
+> When sending a tight rectangle with the palette filter, if the client
+> format was 8/16bpp, the colours on big endian hosts are not set as
+> we're sending the wrong bytes. We must first cast the 32-bit colour
+> to a 16/8-bit value, and then send the result.
+> 
+> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> ---
+>   ui/vnc-enc-tight.c | 12 ++++++++----
+>   1 file changed, 8 insertions(+), 4 deletions(-)
 
-Oh of course. Since no GLib endian enum, preferably:
-
-   int client_bo; /* byte order: G_LITTLE_ENDIAN or G_BIG_ENDIAN */
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
