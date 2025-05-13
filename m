@@ -2,76 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54814AB4A1A
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 05:22:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F4B9AB4BD0
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 08:16:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEgDU-0006Lx-PM; Mon, 12 May 2025 23:22:04 -0400
+	id 1uEiuR-0006wn-0k; Tue, 13 May 2025 02:14:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uEgDF-0006Lc-HF; Mon, 12 May 2025 23:21:49 -0400
-Received: from mgamail.intel.com ([192.198.163.17])
+ (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
+ id 1uEiuM-0006vs-W9
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 02:14:31 -0400
+Received: from mailout08.t-online.de ([194.25.134.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uEgDC-0004r0-S4; Mon, 12 May 2025 23:21:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747106507; x=1778642507;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=1SxtCsvQm+6GQra5FO8dY+JeqK+tU2JEpNuEls3/v48=;
- b=MswjL3wt+fApYpsM4OyRq2Bk1J/D43ciGGmOxop+f4YvIF+4jPH6hqwc
- JeNI7KsJ778Iygviic5eQs6X7nKzNOYBjpz3zC0rPEOhfCnFvM6Nrd1mp
- biOVjxSrD9+vMaCexqpbtVfVkyJpSZTYj5zHoDaBsnWitwSLrPXPmdn3G
- U6WxtHMlqKT0IG4lH+eKAJWRImiKoePWXKrGyaeIb//sg40lvWT4La9CT
- 2LX7cP4ciPpNDlH4bm22mRNU0KIdo7+xGCKDdg5Mh0ktaSqgh6HsjzOio
- dmx3PnZeBl8i2ikZND/UsOG0BJP7iD8lCtdUYylmF1rwPjp8RdzrSfHS3 A==;
-X-CSE-ConnectionGUID: xlFAYbZ8QxWn5G6yhUuSjA==
-X-CSE-MsgGUID: 86Nz985rSne8yfW/IalGuQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11431"; a="48856755"
-X-IronPort-AV: E=Sophos;i="6.15,284,1739865600"; d="scan'208";a="48856755"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 May 2025 20:21:44 -0700
-X-CSE-ConnectionGUID: RFdNaYxpTY67TN+0Me7LuQ==
-X-CSE-MsgGUID: g2ct4n0oSwqWSlt+efelxA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,284,1739865600"; d="scan'208";a="168476532"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa002.jf.intel.com with ESMTP; 12 May 2025 20:21:41 -0700
-Date: Tue, 13 May 2025 11:42:44 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Michael Tokarev <mjt@tls.msk.ru>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: Igor Mammedov <imammedo@redhat.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Chuang Xu <xuchuangxclwt@bytedance.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>,
- Babu Moger <babu.moger@amd.com>, qemu-devel@nongnu.org,
- qemu-stable@nongnu.org, Guixiong Wei <weiguixiong@bytedance.com>,
- Yipeng Yin <yinyipeng@bytedance.com>
-Subject: Re: [PATCH 1/4] i386/cpu: Fix number of addressable IDs field for
- CPUID.01H.EBX[23:16]
-Message-ID: <aCK/tDklG64EZEw2@intel.com>
-References: <20250227062523.124601-1-zhao1.liu@intel.com>
- <20250227062523.124601-2-zhao1.liu@intel.com>
- <84c154b8-c4ab-4a51-8b27-48ec783e0758@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
+ id 1uEiuL-0000P6-00
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 02:14:30 -0400
+Received: from fwd72.aul.t-online.de (fwd72.aul.t-online.de [10.223.144.98])
+ by mailout08.t-online.de (Postfix) with SMTP id 9EA85B25;
+ Tue, 13 May 2025 08:14:23 +0200 (CEST)
+Received: from [192.168.211.200] ([84.175.230.13]) by fwd72.t-online.de
+ with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
+ esmtp id 1uEiu8-09XD9N0; Tue, 13 May 2025 08:14:16 +0200
+Message-ID: <5b633fd4-66da-42e4-b27b-6820801e6f85@t-online.de>
+Date: Tue, 13 May 2025 08:14:16 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <84c154b8-c4ab-4a51-8b27-48ec783e0758@tls.msk.ru>
-Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -58
-X-Spam_score: -5.9
-X-Spam_bar: -----
-X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.551,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/7] hw/audio/asc: fix SIGSEGV in asc_realize()
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+References: <d456c188-0463-4dc2-9178-469f840eaebe@t-online.de>
+ <20250511073846.8713-4-vr_qemu@t-online.de>
+ <cdb6ef37-11cf-4997-ac88-72e780cf1323@ilande.co.uk>
+Content-Language: en-US
+From: =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>
+In-Reply-To: <cdb6ef37-11cf-4997-ac88-72e780cf1323@ilande.co.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TOI-EXPURGATEID: 150726::1747116856-397F850E-1B9B026D/0/0 CLEAN NORMAL
+X-TOI-MSGID: f1dc4782-72e6-4553-b41b-53944e304550
+Received-SPF: pass client-ip=194.25.134.20; envelope-from=vr_qemu@t-online.de;
+ helo=mailout08.t-online.de
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,69 +70,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Paolo,
+Am 11.05.25 um 13:52 schrieb Mark Cave-Ayland:
+> On 11/05/2025 08:38, Volker Rümelin wrote:
+>
+>> AUD_open_out() may fail and return NULL. This may then lead to
+>> a segmentation fault in memset() below. The memset() behaviour
+>> is undefined if the pointer to the destination object is a null
+>> pointer.
+>>
+>> Add the missing error handling code.
+>>
+>> Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
+>> ---
+>>   hw/audio/asc.c | 7 +++++++
+>>   1 file changed, 7 insertions(+)
+>>
+>> diff --git a/hw/audio/asc.c b/hw/audio/asc.c
+>> index 18382ccf6a..03dee0fcc7 100644
+>> --- a/hw/audio/asc.c
+>> +++ b/hw/audio/asc.c
+>> @@ -12,6 +12,7 @@
+>>     #include "qemu/osdep.h"
+>>   #include "qemu/timer.h"
+>> +#include "qapi/error.h"
+>>   #include "hw/sysbus.h"
+>>   #include "hw/irq.h"
+>>   #include "audio/audio.h"
+>> @@ -653,6 +654,12 @@ static void asc_realize(DeviceState *dev, Error
+>> **errp)
+>>         s->voice = AUD_open_out(&s->card, s->voice, "asc.out", s,
+>> asc_out_cb,
+>>                               &as);
+>> +    if (!s->voice) {
+>> +        asc_unrealize(dev);
+>
+> I don't think it is ever right for a device to unrealize itself. If
+> the aim is to handle cleanup, then since s->mixbuf and s->silentbuf
+> are yet to be allocated by this point then I think you can simply call
+> error_setg() and return.
 
-Kindly ping. I think this series is still needed. Could you pls take
-a look at here?
+Hi Mark,
 
-Thanks,
-Zhao
+yes my aim was to handle cleanup. When calling asc_unrealize() I don't
+have to think about which steps are necessary. In this case I would have
+to call AUD_remove_card(&s->card). Therefore, I would like to keep my
+patch version.
 
-On Mon, May 12, 2025 at 12:32:31PM +0300, Michael Tokarev wrote:
-> Date: Mon, 12 May 2025 12:32:31 +0300
-> From: Michael Tokarev <mjt@tls.msk.ru>
-> Subject: Re: [PATCH 1/4] i386/cpu: Fix number of addressable IDs field for
->  CPUID.01H.EBX[23:16]
-> 
-> On 27.02.2025 09:25, Zhao Liu wrote:
-> > From: Chuang Xu <xuchuangxclwt@bytedance.com>
-> > 
-> > When QEMU is started with:
-> > -cpu host,migratable=on,host-cache-info=on,l3-cache=off
-> > -smp 180,sockets=2,dies=1,cores=45,threads=2
-> > 
-> > On Intel platform:
-> > CPUID.01H.EBX[23:16] is defined as "max number of addressable IDs for
-> > logical processors in the physical package".
-> > 
-> > When executing "cpuid -1 -l 1 -r" in the guest, we obtain a value of 90 for
-> > CPUID.01H.EBX[23:16], whereas the expected value is 128. Additionally,
-> > executing "cpuid -1 -l 4 -r" in the guest yields a value of 63 for
-> > CPUID.04H.EAX[31:26], which matches the expected result.
-> > 
-> > As (1+CPUID.04H.EAX[31:26]) rounds up to the nearest power-of-2 integer,
-> > it's necessary to round up CPUID.01H.EBX[23:16] to the nearest power-of-2
-> > integer too. Otherwise there would be unexpected results in guest with
-> > older kernel.
-> > 
-> > For example, when QEMU is started with CLI above and xtopology is disabled,
-> > guest kernel 5.15.120 uses CPUID.01H.EBX[23:16]/(1+CPUID.04H.EAX[31:26]) to
-> > calculate threads-per-core in detect_ht(). Then guest will get "90/(1+63)=1"
-> > as the result, even though threads-per-core should actually be 2.
-> > 
-> > And on AMD platform:
-> > CPUID.01H.EBX[23:16] is defined as "Logical processor count". Current
-> > result meets our expectation.
-> > 
-> > So round up CPUID.01H.EBX[23:16] to the nearest power-of-2 integer only
-> > for Intel platform to solve the unexpected result.
-> > 
-> > This change doesn't need to add compat property since it does not affect
-> > live migration between different versions of pc machines.
-> > 
-> > Cc: qemu-stable@nongnu.org
-> > Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-> > Acked-by: Igor Mammedov <imammedo@redhat.com>
-> > Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
-> > Signed-off-by: Yipeng Yin <yinyipeng@bytedance.com>
-> > Signed-off-by: Chuang Xu <xuchuangxclwt@bytedance.com>
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> 
-> Ping?
-> 
-> Is this series still needed ?
-> 
-> Thanks,
-> 
-> /mjt
+With best regards,
+Volker
+
+>
+>> +        error_setg(errp, "Initializing audio stream failed");
+>> +        return;
+>> +    }
+>> +
+>>       s->shift = 1;
+>>       s->samples = AUD_get_buffer_size_out(s->voice) >> s->shift;
+>>       s->mixbuf = g_malloc0(s->samples << s->shift);
+>
+>
+> ATB,
+>
+> Mark.
+>
+
 
