@@ -2,73 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F53AB55C7
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 15:17:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F25AAB544D
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 14:08:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEpUO-0002xb-ID; Tue, 13 May 2025 09:16:08 -0400
+	id 1uEoPl-0006v9-MC; Tue, 13 May 2025 08:07:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sunnyzhyy@qq.com>)
- id 1uEpUA-0002wu-3C; Tue, 13 May 2025 09:15:55 -0400
-Received: from out203-205-221-205.mail.qq.com ([203.205.221.205])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uEoPP-0006u3-Ub
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 08:06:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sunnyzhyy@qq.com>)
- id 1uEpQE-0004hB-P4; Tue, 13 May 2025 09:11:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
- t=1747141894; bh=WtCpsQDOXNPoZbwE8FLuwq0q20nvtAmJi3ziPV3rGzA=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References;
- b=qLt9pZMrdqqFnaiEMT6vRjdghh8b6IyT903Es3cR7C0ozcObgzqKILIXgk/VZWtEe
- Kdk1quTwCwt3elEMYzJadVEcufIN8YGgfP3lTPLpght9atdx9tvQ4nX7l7MFnBG0x+
- HirOpqOCqfziTq8oj+kDV8iiUZn0IN4XgN7oeKCc=
-Received: from localhost.localdomain ([117.147.34.74])
- by newxmesmtplogicsvrsza29-0.qq.com (NewEsmtp) with SMTP
- id 2DF956A9; Tue, 13 May 2025 21:11:31 +0800
-X-QQ-mid: xmsmtpt1747141891tugy34rgx
-Message-ID: <tencent_4312D7015D59B7B3D52642DA387A00796C06@qq.com>
-X-QQ-XMAILINFO: N/WmRbclY25GEK5JRVY3AjKCNbe2T4BRW+6jgcIF0n0KYtUIoS0djrGMLbdhtO
- wEcak2KRVDw7sebCXcanpGkMekGiucMW7rZes9Y9X1gaM9OKpxHLE/JifJ8rYraoSfbeyk3K4EKS
- dn4CPpZu1xe6Ozr1uSRQFbh/JuQ0GL8JNk5yfC0gMkyf2vvUupQ1uxOombQK06s/Xop2PNJMgURu
- 5H2M4nmw/GBOK3Ni0cQYSLkDuNBw/X425gwW4CBlcCda//4kVAb/HkDlFhgV8ssVcd4jsaL35cFV
- QK0ABG9cf4yU0pgT1yvNzgedk9KjO/ZNML53GAv+5S3XyshqZagzSA6yErb/+XOFDjo9uErX5Scy
- hGvvxgwKx71RqwvXBUeSgYqY1ID485yM0CrWWl7dAIMK1lHp8/UJnaTZTaai2w5jd5BjxDnd4t2S
- 6UfYChjw4OihP/pD0abwS3pWi5M9ERwl7cHkF/4kFgAyxkzThkSayckRmsYO7LHqznuLGprCYGL8
- L3ADk76CBdTJk4ysVFVs4s8MxjE8X0XusHa7i4z//FVon4EVIuGBpUY3gb2XhSJTjql1qreXel9E
- /fGyGUmZdJqJGrQ5zYQZJAkYydzLSet4FY2FOg1prZT+Zu1yiZZ/ZEJypy3IpJlb4ns5tFZgjUF2
- sZoqGeU+dU0aAu/hh5FDnyypxmmgIDZnFR9rbwfAXKWXJSsmGE05W+57KeugSpaWIkDd5iqeR+MS
- Mg43ERYqXEU7wAU1EqggQZx0z7LC2aq2xpwNLv/c2KbOcu75sNztCYUKZHcK14qiJm6FeuhwCUVq
- 4TmJQ1i/dsNSzvaeAsj/5gurlVdyOyAbFa1vuqvI7NANyiuG5pqTVkwpUwXj0OhZPeCAUw5W9B7G
- kQ6JCBc7/EgQdcWOoEGdX5ag2vh5ZlHI/BJWyUiyspQSXpDOJDST+o7B49j1Y0Y/ySDba6MLL6DO
- GynV6aQhWjMu6Zjlq944vR5zxsnCBRwxlLx1Cz2HBJQ93X3lOf1FVw7nagZqaBjE995om4TAVbin
- XXNwV86qp/Raxd+1wetFBwa0/gqS3hhql3409a6S+9gW+KQ/Zsa4yOQNKKL74pgqiXoai/hA==
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
-From: Sunny Zhu <sunnyzhyy@qq.com>
-To: eblake@redhat.com
-Cc: hreitz@redhat.com, jsnow@redhat.com, kwolf@redhat.com,
- qemu-block@nongnu.org, qemu-devel@nongnu.org, stefanha@redhat.com,
- sunnyzhyy@qq.com, vsementsov@yandex-team.ru
-Subject: Re: [PATCH v4 10/13] mirror: Skip pre-zeroing destination if it is
- already zero
-Date: Sat,  3 May 2025 08:51:35 +0800
-X-OQ-MSGID: <20250503005135.49627-1-sunnyzhyy@qq.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250509204341.3553601-25-eblake@redhat.com>
-References: <20250509204341.3553601-25-eblake@redhat.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uEoPK-0004Jw-Nw
+ for qemu-devel@nongnu.org; Tue, 13 May 2025 08:06:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747138007;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=GIYdh6aj0ntYCjyEH1vNNlmdCgzEXnaaUKLyoGaZJMk=;
+ b=gfB7NsXzFMn+/+HpG8IZkIWswIbEnrHwpgKc8eJKWwzg60GxbtjV1AnEvsDyxe9R4bq39u
+ AgtzRUMuRp3jR92KdFgeecXWkk6GQ3u21WUP02ZBbY6LfuLG26Mrit4ElQvusadnzodDhj
+ DTKSlGcAW+GMBTip5iV2e7hMx2LO6W4=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-65-4wU0s_3LMC2FA9cj6bozwA-1; Tue,
+ 13 May 2025 08:06:44 -0400
+X-MC-Unique: 4wU0s_3LMC2FA9cj6bozwA-1
+X-Mimecast-MFC-AGG-ID: 4wU0s_3LMC2FA9cj6bozwA_1747138003
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3363E1955D45; Tue, 13 May 2025 12:06:43 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.27])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DE5B1180045B; Tue, 13 May 2025 12:06:42 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 3728921E66C3; Tue, 13 May 2025 14:06:40 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org,  Peter Maydell <peter.maydell@linaro.org>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PATCH 02/10] qapi: expand docs for SEV commands
+In-Reply-To: <20250508135816.673087-3-berrange@redhat.com> ("Daniel
+ P. =?utf-8?Q?Berrang=C3=A9=22's?= message of "Thu, 8 May 2025 14:58:08
+ +0100")
+References: <20250508135816.673087-1-berrange@redhat.com>
+ <20250508135816.673087-3-berrange@redhat.com>
+Date: Tue, 13 May 2025 14:06:40 +0200
+Message-ID: <8734d8emun.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=203.205.221.205; envelope-from=sunnyzhyy@qq.com;
- helo=out203-205-221-205.mail.qq.com
-X-Spam_score_int: 67
-X-Spam_score: 6.7
-X-Spam_bar: ++++++
-X-Spam_report: (6.7 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.549,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_FROM=0.001, HELO_DYNAMIC_IPADDR=1.951, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- RDNS_DYNAMIC=0.982, SORTED_RECIPS=2.499, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
-X-Spam_action: reject
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,51 +89,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 09, 2025 at 03:40:27PM -0500, Eric Blake wrote:
-> When doing a sync=full mirroring, we can skip pre-zeroing the
-> destination if it already reads as zeroes and we are not also trying
-> to punch holes due to detect-zeroes.  With this patch, there are fewer
-> scenarios that have to pass in an explicit target-is-zero, while still
-> resulting in a sparse destination remaining sparse.
-> 
-> A later patch will then further improve things to skip writing to the
-> destination for parts of the image where the source is zero; but even
-> with just this patch, it is possible to see a difference for any
-> source that does not report itself as fully allocated, coupled with a
-> destination BDS that can quickly report that it already reads as zero.
-> (For a source that reports as fully allocated, such as a file, the
-> rest of mirror_dirty_init() still sets the entire dirty bitmap to
-> true, so even though we avoided the pre-zeroing, we are not yet
-> avoiding all redundant I/O).
-> 
-> Iotest 194 detects the difference made by this patch: for a file
-> source (where block status reports the entire image as allocated, and
-> therefore we end up writing zeroes everywhere in the destination
-> anyways), the job length remains the same.  But for a qcow2 source and
-> a destination that reads as all zeroes, the dirty bitmap changes to
-> just tracking the allocated portions of the source, which results in
-> faster completion and smaller job statistics.  For the test to pass
-> with both ./check -file and -qcow2, a new python filter is needed to
-> mask out the now-varying job amounts (this matches the shell filters
-> _filter_block_job_{offset,len} in common.filter).  A later test will
-> also be added which further validates expected sparseness, so it does
-> not matter that 194 is no longer explicitly looking at how many bytes
-> were copied.
-> 
-> Signed-off-by: Eric Blake <eblake@redhat.com>
-> 
-> ---
-> 
-> v3: add exemption for "detect-zeroes":"unmap" on destination
-> v4: Rebase later in series, revise logic for pre-zeroing [Sunny], add
-> in python filter
-> ---
->  block/mirror.c                | 24 ++++++++++++++++--------
->  tests/qemu-iotests/194        |  6 ++++--
->  tests/qemu-iotests/194.out    |  4 ++--
->  tests/qemu-iotests/iotests.py | 12 +++++++++++-
->  4 files changed, 33 insertions(+), 13 deletions(-)
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-Reviewed-by: Sunny Zhu <sunnyzhyy@qq.com>
+> This gives some more context about the behaviour of the commands in
+> unsupported guest configuration or platform scenarios.
+>
+> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> ---
+>  qapi/misc-target.json | 43 ++++++++++++++++++++++++++++++++++++-------
+>  1 file changed, 36 insertions(+), 7 deletions(-)
+>
+> diff --git a/qapi/misc-target.json b/qapi/misc-target.json
+> index 5d0ffb0164..ae55e437a5 100644
+> --- a/qapi/misc-target.json
+> +++ b/qapi/misc-target.json
+> @@ -110,7 +110,11 @@
+>  ##
+>  # @query-sev:
+>  #
+> -# Returns information about SEV
+> +# Returns information about SEV/SEV-ES/SEV-SNP.
+> +#
+> +# If unavailable due to an incompatible configuration the
+> +# returned @enabled field will be set to 'false' and the
+> +# state of all other fields is undefined.
+
+That's awful.  Not this patch's fault.
+
+What's "incompatible configuration"?
+
+Actual behavior as far as I can tell:
+
+* If !CONFIG_SEV: GenericError "SEV is not available in this QEMU".
+
+* If CONFIG_SEV and !sev_enabled(): SevInfo filled with zero bytes
+
+* If CONFIG_SEV and sev_enabled(): SevInfo filled properly
+
+sev_enabled() is true when the machine's cgs member is an instance of
+"sev-common".
+
+>  #
+>  # Returns: @SevInfo
+>  #
+> @@ -141,7 +145,16 @@
+>  ##
+>  # @query-sev-launch-measure:
+>  #
+> -# Query the SEV guest launch information.
+> +# Query the SEV/SEV-ES guest launch information.
+> +#
+> +# This is only valid on x86 machines configured with KVM and the
+> +# 'sev-guest' confidential virtualization object. The launch
+> +# measurement for SEV-SNP guests is only available within
+> +# the guest.
+> +#
+> +# This will return an error if the launch measurement is
+> +# unavailable, either due to an invalid guest configuration
+> +# or if the guest has not reached the required SEV state.
+>  #
+>  # Returns: The @SevLaunchMeasureInfo for the guest
+>  #
+> @@ -185,8 +198,9 @@
+>  ##
+>  # @query-sev-capabilities:
+>  #
+> -# This command is used to get the SEV capabilities, and is supported
+> -# on AMD X86 platforms only.
+> +# This command is used to get the SEV capabilities, and is only
+> +# supported on AMD X86 platforms with KVM enabled. If SEV is not
+> +# available on the platform an error will be returned.
+
+What does "not supported" mean here?
+
+>  #
+>  # Returns: SevCapability objects.
+>  #
+> @@ -205,7 +219,15 @@
+>  ##
+>  # @sev-inject-launch-secret:
+>  #
+> -# This command injects a secret blob into memory of SEV guest.
+> +# This command injects a secret blob into memory of a SEV/SEV-ES guest.
+> +#
+> +# This is only valid on x86 machines configured with KVM and the
+> +# 'sev-guest' confidential virtualization object. SEV-SNP guests
+> +# do not support launch secret injection
+> +#
+> +# This will return an error if launch secret injection is not possible,
+> +# either due to an invalid guest configuration, or if the guest has not
+> +# reached the required SEV state.
+>  #
+>  # @packet-header: the launch secret packet header encoded in base64
+>  #
+> @@ -236,8 +258,15 @@
+>  ##
+>  # @query-sev-attestation-report:
+>  #
+> -# This command is used to get the SEV attestation report, and is
+> -# supported on AMD X86 platforms only.
+> +# This command is used to get the SEV attestation report.
+> +#
+> +# This is only valid on x86 machines configured with KVM and the
+> +# 'sev-guest' confidential virtualization object. The attestation
+> +# report for SEV-SNP guests is only available within the guest.
+> +#
+> +# This will return an error if the attestation report is
+> +# unavailable, either due to an invalid guest configuration
+> +# or if the guest has not reached the required SEV state.
+>  #
+>  # @mnonce: a random 16 bytes value encoded in base64 (it will be
+>  #     included in report)
+
+Strict improvemement already, so
+Acked-by: Markus Armbruster <armbru@redhat.com>
 
 
