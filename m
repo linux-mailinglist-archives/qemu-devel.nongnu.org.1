@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22638AB4BFC
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 08:32:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB4FFAB4BF0
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 08:30:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEj9I-0002yK-Cu; Tue, 13 May 2025 02:29:56 -0400
+	id 1uEj9U-0003Ef-40; Tue, 13 May 2025 02:30:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1uEj9G-0002vS-9B; Tue, 13 May 2025 02:29:54 -0400
+ id 1uEj9M-0003AY-F5; Tue, 13 May 2025 02:30:00 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1uEj9E-0001me-Bt; Tue, 13 May 2025 02:29:53 -0400
+ id 1uEj9K-0001nN-M4; Tue, 13 May 2025 02:30:00 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Tue, 13 May
@@ -31,10 +31,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
  <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v2 04/25] hw/misc/aspeed_hace: Refactor hash buffer setup into
+Subject: [PATCH v2 05/25] hw/misc/aspeed_hace: Split hash execution into
  helper functions for clarity
-Date: Tue, 13 May 2025 14:28:34 +0800
-Message-ID: <20250513062901.2256865-5-jamin_lin@aspeedtech.com>
+Date: Tue, 13 May 2025 14:28:35 +0800
+Message-ID: <20250513062901.2256865-6-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250513062901.2256865-1-jamin_lin@aspeedtech.com>
 References: <20250513062901.2256865-1-jamin_lin@aspeedtech.com>
@@ -66,202 +66,186 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To improve code readability and maintainability, this commit refactors the hash
-buffer preparation logic from "do_hash_operation()" into two helper functions:
+Refactor "do_hash_operation()" by extracting hash execution and result handling
+into dedicated helper functions:
 
-- "hash_prepare_direct_iov()": handles non-scatter-gather (direct) mode.
-- "hash_prepare_sg_iov()": handles scatter-gather mode with accumulation
-  and padding detection support
+- "hash_write_digest_and_unmap_iov()": Writes the digest result to memory and
+  unmaps IOVs after processing.
+- "hash_execute_non_acc_mode()": Handles one-shot (non-accumulated) hash
+  operations.
+- "hash_execute_acc_mode()": Handles accumulated hashing, including update and
+  finalize logic.
 
-No functional changes are introduced.
+No functional changes introduced.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/misc/aspeed_hace.c | 153 ++++++++++++++++++++++++++----------------
- 1 file changed, 95 insertions(+), 58 deletions(-)
+ hw/misc/aspeed_hace.c | 133 ++++++++++++++++++++++++++----------------
+ 1 file changed, 83 insertions(+), 50 deletions(-)
 
 diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c
-index 1256926d22..22eea62693 100644
+index 22eea62693..eb513ba00f 100644
 --- a/hw/misc/aspeed_hace.c
 +++ b/hw/misc/aspeed_hace.c
-@@ -142,6 +142,92 @@ static bool has_padding(AspeedHACEState *s, struct iovec *iov,
-     return false;
+@@ -228,26 +228,96 @@ static int hash_prepare_sg_iov(AspeedHACEState *s, struct iovec *iov,
+     return iov_idx;
  }
  
-+static int hash_prepare_direct_iov(AspeedHACEState *s, struct iovec *iov)
+-static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
+-                              bool acc_mode)
++static void hash_write_digest_and_unmap_iov(AspeedHACEState *s,
++                                            struct iovec *iov,
++                                            int iov_idx,
++                                            uint8_t *digest_buf,
++                                            size_t digest_len)
 +{
-+    uint32_t src;
-+    void *haddr;
-+    hwaddr plen;
-+    int iov_idx;
-+
-+    plen = s->regs[R_HASH_SRC_LEN];
-+    src = s->regs[R_HASH_SRC];
-+    haddr = address_space_map(&s->dram_as, src, &plen, false,
-+                              MEMTXATTRS_UNSPECIFIED);
-+    if (haddr == NULL) {
++    if (address_space_write(&s->dram_as, s->regs[R_HASH_DEST],
++                            MEMTXATTRS_UNSPECIFIED, digest_buf, digest_len)) {
 +        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: Unable to map address, addr=0x%x, "
-+                      "plen=0x%" HWADDR_PRIx "\n",
-+                      __func__, src, plen);
-+        return -1;
++                      "%s: Failed to write digest to 0x%x\n",
++                      __func__, s->regs[R_HASH_DEST]);
 +    }
 +
-+    iov[0].iov_base = haddr;
-+    iov[0].iov_len = plen;
-+    iov_idx = 1;
-+
-+    return iov_idx;
-+}
-+
-+static int hash_prepare_sg_iov(AspeedHACEState *s, struct iovec *iov,
-+                               bool acc_mode, bool *acc_final_request)
-+{
-+    uint32_t total_msg_len;
-+    uint32_t pad_offset;
-+    uint32_t len = 0;
-+    uint32_t sg_addr;
-+    uint32_t src;
-+    int iov_idx;
-+    hwaddr plen;
-+    void *haddr;
-+
-+    for (iov_idx = 0; !(len & SG_LIST_LEN_LAST); iov_idx++) {
-+        if (iov_idx == ASPEED_HACE_MAX_SG) {
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "%s: Failed to set end of sg list marker\n",
-+                          __func__);
-+            return -1;
-+        }
-+
-+        src = s->regs[R_HASH_SRC] + (iov_idx * SG_LIST_ENTRY_SIZE);
-+
-+        len = address_space_ldl_le(&s->dram_as, src,
-+                                   MEMTXATTRS_UNSPECIFIED, NULL);
-+        sg_addr = address_space_ldl_le(&s->dram_as, src + SG_LIST_LEN_SIZE,
-+                                       MEMTXATTRS_UNSPECIFIED, NULL);
-+        sg_addr &= SG_LIST_ADDR_MASK;
-+
-+        plen = len & SG_LIST_LEN_MASK;
-+        haddr = address_space_map(&s->dram_as, sg_addr, &plen, false,
-+                                  MEMTXATTRS_UNSPECIFIED);
-+
-+        if (haddr == NULL) {
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "%s: Unable to map address, sg_addr=0x%x, "
-+                          "plen=0x%" HWADDR_PRIx "\n",
-+                          __func__, sg_addr, plen);
-+            return -1;
-+        }
-+
-+        iov[iov_idx].iov_base = haddr;
-+        if (acc_mode) {
-+            s->total_req_len += plen;
-+
-+            if (has_padding(s, &iov[iov_idx], plen, &total_msg_len,
-+                            &pad_offset)) {
-+                /* Padding being present indicates the final request */
-+                *acc_final_request = true;
-+                iov[iov_idx].iov_len = pad_offset;
-+            } else {
-+                iov[iov_idx].iov_len = plen;
-+            }
-+        } else {
-+            iov[iov_idx].iov_len = plen;
-+        }
++    for (; iov_idx > 0; iov_idx--) {
++        address_space_unmap(&s->dram_as, iov[iov_idx - 1].iov_base,
++                            iov[iov_idx - 1].iov_len, false,
++                            iov[iov_idx - 1].iov_len);
 +    }
-+
-+    return iov_idx;
 +}
 +
- static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
-                               bool acc_mode)
++static void hash_execute_non_acc_mode(AspeedHACEState *s, int algo,
++                                      struct iovec *iov, int iov_idx)
  {
-@@ -149,15 +235,8 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
-     struct iovec iov[ASPEED_HACE_MAX_SG];
-     bool acc_final_request = false;
+     g_autofree uint8_t *digest_buf = NULL;
+-    struct iovec iov[ASPEED_HACE_MAX_SG];
+-    bool acc_final_request = false;
      Error *local_err = NULL;
--    uint32_t total_msg_len;
-     size_t digest_len = 0;
--    uint32_t sg_addr = 0;
--    uint32_t pad_offset;
--    int iov_idx = 0;
--    uint32_t len = 0;
--    uint32_t src = 0;
--    void *haddr;
--    hwaddr plen;
-+    int iov_idx = -1;
+-    size_t digest_len = 0;
+-    int iov_idx = -1;
++    size_t digest_len;
++
++    if (qcrypto_hash_bytesv(algo, iov, iov_idx, &digest_buf,
++                            &digest_len, &local_err) < 0) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: qcrypto hash bytesv failed : %s",
++                      __func__, error_get_pretty(local_err));
++        error_free(local_err);
++        return;
++    }
++
++    hash_write_digest_and_unmap_iov(s, iov, iov_idx, digest_buf, digest_len);
++}
++
++static void hash_execute_acc_mode(AspeedHACEState *s, int algo,
++                                  struct iovec *iov, int iov_idx,
++                                  bool final_request)
++{
++    g_autofree uint8_t *digest_buf = NULL;
++    Error *local_err = NULL;
++    size_t digest_len;
  
-     if (acc_mode && s->hash_ctx == NULL) {
+-    if (acc_mode && s->hash_ctx == NULL) {
++    if (s->hash_ctx == NULL) {
          s->hash_ctx = qcrypto_hash_new(algo, &local_err);
-@@ -169,59 +248,17 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
+         if (s->hash_ctx == NULL) {
+-            qemu_log_mask(LOG_GUEST_ERROR, "qcrypto hash failed : %s",
+-                          error_get_pretty(local_err));
++            qemu_log_mask(LOG_GUEST_ERROR, "%s: qcrypto hash new failed : %s",
++                          __func__, error_get_pretty(local_err));
+             error_free(local_err);
+             return;
          }
      }
  
-+    /* Prepares the iov for hashing operations based on the selected mode */
-     if (sg_mode) {
--        for (iov_idx = 0; !(len & SG_LIST_LEN_LAST); iov_idx++) {
--            if (iov_idx == ASPEED_HACE_MAX_SG) {
--                qemu_log_mask(LOG_GUEST_ERROR,
--                        "aspeed_hace: guest failed to set end of sg list marker\n");
--                break;
--            }
--
--            src = s->regs[R_HASH_SRC] + (iov_idx * SG_LIST_ENTRY_SIZE);
--
--            len = address_space_ldl_le(&s->dram_as, src,
--                                       MEMTXATTRS_UNSPECIFIED, NULL);
--
--            sg_addr = address_space_ldl_le(&s->dram_as, src + SG_LIST_LEN_SIZE,
--                                           MEMTXATTRS_UNSPECIFIED, NULL);
--            sg_addr &= SG_LIST_ADDR_MASK;
--
--            plen = len & SG_LIST_LEN_MASK;
--            haddr = address_space_map(&s->dram_as, sg_addr, &plen, false,
--                                      MEMTXATTRS_UNSPECIFIED);
--            if (haddr == NULL) {
--                qemu_log_mask(LOG_GUEST_ERROR,
--                              "%s: qcrypto failed\n", __func__);
--                return;
--            }
--            iov[iov_idx].iov_base = haddr;
--            if (acc_mode) {
--                s->total_req_len += plen;
--
--                if (has_padding(s, &iov[iov_idx], plen, &total_msg_len,
--                                &pad_offset)) {
--                    /* Padding being present indicates the final request */
--                    acc_final_request = true;
--                    iov[iov_idx].iov_len = pad_offset;
--                } else {
--                    iov[iov_idx].iov_len = plen;
--                }
--            } else {
--                iov[iov_idx].iov_len = plen;
--            }
--        }
-+        iov_idx = hash_prepare_sg_iov(s, iov, acc_mode, &acc_final_request);
-     } else {
--        plen = s->regs[R_HASH_SRC_LEN];
-+        iov_idx = hash_prepare_direct_iov(s, iov);
++    if (qcrypto_hash_updatev(s->hash_ctx, iov, iov_idx, &local_err) < 0) {
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: qcrypto hash updatev failed : %s",
++                      __func__, error_get_pretty(local_err));
++        error_free(local_err);
++        return;
 +    }
- 
--        haddr = address_space_map(&s->dram_as, s->regs[R_HASH_SRC],
--                                  &plen, false, MEMTXATTRS_UNSPECIFIED);
--        if (haddr == NULL) {
--            qemu_log_mask(LOG_GUEST_ERROR, "%s: qcrypto failed\n", __func__);
--            return;
--        }
--        iov[0].iov_base = haddr;
--        iov[0].iov_len = plen;
--        iov_idx = 1;
-+    if (iov_idx <= 0) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: Failed to prepare iov\n", __func__);
-+         return;
++
++    if (final_request) {
++        if (qcrypto_hash_finalize_bytes(s->hash_ctx, &digest_buf,
++                                        &digest_len, &local_err)) {
++            qemu_log_mask(LOG_GUEST_ERROR,
++                          "%s: qcrypto hash finalize bytes failed : %s",
++                          __func__, error_get_pretty(local_err));
++            error_free(local_err);
++            local_err = NULL;
++        }
++
++        qcrypto_hash_free(s->hash_ctx);
++
++        s->hash_ctx = NULL;
++        s->total_req_len = 0;
++    }
++
++    hash_write_digest_and_unmap_iov(s, iov, iov_idx, digest_buf, digest_len);
++}
++
++static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
++                              bool acc_mode)
++{
++    struct iovec iov[ASPEED_HACE_MAX_SG];
++    bool acc_final_request = false;
++    int iov_idx = -1;
++
+     /* Prepares the iov for hashing operations based on the selected mode */
+     if (sg_mode) {
+         iov_idx = hash_prepare_sg_iov(s, iov, acc_mode, &acc_final_request);
+@@ -261,48 +331,11 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
+          return;
      }
  
++    /* Executes the hash operation */
      if (acc_mode) {
+-        if (qcrypto_hash_updatev(s->hash_ctx, iov, iov_idx, &local_err) < 0) {
+-            qemu_log_mask(LOG_GUEST_ERROR, "qcrypto hash update failed : %s",
+-                          error_get_pretty(local_err));
+-            error_free(local_err);
+-            return;
+-        }
+-
+-        if (acc_final_request) {
+-            if (qcrypto_hash_finalize_bytes(s->hash_ctx, &digest_buf,
+-                                            &digest_len, &local_err)) {
+-                qemu_log_mask(LOG_GUEST_ERROR,
+-                              "qcrypto hash finalize failed : %s",
+-                              error_get_pretty(local_err));
+-                error_free(local_err);
+-                local_err = NULL;
+-            }
+-
+-            qcrypto_hash_free(s->hash_ctx);
+-
+-            s->hash_ctx = NULL;
+-            s->total_req_len = 0;
+-        }
+-    } else if (qcrypto_hash_bytesv(algo, iov, iov_idx, &digest_buf,
+-                                   &digest_len, &local_err) < 0) {
+-        qemu_log_mask(LOG_GUEST_ERROR, "qcrypto hash bytesv failed : %s",
+-                      error_get_pretty(local_err));
+-        error_free(local_err);
+-        return;
+-    }
+-
+-    if (address_space_write(&s->dram_as, s->regs[R_HASH_DEST],
+-                            MEMTXATTRS_UNSPECIFIED,
+-                            digest_buf, digest_len)) {
+-        qemu_log_mask(LOG_GUEST_ERROR,
+-                      "aspeed_hace: address space write failed\n");
+-    }
+-
+-    for (; iov_idx > 0; iov_idx--) {
+-        address_space_unmap(&s->dram_as, iov[iov_idx - 1].iov_base,
+-                            iov[iov_idx - 1].iov_len, false,
+-                            iov[iov_idx - 1].iov_len);
++        hash_execute_acc_mode(s, algo, iov, iov_idx, acc_final_request);
++    } else {
++        hash_execute_non_acc_mode(s, algo, iov, iov_idx);
+     }
+ }
+ 
 -- 
 2.43.0
 
