@@ -2,67 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4778EAB53F9
-	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 13:40:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D8CAAB53F7
+	for <lists+qemu-devel@lfdr.de>; Tue, 13 May 2025 13:40:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uEnyq-0005ge-Du; Tue, 13 May 2025 07:39:29 -0400
+	id 1uEny1-0005Ux-NJ; Tue, 13 May 2025 07:38:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uEnyV-0005Z2-SA
- for qemu-devel@nongnu.org; Tue, 13 May 2025 07:39:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <akrowiak@linux.ibm.com>)
+ id 1uEnxu-0005UM-LR; Tue, 13 May 2025 07:38:30 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uEnyR-0000xB-B6
- for qemu-devel@nongnu.org; Tue, 13 May 2025 07:39:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747136341;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=Uy7i4ciBw7/EdJA/TTL7xldShtMCpXlJshd2Zn3AXbE=;
- b=Gipo4hysgfojtuxdb2wxOfb0zUNFmavaA+i/iH30bP4gDBo+Ul53DFAMwBG5f3fWxidq52
- bZUiXqqjNn3txq9PE9i8zbYYxYplVgA0hL9UN0GLlM+EtIqfJczNhLtbf2/u207mDPiSpK
- 3d23lXHUKTG/+TZEzEeU1WSMAZaAXIw=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-546-D4erdQ4FOgevszZSAifhBw-1; Tue,
- 13 May 2025 07:37:43 -0400
-X-MC-Unique: D4erdQ4FOgevszZSAifhBw-1
-X-Mimecast-MFC-AGG-ID: D4erdQ4FOgevszZSAifhBw_1747136263
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9D93C1800447; Tue, 13 May 2025 11:37:42 +0000 (UTC)
-Received: from merkur.fritz.box (unknown [10.45.224.238])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id EE41A19560A3; Tue, 13 May 2025 11:37:39 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com, hreitz@redhat.com, stefanha@redhat.com,
- pbonzini@redhat.com, bmarzins@redhat.com, qemu-devel@nongnu.org
-Subject: [PATCH] file-posix: Probe paths and retry SG_IO on potential path
- errors
-Date: Tue, 13 May 2025 13:37:30 +0200
-Message-ID: <20250513113730.37404-1-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <akrowiak@linux.ibm.com>)
+ id 1uEnxs-0000uO-5B; Tue, 13 May 2025 07:38:30 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54D9F71b030046;
+ Tue, 13 May 2025 11:38:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=iq0TZf
+ FPDU+ruLkHg7c0vAoeMctdus2BwzX2dq5gcRg=; b=URQr3GrrbJdfqnN+vgHz2I
+ D9NoVVQh3FTM6KfWq3giJc6mDUIq9CdijbGscMukBY2xNBkQSUi56/WXQECtTVjN
+ OmOrj/D3Z2zYdFwafsqtV3t7ijkEyG8PWPsYcJDIpYMWLXWHDvU4v+LwVY9x/F2F
+ somIju2dZLf0JiN6aZhlsYltBalL1b2soo6FaARTXMQMN691QTbff1SaiwDwUTMP
+ m9of5q0CKtmdPKrxsv2JdR1dIPNhK+dUsTasIW4r5tegZ8WKGHyg+i+1QNSYuUEF
+ WBZU8kKV1iMmYjm9ovShLXcNLsxfWkrN96QibcNaHGFvopJ89RQOKRbysyPQxNJg
+ ==
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46m39j8p19-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 13 May 2025 11:38:20 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54D9BcUS016348;
+ Tue, 13 May 2025 11:38:19 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 46jh4tk2e5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 13 May 2025 11:38:19 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
+ [10.39.53.230])
+ by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 54DBcIeQ20709924
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 13 May 2025 11:38:18 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3614A5805F;
+ Tue, 13 May 2025 11:38:18 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CCEBC58064;
+ Tue, 13 May 2025 11:38:16 +0000 (GMT)
+Received: from [9.61.132.237] (unknown [9.61.132.237])
+ by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 13 May 2025 11:38:16 +0000 (GMT)
+Message-ID: <527b09b6-b7cc-4d5e-a82f-5ee87a7ca91e@linux.ibm.com>
+Date: Tue, 13 May 2025 07:38:16 -0400
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.549,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v9 2/4] hw/vfio/ap: store object indicating AP config
+ changed in a queue
+To: Rorie Reyes <rreyes@linux.ibm.com>, qemu-devel@nongnu.org,
+ qemu-s390x@nongnu.org
+Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
+ jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
+ alex.williamson@redhat.com, clg@redhat.com, thuth@redhat.com
+References: <20250512180230.50129-1-rreyes@linux.ibm.com>
+ <20250512180230.50129-3-rreyes@linux.ibm.com>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <20250512180230.50129-3-rreyes@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 5xFgkTGWdvC5odoFtxH2ADn27hIDI-sL
+X-Proofpoint-ORIG-GUID: 5xFgkTGWdvC5odoFtxH2ADn27hIDI-sL
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEzMDExMCBTYWx0ZWRfX9Cw0jdszVu7G
+ xEcejQzI5GLuVpPbqYqks3kQHafDbK8ewOIJekKUtMzW9DyLzIkOVx2UNMARI1ib+Xnkn2HoERO
+ R7uVlDKG31ctK3UOjY1KQKXOw2rdDLuD3h9ibIn9yi+UrA860K96of/NjqNa4vkBH/M4KawWSXN
+ HvOADNKX66iveiEgyadT5Tge42pk0oMCGdxLaxNBiJWieasYQjZNhEftfa6cRCv1lqgwYmmKfBR
+ JeF40FmDrLIHgqqu9lBs/gNGOcgJmalolRGej6ltbGNqpAO9HvZz/tD0nO+CmQqJryl+JiJeGNV
+ ucO/1ut/+HX0z9gmenfSg5uZr7KZYDQZuRd9Q8P5h24ZTQ02CqG6f/g+/Oqg5Kq0K0UN8Hj2iXX
+ /9i6Px39xWndm7zXkzFtmnob52vr2Wt0Lzhqjuw63NBr1H7M79Y1p9HBVYVd+PEJhbTZgY5S
+X-Authority-Analysis: v=2.4 cv=Sfb3duRu c=1 sm=1 tr=0 ts=68232f2c cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=5v0q2DLhJsiMCMKXfuEA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-13_01,2025-05-09_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 spamscore=0
+ impostorscore=0 phishscore=0 malwarescore=0 mlxscore=0 adultscore=0
+ bulkscore=0 clxscore=1015 suspectscore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2505130110
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=akrowiak@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,167 +123,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When scsi-block is used on a host multipath device, it runs into the
-problem that the kernel dm-mpath doesn't know anything about SCSI or
-SG_IO and therefore can't decide if a SG_IO request returned an error
-and needs to be retried on a different path. Instead of getting working
-failover, an error is returned to scsi-block and handled according to
-the configured error policy. Obviously, this is not what users want,
-they want working failover.
 
-QEMU can parse the SG_IO result and determine whether this could have
-been a path error, but just retrying the same request could just send it
-to the same failing path again and result in the same error.
 
-With a kernel that supports the DM_MPATH_PROBE_PATHS ioctl on dm-mpath
-block devices (queued in the device mapper tree for Linux 6.16), we can
-tell the kernel to probe all paths and tell us if any usable paths
-remained. If so, we can now retry the SG_IO ioctl and expect it to be
-sent to a working path.
 
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
----
- block/file-posix.c | 82 +++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 81 insertions(+), 1 deletion(-)
+On 5/12/25 2:02 PM, Rorie Reyes wrote:
+> Creates an object indicating that an AP configuration change event
+> has been received and stores it in a queue. These objects will later
+> be used to store event information for an AP configuration change
+> when the CHSC instruction is intercepted.
+>
+> Signed-off-by: Rorie Reyes <rreyes@linux.ibm.com>
 
-diff --git a/block/file-posix.c b/block/file-posix.c
-index ef52ed9169..2ea41dbc2d 100644
---- a/block/file-posix.c
-+++ b/block/file-posix.c
-@@ -41,6 +41,7 @@
- 
- #include "scsi/pr-manager.h"
- #include "scsi/constants.h"
-+#include "scsi/utils.h"
- 
- #if defined(__APPLE__) && (__MACH__)
- #include <sys/ioctl.h>
-@@ -72,6 +73,7 @@
- #include <linux/blkzoned.h>
- #endif
- #include <linux/cdrom.h>
-+#include <linux/dm-ioctl.h>
- #include <linux/fd.h>
- #include <linux/fs.h>
- #include <linux/hdreg.h>
-@@ -138,6 +140,8 @@
- #define RAW_LOCK_PERM_BASE             100
- #define RAW_LOCK_SHARED_BASE           200
- 
-+#define SG_IO_MAX_RETRIES 5
-+
- typedef struct BDRVRawState {
-     int fd;
-     bool use_lock;
-@@ -165,6 +169,7 @@ typedef struct BDRVRawState {
-     bool use_linux_aio:1;
-     bool has_laio_fdsync:1;
-     bool use_linux_io_uring:1;
-+    bool use_mpath:1;
-     int page_cache_inconsistent; /* errno from fdatasync failure */
-     bool has_fallocate;
-     bool needs_alignment;
-@@ -4263,15 +4268,86 @@ hdev_open_Mac_error:
-     /* Since this does ioctl the device must be already opened */
-     bs->sg = hdev_is_sg(bs);
- 
-+    /* sg devices aren't even block devices and can't use dm-mpath */
-+    s->use_mpath = !bs->sg;
-+
-     return ret;
- }
- 
- #if defined(__linux__)
-+#if defined(DM_MPATH_PROBE_PATHS)
-+static bool sgio_path_error(int ret, sg_io_hdr_t *io_hdr)
-+{
-+    if (ret == -ENODEV) {
-+        return true;
-+    } else if (ret < 0) {
-+        return false;
-+    }
-+
-+    if (io_hdr->host_status != SCSI_HOST_OK) {
-+        return true;
-+    }
-+
-+    switch (io_hdr->status) {
-+    case GOOD:
-+    case CONDITION_GOOD:
-+    case INTERMEDIATE_GOOD:
-+    case INTERMEDIATE_C_GOOD:
-+    case RESERVATION_CONFLICT:
-+    case COMMAND_TERMINATED:
-+        return false;
-+    case CHECK_CONDITION:
-+        return !scsi_sense_buf_is_guest_recoverable(io_hdr->sbp,
-+                                                    io_hdr->mx_sb_len);
-+    default:
-+        return true;
-+    }
-+}
-+
-+static bool coroutine_fn hdev_co_ioctl_sgio_retry(RawPosixAIOData *acb, int ret)
-+{
-+    BDRVRawState *s = acb->bs->opaque;
-+    RawPosixAIOData probe_acb;
-+
-+    if (!s->use_mpath) {
-+        return false;
-+    }
-+
-+    if (!sgio_path_error(ret, acb->ioctl.buf)) {
-+        return false;
-+    }
-+
-+    probe_acb = (RawPosixAIOData) {
-+        .bs         = acb->bs,
-+        .aio_type   = QEMU_AIO_IOCTL,
-+        .aio_fildes = s->fd,
-+        .aio_offset = 0,
-+        .ioctl      = {
-+            .buf        = NULL,
-+            .cmd        = DM_MPATH_PROBE_PATHS,
-+        },
-+    };
-+
-+    ret = raw_thread_pool_submit(handle_aiocb_ioctl, &probe_acb);
-+    if (ret == -ENOTTY) {
-+        s->use_mpath = false;
-+    }
-+
-+    return ret == 0;
-+}
-+#else
-+static bool coroutine_fn hdev_co_ioctl_sgio_retry(RawPosixAIOData *acb, int ret)
-+{
-+    return false;
-+}
-+#endif /* DM_MPATH_PROBE_PATHS */
-+
- static int coroutine_fn
- hdev_co_ioctl(BlockDriverState *bs, unsigned long int req, void *buf)
- {
-     BDRVRawState *s = bs->opaque;
-     RawPosixAIOData acb;
-+    int retries = SG_IO_MAX_RETRIES;
-     int ret;
- 
-     ret = fd_open(bs);
-@@ -4299,7 +4375,11 @@ hdev_co_ioctl(BlockDriverState *bs, unsigned long int req, void *buf)
-         },
-     };
- 
--    return raw_thread_pool_submit(handle_aiocb_ioctl, &acb);
-+    do {
-+        ret = raw_thread_pool_submit(handle_aiocb_ioctl, &acb);
-+    } while (req == SG_IO && retries-- && hdev_co_ioctl_sgio_retry(&acb, ret));
-+
-+    return ret;
- }
- #endif /* linux */
- 
--- 
-2.49.0
+Reviewed-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+
+> ---
+>   hw/vfio/ap.c | 12 ++++++++++++
+>   1 file changed, 12 insertions(+)
+>
+> diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
+> index 3d0af7a54a..5ea5dd9cca 100644
+> --- a/hw/vfio/ap.c
+> +++ b/hw/vfio/ap.c
+> @@ -41,6 +41,13 @@ struct VFIOAPDevice {
+>       EventNotifier cfg_notifier;
+>   };
+>   
+> +typedef struct APConfigChgEvent {
+> +    QTAILQ_ENTRY(APConfigChgEvent) next;
+> +} APConfigChgEvent;
+> +
+> +QTAILQ_HEAD(, APConfigChgEvent) cfg_chg_events =
+> +    QTAILQ_HEAD_INITIALIZER(cfg_chg_events);
+> +
+>   OBJECT_DECLARE_SIMPLE_TYPE(VFIOAPDevice, VFIO_AP_DEVICE)
+>   
+>   static void vfio_ap_compute_needs_reset(VFIODevice *vdev)
+> @@ -74,12 +81,17 @@ static void vfio_ap_req_notifier_handler(void *opaque)
+>   
+>   static void vfio_ap_cfg_chg_notifier_handler(void *opaque)
+>   {
+> +    APConfigChgEvent *cfg_chg_event;
+>       VFIOAPDevice *vapdev = opaque;
+>   
+>       if (!event_notifier_test_and_clear(&vapdev->cfg_notifier)) {
+>           return;
+>       }
+>   
+> +    cfg_chg_event = g_new0(APConfigChgEvent, 1);
+> +
+> +    QTAILQ_INSERT_TAIL(&cfg_chg_events, cfg_chg_event, next);
+> +
+>       css_generate_css_crws(0);
+>   
+>   }
 
 
