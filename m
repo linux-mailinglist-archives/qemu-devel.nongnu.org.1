@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A648AB74FA
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 21:02:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0CE4AB7510
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 21:04:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFHMZ-0004sX-Jh; Wed, 14 May 2025 15:01:58 -0400
+	id 1uFHNy-0007vc-JM; Wed, 14 May 2025 15:03:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uFHLc-0004D3-Nv; Wed, 14 May 2025 15:00:58 -0400
+ id 1uFHLj-0004Jv-AM; Wed, 14 May 2025 15:01:03 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uFHLa-0007JM-PP; Wed, 14 May 2025 15:00:56 -0400
+ id 1uFHLf-0007LE-QR; Wed, 14 May 2025 15:01:02 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2B2E5121D8F;
+ by isrv.corpit.ru (Postfix) with ESMTP id 3ACA6121D90;
  Wed, 14 May 2025 22:00:32 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 311C620BA81;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 3E70D20BA82;
  Wed, 14 May 2025 22:00:42 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.1 05/23] hw/core: Get default_cpu_type calling
- machine_class_default_cpu_type()
-Date: Wed, 14 May 2025 22:00:17 +0300
-Message-Id: <20250514190041.104759-5-mjt@tls.msk.ru>
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.1 06/23] hw/core/cpu: gdb_arch_name string should not be
+ freed
+Date: Wed, 14 May 2025 22:00:18 +0300
+Message-Id: <20250514190041.104759-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-10.0.1-20250514114019@cover.tls.msk.ru>
 References: <qemu-stable-10.0.1-20250514114019@cover.tls.msk.ru>
@@ -62,58 +61,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Since commit 62b4a227a33 the default cpu type can come from the
-valid_cpu_types[] array. Call the machine_class_default_cpu_type()
-instead of accessing MachineClass::default_cpu_type field.
+The documentation for the CPUClass::gdb_arch_name method claims that
+the returned string should be freed with g_free().  This is not
+correct: in commit a650683871ba728 we changed this method to
+instead return a simple constant string, but forgot to update
+the documentation.
 
-Cc: qemu-stable@nongnu.org
-Fixes: 62b4a227a33 ("hw/core: Add machine_class_default_cpu_type()")
+Make the documentation match the new semantics.
+
+Fixes: a650683871ba728 ("hw/core/cpu: Return static value with gdb_arch_name()")
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250317142819.900029-2-peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Message-Id: <20250422084114.39499-1-philmd@linaro.org>
-(cherry picked from commit d5f241834be1b323ea697a469ff0f1335a1823fe)
+(cherry picked from commit 56a9f0d4c4a483ce217e5290db69cb1788586787)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
-index 3130c5cd45..1bc21b84a4 100644
---- a/hw/core/machine-qmp-cmds.c
-+++ b/hw/core/machine-qmp-cmds.c
-@@ -72,6 +72,7 @@ MachineInfoList *qmp_query_machines(bool has_compat_props, bool compat_props,
- 
-     for (el = machines; el; el = el->next) {
-         MachineClass *mc = el->data;
-+        const char *default_cpu_type = machine_class_default_cpu_type(mc);
-         MachineInfo *info;
- 
-         info = g_malloc0(sizeof(*info));
-@@ -90,8 +91,8 @@ MachineInfoList *qmp_query_machines(bool has_compat_props, bool compat_props,
-         info->numa_mem_supported = mc->numa_mem_supported;
-         info->deprecated = !!mc->deprecation_reason;
-         info->acpi = !!object_class_property_find(OBJECT_CLASS(mc), "acpi");
--        if (mc->default_cpu_type) {
--            info->default_cpu_type = g_strdup(mc->default_cpu_type);
-+        if (default_cpu_type) {
-+            info->default_cpu_type = g_strdup(default_cpu_type);
-         }
-         if (mc->default_ram_id) {
-             info->default_ram_id = g_strdup(mc->default_ram_id);
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index f81cb680fc..21a76e904a 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -7082,7 +7082,7 @@ ObjectClass *ppc_cpu_class_by_name(const char *name)
-     if (strcmp(name, "max") == 0) {
-         MachineClass *mc = MACHINE_GET_CLASS(qdev_get_machine());
-         if (mc) {
--            return object_class_by_name(mc->default_cpu_type);
-+            return object_class_by_name(machine_class_default_cpu_type(mc));
-         }
-     }
- #endif
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index abd8764e83..e136b067cd 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -135,7 +135,8 @@ struct SysemuCPUOps;
+  * @gdb_stop_before_watchpoint: Indicates whether GDB expects the CPU to stop
+  *           before the insn which triggers a watchpoint rather than after it.
+  * @gdb_arch_name: Optional callback that returns the architecture name known
+- * to GDB. The caller must free the returned string with g_free.
++ * to GDB. The returned value is expected to be a simple constant string:
++ * the caller will not g_free() it.
+  * @disas_set_info: Setup architecture specific components of disassembly info
+  * @adjust_watchpoint_address: Perform a target-specific adjustment to an
+  * address before attempting to match it against watchpoints.
 -- 
 2.39.5
 
