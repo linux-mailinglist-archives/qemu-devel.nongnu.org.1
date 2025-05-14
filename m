@@ -2,40 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CA11AB6C15
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 15:05:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 166D3AB6C82
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 15:21:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFBlO-0000bl-KO; Wed, 14 May 2025 09:03:11 -0400
+	id 1uFBkr-0000KP-JE; Wed, 14 May 2025 09:02:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uFBiX-0006vz-Me; Wed, 14 May 2025 09:00:14 -0400
+ id 1uFBid-0007IP-2i; Wed, 14 May 2025 09:00:22 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uFBiU-0008AT-Pi; Wed, 14 May 2025 09:00:13 -0400
+ id 1uFBiV-0008Ap-Cl; Wed, 14 May 2025 09:00:18 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 088B3121AF1;
+ by isrv.corpit.ru (Postfix) with ESMTP id 11F74121AF2;
  Wed, 14 May 2025 15:57:50 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 9BAD120B85F;
+ by tsrv.corpit.ru (Postfix) with ESMTP id B23CB20B860;
  Wed, 14 May 2025 15:57:59 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Wei Liu <liuwe@linux.microsoft.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.4 19/34] target/i386/hvf: fix lflags_to_rflags
-Date: Wed, 14 May 2025 15:57:41 +0300
-Message-Id: <20250514125758.92030-19-mjt@tls.msk.ru>
+Subject: [Stable-9.2.4 20/34] target/avr: Improve decode of LDS, STS
+Date: Wed, 14 May 2025 15:57:42 +0300
+Message-Id: <20250514125758.92030-20-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.4-20250514155748@cover.tls.msk.ru>
 References: <qemu-stable-9.2.4-20250514155748@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,29 +58,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-Clear the flags before adding in the ones computed from lflags.
+The comment about not being able to define a field with
+zero bits is out of date since 94597b6146f3
+("decodetree: Allow !function with no input bits").
 
-Cc: Wei Liu <liuwe@linux.microsoft.com>
+This fixes the missing load of imm in the disassembler.
+
 Cc: qemu-stable@nongnu.org
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 94a159f3dc737d00749cc930adaec112abe07b3c)
+Fixes: 9d8caa67a24 ("target/avr: Add support for disassembling via option '-d in_asm'")
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+(cherry picked from commit 6b661b7ed7cd02c54a78426d5eb7dd8543b030ed)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/hvf/x86_flags.c b/target/i386/hvf/x86_flags.c
-index 03d6de5efc..fedc70a1b8 100644
---- a/target/i386/hvf/x86_flags.c
-+++ b/target/i386/hvf/x86_flags.c
-@@ -293,6 +293,7 @@ void set_SF(CPUX86State *env, bool val)
+diff --git a/target/avr/insn.decode b/target/avr/insn.decode
+index 482c23ad0c..cc302249db 100644
+--- a/target/avr/insn.decode
++++ b/target/avr/insn.decode
+@@ -118,11 +118,8 @@ BRBC            1111 01 ....... ...         @op_bit_imm
+ @io_rd_imm      .... . .. ..... ....        &rd_imm     rd=%rd imm=%io_imm
+ @ldst_d         .. . . .. . rd:5  . ...     &rd_imm     imm=%ldst_d_imm
  
- void lflags_to_rflags(CPUX86State *env)
- {
-+    env->eflags &= ~(CC_C|CC_P|CC_A|CC_Z|CC_S|CC_O);
-     env->eflags |= get_CF(env) ? CC_C : 0;
-     env->eflags |= get_PF(env) ? CC_P : 0;
-     env->eflags |= get_AF(env) ? CC_A : 0;
+-# The 16-bit immediate is completely in the next word.
+-# Fields cannot be defined with no bits, so we cannot play
+-# the same trick and append to a zero-bit value.
+-# Defer reading the immediate until trans_{LDS,STS}.
+-@ldst_s         .... ... rd:5 ....          imm=0
++%ldst_imm       !function=next_word
++@ldst_s         .... ... rd:5 ....          imm=%ldst_imm
+ 
+ MOV             0010 11 . ..... ....        @op_rd_rr
+ MOVW            0000 0001 .... ....         &rd_rr      rd=%rd_d rr=%rr_d
+diff --git a/target/avr/translate.c b/target/avr/translate.c
+index 2d51892115..e8279a18df 100644
+--- a/target/avr/translate.c
++++ b/target/avr/translate.c
+@@ -1577,7 +1577,6 @@ static bool trans_LDS(DisasContext *ctx, arg_LDS *a)
+     TCGv Rd = cpu_r[a->rd];
+     TCGv addr = tcg_temp_new_i32();
+     TCGv H = cpu_rampD;
+-    a->imm = next_word(ctx);
+ 
+     tcg_gen_mov_tl(addr, H); /* addr = H:M:L */
+     tcg_gen_shli_tl(addr, addr, 16);
+@@ -1782,7 +1781,6 @@ static bool trans_STS(DisasContext *ctx, arg_STS *a)
+     TCGv Rd = cpu_r[a->rd];
+     TCGv addr = tcg_temp_new_i32();
+     TCGv H = cpu_rampD;
+-    a->imm = next_word(ctx);
+ 
+     tcg_gen_mov_tl(addr, H); /* addr = H:M:L */
+     tcg_gen_shli_tl(addr, addr, 16);
 -- 
 2.39.5
 
