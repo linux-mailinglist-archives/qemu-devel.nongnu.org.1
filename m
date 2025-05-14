@@ -2,73 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4EA1AB71D7
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 18:45:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8D04AB71D6
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 18:44:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFFBY-00039F-Pw; Wed, 14 May 2025 12:42:24 -0400
+	id 1uFFBb-0003B9-Id; Wed, 14 May 2025 12:42:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uFEsB-0006Ko-2T
- for qemu-devel@nongnu.org; Wed, 14 May 2025 12:22:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1uFEtw-0008Pp-5n; Wed, 14 May 2025 12:24:12 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uFEs9-0000q7-MB
- for qemu-devel@nongnu.org; Wed, 14 May 2025 12:22:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747239741;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=gyqdRSlKZ4Lh+ZESZ5JmnwnL55llQYzjMfMlgPRuV4Y=;
- b=iZ9+ZsGlCOPU+AVaCa/JKSHjWyVrtivxASW9Ev3hyYtTfNYL2rygW3TC7SVV9Ti0awWvum
- bwimJpTMI9gmb7ox6PiDLbH3EZPaFIWu7TIn8e07clXqA2+FNSY4qRs5cEBATghujJ/PHv
- iPCe3GiEblqH/govaSfH8eRSr95j7Fk=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-662-dU2ITn8WNi2PpI8dDMpdkQ-1; Wed,
- 14 May 2025 12:22:17 -0400
-X-MC-Unique: dU2ITn8WNi2PpI8dDMpdkQ-1
-X-Mimecast-MFC-AGG-ID: dU2ITn8WNi2PpI8dDMpdkQ_1747239735
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0579F180035E; Wed, 14 May 2025 16:22:15 +0000 (UTC)
-Received: from redhat.com (unknown [10.44.33.207])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5508A18001D8; Wed, 14 May 2025 16:22:10 +0000 (UTC)
-Date: Wed, 14 May 2025 18:22:08 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, den@virtuozzo.com,
- andrey.drobyshev@virtuozzo.com, hreitz@redhat.com,
- stefanha@redhat.com, eblake@redhat.com, jsnow@redhat.com,
- vsementsov@yandex-team.ru
-Subject: Re: [PATCH 01/11] block: remove outdated comments about AioContext
- locking
-Message-ID: <aCTDMJSazSCbzllZ@redhat.com>
-References: <20250508140936.3344485-1-f.ebner@proxmox.com>
- <20250508140936.3344485-2-f.ebner@proxmox.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1uFEtu-0000yg-2h; Wed, 14 May 2025 12:24:11 -0400
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 0358855BC02;
+ Wed, 14 May 2025 18:24:06 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id cQKUllqPe2qA; Wed, 14 May 2025 18:24:03 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 42A6055C0CE; Wed, 14 May 2025 18:24:03 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 40987745682;
+ Wed, 14 May 2025 18:24:03 +0200 (CEST)
+Date: Wed, 14 May 2025 18:24:03 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Zhao Liu <zhao1.liu@intel.com>
+cc: David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ =?ISO-8859-15?Q?Daniel_P_=2E_Berrang=E9?= <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org, 
+ qemu-trivial@nongnu.org, Halil Pasic <pasic@linux.ibm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Thomas Huth <thuth@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Ilya Leoshkevich <iii@linux.ibm.com>, qemu-s390x@nongnu.org
+Subject: Re: [PATCH 8/9] target/s390x/kvm/pv: Consolidate
+ OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES
+In-Reply-To: <aCS8aHsF+VAuj01D@intel.com>
+Message-ID: <7dec9c8e-93d6-81f0-b075-e29b8ede44a2@eik.bme.hu>
+References: <20250514084957.2221975-1-zhao1.liu@intel.com>
+ <20250514084957.2221975-9-zhao1.liu@intel.com>
+ <e0146386-ccf4-44ba-b58f-0bb4d3317f89@redhat.com>
+ <aCS8aHsF+VAuj01D@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250508140936.3344485-2-f.ebner@proxmox.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -37
-X-Spam_score: -3.8
-X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,12 +72,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 08.05.2025 um 16:09 hat Fiona Ebner geschrieben:
-> AioContext locking was removed in commit b49f4755c7 ("block: remove
-> AioContext locking").
-> 
-> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+On Wed, 14 May 2025, Zhao Liu wrote:
+>>> +OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(S390PVGuest,
+>>> +                                          s390_pv_guest,
+>>> +                                          S390_PV_GUEST,
+>>> +                                          CONFIDENTIAL_GUEST_SUPPORT,
+>>> +                                          { TYPE_USER_CREATABLE },
+>>> +                                          { NULL })
+>>
+>> I'll note that existing callers of OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES
+>> happily ignore the line limit and put it into a single line.
+>>
+>> (which ends up looking better IMHO)
+>
+> Ok, I'll onor the existing conventions (which I'll apply to other
+> patches as well).
 
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+There are two line limits. If something is clearer on one line you could 
+exceed the normal 80 chars and put up to 90 chars on one line for which 
+checkpatch will issue a warning that can be ignored for these cases. Over 
+90 lines checkpatch will give an error and I think you should not ignore 
+that. Maybe try to put as much on one line as possible instead of new line 
+after each argument but without exceeding the 80 chars or if the whole 
+line fits in 90 chars then use that. Or maybe do not indent second line 
+under ( but with 4 spaces then you can fit it in two lines but lines over 
+90 chars are undesirable.
 
+Regards,
+BALATON Zoltan
+
+>> Reviewed-by: David Hildenbrand <david@redhat.com>
+>
+> Thanks!
+>
+> Regards,
+> Zhao
+>
+>
+>
 
