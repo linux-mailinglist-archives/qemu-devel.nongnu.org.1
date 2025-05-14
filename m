@@ -2,75 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FC54AB6C86
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 15:22:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DEACAB6C85
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 15:22:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFC3s-00055l-1F; Wed, 14 May 2025 09:22:16 -0400
+	id 1uFC49-00061H-Tw; Wed, 14 May 2025 09:22:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <paolo.bonzini@gmail.com>)
- id 1uFBy9-0007lZ-Tp; Wed, 14 May 2025 09:16:22 -0400
-Received: from mail-pg1-f175.google.com ([209.85.215.175])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <paolo.bonzini@gmail.com>)
- id 1uFBy6-0002bL-K9; Wed, 14 May 2025 09:16:20 -0400
-Received: by mail-pg1-f175.google.com with SMTP id
- 41be03b00d2f7-b2325c56ebdso5718791a12.1; 
- Wed, 14 May 2025 06:16:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747228575; x=1747833375;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=BC6736sHMTaOSi7YQSSykMWxb+O1DJ2Dg8riyoBLr0s=;
- b=dzrN2zEdj111vu5mOBpojzZWLAyrcdZ31PYMfHE8Y/jljWAKA45rjLb2BK0R04tdoS
- EqjKGomqutsvBn0zACCl5sR40O7l/CAjuF+rQXV1QwDY5EhILH/ApyXG+ceODLzKJLiP
- tSlHzl+/p+1zL7Tqpyu1HJjHPmdwkWCS5geWGOjLWYxXhwXfBlLHA56pGlr7P23pMUhQ
- Awz2AUsco0j4rTCyhS3dhJA0QUVrj7NWhbIlKTFLrjqvSk75rrVwR51VRTOq5a650gub
- wg8uQ6Dk4ixVnowRYuZoBSssNXIdq6PyCITDhn1Fnf1p+ZvA2jwCNzbTG+rnUE1u0jsG
- nuNw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVuktOc11wjCVTmA79jSApAnL3kpwwfVZMS+aLdG+Zx4CwKxM8y4brHTnf0JWUDsG84F4nTfJ4CmBY=@nongnu.org
-X-Gm-Message-State: AOJu0Yy58mRy8Depglzo5bENX4qrM+KA1ln6qVZEK9uERKDumKxZ5CoL
- xifjBTN5vV9prME6SUV3+qvaraoXFuP28GcKNM2iBzTU5fL6Wa7AjfUqYjooDUtrXRDjXqJwjrP
- QUgVcgi3Krenw5zOmXtCxekJ5fd8=
-X-Gm-Gg: ASbGnctECfiYBMWwb7ywviV/Hw26SNP14UI4fOsYVqTTNUS+hPtGzt3Q/PB4EHsRDkm
- K4y3eS8aLKRVCYPTWEg2tQb/U7yvcH4Idas24bjR5AghMEYAZOOE0vo7XNCAdx3lHJImCrn22+S
- fLr4unXtIfb4yOJg0YlHdmYzAqKWgn5Fijog==
-X-Google-Smtp-Source: AGHT+IFMG2XKNa4+3LTzMdrKymyLYu77xXGXJpgzbziSKR83hyb6XIwsg10gjsczLI6vnBXyQddS8Kz720GqOZKUYSY=
-X-Received: by 2002:a17:903:198e:b0:231:7399:7db8 with SMTP id
- d9443c01a7336-231980bbe87mr45797755ad.7.1747228574735; Wed, 14 May 2025
- 06:16:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uFC0A-0001Jo-33
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 09:18:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uFC06-00033Y-6d
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 09:18:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747228691;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=mw/v1a9HhmS4Ohv5T0B9ZutLzvEJjGpUKtR+zS+yVOU=;
+ b=S5dfRfYn67DcDzo+EoLEl/+ekGY+Rw9aiENwVmJTO9iyW5RTlNQB/4Z0qAO2jeGIMclhtZ
+ 4pjiCuPio7w6rCx7RacxLaogNxs9mBkxdwZNu+QgTDTmfhFb+VYfVLeP29UI20/9byb4JY
+ FUb6DBAwe+8Z8cc0KOZNBk51DR5UmNo=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-76-EtZZ5FSIOG-UQ2LohpP0KA-1; Wed,
+ 14 May 2025 09:18:10 -0400
+X-MC-Unique: EtZZ5FSIOG-UQ2LohpP0KA-1
+X-Mimecast-MFC-AGG-ID: EtZZ5FSIOG-UQ2LohpP0KA_1747228689
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0D235180036E; Wed, 14 May 2025 13:18:09 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.56])
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 4E7A518003FC; Wed, 14 May 2025 13:18:07 +0000 (UTC)
+Date: Wed, 14 May 2025 09:18:06 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, vsementsov@yandex-team.ru,
+ stefanha@gmail.com
+Subject: Re: [PULL v3 0/8] block-job patches 2025-04-29
+Message-ID: <20250514131806.GA265199@fedora>
+References: <20250512152940.1294079-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
-References: <d3d1944e-2482-4aa7-b621-596246a08107@gnu.org>
- <CAAjaMXZhq_uv-w_9TT3++HAcO7r_OhriJA0RKWs8YqY_ryjK4w@mail.gmail.com>
- <7101782c-f642-41e6-8f3a-7061ca722c99@gnu.org>
- <CAAjaMXbLUG1jsDZVcwKQV5+UfaCZUWTi4o5KFNJRowLbQ67yqQ@mail.gmail.com>
-In-Reply-To: <CAAjaMXbLUG1jsDZVcwKQV5+UfaCZUWTi4o5KFNJRowLbQ67yqQ@mail.gmail.com>
-From: Paolo Bonzini <bonzini@gnu.org>
-Date: Wed, 14 May 2025 09:16:03 -0400
-X-Gm-Features: AX0GCFtBJLgvF7v0FOLg3LPjtiB4RqQTwVWBpkLtzQgyPp2pwyffy6qUkeT0jTI
-Message-ID: <CAHFMJ7tJ0ArHvA3kaJ=8CqGdQX3eTacX9TRrJdoLJGeqbhrk+A@mail.gmail.com>
-Subject: Re: Rust in QEMU update, April 2025
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel <qemu-devel@nongnu.org>, qemu-rust@nongnu.org, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Daniel Berrange <berrange@redhat.com>, Kevin Wolf <kwolf@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>
-Content-Type: multipart/alternative; boundary="00000000000089e2240635185a51"
-Received-SPF: pass client-ip=209.85.215.175;
- envelope-from=paolo.bonzini@gmail.com; helo=mail-pg1-f175.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="RCpBeRPkkw4yRdjn"
+Content-Disposition: inline
+In-Reply-To: <20250512152940.1294079-1-vsementsov@yandex-team.ru>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -37
+X-Spam_score: -3.8
+X-Spam_bar: ---
+X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,109 +83,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000089e2240635185a51
-Content-Type: text/plain; charset="UTF-8"
 
-Il mar 6 mag 2025, 04:41 Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-ha scritto:
+--RCpBeRPkkw4yRdjn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> > It's not about hot paths, it's more that 1) you cannot use From/Into in
-> > a "static"'s initializer 2) bilge relies a lot on non-const methods in
-> > its internal implementation, which makes it quite messy to use it in
-> > some places.  See for example this thing for which I take all the blame:
->
-> Yeah it's not nice that we can't use it in static/const initializers. [...]
+Applied, thanks.
 
-It has its pros and cons that's for sure... there are many crates that
-> let you define typed bitfields, I haven't looked into the current
-> state of the art lately. We should definitely move on to something
-> better if it exists now or in the future.
->
+Please update the changelog at https://wiki.qemu.org/ChangeLog/10.1 for any user-visible changes.
 
-I tried using bitfield-struct. The definitions are a bit less polished than
-bilge but usage is the same, it is const friendly and has fewer
-dependencies. I don't think there's one that's clearly better, but we can
-look at the tradeoffs and decide.
+--RCpBeRPkkw4yRdjn
+Content-Type: application/pgp-signature; name=signature.asc
 
-To streamline expressions on bit flags maybe we could have a macro like
-bits!(Interrupt: RX | TX) which expands to
-Interrupt.RX.union(Interrupt.TX), where union() is a const function
-(likewise for & or !). This should not be hard to write as a procedural
-macro, it's just a recursive descent parser.
+-----BEGIN PGP SIGNATURE-----
 
-Oops, I forgot I had archived it because I moved development to
-> https://gitlab.com/epilys/qemu . I made it public again. Bear in mind
-> this was a WIP, basically my git stash but committed.
->
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmgkmA4ACgkQnKSrs4Gr
+c8hgywgAh7AR7xhBggH701133I35sgx/3im0But4dqJYZj0mXTR4cC19QNJSBG7N
+uqJumP8vZJ58rP6F74GOl/JYSUOz82JgDipg7wJI9QXrEEi4SproJvd+qJazEyk5
+J3naUnCU9Uh+by0YevI0CMyaneXRCHiPxy6o9YD3X97De1NzY1mew9KRCn/LOqmZ
+tzTcB12ZljGltAguqeaaVgvZg8Ca3gxalziWCT/ZRMz9wMn4eCqseYfyOx9Uojuh
+JyRDdPAVfz+ebUzkXq5pYjc6sPOkF0KfgdMc6j4znmIaP+EG4OmeWFKeXqXaMNTE
+jaO92TgRiisR1AYWuDjPQgK80Usq+w==
+=riip
+-----END PGP SIGNATURE-----
 
-Understood. The nice thing to have would be to automatically derive the
-PropertyInfo from the type of the field.
+--RCpBeRPkkw4yRdjn--
 
-Paolo
-
-> BTW, if you need it to model reflection better I think it is acceptable
-> > to assume const_refs_to_static is present.
-> >
-> > Paolo
->
->
-
---00000000000089e2240635185a51
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote gmail_quote_contai=
-ner"><div dir=3D"ltr" class=3D"gmail_attr">Il mar 6 mag 2025, 04:41 Manos P=
-itsidianakis &lt;<a href=3D"mailto:manos.pitsidianakis@linaro.org">manos.pi=
-tsidianakis@linaro.org</a>&gt; ha scritto:</div><blockquote class=3D"gmail_=
-quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1=
-ex">
-&gt; It&#39;s not about hot paths, it&#39;s more that 1) you cannot use Fro=
-m/Into in<br>
-&gt; a &quot;static&quot;&#39;s initializer 2) bilge relies a lot on non-co=
-nst methods in<br>
-&gt; its internal implementation, which makes it quite messy to use it in<b=
-r>
-&gt; some places.=C2=A0 See for example this thing for which I take all the=
- blame:<br>
-<br>
-Yeah it&#39;s not nice that we can&#39;t use it in static/const initializer=
-s. [...]</blockquote></div></div><div dir=3D"auto"><div class=3D"gmail_quot=
-e gmail_quote_container"><blockquote class=3D"gmail_quote" style=3D"margin:=
-0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">It has its pros and=
- cons that&#39;s for sure... there are many crates that<br>
-let you define typed bitfields, I haven&#39;t looked into the current<br>
-state of the art lately. We should definitely move on to something<br>
-better if it exists now or in the future.<br></blockquote></div></div><div =
-dir=3D"auto"><br></div><div dir=3D"auto">I tried using bitfield-struct. The=
- definitions are a bit less polished than bilge but usage is the same, it i=
-s const friendly and has fewer dependencies. I don&#39;t think there&#39;s =
-one that&#39;s clearly better, but we can look at the tradeoffs and decide.=
-</div><div dir=3D"auto"><br></div><div dir=3D"auto">To streamline expressio=
-ns on bit flags maybe we could have a macro like bits!(Interrupt: RX | TX) =
-which expands to Interrupt.RX.union(Interrupt.TX), where union() is a const=
- function (likewise for &amp; or !). This should not be hard to write as a =
-procedural macro, it&#39;s just a recursive descent parser.</div><div dir=
-=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote gmail_quote=
-_container"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;bo=
-rder-left:1px #ccc solid;padding-left:1ex">Oops, I forgot I had archived it=
- because I moved development to<br>
-<a href=3D"https://gitlab.com/epilys/qemu" rel=3D"noreferrer noreferrer" ta=
-rget=3D"_blank">https://gitlab.com/epilys/qemu</a> . I made it public again=
-. Bear in mind<br>
-this was a WIP, basically my git stash but committed.<br></blockquote></div=
-></div><div dir=3D"auto"><br></div><div dir=3D"auto">Understood. The nice t=
-hing to have would be to automatically derive the PropertyInfo from the typ=
-e of the field.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Paolo</d=
-iv><div dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote =
-gmail_quote_container"><blockquote class=3D"gmail_quote" style=3D"margin:0 =
-0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">&gt; BTW, if you need=
- it to model reflection better I think it is acceptable<br>
-&gt; to assume const_refs_to_static is present.<br>
-&gt;<br>
-&gt; Paolo<br>
-<br>
-</blockquote></div></div></div>
-
---00000000000089e2240635185a51--
 
