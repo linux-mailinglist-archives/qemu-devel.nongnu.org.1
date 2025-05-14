@@ -2,108 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54568AB6F4D
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 17:14:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73FCCAB6F3D
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 17:12:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFDl4-0004Jx-Rr; Wed, 14 May 2025 11:10:58 -0400
+	id 1uFDl1-0004Id-V4; Wed, 14 May 2025 11:10:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <calebs@linux.ibm.com>)
- id 1uFDC5-0000A4-2y; Wed, 14 May 2025 10:34:50 -0400
+ id 1uFDCl-0000VV-4J; Wed, 14 May 2025 10:35:33 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <calebs@linux.ibm.com>)
- id 1uFDC1-0006uk-Hg; Wed, 14 May 2025 10:34:47 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54E70Axl018288;
- Wed, 14 May 2025 14:34:43 GMT
+ id 1uFDCf-00079z-15; Wed, 14 May 2025 10:35:26 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54E6IlPX026915;
+ Wed, 14 May 2025 14:35:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=llVUqi
- mV5WZoAjum166nvVQTCqY4FkPx5zldDBTnpg8=; b=c5jxmU6Eq/e1ykMFYYhUo8
- Q2n5sTEzw7hu3JdoUmNhh3xgxJQqvUjmkfhi+pudURic2rfilvE1NWQXGnD6j15a
- Dm2SSDOPHw0T2F6L4ujzLR/N7L7gzu54/rgb6Q99iLOtoSfGEfxZm9vgGJnjiv32
- EJOZ3mGd0ITwp9wulRbfI7RiNCtqrGW+wo1T3u7YFNxc2r90VnL1qbJUHkORevy/
- uffQ5OZJouEkLhWVBMjDcCpsbLqjoQNsITHKY6OQpqkLqV1l6ZjbYhwTOVKzZkgW
- mfMq5GC7fYT7Sh0zng3nqCnEF3uaZ2F9KqoQo2n4E7oYsiHfSxy4x3H/UUWp+/2Q
+ :message-id:mime-version:references:subject:to; s=pp1; bh=M9owXP
+ 7SNuAXLrWy83dcs0PoOTaUSHCsZN4lAicgon4=; b=NtbKtTycJTPc1lEOf+7u+V
+ txPSTjAX6++hU58I10c+VGlljacTajxuRpt82nvv8qFkfPi3+xvs/YJy07yJUAZb
+ tq9Ly9HAYYXe+FKzTd0uGyl8v0RQUVWq1R75KcqhFhAPdTVDm43wRGEccSpQAwfD
+ G2oHevIpDDWUyIPRUFJBdNun6wn1+Gqb4tVyV/kG3vI0kp7Afo+C77Dcjzuj622Y
+ 3SSbF/PKzi4pu5Uh/vG2VfHCbaytjjMYCidoP1PqdagtPtkg+P18sgtD64s6LS+x
+ cH91KOb9dCk9Ef59nKKTe5SYI00pJJfoV2xYnDSTQE0YwSd392FdBAZEkepLNHIg
  ==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mbq8mvw2-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mnst2brw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 May 2025 14:34:43 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54EEVXHM008552;
- Wed, 14 May 2025 14:34:43 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mbq8mvvw-1
+ Wed, 14 May 2025 14:35:23 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54EEVRJA017786;
+ Wed, 14 May 2025 14:35:22 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mnst2bru-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 May 2025 14:34:42 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54EDSdM5019466;
- Wed, 14 May 2025 14:34:42 GMT
+ Wed, 14 May 2025 14:35:22 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54EDWs3j021439;
+ Wed, 14 May 2025 14:35:21 GMT
 Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 46mbfrmp0q-1
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46mbfrmp09-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 May 2025 14:34:42 +0000
+ Wed, 14 May 2025 14:35:21 +0000
 Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
  [10.241.53.103])
  by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 54EEYfIE16188028
+ 54EEZK0k31195662
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 14 May 2025 14:34:41 GMT
+ Wed, 14 May 2025 14:35:20 GMT
 Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0EBAA5805E;
- Wed, 14 May 2025 14:34:41 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 31CF358052;
+ Wed, 14 May 2025 14:35:20 +0000 (GMT)
 Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A74FC58064;
- Wed, 14 May 2025 14:34:40 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id CA11D58062;
+ Wed, 14 May 2025 14:35:19 +0000 (GMT)
 Received: from [9.10.255.115] (unknown [9.10.255.115])
  by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 14 May 2025 14:34:40 +0000 (GMT)
-Message-ID: <18fbf0cb-a60c-4c41-90ca-e24a040a05dc@linux.ibm.com>
-Date: Wed, 14 May 2025 09:34:40 -0500
+ Wed, 14 May 2025 14:35:19 +0000 (GMT)
+Message-ID: <c5243933-5e14-45c6-bbfe-4a3952354e42@linux.ibm.com>
+Date: Wed, 14 May 2025 09:35:19 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/50] ppc/xive: Explicitly zero NSR after accepting
+Subject: Re: [PATCH 15/50] ppc/xive: Move NSR decoding into helper functions
 To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
 Cc: qemu-devel@nongnu.org, =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?=
  <fbarrat@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
  Michael Kowal <kowal@linux.ibm.com>,
  Caleb Schlossin <calebs@linux.vnet.ibm.com>
 References: <20250512031100.439842-1-npiggin@gmail.com>
- <20250512031100.439842-15-npiggin@gmail.com>
+ <20250512031100.439842-16-npiggin@gmail.com>
 Content-Language: en-US
 From: Caleb Schlossin <calebs@linux.ibm.com>
-In-Reply-To: <20250512031100.439842-15-npiggin@gmail.com>
+In-Reply-To: <20250512031100.439842-16-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: vnmcVBrqwKLBCzCQ1M1GBtfYoi14Cezt
-X-Authority-Analysis: v=2.4 cv=GrRC+l1C c=1 sm=1 tr=0 ts=6824aa03 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+X-Proofpoint-GUID: HukXKw4h_nywo3aTbtEffqdNUKGoV2SR
+X-Authority-Analysis: v=2.4 cv=V+590fni c=1 sm=1 tr=0 ts=6824aa2b cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
  a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8
- a=pEHLqOCy1T54nkr0MDsA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE0MDEyMCBTYWx0ZWRfX3i18lVW8h1W2
- CEKf0SdzpeW8hJSpY2Ma2i8AnIigsmtDuP+4Ze+0sQ0CmJPlFPSLFELSr3FFCTXKFOxeJhtIYE7
- 7LKvyUCFXwKlLTxiGUPAnzkDs2C2KABC+Y344KUhzyHsG7YNXxAI3GSNPg8UJGRKlS/CS05/qDt
- arSPBfqS2MQWJ5y5iES+SYWGrbO6vquc3SG/TGedMhYbRuaywhEjb0Q6Z8ehTSennuiIF3CEZ9j
- sD2sdyswzPKRF/XkoTzSPFXl0mXNzo19/KL/BR8U1MsRNvLA0yWCpylvjrZswdaBazOBAuHoi/y
- /Gsz3za+jG2meijBLBeoZWMjiU7g3L3jXp7aUHRGpQ0PVAKXIOa6TJ1tSYeQaJkR5p7iguipKVS
- /8cwzAOnwG87Eg6bc+bmEhR7n44qOMx217YrMNftgfRhN5CByWaoNMk79Lzb04ujHRUprD1R
-X-Proofpoint-GUID: ybTe4ldk_lG7_oApsskaCBFCwbtVmrH_
+ a=4UZJbdheEuQRtzx_KTAA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: xC4O9lS_kdegrpzvoj5b_ZMFODrYvckg
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE0MDEyNSBTYWx0ZWRfXykfwaDAsZq3T
+ PO1QIE60kadCyR4zde4wnSPkwVGXlKWPCnIppoN2mWW4JXiSJ3th66HmGBIaOJQyVZbbx1BJEvQ
+ j0xZLPWc/CMRGHY1V+sy52QkHQ1Ic42UbQ1QbB0ka8Swa5wHA42PcK+/nfZWaEPoafS+O2QOs9M
+ 6iWVLUOezbheN2vhmQRsic52EY8tv2grPdL8lvBiAfryWObpusfWQIqZjFRp+15b/7wt49Ui84G
+ oJ8GfFP8SHTRwumgFLDTuj6tZGha4a0KknEJTBMj5HqGAEsnbluMfpOYWwQAq7264KM9NqbFpYH
+ zxtf5REkykbKWbxQ0n1taBg9ruNMAne4ZOupAeX+edkKIuqw2Zc6kPaiIx8LooZz1LPv7uSuvKY
+ iYILVr5xput+q+jLl8jLC7lfmqKpNL3BbP0mxh5RuPDTv3ALxZClTPU8MQ/zpS+8GB30Cr/F
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-14_04,2025-05-14_03,2025-02-21_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- malwarescore=0 lowpriorityscore=0 phishscore=0 mlxscore=0 clxscore=1015
- mlxlogscore=560 spamscore=0 priorityscore=1501 adultscore=0 bulkscore=0
- suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
- definitions=main-2505140120
+ mlxscore=0 priorityscore=1501
+ mlxlogscore=616 lowpriorityscore=0 bulkscore=0 suspectscore=0
+ impostorscore=0 malwarescore=0 phishscore=0 adultscore=0 clxscore=1015
+ spamscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
+ definitions=main-2505140125
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=calebs@linux.ibm.com;
  helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
@@ -130,39 +130,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Looks good.
 
 Reviewed-by: Caleb Schlossin <calebs@linux.ibm.com>
 
 On 5/11/25 10:10 PM, Nicholas Piggin wrote:
-> Have xive_tctx_accept clear NSR in one shot rather than masking out bits
-> as they are tested, which makes it clear it's reset to 0, and does not
-> have a partial NSR value in the register.
+> Rather than functions to return masks to test NSR bits, have functions
+> to test those bits directly. This should be no functional change, it
+> just makes the code more readable.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  hw/intc/xive.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+>  hw/intc/xive.c        | 51 +++++++++++++++++++++++++++++++++++--------
+>  include/hw/ppc/xive.h |  4 ++++
+>  2 files changed, 46 insertions(+), 9 deletions(-)
 > 
 > diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-> index 6293ea4361..bb40a69c5b 100644
+> index bb40a69c5b..c2da23f9ea 100644
 > --- a/hw/intc/xive.c
 > +++ b/hw/intc/xive.c
-> @@ -68,13 +68,11 @@ static uint64_t xive_tctx_accept(XiveTCTX *tctx, uint8_t ring)
+> @@ -25,6 +25,45 @@
+>  /*
+>   * XIVE Thread Interrupt Management context
+>   */
+> +bool xive_nsr_indicates_exception(uint8_t ring, uint8_t nsr)
+> +{
+> +    switch (ring) {
+> +    case TM_QW1_OS:
+> +        return !!(nsr & TM_QW1_NSR_EO);
+> +    case TM_QW2_HV_POOL:
+> +    case TM_QW3_HV_PHYS:
+> +        return !!(nsr & TM_QW3_NSR_HE);
+> +    default:
+> +        g_assert_not_reached();
+> +    }
+> +}
+> +
+> +bool xive_nsr_indicates_group_exception(uint8_t ring, uint8_t nsr)
+> +{
+> +    if ((nsr & TM_NSR_GRP_LVL) > 0) {
+> +        g_assert(xive_nsr_indicates_exception(ring, nsr));
+> +        return true;
+> +    }
+> +    return false;
+> +}
+> +
+> +uint8_t xive_nsr_exception_ring(uint8_t ring, uint8_t nsr)
+> +{
+> +    /* NSR determines if pool/phys ring is for phys or pool interrupt */
+> +    if ((ring == TM_QW3_HV_PHYS) || (ring == TM_QW2_HV_POOL)) {
+> +        uint8_t he = (nsr & TM_QW3_NSR_HE) >> 6;
+> +
+> +        if (he == TM_QW3_NSR_HE_PHYS) {
+> +            return TM_QW3_HV_PHYS;
+> +        } else if (he == TM_QW3_NSR_HE_POOL) {
+> +            return TM_QW2_HV_POOL;
+> +        } else {
+> +            /* Don't support LSI mode */
+> +            g_assert_not_reached();
+> +        }
+> +    }
+> +    return ring;
+> +}
+> 
+>  static qemu_irq xive_tctx_output(XiveTCTX *tctx, uint8_t ring)
+>  {
+> @@ -48,18 +87,12 @@ static uint64_t xive_tctx_accept(XiveTCTX *tctx, uint8_t ring)
+> 
+>      qemu_irq_lower(xive_tctx_output(tctx, ring));
+> 
+> -    if (regs[TM_NSR] != 0) {
+> +    if (xive_nsr_indicates_exception(ring, nsr)) {
+>          uint8_t cppr = regs[TM_PIPR];
+>          uint8_t alt_ring;
+>          uint8_t *alt_regs;
+> 
+> -        /* POOL interrupt uses IPB in QW2, POOL ring */
+> -        if ((ring == TM_QW3_HV_PHYS) &&
+> -            ((nsr & TM_QW3_NSR_HE) == (TM_QW3_NSR_HE_POOL << 6))) {
+> -            alt_ring = TM_QW2_HV_POOL;
+> -        } else {
+> -            alt_ring = ring;
+> -        }
+> +        alt_ring = xive_nsr_exception_ring(ring, nsr);
+>          alt_regs = &tctx->regs[alt_ring];
+> 
+>          regs[TM_CPPR] = cppr;
+> @@ -68,7 +101,7 @@ static uint64_t xive_tctx_accept(XiveTCTX *tctx, uint8_t ring)
 >           * If the interrupt was for a specific VP, reset the pending
 >           * buffer bit, otherwise clear the logical server indicator
 >           */
-> -        if (regs[TM_NSR] & TM_NSR_GRP_LVL) {
-> -            regs[TM_NSR] &= ~TM_NSR_GRP_LVL;
-> -        } else {
-> +        if (!(regs[TM_NSR] & TM_NSR_GRP_LVL)) {
+> -        if (!(regs[TM_NSR] & TM_NSR_GRP_LVL)) {
+> +        if (!xive_nsr_indicates_group_exception(ring, nsr)) {
 >              alt_regs[TM_IPB] &= ~xive_priority_to_ipb(cppr);
 >          }
 > 
-> -        /* Drop the exception bit and any group/crowd */
-> +        /* Clear the exception from NSR */
->          regs[TM_NSR] = 0;
+> diff --git a/include/hw/ppc/xive.h b/include/hw/ppc/xive.h
+> index 538f438681..28f0f1b79a 100644
+> --- a/include/hw/ppc/xive.h
+> +++ b/include/hw/ppc/xive.h
+> @@ -365,6 +365,10 @@ static inline uint32_t xive_tctx_word2(uint8_t *ring)
+>      return *((uint32_t *) &ring[TM_WORD2]);
+>  }
 > 
->          trace_xive_tctx_accept(tctx->cs->cpu_index, alt_ring,
+> +bool xive_nsr_indicates_exception(uint8_t ring, uint8_t nsr);
+> +bool xive_nsr_indicates_group_exception(uint8_t ring, uint8_t nsr);
+> +uint8_t xive_nsr_exception_ring(uint8_t ring, uint8_t nsr);
+> +
+>  /*
+>   * XIVE Router
+>   */
 
 
