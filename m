@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 923B0AB65F8
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 10:30:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E42B5AB65FC
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 10:30:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uF7UB-0006fq-5s; Wed, 14 May 2025 04:29:07 -0400
+	id 1uF7UC-0006jC-80; Wed, 14 May 2025 04:29:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uF7U8-0006ao-0L; Wed, 14 May 2025 04:29:04 -0400
+ id 1uF7U8-0006c4-HH; Wed, 14 May 2025 04:29:04 -0400
 Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uF7U6-0006Fg-6y; Wed, 14 May 2025 04:29:03 -0400
+ id 1uF7U6-0006GC-CJ; Wed, 14 May 2025 04:29:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747211342; x=1778747342;
+ t=1747211343; x=1778747343;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=D1v/A0ZXU1bNqLebJ7M+DCdIHB/C2f5yFTku3+t4lqY=;
- b=aL6iuwKH8FKJ3jmOsSgjnQLk9Kvlyivwo82GisfHtSlvt/WuQuLvAfbZ
- 0N5IvjM0srSRNLoR6JRMHxoFpHt9E3Mo1E04xQDIxDj3PIR1IipDi0H8Y
- yKKQ2C7FZreTk+V5fiv76I8I2t2lITKE+JUPSWNEZG0YlBuaUcSmcNXtP
- RaRaiw0lFwJdPhgGgBRTgOw7HKth9xAqnhLNb4c+R9Hok+ff5WFaNZzAI
- Dcrfy+mHB0N71HIxAHAz73OK9SfT5CZyCZGt0/3WTyC6aRNwR/WePaT9A
- ey6B4yXdHH4uiqbUb9z7NtRqQG0s9gvrKZoky80nm0T+KnVJM4x///pn7 w==;
-X-CSE-ConnectionGUID: S4V9GTZVTOSMngMjl4M58Q==
-X-CSE-MsgGUID: lliDimEnQcKzaMLUgrpX+A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="66505574"
-X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="66505574"
+ bh=XcfqfXhzwMnZCQ8ssMQpFUaIWpIFYFQwZh6vh4Z+M54=;
+ b=NiO1WSZr7Qd9DYR9LGTEUrF0KvqzzcDDL7GpoxH9pwPKWCvHUk/s9mba
+ c/5oO+MUDkXPmhIODZdnmZhnRFy9Th2A+BKTOSzRUmxm3Key1JZy101tu
+ /iw9ndNzf5pY7l1VckNWFwQ/UVZ+XZKW+g9+R47fTa+EaH9cW8JKMdMbl
+ 2v1df77LBIVfspa+2ZUyssAvdfycwZfnoRaSMtDAYTgRdMDC1KceOsK+E
+ vN0dLAz+JgyuN4MmsFVfMw2TGgfOkwj3SIPOgllNVXO7xZau716FY4XgL
+ j1pze7LJcFuhRpWCP0M+ZcR3wSnlxbEbaIz4WQBCdIMygsI0BIbmiY9V6 A==;
+X-CSE-ConnectionGUID: rgTAyvQiSwC0rRa3upkV9A==
+X-CSE-MsgGUID: W/hBv8vmRCifpwJdYCONBQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="66505579"
+X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="66505579"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 May 2025 01:28:58 -0700
-X-CSE-ConnectionGUID: 6pjiF2b2SlGOFoe6V1Bv2A==
-X-CSE-MsgGUID: ifdDoHMvQYKKJ3s1zzQVkg==
+ 14 May 2025 01:29:00 -0700
+X-CSE-ConnectionGUID: dEgjz3DOSZavm5HX5+IRZA==
+X-CSE-MsgGUID: mDvUXlf2TZajHn5CvXhD9A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="169065810"
+X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="169065815"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa001.fm.intel.com with ESMTP; 14 May 2025 01:28:56 -0700
+ by fmviesa001.fm.intel.com with ESMTP; 14 May 2025 01:28:57 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>
 Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 2/9] docs/devel/qom: Fix the doc about
- OBJECT_DECLARE_SIMPLE_TYPE
-Date: Wed, 14 May 2025 16:49:50 +0800
-Message-Id: <20250514084957.2221975-3-zhao1.liu@intel.com>
+ Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: [PATCH 3/9] hw/acpi/pci: Consolidate
+ OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES
+Date: Wed, 14 May 2025 16:49:51 +0800
+Message-Id: <20250514084957.2221975-4-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250514084957.2221975-1-zhao1.liu@intel.com>
 References: <20250514084957.2221975-1-zhao1.liu@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
@@ -82,53 +82,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, the expansion example of OBJECT_DECLARE_SIMPLE_TYPE "roughly"
-reflects what OBJECT_DECLARE_TYPE is doing.
+The QOM types of AcpiGenericInitiator and AcpiGenericPort are declared
+by OBJECT_DECLARE_SIMPLE_TYPE, which means they don't need the class!
 
-Why "roughly"? Because this line -
+Therefore, use OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES to implement
+the type, then there's no need for class definition.
 
->    G_DEFINE_AUTOPTR_CLEANUP_FUNC(MyDeviceClass, object_unref)
-
-- is also wrong for OBJECT_DECLARE_TYPE.
-
-Fix the expansion example of OBJECT_DECLARE_SIMPLE_TYPE, especially
-drop that definition of MyDeviceClass.
-
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Daniel P. Berrangé" <berrange@redhat.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Igor Mammedov <imammedo@redhat.com>
+Cc: Ani Sinha <anisinha@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- docs/devel/qom.rst | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ hw/acpi/pci.c | 24 ++++++++----------------
+ 1 file changed, 8 insertions(+), 16 deletions(-)
 
-diff --git a/docs/devel/qom.rst b/docs/devel/qom.rst
-index 5870745ba27b..185f4c2f5921 100644
---- a/docs/devel/qom.rst
-+++ b/docs/devel/qom.rst
-@@ -326,21 +326,12 @@ This is equivalent to the following:
-    :caption: Expansion from declaring a simple type
+diff --git a/hw/acpi/pci.c b/hw/acpi/pci.c
+index d511a8502954..acac6744525e 100644
+--- a/hw/acpi/pci.c
++++ b/hw/acpi/pci.c
+@@ -75,16 +75,12 @@ typedef struct AcpiGenericInitiator {
+     uint32_t node;
+ } AcpiGenericInitiator;
  
-    typedef struct MyDevice MyDevice;
--   typedef struct MyDeviceClass MyDeviceClass;
- 
--   G_DEFINE_AUTOPTR_CLEANUP_FUNC(MyDeviceClass, object_unref)
-+   G_DEFINE_AUTOPTR_CLEANUP_FUNC(MyDevice, object_unref)
- 
--   #define MY_DEVICE_GET_CLASS(void *obj) \
--           OBJECT_GET_CLASS(MyDeviceClass, obj, TYPE_MY_DEVICE)
--   #define MY_DEVICE_CLASS(void *klass) \
--           OBJECT_CLASS_CHECK(MyDeviceClass, klass, TYPE_MY_DEVICE)
-    #define MY_DEVICE(void *obj)
-            OBJECT_CHECK(MyDevice, obj, TYPE_MY_DEVICE)
- 
--   struct MyDeviceClass {
--       DeviceClass parent_class;
--   };
+-typedef struct AcpiGenericInitiatorClass {
+-    ObjectClass parent_class;
+-} AcpiGenericInitiatorClass;
 -
- The 'struct MyDevice' needs to be declared separately.
- If the type requires virtual functions to be declared in the class
- struct, then the alternative OBJECT_DECLARE_TYPE() macro can be
+ #define TYPE_ACPI_GENERIC_INITIATOR "acpi-generic-initiator"
+ 
+-OBJECT_DEFINE_TYPE_WITH_INTERFACES(AcpiGenericInitiator, acpi_generic_initiator,
+-                   ACPI_GENERIC_INITIATOR, OBJECT,
+-                   { TYPE_USER_CREATABLE },
+-                   { NULL })
++OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(AcpiGenericInitiator, acpi_generic_initiator,
++                                          ACPI_GENERIC_INITIATOR, OBJECT,
++                                          { TYPE_USER_CREATABLE },
++                                          { NULL })
+ 
+ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGenericInitiator, ACPI_GENERIC_INITIATOR)
+ 
+@@ -191,16 +187,12 @@ typedef struct AcpiGenericPort {
+     uint32_t node;
+ } AcpiGenericPort;
+ 
+-typedef struct AcpiGenericPortClass {
+-    ObjectClass parent_class;
+-} AcpiGenericPortClass;
+-
+ #define TYPE_ACPI_GENERIC_PORT "acpi-generic-port"
+ 
+-OBJECT_DEFINE_TYPE_WITH_INTERFACES(AcpiGenericPort, acpi_generic_port,
+-                   ACPI_GENERIC_PORT, OBJECT,
+-                   { TYPE_USER_CREATABLE },
+-                   { NULL })
++OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(AcpiGenericPort, acpi_generic_port,
++                                          ACPI_GENERIC_PORT, OBJECT,
++                                          { TYPE_USER_CREATABLE },
++                                          { NULL })
+ 
+ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGenericPort, ACPI_GENERIC_PORT)
+ 
 -- 
 2.34.1
 
