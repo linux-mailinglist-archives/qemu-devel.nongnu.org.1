@@ -2,39 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 787BFAB6C01
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 15:02:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CB4BAB6C6E
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 15:16:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFBib-0006Yp-41; Wed, 14 May 2025 09:00:17 -0400
+	id 1uFBkV-0007qt-79; Wed, 14 May 2025 09:02:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uFBhz-0004nO-QB; Wed, 14 May 2025 08:59:40 -0400
+ id 1uFBi2-0004qH-0s; Wed, 14 May 2025 08:59:42 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uFBhx-0007wQ-6o; Wed, 14 May 2025 08:59:39 -0400
+ id 1uFBhz-0007wk-Sk; Wed, 14 May 2025 08:59:41 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A47CA121AEC;
+ by isrv.corpit.ru (Postfix) with ESMTP id BB1FA121AED;
  Wed, 14 May 2025 15:57:49 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 4F8EE20B85A;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 5A99F20B85B;
  Wed, 14 May 2025 15:57:59 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Hanna Czenczek <hreitz@redhat.com>,
+Cc: qemu-stable@nongnu.org, Daan De Meyer <daan.j.demeyer@gmail.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Valentin David <valentin.david@canonical.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.4 14/34] scsi-disk: Apply error policy for host_status
- errors again
-Date: Wed, 14 May 2025 15:57:36 +0300
-Message-Id: <20250514125758.92030-14-mjt@tls.msk.ru>
+Subject: [Stable-9.2.4 15/34] smbios: Fix buffer overrun when using path=
+ option
+Date: Wed, 14 May 2025 15:57:37 +0300
+Message-Id: <20250514125758.92030-15-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.4-20250514155748@cover.tls.msk.ru>
 References: <qemu-stable-9.2.4-20250514155748@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,144 +62,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kevin Wolf <kwolf@redhat.com>
+From: Daan De Meyer <daan.j.demeyer@gmail.com>
 
-Originally, all failed SG_IO requests called scsi_handle_rw_error() to
-apply the configured error policy. However, commit f3126d65, which was
-supposed to be a mere refactoring for scsi-disk.c, broke this and
-accidentally completed the SCSI request without considering the error
-policy any more if the error was signalled in the host_status field.
+We have to make sure the array of bytes read from the path= file
+is null-terminated, otherwise we run into a buffer overrun later on.
 
-Apart from the commit message not describing the change as intended,
-errors indicated in host_status are also obviously backend errors and
-not something the guest must deal with independently of the error
-policy.
+Fixes: bb99f4772f54017490e3356ecbb3df25c5d4537f ("hw/smbios: support loading OEM strings values from a file")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2879
 
-This behaviour means that some recoverable errors (such as a path error
-in multipath configurations) were reported to the guest anyway, which
-might not expect it and might consider its disk broken.
-
-Make sure that we apply the error policy again for host_status errors,
-too. This addresses an existing FIXME comment and allows us to remove
-some comments warning that callbacks weren't always called. With this
-fix, they are called in all cases again.
-
-The return value passed to the request callback doesn't have more free
-values that could be used to indicate host_status errors as well as SAM
-status codes and negative errno. Store the value in the host_status
-field of the SCSIRequest instead and use -ENODEV as the return value (if
-a path hasn't been reachable for a while, blk_aio_ioctl() will return
--ENODEV instead of just setting host_status, so just reuse it here -
-it's not necessarily entirely accurate, but it's as good as any errno).
-
-Cc: qemu-stable@nongnu.org
-Fixes: f3126d65b393 ('scsi: move host_status handling into SCSI drivers')
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20250407155949.44736-1-kwolf@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit 61b6d9b749ba233784c7214cfe9585ea321159dc)
+Signed-off-by: Daan De Meyer <daan.j.demeyer@gmail.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Tested-by: Valentin David <valentin.david@canonical.com>
+Message-ID: <20250323213622.2581013-1-daan.j.demeyer@gmail.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+(cherry picked from commit a7a05f5f6a4085afbede315e749b1c67e78c966b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
-index 7f13b0588f..7af476dfed 100644
---- a/hw/scsi/scsi-disk.c
-+++ b/hw/scsi/scsi-disk.c
-@@ -68,10 +68,9 @@ struct SCSIDiskClass {
-     SCSIDeviceClass parent_class;
-     /*
-      * Callbacks receive ret == 0 for success. Errors are represented either as
--     * negative errno values, or as positive SAM status codes.
--     *
--     * Beware: For errors returned in host_status, the function may directly
--     * complete the request and never call the callback.
-+     * negative errno values, or as positive SAM status codes. For host_status
-+     * errors, the function passes ret == -ENODEV and sets the host_status field
-+     * of the SCSIRequest.
-      */
-     DMAIOFunc       *dma_readv;
-     DMAIOFunc       *dma_writev;
-@@ -226,11 +225,26 @@ static bool scsi_handle_rw_error(SCSIDiskReq *r, int ret, bool acct_failed)
-     SCSIDiskState *s = DO_UPCAST(SCSIDiskState, qdev, r->req.dev);
-     SCSIDiskClass *sdc = (SCSIDiskClass *) object_get_class(OBJECT(s));
-     SCSISense sense = SENSE_CODE(NO_SENSE);
-+    int16_t host_status;
-     int error;
-     bool req_has_sense = false;
-     BlockErrorAction action;
-     int status;
- 
-+    /*
-+     * host_status should only be set for SG_IO requests that came back with a
-+     * host_status error in scsi_block_sgio_complete(). This error path passes
-+     * -ENODEV as the return value.
-+     *
-+     * Reset host_status in the request because we may still want to complete
-+     * the request successfully with the 'stop' or 'ignore' error policy.
-+     */
-+    host_status = r->req.host_status;
-+    if (host_status != -1) {
-+        assert(ret == -ENODEV);
-+        r->req.host_status = -1;
-+    }
-+
-     if (ret < 0) {
-         status = scsi_sense_from_errno(-ret, &sense);
-         error = -ret;
-@@ -290,6 +304,10 @@ static bool scsi_handle_rw_error(SCSIDiskReq *r, int ret, bool acct_failed)
-         if (acct_failed) {
-             block_acct_failed(blk_get_stats(s->qdev.conf.blk), &r->acct);
+diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
+index a394514264..8feb54f229 100644
+--- a/hw/smbios/smbios.c
++++ b/hw/smbios/smbios.c
+@@ -1285,6 +1285,9 @@ static int save_opt_one(void *opaque,
+             g_byte_array_append(data, (guint8 *)buf, ret);
          }
-+        if (host_status != -1) {
-+            scsi_req_complete_failed(&r->req, host_status);
-+            return true;
-+        }
-         if (req_has_sense) {
-             sdc->update_sense(&r->req);
-         } else if (status == CHECK_CONDITION) {
-@@ -411,7 +429,6 @@ done:
-     scsi_req_unref(&r->req);
- }
  
--/* May not be called in all error cases, don't rely on cleanup here */
- static void scsi_dma_complete(void *opaque, int ret)
- {
-     SCSIDiskReq *r = (SCSIDiskReq *)opaque;
-@@ -452,7 +469,6 @@ done:
-     scsi_req_unref(&r->req);
- }
++        buf[0] = '\0';
++        g_byte_array_append(data, (guint8 *)buf, 1);
++
+         qemu_close(fd);
  
--/* May not be called in all error cases, don't rely on cleanup here */
- static void scsi_read_complete(void *opaque, int ret)
- {
-     SCSIDiskReq *r = (SCSIDiskReq *)opaque;
-@@ -592,7 +608,6 @@ done:
-     scsi_req_unref(&r->req);
- }
- 
--/* May not be called in all error cases, don't rely on cleanup here */
- static void scsi_write_complete(void * opaque, int ret)
- {
-     SCSIDiskReq *r = (SCSIDiskReq *)opaque;
-@@ -2854,14 +2869,10 @@ static void scsi_block_sgio_complete(void *opaque, int ret)
-     sg_io_hdr_t *io_hdr = &req->io_header;
- 
-     if (ret == 0) {
--        /* FIXME This skips calling req->cb() and any cleanup in it */
-         if (io_hdr->host_status != SCSI_HOST_OK) {
--            scsi_req_complete_failed(&r->req, io_hdr->host_status);
--            scsi_req_unref(&r->req);
--            return;
--        }
--
--        if (io_hdr->driver_status & SG_ERR_DRIVER_TIMEOUT) {
-+            r->req.host_status = io_hdr->host_status;
-+            ret = -ENODEV;
-+        } else if (io_hdr->driver_status & SG_ERR_DRIVER_TIMEOUT) {
-             ret = BUSY;
-         } else {
-             ret = io_hdr->status;
+         *opt->dest = g_renew(char *, *opt->dest, (*opt->ndest) + 1);
 -- 
 2.39.5
 
