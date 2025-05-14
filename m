@@ -2,36 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BB5CAB7520
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 21:07:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F01FBAB7516
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 21:05:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFHQE-0004YG-UM; Wed, 14 May 2025 15:05:43 -0400
+	id 1uFHQ2-0003rC-Ga; Wed, 14 May 2025 15:05:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uFHMN-00052Q-BK; Wed, 14 May 2025 15:01:44 -0400
+ id 1uFHMR-00054y-3a; Wed, 14 May 2025 15:01:49 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uFHMK-0007ZB-Up; Wed, 14 May 2025 15:01:42 -0400
+ id 1uFHMN-0007aw-EJ; Wed, 14 May 2025 15:01:46 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B6E86121D99;
+ by isrv.corpit.ru (Postfix) with ESMTP id CDDD0121D9A;
  Wed, 14 May 2025 22:00:32 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id BCC0220BA8B;
+ by tsrv.corpit.ru (Postfix) with ESMTP id C9A7320BA8C;
  Wed, 14 May 2025 22:00:42 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Dario Faggioli <dfaggioli@suse.com>, Eric Blake <eblake@redhat.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.1 15/23] docs: Don't define duplicate label in
- qemu-block-drivers.rst.inc
-Date: Wed, 14 May 2025 22:00:27 +0300
-Message-Id: <20250514190041.104759-15-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Bernhard Beschow <shentey@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.1 16/23] hw/gpio/imx_gpio: Fix interpretation of GDIR
+ polarity
+Date: Wed, 14 May 2025 22:00:28 +0300
+Message-Id: <20250514190041.104759-16-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-10.0.1-20250514114019@cover.tls.msk.ru>
 References: <qemu-stable-10.0.1-20250514114019@cover.tls.msk.ru>
@@ -60,66 +58,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Bernhard Beschow <shentey@gmail.com>
 
-Sphinx requires that labels within documents are unique across the
-whole manual.  This is because the "create a hyperlink" directive
-specifies only the name of the label, not a filename+label.  Some
-Sphinx versions will warn about duplicate labels, but even if there
-is no warning there is still an ambiguity and no guarantee that the
-hyperlink will be created to the right target.
+According to the i.MX 8M Plus reference manual, a GPIO pin is
+configured as an output when the corresponding bit in the GDIR
+register is set.  The function imx_gpio_set_int_line() is intended to
+be a no-op if the pin is configured as an output, returning early in
+such cases.  However, it inverts the condition.  Fix this by
+returning early when the bit is set.
 
-For QEMU this is awkward, because we have various .rst.inc fragments
-which we include into multiple .rst files.  If you define a label in
-the .rst.inc file then it will be a duplicate label.  We have mostly
-worked around this by not putting labels into those .rst.inc files,
-or by adding "insert a label" functionality into the hxtool extension
-(see commit 1eeb432a953b0 "doc/sphinx/hxtool.py: add optional label
-argument to SRST directive").
-
-Unfortunately in commit 7f6314427e78 ("docs/devel: add a codebase
-section") we accidentally added a duplicate label, because not all
-Sphinx versions warn about the mistake.
-
-In this case the link was only from the developer docs codebase
-summary, so as the simplest fix for the stable branch, we drop
-the link entirely.
-
-Cc: qemu-stable@nongnu.org
-Fixes: 1eeb432a953b0 "doc/sphinx/hxtool.py: add optional label argument to SRST directive"
-Reported-by: Dario Faggioli <dfaggioli@suse.com>
+cc: qemu-stable@nongnu.org
+Fixes: f44272809779 ("i.MX: Add GPIO device")
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Message-id: 20250501183445.2389-4-shentey@gmail.com
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Acked-by: Eric Blake <eblake@redhat.com>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-id: 20250501093126.716667-1-peter.maydell@linaro.org
-(cherry picked from commit 82707dd4f07613eed8d639956a43bddffca5cd5c)
+(cherry picked from commit eba837a31b9579e30cc6d7ecb4b5c2662a6ffaba)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/docs/devel/codebase.rst b/docs/devel/codebase.rst
-index ef98578296..085da10a22 100644
---- a/docs/devel/codebase.rst
-+++ b/docs/devel/codebase.rst
-@@ -116,7 +116,7 @@ yet, so sometimes the source code is all you have.
- * `monitor <https://gitlab.com/qemu-project/qemu/-/tree/master/monitor>`_:
-   `Monitor <QEMU monitor>` implementation (HMP & QMP).
- * `nbd <https://gitlab.com/qemu-project/qemu/-/tree/master/nbd>`_:
--  QEMU `NBD (Network Block Device) <nbd>` server.
-+  QEMU NBD (Network Block Device) server.
- * `net <https://gitlab.com/qemu-project/qemu/-/tree/master/net>`_:
-   Network (host) support.
- * `pc-bios <https://gitlab.com/qemu-project/qemu/-/tree/master/pc-bios>`_:
-diff --git a/docs/system/qemu-block-drivers.rst.inc b/docs/system/qemu-block-drivers.rst.inc
-index cfe1acb78a..384e95ba76 100644
---- a/docs/system/qemu-block-drivers.rst.inc
-+++ b/docs/system/qemu-block-drivers.rst.inc
-@@ -500,8 +500,6 @@ What you should *never* do:
- - expect it to work when loadvm'ing
- - write to the FAT directory on the host system while accessing it with the guest system
- 
--.. _nbd:
--
- NBD access
- ~~~~~~~~~~
+diff --git a/hw/gpio/imx_gpio.c b/hw/gpio/imx_gpio.c
+index 549a281ed7..8e0ee3048a 100644
+--- a/hw/gpio/imx_gpio.c
++++ b/hw/gpio/imx_gpio.c
+@@ -72,7 +72,7 @@ static void imx_gpio_update_int(IMXGPIOState *s)
+ static void imx_gpio_set_int_line(IMXGPIOState *s, int line, IMXGPIOLevel level)
+ {
+     /* if this signal isn't configured as an input signal, nothing to do */
+-    if (!extract32(s->gdir, line, 1)) {
++    if (extract32(s->gdir, line, 1)) {
+         return;
+     }
  
 -- 
 2.39.5
