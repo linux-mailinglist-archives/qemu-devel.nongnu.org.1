@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EBF4AB7984
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 01:42:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ED79AB798D
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 01:43:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFLj5-0001Uq-Ai; Wed, 14 May 2025 19:41:27 -0400
+	id 1uFLjA-0001gB-Ac; Wed, 14 May 2025 19:41:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uFLj1-0001Pa-Lb
- for qemu-devel@nongnu.org; Wed, 14 May 2025 19:41:23 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1uFLj2-0001TR-NT
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 19:41:24 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uFLiz-00032O-19
- for qemu-devel@nongnu.org; Wed, 14 May 2025 19:41:23 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-22e4db05fe8so3181665ad.0
- for <qemu-devel@nongnu.org>; Wed, 14 May 2025 16:41:20 -0700 (PDT)
+ id 1uFLj0-00032w-6i
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 19:41:24 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-22d95f0dda4so4136495ad.2
+ for <qemu-devel@nongnu.org>; Wed, 14 May 2025 16:41:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747266079; x=1747870879; darn=nongnu.org;
+ d=linaro.org; s=google; t=1747266080; x=1747870880; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NqewT8RcOqdr655RwHxx5Aazd/ICT+n56pHpqqFvRbw=;
- b=W1izTu/2ffk7Q2JmQrNnRvEWmx9sjlbGNRTrFuLlENTIDVn5EQTqhK9z1zhQMcRNXI
- 8/Gfj+67yxtFT9M85WS3SS6h410F5P65jvEZEB31W5gblQS6pspUzYdspBZPZPMChQNO
- Sr4CilJvw7I3kNldP0SmEvNiX7Uixde5MVUh3j3z5roeYIqJcyo9p5wgDKq9MjyvVfdG
- qAhQB2YYEhTDzQi1RlM2n83QyvaA2IkjikM5p6qComuCO/1IoDvN5aa7MWS6s85d3MSs
- FCBcF48x9pEtwPEFdyTUtrGnq4o0eehqJl09fkNjOcET39+MJVkVg3ww+tzuOeqMAwH0
- UQyA==
+ bh=lBS2AIpxXgiP9xnU+n7gYkZBp0TynhJ2U8QSIxuWAKE=;
+ b=K4ZmI/s9RnQ4Bqfu4SnDzvfLuEI2ADM2cc2U+u2K1Hi8AjEPB8iLEVS1zcLse5Sh0U
+ 9jtAEf7HL49qSQW8gqWtIBJV2/mHAjugkwpdRzcN9ZFqtJZKM2iLerr3h1hAxCMynAP7
+ ULGVyXuiy/GdP/yQhgfKeogJSBV4JCN2Hfh015PBc9INbhXlhvvNp9daG6XaVeHZSr+L
+ E6GMNVtNeo5EwnPwV2ko19LNatksk0SfNKjWn2uZ/KzEZO8BM8XEYDo/KGEQx70HOye3
+ twNDuBP6T2eN4FjzyXu57+TbyIKn7YNaQ4zwnzw1yDdg2RrNKyRGOF7VcsxhdArD6D0o
+ YiTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747266079; x=1747870879;
+ d=1e100.net; s=20230601; t=1747266080; x=1747870880;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NqewT8RcOqdr655RwHxx5Aazd/ICT+n56pHpqqFvRbw=;
- b=s4xgUqONjEBAHgS+RqCaAE5gJPa9TI79v3T/CffqoBKNBfJ9LbrCp+hCNNinKgOr70
- kyu+c+P+BpKyY799wDim7xSzs0npuA0+TxzVQbxuo6IBQ7RUmiYdkWxEK6bCAiv9MPSu
- ukSI1DDQwxBTkIFMf1oP48VqlQ/ylS9GJYhr3fFIDMokIolUVNhNSQ7oX5n0WbSkezmL
- DhgrQrC1Mt/EK4FHPmyeK1mXqZWpe3v9AcHBFLmAlipbQ6h3Q0B0RwzJC+KAJ3HGgzNI
- YycKq5iLK9GfZZ9bF/Iyq2PJyhD5/YE76YM9lC8vHLbsA5E3FiuhJoHVJyz4zGpGUzPt
- NFfA==
-X-Gm-Message-State: AOJu0YzQ89Ens7ii3WsEExFxoHBbjSC/yPtAeCrmCZ8iOjOkMfL7nNcg
- 59Rg9UsLg+EVelS4E1J1+yrrxaxeHPVeAMHII9V+E0gKAgnod9r2qXgt++iP1TY0fnfithBlXZL
- s0gw=
-X-Gm-Gg: ASbGncuE9QYPv+4IZ7ksC9PnVIEchlkg8lFr5jgcvFFOxxvERaaOYnjGoJqrOtQLgBV
- VMj+vbAkgcenn4kfE40nVc/SPX7ksujnhuuF4YmMt0L7amj8V2vOl6fBdo2o3LYhLpMy9ZCnXlp
- Ah4zqc5Mk4LIK4q0YHAm2PdbUo4BOZHjNqv9HRW24iqIagXfIKPzUn2ax87X9J94CJcokHqNodl
- NpjzWvctBKbF78MeJApe15WYUdb7mjJ5pNEu3gjez/8y39ag50xjL5Q+F6GABINcIDpFjdB9tLL
- 1KF71/jo1f2I3LNQK0ohqInG7onhL5u30U8hOt/794UXoyHP9GM=
-X-Google-Smtp-Source: AGHT+IHaRwGpDMSKNt2vEwd0mjR0FG0kfxge+diKSz/KGUUjT2HJA8nVhlH6nXyvdSQlN+LaCsgiQg==
-X-Received: by 2002:a17:903:946:b0:22d:e57a:2795 with SMTP id
- d9443c01a7336-231b5ed186amr5294765ad.47.1747266079479; 
- Wed, 14 May 2025 16:41:19 -0700 (PDT)
+ bh=lBS2AIpxXgiP9xnU+n7gYkZBp0TynhJ2U8QSIxuWAKE=;
+ b=SN1K9TD1MvmaBygVeIlc2dkrWv3JMOIAvXDyBfYtm8Cd94i0z8WIOoXC5O4M/oNZf7
+ 9i3kitO+7nck1GvT6DW9dc6zX6TEAY4+mTefa1h42vttnn+NRe5bhV3o76XqRpVUhI+S
+ 9STnJXV8vsFT2r7XrvQeDkbvz8bcQT6ZwM1AsbziSY9I1x9fx9vw9Sid16C6aUB0byKZ
+ f0irUsbxyKA87DZDXzt6+ZGySDYVh8bkm8u5YjrthQEZ0HUtacrPzo4iHpyGQS5xDgRO
+ 7gOJf3VSke9XXMnBiCJlzbNs7qg53TuB0l5qJFYSYY/b7ZP0hg7q90dZ5njDol3f8JaT
+ LJ9A==
+X-Gm-Message-State: AOJu0Yw/bnJeFdqA44i0lAexi3OrlbthVUorekyBP4subYdJhxB8Zz1n
+ KyqCURmJW3fLCaYPmcc1zmm1g88T57O/sa0h3W1++GdeZoYS6Hcwf/y+zJJedU8ZyWBW4v/wR9Z
+ msCs=
+X-Gm-Gg: ASbGnctrlsTh7F88GppRBCgDNs9U42R4Jcdd/U+usaFBqHE9NlKS7Mli5+kPWvZMiMQ
+ 0butNPnmAONmr0yP6UugRfb79H2YBqBLo3B2sXtfcGeyoX6OLbtfUP8Fje1H5XOMdLamFGJkBdB
+ 5b1xfujtu4DLkB4zSGM3aFW/G/7UuxJcZHvPRL5pPyfldsbSXpR9XGEo6hQnPgIPTLvRv87JC6v
+ c7nQDbcO1CU4si4xIvBAWVieFqvjzCcB72+Ko0bHokUqxplcK5nlM0MssWtRXloQdI0rh7k2MwA
+ OSUC/7+NAqibL32RcmdsBy+cctKG1Iy3o2T94ZDJQsSSboZYSIU=
+X-Google-Smtp-Source: AGHT+IF6h919GsR+TM7Y44WdyOAvoQgcQc2HKTq08occBfD7k7WnjMfY02YWJrCSgvW7nqtiN4ayfQ==
+X-Received: by 2002:a17:903:2f85:b0:223:5ca8:5ecb with SMTP id
+ d9443c01a7336-23198143b9bmr69090595ad.42.1747266080411; 
+ Wed, 14 May 2025 16:41:20 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-22fc828b4e4sm104583615ad.182.2025.05.14.16.41.18
+ d9443c01a7336-22fc828b4e4sm104583615ad.182.2025.05.14.16.41.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 May 2025 16:41:19 -0700 (PDT)
+ Wed, 14 May 2025 16:41:20 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
@@ -69,18 +69,17 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  berrange@redhat.com, Richard Henderson <richard.henderson@linaro.org>,
  peter.maydell@linaro.org, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 04/12] qapi: expose query-gic-capability command
- unconditionally
-Date: Wed, 14 May 2025 16:41:00 -0700
-Message-ID: <20250514234108.3746675-5-pierrick.bouvier@linaro.org>
+Subject: [PATCH 05/12] qapi: make SGX commands unconditionally available
+Date: Wed, 14 May 2025 16:41:01 -0700
+Message-ID: <20250514234108.3746675-6-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250514234108.3746675-1-pierrick.bouvier@linaro.org>
 References: <20250514234108.3746675-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,206 +104,278 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-This removes the TARGET_ARM condition from the query-gic-capability
-command. This requires providing a QMP command stub for non-ARM targets.
-This in turn requires moving the command out of misc-target.json, since
-that will trigger symbol poisoning errors when built from target
-independent code.
+This removes the TARGET_I386 condition from the SGX confidential
+virtualization commands, moving them to the recently introduced
+misc-i386.json QAPI file, given they are inherantly i386 specific
+commands.
 
-Following the earlier precedent, this creates a misc-arm.json file to
-hold this ARM specific command.
+Observe a pre-existing bug that the "SGXEPCSection" struct lacked
+a TARGET_I386 condition, despite its only usage being behind a
+TARGET_I386 condition.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- qapi/misc-arm.json        | 49 +++++++++++++++++++++++++++++++++++++++
- qapi/misc-target.json     | 44 -----------------------------------
- qapi/qapi-schema.json     |  1 +
- stubs/monitor-arm-gic.c   | 12 ++++++++++
- target/arm/arm-qmp-cmds.c |  2 +-
- qapi/meson.build          |  1 +
- stubs/meson.build         |  1 +
- 7 files changed, 65 insertions(+), 45 deletions(-)
- create mode 100644 qapi/misc-arm.json
- create mode 100644 stubs/monitor-arm-gic.c
+ qapi/misc-i386.json      | 77 +++++++++++++++++++++++++++++++++++++++
+ qapi/misc-target.json    | 78 ----------------------------------------
+ hw/i386/sgx-stub.c       | 13 -------
+ hw/i386/sgx.c            |  2 +-
+ stubs/monitor-i386-sgx.c | 17 +++++++++
+ stubs/meson.build        |  1 +
+ 6 files changed, 96 insertions(+), 92 deletions(-)
+ create mode 100644 stubs/monitor-i386-sgx.c
 
-diff --git a/qapi/misc-arm.json b/qapi/misc-arm.json
-new file mode 100644
-index 00000000000..f5341372f5a
---- /dev/null
-+++ b/qapi/misc-arm.json
-@@ -0,0 +1,49 @@
-+# -*- Mode: Python -*-
-+# vim: filetype=python
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
+diff --git a/qapi/misc-i386.json b/qapi/misc-i386.json
+index de0e4ab67ff..0ddc297ccbf 100644
+--- a/qapi/misc-i386.json
++++ b/qapi/misc-i386.json
+@@ -293,3 +293,80 @@
+ { 'command': 'query-sev-attestation-report',
+   'data': { 'mnonce': 'str' },
+   'returns': 'SevAttestationReport' }
 +
 +##
-+# @GICCapability:
++# @SGXEPCSection:
 +#
-+# The struct describes capability for a specific GIC (Generic
-+# Interrupt Controller) version.  These bits are not only decided by
-+# QEMU/KVM software version, but also decided by the hardware that the
-+# program is running upon.
++# Information about intel SGX EPC section info
 +#
-+# @version: version of GIC to be described.  Currently, only 2 and 3
-+#     are supported.
++# @node: the numa node
 +#
-+# @emulated: whether current QEMU/hardware supports emulated GIC
-+#     device in user space.
++# @size: the size of EPC section
 +#
-+# @kernel: whether current QEMU/hardware supports hardware accelerated
-+#     GIC device in kernel.
-+#
-+# Since: 2.6
++# Since: 7.0
 +##
-+{ 'struct': 'GICCapability',
-+  'data': { 'version': 'int',
-+            'emulated': 'bool',
-+            'kernel': 'bool' } }
++{ 'struct': 'SGXEPCSection',
++  'data': { 'node': 'int',
++            'size': 'uint64'}}
 +
 +##
-+# @query-gic-capabilities:
++# @SGXInfo:
 +#
-+# It will return a list of GICCapability objects that describe its
-+# capability bits.
++# Information about intel Safe Guard eXtension (SGX) support
 +#
-+# On non-ARM targets this command will report an error as the GIC
-+# technology is not applicable.
++# @sgx: true if SGX is supported
 +#
-+# Returns: a list of GICCapability objects.
++# @sgx1: true if SGX1 is supported
 +#
-+# Since: 2.6
++# @sgx2: true if SGX2 is supported
++#
++# @flc: true if FLC is supported
++#
++# @sections: The EPC sections info for guest (Since: 7.0)
++#
++# Since: 6.2
++##
++{ 'struct': 'SGXInfo',
++  'data': { 'sgx': 'bool',
++            'sgx1': 'bool',
++            'sgx2': 'bool',
++            'flc': 'bool',
++            'sections': ['SGXEPCSection']} }
++
++##
++# @query-sgx:
++#
++# Returns information about SGX
++#
++# Returns: @SGXInfo
++#
++# Since: 6.2
 +#
 +# .. qmp-example::
 +#
-+#     -> { "execute": "query-gic-capabilities" }
-+#     <- { "return": [{ "version": 2, "emulated": true, "kernel": false },
-+#                     { "version": 3, "emulated": false, "kernel": true } ] }
++#     -> { "execute": "query-sgx" }
++#     <- { "return": { "sgx": true, "sgx1" : true, "sgx2" : true,
++#                      "flc": true,
++#                      "sections": [{"node": 0, "size": 67108864},
++#                      {"node": 1, "size": 29360128}]} }
 +##
-+{ 'command': 'query-gic-capabilities', 'returns': ['GICCapability'] }
++{ 'command': 'query-sgx', 'returns': 'SGXInfo' }
++
++##
++# @query-sgx-capabilities:
++#
++# Returns information from host SGX capabilities
++#
++# Returns: @SGXInfo
++#
++# Since: 6.2
++#
++# .. qmp-example::
++#
++#     -> { "execute": "query-sgx-capabilities" }
++#     <- { "return": { "sgx": true, "sgx1" : true, "sgx2" : true,
++#                      "flc": true,
++#                      "section" : [{"node": 0, "size": 67108864},
++#                      {"node": 1, "size": 29360128}]} }
++##
++{ 'command': 'query-sgx-capabilities', 'returns': 'SGXInfo' }
 diff --git a/qapi/misc-target.json b/qapi/misc-target.json
-index ba4403a9241..d36292b3321 100644
+index d36292b3321..d9368a1f21f 100644
 --- a/qapi/misc-target.json
 +++ b/qapi/misc-target.json
-@@ -2,50 +2,6 @@
+@@ -2,84 +2,6 @@
  # vim: filetype=python
  #
  
 -##
--# @GICCapability:
+-# @SGXEPCSection:
 -#
--# The struct describes capability for a specific GIC (Generic
--# Interrupt Controller) version.  These bits are not only decided by
--# QEMU/KVM software version, but also decided by the hardware that the
--# program is running upon.
+-# Information about intel SGX EPC section info
 -#
--# @version: version of GIC to be described.  Currently, only 2 and 3
--#     are supported.
+-# @node: the numa node
 -#
--# @emulated: whether current QEMU/hardware supports emulated GIC
--#     device in user space.
+-# @size: the size of EPC section
 -#
--# @kernel: whether current QEMU/hardware supports hardware accelerated
--#     GIC device in kernel.
--#
--# Since: 2.6
+-# Since: 7.0
 -##
--{ 'struct': 'GICCapability',
--  'data': { 'version': 'int',
--            'emulated': 'bool',
--            'kernel': 'bool' },
--  'if': 'TARGET_ARM' }
+-{ 'struct': 'SGXEPCSection',
+-  'data': { 'node': 'int',
+-            'size': 'uint64'}}
 -
 -##
--# @query-gic-capabilities:
+-# @SGXInfo:
 -#
--# This command is ARM-only.  It will return a list of GICCapability
--# objects that describe its capability bits.
+-# Information about intel Safe Guard eXtension (SGX) support
 -#
--# Returns: a list of GICCapability objects.
+-# @sgx: true if SGX is supported
 -#
--# Since: 2.6
+-# @sgx1: true if SGX1 is supported
+-#
+-# @sgx2: true if SGX2 is supported
+-#
+-# @flc: true if FLC is supported
+-#
+-# @sections: The EPC sections info for guest (Since: 7.0)
+-#
+-# Since: 6.2
+-##
+-{ 'struct': 'SGXInfo',
+-  'data': { 'sgx': 'bool',
+-            'sgx1': 'bool',
+-            'sgx2': 'bool',
+-            'flc': 'bool',
+-            'sections': ['SGXEPCSection']},
+-   'if': 'TARGET_I386' }
+-
+-##
+-# @query-sgx:
+-#
+-# Returns information about SGX
+-#
+-# Returns: @SGXInfo
+-#
+-# Since: 6.2
 -#
 -# .. qmp-example::
 -#
--#     -> { "execute": "query-gic-capabilities" }
--#     <- { "return": [{ "version": 2, "emulated": true, "kernel": false },
--#                     { "version": 3, "emulated": false, "kernel": true } ] }
+-#     -> { "execute": "query-sgx" }
+-#     <- { "return": { "sgx": true, "sgx1" : true, "sgx2" : true,
+-#                      "flc": true,
+-#                      "sections": [{"node": 0, "size": 67108864},
+-#                      {"node": 1, "size": 29360128}]} }
 -##
--{ 'command': 'query-gic-capabilities', 'returns': ['GICCapability'],
--  'if': 'TARGET_ARM' }
+-{ 'command': 'query-sgx', 'returns': 'SGXInfo', 'if': 'TARGET_I386' }
 -
+-##
+-# @query-sgx-capabilities:
+-#
+-# Returns information from host SGX capabilities
+-#
+-# Returns: @SGXInfo
+-#
+-# Since: 6.2
+-#
+-# .. qmp-example::
+-#
+-#     -> { "execute": "query-sgx-capabilities" }
+-#     <- { "return": { "sgx": true, "sgx1" : true, "sgx2" : true,
+-#                      "flc": true,
+-#                      "section" : [{"node": 0, "size": 67108864},
+-#                      {"node": 1, "size": 29360128}]} }
+-##
+-{ 'command': 'query-sgx-capabilities', 'returns': 'SGXInfo', 'if': 'TARGET_I386' }
+-
+ 
  ##
- # @SGXEPCSection:
- #
-diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
-index 96f6aa44133..e96bff8d38c 100644
---- a/qapi/qapi-schema.json
-+++ b/qapi/qapi-schema.json
-@@ -61,6 +61,7 @@
- { 'include': 'replay.json' }
- { 'include': 'yank.json' }
- { 'include': 'misc.json' }
-+{ 'include': 'misc-arm.json' }
- { 'include': 'misc-i386.json' }
- { 'include': 'misc-target.json' }
- { 'include': 'audio.json' }
-diff --git a/stubs/monitor-arm-gic.c b/stubs/monitor-arm-gic.c
+ # @EvtchnPortType:
+diff --git a/hw/i386/sgx-stub.c b/hw/i386/sgx-stub.c
+index 38ff75e9f37..10ffcdd154d 100644
+--- a/hw/i386/sgx-stub.c
++++ b/hw/i386/sgx-stub.c
+@@ -4,24 +4,11 @@
+ #include "hw/i386/pc.h"
+ #include "hw/i386/sgx-epc.h"
+ #include "qapi/error.h"
+-#include "qapi/qapi-commands-misc-target.h"
+ 
+ void sgx_epc_build_srat(GArray *table_data)
+ {
+ }
+ 
+-SGXInfo *qmp_query_sgx(Error **errp)
+-{
+-    error_setg(errp, "SGX support is not compiled in");
+-    return NULL;
+-}
+-
+-SGXInfo *qmp_query_sgx_capabilities(Error **errp)
+-{
+-    error_setg(errp, "SGX support is not compiled in");
+-    return NULL;
+-}
+-
+ void hmp_info_sgx(Monitor *mon, const QDict *qdict)
+ {
+     monitor_printf(mon, "SGX is not available in this QEMU\n");
+diff --git a/hw/i386/sgx.c b/hw/i386/sgx.c
+index 5685c4fb802..2b10a8d144e 100644
+--- a/hw/i386/sgx.c
++++ b/hw/i386/sgx.c
+@@ -19,7 +19,7 @@
+ #include "monitor/hmp-target.h"
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
+-#include "qapi/qapi-commands-misc-target.h"
++#include "qapi/qapi-commands-misc-i386.h"
+ #include "system/address-spaces.h"
+ #include "system/hw_accel.h"
+ #include "system/reset.h"
+diff --git a/stubs/monitor-i386-sgx.c b/stubs/monitor-i386-sgx.c
 new file mode 100644
-index 00000000000..b3429243ef8
+index 00000000000..55a4f194f3f
 --- /dev/null
-+++ b/stubs/monitor-arm-gic.c
-@@ -0,0 +1,12 @@
++++ b/stubs/monitor-i386-sgx.c
+@@ -0,0 +1,17 @@
 +/* SPDX-License-Identifier: GPL-2.0-or-later */
 +
 +#include "qemu/osdep.h"
 +#include "qapi/error.h"
-+#include "qapi/qapi-commands-misc-arm.h"
++#include "qapi/qapi-commands-misc-i386.h"
 +
-+
-+GICCapabilityList *qmp_query_gic_capabilities(Error **errp)
++SGXInfo *qmp_query_sgx(Error **errp)
 +{
-+    error_setg(errp, "GIC hardware is not available on this target");
++    error_setg(errp, "SGX support is not compiled in");
 +    return NULL;
 +}
-diff --git a/target/arm/arm-qmp-cmds.c b/target/arm/arm-qmp-cmds.c
-index a1a944adb43..ef18c867ca4 100644
---- a/target/arm/arm-qmp-cmds.c
-+++ b/target/arm/arm-qmp-cmds.c
-@@ -27,7 +27,7 @@
- #include "qapi/visitor.h"
- #include "qapi/qobject-input-visitor.h"
- #include "qapi/qapi-commands-machine-target.h"
--#include "qapi/qapi-commands-misc-target.h"
-+#include "qapi/qapi-commands-misc-arm.h"
- #include "qobject/qdict.h"
- #include "qom/qom-qobject.h"
- 
-diff --git a/qapi/meson.build b/qapi/meson.build
-index 3a9bd061047..5e93e6b8cfd 100644
---- a/qapi/meson.build
-+++ b/qapi/meson.build
-@@ -64,6 +64,7 @@ if have_system
-     'qdev',
-     'pci',
-     'rocker',
-+    'misc-arm',
-     'misc-i386',
-     'tpm',
-     'uefi',
++
++SGXInfo *qmp_query_sgx_capabilities(Error **errp)
++{
++    error_setg(errp, "SGX support is not compiled in");
++    return NULL;
++}
 diff --git a/stubs/meson.build b/stubs/meson.build
-index 9922ec7b88e..07e9d3799a5 100644
+index 07e9d3799a5..f2eb4880181 100644
 --- a/stubs/meson.build
 +++ b/stubs/meson.build
-@@ -77,6 +77,7 @@ if have_system
-   stub_ss.add(files('target-monitor-defs.c'))
-   stub_ss.add(files('win32-kbd-hook.c'))
-   stub_ss.add(files('xen-hw-stub.c'))
-+  stub_ss.add(files('monitor-arm-gic.c'))
+@@ -80,6 +80,7 @@ if have_system
+   stub_ss.add(files('monitor-arm-gic.c'))
    stub_ss.add(files('monitor-i386-rtc.c'))
    stub_ss.add(files('monitor-i386-sev.c'))
++  stub_ss.add(files('monitor-i386-sgx.c'))
  endif
+ 
+ if have_system or have_user
 -- 
 2.47.2
 
