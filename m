@@ -2,138 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4066AB703F
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 17:46:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0EC8AB7065
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 17:53:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFEIW-0002rH-Ol; Wed, 14 May 2025 11:45:40 -0400
+	id 1uFEPF-00076j-53; Wed, 14 May 2025 11:52:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uFE6Q-0005aC-Sh
- for qemu-devel@nongnu.org; Wed, 14 May 2025 11:33:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uFEAT-0003du-GW
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 11:37:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uFE6N-0001D1-Un
- for qemu-devel@nongnu.org; Wed, 14 May 2025 11:33:02 -0400
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uFEAR-0001ht-Q9
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 11:37:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747236779;
+ s=mimecast20190719; t=1747237030;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=TmdMe2lbnU6i1EE6DgHrHUWFPxIJNIaFivomhQpt0IM=;
- b=EhMitUPtVBcBvM3uoVaM8Spa4BjmkxlRqt/KIn+mlmF69ocXvXP5dQB3/0Td4I/L0H+tAf
- d1FRvGuubbD5h3hC+wt4Q0kmeZpbhI16my0JJzeVZC3g/S7rnBZlV8UbCE7uQKA80dEE2i
- BEzh/u2LjM2G/xj+ayfkyFn79fxSqtI=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-576-5l6z1OJ9N0K7feeirN-KdA-1; Wed, 14 May 2025 11:32:57 -0400
-X-MC-Unique: 5l6z1OJ9N0K7feeirN-KdA-1
-X-Mimecast-MFC-AGG-ID: 5l6z1OJ9N0K7feeirN-KdA_1747236775
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3a1f6c5f54cso2219669f8f.3
- for <qemu-devel@nongnu.org>; Wed, 14 May 2025 08:32:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747236775; x=1747841575;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TmdMe2lbnU6i1EE6DgHrHUWFPxIJNIaFivomhQpt0IM=;
- b=SDsiMqfBXa5BgmtTBBaPULwkFbF8umUqLN0DHltNWwjKPSkcgIaaZ9nAKiqTCd8nay
- qKI4/GEESeQI4EtDWTMf1DLEBihxDx6sY6GuWoepcxsGkxCp1w5Fpo/OPpLtJHSOm0ae
- hUsVMASfzL2OFeV27nBAvD0XMPXkJwA37G2HCNTXHIVCa9HTD843/TJpDErvzkFAeX7X
- Ujgtqx4QANgtQWpCn1hmjfV/FH5dc6ovN3oehbnZrf7kiKzoaA5KtgZvDdrHnnJw0jym
- oltwaQH3zsfab5Z7lvkUGDBp9TVYbvOOrqFPW5+kXoi0Lj3zVm+Sa1kjkWuO9KQyG98n
- GEwg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWFoM5UPZFWfCmfJ51LCAhyRh/db11dETBFgoxrkWL/MMlWGvTFTJOO7gYHVaZMesTHtDpXz7ojj8Y7@nongnu.org
-X-Gm-Message-State: AOJu0YwL5HcvG44J3rSs83CosnODtVs8TDRHLkOmLAK83i+A3dX3d4Zy
- haXFW8kWm3dRtAemuArmJb4Tsd4ZE0riVdlMFeL9v6k1I90x/oHu/FEJzlme2g2nTGaOaCXlTrW
- 5+udCTIes8lsWKikVINW84akG1RdlO69p6OzRJuJXk+ObOkNW8Is/
-X-Gm-Gg: ASbGncs8cQhA9lKKEjoERHYBhxGl/JM1VV5IbOVv2G0JSFMs2JIHXVybrx1u+c6NCQ/
- 9kGc3fA0rVUqnJ8ywI/esAq+ZH4+M0z91vkUyXPgARX+0j5iWydWs7wcRnGf/zu7Md0c0J37cKV
- qDqgUeRDmNHQQS3lj5mwWvUTz7MN08DA7At7+ZU8UK06ZmtnhcBXdnb8uW5tX+pXfQOvszxGqft
- 7Z8jTQLZMhuzOkkWrxJYA6Jt5vUhJ78DhJWVLTazrNuSMEZeGqDdAZmnC9g7phaQcUui9Lg4pHn
- uMLt2KKRT3sxLQ8nXVwaPC+GWiuYpsXXWwViw4BekNFE7sM6zw==
-X-Received: by 2002:a5d:5f8e:0:b0:3a1:f535:e9be with SMTP id
- ffacd0b85a97d-3a349694ac7mr3138870f8f.7.1747236775368; 
- Wed, 14 May 2025 08:32:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEGJ/di50oiGFbb5Yfh5nlBM7l31mPC2fYyS9Ggs8Y6wQpbeDbP3HBDqHkgY5y+Zs3f7zRl2A==
-X-Received: by 2002:a5d:5f8e:0:b0:3a1:f535:e9be with SMTP id
- ffacd0b85a97d-3a349694ac7mr3138838f8f.7.1747236774942; 
- Wed, 14 May 2025 08:32:54 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442f3368f2bsm37110115e9.4.2025.05.14.08.32.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 14 May 2025 08:32:54 -0700 (PDT)
-Message-ID: <fc2da193-dc90-4824-b7de-fc426c38029a@redhat.com>
-Date: Wed, 14 May 2025 17:32:53 +0200
+ in-reply-to:in-reply-to:references:references;
+ bh=rNqpKMDVkRLgudOp61Ys+LEkD187I+q8Zkd/KYUyD+A=;
+ b=Y59z4dosBrHGE9Ou9nUu0aL+mKtSjaL0s1STcSrIWSN1SMluudC6C1RywP/0GvE8m+J/uM
+ HNOfBVBUOFJcjgOQu2b9VmHPGBOz/GmL1dSUysDJrzDPsFGRZwbJj0tIs+pHo6FUloRMaY
+ Y9fhWwTxXdd37vYhAay/QDPQl0OgnWI=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-639-8-jyKCLfMyKwIM9GNFW6lg-1; Wed,
+ 14 May 2025 11:37:07 -0400
+X-MC-Unique: 8-jyKCLfMyKwIM9GNFW6lg-1
+X-Mimecast-MFC-AGG-ID: 8-jyKCLfMyKwIM9GNFW6lg_1747237025
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 745621955DB1; Wed, 14 May 2025 15:37:02 +0000 (UTC)
+Received: from localhost (dhcp-192-216.str.redhat.com [10.33.192.216])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id DDB421955BC0; Wed, 14 May 2025 15:37:00 +0000 (UTC)
+From: Cornelia Huck <cohuck@redhat.com>
+To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, kvmarm@lists.linux.dev, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, alex.bennee@linaro.org, maz@kernel.org,
+ oliver.upton@linux.dev, sebott@redhat.com,
+ shameerali.kolothum.thodi@huawei.com, armbru@redhat.com,
+ abologna@redhat.com, jdenemar@redhat.com, agraf@csgraf.de,
+ shahuang@redhat.com, mark.rutland@arm.com, philmd@linaro.org,
+ pbonzini@redhat.com
+Subject: Re: [PATCH v3 08/10] arm/cpu: more customization for the kvm host
+ cpu model
+In-Reply-To: <aCNsSbDoi5oKWYul@redhat.com>
+Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
+ Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
+ 153243,
+ =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
+ Michael O'Neill, Amy Ross"
+References: <20250414163849.321857-1-cohuck@redhat.com>
+ <20250414163849.321857-9-cohuck@redhat.com> <aCNsSbDoi5oKWYul@redhat.com>
+User-Agent: Notmuch/0.38.3 (https://notmuchmail.org)
+Date: Wed, 14 May 2025 17:36:58 +0200
+Message-ID: <875xi3cig5.fsf@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/5] hw/arm/fby35: Map BMC memory into system memory
-To: Steven Lee <steven_lee@aspeedtech.com>,
- Peter Maydell <peter.maydell@linaro.org>, Troy Lee <leetroy@gmail.com>,
- Jamin Lin <jamin_lin@aspeedtech.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
- "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-Cc: troy_lee@aspeedtech.com, longzl2@lenovo.com, yunlin.tang@aspeedtech.com
-References: <20250514090354.1461717-1-steven_lee@aspeedtech.com>
- <20250514090354.1461717-5-steven_lee@aspeedtech.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250514090354.1461717-5-steven_lee@aspeedtech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=cohuck@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -37
 X-Spam_score: -3.8
@@ -158,35 +95,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/14/25 11:03, Steven Lee wrote:
-> Add the BMC memory region as a subregion of system_memory so that
-> modules relying on system memory can operate correctly.
-> 
-> Signed-off-by: Steven Lee <steven_lee@aspeedtech.com>
+On Tue, May 13 2025, Daniel P. Berrang=C3=A9 <berrange@redhat.com> wrote:
 
+> On Mon, Apr 14, 2025 at 06:38:47PM +0200, Cornelia Huck wrote:
+>> From: Eric Auger <eric.auger@redhat.com>
+>>=20
+>> If the interface for writable ID registers is available, expose uint64
+>> SYSREG properties for writable ID reg fields exposed by the host
+>> kernel. Properties are named  SYSREG_<REG>_<FIELD> with REG and FIELD
+>> being those used  in linux arch/arm64/tools/sysreg. This done by
+>> matching the writable fields retrieved from the host kernel against the
+>> generated description of sysregs.
+>>=20
+>> An example of invocation is:
+>> -cpu host,SYSREG_ID_AA64ISAR0_EL1_DP=3D0x0
+>> which sets DP field of ID_AA64ISAR0_EL1 to 0.
+>
+> For the value you are illustrating 0x0 - is this implying that
+> all the flags take an arbitrary integer hex value ?
+>
+> This would be different from x86, where CPU feature flags are
+> a boolean on/off state.
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Most of the fields are 4 bits, the allowed values vary (there are also
+some fields that are single bits, or wider.) The FEAT_xxx values (which
+can be expressed via ID register fields, or a combination thereof) are
+mostly boolean, but there are also some of them that can take values.
 
-Thanks,
+We could cook up pseudo-features that are always on/off, but I don't
+like that approach: they would be QEMU only, whereas the ID register
+fields and FEAT_xxx features are all defined in the Arm documentation.
 
-C.
-
-
-> ---
->   hw/arm/fby35.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/hw/arm/fby35.c b/hw/arm/fby35.c
-> index e123fa69e1..c14fc2efe9 100644
-> --- a/hw/arm/fby35.c
-> +++ b/hw/arm/fby35.c
-> @@ -77,6 +77,7 @@ static void fby35_bmc_init(Fby35State *s)
->   
->       memory_region_init(&s->bmc_memory, OBJECT(&s->bmc), "bmc-memory",
->                          UINT64_MAX);
-> +    memory_region_add_subregion(get_system_memory(), 0, &s->bmc_memory);
->       memory_region_init_ram(&s->bmc_dram, OBJECT(&s->bmc), "bmc-dram",
->                              FBY35_BMC_RAM_SIZE, &error_abort);
->   
+An additional difference from x86 would be that FEAT_xxx featues are not
+neccessarily configurable (only if the host kernel supports changing the
+ID register field(s) backing the feature.)
 
 
