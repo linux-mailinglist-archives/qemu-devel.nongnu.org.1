@@ -2,75 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47F5AAB6ACA
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 13:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF4CAAB6AD1
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 14:00:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFAjP-000065-RT; Wed, 14 May 2025 07:57:04 -0400
+	id 1uFAmM-0000gm-0a; Wed, 14 May 2025 08:00:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uFAjJ-0008Tf-66
- for qemu-devel@nongnu.org; Wed, 14 May 2025 07:56:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1uFAmA-0000Pr-CK; Wed, 14 May 2025 07:59:55 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uFAjC-0008Vt-Ck
- for qemu-devel@nongnu.org; Wed, 14 May 2025 07:56:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747223806;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=+2E+IpGhfF4EjUiNldbZbgyHpfYMc9BGroFl4B6tBjc=;
- b=cIvR2OIyUvEqcTadGxq//HSPy95eKDJ1VNJfefuAuTeApTC52ItgZeVZYZJ1ukilerDi1Y
- VWrFsA0u4prQNDHiyGR+JR18y6Bg47pyKxa5vbLTDMPFPw5u8w27KL83JeZOpxz7y/o82v
- iqi2Dq6HVjNME4NKeCOo/TxSkQzwcPE=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-152-SpBRwElMPOm2F_o8q_Cobg-1; Wed,
- 14 May 2025 07:56:43 -0400
-X-MC-Unique: SpBRwElMPOm2F_o8q_Cobg-1
-X-Mimecast-MFC-AGG-ID: SpBRwElMPOm2F_o8q_Cobg_1747223802
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 99EB71956052; Wed, 14 May 2025 11:56:42 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.147])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 83B93180049D; Wed, 14 May 2025 11:56:41 +0000 (UTC)
-Date: Wed, 14 May 2025 12:56:38 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH v2 6/7] scripts/checkpatch: use new hook for MAINTAINERS
- update check
-Message-ID: <aCSE9uGxFqnrrVSu@redhat.com>
-References: <20250512182447.1139105-1-berrange@redhat.com>
- <20250512182447.1139105-7-berrange@redhat.com>
- <c0e68194-6aa4-4ca8-bee3-ebd67cd96489@redhat.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1uFAm8-0000JJ-41; Wed, 14 May 2025 07:59:54 -0400
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id D05FE55CA4D;
+ Wed, 14 May 2025 13:59:42 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id fG6MpeYc1IIr; Wed, 14 May 2025 13:59:40 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id CAAC655CA5C; Wed, 14 May 2025 13:59:40 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id C8A50745682;
+ Wed, 14 May 2025 13:59:40 +0200 (CEST)
+Date: Wed, 14 May 2025 13:59:40 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Zhao Liu <zhao1.liu@intel.com>
+cc: Paolo Bonzini <pbonzini@redhat.com>, 
+ =?ISO-8859-15?Q?Daniel_P_=2E_Berrang=E9?= <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org, 
+ qemu-trivial@nongnu.org, Nicholas Piggin <npiggin@gmail.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org
+Subject: Re: [PATCH 6/9] hw/ppc/pef: Consolidate
+ OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES
+In-Reply-To: <0b162bfe-27ed-371e-d46d-22de58f73a37@eik.bme.hu>
+Message-ID: <9f684f97-86ee-3e51-f1cd-569f3bc9a462@eik.bme.hu>
+References: <20250514084957.2221975-1-zhao1.liu@intel.com>
+ <20250514084957.2221975-7-zhao1.liu@intel.com>
+ <0b162bfe-27ed-371e-d46d-22de58f73a37@eik.bme.hu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c0e68194-6aa4-4ca8-bee3-ebd67cd96489@redhat.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -37
-X-Spam_score: -3.8
-X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,61 +66,76 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 14, 2025 at 01:51:52PM +0200, Cédric Le Goater wrote:
-> On 5/12/25 20:24, Daniel P. Berrangé wrote:
-> > From: Daniel P. Berrangé <berrange@redhat.com>
-> > 
-> > When seeing a new/deleted/renamed file we check to see if MAINTAINERS
-> > is updated, but we don't give the user a list of files affected, as
-> > we don't want to repeat the same warning many times over.
-> > 
-> > Using the new file list hook, we can give a single warning at the
-> > end with a list of filenames included.
-> > 
-> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> > ---
-> >   scripts/checkpatch.pl | 37 +++++++++++++++++++------------------
-> >   1 file changed, 19 insertions(+), 18 deletions(-)
-> > 
-> > diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-> > index 4a18daa384..d416a6dcf9 100755
-> > --- a/scripts/checkpatch.pl
-> > +++ b/scripts/checkpatch.pl
-> > @@ -1442,6 +1442,25 @@ sub process_file_list {
-> >   		      join("\n  ", @acpi_nontestexpected) .
-> >   		      "\n\nfound in the same patch\n");
-> >   	}
-> > +
-> > +	my $sawmaintainers = 0;
-> > +	my @maybemaintainers;
-> > +	foreach my $fileinfo (@fileinfos) {
-> > +		if ($fileinfo->{action} ne "modified" &&
-> > +		    $fileinfo->{filenew} !~ m#^tests/data/acpi/#) {
-> > +			push @maybemaintainers, $fileinfo->{filenew};
-> > +		}
-> > +		if ($fileinfo->{filenew} eq "MAINTAINEfRS") {
-> 
-> MAINTAINEfRS ? looks like a typo.
+On Wed, 14 May 2025, BALATON Zoltan wrote:
+> On Wed, 14 May 2025, Zhao Liu wrote:
+>> The QOM type of PefGuest is declared by OBJECT_DECLARE_SIMPLE_TYPE,
+>> which means it doesn't need the class!
+>> 
+>> Therefore, use OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES to implement
+>> the type, then there's no need for class definition.
+>> 
+>> Cc: Nicholas Piggin <npiggin@gmail.com>
+>> Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
+>> Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>> Cc: qemu-ppc@nongnu.org
+>> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+>> ---
+>> hw/ppc/pef.c | 17 ++++++-----------
+>> 1 file changed, 6 insertions(+), 11 deletions(-)
+>> 
+>> diff --git a/hw/ppc/pef.c b/hw/ppc/pef.c
+>> index 254f5707876f..1832791ee533 100644
+>> --- a/hw/ppc/pef.c
+>> +++ b/hw/ppc/pef.c
+>> @@ -20,11 +20,6 @@
+>> OBJECT_DECLARE_SIMPLE_TYPE(PefGuest, PEF_GUEST)
+>> 
+>> typedef struct PefGuest PefGuest;
+>> -typedef struct PefGuestClass PefGuestClass;
+>> -
+>> -struct PefGuestClass {
+>> -    ConfidentialGuestSupportClass parent_class;
+>> -};
+>> 
+>> /**
+>>  * PefGuest:
+>> @@ -121,12 +116,12 @@ static int pef_kvm_reset(ConfidentialGuestSupport 
+>> *cgs, Error **errp)
+>>     return kvmppc_svm_off(errp);
+>> }
+>> 
+>> -OBJECT_DEFINE_TYPE_WITH_INTERFACES(PefGuest,
+>> -                                   pef_guest,
+>> -                                   PEF_GUEST,
+>> -                                   CONFIDENTIAL_GUEST_SUPPORT,
+>> -                                   { TYPE_USER_CREATABLE },
+>> -                                   { NULL })
+>> +OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(PefGuest,
+>> +                                          pef_guest,
+>> +                                          PEF_GUEST,
+>> +                                          CONFIDENTIAL_GUEST_SUPPORT,
+>> +                                          { TYPE_USER_CREATABLE },
+>> +                                          { NULL })
+>
+> Maybe also change the name while at it because the WITH_INTERFACES macros 
+> usually allow to pass an interfaces list instead of the single hardcoded 
+> USER_CREATABLE interface here so if such variant is added it would clash. 
+> Better call this something that shows this is PEF specific or just use the 
+> appropriate macro from qemu/object.h to define it.
 
-Opps, an intentional typo when I was testing logic that
-I accidentally committed.
+Ignore this, I've found the rest of the series and now see better what 
+it's about. Sorry for the noise.
 
-> 
-> 
-> With that fixed,
-> 
-> 
-> Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Regards,
+BALATON Zoltan
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+>> 
+>> static void pef_guest_class_init(ObjectClass *oc, const void *data)
+>> {
+>> 
+>
+>
 
