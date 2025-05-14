@@ -2,41 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94618AB6C5D
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 15:14:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DB87AB6C32
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 15:09:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFBmc-0002mf-5C; Wed, 14 May 2025 09:04:26 -0400
+	id 1uFBqx-0000fz-QE; Wed, 14 May 2025 09:08:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uFBk0-0007uA-Lh; Wed, 14 May 2025 09:01:46 -0400
+ id 1uFBk0-0007uJ-Mt; Wed, 14 May 2025 09:01:46 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uFBjo-0008If-V9; Wed, 14 May 2025 09:01:41 -0400
+ id 1uFBjt-0008JC-3t; Wed, 14 May 2025 09:01:41 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A098A121AFE;
+ by isrv.corpit.ru (Postfix) with ESMTP id AA482121B00;
  Wed, 14 May 2025 15:57:50 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 4B4C020B86C;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 5637620B86D;
  Wed, 14 May 2025 15:58:00 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Bernhard Beschow <shentey@gmail.com>,
- Corey Minyard <cminyard@mvista.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.4 32/34] hw/i2c/imx: Always set interrupt status bit if
- interrupt condition occurs
-Date: Wed, 14 May 2025 15:57:54 +0300
-Message-Id: <20250514125758.92030-32-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Christian Schoenebeck <qemu_oss@crudebyte.com>,
+ Greg Kurz <groug@kaod.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.4 33/34] 9pfs: fix concurrent v9fs_reclaim_fd() calls
+Date: Wed, 14 May 2025 15:57:55 +0300
+Message-Id: <20250514125758.92030-33-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.4-20250514155748@cover.tls.msk.ru>
 References: <qemu-stable-9.2.4-20250514155748@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,51 +57,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bernhard Beschow <shentey@gmail.com>
+From: Christian Schoenebeck <qemu_oss@crudebyte.com>
 
-According to the i.MX 8M Plus reference manual, the status flag
-I2C_I2SR[IIF] continues to be set when an interrupt condition
-occurs even when I2C interrupts are disabled (I2C_I2CR[IIEN] is
-clear). However, the device model only sets the flag when I2C
-interrupts are enabled which causes U-Boot to loop forever. Fix
-the device model by always setting the flag and let I2C_I2CR[IIEN]
-guard I2C interrupts only.
+Even though this function is serialized to be always called from main
+thread, v9fs_reclaim_fd() is dispatching the coroutine to a worker thread
+in between via its v9fs_co_*() calls, hence leading to the situation where
+v9fs_reclaim_fd() is effectively executed multiple times simultaniously,
+which renders its LRU algorithm useless and causes high latency.
 
-Also remove the comment in the code since it merely stated the
-obvious and would be outdated now.
+Fix this by adding a simple boolean variable to ensure this function is
+only called once at a time. No synchronization needed for this boolean
+variable as this function is only entered and returned on main thread.
 
-Cc: qemu-stable@nongnu.org
-Fixes: 20d0f9cf6a41 ("i.MX: Add I2C controller emulator")
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Acked-by: Corey Minyard <cminyard@mvista.com>
-Message-ID: <20250507124040.425773-1-shentey@gmail.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 54e54e594bc8273d210f7ff4448c165a989cbbe8)
+Fixes: 7a46274529c ('hw/9pfs: Add file descriptor reclaim support')
+Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Reviewed-by: Greg Kurz <groug@kaod.org>
+Message-Id: <5c622067efd66dd4ee5eca740dcf263f41db20b2.1741339452.git.qemu_oss@crudebyte.com>
+(cherry picked from commit 61da38db70affd925226ce1e8a61d761c20d045b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/i2c/imx_i2c.c b/hw/i2c/imx_i2c.c
-index c565fd5b8a..1dd0167e47 100644
---- a/hw/i2c/imx_i2c.c
-+++ b/hw/i2c/imx_i2c.c
-@@ -90,13 +90,12 @@ static void imx_i2c_reset(DeviceState *dev)
+diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
+index 578517739a..f9aad55fdf 100644
+--- a/hw/9pfs/9p.c
++++ b/hw/9pfs/9p.c
+@@ -435,6 +435,12 @@ void coroutine_fn v9fs_reclaim_fd(V9fsPDU *pdu)
+     GHashTableIter iter;
+     gpointer fid;
  
- static inline void imx_i2c_raise_interrupt(IMXI2CState *s)
- {
--    /*
--     * raise an interrupt if the device is enabled and it is configured
--     * to generate some interrupts.
--     */
--    if (imx_i2c_is_enabled(s) && imx_i2c_interrupt_is_enabled(s)) {
-+    if (imx_i2c_is_enabled(s)) {
-         s->i2sr |= I2SR_IIF;
--        qemu_irq_raise(s->irq);
++    /* prevent multiple coroutines running this function simultaniously */
++    if (s->reclaiming) {
++        return;
++    }
++    s->reclaiming = true;
 +
-+        if (imx_i2c_interrupt_is_enabled(s)) {
-+            qemu_irq_raise(s->irq);
-+        }
+     g_hash_table_iter_init(&iter, s->fids);
+ 
+     QSLIST_HEAD(, V9fsFidState) reclaim_list =
+@@ -510,6 +516,8 @@ void coroutine_fn v9fs_reclaim_fd(V9fsPDU *pdu)
+          */
+         put_fid(pdu, f);
      }
++
++    s->reclaiming = false;
  }
  
+ /*
+@@ -4291,6 +4299,8 @@ int v9fs_device_realize_common(V9fsState *s, const V9fsTransport *t,
+     s->ctx.fst = &fse->fst;
+     fsdev_throttle_init(s->ctx.fst);
+ 
++    s->reclaiming = false;
++
+     rc = 0;
+ out:
+     if (rc) {
+diff --git a/hw/9pfs/9p.h b/hw/9pfs/9p.h
+index 5e041e1f60..259ad32ed1 100644
+--- a/hw/9pfs/9p.h
++++ b/hw/9pfs/9p.h
+@@ -362,6 +362,7 @@ struct V9fsState {
+     uint64_t qp_ndevices; /* Amount of entries in qpd_table. */
+     uint16_t qp_affix_next;
+     uint64_t qp_fullpath_next;
++    bool reclaiming;
+ };
+ 
+ /* 9p2000.L open flags */
 -- 
 2.39.5
 
