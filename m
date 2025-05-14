@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27323AB6AA8
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 13:56:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09F9DAB6A93
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 13:53:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFAdQ-0005tr-NW; Wed, 14 May 2025 07:50:52 -0400
+	id 1uFAdf-0005uk-4v; Wed, 14 May 2025 07:51:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uFAdM-0005t6-TO
- for qemu-devel@nongnu.org; Wed, 14 May 2025 07:50:50 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uFAdT-0005uY-Nv
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 07:50:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uFAdK-000698-Td
- for qemu-devel@nongnu.org; Wed, 14 May 2025 07:50:48 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uFAdR-0006An-Cg
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 07:50:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747223445;
+ s=mimecast20190719; t=1747223450;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=IKAZdeC1S1a7fw9qgB21u9lSwuILgpD/qjXudGNtUBo=;
- b=Skxcvp1+YeWao0b5aXQO6t3217YYB/0P5yNGCDBn+PIasuwtyypnI3nSCIvkE01o06gRKv
- vqpboHJDbFbSjYS0s36ySb0SUVBH3sl2Q7kbm7lhwJ/lNjuVtQBvROsvPPMYsuEoPBHH4x
- HiQGpK0O7c5rFBweEB6mEOFkTXNi23c=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=eXEi+ZXhQRm8J6CUw9m455HBJJCx9rS1588hLPX09Vw=;
+ b=gVEqvS9mF7v5pk2QzIMiek3OWKfUYI7nqsJww/I1/tM/ijA1Pgr2Lyuvf/NrhivVlAi4U5
+ GGF5VLjakoEh3kZb/KI4JFSW0gVsFShBWs5TbIlbNdm+6v9Q8YItFBKzwJtPsXsGew1WjH
+ kYZ28AxHbQ0/6Av07/5QRGLAU2PzBR0=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-85-X9p0NMbnNqaXxO46Q1MYSA-1; Wed, 14 May 2025 07:50:44 -0400
-X-MC-Unique: X9p0NMbnNqaXxO46Q1MYSA-1
-X-Mimecast-MFC-AGG-ID: X9p0NMbnNqaXxO46Q1MYSA_1747223443
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-43d209dc2d3so33227895e9.3
- for <qemu-devel@nongnu.org>; Wed, 14 May 2025 04:50:43 -0700 (PDT)
+ us-mta-299-vMOGQ0FjMZSiMStKBi6mTA-1; Wed, 14 May 2025 07:50:47 -0400
+X-MC-Unique: vMOGQ0FjMZSiMStKBi6mTA-1
+X-Mimecast-MFC-AGG-ID: vMOGQ0FjMZSiMStKBi6mTA_1747223446
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-43cfda30a3cso34303235e9.3
+ for <qemu-devel@nongnu.org>; Wed, 14 May 2025 04:50:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747223442; x=1747828242;
+ d=1e100.net; s=20230601; t=1747223446; x=1747828246;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IKAZdeC1S1a7fw9qgB21u9lSwuILgpD/qjXudGNtUBo=;
- b=miamk5nPyE745NfUaGYV/S9gfoTeoRMky4L78gJgote6uSZFh+AJjXcJnp0nDfE1Js
- EZxtKaL2v2JeGQLo9uNul40JlzMP43Bgy4sfC5few48YulJK2LjmIwhxqYmJluDrz+7q
- 4amEroGndPatvjLV6LlGkHpIKZ1SL7oMaLb7Bbfkow8gCIKluHABc1YRky2/0Di2gG1V
- Vsjo2oHmn/crsXCD8W5QIE3Gn1mxQLx1azOHJNyJ+L5ae11mdx7c6B4OzobdJA20V1vY
- qBokUM+ZMtT2zyKThx/IirrgRwOF/Zuan3LlATEAHbMKZKZp3ZGlqdKtIS6rcpexyju0
- UQSA==
-X-Gm-Message-State: AOJu0Ywa5uft4Td4S/bM5/tJOmYPyo4a1vLh+03niLigpXKnIMQl57e8
- vUE0dB/jBRWe3MCId9faWwNMtbcH6BG5SxF6bn4rjdxR2BVp+A+Y538PrUpmfuSao7WmoUDaun9
- AVlOnmjuTlYOxHeVmAAjMwQTUkUw8MGhgjTL5y9jG2vm4DiWqYfQozfBQOAOCoejFQ7yEU7C28R
- FR0k641RXqgCbUyps7pWujfeKqpppVmA==
-X-Gm-Gg: ASbGnctoajoqPd9CQVQWe1mPQRJmZadngWpWADicWVXem1BhQHoOO3jWWZwofbd7WpU
- iU2Xew5TGFf+VHSeNC3DzwRXxwg2cM6YcGDKF1VFHHa0KcjCmS6mcsoRI8k98lhcGk+QMrgG8oL
- 8sFoUUoGmOToeo2K4z6QF1NPBI3rAd24JB1Z4YUDxrmHCb9YlQEwKMl5yJFRqyp0Txy+IHbdCyU
- Sc/JlROCJ6CjBGeSTzC1yRzy7O338JSXeUrJbDtIe8k2lAPksH6JtFwIT/+SCvtxkAxg8mbyBt7
- NNisnw==
-X-Received: by 2002:a05:600c:3d0b:b0:43d:ac5:11ed with SMTP id
- 5b1f17b1804b1-442f2169637mr28554415e9.24.1747223442548; 
- Wed, 14 May 2025 04:50:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEFAek8QV2KxEyF3x6dainSGzF5c68C+UJ4mOojewWvBDxJ2dgulkKshq5xW/wJzrkAJaJKbg==
-X-Received: by 2002:a05:600c:3d0b:b0:43d:ac5:11ed with SMTP id
- 5b1f17b1804b1-442f2169637mr28554145e9.24.1747223442085; 
- Wed, 14 May 2025 04:50:42 -0700 (PDT)
+ bh=eXEi+ZXhQRm8J6CUw9m455HBJJCx9rS1588hLPX09Vw=;
+ b=bPCHkx6f9yo9GtQNmscAz8j8oMVOL3HBs8sfrIF+vqSCa8ckJI0ocf1lMCg3687ASO
+ 0OjwdSc20m4XpRjmnLiasDuRKeOB9lcShRCp9rOBSQxO6yNA1ZpNCssfwaT6ozPeWlGh
+ ecVRDCDQDj6XpzPzH3MXW2vaGn2FPYnn2iS5EXCXOr8ToFQSSIdA9aZwAXXC9JFeOOL7
+ HNgWUA0SQCrIL4xKbN4h1/KezzCzr272An24tt759Bc+pTIasbPzxclAhjGZIRfjWACz
+ 8CSRi2LkI8JquVQhBua8Rswry/icgsSSfT1i2SQlpwG+Uv9/o9NYuJl+wMxCTH0VBj9v
+ v/gg==
+X-Gm-Message-State: AOJu0YyAEBeADuvWBaGoN1/PIrT7nLzIbNe0mo3rsvcKa5mGOpB7rQMm
+ xxLBGOp6BHNELJd1kA6886SYb78YEGY8yeW+V4QW+oqdNc48sqVckco6fQRixWQX2VLfHSAsBrq
+ lPNgV+/utL80Bye30DnkAH/E4L6VcRFDGlIS5zIUm/FxGHrxgOuVWg6C2N9bSO7wqdTONbt1AKE
+ 1ujUf54keK2x/izxCIiiclAV3NnI5v8A==
+X-Gm-Gg: ASbGncsBIOvk5CNgeC/yMi5LW3AAnxaRqLh7owYzOFipbuRXut2Jrbi06Hl6qAR6iR2
+ T99US/DvZFUH4YV51w1zuGkPA4gX5TKsV6ItKVAMxOsqFZF+UZOwz5m0/zclQBbE9YN37w+JGHv
+ kYDrGSCIjmLKz0VzkC3Nl3Xy2rvoCa+YEgiFvMSZzBaapKH5fSlMd3kiTWttEooPSucJq9SsHta
+ 6WqHDetwLc52ayalmdXOBXfVQo9c7ClYJja9UzUXT3rfIj3cJqkzEY8S7AsldL3mgxUcnJsRG2N
+ uuk16A==
+X-Received: by 2002:a05:600c:870a:b0:43d:47e:3205 with SMTP id
+ 5b1f17b1804b1-442f20d6d7amr27483015e9.11.1747223445723; 
+ Wed, 14 May 2025 04:50:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHlS9jeWElE4FTTUUj1PM2YyRvbk8jqihcCPk1s1t3nKIlHdiQ1HT2pkDqb2xh6nTA1mSScdA==
+X-Received: by 2002:a05:600c:870a:b0:43d:47e:3205 with SMTP id
+ 5b1f17b1804b1-442f20d6d7amr27482795e9.11.1747223445315; 
+ Wed, 14 May 2025 04:50:45 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442f39ef8c7sm26238315e9.38.2025.05.14.04.50.40
+ 5b1f17b1804b1-442f396c052sm27867335e9.29.2025.05.14.04.50.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 May 2025 04:50:41 -0700 (PDT)
-Date: Wed, 14 May 2025 07:50:39 -0400
+ Wed, 14 May 2025 04:50:43 -0700 (PDT)
+Date: Wed, 14 May 2025 07:50:42 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -75,8 +75,8 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Yui Washizu <yui.washidu@gmail.com>,
  Pasha Tatashin <pasha.tatashin@soleen.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 10/27] pcie_sriov: Ensure PF and VF are mutually exclusive
-Message-ID: <92b6ce3dba26bd3734b528bda7f9a9dee2ee7bb4.1747223385.git.mst@redhat.com>
+Subject: [PULL 11/27] pcie_sriov: Check PCI Express for SR-IOV PF
+Message-ID: <d2f5bb7849e463646173564fdadf40e32a32bf6e.1747223385.git.mst@redhat.com>
 References: <cover.1747223385.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -111,10 +111,10 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-A device cannot be a SR-IOV PF and a VF at the same time.
+SR-IOV requires PCI Express.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20250314-sriov-v9-3-57dae8ae3ab5@daynix.com>
+Message-Id: <20250314-sriov-v9-4-57dae8ae3ab5@daynix.com>
 Tested-by: Yui Washizu <yui.washidu@gmail.com>
 Tested-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
@@ -124,21 +124,21 @@ Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
  1 file changed, 5 insertions(+)
 
 diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
-index 1eb4358256..109b2ebccc 100644
+index 109b2ebccc..a5b546abe8 100644
 --- a/hw/pci/pcie_sriov.c
 +++ b/hw/pci/pcie_sriov.c
 @@ -42,6 +42,11 @@ bool pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
      uint8_t *cfg = dev->config + offset;
      uint8_t *wmask;
  
-+    if (pci_is_vf(dev)) {
-+        error_setg(errp, "a device cannot be a SR-IOV PF and a VF at the same time");
++    if (!pci_is_express(dev)) {
++        error_setg(errp, "PCI Express is required for SR-IOV PF");
 +        return false;
 +    }
 +
-     if (total_vfs &&
-         (uint32_t)devfn + (uint32_t)(total_vfs - 1) * vf_stride >= PCI_DEVFN_MAX) {
-         error_setg(errp, "VF addr overflows");
+     if (pci_is_vf(dev)) {
+         error_setg(errp, "a device cannot be a SR-IOV PF and a VF at the same time");
+         return false;
 -- 
 MST
 
