@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56EF9AB6C3A
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 15:10:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F1ABAB6C3B
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 15:10:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFBnC-0003ef-Nw; Wed, 14 May 2025 09:05:03 -0400
+	id 1uFBnL-0004E1-KZ; Wed, 14 May 2025 09:05:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uFBje-0007hM-Cy; Wed, 14 May 2025 09:01:29 -0400
+ id 1uFBjt-0007o0-0I; Wed, 14 May 2025 09:01:39 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uFBjT-0008Gs-NN; Wed, 14 May 2025 09:01:15 -0400
+ id 1uFBji-0008Hh-Lk; Wed, 14 May 2025 09:01:29 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 82D9A121AFB;
+ by isrv.corpit.ru (Postfix) with ESMTP id 8B8A4121AFC;
  Wed, 14 May 2025 15:57:50 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 2F6DD20B869;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 384F420B86A;
  Wed, 14 May 2025 15:58:00 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.4 29/34] target/i386: do not trigger IRQ shadow for LSS
-Date: Wed, 14 May 2025 15:57:51 +0300
-Message-Id: <20250514125758.92030-29-mjt@tls.msk.ru>
+Subject: [Stable-9.2.4 30/34] target/i386: do not block singlestep for STI
+Date: Wed, 14 May 2025 15:57:52 +0300
+Message-Id: <20250514125758.92030-30-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.4-20250514155748@cover.tls.msk.ru>
 References: <qemu-stable-9.2.4-20250514155748@cover.tls.msk.ru>
@@ -59,88 +59,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-Because LSS need not trigger an IRQ shadow, gen_movl_seg can't just use
-the destination register to decide whether to inhibit IRQs.  Add an
-argument.
+STI will trigger a singlestep exception even if it has inhibit-IRQ
+behavior.  Do not suppress single-step for all IRQ-inhibiting
+instructions, instead special case MOV SS and POP SS.
 
 Cc: qemu-stable@nongnu.org
+Fixes: f0f0136abba ("target/i386: no single-step exception after MOV or POP SS", 2024-05-25)
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit e54ef98c8a80d16158bab4341d9a898701270528)
-(back-ported to 10.0)
+(cherry picked from commit 1e94ddc6854431064c94a7d8f2f2886def285829)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index 785ff63f2a..e7fdec60c5 100644
---- a/target/i386/tcg/emit.c.inc
-+++ b/target/i386/tcg/emit.c.inc
-@@ -355,7 +355,7 @@ static void gen_writeback(DisasContext *s, X86DecodedInsn *decode, int opn, TCGv
-         break;
-     case X86_OP_SEG:
-         /* Note that gen_movl_seg takes care of interrupt shadow and TF.  */
--        gen_movl_seg(s, op->n, s->T0);
-+        gen_movl_seg(s, op->n, v, op->n == R_SS);
-         break;
-     case X86_OP_INT:
-         if (op->has_ea) {
-@@ -2360,7 +2360,7 @@ static void gen_lxx_seg(DisasContext *s, X86DecodedInsn *decode, int seg)
-     gen_op_ld_v(s, MO_16, s->T1, s->A0);
- 
-     /* load the segment here to handle exceptions properly */
--    gen_movl_seg(s, seg, s->T1);
-+    gen_movl_seg(s, seg, s->T1, false);
- }
- 
- static void gen_LDS(DisasContext *s, X86DecodedInsn *decode)
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 5d729e68c9..77c294d485 100644
+index 77c294d485..2b08ddf2cf 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -1876,25 +1876,32 @@ static void gen_op_movl_seg_real(DisasContext *s, X86Seg seg_reg, TCGv seg)
- 
- /* move SRC to seg_reg and compute if the CPU state may change. Never
-    call this function with seg_reg == R_CS */
--static void gen_movl_seg(DisasContext *s, X86Seg seg_reg, TCGv src)
-+static void gen_movl_seg(DisasContext *s, X86Seg seg_reg, TCGv src, bool inhibit_irq)
- {
-     if (PE(s) && !VM86(s)) {
--        tcg_gen_trunc_tl_i32(s->tmp2_i32, src);
--        gen_helper_load_seg(tcg_env, tcg_constant_i32(seg_reg), s->tmp2_i32);
--        /* abort translation because the addseg value may change or
--           because ss32 may change. For R_SS, translation must always
--           stop as a special handling must be done to disable hardware
--           interrupts for the next instruction */
--        if (seg_reg == R_SS) {
--            s->base.is_jmp = DISAS_EOB_INHIBIT_IRQ;
--        } else if (CODE32(s) && seg_reg < R_FS) {
-+        TCGv_i32 sel = tcg_temp_new_i32();
-+
-+        tcg_gen_trunc_tl_i32(sel, src);
-+        gen_helper_load_seg(tcg_env, tcg_constant_i32(seg_reg), sel);
-+
-+        /* For move to DS/ES/SS, the addseg or ss32 flags may change.  */
-+        if (CODE32(s) && seg_reg < R_FS) {
-             s->base.is_jmp = DISAS_EOB_NEXT;
-         }
-     } else {
-         gen_op_movl_seg_real(s, seg_reg, src);
--        if (seg_reg == R_SS) {
--            s->base.is_jmp = DISAS_EOB_INHIBIT_IRQ;
--        }
-+    }
-+
-+    /*
-+     * For MOV or POP to SS (but not LSS) translation must always
-+     * stop as a special handling must be done to disable hardware
-+     * interrupts for the next instruction.
+@@ -1897,11 +1897,15 @@ static void gen_movl_seg(DisasContext *s, X86Seg seg_reg, TCGv src, bool inhibit
+      * stop as a special handling must be done to disable hardware
+      * interrupts for the next instruction.
+      *
++     * This is the last instruction, so it's okay to overwrite
++     * HF_TF_MASK; the next TB will start with the flag set.
 +     *
-+     * DISAS_EOB_INHIBIT_IRQ is a superset of DISAS_EOB_NEXT which
-+     * might have been set above.
-+     */
-+    if (inhibit_irq) {
-+        s->base.is_jmp = DISAS_EOB_INHIBIT_IRQ;
+      * DISAS_EOB_INHIBIT_IRQ is a superset of DISAS_EOB_NEXT which
+      * might have been set above.
+      */
+     if (inhibit_irq) {
+         s->base.is_jmp = DISAS_EOB_INHIBIT_IRQ;
++        s->flags &= ~HF_TF_MASK;
      }
  }
  
+@@ -2189,7 +2193,7 @@ gen_eob(DisasContext *s, int mode)
+     if (mode == DISAS_EOB_RECHECK_TF) {
+         gen_helper_rechecking_single_step(tcg_env);
+         tcg_gen_exit_tb(NULL, 0);
+-    } else if ((s->flags & HF_TF_MASK) && mode != DISAS_EOB_INHIBIT_IRQ) {
++    } else if (s->flags & HF_TF_MASK) {
+         gen_helper_single_step(tcg_env);
+     } else if (mode == DISAS_JUMP &&
+                /* give irqs a chance to happen */
 -- 
 2.39.5
 
