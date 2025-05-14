@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84109AB6A97
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 13:54:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE30BAB6A96
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 13:54:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFAdk-00065K-TL; Wed, 14 May 2025 07:51:14 -0400
+	id 1uFAdu-0006Ik-Id; Wed, 14 May 2025 07:51:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uFAdd-0005yR-Cq
- for qemu-devel@nongnu.org; Wed, 14 May 2025 07:51:06 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uFAdg-00062v-KV
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 07:51:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uFAdW-0006Dt-A6
- for qemu-devel@nongnu.org; Wed, 14 May 2025 07:50:59 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uFAdY-0006Ek-34
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 07:51:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747223455;
+ s=mimecast20190719; t=1747223457;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=scQGANjf5Zg9Z+VVAOZFzRgXSundnohTLR5TyNGPrwM=;
- b=AoEwz66hByQG7mrlnCGKt4CUfyYv8DMRowaBgUf20ZopAlziFYCbcQcvyiiACW+0uLjJ9s
- hlnClpUl26vYACIi/JK2eU8IbYNfVkthElcIjrwSA4Ub5z/Gj0WpmJpqGr8ZIKBruouSt9
- qHha9vZSlJkUwJw9swQK61UlobsAvqI=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kBvJJ1guqk+Wh8WSiEg/aaEDfWIkM3a0BJ0cG44g7BE=;
+ b=P0FsWYSZb0kCcjreZoQdDQx86qMpDPsVbqGr/FwP3D+SAtrLrmyh6PxzasjDM0SfOh5yze
+ yoF0V2NPeizOvPcdgziVtORRqJ4Grzn7jBAhOVH7wq+2ZOsKqI+38b5CTvr55FGfgbXySV
+ RrRRLQb93i7MQ7858qo/IZkk4Jbpluo=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-614-7xd1HfThOBKcqEujAQaAhQ-1; Wed, 14 May 2025 07:50:54 -0400
-X-MC-Unique: 7xd1HfThOBKcqEujAQaAhQ-1
-X-Mimecast-MFC-AGG-ID: 7xd1HfThOBKcqEujAQaAhQ_1747223453
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3a0b570a73eso3858176f8f.1
- for <qemu-devel@nongnu.org>; Wed, 14 May 2025 04:50:54 -0700 (PDT)
+ us-mta-352-63sCOTZNPnKAfhCjOb46sQ-1; Wed, 14 May 2025 07:50:56 -0400
+X-MC-Unique: 63sCOTZNPnKAfhCjOb46sQ-1
+X-Mimecast-MFC-AGG-ID: 63sCOTZNPnKAfhCjOb46sQ_1747223455
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-441d438a9b7so3167505e9.1
+ for <qemu-devel@nongnu.org>; Wed, 14 May 2025 04:50:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747223453; x=1747828253;
+ d=1e100.net; s=20230601; t=1747223455; x=1747828255;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=scQGANjf5Zg9Z+VVAOZFzRgXSundnohTLR5TyNGPrwM=;
- b=IDcPsvD+SWF6Pzqoza10WHHU39xtBG/dX7c0rslqah/+v8pfoN3pNPpLgh94Xdx9wv
- wzPouuwRFqeWiAEtr55+DjJPhUsbTItX6xscYrnAGs6U5UKJtCp0+vaTmTSHhmdBlmwL
- x+RRZf9oX3+wfF4KNF7Ez5D3viRckvVNbC07PnAaGCof6MUuToB51S4JszTl5iQZq1j7
- ENCqvtIyJS5YedDSuEt9D8UyUomz4t4sLay6RG2nrOp/qiOCNjBBb/TTA7jayPtqHizK
- 5NXcCwmB7cH6ANX5hDJphEw8GmvDEbxNxPxHYP+E4N+P+hlVB3w3AcP0Akm6aTly1Pi9
- dJIw==
-X-Gm-Message-State: AOJu0YzXz7Bz1OBoVtgW+nvc9nr4Vqg09mrNtknfbeLoOvdV4nNznYNj
- nElNAG4BWMkPFGjDl20TZDQEg9GH6pHkLSCVZP8Iu5iHfxitpEj/xChuARsPL280nWlQR4nJGhb
- 15GhRUdguAx48mU64PyKJJydg7MxFuIildHUi25GDP4Mxpnx6l3L7cF8JbHPJJ9pAqTA1Njzs4Q
- Rg2tvmcSuHst8nX+2lZ1KC0dy7+TfvLA==
-X-Gm-Gg: ASbGncs7si+GSQ9M4srObLJn8gPejjPBqe/NY7+qc5yWj8AC+VF14zVOzjBLLqNQqhI
- BwGqjsajFXnLYB8Vnu54rjeyUAnhMI+dDx3swI5E/nW9gfygsuKjpXy3Isv7ydwmQeS46fqwJ+G
- 6CfxT+vilsuXVCfQeKkhb1pLS1Xky0KaEmOHMjwRDjilEhti+TyOyYJ6UbWvQdh9ItZMSaFp90d
- DGWoubQlzAg02U8nuiZu8ODef+c35L5bpFJIDARIp7uRETuJOBZq1B3XuMdmOX3oTXry/AQh0aZ
- o/AXrg==
-X-Received: by 2002:a5d:64cb:0:b0:3a0:99de:5309 with SMTP id
- ffacd0b85a97d-3a3496a603fmr2321935f8f.18.1747223452728; 
- Wed, 14 May 2025 04:50:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFA4FN4bayEGrz10h7rsUcxy72k9CqiQedcMKIUfluKGd2T9ZfthiMnq8Y5twmbXt+Qp8yNSw==
-X-Received: by 2002:a5d:64cb:0:b0:3a0:99de:5309 with SMTP id
- ffacd0b85a97d-3a3496a603fmr2321913f8f.18.1747223452343; 
- Wed, 14 May 2025 04:50:52 -0700 (PDT)
+ bh=kBvJJ1guqk+Wh8WSiEg/aaEDfWIkM3a0BJ0cG44g7BE=;
+ b=dE7CFzYKjLDpxLXihp/ximpPp9h63wdcTjKg5vNlQhgpQgbuzWh461StxE5ATokyYP
+ yrClRqFrCV3m+mRQAAMuE38uXfhVQVYD9OufLkeyKvxl2yCjCkiSavaKy1GJsG93s6ur
+ eZYmrFDoXNKkb89fP+CaeTZShNvoUU6di9WHpibxeNMHXaLtYrnhve/bMrHZ4zKakyuS
+ FHCLP9MwBaCmDwQIHk9juYhcUFW74/x/J4EVlWyI1Y1aCezdijE9rxpTfLfqn7w2UtZ5
+ Pn0HbqwmNE+ktQFqDJc3jFmH2ZpgpKrO/UhKVPyDqip7EWrceIkP82NHvaCUWlWCklBE
+ IzIA==
+X-Gm-Message-State: AOJu0YzZ0pUBkdLmxV03vqBzr16OB9CBRp1Zb/f1946LlMCTOMcNniXp
+ ksiEMMGUIVwA21YkCnq30RNln52ay43LKONyCENMnYcIjYA292A9FARY0OsZeaX6+2pajhUus4K
+ vWdqcEefgbgFZ8y87NdZQHWRE3Oj9fn7rbDGkvLE6W37YTXpssRFbJtPL1fAqnvgoo+UmyC/B7S
+ LoseNulk2Qxm7RxPd8JylKCu0Xttm1tA==
+X-Gm-Gg: ASbGncvXQJcmO/rjz0pRqXGZrP5AJcCLIIWPqAw1UVZyxLQHFJyvd5CCXZhZfgWoA5B
+ qcvwqjoXro9tQ784nzKqbiu8lFbMmidFNKPDv/sjYRcNYftZNTVM66aCmAZ49iKjLpJzfl4KVzS
+ Srk7zJBqleJtKBuEb+2yGAw7cSI8dKMNndaivknb3dyy6CXIQ9i6mh0aC6dJWA9KynVsxGz1NlX
+ jDjt7Pd4b759jRcz5103pzxozrg6sV796E/OLGbUjpMZk7pHAtbpG9QU6VuXgj2wpYQJ5OgtTcI
+ +ft+qw==
+X-Received: by 2002:a05:600c:4f53:b0:439:8878:5029 with SMTP id
+ 5b1f17b1804b1-442f1a0d906mr25135305e9.2.1747223455027; 
+ Wed, 14 May 2025 04:50:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFnWl41lYrbfwjbiy1PM1u2OOHTggK1qSmnllwJQPj4jtb2JnyoXL+84o5BHp2qS2crE0qSbg==
+X-Received: by 2002:a05:600c:4f53:b0:439:8878:5029 with SMTP id
+ 5b1f17b1804b1-442f1a0d906mr25135095e9.2.1747223454616; 
+ Wed, 14 May 2025 04:50:54 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a1f57dde1asm19317210f8f.8.2025.05.14.04.50.50
+ 5b1f17b1804b1-442f396c052sm27873355e9.29.2025.05.14.04.50.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 May 2025 04:50:51 -0700 (PDT)
-Date: Wed, 14 May 2025 07:50:50 -0400
+ Wed, 14 May 2025 04:50:54 -0700 (PDT)
+Date: Wed, 14 May 2025 07:50:52 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Akihiko Odaki <akihiko.odaki@daynix.com>,
  Yui Washizu <yui.washidu@gmail.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>
-Subject: [PULL 14/27] virtio-net: Implement SR-IOV VF
-Message-ID: <49f7cb18db0790f7f32cb85dc35ffc25e44a828b.1747223385.git.mst@redhat.com>
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 15/27] docs: Document composable SR-IOV device
+Message-ID: <6f9bebf1dc6b54b63be739ea247b3942f841b9e3.1747223385.git.mst@redhat.com>
 References: <cover.1747223385.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -110,31 +111,82 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-A virtio-net device can be added as a SR-IOV VF to another virtio-pci
-device that will be the PF.
-
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20250314-sriov-v9-7-57dae8ae3ab5@daynix.com>
+Message-Id: <20250314-sriov-v9-8-57dae8ae3ab5@daynix.com>
 Tested-by: Yui Washizu <yui.washidu@gmail.com>
 Tested-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/virtio-net-pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ MAINTAINERS           |  1 +
+ docs/system/index.rst |  1 +
+ docs/system/sriov.rst | 36 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 38 insertions(+)
+ create mode 100644 docs/system/sriov.rst
 
-diff --git a/hw/virtio/virtio-net-pci.c b/hw/virtio/virtio-net-pci.c
-index 8cf9788bc3..f857a84f11 100644
---- a/hw/virtio/virtio-net-pci.c
-+++ b/hw/virtio/virtio-net-pci.c
-@@ -74,6 +74,7 @@ static void virtio_net_pci_class_init(ObjectClass *klass, const void *data)
-     k->device_id = PCI_DEVICE_ID_VIRTIO_NET;
-     k->revision = VIRTIO_PCI_ABI_VERSION;
-     k->class_id = PCI_CLASS_NETWORK_ETHERNET;
-+    k->sriov_vf_user_creatable = true;
-     set_bit(DEVICE_CATEGORY_NETWORK, dc->categories);
-     device_class_set_props(dc, virtio_net_properties);
-     vpciklass->realize = virtio_net_pci_realize;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 6dacd6d004..b579358cdd 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2058,6 +2058,7 @@ F: hw/pci-bridge/*
+ F: qapi/pci.json
+ F: docs/pci*
+ F: docs/specs/*pci*
++F: docs/system/sriov.rst
+ 
+ PCIE DOE
+ M: Huai-Cheng Kuo <hchkuo@avery-design.com.tw>
+diff --git a/docs/system/index.rst b/docs/system/index.rst
+index c21065e519..718e9d3c56 100644
+--- a/docs/system/index.rst
++++ b/docs/system/index.rst
+@@ -39,3 +39,4 @@ or Hypervisor.Framework.
+    multi-process
+    confidential-guest-support
+    vm-templating
++   sriov
+diff --git a/docs/system/sriov.rst b/docs/system/sriov.rst
+new file mode 100644
+index 0000000000..a851a66a4b
+--- /dev/null
++++ b/docs/system/sriov.rst
+@@ -0,0 +1,36 @@
++.. SPDX-License-Identifier: GPL-2.0-or-later
++
++Compsable SR-IOV device
++=======================
++
++SR-IOV (Single Root I/O Virtualization) is an optional extended capability of a
++PCI Express device. It allows a single physical function (PF) to appear as
++multiple virtual functions (VFs) for the main purpose of eliminating software
++overhead in I/O from virtual machines.
++
++There are devices with predefined SR-IOV configurations, but it is also possible
++to compose an SR-IOV device yourself. Composing an SR-IOV device is currently
++only supported by virtio-net-pci.
++
++Users can configure an SR-IOV-capable virtio-net device by adding
++virtio-net-pci functions to a bus. Below is a command line example:
++
++.. code-block:: shell
++
++    -netdev user,id=n -netdev user,id=o
++    -netdev user,id=p -netdev user,id=q
++    -device pcie-root-port,id=b
++    -device virtio-net-pci,bus=b,addr=0x0.0x3,netdev=q,sriov-pf=f
++    -device virtio-net-pci,bus=b,addr=0x0.0x2,netdev=p,sriov-pf=f
++    -device virtio-net-pci,bus=b,addr=0x0.0x1,netdev=o,sriov-pf=f
++    -device virtio-net-pci,bus=b,addr=0x0.0x0,netdev=n,id=f
++
++The VFs specify the paired PF with ``sriov-pf`` property. The PF must be
++added after all VFs. It is the user's responsibility to ensure that VFs have
++function numbers larger than one of the PF, and that the function numbers
++have a consistent stride.
++
++You may also need to perform additional steps to activate the SR-IOV feature on
++your guest. For Linux, refer to [1]_.
++
++.. [1] https://docs.kernel.org/PCI/pci-iov-howto.html
 -- 
 MST
 
