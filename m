@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44D2DAB66D7
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 11:05:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F10AB66D3
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 11:05:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uF82C-0006fs-H7; Wed, 14 May 2025 05:04:16 -0400
+	id 1uF82F-0006hf-2l; Wed, 14 May 2025 05:04:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven_lee@aspeedtech.com>)
- id 1uF828-0006es-FR; Wed, 14 May 2025 05:04:12 -0400
+ id 1uF82B-0006fw-9Y; Wed, 14 May 2025 05:04:15 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven_lee@aspeedtech.com>)
- id 1uF826-0002Ei-OC; Wed, 14 May 2025 05:04:12 -0400
+ id 1uF829-0002Ei-PR; Wed, 14 May 2025 05:04:15 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Wed, 14 May
@@ -30,10 +30,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <troy_lee@aspeedtech.com>, <longzl2@lenovo.com>,
  <yunlin.tang@aspeedtech.com>, <steven_lee@aspeedtech.com>
-Subject: [PATCH v2 2/5] hw/arm/aspeed_ast27x0: Fix unimplemented region
- overlap with vbootrom
-Date: Wed, 14 May 2025 17:03:50 +0800
-Message-ID: <20250514090354.1461717-3-steven_lee@aspeedtech.com>
+Subject: [PATCH v2 3/5] hw/arm/aspeed_ast27x0-fc: Map ca35 memory into system
+ memory
+Date: Wed, 14 May 2025 17:03:51 +0800
+Message-ID: <20250514090354.1461717-4-steven_lee@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250514090354.1461717-1-steven_lee@aspeedtech.com>
 References: <20250514090354.1461717-1-steven_lee@aspeedtech.com>
@@ -65,39 +65,28 @@ From:  Steven Lee via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The unimplemented memory region overlaps with the VBootROM address
-range, causing incorrect memory layout and potential behavior issues.
-
-This patch adjusts the size and start address of the unimplemented
-region to avoid collision. The IO memory region (ASPEED_DEV_IOMEM) is
-now moved to 0x20000 to reserve space for VBootROM at 0x0.
+Attach CA35 memory to system_memory to ensure a valid FlatView.
+Without this, dma_memory_write() used by ftgmac fail silently,
+causing dhcp to break on ast2700fc, as flatview_write() returns
+an error when system_memory is empty.
 
 Signed-off-by: Steven Lee <steven_lee@aspeedtech.com>
 ---
- hw/arm/aspeed_ast27x0.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/arm/aspeed_ast27x0-fc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index 1974a25766..bb61c30cf4 100644
---- a/hw/arm/aspeed_ast27x0.c
-+++ b/hw/arm/aspeed_ast27x0.c
-@@ -23,14 +23,14 @@
- #include "qobject/qlist.h"
- #include "qemu/log.h"
+diff --git a/hw/arm/aspeed_ast27x0-fc.c b/hw/arm/aspeed_ast27x0-fc.c
+index ff64605663..ccba5fc8a1 100644
+--- a/hw/arm/aspeed_ast27x0-fc.c
++++ b/hw/arm/aspeed_ast27x0-fc.c
+@@ -69,6 +69,7 @@ static void ast2700fc_ca35_init(MachineState *machine)
  
--#define AST2700_SOC_IO_SIZE          0x01000000
-+#define AST2700_SOC_IO_SIZE          0x00FE0000
- #define AST2700_SOC_IOMEM_SIZE       0x01000000
- #define AST2700_SOC_DPMCU_SIZE       0x00040000
- #define AST2700_SOC_LTPI_SIZE        0x01000000
+     memory_region_init(&s->ca35_memory, OBJECT(&s->ca35), "ca35-memory",
+                        UINT64_MAX);
++    memory_region_add_subregion(get_system_memory(), 0, &s->ca35_memory);
  
- static const hwaddr aspeed_soc_ast2700_memmap[] = {
--    [ASPEED_DEV_IOMEM]     =  0x00000000,
-     [ASPEED_DEV_VBOOTROM]  =  0x00000000,
-+    [ASPEED_DEV_IOMEM]     =  0x00020000,
-     [ASPEED_DEV_SRAM]      =  0x10000000,
-     [ASPEED_DEV_DPMCU]     =  0x11000000,
-     [ASPEED_DEV_IOMEM0]    =  0x12000000,
+     if (!memory_region_init_ram(&s->ca35_dram, OBJECT(&s->ca35), "ca35-dram",
+                                 AST2700FC_BMC_RAM_SIZE, &error_abort)) {
 -- 
 2.43.0
 
