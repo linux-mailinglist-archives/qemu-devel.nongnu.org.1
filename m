@@ -2,111 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DA6FAB6F55
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 17:14:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8A68AB6F4E
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 17:14:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFDl4-0004Jc-Am; Wed, 14 May 2025 11:10:58 -0400
+	id 1uFDl7-0004M8-Ao; Wed, 14 May 2025 11:11:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <calebs@linux.ibm.com>)
- id 1uFD8G-0007Cp-2C; Wed, 14 May 2025 10:30:52 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1uFD8t-0007PQ-Iy; Wed, 14 May 2025 10:31:32 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <calebs@linux.ibm.com>)
- id 1uFD8E-0006bT-2a; Wed, 14 May 2025 10:30:51 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54E8pQ1V029642;
- Wed, 14 May 2025 14:30:48 GMT
+ id 1uFD8m-0006eT-OO; Wed, 14 May 2025 10:31:31 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54E9F158012727;
+ Wed, 14 May 2025 14:31:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=LYlj+G
- xl3PUtNqxmfgUkiwiAWE53yU+qD+qG687tCa0=; b=SFyZD0Bv1JhrsvyntUlt9y
- NbjMrGiX7Gl4S+4B9vcKBmYYmccSxE3FtzE1/+RoJUod/4ZRV/mIiKzrOO4GcY+o
- 2k/e28lQGyT7d8iKTKuAnuRDtEGwBwUQqY9iWXGZfD706YJe8KhL8gxd+ZuOJset
- 96/LeTqYUuHZs/4SREmGvTZUzWB3+x09zlBnfVaNGNLuSvJEh5sOiQYJ1E8gi+y1
- 68wrxbH4z7YxsJFQZvP6z0JRR1Xlsm+8UY0uEPnzsZ+nts7g8bcteUaM23OLIORo
- cDkWGAmpeabEK7fqfscklMaOKpzoyAx6P2xVZ8ALYcJpm707TJbKzTBJlN9a9BJw
+ :message-id:mime-version:references:subject:to; s=pp1; bh=rzv9mh
+ wyyICrVAz5ILkPpDtcuMJH4j4/cxmpoZHPEB0=; b=dkbExenOU5BwnqLp/8jXr7
+ AKy06HlvM34rT2J0+No4Ex9qly1ONDvr+Gkm2C2b78WoUg1rgzwBlO7C0woJ2Ewc
+ tr0qj870EasecuXCezezNvWgpxOM+vVAqgUShGbz/m/rnNJYX4RIvGhc3oUPZvvF
+ R6TeQZZfY0IST0QL8wXD+bn8F/qhAPEB1veMGKJeXCRdKrcDWImwqV+UGyh9zsF2
+ kOGxvUf/FXT/bFYSxoNT920tSFEkh/J2v5Fsymvw/XelKH1AMIIKWEMYTZgikt2V
+ CdpphlTK8AZa3jVApcJoM3ci42Tnar+wIzIo5Cw9WjIAJP2T2nU/S9XRygz4KZdg
  ==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mr1ghnp5-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mrcj9hm9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 May 2025 14:30:47 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54EETScd007032;
- Wed, 14 May 2025 14:30:47 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mr1ghnp1-1
+ Wed, 14 May 2025 14:31:22 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54EE4nTj003892;
+ Wed, 14 May 2025 14:31:22 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mrcj9hm5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 May 2025 14:30:47 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54EDKKLK021806;
- Wed, 14 May 2025 14:30:46 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46mbfpmntk-1
+ Wed, 14 May 2025 14:31:22 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54EDPJlR024309;
+ Wed, 14 May 2025 14:31:21 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46mbfs4ncd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 May 2025 14:30:46 +0000
+ Wed, 14 May 2025 14:31:21 +0000
 Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
  [10.241.53.103])
- by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 54EEUiBO7995674
+ by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 54EEVGS830999192
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 14 May 2025 14:30:44 GMT
+ Wed, 14 May 2025 14:31:17 GMT
 Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 814815805A;
- Wed, 14 May 2025 14:30:44 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 0DBBE58064;
+ Wed, 14 May 2025 14:31:20 +0000 (GMT)
 Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 25E0658052;
- Wed, 14 May 2025 14:30:44 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 9EAD058052;
+ Wed, 14 May 2025 14:31:19 +0000 (GMT)
 Received: from [9.10.255.115] (unknown [9.10.255.115])
  by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 14 May 2025 14:30:44 +0000 (GMT)
-Message-ID: <f06e57b8-7a41-42f6-bafb-e8f6decfedc9@linux.ibm.com>
-Date: Wed, 14 May 2025 09:30:43 -0500
+ Wed, 14 May 2025 14:31:19 +0000 (GMT)
+Message-ID: <921ffadd-502e-4fd9-b7c8-fe977cda52a3@linux.ibm.com>
+Date: Wed, 14 May 2025 09:31:19 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/50] ppc/xive2: Reset Generation Flipped bit on END
- Cache Watch
+Subject: Re: [PATCH 08/50] ppc/xive2: Use fair irq target search algorithm
 To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
 Cc: qemu-devel@nongnu.org, =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?=
  <fbarrat@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
  Michael Kowal <kowal@linux.ibm.com>,
  Caleb Schlossin <calebs@linux.vnet.ibm.com>
 References: <20250512031100.439842-1-npiggin@gmail.com>
- <20250512031100.439842-8-npiggin@gmail.com>
+ <20250512031100.439842-9-npiggin@gmail.com>
 Content-Language: en-US
 From: Caleb Schlossin <calebs@linux.ibm.com>
-In-Reply-To: <20250512031100.439842-8-npiggin@gmail.com>
+In-Reply-To: <20250512031100.439842-9-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: bZ7U1uvyPa2wxnAev5aNnP_ag7GlIvw2
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE0MDEyNSBTYWx0ZWRfX0qV4X37bB04B
- Hy62r5QWZ3QIupfsqhidHonWxboJT5a8Ovovhhp+gKfYwvwb+NDX2AT8d2qPxsnUop8QzNYg42Y
- xG80CG690oK24703YBLnKePRWsUVWqLp+2J5FwaBX5xjKbzJhOZLj9qhwHNZKizjnOgwohMBWlc
- cOY1KhMR9lqpVw6dhmWdX7vZ0EAo3T9il0RkQ97/C2tW9bAm6j0kf0fJS8hiB5P9olh2XzS/+vo
- H5DzOwoMgwvJbIml9DScgh2flJM+/99H/TJHwxJ2LM9MIyk4MLn92jhO2y5IXavYF6GvkyywaYG
- H6yaqH4m/HNw0rsBHdzEwhxtS1EVPbnZM45z2J+XG234tzrWVcWSz0RCNzb2Jr5zdj8CxOem9mw
- 37qwWbIX9myBysdE2JpbbZ66benVT3K/g/dfnRJ6II2BH3sEQL/fK7jxeC4Zy9q8VWRy3pI5
-X-Proofpoint-GUID: W3YpUSRAetK9eEu-YX9ps01NVLCMiqlr
-X-Authority-Analysis: v=2.4 cv=QOxoRhLL c=1 sm=1 tr=0 ts=6824a917 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=u5XRYQ9GfIdERzJa8uoA:9
+X-Authority-Analysis: v=2.4 cv=ZYgdNtVA c=1 sm=1 tr=0 ts=6824a93a cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=jthM4rBR-rtT7kyaBgcA:9
  a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: cosKkqi0aeTqkrbBm0CbKKgxHAmGu3fh
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE0MDEyNSBTYWx0ZWRfX2sxlU9vbA0jL
+ BZKCUtoMWGqMp24odikW6VEDO8TmxkzmCSc6QabcTH7CaMa3TUw6QdCY8Z+n9iITI5HXWkKuuMI
+ M949mVHvoQodlbLpfQ4I+A0kvN4eQ0c8xwIzfSevCWXxBJohyM8dRT5d1fkiNsIaYdwAUO57pFm
+ Ykvp/WSTyFysxHL9fJFj5Cy0HMUSsYXCkD1rRgFgyCpX5cPIN4kKcjgK457rdau1LPaeTbY8JFx
+ cLrG6RcrhxJuX45kHgVdGfluiufs+gsLebxyAUpeeh+3BR/eYkE13s9Tzt+L08Kl9U1CYVerTlg
+ r3GXfy5nAihJ3FPKpDugysohar4094YF4j3rPkYZaZ3UMxObNwCGci+l/vOwYbPJGHRySh049Bj
+ +Vmv2cQdX9cjw1hy1Us/HHEmA3X7HbFquVUDR0MxxXQ7gjueu0S2vRovjmvqXHcWAeHqa1MF
+X-Proofpoint-GUID: zUQYOLqicrSrxfghH7RoIRQFtcwtUGBO
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-14_04,2025-05-14_03,2025-02-21_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 suspectscore=0
- phishscore=0 spamscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0
- clxscore=1015 mlxscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=999
+ malwarescore=0 phishscore=0
+ clxscore=1011 lowpriorityscore=0 priorityscore=1501 mlxscore=0 spamscore=0
+ suspectscore=0 bulkscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2505070000
  definitions=main-2505140125
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=calebs@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=calebs@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -136,52 +135,65 @@ Looks good.
 Reviewed-by: Caleb Schlossin <calebs@linux.ibm.com>
 
 On 5/11/25 10:10 PM, Nicholas Piggin wrote:
-> From: Michael Kowal <kowal@linux.ibm.com>
+> From: Glenn Miles <milesg@linux.ibm.com>
 > 
-> When the END Event Queue wraps the END EQ Generation bit is flipped and the
-> Generation Flipped bit is set to one.  On a END cache Watch read operation,
-> the Generation Flipped bit needs to be reset.
+> The current xive algorithm for finding a matching group vCPU
+> target always uses the first vCPU found.  And, since it always
+> starts the search with thread 0 of a core, thread 0 is almost
+> always used to handle group interrupts.  This can lead to additional
+> interrupt latency and poor performance for interrupt intensive
+> work loads.
 > 
-> While debugging an error modified END not valid error messages to include
-> the method since all were the same.
+> Changing this to use a simple round-robin algorithm for deciding which
+> thread number to use when starting a search, which leads to a more
+> distributed use of threads for handling group interrupts.
 > 
-> Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
+> [npiggin: Also round-robin among threads, not just cores]
+> Signed-off-by: Glenn Miles <milesg@linux.ibm.com>
 > ---
->  hw/intc/pnv_xive2.c | 3 ++-
->  hw/intc/xive2.c     | 4 ++--
->  2 files changed, 4 insertions(+), 3 deletions(-)
+>  hw/intc/pnv_xive2.c | 18 ++++++++++++++++--
+>  1 file changed, 16 insertions(+), 2 deletions(-)
 > 
 > diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-> index 30b4ab2efe..72cdf0f20c 100644
+> index 72cdf0f20c..d7ca97ecbb 100644
 > --- a/hw/intc/pnv_xive2.c
 > +++ b/hw/intc/pnv_xive2.c
-> @@ -1325,10 +1325,11 @@ static uint64_t pnv_xive2_ic_vc_read(void *opaque, hwaddr offset,
->      case VC_ENDC_WATCH3_DATA0:
->          /*
->           * Load DATA registers from cache with data requested by the
-> -         * SPEC register
-> +         * SPEC register.  Clear gen_flipped bit in word 1.
->           */
->          watch_engine = (offset - VC_ENDC_WATCH0_DATA0) >> 6;
->          pnv_xive2_end_cache_load(xive, watch_engine);
-> +        xive->vc_regs[reg] &= ~(uint64_t)END2_W1_GEN_FLIPPED;
->          val = xive->vc_regs[reg];
->          break;
+> @@ -643,13 +643,18 @@ static int pnv_xive2_match_nvt(XivePresenter *xptr, uint8_t format,
+>      int i, j;
+>      bool gen1_tima_os =
+>          xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_GEN1_TIMA_OS;
+> +    static int next_start_core;
+> +    static int next_start_thread;
+> +    int start_core = next_start_core;
+> +    int start_thread = next_start_thread;
 > 
-> diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-> index 4dd04a0398..453fe37f18 100644
-> --- a/hw/intc/xive2.c
-> +++ b/hw/intc/xive2.c
-> @@ -374,8 +374,8 @@ static void xive2_end_enqueue(Xive2End *end, uint32_t data)
->          qgen ^= 1;
->          end->w1 = xive_set_field32(END2_W1_GENERATION, end->w1, qgen);
+>      for (i = 0; i < chip->nr_cores; i++) {
+> -        PnvCore *pc = chip->cores[i];
+> +        PnvCore *pc = chip->cores[(i + start_core) % chip->nr_cores];
+>          CPUCore *cc = CPU_CORE(pc);
 > 
-> -        /* TODO(PowerNV): reset GF bit on a cache watch operation */
-> -        end->w1 = xive_set_field32(END2_W1_GEN_FLIPPED, end->w1, qgen);
-> +        /* Set gen flipped to 1, it gets reset on a cache watch operation */
-> +        end->w1 = xive_set_field32(END2_W1_GEN_FLIPPED, end->w1, 1);
->      }
->      end->w1 = xive_set_field32(END2_W1_PAGE_OFF, end->w1, qindex);
->  }
+>          for (j = 0; j < cc->nr_threads; j++) {
+> -            PowerPCCPU *cpu = pc->threads[j];
+> +            /* Start search for match with different thread each call */
+> +            PowerPCCPU *cpu = pc->threads[(j + start_thread) % cc->nr_threads];
+>              XiveTCTX *tctx;
+>              int ring;
+> 
+> @@ -694,6 +699,15 @@ static int pnv_xive2_match_nvt(XivePresenter *xptr, uint8_t format,
+>                      if (!match->tctx) {
+>                          match->ring = ring;
+>                          match->tctx = tctx;
+> +
+> +                        next_start_thread = j + start_thread + 1;
+> +                        if (next_start_thread >= cc->nr_threads) {
+> +                            next_start_thread = 0;
+> +                            next_start_core = i + start_core + 1;
+> +                            if (next_start_core >= chip->nr_cores) {
+> +                                next_start_core = 0;
+> +                            }
+> +                        }
+>                      }
+>                      count++;
+>                  }
 
 
