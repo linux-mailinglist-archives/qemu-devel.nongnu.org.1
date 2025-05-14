@@ -2,108 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACD5AAB6F2D
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 17:11:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 227F8AB6F40
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 17:13:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFDl9-0004NY-Ue; Wed, 14 May 2025 11:11:03 -0400
+	id 1uFDl5-0004KY-Tu; Wed, 14 May 2025 11:10:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <calebs@linux.ibm.com>)
- id 1uFDE0-0002Ed-CO; Wed, 14 May 2025 10:36:48 -0400
+ id 1uFDEO-0002XA-7g; Wed, 14 May 2025 10:37:13 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <calebs@linux.ibm.com>)
- id 1uFDDy-0007Ny-FI; Wed, 14 May 2025 10:36:48 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54E8paMC029990;
- Wed, 14 May 2025 14:36:45 GMT
+ id 1uFDEM-0007Sk-Im; Wed, 14 May 2025 10:37:11 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54E6IORM026369;
+ Wed, 14 May 2025 14:37:08 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=1HWLBA
- rP+vwVGeJ9Y7epIqNkMIJr5bdBBa3B31E0srk=; b=Xaw4ziYBl4+8R5jJoMlMyT
- tyUIlRTouDV9BmDaZTGcE+J9Fn63YxY2d1KPHKb6Ev2cS9BFN7ptd9VfPWtzv0tx
- IBttDhgl62F/2xKWOl9JoEnMfaEQd8rZR3EDA1IBwl15qFHS4/vqBtkLXs7K2EUb
- 5w2fDtXDLfvBhOhdreGHOOFsHzk26BoMzF2owJnm40G7hZL0Uuu1oFzN+Nygbzw8
- t39KDxVMQ4Jxyz46J0GbchHs91aA2XPdkfHJcM+DRTc6o41N138dKSY6zGMZBlMR
- JpBPxZSp+aI78UHwKSKNcrXTWFZaU73zlRJJoJzyFWtPwLdYIZMzae/tJ1gjCTUg
+ :message-id:mime-version:references:subject:to; s=pp1; bh=8QprLZ
+ PhsvjDwhLwtBS9z4rQ5HwGpqMv2eQh0g4uSzA=; b=CODRudmP5Hcg/HoJn44JdT
+ etq0e83syj+rzRs28Sj9+aRAY5pkEzhGshXD7ov93reQw0lcAV6zAu8gW7RJoQsQ
+ IKHChXITLS9+qpsJSUdSxBtTz8luUVC3ZAyu9U9FrvMNU9h8twwop8dMMtBRui42
+ LgkDVEiSez5s564/qXRokA8DmH6KMjfi/mAI1DxCosQav/7T140Dz5/KU80zERj+
+ DfG9486r1Noff0CofO1nvUD/rPXKUFh2f7ptyE3BQjYcXo04vMOK7HAtc6LeIBRL
+ j+gkFoIjVxSoneMdrmuq+4QnhkVgTMj71wNrp8C19oLBpIG+qOhhZbCRGl+FKSeg
  ==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mr1ghptn-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mnst2c19-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 May 2025 14:36:44 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54EEIHeH011042;
- Wed, 14 May 2025 14:36:44 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mr1ghpth-1
+ Wed, 14 May 2025 14:37:08 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54EEYM5c025168;
+ Wed, 14 May 2025 14:37:08 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mnst2c14-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 May 2025 14:36:44 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54EDTiDx021822;
- Wed, 14 May 2025 14:36:42 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46mbfpmpp2-1
+ Wed, 14 May 2025 14:37:08 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54EDSdMt019466;
+ Wed, 14 May 2025 14:37:07 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 46mbfrmpcx-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 May 2025 14:36:42 +0000
+ Wed, 14 May 2025 14:37:07 +0000
 Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
  [10.241.53.103])
- by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 54EEafCr10486464
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 54EEb52g25362892
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 14 May 2025 14:36:41 GMT
+ Wed, 14 May 2025 14:37:05 GMT
 Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 42B0D5805A;
- Wed, 14 May 2025 14:36:41 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 2BBEF58056;
+ Wed, 14 May 2025 14:37:05 +0000 (GMT)
 Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E677E58056;
- Wed, 14 May 2025 14:36:40 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id C61D75805E;
+ Wed, 14 May 2025 14:37:04 +0000 (GMT)
 Received: from [9.10.255.115] (unknown [9.10.255.115])
  by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 14 May 2025 14:36:40 +0000 (GMT)
-Message-ID: <f546eae7-dc50-4ac2-b13a-993c0f7dc98c@linux.ibm.com>
-Date: Wed, 14 May 2025 09:36:40 -0500
+ Wed, 14 May 2025 14:37:04 +0000 (GMT)
+Message-ID: <b71663ee-a4b0-442e-a304-c20097a2838e@linux.ibm.com>
+Date: Wed, 14 May 2025 09:37:04 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 18/50] pnv/xive2: Print value in invalid register write
- logging
+Subject: Re: [PATCH 19/50] pnv/xive2: VC_ENDC_WATCH_SPEC regs should read back
+ WATCH_FULL
 To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
 Cc: qemu-devel@nongnu.org, =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?=
  <fbarrat@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
  Michael Kowal <kowal@linux.ibm.com>,
  Caleb Schlossin <calebs@linux.vnet.ibm.com>
 References: <20250512031100.439842-1-npiggin@gmail.com>
- <20250512031100.439842-19-npiggin@gmail.com>
+ <20250512031100.439842-20-npiggin@gmail.com>
 Content-Language: en-US
 From: Caleb Schlossin <calebs@linux.ibm.com>
-In-Reply-To: <20250512031100.439842-19-npiggin@gmail.com>
+In-Reply-To: <20250512031100.439842-20-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: gaMSyJclgP5TouLXDprPlDWu400PuhED
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE0MDEzMCBTYWx0ZWRfX2RJUazQ2ysAW
- rrWpr1B/iK0f7OXF1mHoraDqi8GGH//0Lmq1uHESne601598TUC3ZQMhSeoYdaLRi+I2kosjYY8
- yGjHp/fTGDnJRCQpI3llvj+UJuZU4cIPnNjmI7dqN0s7qooC9IU+lYWmbUGB7Wy5KeonIgM2wIP
- ue079VSK8FH5tsuF1TKhe17ZWtmP9HSxJVLfW3sDtCgfHgstnc9o5kxvJpo/HZtijh649skqq/J
- IN5fNxKq2nyps19EXH9OJCAoBatFwFu0xJ5u3mEzow6Ikx88csq5hqEjjASVjUrWxtPjMqta+P7
- FbhDmYN4HBLGdKwhYcPsOLQdzjgzUiFerQKQymL5o/jwdB7k4dWSe/kSPc2du/Loa/G7sZ5fnj8
- 6JXq3NE8Dkh9fLwANWDgBg1ttP4QqX3uJsY7CpIDyJQMezcDxeBd0oGy6iVJd/xSqbo30hhn
-X-Proofpoint-GUID: KUkVfUpT5YaX3RA_AsEAe2iOEfF4EmKY
-X-Authority-Analysis: v=2.4 cv=QOxoRhLL c=1 sm=1 tr=0 ts=6824aa7c cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=xSvcgLTIzuQBs9w0egYA:9
- a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: UB4xNkVJb_NhQDTUZNxqojzhjKRtk3Md
+X-Authority-Analysis: v=2.4 cv=V+590fni c=1 sm=1 tr=0 ts=6824aa94 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8
+ a=OIwot2dQPgAvwoVT6JIA:9 a=QEXdDO2ut3YA:10
+ a=gZLHJPz4sbkA:10
+X-Proofpoint-ORIG-GUID: As7kAhjD9ZQlCkxKBB1NjZmnGTu60kIi
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE0MDEzMCBTYWx0ZWRfX/arWsACsM2h/
+ UfougMkXx7c3qeFvto1RPPf6HyXkYLSMnulFvMPLE2mnWNUsEiGWn250vfrHQNAws3yWY18ySBs
+ bd0aklE1Bmz2cz6G0Uemde9B4brODcIKlnvQfSht5eJnZaAChVsuCQBnpiJGkWIpBwFw04/o7ke
+ ve/s+MLsSgetA0CpJpKhofGQzyhgXE5BT6tbk9d9Qxp+RhdTvPGByDg3VeftQd62DsYXi4vHT81
+ htWqlxxg6FAhojHdYd0h+va9SR5mjUtSc24aawWHUCv6h/T5N8BSZFoTudwRZvhAG34t4ZcxFO/
+ Edi893uZV89sllhEJGzACKhLDqDaWZXQgKHONfLoq7GljlMn1J2sheMY1fluTU/7mxdi3m6/XHt
+ sAeve2cwpqdKt728ANjAydLcUv9kkRedrdtB5ZyI+x7URFRIOk7fLVmCRVwvTldvhvTHSWsp
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-14_04,2025-05-14_03,2025-02-21_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 suspectscore=0
- phishscore=0 spamscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0
- clxscore=1015 mlxscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=999
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2505070000
+ mlxscore=0 priorityscore=1501
+ mlxlogscore=888 lowpriorityscore=0 bulkscore=0 suspectscore=0
+ impostorscore=0 malwarescore=0 phishscore=0 adultscore=0 clxscore=1015
+ spamscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
  definitions=main-2505140130
 Received-SPF: pass client-ip=148.163.156.1; envelope-from=calebs@linux.ibm.com;
  helo=mx0a-001b2d01.pphosted.com
@@ -135,100 +136,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Caleb Schlossin <calebs@linux.ibm.com>
 
 On 5/11/25 10:10 PM, Nicholas Piggin wrote:
-> From: Michael Kowal <kowal@linux.ibm.com>
+> Firmware expects to read back the WATCH_FULL bit from the VC_ENDC_WATCH_SPEC
+> register, so don't clear it on read.
 > 
-> This can make it easier to see what the target system is trying to
-> do.
+> Don't bother clearing the reads-as-zero CONFLICT bit because it's masked
+> at write already.
 > 
-> [npiggin: split from larger patch]
-> Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  hw/intc/pnv_xive2.c | 24 ++++++++++++++++--------
->  1 file changed, 16 insertions(+), 8 deletions(-)
+>  hw/intc/pnv_xive2.c | 1 -
+>  1 file changed, 1 deletion(-)
 > 
 > diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-> index d7ca97ecbb..fcf5b2e75c 100644
+> index fcf5b2e75c..3c26cd6b77 100644
 > --- a/hw/intc/pnv_xive2.c
 > +++ b/hw/intc/pnv_xive2.c
-> @@ -1197,7 +1197,8 @@ static void pnv_xive2_ic_cq_write(void *opaque, hwaddr offset,
->      case CQ_FIRMASK_OR: /* FIR error reporting */
+> @@ -1329,7 +1329,6 @@ static uint64_t pnv_xive2_ic_vc_read(void *opaque, hwaddr offset,
+>      case VC_ENDC_WATCH2_SPEC:
+>      case VC_ENDC_WATCH3_SPEC:
+>          watch_engine = (offset - VC_ENDC_WATCH0_SPEC) >> 6;
+> -        xive->vc_regs[reg] &= ~(VC_ENDC_WATCH_FULL | VC_ENDC_WATCH_CONFLICT);
+>          pnv_xive2_endc_cache_watch_release(xive, watch_engine);
+>          val = xive->vc_regs[reg];
 >          break;
->      default:
-> -        xive2_error(xive, "CQ: invalid write 0x%"HWADDR_PRIx, offset);
-> +        xive2_error(xive, "CQ: invalid write 0x%"HWADDR_PRIx" value 0x%"PRIx64,
-> +                    offset, val);
->          return;
->      }
-> 
-> @@ -1495,7 +1496,8 @@ static void pnv_xive2_ic_vc_write(void *opaque, hwaddr offset,
->          break;
-> 
->      default:
-> -        xive2_error(xive, "VC: invalid write @%"HWADDR_PRIx, offset);
-> +        xive2_error(xive, "VC: invalid write @0x%"HWADDR_PRIx" value 0x%"PRIx64,
-> +                    offset, val);
->          return;
->      }
-> 
-> @@ -1703,7 +1705,8 @@ static void pnv_xive2_ic_pc_write(void *opaque, hwaddr offset,
->          break;
-> 
->      default:
-> -        xive2_error(xive, "PC: invalid write @%"HWADDR_PRIx, offset);
-> +        xive2_error(xive, "PC: invalid write @0x%"HWADDR_PRIx" value 0x%"PRIx64,
-> +                    offset, val);
->          return;
->      }
-> 
-> @@ -1790,7 +1793,8 @@ static void pnv_xive2_ic_tctxt_write(void *opaque, hwaddr offset,
->          xive->tctxt_regs[reg] = val;
->          break;
->      default:
-> -        xive2_error(xive, "TCTXT: invalid write @%"HWADDR_PRIx, offset);
-> +        xive2_error(xive, "TCTXT: invalid write @0x%"HWADDR_PRIx
-> +                    " data 0x%"PRIx64, offset, val);
->          return;
->      }
->  }
-> @@ -1861,7 +1865,8 @@ static void pnv_xive2_xscom_write(void *opaque, hwaddr offset,
->          pnv_xive2_ic_tctxt_write(opaque, mmio_offset, val, size);
->          break;
->      default:
-> -        xive2_error(xive, "XSCOM: invalid write @%"HWADDR_PRIx, offset);
-> +        xive2_error(xive, "XSCOM: invalid write @%"HWADDR_PRIx
-> +                    " value 0x%"PRIx64, offset, val);
->      }
->  }
-> 
-> @@ -1929,7 +1934,8 @@ static void pnv_xive2_ic_notify_write(void *opaque, hwaddr offset,
->          break;
-> 
->      default:
-> -        xive2_error(xive, "NOTIFY: invalid write @%"HWADDR_PRIx, offset);
-> +        xive2_error(xive, "NOTIFY: invalid write @%"HWADDR_PRIx
-> +                    " value 0x%"PRIx64, offset, val);
->      }
->  }
-> 
-> @@ -1971,7 +1977,8 @@ static void pnv_xive2_ic_lsi_write(void *opaque, hwaddr offset,
->  {
->      PnvXive2 *xive = PNV_XIVE2(opaque);
-> 
-> -    xive2_error(xive, "LSI: invalid write @%"HWADDR_PRIx, offset);
-> +    xive2_error(xive, "LSI: invalid write @%"HWADDR_PRIx" value 0x%"PRIx64,
-> +                offset, val);
->  }
-> 
->  static const MemoryRegionOps pnv_xive2_ic_lsi_ops = {
-> @@ -2074,7 +2081,8 @@ static void pnv_xive2_ic_sync_write(void *opaque, hwaddr offset,
->          inject_type = PNV_XIVE2_QUEUE_NXC_ST_RMT_CI;
->          break;
->      default:
-> -        xive2_error(xive, "SYNC: invalid write @%"HWADDR_PRIx, offset);
-> +        xive2_error(xive, "SYNC: invalid write @%"HWADDR_PRIx" value 0x%"PRIx64,
-> +                    offset, val);
->          return;
->      }
-> 
 
 
