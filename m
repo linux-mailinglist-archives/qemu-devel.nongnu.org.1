@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5FC1AB6AB6
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 13:58:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84109AB6A97
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 13:54:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFAdq-00069m-FH; Wed, 14 May 2025 07:51:18 -0400
+	id 1uFAdk-00065K-TL; Wed, 14 May 2025 07:51:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uFAdd-0005yS-DI
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uFAdd-0005yR-Cq
  for qemu-devel@nongnu.org; Wed, 14 May 2025 07:51:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uFAdS-0006CB-73
- for qemu-devel@nongnu.org; Wed, 14 May 2025 07:51:05 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uFAdW-0006Dt-A6
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 07:50:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747223453;
+ s=mimecast20190719; t=1747223455;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=J0C8HFVJ2DNJTeZFn2iX0dFCwIr6ly7cQ6TeLyNcp1w=;
- b=g0wCt2nFYiZS4C7fF6cXoiXarzaALBSw/F8kDx3Yhi6T5f47Qki8v5JB5SCj+ZjrP9sXEK
- IpzKTbucon8DyBjj8IuUwmYzrJtSNm9p1OBz7ZxwrVMD8CH6TPWRxBmXXtpSPF4QUNwRJC
- PjR/pmfWjnJarQatt4XNaWmiCdeTDSU=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=scQGANjf5Zg9Z+VVAOZFzRgXSundnohTLR5TyNGPrwM=;
+ b=AoEwz66hByQG7mrlnCGKt4CUfyYv8DMRowaBgUf20ZopAlziFYCbcQcvyiiACW+0uLjJ9s
+ hlnClpUl26vYACIi/JK2eU8IbYNfVkthElcIjrwSA4Ub5z/Gj0WpmJpqGr8ZIKBruouSt9
+ qHha9vZSlJkUwJw9swQK61UlobsAvqI=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-586-syJ1e0rWMlqdW2qSEnmhuw-1; Wed, 14 May 2025 07:50:52 -0400
-X-MC-Unique: syJ1e0rWMlqdW2qSEnmhuw-1
-X-Mimecast-MFC-AGG-ID: syJ1e0rWMlqdW2qSEnmhuw_1747223451
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-43cfda30a3cso34303775e9.3
- for <qemu-devel@nongnu.org>; Wed, 14 May 2025 04:50:51 -0700 (PDT)
+ us-mta-614-7xd1HfThOBKcqEujAQaAhQ-1; Wed, 14 May 2025 07:50:54 -0400
+X-MC-Unique: 7xd1HfThOBKcqEujAQaAhQ-1
+X-Mimecast-MFC-AGG-ID: 7xd1HfThOBKcqEujAQaAhQ_1747223453
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3a0b570a73eso3858176f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 14 May 2025 04:50:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747223450; x=1747828250;
+ d=1e100.net; s=20230601; t=1747223453; x=1747828253;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=J0C8HFVJ2DNJTeZFn2iX0dFCwIr6ly7cQ6TeLyNcp1w=;
- b=pcYUN7x+ECU/egFMSv1JGPI0tTsGXa2zstRY2aoS9/a96SQ+K6cBnSvYITAEHNYV7Z
- puiXn9z2YxHXrzRiBzb0w53EmoLbvsEP46E9Bnz35ik5iNKq3nHjJhBILQJxSqNef1rg
- bPSDguEMFZ49RImctwDuyaAe4+QrVV6M1SC2OKLMPvoRfMrgsRz3/g1dQgYE8nYcQIfn
- vYRu6FjIIF76wu34BQSV2Z+9/8SPJPylOZk+cQV0LLLnzpBUarlgB/suSfqBRwptEK3F
- awuipGMCqa334q2XcLws2okt6nRkIj5bhjJ9WpkHxi6CKg+djZVVclh0l3kf4qYxjO0N
- CD8Q==
-X-Gm-Message-State: AOJu0Ywyib4HzqdAug24009CGW44HUBzhq1pr0/PO7ySjc06uxeVmZ7j
- HotyaSyXFm/WpTYK46Ge7EwC6NgXhsNJ1nVwrk57CFLoO9iyoDrhH2wgbHhuUcafY74UfxmgvDO
- ONA4QBlEFsMQgw25jRFdhqhi/ipp0MlLoI9ov9JcBhwbrJ3/W8cgfZu91Wz5ADKk7dBsyd77c/R
- 5lonlLJuUuk0WWIvH1xEJYzOYfQxTpbQ==
-X-Gm-Gg: ASbGncvRRMXLsIRUiOo3XZwJ1NsKBQ0ORTDrV7ziUj90hurMd9VHWkQSz4WDfvxF8Ys
- HT/dtqZhb7YXMVStRTl+7X15zNGFEOePrjKKYYfwD37832BlrVK2HCduDixQpCua7K7Poi96jsh
- uhtfnXR3+Q9NdY9fL4bCsl1xH+pD+t/fWqCkhjh33hv/Nr1MhEM5cj0/MAMmkrN3vGSa2nrZumD
- kxcMdkw2p3biDdCqYo6/DeoGHOs4ZVtEsZpCeiz2KCZOYcfKvpPDvjUNCEizwRSzY6N4jDLBhOQ
- 8fBPUg==
-X-Received: by 2002:a05:6000:2401:b0:3a0:b784:883f with SMTP id
- ffacd0b85a97d-3a3496b8ab0mr2086020f8f.23.1747223450367; 
- Wed, 14 May 2025 04:50:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFVheJh9Ge6MGKZLCBFHzmHjWYnnok4EJzgVkPf6YBhadDBr7Eyn2DiSFdDzF18VIOVyY1bLg==
-X-Received: by 2002:a05:6000:2401:b0:3a0:b784:883f with SMTP id
- ffacd0b85a97d-3a3496b8ab0mr2086000f8f.23.1747223449969; 
- Wed, 14 May 2025 04:50:49 -0700 (PDT)
+ bh=scQGANjf5Zg9Z+VVAOZFzRgXSundnohTLR5TyNGPrwM=;
+ b=IDcPsvD+SWF6Pzqoza10WHHU39xtBG/dX7c0rslqah/+v8pfoN3pNPpLgh94Xdx9wv
+ wzPouuwRFqeWiAEtr55+DjJPhUsbTItX6xscYrnAGs6U5UKJtCp0+vaTmTSHhmdBlmwL
+ x+RRZf9oX3+wfF4KNF7Ez5D3viRckvVNbC07PnAaGCof6MUuToB51S4JszTl5iQZq1j7
+ ENCqvtIyJS5YedDSuEt9D8UyUomz4t4sLay6RG2nrOp/qiOCNjBBb/TTA7jayPtqHizK
+ 5NXcCwmB7cH6ANX5hDJphEw8GmvDEbxNxPxHYP+E4N+P+hlVB3w3AcP0Akm6aTly1Pi9
+ dJIw==
+X-Gm-Message-State: AOJu0YzXz7Bz1OBoVtgW+nvc9nr4Vqg09mrNtknfbeLoOvdV4nNznYNj
+ nElNAG4BWMkPFGjDl20TZDQEg9GH6pHkLSCVZP8Iu5iHfxitpEj/xChuARsPL280nWlQR4nJGhb
+ 15GhRUdguAx48mU64PyKJJydg7MxFuIildHUi25GDP4Mxpnx6l3L7cF8JbHPJJ9pAqTA1Njzs4Q
+ Rg2tvmcSuHst8nX+2lZ1KC0dy7+TfvLA==
+X-Gm-Gg: ASbGncs7si+GSQ9M4srObLJn8gPejjPBqe/NY7+qc5yWj8AC+VF14zVOzjBLLqNQqhI
+ BwGqjsajFXnLYB8Vnu54rjeyUAnhMI+dDx3swI5E/nW9gfygsuKjpXy3Isv7ydwmQeS46fqwJ+G
+ 6CfxT+vilsuXVCfQeKkhb1pLS1Xky0KaEmOHMjwRDjilEhti+TyOyYJ6UbWvQdh9ItZMSaFp90d
+ DGWoubQlzAg02U8nuiZu8ODef+c35L5bpFJIDARIp7uRETuJOBZq1B3XuMdmOX3oTXry/AQh0aZ
+ o/AXrg==
+X-Received: by 2002:a5d:64cb:0:b0:3a0:99de:5309 with SMTP id
+ ffacd0b85a97d-3a3496a603fmr2321935f8f.18.1747223452728; 
+ Wed, 14 May 2025 04:50:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFA4FN4bayEGrz10h7rsUcxy72k9CqiQedcMKIUfluKGd2T9ZfthiMnq8Y5twmbXt+Qp8yNSw==
+X-Received: by 2002:a5d:64cb:0:b0:3a0:99de:5309 with SMTP id
+ ffacd0b85a97d-3a3496a603fmr2321913f8f.18.1747223452343; 
+ Wed, 14 May 2025 04:50:52 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442f337db3bsm26059625e9.9.2025.05.14.04.50.48
+ ffacd0b85a97d-3a1f57dde1asm19317210f8f.8.2025.05.14.04.50.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 May 2025 04:50:49 -0700 (PDT)
-Date: Wed, 14 May 2025 07:50:47 -0400
+ Wed, 14 May 2025 04:50:51 -0700 (PDT)
+Date: Wed, 14 May 2025 07:50:50 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Akihiko Odaki <akihiko.odaki@daynix.com>,
  Yui Washizu <yui.washidu@gmail.com>,
  Pasha Tatashin <pasha.tatashin@soleen.com>
-Subject: [PULL 13/27] virtio-pci: Implement SR-IOV PF
-Message-ID: <3f9cfaa92c96d604e98f16ade5af4742460e4c0f.1747223385.git.mst@redhat.com>
+Subject: [PULL 14/27] virtio-net: Implement SR-IOV VF
+Message-ID: <49f7cb18db0790f7f32cb85dc35ffc25e44a828b.1747223385.git.mst@redhat.com>
 References: <cover.1747223385.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -110,99 +110,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Allow user to attach SR-IOV VF to a virtio-pci PF.
+A virtio-net device can be added as a SR-IOV VF to another virtio-pci
+device that will be the PF.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20250314-sriov-v9-6-57dae8ae3ab5@daynix.com>
+Message-Id: <20250314-sriov-v9-7-57dae8ae3ab5@daynix.com>
 Tested-by: Yui Washizu <yui.washidu@gmail.com>
 Tested-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/virtio/virtio-pci.h |  1 +
- hw/virtio/virtio-pci.c         | 20 +++++++++++++++-----
- 2 files changed, 16 insertions(+), 5 deletions(-)
+ hw/virtio/virtio-net-pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/hw/virtio/virtio-pci.h b/include/hw/virtio/virtio-pci.h
-index 31ec144509..1dbc3851b0 100644
---- a/include/hw/virtio/virtio-pci.h
-+++ b/include/hw/virtio/virtio-pci.h
-@@ -155,6 +155,7 @@ struct VirtIOPCIProxy {
-     uint32_t modern_io_bar_idx;
-     uint32_t modern_mem_bar_idx;
-     int config_cap;
-+    uint16_t last_pcie_cap_offset;
-     uint32_t flags;
-     bool disable_modern;
-     bool ignore_backend_features;
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index 0fa8fe4955..fee65d3645 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -1962,6 +1962,7 @@ static void virtio_pci_device_plugged(DeviceState *d, Error **errp)
-     uint8_t *config;
-     uint32_t size;
-     VirtIODevice *vdev = virtio_bus_get_device(bus);
-+    int16_t res;
- 
-     /*
-      * Virtio capabilities present without
-@@ -2109,6 +2110,14 @@ static void virtio_pci_device_plugged(DeviceState *d, Error **errp)
-         pci_register_bar(&proxy->pci_dev, proxy->legacy_io_bar_idx,
-                          PCI_BASE_ADDRESS_SPACE_IO, &proxy->bar);
-     }
-+
-+    res = pcie_sriov_pf_init_from_user_created_vfs(&proxy->pci_dev,
-+                                                   proxy->last_pcie_cap_offset,
-+                                                   errp);
-+    if (res > 0) {
-+        proxy->last_pcie_cap_offset += res;
-+        virtio_add_feature(&vdev->host_features, VIRTIO_F_SR_IOV);
-+    }
- }
- 
- static void virtio_pci_device_unplugged(DeviceState *d)
-@@ -2199,7 +2208,7 @@ static void virtio_pci_realize(PCIDevice *pci_dev, Error **errp)
- 
-     if (pcie_port && pci_is_express(pci_dev)) {
-         int pos;
--        uint16_t last_pcie_cap_offset = PCI_CONFIG_SPACE_SIZE;
-+        proxy->last_pcie_cap_offset = PCI_CONFIG_SPACE_SIZE;
- 
-         pos = pcie_endpoint_cap_init(pci_dev, 0);
-         assert(pos > 0);
-@@ -2216,9 +2225,9 @@ static void virtio_pci_realize(PCIDevice *pci_dev, Error **errp)
-         pci_set_word(pci_dev->config + pos + PCI_PM_PMC, 0x3);
- 
-         if (proxy->flags & VIRTIO_PCI_FLAG_AER) {
--            pcie_aer_init(pci_dev, PCI_ERR_VER, last_pcie_cap_offset,
-+            pcie_aer_init(pci_dev, PCI_ERR_VER, proxy->last_pcie_cap_offset,
-                           PCI_ERR_SIZEOF, NULL);
--            last_pcie_cap_offset += PCI_ERR_SIZEOF;
-+            proxy->last_pcie_cap_offset += PCI_ERR_SIZEOF;
-         }
- 
-         if (proxy->flags & VIRTIO_PCI_FLAG_INIT_DEVERR) {
-@@ -2243,9 +2252,9 @@ static void virtio_pci_realize(PCIDevice *pci_dev, Error **errp)
-         }
- 
-         if (proxy->flags & VIRTIO_PCI_FLAG_ATS) {
--            pcie_ats_init(pci_dev, last_pcie_cap_offset,
-+            pcie_ats_init(pci_dev, proxy->last_pcie_cap_offset,
-                           proxy->flags & VIRTIO_PCI_FLAG_ATS_PAGE_ALIGNED);
--            last_pcie_cap_offset += PCI_EXT_CAP_ATS_SIZEOF;
-+            proxy->last_pcie_cap_offset += PCI_EXT_CAP_ATS_SIZEOF;
-         }
- 
-         if (proxy->flags & VIRTIO_PCI_FLAG_INIT_FLR) {
-@@ -2273,6 +2282,7 @@ static void virtio_pci_exit(PCIDevice *pci_dev)
-                      !pci_bus_is_root(pci_get_bus(pci_dev));
-     bool modern_pio = proxy->flags & VIRTIO_PCI_FLAG_MODERN_PIO_NOTIFY;
- 
-+    pcie_sriov_pf_exit(&proxy->pci_dev);
-     msix_uninit_exclusive_bar(pci_dev);
-     if (proxy->flags & VIRTIO_PCI_FLAG_AER && pcie_port &&
-         pci_is_express(pci_dev)) {
+diff --git a/hw/virtio/virtio-net-pci.c b/hw/virtio/virtio-net-pci.c
+index 8cf9788bc3..f857a84f11 100644
+--- a/hw/virtio/virtio-net-pci.c
++++ b/hw/virtio/virtio-net-pci.c
+@@ -74,6 +74,7 @@ static void virtio_net_pci_class_init(ObjectClass *klass, const void *data)
+     k->device_id = PCI_DEVICE_ID_VIRTIO_NET;
+     k->revision = VIRTIO_PCI_ABI_VERSION;
+     k->class_id = PCI_CLASS_NETWORK_ETHERNET;
++    k->sriov_vf_user_creatable = true;
+     set_bit(DEVICE_CATEGORY_NETWORK, dc->categories);
+     device_class_set_props(dc, virtio_net_properties);
+     vpciklass->realize = virtio_net_pci_realize;
 -- 
 MST
 
