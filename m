@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE40AB6AA1
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 13:55:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C717AB6A9C
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 13:55:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFAdK-0005rq-Qu; Wed, 14 May 2025 07:50:46 -0400
+	id 1uFAdQ-0005t4-Fl; Wed, 14 May 2025 07:50:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uFAdF-0005rD-Nf
- for qemu-devel@nongnu.org; Wed, 14 May 2025 07:50:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uFAdI-0005s8-5j
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 07:50:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uFAdC-00065l-93
- for qemu-devel@nongnu.org; Wed, 14 May 2025 07:50:41 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uFAdD-00066N-A9
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 07:50:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747223436;
+ s=mimecast20190719; t=1747223438;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=qyLQmrtd4FJpGU+6njcciX6Un/5UyHexyk6THOUGTQI=;
- b=iCkAS79AxlmZXKKSALvTNyLkLc3wAEbsdSZFdfZNNb57zqyb2fEH5jIMR9cOB7NJ6SCzuq
- CVAP2J7Z/OYaFne8dmSDZ0hHfeO3TxhzWtCBILGqYVTydGgg8jaW5+zErA4I2/oe4Vrs0R
- OMsQ92rkKZ30YUeluY79VpWh+6y8TE8=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=xR5eYCaem9AyYnWoLzFT5QzAGvgnkNTXfUa8v1+CEvM=;
+ b=XOgRezE883NSh7BnLmxgnFwg1nOTvcQqxvLMUxV2dwwqL/K9ZqbJipaWcdyqxmnGkBVN4X
+ FZ4pkt2U6yUUgo2VzhllOMmQn6nF4ra7SM08UMsmKiBpHgMqN7nIFYLKwyeEl9SahrPNu9
+ soEKLd4XpGKzw2WTUbIpdf6DLrVakOQ=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-rEX3CRJ5O_CBdb2dtu-ptg-1; Wed, 14 May 2025 07:50:35 -0400
-X-MC-Unique: rEX3CRJ5O_CBdb2dtu-ptg-1
-X-Mimecast-MFC-AGG-ID: rEX3CRJ5O_CBdb2dtu-ptg_1747223434
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3a0ba24d233so2322583f8f.2
- for <qemu-devel@nongnu.org>; Wed, 14 May 2025 04:50:34 -0700 (PDT)
+ us-mta-228-sDs_NuWANc6ws1nnVQVVXw-1; Wed, 14 May 2025 07:50:37 -0400
+X-MC-Unique: sDs_NuWANc6ws1nnVQVVXw-1
+X-Mimecast-MFC-AGG-ID: sDs_NuWANc6ws1nnVQVVXw_1747223436
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3a0b7c8b3e2so4337101f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 14 May 2025 04:50:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747223433; x=1747828233;
+ d=1e100.net; s=20230601; t=1747223435; x=1747828235;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qyLQmrtd4FJpGU+6njcciX6Un/5UyHexyk6THOUGTQI=;
- b=lloj1M97RQn+7BI7yx7RuCiGi0zHyUuezq90tHVO+iBykdEtDfe27Brzvns6w+e47Y
- tf/FRNveNcjUXpe6SSIK1g8as/m14AwlDhXhspKZdVoSp0B8P9mSbAC+mKynBbX+lkEH
- 3epxOC6OO32NScJdpVq/Xj4gLwZ+5T9PwPWMd+VX5tT8l8PH7T2V8+ZCTU814gh9+ccy
- VGXHfjGDokRs+ya/zA/1pV8HqGSZqCMcVRJyS4oKwPE8wdfytqmHTWuVl6eHC06vd4kA
- TjHrmoqu5LpJVvdufHGhdKOrBRW8cy11+aGRtFVM8vIDerca3pMI0PDl5O9X3zhv+Fw4
- AG1Q==
-X-Gm-Message-State: AOJu0Yx7yxwibR5DeRPWaTZ8f+xMtrYiWBAn6I9SM75LCC9QVvbdaRDq
- LO6Jb7w9HXvIkceYQh9mnpDpDncSXo56TVh9E/n4ULxveI7u7fEALhlpY0O7ozw9b3KDG+dygEw
- 2Wv2yRrm1fwh13grhRmpIeZ8X7yVcrv3rUZbWEC/M6UlzDx3/CsUyP/DRsTrvBIEwKGOm/2hb8e
- g/zUssJnPmNGvj618v/AUMfP6v3aH8HA==
-X-Gm-Gg: ASbGncsnFqvmsQIYrKx+X/VIV5RVc7ttr8410qz2xympnWIZi1HP/xkVfz2ZK8vpuZA
- Q/hyD5GzdEK2krlRkIaAfe5sKUSPnbqk1sZee4q5ugxcb/7x1iR9yXRTaHmSb76YTb3T7qN4Xk1
- y/yrPWSp4iwtSnx+qsSuY9P/vSCOv6z5Qvc4jfAnQBhDbXZFmZonmwdzpR5qM6XBW9tSyAhn0u9
- 0w4mnlTPgYxp955y17BkOCwJ4MpUWxE/4Rm0OQ8K7E3AgNUrMOGkHDaYhq3nw6vxUSqYzPrW5JQ
- sWG5cQ==
-X-Received: by 2002:a5d:64e7:0:b0:3a0:b8b0:4418 with SMTP id
- ffacd0b85a97d-3a34994e42cmr2405804f8f.50.1747223433054; 
- Wed, 14 May 2025 04:50:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEt0xZtaX+HoQWSONvM7R8loNJmejnr3JjrjuZbbSrtpXK9rfolChhw+fJllGoiN3eihu2dmw==
-X-Received: by 2002:a5d:64e7:0:b0:3a0:b8b0:4418 with SMTP id
- ffacd0b85a97d-3a34994e42cmr2405780f8f.50.1747223432621; 
- Wed, 14 May 2025 04:50:32 -0700 (PDT)
+ bh=xR5eYCaem9AyYnWoLzFT5QzAGvgnkNTXfUa8v1+CEvM=;
+ b=Z0i2FMRELdKMr4KMMm1JWwCcNlkTO+iKrlnhVH6IhwXEceBSIlXYLKNxDcAtNSI/aZ
+ NykBTmimwKRj715BGFryaqrFbQEDG1vOIIQvnxKlMHOGASfflQn60LR81Up9cSl0UcBy
+ J9yBHc/32P5b/dkP8vNVPs9TsAGhZlI8IPGS5UQbqz/WZ7fneGMARTqGh3b6MV1CfULX
+ 1SmVFZbT2uxwGrQyB91yFx0qPLblLqm7oDmZqo602lZDGHhAvvplyVMw1jztY3Wlxjs7
+ MRBOEyoFRlNsBmuJOz3ax3kmYok8XqImsElOJgpBLfLn9k/uCOhZLckEinxWMZXbdcXi
+ 0DCg==
+X-Gm-Message-State: AOJu0Yx4yB44f66LY9WgjD2m0Px92b2gJDC3aW5IvxPZCHdxPfeAL2Fj
+ Q6ffViPa7i2KbTpQQBPVwQw7q6NI6DTMXc8O2GUHfp39VgBc91NwkfOe2NCBt/L2hIvlW/s+bc/
+ QSKQVNgWS1aYChiipT/kqT+S6Tgt+gQ2/kBDpTDc6lz8Cqc7pEwCvmbV8xXdNWm0hYU2y8esstQ
+ 1b9dfC4Vc/LKTwKsZkAFVWZacBl1lbQw==
+X-Gm-Gg: ASbGncvJc9dPt7ibtP8bYprXzatql4oKW5hFH177xDnipE2J7twO/zVqSbV4O/TeNlK
+ 3BPjU11ES3/V2VMiD89grxkxxzU/ND36r2fMbA0R40OuruCpKK4pHZWok8tzMjCmhl2lOI9WIzm
+ FenN0Bj0MvcjsajI6wYUiLcqEFjz5J0YZuGPfZduteXj9HIRJdtuW4j3/Eq0tZdZlcseC5mtwtq
+ ROvY3sBLldIWlfCJvRLgoTC9d9rw7SKoUATvEOpQBdMWZrJVFxGa9ac/VbVoGr/O9Qkxv1U29Ef
+ ROGa/g==
+X-Received: by 2002:a5d:588d:0:b0:3a2:38e:c0b0 with SMTP id
+ ffacd0b85a97d-3a349922514mr2856688f8f.45.1747223435461; 
+ Wed, 14 May 2025 04:50:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGAXodGh27ySKFpzgU9uFSty+11zCvcQxC4GO56MnRBcJzg5TOweUrpiW3JTPmDXHlnwz3FXw==
+X-Received: by 2002:a5d:588d:0:b0:3a2:38e:c0b0 with SMTP id
+ ffacd0b85a97d-3a349922514mr2856651f8f.45.1747223434976; 
+ Wed, 14 May 2025 04:50:34 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a1f58eb91bsm19865181f8f.33.2025.05.14.04.50.31
+ ffacd0b85a97d-3a1f58f2a1dsm18986861f8f.43.2025.05.14.04.50.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 May 2025 04:50:32 -0700 (PDT)
-Date: Wed, 14 May 2025 07:50:30 -0400
+ Wed, 14 May 2025 04:50:34 -0700 (PDT)
+Date: Wed, 14 May 2025 07:50:32 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Sweta Kumari <s5.kumari@samsung.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
-Subject: [PULL 06/27] hw/cxl/cxl-mailbox-utils: CXL CCI Get/Set alert config
- commands
-Message-ID: <a3e0b1ff37e930095a417666ab3e12715394fb9b.1747223385.git.mst@redhat.com>
+ Yuquan Wang <wangyuquan1236@phytium.com.cn>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Hyeongtak Ji <hyeongtak.ji@gmail.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 07/27] docs/cxl: Add serial number for persistent-memdev
+Message-ID: <abde58f8644491503c058c2ff0775613f251c8e6.1747223385.git.mst@redhat.com>
 References: <cover.1747223385.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -83,7 +83,7 @@ Content-Disposition: inline
 In-Reply-To: <cover.1747223385.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -37
 X-Spam_score: -3.8
@@ -108,224 +108,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sweta Kumari <s5.kumari@samsung.com>
+From: Yuquan Wang <wangyuquan1236@phytium.com.cn>
 
-1) get alert configuration(Opcode 4201h)
-2) set alert configuration(Opcode 4202h)
+Add serial number parameter in the cxl persistent examples.
 
-Signed-off-by: Sweta Kumari <s5.kumari@samsung.com>
+Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20250305092501.191929-7-Jonathan.Cameron@huawei.com>
+Message-Id: <20250305092501.191929-9-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/cxl/cxl_device.h |  15 ++++++
- hw/cxl/cxl-mailbox-utils.c  | 105 ++++++++++++++++++++++++++++++++++++
- hw/mem/cxl_type3.c          |  14 +++++
- 3 files changed, 134 insertions(+)
+ docs/system/devices/cxl.rst | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index 3ec7be3809..ed6cd50c67 100644
---- a/include/hw/cxl/cxl_device.h
-+++ b/include/hw/cxl/cxl_device.h
-@@ -542,6 +542,19 @@ typedef struct CXLSetFeatureInfo {
+diff --git a/docs/system/devices/cxl.rst b/docs/system/devices/cxl.rst
+index 882b036f5e..e307caf3f8 100644
+--- a/docs/system/devices/cxl.rst
++++ b/docs/system/devices/cxl.rst
+@@ -308,7 +308,7 @@ A very simple setup with just one directly attached CXL Type 3 Persistent Memory
+   -object memory-backend-file,id=cxl-lsa1,share=on,mem-path=/tmp/lsa.raw,size=256M \
+   -device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1 \
+   -device cxl-rp,port=0,bus=cxl.1,id=root_port13,chassis=0,slot=2 \
+-  -device cxl-type3,bus=root_port13,persistent-memdev=cxl-mem1,lsa=cxl-lsa1,id=cxl-pmem0 \
++  -device cxl-type3,bus=root_port13,persistent-memdev=cxl-mem1,lsa=cxl-lsa1,id=cxl-pmem0,sn=0x1 \
+   -M cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=4G
  
- struct CXLSanitizeInfo;
+ A very simple setup with just one directly attached CXL Type 3 Volatile Memory device::
+@@ -349,13 +349,13 @@ the CXL Type3 device directly attached (no switches).::
+   -device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1 \
+   -device pxb-cxl,bus_nr=222,bus=pcie.0,id=cxl.2 \
+   -device cxl-rp,port=0,bus=cxl.1,id=root_port13,chassis=0,slot=2 \
+-  -device cxl-type3,bus=root_port13,persistent-memdev=cxl-mem1,lsa=cxl-lsa1,id=cxl-pmem0 \
++  -device cxl-type3,bus=root_port13,persistent-memdev=cxl-mem1,lsa=cxl-lsa1,id=cxl-pmem0,sn=0x1 \
+   -device cxl-rp,port=1,bus=cxl.1,id=root_port14,chassis=0,slot=3 \
+-  -device cxl-type3,bus=root_port14,persistent-memdev=cxl-mem2,lsa=cxl-lsa2,id=cxl-pmem1 \
++  -device cxl-type3,bus=root_port14,persistent-memdev=cxl-mem2,lsa=cxl-lsa2,id=cxl-pmem1,sn=0x2 \
+   -device cxl-rp,port=0,bus=cxl.2,id=root_port15,chassis=0,slot=5 \
+-  -device cxl-type3,bus=root_port15,persistent-memdev=cxl-mem3,lsa=cxl-lsa3,id=cxl-pmem2 \
++  -device cxl-type3,bus=root_port15,persistent-memdev=cxl-mem3,lsa=cxl-lsa3,id=cxl-pmem2,sn=0x3 \
+   -device cxl-rp,port=1,bus=cxl.2,id=root_port16,chassis=0,slot=6 \
+-  -device cxl-type3,bus=root_port16,persistent-memdev=cxl-mem4,lsa=cxl-lsa4,id=cxl-pmem3 \
++  -device cxl-type3,bus=root_port16,persistent-memdev=cxl-mem4,lsa=cxl-lsa4,id=cxl-pmem3,sn=0x4 \
+   -M cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.targets.1=cxl.2,cxl-fmw.0.size=4G,cxl-fmw.0.interleave-granularity=8k
  
-+typedef struct CXLAlertConfig {
-+    uint8_t valid_alerts;
-+    uint8_t enable_alerts;
-+    uint8_t life_used_crit_alert_thresh;
-+    uint8_t life_used_warn_thresh;
-+    uint16_t over_temp_crit_alert_thresh;
-+    uint16_t under_temp_crit_alert_thresh;
-+    uint16_t over_temp_warn_thresh;
-+    uint16_t under_temp_warn_thresh;
-+    uint16_t cor_vmem_err_warn_thresh;
-+    uint16_t cor_pmem_err_warn_thresh;
-+} QEMU_PACKED CXLAlertConfig;
-+
- struct CXLType3Dev {
-     /* Private */
-     PCIDevice parent_obj;
-@@ -563,6 +576,8 @@ struct CXLType3Dev {
-     CXLCCI vdm_fm_owned_ld_mctp_cci;
-     CXLCCI ld0_cci;
+ An example of 4 devices below a switch suitable for 1, 2 or 4 way interleave::
+@@ -375,13 +375,13 @@ An example of 4 devices below a switch suitable for 1, 2 or 4 way interleave::
+   -device cxl-rp,port=1,bus=cxl.1,id=root_port1,chassis=0,slot=1 \
+   -device cxl-upstream,bus=root_port0,id=us0 \
+   -device cxl-downstream,port=0,bus=us0,id=swport0,chassis=0,slot=4 \
+-  -device cxl-type3,bus=swport0,persistent-memdev=cxl-mem0,lsa=cxl-lsa0,id=cxl-pmem0 \
++  -device cxl-type3,bus=swport0,persistent-memdev=cxl-mem0,lsa=cxl-lsa0,id=cxl-pmem0,sn=0x1 \
+   -device cxl-downstream,port=1,bus=us0,id=swport1,chassis=0,slot=5 \
+-  -device cxl-type3,bus=swport1,persistent-memdev=cxl-mem1,lsa=cxl-lsa1,id=cxl-pmem1 \
++  -device cxl-type3,bus=swport1,persistent-memdev=cxl-mem1,lsa=cxl-lsa1,id=cxl-pmem1,sn=0x2 \
+   -device cxl-downstream,port=2,bus=us0,id=swport2,chassis=0,slot=6 \
+-  -device cxl-type3,bus=swport2,persistent-memdev=cxl-mem2,lsa=cxl-lsa2,id=cxl-pmem2 \
++  -device cxl-type3,bus=swport2,persistent-memdev=cxl-mem2,lsa=cxl-lsa2,id=cxl-pmem2,sn=0x3 \
+   -device cxl-downstream,port=3,bus=us0,id=swport3,chassis=0,slot=7 \
+-  -device cxl-type3,bus=swport3,persistent-memdev=cxl-mem3,lsa=cxl-lsa3,id=cxl-pmem3 \
++  -device cxl-type3,bus=swport3,persistent-memdev=cxl-mem3,lsa=cxl-lsa3,id=cxl-pmem3,sn=0x4 \
+   -M cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=4G,cxl-fmw.0.interleave-granularity=4k
  
-+    CXLAlertConfig alert_config;
-+
-     /* PCIe link characteristics */
-     PCIExpLinkSpeed speed;
-     PCIExpLinkWidth width;
-diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 2c6db70e5f..299f232f26 100644
---- a/hw/cxl/cxl-mailbox-utils.c
-+++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -28,6 +28,11 @@
- #define CXL_DC_EVENT_LOG_SIZE 8
- #define CXL_NUM_EXTENTS_SUPPORTED 512
- #define CXL_NUM_TAGS_SUPPORTED 0
-+#define CXL_ALERTS_LIFE_USED_WARN_THRESH (1 << 0)
-+#define CXL_ALERTS_OVER_TEMP_WARN_THRESH (1 << 1)
-+#define CXL_ALERTS_UNDER_TEMP_WARN_THRESH (1 << 2)
-+#define CXL_ALERTS_COR_VMEM_ERR_WARN_THRESH (1 << 3)
-+#define CXL_ALERTS_COR_PMEM_ERR_WARN_THRESH (1 << 4)
- 
- /*
-  * How to add a new command, example. The command set FOO, with cmd BAR.
-@@ -86,6 +91,9 @@ enum {
-         #define GET_PARTITION_INFO     0x0
-         #define GET_LSA       0x2
-         #define SET_LSA       0x3
-+    HEALTH_INFO_ALERTS = 0x42,
-+        #define GET_ALERT_CONFIG 0x1
-+        #define SET_ALERT_CONFIG 0x2
-     SANITIZE    = 0x44,
-         #define OVERWRITE     0x0
-         #define SECURE_ERASE  0x1
-@@ -1610,6 +1618,97 @@ static CXLRetCode cmd_ccls_set_lsa(const struct cxl_cmd *cmd,
-     return CXL_MBOX_SUCCESS;
- }
- 
-+/* CXL r3.2 Section 8.2.10.9.3.2 Get Alert Configuration (Opcode 4201h) */
-+static CXLRetCode cmd_get_alert_config(const struct cxl_cmd *cmd,
-+                                       uint8_t *payload_in,
-+                                       size_t len_in,
-+                                       uint8_t *payload_out,
-+                                       size_t *len_out,
-+                                       CXLCCI *cci)
-+{
-+    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
-+    CXLAlertConfig *out = (CXLAlertConfig *)payload_out;
-+
-+    memcpy(out, &ct3d->alert_config, sizeof(ct3d->alert_config));
-+    *len_out = sizeof(ct3d->alert_config);
-+
-+    return CXL_MBOX_SUCCESS;
-+}
-+
-+/* CXL r3.2 Section 8.2.10.9.3.3 Set Alert Configuration (Opcode 4202h) */
-+static CXLRetCode cmd_set_alert_config(const struct cxl_cmd *cmd,
-+                                       uint8_t *payload_in,
-+                                       size_t len_in,
-+                                       uint8_t *payload_out,
-+                                       size_t *len_out,
-+                                       CXLCCI *cci)
-+{
-+    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
-+    CXLAlertConfig *alert_config = &ct3d->alert_config;
-+    struct {
-+        uint8_t valid_alert_actions;
-+        uint8_t enable_alert_actions;
-+        uint8_t life_used_warn_thresh;
-+        uint8_t rsvd;
-+        uint16_t over_temp_warn_thresh;
-+        uint16_t under_temp_warn_thresh;
-+        uint16_t cor_vmem_err_warn_thresh;
-+        uint16_t cor_pmem_err_warn_thresh;
-+    } QEMU_PACKED *in = (void *)payload_in;
-+
-+    if (in->valid_alert_actions & CXL_ALERTS_LIFE_USED_WARN_THRESH) {
-+        /*
-+         * CXL r3.2 Table 8-149 The life used warning threshold shall be
-+         * less than the life used critical alert value.
-+         */
-+        if (in->life_used_warn_thresh >=
-+            alert_config->life_used_crit_alert_thresh) {
-+            return CXL_MBOX_INVALID_INPUT;
-+        }
-+        alert_config->life_used_warn_thresh = in->life_used_warn_thresh;
-+        alert_config->enable_alerts |= CXL_ALERTS_LIFE_USED_WARN_THRESH;
-+    }
-+
-+    if (in->valid_alert_actions & CXL_ALERTS_OVER_TEMP_WARN_THRESH) {
-+        /*
-+         * CXL r3.2 Table 8-149 The Device Over-Temperature Warning Threshold
-+         * shall be less than the the Device Over-Temperature Critical
-+         * Alert Threshold.
-+         */
-+        if (in->over_temp_warn_thresh >=
-+            alert_config->over_temp_crit_alert_thresh) {
-+            return CXL_MBOX_INVALID_INPUT;
-+        }
-+        alert_config->over_temp_warn_thresh = in->over_temp_warn_thresh;
-+        alert_config->enable_alerts |= CXL_ALERTS_OVER_TEMP_WARN_THRESH;
-+    }
-+
-+    if (in->valid_alert_actions & CXL_ALERTS_UNDER_TEMP_WARN_THRESH) {
-+        /*
-+         * CXL r3.2 Table 8-149 The Device Under-Temperature Warning Threshold
-+         * shall be higher than the the Device Under-Temperature Critical
-+         * Alert Threshold.
-+         */
-+        if (in->under_temp_warn_thresh <=
-+            alert_config->under_temp_crit_alert_thresh) {
-+            return CXL_MBOX_INVALID_INPUT;
-+        }
-+        alert_config->under_temp_warn_thresh = in->under_temp_warn_thresh;
-+        alert_config->enable_alerts |= CXL_ALERTS_UNDER_TEMP_WARN_THRESH;
-+    }
-+
-+    if (in->valid_alert_actions & CXL_ALERTS_COR_VMEM_ERR_WARN_THRESH) {
-+        alert_config->cor_vmem_err_warn_thresh = in->cor_vmem_err_warn_thresh;
-+        alert_config->enable_alerts |= CXL_ALERTS_COR_VMEM_ERR_WARN_THRESH;
-+    }
-+
-+    if (in->valid_alert_actions & CXL_ALERTS_COR_PMEM_ERR_WARN_THRESH) {
-+        alert_config->cor_pmem_err_warn_thresh = in->cor_pmem_err_warn_thresh;
-+        alert_config->enable_alerts |= CXL_ALERTS_COR_PMEM_ERR_WARN_THRESH;
-+    }
-+    return CXL_MBOX_SUCCESS;
-+}
-+
- /* Perform the actual device zeroing */
- static void __do_sanitization(CXLType3Dev *ct3d)
- {
-@@ -3173,6 +3272,12 @@ static const struct cxl_cmd cxl_cmd_set[256][256] = {
-     [CCLS][GET_LSA] = { "CCLS_GET_LSA", cmd_ccls_get_lsa, 8, 0 },
-     [CCLS][SET_LSA] = { "CCLS_SET_LSA", cmd_ccls_set_lsa,
-         ~0, CXL_MBOX_IMMEDIATE_CONFIG_CHANGE | CXL_MBOX_IMMEDIATE_DATA_CHANGE },
-+    [HEALTH_INFO_ALERTS][GET_ALERT_CONFIG] = {
-+        "HEALTH_INFO_ALERTS_GET_ALERT_CONFIG",
-+        cmd_get_alert_config, 0, 0 },
-+    [HEALTH_INFO_ALERTS][SET_ALERT_CONFIG] = {
-+        "HEALTH_INFO_ALERTS_SET_ALERT_CONFIG",
-+        cmd_set_alert_config, 12, CXL_MBOX_IMMEDIATE_POLICY_CHANGE },
-     [SANITIZE][OVERWRITE] = { "SANITIZE_OVERWRITE", cmd_sanitize_overwrite, 0,
-         (CXL_MBOX_IMMEDIATE_DATA_CHANGE |
-          CXL_MBOX_SECURITY_STATE_CHANGE |
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index aacd078118..94e7274912 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -843,6 +843,19 @@ static DOEProtocol doe_cdat_prot[] = {
-     { }
- };
- 
-+/* Initialize CXL device alerts with default threshold values. */
-+static void init_alert_config(CXLType3Dev *ct3d)
-+{
-+    ct3d->alert_config = (CXLAlertConfig) {
-+        .life_used_crit_alert_thresh = 75,
-+        .life_used_warn_thresh = 40,
-+        .over_temp_crit_alert_thresh = 35,
-+        .under_temp_crit_alert_thresh = 10,
-+        .over_temp_warn_thresh = 25,
-+        .under_temp_warn_thresh = 20
-+    };
-+}
-+
- static void ct3_realize(PCIDevice *pci_dev, Error **errp)
- {
-     ERRP_GUARD();
-@@ -910,6 +923,7 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
-         goto err_msix_uninit;
-     }
- 
-+    init_alert_config(ct3d);
-     pcie_cap_deverr_init(pci_dev);
-     /* Leave a bit of room for expansion */
-     rc = pcie_aer_init(pci_dev, PCI_ERR_VER, 0x200, PCI_ERR_SIZEOF, errp);
+ Deprecations
 -- 
 MST
 
