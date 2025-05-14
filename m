@@ -2,56 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64BB1AB65FA
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 10:30:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51E8DAB65F7
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 10:29:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uF7U9-0006c3-A5; Wed, 14 May 2025 04:29:05 -0400
+	id 1uF7UB-0006f4-4K; Wed, 14 May 2025 04:29:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uF7U5-0006V4-BK; Wed, 14 May 2025 04:29:01 -0400
+ id 1uF7U6-0006XB-5d; Wed, 14 May 2025 04:29:02 -0400
 Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uF7U2-0006Fg-Ov; Wed, 14 May 2025 04:29:01 -0400
+ id 1uF7U4-0006Fs-9b; Wed, 14 May 2025 04:29:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747211339; x=1778747339;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=egObq7r+bAUf06a07tyz1db9wNYsBeBm+FIL2c4bTpk=;
- b=ApB1ofOmwYVtXN4COedsSVOwFVuBaNiXRCvTHBUkLsXWgeB3ZiGTkTCL
- phaLd9peE7F1BcpvyNRrbFcwlLmRXcBssHRq/G8BP+z0B7JNOspubOjll
- ghL0rEvh7we86SurWCa5XRQn5ABj/ZVFmsG0o1txVK4Qg21TeTz7dFEMl
- tikOJrDQDhXRpCK0Nq8Nc7u8nC7EmUsgVkQq1zt5M8qcnt0eAw//GXopA
- yY6JAKYwRwJL4GrNCKqbq6CiUnZep4ghCNlCBUn15Fz0MCHQgzxkpLiVI
- kuNXgoSntpImcQQ2N7v1nox320i/YSFpuhvHxgB2Hh4C0BVbFXnH8pzOO w==;
-X-CSE-ConnectionGUID: RZGOl9klT2is/Sg2gjqEoQ==
-X-CSE-MsgGUID: G5acNfiSRRCsluhR75KhbA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="66505563"
-X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="66505563"
+ t=1747211340; x=1778747340;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=FdOAj36KJleXLSX45p4llvGBDxu8kaQ/Flsl3wc8shs=;
+ b=iLrHonJUpnw3kw7EY9b7kSHsgLmcRwFMdkFRWeFLWn6UzwtBwXuwUvJz
+ mLp8hFYmyDkuEYeWEoqJGgdoPKNuEewBiHgYJC/5x+LJPYOxr68zlPlTI
+ QlAEQP7GBrPBnUFNCOmX180PjvJVY98o/iSsfQryZfqjWxrWk7S3dxB0W
+ /d/KDsoN9dEryNA9wvQUTMwGGGC10PqYsY/rJbWV9Pn7RQGgNueN7I7MZ
+ V4c60IM5JUnrgXAGJINr1HG626tFGM4Fqc79Qs3PeUhtP9gyyd4aCHqP+
+ riZBxRjAqguYhC62op8XmgJSBZ0HbQGkJpgE8LIsGpV33D/0s2w9RPHC7 Q==;
+X-CSE-ConnectionGUID: +6YZbp5OTtqtf39B9lBKqw==
+X-CSE-MsgGUID: QJEqJfR3T1Wl/Lc/6TcA/Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="66505568"
+X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="66505568"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 May 2025 01:28:55 -0700
-X-CSE-ConnectionGUID: /ajFYO2HT1CTKSRzKHxO9A==
-X-CSE-MsgGUID: zTsZLN5wSDO/sn1lXmS3EQ==
+ 14 May 2025 01:28:57 -0700
+X-CSE-ConnectionGUID: hYjjzZBxQmu2mNLdCbMYEw==
+X-CSE-MsgGUID: sqcoE+Y6RqGv6+Je+l2zPA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="169065802"
+X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="169065806"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa001.fm.intel.com with ESMTP; 14 May 2025 01:28:52 -0700
+ by fmviesa001.fm.intel.com with ESMTP; 14 May 2025 01:28:54 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>
 Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 0/9] qom: Consolidate OBJECT_{DEFINE|DECLARE}_SIMPLE_TYPE*
-Date: Wed, 14 May 2025 16:49:48 +0800
-Message-Id: <20250514084957.2221975-1-zhao1.liu@intel.com>
+Subject: [PATCH 1/9] qom/object: Improve the doc of macros related with simple
+ type
+Date: Wed, 14 May 2025 16:49:49 +0800
+Message-Id: <20250514084957.2221975-2-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250514084957.2221975-1-zhao1.liu@intel.com>
+References: <20250514084957.2221975-1-zhao1.liu@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
@@ -78,48 +82,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+There're 2 changes:
+ - For OBJECT_DECLARE_SIMPLE_TYPE:
 
-When I read the qom doc (qom.rst) about OBJECT_DECLARE_SIMPLE_TYPE, I
-found there's the wrong example. So I tried to fix the doc and cleaned
-up the relevant code case to correctly show that for simple type, the
-class definition is not needed.
+   Since a clase may not only has virtual method, but also field, thus
+   mention when class is not needed for either, then there is no need
+   to have the class.
 
-This series tries to:
+ - For OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES:
 
- * fix & improve the documentation of OBJECT_{DEFINE|DECLARE}_SIMPLE_TYPE*,
+   And the words like OBJECT_DEFINE_SIMPLE_TYPE about when the type is
+   declared by OBJECT_DECLARE_SIMPLE_TYPE, then user should consider
+   to define the type via OBJECT_DEFINE_SIMPLE_TYPE or
+   OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES.
 
- * and clean up several cases that could have used simple type macros
-   (mainly by dropping unneeded class definitions).
-
-Thanks and Best Regards,
-Zhao
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Daniel P. Berrangé" <berrange@redhat.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
-Zhao Liu (9):
-  qom/object: Improve the doc of macros related with simple type
-  docs/devel/qom: Fix the doc about OBJECT_DECLARE_SIMPLE_TYPE
-  hw/acpi/pci: Consolidate OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES
-  hw/char/sh_serial: Consolidate
-    OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES
-  hw/hyperv/hv-balloon: Consolidate
-    OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES
-  hw/ppc/pef: Consolidate OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES
-  hw/core/resetcontainer: Consolidate OBJECT_DECLARE_SIMPLE_TYPE
-  target/s390x/kvm/pv: Consolidate
-    OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES
-  ui/console-vc: Consolidate OBJECT_DEFINE_SIMPLE_TYPE
+ include/qom/object.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
- docs/devel/qom.rst               | 11 +----------
- hw/acpi/pci.c                    | 24 ++++++++----------------
- hw/char/sh_serial.c              |  4 +---
- hw/hyperv/hv-balloon.c           |  8 ++------
- hw/ppc/pef.c                     | 17 ++++++-----------
- include/hw/core/resetcontainer.h |  2 +-
- include/qom/object.h             |  5 +++--
- target/s390x/kvm/pv.c            | 18 ++++++------------
- ui/console-vc.c                  | 14 ++++++++------
- 9 files changed, 36 insertions(+), 67 deletions(-)
-
+diff --git a/include/qom/object.h b/include/qom/object.h
+index 1d5b03372429..14f84ae454d3 100644
+--- a/include/qom/object.h
++++ b/include/qom/object.h
+@@ -249,7 +249,7 @@ struct Object
+  * declared.
+  *
+  * This macro should be used unless the class struct needs to have
+- * virtual methods declared.
++ * virtual methods or fields declared.
+  */
+ #define OBJECT_DECLARE_SIMPLE_TYPE(InstanceType, MODULE_OBJ_NAME) \
+     typedef struct InstanceType InstanceType; \
+@@ -402,7 +402,8 @@ struct Object
+  *
+  * This is a variant of OBJECT_DEFINE_TYPE_EXTENDED, which is suitable for
+  * the case of a non-abstract type, with interfaces, and with no requirement
+- * for a class struct.
++ * for a class struct. If you declared your type with OBJECT_DECLARE_SIMPLE_TYPE
++ * then this is probably the right choice for defining it.
+  */
+ #define OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(ModuleObjName, \
+                                                   module_obj_name, \
 -- 
 2.34.1
 
