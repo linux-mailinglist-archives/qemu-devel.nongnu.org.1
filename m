@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9C70AB6C83
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 15:21:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94618AB6C5D
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 15:14:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFBo1-00062B-EX; Wed, 14 May 2025 09:05:53 -0400
+	id 1uFBmc-0002mf-5C; Wed, 14 May 2025 09:04:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uFBjl-0007jm-I4; Wed, 14 May 2025 09:01:36 -0400
+ id 1uFBk0-0007uA-Lh; Wed, 14 May 2025 09:01:46 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uFBjh-0008Hg-Vs; Wed, 14 May 2025 09:01:27 -0400
+ id 1uFBjo-0008If-V9; Wed, 14 May 2025 09:01:41 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 95BE8121AFD;
+ by isrv.corpit.ru (Postfix) with ESMTP id A098A121AFE;
  Wed, 14 May 2025 15:57:50 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 4127120B86B;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4B4C020B86C;
  Wed, 14 May 2025 15:58:00 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Thomas Huth <thuth@redhat.com>,
+Cc: qemu-stable@nongnu.org, Bernhard Beschow <shentey@gmail.com>,
+ Corey Minyard <cminyard@mvista.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.4 31/34] gitlab: use --refetch in check-patch/check-dco
- jobs
-Date: Wed, 14 May 2025 15:57:53 +0300
-Message-Id: <20250514125758.92030-31-mjt@tls.msk.ru>
+Subject: [Stable-9.2.4 32/34] hw/i2c/imx: Always set interrupt status bit if
+ interrupt condition occurs
+Date: Wed, 14 May 2025 15:57:54 +0300
+Message-Id: <20250514125758.92030-32-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.4-20250514155748@cover.tls.msk.ru>
 References: <qemu-stable-9.2.4-20250514155748@cover.tls.msk.ru>
@@ -61,51 +61,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+From: Bernhard Beschow <shentey@gmail.com>
 
-When gitlab initializes the repo checkout for a CI job, it will have
-done a shallow clone with only partial history. Periodically the objects
-that are omitted cause trouble with the check-patch/check-dco jobs. This
-is exhibited as reporting strange errors being unable to fetch certain
-objects that are known to exist.
+According to the i.MX 8M Plus reference manual, the status flag
+I2C_I2SR[IIF] continues to be set when an interrupt condition
+occurs even when I2C interrupts are disabled (I2C_I2CR[IIEN] is
+clear). However, the device model only sets the flag when I2C
+interrupts are enabled which causes U-Boot to loop forever. Fix
+the device model by always setting the flag and let I2C_I2CR[IIEN]
+guard I2C interrupts only.
 
-Passing the --refetch flag to 'git fetch' causes it to not assume the
-local checkout has all common objects and thus re-fetch everything that
-is needed. This appears to solve the check-patch/check-dco job failures.
+Also remove the comment in the code since it merely stated the
+obvious and would be outdated now.
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20250225110525.2209854-1-berrange@redhat.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit d5d028eee38d4107821c0d2cfdb0dd04b9ba5ca3)
+Cc: qemu-stable@nongnu.org
+Fixes: 20d0f9cf6a41 ("i.MX: Add I2C controller emulator")
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Acked-by: Corey Minyard <cminyard@mvista.com>
+Message-ID: <20250507124040.425773-1-shentey@gmail.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+(cherry picked from commit 54e54e594bc8273d210f7ff4448c165a989cbbe8)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/.gitlab-ci.d/check-dco.py b/.gitlab-ci.d/check-dco.py
-index 70dec7d6ee..2fd56683dc 100755
---- a/.gitlab-ci.d/check-dco.py
-+++ b/.gitlab-ci.d/check-dco.py
-@@ -21,7 +21,7 @@
+diff --git a/hw/i2c/imx_i2c.c b/hw/i2c/imx_i2c.c
+index c565fd5b8a..1dd0167e47 100644
+--- a/hw/i2c/imx_i2c.c
++++ b/hw/i2c/imx_i2c.c
+@@ -90,13 +90,12 @@ static void imx_i2c_reset(DeviceState *dev)
  
- print(f"adding upstream git repo @ {repourl}")
- subprocess.check_call(["git", "remote", "add", "check-dco", repourl])
--subprocess.check_call(["git", "fetch", "check-dco", "master"])
-+subprocess.check_call(["git", "fetch", "--refetch", "check-dco", "master"])
+ static inline void imx_i2c_raise_interrupt(IMXI2CState *s)
+ {
+-    /*
+-     * raise an interrupt if the device is enabled and it is configured
+-     * to generate some interrupts.
+-     */
+-    if (imx_i2c_is_enabled(s) && imx_i2c_interrupt_is_enabled(s)) {
++    if (imx_i2c_is_enabled(s)) {
+         s->i2sr |= I2SR_IIF;
+-        qemu_irq_raise(s->irq);
++
++        if (imx_i2c_interrupt_is_enabled(s)) {
++            qemu_irq_raise(s->irq);
++        }
+     }
+ }
  
- ancestor = subprocess.check_output(["git", "merge-base",
-                                     "check-dco/master", "HEAD"],
-diff --git a/.gitlab-ci.d/check-patch.py b/.gitlab-ci.d/check-patch.py
-index 68c549a146..be13e6f77d 100755
---- a/.gitlab-ci.d/check-patch.py
-+++ b/.gitlab-ci.d/check-patch.py
-@@ -24,7 +24,7 @@
- # base for the user's branch. We thus need to figure out a common
- # ancestor between the user's branch and current git master.
- subprocess.check_call(["git", "remote", "add", "check-patch", repourl])
--subprocess.check_call(["git", "fetch", "check-patch", "master"])
-+subprocess.check_call(["git", "fetch", "--refetch", "check-patch", "master"])
- 
- ancestor = subprocess.check_output(["git", "merge-base",
-                                     "check-patch/master", "HEAD"],
 -- 
 2.39.5
 
