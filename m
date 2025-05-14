@@ -2,58 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADF14AB6AE6
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 14:04:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BCA0AB6BD9
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 14:53:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFApI-0004Ob-Pa; Wed, 14 May 2025 08:03:08 -0400
+	id 1uFBbX-0002sH-Ss; Wed, 14 May 2025 08:52:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uFAp7-0004KL-HD; Wed, 14 May 2025 08:02:58 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uFAp1-0000vI-W6; Wed, 14 May 2025 08:02:57 -0400
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 1EA1C55CA4E;
- Wed, 14 May 2025 14:02:50 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id nAKQwBil8dTV; Wed, 14 May 2025 14:02:48 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 2A7D255CA4D; Wed, 14 May 2025 14:02:48 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 28BC9745682;
- Wed, 14 May 2025 14:02:48 +0200 (CEST)
-Date: Wed, 14 May 2025 14:02:48 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Zhao Liu <zhao1.liu@intel.com>
-cc: Paolo Bonzini <pbonzini@redhat.com>, 
- =?ISO-8859-15?Q?Daniel_P_=2E_Berrang=E9?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org, 
- qemu-trivial@nongnu.org
-Subject: Re: [PATCH 1/9] qom/object: Improve the doc of macros related with
- simple type
-In-Reply-To: <20250514084957.2221975-2-zhao1.liu@intel.com>
-Message-ID: <e213c4bf-1b26-f1c3-c3ed-10c2adff4a5d@eik.bme.hu>
-References: <20250514084957.2221975-1-zhao1.liu@intel.com>
- <20250514084957.2221975-2-zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <yanfei.xu@bytedance.com>)
+ id 1uF9LC-00064n-PK
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 06:27:58 -0400
+Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yanfei.xu@bytedance.com>)
+ id 1uF9LA-0003sg-3q
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 06:27:58 -0400
+Received: by mail-oi1-x22d.google.com with SMTP id
+ 5614622812f47-403407e998eso4740389b6e.0
+ for <qemu-devel@nongnu.org>; Wed, 14 May 2025 03:27:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1747218472; x=1747823272; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Xsw48AKk8CYEWDlWDcJoP4kYuHx7KlGPMhpRO9e6nME=;
+ b=LvuYxUy0u5dC7vUMOdoBguMBP1Wm1RUk7fjIjTvTH8x49/pDeJWg3za8vX1u+qcEnn
+ tQRcdLJ+/7oqmhoyhh/ZpSnQEjEpi6Tt4UJZ72VF2u6m8lULvbn6TEEl7xcKmRoIXZss
+ 9b2F1mHsOydywILkZScvKSmO3ycqezTHTTPW5jdrOJFLRIzNpibBS5yBIoGiSAvw1wLG
+ wUmwCM+w9Hc2R36yqPhGMzVAABzBFKagFxDwK/KDwjgueZ+txiX4QJS7TjjzygRt3BOm
+ o76p5ViVU0Ay2uTq5xQcqGXZqx+cKLKCFupoKz5kGjJbeCEJIYvLG/qU9l0KaWmDZ+I2
+ Tvzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747218472; x=1747823272;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Xsw48AKk8CYEWDlWDcJoP4kYuHx7KlGPMhpRO9e6nME=;
+ b=tlyPsvvmnRSPZdvVromFN2cw7Fal3ek8ka6+DKC1h2HzYw2BHvkghcRjMnbDRR+DIV
+ qN3oref0660MuVBA1N8mkS8AwkwHiGjffKkmuuJL6md0zsUFGZ8jOi4L+lbvesXzjilD
+ oiPqoL4pvL7de7pjD6Qkom0cqeoFpC9dDLDBtWVbRbOeMx6ynNeVqSmBvHweiBvIUp7u
+ DssoZjsJi0F1byGmxlvx3vf0wdqYOhS4Hi5CH0QfNTar0BV8nrV6cBpD4yphhcP22URp
+ nFKMPKtEet013Etn4iDhX9XNbIL/V3mu2gj88L6xcfTn/6ija/GUMnQsvmgmK3NUjXKb
+ EuXQ==
+X-Gm-Message-State: AOJu0Yxib3jaBmmfP3FKC0NEyXL3a9Uaj33OHRirWWLqKsstW58igVx2
+ uLh/ZngJg3EfpCNZMW1BN7r5zUs+jzmhDO4BKEBanzejiLhCFbEcSfk5cttF2OEa6hZBV4wN+ZR
+ KIlo=
+X-Gm-Gg: ASbGncvBCzaNemPfssipxG/sbsqWucEr7KzpiBKFFDq3oLfYrKSLf9OoZsHSRvLwCub
+ JQwHJCgXL60P0Mood+wdlyQ27OJ8yfHr9HB1ydBZRjcgzcm11OMgxKyZYAmYn12GirNXSPt0Or4
+ eGlkAj3sQxfHJ/tvNRtcSzPwtOeWn7gwQsn1V4A2eZaorkR1HSlA3fXYt6chjNAhEjv/h0F5G1j
+ aeN1OjFalFbkQyJwmuHWFmWW5Mmcvp/woBCbQtB9Gk+5c1RN/KRn2WvfEkVTCSJTmu+i7jz2TRe
+ kKpdYpTviE45sym2/QuDhiSSjtWR4Uiu4iqVFHGcba9gH3RycBQz6p1m6a8IKWge3HTR7Q==
+X-Google-Smtp-Source: AGHT+IFonfmw3Xf4VKFBloalAvK7boQoglZBFIOQlVlwCGSJsSO7Ydqn6oruG1VBTUpO0OGjgPkpAw==
+X-Received: by 2002:a17:90b:4c51:b0:309:cf0b:cb37 with SMTP id
+ 98e67ed59e1d1-30e2e56f634mr5078606a91.7.1747218461472; 
+ Wed, 14 May 2025 03:27:41 -0700 (PDT)
+Received: from n37-071-053.byted.org ([115.190.40.10])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-30e33482fd3sm1211762a91.37.2025.05.14.03.27.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 14 May 2025 03:27:40 -0700 (PDT)
+From: Yanfei Xu <yanfei.xu@bytedance.com>
+To: peterx@redhat.com,
+	farosas@suse.de
+Cc: qemu-devel@nongnu.org,
+	Yanfei Xu <yanfei.xu@bytedance.com>
+Subject: [RFC PATCH] migration/ram: avoid to do log clear in the last round
+Date: Wed, 14 May 2025 18:27:33 +0800
+Message-Id: <20250514102733.3114824-1-yanfei.xu@bytedance.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- BOUNDARY="3866299591-2115792899-1747223934=:15654"
-Content-ID: <0429568b-1794-dc08-6232-a89dfc4cffc0@eik.bme.hu>
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22d;
+ envelope-from=yanfei.xu@bytedance.com; helo=mail-oi1-x22d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 14 May 2025 08:52:47 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,72 +97,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+There won't be any ram sync after the stage of save_complete, therefore
+it's unnecessary to do manually protect for dirty pages being sent. Skip
+to do this in last round can reduce noticeable downtime.
 
---3866299591-2115792899-1747223934=:15654
-Content-Type: text/plain; CHARSET=ISO-8859-15; format=flowed
-Content-Transfer-Encoding: 8BIT
-Content-ID: <ef88af0f-8bd7-da8b-fab7-f71a53d2d957@eik.bme.hu>
+Signed-off-by: Yanfei Xu <yanfei.xu@bytedance.com>
+---
+As I don't have proper machine to test this patch in qemu and verify if it has
+risks like in postcopy, colo and so on.(But I tested this idea on my rust VMM,
+it works and can reduce ~50ms for a 128GB guest). So I raise the patch with RFC
+for suggestions.
 
-On Wed, 14 May 2025, Zhao Liu wrote:
-> There're 2 changes:
-> - For OBJECT_DECLARE_SIMPLE_TYPE:
->
->   Since a clase may not only has virtual method, but also field, thus
+ migration/ram.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-class may not only have virtual methods but also fields, clarify when 
-class is not needed
+diff --git a/migration/ram.c b/migration/ram.c
+index e12913b43e..2b169cdd18 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -838,7 +838,9 @@ static inline bool migration_bitmap_clear_dirty(RAMState *rs,
+      * the page in the chunk we clear the remote dirty bitmap for all.
+      * Clearing it earlier won't be a problem, but too late will.
+      */
+-    migration_clear_memory_region_dirty_bitmap(rb, page);
++    if (!rs->last_stage) {
++        migration_clear_memory_region_dirty_bitmap(rb, page);
++    }
+ 
+     ret = test_and_clear_bit(page, rb->bmap);
+     if (ret) {
+-- 
+2.20.1
 
->   mention when class is not needed for either, then there is no need
->   to have the class.
->
-> - For OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES:
->
->   And the words like OBJECT_DEFINE_SIMPLE_TYPE about when the type is
->   declared by OBJECT_DECLARE_SIMPLE_TYPE, then user should consider
->   to define the type via OBJECT_DEFINE_SIMPLE_TYPE or
->   OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES.
->
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Cc: "Daniel P. Berrangé" <berrange@redhat.com>
-> Cc: Eduardo Habkost <eduardo@habkost.net>
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> ---
-> include/qom/object.h | 5 +++--
-> 1 file changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/include/qom/object.h b/include/qom/object.h
-> index 1d5b03372429..14f84ae454d3 100644
-> --- a/include/qom/object.h
-> +++ b/include/qom/object.h
-> @@ -249,7 +249,7 @@ struct Object
->  * declared.
->  *
->  * This macro should be used unless the class struct needs to have
-> - * virtual methods declared.
-> + * virtual methods or fields declared.
->  */
-> #define OBJECT_DECLARE_SIMPLE_TYPE(InstanceType, MODULE_OBJ_NAME) \
->     typedef struct InstanceType InstanceType; \
-> @@ -402,7 +402,8 @@ struct Object
->  *
->  * This is a variant of OBJECT_DEFINE_TYPE_EXTENDED, which is suitable for
->  * the case of a non-abstract type, with interfaces, and with no requirement
-> - * for a class struct.
-> + * for a class struct. If you declared your type with OBJECT_DECLARE_SIMPLE_TYPE
-> + * then this is probably the right choice for defining it.
-
-Is "probably" correct here? Is it a must or can still use other defining 
-macros? If correct maybe saying "this might be the right choice" is 
-simpler.
-
-Regards,
-BALATON Zoltan
-
->  */
-> #define OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(ModuleObjName, \
->                                                   module_obj_name, \
->
---3866299591-2115792899-1747223934=:15654--
 
