@@ -2,65 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F4CCAB69B0
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 13:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4DE5AB69E4
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 13:29:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFA9M-00060J-7S; Wed, 14 May 2025 07:19:48 -0400
+	id 1uFAH2-0001Lc-AP; Wed, 14 May 2025 07:27:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uFA9K-0005zv-BF
- for qemu-devel@nongnu.org; Wed, 14 May 2025 07:19:46 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uFAH0-0001G4-0a
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 07:27:42 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uFA9I-0001MK-IM
- for qemu-devel@nongnu.org; Wed, 14 May 2025 07:19:45 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uFAGy-00024b-6m
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 07:27:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747221583;
+ s=mimecast20190719; t=1747222058;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=4J5CtSMgf/lbTPFeTGrU8Ks+Fea1QIrBlMcjYXKmsKI=;
- b=Cad1W1xvkEBRxEMMk8+Ft+5KtdAQ422SE31wVgGKjlQnyn0ZbumO8lO2s3swB0J70iL3k0
- yd0jSKSFXBTupnpaTsS5yVZdx1AwXWRY4YgBUosP+0lZJnrTyq/FBckZ2YLHZTFDhN6OYD
- Ib7mQ/fv+j9Tk4Xls6MP6JrrjVj6xFg=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ content-transfer-encoding:content-transfer-encoding;
+ bh=mYK+mXwJBAHO1k4WL/hngMdjsvnt59WtirK2ZXGZOtQ=;
+ b=IfJaTJ7drSM5/p5k8oImGZedBXGK6DTg88IyAavoPgZit7fMd4mZEnN2xq5KUbdgg7iJsj
+ pxc0Svdqqq4VYUa2YfWuGIpUN/NycH9cIi6Bf4B/pSwd3uzOMERlvE5X2tICgvr58nkfJo
+ shjcLfSnZgMIdFbqc1YBRyx4aNnU62Y=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-552-mq43wVQcOEWlToZpyPLPPQ-1; Wed,
- 14 May 2025 07:19:40 -0400
-X-MC-Unique: mq43wVQcOEWlToZpyPLPPQ-1
-X-Mimecast-MFC-AGG-ID: mq43wVQcOEWlToZpyPLPPQ_1747221579
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-686-XUo_slzDM9GqHOMxoVMEqQ-1; Wed,
+ 14 May 2025 07:27:36 -0400
+X-MC-Unique: XUo_slzDM9GqHOMxoVMEqQ-1
+X-Mimecast-MFC-AGG-ID: XUo_slzDM9GqHOMxoVMEqQ_1747222055
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C6D53180048E; Wed, 14 May 2025 11:19:39 +0000 (UTC)
-Received: from toolbx.redhat.com (unknown [10.42.28.147])
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B049E1956068
+ for <qemu-devel@nongnu.org>; Wed, 14 May 2025 11:27:35 +0000 (UTC)
+Received: from thuth-p1g4.str.redhat.com (dhcp-192-219.str.redhat.com
+ [10.33.192.219])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6CF8019560A3; Wed, 14 May 2025 11:19:38 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+ id 6C82419560A3; Wed, 14 May 2025 11:27:34 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 3/3] ui/vnc: fix tight palette pixel encoding for 8/16-bpp
- formats
-Date: Wed, 14 May 2025 12:19:31 +0100
-Message-ID: <20250514111931.1711390-4-berrange@redhat.com>
-In-Reply-To: <20250514111931.1711390-1-berrange@redhat.com>
-References: <20250514111931.1711390-1-berrange@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PULL 00/13] s390x obsolete machine removal & misc fixes
+Date: Wed, 14 May 2025 13:27:20 +0200
+Message-ID: <20250514112733.456644-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -37
 X-Spam_score: -3.8
@@ -85,44 +79,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When sending a tight rectangle with the palette filter, if the client
-format was 8/16bpp, the colours on big endian hosts are not set as
-we're sending the wrong bytes. We must first cast the 32-bit colour
-to a 16/8-bit value, and then send the result.
+ Hi!
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- ui/vnc-enc-tight.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+The following changes since commit 69ee0189d7977cfbb1b2c7a27393d8b9fb661b20:
 
-diff --git a/ui/vnc-enc-tight.c b/ui/vnc-enc-tight.c
-index a5bdc19ebb..705dcbb429 100644
---- a/ui/vnc-enc-tight.c
-+++ b/ui/vnc-enc-tight.c
-@@ -1001,13 +1001,17 @@ static int send_mono_rect(VncState *vs, int x, int y,
-         break;
-     }
-     case 2:
--        vnc_write(vs, &bg, 2);
--        vnc_write(vs, &fg, 2);
-+        uint16_t bg16 = bg;
-+        uint16_t fg16 = fg;
-+        vnc_write(vs, &bg16, 2);
-+        vnc_write(vs, &fg16, 2);
-         tight_encode_mono_rect16(vs->tight->tight.buffer, w, h, bg, fg);
-         break;
-     default:
--        vnc_write_u8(vs, bg);
--        vnc_write_u8(vs, fg);
-+        uint8_t bg8 = bg;
-+        uint8_t fg8 = fg;
-+        vnc_write_u8(vs, bg8);
-+        vnc_write_u8(vs, fg8);
-         tight_encode_mono_rect8(vs->tight->tight.buffer, w, h, bg, fg);
-         break;
-     }
--- 
-2.49.0
+  Merge tag 'qtest-20250509-pull-request' of https://gitlab.com/farosas/qemu into staging (2025-05-12 11:11:37 -0400)
+
+are available in the Git repository at:
+
+  https://gitlab.com/thuth/qemu.git tags/pull-request-2025-05-14
+
+for you to fetch changes up to c23d3339ce8fc936d8c60a023ea2b052d847dc78:
+
+  tests/functional: Skip the screendump tests if the command is not available (2025-05-14 11:50:42 +0200)
+
+----------------------------------------------------------------
+* Removal of obsolete s390x machines
+* Fix a memleak in s390x code
+* Skip some functional tests if the corresponding feature is not available
+
+----------------------------------------------------------------
+Fabiano Rosas (1):
+      s390x: Fix leak in machine_set_loadparm
+
+Thomas Huth (12):
+      hw/s390x/s390-virtio-ccw: Remove the deprecated 2.10 machine type
+      hw/s390x/s390-virtio-ccw: Remove the deprecated 2.11 machine type
+      hw/s390x/event-facility: Remove the obsolete "allow_all_mask_sizes" code
+      target/s390x: Rename the qemu_V2_11 feature set to qemu_MIN
+      hw/s390x/s390-virtio-ccw: Remove the deprecated 2.12 machine type
+      hw/s390x/s390-virtio-ccw: Remove the deprecated 3.0 machine type
+      hw/s390x: Remove the obsolete hpage_1m_allowed switch
+      hw/s390x/s390-virtio-ccw: Remove the deprecated 3.1 machine type
+      hw/s390x/s390-virtio-ccw: Remove the deprecated 4.0 machine type
+      include/hw/dma/xlnx_dpdma: Remove dependency on console.h
+      tests/functional/test_s390x_tuxrun: Check whether the machine is available
+      tests/functional: Skip the screendump tests if the command is not available
+
+ include/hw/dma/xlnx_dpdma.h               |   1 -
+ include/hw/s390x/s390-virtio-ccw.h        |   4 -
+ hw/s390x/event-facility.c                 |  37 +--------
+ hw/s390x/s390-virtio-ccw.c                | 132 +-----------------------------
+ target/s390x/gen-features.c               |  13 +--
+ target/s390x/kvm/kvm.c                    |   6 --
+ tests/functional/test_arm_integratorcp.py |   6 +-
+ tests/functional/test_m68k_nextcube.py    |   6 +-
+ tests/functional/test_mips64el_malta.py   |   6 +-
+ tests/functional/test_s390x_tuxrun.py     |   1 +
+ 10 files changed, 18 insertions(+), 194 deletions(-)
 
 
