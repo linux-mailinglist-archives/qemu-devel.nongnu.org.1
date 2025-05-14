@@ -2,95 +2,121 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2503AB6E34
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 16:34:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE0E5AB6F48
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 17:13:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFDAr-0007if-Ql; Wed, 14 May 2025 10:33:33 -0400
+	id 1uFDl8-0004Mp-98; Wed, 14 May 2025 11:11:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1uFDAj-0007iI-H5
- for qemu-devel@nongnu.org; Wed, 14 May 2025 10:33:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <calebs@linux.ibm.com>)
+ id 1uFDAy-0007jn-B3; Wed, 14 May 2025 10:33:41 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1uFDAh-0006oN-3v
- for qemu-devel@nongnu.org; Wed, 14 May 2025 10:33:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747233201;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=2m5Ndif0BHqDqK5TmENeUmI8YxC82GP7PbCVBotYVtU=;
- b=Wg1xXnsqb2UI3mV41rFfMtgwb1rG8TyKvnEyCbOHPgsFkqspH6tF937JbH9NhIObnbYzm4
- OP5HDs1JCvKlUZH/E7+UEqdG3lJIS2kbbSuaMzOt381RJeyPIs0I8HR1eFC9Lot8oxf87w
- i2hwavcqvtQJxiLZvN9Jz83xgMrS6lY=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-439-neszeYp4NeyD7QWJfEZBdQ-1; Wed, 14 May 2025 10:33:20 -0400
-X-MC-Unique: neszeYp4NeyD7QWJfEZBdQ-1
-X-Mimecast-MFC-AGG-ID: neszeYp4NeyD7QWJfEZBdQ_1747233199
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3a0bd786a53so2972154f8f.0
- for <qemu-devel@nongnu.org>; Wed, 14 May 2025 07:33:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747233199; x=1747837999;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2m5Ndif0BHqDqK5TmENeUmI8YxC82GP7PbCVBotYVtU=;
- b=uEGsg7tglY92+n6O9fn/YgHrIom50dUV1FiMBV07ms1QTsVkw3r/EzFfK5+hdEcUgE
- s57UBjESwihdddHyO8tkgxYGAiXURDYUIqlalbOc9Lm4RMlrGR9U0cxOn7l9MhU/Xyoh
- MtFRjAPuu/9CmykyW2Ze0ADn+xepxciULQMvXmf7KWhnVm3x1bXRGJwWBBftP+KnClLL
- CZKJM4RhyDkwrA8rQCMJ5MkSKnuNoxyyVxD99mBNp+ghzbrcANrUJb96y4Qv6pIs2go8
- 0sK9uU+bQj3jTMUZeAIKv5hVSJg2lans5uLQaNX9r8yHOJhAuF9Ade5+sM40WgeZ9dMj
- duDA==
-X-Gm-Message-State: AOJu0YyvrsLeuFXgSZxxUFNeoMHIalU829QMoTusrY9EUX9tM59k2DKK
- /HlA5xnZHctVUoHtUyeUL6h4ek3g1P1jW2XF/tqzT0TOC8ssfgkQV/YAHNlRlc/QexGr41z4oHX
- 3NsLJ7WGs9V9WXKsV6CFzmbPJ2TxNvSCsKziKp4UBG+q4IQOFddx67nqnDqz0LzyA2A==
-X-Gm-Gg: ASbGncse/SxY0nRLn+kg+rO5L7NaEZwA1YLF0PqNj4kr2atmLQKahV5+R44i7Wjhnpg
- zILNF4OASVyxmS1fOAQH6qSUII8gsSr9cQamTcJ6yEjj2D3AC4xyk7ecTMmE+BmXKTG638wI3/P
- xT93wvcWlIiFnBaDpaRo5i18EoVTRYUPUrpdU02ZtbNJTUEN6HY0VX6B13oMzNLA3FI9/uNiQY/
- C2xFP3uR9xbusDbNB/0oMSo3H+kI3BH8bZz8yhLghcxBSCP9+9tkUj+WRYK/oMdgsPw3ksb5EL8
-X-Received: by 2002:a05:6000:1acf:b0:3a1:f653:85dc with SMTP id
- ffacd0b85a97d-3a349952f09mr3328774f8f.58.1747233198959; 
- Wed, 14 May 2025 07:33:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEEvTRH6sA1SmNpoR39x7b07mShRJ2DjebioclDbfpmbenOgxaKg/nBUDAE6CBGXGZxd6y/TA==
-X-Received: by 2002:a05:6000:1acf:b0:3a1:f653:85dc with SMTP id
- ffacd0b85a97d-3a349952f09mr3328754f8f.58.1747233198559; 
- Wed, 14 May 2025 07:33:18 -0700 (PDT)
-Received: from fedora ([85.93.96.130]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a1f58f3afdsm20250039f8f.60.2025.05.14.07.33.17
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 May 2025 07:33:18 -0700 (PDT)
-Date: Wed, 14 May 2025 16:33:16 +0200
-From: Juraj Marcin <jmarcin@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>, 
- Prasad Pandit <ppandit@redhat.com>,
- "Dr . David Alan Gilbert" <dave@treblig.org>
-Subject: Re: [PATCH 3/3] migration/hmp: Add "info migrate -a", reorg the dump
-Message-ID: <lu4vgrxl2b5kgg5jdfnucqfvu2wh3rudhya5jarw2auyh62mge@onoeum25ttzm>
-References: <20250513220923.518025-1-peterx@redhat.com>
- <20250513220923.518025-4-peterx@redhat.com>
+ (Exim 4.90_1) (envelope-from <calebs@linux.ibm.com>)
+ id 1uFDAw-0006oz-En; Wed, 14 May 2025 10:33:39 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54EDn7WO003596;
+ Wed, 14 May 2025 14:33:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=yY0Qjt
+ 1g/WmXbyRMJgLHhMX6fCea0Xi0+le6XTDe3/g=; b=sIF1A1UpGaJNeoM29Hp2mv
+ MUzuswQgMwATqE9ROmnZRvRQSJPhwJAK2AdJTDnIdX2mVhz3sI0cznU+Dg3O32Ng
+ H7w36j0mJrh7rwXm/7xBIOocRxPB472aZ6eSfzTUqYP63rQvqu7M1OlJ1pN1duHB
+ K+7iaIkW3jW65xXNkygoaLpoVdOJJFWDgLSXp3ZhErVNCJI5BuhSle/HAUtXwMQj
+ ah8vgEI2j57J9Sc9FChN7f09TXSAH9BLniTfyr8YSyYBjvnLlF6OGRZahm2o51ff
+ WZqNrJXL0bsmDHsY6LhsxZ/if6ORFvhxPoy1VEkLuB1eOLmviEfAxQFhoXVn2QIg
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mvd388bq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 14 May 2025 14:33:37 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54EE77h6012238;
+ Wed, 14 May 2025 14:33:36 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mvd388bk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 14 May 2025 14:33:36 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54EDURvM019381;
+ Wed, 14 May 2025 14:33:36 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 46mbfrmnva-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 14 May 2025 14:33:35 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
+ [10.241.53.103])
+ by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 54EEXYN25571308
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 14 May 2025 14:33:34 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E1A5058056;
+ Wed, 14 May 2025 14:33:33 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8814258052;
+ Wed, 14 May 2025 14:33:33 +0000 (GMT)
+Received: from [9.10.255.115] (unknown [9.10.255.115])
+ by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 14 May 2025 14:33:33 +0000 (GMT)
+Message-ID: <e99ecc7d-b127-442c-82f5-15f7ff7457c4@linux.ibm.com>
+Date: Wed, 14 May 2025 09:33:33 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250513220923.518025-4-peterx@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jmarcin@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -37
-X-Spam_score: -3.8
-X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 12/50] ppc/xive2: Set CPPR delivery should account for
+ group priority
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?=
+ <fbarrat@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
+ Michael Kowal <kowal@linux.ibm.com>,
+ Caleb Schlossin <calebs@linux.vnet.ibm.com>
+References: <20250512031100.439842-1-npiggin@gmail.com>
+ <20250512031100.439842-13-npiggin@gmail.com>
+Content-Language: en-US
+From: Caleb Schlossin <calebs@linux.ibm.com>
+In-Reply-To: <20250512031100.439842-13-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: e7-DgOZPpigWcS9EZFcBnRCXqqPwYiqp
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE0MDEyNSBTYWx0ZWRfXyPI4MIdOQSAm
+ TjdzoMXMJUytn/e81v12kUAVfox9672rjX+NvQbRdKzCjURp8zVW13TKnK8NSD9yi7bkt0ejTX+
+ IQS4ZjJ0A5nAHG+KkIj5+sF2l+50TXJPf5ume8YcKGQTqSh6QZy3dDsiA0AJV7X04vaLlHFbeG7
+ 1zjTZxEsrGGQiwzZmCYweOk2TvtBCju4Zb6mj57lw2p8Zfn/uVH0qMEEBCcw24BYtweuFk5Ecj/
+ v1l+pY5+ZEaD+qSLcElhoiY2Nxszkpp7mDRizyp11jbmjDk9eX++6diwf3sALbBLpRirVUDYLUC
+ M2qMM6bFdRL4HdH1R0YzfJZSnb+H49HwgLTc2wUFYM8TPW5Q0vGjDFaqWHPOqZG9D+kVb/NuiEC
+ txJT8Rsmj6plGQUNblY+euqbgKcgPD7OPpKIcPQf7yi30Pl3WRgOF1nVAzd0NbNdFRU4VwEu
+X-Proofpoint-ORIG-GUID: dvAvgDPdxPjDE6ClXjcY_fqdWFJIE60Z
+X-Authority-Analysis: v=2.4 cv=GbEXnRXL c=1 sm=1 tr=0 ts=6824a9c1 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8
+ a=zSV6phptauE46_GIRisA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-14_04,2025-05-14_03,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 impostorscore=0
+ clxscore=1015 priorityscore=1501 lowpriorityscore=0 suspectscore=0
+ mlxlogscore=999 phishscore=0 bulkscore=0 malwarescore=0 mlxscore=0
+ spamscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
+ definitions=main-2505140125
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=calebs@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 14 May 2025 11:10:35 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,369 +131,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Peter
+Looks good.
 
-On 2025-05-13 18:09, Peter Xu wrote:
-> I did quite some changes to the output of "info migrate".
+Reviewed-by: Caleb Schlossin <calebs@linux.ibm.com>
+
+On 5/11/25 10:10 PM, Nicholas Piggin wrote:
+> The group interrupt delivery flow selects the group backlog scan if
+> LSMFB < IPB, but that scan may find an interrupt with a priority >=
+> IPB. In that case, the VP-direct interrupt should be chosen. This
+> extends to selecting the lowest prio between POOL and PHYS rings.
 > 
-> The general rule is:
+> Implement this just by re-starting the selection logic if the
+> backlog irq was not found or priority did not match LSMFB (LSMFB
+> is updated so next time around it would see the right value and
+> not loop infinitely).
 > 
->   - Put important things at the top
->   - Reuse a single line when things are very relevant, hence reducing lines
->     needed to show the results
->   - Remove almost useless ones (e.g. "normal_bytes", while we also have
->     both "page size" and "normal" pages)
->   - Regroup things, so that related fields will show together
->   - etc.
-> 
-> Before this change, it looks like (one example of a completed case):
-> 
-> (qemu) info migrate
-> globals:
-> store-global-state: on
-> only-migratable: off
-> send-configuration: on
-> send-section-footer: on
-> send-switchover-start: on
-> clear-bitmap-shift: 18
-> Migration status: completed
-> total time: 122952 ms
-> downtime: 76 ms
-> setup: 15 ms
-> transferred ram: 130825923 kbytes
-> throughput: 8717.68 mbps
-> remaining ram: 0 kbytes
-> total ram: 16777992 kbytes
-> duplicate: 997263 pages
-> normal: 32622225 pages
-> normal bytes: 130488900 kbytes
-> dirty sync count: 10
-> page size: 4 kbytes
-> multifd bytes: 117134260 kbytes
-> pages-per-second: 169431
-> postcopy request count: 5835
-> precopy ram: 15 kbytes
-> postcopy ram: 13691151 kbytes
-> 
-> After this change, giving a few examples:
-> 
-> NORMAL PRECOPY:
-> 
-> (qemu) info migrate
-> Status: active
-> Time (ms): total=14292, setup=13, exp_down=12223
-> RAM info:
->   Bandwidth (mbps): 9380.51
->   Sizes (KB): psize=4, total=16777992
->     transferred=15697718, remain=12383520,
->     precopy=2, multifd=15697713, postcopy=0
->   Pages: normal=3913877, zero=599981, rate_per_sec=286769
->   Others: dirty_syncs=2, dirty_pages_rate=264552
-> 
-> XBZRLE:
-> 
-> (qemu) info migrate
-> Status: active
-> Time (ms): total=43973, setup=16, exp_down=75826
-> RAM info:
->   Bandwidth (mbps): 1496.08
->   Sizes (KB): psize=4, total=16777992
->     transferred=15156743, remain=12877944,
->     precopy=15156768, multifd=0, postcopy=0
->   Pages: normal=3780458, zero=614029, rate_per_sec=45567
->   Others: dirty_syncs=2, dirty_pages_rate=128624
-> XBZRLE: size=67108864, transferred=0, pages=0, miss=188451
->   miss_rate=0.00, encode_rate=0.00, overflow=0
-> 
-> POSTCOPY:
-> 
-> (qemu) info migrate
-> Status: postcopy-active
-> Time (ms): total=40504, setup=14, down=145
-> RAM info:
->   Bandwidth (mbps): 6102.65
->   Sizes (KB): psize=4, total=16777992
->     transferred=37673019, remain=2136404,
->     precopy=3, multifd=26108780, postcopy=11563855
->   Pages: normal=9394288, zero=600672, rate_per_sec=185875
->   Others: dirty_syncs=3, dirty_pages_rate=278378, postcopy_req=4078
-> 
-> COMPLETED:
-> 
-> (qemu) info migrate
-> Status: completed
-> Time (ms): total=43708, setup=14, down=145
-> RAM info:
->   Bandwidth (mbps): 7464.50
->   Sizes (KB): psize=4, total=16777992
->     transferred=39813725, remain=0,
->     precopy=3, multifd=26108780, postcopy=13704436
->   Pages: normal=9928390, zero=600672, rate_per_sec=167283
->   Others: dirty_syncs=3, postcopy_req=5577
-> 
-> INCOMING (WHEN TCP LISTENING):
-> 
-> (qemu) info migrate
-> Status: setup
-> Sockets: [
->         tcp:0.0.0.0:12345
-> ]
-> 
-> Signed-off-by: Peter Xu <peterx@redhat.com>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  migration/migration-hmp-cmds.c | 158 +++++++++++++++++----------------
->  hmp-commands-info.hx           |   6 +-
->  2 files changed, 85 insertions(+), 79 deletions(-)
+>  hw/intc/xive2.c | 32 ++++++++++++++++++++++----------
+>  1 file changed, 22 insertions(+), 10 deletions(-)
 > 
-> diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-> index 0034dbe47f..c1c10b22ae 100644
-> --- a/migration/migration-hmp-cmds.c
-> +++ b/migration/migration-hmp-cmds.c
-> @@ -54,6 +54,7 @@ static void migration_global_dump(Monitor *mon)
->  
->  void hmp_info_migrate(Monitor *mon, const QDict *qdict)
+> diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
+> index 8ede95b671..de139dcfbf 100644
+> --- a/hw/intc/xive2.c
+> +++ b/hw/intc/xive2.c
+> @@ -939,7 +939,7 @@ static void xive2_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
 >  {
-> +    bool show_all = qdict_get_try_bool(qdict, "all", false);
->      MigrationInfo *info;
->  
->      info = qmp_query_migrate(NULL);
-> @@ -68,7 +69,7 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
->      }
->  
->      if (info->has_status) {
-> -        monitor_printf(mon, "Migration status: %s",
-> +        monitor_printf(mon, "Status: %s",
->                         MigrationStatus_str(info->status));
->          if (info->status == MIGRATION_STATUS_FAILED && info->error_desc) {
->              monitor_printf(mon, " (%s)\n", info->error_desc);
-> @@ -76,90 +77,111 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
->              monitor_printf(mon, "\n");
->          }
->  
-> -        monitor_printf(mon, "total time: %" PRIu64 " ms\n",
-> -                       info->total_time);
-> -        if (info->has_expected_downtime) {
-> -            monitor_printf(mon, "expected downtime: %" PRIu64 " ms\n",
-> -                           info->expected_downtime);
-> -        }
-> -        if (info->has_downtime) {
-> -            monitor_printf(mon, "downtime: %" PRIu64 " ms\n",
-> -                           info->downtime);
-> +        if (info->total_time) {
-> +            monitor_printf(mon, "Time (ms): total=%" PRIu64,
-> +                           info->total_time);
-> +            if (info->has_setup_time) {
-> +                monitor_printf(mon, ", setup=%" PRIu64,
-> +                               info->setup_time);
-> +            }
-> +            if (info->has_expected_downtime) {
-> +                monitor_printf(mon, ", exp_down=%" PRIu64,
-> +                               info->expected_downtime);
-> +            }
-> +            if (info->has_downtime) {
-> +                monitor_printf(mon, ", down=%" PRIu64,
-> +                               info->downtime);
-> +            }
-> +            monitor_printf(mon, "\n");
->          }
-> -        if (info->has_setup_time) {
-> -            monitor_printf(mon, "setup: %" PRIu64 " ms\n",
-> -                           info->setup_time);
-> +    }
-> +
-> +    if (info->has_socket_address) {
-> +        SocketAddressList *addr;
-> +
-> +        monitor_printf(mon, "Sockets: [\n");
-> +
-> +        for (addr = info->socket_address; addr; addr = addr->next) {
-> +            char *s = socket_uri(addr->value);
-> +            monitor_printf(mon, "\t%s\n", s);
-> +            g_free(s);
->          }
-> +        monitor_printf(mon, "]\n");
->      }
->  
->      if (info->ram) {
-> -        monitor_printf(mon, "transferred ram: %" PRIu64 " kbytes\n",
-> -                       info->ram->transferred >> 10);
-> -        monitor_printf(mon, "throughput: %0.2f mbps\n",
-> +        monitor_printf(mon, "RAM info:\n");
-> +        monitor_printf(mon, "  Bandwidth (mbps): %0.2f\n",
->                         info->ram->mbps);
-
-I think the previous name (throughput) was better suited for this
-metric. IIUC '->mbps' is the actual amount of data that has been sent
-over a period of time, which is exactly the definition of throughput.
-Bandwidth, on the other hand, is more of a (theoretical) maximum that
-could be sent.
-
-Otherwise, it looks good to me.
-
-Best regards
-
-Juraj Marcin
-
-> -        monitor_printf(mon, "remaining ram: %" PRIu64 " kbytes\n",
-> -                       info->ram->remaining >> 10);
-> -        monitor_printf(mon, "total ram: %" PRIu64 " kbytes\n",
-> +        monitor_printf(mon, "  Sizes (KB): psize=%" PRIu64
-> +                       ", total=%" PRIu64 "\n",
-> +                       info->ram->page_size >> 10,
->                         info->ram->total >> 10);
-> -        monitor_printf(mon, "duplicate: %" PRIu64 " pages\n",
-> -                       info->ram->duplicate);
-> -        monitor_printf(mon, "normal: %" PRIu64 " pages\n",
-> -                       info->ram->normal);
-> -        monitor_printf(mon, "normal bytes: %" PRIu64 " kbytes\n",
-> -                       info->ram->normal_bytes >> 10);
-> -        monitor_printf(mon, "dirty sync count: %" PRIu64 "\n",
-> -                       info->ram->dirty_sync_count);
-> -        monitor_printf(mon, "page size: %" PRIu64 " kbytes\n",
-> -                       info->ram->page_size >> 10);
-> -        monitor_printf(mon, "multifd bytes: %" PRIu64 " kbytes\n",
-> -                       info->ram->multifd_bytes >> 10);
-> -        monitor_printf(mon, "pages-per-second: %" PRIu64 "\n",
-> +        monitor_printf(mon, "    transferred=%" PRIu64
-> +                       ", remain=%" PRIu64 ",\n",
-> +                       info->ram->transferred >> 10,
-> +                       info->ram->remaining >> 10);
-> +        monitor_printf(mon, "    precopy=%" PRIu64
-> +                       ", multifd=%" PRIu64
-> +                       ", postcopy=%" PRIu64,
-> +                       info->ram->precopy_bytes >> 10,
-> +                       info->ram->multifd_bytes >> 10,
-> +                       info->ram->postcopy_bytes >> 10);
-> +
-> +        if (info->vfio) {
-> +            monitor_printf(mon, ", vfio=%" PRIu64,
-> +                           info->vfio->transferred >> 10);
-> +        }
-> +        monitor_printf(mon, "\n");
-> +
-> +        monitor_printf(mon, "  Pages: normal=%" PRIu64 ", zero=%" PRIu64
-> +                       ", rate_per_sec=%" PRIu64 "\n",
-> +                       info->ram->normal,
-> +                       info->ram->duplicate,
->                         info->ram->pages_per_second);
-> +        monitor_printf(mon, "  Others: dirty_syncs=%" PRIu64,
-> +                       info->ram->dirty_sync_count);
->  
->          if (info->ram->dirty_pages_rate) {
-> -            monitor_printf(mon, "dirty pages rate: %" PRIu64 " pages\n",
-> +            monitor_printf(mon, ", dirty_pages_rate=%" PRIu64,
->                             info->ram->dirty_pages_rate);
->          }
->          if (info->ram->postcopy_requests) {
-> -            monitor_printf(mon, "postcopy request count: %" PRIu64 "\n",
-> +            monitor_printf(mon, ", postcopy_req=%" PRIu64,
->                             info->ram->postcopy_requests);
->          }
-> -        if (info->ram->precopy_bytes) {
-> -            monitor_printf(mon, "precopy ram: %" PRIu64 " kbytes\n",
-> -                           info->ram->precopy_bytes >> 10);
-> -        }
->          if (info->ram->downtime_bytes) {
-> -            monitor_printf(mon, "downtime ram: %" PRIu64 " kbytes\n",
-> -                           info->ram->downtime_bytes >> 10);
-> -        }
-> -        if (info->ram->postcopy_bytes) {
-> -            monitor_printf(mon, "postcopy ram: %" PRIu64 " kbytes\n",
-> -                           info->ram->postcopy_bytes >> 10);
-> +            monitor_printf(mon, ", downtime_ram=%" PRIu64,
-> +                           info->ram->downtime_bytes);
->          }
->          if (info->ram->dirty_sync_missed_zero_copy) {
-> -            monitor_printf(mon,
-> -                           "Zero-copy-send fallbacks happened: %" PRIu64 " times\n",
-> +            monitor_printf(mon, ", zerocopy_fallbacks=%" PRIu64,
->                             info->ram->dirty_sync_missed_zero_copy);
->          }
-> +        monitor_printf(mon, "\n");
->      }
->  
->      if (info->xbzrle_cache) {
-> -        monitor_printf(mon, "cache size: %" PRIu64 " bytes\n",
-> -                       info->xbzrle_cache->cache_size);
-> -        monitor_printf(mon, "xbzrle transferred: %" PRIu64 " kbytes\n",
-> -                       info->xbzrle_cache->bytes >> 10);
-> -        monitor_printf(mon, "xbzrle pages: %" PRIu64 " pages\n",
-> -                       info->xbzrle_cache->pages);
-> -        monitor_printf(mon, "xbzrle cache miss: %" PRIu64 " pages\n",
-> -                       info->xbzrle_cache->cache_miss);
-> -        monitor_printf(mon, "xbzrle cache miss rate: %0.2f\n",
-> -                       info->xbzrle_cache->cache_miss_rate);
-> -        monitor_printf(mon, "xbzrle encoding rate: %0.2f\n",
-> -                       info->xbzrle_cache->encoding_rate);
-> -        monitor_printf(mon, "xbzrle overflow: %" PRIu64 "\n",
-> +        monitor_printf(mon, "XBZRLE: size=%" PRIu64
-> +                       ", transferred=%" PRIu64
-> +                       ", pages=%" PRIu64
-> +                       ", miss=%" PRIu64 "\n"
-> +                       "  miss_rate=%0.2f"
-> +                       ", encode_rate=%0.2f"
-> +                       ", overflow=%" PRIu64 "\n",
-> +                       info->xbzrle_cache->cache_size,
-> +                       info->xbzrle_cache->bytes,
-> +                       info->xbzrle_cache->pages,
-> +                       info->xbzrle_cache->cache_miss,
-> +                       info->xbzrle_cache->cache_miss_rate,
-> +                       info->xbzrle_cache->encoding_rate,
->                         info->xbzrle_cache->overflow);
->      }
->  
-> +    if (!show_all) {
-> +        goto out;
-> +    }
-> +
->      if (info->has_cpu_throttle_percentage) {
->          monitor_printf(mon, "cpu throttle percentage: %" PRIu64 "\n",
->                         info->cpu_throttle_percentage);
-> @@ -191,24 +213,8 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
->          g_free(str);
->          visit_free(v);
->      }
-> -    if (info->has_socket_address) {
-> -        SocketAddressList *addr;
-> -
-> -        monitor_printf(mon, "socket address: [\n");
-> -
-> -        for (addr = info->socket_address; addr; addr = addr->next) {
-> -            char *s = socket_uri(addr->value);
-> -            monitor_printf(mon, "\t%s\n", s);
-> -            g_free(s);
-> -        }
-> -        monitor_printf(mon, "]\n");
-> -    }
-> -
-> -    if (info->vfio) {
-> -        monitor_printf(mon, "vfio device transferred: %" PRIu64 " kbytes\n",
-> -                       info->vfio->transferred >> 10);
-> -    }
->  
-> +out:
->      qapi_free_MigrationInfo(info);
->  }
->  
-> diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
-> index c59cd6637b..639a450ee5 100644
-> --- a/hmp-commands-info.hx
-> +++ b/hmp-commands-info.hx
-> @@ -475,9 +475,9 @@ ERST
->  
->      {
->          .name       = "migrate",
-> -        .args_type  = "",
-> -        .params     = "",
-> -        .help       = "show migration status",
-> +        .args_type  = "all:-a",
-> +        .params     = "[-a]",
-> +        .help       = "show migration status (-a: all, dump all status)",
->          .cmd        = hmp_info_migrate,
->      },
->  
-> -- 
-> 2.49.0
+>      uint8_t *regs = &tctx->regs[ring];
+>      Xive2Router *xrtr = XIVE2_ROUTER(tctx->xptr);
+> -    uint8_t old_cppr, backlog_prio, first_group, group_level = 0;
+> +    uint8_t old_cppr, backlog_prio, first_group, group_level;
+>      uint8_t pipr_min, lsmfb_min, ring_min;
+>      bool group_enabled;
+>      uint32_t nvp_blk, nvp_idx;
+> @@ -961,10 +961,12 @@ static void xive2_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
+>       * Recompute the PIPR based on local pending interrupts. It will
+>       * be adjusted below if needed in case of pending group interrupts.
+>       */
+> +again:
+>      pipr_min = xive_ipb_to_pipr(regs[TM_IPB]);
+>      group_enabled = !!regs[TM_LGS];
+> -    lsmfb_min = (group_enabled) ? regs[TM_LSMFB] : 0xff;
+> +    lsmfb_min = group_enabled ? regs[TM_LSMFB] : 0xff;
+>      ring_min = ring;
+> +    group_level = 0;
 > 
+>      /* PHYS updates also depend on POOL values */
+>      if (ring == TM_QW3_HV_PHYS) {
+> @@ -998,9 +1000,6 @@ static void xive2_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
+>          }
+>      }
+> 
+> -    /* PIPR should not be set to a value greater than CPPR */
+> -    regs[TM_PIPR] = (pipr_min > cppr) ? cppr : pipr_min;
+> -
+>      rc = xive2_tctx_get_nvp_indexes(tctx, ring_min, &nvp_blk, &nvp_idx);
+>      if (rc) {
+>          qemu_log_mask(LOG_GUEST_ERROR, "XIVE: set CPPR on invalid context\n");
+> @@ -1019,7 +1018,7 @@ static void xive2_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
+> 
+>      if (group_enabled &&
+>          lsmfb_min < cppr &&
+> -        lsmfb_min < regs[TM_PIPR]) {
+> +        lsmfb_min < pipr_min) {
+>          /*
+>           * Thread has seen a group interrupt with a higher priority
+>           * than the new cppr or pending local interrupt. Check the
+> @@ -1048,12 +1047,25 @@ static void xive2_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
+>                                                      nvp_blk, nvp_idx,
+>                                                      first_group, &group_level);
+>          tctx->regs[ring_min + TM_LSMFB] = backlog_prio;
+> -        if (backlog_prio != 0xFF) {
+> -            xive2_presenter_backlog_decr(tctx->xptr, nvp_blk, nvp_idx,
+> -                                         backlog_prio, group_level);
+> -            regs[TM_PIPR] = backlog_prio;
+> +        if (backlog_prio != lsmfb_min) {
+> +            /*
+> +             * If the group backlog scan finds a less favored or no interrupt,
+> +             * then re-do the processing which may turn up a more favored
+> +             * interrupt from IPB or the other pool. Backlog should not
+> +             * find a priority < LSMFB.
+> +             */
+> +            g_assert(backlog_prio >= lsmfb_min);
+> +            goto again;
+>          }
+> +
+> +        xive2_presenter_backlog_decr(tctx->xptr, nvp_blk, nvp_idx,
+> +                                     backlog_prio, group_level);
+> +        pipr_min = backlog_prio;
+>      }
+> +
+> +    /* PIPR should not be set to a value greater than CPPR */
+> +    regs[TM_PIPR] = (pipr_min > cppr) ? cppr : pipr_min;
+> +
+>      /* CPPR has changed, check if we need to raise a pending exception */
+>      xive_tctx_notify(tctx, ring_min, group_level);
+>  }
 
 
