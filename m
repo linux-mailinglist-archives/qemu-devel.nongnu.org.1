@@ -2,116 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DA86AB74E5
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 21:00:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2114CAB74FF
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 21:03:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFHJo-0002rh-40; Wed, 14 May 2025 14:59:04 -0400
+	id 1uFHNf-0006vD-2q; Wed, 14 May 2025 15:03:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1uFHJZ-0002Ui-QX; Wed, 14 May 2025 14:58:51 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1uFHLU-0004A5-5z; Wed, 14 May 2025 15:00:52 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1uFHJY-0006su-2A; Wed, 14 May 2025 14:58:49 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54EI5Fvs012963;
- Wed, 14 May 2025 18:58:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=CSQaGM
- YYsEs2RHEct7TArD7A582vitw57wC2rb28J58=; b=FiPLc1q0Y5zywRzaaXB+M2
- ZxoK3P42x4bSgypVchfR08qvcSuJGBSXjEQU17DZYr+NbXvPLgooFl4RTUS16LR+
- hdQLuLhhGuRgd6/tcoIjafAxCppIj9s8PeF+8SrZFjDg4A9wanW1qnufIwlim+0l
- x83cKJ31fAKm4eu/OOa/W9/Bx2/uY+DOgp+lUWz2vyFXUayuHyjRKG9E42GOUhfH
- bkvQCPCU3F+S2LcT2wXcF2MKZL17raceDt0afpTgsM/rhj+RChpnB69rIe/JeLDj
- zQrg/RcYD0ZGbdRWUwPxpMhQCfkOmQtrVGPMdPhIsay/qUl8AnVi1Lo3PXSQ3bLQ
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mrcjb0j5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 May 2025 18:58:43 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54EIo72u016448;
- Wed, 14 May 2025 18:58:42 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mrcjb0j3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 May 2025 18:58:42 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54EGaBQ2021797;
- Wed, 14 May 2025 18:58:42 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46mbfpny1v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 May 2025 18:58:42 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
- [10.39.53.233])
- by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 54EIwebZ24183226
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 14 May 2025 18:58:41 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E159058054;
- Wed, 14 May 2025 18:58:40 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 61BEB5804E;
- Wed, 14 May 2025 18:58:40 +0000 (GMT)
-Received: from [9.10.80.143] (unknown [9.10.80.143])
- by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 14 May 2025 18:58:40 +0000 (GMT)
-Message-ID: <6db13316-fe73-4c72-94ec-4d7f4d22bb3e@linux.ibm.com>
-Date: Wed, 14 May 2025 13:58:39 -0500
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1uFHLR-0007FF-Rt; Wed, 14 May 2025 15:00:47 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id DF6B9121D8A;
+ Wed, 14 May 2025 22:00:31 +0300 (MSK)
+Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
+ by tsrv.corpit.ru (Postfix) with ESMTP id E4F0120BA7C;
+ Wed, 14 May 2025 22:00:41 +0300 (MSK)
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org,
+	Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.1 00/23] Patch Round-up for stable 10.0.1,
+ freeze on 2025-05-24
+Date: Wed, 14 May 2025 22:00:12 +0300
+Message-Id: <qemu-stable-10.0.1-20250514114019@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 13/50] ppc/xive: tctx_notify should clear the precluded
- interrupt
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?=
- <fbarrat@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
- Caleb Schlossin <calebs@linux.vnet.ibm.com>
-References: <20250512031100.439842-1-npiggin@gmail.com>
- <20250512031100.439842-14-npiggin@gmail.com>
-Content-Language: en-US
-From: Mike Kowal <kowal@linux.ibm.com>
-In-Reply-To: <20250512031100.439842-14-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=ZYgdNtVA c=1 sm=1 tr=0 ts=6824e7e3 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8
- a=KyNRirOTzh_n4JZT_p0A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: 0Hr72IyPY7LIaufERwUzK1IJvZY1cz99
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE0MDE2OSBTYWx0ZWRfXyeOWI5v7u6r+
- pb8yNles/jdqQqT6f06ovUnNzTUgV7X98gs+Mbx4ztw80Vxn+E6BaRYhG/+bPRnFRxW7p8hdgZ5
- q21iz9hJuwJz513hu3mc9NB7bMRi6flqv36i05NYVYd8FlXCFipylnTOBDKqi58S2cBDQvQLY7v
- dYBqiO3ifJ0XXZPz+P2FVvZonyWyEo2ZEWXAgbnWWjTHiRnWqN1yAg9aaoF81gr91vUtINxcKM6
- TIRYsqS83XF/ob6JUHv0yT6fsaq6I/dcm9SsfLAy5ml4aH+zJfMpaMGR93E/KNs7bUax0FRBWaJ
- KAFiF5tzoLdQfc6N3h+trGu5zgLSJy6z53k/UKm9DB3uinDJoQMHSzDlez+9+EKAwRSmliDpTR/
- k9N20gxR10paYa6kvFo22lbzMSHsRTqi8J+A7wsUQ9gb5nJ6y1eMdVdoCR/mjfXy0dY33JNU
-X-Proofpoint-GUID: 26UnuFXL8ffXJ_MyAbGQ-cyk-QRHJa-T
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-14_04,2025-05-14_03,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0
- clxscore=1015 lowpriorityscore=0 priorityscore=1501 mlxscore=0 spamscore=0
- suspectscore=0 bulkscore=0 impostorscore=0 mlxlogscore=890 adultscore=0
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2505070000
- definitions=main-2505140169
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=kowal@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -129,35 +57,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The following patches are queued for QEMU stable v10.0.1:
 
-On 5/11/2025 10:10 PM, Nicholas Piggin wrote:
-> If CPPR is lowered to preclude the pending interrupt, NSR should be
-> cleared and the qemu_irq should be lowered. This avoids some cases
-> of supurious interrupts.
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-10.0
 
-Reviewed-by: Michael Kowal <kowal@linux.ibm.com>
+Patch freeze is 2025-05-24, and the release is planned for 2025-05-26:
 
-Thanks MAK
+  https://wiki.qemu.org/Planning/10.0
 
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
 
->
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   hw/intc/xive.c | 3 +++
->   1 file changed, 3 insertions(+)
->
-> diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-> index cebe409a1a..6293ea4361 100644
-> --- a/hw/intc/xive.c
-> +++ b/hw/intc/xive.c
-> @@ -110,6 +110,9 @@ void xive_tctx_notify(XiveTCTX *tctx, uint8_t ring, uint8_t group_level)
->                                  regs[TM_IPB], alt_regs[TM_PIPR],
->                                  alt_regs[TM_CPPR], alt_regs[TM_NSR]);
->           qemu_irq_raise(xive_tctx_output(tctx, ring));
-> +    } else {
-> +        alt_regs[TM_NSR] = 0;
-> +        qemu_irq_lower(xive_tctx_output(tctx, ring));
->       }
->   }
->   
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
+
+Thanks!
+
+/mjt
+
+--------------------------------------
+01 280712b78781 Ewan Hai:
+   target/i386: Fix model number of Zhaoxin YongFeng vCPU template
+02 f6b5f71f0452 Maciej S. Szmigiero:
+   target/i386: Reset parked vCPUs together with the online ones
+03 94a159f3dc73 Paolo Bonzini:
+   target/i386/hvf: fix lflags_to_rflags
+04 6b661b7ed7cd Richard Henderson:
+   target/avr: Improve decode of LDS, STS
+05 d5f241834be1 Philippe Mathieu-Daudé:
+   hw/core: Get default_cpu_type calling machine_class_default_cpu_type()
+06 56a9f0d4c4a4 Peter Maydell:
+   hw/core/cpu: gdb_arch_name string should not be freed
+07 d4a785ba30ce Hauke Mehrtens:
+   target/mips: Fix MIPS16e translation
+08 563cd698dffb Akihiko Odaki:
+   meson: Use has_header_symbol() to check getcpu()
+09 6804b89fb531 Akihiko Odaki:
+   meson: Remove CONFIG_STATX and CONFIG_STATX_MNT_ID
+10 797150d69d2e Akihiko Odaki:
+   meson: Share common C source prefixes
+11 a5b30be53453 Akihiko Odaki:
+   meson: Use osdep_prefix for strchrnul()
+12 9401f91b9b0c Richard Henderson:
+   accel/tcg: Don't use TARGET_LONG_BITS in decode_sleb128
+13 97cdd1b0a7a0 Tim Lee:
+   hw/arm/npcm8xx_boards: Correct valid_cpu_types setting of NPCM8XX SoC
+14 8ed7c0b6488a Peter Maydell:
+   target/arm: Don't assert() for ISB/SB inside IT block
+15 82707dd4f076 Peter Maydell:
+   docs: Don't define duplicate label in qemu-block-drivers.rst.inc
+16 eba837a31b95 Bernhard Beschow:
+   hw/gpio/imx_gpio: Fix interpretation of GDIR polarity
+17 e54ef98c8a80 Paolo Bonzini:
+   target/i386: do not trigger IRQ shadow for LSS
+18 1e94ddc68544 Paolo Bonzini:
+   target/i386: do not block singlestep for STI
+19 a4b20f737cda Aleksandr Partanen:
+   xen: mapcache: Fix finding matching entry
+20 88fb705600a3 Edgar E. Iglesias:
+   xen: mapcache: Split mapcache_grants by ro and rw
+21 54e54e594bc8 Bernhard Beschow:
+   hw/i2c/imx: Always set interrupt status bit if interrupt condition occurs
+22 61da38db70af Christian Schoenebeck:
+   9pfs: fix concurrent v9fs_reclaim_fd() calls
+23 89f7b4da7662 Christian Schoenebeck:
+   9pfs: fix FD leak and reduce latency of v9fs_reclaim_fd()
 
