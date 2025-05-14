@@ -2,40 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD533AB6536
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 10:05:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 179ADAB6538
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 10:05:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uF746-0002YE-JC; Wed, 14 May 2025 04:02:10 -0400
+	id 1uF746-0002XF-9F; Wed, 14 May 2025 04:02:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1uF744-0002XR-Ni
- for qemu-devel@nongnu.org; Wed, 14 May 2025 04:02:08 -0400
+ id 1uF743-0002Wz-5s
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 04:02:07 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1uF740-00029g-3r
- for qemu-devel@nongnu.org; Wed, 14 May 2025 04:02:08 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1uF740-00029i-2k
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 04:02:06 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8CxvOL0TSRorVbmAA--.49380S3;
- Wed, 14 May 2025 16:01:56 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8DxjXL3TSRosVbmAA--.47299S3;
+ Wed, 14 May 2025 16:01:59 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMBxn8XkTSRofwHRAA--.9319S3;
- Wed, 14 May 2025 16:01:54 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowMBxn8XkTSRofwHRAA--.9319S4;
+ Wed, 14 May 2025 16:01:56 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: stefanha@gmail.com, maobibo@loongson.cn,
  Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
-Subject: [PULL 01/17] hw/intc/loongarch_pch: Modify name of some registers
-Date: Wed, 14 May 2025 15:39:11 +0800
-Message-Id: <20250514073927.2424543-2-gaosong@loongson.cn>
+Subject: [PULL 02/17] hw/intc/loongarch_pch: Modify register name
+ PCH_PIC_xxx_OFFSET with PCH_PIC_xxx
+Date: Wed, 14 May 2025 15:39:12 +0800
+Message-Id: <20250514073927.2424543-3-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20250514073927.2424543-1-gaosong@loongson.cn>
 References: <20250514073927.2424543-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBxn8XkTSRofwHRAA--.9319S3
+X-CM-TRANSID: qMiowMBxn8XkTSRofwHRAA--.9319S4
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -65,201 +66,103 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bibo Mao <maobibo@loongson.cn>
 
-For some registers with width 8 bytes, its name is something like
-PCH_PIC_INT_ID_LO and PCH_PIC_INT_ID_HI. From hardware manual,
-register name is PCH_PIC_INT_ID instead. Here name PCH_PIC_INT_ID
-is used, and PCH_PIC_INT_ID + 4 is used for PCH_PIC_INT_ID_HI.
+Macro PCH_PIC_HTMSI_VEC_OFFSET and PCH_PIC_ROUTE_ENTRY_OFFSET is renamed
+as PCH_PIC_HTMSI_VEC and PCH_PIC_ROUTE_ENTRY separately, it is easier to
+understand.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 Reviewed-by: Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
 Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20250507023148.1877287-2-maobibo@loongson.cn>
+Message-Id: <20250507023148.1877287-3-maobibo@loongson.cn>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- hw/intc/loongarch_pch_pic.c            | 50 +++++++++++++-------------
+ hw/intc/loongarch_pch_pic.c            | 20 ++++++++++----------
  hw/loongarch/virt.c                    |  2 +-
- include/hw/intc/loongarch_pic_common.h | 27 +++++---------
- 3 files changed, 36 insertions(+), 43 deletions(-)
+ include/hw/intc/loongarch_pic_common.h |  4 ++--
+ 3 files changed, 13 insertions(+), 13 deletions(-)
 
 diff --git a/hw/intc/loongarch_pch_pic.c b/hw/intc/loongarch_pch_pic.c
-index 834096265a..748213d5a1 100644
+index 748213d5a1..52ae360fdc 100644
 --- a/hw/intc/loongarch_pch_pic.c
 +++ b/hw/intc/loongarch_pch_pic.c
-@@ -79,10 +79,10 @@ static uint64_t loongarch_pch_pic_low_readw(void *opaque, hwaddr addr,
-     uint32_t offset = addr & 0xfff;
+@@ -263,18 +263,18 @@ static uint64_t loongarch_pch_pic_readb(void *opaque, hwaddr addr,
+ {
+     LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(opaque);
+     uint64_t val = 0;
+-    uint32_t offset = (addr & 0xfff) + PCH_PIC_ROUTE_ENTRY_OFFSET;
++    uint32_t offset = (addr & 0xfff) + PCH_PIC_ROUTE_ENTRY;
+     int64_t offset_tmp;
  
      switch (offset) {
--    case PCH_PIC_INT_ID_LO:
-+    case PCH_PIC_INT_ID:
-         val = PCH_PIC_INT_ID_VAL;
+-    case PCH_PIC_HTMSI_VEC_OFFSET ... PCH_PIC_HTMSI_VEC_END:
+-        offset_tmp = offset - PCH_PIC_HTMSI_VEC_OFFSET;
++    case PCH_PIC_HTMSI_VEC ... PCH_PIC_HTMSI_VEC_END:
++        offset_tmp = offset - PCH_PIC_HTMSI_VEC;
+         if (offset_tmp >= 0 && offset_tmp < 64) {
+             val = s->htmsi_vector[offset_tmp];
+         }
          break;
--    case PCH_PIC_INT_ID_HI:
-+    case PCH_PIC_INT_ID + 4:
-         /*
-          * With 7A1000 manual
-          *   bit  0-15 pch irqchip version
-@@ -90,28 +90,29 @@ static uint64_t loongarch_pch_pic_low_readw(void *opaque, hwaddr addr,
-          */
-         val = deposit32(PCH_PIC_INT_ID_VER, 16, 16, s->irq_num - 1);
-         break;
--    case PCH_PIC_INT_MASK_LO:
-+    case PCH_PIC_INT_MASK:
-         val = (uint32_t)s->int_mask;
-         break;
--    case PCH_PIC_INT_MASK_HI:
-+    case PCH_PIC_INT_MASK + 4:
-         val = s->int_mask >> 32;
-         break;
--    case PCH_PIC_INT_EDGE_LO:
-+    case PCH_PIC_INT_EDGE:
-         val = (uint32_t)s->intedge;
-         break;
--    case PCH_PIC_INT_EDGE_HI:
-+    case PCH_PIC_INT_EDGE + 4:
-         val = s->intedge >> 32;
-         break;
--    case PCH_PIC_HTMSI_EN_LO:
-+    case PCH_PIC_HTMSI_EN:
-         val = (uint32_t)s->htmsi_en;
-         break;
--    case PCH_PIC_HTMSI_EN_HI:
-+    case PCH_PIC_HTMSI_EN + 4:
-         val = s->htmsi_en >> 32;
-         break;
--    case PCH_PIC_AUTO_CTRL0_LO:
--    case PCH_PIC_AUTO_CTRL0_HI:
--    case PCH_PIC_AUTO_CTRL1_LO:
--    case PCH_PIC_AUTO_CTRL1_HI:
-+    case PCH_PIC_AUTO_CTRL0:
-+    case PCH_PIC_AUTO_CTRL0 + 4:
-+    case PCH_PIC_AUTO_CTRL1:
-+    case PCH_PIC_AUTO_CTRL1 + 4:
-+        /* PCH PIC connect to EXTIOI always, discard auto_ctrl access */
-         break;
-     default:
-         break;
-@@ -140,7 +141,7 @@ static void loongarch_pch_pic_low_writew(void *opaque, hwaddr addr,
-     trace_loongarch_pch_pic_low_writew(size, addr, data);
+-    case PCH_PIC_ROUTE_ENTRY_OFFSET ... PCH_PIC_ROUTE_ENTRY_END:
+-        offset_tmp = offset - PCH_PIC_ROUTE_ENTRY_OFFSET;
++    case PCH_PIC_ROUTE_ENTRY ... PCH_PIC_ROUTE_ENTRY_END:
++        offset_tmp = offset - PCH_PIC_ROUTE_ENTRY;
+         if (offset_tmp >= 0 && offset_tmp < 64) {
+             val = s->route_entry[offset_tmp];
+         }
+@@ -292,19 +292,19 @@ static void loongarch_pch_pic_writeb(void *opaque, hwaddr addr,
+ {
+     LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(opaque);
+     int32_t offset_tmp;
+-    uint32_t offset = (addr & 0xfff) + PCH_PIC_ROUTE_ENTRY_OFFSET;
++    uint32_t offset = (addr & 0xfff) + PCH_PIC_ROUTE_ENTRY;
+ 
+     trace_loongarch_pch_pic_writeb(size, addr, data);
  
      switch (offset) {
--    case PCH_PIC_INT_MASK_LO:
-+    case PCH_PIC_INT_MASK:
-         old = s->int_mask;
-         s->int_mask = get_writew_val(old, data, 0);
-         old_valid = (uint32_t)old;
-@@ -151,7 +152,7 @@ static void loongarch_pch_pic_low_writew(void *opaque, hwaddr addr,
-             pch_pic_update_irq(s, (~old_valid & data), 0);
+-    case PCH_PIC_HTMSI_VEC_OFFSET ... PCH_PIC_HTMSI_VEC_END:
+-        offset_tmp = offset - PCH_PIC_HTMSI_VEC_OFFSET;
++    case PCH_PIC_HTMSI_VEC ... PCH_PIC_HTMSI_VEC_END:
++        offset_tmp = offset - PCH_PIC_HTMSI_VEC;
+         if (offset_tmp >= 0 && offset_tmp < 64) {
+             s->htmsi_vector[offset_tmp] = (uint8_t)(data & 0xff);
          }
          break;
--    case PCH_PIC_INT_MASK_HI:
-+    case PCH_PIC_INT_MASK + 4:
-         old = s->int_mask;
-         s->int_mask = get_writew_val(old, data, 1);
-         old_valid = (uint32_t)(old >> 32);
-@@ -164,20 +165,20 @@ static void loongarch_pch_pic_low_writew(void *opaque, hwaddr addr,
-             pch_pic_update_irq(s, int_mask << 32, 0);
+-    case PCH_PIC_ROUTE_ENTRY_OFFSET ... PCH_PIC_ROUTE_ENTRY_END:
+-        offset_tmp = offset - PCH_PIC_ROUTE_ENTRY_OFFSET;
++    case PCH_PIC_ROUTE_ENTRY ... PCH_PIC_ROUTE_ENTRY_END:
++        offset_tmp = offset - PCH_PIC_ROUTE_ENTRY;
+         if (offset_tmp >= 0 && offset_tmp < 64) {
+             s->route_entry[offset_tmp] = (uint8_t)(data & 0xff);
          }
-         break;
--    case PCH_PIC_INT_EDGE_LO:
-+    case PCH_PIC_INT_EDGE:
-         s->intedge = get_writew_val(s->intedge, data, 0);
-         break;
--    case PCH_PIC_INT_EDGE_HI:
-+    case PCH_PIC_INT_EDGE + 4:
-         s->intedge = get_writew_val(s->intedge, data, 1);
-         break;
--    case PCH_PIC_INT_CLEAR_LO:
-+    case PCH_PIC_INT_CLEAR:
-         if (s->intedge & data) {
-             s->intirr &= (~data);
-             pch_pic_update_irq(s, data, 0);
-             s->intisr &= (~data);
-         }
-         break;
--    case PCH_PIC_INT_CLEAR_HI:
-+    case PCH_PIC_INT_CLEAR + 4:
-         value <<= 32;
-         if (s->intedge & value) {
-             s->intirr &= (~value);
-@@ -185,16 +186,17 @@ static void loongarch_pch_pic_low_writew(void *opaque, hwaddr addr,
-             s->intisr &= (~value);
-         }
-         break;
--    case PCH_PIC_HTMSI_EN_LO:
-+    case PCH_PIC_HTMSI_EN:
-         s->htmsi_en = get_writew_val(s->htmsi_en, data, 0);
-         break;
--    case PCH_PIC_HTMSI_EN_HI:
-+    case PCH_PIC_HTMSI_EN + 4:
-         s->htmsi_en = get_writew_val(s->htmsi_en, data, 1);
-         break;
--    case PCH_PIC_AUTO_CTRL0_LO:
--    case PCH_PIC_AUTO_CTRL0_HI:
--    case PCH_PIC_AUTO_CTRL1_LO:
--    case PCH_PIC_AUTO_CTRL1_HI:
-+    case PCH_PIC_AUTO_CTRL0:
-+    case PCH_PIC_AUTO_CTRL0 + 4:
-+    case PCH_PIC_AUTO_CTRL1:
-+    case PCH_PIC_AUTO_CTRL1 + 4:
-+        /* discard auto_ctrl access */
-         break;
-     default:
-         break;
 diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 7ad7fb68ff..8a4958aade 100644
+index 8a4958aade..ebcef0a92b 100644
 --- a/hw/loongarch/virt.c
 +++ b/hw/loongarch/virt.c
-@@ -433,7 +433,7 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms)
-                             VIRT_IOAPIC_REG_BASE + PCH_PIC_ROUTE_ENTRY_OFFSET,
+@@ -430,7 +430,7 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms)
+     memory_region_add_subregion(get_system_memory(), VIRT_IOAPIC_REG_BASE,
+                             sysbus_mmio_get_region(d, 0));
+     memory_region_add_subregion(get_system_memory(),
+-                            VIRT_IOAPIC_REG_BASE + PCH_PIC_ROUTE_ENTRY_OFFSET,
++                            VIRT_IOAPIC_REG_BASE + PCH_PIC_ROUTE_ENTRY,
                              sysbus_mmio_get_region(d, 1));
      memory_region_add_subregion(get_system_memory(),
--                            VIRT_IOAPIC_REG_BASE + PCH_PIC_INT_STATUS_LO,
-+                            VIRT_IOAPIC_REG_BASE + PCH_PIC_INT_STATUS,
-                             sysbus_mmio_get_region(d, 2));
- 
-     /* Connect pch_pic irqs to extioi */
+                             VIRT_IOAPIC_REG_BASE + PCH_PIC_INT_STATUS,
 diff --git a/include/hw/intc/loongarch_pic_common.h b/include/hw/intc/loongarch_pic_common.h
-index d301377cd7..8826d15aa7 100644
+index 8826d15aa7..caf712eae0 100644
 --- a/include/hw/intc/loongarch_pic_common.h
 +++ b/include/hw/intc/loongarch_pic_common.h
-@@ -12,28 +12,19 @@
- 
- #define PCH_PIC_INT_ID_VAL              0x7000000UL
- #define PCH_PIC_INT_ID_VER              0x1UL
--#define PCH_PIC_INT_ID_LO               0x00
--#define PCH_PIC_INT_ID_HI               0x04
--#define PCH_PIC_INT_MASK_LO             0x20
--#define PCH_PIC_INT_MASK_HI             0x24
--#define PCH_PIC_HTMSI_EN_LO             0x40
--#define PCH_PIC_HTMSI_EN_HI             0x44
--#define PCH_PIC_INT_EDGE_LO             0x60
--#define PCH_PIC_INT_EDGE_HI             0x64
--#define PCH_PIC_INT_CLEAR_LO            0x80
--#define PCH_PIC_INT_CLEAR_HI            0x84
--#define PCH_PIC_AUTO_CTRL0_LO           0xc0
--#define PCH_PIC_AUTO_CTRL0_HI           0xc4
--#define PCH_PIC_AUTO_CTRL1_LO           0xe0
--#define PCH_PIC_AUTO_CTRL1_HI           0xe4
-+#define PCH_PIC_INT_ID                  0x00
-+#define PCH_PIC_INT_MASK                0x20
-+#define PCH_PIC_HTMSI_EN                0x40
-+#define PCH_PIC_INT_EDGE                0x60
-+#define PCH_PIC_INT_CLEAR               0x80
-+#define PCH_PIC_AUTO_CTRL0              0xc0
-+#define PCH_PIC_AUTO_CTRL1              0xe0
- #define PCH_PIC_ROUTE_ENTRY_OFFSET      0x100
+@@ -19,9 +19,9 @@
+ #define PCH_PIC_INT_CLEAR               0x80
+ #define PCH_PIC_AUTO_CTRL0              0xc0
+ #define PCH_PIC_AUTO_CTRL1              0xe0
+-#define PCH_PIC_ROUTE_ENTRY_OFFSET      0x100
++#define PCH_PIC_ROUTE_ENTRY             0x100
  #define PCH_PIC_ROUTE_ENTRY_END         0x13f
- #define PCH_PIC_HTMSI_VEC_OFFSET        0x200
+-#define PCH_PIC_HTMSI_VEC_OFFSET        0x200
++#define PCH_PIC_HTMSI_VEC               0x200
  #define PCH_PIC_HTMSI_VEC_END           0x23f
--#define PCH_PIC_INT_STATUS_LO           0x3a0
--#define PCH_PIC_INT_STATUS_HI           0x3a4
--#define PCH_PIC_INT_POL_LO              0x3e0
--#define PCH_PIC_INT_POL_HI              0x3e4
-+#define PCH_PIC_INT_STATUS              0x3a0
-+#define PCH_PIC_INT_POL                 0x3e0
- 
- #define STATUS_LO_START                 0
- #define STATUS_HI_START                 0x4
+ #define PCH_PIC_INT_STATUS              0x3a0
+ #define PCH_PIC_INT_POL                 0x3e0
 -- 
 2.34.1
 
