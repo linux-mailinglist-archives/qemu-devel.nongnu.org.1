@@ -2,45 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE337AB6C30
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 15:08:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94507AB6C61
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 15:15:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFBnz-00060j-Tu; Wed, 14 May 2025 09:05:52 -0400
+	id 1uFBsU-00048t-On; Wed, 14 May 2025 09:10:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uFBk6-0007ze-Cg; Wed, 14 May 2025 09:01:54 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1uFBqu-0000sW-E2
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 09:08:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uFBk3-0008KP-6k; Wed, 14 May 2025 09:01:50 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B5DC9121B01;
- Wed, 14 May 2025 15:57:50 +0300 (MSK)
-Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 5FF2020B86E;
- Wed, 14 May 2025 15:58:00 +0300 (MSK)
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Christian Schoenebeck <qemu_oss@crudebyte.com>,
- Greg Kurz <groug@kaod.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.4 34/34] 9pfs: fix FD leak and reduce latency of
- v9fs_reclaim_fd()
-Date: Wed, 14 May 2025 15:57:56 +0300
-Message-Id: <20250514125758.92030-34-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <qemu-stable-9.2.4-20250514155748@cover.tls.msk.ru>
-References: <qemu-stable-9.2.4-20250514155748@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1uFBqs-0000il-2Y
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 09:08:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747228126;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=UjvPFTZxlUTCgxQgiB+/awojF3gbVDt0w+ZaWf8Kprk=;
+ b=YUvRcQ7kK4Z3gd+ThwgjJWB1OI5k/9YC0zVYb8Vmhy2Tp0tmkH+BiKKeJ26KJ+8t5tY+/w
+ MxAeiX5eUfXEKq2DvM+ONPpHY299jRh4oO6LR/dlzS1ON/b/exrj/VNZDxeis5y8fUy+Vj
+ sV1asYmj8VZDsPFM8puZsXkYFM5DLpI=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-553-nOdf0NAWO3iJs7FOzJVNKw-1; Wed, 14 May 2025 09:08:45 -0400
+X-MC-Unique: nOdf0NAWO3iJs7FOzJVNKw-1
+X-Mimecast-MFC-AGG-ID: nOdf0NAWO3iJs7FOzJVNKw_1747228124
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-acbbb00099eso620741066b.2
+ for <qemu-devel@nongnu.org>; Wed, 14 May 2025 06:08:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747228124; x=1747832924;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=UjvPFTZxlUTCgxQgiB+/awojF3gbVDt0w+ZaWf8Kprk=;
+ b=eQrJ7P/YCvF2d+8sAm31GC0rnWD2f00Jj23s6CbBiT0WwgkUljFkz1YMXTyjKuD0Fd
+ 7u6yHz7VSj5d6MqFj08KkY/0+JnEwAM0KBZVY8AcuICnVPJScbSM6+ofCMHbtrPf4Paf
+ rEZsrbYWKBO2MBxn9pwLKhVzpf/LAJNakojvauFevEnXI16A1JS6O7mVie9wVSENjJL0
+ /3TnFBWsv2lN/0WrHg5dXaM2wpGbRELE8ehd5VuaIgYVTL6eSRLIVy5Vt1MQN8GD7pic
+ X0nNipxyKZhl/p6Q/kfwnxhdhDwY9t+eo6715F08AKsV0HjrfGpOqy+VBIcVRySxFV8M
+ XtcA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVBLOItp/m4dlCHhp56N3XDKZRut3rALLDQ7MzyrtoTD7q+5GNgSaK2+ZuinlDHtZKIp+XSQNgxGOQm@nongnu.org
+X-Gm-Message-State: AOJu0YyyiURLalUo187FNq8RZCg97dXYJ/ny9ydp25+0fcu5gwHRR68A
+ Xk5ToWM0p/uTGsqdXjTRg4G4t1X2/qCcbjNMu+o26gEc0JZmqk0ukW/PNI6lX82a31H+lYnLFZh
+ DbYcsc2sC8eP1TbYlTGWkOF1eB2JzO3XIkdGo7bSgOb78/cdbgXPNOb9W5SRWGDtZjYJKKS3zlN
+ w4NtpUbTGXuXCrHbfaX62wrct1Ofs=
+X-Gm-Gg: ASbGncu3cnBgZOWwRpzKKW4FGKHNy1etGHXjdHAVbdjM7rpKXW3sHY6iCZxjp5JYDfv
+ AR0eijB2risyKWMywWeu2xkS/Fp4IDYPULibV07aLrOyqBzAOenbEsjqiURX5cvVWyPt8sQ==
+X-Received: by 2002:a17:907:7e8b:b0:ad2:5657:3161 with SMTP id
+ a640c23a62f3a-ad4f74a836emr371089466b.59.1747228123870; 
+ Wed, 14 May 2025 06:08:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHsDNHGfAzkup7t7LmuEjs9mO0TvsN/0cCBnh8QYpnknCDfmai+awibI2DOsk+myFjrs4Vq+fITNPfIB8Zq12Q=
+X-Received: by 2002:a17:907:7e8b:b0:ad2:5657:3161 with SMTP id
+ a640c23a62f3a-ad4f74a836emr371086066b.59.1747228123483; Wed, 14 May 2025
+ 06:08:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+References: <20250514084957.2221975-1-zhao1.liu@intel.com>
+ <20250514084957.2221975-4-zhao1.liu@intel.com>
+In-Reply-To: <20250514084957.2221975-4-zhao1.liu@intel.com>
+From: Ani Sinha <anisinha@redhat.com>
+Date: Wed, 14 May 2025 18:38:32 +0530
+X-Gm-Features: AX0GCFvztF3hOmQVCp-L4OH09uBMSDdE9_k3iVSa8ZrM9g2Xy8s75S1BT2Nw-WE
+Message-ID: <CAK3XEhPuL8YBdnTekTOBdE09ZegLgpBxHey9iDX61ewj98n1XQ@mail.gmail.com>
+Subject: Re: [PATCH 3/9] hw/acpi/pci: Consolidate
+ OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org,
+ qemu-trivial@nongnu.org, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -37
+X-Spam_score: -3.8
+X-Spam_bar: ---
+X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -58,110 +107,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Christian Schoenebeck <qemu_oss@crudebyte.com>
+On Wed, May 14, 2025 at 1:59=E2=80=AFPM Zhao Liu <zhao1.liu@intel.com> wrot=
+e:
+>
+> The QOM types of AcpiGenericInitiator and AcpiGenericPort are declared
+> by OBJECT_DECLARE_SIMPLE_TYPE, which means they don't need the class!
+>
+> Therefore, use OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES to implement
+> the type, then there's no need for class definition.
+>
+> Cc: "Michael S. Tsirkin" <mst@redhat.com>
+> Cc: Igor Mammedov <imammedo@redhat.com>
+> Cc: Ani Sinha <anisinha@redhat.com>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 
-This patch fixes two different bugs in v9fs_reclaim_fd():
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
 
-1. Reduce latency:
-
-This function calls v9fs_co_close() and v9fs_co_closedir() in a loop. Each
-one of the calls adds two thread hops (between main thread and a fs driver
-background thread). Each thread hop adds latency, which sums up in
-function's loop to a significant duration.
-
-Reduce overall latency by open coding what v9fs_co_close() and
-v9fs_co_closedir() do, executing those and the loop itself altogether in
-only one background thread block, hence reducing the total amount of
-thread hops to only two.
-
-2. Fix file descriptor leak:
-
-The existing code called v9fs_co_close() and v9fs_co_closedir() to close
-file descriptors. Both functions check right at the beginning if the 9p
-request was cancelled:
-
-    if (v9fs_request_cancelled(pdu)) {
-        return -EINTR;
-    }
-
-So if client sent a 'Tflush' message, v9fs_co_close() / v9fs_co_closedir()
-returned without having closed the file descriptor and v9fs_reclaim_fd()
-subsequently freed the FID without its file descriptor being closed, hence
-leaking those file descriptors.
-
-This 2nd bug is fixed by this patch as well by open coding v9fs_co_close()
-and v9fs_co_closedir() inside of v9fs_reclaim_fd() and not performing the
-v9fs_request_cancelled(pdu) check there.
-
-Fixes: 7a46274529c ('hw/9pfs: Add file descriptor reclaim support')
-Fixes: bccacf6c792 ('hw/9pfs: Implement TFLUSH operation')
-Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Reviewed-by: Greg Kurz <groug@kaod.org>
-Message-Id: <5747469d3f039c53147e850b456943a1d4b5485c.1741339452.git.qemu_oss@crudebyte.com>
-(cherry picked from commit 89f7b4da7662ecc6840ffb0846045f03f9714bc6)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-
-diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
-index f9aad55fdf..16207bdf22 100644
---- a/hw/9pfs/9p.c
-+++ b/hw/9pfs/9p.c
-@@ -434,6 +434,8 @@ void coroutine_fn v9fs_reclaim_fd(V9fsPDU *pdu)
-     V9fsFidState *f;
-     GHashTableIter iter;
-     gpointer fid;
-+    int err;
-+    int nclosed = 0;
- 
-     /* prevent multiple coroutines running this function simultaniously */
-     if (s->reclaiming) {
-@@ -446,10 +448,10 @@ void coroutine_fn v9fs_reclaim_fd(V9fsPDU *pdu)
-     QSLIST_HEAD(, V9fsFidState) reclaim_list =
-         QSLIST_HEAD_INITIALIZER(reclaim_list);
- 
-+    /* Pick FIDs to be closed, collect them on reclaim_list. */
-     while (g_hash_table_iter_next(&iter, &fid, (gpointer *) &f)) {
-         /*
--         * Unlink fids cannot be reclaimed. Check
--         * for them and skip them. Also skip fids
-+         * Unlinked fids cannot be reclaimed, skip those, and also skip fids
-          * currently being operated on.
-          */
-         if (f->ref || f->flags & FID_NON_RECLAIMABLE) {
-@@ -499,17 +501,26 @@ void coroutine_fn v9fs_reclaim_fd(V9fsPDU *pdu)
-         }
-     }
-     /*
--     * Now close the fid in reclaim list. Free them if they
--     * are already clunked.
-+     * Close the picked FIDs altogether on a background I/O driver thread. Do
-+     * this all at once to keep latency (i.e. amount of thread hops between main
-+     * thread <-> fs driver background thread) as low as possible.
-      */
-+    v9fs_co_run_in_worker({
-+        QSLIST_FOREACH(f, &reclaim_list, reclaim_next) {
-+            err = (f->fid_type == P9_FID_DIR) ?
-+                s->ops->closedir(&s->ctx, &f->fs_reclaim) :
-+                s->ops->close(&s->ctx, &f->fs_reclaim);
-+            if (!err) {
-+                /* total_open_fd must only be mutated on main thread */
-+                nclosed++;
-+            }
-+        }
-+    });
-+    total_open_fd -= nclosed;
-+    /* Free the closed FIDs. */
-     while (!QSLIST_EMPTY(&reclaim_list)) {
-         f = QSLIST_FIRST(&reclaim_list);
-         QSLIST_REMOVE(&reclaim_list, f, V9fsFidState, reclaim_next);
--        if (f->fid_type == P9_FID_FILE) {
--            v9fs_co_close(pdu, &f->fs_reclaim);
--        } else if (f->fid_type == P9_FID_DIR) {
--            v9fs_co_closedir(pdu, &f->fs_reclaim);
--        }
-         /*
-          * Now drop the fid reference, free it
-          * if clunked.
--- 
-2.39.5
+> ---
+>  hw/acpi/pci.c | 24 ++++++++----------------
+>  1 file changed, 8 insertions(+), 16 deletions(-)
+>
+> diff --git a/hw/acpi/pci.c b/hw/acpi/pci.c
+> index d511a8502954..acac6744525e 100644
+> --- a/hw/acpi/pci.c
+> +++ b/hw/acpi/pci.c
+> @@ -75,16 +75,12 @@ typedef struct AcpiGenericInitiator {
+>      uint32_t node;
+>  } AcpiGenericInitiator;
+>
+> -typedef struct AcpiGenericInitiatorClass {
+> -    ObjectClass parent_class;
+> -} AcpiGenericInitiatorClass;
+> -
+>  #define TYPE_ACPI_GENERIC_INITIATOR "acpi-generic-initiator"
+>
+> -OBJECT_DEFINE_TYPE_WITH_INTERFACES(AcpiGenericInitiator, acpi_generic_in=
+itiator,
+> -                   ACPI_GENERIC_INITIATOR, OBJECT,
+> -                   { TYPE_USER_CREATABLE },
+> -                   { NULL })
+> +OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(AcpiGenericInitiator, acpi_gen=
+eric_initiator,
+> +                                          ACPI_GENERIC_INITIATOR, OBJECT=
+,
+> +                                          { TYPE_USER_CREATABLE },
+> +                                          { NULL })
+>
+>  OBJECT_DECLARE_SIMPLE_TYPE(AcpiGenericInitiator, ACPI_GENERIC_INITIATOR)
+>
+> @@ -191,16 +187,12 @@ typedef struct AcpiGenericPort {
+>      uint32_t node;
+>  } AcpiGenericPort;
+>
+> -typedef struct AcpiGenericPortClass {
+> -    ObjectClass parent_class;
+> -} AcpiGenericPortClass;
+> -
+>  #define TYPE_ACPI_GENERIC_PORT "acpi-generic-port"
+>
+> -OBJECT_DEFINE_TYPE_WITH_INTERFACES(AcpiGenericPort, acpi_generic_port,
+> -                   ACPI_GENERIC_PORT, OBJECT,
+> -                   { TYPE_USER_CREATABLE },
+> -                   { NULL })
+> +OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(AcpiGenericPort, acpi_generic_=
+port,
+> +                                          ACPI_GENERIC_PORT, OBJECT,
+> +                                          { TYPE_USER_CREATABLE },
+> +                                          { NULL })
+>
+>  OBJECT_DECLARE_SIMPLE_TYPE(AcpiGenericPort, ACPI_GENERIC_PORT)
+>
+> --
+> 2.34.1
+>
 
 
