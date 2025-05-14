@@ -2,60 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E42B5AB65FC
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 10:30:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FE63AB65FB
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 10:30:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uF7UC-0006jC-80; Wed, 14 May 2025 04:29:08 -0400
+	id 1uF7UF-0006nP-5x; Wed, 14 May 2025 04:29:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uF7U8-0006c4-HH; Wed, 14 May 2025 04:29:04 -0400
+ id 1uF7UA-0006gc-2W; Wed, 14 May 2025 04:29:06 -0400
 Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uF7U6-0006GC-CJ; Wed, 14 May 2025 04:29:03 -0400
+ id 1uF7U7-0006Fs-OC; Wed, 14 May 2025 04:29:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747211343; x=1778747343;
+ t=1747211344; x=1778747344;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=XcfqfXhzwMnZCQ8ssMQpFUaIWpIFYFQwZh6vh4Z+M54=;
- b=NiO1WSZr7Qd9DYR9LGTEUrF0KvqzzcDDL7GpoxH9pwPKWCvHUk/s9mba
- c/5oO+MUDkXPmhIODZdnmZhnRFy9Th2A+BKTOSzRUmxm3Key1JZy101tu
- /iw9ndNzf5pY7l1VckNWFwQ/UVZ+XZKW+g9+R47fTa+EaH9cW8JKMdMbl
- 2v1df77LBIVfspa+2ZUyssAvdfycwZfnoRaSMtDAYTgRdMDC1KceOsK+E
- vN0dLAz+JgyuN4MmsFVfMw2TGgfOkwj3SIPOgllNVXO7xZau716FY4XgL
- j1pze7LJcFuhRpWCP0M+ZcR3wSnlxbEbaIz4WQBCdIMygsI0BIbmiY9V6 A==;
-X-CSE-ConnectionGUID: rgTAyvQiSwC0rRa3upkV9A==
-X-CSE-MsgGUID: W/hBv8vmRCifpwJdYCONBQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="66505579"
-X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="66505579"
+ bh=1RQexxzH4YFkjxykLnQHXT3NcbCAnyHIN3979LqZumo=;
+ b=Mo8erR1SrJnVLE3e+aK0/W8xcJ5ucWYF7nTquH97P0LzlT+0QP1JGtTh
+ E7Uu3agpBqDuVvQD+8kLI+/I+ak7fU99r/WmOhzJWG5LXIuUjJXvoflv2
+ vKHkmYhacs5EGWhy8jy5qgHKKok1oiwtNHcOsiHynfPWnbPZKEjKV/H4U
+ FZgMxc0IfDsga9CpOtu3lhWIl3Z30Z8hjA5DxHOTkpZyQ+QfEiaS3zDEJ
+ yg4FqxA6Xd/4WAtIxGs7rWZemtO4w7NGwRKtEXRlovnx8DCULRGY5alnK
+ WLe15hTRVhgF/bp8MHyz2qc10cmAfHPMwXurn7hExRn1Y4fZNy48lYP9J A==;
+X-CSE-ConnectionGUID: oZNOczmxQzm80Wlk2jVdlw==
+X-CSE-MsgGUID: QXuca8NnTSi04U0Io+ZI5g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="66505583"
+X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="66505583"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 May 2025 01:29:00 -0700
-X-CSE-ConnectionGUID: dEgjz3DOSZavm5HX5+IRZA==
-X-CSE-MsgGUID: mDvUXlf2TZajHn5CvXhD9A==
+ 14 May 2025 01:29:03 -0700
+X-CSE-ConnectionGUID: 7KGGgSw0QuG2Ewmiw+SMMg==
+X-CSE-MsgGUID: Q3ohJwzCRS6s+i2xXecPpg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="169065815"
+X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="169065821"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa001.fm.intel.com with ESMTP; 14 May 2025 01:28:57 -0700
+ by fmviesa001.fm.intel.com with ESMTP; 14 May 2025 01:28:59 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>
 Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PATCH 3/9] hw/acpi/pci: Consolidate
+ Zhao Liu <zhao1.liu@intel.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Magnus Damm <magnus.damm@gmail.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH 4/9] hw/char/sh_serial: Consolidate
  OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES
-Date: Wed, 14 May 2025 16:49:51 +0800
-Message-Id: <20250514084957.2221975-4-zhao1.liu@intel.com>
+Date: Wed, 14 May 2025 16:49:52 +0800
+Message-Id: <20250514084957.2221975-5-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250514084957.2221975-1-zhao1.liu@intel.com>
 References: <20250514084957.2221975-1-zhao1.liu@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
@@ -82,66 +85,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The QOM types of AcpiGenericInitiator and AcpiGenericPort are declared
-by OBJECT_DECLARE_SIMPLE_TYPE, which means they don't need the class!
+The QOM type of SHSerialState is declared by OBJECT_DECLARE_SIMPLE_TYPE,
+which means it doesn't need the class!
 
 Therefore, use OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES to implement
 the type, then there's no need for class definition.
 
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Igor Mammedov <imammedo@redhat.com>
-Cc: Ani Sinha <anisinha@redhat.com>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Magnus Damm <magnus.damm@gmail.com>
+Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/acpi/pci.c | 24 ++++++++----------------
- 1 file changed, 8 insertions(+), 16 deletions(-)
+ hw/char/sh_serial.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/hw/acpi/pci.c b/hw/acpi/pci.c
-index d511a8502954..acac6744525e 100644
---- a/hw/acpi/pci.c
-+++ b/hw/acpi/pci.c
-@@ -75,16 +75,12 @@ typedef struct AcpiGenericInitiator {
-     uint32_t node;
- } AcpiGenericInitiator;
+diff --git a/hw/char/sh_serial.c b/hw/char/sh_serial.c
+index 6abd80386fb4..8ccc2234ba4d 100644
+--- a/hw/char/sh_serial.c
++++ b/hw/char/sh_serial.c
+@@ -78,9 +78,7 @@ struct SHSerialState {
+     qemu_irq bri;
+ };
  
--typedef struct AcpiGenericInitiatorClass {
--    ObjectClass parent_class;
--} AcpiGenericInitiatorClass;
+-typedef struct {} SHSerialStateClass;
 -
- #define TYPE_ACPI_GENERIC_INITIATOR "acpi-generic-initiator"
+-OBJECT_DEFINE_TYPE(SHSerialState, sh_serial, SH_SERIAL, SYS_BUS_DEVICE)
++OBJECT_DEFINE_SIMPLE_TYPE(SHSerialState, sh_serial, SH_SERIAL, SYS_BUS_DEVICE)
  
--OBJECT_DEFINE_TYPE_WITH_INTERFACES(AcpiGenericInitiator, acpi_generic_initiator,
--                   ACPI_GENERIC_INITIATOR, OBJECT,
--                   { TYPE_USER_CREATABLE },
--                   { NULL })
-+OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(AcpiGenericInitiator, acpi_generic_initiator,
-+                                          ACPI_GENERIC_INITIATOR, OBJECT,
-+                                          { TYPE_USER_CREATABLE },
-+                                          { NULL })
- 
- OBJECT_DECLARE_SIMPLE_TYPE(AcpiGenericInitiator, ACPI_GENERIC_INITIATOR)
- 
-@@ -191,16 +187,12 @@ typedef struct AcpiGenericPort {
-     uint32_t node;
- } AcpiGenericPort;
- 
--typedef struct AcpiGenericPortClass {
--    ObjectClass parent_class;
--} AcpiGenericPortClass;
--
- #define TYPE_ACPI_GENERIC_PORT "acpi-generic-port"
- 
--OBJECT_DEFINE_TYPE_WITH_INTERFACES(AcpiGenericPort, acpi_generic_port,
--                   ACPI_GENERIC_PORT, OBJECT,
--                   { TYPE_USER_CREATABLE },
--                   { NULL })
-+OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(AcpiGenericPort, acpi_generic_port,
-+                                          ACPI_GENERIC_PORT, OBJECT,
-+                                          { TYPE_USER_CREATABLE },
-+                                          { NULL })
- 
- OBJECT_DECLARE_SIMPLE_TYPE(AcpiGenericPort, ACPI_GENERIC_PORT)
- 
+ static void sh_serial_clear_fifo(SHSerialState *s)
+ {
 -- 
 2.34.1
 
