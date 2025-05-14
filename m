@@ -2,98 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3758AAB6AC4
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 13:59:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2FCCAB6AB2
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 13:57:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFAdM-0005sG-C0; Wed, 14 May 2025 07:50:48 -0400
+	id 1uFAdR-0005ty-Hy; Wed, 14 May 2025 07:50:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uFAdH-0005rx-Mi
- for qemu-devel@nongnu.org; Wed, 14 May 2025 07:50:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1uFAdJ-0005sa-JQ
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 07:50:46 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uFAdF-00067J-Or
- for qemu-devel@nongnu.org; Wed, 14 May 2025 07:50:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747223440;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=qTrSTVnWfY0mmIhrJkPgqINBw1atoPtzXJd/8tKth6w=;
- b=WO134a3YDrbuzdPtkWQrCO9il/WaaXadobEpyTDjAZkyMQgT83VFAzOsm3RIc20AoRXh9q
- AMOaorIBUro9NZmgzqWSg3wJjJBJ5HlQncfE0i2DOA77+VcN+d8/i1lwTVkw5kp1XbQ1FS
- pI+h25oIReX9bFUjmN6oguy6/6hcTVg=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-35-j3eOuvgEM462cHmgU-hzPw-1; Wed, 14 May 2025 07:50:39 -0400
-X-MC-Unique: j3eOuvgEM462cHmgU-hzPw-1
-X-Mimecast-MFC-AGG-ID: j3eOuvgEM462cHmgU-hzPw_1747223438
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-440a4e2bad7so4456235e9.0
- for <qemu-devel@nongnu.org>; Wed, 14 May 2025 04:50:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747223438; x=1747828238;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qTrSTVnWfY0mmIhrJkPgqINBw1atoPtzXJd/8tKth6w=;
- b=N99kKZLdE48WsB0JiPyJmZMXt//iNRy81epCL48AgMaMIrcHVTyOBBwhaKYncV/xuT
- ch1eqkAQYvNmkn2DpMkA1s6382NGn4UHLEqLjaqyByeLNKLFY2GNDYtkLkEHbCrYu1sZ
- oJbZaxuMg4Cnh0nr6GxdyNBzFWgQbmpkmCvWay5mIoEgv2F6q0lQNkT2yhMfDiDd0Zc5
- 7cKPpbhuzK/9uF7y85Z9QT7xkI8oJjg7wyzJj6ApOqL4JBw7rg19uBqyxS7mWoLdrEQc
- YjvWPw+BBQQjMaVQmWeN1IoxDxVmAyBDXwlrOoffogNlismNP8IPjs90U9s8v7VERrjq
- jOwA==
-X-Gm-Message-State: AOJu0YwtKdogE9sfjwVzEn0eN1arUmv35snpn5u3iMO+d5zojOvfZIvf
- k1ZrYU5Ixg8e7/w8vKkMg34MW8YJA4gx16TSxx4Hew7fZSoYQMS9CNC6K/LlVeMLa8+qGu9aFvE
- pBgYTFKso2ceg7uTMlBBZUEUXH9jR9oukM86SLACsKlCMR4kHgPfyKybwy/w776aqEDgNPKn1Vo
- p+7d1b0D75kUIwDgMOwZLWZMqCobCuog==
-X-Gm-Gg: ASbGncvS3GJE/OChaKXN/+d97Agz3l/hIwo06t6bUrLXNqLX4n24tJumrQULlRzTq6X
- 4gsBkIu2e/yolkyqYyX7HURqlNA7skW1s5cLd1QIF6bAr6dyOgWj6sR7dQipjtqcNbMw3Umwd4a
- +7EmpnlctLlhVgeHmIB7CdT5vt6JTzIr9W0aVVa1OejMj12M9yrXtmrHFziinnNm33fp7nUzAJT
- eJXvM/dKbozUZ+RBgMvBjosQD6tXiBDCM/jKmIDXo7/vtxudrH0SEatH+xjZrSqFRmHGE2WoA2Y
- yxOJLw==
-X-Received: by 2002:a05:600c:3b86:b0:442:cd12:c68a with SMTP id
- 5b1f17b1804b1-442f1a0d8f9mr30006795e9.1.1747223437992; 
- Wed, 14 May 2025 04:50:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHenNJ49ygUiV5zCRp3t1kn3VlupfpdZHkRyK70zrYvITwom17cIpnvCCvZwq6btdSorgC0ew==
-X-Received: by 2002:a05:600c:3b86:b0:442:cd12:c68a with SMTP id
- 5b1f17b1804b1-442f1a0d8f9mr30006495e9.1.1747223437582; 
- Wed, 14 May 2025 04:50:37 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442f39ef8f7sm26028285e9.39.2025.05.14.04.50.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 May 2025 04:50:36 -0700 (PDT)
-Date: Wed, 14 May 2025 07:50:35 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Yui Washizu <yui.washidu@gmail.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 08/27] hw/pci: Do not add ROM BAR for SR-IOV VF
-Message-ID: <3a031e395dc65239d031890d038bc354af61dc35.1747223385.git.mst@redhat.com>
-References: <cover.1747223385.git.mst@redhat.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1uFAdH-00066r-6J
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 07:50:45 -0400
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id A8CCF55C0CE;
+ Wed, 14 May 2025 13:50:39 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id SiaQK3C4m2Ty; Wed, 14 May 2025 13:50:37 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id A6DCA55BC02; Wed, 14 May 2025 13:50:37 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id A4FDE745682;
+ Wed, 14 May 2025 13:50:37 +0200 (CEST)
+Date: Wed, 14 May 2025 13:50:37 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Weifeng Liu <weifeng.liu.z@gmail.com>
+cc: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org, 
+ =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, 
+ =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@gmail.com>
+Subject: Re: [PATCH 1/9] ui/gtk: Document scale and coordinate handling
+In-Reply-To: <ce6e4a42353118fe41e59f2e6ef79d6df959692b.camel@gmail.com>
+Message-ID: <a1bfa963-e4e2-f869-92e2-12312ad5dc89@eik.bme.hu>
+References: <20250511073337.876650-1-weifeng.liu.z@gmail.com>
+ <20250511073337.876650-2-weifeng.liu.z@gmail.com>
+ <hyeijrn3pxl5r5ij2zryiaar5xcqpj7oigpzwgdl3bl5wslddu@fdfgzn27uy52>
+ <ce6e4a42353118fe41e59f2e6ef79d6df959692b.camel@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1747223385.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -37
-X-Spam_score: -3.8
-X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-844254991-1747223437=:15654"
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,41 +68,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-A SR-IOV VF cannot have a ROM BAR.
+--3866299591-844254991-1747223437=:15654
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-Co-developed-by: Yui Washizu <yui.washidu@gmail.com>
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20250314-sriov-v9-1-57dae8ae3ab5@daynix.com>
-Tested-by: Yui Washizu <yui.washidu@gmail.com>
-Tested-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- hw/pci/pci.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+On Wed, 14 May 2025, Weifeng Liu wrote:
+> Hi Gerd,
+> On Mon, 2025-05-12 at 13:46 +0200, Gerd Hoffmann wrote:
+>> On Sun, May 11, 2025 at 03:33:11PM +0800, Weifeng Liu wrote:
+>>> The existence of multiple scaling factors forces us to deal with
+>>> various
+>>> coordinate systems and this would be confusing. It would be
+>>> beneficial
+>>> to define the concepts clearly and use consistent representation
+>>> for
+>>> variables in different coordinates.
+>>>
+>>> Signed-off-by: Weifeng Liu <weifeng.liu.z@gmail.com>
+>>> ---
+>>>  ui/gtk.c | 65
+>>> ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>>>  1 file changed, 65 insertions(+)
+>>>
+>>> diff --git a/ui/gtk.c b/ui/gtk.c
+>>> index 982037b2c0..9f3171abc5 100644
+>>> --- a/ui/gtk.c
+>>> +++ b/ui/gtk.c
+>>> @@ -800,6 +800,71 @@ void
+>>> gd_update_monitor_refresh_rate(VirtualConsole *vc, GtkWidget
+>>> *widget)
+>>>  #endif
+>>>  }
+>>>  
+>>> +/**
+>>> + * DOC: Coordinate handling.
+>>> + *
+>>> + * We are coping with sizes and positions in various coordinates
+>>> and the
+>>> + * handling of these coordinates is somewhat confusing. It would
+>>> benefit us
+>>> + * all if we define these coordinates explicitly and clearly.
+>>> Besides, it's
+>>> + * also helpful to follow the same naming convention for variables
+>>> + * representing values in different coordinates.
+>>> + *
+>>> + * I. Definitions
+>>> + *
+>>> + * - (guest) buffer coordinate: this is the coordinates that the
+>>> guest will
+>>> + *   see. The x/y offsets and width/height specified in commands
+>>> sent by
+>>> + *   guest is basically in buffer coordinate.
+>>> + *
+>>> + * - (host) pixel coordinate: this is the coordinate in pixel
+>>> level on the
+>>> + *   host destop. A window/widget of width 300 in pixel coordinate
+>>> means it
+>>> + *   occupies 300 pixels horizontally.
+>>> + *
+>>> + * - (host) logical window coordinate: the existence of global
+>>> scaling
+>>> + *   factor in desktop level makes this kind of coordinate play a
+>>> role. It
+>>> + *   always holds that (logical window size) * (global scale
+>>> factor) =
+>>> + *   (pixel size).
+>>> + *
+>>> + * - global scale factor: this is specified in desktop level and
+>>> is
+>>> + *   typically invariant during the life cycle of the process.
+>>> Users with
+>>> + *   high-DPI monitors might set this scale, for example, to 2, in
+>>> order to
+>>> + *   make the UI look larger.
+>>> + *
+>>> + * - zooming scale: this can be freely controlled by the QEMU user
+>>> to zoom
+>>> + *   in/out the guest content.
+>>> + *
+>>> + * II. Representation
+>>> + *
+>>> + * We'd like to use consistent representation for variables in
+>>> different
+>>> + * coordinates:
+>>> + * - buffer coordinate: prefix fb
+>>> + * - pixel coordinate: prefix p
+>>> + * - logical window coordinate: prefix w
+>>> + *
+>>> + * For scales:
+>>> + * - global scale factor: prefix gs
+>>> + * - zooming scale: prefix scale/s
+>>> + *
+>>> + * Example: fbw, pw, ww for width in different coordinates
+>>> + *
+>>> + * III. Equation
+>>> + *
+>>> + * - fbw * gs * scale_x = pw
+>>
+>> Well.  That is one possible approach (and this is what qemu is doing
+>> today, for historical reasons, because most code dates back to pre
+>> high-dpi days).
+>>
+>> A possible alternative would be to go for fbw * scale_x = pw, i.e.
+>> let
+>> the guest run in pixel coordinates instead of window coordinates. 
+>> The
+>> guest would do the high-dpi scaling then.  That requires setting
+>> physical display width and height in ui_info, so the guest can figure
+>> what the display resolution is and go into high-dpi mode if needed.
 
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index fe38c4c028..6d9d3ce90f 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -2522,6 +2522,14 @@ static void pci_add_option_rom(PCIDevice *pdev, bool is_default_rom,
-         return;
-     }
- 
-+    if (pci_is_vf(pdev)) {
-+        if (pdev->rom_bar > 0) {
-+            error_setg(errp, "ROM BAR cannot be enabled for SR-IOV VF");
-+        }
-+
-+        return;
-+    }
-+
-     if (load_file || pdev->romsize == UINT32_MAX) {
-         path = qemu_find_file(QEMU_FILE_TYPE_BIOS, pdev->romfile);
-         if (path == NULL) {
--- 
-MST
+Does that assume the guest knows about hidpi and has its own scale factor? 
+What if I want to run an old guest that cannot do hidpi on a modern host. 
+Can I still specify a scale factor to scale it up to usable size? That's a 
+use case I care about which might be unusual but does exist.
 
+Regards,
+BALATON Zoltan
+
+>
+> Thanks for your suggestion. Sounds like code could be simplified and be
+> much easier to understand in this way. I will investigate it on top of
+> this change.
+>
+> Best regards,
+> Weifeng
+>
+>> We probably also need a non-high-dpi compatibility mode for old
+>> guests.
+>> That mode would start with "zooming scale = global scale" instead of
+>> "zooming scale = 1", and the dpi calculation would have to consider
+>> that too.
+>>
+>> (maybe best done on top of this nice cleanup).
+>>
+>> take care,
+>>   Gerd
+>
+>
+--3866299591-844254991-1747223437=:15654--
 
