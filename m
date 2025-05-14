@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD732AB726B
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 19:10:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E8A8AB725D
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 19:08:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFFYh-0002mM-AG; Wed, 14 May 2025 13:06:19 -0400
+	id 1uFFYy-000343-3D; Wed, 14 May 2025 13:06:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uFFYZ-0002Zl-1G
- for qemu-devel@nongnu.org; Wed, 14 May 2025 13:06:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uFFYe-0002xQ-Fr
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 13:06:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uFFYT-0007le-45
- for qemu-devel@nongnu.org; Wed, 14 May 2025 13:06:10 -0400
+ id 1uFFYa-0007od-SM
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 13:06:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747242364;
+ s=mimecast20190719; t=1747242372;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=U2hJOopkHL89WP3TS0nXibSTG59lmqr3HcH+lleJvA4=;
- b=hWoayKL9WySpkHX0M36IWU9W6asBlGqK0g0ub7nf2kJQknZ9u4RXtbOrfehfVz8cz/4DNS
- 4q5AiafUjRhC3I0/A8Xl244CeATWL5O6OEXeeBcPM+u4f0/RDRVkGc69sPoe0Hx6n56m8Q
- vhfRnWhwoeccidKuL2tUJJ0WaXoYotc=
+ bh=VO/Qs8CcpoojQBEONdSM5eGzVjXioY6K9GJ3PwzM41o=;
+ b=MdS5YH1teC1UOAF5Qxthaahf18J1aQbBeglfGrRtkE7IVkBbVR5rB3M3ryItdOtZA7KC7s
+ LAiLDYwoW4fAvq4K+d758l5DlSsIkW2t/FNgu/YMJ2UMWoLceB2SW+YonF5ZxMcD9+39UL
+ c6gYl1ZGE0PBL+qPk5Q9jVhXhamkqBs=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-403-__JECyZ0M-yBUWIJ5w9h4A-1; Wed,
- 14 May 2025 13:06:03 -0400
-X-MC-Unique: __JECyZ0M-yBUWIJ5w9h4A-1
-X-Mimecast-MFC-AGG-ID: __JECyZ0M-yBUWIJ5w9h4A_1747242361
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-28-npVmSQDjNkmhv1J-rz1Hbw-1; Wed,
+ 14 May 2025 13:06:08 -0400
+X-MC-Unique: npVmSQDjNkmhv1J-rz1Hbw-1
+X-Mimecast-MFC-AGG-ID: npVmSQDjNkmhv1J-rz1Hbw_1747242366
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 81C12195608D; Wed, 14 May 2025 17:06:01 +0000 (UTC)
+ id 83737195609E; Wed, 14 May 2025 17:06:06 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.44.32.14])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 012C430001B1; Wed, 14 May 2025 17:05:56 +0000 (UTC)
+ id 305B630001B1; Wed, 14 May 2025 17:06:01 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, peter.maydell@linaro.org, imammedo@redhat.com,
@@ -52,16 +52,16 @@ To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
 Cc: pbonzini@redhat.com,
 	Jonathan.Cameron@huawei.com,
 	philmd@linaro.org
-Subject: [PATCH 16/22] hw/acpi/ged: Prepare the device to react to PCI hotplug
- events
-Date: Wed, 14 May 2025 19:01:03 +0200
-Message-ID: <20250514170431.2786231-17-eric.auger@redhat.com>
+Subject: [PATCH 17/22] hw/acpi/ged: Call pcihp plug callbacks in hotplug
+ handler implementation
+Date: Wed, 14 May 2025 19:01:04 +0200
+Message-ID: <20250514170431.2786231-18-eric.auger@redhat.com>
 In-Reply-To: <20250514170431.2786231-1-eric.auger@redhat.com>
 References: <20250514170431.2786231-1-eric.auger@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124;
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -37
 X-Spam_score: -3.8
@@ -86,135 +86,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QEMU will notify the OS about PCI hotplug/hotunplug events through
-GED interrupts. Let the GED device handle a new PCI hotplug event.
-On its occurrence it calls the \\_SB.PCI0.PCNT method with the BLCK
-mutex held.
+Add PCI device related code in the TYPE_HOTPLUG_HANDLER
+implementation.
 
-The GED device uses a dedicated MMIO region that will be mapped
-by the machine code.
-
-At this point the GED still does not support PCI device hotplug in
-its TYPE_HOTPLUG_HANDLER implementation. This will come in a
-subsequent patch.
+For a PCI device hotplug/hotunplug event, the code routes to
+acpi_pcihp_device callbacks (pre_plug_cb, plug_cb, unplug_request_cb,
+unplug_cb).
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
 ---
- include/hw/acpi/generic_event_device.h |  5 +++++
- include/hw/acpi/pcihp.h                |  2 ++
- hw/acpi/generic_event_device.c         | 15 +++++++++++++++
- hw/acpi/pcihp.c                        |  1 -
- 4 files changed, 22 insertions(+), 1 deletion(-)
+ hw/acpi/generic_event_device.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
-index d2dac87b4a..28be6c0582 100644
---- a/include/hw/acpi/generic_event_device.h
-+++ b/include/hw/acpi/generic_event_device.h
-@@ -63,6 +63,7 @@
- #include "hw/acpi/memory_hotplug.h"
- #include "hw/acpi/ghes.h"
- #include "hw/acpi/cpu.h"
-+#include "hw/acpi/pcihp.h"
- #include "qom/object.h"
- 
- #define ACPI_POWER_BUTTON_DEVICE "PWRB"
-@@ -101,6 +102,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
- #define ACPI_GED_PWR_DOWN_EVT      0x2
- #define ACPI_GED_NVDIMM_HOTPLUG_EVT 0x4
- #define ACPI_GED_CPU_HOTPLUG_EVT    0x8
-+#define ACPI_GED_PCI_HOTPLUG_EVT    0x10
- 
- typedef struct GEDState {
-     MemoryRegion evt;
-@@ -114,6 +116,9 @@ struct AcpiGedState {
-     MemoryRegion container_memhp;
-     CPUHotplugState cpuhp_state;
-     MemoryRegion container_cpuhp;
-+    AcpiPciHpState pcihp_state;
-+    MemoryRegion container_pcihp;
-+
-     GEDState ged_state;
-     uint32_t ged_event_bitmap;
-     qemu_irq irq;
-diff --git a/include/hw/acpi/pcihp.h b/include/hw/acpi/pcihp.h
-index bc31dbff39..bda5ea24b5 100644
---- a/include/hw/acpi/pcihp.h
-+++ b/include/hw/acpi/pcihp.h
-@@ -38,6 +38,8 @@
- #define ACPI_PCIHP_SEJ_BASE 0x8
- #define ACPI_PCIHP_BNMR_BASE 0x10
- 
-+#define ACPI_PCIHP_SIZE 0x0018
-+
- typedef struct AcpiPciHpPciStatus {
-     uint32_t up;
-     uint32_t down;
 diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
-index 7a62f8d5bc..dc3620553d 100644
+index dc3620553d..519329e2ef 100644
 --- a/hw/acpi/generic_event_device.c
 +++ b/hw/acpi/generic_event_device.c
-@@ -12,6 +12,7 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "hw/acpi/acpi.h"
-+#include "hw/acpi/pcihp.h"
- #include "hw/acpi/generic_event_device.h"
+@@ -17,6 +17,7 @@
  #include "hw/irq.h"
  #include "hw/mem/pc-dimm.h"
-@@ -26,6 +27,7 @@ static const uint32_t ged_supported_events[] = {
-     ACPI_GED_PWR_DOWN_EVT,
-     ACPI_GED_NVDIMM_HOTPLUG_EVT,
-     ACPI_GED_CPU_HOTPLUG_EVT,
-+    ACPI_GED_PCI_HOTPLUG_EVT,
+ #include "hw/mem/nvdimm.h"
++#include "hw/pci/pci_device.h"
+ #include "hw/qdev-properties.h"
+ #include "migration/vmstate.h"
+ #include "qemu/error-report.h"
+@@ -235,6 +236,17 @@ static const MemoryRegionOps ged_regs_ops = {
+     },
  };
  
- /*
-@@ -121,6 +123,12 @@ void build_ged_aml(Aml *table, const char *name, HotplugHandler *hotplug_dev,
-                            aml_notify(aml_name("\\_SB.NVDR"),
-                                       aml_int(0x80)));
-                 break;
-+            case ACPI_GED_PCI_HOTPLUG_EVT:
-+                aml_append(if_ctx,
-+                           aml_acquire(aml_name("\\_SB.PCI0.BLCK"), 0xFFFF));
-+                aml_append(if_ctx, aml_call0("\\_SB.PCI0.PCNT"));
-+                aml_append(if_ctx, aml_release(aml_name("\\_SB.PCI0.BLCK")));
-+                break;
-             default:
-                 /*
-                  * Please make sure all the events in ged_supported_events[]
-@@ -299,6 +307,8 @@ static void acpi_ged_send_event(AcpiDeviceIf *adev, AcpiEventStatusBits ev)
-         sel = ACPI_GED_NVDIMM_HOTPLUG_EVT;
-     } else if (ev & ACPI_CPU_HOTPLUG_STATUS) {
-         sel = ACPI_GED_CPU_HOTPLUG_EVT;
-+    } else if (ev & ACPI_PCI_HOTPLUG_STATUS) {
-+        sel = ACPI_GED_PCI_HOTPLUG_EVT;
-     } else {
-         /* Unknown event. Return without generating interrupt. */
-         warn_report("GED: Unsupported event %d. No irq injected", ev);
-@@ -428,6 +438,11 @@ static void acpi_ged_realize(DeviceState *dev, Error **errp)
-             cpu_hotplug_hw_init(&s->container_cpuhp, OBJECT(dev),
-                                 &s->cpuhp_state, 0);
-             break;
-+        case ACPI_GED_PCI_HOTPLUG_EVT:
-+            memory_region_init(&s->container_pcihp, OBJECT(dev),
-+                                "pcihp container",
-+                                ACPI_PCIHP_SIZE);
-+            sysbus_init_mmio(sbd, &s->container_pcihp);
++static void acpi_ged_device_pre_plug_cb(HotplugHandler *hotplug_dev,
++                                        DeviceState *dev, Error **errp)
++{
++    if (object_dynamic_cast(OBJECT(dev), TYPE_PCI_DEVICE)) {
++        acpi_pcihp_device_pre_plug_cb(hotplug_dev, dev, errp);
++    } else {
++        error_setg(errp, "virt: device pre plug request for unsupported device"
++                   " type: %s", object_get_typename(OBJECT(dev)));
++    }
++}
++
+ static void acpi_ged_device_plug_cb(HotplugHandler *hotplug_dev,
+                                     DeviceState *dev, Error **errp)
+ {
+@@ -248,6 +260,8 @@ static void acpi_ged_device_plug_cb(HotplugHandler *hotplug_dev,
          }
-         ged_events--;
-     }
-diff --git a/hw/acpi/pcihp.c b/hw/acpi/pcihp.c
-index 57fe8938b1..e87846a1fa 100644
---- a/hw/acpi/pcihp.c
-+++ b/hw/acpi/pcihp.c
-@@ -44,7 +44,6 @@
- #include "qobject/qnum.h"
- #include "trace.h"
+     } else if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
+         acpi_cpu_plug_cb(hotplug_dev, &s->cpuhp_state, dev, errp);
++    } else if (object_dynamic_cast(OBJECT(dev), TYPE_PCI_DEVICE)) {
++        acpi_pcihp_device_plug_cb(hotplug_dev, &s->pcihp_state, dev, errp);
+     } else {
+         error_setg(errp, "virt: device plug request for unsupported device"
+                    " type: %s", object_get_typename(OBJECT(dev)));
+@@ -264,6 +278,9 @@ static void acpi_ged_unplug_request_cb(HotplugHandler *hotplug_dev,
+         acpi_memory_unplug_request_cb(hotplug_dev, &s->memhp_state, dev, errp);
+     } else if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
+         acpi_cpu_unplug_request_cb(hotplug_dev, &s->cpuhp_state, dev, errp);
++    } else if (object_dynamic_cast(OBJECT(dev), TYPE_PCI_DEVICE)) {
++        acpi_pcihp_device_unplug_request_cb(hotplug_dev, &s->pcihp_state,
++                                            dev, errp);
+     } else {
+         error_setg(errp, "acpi: device unplug request for unsupported device"
+                    " type: %s", object_get_typename(OBJECT(dev)));
+@@ -279,6 +296,8 @@ static void acpi_ged_unplug_cb(HotplugHandler *hotplug_dev,
+         acpi_memory_unplug_cb(&s->memhp_state, dev, errp);
+     } else if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
+         acpi_cpu_unplug_cb(&s->cpuhp_state, dev, errp);
++    } else if (object_dynamic_cast(OBJECT(dev), TYPE_PCI_DEVICE)) {
++        acpi_pcihp_device_unplug_cb(hotplug_dev, &s->pcihp_state, dev, errp);
+     } else {
+         error_setg(errp, "acpi: device unplug for unsupported device"
+                    " type: %s", object_get_typename(OBJECT(dev)));
+@@ -495,6 +514,7 @@ static void acpi_ged_class_init(ObjectClass *class, const void *data)
+     dc->vmsd = &vmstate_acpi_ged;
+     dc->realize = acpi_ged_realize;
  
--#define ACPI_PCIHP_SIZE 0x0018
- #define PCI_UP_BASE 0x0000
- #define PCI_DOWN_BASE 0x0004
- #define PCI_EJ_BASE 0x0008
++    hc->pre_plug = acpi_ged_device_pre_plug_cb;
+     hc->plug = acpi_ged_device_plug_cb;
+     hc->unplug_request = acpi_ged_unplug_request_cb;
+     hc->unplug = acpi_ged_unplug_cb;
 -- 
 2.49.0
 
