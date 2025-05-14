@@ -2,54 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4DE5AB69E4
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 13:29:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25217AB69F5
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 13:30:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFAH2-0001Lc-AP; Wed, 14 May 2025 07:27:44 -0400
+	id 1uFAH4-0001Nt-BC; Wed, 14 May 2025 07:27:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uFAH0-0001G4-0a
- for qemu-devel@nongnu.org; Wed, 14 May 2025 07:27:42 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uFAH1-0001Kv-Dd
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 07:27:43 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uFAGy-00024b-6m
- for qemu-devel@nongnu.org; Wed, 14 May 2025 07:27:41 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uFAGz-00025O-BO
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 07:27:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747222058;
+ s=mimecast20190719; t=1747222060;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=mYK+mXwJBAHO1k4WL/hngMdjsvnt59WtirK2ZXGZOtQ=;
- b=IfJaTJ7drSM5/p5k8oImGZedBXGK6DTg88IyAavoPgZit7fMd4mZEnN2xq5KUbdgg7iJsj
- pxc0Svdqqq4VYUa2YfWuGIpUN/NycH9cIi6Bf4B/pSwd3uzOMERlvE5X2tICgvr58nkfJo
- shjcLfSnZgMIdFbqc1YBRyx4aNnU62Y=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jECHodVbgas22a0VE4hhXYUoi0MupJJkQ+xRgSyTGYE=;
+ b=FHBgxQTCOqHK5PSKDmHYxIkCzK/ZivSDncHTuoZJLwyt+cU0nK5xsG6tYvSWm1zS6ts0LK
+ MFQ2Pfp19HaeISnTAgnQAdy2fHLbAR+dITFgQe0HJk5sqFHyyVgfdVU9xUUq/CBJOrgg1L
+ tGu7uL2jn6CccTwncN+0/+ZJsv9cLAc=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-686-XUo_slzDM9GqHOMxoVMEqQ-1; Wed,
- 14 May 2025 07:27:36 -0400
-X-MC-Unique: XUo_slzDM9GqHOMxoVMEqQ-1
-X-Mimecast-MFC-AGG-ID: XUo_slzDM9GqHOMxoVMEqQ_1747222055
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-610-3zFuw3CLMGaJluEuHKWgrA-1; Wed,
+ 14 May 2025 07:27:38 -0400
+X-MC-Unique: 3zFuw3CLMGaJluEuHKWgrA-1
+X-Mimecast-MFC-AGG-ID: 3zFuw3CLMGaJluEuHKWgrA_1747222057
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B049E1956068
- for <qemu-devel@nongnu.org>; Wed, 14 May 2025 11:27:35 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 61D311956087; Wed, 14 May 2025 11:27:37 +0000 (UTC)
 Received: from thuth-p1g4.str.redhat.com (dhcp-192-219.str.redhat.com
  [10.33.192.219])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6C82419560A3; Wed, 14 May 2025 11:27:34 +0000 (UTC)
+ id 004BE19560A3; Wed, 14 May 2025 11:27:35 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 00/13] s390x obsolete machine removal & misc fixes
-Date: Wed, 14 May 2025 13:27:20 +0200
-Message-ID: <20250514112733.456644-1-thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eric Farman <farman@linux.ibm.com>
+Subject: [PULL 01/13] hw/s390x/s390-virtio-ccw: Remove the deprecated 2.10
+ machine type
+Date: Wed, 14 May 2025 13:27:21 +0200
+Message-ID: <20250514112733.456644-2-thuth@redhat.com>
+In-Reply-To: <20250514112733.456644-1-thuth@redhat.com>
+References: <20250514112733.456644-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -79,53 +84,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
- Hi!
+From: Thomas Huth <thuth@redhat.com>
 
-The following changes since commit 69ee0189d7977cfbb1b2c7a27393d8b9fb661b20:
+The s390-ccw-virtio-2.10 machine is older than 6 years, so according
+to our machine support policy, it can be removed now.
 
-  Merge tag 'qtest-20250509-pull-request' of https://gitlab.com/farosas/qemu into staging (2025-05-12 11:11:37 -0400)
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250506062148.306084-2-thuth@redhat.com>
+Reviewed-by: Eric Farman <farman@linux.ibm.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ hw/s390x/s390-virtio-ccw.c | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-are available in the Git repository at:
-
-  https://gitlab.com/thuth/qemu.git tags/pull-request-2025-05-14
-
-for you to fetch changes up to c23d3339ce8fc936d8c60a023ea2b052d847dc78:
-
-  tests/functional: Skip the screendump tests if the command is not available (2025-05-14 11:50:42 +0200)
-
-----------------------------------------------------------------
-* Removal of obsolete s390x machines
-* Fix a memleak in s390x code
-* Skip some functional tests if the corresponding feature is not available
-
-----------------------------------------------------------------
-Fabiano Rosas (1):
-      s390x: Fix leak in machine_set_loadparm
-
-Thomas Huth (12):
-      hw/s390x/s390-virtio-ccw: Remove the deprecated 2.10 machine type
-      hw/s390x/s390-virtio-ccw: Remove the deprecated 2.11 machine type
-      hw/s390x/event-facility: Remove the obsolete "allow_all_mask_sizes" code
-      target/s390x: Rename the qemu_V2_11 feature set to qemu_MIN
-      hw/s390x/s390-virtio-ccw: Remove the deprecated 2.12 machine type
-      hw/s390x/s390-virtio-ccw: Remove the deprecated 3.0 machine type
-      hw/s390x: Remove the obsolete hpage_1m_allowed switch
-      hw/s390x/s390-virtio-ccw: Remove the deprecated 3.1 machine type
-      hw/s390x/s390-virtio-ccw: Remove the deprecated 4.0 machine type
-      include/hw/dma/xlnx_dpdma: Remove dependency on console.h
-      tests/functional/test_s390x_tuxrun: Check whether the machine is available
-      tests/functional: Skip the screendump tests if the command is not available
-
- include/hw/dma/xlnx_dpdma.h               |   1 -
- include/hw/s390x/s390-virtio-ccw.h        |   4 -
- hw/s390x/event-facility.c                 |  37 +--------
- hw/s390x/s390-virtio-ccw.c                | 132 +-----------------------------
- target/s390x/gen-features.c               |  13 +--
- target/s390x/kvm/kvm.c                    |   6 --
- tests/functional/test_arm_integratorcp.py |   6 +-
- tests/functional/test_m68k_nextcube.py    |   6 +-
- tests/functional/test_mips64el_malta.py   |   6 +-
- tests/functional/test_s390x_tuxrun.py     |   1 +
- 10 files changed, 18 insertions(+), 194 deletions(-)
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index d5658afed96..206124f7a46 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -1275,18 +1275,6 @@ static void ccw_machine_2_11_class_options(MachineClass *mc)
+ }
+ DEFINE_CCW_MACHINE(2, 11);
+ 
+-static void ccw_machine_2_10_instance_options(MachineState *machine)
+-{
+-    ccw_machine_2_11_instance_options(machine);
+-}
+-
+-static void ccw_machine_2_10_class_options(MachineClass *mc)
+-{
+-    ccw_machine_2_11_class_options(mc);
+-    compat_props_add(mc->compat_props, hw_compat_2_10, hw_compat_2_10_len);
+-}
+-DEFINE_CCW_MACHINE(2, 10);
+-
+ #endif
+ 
+ static void ccw_machine_register_types(void)
+-- 
+2.49.0
 
 
