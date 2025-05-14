@@ -2,86 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15DA5AB6CA2
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 15:28:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89080AB6D0B
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 15:45:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFCA3-00027r-IM; Wed, 14 May 2025 09:28:39 -0400
+	id 1uFCOa-0001Q8-4Q; Wed, 14 May 2025 09:43:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1uFC9x-00020C-M6
- for qemu-devel@nongnu.org; Wed, 14 May 2025 09:28:34 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uFCOX-0001PV-P8
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 09:43:37 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1uFC9t-0006Z7-Qh
- for qemu-devel@nongnu.org; Wed, 14 May 2025 09:28:32 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uFCOS-0008Jf-1c
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 09:43:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747229307;
+ s=mimecast20190719; t=1747230205;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UkwCGrpv1fJh9aXHCZHnwnpuBGR+Kmlc7KfeOOsY75g=;
- b=e0xeUcB3NhQYfsGDfMlTwNtPb1TDwmuey/EuyJJ3kR37LfzNktNjwKAgxbns+sEGsgF2ti
- NxC9Hcct+P3tghiBP5mVWoBzOsdvSSTc55yJs5dxgL75HiZlVmIawkYniq+KcUnh5ZhbXa
- 6d0tcEBwNlCX6K+GYR0G29iv8wlc8ww=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=wVeA15JjBG1Z3rVOep18THL7YrFTvml76cJ1Cr/Fiv8=;
+ b=eIUntIaGq9WPLoWTkwIudsal43jXFv1NGYWcISZu4c+4fBa/2PV+olVMFlVUF6rKnarE5L
+ ZY98/QUgwwgDbcnxWSE2Rge71Upzq6GkZMsZgnHYxiShapTIh80ocEbjO3GrmuK6YC6f5m
+ G0OffElkrgilgDePNA7TB7Ar0Ieez6k=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-696-tDZH1AlJPhGgXqaS6tTOKA-1; Wed, 14 May 2025 09:28:23 -0400
-X-MC-Unique: tDZH1AlJPhGgXqaS6tTOKA-1
-X-Mimecast-MFC-AGG-ID: tDZH1AlJPhGgXqaS6tTOKA_1747229302
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-43cf172ff63so31541405e9.3
- for <qemu-devel@nongnu.org>; Wed, 14 May 2025 06:28:22 -0700 (PDT)
+ us-mta-562-at4x2fiPNPOJIV-47o1JoA-1; Wed, 14 May 2025 09:43:24 -0400
+X-MC-Unique: at4x2fiPNPOJIV-47o1JoA-1
+X-Mimecast-MFC-AGG-ID: at4x2fiPNPOJIV-47o1JoA_1747230203
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-43cec217977so34663355e9.0
+ for <qemu-devel@nongnu.org>; Wed, 14 May 2025 06:43:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747229302; x=1747834102;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=UkwCGrpv1fJh9aXHCZHnwnpuBGR+Kmlc7KfeOOsY75g=;
- b=rJeJ+mQ49bj3rnCkmZVjs/un23zoeWRglLbZpw+c4R1DFsUUZtYpr5cVtrkbeNKX1X
- +mKyOBN/JAbiGcOvpQHmfEu/nY8UjGzIdtYiLDhZLL3H0PEnwNrnfkB8KK8j5dozdYDx
- WngSA+e4bVz4a7a750cnVGxb1KSb83oGohD1qzI5F6XQMQUrFtoyFsLpg4ceK6z8mpxg
- 223HFFwZ26Yq6tKl8Yaa2KKXHQtOvLXXVU1KCpSz5t7e+Tta46fTHOta0KL3BmW/73TU
- 9Jv2TB74XE2gwVYELMLuPPDfhhobe/c++qDvmt87UHbPlvj7K8lLQx3W4S7RnrA7sChY
- LeFg==
-X-Gm-Message-State: AOJu0Yy70rVcVFpMZKtPrVocRkQmzr0KRgVBy9+nDvYv9jnOSxb3q+BO
- yNhysgI5tTfslfKKxF1bwvu2WBazoD2/AhYL/HIHLB+qkHF6tc5Q7OpY/Voiju3UQKTF2l5lT5k
- gqj7/dGXEfgdzCVguMgjTUQdAni9+fwF1F6SXczMwjKOYv/yQvk5L
-X-Gm-Gg: ASbGncvJ17LX47KH5M+lKRC89158FoNS/e18/rnXcnsNmF+XmdJPaenzFCf2EEf7pqU
- k28LRgdzlwvdJnU5FGpI3K5va12p7ILUljuZnGdQe2NNtVdTTk0nLrAsmV7AjHjYpGCh2WbRG+l
- 7htMliXHCy2CQOeoOjg1WO+/4GEwYcfHNf0UcxlXOEOSd6XbO32raoY3kNf3GXUARSqN6VTJdA/
- 00W6NcvgL5VweTFqJAuvUYZ8Xue2/LDgxw6oocPKnMu6QTK9lGgWLIJYEnXs6LDtjVFIZ9r17jC
-X-Received: by 2002:a05:600c:1d9a:b0:43c:e478:889 with SMTP id
- 5b1f17b1804b1-442f1dd5eccmr34059635e9.0.1747229301828; 
- Wed, 14 May 2025 06:28:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGIO3mLT+GKggApVvLJFDsbnSaNwnbxs+TdH2GMHLpYxlQwHujZdhZZU5g2YjvPXR4drHUY4A==
-X-Received: by 2002:a05:600c:1d9a:b0:43c:e478:889 with SMTP id
- 5b1f17b1804b1-442f1dd5eccmr34059295e9.0.1747229301482; 
- Wed, 14 May 2025 06:28:21 -0700 (PDT)
-Received: from fedora ([85.93.96.130]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442f3380539sm31984285e9.16.2025.05.14.06.28.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 May 2025 06:28:21 -0700 (PDT)
-Date: Wed, 14 May 2025 15:28:19 +0200
-From: Juraj Marcin <jmarcin@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>, 
- Prasad Pandit <ppandit@redhat.com>,
- "Dr . David Alan Gilbert" <dave@treblig.org>
-Subject: Re: [PATCH 2/3] migration/hmp: Dump global in "info
- migrate_parameters" instead
-Message-ID: <yvgdscg3oczfqhiv5hyemzb5r2pjawz4gyra7ugpxobu5d3vyy@ja7hbmcmrx7p>
-References: <20250513220923.518025-1-peterx@redhat.com>
- <20250513220923.518025-3-peterx@redhat.com>
+ d=1e100.net; s=20230601; t=1747230201; x=1747835001;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wVeA15JjBG1Z3rVOep18THL7YrFTvml76cJ1Cr/Fiv8=;
+ b=ClqwWII9iBx2Y+avLcmhu3dUP+BwdNXhcJnkAK57nSTVlVan0a/kthDIp2E75nWxqk
+ 8h/5NguJZ3NWvEjoB2VZ4j1bicUN9+Qo5DfIa84yVR8G70PKIRyrJKIokjcmxM5D62F2
+ lOp718JbjXF7G1FNouInybexubfS3r9WOu7PEl4kasEYaCp80+/USrVferaVNhwzq63s
+ 3gFP5ik25pPD7SUVo4GqCB+UsvyrlUMuQPOa+9CsEoYnaguQWUJIOOcp1qemC5s568Ue
+ fUHHCBNzm5WQNgLTOzBNgcsvOjkBxOm2j6VNzjTtXB9JZU5hPYP4nrgM9G1UWfQt5GJ5
+ /w4g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUEbNAbsSnxOsFWqHgdXDIzKg5j9JrFvblHCNr+rn67ivY6CP5i2IRq0XtQQSDD3Ixj48sjublLid75@nongnu.org
+X-Gm-Message-State: AOJu0YwvQeT7rzHURrM+9X9JWRPlEMHgjUmpPzfF/YfMXrGxBM63KVp2
+ 9dISG76UO+SvJQd+hM+xZp4sCLAJqpmZHf1HNsD7mTID2XPlduR2ueRCBeyBzGq+JSZGkWpOdq4
+ +VP1MNNlBxhg9l6zvUzH9hth31Vy4WM5ocuWTHSeGqaUjJbvMTBAv
+X-Gm-Gg: ASbGnctdsP6zo/VCY1WSC0Hjx9nxZi2/NZHtZm1e25biarbXxRhYfbXkJAsQKabMmT1
+ 253oLmieGH6xH9P3egbYprVqLNicnn8+ZgAvvnP+brJicagAg7OoiiSWLGQzlvC3grH1t4hULQe
+ X2ZSIN/tfscbOmrDT9uL5jnc7uhJH+eTa7jFc0QtuAhQ0eKfuQycOLuD/5/jhfvRG4EIBA6TNnw
+ kLj3E/SNOgRWTkI8shZeJ1r+zjsbWnZlBKPddVnmZLi+XOBVBSoYWSVM/j+U5H9uMG5sQp9OGJO
+ y8H2S9Z6tvm8EpORZGF0ZjuLGZRmdn2qTeqj6kUKcEzCgsTvaqeuYIOMcdFVqb7vtb8SilIg4ms
+ qGkdoK/dlYevxdiu2qFpkkGjVJHhQk9pBes/DQ57l
+X-Received: by 2002:a05:600c:a09:b0:43c:f513:958a with SMTP id
+ 5b1f17b1804b1-442f20d65f9mr30132105e9.13.1747230201572; 
+ Wed, 14 May 2025 06:43:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEwYzMoUgF50d2lh6eODwOZwOPUgoGsy2/S17cRM3NndSDMcoyZTOKc7f8W51kHhFMY2f3NWg==
+X-Received: by 2002:a05:600c:a09:b0:43c:f513:958a with SMTP id
+ 5b1f17b1804b1-442f20d65f9mr30131855e9.13.1747230201145; 
+ Wed, 14 May 2025 06:43:21 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d728:a0e0:44e3:3ed5:b7d1:f2e5?
+ (p200300cfd728a0e044e33ed5b7d1f2e5.dip0.t-ipconnect.de.
+ [2003:cf:d728:a0e0:44e3:3ed5:b7d1:f2e5])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-442f395096csm30767415e9.18.2025.05.14.06.43.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 14 May 2025 06:43:19 -0700 (PDT)
+Message-ID: <ce352802-6951-4249-a806-2e0b1ea9d5f2@redhat.com>
+Date: Wed, 14 May 2025 15:43:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250513220923.518025-3-peterx@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jmarcin@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] file-posix: Probe paths and retry SG_IO on potential path
+ errors
+To: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org
+Cc: stefanha@redhat.com, pbonzini@redhat.com, bmarzins@redhat.com,
+ qemu-devel@nongnu.org
+References: <20250513113730.37404-1-kwolf@redhat.com>
+Content-Language: en-US
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <20250513113730.37404-1-kwolf@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -37
 X-Spam_score: -3.8
@@ -89,8 +95,8 @@ X-Spam_bar: ---
 X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,19 +112,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025-05-13 18:09, Peter Xu wrote:
-> "info migrate" is the command people would frequently use to query
-> migration status.  We may not want it to dump global configurations because
-> dumping the same things over and over won't help.
-> 
-> The globals are just more suitable for a parameter dump instead.  Hence
-> move it over.
-> 
-> Signed-off-by: Peter Xu <peterx@redhat.com>
+On 13.05.25 13:37, Kevin Wolf wrote:
+> When scsi-block is used on a host multipath device, it runs into the
+> problem that the kernel dm-mpath doesn't know anything about SCSI or
+> SG_IO and therefore can't decide if a SG_IO request returned an error
+> and needs to be retried on a different path. Instead of getting working
+> failover, an error is returned to scsi-block and handled according to
+> the configured error policy. Obviously, this is not what users want,
+> they want working failover.
+>
+> QEMU can parse the SG_IO result and determine whether this could have
+> been a path error, but just retrying the same request could just send it
+> to the same failing path again and result in the same error.
+>
+> With a kernel that supports the DM_MPATH_PROBE_PATHS ioctl on dm-mpath
+> block devices (queued in the device mapper tree for Linux 6.16), we can
+> tell the kernel to probe all paths and tell us if any usable paths
+> remained. If so, we can now retry the SG_IO ioctl and expect it to be
+> sent to a working path.
+>
+> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 > ---
->  migration/migration-hmp-cmds.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>   block/file-posix.c | 82 +++++++++++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 81 insertions(+), 1 deletion(-)
 
-Reviewed-by: Juraj Marcin <jmarcin@redhat.com>
+Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 
 
