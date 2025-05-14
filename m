@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51326AB653B
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 10:05:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 434DFAB651E
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 10:03:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uF747-0002Yb-FW; Wed, 14 May 2025 04:02:11 -0400
+	id 1uF749-0002Z9-0I; Wed, 14 May 2025 04:02:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1uF744-0002XI-Hg
- for qemu-devel@nongnu.org; Wed, 14 May 2025 04:02:08 -0400
+ id 1uF746-0002YI-9N
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 04:02:10 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1uF740-0002A0-Rb
- for qemu-devel@nongnu.org; Wed, 14 May 2025 04:02:08 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1uF743-0002Ad-SK
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 04:02:10 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Bx7eL5TSRoulbmAA--.12154S3;
- Wed, 14 May 2025 16:02:02 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8DxvnP8TSRov1bmAA--.14603S3;
+ Wed, 14 May 2025 16:02:04 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
- by front1 (Coremail) with SMTP id qMiowMBxn8XkTSRofwHRAA--.9319S6;
- Wed, 14 May 2025 16:02:00 +0800 (CST)
+ by front1 (Coremail) with SMTP id qMiowMBxn8XkTSRofwHRAA--.9319S7;
+ Wed, 14 May 2025 16:02:01 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: stefanha@gmail.com,
 	maobibo@loongson.cn
-Subject: [PULL 04/17] hw/intc/loongarch_pch: Set version information at
- initial stage
-Date: Wed, 14 May 2025 15:39:14 +0800
-Message-Id: <20250514073927.2424543-5-gaosong@loongson.cn>
+Subject: [PULL 05/17] hw/intc/loongarch_pch: Use relative address in
+ MemoryRegionOps
+Date: Wed, 14 May 2025 15:39:15 +0800
+Message-Id: <20250514073927.2424543-6-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20250514073927.2424543-1-gaosong@loongson.cn>
 References: <20250514073927.2424543-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMBxn8XkTSRofwHRAA--.9319S6
+X-CM-TRANSID: qMiowMBxn8XkTSRofwHRAA--.9319S7
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -66,106 +66,124 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bibo Mao <maobibo@loongson.cn>
 
-Register PCH_PIC_INT_ID constains version and supported irq number
-information, and it is read only register. The detailed value can
-be set at initial stage, rather than read callback.
+Parameter address for read and write callback in MemoryRegionOps is
+relative offset with base address of this MemoryRegionOps. It can
+be directly used as offset and offset calculation can be removed.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20250507023148.1877287-5-maobibo@loongson.cn>
+Message-Id: <20250507023148.1877287-6-maobibo@loongson.cn>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- hw/intc/loongarch_pch_pic.c            |  9 ++-------
- hw/intc/loongarch_pic_common.c         | 13 +++++++++++++
- include/hw/intc/loongarch_pic_common.h | 17 +++++++++++++++--
- 3 files changed, 30 insertions(+), 9 deletions(-)
+ hw/intc/loongarch_pch_pic.c | 34 ++++++++++++++++------------------
+ 1 file changed, 16 insertions(+), 18 deletions(-)
 
 diff --git a/hw/intc/loongarch_pch_pic.c b/hw/intc/loongarch_pch_pic.c
-index 17ab071a6b..f732c292f8 100644
+index f732c292f8..9b64bf938f 100644
 --- a/hw/intc/loongarch_pch_pic.c
 +++ b/hw/intc/loongarch_pch_pic.c
-@@ -80,15 +80,10 @@ static uint64_t loongarch_pch_pic_low_readw(void *opaque, hwaddr addr,
+@@ -76,9 +76,8 @@ static uint64_t loongarch_pch_pic_low_readw(void *opaque, hwaddr addr,
+ {
+     LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(opaque);
+     uint64_t val = 0;
+-    uint32_t offset = addr & 0xfff;
  
-     switch (offset) {
+-    switch (offset) {
++    switch (addr) {
      case PCH_PIC_INT_ID:
--        val = PCH_PIC_INT_ID_VAL;
-+        val = s->id.data & UINT_MAX;
+         val = s->id.data & UINT_MAX;
          break;
-     case PCH_PIC_INT_ID + 4:
--        /*
--         * With 7A1000 manual
--         *   bit  0-15 pch irqchip version
--         *   bit 16-31 irq number supported with pch irqchip
--         */
--        val = deposit32(PCH_PIC_INT_ID_VER, 16, 16, s->irq_num - 1);
-+        val = s->id.data >> 32;
-         break;
+@@ -129,13 +128,12 @@ static void loongarch_pch_pic_low_writew(void *opaque, hwaddr addr,
+                                          uint64_t value, unsigned size)
+ {
+     LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(opaque);
+-    uint32_t offset, old_valid, data = (uint32_t)value;
++    uint32_t old_valid, data = (uint32_t)value;
+     uint64_t old, int_mask;
+-    offset = addr & 0xfff;
+ 
+     trace_loongarch_pch_pic_low_writew(size, addr, data);
+ 
+-    switch (offset) {
++    switch (addr) {
      case PCH_PIC_INT_MASK:
-         val = (uint32_t)s->int_mask;
-diff --git a/hw/intc/loongarch_pic_common.c b/hw/intc/loongarch_pic_common.c
-index 6dccacc741..de170501cf 100644
---- a/hw/intc/loongarch_pic_common.c
-+++ b/hw/intc/loongarch_pic_common.c
-@@ -49,6 +49,19 @@ static void loongarch_pic_common_reset_hold(Object *obj, ResetType type)
-     LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(obj);
-     int i;
+         old = s->int_mask;
+         s->int_mask = get_writew_val(old, data, 0);
+@@ -203,9 +201,9 @@ static uint64_t loongarch_pch_pic_high_readw(void *opaque, hwaddr addr,
+ {
+     LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(opaque);
+     uint64_t val = 0;
+-    uint32_t offset = addr + PCH_PIC_INT_STATUS;
  
-+    /*
-+     * With Loongson 7A1000 user manual
-+     * Chapter 5.2 "Description of Interrupt-related Registers"
-+     *
-+     * Interrupt controller identification register 1
-+     *   Bit 24-31 Interrupt Controller ID
-+     * Interrupt controller identification register 2
-+     *   Bit  0-7  Interrupt Controller version number
-+     *   Bit 16-23 The number of interrupt sources supported
-+     */
-+    s->id.desc.id = PCH_PIC_INT_ID_VAL;
-+    s->id.desc.version = PCH_PIC_INT_ID_VER;
-+    s->id.desc.irq_num = s->irq_num - 1;
-     s->int_mask = UINT64_MAX;
-     s->htmsi_en = 0x0;
-     s->intedge  = 0x0;
-diff --git a/include/hw/intc/loongarch_pic_common.h b/include/hw/intc/loongarch_pic_common.h
-index 2b4b483c63..7a9a2bdd46 100644
---- a/include/hw/intc/loongarch_pic_common.h
-+++ b/include/hw/intc/loongarch_pic_common.h
-@@ -10,9 +10,9 @@
- #include "hw/pci-host/ls7a.h"
- #include "hw/sysbus.h"
+-    switch (offset) {
++    addr += PCH_PIC_INT_STATUS;
++    switch (addr) {
+     case PCH_PIC_INT_STATUS:
+         val = (uint32_t)(s->intisr & (~s->int_mask));
+         break;
+@@ -230,12 +228,12 @@ static void loongarch_pch_pic_high_writew(void *opaque, hwaddr addr,
+                                      uint64_t value, unsigned size)
+ {
+     LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(opaque);
+-    uint32_t offset, data = (uint32_t)value;
+-    offset = addr + PCH_PIC_INT_STATUS;
++    uint32_t data = (uint32_t)value;
  
--#define PCH_PIC_INT_ID_VAL              0x7000000UL
--#define PCH_PIC_INT_ID_VER              0x1UL
- #define PCH_PIC_INT_ID                  0x00
-+#define  PCH_PIC_INT_ID_VAL             0x7
-+#define  PCH_PIC_INT_ID_VER             0x1
- #define PCH_PIC_INT_MASK                0x20
- #define PCH_PIC_HTMSI_EN                0x40
- #define PCH_PIC_INT_EDGE                0x60
-@@ -30,10 +30,23 @@
- OBJECT_DECLARE_TYPE(LoongArchPICCommonState,
-                     LoongArchPICCommonClass, LOONGARCH_PIC_COMMON)
++    addr += PCH_PIC_INT_STATUS;
+     trace_loongarch_pch_pic_high_writew(size, addr, data);
  
-+union LoongArchPIC_ID {
-+    struct {
-+        uint8_t _reserved_0[3];
-+        uint8_t id;
-+        uint8_t version;
-+        uint8_t _reserved_1;
-+        uint8_t irq_num;
-+        uint8_t _reserved_2;
-+    } QEMU_PACKED desc;
-+    uint64_t data;
-+};
-+
- struct LoongArchPICCommonState {
-     SysBusDevice parent_obj;
+-    switch (offset) {
++    switch (addr) {
+     case PCH_PIC_INT_STATUS:
+         s->intisr = get_writew_val(s->intisr, data, 0);
+         break;
+@@ -258,18 +256,18 @@ static uint64_t loongarch_pch_pic_readb(void *opaque, hwaddr addr,
+ {
+     LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(opaque);
+     uint64_t val = 0;
+-    uint32_t offset = (addr & 0xfff) + PCH_PIC_ROUTE_ENTRY;
+     int64_t offset_tmp;
  
-     qemu_irq parent_irq[64];
-+    union LoongArchPIC_ID id; /* 0x00  interrupt ID register */
-     uint64_t int_mask;        /* 0x020 interrupt mask register */
-     uint64_t htmsi_en;        /* 0x040 1=msi */
-     uint64_t intedge;         /* 0x060 edge=1 level=0 */
+-    switch (offset) {
++    addr += PCH_PIC_ROUTE_ENTRY;
++    switch (addr) {
+     case PCH_PIC_HTMSI_VEC ... PCH_PIC_HTMSI_VEC_END:
+-        offset_tmp = offset - PCH_PIC_HTMSI_VEC;
++        offset_tmp = addr - PCH_PIC_HTMSI_VEC;
+         if (offset_tmp >= 0 && offset_tmp < 64) {
+             val = s->htmsi_vector[offset_tmp];
+         }
+         break;
+     case PCH_PIC_ROUTE_ENTRY ... PCH_PIC_ROUTE_ENTRY_END:
+-        offset_tmp = offset - PCH_PIC_ROUTE_ENTRY;
++        offset_tmp = addr - PCH_PIC_ROUTE_ENTRY;
+         if (offset_tmp >= 0 && offset_tmp < 64) {
+             val = s->route_entry[offset_tmp];
+         }
+@@ -287,19 +285,19 @@ static void loongarch_pch_pic_writeb(void *opaque, hwaddr addr,
+ {
+     LoongArchPICCommonState *s = LOONGARCH_PIC_COMMON(opaque);
+     int32_t offset_tmp;
+-    uint32_t offset = (addr & 0xfff) + PCH_PIC_ROUTE_ENTRY;
+ 
++    addr += PCH_PIC_ROUTE_ENTRY;
+     trace_loongarch_pch_pic_writeb(size, addr, data);
+ 
+-    switch (offset) {
++    switch (addr) {
+     case PCH_PIC_HTMSI_VEC ... PCH_PIC_HTMSI_VEC_END:
+-        offset_tmp = offset - PCH_PIC_HTMSI_VEC;
++        offset_tmp = addr - PCH_PIC_HTMSI_VEC;
+         if (offset_tmp >= 0 && offset_tmp < 64) {
+             s->htmsi_vector[offset_tmp] = (uint8_t)(data & 0xff);
+         }
+         break;
+     case PCH_PIC_ROUTE_ENTRY ... PCH_PIC_ROUTE_ENTRY_END:
+-        offset_tmp = offset - PCH_PIC_ROUTE_ENTRY;
++        offset_tmp = addr - PCH_PIC_ROUTE_ENTRY;
+         if (offset_tmp >= 0 && offset_tmp < 64) {
+             s->route_entry[offset_tmp] = (uint8_t)(data & 0xff);
+         }
 -- 
 2.34.1
 
