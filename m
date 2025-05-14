@@ -2,40 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08F32AB6C20
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 15:07:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7D28AB6C6C
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 15:16:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFBgq-0002hL-3G; Wed, 14 May 2025 08:58:28 -0400
+	id 1uFBhT-0003j1-AY; Wed, 14 May 2025 08:59:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uFBgl-0002XI-Am; Wed, 14 May 2025 08:58:23 -0400
+ id 1uFBgp-0002rR-UU; Wed, 14 May 2025 08:58:27 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uFBgi-0007pu-Qx; Wed, 14 May 2025 08:58:22 -0400
+ id 1uFBgn-0007qX-IW; Wed, 14 May 2025 08:58:27 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id F271B121ADF;
- Wed, 14 May 2025 15:57:48 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 08E4A121AE0;
+ Wed, 14 May 2025 15:57:49 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 9D99C20B84D;
+ by tsrv.corpit.ru (Postfix) with ESMTP id A852D20B84E;
  Wed, 14 May 2025 15:57:58 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
- "hemanshu.khilari.foss" <hemanshu.khilari.foss@gmail.com>,
- qemu-riscv@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
+ Heinrich Schuchardt <heinrich.schuchardt@canonical.com>,
+ Frederik Du Toit Lotter <fred.lotter@canonical.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.4 01/34] docs/specs/riscv-iommu: Fixed broken link to
- external risv iommu document
-Date: Wed, 14 May 2025 15:57:23 +0300
-Message-Id: <20250514125758.92030-1-mjt@tls.msk.ru>
+Subject: [Stable-9.2.4 02/34] hw/rtc/goldfish: keep time offset when resetting
+Date: Wed, 14 May 2025 15:57:24 +0300
+Message-Id: <20250514125758.92030-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.4-20250514155748@cover.tls.msk.ru>
 References: <qemu-stable-9.2.4-20250514155748@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,52 +61,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "hemanshu.khilari.foss" <hemanshu.khilari.foss@gmail.com>
+From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
 
-The links to riscv iommu specification document are incorrect. This patch
-updates all the said link to point to correct location.
+Currently resetting the leads to resynchronizing the Goldfish RTC
+with the system clock of the host. In real hardware an RTC reset
+would not change the wall time. Other RTCs like pl031 do not show
+this behavior.
+
+Move the synchronization of the RTC with the system clock to the
+instance realization.
 
 Cc: qemu-stable@nongnu.org
-Cc: qemu-riscv@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2808
-Signed-off-by: hemanshu.khilari.foss <hemanshu.khilari.foss@gmail.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250323063404.13206-1-hemanshu.khilari.foss@gmail.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit e768f0246ce2625880800a2bdce78438b5e9282c)
+Reported-by: Frederik Du Toit Lotter <fred.lotter@canonical.com>
+Fixes: 9a5b40b8427 ("hw: rtc: Add Goldfish RTC device")
+Signed-off-by: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20250321221248.17764-1-heinrich.schuchardt@canonical.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+(cherry picked from commit 2542d5cf471a38c4ceb9717708178938b96ded47)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/docs/specs/riscv-iommu.rst b/docs/specs/riscv-iommu.rst
-index 463f4cffb6..decd81cf4f 100644
---- a/docs/specs/riscv-iommu.rst
-+++ b/docs/specs/riscv-iommu.rst
-@@ -4,7 +4,7 @@ RISC-V IOMMU support for RISC-V machines
- ========================================
+diff --git a/hw/rtc/goldfish_rtc.c b/hw/rtc/goldfish_rtc.c
+index 3dcf307e99..75d4cb0f31 100644
+--- a/hw/rtc/goldfish_rtc.c
++++ b/hw/rtc/goldfish_rtc.c
+@@ -239,15 +239,8 @@ static const VMStateDescription goldfish_rtc_vmstate = {
+ static void goldfish_rtc_reset(DeviceState *dev)
+ {
+     GoldfishRTCState *s = GOLDFISH_RTC(dev);
+-    struct tm tm;
  
- QEMU implements a RISC-V IOMMU emulation based on the RISC-V IOMMU spec
--version 1.0 `iommu1.0`_.
-+version 1.0 `iommu1.0.0`_.
+     timer_del(s->timer);
+-
+-    qemu_get_timedate(&tm, 0);
+-    s->tick_offset = mktimegm(&tm);
+-    s->tick_offset *= NANOSECONDS_PER_SECOND;
+-    s->tick_offset -= qemu_clock_get_ns(rtc_clock);
+-    s->tick_offset_vmstate = 0;
+     s->alarm_next = 0;
+     s->alarm_running = 0;
+     s->irq_pending = 0;
+@@ -258,6 +251,7 @@ static void goldfish_rtc_realize(DeviceState *d, Error **errp)
+ {
+     SysBusDevice *dev = SYS_BUS_DEVICE(d);
+     GoldfishRTCState *s = GOLDFISH_RTC(d);
++    struct tm tm;
  
- The emulation includes a PCI reference device, riscv-iommu-pci, that QEMU
- RISC-V boards can use.  The 'virt' RISC-V machine is compatible with this
-@@ -14,7 +14,7 @@ riscv-iommu-pci reference device
- --------------------------------
+     memory_region_init_io(&s->iomem, OBJECT(s),
+                           &goldfish_rtc_ops[s->big_endian], s,
+@@ -267,6 +261,11 @@ static void goldfish_rtc_realize(DeviceState *d, Error **errp)
+     sysbus_init_irq(dev, &s->irq);
  
- This device implements the RISC-V IOMMU emulation as recommended by the section
--"Integrating an IOMMU as a PCIe device" of `iommu1.0`_: a PCI device with base
-+"Integrating an IOMMU as a PCIe device" of `iommu1.0.0`_: a PCI device with base
- class 08h, sub-class 06h and programming interface 00h.
+     s->timer = timer_new_ns(rtc_clock, goldfish_rtc_interrupt, s);
++
++    qemu_get_timedate(&tm, 0);
++    s->tick_offset = mktimegm(&tm);
++    s->tick_offset *= NANOSECONDS_PER_SECOND;
++    s->tick_offset -= qemu_clock_get_ns(rtc_clock);
+ }
  
- As a reference device it doesn't implement anything outside of the specification,
-@@ -83,7 +83,7 @@ Several options are available to control the capabilities of the device, namely:
- - "s-stage": enable s-stage support
- - "g-stage": enable g-stage support
- 
--.. _iommu1.0: https://github.com/riscv-non-isa/riscv-iommu/releases/download/v1.0/riscv-iommu.pdf
-+.. _iommu1.0.0: https://github.com/riscv-non-isa/riscv-iommu/releases/download/v1.0.0/riscv-iommu.pdf
- 
- .. _linux-v8: https://lore.kernel.org/linux-riscv/cover.1718388908.git.tjeznach@rivosinc.com/
- 
+ static Property goldfish_rtc_properties[] = {
 -- 
 2.39.5
 
