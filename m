@@ -2,78 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47DEDAB6AC9
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 13:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B71F4AB6A9E
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 13:55:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFAg1-0000e3-AE; Wed, 14 May 2025 07:53:33 -0400
+	id 1uFAfu-0008CW-Fl; Wed, 14 May 2025 07:53:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uFAe0-0006cE-6F
- for qemu-devel@nongnu.org; Wed, 14 May 2025 07:51:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uFAe2-0006dY-Dc
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 07:51:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uFAdu-0006Nb-Ku
- for qemu-devel@nongnu.org; Wed, 14 May 2025 07:51:27 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1uFAdx-0006PC-Bn
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 07:51:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747223479;
+ s=mimecast20190719; t=1747223483;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=HnuqpIUtdmJu47LKWP+h8IXAeG/9kJhvAnZOIfqpYg8=;
- b=NRePbIlSZvFhIKzfHv6DLRmDSIhxutCcs3hvgVDVFnbsdfsPHWg14cCTafR1K4VR3qaWkm
- 9JGnAuR7tRkBxnimektZd6rcBYHYIUPGiXFHmyJjWnXe0B2MEXPncUQhZDiCG2S4oHmTOm
- GZ+5WzipPvjrDUlCjTMD9Jw+5czwplw=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=6kql+B2DpLK0zsY0c4B4L4VYmubyDfVRDOa+cEX4Mpg=;
+ b=PCXlMyVJFYR9m2Cvha5Gr6XnWn6G0wQ3kzQU3+SG2Wtm5PqYHEm5bb2A2TAsPdoY84UCbB
+ IXQcjTJRJx0E+peHyHrsA8joaahgjXzbztVjcYUx5s4VAPhf2JxgFz0txPzBZzPFMrwgII
+ e1npvG+fLRAy/Y3LmkNJS6pInHy9drA=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-190-SLeayItWO3OODACn6ahKcA-1; Wed, 14 May 2025 07:51:18 -0400
-X-MC-Unique: SLeayItWO3OODACn6ahKcA-1
-X-Mimecast-MFC-AGG-ID: SLeayItWO3OODACn6ahKcA_1747223477
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-43d0a037f97so34800435e9.2
- for <qemu-devel@nongnu.org>; Wed, 14 May 2025 04:51:18 -0700 (PDT)
+ us-mta-563-ZHT2iRFRP9CcF45g_grSIg-1; Wed, 14 May 2025 07:51:22 -0400
+X-MC-Unique: ZHT2iRFRP9CcF45g_grSIg-1
+X-Mimecast-MFC-AGG-ID: ZHT2iRFRP9CcF45g_grSIg_1747223481
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-442dc6f0138so20151485e9.0
+ for <qemu-devel@nongnu.org>; Wed, 14 May 2025 04:51:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747223477; x=1747828277;
+ d=1e100.net; s=20230601; t=1747223480; x=1747828280;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HnuqpIUtdmJu47LKWP+h8IXAeG/9kJhvAnZOIfqpYg8=;
- b=jbZENrY6SPtddrVfwegc+HO6b4GZY4gKDTYm23XPw9cEs9917bAWRTXPFQm6rprXYN
- 0r8R/W6WG4sx4Bn1nPaHT3uW8XiDkGom8EfSx1RVbFXQzVBhnGRUIC7Q/gs2rfTvVUdR
- e2A6MrFnIi/T04itqR7vbLCMlvzt2Tlwu7uBTHqvohu6151TS/wGZ+PJ6H6mVYVSlhtu
- Bi81bG5NGKUcaXX084vQS00igfYqIWuYEfgH/09dZQcagY7OFE0t2RybR8zF6fraTGjm
- JHBt9cesxw9sP3r0OT6mm79/BfR4yVAjTb30NBEEigHsmXT54ZDHIQmGd0mmx1MtmeIh
- qg9g==
-X-Gm-Message-State: AOJu0YxVym0PF0zk8qDv5ZqcQZLMyc3tNL57gSQ2ZkHSIljvtP2KhZwe
- 4bVb9uPw0eY4HTv+S+rWKI6ZaSTMBwEQOK0Th7mJERDIIkAhUey8ehvmDgaA7fYEILW9PYXUepP
- DcnU/hqOBnw26wOb8oBfu/B8OK3LPES8cVdC5PACVL2aRffXNKrKtfIoZUw2gSwdhK78OZQuxZd
- /V4mbh2zjygR+GY1W0shjsDWqG17zKOA==
-X-Gm-Gg: ASbGncum/bWOYPuaD/lahR6zQDpNqXKnfYv9EaRLVmSpR/7LE4ytDgPnnu2b1tdvmwx
- zQlCPAIDBDwZU0DMyCUT4X5eR65Q5PN5LgmyuMQYYiudNpKwyAKT3QofsKlf3q1SEIZAxA2cecd
- n7/2vz5V7vTz1VaW/hKKwKkgYs8uhiNjYV+kGBfE/os+ITxChsFKfuM/W28eAJ3Kd8Hk9j1u/Au
- drEdR61OdJej3tIawIEm2AKPfTvWBQ61dl2PPHce1YVQ+QlwFDguOOzx4UGcE6p9PboD01PNTS7
- f48ZHg==
-X-Received: by 2002:a05:600c:8508:b0:440:59eb:bfc with SMTP id
- 5b1f17b1804b1-442f752f78fmr2058545e9.23.1747223476856; 
- Wed, 14 May 2025 04:51:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGK+tkNrWQ23VX/0Xt5GPJfFb5LwXcWoqKhbKXuZjFXfBp+A0FCydWm7Aatlek+OjfqTn/zTQ==
-X-Received: by 2002:a05:600c:8508:b0:440:59eb:bfc with SMTP id
- 5b1f17b1804b1-442f752f78fmr2058345e9.23.1747223476510; 
- Wed, 14 May 2025 04:51:16 -0700 (PDT)
+ bh=6kql+B2DpLK0zsY0c4B4L4VYmubyDfVRDOa+cEX4Mpg=;
+ b=S4MDc6kYMTZKrcsts5fHqDRLj/bIDLncrKEWpry+FegvKScfLqnyyznODRt2U7n2cj
+ kog1gVh3tst7Yo6JioCEBtv2khYjfsboHRaFRLabMbW5FvcGQC+Ev/hvDN1vi2A1//Jn
+ q3WB1r9/HWaZm44HqIOONdk8INnFNyb8+LmVqGTHly1LNfCN2Xkm+22RwjkmhhXOHA6P
+ lyympB6A4yRIAUAqNDolLTkYQ1bLS9DsN0wtZ5M8DIkW4bnkKdf4UJIzVwnWKoUoMWLj
+ LZcFzElD9AHtjoKX+DCH+S0/Dd6VKBlsORIRBejtuTg1zHlgzx2CrrCRNUZB9Y9ykpsO
+ fmYg==
+X-Gm-Message-State: AOJu0Yx02s7g8m2hLCcol+MiUNt2c59q2MchpQSInAhPkESeDfJiaLye
+ yW1aT0dqdspp3eu219fL7NL51s2m1gk/tZqH2hlOiQL+JA7zFp/5uxD3pyiLnfObkEGOYEuohgv
+ L2Yhgv4ulHlkCU+kz977D2krIcppNO/UfF4+KFtq04+kdJ6DKKOxmu2bMFNgPP92oWLvr4LRj/G
+ v48ZQc8NoSERzsE1yWVwI01XIVnqcu/w==
+X-Gm-Gg: ASbGnctJ72o10/9Hu9CqF1WlRM1EQSvtFfp3J64itPNUsjXmbjRYi7MxKUzRpwXoLDc
+ lHsISr4GVvO944QkI+BMngzuID6T+0lQtTIuvPsTtQGU4sx6QR1aFsEEeOZn/7Zc1MNvrz25zs7
+ lc6c9B0Z63AkDtAOQT1EqlFf4mpSOSEyLmB6tJZUHAsdOPvlJF7NztwD7Pa6Y/z2x7f7255FqQx
+ eybnlChVyNweUw6A5TisBp4wr5IY23tZjViBszEDAmPqTpHQvMEoQu8AgLUR18EYdWf5EGfKcVC
+ +TdjsQ==
+X-Received: by 2002:a05:600c:5118:b0:43d:526:e0ce with SMTP id
+ 5b1f17b1804b1-442f2169a50mr19098635e9.21.1747223480499; 
+ Wed, 14 May 2025 04:51:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE4KxtgrkwQ9kUmO92JnBaAM1wAVRJ5nIOI8b/rA26277TF2Lg4ZNlftbmMxa9MNl0OPu+dRQ==
+X-Received: by 2002:a05:600c:5118:b0:43d:526:e0ce with SMTP id
+ 5b1f17b1804b1-442f2169a50mr19098285e9.21.1747223480079; 
+ Wed, 14 May 2025 04:51:20 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442f39e84d3sm29380325e9.32.2025.05.14.04.51.15
+ 5b1f17b1804b1-442f3368fbasm27531985e9.2.2025.05.14.04.51.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 May 2025 04:51:16 -0700 (PDT)
-Date: Wed, 14 May 2025 07:51:14 -0400
+ Wed, 14 May 2025 04:51:19 -0700 (PDT)
+Date: Wed, 14 May 2025 07:51:16 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PULL 23/27] virtio: Move virtio_reset()
-Message-ID: <77a9408fc774ad99dcd16ea08f31b96b590fbf99.1747223385.git.mst@redhat.com>
+ CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Jason Wang <jasowang@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 24/27] intel_iommu: Use BQL_LOCK_GUARD to manage cleanup
+ automatically
+Message-ID: <b1c84782bfddeaa0070f5ae57ac2e4e3992f9f19.1747223385.git.mst@redhat.com>
 References: <cover.1747223385.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -81,7 +88,7 @@ Content-Disposition: inline
 In-Reply-To: <cover.1747223385.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -37
 X-Spam_score: -3.8
@@ -90,7 +97,7 @@ X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,126 +113,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
 
-Move virtio_reset() to a later part of the file to remove the forward
-declaration of virtio_set_features_nocheck() and to prepare the
-situation that we need more operations to perform during reset.
+vtd_switch_address_space needs to take the BQL if not already held.
+Use BQL_LOCK_GUARD to make the iommu implementation more consistent.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20250421-reset-v2-2-e4c1ead88ea1@daynix.com>
+Signed-off-by: Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
+Message-Id: <20250430124750.240412-2-clement.mathieu--drif@eviden.com>
+Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/virtio.c | 88 ++++++++++++++++++++++------------------------
- 1 file changed, 43 insertions(+), 45 deletions(-)
+ hw/i386/intel_iommu.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 3300f4afb0..2e98cecf64 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -2320,51 +2320,6 @@ void virtio_queue_enable(VirtIODevice *vdev, uint32_t queue_index)
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index 5f8ed1243d..b925e65b02 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -1728,8 +1728,6 @@ static bool vtd_as_pt_enabled(VTDAddressSpace *as)
+ static bool vtd_switch_address_space(VTDAddressSpace *as)
+ {
+     bool use_iommu, pt;
+-    /* Whether we need to take the BQL on our own */
+-    bool take_bql = !bql_locked();
+ 
+     assert(as);
+ 
+@@ -1746,9 +1744,7 @@ static bool vtd_switch_address_space(VTDAddressSpace *as)
+      * from vtd_pt_enable_fast_path(). However the memory APIs need
+      * it. We'd better make sure we have had it already, or, take it.
+      */
+-    if (take_bql) {
+-        bql_lock();
+-    }
++    BQL_LOCK_GUARD();
+ 
+     /* Turn off first then on the other */
+     if (use_iommu) {
+@@ -1801,10 +1797,6 @@ static bool vtd_switch_address_space(VTDAddressSpace *as)
+         memory_region_set_enabled(&as->iommu_ir_fault, false);
      }
+ 
+-    if (take_bql) {
+-        bql_unlock();
+-    }
+-
+     return use_iommu;
  }
  
--static int virtio_set_features_nocheck(VirtIODevice *vdev, uint64_t val);
--
--void virtio_reset(void *opaque)
--{
--    VirtIODevice *vdev = opaque;
--    VirtioDeviceClass *k = VIRTIO_DEVICE_GET_CLASS(vdev);
--    int i;
--
--    virtio_set_status(vdev, 0);
--    if (current_cpu) {
--        /* Guest initiated reset */
--        vdev->device_endian = virtio_current_cpu_endian();
--    } else {
--        /* System reset */
--        vdev->device_endian = virtio_default_endian();
--    }
--
--    if (k->get_vhost) {
--        struct vhost_dev *hdev = k->get_vhost(vdev);
--        /* Only reset when vhost back-end is connected */
--        if (hdev && hdev->vhost_ops) {
--            vhost_reset_device(hdev);
--        }
--    }
--
--    if (k->reset) {
--        k->reset(vdev);
--    }
--
--    vdev->start_on_kick = false;
--    vdev->started = false;
--    vdev->broken = false;
--    virtio_set_features_nocheck(vdev, 0);
--    vdev->queue_sel = 0;
--    vdev->status = 0;
--    vdev->disabled = false;
--    qatomic_set(&vdev->isr, 0);
--    vdev->config_vector = VIRTIO_NO_VECTOR;
--    virtio_notify_vector(vdev, vdev->config_vector);
--
--    for(i = 0; i < VIRTIO_QUEUE_MAX; i++) {
--        __virtio_queue_reset(vdev, i);
--    }
--}
--
- void virtio_queue_set_addr(VirtIODevice *vdev, int n, hwaddr addr)
- {
-     if (!vdev->vq[n].vring.num) {
-@@ -3175,6 +3130,49 @@ int virtio_set_features(VirtIODevice *vdev, uint64_t val)
-     return ret;
- }
- 
-+void virtio_reset(void *opaque)
-+{
-+    VirtIODevice *vdev = opaque;
-+    VirtioDeviceClass *k = VIRTIO_DEVICE_GET_CLASS(vdev);
-+    int i;
-+
-+    virtio_set_status(vdev, 0);
-+    if (current_cpu) {
-+        /* Guest initiated reset */
-+        vdev->device_endian = virtio_current_cpu_endian();
-+    } else {
-+        /* System reset */
-+        vdev->device_endian = virtio_default_endian();
-+    }
-+
-+    if (k->get_vhost) {
-+        struct vhost_dev *hdev = k->get_vhost(vdev);
-+        /* Only reset when vhost back-end is connected */
-+        if (hdev && hdev->vhost_ops) {
-+            vhost_reset_device(hdev);
-+        }
-+    }
-+
-+    if (k->reset) {
-+        k->reset(vdev);
-+    }
-+
-+    vdev->start_on_kick = false;
-+    vdev->started = false;
-+    vdev->broken = false;
-+    virtio_set_features_nocheck(vdev, 0);
-+    vdev->queue_sel = 0;
-+    vdev->status = 0;
-+    vdev->disabled = false;
-+    qatomic_set(&vdev->isr, 0);
-+    vdev->config_vector = VIRTIO_NO_VECTOR;
-+    virtio_notify_vector(vdev, vdev->config_vector);
-+
-+    for (i = 0; i < VIRTIO_QUEUE_MAX; i++) {
-+        __virtio_queue_reset(vdev, i);
-+    }
-+}
-+
- static void virtio_device_check_notification_compatibility(VirtIODevice *vdev,
-                                                            Error **errp)
- {
 -- 
 MST
 
