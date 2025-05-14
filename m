@@ -2,115 +2,127 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F379AB7528
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 21:08:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDD1CAB7541
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 21:10:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFHSa-00018R-78; Wed, 14 May 2025 15:08:09 -0400
+	id 1uFHTL-0002pa-IF; Wed, 14 May 2025 15:08:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1uFHMu-0005V3-OA; Wed, 14 May 2025 15:02:24 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1uFHMi-0007hB-Rz; Wed, 14 May 2025 15:02:09 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54EDnPJ2004373;
- Wed, 14 May 2025 19:01:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=XhX9gG
- 2mecUE5SSUcGCKkc1pHNBvJakHy4LjG7+83hM=; b=PPkE/0eDPGFgYWSY4nddxj
- azd6fbvKmY3WlVs1GZrOapKOc4qdkEFN8zC9dwreR9ZfSZYz/bIpdtAjLRdqirxi
- nmEChB27N58WHuiS7hkQoL65yfW49TtouS+AAxyecy4gQfchV10WHl9Lm2q3V3Rd
- 20NVa6FsQSX2brp9St13QHkSysusfZdu9Lt4gVm0WlIDv/huokJSfazPyoyDzV6i
- 2DJixgu2sKKwWHwEsqimHTdozSdYK/hZfcBdqEhG4wybogZzIeSiGvbn87scRcHC
- VpWeOVucVQT+Cd0N//sY0V57eHV+CNwX8QdPD1oH64NMa0E1oEjOjqADyTJNk3zw
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mvd39r7d-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 May 2025 19:01:59 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54EIri2T027301;
- Wed, 14 May 2025 19:01:58 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mvd39r7a-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 May 2025 19:01:58 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54EGG32k021455;
- Wed, 14 May 2025 19:01:58 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46mbfrny1m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 May 2025 19:01:58 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
- [10.39.53.233])
- by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 54EJ1r8H25428668
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 14 May 2025 19:01:53 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 075C75804E;
- Wed, 14 May 2025 19:01:57 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 85EED5803F;
- Wed, 14 May 2025 19:01:56 +0000 (GMT)
-Received: from [9.10.80.143] (unknown [9.10.80.143])
- by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 14 May 2025 19:01:56 +0000 (GMT)
-Message-ID: <2c83321e-182b-4b98-89df-3d5fc4231747@linux.ibm.com>
-Date: Wed, 14 May 2025 14:01:56 -0500
+ (Exim 4.90_1) (envelope-from <i.maximets.ovn@gmail.com>)
+ id 1uFHNI-0005yT-IS
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 15:02:40 -0400
+Received: from mail-ej1-f65.google.com ([209.85.218.65])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <i.maximets.ovn@gmail.com>)
+ id 1uFHNE-0007pJ-R2
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 15:02:40 -0400
+Received: by mail-ej1-f65.google.com with SMTP id
+ a640c23a62f3a-acae7e7587dso22019566b.2
+ for <qemu-devel@nongnu.org>; Wed, 14 May 2025 12:02:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747249354; x=1747854154;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:to:subject:cc:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Bq6IDucE41HGr9Cs1evHK9COXsFiy7GhBYd0kod3aH0=;
+ b=Uh3cOdmxpnM56zohwvjZ2WF/DoGHlI1m3XsbtZP9Gs0nLRkqDla/Q34J2FmhowUSZQ
+ zRTjhhsPrUuT6LvEjVP44DvYbYCuubjG3p84vnJ7sXifI0308YQoWf6JVNvSKZFid+23
+ 8qtLLsXXB692gvNJulUL6q8A7QRYtsRB+v4hA+NgS9VXCl8LgRuq7LR7BjdgtktqAwBT
+ BkQdn4FZ2e2t1w7eRyp7CwfwUzO6UdJgPx38txv3L1OmSPWuN7PnqSudaR9jZACURUtB
+ CbP2OieH8E5wwfYUAswLV8+Fco+JgSQAVtho4bkeqzrqLVKEMvPupKApnXbU2aw1kEz6
+ 3JrQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV62kqwCmlX5LUvsGw5rWeNX3DmgM6Ubz0qiZNYyHEolKMUZWblvCUgfUAuyd3l5Fj5d5ub/f+wIztU@nongnu.org
+X-Gm-Message-State: AOJu0YxNY0OUvGqNxCqN6wjcBF4ynq+ITLWg2k4lBsisqvUMgYEBvwLJ
+ 95kuym/pBMJN2+nDhn0LjDwDOzbwXQhUY/SJbb1FrGS3YRatLhrN
+X-Gm-Gg: ASbGncslM6fgOBWXHN9wya87rUVnELqRvCK+2b9sYb2ETiltd8PBFKBjSVioBqLQyCn
+ Y5tf8Tcb5MHSMLdRXbhXnt4k5Tue3NTCE/pHHM8QuElEWc6FzsNrNvATJrkBUCorgfx68/Ozodn
+ 9WTcK9nNJvXR/l8lTzB+KdbYX8cCqcyYp8qHhepT7mWsLjlubgrmoW5C5PThLHlI00w5pNIRpRr
+ jl32qrM4Qr/vk8mgI6Rx822sSbf8WSQ7xvNhnIdj7vzGFsD3RwpcH5sgEFh1+jRVLhb/uqhHV/F
+ dBTuai65s0w7FphX2zb6Ee5Sn9GlwiifXn+qwrSn7FJYIHxNOg6/dZIBTyb1XOrl+eciO+6moEH
+ d9kiAbLhjNXlT
+X-Google-Smtp-Source: AGHT+IGG54F/kugcdsakcLt6pdEoShf8wDwYxc/NO7MK3b2Is4aIBDAvjXf6GyYgXChNgD9z1939ZA==
+X-Received: by 2002:a17:906:9c87:b0:ad4:cc66:1524 with SMTP id
+ a640c23a62f3a-ad4f74d49d5mr399857066b.54.1747249353802; 
+ Wed, 14 May 2025 12:02:33 -0700 (PDT)
+Received: from [192.168.88.252] (78-80-121-182.customers.tmcz.cz.
+ [78.80.121.182]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-ad2197be6d7sm970242366b.157.2025.05.14.12.02.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 14 May 2025 12:02:33 -0700 (PDT)
+Message-ID: <03180a8b-bd9e-40c1-8711-bddf04d84aa3@ovn.org>
+Date: Wed, 14 May 2025 21:02:32 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 16/50] ppc/xive: Fix pulling pool and phys contexts
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?=
- <fbarrat@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
- Caleb Schlossin <calebs@linux.vnet.ibm.com>
-References: <20250512031100.439842-1-npiggin@gmail.com>
- <20250512031100.439842-17-npiggin@gmail.com>
+Cc: i.maximets@ovn.org, Jason Wang <jasowang@redhat.com>,
+ Anton Protopopov <aspsk@isovalent.com>
+Subject: Re: [PATCH] net/af-xdp: Support pinned map path for AF_XDP sockets
+To: Daniel Borkmann <daniel@iogearbox.net>, qemu-devel@nongnu.org
+References: <20250508123436.461030-1-daniel@iogearbox.net>
+ <f044b02b-3b7a-4a64-ab38-3298f96955a9@ovn.org>
+ <0d7285c0-15dc-4dcd-9436-b9134f07242d@iogearbox.net>
+ <18f6aae8-2fa2-4fb6-a518-67e982623a5e@ovn.org>
+ <e61edfd9-8979-4ef4-b1a5-28dfd802cba6@iogearbox.net>
 Content-Language: en-US
-From: Mike Kowal <kowal@linux.ibm.com>
-In-Reply-To: <20250512031100.439842-17-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <e61edfd9-8979-4ef4-b1a5-28dfd802cba6@iogearbox.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 2IBeQfT5enuz8KMix9yyGVmuGmpPkkqV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE0MDE2OSBTYWx0ZWRfX64NxxsXLImEB
- yThaHurXtTIgkpVtIGragX4I9EHg0VyYLB7zF1jzmT5d5sC42NV1fso1icaOdrR9Nwqppd9Qu4E
- PvDC+xboiw0vxGbbC5DaQe3StKFe3lbhxcPZCdrJO+L4ZpbNJtSpp/AQUx7uwattczYX9QOpyAq
- dp7Ifjh1pqRSdfQoNakg8CiQKefSmLj4SJikkaw+aaEqPpiqOUb05ETYnE13JciQSL3PCwFEojT
- fQZvbtSRjFFXgRqpYuR5JYjbwN5vBtIpwdxUJ3IIVdHo+FJOt5KLqE+e9keqNq3Hiu1j6045/4T
- DVl/b6JgfBMwhy2xw+0K5pzeMKBQ9lhK9oXzqd1jf0rY5EYmSo3EJ0cCOel4S2lxV1vlIv78cDy
- Kuz92VREYa44hmUMKjka/YCpl0H8rPzD7zZYOIAO+cvcxtfBlhRbV0XxcaVpk7NruJxV28N7
-X-Proofpoint-ORIG-GUID: Nch6JDrVPJpoD34RBY8v_qXjhzKIiccI
-X-Authority-Analysis: v=2.4 cv=GbEXnRXL c=1 sm=1 tr=0 ts=6824e8a7 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8
- a=fmczn3qS4knw4DMiZZIA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-14_04,2025-05-14_03,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0
- clxscore=1015 priorityscore=1501 lowpriorityscore=0 suspectscore=0
- mlxlogscore=999 phishscore=0 bulkscore=0 malwarescore=0 mlxscore=0
- spamscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
- definitions=main-2505140169
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=kowal@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Received-SPF: pass client-ip=209.85.218.65;
+ envelope-from=i.maximets.ovn@gmail.com; helo=mail-ej1-f65.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -128,119 +140,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 5/12/25 4:23 PM, Daniel Borkmann wrote:
+> On 5/12/25 2:03 PM, Ilya Maximets wrote:
+>> On 5/9/25 4:05 PM, Daniel Borkmann wrote:
+>>> On 5/9/25 12:53 AM, Ilya Maximets wrote:
+>>>> On 5/8/25 2:34 PM, Daniel Borkmann wrote:
+>>>>> Extend inhibit=on setting with the option to specify a pinned XSK map
+>>>>> path along with a starting index (default 0) to push the created XSK
+>>>>> sockets into. Example usage:
+>>>>>
+>>>>>     # ./build/qemu-system-x86_64 [...] \
+>>>>>       -netdev af-xdp,ifname=eth0,id=net0,mode=native,queues=2,inhibit=on,map-path=/sys/fs/bpf/foo,map-start-index=2
+>>>>>       -device virtio-net-pci,netdev=net0 [...]
+>>>>>
+>>>>> This is useful for the case where an existing XDP program with XSK map
+>>>>> is present on the AF_XDP supported phys device and the XSK map not yet
+>>>>> populated. Qemu will then push the XSK sockets into the specified map.
+>>>>
+>>>> Thanks for the patch!
+>>>>
+>>>> Could you, please, explain the use case a little more?  Is this patch
+>>>> aiming to improve usability?  Do you have a specific use case in mind?
+>>>
+>>> The use case we have is basically that the phys NIC has an XDP program
+>>> already attached which redirects into xsk map (e.g. installed from separate
+>>> control plane), the xsk map got pinned during that process into bpf fs,
+>>> and now qemu is launched, it creates the xsk sockets and then places them
+>>> into the map by gathering the map fd from the pinned bpf fs file.
+>>
+>> OK.  That's what I thought.  Would be good to expand the commit message
+>> a bit explaining the use case.
+> 
+> Ack, I already adjusted locally. Planning to send v2 ~today with your feedback
+> incorporated. Much appreciated!
+> 
+>>>> The main idea behind 'inhibit' is that the qemu doesn't need to have a lot
+>>>> of privileges to use the pre-loaded program and the pre-created sockets.
+>>>> But creating the sockets and setting them into a map doesn't allow us to
+>>>> run without privileges, IIUC.  May be worth mentioning at least in the
+>>>> commit message.
+>>>
+>>> Yes, privileges for above use case are still needed. Will clarify in the
+>>> description.
+>>
+>> OK.
+>>
+>>>> Also, isn't map-start-index the same thing as start-queue ?  Do we need
+>>>> both of them?
+>>>
+>>> I'd say yes given it does not have to be an exact mapping wrt queue index
+>>> to map slot. The default is 0 though and I expect this to be the most used
+>>> scenario.
+>>
+>> I'm still not sure about this.  For example, libxdp treats queue id as a map
+>> index.  And this value is actually not being used much in libxdp when the
+>> program load is inhibited.  I see that with a custom XDP program the indexes
+>> inside the map may not directly correspond to queues in the device, and, in
+>> fact, may have no relation to the actual queues in the device at all.
+> 
+> Right, that's correct.
+> 
+>> However, we're still calling them "queues" from the QEMU interface (as in the
+>> "queues" parameter of the net/af-xdp device), and QEMU will just treat every
+>> slot in the BPF map as separate queues, as this BPF map is essentially the
+>> network device that QEMU is working with, it doesn't actually know what's
+>> behind it.
+>>
+>> So, I think, it should be appropriate to simplify the interface and
+>> just use existing start-queue configuration knob for this.
+>>
+>> What do you think?
+> 
+> I was thinking of an example like the below (plainly taken from the XDP example
+> programs at github.com/xdp-project/bpf-examples).
+> 
+>    struct {
+> 	__uint(type, BPF_MAP_TYPE_XSKMAP);
+> 	__uint(max_entries, MAX_SOCKS);
+> 	__uint(key_size, sizeof(int));
+> 	__uint(value_size, sizeof(int));
+>    } xsks_map SEC(".maps");
+> 
+>    int num_socks = 0;
+>    static unsigned int rr;
+> 
+>    SEC("xdp_sock") int xdp_sock_prog(struct xdp_md *ctx)
+>    {
+> 	rr = (rr + 1) & (num_socks - 1);
+> 	return bpf_redirect_map(&xsks_map, rr, XDP_DROP);
+>    }
+> 
+> If we'd just reuse the start-queue configuration knob for this, then it wouldn't
+> work. So I think having the flexibility of where to place the sockets in the map
+> would make sense. But I can also drop that part of you think it does not warrant
+> the extra knob and align to start-queue then the map always needs to be of the
+> same size as the combined NIC queues.
 
-On 5/11/2025 10:10 PM, Nicholas Piggin wrote:
-> This improves the implementation of pulling pool and phys contexts in
-> XIVE1, by following closer the OS pulling code.
->
-> In particular, the old ring data is returned rather than the modified,
-> and irq signals are reset on pull.
+I'm a little confused here.  The 'start-queue' is not used for anything important,
+AFAICT, in case of inhibit=on.  So, why re-using it instead of adding a new
+config option reduces the number of available use cases?
 
-Reviewed-by: Michael Kowal <kowal@linux.ibm.com>
-
-Thanks MAK
-
-
->
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   hw/intc/xive.c | 66 ++++++++++++++++++++++++++++++++++++++++++++------
->   1 file changed, 58 insertions(+), 8 deletions(-)
->
-> diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-> index c2da23f9ea..1a94642c62 100644
-> --- a/hw/intc/xive.c
-> +++ b/hw/intc/xive.c
-> @@ -241,25 +241,75 @@ static uint64_t xive_tm_ack_hv_reg(XivePresenter *xptr, XiveTCTX *tctx,
->       return xive_tctx_accept(tctx, TM_QW3_HV_PHYS);
->   }
->   
-> +static void xive_pool_cam_decode(uint32_t cam, uint8_t *nvt_blk,
-> +                                 uint32_t *nvt_idx, bool *vp)
-> +{
-> +    if (nvt_blk) {
-> +        *nvt_blk = xive_nvt_blk(cam);
-> +    }
-> +    if (nvt_idx) {
-> +        *nvt_idx = xive_nvt_idx(cam);
-> +    }
-> +    if (vp) {
-> +        *vp = !!(cam & TM_QW2W2_VP);
-> +    }
-> +}
-> +
-> +static uint32_t xive_tctx_get_pool_cam(XiveTCTX *tctx, uint8_t *nvt_blk,
-> +                                       uint32_t *nvt_idx, bool *vp)
-> +{
-> +    uint32_t qw2w2 = xive_tctx_word2(&tctx->regs[TM_QW2_HV_POOL]);
-> +    uint32_t cam = be32_to_cpu(qw2w2);
-> +
-> +    xive_pool_cam_decode(cam, nvt_blk, nvt_idx, vp);
-> +    return qw2w2;
-> +}
-> +
-> +static void xive_tctx_set_pool_cam(XiveTCTX *tctx, uint32_t qw2w2)
-> +{
-> +    memcpy(&tctx->regs[TM_QW2_HV_POOL + TM_WORD2], &qw2w2, 4);
-> +}
-> +
->   static uint64_t xive_tm_pull_pool_ctx(XivePresenter *xptr, XiveTCTX *tctx,
->                                         hwaddr offset, unsigned size)
->   {
-> -    uint32_t qw2w2_prev = xive_tctx_word2(&tctx->regs[TM_QW2_HV_POOL]);
->       uint32_t qw2w2;
-> +    uint32_t qw2w2_new;
-> +    uint8_t nvt_blk;
-> +    uint32_t nvt_idx;
-> +    bool vp;
->   
-> -    qw2w2 = xive_set_field32(TM_QW2W2_VP, qw2w2_prev, 0);
-> -    memcpy(&tctx->regs[TM_QW2_HV_POOL + TM_WORD2], &qw2w2, 4);
-> +    qw2w2 = xive_tctx_get_pool_cam(tctx, &nvt_blk, &nvt_idx, &vp);
-> +
-> +    if (!vp) {
-> +        qemu_log_mask(LOG_GUEST_ERROR, "XIVE: pull invalid POOL NVT %x/%x !?\n",
-> +                      nvt_blk, nvt_idx);
-> +    }
-> +
-> +    /* Invalidate CAM line */
-> +    qw2w2_new = xive_set_field32(TM_QW2W2_VP, qw2w2, 0);
-> +    xive_tctx_set_pool_cam(tctx, qw2w2_new);
-> +
-> +    xive_tctx_reset_signal(tctx, TM_QW1_OS);
-> +    xive_tctx_reset_signal(tctx, TM_QW2_HV_POOL);
->       return qw2w2;
->   }
->   
->   static uint64_t xive_tm_pull_phys_ctx(XivePresenter *xptr, XiveTCTX *tctx,
->                                         hwaddr offset, unsigned size)
->   {
-> -    uint8_t qw3b8_prev = tctx->regs[TM_QW3_HV_PHYS + TM_WORD2];
-> -    uint8_t qw3b8;
-> +    uint8_t qw3b8 = tctx->regs[TM_QW3_HV_PHYS + TM_WORD2];
-> +    uint8_t qw3b8_new;
-> +
-> +    qw3b8 = tctx->regs[TM_QW3_HV_PHYS + TM_WORD2];
-> +    if (!(qw3b8 & TM_QW3B8_VT)) {
-> +        qemu_log_mask(LOG_GUEST_ERROR, "XIVE: pulling invalid PHYS thread!?\n");
-> +    }
-> +    qw3b8_new = qw3b8 & ~TM_QW3B8_VT;
-> +    tctx->regs[TM_QW3_HV_PHYS + TM_WORD2] = qw3b8_new;
->   
-> -    qw3b8 = qw3b8_prev & ~TM_QW3B8_VT;
-> -    tctx->regs[TM_QW3_HV_PHYS + TM_WORD2] = qw3b8;
-> +    xive_tctx_reset_signal(tctx, TM_QW1_OS);
-> +    xive_tctx_reset_signal(tctx, TM_QW3_HV_PHYS);
->       return qw3b8;
->   }
->   
-> @@ -489,7 +539,7 @@ static uint64_t xive_tm_pull_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
->       qw1w2 = xive_tctx_get_os_cam(tctx, &nvt_blk, &nvt_idx, &vo);
->   
->       if (!vo) {
-> -        qemu_log_mask(LOG_GUEST_ERROR, "XIVE: pulling invalid NVT %x/%x !?\n",
-> +        qemu_log_mask(LOG_GUEST_ERROR, "XIVE: pull invalid OS NVT %x/%x !?\n",
->                         nvt_blk, nvt_idx);
->       }
->   
+Bets regards, Ilya Maximets.
 
