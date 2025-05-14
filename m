@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82CD2AB724A
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 19:06:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC4DFAB7270
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 19:10:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFFXg-0001hx-66; Wed, 14 May 2025 13:05:16 -0400
+	id 1uFFY4-0001op-Gk; Wed, 14 May 2025 13:05:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uFFXa-0001dX-CC
- for qemu-devel@nongnu.org; Wed, 14 May 2025 13:05:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uFFXf-0001ma-7B
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 13:05:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1uFFXX-0007bI-Jh
- for qemu-devel@nongnu.org; Wed, 14 May 2025 13:05:09 -0400
+ id 1uFFXd-0007d6-7C
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 13:05:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747242306;
+ s=mimecast20190719; t=1747242312;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=37bWn0/SLN7Et2zFWZ1hnl9+t8mUMekHwstaQlziV6U=;
- b=Ty8v5OahI1ggi2G852jp/ZPcdUYpiwDAHKDoPm59XkQa22YRZ9nynT7f+fh/DWaZcOxhOm
- zHsardhlemZYhv866DCkDcLV/FFjifKGNiEKPJixkgS7hZoHsfhUqbjxuEabOgQCXN1pKx
- tu3fzPS1pWoHCtqTkyGcee7l3Vx2ktw=
+ bh=Wrvy28pHwDCbg0kHEoTqG1YGxSvjesAGWYyufHKiGqE=;
+ b=OUK4YIbB1ZRAevLFRpqqXN4F6kM+/8kafq0nb2NY8VmNyTNWqTzS+tb9dl7o5iXKIuFDk+
+ JumKk2vskWNIRT9IIfKe+l6z+PhUvZVrdYq5wRua/k7ipoNaOySil4Xtmi/+EWXkevXeHu
+ HkeHvx8HRcHWpZ29PMWD4ihFJuizUCA=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-627-E7G1LCGHPcGolzQ0IPk1Ig-1; Wed,
- 14 May 2025 13:05:03 -0400
-X-MC-Unique: E7G1LCGHPcGolzQ0IPk1Ig-1
-X-Mimecast-MFC-AGG-ID: E7G1LCGHPcGolzQ0IPk1Ig_1747242302
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-638-t3Y_VxkOPgeCogeHP7gxfg-1; Wed,
+ 14 May 2025 13:05:08 -0400
+X-MC-Unique: t3Y_VxkOPgeCogeHP7gxfg-1
+X-Mimecast-MFC-AGG-ID: t3Y_VxkOPgeCogeHP7gxfg_1747242307
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 47CB7180036F; Wed, 14 May 2025 17:05:02 +0000 (UTC)
+ id DC4741800374; Wed, 14 May 2025 17:05:06 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.44.32.14])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id C0FC930001B0; Wed, 14 May 2025 17:04:57 +0000 (UTC)
+ id D1AD730001B0; Wed, 14 May 2025 17:05:02 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, peter.maydell@linaro.org, imammedo@redhat.com,
@@ -52,16 +52,16 @@ To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
 Cc: pbonzini@redhat.com,
 	Jonathan.Cameron@huawei.com,
 	philmd@linaro.org
-Subject: [PATCH 04/22] hw/pci-host/gpex-acpi: Add native_pci_hotplug arg to
- acpi_dsdt_add_pci_osc
-Date: Wed, 14 May 2025 19:00:51 +0200
-Message-ID: <20250514170431.2786231-5-eric.auger@redhat.com>
+Subject: [PATCH 05/22] hw/pci-host/gpex-acpi: Split host bridge OSC and DSM
+ generation
+Date: Wed, 14 May 2025 19:00:52 +0200
+Message-ID: <20250514170431.2786231-6-eric.auger@redhat.com>
 In-Reply-To: <20250514170431.2786231-1-eric.auger@redhat.com>
 References: <20250514170431.2786231-1-eric.auger@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124;
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -37
 X-Spam_score: -3.8
@@ -70,7 +70,7 @@ X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,65 +86,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a new argument to acpi_dsdt_add_pci_osc to be able to disable
-native pci hotplug.
+acpi_dsdt_add_pci_osc() name is confusing as it gives the impression
+it appends the _OSC method but in fact it also appends the _DSM method
+for the host bridge. Let's split the function into two separate ones
+and let them return the method Aml pointer instead. This matches the
+way it is done on x86 (build_q35_osc_method). In a subsequent patch
+we will replace the gpex method by the q35 implementation that will
+become shared between ARM and x86.
+
+acpi_dsdt_add_host_bridge_methods is a new top helper that generates
+both the _OSC and _DSM methods.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
 Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
-
 ---
-
-rfc -> v1:
-- updated the "Allow OS control for all 5 features" comment
----
- hw/pci-host/gpex-acpi.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ hw/pci-host/gpex-acpi.c | 31 +++++++++++++++++++++----------
+ 1 file changed, 21 insertions(+), 10 deletions(-)
 
 diff --git a/hw/pci-host/gpex-acpi.c b/hw/pci-host/gpex-acpi.c
-index 0aba47c71c..f34b7cf25e 100644
+index f34b7cf25e..1aa2d12026 100644
 --- a/hw/pci-host/gpex-acpi.c
 +++ b/hw/pci-host/gpex-acpi.c
-@@ -50,7 +50,7 @@ static void acpi_dsdt_add_pci_route_table(Aml *dev, uint32_t irq,
+@@ -50,13 +50,10 @@ static void acpi_dsdt_add_pci_route_table(Aml *dev, uint32_t irq,
      }
  }
  
--static void acpi_dsdt_add_pci_osc(Aml *dev)
-+static void acpi_dsdt_add_pci_osc(Aml *dev, bool enable_native_pcie_hotplug)
+-static void acpi_dsdt_add_pci_osc(Aml *dev, bool enable_native_pcie_hotplug)
++static Aml *build_host_bridge_osc(bool enable_native_pcie_hotplug)
  {
-     Aml *method, *UUID, *ifctx, *ifctx1, *elsectx, *buf;
+-    Aml *method, *UUID, *ifctx, *ifctx1, *elsectx, *buf;
++    Aml *method, *UUID, *ifctx, *ifctx1, *elsectx;
  
-@@ -77,11 +77,12 @@ static void acpi_dsdt_add_pci_osc(Aml *dev)
-     aml_append(ifctx, aml_store(aml_name("CDW3"), aml_name("CTRL")));
+-    /* Declare an _OSC (OS Control Handoff) method */
+-    aml_append(dev, aml_name_decl("SUPP", aml_int(0)));
+-    aml_append(dev, aml_name_decl("CTRL", aml_int(0)));
+     method = aml_method("_OSC", 4, AML_NOTSERIALIZED);
+     aml_append(method,
+         aml_create_dword_field(aml_arg(3), aml_int(0), "CDW1"));
+@@ -103,9 +100,13 @@ static void acpi_dsdt_add_pci_osc(Aml *dev, bool enable_native_pcie_hotplug)
+                                aml_name("CDW1")));
+     aml_append(elsectx, aml_return(aml_arg(3)));
+     aml_append(method, elsectx);
+-    aml_append(dev, method);
++    return method;
++}
  
-     /*
--     * Allow OS control for all 5 features:
--     * PCIeHotplug SHPCHotplug PME AER PCIeCapability.
-+     * Allow OS control for SHPCHotplug, PME, AER, PCIeCapability,
-+     * and PCIeHotplug depending on enable_native_pcie_hotplug
-      */
--    aml_append(ifctx, aml_and(aml_name("CTRL"), aml_int(0x1F),
--                              aml_name("CTRL")));
-+    aml_append(ifctx, aml_and(aml_name("CTRL"),
-+               aml_int(0x1E | (enable_native_pcie_hotplug ? 0x1 : 0x0)),
-+               aml_name("CTRL")));
+-    method = aml_method("_DSM", 4, AML_NOTSERIALIZED);
++static Aml *build_host_bridge_dsm(void)
++{
++    Aml *method = aml_method("_DSM", 4, AML_NOTSERIALIZED);
++    Aml *UUID, *ifctx, *ifctx1, *buf;
  
-     ifctx1 = aml_if(aml_lnot(aml_equal(aml_arg(1), aml_int(0x1))));
-     aml_append(ifctx1, aml_or(aml_name("CDW1"), aml_int(0x08),
-@@ -192,7 +193,7 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
+     /* PCI Firmware Specification 3.0
+      * 4.6.1. _DSM for PCI Express Slot Information
+@@ -124,7 +125,17 @@ static void acpi_dsdt_add_pci_osc(Aml *dev, bool enable_native_pcie_hotplug)
+     byte_list[0] = 0;
+     buf = aml_buffer(1, byte_list);
+     aml_append(method, aml_return(buf));
+-    aml_append(dev, method);
++    return method;
++}
++
++static void acpi_dsdt_add_host_bridge_methods(Aml *dev,
++                                              bool enable_native_pcie_hotplug)
++{
++    aml_append(dev, aml_name_decl("SUPP", aml_int(0)));
++    aml_append(dev, aml_name_decl("CTRL", aml_int(0)));
++    /* Declare an _OSC (OS Control Handoff) method */
++    aml_append(dev, build_host_bridge_osc(enable_native_pcie_hotplug));
++    aml_append(dev, build_host_bridge_dsm());
+ }
+ 
+ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
+@@ -193,7 +204,7 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
              if (is_cxl) {
                  build_cxl_osc_method(dev);
              } else {
--                acpi_dsdt_add_pci_osc(dev);
-+                acpi_dsdt_add_pci_osc(dev, true);
+-                acpi_dsdt_add_pci_osc(dev, true);
++                acpi_dsdt_add_host_bridge_methods(dev, true);
              }
  
              aml_append(scope, dev);
-@@ -267,7 +268,7 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
+@@ -268,7 +279,7 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
      }
      aml_append(dev, aml_name_decl("_CRS", rbuf));
  
--    acpi_dsdt_add_pci_osc(dev);
-+    acpi_dsdt_add_pci_osc(dev, true);
+-    acpi_dsdt_add_pci_osc(dev, true);
++    acpi_dsdt_add_host_bridge_methods(dev, true);
  
      Aml *dev_res0 = aml_device("%s", "RES0");
      aml_append(dev_res0, aml_name_decl("_HID", aml_string("PNP0C02")));
