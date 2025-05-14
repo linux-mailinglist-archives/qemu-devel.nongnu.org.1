@@ -2,33 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EB69AB7523
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 21:07:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43E78AB7521
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 21:07:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFHRX-0006hX-3H; Wed, 14 May 2025 15:07:03 -0400
+	id 1uFHRs-00070M-HQ; Wed, 14 May 2025 15:07:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uFHNE-0005pK-P6; Wed, 14 May 2025 15:02:38 -0400
+ id 1uFHNF-0005q3-GI; Wed, 14 May 2025 15:02:38 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uFHNC-0007p4-O3; Wed, 14 May 2025 15:02:36 -0400
+ id 1uFHND-0007p8-2C; Wed, 14 May 2025 15:02:36 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1C7A7121DA0;
+ by isrv.corpit.ru (Postfix) with ESMTP id 283FB121DA2;
  Wed, 14 May 2025 22:00:33 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 2403120BA92;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 2EF5320BA93;
  Wed, 14 May 2025 22:00:43 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Christian Schoenebeck <qemu_oss@crudebyte.com>,
  Greg Kurz <groug@kaod.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.1 22/23] 9pfs: fix concurrent v9fs_reclaim_fd() calls
-Date: Wed, 14 May 2025 22:00:34 +0300
-Message-Id: <20250514190041.104759-22-mjt@tls.msk.ru>
+Subject: [Stable-10.0.1 23/23] 9pfs: fix FD leak and reduce latency of
+ v9fs_reclaim_fd()
+Date: Wed, 14 May 2025 22:00:35 +0300
+Message-Id: <20250514190041.104759-23-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-10.0.1-20250514114019@cover.tls.msk.ru>
 References: <qemu-stable-10.0.1-20250514114019@cover.tls.msk.ru>
@@ -59,70 +60,107 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Christian Schoenebeck <qemu_oss@crudebyte.com>
 
-Even though this function is serialized to be always called from main
-thread, v9fs_reclaim_fd() is dispatching the coroutine to a worker thread
-in between via its v9fs_co_*() calls, hence leading to the situation where
-v9fs_reclaim_fd() is effectively executed multiple times simultaniously,
-which renders its LRU algorithm useless and causes high latency.
+This patch fixes two different bugs in v9fs_reclaim_fd():
 
-Fix this by adding a simple boolean variable to ensure this function is
-only called once at a time. No synchronization needed for this boolean
-variable as this function is only entered and returned on main thread.
+1. Reduce latency:
+
+This function calls v9fs_co_close() and v9fs_co_closedir() in a loop. Each
+one of the calls adds two thread hops (between main thread and a fs driver
+background thread). Each thread hop adds latency, which sums up in
+function's loop to a significant duration.
+
+Reduce overall latency by open coding what v9fs_co_close() and
+v9fs_co_closedir() do, executing those and the loop itself altogether in
+only one background thread block, hence reducing the total amount of
+thread hops to only two.
+
+2. Fix file descriptor leak:
+
+The existing code called v9fs_co_close() and v9fs_co_closedir() to close
+file descriptors. Both functions check right at the beginning if the 9p
+request was cancelled:
+
+    if (v9fs_request_cancelled(pdu)) {
+        return -EINTR;
+    }
+
+So if client sent a 'Tflush' message, v9fs_co_close() / v9fs_co_closedir()
+returned without having closed the file descriptor and v9fs_reclaim_fd()
+subsequently freed the FID without its file descriptor being closed, hence
+leaking those file descriptors.
+
+This 2nd bug is fixed by this patch as well by open coding v9fs_co_close()
+and v9fs_co_closedir() inside of v9fs_reclaim_fd() and not performing the
+v9fs_request_cancelled(pdu) check there.
 
 Fixes: 7a46274529c ('hw/9pfs: Add file descriptor reclaim support')
+Fixes: bccacf6c792 ('hw/9pfs: Implement TFLUSH operation')
 Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
 Reviewed-by: Greg Kurz <groug@kaod.org>
-Message-Id: <5c622067efd66dd4ee5eca740dcf263f41db20b2.1741339452.git.qemu_oss@crudebyte.com>
-(cherry picked from commit 61da38db70affd925226ce1e8a61d761c20d045b)
+Message-Id: <5747469d3f039c53147e850b456943a1d4b5485c.1741339452.git.qemu_oss@crudebyte.com>
+(cherry picked from commit 89f7b4da7662ecc6840ffb0846045f03f9714bc6)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
-index 7cad2bce62..4f9c2dde9c 100644
+index 4f9c2dde9c..80b190ff5b 100644
 --- a/hw/9pfs/9p.c
 +++ b/hw/9pfs/9p.c
-@@ -435,6 +435,12 @@ void coroutine_fn v9fs_reclaim_fd(V9fsPDU *pdu)
+@@ -434,6 +434,8 @@ void coroutine_fn v9fs_reclaim_fd(V9fsPDU *pdu)
+     V9fsFidState *f;
      GHashTableIter iter;
      gpointer fid;
++    int err;
++    int nclosed = 0;
  
-+    /* prevent multiple coroutines running this function simultaniously */
-+    if (s->reclaiming) {
-+        return;
-+    }
-+    s->reclaiming = true;
-+
-     g_hash_table_iter_init(&iter, s->fids);
- 
+     /* prevent multiple coroutines running this function simultaniously */
+     if (s->reclaiming) {
+@@ -446,10 +448,10 @@ void coroutine_fn v9fs_reclaim_fd(V9fsPDU *pdu)
      QSLIST_HEAD(, V9fsFidState) reclaim_list =
-@@ -510,6 +516,8 @@ void coroutine_fn v9fs_reclaim_fd(V9fsPDU *pdu)
+         QSLIST_HEAD_INITIALIZER(reclaim_list);
+ 
++    /* Pick FIDs to be closed, collect them on reclaim_list. */
+     while (g_hash_table_iter_next(&iter, &fid, (gpointer *) &f)) {
+         /*
+-         * Unlink fids cannot be reclaimed. Check
+-         * for them and skip them. Also skip fids
++         * Unlinked fids cannot be reclaimed, skip those, and also skip fids
+          * currently being operated on.
           */
-         put_fid(pdu, f);
+         if (f->ref || f->flags & FID_NON_RECLAIMABLE) {
+@@ -499,17 +501,26 @@ void coroutine_fn v9fs_reclaim_fd(V9fsPDU *pdu)
+         }
      }
-+
-+    s->reclaiming = false;
- }
- 
- /*
-@@ -4324,6 +4332,8 @@ int v9fs_device_realize_common(V9fsState *s, const V9fsTransport *t,
-     s->ctx.fst = &fse->fst;
-     fsdev_throttle_init(s->ctx.fst);
- 
-+    s->reclaiming = false;
-+
-     rc = 0;
- out:
-     if (rc) {
-diff --git a/hw/9pfs/9p.h b/hw/9pfs/9p.h
-index 5e041e1f60..259ad32ed1 100644
---- a/hw/9pfs/9p.h
-+++ b/hw/9pfs/9p.h
-@@ -362,6 +362,7 @@ struct V9fsState {
-     uint64_t qp_ndevices; /* Amount of entries in qpd_table. */
-     uint16_t qp_affix_next;
-     uint64_t qp_fullpath_next;
-+    bool reclaiming;
- };
- 
- /* 9p2000.L open flags */
+     /*
+-     * Now close the fid in reclaim list. Free them if they
+-     * are already clunked.
++     * Close the picked FIDs altogether on a background I/O driver thread. Do
++     * this all at once to keep latency (i.e. amount of thread hops between main
++     * thread <-> fs driver background thread) as low as possible.
+      */
++    v9fs_co_run_in_worker({
++        QSLIST_FOREACH(f, &reclaim_list, reclaim_next) {
++            err = (f->fid_type == P9_FID_DIR) ?
++                s->ops->closedir(&s->ctx, &f->fs_reclaim) :
++                s->ops->close(&s->ctx, &f->fs_reclaim);
++            if (!err) {
++                /* total_open_fd must only be mutated on main thread */
++                nclosed++;
++            }
++        }
++    });
++    total_open_fd -= nclosed;
++    /* Free the closed FIDs. */
+     while (!QSLIST_EMPTY(&reclaim_list)) {
+         f = QSLIST_FIRST(&reclaim_list);
+         QSLIST_REMOVE(&reclaim_list, f, V9fsFidState, reclaim_next);
+-        if (f->fid_type == P9_FID_FILE) {
+-            v9fs_co_close(pdu, &f->fs_reclaim);
+-        } else if (f->fid_type == P9_FID_DIR) {
+-            v9fs_co_closedir(pdu, &f->fs_reclaim);
+-        }
+         /*
+          * Now drop the fid reference, free it
+          * if clunked.
 -- 
 2.39.5
 
