@@ -2,121 +2,124 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48B58AB6F52
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 17:14:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0879AB6E6A
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 16:49:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFDlD-0004Oc-FO; Wed, 14 May 2025 11:11:07 -0400
+	id 1uFDOs-0004zv-Gg; Wed, 14 May 2025 10:48:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <calebs@linux.ibm.com>)
- id 1uFDEx-0002dD-1G; Wed, 14 May 2025 10:37:48 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1uFDOp-0004vl-VQ
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 10:48:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <calebs@linux.ibm.com>)
- id 1uFDEu-0007X7-Co; Wed, 14 May 2025 10:37:46 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54EDn4fV003571;
- Wed, 14 May 2025 14:37:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=LvlrJN
- zFUtTJYVeCKxbt6thPVNKqX8a05rZumg6GwiU=; b=fFOq5HO9qTuVgJDLgABZX0
- aCsIcbJeekZXwDTfofTXl7LYbFmWKRGTQ8MEAARQprdc1QDdXw4cUAALa1kh/1Jo
- WZraks0PHht0/3N9bGlBfoTb49YedG454Evg5woL3rjAvFPAkN1gY/8/p+KgC2hX
- YKltO0eN7mFBNFCcbFdaNgaH7SdhCiFNxUvkmGctlAq9UdChEb2N1WX7CihLB2LR
- hrY/zUxmEOcwFmn/vCkxNVphBLV6D8rl1kCeUp0X0z125IScjFBSCWgS4b719hvc
- 2grl489fXMtbksyH0YwZk41HGzIu7OmX+UfZ95dTX6/B6VleNisJFQgOPtiKgVsg
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mvd3894u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 May 2025 14:37:42 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54EEWoaU012072;
- Wed, 14 May 2025 14:37:42 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mvd3894r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 May 2025 14:37:42 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54EDc8sU021809;
- Wed, 14 May 2025 14:37:41 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46mbfpmpta-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 May 2025 14:37:41 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
- [10.241.53.103])
- by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 54EEbeFa52822328
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 14 May 2025 14:37:40 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1C0E358056;
- Wed, 14 May 2025 14:37:40 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BBBB458052;
- Wed, 14 May 2025 14:37:39 +0000 (GMT)
-Received: from [9.10.255.115] (unknown [9.10.255.115])
- by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 14 May 2025 14:37:39 +0000 (GMT)
-Message-ID: <38a9bbb0-92ed-4877-912f-725bb28f6dd0@linux.ibm.com>
-Date: Wed, 14 May 2025 09:37:39 -0500
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1uFDOo-000135-8B
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 10:47:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747234076;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=X2BsONOjDivtTgtkFsn0yv2PnUrWsXcvAaV+8U9+UuA=;
+ b=KGBXjTy31yU31oYdSZKll1JahUtZ3PSKZAmIM5TRodPJUVcZPOvbcctta0Jvzxt+AuCNmw
+ LThlMSSwnWlGFDLL2SA534T/JvS4mD1RGYaD55pZShNuRys7DV0I6QIl8lVki2c85elpAZ
+ 4S7eu/6b8Oqmoe0HbPey7vPvnGslTBg=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-185-E_kpMnSxPJ-gzbbGdaCqjQ-1; Wed, 14 May 2025 10:47:54 -0400
+X-MC-Unique: E_kpMnSxPJ-gzbbGdaCqjQ-1
+X-Mimecast-MFC-AGG-ID: E_kpMnSxPJ-gzbbGdaCqjQ_1747234074
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3a1fa8742a8so2069248f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 14 May 2025 07:47:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747234074; x=1747838874;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=X2BsONOjDivtTgtkFsn0yv2PnUrWsXcvAaV+8U9+UuA=;
+ b=lbNKmOe1qKtD4kFVB4lmatyHyVHym5VWW1y7UvglNVOFL6ZOElKsHQNUKONNJOSAfc
+ K8EDVgWTi5Lw/1ogENZ45y0Y1N5JnOb5YTHMnw+MONPNXDxcLdChk/zb016u0+XP8eTB
+ CNWbzP+4XKbbs0OlUISbbDxJi8dgTKR5FSjjRywm5kExHg3GsatD/DHI6u93DwSS/nGh
+ ic+fO2FI2KWDOIwcCPTkRUtq98xKSHALmMXVj8FuE/0PryFaZAIFgMOyhaF1C/o5k7Os
+ 7dZPZKVpI1sIt1uYsBWS6G6hgWnRp4wY7h8F5tQwhnDGFM4km7O45t8cqLCtDSc3vzgT
+ FptQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXvjVJWio9ouMVH6CC9/mpBi+p+GnBLuaBdKZ8BmB2VLzPZ1F1eHotowS4ipKVoLBlrfIy67YRIpZ5B@nongnu.org
+X-Gm-Message-State: AOJu0YxHItyfyczvzpiEH2Wde523fnhZvM0G3SqSHMkwDMrAPsSpUK7d
+ zLbquESGvrXpZ/YbkwOE426CtLJ0p8v1B6l/VLyIQkfLHBitZjx8FEH3QqZzkhs8/4XMGbhLILM
+ jgy5dolfL0ox8heVlSe1hRyL1Tx+K52/0nU8D0Jf4dnX6eEk89fLi
+X-Gm-Gg: ASbGncvQ+lR53gMI3lBMnqQnFFSozBXi2JXsL5mYj420VCrs+JmNU0yFNsfjoIt2ia1
+ QlKAxIiT/aAqW1QhErTVKKDJk1zKv36ozsf0colqBsRR25AlCnVn0i2pOrRkj5tQRLmjvrs9RAa
+ JRcLHTu7C6PPAjrBYcZAU8QR5hlOtqzeOBuW0TbKvdzsmXxnqtVRu3vARPXzRx8mrm01V1RIg07
+ 4G75e5q14Vc/3kJYZnuJ1jhXzYeC8dKBNxvx7QZK74v79M/WawdbUNN46AqWt0pkXrZ1wpj3vDO
+ PuQI60EV7/zoi0KWFfFlhssj0bNPQjuy9wWO687S9OtOABw+NYgMHunVbS0=
+X-Received: by 2002:a05:6000:2207:b0:3a1:fed3:7108 with SMTP id
+ ffacd0b85a97d-3a349927544mr3236552f8f.40.1747234073718; 
+ Wed, 14 May 2025 07:47:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGSU/glQYPaDOKhV61rdaTt6qL+5rdXjEA8/73Ln5jAN35z/SkLF6fJczukQ8V9uFKDnlfNXA==
+X-Received: by 2002:a05:6000:2207:b0:3a1:fed3:7108 with SMTP id
+ ffacd0b85a97d-3a349927544mr3236510f8f.40.1747234073308; 
+ Wed, 14 May 2025 07:47:53 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874?
+ ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a1f58f2af7sm20184529f8f.52.2025.05.14.07.47.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 14 May 2025 07:47:52 -0700 (PDT)
+Message-ID: <c8f14e69-21b2-403b-99a5-b34f4c9dc2c5@redhat.com>
+Date: Wed, 14 May 2025 16:47:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 20/50] pnv/xive2: Permit valid writes to VC/PC Flush
- Control registers
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?=
- <fbarrat@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
- Michael Kowal <kowal@linux.ibm.com>,
- Caleb Schlossin <calebs@linux.vnet.ibm.com>
-References: <20250512031100.439842-1-npiggin@gmail.com>
- <20250512031100.439842-21-npiggin@gmail.com>
+Subject: Re: [PATCH v3 00/10] kvm/arm: Introduce a customizable aarch64 KVM
+ host model
 Content-Language: en-US
-From: Caleb Schlossin <calebs@linux.ibm.com>
-In-Reply-To: <20250512031100.439842-21-npiggin@gmail.com>
+To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+ Cornelia Huck <cohuck@redhat.com>,
+ "eric.auger.pro@gmail.com" <eric.auger.pro@gmail.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
+ "richard.henderson@linaro.org" <richard.henderson@linaro.org>,
+ "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
+ "maz@kernel.org" <maz@kernel.org>,
+ "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+ "sebott@redhat.com" <sebott@redhat.com>,
+ "armbru@redhat.com" <armbru@redhat.com>,
+ "berrange@redhat.com" <berrange@redhat.com>,
+ "abologna@redhat.com" <abologna@redhat.com>,
+ "jdenemar@redhat.com" <jdenemar@redhat.com>
+Cc: "agraf@csgraf.de" <agraf@csgraf.de>,
+ "shahuang@redhat.com" <shahuang@redhat.com>,
+ "mark.rutland@arm.com" <mark.rutland@arm.com>,
+ "philmd@linaro.org" <philmd@linaro.org>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>
+References: <20250414163849.321857-1-cohuck@redhat.com>
+ <dadc4acd-97c8-4647-9467-89cd1966a6f2@redhat.com>
+ <4fcfb4624f90491ebb238de76f04e4e5@huawei.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <4fcfb4624f90491ebb238de76f04e4e5@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 6Kj-V04g6_MlQWKnl3sKbyK5u50A2wZj
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE0MDEzMCBTYWx0ZWRfX+vt9qiJqbr4g
- AQWGPfcnil65E+FpvOIBda8Ach+Zs4I2zI95LXs4W9keUlkDl4OoPx52UHjVSlAi/EwC7VirAMj
- V4hrFcSaVb3JzlCVu3bpOcjX5V591EgAw7iuWAJhGSAC1+osWE2dnKZG1/pNL2UXyrNKaME0goi
- SyCK+9MMCSSd8Z1WI581nZPwryeSFdzCTNqu4t4VAMBgHZiEgpysOYEd0mN/wrqZu5Nol54wg5E
- TSZqYv2DzIgy29qOqIcH6dscP4KmgcGmToApcWIlVn0sMZTXZiQ5dfcZQC0bxuWWirO6iIW8geH
- 8DpHLtJp9n7ZpyTcU7tqYg2WWGEwzrRmYQLWQqdBBf9KJWHugy1IFZe74ZqocDHpiabeDnT9/+P
- /N+KV0H1ePV+pt372OyfsZwA4xr+31SjatkdIrCpi2Nshs+0pLY5taWFNtreX3j++tVpPiSx
-X-Proofpoint-ORIG-GUID: ff96PEEswlnmcFCKmSiDqTi4vqbIxJ3a
-X-Authority-Analysis: v=2.4 cv=GbEXnRXL c=1 sm=1 tr=0 ts=6824aab6 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=K43VmlK4zf_02HQK-ZgA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-14_04,2025-05-14_03,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0
- clxscore=1015 priorityscore=1501 lowpriorityscore=0 suspectscore=0
- mlxlogscore=770 phishscore=0 bulkscore=0 malwarescore=0 mlxscore=0
- spamscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
- definitions=main-2505140130
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=calebs@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -37
+X-Spam_score: -3.8
+X-Spam_bar: ---
+X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 14 May 2025 11:10:39 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -128,91 +131,49 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-Reviewed-by: Caleb Schlossin <calebs@linux.ibm.com>
 
-On 5/11/25 10:10 PM, Nicholas Piggin wrote:
-> From: Michael Kowal <kowal@linux.ibm.com>
-> 
-> Writes to the Flush Control registers were logged as invalid
-> when they are allowed. Clearing the unsupported want_cache_disable
-> feature is supported, so don't log an error in that case.
-> 
-> Signed-off-by: Michael Kowal <kowal@linux.ibm.com>
-> ---
->  hw/intc/pnv_xive2.c | 36 ++++++++++++++++++++++++++++++++----
->  1 file changed, 32 insertions(+), 4 deletions(-)
-> 
-> diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-> index 3c26cd6b77..c9374f0eee 100644
-> --- a/hw/intc/pnv_xive2.c
-> +++ b/hw/intc/pnv_xive2.c
-> @@ -1411,7 +1411,14 @@ static void pnv_xive2_ic_vc_write(void *opaque, hwaddr offset,
->      /*
->       * ESB cache updates (not modeled)
->       */
-> -    /* case VC_ESBC_FLUSH_CTRL: */
-> +    case VC_ESBC_FLUSH_CTRL:
-> +        if (val & VC_ESBC_FLUSH_CTRL_WANT_CACHE_DISABLE) {
-> +            xive2_error(xive, "VC: unsupported write @0x%"HWADDR_PRIx
-> +                        " value 0x%"PRIx64" bit[2] poll_want_cache_disable",
-> +                        offset, val);
-> +            return;
-> +        }
-> +        break;
->      case VC_ESBC_FLUSH_POLL:
->          xive->vc_regs[VC_ESBC_FLUSH_CTRL >> 3] |= VC_ESBC_FLUSH_CTRL_POLL_VALID;
->          /* ESB update */
-> @@ -1427,7 +1434,14 @@ static void pnv_xive2_ic_vc_write(void *opaque, hwaddr offset,
->      /*
->       * EAS cache updates (not modeled)
->       */
-> -    /* case VC_EASC_FLUSH_CTRL: */
-> +    case VC_EASC_FLUSH_CTRL:
-> +        if (val & VC_EASC_FLUSH_CTRL_WANT_CACHE_DISABLE) {
-> +            xive2_error(xive, "VC: unsupported write @0x%"HWADDR_PRIx
-> +                        " value 0x%"PRIx64" bit[2] poll_want_cache_disable",
-> +                        offset, val);
-> +            return;
-> +        }
-> +        break;
->      case VC_EASC_FLUSH_POLL:
->          xive->vc_regs[VC_EASC_FLUSH_CTRL >> 3] |= VC_EASC_FLUSH_CTRL_POLL_VALID;
->          /* EAS update */
-> @@ -1466,7 +1480,14 @@ static void pnv_xive2_ic_vc_write(void *opaque, hwaddr offset,
->          break;
-> 
-> 
-> -    /* case VC_ENDC_FLUSH_CTRL: */
-> +    case VC_ENDC_FLUSH_CTRL:
-> +        if (val & VC_ENDC_FLUSH_CTRL_WANT_CACHE_DISABLE) {
-> +            xive2_error(xive, "VC: unsupported write @0x%"HWADDR_PRIx
-> +                        " value 0x%"PRIx64" bit[2] poll_want_cache_disable",
-> +                        offset, val);
-> +            return;
-> +        }
-> +        break;
->      case VC_ENDC_FLUSH_POLL:
->          xive->vc_regs[VC_ENDC_FLUSH_CTRL >> 3] |= VC_ENDC_FLUSH_CTRL_POLL_VALID;
->          break;
-> @@ -1687,7 +1708,14 @@ static void pnv_xive2_ic_pc_write(void *opaque, hwaddr offset,
->          pnv_xive2_nxc_update(xive, watch_engine);
->          break;
-> 
-> -   /* case PC_NXC_FLUSH_CTRL: */
-> +    case PC_NXC_FLUSH_CTRL:
-> +        if (val & PC_NXC_FLUSH_CTRL_WANT_CACHE_DISABLE) {
-> +            xive2_error(xive, "VC: unsupported write @0x%"HWADDR_PRIx
-> +                        " value 0x%"PRIx64" bit[2] poll_want_cache_disable",
-> +                        offset, val);
-> +            return;
-> +        }
-> +        break;
->      case PC_NXC_FLUSH_POLL:
->          xive->pc_regs[PC_NXC_FLUSH_CTRL >> 3] |= PC_NXC_FLUSH_CTRL_POLL_VALID;
->          break;
+On 5/14/25 3:47 PM, Shameerali Kolothum Thodi wrote:
+>
+>> -----Original Message-----
+>> From: Eric Auger <eric.auger@redhat.com>
+>> Sent: Tuesday, May 13, 2025 4:30 PM
+>> To: Cornelia Huck <cohuck@redhat.com>; eric.auger.pro@gmail.com; qemu-
+>> devel@nongnu.org; qemu-arm@nongnu.org; kvmarm@lists.linux.dev;
+>> peter.maydell@linaro.org; richard.henderson@linaro.org;
+>> alex.bennee@linaro.org; maz@kernel.org; oliver.upton@linux.dev;
+>> sebott@redhat.com; Shameerali Kolothum Thodi
+>> <shameerali.kolothum.thodi@huawei.com>; armbru@redhat.com;
+>> berrange@redhat.com; abologna@redhat.com; jdenemar@redhat.com
+>> Cc: agraf@csgraf.de; shahuang@redhat.com; mark.rutland@arm.com;
+>> philmd@linaro.org; pbonzini@redhat.com
+>> Subject: Re: [PATCH v3 00/10] kvm/arm: Introduce a customizable aarch64
+>> KVM host model
+> [...]
+>
+>>> We still have to deal with MIDR/REVIDR/AIDR differences by exploiting
+>>>
+>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit?i
+>> d=d300b0168ea8fd5022a1413bd37ab63f4e5a7d4d
+>>> (in a different series.)
+>> Shameer, do you plan to contribute the qemu integration of this feature
+>> you developped on kernel side; or do you allow us to integrate it in
+>> this series?
+> Yes, it's on my ToDo list. I'll first go through this series and then work on
+> adding the above support on top of it.
+
+OK. Thank you for your reply!
+
+Cheers
+
+Eric
+>
+> Thanks,
+> Shameer
+>
 
 
