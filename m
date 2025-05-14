@@ -2,55 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A06E1AB6607
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 10:31:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B7CAB65FD
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 10:30:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uF7UI-00074m-6i; Wed, 14 May 2025 04:29:14 -0400
+	id 1uF7UL-0007EH-8x; Wed, 14 May 2025 04:29:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uF7UG-0006wU-1B; Wed, 14 May 2025 04:29:12 -0400
+ id 1uF7UJ-0007D0-JD; Wed, 14 May 2025 04:29:15 -0400
 Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uF7UE-0006H0-BE; Wed, 14 May 2025 04:29:11 -0400
+ id 1uF7UH-0006H0-PY; Wed, 14 May 2025 04:29:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747211351; x=1778747351;
+ t=1747211354; x=1778747354;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=VUxtdUfmhxC4kgSCPUeYsW2tnM9jTM6sDutnbwjMyCw=;
- b=a8LF1fLEbdFLddG5G5WTpfqVfPYOn/RhV35VUdyEKPJSu28oMMEnS2Op
- 9wwcVAPd/b++BEZ3Z4868oQeTre30WaN0bI4uNDL2le01fLTenACuwtu2
- /fp8FLHkcRqDHz5ikBbhOuFRVnLeTOnODQyw5UBxgmVSDUe3zSorQHMiB
- 0JH0WYdtOBXNmM2g7FCgTRQKGGo8kAqRktLk1MsukPXIB84EiAvpkkErw
- kWyfVTJl/KUo01HsSpXm6ksNC5CrDHDxNCNBk0ViTfm0CVjqxvRPXGekV
- toeU8KiEZnKPFgE6xydLzEOoTLP+kDQw87vaq3riq9hYkSzeNI698uW09 A==;
-X-CSE-ConnectionGUID: o4gswYsDSH2a5OnRU92uLg==
-X-CSE-MsgGUID: wQp5iozeTYOneB1N4PIv8A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="66505603"
-X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="66505603"
+ bh=JbnLeHCbjmi5qiZFkBbMgrEGQSATmTL1jzjpabktqpE=;
+ b=UgL9mIy1WM++4HQTvgRxa+02aWtbK+FLdFSTfbHs5gJ70eviLUrqThqB
+ KCJhNhiIqRA9jV71apdDA43iTTgUwpk8AdgR95IKFQh6fuBtcky7ZoH5G
+ A26zto9rW8V1ju71iZWtxBJPZAAm90ButKhyBJXk4rqFi7aWMeWJ0O4nE
+ 6pIdUWKqLKoZXbGpW6TJbj0hATQp3Q/SvQo7lXXPka/kGua92D5uX/XnP
+ qHMKu49ZV3TnGHD25UEMv45O8CvMxOkAsmHG2SyS6q0Puu7ZuXqmtsi0J
+ o9SyPkJD6iPCPC6X5E8+jJDviG27cb2LJ5eCJcVtjG06eI0M9EwGv+5jy A==;
+X-CSE-ConnectionGUID: B24Rzc/2TXWnedeMwMVyjw==
+X-CSE-MsgGUID: OjEEgq2/SQKBQi3bo7jzZg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="66505614"
+X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="66505614"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 May 2025 01:29:09 -0700
-X-CSE-ConnectionGUID: 3+cZ8mfbSR+Hh4ug4IYxcQ==
-X-CSE-MsgGUID: EkYN1IWVT2aZfK9zgJY7eQ==
+ 14 May 2025 01:29:12 -0700
+X-CSE-ConnectionGUID: hypJoV7ZQemsAFomVxyWQQ==
+X-CSE-MsgGUID: tByd5RQATIuDgh3pTO+SQw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="169065842"
+X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; d="scan'208";a="169065850"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by fmviesa001.fm.intel.com with ESMTP; 14 May 2025 01:29:06 -0700
+ by fmviesa001.fm.intel.com with ESMTP; 14 May 2025 01:29:08 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>
 Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>, Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 7/9] hw/core/resetcontainer: Consolidate
- OBJECT_DECLARE_SIMPLE_TYPE
-Date: Wed, 14 May 2025 16:49:55 +0800
-Message-Id: <20250514084957.2221975-8-zhao1.liu@intel.com>
+ Zhao Liu <zhao1.liu@intel.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ qemu-s390x@nongnu.org
+Subject: [PATCH 8/9] target/s390x/kvm/pv: Consolidate
+ OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES
+Date: Wed, 14 May 2025 16:49:56 +0800
+Message-Id: <20250514084957.2221975-9-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250514084957.2221975-1-zhao1.liu@intel.com>
 References: <20250514084957.2221975-1-zhao1.liu@intel.com>
@@ -81,32 +86,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The QOM type of ResettableContainer is defined by
-OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES, which means it doesn't need
-the class!
+The QOM type of S390PVGuest is declared by OBJECT_DECLARE_SIMPLE_TYPE,
+which means it doesn't need the class!
 
-Therefore, use OBJECT_DECLARE_SIMPLE_TYPE to declare the type, then
-there's no need for class definition.
+Therefore, use OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES to implement
+the type, then there's no need for class definition.
 
-Cc: Peter Maydell <peter.maydell@linaro.org>
+Cc: Halil Pasic <pasic@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Thomas Huth <thuth@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+Cc: qemu-s390x@nongnu.org
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- include/hw/core/resetcontainer.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/s390x/kvm/pv.c | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
 
-diff --git a/include/hw/core/resetcontainer.h b/include/hw/core/resetcontainer.h
-index 23db0c7a8806..daeb18c1ea81 100644
---- a/include/hw/core/resetcontainer.h
-+++ b/include/hw/core/resetcontainer.h
-@@ -20,7 +20,7 @@
- #include "qom/object.h"
+diff --git a/target/s390x/kvm/pv.c b/target/s390x/kvm/pv.c
+index 2bc916a5455f..a4dbbcef7e08 100644
+--- a/target/s390x/kvm/pv.c
++++ b/target/s390x/kvm/pv.c
+@@ -313,12 +313,6 @@ struct S390PVGuest {
+     ConfidentialGuestSupport parent_obj;
+ };
  
- #define TYPE_RESETTABLE_CONTAINER "resettable-container"
--OBJECT_DECLARE_TYPE(ResettableContainer, ResettableContainerClass, RESETTABLE_CONTAINER)
-+OBJECT_DECLARE_SIMPLE_TYPE(ResettableContainer, RESETTABLE_CONTAINER)
+-typedef struct S390PVGuestClass S390PVGuestClass;
+-
+-struct S390PVGuestClass {
+-    ConfidentialGuestSupportClass parent_class;
+-};
+-
+ /*
+  * If protected virtualization is enabled, the amount of data that the
+  * Read SCP Info Service Call can use is limited to one page. The
+@@ -380,12 +374,12 @@ static int s390_pv_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+     return 0;
+ }
  
- /**
-  * resettable_container_add: Add a resettable object to the container
+-OBJECT_DEFINE_TYPE_WITH_INTERFACES(S390PVGuest,
+-                                   s390_pv_guest,
+-                                   S390_PV_GUEST,
+-                                   CONFIDENTIAL_GUEST_SUPPORT,
+-                                   { TYPE_USER_CREATABLE },
+-                                   { NULL })
++OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(S390PVGuest,
++                                          s390_pv_guest,
++                                          S390_PV_GUEST,
++                                          CONFIDENTIAL_GUEST_SUPPORT,
++                                          { TYPE_USER_CREATABLE },
++                                          { NULL })
+ 
+ static void s390_pv_guest_class_init(ObjectClass *oc, const void *data)
+ {
 -- 
 2.34.1
 
