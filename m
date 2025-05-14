@@ -2,116 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B742AB763E
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 21:57:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0200AB764D
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 22:03:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFIDZ-0002Fc-IC; Wed, 14 May 2025 15:56:41 -0400
+	id 1uFIIe-000745-Ic; Wed, 14 May 2025 16:01:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1uFICe-0001cJ-Ii; Wed, 14 May 2025 15:55:52 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uFIIU-0006tI-QI
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 16:01:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1uFICX-0002fn-6o; Wed, 14 May 2025 15:55:38 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54EIoJkD031031;
- Wed, 14 May 2025 19:55:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=Zxp3AI
- GtTq6XfPyeTfnCrYVfzxgwTo5s6O0D78nJN2g=; b=oP4RQjYjmh8v79z7e7jilP
- KhJTLapfaacWUHXjnXvARPOM33g4mAetBSFKxCGgFIRm8qBzfsmIbJwQQkqzEHBE
- BDT7ItR4L8JE2fH2j2DWlVKgHrywqQhXBJrkZMEa0pLdVjuvltHhROez6T38Nwu0
- 8WALYnIGWopHvnU7d8qzmKTXNfg8lw1++6yZVdNpyukPlbbFRgCccK/knfb9Qexl
- ZbndL6SIPxtgX6LjjJ1uRH0infuk0EqG8u5mOMlEBXPiHg+xb+gBg3we+KJ88uUm
- Nnx/0aCdfW8U1yeJ3dMWMRZeDZetrvd/d8YL73A+N+E3xMwg/yQXulrZ7YloYG9g
- ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46n0t98brw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 May 2025 19:55:35 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54EJtYoY011733;
- Wed, 14 May 2025 19:55:34 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46n0t98brt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 May 2025 19:55:34 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54EJjYiO021797;
- Wed, 14 May 2025 19:55:33 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46mbfpp872-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 14 May 2025 19:55:33 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
- [10.39.53.233])
- by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 54EJtW9Z19596026
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 14 May 2025 19:55:32 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2834258054;
- Wed, 14 May 2025 19:55:32 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9EE615804E;
- Wed, 14 May 2025 19:55:31 +0000 (GMT)
-Received: from [9.10.80.143] (unknown [9.10.80.143])
- by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 14 May 2025 19:55:31 +0000 (GMT)
-Message-ID: <08a08e3f-2de5-424c-a253-595fa43fa298@linux.ibm.com>
-Date: Wed, 14 May 2025 14:55:31 -0500
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uFIIT-0003Z7-83
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 16:01:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747252903;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=im9GTe+XANPevvqEKchJYT4QQTHDvCgcK4V/4tNOw7M=;
+ b=FOPdHpnlPmX5Vu0FGM5h8faDdyY+Pf65LHrpYhWYtsrznB0lw6AYmAzcmMxYfMwF+FdG+3
+ U5P4vsscF/6sd/pHVl4BhitmJPMn95SAoGYhYGZYvin0BZbF0LhF+/+bUqal+p25I36qD0
+ 0jc9Irib8SjbeskqBRKOVN/FNSSuA9c=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-138-0ObCmJOzOQ-5E9w7EDkc2A-1; Wed, 14 May 2025 16:01:42 -0400
+X-MC-Unique: 0ObCmJOzOQ-5E9w7EDkc2A-1
+X-Mimecast-MFC-AGG-ID: 0ObCmJOzOQ-5E9w7EDkc2A_1747252902
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-6f54032880aso24665366d6.0
+ for <qemu-devel@nongnu.org>; Wed, 14 May 2025 13:01:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747252901; x=1747857701;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=im9GTe+XANPevvqEKchJYT4QQTHDvCgcK4V/4tNOw7M=;
+ b=NB5V3jye3e/VyCFZtY+DeWtBPZalNvq6CZZPqgSZ7R66GCH7UY4LYKZqZQ3bLZMYdj
+ HNpUqG6qUihC7EPX3AvB/04t/c1HsBH4noR5/kyjffgAFVD0dTh5rEQisVnCRAsF39zE
+ bjtfMgRpwzBYHJwK9DiDgIAXm/8NC1TG3JlVkzsDmfzlUyRNnr5nkS+Pmo1mjeqoAjdO
+ 1eGtDHmHgkJVeAMGLTJ4Ylo0jWgdyh1DFZ5OXZFpwUUfhXmTY9j3RuSmg+31hIowTREX
+ 0aScNfVFQVvw6N1A/SNJafvmdivtAXTl4R6/F2r3mc9HmOAc2eR5Hpony0K7xVrlTFll
+ 6mwg==
+X-Gm-Message-State: AOJu0YxnjJUHdeHZ66i6jMw3h51AJA80gQKBxeLgP8jeSQMPjAQO78BN
+ g0fU5CDXc30GqwExykgSFS8uh0xXCnd6IK9xpcPwKSVvhl6ppjI4VhtpRpRKH4e8N2jkMw6o/U2
+ DGjvSgqpccBO/Lyh91K3LzpVUulFhyjKwi/s61d2g5tgsh87DdWeZNRNvCwo6TUMniRd9KPhdzC
+ 1GEWtcGcnAFt/iC3T6LpOs2GoYEE1wqm35vA==
+X-Gm-Gg: ASbGncuzGDcjottWgZjPb6HRK00uxFP9gYaG9VqXp68F9zQoqbuEGnr2tvoxzQLr0yp
+ yJhEH642jxvINlw1lddSHGU1AhohF/WUWsi4Pd+1nBnFx5mcqUI9aZHgrcZPR2D12nfzLgzgYnM
+ 3wqXk6pzCWN9y4Euky/xu8cs0I18D/S6wsUD/C+iOVuDhxDRFtQ0PDla3fy0yMZdfSn03tCMofE
+ 3tpghbF2Kx/OKSLkfb0OyBWoklMcoE8ivKyksfWgrwBSBI1yV0WC5xyw8otPg3PkA9Yrhg+XTVN
+X-Received: by 2002:a05:6214:1254:b0:6e4:2479:d59b with SMTP id
+ 6a1803df08f44-6f8a31e9146mr14770806d6.16.1747252901381; 
+ Wed, 14 May 2025 13:01:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHeVtjkz64qdDNdgQ6gvVhE+8ynRZQnCMdKo2Bzjfe9CwIntviveJcpdAileNH30PIg9OkAqA==
+X-Received: by 2002:a05:6214:1254:b0:6e4:2479:d59b with SMTP id
+ 6a1803df08f44-6f8a31e9146mr14770076d6.16.1747252900746; 
+ Wed, 14 May 2025 13:01:40 -0700 (PDT)
+Received: from x1.com ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6f6e3a524a6sm84979066d6.104.2025.05.14.13.01.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 14 May 2025 13:01:40 -0700 (PDT)
+From: Peter Xu <peterx@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Fabiano Rosas <farosas@suse.de>, Prasad Pandit <ppandit@redhat.com>,
+ "Dr . David Alan Gilbert" <dave@treblig.org>,
+ Juraj Marcin <jmarcin@redhat.com>, peterx@redhat.com
+Subject: [PATCH v2 0/2] migration: Some fix and enhancements to HMP "info
+ migrate"
+Date: Wed, 14 May 2025 16:01:35 -0400
+Message-ID: <20250514200137.581935-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.49.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 29/50] ppc/xive2: Redistribute group interrupt preempted
- by higher priority interrupt
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?=
- <fbarrat@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
- Caleb Schlossin <calebs@linux.vnet.ibm.com>
-References: <20250512031100.439842-1-npiggin@gmail.com>
- <20250512031100.439842-30-npiggin@gmail.com>
-Content-Language: en-US
-From: Mike Kowal <kowal@linux.ibm.com>
-In-Reply-To: <20250512031100.439842-30-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=etzfzppX c=1 sm=1 tr=0 ts=6824f537 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8
- a=h6Ax321QG256VOZq6v8A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE0MDE4MCBTYWx0ZWRfX0bmMQU7ZN3my
- N4tOBO9iiRkmCJ3X1UitAvekBNvuYGkS7gqdaU7YW7ULYUFXWk0Ixrt+0r+lZpj6IT364uUtMuU
- l45eWkYn60b6vtdO3ytJr2PeGCxBe/TCilUCk0v4rq4FeBIXJcWkEpQ3RK+l5Y/qNPgcsAYwZof
- 7PFkVOZPIh7QZJnQT2p52yMVyfsSoJo/ES3VtBwKUqKANuIs3HpEkBWGEuiZrZ6QpXsLo5Wpz5j
- IB7yX0JOWWuLgGc6U0DfkS6hZV3ybLSYIDi3t8TCG8BXuKLDpefy4iqXE+YWxm1MpODzpGeCWt8
- 81jTLrgscz3jdekTRMIluiTpO7qRTHGQR31earbPflrgmunAcpce0IVZBQTcjpAzAQ9Ndd2eXcj
- YHGIbTvYnsbrd7qLin3jiHDLt3SlEMLAmcLAx3NiKbgfwoPusvE7iDq2EcCFqEgXxf7c2Rl1
-X-Proofpoint-ORIG-GUID: dvSyao52Mn1mYpuITAkQ4asrJzYUe1mI
-X-Proofpoint-GUID: ph7K5kKKfHWNyrg1Btr9CzvgzwRuHds4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-14_04,2025-05-14_03,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- lowpriorityscore=0 phishscore=0 mlxscore=0 mlxlogscore=999 bulkscore=0
- suspectscore=0 spamscore=0 clxscore=1015 priorityscore=1501 malwarescore=0
- adultscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
- definitions=main-2505140180
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=kowal@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -37
+X-Spam_score: -3.8
+X-Spam_bar: ---
+X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -129,47 +103,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+v2:
+- Dropped patch 2, dump globals only if "-a" in the last patch [Dave]
+- Keep using "Throughput" for dumping ->mbps [Juraj]
+- Rearranged some more, e.g. put xbzrle/globals under -a too, added indents
+  for the global dump, etc.
 
-On 5/11/2025 10:10 PM, Nicholas Piggin wrote:
-> A group interrupt that gets preempted by a higher priority interrupt
-> delivery must be redistributed otherwise it would get lost.
+Patch 1 was a bug I found set capabilities, so it's pretty separate issue.
 
-Reviewed-by: Michael Kowal<kowal@linux.ibm.com>
+Patch 2 was an attempt that I made the HMP "info migrate" looks slightly
+easier to read.  A new option "-a" is added to request a full dump,
+otherwise only the important info will be dumped.
 
-Thanks,  MAK
+Comments welcomed, thanks.
 
->
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   hw/intc/xive2.c | 14 ++++++++++++--
->   1 file changed, 12 insertions(+), 2 deletions(-)
->
-> diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-> index 6e136ad2e2..cae4092198 100644
-> --- a/hw/intc/xive2.c
-> +++ b/hw/intc/xive2.c
-> @@ -1638,11 +1638,21 @@ static void xive2_router_end_notify(Xive2Router *xrtr, uint8_t end_blk,
->                                crowd, cam_ignore, priority,
->                                xive_get_field32(END2_W7_F1_LOG_SERVER_ID, end.w7),
->                                &match)) {
-> +        XiveTCTX *tctx = match.tctx;
-> +        uint8_t ring = match.ring;
-> +        uint8_t alt_ring = (ring == TM_QW2_HV_POOL) ? TM_QW3_HV_PHYS : ring;
-> +        uint8_t *aregs = &tctx->regs[alt_ring];
-> +        uint8_t nsr = aregs[TM_NSR];
->           uint8_t group_level;
->   
-> +        if (priority < aregs[TM_PIPR] &&
-> +            xive_nsr_indicates_group_exception(alt_ring, nsr)) {
-> +            xive2_redistribute(xrtr, tctx, alt_ring);
-> +        }
-> +
->           group_level = xive_get_group_level(crowd, cam_ignore, nvx_blk, nvx_idx);
-> -        trace_xive_presenter_notify(nvx_blk, nvx_idx, match.ring, group_level);
-> -        xive_tctx_pipr_update(match.tctx, match.ring, priority, group_level);
-> +        trace_xive_presenter_notify(nvx_blk, nvx_idx, ring, group_level);
-> +        xive_tctx_pipr_update(tctx, ring, priority, group_level);
->           return;
->       }
->   
+Peter Xu (2):
+  migration: Allow caps to be set when preempt or multifd cap enabled
+  migration/hmp: Add "info migrate -a", reorg the dump
+
+ migration/migration-hmp-cmds.c | 186 +++++++++++++++++----------------
+ migration/options.c            |   4 +-
+ hmp-commands-info.hx           |   6 +-
+ 3 files changed, 101 insertions(+), 95 deletions(-)
+
+-- 
+2.49.0
+
 
