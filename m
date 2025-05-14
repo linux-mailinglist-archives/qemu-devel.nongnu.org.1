@@ -2,57 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57E29AB6C84
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 15:22:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FC54AB6C86
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 15:22:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFC3M-0002LN-D3; Wed, 14 May 2025 09:21:44 -0400
+	id 1uFC3s-00055l-1F; Wed, 14 May 2025 09:22:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1uFBxu-0007iB-L4
- for qemu-devel@nongnu.org; Wed, 14 May 2025 09:16:08 -0400
-Received: from mx.treblig.org ([2a00:1098:5b::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1uFBxo-0002Z6-Cu
- for qemu-devel@nongnu.org; Wed, 14 May 2025 09:16:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
- ; s=bytemarkmx;
- h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
- :Subject; bh=wssSqC1ddx4DIYqQOy2aDCEmeNRhXKsMLYlLoAl5hF4=; b=VvBSSzKEv31mdtyX
- z6mpGE7TKL03ZLWENk/Pq0Emn8qTllK82Yb6gWpWGTJfSxjCgGZbQt9NPQW0RHJQ98VoRnh1Yjbjg
- whIL3tX6/pkJUiHuXiOA3Xe50+k8Z8B8X7Asy/g2NP1jbQTn+786Lro104CYcKbAtjhzQA9WRcUZG
- BpGWasRLldicGeH5dgxfHPPE0QO3Q3dsi7ddxLDE2FraAned8AuhTEZ7ghMdfZCV38sge5OY8wHeh
- 2lH3T6fvcJ2hYGz3eTQXV8FYJbTOHyqvjhhvZDktpccMLTkxdIOniM2RAyQU65kkfcBoPtYbzF0qA
- Eq86A+HJ6c3NSbA6NQ==;
-Received: from dg by mx.treblig.org with local (Exim 4.96)
- (envelope-from <dg@treblig.org>) id 1uFBxl-003WDj-1j;
- Wed, 14 May 2025 13:15:57 +0000
-Date: Wed, 14 May 2025 13:15:57 +0000
-From: "Dr. David Alan Gilbert" <dave@treblig.org>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Prasad Pandit <ppandit@redhat.com>, Juraj Marcin <jmarcin@redhat.com>
-Subject: Re: [PATCH 3/3] migration/hmp: Add "info migrate -a", reorg the dump
-Message-ID: <aCSXjRCTYKbDf9le@gallifrey>
-References: <20250513220923.518025-1-peterx@redhat.com>
- <20250513220923.518025-4-peterx@redhat.com>
+ (Exim 4.90_1) (envelope-from <paolo.bonzini@gmail.com>)
+ id 1uFBy9-0007lZ-Tp; Wed, 14 May 2025 09:16:22 -0400
+Received: from mail-pg1-f175.google.com ([209.85.215.175])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <paolo.bonzini@gmail.com>)
+ id 1uFBy6-0002bL-K9; Wed, 14 May 2025 09:16:20 -0400
+Received: by mail-pg1-f175.google.com with SMTP id
+ 41be03b00d2f7-b2325c56ebdso5718791a12.1; 
+ Wed, 14 May 2025 06:16:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747228575; x=1747833375;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=BC6736sHMTaOSi7YQSSykMWxb+O1DJ2Dg8riyoBLr0s=;
+ b=dzrN2zEdj111vu5mOBpojzZWLAyrcdZ31PYMfHE8Y/jljWAKA45rjLb2BK0R04tdoS
+ EqjKGomqutsvBn0zACCl5sR40O7l/CAjuF+rQXV1QwDY5EhILH/ApyXG+ceODLzKJLiP
+ tSlHzl+/p+1zL7Tqpyu1HJjHPmdwkWCS5geWGOjLWYxXhwXfBlLHA56pGlr7P23pMUhQ
+ Awz2AUsco0j4rTCyhS3dhJA0QUVrj7NWhbIlKTFLrjqvSk75rrVwR51VRTOq5a650gub
+ wg8uQ6Dk4ixVnowRYuZoBSssNXIdq6PyCITDhn1Fnf1p+ZvA2jwCNzbTG+rnUE1u0jsG
+ nuNw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVuktOc11wjCVTmA79jSApAnL3kpwwfVZMS+aLdG+Zx4CwKxM8y4brHTnf0JWUDsG84F4nTfJ4CmBY=@nongnu.org
+X-Gm-Message-State: AOJu0Yy58mRy8Depglzo5bENX4qrM+KA1ln6qVZEK9uERKDumKxZ5CoL
+ xifjBTN5vV9prME6SUV3+qvaraoXFuP28GcKNM2iBzTU5fL6Wa7AjfUqYjooDUtrXRDjXqJwjrP
+ QUgVcgi3Krenw5zOmXtCxekJ5fd8=
+X-Gm-Gg: ASbGnctECfiYBMWwb7ywviV/Hw26SNP14UI4fOsYVqTTNUS+hPtGzt3Q/PB4EHsRDkm
+ K4y3eS8aLKRVCYPTWEg2tQb/U7yvcH4Idas24bjR5AghMEYAZOOE0vo7XNCAdx3lHJImCrn22+S
+ fLr4unXtIfb4yOJg0YlHdmYzAqKWgn5Fijog==
+X-Google-Smtp-Source: AGHT+IFMG2XKNa4+3LTzMdrKymyLYu77xXGXJpgzbziSKR83hyb6XIwsg10gjsczLI6vnBXyQddS8Kz720GqOZKUYSY=
+X-Received: by 2002:a17:903:198e:b0:231:7399:7db8 with SMTP id
+ d9443c01a7336-231980bbe87mr45797755ad.7.1747228574735; Wed, 14 May 2025
+ 06:16:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <20250513220923.518025-4-peterx@redhat.com>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.1.0-34-amd64 (x86_64)
-X-Uptime: 13:11:40 up 16 days, 21:25, 1 user, load average: 0.04, 0.02, 0.00
-User-Agent: Mutt/2.2.12 (2023-09-09)
-Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
- helo=mx.treblig.org
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <d3d1944e-2482-4aa7-b621-596246a08107@gnu.org>
+ <CAAjaMXZhq_uv-w_9TT3++HAcO7r_OhriJA0RKWs8YqY_ryjK4w@mail.gmail.com>
+ <7101782c-f642-41e6-8f3a-7061ca722c99@gnu.org>
+ <CAAjaMXbLUG1jsDZVcwKQV5+UfaCZUWTi4o5KFNJRowLbQ67yqQ@mail.gmail.com>
+In-Reply-To: <CAAjaMXbLUG1jsDZVcwKQV5+UfaCZUWTi4o5KFNJRowLbQ67yqQ@mail.gmail.com>
+From: Paolo Bonzini <bonzini@gnu.org>
+Date: Wed, 14 May 2025 09:16:03 -0400
+X-Gm-Features: AX0GCFtBJLgvF7v0FOLg3LPjtiB4RqQTwVWBpkLtzQgyPp2pwyffy6qUkeT0jTI
+Message-ID: <CAHFMJ7tJ0ArHvA3kaJ=8CqGdQX3eTacX9TRrJdoLJGeqbhrk+A@mail.gmail.com>
+Subject: Re: Rust in QEMU update, April 2025
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel <qemu-devel@nongnu.org>, qemu-rust@nongnu.org, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Daniel Berrange <berrange@redhat.com>, Kevin Wolf <kwolf@redhat.com>, 
+ Peter Maydell <peter.maydell@linaro.org>
+Content-Type: multipart/alternative; boundary="00000000000089e2240635185a51"
+Received-SPF: pass client-ip=209.85.215.175;
+ envelope-from=paolo.bonzini@gmail.com; helo=mail-pg1-f175.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.001, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,374 +86,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-* Peter Xu (peterx@redhat.com) wrote:
-> I did quite some changes to the output of "info migrate".
-> 
-> The general rule is:
-> 
->   - Put important things at the top
->   - Reuse a single line when things are very relevant, hence reducing lines
->     needed to show the results
->   - Remove almost useless ones (e.g. "normal_bytes", while we also have
->     both "page size" and "normal" pages)
->   - Regroup things, so that related fields will show together
->   - etc.
-> 
-> Before this change, it looks like (one example of a completed case):
+--00000000000089e2240635185a51
+Content-Type: text/plain; charset="UTF-8"
 
-The changelog should probably also show the -a difference.
+Il mar 6 mag 2025, 04:41 Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+ha scritto:
 
-Also a couple of minor ones lower down in the changelog...
+> > It's not about hot paths, it's more that 1) you cannot use From/Into in
+> > a "static"'s initializer 2) bilge relies a lot on non-const methods in
+> > its internal implementation, which makes it quite messy to use it in
+> > some places.  See for example this thing for which I take all the blame:
+>
+> Yeah it's not nice that we can't use it in static/const initializers. [...]
 
-> (qemu) info migrate
-> globals:
-> store-global-state: on
-> only-migratable: off
-> send-configuration: on
-> send-section-footer: on
-> send-switchover-start: on
-> clear-bitmap-shift: 18
-> Migration status: completed
-> total time: 122952 ms
-> downtime: 76 ms
-> setup: 15 ms
-> transferred ram: 130825923 kbytes
-> throughput: 8717.68 mbps
-> remaining ram: 0 kbytes
-> total ram: 16777992 kbytes
-> duplicate: 997263 pages
-> normal: 32622225 pages
-> normal bytes: 130488900 kbytes
-> dirty sync count: 10
-> page size: 4 kbytes
-> multifd bytes: 117134260 kbytes
-> pages-per-second: 169431
-> postcopy request count: 5835
-> precopy ram: 15 kbytes
-> postcopy ram: 13691151 kbytes
-> 
-> After this change, giving a few examples:
-> 
-> NORMAL PRECOPY:
-> 
-> (qemu) info migrate
-> Status: active
-> Time (ms): total=14292, setup=13, exp_down=12223
-> RAM info:
->   Bandwidth (mbps): 9380.51
+It has its pros and cons that's for sure... there are many crates that
+> let you define typed bitfields, I haven't looked into the current
+> state of the art lately. We should definitely move on to something
+> better if it exists now or in the future.
+>
 
-Now lets see, I think that is actually (MB/s) - i.e.
-decimal megabytes;
-        s->mbps = ((double) bytes * 8.0) / transfer_time / 1000;
+I tried using bitfield-struct. The definitions are a bit less polished than
+bilge but usage is the same, it is const friendly and has fewer
+dependencies. I don't think there's one that's clearly better, but we can
+look at the tradeoffs and decide.
 
->   Sizes (KB): psize=4, total=16777992
+To streamline expressions on bit flags maybe we could have a macro like
+bits!(Interrupt: RX | TX) which expands to
+Interrupt.RX.union(Interrupt.TX), where union() is a const function
+(likewise for & or !). This should not be hard to write as a procedural
+macro, it's just a recursive descent parser.
 
-and I think that is actually (KiB) i.e. 2^10 bytes
+Oops, I forgot I had archived it because I moved development to
+> https://gitlab.com/epilys/qemu . I made it public again. Bear in mind
+> this was a WIP, basically my git stash but committed.
+>
 
-Other than those,
+Understood. The nice thing to have would be to automatically derive the
+PropertyInfo from the type of the field.
 
-Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
+Paolo
 
->     transferred=15697718, remain=12383520,
->     precopy=2, multifd=15697713, postcopy=0
->   Pages: normal=3913877, zero=599981, rate_per_sec=286769
->   Others: dirty_syncs=2, dirty_pages_rate=264552
-> 
-> XBZRLE:
-> 
-> (qemu) info migrate
-> Status: active
-> Time (ms): total=43973, setup=16, exp_down=75826
-> RAM info:
->   Bandwidth (mbps): 1496.08
->   Sizes (KB): psize=4, total=16777992
->     transferred=15156743, remain=12877944,
->     precopy=15156768, multifd=0, postcopy=0
->   Pages: normal=3780458, zero=614029, rate_per_sec=45567
->   Others: dirty_syncs=2, dirty_pages_rate=128624
-> XBZRLE: size=67108864, transferred=0, pages=0, miss=188451
->   miss_rate=0.00, encode_rate=0.00, overflow=0
-> 
-> POSTCOPY:
-> 
-> (qemu) info migrate
-> Status: postcopy-active
-> Time (ms): total=40504, setup=14, down=145
-> RAM info:
->   Bandwidth (mbps): 6102.65
->   Sizes (KB): psize=4, total=16777992
->     transferred=37673019, remain=2136404,
->     precopy=3, multifd=26108780, postcopy=11563855
->   Pages: normal=9394288, zero=600672, rate_per_sec=185875
->   Others: dirty_syncs=3, dirty_pages_rate=278378, postcopy_req=4078
-> 
-> COMPLETED:
-> 
-> (qemu) info migrate
-> Status: completed
-> Time (ms): total=43708, setup=14, down=145
-> RAM info:
->   Bandwidth (mbps): 7464.50
->   Sizes (KB): psize=4, total=16777992
->     transferred=39813725, remain=0,
->     precopy=3, multifd=26108780, postcopy=13704436
->   Pages: normal=9928390, zero=600672, rate_per_sec=167283
->   Others: dirty_syncs=3, postcopy_req=5577
-> 
-> INCOMING (WHEN TCP LISTENING):
-> 
-> (qemu) info migrate
-> Status: setup
-> Sockets: [
->         tcp:0.0.0.0:12345
-> ]
-> 
-> Signed-off-by: Peter Xu <peterx@redhat.com>
-> ---
->  migration/migration-hmp-cmds.c | 158 +++++++++++++++++----------------
->  hmp-commands-info.hx           |   6 +-
->  2 files changed, 85 insertions(+), 79 deletions(-)
-> 
-> diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-> index 0034dbe47f..c1c10b22ae 100644
-> --- a/migration/migration-hmp-cmds.c
-> +++ b/migration/migration-hmp-cmds.c
-> @@ -54,6 +54,7 @@ static void migration_global_dump(Monitor *mon)
->  
->  void hmp_info_migrate(Monitor *mon, const QDict *qdict)
->  {
-> +    bool show_all = qdict_get_try_bool(qdict, "all", false);
->      MigrationInfo *info;
->  
->      info = qmp_query_migrate(NULL);
-> @@ -68,7 +69,7 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
->      }
->  
->      if (info->has_status) {
-> -        monitor_printf(mon, "Migration status: %s",
-> +        monitor_printf(mon, "Status: %s",
->                         MigrationStatus_str(info->status));
->          if (info->status == MIGRATION_STATUS_FAILED && info->error_desc) {
->              monitor_printf(mon, " (%s)\n", info->error_desc);
-> @@ -76,90 +77,111 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
->              monitor_printf(mon, "\n");
->          }
->  
-> -        monitor_printf(mon, "total time: %" PRIu64 " ms\n",
-> -                       info->total_time);
-> -        if (info->has_expected_downtime) {
-> -            monitor_printf(mon, "expected downtime: %" PRIu64 " ms\n",
-> -                           info->expected_downtime);
-> -        }
-> -        if (info->has_downtime) {
-> -            monitor_printf(mon, "downtime: %" PRIu64 " ms\n",
-> -                           info->downtime);
-> +        if (info->total_time) {
-> +            monitor_printf(mon, "Time (ms): total=%" PRIu64,
-> +                           info->total_time);
-> +            if (info->has_setup_time) {
-> +                monitor_printf(mon, ", setup=%" PRIu64,
-> +                               info->setup_time);
-> +            }
-> +            if (info->has_expected_downtime) {
-> +                monitor_printf(mon, ", exp_down=%" PRIu64,
-> +                               info->expected_downtime);
-> +            }
-> +            if (info->has_downtime) {
-> +                monitor_printf(mon, ", down=%" PRIu64,
-> +                               info->downtime);
-> +            }
-> +            monitor_printf(mon, "\n");
->          }
-> -        if (info->has_setup_time) {
-> -            monitor_printf(mon, "setup: %" PRIu64 " ms\n",
-> -                           info->setup_time);
-> +    }
-> +
-> +    if (info->has_socket_address) {
-> +        SocketAddressList *addr;
-> +
-> +        monitor_printf(mon, "Sockets: [\n");
-> +
-> +        for (addr = info->socket_address; addr; addr = addr->next) {
-> +            char *s = socket_uri(addr->value);
-> +            monitor_printf(mon, "\t%s\n", s);
-> +            g_free(s);
->          }
-> +        monitor_printf(mon, "]\n");
->      }
->  
->      if (info->ram) {
-> -        monitor_printf(mon, "transferred ram: %" PRIu64 " kbytes\n",
-> -                       info->ram->transferred >> 10);
-> -        monitor_printf(mon, "throughput: %0.2f mbps\n",
-> +        monitor_printf(mon, "RAM info:\n");
-> +        monitor_printf(mon, "  Bandwidth (mbps): %0.2f\n",
->                         info->ram->mbps);
-> -        monitor_printf(mon, "remaining ram: %" PRIu64 " kbytes\n",
-> -                       info->ram->remaining >> 10);
-> -        monitor_printf(mon, "total ram: %" PRIu64 " kbytes\n",
-> +        monitor_printf(mon, "  Sizes (KB): psize=%" PRIu64
-> +                       ", total=%" PRIu64 "\n",
-> +                       info->ram->page_size >> 10,
->                         info->ram->total >> 10);
-> -        monitor_printf(mon, "duplicate: %" PRIu64 " pages\n",
-> -                       info->ram->duplicate);
-> -        monitor_printf(mon, "normal: %" PRIu64 " pages\n",
-> -                       info->ram->normal);
-> -        monitor_printf(mon, "normal bytes: %" PRIu64 " kbytes\n",
-> -                       info->ram->normal_bytes >> 10);
-> -        monitor_printf(mon, "dirty sync count: %" PRIu64 "\n",
-> -                       info->ram->dirty_sync_count);
-> -        monitor_printf(mon, "page size: %" PRIu64 " kbytes\n",
-> -                       info->ram->page_size >> 10);
-> -        monitor_printf(mon, "multifd bytes: %" PRIu64 " kbytes\n",
-> -                       info->ram->multifd_bytes >> 10);
-> -        monitor_printf(mon, "pages-per-second: %" PRIu64 "\n",
-> +        monitor_printf(mon, "    transferred=%" PRIu64
-> +                       ", remain=%" PRIu64 ",\n",
-> +                       info->ram->transferred >> 10,
-> +                       info->ram->remaining >> 10);
-> +        monitor_printf(mon, "    precopy=%" PRIu64
-> +                       ", multifd=%" PRIu64
-> +                       ", postcopy=%" PRIu64,
-> +                       info->ram->precopy_bytes >> 10,
-> +                       info->ram->multifd_bytes >> 10,
-> +                       info->ram->postcopy_bytes >> 10);
-> +
-> +        if (info->vfio) {
-> +            monitor_printf(mon, ", vfio=%" PRIu64,
-> +                           info->vfio->transferred >> 10);
-> +        }
-> +        monitor_printf(mon, "\n");
-> +
-> +        monitor_printf(mon, "  Pages: normal=%" PRIu64 ", zero=%" PRIu64
-> +                       ", rate_per_sec=%" PRIu64 "\n",
-> +                       info->ram->normal,
-> +                       info->ram->duplicate,
->                         info->ram->pages_per_second);
-> +        monitor_printf(mon, "  Others: dirty_syncs=%" PRIu64,
-> +                       info->ram->dirty_sync_count);
->  
->          if (info->ram->dirty_pages_rate) {
-> -            monitor_printf(mon, "dirty pages rate: %" PRIu64 " pages\n",
-> +            monitor_printf(mon, ", dirty_pages_rate=%" PRIu64,
->                             info->ram->dirty_pages_rate);
->          }
->          if (info->ram->postcopy_requests) {
-> -            monitor_printf(mon, "postcopy request count: %" PRIu64 "\n",
-> +            monitor_printf(mon, ", postcopy_req=%" PRIu64,
->                             info->ram->postcopy_requests);
->          }
-> -        if (info->ram->precopy_bytes) {
-> -            monitor_printf(mon, "precopy ram: %" PRIu64 " kbytes\n",
-> -                           info->ram->precopy_bytes >> 10);
-> -        }
->          if (info->ram->downtime_bytes) {
-> -            monitor_printf(mon, "downtime ram: %" PRIu64 " kbytes\n",
-> -                           info->ram->downtime_bytes >> 10);
-> -        }
-> -        if (info->ram->postcopy_bytes) {
-> -            monitor_printf(mon, "postcopy ram: %" PRIu64 " kbytes\n",
-> -                           info->ram->postcopy_bytes >> 10);
-> +            monitor_printf(mon, ", downtime_ram=%" PRIu64,
-> +                           info->ram->downtime_bytes);
->          }
->          if (info->ram->dirty_sync_missed_zero_copy) {
-> -            monitor_printf(mon,
-> -                           "Zero-copy-send fallbacks happened: %" PRIu64 " times\n",
-> +            monitor_printf(mon, ", zerocopy_fallbacks=%" PRIu64,
->                             info->ram->dirty_sync_missed_zero_copy);
->          }
-> +        monitor_printf(mon, "\n");
->      }
->  
->      if (info->xbzrle_cache) {
-> -        monitor_printf(mon, "cache size: %" PRIu64 " bytes\n",
-> -                       info->xbzrle_cache->cache_size);
-> -        monitor_printf(mon, "xbzrle transferred: %" PRIu64 " kbytes\n",
-> -                       info->xbzrle_cache->bytes >> 10);
-> -        monitor_printf(mon, "xbzrle pages: %" PRIu64 " pages\n",
-> -                       info->xbzrle_cache->pages);
-> -        monitor_printf(mon, "xbzrle cache miss: %" PRIu64 " pages\n",
-> -                       info->xbzrle_cache->cache_miss);
-> -        monitor_printf(mon, "xbzrle cache miss rate: %0.2f\n",
-> -                       info->xbzrle_cache->cache_miss_rate);
-> -        monitor_printf(mon, "xbzrle encoding rate: %0.2f\n",
-> -                       info->xbzrle_cache->encoding_rate);
-> -        monitor_printf(mon, "xbzrle overflow: %" PRIu64 "\n",
-> +        monitor_printf(mon, "XBZRLE: size=%" PRIu64
-> +                       ", transferred=%" PRIu64
-> +                       ", pages=%" PRIu64
-> +                       ", miss=%" PRIu64 "\n"
-> +                       "  miss_rate=%0.2f"
-> +                       ", encode_rate=%0.2f"
-> +                       ", overflow=%" PRIu64 "\n",
-> +                       info->xbzrle_cache->cache_size,
-> +                       info->xbzrle_cache->bytes,
-> +                       info->xbzrle_cache->pages,
-> +                       info->xbzrle_cache->cache_miss,
-> +                       info->xbzrle_cache->cache_miss_rate,
-> +                       info->xbzrle_cache->encoding_rate,
->                         info->xbzrle_cache->overflow);
->      }
->  
-> +    if (!show_all) {
-> +        goto out;
-> +    }
-> +
->      if (info->has_cpu_throttle_percentage) {
->          monitor_printf(mon, "cpu throttle percentage: %" PRIu64 "\n",
->                         info->cpu_throttle_percentage);
-> @@ -191,24 +213,8 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
->          g_free(str);
->          visit_free(v);
->      }
-> -    if (info->has_socket_address) {
-> -        SocketAddressList *addr;
-> -
-> -        monitor_printf(mon, "socket address: [\n");
-> -
-> -        for (addr = info->socket_address; addr; addr = addr->next) {
-> -            char *s = socket_uri(addr->value);
-> -            monitor_printf(mon, "\t%s\n", s);
-> -            g_free(s);
-> -        }
-> -        monitor_printf(mon, "]\n");
-> -    }
-> -
-> -    if (info->vfio) {
-> -        monitor_printf(mon, "vfio device transferred: %" PRIu64 " kbytes\n",
-> -                       info->vfio->transferred >> 10);
-> -    }
->  
-> +out:
->      qapi_free_MigrationInfo(info);
->  }
->  
-> diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
-> index c59cd6637b..639a450ee5 100644
-> --- a/hmp-commands-info.hx
-> +++ b/hmp-commands-info.hx
-> @@ -475,9 +475,9 @@ ERST
->  
->      {
->          .name       = "migrate",
-> -        .args_type  = "",
-> -        .params     = "",
-> -        .help       = "show migration status",
-> +        .args_type  = "all:-a",
-> +        .params     = "[-a]",
-> +        .help       = "show migration status (-a: all, dump all status)",
->          .cmd        = hmp_info_migrate,
->      },
->  
-> -- 
-> 2.49.0
-> 
--- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+> BTW, if you need it to model reflection better I think it is acceptable
+> > to assume const_refs_to_static is present.
+> >
+> > Paolo
+>
+>
+
+--00000000000089e2240635185a51
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote gmail_quote_contai=
+ner"><div dir=3D"ltr" class=3D"gmail_attr">Il mar 6 mag 2025, 04:41 Manos P=
+itsidianakis &lt;<a href=3D"mailto:manos.pitsidianakis@linaro.org">manos.pi=
+tsidianakis@linaro.org</a>&gt; ha scritto:</div><blockquote class=3D"gmail_=
+quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1=
+ex">
+&gt; It&#39;s not about hot paths, it&#39;s more that 1) you cannot use Fro=
+m/Into in<br>
+&gt; a &quot;static&quot;&#39;s initializer 2) bilge relies a lot on non-co=
+nst methods in<br>
+&gt; its internal implementation, which makes it quite messy to use it in<b=
+r>
+&gt; some places.=C2=A0 See for example this thing for which I take all the=
+ blame:<br>
+<br>
+Yeah it&#39;s not nice that we can&#39;t use it in static/const initializer=
+s. [...]</blockquote></div></div><div dir=3D"auto"><div class=3D"gmail_quot=
+e gmail_quote_container"><blockquote class=3D"gmail_quote" style=3D"margin:=
+0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">It has its pros and=
+ cons that&#39;s for sure... there are many crates that<br>
+let you define typed bitfields, I haven&#39;t looked into the current<br>
+state of the art lately. We should definitely move on to something<br>
+better if it exists now or in the future.<br></blockquote></div></div><div =
+dir=3D"auto"><br></div><div dir=3D"auto">I tried using bitfield-struct. The=
+ definitions are a bit less polished than bilge but usage is the same, it i=
+s const friendly and has fewer dependencies. I don&#39;t think there&#39;s =
+one that&#39;s clearly better, but we can look at the tradeoffs and decide.=
+</div><div dir=3D"auto"><br></div><div dir=3D"auto">To streamline expressio=
+ns on bit flags maybe we could have a macro like bits!(Interrupt: RX | TX) =
+which expands to Interrupt.RX.union(Interrupt.TX), where union() is a const=
+ function (likewise for &amp; or !). This should not be hard to write as a =
+procedural macro, it&#39;s just a recursive descent parser.</div><div dir=
+=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote gmail_quote=
+_container"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;bo=
+rder-left:1px #ccc solid;padding-left:1ex">Oops, I forgot I had archived it=
+ because I moved development to<br>
+<a href=3D"https://gitlab.com/epilys/qemu" rel=3D"noreferrer noreferrer" ta=
+rget=3D"_blank">https://gitlab.com/epilys/qemu</a> . I made it public again=
+. Bear in mind<br>
+this was a WIP, basically my git stash but committed.<br></blockquote></div=
+></div><div dir=3D"auto"><br></div><div dir=3D"auto">Understood. The nice t=
+hing to have would be to automatically derive the PropertyInfo from the typ=
+e of the field.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Paolo</d=
+iv><div dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote =
+gmail_quote_container"><blockquote class=3D"gmail_quote" style=3D"margin:0 =
+0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">&gt; BTW, if you need=
+ it to model reflection better I think it is acceptable<br>
+&gt; to assume const_refs_to_static is present.<br>
+&gt;<br>
+&gt; Paolo<br>
+<br>
+</blockquote></div></div></div>
+
+--00000000000089e2240635185a51--
 
