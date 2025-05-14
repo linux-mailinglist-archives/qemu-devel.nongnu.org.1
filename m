@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DCBDAB6C23
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 15:07:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5987DAB6C75
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 15:18:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFBiL-0005sZ-6D; Wed, 14 May 2025 09:00:02 -0400
+	id 1uFBiZ-0006Rx-A9; Wed, 14 May 2025 09:00:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uFBhL-0003pR-2a; Wed, 14 May 2025 08:58:59 -0400
+ id 1uFBhM-0003tJ-4i; Wed, 14 May 2025 08:59:00 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uFBhI-0007rp-JN; Wed, 14 May 2025 08:58:58 -0400
+ id 1uFBhJ-0007t1-DX; Wed, 14 May 2025 08:58:59 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3DE34121AE4;
+ by isrv.corpit.ru (Postfix) with ESMTP id 47381121AE5;
  Wed, 14 May 2025 15:57:49 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id DD76E20B852;
+ by tsrv.corpit.ru (Postfix) with ESMTP id E7C3A20B853;
  Wed, 14 May 2025 15:57:58 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.4 06/34] target/mips: Require even maskbits in
- update_pagemask
-Date: Wed, 14 May 2025 15:57:28 +0300
-Message-Id: <20250514125758.92030-6-mjt@tls.msk.ru>
+Subject: [Stable-9.2.4 07/34] target/mips: Simplify and fix update_pagemask
+Date: Wed, 14 May 2025 15:57:29 +0300
+Message-Id: <20250514125758.92030-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.4-20250514155748@cover.tls.msk.ru>
 References: <qemu-stable-9.2.4-20250514155748@cover.tls.msk.ru>
@@ -62,54 +61,84 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-The number of bits set in PageMask must be even.
+When update_pagemask was split from helper_mtc0_pagemask,
+we failed to actually write to the new parameter but continue
+to write to env->CP0_PageMask.  Thus the use within
+page_table_walk_refill modifies cpu state and not the local
+variable as expected.
 
-Fixes: d40b55bc1b86 ("target/mips: Fix PageMask with variable page size")
+Simplify by renaming to compute_pagemask and returning the
+value directly.  No need for either env or pointer return.
+
+Fixes: 074cfcb4dae ("target/mips: Implement hardware page table walker for MIPS32")
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250328175526.368121-3-richard.henderson@linaro.org>
+Message-ID: <20250328175526.368121-4-richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Cc: qemu-stable@nongnu.org
-(cherry picked from commit d89b9899babcc01d7ee75f2917da861dc2afbc27)
+(cherry picked from commit 256ba7715b109c080c0c77a3923df9e69736ba17)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/mips/tcg/sysemu/cp0_helper.c b/target/mips/tcg/sysemu/cp0_helper.c
-index fb394bf0ed..4796638126 100644
+index 4796638126..3bfb6edbd0 100644
 --- a/target/mips/tcg/sysemu/cp0_helper.c
 +++ b/target/mips/tcg/sysemu/cp0_helper.c
-@@ -866,24 +866,17 @@ void helper_mtc0_memorymapid(CPUMIPSState *env, target_ulong arg1)
- 
- void update_pagemask(CPUMIPSState *env, target_ulong arg1, int32_t *pagemask)
- {
--    uint32_t mask;
--    int maskbits;
--
-     /* Don't care MASKX as we don't support 1KB page */
--    mask = extract32((uint32_t)arg1, CP0PM_MASK, 16);
--    maskbits = cto32(mask);
-+    uint32_t mask = extract32((uint32_t)arg1, CP0PM_MASK, 16);
-+    int maskbits = cto32(mask);
- 
--    /* Ensure no more set bit after first zero */
--    if ((mask >> maskbits) != 0) {
--        goto invalid;
-+    /* Ensure no more set bit after first zero, and maskbits even. */
-+    if ((mask >> maskbits) == 0 && maskbits % 2 == 0) {
-+        env->CP0_PageMask = mask << CP0PM_MASK;
-+    } else {
-+        /* When invalid, set to default target page size. */
-+        env->CP0_PageMask = 0;
+@@ -864,24 +864,24 @@ void helper_mtc0_memorymapid(CPUMIPSState *env, target_ulong arg1)
      }
--    env->CP0_PageMask = mask << CP0PM_MASK;
--
--    return;
--
--invalid:
--    /* When invalid, set to default target page size. */
--    env->CP0_PageMask = 0;
+ }
+ 
+-void update_pagemask(CPUMIPSState *env, target_ulong arg1, int32_t *pagemask)
++uint32_t compute_pagemask(uint32_t val)
+ {
+     /* Don't care MASKX as we don't support 1KB page */
+-    uint32_t mask = extract32((uint32_t)arg1, CP0PM_MASK, 16);
++    uint32_t mask = extract32(val, CP0PM_MASK, 16);
+     int maskbits = cto32(mask);
+ 
+     /* Ensure no more set bit after first zero, and maskbits even. */
+     if ((mask >> maskbits) == 0 && maskbits % 2 == 0) {
+-        env->CP0_PageMask = mask << CP0PM_MASK;
++        return mask << CP0PM_MASK;
+     } else {
+         /* When invalid, set to default target page size. */
+-        env->CP0_PageMask = 0;
++        return 0;
+     }
  }
  
  void helper_mtc0_pagemask(CPUMIPSState *env, target_ulong arg1)
+ {
+-    update_pagemask(env, arg1, &env->CP0_PageMask);
++    env->CP0_PageMask = compute_pagemask(arg1);
+ }
+ 
+ void helper_mtc0_pagegrain(CPUMIPSState *env, target_ulong arg1)
+diff --git a/target/mips/tcg/sysemu/tlb_helper.c b/target/mips/tcg/sysemu/tlb_helper.c
+index 62a3a86d80..56b1e8a36e 100644
+--- a/target/mips/tcg/sysemu/tlb_helper.c
++++ b/target/mips/tcg/sysemu/tlb_helper.c
+@@ -875,7 +875,7 @@ refill:
+         }
+     }
+     pw_pagemask = m >> TARGET_PAGE_BITS;
+-    update_pagemask(env, pw_pagemask << CP0PM_MASK, &pw_pagemask);
++    pw_pagemask = compute_pagemask(pw_pagemask << CP0PM_MASK);
+     pw_entryhi = (address & ~0x1fff) | (env->CP0_EntryHi & 0xFF);
+     {
+         target_ulong tmp_entryhi = env->CP0_EntryHi;
+diff --git a/target/mips/tcg/tcg-internal.h b/target/mips/tcg/tcg-internal.h
+index aef032c48d..be398665e6 100644
+--- a/target/mips/tcg/tcg-internal.h
++++ b/target/mips/tcg/tcg-internal.h
+@@ -45,7 +45,7 @@ bool mips_cpu_exec_interrupt(CPUState *cpu, int int_req);
+ 
+ void mmu_init(CPUMIPSState *env, const mips_def_t *def);
+ 
+-void update_pagemask(CPUMIPSState *env, target_ulong arg1, int32_t *pagemask);
++uint32_t compute_pagemask(uint32_t val);
+ 
+ void r4k_invalidate_tlb(CPUMIPSState *env, int idx, int use_extra);
+ uint32_t cpu_mips_get_random(CPUMIPSState *env);
 -- 
 2.39.5
 
