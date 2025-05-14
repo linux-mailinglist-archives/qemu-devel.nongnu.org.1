@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39325AB6C7B
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 15:20:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC389AB6C80
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 15:21:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFBlN-0000bg-64; Wed, 14 May 2025 09:03:10 -0400
+	id 1uFBnO-0004Ph-29; Wed, 14 May 2025 09:05:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uFBjI-0007bn-Gw; Wed, 14 May 2025 09:01:07 -0400
+ id 1uFBjI-0007bo-Ao; Wed, 14 May 2025 09:01:13 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uFBjB-0008FM-0Z; Wed, 14 May 2025 09:00:56 -0400
+ id 1uFBjB-0008FP-Ko; Wed, 14 May 2025 09:00:58 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3DB39121AF6;
+ by isrv.corpit.ru (Postfix) with ESMTP id 47606121AF7;
  Wed, 14 May 2025 15:57:50 +0300 (MSK)
 Received: from think4mjt.tls.msk.ru (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id DE1F020B864;
+ by tsrv.corpit.ru (Postfix) with ESMTP id E7BDE20B865;
  Wed, 14 May 2025 15:57:59 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.4 24/34] meson: Use has_header_symbol() to check getcpu()
-Date: Wed, 14 May 2025 15:57:46 +0300
-Message-Id: <20250514125758.92030-24-mjt@tls.msk.ru>
+Subject: [Stable-9.2.4 25/34] meson: Remove CONFIG_STATX and
+ CONFIG_STATX_MNT_ID
+Date: Wed, 14 May 2025 15:57:47 +0300
+Message-Id: <20250514125758.92030-25-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.4-20250514155748@cover.tls.msk.ru>
 References: <qemu-stable-9.2.4-20250514155748@cover.tls.msk.ru>
@@ -61,42 +62,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-The use of gnu_source_prefix in the detection of getcpu() was
-ineffective because the header file that declares getcpu() when
-_GNU_SOURCE is defined was not included. Pass sched.h to
-has_header_symbol() so that the existence of the declaration will be
-properly checked.
+CONFIG_STATX and CONFIG_STATX_MNT_ID are not used since commit
+e0dc2631ec4 ("virtiofsd: Remove source").
 
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250424-buildsys-v1-1-97655e3b25d7@daynix.com>
+Message-ID: <20250424-buildsys-v1-2-97655e3b25d7@daynix.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 563cd698dffb977eea0ccfef3b95f6f9786766f3)
+(cherry picked from commit 6804b89fb531f5dd49c1e038214c89272383e220)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/meson.build b/meson.build
-index 7f6f638676..a1113b86fe 100644
+index a1113b86fe..d48e87d2d1 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -2603,7 +2603,6 @@ config_host_data.set('CONFIG_CLOCK_ADJTIME', cc.has_function('clock_adjtime'))
- config_host_data.set('CONFIG_DUP3', cc.has_function('dup3'))
- config_host_data.set('CONFIG_FALLOCATE', cc.has_function('fallocate'))
- config_host_data.set('CONFIG_POSIX_FALLOCATE', cc.has_function('posix_fallocate'))
--config_host_data.set('CONFIG_GETCPU', cc.has_function('getcpu', prefix: gnu_source_prefix))
- config_host_data.set('CONFIG_SCHED_GETCPU', cc.has_function('sched_getcpu', prefix: '#include <sched.h>'))
- # Note that we need to specify prefix: here to avoid incorrectly
- # thinking that Windows has posix_memalign()
-@@ -2680,6 +2679,8 @@ config_host_data.set('CONFIG_FALLOCATE_ZERO_RANGE',
- config_host_data.set('CONFIG_FIEMAP',
-                      cc.has_header('linux/fiemap.h') and
-                      cc.has_header_symbol('linux/fs.h', 'FS_IOC_FIEMAP'))
-+config_host_data.set('CONFIG_GETCPU',
-+                     cc.has_header_symbol('sched.h', 'getcpu', prefix: gnu_source_prefix))
- config_host_data.set('CONFIG_GETRANDOM',
-                      cc.has_function('getrandom') and
-                      cc.has_header_symbol('sys/random.h', 'GRND_NONBLOCK'))
+@@ -2159,14 +2159,6 @@ gnu_source_prefix = '''
+   #endif
+ '''
+ 
+-# Check whether the glibc provides STATX_BASIC_STATS
+-
+-has_statx = cc.has_header_symbol('sys/stat.h', 'STATX_BASIC_STATS', prefix: gnu_source_prefix)
+-
+-# Check whether statx() provides mount ID information
+-
+-has_statx_mnt_id = cc.has_header_symbol('sys/stat.h', 'STATX_MNT_ID', prefix: gnu_source_prefix)
+-
+ have_vhost_user_blk_server = get_option('vhost_user_blk_server') \
+   .require(host_os == 'linux',
+            error_message: 'vhost_user_blk_server requires linux') \
+@@ -2528,8 +2520,6 @@ config_host_data.set('CONFIG_CRYPTO_SM3', crypto_sm3.found())
+ config_host_data.set('CONFIG_HOGWEED', hogweed.found())
+ config_host_data.set('CONFIG_QEMU_PRIVATE_XTS', xts == 'private')
+ config_host_data.set('CONFIG_MALLOC_TRIM', has_malloc_trim)
+-config_host_data.set('CONFIG_STATX', has_statx)
+-config_host_data.set('CONFIG_STATX_MNT_ID', has_statx_mnt_id)
+ config_host_data.set('CONFIG_ZSTD', zstd.found())
+ config_host_data.set('CONFIG_QPL', qpl.found())
+ config_host_data.set('CONFIG_UADK', uadk.found())
 -- 
 2.39.5
 
