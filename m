@@ -2,74 +2,139 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F308AB701F
-	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 17:42:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81001AB7031
+	for <lists+qemu-devel@lfdr.de>; Wed, 14 May 2025 17:44:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFEDo-0006Iu-73; Wed, 14 May 2025 11:40:40 -0400
+	id 1uFEH1-0000Vh-H8; Wed, 14 May 2025 11:43:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uFE3F-0000n3-2l
- for qemu-devel@nongnu.org; Wed, 14 May 2025 11:29:45 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uFE5k-0004IT-8d
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 11:32:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uFE3C-0000e2-R4
- for qemu-devel@nongnu.org; Wed, 14 May 2025 11:29:44 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uFE5g-00019B-KG
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 11:32:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747236581;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1747236734;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Ujc5g4wP7awZPP/3/jYO0KhWUewU++24FB98JsLaKD0=;
- b=fA9mDWP498+PGxrdSIZ1WZa/UmWeKU0iV9g/SCqzCY0gewT3Xj3RiJRTeePZ5/pEFKJg61
- o596ZZCfJH9sfsS2FC0mIfSXuP2JFZX8ImX8GyKnUN/RvIaNsPp1VL8Lkzb8Yb6Mg5SYXT
- aaAiIg7LrU6BmedZRFma/owcE/3oFJQ=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-107-7PXd5x_dMUW1RklfQzMz_w-1; Wed,
- 14 May 2025 11:29:38 -0400
-X-MC-Unique: 7PXd5x_dMUW1RklfQzMz_w-1
-X-Mimecast-MFC-AGG-ID: 7PXd5x_dMUW1RklfQzMz_w_1747236574
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BAE8E1800EC8; Wed, 14 May 2025 15:29:33 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.147])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 54BB618004A7; Wed, 14 May 2025 15:29:27 +0000 (UTC)
-Date: Wed, 14 May 2025 16:29:24 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Cornelia Huck <cohuck@redhat.com>
-Cc: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, kvmarm@lists.linux.dev,
- peter.maydell@linaro.org, richard.henderson@linaro.org,
- alex.bennee@linaro.org, maz@kernel.org, oliver.upton@linux.dev,
- sebott@redhat.com, shameerali.kolothum.thodi@huawei.com,
- armbru@redhat.com, abologna@redhat.com, jdenemar@redhat.com,
- agraf@csgraf.de, shahuang@redhat.com, mark.rutland@arm.com,
- philmd@linaro.org, pbonzini@redhat.com
-Subject: Re: [PATCH v3 02/10] arm/cpu: Add sysreg properties generation
-Message-ID: <aCS21A8UmjEedTIP@redhat.com>
-References: <20250414163849.321857-1-cohuck@redhat.com>
- <20250414163849.321857-3-cohuck@redhat.com>
- <aCNj4dFWLkBZrmmh@redhat.com> <878qmzciyg.fsf@redhat.com>
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=Cmi8Edr/NLECiZ1BeZfRRGGRmp8fYyIvNxsmMEjd2iw=;
+ b=eFx/JaoNYNcbOKgsdon38bsw0AXaBJT7tqnOwArYbo1NChw0rW/L2L6i8apvYw2qifzjnv
+ IDfs6cpuF6P/bwXX5A3EYEcotNvWKrQ9FCK37Rez1rgOolPsnYCm5mVRuiCqMyFKEoPyzi
+ SYedXRWHwl64AuZMMoCApoy835qor2E=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-9-F36H9P1KPUCWA2deP8m--Q-1; Wed, 14 May 2025 11:32:11 -0400
+X-MC-Unique: F36H9P1KPUCWA2deP8m--Q-1
+X-Mimecast-MFC-AGG-ID: F36H9P1KPUCWA2deP8m--Q_1747236730
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3a0b9bbfb0fso3934395f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 14 May 2025 08:32:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747236730; x=1747841530;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Cmi8Edr/NLECiZ1BeZfRRGGRmp8fYyIvNxsmMEjd2iw=;
+ b=db39SroDpm3FIp6NpyTkIm2KSavKVPd2oi/Z2CsOnCBiN1nXCdyW5vGIuL0N+91otb
+ E/fuDHloYkc4zg5g9htv/EJqflcMnoeBJ0AKs7K0zzdoN6ArNPFkdHbEaSbqGmwqOXCH
+ +uRpQxwM9IDj8iKBQhJ6IwBb13x12mpXtiyZSlp8KHoDdKhQrwZD0rh+Z0lN6f+VR5sc
+ 31P6pYwMNQY/76FTRqEIbj2SV1HwyDw+OdKf84D3MZJ3Gmo07xdWK+3kM8zsenZe2cvl
+ HCJxhF7nS1pXkZDc1Nlhlwm4A0HezT3KFt22+QPMCtpEKkOSHZraeF0MhbVuYWriKLlu
+ hxjg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUr4vj6WLa7jDaT73k56AUUYQcQKmzLOuRn59QzPOFCkyVWv3iCzjdNqVprw7K6VZ1DL8U2mgAttYg0@nongnu.org
+X-Gm-Message-State: AOJu0Yx6UyUTxrZoIsKRpeABz98hU7gc4qz73d331Tw5MLlnhwY+Ok9p
+ anH23R8O8/DQasSaY54NfVWyAF8dO9EFXelEbNvC9aUl+8XiHIu95yeIZJ9aW3nFyMp4kefNQNt
+ yInlzfFya/nHVPL/LrxfpjeCYBj4qcC+IZlhwMJx9S5qgOaX6faEz
+X-Gm-Gg: ASbGncsNpglyyBENcd+5CxuJX9SqZ9ZtuD75uOcJEJTztijvyifcKcdlNZtlOW+LHgN
+ 4Vrmwe5A2VUpF1MfDMpIR7vSqXAw5weQiDxqGkjPbO0t5nXIkkLuOQHT+1WlteuoE/wvIKwYB3m
+ GpKeSw2ShOsyBO32lfBTti7gc8bv4OPsZFd+1INBiYt6NgTJJ7o1NnAPIWdp7x3Z+Cta+W9afYa
+ lUI0+Og2YDxwt9lTLwLENTNXGBD9pgxuEFISpAX+32vScm+vw2DW+W1BmPreuFt0/W/OrWrAv9y
+ 62DMarYcBDOybwSBeCoybR7f7xhCt+pUQdSFpWC9NGANLzNEWg==
+X-Received: by 2002:adf:fb03:0:b0:3a3:4a11:3377 with SMTP id
+ ffacd0b85a97d-3a34a1134ccmr2578144f8f.38.1747236730012; 
+ Wed, 14 May 2025 08:32:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGbk0T3UCicf55PP24nutl3C7Aw58d77UmDmE4CxO0Zlb/RYV18fI63euehD4zjsaRoPwiJEw==
+X-Received: by 2002:adf:fb03:0:b0:3a3:4a11:3377 with SMTP id
+ ffacd0b85a97d-3a34a1134ccmr2578120f8f.38.1747236729619; 
+ Wed, 14 May 2025 08:32:09 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a1f58ebd6asm20362153f8f.35.2025.05.14.08.32.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 14 May 2025 08:32:09 -0700 (PDT)
+Message-ID: <58fd39ee-0294-4a05-ad5a-76a144a36e91@redhat.com>
+Date: Wed, 14 May 2025 17:32:08 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <878qmzciyg.fsf@redhat.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/5] hw/arm/aspeed_ast27x0-fc: Map ca35 memory into
+ system memory
+To: Steven Lee <steven_lee@aspeedtech.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Troy Lee <leetroy@gmail.com>,
+ Jamin Lin <jamin_lin@aspeedtech.com>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
+ "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+Cc: troy_lee@aspeedtech.com, longzl2@lenovo.com, yunlin.tang@aspeedtech.com
+References: <20250514090354.1461717-1-steven_lee@aspeedtech.com>
+ <20250514090354.1461717-4-steven_lee@aspeedtech.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <20250514090354.1461717-4-steven_lee@aspeedtech.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -37
 X-Spam_score: -3.8
@@ -78,7 +143,7 @@ X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,69 +156,52 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 14, 2025 at 05:25:59PM +0200, Cornelia Huck wrote:
-> On Tue, May 13 2025, Daniel P. Berrangé <berrange@redhat.com> wrote:
+Hello Steven,
+
+On 5/14/25 11:03, Steven Lee wrote:
+> Attach CA35 memory to system_memory to ensure a valid FlatView.
+> Without this, dma_memory_write() used by ftgmac fail silently,
+> causing dhcp to break on ast2700fc, as flatview_write() returns
+> an error when system_memory is empty.
+
+The change below fixes the network DMA transactions indeed but I think
+this case can be addressed differently.
+
+The transactions on address_space_memory in the ftgmac100 device model
+should be replaced by transactions on a local address space which would
+be initialized from a memory region passed to the model with a property.
+This is very similar to what we do in the Aspeed SMC model. Since it is
+more work, it can be addressed separately and later.
+
+However, let's keep the change below for all other places which are
+difficult to address, like rom_check_and_register_reset(). The commit
+should be rephrased.
+
+Thanks,
+
+C.
+
+
+
+> Signed-off-by: Steven Lee <steven_lee@aspeedtech.com>
+> ---
+>   hw/arm/aspeed_ast27x0-fc.c | 1 +
+>   1 file changed, 1 insertion(+)
 > 
-> > On Mon, Apr 14, 2025 at 06:38:41PM +0200, Cornelia Huck wrote:
-> >> From: Eric Auger <eric.auger@redhat.com>
-> >> 
-> >> Introduce a script that automates the generation of system register
-> >> properties definitions from a given linux source tree
-> >> arch/arm64/tools/sysreg.
-> >> 
-> >> Invocation of
-> >> ./update-aarch64-sysreg-code.sh $PATH_TO_LINUX_SOURCE_TREE
-> >> in scripts directory additionally generates
-> >> target/arm/cpu-sysreg-properties.c containing definitions for
-> >> feature ID registers.
-> >> 
-> >> update-aarch64-sysreg-code.sh additionally calls
-> >> gen-cpu-sysreg-properties.awk which is inherited from kernel
-> >> arch/arm64/tools/gen-sysreg.awk. All credits to Mark Rutland
-> >> the original author of this script.
-> >> 
-> >> [CH: split off from original patch adding both sysreg definitions
-> >>  and properties]
-> >> Signed-off-by: Eric Auger <eric.auger@redhat.com>
-> >> Signed-off-by: Cornelia Huck <cohuck@redhat.com>
-> >> ---
-> >>  scripts/gen-cpu-sysreg-properties.awk | 325 ++++++++++++++++++++++++++
-> >>  scripts/update-aarch64-sysreg-code.sh |   5 +-
-> >>  2 files changed, 329 insertions(+), 1 deletion(-)
-> >>  create mode 100755 scripts/gen-cpu-sysreg-properties.awk
-> >> 
-> >> diff --git a/scripts/gen-cpu-sysreg-properties.awk b/scripts/gen-cpu-sysreg-properties.awk
-> >> new file mode 100755
-> >> index 000000000000..76c37938b168
-> >> --- /dev/null
-> >> +++ b/scripts/gen-cpu-sysreg-properties.awk
-> >> @@ -0,0 +1,325 @@
-> >> +#!/bin/awk -f
-> >> +# SPDX-License-Identifier: GPL-2.0
-> >
-> > GPL-2.0 is a deprecated SPDX identifier. checkpatch.pl ought to
-> > have complained about this, requiring GPL-2.0-or-later as the
-> > preference, with GPL-2.0-only requiring justification in the
-> > commit.
-> 
-> GPL-2.0 is inherited from the Linux script mentioned; not sure if
-> GPL-2.0-only would be the correct fit here?
-
-Yes, according to the table of deprecated terms at the bottom of
-
-https://spdx.org/licenses/
-
-GPL-2.0-only would indeed be the correct replacement.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> diff --git a/hw/arm/aspeed_ast27x0-fc.c b/hw/arm/aspeed_ast27x0-fc.c
+> index ff64605663..ccba5fc8a1 100644
+> --- a/hw/arm/aspeed_ast27x0-fc.c
+> +++ b/hw/arm/aspeed_ast27x0-fc.c
+> @@ -69,6 +69,7 @@ static void ast2700fc_ca35_init(MachineState *machine)
+>   
+>       memory_region_init(&s->ca35_memory, OBJECT(&s->ca35), "ca35-memory",
+>                          UINT64_MAX);
+> +    memory_region_add_subregion(get_system_memory(), 0, &s->ca35_memory);
+>   
+>       if (!memory_region_init_ram(&s->ca35_dram, OBJECT(&s->ca35), "ca35-dram",
+>                                   AST2700FC_BMC_RAM_SIZE, &error_abort)) {
 
 
