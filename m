@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B415AB83E1
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 12:31:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEC58AB8418
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 12:37:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFVnN-0004yb-8t; Thu, 15 May 2025 06:26:39 -0400
+	id 1uFVnh-0005Ks-Qe; Thu, 15 May 2025 06:26:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uFVn8-0004cO-VA
- for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:19 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ id 1uFVn9-0004gJ-TT
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:20 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uFVn7-0008Af-5n
- for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:18 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3a1d8c0966fso530966f8f.1
- for <qemu-devel@nongnu.org>; Thu, 15 May 2025 03:26:16 -0700 (PDT)
+ id 1uFVn7-0008Aq-Q7
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:19 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-43d04dc73b7so8012725e9.3
+ for <qemu-devel@nongnu.org>; Thu, 15 May 2025 03:26:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747304775; x=1747909575; darn=nongnu.org;
+ d=linaro.org; s=google; t=1747304776; x=1747909576; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=RG8Ka89WGECPxEN9oHVhNLbmDepbN7rDBbuob6DhDg4=;
- b=se4HmPfr6ryKxfn9E7+km11kM5AJ3U/zw3vAN2k4jgWKyML1X0reLjrGWGsYrSaFhG
- uSAbc8VS99WGAxyYn39KFZWfHbJFDuLKXnPj7j2M40aa6q3cT+KW1J0whKvkf5ghpbSc
- hzUH51YiKJJctFK1/c9YTnzKcu4TD3O+jwYAozbVuc6boUIbHxpwlTrb+L7fXN+gZwew
- 4P821+9vgEgFpd8+nLBtGu1WOsp2Q9sme2Vb6OXaxTuZ9hEv7DrzPwIzIUmgPClt09Yp
- y6S4EaGMJ5GtqluJvdJx/siEQSCCebQ8A2Z6i0/ipqhObgavEWS4hs+ted0v/gIBwPM9
- zJoA==
+ :reply-to; bh=5iuDbPPf5lEYT71cv+B0giQZmGA3HvyTgZbPr6A9ErE=;
+ b=soKSFVKxFAS+oKZMe6UoBJ9H2LvmWRB9THjpCl23OLOVbh+4JDxnnikwz9OXoVCTc3
+ 4OtsPU8bZX7qQ+GJEyAsTh9cjp0hvwNZTGW9GWEkCbQ/F3D5yP6BmflwH9Lp04Lx5GzN
+ WrVuUjSKvtDujtsM12cLS/nogiQvKuQ3gWdgAglLiEzGv/ASRv+WdlNBf/5gSfqvHmfx
+ F33fFEUeV9IQE4NBxdeswoTzAcX+bg2j9idLlVQWKIsVNyrI+dknuqVu6Fq3fAPvbzIN
+ VgFsLttNjplaU6tluAeDkE1CINiZWOnhvmiiiBWKl9jGhDzESYzqJHuZ2YWscfaqcFfk
+ elow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747304775; x=1747909575;
+ d=1e100.net; s=20230601; t=1747304776; x=1747909576;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RG8Ka89WGECPxEN9oHVhNLbmDepbN7rDBbuob6DhDg4=;
- b=MInsAtC8Uf8ueunT0d8aXkQIzyx+aHHK/2OjqeZkz2fu8cYHLldjC0B2ao08mLcTFg
- ycyoFu8GXJaftSkzO6hWqAQ6QQ76Z2EbCiWMwfTvox7H/qG0yaBmv8LUcJ5K4HoY7+jf
- e6hLCdDazgYuolKlD6i202/MI7+BK8nxv4YLh0Ucq2W2mjezM3tGE1b/x1UDmdhdVB8V
- WvHiWIXrloFh5l1bBmDbeVdlv93ths4c4WAqbHD6zi7T17/cIoZtBy1qAmMTSUhRTb+E
- t5fUPRbDyFoAgKe6gMKJc+qBxXjjhav1TcdAPzH/QsYsjpWSXYQN1ysSmrAl3FK7mQsz
- vYYQ==
-X-Gm-Message-State: AOJu0YxOK0q4SOMq4BojN/tEp9pOw20kL9BLx2vk49XEVjFXnwwSVDB9
- SpYp7MBA8g447X5Qh79hAiVx/92JgcoQXl2Q9kbqhS3naumjkj8B1P5ZlZ4GfJIIhogNp7t+XZG
- jv6xqjIE=
-X-Gm-Gg: ASbGnctifTtY6rMflW24IjQ71by0mhf8VqEXYzUFUSOc207jPBs82u+u37NRPPT5AB2
- 5wU7QhLv+oo/AwGdtZdSBRDQ/A/evAIldlxW65MvUvnpm9BDImkSG1jRlhk7BlADz8mUAS2n7LS
- pqSVfvDK6yM2oPTvfNMl+qrAQKwhSE/Ou25W9VptHb6RFilTeezhJzXwC8aqOGK46AaLLCwHlge
- 5nZKnrfUpQHe9P85DVOxOtbmokq7HihqLdd6XLWYBbjXi30AcI5B+Gsbri6D/WDxPKnfL5qTlsQ
- bi6JKchtqHF7AGeLMU+9/jM3g0cTjietO4WwDddZrJ11LjN30J05mhf6pg==
-X-Google-Smtp-Source: AGHT+IE1BLszunUFW8kOr6VdkRYO7w48uBOhjgUsErGAKRDeUrrlxU77B2+lqzKpRLb38/LWTA/sSg==
-X-Received: by 2002:a05:6000:2a5:b0:3a0:b817:2d7a with SMTP id
- ffacd0b85a97d-3a351222edemr2489026f8f.29.1747304775317; 
- Thu, 15 May 2025 03:26:15 -0700 (PDT)
+ bh=5iuDbPPf5lEYT71cv+B0giQZmGA3HvyTgZbPr6A9ErE=;
+ b=NZCPkf/2MnlTKrUmhi9Y6ECXB8W/NwN9sk/u6qeD5laQ+TuUbTePOgdlSj+hQ6gAuV
+ ORvP4e/6TXI8xpDgts/j6rl8JFSVGZubZDM2Sa852oq83yXa68lxWw9Brk5Taf4AZzlw
+ 2HAo8+k9EIlFt0/8JF8dFdWU0UP3QSAd2JgY4JwQUb7QtI3LcRdrDjUj2/fzYGgUBRAt
+ RGGY9tLDiADFo19GV1+80qZQ3V45I0Hs3qYHdShf8WaeIiwK6qGEmIPgXRxJLimGJQTq
+ nzkUA17SMCNSceFOv9pfmXfEDIB1SFm0oyA7NX+6mTs5Pzx9HcIpW+D2jQR11MmtjBNJ
+ wokw==
+X-Gm-Message-State: AOJu0Yz8EfnZBmJvbriRd7mLvSYh6TA6ABmz35QMbYNXm7vLknl6w1z8
+ tiiiFgGIVdH/68Ekk4zFP0JbCZuurTqWUO/in5m7SxBqqXEq9yuGcVwOFq9uQEtNkDqHGdkCVaw
+ Sjk0=
+X-Gm-Gg: ASbGnctKx72pVWi3LfQH4yP/4pdIiWdY7qqNoD6M4xGfTQbHDPZzEkjuzRugllWNEH5
+ qNYgeTOAvnoWCWHnr+vrSLeqOJVwuo3uAG8ztFO/Tjuq9XtHaGv6/fblcmXW5NyNnFawgu91c/u
+ fpEuGLnD5r56j++Duvh8BYSMbUFbFy54zrwqtINVB97suKsEv3OoM4Cmodw3Plr1dr+KXQt/6yS
+ 9KIic1EwEwvk29XrhH1aJisAFQtpNp+wvTlP3sO4NMOtNVAIZsoE3l66aYPambDUoTP+RRwcx6f
+ cgfvGCfbmrtfKtzOiRN/3V/8hsA5SUkc1B1V3wBbGkUiNl7pzFMoPTqYYv90IOp1Io+V
+X-Google-Smtp-Source: AGHT+IEV0tMwlzxPDPTNuMcZxDjTY0+BLUo03NL6PWpYqT35aXzCjJaKNBjywNz2bf93mI/CgoWBYg==
+X-Received: by 2002:a05:600c:3483:b0:442:d9f2:c753 with SMTP id
+ 5b1f17b1804b1-442f21684b4mr58321475e9.26.1747304776361; 
+ Thu, 15 May 2025 03:26:16 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442f396c3a4sm65657855e9.26.2025.05.15.03.26.14
+ 5b1f17b1804b1-442f396c3a4sm65657855e9.26.2025.05.15.03.26.15
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 May 2025 03:26:14 -0700 (PDT)
+ Thu, 15 May 2025 03:26:15 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 19/58] target/arm/cpu: remove TARGET_AARCH64 in
- arm_cpu_finalize_features
-Date: Thu, 15 May 2025 11:25:07 +0100
-Message-ID: <20250515102546.2149601-20-peter.maydell@linaro.org>
+Subject: [PULL 20/58] target/arm/cpu: compile file twice (user, system) only
+Date: Thu, 15 May 2025 11:25:08 +0100
+Message-ID: <20250515102546.2149601-21-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250515102546.2149601-1-peter.maydell@linaro.org>
 References: <20250515102546.2149601-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,94 +98,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Need to stub cpu64 finalize functions.
-
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-id: 20250512180502.2395029-10-pierrick.bouvier@linaro.org
+Message-id: 20250512180502.2395029-11-pierrick.bouvier@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpu.c         |  2 --
- target/arm/cpu32-stubs.c | 26 ++++++++++++++++++++++++++
- target/arm/meson.build   | 11 +++++++----
- 3 files changed, 33 insertions(+), 6 deletions(-)
- create mode 100644 target/arm/cpu32-stubs.c
+ target/arm/meson.build | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index ec9bc72c3d6..ca5ed7892e4 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -1913,7 +1913,6 @@ void arm_cpu_finalize_features(ARMCPU *cpu, Error **errp)
- {
-     Error *local_err = NULL;
- 
--#ifdef TARGET_AARCH64
-     if (arm_feature(&cpu->env, ARM_FEATURE_AARCH64)) {
-         arm_cpu_sve_finalize(cpu, &local_err);
-         if (local_err != NULL) {
-@@ -1949,7 +1948,6 @@ void arm_cpu_finalize_features(ARMCPU *cpu, Error **errp)
-             return;
-         }
-     }
--#endif
- 
-     if (kvm_enabled()) {
-         kvm_arm_steal_time_finalize(cpu, &local_err);
-diff --git a/target/arm/cpu32-stubs.c b/target/arm/cpu32-stubs.c
-new file mode 100644
-index 00000000000..81be44d8462
---- /dev/null
-+++ b/target/arm/cpu32-stubs.c
-@@ -0,0 +1,26 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+#include "qemu/osdep.h"
-+#include "target/arm/cpu.h"
-+#include "target/arm/internals.h"
-+#include <glib.h>
-+
-+void arm_cpu_sme_finalize(ARMCPU *cpu, Error **errp)
-+{
-+    g_assert_not_reached();
-+}
-+
-+void arm_cpu_sve_finalize(ARMCPU *cpu, Error **errp)
-+{
-+    g_assert_not_reached();
-+}
-+
-+void arm_cpu_pauth_finalize(ARMCPU *cpu, Error **errp)
-+{
-+    g_assert_not_reached();
-+}
-+
-+void arm_cpu_lpa2_finalize(ARMCPU *cpu, Error **errp)
-+{
-+    g_assert_not_reached();
-+}
 diff --git a/target/arm/meson.build b/target/arm/meson.build
-index 3065081d241..c39ddc4427b 100644
+index c39ddc4427b..89e305eb56a 100644
 --- a/target/arm/meson.build
 +++ b/target/arm/meson.build
-@@ -11,10 +11,13 @@ arm_ss.add(zlib)
- arm_ss.add(when: 'CONFIG_KVM', if_true: files('hyp_gdbstub.c', 'kvm.c'), if_false: files('kvm-stub.c'))
- arm_ss.add(when: 'CONFIG_HVF', if_true: files('hyp_gdbstub.c'))
- 
--arm_ss.add(when: 'TARGET_AARCH64', if_true: files(
--  'cpu64.c',
--  'gdbstub64.c',
--))
-+arm_ss.add(when: 'TARGET_AARCH64',
-+  if_true: files(
-+    'cpu64.c',
-+    'gdbstub64.c'),
-+  if_false: files(
-+    'cpu32-stubs.c'),
-+)
+@@ -1,6 +1,6 @@
+ arm_ss = ss.source_set()
++arm_common_ss = ss.source_set()
+ arm_ss.add(files(
+-  'cpu.c',
+   'debug_helper.c',
+   'gdbstub.c',
+   'helper.c',
+@@ -20,6 +20,7 @@ arm_ss.add(when: 'TARGET_AARCH64',
+ )
  
  arm_system_ss = ss.source_set()
++arm_common_system_ss = ss.source_set()
  arm_system_ss.add(files(
+   'arch_dump.c',
+   'arm-powerctl.c',
+@@ -30,6 +31,9 @@ arm_system_ss.add(files(
+ ))
+ 
+ arm_user_ss = ss.source_set()
++arm_user_ss.add(files('cpu.c'))
++
++arm_common_system_ss.add(files('cpu.c'), capstone)
+ 
+ subdir('hvf')
+ 
+@@ -42,3 +46,5 @@ endif
+ target_arch += {'arm': arm_ss}
+ target_system_arch += {'arm': arm_system_ss}
+ target_user_arch += {'arm': arm_user_ss}
++target_common_arch += {'arm': arm_common_ss}
++target_common_system_arch += {'arm': arm_common_system_ss}
 -- 
 2.43.0
 
