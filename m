@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B28C1AB7FFD
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 10:13:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57DEEAB7FE8
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 10:12:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFThZ-0000ix-ME; Thu, 15 May 2025 04:12:26 -0400
+	id 1uFTh9-00066H-7l; Thu, 15 May 2025 04:11:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1uFTfw-0003OA-0D; Thu, 15 May 2025 04:10:44 -0400
+ id 1uFTfw-0003PZ-C4; Thu, 15 May 2025 04:10:45 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1uFTfu-00010V-1H; Thu, 15 May 2025 04:10:43 -0400
+ id 1uFTfu-00011Y-2m; Thu, 15 May 2025 04:10:43 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 15 May
@@ -31,10 +31,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
  <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v3 09/28] hw/misc/aspeed_hace: Introduce 64-bit hash source
- address helper function
-Date: Thu, 15 May 2025 16:09:41 +0800
-Message-ID: <20250515081008.583578-10-jamin_lin@aspeedtech.com>
+Subject: [PATCH v3 10/28] hw/misc/aspeed_hace: Rename R_HASH_DEST to
+ R_HASH_DIGEST and introduce 64-bit hash digest address helper
+Date: Thu, 15 May 2025 16:09:42 +0800
+Message-ID: <20250515081008.583578-11-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250515081008.583578-1-jamin_lin@aspeedtech.com>
 References: <20250515081008.583578-1-jamin_lin@aspeedtech.com>
@@ -66,89 +66,75 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The AST2700 CPU, based on the Cortex-A35, is a 64-bit processor, and its DRAM
-address space is also 64-bit. To support future AST2700 updates, the source
-hash buffer address data type is being updated to 64-bit.
+Renaming R_HASH_DEST to R_HASH_DIGEST for better semantic clarity.
 
-Introduces the "hash_get_source_addr()" helper function to extract the source hash
-buffer address.
+The AST2700 CPU, based on the Cortex-A35, features a 64-bit DRAM address space.
+To prepare for future AST2700 support, this change introduces a new helper
+function hash_get_digest_addr() to encapsulate digest address extraction logic
+and improve code readability.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/misc/aspeed_hace.c | 24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+ hw/misc/aspeed_hace.c | 25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
 diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c
-index 33e13974fe..b3c3af51fa 100644
+index b3c3af51fa..62649b5b27 100644
 --- a/hw/misc/aspeed_hace.c
 +++ b/hw/misc/aspeed_hace.c
-@@ -142,21 +142,30 @@ static bool has_padding(AspeedHACEState *s, struct iovec *iov,
-     return false;
+@@ -27,7 +27,7 @@
+ #define TAG_IRQ         BIT(15)
+ 
+ #define R_HASH_SRC      (0x20 / 4)
+-#define R_HASH_DEST     (0x24 / 4)
++#define R_HASH_DIGEST   (0x24 / 4)
+ #define R_HASH_KEY_BUFF (0x28 / 4)
+ #define R_HASH_SRC_LEN  (0x2c / 4)
+ 
+@@ -238,17 +238,30 @@ static int hash_prepare_sg_iov(AspeedHACEState *s, struct iovec *iov,
+     return iov_idx;
  }
  
-+static uint64_t hash_get_source_addr(AspeedHACEState *s)
++static uint64_t hash_get_digest_addr(AspeedHACEState *s)
 +{
-+    uint64_t src_addr = 0;
++    uint64_t digest_addr = 0;
 +
-+    src_addr = deposit64(src_addr, 0, 32, s->regs[R_HASH_SRC]);
++    digest_addr = deposit64(digest_addr, 0, 32, s->regs[R_HASH_DIGEST]);
 +
-+    return src_addr;
++    return digest_addr;
 +}
 +
- static int hash_prepare_direct_iov(AspeedHACEState *s, struct iovec *iov)
+ static void hash_write_digest_and_unmap_iov(AspeedHACEState *s,
+                                             struct iovec *iov,
+                                             int iov_idx,
+                                             uint8_t *digest_buf,
+                                             size_t digest_len)
  {
--    uint32_t src;
-+    uint64_t src;
-     void *haddr;
-     hwaddr plen;
-     int iov_idx;
- 
-     plen = s->regs[R_HASH_SRC_LEN];
--    src = s->regs[R_HASH_SRC];
-+    src = hash_get_source_addr(s);
-     haddr = address_space_map(&s->dram_as, src, &plen, false,
-                               MEMTXATTRS_UNSPECIFIED);
-     if (haddr == NULL) {
-         qemu_log_mask(LOG_GUEST_ERROR,
--                      "%s: Unable to map address, addr=0x%x, "
--                      "plen=0x%" HWADDR_PRIx "\n",
-+                      "%s: Unable to map address, addr=0x%" HWADDR_PRIx
-+                      " ,plen=0x%" HWADDR_PRIx "\n",
-                       __func__, src, plen);
-         return -1;
-     }
-@@ -175,11 +184,12 @@ static int hash_prepare_sg_iov(AspeedHACEState *s, struct iovec *iov,
-     uint32_t pad_offset;
-     uint32_t len = 0;
-     uint32_t sg_addr;
--    uint32_t src;
-+    uint64_t src;
-     int iov_idx;
-     hwaddr plen;
-     void *haddr;
- 
-+    src = hash_get_source_addr(s);
-     for (iov_idx = 0; !(len & SG_LIST_LEN_LAST); iov_idx++) {
-         if (iov_idx == ASPEED_HACE_MAX_SG) {
-             qemu_log_mask(LOG_GUEST_ERROR,
-@@ -188,8 +198,6 @@ static int hash_prepare_sg_iov(AspeedHACEState *s, struct iovec *iov,
-             return -1;
-         }
- 
--        src = s->regs[R_HASH_SRC] + (iov_idx * SG_LIST_ENTRY_SIZE);
--
-         len = address_space_ldl_le(&s->dram_as, src,
-                                    MEMTXATTRS_UNSPECIFIED, NULL);
-         sg_addr = address_space_ldl_le(&s->dram_as, src + SG_LIST_LEN_SIZE,
-@@ -208,6 +216,8 @@ static int hash_prepare_sg_iov(AspeedHACEState *s, struct iovec *iov,
-             return -1;
-         }
- 
-+        src += SG_LIST_ENTRY_SIZE;
+-    if (address_space_write(&s->dram_as, s->regs[R_HASH_DEST],
+-                            MEMTXATTRS_UNSPECIFIED, digest_buf, digest_len)) {
++    uint64_t digest_addr = 0;
 +
-         iov[iov_idx].iov_base = haddr;
-         if (acc_mode) {
-             s->total_req_len += plen;
++    digest_addr = hash_get_digest_addr(s);
++    if (address_space_write(&s->dram_as, digest_addr,
++                            MEMTXATTRS_UNSPECIFIED,
++                            digest_buf, digest_len)) {
+         qemu_log_mask(LOG_GUEST_ERROR,
+-                      "%s: Failed to write digest to 0x%x\n",
+-                      __func__, s->regs[R_HASH_DEST]);
++                      "%s: Failed to write digest to 0x%" HWADDR_PRIx "\n",
++                      __func__, digest_addr);
+     }
+ 
+     for (; iov_idx > 0; iov_idx--) {
+@@ -402,7 +415,7 @@ static void aspeed_hace_write(void *opaque, hwaddr addr, uint64_t data,
+     case R_HASH_SRC:
+         data &= ahc->src_mask;
+         break;
+-    case R_HASH_DEST:
++    case R_HASH_DIGEST:
+         data &= ahc->dest_mask;
+         break;
+     case R_HASH_KEY_BUFF:
 -- 
 2.43.0
 
