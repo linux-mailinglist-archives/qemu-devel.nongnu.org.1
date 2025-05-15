@@ -2,138 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C42E0AB7EF5
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 09:37:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F24AAB7F19
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 09:45:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFT8r-0007zo-57; Thu, 15 May 2025 03:36:33 -0400
+	id 1uFTFv-00046w-5m; Thu, 15 May 2025 03:43:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uFT8o-0007zf-Ry
- for qemu-devel@nongnu.org; Thu, 15 May 2025 03:36:31 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uFTFs-00046L-Gt
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 03:43:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uFT8m-0005M2-B9
- for qemu-devel@nongnu.org; Thu, 15 May 2025 03:36:30 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uFTFq-0006EE-IC
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 03:43:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747294585;
+ s=mimecast20190719; t=1747295023;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=QTff/lNpSkK4YBe7NK+nN1jY4NvLldH2owcY8su8puA=;
- b=ako3Hvrku9YKVKOC0AVzJFhY+MhJmHsfW+zKdaGfxGJ+yRIbS4M+2TdBbNxVYN0CDoFM8q
- 1tWhbGYdbXDkjLdIyuhR4T3GjUTaUw0Hhu0t6ONCDEfCMApx8ulOnvYbFMc9IKz+dDUN1k
- 4/U4WNgjrjl43GgnOp6ddGrl7c7skI4=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-26-qf-Q6TGUM4K4_qitF5_54Q-1; Thu, 15 May 2025 03:36:24 -0400
-X-MC-Unique: qf-Q6TGUM4K4_qitF5_54Q-1
-X-Mimecast-MFC-AGG-ID: qf-Q6TGUM4K4_qitF5_54Q_1747294583
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-441c122fa56so2553345e9.2
- for <qemu-devel@nongnu.org>; Thu, 15 May 2025 00:36:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747294583; x=1747899383;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=QTff/lNpSkK4YBe7NK+nN1jY4NvLldH2owcY8su8puA=;
- b=ruPjyqU2fReKJXFfPL04jv8h543H3FIwg5glRfMZ27NiANOc8q+lE5UQ6iYv+5QZcv
- y8ZLwPb+QV1QqAiDY7RF9ZrI+GidHlE4GoGm9b/sJFJ+otbjiVr2o1IOr9CgzjJll0mp
- OQjkCPZhG1RQf2tHqbd60VGBwQtUfWJLFzH8mt3djIYtxG2R7KM7tvDzwU6mbZpEorGk
- 1qWXGmfzeMgUmyJ2AUyupCiJx8u0Oztlilwfr/WoB1wnCbD8fCXI3WR52kcPuxWeLTiW
- 2MY95/pzpfhAE9PoFcyR+xHBP4Qe0qRujiulUhEZZwl5wYQvDTilBxMqbYg4Kr/ywHZc
- UGUw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUrQSLDsa1DV1x+go3lClHS3jX1QLW6MtYFZx8/VTHwn2rYZN6MFFNIEqtwvGF0JuLx1hA4bVLxPChd@nongnu.org
-X-Gm-Message-State: AOJu0YwP/0dWoweZ2cN5gm+q48nv7kLS6jTUyolmOiUD5vnND95cNudo
- Y3szrlZ4vF3/8deVAomOKbrzKlUEw/8R9i3AQz97BbX/Fbe9b5ParwRpeSsx5eGgI74ofyhlCz7
- aFqRVV18dzhW/vKIQ7NRiua47JL+HMf5LGHekJQudm9AQP0lV1W1T
-X-Gm-Gg: ASbGnctd5YiiJPTFjtkn7uaknrDZQT6qfRxtodnRUuODh7RL1YxpQ10eYq5O25HmQCm
- szjRpEuD0+0Z7J31dHqAXCpMxcUfinqBr0fzO+g34fQwCg0wsTabGTwTPrOoePpcX/BpPf76kJr
- fF2sl24qPw3CKdw57R12Qs9tf2BzZ2gXmWnOMipGhoVnF7CDptp57Zu/oG/veWsZNLLtW62K0HF
- 384psjpq+bTj7dOAHdV7NZlz+MkL9Z+hOE7iRZWg0Qmkff9ymOcHfUE7ZRXGXsewmGQGfpU4PGB
- +rneqLQgc1tu3Zrg0msOGmstij/o2KSMVxycB726xdGiBPkSew==
-X-Received: by 2002:a05:6000:22c5:b0:3a1:fc91:f784 with SMTP id
- ffacd0b85a97d-3a34994ef51mr4845486f8f.53.1747294583009; 
- Thu, 15 May 2025 00:36:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGXojvA7hkWU3MQ6H+FA+IR6GPArq24jrsELIyexv/CVX1FPLIFokEBs8eaW6yYJLU5lOjS7Q==
-X-Received: by 2002:a05:6000:22c5:b0:3a1:fc91:f784 with SMTP id
- ffacd0b85a97d-3a34994ef51mr4845464f8f.53.1747294582671; 
- Thu, 15 May 2025 00:36:22 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442f3368f2bsm60841945e9.4.2025.05.15.00.36.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 15 May 2025 00:36:21 -0700 (PDT)
-Message-ID: <58bdbe4c-3d8b-4b6c-9bbc-d453a104d07b@redhat.com>
-Date: Thu, 15 May 2025 09:36:20 +0200
+ in-reply-to:in-reply-to:references:references;
+ bh=iMktAqtVjFdQ4jPA8on/MdgqREjgi3G2FE7cEE/DnEA=;
+ b=VwC0VxgswdpZNkjmrdq3gNANv+9yuc5elPpqTRxMJGt58FNl279CennFgtmrPs8FBB8DbJ
+ COjvjCrDWyBWlgyK6oJx66UKuEpwoq0m/aif4UWOlrE7LEEl6yY5FAjR1shzZoc1Hl175h
+ QVdW6KdzLbLuiEb8AJGUMfvwZKsiWh8=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-606-1lII2W0yNm6TILLZ7LJW1Q-1; Thu,
+ 15 May 2025 03:43:42 -0400
+X-MC-Unique: 1lII2W0yNm6TILLZ7LJW1Q-1
+X-Mimecast-MFC-AGG-ID: 1lII2W0yNm6TILLZ7LJW1Q_1747295021
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 1E50519560AA; Thu, 15 May 2025 07:43:41 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.27])
+ by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AD2031800268; Thu, 15 May 2025 07:43:40 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id F220E21E6768; Thu, 15 May 2025 09:43:37 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Eric Blake <eblake@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH 0/2] qapi/misc-target: Fix the doc of query-sgx and
+ query-sgx-capabilities
+In-Reply-To: <aCWQNdZ0dy3641jE@intel.com> (Zhao Liu's message of "Thu, 15 May
+ 2025 14:56:53 +0800")
+References: <20250513143131.2008078-1-zhao1.liu@intel.com>
+ <87cyca4dbt.fsf@pond.sub.org> <aCWQNdZ0dy3641jE@intel.com>
+Date: Thu, 15 May 2025 09:43:37 +0200
+Message-ID: <87zffe2uae.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3 01/42] MAINTAINERS: Add reviewer for CPR
-To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>, Yi Liu
- <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>
-References: <1747063973-124548-1-git-send-email-steven.sistare@oracle.com>
- <1747063973-124548-2-git-send-email-steven.sistare@oracle.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <1747063973-124548-2-git-send-email-steven.sistare@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -37
 X-Spam_score: -3.8
@@ -158,46 +85,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/12/25 17:32, Steve Sistare wrote:
-> CPR is integrated with live migration, and has the same maintainers.
-> But, add a CPR section to add a reviewer.
-> 
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> ---
->   MAINTAINERS | 9 +++++++++
->   1 file changed, 9 insertions(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 6dacd6d..d54a532 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -3019,6 +3019,15 @@ F: include/qemu/co-shared-resource.h
->   T: git https://gitlab.com/jsnow/qemu.git jobs
->   T: git https://gitlab.com/vsementsov/qemu.git block
->   
-> +CheckPoint and Restart (CPR)
-> +R: Steve Sistare <steven.sistare@oracle.com>
-> +S: Supported
-> +F: hw/vfio/cpr*
-> +F: include/migration/cpr.h
-> +F: migration/cpr*
-> +F: tests/qtest/migration/cpr*
-> +F: docs/devel/migration/CPR.rst
-> +
->   Compute Express Link
->   M: Jonathan Cameron <jonathan.cameron@huawei.com>
->   R: Fan Ni <fan.ni@samsung.com>
+Zhao Liu <zhao1.liu@intel.com> writes:
 
-Please add :
+> On Thu, May 15, 2025 at 08:07:02AM +0200, Markus Armbruster wrote:
+>> Date: Thu, 15 May 2025 08:07:02 +0200
+>> From: Markus Armbruster <armbru@redhat.com>
+>> Subject: Re: [PATCH 0/2] qapi/misc-target: Fix the doc of query-sgx and
+>>  query-sgx-capabilities
+>> 
+>> Zhao Liu <zhao1.liu@intel.com> writes:
+>> 
+>> > Hi all,
+>> >
+>> > There're 2 QMP commands: query-sgx and query-sgx-capabilities, but
+>> > their outputs are very similar and the documentation lacks clear
+>> > differentiation.
+>> >
+>>  >From the codes, query-sgx is used to gather guest's SGX capabilities
+>> > (including SGX related CPUIDs and EPC sections' size, in SGXInfo), and
+>> > query-sgx-capabilities is used to gather host's SGX capabilities 
+>> > (descripted by SGXInfo as well).
+>> >
+>> > Therefore, fix their documentation to reflect this difference.
+>> 
+>> Acked-by: Markus Armbruster <armbru@redhat.com>
+>> 
+>> I'll take this through my tree unless Paolo is faster.
+>
+> Thanks Markus!
+>
+> I was also thinking you would like "SgxInfo" and "SgxEpcSection" instead
+> of current "SGXInfo" and "SGXEPCSection".
 
-   include/hw/vfio/vfio-cpr.h
+These are indeed easier to read, especially the latter.
 
-with that,
-  
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+> But I'm not sure if modifying the old names has any compatibility issues
+> for QAPI? If you think it's ok, I can continue to make the SGX naming
+> styles more QAPI compliant.
 
-Thanks,
-
-C.
+Type names are not visible at the external interface, so changing them
+is just fine.  That's a feature!
 
 
