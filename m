@@ -2,59 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB55DAB88C9
+	by mail.lfdr.de (Postfix) with ESMTPS id DBBFEAB88C8
 	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 16:01:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFZ8C-0002aN-55; Thu, 15 May 2025 10:00:16 -0400
+	id 1uFZ8F-0002ax-1C; Thu, 15 May 2025 10:00:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uFZ88-0002Zu-8k
- for qemu-devel@nongnu.org; Thu, 15 May 2025 10:00:12 -0400
+ id 1uFZ89-0002a5-J4
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 10:00:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uFZ85-00084m-04
- for qemu-devel@nongnu.org; Thu, 15 May 2025 10:00:11 -0400
+ id 1uFZ86-000857-Bx
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 10:00:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747317607;
+ s=mimecast20190719; t=1747317609;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JeIVo8pFBhGwePw+lJWl1S6B17za87Izgj/+xZPl7/Y=;
- b=AvSXnwvtqfsuXAePJ2rEBz2v4qW/HIXa7ZXyodYcBO9DNQbf1LE+aC0Ff4dTCjaq+QZDJq
- c8+lNmT1jiz5l8RefUGUqeF7aMDuXE1IEJUMhb6ZlgBFcNeQDYMdKotTaJ9mds8Zto/f3s
- I3xMjm5S1CXGGFnsIj7FXLh3ui32tEk=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=mflY1Lwpkm9HezKk09xW5TZteq3I7eD4udb269k+Byg=;
+ b=UGKtDaRvs86gM6W4f/T/tNJPW0ropTmpGOM5Ox2F2kcoB2IFSPWPnjacFNb4S5MGfCrfjy
+ GZrIKtiIS2fQ7rvV0k4eLzemu2lkxbW+A2yghEVrK8QmDxlZqyOfha5BZmM6fbOudJ6+Nl
+ CJ+HvNqLqltvX6NBGOu62eTon7INxck=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-16-g7l3GDavMBa1VDWAxEYgGw-1; Thu,
- 15 May 2025 10:00:04 -0400
-X-MC-Unique: g7l3GDavMBa1VDWAxEYgGw-1
-X-Mimecast-MFC-AGG-ID: g7l3GDavMBa1VDWAxEYgGw_1747317603
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-336-nUNDiZuPObq37r0F8H7myQ-1; Thu,
+ 15 May 2025 10:00:06 -0400
+X-MC-Unique: nUNDiZuPObq37r0F8H7myQ-1
+X-Mimecast-MFC-AGG-ID: nUNDiZuPObq37r0F8H7myQ_1747317605
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id ED87D19560B1; Thu, 15 May 2025 14:00:02 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 15DB318001CC; Thu, 15 May 2025 14:00:05 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.135])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 20B1C30075D4; Thu, 15 May 2025 14:00:00 +0000 (UTC)
+ id 6D13230075D4; Thu, 15 May 2025 14:00:03 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v3 8/9] scripts/checkpatch: reimplement mandate for
- SPDX-License-Identifier
-Date: Thu, 15 May 2025 14:59:35 +0100
-Message-ID: <20250515135936.86760-9-berrange@redhat.com>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH v3 9/9] scripts/checkpatch: reject license boilerplate on new
+ files
+Date: Thu, 15 May 2025 14:59:36 +0100
+Message-ID: <20250515135936.86760-10-berrange@redhat.com>
 In-Reply-To: <20250515135936.86760-1-berrange@redhat.com>
 References: <20250515135936.86760-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -86,57 +85,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Going forward we want all newly created source files to have an
-SPDX-License-Identifier tag present.
+The previous commit mandates use of SPDX-License-Identifier on common
+source files, and encourages it on all other files.
 
-Initially mandate this for C, Python, Perl, Shell source files,
-as well as JSON (QAPI) and Makefiles, while encouraging users
-to consider it for other file types.
+Some contributors are none the less still also including the license
+boilerplate text. This is redundant and will potentially cause
+trouble if inconsistent with the SPDX declaration.
 
-The new attempt at detecting missing SPDX-License-Identifier relies
-on the hooks for relying triggering logic at the end of scanning a
-new file in the diff.
+Match common boilerplate text blurbs and report them as invalid,
+for newly added files.
 
-Tested-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- scripts/checkpatch.pl | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ scripts/checkpatch.pl | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
 diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 6adef12871..87050e6677 100755
+index 87050e6677..cb1942c021 100755
 --- a/scripts/checkpatch.pl
 +++ b/scripts/checkpatch.pl
-@@ -1482,6 +1482,20 @@ sub process_start_of_file {
- # Called at the end of processing a diff hunk for a file
- sub process_end_of_file {
- 	my $fileinfo = shift;
-+
+@@ -1496,6 +1496,13 @@ sub process_end_of_file {
+ 			     "' need 'SPDX-License-Identifier'?");
+ 		}
+ 	}
 +	if ($fileinfo->{action} eq "new" &&
-+	    !exists $fileinfo->{facts}->{sawspdx}) {
-+		if ($fileinfo->{filenew} =~
-+		    /(\.(c|h|py|pl|sh|json|inc)|Makefile.*)$/) {
-+			# source code files MUST have SPDX license declared
-+			ERROR("New file '" . $fileinfo->{filenew} .
-+			      "' requires 'SPDX-License-Identifier'");
-+		} else {
-+			# Other files MAY have SPDX license if appropriate
-+			WARN("Does new file '" . $fileinfo->{filenew} .
-+			     "' need 'SPDX-License-Identifier'?");
-+		}
++	    !exists $fileinfo->{facts}->{sawboilerplate}) {
++		ERROR("New file '" . $fileinfo->{filenew} . "' must " .
++		      "not have license boilerplate header text unless " .
++		      "this file is copied from existing code with such " .
++		      "text already present.");
 +	}
  }
  
  sub process {
-@@ -1780,6 +1794,7 @@ sub process {
- 
- # Check SPDX-License-Identifier references a permitted license
- 		if ($rawline =~ m,SPDX-License-Identifier: (.*?)(\*/)?\s*$,) {
-+			$fileinfo->{facts}->{sawspdx} = 1;
+@@ -1798,6 +1805,15 @@ sub process {
  			&checkspdx($realfile, $1);
  		}
  
++		if ($rawline =~ /licensed under the terms of the GNU GPL/ ||
++		    $rawline =~ /under the terms of the GNU General Public License/ ||
++		    $rawline =~ /under the terms of the GNU Lesser General Public/ ||
++		    $rawline =~ /Permission is hereby granted, free of charge/ ||
++		    $rawline =~ /GNU GPL, version 2 or later/ ||
++		    $rawline =~ /See the COPYING file/) {
++			$fileinfo->{facts}->{sawboilerplate} = 1;
++		}
++
+ 		if ($rawline =~ m,(SPDX-[a-zA-Z0-9-_]+):,) {
+ 			my $tag = $1;
+ 			my @permitted = qw(
 -- 
 2.49.0
 
