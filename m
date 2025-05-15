@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0DD3AB83C8
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 12:28:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF12AB8414
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 12:37:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFVms-0004Ja-B8; Thu, 15 May 2025 06:26:02 -0400
+	id 1uFVmv-0004NR-Es; Thu, 15 May 2025 06:26:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uFVmp-0004HJ-9w
- for qemu-devel@nongnu.org; Thu, 15 May 2025 06:25:59 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1uFVmq-0004JH-Mx
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:00 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uFVmn-000872-Jv
- for qemu-devel@nongnu.org; Thu, 15 May 2025 06:25:59 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-43cfba466b2so8367755e9.3
- for <qemu-devel@nongnu.org>; Thu, 15 May 2025 03:25:57 -0700 (PDT)
+ id 1uFVmo-00087G-NU
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:00 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-442ccf0e1b3so9263445e9.3
+ for <qemu-devel@nongnu.org>; Thu, 15 May 2025 03:25:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747304756; x=1747909556; darn=nongnu.org;
+ d=linaro.org; s=google; t=1747304757; x=1747909557; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=bObN/GZFYIPXswmzQmBrFY+KFYsdoS+icAznneCd2Ck=;
- b=XK+ppCmRVs3Q+RVjZ7bil6PE3H2GC1u6wK3pfVA4qak0y6KX74s99DEnjEohuul1wi
- +l8oJs2tSC80sfMfrFs+sKL3VPj1rudrTIEuamrldFxaLMjk8406/hfIfArkQfMqcAby
- yFr/V3GNgZqJ6bIDJJCm60Lv8iTuz60hHE1XPpciI6XeP2omcEVweh6DUa9gKHIyqy17
- Bhl7RXDED1urw6yXUyUBLx6bY3CKzzZbM1nEZPd0VeI/kucJJYtNVssD8Q8fClrYn2Zf
- lB7HM4QrCmaRQCtAovh6Xj9wBDtOkYU68Ol6YbJaYxbIzndQCcORhWkH0iTfZHn+AQew
- 0i9w==
+ :reply-to; bh=V44BClu19+jvYPw+zjT/7PfwtqiqasGrnUcfMcg673Q=;
+ b=CZS+esSn4X67hdD7niZJW2zNGW1xSZjmt9Vp6kQXA/irzEdJfQCJO9peJ7JSaaaI8W
+ YgHcF8wzJ4ITbP5/Nf9yHxmFzneuQpaGw3tMDlx3T1tmLNtb3zxWysOrP169Cc2UFKqY
+ sOF3so3IYCIhQ9G0bjhfmyWUetoH6tqFNjPLeJcmskXmcoxotE8TpynPMvLz0bgaCbSm
+ ZGkIa+IQmAav/CFdKVEvWt2VYwbChGSIbM+wbBK+XeWUooP4NAcj7t9YqoxvfyT/16Qs
+ qqL4MiTygxm/9JkA9XSL8ozoKY1ZYFcNxG5veQKHrh4esa7PCKD6luQKf5Lj/CJudCFK
+ 3RgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747304756; x=1747909556;
+ d=1e100.net; s=20230601; t=1747304757; x=1747909557;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bObN/GZFYIPXswmzQmBrFY+KFYsdoS+icAznneCd2Ck=;
- b=J3dYYv/ENL9IBfu0KDPGiw6Tkh1U5CUhNRJ0FVjXftEDeKjYErzTlkD3oMm5i3VwMk
- u3ZxXg/1pNWSzYpoPrU6igQ1A+uZrYpKEPLBsisAhAqHSLLu/bMZU84QuPZwW8SNfYx4
- +byqN5UFLuLdpbmC2gMjBAS5YUtVr2SUs5KJpwTrTNH5L9aWSsFEcqn/GGMWIs+WIRjI
- 5kugVabbZ7LHnx6GcRFjiRyfHFTtXzktS0/FXSV2w8nZBsqZRMiaIPDxH5cOp7KLk97j
- wUgzTWUP6bsJnXB2sscHXe9TLhX4Bw3WVxWUBZQQffQ9PWd9oSwSYtU5+vumQm8Nqnyc
- pa+w==
-X-Gm-Message-State: AOJu0YzQ1iY5RczHcLPJVR7H1idP+31/oSNrSc8ncNqDjmabxFiJu8XN
- uWSUMN+3IFeNNlj5RNDwEwidu/9mSK/uOLBz4uO/wOLjNhyzr2nzewhuZYvyI19PJlFkDQ9ubUp
- Fv7I=
-X-Gm-Gg: ASbGnct6kqyROTzTpaLagu2azTiHFzq3KEv33MN5ymq+pUoQeHwM68ywK5eqzYvGgzr
- 5wjNed8Ba+mMj7DjdzGAX6h5Vuvut6dJ5/QFW0eAGzj0c+qyv6RlyQN36dn7+VgjUzLQrn+frok
- JPqIPwrHoD9m/sNEFVfQmOQnyTDKlUE0M98e+QhTuWnVBya5CGVjUo1Vx+5w92Arg4pi/St+Nls
- aw/htTv7rdRgOZcWpznKMOXL5dlVH1yqUQucPb5n0F0TmEWtN2oj+5hR2U+oW6Jj+sV9aNwKQHy
- M5wy9lY+Ch1XenspBvu50GDJJEq7dKxgJRfIfP9qdK4P2jPk8CoegT4vLQ==
-X-Google-Smtp-Source: AGHT+IFjpRYfpelDs03kn3IXJIUEZ74FQp6xhHfY+3vJl2G2FuerLWetFl1gTD/s8JOln/C9qDkITQ==
-X-Received: by 2002:a05:600c:1e02:b0:43c:ea36:9840 with SMTP id
- 5b1f17b1804b1-442f970a8dcmr15027585e9.22.1747304755959; 
- Thu, 15 May 2025 03:25:55 -0700 (PDT)
+ bh=V44BClu19+jvYPw+zjT/7PfwtqiqasGrnUcfMcg673Q=;
+ b=k12AB/syNHqeXeJ0ZAv3WKeSmnVmXOxHpuDJT1QItSIwloeTAzQIl6OT5cURWW4DCa
+ yYa1Tq03KFnTAi1e6RdKPGAvCJSfqQaPfxV4jUbzY+clcytwt3hxywttCVQh7MYRvFiE
+ rEM6hm71RPU4swr0segb/Kg6LzzmBynBGU/nARJxHA5ln4/aR6IBejRE1xeGRm4jI8I5
+ 7bto8FeCDpol1kiM8mABTFEl6JJKPp9DOxbCkKIJ50OnVJdBhluaAuweQRDULg/moEmZ
+ s9xIGkvv3qVPWYb3TeMsLKFWxe24wNhZeXVyio9iWBem96XRXFeW5MjCz0BLNTwy+5cx
+ AEKA==
+X-Gm-Message-State: AOJu0YxJYEBIEDhsjsSccZMUEn8p/hzfCKp5+j6XRdccytJBJyJMgzYX
+ eesJ8nSKX2/J/HpwttfQf6txsDsZp0jK29v3wUi+zQsjm/z7k2+XS0s0gn82K8XW/mrTVCjtcoB
+ aMaw=
+X-Gm-Gg: ASbGncvrDcKvHahGWhib8nivoBSfWkSJ8kFw6ARdgrJDbyHphQFwWCoJkaE8EEpYY0g
+ jMIdPdW+3xi7xomQLzluJMzSUWUuQ7IdT6frik+KRK2NtwErlkoVj1UJF11UMvMJzYCEhJ9q2r2
+ NLXu4/ULm8EcC0IyUcaBKHYeAoNH4TsUeCQjjiWiEaVJ1CcbPRR7SBljM2ySOIG/04XfUbuVRfg
+ 2L+jmDCP9EhULv1NCUCxfh26gyQ7pnurYAa5Voo5lGFLE1PgIRhLzW3rSBABXwnhCUNBjS6LIC4
+ MJ7+1+LGeB116N3d2jXFvZSoRaNld5JNLMSRXSNi6leo1mkCO/05FmHBgyCjseEvju/y
+X-Google-Smtp-Source: AGHT+IF2c+SWv/P9+Tpn2LV7RD4SHoKn+nx5riGwMirs1xFP5ntFGsPXnbFQ/pWSdohybR1ZJfxUGg==
+X-Received: by 2002:a05:600c:c09:b0:43d:82c:2b23 with SMTP id
+ 5b1f17b1804b1-442f2168c29mr54196595e9.23.1747304756870; 
+ Thu, 15 May 2025 03:25:56 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442f396c3a4sm65657855e9.26.2025.05.15.03.25.54
+ 5b1f17b1804b1-442f396c3a4sm65657855e9.26.2025.05.15.03.25.56
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 May 2025 03:25:54 -0700 (PDT)
+ Thu, 15 May 2025 03:25:56 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 04/58] target/arm: Present AArch64 gdbstub based on
- ARM_FEATURE_AARCH64
-Date: Thu, 15 May 2025 11:24:52 +0100
-Message-ID: <20250515102546.2149601-5-peter.maydell@linaro.org>
+Subject: [PULL 05/58] target/arm: Move aarch64 CPU property code to
+ TYPE_ARM_CPU
+Date: Thu, 15 May 2025 11:24:53 +0100
+Message-ID: <20250515102546.2149601-6-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250515102546.2149601-1-peter.maydell@linaro.org>
 References: <20250515102546.2149601-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,40 +98,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently we provide an AArch64 gdbstub for CPUs which are
-TYPE_AARCH64_CPU, and an AArch32 gdbstub for those which are only
-TYPE_ARM_CPU.  This mostly does the right thing, except in the
-corner case of KVM with -cpu host,aarch64=off.  That produces a CPU
-which is TYPE_AARCH64_CPU but which has ARM_FEATURE_AARCH64 removed
-and which to the guest is in AArch32 mode.
+The only thing we have left in the TYPE_AARCH64_CPU class that makes
+it different to TYPE_ARM_CPU is that we register the handling of the
+"aarch64" property there.
 
-Now we have moved all the handling of AArch64-vs-AArch32 gdbstub
-behaviour into TYPE_ARM_CPU we can change the condition we use for
-whether to select the AArch64 gdbstub to look at ARM_FEATURE_AARCH64.
-This will mean that we now correctly provide an AArch32 gdbstub for
-aarch64=off CPUs.
+Move the handling of this property to the base class, where we make
+it a property of the object rather than of the class, and add it
+to the CPU if it has the ARM_FEATURE_AARCH64 property present at
+init.  This is in line with how we handle other Arm CPU properties,
+and should not change which CPUs it's visible for.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20250429132200.605611-5-peter.maydell@linaro.org
+Message-id: 20250429132200.605611-6-peter.maydell@linaro.org
 ---
- target/arm/internals.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/arm/cpu.c   | 36 ++++++++++++++++++++++++++++++++++++
+ target/arm/cpu64.c | 33 ---------------------------------
+ 2 files changed, 36 insertions(+), 33 deletions(-)
 
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index 660d3a88e07..a396c0be3b7 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -1833,7 +1833,7 @@ void aarch64_add_sme_properties(Object *obj);
- /* Return true if the gdbstub is presenting an AArch64 CPU */
- static inline bool arm_gdbstub_is_aarch64(ARMCPU *cpu)
- {
--    return object_dynamic_cast(OBJECT(cpu), TYPE_AARCH64_CPU);
-+    return arm_feature(&cpu->env, ARM_FEATURE_AARCH64);
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 45cb6fd7eed..603f08d05a0 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -1609,6 +1609,35 @@ static void arm_set_pmu(Object *obj, bool value, Error **errp)
+     cpu->has_pmu = value;
  }
  
- /* Read the CONTROL register as the MRS instruction would. */
++static bool aarch64_cpu_get_aarch64(Object *obj, Error **errp)
++{
++    ARMCPU *cpu = ARM_CPU(obj);
++
++    return arm_feature(&cpu->env, ARM_FEATURE_AARCH64);
++}
++
++static void aarch64_cpu_set_aarch64(Object *obj, bool value, Error **errp)
++{
++    ARMCPU *cpu = ARM_CPU(obj);
++
++    /*
++     * At this time, this property is only allowed if KVM is enabled.  This
++     * restriction allows us to avoid fixing up functionality that assumes a
++     * uniform execution state like do_interrupt.
++     */
++    if (value == false) {
++        if (!kvm_enabled() || !kvm_arm_aarch32_supported()) {
++            error_setg(errp, "'aarch64' feature cannot be disabled "
++                             "unless KVM is enabled and 32-bit EL1 "
++                             "is supported");
++            return;
++        }
++        unset_feature(&cpu->env, ARM_FEATURE_AARCH64);
++    } else {
++        set_feature(&cpu->env, ARM_FEATURE_AARCH64);
++    }
++}
++
+ unsigned int gt_cntfrq_period_ns(ARMCPU *cpu)
+ {
+     /*
+@@ -1736,6 +1765,13 @@ void arm_cpu_post_init(Object *obj)
+      */
+     arm_cpu_propagate_feature_implications(cpu);
+ 
++    if (arm_feature(&cpu->env, ARM_FEATURE_AARCH64)) {
++        object_property_add_bool(obj, "aarch64", aarch64_cpu_get_aarch64,
++                                       aarch64_cpu_set_aarch64);
++        object_property_set_description(obj, "aarch64",
++                                        "Set on/off to enable/disable aarch64 "
++                                        "execution state ");
++    }
+     if (arm_feature(&cpu->env, ARM_FEATURE_CBAR) ||
+         arm_feature(&cpu->env, ARM_FEATURE_CBAR_RO)) {
+         qdev_property_add_static(DEVICE(obj), &arm_cpu_reset_cbar_property);
+diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
+index 00629a5d1d1..e527465a3ca 100644
+--- a/target/arm/cpu64.c
++++ b/target/arm/cpu64.c
+@@ -781,45 +781,12 @@ static const ARMCPUInfo aarch64_cpus[] = {
+ #endif
+ };
+ 
+-static bool aarch64_cpu_get_aarch64(Object *obj, Error **errp)
+-{
+-    ARMCPU *cpu = ARM_CPU(obj);
+-
+-    return arm_feature(&cpu->env, ARM_FEATURE_AARCH64);
+-}
+-
+-static void aarch64_cpu_set_aarch64(Object *obj, bool value, Error **errp)
+-{
+-    ARMCPU *cpu = ARM_CPU(obj);
+-
+-    /* At this time, this property is only allowed if KVM is enabled.  This
+-     * restriction allows us to avoid fixing up functionality that assumes a
+-     * uniform execution state like do_interrupt.
+-     */
+-    if (value == false) {
+-        if (!kvm_enabled() || !kvm_arm_aarch32_supported()) {
+-            error_setg(errp, "'aarch64' feature cannot be disabled "
+-                             "unless KVM is enabled and 32-bit EL1 "
+-                             "is supported");
+-            return;
+-        }
+-        unset_feature(&cpu->env, ARM_FEATURE_AARCH64);
+-    } else {
+-        set_feature(&cpu->env, ARM_FEATURE_AARCH64);
+-    }
+-}
+-
+ static void aarch64_cpu_finalizefn(Object *obj)
+ {
+ }
+ 
+ static void aarch64_cpu_class_init(ObjectClass *oc, const void *data)
+ {
+-    object_class_property_add_bool(oc, "aarch64", aarch64_cpu_get_aarch64,
+-                                   aarch64_cpu_set_aarch64);
+-    object_class_property_set_description(oc, "aarch64",
+-                                          "Set on/off to enable/disable aarch64 "
+-                                          "execution state ");
+ }
+ 
+ static void aarch64_cpu_instance_init(Object *obj)
 -- 
 2.43.0
 
