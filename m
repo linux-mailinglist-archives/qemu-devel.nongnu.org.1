@@ -2,109 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A218AB8B7A
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 17:52:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEE55AB8B8F
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 17:54:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFapx-0004W6-4O; Thu, 15 May 2025 11:49:33 -0400
+	id 1uFarZ-0006yv-Bg; Thu, 15 May 2025 11:51:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
- id 1uFapt-0004Bq-CF; Thu, 15 May 2025 11:49:29 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
+ id 1uFaqa-0006XK-HY; Thu, 15 May 2025 11:50:17 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
- id 1uFapk-0006kE-C0; Thu, 15 May 2025 11:49:29 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54FCgAFs004769;
- Thu, 15 May 2025 15:49:17 GMT
+ (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
+ id 1uFaqT-0006nN-A5; Thu, 15 May 2025 11:50:12 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54FCgOwn013030;
+ Thu, 15 May 2025 15:50:02 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:reply-to:subject:to; s=pp1;
- bh=d9hIti7ftVCs19pCWU6Ho24lLc1XQVOfwlG+W/SzdjI=; b=cUB4Bh1mutRy
- w3WSgAdmzz3cn39Z7nFfkerhbQhzckjaymUQzmtK3uj5qxwVjRc5FqCwCTJuO+aw
- c/RR/6i4VgPLUMViECHosJceJdOw7doXkZQ2XBRg2eBpUur7lL/9IKda0EEOF7RS
- 7oA6pQtb98gOugaDIdmswRuSRrOK0NjQc3zjjFKW6bM3yYcw6q3qwznjUfNwswTn
- uzediWgJSHFPu9ZkoX7FN1AwECUVpDsA8kzndU1CV2FCg6YNWVb1zIoPWwz+bdHb
- yr5rXrXYACGysQB+qNvlKaA5LDA/jd6W/T5E34KjLKJLCh9+L+nNWl+ggiu9IN5q
- I8CnYT29/w==
+ :message-id:mime-version:references:subject:to; s=pp1; bh=aN1Fn+
+ 2EfkR3fghPlp516O5wn0aD5pXnja7rdPfiTBM=; b=riFugZ6MtAilUPVx5yIFJ3
+ CzaoHS+h4+MvXLOLVkykNIlh5u0vVRBZ2uJ2vvt+yW2XAZo7+VH/OtGyMdiKcuoy
+ hCXmAqa2UymAJEzsW5N7sda1iQRLOblWlL/LXDH+ldz7mu28bN4lcXUTolBY+/Kb
+ G73qvZPMyykn0SPlnqSpW8qVI1jaQbTmcaAp4YOBKUUw41u2Tm3UIQ//Ia9sfr4j
+ 3upGa7Et8wSoZNAbwemJmZgFK2SOp77ZpXrSla1vfvxUOBuqo5G+BUvLOWBT+gec
+ jX6bee3B6oABnrwjD5llF85mE96iBaHdGKAt3E+f/TYVB865uDWd9CksFi2Cu5Ww
+ ==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46ndfjt31x-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46n0t9djk3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 May 2025 15:49:17 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54FFigYe024463;
- Thu, 15 May 2025 15:49:16 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46ndfjt31w-1
+ Thu, 15 May 2025 15:50:02 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54FFcEGI016084;
+ Thu, 15 May 2025 15:50:02 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46n0t9djju-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 May 2025 15:49:16 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54FE89FC021439;
- Thu, 15 May 2025 15:49:16 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46mbfru16e-1
+ Thu, 15 May 2025 15:50:01 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54FDl6cl021806;
+ Thu, 15 May 2025 15:50:00 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46mbfpu259-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 May 2025 15:49:16 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
- by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 54FFnEQo27394658
+ Thu, 15 May 2025 15:50:00 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 54FFnufB30409318
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 15 May 2025 15:49:14 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6860158053;
- Thu, 15 May 2025 15:49:14 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C776C58043;
- Thu, 15 May 2025 15:49:13 +0000 (GMT)
-Received: from mambor8.rchland.ibm.com (unknown [9.10.239.198])
- by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 15 May 2025 15:49:13 +0000 (GMT)
-Message-ID: <4260e56a877e459cc9c3a2d4a8912c5622b46675.camel@linux.ibm.com>
-Subject: Re: [PATCH 16/50] ppc/xive: Fix pulling pool and phys contexts
-From: Miles Glenn <milesg@linux.ibm.com>
+ Thu, 15 May 2025 15:49:56 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 42D3A58063;
+ Thu, 15 May 2025 15:49:59 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E750658061;
+ Thu, 15 May 2025 15:49:58 +0000 (GMT)
+Received: from [9.10.80.143] (unknown [9.10.80.143])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 15 May 2025 15:49:58 +0000 (GMT)
+Message-ID: <c30e3716-135b-4e90-be1f-28f286bc51ae@linux.ibm.com>
+Date: Thu, 15 May 2025 10:49:58 -0500
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 46/50] ppc/xive2: Implement set_os_pending TIMA op
 To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, =?ISO-8859-1?Q?Fr=E9d=E9ric?= Barrat
- <fbarrat@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>, Caleb
- Schlossin <calebs@linux.vnet.ibm.com>
-Date: Thu, 15 May 2025 10:49:13 -0500
-In-Reply-To: <20250512031100.439842-17-npiggin@gmail.com>
+Cc: qemu-devel@nongnu.org, =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?=
+ <fbarrat@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
+ Caleb Schlossin <calebs@linux.vnet.ibm.com>
 References: <20250512031100.439842-1-npiggin@gmail.com>
- <20250512031100.439842-17-npiggin@gmail.com>
-Organization: IBM
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-27.el8_10) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+ <20250512031100.439842-47-npiggin@gmail.com>
+Content-Language: en-US
+From: Mike Kowal <kowal@linux.ibm.com>
+In-Reply-To: <20250512031100.439842-47-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: pomMtLsNleiqCzvQwYX_btm77NvFYoVX
-X-Authority-Analysis: v=2.4 cv=ecg9f6EH c=1 sm=1 tr=0 ts=68260cfd cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+X-Authority-Analysis: v=2.4 cv=etzfzppX c=1 sm=1 tr=0 ts=68260d2a cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
  a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8
- a=Z2M4xorl1dFmOFgaFRYA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: hlZRdlRP4p1hh4oPLdudyW2ThGV1bXKU
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE1MDE1NSBTYWx0ZWRfX1pROPESydOBK
- BnCl5mZ9EYfJhnKbZWolTUBfAnqikDJsP5KWHC0jUgaoMJK8MI5Dre1dVPb8pDMLkG+JPrl+cpw
- Q/MZjVqNbDK0ycwyUB6r4ebMSVVDbXGlZqCb9aLCKBcdG3KObzInIemHmerwc24EbmO0GuPDIJB
- PXPkoD3YbKO2Lm2okLK3ZXA/guyYWsT0t/RP+BRvLboK7x/L2I3vpRab763sVL3EaFJnz0g87PF
- NXTqrqqeDERtxS6gf3I+vvv1I/fluTeyE/+61JeLzOp5bfo85YP3dzX3mIEIMrNeotScBiwmrq6
- ZvH/DA9Hpq0nWUBfGuRrC+WXYshnUpzhrrBoARDMxv95IBBLb8VItL61TtwR6NnnlzP3z2QQPqv
- /WgOhfPY2zrEhhyP4ORAP9UjIoTPsGCeIhviB1Iu5OCIlPOeCSmT187txJgsApOn8DqNqg0Y
+ a=jaoGCA84DIYCLCjvDVkA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE1MDE1NSBTYWx0ZWRfX+oZRioa5wpQ6
+ 1VcpMRqQr3wGuNjzNHt87CzQSjmhrv783n81/e8RdmIVyfkJ0qrKI39bA6nQbIbNc9k88vFPD9z
+ RzhXAinMHNeYzK4RS2XK68DJKayOZ2HEPF0xtwZ+l+posqY02+d1BAKbi1Daq8IM8kUi6sPYIxs
+ jn2dWF6rnERKZvOUDFZTJQ285qWVECMLF2NeDjnf111O1QUzJrRdZL16JP0kVPvmQCOQ+nZ36d4
+ 82QkpTuT45tiyNl/raweDE6o1mMEXCqPnpmwHjV/iIpjyCvt5erOnqK4HMqmk5BfnT1w+6B1wgl
+ W1fUWMc4cP3DxWfC1XCvH5AXxvK/9dAAQWpeuej0H9bUFfBN15D5dcyVYkg1ZrUxsg5nlwN9hZ3
+ k+auur1p2Dh1QmSIwWPSfnLs83OT998w4aFP76x1VW78ereJTFaiMMswArffe4v91V8CpDh0
+X-Proofpoint-ORIG-GUID: NCF4VzEltiSze7j56_K2LL1RGDwjME1L
+X-Proofpoint-GUID: Xp9RuHO0LazSfAd8QlT3BZn6d12_i8WS
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-15_06,2025-05-15_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=950
- impostorscore=0 spamscore=0 clxscore=1015 malwarescore=0 mlxscore=0
- lowpriorityscore=0 priorityscore=1501 adultscore=0 bulkscore=0
- suspectscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
+ impostorscore=0
+ lowpriorityscore=0 phishscore=0 mlxscore=0 mlxlogscore=999 bulkscore=0
+ suspectscore=0 spamscore=0 clxscore=1015 priorityscore=1501 malwarescore=0
+ adultscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
  definitions=main-2505150155
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=milesg@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=kowal@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -125,119 +126,92 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: milesg@linux.ibm.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
 
-On Mon, 2025-05-12 at 13:10 +1000, Nicholas Piggin wrote:
-> This improves the implementation of pulling pool and phys contexts in
-> XIVE1, by following closer the OS pulling code.
-> 
-> In particular, the old ring data is returned rather than the modified,
-> and irq signals are reset on pull.
-> 
+On 5/11/2025 10:10 PM, Nicholas Piggin wrote:
+> xive2 must take into account redistribution of group interrupts if
+> the VP directed priority exceeds the group interrupt priority after
+> this operation. The xive1 code is not group aware so implement this
+> for xive2.
+
+
+Reviewed-by: Michael Kowal<kowal@linux.ibm.com>
+
+Thanks,  MAK
+
+>
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  hw/intc/xive.c | 66 ++++++++++++++++++++++++++++++++++++++++++++------
->  1 file changed, 58 insertions(+), 8 deletions(-)
-> 
+>   hw/intc/xive.c         |  2 ++
+>   hw/intc/xive2.c        | 28 ++++++++++++++++++++++++++++
+>   include/hw/ppc/xive2.h |  2 ++
+>   3 files changed, 32 insertions(+)
+>
 > diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-> index c2da23f9ea..1a94642c62 100644
+> index 979031a587..dc64edf13d 100644
 > --- a/hw/intc/xive.c
 > +++ b/hw/intc/xive.c
-> @@ -241,25 +241,75 @@ static uint64_t xive_tm_ack_hv_reg(XivePresenter *xptr, XiveTCTX *tctx,
->      return xive_tctx_accept(tctx, TM_QW3_HV_PHYS);
->  }
->  
-> +static void xive_pool_cam_decode(uint32_t cam, uint8_t *nvt_blk,
-> +                                 uint32_t *nvt_idx, bool *vp)
+> @@ -747,6 +747,8 @@ static const XiveTmOp xive2_tm_operations[] = {
+>       /* MMIOs above 2K : special operations with side effects */
+>       { XIVE_TM_OS_PAGE, TM_SPC_ACK_OS_REG,         2, true, false,
+>         NULL, xive_tm_ack_os_reg },
+> +    { XIVE_TM_OS_PAGE, TM_SPC_SET_OS_PENDING,     1, true, false,
+> +      xive2_tm_set_os_pending, NULL },
+>       { XIVE_TM_HV_PAGE, TM_SPC_PULL_OS_CTX_G2,     4, true, false,
+>         NULL, xive2_tm_pull_os_ctx },
+>       { XIVE_TM_HV_PAGE, TM_SPC_PULL_OS_CTX,        4, true, false,
+> diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
+> index 392ac6077e..de1ccad685 100644
+> --- a/hw/intc/xive2.c
+> +++ b/hw/intc/xive2.c
+> @@ -1323,6 +1323,34 @@ void xive2_tm_set_os_cppr(XivePresenter *xptr, XiveTCTX *tctx,
+>       xive2_tctx_set_cppr(tctx, TM_QW1_OS, value & 0xff);
+>   }
+>   
+> +/*
+> + * Adjust the IPB to allow a CPU to process event queues of other
+> + * priorities during one physical interrupt cycle.
+> + */
+> +void xive2_tm_set_os_pending(XivePresenter *xptr, XiveTCTX *tctx,
+> +                             hwaddr offset, uint64_t value, unsigned size)
 > +{
-> +    if (nvt_blk) {
-> +        *nvt_blk = xive_nvt_blk(cam);
+> +    Xive2Router *xrtr = XIVE2_ROUTER(xptr);
+> +    uint8_t ring = TM_QW1_OS;
+> +    uint8_t *regs = &tctx->regs[ring];
+> +    uint8_t priority = value & 0xff;
+> +
+> +    /*
+> +     * XXX: should this simply set a bit in IPB and wait for it to be picked
+> +     * up next cycle, or is it supposed to present it now? We implement the
+> +     * latter here.
+> +     */
+> +    regs[TM_IPB] |= xive_priority_to_ipb(priority);
+> +    if (xive_ipb_to_pipr(regs[TM_IPB]) >= regs[TM_PIPR]) {
+> +        return;
 > +    }
-> +    if (nvt_idx) {
-> +        *nvt_idx = xive_nvt_idx(cam);
+> +    if (xive_nsr_indicates_group_exception(ring, regs[TM_NSR])) {
+> +        xive2_redistribute(xrtr, tctx, ring);
 > +    }
-> +    if (vp) {
-> +        *vp = !!(cam & TM_QW2W2_VP);
-> +    }
+> +
+> +    xive_tctx_pipr_present(tctx, ring, priority, 0);
 > +}
 > +
-> +static uint32_t xive_tctx_get_pool_cam(XiveTCTX *tctx, uint8_t *nvt_blk,
-> +                                       uint32_t *nvt_idx, bool *vp)
-> +{
-> +    uint32_t qw2w2 = xive_tctx_word2(&tctx->regs[TM_QW2_HV_POOL]);
-> +    uint32_t cam = be32_to_cpu(qw2w2);
-> +
-> +    xive_pool_cam_decode(cam, nvt_blk, nvt_idx, vp);
-> +    return qw2w2;
-> +}
-> +
-> +static void xive_tctx_set_pool_cam(XiveTCTX *tctx, uint32_t qw2w2)
-> +{
-> +    memcpy(&tctx->regs[TM_QW2_HV_POOL + TM_WORD2], &qw2w2, 4);
-> +}
-> +
->  static uint64_t xive_tm_pull_pool_ctx(XivePresenter *xptr, XiveTCTX *tctx,
->                                        hwaddr offset, unsigned size)
->  {
-> -    uint32_t qw2w2_prev = xive_tctx_word2(&tctx->regs[TM_QW2_HV_POOL]);
->      uint32_t qw2w2;
-> +    uint32_t qw2w2_new;
-> +    uint8_t nvt_blk;
-> +    uint32_t nvt_idx;
-> +    bool vp;
->  
-> -    qw2w2 = xive_set_field32(TM_QW2W2_VP, qw2w2_prev, 0);
-> -    memcpy(&tctx->regs[TM_QW2_HV_POOL + TM_WORD2], &qw2w2, 4);
-> +    qw2w2 = xive_tctx_get_pool_cam(tctx, &nvt_blk, &nvt_idx, &vp);
-> +
-> +    if (!vp) {
-> +        qemu_log_mask(LOG_GUEST_ERROR, "XIVE: pull invalid POOL NVT %x/%x !?\n",
-> +                      nvt_blk, nvt_idx);
-> +    }
-> +
-> +    /* Invalidate CAM line */
-> +    qw2w2_new = xive_set_field32(TM_QW2W2_VP, qw2w2, 0);
-> +    xive_tctx_set_pool_cam(tctx, qw2w2_new);
-> +
-> +    xive_tctx_reset_signal(tctx, TM_QW1_OS);
-> +    xive_tctx_reset_signal(tctx, TM_QW2_HV_POOL);
->      return qw2w2;
->  }
->  
->  static uint64_t xive_tm_pull_phys_ctx(XivePresenter *xptr, XiveTCTX *tctx,
->                                        hwaddr offset, unsigned size)
->  {
-> -    uint8_t qw3b8_prev = tctx->regs[TM_QW3_HV_PHYS + TM_WORD2];
-> -    uint8_t qw3b8;
-> +    uint8_t qw3b8 = tctx->regs[TM_QW3_HV_PHYS + TM_WORD2];
-> +    uint8_t qw3b8_new;
-> +
-> +    qw3b8 = tctx->regs[TM_QW3_HV_PHYS + TM_WORD2];
-> +    if (!(qw3b8 & TM_QW3B8_VT)) {
-> +        qemu_log_mask(LOG_GUEST_ERROR, "XIVE: pulling invalid PHYS thread!?\n");
-> +    }
-> +    qw3b8_new = qw3b8 & ~TM_QW3B8_VT;
-> +    tctx->regs[TM_QW3_HV_PHYS + TM_WORD2] = qw3b8_new;
->  
-> -    qw3b8 = qw3b8_prev & ~TM_QW3B8_VT;
-> -    tctx->regs[TM_QW3_HV_PHYS + TM_WORD2] = qw3b8;
-> +    xive_tctx_reset_signal(tctx, TM_QW1_OS);
-> +    xive_tctx_reset_signal(tctx, TM_QW3_HV_PHYS);
->      return qw3b8;
->  }
->  
-> @@ -489,7 +539,7 @@ static uint64_t xive_tm_pull_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
->      qw1w2 = xive_tctx_get_os_cam(tctx, &nvt_blk, &nvt_idx, &vo);
->  
->      if (!vo) {
-> -        qemu_log_mask(LOG_GUEST_ERROR, "XIVE: pulling invalid NVT %x/%x !?\n",
-> +        qemu_log_mask(LOG_GUEST_ERROR, "XIVE: pull invalid OS NVT %x/%x !?\n",
->                        nvt_blk, nvt_idx);
->      }
->  
-
+>   static void xive2_tctx_set_target(XiveTCTX *tctx, uint8_t ring, uint8_t target)
+>   {
+>       uint8_t *regs = &tctx->regs[ring];
+> diff --git a/include/hw/ppc/xive2.h b/include/hw/ppc/xive2.h
+> index c1ab06a55a..45266c2a8b 100644
+> --- a/include/hw/ppc/xive2.h
+> +++ b/include/hw/ppc/xive2.h
+> @@ -130,6 +130,8 @@ void xive2_tm_set_hv_cppr(XivePresenter *xptr, XiveTCTX *tctx,
+>                             hwaddr offset, uint64_t value, unsigned size);
+>   void xive2_tm_set_os_cppr(XivePresenter *xptr, XiveTCTX *tctx,
+>                             hwaddr offset, uint64_t value, unsigned size);
+> +void xive2_tm_set_os_pending(XivePresenter *xptr, XiveTCTX *tctx,
+> +                             hwaddr offset, uint64_t value, unsigned size);
+>   void xive2_tm_push_os_ctx(XivePresenter *xptr, XiveTCTX *tctx, hwaddr offset,
+>                              uint64_t value, unsigned size);
+>   uint64_t xive2_tm_pull_os_ctx(XivePresenter *xptr, XiveTCTX *tctx,
 
