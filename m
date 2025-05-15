@@ -2,86 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 214BFAB7E14
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 08:34:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9A86AB7E3B
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 08:45:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFS9M-00086a-LM; Thu, 15 May 2025 02:33:00 -0400
+	id 1uFSJm-0008Q0-7D; Thu, 15 May 2025 02:43:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
- id 1uFS9I-00084i-Iw
- for qemu-devel@nongnu.org; Thu, 15 May 2025 02:32:56 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
- id 1uFS9D-0006S3-Hg
- for qemu-devel@nongnu.org; Thu, 15 May 2025 02:32:54 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3a1c85e77d7so297287f8f.0
- for <qemu-devel@nongnu.org>; Wed, 14 May 2025 23:32:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1747290767; x=1747895567;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=xFX2/rCvFl/aHVRlpBletJAsr6RLsmN/7Y/0M9LH1qQ=;
- b=TeB75cExuwPhHwfJTThNoGKiKBQyYFlhwoa9Fje0lgSxumiMpKybm4gJTHb9llV/ap
- 3HdkyruIagPn0FgFvvyIzQC7b4buFrdB9zCjZ71ZNB2PKYjUIsUjsEb+Xi52xgbDLM+7
- Ezmu2tWq+In85dYuT/HOdE6wg7foHfOXxKRHoUVtzmAK0oRreXJF/plMyDi9JU8gaavF
- Qb+L4tirI5MWt86B5IgL+pgJ92dEANJp/VIDeyyZO3BBNk5UicnzCGUN1uUTo6yIAZDM
- oAN4C4j+nf4k8Ddv8fD5sbhl/JQszFflqlJhexBeZe9v4mWjbmNP6Em3FDxFewt7Ev5Y
- SZwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747290767; x=1747895567;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=xFX2/rCvFl/aHVRlpBletJAsr6RLsmN/7Y/0M9LH1qQ=;
- b=hdZJr5u0080PGEXg0D5F1UuJJq0jmxjpd9ln4HFREuM7GhHzSaVSLjo5EH1JJ+d5Z4
- nTvFSlR5gPjgr4Q9trxJYsOZw1Xh7yWUWxwkslAALDFZVuROCq+fyL5RXF+ijVqFoS3w
- 0fh5T/bOXghgO/7EUTBSbQotH2q5vIXtLR5f765HoRKqTAcTh+QQhYgoLsmGjNq9xl+f
- Z/Hja/Oy/2t2t6AIGxcyK7JMAz/twB9X4FcLCB1kobcGSF5luY+qy2RBZGimtvexpoC8
- /aUZGXyOZWHbvKC+BTOacmuBmjRaR0Cw50p5BUt9NfFxB+RZ4M0ktzc0akuT/0n4JEqL
- n2BQ==
-X-Gm-Message-State: AOJu0YyGluj/9EXuyhSKowuvlLmhksNrJX/r/QfoR0vfhMtvW5/sk1Pc
- zI9s+2oYYDHx+eMGQMrCGncG7jgMWC8/8ggCgAItExmtzycwpi2auzclCvMDaTl4382mStqSdlJ
- J42o=
-X-Gm-Gg: ASbGncseBQKPbR2/kWHK+K+LNeK/pZGDpBof9zdMc6AcP7m2A+iI/JnZEufPNMb08+p
- K1B8ALd8m5rF9E6ncR/GJhPxpgyZSWSOihU1ikji8qBSYnDeTp3K+qYpty0sh/8TaBD/hhmbcUD
- ZGPPUBcql3ZixtlNY56p/I/V8sPJyQKKDpfZ2yz5ZwxZkxxPLSJaNjittMsSmwpdaNQ7BxeGhlQ
- T/R5CzRzlBWkjDr7vBU9Fnx2Q3N0YQxk0oUJNp/MfPlWUq3IwRGl0DEAKGRGBQNT6E/eB6hCxeI
- wynwuISKCBhlUD/8GPa7wDrfb1e7knIO5Utb2RyCXGxnGv0wVCdK/2CKRiRbbMnHWDI78+heRIf
- QKJM=
-X-Google-Smtp-Source: AGHT+IEdDBx1AaCz6FtLTxU/hK2AVg1DfoBAtGLHgrrwxZXas//pO+5H4+KN0xWLHtG7e9AiAVpong==
-X-Received: by 2002:a05:6000:40d9:b0:39c:16a0:fee4 with SMTP id
- ffacd0b85a97d-3a3537485f6mr942267f8f.27.1747290767023; 
- Wed, 14 May 2025 23:32:47 -0700 (PDT)
-Received: from localhost.localdomain
- ([2a06:c701:46e6:f100:c8c7:3786:c3ef:951f])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a1f58ecadfsm21580670f8f.22.2025.05.14.23.32.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 May 2025 23:32:46 -0700 (PDT)
-From: Yuri Benditovich <yuri.benditovich@daynix.com>
-To: qemu-devel@nongnu.org,
-	mst@redhat.com
-Cc: devel@daynix.com
-Subject: [PATCH] virtio: check for validity of indirect descriptors
-Date: Thu, 15 May 2025 09:32:37 +0300
-Message-Id: <20250515063237.808293-1-yuri.benditovich@daynix.com>
-X-Mailer: git-send-email 2.40.1
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1uFSJi-0008OC-UD
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 02:43:43 -0400
+Received: from mgamail.intel.com ([198.175.65.13])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1uFSJg-0007Zy-Tm
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 02:43:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1747291421; x=1778827421;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=I09ea2kKf9RnKIED493f/5AWWrQRUzEO3KzDsvyoMOY=;
+ b=TcgkhbcPqF36O7WWVTvEGUyh3SZ0Pb0fdeRYFs51NFJ/NTKn2iwRVAld
+ xr9D8ytOUCX0RbygrMIgZgWK3viwA8rX1YlTQlAekjdk84sio1ho6o/Vo
+ CETJ/Y6Laq7iGkuCoxzKvbtcWmWgqDdw7xR8zfjesqTGxjNpTIUXWGcWK
+ VAF6E0NRpuJY7fpl+yGQMT2DJYZLHvm0OA7ledkBzsY35nCOxSMmiuJOT
+ 1cjVCVW2bDy0BtgtabDylS3U35Mx9J8YOXUeDSiLL2LjixJUrnDCiG3oi
+ cNBBNS8YOjldA+ihzF1YU/cCOoGBeLmn0Cegg54+zrP5riPa9k0NU86H+ Q==;
+X-CSE-ConnectionGUID: 7QJflad3Q6msUil1FjCKhQ==
+X-CSE-MsgGUID: upVF/OplQMWbsFI2jEwKMA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="60222688"
+X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; d="scan'208";a="60222688"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 May 2025 23:43:34 -0700
+X-CSE-ConnectionGUID: OyFXNiyCS+KrRiFuXOWz3w==
+X-CSE-MsgGUID: kg+8aFfdQHadJbEhcLz3nw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; d="scan'208";a="143153675"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
+ ([10.124.247.1])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 May 2025 23:43:30 -0700
+Message-ID: <f825c105-9a19-4b17-9798-57d6cff76f95@intel.com>
+Date: Thu, 15 May 2025 14:43:27 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=yuri.benditovich@daynix.com; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 06/10] i386/cpu: Introduce enable_cpuid_0x1f to force
+ exposing CPUID 0x1f
+To: Zhao Liu <zhao1.liu@intel.com>, Igor Mammedov <imammedo@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti
+ <mtosatti@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Babu Moger <babu.moger@amd.com>,
+ Ewan Hai <ewanhai-oc@zhaoxin.com>, Tejus GK <tejus.gk@nutanix.com>,
+ Jason Zeng <jason.zeng@intel.com>, Manish Mishra
+ <manish.mishra@nutanix.com>, Tao Su <tao1.su@intel.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org
+References: <20250423114702.1529340-1-zhao1.liu@intel.com>
+ <20250423114702.1529340-7-zhao1.liu@intel.com>
+ <20250513144515.37615651@imammedo.users.ipa.redhat.com>
+ <aCS1XVotdnLw+kqX@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <aCS1XVotdnLw+kqX@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=198.175.65.13; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=1, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,57 +93,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-virtio processes indirect descriptors even if the respected
-feature VIRTIO_RING_F_INDIRECT_DESC was not negotiated.
-If qemu is used with reduced set of features to emulate the
-hardware device that does not support indirect descriptors,
-the will probably trigger problematic flows on the hardware
-setup but do not reveal the  mistake on qemu.
-Add LOG_GUEST_ERROR for such case. This will issue logs with
-'-d guest_errors' in the command line
+On 5/14/2025 11:23 PM, Zhao Liu wrote:
+> Hi Igor, thanks for your review!
+> 
+> On Tue, May 13, 2025 at 02:45:15PM +0200, Igor Mammedov wrote:
+>> Date: Tue, 13 May 2025 14:45:15 +0200
+>> From: Igor Mammedov <imammedo@redhat.com>
+>> Subject: Re: [RFC 06/10] i386/cpu: Introduce enable_cpuid_0x1f to force
+>>   exposing CPUID 0x1f
+>> X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+>>
+>> On Wed, 23 Apr 2025 19:46:58 +0800
+>> Zhao Liu <zhao1.liu@intel.com> wrote:
+>>
+>>> From: Xiaoyao Li <xiaoyao.li@intel.com>
+>>>
+>>> Currently, QEMU exposes CPUID 0x1f to guest only when necessary, i.e.,
+>>> when topology level that cannot be enumerated by leaf 0xB, e.g., die or
+>>> module level, are configured for the guest, e.g., -smp xx,dies=2.
+>>>
+>>> However, TDX architecture forces to require CPUID 0x1f to configure CPU
+>>> topology.
+>>>
+>>> Introduce a bool flag, enable_cpuid_0x1f, in CPU for the case that
+>>> requires CPUID leaf 0x1f to be exposed to guest.
+>>>
+>>> Introduce a new function x86_has_cpuid_0x1f(), which is the warpper of
+>>> cpu->enable_cpuid_0x1f and x86_has_extended_topo() to check if it needs
+>>> to enable cpuid leaf 0x1f for the guest.
+>>
+>> that reminds me about recent attempt to remove enable_cpuid_0xb,
+>>
+>> So is enable_cpuid_0x1f inteded to be used by external users or
+>> it's internal only knob for TDX sake?
+> 
+> TDX needs this and I also try to apply this to named CPU models. For
+> max/host CPUs, there are no explicit use cases. I think it's enough to
+> make named CPU models have 0x1f.
+> 
+> Then this should be only used internally.
+> 
+>> I'd push for it being marked as internal|unstable with the means
+>> we currently have (i.e. adding 'x-' prefix)
+> 
+> Sure, 'x-' is good. (If there is the internal property in the future,
+> I can also convert this unsatble property into internal one.)
+> 
+> This patch is picked from the TDX series, and in this patch Xiaoyao
+> doesn't make 0x1f enabling as property. In the next patch (RFC patch 7),
+> I add the "cpuid-0x1f" property. I'll rename that property as
+> "x-cpuid-0x1f".
+> 
+>> and also enable_ is not right here, the leaf is enabled when
+>> topology requires it.
+>> perhaps s/enable_/force_/
+> 
+> Thanks, I agree force_cpuid_0x1f is a better name.
+> 
+> @Xiaoyao, do you agree with this idea?
+> 
+> But probably TDX won't have v10 though, I can rename the field in my v2
+> after TDX.
 
-Signed-off-by: Yuri Benditovich <yuri.benditovich@daynix.com>
----
- hw/virtio/virtio.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+I'm OK with it.
 
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 480c2e5036..8d185f282a 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -205,6 +205,15 @@ static const char *virtio_id_to_name(uint16_t device_id)
-     return name;
- }
- 
-+static void virtio_check_indirect_feature(VirtIODevice *vdev)
-+{
-+    if (!virtio_vdev_has_feature(vdev, VIRTIO_RING_F_INDIRECT_DESC)) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "Device %s: indirect_desc was not negotiated!\n",
-+                      vdev->name);
-+    }
-+}
-+
- /* Called within call_rcu().  */
- static void virtio_free_region_cache(VRingMemoryRegionCaches *caches)
- {
-@@ -1733,6 +1742,7 @@ static void *virtqueue_split_pop(VirtQueue *vq, size_t sz)
-             virtio_error(vdev, "Invalid size for indirect buffer table");
-             goto done;
-         }
-+        virtio_check_indirect_feature(vdev);
- 
-         /* loop over the indirect descriptor table */
-         len = address_space_cache_init(&indirect_desc_cache, vdev->dma_as,
-@@ -1870,6 +1880,7 @@ static void *virtqueue_packed_pop(VirtQueue *vq, size_t sz)
-             virtio_error(vdev, "Invalid size for indirect buffer table");
-             goto done;
-         }
-+        virtio_check_indirect_feature(vdev);
- 
-         /* loop over the indirect descriptor table */
-         len = address_space_cache_init(&indirect_desc_cache, vdev->dma_as,
--- 
-2.40.1
+The TDX series won't be merged by Paolo soon. It has to be after the KVM 
+part being in linux v6.16-rc1, i.e., about one month later.
+
+And there are rebase conflicts when I rebase the TDX-QEMU series against 
+upstream QEMU master daily. It seems to have a newer version of TDX-QEMU 
+when it's going to be picked up by Paolo for Paolo's convenience. If a 
+v10 needed, I can rename in it.
+
+Let's see how it goes.
+
+> Regards,
+> Zhao
+> 
 
 
