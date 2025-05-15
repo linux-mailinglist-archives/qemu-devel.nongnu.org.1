@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27672AB841B
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 12:38:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F16EEAB841A
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 12:38:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFVoZ-0006QV-Ri; Thu, 15 May 2025 06:27:49 -0400
+	id 1uFVoY-0006Mn-1t; Thu, 15 May 2025 06:27:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uFVnT-0005HX-E0
+ id 1uFVnT-0005Hg-Fc
  for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:44 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uFVnN-0008DQ-CV
+ id 1uFVnP-0008Dg-3l
  for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:38 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3a0b7fbdde7so669572f8f.2
- for <qemu-devel@nongnu.org>; Thu, 15 May 2025 03:26:31 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-43d2d952eb1so5860955e9.1
+ for <qemu-devel@nongnu.org>; Thu, 15 May 2025 03:26:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747304790; x=1747909590; darn=nongnu.org;
+ d=linaro.org; s=google; t=1747304792; x=1747909592; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=sFij1h3veGtKhSTyxyyf2bRq4SfQA6FXNfG9cnrUTkY=;
- b=K6+h+9Jskp2qOdvxZk97L7wBZB/LtXXZca0K84tqOYnsYbznuRFQFO8QYX2docrVaN
- ejl5DMVXgKSCMQ6Kdqc6f9IZ9P6O0JhJmmj9b1Fp0aovBu9eBS+GzqEII6159mThNZL4
- DLfR1xGoNhmCHd53ggdcbvToDnC8ytK4rT2dX9ocSnZtvXmmDI12+K9Q4coGyo17DStN
- SxQ2FVzBdzu9YG5jb7+u5ifPVr+EukdqupNOpZOw+HS5mYBsfHGqvs0uK28s5eiHFm52
- NrafIiNNIsrg9KmfjZ48JRay7okNnZ0h9UOsVlkqSvxc+BmQ9Up+a5iZCNrkCh/4ayGR
- 2BAw==
+ :reply-to; bh=rwfPuBQXcGtWoJn9msWHbhqRij5/5zipndMnWAXWLc4=;
+ b=YyD/oNacMDuPvqMAqJ6jlXT6yc/CvoidJjafXtn7Ho7a6+kOh2egUyN4KF6LzOaMmQ
+ i4Q2eX4XtRzTo8ItKkk4xcuN9hTHL5ZhBM7kdVNOwFTI1xRJqUAbfs0Bh6sr0nfqAPhJ
+ lvLDZia8U1M+xnfjhjRON4RkZNoITX/Kt4PlQe3+L7EnpDMUSmQLSo5EptF1jT3pFslr
+ vttcLHIQXZ8FI1PHA3mNTH5cMnQRjzhdPdUgTSpvZ+pKifA04htPo8fvQSQn1uqv2qtx
+ 98PAywuJWPF3FE8IO41qafQihKK2TdY5b2bhcdduDAB+n+ud160BwHQu8b6wrTnYf7fK
+ wkcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747304790; x=1747909590;
+ d=1e100.net; s=20230601; t=1747304792; x=1747909592;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sFij1h3veGtKhSTyxyyf2bRq4SfQA6FXNfG9cnrUTkY=;
- b=O3sQcU+cWojHgN8PUXCix13wb7vmGWlPnzV3BKf+E12Zs4bJdVhqEHGU5pKRUSZMho
- ItjD+aq3HaQCn5SGtaPLCBtJQAxKi65KfFpz7ykITcLn3yRpKci8lImwoDvU7GHcVp9y
- jXdYBcTxCV7lhVcWqcEdb987lsbCci+EefDbZ5kJWntERXuD0DGEoWXdc9DFL3jLXTPh
- ui5CWdgINe3d8yB15RvUNZR07DE4Z8yWyAz3OQHWRmqqhX8fn4+lmiWHXvuFoK4QV0P9
- d1LSAJKyGIVnMKVnO6GRguYHKUD1NjVyMaYrgzTVE4wqcBXEQrX1jXj7DJest/NtFYkZ
- aKdg==
-X-Gm-Message-State: AOJu0YxBqIC7sZLOZRbs/FOCXDq2+7B4YKNJicJM8MPUrF+yogFSO6nk
- fWC3Dcsah0i+Nfuhj1N2OuxTAHB2tfExY16I5FFqkYhCTRWaZxTei2aLEfI8GiGeK8ixHTsI2xs
- soh8=
-X-Gm-Gg: ASbGncvH7gIdvjmz36zff8cCaB+1FubfRlHXAECmAadIIwT2Oe2q7hKRqa/E4ggERqK
- CY841x/te1tDsx41NoKdIgAhLSbh9novvhzXS2QmK88Bx4mtgfao6+BOZVnSMv4T9j8BBw5JG+l
- cVFztKGzmbGTGJfJq4SWBWBB8SoyHjgisafCy4xpMPV34V2E0/HV1mhy3or+Sh9F1cu0TBen04n
- 9IDBhU853v3tTlpTTOBxtibKH4gdhVDn3mmxYqZfr1mgnMFcOxSK99jT99xYgHCSr51D7x0iFNG
- B0IeeJE5Ydrh4Wuh6ENTZuEAsL6ZhGArwFhhMAnhU7tUUJz1PrkSKDoo4w==
-X-Google-Smtp-Source: AGHT+IHRyXMSwYfDhHga5wPTdxeVIcP7wHyvoPOwzpUNT9kl1ISc5IUJPq6ZDfUHwoA4dsXfssgQnw==
-X-Received: by 2002:a05:6000:381:b0:3a2:229:2a4d with SMTP id
- ffacd0b85a97d-3a3496a49fdmr5513537f8f.22.1747304790042; 
- Thu, 15 May 2025 03:26:30 -0700 (PDT)
+ bh=rwfPuBQXcGtWoJn9msWHbhqRij5/5zipndMnWAXWLc4=;
+ b=ONxKDMx//RYdoZNeqOlAqtyuf1R0BsBihaXmrGaKErCi4y5CXEVlHSQj+535BzqAue
+ YEP1ysIo+yzt9YOwrgZUGSZpV7dMnW6IL1VgVdISz3zm5unsKTjDSmtAB1Jz3k+fwBBm
+ bephWNqaYm8NGjnVZumW/2QKJp16VkvYwDkgUvEGO0RzuFJB1TQfHEKgPDJV1lB398bE
+ ybH+7a3oMbIURB/AAcPvVEJwifN4kMnmOkz4npYzPT37tEOihQp9G/38F8Y9fqEUOhYF
+ NQWfLwRwvMz9X3+7DvE3jjRvUslxpN66od9hHs4Ex4pBdjRPcM+eGR7jyFrzSUH5Ll3z
+ fiLQ==
+X-Gm-Message-State: AOJu0YwC3JB9PxTggBk+C00JO2pBcfAa618d4qL9QY3LDO/53oIZL5JS
+ PmZANSd60uSb3/XEdXa1aUHqXxGdf//J+ZnEVms5cPPDxFxodKDvClnm7UAoy7TYdKtrf9tZa4t
+ 5r3o=
+X-Gm-Gg: ASbGncuR0pzMTTesn0wnWdoa+gVXy5Lw4Ig7VDH1cQ3RoegkjAijrE6nLgScjKY4qX+
+ wr5pbC1Is2sMKyhKUnzGYuLasDreyQ6JbapZGdmrMpS6NZ3whoXpjTlFe5XrW6iSzCo/nlK3PBj
+ Z2WLO3BZ5VzKLrCeHzVGQjOvuNg9cKybRZoSOFjeyFRLaXHkenetn7YSJYcC0FHy6qWxCToARA9
+ 0e3z8xWq6rA04ABIHUCEOns/l5sWQFK+XCwtL+QHW9a83G0M5ex+kTOKlL44LtPlLt1rx3imRtd
+ UfafRVjHRYqIwlaKR6d/nEp1Wc7wA59O/PYATMfVy0xSY+QD7nuzktF7Rg==
+X-Google-Smtp-Source: AGHT+IEEs2DF1BETNK6ZLUgGLusc6hRdnufw7UTm0i5JpFhAyWm5DAAFTNF/iPitb8R6e0pW1aBDAw==
+X-Received: by 2002:a05:600c:609b:b0:43c:fceb:91a with SMTP id
+ 5b1f17b1804b1-442f20e8c4fmr62358485e9.11.1747304791881; 
+ Thu, 15 May 2025 03:26:31 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442f396c3a4sm65657855e9.26.2025.05.15.03.26.28
+ 5b1f17b1804b1-442f396c3a4sm65657855e9.26.2025.05.15.03.26.30
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 May 2025 03:26:29 -0700 (PDT)
+ Thu, 15 May 2025 03:26:30 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 32/58] target/arm/helper: remove remaining TARGET_AARCH64
-Date: Thu, 15 May 2025 11:25:20 +0100
-Message-ID: <20250515102546.2149601-33-peter.maydell@linaro.org>
+Subject: [PULL 33/58] target/arm/helper: compile file twice (user, system)
+Date: Thu, 15 May 2025 11:25:21 +0100
+Message-ID: <20250515102546.2149601-34-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250515102546.2149601-1-peter.maydell@linaro.org>
 References: <20250515102546.2149601-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,71 +99,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-They were hiding aarch64_sve_narrow_vq and aarch64_sve_change_el, which
-we can expose safely.
-
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20250512180502.2395029-23-pierrick.bouvier@linaro.org
+Message-id: 20250512180502.2395029-24-pierrick.bouvier@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/helper.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ target/arm/meson.build | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 92a975bbf78..aae8554e8f2 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -29,6 +29,7 @@
- #include "qemu/guest-random.h"
- #ifdef CONFIG_TCG
- #include "accel/tcg/probe.h"
-+#include "accel/tcg/getpc.h"
- #include "semihosting/common-semi.h"
- #endif
- #include "cpregs.h"
-@@ -6565,9 +6566,7 @@ static void zcr_write(CPUARMState *env, const ARMCPRegInfo *ri,
-      */
-     new_len = sve_vqm1_for_el(env, cur_el);
-     if (new_len < old_len) {
--#ifdef TARGET_AARCH64
-         aarch64_sve_narrow_vq(env, new_len + 1);
--#endif
-     }
- }
+diff --git a/target/arm/meson.build b/target/arm/meson.build
+index 48a6bf59353..c8c80c3f969 100644
+--- a/target/arm/meson.build
++++ b/target/arm/meson.build
+@@ -2,7 +2,6 @@ arm_ss = ss.source_set()
+ arm_common_ss = ss.source_set()
+ arm_ss.add(files(
+   'gdbstub.c',
+-  'helper.c',
+   'vfp_fpscr.c',
+ ))
+ arm_ss.add(zlib)
+@@ -32,6 +31,7 @@ arm_user_ss.add(when: 'TARGET_AARCH64', if_false: files(
+ ))
+ arm_user_ss.add(files(
+   'debug_helper.c',
++  'helper.c',
+ ))
  
-@@ -10625,9 +10624,7 @@ static void arm_cpu_do_interrupt_aarch64(CPUState *cs)
-          * Note that new_el can never be 0.  If cur_el is 0, then
-          * el0_a64 is is_a64(), else el0_a64 is ignored.
-          */
--#ifdef TARGET_AARCH64
-         aarch64_sve_change_el(env, cur_el, new_el, is_a64(env));
--#endif
-     }
+ arm_common_system_ss.add(files('cpu.c'), capstone)
+@@ -39,6 +39,7 @@ arm_common_system_ss.add(when: 'TARGET_AARCH64', if_false: files(
+   'cpu32-stubs.c'))
+ arm_common_system_ss.add(files(
+   'debug_helper.c',
++  'helper.c',
+ ))
  
-     if (cur_el < new_el) {
-@@ -11418,7 +11415,6 @@ ARMMMUIdx arm_mmu_idx(CPUARMState *env)
-     return arm_mmu_idx_el(env, arm_current_el(env));
- }
- 
--#ifdef TARGET_AARCH64
- /*
-  * The manual says that when SVE is enabled and VQ is widened the
-  * implementation is allowed to zero the previously inaccessible
-@@ -11530,12 +11526,9 @@ void aarch64_sve_change_el(CPUARMState *env, int old_el,
- 
-     /* When changing vector length, clear inaccessible state.  */
-     if (new_len < old_len) {
--#ifdef TARGET_AARCH64
-         aarch64_sve_narrow_vq(env, new_len + 1);
--#endif
-     }
- }
--#endif
- 
- #ifndef CONFIG_USER_ONLY
- ARMSecuritySpace arm_security_space(CPUARMState *env)
+ subdir('hvf')
 -- 
 2.43.0
 
