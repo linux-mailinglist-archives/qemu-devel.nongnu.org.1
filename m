@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 725E5AB83FD
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 12:34:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70266AB83FF
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 12:34:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFVpG-0000Nf-7m; Thu, 15 May 2025 06:28:30 -0400
+	id 1uFVpT-0001Np-JU; Thu, 15 May 2025 06:28:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uFVnh-0005Va-5Q
- for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:53 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1uFVnk-0005Ym-Ci
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 06:27:00 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uFVne-0008Gl-Ao
- for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:52 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-440685d6afcso8448285e9.0
- for <qemu-devel@nongnu.org>; Thu, 15 May 2025 03:26:46 -0700 (PDT)
+ id 1uFVne-0008Gq-JA
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:56 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-43cec5cd73bso5035925e9.3
+ for <qemu-devel@nongnu.org>; Thu, 15 May 2025 03:26:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747304805; x=1747909605; darn=nongnu.org;
+ d=linaro.org; s=google; t=1747304806; x=1747909606; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=JgvcooGso6hgHoCAG9dIwH2FprpPy71bhrSzgHgqriY=;
- b=zLMEjU8G1LwbGK5+eE7v2w1Hq9NZGNxG4XfB3zHdZw2/pgcQwkNYD6roWylVn+/5bE
- Ahi9hI+E90LVIihm8Z3zbxX3SA6hN6TmMKhf/vQM/Ous9ndNH9RLc9oln/b4N0rYpUe/
- A4GJjkGWq71nfsuO/cl3kv850N0TOm0y6tr7P4/6rhBMI1kKeP2984I2e8lmgcTfx2Rt
- 4YWMhPu/Al66QJi4jwovE0g72cXHBhD8LoopYj9/VQk/bweBZX4ycwH99fMmdPrCpom0
- 3112TZwOPBu22saArPzutPSAtUwkaoDtngB/ulSfpNZRLPTg5GG3LkuVPQvPCHI18FI8
- Xd8w==
+ :reply-to; bh=wVaw38IJB5ualjLwd7Gyd/Z0jgsIF8bEQZE81xv9lGk=;
+ b=wIedFG8FnRpySf74J+7lZkgwsH3sg407tKaUpBKQZiOysBsgzlpOZMTZnJZu0lMVRY
+ y1oeut6FJNfskC+slw/mZ8V+0N3U/sQoCVlLCvptGAn7RBEqIpSn6OBSBikx4d6ivEXB
+ +LQvuUiGlwpd7iQn8A5ogE74We75o5ngp6iHZ2Oy4u2y1q7C6+fABKh3XZbAfc4RWepV
+ N9RJQM1ALIBIqPOhAP+HfqK5DCUewEucM6YiKoT2bgtopiIMhsJdT0loL2g0EeZLvqDm
+ vwHSqYVpMq2siMUiFXbygfSnkIkHPXNpM8GHTN/AJ6VF4aVRGIVJp1tb+xExQeMAfTv1
+ bwyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747304805; x=1747909605;
+ d=1e100.net; s=20230601; t=1747304806; x=1747909606;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JgvcooGso6hgHoCAG9dIwH2FprpPy71bhrSzgHgqriY=;
- b=PA12P6BQoV/NcKSTpIJix7mDjTE6UJ1CkQty99DOBrb98j9poVIjkJOSUDIye2CRpe
- wvyapMIRngi03kR5lejOQhxGJgmZI6mbJbVXJG/lsM9MlYgEBH5tewA9zytAMz2m2VP/
- lvgmVu02N1AuORqYfpcYQtv4dJUZgcnP0Cl7n8HWNBi8J25piBBc6p7N1cotrtdsjLMU
- x4rctBRMaXiO0OUuxinOkduklrNtbr0Go6WBYZGAaz93lOKqPs7XGl8i+oV2bOwR44LX
- h/WVlj8kwVPgh7FlhrSJDNh0UaO3sndlMqXDei+M6uOcnGBY2y1aLj8UujkuX70WcmKp
- 0q5A==
-X-Gm-Message-State: AOJu0YyS7Bay1PfJEWXVQF9TUm8V7hrqHdDhLdktJ3GEkpm60J3gpl9M
- p4J0dK9k6lG3EReEMJToWeMxZc/Spvc5dHvO/KeglyhLQ4UX1l5hxgyTQgb6U/huj+fpt4cC0sn
- ghWU=
-X-Gm-Gg: ASbGncud7tKBvKQzg/j2th5KbuF0m2T2ZJ8tVE1pNJ/fvL6Fp7k7lNnXyZxb39ozyUH
- ll4V85U23cM0J6JO3a7Y8klyWuh+npqwLfGI6k2bj6QJyWWCP2uTPq0rLPlfmOLNzygWMwvA05i
- JR4saUo3dKGcCuRgtffvqZym2HZcmI2jDpfKhBTurPZwiK9m6kPELrIgrxPxkFfdD5cLkKMZpk0
- 6aAD1PmewNOFU5JKAIXcbJYmZe9kHfbJodcz1PIRYiXNXl4fvrb9QaO752nEEsIevrbpZHhpmvu
- LQ3Ukn2W7rGg0sinGcjdu0W5KKzOSt9pHqXDvc28NGyNLtv5V1TcDNrP8A==
-X-Google-Smtp-Source: AGHT+IEM6LoN2FdIFp7KCIrFL2U13yFPWVjDvbPxg3rYyZHwpcZsLsFHsXAZgmQ3UypKKcQqJ7bqxg==
-X-Received: by 2002:a05:600c:3e12:b0:442:dcdc:41c8 with SMTP id
- 5b1f17b1804b1-442f96ecf1amr16276215e9.19.1747304805302; 
- Thu, 15 May 2025 03:26:45 -0700 (PDT)
+ bh=wVaw38IJB5ualjLwd7Gyd/Z0jgsIF8bEQZE81xv9lGk=;
+ b=bB1gzBqdQR2xrIlBpe37xkXEtnnn3ZV+yWb7z4MEGIdYEiUBHD2p1705i+ijuLnQ1f
+ gfIwEGrMiaFbytcl/qn9D9DBO7Iqy1FlvoDhiGZF76KgUoWZ33P8/ZO9GBfr7Q4t/Ku7
+ iqdDMjdcHzQJn/GtB3a8AZC2fBD1houlb9HY4xLz6F5F//iDdNG/K2MeumQHGOjEgPHo
+ Je77LZ+nWI/if/zO51rZF0Xb4iFnsyrGf0qvEp8yT9iD2fIDyF5Zj5wQkRO+xBN/mtnJ
+ +lcXzSQ+uTop8ug7GDMSIIiQ7zV/qLozXSjKt7q0PSDPwd6V0+klwjdgKFycaXkb6a1w
+ pCLQ==
+X-Gm-Message-State: AOJu0YxDSJFbzAaf7VnLq7CMVf5J7/9iYAo/ZPI2yEgYCEpFqe4ZrOmd
+ keC0wPDGWQzX3sm2VZBeVZPA+/MT7fEZ7YtVO50EteMZGq2IHSLlkkpsiD2ljG0KYFaARtDqxnm
+ J5rE=
+X-Gm-Gg: ASbGncslff9yRHyjKkwky1tClIr/UtwHLJ5cFODkqZmV/FKufIsT75y1ZoJrF+eR0h2
+ 0LHzv6UMq0hZqAP8nykwdxlU1bR80xRuwkAh7cXli7n1eRMjF2i+ADXzRXJa/bf/khGaY3YY2km
+ BqrpoZHYcBEnF9fo4xcrb7Hytdm8y/7vUIpWW7Ymv5j3MEdWJhuIOzYNL7rB+S267O49vFxIL5y
+ vWCFyjRR6VFbfP+tAmk2uwG+OJp/OoQfMUVqZNi8eP887PHkv2swUryOUmrL212Phbx6x4Hamd/
+ lKPks7N/SG+BDejP3hifLTxOWxvescAY5u1ti4Kzz6dYenfIAyOZHuHa1A==
+X-Google-Smtp-Source: AGHT+IF+cCMpy12TCa/I+9WlChg2mA9SwNPAAsnbILCA21D+OVYIAgibPv9Sjn57dPgYLPCTt0gkeg==
+X-Received: by 2002:a05:600c:5286:b0:43d:5ec:b2f4 with SMTP id
+ 5b1f17b1804b1-442f20e9008mr82841465e9.10.1747304806229; 
+ Thu, 15 May 2025 03:26:46 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442f396c3a4sm65657855e9.26.2025.05.15.03.26.44
+ 5b1f17b1804b1-442f396c3a4sm65657855e9.26.2025.05.15.03.26.45
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 May 2025 03:26:44 -0700 (PDT)
+ Thu, 15 May 2025 03:26:45 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 46/58] target/arm/machine: move cpu_post_load kvm bits to
- kvm_arm_cpu_post_load function
-Date: Thu, 15 May 2025 11:25:34 +0100
-Message-ID: <20250515102546.2149601-47-peter.maydell@linaro.org>
+Subject: [PULL 47/58] target/arm/kvm-stub: add missing stubs
+Date: Thu, 15 May 2025 11:25:35 +0100
+Message-ID: <20250515102546.2149601-48-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250515102546.2149601-1-peter.maydell@linaro.org>
 References: <20250515102546.2149601-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,84 +98,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
+Those become needed once kvm_enabled can't be known at compile time.
+
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20250512180502.2395029-37-pierrick.bouvier@linaro.org
+Message-id: 20250512180502.2395029-38-pierrick.bouvier@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/kvm_arm.h |  4 +++-
- target/arm/kvm.c     | 13 ++++++++++++-
- target/arm/machine.c |  8 +-------
- 3 files changed, 16 insertions(+), 9 deletions(-)
+ target/arm/kvm-stub.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-index b638e09a687..c4178d1327c 100644
---- a/target/arm/kvm_arm.h
-+++ b/target/arm/kvm_arm.h
-@@ -83,8 +83,10 @@ void kvm_arm_cpu_pre_save(ARMCPU *cpu);
-  * @cpu: ARMCPU
-  *
-  * Called from cpu_post_load() to update KVM CPU state from the cpreg list.
-+ *
-+ * Returns: true on success, or false if write_list_to_kvmstate failed.
-  */
--void kvm_arm_cpu_post_load(ARMCPU *cpu);
-+bool kvm_arm_cpu_post_load(ARMCPU *cpu);
- 
- /**
-  * kvm_arm_reset_vcpu:
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 82668d64385..a2791aa866f 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -938,13 +938,24 @@ void kvm_arm_cpu_pre_save(ARMCPU *cpu)
-     }
- }
- 
--void kvm_arm_cpu_post_load(ARMCPU *cpu)
-+bool kvm_arm_cpu_post_load(ARMCPU *cpu)
+diff --git a/target/arm/kvm-stub.c b/target/arm/kvm-stub.c
+index 4806365cdc5..34e57fab011 100644
+--- a/target/arm/kvm-stub.c
++++ b/target/arm/kvm-stub.c
+@@ -109,3 +109,13 @@ void arm_cpu_kvm_set_irq(void *arm_cpu, int irq, int level)
  {
-+    if (!write_list_to_kvmstate(cpu, KVM_PUT_FULL_STATE)) {
-+        return false;
-+    }
-+    /* Note that it's OK for the TCG side not to know about
-+     * every register in the list; KVM is authoritative if
-+     * we're using it.
-+     */
-+    write_list_to_cpustate(cpu);
-+
-     /* KVM virtual time adjustment */
-     if (cpu->kvm_adjvtime) {
-         cpu->kvm_vtime = *kvm_arm_get_cpreg_ptr(cpu, KVM_REG_ARM_TIMER_CNT);
-         cpu->kvm_vtime_dirty = true;
-     }
-+
-+    return true;
+     g_assert_not_reached();
  }
- 
- void kvm_arm_reset_vcpu(ARMCPU *cpu)
-diff --git a/target/arm/machine.c b/target/arm/machine.c
-index 868246a98c0..e442d485241 100644
---- a/target/arm/machine.c
-+++ b/target/arm/machine.c
-@@ -976,15 +976,9 @@ static int cpu_post_load(void *opaque, int version_id)
-     }
- 
-     if (kvm_enabled()) {
--        if (!write_list_to_kvmstate(cpu, KVM_PUT_FULL_STATE)) {
-+        if (!kvm_arm_cpu_post_load(cpu)) {
-             return -1;
-         }
--        /* Note that it's OK for the TCG side not to know about
--         * every register in the list; KVM is authoritative if
--         * we're using it.
--         */
--        write_list_to_cpustate(cpu);
--        kvm_arm_cpu_post_load(cpu);
-     } else {
-         if (!write_list_to_cpustate(cpu)) {
-             return -1;
++
++void kvm_arm_cpu_pre_save(ARMCPU *cpu)
++{
++    g_assert_not_reached();
++}
++
++bool kvm_arm_cpu_post_load(ARMCPU *cpu)
++{
++    g_assert_not_reached();
++}
 -- 
 2.43.0
 
