@@ -2,71 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58DD2AB7F5D
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 09:54:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 904CEAB7EE2
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 09:34:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFTPJ-0000vQ-8H; Thu, 15 May 2025 03:53:33 -0400
+	id 1uFT5E-0007F8-Ua; Thu, 15 May 2025 03:32:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uFTPD-0000o8-LV
- for qemu-devel@nongnu.org; Thu, 15 May 2025 03:53:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uFT5C-0007Ez-08
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 03:32:46 -0400
+Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uFTPB-0007Fr-Nf
- for qemu-devel@nongnu.org; Thu, 15 May 2025 03:53:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747295604;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Zh4Gnv2GLXV6gJfLIWzjYR7uOEnfCnrUR/UzO4yz8oA=;
- b=MEc0ntaou8wjBTEntWXJvvRKrcPHFZpGAoh3cSLq/exjipCdIxm8m79enN687Xx6/74GYK
- gSwc9anRAbQH83b06+wOagroqHpNRpMbUnyesTXu0URJqwlk1h8X7xPePj4oLzU0/HaFd1
- vyBv5oiDBR7y5Gb31jBb/4oxu0Lc5cQ=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-114-XYeNPb7wNCevPGhhS13fiw-1; Thu,
- 15 May 2025 03:53:21 -0400
-X-MC-Unique: XYeNPb7wNCevPGhhS13fiw-1
-X-Mimecast-MFC-AGG-ID: XYeNPb7wNCevPGhhS13fiw_1747295600
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B0968195605F; Thu, 15 May 2025 07:53:18 +0000 (UTC)
-Received: from redhat.com (unknown [10.45.224.242])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3AC9719560A7; Thu, 15 May 2025 07:53:15 +0000 (UTC)
-Date: Thu, 15 May 2025 09:53:13 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org
-Subject: Re: [PATCH 07/27] qemu-img: check: refresh options/--help
-Message-ID: <aCWdaXsifyf4SxQM@redhat.com>
-References: <20240927061121.573271-1-mjt@tls.msk.ru>
- <20240927061121.573271-8-mjt@tls.msk.ru>
- <aCNrThMpezno1o1Z@redhat.com>
- <a5867bf2-fdbc-41ba-802a-e2f9a45c1b1c@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uFT59-0004vr-I0
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 03:32:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1747294363; x=1778830363;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=x6KqwCn/i0agTo8NqVmQhC6ggUzE4eVYkFcd+vWCGNM=;
+ b=AFg+9a/pnKDcnmVvGSChUf4YTaIGOhsnEyvqO+voPV43OMa3aYOcP8SG
+ Mi67r0c1Fe43s+u0gCsuDjb7ldOxCDjUCmDntwK/RxVEy0iZdQxU44cpe
+ FZhiCH4xWd2vIKNK4R9AwYtUwmVC11LcFoHWE/kJZsvs5uKecZ+y5plp6
+ TfG03c6WtUggND9tv4H+zQ4Zt2NT/gV5sZ+ib6G7wuZfFFArU55Po8Sk/
+ jfDJloamOTUq0FKIC1uDZNC8t+aQBB3MrAvnvG54oPXhMHWSO/MV6cJEx
+ 3Ylp06BS31Q2o4h9lrzAGZ5UrLcDwwAxa3rcsXkeu0EPBAZMgb7wNjLoR Q==;
+X-CSE-ConnectionGUID: tfKlprexQi6EMs9S+7KljA==
+X-CSE-MsgGUID: snF7rvcTTeGcxdTvOCC0iQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="66768575"
+X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; d="scan'208";a="66768575"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 May 2025 00:32:38 -0700
+X-CSE-ConnectionGUID: 9EhKdpTGTrCcCICKgPZWog==
+X-CSE-MsgGUID: 0QZ2Py39Ss+yQhgBAyN4ww==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; d="scan'208";a="138823155"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa007.jf.intel.com with ESMTP; 15 May 2025 00:32:36 -0700
+Date: Thu, 15 May 2025 15:53:40 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Cameron Esfahani <dirty@apple.com>,
+ Roman Bolshakov <rbolshakov@ddn.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>, qemu-devel@nongnu.org
+Subject: Re: [PATCH 1/2] i386/tcg: Make CPUID_HT and CPUID_EXT3_CMP_LEG
+ supported
+Message-ID: <aCWdhIqZiu4q+UJi@intel.com>
+References: <20250514031652.838763-1-xiaoyao.li@intel.com>
+ <20250514031652.838763-2-xiaoyao.li@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a5867bf2-fdbc-41ba-802a-e2f9a45c1b1c@tls.msk.ru>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -37
-X-Spam_score: -3.8
-X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
+In-Reply-To: <20250514031652.838763-2-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -60
+X-Spam_score: -6.1
+X-Spam_bar: ------
+X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,59 +84,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 15.05.2025 um 08:50 hat Michael Tokarev geschrieben:
-> On 13.05.2025 18:54, Kevin Wolf wrote:
-> > Am 27.09.2024 um 08:11 hat Michael Tokarev geschrieben:
+On Tue, May 13, 2025 at 11:16:51PM -0400, Xiaoyao Li wrote:
+> Date: Tue, 13 May 2025 23:16:51 -0400
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
+> Subject: [PATCH 1/2] i386/tcg: Make CPUID_HT and CPUID_EXT3_CMP_LEG
+>  supported
+> X-Mailer: git-send-email 2.43.0
 > 
-> > > +            cmd_help(ccmd,
-> > > +"[-f FMT | --image-opts] [-T CACHE_MODE] [-r] [-u]\n"
-> > > +"        [--output human|json] [--object OBJDEF] FILENAME\n"
-> > > +,
-> > > +"  -q, --quiet\n"
-> > > +"     quiet operations\n"
-> > 
-> > Let's keep the help text more in line with the terminology used in the
-> > man page, even if shorter at times.
+> Since commit c6bd2dd63420 ("i386/cpu: Set up CPUID_HT in
+> x86_cpu_expand_features() instead of cpu_x86_cpuid()") and
+> commit 99a637a86f55 ("i386/cpu: Set and track CPUID_EXT3_CMP_LEG in
+> env->features[FEAT_8000_0001_ECX]"), it gets warnings when booting the
+> VM with vcpus >= 2 and with tcg:
 > 
-> I haven't touched the man page for a reason, - I wasn't sure I
-> understood all the options correctly.  And the man pages were the
-> next planning step.  Unfortunately it's been quite some time ago
-> and I don't remember details anymore.  It can be done either way,
-> and I tried to make the whole thing as short as possible in the
-> --help output.
-
-Yes, we definitely need to shorten the descriptions from the man page
-for --help. I think as long as it fits on a single line, it's okay, but
-I understand if you want to keep it even shorter in some cases.
-
-> > I would use the first sentence from it here: "Quiet mode - do not print
-> > any output (except errors)"
+>   qemu-system-x86_64: warning: TCG doesn't support requested feature: CPUID.01H:EDX.ht [bit 28]
+>   qemu-system-x86_64: warning: TCG doesn't support requested feature: CPUID.80000001H:ECX.cmp-legacy [bit 1]
 > 
-> Ok.
-
-If this is too wordy for your liking, just "quiet mode" could be enough,
-but I would keep the terminology the same (i.e. not "operations" here
-and "mode" there").
-
-> > > +"  -f, --format FMT\n"
-> > > +"     specifies format of the image explicitly\n"
-> > 
-> > Maybe "format of the image (default: probing is used)"?
+> This is because, after the two commits, CPUID_HT and CPUID_EXT3_CMP_LEG
+> are set in env->features[] when vcpus >=2 (in x86_cpu_expand_features())
+> later in x86_cpu_filter_features() it will check against the TCG supported
+> bits. However, current TCG doesn't mark the two bits as supported, hence
+> the warnings.
 > 
-> Yeah, makes sense.
+> Fix it by adding the two bits to the supported bits of TCG since multiple
+> vcpus are supported by TCG.
 > 
-> Not wanting to risk going into an endless wording discussion,
-> let's do it this way here and elsewhere.
+> Fixes: c6bd2dd63420 ("i386/cpu: Set up CPUID_HT in x86_cpu_expand_features() instead of cpu_x86_cpuid()")
+> Fixes: 99a637a86f55 ("i386/cpu: Set and track CPUID_EXT3_CMP_LEG in env->features[FEAT_8000_0001_ECX]")
+> Reported-by: Ewan Hai <ewanhai-oc@zhaoxin.com>
 
-The nature of your series is that a big part of the review is actually
-the new help text, so it's unavoidable to have some wording discussions
-here and there. Don't necessarily take my suggestions as the final word,
-they are just suggestions on which we can iterate and find the best
-wording for users. I think refining help texts is worth some thought and
-back and forth between multiple people. So if you don't like my
-suggestions, or you prefer a mix of yours and mine, or you have
-additional improvements to them, feel free to say so.
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2894
 
-Kevin
+Then QEMU gitlab can track this fix.
+
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> ---
+>  target/i386/cpu.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
+
+Both HT and CMPLegacy depend on CPU topology (mutiple threads per
+package), therefore, there's no need for extra work in TCG.
+
+So,
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
 
 
