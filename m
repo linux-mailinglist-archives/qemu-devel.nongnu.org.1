@@ -2,72 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE70AB7F6F
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 09:57:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A4ACAB7FC3
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 10:06:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFTSO-0004nW-8V; Thu, 15 May 2025 03:56:44 -0400
+	id 1uFTbL-0006XC-Vv; Thu, 15 May 2025 04:06:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uFTSB-0004fs-Pi
- for qemu-devel@nongnu.org; Thu, 15 May 2025 03:56:32 -0400
-Received: from mgamail.intel.com ([198.175.65.11])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1uFTb5-0006KD-Pm; Thu, 15 May 2025 04:05:43 -0400
+Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uFTS9-0007eT-Ip
- for qemu-devel@nongnu.org; Thu, 15 May 2025 03:56:31 -0400
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1uFTb3-0000Sk-Uv; Thu, 15 May 2025 04:05:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747295789; x=1778831789;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=d/uAI1stqwfhW1tdA2rECmcN2OVfSmJWFS45w2ZofY0=;
- b=R2PzV/v7Co5vIetGaR1iO9A2Kbmn1k+CU6zoU4Hwla7IZeCy69n5tjs6
- KpkUdCDFIEAFiOl/nNumqhZaBdLSxqEuNT7ystbv1Lr7pXplnq5H37Per
- hZDdVuePSd8zTcO5jlZMIMMv0eT/9kvqqXpfReYFlkHztK3bCd2FlbCKM
- Ai4MY5wcLem69m6q8+VJXzVtqEWGewEH4LP+DteEbuFPM0gxMXi97IMOE
- K8HvWPDWGORPtA64NA6xGOyKnZbSypTXDyEAcpnY+WFlXBaMK5xBZzUCV
- D9cbD3g1B3uKwg2jWCWJQrM7zwkz/U8FW3nbtx7N4zWawdo7tOQWIrIBi w==;
-X-CSE-ConnectionGUID: JzSQVXQjSTO27Aa3ieGWZA==
-X-CSE-MsgGUID: nRj5yWhiTwGCblQR/aGgQQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="59449277"
-X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; d="scan'208";a="59449277"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2025 00:56:25 -0700
-X-CSE-ConnectionGUID: 2mjGk6BOQBiPyaU1Bb7ZeA==
-X-CSE-MsgGUID: xix7kRVHSTiQ5qsfPTz3Fg==
+ t=1747296342; x=1778832342;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=UJuyTxivS+g0xlBTa/B4ds5HvhahR14P6k02iRItjz0=;
+ b=oEByV3br7po1AMyRp9HZM5SugXDn7MlHfd9bGPb4LCrbqtw8vizcaADW
+ +UzLwO11rRT+95H9q/yUzP/SkeKOZKOIMENPN9TfXPPUKP7g/Lc/CQQbT
+ HjBsHeZGQXfvA1fQXXU9BLGaM5Szwpx3RwwzX41mPR9TR2iVmX2Gie3f8
+ eqk1AxBdMSPRO7JB1M8q1JEkBfh/aVsEcXXdp97pjNKQ5s97bPsAf/BM5
+ fX39sJqZUrDc/1Gq/+GJXW8kTrUfrco+tvu/xYZEzUgULh1jUQ0/G2klm
+ C3pwMV0Ud2p/L7NkTey6uE4JQjKKfPqxqbkh30aXZaazojbZ65mtRJ4et w==;
+X-CSE-ConnectionGUID: IRYwYA1NQIKT/5vn0eO2vg==
+X-CSE-MsgGUID: 5/2RyLzdSn2rIFaxsuqvag==
+X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="60230586"
+X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; d="scan'208";a="60230586"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 May 2025 01:05:39 -0700
+X-CSE-ConnectionGUID: 29do6jHcSNKogpDnvvqQaQ==
+X-CSE-MsgGUID: jDXGiLCiRNi3nxFHLXAR5Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; d="scan'208";a="138161571"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa010.jf.intel.com with ESMTP; 15 May 2025 00:56:23 -0700
-Date: Thu, 15 May 2025 16:17:28 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Cameron Esfahani <dirty@apple.com>,
- Roman Bolshakov <rbolshakov@ddn.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>, qemu-devel@nongnu.org
-Subject: Re: [PATCH 2/2] i386/hvf: Make CPUID_HT supported
-Message-ID: <aCWjGFFlKqwOyY0/@intel.com>
-References: <20250514031652.838763-1-xiaoyao.li@intel.com>
- <20250514031652.838763-3-xiaoyao.li@intel.com>
+X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; d="scan'208";a="138177981"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
+ ([10.124.247.1])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 May 2025 01:05:19 -0700
+Message-ID: <e2ebf45c-619c-46bb-884d-e4113b703855@intel.com>
+Date: Thu, 15 May 2025 16:05:15 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250514031652.838763-3-xiaoyao.li@intel.com>
-Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 04/27] hw/mips/loongson3_virt: Prefer using
+ fw_cfg_init_mem_nodma()
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>, kvm@vger.kernel.org,
+ Sergio Lopez <slp@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Laurent Vivier
+ <lvivier@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Yi Liu <yi.l.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-riscv@nongnu.org,
+ Weiwei Li <liwei1518@gmail.com>, Amit Shah <amit@kernel.org>,
+ Zhao Liu <zhao1.liu@intel.com>, Yanan Wang <wangyanan55@huawei.com>,
+ Helge Deller <deller@gmx.de>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Ani Sinha <anisinha@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ =?UTF-8?Q?Cl=C3=A9ment_Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
+ qemu-arm@nongnu.org, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
+ <marcandre.lureau@redhat.com>, Huacai Chen <chenhuacai@kernel.org>,
+ Jason Wang <jasowang@redhat.com>
+References: <20250508133550.81391-1-philmd@linaro.org>
+ <20250508133550.81391-5-philmd@linaro.org>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20250508133550.81391-5-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.13; envelope-from=xiaoyao.li@intel.com;
  helo=mgamail.intel.com
-X-Spam_score_int: -60
-X-Spam_score: -6.1
-X-Spam_bar: ------
-X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=1, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,45 +103,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 13, 2025 at 11:16:52PM -0400, Xiaoyao Li wrote:
-> Date: Tue, 13 May 2025 23:16:52 -0400
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: [PATCH 2/2] i386/hvf: Make CPUID_HT supported
-> X-Mailer: git-send-email 2.43.0
+On 5/8/2025 9:35 PM, Philippe Mathieu-Daudé wrote:
+> fw_cfg_init_mem_wide() is prefered to initialize fw_cfg
+> with DMA support. Without DMA, use fw_cfg_init_mem_nodma().
 > 
-> Since Commit c6bd2dd63420 ("i386/cpu: Set up CPUID_HT in
-> x86_cpu_expand_features() instead of cpu_x86_cpuid()"), CPUID_HT will be
-> set in env->features[] in x86_cpu_expand_features() when vcpus >= 2.
-> 
-> Later in x86_cpu_filter_features() it will check against the HVF
-> supported bits. It will trigger the warning like
-> 
->     qemu-system-x86_64: warning: host doesn't support requested feature: CPUID.01H:EDX.ht [bit 28]
-> 
-> Add CPUID_HT to HVF supported CPUID bits to fix it.
-> 
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> ---
-> Note, the issue is totally by my analysis (which should be the same as
-> the TCG warnings) because I don't have HVF environment to verify it.
-> 
-> If would be helpful if anyone can help reproduce it and test the patch
-> in HVF environment.
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Ah, I found someone has reported a bug on HVF. In his log, there's the
-ht warning:
-
-https://gitlab.com/qemu-project/qemu/-/issues/2938
-
-But I don't know if this fix can help on his bug...let's wait for his
-feedback.
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
 > ---
->  target/i386/hvf/x86_cpuid.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
-Anyway, this fix is fine for me, so,
-
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+>   hw/mips/loongson3_virt.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
+> index de6fbcc0cb4..654a2f0999f 100644
+> --- a/hw/mips/loongson3_virt.c
+> +++ b/hw/mips/loongson3_virt.c
+> @@ -286,7 +286,7 @@ static void fw_conf_init(void)
+>       FWCfgState *fw_cfg;
+>       hwaddr cfg_addr = virt_memmap[VIRT_FW_CFG].base;
+>   
+> -    fw_cfg = fw_cfg_init_mem_wide(cfg_addr, cfg_addr + 8, 8, 0, NULL);
+> +    fw_cfg = fw_cfg_init_mem_nodma(cfg_addr, cfg_addr + 8, 8);
+>       fw_cfg_add_i16(fw_cfg, FW_CFG_NB_CPUS, (uint16_t)current_machine->smp.cpus);
+>       fw_cfg_add_i16(fw_cfg, FW_CFG_MAX_CPUS, (uint16_t)current_machine->smp.max_cpus);
+>       fw_cfg_add_i64(fw_cfg, FW_CFG_RAM_SIZE, loaderparams.ram_size);
 
 
