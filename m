@@ -2,64 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C42C5AB8743
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 15:03:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1CCEAB87D2
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 15:22:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFYEM-0005DH-DI; Thu, 15 May 2025 09:02:34 -0400
+	id 1uFYVw-0008KI-7A; Thu, 15 May 2025 09:20:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uFYEF-00053n-Bu
- for qemu-devel@nongnu.org; Thu, 15 May 2025 09:02:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uFYVs-0008Jt-6z
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 09:20:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uFYED-0001CB-EQ
- for qemu-devel@nongnu.org; Thu, 15 May 2025 09:02:27 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1uFYVq-0003an-BK
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 09:20:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747314144;
+ s=mimecast20190719; t=1747315236;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=cZ1tz3XlQsOvZzC6xq/m+22FocNZ6aBalbh6ECN310k=;
- b=dCsSOtQgbLjugz47FQQDLiJ6AOjoPcyOeWCuOeuUW922PsAaWiaHMvkITHT5JenOIvDxJ8
- IxH6PbYHV1aoXly5OI2HexnlAPd5CLCajCDuVilzFyBqsZ89ADRg6KOJtPhuqi1wuoOEee
- exX6gd8LKCLFDFAbKzHbRNL9NEXLTY4=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding;
+ bh=eWAQav3oZRwcI4Yz65PWMHYpkd524jMlB/PEv9XTogA=;
+ b=cmrIlqHC9p7ZarC2gOx0DiJOhf6nGkKA7c0LO27uHLvAJjpWt7KMwldEYq/hpM9WZLoiHw
+ +2hhP0tJXslZaGF5NOP5PALzY/2NQyE7SqGQADIEnhj+gUgWZYv2vGmPXLXixogipn9My3
+ +BSY+4uI1RubbnGe5zK0J/QMEiPygwo=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-394-TenvsM4wNrmQy4FYsGcj5A-1; Thu,
- 15 May 2025 09:02:23 -0400
-X-MC-Unique: TenvsM4wNrmQy4FYsGcj5A-1
-X-Mimecast-MFC-AGG-ID: TenvsM4wNrmQy4FYsGcj5A_1747314142
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-635-KDYnmGJBMSiQFDnBlRBPkQ-1; Thu,
+ 15 May 2025 09:20:33 -0400
+X-MC-Unique: KDYnmGJBMSiQFDnBlRBPkQ-1
+X-Mimecast-MFC-AGG-ID: KDYnmGJBMSiQFDnBlRBPkQ_1747315232
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id ABE311800980; Thu, 15 May 2025 13:02:21 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.45.242.27])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id D4F1319560AD; Thu, 15 May 2025 13:02:20 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 504ED21E6768; Thu, 15 May 2025 15:02:18 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Mario Fleischmann <mario.fleischmann@lauterbach.com>
-Cc: qemu-devel@nongnu.org,  alex.bennee@linaro.org,  philmd@linaro.org,
- christian.boenig@lauterbach.com
-Subject: Re: [PATCH v2 07/20] mcd: Implement target initialization API
-In-Reply-To: <20250430052741.21145-8-mario.fleischmann@lauterbach.com> (Mario
- Fleischmann's message of "Wed, 30 Apr 2025 07:27:28 +0200")
-References: <20250430052741.21145-1-mario.fleischmann@lauterbach.com>
- <20250430052741.21145-8-mario.fleischmann@lauterbach.com>
-Date: Thu, 15 May 2025 15:02:18 +0200
-Message-ID: <875xi2yqlh.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D1F641800447; Thu, 15 May 2025 13:20:31 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.45.224.27])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id AFF181956094; Thu, 15 May 2025 13:20:27 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+	qemu-devel@nongnu.org
+Cc: Alistair Francis <alistair@alistair23.me>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PATCH 0/4] hw/microblaze: Endianness clean-ups and deprecations
+Date: Thu, 15 May 2025 15:20:15 +0200
+Message-ID: <20250515132019.569365-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -37
 X-Spam_score: -3.8
@@ -84,218 +81,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Mario Fleischmann <mario.fleischmann@lauterbach.com> writes:
+Thanks to the great reworks from Philippe, the microblaze targets
+can now handle both endiannesses. I'd like to suggest now to use
+a "endianness" property to allow to switch the endianness of the
+petalogix-s3adsp1800 machine. The endiannes of the other two
+microblaze machines should be hard-wired to little-endian now
+since the big-endian mode likely never worked. With all those
+modifications in place, we can then finally deprecate the little-endian
+target binary qemu-system-microblazeel since the qemu-system-microblaze
+can handle all use cases. This will help us in the future to reduce
+our compilation and testing times.
 
-> The target initialization API ensures that the requested and provided
-> MCD versions are compatible.
->
-> * implement mcd_initialize_f and mcd_qry_error_info_f in mcdserver
-> * implement QMP stub functionality
-> * add QTest
->
-> Thanks to the QMP integration in QTest, function arguments and results
-> can be (de)serialized automatically.
->
-> Signed-off-by: Mario Fleischmann <mario.fleischmann@lauterbach.com>
+Thomas Huth (4):
+  hw/microblaze: Add endianness property to the petalogix_s3adsp1800
+    machine
+  tests/functional: Test both microblaze s3adsp1800 endianness variants
+  hw/microblaze: Remove the big-endian variants of ml605 and
+    xlnx-zynqmp-pmu
+  docs: Deprecate the qemu-system-microblazeel binary
 
-[...]
+ docs/about/deprecated.rst                     | 19 ++++++---
+ docs/about/removed-features.rst               |  9 ++++
+ hw/microblaze/petalogix_ml605_mmu.c           | 15 ++-----
+ hw/microblaze/petalogix_s3adsp1800_mmu.c      | 41 ++++++++++++++++---
+ hw/microblaze/xlnx-zynqmp-pmu.c               |  7 +---
+ .../functional/test_microblaze_s3adsp1800.py  | 17 +++++---
+ .../test_microblazeel_s3adsp1800.py           |  5 ++-
+ 7 files changed, 79 insertions(+), 34 deletions(-)
 
-> diff --git a/qapi/mcd.json b/qapi/mcd.json
-> index 701fd03..7b42a74 100644
-> --- a/qapi/mcd.json
-> +++ b/qapi/mcd.json
-> @@ -4,3 +4,186 @@
->  ##
->  # = Multi-Core Debug (MCD) API
->  ##
-> +
-> +
-> +##
-> +# == Definition of Structures
-> +##
-> +
-> +
-> +##
-> +# @MCDAPIVersion:
-> +#
-> +# Structure type containing the MCD API version information of the tool.
-> +#
-> +# @v-api-major: API major version.
-> +# @v-api-minor: API minor version.
-> +# @author:      API name of the author of this MCD API version.
-> +#
-> +# Since: 9.1
-> +##
-> +{ 'struct': 'MCDAPIVersion',
-> +  'data': {
-> +    'v-api-major': 'uint16',
-> +    'v-api-minor': 'uint16',
-> +    'author':      'str' } }
-> +
-> +
-> +##
-> +# @MCDImplVersionInfo:
-> +#
-> +# Structure type containing the MCD API implementation information.
-> +#
-> +# @v-api:       Implemented API version.
-> +# @v-imp-major: Major version number of this implementation.
-> +# @v-imp-minor: Minor version number of this implementation.
-> +# @v-imp-build: Build number of this implementation.
-> +# @vendor:      Name of vendor of the implementation.
-> +# @date:        String from __DATE__ macro at compile time.
-> +#
-> +# Since: 9.1
-> +##
-> +{ 'struct': 'MCDImplVersionInfo',
-> +  'data': {
-> +    'v-api'      : 'MCDAPIVersion',
-> +    'v-imp-major': 'uint16',
-> +    'v-imp-minor': 'uint16',
-> +    'v-imp-build': 'uint16',
-> +    'vendor'     : 'str',
-> +    'date'       : 'str' } }
-> +
-> +
-> +##
-> +# @MCDErrorInfo:
-> +#
-> +# Structure type containing the error status and error event notification.
-> +#
-> +# @return-status: Return status from the last API call.
-> +# @error-code:    Detailed error code from the last API call.
-> +# @error-events:  Detailed event code from the last API call.
-> +# @error-str:     Detailed error text string from the last API call.
-> +#
-> +# Since: 9.1
-> +##
-> +{ 'struct': 'MCDErrorInfo',
-> +  'data': {
-> +    'return-status': 'uint32',
-> +    'error-code'   : 'uint32',
-> +    'error-events' : 'uint32',
-> +    'error-str'    : 'str' }}
-> +
-> +
-> +##
-> +# == Target Initialization API
-> +##
-> +
-> +
-> +##
-> +# @MCDInitializeResult:
-> +#
-> +# Return value of @mcd-initialize.
-> +#
-> +# @return-status: Return code.
-> +#
-> +# @impl-info: Information about the QEMU build, its version and the version of
-> +#             the implemented MCD API.
-> +#
-> +# Since: 9.1
-> +##
-> +{ 'struct': 'MCDInitializeResult',
-> +  'data': {
-> +    'return-status': 'uint32',
-> +    '*impl-info'   : 'MCDImplVersionInfo' } }
-> +
-> +
-> +##
-> +# @mcd-initialize:
-> +#
-> +# Function initializing the interaction between a tool-side implementation and
-> +# target-side implementation.
-> +#
-> +# @version-req: MCD API version as requested by an upper layer.
-> +#
-> +# Returns: @MCDInitializeResult
-> +#
-> +# Since: 9.1
-> +#
-> +# .. qmp-example::
-> +#    :title: Check compatibility with MCD server
-> +#
-> +#     -> { "execute": "mcd-initialize",
-> +#          "arguments": { "version-req": { "v-api-major": 1,
-> +#                                          "v-api-minor": 1,
-> +#                                          "author": "" } } }
-> +#     <- {
-> +#            "return": {
-> +#                "impl-info": {
-> +#                    "v-api": {
-> +#                        "v-api-minor": 1,
-> +#                        "v-api-major": 1,
-> +#                        "author": "QEMU Release"
-> +#                    },
-> +#                    "vendor": "QEMU",
-> +#                    "v-imp-minor": 2,
-> +#                    "v-imp-major": 9,
-> +#                    "v-imp-build": 0,
-> +#                    "date": "Dec 18 2024"
-> +#                },
-> +#                "return-status": 0
-> +#            }
-> +#        }
-> +##
-> +{ 'command': 'mcd-initialize',
-> +  'data': { 'version-req': 'MCDAPIVersion' },
-> +  'returns': 'MCDInitializeResult' }
-> +
-> +
-> +##
-> +# @mcd-exit:
-> +#
-> +# Function cleaning up all core and server connections from a tool.
-> +#
-> +# Since: 9.1
-> +##
-> +{ 'command': 'mcd-exit' }
-> +
-> +
-> +##
-> +# == Core Connection API
-> +##
-> +
-> +
-> +##
-> +# @mcd-qry-error-info:
-> +#
-> +# Function allowing the access to detailed error and/or event information after
-> +# an API call.
-> +#
-> +# Returns: @MCDErrorInfo
-> +#
-> +# Since: 9.1
-> +#
-> +# .. qmp-example::
-> +#    :title: Incompatible MCD versions
-> +#
-> +#     -> { "execute": "mcd-initialize",
-> +#          "arguments": { "version-req": { "v-api-major": 2,
-> +#                                          "v-api-minor": 0,
-> +#                                          "author": "" } } }
-> +#     <- {
-> +#            "return": {
-> +#                "return-status": 3
-> +#            }
-> +#        }
-> +#     -> { "execute": "mcd-qry-error-info" }
-> +#     <- {
-> +#            "return": {
-> +#                "error-str": "incompatible versions",
-> +#                "error-code": 3840,
-> +#                "error-events": 0,
-> +#                "return-status": 3
-> +#            }
-> +#        }
-> +##
-> +{ 'command': 'mcd-qry-error-info',
-> +  'returns': 'MCDErrorInfo' }
-
-You define some types under "Definition of Structures", and some
-elsewhere.  How do you decide what goes where?  Hmm, looks like you
-mirror mcd/mcd_api.h.  Correct?
-
-[...]
+-- 
+2.49.0
 
 
