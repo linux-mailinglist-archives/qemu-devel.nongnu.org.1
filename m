@@ -2,93 +2,119 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A137FAB8B20
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 17:44:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88F6DAB8B24
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 17:44:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFajf-0008Ct-HL; Thu, 15 May 2025 11:43:03 -0400
+	id 1uFakD-0001Gs-Mq; Thu, 15 May 2025 11:43:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uFaja-00088A-MK
- for qemu-devel@nongnu.org; Thu, 15 May 2025 11:42:58 -0400
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uFajY-00065a-8f
- for qemu-devel@nongnu.org; Thu, 15 May 2025 11:42:58 -0400
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-30df7c98462so1162061a91.3
- for <qemu-devel@nongnu.org>; Thu, 15 May 2025 08:42:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747323770; x=1747928570; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=1ed5OpV8LcoXGv4f+CEtHJEcEJDwnymAn/7MyejJClM=;
- b=pkfXo3lOPcotMg5/1OfJkzpnXatnDihq2dZmcjfyXIVmQxssv1gOij4t25M/YxWzgI
- lmRmgfeN+lUWEJUpOaaLx5/S536LPF0gSwYV9+tHc98M2HZNzXxLY0n24KNs+V0DwMlK
- jR0WOaTscoGQuW0OA+hJKhuhRldsHLIlAMeHWXPOOPUf1lgYQhEzrmRaeo1iak7NIjFK
- msjvQ7gcRv/2mnErC0mQjckDu+61WDTjRLshPd4bcTcKUBZ0iFeRFxu5nA99QplfrdO3
- jAuHo8JS4qfmQVM8kYpUPb+MoGFEhMSryiXwjzrMQcSmgTXu6L5FKRAUh7KdAUDrQmZR
- b08w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747323770; x=1747928570;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1ed5OpV8LcoXGv4f+CEtHJEcEJDwnymAn/7MyejJClM=;
- b=mcMhrvWn8k56Jeg7G2+d0oU5sW2nrXsdyEd8HB6i6wQyOsMi6PI99LHvkixfSJRJ1E
- vp10g3rlTIWrZLGM5Nlmqgv9FxLg9sc7EM3rnaNy7FR4cRrIcEYK6nNhOcJst9UMVWGt
- sTN6oWGCAD2qo4DUEwDVMgDTvI/EnILLrtNyCUTnf1jils2VZKUnOjMDXgxzaY6kucAP
- CnuHTAWVqTTBthE/lEUsMmCjDQWvLIScS8ptnuK4dYaZGuPeCk4z3jQGXAxZL3iNEt71
- 1qQbUyCyNE8lpC6wGRZKH00nLL55Us+uw9R5arEgMBLXrxN9ZSFjLxC6hfC0Hzq50ji7
- RJIw==
-X-Gm-Message-State: AOJu0YzYs6plAd/+ZPZo4bucvi6M7vfavqjx7/PNXWRwXqv+f8HBvyHR
- UQkdjdYg72t28SJXlmyFuEInMSf72goe5DDuTe7T1lL7JINLy9s5QL5sRDxdcuzdb45IVIiCizu
- n
-X-Gm-Gg: ASbGnctAw9TnuJnDrvb7CtJazbA7YCtK67O592Kz5+pl4/8eGxfdEVRlwdjckxxrtZV
- t9Zfa5GsGoY2B1kxLojPxTqq4DiLC1G+vjadpgJeIjKSLF08a3sTqlCuN+FCyXJNlFmG1RXOHs2
- oTawo0JgY6WUXqeMQrfSdkK1x176B8UmdzArKksC1a8y9rv2jF78qvKJoDMaVyUuOkckLt8G/Aa
- 9jQB2CmzmEl5BAh7WjSBPnMIYWgLXOWPV7Th3Dw/PsjUPyhNFjUGPIlp5+YWhDfi/NhXD1ng6xW
- ghvdIPPmlTujRYTWIyQm+FZRuomfhh6jcAAKdJgaxcCTKga+qew8w201eR5RH2Nm
-X-Google-Smtp-Source: AGHT+IGz4HCU94VubISGCgyhUxhcPGeLN0Z2du+nCRyv5Gh3o8z8b406lAFmkNYwXsDAKo8IV0U7Ow==
-X-Received: by 2002:a17:90b:3c0f:b0:30c:4b1d:330 with SMTP id
- 98e67ed59e1d1-30e2e65e705mr12792667a91.27.1747323770372; 
- Thu, 15 May 2025 08:42:50 -0700 (PDT)
-Received: from [192.168.1.87] ([38.41.223.211])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-30e3345fe6csm3639443a91.26.2025.05.15.08.42.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 15 May 2025 08:42:49 -0700 (PDT)
-Message-ID: <b1497baf-323b-431c-a6bc-2758db3cc428@linaro.org>
-Date: Thu, 15 May 2025 08:42:48 -0700
+ (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
+ id 1uFakB-0001CK-BE; Thu, 15 May 2025 11:43:35 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
+ id 1uFak9-00067u-5E; Thu, 15 May 2025 11:43:34 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54FCg561002277;
+ Thu, 15 May 2025 15:43:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=pp1; bh=wNLaAT
+ ms/IfH4TryaYduKLF3sLhTtn659EMkwMekuvU=; b=X2WFi9YSBcsRbSUI2WuPOJ
+ Ax9S2JbCVGcve2WPGm4X6/YOl4q8wUuLvFfuRLdcWfeUZyZaWlz/cAtALvb+hGzw
+ RMCuX7Bz4+04fbS6cdHp1rEU2vr14XhBGxl0/RHHlZO5sz5DMpNQdBMw0Rpq5mtv
+ OIqBRyN3TQoqFyaXhvV18/1b2DTskZS8RhCg2I5Rm3VS6wmCM6ifTltQkZAz6Yun
+ Are6lci1s3wgDFMW194TXxmCuWnmrPSuR+Zx2pE+so5ORaWeQG8T4UDzuM4tXC5I
+ /6eUXRae0kp3aZ7ijAub4UcNjVT4T0RsbgZuGhRsGazOx6ApuHq0FWLsdHv0c/2w
+ ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46n0v6ndjm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 15 May 2025 15:43:28 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54FFTPpE011769;
+ Thu, 15 May 2025 15:43:28 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46n0v6ndjk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 15 May 2025 15:43:28 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54FE3Xot021793;
+ Thu, 15 May 2025 15:43:27 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46mbfpu16h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 15 May 2025 15:43:27 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 54FFhQ4K30147178
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 15 May 2025 15:43:26 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 76B7D58058;
+ Thu, 15 May 2025 15:43:26 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 245BC5805D;
+ Thu, 15 May 2025 15:43:26 +0000 (GMT)
+Received: from [9.10.80.143] (unknown [9.10.80.143])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 15 May 2025 15:43:26 +0000 (GMT)
+Message-ID: <01a04608-18ba-4a83-9627-34a596e6a11d@linux.ibm.com>
+Date: Thu, 15 May 2025 10:43:25 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/13] qapi: introduce 'runtime_if' for QAPI json
+Subject: Re: [PATCH 41/50] ppc/xive2: Prevent pulling of pool context losing
+ phys interrupt
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?=
+ <fbarrat@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
+ Caleb Schlossin <calebs@linux.vnet.ibm.com>
+References: <20250512031100.439842-1-npiggin@gmail.com>
+ <20250512031100.439842-42-npiggin@gmail.com>
 Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, alex.bennee@linaro.org, stefanha@redhat.com,
- peter.maydell@linaro.org, richard.henderson@linaro.org, pbonzini@redhat.com,
- jsnow@redhat.com, philmd@linaro.org, berrange@redhat.com, thuth@redhat.com,
- Michael Roth <michael.roth@amd.com>
-References: <20250507231442.879619-1-pierrick.bouvier@linaro.org>
- <20250507231442.879619-2-pierrick.bouvier@linaro.org>
- <878qmy5vxc.fsf@pond.sub.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <878qmy5vxc.fsf@pond.sub.org>
+From: Mike Kowal <kowal@linux.ibm.com>
+In-Reply-To: <20250512031100.439842-42-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x102d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=IqAecK/g c=1 sm=1 tr=0 ts=68260ba0 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8
+ a=N5jOW-pyvUPM4XXbhVEA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: Fb0Vg-_sJBIT5HBmh4n-G6c_PRTm_gJd
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE1MDE1NSBTYWx0ZWRfX2EEE9M0/ddkB
+ Bh1iQQwcCS+093UtigWU9ELza6zvdZ5e5VSizrBcZ5MnN413vQZ6Yk4552WO1K7iFXDfsdkGAkN
+ bwXOCkK9haySsABP2woixPm654p7MmaUi1gx7oxUZNGuAIz+a++4+DzqVm5jb9Bv4X0+h/eiE7v
+ 1JJIm9HufKfeBg5clpdSQvxhlOQilIp/TAx8Z4nTrymVNvAsb6puQdA1XrOxDgHhv7i3OXEFk+g
+ y6Bb7awnoDZKYyh7t44/jYghM0IsKGnmJfycxh9s837ThysR4xH+LXhT1iHDUs6q+sSctyoNGkN
+ woMPle48KJWl6f2s1S7BfwqlVW5coUCQDrxc/Ql4bMpZ89ahm8HF03yRpfuajjJZRGfB3lZiZaP
+ g/bDbFt82k2riY/wSPC1dGpczm/4pVEAqDuDheGi+lXxumXXxJVsqXLjeEHzXn+a+osqgu7N
+X-Proofpoint-GUID: -Rn6wBYcbe0IZTuxF8B3F67H_2UfigY4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-15_06,2025-05-15_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 malwarescore=0
+ adultscore=0 lowpriorityscore=0 phishscore=0 impostorscore=0
+ priorityscore=1501 clxscore=1015 spamscore=0 mlxlogscore=904 bulkscore=0
+ suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
+ definitions=main-2505150155
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=kowal@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,89 +130,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/14/25 9:39 PM, Markus Armbruster wrote:
-> Consensus is to shelve this series, and eliminate target-specific
-> conditionals instead.  But let me scribble down a few notes for
-> posterity just in case we ever take it off the shelf again.
-> 
-> Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
-> 
->> This new entry can be used in QAPI json to specify a runtime conditional
->> to expose any entry, similar to existing 'if', that applies at compile
->> time, thanks to ifdef. The element is always defined in C, but not
->> exposed through the schema and visit functions, thus being hidden for a
->> QMP consumer.
->>
->> QAPISchemaIfCond is extended to parse this information. A first version
->> was tried duplicating this, but this proved to be much more boilerplate
->> than needed to pass information through all function calls.
->>
->> 'if' and 'runtime_if' can be combined elegantly on a single item,
->> allowing to restrict an element to be present based on compile time
->> defines, and runtime checks at the same time.
-> 
-> I understand the combination is "and", i.e. both conditions need to be
-> satisfied.
-> 
 
-Yes, if results in introduction of an ifdef, and runtime_if, an if.
-
-#ifdef IF_CONDITION
-if (runtime_if_condition()) {
-...
-}
-#endif
-
-> The syntax change I'd consider elegant (it's subjective!) is *none*.
-> Instead of
-> 
->      'if': 'CONFIG_DINGS',
->      'runtime_if': 'target_bums()'
-> 
-> use
-> 
->      'if': ['all': ['CONFIG_DINGS', 'target_bums()']]
+On 5/11/2025 10:10 PM, Nicholas Piggin wrote:
+> When the pool context is pulled, the shared pool/phys signal is
+> reset, which loses the qemu irq if a phys interrupt was presented.
 >
+> Only reset the signal if a poll irq was presented.
 
-Why not, but I don't see how to identify what would be an ifdef, vs what 
-is an if, and I don't think that using something like 
-"is_capital_letters" or "has_parentheses" is a good thing.
+Reviewed-by: Michael Kowal<kowal@linux.ibm.com>
 
-> Might need semantic restrictions to simplify the implementation.
-> 
->> Note: This commit only adds parsing of runtime_if, and does not hide
->> anything yet.
->>
->> For review:
->>
->> - I don't really like "runtime_if" name.
->>    What would make sense, IMHO, is to rename existing 'if' to 'ifdef',
->>    and reuse 'if' for 'runtime_if'. Since it requires invasive changes, I
->>    would prefer to get agreement before wasting time in case you prefer
->>    any other naming convention. Let me know what you'd like.
->>
->> - As mentioned in second paragraph, I think our best implementation
->>    would be to extend existing QAPISchemaIfCond, as it's really
->>    complicated to extend all call sites if we have another new object.
-> 
-> I figure the alternative is an abstract type with two concrete subtypes,
-> one for each kind of conditional.
-> 
->> - No tests/doc added at this time, as I prefer to wait that we decide
->>    about naming and proposed approach first.
-> 
-> We'd need
-> 
-> * Positive test(s) in tests/qapi-schema/qapi-schema-test.json
-> 
-> * Negative tests similar to the ones with have for 'if'
-> 
-> * Documentation update docs/devel/qapi-code-gen.rst
+Thanks,  MAK
 >
-
-As we decided to follow the approach (1) "Drop target-specific 
-conditionals", I will focus on the other series, and drop this one.
-
-Thanks,
-Pierrick
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   hw/intc/xive2.c | 18 ++++++++++--------
+>   1 file changed, 10 insertions(+), 8 deletions(-)
+>
+> diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
+> index d899c1fb14..aeeb901b6a 100644
+> --- a/hw/intc/xive2.c
+> +++ b/hw/intc/xive2.c
+> @@ -727,20 +727,22 @@ static uint64_t xive2_tm_pull_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+>                   xive2_redistribute(xrtr, tctx, cur_ring);
+>               }
+>           }
+> +
+> +        /*
+> +         * Lower external interrupt line of requested ring and below except for
+> +         * USER, which doesn't exist.
+> +         */
+> +        if (xive_nsr_indicates_exception(cur_ring, nsr)) {
+> +            if (cur_ring == xive_nsr_exception_ring(cur_ring, nsr)) {
+> +                xive_tctx_reset_signal(tctx, cur_ring);
+> +            }
+> +        }
+>       }
+>   
+>       if (xive2_router_get_config(xrtr) & XIVE2_VP_SAVE_RESTORE && do_save) {
+>           xive2_tctx_save_ctx(xrtr, tctx, ring, nvp_blk, nvp_idx);
+>       }
+>   
+> -    /*
+> -     * Lower external interrupt line of requested ring and below except for
+> -     * USER, which doesn't exist.
+> -     */
+> -    for (cur_ring = TM_QW1_OS; cur_ring <= ring;
+> -         cur_ring += XIVE_TM_RING_SIZE) {
+> -        xive_tctx_reset_signal(tctx, cur_ring);
+> -    }
+>       return target_ringw2;
+>   }
+>   
 
