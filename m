@@ -2,76 +2,117 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB4ABAB8B0A
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 17:42:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAECFAB8B23
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 17:44:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFai5-0004ao-NZ; Thu, 15 May 2025 11:41:26 -0400
+	id 1uFagv-0002UW-GI; Thu, 15 May 2025 11:40:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uFahv-0004Fq-0p
- for qemu-devel@nongnu.org; Thu, 15 May 2025 11:41:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
+ id 1uFagr-0002SO-0p; Thu, 15 May 2025 11:40:09 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uFahn-0005ye-W6
- for qemu-devel@nongnu.org; Thu, 15 May 2025 11:41:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747323666;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ujhpAeNbvkPuTAuN/7tsjfNaVw5JmoHfwuVyChSTibM=;
- b=ewWBC/CU6r1fQzGjgPqFiADywRCRsxGh2Lx7spetfHsaC4YA230wL3u4ivDV4wcCZ2H58G
- r4YrscO0joRm2602vLYMaOj1ZdQCaHxK60TlP1CM5G+oWnpMwt+MzzsSGnbm4Uov+o5ry5
- zJdEqwHPEeexOnHZsbS2g/l2QMYmp1w=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-484-pouvp3yCOLKtFsmVIGFRug-1; Thu,
- 15 May 2025 11:41:02 -0400
-X-MC-Unique: pouvp3yCOLKtFsmVIGFRug-1
-X-Mimecast-MFC-AGG-ID: pouvp3yCOLKtFsmVIGFRug_1747323660
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9B473180045C; Thu, 15 May 2025 15:41:00 +0000 (UTC)
-Received: from gondolin.redhat.com (unknown [10.45.225.145])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 1EC3C1956066; Thu, 15 May 2025 15:40:53 +0000 (UTC)
-From: Cornelia Huck <cohuck@redhat.com>
-To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, kvmarm@lists.linux.dev, peter.maydell@linaro.org,
- richard.henderson@linaro.org, alex.bennee@linaro.org, maz@kernel.org,
- oliver.upton@linux.dev, sebott@redhat.com,
- shameerali.kolothum.thodi@huawei.com, armbru@redhat.com,
- berrange@redhat.com, abologna@redhat.com, jdenemar@redhat.com,
- agraf@csgraf.de
-Cc: shahuang@redhat.com, mark.rutland@arm.com, philmd@linaro.org,
- pbonzini@redhat.com, Cornelia Huck <cohuck@redhat.com>
-Subject: [PATCH v7 14/14] arm/kvm: use fd instead of fdarray[2]
-Date: Thu, 15 May 2025 17:39:07 +0200
-Message-ID: <20250515153907.151174-15-cohuck@redhat.com>
-In-Reply-To: <20250515153907.151174-1-cohuck@redhat.com>
-References: <20250515153907.151174-1-cohuck@redhat.com>
-MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
+ id 1uFagl-0005YU-Iz; Thu, 15 May 2025 11:40:08 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54FCg89e004991;
+ Thu, 15 May 2025 15:39:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:reply-to:subject:to; s=pp1;
+ bh=LcoNaYTpuMV9H15R7ctdVqcVYl1x0rMgO/4U2WWgfZ8=; b=drelQbX6ubfL
+ YnAnm9J1QuqpUojOzvfLnxkU3W3tM/J7ZyY6IEyIXr2k6TaA5ivnK9lLspvzngdq
+ zSj8nM7pPqg7C99CFOhAq1CoPqV4/OEg5qq4j65QTRHjdTq2aYZBmUR2S3yY7V8w
+ XZndtrTwJT1KXXXZGpKQRPPYd6G7YBRs5iwFplk0AfrPq6fqiMLQDml6aLUgq1WG
+ Fh+lpvTU+/naFXIorwF2B3lL2ipLSaS1JDt6zgBqHx20VWNwNlktIpn6DSCHRNvF
+ PY2uUJvyfCJAf5X49ePaKRTCqAB+sfbtyQt4SJ6k6xVvoa15k7tJ/oIl9yhNaGJ9
+ ZTKE41wNdw==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46navu2uxr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 15 May 2025 15:39:59 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54FFbOun004980;
+ Thu, 15 May 2025 15:39:58 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46navu2uxp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 15 May 2025 15:39:58 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54FEGBP9021861;
+ Thu, 15 May 2025 15:39:57 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46mbfpu0p3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 15 May 2025 15:39:57 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 54FFdtjf32506468
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 15 May 2025 15:39:56 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CFAFF58066;
+ Thu, 15 May 2025 15:39:55 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 784FF5805D;
+ Thu, 15 May 2025 15:39:55 +0000 (GMT)
+Received: from mambor8.rchland.ibm.com (unknown [9.10.239.198])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 15 May 2025 15:39:55 +0000 (GMT)
+Message-ID: <f5eef7962718078d28789bda421eddbb625640cc.camel@linux.ibm.com>
+Subject: Re: [PATCH 06/50] ppc/xive: Fix PHYS NSR ring matching
+From: Miles Glenn <milesg@linux.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, =?ISO-8859-1?Q?Fr=E9d=E9ric?= Barrat
+ <fbarrat@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>, Caleb
+ Schlossin <calebs@linux.vnet.ibm.com>
+Date: Thu, 15 May 2025 10:39:55 -0500
+In-Reply-To: <20250512031100.439842-7-npiggin@gmail.com>
+References: <20250512031100.439842-1-npiggin@gmail.com>
+ <20250512031100.439842-7-npiggin@gmail.com>
+Organization: IBM
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-27.el8_10) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: SxIbw6yIYzGQ0dt81Tht6vyUof45k6r0
+X-Authority-Analysis: v=2.4 cv=XK4wSRhE c=1 sm=1 tr=0 ts=68260acf cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8
+ a=cvhWS9GGLzrGVX_1QB8A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: OG1CJLfI_91pl_rLZnoDuK7T_X-VDtWf
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE1MDE1NSBTYWx0ZWRfX+u6A7wWiQQ47
+ VgTO6z1L2aT0POpjgMFlRdKwUJGC4t/KOceepI/LR/VJkOCrXXvrM3PYU9NfGJnmx2nFHuEbOx5
+ TaJTOyiZ6UJaP9ZeV3AuoEdctff8A3qK/tXbfzrN2e2gbNqNqr1MQmvNZVb2SqjlD4oS3bh+VbZ
+ yaHjiYNbR3KbRaHvxUX7tatFr1tEWSyCw71FzxcIU/HJsjU9rYqABHfv6bczb9H7vyNdHEF5xBE
+ AYQQVNdYGnDtW89CdwkgDAQuCNN8b/Ug9/mppnODLPi2tYWGH5Dc9wz9eyUxf8ZKXeLjgNsypA9
+ vEgFz6Ky3RC6iqlQB5odYE6tEBR94joKkjVW96ilt2pYz79rxJgF25PWECBODhiqesyLtSu+jAV
+ TN0mcs45oDvx0zFV3ePy6qaEcC48XeXFzjp/sZaj7DzKiPRLjEd7rIfY9tPDyeK6tcdVzTcG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-15_06,2025-05-15_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 phishscore=0
+ mlxscore=0 bulkscore=0 mlxlogscore=941 clxscore=1015 lowpriorityscore=0
+ priorityscore=1501 suspectscore=0 impostorscore=0 adultscore=0
+ malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
+ definitions=main-2505150155
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=milesg@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,47 +125,37 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: milesg@linux.ibm.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We have fd, so might as well neaten things up.
+Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
 
-Suggested-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Signed-off-by: Cornelia Huck <cohuck@redhat.com>
----
- target/arm/kvm.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 6c665334658b..a954a08a0fc3 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -348,11 +348,11 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
-         err |= get_host_cpu_reg(fd, ahcf, ID_ISAR6_EL1_IDX);
-         err |= get_host_cpu_reg(fd, ahcf, ID_MMFR4_EL1_IDX);
- 
--        err |= read_sys_reg32(fdarray[2], &ahcf->isar.mvfr0,
-+        err |= read_sys_reg32(fd, &ahcf->isar.mvfr0,
-                               ARM64_SYS_REG(3, 0, 0, 3, 0));
--        err |= read_sys_reg32(fdarray[2], &ahcf->isar.mvfr1,
-+        err |= read_sys_reg32(fd, &ahcf->isar.mvfr1,
-                               ARM64_SYS_REG(3, 0, 0, 3, 1));
--        err |= read_sys_reg32(fdarray[2], &ahcf->isar.mvfr2,
-+        err |= read_sys_reg32(fd, &ahcf->isar.mvfr2,
-                               ARM64_SYS_REG(3, 0, 0, 3, 2));
-         err |= get_host_cpu_reg(fd, ahcf, ID_PFR2_EL1_IDX);
-         err |= get_host_cpu_reg(fd, ahcf, ID_DFR1_EL1_IDX);
-@@ -390,7 +390,7 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
- 
-         if (pmu_supported) {
-             /* PMCR_EL0 is only accessible if the vCPU has feature PMU_V3 */
--            err |= read_sys_reg64(fdarray[2], &ahcf->isar.reset_pmcr_el0,
-+            err |= read_sys_reg64(fd, &ahcf->isar.reset_pmcr_el0,
-                                   ARM64_SYS_REG(3, 3, 9, 12, 0));
-         }
- 
--- 
-2.49.0
+On Mon, 2025-05-12 at 13:10 +1000, Nicholas Piggin wrote:
+> Test that the NSR exception bit field is equal to the pool ring value,
+> rather than any common bits set, which is more correct (although there
+> is no practical bug because the LSI NSR type is not implemented and
+> POOL/PHYS NSR are encoded with exclusive bits).
+> 
+> Fixes: 4c3ccac636 ("pnv/xive: Add special handling for pool targets")
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  hw/intc/xive.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/intc/xive.c b/hw/intc/xive.c
+> index 80b07a0afe..cebe409a1a 100644
+> --- a/hw/intc/xive.c
+> +++ b/hw/intc/xive.c
+> @@ -54,7 +54,8 @@ static uint64_t xive_tctx_accept(XiveTCTX *tctx, uint8_t ring)
+>          uint8_t *alt_regs;
+>  
+>          /* POOL interrupt uses IPB in QW2, POOL ring */
+> -        if ((ring == TM_QW3_HV_PHYS) && (nsr & (TM_QW3_NSR_HE_POOL << 6))) {
+> +        if ((ring == TM_QW3_HV_PHYS) &&
+> +            ((nsr & TM_QW3_NSR_HE) == (TM_QW3_NSR_HE_POOL << 6))) {
+>              alt_ring = TM_QW2_HV_POOL;
+>          } else {
+>              alt_ring = ring;
 
 
