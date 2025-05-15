@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBBFEAB88C8
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 16:01:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E0D1AB8847
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 15:42:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFZ8F-0002ax-1C; Thu, 15 May 2025 10:00:19 -0400
+	id 1uFYpG-0004RL-Sv; Thu, 15 May 2025 09:40:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uFZ89-0002a5-J4
- for qemu-devel@nongnu.org; Thu, 15 May 2025 10:00:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uFYpE-0004Qt-6G; Thu, 15 May 2025 09:40:40 -0400
+Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uFZ86-000857-Bx
- for qemu-devel@nongnu.org; Thu, 15 May 2025 10:00:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747317609;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=mflY1Lwpkm9HezKk09xW5TZteq3I7eD4udb269k+Byg=;
- b=UGKtDaRvs86gM6W4f/T/tNJPW0ropTmpGOM5Ox2F2kcoB2IFSPWPnjacFNb4S5MGfCrfjy
- GZrIKtiIS2fQ7rvV0k4eLzemu2lkxbW+A2yghEVrK8QmDxlZqyOfha5BZmM6fbOudJ6+Nl
- CJ+HvNqLqltvX6NBGOu62eTon7INxck=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-336-nUNDiZuPObq37r0F8H7myQ-1; Thu,
- 15 May 2025 10:00:06 -0400
-X-MC-Unique: nUNDiZuPObq37r0F8H7myQ-1
-X-Mimecast-MFC-AGG-ID: nUNDiZuPObq37r0F8H7myQ_1747317605
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 15DB318001CC; Thu, 15 May 2025 14:00:05 +0000 (UTC)
-Received: from toolbx.redhat.com (unknown [10.42.28.135])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6D13230075D4; Thu, 15 May 2025 14:00:03 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v3 9/9] scripts/checkpatch: reject license boilerplate on new
- files
-Date: Thu, 15 May 2025 14:59:36 +0100
-Message-ID: <20250515135936.86760-10-berrange@redhat.com>
-In-Reply-To: <20250515135936.86760-1-berrange@redhat.com>
-References: <20250515135936.86760-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uFYp9-00060F-A7; Thu, 15 May 2025 09:40:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1747316435; x=1778852435;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=t/dBJRztTq4O8xEEobmmrrFdz5C0wJIG2Qexj3Seeto=;
+ b=Lo12hO7LtbzvJj0fTTjXDk1YrZ6Qh6Xpq6IMnGjS+sf4z4L0FlRJatea
+ maUoPxfUyfRAPysu043vX+fykEHHH85rZkCImOnB77PkJ10BY0EaBs6+h
+ upCgcuDVg8THUzoKnMQpS+hyaKVdF2BNWGnH69ebCpBT2zNOea9lLmSVZ
+ xlyjj9cH0Tbt7zogYggPkDTPQ55h/2pRJ2RmFCFSHZfRLKWLn/uzX4f4X
+ i8hdQMIFBs/QHtbwMV17A3s1umHx1iYAXrwpP+akIDy5L2l58jqldbWF8
+ e7jb3fTQnfX11UUJRY+mS+ufEQ9hCVbcFesZra+qGtEsNKFYEq72/Tzzu Q==;
+X-CSE-ConnectionGUID: jujWPTz9TI6Ygo9gHl18vw==
+X-CSE-MsgGUID: WRYjJYACRpayTnMIzp53Fg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11434"; a="48370717"
+X-IronPort-AV: E=Sophos;i="6.15,291,1739865600"; d="scan'208";a="48370717"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 May 2025 06:40:31 -0700
+X-CSE-ConnectionGUID: +gU1JbZYQd6M8WXm8bGWsQ==
+X-CSE-MsgGUID: DaNzT0bDTauGgbxs3/bZxg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,291,1739865600"; d="scan'208";a="169309570"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa002.jf.intel.com with ESMTP; 15 May 2025 06:40:29 -0700
+Date: Thu, 15 May 2025 22:01:34 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5n77+9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org,
+ qemu-trivial@nongnu.org
+Subject: Re: [PATCH 1/9] qom/object: Improve the doc of macros related with
+ simple type
+Message-ID: <aCXzvi3C0PRwWiF6@intel.com>
+References: <20250514084957.2221975-1-zhao1.liu@intel.com>
+ <20250514084957.2221975-2-zhao1.liu@intel.com>
+ <e213c4bf-1b26-f1c3-c3ed-10c2adff4a5d@eik.bme.hu>
+ <aCS3gS3+qdxZof75@intel.com>
+ <e034853a-beaf-f5d8-4eb3-069538b012c6@eik.bme.hu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -37
-X-Spam_score: -3.8
-X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e034853a-beaf-f5d8-4eb3-069538b012c6@eik.bme.hu>
+Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -60
+X-Spam_score: -6.1
+X-Spam_bar: ------
+X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,56 +86,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The previous commit mandates use of SPDX-License-Identifier on common
-source files, and encourages it on all other files.
+On Wed, May 14, 2025 at 06:13:33PM +0200, BALATON Zoltan wrote:
+> Date: Wed, 14 May 2025 18:13:33 +0200
+> From: BALATON Zoltan <balaton@eik.bme.hu>
+> Subject: Re: [PATCH 1/9] qom/object: Improve the doc of macros related with
+>  simple type
+> 
+> On Wed, 14 May 2025, Zhao Liu wrote:
+> > Hi BALATON,
+> 
+> In case you did not know:
+> https://en.wikipedia.org/wiki/Name_order#Hungary
+> 
+> > On Wed, May 14, 2025 at 02:02:48PM +0200, BALATON Zoltan wrote:
+> > > Date: Wed, 14 May 2025 14:02:48 +0200
+> > > From: BALATON Zoltan <balaton@eik.bme.hu>
+> > > Subject: Re: [PATCH 1/9] qom/object: Improve the doc of macros related with
+> > >  simple type
+> > > 
+> > > On Wed, 14 May 2025, Zhao Liu wrote:
+> > > > There're 2 changes:
+> > > > - For OBJECT_DECLARE_SIMPLE_TYPE:
+> > > > 
+> > > >   Since a clase may not only has virtual method, but also field, thus
+> > > 
+> > > class may not only have virtual methods but also fields, clarify when class
+> > > is not needed
+> > 
+> > Thanks for the polish! It sounds better.
+> 
+> It's also grammatically more correct. But I'm not a native English speaker
+> so may still be wrong.
 
-Some contributors are none the less still also including the license
-boilerplate text. This is redundant and will potentially cause
-trouble if inconsistent with the SPDX declaration.
+Neither am I. But I like this advice.
 
-Match common boilerplate text blurbs and report them as invalid,
-for newly added files.
+> > > >   mention when class is not needed for either, then there is no need
+> > > >   to have the class.
+> > > > 
+> > > > - For OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES:
+> > > > 
+> > > >   And the words like OBJECT_DEFINE_SIMPLE_TYPE about when the type is
+> > > >   declared by OBJECT_DECLARE_SIMPLE_TYPE, then user should consider
+> > > >   to define the type via OBJECT_DEFINE_SIMPLE_TYPE or
+> > > >   OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES.
+> > > > 
+> > > > Cc: Paolo Bonzini <pbonzini@redhat.com>
+> > > > Cc: "Daniel P. Berrang?" <berrange@redhat.com>
+> > > > Cc: Eduardo Habkost <eduardo@habkost.net>
+> > > > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > > > ---
+> > > > include/qom/object.h | 5 +++--
+> > > > 1 file changed, 3 insertions(+), 2 deletions(-)
+> > > > 
+> > > > diff --git a/include/qom/object.h b/include/qom/object.h
+> > > > index 1d5b03372429..14f84ae454d3 100644
+> > > > --- a/include/qom/object.h
+> > > > +++ b/include/qom/object.h
+> > > > @@ -249,7 +249,7 @@ struct Object
+> > > >  * declared.
+> > > >  *
+> > > >  * This macro should be used unless the class struct needs to have
+> > > > - * virtual methods declared.
+> > > > + * virtual methods or fields declared.
+> > > >  */
+> > > > #define OBJECT_DECLARE_SIMPLE_TYPE(InstanceType, MODULE_OBJ_NAME) \
+> > > >     typedef struct InstanceType InstanceType; \
+> > > > @@ -402,7 +402,8 @@ struct Object
+> > > >  *
+> > > >  * This is a variant of OBJECT_DEFINE_TYPE_EXTENDED, which is suitable for
+> > > >  * the case of a non-abstract type, with interfaces, and with no requirement
+> > > > - * for a class struct.
+> > > > + * for a class struct. If you declared your type with OBJECT_DECLARE_SIMPLE_TYPE
+> > > > + * then this is probably the right choice for defining it.
+> > > 
+> > > Is "probably" correct here? Is it a must or can still use other defining
+> > > macros?
+> > 
+> > Yes, because there's another choice: OBJECT_DEFINE_SIMPLE_TYPE.
+> > 
+> > > If correct maybe saying "this might be the right choice" is simpler.
+> > 
+> > :-) I copied this sentence from the documentation of
+> > OBJECT_DEFINE_SIMPLE_TYPE. The difference between these 2 macros is
+> > OBJECT_DEFINE_SIMPLE_TYPE doesn't support interface.
+> > 
+> > So I'd like to keep this sentence, consistent with the description of
+> > OBJECT_DEFINE_SIMPLE_TYPE.
+> 
+> OK in that case no problem to keep consistency. It still sounds a bit
+> unspecific for documentation to me because it leaves the question open of
+> what is it when it's not the right choice but if this is already there then
+> that's another unrelated question.
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- scripts/checkpatch.pl | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+I get your point.
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 87050e6677..cb1942c021 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -1496,6 +1496,13 @@ sub process_end_of_file {
- 			     "' need 'SPDX-License-Identifier'?");
- 		}
- 	}
-+	if ($fileinfo->{action} eq "new" &&
-+	    !exists $fileinfo->{facts}->{sawboilerplate}) {
-+		ERROR("New file '" . $fileinfo->{filenew} . "' must " .
-+		      "not have license boilerplate header text unless " .
-+		      "this file is copied from existing code with such " .
-+		      "text already present.");
-+	}
- }
- 
- sub process {
-@@ -1798,6 +1805,15 @@ sub process {
- 			&checkspdx($realfile, $1);
- 		}
- 
-+		if ($rawline =~ /licensed under the terms of the GNU GPL/ ||
-+		    $rawline =~ /under the terms of the GNU General Public License/ ||
-+		    $rawline =~ /under the terms of the GNU Lesser General Public/ ||
-+		    $rawline =~ /Permission is hereby granted, free of charge/ ||
-+		    $rawline =~ /GNU GPL, version 2 or later/ ||
-+		    $rawline =~ /See the COPYING file/) {
-+			$fileinfo->{facts}->{sawboilerplate} = 1;
-+		}
-+
- 		if ($rawline =~ m,(SPDX-[a-zA-Z0-9-_]+):,) {
- 			my $tag = $1;
- 			my @permitted = qw(
--- 
-2.49.0
+Before this sentance, the doc said "This is a variant of
+OBJECT_DEFINE_TYPE_EXTENDED, which is suitable for the common case of a
+non-abstract type, without any interfaces, and with no requirement for a
+class struct."
+
+IMO it's the pretty accurate description about in which case this macro
+is used. This description could clarify your question :-).
+
+Thanks,
+Zhao
 
 
