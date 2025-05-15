@@ -2,70 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B790AB801A
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 10:17:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68F7CAB803B
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 10:21:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFTlb-0007bH-Nt; Thu, 15 May 2025 04:16:36 -0400
+	id 1uFTns-0006Yv-PS; Thu, 15 May 2025 04:18:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uFTl8-0006k3-OY
- for qemu-devel@nongnu.org; Thu, 15 May 2025 04:16:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1uFTmx-0004UN-90; Thu, 15 May 2025 04:17:59 -0400
+Received: from mgamail.intel.com ([198.175.65.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uFTl5-00022q-Oe
- for qemu-devel@nongnu.org; Thu, 15 May 2025 04:16:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747296961;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=QxJJqD6Nk2boVin/GG2QwQ8ZJ4QNjDOOMbg+NaNF+9Q=;
- b=LeiTzMEvnpfF0WzQlrzShoZMhGqjmYrQQUrxUS946hoh/Rdr0TKiHpHAy0h7t7MqmWeF95
- spQlXnVASUwC4Rw2NSlJ3feFBJfggDz49DV9KRRTk975NHCK1dbN/e+/boVTajODGjeOad
- tmA0CJ9uccHXcwD9rhmoh4slMkbsB5Y=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-468-dWhR9TMPMSCLtN4qQiZMBw-1; Thu,
- 15 May 2025 04:15:59 -0400
-X-MC-Unique: dWhR9TMPMSCLtN4qQiZMBw-1
-X-Mimecast-MFC-AGG-ID: dWhR9TMPMSCLtN4qQiZMBw_1747296958
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B1F5E180048E; Thu, 15 May 2025 08:15:58 +0000 (UTC)
-Received: from redhat.com (unknown [10.45.224.242])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 541CF30075D4; Thu, 15 May 2025 08:15:55 +0000 (UTC)
-Date: Thu, 15 May 2025 10:15:53 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-block@nongnu.org, hreitz@redhat.com, pbonzini@redhat.com,
- bmarzins@redhat.com, qemu-devel@nongnu.org
-Subject: Re: [PATCH] file-posix: Probe paths and retry SG_IO on potential
- path errors
-Message-ID: <aCWiuYUWiwKJz4_j@redhat.com>
-References: <20250513113730.37404-1-kwolf@redhat.com>
- <20250513135148.GB227327@fedora>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1uFTmt-0002J6-AU; Thu, 15 May 2025 04:17:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1747297076; x=1778833076;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=J0d7qIZ0wAM9NtgBW44TtLkYeQrux0sEamdBuRSRMrc=;
+ b=c/VW0JvykPdwzRGwubb/0nxsvznsD33wzeDXiAM8x+ElVT/VquuRrj3M
+ BDT6m4pk8SOuK7wvDP+pkGHvG2URz/dhiOuUE/HcIx+ZjiRQMm6O+zuKH
+ GKX7iVTKnvXvRD18QzQqrp/l+WZIxHp0phlB79lO+tMKnLLmgQLG37kKO
+ fovOgg2axRi/aphjotvZLULBSSJrGgYHmXf76OA14Txy9xMn5sI2ZxE0t
+ kL2G9IkoRZaXCUqzujOw5df5mygH6NIT1tQ4BwOr4TDUp3TUJZpfkAPw9
+ z+7ZOFdSWAPYkD5NET5omo5teRq1XJn/VznCm+JsZZo1shBWahh2mNSMI A==;
+X-CSE-ConnectionGUID: fVcagOJGTyKnc0nqajqjwg==
+X-CSE-MsgGUID: joYNj3EFQNy8mpRwqhKQVw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="49089798"
+X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; d="scan'208";a="49089798"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 May 2025 01:17:50 -0700
+X-CSE-ConnectionGUID: hqga7r+1R4WuaPQz4z97Ew==
+X-CSE-MsgGUID: w3HeNXTfQGigkpkjZsqihg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; d="scan'208";a="169367933"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
+ ([10.124.247.1])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 May 2025 01:17:42 -0700
+Message-ID: <0805f8a8-1680-4962-80e3-6b43a6e344b6@intel.com>
+Date: Thu, 15 May 2025 16:17:38 +0800
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="r4OBl1l6r6mSxIWy"
-Content-Disposition: inline
-In-Reply-To: <20250513135148.GB227327@fedora>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -37
-X-Spam_score: -3.8
-X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 06/27] hw/nvram/fw_cfg: Rename fw_cfg_init_mem_wide()
+ -> fw_cfg_init_mem_dma()
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>, kvm@vger.kernel.org,
+ Sergio Lopez <slp@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Laurent Vivier
+ <lvivier@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Yi Liu <yi.l.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-riscv@nongnu.org,
+ Weiwei Li <liwei1518@gmail.com>, Amit Shah <amit@kernel.org>,
+ Zhao Liu <zhao1.liu@intel.com>, Yanan Wang <wangyanan55@huawei.com>,
+ Helge Deller <deller@gmx.de>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Ani Sinha <anisinha@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ =?UTF-8?Q?Cl=C3=A9ment_Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
+ qemu-arm@nongnu.org, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
+ <marcandre.lureau@redhat.com>, Huacai Chen <chenhuacai@kernel.org>,
+ Jason Wang <jasowang@redhat.com>
+References: <20250508133550.81391-1-philmd@linaro.org>
+ <20250508133550.81391-7-philmd@linaro.org>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20250508133550.81391-7-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.19; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=1, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -83,83 +103,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 5/8/2025 9:35 PM, Philippe Mathieu-Daudé wrote:
+> "wide" in fw_cfg_init_mem_wide() means "DMA support".
+> Rename for clarity.
 
---r4OBl1l6r6mSxIWy
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+PS: at the time when fw_cfg_init_mem_wide() was first introcuded,
+'wide' was exactly for data_width. see commit 6c87e3d5967a.
 
-Am 13.05.2025 um 15:51 hat Stefan Hajnoczi geschrieben:
-> On Tue, May 13, 2025 at 01:37:30PM +0200, Kevin Wolf wrote:
-> > When scsi-block is used on a host multipath device, it runs into the
-> > problem that the kernel dm-mpath doesn't know anything about SCSI or
-> > SG_IO and therefore can't decide if a SG_IO request returned an error
-> > and needs to be retried on a different path. Instead of getting working
-> > failover, an error is returned to scsi-block and handled according to
-> > the configured error policy. Obviously, this is not what users want,
-> > they want working failover.
-> >=20
-> > QEMU can parse the SG_IO result and determine whether this could have
-> > been a path error, but just retrying the same request could just send it
-> > to the same failing path again and result in the same error.
-> >=20
-> > With a kernel that supports the DM_MPATH_PROBE_PATHS ioctl on dm-mpath
-> > block devices (queued in the device mapper tree for Linux 6.16), we can
-> > tell the kernel to probe all paths and tell us if any usable paths
-> > remained. If so, we can now retry the SG_IO ioctl and expect it to be
-> > sent to a working path.
-> >=20
-> > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> > ---
-> >  block/file-posix.c | 82 +++++++++++++++++++++++++++++++++++++++++++++-
-> >  1 file changed, 81 insertions(+), 1 deletion(-)
->=20
-> Maybe the probability of retry success would be higher with a delay so
-> that intermittent issues have time to resolve themselves. Either way,
-> the patch looks good.
+> Suggested-by: Zhao Liu <zhao1.liu@intel.com>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-I don't think adding a delay here would be helpful. The point of
-multipath isn't that you wait until a bad path comes back, but that you
-just switch to a different path until it is restored.
+with the usage in hw/loongarch/fw_cfg.c fixed,
 
-Ideally, calling DM_MPATH_PROBE_PATHS would just remove all the bad
-paths instantaneously and we would either be able to send the request
-using one of the remaining good paths, or know that we have to fail. In
-practice, the ioctl will probably have to wait for a timeout, so you get
-a delay anyway.
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-What could potentially be useful is a new error policy [rw]error=3Dretry
-with a configurable delay. This wouldn't be in file-posix, but in the
-devices after file-posix came to the conclusion that there is currently
-no usable path. On the other hand, retrying indefinitely is probably not
-what you want either, so that could quickly become rather complex.
-
-> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-
-Thanks.
-
-Kevin
-
---r4OBl1l6r6mSxIWy
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEE3D3rFZqa+V09dFb+fwmycsiPL9YFAmglorkACgkQfwmycsiP
-L9Y/dg/+MUWCXGjyeNPMiiXIIYlRVMglzuZMdUMsY1GKbLfjgcY2u9mGyKt8XViV
-hMQONWqiMuzsaOGS6+mOewSJ5KJrIGsmZE/rU9sNLm2gygf1Mw1vb9NOdDOxdEso
-C1H1qzFx2MGQSatGmR30PNjiwOWKdSYphxFl4AqsbIDzprhpsLl5doF9eeCXft5b
-WBkGFYkwZLgs6z4KYVsGXo8W7aPof9MwChM3cRJRt9m0uU4vDeiHZWQQfxxdyNFm
-A0dca+A70okSBfxxYPUJl/hZSiS85EyQN3UcbteFtSOHMl3LnKcTB2eCY4PDOD9G
-sRE647GjDnV2wPEjXh3/I2Ti4yi1KxV97WIdnVSHN0a1C177RIS+lG+Hcbn4DyBn
-Uq5b5L/cFVXlGDeY+BKbt7eDGeCcVNBSCKrXg5MPWNzWJxyddXO0RS2JjMMFGKr6
-XLp0F6PLCCjtgFRHxubi3rQc8oZekpg04SMwnVc2Iuc1/Z7QJln1TZMnqDJjSz/H
-ELzQlKNHIi4pPjmy1krvAg+yq8IvIKCb5Vpyomz312ZVwadTzS6w5mLO9WqkB0ro
-Ykr6nHxINIiqmhMOGaWBhmxS6QMSuY+FlbtQ+lBmONlg0T4H7f0Z0MbBjtDbl3da
-LbFzjBmelqGRyEMzM5DbeK0N7akwJN5wMFgcwnVxbLvgkKqzwQ8=
-=qkj6
------END PGP SIGNATURE-----
-
---r4OBl1l6r6mSxIWy--
+> ---
+>   include/hw/nvram/fw_cfg.h | 6 +++---
+>   hw/arm/virt.c             | 2 +-
+>   hw/nvram/fw_cfg.c         | 6 +++---
+>   hw/riscv/virt.c           | 4 ++--
+>   4 files changed, 9 insertions(+), 9 deletions(-)
+> 
+> diff --git a/include/hw/nvram/fw_cfg.h b/include/hw/nvram/fw_cfg.h
+> index d5161a79436..c4c49886754 100644
+> --- a/include/hw/nvram/fw_cfg.h
+> +++ b/include/hw/nvram/fw_cfg.h
+> @@ -309,9 +309,9 @@ FWCfgState *fw_cfg_init_io_dma(uint32_t iobase, uint32_t dma_iobase,
+>                                   AddressSpace *dma_as);
+>   FWCfgState *fw_cfg_init_mem_nodma(hwaddr ctl_addr, hwaddr data_addr,
+>                                     unsigned data_width);
+> -FWCfgState *fw_cfg_init_mem_wide(hwaddr ctl_addr,
+> -                                 hwaddr data_addr, uint32_t data_width,
+> -                                 hwaddr dma_addr, AddressSpace *dma_as);
+> +FWCfgState *fw_cfg_init_mem_dma(hwaddr ctl_addr,
+> +                                hwaddr data_addr, uint32_t data_width,
+> +                                hwaddr dma_addr, AddressSpace *dma_as);
+>   
+>   FWCfgState *fw_cfg_find(void);
+>   bool fw_cfg_dma_enabled(void *opaque);
+> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> index 9a6cd085a37..7583f0a85d9 100644
+> --- a/hw/arm/virt.c
+> +++ b/hw/arm/virt.c
+> @@ -1361,7 +1361,7 @@ static FWCfgState *create_fw_cfg(const VirtMachineState *vms, AddressSpace *as)
+>       FWCfgState *fw_cfg;
+>       char *nodename;
+>   
+> -    fw_cfg = fw_cfg_init_mem_wide(base + 8, base, 8, base + 16, as);
+> +    fw_cfg = fw_cfg_init_mem_dma(base + 8, base, 8, base + 16, as);
+>       fw_cfg_add_i16(fw_cfg, FW_CFG_NB_CPUS, (uint16_t)ms->smp.cpus);
+>   
+>       nodename = g_strdup_printf("/fw-cfg@%" PRIx64, base);
+> diff --git a/hw/nvram/fw_cfg.c b/hw/nvram/fw_cfg.c
+> index 4067324fb09..51b028b5d0a 100644
+> --- a/hw/nvram/fw_cfg.c
+> +++ b/hw/nvram/fw_cfg.c
+> @@ -1087,9 +1087,9 @@ static FWCfgState *fw_cfg_init_mem_internal(hwaddr ctl_addr,
+>       return s;
+>   }
+>   
+> -FWCfgState *fw_cfg_init_mem_wide(hwaddr ctl_addr,
+> -                                 hwaddr data_addr, uint32_t data_width,
+> -                                 hwaddr dma_addr, AddressSpace *dma_as)
+> +FWCfgState *fw_cfg_init_mem_dma(hwaddr ctl_addr,
+> +                                hwaddr data_addr, uint32_t data_width,
+> +                                hwaddr dma_addr, AddressSpace *dma_as)
+>   {
+>       assert(dma_addr && dma_as);
+>       return fw_cfg_init_mem_internal(ctl_addr, data_addr, data_addr,
+> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+> index be1bf0f6468..3ddea18c93e 100644
+> --- a/hw/riscv/virt.c
+> +++ b/hw/riscv/virt.c
+> @@ -1266,8 +1266,8 @@ static FWCfgState *create_fw_cfg(const MachineState *ms)
+>       hwaddr base = virt_memmap[VIRT_FW_CFG].base;
+>       FWCfgState *fw_cfg;
+>   
+> -    fw_cfg = fw_cfg_init_mem_wide(base + 8, base, 8, base + 16,
+> -                                  &address_space_memory);
+> +    fw_cfg = fw_cfg_init_mem_dma(base + 8, base, 8, base + 16,
+> +                                 &address_space_memory);
+>       fw_cfg_add_i16(fw_cfg, FW_CFG_NB_CPUS, (uint16_t)ms->smp.cpus);
+>   
+>       return fw_cfg;
 
 
