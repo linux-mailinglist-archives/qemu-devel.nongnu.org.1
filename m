@@ -2,73 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 670D2AB7BA2
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 04:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D59AB7BC0
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 04:50:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFOMj-0007gd-7T; Wed, 14 May 2025 22:30:33 -0400
+	id 1uFOf3-0006Y0-7P; Wed, 14 May 2025 22:49:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uFOM5-0007JO-3d
- for qemu-devel@nongnu.org; Wed, 14 May 2025 22:29:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
+ id 1uFOf0-0006Rg-4b
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 22:49:26 -0400
+Received: from mgamail.intel.com ([192.198.163.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uFOM3-000496-51
- for qemu-devel@nongnu.org; Wed, 14 May 2025 22:29:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747276190;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HY2BKYaenOdkHXGj0SC+xO/i13qFKsY5KdzAoAHdnGc=;
- b=hi5YYlv5e23/TwrsUFiRiuF33flDCxZ3iyH2WCXrDC2fWsXLaLqIjPNZjaTl2v9a55ZD5h
- zsIaZrbdE2gxeuhIyfD0cT2zJkviIC8naCYV49Im1GhlwQ9Espzl98lGp2klYip/s2o0nw
- oJlEnHmYT/mFqRTpNaqhdfzihkTBS9s=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-125-jv_9tFhfNqO_9obOcca1Hg-1; Wed,
- 14 May 2025 22:29:46 -0400
-X-MC-Unique: jv_9tFhfNqO_9obOcca1Hg-1
-X-Mimecast-MFC-AGG-ID: jv_9tFhfNqO_9obOcca1Hg_1747276185
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 31757180045C; Thu, 15 May 2025 02:29:45 +0000 (UTC)
-Received: from green.redhat.com (unknown [10.2.16.66])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 698971955F24; Thu, 15 May 2025 02:29:43 +0000 (UTC)
-From: Eric Blake <eblake@redhat.com>
+ (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
+ id 1uFOex-0005hp-F9
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 22:49:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1747277363; x=1778813363;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=nQL7AbhEDORsemmTADCDOWS7p035Qry/aV1L5jbzG90=;
+ b=KMHRSGmk9lSTCkA8jiYJQCh6r9fl1TBn4AXJBruy7f+NGSKZOEYaFpO8
+ KKFlAtHkDQ4e5Xl8Tv6Bz6NElCaTr7/rZQZO1euRo+VlE0rMeO5s5k9PJ
+ LeJpHq/cCma383iLsFwSAquZz1h8cYM5VaACnWBIvo8IDtjxXVQhV2G7s
+ 7I2BBP9NNNbYpuNWlAt4sQRzopbDagAb9VxTZKeU/ZQvp83I7kDj+qk2e
+ +GNxU6xoz0VfFTCQHUjpzJkpzHu7ZlpGAveRCka6pHugqoiZglXSFV7aC
+ IqYYPR36hA3mUwRifrlJ37Ii+03tgODl8o3GV1qsTlWNbRgxCwFVD9bWd A==;
+X-CSE-ConnectionGUID: LZJVWwKlQSeRTJU0XX46eA==
+X-CSE-MsgGUID: giWR+3rjQPKn5p8DgAdGoQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="36819288"
+X-IronPort-AV: E=Sophos;i="6.15,289,1739865600"; d="scan'208";a="36819288"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 May 2025 19:49:19 -0700
+X-CSE-ConnectionGUID: bMubVbUBTfy9uNPWh0+sFA==
+X-CSE-MsgGUID: RdB/ZhijQGSFwzCBZfDi7w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,289,1739865600"; d="scan'208";a="142246642"
+Received: from vkasired-desk2.fm.intel.com ([10.105.128.132])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 May 2025 19:49:19 -0700
+From: Vivek Kasireddy <vivek.kasireddy@intel.com>
 To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, John Snow <jsnow@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org (open list:Block Jobs)
-Subject: [PULL 14/14] mirror: Reduce I/O when destination is
- detect-zeroes:unmap
-Date: Wed, 14 May 2025 21:28:57 -0500
-Message-ID: <20250515022904.575509-30-eblake@redhat.com>
-In-Reply-To: <20250515022904.575509-16-eblake@redhat.com>
-References: <20250515022904.575509-16-eblake@redhat.com>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Frediano Ziglio <freddy77@gmail.com>,
+ Michael Scherle <michael.scherle@rz.uni-freiburg.de>,
+ Dongwon Kim <dongwon.kim@intel.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v4 0/7] ui/spice: Enable gl=on option for non-local or remote
+ clients
+Date: Wed, 14 May 2025 19:45:38 -0700
+Message-ID: <20250515024734.758335-1-vivek.kasireddy@intel.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-type: text/plain
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -37
-X-Spam_score: -3.8
-X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
+Received-SPF: pass client-ip=192.198.163.16;
+ envelope-from=vivek.kasireddy@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -60
+X-Spam_score: -6.1
+X-Spam_bar: ------
+X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,44 +87,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If we are going to punch holes in the mirror destination even for the
-portions where the source image is unallocated, it is nicer to treat
-the entire image as dirty and punch as we go, rather than pre-zeroing
-the entire image just to re-do I/O to the allocated portions of the
-image.
+To address the limitation that this option is incompatible with
+remote clients, this patch series adds an option to select a
+preferred codec and also enable gl=on option for clients that
+are connected via the network. In other words, with this option
+enabled (and the below linked Spice series merged), it would be
+possible to have Qemu share a dmabuf fd with Spice, which would
+then forward it to a hardware or software based encoder and
+eventually send the data associated with the fd to a client that
+could be located on a different machine.
 
-Signed-off-by: Eric Blake <eblake@redhat.com>
-Message-ID: <20250513220142.535200-2-eblake@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Essentially, this patch series provides a hardware accelerated,
+opensource VDI option for users using Qemu and Spice by leveraging
+the iGPU/dGPU on the host machine to encode the Guest FB via the
+Gstreamer framework.
+
+v3 -> v4 (suggestions from Marc-André):
+- Add a new parameter to make max_refresh_rate configurable
+- Have surface_gl_create_texture_from_fd() return bool after checking
+  for errors
+- Remove the check for PIXMAN_r5g6b5() in spice_gl_replace_fd_texture()
+- Report errors in spice_gl_replace_fd_texture() when someting fails
+- Use glGetError() correctly by adding an additional (dummy) call
+  before checking for actual errors (Dmitry)
+- Add a new patch to check fd values in egl_dmabuf_export_texture()
+- Rebase on Qemu master
+
+v2 -> v3:
+- Check for errors after invoking glImportMemoryFdEXT() using
+  glGetError() and report the error to user (Dmitry)
+
+v1 -> v2:
+- Replace the option name preferred-codec with video-codecs (Marc-André)
+- Add a warning when an fd cannot be created from texture (Marc-André)
+- Add a new patch to blit the scanout texture into a linear one to
+  make it work with virgl
+- Rebased and tested against the latest Spice master
+
+Tested with the following Qemu parameters:
+-device virtio-vga,max_outputs=1,xres=1920,yres=1080,blob=true
+-spice port=3001,gl=on,disable-ticketing=on,video-codecs=gstreamer:h264
+
+and remote-viewer --spice-debug spice://x.x.x.x:3001 on the client side.
+
+Associated Spice server MR (merged):
+https://gitlab.freedesktop.org/spice/spice/-/merge_requests/229
+
 ---
- block/mirror.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
+Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc: Frediano Ziglio <freddy77@gmail.com>
+Cc: Michael Scherle <michael.scherle@rz.uni-freiburg.de>
+Cc: Dongwon Kim <dongwon.kim@intel.com>
+Cc: Alex Bennée <alex.bennee@linaro.org>
 
-diff --git a/block/mirror.c b/block/mirror.c
-index 724318f0371..c2c5099c951 100644
---- a/block/mirror.c
-+++ b/block/mirror.c
-@@ -920,11 +920,16 @@ static int coroutine_fn GRAPH_UNLOCKED mirror_dirty_init(MirrorBlockJob *s)
-          * zeroing happened externally (ret > 0) or if we have a fast
-          * way to pre-zero the image (the dirty bitmap will be
-          * populated later by the non-zero portions, the same as for
--         * TOP mode).  If pre-zeroing is not fast, then our only
--         * recourse is to mark the entire image dirty.  The act of
--         * pre-zeroing will populate the zero bitmap.
-+         * TOP mode).  If pre-zeroing is not fast, or we need to visit
-+         * the entire image in order to punch holes even in the
-+         * non-allocated regions of the source, then just mark the
-+         * entire image dirty and leave the zero bitmap clear at this
-+         * point in time.  Otherwise, it can be faster to pre-zero the
-+         * image now, even if we re-write the allocated portions of
-+         * the disk later, and the pre-zero pass will populate the
-+         * zero bitmap.
-          */
--        if (!bdrv_can_write_zeroes_with_unmap(target_bs)) {
-+        if (!bdrv_can_write_zeroes_with_unmap(target_bs) || punch_holes) {
-             bdrv_set_dirty_bitmap(s->dirty_bitmap, 0, s->bdev_length);
-             return 0;
-         }
+Vivek Kasireddy (7):
+  ui/egl-helpers: Error check the fds in egl_dmabuf_export_texture()
+  ui/spice: Add an option for users to provide a preferred codec
+  ui/spice: Enable gl=on option for non-local or remote clients
+  ui/spice: Add an option to submit gl_draw requests at fixed rate
+  ui/console-gl: Add a helper to create a texture with linear memory
+    layout
+  ui/spice: Create a new texture with linear layout when gl=on is
+    enabled
+  ui/spice: Blit the scanout texture if its memory layout is not linear
+
+ include/ui/console.h       |   2 +
+ include/ui/spice-display.h |   5 +
+ qemu-options.hx            |  10 ++
+ ui/console-gl.c            |  32 ++++++
+ ui/egl-helpers.c           |   6 ++
+ ui/spice-core.c            |  27 +++++
+ ui/spice-display.c         | 212 ++++++++++++++++++++++++++++++++++---
+ 7 files changed, 278 insertions(+), 16 deletions(-)
+
 -- 
 2.49.0
 
