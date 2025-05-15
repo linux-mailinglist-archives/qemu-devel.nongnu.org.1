@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D59AB7BC0
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 04:50:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C93B0AB7BC3
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 04:50:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFOf3-0006Y0-7P; Wed, 14 May 2025 22:49:29 -0400
+	id 1uFOf9-0006lX-TJ; Wed, 14 May 2025 22:49:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
- id 1uFOf0-0006Rg-4b
- for qemu-devel@nongnu.org; Wed, 14 May 2025 22:49:26 -0400
+ id 1uFOf6-0006kV-P6
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 22:49:32 -0400
 Received: from mgamail.intel.com ([192.198.163.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
- id 1uFOex-0005hp-F9
- for qemu-devel@nongnu.org; Wed, 14 May 2025 22:49:25 -0400
+ id 1uFOf5-0005hp-0Y
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 22:49:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747277363; x=1778813363;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=nQL7AbhEDORsemmTADCDOWS7p035Qry/aV1L5jbzG90=;
- b=KMHRSGmk9lSTCkA8jiYJQCh6r9fl1TBn4AXJBruy7f+NGSKZOEYaFpO8
- KKFlAtHkDQ4e5Xl8Tv6Bz6NElCaTr7/rZQZO1euRo+VlE0rMeO5s5k9PJ
- LeJpHq/cCma383iLsFwSAquZz1h8cYM5VaACnWBIvo8IDtjxXVQhV2G7s
- 7I2BBP9NNNbYpuNWlAt4sQRzopbDagAb9VxTZKeU/ZQvp83I7kDj+qk2e
- +GNxU6xoz0VfFTCQHUjpzJkpzHu7ZlpGAveRCka6pHugqoiZglXSFV7aC
- IqYYPR36hA3mUwRifrlJ37Ii+03tgODl8o3GV1qsTlWNbRgxCwFVD9bWd A==;
-X-CSE-ConnectionGUID: LZJVWwKlQSeRTJU0XX46eA==
-X-CSE-MsgGUID: giWR+3rjQPKn5p8DgAdGoQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="36819288"
-X-IronPort-AV: E=Sophos;i="6.15,289,1739865600"; d="scan'208";a="36819288"
+ t=1747277371; x=1778813371;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=NymX+OvNvqfitAD9MeVg+2BvNLTTzBo4mgjZyaMzdaU=;
+ b=DWiAG5ly/OS7Hdb7WQSTJeXrp+AyJ6PUaGlNbDzvWiYW53s3mZik5deP
+ wS1HWvKVrpQSaxTOid7GM21jMLs8B7mYPeOYITWIWlrJGu7xWMKXBmawz
+ 3JMnpIhPJVSQoNmkGXM/dn9pLAV5+s3Q2J6TwvaxNZBuQYMjqv3vdX4dc
+ T1ZFEXiooKXdGdTVxNOxzSLyES6EWJ34m7aNljS8bAGRMeYw6riTSHd0e
+ 7tQjSX+UkkX87zcrOjAFMk+m8A9tQgOWyLuX+elYlGNNZITMMSGok8D76
+ bIFJERQeU21CF5zAl150h2r8RGX0jYCsWrc6UIbFlPdikPaVvradDqfVC g==;
+X-CSE-ConnectionGUID: P+XQwSbaQTG+9IM+DM+grQ==
+X-CSE-MsgGUID: kJfLo1IHQnm8uZFptWbnEg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="36819293"
+X-IronPort-AV: E=Sophos;i="6.15,289,1739865600"; d="scan'208";a="36819293"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  14 May 2025 19:49:19 -0700
-X-CSE-ConnectionGUID: bMubVbUBTfy9uNPWh0+sFA==
-X-CSE-MsgGUID: RdB/ZhijQGSFwzCBZfDi7w==
+X-CSE-ConnectionGUID: aVYoyly7QK+aLVBry5qhbQ==
+X-CSE-MsgGUID: 7Py3bt8WRLKNe0z/4vtLWg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,289,1739865600"; d="scan'208";a="142246642"
+X-IronPort-AV: E=Sophos;i="6.15,289,1739865600"; d="scan'208";a="142246645"
 Received: from vkasired-desk2.fm.intel.com ([10.105.128.132])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  14 May 2025 19:49:19 -0700
@@ -50,15 +50,14 @@ Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>,
  Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Frediano Ziglio <freddy77@gmail.com>,
- Michael Scherle <michael.scherle@rz.uni-freiburg.de>,
- Dongwon Kim <dongwon.kim@intel.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v4 0/7] ui/spice: Enable gl=on option for non-local or remote
- clients
-Date: Wed, 14 May 2025 19:45:38 -0700
-Message-ID: <20250515024734.758335-1-vivek.kasireddy@intel.com>
+ Frediano Ziglio <freddy77@gmail.com>, Dongwon Kim <dongwon.kim@intel.com>
+Subject: [PATCH v4 1/7] ui/egl-helpers: Error check the fds in
+ egl_dmabuf_export_texture()
+Date: Wed, 14 May 2025 19:45:39 -0700
+Message-ID: <20250515024734.758335-2-vivek.kasireddy@intel.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250515024734.758335-1-vivek.kasireddy@intel.com>
+References: <20250515024734.758335-1-vivek.kasireddy@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -87,81 +86,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To address the limitation that this option is incompatible with
-remote clients, this patch series adds an option to select a
-preferred codec and also enable gl=on option for clients that
-are connected via the network. In other words, with this option
-enabled (and the below linked Spice series merged), it would be
-possible to have Qemu share a dmabuf fd with Spice, which would
-then forward it to a hardware or software based encoder and
-eventually send the data associated with the fd to a client that
-could be located on a different machine.
+While trying to export and obtain fds associated with a texture, it
+is possible that the fds returned after eglExportDMABUFImageMESA()
+call are -1. Therefore, we need to evaluate the value of all fds
+and return false if any of them are -1.
 
-Essentially, this patch series provides a hardware accelerated,
-opensource VDI option for users using Qemu and Spice by leveraging
-the iGPU/dGPU on the host machine to encode the Guest FB via the
-Gstreamer framework.
-
-v3 -> v4 (suggestions from Marc-André):
-- Add a new parameter to make max_refresh_rate configurable
-- Have surface_gl_create_texture_from_fd() return bool after checking
-  for errors
-- Remove the check for PIXMAN_r5g6b5() in spice_gl_replace_fd_texture()
-- Report errors in spice_gl_replace_fd_texture() when someting fails
-- Use glGetError() correctly by adding an additional (dummy) call
-  before checking for actual errors (Dmitry)
-- Add a new patch to check fd values in egl_dmabuf_export_texture()
-- Rebase on Qemu master
-
-v2 -> v3:
-- Check for errors after invoking glImportMemoryFdEXT() using
-  glGetError() and report the error to user (Dmitry)
-
-v1 -> v2:
-- Replace the option name preferred-codec with video-codecs (Marc-André)
-- Add a warning when an fd cannot be created from texture (Marc-André)
-- Add a new patch to blit the scanout texture into a linear one to
-  make it work with virgl
-- Rebased and tested against the latest Spice master
-
-Tested with the following Qemu parameters:
--device virtio-vga,max_outputs=1,xres=1920,yres=1080,blob=true
--spice port=3001,gl=on,disable-ticketing=on,video-codecs=gstreamer:h264
-
-and remote-viewer --spice-debug spice://x.x.x.x:3001 on the client side.
-
-Associated Spice server MR (merged):
-https://gitlab.freedesktop.org/spice/spice/-/merge_requests/229
-
----
 Cc: Gerd Hoffmann <kraxel@redhat.com>
 Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
 Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 Cc: Frediano Ziglio <freddy77@gmail.com>
-Cc: Michael Scherle <michael.scherle@rz.uni-freiburg.de>
 Cc: Dongwon Kim <dongwon.kim@intel.com>
-Cc: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+---
+ ui/egl-helpers.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Vivek Kasireddy (7):
-  ui/egl-helpers: Error check the fds in egl_dmabuf_export_texture()
-  ui/spice: Add an option for users to provide a preferred codec
-  ui/spice: Enable gl=on option for non-local or remote clients
-  ui/spice: Add an option to submit gl_draw requests at fixed rate
-  ui/console-gl: Add a helper to create a texture with linear memory
-    layout
-  ui/spice: Create a new texture with linear layout when gl=on is
-    enabled
-  ui/spice: Blit the scanout texture if its memory layout is not linear
-
- include/ui/console.h       |   2 +
- include/ui/spice-display.h |   5 +
- qemu-options.hx            |  10 ++
- ui/console-gl.c            |  32 ++++++
- ui/egl-helpers.c           |   6 ++
- ui/spice-core.c            |  27 +++++
- ui/spice-display.c         | 212 ++++++++++++++++++++++++++++++++++---
- 7 files changed, 278 insertions(+), 16 deletions(-)
-
+diff --git a/ui/egl-helpers.c b/ui/egl-helpers.c
+index 9cda2bbbee..07d8edd3dc 100644
+--- a/ui/egl-helpers.c
++++ b/ui/egl-helpers.c
+@@ -289,6 +289,7 @@ bool egl_dmabuf_export_texture(uint32_t tex_id, int *fd, EGLint *offset,
+ {
+     EGLImageKHR image;
+     EGLuint64KHR modifiers[DMABUF_MAX_PLANES];
++    int i;
+ 
+     image = eglCreateImageKHR(qemu_egl_display, eglGetCurrentContext(),
+                               EGL_GL_TEXTURE_2D_KHR,
+@@ -308,6 +309,11 @@ bool egl_dmabuf_export_texture(uint32_t tex_id, int *fd, EGLint *offset,
+         *modifier = modifiers[0];
+     }
+ 
++    for (i = 0; i < *num_planes; i++) {
++        if (fd[i] < 0) {
++            return false;
++        }
++    }
+     return true;
+ }
+ 
 -- 
 2.49.0
 
