@@ -2,58 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B9A6AB7D87
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 08:05:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADB00AB7D7C
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 08:02:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFRPr-00068a-Fc; Thu, 15 May 2025 01:46:07 -0400
+	id 1uFRPP-0004xR-4h; Thu, 15 May 2025 01:45:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <volker.ruemelin@t-online.de>)
- id 1uFRPV-0005eP-95
- for qemu-devel@nongnu.org; Thu, 15 May 2025 01:45:37 -0400
-Received: from mailout11.t-online.de ([194.25.134.85])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <volker.ruemelin@t-online.de>)
- id 1uFRPT-00006n-47
- for qemu-devel@nongnu.org; Thu, 15 May 2025 01:45:36 -0400
-Received: from fwd83.aul.t-online.de (fwd83.aul.t-online.de [10.223.144.109])
- by mailout11.t-online.de (Postfix) with SMTP id 91A89147A;
- Thu, 15 May 2025 07:44:46 +0200 (CEST)
-Received: from linpower.localnet ([84.175.230.13]) by fwd83.t-online.de
- with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
- esmtp id 1uFROe-2G3OOf0; Thu, 15 May 2025 07:44:44 +0200
-Received: by linpower.localnet (Postfix, from userid 1000)
- id 78E6E2006D0; Thu, 15 May 2025 07:44:29 +0200 (CEST)
-From: =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>
-To: Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v2 7/7] audio: add float sample endianness converters
-Date: Thu, 15 May 2025 07:44:29 +0200
-Message-ID: <20250515054429.7385-7-vr_qemu@t-online.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <0bb1a55e-70f1-410b-8b59-78eed7f4c8f7@t-online.de>
-References: <0bb1a55e-70f1-410b-8b59-78eed7f4c8f7@t-online.de>
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1uFRPB-0004k9-0N
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 01:45:22 -0400
+Received: from mail-ua1-x92d.google.com ([2607:f8b0:4864:20::92d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1uFRP8-0008W1-CG
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 01:45:15 -0400
+Received: by mail-ua1-x92d.google.com with SMTP id
+ a1e0cc1a2514c-86feb84877aso131989241.3
+ for <qemu-devel@nongnu.org>; Wed, 14 May 2025 22:45:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1747287912; x=1747892712; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=aml13uY5XHWNbto2zekqma9lFFAfQDjGHX3UEiFikmI=;
+ b=P2PXxJGPcYLu3jg72grva9nF8P4LgPFL1n1eXolz0us7zWV8HkMtjcIN2kUEbBcq3U
+ taWqGU9nKLsSrk4CynlDNq3qzNlOzsYrJ5noTn87zj9RqtZzhuYRVDPTEYs7Pkx7iP6a
+ hOe+BNNNmYjfdsdpMkjOS8Ef1+fhcGzZQtRczIZ3/FEz8JOa+svpZT5Zmltp9iQi7WNQ
+ rTOObXY/BpWtoc97D2vhiIT2kmQ8ErDVFQtEDnm+WzZjp3m5WOMg4ALXI29KXoSx9yK5
+ e0fhV5Hr82NJl186KgN8RqwIAbQZPCs5VzBg+8Izh6clmfXj9f8XiJt+qf5BSJ0M0jzt
+ sTvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747287912; x=1747892712;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=aml13uY5XHWNbto2zekqma9lFFAfQDjGHX3UEiFikmI=;
+ b=vXGCc8V3vfs6iCL5wCr27/OOMan0wVIGjfv9oyApvgXBAlMkzPZRq5hizpH2+pXVim
+ 0HGSLaCTo1L9NRl8MH+5TaH870hhuBrYboe0SPeaIwhiMABO95mVCakJIKDqDvaFffuV
+ rgoFLdnUpnXbfMQMweOWp/CEKtmYRl8PTN6BxPfUkLZ/G9SORJNUbKIZ7NVZw9K5OY0A
+ m4SenaI+NYJaZZCqAYfpu9oiXmq1P5mu6ncF57os6PIlLjoGB5QBkcFFVsfzG1eTk624
+ IVfLu8Kub37ASDl1Is24e4GJtYBFhxxkl6MqlcHg+TzZVSPP6f9TwXcC68UxTgYzMZDK
+ 5S4g==
+X-Gm-Message-State: AOJu0YyPg48SzMQfriYlG2zf+8N9gkFSl1DHYaNQejGPocYPdHGEDn/m
+ 2riLMQVcFxb8nelvOdB4HE0iDvLW2hKQXEjJzu8BcL4figAOjPv1cJ0LGIw0t5/YYFTl3t6IZrD
+ XSy8HV3e/XaMPMTjO6+Zf2K+1rjM=
+X-Gm-Gg: ASbGncu4+SykeCOhBfFOfvLgT1cG3dP4Jj5i464gUXRw1YM90SXybMGhihibNiOWk4c
+ b0+VsdUVRvMvp+BO8tptoewooh+jJJyG2omVuIpfIq6kjW/rCcRNhRJTeKGnjdKbqKhMm7Q/GIe
+ HiUMhJBRi7tkVZlWptwfr4nGzNsHzl1L32luDAfAMR5bvOSp8ZODBYfx80nN3aG9on3C8iE2G+1
+ w==
+X-Google-Smtp-Source: AGHT+IEVBfJddNxtzMQ7gYWnNMJeaL4hx8P7ObMsnuRpZYCyPsFqE1sIbd7VY6+/M72VaM0Eiph9ndzW1eFXOVaqa9I=
+X-Received: by 2002:a05:6102:4b0c:b0:4d7:9072:1873 with SMTP id
+ ada2fe7eead31-4df9569d4e6mr848734137.24.1747287912429; Wed, 14 May 2025
+ 22:45:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TOI-EXPURGATEID: 150726::1747287884-7EA2A5E4-A66AE5F8/0/0 CLEAN NORMAL
-X-TOI-MSGID: 3af5b955-3819-4479-82ad-dcb9ccf90b85
-Received-SPF: pass client-ip=194.25.134.85;
- envelope-from=volker.ruemelin@t-online.de; helo=mailout11.t-online.de
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20250512095226.93621-1-pbonzini@redhat.com>
+ <20250512095226.93621-25-pbonzini@redhat.com>
+In-Reply-To: <20250512095226.93621-25-pbonzini@redhat.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Thu, 15 May 2025 15:44:46 +1000
+X-Gm-Features: AX0GCFt5uuiSLPuvrH4tYz-t2jvJTInsJLFg4ojx6j3lRZapY_Bw9191SoIORQk
+Message-ID: <CAKmqyKMRWzW2xeE8_imP2Hw1z94KqtMUFfnr315=-169MP-bQg@mail.gmail.com>
+Subject: Re: [PATCH 24/26] target/riscv: convert Xiangshan Nanhu to RISCVCPUDef
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, dbarboza@ventanamicro.com, 
+ richard.henderson@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92d;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x92d.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,207 +95,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit ed2a4a7941 ("audio: proper support for float samples in
-mixeng") added support for float audio samples. As there were no
-audio frontend devices with float support at that time, the code
-was limited to native endian float samples.
+On Mon, May 12, 2025 at 7:54=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
+ wrote:
+>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-When nobody was paying attention, an audio device that supports
-floating point samples crept in with commit eb9ad377bb
-("virtio-sound: handle control messages and streams").
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
-Add code for the audio subsystem to convert float samples to the
-correct endianness.
+Alistair
 
-The type punning code was taken from the PipeWire project.
-
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
----
- audio/audio.c          |  3 +-
- audio/audio_template.h | 12 ++++---
- audio/mixeng.c         | 75 ++++++++++++++++++++++++++++++++++++++----
- audio/mixeng.h         |  6 ++--
- 4 files changed, 82 insertions(+), 14 deletions(-)
-
-diff --git a/audio/audio.c b/audio/audio.c
-index 3f5baf0cc6..b58ad74433 100644
---- a/audio/audio.c
-+++ b/audio/audio.c
-@@ -1892,7 +1892,8 @@ CaptureVoiceOut *AUD_add_capture(
-         cap->buf = g_malloc0_n(hw->mix_buf.size, hw->info.bytes_per_frame);
- 
-         if (hw->info.is_float) {
--            hw->clip = mixeng_clip_float[hw->info.nchannels == 2];
-+            hw->clip = mixeng_clip_float[hw->info.nchannels == 2]
-+                [hw->info.swap_endianness];
-         } else {
-             hw->clip = mixeng_clip
-                 [hw->info.nchannels == 2]
-diff --git a/audio/audio_template.h b/audio/audio_template.h
-index 7ccfec0116..c29d79c443 100644
---- a/audio/audio_template.h
-+++ b/audio/audio_template.h
-@@ -174,9 +174,11 @@ static int glue (audio_pcm_sw_init_, TYPE) (
- 
-     if (sw->info.is_float) {
- #ifdef DAC
--        sw->conv = mixeng_conv_float[sw->info.nchannels == 2];
-+        sw->conv = mixeng_conv_float[sw->info.nchannels == 2]
-+            [sw->info.swap_endianness];
- #else
--        sw->clip = mixeng_clip_float[sw->info.nchannels == 2];
-+        sw->clip = mixeng_clip_float[sw->info.nchannels == 2]
-+            [sw->info.swap_endianness];
- #endif
-     } else {
- #ifdef DAC
-@@ -303,9 +305,11 @@ static HW *glue(audio_pcm_hw_add_new_, TYPE)(AudioState *s,
- 
-     if (hw->info.is_float) {
- #ifdef DAC
--        hw->clip = mixeng_clip_float[hw->info.nchannels == 2];
-+        hw->clip = mixeng_clip_float[hw->info.nchannels == 2]
-+            [hw->info.swap_endianness];
- #else
--        hw->conv = mixeng_conv_float[hw->info.nchannels == 2];
-+        hw->conv = mixeng_conv_float[hw->info.nchannels == 2]
-+            [hw->info.swap_endianness];
- #endif
-     } else {
- #ifdef DAC
-diff --git a/audio/mixeng.c b/audio/mixeng.c
-index 13e1ff9b08..703ee5448f 100644
---- a/audio/mixeng.c
-+++ b/audio/mixeng.c
-@@ -283,6 +283,11 @@ static const float float_scale_reciprocal = 1.f / ((int64_t)INT32_MAX + 1);
- #endif
- #endif
- 
-+#define F32_TO_F32S(v) \
-+    bswap32((union { uint32_t i; float f; }){ .f = (v) }.i)
-+#define F32S_TO_F32(v) \
-+    ((union { uint32_t i; float f; }){ .i = bswap32(v) }.f)
-+
- static void conv_natural_float_to_mono(struct st_sample *dst, const void *src,
-                                        int samples)
- {
-@@ -294,6 +299,17 @@ static void conv_natural_float_to_mono(struct st_sample *dst, const void *src,
-     }
- }
- 
-+static void conv_swap_float_to_mono(struct st_sample *dst, const void *src,
-+                                    int samples)
-+{
-+    const uint32_t *in_f32s = src;
-+
-+    while (samples--) {
-+        dst->r = dst->l = CONV_NATURAL_FLOAT(F32S_TO_F32(*in_f32s++));
-+        dst++;
-+    }
-+}
-+
- static void conv_natural_float_to_stereo(struct st_sample *dst, const void *src,
-                                          int samples)
- {
-@@ -306,9 +322,27 @@ static void conv_natural_float_to_stereo(struct st_sample *dst, const void *src,
-     }
- }
- 
--t_sample *mixeng_conv_float[2] = {
--    conv_natural_float_to_mono,
--    conv_natural_float_to_stereo,
-+static void conv_swap_float_to_stereo(struct st_sample *dst, const void *src,
-+                                      int samples)
-+{
-+    const uint32_t *in_f32s = src;
-+
-+    while (samples--) {
-+        dst->l = CONV_NATURAL_FLOAT(F32S_TO_F32(*in_f32s++));
-+        dst->r = CONV_NATURAL_FLOAT(F32S_TO_F32(*in_f32s++));
-+        dst++;
-+    }
-+}
-+
-+t_sample *mixeng_conv_float[2][2] = {
-+    {
-+        conv_natural_float_to_mono,
-+        conv_swap_float_to_mono,
-+    },
-+    {
-+        conv_natural_float_to_stereo,
-+        conv_swap_float_to_stereo,
-+    }
- };
- 
- static void clip_natural_float_from_mono(void *dst, const struct st_sample *src,
-@@ -322,6 +356,17 @@ static void clip_natural_float_from_mono(void *dst, const struct st_sample *src,
-     }
- }
- 
-+static void clip_swap_float_from_mono(void *dst, const struct st_sample *src,
-+                                      int samples)
-+{
-+    uint32_t *out_f32s = dst;
-+
-+    while (samples--) {
-+        *out_f32s++ = F32_TO_F32S(CLIP_NATURAL_FLOAT(src->l + src->r));
-+        src++;
-+    }
-+}
-+
- static void clip_natural_float_from_stereo(
-     void *dst, const struct st_sample *src, int samples)
- {
-@@ -334,9 +379,27 @@ static void clip_natural_float_from_stereo(
-     }
- }
- 
--f_sample *mixeng_clip_float[2] = {
--    clip_natural_float_from_mono,
--    clip_natural_float_from_stereo,
-+static void clip_swap_float_from_stereo(
-+    void *dst, const struct st_sample *src, int samples)
-+{
-+    uint32_t *out_f32s = dst;
-+
-+    while (samples--) {
-+        *out_f32s++ = F32_TO_F32S(CLIP_NATURAL_FLOAT(src->l));
-+        *out_f32s++ = F32_TO_F32S(CLIP_NATURAL_FLOAT(src->r));
-+        src++;
-+    }
-+}
-+
-+f_sample *mixeng_clip_float[2][2] = {
-+    {
-+        clip_natural_float_from_mono,
-+        clip_swap_float_from_mono,
-+    },
-+    {
-+        clip_natural_float_from_stereo,
-+        clip_swap_float_from_stereo,
-+    }
- };
- 
- void audio_sample_to_uint64(const void *samples, int pos,
-diff --git a/audio/mixeng.h b/audio/mixeng.h
-index a5f56d2c26..ead93ac2f7 100644
---- a/audio/mixeng.h
-+++ b/audio/mixeng.h
-@@ -42,9 +42,9 @@ typedef void (f_sample) (void *dst, const struct st_sample *src, int samples);
- extern t_sample *mixeng_conv[2][2][2][3];
- extern f_sample *mixeng_clip[2][2][2][3];
- 
--/* indices: [stereo] */
--extern t_sample *mixeng_conv_float[2];
--extern f_sample *mixeng_clip_float[2];
-+/* indices: [stereo][swap endianness] */
-+extern t_sample *mixeng_conv_float[2][2];
-+extern f_sample *mixeng_clip_float[2][2];
- 
- void *st_rate_start (int inrate, int outrate);
- void st_rate_flow(void *opaque, st_sample *ibuf, st_sample *obuf,
--- 
-2.43.0
-
+> ---
+>  target/riscv/cpu.c | 80 +++++++++++++---------------------------------
+>  1 file changed, 23 insertions(+), 57 deletions(-)
+>
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index c884e09d869..f4d4abada75 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -440,16 +440,6 @@ const char *satp_mode_str(uint8_t satp_mode, bool is=
+_32_bit)
+>      g_assert_not_reached();
+>  }
+>
+> -static void __attribute__((unused))
+> -set_satp_mode_max_supported(RISCVCPU *cpu, int satp_mode)
+> -{
+> -    bool rv32 =3D riscv_cpu_mxl(&cpu->env) =3D=3D MXL_RV32;
+> -    const bool *valid_vm =3D rv32 ? valid_vm_1_10_32 : valid_vm_1_10_64;
+> -
+> -    assert(valid_vm[satp_mode]);
+> -    cpu->cfg.max_satp_mode =3D satp_mode;
+> -}
+> -
+>  static bool get_satp_mode_supported(RISCVCPU *cpu, uint16_t *supported)
+>  {
+>      bool rv32 =3D riscv_cpu_is_32bit(cpu);
+> @@ -498,38 +488,6 @@ static void riscv_register_custom_csrs(RISCVCPU *cpu=
+, const RISCVCSR *csr_list)
+>  }
+>  #endif
+>
+> -#if defined(TARGET_RISCV64)
+> -
+> -static void rv64_xiangshan_nanhu_cpu_init(Object *obj)
+> -{
+> -    CPURISCVState *env =3D &RISCV_CPU(obj)->env;
+> -    RISCVCPU *cpu =3D RISCV_CPU(obj);
+> -
+> -    riscv_cpu_set_misa_ext(env, RVG | RVC | RVB | RVS | RVU);
+> -    env->priv_ver =3D PRIV_VERSION_1_12_0;
+> -
+> -    /* Enable ISA extensions */
+> -    cpu->cfg.ext_zbc =3D true;
+> -    cpu->cfg.ext_zbkb =3D true;
+> -    cpu->cfg.ext_zbkc =3D true;
+> -    cpu->cfg.ext_zbkx =3D true;
+> -    cpu->cfg.ext_zknd =3D true;
+> -    cpu->cfg.ext_zkne =3D true;
+> -    cpu->cfg.ext_zknh =3D true;
+> -    cpu->cfg.ext_zksed =3D true;
+> -    cpu->cfg.ext_zksh =3D true;
+> -    cpu->cfg.ext_svinval =3D true;
+> -
+> -    cpu->cfg.mmu =3D true;
+> -    cpu->cfg.pmp =3D true;
+> -
+> -#ifndef CONFIG_USER_ONLY
+> -    set_satp_mode_max_supported(cpu, VM_1_10_SV39);
+> -#endif
+> -}
+> -
+> -#endif /* !TARGET_RISCV64 */
+> -
+>  static ObjectClass *riscv_cpu_class_by_name(const char *cpu_model)
+>  {
+>      ObjectClass *oc;
+> @@ -2891,19 +2849,6 @@ void riscv_isa_write_fdt(RISCVCPU *cpu, void *fdt,=
+ char *nodename)
+>  }
+>  #endif
+>
+> -#define DEFINE_VENDOR_CPU(type_name, misa_mxl_max_, initfn) \
+> -    {                                                       \
+> -        .name =3D (type_name),                                \
+> -        .parent =3D TYPE_RISCV_VENDOR_CPU,                    \
+> -        .instance_init =3D (initfn),                          \
+> -        .class_data =3D &(const RISCVCPUDef) {                \
+> -             .misa_mxl_max =3D (misa_mxl_max_),               \
+> -             .priv_spec =3D RISCV_PROFILE_ATTR_UNUSED,        \
+> -             .vext_spec =3D RISCV_PROFILE_ATTR_UNUSED,        \
+> -             .cfg.max_satp_mode =3D -1,                       \
+> -        },                                                  \
+> -    }
+> -
+>  #define DEFINE_ABSTRACT_RISCV_CPU(type_name, parent_type_name, ...) \
+>      {                                                       \
+>          .name =3D (type_name),                                \
+> @@ -3203,8 +3148,29 @@ static const TypeInfo riscv_cpu_type_infos[] =3D {
+>          .cfg.max_satp_mode =3D VM_1_10_SV48,
+>      ),
+>
+> -    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_XIANGSHAN_NANHU,
+> -                                                 MXL_RV64, rv64_xiangsha=
+n_nanhu_cpu_init),
+> +    DEFINE_RISCV_CPU(TYPE_RISCV_CPU_XIANGSHAN_NANHU, TYPE_RISCV_VENDOR_C=
+PU,
+> +        .misa_mxl_max =3D MXL_RV64,
+> +        .misa_ext =3D RVG | RVC | RVB | RVS | RVU,
+> +        .priv_spec =3D PRIV_VERSION_1_12_0,
+> +
+> +        /* ISA extensions */
+> +        .cfg.ext_zbc =3D true,
+> +        .cfg.ext_zbkb =3D true,
+> +        .cfg.ext_zbkc =3D true,
+> +        .cfg.ext_zbkx =3D true,
+> +        .cfg.ext_zknd =3D true,
+> +        .cfg.ext_zkne =3D true,
+> +        .cfg.ext_zknh =3D true,
+> +        .cfg.ext_zksed =3D true,
+> +        .cfg.ext_zksh =3D true,
+> +        .cfg.ext_svinval =3D true,
+> +
+> +        .cfg.mmu =3D true,
+> +        .cfg.pmp =3D true,
+> +
+> +        .cfg.max_satp_mode =3D VM_1_10_SV39,
+> +    ),
+> +
+>  #if defined(CONFIG_TCG) && !defined(CONFIG_USER_ONLY)
+>      DEFINE_RISCV_CPU(TYPE_RISCV_CPU_BASE128, TYPE_RISCV_DYNAMIC_CPU,
+>          .cfg.max_satp_mode =3D VM_1_10_SV57,
+> --
+> 2.49.0
+>
 
