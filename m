@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FA73AB7F18
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 09:45:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D71A7AB7F24
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 09:46:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFTFx-00047C-4U; Thu, 15 May 2025 03:43:53 -0400
+	id 1uFTIQ-0005PC-SC; Thu, 15 May 2025 03:46:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uFTFu-00046x-8i
- for qemu-devel@nongnu.org; Thu, 15 May 2025 03:43:50 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uFTIO-0005Ow-7K
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 03:46:24 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uFTFs-0006EU-6q
- for qemu-devel@nongnu.org; Thu, 15 May 2025 03:43:49 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uFTIL-0006XC-4y
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 03:46:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747295026;
+ s=mimecast20190719; t=1747295179;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=jFvKSla7qsixIHJoDhEQwNf4SKIuq/LcXxhEbevh+Cw=;
- b=M+mmRMXr+Ko1OGsqpgsAfp0lTse94+6rdGlHPNk0ukA8dvMsMfIjK5oN7VB9oZi+iEpfoN
- TRl7Xh1Wg99antGL70jom9UQHKTwOWsMZWGXpUeqXPTom2bcY1B4fz10zhKm78EsM/zfZ6
- chMFzERX4RjcDJSIjlnMjNCVtwnW7UE=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=M2SM/GQsQBObezjKplxXPIPDP079LKFzkIR9o5VAiSw=;
+ b=iyTXH+zTcaj8LkzHzBjdZtPBr66v6ztTX7AGtm/c36aiZ0aGiGIc3MoyOFuqyldTpfBFtn
+ XCbcW9DiNOlROHtXpokyaR4tOT1IHMtHdx56hy/opa1cQBmGxFYl++2hpYb8X3nPr21I1k
+ tUN6A94deICDVaBJgeTP+QHLFrx5t6g=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-639-kEfq8GPYMOmlBEsj3x_5Bg-1; Thu, 15 May 2025 03:43:45 -0400
-X-MC-Unique: kEfq8GPYMOmlBEsj3x_5Bg-1
-X-Mimecast-MFC-AGG-ID: kEfq8GPYMOmlBEsj3x_5Bg_1747295024
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3a3591847a5so88121f8f.1
- for <qemu-devel@nongnu.org>; Thu, 15 May 2025 00:43:44 -0700 (PDT)
+ us-mta-247-pXzbmJZzMaiICCRljkLhjg-1; Thu, 15 May 2025 03:46:17 -0400
+X-MC-Unique: pXzbmJZzMaiICCRljkLhjg-1
+X-Mimecast-MFC-AGG-ID: pXzbmJZzMaiICCRljkLhjg_1747295176
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-43d5ca7c86aso3341495e9.0
+ for <qemu-devel@nongnu.org>; Thu, 15 May 2025 00:46:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747295024; x=1747899824;
+ d=1e100.net; s=20230601; t=1747295176; x=1747899976;
  h=content-transfer-encoding:in-reply-to:autocrypt:from
  :content-language:references:cc:to:subject:user-agent:mime-version
  :date:message-id:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jFvKSla7qsixIHJoDhEQwNf4SKIuq/LcXxhEbevh+Cw=;
- b=p7dBwedgSCTPMd42CL0eQ2WKRbNm4iMEHm1ykryJj9QmJfgDC2aBcJRL7pQCUXW5gE
- DVCuA5ZTYIJ9BZYw8n4KXibpj2G6jFDzz3JyFo2QTFnEG1UoM157qDTbWlCvyKQVSIf7
- 9sb0wRaHz4R2nLqB4sqNld09ss7LUwnxe0xltRI7OXkAeAaeMeSDA+k3+Er/rSu9akgZ
- AkrqtywqVSM17UMAKNn72UNyuEvcUwjn4Po3ARIDL39bxxfpXaxD5gIQLIMVK3nPeTSd
- ZaEKyKxy+An+dzpQayjA6j0/bLX9Af7ilmmdm1ty4+1Nfg/WQlPy4yzReCd8/UKN7iVi
- xfxQ==
+ bh=M2SM/GQsQBObezjKplxXPIPDP079LKFzkIR9o5VAiSw=;
+ b=djdaz8lOCQPmjI6YAFXt749ZQbCvMPCRpeugvdAtvCII3j8NnzT8TMEvOYpgpNOAO+
+ tkSncc/dcBtegfMVE85d2JBXd5UWOeTarvfc/gPAXyZr/NGsLFIV1ZRqlXPvgI2qvCDe
+ bCD+l6E4J4cOr+gALw8dc4QtNBskh7+7qQjv2pBvvRhLWRDtR5J4f52UKE9JWDti1t52
+ QASurIRCe21fJc8Qan5ozBIcVhP0ZrIKjk1UamSWgU+8NRFfsSrAAZdmjgctaXNXA+WV
+ PYnqa9oT9cQ2U/Rv4DvcknYTyxewIKmWChqQ+SnswC1WItLIVoVAPJ17BZGmpCxnrOIS
+ e8zg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXsK9/FiAnZn4xm/EP7qVYoikt1iRnZy3DHsqBQvxF4kV92rxjpHHq9sVrbsjVkRqhQFY8TU48AtgD/@nongnu.org
-X-Gm-Message-State: AOJu0YzM91uXpLAGG6j8Ih/isYM837z1zzsWyHLHMGutSY4I7zW6Aitr
- De4PcwiVqALtJ6jY/oE0aDedSL4svotzATXuEgvS5drsgmho85nOP6sGZGIl6RO32ql5M90jPG/
- sFpquEkJZXCQ/vZ+EDPuDzqqwWGJ+jM9j8vbPijC1iVzjDyllUsMP
-X-Gm-Gg: ASbGncsdOLN8JXoIoz6bPwXZbt1Vguw9kQqaTUXOlkWsSfDOu4rvxSBQno0IfKsKFn6
- bXjnhlrftVF/YaQ+TzQnzqC2bSHDBI4/UPPHrkhUQQZ9Lo1BD8cMZiRizt7mpx4zSIQXPpaLmiy
- eHAP5FLrakh2vQHIFPd9MPSjskBxyj85RXf4B0QpMVxxckV2kraPkk+iJ2B6hFBnfncPdFCRsKa
- jpbD4v3oAVXdr/1hFFtszFiBjC1R5UQ5pCq0gx+2kfT/MXVkIkjXUZbTtl4QpGMoqAqzcM0ZJOO
- wqeRypylMqbHWnlFL9afssIRd/8DXCoYY8e7T+Fq98T2HGvyBQ==
-X-Received: by 2002:a05:6000:2408:b0:39c:30f9:339c with SMTP id
- ffacd0b85a97d-3a3496c1fa7mr5158795f8f.28.1747295023895; 
- Thu, 15 May 2025 00:43:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFkDrlHo9epuW4F0GUKa4eAXBAhDEzbn5g8lxCf2Trz8RuPR765/7KFqli87ilJgLHbOsyNyw==
-X-Received: by 2002:a05:6000:2408:b0:39c:30f9:339c with SMTP id
- ffacd0b85a97d-3a3496c1fa7mr5158771f8f.28.1747295023529; 
- Thu, 15 May 2025 00:43:43 -0700 (PDT)
+ AJvYcCXPTXz0N/Whf9a7gi4sqF0SKX9eHyewT1NlArXstKxaT0mVIEtQjlw8U+DAhjAMz1jUnDAcAIlsJo7o@nongnu.org
+X-Gm-Message-State: AOJu0YyFrwsMSPTVjnwgxeL/QwszAQDifvomPxj/9zUuewt2NgdIynnK
+ DB3majQmOb5grxvXQZDcQcxLSCZCdSJ3Weh9QKDHpdL6SUHWDFvZ9lH/1kqhUUelWUushuLxnF4
+ 35qp0YX8Xfd94rJrXVtO9UKlnOt3lWRmEHEyGDfSU455915lnZNEz
+X-Gm-Gg: ASbGncsb8KYmHigsArC8dPRD2jGNiN/zxsDYFNEosoShLOXrvxTiGDndQOdY6PmbJVz
+ pkFNZSGJXU6RKWy+KB7Rj3fNhMAbxeIEQkkKg3sPu78gV0llN/0oz0LlWyhtAuvrI1d0UD15NnV
+ 7HmjNKj0Vwm8F+1FoagQt8KrKuqcvbL8zAGzZQlFuGjxcloN+ozMjFicNqA35gTs1lZMh1Oo4He
+ HzQOo/5OLYYU4ahG5i44DfLSWh5ovuDPtD/YS7HEu3XaeJfkeli00HcHmTRr/L7HeyYDfJkNXuh
+ kIDuI8x3VBvA1gk4V8Wy1Z5t/eEt2t83rpNANpI8iUhKw5wPGQ==
+X-Received: by 2002:a05:600c:609b:b0:43c:fbba:41ba with SMTP id
+ 5b1f17b1804b1-442f21798ddmr48477335e9.28.1747295176276; 
+ Thu, 15 May 2025 00:46:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFMsyjBxWNZ8+IZXn2hRoTwS1dQa20u4i3nFllLBstdc3FTLRtQjkZsBQZ6WBcVlmwiZGnKNQ==
+X-Received: by 2002:a05:600c:609b:b0:43c:fbba:41ba with SMTP id
+ 5b1f17b1804b1-442f21798ddmr48477105e9.28.1747295175846; 
+ Thu, 15 May 2025 00:46:15 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
  ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a1f5a2ca47sm22001602f8f.73.2025.05.15.00.43.42
+ 5b1f17b1804b1-442f33691f2sm58059385e9.3.2025.05.15.00.46.14
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 15 May 2025 00:43:42 -0700 (PDT)
-Message-ID: <f5008a93-7479-4dba-a51b-b1d0d8fe50d2@redhat.com>
-Date: Thu, 15 May 2025 09:43:41 +0200
+ Thu, 15 May 2025 00:46:15 -0700 (PDT)
+Message-ID: <08e23456-33cd-467f-8425-ee19fae28e5f@redhat.com>
+Date: Thu, 15 May 2025 09:46:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3 02/42] migration: cpr helpers
+Subject: Re: [PATCH V3 05/42] vfio: move vfio-cpr.h
 To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>, Yi Liu
  <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
@@ -84,7 +84,7 @@ Cc: Alex Williamson <alex.williamson@redhat.com>, Yi Liu
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Peter Xu <peterx@redhat.com>,
  Fabiano Rosas <farosas@suse.de>
 References: <1747063973-124548-1-git-send-email-steven.sistare@oracle.com>
- <1747063973-124548-3-git-send-email-steven.sistare@oracle.com>
+ <1747063973-124548-6-git-send-email-steven.sistare@oracle.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -130,7 +130,7 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <1747063973-124548-3-git-send-email-steven.sistare@oracle.com>
+In-Reply-To: <1747063973-124548-6-git-send-email-steven.sistare@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
@@ -159,10 +159,25 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 5/12/25 17:32, Steve Sistare wrote:
-> Add the cpr_needed_for_reuse and cpr_open_fd, for use when adding cpr
-> support for vfio and iommufd.
-> 
+> Move vfio-cpr.h to include/hw/vfio, because it will need to be included by
+> other files there.
+
+
+So patch 1 is fine. Forget my comment.
+
+
 > Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+> ---
+>   MAINTAINERS                |  1 +
+>   hw/vfio/container.c        |  2 +-
+>   hw/vfio/cpr.c              |  2 +-
+>   hw/vfio/iommufd.c          |  2 +-
+>   hw/vfio/vfio-cpr.h         | 15 ---------------
+>   include/hw/vfio/vfio-cpr.h | 18 ++++++++++++++++++
+>   6 files changed, 22 insertions(+), 18 deletions(-)
+>   delete mode 100644 hw/vfio/vfio-cpr.h
+>   create mode 100644 include/hw/vfio/vfio-cpr.h
+
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
@@ -171,71 +186,110 @@ Thanks,
 C.
 
 
-> ---
->   include/migration/cpr.h |  4 ++++
->   migration/cpr.c         | 24 ++++++++++++++++++++++++
->   2 files changed, 28 insertions(+)
-> 
-> diff --git a/include/migration/cpr.h b/include/migration/cpr.h
-> index 7561fc7..fc6aa33 100644
-> --- a/include/migration/cpr.h
-> +++ b/include/migration/cpr.h
-> @@ -18,6 +18,8 @@
->   void cpr_save_fd(const char *name, int id, int fd);
->   void cpr_delete_fd(const char *name, int id);
->   int cpr_find_fd(const char *name, int id);
-> +int cpr_open_fd(const char *path, int flags, const char *name, int id,
-> +                bool *reused, Error **errp);
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index d54a532..9bee3cf 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -3023,6 +3023,7 @@ CheckPoint and Restart (CPR)
+>   R: Steve Sistare <steven.sistare@oracle.com>
+>   S: Supported
+>   F: hw/vfio/cpr*
+> +F: include/hw/vfio/vfio-cpr.h
+>   F: include/migration/cpr.h
+>   F: migration/cpr*
+>   F: tests/qtest/migration/cpr*
+> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+> index a9f0dba..eb56f00 100644
+> --- a/hw/vfio/container.c
+> +++ b/hw/vfio/container.c
+> @@ -33,8 +33,8 @@
+>   #include "qapi/error.h"
+>   #include "pci.h"
+>   #include "hw/vfio/vfio-container.h"
+> +#include "hw/vfio/vfio-cpr.h"
+>   #include "vfio-helpers.h"
+> -#include "vfio-cpr.h"
+>   #include "vfio-listener.h"
 >   
->   MigMode cpr_get_incoming_mode(void);
->   void cpr_set_incoming_mode(MigMode mode);
-> @@ -28,6 +30,8 @@ int cpr_state_load(MigrationChannel *channel, Error **errp);
->   void cpr_state_close(void);
->   struct QIOChannel *cpr_state_ioc(void);
+>   #define TYPE_HOST_IOMMU_DEVICE_LEGACY_VFIO TYPE_HOST_IOMMU_DEVICE "-legacy-vfio"
+> diff --git a/hw/vfio/cpr.c b/hw/vfio/cpr.c
+> index 3214184..0210e76 100644
+> --- a/hw/vfio/cpr.c
+> +++ b/hw/vfio/cpr.c
+> @@ -8,9 +8,9 @@
+>   #include "qemu/osdep.h"
+>   #include "hw/vfio/vfio-device.h"
+>   #include "migration/misc.h"
+> +#include "hw/vfio/vfio-cpr.h"
+>   #include "qapi/error.h"
+>   #include "system/runstate.h"
+> -#include "vfio-cpr.h"
 >   
-> +bool cpr_needed_for_reuse(void *opaque);
-> +
->   QEMUFile *cpr_transfer_output(MigrationChannel *channel, Error **errp);
->   QEMUFile *cpr_transfer_input(MigrationChannel *channel, Error **errp);
+>   static int vfio_cpr_reboot_notifier(NotifierWithReturn *notifier,
+>                                       MigrationEvent *e, Error **errp)
+> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+> index af1c7ab..167bda4 100644
+> --- a/hw/vfio/iommufd.c
+> +++ b/hw/vfio/iommufd.c
+> @@ -21,13 +21,13 @@
+>   #include "qapi/error.h"
+>   #include "system/iommufd.h"
+>   #include "hw/qdev-core.h"
+> +#include "hw/vfio/vfio-cpr.h"
+>   #include "system/reset.h"
+>   #include "qemu/cutils.h"
+>   #include "qemu/chardev_open.h"
+>   #include "pci.h"
+>   #include "vfio-iommufd.h"
+>   #include "vfio-helpers.h"
+> -#include "vfio-cpr.h"
+>   #include "vfio-listener.h"
 >   
-> diff --git a/migration/cpr.c b/migration/cpr.c
-> index 42c4656..0b01e25 100644
-> --- a/migration/cpr.c
-> +++ b/migration/cpr.c
-> @@ -95,6 +95,24 @@ int cpr_find_fd(const char *name, int id)
->       trace_cpr_find_fd(name, id, fd);
->       return fd;
->   }
+>   #define TYPE_HOST_IOMMU_DEVICE_IOMMUFD_VFIO             \
+> diff --git a/hw/vfio/vfio-cpr.h b/hw/vfio/vfio-cpr.h
+> deleted file mode 100644
+> index 134b83a..0000000
+> --- a/hw/vfio/vfio-cpr.h
+> +++ /dev/null
+> @@ -1,15 +0,0 @@
+> -/*
+> - * VFIO CPR
+> - *
+> - * Copyright (c) 2025 Oracle and/or its affiliates.
+> - *
+> - * SPDX-License-Identifier: GPL-2.0-or-later
+> - */
+> -
+> -#ifndef HW_VFIO_CPR_H
+> -#define HW_VFIO_CPR_H
+> -
+> -bool vfio_cpr_register_container(VFIOContainerBase *bcontainer, Error **errp);
+> -void vfio_cpr_unregister_container(VFIOContainerBase *bcontainer);
+> -
+> -#endif /* HW_VFIO_CPR_H */
+> diff --git a/include/hw/vfio/vfio-cpr.h b/include/hw/vfio/vfio-cpr.h
+> new file mode 100644
+> index 0000000..750ea5b
+> --- /dev/null
+> +++ b/include/hw/vfio/vfio-cpr.h
+> @@ -0,0 +1,18 @@
+> +/*
+> + * VFIO CPR
+> + *
+> + * Copyright (c) 2025 Oracle and/or its affiliates.
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
 > +
-> +int cpr_open_fd(const char *path, int flags, const char *name, int id,
-> +                bool *reused, Error **errp)
-> +{
-> +    int fd = cpr_find_fd(name, id);
+> +#ifndef HW_VFIO_VFIO_CPR_H
+> +#define HW_VFIO_VFIO_CPR_H
 > +
-> +    if (reused) {
-> +        *reused = (fd >= 0);
-> +    }
-> +    if (fd < 0) {
-> +        fd = qemu_open(path, flags, errp);
-> +        if (fd >= 0) {
-> +            cpr_save_fd(name, id, fd);
-> +        }
-> +    }
-> +    return fd;
-> +}
+> +struct VFIOContainerBase;
 > +
->   /*************************************************************************/
->   #define CPR_STATE "CprState"
->   
-> @@ -228,3 +246,9 @@ void cpr_state_close(void)
->           cpr_state_file = NULL;
->       }
->   }
+> +bool vfio_cpr_register_container(struct VFIOContainerBase *bcontainer,
+> +                                 Error **errp);
+> +void vfio_cpr_unregister_container(struct VFIOContainerBase *bcontainer);
 > +
-> +bool cpr_needed_for_reuse(void *opaque)
-> +{
-> +    MigMode mode = migrate_mode();
-> +    return mode == MIG_MODE_CPR_TRANSFER;
-> +}
+> +#endif /* HW_VFIO_VFIO_CPR_H */
 
 
