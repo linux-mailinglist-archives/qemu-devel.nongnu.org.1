@@ -2,118 +2,180 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B2A8AB8B6F
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 17:51:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78C35AB8B60
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 17:50:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFanB-0000my-Cy; Thu, 15 May 2025 11:46:41 -0400
+	id 1uFanh-0002kc-9k; Thu, 15 May 2025 11:47:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
- id 1uFamF-00082Q-KW; Thu, 15 May 2025 11:45:44 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
+ id 1uFamt-0000Cn-PZ
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 11:46:27 -0400
+Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
- id 1uFam4-0006U5-Or; Thu, 15 May 2025 11:45:43 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54FCg6LI002316;
- Thu, 15 May 2025 15:45:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:reply-to:subject:to; s=pp1;
- bh=oSt+N1lu/Ph9YEJoXpM25zKAE7994l+m0uALbFqfXHI=; b=WdtecRkLMw8P
- Z8y2bRyOrNKLN17lnJWZvU+ZG++0O4ryVd7f2PWMJxgrVD/jC+WZRPGkrJSqP7wY
- 42OxGg2S1BeQIIqEd6B8p/KYjkDVPnxhwbAiZgYeiGh8ZlPxvMtDOWDfiQjsstjq
- cNpSuj9aWwLMb7cOYEskgTAuEIj4z5ZQw7AF6Ukkkn5GwGKspze6sKHiLZV+oy+8
- 0tJRpZwoat6J1Vdiw2mBy4gwyjVQ/x1XKkaly7g9lCfj5KV3fjCEzneYptA2YCK8
- CUAE5HsyXtyGu7EdvbCNB6jN9/UKrKA+ytG/c7+bpia6bUQ7qX88Q6XJi61jtmEs
- Z+LI/pfKwQ==
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46n0v6ndx9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 May 2025 15:45:30 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54FFjTwe019016;
- Thu, 15 May 2025 15:45:29 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46n0v6ndx6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 May 2025 15:45:29 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54FEOTig015329;
- Thu, 15 May 2025 15:45:29 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 46mbfq30ep-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 May 2025 15:45:29 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
- [10.39.53.229])
- by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 54FFjR9o25756306
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 15 May 2025 15:45:27 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3AEF858059;
- Thu, 15 May 2025 15:45:27 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A8EA258058;
- Thu, 15 May 2025 15:45:26 +0000 (GMT)
-Received: from mambor8.rchland.ibm.com (unknown [9.10.239.198])
- by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 15 May 2025 15:45:26 +0000 (GMT)
-Message-ID: <12549968b1d9a0a89b32900b3fc8c4a574a28906.camel@linux.ibm.com>
-Subject: Re: [PATCH 12/50] ppc/xive2: Set CPPR delivery should account for
- group priority
-From: Miles Glenn <milesg@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, =?ISO-8859-1?Q?Fr=E9d=E9ric?= Barrat
- <fbarrat@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>, Caleb
- Schlossin <calebs@linux.vnet.ibm.com>
-Date: Thu, 15 May 2025 10:45:26 -0500
-In-Reply-To: <20250512031100.439842-13-npiggin@gmail.com>
-References: <20250512031100.439842-1-npiggin@gmail.com>
- <20250512031100.439842-13-npiggin@gmail.com>
-Organization: IBM
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-27.el8_10) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=IqAecK/g c=1 sm=1 tr=0 ts=68260c1a cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=pGLkceISAAAA:8 a=zSV6phptauE46_GIRisA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: j93Hfu676Q3HpO1RJPJYyrKOxQedT-KB
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE1MDE1NSBTYWx0ZWRfXzB7WH5U8VGUP
- WdKSdzRdh/QuRrx1G0z6Gq08kOg4TyQ7el1mf5BlVTsKyy7trcDSFeSca32qN9T6AUl90nvYRPp
- nwfsQTaaGglDInbB77bIqH3283JkfypLpv0dvY4pPxmSb7bTpg5zizmHoGaaoWME2ZT6pcWAO3P
- cC3WtdDgx5J9Th90dJ1oUhwLY1TWGksiasV5WymwnMTJlk4yNNTWRITHVwWPQgPdZ7LSyA3q+iI
- 7ND5rGdev2vLsTAOHwCAEP17kZfdfB00s/E+ofNikc6TgFp1OWXoJM8havlCkxYKo4qkl1rruYw
- FfkQHEioBxyiE1WYQEX8EvCuCnHulDU46Fe3ONHMXZmueQapi8Wt3VJAkJ52aZbfG8+zWGoPBXn
- XsRttxSp0BL6pm7liw1dbmzO+qYIQUPmKKRgOlE0u/ZpjJopZyOHx3tLD1fjs1sfTVqpIhPC
-X-Proofpoint-GUID: yvXyE6cKdRwapzRaeOAP_fJZVL-PHSSZ
+ (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
+ id 1uFamq-0006Ym-Q6
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 11:46:22 -0400
+Received: from pps.filterd (m0127841.ppops.net [127.0.0.1])
+ by mx0b-002c1b01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54F8MCUH007995
+ for <qemu-devel@nongnu.org>; Thu, 15 May 2025 08:46:19 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
+ content-type:date:from:in-reply-to:message-id:mime-version
+ :references:subject:to; s=proofpoint20171006; bh=o21zLGPnQfDg1MA
+ 30bNWlGMReK6JrTdC+cVYgCe2bqI=; b=GVdag2H8g5xdWW3CGcUhhT/5WFNfax0
+ 0+dWR9s9DR3VJmeZ6vgf7myA7Bf57WIMwdTnkXnwmVKVbYN3otEnGpDFtN5CRQZd
+ fr4iqMECnZ3q20d3FGlOU84vMocm0BBgGCQgJ6gJTzU5ybYhj5CcUAEwI1o7rgR9
+ M22CCWB9oOFgjIQXrThfYtzUzPujjo4vFiCul7t7HuR+JFZour7mD+ZIP0iRrEQs
+ nutGR6sr9CzWjA7Ayp//QGDDm9qnUjZQvV58QwK6pbdX/CH/b/f4wmzdpVXjW95q
+ dUVAyOYu/RfOpow3L+cypVCG4/ntRHsV4ADnJvEz7iaCg2LJOOdognA==
+Received: from byapr05cu005.outbound.protection.outlook.com
+ (mail-westusazlp17010001.outbound.protection.outlook.com [40.93.1.1])
+ by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 46mbd0we5k-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <qemu-devel@nongnu.org>; Thu, 15 May 2025 08:46:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Wg2pjftg+7AYtf4PIkpNhCkJwWOrklZx7DWysn++4tFzhRqH4QHbewxJC1052SUo8JmUSScyijXd58asFMrS8AbV1BxxlCxFgVf47yjcia8Avn///YQsn5GYv0SbOqwngS8lpKy9rtidnlSgAgTsUAau1IJ/CIzIo7TYemnglY3KB0BUiGRjI3diWxHJK53yvgm4yTstR/JbS3P8bRt+yGQW2ybK8oJSNQDnG3CZGoit1Bm5nlPfzTpf68Abn4+BdXLDb6zCBHkZo77I/FDKxO2tTFoYO51HOquUf14wgj5uxco8KwEa6LTw3eQi9RUdwak/01wAZcWgdeyZToxGzw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=o21zLGPnQfDg1MA30bNWlGMReK6JrTdC+cVYgCe2bqI=;
+ b=mUVVbGq2xGwtU6J+pcEL9vsKN9XhrXaqg+8UUNt1AJbe46OAJbVv+DB/jiXH5Nhvsbbm2vsjkfLPi7vZC54PaqJkXeLm1mG1wLEkelWHDKvJUaX8HTF9HRdO1WIcM4PDTTuBTeXCMzwFv1o5Nl2lzSP6kpsbbkmXwiHxPLBujaBfSZqLLtUvJYKoi29P84ON/cuhRJev4XpyrJb/t0rWhMxrAPpN6wPviHQ3wXOVUHMPgC5xXRh/ArSd2zKT9pgHRnDjPZZqCK8hBzJ6Br4Aj+g23BzN/jKtrZ8dX2ZuMgwrYGT1Jskr5NYwOyjMfdLTa8gs6xIESixbRw8eq2bDIQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
+ dkim=pass header.d=nutanix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=o21zLGPnQfDg1MA30bNWlGMReK6JrTdC+cVYgCe2bqI=;
+ b=IOIrXINeMyJ6kfUMKVi6CPlBrbr2xRpyyRyv0qN+3/omASH6WRK8ixaeeBVA+3tJ2OxqyU1oVmrQarlrcAWas/iNiCkGP7n7BIu1/n7/zsnb4n/DZZSvubwVFbW7tApc3qRilNSy1XhWfb9RlSMo2D4Yglzamr/0lOho9249mFJD8ar39uAnWgJO/Tl/sII/FbgZOExYCGt3G071VPvJ7W0d8ebfBZK6AmXyKbg2GObYOtqa9aTixqkKoX7p7Z4r5p7EAJMZIsILnjZwjytuIn6cjb9UrGUA2rqORB0ojNEpremRpXpz0pajuFZCX2nAd+K1uXyboyCfM8ISad/Z2A==
+Received: from CH2PR02MB6760.namprd02.prod.outlook.com (2603:10b6:610:7f::9)
+ by BY1PR02MB10459.namprd02.prod.outlook.com (2603:10b6:a03:5a8::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.21; Thu, 15 May
+ 2025 15:46:16 +0000
+Received: from CH2PR02MB6760.namprd02.prod.outlook.com
+ ([fe80::fd77:ea65:a159:ef51]) by CH2PR02MB6760.namprd02.prod.outlook.com
+ ([fe80::fd77:ea65:a159:ef51%6]) with mapi id 15.20.8722.024; Thu, 15 May 2025
+ 15:46:16 +0000
+Date: Thu, 15 May 2025 16:46:14 +0100
+From: John Levon <john.levon@nutanix.com>
+To: qemu-devel@nongnu.org
+Subject: Re: [PATCH 01/27] vfio: return mr from vfio_get_xlat_addr
+Message-ID: <aCYMRnE8D1VnVV-z@lent>
+References: <20250515154413.210315-1-john.levon@nutanix.com>
+ <20250515154413.210315-2-john.levon@nutanix.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250515154413.210315-2-john.levon@nutanix.com>
+X-Url: http://www.movementarian.org/
+X-ClientProxiedBy: AS4P191CA0045.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:20b:657::28) To CH2PR02MB6760.namprd02.prod.outlook.com
+ (2603:10b6:610:7f::9)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR02MB6760:EE_|BY1PR02MB10459:EE_
+X-MS-Office365-Filtering-Correlation-Id: d81b001d-046f-496f-5b85-08dd93c7a116
+x-proofpoint-crosstenant: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?GeoWSS9mJbOS32zoHTCKvzasiZpYjVRhJoMfgFSs5CLR+FyfAtVPacICXEtt?=
+ =?us-ascii?Q?vJMmb9gxnqfz1TGr6Vzv0gi4rB/k6urb+SspqSiRzSPHaZ1NHMMWnIM8i0/h?=
+ =?us-ascii?Q?bvrbc1V3kFCHYW2/zL24QTCmBnOOVjz6mSLQN+5jxkhQressTYR9WPiOZ2M4?=
+ =?us-ascii?Q?UyiaG/44VkXFdwHSxqHeWof9n93XKq0HAlcl1HoVKepQKxqHZ3WmteY7vxV+?=
+ =?us-ascii?Q?mKqCxM0xXshQslX6wdmB1sdwgJX2rC4s4XsmtdRW1OoIFKQFvsrh+vaNPjBE?=
+ =?us-ascii?Q?hj2Dv4j2gPHTjg1Iif82/YCFmPo94/y/Q8UB5h8Jf8UKGzOreQT+zmnbLOLN?=
+ =?us-ascii?Q?GfOy8hhOqGx1+mGE2KGTLuR6bCl01MHpqhvMIvx0qmFOw1l7d6mV/qke4hdX?=
+ =?us-ascii?Q?8rWaE5b2Qr/R8d7Z5RxrCr9xIGiSfq1kXhP1pFtIrcye/P/X1Kmhi9tspFXn?=
+ =?us-ascii?Q?wHaIhVpY9PRhWYZgFqFoQtF426q24DHpJS0mfnujbJ9jWvJ0ehdzN0eIa+KN?=
+ =?us-ascii?Q?FtXHj347bRdwK2bcEieyzA4sEqcmi4HwaY2LGXRi2SED73wVwGITVUVd86O/?=
+ =?us-ascii?Q?1s3/KIj3RAVoDPmRkslHNhQRon7caP/DgewD+bGL4Hwmc5t6s1PhPf9ha2mB?=
+ =?us-ascii?Q?RihjMMgR/BaAL9ifkfcT0oAB0irC2ogAhxd23wIxN+z+gKq2kPVMwNF6AfT4?=
+ =?us-ascii?Q?CmEdUOLlGkljxDvAyQVrWkFzWy+IK/eJfPyA1Zuk/ArGNeI9PrHI4HVhxjpQ?=
+ =?us-ascii?Q?hP29HrGkDkgc4LRfZcEj956goFMQ1iB+Q64SuVCvg8MTF8nakShxg6Jw+KnZ?=
+ =?us-ascii?Q?IXElSzGivN6xGJs71EDjTbHJhjSJFfonXK7IN9IdGv0NPexLZ9HNKMS40Qta?=
+ =?us-ascii?Q?TJEoLDcN/Jxdd6ZidWWWBz17pXvyb5sfYW4dlxr5gQ7vDHw46D4NR7F3eCNE?=
+ =?us-ascii?Q?2f0U8jKUbMn/V1E2fx1kIWUtiJiuwdo0MM72DoiA3FSBTk/FlUG32l0aSOEl?=
+ =?us-ascii?Q?J+Kkg0UuVA7rArO/rcQ1NAHuwAw2e2poW3zDSjllctxKmBhvsMY58rFepC0Y?=
+ =?us-ascii?Q?tNgVrtrmCU1v1XG0Fdwud8bE0evBeP+MGylOTucPcXYW4kWfcp0sB2tCjmiH?=
+ =?us-ascii?Q?CsHGE6Uv6Uhucn4qSwP6EsrtnnBAEu7tEgcAV374KZa/5YI/92mK6aoiKkgR?=
+ =?us-ascii?Q?vwX0b5UeG0xSmwoX8/J8CsOW/YjC7OOBEeYomWQA/8deNxt0vH809FJyJCiC?=
+ =?us-ascii?Q?A2ZhnShU8NZGvDmW8J0EGKl1a3rodT5crVe+BHNkeVhk3v5hwQhff7FnHlWe?=
+ =?us-ascii?Q?T2qQ7hqlJ6+DSTfaKzdVKfAIY+ALr5Lu+g3V7wOoxgaIo3ZlOYwUIvH9MmRG?=
+ =?us-ascii?Q?dFtOzYs2KqRQ6WtGZrAn8+VeTBEPO4zrLvz9yzgSaFJt1zznSV6j1GYXsYQV?=
+ =?us-ascii?Q?GZaBAhQLNqA=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH2PR02MB6760.namprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?rK6sC5ci9/8pLh0m/V6KxqrT+lyaaEZFMngGnPwluNtgzL47SRb+A29bHmRI?=
+ =?us-ascii?Q?sBgb2S3wNVFbJk0n9rqcSleeBNUI81/BR5K5OMUsg5qCUMK9ywfizz7b7OGn?=
+ =?us-ascii?Q?uvhXvoBU/zRKjdca5vrTYuvMZBg/O1jIefKYBt6/WbY77h7iVAnz6kpio12/?=
+ =?us-ascii?Q?nzWTJVNBZa3bBCAMQhEu+0T9X2p64+D4FAk9mjaqcCWjGT3K24nevQ1lG2jK?=
+ =?us-ascii?Q?l+68LNjpzabao5oXueCnnWQuQwmOM5CiDPPedOIKFYyWLX7/Ub3r+KAVTdKR?=
+ =?us-ascii?Q?3+dzPIAmdoC9rXvIeUK26U5dbno90xa45VOwcT2mQ0mH3+JDNBdTZIXqMRxn?=
+ =?us-ascii?Q?+PuxbRIOShyMiNlgJ6YtG5bpbs5GFHdmi9llSSURMS3zK3RO0A1OR9ok3dtI?=
+ =?us-ascii?Q?n+Ik6hRBy3BlA2dXHCGn1Jj2kADElJ+U/IC3jPPRlCQxyVWm4a/2uEXQt18F?=
+ =?us-ascii?Q?MINZvhH5e16cL2IjAmaqWa5yOeGfBjF95Ml2IhzE/esgLgRb//9ftBM0+hl/?=
+ =?us-ascii?Q?GxtOMrCHFOUra8OynUFt5b/Bv18dYdx5vet7TsDYT20HUJdX1kgAwjf007up?=
+ =?us-ascii?Q?zn8uFIFeMU17Sjq1K2jrdbIiaUEoerkCME+0FO7z8p6nhbqCajZhrb5ahTs8?=
+ =?us-ascii?Q?13MsOcNUn4orqPRM0YuZg6kQgrZ6abmlut5ZUF068fedmJbiVzKwIM6vzxKw?=
+ =?us-ascii?Q?zaDEO4C4m+QLD8THP7oa7KyEyUi5w4uq74sC0c0ArvBoQNmka79iNWOlFTEl?=
+ =?us-ascii?Q?4HgjAGTEMQxj0ywpG/LroiGhuf5tUvGTe4Cn1BmHy6UAp8wuErGV5DhXbzhI?=
+ =?us-ascii?Q?g3zW/+mNtDdhYvyakAyyBFTIIrzA1Xedp1Bj9igRlAAnorczMBznBDSsVFmy?=
+ =?us-ascii?Q?FwK9s5e6+1isHxxCTNwrDPhyXeK4dNCCVetnUFWkapp5WeGcC+vPc/XwxNJG?=
+ =?us-ascii?Q?1RaOR7uvsl7VohMbPM1gL2TPiWvFQs3yFuXyW4kb8C3yqYx0CHp0HRikDQ0p?=
+ =?us-ascii?Q?emtLqUd8bnticZZTTXLVMgYQtnqTkfHjRz9VCkI8o06zE6skfPuOeKTrOgar?=
+ =?us-ascii?Q?ZU8VnS0JU87gSiglemgDmIq3fmXkEFyTIkGNfHjK4iJK7FOonXoEQ6IyYwLz?=
+ =?us-ascii?Q?xVdNATiS1NtZJVRMjwnc7CbRxsakRLH3uh/9OJANKAI8Xww5T//n8TjHRxPb?=
+ =?us-ascii?Q?GuD+hYVbxLs7DKK7qToE1Fzf9L+BqLetCuXeEf4Yw/dyWJrQ9x87w0T7eqcR?=
+ =?us-ascii?Q?roXoYdPhgkS76YfD+HAGs07PsWlZC0aII7WoU1/+lyHroanQ2V2DcvnBqNDW?=
+ =?us-ascii?Q?ui9E9y7jYPXx/7bLEM623OLHkRqcePdkoSHpLauwIyFGgfets8qiGxbyJix0?=
+ =?us-ascii?Q?ejNkE3G5X+mi81Py0Ra9k5ZMmFwU1sHxy03t4rHqKsWACsPfnRJ4t4bDDIqa?=
+ =?us-ascii?Q?XkvwiwKVI/BxzuNCXdT7QDXbyDc+eLrLQ505tJ2MK2QVzITr0EaLkFXBi92J?=
+ =?us-ascii?Q?PVgWdmsGKgbtD6LZcBk3lNRfXKfnEyBkSlxddwgBggQ9qSnNSvxGLr9elZsh?=
+ =?us-ascii?Q?yFGIfNpPp3U5Hbirv0+nYKcmED51xxHplRWTKmF6?=
+X-OriginatorOrg: nutanix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d81b001d-046f-496f-5b85-08dd93c7a116
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR02MB6760.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2025 15:46:16.7959 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rMtvBzJBXcVFRNJcK94FpARQcKUncnqYByomZYjKAp14W7T5H9FJkXYltzugP8Yf+ZC7VUUNjmk5ieefN/CaxQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY1PR02MB10459
+X-Proofpoint-ORIG-GUID: Wo510lA0B3lr2dbM4KTep3ZRGzJw6kX_
+X-Proofpoint-GUID: Wo510lA0B3lr2dbM4KTep3ZRGzJw6kX_
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE1MDE1NiBTYWx0ZWRfXx3/JA8Km4zJs
+ 6jtOFXmcNbbgwg49aC0UWxB1vxVPntbRqL9Wgmf32E12GwlDEnGzjPdwl/6Qc14gvFyxt4I4rmD
+ Ppe+WI49cX4iCEBGbkxM5jeSo9AZSGmzM/zp7oVzvpDAQ+pke5v81j/JA11zt9tCvzP3l/QKWWc
+ 2SXM/sMbosD4qjdxtfb+1a+uZcgDX/MXQmsyLKmqtWjfEXO+6DEriIq0QZWzGWa0kcqSdvQ+fPG
+ G/YT7PlSjRBSbnJbKfNJlwPawulBm4XKCQ4AwyjUqh89qP4eIH0Mid1mMZ5rCAGIhH8+pVevQOB
+ GB4DWErJOVi5vhP+0Zu5vYeTtlWH4NKpYSPbT20DEZ/sSuvX7bMHjT0ttRJfmGB+13XkvpDw7Hi
+ hyTCbYQ/c3Hx3hgPbRQGBuoq9BdGzUZEbmkc3rha7qqa4rXF8cg74Pf0xoHLAd3m/CSgkwrA
+X-Authority-Analysis: v=2.4 cv=KKlaDEFo c=1 sm=1 tr=0 ts=68260c4a cx=c_pps
+ a=zbudaZmfUx0dwwhLSrpPog==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
+ a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=dt9VzEwgFbYA:10 a=0kUYKlekyDsA:10 a=yPCof4ZbAAAA:8 a=vcURM8QVG6rO4YVKcBAA:9
+ a=CjuIK1q_8ugA:10
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-15_06,2025-05-15_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 malwarescore=0
- adultscore=0 lowpriorityscore=0 phishscore=0 impostorscore=0
- priorityscore=1501 clxscore=1015 spamscore=0 mlxlogscore=999 bulkscore=0
- suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
- definitions=main-2505150155
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=milesg@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=148.163.155.12;
+ envelope-from=john.levon@nutanix.com; helo=mx0b-002c1b01.pphosted.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -126,101 +188,25 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: milesg@linux.ibm.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 2025-05-12 at 13:10 +1000, Nicholas Piggin wrote:
-> The group interrupt delivery flow selects the group backlog scan if
-> LSMFB < IPB, but that scan may find an interrupt with a priority >=
-> IPB. In that case, the VP-direct interrupt should be chosen. This
-> extends to selecting the lowest prio between POOL and PHYS rings.
-> 
-> Implement this just by re-starting the selection logic if the
-> backlog irq was not found or priority did not match LSMFB (LSMFB
-> is updated so next time around it would see the right value and
-> not loop infinitely).
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->  hw/intc/xive2.c | 32 ++++++++++++++++++++++----------
->  1 file changed, 22 insertions(+), 10 deletions(-)
-> 
-> diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-> index 8ede95b671..de139dcfbf 100644
-> --- a/hw/intc/xive2.c
-> +++ b/hw/intc/xive2.c
-> @@ -939,7 +939,7 @@ static void xive2_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
->  {
->      uint8_t *regs = &tctx->regs[ring];
->      Xive2Router *xrtr = XIVE2_ROUTER(tctx->xptr);
-> -    uint8_t old_cppr, backlog_prio, first_group, group_level = 0;
-> +    uint8_t old_cppr, backlog_prio, first_group, group_level;
->      uint8_t pipr_min, lsmfb_min, ring_min;
->      bool group_enabled;
->      uint32_t nvp_blk, nvp_idx;
-> @@ -961,10 +961,12 @@ static void xive2_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
->       * Recompute the PIPR based on local pending interrupts. It will
->       * be adjusted below if needed in case of pending group interrupts.
->       */
-> +again:
->      pipr_min = xive_ipb_to_pipr(regs[TM_IPB]);
->      group_enabled = !!regs[TM_LGS];
-> -    lsmfb_min = (group_enabled) ? regs[TM_LSMFB] : 0xff;
-> +    lsmfb_min = group_enabled ? regs[TM_LSMFB] : 0xff;
->      ring_min = ring;
-> +    group_level = 0;
->  
->      /* PHYS updates also depend on POOL values */
->      if (ring == TM_QW3_HV_PHYS) {
-> @@ -998,9 +1000,6 @@ static void xive2_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
->          }
->      }
->  
-> -    /* PIPR should not be set to a value greater than CPPR */
-> -    regs[TM_PIPR] = (pipr_min > cppr) ? cppr : pipr_min;
-> -
->      rc = xive2_tctx_get_nvp_indexes(tctx, ring_min, &nvp_blk, &nvp_idx);
->      if (rc) {
->          qemu_log_mask(LOG_GUEST_ERROR, "XIVE: set CPPR on invalid context\n");
-> @@ -1019,7 +1018,7 @@ static void xive2_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
->  
->      if (group_enabled &&
->          lsmfb_min < cppr &&
-> -        lsmfb_min < regs[TM_PIPR]) {
-> +        lsmfb_min < pipr_min) {
->          /*
->           * Thread has seen a group interrupt with a higher priority
->           * than the new cppr or pending local interrupt. Check the
-> @@ -1048,12 +1047,25 @@ static void xive2_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
->                                                      nvp_blk, nvp_idx,
->                                                      first_group, &group_level);
->          tctx->regs[ring_min + TM_LSMFB] = backlog_prio;
-> -        if (backlog_prio != 0xFF) {
-> -            xive2_presenter_backlog_decr(tctx->xptr, nvp_blk, nvp_idx,
-> -                                         backlog_prio, group_level);
-> -            regs[TM_PIPR] = backlog_prio;
-> +        if (backlog_prio != lsmfb_min) {
-> +            /*
-> +             * If the group backlog scan finds a less favored or no interrupt,
-> +             * then re-do the processing which may turn up a more favored
-> +             * interrupt from IPB or the other pool. Backlog should not
-> +             * find a priority < LSMFB.
-> +             */
-> +            g_assert(backlog_prio >= lsmfb_min);
-> +            goto again;
->          }
-> +
-> +        xive2_presenter_backlog_decr(tctx->xptr, nvp_blk, nvp_idx,
-> +                                     backlog_prio, group_level);
-> +        pipr_min = backlog_prio;
->      }
-> +
-> +    /* PIPR should not be set to a value greater than CPPR */
-> +    regs[TM_PIPR] = (pipr_min > cppr) ? cppr : pipr_min;
-> +
->      /* CPPR has changed, check if we need to raise a pending exception */
->      xive_tctx_notify(tctx, ring_min, group_level);
->  }
+On Thu, May 15, 2025 at 04:43:46PM +0100, John Levon wrote:
 
+> From: Steve Sistare <steven.sistare@oracle.com>
+> 
+> Modify memory_get_xlat_addr and vfio_get_xlat_addr to return the memory
+> region that the translated address is found in.  This will be needed by
+> CPR in a subsequent patch to map blocks using IOMMU_IOAS_MAP_FILE.
+> 
+> Also return the xlat offset, so we can simplify the interface by removing
+> the out parameters that can be trivially derived from mr and xlat.
+> 
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+
+FWIW I'm aware there's recent discussion on this patch separately, but I've
+needed to include it in this series for the subsequent changes.
+
+thanks
+john
 
