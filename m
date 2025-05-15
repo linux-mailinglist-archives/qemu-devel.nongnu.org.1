@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C226AB83B9
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 12:26:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68D17AB8427
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 12:39:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFVmz-0004PN-RW; Thu, 15 May 2025 06:26:09 -0400
+	id 1uFVn3-0004Qp-V5; Thu, 15 May 2025 06:26:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uFVmy-0004P8-O0
- for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:08 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1uFVmz-0004PO-Dg
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:09 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uFVmw-00088i-NT
- for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:08 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-43cfba466b2so8368895e9.3
- for <qemu-devel@nongnu.org>; Thu, 15 May 2025 03:26:06 -0700 (PDT)
+ id 1uFVmx-00088z-Ls
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:09 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-43cebe06e9eso5736765e9.3
+ for <qemu-devel@nongnu.org>; Thu, 15 May 2025 03:26:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747304765; x=1747909565; darn=nongnu.org;
+ d=linaro.org; s=google; t=1747304766; x=1747909566; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=45OXTNzjwjDe6TE6ZCe7ioq6XmOCBuiCA+I7gKEs7n0=;
- b=uN0htnB7mWJPnPhW0XXlk9f1lisd/MLd6cY7+XW+oGnIcF5Grqj9KPcTFGBMdfToYU
- B9Jvw2Q+GPV1Sop9PmEI/jtu1eH/0JaYT5Uq4XjNsifirbF+SKsGbNgE5CoMPTgCiubV
- pVcGhEczA1XFIEEFyNo4Ufoi87r66TSnjGyADa32Zhe6Dy/CuC0uvKD5V417mG+3jQUX
- AuNyS6D/uij94NWL9eKRIYyhNcscx2jOqssDRQYS6MdvzOV7lAy/ec/uJb0NPRUEXS4H
- +t32fLmYbIkP1UtoOTpv8giFUUqicKxXTAUEhveXECCCbABHbFUqccFE3OmGpF5sYUWZ
- X7Dg==
+ :reply-to; bh=CHj4ncL69V76HEaBcKrQS1jymf4RbpKZzaXqYG1J/L0=;
+ b=sa4+g99pNfNulT0kf0qXHGo9jEI4FFqOWDogj5PLmB/fBg67CAGM56HrfJQ82+LQAI
+ 5hISOTYxxLf594coy/SCQk52cJuKNIV5NqvAac39bT8FMAT8Zl8cnBwCgqlar7JqdZpU
+ dqvuvp8gAlVkVaxd16vaBzDZBhUYWbfpCpjh99nVGFxYbr3NRXnX3Jh9XUh8JxB7ODb8
+ CbmZmdlZCV3jksqfIV5X4kemq6zBRmqoSrhk4BHQPedRbFzdUNFGtrRglWhgVChlJ6Ir
+ taisAIIHWZggPifweUFXg0JtKXJ+A58ZtNVcAq+6llyWlU4FtauAAz7SEbuFQb7IV6ts
+ Dang==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747304765; x=1747909565;
+ d=1e100.net; s=20230601; t=1747304766; x=1747909566;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=45OXTNzjwjDe6TE6ZCe7ioq6XmOCBuiCA+I7gKEs7n0=;
- b=b4i3WFfajl5LoDZvuf/XapVzfAjQTKkZG0+xgXmpSR3ZNsbV2I2tsOxnBYCIzpF6NN
- y5gTo5PMTRFjHfygW53P+Hoxo1Ljk1PMEdREKVW0D+UkimvjHdCsPB93lQpVmZAwWYR9
- yLjznCNKGmLggTz2MZ1a3AayBK55Tn6ivKpsKK1h2hWwYuuiU1qKhW1KkuwEhrNbfy+r
- LJjTPrm7VIZkMBxl001yXrtd14yNAvAz9HXB10pifJV9ZEudB01S77RORI1XL38XDZcU
- AaTGtfP1tcrGTbFUrhuEi62fpw2ZSi+TdAZtVeden75ccn/lcq/7/84yrfT8O7Bmbtu4
- TBMA==
-X-Gm-Message-State: AOJu0Yz4VgY5JcSKmshFoVJn79pUV8xvkcERzi7/3d9BiG/MRCrsn81d
- Re6JNYDjIRcenbycKrpfxAiOY4MgBQrdRee0qUo8Ma08m/jDaVUXGkGrrAGXeyf+Gimpwl3Gusy
- M0Rc=
-X-Gm-Gg: ASbGncv9jLGe+96rf06TnKSiRz49TAzAx2jmSDhJ7jhOAA/McKYrJAciNQAxyJSG8na
- vFjE721JwDlTqnA365vA8mfB2u8xruwOvF+G01F3yY+iFVzlrF5GbSGYKKmzTxjeUxn8ESR/xBO
- 2UB6AS7vL816DNdVpotbF4QxWbNnntcYUndPtKQSlngFgK5QPl0w6hYVX13pZhPBzNO7v7z2s6U
- O9dsNS63MW+S8WO7jfDBtzwb0UzQ9VqcjmTkdCcHl9r//NH2Mtc5Vio7brCdV+X71rY40hPlQqM
- VPfRscJQhxg8gtR34gEANOIcJQ6RSlrnateN/AgIcdNFCDKdZIFGSVdsUA==
-X-Google-Smtp-Source: AGHT+IEf6MQhfgnURfV23gSAlxvPhJWZ/sHg9rGRSIToQe0mwoTWtm+CjUPk+trxa40OzXzVsxT9xA==
-X-Received: by 2002:a05:600c:698c:b0:43c:fa52:7d2d with SMTP id
- 5b1f17b1804b1-442fbbdd46dmr5380835e9.20.1747304765129; 
- Thu, 15 May 2025 03:26:05 -0700 (PDT)
+ bh=CHj4ncL69V76HEaBcKrQS1jymf4RbpKZzaXqYG1J/L0=;
+ b=KMlLweh1zrvoQukdvrLzkF+PK1harDAfeuruLEad0JB0tbcx8d9wjHQgZmR9XujFGE
+ B58kQxyR4c36QOp4/kKf0CDQmmHV6+HxkO4ZS8Nqz7QGTThGOQBfmBeHGJhsnY+QtaHj
+ u3P4B5yOQIey4StXal/I9SoVpef9t7n7lpZ5tSDf2XznVxU4ItgeZJ1PGwCscU5Spmn9
+ DTeOh+Fo0zf2ricJ+7mwWG3CLsaCMhkP7QndWqu2JYJxChbUb0G6jBnmsSvNQSXU3yW5
+ zNSXABafFN3qUmQCs6oGa6mJwjZ4bNriUaqxA3e8g7n4xI4lzWJ6Cm3eGi+JYZVB1BiP
+ Za1A==
+X-Gm-Message-State: AOJu0Ywp4y3YjR0f1fPPC8RkH4JYhmxf5Nzy3EiAsCjSoi8DjrD6VVae
+ 0TkjAtQJgTeoaA+J9Kzoszj1Q4s57DM666VbS00GJk2CJOCVs1hqZqPDvn+livTkQxtY1yMTBoU
+ KyX0=
+X-Gm-Gg: ASbGnctjCAt+51c/9G8gvHQP3FFDxrX/A3m1FRhtRQl+4aKoCE3+dFqV6BrE3Tk3UsU
+ /R0YPHrY9oQ7Ts3ZYuoJd7NrcdqPttqkv3LCWd0qxkhZQa21RGZn84PJceY7KJR9XiU2vZRVihM
+ BxAqDPw/prvw+yfzYu8UdHiUlQSDCK1XN8kscOuBjzdAMQJeNtlYB2VtI9kjg9f6TsL17gm5zDq
+ guBpkD1x2gCa/Q7gerBNJTok9dSLc6DazyGd4Do6wWmtwv/s15oWebEeW36TJfOI9O6+CH0Klt0
+ PB7bTHWM21+BjN7lPXUfvtsL+GEIMI6EGG+wcFBqfxNeasIfdLc2o4wBjg==
+X-Google-Smtp-Source: AGHT+IFhixVYU5SXiN77Kra6hjlMgjK5J2IfDQREnMDt//frICiUxt8kXVNWpB5XyO8CqcyQfeHa+Q==
+X-Received: by 2002:a05:6000:250a:b0:3a0:6f92:ef7c with SMTP id
+ ffacd0b85a97d-3a35373a1ddmr1718079f8f.17.1747304766141; 
+ Thu, 15 May 2025 03:26:06 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442f396c3a4sm65657855e9.26.2025.05.15.03.26.04
+ 5b1f17b1804b1-442f396c3a4sm65657855e9.26.2025.05.15.03.26.05
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 May 2025 03:26:04 -0700 (PDT)
+ Thu, 15 May 2025 03:26:05 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 11/58] target/arm: Replace target_ulong -> vaddr for
- HWBreakpoint
-Date: Thu, 15 May 2025 11:24:59 +0100
-Message-ID: <20250515102546.2149601-12-peter.maydell@linaro.org>
+Subject: [PULL 12/58] include/system/hvf: missing vaddr include
+Date: Thu, 15 May 2025 11:25:00 +0100
+Message-ID: <20250515102546.2149601-13-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250515102546.2149601-1-peter.maydell@linaro.org>
 References: <20250515102546.2149601-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,67 +97,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+On MacOS x86_64:
+In file included from ../target/i386/hvf/x86_task.c:13:
+/Users/runner/work/qemu/qemu/include/system/hvf.h:42:5: error: unknown type name 'vaddr'
+    vaddr pc;
+    ^
+/Users/runner/work/qemu/qemu/include/system/hvf.h:43:5: error: unknown type name 'vaddr'
+    vaddr saved_insn;
+    ^
+/Users/runner/work/qemu/qemu/include/system/hvf.h:45:5: error: type name requires a specifier or qualifier
+    QTAILQ_ENTRY(hvf_sw_breakpoint) entry;
+    ^
+/Users/runner/work/qemu/qemu/include/system/hvf.h:45:18: error: a parameter list without types is only allowed in a function definition
+    QTAILQ_ENTRY(hvf_sw_breakpoint) entry;
+                 ^
+/Users/runner/work/qemu/qemu/include/system/hvf.h:45:36: error: expected ';' at end of declaration list
+    QTAILQ_ENTRY(hvf_sw_breakpoint) entry;
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-id: 20250512180502.2395029-2-pierrick.bouvier@linaro.org
+Message-id: 20250512180502.2395029-3-pierrick.bouvier@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/internals.h   | 6 +++---
- target/arm/hyp_gdbstub.c | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ include/system/hvf.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index 702eb1a5483..3360de9150f 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -1948,9 +1948,9 @@ extern GArray *hw_breakpoints, *hw_watchpoints;
- #define get_hw_bp(i)    (&g_array_index(hw_breakpoints, HWBreakpoint, i))
- #define get_hw_wp(i)    (&g_array_index(hw_watchpoints, HWWatchpoint, i))
+diff --git a/include/system/hvf.h b/include/system/hvf.h
+index 7b45a2e1988..a9a502f0c8f 100644
+--- a/include/system/hvf.h
++++ b/include/system/hvf.h
+@@ -17,6 +17,7 @@
+ #include "qemu/queue.h"
+ #include "exec/vaddr.h"
+ #include "qom/object.h"
++#include "exec/vaddr.h"
  
--bool find_hw_breakpoint(CPUState *cpu, target_ulong pc);
--int insert_hw_breakpoint(target_ulong pc);
--int delete_hw_breakpoint(target_ulong pc);
-+bool find_hw_breakpoint(CPUState *cpu, vaddr pc);
-+int insert_hw_breakpoint(vaddr pc);
-+int delete_hw_breakpoint(vaddr pc);
- 
- bool check_watchpoint_in_range(int i, vaddr addr);
- CPUWatchpoint *find_hw_watchpoint(CPUState *cpu, vaddr addr);
-diff --git a/target/arm/hyp_gdbstub.c b/target/arm/hyp_gdbstub.c
-index 0512d67f8cf..bb5969720ce 100644
---- a/target/arm/hyp_gdbstub.c
-+++ b/target/arm/hyp_gdbstub.c
-@@ -54,7 +54,7 @@ GArray *hw_breakpoints, *hw_watchpoints;
-  * here so future PC comparisons will work properly.
-  */
- 
--int insert_hw_breakpoint(target_ulong addr)
-+int insert_hw_breakpoint(vaddr addr)
- {
-     HWBreakpoint brk = {
-         .bcr = 0x1,                             /* BCR E=1, enable */
-@@ -80,7 +80,7 @@ int insert_hw_breakpoint(target_ulong addr)
-  * Delete a breakpoint and shuffle any above down
-  */
- 
--int delete_hw_breakpoint(target_ulong pc)
-+int delete_hw_breakpoint(vaddr pc)
- {
-     int i;
-     for (i = 0; i < hw_breakpoints->len; i++) {
-@@ -226,7 +226,7 @@ int delete_hw_watchpoint(vaddr addr, vaddr len, int type)
-     return -ENOENT;
- }
- 
--bool find_hw_breakpoint(CPUState *cpu, target_ulong pc)
-+bool find_hw_breakpoint(CPUState *cpu, vaddr pc)
- {
-     int i;
- 
+ #ifdef COMPILING_PER_TARGET
+ # ifdef CONFIG_HVF
 -- 
 2.43.0
 
