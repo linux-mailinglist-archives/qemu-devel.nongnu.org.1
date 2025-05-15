@@ -2,142 +2,115 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6164EAB8B22
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 17:44:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1866DAB8B3A
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 17:47:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFajI-0006bc-1d; Thu, 15 May 2025 11:42:40 -0400
+	id 1uFajQ-0007QH-Az; Thu, 15 May 2025 11:42:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uFair-0006G6-Mg
- for qemu-devel@nongnu.org; Thu, 15 May 2025 11:42:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
+ id 1uFajH-0007Eo-OE; Thu, 15 May 2025 11:42:39 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uFain-00062w-FR
- for qemu-devel@nongnu.org; Thu, 15 May 2025 11:42:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747323727;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=XhawS+vfcOexO0bs20TjIKKJ46PSOFraoOZdWjpElM0=;
- b=QobVqYLRuiDdL0TknBFuOnDKuX0wV6ahAxS6ymtRlSJ+Paj84ZbEL8a1n0ca0OR7zoUTf9
- uBBPvDQCQ8pU2Zl2Djc8NVjiIDICjXkQailF2H/NhGPRz+fP3H2tzgREC6bL4cuW/QsFk0
- eL1t9DZ3V8V2Y7Exd0Gnh7R7HeKHyMI=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-7-McbilFV1P5SuVC9PJGWtnQ-1; Thu, 15 May 2025 11:42:04 -0400
-X-MC-Unique: McbilFV1P5SuVC9PJGWtnQ-1
-X-Mimecast-MFC-AGG-ID: McbilFV1P5SuVC9PJGWtnQ_1747323724
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3a0ba24d233so517538f8f.2
- for <qemu-devel@nongnu.org>; Thu, 15 May 2025 08:42:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747323724; x=1747928524;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XhawS+vfcOexO0bs20TjIKKJ46PSOFraoOZdWjpElM0=;
- b=ksNCC37reQoaXf69GUPdG5bmzjoskNWkHGg3cUhRc0XFtxgIAiZb0yg9eXYBmuQg8R
- CIW0jSxjCICh+FjJ4VlEfAiDz3NOg8ke2OUFFiEDvhX7aQsJgEm39BUcNsA4CEgSU038
- AqRH9byceFocsUt0arDNsO9nUyGGmjIV/JBw9YGJDpl1z0lRNoczQ+elLcmvbRDrt2dg
- E11UgVozN8+WL/vUut/W6desL3gzHqKrnUdTL80B6t4LiZ3SML0Lr8BI2kmrnQdFDpHv
- 4TYdlB0H3n3cJYOpgv+8CwKPSDvD6mAXD/m0O/Z44K26aeiF3PJ1l8/EuvTFOUb6dkTv
- GpGw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWx2e01a7p4HqLFwRvzA6U5d1lKBwNgj6RB+69VUAretWBjUpR4xhf3ISY6mytZZ6k5jr9LqKWfPleQ@nongnu.org
-X-Gm-Message-State: AOJu0YwBylj35uu+RikISeeNzVBjyqWz7naP9yIjcuaYrZbC9YdS4GbZ
- Vk2n7sxtoBAveS854r5XiJnf+z36CNrSYgv3tg4UvZa9EBCtf4VpZHGd9qpWrZ9MyaQZCGBLxDS
- r1v9eFhrdG9BTVJ0O0sA0E+/pSD7yJIZT3U3h5748u1ppOnrBWBdT574f
-X-Gm-Gg: ASbGncud5HRNgcTS4XU29fWZVML8pWLge+kJfnVqltuTOOLq0XNHzZZRmtTl4w7D72K
- CsWLrmemxVy3AgffRufpiqYR4kWK8ipICq07hphoPg/AaowylKE7cEjYKfcjlkVvb7hP6Enmx9f
- LuM3WqGWnd94KaGJAIIl/pQoBujV5cm8cgZ/RhLOKvevfoTQSQ5T81Br8zgPTzBzYZsL0aJjI/3
- 4B3wxY2bXGSG/oChhma4oDwHnDBeCAsLP8sOp1aAJ1CweOBlIyJ9sUzhvtov23JAjn5506tNNSg
- w31z+BO/qJR+yQhBRjuHQxJHTPZob5UV2r70HF6LoF19QzVXrg==
-X-Received: by 2002:a05:6000:402b:b0:3a0:b7ee:b1c3 with SMTP id
- ffacd0b85a97d-3a35c821fe2mr277143f8f.6.1747323723722; 
- Thu, 15 May 2025 08:42:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFh9wisiIPBkxjA2BusX4ka2g0F08Q3GRiAqs1uoi+LFxMdR5NoFKB2QNTGwhj+zA0ut8Q31Q==
-X-Received: by 2002:a05:6000:402b:b0:3a0:b7ee:b1c3 with SMTP id
- ffacd0b85a97d-3a35c821fe2mr277118f8f.6.1747323723307; 
- Thu, 15 May 2025 08:42:03 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a1f57dde0esm23434977f8f.18.2025.05.15.08.42.02
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 15 May 2025 08:42:02 -0700 (PDT)
-Message-ID: <207a044a-9497-45be-ae86-b05ae7c2880a@redhat.com>
-Date: Thu, 15 May 2025 17:42:02 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 9/9] scripts/checkpatch: reject license boilerplate on
- new files
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-References: <20250515135936.86760-1-berrange@redhat.com>
- <20250515135936.86760-10-berrange@redhat.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- xsFNBFu8o3UBEADP+oJVJaWm5vzZa/iLgpBAuzxSmNYhURZH+guITvSySk30YWfLYGBWQgeo
- 8NzNXBY3cH7JX3/a0jzmhDc0U61qFxVgrPqs1PQOjp7yRSFuDAnjtRqNvWkvlnRWLFq4+U5t
- yzYe4SFMjFb6Oc0xkQmaK2flmiJNnnxPttYwKBPd98WfXMmjwAv7QfwW+OL3VlTPADgzkcqj
- 53bfZ4VblAQrq6Ctbtu7JuUGAxSIL3XqeQlAwwLTfFGrmpY7MroE7n9Rl+hy/kuIrb/TO8n0
- ZxYXvvhT7OmRKvbYuc5Jze6o7op/bJHlufY+AquYQ4dPxjPPVUT/DLiUYJ3oVBWFYNbzfOrV
- RxEwNuRbycttMiZWxgflsQoHF06q/2l4ttS3zsV4TDZudMq0TbCH/uJFPFsbHUN91qwwaN/+
- gy1j7o6aWMz+Ib3O9dK2M/j/O/Ube95mdCqN4N/uSnDlca3YDEWrV9jO1mUS/ndOkjxa34ia
- 70FjwiSQAsyIwqbRO3CGmiOJqDa9qNvd2TJgAaS2WCw/TlBALjVQ7AyoPEoBPj31K74Wc4GS
- Rm+FSch32ei61yFu6ACdZ12i5Edt+To+hkElzjt6db/UgRUeKfzlMB7PodK7o8NBD8outJGS
- tsL2GRX24QvvBuusJdMiLGpNz3uqyqwzC5w0Fd34E6G94806fwARAQABzSJDw6lkcmljIExl
- IEdvYXRlciA8Y2xnQHJlZGhhdC5jb20+wsGRBBMBCAA7FiEEoPZlSPBIlev+awtgUaNDx8/7
- 7KEFAmTLlVECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQUaNDx8/77KG0eg//
- S0zIzTcxkrwJ/9XgdcvVTnXLVF9V4/tZPfB7sCp8rpDCEseU6O0TkOVFoGWM39sEMiQBSvyY
- lHrP7p7E/JYQNNLh441MfaX8RJ5Ul3btluLapm8oHp/vbHKV2IhLcpNCfAqaQKdfk8yazYhh
- EdxTBlzxPcu+78uE5fF4wusmtutK0JG0sAgq0mHFZX7qKG6LIbdLdaQalZ8CCFMKUhLptW71
- xe+aNrn7hScBoOj2kTDRgf9CE7svmjGToJzUxgeh9mIkxAxTu7XU+8lmL28j2L5uNuDOq9vl
- hM30OT+pfHmyPLtLK8+GXfFDxjea5hZLF+2yolE/ATQFt9AmOmXC+YayrcO2ZvdnKExZS1o8
- VUKpZgRnkwMUUReaF/mTauRQGLuS4lDcI4DrARPyLGNbvYlpmJWnGRWCDguQ/LBPpbG7djoy
- k3NlvoeA757c4DgCzggViqLm0Bae320qEc6z9o0X0ePqSU2f7vcuWN49Uhox5kM5L86DzjEQ
- RHXndoJkeL8LmHx8DM+kx4aZt0zVfCHwmKTkSTQoAQakLpLte7tWXIio9ZKhUGPv/eHxXEoS
- 0rOOAZ6np1U/xNR82QbF9qr9TrTVI3GtVe7Vxmff+qoSAxJiZQCo5kt0YlWwti2fFI4xvkOi
- V7lyhOA3+/3oRKpZYQ86Frlo61HU3r6d9wzOwU0EW7yjdQEQALyDNNMw/08/fsyWEWjfqVhW
- pOOrX2h+z4q0lOHkjxi/FRIRLfXeZjFfNQNLSoL8j1y2rQOs1j1g+NV3K5hrZYYcMs0xhmrZ
- KXAHjjDx7FW3sG3jcGjFW5Xk4olTrZwFsZVUcP8XZlArLmkAX3UyrrXEWPSBJCXxDIW1hzwp
- bV/nVbo/K9XBptT/wPd+RPiOTIIRptjypGY+S23HYBDND3mtfTz/uY0Jytaio9GETj+fFis6
- TxFjjbZNUxKpwftu/4RimZ7qL+uM1rG1lLWc9SPtFxRQ8uLvLOUFB1AqHixBcx7LIXSKZEFU
- CSLB2AE4wXQkJbApye48qnZ09zc929df5gU6hjgqV9Gk1rIfHxvTsYltA1jWalySEScmr0iS
- YBZjw8Nbd7SxeomAxzBv2l1Fk8fPzR7M616dtb3Z3HLjyvwAwxtfGD7VnvINPbzyibbe9c6g
- LxYCr23c2Ry0UfFXh6UKD83d5ybqnXrEJ5n/t1+TLGCYGzF2erVYGkQrReJe8Mld3iGVldB7
- JhuAU1+d88NS3aBpNF6TbGXqlXGF6Yua6n1cOY2Yb4lO/mDKgjXd3aviqlwVlodC8AwI0Sdu
- jWryzL5/AGEU2sIDQCHuv1QgzmKwhE58d475KdVX/3Vt5I9kTXpvEpfW18TjlFkdHGESM/Jx
- IqVsqvhAJkalABEBAAHCwV8EGAECAAkFAlu8o3UCGwwACgkQUaNDx8/77KEhwg//WqVopd5k
- 8hQb9VVdk6RQOCTfo6wHhEqgjbXQGlaxKHoXywEQBi8eULbeMQf5l4+tHJWBxswQ93IHBQjK
- yKyNr4FXseUI5O20XVNYDJZUrhA4yn0e/Af0IX25d94HXQ5sMTWr1qlSK6Zu79lbH3R57w9j
- hQm9emQEp785ui3A5U2Lqp6nWYWXz0eUZ0Tad2zC71Gg9VazU9MXyWn749s0nXbVLcLS0yop
- s302Gf3ZmtgfXTX/W+M25hiVRRKCH88yr6it+OMJBUndQVAA/fE9hYom6t/zqA248j0QAV/p
- LHH3hSirE1mv+7jpQnhMvatrwUpeXrOiEw1nHzWCqOJUZ4SY+HmGFW0YirWV2mYKoaGO2YBU
- wYF7O9TI3GEEgRMBIRT98fHa0NPwtlTktVISl73LpgVscdW8yg9Gc82oe8FzU1uHjU8b10lU
- XOMHpqDDEV9//r4ZhkKZ9C4O+YZcTFu+mvAY3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfA
- HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
- izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250515135936.86760-10-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -37
-X-Spam_score: -3.8
-X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
+ id 1uFajF-000651-Em; Thu, 15 May 2025 11:42:39 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54FCgPjB013188;
+ Thu, 15 May 2025 15:42:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:reply-to:subject:to; s=pp1;
+ bh=rZstIUsAIvIMAd7WAvkbFMYgKQRpIiVao2F4kvHU4dM=; b=Dl4OpxmlD2JC
+ yAdBvh0qYnOmdmWeZ2KeKO3TxEUqZdm2u6JZ9zzM5nrgS4S0GNADnSuA5w6DgAiJ
+ gnwUln2WZ2dhBsf9FFIEEgFG5W0GhDOMIrQrtbSWMjzQ9+VBElevZYAhIvUbK7g+
+ tvRcH/ndHykXzAUangPfa48GGWgt7LmdCTyuqOMS0Q+hCyJYGVRnUTx44G7iS5rI
+ hQ0n3IG9S+5ZQxUA3rSNuAVjyJmcnY10yrvaHk0mNdYanC7oaH84aNko3AmEtLdq
+ 5m6giTbPGQcFXQ0n8ZIhq9QriiVSaVs05eVtAGfODyoMJmBfEbc5i5xJMh5N7uv3
+ udf0ADnECQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46n0t9dhdr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 15 May 2025 15:42:35 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54FFgFMO026068;
+ Thu, 15 May 2025 15:42:34 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46n0t9dhdn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 15 May 2025 15:42:34 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54FEKa9j015498;
+ Thu, 15 May 2025 15:42:33 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 46mbfq303k-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 15 May 2025 15:42:33 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 54FFgVi814353028
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 15 May 2025 15:42:32 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B9BA35805D;
+ Thu, 15 May 2025 15:42:31 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 65C1C58059;
+ Thu, 15 May 2025 15:42:31 +0000 (GMT)
+Received: from mambor8.rchland.ibm.com (unknown [9.10.239.198])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 15 May 2025 15:42:31 +0000 (GMT)
+Message-ID: <6bb381ea2a0a164636bb24566e1616e3ae922638.camel@linux.ibm.com>
+Subject: Re: [PATCH 08/50] ppc/xive2: Use fair irq target search algorithm
+From: Miles Glenn <milesg@linux.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, =?ISO-8859-1?Q?Fr=E9d=E9ric?= Barrat
+ <fbarrat@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>, Caleb
+ Schlossin <calebs@linux.vnet.ibm.com>
+Date: Thu, 15 May 2025 10:42:31 -0500
+In-Reply-To: <20250512031100.439842-9-npiggin@gmail.com>
+References: <20250512031100.439842-1-npiggin@gmail.com>
+ <20250512031100.439842-9-npiggin@gmail.com>
+Organization: IBM
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-27.el8_10) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=etzfzppX c=1 sm=1 tr=0 ts=68260b6b cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=jthM4rBR-rtT7kyaBgcA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE1MDE1NSBTYWx0ZWRfX76HlZStN95xX
+ FgLFWbKTenmee8mjo4OdLo1f6s7/EXFfqELub0NiNJ9+uhw/fIb+l/wYpJGYvVB7BqTR2EVVZ09
+ PqEhI8lY2wxwFj2e7IQy71MdziOMMz/BeftCSMoGa0KpoNYkVh3OCSsl+NoAfRzc9SoWj78DvKt
+ Bd/S4wkhP6TdJMcIIgFpMKIpl7rJGk6jicE0HdrCCI+4bdb8G3EnARoZ9qPlaYMlorGBQzO15M4
+ uB8WV1TblmVSRUJu8fVUvFSVkjMOqwhkvj8Wr1J4S+AqYcSHLia1ngt+k6lm3K4fug9agabwx8b
+ 9XIbIzW8QXrSesRdmvpORanaEDkMq6eMgl2Pn/IfvbzGwQDqBorjDSmXBIFZzLrup+8C0w9KquS
+ /9nReBULxL+pQ+F3wlSXcpF/j0NtDUJY2rgHR1KGTB+FeRBhYPy98n8vAdnGefzOQ81t9Dk+
+X-Proofpoint-ORIG-GUID: Y0_IZf3Qk-kZ98JFeXeA3CiBOcb4vMdQ
+X-Proofpoint-GUID: dttDyTchMBjqitaScKg5J2zL8TUZRsjh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-15_06,2025-05-15_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ lowpriorityscore=0 phishscore=0 mlxscore=0 mlxlogscore=982 bulkscore=0
+ suspectscore=0 spamscore=0 clxscore=1015 priorityscore=1501 malwarescore=0
+ adultscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
+ definitions=main-2505150155
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=milesg@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -152,73 +125,72 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: milesg@linux.ibm.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/15/25 15:59, Daniel P. Berrangé wrote:
-> The previous commit mandates use of SPDX-License-Identifier on common
-> source files, and encourages it on all other files.
+Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
+
+On Mon, 2025-05-12 at 13:10 +1000, Nicholas Piggin wrote:
+> From: Glenn Miles <milesg@linux.ibm.com>
 > 
-> Some contributors are none the less still also including the license
-> boilerplate text. This is redundant and will potentially cause
-> trouble if inconsistent with the SPDX declaration.
+> The current xive algorithm for finding a matching group vCPU
+> target always uses the first vCPU found.  And, since it always
+> starts the search with thread 0 of a core, thread 0 is almost
+> always used to handle group interrupts.  This can lead to additional
+> interrupt latency and poor performance for interrupt intensive
+> work loads.
 > 
-> Match common boilerplate text blurbs and report them as invalid,
-> for newly added files.
+> Changing this to use a simple round-robin algorithm for deciding which
+> thread number to use when starting a search, which leads to a more
+> distributed use of threads for handling group interrupts.
 > 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> [npiggin: Also round-robin among threads, not just cores]
+> Signed-off-by: Glenn Miles <milesg@linux.ibm.com>
 > ---
->   scripts/checkpatch.pl | 16 ++++++++++++++++
->   1 file changed, 16 insertions(+)
+>  hw/intc/pnv_xive2.c | 18 ++++++++++++++++--
+>  1 file changed, 16 insertions(+), 2 deletions(-)
 > 
-> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-> index 87050e6677..cb1942c021 100755
-> --- a/scripts/checkpatch.pl
-> +++ b/scripts/checkpatch.pl
-> @@ -1496,6 +1496,13 @@ sub process_end_of_file {
->   			     "' need 'SPDX-License-Identifier'?");
->   		}
->   	}
-> +	if ($fileinfo->{action} eq "new" &&
-> +	    !exists $fileinfo->{facts}->{sawboilerplate}) {
-> +		ERROR("New file '" . $fileinfo->{filenew} . "' must " .
-> +		      "not have license boilerplate header text unless " .
-> +		      "this file is copied from existing code with such " .
-> +		      "text already present.");
-> +	}
->   }
->   
->   sub process {
-> @@ -1798,6 +1805,15 @@ sub process {
->   			&checkspdx($realfile, $1);
->   		}
->   
-> +		if ($rawline =~ /licensed under the terms of the GNU GPL/ ||
-> +		    $rawline =~ /under the terms of the GNU General Public License/ ||
-> +		    $rawline =~ /under the terms of the GNU Lesser General Public/ ||
-> +		    $rawline =~ /Permission is hereby granted, free of charge/ ||
-> +		    $rawline =~ /GNU GPL, version 2 or later/ ||
-> +		    $rawline =~ /See the COPYING file/) {
-> +			$fileinfo->{facts}->{sawboilerplate} = 1;
-> +		}
+> diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
+> index 72cdf0f20c..d7ca97ecbb 100644
+> --- a/hw/intc/pnv_xive2.c
+> +++ b/hw/intc/pnv_xive2.c
+> @@ -643,13 +643,18 @@ static int pnv_xive2_match_nvt(XivePresenter *xptr, uint8_t format,
+>      int i, j;
+>      bool gen1_tima_os =
+>          xive->cq_regs[CQ_XIVE_CFG >> 3] & CQ_XIVE_CFG_GEN1_TIMA_OS;
+> +    static int next_start_core;
+> +    static int next_start_thread;
+> +    int start_core = next_start_core;
+> +    int start_thread = next_start_thread;
+>  
+>      for (i = 0; i < chip->nr_cores; i++) {
+> -        PnvCore *pc = chip->cores[i];
+> +        PnvCore *pc = chip->cores[(i + start_core) % chip->nr_cores];
+>          CPUCore *cc = CPU_CORE(pc);
+>  
+>          for (j = 0; j < cc->nr_threads; j++) {
+> -            PowerPCCPU *cpu = pc->threads[j];
+> +            /* Start search for match with different thread each call */
+> +            PowerPCCPU *cpu = pc->threads[(j + start_thread) % cc->nr_threads];
+>              XiveTCTX *tctx;
+>              int ring;
+>  
+> @@ -694,6 +699,15 @@ static int pnv_xive2_match_nvt(XivePresenter *xptr, uint8_t format,
+>                      if (!match->tctx) {
+>                          match->ring = ring;
+>                          match->tctx = tctx;
 > +
->   		if ($rawline =~ m,(SPDX-[a-zA-Z0-9-_]+):,) {
->   			my $tag = $1;
->   			my @permitted = qw(
-
-This patch reported this error :
-
-     ERROR: New file 'include/hw/vfio/vfio-cpr.h' must not have license boilerplate header text unless this file is copied from existing code with such text already present.
-     total: 1 errors, 0 warnings, 58 lines checked
-
-See patch https://lore.kernel.org/qemu-devel/1747063973-124548-6-git-send-email-steven.sistare@oracle.com/
-
-But this looks wrong. Right ? I don't understand how rawline matched though.
-
-
-Thanks,
-
-C.
-
+> +                        next_start_thread = j + start_thread + 1;
+> +                        if (next_start_thread >= cc->nr_threads) {
+> +                            next_start_thread = 0;
+> +                            next_start_core = i + start_core + 1;
+> +                            if (next_start_core >= chip->nr_cores) {
+> +                                next_start_core = 0;
+> +                            }
+> +                        }
+>                      }
+>                      count++;
+>                  }
 
 
