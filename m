@@ -2,24 +2,24 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F2A9AB8014
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 10:17:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0114AB8007
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 10:15:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFTig-0006Yw-LQ; Thu, 15 May 2025 04:13:34 -0400
+	id 1uFThz-0001sz-QT; Thu, 15 May 2025 04:12:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1uFTgR-0004nP-Pw; Thu, 15 May 2025 04:11:16 -0400
+ id 1uFTgW-0005Fc-Lc; Thu, 15 May 2025 04:11:22 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1uFTgP-00010V-0j; Thu, 15 May 2025 04:11:15 -0400
+ id 1uFTgU-00018W-HT; Thu, 15 May 2025 04:11:20 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 15 May
- 2025 16:10:12 +0800
+ 2025 16:10:13 +0800
 Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
  Transport; Thu, 15 May 2025 16:10:12 +0800
@@ -31,10 +31,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
  <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v3 13/28] hw/misc/aspeed_hace: Add support for source, digest,
- key buffer 64 bit addresses
-Date: Thu, 15 May 2025 16:09:45 +0800
-Message-ID: <20250515081008.583578-14-jamin_lin@aspeedtech.com>
+Subject: [PATCH v3 14/28] hw/misc/aspeed_hace: Support DMA 64 bits dram address
+Date: Thu, 15 May 2025 16:09:46 +0800
+Message-ID: <20250515081008.583578-15-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250515081008.583578-1-jamin_lin@aspeedtech.com>
 References: <20250515081008.583578-1-jamin_lin@aspeedtech.com>
@@ -68,118 +67,91 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 According to the AST2700 design, the data source address is 64-bit, with
 R_HASH_SRC_HI storing bits [63:32] and R_HASH_SRC storing bits [31:0].
-Similarly, the digest address is 64-bit, with R_HASH_DIGEST_HI storing bits
-[63:32] and R_HASH_DIGEST storing bits [31:0]. The HMAC key buffer address is also
-64-bit, with R_HASH_KEY_BUFF_HI storing bits [63:32] and R_HASH_KEY_BUFF storing
-bits [31:0].
 
-The AST2700 supports a maximum DRAM size of 8 GB, with a DRAM addressable range
-from 0x0_0000_0000 to 0x1_FFFF_FFFF. Since this range fits within 34 bits, only
-bits [33:0] are needed to store the DRAM offset. To optimize address storage,
-the high physical address bits [1:0] of the source, digest and key buffer
-addresses are stored as dram_offset bits [33:32].
+Similarly, the digest address is 64-bit, with R_HASH_DEST_HI storing bits
+[63:32] and R_HASH_DEST storing bits [31:0].
 
-To achieve this, a src_hi_mask with a mask value of 0x3 is introduced, ensuring
-that src_addr_hi consists of bits [1:0]. The final src_addr is computed as
-(src_addr_hi[1:0] << 32) | src_addr[31:0], representing the DRAM offset within
-bits [33:0].
+To maintain compatibility with older SoCs such as the AST2600, the AST2700 HW
+automatically set bit 34 of the 64-bit sg_addr. As a result, the firmware
+only needs to provide a 32-bit sg_addr containing bits [31:0]. This is
+sufficient for the AST2700, as it uses a DRAM offset rather than a DRAM
+address.
 
-Similarly, a dest_hi_mask with a mask value of 0x3 is introduced to ensure that
-dest_addr_hi consists of bits [1:0]. The final dest_addr is calculated as
-(dest_addr_hi[1:0] << 32) | dest_addr[31:0], representing the DRAM offset within
-bits [33:0].
-
-Additionally, a key_hi_mask with a mask value of 0x3 is introduced to ensure
-that key_buf_addr_hi consists of bits [1:0]. The final key_buf_addr is
-determined as (key_buf_addr_hi[1:0] << 32) | key_buf_addr[31:0], representing
-the DRAM offset within bits [33:0].
-
-This approach eliminates the need to reduce the high part of the DRAM physical
-address for DMA operations. Previously, this was calculated as
-(high physical address bits [7:0] - 4), since the DRAM start address is
-0x4_00000000, making the high part address [7:0] - 4.
+Introduce a has_dma64 class attribute and set it to true for the AST2700.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- include/hw/misc/aspeed_hace.h |  3 +++
- hw/misc/aspeed_hace.c         | 31 ++++++++++++++++++++++++++++++-
- 2 files changed, 33 insertions(+), 1 deletion(-)
+ include/hw/misc/aspeed_hace.h |  1 +
+ hw/misc/aspeed_hace.c         | 17 ++++++++++++++++-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
 diff --git a/include/hw/misc/aspeed_hace.h b/include/hw/misc/aspeed_hace.h
-index f30d606559..9945b61863 100644
+index 9945b61863..d5d07c6c02 100644
 --- a/include/hw/misc/aspeed_hace.h
 +++ b/include/hw/misc/aspeed_hace.h
-@@ -50,6 +50,9 @@ struct AspeedHACEClass {
-     uint32_t hash_mask;
-     uint64_t nr_regs;
-     bool raise_crypt_interrupt_workaround;
-+    uint32_t src_hi_mask;
-+    uint32_t dest_hi_mask;
-+    uint32_t key_hi_mask;
+@@ -53,6 +53,7 @@ struct AspeedHACEClass {
+     uint32_t src_hi_mask;
+     uint32_t dest_hi_mask;
+     uint32_t key_hi_mask;
++    bool has_dma64;
  };
  
  #endif /* ASPEED_HACE_H */
 diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c
-index fef63eb488..d58645cabd 100644
+index d58645cabd..764408716e 100644
 --- a/hw/misc/aspeed_hace.c
 +++ b/hw/misc/aspeed_hace.c
-@@ -30,6 +30,9 @@
- #define R_HASH_DIGEST   (0x24 / 4)
- #define R_HASH_KEY_BUFF (0x28 / 4)
- #define R_HASH_SRC_LEN  (0x2c / 4)
-+#define R_HASH_SRC_HI       (0x90 / 4)
-+#define R_HASH_DIGEST_HI    (0x94 / 4)
-+#define R_HASH_KEY_BUFF_HI  (0x98 / 4)
+@@ -147,9 +147,13 @@ static bool has_padding(AspeedHACEState *s, struct iovec *iov,
  
- #define R_HASH_CMD      (0x30 / 4)
- /* Hash algorithm selection */
-@@ -473,6 +476,15 @@ static void aspeed_hace_write(void *opaque, hwaddr addr, uint64_t data,
-             }
-         }
-         break;
-+    case R_HASH_SRC_HI:
-+        data &= ahc->src_hi_mask;
-+        break;
-+    case R_HASH_DIGEST_HI:
-+        data &= ahc->dest_hi_mask;
-+        break;
-+    case R_HASH_KEY_BUFF_HI:
-+        data &= ahc->key_hi_mask;
-+        break;
-     default:
-         break;
-     }
-@@ -656,12 +668,29 @@ static void aspeed_ast2700_hace_class_init(ObjectClass *klass, const void *data)
+ static uint64_t hash_get_source_addr(AspeedHACEState *s)
+ {
++    AspeedHACEClass *ahc = ASPEED_HACE_GET_CLASS(s);
+     uint64_t src_addr = 0;
  
-     dc->desc = "AST2700 Hash and Crypto Engine";
+     src_addr = deposit64(src_addr, 0, 32, s->regs[R_HASH_SRC]);
++    if (ahc->has_dma64) {
++        src_addr = deposit64(src_addr, 32, 32, s->regs[R_HASH_SRC_HI]);
++    }
  
--    ahc->nr_regs = 0x64 >> 2;
-+    ahc->nr_regs = 0x9C >> 2;
-     ahc->src_mask = 0x7FFFFFFF;
-     ahc->dest_mask = 0x7FFFFFF8;
-     ahc->key_mask = 0x7FFFFFF8;
-     ahc->hash_mask = 0x00147FFF;
+     return src_addr;
+ }
+@@ -223,7 +227,13 @@ static int hash_prepare_sg_iov(AspeedHACEState *s, struct iovec *iov,
+         sg_addr = address_space_ldl_le(&s->dram_as, src + SG_LIST_LEN_SIZE,
+                                        MEMTXATTRS_UNSPECIFIED, NULL);
+         sg_addr &= SG_LIST_ADDR_MASK;
+-
++        /*
++         * To maintain compatibility with older SoCs such as the AST2600,
++         * the AST2700 HW automatically set bit 34 of the 64-bit sg_addr.
++         * As a result, the firmware only needs to provide a 32-bit sg_addr
++         * containing bits [31:0]. This is sufficient for the AST2700, as
++         * it uses a DRAM offset rather than a DRAM address.
++         */
+         plen = len & SG_LIST_LEN_MASK;
+         haddr = address_space_map(&s->dram_as, sg_addr, &plen, false,
+                                   MEMTXATTRS_UNSPECIFIED);
+@@ -260,9 +270,13 @@ static int hash_prepare_sg_iov(AspeedHACEState *s, struct iovec *iov,
  
-+    /*
-+     * The AST2700 supports a maximum DRAM size of 8 GB, with a DRAM
-+     * addressable range from 0x0_0000_0000 to 0x1_FFFF_FFFF. Since this range
-+     * fits within 34 bits, only bits [33:0] are needed to store the DRAM
-+     * offset. To optimize address storage, the high physical address bits
-+     * [1:0] of the source, digest and key buffer addresses are stored as
-+     * dram_offset bits [33:32].
-+     *
-+     * This approach eliminates the need to reduce the high part of the DRAM
-+     * physical address for DMA operations. Previously, this was calculated as
-+     * (high physical address bits [7:0] - 4), since the DRAM start address is
-+     * 0x4_00000000, making the high part address [7:0] - 4.
-+     */
-+    ahc->src_hi_mask = 0x00000003;
-+    ahc->dest_hi_mask = 0x00000003;
-+    ahc->key_hi_mask = 0x00000003;
-+
-     /*
-      * Currently, it does not support the CRYPT command. Instead, it only
-      * sends an interrupt to notify the firmware that the crypt command
+ static uint64_t hash_get_digest_addr(AspeedHACEState *s)
+ {
++    AspeedHACEClass *ahc = ASPEED_HACE_GET_CLASS(s);
+     uint64_t digest_addr = 0;
+ 
+     digest_addr = deposit64(digest_addr, 0, 32, s->regs[R_HASH_DIGEST]);
++    if (ahc->has_dma64) {
++        digest_addr = deposit64(digest_addr, 32, 32, s->regs[R_HASH_DIGEST_HI]);
++    }
+ 
+     return digest_addr;
+ }
+@@ -697,6 +711,7 @@ static void aspeed_ast2700_hace_class_init(ObjectClass *klass, const void *data)
+      * has completed. It is a temporary workaround.
+      */
+     ahc->raise_crypt_interrupt_workaround = true;
++    ahc->has_dma64 = true;
+ }
+ 
+ static const TypeInfo aspeed_ast2700_hace_info = {
 -- 
 2.43.0
 
