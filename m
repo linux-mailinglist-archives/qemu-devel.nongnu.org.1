@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED99BAB8DBC
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 19:29:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F36DAB8DCD
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 19:30:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFcNU-0000Sh-4x; Thu, 15 May 2025 13:28:16 -0400
+	id 1uFcNa-0000iH-Bs; Thu, 15 May 2025 13:28:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uFcN3-0008Ek-FJ
- for qemu-devel@nongnu.org; Thu, 15 May 2025 13:27:49 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1uFcN4-0008Hx-BI
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 13:27:50 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uFcN0-00025v-LC
- for qemu-devel@nongnu.org; Thu, 15 May 2025 13:27:48 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-7423df563d6so1398924b3a.0
+ id 1uFcN1-00026e-99
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 13:27:49 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-74264d1832eso1674330b3a.0
  for <qemu-devel@nongnu.org>; Thu, 15 May 2025 10:27:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747330065; x=1747934865; darn=nongnu.org;
+ d=linaro.org; s=google; t=1747330066; x=1747934866; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Yy1N9oiYSYBkQ29Su06uvC5+FmtCDv4iNmAiWF6Koag=;
- b=ASZk1t2m6ejzXgfFXk3Gx/y5QNj/aa4DlQBHBhePdhlrRjzcqHccK9JExxdcJwMf59
- tYi2CjIJBe0G168G52+BBaCGMXKzKKeT0HvthAlg43VMIsT98wYen/ABEBE7Hten8ZmW
- RswX3QhBvMtJp+YCkAKNrs5WuoEaV2HVeCrNyrIruJCLzRuMjfn4RvF5WXE/8oBk/rLq
- gKqHEDz8NJn2HKTKHdI7YmGqL16o0uvDS+TRB1UvzxxERvpLRT0iE4q4Mt5phra4UG93
- cBpvLtrFCCGJQOK7xvx5Cn01efpge8rDy8wFZbawQFW8Zz8GYFrreZF0Kppus22VBRAP
- mvZw==
+ bh=CNI2BFFgTeljdJ/HtYFFxLLCliw0wPHFB2HapKUt6b4=;
+ b=c2Ib+CYyfD3gs345IJ1hW4Chv1HTMXFmSCzoY+JX9iqbvHaKuw4W80wMtOvO3F3sds
+ EQmelCyrGYgoaeCzu7So2kEry9r5I1BDsHMcKO8wGwq1ef0BgOC1bDZv4AIf7AwK6udN
+ DijLEJ71zosGcaKeAWIah9iRI0rPsNZ2pnRxQ8y7629niIZ9YpU6gvpBsl0uPHzwtp+8
+ +lQ/8UbZUwgU9H3BnbvNgo0cc99mpz+vqcfJaLoelnV+3szSYKayMgZzeQT79Gu3TbnJ
+ KyWJtkKw62ou4Odv8dBi5ovcOBq12IOFjTfUfqsgjPuBa2C7j+WquBRm/qmIsG6OvG5I
+ 72JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747330065; x=1747934865;
+ d=1e100.net; s=20230601; t=1747330066; x=1747934866;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Yy1N9oiYSYBkQ29Su06uvC5+FmtCDv4iNmAiWF6Koag=;
- b=n5vRewv481DDBLu3vkLGq20wh8y5Pex22hAYjJetdwNUqlqNap8NquqAKxVXIMCUM6
- 7yD+O/PeFZUiXAh3DKPv6f2QzdrWcGxr7a5ZZBbMqKFOcjv4MKcnXjljW61imAcbSEIb
- tQi9nSsBg2ZmeBaisE7U60gi+mdSACC0gNDFlTE0DmswFvc35a08No3Bnpsck3uOfUXF
- n4lt0pWY0PQnlur0Pve+RW+DdjkPYwrZD+/mKeGGukw4VYrc+onRp9I5V3L/hanB3qeO
- cAHFzxiwlGuXmsUyDrGjEL3+V46sTpS+DObA4hgLv76DlL3YW07+kLt9PgSA0REbeC+L
- K57w==
-X-Gm-Message-State: AOJu0YxE7u/ufUH+ZySpkqDc09nPNdVpnPh24vmvRz7O+26/GyYOJiWC
- k3XJsCzcJHsOUFyl/FcjznvO9syblXe/IBs4i5kIpT3VqqGspD+8AW0mu/qN68sFttKlLOIRKoO
- MsAI3
-X-Gm-Gg: ASbGnctztZBXXGGpX3KyQ3Dt+JjuQlHGZJDXI3TT5//LU0+Ap+L0aJ62KDzv1l1i9yk
- GcqJAmaRgwoXjKHKPY6KldX/BRNRsfXuLtL/4KSI05cgTgD6sezXHOZbes6VaP2ic5YvkUOP5Cr
- Pam5jbNAzyUZ35fkDpJBCBTEjXpAegUlsYHxDV1BtbAMSFCCOrna8bUwaaWOnanLO133kaM+oqM
- 5H+bIB94EvS1y5ltPy3ugfwDGjprI7s0pA61fQEEo+lH/dqL5HlBntifp4Z2uveo7C0pBte89xa
- 9Q6z6WcXLn4iKzJCUUX3UGQQpxohBsf8xHIFCULgLzeqb9nz3tA=
-X-Google-Smtp-Source: AGHT+IGf0DssqHpoVYKS/Po4HeATLasR0Yfc9cTp4qkOKfxeF5Ul3T76lRFHDEqGDU03jMY2kDJ7nw==
-X-Received: by 2002:a05:6a21:69b:b0:216:1ea0:a512 with SMTP id
- adf61e73a8af0-21621a03148mr429988637.38.1747330064831; 
- Thu, 15 May 2025 10:27:44 -0700 (PDT)
+ bh=CNI2BFFgTeljdJ/HtYFFxLLCliw0wPHFB2HapKUt6b4=;
+ b=m8Z2qQDJ+EQxBaD2X9mP4cKqDkFRvg0wXbWPi7Bpt6Kwj3+lr6s7bvyUQIjKEqgVmF
+ 5VOHmoWb91vpjqhCCGXLNOm8joUgE5V+vu1J9fret8skrs3Ud7kUjSE7yrRgEbjUe6Xe
+ UpuowZ972xxUvzd4OPE7+HJ0vHcxFHnzc5b2zfMrNbTuygaIP6HLHuMDKptOUgm0HPTE
+ m7EwhotCfXgN2DKCk0ES9rHnMZNm+rPD5+T1NyI8xbuyv+nnyK0A7QKRmi9JgJasQUNr
+ tqnYKRtLRN8pyol+abJ/1GTDIblmtvDvW4sWRvfuLnKx98/YSSDfLiBUlrplYuVR3gPh
+ Eksg==
+X-Gm-Message-State: AOJu0YyVTcfswMjn/Ec37Byove4Y3J6hy5Ns3Zq+nJfxsxaaPBMkzSbS
+ 2MeqRmZaBbhJQOMK7VGHkBg/MnhPcb5NRSuJ3jcaxBdxBLWpsfD3hs/PeG7aKMB/PDqZUSVBGlw
+ nqYhF
+X-Gm-Gg: ASbGncsst6Mo4amH+Y/mncq6IiI/FCYcI8UzJSzfYqeildpB9yEnR3r7nGrT4Ryabpc
+ wx2xb0YwmDmgBlqesKaupt/g/LDM6u21tQojuvzKVn6IhqbCoLUY9QbzyZeh8M5GE4HwqWNGL2s
+ 7uMMJ7vphsJd4MFQyQ68HhgDE1wntEMei1v8bSQo+bZuAVM9ZWZZZGVEQO+w5XCtlLQyUty5iWR
+ KWjZzwI2ODUyMl4IcjdnXklwoQzCdJddEAcrOi5lqvoSE/cF0Y4hLNe1HFWawW+q/kqaIy25Q4N
+ FrEP/C5oIBB66hOy7P7FXK4Lo7AFbgjsFTvwTEDjoFet+QSUija5afCU2e8chQ==
+X-Google-Smtp-Source: AGHT+IFOtBX+PK4J5MAkSLQdI3ff/BySXyYknToFkSB10/i1EHm/I9TdHIitFPmpbIYFUhNyChvP4Q==
+X-Received: by 2002:a05:6a20:7287:b0:1f5:a3e8:64d3 with SMTP id
+ adf61e73a8af0-2162192a995mr497853637.21.1747330065758; 
+ Thu, 15 May 2025 10:27:45 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
  d2e1a72fcca58-742a96dfa9dsm79730b3a.10.2025.05.15.10.27.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 May 2025 10:27:44 -0700 (PDT)
+ Thu, 15 May 2025 10:27:45 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
@@ -69,20 +69,18 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Michael Roth <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  berrange@redhat.com, Markus Armbruster <armbru@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v2 06/12] qapi: make Xen event commands unconditionally
- available
-Date: Thu, 15 May 2025 10:27:26 -0700
-Message-ID: <20250515172732.3992504-7-pierrick.bouvier@linaro.org>
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH v2 07/12] qapi: remove the misc-target.json file
+Date: Thu, 15 May 2025 10:27:27 -0700
+Message-ID: <20250515172732.3992504-8-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250515172732.3992504-1-pierrick.bouvier@linaro.org>
 References: <20250515172732.3992504-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,334 +105,80 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-This removes the TARGET_I386 condition from the Xen event channel
-commands, moving them to the recently introduced misc-i386.json
-QAPI file, given they are inherantly i386 specific commands.
+This file is now empty and can thus be removed.
+
+Observe the pre-existing bug with s390-skeys.c and target/i386/monitor.c
+both including qapi-commands-misc-target.h despite not requiring it.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Acked-by: David Woodhouse <dwmw@amazon.co.uk>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- qapi/misc-i386.json      | 107 +++++++++++++++++++++++++++++++++++++
- qapi/misc-target.json    | 112 ---------------------------------------
- hw/i386/kvm/xen-stubs.c  |  13 -----
- hw/i386/kvm/xen_evtchn.c |   2 +-
- stubs/monitor-i386-xen.c |  16 ++++++
- stubs/meson.build        |   1 +
- 6 files changed, 125 insertions(+), 126 deletions(-)
- create mode 100644 stubs/monitor-i386-xen.c
+ qapi/misc-target.json | 3 ---
+ qapi/qapi-schema.json | 1 -
+ hw/s390x/s390-skeys.c | 1 -
+ target/i386/monitor.c | 1 -
+ qapi/meson.build      | 1 -
+ 5 files changed, 7 deletions(-)
+ delete mode 100644 qapi/misc-target.json
 
-diff --git a/qapi/misc-i386.json b/qapi/misc-i386.json
-index 0ddc297ccbf..3d3f373a6be 100644
---- a/qapi/misc-i386.json
-+++ b/qapi/misc-i386.json
-@@ -370,3 +370,110 @@
- #                      {"node": 1, "size": 29360128}]} }
- ##
- { 'command': 'query-sgx-capabilities', 'returns': 'SGXInfo' }
-+
-+##
-+# @EvtchnPortType:
-+#
-+# An enumeration of Xen event channel port types.
-+#
-+# @closed: The port is unused.
-+#
-+# @unbound: The port is allocated and ready to be bound.
-+#
-+# @interdomain: The port is connected as an interdomain interrupt.
-+#
-+# @pirq: The port is bound to a physical IRQ (PIRQ).
-+#
-+# @virq: The port is bound to a virtual IRQ (VIRQ).
-+#
-+# @ipi: The post is an inter-processor interrupt (IPI).
-+#
-+# Since: 8.0
-+##
-+{ 'enum': 'EvtchnPortType',
-+  'data': ['closed', 'unbound', 'interdomain', 'pirq', 'virq', 'ipi'] }
-+
-+##
-+# @EvtchnInfo:
-+#
-+# Information about a Xen event channel port
-+#
-+# @port: the port number
-+#
-+# @vcpu: target vCPU for this port
-+#
-+# @type: the port type
-+#
-+# @remote-domain: remote domain for interdomain ports
-+#
-+# @target: remote port ID, or virq/pirq number
-+#
-+# @pending: port is currently active pending delivery
-+#
-+# @masked: port is masked
-+#
-+# Since: 8.0
-+##
-+{ 'struct': 'EvtchnInfo',
-+  'data': {'port': 'uint16',
-+           'vcpu': 'uint32',
-+           'type': 'EvtchnPortType',
-+           'remote-domain': 'str',
-+           'target': 'uint16',
-+           'pending': 'bool',
-+           'masked': 'bool'} }
-+
-+
-+##
-+# @xen-event-list:
-+#
-+# Query the Xen event channels opened by the guest.
-+#
-+# Returns: list of open event channel ports.
-+#
-+# Since: 8.0
-+#
-+# .. qmp-example::
-+#
-+#     -> { "execute": "xen-event-list" }
-+#     <- { "return": [
-+#             {
-+#                 "pending": false,
-+#                 "port": 1,
-+#                 "vcpu": 1,
-+#                 "remote-domain": "qemu",
-+#                 "masked": false,
-+#                 "type": "interdomain",
-+#                 "target": 1
-+#             },
-+#             {
-+#                 "pending": false,
-+#                 "port": 2,
-+#                 "vcpu": 0,
-+#                 "remote-domain": "",
-+#                 "masked": false,
-+#                 "type": "virq",
-+#                 "target": 0
-+#             }
-+#          ]
-+#        }
-+##
-+{ 'command': 'xen-event-list',
-+  'returns': ['EvtchnInfo'] }
-+
-+##
-+# @xen-event-inject:
-+#
-+# Inject a Xen event channel port (interrupt) to the guest.
-+#
-+# @port: The port number
-+#
-+# Since: 8.0
-+#
-+# .. qmp-example::
-+#
-+#     -> { "execute": "xen-event-inject", "arguments": { "port": 1 } }
-+#     <- { "return": { } }
-+##
-+{ 'command': 'xen-event-inject',
-+  'data': { 'port': 'uint32' } }
 diff --git a/qapi/misc-target.json b/qapi/misc-target.json
-index d9368a1f21f..c9ea1ab23e7 100644
+deleted file mode 100644
+index c9ea1ab23e7..00000000000
 --- a/qapi/misc-target.json
-+++ b/qapi/misc-target.json
-@@ -1,115 +1,3 @@
- # -*- Mode: Python -*-
- # vim: filetype=python
- #
--
--
--##
--# @EvtchnPortType:
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# -*- Mode: Python -*-
+-# vim: filetype=python
 -#
--# An enumeration of Xen event channel port types.
--#
--# @closed: The port is unused.
--#
--# @unbound: The port is allocated and ready to be bound.
--#
--# @interdomain: The port is connected as an interdomain interrupt.
--#
--# @pirq: The port is bound to a physical IRQ (PIRQ).
--#
--# @virq: The port is bound to a virtual IRQ (VIRQ).
--#
--# @ipi: The post is an inter-processor interrupt (IPI).
--#
--# Since: 8.0
--##
--{ 'enum': 'EvtchnPortType',
--  'data': ['closed', 'unbound', 'interdomain', 'pirq', 'virq', 'ipi'],
--  'if': 'TARGET_I386' }
--
--##
--# @EvtchnInfo:
--#
--# Information about a Xen event channel port
--#
--# @port: the port number
--#
--# @vcpu: target vCPU for this port
--#
--# @type: the port type
--#
--# @remote-domain: remote domain for interdomain ports
--#
--# @target: remote port ID, or virq/pirq number
--#
--# @pending: port is currently active pending delivery
--#
--# @masked: port is masked
--#
--# Since: 8.0
--##
--{ 'struct': 'EvtchnInfo',
--  'data': {'port': 'uint16',
--           'vcpu': 'uint32',
--           'type': 'EvtchnPortType',
--           'remote-domain': 'str',
--           'target': 'uint16',
--           'pending': 'bool',
--           'masked': 'bool'},
--  'if': 'TARGET_I386' }
--
--
--##
--# @xen-event-list:
--#
--# Query the Xen event channels opened by the guest.
--#
--# Returns: list of open event channel ports.
--#
--# Since: 8.0
--#
--# .. qmp-example::
--#
--#     -> { "execute": "xen-event-list" }
--#     <- { "return": [
--#             {
--#                 "pending": false,
--#                 "port": 1,
--#                 "vcpu": 1,
--#                 "remote-domain": "qemu",
--#                 "masked": false,
--#                 "type": "interdomain",
--#                 "target": 1
--#             },
--#             {
--#                 "pending": false,
--#                 "port": 2,
--#                 "vcpu": 0,
--#                 "remote-domain": "",
--#                 "masked": false,
--#                 "type": "virq",
--#                 "target": 0
--#             }
--#          ]
--#        }
--##
--{ 'command': 'xen-event-list',
--  'returns': ['EvtchnInfo'],
--  'if': 'TARGET_I386' }
--
--##
--# @xen-event-inject:
--#
--# Inject a Xen event channel port (interrupt) to the guest.
--#
--# @port: The port number
--#
--# Since: 8.0
--#
--# .. qmp-example::
--#
--#     -> { "execute": "xen-event-inject", "arguments": { "port": 1 } }
--#     <- { "return": { } }
--##
--{ 'command': 'xen-event-inject',
--  'data': { 'port': 'uint32' },
--  'if': 'TARGET_I386' }
-diff --git a/hw/i386/kvm/xen-stubs.c b/hw/i386/kvm/xen-stubs.c
-index d03131e6864..ce73119ee7a 100644
---- a/hw/i386/kvm/xen-stubs.c
-+++ b/hw/i386/kvm/xen-stubs.c
-@@ -12,7 +12,6 @@
- #include "qemu/osdep.h"
- 
+diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
+index e96bff8d38c..d8eb79cfda6 100644
+--- a/qapi/qapi-schema.json
++++ b/qapi/qapi-schema.json
+@@ -63,7 +63,6 @@
+ { 'include': 'misc.json' }
+ { 'include': 'misc-arm.json' }
+ { 'include': 'misc-i386.json' }
+-{ 'include': 'misc-target.json' }
+ { 'include': 'audio.json' }
+ { 'include': 'acpi.json' }
+ { 'include': 'pci.json' }
+diff --git a/hw/s390x/s390-skeys.c b/hw/s390x/s390-skeys.c
+index aedb62b2d31..8eeecfd58fc 100644
+--- a/hw/s390x/s390-skeys.c
++++ b/hw/s390x/s390-skeys.c
+@@ -17,7 +17,6 @@
+ #include "hw/s390x/storage-keys.h"
  #include "qapi/error.h"
+ #include "qapi/qapi-commands-machine.h"
 -#include "qapi/qapi-commands-misc-target.h"
- 
- #include "xen_evtchn.h"
- #include "xen_primary_console.h"
-@@ -38,15 +37,3 @@ void xen_primary_console_create(void)
- void xen_primary_console_set_be_port(uint16_t port)
- {
- }
--#ifdef TARGET_I386
--EvtchnInfoList *qmp_xen_event_list(Error **errp)
--{
--    error_setg(errp, "Xen event channel emulation not enabled");
--    return NULL;
--}
--
--void qmp_xen_event_inject(uint32_t port, Error **errp)
--{
--    error_setg(errp, "Xen event channel emulation not enabled");
--}
--#endif
-diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
-index b5190549a81..dd566c49679 100644
---- a/hw/i386/kvm/xen_evtchn.c
-+++ b/hw/i386/kvm/xen_evtchn.c
-@@ -19,7 +19,7 @@
- #include "monitor/monitor.h"
- #include "monitor/hmp.h"
- #include "qapi/error.h"
--#include "qapi/qapi-commands-misc-target.h"
-+#include "qapi/qapi-commands-misc-i386.h"
  #include "qobject/qdict.h"
- #include "qom/object.h"
- #include "exec/target_page.h"
-diff --git a/stubs/monitor-i386-xen.c b/stubs/monitor-i386-xen.c
-new file mode 100644
-index 00000000000..95b826f9795
---- /dev/null
-+++ b/stubs/monitor-i386-xen.c
-@@ -0,0 +1,16 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "qapi/qapi-commands-misc-i386.h"
-+
-+EvtchnInfoList *qmp_xen_event_list(Error **errp)
-+{
-+    error_setg(errp, "Xen event channel emulation not enabled");
-+    return NULL;
-+}
-+
-+void qmp_xen_event_inject(uint32_t port, Error **errp)
-+{
-+    error_setg(errp, "Xen event channel emulation not enabled");
-+}
-diff --git a/stubs/meson.build b/stubs/meson.build
-index f2eb4880181..0ef11976a2f 100644
---- a/stubs/meson.build
-+++ b/stubs/meson.build
-@@ -81,6 +81,7 @@ if have_system
-   stub_ss.add(files('monitor-i386-rtc.c'))
-   stub_ss.add(files('monitor-i386-sev.c'))
-   stub_ss.add(files('monitor-i386-sgx.c'))
-+  stub_ss.add(files('monitor-i386-xen.c'))
- endif
+ #include "qemu/error-report.h"
+ #include "system/memory_mapping.h"
+diff --git a/target/i386/monitor.c b/target/i386/monitor.c
+index 3ea92b066e1..3c9b6ca62f2 100644
+--- a/target/i386/monitor.c
++++ b/target/i386/monitor.c
+@@ -29,7 +29,6 @@
+ #include "monitor/hmp.h"
+ #include "qobject/qdict.h"
+ #include "qapi/error.h"
+-#include "qapi/qapi-commands-misc-target.h"
+ #include "qapi/qapi-commands-misc.h"
  
- if have_system or have_user
+ /* Perform linear address sign extension */
+diff --git a/qapi/meson.build b/qapi/meson.build
+index 5e93e6b8cfd..ffe44f9e0b8 100644
+--- a/qapi/meson.build
++++ b/qapi/meson.build
+@@ -42,7 +42,6 @@ qapi_all_modules = [
+   'machine-target',
+   'migration',
+   'misc',
+-  'misc-target',
+   'net',
+   'pragma',
+   'qom',
 -- 
 2.47.2
 
