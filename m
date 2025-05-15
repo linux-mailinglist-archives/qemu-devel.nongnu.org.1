@@ -2,106 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D502AAB8B8E
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 17:53:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F453AB8B88
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 17:53:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFare-0007dm-Jc; Thu, 15 May 2025 11:51:19 -0400
+	id 1uFarh-000807-EJ; Thu, 15 May 2025 11:51:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1uFar0-0006rR-ML; Thu, 15 May 2025 11:50:39 -0400
+ id 1uFarR-0007HW-TK; Thu, 15 May 2025 11:51:08 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1uFaqy-00072S-0r; Thu, 15 May 2025 11:50:37 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54FCgBY6004852;
- Thu, 15 May 2025 15:50:32 GMT
+ id 1uFarP-000743-DZ; Thu, 15 May 2025 11:51:05 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54FCg420002200;
+ Thu, 15 May 2025 15:51:01 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=RhuEZD
- cPQ+DgIO8V2WL8y1IM7Hi8tTwDx9hL/+2K8vU=; b=PAlMmhJYPm0ozixNE8p+v7
- DPQSoOmfIHd0Sqw0QtsVvffUIf7g02Cdil5dvOdmqBS/VRyeHJHEIbymUTYZ2oyl
- i2ZLLKYh7c1JWP4y1MKvzXdJ3NEkvtOf9NSO25kqGPoV/SI6CBmCZ4vbPIFbN+Tn
- tiecUQsUqiYrEWLL2/w3P9y4wZ4VSIatxOZJaIGM30hQaqyVK1taJq4daTaLM9Ym
- Tl88uxU9ffiRx/lHo9/71ZnycTws34P5DDe1NVpom4Yag4NiKzrPfFnCa542jY+7
- xYd7MO/QP1baxQXQHGfjpOQks7jzf3Ad2IML6d21fTm9PI+JKQdV83ggcf5LKD+g
+ :message-id:mime-version:references:subject:to; s=pp1; bh=5wyfZD
+ ZsgDB6STLQosr0IYPuC8KTlipICrlksLyb+94=; b=GprSRgSSTd6M8h11t4YsLO
+ Ar3V0kJbML2Elnsfszg1U6z/tr9AOXELVVF7QSlXRQkbeQNCuhbd2yXEtfntFPDN
+ ggxmiA5MX1STfg1EwGTLOtcx42zPnfFgeamPoyHbqW06yDatcf0QeiuFIdVYTPMk
+ Wi8PgMPSJhBk+86ksW3sSFAnuXERCzYSnWkaW5b729r2AC0dPQlNvVIU8aWEtnet
+ E9UbWbgigt47Il9AVu6VxdIfbp1nSk389dMLFtXfvzBRHtfNXdz048J+cY6mQKg5
+ 1qN8ZbOMqy5BqmyZcdrqAFIaVI0aLPI5JhP8kRmJ4EvLv1InChF9dEmPQuGCYqdQ
  ==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46ndfjt37s-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46n0v6nent-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 May 2025 15:50:32 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54FFhdxp022345;
- Thu, 15 May 2025 15:50:32 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46ndfjt37r-1
+ Thu, 15 May 2025 15:51:01 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54FFaFRi028631;
+ Thu, 15 May 2025 15:51:01 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46n0v6nenp-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 May 2025 15:50:32 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54FE0HTP019386;
- Thu, 15 May 2025 15:50:31 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 46mbfru27w-1
+ Thu, 15 May 2025 15:51:01 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54FE40nW024279;
+ Thu, 15 May 2025 15:51:00 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46mbfsb24h-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 May 2025 15:50:31 +0000
+ Thu, 15 May 2025 15:51:00 +0000
 Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
  [10.241.53.100])
- by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 54FFoTfG35193290
+ by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 54FFowi521365286
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 15 May 2025 15:50:29 GMT
+ Thu, 15 May 2025 15:50:59 GMT
 Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 70AC258058;
- Thu, 15 May 2025 15:50:29 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id D6CFD58061;
+ Thu, 15 May 2025 15:50:58 +0000 (GMT)
 Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1D92558057;
- Thu, 15 May 2025 15:50:29 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 864B55805D;
+ Thu, 15 May 2025 15:50:58 +0000 (GMT)
 Received: from [9.10.80.143] (unknown [9.10.80.143])
  by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 15 May 2025 15:50:29 +0000 (GMT)
-Message-ID: <c96c741f-51b7-481f-a1f3-68251013bcf7@linux.ibm.com>
-Date: Thu, 15 May 2025 10:50:28 -0500
+ Thu, 15 May 2025 15:50:58 +0000 (GMT)
+Message-ID: <9a479b81-ec35-4256-8092-52357f4eebea@linux.ibm.com>
+Date: Thu, 15 May 2025 10:50:57 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 47/50] ppc/xive2: Implement POOL LGS push TIMA op
+Subject: Re: [PATCH 48/50] ppc/xive2: Implement PHYS ring VP push TIMA op
 To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
 Cc: qemu-devel@nongnu.org, =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?=
  <fbarrat@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
  Caleb Schlossin <calebs@linux.vnet.ibm.com>
 References: <20250512031100.439842-1-npiggin@gmail.com>
- <20250512031100.439842-48-npiggin@gmail.com>
+ <20250512031100.439842-49-npiggin@gmail.com>
 Content-Language: en-US
 From: Mike Kowal <kowal@linux.ibm.com>
-In-Reply-To: <20250512031100.439842-48-npiggin@gmail.com>
+In-Reply-To: <20250512031100.439842-49-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: WH-Ub6L_c66Yx2EXidzf-lXzug6YjY6C
-X-Authority-Analysis: v=2.4 cv=ecg9f6EH c=1 sm=1 tr=0 ts=68260d48 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+X-Authority-Analysis: v=2.4 cv=IqAecK/g c=1 sm=1 tr=0 ts=68260d65 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
  a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8
- a=F6GhtudbdRW5Ju_cDBcA:9 a=3ZKOabzyN94A:10
+ a=5GyUnxkyDHgghPbyitQA:9 a=3ZKOabzyN94A:10
  a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: 6AIRmrBXeSwxfy86GJKvNlVlUYre9N-k
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE1MDE1NSBTYWx0ZWRfX35jvadzdLUg6
- gUNALJmtmPpn5v/JkNCoMqs29oqgz3rraQ9kZXi0CocG8lj6RRkO0tQ1ahL2dWHFor0xXg7wD8N
- yOJgZN3PdIUiRX4HjUMBvzADxO4uMLj4x+9qyfdR158jh9u9t8C7SHwYv4+S0vpGfHxkNwZNCWY
- gm0VORs6Q/m9iW0IXT4ivrnqlf2anKBfKB+VWoRXOWxJ+U7dt+X7p1tGfHu1pmYTKEnrrSGyLK+
- sGykcUMlJo0WNE5XRqTzUcCPOJUGlrada5VOlHBv0pOE/vFYCm50H/TtodmUI5l3Uvm7raxl+gi
- E6Uwt/VIZw8oer9zL5SleLGn3KLMNmnfsYFbVkTAoo4eSHLmalCduiv7+wPFcElCzrOwsLUGbwe
- VptNaGsOab57WlolhgpwKyiL7n787k7Tz9C/1QM9LM+IknkpPGpJX7SjGqsORa+9lWmpj0BJ
+X-Proofpoint-ORIG-GUID: yYpB7kexrzJmzNucRky1FkvTgh6aorMV
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE1MDE1NSBTYWx0ZWRfX1Rud2G/jPVNj
+ WmFUH8lLF2pKDqTGpf7QDhUjLQIKI0yokmEI7BSULYoZKPR1jAKe3fcqJl08/PqdDxekKi9Y190
+ avnA3NSrtsEzF7OHYl7Dx2lhVmJirpacPKflVGV0eeMjBhnDaHT8zN5HlWTY8HSjltoQB3cGmvr
+ M+/SkLGDW10shCL9S6BOvkWYorvKIBz3BVloJIcy+o5ivK4v+wZ+snDuqQ7jT+mapoZWjEgENOz
+ vyvPZ8IEjnRJZ7bB9gX58o//Qh4GTEWKQtvZimEcFxBre7Ot+AfniThL6/emkfZviVfny+KdTzR
+ GUz9+knNRnn4OmmP2ZbGf5djovm1Lis91l5YY5n/Fby6AZrjTJkO1R3/piVisIiEirC4tWfpnb8
+ me3FIlCp0oKgTYc/gbkWTn3Yy/YQ6juU7pHJZo96VmnsTOOzJOeB4Zr+lOYHr9Z+crZBz7Yq
+X-Proofpoint-GUID: OaGeuXZ8xq3nF69G-RnmvWS_iiCoynqO
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-15_06,2025-05-15_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- impostorscore=0 spamscore=0 clxscore=1015 malwarescore=0 mlxscore=0
- lowpriorityscore=0 priorityscore=1501 adultscore=0 bulkscore=0
- suspectscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ mlxscore=0 malwarescore=0
+ adultscore=0 lowpriorityscore=0 phishscore=0 impostorscore=0
+ priorityscore=1501 clxscore=1015 spamscore=0 mlxlogscore=999 bulkscore=0
+ suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
  definitions=main-2505150155
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=kowal@linux.ibm.com;
@@ -131,7 +131,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 5/11/2025 10:10 PM, Nicholas Piggin wrote:
-> Implement set LGS for the POOL ring.
+> Implement the phys (aka hard) VP push. PowerVM uses this operation.
 
 Reviewed-by: Michael Kowal<kowal@linux.ibm.com>
 
@@ -139,33 +139,64 @@ Thanks,  MAK
 >
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   hw/intc/xive.c | 8 ++++++++
->   1 file changed, 8 insertions(+)
+>   hw/intc/xive.c         |  2 ++
+>   hw/intc/xive2.c        | 11 +++++++++++
+>   include/hw/ppc/xive2.h |  2 ++
+>   3 files changed, 15 insertions(+)
 >
 > diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-> index dc64edf13d..807a1c1c34 100644
+> index 807a1c1c34..69118999e6 100644
 > --- a/hw/intc/xive.c
 > +++ b/hw/intc/xive.c
-> @@ -532,6 +532,12 @@ static void xive_tm_set_os_lgs(XivePresenter *xptr, XiveTCTX *tctx,
->       xive_tctx_set_lgs(tctx, TM_QW1_OS, value & 0xff);
->   }
->   
-> +static void xive_tm_set_pool_lgs(XivePresenter *xptr, XiveTCTX *tctx,
-> +                          hwaddr offset, uint64_t value, unsigned size)
-> +{
-> +    xive_tctx_set_lgs(tctx, TM_QW2_HV_POOL, value & 0xff);
-> +}
-> +
->   /*
->    * Adjust the PIPR to allow a CPU to process event queues of other
->    * priorities during one physical interrupt cycle.
-> @@ -737,6 +743,8 @@ static const XiveTmOp xive2_tm_operations[] = {
->         xive2_tm_push_pool_ctx, NULL },
->       { XIVE_TM_HV_PAGE, TM_QW2_HV_POOL + TM_WORD2, 8, true, true,
->         xive2_tm_push_pool_ctx, NULL },
-> +    { XIVE_TM_HV_PAGE, TM_QW2_HV_POOL + TM_LGS,   1, true, true,
-> +      xive_tm_set_pool_lgs, NULL },
+> @@ -747,6 +747,8 @@ static const XiveTmOp xive2_tm_operations[] = {
+>         xive_tm_set_pool_lgs, NULL },
 >       { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_CPPR,  1, true, true,
 >         xive2_tm_set_hv_cppr, NULL },
+> +    { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_WORD2, 1, false, true,
+> +      xive2_tm_push_phys_ctx, NULL },
 >       { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_WORD2, 1, true, true,
+>         NULL, xive_tm_vt_poll },
+>       { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_T,     1, true, true,
+> diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
+> index de1ccad685..a9b188b909 100644
+> --- a/hw/intc/xive2.c
+> +++ b/hw/intc/xive2.c
+> @@ -1005,6 +1005,11 @@ static void xive2_tm_push_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+>   
+>       /* First update the thead context */
+>       switch (size) {
+> +    case 1:
+> +        tctx->regs[ring + TM_WORD2] = value & 0xff;
+> +        cam = xive2_tctx_hw_cam_line(xptr, tctx);
+> +        cam |= ((value & 0xc0) << 24); /* V and H bits */
+> +        break;
+>       case 4:
+>           cam = value;
+>           w2 = cpu_to_be32(cam);
+> @@ -1040,6 +1045,12 @@ void xive2_tm_push_pool_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+>       xive2_tm_push_ctx(xptr, tctx, offset, value, size, TM_QW2_HV_POOL);
+>   }
+>   
+> +void xive2_tm_push_phys_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+> +                            hwaddr offset, uint64_t value, unsigned size)
+> +{
+> +    xive2_tm_push_ctx(xptr, tctx, offset, value, size, TM_QW3_HV_PHYS);
+> +}
+> +
+>   /* returns -1 if ring is invalid, but still populates block and index */
+>   static int xive2_tctx_get_nvp_indexes(XiveTCTX *tctx, uint8_t ring,
+>                                         uint8_t *nvp_blk, uint32_t *nvp_idx)
+> diff --git a/include/hw/ppc/xive2.h b/include/hw/ppc/xive2.h
+> index 45266c2a8b..f4437e2c79 100644
+> --- a/include/hw/ppc/xive2.h
+> +++ b/include/hw/ppc/xive2.h
+> @@ -146,6 +146,8 @@ void xive2_tm_push_pool_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+>                               hwaddr offset, uint64_t value, unsigned size);
+>   uint64_t xive2_tm_pull_pool_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+>                                   hwaddr offset, unsigned size);
+> +void xive2_tm_push_phys_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+> +                            hwaddr offset, uint64_t value, unsigned size);
+>   uint64_t xive2_tm_pull_phys_ctx(XivePresenter *xptr, XiveTCTX *tctx,
+>                                   hwaddr offset, unsigned size);
+>   void xive2_tm_pull_phys_ctx_ol(XivePresenter *xptr, XiveTCTX *tctx,
 
