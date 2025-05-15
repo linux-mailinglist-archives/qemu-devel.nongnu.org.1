@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E20CFAB83C6
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 12:27:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73755AB840C
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 12:35:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFVnF-0004q0-3w; Thu, 15 May 2025 06:26:25 -0400
+	id 1uFVoK-00065E-1B; Thu, 15 May 2025 06:27:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uFVnB-0004lt-3G
+ id 1uFVnB-0004ot-Rz
  for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:21 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uFVn9-0008B0-09
- for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:20 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-442ed8a275fso8398095e9.2
- for <qemu-devel@nongnu.org>; Thu, 15 May 2025 03:26:18 -0700 (PDT)
+ id 1uFVn9-0008BE-Rz
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:21 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-3a206845eadso427406f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 15 May 2025 03:26:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747304777; x=1747909577; darn=nongnu.org;
+ d=linaro.org; s=google; t=1747304778; x=1747909578; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ZkRqD+LMx6swHQ6xUEIIe9lCbzC5g6w0oxlU/fhgdns=;
- b=xrtVaEQm9jSjMWAhfgxfzNuJ7t9MrRWT6xnCCusKvbwOaoi4BCwU8T0VpLG2gD7V2d
- Per4h4YwYuBCedbGJueC25cubgveFeL0dVV+NbHjxeGkBIuvSTfUNOr620zcjlU7/eWv
- 1cW4ivrDzP5jyLeO/h8YNtPTzi5g28R9/yvldo8UlC57HXmENVmzZFFcN1hOp/S2G1D8
- 7MG49ZNGmoUaK3dqsCdSUJBG1huRztEWwoNWJwtBGdilmLCYruqY1t/YG2ivyrLfJpvt
- zGD+aSPIPeLZAKX6kuD/AYAh3NFfAtwR8iNsjSwgI7dxYoGNWNl7+jCv3lSGbZdzNcg6
- 4YZQ==
+ :reply-to; bh=JBwP4MINLJbGQNTaVfNpgXGCUDV61F8mAdNh5p7lyQQ=;
+ b=PKsc4F5CRS4zcTDIm1s32VA3CEvfJAnm1cDEui6MQ/4cy7JWx3dUyeADSFcJDDw9HX
+ U638S0wIleTnv0HYFvneL3nX/7C13k3x8cm98kwbwpUbrdEXBRU9sGl1y8YwdrdN+cXe
+ hqff1fzB9OyboWw1pWXZHsr7zR5I8302vd+Erfaag5jgxZD6vX+stWMqJsMU9rAkc0K0
+ bZmkewarMAnwI0vr+FN4FmT11vXXq5okNX6eTgHLA0vf0t0fspBX5VjVwQvoZeTgoR6V
+ JncSY+t+67ALMmzyoC5chGe2DrI7hP6CVtVq8Tlr+sL7XP7QV+f4aXGa/hfjukcVGkBK
+ 4BaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747304777; x=1747909577;
+ d=1e100.net; s=20230601; t=1747304778; x=1747909578;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZkRqD+LMx6swHQ6xUEIIe9lCbzC5g6w0oxlU/fhgdns=;
- b=m1PpK3cVW5LWtL0n138gqBRyhR+Fbmw5VJiNT2FqQWjomL1fdueX9B4DFTw8lrlGD6
- YiRdyH7xi4ucS8mio/X/PaIXpl4IBL7EgSHwS2i972XI1uBjX6nm2Q5zr9O+1pkiRGD4
- 4D0GKAKKoSDHImxMQPlMIgHWfbDnBrzCPSmJYHqmJFl1HjhDWbwEScv7DrF7Wwsegiqm
- 4Sv59k6TTskr6EBtxg+Pvf+SmThOQhjt0HHtl3PjMHwH9TJJKNP1ZapkcdVmxRjcWar8
- 0+D1KWf9gSLvruY87/hTSdiEkfxJ0T8pVc41pj0fH+lVNDfqpakzCfXzTKuWdQslNQcD
- vATg==
-X-Gm-Message-State: AOJu0YxlK5509Ky1Rx6bc51SsSzllfzDSFBJ/0mhZ6faFEP1BObjixKP
- zxCzpwo/ibzNkEDbD+Xgk21JMrbZGiH4KtMGBQKkpJiXx6dG6w460XtYRCIE9NX8nwVh6lqg7xZ
- upwY=
-X-Gm-Gg: ASbGncsGPdW6socxIqG5FV3VIn5gyCozwxf1V8W3Df3xZb4QTgSuHq84oxqCEbgCyuM
- OJY5jHcODURCUUViRTSRusNEAu/1AAIDzwryL9IIy+mwkplv0szowRI0NM1+7Ob4VQR3iIMjvJY
- MalTQU1b6FSaa8fVg9C6tsvGYlHQFTVnlhryJ+wpbDnWfPZgEMLlmdXwGdNcc4CKOYsqozvWkPx
- X7s2hOBTjMgQ0vb37+Z8oeIhgBx01qMm9pJc7fmymPsODahmo9E6H+349BOZ/Ty7rkFTYXV9r9A
- I5h+MZwr4Nv3pNBCdYfcVraXX65NCyL3ef3/gP4mwGLJz123GWu5u/R4+Q==
-X-Google-Smtp-Source: AGHT+IF5O7HbINRD69gyaPxOPZyNjz5dF2FMdUWYEBmFax0WLG7DrmBZvTmfaGLRVSQIsrhQPlZJJQ==
-X-Received: by 2002:a05:600c:1d1c:b0:43c:fda5:41e9 with SMTP id
- 5b1f17b1804b1-442f2178679mr71249315e9.31.1747304777280; 
- Thu, 15 May 2025 03:26:17 -0700 (PDT)
+ bh=JBwP4MINLJbGQNTaVfNpgXGCUDV61F8mAdNh5p7lyQQ=;
+ b=Lxl3pF3YxNTK0a+aGYf4o6ocwF8FkoGUXo1T8DL7LrxyIiCxRNSXyH2o285DCE2mmF
+ ZQdwKNqT2vKm1Rp7Cn2bvZkOQ/8S7nZCGjvUqP0qkojHQrp80uV3L7t5tn1shP95iDl3
+ TAEqJoYLxfxBiFVC+MHfcCl7Ia/YRlebo3S8YuggGr6LH/RjV5twLPBZtCguOHtezway
+ rzUAcAXvpYHU9vCHgsB8jNLb+fGL9x9SHKU9L6PB5ik7WGIkZy9LducIdwxSO8hx9efs
+ vggvIhWXqo/WlGUrfSmQLAW7n4fhygolEBGbNWJtXqQdpH9+jR/FT86XvT8IHra/MoIp
+ kIzw==
+X-Gm-Message-State: AOJu0Yw9N5LQxw/Sd7J5B4M1MllNoOGBTUlSCNl4Cydf8cy591nGn87D
+ ZdVI3re3E7EXLAschhApeGyVIkL0Jg8QJCQVq8mXGccUBnaSILXVPbg0l4P/9vgtywUTBApFcTj
+ jdEU=
+X-Gm-Gg: ASbGnctpBFd3CcldbnZgglOg6j/FRcndOubiR9dhInib1HSkmQ0z4OVrJojSsG7LPfF
+ AZ+8inCRbfedb7KE3tXedlDcGaC8gZJfy4lGIaf33V5St7KFXupsWYVgGhIq2EhrGESk1V2N4Dw
+ 2tY2Chn/QlS/Ygy01mDYVwOPji5X+/fwVg5QXCodx+nI9TDLrhKPFvCbVzDW/oyLVpTaT/zUM0o
+ pcWvxUvtulWn+5I/2CLUiyQcMvOLgSkGA4maAHmn40TIdVWxQDO32FRqBpjoKhsYtCv96ArHQv2
+ FqChsABFHKSPrF7jdMlWrZjvN+n7rXnt1JBXRVenQFnNP72CtHY2XFTSGPR7ZnAKlXO3
+X-Google-Smtp-Source: AGHT+IGtOQlUXFzwrnfc12eEZhS72PYLuZHeqzaV60tY8lD4yR24nuiRcKt6AKL17Swek2FWbMVt1A==
+X-Received: by 2002:a5d:598f:0:b0:3a3:4a1a:de6f with SMTP id
+ ffacd0b85a97d-3a353748601mr1742158f8f.26.1747304778277; 
+ Thu, 15 May 2025 03:26:18 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442f396c3a4sm65657855e9.26.2025.05.15.03.26.16
+ 5b1f17b1804b1-442f396c3a4sm65657855e9.26.2025.05.15.03.26.17
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 May 2025 03:26:16 -0700 (PDT)
+ Thu, 15 May 2025 03:26:17 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 21/58] target/arm/cpu32-stubs.c: compile file twice (user,
- system)
-Date: Thu, 15 May 2025 11:25:09 +0100
-Message-ID: <20250515102546.2149601-22-peter.maydell@linaro.org>
+Subject: [PULL 22/58] tcg: add vaddr type for helpers
+Date: Thu, 15 May 2025 11:25:10 +0100
+Message-ID: <20250515102546.2149601-23-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250515102546.2149601-1-peter.maydell@linaro.org>
 References: <20250515102546.2149601-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,51 +99,109 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-It could be squashed with commit introducing it, but I would prefer to
-introduce target/arm/cpu.c first.
+Defined as an alias of i32/i64 depending on host pointer size.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-id: 20250512180502.2395029-12-pierrick.bouvier@linaro.org
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20250512180502.2395029-13-pierrick.bouvier@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/meson.build | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ include/tcg/tcg-op-common.h    |  1 +
+ include/tcg/tcg.h              | 14 ++++++++++++++
+ include/exec/helper-head.h.inc | 11 +++++++++++
+ tcg/tcg.c                      |  5 +++++
+ 4 files changed, 31 insertions(+)
 
-diff --git a/target/arm/meson.build b/target/arm/meson.build
-index 89e305eb56a..de214fe5d56 100644
---- a/target/arm/meson.build
-+++ b/target/arm/meson.build
-@@ -11,13 +11,9 @@ arm_ss.add(zlib)
- arm_ss.add(when: 'CONFIG_KVM', if_true: files('hyp_gdbstub.c', 'kvm.c'), if_false: files('kvm-stub.c'))
- arm_ss.add(when: 'CONFIG_HVF', if_true: files('hyp_gdbstub.c'))
+diff --git a/include/tcg/tcg-op-common.h b/include/tcg/tcg-op-common.h
+index b439bdb385a..e1071adebf2 100644
+--- a/include/tcg/tcg-op-common.h
++++ b/include/tcg/tcg-op-common.h
+@@ -14,6 +14,7 @@
  
--arm_ss.add(when: 'TARGET_AARCH64',
--  if_true: files(
--    'cpu64.c',
--    'gdbstub64.c'),
--  if_false: files(
--    'cpu32-stubs.c'),
--)
-+arm_ss.add(when: 'TARGET_AARCH64', if_true: files(
-+  'cpu64.c',
-+  'gdbstub64.c'))
+ TCGv_i32 tcg_constant_i32(int32_t val);
+ TCGv_i64 tcg_constant_i64(int64_t val);
++TCGv_vaddr tcg_constant_vaddr(uintptr_t val);
+ TCGv_vec tcg_constant_vec(TCGType type, unsigned vece, int64_t val);
+ TCGv_vec tcg_constant_vec_matching(TCGv_vec match, unsigned vece, int64_t val);
  
- arm_system_ss = ss.source_set()
- arm_common_system_ss = ss.source_set()
-@@ -32,8 +28,12 @@ arm_system_ss.add(files(
+diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
+index a8c00c72cc8..3fa5a7aed2c 100644
+--- a/include/tcg/tcg.h
++++ b/include/tcg/tcg.h
+@@ -189,6 +189,7 @@ typedef tcg_target_ulong TCGArg;
+     * TCGv_i64  : 64 bit integer type
+     * TCGv_i128 : 128 bit integer type
+     * TCGv_ptr  : a host pointer type
++    * TCGv_vaddr: an integer type wide enough to hold a target pointer type
+     * TCGv_vec  : a host vector type; the exact size is not exposed
+                   to the CPU front-end code.
+     * TCGv      : an integer type the same size as target_ulong
+@@ -217,6 +218,14 @@ typedef struct TCGv_ptr_d *TCGv_ptr;
+ typedef struct TCGv_vec_d *TCGv_vec;
+ typedef TCGv_ptr TCGv_env;
  
- arm_user_ss = ss.source_set()
- arm_user_ss.add(files('cpu.c'))
-+arm_user_ss.add(when: 'TARGET_AARCH64', if_false: files(
-+  'cpu32-stubs.c'))
++#if __SIZEOF_POINTER__ == 4
++typedef TCGv_i32 TCGv_vaddr;
++#elif __SIZEOF_POINTER__ == 8
++typedef TCGv_i64 TCGv_vaddr;
++#else
++# error "sizeof pointer is different from {4,8}"
++#endif /* __SIZEOF_POINTER__ */
++
+ /* call flags */
+ /* Helper does not read globals (either directly or through an exception). It
+    implies TCG_CALL_NO_WRITE_GLOBALS. */
+@@ -577,6 +586,11 @@ static inline TCGv_ptr temp_tcgv_ptr(TCGTemp *t)
+     return (TCGv_ptr)temp_tcgv_i32(t);
+ }
  
- arm_common_system_ss.add(files('cpu.c'), capstone)
-+arm_common_system_ss.add(when: 'TARGET_AARCH64', if_false: files(
-+  'cpu32-stubs.c'))
++static inline TCGv_vaddr temp_tcgv_vaddr(TCGTemp *t)
++{
++    return (TCGv_vaddr)temp_tcgv_i32(t);
++}
++
+ static inline TCGv_vec temp_tcgv_vec(TCGTemp *t)
+ {
+     return (TCGv_vec)temp_tcgv_i32(t);
+diff --git a/include/exec/helper-head.h.inc b/include/exec/helper-head.h.inc
+index bce5db06ef3..5b248fd7138 100644
+--- a/include/exec/helper-head.h.inc
++++ b/include/exec/helper-head.h.inc
+@@ -58,6 +58,17 @@
+ # define dh_ctype_tl target_ulong
+ #endif /* COMPILING_PER_TARGET */
  
- subdir('hvf')
++#if __SIZEOF_POINTER__ == 4
++# define dh_alias_vaddr i32
++# define dh_typecode_vaddr dh_typecode_i32
++#elif __SIZEOF_POINTER__ == 8
++# define dh_alias_vaddr i64
++# define dh_typecode_vaddr dh_typecode_i64
++#else
++# error "sizeof pointer is different from {4,8}"
++#endif /* __SIZEOF_POINTER__ */
++# define dh_ctype_vaddr uintptr_t
++
+ /* We can't use glue() here because it falls foul of C preprocessor
+    recursive expansion rules.  */
+ #define dh_retvar_decl0_void void
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index 648333a9fb7..ae27a2607df 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -2367,6 +2367,11 @@ TCGv_i64 tcg_constant_i64(int64_t val)
+     return temp_tcgv_i64(tcg_constant_internal(TCG_TYPE_I64, val));
+ }
  
++TCGv_vaddr tcg_constant_vaddr(uintptr_t val)
++{
++    return temp_tcgv_vaddr(tcg_constant_internal(TCG_TYPE_PTR, val));
++}
++
+ TCGv_ptr tcg_constant_ptr_int(intptr_t val)
+ {
+     return temp_tcgv_ptr(tcg_constant_internal(TCG_TYPE_PTR, val));
 -- 
 2.43.0
 
