@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CF44AB8425
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 12:39:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B987AB8422
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 12:39:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFVoZ-0006NR-RB; Thu, 15 May 2025 06:27:49 -0400
+	id 1uFVq9-00026s-12; Thu, 15 May 2025 06:29:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uFVnc-0005NJ-DV
- for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:49 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1uFVne-0005PF-Eb
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:50 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uFVnV-0008Fl-9d
- for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:44 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-43cf06eabdaso7149225e9.2
- for <qemu-devel@nongnu.org>; Thu, 15 May 2025 03:26:40 -0700 (PDT)
+ id 1uFVnW-0008Fy-Uy
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:45 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-43d0618746bso5770015e9.2
+ for <qemu-devel@nongnu.org>; Thu, 15 May 2025 03:26:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747304800; x=1747909600; darn=nongnu.org;
+ d=linaro.org; s=google; t=1747304801; x=1747909601; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=M4wis+oyI42kUUV62F9CkVaRrtKVkEpqI4xQo+H0IZg=;
- b=tnHJQNA1GFqHW6c5plNcxqIZGLgppruWW5wt+JWdI95RrebGnV24LGqrw4PY87Fl7z
- i87J0O0iwfzNZkmarl3U6sDqmx803CVBqpoD/XO1bp2BAQKW0Kl+B3CTvDIJqMHs0Bd8
- 2FC46hSsiWfFbv4tHDvxGzmHNUBr/FATwvQQYkv84p0irFTasw14cgdGELAfNrZwnzlu
- V2K09ZSl6Y3Spo+VQwm6lmMKoRJA/R+Aj9Gy1o2v/qYEIoNXK+d54J5vtSm2wRHbA0iR
- 6HV7nF4EVb6R7N4iCoUSLg11syN0AAn/wNf6pLCuczjRMYnDHKkcDppLKEPlzm5f7c/r
- jN0Q==
+ :reply-to; bh=Ab5pp6BZoHOVPbJgDowtlvgwNNGVrCIgmepaEE9nqb0=;
+ b=xlIFU9Kt+QFf1AHQ5HmOT0dPbicVtkJHjl5UZlf27lVo1az3jSP7cKMeKbokqVAbFb
+ n55VRhWD+hRRXLefB3/s4FYxXGAgQXqh+nDBupaIDHzad+WTBQQN5C1r/LCcXVNj/9eX
+ Zxc6XHZmHcLSxFZfrfSuPU+lxsAnECnouvWJfNZg44TKKCkkZb56HbgeaBqgU3yTQxml
+ OLiKmWJZYM4b70ReBdwGcgrjCyoej7n8i5HMTMD22CBJOWAWQR+unhR74XI3sx7CdRkb
+ rlRiL3fvg4SqcQsOcBZF5NjG9uasM/+2ov84/ZQN03WPAXYn/fLRSZ5NqwyggpRwIcUp
+ yCzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747304800; x=1747909600;
+ d=1e100.net; s=20230601; t=1747304801; x=1747909601;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=M4wis+oyI42kUUV62F9CkVaRrtKVkEpqI4xQo+H0IZg=;
- b=l7Yfl350sf/63PHKn/cIciPtW7K8RPKv7n8oSpCHXuT3cvShKuy9nryY83YdGFwLEO
- 1EiohXrNKfy5fAS94NUsebzKmuJyIhWD/PFgz/POQI6pNRj5b7/m238kkMleXH/NIPgR
- oRTfEigujAY/sROOIXvWfDBlh37GtQyGGs7crHwhwqODMuIr4woUC6mD27tRUICM/TB6
- +wfidRfc7NRXRTjc88dpdnmXutNOWs5dqtk7dnBAkb+jAUJyzgejxC28P/k49MNY4rwg
- I6R+xTmVqMJQ8nyKcFFWgp0xLstSTQDxwdybs+CFzJ5gTjPQnAeZAL9RbaGqTeROXf0m
- hp7g==
-X-Gm-Message-State: AOJu0Yz9Nr874oY0wSHhZnM6OYHUdGbABtD2gPO45aTlpaV25yuYTJ2u
- +ncNSDnjen1I/esqf2AIUQEtcWXgIencCml4g9pjVXIampJNHQQjbTwQ6S4A0MFgD7XfgN6n6/5
- anJE=
-X-Gm-Gg: ASbGnctMjpuozQgcQzmRFAKNdLZDBNIYqj7geMLjg16JTuU/EXw5oXCvvje/gzZNL1V
- Hi5jBotlb2IbdOcf958/bqkH5jRDqRon3c6aM412a16qcG7kbwKi5Hys7oK9c+wTAX+jA5U1saH
- LS9fPyiWkW1pM5d1Xz4/Enzev60NTRa8FyZemH2TVuSbDr9urrLwkgvPWwhNzpyB60OJ+rk+WuI
- EIQoj4lycsxA2KjywWtFlsckUCv8nZmyjwRDuxYdohQq6642qe5kc34UL7oVP8gZ+32/g+k/jZa
- dIUsgA8HFahkadrH7iH3+VnGmGVSdZ8ZeGqZgYFz42CIHc1dhW7fHwUOLQ==
-X-Google-Smtp-Source: AGHT+IG3Vj/Ca8Oyuo/RAc7izkJhAKUzIiMozfQh21LGed+zkzi0rFkSu0v9Kdnq6DxkYHJqpTFjPQ==
-X-Received: by 2002:a05:600c:4e09:b0:43d:1b74:e89a with SMTP id
- 5b1f17b1804b1-442f96e8949mr19607585e9.9.1747304799641; 
- Thu, 15 May 2025 03:26:39 -0700 (PDT)
+ bh=Ab5pp6BZoHOVPbJgDowtlvgwNNGVrCIgmepaEE9nqb0=;
+ b=uJdvLfbL2Pyo9ej6+Wtmo3RHECieYJOMFttkURo8HS72pIWWgsBaT/fkIvdjMjuyl7
+ cZDmLQUQyfDg85Lnn9QqiP6eYD7QBaYodn0KlhPxbczcKAsCWqWFaKxNrclVfvn1eNN2
+ ydvf872llW7iZK7oczMsmr6yaWivCOrHia8jtCGD5WRxhldqce/wCeTUNP2fePkrtR99
+ ac9DM2yOSggjGq+Is1024moN4ilK+gBaPU+zktiLfFd8jhFBatJfA8cM2+fbWAgkT+Ve
+ HKlVHwKZ9CTtPDPvgvKM++U0gZ8t2inZvI99bXOcZVFzd2UIEotOtuboFkrlpzUxv+mR
+ 1yhg==
+X-Gm-Message-State: AOJu0Yx0m4FoBvbe8mratK6GQhbXDtKVWjjts2in+MSCN5xv3n/6wpFN
+ ATQqF6xdL9oeKojekqcFS9XXLYHhtLAL8u6g/tM+WBpTvh01vne1ATAPttJ9lkzb9bPnbxfi0DA
+ Jt3E=
+X-Gm-Gg: ASbGncuv6JHa60kCX04bUXzAwRhrBg1NZaelD9gE4L+DWXOwa5QXwffVWIKoqdVhUGP
+ q+459SHuwgL9fZRx4M7Z1pTrSlagrF3LJCswl9WQ9jqXwcm7ClEfIjApsmsxmDLpFwV7sMNOKT8
+ KBqKLwwUXWY0R9pQ3IeNKv6M6xuNefuWQjQjrvDKVw6qOVQLwhrF+54ZfRSqzcGD3WimONJwiBN
+ cDrGkE/vDu9JL8GZ8RuyFUtn30/A50VWizVUuTCU0sLX1yu+Dlv8YwXVo6+aL8f+NPboLy13S6k
+ sw/Dab2EHEl0IA4Vh9SyH9erMoC8n2rO/MZ7jScZOl7F+e6YcVaW4xShNQ==
+X-Google-Smtp-Source: AGHT+IHzB2Pr0tIQc0jkPWYkwF1RMsVsA2r1AHpWRbxaGKBc/1negtw6tJYjcKwcsmo4WRXef94tag==
+X-Received: by 2002:a05:600c:3b8d:b0:43d:fa5d:9314 with SMTP id
+ 5b1f17b1804b1-442f971a49bmr17727825e9.32.1747304800683; 
+ Thu, 15 May 2025 03:26:40 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442f396c3a4sm65657855e9.26.2025.05.15.03.26.38
+ 5b1f17b1804b1-442f396c3a4sm65657855e9.26.2025.05.15.03.26.39
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 May 2025 03:26:38 -0700 (PDT)
+ Thu, 15 May 2025 03:26:40 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 40/58] target/arm/ptw: replace TARGET_AARCH64 by
- CONFIG_ATOMIC64 from arm_casq_ptw
-Date: Thu, 15 May 2025 11:25:28 +0100
-Message-ID: <20250515102546.2149601-41-peter.maydell@linaro.org>
+Subject: [PULL 41/58] target/arm/ptw: compile file once (system)
+Date: Thu, 15 May 2025 11:25:29 +0100
+Message-ID: <20250515102546.2149601-42-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250515102546.2149601-1-peter.maydell@linaro.org>
 References: <20250515102546.2149601-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,30 +98,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-This function needs 64 bit compare exchange, so we hide implementation
-for hosts not supporting it (some 32 bit target, which don't run 64 bit
-guests anyway).
-
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-id: 20250512180502.2395029-31-pierrick.bouvier@linaro.org
+Message-id: 20250512180502.2395029-32-pierrick.bouvier@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/ptw.c | 2 +-
+ target/arm/meson.build | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 68ec3f5e755..44170d831cc 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -737,7 +737,7 @@ static uint64_t arm_casq_ptw(CPUARMState *env, uint64_t old_val,
-                              uint64_t new_val, S1Translate *ptw,
-                              ARMMMUFaultInfo *fi)
- {
--#if defined(TARGET_AARCH64) && defined(CONFIG_TCG)
-+#if defined(CONFIG_ATOMIC64) && defined(CONFIG_TCG)
-     uint64_t cur_val;
-     void *host = ptw->out_host;
+diff --git a/target/arm/meson.build b/target/arm/meson.build
+index 6e0327b6f5b..151184da71c 100644
+--- a/target/arm/meson.build
++++ b/target/arm/meson.build
+@@ -17,7 +17,6 @@ arm_common_system_ss = ss.source_set()
+ arm_system_ss.add(files(
+   'arm-qmp-cmds.c',
+   'machine.c',
+-  'ptw.c',
+ ))
+ 
+ arm_user_ss = ss.source_set()
+@@ -40,6 +39,7 @@ arm_common_system_ss.add(files(
+   'cortex-regs.c',
+   'debug_helper.c',
+   'helper.c',
++  'ptw.c',
+   'vfp_fpscr.c',
+ ))
  
 -- 
 2.43.0
