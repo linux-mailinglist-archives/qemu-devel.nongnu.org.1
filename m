@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4FB7AB7D52
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 07:51:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B9A6AB7D87
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 08:05:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFRP4-0004Tr-Ac; Thu, 15 May 2025 01:45:12 -0400
+	id 1uFRPr-00068a-Fc; Thu, 15 May 2025 01:46:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <volker.ruemelin@t-online.de>)
- id 1uFROq-000499-Uw
- for qemu-devel@nongnu.org; Thu, 15 May 2025 01:44:58 -0400
-Received: from mailout07.t-online.de ([194.25.134.83])
+ id 1uFRPV-0005eP-95
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 01:45:37 -0400
+Received: from mailout11.t-online.de ([194.25.134.85])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <volker.ruemelin@t-online.de>)
- id 1uFROp-0008JP-4c
- for qemu-devel@nongnu.org; Thu, 15 May 2025 01:44:56 -0400
-Received: from fwd73.aul.t-online.de (fwd73.aul.t-online.de [10.223.144.99])
- by mailout07.t-online.de (Postfix) with SMTP id 5563313FD;
- Thu, 15 May 2025 07:44:42 +0200 (CEST)
-Received: from linpower.localnet ([84.175.230.13]) by fwd73.t-online.de
+ id 1uFRPT-00006n-47
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 01:45:36 -0400
+Received: from fwd83.aul.t-online.de (fwd83.aul.t-online.de [10.223.144.109])
+ by mailout11.t-online.de (Postfix) with SMTP id 91A89147A;
+ Thu, 15 May 2025 07:44:46 +0200 (CEST)
+Received: from linpower.localnet ([84.175.230.13]) by fwd83.t-online.de
  with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
- esmtp id 1uFROZ-1EbUjB0; Thu, 15 May 2025 07:44:39 +0200
+ esmtp id 1uFROe-2G3OOf0; Thu, 15 May 2025 07:44:44 +0200
 Received: by linpower.localnet (Postfix, from userid 1000)
- id 723B42006CE; Thu, 15 May 2025 07:44:29 +0200 (CEST)
+ id 78E6E2006D0; Thu, 15 May 2025 07:44:29 +0200 (CEST)
 From: =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>
 To: Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -34,19 +34,19 @@ To: Gerd Hoffmann <kraxel@redhat.com>,
 Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v2 5/7] hw/audio/asc: replace g_malloc0() with g_malloc()
-Date: Thu, 15 May 2025 07:44:27 +0200
-Message-ID: <20250515054429.7385-5-vr_qemu@t-online.de>
+Subject: [PATCH v2 7/7] audio: add float sample endianness converters
+Date: Thu, 15 May 2025 07:44:29 +0200
+Message-ID: <20250515054429.7385-7-vr_qemu@t-online.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <0bb1a55e-70f1-410b-8b59-78eed7f4c8f7@t-online.de>
 References: <0bb1a55e-70f1-410b-8b59-78eed7f4c8f7@t-online.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TOI-EXPURGATEID: 150726::1747287879-EBFFD49F-65FBA01C/0/0 CLEAN NORMAL
-X-TOI-MSGID: 1303351f-99cf-48bc-92cf-9f865715ffbb
-Received-SPF: pass client-ip=194.25.134.83;
- envelope-from=volker.ruemelin@t-online.de; helo=mailout07.t-online.de
+X-TOI-EXPURGATEID: 150726::1747287884-7EA2A5E4-A66AE5F8/0/0 CLEAN NORMAL
+X-TOI-MSGID: 3af5b955-3819-4479-82ad-dcb9ccf90b85
+Received-SPF: pass client-ip=194.25.134.85;
+ envelope-from=volker.ruemelin@t-online.de; helo=mailout11.t-online.de
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
@@ -69,30 +69,206 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is no need to allocate initialized memory with g_malloc0()
-if it's directly followed by a memset() function call. g_malloc()
-is sufficient.
+Commit ed2a4a7941 ("audio: proper support for float samples in
+mixeng") added support for float audio samples. As there were no
+audio frontend devices with float support at that time, the code
+was limited to native endian float samples.
+
+When nobody was paying attention, an audio device that supports
+floating point samples crept in with commit eb9ad377bb
+("virtio-sound: handle control messages and streams").
+
+Add code for the audio subsystem to convert float samples to the
+correct endianness.
+
+The type punning code was taken from the PipeWire project.
 
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
 ---
- hw/audio/asc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ audio/audio.c          |  3 +-
+ audio/audio_template.h | 12 ++++---
+ audio/mixeng.c         | 75 ++++++++++++++++++++++++++++++++++++++----
+ audio/mixeng.h         |  6 ++--
+ 4 files changed, 82 insertions(+), 14 deletions(-)
 
-diff --git a/hw/audio/asc.c b/hw/audio/asc.c
-index 6721c0d9fb..edd42d6d91 100644
---- a/hw/audio/asc.c
-+++ b/hw/audio/asc.c
-@@ -664,7 +664,7 @@ static void asc_realize(DeviceState *dev, Error **errp)
-     s->samples = AUD_get_buffer_size_out(s->voice) >> s->shift;
-     s->mixbuf = g_malloc0(s->samples << s->shift);
+diff --git a/audio/audio.c b/audio/audio.c
+index 3f5baf0cc6..b58ad74433 100644
+--- a/audio/audio.c
++++ b/audio/audio.c
+@@ -1892,7 +1892,8 @@ CaptureVoiceOut *AUD_add_capture(
+         cap->buf = g_malloc0_n(hw->mix_buf.size, hw->info.bytes_per_frame);
  
--    s->silentbuf = g_malloc0(s->samples << s->shift);
-+    s->silentbuf = g_malloc(s->samples << s->shift);
-     memset(s->silentbuf, 0x80, s->samples << s->shift);
+         if (hw->info.is_float) {
+-            hw->clip = mixeng_clip_float[hw->info.nchannels == 2];
++            hw->clip = mixeng_clip_float[hw->info.nchannels == 2]
++                [hw->info.swap_endianness];
+         } else {
+             hw->clip = mixeng_clip
+                 [hw->info.nchannels == 2]
+diff --git a/audio/audio_template.h b/audio/audio_template.h
+index 7ccfec0116..c29d79c443 100644
+--- a/audio/audio_template.h
++++ b/audio/audio_template.h
+@@ -174,9 +174,11 @@ static int glue (audio_pcm_sw_init_, TYPE) (
  
-     /* Add easc registers if required */
+     if (sw->info.is_float) {
+ #ifdef DAC
+-        sw->conv = mixeng_conv_float[sw->info.nchannels == 2];
++        sw->conv = mixeng_conv_float[sw->info.nchannels == 2]
++            [sw->info.swap_endianness];
+ #else
+-        sw->clip = mixeng_clip_float[sw->info.nchannels == 2];
++        sw->clip = mixeng_clip_float[sw->info.nchannels == 2]
++            [sw->info.swap_endianness];
+ #endif
+     } else {
+ #ifdef DAC
+@@ -303,9 +305,11 @@ static HW *glue(audio_pcm_hw_add_new_, TYPE)(AudioState *s,
+ 
+     if (hw->info.is_float) {
+ #ifdef DAC
+-        hw->clip = mixeng_clip_float[hw->info.nchannels == 2];
++        hw->clip = mixeng_clip_float[hw->info.nchannels == 2]
++            [hw->info.swap_endianness];
+ #else
+-        hw->conv = mixeng_conv_float[hw->info.nchannels == 2];
++        hw->conv = mixeng_conv_float[hw->info.nchannels == 2]
++            [hw->info.swap_endianness];
+ #endif
+     } else {
+ #ifdef DAC
+diff --git a/audio/mixeng.c b/audio/mixeng.c
+index 13e1ff9b08..703ee5448f 100644
+--- a/audio/mixeng.c
++++ b/audio/mixeng.c
+@@ -283,6 +283,11 @@ static const float float_scale_reciprocal = 1.f / ((int64_t)INT32_MAX + 1);
+ #endif
+ #endif
+ 
++#define F32_TO_F32S(v) \
++    bswap32((union { uint32_t i; float f; }){ .f = (v) }.i)
++#define F32S_TO_F32(v) \
++    ((union { uint32_t i; float f; }){ .i = bswap32(v) }.f)
++
+ static void conv_natural_float_to_mono(struct st_sample *dst, const void *src,
+                                        int samples)
+ {
+@@ -294,6 +299,17 @@ static void conv_natural_float_to_mono(struct st_sample *dst, const void *src,
+     }
+ }
+ 
++static void conv_swap_float_to_mono(struct st_sample *dst, const void *src,
++                                    int samples)
++{
++    const uint32_t *in_f32s = src;
++
++    while (samples--) {
++        dst->r = dst->l = CONV_NATURAL_FLOAT(F32S_TO_F32(*in_f32s++));
++        dst++;
++    }
++}
++
+ static void conv_natural_float_to_stereo(struct st_sample *dst, const void *src,
+                                          int samples)
+ {
+@@ -306,9 +322,27 @@ static void conv_natural_float_to_stereo(struct st_sample *dst, const void *src,
+     }
+ }
+ 
+-t_sample *mixeng_conv_float[2] = {
+-    conv_natural_float_to_mono,
+-    conv_natural_float_to_stereo,
++static void conv_swap_float_to_stereo(struct st_sample *dst, const void *src,
++                                      int samples)
++{
++    const uint32_t *in_f32s = src;
++
++    while (samples--) {
++        dst->l = CONV_NATURAL_FLOAT(F32S_TO_F32(*in_f32s++));
++        dst->r = CONV_NATURAL_FLOAT(F32S_TO_F32(*in_f32s++));
++        dst++;
++    }
++}
++
++t_sample *mixeng_conv_float[2][2] = {
++    {
++        conv_natural_float_to_mono,
++        conv_swap_float_to_mono,
++    },
++    {
++        conv_natural_float_to_stereo,
++        conv_swap_float_to_stereo,
++    }
+ };
+ 
+ static void clip_natural_float_from_mono(void *dst, const struct st_sample *src,
+@@ -322,6 +356,17 @@ static void clip_natural_float_from_mono(void *dst, const struct st_sample *src,
+     }
+ }
+ 
++static void clip_swap_float_from_mono(void *dst, const struct st_sample *src,
++                                      int samples)
++{
++    uint32_t *out_f32s = dst;
++
++    while (samples--) {
++        *out_f32s++ = F32_TO_F32S(CLIP_NATURAL_FLOAT(src->l + src->r));
++        src++;
++    }
++}
++
+ static void clip_natural_float_from_stereo(
+     void *dst, const struct st_sample *src, int samples)
+ {
+@@ -334,9 +379,27 @@ static void clip_natural_float_from_stereo(
+     }
+ }
+ 
+-f_sample *mixeng_clip_float[2] = {
+-    clip_natural_float_from_mono,
+-    clip_natural_float_from_stereo,
++static void clip_swap_float_from_stereo(
++    void *dst, const struct st_sample *src, int samples)
++{
++    uint32_t *out_f32s = dst;
++
++    while (samples--) {
++        *out_f32s++ = F32_TO_F32S(CLIP_NATURAL_FLOAT(src->l));
++        *out_f32s++ = F32_TO_F32S(CLIP_NATURAL_FLOAT(src->r));
++        src++;
++    }
++}
++
++f_sample *mixeng_clip_float[2][2] = {
++    {
++        clip_natural_float_from_mono,
++        clip_swap_float_from_mono,
++    },
++    {
++        clip_natural_float_from_stereo,
++        clip_swap_float_from_stereo,
++    }
+ };
+ 
+ void audio_sample_to_uint64(const void *samples, int pos,
+diff --git a/audio/mixeng.h b/audio/mixeng.h
+index a5f56d2c26..ead93ac2f7 100644
+--- a/audio/mixeng.h
++++ b/audio/mixeng.h
+@@ -42,9 +42,9 @@ typedef void (f_sample) (void *dst, const struct st_sample *src, int samples);
+ extern t_sample *mixeng_conv[2][2][2][3];
+ extern f_sample *mixeng_clip[2][2][2][3];
+ 
+-/* indices: [stereo] */
+-extern t_sample *mixeng_conv_float[2];
+-extern f_sample *mixeng_clip_float[2];
++/* indices: [stereo][swap endianness] */
++extern t_sample *mixeng_conv_float[2][2];
++extern f_sample *mixeng_clip_float[2][2];
+ 
+ void *st_rate_start (int inrate, int outrate);
+ void st_rate_flow(void *opaque, st_sample *ibuf, st_sample *obuf,
 -- 
 2.43.0
 
