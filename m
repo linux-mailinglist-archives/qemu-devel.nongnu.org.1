@@ -2,109 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F453AB8B88
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 17:53:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FE0FAB8B91
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 17:54:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFarh-000807-EJ; Thu, 15 May 2025 11:51:21 -0400
+	id 1uFas7-0000X3-KS; Thu, 15 May 2025 11:51:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1uFarR-0007HW-TK; Thu, 15 May 2025 11:51:08 -0400
+ (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
+ id 1uFarx-0000NR-Ar; Thu, 15 May 2025 11:51:40 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kowal@linux.ibm.com>)
- id 1uFarP-000743-DZ; Thu, 15 May 2025 11:51:05 -0400
+ (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
+ id 1uFars-00076W-AE; Thu, 15 May 2025 11:51:36 -0400
 Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54FCg420002200;
- Thu, 15 May 2025 15:51:01 GMT
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54FCgGQj002606;
+ Thu, 15 May 2025 15:51:28 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=5wyfZD
- ZsgDB6STLQosr0IYPuC8KTlipICrlksLyb+94=; b=GprSRgSSTd6M8h11t4YsLO
- Ar3V0kJbML2Elnsfszg1U6z/tr9AOXELVVF7QSlXRQkbeQNCuhbd2yXEtfntFPDN
- ggxmiA5MX1STfg1EwGTLOtcx42zPnfFgeamPoyHbqW06yDatcf0QeiuFIdVYTPMk
- Wi8PgMPSJhBk+86ksW3sSFAnuXERCzYSnWkaW5b729r2AC0dPQlNvVIU8aWEtnet
- E9UbWbgigt47Il9AVu6VxdIfbp1nSk389dMLFtXfvzBRHtfNXdz048J+cY6mQKg5
- 1qN8ZbOMqy5BqmyZcdrqAFIaVI0aLPI5JhP8kRmJ4EvLv1InChF9dEmPQuGCYqdQ
- ==
+ :message-id:mime-version:references:reply-to:subject:to; s=pp1;
+ bh=bb76EGushOB8klMmBVskrxUzYz4mlCvxy41Gm7tRr3M=; b=j6WSZem/xPU6
+ K0WpxmcCgQNlAGVH2qaqOU1i0UR+Sn5sCrY1x5+WwIuQOULHD6TwGIfgj5QV4MBD
+ lZb9WHc6r78D7eYkN6+zrSnc6rtplES2sqnEtJ12Optb/9Hrig4Y0FaU42iV2zkG
+ uhyQFScU+MhH9PlXtke8LemQN6sLau8Wm9TQhcfF93Gp+u+XqH3sMziReV59GMJo
+ 46TTQ7CcrxGQQD4UQ3QW8k3nYhAFcF3J0CZZwDhkj+OP6jqclkUjiAepTZ7niLFU
+ Oe3FMm7aW91iZVKy6IYL1ZuycXMwWaLPk8KuZnCLn2C3Z638Ya4lillfzkTvJOT0
+ SuHCC5rZfw==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46n0v6nent-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46n0v6nerh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 May 2025 15:51:01 +0000 (GMT)
+ Thu, 15 May 2025 15:51:28 +0000 (GMT)
 Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54FFaFRi028631;
- Thu, 15 May 2025 15:51:01 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46n0v6nenp-1
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54FFTPpS011769;
+ Thu, 15 May 2025 15:51:27 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46n0v6nere-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 May 2025 15:51:01 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54FE40nW024279;
- Thu, 15 May 2025 15:51:00 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46mbfsb24h-1
+ Thu, 15 May 2025 15:51:27 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54FDY9lB019455;
+ Thu, 15 May 2025 15:51:27 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 46mbfru2b3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 May 2025 15:51:00 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 54FFowi521365286
+ Thu, 15 May 2025 15:51:27 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
+ [10.39.53.230])
+ by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 54FFpQOi20775522
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 15 May 2025 15:50:59 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D6CFD58061;
- Thu, 15 May 2025 15:50:58 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 864B55805D;
- Thu, 15 May 2025 15:50:58 +0000 (GMT)
-Received: from [9.10.80.143] (unknown [9.10.80.143])
- by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 15 May 2025 15:50:58 +0000 (GMT)
-Message-ID: <9a479b81-ec35-4256-8092-52357f4eebea@linux.ibm.com>
-Date: Thu, 15 May 2025 10:50:57 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 48/50] ppc/xive2: Implement PHYS ring VP push TIMA op
+ Thu, 15 May 2025 15:51:26 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0DB4B5805F;
+ Thu, 15 May 2025 15:51:26 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7ACD95805C;
+ Thu, 15 May 2025 15:51:25 +0000 (GMT)
+Received: from mambor8.rchland.ibm.com (unknown [9.10.239.198])
+ by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 15 May 2025 15:51:25 +0000 (GMT)
+Message-ID: <abfaf4a88e44accff68653df159fbc28cf45d7e6.camel@linux.ibm.com>
+Subject: Re: [PATCH 19/50] pnv/xive2: VC_ENDC_WATCH_SPEC regs should read
+ back WATCH_FULL
+From: Miles Glenn <milesg@linux.ibm.com>
 To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?=
- <fbarrat@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
- Caleb Schlossin <calebs@linux.vnet.ibm.com>
+Cc: qemu-devel@nongnu.org, =?ISO-8859-1?Q?Fr=E9d=E9ric?= Barrat
+ <fbarrat@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>, Caleb
+ Schlossin <calebs@linux.vnet.ibm.com>
+Date: Thu, 15 May 2025 10:51:25 -0500
+In-Reply-To: <20250512031100.439842-20-npiggin@gmail.com>
 References: <20250512031100.439842-1-npiggin@gmail.com>
- <20250512031100.439842-49-npiggin@gmail.com>
-Content-Language: en-US
-From: Mike Kowal <kowal@linux.ibm.com>
-In-Reply-To: <20250512031100.439842-49-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+ <20250512031100.439842-20-npiggin@gmail.com>
+Organization: IBM
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-27.el8_10) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=IqAecK/g c=1 sm=1 tr=0 ts=68260d65 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+X-Authority-Analysis: v=2.4 cv=IqAecK/g c=1 sm=1 tr=0 ts=68260d80 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
  a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8
- a=5GyUnxkyDHgghPbyitQA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: yYpB7kexrzJmzNucRky1FkvTgh6aorMV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE1MDE1NSBTYWx0ZWRfX1Rud2G/jPVNj
- WmFUH8lLF2pKDqTGpf7QDhUjLQIKI0yokmEI7BSULYoZKPR1jAKe3fcqJl08/PqdDxekKi9Y190
- avnA3NSrtsEzF7OHYl7Dx2lhVmJirpacPKflVGV0eeMjBhnDaHT8zN5HlWTY8HSjltoQB3cGmvr
- M+/SkLGDW10shCL9S6BOvkWYorvKIBz3BVloJIcy+o5ivK4v+wZ+snDuqQ7jT+mapoZWjEgENOz
- vyvPZ8IEjnRJZ7bB9gX58o//Qh4GTEWKQtvZimEcFxBre7Ot+AfniThL6/emkfZviVfny+KdTzR
- GUz9+knNRnn4OmmP2ZbGf5djovm1Lis91l5YY5n/Fby6AZrjTJkO1R3/piVisIiEirC4tWfpnb8
- me3FIlCp0oKgTYc/gbkWTn3Yy/YQ6juU7pHJZo96VmnsTOOzJOeB4Zr+lOYHr9Z+crZBz7Yq
-X-Proofpoint-GUID: OaGeuXZ8xq3nF69G-RnmvWS_iiCoynqO
+ a=OIwot2dQPgAvwoVT6JIA:9 a=QEXdDO2ut3YA:10
+ a=gZLHJPz4sbkA:10
+X-Proofpoint-ORIG-GUID: HYhE7hOPaWqkQLAkuOD9RbjxkRrnzPps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE1MDE1NSBTYWx0ZWRfX8eQ0GzaEWjyB
+ rWMr3SoE1LRA8NcFgglvg7X3FA2VIFm8RsBPBI4XTETpJvj05kshLWTmvIx4M+qYvee2z4jc2nu
+ ILISguaSca0qH/cfHebR3sldgp403tyFIi55p6HPNwES4QZZB3L2N5/2LEBBQ+TcMrU9iFpvVz3
+ kZXeIlUedTbYeUphnj3X/zi06Bcicja2nKcF8knB2//lUksezOqHcUwe2nQ/yulgkfw3HbL/wjS
+ ScpQRIjRnaA/hUhNGtqqz4BQM/EdVIDJhwlHuZQNlWk6hcZaTO9R+yoDiS4scX5oUZKMRQfLU11
+ aC2cqdU8FBAoGa7tA3ZWZPKxZf2mVo0jKi646JY9sL7R+ln01RuxLGbpJ89KEEqlUdtwstMZd2q
+ qmHwxstM091nO7xZPvOw8fL52OxzzYZ/zZXv7BZgm/F0pJ3q9Q4nlgEbAzKITtmy6xoa5/h3
+X-Proofpoint-GUID: uX6NV4BRftpcZnvB-J6yJOWO9bGko6an
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-15_06,2025-05-15_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  mlxscore=0 malwarescore=0
  adultscore=0 lowpriorityscore=0 phishscore=0 impostorscore=0
- priorityscore=1501 clxscore=1015 spamscore=0 mlxlogscore=999 bulkscore=0
+ priorityscore=1501 clxscore=1015 spamscore=0 mlxlogscore=891 bulkscore=0
  suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
  definitions=main-2505150155
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=kowal@linux.ibm.com;
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=milesg@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
@@ -126,77 +127,35 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: milesg@linux.ibm.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
 
-On 5/11/2025 10:10 PM, Nicholas Piggin wrote:
-> Implement the phys (aka hard) VP push. PowerVM uses this operation.
-
-Reviewed-by: Michael Kowal<kowal@linux.ibm.com>
-
-Thanks,  MAK
->
+On Mon, 2025-05-12 at 13:10 +1000, Nicholas Piggin wrote:
+> Firmware expects to read back the WATCH_FULL bit from the VC_ENDC_WATCH_SPEC
+> register, so don't clear it on read.
+> 
+> Don't bother clearing the reads-as-zero CONFLICT bit because it's masked
+> at write already.
+> 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   hw/intc/xive.c         |  2 ++
->   hw/intc/xive2.c        | 11 +++++++++++
->   include/hw/ppc/xive2.h |  2 ++
->   3 files changed, 15 insertions(+)
->
-> diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-> index 807a1c1c34..69118999e6 100644
-> --- a/hw/intc/xive.c
-> +++ b/hw/intc/xive.c
-> @@ -747,6 +747,8 @@ static const XiveTmOp xive2_tm_operations[] = {
->         xive_tm_set_pool_lgs, NULL },
->       { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_CPPR,  1, true, true,
->         xive2_tm_set_hv_cppr, NULL },
-> +    { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_WORD2, 1, false, true,
-> +      xive2_tm_push_phys_ctx, NULL },
->       { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_WORD2, 1, true, true,
->         NULL, xive_tm_vt_poll },
->       { XIVE_TM_HV_PAGE, TM_QW3_HV_PHYS + TM_T,     1, true, true,
-> diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-> index de1ccad685..a9b188b909 100644
-> --- a/hw/intc/xive2.c
-> +++ b/hw/intc/xive2.c
-> @@ -1005,6 +1005,11 @@ static void xive2_tm_push_ctx(XivePresenter *xptr, XiveTCTX *tctx,
->   
->       /* First update the thead context */
->       switch (size) {
-> +    case 1:
-> +        tctx->regs[ring + TM_WORD2] = value & 0xff;
-> +        cam = xive2_tctx_hw_cam_line(xptr, tctx);
-> +        cam |= ((value & 0xc0) << 24); /* V and H bits */
-> +        break;
->       case 4:
->           cam = value;
->           w2 = cpu_to_be32(cam);
-> @@ -1040,6 +1045,12 @@ void xive2_tm_push_pool_ctx(XivePresenter *xptr, XiveTCTX *tctx,
->       xive2_tm_push_ctx(xptr, tctx, offset, value, size, TM_QW2_HV_POOL);
->   }
->   
-> +void xive2_tm_push_phys_ctx(XivePresenter *xptr, XiveTCTX *tctx,
-> +                            hwaddr offset, uint64_t value, unsigned size)
-> +{
-> +    xive2_tm_push_ctx(xptr, tctx, offset, value, size, TM_QW3_HV_PHYS);
-> +}
-> +
->   /* returns -1 if ring is invalid, but still populates block and index */
->   static int xive2_tctx_get_nvp_indexes(XiveTCTX *tctx, uint8_t ring,
->                                         uint8_t *nvp_blk, uint32_t *nvp_idx)
-> diff --git a/include/hw/ppc/xive2.h b/include/hw/ppc/xive2.h
-> index 45266c2a8b..f4437e2c79 100644
-> --- a/include/hw/ppc/xive2.h
-> +++ b/include/hw/ppc/xive2.h
-> @@ -146,6 +146,8 @@ void xive2_tm_push_pool_ctx(XivePresenter *xptr, XiveTCTX *tctx,
->                               hwaddr offset, uint64_t value, unsigned size);
->   uint64_t xive2_tm_pull_pool_ctx(XivePresenter *xptr, XiveTCTX *tctx,
->                                   hwaddr offset, unsigned size);
-> +void xive2_tm_push_phys_ctx(XivePresenter *xptr, XiveTCTX *tctx,
-> +                            hwaddr offset, uint64_t value, unsigned size);
->   uint64_t xive2_tm_pull_phys_ctx(XivePresenter *xptr, XiveTCTX *tctx,
->                                   hwaddr offset, unsigned size);
->   void xive2_tm_pull_phys_ctx_ol(XivePresenter *xptr, XiveTCTX *tctx,
+>  hw/intc/pnv_xive2.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
+> index fcf5b2e75c..3c26cd6b77 100644
+> --- a/hw/intc/pnv_xive2.c
+> +++ b/hw/intc/pnv_xive2.c
+> @@ -1329,7 +1329,6 @@ static uint64_t pnv_xive2_ic_vc_read(void *opaque, hwaddr offset,
+>      case VC_ENDC_WATCH2_SPEC:
+>      case VC_ENDC_WATCH3_SPEC:
+>          watch_engine = (offset - VC_ENDC_WATCH0_SPEC) >> 6;
+> -        xive->vc_regs[reg] &= ~(VC_ENDC_WATCH_FULL | VC_ENDC_WATCH_CONFLICT);
+>          pnv_xive2_endc_cache_watch_release(xive, watch_engine);
+>          val = xive->vc_regs[reg];
+>          break;
+
 
