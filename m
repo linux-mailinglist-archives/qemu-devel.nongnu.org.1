@@ -2,92 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EECDAB8003
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 10:14:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B790AB801A
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 10:17:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFTi4-00032f-3H; Thu, 15 May 2025 04:12:56 -0400
+	id 1uFTlb-0007bH-Nt; Thu, 15 May 2025 04:16:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uFTg3-0003ey-Vb
- for qemu-devel@nongnu.org; Thu, 15 May 2025 04:10:54 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1uFTg1-00015K-7T
- for qemu-devel@nongnu.org; Thu, 15 May 2025 04:10:51 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-441c99459e9so4020315e9.3
- for <qemu-devel@nongnu.org>; Thu, 15 May 2025 01:10:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747296647; x=1747901447; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=i8blzH84htNdwLmxGF8Fo5lYEnrapevirfn7c/HQO2s=;
- b=TedL2Jo/mN3Xv/MiQMqiuObDbU5Edngjr0tUp0n095SHdxoroA65BKnw53BcbtlGpc
- 72dmDGLxJvZ5Dw+/nOEipjNOFOR+Lbi5BJZbFtVvL2F6TDum5AKngwwgj9EeDPpRtWzs
- Y2fBty83M4ENFIaIViypwrbTqU751o1CH3lKVUsghlFLYh+nNcjfTWLKL6Nlxw4Lkdmi
- GG7viHKDZ22ERauciAwW6AQ1ymdv7v+DvrqiwndRZjpEiu4XdH41yuYnGd/NuetvZTSh
- 2bueFsmTy442sS1CzcxCm5iRBgHA59AVtsNfPJEY1tkFi8P4z7z2ohL5vJqPZ4LiEZey
- QRqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747296647; x=1747901447;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=i8blzH84htNdwLmxGF8Fo5lYEnrapevirfn7c/HQO2s=;
- b=K9FBZvYmbvstZKd0juocQz4EDExQIblwzcnakSAiw7fnLX/rg9yTwAG6WW4LpoRhxS
- /jsOrkupxTZuuErdKbcrgfElOT0MeLUf9OixjXnxD28pxtOgVDkdgv0t61Jil73yZDgR
- pSh2XHqxmT5z3x/0ZRarAFdbmm4R+pIF0I4MVKgIJ+k5By6/kKx43dnvsRmk3ELcPvjK
- nERrHhKMBylyHf52J8zzVu9ALgpjXEQuQqaYnNCI3MFbCfDuDHe9yimWaJOE/Y1T2atU
- 6c+kkTHsfMm4QB9DiRKPKnTLBV18Pomqk1x/YZBgwjDy+kE2pIT+qs26zyfUEALHI7kv
- yO5Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXCnU4g30jCmpBYY1pqz2F5fkwQHeHgAI+Aes/22/dQn8B3KGQzqiAEXs29GiU/Lzq91sEckwZ/qCtS@nongnu.org
-X-Gm-Message-State: AOJu0Yw1obEtqvLmqzpEoLHJDynoHASNFf5li6OMrhiGhRvFUa/Ehh8e
- eX51O3HjktP9PG/mJ3YBaZmU8AIR+gD9DIjcJsXrHZTME5VeiI1VbHIvJ75e0zI=
-X-Gm-Gg: ASbGncvkMPi2puzOuruaib+CAnI0NFOnSwBBOWE58dVzBSXpDzSOeU3lNsTB+9aqtTJ
- xcxVFGm0uC4RFz5InahnjzJK8W/+C3yqnnrJS944fPNT4PLy07p1Pj9ZeJgjZ5Ur8Jo3G2HOQkD
- sryGuVtEfnMgp+yyeA+2hwneWznLPIHa/yeIzKrnf2eSkMRllHBe9i9FHUoFn/qrg3xnqB3g7Gn
- ks9SdZtWM/ymdEOaNYJ/685hKZ+AoL63tY5Sul2SnnqC7eU5Y+gMXo0Cob5f6Sqpozg/Mx6nz/P
- pqUxgPt13N87eX9NrOw8Z731lF7A/zF1y1DVFqEMOKx7uuTQ+P/jIymlhuSMFcsE/FDrag3X4Cm
- dUxT+rfmjvG06xCM=
-X-Google-Smtp-Source: AGHT+IG0Fns6yAf9hOAHmp8An9ONTUC9VGwI7rATJ/7WEZqPt3yEGTeQkFeiymgJA/pLmWtbhOw7JA==
-X-Received: by 2002:a05:6000:1445:b0:3a1:faa7:89e2 with SMTP id
- ffacd0b85a97d-3a34994ef7emr4623394f8f.58.1747296646704; 
- Thu, 15 May 2025 01:10:46 -0700 (PDT)
-Received: from [10.61.1.10] (110.8.30.213.rev.vodafone.pt. [213.30.8.110])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a1f5a4bbf0sm21633059f8f.82.2025.05.15.01.10.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 15 May 2025 01:10:46 -0700 (PDT)
-Message-ID: <29536f13-b441-4cb4-a58e-831c008a0962@linaro.org>
-Date: Thu, 15 May 2025 09:10:43 +0100
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uFTl8-0006k3-OY
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 04:16:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uFTl5-00022q-Oe
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 04:16:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747296961;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=QxJJqD6Nk2boVin/GG2QwQ8ZJ4QNjDOOMbg+NaNF+9Q=;
+ b=LeiTzMEvnpfF0WzQlrzShoZMhGqjmYrQQUrxUS946hoh/Rdr0TKiHpHAy0h7t7MqmWeF95
+ spQlXnVASUwC4Rw2NSlJ3feFBJfggDz49DV9KRRTk975NHCK1dbN/e+/boVTajODGjeOad
+ tmA0CJ9uccHXcwD9rhmoh4slMkbsB5Y=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-468-dWhR9TMPMSCLtN4qQiZMBw-1; Thu,
+ 15 May 2025 04:15:59 -0400
+X-MC-Unique: dWhR9TMPMSCLtN4qQiZMBw-1
+X-Mimecast-MFC-AGG-ID: dWhR9TMPMSCLtN4qQiZMBw_1747296958
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B1F5E180048E; Thu, 15 May 2025 08:15:58 +0000 (UTC)
+Received: from redhat.com (unknown [10.45.224.242])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 541CF30075D4; Thu, 15 May 2025 08:15:55 +0000 (UTC)
+Date: Thu, 15 May 2025 10:15:53 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-block@nongnu.org, hreitz@redhat.com, pbonzini@redhat.com,
+ bmarzins@redhat.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH] file-posix: Probe paths and retry SG_IO on potential
+ path errors
+Message-ID: <aCWiuYUWiwKJz4_j@redhat.com>
+References: <20250513113730.37404-1-kwolf@redhat.com>
+ <20250513135148.GB227327@fedora>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/7] target/riscv: Fix write_misa vs aligned next_pc
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com
-References: <20250425152311.804338-1-richard.henderson@linaro.org>
- <20250425152311.804338-8-richard.henderson@linaro.org>
- <b1b72b45-d1fe-4ff4-8649-cbfd32e5f8a8@ventanamicro.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <b1b72b45-d1fe-4ff4-8649-cbfd32e5f8a8@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="r4OBl1l6r6mSxIWy"
+Content-Disposition: inline
+In-Reply-To: <20250513135148.GB227327@fedora>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -37
+X-Spam_score: -3.8
+X-Spam_bar: ---
+X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,44 +83,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/14/25 22:33, Daniel Henrique Barboza wrote:
-> Richard,
-> 
-> On 4/25/25 12:23 PM, Richard Henderson wrote:
->> Do not examine a random host return address, but
->> properly compute the next pc for the guest cpu.
->>
->> Fixes: f18637cd611 ("RISC-V: Add misa runtime write support")
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   target/riscv/csr.c | 22 +++++++++++++++++-----
->>   1 file changed, 17 insertions(+), 5 deletions(-)
->>
->> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
->> index a663f527a4..85f9b4c3d2 100644
->> --- a/target/riscv/csr.c
->> +++ b/target/riscv/csr.c
->> @@ -30,6 +30,8 @@
->>   #include "exec/icount.h"
->>   #include "qemu/guest-random.h"
->>   #include "qapi/error.h"
->> +#include "tcg/insn-start-words.h"
->> +#include "internals.h"
->>   #include <stdbool.h>
->>   /* CSR function table public API */
->> @@ -2099,6 +2101,19 @@ static RISCVException read_misa(CPURISCVState *env, int csrno,
->>       return RISCV_EXCP_NONE;
->>   }
->> +static target_ulong get_next_pc(CPURISCVState *env, uintptr_t ra)
->> +{
->> +    uint64_t data[TARGET_INSN_START_WORDS];
-> 
-> Isn't this 'INSN_START_WORDS'?  I'm seeing code in i386 that is similar
-> to what we're doing here and it's using INSN_START_WORDS:
 
-Yes, though INSN_START_WORDS is a very recent change.
-Probably the week after I posted this patch set.  :-)
+--r4OBl1l6r6mSxIWy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+Am 13.05.2025 um 15:51 hat Stefan Hajnoczi geschrieben:
+> On Tue, May 13, 2025 at 01:37:30PM +0200, Kevin Wolf wrote:
+> > When scsi-block is used on a host multipath device, it runs into the
+> > problem that the kernel dm-mpath doesn't know anything about SCSI or
+> > SG_IO and therefore can't decide if a SG_IO request returned an error
+> > and needs to be retried on a different path. Instead of getting working
+> > failover, an error is returned to scsi-block and handled according to
+> > the configured error policy. Obviously, this is not what users want,
+> > they want working failover.
+> >=20
+> > QEMU can parse the SG_IO result and determine whether this could have
+> > been a path error, but just retrying the same request could just send it
+> > to the same failing path again and result in the same error.
+> >=20
+> > With a kernel that supports the DM_MPATH_PROBE_PATHS ioctl on dm-mpath
+> > block devices (queued in the device mapper tree for Linux 6.16), we can
+> > tell the kernel to probe all paths and tell us if any usable paths
+> > remained. If so, we can now retry the SG_IO ioctl and expect it to be
+> > sent to a working path.
+> >=20
+> > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> > ---
+> >  block/file-posix.c | 82 +++++++++++++++++++++++++++++++++++++++++++++-
+> >  1 file changed, 81 insertions(+), 1 deletion(-)
+>=20
+> Maybe the probability of retry success would be higher with a delay so
+> that intermittent issues have time to resolve themselves. Either way,
+> the patch looks good.
 
-r~
+I don't think adding a delay here would be helpful. The point of
+multipath isn't that you wait until a bad path comes back, but that you
+just switch to a different path until it is restored.
+
+Ideally, calling DM_MPATH_PROBE_PATHS would just remove all the bad
+paths instantaneously and we would either be able to send the request
+using one of the remaining good paths, or know that we have to fail. In
+practice, the ioctl will probably have to wait for a timeout, so you get
+a delay anyway.
+
+What could potentially be useful is a new error policy [rw]error=3Dretry
+with a configurable delay. This wouldn't be in file-posix, but in the
+devices after file-posix came to the conclusion that there is currently
+no usable path. On the other hand, retrying indefinitely is probably not
+what you want either, so that could quickly become rather complex.
+
+> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+
+Thanks.
+
+Kevin
+
+--r4OBl1l6r6mSxIWy
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEE3D3rFZqa+V09dFb+fwmycsiPL9YFAmglorkACgkQfwmycsiP
+L9Y/dg/+MUWCXGjyeNPMiiXIIYlRVMglzuZMdUMsY1GKbLfjgcY2u9mGyKt8XViV
+hMQONWqiMuzsaOGS6+mOewSJ5KJrIGsmZE/rU9sNLm2gygf1Mw1vb9NOdDOxdEso
+C1H1qzFx2MGQSatGmR30PNjiwOWKdSYphxFl4AqsbIDzprhpsLl5doF9eeCXft5b
+WBkGFYkwZLgs6z4KYVsGXo8W7aPof9MwChM3cRJRt9m0uU4vDeiHZWQQfxxdyNFm
+A0dca+A70okSBfxxYPUJl/hZSiS85EyQN3UcbteFtSOHMl3LnKcTB2eCY4PDOD9G
+sRE647GjDnV2wPEjXh3/I2Ti4yi1KxV97WIdnVSHN0a1C177RIS+lG+Hcbn4DyBn
+Uq5b5L/cFVXlGDeY+BKbt7eDGeCcVNBSCKrXg5MPWNzWJxyddXO0RS2JjMMFGKr6
+XLp0F6PLCCjtgFRHxubi3rQc8oZekpg04SMwnVc2Iuc1/Z7QJln1TZMnqDJjSz/H
+ELzQlKNHIi4pPjmy1krvAg+yq8IvIKCb5Vpyomz312ZVwadTzS6w5mLO9WqkB0ro
+Ykr6nHxINIiqmhMOGaWBhmxS6QMSuY+FlbtQ+lBmONlg0T4H7f0Z0MbBjtDbl3da
+LbFzjBmelqGRyEMzM5DbeK0N7akwJN5wMFgcwnVxbLvgkKqzwQ8=
+=qkj6
+-----END PGP SIGNATURE-----
+
+--r4OBl1l6r6mSxIWy--
+
 
