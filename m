@@ -2,84 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58CADAB7D72
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 07:58:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F5FAB7D6F
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 07:56:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFRIu-0006lL-Ar; Thu, 15 May 2025 01:38:48 -0400
+	id 1uFRMB-0005uz-Hm; Thu, 15 May 2025 01:42:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uFRIo-0006bf-RN
- for qemu-devel@nongnu.org; Thu, 15 May 2025 01:38:44 -0400
-Received: from mail-vk1-xa35.google.com ([2607:f8b0:4864:20::a35])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uFRIn-0007ft-6T
- for qemu-devel@nongnu.org; Thu, 15 May 2025 01:38:42 -0400
-Received: by mail-vk1-xa35.google.com with SMTP id
- 71dfb90a1353d-52c6f67c6c5so167522e0c.2
- for <qemu-devel@nongnu.org>; Wed, 14 May 2025 22:38:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747287520; x=1747892320; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vSVPPDX54kOYXjEskzCbq/UHPSBv+Yq+Qenn9t6+A98=;
- b=IzuibHMsIKNY9nvKoO41YQ/OHHCXZe53a5nhome4wQv/bqEMjbN6AL/Dfns6oS5hoT
- nb76wFT7FPJouylKjEbIdCMYpIjkS1iw3f/OiLw335ibGhd4/VHsTRTSuPl16WPW0fLs
- 04mBjrRhULMArS1nHUoR4awOVNkvppM6HcucoSGNFa9gjzEeHGjhtROFwtukOHje3McD
- cjaVOM6kQN7dorszyy+vwn9BA6MX/3Gn8GMF/9ICvnYS53vqbhddzULO7MW1oTQcGkq7
- 7m1Eqg7WHv9MnOcN0inRi9ygawnbp1ySUuD29Rmx1M984yhYEsHOQLNKNnw2sPxXoBNY
- UBaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747287520; x=1747892320;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vSVPPDX54kOYXjEskzCbq/UHPSBv+Yq+Qenn9t6+A98=;
- b=nA/W/rZqIzHaA6Fcohg6bDC6J5tDvOW+ZdImH+3v+ztrEovPXYg+qk87FdjW+HY6QR
- UOicONhZdcZHGDUDnvTlaA1Aw0wV0akPtTTxfPziZOWQWRN9D7kARV0iISnKqQNdq4xO
- G6EcgcE3/67ro1d7Ec+ooMwd0RxQw+s0qRfFmJX98MrPQe9wpc5/hhLQEBYMwfKzVqs7
- G6IBrweECKLuh/LZwzZZriyekWpOgxURDchfrOgOKisyGLdeqkG0KzpSWs/9MnfRoQPM
- UsUvjZq+NgcM2TdHLRlKwpvrX3xTOY7dR7/ZD2BfF743J5HeuEYDT4BbmF03wAnDMe10
- NRxg==
-X-Gm-Message-State: AOJu0YxiD6zJZ6apIZ5hunA1UEfnSysNZGzBqVY8juUBzy7R3N9ZBSra
- ixKRPX/JbutVveIZYaSP6XYE6b+TtJ2vXMv9WmXl9mdezNUK9AVTK0t26G2vOTHOX8ckN0IjJhm
- 7tbO+9eiQ8gGm5NKN7IazbTwGOR0=
-X-Gm-Gg: ASbGnctCbDWHsVc/LsQcwXDIST/TBYo6K2a26NFQbcrQ6lmXkIsOHDLeAjAfNcd0He/
- wKa23SJP7zHD/4hCa7K8C4cdyURzv6Mc8aE9MNiSkpBbYDV7vAF+o6G21x17Lbi36/5LcjkEE71
- VIfIajtf4WGYFeXiehs45gG4mBoI9B+dmo15lErFR0jaP9X5HVgngmChZMb2GCSwc=
-X-Google-Smtp-Source: AGHT+IH9AQLyKwN0UINojfRvTvlSd611rXM9+MXnW4TClJGxGpo4fQIweHHZmf+hlEC2wTu0/xvbwqh2Ot44oo7PlyQ=
-X-Received: by 2002:a05:6122:1781:b0:52b:789:2d0 with SMTP id
- 71dfb90a1353d-52dabcfe957mr845864e0c.5.1747287520026; Wed, 14 May 2025
- 22:38:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
+ id 1uFRM8-0005tt-Jh
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 01:42:08 -0400
+Received: from mailout09.t-online.de ([194.25.134.84])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
+ id 1uFRM6-0008A2-9N
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 01:42:08 -0400
+Received: from fwd73.aul.t-online.de (fwd73.aul.t-online.de [10.223.144.99])
+ by mailout09.t-online.de (Postfix) with SMTP id C35D262C;
+ Thu, 15 May 2025 07:42:02 +0200 (CEST)
+Received: from [192.168.211.200] ([84.175.230.13]) by fwd73.t-online.de
+ with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
+ esmtp id 1uFRM1-31H8770; Thu, 15 May 2025 07:42:01 +0200
+Message-ID: <0bb1a55e-70f1-410b-8b59-78eed7f4c8f7@t-online.de>
+Date: Thu, 15 May 2025 07:42:00 +0200
 MIME-Version: 1.0
-References: <20250512095226.93621-1-pbonzini@redhat.com>
- <20250512095226.93621-20-pbonzini@redhat.com>
-In-Reply-To: <20250512095226.93621-20-pbonzini@redhat.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 15 May 2025 15:38:14 +1000
-X-Gm-Features: AX0GCFu0gk-U8AIaEjOwBfQPb9GuEh8m4cBWfyYNKVx3cBF8tDQExYASoqpi4mE
-Message-ID: <CAKmqyKPUGEEgC3w44FsenuZEMqqr+f_KSn6qm3Fj5X2SvFW4UQ@mail.gmail.com>
-Subject: Re: [PATCH 19/26] target/riscv: th: make CSR insertion test a bit
- more intuitive
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, dbarboza@ventanamicro.com, 
- richard.henderson@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a35;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa35.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+From: =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>
+Subject: [PATCH v2 0/7] audio related fixes for 10.1
+To: Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TOI-EXPURGATEID: 150726::1747287721-CA7FA49F-ABD15679/0/0 CLEAN NORMAL
+X-TOI-MSGID: 9a9a415a-1b4d-4c80-baa6-6b1a68bf96cb
+Received-SPF: pass client-ip=194.25.134.84; envelope-from=vr_qemu@t-online.de;
+ helo=mailout09.t-online.de
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,70 +66,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 12, 2025 at 7:54=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
- wrote:
->
-> In preparation for generalizing the custom CSR functionality,
-> make the test return bool instead of int.  Make the insertion_test
-> optional, too.
->
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+A few audio related fixes for 10.1.
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+The virtio-sound device is the first QEMU audio front end that supports floating point samples. The audio subsystem is only partially prepared for this. The commit message of patch 7/7 "audio: add float sample endianness converters" has the details. The new code paths in patch 7/7 are only compile tested. I don't have a big endian host to test.
 
-Alistair
+checkpatch.pl complains about missing space characters in the type punning macros in patch 7/7. I don't agree.
 
-> ---
->  target/riscv/th_csr.c | 13 ++++---------
->  1 file changed, 4 insertions(+), 9 deletions(-)
->
-> diff --git a/target/riscv/th_csr.c b/target/riscv/th_csr.c
-> index 6c970d4e813..969a9fe3c80 100644
-> --- a/target/riscv/th_csr.c
-> +++ b/target/riscv/th_csr.c
-> @@ -29,7 +29,7 @@
->
->  typedef struct {
->      int csrno;
-> -    int (*insertion_test)(RISCVCPU *cpu);
-> +    bool (*insertion_test)(RISCVCPU *cpu);
->      riscv_csr_operations csr_ops;
->  } riscv_csr;
->
-> @@ -42,13 +42,9 @@ static RISCVException smode(CPURISCVState *env, int cs=
-rno)
->      return RISCV_EXCP_ILLEGAL_INST;
->  }
->
-> -static int test_thead_mvendorid(RISCVCPU *cpu)
-> +static bool test_thead_mvendorid(RISCVCPU *cpu)
->  {
-> -    if (cpu->cfg.mvendorid !=3D THEAD_VENDOR_ID) {
-> -        return -1;
-> -    }
-> -
-> -    return 0;
-> +    return cpu->cfg.mvendorid =3D=3D THEAD_VENDOR_ID;
->  }
->
->  static RISCVException read_th_sxstatus(CPURISCVState *env, int csrno,
-> @@ -66,13 +62,12 @@ static riscv_csr th_csr_list[] =3D {
->          .csr_ops =3D { "th.sxstatus", smode, read_th_sxstatus }
->      }
->  };
-> -
->  void th_register_custom_csrs(RISCVCPU *cpu)
->  {
->      for (size_t i =3D 0; i < ARRAY_SIZE(th_csr_list); i++) {
->          int csrno =3D th_csr_list[i].csrno;
->          riscv_csr_operations *csr_ops =3D &th_csr_list[i].csr_ops;
-> -        if (!th_csr_list[i].insertion_test(cpu)) {
-> +        if (!th_csr_list[i].insertion_test || th_csr_list[i].insertion_t=
-est(cpu)) {
->              riscv_set_csr_ops(csrno, csr_ops);
->          }
->      }
-> --
-> 2.49.0
->
+v2: Address Mark's comments
+
+patch 4/7 "hw/audio/asc: fix SIGSEGV in asc_realize()"
+Only call AUD_remove_card() to handle cleanup.
+
+Volker Rümelin (7):
+  tests/functional: use 'none' audio driver for q800 tests
+  audio: fix SIGSEGV in AUD_get_buffer_size_out()
+  audio: fix size calculation in AUD_get_buffer_size_out()
+  hw/audio/asc: fix SIGSEGV in asc_realize()
+  hw/audio/asc: replace g_malloc0() with g_malloc()
+  audio/mixeng: remove unnecessary pointer type casts
+  audio: add float sample endianness converters
+
+ audio/audio.c                        | 11 +++-
+ audio/audio_template.h               | 12 ++--
+ audio/mixeng.c                       | 83 ++++++++++++++++++++++++----
+ audio/mixeng.h                       |  6 +-
+ hw/audio/asc.c                       |  9 ++-
+ tests/functional/test_m68k_q800.py   |  3 +-
+ tests/functional/test_m68k_replay.py |  3 +-
+ 7 files changed, 106 insertions(+), 21 deletions(-)
+
+-- 
+2.43.0
+
 
