@@ -2,145 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE86AB7F68
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 09:56:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA59DAB7FBF
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 10:06:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFTR4-0002Qb-12; Thu, 15 May 2025 03:55:26 -0400
+	id 1uFTaR-0004ud-Fj; Thu, 15 May 2025 04:05:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uFTQm-0002Px-5M
- for qemu-devel@nongnu.org; Thu, 15 May 2025 03:55:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1uFTa5-0004lh-VE; Thu, 15 May 2025 04:04:42 -0400
+Received: from mgamail.intel.com ([198.175.65.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uFTQj-0007Mk-Ne
- for qemu-devel@nongnu.org; Thu, 15 May 2025 03:55:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747295700;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=jNhroFD8zVIFGI6TZLUbNr939uDw8fIIVy37vbNfq5Q=;
- b=IY0bZ5PJEzQYQHQp9coGoaUZ467SPQHp9yvtKPAMjz4AaVpR8/UA3nELeWGwxfSr5MY3w5
- jaNz5bwcz3no03XEZQ6XGZ6wwdaXmtcIaM/7g8OAilwroC0j8iL225MRvR8s/iNkun/aTe
- Eo8EYKQfwTbnP+dXbGWUJj2xUDpB/xg=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-280-2GI0GqUQP7-8Iu7oQr0G-w-1; Thu, 15 May 2025 03:54:59 -0400
-X-MC-Unique: 2GI0GqUQP7-8Iu7oQr0G-w-1
-X-Mimecast-MFC-AGG-ID: 2GI0GqUQP7-8Iu7oQr0G-w_1747295698
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3a1fa8742a8so247193f8f.3
- for <qemu-devel@nongnu.org>; Thu, 15 May 2025 00:54:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747295698; x=1747900498;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jNhroFD8zVIFGI6TZLUbNr939uDw8fIIVy37vbNfq5Q=;
- b=ELRikANq0oUVqBHNLY0dCADMROOpffukFxTPfT9AiS5MPNSvSPfLMhrghvZIfJ2/ou
- 5NhTpEfrFxgHog6/rOzT4jxPe/w51vzht1vENLFz7zNMOsRrA1ETEWEZbkGto0MLkXX6
- nIsVmPShvExfndqhtc+h6TFhtg29C7T7J/gSCb2cvf1uMJoesKK1ysoZV1LycsHaNebB
- Q16xpP765VoI00B4yCIwIdTKED4BLrXp3g+sfDmqfooE5h+wpZVHodJ4jgMJB6T3ugys
- fZnW8V7WQYqCaedCxlBnI0UD7CCz5jLIyalmQ4ThRiMCN7YXB2K7m5rWgupuXYi8OtHD
- wldQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUaDyDF8OZlXjDOqsnzdIlE/wJLbUinykpU42njY+Rbs7kkDakh/KE9ZZ2s8QmOtljbKW1dRzPgzUOx@nongnu.org
-X-Gm-Message-State: AOJu0Yy+uVIk9inqd27/nrb/ZljEd2YCtRTLvODh76Uy2ri/csi8pp7M
- 6tf2WjBxlQhLqFxyyKI6PUz8JKhPGdQK34pbNMoudTp78ALIGfeik5l+HX2lrI3pJ2FKAkkT4lB
- wwckjz9Cqg+eLdQrYyGKG0wG2448buKCisBz3iDRCccSSALVGY66P
-X-Gm-Gg: ASbGncsF11diclJiO4UH9NYPYtRJfOpymRfRlq0R6nQIQFXKedNixF8Et+s/7PqN8Gr
- gEaE0JQOgpI2G+UH6mlOIXtWZJaz5nLPDIV1Mh6hU2ZBULaXI7aZX5HATLtQ18JvGtdK1umZ7mW
- 8uonKi6G7GbAUWL3jNreZGehqgDpi+QBgHpUNpv3lzd75v/kzs3e9AVMEw564EKGXpXHst3cBuu
- vTpHZJGCfxoqz3cDzGv76r9w0fa1EEQ+189Jw2jhMIbvWm4NbaCglmGkF2ZzvJzrPr3kUSw0Xu4
- 5BkFeh+iCIFU7LC2MzVbNdbx1Nc6CouPtFbeYji4hAaAeYfbZQ==
-X-Received: by 2002:a05:6000:2484:b0:3a1:fffe:6b6c with SMTP id
- ffacd0b85a97d-3a353749125mr1254473f8f.34.1747295697714; 
- Thu, 15 May 2025 00:54:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHl9Y2fJPEEToyOtIeQdjraSsiCqrCRErs2T6O6db0nLtE0Fs1PPNBdDptpO/5G5PV+B5HhFQ==
-X-Received: by 2002:a05:6000:2484:b0:3a1:fffe:6b6c with SMTP id
- ffacd0b85a97d-3a353749125mr1254449f8f.34.1747295697346; 
- Thu, 15 May 2025 00:54:57 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a3591e0c7fsm428633f8f.24.2025.05.15.00.54.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 15 May 2025 00:54:56 -0700 (PDT)
-Message-ID: <161947a0-f3fb-4ddb-b6c1-6e1a1e4d6849@redhat.com>
-Date: Thu, 15 May 2025 09:54:55 +0200
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1uFTa3-0000B9-Bw; Thu, 15 May 2025 04:04:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1747296279; x=1778832279;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=x2mLUxA+et8iwA9rDXZwVtIWILZ108fGO+5QLFn1iKw=;
+ b=lAQ/TDksNEMGj0AfVXn10TGVhINKBhOSdHC06yje6lWBtWC5/zX5QPha
+ 3APyMGJUsSM0k9Bh1fby5rQD0jWpLIjRxJfagOaQgG0VFxsIBftJYvwLk
+ mShhuquzCzuAHB2/bkUp0Ou4Ql9H0gffun49vsrLPUIl5Mrr0vrYJ0tem
+ Gwned3pNxvsjrw7Ehr3itBpRzez+3BymRDP2epPy7ibLxnrE64YAhNJVw
+ 7yQ+IdXGbgScoHi3/xenek8eS6DBug+TNXIDEo0hR+udXP4f5ciErb00P
+ Rpsyx/2zqTJa0Ru1+hRAVBHh4cy5EWnNWhCAyB1Xkqpk9Exao4YLsBDvr g==;
+X-CSE-ConnectionGUID: stH7jMFJQYOS1Ih7Kob94A==
+X-CSE-MsgGUID: uv7k5YXRSEW5MJJoZsSbFA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="60230381"
+X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; d="scan'208";a="60230381"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 May 2025 01:04:35 -0700
+X-CSE-ConnectionGUID: i46b0jPrQnaeMMhU2eB1pw==
+X-CSE-MsgGUID: ax5soz81Qsezcgk15CnXCA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; d="scan'208";a="138177647"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1])
+ ([10.124.247.1])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 May 2025 01:04:27 -0700
+Message-ID: <1c347ea7-1e33-420e-a666-cd02573d9089@intel.com>
+Date: Thu, 15 May 2025 16:04:23 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3 06/42] vfio/container: register container for cpr
-To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>, Yi Liu
- <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>
-References: <1747063973-124548-1-git-send-email-steven.sistare@oracle.com>
- <1747063973-124548-7-git-send-email-steven.sistare@oracle.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <1747063973-124548-7-git-send-email-steven.sistare@oracle.com>
+Subject: Re: [PATCH v4 03/27] hw/nvram/fw_cfg: Rename fw_cfg_init_mem() with
+ '_nodma' suffix
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>, kvm@vger.kernel.org,
+ Sergio Lopez <slp@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Laurent Vivier
+ <lvivier@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Yi Liu <yi.l.liu@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-riscv@nongnu.org,
+ Weiwei Li <liwei1518@gmail.com>, Amit Shah <amit@kernel.org>,
+ Zhao Liu <zhao1.liu@intel.com>, Yanan Wang <wangyanan55@huawei.com>,
+ Helge Deller <deller@gmx.de>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Ani Sinha <anisinha@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ =?UTF-8?Q?Cl=C3=A9ment_Mathieu--Drif?= <clement.mathieu--drif@eviden.com>,
+ qemu-arm@nongnu.org, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
+ <marcandre.lureau@redhat.com>, Huacai Chen <chenhuacai@kernel.org>,
+ Jason Wang <jasowang@redhat.com>
+References: <20250508133550.81391-1-philmd@linaro.org>
+ <20250508133550.81391-4-philmd@linaro.org>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20250508133550.81391-4-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -37
-X-Spam_score: -3.8
-X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.13; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=1, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -158,222 +103,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/12/25 17:32, Steve Sistare wrote:
-> Register a legacy container for cpr-transfer, replacing the generic CPR
-> register call with a more specific legacy container register call.  Add a
-> blocker if the kernel does not support VFIO_UPDATE_VADDR or VFIO_UNMAP_ALL.
+On 5/8/2025 9:35 PM, Philippe Mathieu-Daudé wrote:
+> Rename fw_cfg_init_mem() as fw_cfg_init_mem_nodma()
+> to distinct with the DMA version (currently named
+> fw_cfg_init_mem_wide).
 > 
-> This is mostly boiler plate.  The fields to to saved and restored are added
-> in subsequent patches.
-> 
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+> Suggested-by: Zhao Liu <zhao1.liu@intel.com>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   hw/vfio/container.c              |  6 ++--
->   hw/vfio/cpr-legacy.c             | 70 ++++++++++++++++++++++++++++++++++++++++
->   hw/vfio/cpr.c                    |  5 ++-
->   hw/vfio/meson.build              |  1 +
->   include/hw/vfio/vfio-container.h |  2 ++
->   include/hw/vfio/vfio-cpr.h       | 14 ++++++++
->   6 files changed, 92 insertions(+), 6 deletions(-)
->   create mode 100644 hw/vfio/cpr-legacy.c
+>   include/hw/nvram/fw_cfg.h | 3 ++-
+>   hw/hppa/machine.c         | 2 +-
+>   hw/nvram/fw_cfg.c         | 7 +++----
+>   3 files changed, 6 insertions(+), 6 deletions(-)
 > 
-> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-> index eb56f00..85c76da 100644
-> --- a/hw/vfio/container.c
-> +++ b/hw/vfio/container.c
-> @@ -642,7 +642,7 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
->       new_container = true;
->       bcontainer = &container->bcontainer;
+> diff --git a/include/hw/nvram/fw_cfg.h b/include/hw/nvram/fw_cfg.h
+> index d41b9328fd1..d5161a79436 100644
+> --- a/include/hw/nvram/fw_cfg.h
+> +++ b/include/hw/nvram/fw_cfg.h
+> @@ -307,7 +307,8 @@ bool fw_cfg_add_file_from_generator(FWCfgState *s,
 >   
-> -    if (!vfio_cpr_register_container(bcontainer, errp)) {
-> +    if (!vfio_legacy_cpr_register_container(container, errp)) {
->           goto fail;
->       }
+>   FWCfgState *fw_cfg_init_io_dma(uint32_t iobase, uint32_t dma_iobase,
+>                                   AddressSpace *dma_as);
+> -FWCfgState *fw_cfg_init_mem(hwaddr ctl_addr, hwaddr data_addr);
+> +FWCfgState *fw_cfg_init_mem_nodma(hwaddr ctl_addr, hwaddr data_addr,
+> +                                  unsigned data_width);
+>   FWCfgState *fw_cfg_init_mem_wide(hwaddr ctl_addr,
+>                                    hwaddr data_addr, uint32_t data_width,
+>                                    hwaddr dma_addr, AddressSpace *dma_as);
+> diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+> index dacedc5409c..0d768cb90b0 100644
+> --- a/hw/hppa/machine.c
+> +++ b/hw/hppa/machine.c
+> @@ -201,7 +201,7 @@ static FWCfgState *create_fw_cfg(MachineState *ms, PCIBus *pci_bus,
+>       int btlb_entries = HPPA_BTLB_ENTRIES(&cpu[0]->env);
+>       int len;
 >   
-> @@ -678,7 +678,7 @@ fail:
->           vioc->release(bcontainer);
->       }
->       if (new_container) {
-> -        vfio_cpr_unregister_container(bcontainer);
-> +        vfio_legacy_cpr_unregister_container(container);
->           object_unref(container);
->       }
->       if (fd >= 0) {
-> @@ -719,7 +719,7 @@ static void vfio_container_disconnect(VFIOGroup *group)
->           VFIOAddressSpace *space = bcontainer->space;
->   
->           trace_vfio_container_disconnect(container->fd);
-> -        vfio_cpr_unregister_container(bcontainer);
-> +        vfio_legacy_cpr_unregister_container(container);
->           close(container->fd);
->           object_unref(container);
->   
-> diff --git a/hw/vfio/cpr-legacy.c b/hw/vfio/cpr-legacy.c
-> new file mode 100644
-> index 0000000..fac323c
-> --- /dev/null
-> +++ b/hw/vfio/cpr-legacy.c
-> @@ -0,0 +1,70 @@
-> +/*
-> + * Copyright (c) 2021-2025 Oracle and/or its affiliates.
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
-> + * See the COPYING file in the top-level directory.
+> -    fw_cfg = fw_cfg_init_mem(addr, addr + 4);
+> +    fw_cfg = fw_cfg_init_mem_nodma(addr, addr + 4, 1);
 
-Please add a SPDX-License-Identifier tag.
+It does additional job to replace 
+fw_cfg_data_mem_ops.valid.max_access_size with a hardcode 1.
 
+It needs clarification at least in commit message that doing it is safe 
+that fw_cfg_data_mem_ops.valid.max_access_size is not changed by other code.
 
-> + */
-> +
-> +#include <sys/ioctl.h>
-> +#include <linux/vfio.h>
-> +#include "qemu/osdep.h"
-> +#include "hw/vfio/vfio-container.h"
-> +#include "hw/vfio/vfio-cpr.h"
-> +#include "migration/blocker.h"
-> +#include "migration/cpr.h"
-> +#include "migration/migration.h"
-> +#include "migration/vmstate.h"
-> +#include "qapi/error.h"
-> +
-> +static bool vfio_cpr_supported(VFIOContainer *container, Error **errp)
-> +{
-> +    if (!ioctl(container->fd, VFIO_CHECK_EXTENSION, VFIO_UPDATE_VADDR)) {
-> +        error_setg(errp, "VFIO container does not support VFIO_UPDATE_VADDR");
-> +        return false;
-> +
-> +    } else if (!ioctl(container->fd, VFIO_CHECK_EXTENSION, VFIO_UNMAP_ALL)) {
-> +        error_setg(errp, "VFIO container does not support VFIO_UNMAP_ALL");
-> +        return false;
-> +
-> +    } else {
-> +        return true;
-> +    }
-> +}
-> +
-> +static const VMStateDescription vfio_container_vmstate = {
-> +    .name = "vfio-container",
-> +    .version_id = 0,
-> +    .minimum_version_id = 0,
-> +    .needed = cpr_needed_for_reuse,
-> +    .fields = (VMStateField[]) {
-> +        VMSTATE_END_OF_LIST()
-> +    }
-> +};
-> +
-> +bool vfio_legacy_cpr_register_container(VFIOContainer *container, Error **errp)
-> +{
-> +    VFIOContainerBase *bcontainer = &container->bcontainer;
-> +    Error **cpr_blocker = &container->cpr.blocker;
-> +
-> +    migration_add_notifier_mode(&bcontainer->cpr_reboot_notifier,
-> +                                vfio_cpr_reboot_notifier,
-> +                                MIG_MODE_CPR_REBOOT);
-> +
-> +    if (!vfio_cpr_supported(container, cpr_blocker)) {
-> +        return migrate_add_blocker_modes(cpr_blocker, errp,
-> +                                         MIG_MODE_CPR_TRANSFER, -1) == 0;
-> +    }
-> +
-> +    vmstate_register(NULL, -1, &vfio_container_vmstate, container);
-> +
-> +    return true;
-> +}
-> +
-> +void vfio_legacy_cpr_unregister_container(VFIOContainer *container)
-> +{
-> +    VFIOContainerBase *bcontainer = &container->bcontainer;
-> +
-> +    migration_remove_notifier(&bcontainer->cpr_reboot_notifier);
-> +    migrate_del_blocker(&container->cpr.blocker);
-> +    vmstate_unregister(NULL, &vfio_container_vmstate, container);
-> +}
-> diff --git a/hw/vfio/cpr.c b/hw/vfio/cpr.c
-> index 0210e76..0e59612 100644
-> --- a/hw/vfio/cpr.c
-> +++ b/hw/vfio/cpr.c
-> @@ -7,13 +7,12 @@
+It's even better to put this in a seperate patch.
+
+For the pure rename part:
+
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+
+>       fw_cfg_add_i16(fw_cfg, FW_CFG_NB_CPUS, ms->smp.cpus);
+>       fw_cfg_add_i16(fw_cfg, FW_CFG_MAX_CPUS, HPPA_MAX_CPUS);
+>       fw_cfg_add_i64(fw_cfg, FW_CFG_RAM_SIZE, ms->ram_size);
+> diff --git a/hw/nvram/fw_cfg.c b/hw/nvram/fw_cfg.c
+> index 54cfa07d3f5..10f8f8db86f 100644
+> --- a/hw/nvram/fw_cfg.c
+> +++ b/hw/nvram/fw_cfg.c
+> @@ -1087,11 +1087,10 @@ FWCfgState *fw_cfg_init_mem_wide(hwaddr ctl_addr,
+>       return s;
+>   }
 >   
->   #include "qemu/osdep.h"
->   #include "hw/vfio/vfio-device.h"
-> -#include "migration/misc.h"
->   #include "hw/vfio/vfio-cpr.h"
->   #include "qapi/error.h"
->   #include "system/runstate.h"
->   
-> -static int vfio_cpr_reboot_notifier(NotifierWithReturn *notifier,
-> -                                    MigrationEvent *e, Error **errp)
-> +int vfio_cpr_reboot_notifier(NotifierWithReturn *notifier,
-> +                             MigrationEvent *e, Error **errp)
+> -FWCfgState *fw_cfg_init_mem(hwaddr ctl_addr, hwaddr data_addr)
+> +FWCfgState *fw_cfg_init_mem_nodma(hwaddr ctl_addr, hwaddr data_addr,
+> +                                  unsigned data_width)
 >   {
->       if (e->type == MIG_EVENT_PRECOPY_SETUP &&
->           !runstate_check(RUN_STATE_SUSPENDED) && !vm_get_suspended()) {
-> diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
-> index bccb050..73d29f9 100644
-> --- a/hw/vfio/meson.build
-> +++ b/hw/vfio/meson.build
-> @@ -21,6 +21,7 @@ system_ss.add(when: 'CONFIG_VFIO_XGMAC', if_true: files('calxeda-xgmac.c'))
->   system_ss.add(when: 'CONFIG_VFIO_AMD_XGBE', if_true: files('amd-xgbe.c'))
->   system_ss.add(when: 'CONFIG_VFIO', if_true: files(
->     'cpr.c',
-> +  'cpr-legacy.c',
->     'device.c',
->     'migration.c',
->     'migration-multifd.c',
-> diff --git a/include/hw/vfio/vfio-container.h b/include/hw/vfio/vfio-container.h
-> index afc498d..21e5807 100644
-> --- a/include/hw/vfio/vfio-container.h
-> +++ b/include/hw/vfio/vfio-container.h
-> @@ -10,6 +10,7 @@
->   #define HW_VFIO_CONTAINER_H
+> -    return fw_cfg_init_mem_wide(ctl_addr, data_addr,
+> -                                fw_cfg_data_mem_ops.valid.max_access_size,
+> -                                0, NULL);
+> +    return fw_cfg_init_mem_wide(ctl_addr, data_addr, data_width, 0, NULL);
+>   }
 >   
->   #include "hw/vfio/vfio-container-base.h"
-> +#include "hw/vfio/vfio-cpr.h"
 >   
->   typedef struct VFIOContainer VFIOContainer;
->   typedef struct VFIODevice VFIODevice;
-> @@ -29,6 +30,7 @@ typedef struct VFIOContainer {
->       int fd; /* /dev/vfio/vfio, empowered by the attached groups */
->       unsigned iommu_type;
->       QLIST_HEAD(, VFIOGroup) group_list;
-> +    VFIOContainerCPR cpr;
->   } VFIOContainer;
->   
->   OBJECT_DECLARE_SIMPLE_TYPE(VFIOContainer, VFIO_IOMMU_LEGACY);
-> diff --git a/include/hw/vfio/vfio-cpr.h b/include/hw/vfio/vfio-cpr.h
-> index 750ea5b..f864547 100644
-> --- a/include/hw/vfio/vfio-cpr.h
-> +++ b/include/hw/vfio/vfio-cpr.h
-> @@ -9,8 +9,22 @@
->   #ifndef HW_VFIO_VFIO_CPR_H
->   #define HW_VFIO_VFIO_CPR_H
->   
-> +#include "migration/misc.h"
-> +
-> +typedef struct VFIOContainerCPR {
-> +    Error *blocker;
-> +} VFIOContainerCPR;
-> +
-> +struct VFIOContainer;
->   struct VFIOContainerBase;
->   
-> +bool vfio_legacy_cpr_register_container(struct VFIOContainer *container,
-> +                                        Error **errp);
-> +void vfio_legacy_cpr_unregister_container(struct VFIOContainer *container);
-> +
-> +int vfio_cpr_reboot_notifier(NotifierWithReturn *notifier, MigrationEvent *e,
-> +                             Error **errp);
-> +
->   bool vfio_cpr_register_container(struct VFIOContainerBase *bcontainer,
->                                    Error **errp);
->   void vfio_cpr_unregister_container(struct VFIOContainerBase *bcontainer);
-
-what about vfio_cpr_un/register_container ? Shouldn't we remove them ?
-
-
-Thanks,
-
-C.
-
 
 
