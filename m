@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 623C0AB7DA5
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 08:16:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34A84AB7D8C
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 08:07:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFRQx-0006zH-1E; Thu, 15 May 2025 01:47:08 -0400
+	id 1uFRjK-0003sq-2e; Thu, 15 May 2025 02:06:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uFRPz-0006cd-F1
- for qemu-devel@nongnu.org; Thu, 15 May 2025 01:46:10 -0400
-Received: from mail-vk1-xa2d.google.com ([2607:f8b0:4864:20::a2d])
+ id 1uFRjI-0003qf-4p
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 02:06:04 -0400
+Received: from mail-vk1-xa2c.google.com ([2607:f8b0:4864:20::a2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uFRPx-00008l-II
- for qemu-devel@nongnu.org; Thu, 15 May 2025 01:46:06 -0400
-Received: by mail-vk1-xa2d.google.com with SMTP id
- 71dfb90a1353d-525da75d902so170860e0c.3
- for <qemu-devel@nongnu.org>; Wed, 14 May 2025 22:46:04 -0700 (PDT)
+ id 1uFRjG-0002tz-Dp
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 02:06:03 -0400
+Received: by mail-vk1-xa2c.google.com with SMTP id
+ 71dfb90a1353d-52c54b4d68bso168959e0c.3
+ for <qemu-devel@nongnu.org>; Wed, 14 May 2025 23:05:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747287963; x=1747892763; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1747289157; x=1747893957; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=seb0RtiqSD7AZPkJHvDYLX0KngzFGy7J3RwYD/uBKG4=;
- b=BYNzCMAzGOHSz3dejc/UG1zPwFDSC8wdG3o8UTSo1/sLahRe3bKIlI64vhi2P21wK+
- Tmp54KONURTKY/8GQ6UDIk9VyWyvj0g41R28L8b+si2Fh7EvSmy3gsbs0xDXC40L3g8v
- vlScY09Me3sw+YE947VxI8Tt/R8n1n1b76+dmv2WhesTo0SV63/t7G3ro+vTDIo02xr8
- k67l1sRbgealH3N986JZ28mJ9z0IWg/PjAGE44GJcoWApnOpWt6hKO8pf33NB15Siyv7
- Al2afOUpjQ8BaGdswNORXDk8xnlWjZjEP0YJH+22ASD8/r00eEow/W6hx7jFUZSmhf5I
- RHtA==
+ bh=8zOye18eDtHu/bi18IeVFGk7PweTozVAC9GpvdMdS7s=;
+ b=R5rrODsSZENqcmmh9m8JnKSq29CNBFNecV8oMsxc5cfjdf2BbhZSD5BOkboc1/SFdu
+ kgCvGOUlFujo0Bde6oJimQL63GEXLh8hI6IUfatuD8/vF7S4QO7LRgT9dhdkPATFZwa3
+ NVl8bP+VlDm57oyfuapJH1qQeCzTAIsrlEWzjaRhZ6b16Y1nwkU97R6EKz0J3cSm5C9B
+ DHGE2cX9CUtbuhOQi7gKE+rqdkXwUs62xe84tjnctj0ecNODH7XTG8YOhJu0o/gNyo6B
+ y82yhdUsrBJrmEPeRzPO68atVo/S6mMcz6n5KoHmX8ZZutbKxAgijQcL8Cf5N+quWXOR
+ zFJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747287963; x=1747892763;
+ d=1e100.net; s=20230601; t=1747289157; x=1747893957;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=seb0RtiqSD7AZPkJHvDYLX0KngzFGy7J3RwYD/uBKG4=;
- b=weuO68a+eFqti4UWC3v/bTeitOUZch55bm0cbndRhwPJRngiTTIRAYKM2r6/QWkCIT
- RdLO2u6J7J3zmJQGZjVR11bOMWUtDuCjx2uN7nQBuF3UG1ERQ7+xIoIbxJ1/LQkV1QzD
- +uuqmNtGp+HfYCVij7qAZu+piWBjigRNjDxESOYft/p3iSGwhn2e3DuD+6ErgXYm2zQY
- 1ez5Ai+cMsTZK3l/4kkWepj0zB862bWXWuIi1KPVWzSo3aw9gHHH7dFlmyzxhORJzqtO
- vNn7PJqGqPFgoIcIkvV2Tekter6v3nBeFb883Z5a69q6goPLzKzjUKw38et8aDEVP+Ei
- WXgw==
-X-Gm-Message-State: AOJu0YwUXQuZ1wfeF9Z0a65uKAiRf8PlCdAAXFlUtK2KpFCqv86jeeB2
- a0HUPpNdNMa3J3O7uWRNWSHY1a1PlGx8s7pZbNWdJwvmL+u9WTa5rFpIXf5cXEiEWMnihHoF/WO
- m3MrTifyOnPnAnxgAkyZezDO3tLsUNQ==
-X-Gm-Gg: ASbGncu8/cOEuLBll9wkvH1HW/y3HJymlgKOdhJOQEH/uFRxgr6dXB7uskgyP4E9OT/
- 3+AcNDoYi/HO+tdyhd/4c/LNEnH2PCQLakHdkRzZ9SA1MbwJ1EyLyvWyRShG8Cy5kzMBs+wpd6x
- rEm9QXKweJ9ZgIwLhamm3eSqYUP599M8XVcn1CrhgI/3ae+MhIwXzU0LTGqH5zUAU=
-X-Google-Smtp-Source: AGHT+IHZVhYqtEx+MERvPj8V1gIFYnXMz/uIkqDTZkguvW6iXNznyVakDtDCJGLKcTOwzrw/PuuPDN6Qcq4q2OglC0w=
-X-Received: by 2002:a05:6122:2a54:b0:52a:7787:53d7 with SMTP id
- 71dfb90a1353d-52d9c689881mr5770916e0c.6.1747287963268; Wed, 14 May 2025
- 22:46:03 -0700 (PDT)
+ bh=8zOye18eDtHu/bi18IeVFGk7PweTozVAC9GpvdMdS7s=;
+ b=N0ynGpbUA+5WKHfTcJfmMeKBCQLFsJcj2XuP700ea5nVENg3cKcaaAHWx/HuQkQ9gY
+ JggBq0zz/GAuYxAFkBnQZSIfnn9P7IWbak7IfbEamXTbnwrqEdCLsB8ZsVvDaaJPNSRD
+ BdOSJJvU8SMld7NwYVbLhfcaSMOy/pIO7VDEQsB7qwiL1c3oY48zps8hPhCtYW9PL5MY
+ OmIqr2dGEWZFQmkPpZz4xe9uhksO3siSYlhxUD4SAsxCuLq7oXZ9QAV5Vc5CzM7Y8z+v
+ 2dCJnWpekUxIypNBq+Gg44IPwo6jA3O+1zgaiyXBD/2Tc2zl6wmh7Uw8CpoRvzjw1zIb
+ rnSw==
+X-Gm-Message-State: AOJu0YyGJwZc9M1F7bP7TCfrarcWul7yMVeW7fx7ouBp255wfv6fOsuH
+ POo+bje7eaVo/aUnstuCt9/eFylU8fjXZjhYmgmePmF/Cku3R2a7n0AJdp7UdB3+s4GJb8UiOQM
+ aRJPQylcCkjCsWehUwEQy3ctBD4M=
+X-Gm-Gg: ASbGncvsvY56NtG5SjaCguv36ICPzOMrmifXZvZ+Ogrntx8fR1cxxnhx3XCq7rh9CY0
+ 9Hd2HrtYK6tey+iMExsGzFEigXWvJY6+63XbDDt1wXQSatl9QXngYerp7K1d86JZFUdPaKCs+cx
+ uJAzA5oQ0oRa6uwT58Ai9ER2ZpMsuYKxM7ISd2XS3Qe2awtxHH/FhVJuLzRMPq6WA=
+X-Google-Smtp-Source: AGHT+IEt9Q0QraLVHaOg0204w9boSmQae9hbdwJ2aSisGvUaBH5ZDxiA/WBNInkNp6sxzfIdjgTLrVxbRk+zHnP85r4=
+X-Received: by 2002:a05:6122:a23:b0:529:2644:8c with SMTP id
+ 71dfb90a1353d-52dabf915e3mr842754e0c.8.1747289157622; Wed, 14 May 2025
+ 23:05:57 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250512095226.93621-1-pbonzini@redhat.com>
- <20250512095226.93621-26-pbonzini@redhat.com>
-In-Reply-To: <20250512095226.93621-26-pbonzini@redhat.com>
+In-Reply-To: <20250512095226.93621-1-pbonzini@redhat.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 15 May 2025 15:45:37 +1000
-X-Gm-Features: AX0GCFstXnEZnQquLT2cugAXFX5A-K4Wqb-WWWF18pLNqqPuzrrpD7DAQIamFMQ
-Message-ID: <CAKmqyKNKFuqqn6dCDe1OH0ibUhFbaSfZx7cyjik3ioNiQBCzXw@mail.gmail.com>
-Subject: Re: [PATCH 25/26] target/riscv: remove .instance_post_init
+Date: Thu, 15 May 2025 16:05:30 +1000
+X-Gm-Features: AX0GCFtqkIoViQvhXqXHJmCwQ0Ye9U_mL9YzH2U5DcYaapropREE-M6DXbuRiyU
+Message-ID: <CAKmqyKOomS2NsO=7V5AhxURjSMkEDiQ0k7t59KqYq=FqJDW=Rg@mail.gmail.com>
+Subject: Re: [PATCH v5 00/26] target/riscv: SATP mode and CPU definition
+ overhaul
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, dbarboza@ventanamicro.com, 
  richard.henderson@linaro.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2d;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a2c;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2c.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -94,60 +94,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 12, 2025 at 7:54=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
+On Mon, May 12, 2025 at 7:53=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
  wrote:
 >
-> Unlike other uses of .instance_post_init, accel_cpu_instance_init()
-> *registers* properties, and therefore must be run before
-> device_post_init() which sets them to their values from -global.
+> Same as v4, with suggestion from Richard to avoid parentheses---which als=
+o
+> fixes the issue with kvm-cpu.c reported by Daniel Barboza.  KVM/RISC-V is
+> now covered in CI and passes with this version.
 >
-> In order to move all registration of properties to .instance_init,
-> call accel_cpu_instance_init() at the end of riscv_cpu_init().
+> Paolo
 >
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> Paolo Bonzini (26):
+>   target/riscv: assert argument to set_satp_mode_max_supported is valid
+>   target/riscv: cpu: store max SATP mode as a single integer
+>   target/riscv: update max_satp_mode based on QOM properties
+>   target/riscv: remove supported from RISCVSATPMap
+>   target/riscv: move satp_mode.{map,init} out of CPUConfig
+>   target/riscv: introduce RISCVCPUDef
+>   target/riscv: store RISCVCPUDef struct directly in the class
+>   target/riscv: merge riscv_cpu_class_init with the class_base function
+>   target/riscv: move RISCVCPUConfig fields to a header file
+>   target/riscv: include default value in cpu_cfg_fields.h.inc
+>   target/riscv: add more RISCVCPUDef fields
+>   target/riscv: convert abstract CPU classes to RISCVCPUDef
+>   target/riscv: convert profile CPU models to RISCVCPUDef
+>   target/riscv: convert bare CPU models to RISCVCPUDef
+>   target/riscv: convert dynamic CPU models to RISCVCPUDef
+>   target/riscv: convert SiFive E CPU models to RISCVCPUDef
+>   target/riscv: convert ibex CPU models to RISCVCPUDef
+>   target/riscv: convert SiFive U models to RISCVCPUDef
+>   target/riscv: th: make CSR insertion test a bit more intuitive
+>   target/riscv: generalize custom CSR functionality
+>   target/riscv: convert TT C906 to RISCVCPUDef
+>   target/riscv: convert TT Ascalon to RISCVCPUDef
+>   target/riscv: convert Ventana V1 to RISCVCPUDef
+>   target/riscv: convert Xiangshan Nanhu to RISCVCPUDef
+>   target/riscv: remove .instance_post_init
+>   qom: reverse order of instance_post_init calls
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+This doesn't seem to have made it through to Patchew for some reason:
+https://patchew.org/search?q=3DSATP+mode+and+CPU+definition+overhaul
 
 Alistair
 
-> ---
->  target/riscv/cpu.c | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
 >
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index f4d4abada75..2437d53d4bc 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1083,11 +1083,6 @@ static bool riscv_cpu_is_dynamic(Object *cpu_obj)
->      return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) !=3D NUL=
-L;
->  }
+>  include/qom/object.h              |    3 +-
+>  target/riscv/cpu-qom.h            |    2 +
+>  target/riscv/cpu.h                |   42 +-
+>  target/riscv/cpu_cfg.h            |  178 +----
+>  target/riscv/cpu_cfg_fields.h.inc |  170 +++++
+>  hw/riscv/boot.c                   |    2 +-
+>  hw/riscv/virt-acpi-build.c        |   14 +-
+>  hw/riscv/virt.c                   |    5 +-
+>  qom/object.c                      |    8 +-
+>  target/riscv/cpu.c                | 1014 +++++++++++++----------------
+>  target/riscv/csr.c                |   11 +-
+>  target/riscv/gdbstub.c            |    6 +-
+>  target/riscv/kvm/kvm-cpu.c        |   27 +-
+>  target/riscv/machine.c            |    2 +-
+>  target/riscv/tcg/tcg-cpu.c        |   13 +-
+>  target/riscv/th_csr.c             |   30 +-
+>  target/riscv/translate.c          |    2 +-
+>  17 files changed, 734 insertions(+), 795 deletions(-)
+>  create mode 100644 target/riscv/cpu_cfg_fields.h.inc
 >
-> -static void riscv_cpu_post_init(Object *obj)
-> -{
-> -    accel_cpu_instance_init(CPU(obj));
-> -}
-> -
->  static void riscv_cpu_init(Object *obj)
->  {
->      RISCVCPUClass *mcc =3D RISCV_CPU_GET_CLASS(obj);
-> @@ -1143,6 +1138,8 @@ static void riscv_cpu_init(Object *obj)
->          riscv_register_custom_csrs(cpu, mcc->def->custom_csrs);
->      }
->  #endif
-> +
-> +    accel_cpu_instance_init(CPU(obj));
->  }
->
->  typedef struct misa_ext_info {
-> @@ -2885,7 +2882,6 @@ static const TypeInfo riscv_cpu_type_infos[] =3D {
->          .instance_size =3D sizeof(RISCVCPU),
->          .instance_align =3D __alignof(RISCVCPU),
->          .instance_init =3D riscv_cpu_init,
-> -        .instance_post_init =3D riscv_cpu_post_init,
->          .abstract =3D true,
->          .class_size =3D sizeof(RISCVCPUClass),
->          .class_init =3D riscv_cpu_common_class_init,
 > --
 > 2.49.0
 >
