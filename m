@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 123EEAB88D2
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 16:02:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE784AB88CA
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 16:01:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFZ88-0002Yo-W1; Thu, 15 May 2025 10:00:13 -0400
+	id 1uFZ8B-0002a6-Vm; Thu, 15 May 2025 10:00:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uFZ82-0002X1-No
- for qemu-devel@nongnu.org; Thu, 15 May 2025 10:00:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uFZ83-0002Y0-VN
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 10:00:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uFZ80-0007ut-P1
- for qemu-devel@nongnu.org; Thu, 15 May 2025 10:00:06 -0400
+ id 1uFZ81-0007xg-Qk
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 10:00:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1747317603;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+zbRNdtCWZRg83pRjQBqQeZDJg0RPooG0kmoLxqn4P4=;
- b=LS5qGjqsrMFGh0aWUz2w50msoL705FSr93z9B41HBsd3jsKyX8w1bhIGHt5iUJ5YIp5gMb
- EjNZ4o+A2Jqw6BJ9YdnxIVizLXS2Zw3xOj9hg47a8KMgpZR3nvd6Ou2AN/8/dgihBDuIFM
- ZP8AIgmFRew4VW/ALBbokVz9P/Bcm1s=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=AEI6TSfRzyBZWoQLpr5ygDxIVdrgpnlK8dZ+WiSaUVI=;
+ b=FO1IfpRAUGjLjYAIvKuO0qLxxG+yq0URxCpyyqrYPflxlAOQ4Od2ta53ZDCz5WmAPCFCM7
+ xs209kp506A+C6aBQgASnCqRTQnG6PFzVt2zqgOj5HZL8V43t66c08GnT2Kw+fOubXQ3or
+ bWC64K7Ugk/EZ6SS5NLB689JRqoH+Hg=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-584-a77012nCMYuPKVAtTGr53w-1; Thu,
- 15 May 2025 10:00:00 -0400
-X-MC-Unique: a77012nCMYuPKVAtTGr53w-1
-X-Mimecast-MFC-AGG-ID: a77012nCMYuPKVAtTGr53w_1747317597
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-113-Dwt8wQfgPqyejD35qcV86A-1; Thu,
+ 15 May 2025 10:00:01 -0400
+X-MC-Unique: Dwt8wQfgPqyejD35qcV86A-1
+X-Mimecast-MFC-AGG-ID: Dwt8wQfgPqyejD35qcV86A_1747317600
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A467B1956089; Thu, 15 May 2025 13:59:57 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 812D2180087F; Thu, 15 May 2025 14:00:00 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.135])
  by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3DEDF30075D4; Thu, 15 May 2025 13:59:54 +0000 (UTC)
+ id 55A3030075D4; Thu, 15 May 2025 13:59:58 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v3 6/9] scripts/checkpatch: expand pattern for matching
- makefiles
-Date: Thu, 15 May 2025 14:59:33 +0100
-Message-ID: <20250515135936.86760-7-berrange@redhat.com>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH v3 7/9] scripts/checkpatch: use new hook for MAINTAINERS
+ update check
+Date: Thu, 15 May 2025 14:59:34 +0100
+Message-ID: <20250515135936.86760-8-berrange@redhat.com>
 In-Reply-To: <20250515135936.86760-1-berrange@redhat.com>
 References: <20250515135936.86760-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -37
 X-Spam_score: -3.8
@@ -85,28 +86,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The current regex matches Makefile & Makefile.objs, but the latter is
-no longer used, and we're missing coverage of Makefile.include and
-Makefile.target. Expand the pattern to match any suffix.
+When seeing a new/deleted/renamed file we check to see if MAINTAINERS
+is updated, but we don't give the user a list of files affected, as
+we don't want to repeat the same warning many times over.
 
+Using the new file list hook, we can give a single warning at the
+end with a list of filenames included.
+
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- scripts/checkpatch.pl | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/checkpatch.pl | 37 +++++++++++++++++++------------------
+ 1 file changed, 19 insertions(+), 18 deletions(-)
 
 diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 4a18daa384..00d7d72e53 100755
+index 00d7d72e53..6adef12871 100755
 --- a/scripts/checkpatch.pl
 +++ b/scripts/checkpatch.pl
-@@ -1453,7 +1453,7 @@ sub process_start_of_file {
- 		my $permhere = $fileinfo->{linestart} . "FILE: " .
- 			$fileinfo->{filenew} . "\n";
- 		if ($fileinfo->{filenew} =~
--		    /(\bMakefile(?:\.objs)?|\.(c|cc|cpp|h|mak|s|S))$/) {
-+		    /(\bMakefile.*|\.(c|cc|cpp|h|mak|s|S))$/) {
- 			ERROR("do not set execute permissions for source " .
- 			      "files\n" . $permhere);
+@@ -1442,6 +1442,25 @@ sub process_file_list {
+ 		      join("\n  ", @acpi_nontestexpected) .
+ 		      "\n\nfound in the same patch\n");
+ 	}
++
++	my $sawmaintainers = 0;
++	my @maybemaintainers;
++	foreach my $fileinfo (@fileinfos) {
++		if ($fileinfo->{action} ne "modified" &&
++		    $fileinfo->{filenew} !~ m#^tests/data/acpi/#) {
++			push @maybemaintainers, $fileinfo->{filenew};
++		}
++		if ($fileinfo->{filenew} eq "MAINTAINERS") {
++			$sawmaintainers = 1;
++		}
++	}
++
++	# If we don't see a MAINTAINERS update, prod the user to check
++	if (int(@maybemaintainers) > 0 && !$sawmaintainers) {
++		WARN("added, moved or deleted file(s):\n\n  " .
++		     join("\n  ", @maybemaintainers) .
++		     "\n\nDoes MAINTAINERS need updating?\n");
++	}
+ }
+ 
+ # Called at the start of processing a diff hunk for a file
+@@ -1485,7 +1504,6 @@ sub process {
+ 
+ 	my $in_header_lines = $file ? 0 : 1;
+ 	my $in_commit_log = 0;		#Scanning lines before patch
+-	my $reported_maintainer_file = 0;
+ 	my $reported_mixing_imported_file = 0;
+ 	my $in_imported_file = 0;
+ 	my $in_no_imported_file = 0;
+@@ -1760,23 +1778,6 @@ sub process {
+ 			}
  		}
+ 
+-# Check if MAINTAINERS is being updated.  If so, there's probably no need to
+-# emit the "does MAINTAINERS need updating?" message on file add/move/delete
+-		if ($line =~ /^\s*MAINTAINERS\s*\|/) {
+-			$reported_maintainer_file = 1;
+-		}
+-
+-# Check for added, moved or deleted files
+-		if (!$reported_maintainer_file && !$in_commit_log &&
+-		    ($line =~ /^(?:new|deleted) file mode\s*\d+\s*$/ ||
+-		     $line =~ /^rename (?:from|to) [\w\/\.\-]+\s*$/ ||
+-		     ($line =~ /\{\s*([\w\/\.\-]*)\s*\=\>\s*([\w\/\.\-]*)\s*\}/ &&
+-		      (defined($1) || defined($2)))) &&
+-		    $realfile !~ m#^tests/data/acpi/#) {
+-			$reported_maintainer_file = 1;
+-			WARN("added, moved or deleted file(s), does MAINTAINERS need updating?\n" . $herecurr);
+-		}
+-
+ # Check SPDX-License-Identifier references a permitted license
+ 		if ($rawline =~ m,SPDX-License-Identifier: (.*?)(\*/)?\s*$,) {
+ 			&checkspdx($realfile, $1);
 -- 
 2.49.0
 
