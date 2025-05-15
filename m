@@ -2,107 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C978AB8BDD
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 18:07:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DF0CAB8BE3
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 18:07:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFb5l-0001eu-5q; Thu, 15 May 2025 12:05:53 -0400
+	id 1uFb77-0003SX-MM; Thu, 15 May 2025 12:07:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
- id 1uFb5Q-0001Zm-8b; Thu, 15 May 2025 12:05:32 -0400
+ id 1uFb6j-0002rL-IW; Thu, 15 May 2025 12:06:59 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
- id 1uFb5N-0000KJ-LM; Thu, 15 May 2025 12:05:31 -0400
+ id 1uFb6g-0000YG-1T; Thu, 15 May 2025 12:06:52 -0400
 Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54FDnGFf032448;
- Thu, 15 May 2025 16:05:27 GMT
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54FDn3Z9032297;
+ Thu, 15 May 2025 16:06:45 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
  :message-id:mime-version:references:reply-to:subject:to; s=pp1;
- bh=kphMMa3Vka/ULe9RNsbEYuLxRaIBzt+4dhj/UBSfLrw=; b=tA+qcibrAYIP
- f58bLkASSpVLkaf/W9wJXKTYBGMUEHjSfnn747XZQfZ8lNRCYkmqIrGbW0tk3KZk
- uCgUuYUbnPHRlMb8WNxdtwdlO8y3bCYihXnrIbH2SPofNC8wAjTn1g+O66SMs6ZJ
- qNsUEcpABIZkVAbhS4R7ArMu25UT5S3JQRzupLagbJS+EYVpZIetpxpG86QIMKKu
- GRJ96oFa8ov6Ivqz/I2bNyF9B+ekAb9xF9C+5yKAmODRkkso07Q7KHcywwyaWFbU
- MQaF2jt0kW8NWpdE/d1vlL4VWj1Ne3c8lkO5O7sv1SnWLSNUoj9qsxOBIDyelxF9
- 51fq4xlhHQ==
+ bh=fawGPSErN21Yv7x+wKDzxKRp+dQQPdexiwI86i+hLng=; b=iAsi/TqojoFQ
+ QsBLfgsmVlwR5iSA3hENu15UmYO6B0ZXHGybjKwGNyILkW5+yJL32o8PCJzzDPBX
+ FPbjo0nZcwNWaCiQjt6KkRcr6sctGUX4tsXYjRoeZsJAMV2Of0X4x1nAUnCTxTGP
+ G9VtdgT11p+W6hXDPCCZiWl8B3y2u96jLNdZlJQBg4+AQzy/+4N1KUgXvuC6/sBO
+ 5MUJFaIoWgx3c5QmkQuOxbaK21uX+grTT0nEX217NdzF1q4U0R/yCzJlGZvxkLtV
+ tkk3RYqIc5vsmRh/OGJjuoXZJPHl007yenleXob0LMuqctLK/sXJg0u67Kb8EyDm
+ z+aZNy5bBg==
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46nhg30rx8-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46nhg30s4x-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 May 2025 16:05:27 +0000 (GMT)
+ Thu, 15 May 2025 16:06:42 +0000 (GMT)
 Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54FG2Bwg019910;
- Thu, 15 May 2025 16:05:26 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46nhg30rx5-1
+ by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54FFeQ89003868;
+ Thu, 15 May 2025 16:06:42 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46nhg30s2n-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 May 2025 16:05:26 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54FEGBY4021861;
- Thu, 15 May 2025 16:05:26 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46mbfpu4rf-1
+ Thu, 15 May 2025 16:06:42 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54FE58tx021459;
+ Thu, 15 May 2025 16:06:12 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46mbfru3xp-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 15 May 2025 16:05:26 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
- [10.39.53.230])
- by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 54FG5OdZ29426256
+ Thu, 15 May 2025 16:06:12 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 54FG6BFX24511088
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 15 May 2025 16:05:25 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CBBCE58054;
- Thu, 15 May 2025 16:05:24 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 40D215805A;
- Thu, 15 May 2025 16:05:24 +0000 (GMT)
+ Thu, 15 May 2025 16:06:11 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 973065805D;
+ Thu, 15 May 2025 16:06:11 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 42A7158057;
+ Thu, 15 May 2025 16:06:11 +0000 (GMT)
 Received: from mambor8.rchland.ibm.com (unknown [9.10.239.198])
- by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 15 May 2025 16:05:24 +0000 (GMT)
-Message-ID: <54f087b21d501fd68648f6b07229d6d14f64b8e4.camel@linux.ibm.com>
-Subject: Re: [PATCH 35/50] ppc/xive: Add xive_tctx_pipr_set() helper function
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 15 May 2025 16:06:11 +0000 (GMT)
+Message-ID: <dc8f9cce170492c32fe12a7f50f0fdfe9d79e02c.camel@linux.ibm.com>
+Subject: Re: [PATCH 36/50] ppc/xive2: split tctx presentation processing
+ from set CPPR
 From: Miles Glenn <milesg@linux.ibm.com>
 To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
 Cc: qemu-devel@nongnu.org, =?ISO-8859-1?Q?Fr=E9d=E9ric?= Barrat
  <fbarrat@linux.ibm.com>, Michael Kowal <kowal@linux.ibm.com>, Caleb
  Schlossin <calebs@linux.vnet.ibm.com>
-Date: Thu, 15 May 2025 11:05:23 -0500
-In-Reply-To: <20250512031100.439842-36-npiggin@gmail.com>
+Date: Thu, 15 May 2025 11:06:10 -0500
+In-Reply-To: <20250512031100.439842-37-npiggin@gmail.com>
 References: <20250512031100.439842-1-npiggin@gmail.com>
- <20250512031100.439842-36-npiggin@gmail.com>
+ <20250512031100.439842-37-npiggin@gmail.com>
 Organization: IBM
 Content-Type: text/plain; charset="UTF-8"
 X-Mailer: Evolution 3.28.5 (3.28.5-27.el8_10) 
 Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Cf0I5Krl c=1 sm=1 tr=0 ts=682610c7 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+X-Authority-Analysis: v=2.4 cv=Cf0I5Krl c=1 sm=1 tr=0 ts=68261114 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
  a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8
- a=-0ihnXfFfNGhLI41e7gA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE1MDE1NSBTYWx0ZWRfXyduBQ2jAIZUc
- VqNWFgBsJKdHAOMThgxl99ZpV7Z9aVzIOMa9Uw2q9ho1vjkoHCY9z3rOFuzne/mTCNPO/oIHk7J
- Kx2Rva7sD0vBJPN/lVi+NiReBpSxkvO3zUoZZ0edUwXxMJDe/14TIqMhjFLS7ztHC292+DA4elR
- z0NcM/Kjz6kxoDapnR73ijX7DlkJ6wfmjdvNK5o3PBelWsFLQ6AeO7JpCs+30iySDyGlrjCqwxb
- YW/LtlTft0tX2rSyrkYuauM0lScjO98DYKlr462xXm+qv6yKNBeSQuYhP8z7hj15iDXzLJqge9O
- TBX+ukHSLXaDDzcAxnuW/oAS8ck57ZGSIZCmeC+gQXBd246s16aMaIntTY+rvK9V4W+t1p9P04x
- CjbPQBasVU0Yd18nr+rsKyd9UZ/p/zY6MYdBtnXE96EM2ft+wTscZrBqnFNkmTte5jsBY371
-X-Proofpoint-GUID: XRRBEZI6vDsLEhbY58bVwU1j9wdD9Lpn
-X-Proofpoint-ORIG-GUID: fOoJrwdLr1azA4tL4hNYzlw-LpeEh6OX
+ a=0-WaI2_ozc3jpBna6GUA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE1MDE2MCBTYWx0ZWRfX9//viQm8NecL
+ XzX6EQjgDFDdOkX61oq/BtqcY/Nb5W2ikLjHnIwbx6uBquPxO5tJH5Gx1IUpoq2PueQt+S1lMrO
+ GyvyxZGVA0eCXJi2QqQiIyDZGrxctmeMAUyFrAwfcij6wuFpurlRYqcrELQLR1+8IRqsVAIM4Eo
+ 15HyUI3HF5bPTvedKPcJA/jLCbOvlDucvfnaM2am9OhrsGGY1i81r771Td+VoSIq1GIj4K42WCD
+ j8Fz8Mu12TCYERvj35E+c1+JsLy2+Bf4w949LmM9eeK2rAhmB3ESntNwm0E0FZfZMBDvyOuba3l
+ xpe2IXgkxfqIbEUVygH4vwitvWPH+18eOK1MIfcln4SaTHEVEixC6YoROOjC5x8nDh2M2Kqf6Bm
+ RYf/cuAmsVc9G9mDo//xSi2QwqSFcaoaCrgJgOcTaKCzHHo/WVdk44B9Wq4Qw4dlfaImGoWY
+X-Proofpoint-GUID: H8aVPl9yaKFCP4fF6SRQP7F5HcY8AkX6
+X-Proofpoint-ORIG-GUID: 15GJdba679pitMYDAztekH7L-E3K9SDW
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-15_06,2025-05-15_01,2025-03-28_01
+ definitions=2025-05-15_07,2025-05-15_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  clxscore=1015 suspectscore=0
  spamscore=0 malwarescore=0 lowpriorityscore=0 mlxlogscore=999
  impostorscore=0 phishscore=0 priorityscore=1501 mlxscore=0 bulkscore=0
  adultscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
  adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
- definitions=main-2505150155
+ definitions=main-2505150160
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=milesg@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -26
@@ -132,162 +133,203 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
 
 On Mon, 2025-05-12 at 13:10 +1000, Nicholas Piggin wrote:
-> Have xive_tctx_notify() also set the new PIPR value and rename it to
-> xive_tctx_pipr_set(). This can replace the last xive_tctx_pipr_update()
-> caller because it does not need to update IPB (it already sets it).
+> The second part of the set CPPR operation is to process (or re-present)
+> any pending interrupts after CPPR is adjusted.
+> 
+> Split this presentation processing out into a standalone function that
+> can be used in other places.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  hw/intc/xive.c        | 39 +++++++++++----------------------------
->  hw/intc/xive2.c       | 16 +++++++---------
->  include/hw/ppc/xive.h |  5 ++---
->  3 files changed, 20 insertions(+), 40 deletions(-)
+>  hw/intc/xive2.c | 137 +++++++++++++++++++++++++++---------------------
+>  1 file changed, 76 insertions(+), 61 deletions(-)
 > 
-> diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-> index d5dbeab6bd..4659821d4a 100644
-> --- a/hw/intc/xive.c
-> +++ b/hw/intc/xive.c
-> @@ -125,12 +125,16 @@ uint64_t xive_tctx_accept(XiveTCTX *tctx, uint8_t sig_ring)
->      return ((uint64_t)nsr << 8) | sig_regs[TM_CPPR];
->  }
->  
-> -void xive_tctx_notify(XiveTCTX *tctx, uint8_t ring, uint8_t group_level)
-> +/* Change PIPR and calculate NSR and irq based on PIPR, CPPR, group */
-> +void xive_tctx_pipr_set(XiveTCTX *tctx, uint8_t ring, uint8_t pipr,
-> +                        uint8_t group_level)
->  {
->      uint8_t *sig_regs = xive_tctx_signal_regs(tctx, ring);
->      uint8_t *regs = &tctx->regs[ring];
->  
-> -    if (sig_regs[TM_PIPR] < sig_regs[TM_CPPR]) {
-> +    sig_regs[TM_PIPR] = pipr;
-> +
-> +    if (pipr < sig_regs[TM_CPPR]) {
->          switch (ring) {
->          case TM_QW1_OS:
->              sig_regs[TM_NSR] = TM_QW1_NSR_EO | (group_level & 0x3F);
-> @@ -145,7 +149,7 @@ void xive_tctx_notify(XiveTCTX *tctx, uint8_t ring, uint8_t group_level)
->              g_assert_not_reached();
->          }
->          trace_xive_tctx_notify(tctx->cs->cpu_index, ring,
-> -                               regs[TM_IPB], sig_regs[TM_PIPR],
-> +                               regs[TM_IPB], pipr,
->                                 sig_regs[TM_CPPR], sig_regs[TM_NSR]);
->          qemu_irq_raise(xive_tctx_output(tctx, ring));
->      } else {
-> @@ -213,29 +217,10 @@ static void xive_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
->          }
->      }
->  
-> -    sig_regs[TM_PIPR] = pipr_min;
-> -
-> -    /* CPPR has changed, check if we need to raise a pending exception */
-> -    xive_tctx_notify(tctx, ring_min, 0);
-> +    /* CPPR has changed, this may present or preclude a pending exception */
-> +    xive_tctx_pipr_set(tctx, ring_min, pipr_min, 0);
->  }
->  
-> -void xive_tctx_pipr_update(XiveTCTX *tctx, uint8_t ring, uint8_t priority,
-> -                           uint8_t group_level)
-> -{
-> -    uint8_t *sig_regs = xive_tctx_signal_regs(tctx, ring);
-> -    uint8_t *regs = &tctx->regs[ring];
-> -
-> -    if (group_level == 0) {
-> -        /* VP-specific */
-> -        regs[TM_IPB] |= xive_priority_to_ipb(priority);
-> -        sig_regs[TM_PIPR] = xive_ipb_to_pipr(regs[TM_IPB]);
-> -    } else {
-> -        /* VP-group */
-> -        sig_regs[TM_PIPR] = xive_priority_to_pipr(priority);
-> -    }
-> -    xive_tctx_notify(tctx, ring, group_level);
-> - }
-> -
->  static void xive_tctx_pipr_recompute_from_ipb(XiveTCTX *tctx, uint8_t ring)
->  {
->      uint8_t *sig_regs = xive_tctx_signal_regs(tctx, ring);
-> @@ -244,8 +229,7 @@ static void xive_tctx_pipr_recompute_from_ipb(XiveTCTX *tctx, uint8_t ring)
->      /* Does not support a presented group interrupt */
->      g_assert(!xive_nsr_indicates_group_exception(ring, sig_regs[TM_NSR]));
->  
-> -    sig_regs[TM_PIPR] = xive_ipb_to_pipr(regs[TM_IPB]);
-> -    xive_tctx_notify(tctx, ring, 0);
-> +    xive_tctx_pipr_set(tctx, ring, xive_ipb_to_pipr(regs[TM_IPB]), 0);
->  }
->  
->  void xive_tctx_pipr_present(XiveTCTX *tctx, uint8_t ring, uint8_t priority,
-> @@ -264,8 +248,7 @@ void xive_tctx_pipr_present(XiveTCTX *tctx, uint8_t ring, uint8_t priority,
->      }
->      g_assert(pipr <= xive_ipb_to_pipr(regs[TM_IPB]));
->      g_assert(pipr < sig_regs[TM_PIPR]);
-> -    sig_regs[TM_PIPR] = pipr;
-> -    xive_tctx_notify(tctx, ring, group_level);
-> +    xive_tctx_pipr_set(tctx, ring, pipr, group_level);
->  }
->  
->  /*
 > diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-> index b9ee8c9e9f..8c8dab3aa2 100644
+> index 8c8dab3aa2..aa06bfda77 100644
 > --- a/hw/intc/xive2.c
 > +++ b/hw/intc/xive2.c
-> @@ -966,10 +966,10 @@ static void xive2_tctx_need_resend(Xive2Router *xrtr, XiveTCTX *tctx,
->      }
+> @@ -1098,66 +1098,19 @@ void xive2_tm_ack_os_el(XivePresenter *xptr, XiveTCTX *tctx,
+>      xive2_tctx_accept_el(xptr, tctx, TM_QW1_OS, TM_QW1_OS);
+>  }
+>  
+> -/* NOTE: CPPR only exists for TM_QW1_OS and TM_QW3_HV_PHYS */
+> -static void xive2_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
+> +/* Re-calculate and present pending interrupts */
+> +static void xive2_tctx_process_pending(XiveTCTX *tctx, uint8_t sig_ring)
+>  {
+> -    uint8_t *sig_regs = &tctx->regs[ring];
+> +    uint8_t *sig_regs = &tctx->regs[sig_ring];
+>      Xive2Router *xrtr = XIVE2_ROUTER(tctx->xptr);
+> -    uint8_t old_cppr, backlog_prio, first_group, group_level;
+> +    uint8_t backlog_prio, first_group, group_level;
+>      uint8_t pipr_min, lsmfb_min, ring_min;
+> +    uint8_t cppr = sig_regs[TM_CPPR];
+>      bool group_enabled;
+> -    uint8_t nvp_blk;
+> -    uint32_t nvp_idx;
+>      Xive2Nvp nvp;
+>      int rc;
+> -    uint8_t nsr = sig_regs[TM_NSR];
+> -
+> -    g_assert(ring == TM_QW1_OS || ring == TM_QW3_HV_PHYS);
+> -
+> -    g_assert(tctx->regs[TM_QW2_HV_POOL + TM_NSR] == 0);
+> -    g_assert(tctx->regs[TM_QW2_HV_POOL + TM_PIPR] == 0);
+> -    g_assert(tctx->regs[TM_QW2_HV_POOL + TM_CPPR] == 0);
+> -
+> -    /* XXX: should show pool IPB for PHYS ring */
+> -    trace_xive_tctx_set_cppr(tctx->cs->cpu_index, ring,
+> -                             sig_regs[TM_IPB], sig_regs[TM_PIPR],
+> -                             cppr, nsr);
+> -
+> -    if (cppr > XIVE_PRIORITY_MAX) {
+> -        cppr = 0xff;
+> -    }
+> -
+> -    old_cppr = sig_regs[TM_CPPR];
+> -    sig_regs[TM_CPPR] = cppr;
+> -
+> -    /* Handle increased CPPR priority (lower value) */
+> -    if (cppr < old_cppr) {
+> -        if (cppr <= sig_regs[TM_PIPR]) {
+> -            /* CPPR lowered below PIPR, must un-present interrupt */
+> -            if (xive_nsr_indicates_exception(ring, nsr)) {
+> -                if (xive_nsr_indicates_group_exception(ring, nsr)) {
+> -                    /* redistribute precluded active grp interrupt */
+> -                    xive2_redistribute(xrtr, tctx,
+> -                                       xive_nsr_exception_ring(ring, nsr));
+> -                    return;
+> -                }
+> -            }
+>  
+> -            /* interrupt is VP directed, pending in IPB */
+> -            xive_tctx_pipr_set(tctx, ring, cppr, 0);
+> -            return;
+> -        } else {
+> -            /* CPPR was lowered, but still above PIPR. No action needed. */
+> -            return;
+> -        }
+> -    }
+> -
+> -    /* CPPR didn't change, nothing needs to be done */
+> -    if (cppr == old_cppr) {
+> -        return;
+> -    }
+> -
+> -    /* CPPR priority decreased (higher value) */
+> +    g_assert(sig_ring == TM_QW3_HV_PHYS || sig_ring == TM_QW1_OS);
 >  
 >      /*
-> -     * Compute the PIPR based on the restored state.
-> +     * Set the PIPR/NSR based on the restored state.
->       * It will raise the External interrupt signal if needed.
->       */
-> -    xive_tctx_pipr_update(tctx, TM_QW1_OS, backlog_prio, backlog_level);
-> +    xive_tctx_pipr_set(tctx, TM_QW1_OS, backlog_prio, backlog_level);
->  }
+>       * Recompute the PIPR based on local pending interrupts. It will
+> @@ -1167,11 +1120,11 @@ again:
+>      pipr_min = xive_ipb_to_pipr(sig_regs[TM_IPB]);
+>      group_enabled = !!sig_regs[TM_LGS];
+>      lsmfb_min = group_enabled ? sig_regs[TM_LSMFB] : 0xff;
+> -    ring_min = ring;
+> +    ring_min = sig_ring;
+>      group_level = 0;
 >  
->  /*
-> @@ -1144,8 +1144,7 @@ static void xive2_tctx_set_cppr(XiveTCTX *tctx, uint8_t ring, uint8_t cppr)
->              }
+>      /* PHYS updates also depend on POOL values */
+> -    if (ring == TM_QW3_HV_PHYS) {
+> +    if (sig_ring == TM_QW3_HV_PHYS) {
+>          uint8_t *pool_regs = &tctx->regs[TM_QW2_HV_POOL];
 >  
->              /* interrupt is VP directed, pending in IPB */
-> -            sig_regs[TM_PIPR] = cppr;
-> -            xive_tctx_notify(tctx, ring, 0); /* Ensure interrupt is cleared */
-> +            xive_tctx_pipr_set(tctx, ring, cppr, 0);
->              return;
->          } else {
->              /* CPPR was lowered, but still above PIPR. No action needed. */
-> @@ -1255,11 +1254,10 @@ again:
->          pipr_min = backlog_prio;
+>          /* POOL values only matter if POOL ctx is valid */
+> @@ -1201,20 +1154,25 @@ again:
+>          }
 >      }
 >  
-> -    /* PIPR should not be set to a value greater than CPPR */
-> -    sig_regs[TM_PIPR] = (pipr_min > cppr) ? cppr : pipr_min;
+> -    rc = xive2_tctx_get_nvp_indexes(tctx, ring_min, &nvp_blk, &nvp_idx);
+> -    if (rc) {
+> -        qemu_log_mask(LOG_GUEST_ERROR, "XIVE: set CPPR on invalid context\n");
+> -        return;
+> -    }
 > -
-> -    /* CPPR has changed, check if we need to raise a pending exception */
-> -    xive_tctx_notify(tctx, ring_min, group_level);
-> +    if (pipr_min > cppr) {
-> +        pipr_min = cppr;
-> +    }
-> +    xive_tctx_pipr_set(tctx, ring_min, pipr_min, group_level);
+>      if (group_enabled &&
+>          lsmfb_min < cppr &&
+>          lsmfb_min < pipr_min) {
+> +
+> +        uint8_t nvp_blk;
+> +        uint32_t nvp_idx;
+> +
+>          /*
+>           * Thread has seen a group interrupt with a higher priority
+>           * than the new cppr or pending local interrupt. Check the
+>           * backlog
+>           */
+> +        rc = xive2_tctx_get_nvp_indexes(tctx, ring_min, &nvp_blk, &nvp_idx);
+> +        if (rc) {
+> +            qemu_log_mask(LOG_GUEST_ERROR, "XIVE: set CPPR on invalid "
+> +                                           "context\n");
+> +            return;
+> +        }
+> +
+>          if (xive2_router_get_nvp(xrtr, nvp_blk, nvp_idx, &nvp)) {
+>              qemu_log_mask(LOG_GUEST_ERROR, "XIVE: No NVP %x/%x\n",
+>                            nvp_blk, nvp_idx);
+> @@ -1260,6 +1218,63 @@ again:
+>      xive_tctx_pipr_set(tctx, ring_min, pipr_min, group_level);
 >  }
 >  
+> +/* NOTE: CPPR only exists for TM_QW1_OS and TM_QW3_HV_PHYS */
+> +static void xive2_tctx_set_cppr(XiveTCTX *tctx, uint8_t sig_ring, uint8_t cppr)
+> +{
+> +    uint8_t *sig_regs = &tctx->regs[sig_ring];
+> +    Xive2Router *xrtr = XIVE2_ROUTER(tctx->xptr);
+> +    uint8_t old_cppr;
+> +    uint8_t nsr = sig_regs[TM_NSR];
+> +
+> +    g_assert(sig_ring == TM_QW1_OS || sig_ring == TM_QW3_HV_PHYS);
+> +
+> +    g_assert(tctx->regs[TM_QW2_HV_POOL + TM_NSR] == 0);
+> +    g_assert(tctx->regs[TM_QW2_HV_POOL + TM_PIPR] == 0);
+> +    g_assert(tctx->regs[TM_QW2_HV_POOL + TM_CPPR] == 0);
+> +
+> +    /* XXX: should show pool IPB for PHYS ring */
+> +    trace_xive_tctx_set_cppr(tctx->cs->cpu_index, sig_ring,
+> +                             sig_regs[TM_IPB], sig_regs[TM_PIPR],
+> +                             cppr, nsr);
+> +
+> +    if (cppr > XIVE_PRIORITY_MAX) {
+> +        cppr = 0xff;
+> +    }
+> +
+> +    old_cppr = sig_regs[TM_CPPR];
+> +    sig_regs[TM_CPPR] = cppr;
+> +
+> +    /* Handle increased CPPR priority (lower value) */
+> +    if (cppr < old_cppr) {
+> +        if (cppr <= sig_regs[TM_PIPR]) {
+> +            /* CPPR lowered below PIPR, must un-present interrupt */
+> +            if (xive_nsr_indicates_exception(sig_ring, nsr)) {
+> +                if (xive_nsr_indicates_group_exception(sig_ring, nsr)) {
+> +                    /* redistribute precluded active grp interrupt */
+> +                    xive2_redistribute(xrtr, tctx,
+> +                                       xive_nsr_exception_ring(sig_ring, nsr));
+> +                    return;
+> +                }
+> +            }
+> +
+> +            /* interrupt is VP directed, pending in IPB */
+> +            xive_tctx_pipr_set(tctx, sig_ring, cppr, 0);
+> +            return;
+> +        } else {
+> +            /* CPPR was lowered, but still above PIPR. No action needed. */
+> +            return;
+> +        }
+> +    }
+> +
+> +    /* CPPR didn't change, nothing needs to be done */
+> +    if (cppr == old_cppr) {
+> +        return;
+> +    }
+> +
+> +    /* CPPR priority decreased (higher value) */
+> +    xive2_tctx_process_pending(tctx, sig_ring);
+> +}
+> +
 >  void xive2_tm_set_hv_cppr(XivePresenter *xptr, XiveTCTX *tctx,
-> diff --git a/include/hw/ppc/xive.h b/include/hw/ppc/xive.h
-> index a3c2f50ece..2372d1014b 100644
-> --- a/include/hw/ppc/xive.h
-> +++ b/include/hw/ppc/xive.h
-> @@ -584,12 +584,11 @@ void xive_tctx_pic_print_info(XiveTCTX *tctx, GString *buf);
->  Object *xive_tctx_create(Object *cpu, XivePresenter *xptr, Error **errp);
->  void xive_tctx_reset(XiveTCTX *tctx);
->  void xive_tctx_destroy(XiveTCTX *tctx);
-> -void xive_tctx_pipr_update(XiveTCTX *tctx, uint8_t ring, uint8_t priority,
-> -                           uint8_t group_level);
-> +void xive_tctx_pipr_set(XiveTCTX *tctx, uint8_t ring, uint8_t priority,
-> +                        uint8_t group_level);
->  void xive_tctx_pipr_present(XiveTCTX *tctx, uint8_t ring, uint8_t priority,
->                              uint8_t group_level);
->  void xive_tctx_reset_signal(XiveTCTX *tctx, uint8_t ring);
-> -void xive_tctx_notify(XiveTCTX *tctx, uint8_t ring, uint8_t group_level);
->  uint64_t xive_tctx_accept(XiveTCTX *tctx, uint8_t ring);
->  
->  /*
+>                            hwaddr offset, uint64_t value, unsigned size)
+>  {
 
 
