@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F36DAB8DCD
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 19:30:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47046AB8DC6
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 19:30:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFcNa-0000iH-Bs; Thu, 15 May 2025 13:28:22 -0400
+	id 1uFcNW-0000aC-IY; Thu, 15 May 2025 13:28:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uFcN4-0008Hx-BI
+ id 1uFcN4-0008Hy-C8
  for qemu-devel@nongnu.org; Thu, 15 May 2025 13:27:50 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uFcN1-00026e-99
+ id 1uFcN1-00026r-UY
  for qemu-devel@nongnu.org; Thu, 15 May 2025 13:27:49 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-74264d1832eso1674330b3a.0
- for <qemu-devel@nongnu.org>; Thu, 15 May 2025 10:27:46 -0700 (PDT)
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-74068f95d9fso1188152b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 15 May 2025 10:27:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1747330066; x=1747934866; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CNI2BFFgTeljdJ/HtYFFxLLCliw0wPHFB2HapKUt6b4=;
- b=c2Ib+CYyfD3gs345IJ1hW4Chv1HTMXFmSCzoY+JX9iqbvHaKuw4W80wMtOvO3F3sds
- EQmelCyrGYgoaeCzu7So2kEry9r5I1BDsHMcKO8wGwq1ef0BgOC1bDZv4AIf7AwK6udN
- DijLEJ71zosGcaKeAWIah9iRI0rPsNZ2pnRxQ8y7629niIZ9YpU6gvpBsl0uPHzwtp+8
- +lQ/8UbZUwgU9H3BnbvNgo0cc99mpz+vqcfJaLoelnV+3szSYKayMgZzeQT79Gu3TbnJ
- KyWJtkKw62ou4Odv8dBi5ovcOBq12IOFjTfUfqsgjPuBa2C7j+WquBRm/qmIsG6OvG5I
- 72JQ==
+ bh=E+mqRJjW/uNU+WmqEgMnh4Q0J4iLqGLa+X8vg8xz6/U=;
+ b=KKZDqRVu6WJmMaeHaTX83lcSOtJUuZKjThnNMj/deUZWxrAnBQW80FT07tCIZlEGPJ
+ VVdpZRy46sFzW85KzVmy9H2ir+z8kko3ld+7zATi01uw5G2oQv5UArAkfzbOLCD0KeXG
+ r2jzonIyjF+sfqUC+aYAvzH3a6lEjZM8NYvnEnINlWwTy7Mjosx+F1IZlO2x6LQWoE9B
+ lIjdZ/AwK74cmQUlbRDtx6I+vUmAWsf4JBeQvZZv8aFSF3dUG8wwqin81z2QteLVIL9W
+ n2n13+H8O5cUHeHZrcTWBAL/29745fmF7f+jMYkzdIScGkVli681ZG+8FvRNkr7WUWvp
+ yvCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1747330066; x=1747934866;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CNI2BFFgTeljdJ/HtYFFxLLCliw0wPHFB2HapKUt6b4=;
- b=m8Z2qQDJ+EQxBaD2X9mP4cKqDkFRvg0wXbWPi7Bpt6Kwj3+lr6s7bvyUQIjKEqgVmF
- 5VOHmoWb91vpjqhCCGXLNOm8joUgE5V+vu1J9fret8skrs3Ud7kUjSE7yrRgEbjUe6Xe
- UpuowZ972xxUvzd4OPE7+HJ0vHcxFHnzc5b2zfMrNbTuygaIP6HLHuMDKptOUgm0HPTE
- m7EwhotCfXgN2DKCk0ES9rHnMZNm+rPD5+T1NyI8xbuyv+nnyK0A7QKRmi9JgJasQUNr
- tqnYKRtLRN8pyol+abJ/1GTDIblmtvDvW4sWRvfuLnKx98/YSSDfLiBUlrplYuVR3gPh
- Eksg==
-X-Gm-Message-State: AOJu0YyVTcfswMjn/Ec37Byove4Y3J6hy5Ns3Zq+nJfxsxaaPBMkzSbS
- 2MeqRmZaBbhJQOMK7VGHkBg/MnhPcb5NRSuJ3jcaxBdxBLWpsfD3hs/PeG7aKMB/PDqZUSVBGlw
- nqYhF
-X-Gm-Gg: ASbGncsst6Mo4amH+Y/mncq6IiI/FCYcI8UzJSzfYqeildpB9yEnR3r7nGrT4Ryabpc
- wx2xb0YwmDmgBlqesKaupt/g/LDM6u21tQojuvzKVn6IhqbCoLUY9QbzyZeh8M5GE4HwqWNGL2s
- 7uMMJ7vphsJd4MFQyQ68HhgDE1wntEMei1v8bSQo+bZuAVM9ZWZZZGVEQO+w5XCtlLQyUty5iWR
- KWjZzwI2ODUyMl4IcjdnXklwoQzCdJddEAcrOi5lqvoSE/cF0Y4hLNe1HFWawW+q/kqaIy25Q4N
- FrEP/C5oIBB66hOy7P7FXK4Lo7AFbgjsFTvwTEDjoFet+QSUija5afCU2e8chQ==
-X-Google-Smtp-Source: AGHT+IFOtBX+PK4J5MAkSLQdI3ff/BySXyYknToFkSB10/i1EHm/I9TdHIitFPmpbIYFUhNyChvP4Q==
-X-Received: by 2002:a05:6a20:7287:b0:1f5:a3e8:64d3 with SMTP id
- adf61e73a8af0-2162192a995mr497853637.21.1747330065758; 
- Thu, 15 May 2025 10:27:45 -0700 (PDT)
+ bh=E+mqRJjW/uNU+WmqEgMnh4Q0J4iLqGLa+X8vg8xz6/U=;
+ b=Pop9JEGvS/bXxempm7bzgV6g+8WMmHx3hOT9v9WzL97ZYTdzHH6zZHithP41P+Vh+i
+ VXumNeTLn7CIfsYr/tqXjgi0YkbnRm+zquIbCqt/9rZbgw3a70TPREm017ObQMQAwqO5
+ A0fpyUhlQHn9gr4iANc0amnIV/XoFAP/9LMIgJUONw8ilM9Hg9DfDL+mto7AlVi/ce0s
+ a9BoHlC0yh+ryqxvaxMqxeSE5UyD76p1M9z40C/V9H9RA7re0l+ejX6ompYckhjSxjjJ
+ sIH7CUkCUZuUXeps/n0ax/d8eIW42PRN3/XiFoWrU71bz/P/RnpK+u1tyY1KXP/AvFi+
+ KoMw==
+X-Gm-Message-State: AOJu0Yyqy6qnaeI0CQcTE3KpUtyeeVo71drjpLS/6qZ7FevgkZOqXjPV
+ Ta1u0Bdnuz3VlIccALbrtvi9vcVK+Et2SS8lkD/APO75NvYAHT/v64yawvUdJU8kVHKqPla1Bh1
+ fsmE3
+X-Gm-Gg: ASbGnctOvFsNyxekU/1Rexov32hgbERkW2yz9+r+VPv6JJ/DLYp+iLCHbkIayv5tVAC
+ 4RNVuKOlkztdTNT/Cok2910CLc/bPVwD15VbxUJr7ufhAiKJxzhbPIYo1sHdkCKe3jkFkW6rRzd
+ lXze4iOR+3GhYonaVBhfu1TjjMf+rMHFSgmiOZUEQyJLe1jAbyR5ybR7kwnFTpB6aXMKCZrzI9P
+ DyiR+ENybIrcyZAgYGpvnD+2HVesQsey5mpKwJ8mysd0dKJ33dWxjygaIHB4KJkD9x7UPwf/mob
+ i7pRyH14U6yAz4YHuy2WqAUS7mAYWUIi0wLfF047M6AOsGEkPTI=
+X-Google-Smtp-Source: AGHT+IET3uA0fgR+OFgadqtmZBY6JMhbspU77fCKtzmBvgOpskWYCt8zJI2gt2ECUQ4+gIz/Lm3asA==
+X-Received: by 2002:a05:6a00:a8a:b0:736:b402:533a with SMTP id
+ d2e1a72fcca58-742a976ae04mr257987b3a.1.1747330066575; 
+ Thu, 15 May 2025 10:27:46 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-742a96dfa9dsm79730b3a.10.2025.05.15.10.27.44
+ d2e1a72fcca58-742a96dfa9dsm79730b3a.10.2025.05.15.10.27.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 May 2025 10:27:45 -0700 (PDT)
+ Thu, 15 May 2025 10:27:46 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
@@ -70,17 +70,18 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  berrange@redhat.com, Markus Armbruster <armbru@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v2 07/12] qapi: remove the misc-target.json file
-Date: Thu, 15 May 2025 10:27:27 -0700
-Message-ID: <20250515172732.3992504-8-pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 08/12] qapi: Make CpuModelExpansionInfo::deprecated-props
+ optional and generic
+Date: Thu, 15 May 2025 10:27:28 -0700
+Message-ID: <20250515172732.3992504-9-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250515172732.3992504-1-pierrick.bouvier@linaro.org>
 References: <20250515172732.3992504-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,82 +104,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-This file is now empty and can thus be removed.
+We'd like to have some unified QAPI schema. Having a structure field
+conditional to a target being built in is not very practical.
 
-Observe the pre-existing bug with s390-skeys.c and target/i386/monitor.c
-both including qapi-commands-misc-target.h despite not requiring it.
+While @deprecated-props is only used by s390x target, it is generic
+enough and could be used by other targets (assuming we expand
+CpuModelExpansionType enum values).
+
+Let's always include this field, regardless of the target, but
+make it optional.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- qapi/misc-target.json | 3 ---
- qapi/qapi-schema.json | 1 -
- hw/s390x/s390-skeys.c | 1 -
- target/i386/monitor.c | 1 -
- qapi/meson.build      | 1 -
- 5 files changed, 7 deletions(-)
- delete mode 100644 qapi/misc-target.json
+ qapi/machine-target.json | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/qapi/misc-target.json b/qapi/misc-target.json
-deleted file mode 100644
-index c9ea1ab23e7..00000000000
---- a/qapi/misc-target.json
-+++ /dev/null
-@@ -1,3 +0,0 @@
--# -*- Mode: Python -*-
--# vim: filetype=python
--#
-diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
-index e96bff8d38c..d8eb79cfda6 100644
---- a/qapi/qapi-schema.json
-+++ b/qapi/qapi-schema.json
-@@ -63,7 +63,6 @@
- { 'include': 'misc.json' }
- { 'include': 'misc-arm.json' }
- { 'include': 'misc-i386.json' }
--{ 'include': 'misc-target.json' }
- { 'include': 'audio.json' }
- { 'include': 'acpi.json' }
- { 'include': 'pci.json' }
-diff --git a/hw/s390x/s390-skeys.c b/hw/s390x/s390-skeys.c
-index aedb62b2d31..8eeecfd58fc 100644
---- a/hw/s390x/s390-skeys.c
-+++ b/hw/s390x/s390-skeys.c
-@@ -17,7 +17,6 @@
- #include "hw/s390x/storage-keys.h"
- #include "qapi/error.h"
- #include "qapi/qapi-commands-machine.h"
--#include "qapi/qapi-commands-misc-target.h"
- #include "qobject/qdict.h"
- #include "qemu/error-report.h"
- #include "system/memory_mapping.h"
-diff --git a/target/i386/monitor.c b/target/i386/monitor.c
-index 3ea92b066e1..3c9b6ca62f2 100644
---- a/target/i386/monitor.c
-+++ b/target/i386/monitor.c
-@@ -29,7 +29,6 @@
- #include "monitor/hmp.h"
- #include "qobject/qdict.h"
- #include "qapi/error.h"
--#include "qapi/qapi-commands-misc-target.h"
- #include "qapi/qapi-commands-misc.h"
- 
- /* Perform linear address sign extension */
-diff --git a/qapi/meson.build b/qapi/meson.build
-index 5e93e6b8cfd..ffe44f9e0b8 100644
---- a/qapi/meson.build
-+++ b/qapi/meson.build
-@@ -42,7 +42,6 @@ qapi_all_modules = [
-   'machine-target',
-   'migration',
-   'misc',
--  'misc-target',
-   'net',
-   'pragma',
-   'qom',
+diff --git a/qapi/machine-target.json b/qapi/machine-target.json
+index 426ce4ee82d..e153291a7fc 100644
+--- a/qapi/machine-target.json
++++ b/qapi/machine-target.json
+@@ -244,19 +244,18 @@
+ #
+ # @model: the expanded CpuModelInfo.
+ #
+-# @deprecated-props: a list of properties that are flagged as
++# @deprecated-props: an optional list of properties that are flagged as
+ #     deprecated by the CPU vendor.  The list depends on the
+ #     CpuModelExpansionType: "static" properties are a subset of the
+ #     enabled-properties for the expanded model; "full" properties are
+ #     a set of properties that are deprecated across all models for
+-#     the architecture.  (since: 9.1).
++#     the architecture.  (since: 10.1 -- since 9.1 on s390x --).
+ #
+ # Since: 2.8
+ ##
+ { 'struct': 'CpuModelExpansionInfo',
+   'data': { 'model': 'CpuModelInfo',
+-            'deprecated-props' : { 'type': ['str'],
+-                                   'if': 'TARGET_S390X' } },
++            '*deprecated-props' : { 'type': ['str'] } },
+   'if': { 'any': [ 'TARGET_S390X',
+                    'TARGET_I386',
+                    'TARGET_ARM',
 -- 
 2.47.2
 
