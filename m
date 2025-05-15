@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FF43AB8FB3
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 21:10:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 634E2AB8FB4
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 21:10:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFdws-0005tw-4d; Thu, 15 May 2025 15:08:54 -0400
+	id 1uFdxD-00064y-I2; Thu, 15 May 2025 15:09:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uFdwp-0005tR-VD
- for qemu-devel@nongnu.org; Thu, 15 May 2025 15:08:51 -0400
+ id 1uFdxB-000637-Lr
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 15:09:13 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1uFdwo-00056g-0f
- for qemu-devel@nongnu.org; Thu, 15 May 2025 15:08:51 -0400
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54FF1oi4006321;
- Thu, 15 May 2025 19:08:47 GMT
+ id 1uFdx9-00057S-A7
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 15:09:13 -0400
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54FF1lmE023103;
+ Thu, 15 May 2025 19:09:08 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
  :message-id:mime-version:references:subject:to; s=
- corp-2025-04-25; bh=VvFyK6032cyTPYPeVtzlQeLPYg/w0hz/zznsWDpAi8o=; b=
- DX7DWR/FPJH8jHYhAXYxZcJGXm3EdGfPMQGzFyI83nI66gTRFK8GBGMqlrx2lPpy
- gjIz89PBRCenNUZpsAGiMDi9+dk6sTdIhimWechTzyz6ljlYR3NaD9pZkwmYitFB
- PhC9mgRVPG2H+2uSXOSufrmSsAxTLQjQaWUre4/FMWkGi8mqrNc/RlQhTaTtO/Ko
- Kq2yiuRsJLI2WBWPYJ5PI4Rmm+nozWVOIwzha9an+FLaWVoW5pv9Ol/rIHCLza2o
- +6S//po4oBs+IcfyX4fGd7d8d+fchgLYdyWRcTjgxLJ6pmajcIwKsz4M4wOyoK1u
- nxS7w/5CtZOfg6HDcsl1Iw==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46mbcgvy5j-1
+ corp-2025-04-25; bh=8PYnQPUoIZwwFL+DNLeZ0Bp0fo6iu+Yw7tDLa7Uly2c=; b=
+ hbgsQI7sMo690IGW8QAd+nuGhJUFWMAGIrLGDb8Vl31Z5+/AWvU+LZ3MJ8wtg0kg
+ LOWj0uYiU3deTptCbTln3KNgU6C/uhD+vVnpCQomRAhSfzcaZS0fHoimiTgaSZCL
+ ciloJ5uPHKD0DLeA0aoI9dqJBDov6BtrO/8SQo7naaIAJG6yKC5Oe5NL4wCjWn+P
+ 60sOhye4E0+OhmT603vF0x7lDpT1fzHwCtYhP0DbaNswXdS6TLWi/0o4ZRs8vikS
+ CMsNV+kd2+0h38FP1b4OwaXoJqsPNbxjkGlaq0n+L65x853hJw3akgXHUWWrj58V
+ Cjb5Oc7v5BceplGSIuNTLQ==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46mbccw63g-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 15 May 2025 19:08:47 +0000 (GMT)
+ Thu, 15 May 2025 19:09:08 +0000 (GMT)
 Received: from pps.filterd
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 54FIV1vx004253; Thu, 15 May 2025 19:08:46 GMT
-Received: from ch4pr04cu002.outbound.protection.outlook.com
- (mail-northcentralusazlp17013063.outbound.protection.outlook.com
- [40.93.20.63])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 46mqmdu666-1
+ (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 54FHphHC026316; Thu, 15 May 2025 19:09:07 GMT
+Received: from sj2pr03cu002.outbound.protection.outlook.com
+ (mail-westusazlp17013077.outbound.protection.outlook.com [40.93.1.77])
+ by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 46mbt9rhaq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 15 May 2025 19:08:46 +0000
+ Thu, 15 May 2025 19:09:07 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JAvbKQAonRysa/nFbMpLE3UGO/UKGbkJV3rWB3HS1MqhVqg/Qig8Ki90aPm1g8L8pj/YpKLYhtgzUvYOS+AXepiYz6SyqCfoA/Bhl2qJ4VFn8iZTSKd6+DiKTeWeaMQrNDcbQgcMZZvk75s9cFq94dcZuie5kvegBy0Z66lMFXZMXfTkaPsEfXM3d8cx2n58AWYRoszrnGgnIQLNP79hqSSOgy47SCJVLF/7pNrRgq4AFAJL9eDN/X9nCPf6slOHDSoVzcXmVho/kfmGHYeCoqBnH4Wj7MPMmxRaxpzpd56Lb+b2/aO1qNR3o6YnhfWE/2wAE/QA1AxkLs0ni312BQ==
+ b=X36iHdjs+Z8vTE/54bgpHlv52nam6gReddlbdcXMKJTN+ee7N8r5m1+2Fcp8S2PXtwSn4XRplkFivrSCauAziQVy0oh8M2YLU/5HosE7Z5VSC1HKNtdB+7Nh5ZXwGvcMXzVQDtQiAcZV7E5zBgsSSeaKdCz7ZwK179mCLs9jzxlOdtaC6KQCKGIzD90XzoA21ghCPY2bFZrL64n7Gs+Q4QGVo5Afh/O4WjhmOFi1sbE+7qr7YsgIwDW+ip0+RO60waVUw17g8gp+xDrcXdUKEXfievtkltDdFR5wVC9Y2TYwIgErE1/HvSjMfkj4rqCGEsoGTb/p2MbhfFOURbigsA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VvFyK6032cyTPYPeVtzlQeLPYg/w0hz/zznsWDpAi8o=;
- b=pEtO2HksTgFTpMIzGQct1Qxlo7dZADVLn+471a62eFlcFStnL1Igwca0w5YArqKRTGTgk2EVqUGmOVqRKUBv2qyveRTc7qCGnew47izpoT+vVlrto/U/SNZU5La8PdVXsFn0aAl8eV7dvj9uj8GwquveOvsW0Av+GpJHjXNrg05HjWKSUaFZ0KsXRPUEMQWSLxwhGu+C2cvrKUAReBnOb4KWdbOmm90Fd3PW0UYRKU8ANnsh9SqjR06XERKtdtiMOJGnXLQrd2UgASrRzWBOnTFNbMo/bgydXxGtjDVk9x4nwhl3ij19kts4wxYS6cSvMNde264O1W7ZTzlSoRdGMw==
+ bh=8PYnQPUoIZwwFL+DNLeZ0Bp0fo6iu+Yw7tDLa7Uly2c=;
+ b=hRV4oKbnvycZm1IiLXpcImbd3itK3NUTxstThZUKtCWly+GwMmmOQWz7WiYtnCxy6c+SrmGTsGdACk8i40q8mEfcJfUF0fJQVhV6CyhrhHiDvNkZAHUYsrHwS6TbYlEYkmbOUnJ5+bv8Zov/yDH57idIcjv2jUBqXez1XnIKHvvJAQ7jab7BjD6BBzJlvLLAchuQbzBWFip5zr9VvMcWAZm+DI5BkJCvKmqjg+0BJFWXRdEMSdIcDcRlZI4tSB0f/OcLtsRWX7i8IJhf7SfnZWlH/B8vandGZ0AL/LEJjfJXRRcn15TEJ8kvVeLCPt4As4rigrUFhFosV/PIH1Y3AA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VvFyK6032cyTPYPeVtzlQeLPYg/w0hz/zznsWDpAi8o=;
- b=N+74OxyXqr4al82Lh8keJhnpzL+iLiB6xHcPk0194B8a0tRCyTVseyUgC/B0py+nNlgcpvzA1+bAzZeEAKNXapoySYZywEcNoFYetrSMAaxYBVVLvyMj6c5FYVGMkGG6AOSXWDmL9fI1ylyzn6lgrl2wtKyPBUsfwnA/5wsZPaU=
+ bh=8PYnQPUoIZwwFL+DNLeZ0Bp0fo6iu+Yw7tDLa7Uly2c=;
+ b=B5kQoL9t4pXGCYOmyFV/lMSTa5Lbb2ojSV2VtZ96Q9I73lh/sZONAK/6LusSeSUnPrgAO6tcwn8UyaL/LUEns6P9HVqelRzl7bh1yRoho1NSr6kkm5F5554WERdGUa6dKedQnmrV472JjZzOtmImFatZj+IrxxZaunxSpqKgjo4=
 Received: from IA1PR10MB7447.namprd10.prod.outlook.com (2603:10b6:208:44c::10)
  by CO1PR10MB4450.namprd10.prod.outlook.com (2603:10b6:303:93::21)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.33; Thu, 15 May
- 2025 19:08:42 +0000
+ 2025 19:09:03 +0000
 Received: from IA1PR10MB7447.namprd10.prod.outlook.com
  ([fe80::f2fe:d6c6:70c4:4572]) by IA1PR10MB7447.namprd10.prod.outlook.com
  ([fe80::f2fe:d6c6:70c4:4572%6]) with mapi id 15.20.8722.027; Thu, 15 May 2025
- 19:08:42 +0000
-Message-ID: <f67b2a28-ef6d-47e0-a35e-4938622406f0@oracle.com>
-Date: Thu, 15 May 2025 15:08:38 -0400
+ 19:09:03 +0000
+Message-ID: <8a5c86ea-f0aa-4b84-9efd-1ce0edb2e7fc@oracle.com>
+Date: Thu, 15 May 2025 15:08:59 -0400
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3 08/42] vfio/container: export vfio_legacy_dma_map
+Subject: Re: [PATCH V3 10/42] vfio/container: restore DMA vaddr
 To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
  Eric Auger <eric.auger@redhat.com>,
@@ -83,132 +82,133 @@ Cc: Alex Williamson <alex.williamson@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
 References: <1747063973-124548-1-git-send-email-steven.sistare@oracle.com>
- <1747063973-124548-9-git-send-email-steven.sistare@oracle.com>
- <45f4a597-f25c-4386-a410-e8892fd584ce@redhat.com>
+ <1747063973-124548-11-git-send-email-steven.sistare@oracle.com>
+ <0501dd8f-7cae-456e-b4d7-e80b8aaaa5b2@redhat.com>
 Content-Language: en-US
 From: Steven Sistare <steven.sistare@oracle.com>
-In-Reply-To: <45f4a597-f25c-4386-a410-e8892fd584ce@redhat.com>
+In-Reply-To: <0501dd8f-7cae-456e-b4d7-e80b8aaaa5b2@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BN9PR03CA0893.namprd03.prod.outlook.com
- (2603:10b6:408:13c::28) To IA1PR10MB7447.namprd10.prod.outlook.com
+X-ClientProxiedBy: BN9PR03CA0964.namprd03.prod.outlook.com
+ (2603:10b6:408:109::9) To IA1PR10MB7447.namprd10.prod.outlook.com
  (2603:10b6:208:44c::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: IA1PR10MB7447:EE_|CO1PR10MB4450:EE_
-X-MS-Office365-Filtering-Correlation-Id: b717d3c5-7276-4590-8952-08dd93e3e87a
+X-MS-Office365-Filtering-Correlation-Id: e0440360-7e24-4c06-60c4-08dd93e3f4e6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?eGZQNXhiSGxOMXMxMzhVR2hDUFcvYjZ6bkh3THdjbTZTTVo0UlNJZHVEemZx?=
- =?utf-8?B?N1cwL3VGdVE5WXE3T1NqUWQ0SFEwWTVPa1JLMzdLNUpPUmtQWFlBdUJtLzA2?=
- =?utf-8?B?SzdLRnQzZGFFZ3NpOXhUWHp3K1U0cWcrVkx1azNhODNPODRJQ2p0OXg3V3c3?=
- =?utf-8?B?em1rb2Z3TjlzSzFjQ0JVaUpUV1krQ1l5dTVob0pYeUFlYXFha3BrdnMvN2hC?=
- =?utf-8?B?TTFKeXRPTG0xamJ3YUJFWXZOSUJuVThsTjlnOVIxWGJEWU5VZlZJYUJnWXpq?=
- =?utf-8?B?a24wUnlnV0NWUFM5SWdRTUdyS2N4Z3UwUSttVi9hYTc0WWY2RVYvVlRTWFM4?=
- =?utf-8?B?ak5wc3ZHMlJhZkd4RVB1SGZNVHZFWmZIQjZBK0Rvc01vbnA5Y3phN0VHV0E3?=
- =?utf-8?B?NlY3Ujduc216cFFpQlBVYlp4alBjbWc5L2VRU2VvSS9HN0dnbjlMckc2RG5L?=
- =?utf-8?B?MmV4a0s0WDFSdmF0UzZNZDZWN3JNdGwyMUI1UDUvWEZOcmNGdmx5TnBESmh2?=
- =?utf-8?B?Z0ZybmUyMW1iUVpyOWJ4TVMwT254cGszWmQ4VDJUUHFqdzhZVkJFanBoMmNG?=
- =?utf-8?B?cUcrWVJ5WFZDSmVzMkJPU3FYc1p3TnhPKytscSszcHo1UWRVTzRiOXowY1N2?=
- =?utf-8?B?REtLdEpSL3J1UVhUYitSQkN4THR1M0x1cDlQaU84YldjQWxZWFl5c2JGRFBW?=
- =?utf-8?B?MUMvRHB0eG1JdkRZa3pyWkxKME1wTG5wdjVIVVhzdTVhRCtIVVZkdXUwNzY5?=
- =?utf-8?B?MUxzTFkvcWZHZmtPaXhOdVkvbDV0N0JpdmRUcUhhNG1lS3N0My9MaEs2cEE1?=
- =?utf-8?B?Q1daUnE3YWVYQzloTW5nOCt3b2V6VSt4QXYrOWQ5NHVOL0xkVnVyd04ycURv?=
- =?utf-8?B?US9KNE13YnU2VXVIb3c3THNRZ2V1VjFUZk0wUGNmVERLZ255ODBkbDNYUlRt?=
- =?utf-8?B?Z3YycytZRUZCay8vVk5DQjZ2SnN6blhIbisrTE5UYlNQWDIrU3VtYmYyYWY2?=
- =?utf-8?B?MkpIbExkcHlNL0hPV2Z2amgyeHZYcFNMSjg3aEJVTWdPTUJnSjVLQjdYcE9L?=
- =?utf-8?B?N1FreGxWN3dnUXdObmNkRWtLeW5FTW1yRXQ3NHdBKytBZEVpb2xKekJtU01s?=
- =?utf-8?B?clduZjd3TUhsU05aZUg3UUhiUFhLN2NvdkFRbGpJVmVHN0pZMG9NRTdDUUpm?=
- =?utf-8?B?OGNKSTBJNmh3M21rZHZsTnZDd3JKQXBFZzZBS1AyV3lUenMyRTVia1NHcEZs?=
- =?utf-8?B?cWpwUFdwT0g4TFgwaGFuWnB3dGlDbWFobWhZN2wvL1RxUnJLbTRZUThqTlVB?=
- =?utf-8?B?ZVhMN0tjTDhtVzRKaElQTTRoQlM3MzBYNXRmME1tSGhnc29sS3kzUjNabG5Q?=
- =?utf-8?B?c1ZzcmRQVGtFNUJ4bWVtd3FoS2E4UjJxc3ExeVViR2crSW80Y2hRZmlIdUZD?=
- =?utf-8?B?VXd6UmRackI0V3pxWStRam9mZWY2a3FCZzZZRGQ1WlpRN25zS1YyWGNNS0hW?=
- =?utf-8?B?UGNtcDhjWkZIMHVnYTUzNkVQZ3BxdytjcVdtdzM4STdUblNOLzVtRGRYd08x?=
- =?utf-8?B?N2tjSCtibnorOVV4Ny9ab01IYnJmd2NzR0kxeUp1dHU5aFdYZHNGS3kxUnVN?=
- =?utf-8?B?eDV3Y25COWtudG9TOUIvOUR4UExBWGJvSmdrbVp2RzBCQ1hWWHJyQWJQL3Z6?=
- =?utf-8?B?L0JyNXZmSE5PNXh6N2taMzIrOWVDdlJQNWVuSzBGYTVGVG9sSDcwckVMWTll?=
- =?utf-8?B?a3VZNnlpMmNzR0JiYnU0NmxCZGdXcmE5VmlvWnVxdmRJRFdUU3Z2Z2FGak9X?=
- =?utf-8?B?QW95M1RUUnVBaHZ3clFCczJvU3dZTHh3K1M1RFl3VTI4UXBoUGR6ZXJDRDFD?=
- =?utf-8?B?ZnZhd0xlSkhwWElFNVA4ZzJYNTNSMXBTSGlTeUVvTTFjTTZnc1YrR1hJRkor?=
- =?utf-8?Q?+hUiUuCuvTw=3D?=
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?Mkt0aXAvN20ycmV2RlhacXRCK3N2S1g5dm53eU5xOG1PNTAwQWZ1eDgyVHNq?=
+ =?utf-8?B?Wm1tejIxckxUU0FxZ28rQkxTVE5YY3l4MzJhUTFBMXcrVGxNWTNlM1VzNkFI?=
+ =?utf-8?B?N3BFZGV3ZVpIY05kVXNHcEhISFY1ZHZmSEZsNlpDdHpSNWlKdEVDYWNydXRH?=
+ =?utf-8?B?MDIreVNWZ3U5emgwRHdwVlJMZHVQZWRYUXQvTXU5amlKS3ZVYW90UkhJVmJR?=
+ =?utf-8?B?R21GUVRmVkUrb0MyQ2VueFFiODhvRVhqcmR3dXloZlZkVlRBZzA5c2R5d0No?=
+ =?utf-8?B?NzdMdWwreEN4bTAyRW9jQnpLYkxhdHpLZ1RNamhObTFObnFUMUx4VVhuMVZ1?=
+ =?utf-8?B?Z0dlZkxXd3RkZHBoSEFGWmxtY0FJUjI3dVRidnVxSWRhejdtd2RWdnZVM2x2?=
+ =?utf-8?B?a2dYa0xESDFoUGpyQ000RUdvK2Z5MXMwMnJSRU5YeGVObTdEYyszRFo1NCsx?=
+ =?utf-8?B?QlZ3WjdiSkVRaXdReDlSY2FjZ0gvK1l6WCs3NWtvaHBpbE42MGVTZlo3cHpL?=
+ =?utf-8?B?SUVRK2JudUI0d0NIOVVmMUFsa1lVajNRT0p4bDhJSUtveUVGc3ZlOU91Y2Jt?=
+ =?utf-8?B?d2NtSlVqUFl6MkFFVlp4bWpHeTJESWhKNDFTL2dVRUdMb2s1clB0NkdhbDlW?=
+ =?utf-8?B?ZEt0aUJHNHpWNU5wT2l4MVF4SnlGVmZXU3ZWc0lQcmRHQjM2eTczbnMrUDR0?=
+ =?utf-8?B?RWY5M2d0YnVzNXRMTGRCUjFaVHYvbHpUdFd5MFNJV2xldy9jckpVanU1YnY0?=
+ =?utf-8?B?aTErYkJ1U214MVNXa0oxRGlnWFlrbURRQnlObEVDZVVpV0tpcnVScnhPMTZj?=
+ =?utf-8?B?SFo3N3kwb2xGZWJwditBVWZwY2gzNldHYVoyNFhXWWgxd2krZ1JpdGh6Qm4z?=
+ =?utf-8?B?cjE0Q0tmVHpHSFJhbDJnQ0dUaithSk1Sc0I2bTNxbTEvYTM2R2ZLcTd1dnNs?=
+ =?utf-8?B?dG1rZ1dYR1Bwb2tOQlBmb0U3RjlMb1o2ZFJTNnNqY21haUFSdSt1cy85ZFRN?=
+ =?utf-8?B?aDFnNndTK0FsMnN5VXRGZlBvUGtXZU5ubHoxVXdlcmVnYitlT0FsL0p5UGd5?=
+ =?utf-8?B?UVFuV1VPbUZMOFdMVGRyajZybmdtZE9ha0JkYWdBMi92enNmYVZuQzVodXQz?=
+ =?utf-8?B?UjZiY2MzNjEyMjhCb0NqaVdETmZTZHZZa3NEYjh0NHQwV0psSjhSWUFidC9v?=
+ =?utf-8?B?MzlRM3l4KzRhVzF0QmI3SDJYT1dEWTNBUWhDSzlOTDdnclg1VnVrbEF5Y1Mr?=
+ =?utf-8?B?T0dMQnFkd3FtQ0RjaE8vVjZYdng0TnFBRFBkNGNIRHROUXJXS2dhK3RQMlkz?=
+ =?utf-8?B?NHlYMTdBeElOVUtvUkY0ZU1XTnY0bzhRb3dWUlU4bFFBanpuS3RvOUQ2bUJt?=
+ =?utf-8?B?dkpEc1E3NENpeURRckpVUkI3dzlyTGxBc0FDVDJnem1zL1FmS3E0ME9UL3E2?=
+ =?utf-8?B?OEZWcUNWMit5Zk5sczVWbnovbC93MGtLSTBzUkhaeUtGNDBQdCtxZnRhZUVa?=
+ =?utf-8?B?NkRVcUNkZ3R1NDBHZngxNkZrY1QvNmRNRVVlLzVlcElyS2w0Sm1hWDd6YWRU?=
+ =?utf-8?B?QW1TTUxQTU5vNEpnSURTOGtFSVBMVld2cFBsSldxTnNqV0ZZdmNqL0hyaTly?=
+ =?utf-8?B?Vk1IUEhqSVZZTDYvdnZCS0VCV3FvSnJ4cU55WDlNeG1tQ041YXZjcjdGOVAr?=
+ =?utf-8?B?SWh5ZFFBaHpiTk5BdGg4QXZYK2VTM0VNQmZ1eWo4dStuWEo0RDlMTjdxakhN?=
+ =?utf-8?B?UXovcW8wRUdpK1BsNWRTTTlTcE1FbzBuY0ErS1RHdWR2Q0lpNmUya2M5bkp2?=
+ =?utf-8?B?M2xvdWZvODUwNGcxYnRoM0lZQXA3a28xQWVFOVlLVmhQdGJKTWZEblRHNExU?=
+ =?utf-8?B?Sy8yWjkyQzRISjhIYmV6T2d6bFkvcW9Ec1A0TVQ3aUNUTVJRNm5nTkJWMnpl?=
+ =?utf-8?Q?2wxuUk8baeE=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:IA1PR10MB7447.namprd10.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(1800799024)(7416014)(376014)(366016); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YWkzZFk3OXJ0aW5PMUtEb0p6UEdEd1p0OWRzVkxmd2lBWXlNeWlnY0dYeHRX?=
- =?utf-8?B?S3dZWkY2QjVFNHVVMkc3eStId2NIOWZQT09sODdGSUNIOWVhTzRBcllqdWwy?=
- =?utf-8?B?NE1LTXZwcllFRG5XSy9uVTlUc21NUENDMytQZGhReHVQam5rOUwzY3BFeVN5?=
- =?utf-8?B?Zm9PcVZFamtaMDRraUc2WGdJd0JhV1I0bXRHRnUzTjFhcHdkYW9yanRZTmZC?=
- =?utf-8?B?d3ZSMkphZ2x4dzhhdEQ2QUhTY2tjd3BTQ0F4Ykowa2xzY3BaZGJIY0JoS2tW?=
- =?utf-8?B?TWE1WnZTU2swQmxYRjNKZms4c0g5TWx3VkxsOUtsRWJvblJCemp3aEtjWlJ2?=
- =?utf-8?B?T0I5dGZsNGIyZ3YzRXZkOVNTYW8yZEhCT3NWN1c0WUZtVlN3bVlWV2ZNdkxK?=
- =?utf-8?B?VXdLUGVnc0lyb1Qvd3Y1U0Z6Z24zMVYwZFZSc2wxSlVWMmI2WExBVkF6TVV5?=
- =?utf-8?B?Skh5OEkyemFxOTU2V2h0RUMyYUxhRG13Q1hFdXNaZHRMd25TYXNodzNObUlk?=
- =?utf-8?B?d3ZFYm9yNHVQeUZJeGdHeFdrNkx3VEVmbzhLTG9EWElWR2FWQTVEZzBmRUFi?=
- =?utf-8?B?ejV3Zk1uN3ZZekFSUWdrOXF1ZE13SjgyazU0OXRKVXBpUXNnTWQ5VU5rUFc1?=
- =?utf-8?B?YlVtcjEwVDBwVkp0Y3ZKajYzRnZXa3RxU3BEZGVNR1lqZld6K0lPQytjb0RB?=
- =?utf-8?B?SG0xeGtXSkNXaUJXT1l4NkJ5QTJHaDd2Y1NaK3poa0ZnT1BFNVp4VVRYRTlT?=
- =?utf-8?B?aVBBdVJHWXBrT3hYYk5uUkJaOE1HdDV3UThramtHT3ltRGRHZFF4NEFaaFVD?=
- =?utf-8?B?ZEVQdXJBMEtPc2ZBdnIvcmcrSk9BME5mRXBCVVFtVzhwTld4d0FGRlVZM2wr?=
- =?utf-8?B?M3Fscm50cmlvdHQ3OUVVd01Sbkt3QXZmN1BXNzlPWldGa055eGpIOGhaQzJu?=
- =?utf-8?B?cFJMWEpwejJaTnJvQWZqaE5NMjFKYndJMkZMNHArQzZ1RkFpYXhlcFBUQ3dw?=
- =?utf-8?B?UGt1Rm1Odys2aTM0enNOazRkK0s4YkNZbHAwb0JnTWtnbWdjaGZmbHNlRXk5?=
- =?utf-8?B?d0VXMENMZFdqM3Jvcm91MEVIQXJjRlZPZFlQK0taQzJGbzFXNzZPaE1HRzli?=
- =?utf-8?B?eDNxZW9uaEp6VVNZUUhRRzY0VE8raFl3d3JGS2J2ajE3Z29PV1VyYWVnYmZR?=
- =?utf-8?B?WG55dEE1VlBXL3IrZGdkUVVCcTUrUEYwcFd1TE1OTEt5UmtRdTc5akhIV3Ur?=
- =?utf-8?B?Nzk4MHpENkd5aE1QdDMvcVNxUmc1d0l5aDIzRVFUMEJkZTlBVkFIS2dTLzFq?=
- =?utf-8?B?aW1pZTVQdmVqYmdFVXh0RndRVGsxTXVOek53emgzVWhsSGJ5K3JQREZEUnlu?=
- =?utf-8?B?Mml5S2VkczRreGE0MjZuc3VNa3BnZWNHRzA4WEwraG5vSkZ5d1RST0tKMENL?=
- =?utf-8?B?a1h5eVdCdlBMV3hPajZxelZBcmJiSDJmRStMcHdnZFp4S1NWTVhhdkMzSUpp?=
- =?utf-8?B?Y3NRb2IrcFZYWXRjVTVZZUJJK3FWNlFtOUdIalJUSGk0bUxBN2NOSUpxcU5j?=
- =?utf-8?B?a3pJTXR3bmJ5Qit2dWUvMU1hS0JFU2llSlFZNmF4eCt6dy8wWHNieDdqcTI3?=
- =?utf-8?B?c0FWZnVZQTRRVGI2cXpKTWhtNnVpRi9VeWxOREJIckdCbktzR01oTTQ4TWp4?=
- =?utf-8?B?b2RWaTRsL0tBeUZTaFRabXJrZ2kxV3Q5Qlh0UmpVUHduMUtnVUUxa2tFaFVC?=
- =?utf-8?B?K1hDVUM2Y1B4RHhYQWc5WnZBdkV6d2N0ZmxrUzFucThhOUVyUGxLcCtzRmh1?=
- =?utf-8?B?dWxlYm1nOEN1Zm15YkVoRTdwNWpkSUNtb2NTQlJ5Vkl0OTdYY0tFWm9ydmRw?=
- =?utf-8?B?KzdTMm1ac3kxTXluWVdXZmFoRDY5bWFQMExVaG9mT1djNHRlZDZ0VFVLSHMx?=
- =?utf-8?B?djRJejZ2WS9aWWQ3WXJyM0U0TThjcmlNZW1uME9rKytzdk1TSmsxd0ZSNHFK?=
- =?utf-8?B?dmh6N3pTTWFncGJScjFFVEY1VXkwSFQxdWdPcHJvQ01seThtTzJZRGRsU2JT?=
- =?utf-8?B?a2hEQktpV1MzK29USXpab1c1d3dCcFVCa21xeThPUGFpT2dFajhEWlZVcVRt?=
- =?utf-8?B?Zkg5Y3FjS0o1MmtCcnludGZNWHdOYmpxWWgyMllueWxvOUJ5YVo0VkxIT1Y2?=
- =?utf-8?B?WkE9PQ==?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZXlMSDh3REJwcWxoZFl2N1JydDRHb2VhbUNjdE5rRkNwNzREOXFJTUNBa3I0?=
+ =?utf-8?B?dmt4azBESzU3L3FDRnRndjRQRWowdUdtaHA4bzR3Ky9PR3VLWEwyL2x6d252?=
+ =?utf-8?B?ZHN5N3UrZUV4QlA0UUNzV3NTQllabHNXVVpqZytqOGNQd05iT25VdUVtQTE3?=
+ =?utf-8?B?RUpTL3ZsbVhNWlFzTk03MElWcGJuN0tQcFJRKzZBQTVHbkdGdEpPYXgrMFcw?=
+ =?utf-8?B?anFxTWRycHBjZVdpTFl1SnZOVjF3TXdsTEZoS0hjd21lUzBpc3dwUy9EZ0t1?=
+ =?utf-8?B?SHY0Z0R3VVgxalJPREt3VDVmUTh0SkJPZUNBcVdLY2w5WFVGejZsb0IzL0Uz?=
+ =?utf-8?B?L3h0REhYU2NBc0JVTDY2SUk2SXhRMzNReTZ0QlMyakliMnJlY250RlhMU05E?=
+ =?utf-8?B?eUtVZUhnclc4TmRwMDJaMEl3aXFVaGhPWUx5YmtFK0tWYWtNRlZIWDBHcU5S?=
+ =?utf-8?B?Z28raVMvSjVyazlLK1lJTEcydkVjUlpmczFRWjg0Kzdhbi9oTGRBU3p6TG0r?=
+ =?utf-8?B?RG51YkQvS2xQTlVzYWJkMlRDVXV4UVhFQ2JzY0RpaFZSMkRzdEN4Nk8yYk4x?=
+ =?utf-8?B?VSswL1BTOFdpbkxJa2VwYkRYZUdEcHluLzZ5cWQ1dUJXTzl4RjZDOGxIUSt1?=
+ =?utf-8?B?dUZsZzVIKzFYQktyOXlLZ2U1bkV3cVZUUnVkOXlLdUZvQzEySEk2dVhYR3ZQ?=
+ =?utf-8?B?aFM5bXRMb1hoOUJtR0kwM0JnQ0EveE9nM1FZM1duamFTZmo3Mnp1T09yQUoz?=
+ =?utf-8?B?eTNGRkZFT3NpYVUxZ1NWcFZYdVdYRzBYU0tZVncrU1VzYVVKRWxhZnVlNHNT?=
+ =?utf-8?B?K0hwWkZDUjVFbVJ6NS9RYlpDcmh6cVoyeE0yZFBvMmlCa3BrZXZzbzNyNW1p?=
+ =?utf-8?B?aENkM2I1NHNIdkpSaTRvcmFWTUZlS3lUd1pBRE82SjhLbUZHRW8rMjhDSlVB?=
+ =?utf-8?B?Yjg1TGVxU01nMEtWdmtXM2Y5L3hsOWExUncvczlVZ3Z6eHRROEU0eURrRGZs?=
+ =?utf-8?B?WnVJMkJXOTQ4ajNLajdBWEZoWGxwUHFQK0MzSFB6SU80R0lKS1Vwc0kxcWI1?=
+ =?utf-8?B?Y0U3SEp4UHRqajZ6NVk2NjM1NXBLVXRPeVp5QVJWSFo1NWx6bHdmV0wrN29R?=
+ =?utf-8?B?YXBRR2ZtcXcwY2RSQ09RQ0tCM2h3OU9Sbzd1R3lPdXZyblRWU2t5ZlE0Y0RK?=
+ =?utf-8?B?b0NDeEFVbmlFaXdsNTNNamx5MllmVmRLVThZY2pDS2o2RVB0eVc3Mmh4Ykli?=
+ =?utf-8?B?Y1Yya1JLRjlsVWh5WmYxc2wrMTdDd0dnUzJLVG9seVNxUHNaQ0NMdWYwZzdq?=
+ =?utf-8?B?MktHcE9PUlhIamMzS1MxVENFZ3NkSUNybHlwcE1oOHBhZG1zNmozU0FHMzB0?=
+ =?utf-8?B?c1JSN3FoL1NpbTYyclBuUmZCSTVveXJ2VW5HS3Z2TG9xenNUSUpVcmgyYUVi?=
+ =?utf-8?B?d0Z3SVNYQ3ZsOHFsZVV6ajFsUFNmVndvYzhsT3AwbDlxVHJTM2ExclBZb210?=
+ =?utf-8?B?bU54MlR5aWJjbm1ZWG5aMENMRTVDdG5YTklzcyt2MERNMUJNRUhiSXdNTHN2?=
+ =?utf-8?B?M0xmb0NpblNaMFU0NmpFaTV4amlhem9BclVEeUxWTis0QWxsc0VQdE5TNGlU?=
+ =?utf-8?B?dGhXQlR2OGFWR0YvUFdvS1R5YXFoQmZrVmc5R1Jza0ZPd0xmT0M4N3ZyeU0z?=
+ =?utf-8?B?WGErRlMwVExGandFbW1FSzNqbnJJSmtTVzJSL3RVbEplYzFLdHhobTN1U2I5?=
+ =?utf-8?B?UTNidGkvM0oxb3o2ZUNQTm9GYjJBd0Jyak5BQVhUVkZIVVVFSWxYMEZRdjhn?=
+ =?utf-8?B?ZzQwZDNVMk8vQWRCV09oNVg0RTRveTdsSjBaT1p2eCt0TVZlZXVxT0Y3VTJV?=
+ =?utf-8?B?T3c2dVRSWjMvNERWK2Qzd05MZjMrSVJCQnZwdlVjZWtpRHhTSVEzVStNZ1h0?=
+ =?utf-8?B?cE9TejNsVlNLMnFDUTc4Mjk4ckNNQUxGZ3A1WFlvNXJ0TDd3VU1FTzhQSGZG?=
+ =?utf-8?B?VG1GRGNsZWN4S3ZFdHlKMnN5QnJqK0p0QWZkcnN5cjNVV1hzSkhKN1ZKMXJJ?=
+ =?utf-8?B?dTZPcnE5cklBSHZFQllTQTMrV2FLZUJHK1NyUHo2c2srK0liWjBDVmtkL3Zo?=
+ =?utf-8?B?TWdKZXpFTTJrS3NxSjhacTBZSmIwZ1pKTWQxTWxlTkZubE9uWDJYWDZlR2M1?=
+ =?utf-8?B?eWc9PQ==?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: Qzwa06W16zmKoZPKh12CmKRiVnVpl/ocMo/XAsVLyu2v4p5Y/a/G4LaykFfzMckozDpP+bQbFyEoKooEWF0HXL9+hofGEjpf4s6x1gFSQvg+eOHsktp0vMdWPHl8kBC1F11eGh+7IZYOgiMUGWNtLFJ55E/6zUfNRiAZYOZETrghBSxx+9HTSQc9M4ZiWq0w6KRaV2gqDLG2e/s0zqZHKt8ucG4lAxcR/EIx8wW2DMvFWM7ggrRnsXHerWQVoENy0kW+Zbkb8h3DiuklSbnEUko1Dm4JHQYe5BxJrRcmwVIqVEyV8TbcDA9fzumd2Rk2HTB/CMPDWTEqfkdqAmMKbCNN1FhgTuUJIrce5H72c2svvk9JHeg85fjJgjuoPs+DMdt6aIIzTH9uZTkCHeQnyI1f5jZfhirdykSzs2OCDD0uUH4Af3iqhHnKzoUN0jT1U6T2SaSOTdPwVibiCoHWo6ZTbmwYbYQtSm/o4xew7L9kSuGtnpKNygTJBSgt1Uqx9DvdOUTak5I8xwYC4QxhI+QNPIJNOMmHj0TNGP4FZq8zfb2/hw2vJ+zoX5IUp+M9F34h8gXplsNijYkwrdNg93EvdbaP+HJLVK07AKw03P0=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: /HG9nQzMWSu+DqPHuNr8IL6+a6E72RpPUQbC/A9qKeP4Wa+NeglwplK6SVjabrXZoWWfo9a2uFwbP134f4o7E5zHFI1YgrKIk/pP8KUGmxnWZt/+EM+4gIPFXycOMKEMFk6tgnyeVviK4tQ5h2McFfGmHZHEMuyMP6QFfkHgvXMnaY5ovYUIxEA/nGX1zc50xdf7OJS90OpCl1n5G3ZNF6pTQ4jqk+APP7YkEYhEuD8iUIHm8WXrjgVeVVuBzznIrGBuH3Gij87VEyqlVsZ51P0lRQgmW30IAzdhX6Icn949SrtiL/NjuB9cUOeDLam9/lZSI0LQFELCMgYdn6jWvnWzH48GN2/GmHs+CU2G6nWTj0NZIVaQ05QcFA6lhQcuD3w4bvfh1Lh9FpM/+wRGbrZ1Pvaz/FExShsRhZFvVYLhxhbQjL8PtDgqf00sl/R3lqYahxwQ3a7X9pmwepH31eSLtGQj6SNHRUoZTCRyz5Rjl+AObCGnY8xha7PK0PB899Pyfup0slfOsRKAZjycWvz42ofMo83wWyr+kIoa3wcyIPI3jBsO83IxLEvpm6J/gpC+s9r9svbttRWXaqR765sLR4HUpcU6FBQnjyijxQs=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b717d3c5-7276-4590-8952-08dd93e3e87a
+X-MS-Exchange-CrossTenant-Network-Message-Id: e0440360-7e24-4c06-60c4-08dd93e3f4e6
 X-MS-Exchange-CrossTenant-AuthSource: IA1PR10MB7447.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2025 19:08:42.5084 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2025 19:09:03.3432 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3w19Kq1m+QzUohbfSk21GwH9ATJJLIPXq6izkx0h9ixc4NGyGKBYOHMouOJmRy6Hlda+GnNKLFWLmaMGZflHduJsXvHVjwME/jy7V8jGs3Y=
+X-MS-Exchange-CrossTenant-UserPrincipalName: PHkAT7p/W0KFtYRD4m4COoR66V8SJqAvRV3AH2SpAuOFck/JAbPUGbCSSUYMiauwUo+f5s3t/dYOGxCQh7NEpX9udVbjhwphe88BGPgC/uE=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR10MB4450
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-15_08,2025-05-15_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- mlxlogscore=999
- mlxscore=0 adultscore=0 spamscore=0 phishscore=0 malwarescore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ malwarescore=0
+ mlxlogscore=999 phishscore=0 bulkscore=0 mlxscore=0 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2505070000 definitions=main-2505150189
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE1MDE4OSBTYWx0ZWRfX2nUHX8q4dAFx
- jjIo8tY/Fxt8BArVfJPwQMD5WeFUganozBdOKtBA/TFGwPofBogzAipYFQVjuEf3vTcDqIYKk5J
- hHjoLfSpropa0xFnzuXenSEKch5wsr5aV4jg5mqADv4rCgeHarhLbppYIJ3HnV4ZIIwveSzabZ2
- XzlXOhagdNO8JbrOPEhh5Iqb2RR4BdbeYQIAlDbTBT/o0LyII+40mlgmS7oDkEZTkiX1CaW0LX8
- ctjqQkPbHfRNoteOlA7fh6rNN44PO/i9zaYyS6RNSHSxcl4WyebSCQe6ky3CSoXFWBTT1v31k9Z
- Q4m9TBz0QJWgmq7Jkzpe9eF1G8du99e/nS/t7ORWm80YeMIiSuTFPphZzmn8qyzn3k2gf2Ugj6M
- rUu/e7KUqg2K8Ua69kURvtRCSodg90B9xzuPvIQQx1MTXUp27oLtVLNMvp5LvrcaxT5CmtM0
-X-Proofpoint-GUID: d1xjwht1HnrZMHLiZyAAk_R41zck_fGz
-X-Authority-Analysis: v=2.4 cv=fvDcZE4f c=1 sm=1 tr=0 ts=68263bbf cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE1MDE4OSBTYWx0ZWRfX+f6w7hrmZdCQ
+ b2uSDcWK5IC/JUSY6w0eDdL1hTEPn6f0iqtIhxiRZ+sHHAO3/xuDExzwbXx5SBfPqMZQLBlpgDw
+ 5DUfMJhCpB7p5Z70m52zAnjC/A2y2/qi0CIxBPernCFGOWOoikjZx2KkHxhjo2Q35VgUuWOCwgX
+ ytZIR2NZLGJJYNX+vake/7L6zH3E++ytbFYuR7SmNYFExCXO9cHoxI2C09WidP60ZBg4+OkSCFr
+ 9Q/AmCJGnoH+Gp3Xx29JRLHEBarkL+mGcAPTTJXIJ5TnQUSI2St7ugJ+8LIO0cCe6ib+LEkFZF5
+ VcX8YTJM725c7X5UuzRE7syIdVPq7tKwVZz/+3WrSmbc0U9cbkEWzCUVX97PP64aPO5ekpvy8Go
+ LCj25sb5Py97rvM9WDsohhjusvneOQ0ThEgs1QPfHY4y+Uj0coEZsINMlijzxrJhgBWGEZIC
+X-Authority-Analysis: v=2.4 cv=Y+b4sgeN c=1 sm=1 tr=0 ts=68263bd4 b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
  a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8
- a=VaJYI7sJDJ9SQ48ImukA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: d1xjwht1HnrZMHLiZyAAk_R41zck_fGz
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
+ a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=GoEa3M9JfhUA:10
+ a=yPCof4ZbAAAA:8 a=pfo2m88UJNmgxuZIXMkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ cc=ntf awl=host:14694
+X-Proofpoint-GUID: y2LzBIZ41qnh4YO-xjyXEP4-utpYom6I
+X-Proofpoint-ORIG-GUID: y2LzBIZ41qnh4YO-xjyXEP4-utpYom6I
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -236,43 +236,160 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 5/15/2025 9:42 AM, Cédric Le Goater wrote:
 > On 5/12/25 17:32, Steve Sistare wrote:
->> Export vfio_legacy_dma_map so it may be referenced outside the file
->> in a subsequent patch.
+>> In new QEMU, do not register the memory listener at device creation time.
+>> Register it later, in the container post_load handler, after all vmstate
+>> that may affect regions and mapping boundaries has been loaded.  The
+>> post_load registration will cause the listener to invoke its callback on
+>> each flat section, and the calls will match the mappings remembered by the
+>> kernel.
+>>
+>> The listener calls a special dma_map handler that passes the new VA of each
+>> section to the kernel using VFIO_DMA_MAP_FLAG_VADDR.  Restore the normal
+>> handler at the end.
 >>
 >> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 >> ---
->>   hw/vfio/container.c                   | 4 ++--
->>   include/hw/vfio/vfio-container-base.h | 3 +++
->>   2 files changed, 5 insertions(+), 2 deletions(-)
+>>   hw/vfio/container.c  | 15 +++++++++++++--
+>>   hw/vfio/cpr-legacy.c | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
+>>   2 files changed, 61 insertions(+), 2 deletions(-)
 >>
 >> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
->> index 278a220..a554683 100644
+>> index a554683..0e02726 100644
 >> --- a/hw/vfio/container.c
 >> +++ b/hw/vfio/container.c
->> @@ -208,8 +208,8 @@ static int vfio_legacy_dma_unmap(const VFIOContainerBase *bcontainer,
->>       return ret;
->>   }
->> -static int vfio_legacy_dma_map(const VFIOContainerBase *bcontainer, hwaddr iova,
->> -                               ram_addr_t size, void *vaddr, bool readonly)
->> +int vfio_legacy_dma_map(const VFIOContainerBase *bcontainer, hwaddr iova,
->> +                        ram_addr_t size, void *vaddr, bool readonly)
->>   {
->>       const VFIOContainer *container = container_of(bcontainer, VFIOContainer,
->>                                                     bcontainer);
->> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
->> index 1dc760f..a2f6c3a 100644
->> --- a/include/hw/vfio/vfio-container-base.h
->> +++ b/include/hw/vfio/vfio-container-base.h
->> @@ -186,4 +186,7 @@ struct VFIOIOMMUClass {
->>   VFIORamDiscardListener *vfio_find_ram_discard_listener(
->>       VFIOContainerBase *bcontainer, MemoryRegionSection *section);
->> +int vfio_legacy_dma_map(const VFIOContainerBase *bcontainer, hwaddr iova,
->> +                        ram_addr_t size, void *vaddr, bool readonly);
+>> @@ -137,6 +137,8 @@ static int vfio_legacy_dma_unmap_one(const VFIOContainerBase *bcontainer,
+>>       int ret;
+>>       Error *local_err = NULL;
+>> +    assert(!container->cpr.reused);
 >> +
->>   #endif /* HW_VFIO_VFIO_CONTAINER_BASE_H */
+>>       if (iotlb && vfio_container_dirty_tracking_is_started(bcontainer)) {
+>>           if (!vfio_container_devices_dirty_tracking_is_supported(bcontainer) &&
+>>               bcontainer->dirty_pages_supported) {
+>> @@ -691,8 +693,17 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
+>>       }
+>>       group_was_added = true;
+>> -    if (!vfio_listener_register(bcontainer, errp)) {
+>> -        goto fail;
+>> +    /*
+>> +     * If reused, register the listener later, after all state that may
+>> +     * affect regions and mapping boundaries has been cpr load'ed.  Later,
+>> +     * the listener will invoke its callback on each flat section and call
+>> +     * dma_map to supply the new vaddr, and the calls will match the mappings
+>> +     * remembered by the kernel.
+>> +     */
+>> +    if (!cpr_reused) {
+>> +        if (!vfio_listener_register(bcontainer, errp)) {
+>> +            goto fail;
+>> +        }
 > 
-> I don't think this export is necessary. See comment on patch 10.
+> hmm, I am starting to think we should have a vfio_cpr_container_connect
+> routine too.
 
-OK, I will drop this patch - steve
+I think that would obscure rather than clarify the code, since the normal
+non-cpr action of calling vfio_listener_register would be buried in a
+cpr flavored function name.
 
+>>       }
+>>       bcontainer->initialized = true;
+>> diff --git a/hw/vfio/cpr-legacy.c b/hw/vfio/cpr-legacy.c
+>> index 519d772..bbcf71e 100644
+>> --- a/hw/vfio/cpr-legacy.c
+>> +++ b/hw/vfio/cpr-legacy.c
+>> @@ -11,11 +11,13 @@
+>>   #include "hw/vfio/vfio-container.h"
+>>   #include "hw/vfio/vfio-cpr.h"
+>>   #include "hw/vfio/vfio-device.h"
+>> +#include "hw/vfio/vfio-listener.h"
+>>   #include "migration/blocker.h"
+>>   #include "migration/cpr.h"
+>>   #include "migration/migration.h"
+>>   #include "migration/vmstate.h"
+>>   #include "qapi/error.h"
+>> +#include "qemu/error-report.h"
+>>   static bool vfio_dma_unmap_vaddr_all(VFIOContainer *container, Error **errp)
+>>   {
+>> @@ -32,6 +34,34 @@ static bool vfio_dma_unmap_vaddr_all(VFIOContainer *container, Error **errp)
+>>       return true;
+>>   }
+>> +/*
+>> + * Set the new @vaddr for any mappings registered during cpr load.
+>> + * Reused is cleared thereafter.
+>> + */
+>> +static int vfio_legacy_cpr_dma_map(const VFIOContainerBase *bcontainer,
+>> +                                   hwaddr iova, ram_addr_t size, void *vaddr,
+>> +                                   bool readonly)
+>> +{
+>> +    const VFIOContainer *container = container_of(bcontainer, VFIOContainer,
+>> +                                                  bcontainer);
+>> +    struct vfio_iommu_type1_dma_map map = {
+>> +        .argsz = sizeof(map),
+>> +        .flags = VFIO_DMA_MAP_FLAG_VADDR,
+>> +        .vaddr = (__u64)(uintptr_t)vaddr,
+>> +        .iova = iova,
+>> +        .size = size,
+>> +    };
+>> +
+>> +    assert(container->cpr.reused);
+>> +
+>> +    if (ioctl(container->fd, VFIO_IOMMU_MAP_DMA, &map)) {
+>> +        error_report("vfio_legacy_cpr_dma_map (iova %lu, size %ld, va %p): %s",
+>> +                     iova, size, vaddr, strerror(errno));
+> 
+> Callers should also report the error. No need to do it here.
+
+This function has the same signature as the dma_map class method,
+which does not return an error message.  It's existing implementations
+use error_report.
+
+>> +        return -errno;
+>> +    }
+>> +
+>> +    return 0;
+>> +}
+>>   static bool vfio_cpr_supported(VFIOContainer *container, Error **errp)
+>>   {
+>> @@ -63,12 +93,24 @@ static int vfio_container_pre_save(void *opaque)
+>>   static int vfio_container_post_load(void *opaque, int version_id)
+>>   {
+>>       VFIOContainer *container = opaque;
+>> +    VFIOContainerBase *bcontainer = &container->bcontainer;
+>>       VFIOGroup *group;
+>>       VFIODevice *vbasedev;
+>> +    Error *err = NULL;
+>> +
+>> +    if (!vfio_listener_register(bcontainer, &err)) {
+>> +        error_report_err(err);
+>> +        return -1;
+>> +    }
+>>       container->cpr.reused = false;
+>>       QLIST_FOREACH(group, &container->group_list, container_next) {
+>> +        VFIOIOMMUClass *vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
+>> +
+>> +        /* Restore original dma_map function */
+>> +        vioc->dma_map = vfio_legacy_dma_map;
+>> +
+>>           QLIST_FOREACH(vbasedev, &group->device_list, next) {
+>>               vbasedev->cpr.reused = false;
+>>           }
+>> @@ -80,6 +122,7 @@ static const VMStateDescription vfio_container_vmstate = {
+>>       .name = "vfio-container",
+>>       .version_id = 0,
+>>       .minimum_version_id = 0,
+>> +    .priority = MIG_PRI_LOW,  /* Must happen after devices and groups */
+>>       .pre_save = vfio_container_pre_save,
+>>       .post_load = vfio_container_post_load,
+>>       .needed = cpr_needed_for_reuse,
+>> @@ -104,6 +147,11 @@ bool vfio_legacy_cpr_register_container(VFIOContainer *container, Error **errp)
+>>       vmstate_register(NULL, -1, &vfio_container_vmstate, container);
+>> +    /* During incoming CPR, divert calls to dma_map. */
+>> +    if (container->cpr.reused) {
+>> +        VFIOIOMMUClass *vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
+>> +        vioc->dma_map = vfio_legacy_cpr_dma_map;
+> 
+> You could backup the previous dma_map() handler in a static variable or,
+> better, under container->cpr.
+
+OK.
+
+- Steve
 
