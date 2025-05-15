@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13402AB7BC5
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 04:51:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ECB5AB7BBF
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 04:50:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFOf7-0006kX-Vi; Wed, 14 May 2025 22:49:33 -0400
+	id 1uFOfB-0006nY-2u; Wed, 14 May 2025 22:49:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
- id 1uFOf5-0006jU-Bo
- for qemu-devel@nongnu.org; Wed, 14 May 2025 22:49:31 -0400
+ id 1uFOf6-0006kB-4G
+ for qemu-devel@nongnu.org; Wed, 14 May 2025 22:49:32 -0400
 Received: from mgamail.intel.com ([192.198.163.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vivek.kasireddy@intel.com>)
- id 1uFOf3-0005iL-DS
+ id 1uFOf4-0005i5-2c
  for qemu-devel@nongnu.org; Wed, 14 May 2025 22:49:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747277369; x=1778813369;
+ t=1747277370; x=1778813370;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=STthhcuiYFhtaPFn0z3oX1IbTphb/i1MPiWVLMqKqJI=;
- b=lvVbuurdjY/pj1QDTE0dsFNzC1s2u0ZsiHs19gHbMigJ6oGvg5tNvdt9
- yiK8ugN4ugDVhepgafWGu8QqHsuMRjtpyU1iIl6zHA3vkugzz356pPrcS
- WRwutw/Zxk5xEglVHSMxvNvH4DnmeZ3/FyFoBuE8KSA0ub2wI1w62E83E
- kJJ5+fFHpvzCxWaTpIBIbyXIf87JsI9bKOi2se8h89E7vsmZIJl6FyW0i
- CVvsySJPQwhUY4dO17ZQcxedQFqeMtPwQKqYCkOqRCwOQ6io8JFIEuga4
- Pm214+3Ujm3ThqMJVplaN1eMbS2ePzPBtV06SHkJYKQDBHpX/F2gaYFG8 Q==;
-X-CSE-ConnectionGUID: XD083olhSVu6ml71s8h6gw==
-X-CSE-MsgGUID: dwYHp72AQDy/GTrImhzA0Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="36819309"
-X-IronPort-AV: E=Sophos;i="6.15,289,1739865600"; d="scan'208";a="36819309"
+ bh=mvjg/ktKajg8f9d4j5dRKNxgmW9hH868BCrGCjM/hms=;
+ b=bwuhKJH+Hi2Mj/KbzAuIdm2ByG3n/YQGLpRmPny29Mb1XzR7AHNCgnhT
+ idj0X2uIcektpWctyQ0pXpYZlJ/uktGMKkvybgXKb0DwFzncYTBcCIq4h
+ ilomTf3vPqU8YolaBxd72vzRk60km9pss2GZDd5pngQWiPlpnbZvfIJuK
+ WluIwS1WAILNSh7kJ24HeYscOTq1sfmLQSFD+eLa3k6rzQhUVXhlN14v0
+ EfSaPXsfFfgSJlvtNT0oNCZ83MufYJtqrDwluOdfsf+LxcK612np2tls7
+ 4o+nrbnn9rHY8L6xmCBz/1snf7RaTysnEWFq6hyXMPeQc02oQ+uakHcL+ Q==;
+X-CSE-ConnectionGUID: ppYI9U3ZTceC8faRqj59Dg==
+X-CSE-MsgGUID: yBDmQe5rSeyP707PGWIthA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="36819312"
+X-IronPort-AV: E=Sophos;i="6.15,289,1739865600"; d="scan'208";a="36819312"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  14 May 2025 19:49:19 -0700
-X-CSE-ConnectionGUID: YImCxpjPTGKvLXh+wYKggw==
-X-CSE-MsgGUID: vCrJft5PR6S+vBrtvqknpg==
+X-CSE-ConnectionGUID: hOEe7SKDQgupDhbR7E4/Lw==
+X-CSE-MsgGUID: Y5dbmWe/QJqkW4reyDzaxw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,289,1739865600"; d="scan'208";a="142246658"
+X-IronPort-AV: E=Sophos;i="6.15,289,1739865600"; d="scan'208";a="142246661"
 Received: from vkasired-desk2.fm.intel.com ([10.105.128.132])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  14 May 2025 19:49:19 -0700
@@ -51,10 +51,10 @@ Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>,
  Frediano Ziglio <freddy77@gmail.com>, Dongwon Kim <dongwon.kim@intel.com>
-Subject: [PATCH v4 5/7] ui/console-gl: Add a helper to create a texture with
- linear memory layout
-Date: Wed, 14 May 2025 19:45:43 -0700
-Message-ID: <20250515024734.758335-6-vivek.kasireddy@intel.com>
+Subject: [PATCH v4 6/7] ui/spice: Create a new texture with linear layout when
+ gl=on is enabled
+Date: Wed, 14 May 2025 19:45:44 -0700
+Message-ID: <20250515024734.758335-7-vivek.kasireddy@intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250515024734.758335-1-vivek.kasireddy@intel.com>
 References: <20250515024734.758335-1-vivek.kasireddy@intel.com>
@@ -86,11 +86,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are cases where we do not want the memory layout of a texture to
-be tiled as the component processing the texture would not know how to
-de-tile either via software or hardware. Therefore, ensuring that the
-memory backing the texture has a linear layout is absolutely necessary
-in these situations.
+Since most encoders/decoders (invoked by Spice) may not work with
+tiled memory associated with a texture, we need to create another
+texture that has linear memory layout and use that instead.
+
+Note that, there does not seem to be a direct way to indicate to the
+GL implementation that a texture's backing memory needs to be linear.
+Instead, we have to do it in a roundabout way where we need to first
+create a tiled texture and import that as a memory object to create
+a new texture that has a linear memory layout.
 
 Cc: Gerd Hoffmann <kraxel@redhat.com>
 Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
@@ -99,73 +103,110 @@ Cc: Frediano Ziglio <freddy77@gmail.com>
 Cc: Dongwon Kim <dongwon.kim@intel.com>
 Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
 ---
- include/ui/console.h |  2 ++
- ui/console-gl.c      | 32 ++++++++++++++++++++++++++++++++
- 2 files changed, 34 insertions(+)
+ ui/spice-display.c | 76 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 76 insertions(+)
 
-diff --git a/include/ui/console.h b/include/ui/console.h
-index 46b3128185..5cfa6ae215 100644
---- a/include/ui/console.h
-+++ b/include/ui/console.h
-@@ -422,6 +422,8 @@ bool console_gl_check_format(DisplayChangeListener *dcl,
-                              pixman_format_code_t format);
- void surface_gl_create_texture(QemuGLShader *gls,
-                                DisplaySurface *surface);
-+bool surface_gl_create_texture_from_fd(DisplaySurface *surface,
-+                                       int fd, GLuint *texture);
- void surface_gl_update_texture(QemuGLShader *gls,
-                                DisplaySurface *surface,
-                                int x, int y, int w, int h);
-diff --git a/ui/console-gl.c b/ui/console-gl.c
-index 103b954017..97f7989651 100644
---- a/ui/console-gl.c
-+++ b/ui/console-gl.c
-@@ -25,6 +25,7 @@
-  * THE SOFTWARE.
-  */
- #include "qemu/osdep.h"
-+#include "qemu/error-report.h"
- #include "ui/console.h"
- #include "ui/shader.h"
- 
-@@ -96,6 +97,37 @@ void surface_gl_create_texture(QemuGLShader *gls,
-     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+diff --git a/ui/spice-display.c b/ui/spice-display.c
+index ed91521ac2..fb56da4ab0 100644
+--- a/ui/spice-display.c
++++ b/ui/spice-display.c
+@@ -893,6 +893,75 @@ static void spice_gl_update(DisplayChangeListener *dcl,
+     ssd->gl_updates++;
  }
  
-+bool surface_gl_create_texture_from_fd(DisplaySurface *surface,
-+                                       int fd, GLuint *texture)
++static bool spice_gl_replace_fd_texture(SimpleSpiceDisplay *ssd,
++                                        int *fds, uint64_t *modifier,
++                                        int *num_planes)
 +{
-+    unsigned long size = surface_stride(surface) * surface_height(surface);
-+    GLenum err = glGetError();
-+    GLuint mem_obj;
++    uint32_t offsets[DMABUF_MAX_PLANES], strides[DMABUF_MAX_PLANES];
++    GLuint texture = 0;
++    int fourcc;
++    bool ret;
 +
-+    if (!epoxy_has_gl_extension("GL_EXT_memory_object") ||
-+        !epoxy_has_gl_extension("GL_EXT_memory_object_fd")) {
++    if (!remote_client) {
++        return true;
++    }
++
++    if (*modifier == DRM_FORMAT_MOD_LINEAR) {
++        return true;
++    }
++
++    if (*num_planes > 1) {
++        error_report("spice: cannot replace texture with multiple planes");
 +        return false;
 +    }
 +
-+#ifdef GL_EXT_memory_object_fd
-+    glCreateMemoryObjectsEXT(1, &mem_obj);
-+    glImportMemoryFdEXT(mem_obj, size, GL_HANDLE_TYPE_OPAQUE_FD_EXT, fd);
-+
-+    err = glGetError();
-+    if (err != GL_NO_ERROR) {
-+        error_report("spice: cannot import memory object from fd");
++    /*
++     * We really want to ensure that the memory layout of the texture
++     * is linear; otherwise, the encoder's output may show corruption.
++     */
++    if (!surface_gl_create_texture_from_fd(ssd->ds, fds[0], &texture)) {
++        error_report("spice: cannot create new texture from fd");
 +        return false;
 +    }
 +
-+    glGenTextures(1, texture);
-+    glBindTexture(GL_TEXTURE_2D, *texture);
-+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_TILING_EXT, GL_LINEAR_TILING_EXT);
-+    glTexStorageMem2DEXT(GL_TEXTURE_2D, 1, GL_RGBA8, surface_width(surface),
-+                         surface_height(surface), mem_obj, 0);
-+#endif
-+    return *texture > 0 && glGetError() == GL_NO_ERROR;
++    /*
++     * A successful return after glImportMemoryFdEXT() means that
++     * the ownership of fd has been passed to GL. In other words,
++     * the fd we got above should not be used anymore.
++     */
++    ret = egl_dmabuf_export_texture(texture,
++                                    fds,
++                                    (EGLint *)offsets,
++                                    (EGLint *)strides,
++                                    &fourcc,
++                                    num_planes,
++                                    modifier);
++    if (!ret) {
++        glDeleteTextures(1, &texture);
++
++        /*
++         * Since we couldn't export our newly create texture (or create,
++         * an fd associated with it) we need to backtrack and try to
++         * recreate the fd associated with the original texture.
++         */
++        ret = egl_dmabuf_export_texture(ssd->ds->texture,
++                                        fds,
++                                        (EGLint *)offsets,
++                                        (EGLint *)strides,
++                                        &fourcc,
++                                        num_planes,
++                                        modifier);
++        if (!ret) {
++            surface_gl_destroy_texture(ssd->gls, ssd->ds);
++            warn_report("spice: no texture available to display");
++        }
++    } else {
++        surface_gl_destroy_texture(ssd->gls, ssd->ds);
++        ssd->ds->texture = texture;
++    }
++    return ret;
 +}
 +
- void surface_gl_update_texture(QemuGLShader *gls,
-                                DisplaySurface *surface,
-                                int x, int y, int w, int h)
+ static void spice_server_gl_scanout(QXLInstance *qxl,
+                                     const int *fd,
+                                     uint32_t width, uint32_t height,
+@@ -917,6 +986,7 @@ static void spice_gl_switch(DisplayChangeListener *dcl,
+                             struct DisplaySurface *new_surface)
+ {
+     SimpleSpiceDisplay *ssd = container_of(dcl, SimpleSpiceDisplay, dcl);
++    bool ret;
+ 
+     if (ssd->ds) {
+         surface_gl_destroy_texture(ssd->gls, ssd->ds);
+@@ -939,6 +1009,12 @@ static void spice_gl_switch(DisplayChangeListener *dcl,
+             return;
+         }
+ 
++        ret = spice_gl_replace_fd_texture(ssd, fd, &modifier, &num_planes);
++        if (!ret) {
++            surface_gl_destroy_texture(ssd->gls, ssd->ds);
++            return;
++        }
++
+         trace_qemu_spice_gl_surface(ssd->qxl.id,
+                                     surface_width(ssd->ds),
+                                     surface_height(ssd->ds),
 -- 
 2.49.0
 
