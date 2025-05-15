@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF18CAB83D9
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 12:30:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8DC7AB83BC
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 12:26:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFVnD-0004lN-OA; Thu, 15 May 2025 06:26:23 -0400
+	id 1uFVnG-0004uE-AA; Thu, 15 May 2025 06:26:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uFVn3-0004Qr-DE
- for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:13 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1uFVn6-0004Zu-RM
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:17 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uFVn1-00089k-Sl
- for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:13 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-441d437cfaaso4618375e9.1
- for <qemu-devel@nongnu.org>; Thu, 15 May 2025 03:26:11 -0700 (PDT)
+ id 1uFVn3-0008A7-DV
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:15 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-440685d6afcso8443035e9.0
+ for <qemu-devel@nongnu.org>; Thu, 15 May 2025 03:26:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747304770; x=1747909570; darn=nongnu.org;
+ d=linaro.org; s=google; t=1747304772; x=1747909572; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=+6ury5Sg2Jud9itYU7h3OKlx8pJe0hJxXUnirJFm93U=;
- b=vpNslmbw+gzKOlII17nWYqzxxc48EtkrqbqTkv6QLobr8wcVYHjgY/WvudQEn2eNdN
- pyc8uw4trLsaQGqqLmeCovvAmK10ts026LCzwfIiFcZuxAPudEYWo5JiO96GZlb6LsRA
- M/XZ5MevUCyV1Bt17M74SbtGTqJPpuZyFBHK8HHpEr8TI22+c8abpvmR4ut06KmDEozo
- mF4mOwJL7MD048xnQVMXTLoUKAOSUtou8e58HVjZ7O27qsZBC8E0evyJug+UN6754DsF
- DhG5hoy/4b9R32xwz1d7qkAzwokNQLb3ziNBGXqJICWag7vv58cOtRGksmfVz/hunDLW
- BqkA==
+ :reply-to; bh=FaYh3VlkdCKvRFw8QcW3CmdcVFOTvth6Gi2E4GKc2o0=;
+ b=SoGHyxcdaYad3YIv8OXhwph8u+Uhm5dQp5ivoC0mvcAFqVy4HREf3OZec+OzG+zEnM
+ +a4Yh2WdauFc4MF6tNq0fO5Lm0rC6SATWgOaJQxugpzst5av7mdvduDtWKR8DdKMyL6V
+ gUTITw+UAxwTyXJaZ0FV9qDdm2s2dbLjlo1Voi7iqBocQBcfjoBs4r40Jk6MnChrZOp5
+ b+P/a3FSMLjgR7ln4My99+swe4Nrk8GYnQC5V8zl0a9hjDT7VbPJ7P2XBmJ7U0BM4eg1
+ C5cOCLgdcatyvzof5L8hzm81sDZy6wue2b5vMo93fcrxTUcQ/m4pkxzDw8fOnTXKK5Bh
+ NJ1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747304770; x=1747909570;
+ d=1e100.net; s=20230601; t=1747304772; x=1747909572;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+6ury5Sg2Jud9itYU7h3OKlx8pJe0hJxXUnirJFm93U=;
- b=F/kwZJzEWXxOOQ9WbRQ4c3cCRL/U4kaDIaaNi1F5yIcda4QUj3MnEEGhW5ImwdCwQi
- NA0V6ZxpJj/1r47Kh6ByzGsT9mnIKVo/LncjL+s69pT5d6varylfUPpkfxTdvVh2Gwxb
- 0oZsfmCRs8if/cKfBNXmdayL5AgIxIWWlVzTcnVT9Of2ozTqK7kt+f2XahC51LF7tBqR
- GxBHrszxOuXzbtD9YDS4+apZ2/V3pYKWQ8o6cGq1/nx+3wmOvldiPs1t+zYnNTU5Dy6G
- Z29EE9YrU92bjveajZ9SEfVJ2cSShhK6/FnQLielr8tYp9bCAWOEdJ98x9Iuu++APfyU
- y04A==
-X-Gm-Message-State: AOJu0YxXWJlAyHZJvOWNQdnRuTsXIW84PHb1GZtxbLUGVIDGbed4Cg1n
- /DAFz0YUE4RXE7ZTg04t+M0GR1TSGiMFAbDd1e4Dp7uyjpUd0sSLgvNE/WJCbfJH82237pmxAJt
- wiCw=
-X-Gm-Gg: ASbGncvYhLfzbA49m40cQcLcbxY9Qk0B3hTpVp7BgOyHLDDindtIAjwKB1hmCJhEX0l
- cCvWNbdCanZigk5FN0sZ2+M93OodsazyFgiUGli3xoHb9DrDCbIXsDuvXtDJwri6INgu32Mg84f
- Z4JBzqRCDThjOF1gvjGpo+4Oi0dLDMFPOGhaIqSZ2gED4u/KVbG8IXfRRO8gIalojBZA+AP2iVY
- 3wLxZpu0N79STqU/wsD1AOsRm+vTw1Rr9AtkpdeI3NzlfKbEkNlOLAgZmMpQIV0bGf3h4VOjOCz
- XitYbmH5oQqnHvqzD+gt/f/xggx2JannUZo8sS03WUDS1xRE2fOAPpmerA==
-X-Google-Smtp-Source: AGHT+IFDDQtrqxqe4Z8se7EPVpp2BwPBFRAoIi3J+dkn+959IVAVHBNADKiXKVehrcgEoC8ktmKouw==
-X-Received: by 2002:a05:600c:a014:b0:43c:ef13:7e5e with SMTP id
- 5b1f17b1804b1-442f970b0d5mr15516245e9.26.1747304769921; 
- Thu, 15 May 2025 03:26:09 -0700 (PDT)
+ bh=FaYh3VlkdCKvRFw8QcW3CmdcVFOTvth6Gi2E4GKc2o0=;
+ b=L6IpuxRCUeFMGeMoebrr48EFgcCz3RH8RcNVDutCoBddOYbhR06Y22OXF7sQgw1nzo
+ HrZLMG2hjn7N2R1QP21XKiKDjCG1EZj43l+so+wPgey4CxC4Hs2CvWW/79LWY7Y5I/bu
+ 3DmwgJfchF8mP5Sg7Q//tLK4+kd0hH77tG9ZUDfQEnhYDdarMuon2iw//+7tiuQHTIkw
+ U7ZCNy88naS+twdPjjo6F0uOcOdBZZOzQHWmMeYoPfUFt5xx8N89kIwaMOKSO2ICiRBK
+ q+g72DuJ0wEAZ9hFNeNxnHO6+VPPMQgyJh/jElxP7nAIXemcvibDbdRWgS+xXQ9DkiBI
+ yjkw==
+X-Gm-Message-State: AOJu0Yzn2n2oAl/qhaBxpfweMFH7c9RiGGOF2X6OEmLAZM5YhDT7SC2B
+ vaLEYwkeyIu0k7lALq0F1dTSUGmdewSbjZkPoy1NrZBoVFz8Guc87xmdCyWnsWJK3c9JzzEjbc9
+ /iCg=
+X-Gm-Gg: ASbGncvNzTYlC7lwW454UwbtEDKOno3H7b7g1JsJxGKZKz67odNDwBbLNmad+yAdoIj
+ Ud39YLmbTKFm4l/ui44ay/dHxfVHkXMPRzXoFrRwFA1sCj7tVYRnfcbzlevrBs5kGcX10fGFXeu
+ qFCS1mBDIZYorJ5AMqpnD5438ABdSSELtcJuzAFAZ7cxKpwBdWjbwtoCWMPyQHOTtaRXFxsXxg7
+ rUcHjDydRxLVlX0B1S5pjAtESa3+/4u6Sm6lvcNJ8Fr6Yplc5i+uSS3g9TixLDW7UmHerxqzbcq
+ C9Cy+T712lm97yJnl7tS1p7Sr+SNRvwK7U0qb/IScTBfjMACvOUSMINzVw==
+X-Google-Smtp-Source: AGHT+IHmftD+xzsMbG/Jkyt9an0Ksi6TPsxijDqvYl8g3N8P0FMFBum89vWX9qjJ9GxI0uYxYMf2Fw==
+X-Received: by 2002:a05:600c:540f:b0:43c:ec28:d31b with SMTP id
+ 5b1f17b1804b1-442f96e88damr23789105e9.10.1747304771617; 
+ Thu, 15 May 2025 03:26:11 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442f396c3a4sm65657855e9.26.2025.05.15.03.26.08
+ 5b1f17b1804b1-442f396c3a4sm65657855e9.26.2025.05.15.03.26.10
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 May 2025 03:26:09 -0700 (PDT)
+ Thu, 15 May 2025 03:26:10 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 15/58] target/arm/kvm-stub: add kvm_arm_reset_vcpu stub
-Date: Thu, 15 May 2025 11:25:03 +0100
-Message-ID: <20250515102546.2149601-16-peter.maydell@linaro.org>
+Subject: [PULL 16/58] target/arm/cpu: move arm_cpu_kvm_set_irq to kvm.c
+Date: Thu, 15 May 2025 11:25:04 +0100
+Message-ID: <20250515102546.2149601-17-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250515102546.2149601-1-peter.maydell@linaro.org>
 References: <20250515102546.2149601-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,29 +99,122 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Needed in target/arm/cpu.c once kvm is possible.
+Allow to get rid of CONFIG_KVM in target/arm/cpu.c
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20250512180502.2395029-6-pierrick.bouvier@linaro.org
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-id: 20250512180502.2395029-7-pierrick.bouvier@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/kvm-stub.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ target/arm/kvm_arm.h  |  2 ++
+ target/arm/cpu.c      | 31 -------------------------------
+ target/arm/kvm-stub.c |  5 +++++
+ target/arm/kvm.c      | 29 +++++++++++++++++++++++++++++
+ 4 files changed, 36 insertions(+), 31 deletions(-)
 
+diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
+index 5bf5d56648f..b638e09a687 100644
+--- a/target/arm/kvm_arm.h
++++ b/target/arm/kvm_arm.h
+@@ -216,4 +216,6 @@ int kvm_arm_set_irq(int cpu, int irqtype, int irq, int level);
+ 
+ void kvm_arm_enable_mte(Object *cpuobj, Error **errp);
+ 
++void arm_cpu_kvm_set_irq(void *arm_cpu, int irq, int level);
++
+ #endif
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 603f08d05a0..66047693415 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -1098,37 +1098,6 @@ static void arm_cpu_set_irq(void *opaque, int irq, int level)
+     }
+ }
+ 
+-static void arm_cpu_kvm_set_irq(void *opaque, int irq, int level)
+-{
+-#ifdef CONFIG_KVM
+-    ARMCPU *cpu = opaque;
+-    CPUARMState *env = &cpu->env;
+-    CPUState *cs = CPU(cpu);
+-    uint32_t linestate_bit;
+-    int irq_id;
+-
+-    switch (irq) {
+-    case ARM_CPU_IRQ:
+-        irq_id = KVM_ARM_IRQ_CPU_IRQ;
+-        linestate_bit = CPU_INTERRUPT_HARD;
+-        break;
+-    case ARM_CPU_FIQ:
+-        irq_id = KVM_ARM_IRQ_CPU_FIQ;
+-        linestate_bit = CPU_INTERRUPT_FIQ;
+-        break;
+-    default:
+-        g_assert_not_reached();
+-    }
+-
+-    if (level) {
+-        env->irq_line_state |= linestate_bit;
+-    } else {
+-        env->irq_line_state &= ~linestate_bit;
+-    }
+-    kvm_arm_set_irq(cs->cpu_index, KVM_ARM_IRQ_TYPE_CPU, irq_id, !!level);
+-#endif
+-}
+-
+ static bool arm_cpu_virtio_is_big_endian(CPUState *cs)
+ {
+     ARMCPU *cpu = ARM_CPU(cs);
 diff --git a/target/arm/kvm-stub.c b/target/arm/kvm-stub.c
-index 2b73d0598c1..e34d3f5e6b4 100644
+index e34d3f5e6b4..4806365cdc5 100644
 --- a/target/arm/kvm-stub.c
 +++ b/target/arm/kvm-stub.c
-@@ -99,3 +99,8 @@ void kvm_arm_enable_mte(Object *cpuobj, Error **errp)
+@@ -104,3 +104,8 @@ void kvm_arm_reset_vcpu(ARMCPU *cpu)
  {
      g_assert_not_reached();
  }
 +
-+void kvm_arm_reset_vcpu(ARMCPU *cpu)
++void arm_cpu_kvm_set_irq(void *arm_cpu, int irq, int level)
 +{
 +    g_assert_not_reached();
++}
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 85911e30242..82668d64385 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -2428,3 +2428,32 @@ void kvm_arm_enable_mte(Object *cpuobj, Error **errp)
+         cpu->kvm_mte = true;
+     }
+ }
++
++void arm_cpu_kvm_set_irq(void *arm_cpu, int irq, int level)
++{
++    ARMCPU *cpu = arm_cpu;
++    CPUARMState *env = &cpu->env;
++    CPUState *cs = CPU(cpu);
++    uint32_t linestate_bit;
++    int irq_id;
++
++    switch (irq) {
++    case ARM_CPU_IRQ:
++        irq_id = KVM_ARM_IRQ_CPU_IRQ;
++        linestate_bit = CPU_INTERRUPT_HARD;
++        break;
++    case ARM_CPU_FIQ:
++        irq_id = KVM_ARM_IRQ_CPU_FIQ;
++        linestate_bit = CPU_INTERRUPT_FIQ;
++        break;
++    default:
++        g_assert_not_reached();
++    }
++
++    if (level) {
++        env->irq_line_state |= linestate_bit;
++    } else {
++        env->irq_line_state &= ~linestate_bit;
++    }
++    kvm_arm_set_irq(cs->cpu_index, KVM_ARM_IRQ_TYPE_CPU, irq_id, !!level);
 +}
 -- 
 2.43.0
