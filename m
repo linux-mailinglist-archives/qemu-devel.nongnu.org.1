@@ -2,93 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A98A9AB7D6B
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 07:56:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CE2DAB7D8D
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 08:07:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFRYv-0006av-Rh; Thu, 15 May 2025 01:55:21 -0400
+	id 1uFRAM-0000MQ-8c; Thu, 15 May 2025 01:29:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <weifeng.liu.z@gmail.com>)
- id 1uFRYq-0006ab-4A
- for qemu-devel@nongnu.org; Thu, 15 May 2025 01:55:16 -0400
-Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1uFRAH-0000Ly-Ua
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 01:29:54 -0400
+Received: from mail-vk1-xa30.google.com ([2607:f8b0:4864:20::a30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <weifeng.liu.z@gmail.com>)
- id 1uFRYg-0001LM-DX
- for qemu-devel@nongnu.org; Thu, 15 May 2025 01:55:08 -0400
-Received: by mail-pg1-x52c.google.com with SMTP id
- 41be03b00d2f7-b239763eeddso340071a12.1
- for <qemu-devel@nongnu.org>; Wed, 14 May 2025 22:55:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1uFRAF-0006PK-Rs
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 01:29:53 -0400
+Received: by mail-vk1-xa30.google.com with SMTP id
+ 71dfb90a1353d-52b2290e28eso143537e0c.3
+ for <qemu-devel@nongnu.org>; Wed, 14 May 2025 22:29:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747288504; x=1747893304; darn=nongnu.org;
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
- :date:message-id:reply-to;
- bh=Bi3+gfxN1cvGcai+VyiRjyCq02Xonm6DTcPgs7EuXJ0=;
- b=kTT8O3V0rlwCyaw+4FqmW5qnfdhRY22nvLm28Zo38KWFYE5VA4NpZZmvr217mKI5Ld
- SMnhP6JzGmhbktWUluxYVdO/jCbS3uiA5o7H2YO96hn59ffdY1MbnAEbUWUtesRbRWt2
- giBKmuSlywyFeg11cp6inM5pfy5IPDhH19u/DoIZBobqZumovrbNyHNZ5lEEE818lgag
- G/TYSCc3far4wD6idhkeAeAR4iC7EHHborwcMwet14KAoD8AEOSGPsO/90gQbYyD1+9t
- SCMz4GwyRrYTZk1QdxbdFx5VGPgVEyJBD5zSA/uafRaswte5q88fTAH6h8JOKETVjmov
- QDXw==
+ d=gmail.com; s=20230601; t=1747286988; x=1747891788; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=o60j7FeCq3nmY0xl4V4QJrYYUAM4klYE7XfEg1n9NeE=;
+ b=eRjHrrpWECWWMKQonhPzQA5rnu0le8CtluF6J5G0rVf0fkGDS8utQnRYHGDeL8+7JW
+ o1X8FcmcUPDBQ74D9FzTYQCoR6kSCULJK3Pll8zBn8l1lUw+IPXR8MS+qGcwFtk6VgfA
+ o4H0EN+gabcf7mCa6sGGxMxkQpfvEbyUrJvTDOe3sfTQY3qyPROPZCji3C9exUoUF8bT
+ 5EWCCcqbRZ2n8EPt1En8qXxk2tj3BkFvyzuL+sKWL37EnSX7HXHl1klu4VWyvaAvvkWX
+ c01GJiiKD1x6sVsJ2oywTdseRWmZK49HVFGLc22xhWN3UAF308YLBgwF5h89Kj7tEb4C
+ U19A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747288504; x=1747893304;
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Bi3+gfxN1cvGcai+VyiRjyCq02Xonm6DTcPgs7EuXJ0=;
- b=mKAVjSWoEgko1kgd20KyptC4x2ZH/ixVkLWTjEj5KVLfLTJk4H4HTU13uPicyTfIBq
- k0kXsMYTWEwevyQ5knDe434AIuhKq+aMQ33qNgv0r83M3agipbCYSGzGAPK+lP18+ah9
- SL0ZxCQaWwtyn/fMLkVqOvOHH9q+9keiPA2qQr1zkQxGEurYMC/icRLhC5kwNkTEApaP
- Bq6EVQsFvLVFLDWAFob8/6y40/l6B246MSd2Efy2AwxXAlNHidGt+0xXJrXYmtIHEUoY
- wz2RzSOXguHrp+oAe53Ax352BxdS6nZ3ufKSY6VlQuxd9CYTeRJkt0KnA6Cgic2Yjhcx
- 0XLQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXp20s5PH6EpIBjSIqw9L/jMVxdV4F/8g0RYiOQ0Fm86AIIOJ9yC8j5QI/0gHpY/KFdLL66jJvUqhWb@nongnu.org
-X-Gm-Message-State: AOJu0Yz5iW8ZgwoCWwRhquJ5ab6jhqtacRgLkXlri6U9ts2fF2/Wm276
- RU/iOvW6FrIUgiLiNlOOdjb1WU/7UTWrSUKW3fHlWe/7zXTGOey0KH5r2Zlj
-X-Gm-Gg: ASbGncv+0wXLF4AXXC5Q9ocybc6Y5jN/Z5SGrEI8TbZfzMQBZAp2boz8Pv8ahW+97E2
- 7KTmghOpb+UCGOrHrUDSqRc/4LSipev7g19GMMtySF6Z9sPsjS4/lrYhMSku/YLA2BuAUskJeoi
- qiSY6Wzl3GlCRA5WT9quLWAPmaYgNvqXJv6E7N/aAZ7ajMpptUYn+TuaSB3ecvz4F/ErDb8Q5DJ
- /ZiqmtnOyhRzF1ViSfRXsKqiB52v8OA2icgoBt85gUU058TFJOoVNBlwyV7oZ5raLG2v6slXhcl
- veq9HlLq3O60KfxVpbO8fjgFQJ7Papg4bv5H51mnOLq0r1G+ftBfGZ19QA8ugB4=
-X-Google-Smtp-Source: AGHT+IFs+tTb7+vHGM4g5il82GqWfhER7eI9NNvRDpimOX4dal/K7LbRYXux432d9kEOygghx47BsQ==
-X-Received: by 2002:a17:90a:d88c:b0:2ee:af31:a7bd with SMTP id
- 98e67ed59e1d1-30e5156789emr1862321a91.5.1747288504149; 
- Wed, 14 May 2025 22:55:04 -0700 (PDT)
-Received: from [10.239.152.184] ([134.134.139.75])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-30e371d626esm2415577a91.44.2025.05.14.22.55.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 May 2025 22:55:03 -0700 (PDT)
-Message-ID: <39f140999474ba4798d8015c704f33dc5555cbc4.camel@gmail.com>
-Subject: Re: [PATCH 1/9] ui/gtk: Document scale and coordinate handling
-From: Weifeng Liu <weifeng.liu.z@gmail.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org, 
- =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau
- <marcandre.lureau@redhat.com>, =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau
- <marcandre.lureau@gmail.com>
-Date: Thu, 15 May 2025 13:55:00 +0800
-In-Reply-To: <a1bfa963-e4e2-f869-92e2-12312ad5dc89@eik.bme.hu>
-References: <20250511073337.876650-1-weifeng.liu.z@gmail.com>
- <20250511073337.876650-2-weifeng.liu.z@gmail.com>
- <hyeijrn3pxl5r5ij2zryiaar5xcqpj7oigpzwgdl3bl5wslddu@fdfgzn27uy52>
- <ce6e4a42353118fe41e59f2e6ef79d6df959692b.camel@gmail.com>
- <a1bfa963-e4e2-f869-92e2-12312ad5dc89@eik.bme.hu>
+ d=1e100.net; s=20230601; t=1747286988; x=1747891788;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=o60j7FeCq3nmY0xl4V4QJrYYUAM4klYE7XfEg1n9NeE=;
+ b=N9bkDc9wdT+ALsz2BHTSf7SzOetSbUBHFKZu6R57jpibbEcKtc4F9Bxwl4gm9AjoVj
+ CjxInYAb7Bo7rj/m+atSOZKjUFDTlsLuTxjhKNLB5OgscCaW37XqrcAmVbFbVYXy2Ag7
+ /wxQG4nD38zFsYMsNZhaS2U3zp83ilBrw5PyF/FFTmxxNHQ6Nn2/LjTyILeHLzlJ665f
+ RLXVmUdEQ0vC/pDy9xNZipL9fmmppC1EQaLQgJ3Sjasr8wSQaaH1qagOe4kxqk/X82dr
+ UwCyByhuGaZK8c8YRJVx7M63l/8KS3YF1kfvBQM/qe3N4npqPuoU3xgheKi4REnW4iXs
+ a5nw==
+X-Gm-Message-State: AOJu0YwT0T3ne10cAZvVK9LofkgHXOY+BOFmeQhj8VkHIhQHvk7taqYM
+ PJmIKn+8oApwfqgEf3NLBmIKK1VtF60nJ6FU5Sh7TxjE0/Vbbp6IZ3ORdJnjQGytISbJezeRI4z
+ FJXlWMUjoiTX/qFCrFSYvagcOgDc=
+X-Gm-Gg: ASbGncu1r2sNI7NhJQJC3tUAF+N0d6kDobJqUMl0NvAD53PhW21YYkeFdq2gTKVhW3U
+ E9I9rDUsEBQV8Tukr7fVXB3wrh38FU0zYxK0xiUSKvEqV0jkVIJBvWBfo3uKPYTq2ZsC450NhT2
+ p+GghV71HHYFFNNn4mpXGW4hFPGrrd+qM/UXK1lPcEDXG1rguPw1W5XTTTnck3Ruk=
+X-Google-Smtp-Source: AGHT+IGK7txuwQ1s/Z3NN806nyML2wKEBB04CPt/bg5DoGNlVN4kE9fiWvX3A1YgVhEDm+PfXZgXl67tidFTJF3c42s=
+X-Received: by 2002:a05:6122:658f:b0:52a:78ab:12ad with SMTP id
+ 71dfb90a1353d-52d9c3b96admr5174627e0c.0.1747286988527; Wed, 14 May 2025
+ 22:29:48 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250512095226.93621-1-pbonzini@redhat.com>
+ <20250512095226.93621-14-pbonzini@redhat.com>
+In-Reply-To: <20250512095226.93621-14-pbonzini@redhat.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Thu, 15 May 2025 15:29:21 +1000
+X-Gm-Features: AX0GCFs-3wPKPNOBzVuqjYqS39PglXsyVNvX6Io0olxAak6hntAt-UNJHnaWELw
+Message-ID: <CAKmqyKNqTP_tbU3cOL5y8CXYVM+vinUVCA_UPtOdWZA+Ezz3cA@mail.gmail.com>
+Subject: Re: [PATCH 13/26] target/riscv: convert profile CPU models to
+ RISCVCPUDef
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, dbarboza@ventanamicro.com, 
+ richard.henderson@linaro.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1 (3.56.1-1.fc42) 
-MIME-Version: 1.0
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
- envelope-from=weifeng.liu.z@gmail.com; helo=mail-pg1-x52c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a30;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa30.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -106,174 +95,195 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2025-05-14 at 13:50 +0200, BALATON Zoltan wrote:
-> On Wed, 14 May 2025, Weifeng Liu wrote:
-> > Hi Gerd,
-> > On Mon, 2025-05-12 at 13:46 +0200, Gerd Hoffmann wrote:
-> > > On Sun, May 11, 2025 at 03:33:11PM +0800, Weifeng Liu wrote:
-> > > > The existence of multiple scaling factors forces us to deal
-> > > > with
-> > > > various
-> > > > coordinate systems and this would be confusing. It would be
-> > > > beneficial
-> > > > to define the concepts clearly and use consistent
-> > > > representation
-> > > > for
-> > > > variables in different coordinates.
-> > > >=20
-> > > > Signed-off-by: Weifeng Liu <weifeng.liu.z@gmail.com>
-> > > > ---
-> > > > =C2=A0ui/gtk.c | 65
-> > > > ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-> > > > =C2=A01 file changed, 65 insertions(+)
-> > > >=20
-> > > > diff --git a/ui/gtk.c b/ui/gtk.c
-> > > > index 982037b2c0..9f3171abc5 100644
-> > > > --- a/ui/gtk.c
-> > > > +++ b/ui/gtk.c
-> > > > @@ -800,6 +800,71 @@ void
-> > > > gd_update_monitor_refresh_rate(VirtualConsole *vc, GtkWidget
-> > > > *widget)
-> > > > =C2=A0#endif
-> > > > =C2=A0}
-> > > > =C2=A0
-> > > > +/**
-> > > > + * DOC: Coordinate handling.
-> > > > + *
-> > > > + * We are coping with sizes and positions in various
-> > > > coordinates
-> > > > and the
-> > > > + * handling of these coordinates is somewhat confusing. It
-> > > > would
-> > > > benefit us
-> > > > + * all if we define these coordinates explicitly and clearly.
-> > > > Besides, it's
-> > > > + * also helpful to follow the same naming convention for
-> > > > variables
-> > > > + * representing values in different coordinates.
-> > > > + *
-> > > > + * I. Definitions
-> > > > + *
-> > > > + * - (guest) buffer coordinate: this is the coordinates that
-> > > > the
-> > > > guest will
-> > > > + *=C2=A0=C2=A0 see. The x/y offsets and width/height specified in
-> > > > commands
-> > > > sent by
-> > > > + *=C2=A0=C2=A0 guest is basically in buffer coordinate.
-> > > > + *
-> > > > + * - (host) pixel coordinate: this is the coordinate in pixel
-> > > > level on the
-> > > > + *=C2=A0=C2=A0 host destop. A window/widget of width 300 in pixel
-> > > > coordinate
-> > > > means it
-> > > > + *=C2=A0=C2=A0 occupies 300 pixels horizontally.
-> > > > + *
-> > > > + * - (host) logical window coordinate: the existence of global
-> > > > scaling
-> > > > + *=C2=A0=C2=A0 factor in desktop level makes this kind of coordina=
-te
-> > > > play a
-> > > > role. It
-> > > > + *=C2=A0=C2=A0 always holds that (logical window size) * (global s=
-cale
-> > > > factor) =3D
-> > > > + *=C2=A0=C2=A0 (pixel size).
-> > > > + *
-> > > > + * - global scale factor: this is specified in desktop level
-> > > > and
-> > > > is
-> > > > + *=C2=A0=C2=A0 typically invariant during the life cycle of the pr=
-ocess.
-> > > > Users with
-> > > > + *=C2=A0=C2=A0 high-DPI monitors might set this scale, for example=
-, to
-> > > > 2, in
-> > > > order to
-> > > > + *=C2=A0=C2=A0 make the UI look larger.
-> > > > + *
-> > > > + * - zooming scale: this can be freely controlled by the QEMU
-> > > > user
-> > > > to zoom
-> > > > + *=C2=A0=C2=A0 in/out the guest content.
-> > > > + *
-> > > > + * II. Representation
-> > > > + *
-> > > > + * We'd like to use consistent representation for variables in
-> > > > different
-> > > > + * coordinates:
-> > > > + * - buffer coordinate: prefix fb
-> > > > + * - pixel coordinate: prefix p
-> > > > + * - logical window coordinate: prefix w
-> > > > + *
-> > > > + * For scales:
-> > > > + * - global scale factor: prefix gs
-> > > > + * - zooming scale: prefix scale/s
-> > > > + *
-> > > > + * Example: fbw, pw, ww for width in different coordinates
-> > > > + *
-> > > > + * III. Equation
-> > > > + *
-> > > > + * - fbw * gs * scale_x =3D pw
-> > >=20
-> > > Well.=C2=A0 That is one possible approach (and this is what qemu is
-> > > doing
-> > > today, for historical reasons, because most code dates back to
-> > > pre
-> > > high-dpi days).
-> > >=20
-> > > A possible alternative would be to go for fbw * scale_x =3D pw,
-> > > i.e.
-> > > let
-> > > the guest run in pixel coordinates instead of window
-> > > coordinates.=C2=A0
-> > > The
-> > > guest would do the high-dpi scaling then.=C2=A0 That requires setting
-> > > physical display width and height in ui_info, so the guest can
-> > > figure
-> > > what the display resolution is and go into high-dpi mode if
-> > > needed.
->=20
-> Does that assume the guest knows about hidpi and has its own scale
-> factor?=20
-> What if I want to run an old guest that cannot do hidpi on a modern
-> host.=20
-> Can I still specify a scale factor to scale it up to usable size?
-> That's a=20
-> use case I care about which might be unusual but does exist.
->=20
+On Mon, May 12, 2025 at 7:53=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
+ wrote:
+>
+> Profile CPUs reuse the instance_init function for bare CPUs; make them
+> proper subclasses instead.  Enabling a profile is now done based on the
+> RISCVCPUDef struct: even though there is room for only one in RISCVCPUDef=
+,
+> subclasses check that the parent class's profile is enabled through the
+> parent profile mechanism.
+>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-Yeah, that use case will be supported by introducing a non-high-dpi
-compatibility mode as suggested by Gerd. In this mode, the guest images
-will be scaled by global desktop scale factor.
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
-Best regards,
-Weifeng
+Alistair
 
-> Regards,
-> BALATON Zoltan
->=20
-> >=20
-> > Thanks for your suggestion. Sounds like code could be simplified
-> > and be
-> > much easier to understand in this way. I will investigate it on top
-> > of
-> > this change.
-> >=20
-> > Best regards,
-> > Weifeng
-> >=20
-> > > We probably also need a non-high-dpi compatibility mode for old
-> > > guests.
-> > > That mode would start with "zooming scale =3D global scale" instead
-> > > of
-> > > "zooming scale =3D 1", and the dpi calculation would have to
-> > > consider
-> > > that too.
-> > >=20
-> > > (maybe best done on top of this nice cleanup).
-> > >=20
-> > > take care,
-> > > =C2=A0 Gerd
-> >=20
+> ---
+>  target/riscv/cpu.h |  1 +
+>  target/riscv/cpu.c | 85 +++++++++++++++++++++++++---------------------
+>  2 files changed, 48 insertions(+), 38 deletions(-)
+>
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index 0330d74ab6b..8a8d61f8099 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -539,6 +539,7 @@ struct ArchCPU {
+>
+>  typedef struct RISCVCPUDef {
+>      RISCVMXL misa_mxl_max;  /* max mxl for this cpu */
+> +    RISCVCPUProfile *profile;
+>      uint32_t misa_ext;
+>      int priv_spec;
+>      int32_t vext_spec;
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index f66560442a9..06c612afba7 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -1487,6 +1487,10 @@ static void riscv_cpu_init(Object *obj)
+>      cpu->env.vext_ver =3D VEXT_VERSION_1_00_0;
+>      cpu->cfg.max_satp_mode =3D -1;
+>
+> +    if (mcc->def->profile) {
+> +        mcc->def->profile->enabled =3D true;
+> +    }
+> +
+>      env->misa_ext_mask =3D env->misa_ext =3D mcc->def->misa_ext;
+>      riscv_cpu_cfg_merge(&cpu->cfg, &mcc->def->cfg);
+>
+> @@ -2959,36 +2963,6 @@ static const Property riscv_cpu_properties[] =3D {
+>      DEFINE_PROP_BOOL("x-misa-w", RISCVCPU, cfg.misa_w, false),
+>  };
+>
+> -#if defined(TARGET_RISCV64)
+> -static void rva22u64_profile_cpu_init(Object *obj)
+> -{
+> -    rv64i_bare_cpu_init(obj);
+> -
+> -    RVA22U64.enabled =3D true;
+> -}
+> -
+> -static void rva22s64_profile_cpu_init(Object *obj)
+> -{
+> -    rv64i_bare_cpu_init(obj);
+> -
+> -    RVA22S64.enabled =3D true;
+> -}
+> -
+> -static void rva23u64_profile_cpu_init(Object *obj)
+> -{
+> -    rv64i_bare_cpu_init(obj);
+> -
+> -    RVA23U64.enabled =3D true;
+> -}
+> -
+> -static void rva23s64_profile_cpu_init(Object *obj)
+> -{
+> -    rv64i_bare_cpu_init(obj);
+> -
+> -    RVA23S64.enabled =3D true;
+> -}
+> -#endif
+> -
+>  static const gchar *riscv_gdb_arch_name(CPUState *cs)
+>  {
+>      RISCVCPU *cpu =3D RISCV_CPU(cs);
+> @@ -3057,6 +3031,32 @@ static void riscv_cpu_common_class_init(ObjectClas=
+s *c, const void *data)
+>      device_class_set_props(dc, riscv_cpu_properties);
+>  }
+>
+> +static bool profile_extends(RISCVCPUProfile *trial, RISCVCPUProfile *par=
+ent)
+> +{
+> +    RISCVCPUProfile *curr;
+> +    if (!parent) {
+> +        return true;
+> +    }
+> +
+> +    curr =3D trial;
+> +    while (curr) {
+> +        if (curr =3D=3D parent) {
+> +            return true;
+> +        }
+> +        curr =3D curr->u_parent;
+> +    }
+> +
+> +    curr =3D trial;
+> +    while (curr) {
+> +        if (curr =3D=3D parent) {
+> +            return true;
+> +        }
+> +        curr =3D curr->s_parent;
+> +    }
+> +
+> +    return false;
+> +}
+> +
+>  static void riscv_cpu_class_base_init(ObjectClass *c, const void *data)
+>  {
+>      RISCVCPUClass *mcc =3D RISCV_CPU_CLASS(c);
+> @@ -3071,6 +3071,11 @@ static void riscv_cpu_class_base_init(ObjectClass =
+*c, const void *data)
+>      if (data) {
+>          const RISCVCPUDef *def =3D data;
+>          mcc->def->bare |=3D def->bare;
+> +        if (def->profile) {
+> +            assert(profile_extends(def->profile, mcc->def->profile));
+> +            assert(mcc->def->bare);
+> +            mcc->def->profile =3D def->profile;
+> +        }
+>          if (def->misa_mxl_max) {
+>              assert(def->misa_mxl_max <=3D MXL_RV128);
+>              mcc->def->misa_mxl_max =3D def->misa_mxl_max;
+> @@ -3237,19 +3242,22 @@ void riscv_isa_write_fdt(RISCVCPU *cpu, void *fdt=
+, char *nodename)
+>          }),                                                 \
+>      }
+>
+> -#define DEFINE_PROFILE_CPU(type_name, misa_mxl_max_, initfn) \
+> +#define DEFINE_RISCV_CPU(type_name, parent_type_name, ...)  \
+>      {                                                       \
+>          .name =3D (type_name),                                \
+> -        .parent =3D TYPE_RISCV_BARE_CPU,                      \
+> -        .instance_init =3D (initfn),                          \
+> +        .parent =3D (parent_type_name),                       \
+>          .class_data =3D &(const RISCVCPUDef) {                \
+> -             .misa_mxl_max =3D (misa_mxl_max_),               \
+>               .priv_spec =3D RISCV_PROFILE_ATTR_UNUSED,        \
+>               .vext_spec =3D RISCV_PROFILE_ATTR_UNUSED,        \
+>               .cfg.max_satp_mode =3D -1,                       \
+> +             __VA_ARGS__                                    \
+>          },                                                  \
+>      }
+>
+> +#define DEFINE_PROFILE_CPU(type_name, parent_type_name, profile_)    \
+> +    DEFINE_RISCV_CPU(type_name, parent_type_name,             \
+> +        .profile =3D &(profile_))
+> +
+>  static const TypeInfo riscv_cpu_type_infos[] =3D {
+>      {
+>          .name =3D TYPE_RISCV_CPU,
+> @@ -3328,10 +3336,11 @@ static const TypeInfo riscv_cpu_type_infos[] =3D =
+{
+>  #endif /* CONFIG_TCG && !CONFIG_USER_ONLY */
+>      DEFINE_BARE_CPU(TYPE_RISCV_CPU_RV64I,        MXL_RV64,  rv64i_bare_c=
+pu_init),
+>      DEFINE_BARE_CPU(TYPE_RISCV_CPU_RV64E,        MXL_RV64,  rv64e_bare_c=
+pu_init),
+> -    DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22U64,  MXL_RV64,  rva22u64_pro=
+file_cpu_init),
+> -    DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22S64,  MXL_RV64,  rva22s64_pro=
+file_cpu_init),
+> -    DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA23U64,  MXL_RV64,  rva23u64_pro=
+file_cpu_init),
+> -    DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA23S64,  MXL_RV64,  rva23s64_pro=
+file_cpu_init),
+> +
+> +    DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22U64,  TYPE_RISCV_CPU_RV64I,  =
+RVA22U64),
+> +    DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22S64,  TYPE_RISCV_CPU_RV64I,  =
+RVA22S64),
+> +    DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA23U64,  TYPE_RISCV_CPU_RV64I,  =
+RVA23U64),
+> +    DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA23S64,  TYPE_RISCV_CPU_RV64I,  =
+RVA23S64),
+>  #endif /* TARGET_RISCV64 */
+>  };
+>
+> --
+> 2.49.0
+>
 
