@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6EA2AB800D
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 10:16:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65575AB802B
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 10:19:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFTgh-0004Wq-Pv; Thu, 15 May 2025 04:11:35 -0400
+	id 1uFTgY-0003ms-D5; Thu, 15 May 2025 04:11:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1uFTfs-0003I4-Pg; Thu, 15 May 2025 04:10:40 -0400
+ id 1uFTft-0003Ia-2N; Thu, 15 May 2025 04:10:41 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1uFTfq-00010V-S8; Thu, 15 May 2025 04:10:40 -0400
+ id 1uFTfq-00011Y-Sj; Thu, 15 May 2025 04:10:40 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 15 May
@@ -31,10 +31,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
  <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v3 07/28] hw/misc/aspeed_hace: Extract non-accumulation hash
+Subject: [PATCH v3 08/28] hw/misc/aspeed_hace: Extract accumulation-mode hash
  execution into helper function
-Date: Thu, 15 May 2025 16:09:39 +0800
-Message-ID: <20250515081008.583578-8-jamin_lin@aspeedtech.com>
+Date: Thu, 15 May 2025 16:09:40 +0800
+Message-ID: <20250515081008.583578-9-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250515081008.583578-1-jamin_lin@aspeedtech.com>
 References: <20250515081008.583578-1-jamin_lin@aspeedtech.com>
@@ -67,68 +67,124 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 To improve code readability and maintainability of do_hash_operation(), this
-commit introduces a new helper function: hash_execute_non_acc_mode().
+commit introduces a new helper function: hash_execute_acc_mode().
 
-The helper encapsulate the hashing logic for non-accumulation mode.
+This function encapsulates the full flow for accumulation mode, including
+context initialization, update, conditional finalization, and digest writeback
+with I/O vector unmapping.
 
 No functional changes are introduced.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/misc/aspeed_hace.c | 32 ++++++++++++++++++++++++--------
- 1 file changed, 24 insertions(+), 8 deletions(-)
+ hw/misc/aspeed_hace.c | 74 ++++++++++++++++++++++++-------------------
+ 1 file changed, 41 insertions(+), 33 deletions(-)
 
 diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c
-index 7da781f864..c50e228cdf 100644
+index c50e228cdf..33e13974fe 100644
 --- a/hw/misc/aspeed_hace.c
 +++ b/hw/misc/aspeed_hace.c
-@@ -248,6 +248,25 @@ static void hash_write_digest_and_unmap_iov(AspeedHACEState *s,
-     }
+@@ -267,26 +267,57 @@ static void hash_execute_non_acc_mode(AspeedHACEState *s, int algo,
+     hash_write_digest_and_unmap_iov(s, iov, iov_idx, digest_buf, digest_len);
  }
  
-+static void hash_execute_non_acc_mode(AspeedHACEState *s, int algo,
-+                                      struct iovec *iov, int iov_idx)
-+{
-+    g_autofree uint8_t *digest_buf = NULL;
-+    Error *local_err = NULL;
-+    size_t digest_len = 0;
-+
-+    if (qcrypto_hash_bytesv(algo, iov, iov_idx, &digest_buf,
-+                            &digest_len, &local_err) < 0) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: qcrypto hash bytesv failed : %s",
+-static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
+-                              bool acc_mode)
++static void hash_execute_acc_mode(AspeedHACEState *s, int algo,
++                                  struct iovec *iov, int iov_idx,
++                                  bool final_request)
+ {
+     g_autofree uint8_t *digest_buf = NULL;
+-    struct iovec iov[ASPEED_HACE_MAX_SG];
+-    bool acc_final_request = false;
+     Error *local_err = NULL;
+     size_t digest_len = 0;
+-    int iov_idx = -1;
+ 
+-    if (acc_mode && s->hash_ctx == NULL) {
++    if (s->hash_ctx == NULL) {
+         s->hash_ctx = qcrypto_hash_new(algo, &local_err);
+         if (s->hash_ctx == NULL) {
+-            qemu_log_mask(LOG_GUEST_ERROR, "qcrypto hash failed : %s",
+-                          error_get_pretty(local_err));
++            qemu_log_mask(LOG_GUEST_ERROR, "%s: qcrypto hash new failed : %s",
++                          __func__, error_get_pretty(local_err));
+             error_free(local_err);
+             return;
+         }
+     }
+ 
++    if (qcrypto_hash_updatev(s->hash_ctx, iov, iov_idx, &local_err) < 0) {
++        qemu_log_mask(LOG_GUEST_ERROR, "%s: qcrypto hash updatev failed : %s",
 +                      __func__, error_get_pretty(local_err));
 +        error_free(local_err);
 +        return;
 +    }
 +
++    if (final_request) {
++        if (qcrypto_hash_finalize_bytes(s->hash_ctx, &digest_buf,
++                                        &digest_len, &local_err)) {
++            qemu_log_mask(LOG_GUEST_ERROR,
++                          "%s: qcrypto hash finalize bytes failed : %s",
++                          __func__, error_get_pretty(local_err));
++            error_free(local_err);
++            local_err = NULL;
++        }
++
++        qcrypto_hash_free(s->hash_ctx);
++
++        s->hash_ctx = NULL;
++        s->total_req_len = 0;
++    }
++
 +    hash_write_digest_and_unmap_iov(s, iov, iov_idx, digest_buf, digest_len);
 +}
 +
- static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
-                               bool acc_mode)
- {
-@@ -304,15 +323,12 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
-             s->hash_ctx = NULL;
-             s->total_req_len = 0;
-         }
--    } else if (qcrypto_hash_bytesv(algo, iov, iov_idx, &digest_buf,
--                                   &digest_len, &local_err) < 0) {
--        qemu_log_mask(LOG_GUEST_ERROR, "qcrypto hash bytesv failed : %s",
--                      error_get_pretty(local_err));
--        error_free(local_err);
--        return;
--    }
++static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
++                              bool acc_mode)
++{
++    struct iovec iov[ASPEED_HACE_MAX_SG];
++    bool acc_final_request = false;
++    int iov_idx = -1;
++
+     /* Prepares the iov for hashing operations based on the selected mode */
+     if (sg_mode) {
+         iov_idx = hash_prepare_sg_iov(s, iov, acc_mode, &acc_final_request);
+@@ -300,32 +331,9 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
+          return;
+     }
  
--    hash_write_digest_and_unmap_iov(s, iov, iov_idx, digest_buf, digest_len);
-+        hash_write_digest_and_unmap_iov(s, iov, iov_idx, digest_buf,
-+                                        digest_len);
-+    } else {
-+        hash_execute_non_acc_mode(s, algo, iov, iov_idx);
-+    }
- }
- 
- static uint64_t aspeed_hace_read(void *opaque, hwaddr addr, unsigned int size)
++    /* Executes the hash operation */
+     if (acc_mode) {
+-        if (qcrypto_hash_updatev(s->hash_ctx, iov, iov_idx, &local_err) < 0) {
+-            qemu_log_mask(LOG_GUEST_ERROR, "qcrypto hash update failed : %s",
+-                          error_get_pretty(local_err));
+-            error_free(local_err);
+-            return;
+-        }
+-
+-        if (acc_final_request) {
+-            if (qcrypto_hash_finalize_bytes(s->hash_ctx, &digest_buf,
+-                                            &digest_len, &local_err)) {
+-                qemu_log_mask(LOG_GUEST_ERROR,
+-                              "qcrypto hash finalize failed : %s",
+-                              error_get_pretty(local_err));
+-                error_free(local_err);
+-                local_err = NULL;
+-            }
+-
+-            qcrypto_hash_free(s->hash_ctx);
+-
+-            s->hash_ctx = NULL;
+-            s->total_req_len = 0;
+-        }
+-
+-        hash_write_digest_and_unmap_iov(s, iov, iov_idx, digest_buf,
+-                                        digest_len);
++        hash_execute_acc_mode(s, algo, iov, iov_idx, acc_final_request);
+     } else {
+         hash_execute_non_acc_mode(s, algo, iov, iov_idx);
+     }
 -- 
 2.43.0
 
