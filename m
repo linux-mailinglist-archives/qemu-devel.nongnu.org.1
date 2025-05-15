@@ -2,79 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A917CAB87F2
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 15:30:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8AF5AB88CC
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 16:01:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFYeZ-00053u-S8; Thu, 15 May 2025 09:29:40 -0400
+	id 1uFZ7t-0002R0-Gf; Thu, 15 May 2025 09:59:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uFYeP-000511-Cj; Thu, 15 May 2025 09:29:29 -0400
-Received: from mgamail.intel.com ([198.175.65.10])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uFZ7m-0002Qd-VG
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 09:59:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uFYeJ-0004eZ-LF; Thu, 15 May 2025 09:29:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747315764; x=1778851764;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=nD4jIMzPEL9GlBRMVD8jm1YlOuSAxd1LZIi/qkLyWyA=;
- b=Fvki2vRJyNjhad6+Qy58SR22nQs5CQQxJa0Cx9BKzB3JNPIDnSy55ykH
- tn+En0eIX4WCUl/vO12QWt8V5yb34oCFqFCYyF90Y8XSlmGmr1O6fJSGE
- PLteH2/0yAxC8QuVi3SHGkqZ7nGzGUK+ZMrxARVx5EgABRSnQVXBpeSIp
- rhVigrm0VnI2RA2pZ5JvRDxj7q79k0vlHmgDJqVnAR2IPiNVukjuWGFDL
- KxUS6qrFQEwmakrdZ0gFJiMprjRDaEjrJeZIrkeHbyEQ1jzueweQonflO
- jqMoZFtcGGNjYPJrPp97ubUUM/94XHqQ98/obgYqzuE13OCCGFcPLNBtk Q==;
-X-CSE-ConnectionGUID: NbWoZR5+Sfi047jRu5WFLQ==
-X-CSE-MsgGUID: I1ZWHCMeQcmR4zLMMd+kmA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11434"; a="66658082"
-X-IronPort-AV: E=Sophos;i="6.15,291,1739865600"; d="scan'208";a="66658082"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2025 06:29:19 -0700
-X-CSE-ConnectionGUID: M8NdgvHtQnKdJ4IAlWQcfw==
-X-CSE-MsgGUID: McE69DKsTyyJ1kCYn0ABkw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,291,1739865600"; d="scan'208";a="142386727"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by fmviesa003.fm.intel.com with ESMTP; 15 May 2025 06:29:16 -0700
-Date: Thu, 15 May 2025 21:50:20 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Daniel P =?utf-8?B?LiBCZXJyYW5n77+9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org,
- qemu-trivial@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>, qemu-s390x@nongnu.org
-Subject: Re: [PATCH 8/9] target/s390x/kvm/pv: Consolidate
- OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES
-Message-ID: <aCXxHEVZb8+ZCW/m@intel.com>
-References: <20250514084957.2221975-1-zhao1.liu@intel.com>
- <20250514084957.2221975-9-zhao1.liu@intel.com>
- <e0146386-ccf4-44ba-b58f-0bb4d3317f89@redhat.com>
- <aCS8aHsF+VAuj01D@intel.com>
- <7dec9c8e-93d6-81f0-b075-e29b8ede44a2@eik.bme.hu>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uFZ7k-0007p3-DA
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 09:59:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747317584;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=0pGPenc3PoLncbMafMqkAXik5mj+RrLiJtYGXmRS0hQ=;
+ b=baqOF6+6BpnPFIpSRY5Gh9xQAQkg5RsKMXvOiLimClyIUqjB3rl1gY+kawUlFY4dztzDy+
+ FKeHKeJRyiURTXTzJlVZM0mZd0jqia0+cLHVGK1eHMWXehA6I2JSTWjklREfHbS9DQVGED
+ CHwe2o0RsJYJZr8blUioVy+b0CVuD70=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-610-MJh__O-8O6m2WRx7q2d5Cg-1; Thu,
+ 15 May 2025 09:59:41 -0400
+X-MC-Unique: MJh__O-8O6m2WRx7q2d5Cg-1
+X-Mimecast-MFC-AGG-ID: MJh__O-8O6m2WRx7q2d5Cg_1747317580
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 573191800258; Thu, 15 May 2025 13:59:40 +0000 (UTC)
+Received: from toolbx.redhat.com (unknown [10.42.28.135])
+ by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id A915B30075D4; Thu, 15 May 2025 13:59:38 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH v3 0/9] scripts/checkpatch: fix SPDX-License-Identifier
+ detection
+Date: Thu, 15 May 2025 14:59:27 +0100
+Message-ID: <20250515135936.86760-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7dec9c8e-93d6-81f0-b075-e29b8ede44a2@eik.bme.hu>
-Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -60
-X-Spam_score: -6.1
-X-Spam_bar: ------
-X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -37
+X-Spam_score: -3.8
+X-Spam_bar: ---
+X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.686,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,49 +82,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 14, 2025 at 06:24:03PM +0200, BALATON Zoltan wrote:
-> Date: Wed, 14 May 2025 18:24:03 +0200
-> From: BALATON Zoltan <balaton@eik.bme.hu>
-> Subject: Re: [PATCH 8/9] target/s390x/kvm/pv: Consolidate
->  OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES
-> 
-> On Wed, 14 May 2025, Zhao Liu wrote:
-> > > > +OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(S390PVGuest,
-> > > > +                                          s390_pv_guest,
-> > > > +                                          S390_PV_GUEST,
-> > > > +                                          CONFIDENTIAL_GUEST_SUPPORT,
-> > > > +                                          { TYPE_USER_CREATABLE },
-> > > > +                                          { NULL })
-> > > 
-> > > I'll note that existing callers of OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES
-> > > happily ignore the line limit and put it into a single line.
-> > > 
-> > > (which ends up looking better IMHO)
-> > 
-> > Ok, I'll onor the existing conventions (which I'll apply to other
-> > patches as well).
-> 
-> There are two line limits. If something is clearer on one line you could
-> exceed the normal 80 chars and put up to 90 chars on one line for which
-> checkpatch will issue a warning that can be ignored for these cases. Over 90
-> lines checkpatch will give an error and I think you should not ignore that.
+This is hugely expanded an update of
 
-Thank you. This makes sense!
+  https://lists.nongnu.org/archive/html/qemu-devel/2025-05/msg02040.html
 
-> Maybe try to put as much on one line as possible instead of new line after
-> each argument but without exceeding the 80 chars or if the whole line fits
-> in 90 chars then use that. Or maybe do not indent second line under ( but
-> with 4 spaces then you can fit it in two lines but lines over 90 chars are
-> undesirable.
+In that series, Peter suggested creating standalone methods to act
+as hooks to call when detecting the start/end of a file in a diff.
 
-HMM, I understand you mean:
+This implements that idea and adapts a number of existing checks
+to use the new hooks.
 
-OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(S390PVGuest, s390_pv_guest,
-    S390_PV_GUEST, CONFIDENTIAL_GUEST_SUPPORT, { TYPE_USER_CREATABLE }, { NULL })
+Changed in v3:
 
-The second line is 82 chars and now I think this version is better.
+ - Add check for redundent license boilerplate text
+ - Fix check for Makefile names
 
-Thanks,
-Zhao
+Daniel P. Berrangé (9):
+  Revert "scripts: mandate that new files have SPDX-License-Identifier"
+  scripts/checkpatch.pl: fix various indentation mistakes
+  scripts/checkpatch: introduce tracking of file start/end
+  scripts/checkpatch: use new hook for ACPI test data check
+  scripts/checkpatch: use new hook for file permissions check
+  scripts/checkpatch: expand pattern for matching makefiles
+  scripts/checkpatch: use new hook for MAINTAINERS update check
+  scripts/checkpatch: reimplement mandate for SPDX-License-Identifier
+  scripts/checkpatch: reject license boilerplate on new files
+
+ scripts/checkpatch.pl | 381 +++++++++++++++++++++++++++---------------
+ 1 file changed, 243 insertions(+), 138 deletions(-)
+
+-- 
+2.49.0
 
 
