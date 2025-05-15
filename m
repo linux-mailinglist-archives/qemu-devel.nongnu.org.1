@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB7BAB7FE9
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 10:12:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F342AB7FEB
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 10:12:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFTg6-0003PO-U5; Thu, 15 May 2025 04:10:58 -0400
+	id 1uFTgS-0003VS-38; Thu, 15 May 2025 04:11:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1uFTfm-000331-Kw; Thu, 15 May 2025 04:10:36 -0400
+ id 1uFTfm-000336-MA; Thu, 15 May 2025 04:10:36 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1uFTfj-00011Y-Sm; Thu, 15 May 2025 04:10:33 -0400
+ id 1uFTfj-00010V-Sw; Thu, 15 May 2025 04:10:33 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 15 May
@@ -31,10 +31,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
  <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>
-Subject: [PATCH v3 03/28] hw/misc/aspeed_hace: Ensure HASH_IRQ is always set
- to prevent firmware hang
-Date: Thu, 15 May 2025 16:09:35 +0800
-Message-ID: <20250515081008.583578-4-jamin_lin@aspeedtech.com>
+Subject: [PATCH v3 04/28] hw/misc/aspeed_hace: Extract direct mode hash buffer
+ setup into helper function
+Date: Thu, 15 May 2025 16:09:36 +0800
+Message-ID: <20250515081008.583578-5-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250515081008.583578-1-jamin_lin@aspeedtech.com>
 References: <20250515081008.583578-1-jamin_lin@aspeedtech.com>
@@ -66,63 +66,86 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, if the program encounters an unsupported algorithm, it does not set
-the HASH_IRQ bit in the status register and send an interrupt to indicate
-command completion. As a result, the FW gets stuck waiting for a completion
-signal from the HACE module.
+To improve code readability and maintainability of do_hash_operation(), this
+commit introduces a new helper function: hash_prepare_direct_iov().
+This function encapsulates the logic for setting up the I/O vector (iov)
+in direct mode (non-scatter-gather).
 
-Additionally, in do_hash_operation, if an error occurs within the conditional
-statement, the HASH_IRQ bit is not set in the status register. This causes the
-firmware to continuously send HASH commands, as it is unaware that the HACE
-model has completed processing the command.
-
-To fix this, the HASH_IRQ bit in the status register must always be set to
-ensure that the firmware receives an interrupt from the HACE module, preventing
-it from getting stuck or repeatedly sending HASH commands.
+No functional changes are introduced.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Fixes: c5475b3 ("hw: Model ASPEED's Hash and Crypto Engine")
 ---
- hw/misc/aspeed_hace.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ hw/misc/aspeed_hace.c | 42 ++++++++++++++++++++++++++++++++----------
+ 1 file changed, 32 insertions(+), 10 deletions(-)
 
 diff --git a/hw/misc/aspeed_hace.c b/hw/misc/aspeed_hace.c
-index 6be94963bc..1256926d22 100644
+index 1256926d22..42c6f29f82 100644
 --- a/hw/misc/aspeed_hace.c
 +++ b/hw/misc/aspeed_hace.c
-@@ -267,12 +267,6 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
-                             iov[iov_idx - 1].iov_len, false,
-                             iov[iov_idx - 1].iov_len);
-     }
--
--    /*
--     * Set status bits to indicate completion. Testing shows hardware sets
--     * these irrespective of HASH_IRQ_EN.
--     */
--    s->regs[R_STATUS] |= HASH_IRQ;
+@@ -142,6 +142,31 @@ static bool has_padding(AspeedHACEState *s, struct iovec *iov,
+     return false;
  }
  
- static uint64_t aspeed_hace_read(void *opaque, hwaddr addr, unsigned int size)
-@@ -356,10 +350,16 @@ static void aspeed_hace_write(void *opaque, hwaddr addr, uint64_t data,
-                 qemu_log_mask(LOG_GUEST_ERROR,
-                         "%s: Invalid hash algorithm selection 0x%"PRIx64"\n",
-                         __func__, data & ahc->hash_mask);
--                break;
-+        } else {
-+            do_hash_operation(s, algo, data & HASH_SG_EN,
-+                    ((data & HASH_HMAC_MASK) == HASH_DIGEST_ACCUM));
-         }
--        do_hash_operation(s, algo, data & HASH_SG_EN,
--                ((data & HASH_HMAC_MASK) == HASH_DIGEST_ACCUM));
++static int hash_prepare_direct_iov(AspeedHACEState *s, struct iovec *iov)
++{
++    uint32_t src;
++    void *haddr;
++    hwaddr plen;
++    int iov_idx;
 +
-+        /*
-+         * Set status bits to indicate completion. Testing shows hardware sets
-+         * these irrespective of HASH_IRQ_EN.
-+         */
-+        s->regs[R_STATUS] |= HASH_IRQ;
++    plen = s->regs[R_HASH_SRC_LEN];
++    src = s->regs[R_HASH_SRC];
++    haddr = address_space_map(&s->dram_as, src, &plen, false,
++                              MEMTXATTRS_UNSPECIFIED);
++    if (haddr == NULL) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: Unable to map address, addr=0x%x, "
++                      "plen=0x%" HWADDR_PRIx "\n",
++                      __func__, src, plen);
++        return -1;
++    }
++
++    iov[0].iov_base = haddr;
++    iov[0].iov_len = plen;
++    iov_idx = 1;
++
++    return iov_idx;
++}
+ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
+                               bool acc_mode)
+ {
+@@ -169,6 +194,7 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
+         }
+     }
  
-         if (data & HASH_IRQ_EN) {
-             qemu_irq_raise(s->irq);
++    /* Prepares the iov for hashing operations based on the selected mode */
+     if (sg_mode) {
+         for (iov_idx = 0; !(len & SG_LIST_LEN_LAST); iov_idx++) {
+             if (iov_idx == ASPEED_HACE_MAX_SG) {
+@@ -211,17 +237,13 @@ static void do_hash_operation(AspeedHACEState *s, int algo, bool sg_mode,
+             }
+         }
+     } else {
+-        plen = s->regs[R_HASH_SRC_LEN];
++        iov_idx = hash_prepare_direct_iov(s, iov);
++    }
+ 
+-        haddr = address_space_map(&s->dram_as, s->regs[R_HASH_SRC],
+-                                  &plen, false, MEMTXATTRS_UNSPECIFIED);
+-        if (haddr == NULL) {
+-            qemu_log_mask(LOG_GUEST_ERROR, "%s: qcrypto failed\n", __func__);
+-            return;
+-        }
+-        iov[0].iov_base = haddr;
+-        iov[0].iov_len = plen;
+-        iov_idx = 1;
++    if (iov_idx <= 0) {
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: Failed to prepare iov\n", __func__);
++         return;
+     }
+ 
+     if (acc_mode) {
 -- 
 2.43.0
 
