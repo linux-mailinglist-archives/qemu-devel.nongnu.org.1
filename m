@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F10EAB8DBD
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 19:29:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24E4FAB8DBF
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 19:29:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFcNV-0000W5-73; Thu, 15 May 2025 13:28:17 -0400
+	id 1uFcOc-0002c5-AM; Thu, 15 May 2025 13:29:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uFcNA-0000Bg-OF
- for qemu-devel@nongnu.org; Thu, 15 May 2025 13:27:57 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1uFcOV-0002NB-EN
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 13:29:19 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uFcN5-00027n-QY
- for qemu-devel@nongnu.org; Thu, 15 May 2025 13:27:54 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-741b3e37a1eso1432910b3a.1
- for <qemu-devel@nongnu.org>; Thu, 15 May 2025 10:27:51 -0700 (PDT)
+ id 1uFcOS-0002Fg-Mt
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 13:29:19 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-af6a315b491so1011647a12.1
+ for <qemu-devel@nongnu.org>; Thu, 15 May 2025 10:29:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747330070; x=1747934870; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+Ojs5C/HJLX1uGWQpBATdc+qvG3d9Q0HejjDzFBL3jg=;
- b=uLG6GfnjlkAocwlyXKcZ+QFIldqd29TWCUx2m/L2o40UTEmGgqxlUQsfupo2Ss6vTA
- Tr5HXKW12r4dDx1nqhIwQiBXgl8CSw3tepYKj41CXQukUWVkA0A6wwt99m+D1NOjyNeY
- QJyCi8mWDJbe41tbYfZTChhf3NKPYoMCoZu6E93XKnWS4zx2xAuKu80gHQZeUpbajmp9
- N40GM/kl9R7WoLx5tQqQ1JaPt8YyJZ/A4l0Njdj4NxCqp6KCLgJ7Qi/tYMDBH+aUw09d
- aJndFGyRvCdb8HSqCVhdbY5V1A3VAT4ZAujjjb0OJXL1Q5pXYpk+F1YfQ/4z4sErDweE
- ldRQ==
+ d=linaro.org; s=google; t=1747330155; x=1747934955; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=FYedixI6lFZBk1lJBzI5v6/hl5cIdyd6RqWZzgpF72Y=;
+ b=qaWep2P41hW5Rt1gAzGZ/23cNvK541veOFl+ygJrMp3JblSVTklt898tSy/Ag81ARI
+ NHvjT2BDAIKejGP9vGx5Ooe3y+MOJy3mBnV4MWsS+4gClg4AIOh7kHjx+MyWKV/FUKVX
+ v7BgfCRswZismsMzJSdkJ2zsGVh7D0WRRXYvkJkfopjkD/47vosZwGa6dLhD4E9tlUJ9
+ so0N4XcyT7vIhmKMHFVSfvld7fpYYpxGv1CSUI8JMZdJJo6/DVp+oMp7SybNbN6A4nWs
+ xq1IbOTDdXTsRFqvTjEIGFyZuAkmS2azccCEBZjJ3mnKmRWm18Ms3OqnwVeIvhomq0DQ
+ bwDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747330070; x=1747934870;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=+Ojs5C/HJLX1uGWQpBATdc+qvG3d9Q0HejjDzFBL3jg=;
- b=m2sbNk9eEDo+oVCOHXJrvXj9MyVO1sfhSEbMPij2A8HWmK279WCJLbfFKRUoaLcXX4
- OIHNPgEskfYKieP5znwyqsLUnB+Rp3La6Qnrx3BFBIZ8ezcWrfJI/lmbvmfvG83HdKTS
- hQxfuGC0RiU8b5bCkIDHkRLvwquBMhKah03TxQH1wc/oT1+PsJW7OdFQyVEd6PPnH0SW
- cjilZp5OQg3xZ0Z5qc1McIvAw8Z0x1WWdHhK3gbkzugrMDxtrFmWZkgS4bDlJoAZVQQT
- iszIzPjnaWM6BobfIGW7h9UcoNy1ciUoudIgiR73H7WnkWppVoBZFe1Kf4BMC5RhpLVn
- c84g==
-X-Gm-Message-State: AOJu0Yx/3d312k/qb7P8zB8e4ipKA3tovtcRhNlhDoO29tJs+4Vcc1D/
- MeIQ6IF2O2iO1ejoki3SLnV26AJyNT6RmgeY+qgzuRurk2ukAUVZ6YAERhnVhTFnIyrc9CZTwBa
- o6/Yf
-X-Gm-Gg: ASbGnctiryh1nq3Qe8RGYX9XSIDC7SwjgdEfZeW2rNJ7DnGOFWlCmWqY2zX/1okdyOB
- GVampgH8EgJbU0gE22LGez+3neVR6+/ZW4w6u3AZPRPM0etX0THjy4r8S/TsMe01p1fGI2JFcVA
- /lkplxj00daQIaETU0Zu+t6SwoxMFROY+5my+iSnJwSDn5SO9U90BgnceJHA3PB9/39YjXbhK/U
- /E76CSfbGGlRIdKcLEndWJJrFMGjkCzS5zV71InbYISm8SWHrafa0JFlSXCUzcTn17V1pj2lGFy
- MWCbbjtsVk5PajpVuX/7qma2zcWkZb292DmTjQBSGNXXI6CrbjNkps1JDNDPCg==
-X-Google-Smtp-Source: AGHT+IGQ8OXe9xZV1/kYL3AUPoBlJ3ORUa6zrwfPm0FNzjKDvXpHgEUpUvhCD/6k0bK25/pRxA3K1w==
-X-Received: by 2002:a05:6a00:9186:b0:742:4770:bfbb with SMTP id
- d2e1a72fcca58-742a98a3213mr266688b3a.18.1747330070291; 
- Thu, 15 May 2025 10:27:50 -0700 (PDT)
-Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-742a96dfa9dsm79730b3a.10.2025.05.15.10.27.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 May 2025 10:27:49 -0700 (PDT)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Roth <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- berrange@redhat.com, Markus Armbruster <armbru@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v2 12/12] qapi: make all generated files common
-Date: Thu, 15 May 2025 10:27:32 -0700
-Message-ID: <20250515172732.3992504-13-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250515172732.3992504-1-pierrick.bouvier@linaro.org>
-References: <20250515172732.3992504-1-pierrick.bouvier@linaro.org>
+ d=1e100.net; s=20230601; t=1747330155; x=1747934955;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=FYedixI6lFZBk1lJBzI5v6/hl5cIdyd6RqWZzgpF72Y=;
+ b=J6tFmazxxSY9Pc8avd38m0zkudHDmVKh/6KiJdFHiSpjZmeQd4kGhCTXv3gexHvBh2
+ f3JFg1nxEy8tdgUc8a+jpUxpOpSVlqOeGdj7FeobadktxyKF4K5y4cF/xucGf7KJ4WvJ
+ hr/HKiyAeIvCKmZuLTueWv209dU3gs43X7NJDnD7dw4GYZ2zhTElQMBxebIxKq0Sxv9U
+ a/Nv1Mvy0SipdjsVxjK3KoLSOttF/CjjxECkOW+qk8Qu0zv2sTVbjNHgno2drnuHmsDo
+ I5UGU236L3SxWYaC43E1dtiXLU76dsC8QERjYzte0O478wsRmIR0F1fmW9YydXed8e6F
+ EZBg==
+X-Gm-Message-State: AOJu0YzB9DzKpAjQszuxrFcBc8sMt/JiD8zlzOg/SZwAJzBMJjrUmR1/
+ WZXgOi6ofDhOKAcfAVCvDY3agUPCYTbB3jCGHmuoPhabiQ97pdwwLhq+ETD/iAO0VsmUXRxEv1Y
+ JmvUg
+X-Gm-Gg: ASbGncvk1SE3QNKIW1GW2zWDESQjYxxuiF7nMI+Gw5rq0tmzV2W3bGIJkd74uWQWCNU
+ Rp/F4p7as0vkevBzBuKx1lDvm0Bo4+wai9Vdrg2UZJ++UemvIUqgn3pxF8RG9NcakNeD9/8s0YP
+ dNETpKTG08adfpT+8+2zaod5V38iSA6klzXNxRP0RExZGNYIIRtgpVdhUObJ1fdvfFnsxj2P2pp
+ NqN7QAt/CurLwcIUPIySC3JKlx+HX2jRQCowlSB0L3+YEPu9TNY7JCQphIPjAYTHD9HV58AdUm9
+ DdEWxZXVbqglNsKIBZK52/7smAXwgG3qJnX01Uu47IpoVyvYjjPmNChcjdUIEdJD
+X-Google-Smtp-Source: AGHT+IEzOEn9266WXgIZ53NHPVtbLnszESOwsudy+9khwASGcsa8BOWf1/BjL6KzM2LOdp2An95WjA==
+X-Received: by 2002:a05:6a20:430f:b0:201:b65:81ab with SMTP id
+ adf61e73a8af0-2162190a3f0mr551657637.23.1747330144876; 
+ Thu, 15 May 2025 10:29:04 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-742a985e417sm63774b3a.123.2025.05.15.10.29.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 15 May 2025 10:29:04 -0700 (PDT)
+Message-ID: <9b2ddfaa-9bc3-4b8d-946e-4705145e2055@linaro.org>
+Date: Thu, 15 May 2025 10:29:03 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/12] qapi: remove all TARGET_* conditionals from the
+ schema
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: Michael Roth <michael.roth@amd.com>, alex.bennee@linaro.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ berrange@redhat.com, Richard Henderson <richard.henderson@linaro.org>,
+ peter.maydell@linaro.org, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20250514234108.3746675-1-pierrick.bouvier@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20250514234108.3746675-1-pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,26 +104,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- qapi/meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 5/14/25 4:40 PM, Pierrick Bouvier wrote:
+> This series exposes all qmp commands for any target unconditionally, allowing to
+> compile QAPI generated code without any TARGET conditionals.
+> 
+> Based on original RFC from Daniel P. Berrangé:
+> https://lore.kernel.org/qemu-devel/20250508135816.673087-1-berrange@redhat.com/
+> 
+> v1
+> --
+> 
+> - remove file qapi/misc-target.json (Markus)
+> - remove qapi/*-target.json from MAINTAINERS (Markus)
+> - remove qapi_specific_outputs from qapi/meson.build (Markus)
+> - update comment in rtc-reset-reinjection stub (Markus)
+> - build QAPI generated code only once
+> 
+> Daniel P. Berrangé (9):
+>    qapi: expose rtc-reset-reinjection command unconditionally
+>    qapi: expand docs for SEV commands
+>    qapi: make SEV commands unconditionally available
+>    qapi: expose query-gic-capability command unconditionally
+>    qapi: make SGX commands unconditionally available
+>    qapi: make Xen event commands unconditionally available
+>    qapi: remove the misc-target.json file
+>    qapi: make most CPU commands unconditionally available
+>    qapi: make s390x specific CPU commands unconditionally available
+> 
+> Philippe Mathieu-Daudé (1):
+>    qapi: Make CpuModelExpansionInfo::deprecated-props optional and
+>      generic
+> 
+> Pierrick Bouvier (2):
+>    qapi: remove qapi_specific_outputs from meson.build
+>    qapi: make all generated files common
+> 
+>   MAINTAINERS                               |   1 -
+>   qapi/machine-s390x.json                   | 121 +++++
+>   qapi/machine-target.json                  | 523 ----------------------
+>   qapi/machine.json                         | 363 +++++++++++++++
+>   qapi/misc-arm.json                        |  49 ++
+>   qapi/{misc-target.json => misc-i386.json} | 154 +++----
+>   qapi/qapi-schema.json                     |   5 +-
+>   include/hw/s390x/cpu-topology.h           |   2 +-
+>   hw/i386/kvm/xen-stubs.c                   |  13 -
+>   hw/i386/kvm/xen_evtchn.c                  |   2 +-
+>   hw/i386/monitor.c                         |   2 +-
+>   hw/i386/sgx-stub.c                        |  13 -
+>   hw/i386/sgx.c                             |   2 +-
+>   hw/s390x/cpu-topology.c                   |   4 +-
+>   hw/s390x/s390-skeys.c                     |   1 -
+>   stubs/monitor-arm-gic.c                   |  12 +
+>   stubs/monitor-cpu-s390x-kvm.c             |  22 +
+>   stubs/monitor-cpu-s390x.c                 |  23 +
+>   stubs/monitor-cpu.c                       |  21 +
+>   stubs/monitor-i386-rtc.c                  |  14 +
+>   stubs/monitor-i386-sev.c                  |  36 ++
+>   stubs/monitor-i386-sgx.c                  |  17 +
+>   stubs/monitor-i386-xen.c                  |  16 +
+>   target/arm/arm-qmp-cmds.c                 |   4 +-
+>   target/i386/cpu-system.c                  |   2 +-
+>   target/i386/cpu.c                         |   2 +-
+>   target/i386/monitor.c                     |   1 -
+>   target/i386/sev-system-stub.c             |  32 --
+>   target/i386/sev.c                         |   2 +-
+>   target/loongarch/loongarch-qmp-cmds.c     |   2 +-
+>   target/mips/system/mips-qmp-cmds.c        |  12 +-
+>   target/ppc/ppc-qmp-cmds.c                 |  12 +-
+>   target/riscv/riscv-qmp-cmds.c             |   2 +-
+>   target/s390x/cpu_models_system.c          |   2 +-
+>   tests/qtest/qmp-cmd-test.c                |   1 +
+>   qapi/meson.build                          |  18 +-
+>   stubs/meson.build                         |   8 +
+>   37 files changed, 811 insertions(+), 705 deletions(-)
+>   create mode 100644 qapi/machine-s390x.json
+>   delete mode 100644 qapi/machine-target.json
+>   create mode 100644 qapi/misc-arm.json
+>   rename qapi/{misc-target.json => misc-i386.json} (76%)
+>   create mode 100644 stubs/monitor-arm-gic.c
+>   create mode 100644 stubs/monitor-cpu-s390x-kvm.c
+>   create mode 100644 stubs/monitor-cpu-s390x.c
+>   create mode 100644 stubs/monitor-cpu.c
+>   create mode 100644 stubs/monitor-i386-rtc.c
+>   create mode 100644 stubs/monitor-i386-sev.c
+>   create mode 100644 stubs/monitor-i386-sgx.c
+>   create mode 100644 stubs/monitor-i386-xen.c
+> 
 
-diff --git a/qapi/meson.build b/qapi/meson.build
-index 7582c2b5bcf..6cc3afce721 100644
---- a/qapi/meson.build
-+++ b/qapi/meson.build
-@@ -140,6 +140,6 @@ foreach output : qapi_nonmodule_outputs
-   if output.endswith('.trace-events')
-     qapi_trace_events += qapi_files[i]
-   endif
--  specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: qapi_files[i])
-+  system_ss.add(if_true: qapi_files[i])
-   i = i + 1
- endforeach
--- 
-2.47.2
-
+v2 was posted:
+https://lore.kernel.org/qemu-devel/20250515172732.3992504-1-pierrick.bouvier@linaro.org
 
