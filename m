@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE719AB83D0
-	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 12:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58426AB83B7
+	for <lists+qemu-devel@lfdr.de>; Thu, 15 May 2025 12:26:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFVn3-0004Qj-EB; Thu, 15 May 2025 06:26:13 -0400
+	id 1uFVn9-0004bE-TK; Thu, 15 May 2025 06:26:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uFVn1-0004QM-3a
- for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:11 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1uFVn2-0004Qg-KN
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:12 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uFVmy-00089E-Os
- for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:10 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-43cfba466b2so8369085e9.3
- for <qemu-devel@nongnu.org>; Thu, 15 May 2025 03:26:08 -0700 (PDT)
+ id 1uFVn0-00089X-QS
+ for qemu-devel@nongnu.org; Thu, 15 May 2025 06:26:12 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-3a0bdcd7357so600199f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 15 May 2025 03:26:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747304767; x=1747909567; darn=nongnu.org;
+ d=linaro.org; s=google; t=1747304769; x=1747909569; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=+fk+E1hNI4ene4uIKK/hnLRnqA1uMFK4Q9d7SpDJgfs=;
- b=QT/4dH0CRGnOn4Q/ecROuTXpvzynOWf3ZOX2+2VcvU3XVEwbEq3N4wuzHD0FxK33j3
- zIIrI4908idSjkWCmxPzBECyOl9afRuG1/usXFZpTy/kRztyK2BGPg0UKSNHFYppqeu+
- pj+TEez1XcDLuSP4RzrWq1CFjJKMo6PEK1ngXNbBGPV7h8V5Hb6J9uxKsk8zqQk2fGWr
- 9uVgeyaeUiX/Vmz6kw7i8t8UbD5RWMSrgdxi5iDOqCGgZ19tXzxxCTvZ2yFmORlLLijJ
- twvArvSbkNmvW1uODP0ZMgLSIVD42lxYIxcnREz5rdetLj9qdgy4tvOJqD/34hRkDMHb
- hisg==
+ :reply-to; bh=HJ2vzUkmCNfhfxZp85kg68jtmVNXafBvWG/WJXtDBrM=;
+ b=fSGTL+wwtDiiH4Qr0OI450+U8UOvSznFmjCc23siJq85ZmoThSd9cEaxFhEbNFCBRr
+ dJCdIx4FaBnjlgs3EtrKfVLpxxI5t1rTPRKJfevVSaFUClXc2/xu0QzZi1yiGNOY9ov7
+ biL6pcWrh6WvJDdNtejkhVlj5cWQXTNAyHJszGJhVzxtBegtfNVKEHDHtEPg73Vqu6UZ
+ GjL1omSjSAa8ncYpO8WP7LMuUaI5e9u+r7CVqIJwETm7KiAZXMP+/AY67R1kmqAlOTxD
+ iVtlNif2SjmfanKl6+0DOaB1YGHfvHsW4n2+f4/36U/nR7reDsNMX09rZi6SyKJ2J3KX
+ mw4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747304767; x=1747909567;
+ d=1e100.net; s=20230601; t=1747304769; x=1747909569;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+fk+E1hNI4ene4uIKK/hnLRnqA1uMFK4Q9d7SpDJgfs=;
- b=jlDt5r2HauqByIKyL8VaiNQ2Gvm8QTN81+TQhdz9Tft6kSh1L64tHBw+46Iongyida
- SjNUbu3gisIbZy0jGvNB7B8AXhLkUC9buKzBAF20W1PVNMSikrI5C2t3SHlzPwv3Ns7I
- nBa8bauFLpYPZZMoq/d+Qq1tHFG1SWsz+IISu6BfkhdDJ9FfWL2ijiieBkFyf7ltIxxV
- u3fG3Ft97OhFzgoY9LPf/PCqjirtzcTbYsOck3W16n3XmszS5BAl+hv8wk0/D2Aa6klk
- /gacRxgJHnDrvbNJozCAfMSeny956ySLt3EVYnx0Maa6QGO4585q/N05NzaN3KHvITc2
- 7g7Q==
-X-Gm-Message-State: AOJu0YzeZpqz3P9kLrbji0ZoUD7r8x55ZPhi6htz/3KpLD7KMMqcdHVb
- hFQaLpXdOVZfSuVjyOMyRoIu3He9Yn/e2lL2QdO8UuWad38nh7l8lqv24zkiBAv8h2z9mFmFG05
- KKKI=
-X-Gm-Gg: ASbGncuky1d3y77bCo8YUAkFc9kGVpHD3gcnRQGTM77l0qm6VTnY0QwAbLo9jPVjVd+
- kzSpZ5EhPEBgPmnWMIONaVNRhNtlWB4A8mpN9LfR6U/5sm7/wVbllPKayZjcyKAQKVjoCasUdw+
- 2Mt5EhT6+eKGufb3uIB6rsML0vclcwbeVgwINrdpi9MVZaQx79vQpm/Boxf4ttqSARYoZp4i2of
- THTtLDWTEACBTRuKOklFyvu0frQEPLCNWgCf3TrFn2w5y28NvxEq8POoCZFQMm9+qPXpmnmUGmQ
- syy1AQVeTaj5n4p35u0woY+M6637ulZnD3cws4Y5L+mjmi6fHHQG0V3W5g==
-X-Google-Smtp-Source: AGHT+IEsuMGWFeteTRMxWin+qCIrvuJsFDXBDxpvDyQlCn7UxaW4XolV1XVv+46ItEB9YipHHaYL8w==
-X-Received: by 2002:a05:600c:4e09:b0:43d:1b74:e89a with SMTP id
- 5b1f17b1804b1-442f96e8949mr19588185e9.9.1747304767095; 
- Thu, 15 May 2025 03:26:07 -0700 (PDT)
+ bh=HJ2vzUkmCNfhfxZp85kg68jtmVNXafBvWG/WJXtDBrM=;
+ b=hj5GndYg6PG8IRfov9obkwMBDAn1hT/jjJpPzNDMCCfrtvyqq6uIByufvQgFzLCfxZ
+ 0SUfxlltxaHYBAFdkrQq6V896AN4MM/UGgmIjGybp45uBKyQS4H4NhLpTazDsGKChrfH
+ X/N5MMTkyAqQ2yucBRbSez3CpMUubtB8zLVsKkvt7xS2teN5RBXo91wgO06/uhDENxnG
+ BfGzezb+FmKXmSkX9HYxTF0mDYrqN9E3uPG+2EkeePneKRy+dtZPbj+5rnJwGtQQwgQE
+ jlHr0MFlO7Z4fZgL5dgbQQsMg3hvETvZUBKq52Q95iHJi9qAUcDSgxG35Cde2GtvMK5q
+ 8Nmg==
+X-Gm-Message-State: AOJu0YxQQj41411/zTsf6Pi/1sdRgDZ9NHp3RCED0d1smLsR2zlWnsE7
+ V7Kzlgnf4OUSKonT5CTW2P/hioibFM6g9zEgvGoFzJs5CRata+k7x21EC93cJ9L99zpTKH6aw9l
+ CUBE=
+X-Gm-Gg: ASbGncsafX82ig+Y30VX6Bw9hWLohGLTi0wGlPxH3TBdPOgkBwtFleqA0EYcLdSKkzQ
+ pgM8HMhTZ9o7y9ij/J905ZmLPQ4BCo8o8wBu/zmTDZMM9haQwGCPO0v46k+D0apo1ZhO/ozxwby
+ 11YBLpK3llWVoSGM6rHU3+fMOoxuJh5c7KK+NVT0ZKrLSbCO4UB7CCgGW4KavP9S4L3AD4Bs7vS
+ WZ1EXwrcpYWLHZugsz6ThZ8B5xlYjENt1Uz+Qikf0Ln4fKWrlZP2Ag3uF47Wo9h+SQpo7FIDAuI
+ wAi+vhH1yRdZW07pdvpO6b+9aAIsC/Qx/X8Ivtl7+vFLXNx6hT6lzXccpg==
+X-Google-Smtp-Source: AGHT+IF++aw10p+JMjrAJMTYyjK4P3m9CsxNUT6eVRVxkY7GRbOqUaA81qo3Rv8dwD3KZz2jyIB4Sg==
+X-Received: by 2002:a05:6000:4007:b0:39f:175b:a68d with SMTP id
+ ffacd0b85a97d-3a349699c4fmr6323255f8f.11.1747304768816; 
+ Thu, 15 May 2025 03:26:08 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442f396c3a4sm65657855e9.26.2025.05.15.03.26.06
+ 5b1f17b1804b1-442f396c3a4sm65657855e9.26.2025.05.15.03.26.07
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 15 May 2025 03:26:06 -0700 (PDT)
+ Thu, 15 May 2025 03:26:07 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/58] meson: add common libs for target and target_system
-Date: Thu, 15 May 2025 11:25:01 +0100
-Message-ID: <20250515102546.2149601-14-peter.maydell@linaro.org>
+Subject: [PULL 14/58] target/arm: move kvm stubs and remove CONFIG_KVM from
+ kvm_arm.h
+Date: Thu, 15 May 2025 11:25:02 +0100
+Message-ID: <20250515102546.2149601-15-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250515102546.2149601-1-peter.maydell@linaro.org>
 References: <20250515102546.2149601-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,136 +100,203 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Following what we did for hw/, we need target specific common libraries
-for target. We need 2 different libraries:
-- code common to a base architecture
-- system code common to a base architecture
-
-For user code, it can stay compiled per target for now.
+Add a forward decl for struct kvm_vcpu_init to avoid pulling all kvm
+headers.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-id: 20250512180502.2395029-4-pierrick.bouvier@linaro.org
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20250512180502.2395029-5-pierrick.bouvier@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- meson.build | 78 +++++++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 61 insertions(+), 17 deletions(-)
+ target/arm/kvm_arm.h  | 83 +------------------------------------------
+ target/arm/kvm-stub.c | 77 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 78 insertions(+), 82 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 7f91500bb73..ad2053f968b 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3709,6 +3709,8 @@ target_arch = {}
- target_system_arch = {}
- target_user_arch = {}
- hw_common_arch = {}
-+target_common_arch = {}
-+target_common_system_arch = {}
+diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
+index 5f17fc2f3d5..5bf5d56648f 100644
+--- a/target/arm/kvm_arm.h
++++ b/target/arm/kvm_arm.h
+@@ -94,7 +94,7 @@ void kvm_arm_cpu_post_load(ARMCPU *cpu);
+  */
+ void kvm_arm_reset_vcpu(ARMCPU *cpu);
  
- # NOTE: the trace/ subdirectory needs the qapi_trace_events variable
- # that is filled in by qapi/.
-@@ -4107,29 +4109,59 @@ common_all = static_library('common',
+-#ifdef CONFIG_KVM
++struct kvm_vcpu_init;
+ /**
+  * kvm_arm_create_scratch_host_vcpu:
+  * @fdarray: filled in with kvmfd, vmfd, cpufd file descriptors in that order
+@@ -216,85 +216,4 @@ int kvm_arm_set_irq(int cpu, int irqtype, int irq, int level);
  
- # construct common libraries per base architecture
- hw_common_arch_libs = {}
-+target_common_arch_libs = {}
-+target_common_system_arch_libs = {}
- foreach target : target_dirs
-   config_target = config_target_mak[target]
-   target_base_arch = config_target['TARGET_BASE_ARCH']
-+  target_inc = [include_directories('target' / target_base_arch)]
-+  inc = [common_user_inc + target_inc]
+ void kvm_arm_enable_mte(Object *cpuobj, Error **errp);
  
--  # check if already generated
--  if target_base_arch in hw_common_arch_libs
--    continue
--  endif
-+  # prevent common code to access cpu compile time definition,
-+  # but still allow access to cpu.h
-+  target_c_args = ['-DCPU_DEFS_H']
-+  target_system_c_args = target_c_args + ['-DCOMPILING_SYSTEM_VS_USER', '-DCONFIG_SOFTMMU']
- 
-   if target_base_arch in hw_common_arch
--    target_inc = [include_directories('target' / target_base_arch)]
--    src = hw_common_arch[target_base_arch]
--    lib = static_library(
--      'hw_' + target_base_arch,
--      build_by_default: false,
--      sources: src.all_sources() + genh,
--      include_directories: common_user_inc + target_inc,
--      implicit_include_directories: false,
--      # prevent common code to access cpu compile time
--      # definition, but still allow access to cpu.h
--      c_args: ['-DCPU_DEFS_H', '-DCOMPILING_SYSTEM_VS_USER', '-DCONFIG_SOFTMMU'],
--      dependencies: src.all_dependencies())
--    hw_common_arch_libs += {target_base_arch: lib}
-+    if target_base_arch not in hw_common_arch_libs
-+      src = hw_common_arch[target_base_arch]
-+      lib = static_library(
-+        'hw_' + target_base_arch,
-+        build_by_default: false,
-+        sources: src.all_sources() + genh,
-+        include_directories: inc,
-+        c_args: target_system_c_args,
-+        dependencies: src.all_dependencies())
-+      hw_common_arch_libs += {target_base_arch: lib}
-+    endif
-+  endif
+-#else
+-
+-/*
+- * It's safe to call these functions without KVM support.
+- * They should either do nothing or return "not supported".
+- */
+-static inline bool kvm_arm_aarch32_supported(void)
+-{
+-    return false;
+-}
+-
+-static inline bool kvm_arm_pmu_supported(void)
+-{
+-    return false;
+-}
+-
+-static inline bool kvm_arm_sve_supported(void)
+-{
+-    return false;
+-}
+-
+-static inline bool kvm_arm_mte_supported(void)
+-{
+-    return false;
+-}
+-
+-/*
+- * These functions should never actually be called without KVM support.
+- */
+-static inline void kvm_arm_set_cpu_features_from_host(ARMCPU *cpu)
+-{
+-    g_assert_not_reached();
+-}
+-
+-static inline void kvm_arm_add_vcpu_properties(ARMCPU *cpu)
+-{
+-    g_assert_not_reached();
+-}
+-
+-static inline int kvm_arm_get_max_vm_ipa_size(MachineState *ms, bool *fixed_ipa)
+-{
+-    g_assert_not_reached();
+-}
+-
+-static inline int kvm_arm_vgic_probe(void)
+-{
+-    g_assert_not_reached();
+-}
+-
+-static inline void kvm_arm_pmu_set_irq(ARMCPU *cpu, int irq)
+-{
+-    g_assert_not_reached();
+-}
+-
+-static inline void kvm_arm_pmu_init(ARMCPU *cpu)
+-{
+-    g_assert_not_reached();
+-}
+-
+-static inline void kvm_arm_pvtime_init(ARMCPU *cpu, uint64_t ipa)
+-{
+-    g_assert_not_reached();
+-}
+-
+-static inline void kvm_arm_steal_time_finalize(ARMCPU *cpu, Error **errp)
+-{
+-    g_assert_not_reached();
+-}
+-
+-static inline uint32_t kvm_arm_sve_get_vls(ARMCPU *cpu)
+-{
+-    g_assert_not_reached();
+-}
+-
+-static inline void kvm_arm_enable_mte(Object *cpuobj, Error **errp)
+-{
+-    g_assert_not_reached();
+-}
+-
+-#endif
+-
+ #endif
+diff --git a/target/arm/kvm-stub.c b/target/arm/kvm-stub.c
+index 965a486b320..2b73d0598c1 100644
+--- a/target/arm/kvm-stub.c
++++ b/target/arm/kvm-stub.c
+@@ -22,3 +22,80 @@ bool write_list_to_kvmstate(ARMCPU *cpu, int level)
+ {
+     g_assert_not_reached();
+ }
 +
-+  if target_base_arch in target_common_arch
-+    if target_base_arch not in target_common_arch_libs
-+      src = target_common_arch[target_base_arch]
-+      lib = static_library(
-+        'target_' + target_base_arch,
-+        build_by_default: false,
-+        sources: src.all_sources() + genh,
-+        include_directories: inc,
-+        c_args: target_c_args,
-+        dependencies: src.all_dependencies())
-+      target_common_arch_libs += {target_base_arch: lib}
-+    endif
-+  endif
++/*
++ * It's safe to call these functions without KVM support.
++ * They should either do nothing or return "not supported".
++ */
++bool kvm_arm_aarch32_supported(void)
++{
++    return false;
++}
 +
-+  if target_base_arch in target_common_system_arch
-+    if target_base_arch not in target_common_system_arch_libs
-+      src = target_common_system_arch[target_base_arch]
-+      lib = static_library(
-+        'target_system_' + target_base_arch,
-+        build_by_default: false,
-+        sources: src.all_sources() + genh,
-+        include_directories: inc,
-+        c_args: target_system_c_args,
-+        dependencies: src.all_dependencies())
-+      target_common_system_arch_libs += {target_base_arch: lib}
-+    endif
-   endif
- endforeach
- 
-@@ -4300,12 +4332,24 @@ foreach target : target_dirs
-   target_common = common_ss.apply(config_target, strict: false)
-   objects = [common_all.extract_objects(target_common.sources())]
-   arch_deps += target_common.dependencies()
-+  if target_base_arch in target_common_arch_libs
-+    src = target_common_arch[target_base_arch].apply(config_target, strict: false)
-+    lib = target_common_arch_libs[target_base_arch]
-+    objects += lib.extract_objects(src.sources())
-+    arch_deps += src.dependencies()
-+  endif
-   if target_type == 'system' and target_base_arch in hw_common_arch_libs
-     src = hw_common_arch[target_base_arch].apply(config_target, strict: false)
-     lib = hw_common_arch_libs[target_base_arch]
-     objects += lib.extract_objects(src.sources())
-     arch_deps += src.dependencies()
-   endif
-+  if target_type == 'system' and target_base_arch in target_common_system_arch_libs
-+    src = target_common_system_arch[target_base_arch].apply(config_target, strict: false)
-+    lib = target_common_system_arch_libs[target_base_arch]
-+    objects += lib.extract_objects(src.sources())
-+    arch_deps += src.dependencies()
-+  endif
- 
-   target_specific = specific_ss.apply(config_target, strict: false)
-   arch_srcs += target_specific.sources()
++bool kvm_arm_pmu_supported(void)
++{
++    return false;
++}
++
++bool kvm_arm_sve_supported(void)
++{
++    return false;
++}
++
++bool kvm_arm_mte_supported(void)
++{
++    return false;
++}
++
++/*
++ * These functions should never actually be called without KVM support.
++ */
++void kvm_arm_set_cpu_features_from_host(ARMCPU *cpu)
++{
++    g_assert_not_reached();
++}
++
++void kvm_arm_add_vcpu_properties(ARMCPU *cpu)
++{
++    g_assert_not_reached();
++}
++
++int kvm_arm_get_max_vm_ipa_size(MachineState *ms, bool *fixed_ipa)
++{
++    g_assert_not_reached();
++}
++
++int kvm_arm_vgic_probe(void)
++{
++    g_assert_not_reached();
++}
++
++void kvm_arm_pmu_set_irq(ARMCPU *cpu, int irq)
++{
++    g_assert_not_reached();
++}
++
++void kvm_arm_pmu_init(ARMCPU *cpu)
++{
++    g_assert_not_reached();
++}
++
++void kvm_arm_pvtime_init(ARMCPU *cpu, uint64_t ipa)
++{
++    g_assert_not_reached();
++}
++
++void kvm_arm_steal_time_finalize(ARMCPU *cpu, Error **errp)
++{
++    g_assert_not_reached();
++}
++
++uint32_t kvm_arm_sve_get_vls(ARMCPU *cpu)
++{
++    g_assert_not_reached();
++}
++
++void kvm_arm_enable_mte(Object *cpuobj, Error **errp)
++{
++    g_assert_not_reached();
++}
 -- 
 2.43.0
 
