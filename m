@@ -2,61 +2,168 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79FCDAB9417
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 May 2025 04:33:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59ABAAB9433
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 May 2025 04:59:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFkr8-0004UI-KJ; Thu, 15 May 2025 22:31:26 -0400
+	id 1uFlIH-0004bm-FU; Thu, 15 May 2025 22:59:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <itaru.kitayama@linux.dev>)
- id 1uFkr6-0004Q5-QG
- for qemu-devel@nongnu.org; Thu, 15 May 2025 22:31:24 -0400
-Received: from out-170.mta0.migadu.com ([91.218.175.170])
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1uFlIF-0004b6-10; Thu, 15 May 2025 22:59:27 -0400
+Received: from mail-japanwestazlp170120003.outbound.protection.outlook.com
+ ([2a01:111:f403:c406::3] helo=OS8PR02CU002.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <itaru.kitayama@linux.dev>)
- id 1uFkr3-0007qs-VY
- for qemu-devel@nongnu.org; Thu, 15 May 2025 22:31:24 -0400
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
- t=1747362669;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=llObsdvYuuWAtpYKes7BnUdKKbN3nveceK2uGee/4CA=;
- b=X3WKR2uXLU047RHFNSA24keiKcIlF/0JpQ0QMnLRq69lFNATZA9Pqggtn1Nj1oPdFtHDIB
- vTYysgCG0+HWTcTKnHI54Vwh0h9LsUOGVglyDOcg+kPeh9wStIeVf7c8e2A6ju2CcTGyhA
- JlepzyUF/fa/L7uoOk6fwO3Jwy+0izk=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
-Subject: Re: [PATCH v13 0/5] arm/virt: CXL support via pxb_cxl
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
- include these headers.
-From: Itaru Kitayama <itaru.kitayama@linux.dev>
-In-Reply-To: <20250513111455.128266-1-Jonathan.Cameron@huawei.com>
-Date: Fri, 16 May 2025 11:30:49 +0900
-Cc: qemu-devel@nongnu.org, Fan Ni <fan.ni@samsung.com>,
- Peter Maydell <peter.maydell@linaro.org>, mst@redhat.com,
- linux-cxl@vger.kernel.org, linuxarm@huawei.com, qemu-arm@nongnu.org,
- Yuquan Wang <wangyuquan1236@phytium.com.cn>,
- =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <1DF02466-C91E-461E-B35F-D42CEE9F040D@linux.dev>
-References: <20250513111455.128266-1-Jonathan.Cameron@huawei.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-X-Migadu-Flow: FLOW_OUT
-Received-SPF: pass client-ip=91.218.175.170;
- envelope-from=itaru.kitayama@linux.dev; helo=out-170.mta0.migadu.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+ (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
+ id 1uFlIA-00025h-UG; Thu, 15 May 2025 22:59:25 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KEuvQiNkoPSEBotJL3xn8CmbIALYp2JMvVH6mVaimnLvJRQb5hD/77AXpC+RPpACtHZJhwYdHLAuLsSvHE+zSuWSCDBWJ4vCTq1iO6AKxQ9gZoAzcXmtWnhcFGJkMR7WBNxzWxYWO4yoqZcczgllUGw7QbTNqm6rUbAzeIarG3RJNfuySD63MWA8Ll/m2ETwGCmoPXdUzbENQorgMMplZzdcvNZ8MV4uZlyHSWRtPV0jwG9mD2XL8fQRd9Z4mp2Vgtw0ZtoDvxIuxejbRwLUu47e5tcZbAVFr/F1alvQc4ZleDZok24tZnGyVhwZWWgie+f8f/8fnhBHJVvwhD49uA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3A4zh8L+pesKHuMqsF5sODbtSY+mfdbnhkw//XwHI6k=;
+ b=mtFudgTLKiaVpksE/AeUQYIy9cw0KpY9iZ3tCgvZELaIz3HPy6FBr4WzmPQ05OKlj36KRC9AQMWpayua8QG8/0h1Z2VHbX484za+0LaZE0pul0i0UJLWqEyvSQfMSE2+yI+TqW+kXM22dNI7DCqt89C+2HLKMH1p+KlAboPfL7ETQKqhVujWXsItHh80rTtp4UOPCcZfLTMLpFrVi/CLNTqwt8lYZnPc4a5b0H9ENlPUPD7wK4VqyXe/Lu0EWzPljqGAdGhDkJrmYwFHt51bjyJVn6pBcI/IMIj011yBI2C8M4wGfAfBVr1c23fsgYTZ6kQnyfKRmjOJZFH3KN0cAw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=aspeedtech.com; dmarc=pass action=none
+ header.from=aspeedtech.com; dkim=pass header.d=aspeedtech.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aspeedtech.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3A4zh8L+pesKHuMqsF5sODbtSY+mfdbnhkw//XwHI6k=;
+ b=AvQwJkfM20clS/v9GBL9V9HKBBM3u/VlK7w+tf9u3beHwJJTOn14rRB8HBaDBAYRXFJSPVsd1GFgNs/OwU3YH4xF1zys7EhGiDFlUa94Ti3R97o02DRE35FgRF4u8I3eNjwhZmFjAKwWsGAv7Nv7gKrHmBUfz9i3PjhSdZYj8dYpQcsKeB6exQ85E7lBsjkp1+adyb9PA/FYxN1UBLB3sHEMyIyAtbJ+nBSsE0oivv8ZRW/An/0yFYtvigSHmXWvaBV28hjto+HpEPueNceS3ZHuWEYOQVE1mAvgfLHUjZqAzFsE5B7FcN6fG1u2NO5f5nOnTtZMFsWcGQzsLVfGTw==
+Received: from SI2PR06MB5041.apcprd06.prod.outlook.com (2603:1096:4:1a4::6) by
+ SEZPR06MB6486.apcprd06.prod.outlook.com (2603:1096:101:179::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.31; Fri, 16 May
+ 2025 02:59:11 +0000
+Received: from SI2PR06MB5041.apcprd06.prod.outlook.com
+ ([fe80::705a:352a:7564:8e56]) by SI2PR06MB5041.apcprd06.prod.outlook.com
+ ([fe80::705a:352a:7564:8e56%4]) with mapi id 15.20.8722.031; Fri, 16 May 2025
+ 02:59:10 +0000
+From: Jamin Lin <jamin_lin@aspeedtech.com>
+To: =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?= <clg@redhat.com>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+Subject: RE: [PULL 45/46] tests/functional/aspeed: Add test case for AST2700 A1
+Thread-Topic: [PULL 45/46] tests/functional/aspeed: Add test case for AST2700
+ A1
+Thread-Index: AQHbkPqniOXydvp9UUCfny5pz+65h7PUCsMAgADoA0A=
+Date: Fri, 16 May 2025 02:59:10 +0000
+Message-ID: <SI2PR06MB5041918337B1F93AEF8AE4F2FC93A@SI2PR06MB5041.apcprd06.prod.outlook.com>
+References: <20250309135130.545764-1-clg@redhat.com>
+ <20250309135130.545764-46-clg@redhat.com>
+ <81355136-fddb-4134-bc75-5f8baddcefc3@redhat.com>
+In-Reply-To: <81355136-fddb-4134-bc75-5f8baddcefc3@redhat.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=aspeedtech.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SI2PR06MB5041:EE_|SEZPR06MB6486:EE_
+x-ms-office365-filtering-correlation-id: eff7cc8a-3093-4f0a-a90e-08dd9425a1f3
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0; ARA:13230040|376014|366016|1800799024|38070700018;
+x-microsoft-antispam-message-info: =?utf-8?B?bTg0eUZudEN1bXhvd3k1b3gzWEZPcFo0ZVVxUUcrWVRoRndYZkk2c3pabHFa?=
+ =?utf-8?B?RkpTcmtYYXVPM3V4VVRUclRzTUdIcWtuRmdaVTBDcG9RZGJuQzRqS3FjMDFu?=
+ =?utf-8?B?YXRuZ0hZT2s4eXE0c2pOWkNSUTlNVXBhYi9ML1pXYTZBWTQ0VExmNDc3YlRD?=
+ =?utf-8?B?RWxLM0RySTRna2Jwdk44S1JnZEh4LzY2U3czNlZ3WXhPVWc2bTlvZ3VRZ3Iz?=
+ =?utf-8?B?NHhYdVB1RWFZUG1wdmw0V3d6NjRJTi9hOFgrWUprSW1EVythbGRxMTJFbE82?=
+ =?utf-8?B?ZG1VcncwTDROUmhTeHRHR3pCZDVtdjQrT0R6aERvSi9WRWNrZXVDTjRqRzIv?=
+ =?utf-8?B?YjViRXpGdjlpbkxmbHhxK0hwNFg4UW0yQnk0OVgzZTIzcmNtLzh2dHlhM2hU?=
+ =?utf-8?B?Z0QxZGU0Z3N1MkU5MklrV3FDUi9QanQ4QjJvbUJwQk9WdSsyWDEzMmN6SDRl?=
+ =?utf-8?B?aXJYS1JXcC9MY29LQlAyWTN0aWRlSU5TNUsxODRrS2Y3c3h4Y1JXQUFxQ0dj?=
+ =?utf-8?B?YTYzWnloUkJITVNobDRESjNVdVlOeFJPS3B5UmZndDFIZ3lkWFZ0dTlGLzg0?=
+ =?utf-8?B?T2JUQnFQUWVjN1JIbVNWTnBvazdNYlRqV09RV3QvM1pBYzBvaHZ1UnhoVC9x?=
+ =?utf-8?B?dWNPaksvN0pNVkEyQythNGZUcnN5S0tWc3owTnRyWWd6OWEwdk5nYm9keDFY?=
+ =?utf-8?B?WTdXa2VZcVVqSXYzc2sxVllnMkpBUEZ6Z2FHMzVPZXpmNmdTTWFnMnJESnBP?=
+ =?utf-8?B?M3Z4cUlDNG5OOTNSYVl4SGpBTEZoZFc0Y3hSWUxMQ1prMDJTV0UzYXdFcWwv?=
+ =?utf-8?B?L1pqb2ZnNXpOM2d4c0NzZi91a05PNC9hV3NydFpmK1hOeVJ5ZElZQlI5emtD?=
+ =?utf-8?B?bnJWY1ovZ2I2WS9RdjdkWVJRVkZ3ZXNEdFVTQnZRN0pKTVZ2ckZQMloxVzNa?=
+ =?utf-8?B?dnJoR254K2dFV0p3MzB2cFp1d2lNS3dLUWpZdS9sY2tNeGtuQXlHVyt6RTVh?=
+ =?utf-8?B?dG82RHR5VDRGY1NWQ2ZvVkRqcTJkUjJ0cExKdE1NcHplSkRsbGlmWkZzNUdG?=
+ =?utf-8?B?SFRwSnV6dUZ0WlZVdlNydmpLRDlGTEZ1bndqcFZranZGeWt3MXJZNXJMYWpE?=
+ =?utf-8?B?akErWmJGVzZOUkUvMFhHKzhCYlJpdzY4U2s3Zi9iTGRjRFovc2EzYzJlTzNr?=
+ =?utf-8?B?WEtySldTQ3ZCWmF4NmhodFBUUktJVFZDZUZHUjgzem4rQzdWZUg0WkFZZ1hm?=
+ =?utf-8?B?SzZpczkzS2JLWlZocTY5aU9TaWpnSXZ2eVhaTlBPRCtsRGNrcVlTM25IelFY?=
+ =?utf-8?B?YkNKeFhOcTF5R1BJNUxaWkxMUU4zK3dsWUExamoxakhMaVdlRmNhN0Z6YXlP?=
+ =?utf-8?B?RHBaSGhCY1JkY0dOUVU3U0xjbk9LY1pFRmlHOEpFYTBONUl1VlRpa0UrZ1dR?=
+ =?utf-8?B?MmRobGJiZTh6TnB2L0h0TW1BcVRRbE5leEpkRGpWdWNnZGp0Q3Rvd2x0SkdJ?=
+ =?utf-8?B?MU5nTzBEQWQrb1ZibU4rcXgvRXh4eTd1VjF5WEdab1NIV3lDbnBwZHE5ekRS?=
+ =?utf-8?B?dDZHbEdUMzRFbEwrMTcvV3NqVUk2UEdnYjYvZTN0RVRYM09nZ21tMFNldzBu?=
+ =?utf-8?B?OURob05hSGVBYnF4NW8xYkhPa3VHNkR3eEhMMlpybm55cmRNUzRUOC9PRmlR?=
+ =?utf-8?B?Yytxb05WWitrUThxRHJ0c2xtOE1Kem5MSitWMmZNaU9GMkpiWUdjSE1PVWxo?=
+ =?utf-8?B?dE42VlhMaXdMU3J0cm8vRHZvajVVSmdHMjloYWdnbHVGTWp0TWtNN2NkcWJU?=
+ =?utf-8?B?NFhYUHlhNEc3M2g1Z2c4RHQxUHhKcFplVkRETFdkVU8zVi9PK3FsdGg5MjVh?=
+ =?utf-8?B?VWsyNGt2cGZEbGI1aVloWHlVUlNHeTJ5RnhQMmdWV3Q1NzNPSlA5bVlKUjJ0?=
+ =?utf-8?Q?oXHFUSQ49NPa4ExtDGMLSN8tGW2UoDTV?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:zh-tw; SCL:1;
+ SRV:; IPV:NLI; SFV:NSPM; H:SI2PR06MB5041.apcprd06.prod.outlook.com; PTR:;
+ CAT:NONE; SFS:(13230040)(376014)(366016)(1800799024)(38070700018); DIR:OUT;
+ SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?RGtneEtZSm16bkJnb3ZOTjQ0d0p4Q3NpWlFTdHdIZXBwRHg0dk5YNDNnUTJZ?=
+ =?utf-8?B?NkRHR1B2bXZHOUZLU25wYXpUK3FZQ0dSQzFuSERoUytpQlhlbEpxdTJzVGJS?=
+ =?utf-8?B?djB3czU5K3BhYUxmdDNOQml6VWVQMXpaUkdkbFk0NU9RRWcwcDZ3RnRuaHJi?=
+ =?utf-8?B?ZFA4ZEpzTXdId29JSktWL01IdzlXTENMT3E4ekMvRWozUWptbkFzVWhHU0Vw?=
+ =?utf-8?B?dVhzRk5Mb0tlVml6MjYzNU0wdGZEeldna1VMa1U0N2t4d1pkQ3A5K29oOW5n?=
+ =?utf-8?B?Mzd2QkU3MzcvT2RHM1ZMVjNrSWlrU3BxamNzaGEwTHNyZVl1Q1FiU3dCaHZ1?=
+ =?utf-8?B?a1F5aFlOWjl5LzcxTk9vZFkxbW9HUkVpU1o3Um9aelp5SmQ2K0hHV0I2TWF1?=
+ =?utf-8?B?VGhXQUI3NVBpc0xvUWZQay90c2ROQ3UySGNVdVNnVWhiNGpDWUxjTUZlY3J4?=
+ =?utf-8?B?UWJWeDgxR3BtMUUwWVZ5WjNrOVNUQnkrSS96ZTd1UjFHZkJ6b2RWcms1WEt0?=
+ =?utf-8?B?SkNrZDJXSEF0aWJKUjlsVXFqNE9obmxVenFTeVZBVVV5S2xkN3lhcm9ZVThF?=
+ =?utf-8?B?NG95NHYvektlQ2pzL0V6b3dmd2RRQnNIblFyTDVIWEttRFFISUU5dUNmUXE5?=
+ =?utf-8?B?VVJ2eW1tV01nSGhQT0pGU25CL3EwUHMwZndWbXZTSFdsQWtkb0VwZmJMTHNz?=
+ =?utf-8?B?eHpJRHVuK3pBcTNreFI5bXBGZUxCYVdqVEp0bkFCSmEzcUxDYXZYVStqd3JM?=
+ =?utf-8?B?elJxK0N5eVZ1TjN6RlFISWdtdC92S3Bmdjd5VmVOVC8vSVdqQlE2R1I3K3Vr?=
+ =?utf-8?B?eERCRDdtRGxEelBOVlQzSEJlSFFRT3d2U2ptUXBLRFZBRy9WU1ZISEZjYTdj?=
+ =?utf-8?B?bktmWnlkRVpOaXVvU2RYdzBCa3VvdXk5VGtha2F4by8rVWlTVG5wYUZGdysv?=
+ =?utf-8?B?Rm44OHJST2l3MFRrVzQzNEpYWno1MXp5MFVYaGlqTHhxQWloUnU1by9kNDZB?=
+ =?utf-8?B?bEYrTVM5UThpdlBlKzkzbnhxbkh4SGY5ZU92ajc2dGh5VFBtMEp2UlFpTDlG?=
+ =?utf-8?B?ak1OWGlnNFRiN3JMaUh3TUkzb1pwRmpFNmtkWks0SDhjVWlnNU5EV0ZLQm1v?=
+ =?utf-8?B?RHhhQ0J0R25EYU5VRURqUnJBS1NRNStOUk83RHp2TlNncU85cnNNRTAxbEpZ?=
+ =?utf-8?B?UExRNlRERXRHUUhzMnBxNFFiRVFQYWJxbjJFVjlOdHI0RVl1c1gzeEtrZ1My?=
+ =?utf-8?B?OTBGbmp0bkl2Mk8yWE5SdEw0VTZQd2NlQytaUndqeW1ZNzV6K3RTRmtGNkJv?=
+ =?utf-8?B?M1VlVHdpWFVtSmxEVjE3WVVyaWozb2NsWjcrUXBMZlc4MTl3QytXMWhhVjNQ?=
+ =?utf-8?B?UnRwckVaL0hlcnRkeTlTYTFhOGpKbWFGd1cxS2NJbklHaFNoVHprTmEzbWRv?=
+ =?utf-8?B?TFNyMTJ2ejhXU0QxRXh5Qmw1NlJLS2JzeEM1SFlnZUIzaDhDeFJoNnh3NWxp?=
+ =?utf-8?B?ekg1dWszS3ZhV3JrdTdUbEYyZEhwUDR4WDhCTjZQZVAxU0pYekFPRHJIdVVH?=
+ =?utf-8?B?K3J4RjJlZDBrV21XWThFSW0yczJCb2NyWWdicG5kcGVPdFNvVXo5TGcydGdZ?=
+ =?utf-8?B?Yng4MDRxN0ZsenRyQWdkVFJ0bXFWcHlzdmxYczlVK2RQd2V1TmJzK0FBUXg1?=
+ =?utf-8?B?eFpQNTZiQ0xicGxaRndCY2FobkhSbUpDbDRha0czZmNzWkd0aEd0ZXpieXQr?=
+ =?utf-8?B?MklLOVByaStFV01ZdzZSNlBVbmorTXBkYVVTclFCcWkwYXFpdUU1WmRMeHlX?=
+ =?utf-8?B?aEROTTdvc2tPYkwxNlgwTWExMzN5ZzBQSG9qcUprczlDcXphNVJNWE44Yi9q?=
+ =?utf-8?B?UDBubjBySmYzYStUUTVRVHd6b0p3cWVWOTA4Y3Z6eW1zeVRMeEQ2Z0lpL2Ro?=
+ =?utf-8?B?ZEZadHloV3Q0YnFJVmswM2g1MTlFdkk5a0I2REdHSnQ5TU5Yd2hqWGVPZ2pt?=
+ =?utf-8?B?Q0ZlYTJJekk0Z3c0RTNmMDdGcnNzMXppZ3ZYcGo2dk0wbnc5dG0zMlZZQUpC?=
+ =?utf-8?B?QUk0c2Z5eFJxdXdBN09xcnlvMnAvb2tDcWMzSDMwemZBVW5QcFI2dWJSWSto?=
+ =?utf-8?Q?IpZH41MFxydnv7KfTwNjOKCrQ?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: aspeedtech.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SI2PR06MB5041.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: eff7cc8a-3093-4f0a-a90e-08dd9425a1f3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 May 2025 02:59:10.8160 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43d4aa98-e35b-4575-8939-080e90d5a249
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: twJd4GWdHhEmo3vPbRd/HJ3K88Mz3VyERMVikiIHHeuJZUP8NOsrkvrZspk4yd77kNIbU/a0o8DotpSSitBum0LWL2a1yGF4WB/cZ1m5xJU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEZPR06MB6486
+Received-SPF: pass client-ip=2a01:111:f403:c406::3;
+ envelope-from=jamin_lin@aspeedtech.com;
+ helo=OS8PR02CU002.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,274 +179,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Jonathan,
-
-> On May 13, 2025, at 20:14, Jonathan Cameron =
-<Jonathan.Cameron@huawei.com> wrote:
->=20
-> V13:
-> - Make CXL fixed memory windows sysbus devices.
->  IIRC this was requested by Peter in one of the reviews a long time =
-back
->  but at the time the motivation was less strong than it becomes with =
-some
->  WiP patches for hotness monitoring and high performance direct =
-connect
->  where we need a machine type independent way to iterate all the CXL
->  fixed memory windows. This is a convenient place to do it so drag =
-that
->  work forward into this series.
->=20
->  This allows us to drop separate list and necessary machine specific
->  access code in favour of
->  object_child_foreach_recursive(object_get_root(),...)
->  One snag is that the ordering of multiple fixed memory windows in =
-that
->  walk depends on the underlying g_hash_table iterations rather than =
-the
->  order of creation. In the memory map layout and ACPI table creation =
-we
->  need both stable and predictable ordering. Resolve this in a similar
->  fashion to object_class_get_list_sorted() be throwing them in a =
-GSList
->  and sorting that. Only use this when a sorted list is needed.
->=20
->  Dropped RFC as now I'm happy with this code and would like to get it
->  upstream!  Particularly as it broken even today due to enscripten
->  related changes that stop us using g_slist_sort(). Easy fix though.
->=20
-> Note that we have an issue for CXL emulation in general and TCG which
-> is being discussed in:
-> https://lore.kernel.org/all/20250425183524.00000b28@huawei.com/
-> (also affects some other platforms)
->=20
-> Until that is resolved, either rebase this back on 10.0 or just
-> don't let code run out of it (don't use KMEM to expose it as normal
-> memory, use DAX instead).
->=20
-> Previous cover letter.
->=20
-> Back in 2022, this series stalled on the absence of a solution to =
-device
-> tree support for PCI Expander Bridges (PXB) and we ended up only =
-having
-> x86 support upstream. I've been carrying the arm64 support out of tree
-> since then, with occasional nasty surprises (e.g. UNIMP + DT issue =
-seen
-> a few weeks ago) and a fair number of fiddly rebases.
-> gitlab.com/jic23/qemu cxl-<latest date>
->=20
-> A recent discussion with Peter Maydell indicated that there are =
-various
-> other ACPI only features now, so in general he might be more relaxed
-> about DT support being necessary. The upcoming vSMMUv3 support would
-> run into this problem as well.
->=20
-> I presented the background to the PXB issue at Linaro connect 2022. In
-> short the issue is that PXBs steal MMIO space from the main PCI root
-> bridge. The challenge is knowing how much to steal.
->=20
-> On ACPI platforms, we can rely on EDK2 to perform an enumeration and
-> configuration of the PCI topology and QEMU can update the ACPI tables
-> after EDK2 has done this when it can simply read the space used by the
-> root ports. On device tree, there is no entity to figure out that
-> enumeration so we don't know how to size the stolen region.
->=20
-> Three approaches were discussed:
-> 1) Enumerating in QEMU. Horribly complex and the last thing we want is =
-a
->   3rd enumeration implementation that ends up out of sync with EDK2 =
-and
->   the kernel (there are frequent issues because of how those existing
->   implementations differ.
-> 2) Figure out how to enumerate in kernel. I never put a huge amount of =
-work
->   into this, but it seemed likely to involve a nasty dance with =
-similar
->   very specific code to that EDK2 is carrying and would very =
-challenging
->   to upstream (given the lack of clarity on real use cases for PXBs =
-and
->   DT).
-> 3) Hack it based on the control we have which is bus numbers.
->   No one liked this but it worked :)
->=20
-> The other little wrinkle would be the need to define full bindings for =
-CXL
-> on DT + implement a fairly complex kernel stack as equivalent in ACPI
-> involves a static table, CEDT, new runtime queries via _DSM and a =
-description
-> of various components. Doable, but so far there is no interest on =
-physical
-> platforms. Worth noting that for now, the QEMU CXL emulation is all =
-about
-> testing and developing the OS stack, not about virtualization =
-(performance
-> is terrible except in some very contrived situations!)
->=20
-> Back to posting as an RFC because there was some discussion of =
-approach to
-> modelling the devices that may need a bit of redesign.
-> The discussion kind of died out on the back of DT issue and I doubt =
-anyone
-> can remember the details.
->=20
-> =
-https://lore.kernel.org/qemu-devel/20220616141950.23374-1-Jonathan.Cameron=
-@huawei.com/
->=20
-> There is only a very simple test in here, because my intent is not to
-> duplicate what we have on x86, but just to do a smoke test that =
-everything
-> is hooked up.  In general we need much more comprehensive end to end =
-CXL
-> tests but that requires a reaonsably stable guest software stack. A =
-few
-> people have expressed interest in working on that, but we aren't there =
-yet.
->=20
-> Note that this series has a very different use case to that in the =
-proposed
-> SBSA-ref support:
-> =
-https://lore.kernel.org/qemu-devel/20250117034343.26356-1-wangyuquan1236@p=
-hytium.com.cn/
->=20
-> SBSA-ref is a good choice if you want a relatively simple mostly fixed
-> configuration.  That works well with the limited host system
-> discoverability etc as EDK2 can be build against a known =
-configuration.
->=20
-> My interest with this support in arm/virt is support host software =
-stack
-> development (we have a wide range of contributors, most of whom are =
-working
-> on emulation + the kernel support). I care about the weird corners. As =
-such
-> I need to be able to bring up variable numbers of host bridges, =
-multiple CXL
-> Fixed Memory Windows with varying characteristics (interleave etc), =
-complex
-> NUMA topologies with wierd performance characteristics etc. We can do =
-that
-> on x86 upstream today, or my gitlab tree. Note that we need arm =
-support
-> for some arch specific features in the near future (cache flushing).
-> Doing kernel development with this need for flexibility on SBSA-ref is =
-not
-> currently practical. SBSA-ref CXL support is an excellent thing, just
-> not much use to me for this work.
->=20
-> Jonathan Cameron (5):
->  hw/cxl-host: Add an index field to CXLFixedMemoryWindow
->  hw/cxl: Make the CXL fixed memory windows devices.
->  hw/cxl-host: Allow split of establishing memory address and mmio
->    setup.
->  hw/arm/virt: Basic CXL enablement on pci_expander_bridge instances
->    pxb-cxl
->  qtest/cxl: Add aarch64 virt test for CXL
->=20
-> include/hw/arm/virt.h     |   4 +
-> include/hw/cxl/cxl.h      |   4 +
-> include/hw/cxl/cxl_host.h |   6 +-
-> hw/acpi/cxl.c             |  83 +++++++++------
-> hw/arm/virt-acpi-build.c  |  34 ++++++
-> hw/arm/virt.c             |  29 +++++
-> hw/cxl/cxl-host-stubs.c   |   8 +-
-> hw/cxl/cxl-host.c         | 218 ++++++++++++++++++++++++++++++++------
-> hw/i386/pc.c              |  51 ++++-----
-> tests/qtest/cxl-test.c    |  59 ++++++++---
-> tests/qtest/meson.build   |   1 +
-> 11 files changed, 389 insertions(+), 108 deletions(-)
->=20
-> --=20
-> 2.43.0
->=20
-
-With your series applied on top of upstream QEMU, the -drive option does =
-not work well with the sane CXL
-setup (I use run_qemu.sh maintained by Marc et al. at Intel) see below:
-
-/home/realm/projects/qemu/build/qemu-system-aarch64 -machine =
-virt,accel=3Dtcg,cxl=3Don,highmem=3Don,compact-highmem=3Don,highmem-ecam=3D=
-on,highmem-mmio=3Don -m 2048M,slots=3D0,maxmem=3D6144M -smp =
-2,sockets=3D1,cores=3D2,threads=3D1 -display none -nographic -drive =
-if=3Dpflash,format=3Draw,unit=3D0,file=3DAAVMF_CODE.fd,readonly=3Don =
--drive if=3Dpflash,format=3Draw,unit=3D1,file=3DAAVMF_VARS.fd -drive =
-file=3Droot.img,format=3Draw,media=3Ddisk -kernel =
-mkosi.extra/boot/vmlinuz-6.15.0-rc4-00040-g128ad8fa385b -initrd =
-mkosi.extra/boot/initramfs-6.15.0-rc4-00040-g128ad8fa385b.img -append =
-selinux=3D0 audit=3D0 console=3Dtty0 console=3DttyS0 =
-root=3DPARTUUID=3D14d6bae9-c917-435d-89ea-99af1fa4439a ignore_loglevel =
-rw initcall_debug log_buf_len=3D20M =
-memory_hotplug.memmap_on_memory=3Dforce cxl_acpi.dyndbg=3D+fplm =
-cxl_pci.dyndbg=3D+fplm cxl_core.dyndbg=3D+fplm cxl_mem.dyndbg=3D+fplm =
-cxl_pmem.dyndbg=3D+fplm cxl_port.dyndbg=3D+fplm cxl_region.dyndbg=3D+fplm =
-cxl_test.dyndbg=3D+fplm cxl_mock.dyndbg=3D+fplm =
-cxl_mock_mem.dyndbg=3D+fplm systemd.set_credential=3Dagetty.autologin:root=
- systemd.set_credential=3Dlogin.noauth:yes -device =
-e1000,netdev=3Dnet0,mac=3D52:54:00:12:34:56 -netdev =
-user,id=3Dnet0,hostfwd=3Dtcp::10022-:22 -cpu max -object =
-memory-backend-file,id=3Dcxl-mem0,share=3Don,mem-path=3Dcxltest0.raw,size=3D=
-256M -object =
-memory-backend-file,id=3Dcxl-mem1,share=3Don,mem-path=3Dcxltest1.raw,size=3D=
-256M -object =
-memory-backend-file,id=3Dcxl-mem2,share=3Don,mem-path=3Dcxltest2.raw,size=3D=
-256M -object =
-memory-backend-file,id=3Dcxl-mem3,share=3Don,mem-path=3Dcxltest3.raw,size=3D=
-256M -object =
-memory-backend-file,id=3Dcxl-lsa0,share=3Don,mem-path=3Dlsa0.raw,size=3D12=
-8K -object =
-memory-backend-file,id=3Dcxl-lsa1,share=3Don,mem-path=3Dlsa1.raw,size=3D12=
-8K -object =
-memory-backend-file,id=3Dcxl-lsa2,share=3Don,mem-path=3Dlsa2.raw,size=3D12=
-8K -object =
-memory-backend-file,id=3Dcxl-lsa3,share=3Don,mem-path=3Dlsa3.raw,size=3D12=
-8K -device pxb-cxl,id=3Dcxl.0,bus=3Dpcie.0,bus_nr=3D53 -device =
-pxb-cxl,id=3Dcxl.1,bus=3Dpcie.0,bus_nr=3D191 -device =
-cxl-rp,id=3Dhb0rp0,bus=3Dcxl.0,chassis=3D0,slot=3D0,port=3D0 -device =
-cxl-rp,id=3Dhb0rp1,bus=3Dcxl.0,chassis=3D0,slot=3D1,port=3D1 -device =
-cxl-rp,id=3Dhb1rp0,bus=3Dcxl.1,chassis=3D0,slot=3D2,port=3D0 -device =
-cxl-rp,id=3Dhb1rp1,bus=3Dcxl.1,chassis=3D0,slot=3D3,port=3D1 -device =
-cxl-upstream,port=3D4,bus=3Dhb0rp0,id=3Dcxl-up0,multifunction=3Don,addr=3D=
-0.0,sn=3D12345678 -device =
-cxl-switch-mailbox-cci,bus=3Dhb0rp0,addr=3D0.1,target=3Dcxl-up0 -device =
-cxl-upstream,port=3D4,bus=3Dhb1rp0,id=3Dcxl-up1,multifunction=3Don,addr=3D=
-0.0,sn=3D12341234 -device =
-cxl-switch-mailbox-cci,bus=3Dhb1rp0,addr=3D0.1,target=3Dcxl-up1 -device =
-cxl-downstream,port=3D0,bus=3Dcxl-up0,id=3Dswport0,chassis=3D0,slot=3D4 =
--device cxl-downstream,port=3D1,bus=3Dcxl-up0,id=3Dswport1,chassis=3D0,slo=
-t=3D5 -device =
-cxl-downstream,port=3D2,bus=3Dcxl-up0,id=3Dswport2,chassis=3D0,slot=3D6 =
--device cxl-downstream,port=3D3,bus=3Dcxl-up0,id=3Dswport3,chassis=3D0,slo=
-t=3D7 -device =
-cxl-downstream,port=3D0,bus=3Dcxl-up1,id=3Dswport4,chassis=3D0,slot=3D8 =
--device cxl-downstream,port=3D1,bus=3Dcxl-up1,id=3Dswport5,chassis=3D0,slo=
-t=3D9 -device =
-cxl-downstream,port=3D2,bus=3Dcxl-up1,id=3Dswport6,chassis=3D0,slot=3D10 =
--device cxl-downstream,port=3D3,bus=3Dcxl-up1,id=3Dswport7,chassis=3D0,slo=
-t=3D11 -device =
-cxl-type3,bus=3Dswport0,persistent-memdev=3Dcxl-mem0,id=3Dcxl-pmem0,lsa=3D=
-cxl-lsa0 -device =
-cxl-type3,bus=3Dswport2,persistent-memdev=3Dcxl-mem1,id=3Dcxl-pmem1,lsa=3D=
-cxl-lsa1 -device =
-cxl-type3,bus=3Dswport4,volatile-memdev=3Dcxl-mem2,id=3Dcxl-vmem2,lsa=3Dcx=
-l-lsa2 -device =
-cxl-type3,bus=3Dswport6,volatile-memdev=3Dcxl-mem3,id=3Dcxl-vmem3,lsa=3Dcx=
-l-lsa3 -M =
-cxl-fmw.0.targets.0=3Dcxl.0,cxl-fmw.0.size=3D4G,cxl-fmw.0.interleave-granu=
-larity=3D8k,cxl-fmw.1.targets.0=3Dcxl.0,cxl-fmw.1.targets.1=3Dcxl.1,cxl-fm=
-w.1.size=3D4G,cxl-fmw.1.interleave-granularity=3D8k -snapshot -object =
-memory-backend-ram,id=3Dmem0,size=3D2048M -numa =
-node,nodeid=3D0,memdev=3Dmem0, -numa cpu,node-id=3D0,socket-id=3D0 -numa =
-dist,src=3D0,dst=3D0,val=3D10
-qemu-system-aarch64: -drive file=3Droot.img,format=3Draw,media=3Ddisk: =
-PCI: Only PCI/PCIe bridges can be plugged into pxb-cxl
-
-Plain upstream QEMU aarch64 target vert machine can handle the -drive =
-option without an issue _without_ those cxl setup options added. I think =
-the error was seen with your previous cxl-2025-03-20 branch.=20
-
-Thanks,
-Itaru.=20=
+SGkgQ8OpZHJpYw0KDQo+IA0KPiBPbiBhIEJFIGhvc3QsIGlmIEkgcnVuIGFuIGFzdDI3MDBhMC1l
+dmIgbWFjaGluZSA6DQo+IA0KPiAgICAgJCBxZW11LXN5c3RlbS1hYXJjaDY0IC1tYWNoaW5lIGFz
+dDI3MDBhMC1ldmIgIC4uLg0KPiAgICAgLi4uDQo+ICAgICBVLUJvb3QgMjAyMy4xMC12MDAuMDUu
+MDYgKE1hciAyNiAyMDI1IC0gMDU6NTk6MjYgKzAwMDApDQo+IA0KPiAgICAgU09DOiBBU1QyNzAw
+LUEwDQo+ICAgICBNb2RlbDogQVNUMjcwMCBFVkINCj4gICAgIERSQU06ICA4IEdpQiAoZWZmZWN0
+aXZlIDAgQnl0ZXMpDQo+IA0KPiBRRU1VIGhhbmdzLg0KPiANCj4gSWYgdGhlIFJBTSBzaXplIGlz
+IGRlZmluZWQgdG8gOGcNCj4gDQo+ICAgICAkIHFlbXUtc3lzdGVtLWFhcmNoNjQgLW1hY2hpbmUg
+YXN0MjcwMGEwLWV2YiAtbSA4ZyAgLi4uDQo+ICAgICAuLi4NCj4gICAgIFUtQm9vdCAyMDIzLjEw
+LXYwMC4wNS4wNiAoTWFyIDI2IDIwMjUgLSAwNTo1OToyNiArMDAwMCkNCj4gDQo+ICAgICBTT0M6
+IEFTVDI3MDAtQTANCj4gICAgIE1vZGVsOiBBU1QyNzAwIEVWQg0KPiAgICAgRFJBTTogIDggR2lC
+DQo+ICAgICBhc3BlZWRfZHAgZHBAMTJjMGEwMDA6IGFzcGVlZF9kcF9wcm9iZSgpOiBGYWlsZWQg
+dG8gYWNjZXNzIGRwLg0KPiB2ZXJzaW9uKDApDQo+ICAgICBDb3JlOiAgMTI1IGRldmljZXMsIDI3
+IHVjbGFzc2VzLCBkZXZpY2V0cmVlOiBzZXBhcmF0ZQ0KPiANCj4gbWFjaGluZSBib290cy4NCj4g
+DQo+IFdoZXJlYXMsIHdpdGggYW4gYXN0MjcwMGExLWV2YiBtYWNoaW5lIDoNCj4gDQo+ICAgICAk
+IHFlbXUtc3lzdGVtLWFhcmNoNjQgLW1hY2hpbmUgYXN0MjcwMGExLWV2YiAgLi4uDQo+ICAgICAu
+Li4NCj4gICAgIFUtQm9vdCAyMDIzLjEwLXYwMC4wNS4wNiAoTWFyIDI2IDIwMjUgLSAwNTo1OToy
+NiArMDAwMCkNCj4gDQo+ICAgICBTT0M6IEFTVDI3MDAtQTENCj4gICAgIE1vZGVsOiBBU1QyNzAw
+IEVWQg0KPiAgICAgRFJBTTogIDEgR2lCDQo+ICAgICBhc3BlZWRfZHAgZHBAMTJjMGEwMDA6IGFz
+cGVlZF9kcF9wcm9iZSgpOiBGYWlsZWQgdG8gYWNjZXNzIGRwLg0KPiB2ZXJzaW9uKDApDQo+ICAg
+ICBDb3JlOiAgMTI1IGRldmljZXMsIDI3IHVjbGFzc2VzLCBkZXZpY2V0cmVlOiBzZXBhcmF0ZQ0K
+PiANCj4gbWFjaGluZSBib290cy4NCj4gDQo+ICAgICAkIHFlbXUtc3lzdGVtLWFhcmNoNjQgLW1h
+Y2hpbmUgYXN0MjcwMGExLWV2YiAtbSA4ZyAgLi4uDQo+ICAgICAuLi4NCj4gICAgIFUtQm9vdCAy
+MDIzLjEwLXYwMC4wNS4wNiAoTWFyIDI2IDIwMjUgLSAwNTo1OToyNiArMDAwMCkNCj4gDQo+ICAg
+ICBTT0M6IEFTVDI3MDAtQTENCj4gICAgIE1vZGVsOiBBU1QyNzAwIEVWQg0KPiAgICAgRFJBTTog
+IDggR2lCDQo+ICAgICBhc3BlZWRfZHAgZHBAMTJjMGEwMDA6IGFzcGVlZF9kcF9wcm9iZSgpOiBG
+YWlsZWQgdG8gYWNjZXNzIGRwLg0KPiB2ZXJzaW9uKDApDQo+ICAgICBDb3JlOiAgMTI1IGRldmlj
+ZXMsIDI3IHVjbGFzc2VzLCBkZXZpY2V0cmVlOiBzZXBhcmF0ZQ0KPiANCj4gbWFjaGluZSBib290
+cy4NCj4gDQo+IA0KPiBJIFdvbmRlciBpZiB5b3UgY291bGQgYW5hbHl6ZSB0aGlzIGlzc3VlIHRv
+IGNoZWNrIGlmIGl0IGlzIHJlbGF0ZWQgdG8gb25lIG9mIG91cg0KPiBRRU1VIG1vZGVsLg0KPiAN
+Cj4gDQoNClNvcnJ5LCBJIG9ubHkgaGF2ZSBhIGxpdHRsZS1lbmRpYW4gaG9zdCBtYWNoaW5lICh4
+ODZfNjQpLg0KSXMgaXQgcG9zc2libGUgdG8gcnVuIGEgYmlnLWVuZGlhbihQT1dFUiBQQykgUUVN
+VSBob3N0IGVudmlyb25tZW50IG9uIHRoaXMgbWFjaGluZSwgc28gdGhhdCBJIGNhbiB0aGVuIHJ1
+biB0aGUgQVNUMjcwMCBRRU1VIHRhcmdldCBpbnNpZGUgaXQgdG8gYW5hbHl6ZSB0aGlzIGlzc3Vl
+Pw0KDQpJZiB5b3UgYWdyZWUsIGNvdWxkIHlvdSBwbGVhc2UgaGVscCBtZSBpbnNlcnQgdGhlIGZv
+bGxvd2luZyBsaW5lcyBpbnRvIHRoZSBmdW5jdGlvbiB0aGF0IGRldGVjdHMgdGhlIERSQU0gc2l6
+ZSBvbiB0aGUgQVNUMjcwMD8NCmh0dHBzOi8vZ2l0aHViLmNvbS9xZW11L3FlbXUvYmxvYi9tYXN0
+ZXIvaHcvYXJtL2FzcGVlZF9hc3QyN3gwLmMjTDMzMg0KaHR0cHM6Ly9naXRodWIuY29tL3FlbXUv
+cWVtdS9jb21taXQvNzQzNmRiMTA2M2JiZmVjYzJlNDk4YTdkNzk1NjEzYjMzMzEyZDY2NSANCmBg
+YGANCnN0YXRpYyB2b2lkIGFzcGVlZF9yYW1fY2FwYWNpdHlfd3JpdGUodm9pZCAqb3BhcXVlLCBo
+d2FkZHIgYWRkciwgdWludDY0X3QgZGF0YSwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIHVuc2lnbmVkIGludCBzaXplKQ0Kew0KICAgIEFzcGVlZFNvQ1N0
+YXRlICpzID0gQVNQRUVEX1NPQyhvcGFxdWUpOw0KICAgIHJhbV9hZGRyX3QgcmFtX3NpemU7DQog
+ICAgTWVtVHhSZXN1bHQgcmVzdWx0Ow0KICAgIHVpbnQzMl90IHJlYWRfYmFja1s0XSA9IHswfTsN
+CiAgICByYW1fc2l6ZSA9IG9iamVjdF9wcm9wZXJ0eV9nZXRfdWludChPQkpFQ1QoJnMtPnNkbWMp
+LCAicmFtLXNpemUiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICZl
+cnJvcl9hYm9ydCk7DQoNCiAgICBhc3NlcnQocmFtX3NpemUgPiAwKTsNCiAgICBwcmludGYoImph
+bWluIHNpemUgJWRcbiIsIHNpemUpOw0KICAgIHByaW50ZigiYWRkcj0lIiBQUkl4NjQgIiAoYWRk
+ciByYW1fc2l6ZSk9JSIgUFJJeDY0ICJcbiIsIGFkZHIsIChhZGRyICUgcmFtX3NpemUpKTsNCiAg
+ICAvKg0KICAgICAqIEVtdWxhdGUgZGRyIGNhcGFjaXR5IGhhcmR3YXJlIGJlaGF2aW9yLg0KICAg
+ICAqIElmIHdyaXRlcyB0aGUgZGF0YSB0byB0aGUgYWRkcmVzcyB3aGljaCBpcyBiZXlvbmQgdGhl
+IHJhbSBzaXplLA0KICAgICAqIGl0IHdvdWxkIHdyaXRlIHRoZSBkYXRhIHRvIHRoZSAiYWRkcmVz
+cyAlIHJhbV9zaXplIi4NCiAgICAgKi8NCiAgICByZXN1bHQgPSBhZGRyZXNzX3NwYWNlX3dyaXRl
+KCZzLT5kcmFtX2FzLCBhZGRyICUgcmFtX3NpemUsDQogICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICBNRU1UWEFUVFJTX1VOU1BFQ0lGSUVELCAmZGF0YSwgc2l6ZSk7DQogICAgaWYgKHJl
+c3VsdCAhPSBNRU1UWF9PSykgew0KICAgICAgICBxZW11X2xvZ19tYXNrKExPR19HVUVTVF9FUlJP
+UiwNCiAgICAgICAgICAgICAgICAgICAgICAiJXM6IERSQU0gd3JpdGUgZmFpbGVkLCBhZGRyOjB4
+JSIgSFdBRERSX1BSSXgNCiAgICAgICAgICAgICAgICAgICAgICAiLCBkYXRhIDoweCUiIFBSSXg2
+NCAgIlxuIiwNCiAgICAgICAgICAgICAgICAgICAgICBfX2Z1bmNfXywgYWRkciAlIHJhbV9zaXpl
+LCBkYXRhKTsNCiAgICB9DQoNCiAgICBhZGRyZXNzX3NwYWNlX3JlYWQoJnMtPmRyYW1fYXMsIGFk
+ZHIgJSByYW1fc2l6ZSwNCiAgICAgICAgICAgICAgICAgICAgICAgTUVNVFhBVFRSU19VTlNQRUNJ
+RklFRCwgcmVhZF9iYWNrLA0KICAgICAgICAgICAgICAgICAgICAgICBzaXplKTsNCg0KICAgIGZv
+cihpbnQgaT0wOyBpPDQ7IGkrKykgew0KICAgICAgICBwcmludGYoImphbWluIHJlYWRfYmFja1sl
+ZF09JXhcbiIsIGksIHJlYWRfYmFja1tpXSk7DQogICAgfQ0KfQ0KYGBgYA0KQWxzbywgY291bGQg
+eW91IHBsZWFzZSBwcm92aWRlIG1lIHdpdGggdGhlIGZvbGxvd2luZyBsb2c/DQoNClUtQm9vdCAy
+MDIzLjEwLXYwMC4wNS4wNiAoTWFyIDI2IDIwMjUgLSAwNTo1OToyNiArMDAwMCkNCg0KU09DOiBB
+U1QyNzAwLUEwDQpNb2RlbDogQVNUMjcwMCBFVkINCkRSQU06ICBqYW1pbiBzaXplIDQNCmFkZHI9
+YzAwMDAwMDAgKGFkZHIgcmFtX3NpemUpPTANCmphbWluIHJlYWRfYmFja1swXT1lYWRiZWVmNA0K
+amFtaW4gcmVhZF9iYWNrWzFdPTANCmphbWluIHJlYWRfYmFja1syXT0wDQpqYW1pbiByZWFkX2Jh
+Y2tbM109MA0KamFtaW4gc2l6ZSA0DQphZGRyPTQwMDAwMDAwIChhZGRyIHJhbV9zaXplKT0wDQpq
+YW1pbiByZWFkX2JhY2tbMF09YWRiZWVmNDMNCmphbWluIHJlYWRfYmFja1sxXT0wDQpqYW1pbiBy
+ZWFkX2JhY2tbMl09MA0KamFtaW4gcmVhZF9iYWNrWzNdPTANCmphbWluIHNpemUgNA0KYWRkcj0w
+IChhZGRyIHJhbV9zaXplKT0wDQpqYW1pbiByZWFkX2JhY2tbMF09ZGJlZWY0MzINCmphbWluIHJl
+YWRfYmFja1sxXT0wDQpqYW1pbiByZWFkX2JhY2tbMl09MA0KamFtaW4gcmVhZF9iYWNrWzNdPTAN
+CjEgR2lCDQoNCkl0J3MgcXVpdGUgc3RyYW5nZSwgYmVjYXVzZSB5b3UgbWVudGlvbmVkIHRoYXQg
+dGhlIEExIHZlcnNpb24gd29ya3MsIGJ1dCB0aGUgQTAgdmVyc2lvbiBkb2Vzbid0Lg0KSXQgc2Vl
+bXMgZGV0ZWN0IHRoZSBEUkFNIHNpemUgZmFpbGVkIGluIHRoaXMgbG9vcCwgIA0KaHR0cHM6Ly9n
+aXRodWIuY29tL0FzcGVlZFRlY2gtQk1DL3UtYm9vdC9ibG9iL2FzcGVlZC1tYXN0ZXItdjIwMjMu
+MTAvZHJpdmVycy9yYW0vYXNwZWVkL3NkcmFtX2FzdDI3MDAuYyNMMTE3Mw0Kc3RydWN0IGRkcl9j
+YXBhY2l0eSByYW1fc2l6ZVtdID0gew0KCQl7MHgxMDAwMDAwMCwJezIwOCwgMjU2fX0sIC8vIDI1
+Nk1CDQoJCXsweDIwMDAwMDAwLAl7MjA4LCA0MTZ9fSwgLy8gNTEyTUINCgkJezB4NDAwMDAwMDAs
+CXsyMDgsIDU2MH19LCAvLyAxR0INCgkJezB4ODAwMDAwMDAsCXs0NzIsIDg4MH19LCAvLyAyR0IN
+CgkJezB4MTAwMDAwMDAwLAl7NjU2LCA4ODB9fSwgLy8gNEdCDQoJCXsweDIwMDAwMDAwMCwJezg4
+MCwgODgwfX0sIC8vIDhHQg0KCQl9Ow0KdTMyIHRlc3RfcGF0dGVybiA9IDB4ZGVhZGJlZWYNCg0K
+Zm9yIChzeiA9IFNEUkFNX1NJWkVfOEdCIC0gMTsgc3ogPiBTRFJBTV9TSVpFXzI1Nk1COyBzei0t
+KSB7DQoJCXRlc3RfcGF0dGVybiA9ICh0ZXN0X3BhdHRlcm4gPDwgNCkgKyBzejsNCgkJd3JpdGVs
+KHRlc3RfcGF0dGVybiwgKHZvaWQgKilDRkdfU1lTX1NEUkFNX0JBU0UgKyByYW1fc2l6ZVtzel0u
+c2l6ZSk7DQoNCgkJaWYgKHJlYWRsKCh2b2lkICopQ0ZHX1NZU19TRFJBTV9CQVNFKSAhPSB0ZXN0
+X3BhdHRlcm4pDQoJCQlicmVhazsNCn0NCg0KUGxlYXNlIGhlbHAgdG8gZHVtcCB0aGlzIHJlZ2lz
+dGVyLg0KPT4gbWQgMTJjMDAwMTANCjEyYzAwMDEwOiAwMDAwMDAyOCAwMDAwMDAwMCAwMDAwMDAw
+MCAwMDAwMDAwMCAgKC4uLi4uLi4uLi4uLi4uLg0KDQoweDI4LS0+DQowMDEwIDEwMDANCkJpdDAg
+OiAwIEREUjQgU0RSQU0NCkJpdDoxIDogMCBSZXNlcnZlZA0KQml0OjQ6MiA6IDAxMCAtLT4gMUdC
+IA0KDQpUaGFua3MtSmFtaW4NCg0KPiBUaGFua3MsDQo+IA0KPiBDLg0KDQo=
 
