@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D6D7ABA06E
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 May 2025 17:58:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E55AABA07C
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 May 2025 17:59:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFxRY-0008RH-NA; Fri, 16 May 2025 11:57:52 -0400
+	id 1uFxRZ-0008RJ-TY; Fri, 16 May 2025 11:57:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1uFxRW-0008Qm-ON
- for qemu-devel@nongnu.org; Fri, 16 May 2025 11:57:50 -0400
+ id 1uFxRX-0008Qu-EE
+ for qemu-devel@nongnu.org; Fri, 16 May 2025 11:57:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1uFxRV-0002cn-9M
- for qemu-devel@nongnu.org; Fri, 16 May 2025 11:57:50 -0400
+ id 1uFxRV-0002cr-P6
+ for qemu-devel@nongnu.org; Fri, 16 May 2025 11:57:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747411068;
+ s=mimecast20190719; t=1747411069;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Zx/5finWrW3BE7soKnFMX10p0Eu9Wv9Ivwwng/VowTQ=;
- b=UY3VhwqbP1dcLODC9j2L2prciMs1kG9hp+gZWSj7jeCT+XFsh9hs1zNKaPWMI2iXfi3iNt
- HrgJiDhB5D2VrxaCEaiqP3T9eoJ//mp0PNnMiFYvLgsQb4mtBZiZnVicoAi8I2rvmu1iKn
- 44wBmNcTf/bwZvJWjFDiX1U3oJswCqQ=
+ bh=py+TZoPFweDXa675c5l/OIWhVyVWlz3r43R1tVyvdH0=;
+ b=AVajkAQ8l/1MlILyTXIvxZRkw1D3jmtiOOVOr5Md9MTQDg+1YnZ80XldZhZyaCCb1swlHl
+ Hfz6ASE9rwqTki6DlQriXs0srwoj/La+W8NwnynyaJrUIgX+m6dCFZTqAmqgEvpZI8YNpB
+ D7SVugFEXjAYYqQcO7dgOVw9gv4//SM=
 Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-460-SCBtfdGeNWmL4vl8qqWkFw-1; Fri,
- 16 May 2025 11:57:45 -0400
-X-MC-Unique: SCBtfdGeNWmL4vl8qqWkFw-1
-X-Mimecast-MFC-AGG-ID: SCBtfdGeNWmL4vl8qqWkFw_1747411064
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-318-YOvTP7OTM0SaAr4U16CjxA-1; Fri,
+ 16 May 2025 11:57:47 -0400
+X-MC-Unique: YOvTP7OTM0SaAr4U16CjxA-1
+X-Mimecast-MFC-AGG-ID: YOvTP7OTM0SaAr4U16CjxA_1747411066
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 07AC619560A5; Fri, 16 May 2025 15:57:40 +0000 (UTC)
+ id 48CD01956096; Fri, 16 May 2025 15:57:46 +0000 (UTC)
 Received: from fedora.brq.redhat.com (unknown [10.43.2.64])
  by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6722018003FC; Fri, 16 May 2025 15:57:38 +0000 (UTC)
+ id AB6CE180045B; Fri, 16 May 2025 15:57:44 +0000 (UTC)
 From: Juraj Marcin <jmarcin@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Juraj Marcin <jmarcin@redhat.com>, vsementsov@yandex-team.ru,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v4 2/7] util/qemu-sockets: Refactor setting client sockopts
- into a separate function
-Date: Fri, 16 May 2025 17:56:54 +0200
-Message-ID: <20250516155710.2246148-3-jmarcin@redhat.com>
+Subject: [PATCH v4 3/7] util/qemu-sockets: Refactor success and failure paths
+ in inet_listen_saddr()
+Date: Fri, 16 May 2025 17:56:55 +0200
+Message-ID: <20250516155710.2246148-4-jmarcin@redhat.com>
 In-Reply-To: <20250516155710.2246148-1-jmarcin@redhat.com>
 References: <20250516155710.2246148-1-jmarcin@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=jmarcin@redhat.com;
@@ -86,62 +87,121 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Juraj Marcin <jmarcin@redhat.com>
 
-This is done in preparation for enabling the SO_KEEPALIVE support for
-server sockets and adding settings for more TCP keep-alive socket
-options.
+To get a listening socket, we need to first create a socket, try binding
+it to a certain port, and lastly starting listening to it. Each of these
+operations can fail due to various reasons, one of them being that the
+requested address/port is already in use. In such case, the function
+tries the same process with a new port number.
+
+This patch refactors the port number loop, so the success path is no
+longer buried inside the 'if' statements in the middle of the loop. Now,
+the success path is not nested and ends at the end of the iteration
+after successful socket creation, binding, and listening. In case any of
+the operations fails, it either continues to the next iteration (and the
+next port) or jumps out of the loop to handle the error and exits the
+function.
 
 Signed-off-by: Juraj Marcin <jmarcin@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- util/qemu-sockets.c | 29 +++++++++++++++++++----------
- 1 file changed, 19 insertions(+), 10 deletions(-)
+ util/qemu-sockets.c | 51 ++++++++++++++++++++++++---------------------
+ 1 file changed, 27 insertions(+), 24 deletions(-)
 
 diff --git a/util/qemu-sockets.c b/util/qemu-sockets.c
-index 77477c1cd5..4a878e0527 100644
+index 4a878e0527..329fdbfd97 100644
 --- a/util/qemu-sockets.c
 +++ b/util/qemu-sockets.c
-@@ -205,6 +205,22 @@ static int try_bind(int socket, InetSocketAddress *saddr, struct addrinfo *e)
- #endif
+@@ -303,11 +303,20 @@ static int inet_listen_saddr(InetSocketAddress *saddr,
+         port_min = inet_getport(e);
+         port_max = saddr->has_to ? saddr->to + port_offset : port_min;
+         for (p = port_min; p <= port_max; p++) {
++            if (slisten >= 0) {
++                /*
++                 * We have a socket we tried with the previous port. It cannot
++                 * be rebound, we need to close it and create a new one.
++                 */
++                close(slisten);
++                slisten = -1;
++            }
+             inet_setport(e, p);
+ 
+             slisten = create_fast_reuse_socket(e);
+             if (slisten < 0) {
+-                /* First time we expect we might fail to create the socket
++                /*
++                 * First time we expect we might fail to create the socket
+                  * eg if 'e' has AF_INET6 but ipv6 kmod is not loaded.
+                  * Later iterations should always succeed if first iteration
+                  * worked though, so treat that as fatal.
+@@ -317,40 +326,38 @@ static int inet_listen_saddr(InetSocketAddress *saddr,
+                 } else {
+                     error_setg_errno(errp, errno,
+                                      "Failed to recreate failed listening socket");
+-                    goto listen_failed;
++                    goto fail;
+                 }
+             }
+             socket_created = true;
+ 
+             rc = try_bind(slisten, saddr, e);
+             if (rc < 0) {
+-                if (errno != EADDRINUSE) {
+-                    error_setg_errno(errp, errno, "Failed to bind socket");
+-                    goto listen_failed;
++                if (errno == EADDRINUSE) {
++                    /* This port is already used, try the next one */
++                    continue;
+                 }
+-            } else {
+-                if (!listen(slisten, num)) {
+-                    goto listen_ok;
+-                }
+-                if (errno != EADDRINUSE) {
+-                    error_setg_errno(errp, errno, "Failed to listen on socket");
+-                    goto listen_failed;
++                error_setg_errno(errp, errno, "Failed to bind socket");
++                goto fail;
++            }
++            if (listen(slisten, num)) {
++                if (errno == EADDRINUSE) {
++                    /* This port is already used, try the next one */
++                    continue;
+                 }
++                error_setg_errno(errp, errno, "Failed to listen on socket");
++                goto fail;
+             }
+-            /* Someone else managed to bind to the same port and beat us
+-             * to listen on it! Socket semantics does not allow us to
+-             * recover from this situation, so we need to recreate the
+-             * socket to allow bind attempts for subsequent ports:
+-             */
+-            close(slisten);
+-            slisten = -1;
++            /* We have a listening socket */
++            freeaddrinfo(res);
++            return slisten;
+         }
+     }
+     error_setg_errno(errp, errno,
+                      socket_created ?
+                      "Failed to find an available port" :
+                      "Failed to create a socket");
+-listen_failed:
++fail:
+     saved_errno = errno;
+     if (slisten >= 0) {
+         close(slisten);
+@@ -358,10 +365,6 @@ listen_failed:
+     freeaddrinfo(res);
+     errno = saved_errno;
+     return -1;
+-
+-listen_ok:
+-    freeaddrinfo(res);
+-    return slisten;
  }
  
-+static int inet_set_sockopts(int sock, InetSocketAddress *saddr, Error **errp)
-+{
-+    if (saddr->keep_alive) {
-+        int keep_alive = 1;
-+        int ret = setsockopt(sock, SOL_SOCKET, SO_KEEPALIVE,
-+                             &keep_alive, sizeof(keep_alive));
-+
-+        if (ret < 0) {
-+            error_setg_errno(errp, errno,
-+                             "Unable to set keep-alive option on socket");
-+            return -1;
-+        }
-+    }
-+    return 0;
-+}
-+
- static int inet_listen_saddr(InetSocketAddress *saddr,
-                              int port_offset,
-                              int num,
-@@ -475,16 +491,9 @@ int inet_connect_saddr(InetSocketAddress *saddr, Error **errp)
-         return sock;
-     }
- 
--    if (saddr->keep_alive) {
--        int val = 1;
--        int ret = setsockopt(sock, SOL_SOCKET, SO_KEEPALIVE,
--                             &val, sizeof(val));
--
--        if (ret < 0) {
--            error_setg_errno(errp, errno, "Unable to set KEEPALIVE");
--            close(sock);
--            return -1;
--        }
-+    if (inet_set_sockopts(sock, saddr, errp) < 0) {
-+        close(sock);
-+        return -1;
-     }
- 
-     return sock;
+ #ifdef _WIN32
 -- 
 2.49.0
 
