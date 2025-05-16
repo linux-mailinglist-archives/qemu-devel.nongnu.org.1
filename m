@@ -2,64 +2,140 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94BEFABA07A
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 May 2025 17:59:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B2ADABA0BC
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 May 2025 18:22:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFxS1-0000Tf-6S; Fri, 16 May 2025 11:58:21 -0400
+	id 1uFxno-0006Xa-KF; Fri, 16 May 2025 12:20:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1uFxRy-0000KW-Pe
- for qemu-devel@nongnu.org; Fri, 16 May 2025 11:58:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uFxnl-0006XJ-Rb
+ for qemu-devel@nongnu.org; Fri, 16 May 2025 12:20:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
- id 1uFxRw-0002ed-EE
- for qemu-devel@nongnu.org; Fri, 16 May 2025 11:58:18 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uFxnj-0005y0-5O
+ for qemu-devel@nongnu.org; Fri, 16 May 2025 12:20:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747411095;
+ s=mimecast20190719; t=1747412445;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=aFMICsjYm62/z6PLh4qeoP8TmO0u9dpjXLy2gFguuw8=;
- b=XQibT9B9qOypPGkh6pmDdDfElqwa1+EX5NLYdDXcQuP0fP9V0pcj+eo/58dC4Ue0OOURD5
- B0sqsOQcWr6yWiAhOXjpfZK3Fgq628n16qmkAIr++YKwV4GyoYqKBU/hCgqlpaOs0TLFml
- /piGmVSLr1FQLTIl0PQ8YG857o0on+0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-81-921KARWCNXmJibd9IuEkuA-1; Fri,
- 16 May 2025 11:58:13 -0400
-X-MC-Unique: 921KARWCNXmJibd9IuEkuA-1
-X-Mimecast-MFC-AGG-ID: 921KARWCNXmJibd9IuEkuA_1747411093
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 199A11800772; Fri, 16 May 2025 15:58:13 +0000 (UTC)
-Received: from fedora.brq.redhat.com (unknown [10.43.2.64])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7D02518003FC; Fri, 16 May 2025 15:58:11 +0000 (UTC)
-From: Juraj Marcin <jmarcin@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Juraj Marcin <jmarcin@redhat.com>, vsementsov@yandex-team.ru,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v4 7/7] util/qemu-sockets: Introduce inet socket options
- controlling TCP keep-alive
-Date: Fri, 16 May 2025 17:56:59 +0200
-Message-ID: <20250516155710.2246148-8-jmarcin@redhat.com>
-In-Reply-To: <20250516155710.2246148-1-jmarcin@redhat.com>
-References: <20250516155710.2246148-1-jmarcin@redhat.com>
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=AR7M4CKyTPjakltG21LIrzf+nlTHtXjECNp9S2vw0Jg=;
+ b=E/7DDz4+eHYT5InZTk81uai/2IjYTQBn/5Miq6yNx9//bPTjt3QHvtfr4q/WpjHgU/XHu0
+ +dnnCZTYvA7fKBEVPuymtizFc8qUkBVBzOdmwS0OthEVrPUJ1z7eQZxNIo0ByghyKax1Em
+ 2kcDJw1dSbZvUorROoiMxGTIOtCnzUM=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-300-8NrOsz9-MbKYRP-XbKkeUg-1; Fri, 16 May 2025 12:20:43 -0400
+X-MC-Unique: 8NrOsz9-MbKYRP-XbKkeUg-1
+X-Mimecast-MFC-AGG-ID: 8NrOsz9-MbKYRP-XbKkeUg_1747412443
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3a0af6219a5so1368349f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 16 May 2025 09:20:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747412442; x=1748017242;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=AR7M4CKyTPjakltG21LIrzf+nlTHtXjECNp9S2vw0Jg=;
+ b=YJHlsjxpMvEo4jrmjM/FSaMclLVhezJtbcRyZ4Co2fv3f3khmq7Ti5Fo2mwImwqou8
+ FDHFEj5qeKsAXW9+zBBW4YFVWmP+WQxGWK91zJm94sHzBcnUTZ48xt8nJ/dPaY3qJ4Sv
+ dEJy48K9Tb3aalbi2IU7tcO5omNmA29ATA95sI6iMpvhZu12TpWCrruatXp5gOftbRuU
+ WiV46ahr2oPZZKuKgFJ2mTWEOadKQ+5GP0fkrSvWnQoybOkdCcYP/Snw05AF/yIoIET+
+ FN9QtPsS1p6aly7EJOk+/s/Tyj7lqi2p33BlEF5zeW6QAC7Lhfp8/yEjAtavRl68WMrg
+ 9JKA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXFtH2QfVtQNApPiHsWcRZ56VRjtyszxYKKaeLHnIPQq1Sic3m57E3IfSqvab7VikCjKXy6imeAxRYl@nongnu.org
+X-Gm-Message-State: AOJu0YwKJoPjboBCC0IoLFWcsj1kTJkjGVVBHCP4tBQkclxCv7pAOu3+
+ IZPUJjnJYLA4HxVs9B333LobSFDhGix0ai3leRwu+4l1ynPlVW5B1W3A/GFhJLwD0V21lwpgHmA
+ y6bO5X8fHSKkI0MRYo0hnDOAYgE7ndOHTO+90JP71MbEtjVzRJzVdEk0F
+X-Gm-Gg: ASbGncvR5VTI/F6JxtMnWEAWU0ouCqZx2eovYF3AzgpTETVK61JeC8rEMqEiOk15w5w
+ YVEe3WqWFrxS9JKdqDnyyrMwkTuXA0f2PwK/6rBTH7fCsOs7kA8D/Y7qWKn8VeTxVu1QerHwOyb
+ R+UXKYvvsAJlr/68qxSr/JFu7E1oA7xDly28MD0OSKNxEiO1YIBRZZzgVGwbcOVh7q1+VW0AaFd
+ fX5UbKpLhPJbWJc92QI9sri2DYtLR0bAtnweOCyZGDhIWKaticMlJXaF47LayNrebYH0ut7thXp
+ V2Iji56FP8fWnUoqEBIezF9eTFPq+vXd1bClFiwoZhcqexk=
+X-Received: by 2002:a5d:64e6:0:b0:3a3:4ba9:73b2 with SMTP id
+ ffacd0b85a97d-3a3511998b6mr7492930f8f.3.1747412442564; 
+ Fri, 16 May 2025 09:20:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHQrgIazV2BmuB7a1R1SmVIl6um6P5dnnDg5oWhq0riGWIA1p4XzKW5ox8fmcyJ4YAhUg99Ag==
+X-Received: by 2002:a5d:64e6:0:b0:3a3:4ba9:73b2 with SMTP id
+ ffacd0b85a97d-3a3511998b6mr7492901f8f.3.1747412442128; 
+ Fri, 16 May 2025 09:20:42 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:165:d60:bbdd:3c5e:7d8b:3f72?
+ ([2a01:e0a:165:d60:bbdd:3c5e:7d8b:3f72])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a361a81fd8sm2373535f8f.81.2025.05.16.09.20.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 16 May 2025 09:20:41 -0700 (PDT)
+Message-ID: <d989b8a9-16cb-4b5f-b6cb-299ce93883f5@redhat.com>
+Date: Fri, 16 May 2025 18:20:40 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V3 06/42] vfio/container: register container for cpr
+To: Steven Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>, Yi Liu
+ <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>
+References: <1747063973-124548-1-git-send-email-steven.sistare@oracle.com>
+ <1747063973-124548-7-git-send-email-steven.sistare@oracle.com>
+ <161947a0-f3fb-4ddb-b6c1-6e1a1e4d6849@redhat.com>
+ <2f36f035-6704-4a73-a9e7-953c27fb32d2@oracle.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <2f36f035-6704-4a73-a9e7-953c27fb32d2@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jmarcin@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -37
 X-Spam_score: -3.8
@@ -84,293 +160,236 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Juraj Marcin <jmarcin@redhat.com>
+On 5/15/25 21:06, Steven Sistare wrote:
+> On 5/15/2025 3:54 AM, Cédric Le Goater wrote:
+>> On 5/12/25 17:32, Steve Sistare wrote:
+>>> Register a legacy container for cpr-transfer, replacing the generic CPR
+>>> register call with a more specific legacy container register call.  Add a
+>>> blocker if the kernel does not support VFIO_UPDATE_VADDR or VFIO_UNMAP_ALL.
+>>>
+>>> This is mostly boiler plate.  The fields to to saved and restored are added
+>>> in subsequent patches.
+>>>
+>>> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+>>> ---
+>>>   hw/vfio/container.c              |  6 ++--
+>>>   hw/vfio/cpr-legacy.c             | 70 ++++++++++++++++++++++++++++++++++++++++
+>>>   hw/vfio/cpr.c                    |  5 ++-
+>>>   hw/vfio/meson.build              |  1 +
+>>>   include/hw/vfio/vfio-container.h |  2 ++
+>>>   include/hw/vfio/vfio-cpr.h       | 14 ++++++++
+>>>   6 files changed, 92 insertions(+), 6 deletions(-)
+>>>   create mode 100644 hw/vfio/cpr-legacy.c
+>>>
+>>> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+>>> index eb56f00..85c76da 100644
+>>> --- a/hw/vfio/container.c
+>>> +++ b/hw/vfio/container.c
+>>> @@ -642,7 +642,7 @@ static bool vfio_container_connect(VFIOGroup *group, AddressSpace *as,
+>>>       new_container = true;
+>>>       bcontainer = &container->bcontainer;
+>>> -    if (!vfio_cpr_register_container(bcontainer, errp)) {
+>>> +    if (!vfio_legacy_cpr_register_container(container, errp)) {
+>>>           goto fail;
+>>>       }
+>>> @@ -678,7 +678,7 @@ fail:
+>>>           vioc->release(bcontainer);
+>>>       }
+>>>       if (new_container) {
+>>> -        vfio_cpr_unregister_container(bcontainer);
+>>> +        vfio_legacy_cpr_unregister_container(container);
+>>>           object_unref(container);
+>>>       }
+>>>       if (fd >= 0) {
+>>> @@ -719,7 +719,7 @@ static void vfio_container_disconnect(VFIOGroup *group)
+>>>           VFIOAddressSpace *space = bcontainer->space;
+>>>           trace_vfio_container_disconnect(container->fd);
+>>> -        vfio_cpr_unregister_container(bcontainer);
+>>> +        vfio_legacy_cpr_unregister_container(container);
+>>>           close(container->fd);
+>>>           object_unref(container);
+>>> diff --git a/hw/vfio/cpr-legacy.c b/hw/vfio/cpr-legacy.c
+>>> new file mode 100644
+>>> index 0000000..fac323c
+>>> --- /dev/null
+>>> +++ b/hw/vfio/cpr-legacy.c
+>>> @@ -0,0 +1,70 @@
+>>> +/*
+>>> + * Copyright (c) 2021-2025 Oracle and/or its affiliates.
+>>> + *
+>>> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
+>>> + * See the COPYING file in the top-level directory.
+>>
+>> Please add a SPDX-License-Identifier tag.
+> 
+> Sure.  I'll do the same for my other new files.
 
-With the default TCP stack configuration, it could be even 2 hours
-before the connection times out due to the other side not being
-reachable. However, in some cases, the application needs to be aware of
-a connection issue much sooner.
+and remove the License boiler plate too please.
 
-This is the case, for example, for postcopy live migration. If there is
-no traffic from the migration destination guest (server-side) to the
-migration source guest (client-side), the destination keeps waiting for
-pages indefinitely and does not switch to the postcopy-paused state.
-This can happen, for example, if the destination QEMU instance is
-started with the '-S' command line option and the machine is not started
-yet, or if the machine is idle and produces no new page faults for
-not-yet-migrated pages.
+A newer version of checkpatch will complain with :
 
-This patch introduces new inet socket parameters that control count,
-idle period, and interval of TCP keep-alive packets before the
-connection is considered broken. These parameters are available on
-systems where the respective TCP socket options are defined, that
-includes Linux, Windows, macOS, but not OpenBSD. Additionally, macOS
-defines TCP_KEEPIDLE as TCP_KEEPALIVE instead, so the patch supplies its
-own definition.
+   ERROR: New file 'hw/vfio/cpr-legacy.c' requires 'SPDX-License-Identifier'
+   ERROR: New file 'hw/vfio/cpr-legacy.c' must not have license boilerplate header text unless this file is copied from existing code with such  text already present.
+   WARNING: added, moved or deleted file(s):
 
-The default value for all is 0, which means the system configuration is
-used.
+     hw/vfio/cpr-legacy.c
 
-Signed-off-by: Juraj Marcin <jmarcin@redhat.com>
----
- meson.build                    | 30 ++++++++++++
- qapi/sockets.json              | 19 ++++++++
- tests/unit/test-util-sockets.c | 33 ++++++++++++++
- util/qemu-sockets.c            | 83 ++++++++++++++++++++++++++++++++++
- 4 files changed, 165 insertions(+)
+   Does MAINTAINERS need updating?
 
-diff --git a/meson.build b/meson.build
-index ad2053f968..fdad3fb528 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2760,6 +2760,36 @@ if linux_io_uring.found()
-   config_host_data.set('HAVE_IO_URING_PREP_WRITEV2',
-                        cc.has_header_symbol('liburing.h', 'io_uring_prep_writev2'))
- endif
-+config_host_data.set('HAVE_TCP_KEEPCNT',
-+                     cc.has_header_symbol('netinet/tcp.h', 'TCP_KEEPCNT') or
-+                     cc.compiles('''
-+                     #include <ws2tcpip.h>
-+                     #ifndef TCP_KEEPCNT
-+                     #error
-+                     #endif
-+                     int main(void) { return 0; }''',
-+                     name: 'Win32 TCP_KEEPCNT'))
-+# On Darwin TCP_KEEPIDLE is available under different name, TCP_KEEPALIVE.
-+# https://github.com/apple/darwin-xnu/blob/xnu-4570.1.46/bsd/man/man4/tcp.4#L172
-+config_host_data.set('HAVE_TCP_KEEPIDLE',
-+                     cc.has_header_symbol('netinet/tcp.h', 'TCP_KEEPIDLE') or
-+                     cc.has_header_symbol('netinet/tcp.h', 'TCP_KEEPALIVE') or
-+                     cc.compiles('''
-+                     #include <ws2tcpip.h>
-+                     #ifndef TCP_KEEPIDLE
-+                     #error
-+                     #endif
-+                     int main(void) { return 0; }''',
-+                     name: 'Win32 TCP_KEEPIDLE'))
-+config_host_data.set('HAVE_TCP_KEEPINTVL',
-+                     cc.has_header_symbol('netinet/tcp.h', 'TCP_KEEPINTVL') or
-+                     cc.compiles('''
-+                     #include <ws2tcpip.h>
-+                     #ifndef TCP_KEEPINTVL
-+                     #error
-+                     #endif
-+                     int main(void) { return 0; }''',
-+                     name: 'Win32 TCP_KEEPINTVL'))
- 
- # has_member
- config_host_data.set('HAVE_SIGEV_NOTIFY_THREAD_ID',
-diff --git a/qapi/sockets.json b/qapi/sockets.json
-index 62797cd027..f9f559daba 100644
---- a/qapi/sockets.json
-+++ b/qapi/sockets.json
-@@ -59,6 +59,22 @@
- # @keep-alive: enable keep-alive when connecting to/listening on this socket.
- #     (Since 4.2, not supported for listening sockets until 10.1)
- #
-+# @keep-alive-count: number of keep-alive packets sent before the connection is
-+#     closed.  Only supported for TCP sockets on systems where TCP_KEEPCNT
-+#     socket option is defined (this includes Linux, Windows, macOS, FreeBSD,
-+#     but not OpenBSD).  When set to 0, system setting is used.  (Since 10.1)
-+#
-+# @keep-alive-idle: time in seconds the connection needs to be idle before
-+#     sending a keepalive packet.  Only supported for TCP sockets on systems
-+#     where TCP_KEEPIDLE socket option is defined (this includes Linux,
-+#     Windows, macOS, FreeBSD, but not OpenBSD).  When set to 0, system setting
-+#     is used.  (Since 10.1)
-+#
-+# @keep-alive-interval: time in seconds between keep-alive packets.  Only
-+#     supported for TCP sockets on systems where TCP_KEEPINTVL is defined (this
-+#     includes Linux, Windows, macOS, FreeBSD, but not OpenBSD).  When set to
-+#     0, system setting is used.  (Since 10.1)
-+#
- # @mptcp: enable multi-path TCP.  (Since 6.1)
- #
- # Since: 1.3
-@@ -71,6 +87,9 @@
-     '*ipv4': 'bool',
-     '*ipv6': 'bool',
-     '*keep-alive': 'bool',
-+    '*keep-alive-count': { 'type': 'uint32', 'if': 'HAVE_TCP_KEEPCNT' },
-+    '*keep-alive-idle': { 'type': 'uint32', 'if': 'HAVE_TCP_KEEPIDLE' },
-+    '*keep-alive-interval': { 'type': 'uint32', 'if': 'HAVE_TCP_KEEPINTVL' },
-     '*mptcp': { 'type': 'bool', 'if': 'HAVE_IPPROTO_MPTCP' } } }
- 
- ##
-diff --git a/tests/unit/test-util-sockets.c b/tests/unit/test-util-sockets.c
-index 77d0767b9b..e4fb5b702a 100644
---- a/tests/unit/test-util-sockets.c
-+++ b/tests/unit/test-util-sockets.c
-@@ -358,6 +358,18 @@ static void inet_parse_test_helper(const char *str, InetSocketAddress *exp_addr,
-         g_assert_cmpint(addr.ipv6, ==, exp_addr->ipv6);
-         g_assert_cmpint(addr.has_keep_alive, ==, exp_addr->has_keep_alive);
-         g_assert_cmpint(addr.keep_alive, ==, exp_addr->keep_alive);
-+#ifdef HAVE_TCP_KEEPCNT
-+        g_assert_cmpint(addr.has_keep_alive_count, ==, exp_addr->has_keep_alive_count);
-+        g_assert_cmpint(addr.keep_alive_count, ==, exp_addr->keep_alive_count);
-+#endif
-+#ifdef HAVE_TCP_KEEPIDLE
-+        g_assert_cmpint(addr.has_keep_alive_idle, ==, exp_addr->has_keep_alive_idle);
-+        g_assert_cmpint(addr.keep_alive_idle, ==, exp_addr->keep_alive_idle);
-+#endif
-+#ifdef HAVE_TCP_KEEPINTVL
-+        g_assert_cmpint(addr.has_keep_alive_interval, ==, exp_addr->has_keep_alive_interval);
-+        g_assert_cmpint(addr.keep_alive_interval, ==, exp_addr->keep_alive_interval);
-+#endif
- #ifdef HAVE_IPPROTO_MPTCP
-         g_assert_cmpint(addr.has_mptcp, ==, exp_addr->has_mptcp);
-         g_assert_cmpint(addr.mptcp, ==, exp_addr->mptcp);
-@@ -459,6 +471,18 @@ static void test_inet_parse_all_options_good(void)
-         .ipv6 = true,
-         .has_keep_alive = true,
-         .keep_alive = true,
-+#ifdef HAVE_TCP_KEEPCNT
-+        .has_keep_alive_count = true,
-+        .keep_alive_count = 10,
-+#endif
-+#ifdef HAVE_TCP_KEEPIDLE
-+        .has_keep_alive_idle = true,
-+        .keep_alive_idle = 60,
-+#endif
-+#ifdef HAVE_TCP_KEEPINTVL
-+        .has_keep_alive_interval = true,
-+        .keep_alive_interval = 30,
-+#endif
- #ifdef HAVE_IPPROTO_MPTCP
-         .has_mptcp = true,
-         .mptcp = true,
-@@ -466,6 +490,15 @@ static void test_inet_parse_all_options_good(void)
-     };
-     inet_parse_test_helper(
-         "[::1]:5000,numeric,to=5006,ipv4=off,ipv6=on,keep-alive"
-+#ifdef HAVE_TCP_KEEPCNT
-+        ",keep-alive-count=10"
-+#endif
-+#ifdef HAVE_TCP_KEEPIDLE
-+        ",keep-alive-idle=60"
-+#endif
-+#ifdef HAVE_TCP_KEEPINTVL
-+        ",keep-alive-interval=30"
-+#endif
- #ifdef HAVE_IPPROTO_MPTCP
-         ",mptcp"
- #endif
-diff --git a/util/qemu-sockets.c b/util/qemu-sockets.c
-index 403dc26b36..3da5c18870 100644
---- a/util/qemu-sockets.c
-+++ b/util/qemu-sockets.c
-@@ -45,6 +45,14 @@
- # define AI_NUMERICSERV 0
- #endif
- 
-+/*
-+ * On macOS TCP_KEEPIDLE is available under a different name, TCP_KEEPALIVE.
-+ * https://github.com/apple/darwin-xnu/blob/xnu-4570.1.46/bsd/man/man4/tcp.4#L172
-+ */
-+#if defined(TCP_KEEPALIVE) && !defined(TCP_KEEPIDLE)
-+# define TCP_KEEPIDLE TCP_KEEPALIVE
-+#endif
-+
- 
- static int inet_getport(struct addrinfo *e)
- {
-@@ -218,6 +226,45 @@ static int inet_set_sockopts(int sock, InetSocketAddress *saddr, Error **errp)
-                              "Unable to set keep-alive option on socket");
-             return -1;
-         }
-+#ifdef HAVE_TCP_KEEPCNT
-+        if (saddr->has_keep_alive_count &&
-+            saddr->keep_alive_count) {
-+            int keep_count = saddr->has_keep_alive_count;
-+            ret = setsockopt(sock, IPPROTO_TCP, TCP_KEEPCNT, &keep_count,
-+                             sizeof(keep_count));
-+            if (ret < 0) {
-+                error_setg_errno(errp, errno,
-+                                 "Unable to set TCP keep-alive count option on socket");
-+                return -1;
-+            }
-+        }
-+#endif
-+#ifdef HAVE_TCP_KEEPIDLE
-+        if (saddr->has_keep_alive_idle &&
-+            saddr->keep_alive_idle) {
-+            int keep_idle = saddr->has_keep_alive_idle;
-+            ret = setsockopt(sock, IPPROTO_TCP, TCP_KEEPIDLE, &keep_idle,
-+                             sizeof(keep_idle));
-+            if (ret < 0) {
-+                error_setg_errno(errp, errno,
-+                                 "Unable to set TCP keep-alive idle option on socket");
-+                return -1;
-+            }
-+        }
-+#endif
-+#ifdef HAVE_TCP_KEEPINTVL
-+        if (saddr->has_keep_alive_interval &&
-+            saddr->keep_alive_interval) {
-+            int keep_interval = saddr->has_keep_alive_interval;
-+            ret = setsockopt(sock, IPPROTO_TCP, TCP_KEEPINTVL, &keep_interval,
-+                             sizeof(keep_interval));
-+            if (ret < 0) {
-+                error_setg_errno(errp, errno,
-+                                 "Unable to set TCP keep-alive interval option on socket");
-+                return -1;
-+            }
-+        }
-+#endif
-     }
-     return 0;
- }
-@@ -630,6 +677,24 @@ static QemuOptsList inet_opts = {
-             .name = "keep-alive",
-             .type = QEMU_OPT_BOOL,
-         },
-+#ifdef HAVE_TCP_KEEPCNT
-+        {
-+            .name = "keep-alive-count",
-+            .type = QEMU_OPT_NUMBER,
-+        },
-+#endif
-+#ifdef HAVE_TCP_KEEPIDLE
-+        {
-+            .name = "keep-alive-idle",
-+            .type = QEMU_OPT_NUMBER,
-+        },
-+#endif
-+#ifdef HAVE_TCP_KEEPINTVL
-+        {
-+            .name = "keep-alive-interval",
-+            .type = QEMU_OPT_NUMBER,
-+        },
-+#endif
- #ifdef HAVE_IPPROTO_MPTCP
-         {
-             .name = "mptcp",
-@@ -695,6 +760,24 @@ int inet_parse(InetSocketAddress *addr, const char *str, Error **errp)
-         addr->has_keep_alive = true;
-         addr->keep_alive = qemu_opt_get_bool(opts, "keep-alive", false);
-     }
-+#ifdef HAVE_TCP_KEEPCNT
-+    if (qemu_opt_find(opts, "keep-alive-count")) {
-+        addr->has_keep_alive_count = true;
-+        addr->keep_alive_count = qemu_opt_get_number(opts, "keep-alive-count", 0);
-+    }
-+#endif
-+#ifdef HAVE_TCP_KEEPIDLE
-+    if (qemu_opt_find(opts, "keep-alive-idle")) {
-+        addr->has_keep_alive_idle = true;
-+        addr->keep_alive_idle = qemu_opt_get_number(opts, "keep-alive-idle", 0);
-+    }
-+#endif
-+#ifdef HAVE_TCP_KEEPINTVL
-+    if (qemu_opt_find(opts, "keep-alive-interval")) {
-+        addr->has_keep_alive_interval = true;
-+        addr->keep_alive_interval = qemu_opt_get_number(opts, "keep-alive-interval", 0);
-+    }
-+#endif
- #ifdef HAVE_IPPROTO_MPTCP
-     if (qemu_opt_find(opts, "mptcp")) {
-         addr->has_mptcp = true;
--- 
-2.49.0
+   total: 2 errors, 1 warnings, 152 lines checked
+
+
+Thanks,
+
+C.
+
+
+> 
+>>> + */
+>>> +
+>>> +#include <sys/ioctl.h>
+>>> +#include <linux/vfio.h>
+>>> +#include "qemu/osdep.h"
+>>> +#include "hw/vfio/vfio-container.h"
+>>> +#include "hw/vfio/vfio-cpr.h"
+>>> +#include "migration/blocker.h"
+>>> +#include "migration/cpr.h"
+>>> +#include "migration/migration.h"
+>>> +#include "migration/vmstate.h"
+>>> +#include "qapi/error.h"
+>>> +
+>>> +static bool vfio_cpr_supported(VFIOContainer *container, Error **errp)
+>>> +{
+>>> +    if (!ioctl(container->fd, VFIO_CHECK_EXTENSION, VFIO_UPDATE_VADDR)) {
+>>> +        error_setg(errp, "VFIO container does not support VFIO_UPDATE_VADDR");
+>>> +        return false;
+>>> +
+>>> +    } else if (!ioctl(container->fd, VFIO_CHECK_EXTENSION, VFIO_UNMAP_ALL)) {
+>>> +        error_setg(errp, "VFIO container does not support VFIO_UNMAP_ALL");
+>>> +        return false;
+>>> +
+>>> +    } else {
+>>> +        return true;
+>>> +    }
+>>> +}
+>>> +
+>>> +static const VMStateDescription vfio_container_vmstate = {
+>>> +    .name = "vfio-container",
+>>> +    .version_id = 0,
+>>> +    .minimum_version_id = 0,
+>>> +    .needed = cpr_needed_for_reuse,
+>>> +    .fields = (VMStateField[]) {
+>>> +        VMSTATE_END_OF_LIST()
+>>> +    }
+>>> +};
+>>> +
+>>> +bool vfio_legacy_cpr_register_container(VFIOContainer *container, Error **errp)
+>>> +{
+>>> +    VFIOContainerBase *bcontainer = &container->bcontainer;
+>>> +    Error **cpr_blocker = &container->cpr.blocker;
+>>> +
+>>> +    migration_add_notifier_mode(&bcontainer->cpr_reboot_notifier,
+>>> +                                vfio_cpr_reboot_notifier,
+>>> +                                MIG_MODE_CPR_REBOOT);
+>>> +
+>>> +    if (!vfio_cpr_supported(container, cpr_blocker)) {
+>>> +        return migrate_add_blocker_modes(cpr_blocker, errp,
+>>> +                                         MIG_MODE_CPR_TRANSFER, -1) == 0;
+>>> +    }
+>>> +
+>>> +    vmstate_register(NULL, -1, &vfio_container_vmstate, container);
+>>> +
+>>> +    return true;
+>>> +}
+>>> +
+>>> +void vfio_legacy_cpr_unregister_container(VFIOContainer *container)
+>>> +{
+>>> +    VFIOContainerBase *bcontainer = &container->bcontainer;
+>>> +
+>>> +    migration_remove_notifier(&bcontainer->cpr_reboot_notifier);
+>>> +    migrate_del_blocker(&container->cpr.blocker);
+>>> +    vmstate_unregister(NULL, &vfio_container_vmstate, container);
+>>> +}
+>>> diff --git a/hw/vfio/cpr.c b/hw/vfio/cpr.c
+>>> index 0210e76..0e59612 100644
+>>> --- a/hw/vfio/cpr.c
+>>> +++ b/hw/vfio/cpr.c
+>>> @@ -7,13 +7,12 @@
+>>>   #include "qemu/osdep.h"
+>>>   #include "hw/vfio/vfio-device.h"
+>>> -#include "migration/misc.h"
+>>>   #include "hw/vfio/vfio-cpr.h"
+>>>   #include "qapi/error.h"
+>>>   #include "system/runstate.h"
+>>> -static int vfio_cpr_reboot_notifier(NotifierWithReturn *notifier,
+>>> -                                    MigrationEvent *e, Error **errp)
+>>> +int vfio_cpr_reboot_notifier(NotifierWithReturn *notifier,
+>>> +                             MigrationEvent *e, Error **errp)
+>>>   {
+>>>       if (e->type == MIG_EVENT_PRECOPY_SETUP &&
+>>>           !runstate_check(RUN_STATE_SUSPENDED) && !vm_get_suspended()) {
+>>> diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
+>>> index bccb050..73d29f9 100644
+>>> --- a/hw/vfio/meson.build
+>>> +++ b/hw/vfio/meson.build
+>>> @@ -21,6 +21,7 @@ system_ss.add(when: 'CONFIG_VFIO_XGMAC', if_true: files('calxeda-xgmac.c'))
+>>>   system_ss.add(when: 'CONFIG_VFIO_AMD_XGBE', if_true: files('amd-xgbe.c'))
+>>>   system_ss.add(when: 'CONFIG_VFIO', if_true: files(
+>>>     'cpr.c',
+>>> +  'cpr-legacy.c',
+>>>     'device.c',
+>>>     'migration.c',
+>>>     'migration-multifd.c',
+>>> diff --git a/include/hw/vfio/vfio-container.h b/include/hw/vfio/vfio-container.h
+>>> index afc498d..21e5807 100644
+>>> --- a/include/hw/vfio/vfio-container.h
+>>> +++ b/include/hw/vfio/vfio-container.h
+>>> @@ -10,6 +10,7 @@
+>>>   #define HW_VFIO_CONTAINER_H
+>>>   #include "hw/vfio/vfio-container-base.h"
+>>> +#include "hw/vfio/vfio-cpr.h"
+>>>   typedef struct VFIOContainer VFIOContainer;
+>>>   typedef struct VFIODevice VFIODevice;
+>>> @@ -29,6 +30,7 @@ typedef struct VFIOContainer {
+>>>       int fd; /* /dev/vfio/vfio, empowered by the attached groups */
+>>>       unsigned iommu_type;
+>>>       QLIST_HEAD(, VFIOGroup) group_list;
+>>> +    VFIOContainerCPR cpr;
+>>>   } VFIOContainer;
+>>>   OBJECT_DECLARE_SIMPLE_TYPE(VFIOContainer, VFIO_IOMMU_LEGACY);
+>>> diff --git a/include/hw/vfio/vfio-cpr.h b/include/hw/vfio/vfio-cpr.h
+>>> index 750ea5b..f864547 100644
+>>> --- a/include/hw/vfio/vfio-cpr.h
+>>> +++ b/include/hw/vfio/vfio-cpr.h
+>>> @@ -9,8 +9,22 @@
+>>>   #ifndef HW_VFIO_VFIO_CPR_H
+>>>   #define HW_VFIO_VFIO_CPR_H
+>>> +#include "migration/misc.h"
+>>> +
+>>> +typedef struct VFIOContainerCPR {
+>>> +    Error *blocker;
+>>> +} VFIOContainerCPR;
+>>> +
+>>> +struct VFIOContainer;
+>>>   struct VFIOContainerBase;
+>>> +bool vfio_legacy_cpr_register_container(struct VFIOContainer *container,
+>>> +                                        Error **errp);
+>>> +void vfio_legacy_cpr_unregister_container(struct VFIOContainer *container);
+>>> +
+>>> +int vfio_cpr_reboot_notifier(NotifierWithReturn *notifier, MigrationEvent *e,
+>>> +                             Error **errp);
+>>> +
+>>>   bool vfio_cpr_register_container(struct VFIOContainerBase *bcontainer,
+>>>                                    Error **errp);
+>>>   void vfio_cpr_unregister_container(struct VFIOContainerBase *bcontainer);
+>>
+>> what about vfio_cpr_un/register_container ? Shouldn't we remove them ?
+> 
+> At this patch in the series, those are still used by iommufd containers.
+> Those uses are removed in "vfio/iommufd: register container for cpr", and
+> vfio_cpr_un/register_container are deleted by the last patch in the series.
+> 
+> - Steve
+> 
 
 
