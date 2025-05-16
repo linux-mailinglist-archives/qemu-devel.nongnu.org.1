@@ -2,77 +2,140 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4831FAB9F96
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 May 2025 17:14:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8178FAB9FC2
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 May 2025 17:22:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFwky-0002RG-Rd; Fri, 16 May 2025 11:13:53 -0400
+	id 1uFwsJ-0004yg-HE; Fri, 16 May 2025 11:21:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uFwko-0002Qo-Mt
- for qemu-devel@nongnu.org; Fri, 16 May 2025 11:13:43 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uFwsH-0004yM-N3
+ for qemu-devel@nongnu.org; Fri, 16 May 2025 11:21:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uFwkm-0005Qq-OK
- for qemu-devel@nongnu.org; Fri, 16 May 2025 11:13:42 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uFwsD-0006OJ-MN
+ for qemu-devel@nongnu.org; Fri, 16 May 2025 11:21:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747408419;
+ s=mimecast20190719; t=1747408879;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=9Ruv5/J5VYkKEWrD/cz7hCgfh11LAVpqqxOAHUaNUOI=;
- b=cFVJom1qaiCFNJIasB4w6B/QSTnqmOxyxPa4uHpuCxCAMzH8hwD/7p0a05+DHmXYzJ2r4Q
- O895ZjmhPoehshEcv0kDx+8g7SUFTgaIm2OOIo0/fHWK+Ocy55mh+4H2Zao7fH9lBjXupu
- 4KZoiZyV79u995bFYFo65pvz0k1Jctg=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-456-cadUfcVzOxujBeu41zZfUA-1; Fri,
- 16 May 2025 11:13:37 -0400
-X-MC-Unique: cadUfcVzOxujBeu41zZfUA-1
-X-Mimecast-MFC-AGG-ID: cadUfcVzOxujBeu41zZfUA_1747408415
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 56D261954235; Fri, 16 May 2025 15:13:34 +0000 (UTC)
-Received: from localhost (dhcp-192-216.str.redhat.com [10.33.192.216])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A890119560AE; Fri, 16 May 2025 15:13:32 +0000 (UTC)
-From: Cornelia Huck <cohuck@redhat.com>
-To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, kvmarm@lists.linux.dev, peter.maydell@linaro.org,
- richard.henderson@linaro.org, alex.bennee@linaro.org, maz@kernel.org,
- oliver.upton@linux.dev, sebott@redhat.com,
- shameerali.kolothum.thodi@huawei.com, armbru@redhat.com,
- abologna@redhat.com, jdenemar@redhat.com, agraf@csgraf.de,
- shahuang@redhat.com, mark.rutland@arm.com, philmd@linaro.org,
- pbonzini@redhat.com
-Subject: Re: [PATCH v3 08/10] arm/cpu: more customization for the kvm host
- cpu model
-In-Reply-To: <aCdSZD5n2GCRXjVQ@redhat.com>
-Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
- Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
- 153243,
- =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
- Michael O'Neill, Amy Ross"
-References: <20250414163849.321857-1-cohuck@redhat.com>
- <20250414163849.321857-9-cohuck@redhat.com> <aCNsSbDoi5oKWYul@redhat.com>
- <875xi3cig5.fsf@redhat.com> <aCTe5kEN1WdgZ74T@redhat.com>
- <87v7q0bocp.fsf@redhat.com> <aCdSZD5n2GCRXjVQ@redhat.com>
-User-Agent: Notmuch/0.38.3 (https://notmuchmail.org)
-Date: Fri, 16 May 2025 17:13:30 +0200
-Message-ID: <87sel4bnc5.fsf@redhat.com>
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=wFggqDWzMVFII9BooOwcYa/wOnzTJLJ6eiZQgD132/Y=;
+ b=gCh/GuZecNysnSDHnBNZShwRyAgCVe/OVYVj0AhGfnLS+ER5Pg+bNx+ZocZ95a2pa8GK9t
+ eQSlqbMYw6cgCgVT3v/NtA7xpEaGQ2WRfWrPiv855wFb68ktxuxKqjfgwe9eXWFORLLtfb
+ hfK/otFm/LljwTaD/njNIt2o939Ly6A=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-312-P_LdyJwOOjm79I9pVROSXw-1; Fri, 16 May 2025 11:21:17 -0400
+X-MC-Unique: P_LdyJwOOjm79I9pVROSXw-1
+X-Mimecast-MFC-AGG-ID: P_LdyJwOOjm79I9pVROSXw_1747408877
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-442e0e6eb84so15477135e9.0
+ for <qemu-devel@nongnu.org>; Fri, 16 May 2025 08:21:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747408876; x=1748013676;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=wFggqDWzMVFII9BooOwcYa/wOnzTJLJ6eiZQgD132/Y=;
+ b=awZePL07wKoKi8W2XHi4oYniUno+B9yjcIwdcZ1jghsSLxu4pFog1tOSIQATN4oBiq
+ +roBuHV5FIOTVseIasViq0EvQHP+4aeC13vqdqhiZOCrc/99oTKOUxgIAJ6sZyRaDvkY
+ sCI9nvOeGR70msDwFTd7XEhpuCkz634AuZ974YIQEwHzAFm7/YklxuQoVi6x/NNUJP93
+ WlLiCwW+XdJ6IQUquq6YGelUZNcnV/P0wpaMuHbMcUCwyjxiKss0/aOhhs0ANO/gcFNk
+ JR2PKq2+TEUcY7LjUkrLBRFcVtdWWAbi6935CYGTLAIpZnZzAhssthYfONBrdNMKyxV9
+ q5og==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVAXlzCFpvloECmJtdJZIwqbp43y4bpi6EbVFRBbuqjipRGZ77FkUGluy2Sg3vr/QmaxfNnaWiCNrQN@nongnu.org
+X-Gm-Message-State: AOJu0YzoXxF1ZUt9XaNp1wOZmVEp61HX9hMV1Favm7SGvoI2AVYqNGhY
+ fc6kJgwkeoNWZPlt9WCQKnAM38X9vKJfiib9/ss6aLZk3iTWfGpNucgpbgXWRUKpZGRCNDu59fq
+ 6ZKOm4M4UbcPcdqwFKFJbMKf0VTsPzinmiU4Ejx9elV/IWWfSM22XawqGttOHkvi+7bY=
+X-Gm-Gg: ASbGncsprNNTIbGbjwfncqnd15N7z1oIb2rvxi3sFoo7MdVGAOeRzBZz7jT2fVWgo5R
+ AX1lSzHgL8c4U27jv7ujkFuZOfhd5fVG9UyOZfMshqAQp5DVsIFuhTi7Cyih+Wz7Lqnyen8B60k
+ trbqjYv4IBoW6lhlK146D4n4KIo/ziPp5sXvq2dgRU9Sx2rQRzLgYCPd77ydX9nv2KO0sGw5uJP
+ AjKzqIlp7frQojrl6O2YL6fovZPk682qyaZDhgh/Fj4bS9nYfWWLLpsy9+IRO5rqLHyCNlbDbBe
+ jfEzZMIJzY3qwmXeQ4Qm9gSGU/M1pHqt/JD8kXBSd9AmuJw=
+X-Received: by 2002:a05:600c:3554:b0:442:cd13:f15d with SMTP id
+ 5b1f17b1804b1-442fd67197dmr38960375e9.29.1747408876236; 
+ Fri, 16 May 2025 08:21:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG+NBLu/UuIOripSZmxtv5RZiGBc/cKpSYqTKlvev46Na/6/0jMmo6OdzVG/0wYkAnh71BHEw==
+X-Received: by 2002:a05:600c:3554:b0:442:cd13:f15d with SMTP id
+ 5b1f17b1804b1-442fd67197dmr38960065e9.29.1747408875882; 
+ Fri, 16 May 2025 08:21:15 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:165:d60:bbdd:3c5e:7d8b:3f72?
+ ([2a01:e0a:165:d60:bbdd:3c5e:7d8b:3f72])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-442eb85a3b1sm87938605e9.0.2025.05.16.08.21.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 16 May 2025 08:21:15 -0700 (PDT)
+Message-ID: <cf581a09-6d6c-48f8-8b9d-3142b7a1e8a0@redhat.com>
+Date: Fri, 16 May 2025 17:21:14 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 03/27] vfio: move more cleanup into vfio_pci_put_device()
+To: John Levon <john.levon@nutanix.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Thanos Makatos <thanos.makatos@nutanix.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20250515154413.210315-1-john.levon@nutanix.com>
+ <20250515154413.210315-4-john.levon@nutanix.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <20250515154413.210315-4-john.levon@nutanix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -37
 X-Spam_score: -3.8
@@ -97,99 +160,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 16 2025, Daniel P. Berrang=C3=A9 <berrange@redhat.com> wrote:
+On 5/15/25 17:43, John Levon wrote:
+> All of the cleanup can be done in the same place, and vfio-user will
+> want to do the same.
+> 
+> Signed-off-by: John Levon <john.levon@nutanix.com>
 
-> On Fri, May 16, 2025 at 04:51:34PM +0200, Cornelia Huck wrote:
->> On Wed, May 14 2025, Daniel P. Berrang=C3=A9 <berrange@redhat.com> wrote:
->>=20
->> > On Wed, May 14, 2025 at 05:36:58PM +0200, Cornelia Huck wrote:
->> >> On Tue, May 13 2025, Daniel P. Berrang=C3=A9 <berrange@redhat.com> wr=
-ote:
->> >>=20
->> >> > On Mon, Apr 14, 2025 at 06:38:47PM +0200, Cornelia Huck wrote:
->> >> >> From: Eric Auger <eric.auger@redhat.com>
->> >> >>=20
->> >> >> If the interface for writable ID registers is available, expose ui=
-nt64
->> >> >> SYSREG properties for writable ID reg fields exposed by the host
->> >> >> kernel. Properties are named  SYSREG_<REG>_<FIELD> with REG and FI=
-ELD
->> >> >> being those used  in linux arch/arm64/tools/sysreg. This done by
->> >> >> matching the writable fields retrieved from the host kernel agains=
-t the
->> >> >> generated description of sysregs.
->> >> >>=20
->> >> >> An example of invocation is:
->> >> >> -cpu host,SYSREG_ID_AA64ISAR0_EL1_DP=3D0x0
->> >> >> which sets DP field of ID_AA64ISAR0_EL1 to 0.
->> >> >
->> >> > For the value you are illustrating 0x0 - is this implying that
->> >> > all the flags take an arbitrary integer hex value ?
->> >> >
->> >> > This would be different from x86, where CPU feature flags are
->> >> > a boolean on/off state.
->> >>=20
->> >> Most of the fields are 4 bits, the allowed values vary (there are also
->> >> some fields that are single bits, or wider.) The FEAT_xxx values (whi=
-ch
->> >> can be expressed via ID register fields, or a combination thereof) are
->> >> mostly boolean, but there are also some of them that can take values.
->> >>=20
->> >> We could cook up pseudo-features that are always on/off, but I don't
->> >> like that approach: they would be QEMU only, whereas the ID register
->> >> fields and FEAT_xxx features are all defined in the Arm documentation.
->> >
->> > Fortunately from a libvirt POV we can likely expand our config
->> > to cope with hex values for arm features without too much
->> > trouble.
->> >
->> >>=20
->> >> An additional difference from x86 would be that FEAT_xxx featues are =
-not
->> >> neccessarily configurable (only if the host kernel supports changing =
-the
->> >> ID register field(s) backing the feature.)
->> >
->> > Is the kernel able to tell us which ones are configurable and which
->> > are not ? If so, it'd be helpful to expose this info in QAPI some
->> > place.
->>=20
->> The kernel can tell us which ID register fields are writable (we won't
->> generate properties if we don't.) For FEAT_xxx, this depends on how
->> we'll end up handling them (maybe we should only expose them if all ID
->> register bits backing them are actually writable.)
->>=20
->> What worries me a bit is that QEMU exposing a certain set of FEAT_xxx
->> values could be interpreted as "those features are present, any other
->> features aren't", while it is only the list of configurable features.
->>=20
->> Another issue: If libvirt is trying to baseline two cpus, it might end
->> up creating a model that looks sane on paper, but migrations will fail
->> because there are differences in non-writable bits. It would be much
->> better if libvirt could detect beforehand that there was no common
->> determinator. Not yet sure how to handle this.
->
-> For "host" model that's probably not the end of the world. Apps have
-> already given up strong guarantee of migration compat by using 'host'
-> CPU and so in that context libvirt's feature comparison can assume
-> the underlying silicon is a match and just compare features.
->
->
-> In that sense the ability to list features and baseline two cpus
-> lets you guarantee that whatever CPU you boot the guest on, will
-> have at least those requested features. That's useful, even if it
-> does not give you a strong migration compat guarantee.
->
-> Doing better would require info on non-writable features, and
-> possibly even that might not be sufficient to guarantee compat
 
-We'd probably want to use named models rather than 'host' for better
-generic handling, but that's a whole different can of worms that I'd
-prefer to keep closed right now.
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
-OTOH, 'host' with some features tweaked is already useful if you want to
-migrate across machines in a heterogeneous environment with known
-players (i.e. you know that the various machines only differ in features
-that you can actually configure.)
+Thanks,
+
+C.
+
+
+> ---
+>   hw/vfio/pci.c | 23 ++++++++++++-----------
+>   1 file changed, 12 insertions(+), 11 deletions(-)
+> 
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index a1bfdfe375..d96b55f80c 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -2854,6 +2854,18 @@ static bool vfio_populate_device(VFIOPCIDevice *vdev, Error **errp)
+>   
+>   static void vfio_pci_put_device(VFIOPCIDevice *vdev)
+>   {
+> +    vfio_display_finalize(vdev);
+> +    vfio_bars_finalize(vdev);
+> +    g_free(vdev->emulated_config_bits);
+> +    g_free(vdev->rom);
+> +    /*
+> +     * XXX Leaking igd_opregion is not an oversight, we can't remove the
+> +     * fw_cfg entry therefore leaking this allocation seems like the safest
+> +     * option.
+> +     *
+> +     * g_free(vdev->igd_opregion);
+> +     */
+> +
+>       vfio_device_detach(&vdev->vbasedev);
+>   
+>       g_free(vdev->vbasedev.name);
+> @@ -3302,17 +3314,6 @@ static void vfio_instance_finalize(Object *obj)
+>   {
+>       VFIOPCIDevice *vdev = VFIO_PCI_BASE(obj);
+>   
+> -    vfio_display_finalize(vdev);
+> -    vfio_bars_finalize(vdev);
+> -    g_free(vdev->emulated_config_bits);
+> -    g_free(vdev->rom);
+> -    /*
+> -     * XXX Leaking igd_opregion is not an oversight, we can't remove the
+> -     * fw_cfg entry therefore leaking this allocation seems like the safest
+> -     * option.
+> -     *
+> -     * g_free(vdev->igd_opregion);
+> -     */
+>       vfio_pci_put_device(vdev);
+>   }
+>   
 
 
