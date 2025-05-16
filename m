@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEA0FAB930E
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 May 2025 02:13:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA58CAB9313
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 May 2025 02:16:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFihK-0003hA-PT; Thu, 15 May 2025 20:13:11 -0400
+	id 1uFijv-0005S4-Rc; Thu, 15 May 2025 20:15:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1uFihI-0003gi-EG; Thu, 15 May 2025 20:13:08 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ id 1uFije-0005Qa-P0; Thu, 15 May 2025 20:15:34 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1uFihD-00037I-Jy; Thu, 15 May 2025 20:13:08 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-af523f4511fso1140237a12.0; 
- Thu, 15 May 2025 17:13:02 -0700 (PDT)
+ id 1uFijc-0003P6-RG; Thu, 15 May 2025 20:15:34 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-74264d1832eso2120499b3a.0; 
+ Thu, 15 May 2025 17:15:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747354381; x=1747959181; darn=nongnu.org;
- h=in-reply-to:references:from:subject:cc:to:message-id:date
+ d=gmail.com; s=20230601; t=1747354531; x=1747959331; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ne21q6MHswON5FDJKhgq3EjzjVFDznh1HEP17vjaZS4=;
- b=WYl9+Z0rpJYWVuCF8bMXtobAM62pvI3vLA+1mdETQEJ0D0oaxQiVh+9MAIbeF+wjp4
- 5DcVvppJ5dNYdydP+KRJTelWhZOlrOZIM0Bam3ExSdskyyc2Csk3WTLd4UkRSIHPXqY3
- ER/y8oF/uQt0RQJCxKBOcxCJrJkJAXz3Fx1uO7ayC1HTADdUv5Y/ioSsuOLZTB06WV7k
- 4TJanIiKf4NdOEE9KAtIS1J6dZiXpd3OoYJ9AdvStjtHnamZVOamF6V325Y3usln9uXa
- Xvf+4OSAce/ucWaQbfKDEdfAE0OuMojLTR8P0DoLFLkCITXOo3a0MBOTf15oQzU2wxP2
- Ouaw==
+ bh=2tXq37WJ2NYbiXeqNu8LviZUJ1fe9pNWi2RNotunKkA=;
+ b=EB0SXup8GKzEqBgaSqQSEjaY2v3/hsOX3Bot3y/kyEEXHz+YKZvdwxNam5ynD8/q12
+ mUUv5o0vS0jxx6tUqJ2ZaxY9Rbf+V2g3zylSSvpQkOnDScXtdWbw1KCck7Wu/MJ2SAA/
+ Y4RlYQ9XxjgXcVEc7DsfcIPse+u0UNuvxgIT5fgsEdE8+htTqw0TMrFOqShOGFhX6rUO
+ x8xUpuPXoV1psxUoA7xPVZXx3XaIJqWrhM52UygQziC2ZyeJ8IJhvlLZpi4zLPX7pSxV
+ Af82mdBId4yRNaG3GrAy9d/9EC2+1XB6mOjyP5aR4cXnBY5VjqfvzxSEwc1E5pVN+Taj
+ 2Awg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747354381; x=1747959181;
- h=in-reply-to:references:from:subject:cc:to:message-id:date
+ d=1e100.net; s=20230601; t=1747354531; x=1747959331;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=ne21q6MHswON5FDJKhgq3EjzjVFDznh1HEP17vjaZS4=;
- b=K99Jje+RnmgQuT2EhXF216gphKJNGsJxinZsLKS1yCzZ5aakMbOZzgh+lMDcm5Eoli
- rX7kHO96jANFxHQfeXfrnlyPPpcRVkYvQJA8qEVa6iKvh/vFj84Kk9PvvDu4XnONlHNV
- lRvo4eNc4EClO9LJqWDGJyz5EdL5YAhIdjioxdbrJ2fbPlO31yt7FS8pvdjM6IsFPHU7
- Yk2X/higLjo9Mm+jfbJcEZ5XVdKzoFq2XC0vqjXt9Ky1JREYNO/V0fzBMYcc/sV3YRa5
- dz08pD5DDUuTqv1sR8wpPAohz8dyzrX4my2vdZIb5jPX/02B24Oyyi55PDnDjouQVwp7
- 8xxg==
+ bh=2tXq37WJ2NYbiXeqNu8LviZUJ1fe9pNWi2RNotunKkA=;
+ b=LHgiD7DZk0/YtCvb8I8ymqulFxD23d0OOPa0kYwQXLkpxECtkJpRFFVGduoNKDWNCV
+ QfEzPY2KF0XrYbCdVcbBoJvT8ZawtAxYID9MhPQoRdjyz6tfcreFxHyZtTOpAMp8JVwU
+ KX8M4PIGmh4gjN2jpFk/oJYo4LltOwx4+SWIAOR5di6yA7CtM67LPnYCPphviO+uibXL
+ 5qkaeGg1Z78MUvKBCqv1RorkrJENVGiQB/5N63plXjuuLCSX9IPYPlkMEVnFjvA6ME1J
+ mG/Oa5LopItATpSsIa8ht7hoOK0NkH46NtRyhwyKVRjHrchOvA96q7YWD9tt4q+2R3HZ
+ AHkw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUuiIGaKAjgYlj8dMMiQ9VUtA8pX+KT5qf5pnvXGLv60fpcND/SHDgkTO24uDyJaRvNMv0QbHNNZw==@nongnu.org
-X-Gm-Message-State: AOJu0YyuQUSMGg+pzcJgZLPNL1BfaYthOQwnNVP7HyBbaWdShpNHFed2
- C6S/dKwdWPBcbSNJcKC36pCKit/nARaepbUUyGe96362edS4KmZq8ipH
-X-Gm-Gg: ASbGnct3iPvOH2CwdE+HKd47ZYztyOq/+72FLiN1B84WZGNlTXJnAR9PhnS2zf6P0Mx
- EoISUc0ITGbokpNTPazeiYZKDy1rC1SnMh6OvZSC1zzavzvMxnOC55DEx6YcPSe7eobcQbAlhyW
- sbUiqipanUnk4mPwMHWhVcxqPTav4DD46t+jhQZt/43Q9enDBcfp9mYQcpqOtCQ6PDWq1ia4sCc
- 4H/5Aospz7MO7CxfmEfVFyZgBDoQDyaH/mMfsK0hC1BBpNnr4NhIg9P+RxaU6TkzunJYEJlXPld
- Z/8nwsBW5x0Tu/H7L9pdOUdUCSw5l17TzGMLwy7RIe+QDF8Y4LMa/S9c6Q==
-X-Google-Smtp-Source: AGHT+IGTFTaNdoQEMnhsTQe3/G2uiMzr+9ucfCcWm7YGGQVkQm35IwIY/cB3XrPZEEScFgtSgZsvQg==
-X-Received: by 2002:a17:903:19c4:b0:220:e655:d77 with SMTP id
- d9443c01a7336-231d452d0e3mr16460925ad.36.1747354381486; 
- Thu, 15 May 2025 17:13:01 -0700 (PDT)
+ AJvYcCXQTGynTUBn+nWJ5m7LZYfGeGXnKE+byUdy8qfJtevp8ImYN+Btss5IOsBK6S9WPiXUPxTMTfy8Cg==@nongnu.org
+X-Gm-Message-State: AOJu0Yz8orDpKqIwMe2BRFZeCvWIa3AjbIS0SJdvPQtjaw7ai1BfTA32
+ y/y2YW+AoUt+S2+fwhdBQb8GW53Xx07GbW1s+szwfBjE8OcSF7SqCCso
+X-Gm-Gg: ASbGncs8rZ8qC9c6iX4veAKixMpvQJrEI5vklfUlYVPGU9/0jDInYNqcoJmBqE6Hokc
+ HXJ0vOWZpak3E4zwcRxs7tUJx5UTvgLANicpfERmzMNkr1chKEP4PJZ7nUhJZZIzMNe9uY+fjtW
+ 310EfbPlPpmSt1C3/d9O5VpOHnohkNjedaHQslvvJhsqXSWmfzT2oB/OX78yccNMcRzWBmQjiDD
+ SjJMeAp0S9XVUuYvURKH7DALRaNMPhVVH65kBnXsFB4vJMYfEFc9PJOS7HBVW9ipFwJqNR1ZDFW
+ WiepH0EmhgmLmuX2X/5wSrs4NbYsW+WD2xUY57InnuCUwsU=
+X-Google-Smtp-Source: AGHT+IECj2OWt1Suk3ssre6Vvs1+tT2GPu8m+9Kh5n0wThhRvPLFaNqrCIxOX9WUKSDBGsQd3JsraQ==
+X-Received: by 2002:a05:6a21:6d82:b0:215:dbb0:2a85 with SMTP id
+ adf61e73a8af0-2162166420cmr1611673637.0.1747354530834; 
+ Thu, 15 May 2025 17:15:30 -0700 (PDT)
 Received: from localhost ([118.209.229.237]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-231d4af1b75sm3550085ad.85.2025.05.15.17.12.58
+ 41be03b00d2f7-b26eb0a9893sm473842a12.72.2025.05.15.17.15.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 15 May 2025 17:13:01 -0700 (PDT)
+ Thu, 15 May 2025 17:15:30 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 16 May 2025 10:12:55 +1000
-Message-Id: <D9X5FIL3F1DM.2FXXJ4YPTA41U@gmail.com>
-To: "Nicholas Piggin" <npiggin@gmail.com>, <qemu-ppc@nongnu.org>
+Date: Fri, 16 May 2025 10:15:25 +1000
+Message-Id: <D9X5HF9BNKZC.1AETY0CDNWTAF@gmail.com>
 Cc: <qemu-devel@nongnu.org>, =?utf-8?q?Fr=C3=A9d=C3=A9ric_Barrat?=
  <fbarrat@linux.ibm.com>, "Glenn Miles" <milesg@linux.ibm.com>, "Michael
  Kowal" <kowal@linux.ibm.com>, "Caleb Schlossin" <calebs@linux.vnet.ibm.com>
-Subject: Re: [PATCH 09/50] ppc/xive2: Fix irq preempted by lower priority
- group irq
+Subject: Re: [PATCH 10/50] ppc/xive2: Fix treatment of PIPR in CPPR update
 From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Nicholas Piggin" <npiggin@gmail.com>, <qemu-ppc@nongnu.org>
 X-Mailer: aerc 0.19.0
 References: <20250512031100.439842-1-npiggin@gmail.com>
- <20250512031100.439842-10-npiggin@gmail.com>
-In-Reply-To: <20250512031100.439842-10-npiggin@gmail.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x52b.google.com
+ <20250512031100.439842-11-npiggin@gmail.com>
+In-Reply-To: <20250512031100.439842-11-npiggin@gmail.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,40 +102,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Mon May 12, 2025 at 1:10 PM AEST, Nicholas Piggin wrote:
 > From: Glenn Miles <milesg@linux.ibm.com>
 >
-> A problem was seen where uart interrupts would be lost resulting in the
-> console hanging. Traces showed that a lower priority interrupt was
-> preempting a higher priority interrupt, which would result in the higher
-> priority interrupt never being handled.
+> According to the XIVE spec, updating the CPPR should also update the
+> PIPR. The final value of the PIPR depends on other factors, but it
+> should never be set to a value that is above the CPPR.
 >
-> The new interrupt's priority was being compared against the CPPR
-> (Current Processor Priority Register) instead of the PIPR (Post
-> Interrupt Priority Register), as was required by the XIVE spec.
-> This allowed for a window between raising an interrupt and ACK'ing
-> the interrupt where a lower priority interrupt could slip in.
+> Also added support for redistributing an active group interrupt when it
+> is precluded as a result of changing the CPPR value.
 >
+> Signed-off-by: Glenn Miles <milesg@linux.ibm.com>
+
+The second paragraph in there I believe was my fault when splitting
+the patch into this one and the previous. I will remove the second
+paragraph from this changelog and with that,
 
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
-> Fixes: 26c55b99418 ("ppc/xive2: Process group backlog when updating the C=
-PPR")
-> Signed-off-by: Glenn Miles <milesg@linux.ibm.com>
 > ---
->  hw/intc/xive2.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  hw/intc/xive2.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 >
 > diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-> index 453fe37f18..2b4d0f51be 100644
+> index 2b4d0f51be..1971c05fa1 100644
 > --- a/hw/intc/xive2.c
 > +++ b/hw/intc/xive2.c
-> @@ -1283,7 +1283,7 @@ bool xive2_tm_irq_precluded(XiveTCTX *tctx, int rin=
-g, uint8_t priority)
->       * priority to know if the thread can take the interrupt now or if
->       * it is precluded.
->       */
-> -    if (priority < alt_regs[TM_CPPR]) {
-> +    if (priority < alt_regs[TM_PIPR]) {
->          return false;
+> @@ -995,7 +995,9 @@ static void xive2_tctx_set_cppr(XiveTCTX *tctx, uint8=
+_t ring, uint8_t cppr)
+>              }
+>          }
 >      }
->      return true;
+> -    regs[TM_PIPR] =3D pipr_min;
+> +
+> +    /* PIPR should not be set to a value greater than CPPR */
+> +    regs[TM_PIPR] =3D (pipr_min > cppr) ? cppr : pipr_min;
+> =20
+>      rc =3D xive2_tctx_get_nvp_indexes(tctx, ring_min, &nvp_blk, &nvp_idx=
+);
+>      if (rc) {
 
 
