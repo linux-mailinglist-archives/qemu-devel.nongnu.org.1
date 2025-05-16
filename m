@@ -2,64 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E14B7AB9430
-	for <lists+qemu-devel@lfdr.de>; Fri, 16 May 2025 04:57:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78103AB9439
+	for <lists+qemu-devel@lfdr.de>; Fri, 16 May 2025 05:03:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uFlFZ-0002wA-LE; Thu, 15 May 2025 22:56:42 -0400
+	id 1uFlL9-0005aM-5k; Thu, 15 May 2025 23:02:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uFlFU-0002vr-Ss
- for qemu-devel@nongnu.org; Thu, 15 May 2025 22:56:37 -0400
-Received: from mgamail.intel.com ([198.175.65.13])
+ id 1uFlL7-0005Zm-4g; Thu, 15 May 2025 23:02:25 -0400
+Received: from mgamail.intel.com ([192.198.163.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uFlFS-0001yA-Rr
- for qemu-devel@nongnu.org; Thu, 15 May 2025 22:56:36 -0400
+ id 1uFlL5-0002PJ-9S; Thu, 15 May 2025 23:02:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747364195; x=1778900195;
+ t=1747364543; x=1778900543;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=kyp5B9Yk+/qeMoCR0UxmKqiiDUDuqHi+ztmAS8HGzMc=;
- b=N/984DONbtMB9HexNKEdTqI2iqxrRVr3o+01m5X6nsnLfuZ+uiOEc0yJ
- xwy3TMiHFgQY+gstWE91Zu7VJWokFf0vK/6v0DzPDbc5saoIBfPdrydQp
- 4eZtv5gI/Rt/PT8SS1V926wQNN2khJD1o7l1TJ6+aiC/emx1yXlmXnK95
- duhUeL9RfDFUCzMGQ5AsQV4GQ/adbEeCrIldHumko+AfohnSs09EPZZxw
- jZ76fy82rJ/nZPbk2p7q3L3hI9vKiwt4lHcsYuwZENJQcYTVPBnUuTeVQ
- rrPAPVPRWZkjNsQnShMTgwI2BWkORytZ2W4iM5SGzH9bA5++vaqb5NvdC w==;
-X-CSE-ConnectionGUID: CZ5M4F9/RGSLwfxIQkVY1A==
-X-CSE-MsgGUID: 943ZD/lbTlKWPSIdwNx0jw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11434"; a="60347580"
-X-IronPort-AV: E=Sophos;i="6.15,293,1739865600"; d="scan'208";a="60347580"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2025 19:56:32 -0700
-X-CSE-ConnectionGUID: QRctgbuMT0CcqzqJTLXYoQ==
-X-CSE-MsgGUID: Uo1NUvnIRDmyTT3mhGxB9g==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=T6a4JpmpVPPBxMlEtCwTWcpYCmTHuhKCQK3n2fiJ2oo=;
+ b=f5qMqGLBIPuHdaJR0A1SWJJ1XyKKjNrp+BzI4SI5zTh0WmjagW4Kb8yO
+ C2irwzanIrfXeUHq0mr9e2JaE4smQ+02Q2vmm2v7tAUc9gDUPa43jkIF8
+ sObNbmNiDwZHlP9PxccwYs8voy1pSXn6ueERZiPISHpE8LPU97HAtb3bf
+ 5f4kq+HoGg6Et+dXnqCDLeSBXLwQhzLoNRKxJWyz5l8bi/ebzIqVs0qO6
+ +ynR0kj63ngrCcnUxXwvcZKkg+NwnT3wJytjEU58ndeGStbbobajMwHkH
+ 6TRcRGttvuiee9XEZkgD41sFHlsX2hpgUhRz2AYe8bSVTbxq7GM3CG+iJ g==;
+X-CSE-ConnectionGUID: xqrHJTeQR8ytyqDciodGAg==
+X-CSE-MsgGUID: 63gXb6OERTW+EEyAlPczVQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11434"; a="48579999"
+X-IronPort-AV: E=Sophos;i="6.15,293,1739865600"; d="scan'208";a="48579999"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 May 2025 20:02:20 -0700
+X-CSE-ConnectionGUID: BJug3vzhSF6XIdgWu2AGog==
+X-CSE-MsgGUID: B76+3srHRlS5nypoDzUhdg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,293,1739865600"; d="scan'208";a="138445148"
+X-IronPort-AV: E=Sophos;i="6.15,293,1739865600"; d="scan'208";a="143329249"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.39])
- by orviesa006.jf.intel.com with ESMTP; 15 May 2025 19:56:30 -0700
-Date: Fri, 16 May 2025 11:17:35 +0800
+ by orviesa003.jf.intel.com with ESMTP; 15 May 2025 20:02:16 -0700
+Date: Fri, 16 May 2025 11:23:21 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Cameron Esfahani <dirty@apple.com>,
- Roman Bolshakov <rbolshakov@ddn.com>,
- Phil Dennis-Jordan <phil@philjordan.eu>, qemu-devel@nongnu.org
-Subject: Re: [PATCH 2/2] i386/hvf: Make CPUID_HT supported
-Message-ID: <aCauT25wGtyr5lt7@intel.com>
-References: <20250514031652.838763-1-xiaoyao.li@intel.com>
- <20250514031652.838763-3-xiaoyao.li@intel.com>
- <aCWjGFFlKqwOyY0/@intel.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: BALATON Zoltan <balaton@eik.bme.hu>, David Hildenbrand <david@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org,
+ qemu-trivial@nongnu.org, Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, qemu-s390x@nongnu.org
+Subject: Re: [PATCH 8/9] target/s390x/kvm/pv: Consolidate
+ OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES
+Message-ID: <aCavqdZ/PI461DDe@intel.com>
+References: <20250514084957.2221975-1-zhao1.liu@intel.com>
+ <20250514084957.2221975-9-zhao1.liu@intel.com>
+ <e0146386-ccf4-44ba-b58f-0bb4d3317f89@redhat.com>
+ <aCS8aHsF+VAuj01D@intel.com>
+ <7dec9c8e-93d6-81f0-b075-e29b8ede44a2@eik.bme.hu>
+ <aCXxHEVZb8+ZCW/m@intel.com>
+ <c2466a27-8f8a-780d-ff78-491921bb41e5@eik.bme.hu>
+ <aCYSTHiXtBsjw510@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <aCWjGFFlKqwOyY0/@intel.com>
-Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aCYSTHiXtBsjw510@redhat.com>
+Received-SPF: pass client-ip=192.198.163.18; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -60
 X-Spam_score: -6.1
@@ -84,61 +94,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 15, 2025 at 04:17:28PM +0800, Zhao Liu wrote:
-> Date: Thu, 15 May 2025 16:17:28 +0800
-> From: Zhao Liu <zhao1.liu@intel.com>
-> Subject: Re: [PATCH 2/2] i386/hvf: Make CPUID_HT supported
+On Thu, May 15, 2025 at 05:11:56PM +0100, Daniel P. Berrangé wrote:
+> Date: Thu, 15 May 2025 17:11:56 +0100
+> From: "Daniel P. Berrangé" <berrange@redhat.com>
+> Subject: Re: [PATCH 8/9] target/s390x/kvm/pv: Consolidate
+>  OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES
 > 
-> On Tue, May 13, 2025 at 11:16:52PM -0400, Xiaoyao Li wrote:
-> > Date: Tue, 13 May 2025 23:16:52 -0400
-> > From: Xiaoyao Li <xiaoyao.li@intel.com>
-> > Subject: [PATCH 2/2] i386/hvf: Make CPUID_HT supported
-> > X-Mailer: git-send-email 2.43.0
+> On Thu, May 15, 2025 at 05:41:40PM +0200, BALATON Zoltan wrote:
+> > On Thu, 15 May 2025, Zhao Liu wrote:
+> > > On Wed, May 14, 2025 at 06:24:03PM +0200, BALATON Zoltan wrote:
+> > > > Date: Wed, 14 May 2025 18:24:03 +0200
+> > > > From: BALATON Zoltan <balaton@eik.bme.hu>
+> > > > Subject: Re: [PATCH 8/9] target/s390x/kvm/pv: Consolidate
+> > > >  OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES
+> > > > 
+> > > > On Wed, 14 May 2025, Zhao Liu wrote:
+> > > > > > > +OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(S390PVGuest,
+> > > > > > > +                                          s390_pv_guest,
+> > > > > > > +                                          S390_PV_GUEST,
+> > > > > > > +                                          CONFIDENTIAL_GUEST_SUPPORT,
+> > > > > > > +                                          { TYPE_USER_CREATABLE },
+> > > > > > > +                                          { NULL })
+> > > > > > 
+> > > > > > I'll note that existing callers of OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES
+> > > > > > happily ignore the line limit and put it into a single line.
+> > > > > > 
+> > > > > > (which ends up looking better IMHO)
+> > > > > 
+> > > > > Ok, I'll onor the existing conventions (which I'll apply to other
+> > > > > patches as well).
+> > > > 
+> > > > There are two line limits. If something is clearer on one line you could
+> > > > exceed the normal 80 chars and put up to 90 chars on one line for which
+> > > > checkpatch will issue a warning that can be ignored for these cases. Over 90
+> > > > lines checkpatch will give an error and I think you should not ignore that.
+> > > 
+> > > Thank you. This makes sense!
+> > > 
+> > > > Maybe try to put as much on one line as possible instead of new line after
+> > > > each argument but without exceeding the 80 chars or if the whole line fits
+> > > > in 90 chars then use that. Or maybe do not indent second line under ( but
+> > > > with 4 spaces then you can fit it in two lines but lines over 90 chars are
+> > > > undesirable.
+> > > 
+> > > HMM, I understand you mean:
+> > > 
+> > > OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(S390PVGuest, s390_pv_guest,
+> > >    S390_PV_GUEST, CONFIDENTIAL_GUEST_SUPPORT, { TYPE_USER_CREATABLE }, { NULL })
+> > > 
+> > > The second line is 82 chars and now I think this version is better.
 > > 
-> > Since Commit c6bd2dd63420 ("i386/cpu: Set up CPUID_HT in
-> > x86_cpu_expand_features() instead of cpu_x86_cpuid()"), CPUID_HT will be
-> > set in env->features[] in x86_cpu_expand_features() when vcpus >= 2.
-> > 
-> > Later in x86_cpu_filter_features() it will check against the HVF
-> > supported bits. It will trigger the warning like
-> > 
-> >     qemu-system-x86_64: warning: host doesn't support requested feature: CPUID.01H:EDX.ht [bit 28]
-> > 
-> > Add CPUID_HT to HVF supported CPUID bits to fix it.
-> > 
-> > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> > ---
-> > Note, the issue is totally by my analysis (which should be the same as
-> > the TCG warnings) because I don't have HVF environment to verify it.
-> > 
-> > If would be helpful if anyone can help reproduce it and test the patch
-> > in HVF environment.
+> > Yes and maybe can even fit in 80 chars if using { } instead of { NULL }.
 > 
-> Ah, I found someone has reported a bug on HVF. In his log, there's the
-> ht warning:
+> Personally, once you have to break the line, I would be inclined
+> to have *nothing* after the '(' on the first line, and then break
+> at the list of interfaces. ie
 > 
-> https://gitlab.com/qemu-project/qemu/-/issues/2938
-> 
-> But I don't know if this fix can help on his bug...let's wait for his
-> feedback.
+>  OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(
+>     S390PVGuest, s390_pv_guest, S390_PV_GUEST, CONFIDENTIAL_GUEST_SUPPORT,
+>     { TYPE_USER_CREATABLE }, { NULL })
+>  
 
-Amitai has confirmed this fix can resolve #2938. So I think it's
-necessary to add the tag:
+This version looks better! Thank you all for your patience.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2938
+(How to elegantly break lines is indeed a matter of taste, and I've
+improved in this area now with your help :-).)
 
-and CC this series to qemu-stable@nongnu.org.
-
-Thanks,
+Regards,
 Zhao
 
-> > ---
-> >  target/i386/hvf/x86_cpuid.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> Anyway, this fix is fine for me, so,
-> 
-> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-> 
-> 
+
 
