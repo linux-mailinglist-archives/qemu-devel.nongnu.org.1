@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C80BABAC3E
-	for <lists+qemu-devel@lfdr.de>; Sat, 17 May 2025 22:13:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B77A3ABAC3D
+	for <lists+qemu-devel@lfdr.de>; Sat, 17 May 2025 22:13:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uGNt5-0005RA-VK; Sat, 17 May 2025 16:12:03 -0400
+	id 1uGNt7-0005S5-Vd; Sat, 17 May 2025 16:12:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nirsof@gmail.com>)
- id 1uGNt3-0005Qx-Fb; Sat, 17 May 2025 16:12:01 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ id 1uGNt4-0005R9-AY; Sat, 17 May 2025 16:12:02 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <nirsof@gmail.com>)
- id 1uGNt1-0001zj-Oz; Sat, 17 May 2025 16:12:01 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3a0b9c371d8so2778106f8f.0; 
- Sat, 17 May 2025 13:11:58 -0700 (PDT)
+ id 1uGNt2-0001zz-Pj; Sat, 17 May 2025 16:12:02 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-441d437cfaaso18143275e9.1; 
+ Sat, 17 May 2025 13:12:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747512717; x=1748117517; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=BmIn30CLgvHNMRb0we3UJOXvGtozu64nyv3bzf4pteI=;
- b=lwmcqz0kbc7IP64PRaVqGSSTTQ7QeGu7fkfXrpaqLnwwsb4m+WWXceT22kViDT/fTR
- cnWTc+hSqTU7oqE3wldbImzKXF98HgUpLGBEy08mbP2Pei1CFOU2M8Ak9NkD+b8P4um1
- M7OTuD2YpK7udlhpDfwwKDjOtU0b/Ae9qrgPS64YH4m/1KMHGNcRzmzDIx9ji8etSoZC
- MXh8ZIEhxn+Ktz0w0wznh9tguYvg+6aE7T+kCSJ9HTpVQK4v7pKK37HLziZWVhjx9aXM
- Ft7eQNpT3CW/f0co2j9PAhbvkyTFwa40PgCb/9aF0QTrS75QYU6z4YqxDW4BPy+SpjGo
- mgVw==
+ d=gmail.com; s=20230601; t=1747512719; x=1748117519; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=cIMMYJUwbBBktOXZV3ZqZIlfvVDKWD/JTEdHmGS7mkE=;
+ b=OinnNcKu4at1hS+vUfX/UKHbA5GavoJf6rWx7sCBcJVfJ4v1EISY/xTjRcp9VFw8Jz
+ tLQAk8FhC2HMb2Ml8cTH007ZF/oRyXl9UDvcX/dlDGHO2EAcZB3PEqjSq4+wvjGwnzZj
+ IowgdXxC6J4KB8Sq0T/tFpHoKrGNv2I1dxKb9CrWY4roHldox2+DNJvBQLh/i3Pl6CKB
+ fp6VBITnX66riLkKuSFHPcWnRsBHGfjsNU0BgoXAx01IKZ8MrCS/0oLvGaIyZMTfVRT/
+ SrjbF1EeLeUEqGV1p431iWaZ34cjWglI5Bn60g63gO6PYHuP9SqX6wPG6T88GDg/lrwU
+ QlxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747512717; x=1748117517;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=BmIn30CLgvHNMRb0we3UJOXvGtozu64nyv3bzf4pteI=;
- b=rSEGXovJRprh5irYHiWEV+IYxsmu2IPwjioAk6UJHZGzZflW87RziIr1wJOz2MiN/3
- E7aFs0P1H6f2Qbt+jmkHDiodtTa/FQe0QwqC1spT2oT0Ak6TBLQptsHElhUR6LIj5tDc
- Rgn9S8PyPnxM4Rgm/ERI5IhjLT54IMGf5RBloG+WlpJ655dv/Hozv8q/L/De/z6YgSNc
- lbui809Rh7dlij/wSO8vK2R3lV9ZrYYHX43lRZhqwCXurx5FKWJOZgyG1GXGM0SERHOy
- xtoqtyAZT0RSZU7cqVJED4mECNds/km4bRQq7qTNxvzEVEBTHVUg/of0+6xvmX3hJYnm
- sVqA==
+ d=1e100.net; s=20230601; t=1747512719; x=1748117519;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cIMMYJUwbBBktOXZV3ZqZIlfvVDKWD/JTEdHmGS7mkE=;
+ b=ti1lmN7CNBqZHyDNk9HHxJ1JO2BdYft1UhNi2w24S/jD5Ad6KLU7MEwuolXr78A0pJ
+ OTYTdPehEJ4VNVFE00QMkWP12EDqVX5lw97T60fBwAVkzzoObkjpI9IrNNvRhUIxXbub
+ ce56ZSou+BjvG2OC0yBgpLY85LR9Zf/rggaxG5MmxiZlhf0LdeavhGXLm0coDwwdIgyu
+ P+oqdKF7rvn/+P6lC5xqc4I6xVtlfQoZNSLxCQGqNJYYq38XaCR3KwJO997dl1PpQpTm
+ /B2kbMJiccVAxS6fOM4t5PX8SP/vBa1tP+xtyj2ZxXQNhRdtdXLcmovCmtPEcR7Bjf/R
+ ZXcw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVF38l53k/ZuLOlOM83MIoyi9IfCz4cqm74N74Q4+gevdic1fKcBg28HzosnvFs0bv0ZmmIarkFIPlS@nongnu.org
-X-Gm-Message-State: AOJu0YzVSUnFS7xq1Np9e5ykIj2QH5LnGHs3RAZU63tu4lQE7PtKSO32
- 0c1BgV9C9j+GzVgH4IybsNImey+RMJLgVDoYRP9+9MFnFBcdWLeADKeqKupVTBnx+Hk=
-X-Gm-Gg: ASbGnctC4dxGZyqOjLWfmsazhYPyeGe2CsWHCprbVnHNae1P0eY40E+OjHyMs2EV32Q
- JBkuMhoezJySFUWzPWxypA5CZeeKaiH44IZsJVz/fNxDlUOQ0XwdnBiitoUymM8dVp39D1ftr3l
- 4C5tROQMFhTHJktiQlmg9hVFK9wBUPFiIZHkibsOuHlXb3yRSJ4qefx4wxCZLjc5PgpliI33dDG
- kKBxcGbaSUX/H7OVGawTjIOB0gPL8CyyzUyV761G4Fq7zVo9Ry/p7CzmqfduWYbW5kEoFhrfTmK
- LXZHLERgfaL6/9Rw98TLM18W8K4jg7ohPnGgdjj4KwimgJypp0yi5HUC2eu3HpiEEMhK4o5xZQh
- TkpTe1qksHGAOxYRU8xfgryDOTH8YVRD8zG7g5BPg/g/2
-X-Google-Smtp-Source: AGHT+IF2BHBSnYrKPjxocAQ5R0Goa86yhT5jX+pOADE+FF+XKYoG8NlPLIPU6jcl59/OP8HVHZV6FA==
-X-Received: by 2002:a05:6000:438a:b0:39c:2665:2c13 with SMTP id
- ffacd0b85a97d-3a3600dbbcbmr5776159f8f.54.1747512717034; 
- Sat, 17 May 2025 13:11:57 -0700 (PDT)
+ AJvYcCVFnDi8+njNOKSljwh3U7PwT6UMXZrANrgR+/NTOCUdNUlAXOwSuyIonkpTs8PIDQAuiPZw1Y0RHgzu@nongnu.org
+X-Gm-Message-State: AOJu0Yy6w1UYrjagALIWGBgQN0kZKDXpO3sKg52iMrAR/rJGdEvvDTX6
+ yn5xJyJ9b0+kMXy2yrKNzTi1jEfFm7DLv+GBWFC9P9Utsk14crxV/EHXaLqSXSIdt+4=
+X-Gm-Gg: ASbGncuFF1tEjLi39UVg7kpHNS0s7V/sro0Ppd+cNvDEGcsfygql7qWZnPMUrQkqEtg
+ m2B8Ik3QeU6UFfrNgPulxl6Ii+BQmm7NGtjFIgta/EIsSn4PXhVOxUbbdohYcS4mdPaKNIKmncS
+ 8QT1tkcurAgJwleo7/PLb1IMwo5kp+Ah0IxcqVYW80RKoLhuMOJ5Yv6pD79reynjSI5AGL6kktL
+ TjR9qDipM/KvyiEUpz7omgJ/NDg7jgX2sMhooocK3+k4+O74bXnHT+Cx8lb71BJCSWKUx3Vgb6P
+ 6fAOLQrUHvYbFolrZIrfQ0S7ky8klkreqP9CkwmRESeN0YHyKq56tlCsOjg33+nN0YXnzz0gn0T
+ tUKvVwAiNTAdlVAUa4hQuFxdDQkWLG8obVA==
+X-Google-Smtp-Source: AGHT+IHFyJ8Qtd2yQNi5HwXukWollkAroIv0NU+b7U3QR90czgquq+UVaHbKLlANjwjeI9Jk+eC1rQ==
+X-Received: by 2002:a05:600c:528b:b0:43d:4e9:27f3 with SMTP id
+ 5b1f17b1804b1-442fefee1b8mr65824795e9.9.1747512718495; 
+ Sat, 17 May 2025 13:11:58 -0700 (PDT)
 Received: from localhost.localdomain (46-116-102-127.bb.netvision.net.il.
  [46.116.102.127]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442fd59ab21sm78714715e9.38.2025.05.17.13.11.55
+ 5b1f17b1804b1-442fd59ab21sm78714715e9.38.2025.05.17.13.11.57
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 17 May 2025 13:11:56 -0700 (PDT)
+ Sat, 17 May 2025 13:11:58 -0700 (PDT)
 From: Nir Soffer <nirsof@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -69,15 +70,16 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  "Richard Jones" <rjones@redhat.com>,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
  qemu-block@nongnu.org, Nir Soffer <nirsof@gmail.com>
-Subject: [PATCH v4 0/3] nbd: Increase unix socket buffer size
-Date: Sat, 17 May 2025 23:11:51 +0300
-Message-Id: <20250517201154.88456-1-nirsof@gmail.com>
+Subject: [PATCH v4 1/3] io: Add helper for setting socket send buffer size
+Date: Sat, 17 May 2025 23:11:52 +0300
+Message-Id: <20250517201154.88456-2-nirsof@gmail.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20250517201154.88456-1-nirsof@gmail.com>
+References: <20250517201154.88456-1-nirsof@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=nirsof@gmail.com; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=nirsof@gmail.com; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,48 +102,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On both macOS and Linux, the default send buffer size is too small causing poor
-performance when reading and writing to qemu-nbd. A simple way to experience
-this is to compare TCP and unix sockets, showing that TCP socket is much
-faster. Programs like nbdcopy partly mitigate this by using multiple NBD
-connections.
+Testings reading and writing from qemu-nbd using a unix domain socket
+shows that the platform default send buffer size is too low, leading to
+poor performance and hight cpu usage.
 
-On macOS the default send buffer size is 8192 bytes. Increasing the send buffer
-size to 2 MiB shows up to *12.6 times higher throughput* and lower cpu usage.
+Add a helper for setting socket send buffer size to be used in NBD code.
+It can also be used in other context.
 
-On Linux the default and maximum buffer size is 212992 bytes. Increasing the
-send buffer size to 2 MiB shows up to *2.7 times higher throughput* and lower
-cpu usage. On older machine we see very little improvement, up to 1.03 times
-higher throughput.
+We don't need a helper for receive buffer size since it is not used with
+unix domain sockets. This is documented for Linux, and not documented
+for macOS.
 
-We likely have the same issue on other platforms. It should be easy to enable
-this change for more platform by defining UNIX_STREAM_SOCKET_SEND_BUFFER_SIZE.
+Failing to set the socket buffer size is not a fatal error, but the
+caller may want to warn about the failure.
 
-Changes since v3:
-- Modify only NBD sockets, since not all sockets need a larger buffer size, and
-  the fixed memory overhead per socker may be a significant amount of extra
-  memory overhead on a host. (Daniel)
-- Add qio_channel_socket_set_send_buffer() helper to set buffer size from nbd
-  code.
-- Remove the check for SOCK_STREAM since NBD does not support SOCK_DGRAM.
-- Warn if we fail to set the socket send buffer size.
-
-v3 was here:
-https://lists.gnu.org/archive/html/qemu-devel/2025-04/msg05096.html
-
-Nir Soffer (3):
-  io: Add helper for setting socket send buffer size
-  nbd: Set unix socket send buffer on macOS
-  nbd: Set unix socket send buffer on Linux
-
+Signed-off-by: Nir Soffer <nirsof@gmail.com>
+---
  include/io/channel-socket.h | 13 +++++++++++++
  io/channel-socket.c         | 11 +++++++++++
- nbd/client-connection.c     |  3 +++
- nbd/common.c                | 26 ++++++++++++++++++++++++++
- nbd/nbd-internal.h          |  5 +++++
- nbd/server.c                |  2 ++
- 6 files changed, 60 insertions(+)
+ 2 files changed, 24 insertions(+)
 
+diff --git a/include/io/channel-socket.h b/include/io/channel-socket.h
+index ab15577d38..a88cf8b3a9 100644
+--- a/include/io/channel-socket.h
++++ b/include/io/channel-socket.h
+@@ -261,5 +261,18 @@ QIOChannelSocket *
+ qio_channel_socket_accept(QIOChannelSocket *ioc,
+                           Error **errp);
+ 
++/**
++ * qio_channel_socket_set_send_buffer:
++ * @ioc: the socket channel object
++ * @size: buffer size
++ * @errp: pointer to a NULL-initialized error object
++ *
++ * Set the underlying socket send buffer size.
++ *
++ * Retruns: 0 on success, or -1 on error.
++ */
++int qio_channel_socket_set_send_buffer(QIOChannelSocket *ioc,
++                                       size_t size,
++                                       Error **errp);
+ 
+ #endif /* QIO_CHANNEL_SOCKET_H */
+diff --git a/io/channel-socket.c b/io/channel-socket.c
+index 608bcf066e..a776cd45f5 100644
+--- a/io/channel-socket.c
++++ b/io/channel-socket.c
+@@ -78,6 +78,17 @@ qio_channel_socket_new(void)
+     return sioc;
+ }
+ 
++int qio_channel_socket_set_send_buffer(QIOChannelSocket *ioc,
++                                       size_t size,
++                                       Error **errp)
++{
++    if (setsockopt(ioc->fd, SOL_SOCKET, SO_SNDBUF, &size, sizeof(size)) < 0) {
++        error_setg_errno(errp, errno, "Unable to set socket send buffer size");
++        return -1;
++    }
++
++    return 0;
++}
+ 
+ static int
+ qio_channel_socket_set_fd(QIOChannelSocket *sioc,
 -- 
 2.39.5 (Apple Git-154)
 
