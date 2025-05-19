@@ -2,85 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F194DABB3DF
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:16:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C67ABB400
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:26:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uGruN-0003cD-Nn; Mon, 19 May 2025 00:15:29 -0400
+	id 1uGs3R-0000di-1i; Mon, 19 May 2025 00:24:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uGrnw-0006gp-Va; Mon, 19 May 2025 00:08:46 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1uGrnz-0006iB-Jk; Mon, 19 May 2025 00:08:48 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uGrnv-0004Ff-6C; Mon, 19 May 2025 00:08:44 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-22e033a3a07so38420355ad.0; 
- Sun, 18 May 2025 21:08:42 -0700 (PDT)
+ id 1uGrnx-0004G5-OP; Mon, 19 May 2025 00:08:47 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-231e8553248so18886255ad.1; 
+ Sun, 18 May 2025 21:08:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747627721; x=1748232521; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1747627724; x=1748232524; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=k370jVb1ghYD8wRe4THt85sChP4fM4b7xFJCBveO8zY=;
- b=fT14XRzQdLQyw9Naz4c0GOxUzdhzGubETEbNMlsynKs8FkeinnLBDB8vAh6hkgWNJs
- JdeEK2HGLbSzdZ/9gMc8JM1lx20x/bBkwsdTHdWhRHxlLQfrAo+RAjvHfWYkmtSwMUiC
- 96+0DmoNYsxuPXyWgj0WNVkmJBIdneOvuNT0fyOVLzkO7fjpwdNnobytZpafo0bmDwOb
- TpGU8GllEApg1jIK9aEBptMidianjhu711F+vaqQB+XNtqb0HnUCwPL1+R3vR9a/YM5d
- kACyS7QAk/iIdAtLjDTO8xggUk/yVFLn+eVJCPYKlXWXB7tCDUWGJIq6Jn8CpxWGCXNr
- 3MMQ==
+ bh=2v44lGfcQYNx/2ewSOTljM6U7tlQBnMtbr3WCiqvH6Q=;
+ b=ILZu8U6gZ/qQ4CFPEm4DRliC0gAChkwrO50aUvG0BHEERbrYwnofbiVCNu+UK4bjTL
+ TFFHEbY2CJQijsVRgX4963y8WwAQn69qJzzWI087UBY81a9IG7HLD08VIuYnQxhVybNc
+ h296pg8tbZFRyUhgCCioawUTfSt66mEd16kSQ0xy6rT96PfWbzoo6Tkzs6nR8EDBoIj3
+ bd6i+PbZBwePOBOioMKA1DzImA4nBeKaejfAnkRYE5gNj8v7pYYDSzfGWWzDsTuLCcQX
+ LdneiYKyei/V/hcQ3ksUZGnjBryKtKlXdj+bGum2WHIPY9iicYNx02aiCQNeJqpSYyfH
+ hIeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747627721; x=1748232521;
+ d=1e100.net; s=20230601; t=1747627724; x=1748232524;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=k370jVb1ghYD8wRe4THt85sChP4fM4b7xFJCBveO8zY=;
- b=OBfQihcxM/fnWEAfT1G0aqJnMTUVBsajM4WPHgLUxrMlSod3pP8DgQ+kHFRqPH2zf+
- aI4hYx2b+45sGwho3B/TJyoCWlqtpmvnN+RJNfEVNupxqnD8Seg4M85HfaKA6MoQ9xD+
- ijCPbC1TXQelOY2g8wheL+MmvU6zaKQnisP0My/SY6bJj0UTP4GhvLMpEfSPYuQcKFwn
- LkgB8IfEkmsppasBurpVJR1hFCu6HjKMcjG5D8su8KmfZ+lMSgE1f3fSb27HNmUdZWew
- fZNXOEMLL+GihAT6F+XBCn/lJRQ+T45hauv/KneMc51GiJMfDxdJj5hdLoWdZ0p9s3tq
- bIFg==
+ bh=2v44lGfcQYNx/2ewSOTljM6U7tlQBnMtbr3WCiqvH6Q=;
+ b=sBnMzgdXEQIbIr2gccRFqvgLfNC2RnesTwiGwemTpjM9HSTT6uQ/3vWqe0OM82ZFRZ
+ RfTR3ZouC7t+bT51wMIqBgTZtFisiNLtBPXDscTJwxEP4BE8P5/BVsnsJUsNs4wDTbeK
+ seHtVG3481vsUUlo16VfaOpWskhgGqjDQ0/9qtg3hq/uxxU92smlP6Lc8GD7ZYBdWVzw
+ O36A4cx7lCgnQ/IM0jXnBJYSQhEHKfHQmlqGjGQrBhGU0pN1gUoXlkigOZ67q70nH7bz
+ bopk37dDekG53VKCwu6pDmRzcMY64OKstMgD2yiiRfi03qIUsmWaWraT4vq+rCH7Uy0H
+ tDDw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWQcY/fTFc2Hu8v9UhNObotnvU1QLQ9MFYz0FJaj8SZQBf81jFzFE/U7ZtKEXwgfXyBROkbzZlauCkgjQ==@nongnu.org
-X-Gm-Message-State: AOJu0YyxVkX5kPVEDGzsZnjw8Ra4BolQ7SP++qtLcacVwt38PJiqy1mr
- inAEkurU2QYAF+qkswwFsfmFOzzRPlOMyya26erH1U8WmWOulkeO2qzQyCfRAQ==
-X-Gm-Gg: ASbGnctp4zmhc/7gpLYhDcXuXzUNdyBfLaIuQgeL7dH0nXeGzzDt3US9MS42IsqxO6s
- 3VtqICD2Evwj5JBQMTmuM+A3UQo0fLNXvgG6QrX0QjSa6ex08a3qMeVvuWnRly4c550tPQG9Uur
- kLNf5F5pYfQF9Gni8+cnp9Me0aFcaAoX+voNoc0kIAfiiTNd7usxnKSJ3Bk4W3UahR+TlPnxVIF
- Pry7Xoxn3PvJN+RqrsGVYJwJ7h6oiOPC0AKVaXjc2WZTY5XzEJP2b7TEGzTXug7Pe0eBJo/3K3a
- MWv5luTEFelfJGFVOUfvfLh9k+oaTK10saELD97TC7QShg2HKOLyEVyQrzqsr8/Zhu8TyJkcSRC
- sFo5mauj7XxD0QZlkQ3JqoKasVS6fODqmyHtZj3A+MbfRMjrm0YvmVjoY
-X-Google-Smtp-Source: AGHT+IEuVhGAj13/pN41u6qhci19IqI2oHyY1paqsA8+80oAPhkZ6bqbkZ1Wv5Qu1IcKMTmjHwb0dw==
-X-Received: by 2002:a17:903:2ec8:b0:224:1943:c65 with SMTP id
- d9443c01a7336-231d44e64e6mr163563695ad.14.1747627720835; 
- Sun, 18 May 2025 21:08:40 -0700 (PDT)
+ AJvYcCX4Gr1qSnHgzTUQxswo48Fx3prEZGKo7lsc+xdroGY2wrxJdY9XwO1VCXijrtUKVo9zsFRni1gBfKW1jA==@nongnu.org
+X-Gm-Message-State: AOJu0YyZQmSvNg46FYZuYrdlMefdyVrdekEJEt0YpZ4UVjuptS+VHJKp
+ UTnoBPtx1CWwQWGGWXRMFFbXHRuoGP8AjFneaCpKKVHUDs50i+kuSve6z7w7aA==
+X-Gm-Gg: ASbGncsic/AXd3A1TYEfukFVCB1iijPn9svHAeYy+2QAURGm7ESG64O7NzeKdAbuzL7
+ yXmlALRM4fHQrCbwcYod0/cuk+LhqBYqXbC9u4smtwNuPD2CDimuZ4A31LRb8hyCSVAHD7TyZNB
+ iTzKcWwitLf5NDLsuRWiGSVdUc2Z0YyA+hfWFdgDxXbaw9+a4vKgFmPLYRP/405uXRnwoGH2B3z
+ U68LrSVjB9XM8uCkArISVZ5t15o0Vw+WfhxObhECL4Ig6iR0x/JW88YYtChDLvHz1XyLLKv7QYm
+ 5k1UA/Lmq00JtmGA7CYhA21AkVClnD3U7RqYswII0iYiEbcuZtn5/JtbqNaEOvqvzSNAQr0lJuE
+ TNT/6vS3XRgTM0BSgD8JERzpHVn3XLh6aH3uXpud35vTw+D/1q6H7treqBl9YW/hnmOE=
+X-Google-Smtp-Source: AGHT+IHLzNx9Gjc+mecwkbBKycz3Y8iCQijzhrjCeeIvf8/phq9s7L+lDwJoDXfxzJHtn/VShQLXsA==
+X-Received: by 2002:a17:903:2f44:b0:223:88af:2c30 with SMTP id
+ d9443c01a7336-231de30281bmr141448685ad.16.1747627723900; 
+ Sun, 18 May 2025 21:08:43 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.08.37
+ d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.08.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 May 2025 21:08:40 -0700 (PDT)
+ Sun, 18 May 2025 21:08:43 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Max Chou <max.chou@sifive.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: alistair23@gmail.com, Anton Blanchard <antonb@tenstorrent.com>,
  Alistair Francis <alistair.francis@wdc.com>, qemu-stable@nongnu.org
-Subject: [PULL 29/56] target/riscv: Fix the rvv reserved encoding of unmasked
- instructions
-Date: Mon, 19 May 2025 14:05:26 +1000
-Message-ID: <20250519040555.3797167-30-alistair.francis@wdc.com>
+Subject: [PULL 30/56] target/riscv: Fix vslidedown with rvv_ta_all_1s
+Date: Mon, 19 May 2025 14:05:27 +1000
+Message-ID: <20250519040555.3797167-31-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250519040555.3797167-1-alistair.francis@wdc.com>
 References: <20250519040555.3797167-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -104,56 +102,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Max Chou <max.chou@sifive.com>
+From: Anton Blanchard <antonb@tenstorrent.com>
 
-According to the v spec, the encodings of vcomoress.vm and vector
-mask-register logical instructions with vm=0 are reserved.
+vslidedown always zeroes elements past vl, where it should use the
+tail policy.
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Signed-off-by: Max Chou <max.chou@sifive.com>
-Message-ID: <20250408103938.3623486-11-max.chou@sifive.com>
+Signed-off-by: Anton Blanchard <antonb@tenstorrent.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20250414213006.3509058-1-antonb@tenstorrent.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 Cc: qemu-stable@nongnu.org
 ---
- target/riscv/insn32.decode | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ target/riscv/vector_helper.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
-index 6d1a13c826..cd23b1f3a9 100644
---- a/target/riscv/insn32.decode
-+++ b/target/riscv/insn32.decode
-@@ -703,14 +703,14 @@ vfredmax_vs     000111 . ..... ..... 001 ..... 1010111 @r_vm
- # Vector widening ordered and unordered float reduction sum
- vfwredusum_vs   110001 . ..... ..... 001 ..... 1010111 @r_vm
- vfwredosum_vs   110011 . ..... ..... 001 ..... 1010111 @r_vm
--vmand_mm        011001 - ..... ..... 010 ..... 1010111 @r
--vmnand_mm       011101 - ..... ..... 010 ..... 1010111 @r
--vmandn_mm       011000 - ..... ..... 010 ..... 1010111 @r
--vmxor_mm        011011 - ..... ..... 010 ..... 1010111 @r
--vmor_mm         011010 - ..... ..... 010 ..... 1010111 @r
--vmnor_mm        011110 - ..... ..... 010 ..... 1010111 @r
--vmorn_mm        011100 - ..... ..... 010 ..... 1010111 @r
--vmxnor_mm       011111 - ..... ..... 010 ..... 1010111 @r
-+vmand_mm        011001 1 ..... ..... 010 ..... 1010111 @r
-+vmnand_mm       011101 1 ..... ..... 010 ..... 1010111 @r
-+vmandn_mm       011000 1 ..... ..... 010 ..... 1010111 @r
-+vmxor_mm        011011 1 ..... ..... 010 ..... 1010111 @r
-+vmor_mm         011010 1 ..... ..... 010 ..... 1010111 @r
-+vmnor_mm        011110 1 ..... ..... 010 ..... 1010111 @r
-+vmorn_mm        011100 1 ..... ..... 010 ..... 1010111 @r
-+vmxnor_mm       011111 1 ..... ..... 010 ..... 1010111 @r
- vcpop_m         010000 . ..... 10000 010 ..... 1010111 @r2_vm
- vfirst_m        010000 . ..... 10001 010 ..... 1010111 @r2_vm
- vmsbf_m         010100 . ..... 00001 010 ..... 1010111 @r2_vm
-@@ -732,7 +732,7 @@ vrgather_vv     001100 . ..... ..... 000 ..... 1010111 @r_vm
- vrgatherei16_vv 001110 . ..... ..... 000 ..... 1010111 @r_vm
- vrgather_vx     001100 . ..... ..... 100 ..... 1010111 @r_vm
- vrgather_vi     001100 . ..... ..... 011 ..... 1010111 @r_vm
--vcompress_vm    010111 - ..... ..... 010 ..... 1010111 @r
-+vcompress_vm    010111 1 ..... ..... 010 ..... 1010111 @r
- vmv1r_v         100111 1 ..... 00000 011 ..... 1010111 @r2rd
- vmv2r_v         100111 1 ..... 00001 011 ..... 1010111 @r2rd
- vmv4r_v         100111 1 ..... 00011 011 ..... 1010111 @r2rd
+diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+index 3aec9a7731..5dc1c10012 100644
+--- a/target/riscv/vector_helper.c
++++ b/target/riscv/vector_helper.c
+@@ -5133,9 +5133,11 @@ void HELPER(NAME)(void *vd, void *v0, target_ulong s1, void *vs2,         \
+     }                                                                     \
+                                                                           \
+     for (i = i_max; i < vl; ++i) {                                        \
+-        if (vm || vext_elem_mask(v0, i)) {                                \
+-            *((ETYPE *)vd + H(i)) = 0;                                    \
++        if (!vm && !vext_elem_mask(v0, i)) {                              \
++            vext_set_elems_1s(vd, vma, i * esz, (i + 1) * esz);           \
++            continue;                                                     \
+         }                                                                 \
++        *((ETYPE *)vd + H(i)) = 0;                                        \
+     }                                                                     \
+                                                                           \
+     env->vstart = 0;                                                      \
 -- 
 2.49.0
 
