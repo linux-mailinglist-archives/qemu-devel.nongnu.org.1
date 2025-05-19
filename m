@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A03AABC0EE
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 16:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93249ABC0F1
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 16:36:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uH1aj-0001kB-QN; Mon, 19 May 2025 10:35:45 -0400
+	id 1uH1ao-0001rI-6g; Mon, 19 May 2025 10:35:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1uH1ag-0001iE-O2
- for qemu-devel@nongnu.org; Mon, 19 May 2025 10:35:42 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1uH1ak-0001qN-N7
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 10:35:46 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
- id 1uH1ae-0007QM-OD
- for qemu-devel@nongnu.org; Mon, 19 May 2025 10:35:42 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-742c3d06de3so1838795b3a.0
- for <qemu-devel@nongnu.org>; Mon, 19 May 2025 07:35:40 -0700 (PDT)
+ id 1uH1ai-0007QV-1o
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 10:35:46 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-7398d65476eso3559377b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 19 May 2025 07:35:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1747665338; x=1748270138; darn=nongnu.org;
+ d=sifive.com; s=google; t=1747665340; x=1748270140; darn=nongnu.org;
  h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
  :cc:subject:date:message-id:reply-to;
- bh=yRx0l1L38CJZ6hR/oSAgykoMwro5gt/zxtwEU7Os2aE=;
- b=fhKQYKX+eayeDv0xnVm4QBnTUDkIQxG0jrR2OiugyRG/zic8/aJmGP5hV6yfoaIbjA
- NPjlqTjFTiTz6oOhu5dFdX8Gx7fpuxMBMpFFzdOmzbMPCo3brK7fCFKCj/IaaAU2Qn4d
- qgPO2nPpaYqmXAcz1YLnMZjmY1mQUgGrfBoKp/jDZMWXqfduumO1A3KoYLpbYGmHJQmR
- hW+4g8P5M+Hh8t6vWsLHUMxTMwWTL7KjC0Ky9St7gcjSCZzpdjXnR63VniiwvUIztUCR
- RQiHIVY8tv5oWIBl8qu8n9XPISUMOuohySaXaJ/KP8uRpPCILgel7OVhOOAV5/JESjrj
- blpA==
+ bh=dIa7DDRQ8dI1YRPtN6aWOvu+ANiSnYEGc52FeaM93zI=;
+ b=fW5ln5TfOCxl9ZwHEBUzdDn4CR14bZKnNPcx8HvH+IztUMj3bXA+AztHD/OdRQzQwh
+ yEE0opx7fIGQUnYtzoeVCMRgcg+Cuy/01ZbQPyX9vsGw0AHaJzf7PIdzcG3nVOqwR8y+
+ feKc+H9FCU7Tdsp5ajglq4RGynTfMlrH0E56/80ao6/pps4rWdc5bktW8o8JGAUaDbfU
+ FvDfs9aC3fn+VNWNFZAWhbCnKorWe4QMxh1fNZpboAKWgsk8g/mq/nP7JlG+Z39TX6zX
+ GaXZVbAu0Esi3vF+hqfnVV/v16lshoOl9zdXG1vOcs+mdvNmYfSaZ46Wj6mCnpzymqEC
+ sEVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747665338; x=1748270138;
+ d=1e100.net; s=20230601; t=1747665340; x=1748270140;
  h=references:in-reply-to:message-id:date:subject:cc:to:from
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yRx0l1L38CJZ6hR/oSAgykoMwro5gt/zxtwEU7Os2aE=;
- b=bl2s/MCJmx6Yw040K37hye2YpCFlqEGyP0WtDDqV4zDNnRf+yE4+i8dt/pjJFhiyMf
- ewD0D3M81G6WAJzCrSc7FwnXqvb02a1GSiww840WYqfrdnqQAfj9/wqE5GiPM9UJ5cBC
- qiXZGV/slhXMtbZwwjkZtEqsdRaJz2llRWEMq1bxSi/5KuKi+M4Ox/nA6HG/mXZ/6wNI
- e2PhEQ/iPAFQ4NvqPLuWU/ScTRGVGXusEzzD98ok+np1O2kZV9Xf2kmxTQtGGoLJA1mS
- gWEZAlZhO4vQOVyl5BcgfHOrYUb7deY36oRqhWJ1BCkRA99zbblQMo/X9UzeHMfu1Juv
- xKwg==
-X-Gm-Message-State: AOJu0Yxjc1oWKRyyrNDzJ+0S7bwP8xRWNYzSymbWo9S+/WHY6ufMPGQs
- VQq8nCm7nvhLpUApZHful0CUxL3YiMKh4ByOze6v8C3TQ4WWfkY9fDTKuJ2pwflCYVODB9lucQu
- Z2Ju8feeJFfv3U0w4YahxAKUiUEGTI8QMzN9R0G1vZYYjYYS623nC5bx7vPlDZGNhd+i2b92yTo
- dRJjLyiDI+TO9ZL+UyIrVgolhPKNUu1KE25gBQNw==
-X-Gm-Gg: ASbGncvPcIPoJrA5f4LmBhGske5a1WqM1gvqMxgiUGqMOmKVxzzQjxDl66VsQLszRMM
- YYbzeGS5l0D82XXlt7Bcp7286UPELCB5ud9NbtewL/qU/myRvs1J5DND1ydi8rzdYdukjYHiwmP
- 2vIPzXFWd1JlmDB8/Tg6mvyDWIwpY7TOkkFISnoRRrJrPe6npRYht6sGlsEQ4nuxSQL0u1MwPTr
- lwEPhXAJLEbEjsUjEVd8+Ep5Y/Hi1Ag/s3/vtYGTUDT2R5qL0Ux9Ra8RNf2PYAnXAMM95A2eiBU
- w1ed2KZrIBfC7UZAAdk7HAIeEVhQvNiV5aGfQSf62m85fXnLmIgp4naApnkjsXvgJpVKOqqBz2K
- xLqpATHnW
-X-Google-Smtp-Source: AGHT+IFj0CtaR0gsxA+LzAcZUFHAdy8ieb+frcQlTqBqPJJG+qHyboqJgvidn+oYUTDxQx9ztejnoA==
-X-Received: by 2002:a05:6a00:a81:b0:742:9f58:ccce with SMTP id
- d2e1a72fcca58-742acce364cmr16851293b3a.12.1747665337255; 
- Mon, 19 May 2025 07:35:37 -0700 (PDT)
+ bh=dIa7DDRQ8dI1YRPtN6aWOvu+ANiSnYEGc52FeaM93zI=;
+ b=W8xGKCxKWRM1jyZB2iJIvi8ek1KBrdgKcikc1/MFerzFA6PkdNDvIv2+rPTCB13YkQ
+ I+MBy9MU7VCHWY1b4gZ+9xQ2S0QIhUq0Y9hSENGXYyyX9eJOKEet5uBPkzlBgB48aw8p
+ VomaUGOW1mMlWIwlPaUnzqO8S7z9tUtsuAFzUzPkiXUrnXvRnTs1kjLdkaTzQRyZwQhD
+ NeCQ1ANF1H1GgHP7t/P/3kl+W/TPiwmmz0lij5voGl4IaGpuSNK/YPwkNDcKaegsQ6N5
+ iwUVbm0BSGL02vJsdW3kS0hvyak5qTj+8xu8e4vzOBAkgM3z543ysgiryE8eYVrf+RIx
+ NRxQ==
+X-Gm-Message-State: AOJu0YyXrJdkCu1TzaT13s8puaE4Enb22vSzUtYG2VUrR686MCpVD+CV
+ aXPBM4r/BE4oG5YgSILtIT0hwgyG1obUFjFSZlyLYqsUPIkl/R7bqnq5xfoafSTUtAKf5iFYXEi
+ pSXz4lNBuJAex9haAMnOP7itZM8wV9mf80Th1hmOJHx3u2rMaMS28XF/Q+V/J5/JHaqKoD0jaFe
+ RlZCeyRnPVBY9pEtSgj1omhQT7R1df0ui/Se22iA==
+X-Gm-Gg: ASbGnctX7Q0brv80z+T8nEpV/gAtdNfL7MHlf0Vebyez3BZXILeCnW3Q1Md7oTOZoKC
+ KQeWvxD02YBBKYABBbhaaXehnXG1C8fytWLSx/QM+5ZROU/21OsjT21L3pthNHppJdY1D59WICq
+ qwKwcP9m8f7iE9X2Yjp/KzDcwDQVwn5gEGMCSMDU39MA1u875y0AwsqFBYt1VCHPFcI7Zc6fwDi
+ qMXVDgiLw6I0dK1IEGmYDjVLOILK7GCyJcxwScVPSNQiC0T7DjyzLS7xwLYNTiZMOQQqTsVYpuv
+ wXogdM4Q2O5Ptpl5cZbTSJWG1dX+vLCP9+6KUjmcyZNgrepZxgphH0PF8/Ix+CHw7uGJP9BzIQ=
+ =
+X-Google-Smtp-Source: AGHT+IE3UuhHn0UNehAuLAdg2lfUfsCG18va4AcXSjBAO/RC8mIkrPOkBoE6ZUDYZkYRAGWtOkhYgg==
+X-Received: by 2002:a05:6a00:1d23:b0:742:ccf9:317a with SMTP id
+ d2e1a72fcca58-742ccf932d4mr6842489b3a.12.1747665339435; 
+ Mon, 19 May 2025 07:35:39 -0700 (PDT)
 Received: from hsinchu26.internal.sifive.com ([210.176.154.34])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-742a98a32edsm6297683b3a.162.2025.05.19.07.35.35
+ d2e1a72fcca58-742a98a32edsm6297683b3a.162.2025.05.19.07.35.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 May 2025 07:35:36 -0700 (PDT)
+ Mon, 19 May 2025 07:35:38 -0700 (PDT)
 From: Jim Shu <jim.shu@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -70,15 +70,15 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Weiwei Li <liwei1518@gmail.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Jim Shu <jim.shu@sifive.com>
-Subject: [PATCH v3 1/4] target/riscv: Add the checking into stimecmp write
- function.
-Date: Mon, 19 May 2025 22:35:15 +0800
-Message-Id: <20250519143518.11086-2-jim.shu@sifive.com>
+Subject: [PATCH v3 2/4] hw/intc: riscv_aclint: Fix mtime write for sstc
+ extension
+Date: Mon, 19 May 2025 22:35:16 +0800
+Message-Id: <20250519143518.11086-3-jim.shu@sifive.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20250519143518.11086-1-jim.shu@sifive.com>
 References: <20250519143518.11086-1-jim.shu@sifive.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=jim.shu@sifive.com; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=jim.shu@sifive.com; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,46 +101,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Preparation commit to let aclint timer to use stimecmp write function.
-Aclint timer doesn't call sstc() predicate so we need to check inside
-the stimecmp write function.
+When changing the mtime value, the period of [s|vs]timecmp timers
+should also be updated, similar to the period of mtimecmp timer.
+
+The period of the stimecmp timer is the time until the next S-mode
+timer IRQ. The value is calculated as "stimecmp - time". [1]
+It is equal to "stimecmp - mtime" since the time CSR is a read-only
+shadow of the memory-mapped mtime register.
+Thus, changing mtime value will update the period of stimecmp timer.
+
+Similarly, the period of vstimecmp timer is calculated as "vstimecmp -
+(mtime + htimedelta)" [2], so changing mtime value will update the
+period of vstimecmp timer.
+
+[1] RISC-V Priv spec ch 9.1.1. Supervisor Timer (stimecmp) Register
+A supervisor timer interrupt becomes pending, as reflected in the STIP
+bit in the mip and sip registers whenever time contains a value
+greater than or equal to stimecmp.
+[2] RISC-V Priv spec ch19.2.1. Virtual Supervisor Timer (vstimecmp) Register
+A virtual supervisor timer interrupt becomes pending, as reflected in
+the VSTIP bit in the hip register, whenever (time + htimedelta),
+truncated to 64 bits, contains a value greater than or equal to
+vstimecmp
 
 Signed-off-by: Jim Shu <jim.shu@sifive.com>
 Acked-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/time_helper.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ hw/intc/riscv_aclint.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/target/riscv/time_helper.c b/target/riscv/time_helper.c
-index bc0d9a0c4c..aebf0798d0 100644
---- a/target/riscv/time_helper.c
-+++ b/target/riscv/time_helper.c
-@@ -46,8 +46,23 @@ void riscv_timer_write_timecmp(CPURISCVState *env, QEMUTimer *timer,
- {
-     uint64_t diff, ns_diff, next;
-     RISCVAclintMTimerState *mtimer = env->rdtime_fn_arg;
--    uint32_t timebase_freq = mtimer->timebase_freq;
--    uint64_t rtc_r = env->rdtime_fn(env->rdtime_fn_arg) + delta;
-+    uint32_t timebase_freq;
-+    uint64_t rtc_r;
+diff --git a/hw/intc/riscv_aclint.c b/hw/intc/riscv_aclint.c
+index b0139f03f5..4623cfa029 100644
+--- a/hw/intc/riscv_aclint.c
++++ b/hw/intc/riscv_aclint.c
+@@ -28,6 +28,7 @@
+ #include "qemu/module.h"
+ #include "hw/sysbus.h"
+ #include "target/riscv/cpu.h"
++#include "target/riscv/time_helper.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/intc/riscv_aclint.h"
+ #include "qemu/timer.h"
+@@ -240,6 +241,10 @@ static void riscv_aclint_mtimer_write(void *opaque, hwaddr addr,
+             riscv_aclint_mtimer_write_timecmp(mtimer, RISCV_CPU(cpu),
+                                               mtimer->hartid_base + i,
+                                               mtimer->timecmp[i]);
++            riscv_timer_write_timecmp(env, env->stimer, env->stimecmp, 0, MIP_STIP);
++            riscv_timer_write_timecmp(env, env->vstimer, env->vstimecmp,
++                                      env->htimedelta, MIP_VSTIP);
 +
-+    if (!riscv_cpu_cfg(env)->ext_sstc || !env->rdtime_fn ||
-+        !env->rdtime_fn_arg || !get_field(env->menvcfg, MENVCFG_STCE)) {
-+        /* S/VS Timer IRQ depends on sstc extension, rdtime_fn(), and STCE. */
-+        return;
-+    }
-+
-+    if (timer_irq == MIP_VSTIP &&
-+        (!riscv_has_ext(env, RVH) || !get_field(env->henvcfg, HENVCFG_STCE))) {
-+        /* VS Timer IRQ also depends on RVH and henvcfg.STCE. */
-+        return;
-+    }
-+
-+    timebase_freq = mtimer->timebase_freq;
-+    rtc_r = env->rdtime_fn(env->rdtime_fn_arg) + delta;
- 
-     if (timecmp <= rtc_r) {
-         /*
+         }
+         return;
+     }
 -- 
 2.17.1
 
