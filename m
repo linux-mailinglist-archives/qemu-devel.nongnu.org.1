@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 702A6ABB40E
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B00A3ABB40F
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:29:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uGs4e-0002uc-SP; Mon, 19 May 2025 00:26:01 -0400
+	id 1uGs3y-0001T1-94; Mon, 19 May 2025 00:25:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uGrox-0008S2-VC
- for qemu-devel@nongnu.org; Mon, 19 May 2025 00:09:50 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ id 1uGrp2-0008TT-Pn
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 00:09:56 -0400
+Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uGrow-0004OC-2t
- for qemu-devel@nongnu.org; Mon, 19 May 2025 00:09:47 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-afc857702d1so3573090a12.3
- for <qemu-devel@nongnu.org>; Sun, 18 May 2025 21:09:45 -0700 (PDT)
+ id 1uGroz-0004Oo-0G
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 00:09:51 -0400
+Received: by mail-pj1-x1032.google.com with SMTP id
+ 98e67ed59e1d1-30dfd9e7fa8so4929785a91.2
+ for <qemu-devel@nongnu.org>; Sun, 18 May 2025 21:09:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747627784; x=1748232584; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1747627787; x=1748232587; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=B300N4tFGzpqfBm+PQfnLU/hq0whY6Gs5bO28y2J7A4=;
- b=neL+TV46MuHtRU5srcIMQEMjgv/w0iweBOPpoKdaPcNJvGzQo6fwVhBzt6wmnIEQu1
- +UT83cZ4E5clm7vJWVhPMNZEflVSeuR08F/gp9oXB9OH/J1WH9NFNJQYdM8gqoSEuB1T
- Eh65Cgl+rWUw6V51jSh3M2RLBl1zHgLoZrK51Ms87nPVsH7jgctw5VVhiqeXhr7Gt2OE
- QM/t1kFl26r8eiae7o4UJif4bdFcuGSUtCLnv+6yzsymxzGgn2Lhpjnoi5ziZOXymXWr
- coo6bes1Q7jK/gBSbeePa5v7Iarxg38DMlRzmWOjFNKLLmqc/WfpsN0ytt9FLA9idV16
- 84eQ==
+ bh=YXvxkbFCVrdBL5uAGVM/FxbZOq84FCzkwXE2y02RSA8=;
+ b=hKvMC2o+j5VXn0vqRk8JQv+ASZNg3+HY5T9n/8ZLBOUFFMmN1PKLbsk2JYdV7Ggo9U
+ 6JUiG3OszxFQaH5b+uONfUd07UapuQsGNZqWDqpNtpoDHfgzFqyOtAlU4/I0XiQ8/JC2
+ w0GRQ640i0ACjAqU8u09mzcyZMtkH4oJfxL+2xkq91OF/YajKJ4g5PXWf0lWRm1eZD8v
+ IKfyb72KY44YnY+dypp5kyp7M1bbQpol5YeyRgYX3YCxEN0g/0Wj1YKpTVA9fIQBtgvP
+ IBhRAnB42L2JGVVWW/A814YVh5hgCO+M6Eo5yTtX93Wx3fyvNzHKZms3VmiiDqIJt3Q8
+ sOZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747627784; x=1748232584;
+ d=1e100.net; s=20230601; t=1747627787; x=1748232587;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=B300N4tFGzpqfBm+PQfnLU/hq0whY6Gs5bO28y2J7A4=;
- b=doKPMXhLJkuoacVV3TgHXnf111txh8MQTTP0zCSyBrmNMlJHmmLf1M7nWQqZsLREj9
- 5wIFc4nGq0g5DlzonTUkHofz5bLyCxZvF9oP+OxUoTRSL7YLMrVG5s0vbFrdNdkmduWR
- 5ncdJqj41UzsxkEhAQ2x0FF/khaHahSiJETUV/EMAqp6imsVuWZ+hxNeeQt3bKI022ay
- ufomISvOpvtLIskPK3JJB+lWkwoE4rthNDmaptzGkH5l92OzoOUk7NmF7eVzEC3Z7NJ5
- zzeK5zWO7YZ4c/ED07czxDqEatFlygth+1JwdPTxef211izTmWjaiVRbG6BsbucbwKmn
- jIiQ==
-X-Gm-Message-State: AOJu0Yw0r8VRKKC4tQK0VjvgcniDaDqjVL97Z9AVVS/u4gTe3+c5wxit
- vcT2wrhWm3GJXgcXby4+ZetUgLwWEaBNH0Voj3GoY0wdwAxFobVyBVOrVNmpVQ==
-X-Gm-Gg: ASbGncu/C+aVpJhGEIdNdexwG3YIsu0oJ8gWVX2n8lOnwoQOO9+HyxZJMaizDwHSFJD
- T9BWQHRHlFw+1w2SIWYAnaeB4QaO/Ch8jBt6v6YVFXekX9s4qiGJmAHwgd+zj00JaUPjaGgbUoy
- g5qn6UwiFlmmvqaUhGkLEbB6BDLcs9aingmeOi7oeYEy76BGiUvBPo8hKHYYlFH+LQSSeRJxMLx
- cMh6R50TZQv210qWAvDjPgPxDHGVpKwT1k0+PSrPQe1jF9gnA0NvH8275Vgbun94Hz3Kz/nAkOF
- biKtTPPt+9GcSP058cTyNgFsAnHsTA526pzwWup4NYlOzM9Gy3PDk1saDRcnh7UHOcSeWlR1OKm
- m1zgHx2nux7lgniabjJ1YSg7ij/H3sXucZr11ML95/e81NwjPglpF6IQJ
-X-Google-Smtp-Source: AGHT+IGkd576SG3pbyCDzfw/V2/d31Bp1L1f/9OLaS8f/aprVg2gprPUvMl2TY7PPNa8CUtVQkhz7A==
-X-Received: by 2002:a17:903:230b:b0:22f:b6cc:421e with SMTP id
- d9443c01a7336-231d452683fmr162141075ad.26.1747627784344; 
- Sun, 18 May 2025 21:09:44 -0700 (PDT)
+ bh=YXvxkbFCVrdBL5uAGVM/FxbZOq84FCzkwXE2y02RSA8=;
+ b=lPlMSFVJjVzYuPfdOH8OC9r2tf6eCb8fDov9xk1ihuWTlyBcyirxkmjvG2tgClE76l
+ rZS4Hg0kNj3DyKjvsJGF/5n+Up+O+ilc6L3MzCBxY7aF79u+Q4lsdrlXQEd56Fzgn9og
+ 3mrCGZTYUDd/7M3QwY5G/NDAK3fyUEf1NAfhvN1PGRqD8nNMLgQe+mOBStUyA+Phgk9/
+ HCaXdRja5PgInTM09wEIwsKo8AV00h06y7gxk71OT3nNIxJqCq0O41luIGcBEdJYBzI2
+ E5NcRyf1JyrVZc2FHlVIbkmocVYNCsBuciW+2PvEAxZpG4Xua0M5R1VN+zRXQXH7s6MW
+ ODDw==
+X-Gm-Message-State: AOJu0YwGTGKkrBzgcyt8Cg7nP8CNUW5oDCPGscZAqkyR74d5e/Y4Oo13
+ Ep4c9kcz0TY4e+WiEkGeY7n6Tf5ozklr06giJTpq0NKNslYf9Dg+TTpUpO50wA==
+X-Gm-Gg: ASbGncv4EN7CH75zXwXu/HV4U2dssZJl2WVOZRIQMw9CrLYj+hBoxBs6J6AL0zt43tR
+ Rc4ztxQV4p8j6FQgEHzM4JDrQuOa4jMuev2ZgrPpSEnQ3r+3PGvKk9Mr3zUmVT9uVurqBMyg9e5
+ icxj6k664R6sTCakfekEMF6JX08rO0CwzWQusMwMDW4xl/+krCS6ehDYoMLxRSVo2QLn+aGYKYZ
+ qxrYhn11bAS4M5amwtyq6cw4S52dEBY1oSz7aHY6svWIBk+Gk+RYo0xgm5UoltTythlJ9Mr7AC9
+ Batc0yQ4iupW75E5vTKL6URoBd4/430a7alFmDfuoFH9KbFMlKh9esJDgbtYfpZHizZxlKi1IIN
+ aFRATX9Tq7oEGI502T3ehLKOVlGuQTpBTwKqPZaKsLur5gWGCnPDIIvKe+GlUWGuKEmk=
+X-Google-Smtp-Source: AGHT+IEPxzSQ8z9EeXNZ9TV+Dc9PQypkNgnXsx6QWJj50MvMg7tSPHk54qS84Sfcx72e7SDdbmanKw==
+X-Received: by 2002:a17:903:244e:b0:22e:3b65:9286 with SMTP id
+ d9443c01a7336-231de3bb4afmr165334295ad.49.1747627787103; 
+ Sun, 18 May 2025 21:09:47 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.09.41
+ d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.09.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 May 2025 21:09:43 -0700 (PDT)
+ Sun, 18 May 2025 21:09:46 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 49/56] hw/riscv/virt.c: remove trivial virt_memmap references
-Date: Mon, 19 May 2025 14:05:46 +1000
-Message-ID: <20250519040555.3797167-50-alistair.francis@wdc.com>
+Subject: [PULL 50/56] hw/riscv/virt.c: use s->memmap in virt_machine_done()
+Date: Mon, 19 May 2025 14:05:47 +1000
+Message-ID: <20250519040555.3797167-51-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250519040555.3797167-1-alistair.francis@wdc.com>
 References: <20250519040555.3797167-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x531.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
+ envelope-from=alistair23@gmail.com; helo=mail-pj1-x1032.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -104,117 +104,66 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-We should use s->memmap instead of virt_memmap to be able to use an
-updated memmap when we start versioning the board.
-
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250429125811.224803-3-dbarboza@ventanamicro.com>
+Message-ID: <20250429125811.224803-4-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/riscv/virt.c | 29 ++++++++++++++---------------
- 1 file changed, 14 insertions(+), 15 deletions(-)
+ hw/riscv/virt.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
 diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index 0200679240..843665a5bd 100644
+index 843665a5bd..b349b2b1cf 100644
 --- a/hw/riscv/virt.c
 +++ b/hw/riscv/virt.c
-@@ -166,8 +166,8 @@ static void virt_flash_map1(PFlashCFI01 *flash,
- static void virt_flash_map(RISCVVirtState *s,
-                            MemoryRegion *sysmem)
+@@ -1425,9 +1425,8 @@ static void virt_machine_done(Notifier *notifier, void *data)
  {
--    hwaddr flashsize = virt_memmap[VIRT_FLASH].size / 2;
--    hwaddr flashbase = virt_memmap[VIRT_FLASH].base;
-+    hwaddr flashsize = s->memmap[VIRT_FLASH].size / 2;
-+    hwaddr flashbase = s->memmap[VIRT_FLASH].base;
- 
-     virt_flash_map1(s->flash[0], flashbase, flashsize,
-                     sysmem);
-@@ -999,8 +999,8 @@ static void create_fdt_rtc(RISCVVirtState *s, const MemMapEntry *memmap,
- static void create_fdt_flash(RISCVVirtState *s, const MemMapEntry *memmap)
- {
-     MachineState *ms = MACHINE(s);
--    hwaddr flashsize = virt_memmap[VIRT_FLASH].size / 2;
--    hwaddr flashbase = virt_memmap[VIRT_FLASH].base;
-+    hwaddr flashsize = s->memmap[VIRT_FLASH].size / 2;
-+    hwaddr flashbase = s->memmap[VIRT_FLASH].base;
-     g_autofree char *name = g_strdup_printf("/flash@%" PRIx64, flashbase);
- 
-     qemu_fdt_add_subnode(ms->fdt, name);
-@@ -1035,7 +1035,7 @@ static void create_fdt_virtio_iommu(RISCVVirtState *s, uint16_t bdf)
-     g_autofree char *pci_node = NULL;
- 
-     pci_node = g_strdup_printf("/soc/pci@%lx",
--                               (long) virt_memmap[VIRT_PCIE_ECAM].base);
-+                               (long) s->memmap[VIRT_PCIE_ECAM].base);
-     iommu_node = g_strdup_printf("%s/virtio_iommu@%x,%x", pci_node,
-                                  PCI_SLOT(bdf), PCI_FUNC(bdf));
-     iommu_phandle = qemu_fdt_alloc_phandle(fdt);
-@@ -1104,7 +1104,7 @@ static void create_fdt_iommu(RISCVVirtState *s, uint16_t bdf)
-     g_autofree char *pci_node = NULL;
- 
-     pci_node = g_strdup_printf("/soc/pci@%lx",
--                               (long) virt_memmap[VIRT_PCIE_ECAM].base);
-+                               (long) s->memmap[VIRT_PCIE_ECAM].base);
-     iommu_node = g_strdup_printf("%s/iommu@%x", pci_node, bdf);
-     iommu_phandle = qemu_fdt_alloc_phandle(fdt);
-     qemu_fdt_add_subnode(fdt, iommu_node);
-@@ -1126,24 +1126,24 @@ static void finalize_fdt(RISCVVirtState *s)
-     uint32_t irq_pcie_phandle = 1, irq_virtio_phandle = 1;
-     uint32_t iommu_sys_phandle = 1;
- 
--    create_fdt_sockets(s, virt_memmap, &phandle, &irq_mmio_phandle,
-+    create_fdt_sockets(s, s->memmap, &phandle, &irq_mmio_phandle,
-                        &irq_pcie_phandle, &irq_virtio_phandle,
-                        &msi_pcie_phandle);
- 
--    create_fdt_virtio(s, virt_memmap, irq_virtio_phandle);
-+    create_fdt_virtio(s, s->memmap, irq_virtio_phandle);
- 
-     if (virt_is_iommu_sys_enabled(s)) {
-         create_fdt_iommu_sys(s, irq_mmio_phandle, msi_pcie_phandle,
-                              &iommu_sys_phandle);
-     }
--    create_fdt_pcie(s, virt_memmap, irq_pcie_phandle, msi_pcie_phandle,
-+    create_fdt_pcie(s, s->memmap, irq_pcie_phandle, msi_pcie_phandle,
-                     iommu_sys_phandle);
- 
--    create_fdt_reset(s, virt_memmap, &phandle);
-+    create_fdt_reset(s, s->memmap, &phandle);
- 
--    create_fdt_uart(s, virt_memmap, irq_mmio_phandle);
-+    create_fdt_uart(s, s->memmap, irq_mmio_phandle);
- 
--    create_fdt_rtc(s, virt_memmap, irq_mmio_phandle);
-+    create_fdt_rtc(s, s->memmap, irq_mmio_phandle);
- }
- 
- static void create_fdt(RISCVVirtState *s, const MemMapEntry *memmap)
-@@ -1361,14 +1361,13 @@ static void create_platform_bus(RISCVVirtState *s, DeviceState *irqchip)
- {
-     DeviceState *dev;
-     SysBusDevice *sysbus;
+     RISCVVirtState *s = container_of(notifier, RISCVVirtState,
+                                      machine_done);
 -    const MemMapEntry *memmap = virt_memmap;
-     int i;
-     MemoryRegion *sysmem = get_system_memory();
- 
-     dev = qdev_new(TYPE_PLATFORM_BUS_DEVICE);
-     dev->id = g_strdup(TYPE_PLATFORM_BUS_DEVICE);
-     qdev_prop_set_uint32(dev, "num_irqs", VIRT_PLATFORM_BUS_NUM_IRQS);
--    qdev_prop_set_uint32(dev, "mmio_size", memmap[VIRT_PLATFORM_BUS].size);
-+    qdev_prop_set_uint32(dev, "mmio_size", s->memmap[VIRT_PLATFORM_BUS].size);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-     s->platform_bus_dev = dev;
- 
-@@ -1379,7 +1378,7 @@ static void create_platform_bus(RISCVVirtState *s, DeviceState *irqchip)
+     MachineState *machine = MACHINE(s);
+-    hwaddr start_addr = memmap[VIRT_DRAM].base;
++    hwaddr start_addr = s->memmap[VIRT_DRAM].base;
+     target_ulong firmware_end_addr, kernel_start_addr;
+     const char *firmware_name = riscv_default_firmware_name(&s->soc[0]);
+     uint64_t fdt_load_addr;
+@@ -1471,14 +1470,14 @@ static void virt_machine_done(Notifier *notifier, void *data)
+              * let's overwrite the address we jump to after reset to
+              * the base of the flash.
+              */
+-            start_addr = virt_memmap[VIRT_FLASH].base;
++            start_addr = s->memmap[VIRT_FLASH].base;
+         } else {
+             /*
+              * Pflash was supplied but either KVM guest or bios is not none.
+              * In this case, base of the flash would contain S-mode payload.
+              */
+             riscv_setup_firmware_boot(machine);
+-            kernel_entry = virt_memmap[VIRT_FLASH].base;
++            kernel_entry = s->memmap[VIRT_FLASH].base;
+         }
      }
  
-     memory_region_add_subregion(sysmem,
--                                memmap[VIRT_PLATFORM_BUS].base,
-+                                s->memmap[VIRT_PLATFORM_BUS].base,
-                                 sysbus_mmio_get_region(sysbus, 0));
- }
+@@ -1492,15 +1491,15 @@ static void virt_machine_done(Notifier *notifier, void *data)
+         kernel_entry = boot_info.image_low_addr;
+     }
  
+-    fdt_load_addr = riscv_compute_fdt_addr(memmap[VIRT_DRAM].base,
+-                                           memmap[VIRT_DRAM].size,
++    fdt_load_addr = riscv_compute_fdt_addr(s->memmap[VIRT_DRAM].base,
++                                           s->memmap[VIRT_DRAM].size,
+                                            machine, &boot_info);
+     riscv_load_fdt(fdt_load_addr, machine->fdt);
+ 
+     /* load the reset vector */
+     riscv_setup_rom_reset_vec(machine, &s->soc[0], start_addr,
+-                              virt_memmap[VIRT_MROM].base,
+-                              virt_memmap[VIRT_MROM].size, kernel_entry,
++                              s->memmap[VIRT_MROM].base,
++                              s->memmap[VIRT_MROM].size, kernel_entry,
+                               fdt_load_addr);
+ 
+     /*
 -- 
 2.49.0
 
