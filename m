@@ -2,124 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 594ABABC1A8
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 17:07:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 622F9ABC1A9
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 17:08:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uH24e-0008Il-9k; Mon, 19 May 2025 11:06:40 -0400
+	id 1uH25o-0000dh-Gy; Mon, 19 May 2025 11:07:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uH24Z-0008II-UJ
- for qemu-devel@nongnu.org; Mon, 19 May 2025 11:06:36 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uH25m-0000YY-BG
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 11:07:50 -0400
+Received: from mail-yw1-x1132.google.com ([2607:f8b0:4864:20::1132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uH24Y-0002j9-5N
- for qemu-devel@nongnu.org; Mon, 19 May 2025 11:06:35 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 5D65822A7B;
- Mon, 19 May 2025 15:06:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1747667191; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=vhvBaPsJpWRhUqQorFQL9XNt+vr2Yu9GE1NPTsdKAlw=;
- b=reFr7wVWFmkQzMku2BabjyvzUq4U13Xxh+T5xryY6nwk5qyRddWGuP6+mkCLiebc8R5Zrc
- IznCC0rEjAtfQsbtGdGz3AKzoRC7LDrJeQXED4HvD2OakIGh8bDt+3kBVp2TJC/G/0A2X5
- oYd0OlsAwlYFb+H7jgfA4DP9ciRxBAg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1747667191;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=vhvBaPsJpWRhUqQorFQL9XNt+vr2Yu9GE1NPTsdKAlw=;
- b=oApiIOR7Ns5D3lI3HAHrEWBwzPokg7HT2MzqYHJGO3EQUEhAyWqqJ0UnyGUVa1mJkc6J3a
- yPckMevr/ZT/yrCw==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fyzNKrKv;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=DpJHCXAU
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1747667190; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=vhvBaPsJpWRhUqQorFQL9XNt+vr2Yu9GE1NPTsdKAlw=;
- b=fyzNKrKvugJdKlwUA3GKsZYp9UQCE0iz/3267b6lPqFiXFLMECbu6oIomnTZaip4qV6CJJ
- j/xmTxk2NiHah6EAEbi8M8e/6p7ayzA45ILaZ9s9gnoZZPqO83odBhVY6gqwZaOuNSnMkw
- fKGhDCuQDVW+ZhOHS8PfgnqI1464hwY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1747667190;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=vhvBaPsJpWRhUqQorFQL9XNt+vr2Yu9GE1NPTsdKAlw=;
- b=DpJHCXAUZmEuqJDkD/7J12PXQTC8TDGDW3C15EtkL2s4uAGNAmryYTWctqhUuOD30Hv+e7
- W8MiW2s06uVTbTAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B6C4B1372E;
- Mon, 19 May 2025 15:06:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id T64SHfVIK2jXQgAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 19 May 2025 15:06:29 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Nicholas Piggin <npiggin@gmail.com>, Akihiko Odaki
- <akihiko.odaki@daynix.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org, Dmitry
- Fleytman <dmitry.fleytman@gmail.com>, Jason Wang <jasowang@redhat.com>,
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, Laurent Vivier
- <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, "Michael S.
- Tsirkin" <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: Re: [PATCH v3 01/12] qtest/e1000e|igb: Clear interrupt-cause and
- msix pending bits after irq
-In-Reply-To: <20250502031705.100768-2-npiggin@gmail.com>
-References: <20250502031705.100768-1-npiggin@gmail.com>
- <20250502031705.100768-2-npiggin@gmail.com>
-Date: Mon, 19 May 2025 12:06:26 -0300
-Message-ID: <87h61g7i8d.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1uH25k-0002q6-8J
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 11:07:50 -0400
+Received: by mail-yw1-x1132.google.com with SMTP id
+ 00721157ae682-708ac7dfc19so41820947b3.3
+ for <qemu-devel@nongnu.org>; Mon, 19 May 2025 08:07:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1747667266; x=1748272066; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+gXOesR3SEtU8F0M84hJr3NYCDfVUGyS9aJHZrCKHhc=;
+ b=UNz4pOR+zHr9x+g5pijbgJvd64adNrOzRyED+b4lT0wegPXwKBnAn98d7LzXdaylk1
+ Ta7AkFodTw+TFQbCuAxlbOxCeqqZy2wYKUqhAhHtDvkN9fISlcTUk2DuXCnlt3UdGml8
+ cnFug8GDyrKV9rBIPGBx5UhH9eCHUrPAhZep7l9foQCm0iHso4fn3irWUZzRXgcbk/IC
+ wSg5UGT6WQPR53o0N3FQ+4niF4Z89Jxzke8rOY457SwHFylWjG2YFEZCEFslEXbmcC8j
+ bVT7XnHicwp1S9PO4Fdkle+3ErDr57yhjDU/KlMmQaarUSQ79ReoNZyhSEnBPui3ZM1H
+ Tz3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747667266; x=1748272066;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=+gXOesR3SEtU8F0M84hJr3NYCDfVUGyS9aJHZrCKHhc=;
+ b=Cyb6G4fWCGn31l2AfZl8e8Od5tOvo8KIgRv86GF2JGWRUTR5t9b7YB4+GI/NdJiXlz
+ N61OBiQXLNKKiMo6jvUUb6s7dhYL7DMBrtjlxD/9tCIdX5+kdLHQe4/poJLoBK/wsznp
+ 7Y5VVp3ak4/dDLnlFSdKfkPYupcRXaX/mO8r/s0U/3bnEWswroC5ypXy74+yMKvs3KyH
+ tip8NRjmzXZex1xuJ9qVKZLUcy2Qh9jjXZO8sexh47PKZBNpkpDKYZ1vjaYMdIe5VseC
+ TE6wItVL6lz/DrpJ++31glSyEq3J5RBQdxa4nLjKiH1A5GmXighJ34+lacwy044iPuGJ
+ mjIA==
+X-Gm-Message-State: AOJu0Yznmh0jwuuvgv3u/J7aQJT4gMNdkqPcHUr0yexTwzB1tNlFbz5o
+ YRQhkPH+9SW3r3CtdJJQB3EImIV3t/lZCg9UxSKQ7QOt5iyDTbjPTcFkPr1LXrkNxLSgyMuDdEX
+ CkLvAJ9V8ffPcLfqwkn05oDRAugZcvZW6up+97b0B7w==
+X-Gm-Gg: ASbGncvsNvjPqUQTnlMZ7erSSYyyIBLxnXY9Q+EYPEEuamSL3OTAdqXE0voo8N6WB8N
+ N2y6K6Lwc1FTwKtgaHN98I2rvd3YE2Z9iBWjhkS/brQ3R1PBYyRNsUwHJgbplab5L21WBdJ9yu1
+ hKUIz9xtrCslkPPwKwxErcQ2PdQWkVrHtaMA==
+X-Google-Smtp-Source: AGHT+IF4UsKvwriPiBsIgFIaM7sRVvlNfHXsvSmaqMDQgndCoaVydVQEN1J4Xf0rjK4Zc3XviBD1Kc4pu5rXpjKSUcw=
+X-Received: by 2002:a05:690c:650e:b0:709:191c:d7ee with SMTP id
+ 00721157ae682-70ca79efe46mr181951707b3.17.1747667266087; Mon, 19 May 2025
+ 08:07:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spamd-Bar: /
-X-Spam-Score: -0.01
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 5D65822A7B
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-0.01 / 50.00]; SUSPICIOUS_RECIPS(1.50)[];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- MIME_GOOD(-0.10)[text/plain]; MX_GOOD(-0.01)[];
- FREEMAIL_ENVRCPT(0.00)[gmail.com];
- TO_MATCH_ENVRCPT_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FREEMAIL_TO(0.00)[gmail.com,daynix.com];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- TO_DN_SOME(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
- MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[];
- FREEMAIL_CC(0.00)[gmail.com,nongnu.org,redhat.com,ericsson.com];
- DKIM_TRACE(0.00)[suse.de:+];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- RCVD_COUNT_TWO(0.00)[2]; MID_RHS_MATCH_FROM(0.00)[];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_SEVEN(0.00)[11];
- TAGGED_RCPT(0.00)[]; MISSING_XM_UA(0.00)[];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,
- imap1.dmz-prg2.suse.org:helo, suse.de:email, suse.de:mid, suse.de:dkim]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+References: <20230116223637.3512814-1-richard.henderson@linaro.org>
+ <20230116223637.3512814-4-richard.henderson@linaro.org>
+In-Reply-To: <20230116223637.3512814-4-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 19 May 2025 16:07:34 +0100
+X-Gm-Features: AX0GCFuK1V0kvDMuXtEgJwzazuOzM28zbz6xL_xMq_eUtpdRcS2NoD5K8trUqpU
+Message-ID: <CAFEAcA905fCuyqLR9UK5Tz5tNkFAS07epcKzVOgbNXpbd75F0Q@mail.gmail.com>
+Subject: Re: [PULL 3/5] tcg: add perfmap and jitdump
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>, 
+ "Vanderson M . do Rosario" <vandersonmr2@gmail.com>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1132;
+ envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1132.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -136,22 +94,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-
-> The e1000e and igb tests do not clear the ICR/EICR cause bits (or
-> set auto-clear) on seeing queue interrupts, which inhibits the
-> triggering of a new interrupt. The msix pending bit which is used
-> to test for the interrupt is also not cleared (the vector is masked).
+On Mon, 16 Jan 2023 at 22:36, Richard Henderson
+<richard.henderson@linaro.org> wrote:
 >
-> Fix this by clearing the ICR/EICR cause bits, and the msix pending
-> bit using the PBACLR device register.
+> From: Ilya Leoshkevich <iii@linux.ibm.com>
 >
-> Cc: Michael S. Tsirkin <mst@redhat.com>
-> Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-> Cc: Dmitry Fleytman <dmitry.fleytman@gmail.com>
-> Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
-> Cc: Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> Add ability to dump /tmp/perf-<pid>.map and jit-<pid>.dump.
+> The first one allows the perf tool to map samples to each individual
+> translation block. The second one adds the ability to resolve symbol
+> names, line numbers and inspect JITed code.
+>
+> Example of use:
+>
+>     perf record qemu-x86_64 -perfmap ./a.out
+>     perf report
+>
+> or
+>
+>     perf record -k 1 qemu-x86_64 -jitdump ./a.out
+>     DEBUGINFOD_URLS=3D perf inject -j -i perf.data -o perf.data.jitted
+>     perf report -i perf.data.jitted
+>
+> Co-developed-by: Vanderson M. do Rosario <vandersonmr2@gmail.com>
+> Co-developed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+> Message-Id: <20230112152013.125680-4-iii@linux.ibm.com>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Apparently this doesn't build with current head-of-trunk clang:
+https://gitlab.com/qemu-project/qemu/-/issues/2970
+
+> +struct debug_entry {
+> +    uint64_t addr;
+> +    int lineno;
+> +    int discrim;
+> +    const char name[];
+> +};
+
+> +struct jr_code_debug_info {
+> +    struct jr_prefix p;
+> +
+> +    uint64_t code_addr;
+> +    uint64_t nr_entry;
+> +    struct debug_entry entries[];
+> +};
+
+> +/* Write a JIT_CODE_DEBUG_INFO jitdump entry. */
+> +static void write_jr_code_debug_info(const void *start,
+> +                                     const struct debuginfo_query *q,
+> +                                     size_t icount)
+> +{
+> +    struct jr_code_debug_info rec;
+> +    struct debug_entry ent;
+
+
+../tcg/perf.c:250:24: error: default initialization of an object of
+type 'struct debug_entry' with const member leaves the object
+uninitialized [-Werror,-Wdefault-const-init-field-unsafe]
+  250 |     struct debug_entry ent;
+      |                        ^
+../tcg/perf.c:157:16: note: member 'name' declared 'const' here
+  157 |     const char name[];
+      |                ^
+
+I don't understand what's going on with this flexible-array
+name[] field: we never access it, and I don't see how we
+can sensibly have an array of debug_entry structs in
+jr_code_debug_info if the size of a debug_entry is variable.
+I also don't see why we've declared it 'const'.
+
+Anybody want to take a look at this?
+
+thanks
+-- PMM
 
