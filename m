@@ -2,74 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C1BBABC547
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 19:11:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D4B7ABC55A
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 19:15:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uH40e-00060q-Jc; Mon, 19 May 2025 13:10:40 -0400
+	id 1uH459-0003yk-NW; Mon, 19 May 2025 13:15:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uH40b-0005zp-04
- for qemu-devel@nongnu.org; Mon, 19 May 2025 13:10:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uH40Z-0001Zz-8t
- for qemu-devel@nongnu.org; Mon, 19 May 2025 13:10:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747674634;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=bHxr2avKZwMQbb4Nt5uTm7UKAaDRZw9/aTaWTEK5ZtI=;
- b=ON1Ze26T9LkFU6cB01I9ympb0TIQwAIap6RVr9/1gOqsLHTFQpBOEdnINTIQCH32gQu0sM
- jyYzCgmq/z2BMkUDJlQdBy8T8AW/zfEaUk2Peo1FxAOPK7Zx1fhMOK7p+jOepAKktVc+Uc
- QfDC71+LQOiWFs1tw+ER55ZNgekuebc=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-600-6xq7pAJwPZicjOjCx8xOvg-1; Mon,
- 19 May 2025 13:10:31 -0400
-X-MC-Unique: 6xq7pAJwPZicjOjCx8xOvg-1
-X-Mimecast-MFC-AGG-ID: 6xq7pAJwPZicjOjCx8xOvg_1747674629
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 8DC0E1800368; Mon, 19 May 2025 17:10:29 +0000 (UTC)
-Received: from toolbx.redhat.com (unknown [10.42.28.50])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id ABA0D19560AA; Mon, 19 May 2025 17:10:27 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v5 9/9] scripts/checkpatch: reject license boilerplate on new
- files
-Date: Mon, 19 May 2025 18:10:04 +0100
-Message-ID: <20250519171004.352636-10-berrange@redhat.com>
-In-Reply-To: <20250519171004.352636-1-berrange@redhat.com>
-References: <20250519171004.352636-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1uH453-0003vS-JR
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 13:15:13 -0400
+Received: from mail-ua1-x929.google.com ([2607:f8b0:4864:20::929])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1uH451-0001s2-Id
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 13:15:13 -0400
+Received: by mail-ua1-x929.google.com with SMTP id
+ a1e0cc1a2514c-87bfd1499f0so521018241.0
+ for <qemu-devel@nongnu.org>; Mon, 19 May 2025 10:15:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1747674910; x=1748279710; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Tjk49PHUlteJGs2KitDuZCe1m5yPtwsrOIGRYZdzxDQ=;
+ b=lffXFK+YC0IJhq2Iq8/vgD4jHkgAWAC0YU+gUEPhfOmICG4ukmtbMAp/u6aHyoEJvS
+ ebYRg4U3nqT+FKvlXi+xy4RUP3sHK0sWf+p29WKGTmQAycDXNgTgvCmCzQWymN58bc2T
+ 10fCSuHjIACrJIKDWsROSgTW9pCeocefTgzbO5E4y+LylUyAVDGInT3sQYh+By+WQNjx
+ 34+7vlI2hcPcPZKLVKlATSldz45cMAnXOZkQhmW6ZsA8L11ZdzN+2fxoJACQ7hm7B6sh
+ ex5EhEm3wNssxDughh5kyRDfflgmQg7jINed7OfW/PpkJYJuqDxaRn9vDpAZ2R7DdVkE
+ BPrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747674910; x=1748279710;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Tjk49PHUlteJGs2KitDuZCe1m5yPtwsrOIGRYZdzxDQ=;
+ b=oS5knzn0zpoSkk8CC/Jud3e4hR7itw0czd0xYNi4Xem8hxFyfdWShhA9RpdMl7ycA2
+ bnh9eJUKb8RWCLO1ydjg5TenTwejKoYbS3EX7NkLvlr7th+pgp2ysVEospaj133hnoR3
+ MeST2OtT3T7A3Pd1GcfqpuGJVWnpihi3pbD61GTZgclPGzxykD5FRnxhqtIoY+WFQ6/L
+ QdsHVEGbfPNFPRDj6n2Py+Huh1rbjxiMYYJmVIhT+xpRzs4FNxLOlat9g5f0pqyPtOnv
+ /jS5+8BeWJPZ3sLzTzg9p0M9H9CYQURQGZLC2Zkphxya5WHQlD5OvXAcnOvGIX0kKcnI
+ KQ9Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWnUq1hN0q5kH2aLsQa6QLNhXYXbhR+daC38B1t3YdIdbR2aRC0lQ3JJSEfuZsOMTe6OOiUERZrovtv@nongnu.org
+X-Gm-Message-State: AOJu0YxSG+si7DDyYSDw74BtDMYa0e77WGEWRwQGK/nSPNjxLWmy6kqU
+ G49T8qq25r3LCyqXlLIaEW0tfeNlJDTeIbmOtNCLeIchA6froKYbYg56mHy/9exCZbc=
+X-Gm-Gg: ASbGncsKLsoJfaes6Ojc43BoRYojfuGm2wIoBbM1DgCD+ViLTAH4G876EOH5hr3BL1s
+ BRhdkr1xSKdoVLpG+XvBPqEc+cThzZmOW33ZgSYw4QsUmAWcfYkxfnQLldQj/k1XVxwQqxWlwiD
+ W4lLGLLPFVlKAcHY02FjxO8pD7trwcGLeCFT81vcCOYmlDj3YFwRb4sri45mXCHouMkQya/FyrM
+ hxIZHlpym7wUCi4EV4W4GuWIGNqMKMgNp6WdZgi8XIDC4eDJ5U3/msggbFRP12Xe+AZBXvxxwdf
+ IVp/I6lkBbNSNgHdHXjIzXJtOM2RtiR2edNrJEum6Lv4XAq3Xs2gWCqhjWwN9Y/D38s=
+X-Google-Smtp-Source: AGHT+IExy0x4yge7bL1QjgSBJYPsWPYL6s1vtK7HLJylv9tbNrTBn3a6vSo1VNkmjLz8upEz80oGbg==
+X-Received: by 2002:a05:6122:8c0f:b0:520:3536:feb5 with SMTP id
+ 71dfb90a1353d-52dba97c622mr12654125e0c.11.1747674909986; 
+ Mon, 19 May 2025 10:15:09 -0700 (PDT)
+Received: from [192.168.68.110] ([152.250.131.100])
+ by smtp.gmail.com with ESMTPSA id
+ 71dfb90a1353d-52dbaa5a449sm6973291e0c.32.2025.05.19.10.15.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 19 May 2025 10:15:09 -0700 (PDT)
+Message-ID: <c1368421-4441-4058-b78c-317d1d21d580@ventanamicro.com>
+Date: Mon, 19 May 2025 14:15:05 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.13,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC] target: riscv: Fix satp mode initialization based on
+ profile
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: Alexandre Ghiti <alexghiti@rivosinc.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20250516122319.4100121-1-alexghiti@rivosinc.com>
+ <e86af5b2-7d8a-4503-8a5c-5ee2147aa850@ventanamicro.com>
+ <20250519-a153c03e434d1bf31498eb01@orel>
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20250519-a153c03e434d1bf31498eb01@orel>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::929;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ua1-x929.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,70 +108,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The previous commit mandates use of SPDX-License-Identifier on common
-source files, and encourages it on all other files.
 
-Some contributors are none the less still also including the license
-boilerplate text. This is redundant and will potentially cause
-trouble if inconsistent with the SPDX declaration.
 
-Match common boilerplate text blurbs and report them as invalid,
-for newly added files.
+On 5/19/25 1:35 PM, Andrew Jones wrote:
+> On Mon, May 19, 2025 at 09:48:14AM -0300, Daniel Henrique Barboza wrote:
+>>
+>>
+>> On 5/16/25 9:23 AM, Alexandre Ghiti wrote:
+>>> The satp mode is set using the svXX properties, but that actually
+>>> restricts the satp mode to the minimum required by the profile and
+>>> prevents the use of higher satp modes.
+>>
+>> For rva23s64, in "Optional Extensions" we'll find:
+> 
+> The keyword is "Optional". The profile should only set sv39 since that's
+> what rva23 (and rv22) have for the mandatory support. sv48 and sv57 are
+> both optional so, while the user should be allowed to turn them on, just
+> like other optional extensions, they shouldn't be on by default since we
+> don't set any optional extensions on by default.
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- scripts/checkpatch.pl | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+What about satp validation for a profile? For both rva22 and rva23 the mandatory
+satp is sv39, but up to sv57 is also ok. Do we care if a sv64 CPU claims rva23
+support?
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index dc2c3e6aa1..17b8db40ad 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -365,6 +365,18 @@ our @typeList = (
- 	qr{guintptr},
- );
- 
-+# Match text found in common license boilerplate comments:
-+# for new files the SPDX-License-Identifier line is sufficient.
-+our @LICENSE_BOILERPLATE = (
-+	"licensed under the terms of the GNU GPL",
-+	"under the terms of the GNU General Public License",
-+	"under the terms of the GNU Lesser General Public",
-+	"Permission is hereby granted, free of charge",
-+	"GNU GPL, version 2 or later",
-+	"See the COPYING file"
-+);
-+our $LICENSE_BOILERPLATE_RE = join("|", @LICENSE_BOILERPLATE);
-+
- # Load common spelling mistakes and build regular expression list.
- my $misspellings;
- my %spelling_fix;
-@@ -1497,6 +1509,13 @@ sub process_end_of_file {
- 			     "' need 'SPDX-License-Identifier'?");
- 		}
- 	}
-+	if ($fileinfo->{action} eq "new" &&
-+	    exists $fileinfo->{facts}->{sawboilerplate}) {
-+		ERROR("New file '" . $fileinfo->{filenew} . "' must " .
-+		      "not have license boilerplate header text, only " .
-+		      "the SPDX-License-Identifier, unless this file was " .
-+		      "copied from existing code already having such text.");
-+	}
- }
- 
- sub process {
-@@ -1799,6 +1818,10 @@ sub process {
- 			&checkspdx($realfile, $1);
- 		}
- 
-+		if ($rawline =~ /$LICENSE_BOILERPLATE_RE/) {
-+			$fileinfo->{facts}->{sawboilerplate} = 1;
-+		}
-+
- 		if ($rawline =~ m,(SPDX-[a-zA-Z0-9-_]+):,) {
- 			my $tag = $1;
- 			my @permitted = qw(
--- 
-2.49.0
+I am aware that sv64 also means sv57 support but I'm worried about migration
+compatibility. Let's say we migrate between two hosts A and B that claim
+to be rva23 compliant. A is running sv64, B is running sv57. If the software
+running in A is actually using satp sv64 we can't migrate A to B.
+
+> 
+> So we don't want this change, but fixing any bugs with the first hart vs.
+> the other harts is of course necessary.
+
+I'm working on it. I'll decouple the QMP bits (all the profile validation business
+is a QMP problem in the end) from the core CPU finalize logic. I'll send patches
+soon.
+
+
+Thanks,
+
+Daniel
+
+> 
+> Thanks,
+> drew
+> 
+>>
+>> https://github.com/riscv/riscv-profiles/blob/main/src/rva23-profile.adoc
+>>
+>> - Sv48 Page-based 48-bit virtual-memory system.
+>> - Sv57 Page-based 57-bit virtual-memory system.
+>>
+>> So in theory we could go up to sv57 for rva23s64 (and rva22s64, just checked).
+>> Changing satp_mode to the maximum allowed seems sensible.
+>>
+>> But allowing all satp modes to go in a profile defeats the purpose, doesn't it?
+>> None of the existing profiles in QEMU claims supports sv64. Granted, I'm not a
+>> satp expert, but removing the satp restriction in profiles doesn't seem right.
+>>
+>>
+>> Thanks,
+>>
+>> Daniel
+>>
+>>
+>>>
+>>> Fix this by not setting any svXX property and allow all satp mode to be
+>>> supported.
+>>>
+>>> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+>>> ---
+>>>    target/riscv/tcg/tcg-cpu.c | 3 ---
+>>>    1 file changed, 3 deletions(-)
+>>>
+>>> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+>>> index 5aef9eef36..ca2d2950eb 100644
+>>> --- a/target/riscv/tcg/tcg-cpu.c
+>>> +++ b/target/riscv/tcg/tcg-cpu.c
+>>> @@ -1232,9 +1232,6 @@ static void cpu_set_profile(Object *obj, Visitor *v, const char *name,
+>>>    #ifndef CONFIG_USER_ONLY
+>>>        if (profile->satp_mode != RISCV_PROFILE_ATTR_UNUSED) {
+>>>            object_property_set_bool(obj, "mmu", true, NULL);
+>>> -        const char *satp_prop = satp_mode_str(profile->satp_mode,
+>>> -                                              riscv_cpu_is_32bit(cpu));
+>>> -        object_property_set_bool(obj, satp_prop, profile->enabled, NULL);
+>>>        }
+>>>    #endif
+>>
+>>
 
 
