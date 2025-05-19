@@ -2,60 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9958EABC241
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 17:22:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30348ABC24D
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 17:23:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uH2IJ-0006vg-Et; Mon, 19 May 2025 11:20:47 -0400
+	id 1uH2IU-00070D-LH; Mon, 19 May 2025 11:20:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uH2IF-0006ur-8F
- for qemu-devel@nongnu.org; Mon, 19 May 2025 11:20:43 -0400
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uH2II-0006vz-8f
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 11:20:46 -0400
 Received: from mailgate02.uberspace.is ([185.26.156.114])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uH2I9-0005Ty-8C
- for qemu-devel@nongnu.org; Mon, 19 May 2025 11:20:42 -0400
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uH2IA-0005UO-Mr
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 11:20:45 -0400
 Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate02.uberspace.is (Postfix) with ESMTPS id 02663180EA5
+ by mailgate02.uberspace.is (Postfix) with ESMTPS id 4384C180EA7
  for <qemu-devel@nongnu.org>; Mon, 19 May 2025 17:20:26 +0200 (CEST)
-Received: (qmail 1522 invoked by uid 990); 19 May 2025 15:20:25 -0000
+Received: (qmail 1537 invoked by uid 990); 19 May 2025 15:20:26 -0000
 Authentication-Results: skiff.uberspace.de;
 	auth=pass (plain)
 Received: from unknown (HELO unkown) (::1)
  by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
- Mon, 19 May 2025 17:20:25 +0200
+ Mon, 19 May 2025 17:20:26 +0200
 From: Julian Ganz <neither@nut.email>
 To: qemu-devel@nongnu.org
 Cc: Julian Ganz <neither@nut.email>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <arikalo@gmail.com>
-Subject: [PATCH v5 13/25] target/mips: call plugin trap callbacks
-Date: Mon, 19 May 2025 17:19:53 +0200
-Message-ID: <7e602c496a873fd55713eab740543683b69c98eb.1747666625.git.neither@nut.email>
+	Stafford Horne <shorne@gmail.com>
+Subject: [PATCH v5 14/25] target/openrisc: call plugin trap callbacks
+Date: Mon, 19 May 2025 17:19:54 +0200
+Message-ID: <37da15321ffd8f3aa41ad2dadd591cc1f179feb1.1747666625.git.neither@nut.email>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1747666625.git.neither@nut.email>
 References: <cover.1747666625.git.neither@nut.email>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Bar: -----
-X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.999338) MID_CONTAINS_FROM(1)
+X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.998926) MID_CONTAINS_FROM(1)
  MIME_GOOD(-0.1) R_MISSING_CHARSET(0.5)
-X-Rspamd-Score: -5.599338
+X-Rspamd-Score: -5.598926
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
  h=from:to:cc:subject:date;
- bh=gF8ZpJS8y9Bbk8U6lfy6v84ed6luIVNRS7iWh3mugkA=;
- b=hCLggOgeqbceKTwet6LKHJpsaY+ahwjZgqG61Z/jzZXnq39ycvAoNpIiDGXg+3fVhPEDqlvYO6
- F/Es5gee1Ntb0HVLrZbaScFM7CSPhxHDUhn5f4WKCrs7gUMOQDf2fWrGOZXcd+mBTz3fGCt3K+MG
- WncSHD0WQdlS2vK3F9YGqKVsutR3UypXWxlX260L8e2ShfPCBXO6dSjOlSf4LyYftwYCtW2Ew5ln
- k6L+SQ/powH8x6P2mdaHaJWNTDUm1ESvYP7ih9p78hmawz7iKQHNZ77zoqU03jJeskNf0l6cjMZY
- dbjfOdrmk6itaxFU4Dbp/3cUzi4bQNpLMFqrvejYitSKoxEIP0Q857kLMhkjcdH1L6eZ8ehyM9f0
- 03d4qYuljZsuQHaQqP805Ba6OY2P82oFpp/02rXQLmBZXDgqYewQQABMsKeCy6l3bUXjv2kFg+X2
- 7S4CedCaJfGgs9D6syPsLICUE1E68CTR0LkjBji7pVqGlnNR8bvBZHMT1SJbYt0PUrQExyVQqop/
- WNqSL+c96a5YCg0+KrUrEYcC3i9Y5idn8EKV1rXSeuiCfNVFY0DhLofWP5DNewru0TF8QOVbi0iC
- 1ll7foVAS+dpUp+U/JzQifGDloTk4PZ7SpWZD2/whTJFOlwpXLK/edbpBpgjdkYcQRSbQ2Hvi1Ty
+ bh=92gsDAb/F7BMOSszWmofaaZf2P8bUL8jYBMcs0mlQQY=;
+ b=EtZe+BQNAi3YZyMhuzHVn1omoOpi2DAR1/ht3xdBTz5MIM4wfgkzdtVoDnDPy7kWYEjgrRoE/F
+ B00pRXU1QKGjG3JOJ2rzHhWAeLyyYE1IAyZKE4pwfBHu8HUMlyUOeKy/8ePCFvGxvCPT4yer5uc0
+ 3pDTSBrGkJ+QdWvzy7KIIwJkLolo+2AkZY+pqNonVW/6Gg2TE0j4XZQu7/Yn92mNos38jbYxb1KP
+ DAN6JEiVQCQtdzwGNy+dO3j71dSm8o4w64lHdZLvKbPkl8FAp6kR9Ue7AdE8/CbpFJSNdeX9XaDr
+ k6WZFh9WY5cDKLk7goK0mXilKelMV7FC8LkmR7CyiSl1Jsa2u/0wKHqq9pNOuvf4ryJQkq9JyjVx
+ gTuRt18mXZz22c+r5aey39Kbnv2FdkCGRLRmpVLpSVeEv5nP1QQGbfALfcKNO2Gz+8/9OVJOgWJG
+ 8trmWhKJyEsr+9pScM6fmE8j90lNC7U4Ch23Eho5n0m00e7nozOLBnwBcHyrGbzMmjreNGCIAZg3
+ 7C8XE83kRGlaoH1SbdvrfkmEdy2bLbjPZIHt0bYW733azTNdyYh/UHO/x9DHdmtE3LJv1FnS25Zd
+ BKYr9Uo1pn56Q51YwSDuNh/W6h82j4J5xzqQpVmjqmo5vhh2Ip6acLwUMluOxPIvdde1qutA25Nd
  E=
 Received-SPF: pass client-ip=185.26.156.114; envelope-from=neither@nut.email;
  helo=mailgate02.uberspace.is
@@ -86,56 +83,48 @@ events as well as the corresponding hook functions. Due to differences
 between architectures, the latter need to be called from target specific
 code.
 
-This change places hooks for MIPS targets. We consider the exceptions
-NMI and EXT_INTERRUPT to be asynchronous interrupts rather than
-exceptions.
+This change places hooks for OpenRISC targets. We treat anything other
+than resets, timer and device interrupts as exceptions.
 
 Signed-off-by: Julian Ganz <neither@nut.email>
 ---
- target/mips/tcg/system/tlb_helper.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ target/openrisc/interrupt.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/target/mips/tcg/system/tlb_helper.c b/target/mips/tcg/system/tlb_helper.c
-index eccaf3624c..abc4d9fef0 100644
---- a/target/mips/tcg/system/tlb_helper.c
-+++ b/target/mips/tcg/system/tlb_helper.c
-@@ -18,6 +18,7 @@
-  */
- #include "qemu/osdep.h"
- #include "qemu/bitops.h"
+diff --git a/target/openrisc/interrupt.c b/target/openrisc/interrupt.c
+index 486823094c..08f0ed9b89 100644
+--- a/target/openrisc/interrupt.c
++++ b/target/openrisc/interrupt.c
+@@ -25,11 +25,13 @@
+ #ifndef CONFIG_USER_ONLY
+ #include "hw/loader.h"
+ #endif
 +#include "qemu/plugin.h"
  
- #include "cpu.h"
- #include "internal.h"
-@@ -1034,6 +1035,7 @@ void mips_cpu_do_interrupt(CPUState *cs)
-     bool update_badinstr = 0;
-     target_ulong offset;
-     int cause = -1;
-+    uint64_t last_pc = env->active_tc.PC;
+ void openrisc_cpu_do_interrupt(CPUState *cs)
+ {
+     CPUOpenRISCState *env = cpu_env(cs);
+     int exception = cs->exception_index;
++    uint64_t last_pc = env->pc;
  
-     if (qemu_loglevel_mask(CPU_LOG_INT)
-         && cs->exception_index != EXCP_EXT_INTERRUPT) {
-@@ -1052,6 +1054,7 @@ void mips_cpu_do_interrupt(CPUState *cs)
-         cs->exception_index = EXCP_NONE;
-         mips_semihosting(env);
-         env->active_tc.PC += env->error_code;
-+        qemu_plugin_vcpu_hostcall_cb(cs, last_pc);
-         return;
-     case EXCP_DSS:
-         env->CP0_Debug |= 1 << CP0DB_DSS;
-@@ -1336,6 +1339,14 @@ void mips_cpu_do_interrupt(CPUState *cs)
-                  env->CP0_Status, env->CP0_Cause, env->CP0_BadVAddr,
-                  env->CP0_DEPC);
+     env->epcr = env->pc;
+ 
+@@ -98,6 +100,17 @@ void openrisc_cpu_do_interrupt(CPUState *cs)
+         cpu_abort(cs, "Unhandled exception 0x%x\n", exception);
      }
-+    switch (cs->exception_index) {
-+    case EXCP_NMI:
-+    case EXCP_EXT_INTERRUPT:
+ 
++    switch (exception) {
++    case EXCP_RESET:
++    case EXCP_TICK:
++    case EXCP_INT:
 +        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
 +        break;
 +    default:
 +        qemu_plugin_vcpu_exception_cb(cs, last_pc);
++        break;
 +    }
-     cs->exception_index = EXCP_NONE;
++
+     cs->exception_index = -1;
  }
  
 -- 
