@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAA2CABB41E
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:32:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13EF1ABB3DA
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:14:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uGs3K-0000ba-SI; Mon, 19 May 2025 00:24:38 -0400
+	id 1uGrtE-0002gk-C8; Mon, 19 May 2025 00:14:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uGrmf-0004jb-AZ; Mon, 19 May 2025 00:07:28 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1uGrmk-0004kC-Fe
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 00:07:33 -0400
+Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uGrmd-00045J-Iu; Mon, 19 May 2025 00:07:25 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-231e8553248so18879615ad.1; 
- Sun, 18 May 2025 21:07:22 -0700 (PDT)
+ id 1uGrmg-00045c-Pa
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 00:07:28 -0400
+Received: by mail-pj1-x1029.google.com with SMTP id
+ 98e67ed59e1d1-30ed99132abso752409a91.3
+ for <qemu-devel@nongnu.org>; Sun, 18 May 2025 21:07:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747627641; x=1748232441; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1747627645; x=1748232445; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yphhlPS9biEieFLOj3eoHey74pP4qWULE21z6B5e0ew=;
- b=QJSfTuQ70z6jrVWmrlXDXSYWw8hXZ75GIGYknF90Y4z6/oaG5x/T3eKct8k3+Uv55y
- cpeCKfAFJjOauRgg89UAm2XDR4Ro+SimzDAxa0wYXe/sM0UAiZPxtXV2LbYX9xuEJ5vg
- g16zIICGVg3FiDnP5EFjbdbpsDbgr9Fd4vs3BEk5jZeaEJElhqpY+WaGHvQ766dLhIy7
- SmPwr8dIaf7kWy+jpuDuCMKJ5jpWf/PQMCsJ4Oatt+GlJR8w6MRdBSkjVRgU5iGfcQP6
- rXEWKpYz582mYf2TLQuoZzhUpZ7dnP2N8b1SiuN4DBJ8DYtr/kuzb6P+0LlQG2DCrmxQ
- owgg==
+ bh=eQ8oK567cL4InAUCLjpcMcBvYiQLXRFYVbtoODZATfI=;
+ b=ZFOJwxFRF7tDSEo90iCHdp8ixY9FcBGrj2sJs1XAtDDOhXcWiT1RR8S8WCFyZWzvby
+ wJW3ZEch4U6xnwhg7GCxRE0nd1gaVmw5IqOnv6Sa+/XCGaYQFBEeQ6MFX4QHe+kctFYs
+ BEHDwgJIi/Jov/fnyrDg0UryjLQ86oUnW/T6rM/uHknle8X9PdZeakJHKhKh3WFfkkwc
+ uV/cgPCfMJIm96JFZomOOuBXezDyvSt9DfWd9le06MF4gsMnIe6KffEQLBoH6H7GVPs7
+ C4gQM5Izscqc/LzULa8/vRDzhJXJCFIKnc+Sd5wbqNUl6bjKpOaUqrd5ZNiSBqrJ0TRE
+ Go7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747627641; x=1748232441;
+ d=1e100.net; s=20230601; t=1747627645; x=1748232445;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yphhlPS9biEieFLOj3eoHey74pP4qWULE21z6B5e0ew=;
- b=GZCElpHRZuwxZSg9tUZUHlI/FXW6k6feaUsA4vQZsbiJHq6vcmYn1lML12LFzkEkj0
- svYMitcOap80vgal7+Gy9Sy+VJ0rvtewb+SHw0TfT08twLoY9I4jieerCDS4P9ms+qFd
- C7kJtYtjBiuQHWjMRKyD9M/t/pVmXhhW4E9LjGF5CgYPYbP5LFGcl3hcnhP4BRpnqlXo
- V64tmEpAj5OsaEpjhJEQitbdFOnBiPUPRGff0BsCwkv8dA7ay0uDLs+xyQsRxuGboxkw
- 621HagDarM8+HOtbgO6661tBrADFm8y3OZX9BdGgDuFgZekzcJX5B37vw00lal5ZZ86Q
- IHqg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUb4Zvp7qDavlpaRFGcq5MKUjH6k+aRLT63BdwET2DZ2bFpxz8QHm5MZkCJ2TM0TQdBLIcwAeDdl69dsQ==@nongnu.org
-X-Gm-Message-State: AOJu0YzKBNHv9f4OX6NdnkwWZr+1q5db7eCx6bjVxnWTxfLlTklA5NXY
- JvKMKvMenVC8FmeQeA29EQEoJlZX71V8hdqIQrtIDCWjvrFFgaRaqYUNoaEVNg==
-X-Gm-Gg: ASbGncv9mK7lqrm7WFCXUwmH69VIRQpqBt0C9pqUdUC/CqGmUKiMdCwGV6UoR8gfkoN
- XNcKgpboYd14u0GAsREKL2+YqVhA1ERMKtG+NrPuoplIoKUy3CyOybHzqYN+BlXIEzTVOKchYRi
- 8uNdnUtm7Yf562cQGdWgioYwvxx9Z3dGPohYS+v+0awrr+GY/rk44L2PKAY6P6v/uXNFQGQip4b
- 8eLJwLNC7i+6XnO9Kmlh/Ing4juRg6x2OBlfLksNuPADjinAOwz3FKLBhzTx0Y8UUjSmeH+80FY
- U4oWg7NBhl22kVjoahee9Kb5xCrFt7Mf87MLao3hl3pLPzjkY4jjPRof/6YCyIcXqynTDhAiDhQ
- kUPkavW+ysJxjdjcxMjoamvNc+eWLOjjFr3HTJ7RD8acrwh/awmxJ2+D6
-X-Google-Smtp-Source: AGHT+IF2SbYzmKD4t2kfiJHwg8vFDp1BaIPMU9eTFNos2vaxug5Vm8cSNMY2x3QhZW+oviLaXegBTg==
-X-Received: by 2002:a17:903:40d0:b0:22e:847b:5bbd with SMTP id
- d9443c01a7336-231de370cebmr165048535ad.32.1747627641437; 
- Sun, 18 May 2025 21:07:21 -0700 (PDT)
+ bh=eQ8oK567cL4InAUCLjpcMcBvYiQLXRFYVbtoODZATfI=;
+ b=e6fGHvPBrvzPhmVk9ZDi+j9Cen/X9Qti2aa/VL9+b9VwwdK37w7PVEMRdS2kslqClx
+ IrQ526QEvUGXIFp838tesf/Tf2GUk2RIy2hKPdYSbZX4kJ0fn9AnwsRzfN3k6nsw/LhU
+ NEogj8vAfhdC63WrRbE+MkLij3vFO0MtCj2Sl+tmmckimH3O/rWgEQRNYHKMxrbPVTSB
+ rRjSOyKH3kBdnEJhnjwDsVe4BVX/eHQtGYspehttBN5xd4r7LvaLQagnTSyvPW13p3GW
+ niRM61Z+FHhduo9YMVuRpUVhU+YjvR1J51NtRM1+rYjjdBfv1VFy0JYDw5JqhyJPkufq
+ 3vrA==
+X-Gm-Message-State: AOJu0YylSvQsrg9qKLnMifahOniYebwc6y5YHHG2BFOEtftfOLJTOYYu
+ nM58VwhbtDuEKCAanFxUQd23q26Jqz4fkYQKrxvjF7nvC4VrxGkK59NwJB/NQA==
+X-Gm-Gg: ASbGncvWYlQLPfJFZ9TUR/eAubhhEv+zLg6IX8M8MukuNnpVjbesEJePp0Vs4rS3nI+
+ 1vuI5B6L+PvGxs88kRDcHOS3onqt3iWSIcuE1HXQ9mBdwGa+RriGt6TH27c23MnMkExJ0qlJlNV
+ 8/Uwc5iO4XXKjPM46z9FaWbvy5T2TZNrzIUcdU4bWN39Fb1T56qxPVEo320l4Mf5dvuQZBOcqF2
+ h1Ek5JK+zZ4cj+LXCylDpA/Vp48NAongHIE1WMCczJoqk6b9Ud15PwBQSUy/kQ4B1RKotMvuG8p
+ SNuyaow68gOjmtV9qoF2XiFy1goDI8DITkmcSi7Zjb7naoNiPkqdFwuHRI4LI+XT5ilvg/CD6q/
+ 7gaZXkb8qY+3klYfUXIpVk8tKVCI4bkMpkuAVM+I7lf5V4nMDnJw3UH8s
+X-Google-Smtp-Source: AGHT+IGVOZWfhn2SIfXo1tf+oMj5+2825n7mGdgRmxejbaGH5S2f9xhJsJLeE7BHwf/6TbBYUkc3+A==
+X-Received: by 2002:a17:902:c948:b0:22f:c91f:d05f with SMTP id
+ d9443c01a7336-231d45c99c7mr173264435ad.46.1747627644713; 
+ Sun, 18 May 2025 21:07:24 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.07.18
+ d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.07.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 May 2025 21:07:20 -0700 (PDT)
+ Sun, 18 May 2025 21:07:24 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, =?UTF-8?q?Lo=C3=AFc=20Lefort?= <loic@rivosinc.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Alistair Francis <alistair.francis@wdc.com>, qemu-stable@nongnu.org
-Subject: [PULL 05/56] target/riscv: pmp: fix checks on writes to pmpcfg in
- Smepmp MML mode
-Date: Mon, 19 May 2025 14:05:02 +1000
-Message-ID: <20250519040555.3797167-6-alistair.francis@wdc.com>
+ Alistair Francis <alistair.francis@wdc.com>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PULL 06/56] target/riscv: pmp: exit csr writes early if value was
+ not changed
+Date: Mon, 19 May 2025 14:05:03 +1000
+Message-ID: <20250519040555.3797167-7-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250519040555.3797167-1-alistair.francis@wdc.com>
 References: <20250519040555.3797167-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
+ envelope-from=alistair23@gmail.com; helo=mail-pj1-x1029.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -108,131 +108,64 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Loïc Lefort <loic@rivosinc.com>
 
-With Machine Mode Lockdown (mseccfg.MML) set and RLB not set, checks on pmpcfg
-writes would match the wrong cases of Smepmp truth table.
-
-The existing code allows writes for the following cases:
-- L=1, X=0: cases 8, 10, 12, 14
-- L=0, RWX!=WX: cases 0-2, 4-6
-This leaves cases 3, 7, 9, 11, 13, 15 for which writes are ignored.
-
-From the Smepmp specification: "Adding a rule with executable privileges that
-either is M-mode-only or a locked Shared-Region is not possible (...)" This
-description matches cases 9-11, 13 of the truth table.
-
-This commit implements an explicit check for these cases by using
-pmp_get_epmp_operation to convert between PMP configuration and Smepmp truth
-table cases.
-
 Signed-off-by: Loïc Lefort <loic@rivosinc.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Message-ID: <20250313193011.720075-4-loic@rivosinc.com>
+Message-ID: <20250313193011.720075-5-loic@rivosinc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-Cc: qemu-stable@nongnu.org
 ---
- target/riscv/pmp.c | 79 +++++++++++++++++++++++++---------------------
- 1 file changed, 43 insertions(+), 36 deletions(-)
+ target/riscv/pmp.c | 22 +++++++++++++++-------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
 
 diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-index 3afa16917e..8fc313990a 100644
+index 8fc313990a..4070e21ea3 100644
 --- a/target/riscv/pmp.c
 +++ b/target/riscv/pmp.c
-@@ -76,6 +76,44 @@ static int pmp_is_readonly(CPURISCVState *env, uint32_t pmp_index)
-     return pmp_is_locked(env, pmp_index) && !MSECCFG_RLB_ISSET(env);
- }
- 
-+/*
-+ * Check whether `val` is an invalid Smepmp config value
-+ */
-+static int pmp_is_invalid_smepmp_cfg(CPURISCVState *env, uint8_t val)
-+{
-+    /* No check if mseccfg.MML is not set or if mseccfg.RLB is set */
-+    if (!MSECCFG_MML_ISSET(env) || MSECCFG_RLB_ISSET(env)) {
-+        return 0;
-+    }
-+
-+    /*
-+     * Adding a rule with executable privileges that either is M-mode-only
-+     * or a locked Shared-Region is not possible
-+     */
-+    switch (pmp_get_smepmp_operation(val)) {
-+    case 0:
-+    case 1:
-+    case 2:
-+    case 3:
-+    case 4:
-+    case 5:
-+    case 6:
-+    case 7:
-+    case 8:
-+    case 12:
-+    case 14:
-+    case 15:
-+        return 0;
-+    case 9:
-+    case 10:
-+    case 11:
-+    case 13:
-+        return 1;
-+    default:
-+        g_assert_not_reached();
-+    }
-+}
-+
- /*
-  * Count the number of active rules.
-  */
-@@ -104,44 +142,13 @@ static inline uint8_t pmp_read_cfg(CPURISCVState *env, uint32_t pmp_index)
+@@ -142,6 +142,11 @@ static inline uint8_t pmp_read_cfg(CPURISCVState *env, uint32_t pmp_index)
  static bool pmp_write_cfg(CPURISCVState *env, uint32_t pmp_index, uint8_t val)
  {
      if (pmp_index < MAX_RISCV_PMPS) {
--        bool readonly = true;
--
--        if (riscv_cpu_cfg(env)->ext_smepmp) {
--            /* mseccfg.RLB is set */
--            if (MSECCFG_RLB_ISSET(env)) {
--                readonly = false;
--            }
--
--            /* mseccfg.MML is not set */
--            if (!MSECCFG_MML_ISSET(env) && !pmp_is_readonly(env, pmp_index)) {
--                readonly = false;
--            }
--
--            /* mseccfg.MML is set */
--            if (MSECCFG_MML_ISSET(env)) {
--                /* not adding execute bit */
--                if ((val & PMP_LOCK) != 0 && (val & PMP_EXEC) != PMP_EXEC) {
--                    readonly = false;
--                }
--                /* shared region and not adding X bit */
--                if ((val & PMP_LOCK) != PMP_LOCK &&
--                    (val & 0x7) != (PMP_WRITE | PMP_EXEC)) {
--                    readonly = false;
--                }
--            }
--        } else {
--            readonly = pmp_is_readonly(env, pmp_index);
--        }
--
--        if (readonly) {
-+        if (pmp_is_readonly(env, pmp_index)) {
++        if (env->pmp_state.pmp[pmp_index].cfg_reg == val) {
++            /* no change */
++            return false;
++        }
++
+         if (pmp_is_readonly(env, pmp_index)) {
              qemu_log_mask(LOG_GUEST_ERROR,
                            "ignoring pmpcfg write - read only\n");
--        } else if (env->pmp_state.pmp[pmp_index].cfg_reg != val) {
--            /* If !mseccfg.MML then ignore writes with encoding RW=01 */
--            if ((val & PMP_WRITE) && !(val & PMP_READ) &&
--                !MSECCFG_MML_ISSET(env)) {
--                return false;
--            }
-+        } else if (pmp_is_invalid_smepmp_cfg(env, val)) {
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "ignoring pmpcfg write - invalid\n");
-+        } else {
-             env->pmp_state.pmp[pmp_index].cfg_reg = val;
-             pmp_update_rule_addr(env, pmp_index);
-             return true;
+@@ -529,6 +534,11 @@ void pmpaddr_csr_write(CPURISCVState *env, uint32_t addr_index,
+     bool is_next_cfg_tor = false;
+ 
+     if (addr_index < MAX_RISCV_PMPS) {
++        if (env->pmp_state.pmp[addr_index].addr_reg == val) {
++            /* no change */
++            return;
++        }
++
+         /*
+          * In TOR mode, need to check the lock bit of the next pmp
+          * (if there is a next).
+@@ -545,14 +555,12 @@ void pmpaddr_csr_write(CPURISCVState *env, uint32_t addr_index,
+         }
+ 
+         if (!pmp_is_readonly(env, addr_index)) {
+-            if (env->pmp_state.pmp[addr_index].addr_reg != val) {
+-                env->pmp_state.pmp[addr_index].addr_reg = val;
+-                pmp_update_rule_addr(env, addr_index);
+-                if (is_next_cfg_tor) {
+-                    pmp_update_rule_addr(env, addr_index + 1);
+-                }
+-                tlb_flush(env_cpu(env));
++            env->pmp_state.pmp[addr_index].addr_reg = val;
++            pmp_update_rule_addr(env, addr_index);
++            if (is_next_cfg_tor) {
++                pmp_update_rule_addr(env, addr_index + 1);
+             }
++            tlb_flush(env_cpu(env));
+         } else {
+             qemu_log_mask(LOG_GUEST_ERROR,
+                           "ignoring pmpaddr write - read only\n");
 -- 
 2.49.0
 
