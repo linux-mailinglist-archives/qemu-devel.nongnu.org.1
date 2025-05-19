@@ -2,24 +2,24 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBDF9ABC24F
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 17:23:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FC65ABC253
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 17:24:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uH2IR-0006zG-Dm; Mon, 19 May 2025 11:20:55 -0400
+	id 1uH2IY-00070W-Me; Mon, 19 May 2025 11:21:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uH2IE-0006uZ-Mg
- for qemu-devel@nongnu.org; Mon, 19 May 2025 11:20:42 -0400
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uH2IP-0006zW-Cp
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 11:20:53 -0400
 Received: from mailgate02.uberspace.is ([185.26.156.114])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uH2IA-0005Ue-Mo
- for qemu-devel@nongnu.org; Mon, 19 May 2025 11:20:42 -0400
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uH2IM-0005VD-Px
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 11:20:52 -0400
 Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate02.uberspace.is (Postfix) with ESMTPS id 398ED180EA8
+ by mailgate02.uberspace.is (Postfix) with ESMTPS id 835DB180E9E
  for <qemu-devel@nongnu.org>; Mon, 19 May 2025 17:20:27 +0200 (CEST)
-Received: (qmail 1586 invoked by uid 990); 19 May 2025 15:20:27 -0000
+Received: (qmail 1602 invoked by uid 990); 19 May 2025 15:20:27 -0000
 Authentication-Results: skiff.uberspace.de;
 	auth=pass (plain)
 Received: from unknown (HELO unkown) (::1)
@@ -27,33 +27,35 @@ Received: from unknown (HELO unkown) (::1)
  Mon, 19 May 2025 17:20:27 +0200
 From: Julian Ganz <neither@nut.email>
 To: qemu-devel@nongnu.org
-Cc: Julian Ganz <neither@nut.email>,
- Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: [PATCH v5 17/25] target/rx: call plugin trap callbacks
-Date: Mon, 19 May 2025 17:19:57 +0200
-Message-ID: <f82766b654488c9873de8f042c048ac6abc71f9f.1747666625.git.neither@nut.email>
+Cc: Julian Ganz <neither@nut.email>, David Hildenbrand <david@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ qemu-s390x@nongnu.org (open list:S390 TCG CPUs)
+Subject: [PATCH v5 18/25] target/s390x: call plugin trap callbacks
+Date: Mon, 19 May 2025 17:19:58 +0200
+Message-ID: <71507814db65ebc5bbf8e5944728a106f51e3808.1747666625.git.neither@nut.email>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1747666625.git.neither@nut.email>
 References: <cover.1747666625.git.neither@nut.email>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Bar: -----
-X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.997787) MID_CONTAINS_FROM(1)
+X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.996855) MID_CONTAINS_FROM(1)
  MIME_GOOD(-0.1) R_MISSING_CHARSET(0.5)
-X-Rspamd-Score: -5.597787
+X-Rspamd-Score: -5.596855
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
  h=from:to:cc:subject:date;
- bh=hQkRJhsCAoh/1qVrrVBmBN8T3iX5LzPpXKtF61AGsE0=;
- b=UOtF0/e117zvdg9jI+GvWBAb1qTKLlw+2AsEFfXaUrJp4WvW0Ia31XPtBvvbRwvOUiDSa7U7kQ
- eO1PpLUfwYEuVquiscKrEW3Srchr8CN0OTz9LRXVqvMiZjJFMZLe9r9cJKVLFIe9X8SFj6UekTVS
- qV/Wy948I/vfszrwQ5rgHmc1yGw3ArGnUNIT/haA2TQCA7xYVhMwuOIXiwCFPO6Ol67oIHvQhvA3
- VvUHp6Sg5Nvve7FB/FPlb0Iwf7HPfFwrcSAs8pepO7XU6Yfx9CohSriVVsqs2WRpq7wE6JAGqC3y
- FoaCQ+gvRnoRas1oI41oRifYFYo3Tr6Y3kPRyJOCVqpTsbCT8pe4yr4VsfAMI5w1cC8KTypfZnFJ
- M8NihCo1MzZv8w250P4QTssU9Mhc4aAPxwWQC1bK7Va0Xj9OoM3R0olh+3H6gdhzLP1oQ4C1IA/T
- eD46t3nGjFzrpuptQsOkPjYiBb7uSU5z3rw22+ePm+HbfIgKqr88okqnZokTn3wsfSRarhntUHrN
- 5DjT+kMP+QUfjwFWtf3+7u3uWCoapPB0yA6/zVXt16lBEf7qC9/U7vAwh9wrq+DuBTKS/ShpCDWc
- 5yYVAr8xll8eQXpkci2JLcsiYEt6qOjDu0rCHXqIlCT9MqQ8/wC5UR2LvUOyoQ9+d+Tsuaqam5J5
- Q=
+ bh=xX6ychV8ZQnfsmmBU699XHy/DI6ddqD8g0NA6IFVV98=;
+ b=NWXiTaPDEUcy2U/RUKb8ptKnNvYFZl4wucXjg/xzl4/kl4SkQkUCNefVSQO+ZCbrWr26C/w8hN
+ gQm1V3UAgLZ2KuYHiUXHx4VfsiEwGVTYEDu1zC+08roz202+CJYaP/S2TX5kfj3Ho9krt3HWgxHG
+ 4oV4MHfJBvMsawCqT3QB8ekv+ef6x4m3hZE4PeO610GIieF9eqEhmfQ2i7Y4mBL+ptQ0pZ5KRD6z
+ LXU+6+0QoQdd+H1x+p45/m7gp3z/JHilhbarpMY/U4Rdx5/qnD+ubHsGJqZFBJJ/xND8BLfrUvu5
+ vMj7mhHghIY9SS5T8f0AEZiOM3OwcxOBLPdoAOHH6k4busiHyFUEHLkEPQHw3brEd9ervL535Qp6
+ JwwQBqCX6U9uPlP5C9ry+GBD+fygbsooY1evgXyXXKQzjMOZJoP1loAlaobpS/57Lca27WYB6t1J
+ jFLS0pItglLzRDR+RC97CqSSZVT9fYOPC/QngvPi8NjDJEY6NS5H3968c5WyZZlOmss2urfMnA+e
+ QZN3fpyYOC+e7s7Tp9Qdy11ktnudZmVxD+wOxFmMfISXhJonXGePdPvlOJvAx6xitGSIJGVdUmuo
+ gC8WBdie48Eypo47wbwGVSuXIBxsWAopqkxnSk00XdPfMDjpq15c53kJg3IeYL6dBKQBzjrQpaVO
+ c=
 Received-SPF: pass client-ip=185.26.156.114; envelope-from=neither@nut.email;
  helo=mailgate02.uberspace.is
 X-Spam_score_int: -20
@@ -83,64 +85,64 @@ events as well as the corresponding hook functions. Due to differences
 between architectures, the latter need to be called from target specific
 code.
 
-This change places hooks for Renesas Xtreme targets.
+This change places hooks for IBM System/390 targets. We treat "program
+interrupts" and service calls as exceptions. We treat external and io
+"exceptions" as well as resets as interrupts.
 
+Acked-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Julian Ganz <neither@nut.email>
 ---
- target/rx/helper.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ target/s390x/tcg/excp_helper.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/target/rx/helper.c b/target/rx/helper.c
-index 0640ab322b..09f1c25be2 100644
---- a/target/rx/helper.c
-+++ b/target/rx/helper.c
-@@ -22,6 +22,7 @@
- #include "exec/log.h"
- #include "accel/tcg/cpu-ldst.h"
- #include "hw/irq.h"
+diff --git a/target/s390x/tcg/excp_helper.c b/target/s390x/tcg/excp_helper.c
+index e4c75d0ce0..b7e7a4deff 100644
+--- a/target/s390x/tcg/excp_helper.c
++++ b/target/s390x/tcg/excp_helper.c
+@@ -34,6 +34,7 @@
+ #include "hw/s390x/s390_flic.h"
+ #include "hw/boards.h"
+ #endif
 +#include "qemu/plugin.h"
  
- void rx_cpu_unpack_psw(CPURXState *env, uint32_t psw, int rte)
- {
-@@ -46,6 +47,7 @@ void rx_cpu_do_interrupt(CPUState *cs)
-     CPURXState *env = cpu_env(cs);
-     int do_irq = cs->interrupt_request & INT_FLAGS;
-     uint32_t save_psw;
-+    uint64_t last_pc = env->pc;
+ G_NORETURN void tcg_s390_program_interrupt(CPUS390XState *env,
+                                            uint32_t code, uintptr_t ra)
+@@ -499,6 +500,7 @@ void s390_cpu_do_interrupt(CPUState *cs)
+     S390CPU *cpu = S390_CPU(cs);
+     CPUS390XState *env = &cpu->env;
+     bool stopped = false;
++    uint64_t last_pc = cpu->env.psw.addr;
  
-     env->in_sleep = 0;
- 
-@@ -65,6 +67,7 @@ void rx_cpu_do_interrupt(CPUState *cs)
-             env->psw_ipl = 15;
-             cs->interrupt_request &= ~CPU_INTERRUPT_FIR;
-             qemu_set_irq(env->ack, env->ack_irq);
-+            qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
-             qemu_log_mask(CPU_LOG_INT, "fast interrupt raised\n");
-         } else if (do_irq & CPU_INTERRUPT_HARD) {
-             env->isp -= 4;
-@@ -75,6 +78,7 @@ void rx_cpu_do_interrupt(CPUState *cs)
-             env->psw_ipl = env->ack_ipl;
-             cs->interrupt_request &= ~CPU_INTERRUPT_HARD;
-             qemu_set_irq(env->ack, env->ack_irq);
-+            qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
-             qemu_log_mask(CPU_LOG_INT,
-                           "interrupt 0x%02x raised\n", env->ack_irq);
-         }
-@@ -92,6 +96,14 @@ void rx_cpu_do_interrupt(CPUState *cs)
-         } else {
-             env->pc = cpu_ldl_data(env, env->intb + (vec & 0xff) * 4);
-         }
-+
-+        if (vec == 30) {
-+            /* Non-maskable interrupt */
-+            qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
-+        } else {
-+            qemu_plugin_vcpu_exception_cb(cs, last_pc);
-+        }
-+
-         switch (vec) {
-         case 20:
-             expname = "privilege violation";
+     qemu_log_mask(CPU_LOG_INT, "%s: %d at psw=%" PRIx64 ":%" PRIx64 "\n",
+                   __func__, cs->exception_index, env->psw.mask, env->psw.addr);
+@@ -528,21 +530,27 @@ try_deliver:
+     switch (cs->exception_index) {
+     case EXCP_PGM:
+         do_program_interrupt(env);
++        qemu_plugin_vcpu_exception_cb(cs, last_pc);
+         break;
+     case EXCP_SVC:
+         do_svc_interrupt(env);
++        qemu_plugin_vcpu_exception_cb(cs, last_pc);
+         break;
+     case EXCP_EXT:
+         do_ext_interrupt(env);
++        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
+         break;
+     case EXCP_IO:
+         do_io_interrupt(env);
++        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
+         break;
+     case EXCP_MCHK:
+         do_mchk_interrupt(env);
++        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
+         break;
+     case EXCP_RESTART:
+         do_restart_interrupt(env);
++        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
+         break;
+     case EXCP_STOP:
+         do_stop_interrupt(env);
 -- 
 2.49.0
 
