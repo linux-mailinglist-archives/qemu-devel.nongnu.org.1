@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5A62ABC251
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 17:24:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37579ABC234
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 17:21:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uH2IZ-00070c-19; Mon, 19 May 2025 11:21:03 -0400
+	id 1uH2Ig-00076M-Vu; Mon, 19 May 2025 11:21:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uH2IP-0006zT-9U
- for qemu-devel@nongnu.org; Mon, 19 May 2025 11:20:53 -0400
-Received: from mailgate02.uberspace.is ([2a00:d0c0:200:0:1c7b:a6ff:fee0:8ea4])
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uH2IQ-0006zl-9y
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 11:20:54 -0400
+Received: from mailgate02.uberspace.is ([185.26.156.114])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uH2IM-0005VJ-Py
- for qemu-devel@nongnu.org; Mon, 19 May 2025 11:20:52 -0400
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uH2IN-0005VS-5M
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 11:20:53 -0400
 Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate02.uberspace.is (Postfix) with ESMTPS id 07E2B180EB6
+ by mailgate02.uberspace.is (Postfix) with ESMTPS id 47194180EA6
  for <qemu-devel@nongnu.org>; Mon, 19 May 2025 17:20:28 +0200 (CEST)
-Received: (qmail 1638 invoked by uid 990); 19 May 2025 15:20:27 -0000
+Received: (qmail 1656 invoked by uid 990); 19 May 2025 15:20:28 -0000
 Authentication-Results: skiff.uberspace.de;
 	auth=pass (plain)
 Received: from unknown (HELO unkown) (::1)
  by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
- Mon, 19 May 2025 17:20:27 +0200
+ Mon, 19 May 2025 17:20:28 +0200
 From: Julian Ganz <neither@nut.email>
 To: qemu-devel@nongnu.org
 Cc: Julian Ganz <neither@nut.email>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: [PATCH v5 20/25] target/sparc: call plugin trap callbacks
-Date: Mon, 19 May 2025 17:20:00 +0200
-Message-ID: <74a9841af043f785757ad9c6cb585b51752b15f8.1747666625.git.neither@nut.email>
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+Subject: [PATCH v5 21/25] target/tricore: call plugin trap callbacks
+Date: Mon, 19 May 2025 17:20:01 +0200
+Message-ID: <8bd3931ba67e8beb420cb198e2eb16b7b1270084.1747666625.git.neither@nut.email>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1747666625.git.neither@nut.email>
 References: <cover.1747666625.git.neither@nut.email>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Bar: -----
-X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.999515) MID_CONTAINS_FROM(1)
+X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.99107) MID_CONTAINS_FROM(1)
  MIME_GOOD(-0.1) R_MISSING_CHARSET(0.5)
-X-Rspamd-Score: -5.599515
+X-Rspamd-Score: -5.59107
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
  h=from:to:cc:subject:date;
- bh=IdC88N99+YM4YmCWx53I/KZhBjRliJfCHy+BVZ5q4+g=;
- b=xJ8vZj92AAEZR8I+SczftdCmXasYa/qC6se6EF+YHNPJc1vjyUG1AH9vckvKgFgEYzQYphgX6C
- hqBoBK8h81hC/n/4sNZuGzKqWflxgfDwWCuP7+v1IlK3jcPno3r4ZKMtWi3G4AEIFhu0IBNcuPwo
- QfhGVZf7qg0UauhntuBfHbn1HzQ0C7qh4IeaNOlKaYszkwK9YQt1gSQMu9/8Gx6IQyEGpb/slivE
- mHT5IoC4RUhFoS/i6uEye8Tl+ZT1mCX375kZfGgeXA1cJcXv86C6ZTjAqZC7TRzfFihfEm/UL/XJ
- UX9ltY1UEpiXEVn5yZtwWFPEu3wmci3eicPB9doURhjTk/UmWdx6QdZbZee7PvUPpAjHccGd1o7u
- 2uZOjDA0iSeoHuXO1b5rDGuUcoY06WlW1TuE4WKa6Us2sXYWvuMcHOcGQxT3660Loi4hVEE2Tm6M
- /cfg3XIzHlfSUA8TkwY4UTsSOiB8ByegBMQgflPHw7p4+gZebB811/IRv6YRhKKrbi2EL/4ihCnV
- LQyG14vJwC1XgKXhVh2oyLvUrk9A48IoqVWoIWQSRzpoHqe/D/fMmFZxUqnpWdn+pULYp5GIqJFV
- O+Gass+v10Cz9WzBgoKLjDvAp3GZkmFZBIMp9AupbLZK9PB3C63EDD0r4MQUmFj59ndmShYdZQI+
- M=
-Received-SPF: pass client-ip=2a00:d0c0:200:0:1c7b:a6ff:fee0:8ea4;
- envelope-from=neither@nut.email; helo=mailgate02.uberspace.is
+ bh=YXMZB8MgiqIetDkdLVgfF/7lrJrc0D6JsYkbzthKZd4=;
+ b=QhayD4sfEx0RJmDvE8AzmfQiD1m8pNR2wj2f+xXGwmzP/0NBJcgz3wjap+9ceUKXY80hU0orI7
+ 8aGngnPLH4pX5u5LjkIm59RlCtvb/e3ULqExdwWT0kBwz//WzY41XOSEi5mQ6ZkVgGEMq+Yeg1fI
+ 71ugoPU13VzkKnc0thGvIvMFPBLej1snFbjwHHxXTASpa0cXS4C+njmyAWfsQinu92r5QiuttBFx
+ R7vCcSXR5LguqOFLYfIGqPMilrSlUHyZfTdyQY96p8u/Hq5xCg0mWNbqSBbns99bdkmbRXNlb6lD
+ mY1wd2RULIU+MvgnpQFP7UIHaykXGMKAzejsOuwnOMa+W03XWX9WoPJY+p1XSBIDnr+B/T/P+cd4
+ 1g7NR6T9vLaUuw61TGEcHmxovLRXxcFOsRo3b9LcrWTlnbyy28d6UQM385R00UOOUDAVe18G6cHx
+ 86DxRynwb6rMIcXks0vvJUqep1+wg+a5gZPR4ey6FrSTwt+d9S6OmPHe8niMhRZuLXxcp84hRcF5
+ /LZCy9BAqthezP4y3q6Uq5S/b5F/UHALdeCj7bYtVCvtNmJ+JxvLJc+J+EN7nLpQKQS+I7P+rUD2
+ wyJT8cWzb3UV8yPicRozVA33DsQxxOhEgjB1ZcmzzVSVIdh6KiEaG4uRiD1+hGYXGHRltH9hQZxG
+ w=
+Received-SPF: pass client-ip=185.26.156.114; envelope-from=neither@nut.email;
+ helo=mailgate02.uberspace.is
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,67 +83,46 @@ events as well as the corresponding hook functions. Due to differences
 between architectures, the latter need to be called from target specific
 code.
 
-This change places hooks for SPARC (32bit and 64bit) targets. We treat
-any interrupt other than EXTINT and IVEC as exceptions as they appear to
-be synchroneous events.
+This change places an exception hook for TriCore targets. Interrupts are
+not implemented for this target and it has no host calls.
 
 Signed-off-by: Julian Ganz <neither@nut.email>
 ---
- target/sparc/int32_helper.c |  7 +++++++
- target/sparc/int64_helper.c | 10 ++++++++++
- 2 files changed, 17 insertions(+)
+ target/tricore/op_helper.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/target/sparc/int32_helper.c b/target/sparc/int32_helper.c
-index 39db4ffa70..634439ab2a 100644
---- a/target/sparc/int32_helper.c
-+++ b/target/sparc/int32_helper.c
-@@ -24,6 +24,7 @@
- #include "accel/tcg/cpu-ldst.h"
- #include "exec/log.h"
- #include "system/runstate.h"
-+#include "qemu/plugin.h"
- 
- static const char * const excp_names[0x80] = {
-     [TT_TFAULT] = "Instruction Access Fault",
-@@ -172,4 +173,10 @@ void sparc_cpu_do_interrupt(CPUState *cs)
-         env->qemu_irq_ack(env, intno);
-     }
- #endif
-+
-+    if (intno == TT_EXTINT) {
-+        qemu_plugin_vcpu_interrupt_cb(cs, env->regwptr[9]);
-+    } else {
-+        qemu_plugin_vcpu_exception_cb(cs, env->regwptr[9]);
-+    }
- }
-diff --git a/target/sparc/int64_helper.c b/target/sparc/int64_helper.c
-index bd14c7a0db..9868a80669 100644
---- a/target/sparc/int64_helper.c
-+++ b/target/sparc/int64_helper.c
-@@ -23,6 +23,7 @@
+diff --git a/target/tricore/op_helper.c b/target/tricore/op_helper.c
+index 9910c13f4b..9bd6ce55d1 100644
+--- a/target/tricore/op_helper.c
++++ b/target/tricore/op_helper.c
+@@ -19,6 +19,7 @@
+ #include "qemu/host-utils.h"
  #include "exec/helper-proto.h"
- #include "exec/log.h"
- #include "trace.h"
+ #include "accel/tcg/cpu-ldst.h"
 +#include "qemu/plugin.h"
+ #include <zlib.h> /* for crc32 */
  
- #define DEBUG_PCALL
  
-@@ -253,6 +254,15 @@ void sparc_cpu_do_interrupt(CPUState *cs)
-     }
-     env->npc = env->pc + 4;
-     cs->exception_index = -1;
+@@ -29,8 +30,11 @@ void raise_exception_sync_internal(CPUTriCoreState *env, uint32_t class, int tin
+                                    uintptr_t pc, uint32_t fcd_pc)
+ {
+     CPUState *cs = env_cpu(env);
++    uint64_t last_pc;
 +
-+    switch (intno) {
-+    case TT_EXTINT:
-+    case TT_IVEC:
-+        qemu_plugin_vcpu_interrupt_cb(cs, tsptr->tpc);
-+        break;
-+    default:
-+        qemu_plugin_vcpu_exception_cb(cs, tsptr->tpc);
-+    }
+     /* in case we come from a helper-call we need to restore the PC */
+     cpu_restore_state(cs, pc);
++    last_pc = env->PC;
+ 
+     /* Tin is loaded into d[15] */
+     env->gpr_d[15] = tin;
+@@ -90,6 +94,7 @@ void raise_exception_sync_internal(CPUTriCoreState *env, uint32_t class, int tin
+     /* Update PC using the trap vector table */
+     env->PC = env->BTV | (class << 5);
+ 
++    qemu_plugin_vcpu_exception_cb(cs, last_pc);
+     cpu_loop_exit(cs);
  }
  
- trap_state *cpu_tsptr(CPUSPARCState* env)
 -- 
 2.49.0
 
