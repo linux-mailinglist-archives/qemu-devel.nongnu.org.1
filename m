@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCBB0ABB3D1
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:09:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04D90ABB3CF
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:08:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uGrnM-00056j-Vu; Mon, 19 May 2025 00:08:09 -0400
+	id 1uGrnH-0004w7-U4; Mon, 19 May 2025 00:08:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uGrn3-0004oh-N3
- for qemu-devel@nongnu.org; Mon, 19 May 2025 00:07:50 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1uGrn5-0004pD-S1
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 00:07:52 -0400
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uGrn1-0004AQ-O8
- for qemu-devel@nongnu.org; Mon, 19 May 2025 00:07:49 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-22e16234307so36906415ad.0
- for <qemu-devel@nongnu.org>; Sun, 18 May 2025 21:07:46 -0700 (PDT)
+ id 1uGrn3-0004Aj-Mu
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 00:07:51 -0400
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-b1fd59851baso2333322a12.0
+ for <qemu-devel@nongnu.org>; Sun, 18 May 2025 21:07:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747627665; x=1748232465; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1747627668; x=1748232468; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=l5vu2hrQseFU8LOh7DPzcKh1zIWTsbn7UZDtVOI2mnY=;
- b=I1JTzu3LePCYDnOlY8wTAousGCRSYLneyGU8klvk0Fe8pA87F1WbK9km+0cUZtmLG0
- ptXtDIhMccSgasSIjW2bytDj57V+7vga+qeukWf+QE2SfZ9P4MxbXs9ke+A8fXDPNQLX
- 8TuLJUK5+t89WgKZAZ/em77GnvvfR0X+LW8sAjmxANGG8wQclaPTAselWEbZuWs1Kfng
- ySYplcDM7yEpKCBkbMZJSQZeBB/16qDS3RY2JgMVZ91dW8wdfCHh9A3ZlnlMMxeuvNab
- knkPmlDiH5Vli1g9yiCZjtGGlei4eZMcCMBHa5mTz3woVAkaLWlEi8i2/WKkUErM9Mgw
- dEfw==
+ bh=8AzDyKx6OgyWxTzZBTwniZzUexKQarca/x+PapVXPjc=;
+ b=Ymi9hx60J1t14QaqdI7xWwT5JkdDSGEcY7f/Z+G9AFwFWkLZoNBc0mnzZb2DPxh0Xu
+ HTAgLRL786Xmsn16MBiSNNBkHM8vEjMWJe84TomR8JCrJdq49xjvTXPHI+UC9axBDRDF
+ tsMhJvhPaV3v523CE2xzyAcGzWVoVRpRxFop+acX9WTTGq8F5RhlEIhrYyNH6tmVu6Uk
+ LZlBrqQhH0NfeW6/2/l82++XylYQKagJRp9S9P/BJ1h1xHtGH3enHA0R4tyNZsuT43Jk
+ D3gxPpFalxdVW9QgZIqlmsNjRQZkfYF1/kViW+FfbmahFwkxw+exwZI54H9JJt6HU9on
+ lWKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747627665; x=1748232465;
+ d=1e100.net; s=20230601; t=1747627668; x=1748232468;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=l5vu2hrQseFU8LOh7DPzcKh1zIWTsbn7UZDtVOI2mnY=;
- b=FjmnYR66oAOIER0UAX+TDlUrGQG7czYNnTi7sJ7VkW0Arlk/qgtogHnxYwo1p6BB78
- eZQW95gXRA/Z/Z+h0B8gQdl0p3FHVeM407bKt/c41ynEcK8YpX6HoyyFN6hX+OkSJEOf
- bEkWHhnS3ZT83MVYBDSgrBjgrNKYXcUHTp1w53GAVciUEBzv1lCUrp49XeMJCUbmbfH0
- g/aVMF/ERLCVzSUlDMy2kD09lExCFTAd2BSwJVXEUBVWHEjZLDb0yTZVwwxGF/V0vjI3
- 3+oLpyxAY6Gcf6wvavIC3vlQRa6aP0IXbBDYhAwNeFKZx3SnjI1vbdNZWfLUUPbcsFkZ
- h5mQ==
-X-Gm-Message-State: AOJu0YxYKRRQytb4Ly2nX23Vs/wJQZLtn1Za0tJ5jc1SRYrLXQO7cI2T
- iD+ErMCT5NrE7fUG5b1afLiBOmr5oaWPoRHIO5wwZp07hH2VGqVtHOD2tyYPWg==
-X-Gm-Gg: ASbGncs+TZXo+nyqMnfNL9C8sAjYKDAvb3pAB8XYF9UEzVowXpp7QMEf8TPhrc+s9a7
- TEnz2f7ZG2lVxPw2C7EeDRQ+S84OwMPVagxYttn8goielQysdgDCA4R5VVGdwsOBbrxVmtL3glV
- bVsSpa4413vhRWaO7+Tk6p+lM6udR1n/fRiG5ZAKal6v3bQv2hHn0SFy2iVaZS4GlWmwVVTt1EI
- pZCZwS1iVmqRh2+eiuVcl0ld1rl78Br3AlD5hhn0nPU4Fll6CSMhfId/FIpEl1mW71p7JQ31KJf
- 8aBppTAJ+/JWAsO4SgIIcR9uQnR0HiyYJ4clCyDE/cYm9ugsrfhdIf0JWj+uUSQfK6zL1STu82q
- dpZWMgbE4HclDM48rNrnJ0qMnnmVwHx8BwBmnDptllFbDjqVBjUAOUH3Kkg3nIfWKA7I=
-X-Google-Smtp-Source: AGHT+IEStCeD9Fqq35qs334GkR5u7E1dIHdlDYmWkUYSzlfcmoe7d/XznBlKhOEq26k7IoPog92Dig==
-X-Received: by 2002:a17:902:d48d:b0:232:557c:2501 with SMTP id
- d9443c01a7336-232557c2657mr15801685ad.10.1747627665200; 
- Sun, 18 May 2025 21:07:45 -0700 (PDT)
+ bh=8AzDyKx6OgyWxTzZBTwniZzUexKQarca/x+PapVXPjc=;
+ b=i2GKdTXVmQmiWvRRjsRf3BM0uAuj0rmAthlOkVcTpqO53WXhMaZalk2vYqTdummWux
+ 8vDahGK7nCC5o6LJ0jvb5jD1lNovvZdGcSNpNaaFgXjKpoybK2TMVpYQZyDstJUfF0ec
+ 6cKrlqfxaGqMeg13uHoVbxfrQtLeTOHquUaLbnM9e9xgbawBjE6lNfGoSk8NW8oJx6zS
+ HVF2BTv6ReIXhRrGj7dkDYltTB5MnJyHxmEcFBkfN2ngXK2ykVVarXKPCrv/umu6k7l8
+ qfgQ+yr8o6ozP6FGl2XOXts1hquypFyBhVC7z3FQyIjJ2I8fKnHSpZCFBx0zxYYSoUFS
+ l3bg==
+X-Gm-Message-State: AOJu0Ywe6KheHyCcNfhOxoxSrCM7giO4SXFyA0ga4q93wdCrhEmBZQpu
+ ehbrzKm1stO5uIpfXmuKmuB4xaVLJ9eMr+ohSQ+dR07gLtlsFdVU0RUz2E9UFg==
+X-Gm-Gg: ASbGncuRy9B77790LSW+sIIQxPV6Y0DTlR/dCWsWM0alLHxeEl0GAl+OHJhzsPXksEN
+ xhicDWrp6FNxEAqBfBI0yIZqc05FDSRzmN+4/cHjB/o4NfLsmloQSX9YtuhE0B7QQL3mwhf/IUC
+ ikTS8UijMHAuH/Bmi0SFXFK1Lfsoi4kb5kHq4KurirDLDKWMPjBBAwM+TD1x1fcFiV4zdVGivZq
+ 6aq+CwsYWKWyC7yhXDAolXaGEjZcg5gyXqlLcsNtcvhAqrg7js7nkthsXSguVClUqQ96ra7Lyne
+ EiyyvSSSb5mnrHS/n1Ntdv8qXftJwCgqyyo3DsGmNtR+Gkuf/vRYkBudv2y5eSfVwVD2P3TI5/f
+ 3ZobPdAbb80lIeNmjxEBM71A61Na6ow2kv+zj8iulPZ1/iYQUnQvsXIR8
+X-Google-Smtp-Source: AGHT+IFnM5JL57he9gnOUOZWyRkUlh5VB8Q5b8OHNWGjqmZSXhO2mGZaPuVfK4Jyof5Vbe3NYQME+g==
+X-Received: by 2002:a17:902:f706:b0:21f:6a36:7bf3 with SMTP id
+ d9443c01a7336-231de3001cemr183769335ad.12.1747627668034; 
+ Sun, 18 May 2025 21:07:48 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.07.42
+ d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.07.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 May 2025 21:07:44 -0700 (PDT)
+ Sun, 18 May 2025 21:07:47 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Sebastian Huber <sebastian.huber@embedded-brains.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 13/56] hw/riscv: Configurable MPFS CLINT timebase freq
-Date: Mon, 19 May 2025 14:05:10 +1000
-Message-ID: <20250519040555.3797167-14-alistair.francis@wdc.com>
+Subject: [PULL 14/56] hw/riscv: microchip_pfsoc: Rework documentation
+Date: Mon, 19 May 2025 14:05:11 +1000
+Message-ID: <20250519040555.3797167-15-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250519040555.3797167-1-alistair.francis@wdc.com>
 References: <20250519040555.3797167-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x535.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -106,134 +105,176 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sebastian Huber <sebastian.huber@embedded-brains.de>
 
-This property enables the setting of the CLINT timebase frequency
-through the command line, for example:
-
-  -machine microchip-icicle-kit,clint-timebase-frequency=10000000
+Mention that running the HSS no longer works.  Document the changed boot
+options.  Reorder documentation blocks.  Update URLs.
 
 Signed-off-by: Sebastian Huber <sebastian.huber@embedded-brains.de>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250319061342.26435-6-sebastian.huber@embedded-brains.de>
+Message-ID: <20250319061342.26435-7-sebastian.huber@embedded-brains.de>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- include/hw/riscv/microchip_pfsoc.h |  1 +
- hw/riscv/microchip_pfsoc.c         | 49 +++++++++++++++++++++++++++---
- 2 files changed, 46 insertions(+), 4 deletions(-)
+ docs/system/riscv/microchip-icicle-kit.rst | 124 +++++++--------------
+ 1 file changed, 43 insertions(+), 81 deletions(-)
 
-diff --git a/include/hw/riscv/microchip_pfsoc.h b/include/hw/riscv/microchip_pfsoc.h
-index daef086da6..7ca9b976c1 100644
---- a/include/hw/riscv/microchip_pfsoc.h
-+++ b/include/hw/riscv/microchip_pfsoc.h
-@@ -67,6 +67,7 @@ typedef struct MicrochipIcicleKitState {
-     MachineState parent_obj;
+diff --git a/docs/system/riscv/microchip-icicle-kit.rst b/docs/system/riscv/microchip-icicle-kit.rst
+index 40798b1aae..9809e94b84 100644
+--- a/docs/system/riscv/microchip-icicle-kit.rst
++++ b/docs/system/riscv/microchip-icicle-kit.rst
+@@ -5,10 +5,10 @@ Microchip PolarFire SoC Icicle Kit integrates a PolarFire SoC, with one
+ SiFive's E51 plus four U54 cores and many on-chip peripherals and an FPGA.
  
-     /*< public >*/
-+    uint32_t clint_timebase_freq;
-     MicrochipPFSoCState soc;
- } MicrochipIcicleKitState;
+ For more details about Microchip PolarFire SoC, please see:
+-https://www.microsemi.com/product-directory/soc-fpgas/5498-polarfire-soc-fpga
++https://www.microchip.com/en-us/products/fpgas-and-plds/system-on-chip-fpgas/polarfire-soc-fpgas
  
-diff --git a/hw/riscv/microchip_pfsoc.c b/hw/riscv/microchip_pfsoc.c
-index 6e5b17c05f..2e74783fce 100644
---- a/hw/riscv/microchip_pfsoc.c
-+++ b/hw/riscv/microchip_pfsoc.c
-@@ -39,6 +39,7 @@
- #include "qemu/units.h"
- #include "qemu/cutils.h"
- #include "qapi/error.h"
-+#include "qapi/visitor.h"
- #include "hw/boards.h"
- #include "hw/loader.h"
- #include "hw/sysbus.h"
-@@ -61,9 +62,6 @@
- #define BIOS_FILENAME   "hss.bin"
- #define RESET_VECTOR    0x20220000
+ The Icicle Kit board information can be found here:
+-https://www.microsemi.com/existing-parts/parts/152514
++https://www.microchip.com/en-us/development-tool/mpfs-icicle-kit-es
  
--/* CLINT timebase frequency */
--#define CLINT_TIMEBASE_FREQ 1000000
+ Supported devices
+ -----------------
+@@ -26,95 +26,48 @@ The ``microchip-icicle-kit`` machine supports the following devices:
+ * 2 GEM Ethernet controllers
+ * 1 SDHC storage controller
+ 
++The memory is set to 1537 MiB by default.  A sanity check on RAM size is
++performed in the machine init routine to prompt user to increase the RAM size
++to > 1537 MiB when less than 1537 MiB RAM is detected.
++
+ Boot options
+ ------------
+ 
+-The ``microchip-icicle-kit`` machine can start using the standard -bios
+-functionality for loading its BIOS image, aka Hart Software Services (HSS_).
+-HSS loads the second stage bootloader U-Boot from an SD card. Then a kernel
+-can be loaded from U-Boot. It also supports direct kernel booting via the
+--kernel option along with the device tree blob via -dtb. When direct kernel
+-boot is used, the OpenSBI fw_dynamic BIOS image is used to boot a payload
+-like U-Boot or OS kernel directly.
 -
- /* GEM version */
- #define GEM_REVISION    0x0107010c
+-The user provided DTB should have the following requirements:
+-
+-* The /cpus node should contain at least one subnode for E51 and the number
+-  of subnodes should match QEMU's ``-smp`` option
+-* The /memory reg size should match QEMU’s selected ram_size via ``-m``
+-* Should contain a node for the CLINT device with a compatible string
+-  "riscv,clint0"
+-
+-QEMU follows below truth table to select which payload to execute:
+-
+-===== ========== ========== =======
+--bios    -kernel       -dtb payload
+-===== ========== ========== =======
+-    N          N don't care     HSS
+-    Y don't care don't care     HSS
+-    N          Y          Y  kernel
+-===== ========== ========== =======
+-
+-The memory is set to 1537 MiB by default which is the minimum required high
+-memory size by HSS. A sanity check on ram size is performed in the machine
+-init routine to prompt user to increase the RAM size to > 1537 MiB when less
+-than 1537 MiB ram is detected.
+-
+-Running HSS
+------------
+-
+-HSS 2020.12 release is tested at the time of writing. To build an HSS image
+-that can be booted by the ``microchip-icicle-kit`` machine, type the following
+-in the HSS source tree:
+-
+-.. code-block:: bash
+-
+-  $ export CROSS_COMPILE=riscv64-linux-
+-  $ cp boards/mpfs-icicle-kit-es/def_config .config
+-  $ make BOARD=mpfs-icicle-kit-es
+-
+-Download the official SD card image released by Microchip and prepare it for
+-QEMU usage:
+-
+-.. code-block:: bash
+-
+-  $ wget ftp://ftpsoc.microsemi.com/outgoing/core-image-minimal-dev-icicle-kit-es-sd-20201009141623.rootfs.wic.gz
+-  $ gunzip core-image-minimal-dev-icicle-kit-es-sd-20201009141623.rootfs.wic.gz
+-  $ qemu-img resize core-image-minimal-dev-icicle-kit-es-sd-20201009141623.rootfs.wic 4G
+-
+-Then we can boot the machine by:
+-
+-.. code-block:: bash
+-
+-  $ qemu-system-riscv64 -M microchip-icicle-kit -smp 5 \
+-      -bios path/to/hss.bin -sd path/to/sdcard.img \
+-      -nic user,model=cadence_gem \
+-      -nic tap,ifname=tap,model=cadence_gem,script=no \
+-      -display none -serial stdio \
+-      -chardev socket,id=serial1,path=serial1.sock,server=on,wait=on \
+-      -serial chardev:serial1
++The ``microchip-icicle-kit`` machine provides some options to run a firmware
++(BIOS) or a kernel image.  QEMU follows below truth table to select the
++firmware:
  
-@@ -193,6 +191,7 @@ static void microchip_pfsoc_soc_instance_init(Object *obj)
- static void microchip_pfsoc_soc_realize(DeviceState *dev, Error **errp)
- {
-     MachineState *ms = MACHINE(qdev_get_machine());
-+    MicrochipIcicleKitState *iks = MICROCHIP_ICICLE_KIT_MACHINE(ms);
-     MicrochipPFSoCState *s = MICROCHIP_PFSOC(dev);
-     const MemMapEntry *memmap = microchip_pfsoc_memmap;
-     MemoryRegion *system_memory = get_system_memory();
-@@ -253,7 +252,7 @@ static void microchip_pfsoc_soc_realize(DeviceState *dev, Error **errp)
-         memmap[MICROCHIP_PFSOC_CLINT].base + RISCV_ACLINT_SWI_SIZE,
-         RISCV_ACLINT_DEFAULT_MTIMER_SIZE, 0, ms->smp.cpus,
-         RISCV_ACLINT_DEFAULT_MTIMECMP, RISCV_ACLINT_DEFAULT_MTIME,
--        CLINT_TIMEBASE_FREQ, false);
-+        iks->clint_timebase_freq, false);
+-With above command line, current terminal session will be used for the first
+-serial port. Open another terminal window, and use ``minicom`` to connect the
+-second serial port.
++============= =========== ======================================
++-bios          -kernel    firmware
++============= =========== ======================================
++none                    N this is an error
++none                    Y the kernel image
++NULL, default           N hss.bin
++NULL, default           Y opensbi-riscv64-generic-fw_dynamic.bin
++other          don't care the BIOS image
++============= =========== ======================================
  
-     /* L2 cache controller */
-     create_unimplemented_device("microchip.pfsoc.l2cc",
-@@ -671,6 +670,40 @@ static void microchip_icicle_kit_machine_init(MachineState *machine)
-     }
- }
+-.. code-block:: bash
++Direct Kernel Boot
++------------------
  
-+static void microchip_icicle_kit_set_clint_timebase_freq(Object *obj,
-+                                                         Visitor *v,
-+                                                         const char *name,
-+                                                         void *opaque,
-+                                                         Error **errp)
-+{
-+    MicrochipIcicleKitState *s = MICROCHIP_ICICLE_KIT_MACHINE(obj);
-+    uint32_t value;
-+
-+    if (!visit_type_uint32(v, name, &value, errp)) {
-+        return;
-+    }
-+
-+    s->clint_timebase_freq = value;
-+}
-+
-+static void microchip_icicle_kit_get_clint_timebase_freq(Object *obj,
-+                                                         Visitor *v,
-+                                                         const char *name,
-+                                                         void *opaque,
-+                                                         Error **errp)
-+{
-+    MicrochipIcicleKitState *s = MICROCHIP_ICICLE_KIT_MACHINE(obj);
-+    uint32_t value = s->clint_timebase_freq;
-+
-+    visit_type_uint32(v, name, &value, errp);
-+}
-+
-+static void microchip_icicle_kit_machine_instance_init(Object *obj)
-+{
-+    MicrochipIcicleKitState *m = MICROCHIP_ICICLE_KIT_MACHINE(obj);
-+    m->clint_timebase_freq = 1000000;
-+}
-+
- static void microchip_icicle_kit_machine_class_init(ObjectClass *oc,
-                                                     const void *data)
- {
-@@ -693,12 +726,20 @@ static void microchip_icicle_kit_machine_class_init(ObjectClass *oc,
-      * See memory_tests() in mss_ddr.c in the HSS source code.
-      */
-     mc->default_ram_size = 1537 * MiB;
-+
-+    object_class_property_add(oc, "clint-timebase-frequency", "uint32_t",
-+                              microchip_icicle_kit_get_clint_timebase_freq,
-+                              microchip_icicle_kit_set_clint_timebase_freq,
-+                              NULL, NULL);
-+    object_class_property_set_description(oc, "clint-timebase-frequency",
-+                                  "Set CLINT timebase frequency in Hz.");
- }
+-  $ minicom -D unix\#serial1.sock
++Use the ``-kernel`` option to directly run a kernel image.  When a direct
++kernel boot is requested, a device tree blob may be specified via the ``-dtb``
++option.  Unlike other QEMU machines, this machine does not generate a device
++tree for the kernel.  It shall be provided by the user.  The user provided DTB
++should meet the following requirements:
  
- static const TypeInfo microchip_icicle_kit_machine_typeinfo = {
-     .name       = MACHINE_TYPE_NAME("microchip-icicle-kit"),
-     .parent     = TYPE_MACHINE,
-     .class_init = microchip_icicle_kit_machine_class_init,
-+    .instance_init = microchip_icicle_kit_machine_instance_init,
-     .instance_size = sizeof(MicrochipIcicleKitState),
- };
+-HSS output is on the first serial port (stdio) and U-Boot outputs on the
+-second serial port. U-Boot will automatically load the Linux kernel from
+-the SD card image.
++* The ``/cpus`` node should contain at least one subnode for E51 and the number
++  of subnodes should match QEMU's ``-smp`` option.
  
+-Direct Kernel Boot
+-------------------
++* The ``/memory`` reg size should match QEMU’s selected RAM size via the ``-m``
++  option.
+ 
+-Sometimes we just want to test booting a new kernel, and transforming the
+-kernel image to the format required by the HSS bootflow is tedious. We can
+-use '-kernel' for direct kernel booting just like other RISC-V machines do.
++* It should contain a node for the CLINT device with a compatible string
++  "riscv,clint0".
+ 
+-In this mode, the OpenSBI fw_dynamic BIOS image for 'generic' platform is
+-used to boot an S-mode payload like U-Boot or OS kernel directly.
++When ``-bios`` is not specified or set to ``default``, the OpenSBI
++``fw_dynamic`` BIOS image for the ``generic`` platform is used to boot an
++S-mode payload like U-Boot or OS kernel directly.
+ 
+ For example, the following commands show building a U-Boot image from U-Boot
+ mainline v2021.07 for the Microchip Icicle Kit board:
+@@ -146,4 +99,13 @@ CAVEATS:
+   ``u-boot.bin`` has to be used which does contain one. To use the ELF image,
+   we need to change to CONFIG_OF_EMBED or CONFIG_OF_PRIOR_STAGE.
+ 
++Running HSS
++-----------
++
++The machine ``microchip-icicle-kit`` used to run the Hart Software Services
++(HSS_), however, the HSS development progressed and the QEMU machine
++implementation lacks behind.  Currently, running the HSS no longer works.
++There is missing support in the clock and memory controller devices.  In
++particular, reading from the SD card does not work.
++
+ .. _HSS: https://github.com/polarfire-soc/hart-software-services
 -- 
 2.49.0
 
