@@ -2,24 +2,24 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FC65ABC253
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 17:24:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A44CABC23C
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 17:22:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uH2IY-00070W-Me; Mon, 19 May 2025 11:21:02 -0400
+	id 1uH2Ii-0007EL-EY; Mon, 19 May 2025 11:21:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uH2IP-0006zW-Cp
- for qemu-devel@nongnu.org; Mon, 19 May 2025 11:20:53 -0400
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uH2IR-00070C-Oc
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 11:20:55 -0400
 Received: from mailgate02.uberspace.is ([185.26.156.114])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uH2IM-0005VD-Px
- for qemu-devel@nongnu.org; Mon, 19 May 2025 11:20:52 -0400
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uH2IO-0005VM-0z
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 11:20:55 -0400
 Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate02.uberspace.is (Postfix) with ESMTPS id 835DB180E9E
+ by mailgate02.uberspace.is (Postfix) with ESMTPS id BAACB180EB4
  for <qemu-devel@nongnu.org>; Mon, 19 May 2025 17:20:27 +0200 (CEST)
-Received: (qmail 1602 invoked by uid 990); 19 May 2025 15:20:27 -0000
+Received: (qmail 1617 invoked by uid 990); 19 May 2025 15:20:27 -0000
 Authentication-Results: skiff.uberspace.de;
 	auth=pass (plain)
 Received: from unknown (HELO unkown) (::1)
@@ -27,35 +27,33 @@ Received: from unknown (HELO unkown) (::1)
  Mon, 19 May 2025 17:20:27 +0200
 From: Julian Ganz <neither@nut.email>
 To: qemu-devel@nongnu.org
-Cc: Julian Ganz <neither@nut.email>, David Hildenbrand <david@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- qemu-s390x@nongnu.org (open list:S390 TCG CPUs)
-Subject: [PATCH v5 18/25] target/s390x: call plugin trap callbacks
-Date: Mon, 19 May 2025 17:19:58 +0200
-Message-ID: <71507814db65ebc5bbf8e5944728a106f51e3808.1747666625.git.neither@nut.email>
+Cc: Julian Ganz <neither@nut.email>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>
+Subject: [PATCH v5 19/25] target/sh4: call plugin trap callbacks
+Date: Mon, 19 May 2025 17:19:59 +0200
+Message-ID: <dde42e30d6f5521c8568738d1abbbe5674192f8a.1747666625.git.neither@nut.email>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1747666625.git.neither@nut.email>
 References: <cover.1747666625.git.neither@nut.email>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Bar: -----
-X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.996855) MID_CONTAINS_FROM(1)
+X-Rspamd-Report: REPLY(-4) BAYES_HAM(-2.99762) MID_CONTAINS_FROM(1)
  MIME_GOOD(-0.1) R_MISSING_CHARSET(0.5)
-X-Rspamd-Score: -5.596855
+X-Rspamd-Score: -5.59762
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
  h=from:to:cc:subject:date;
- bh=xX6ychV8ZQnfsmmBU699XHy/DI6ddqD8g0NA6IFVV98=;
- b=NWXiTaPDEUcy2U/RUKb8ptKnNvYFZl4wucXjg/xzl4/kl4SkQkUCNefVSQO+ZCbrWr26C/w8hN
- gQm1V3UAgLZ2KuYHiUXHx4VfsiEwGVTYEDu1zC+08roz202+CJYaP/S2TX5kfj3Ho9krt3HWgxHG
- 4oV4MHfJBvMsawCqT3QB8ekv+ef6x4m3hZE4PeO610GIieF9eqEhmfQ2i7Y4mBL+ptQ0pZ5KRD6z
- LXU+6+0QoQdd+H1x+p45/m7gp3z/JHilhbarpMY/U4Rdx5/qnD+ubHsGJqZFBJJ/xND8BLfrUvu5
- vMj7mhHghIY9SS5T8f0AEZiOM3OwcxOBLPdoAOHH6k4busiHyFUEHLkEPQHw3brEd9ervL535Qp6
- JwwQBqCX6U9uPlP5C9ry+GBD+fygbsooY1evgXyXXKQzjMOZJoP1loAlaobpS/57Lca27WYB6t1J
- jFLS0pItglLzRDR+RC97CqSSZVT9fYOPC/QngvPi8NjDJEY6NS5H3968c5WyZZlOmss2urfMnA+e
- QZN3fpyYOC+e7s7Tp9Qdy11ktnudZmVxD+wOxFmMfISXhJonXGePdPvlOJvAx6xitGSIJGVdUmuo
- gC8WBdie48Eypo47wbwGVSuXIBxsWAopqkxnSk00XdPfMDjpq15c53kJg3IeYL6dBKQBzjrQpaVO
- c=
+ bh=KlyMN/5qzgjLb+9aIafnthxsp3s3tteWGEJqz7YyfMg=;
+ b=YYPLXajsqDkBGf/TQY571opD/Z4uYw5XtcUstWKb4/zk9yKz7WBXFIeyTOKH/MnJPXsGVEjj+Z
+ s7jIq69h9y83XiCrm1sowg/GtL6eOT2PYThOvGEQsSqNMYHe21XzRO83MkA79Fl+U7A/OB0H+b4r
+ i7WJkURV4RoccNfCHsC7mUWn2S9TlVyvrn45prsyjGaIU/4dSsEt0olos5mw8MrGetDslIPvGk31
+ B9qGpMBOk5AvEC/+thger7Hk8DZNLfdOp97/Qo6lbBKRyH1viRKwHDTf6jE+X3DVHZiFqSYXz61r
+ 4PDi6PQ+4CkyZADm3zHV3tCdvfXwC3m41XDJLTRFEtZbcmxKf3WtZN5Zbk9W/DBsSwaBfiUkujPb
+ B8nvR4DkeAiybq7AondQgykaW8HsDNcK+kyw+qg96601bk7uM4QQ9FvwNFKV8dl0KVYN97AFWI09
+ DIHIne9YbTE2+SlpDRlFEgbukdcYL8aJwjXgZkwAjJXwaJMs0WGU50kCM4PKChrHyP95H7XpTSz/
+ Oa68Gx5DiMFcEEocuUr/3pKzUIX1uMHcMcUakbcQRP4w5RWzebbrljDbpqBnq7Te2nVhdK5OTpXp
+ 7X2tF7TJaStDWEDNSyQqyHZ/0+0gYqfa77aOZsQL2poraU0KqoxPOcCyAlbdRFNwr1H8e8MSQJjN
+ o=
 Received-SPF: pass client-ip=185.26.156.114; envelope-from=neither@nut.email;
  helo=mailgate02.uberspace.is
 X-Spam_score_int: -20
@@ -85,64 +83,48 @@ events as well as the corresponding hook functions. Due to differences
 between architectures, the latter need to be called from target specific
 code.
 
-This change places hooks for IBM System/390 targets. We treat "program
-interrupts" and service calls as exceptions. We treat external and io
-"exceptions" as well as resets as interrupts.
+This change places hooks for SuperH targets.
 
-Acked-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Julian Ganz <neither@nut.email>
 ---
- target/s390x/tcg/excp_helper.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ target/sh4/helper.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/target/s390x/tcg/excp_helper.c b/target/s390x/tcg/excp_helper.c
-index e4c75d0ce0..b7e7a4deff 100644
---- a/target/s390x/tcg/excp_helper.c
-+++ b/target/s390x/tcg/excp_helper.c
-@@ -34,6 +34,7 @@
- #include "hw/s390x/s390_flic.h"
- #include "hw/boards.h"
- #endif
+diff --git a/target/sh4/helper.c b/target/sh4/helper.c
+index fb7642bda1..ef8760111d 100644
+--- a/target/sh4/helper.c
++++ b/target/sh4/helper.c
+@@ -24,6 +24,7 @@
+ #include "exec/page-protection.h"
+ #include "exec/target_page.h"
+ #include "exec/log.h"
 +#include "qemu/plugin.h"
  
- G_NORETURN void tcg_s390_program_interrupt(CPUS390XState *env,
-                                            uint32_t code, uintptr_t ra)
-@@ -499,6 +500,7 @@ void s390_cpu_do_interrupt(CPUState *cs)
-     S390CPU *cpu = S390_CPU(cs);
-     CPUS390XState *env = &cpu->env;
-     bool stopped = false;
-+    uint64_t last_pc = cpu->env.psw.addr;
+ #if !defined(CONFIG_USER_ONLY)
+ #include "hw/sh4/sh_intc.h"
+@@ -60,6 +61,7 @@ void superh_cpu_do_interrupt(CPUState *cs)
+     CPUSH4State *env = cpu_env(cs);
+     int do_irq = cs->interrupt_request & CPU_INTERRUPT_HARD;
+     int do_exp, irq_vector = cs->exception_index;
++    uint64_t last_pc = env->pc;
  
-     qemu_log_mask(CPU_LOG_INT, "%s: %d at psw=%" PRIx64 ":%" PRIx64 "\n",
-                   __func__, cs->exception_index, env->psw.mask, env->psw.addr);
-@@ -528,21 +530,27 @@ try_deliver:
-     switch (cs->exception_index) {
-     case EXCP_PGM:
-         do_program_interrupt(env);
+     /* prioritize exceptions over interrupts */
+ 
+@@ -176,12 +178,14 @@ void superh_cpu_do_interrupt(CPUState *cs)
+             env->pc = env->vbr + 0x100;
+             break;
+         }
 +        qemu_plugin_vcpu_exception_cb(cs, last_pc);
-         break;
-     case EXCP_SVC:
-         do_svc_interrupt(env);
-+        qemu_plugin_vcpu_exception_cb(cs, last_pc);
-         break;
-     case EXCP_EXT:
-         do_ext_interrupt(env);
+         return;
+     }
+ 
+     if (do_irq) {
+         env->intevt = irq_vector;
+         env->pc = env->vbr + 0x600;
 +        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
-         break;
-     case EXCP_IO:
-         do_io_interrupt(env);
-+        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
-         break;
-     case EXCP_MCHK:
-         do_mchk_interrupt(env);
-+        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
-         break;
-     case EXCP_RESTART:
-         do_restart_interrupt(env);
-+        qemu_plugin_vcpu_interrupt_cb(cs, last_pc);
-         break;
-     case EXCP_STOP:
-         do_stop_interrupt(env);
+         return;
+     }
+ }
 -- 
 2.49.0
 
