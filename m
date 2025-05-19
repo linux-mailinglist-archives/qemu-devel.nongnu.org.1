@@ -2,65 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C771ABB801
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 10:57:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6172AABB86B
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 11:16:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uGwIT-0004PB-4E; Mon, 19 May 2025 04:56:33 -0400
+	id 1uGwaR-0008Ar-46; Mon, 19 May 2025 05:15:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
- id 1uGwIK-0004Or-3E
- for qemu-devel@nongnu.org; Mon, 19 May 2025 04:56:25 -0400
-Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uGwaM-00088s-15
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 05:15:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alireza.sanaee@huawei.com>)
- id 1uGwIF-0001TO-Iw
- for qemu-devel@nongnu.org; Mon, 19 May 2025 04:56:22 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4b1BN02Rs5z6K9jK;
- Mon, 19 May 2025 16:55:12 +0800 (CST)
-Received: from frapeml500003.china.huawei.com (unknown [7.182.85.28])
- by mail.maildlp.com (Postfix) with ESMTPS id 45D7C140133;
- Mon, 19 May 2025 16:55:59 +0800 (CST)
-Received: from localhost (10.47.79.213) by frapeml500003.china.huawei.com
- (7.182.85.28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 19 May
- 2025 10:55:57 +0200
-Date: Mon, 19 May 2025 09:55:51 +0100
-To: "Michael S. Tsirkin" <mst@redhat.com>
-CC: <qemu-devel@nongnu.org>, <anisinha@redhat.com>, <imammedo@redhat.com>,
- <jonathan.cameron@huawei.com>, <linuxarm@huawei.com>,
- <peter.maydell@linaro.org>, <prime.zeng@hisilicon.com>,
- <shameerali.kolothum.thodi@huawei.com>, <wangyanan55@huawei.com>,
- <yangyicong@hisilicon.com>
-Subject: Re: [PATCH v4 3/4] hw/acpi/aml-build: Build a root node in the PPTT
- table
-Message-ID: <20250519095551.0000525d.alireza.sanaee@huawei.com>
-In-Reply-To: <20250511140938-mutt-send-email-mst@kernel.org>
-References: <20250424122439.550-1-alireza.sanaee@huawei.com>
- <20250424122439.550-4-alireza.sanaee@huawei.com>
- <20250511140938-mutt-send-email-mst@kernel.org>
-Organization: Huawei
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1uGwaH-00057I-TJ
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 05:14:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747646095;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=v2C4KdJi1QF3Niatz+kL4tJmLMrQDtvaT3SUuilt7ds=;
+ b=a4++8kFCDMe0X5UtPNQsOH3cTIved2Jooo5l07Xq0r485QkIf4zkR0iKTiQhLquX+M41nZ
+ hsvZHpQczFpssWpHdxncm8aeXG5dsXT+Qc6sHI0jO/v7IeclTRby+TtwZ4CQ6obCltX4iO
+ ebaChDWh3NI9K8jw8bN7atFS66SMBjA=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-418-rYjiZHHGPaGRTfMeyEU9_A-1; Mon,
+ 19 May 2025 05:14:50 -0400
+X-MC-Unique: rYjiZHHGPaGRTfMeyEU9_A-1
+X-Mimecast-MFC-AGG-ID: rYjiZHHGPaGRTfMeyEU9_A_1747646089
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2912B1800373; Mon, 19 May 2025 09:14:49 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.45.242.27])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id B28EC1956096; Mon, 19 May 2025 09:14:48 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 4815921E66C3; Mon, 19 May 2025 11:14:46 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Cc: qemu-devel@nongnu.org,  Thomas Huth <thuth@redhat.com>,  Richard
+ Henderson <richard.henderson@linaro.org>,  Michael Roth
+ <michael.roth@amd.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  berrange@redhat.com,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH v2 12/12] qapi: make all generated files common
+In-Reply-To: <20250515172732.3992504-13-pierrick.bouvier@linaro.org> (Pierrick
+ Bouvier's message of "Thu, 15 May 2025 10:27:32 -0700")
+References: <20250515172732.3992504-1-pierrick.bouvier@linaro.org>
+ <20250515172732.3992504-13-pierrick.bouvier@linaro.org>
+Date: Mon, 19 May 2025 11:14:46 +0200
+Message-ID: <8734d1hshl.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.79.213]
-X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
- frapeml500003.china.huawei.com (7.182.85.28)
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=alireza.sanaee@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.13,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,86 +86,86 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Alireza Sanaee <alireza.sanaee@huawei.com>
-From:  Alireza Sanaee via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 11 May 2025 14:10:46 -0400
-"Michael S. Tsirkin" <mst@redhat.com> wrote:
+Pierrick Bouvier <pierrick.bouvier@linaro.org> writes:
 
-> On Thu, Apr 24, 2025 at 01:24:38PM +0100, Alireza Sanaee wrote:
-> > From: Yicong Yang <yangyicong@hisilicon.com>
-> > 
-> > Currently we build the PPTT starting from the socket node and each
-> > socket will be a separate tree. For a multi-socket system it'll
-> > be hard for the OS to know the whole system is homogeneous or not
-> > (actually we're in the current implementation) since no parent node
-> > to telling the identical implementation informentation. Add a
-> > root node for indicating this.
-> > 
-> > Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Signed-off-by: Alireza Sanaee <alireza.sanaee@huawei.com>
-> > ---
-> >  hw/acpi/aml-build.c | 15 ++++++++++++++-
-> >  1 file changed, 14 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/hw/acpi/aml-build.c b/hw/acpi/aml-build.c
-> > index 560cee12a24b..3010325ca423 100644
-> > --- a/hw/acpi/aml-build.c
-> > +++ b/hw/acpi/aml-build.c
-> > @@ -2153,12 +2153,25 @@ void build_pptt(GArray *table_data,
-> > BIOSLinker *linker, MachineState *ms, int64_t socket_id = -1,
-> > cluster_id = -1, core_id = -1; uint32_t socket_offset = 0,
-> > cluster_offset = 0, core_offset = 0; uint32_t pptt_start =
-> > table_data->len;
-> > +    uint32_t root_offset;
-> >      int n;
-> >      AcpiTable table = { .sig = "PPTT", .rev = 2,
-> >                          .oem_id = oem_id, .oem_table_id =
-> > oem_table_id }; 
-> >      acpi_table_begin(&table, table_data);
-> >  
-> > +    /*
-> > +     * Build a root node for all the processor nodes. Otherwise
-> > when
-> > +     * building a multi-socket system each socket tree are
-> > separated  
-> 
-> is separated
-Hi Michael,
+> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+> ---
+>  qapi/meson.build | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/qapi/meson.build b/qapi/meson.build
+> index 7582c2b5bcf..6cc3afce721 100644
+> --- a/qapi/meson.build
+> +++ b/qapi/meson.build
+> @@ -140,6 +140,6 @@ foreach output : qapi_nonmodule_outputs
+>    if output.endswith('.trace-events')
+>      qapi_trace_events +=3D qapi_files[i]
+>    endif
+> -  specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: qapi_files[i])
+> +  system_ss.add(if_true: qapi_files[i])
+>    i =3D i + 1
+>  endforeach
 
-Happy to send another version for this issue, or maybe you can
-fix this when pulling, if that's the only problem? Up to you :)
+I think this can be simplified further:
 
-Alireza
-> 
-> > +     * and will be hard for the OS like Linux to know whether the
-> > +     * system is homogeneous.
-> > +     */
-> > +    root_offset = table_data->len - pptt_start;
-> > +    build_processor_hierarchy_node(table_data,
-> > +        (1 << 0) | /* Physical package */
-> > +        (1 << 4), /* Identical Implementation */
-> > +        0, 0, NULL, 0);
-> > +
-> >      /*
-> >       * This works with the assumption that cpus[n].props.*_id has
-> > been
-> >       * sorted from top to down levels in
-> > mc->possible_cpu_arch_ids(). @@ -2175,7 +2188,7 @@ void
-> > build_pptt(GArray *table_data, BIOSLinker *linker, MachineState
-> > *ms, build_processor_hierarchy_node(table_data, (1 << 0) | /*
-> > Physical package */ (1 << 4), /* Identical Implementation */
-> > -                0, socket_id, NULL, 0);
-> > +                root_offset, socket_id, NULL, 0);
-> >          }
-> >  
-> >          if (mc->smp_props.clusters_supported &&
-> > mc->smp_props.has_clusters) { -- 
-> > 2.34.1  
-> 
-> 
+diff --git a/qapi/meson.build b/qapi/meson.build
+index 6cc3afce72..3b035aea33 100644
+--- a/qapi/meson.build
++++ b/qapi/meson.build
+@@ -85,8 +85,7 @@ qapi_nonmodule_outputs =3D [
+   'qapi-emit-events.c', 'qapi-emit-events.h',
+ ]
+=20
+-# First build all sources
+-qapi_util_outputs =3D [
++qapi_outputs =3D qapi_nonmodule_outputs + [
+   'qapi-builtin-types.c', 'qapi-builtin-visit.c',
+   'qapi-builtin-types.h', 'qapi-builtin-visit.h',
+ ]
+@@ -109,20 +108,17 @@ foreach module : qapi_all_modules
+       'qapi-commands-@0@.trace-events'.format(module),
+     ]
+   endif
+-  qapi_util_outputs +=3D qapi_module_outputs
++  qapi_outputs +=3D qapi_module_outputs
+ endforeach
+=20
+ qapi_files =3D custom_target('shared QAPI source files',
+-  output: qapi_util_outputs + qapi_nonmodule_outputs,
++  output: qapi_outputs,
+   input: [ files('qapi-schema.json') ],
+   command: [ qapi_gen, '-o', 'qapi', '-b', '@INPUT0@' ],
+   depend_files: [ qapi_inputs, qapi_gen_depends ])
+=20
+-# Now go through all the outputs and add them to the right sourceset.
+-# These loops must be synchronized with the output of the above custom tar=
+get.
+-
+ i =3D 0
+-foreach output : qapi_util_outputs
++foreach output : qapi_outputs
+   if output.endswith('.h')
+     genh +=3D qapi_files[i]
+   endif
+@@ -132,14 +128,3 @@ foreach output : qapi_util_outputs
+   util_ss.add(qapi_files[i])
+   i =3D i + 1
+ endforeach
+-
+-foreach output : qapi_nonmodule_outputs
+-  if output.endswith('.h')
+-    genh +=3D qapi_files[i]
+-  endif
+-  if output.endswith('.trace-events')
+-    qapi_trace_events +=3D qapi_files[i]
+-  endif
+-  system_ss.add(if_true: qapi_files[i])
+-  i =3D i + 1
+-endforeach
 
 
