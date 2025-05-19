@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 906D8ABB3CC
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:08:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9ED0ABB40A
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:27:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uGrnR-0005Hj-P5; Mon, 19 May 2025 00:08:13 -0400
+	id 1uGs3L-0000bl-Qf; Mon, 19 May 2025 00:24:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uGrnN-0005DL-8F; Mon, 19 May 2025 00:08:09 -0400
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ id 1uGrnQ-0005KZ-Tf; Mon, 19 May 2025 00:08:13 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uGrnL-0004Bo-KG; Mon, 19 May 2025 00:08:08 -0400
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-b07d607dc83so3083894a12.1; 
- Sun, 18 May 2025 21:08:06 -0700 (PDT)
+ id 1uGrnP-0004C9-54; Mon, 19 May 2025 00:08:12 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-2322f8afe02so4403445ad.2; 
+ Sun, 18 May 2025 21:08:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747627685; x=1748232485; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1747627689; x=1748232489; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=G78cIS/PHCPYMAvVVMMp56jlLZJ95JW7Zc/OeF+uzTE=;
- b=PusYFZCjnwE3zNz8hHzTs/uAdTr7Zcx/TKotXZhTvvb9jaDEAmf4VvC4nfe8/Ak0FC
- b7gn9Fgqv6zU79oFJinXmyamKkivwhxsX1L0A2HxNGdOgrvcNPqvm14BCS5GRdMyEas3
- S4BuIBSLE14PBURbC+HK8KNGPJCGOh+nzCbJIREsZ1B7Zt9Jn+YmAph0zQoZ/R0DAVZi
- nmEzcb09IhgwsrzubEy2a7HxBAwVs4xeNBUX7sjrQe5GHZd5a5b73bdBKoWzCt/6dsW+
- jRvG+6U+tw0UFzEINVgqOE+klAxZD6aUPeYvRSpukqZGWyw+jQnFOrQE6oHTCIcqg78W
- aqKg==
+ bh=Emiw7dknS6nI7w0EE/PpXVbkuw9YpLuTjEDIBsyRuEs=;
+ b=YxaqzI7OpCOanDQFEnxSry4ysxqH+sxEQupk4bkCtRxGslku9PWHtNECg8LCSDCjNz
+ HPQ7cWeTchI7jhBkQZkxwHWy7t2agdvmcZySQeplW23ENSshVOuYja/E54Gcjc43jxZ1
+ dYz6a5PFPzcTASWQAprOOG9oZL6zZksPIez88exct0ZdMDVJ/6+K/vf5ZxDlnHCy5dag
+ GLR3Zur0RGzqe1IzZ+u502Ldi1dN3v14joQuc2n4DxISRt6aLQC73VhK7+nA3mHEcit4
+ iLiHy5PNvBJ65E1pgnR68iIx43VdU/sgxQCHxrIFh0eJiSaItnbNITwL7Lipx5yDE+ps
+ iI9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747627685; x=1748232485;
+ d=1e100.net; s=20230601; t=1747627689; x=1748232489;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=G78cIS/PHCPYMAvVVMMp56jlLZJ95JW7Zc/OeF+uzTE=;
- b=LiVt6pNg1joehb/4AYEG+B4aT0fX1EeVFcgUJRXpZtViQD/4mCCFaJ9fEClRI0G1y8
- 8Q/rb6edHj7apoQgNHntP0x0vEtAwM5W8j0daoPDtUmpe/75vnivJRTHunOSzcQj0BMZ
- w4GUWFTqN9jfRDxjQOzPWVoASq7zfLBUh5Ikq+sF9aKNsgqCDLWL46zbBhLWNDkyLYpm
- ptynPEets0mhDMRwCvLQgNORn4sJ+ZznvBaD+7377eGaO2gVjjkvSZEmcIz6S7QKpQTF
- nM0bJX2pi/awgS03wWUwwdXcOBzd7Jnv5BmWHSfj9wF0RDzG+Fv6H1R9izgkaFU3vdXT
- 5I7g==
+ bh=Emiw7dknS6nI7w0EE/PpXVbkuw9YpLuTjEDIBsyRuEs=;
+ b=A6iTAdlHQbtD0015+ATIUWqmPdwef425+k4eVr4LKocvX5MgWP81Te0/VnVUdkwg1M
+ 365jHKzsUfiSQZX0KdGg0bi/jWCitl6ns8QdozsytxlYDJfog7ASxTfTl3VqBRU5vIC0
+ GUYq4tGFzW9ZCXScFSHilznAmHnZEDhGy8BZ6t05HCZFsrcnKlGr3M2SS4jj5bSS0wrD
+ Bdgzh3rmoeLGoVv6vLosl5mcSitRbkNzfLbA9c9ejtJdze+jBz+uEn9SLCKxZKL18IqY
+ qZa7lLizuDQoc6ziHx7WV0/dltaXLIow+I3YBcLrm2P/fjzSGYJVuBfA8YL1IU8jEbGO
+ TXvQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX37IsK967fiSDzozmk9LZbi5C6qZACEy4g6k+61bDMVAquFTxtflCk3ochC5pmISxyL0xY+Q9BS1MfKA==@nongnu.org
-X-Gm-Message-State: AOJu0YztQWm6xkmqrz3vKVUOz76Fo2zantODDGp+Uap1EmD16ydjDsrp
- HZyjAenswiDbh7aHw4MX1D85M6MbgFKXen5jgrdCVNX5YDh4ge7Y9k5/dihMXw==
-X-Gm-Gg: ASbGnct03Iwb4XN+GMuUp/RY5tyStvB+cw0Cso3vbzKPTytaQQKRt0H9gjinWXLYgsZ
- or3vmVn+wVOhZi71MpEv0krpIEO4Y3CJ3D3qZudDzJxWpAPZZ/sKx8C88o+RjvtH2D0cEi2rSeu
- g5Y70byQ20Mn0HV1gtqx7PEGdxxX7QKwdZmAWp57JK6qSoDcNd2yWW9yzLzuBfxmDrhS6yR2zIO
- L6+XnRtuevNpnfCnWVuT02KspRbTL+DzwOr/25R6/B/WG0RRZvidMXGJLOL1sFNi4jdwrgZy/DB
- xs90WeRzRC1cD89ehUK4HCP9U6O06Pneu9wt9Vg40oZQTagsRx3UuBaq5lL14CxQsI+mv2rD6o6
- HtQHtG1DRuGF3CGuBbTL0VewnU0tdAPSxsKhSSfTCRAgLwsilTw0rK26C
-X-Google-Smtp-Source: AGHT+IHB+Ofrx8ARrqHW2iD0d3Y3jP13tQeXYnOb+o4Kq9gf4twLVwdvNeVxUkH1ttNpT7qpU/D86Q==
-X-Received: by 2002:a17:902:cf12:b0:223:669f:ca2d with SMTP id
- d9443c01a7336-231d45a9adamr188926235ad.35.1747627685479; 
- Sun, 18 May 2025 21:08:05 -0700 (PDT)
+ AJvYcCUpeBtWGCBNVoiAgWjK2UKIGAFeRHkD2PvifB4WLLIlEKpvAlcKk/UvsOaO5+8a8RBio1p+1m1KV86s+w==@nongnu.org
+X-Gm-Message-State: AOJu0YzIIsdltSAjCMJZK4J2jfEcWMMaDeNXImO40zQSBC9p+uBEfRLN
+ efdDhaIK3VFFMeN+lcrrNR+KXXmW1Z1K2f9LXvqo8iATku4CPlNdFyyVEsrevA==
+X-Gm-Gg: ASbGncsRHMNeSAXWc0ycA8q6orLT2sEtmCD/expeNofp/V/3IUdROkcv3Eneh3OsdKi
+ tewTKJMFDB8Fy13/v4jUHVkEGW06OzaBH++PXvcy5I8dG4Gnd+QGJecV/UZJdFrwXMy1vjbBSUh
+ IwCXHLVX1vxkcv5g4go4SJxxN9ougfTrMr7L4ynk/1UXX4lJyI+ieoOzpjqI8oQC51JvMJddnjQ
+ iH+IgUhbM5DbCpawzPYbR+A/fz3xOH2GCP4x/H3e/eMqxdfRRoJpIvAbrbLSChveuTouJuPOd8z
+ w6UqGzWI2X1G/HnAF5xYN1sI1HW6Mz/86yFPFf0gBgJrSc4/3d9PlqHibZ8I7V5xcurWbFmMjQo
+ RoIuEoOL71iXjyHccOmiXBRia0JWOb6oWU5gZqrN9S/hnzXnRpWvl9Pfw
+X-Google-Smtp-Source: AGHT+IHXRPXBStQTw09+6mHE5S+X5/yho/xVDUu0tBNefKzIiNRhouC+2laOEvfd9g6IFUkENKbN6Q==
+X-Received: by 2002:a17:903:1a08:b0:224:1d1c:8837 with SMTP id
+ d9443c01a7336-231d451214emr169221425ad.19.1747627688988; 
+ Sun, 18 May 2025 21:08:08 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.08.02
+ d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.08.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 May 2025 21:08:04 -0700 (PDT)
+ Sun, 18 May 2025 21:08:08 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Icenowy Zheng <uwu@icenowy.me>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: alistair23@gmail.com, Anton Blanchard <antonb@tenstorrent.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Max Chou <max.chou@sifive.com>,
  Alistair Francis <alistair.francis@wdc.com>, qemu-stable@nongnu.org
-Subject: [PULL 19/56] common-user/host/riscv: use tail pseudoinstruction for
- calling tail
-Date: Mon, 19 May 2025 14:05:16 +1000
-Message-ID: <20250519040555.3797167-20-alistair.francis@wdc.com>
+Subject: [PULL 20/56] target/riscv: rvv: Source vector registers cannot
+ overlap mask register
+Date: Mon, 19 May 2025 14:05:17 +1000
+Message-ID: <20250519040555.3797167-21-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250519040555.3797167-1-alistair.francis@wdc.com>
 References: <20250519040555.3797167-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x532.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -104,43 +105,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Icenowy Zheng <uwu@icenowy.me>
+From: Anton Blanchard <antonb@tenstorrent.com>
 
-The j pseudoinstruction maps to a JAL instruction, which can only handle
-a jump to somewhere with a signed 20-bit destination. In case of static
-linking and LTO'ing this easily leads to "relocation truncated to fit"
-error.
+Add the relevant ISA paragraphs explaining why source (and destination)
+registers cannot overlap the mask register.
 
-Switch to use tail pseudoinstruction, which is the standard way to
-tail-call a function in medium code model (emits AUIPC+JALR).
-
-Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250417072206.364008-1-uwu@icenowy.me>
+Signed-off-by: Anton Blanchard <antonb@tenstorrent.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Max Chou <max.chou@sifive.com>
+Signed-off-by: Max Chou <max.chou@sifive.com>
+Message-ID: <20250408103938.3623486-2-max.chou@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 Cc: qemu-stable@nongnu.org
 ---
- common-user/host/riscv/safe-syscall.inc.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/riscv/insn_trans/trans_rvv.c.inc | 29 ++++++++++++++++++++++---
+ 1 file changed, 26 insertions(+), 3 deletions(-)
 
-diff --git a/common-user/host/riscv/safe-syscall.inc.S b/common-user/host/riscv/safe-syscall.inc.S
-index dfe83c300e..c8b81e33d0 100644
---- a/common-user/host/riscv/safe-syscall.inc.S
-+++ b/common-user/host/riscv/safe-syscall.inc.S
-@@ -69,11 +69,11 @@ safe_syscall_end:
+diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
+index 4ca7b15da1..2110392d1c 100644
+--- a/target/riscv/insn_trans/trans_rvv.c.inc
++++ b/target/riscv/insn_trans/trans_rvv.c.inc
+@@ -100,10 +100,33 @@ static bool require_scale_rvfmin(DisasContext *s)
+     }
+ }
  
-         /* code path setting errno */
- 0:      neg     a0, a0
--        j       safe_syscall_set_errno_tail
-+        tail    safe_syscall_set_errno_tail
+-/* Destination vector register group cannot overlap source mask register. */
+-static bool require_vm(int vm, int vd)
++/*
++ * Source and destination vector register groups cannot overlap source mask
++ * register:
++ *
++ * A vector register cannot be used to provide source operands with more than
++ * one EEW for a single instruction. A mask register source is considered to
++ * have EEW=1 for this constraint. An encoding that would result in the same
++ * vector register being read with two or more different EEWs, including when
++ * the vector register appears at different positions within two or more vector
++ * register groups, is reserved.
++ * (Section 5.2)
++ *
++ * A destination vector register group can overlap a source vector
++ * register group only if one of the following holds:
++ *  1. The destination EEW equals the source EEW.
++ *  2. The destination EEW is smaller than the source EEW and the overlap
++ *     is in the lowest-numbered part of the source register group.
++ *  3. The destination EEW is greater than the source EEW, the source EMUL
++ *     is at least 1, and the overlap is in the highest-numbered part of
++ *     the destination register group.
++ * For the purpose of determining register group overlap constraints, mask
++ * elements have EEW=1.
++ * (Section 5.2)
++ */
++static bool require_vm(int vm, int v)
+ {
+-    return (vm != 0 || vd != 0);
++    return (vm != 0 || v != 0);
+ }
  
-         /* code path when we didn't execute the syscall */
- 2:      li      a0, QEMU_ERESTARTSYS
--        j       safe_syscall_set_errno_tail
-+        tail    safe_syscall_set_errno_tail
- 
-         .cfi_endproc
-         .size   safe_syscall_base, .-safe_syscall_base
+ static bool require_nf(int vd, int nf, int lmul)
 -- 
 2.49.0
 
