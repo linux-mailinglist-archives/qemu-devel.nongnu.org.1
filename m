@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1A2BABB3FA
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:26:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE2ABABB3D2
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:09:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uGs3K-0000b6-BA; Mon, 19 May 2025 00:24:38 -0400
+	id 1uGrnI-0004xK-PC; Mon, 19 May 2025 00:08:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uGrmr-0004l5-RO
- for qemu-devel@nongnu.org; Mon, 19 May 2025 00:07:40 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ id 1uGrmv-0004lt-As
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 00:07:41 -0400
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uGrmp-00048s-E1
- for qemu-devel@nongnu.org; Mon, 19 May 2025 00:07:36 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-b061a06f127so2580937a12.2
- for <qemu-devel@nongnu.org>; Sun, 18 May 2025 21:07:35 -0700 (PDT)
+ id 1uGrmt-00049Q-J0
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 00:07:41 -0400
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-7fd35b301bdso4433542a12.2
+ for <qemu-devel@nongnu.org>; Sun, 18 May 2025 21:07:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747627654; x=1748232454; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1747627656; x=1748232456; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AcTSIVF8fD22KtdcMyyIobQ8uv5lgIlmowtqHalYg9s=;
- b=C+eD6nqhwZFLgk8ZjMaDMkSehvmImT+/S4XZzyWrXP44u9CJoAbRSA7CaHJqS8zRD0
- quO2FFpv1Ikn7ci7n2Q27bi1ELnm+b93dBW/sCbNuTvTYIY3PJvM6keXHK4xie9KoLZK
- +1/+f6FH4IQpczk0n39svRS13P61foKayWQSgouo0/ErjVjNkl7owmKSrjS48OCOW16T
- Ojt3hWhd5niw00HzdxmQVW1q5VBV0vYHjJ4BZYL891TwOjC0FwlsoJMkXGeHYAPcTo+H
- RrvBR8hgqc0Cm7A7iwn21abupYuJ8fZidSiWqj5Soy7KzDs6rjrjEQPEQ4wTQPdt7pKo
- Ltkg==
+ bh=zsKoSChLOgf9IXWkPW+gBtADC5q1GRWfNKybDJ3aAWQ=;
+ b=D5r7RZsMp0SMf3mb2lyMr8krJs/ABzkAVB+GSIzpJpXREq+pcfPqk3LSW+jVBqO3Rb
+ sgeqcUzumn4PtIIyh5hp5RAIHsKM2hYCYbJsCIcq7AwiRZW5zwQ51fwqwxSPa9D0kb28
+ ZCYZAdhfbefgrsoXpyyG2iQhYa/d65hj5txitWQ1PRbOAyzvsuMKAQTuqWIYEFtAbnQM
+ k/8HxFxhv24UYcrZvuel5rk6Qn9CT88yt09GKtJ2CwYsQxExNGK8aFhj6j1SrhP38VDv
+ jHDOsPWCl+5FgE7yPFNcejinXwQ9WlYgIF78ksYiPkd7TBS6ZSNt6ODZHeUF/dhHvpa5
+ YY/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747627654; x=1748232454;
+ d=1e100.net; s=20230601; t=1747627656; x=1748232456;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AcTSIVF8fD22KtdcMyyIobQ8uv5lgIlmowtqHalYg9s=;
- b=ISU7pUYP7c1+iip1YNx/iduUHrb+gtsEe7/nE08dpFUGsWr2NVlpicNzb3xB8WYKSe
- tn3InLmrYZ6TDrxZU/rW/7GvIX8iZYhi6Ci6o0N2dy93CfwUleXvJJveKC9rp1RKLBpK
- 9SMbrEoR7/KvQJALoHO190Thvn9o8TEg5UB4MZ48OXSKA3vbM1OhuAfM6iehODOLHFD5
- Qeyx6B8iK+Rad95Z5fiSySP+hCulgMsTxpcxWbE3s2e7fThUsv3JmMfRrinHaVcArAaJ
- poU4UkQcrN3GuXrWjDrGhN9R4nUNSnJooG/QuMnqgvwllESsfGBqdgYKI1a8HRp+Zva7
- EhFA==
-X-Gm-Message-State: AOJu0YzuLW3zEnv+WL2JtvmVhaPXzM/sNwx6Pa1p81V8RWHiCRxqMLKz
- xrFdvK5BgcQnVWIOb1gThQXhsKXVf6sM/dfvdQ49gITMKutplNxcCRA1Cx3lzg==
-X-Gm-Gg: ASbGncsXRMSnZb/OTg4w9z+Q6liKHEmI3OWfnuKL4ip9Nkf5/YzlyOw3jWQ8xaY8miz
- sJ7OsKUrbj8tch8tSKiZ3qfGQ4UevvyhXx+f2e15W2Oq5zGJao/831Xt6bWCx2C0UylrtWRMb0E
- AjgxFt3UAnuAoi8UBpP7eqBIVX9oJyAZQoP/IHEAHYmztyiMsSrFHk8DFzJ4WacgzBThafMwQeN
- 0xWB3LiSeNzhybF0V4FVtxmA3lavSiqU8o/od5808AS/JV5n04c4CpLYdbbujzLKaELBhq4tik7
- cMt+ZWGEgmGW0BotBXnvErDTzDyupHhe7ddsdBqWBM2B7zRx1oyT8m9zWnOGTC/czRVVDRTavUu
- vUiHesOGHsTh1z18SwT8tdXkH//wMUp+Axg4pGJpdivwE1JTz72YJwpW3
-X-Google-Smtp-Source: AGHT+IHH3JArvwsDD+ieQaiWntf1kCuSLrGexKAK94DWbXN7N6KJXRgcVqUhjA0/xnvXaH6Ve39R+Q==
-X-Received: by 2002:a17:903:17cc:b0:22e:5389:67fb with SMTP id
- d9443c01a7336-231d43d9bedmr151572665ad.7.1747627653788; 
- Sun, 18 May 2025 21:07:33 -0700 (PDT)
+ bh=zsKoSChLOgf9IXWkPW+gBtADC5q1GRWfNKybDJ3aAWQ=;
+ b=Z7JyvCfe9leNBx5tV0GjTcgwggQq1+gQcRZLbCWzu/6t+woogxgGtfIUA5z/h3PSgH
+ zkErb6vnIK8O5lbtBeyL2OBRkrXByy8GW3COi/UjSFxLPwAmZRFkcnoTfUwHVKckO273
+ 1eQQ4odAUg8h+h2P8SHPUo8kzmWSCOWMwLE/BYqUsjNqEHPU43Z4ao4WU0eOPFRUYnM5
+ d6t3Pa3uUGTLO/9uIS0+6NDn6k9ow/4QXcLcGdmMu+/iirQBEJtVNnpcWTuAYEl91bgF
+ okUMV6fv/5EPeOq4rye/ZgJ9Wr1MEVtrDNwugIeqDi8P+6MBqM5tq9LiCq9W54UF3VAm
+ PMfw==
+X-Gm-Message-State: AOJu0YxINooMFl8dEAxk9rm4r/LSXNvMbxilgN1ZSfNOABQn4T+8T70P
+ oK6c0sBgDal8E0ftlsYivgow3D389gC6ZvzmIjtHOHhnJhcm5RA8j2TT8lRfTQ==
+X-Gm-Gg: ASbGncuUW9iNepnkquTqSNRZaoRyVPJqR0hYeVe4kWkcA7aFH4OzunX2cR5lW4Nb+5X
+ h4mElhRseTsSodOgsI6cj/P2B6sDWN0+Trw8nfeBRdTs8hWW2R+No562/Dy55IsQ9ijCaVcci43
+ XFCGYL1Ip3KZZVsFGgRpRSf6AjfbL1c9DFfYeWlGPa1p5hoRQSqmNlt7K5IJRtRVRBKtX1NeiA0
+ kYDvhwkr74mxUj3ZMHmljts2mEO2FNWj9f7jmb6EqKJvzfHsH6anDkPn40vTw74lTbIjPLnhW/0
+ pJMWCpd4KbeB4dFXrWiKRAUWLZ6cmsDAKS+6jDPSeH8IH3gCyPVFYwnsUHzAC8Jftqdnckn3Mx0
+ 1FiJTTdGEiGnRrZ34yvLra7MfdVqeZqfVT8Ie6n0syZbaqUUG30kZry81
+X-Google-Smtp-Source: AGHT+IEb2u61/bsK4ij3F3u0eIjtE+N/nrQ1XXcYgyC1b7vol+gRE7yExMvg3Tbit2bWwK8y50Gb8w==
+X-Received: by 2002:a17:902:f78c:b0:215:7421:262 with SMTP id
+ d9443c01a7336-231de35f13fmr188046155ad.12.1747627656601; 
+ Sun, 18 May 2025 21:07:36 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.07.31
+ d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.07.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 May 2025 21:07:33 -0700 (PDT)
+ Sun, 18 May 2025 21:07:35 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Sebastian Huber <sebastian.huber@embedded-brains.de>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 09/56] hw/misc: Add MPFS system reset support
-Date: Mon, 19 May 2025 14:05:06 +1000
-Message-ID: <20250519040555.3797167-10-alistair.francis@wdc.com>
+Subject: [PULL 10/56] hw/riscv: More flexible FDT placement for MPFS
+Date: Mon, 19 May 2025 14:05:07 +1000
+Message-ID: <20250519040555.3797167-11-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250519040555.3797167-1-alistair.francis@wdc.com>
 References: <20250519040555.3797167-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x530.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x531.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -104,40 +104,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sebastian Huber <sebastian.huber@embedded-brains.de>
 
+If the kernel entry is in the high DRAM area, place the FDT into this
+area.
+
 Signed-off-by: Sebastian Huber <sebastian.huber@embedded-brains.de>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250319061342.26435-2-sebastian.huber@embedded-brains.de>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20250319061342.26435-3-sebastian.huber@embedded-brains.de>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/misc/mchp_pfsoc_sysreg.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ hw/riscv/microchip_pfsoc.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/hw/misc/mchp_pfsoc_sysreg.c b/hw/misc/mchp_pfsoc_sysreg.c
-index bfa78d3d2f..f47c835f80 100644
---- a/hw/misc/mchp_pfsoc_sysreg.c
-+++ b/hw/misc/mchp_pfsoc_sysreg.c
-@@ -27,7 +27,9 @@
- #include "hw/irq.h"
- #include "hw/sysbus.h"
- #include "hw/misc/mchp_pfsoc_sysreg.h"
-+#include "system/runstate.h"
+diff --git a/hw/riscv/microchip_pfsoc.c b/hw/riscv/microchip_pfsoc.c
+index e39ee657cd..6bb44e3ac5 100644
+--- a/hw/riscv/microchip_pfsoc.c
++++ b/hw/riscv/microchip_pfsoc.c
+@@ -626,8 +626,15 @@ static void microchip_icicle_kit_machine_init(MachineState *machine)
+         kernel_entry = boot_info.image_low_addr;
  
-+#define MSS_RESET_CR    0x18
- #define ENVM_CR         0xb8
- #define MESSAGE_INT     0x118c
- 
-@@ -56,6 +58,11 @@ static void mchp_pfsoc_sysreg_write(void *opaque, hwaddr offset,
- {
-     MchpPfSoCSysregState *s = opaque;
-     switch (offset) {
-+    case MSS_RESET_CR:
-+        if (value == 0xdead) {
-+            qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
+         /* Compute the fdt load address in dram */
+-        fdt_load_addr = riscv_compute_fdt_addr(memmap[MICROCHIP_PFSOC_DRAM_LO].base,
+-                                               memmap[MICROCHIP_PFSOC_DRAM_LO].size,
++        hwaddr kernel_ram_base = memmap[MICROCHIP_PFSOC_DRAM_LO].base;
++        hwaddr kernel_ram_size = memmap[MICROCHIP_PFSOC_DRAM_LO].size;
++
++        if (kernel_entry - kernel_ram_base >= kernel_ram_size) {
++            kernel_ram_base = memmap[MICROCHIP_PFSOC_DRAM_HI].base;
++            kernel_ram_size = mem_high_size;
 +        }
-+        break;
-     case MESSAGE_INT:
-         qemu_irq_lower(s->irq);
-         break;
++
++        fdt_load_addr = riscv_compute_fdt_addr(kernel_ram_base, kernel_ram_size,
+                                                machine, &boot_info);
+         riscv_load_fdt(fdt_load_addr, machine->fdt);
+ 
 -- 
 2.49.0
 
