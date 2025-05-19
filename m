@@ -2,84 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04D90ABB3CF
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:08:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EA82ABB3F8
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:25:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uGrnH-0004w7-U4; Mon, 19 May 2025 00:08:04 -0400
+	id 1uGs3L-0000bh-4c; Mon, 19 May 2025 00:24:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uGrn5-0004pD-S1
- for qemu-devel@nongnu.org; Mon, 19 May 2025 00:07:52 -0400
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+ id 1uGrn9-0004t1-UX
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 00:07:56 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uGrn3-0004Aj-Mu
- for qemu-devel@nongnu.org; Mon, 19 May 2025 00:07:51 -0400
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-b1fd59851baso2333322a12.0
- for <qemu-devel@nongnu.org>; Sun, 18 May 2025 21:07:49 -0700 (PDT)
+ id 1uGrn7-0004B8-HN
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 00:07:55 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-2301ac32320so42315105ad.1
+ for <qemu-devel@nongnu.org>; Sun, 18 May 2025 21:07:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747627668; x=1748232468; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1747627672; x=1748232472; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8AzDyKx6OgyWxTzZBTwniZzUexKQarca/x+PapVXPjc=;
- b=Ymi9hx60J1t14QaqdI7xWwT5JkdDSGEcY7f/Z+G9AFwFWkLZoNBc0mnzZb2DPxh0Xu
- HTAgLRL786Xmsn16MBiSNNBkHM8vEjMWJe84TomR8JCrJdq49xjvTXPHI+UC9axBDRDF
- tsMhJvhPaV3v523CE2xzyAcGzWVoVRpRxFop+acX9WTTGq8F5RhlEIhrYyNH6tmVu6Uk
- LZlBrqQhH0NfeW6/2/l82++XylYQKagJRp9S9P/BJ1h1xHtGH3enHA0R4tyNZsuT43Jk
- D3gxPpFalxdVW9QgZIqlmsNjRQZkfYF1/kViW+FfbmahFwkxw+exwZI54H9JJt6HU9on
- lWKg==
+ bh=EvYjxJC/6lYT2MLjH/wxW+uRvoxqIu2LLh/2lksDadY=;
+ b=Lj+AgTQsLGvDa8NPGWOGqoWXQ3OfD2RB6WaKfrFPxLzCzG1VbuL+ABhweHZuIpulQu
+ gc/DI3Icy4JSJwzmTGwRguqbe58GX6N4jUXQaPrpnKFq4ppgQ8dF2sGc+yQ5vg8ZOlL6
+ SevaPsInrDNHViHdYtOACzvEy91Cj4uuPyuooe1JbMrSCia+1YdXDlvyVR7vg9hu9hY/
+ 436V+beEv+Bz7WUUreO1dXIOPnpQp0eLTxN5Y5FnWtYb2oP1MqEnZ3btvtt4NDtdSGMX
+ NfTJ+l0KMK6krtGJmNhL1rgz+37M79Cd5gyLJaDkKl9yEZSHjW+V9vHsX+hissJGPPzE
+ 2Udw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747627668; x=1748232468;
+ d=1e100.net; s=20230601; t=1747627672; x=1748232472;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8AzDyKx6OgyWxTzZBTwniZzUexKQarca/x+PapVXPjc=;
- b=i2GKdTXVmQmiWvRRjsRf3BM0uAuj0rmAthlOkVcTpqO53WXhMaZalk2vYqTdummWux
- 8vDahGK7nCC5o6LJ0jvb5jD1lNovvZdGcSNpNaaFgXjKpoybK2TMVpYQZyDstJUfF0ec
- 6cKrlqfxaGqMeg13uHoVbxfrQtLeTOHquUaLbnM9e9xgbawBjE6lNfGoSk8NW8oJx6zS
- HVF2BTv6ReIXhRrGj7dkDYltTB5MnJyHxmEcFBkfN2ngXK2ykVVarXKPCrv/umu6k7l8
- qfgQ+yr8o6ozP6FGl2XOXts1hquypFyBhVC7z3FQyIjJ2I8fKnHSpZCFBx0zxYYSoUFS
- l3bg==
-X-Gm-Message-State: AOJu0Ywe6KheHyCcNfhOxoxSrCM7giO4SXFyA0ga4q93wdCrhEmBZQpu
- ehbrzKm1stO5uIpfXmuKmuB4xaVLJ9eMr+ohSQ+dR07gLtlsFdVU0RUz2E9UFg==
-X-Gm-Gg: ASbGncuRy9B77790LSW+sIIQxPV6Y0DTlR/dCWsWM0alLHxeEl0GAl+OHJhzsPXksEN
- xhicDWrp6FNxEAqBfBI0yIZqc05FDSRzmN+4/cHjB/o4NfLsmloQSX9YtuhE0B7QQL3mwhf/IUC
- ikTS8UijMHAuH/Bmi0SFXFK1Lfsoi4kb5kHq4KurirDLDKWMPjBBAwM+TD1x1fcFiV4zdVGivZq
- 6aq+CwsYWKWyC7yhXDAolXaGEjZcg5gyXqlLcsNtcvhAqrg7js7nkthsXSguVClUqQ96ra7Lyne
- EiyyvSSSb5mnrHS/n1Ntdv8qXftJwCgqyyo3DsGmNtR+Gkuf/vRYkBudv2y5eSfVwVD2P3TI5/f
- 3ZobPdAbb80lIeNmjxEBM71A61Na6ow2kv+zj8iulPZ1/iYQUnQvsXIR8
-X-Google-Smtp-Source: AGHT+IFnM5JL57he9gnOUOZWyRkUlh5VB8Q5b8OHNWGjqmZSXhO2mGZaPuVfK4Jyof5Vbe3NYQME+g==
-X-Received: by 2002:a17:902:f706:b0:21f:6a36:7bf3 with SMTP id
- d9443c01a7336-231de3001cemr183769335ad.12.1747627668034; 
- Sun, 18 May 2025 21:07:48 -0700 (PDT)
+ bh=EvYjxJC/6lYT2MLjH/wxW+uRvoxqIu2LLh/2lksDadY=;
+ b=gbhjX8BdirZQX5xuRyqtsybeDuCtxBntrVu/94cTthWxvo+yUMtvsh56CzEzIOXeVm
+ YRqX6b3ivTEICu6BU8JH65TSjOohOItBYg0m49bgARW9QtcyVpCbbHKr+xDH3TuqEJtD
+ bvMViSuWDH4ZCubxdWKuwUKWMWlkzg/kI9MhYB5e7tVdfjr96vRbiXBgn/n6pw0mLKdN
+ yMcH69gxR8EDbW/kPecltKHyxv3M7CMKkVKmi5plI3iYfvExiaXg7GNKCoFUjJ9smSXb
+ eFAy2llGlhb98kvawKMM+LgRuuSXzh26qIsLjzfoie0PPg9neM42ybck9ouVARLqLu7x
+ a1VQ==
+X-Gm-Message-State: AOJu0Ywf3fLgjBOCLGRpxn5F//hru5JoqEUCG4rKF8z0BYVRqevibglA
+ 2PjYGNFKQ3Ykj7WD9DOR8S7LFnX6410yZYyxtdqVzl/JfUp5X8Y8viidUqqU1A==
+X-Gm-Gg: ASbGncujmL8IAjwS5mEcQ9a08BCnHxX98i1lbxQAaLxdIpEzNML1vKQYIZlTmatX5Ap
+ D40px6v4ifcJXLG699mXbk+VpO17NwZBLa/TNATfc9AGmidrc2uQjXqV8S1goFbeh523vQlqXSs
+ b8e4BM/GJd9G8IKxVZck77cz6Z7QsleHSXYaxnvw+KYPvFVRZEQTAxqsdSQB5/VF51IO5o0MUD1
+ J7Ax5r+WJQfbKPr/RxOUOH+hIp2Vhkbk+QY8O9idQfz7jkRtOW2itTNJPrVuAun5CA42Y8bRr/R
+ AB4o0Gman7oNVTq7d0FjPVSCZjQM0eGWMV7QFILMSDhEekQfQ7GoUxaduce0K5wM8351q9dOByf
+ 9YD0EUyzMsoedTKzLLNjlUVSOxV0joCDIvu8eRVBB6/7oSO8cR39qBX6bju6KlaCoATU=
+X-Google-Smtp-Source: AGHT+IFFDmO2kXmY+6WST5/9Y8ec/n1ZkhToKvOqN8evRko/V33RkTPmphvibnSjwBPNSZEmVdTFKQ==
+X-Received: by 2002:a17:903:2f4c:b0:21f:522b:690f with SMTP id
+ d9443c01a7336-231d45af194mr157037135ad.46.1747627671906; 
+ Sun, 18 May 2025 21:07:51 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.07.45
+ d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.07.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 May 2025 21:07:47 -0700 (PDT)
+ Sun, 18 May 2025 21:07:51 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Sebastian Huber <sebastian.huber@embedded-brains.de>,
+Cc: alistair23@gmail.com, Paolo Savini <paolo.savini@embecosm.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Richard Handerson <richard.henderson@linaro.org>,
+ Max Chou <max.chou@sifive.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 14/56] hw/riscv: microchip_pfsoc: Rework documentation
-Date: Mon, 19 May 2025 14:05:11 +1000
-Message-ID: <20250519040555.3797167-15-alistair.francis@wdc.com>
+Subject: [PULL 15/56] target/riscv: use tcg ops generation to emulate whole
+ reg rvv loads/stores.
+Date: Mon, 19 May 2025 14:05:12 +1000
+Message-ID: <20250519040555.3797167-16-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250519040555.3797167-1-alistair.francis@wdc.com>
 References: <20250519040555.3797167-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x535.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -103,178 +108,212 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sebastian Huber <sebastian.huber@embedded-brains.de>
+From: Paolo Savini <paolo.savini@embecosm.com>
 
-Mention that running the HSS no longer works.  Document the changed boot
-options.  Reorder documentation blocks.  Update URLs.
+This patch replaces the use of a helper function with direct tcg ops generation
+in order to emulate whole register loads and stores. This is done in order to
+improve the performance of QEMU.
+We still use the helper function when vstart is not 0 at the beginning of the
+emulation of the whole register load or store or when we would end up generating
+partial loads or stores of vector elements (e.g. emulating 64 bits element loads
+with pairs of 32 bits loads on hosts with 32 bits registers).
+The latter condition ensures that we are not surprised by a trap in mid-element
+and consecutively that we can update vstart correctly.
+We also use the helper function when it performs better than tcg for specific
+combinations of vector length, number of fields and element size.
 
-Signed-off-by: Sebastian Huber <sebastian.huber@embedded-brains.de>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250319061342.26435-7-sebastian.huber@embedded-brains.de>
+Signed-off-by: Paolo Savini <paolo.savini@embecosm.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Richard Handerson <richard.henderson@linaro.org>
+Reviewed-by: Max Chou <max.chou@sifive.com>
+Reviewed-by: "Alex Bennée" <alex.bennee@linaro.org>
+Message-ID: <20250313152330.398396-2-paolo.savini@embecosm.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- docs/system/riscv/microchip-icicle-kit.rst | 124 +++++++--------------
- 1 file changed, 43 insertions(+), 81 deletions(-)
+ target/riscv/insn_trans/trans_rvv.c.inc | 155 +++++++++++++++++-------
+ 1 file changed, 108 insertions(+), 47 deletions(-)
 
-diff --git a/docs/system/riscv/microchip-icicle-kit.rst b/docs/system/riscv/microchip-icicle-kit.rst
-index 40798b1aae..9809e94b84 100644
---- a/docs/system/riscv/microchip-icicle-kit.rst
-+++ b/docs/system/riscv/microchip-icicle-kit.rst
-@@ -5,10 +5,10 @@ Microchip PolarFire SoC Icicle Kit integrates a PolarFire SoC, with one
- SiFive's E51 plus four U54 cores and many on-chip peripherals and an FPGA.
+diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
+index 7079f758ad..4ca7b15da1 100644
+--- a/target/riscv/insn_trans/trans_rvv.c.inc
++++ b/target/riscv/insn_trans/trans_rvv.c.inc
+@@ -1334,25 +1334,86 @@ GEN_VEXT_TRANS(vle64ff_v, MO_64, r2nfvm, ldff_op, ld_us_check)
+ typedef void gen_helper_ldst_whole(TCGv_ptr, TCGv, TCGv_env, TCGv_i32);
  
- For more details about Microchip PolarFire SoC, please see:
--https://www.microsemi.com/product-directory/soc-fpgas/5498-polarfire-soc-fpga
-+https://www.microchip.com/en-us/products/fpgas-and-plds/system-on-chip-fpgas/polarfire-soc-fpgas
+ static bool ldst_whole_trans(uint32_t vd, uint32_t rs1, uint32_t nf,
+-                             gen_helper_ldst_whole *fn,
+-                             DisasContext *s)
++                             uint32_t log2_esz, gen_helper_ldst_whole *fn,
++                             DisasContext *s, bool is_load)
+ {
+-    TCGv_ptr dest;
+-    TCGv base;
+-    TCGv_i32 desc;
+-
+-    uint32_t data = FIELD_DP32(0, VDATA, NF, nf);
+-    data = FIELD_DP32(data, VDATA, VM, 1);
+-    dest = tcg_temp_new_ptr();
+-    desc = tcg_constant_i32(simd_desc(s->cfg_ptr->vlenb,
+-                                      s->cfg_ptr->vlenb, data));
+-
+-    base = get_gpr(s, rs1, EXT_NONE);
+-    tcg_gen_addi_ptr(dest, tcg_env, vreg_ofs(s, vd));
+-
+     mark_vs_dirty(s);
  
- The Icicle Kit board information can be found here:
--https://www.microsemi.com/existing-parts/parts/152514
-+https://www.microchip.com/en-us/development-tool/mpfs-icicle-kit-es
- 
- Supported devices
- -----------------
-@@ -26,95 +26,48 @@ The ``microchip-icicle-kit`` machine supports the following devices:
- * 2 GEM Ethernet controllers
- * 1 SDHC storage controller
- 
-+The memory is set to 1537 MiB by default.  A sanity check on RAM size is
-+performed in the machine init routine to prompt user to increase the RAM size
-+to > 1537 MiB when less than 1537 MiB RAM is detected.
+-    fn(dest, base, tcg_env, desc);
++    /*
++     * Load/store multiple bytes per iteration.
++     * When possible do this atomically.
++     * Update vstart with the number of processed elements.
++     * Use the helper function if either:
++     * - vstart is not 0.
++     * - the target has 32 bit registers and we are loading/storing 64 bit long
++     *   elements. This is to ensure that we process every element with a single
++     *   memory instruction.
++     */
 +
- Boot options
- ------------
- 
--The ``microchip-icicle-kit`` machine can start using the standard -bios
--functionality for loading its BIOS image, aka Hart Software Services (HSS_).
--HSS loads the second stage bootloader U-Boot from an SD card. Then a kernel
--can be loaded from U-Boot. It also supports direct kernel booting via the
---kernel option along with the device tree blob via -dtb. When direct kernel
--boot is used, the OpenSBI fw_dynamic BIOS image is used to boot a payload
--like U-Boot or OS kernel directly.
--
--The user provided DTB should have the following requirements:
--
--* The /cpus node should contain at least one subnode for E51 and the number
--  of subnodes should match QEMU's ``-smp`` option
--* The /memory reg size should match QEMU’s selected ram_size via ``-m``
--* Should contain a node for the CLINT device with a compatible string
--  "riscv,clint0"
--
--QEMU follows below truth table to select which payload to execute:
--
--===== ========== ========== =======
---bios    -kernel       -dtb payload
--===== ========== ========== =======
--    N          N don't care     HSS
--    Y don't care don't care     HSS
--    N          Y          Y  kernel
--===== ========== ========== =======
--
--The memory is set to 1537 MiB by default which is the minimum required high
--memory size by HSS. A sanity check on ram size is performed in the machine
--init routine to prompt user to increase the RAM size to > 1537 MiB when less
--than 1537 MiB ram is detected.
--
--Running HSS
-------------
--
--HSS 2020.12 release is tested at the time of writing. To build an HSS image
--that can be booted by the ``microchip-icicle-kit`` machine, type the following
--in the HSS source tree:
--
--.. code-block:: bash
--
--  $ export CROSS_COMPILE=riscv64-linux-
--  $ cp boards/mpfs-icicle-kit-es/def_config .config
--  $ make BOARD=mpfs-icicle-kit-es
--
--Download the official SD card image released by Microchip and prepare it for
--QEMU usage:
--
--.. code-block:: bash
--
--  $ wget ftp://ftpsoc.microsemi.com/outgoing/core-image-minimal-dev-icicle-kit-es-sd-20201009141623.rootfs.wic.gz
--  $ gunzip core-image-minimal-dev-icicle-kit-es-sd-20201009141623.rootfs.wic.gz
--  $ qemu-img resize core-image-minimal-dev-icicle-kit-es-sd-20201009141623.rootfs.wic 4G
--
--Then we can boot the machine by:
--
--.. code-block:: bash
--
--  $ qemu-system-riscv64 -M microchip-icicle-kit -smp 5 \
--      -bios path/to/hss.bin -sd path/to/sdcard.img \
--      -nic user,model=cadence_gem \
--      -nic tap,ifname=tap,model=cadence_gem,script=no \
--      -display none -serial stdio \
--      -chardev socket,id=serial1,path=serial1.sock,server=on,wait=on \
--      -serial chardev:serial1
-+The ``microchip-icicle-kit`` machine provides some options to run a firmware
-+(BIOS) or a kernel image.  QEMU follows below truth table to select the
-+firmware:
- 
--With above command line, current terminal session will be used for the first
--serial port. Open another terminal window, and use ``minicom`` to connect the
--second serial port.
-+============= =========== ======================================
-+-bios          -kernel    firmware
-+============= =========== ======================================
-+none                    N this is an error
-+none                    Y the kernel image
-+NULL, default           N hss.bin
-+NULL, default           Y opensbi-riscv64-generic-fw_dynamic.bin
-+other          don't care the BIOS image
-+============= =========== ======================================
- 
--.. code-block:: bash
-+Direct Kernel Boot
-+------------------
- 
--  $ minicom -D unix\#serial1.sock
-+Use the ``-kernel`` option to directly run a kernel image.  When a direct
-+kernel boot is requested, a device tree blob may be specified via the ``-dtb``
-+option.  Unlike other QEMU machines, this machine does not generate a device
-+tree for the kernel.  It shall be provided by the user.  The user provided DTB
-+should meet the following requirements:
- 
--HSS output is on the first serial port (stdio) and U-Boot outputs on the
--second serial port. U-Boot will automatically load the Linux kernel from
--the SD card image.
-+* The ``/cpus`` node should contain at least one subnode for E51 and the number
-+  of subnodes should match QEMU's ``-smp`` option.
- 
--Direct Kernel Boot
--------------------
-+* The ``/memory`` reg size should match QEMU’s selected RAM size via the ``-m``
-+  option.
- 
--Sometimes we just want to test booting a new kernel, and transforming the
--kernel image to the format required by the HSS bootflow is tedious. We can
--use '-kernel' for direct kernel booting just like other RISC-V machines do.
-+* It should contain a node for the CLINT device with a compatible string
-+  "riscv,clint0".
- 
--In this mode, the OpenSBI fw_dynamic BIOS image for 'generic' platform is
--used to boot an S-mode payload like U-Boot or OS kernel directly.
-+When ``-bios`` is not specified or set to ``default``, the OpenSBI
-+``fw_dynamic`` BIOS image for the ``generic`` platform is used to boot an
-+S-mode payload like U-Boot or OS kernel directly.
- 
- For example, the following commands show building a U-Boot image from U-Boot
- mainline v2021.07 for the Microchip Icicle Kit board:
-@@ -146,4 +99,13 @@ CAVEATS:
-   ``u-boot.bin`` has to be used which does contain one. To use the ELF image,
-   we need to change to CONFIG_OF_EMBED or CONFIG_OF_PRIOR_STAGE.
- 
-+Running HSS
-+-----------
++    bool use_helper_fn = !(s->vstart_eq_zero) ||
++                          (TCG_TARGET_REG_BITS == 32 && log2_esz == 3);
 +
-+The machine ``microchip-icicle-kit`` used to run the Hart Software Services
-+(HSS_), however, the HSS development progressed and the QEMU machine
-+implementation lacks behind.  Currently, running the HSS no longer works.
-+There is missing support in the clock and memory controller devices.  In
-+particular, reading from the SD card does not work.
++    if (!use_helper_fn) {
++        TCGv addr = tcg_temp_new();
++        uint32_t size = s->cfg_ptr->vlenb * nf;
++        TCGv_i64 t8 = tcg_temp_new_i64();
++        TCGv_i32 t4 = tcg_temp_new_i32();
++        MemOp atomicity = MO_ATOM_NONE;
++        if (log2_esz == 0) {
++            atomicity = MO_ATOM_NONE;
++        } else {
++            atomicity = MO_ATOM_IFALIGN_PAIR;
++        }
++        if (TCG_TARGET_REG_BITS == 64) {
++            for (int i = 0; i < size; i += 8) {
++                addr = get_address(s, rs1, i);
++                if (is_load) {
++                    tcg_gen_qemu_ld_i64(t8, addr, s->mem_idx,
++                            MO_LE | MO_64 | atomicity);
++                    tcg_gen_st_i64(t8, tcg_env, vreg_ofs(s, vd) + i);
++                } else {
++                    tcg_gen_ld_i64(t8, tcg_env, vreg_ofs(s, vd) + i);
++                    tcg_gen_qemu_st_i64(t8, addr, s->mem_idx,
++                            MO_LE | MO_64 | atomicity);
++                }
++                if (i == size - 8) {
++                    tcg_gen_movi_tl(cpu_vstart, 0);
++                } else {
++                    tcg_gen_addi_tl(cpu_vstart, cpu_vstart, 8 >> log2_esz);
++                }
++            }
++        } else {
++            for (int i = 0; i < size; i += 4) {
++                addr = get_address(s, rs1, i);
++                if (is_load) {
++                    tcg_gen_qemu_ld_i32(t4, addr, s->mem_idx,
++                            MO_LE | MO_32 | atomicity);
++                    tcg_gen_st_i32(t4, tcg_env, vreg_ofs(s, vd) + i);
++                } else {
++                    tcg_gen_ld_i32(t4, tcg_env, vreg_ofs(s, vd) + i);
++                    tcg_gen_qemu_st_i32(t4, addr, s->mem_idx,
++                            MO_LE | MO_32 | atomicity);
++                }
++                if (i == size - 4) {
++                    tcg_gen_movi_tl(cpu_vstart, 0);
++                } else {
++                    tcg_gen_addi_tl(cpu_vstart, cpu_vstart, 4 >> log2_esz);
++                }
++            }
++        }
++    } else {
++        TCGv_ptr dest;
++        TCGv base;
++        TCGv_i32 desc;
++        uint32_t data = FIELD_DP32(0, VDATA, NF, nf);
++        data = FIELD_DP32(data, VDATA, VM, 1);
++        dest = tcg_temp_new_ptr();
++        desc = tcg_constant_i32(simd_desc(s->cfg_ptr->vlenb,
++                        s->cfg_ptr->vlenb, data));
++        base = get_gpr(s, rs1, EXT_NONE);
++        tcg_gen_addi_ptr(dest, tcg_env, vreg_ofs(s, vd));
++        fn(dest, base, tcg_env, desc);
++    }
+ 
+     finalize_rvv_inst(s);
+     return true;
+@@ -1362,42 +1423,42 @@ static bool ldst_whole_trans(uint32_t vd, uint32_t rs1, uint32_t nf,
+  * load and store whole register instructions ignore vtype and vl setting.
+  * Thus, we don't need to check vill bit. (Section 7.9)
+  */
+-#define GEN_LDST_WHOLE_TRANS(NAME, ARG_NF)                                \
+-static bool trans_##NAME(DisasContext *s, arg_##NAME * a)                 \
+-{                                                                         \
+-    if (require_rvv(s) &&                                                 \
+-        QEMU_IS_ALIGNED(a->rd, ARG_NF)) {                                 \
+-        return ldst_whole_trans(a->rd, a->rs1, ARG_NF,                    \
+-                                gen_helper_##NAME, s);                    \
+-    }                                                                     \
+-    return false;                                                         \
+-}
+-
+-GEN_LDST_WHOLE_TRANS(vl1re8_v,  1)
+-GEN_LDST_WHOLE_TRANS(vl1re16_v, 1)
+-GEN_LDST_WHOLE_TRANS(vl1re32_v, 1)
+-GEN_LDST_WHOLE_TRANS(vl1re64_v, 1)
+-GEN_LDST_WHOLE_TRANS(vl2re8_v,  2)
+-GEN_LDST_WHOLE_TRANS(vl2re16_v, 2)
+-GEN_LDST_WHOLE_TRANS(vl2re32_v, 2)
+-GEN_LDST_WHOLE_TRANS(vl2re64_v, 2)
+-GEN_LDST_WHOLE_TRANS(vl4re8_v,  4)
+-GEN_LDST_WHOLE_TRANS(vl4re16_v, 4)
+-GEN_LDST_WHOLE_TRANS(vl4re32_v, 4)
+-GEN_LDST_WHOLE_TRANS(vl4re64_v, 4)
+-GEN_LDST_WHOLE_TRANS(vl8re8_v,  8)
+-GEN_LDST_WHOLE_TRANS(vl8re16_v, 8)
+-GEN_LDST_WHOLE_TRANS(vl8re32_v, 8)
+-GEN_LDST_WHOLE_TRANS(vl8re64_v, 8)
++#define GEN_LDST_WHOLE_TRANS(NAME, ETYPE, ARG_NF, IS_LOAD)                  \
++static bool trans_##NAME(DisasContext *s, arg_##NAME * a)                   \
++{                                                                           \
++    if (require_rvv(s) &&                                                   \
++        QEMU_IS_ALIGNED(a->rd, ARG_NF)) {                                   \
++        return ldst_whole_trans(a->rd, a->rs1, ARG_NF, ctzl(sizeof(ETYPE)), \
++                                gen_helper_##NAME, s, IS_LOAD);             \
++    }                                                                       \
++    return false;                                                           \
++}
 +
- .. _HSS: https://github.com/polarfire-soc/hart-software-services
++GEN_LDST_WHOLE_TRANS(vl1re8_v,  int8_t,  1, true)
++GEN_LDST_WHOLE_TRANS(vl1re16_v, int16_t, 1, true)
++GEN_LDST_WHOLE_TRANS(vl1re32_v, int32_t, 1, true)
++GEN_LDST_WHOLE_TRANS(vl1re64_v, int64_t, 1, true)
++GEN_LDST_WHOLE_TRANS(vl2re8_v,  int8_t,  2, true)
++GEN_LDST_WHOLE_TRANS(vl2re16_v, int16_t, 2, true)
++GEN_LDST_WHOLE_TRANS(vl2re32_v, int32_t, 2, true)
++GEN_LDST_WHOLE_TRANS(vl2re64_v, int64_t, 2, true)
++GEN_LDST_WHOLE_TRANS(vl4re8_v,  int8_t,  4, true)
++GEN_LDST_WHOLE_TRANS(vl4re16_v, int16_t, 4, true)
++GEN_LDST_WHOLE_TRANS(vl4re32_v, int32_t, 4, true)
++GEN_LDST_WHOLE_TRANS(vl4re64_v, int64_t, 4, true)
++GEN_LDST_WHOLE_TRANS(vl8re8_v,  int8_t,  8, true)
++GEN_LDST_WHOLE_TRANS(vl8re16_v, int16_t, 8, true)
++GEN_LDST_WHOLE_TRANS(vl8re32_v, int32_t, 8, true)
++GEN_LDST_WHOLE_TRANS(vl8re64_v, int64_t, 8, true)
+ 
+ /*
+  * The vector whole register store instructions are encoded similar to
+  * unmasked unit-stride store of elements with EEW=8.
+  */
+-GEN_LDST_WHOLE_TRANS(vs1r_v, 1)
+-GEN_LDST_WHOLE_TRANS(vs2r_v, 2)
+-GEN_LDST_WHOLE_TRANS(vs4r_v, 4)
+-GEN_LDST_WHOLE_TRANS(vs8r_v, 8)
++GEN_LDST_WHOLE_TRANS(vs1r_v, int8_t, 1, false)
++GEN_LDST_WHOLE_TRANS(vs2r_v, int8_t, 2, false)
++GEN_LDST_WHOLE_TRANS(vs4r_v, int8_t, 4, false)
++GEN_LDST_WHOLE_TRANS(vs8r_v, int8_t, 8, false)
+ 
+ /*
+  *** Vector Integer Arithmetic Instructions
 -- 
 2.49.0
 
