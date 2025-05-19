@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4173ABB41B
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:31:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14EFBABB3D5
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:10:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uGs3t-0001F0-8B; Mon, 19 May 2025 00:25:13 -0400
+	id 1uGro7-0006q6-FX; Mon, 19 May 2025 00:08:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uGrni-0006Gh-Eg; Mon, 19 May 2025 00:08:30 -0400
+ id 1uGrno-0006Xa-B9; Mon, 19 May 2025 00:08:38 -0400
 Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uGrnd-0004DB-K7; Mon, 19 May 2025 00:08:27 -0400
+ id 1uGrni-0004DS-Jk; Mon, 19 May 2025 00:08:33 -0400
 Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-231e21d3b63so30950045ad.3; 
- Sun, 18 May 2025 21:08:24 -0700 (PDT)
+ d9443c01a7336-22e033a3a07so38419055ad.0; 
+ Sun, 18 May 2025 21:08:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747627703; x=1748232503; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1747627707; x=1748232507; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9koq1jI9PnAy2EBT0cXlCZka3dT6wobo2uoSTfd5KCo=;
- b=nfaZntbmyZOkTlrKRmk8BDTwYDARe1ZPTpJ/Qsgz3bRgDA+eZ7APbur8AYZYWpyYFP
- oIE3gQPsbCPs+9yEUu/xWjAwDpmggo7DtrfkwkQD+dhCVGQ/VRgIf/z/3LDMvTuRMoIy
- QcfuJaBQu0Z43zMDbAlJfnOGbGPIaiE16vD6H898QQrdQvDZ88K/mjOEE59DmfbBbZbC
- 4bNr6gdziywjulAdAWENL+jIejwZS4HOWBpXEtNkHW09XcuGu25DHrpSUeKRISr1wC1o
- oeAdlN3vDtQPi788J+9ZHJPLDw0ZO6rSvh+QTJ+IjmfMfr6ca3Yq7fzZje/zNlfVbP8y
- qB+w==
+ bh=FdzxLn5+6FGynVzbWgDSqtDZ68g9RcZFD6alFggjkaI=;
+ b=LLI/Oib5bdN8VgxCdwRD7ObZSLBJGdnkdQzbZDzo1rbqnxHVuf+orEHykn4ZYSvXRw
+ 4lgavs1rp957obzRtPvdFNe/H6DZyx4evqTrhHVwU9YY0GT2f/b96aZpkIeLGnipF3yx
+ XbZPULtFOzTyi58EM4qtfYCx5088cx2kskUWZImhOh3yWlkXaXZ7HzABE4hEC0BKUbCi
+ AmxJfY1w9IoeXf9AQrz+l1h/DkKYSwUcKWadMxVn4zuDAaNKViGO9vEEkGmJDRF/WWg2
+ 2eQRCyq1/WsLmmvP1mt6O1EreoOEYnyeXdct/ynY8mtEVwEhTm+Aq9rqauC9vNX8KdJc
+ MZUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747627703; x=1748232503;
+ d=1e100.net; s=20230601; t=1747627707; x=1748232507;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9koq1jI9PnAy2EBT0cXlCZka3dT6wobo2uoSTfd5KCo=;
- b=tVjMWVE9kayYKwhnswtmJQ8iwB64r8VR3fmfjf7Xj/4Oq2a11Q0GX2JipDJATP/lLo
- i8TY50HJ+W4fdenPwlIAhA43HjkAr9wA4cUOCwOap3LLLdrlpTgsfkJjktVqxJg6SBNc
- OxvUkvmPcScnRaowqPgKycgmiH4FvDNQpvhu9FJPy/Tud9jgPfmMEMFu1q1pYmXWHDi7
- 6+BUoIX09VFgH0KVWQHQJxD1u73QxI/aHWxQs9Z6G0HqQO3XzTa594KttF35jgSUxpxm
- EjXUYAGMOnDOvQlw2q2DMhtk9XRQFqJKQ+TmQmHzRaBs+aPYk9Jz8lzyh7v4l1lG62Wp
- /S0w==
+ bh=FdzxLn5+6FGynVzbWgDSqtDZ68g9RcZFD6alFggjkaI=;
+ b=wr+R5c5hQfSeKXMatCMCgErQ7YphESyQRwdGW40D+iRnQ/LOz87xdbSbkRZlOm6WzC
+ p95tfNqZR3txFnw0QTcRFeIvvgeJkwhq2sSTXp37EIbWnU4Kkb6taVGq5GAn3ebLKxe1
+ VqsSpR+xh/soTST+5k81kkmBkFzq6LrOiSOBDB8uClUC0NuEJ2gXf0lBLWG6S0KLy6BS
+ BaGaZ0BCdh930tdbBT0oiUm9JJAfUFzmfHRX1wIBi/URBt5Txd6KTevExxzqiJnrPNUR
+ aVsUsXrHH1CyRSLBocLS2Ftdsw82hfw5fq6sFd91vJPB7IL91ymrCMt2q9YR8N+NeC7b
+ HGmQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVagHVXUAq1kWwe/Jtwtp+dFyajzg8lg1M4Rh42pn+mLlMQd65pvVKLHaKHJY5XpT681hB1pEm2RC5X6g==@nongnu.org
-X-Gm-Message-State: AOJu0Yx1djY0yhVBfw24jx05q1K4la0DSGZSwemSFZVw2I6njinwzbmO
- 9T6M6KayXSVZqZ7w+V1vFDfplejGjXHeOzc69IQ+vAaHqIUBO/msxazia3yo3w==
-X-Gm-Gg: ASbGnctpN61E5UdXxI1DukB/JR4ZAMq9BJ0pu5h7VhGRtSFLLfUbodcNxooWyHCmJsb
- b8fXk/YkKv0ZkjLlODLYots9ZR6SMSZxehdFepKe5ewxG4XyppjiesbtyKkv421q4y1eutH3DBp
- xJCUzz/NcX6yTmzNlsylbQMRVuuCC7aaaIhYVoD1fLoxEMXVf7BEOKmW4VamwtmKLZHCDc4WtJa
- TLs+iGD7e6QPxcItrqzGumiJcU8xbtoHZuC5QOd9S5msxbso+4lVxd9zCkpUBgvBgir0k5qY20o
- 4hUJFnTqJt0fCgYerZ0fMQWB7IvHYkakeLS72Y6GD11CPgZOFzZsf9H7HJzhkBzAwhuciitTrdI
- JR8LZebiScQonMlDFermMr9c4jFDstfszv+lTEBvRPHaCC8BH+GKTEfm+
-X-Google-Smtp-Source: AGHT+IGQzDuqoYoqziXn+uoLqLMvemwGRerpgCGtxtUxNV9ibEMMTtC83+1CeVK8T9+nwwDyY1VkeQ==
-X-Received: by 2002:a17:902:d486:b0:224:1609:a74a with SMTP id
- d9443c01a7336-231de3ae59amr154737275ad.34.1747627703298; 
- Sun, 18 May 2025 21:08:23 -0700 (PDT)
+ AJvYcCUOb21IccD3plp3MwFXobQMbP3lneacfUTeMZZWGwTIogzT2zAT1Wg3jwmmJdB+P8ZGY8Lq3KdcU8tL4w==@nongnu.org
+X-Gm-Message-State: AOJu0YzHZH364pNdHUGbDkiMUPJNI9OqB0kCrx3SAcyRmo7O/oLAU5qY
+ /FhO0SgpHvqJR+zQjk9wemitbPTBi3sX8I7v6yF0UKhyiBpARpoc/CL5ViS4cw==
+X-Gm-Gg: ASbGncs8YZAms9CZ069FF+c4qQbPG6W/IQuC8qGOKDfo7Kpwrpfc6mio7WU95hB3hjX
+ ZQm3KQVDZhQPyU3UjsmAZxRyTPKgqgPbSYddBrk1DPpcJusD3uXffCf/78n+p5SyPax1avv9eVp
+ 81mGApVOo+Kwd+3X4HV5sPkkbJNYzcbrVmOKsbvaCEXzGDCB/BYsMHndOQIkRhKq9ZkAO8ZLIoo
+ JoiODGCHkVroKqeNvPBh721jTV5Lx6Hm9h9o0WjOKKyrNfbwlwoMCuNo90KwKRXcVPJO6IUN7Gj
+ GDENGMtCMlBv3ErdVCgPcbuzZJwim8VUJuhayiS7AfCRQO4fZGBzY9jvNLnWQkNKQwUZNnRGuYs
+ InnvbkZf5xswiphyoJZngVDYfNBmcOWyZI5fhzjk+rBkG+DAiOyuDlKxQ
+X-Google-Smtp-Source: AGHT+IFaAlYUR5VNUmtFEh6kGKZI3OCvKaKoY3ZariiuzuagzlwsC0kwigdDBoBEBZL7y65leV5Z+g==
+X-Received: by 2002:a17:903:1a08:b0:224:1d1c:8837 with SMTP id
+ d9443c01a7336-231d451214emr169231565ad.19.1747627706904; 
+ Sun, 18 May 2025 21:08:26 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.08.19
+ d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.08.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 May 2025 21:08:22 -0700 (PDT)
+ Sun, 18 May 2025 21:08:26 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
@@ -71,10 +71,10 @@ Cc: alistair23@gmail.com, Max Chou <max.chou@sifive.com>,
  Anton Blanchard <antonb@tenstorrent.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>, qemu-stable@nongnu.org
-Subject: [PULL 24/56] target/riscv: rvv: Apply vext_check_input_eew to
- OPIVV/OPFVV(vext_check_sss) instructions
-Date: Mon, 19 May 2025 14:05:21 +1000
-Message-ID: <20250519040555.3797167-25-alistair.francis@wdc.com>
+Subject: [PULL 25/56] target/riscv: rvv: Apply vext_check_input_eew to vector
+ slide instructions(OPIVI/OPIVX)
+Date: Mon, 19 May 2025 14:05:22 +1000
+Message-ID: <20250519040555.3797167-26-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250519040555.3797167-1-alistair.francis@wdc.com>
 References: <20250519040555.3797167-1-alistair.francis@wdc.com>
@@ -112,25 +112,28 @@ Handle the overlap of source registers with different EEWs.
 Co-authored-by: Anton Blanchard <antonb@tenstorrent.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Signed-off-by: Max Chou <max.chou@sifive.com>
-Message-ID: <20250408103938.3623486-6-max.chou@sifive.com>
+Message-ID: <20250408103938.3623486-7-max.chou@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 Cc: qemu-stable@nongnu.org
 ---
- target/riscv/insn_trans/trans_rvv.c.inc | 1 +
- 1 file changed, 1 insertion(+)
+ target/riscv/insn_trans/trans_rvv.c.inc | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
-index b1e1db04a0..5de50422c9 100644
+index 5de50422c9..841692701c 100644
 --- a/target/riscv/insn_trans/trans_rvv.c.inc
 +++ b/target/riscv/insn_trans/trans_rvv.c.inc
-@@ -432,6 +432,7 @@ static bool vext_check_ss(DisasContext *s, int vd, int vs, int vm)
- static bool vext_check_sss(DisasContext *s, int vd, int vs1, int vs2, int vm)
+@@ -638,7 +638,9 @@ static bool vext_check_slide(DisasContext *s, int vd, int vs2,
  {
-     return vext_check_ss(s, vd, vs2, vm) &&
-+           vext_check_input_eew(s, vs1, s->sew, vs2, s->sew, vm) &&
-            require_align(vs1, s->lmul);
- }
- 
+     bool ret = require_align(vs2, s->lmul) &&
+                require_align(vd, s->lmul) &&
+-               require_vm(vm, vd);
++               require_vm(vm, vd) &&
++               vext_check_input_eew(s, -1, 0, vs2, s->sew, vm);
++
+     if (is_over) {
+         ret &= (vd != vs2);
+     }
 -- 
 2.49.0
 
