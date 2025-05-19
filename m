@@ -2,96 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D30E0ABBF81
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 15:45:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1131CABBFDE
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 15:53:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uH0md-0003rq-B9; Mon, 19 May 2025 09:43:59 -0400
+	id 1uH0uA-0007dl-V2; Mon, 19 May 2025 09:51:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uH0mZ-0003rT-OK
- for qemu-devel@nongnu.org; Mon, 19 May 2025 09:43:56 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1uH0u8-0007dI-6E
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 09:51:44 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uH0mX-0008Eu-LT
- for qemu-devel@nongnu.org; Mon, 19 May 2025 09:43:55 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-43cfe63c592so48162215e9.2
- for <qemu-devel@nongnu.org>; Mon, 19 May 2025 06:43:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1uH0u6-0000f0-6T
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 09:51:43 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-3a36e0d22c1so838626f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 19 May 2025 06:51:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747662232; x=1748267032; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=FUsMvD80xK+nS9HXFI6AMDnlF2I0EExExItaMAeW2J0=;
- b=nKxvhZCyXg0TduGSWMLVUQIPlJ8nLzARTH/YDcZv+lia50f9Xp5qYiIVZjNbWALwb6
- +YaxrZ7d3+cHtwswJFpEq4Bi0Z/lzHn6h2PK+pSStpXSSL+MVPD51/KH+BTSC6r3rUgw
- B7IC+ULuhv8GQ8hFzJjMd1f5pn7XuTaxpmPIGCRO88RchPu5bVRqamlTWPKazCBtuoYJ
- W81KY/bA6dgn6NQqZXTO6Ao2+/1G/T5mIkOZdj08Yg7G/7w7OTp54Nx3dZ3mhfYyVna9
- lUbga91dMWd61Xnw+T3998PslaqZlWGYBffnDc0qXq1s7dzwRczIM0r424YXqnFTJZl2
- 5dVg==
+ d=linaro.org; s=google; t=1747662700; x=1748267500; darn=nongnu.org;
+ h=mime-version:message-id:in-reply-to:references:user-agent:subject
+ :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=TaQ2adZzLMqgAPfaB0k5L5diWXv6nP9Kg5y/xe9TS+U=;
+ b=sfyn0KYIfx/Fr+1mlDsRH3PLdmTAfo2cj9F1CGQCyKQDlRlebADYMxqZQkCOUvcw5p
+ NVdDuBZo1GYxEkLzlAFpQBpl6GfyNndSiQ4Mrigu6Td5yt/rYBd/xMNyvpDccxEg0iEZ
+ jzTMSR7UlrC3CpWwobmmG/m6ou8XeRVZhqBqVVa0V6gTx445ejNTDj1c6NKHxpDJlgyx
+ zqy9sgkTYpXrdOd96uPxVRfpOS2ifcGxsXZzoFhmCRQE7WCWCfGhgSsbZoJs/SY5y4wg
+ gg+XTRY/LOuFA9bnFenuI4dDdwO5d1P376RHJBNqpcpLP4gXAcyqNK7GsZCq5zETPEhi
+ o7Bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747662232; x=1748267032;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=FUsMvD80xK+nS9HXFI6AMDnlF2I0EExExItaMAeW2J0=;
- b=BANjT30UcJOH9XP3JpV2Na+2D1Sg+Z6uf6ja69/nI8wn0x7hyOwPAGwltXcO3xSS8X
- zoBKP+6lQ2HrRTp44XLbQo6Jhama0YETo6l97fLil8K47we1hTT1ZzPAYMybhd661uVd
- 6EEEMvTAF+R63w9FLrVI0heGhgTS/J8OIgYhL8TTus2CRP8kUv8JxjSfyiUBcHRH0OZA
- zJsGEic1IjWbSO0M3CgVNVJw6Z6CzXG4DwvPoNs/IKcKMGZAGRXQyNq8Kh8bAMzwPm0Q
- 6+GPDt7u17VNRzpBSqjgHFZnl7T4JrEE7EeFDBREkcS6MNUwtdCjJdn9YDBgELG1krZy
- pbDw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUXMzB9v5vBr3PR2SljwjY86Y2HTz9+YDpIHwRL9U2Lfr2Wmm0SUQFTv1pC51X5HIYoRRtRBnIwAYkK@nongnu.org
-X-Gm-Message-State: AOJu0YyUq+unby6jQQ0g12uuWxMqmF6TTKfnBkirBTjnHztasIOCjftF
- 4PQtpTTI2qiPuCkNsbwnRTJKV6j80FgiOZFyXdBMUCGLbF4Vgm2MFAsK+y1PiagEugg=
-X-Gm-Gg: ASbGncvqWuzCSqdainqvfKPofnohD9twoHU0VXPlQjL+7mIuB+FGwGsbt3oi1l1jFGz
- hgGTtNc4FBea4TmDdb6OxCRL2nnIIjvPZODQyWFp7eTePUfzTiUEz114sLPOBSUZdTf8j4U4/hB
- 2s633rTjNEoY9FZXJF0u5VMl5CPmEnfQXz08CxDJPDIDE9yai1XzX9pTG7GU3mW+Df77TNMjy/+
- vMYJuRs8ONACxoX17H3WPfwwSjKNJdZDOm8OqnOCf3K5br3gElwtkFEnWwj2QOqLed2gZbrQLpm
- IOYc1DJnCG1gkj7B9dhWmqsGF3VFT0LnLNl/IXA3Q4YwGORKUCqPhRD93aoHHVc=
-X-Google-Smtp-Source: AGHT+IG9a5xIbrF/8C3XPiSGaVUrIEXxWv/9n7owfrLWTF7xS3ymA3qKRcET3TUf0m5Hxzb/hSRtBQ==
-X-Received: by 2002:a05:600c:3c9b:b0:439:643a:c8d5 with SMTP id
- 5b1f17b1804b1-442fd5a1e4cmr122511665e9.0.1747662231907; 
- Mon, 19 May 2025 06:43:51 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442fd594707sm143333805e9.33.2025.05.19.06.43.50
+ d=1e100.net; s=20230601; t=1747662700; x=1748267500;
+ h=mime-version:message-id:in-reply-to:references:user-agent:subject
+ :cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=TaQ2adZzLMqgAPfaB0k5L5diWXv6nP9Kg5y/xe9TS+U=;
+ b=fdh9oWASB3vv39I09UYxNkNQBo+49zBtOpmhP4kaDWG30wO4BEzbt29CJp56PEU9B7
+ Cc/fudEGb4NMWD2NdylkqX6eG1D90JdMchq8oXuZVcD/Zzqylaoyd13bUejexuEknTNZ
+ frBIX1QC6Ad+zZ4ps588GojQjIWMjmPqDuGpuVCM5O0Sx8viNPHFoGkZgzStjlEH++CY
+ S1mdKBrWDpndUg4l0m2pMxe1Ov4HyoJgIqr/eLoqASQevMztuogDGm6yVe+Z1qTFd+Y/
+ uErfrKFI9aren8Vrja215rKey7FE/M6shdP28WXPv2XdWHZzMpzqMuKryFK0fx63Q6HY
+ ibrg==
+X-Gm-Message-State: AOJu0YxLJq1CTKknFKwEKIwZ9Pvh7RF+DnPyoLNhbzucGeuMOQTi+K/s
+ U+1nyhsggna6KCZlOe4dWWuYR8nXRYU1ugvXGBoxz8W4IAQyjOS3tbnOatjiFS5LAPQ=
+X-Gm-Gg: ASbGncvs4aCCiYEtb/em2Z+SNN02XYyqdzSaD8rTDVMI0FeOXdeBXOM2GCPU9vMyPiI
+ fUuDPCEugoYiad5u6kcNp/rqAjd/d8g5jHFHWwzON7DB4MHIVrwhOCcdizRIUUYOdViCqiWvSLw
+ gZn80vkkbTm55LQ1i5g5QwsuBNrqOkwum7extBoXaoaSYrKsSiR9QzwQDoAYXur9CkTxVtpqG7P
+ FC1fochFM88+FF3QcGRjq8erDRkxMvVr8B+wXivEtNppy3dZqrmRQfC+fYblxZSqsAXV/3DgdVC
+ 6BTRrE45UeekPhA8HG574v4/THB29iFRSKIeNnpkc8vMjUnHrhEd9MRv9J+0FojvuvO5ZSRm7/X
+ TzXWn6CiYAPM9BaKD0+1wTtpEGPLHIi6Q
+X-Google-Smtp-Source: AGHT+IHixjDlIaKX/rNTF9kdy/MW6o3IrRMxcjXy05kThsN7g3LFSK+Cmf4i91fIl7g1trLbcaJRCg==
+X-Received: by 2002:a05:6000:40e0:b0:3a0:b733:f264 with SMTP id
+ ffacd0b85a97d-3a35fe5ba7amr10520197f8f.11.1747662699884; 
+ Mon, 19 May 2025 06:51:39 -0700 (PDT)
+Received: from meli-email.org (adsl-99.109.242.93.tellas.gr. [109.242.93.99])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-442f9053b4dsm168254925e9.4.2025.05.19.06.51.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 May 2025 06:43:50 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id A51D75F87C;
- Mon, 19 May 2025 14:43:49 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Gustavo Romero <gustavo.romero@linaro.org>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org,
- thuth@redhat.com,  berrange@redhat.com,  eric.auger@redhat.com,
- peter.maydell@linaro.org,  qemu-arm@nongnu.org
-Subject: Re: [PATCH v4] tests/functional: Add PCI hotplug test for aarch64
-In-Reply-To: <85f13ff0-80c5-4a62-8b33-ff35911866a5@linaro.org> (Gustavo
- Romero's message of "Sun, 18 May 2025 10:26:21 +0100")
-References: <20250512144629.182340-1-gustavo.romero@linaro.org>
- <002caade-699e-4128-ac08-7797b83b3cc8@linaro.org>
- <85f13ff0-80c5-4a62-8b33-ff35911866a5@linaro.org>
-User-Agent: mu4e 1.12.11; emacs 30.1
-Date: Mon, 19 May 2025 14:43:49 +0100
-Message-ID: <878qmssokq.fsf@draig.linaro.org>
+ Mon, 19 May 2025 06:51:39 -0700 (PDT)
+Date: Mon, 19 May 2025 16:45:21 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: Alex Benn=?UTF-8?B?w6k=?=e <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>
+Subject: Re: [PATCH] gdbstub: update aarch64-core.xml
+User-Agent: meli/0.8.12
+References: <20250519-gdbstub-aarch64-pstate-xml-v1-1-b4dbe87fe7c6@linaro.org>
+ <87msb8sqts.fsf@draig.linaro.org>
+In-Reply-To: <87msb8sqts.fsf@draig.linaro.org>
+Message-ID: <swih62.nwehumxno4zp@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x42f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, CTE_8BIT_MISMATCH=0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,51 +98,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Gustavo Romero <gustavo.romero@linaro.org> writes:
-
-> Hi Phil,
+On Mon, 19 May 2025 15:55, Alex Bennée <alex.bennee@linaro.org> wrote:
+>Manos Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
 >
-> On 5/16/25 15:47, Philippe Mathieu-Daud=C3=A9 wrote:
->> On 12/5/25 16:45, Gustavo Romero wrote:
->>> Add a functional test, aarch64_hotplug_pci, to exercise PCI hotplug and
->>> hot-unplug on arm64.
->>>
->>> Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
->>> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
->>> ---
->>> =C2=A0 MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=
-=C2=A0 5 ++
->>> =C2=A0 tests/functional/meson.build=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 1 +
->>> =C2=A0 tests/functional/test_aarch64_hotplug_pci.py | 74 ++++++++++++++=
-++++++
->>> =C2=A0 3 files changed, 80 insertions(+)
->>> =C2=A0 create mode 100755 tests/functional/test_aarch64_hotplug_pci.py
->>>
->>> diff --git a/MAINTAINERS b/MAINTAINERS
->>> index 23174b4ca7..9ebb768214 100644
->>> --- a/MAINTAINERS
->>> +++ b/MAINTAINERS
->>> @@ -2065,6 +2065,11 @@ S: Supported
->>> =C2=A0 F: include/hw/pci/pcie_doe.h
->>> =C2=A0 F: hw/pci/pcie_doe.c
->>> +ARM PCI Hotplug
->>> +M: Gustavo Romero <gustavo.romero@linaro.org>
->> As mentioned in v2, since this might interest ARM contributors:
->>  =C2=A0=C2=A0 L: qemu-arm@nongnu.org
+>> Update aarch64-core.xml to include field definitions for PSTATE, which
+>> in gdb is modelled in the cpsr (current program status register)
+>> pseudo-register, named after the actual cpsr register in armv7.
+>>
+>> Defining the fields layout of the register allows easy inspection of for
+>> example, the current exception level (EL):
+>>
+>> For example. Before booting a Linux guest, EL=2, but after booting and
+>> Ctrl-C'ing in gdb, we get EL=0:
+>>
+>>   (gdb) info registers $cpsr
+>>   cpsr           0x20402009          [ SP EL=2 BTYPE=0 PAN C ]
+>>   (gdb) cont
+>>   Continuing.
+>>   ^C
+>>   Thread 2 received signal SIGINT, Interrupt.
+>>   0x0000ffffaaff286c in ?? ()
+>>   (gdb) info registers $cpsr
+>>   cpsr           0x20001000          [ EL=0 BTYPE=0 SSBS C ]
+>>
+>> The aarch64-core.xml has been updated to match exactly the version
+>> retrieved from upstream gdb, retrieved in 2025-05-19 from HEAD commit
+>> 9f4dc0b137c86f6ff2098cb1ab69442c69d6023d.
+>>
+>> https://sourceware.org/git/?p=binutils-gdb.git;a=tree;h=9f4dc0b137c86f6ff2098cb1ab69442c69d6023d
+>>
+>> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 >
-> I thought you're saying "include qemu-arm@nongnu.org" when sending the
-> patch, not "add the email into a L: section in the MAINTAINERS".
+>Queued to gdbstub/next, thanks.
 >
-> The test is now queued in Alex's branch. What's best: send a patch
-> now; or wait for it to land in the master branch and then send the
-> patch?
 
-I've fixed it up.
+Would patches for the field system registers (NZCV, CurrentEL, DAIF, 
+SPSel) be acceptable?
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+If yes, I think defining them in the static core xml is cleaner than 
+generating them dynamically in "system-registers.xml" like we do with 
+arm_gen_dynamic_sysreg_feature() but both can work. The drawback would 
+be that we wouldn't match upstream gdb's core xml schema anymore. (Maybe 
+we  can add a new xml include "pstate.xml" instead)
 
