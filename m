@@ -2,57 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76435ABC51E
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 19:03:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 237B6ABC518
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 19:03:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uH3rs-0007CH-MQ; Mon, 19 May 2025 13:01:36 -0400
+	id 1uH3rp-00079w-2G; Mon, 19 May 2025 13:01:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uH3rR-00078A-1V
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uH3rS-00078D-Hm
  for qemu-devel@nongnu.org; Mon, 19 May 2025 13:01:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uH3rM-0000BS-HJ
- for qemu-devel@nongnu.org; Mon, 19 May 2025 13:01:08 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uH3rN-0000DP-Vr
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 13:01:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747674062;
+ s=mimecast20190719; t=1747674065;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=8Y8s6xJOFgaAAAbJybJ92bajG6M6RwI9LbyP6JKPK4I=;
- b=IGOyRV5VgjzoCsjs3mRKWu5f7AcwFE7YqYtxPSD4POGo+8cKXD6H+N4aDfimhkaQOqdT9S
- Whcd6YGVkgMlkufl9kUtNqAD5ut7i36skA3t2xrNoap3e3H8wLh13En4UymV/MHFlCexlt
- l5ZpZNNOuRZpiQQorvS8Ehd6ZvXmXio=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jPRU8El0TvAdjD+sXu4gHgBVG1p6BhnFnrUSgwwyZ9o=;
+ b=jBfj0PcDt13FqOY6acJRqFVOhzSaXzButNzkd4f8epHp0yha9CoVuYVx6CjTG7x5tdVwJm
+ O2+Lkqk5kxnsNoY+EMwIaWpBEdRmg8+HQ0DYvPqqAU3KZ9SiC1/Vllp6rVfHQkgLjHQUFR
+ cJAje/oFsaiOWgJK398mT0bnNxPOucM=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-52-ck3Lks3LPd-Ce0h2YvXopQ-1; Mon,
- 19 May 2025 13:01:00 -0400
-X-MC-Unique: ck3Lks3LPd-Ce0h2YvXopQ-1
-X-Mimecast-MFC-AGG-ID: ck3Lks3LPd-Ce0h2YvXopQ_1747674059
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-230-kh0EbRw7OYygYkXF9Lk4aQ-1; Mon,
+ 19 May 2025 13:01:02 -0400
+X-MC-Unique: kh0EbRw7OYygYkXF9Lk4aQ-1
+X-Mimecast-MFC-AGG-ID: kh0EbRw7OYygYkXF9Lk4aQ_1747674061
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 9114B19560A3; Mon, 19 May 2025 17:00:59 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0940A180045B; Mon, 19 May 2025 17:01:01 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.89.235])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A2FD31956095; Mon, 19 May 2025 17:00:57 +0000 (UTC)
+ id B86FC1956095; Mon, 19 May 2025 17:00:59 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Cleber Rosa <crosa@redhat.com>, Michael Roth <michael.roth@amd.com>,
  John Snow <jsnow@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 0/6] Python patches
-Date: Mon, 19 May 2025 13:00:49 -0400
-Message-ID: <20250519170055.3693275-1-jsnow@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PULL 1/6] qapi: Add some pylint ignores
+Date: Mon, 19 May 2025 13:00:50 -0400
+Message-ID: <20250519170055.3693275-2-jsnow@redhat.com>
+In-Reply-To: <20250519170055.3693275-1-jsnow@redhat.com>
+References: <20250519170055.3693275-1-jsnow@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -79,63 +81,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 757a34115e7491744a63dfc3d291fd1de5297ee2=
-:=0D
-=0D
-  Merge tag 'pull-nvme-20250515' of https://gitlab.com/birkelund/qemu into =
-staging (2025-05-15 13:42:27 -0400)=0D
-=0D
-are available in the Git repository at:=0D
-=0D
-  https://gitlab.com/jsnow/qemu.git tags/python-pull-request=0D
-=0D
-for you to fetch changes up to 818060c02a53df4b27bc86cbac3a26009996b6a4:=0D
-=0D
-  qapi: delete un-needed python static analysis configs (2025-05-19 12:44:0=
-1 -0400)=0D
-=0D
-----------------------------------------------------------------=0D
-Python PR=0D
-=0D
-Add scripts/qapi and docs/sphinx/*qapi* to the Python static analysis check=
-s=0D
-=0D
-----------------------------------------------------------------=0D
-=0D
-John Snow (5):=0D
-  qapi: Add some pylint ignores=0D
-  docs/qapidoc: linting fixes=0D
-  python: update missing dependencies from minreqs=0D
-  python: add qapi static analysis tests=0D
-  qapi: delete un-needed python static analysis configs=0D
-=0D
-Markus Armbruster (1):=0D
-  python: Drop redundant warn_unused_configs =3D True=0D
-=0D
- docs/sphinx/qapi_domain.py  | 25 ++++++++++++++-----------=0D
- docs/sphinx/qapidoc.py      |  5 +++--=0D
- python/setup.cfg            |  2 +-=0D
- python/tests/minreqs.txt    | 25 +++++++++++++++++++++++++=0D
- python/tests/qapi-flake8.sh |  4 ++++=0D
- python/tests/qapi-isort.sh  |  6 ++++++=0D
- python/tests/qapi-mypy.sh   |  2 ++=0D
- python/tests/qapi-pylint.sh |  6 ++++++=0D
- scripts/qapi/.flake8        |  3 ---=0D
- scripts/qapi/.isort.cfg     |  7 -------=0D
- scripts/qapi/backend.py     |  2 ++=0D
- scripts/qapi/mypy.ini       |  4 ----=0D
- scripts/qapi/pylintrc       |  1 +=0D
- 13 files changed, 64 insertions(+), 28 deletions(-)=0D
- create mode 100755 python/tests/qapi-flake8.sh=0D
- create mode 100755 python/tests/qapi-isort.sh=0D
- create mode 100755 python/tests/qapi-mypy.sh=0D
- create mode 100755 python/tests/qapi-pylint.sh=0D
- delete mode 100644 scripts/qapi/.flake8=0D
- delete mode 100644 scripts/qapi/.isort.cfg=0D
- delete mode 100644 scripts/qapi/mypy.ini=0D
-=0D
--- =0D
-2.48.1=0D
-=0D
+This restores the linting baseline in QAPI.
+
+Signed-off-by: John Snow <jsnow@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Message-id: 20250512193357.3388514-2-jsnow@redhat.com
+Signed-off-by: John Snow <jsnow@redhat.com>
+---
+ scripts/qapi/backend.py | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/scripts/qapi/backend.py b/scripts/qapi/backend.py
+index 14e60aa67af..49ae6ecdd33 100644
+--- a/scripts/qapi/backend.py
++++ b/scripts/qapi/backend.py
+@@ -13,6 +13,7 @@
+ 
+ 
+ class QAPIBackend(ABC):
++    # pylint: disable=too-few-public-methods
+ 
+     @abstractmethod
+     def generate(self,
+@@ -36,6 +37,7 @@ def generate(self,
+ 
+ 
+ class QAPICBackend(QAPIBackend):
++    # pylint: disable=too-few-public-methods
+ 
+     def generate(self,
+                  schema: QAPISchema,
+-- 
+2.48.1
 
 
