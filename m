@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D2C1ABC833
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 22:13:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13A35ABC8FC
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 23:18:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uH6qa-0000tS-TE; Mon, 19 May 2025 16:12:28 -0400
+	id 1uH7qe-0007uI-3X; Mon, 19 May 2025 17:16:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uH6qQ-0000sh-QN
- for qemu-devel@nongnu.org; Mon, 19 May 2025 16:12:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uH6qP-00066f-4m
- for qemu-devel@nongnu.org; Mon, 19 May 2025 16:12:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747685536;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=+viDVsoJDAluJaTzG7+kRmPT6NrnYkIBphDAt0jVpyQ=;
- b=O5qRh0yFSvNKS/8aIuMe76kVpOEdw0bJbIZRimfUuTPWLtXNMjV/L/f/fywk7QgYmJmEW8
- XSabP0K0oQYZJkZtFQ4yUYCaIhi4pHsAIKRkJ1rRQjrdp5qStbJ7r1SrQbvnO9Rpsq149J
- WHLlwwXCH8iyp36/8ke5E7eFtq43Sxw=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-610-iTu1q1b-NvSQ1y10GD6YPQ-1; Mon,
- 19 May 2025 16:12:13 -0400
-X-MC-Unique: iTu1q1b-NvSQ1y10GD6YPQ-1
-X-Mimecast-MFC-AGG-ID: iTu1q1b-NvSQ1y10GD6YPQ_1747685532
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C543E180035C; Mon, 19 May 2025 20:12:11 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.201])
- by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6EEB218003FC; Mon, 19 May 2025 20:12:09 +0000 (UTC)
-Date: Mon, 19 May 2025 15:12:06 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Nir Soffer <nirsof@gmail.com>
-Cc: qemu-devel@nongnu.org, 
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Richard Jones <rjones@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>, 
- qemu-block@nongnu.org
-Subject: Re: [PATCH v4 0/3] nbd: Increase unix socket buffer size
-Message-ID: <5udsw4sg2avldgtdpisiu6arrg7t6el7kbiz4a7xgwiqs5g7e4@qhmkaa4oldbx>
-References: <20250517201154.88456-1-nirsof@gmail.com>
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1uH7qc-0007u6-1n
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 17:16:34 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1uH7qa-00050a-7Y
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 17:16:33 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-231e011edfaso37886465ad.0
+ for <qemu-devel@nongnu.org>; Mon, 19 May 2025 14:16:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1747689390; x=1748294190; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=104EC20XdaLBJzQFWGmFNCvPEA0lzfVozLjB3hPd8VA=;
+ b=MeM0s6T+KZtu0FXc4Z9BImH1cbBtz8RKEhX/4XWi2o7zZKtxJSU0ts6FeaFIsaUCkR
+ qC+rVU5x46NZRnq3Jjdvi2tOwwsiQzLTf691DZt5ZY1h5OE+G3j+FFDL9Fewefdarw12
+ aZSLNMZ5xqkqTYTCyVcPtc978M+m4/y1DD9KFx6LsPrtI7Nx5jT1YG9jIOuHUnavJsJv
+ qTjJq9rz9DlzJZ566QlSQUMkoZJsuxCnVlxLwHHAlsWZh8POrqJGBlfkTHuxAqF+XE1u
+ 1Jczd0GpF2QkWRsRLDWpQphs6cWDjGxaAlS/M2xGWgcN379mMCRdP7X/ZrK5U1vhAfDo
+ P5Tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747689390; x=1748294190;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=104EC20XdaLBJzQFWGmFNCvPEA0lzfVozLjB3hPd8VA=;
+ b=Vp7PGq/Gm08d/3ls/364Sr2zIYltpOtV+FVZFQwLuRTLd+xQY8UDDt/huxQgWehnka
+ taR7uyy0jveiP4jOzyBNlhZ0b9etm4oNUjTyXvyj5dUllSkPk8PyECOsz///UyWMnnfM
+ btIRPMr2wwL3RBFtN8K7fzH5l/eYIDSxhqhUbtri0BZtVlwuc1Cz8WWjz/awwnzEFOJ5
+ 3BRQ3vPL8vYtOaZp+PDq9tydiES4oJmtSo0JTe+UAFFIakZR9tq74ForHlQRBUv+U4cd
+ BCp1FiYhQJfwqzCJmyJEefMGCi4AV4HrXnunKf2Jx6Gi5L3lkr84c57pm5felB0VnLSI
+ a7KQ==
+X-Gm-Message-State: AOJu0YwP1hfaJHXi8W/x4aQeIxiz4QggSwp8n+j+y7mnXgD3HD+su6vu
+ 6WmppvAnTETD0LIao7S3uskhJA0ZhH7NcM+q3Citx6SkAoj8iVgWT3EtiMfFGm4k9RaBesMshah
+ 4fI+w82JpugWec8/rnhw2c07XPWagr5M=
+X-Gm-Gg: ASbGncuQD0uxjRIhhAGxWcuku6PodkJtPF7uoMVv0ni1A2zecTcQVxgo4jOoODge6WS
+ 4tTD395ZFyhFWs98JFH1FUKJU8WwxVLRmalYSDu57MJrqAX7BsT1eAzASGW5z8JMc5z3iUvFmv2
+ JWKfwr6Zya1J43LcW4ZOsZB+hS2B0pjN0=
+X-Google-Smtp-Source: AGHT+IE4NAWD9lsB2sF9QzQ9bXowErGZL+p3ry3ny/eJyt4cYu+zgMMoDLx8cbsehjNxOaCkDhXgdbrlgNm04bYmPsA=
+X-Received: by 2002:a17:902:e78c:b0:231:d156:b26b with SMTP id
+ d9443c01a7336-231d4598d28mr234128885ad.38.1747689390141; Mon, 19 May 2025
+ 14:16:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250517201154.88456-1-nirsof@gmail.com>
-User-Agent: NeoMutt/20250404
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.13,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Mon, 19 May 2025 17:16:14 -0400
+X-Gm-Features: AX0GCFudR-6Rqk1QbWh074E5CeENsR3KWm9U93V5Wjeqk8pYETkntGCBY7014XQ
+Message-ID: <CAJSP0QUrkSK9FGXBCTmCOQD6QT1gK1SmvWxr2=C6Y5_eTzUx8w@mail.gmail.com>
+Subject: Orange Pi Armbian image down
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=stefanha@gmail.com; helo=mail-pl1-x62f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,29 +86,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, May 17, 2025 at 11:11:51PM +0300, Nir Soffer wrote:
-> On both macOS and Linux, the default send buffer size is too small causing poor
-> performance when reading and writing to qemu-nbd. A simple way to experience
-> this is to compare TCP and unix sockets, showing that TCP socket is much
-> faster. Programs like nbdcopy partly mitigate this by using multiple NBD
-> connections.
-> 
-> On macOS the default send buffer size is 8192 bytes. Increasing the send buffer
-> size to 2 MiB shows up to *12.6 times higher throughput* and lower cpu usage.
-> 
-> On Linux the default and maximum buffer size is 212992 bytes. Increasing the
-> send buffer size to 2 MiB shows up to *2.7 times higher throughput* and lower
-> cpu usage. On older machine we see very little improvement, up to 1.03 times
-> higher throughput.
-> 
-> We likely have the same issue on other platforms. It should be easy to enable
-> this change for more platform by defining UNIX_STREAM_SOCKET_SEND_BUFFER_SIZE.
+Hi,
+Hopefully this is just a temporary issue. The functional-system-debian
+CI job is failing because the following image URL is down:
+https://k-space.ee.armbian.com/archive/orangepipc/archive/Armbian_23.8.1_Orangepipc_jammy_current_6.1.47.img.xz
 
-Thanks; I'm staging this through my NBD tree.
+https://gitlab.com/qemu-project/qemu/-/jobs/10082011030#L1037
 
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+I can skip the job for now. If anyone knows the contact details of the
+Armbian project's server administrators, please let them know that the
+download is not working.
 
+Thanks,
+Stefan
 
