@@ -2,83 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B00A3ABB40F
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:29:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7CB3ABB421
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:32:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uGs3y-0001T1-94; Mon, 19 May 2025 00:25:18 -0400
+	id 1uGs4i-0003JQ-HN; Mon, 19 May 2025 00:26:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uGrp2-0008TT-Pn
- for qemu-devel@nongnu.org; Mon, 19 May 2025 00:09:56 -0400
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ id 1uGrp5-0008Ud-R9
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 00:09:58 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uGroz-0004Oo-0G
- for qemu-devel@nongnu.org; Mon, 19 May 2025 00:09:51 -0400
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-30dfd9e7fa8so4929785a91.2
- for <qemu-devel@nongnu.org>; Sun, 18 May 2025 21:09:48 -0700 (PDT)
+ id 1uGrp2-0004PI-IY
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 00:09:55 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-231fd67a9aeso12605945ad.1
+ for <qemu-devel@nongnu.org>; Sun, 18 May 2025 21:09:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747627787; x=1748232587; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1747627790; x=1748232590; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YXvxkbFCVrdBL5uAGVM/FxbZOq84FCzkwXE2y02RSA8=;
- b=hKvMC2o+j5VXn0vqRk8JQv+ASZNg3+HY5T9n/8ZLBOUFFMmN1PKLbsk2JYdV7Ggo9U
- 6JUiG3OszxFQaH5b+uONfUd07UapuQsGNZqWDqpNtpoDHfgzFqyOtAlU4/I0XiQ8/JC2
- w0GRQ640i0ACjAqU8u09mzcyZMtkH4oJfxL+2xkq91OF/YajKJ4g5PXWf0lWRm1eZD8v
- IKfyb72KY44YnY+dypp5kyp7M1bbQpol5YeyRgYX3YCxEN0g/0Wj1YKpTVA9fIQBtgvP
- IBhRAnB42L2JGVVWW/A814YVh5hgCO+M6Eo5yTtX93Wx3fyvNzHKZms3VmiiDqIJt3Q8
- sOZg==
+ bh=1OW1dBcqkD9seiHj1GS+2RugnBsuqu0z4wjW5Lk4KiQ=;
+ b=ArX5NVNeXv/fZYllJBNZ+x3ovyvTobBWgzyXT9+XwGQruD+XBoTXkHQXWhUmR84WXH
+ pi5FWEeRvTvrcY5Xf0NeB6SEtMV4bLN+lYHCHKYqUWr/6mlVfwXaNBvw5hNe/F44bd4K
+ q0vx/sGRy7fM9OIMG8HED6035W6emlH0zif2ROZRIWYapDr5abtNaxNGvT+boLVVDzvC
+ 5DXZdi4IatvOPFQ1QsH5c6nhJuttOhFbSr0XqKc0hXm3pDEaSmw8GWP1VnRC5ReG3lBW
+ l2jK0cRy+VEcH4Z75cOPhhL9utx8AAzzLlm5p7wzZWSOdjnWuXkByZ1zO8Woqb79VhOs
+ OOuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747627787; x=1748232587;
+ d=1e100.net; s=20230601; t=1747627790; x=1748232590;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YXvxkbFCVrdBL5uAGVM/FxbZOq84FCzkwXE2y02RSA8=;
- b=lPlMSFVJjVzYuPfdOH8OC9r2tf6eCb8fDov9xk1ihuWTlyBcyirxkmjvG2tgClE76l
- rZS4Hg0kNj3DyKjvsJGF/5n+Up+O+ilc6L3MzCBxY7aF79u+Q4lsdrlXQEd56Fzgn9og
- 3mrCGZTYUDd/7M3QwY5G/NDAK3fyUEf1NAfhvN1PGRqD8nNMLgQe+mOBStUyA+Phgk9/
- HCaXdRja5PgInTM09wEIwsKo8AV00h06y7gxk71OT3nNIxJqCq0O41luIGcBEdJYBzI2
- E5NcRyf1JyrVZc2FHlVIbkmocVYNCsBuciW+2PvEAxZpG4Xua0M5R1VN+zRXQXH7s6MW
- ODDw==
-X-Gm-Message-State: AOJu0YwGTGKkrBzgcyt8Cg7nP8CNUW5oDCPGscZAqkyR74d5e/Y4Oo13
- Ep4c9kcz0TY4e+WiEkGeY7n6Tf5ozklr06giJTpq0NKNslYf9Dg+TTpUpO50wA==
-X-Gm-Gg: ASbGncv4EN7CH75zXwXu/HV4U2dssZJl2WVOZRIQMw9CrLYj+hBoxBs6J6AL0zt43tR
- Rc4ztxQV4p8j6FQgEHzM4JDrQuOa4jMuev2ZgrPpSEnQ3r+3PGvKk9Mr3zUmVT9uVurqBMyg9e5
- icxj6k664R6sTCakfekEMF6JX08rO0CwzWQusMwMDW4xl/+krCS6ehDYoMLxRSVo2QLn+aGYKYZ
- qxrYhn11bAS4M5amwtyq6cw4S52dEBY1oSz7aHY6svWIBk+Gk+RYo0xgm5UoltTythlJ9Mr7AC9
- Batc0yQ4iupW75E5vTKL6URoBd4/430a7alFmDfuoFH9KbFMlKh9esJDgbtYfpZHizZxlKi1IIN
- aFRATX9Tq7oEGI502T3ehLKOVlGuQTpBTwKqPZaKsLur5gWGCnPDIIvKe+GlUWGuKEmk=
-X-Google-Smtp-Source: AGHT+IEPxzSQ8z9EeXNZ9TV+Dc9PQypkNgnXsx6QWJj50MvMg7tSPHk54qS84Sfcx72e7SDdbmanKw==
-X-Received: by 2002:a17:903:244e:b0:22e:3b65:9286 with SMTP id
- d9443c01a7336-231de3bb4afmr165334295ad.49.1747627787103; 
- Sun, 18 May 2025 21:09:47 -0700 (PDT)
+ bh=1OW1dBcqkD9seiHj1GS+2RugnBsuqu0z4wjW5Lk4KiQ=;
+ b=jWhvFglZsN/x/N1e1dIR7L3/cLUZeql0ZNMYxdWQIpXFCFJQ+BEih3/m2QhU6gFEM3
+ 1AYwTKJ7oBAlURJn5NiD/xkOp0erAbQECmvU2+Hqahr/SwSxgeg1chvTBrZ7LlAhICmU
+ l+652XXtUHvbY+5Oo7q57zPTM06cNZYhINZnratNJdmV/OBSbE2qpQx3nSvCxgFvftyx
+ aWwLBp0fI07oa6VXwcX7xqAY33qdHrM81QhuQGW8pD018Hut2wdHtESIohHD+PdS2i4L
+ Zs84b9/jUhtjLM3pX/gNvDLH/Oi7cGzrXcF3CkuAz+RiIRHGURhsEx/L2kN0Dj8tI+bM
+ 6nag==
+X-Gm-Message-State: AOJu0YwzGHALaU1xNQqr6pv23ocG+IJL/7kGfkCfs7GMsUx69wPL5wqL
+ Vuubv8r2DY1kmbLXXa5Kz5UzZpUecy/Mu89plJrd/41hJyF/5lcOkATo4zS8aw==
+X-Gm-Gg: ASbGncu3vlzsWUoqpuJzuUaQcEk9dJ6Rpu5GTVMd7ND7hlWn1ag+u58tdKUtLxMnmmJ
+ N9i7HxH83LO+cXD5pgJ+jIj9pKFtjezAwD9fhois6Q910lnYu4h023wCTZwj81qxgEPvrhf8VAB
+ A29/DXVUNqrYNpWyTQJu7NRWLsloKjjbMSEafMSeR0/fV/phh9HZXAjhU1nhYQYlyLgtzPKOyU8
+ cxS/aIx8PJMX/eQ+ZgkRiEbSb3XWKughQZwqMQZYsXcwpAuM3dJoiW6Ej9rMxZQP7S9SxJk9Gfg
+ 9w8dl/645T11sFcQLfJchPZI9fyQUjCRqnxgAqeBO1u5M1bgcu2WlnaIEFVAuG7bdqbtJRbM/Nb
+ 5QR2CKcELRM56j0x7xDyRLlsPMoXWeytxIyueLgYRh1f6ly9pR/7E5VH/
+X-Google-Smtp-Source: AGHT+IHkXzV3SHqgOD9/ON/6bEPLPMJ46NrHnIqflfqdQ8lAsZTF8i7uDd5mbqJUni6L6IM+3laakQ==
+X-Received: by 2002:a17:902:c202:b0:231:c89f:4e94 with SMTP id
+ d9443c01a7336-231c89f4f9amr147418275ad.21.1747627790209; 
+ Sun, 18 May 2025 21:09:50 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.09.44
+ d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.09.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 May 2025 21:09:46 -0700 (PDT)
+ Sun, 18 May 2025 21:09:49 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 50/56] hw/riscv/virt.c: use s->memmap in virt_machine_done()
-Date: Mon, 19 May 2025 14:05:47 +1000
-Message-ID: <20250519040555.3797167-51-alistair.francis@wdc.com>
+Subject: [PULL 51/56] hw/riscv/virt.c: add 'base' arg in create_fw_cfg()
+Date: Mon, 19 May 2025 14:05:48 +1000
+Message-ID: <20250519040555.3797167-52-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250519040555.3797167-1-alistair.francis@wdc.com>
 References: <20250519040555.3797167-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=alistair23@gmail.com; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -104,66 +106,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
+The function can receive the value via s->memmap[VIRT_FW_CFG].base from
+the caller, avoiding the use of virt_memmap.
+
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250429125811.224803-4-dbarboza@ventanamicro.com>
+Message-ID: <20250429125811.224803-5-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/riscv/virt.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ hw/riscv/virt.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index 843665a5bd..b349b2b1cf 100644
+index b349b2b1cf..3d547f7c2b 100644
 --- a/hw/riscv/virt.c
 +++ b/hw/riscv/virt.c
-@@ -1425,9 +1425,8 @@ static void virt_machine_done(Notifier *notifier, void *data)
+@@ -1262,9 +1262,8 @@ static inline DeviceState *gpex_pcie_init(MemoryRegion *sys_mem,
+     return dev;
+ }
+ 
+-static FWCfgState *create_fw_cfg(const MachineState *ms)
++static FWCfgState *create_fw_cfg(const MachineState *ms, hwaddr base)
  {
-     RISCVVirtState *s = container_of(notifier, RISCVVirtState,
-                                      machine_done);
--    const MemMapEntry *memmap = virt_memmap;
-     MachineState *machine = MACHINE(s);
--    hwaddr start_addr = memmap[VIRT_DRAM].base;
-+    hwaddr start_addr = s->memmap[VIRT_DRAM].base;
-     target_ulong firmware_end_addr, kernel_start_addr;
-     const char *firmware_name = riscv_default_firmware_name(&s->soc[0]);
-     uint64_t fdt_load_addr;
-@@ -1471,14 +1470,14 @@ static void virt_machine_done(Notifier *notifier, void *data)
-              * let's overwrite the address we jump to after reset to
-              * the base of the flash.
-              */
--            start_addr = virt_memmap[VIRT_FLASH].base;
-+            start_addr = s->memmap[VIRT_FLASH].base;
-         } else {
-             /*
-              * Pflash was supplied but either KVM guest or bios is not none.
-              * In this case, base of the flash would contain S-mode payload.
-              */
-             riscv_setup_firmware_boot(machine);
--            kernel_entry = virt_memmap[VIRT_FLASH].base;
-+            kernel_entry = s->memmap[VIRT_FLASH].base;
-         }
-     }
+-    hwaddr base = virt_memmap[VIRT_FW_CFG].base;
+     FWCfgState *fw_cfg;
  
-@@ -1492,15 +1491,15 @@ static void virt_machine_done(Notifier *notifier, void *data)
-         kernel_entry = boot_info.image_low_addr;
-     }
+     fw_cfg = fw_cfg_init_mem_wide(base + 8, base, 8, base + 16,
+@@ -1677,7 +1676,7 @@ static void virt_machine_init(MachineState *machine)
+      * Init fw_cfg. Must be done before riscv_load_fdt, otherwise the
+      * device tree cannot be altered and we get FDT_ERR_NOSPACE.
+      */
+-    s->fw_cfg = create_fw_cfg(machine);
++    s->fw_cfg = create_fw_cfg(machine, s->memmap[VIRT_FW_CFG].base);
+     rom_set_fw(s->fw_cfg);
  
--    fdt_load_addr = riscv_compute_fdt_addr(memmap[VIRT_DRAM].base,
--                                           memmap[VIRT_DRAM].size,
-+    fdt_load_addr = riscv_compute_fdt_addr(s->memmap[VIRT_DRAM].base,
-+                                           s->memmap[VIRT_DRAM].size,
-                                            machine, &boot_info);
-     riscv_load_fdt(fdt_load_addr, machine->fdt);
- 
-     /* load the reset vector */
-     riscv_setup_rom_reset_vec(machine, &s->soc[0], start_addr,
--                              virt_memmap[VIRT_MROM].base,
--                              virt_memmap[VIRT_MROM].size, kernel_entry,
-+                              s->memmap[VIRT_MROM].base,
-+                              s->memmap[VIRT_MROM].size, kernel_entry,
-                               fdt_load_addr);
- 
-     /*
+     /* SiFive Test MMIO device */
 -- 
 2.49.0
 
