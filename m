@@ -2,99 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0367CABB3C6
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:05:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB6A4ABB3F4
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:24:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uGrjZ-0003M9-MD; Mon, 19 May 2025 00:04:14 -0400
+	id 1uGs3A-0000RX-J7; Mon, 19 May 2025 00:24:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1uGrjO-0003Lg-UU
- for qemu-devel@nongnu.org; Mon, 19 May 2025 00:04:03 -0400
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1uGrmO-0004iS-Ku
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 00:07:09 -0400
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1uGrjL-0003fb-PP
- for qemu-devel@nongnu.org; Mon, 19 May 2025 00:04:02 -0400
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-b1396171fb1so2234101a12.2
- for <qemu-devel@nongnu.org>; Sun, 18 May 2025 21:03:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1uGrmM-00044N-BU
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 00:07:08 -0400
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-b1fb650bdf7so2358518a12.1
+ for <qemu-devel@nongnu.org>; Sun, 18 May 2025 21:07:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1747627437; x=1748232237; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=02NqxBW3qQdmYXTr1KkhoGNaQoa1PsgXXqCCGD+KoUg=;
- b=eK+6yZUZ88ISyGlLp9PiEypTnO0AGoyABY+ol9jN9SBbCeCL0/4Um3NdyMeeuHHcce
- HR8dWQxQgauaf2On8flUediWmxez4qIMPscB7UenEvhC9MJkVxnAxCIlZYvEzOu2rGMX
- MN85Fq18PsuG9S6AGkf98MNUCX4tlDy1sEQWVJjbZQuR6+QMLfH/a56N3scqAUEXi2jr
- aM+4WrzSboGP9RxRYRhOvo/u6k80yQ/C1mqIVR6/X9RSfOeKnmM1hp0tFq+hT3fqScfS
- 9mj/SrgEmcHGMMkoZKH+p9mgs+Nrs+RJ2JBTLFb15JG3ko5UZqlfRG3BOichXCv7ITAI
- Bk/g==
+ d=gmail.com; s=20230601; t=1747627624; x=1748232424; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=4G+l0DbMpv8SAPAsssm+mafD9DyX08mfxZX5Jp6Aba0=;
+ b=hyBx6a1y8lnq63pNmVegwN68MRsrfRpmef01qqeYayIsrNhSdYrbEDT6Yy2NcpO3rv
+ RICTYQQESGCSYL5UHLrrN0V1x9xDxoYy6a4RjrK0ezWPEN10R1iJb6DyANigDQmZqWQD
+ BcJec8NP3XhoobMW/o8Bo8+qvwgHdfiUu3lOcJr7hNWMKS9ZdpjKnvQlYBfzNmEUh7nL
+ w4uvTKgGp0RL9ZkVvDGHBIwmH3tpSOZsUx6uxAPlWHfii8cNXeDlXS9L0YnqzmPQBoh6
+ a+3XX4ZUqMUiazhWCQq5eEYvqtXgqPY9mVKudB0q8HLmRLKSyw9NI4FNO1rkK1dTXBp4
+ apvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747627437; x=1748232237;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=02NqxBW3qQdmYXTr1KkhoGNaQoa1PsgXXqCCGD+KoUg=;
- b=sSvNndU0zrF2kR3D41wsscGtfiqs1p8T93AYiqfajg6ZAzUXMavj53NfCG/94/TsgU
- DqY8YgZ+QCmPOAN58ovMBZa/DiJhm4+b236TS73W+y3qnC0Tk1o8NPRFCQN2sxrjO4Bl
- V1r6QtNcj7+LhZCZQMkcTbjcB1loQa0ZMmwiexoVfTUpIFfWnc14owY6G+/HIh0YLBDn
- x4/cwqFMsbduk7uDUB1KZFRUk9m4jddJQqfunS/XcVCk7YQBAuLlUNY6YDML2lAzsfox
- FcaT6K8wdH2NmtYoxgpyyzYGhCwSehjdXTYgyPhFGuI+DIm68M00iqWtqx3sktBfT1VN
- D9LQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU1eVGDZPCYrBc800xWf5Kkf/lUbMNt73b0zzgAQ6CKO2baNqGKSsegr/lusuvXeY2fqcSKQ5AsA/5X@nongnu.org
-X-Gm-Message-State: AOJu0YxFrovLyutWxdrNcHoda2N4sN2dYQEg/nf5NAuPY3xm5ZFqcfnB
- R+D1YohAaWBiAyAgJXvdftVmEmciKweaeC2qAkc/LBM/OoCS578vRhO6xt9ch+etSOY=
-X-Gm-Gg: ASbGncsimDiTvqXNQnftM7JR8sBhhCZfEzmztou4vwjWAjEQRxfy1lbQfdfyLVQG+w+
- 5WO8augE6aIrzYsk7N2MBj3u89yz+p72b7SjTiIuTY2TdVZW+nD58lfHmvUYSKCSaaHHxrpPgeG
- aQj9F/t9iPd3hC2ZHGe5oHA3pQ6ta9Q1RyZ7f1ryYxH/ksDjB6+cWbaOPBhGmOGi2LtGisWsyq3
- mZmxTjSMhov/kmxQ87ZM8OapujkKbePmsc7DbipMMs4SyFdgNMLHi3Pyp5TYpxe9CtA9r72D775
- 3ysBqVPUcgt67w+rlWZjBjPpXJ+IkB4dDME0AHrv28b7ccz4jTIqyAYwCYE=
-X-Google-Smtp-Source: AGHT+IFtzBUirzOOsBz7D+ouMbSTc/hyVnclkhndAVDkubanaRBQPwqJF0zLVFRd/AhHbO5UMmjnrA==
-X-Received: by 2002:a17:903:24e:b0:22e:4a6c:fef2 with SMTP id
- d9443c01a7336-231d45ae355mr183382195ad.53.1747627437632; 
- Sun, 18 May 2025 21:03:57 -0700 (PDT)
-Received: from sunil-laptop ([103.97.166.196])
+ d=1e100.net; s=20230601; t=1747627624; x=1748232424;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=4G+l0DbMpv8SAPAsssm+mafD9DyX08mfxZX5Jp6Aba0=;
+ b=FTCJnrvl+0/1nefhqhLmJyYWDSa0e/B7crUUpgHAq7qAnHGnFeiA3qh32OZ+c9Bw3k
+ DKtRcml8OJ5GF5IcvHHDkLkGqks1yXv2l9v6lMH6NvxQX2oBKfFuqiR/7fsGLBtYpaiY
+ VmbUmfG5+8N+6hdsqPHtvH1oOAWWbHII+9I/YVodZp1P4tp7LkjHc3yEwUtQsYbR/lA2
+ 6VVgn31jCQCkCQOMnp3W9N65TZOW5BBvCx750m1SaDO224WMaV8L6CDA3r2tPT4xqZxU
+ clPGhSiWcA1KXp9+YpAZMHX1OpRryTaAmiQ6wQxA+lclp0qsh5zceE8uREppCL7F6Tbr
+ PXhw==
+X-Gm-Message-State: AOJu0Yzd0XjfPhBx8UpRfwwHD2ptbDZxjcGJ2rnzNUx4OSLexNpEaG47
+ uRv3gyZQp7q4rKKmgRrTXM0b7tk6X2UwRvvnAKdHFCWDrcsRx1PztOY6RYUhkw==
+X-Gm-Gg: ASbGncuEzw3776KT4vNBmkBrEKeW6fdioYingqY/ktglKIjzc4dz5wILjDye6HPjqIG
+ nvNMaak4RrqiF5wJKYmIm45QZg7tcDSp5uQz9wBItVrQ7wflSyqYnHPynu7JX5JxuX1W8sJZifs
+ TKBNBmP3miOyO4g4kZNRi1DtAkCXKOKtNtrft0pLCyfvLHO64ZWw+wAwmkQZCTd4+vkQ7eRTr9z
+ GT0ZxH3nCwySBDUn2pGQ1ro5uTkIIPDvW80n8DqwjYfbg4g5i2oUgoCYjn8uF8qcAHVvFbD618S
+ yPO3M88rSBeoluNr2EZ9WG0XIL5Cp7tsR13YXGjmtc9sAs12djEIZMyELanscbME3/s644LwSJ9
+ OgEtJcsRIRs/p4QVYvUzEUGoueNk+8pqN2IKyHhF5oS0iBKC7efegs6Om
+X-Google-Smtp-Source: AGHT+IE+mv47iBYr6DY9tYl60zYaNMMb9Z+cH+Vz3kvrEHFMQM9TGzFX8rnVlVnwv46xsQWHVrl+mA==
+X-Received: by 2002:a17:903:41c7:b0:223:53fb:e1dd with SMTP id
+ d9443c01a7336-231de351565mr145460445ad.9.1747627624413; 
+ Sun, 18 May 2025 21:07:04 -0700 (PDT)
+Received: from toolbx.alistair23.me
+ (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
+ [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-231d4ed546fsm50138045ad.231.2025.05.18.21.03.48
+ d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.07.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 May 2025 21:03:55 -0700 (PDT)
-Date: Mon, 19 May 2025 09:33:45 +0530
-From: Sunil V L <sunilvl@ventanamicro.com>
-To: Li Chen <me@linux.beauty>
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?utf-8?Q?=22Philippe_Mathieu-Daud=C3=A9=22?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
- Song Gao <gaosong@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Weiwei Li <liwei1518@gmail.com>, qemu-arm <qemu-arm@nongnu.org>,
- qemu-devel <qemu-devel@nongnu.org>, qemu-riscv <qemu-riscv@nongnu.org>
-Subject: Re: [PATCH V3 3/4] tests/qtest/bios-tables-test: Add test for
- disabling SPCR on RISC-V
-Message-ID: <aCqtob_S5FKsG-1r@sunil-laptop>
-References: <87msberqzi.wl-me@linux.beauty>
- <87ikm2rqn8.wl-me@linux.beauty>
+ Sun, 18 May 2025 21:07:03 -0700 (PDT)
+From: alistair23@gmail.com
+X-Google-Original-From: alistair.francis@wdc.com
+To: qemu-devel@nongnu.org
+Cc: alistair23@gmail.com,
+	Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 00/56] riscv-to-apply queue
+Date: Mon, 19 May 2025 14:04:57 +1000
+Message-ID: <20250519040555.3797167-1-alistair.francis@wdc.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87ikm2rqn8.wl-me@linux.beauty>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
- envelope-from=sunilvl@ventanamicro.com; helo=mail-pg1-x529.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x534.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,53 +100,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 15, 2025 at 08:43:07PM +0800, Li Chen wrote:
-> From: Li Chen <chenl311@chinatelecom.cn>
->  
-> Add ACPI SPCR table test case for RISC-V when SPCR was off.
-> 
-> Signed-off-by: Li Chen <chenl311@chinatelecom.cn>
-> ---
->  tests/qtest/bios-tables-test.c | 22 ++++++++++++++++++++++
->  1 file changed, 22 insertions(+)
-> 
-> diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-> index d2a1aa7fb3..44de152a36 100644
-> --- a/tests/qtest/bios-tables-test.c
-> +++ b/tests/qtest/bios-tables-test.c
-> @@ -1807,6 +1807,26 @@ static void test_acpi_aarch64_virt_tcg_acpi_spcr(void)
->                    " -machine spcr=off", &data);
->      free_test_data(&data);
->  }
-> +
-> +static void test_acpi_riscv_virt_tcg_acpi_spcr(void)
-> +{
-> +    test_data data = {
-> +        .machine = "virt",
-> +        .arch = "riscv64",
-> +        .tcg_only = true,
-> +        .uefi_fl1 = "pc-bios/edk2-riscv-code.fd",
-> +        .uefi_fl2 = "pc-bios/edk2-riscv-vars.fd",
-> +        .cd = "tests/data/uefi-boot-images/bios-tables-test.riscv64.iso.qcow2",
-> +        .ram_start = 0x80000000ULL,
-> +        .scan_len = 128ULL * 1024 * 1024,
-> +        .variant = ".acpispcr",
-> +    };
-> +
-> +    test_acpi_one("-cpu rva22s64 "
-> +                  "-machine spcr=off", &data);
-> +    free_test_data(&data);
-> +}
-> +
->  static void test_acpi_tcg_acpi_hmat(const char *machine, const char *arch)
->  {
->      test_data data = {};
-> @@ -2612,6 +2632,8 @@ int main(int argc, char *argv[])
->              qtest_add_func("acpi/virt", test_acpi_riscv64_virt_tcg);
->              qtest_add_func("acpi/virt/numamem",
->                             test_acpi_riscv64_virt_tcg_numamem);
-> +            qtest_add_func("acpi/virt/acpispcr",
-> +                           test_acpi_riscv_virt_tcg_acpi_spcr);
->          }
-Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
+From: Alistair Francis <alistair.francis@wdc.com>
+
+The following changes since commit 757a34115e7491744a63dfc3d291fd1de5297ee2:
+
+  Merge tag 'pull-nvme-20250515' of https://gitlab.com/birkelund/qemu into staging (2025-05-15 13:42:27 -0400)
+
+are available in the Git repository at:
+
+  https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20250519
+
+for you to fetch changes up to e7cb99bfd1afc5cf2265a122bcfeab36eff7489a:
+
+  hw/riscv/virt.c: remove 'long' casts in fmt strings (2025-05-19 13:42:56 +1000)
+
+----------------------------------------------------------------
+First RISC-V PR for 10.1
+
+* Add support for RIMT to virt machine ACPI
+* Don't allow PMP RLB to bypass rule privileges
+* Fix checks on writes to pmpcfg in Smepmp MML mode
+* Generate strided vector loads/stores with tcg nodes
+* Improve Microchip Polarfire SoC customization
+* Use tcg ops generation to emulate whole reg rvv loads/stores
+* Expand the probe_pages helper function to handle probe flags
+* Fix type conflict of GLib function pointers
+* Fix endless translation loop on big endian systems
+* Use tail pseudoinstruction for calling tail
+* Fix some RISC-V vector instruction corner cases
+* MAINTAINERS: Add common-user/host/riscv to RISC-V section
+* Fix write_misa vs aligned next_pc
+* KVM CSR fixes
+* Virt machine memmap usage cleanup
+
+----------------------------------------------------------------
+Alistair Francis (1):
+      MAINTAINERS: Add common-user/host/riscv to RISC-V section
+
+Anton Blanchard (3):
+      target/riscv: rvv: Source vector registers cannot overlap mask register
+      target/riscv: rvv: Add CHECK arg to GEN_OPFVF_WIDEN_TRANS
+      target/riscv: Fix vslidedown with rvv_ta_all_1s
+
+Daniel Henrique Barboza (18):
+      target/riscv/kvm: minor fixes/tweaks
+      target/riscv/kvm: fix leak in kvm_riscv_init_multiext_cfg()
+      target/riscv/kvm: turn u32/u64 reg functions into macros
+      target/riscv/kvm: turn kvm_riscv_reg_id_ulong() into a macro
+      target/riscv/kvm: add kvm_csr_cfgs[]
+      target/riscv/kvm: do not read unavailable CSRs
+      target/riscv/kvm: add senvcfg CSR
+      target/riscv/kvm: read/write KVM regs via env size
+      target/riscv/kvm: add scounteren CSR
+      hw/riscv/virt.c: enforce s->memmap use in machine_init()
+      hw/riscv/virt.c: remove trivial virt_memmap references
+      hw/riscv/virt.c: use s->memmap in virt_machine_done()
+      hw/riscv/virt.c: add 'base' arg in create_fw_cfg()
+      hw/riscv/virt.c: use s->memmap in create_fdt() path
+      hw/riscv/virt.c: use s->memmap in create_fdt_sockets() path
+      hw/riscv/virt.c: use s->memmap in create_fdt_virtio()
+      hw/riscv/virt.c: use s->memmap in finalize_fdt() functions
+      hw/riscv/virt.c: remove 'long' casts in fmt strings
+
+Icenowy Zheng (1):
+      common-user/host/riscv: use tail pseudoinstruction for calling tail
+
+Loïc Lefort (5):
+      target/riscv: pmp: don't allow RLB to bypass rule privileges
+      target/riscv: pmp: move Smepmp operation conversion into a function
+      target/riscv: pmp: fix checks on writes to pmpcfg in Smepmp MML mode
+      target/riscv: pmp: exit csr writes early if value was not changed
+      target/riscv: pmp: remove redundant check in pmp_is_locked
+
+Max Chou (8):
+      target/riscv: rvv: Apply vext_check_input_eew to vrgather instructions to check mismatched input EEWs encoding constraint
+      target/riscv: rvv: Apply vext_check_input_eew to OPIVI/OPIVX/OPFVF(vext_check_ss) instructions
+      target/riscv: rvv: Apply vext_check_input_eew to OPIVV/OPFVV(vext_check_sss) instructions
+      target/riscv: rvv: Apply vext_check_input_eew to vector slide instructions(OPIVI/OPIVX)
+      target/riscv: rvv: Apply vext_check_input_eew to vector integer extension instructions(OPMVV)
+      target/riscv: rvv: Apply vext_check_input_eew to vector narrow/widen instructions
+      target/riscv: rvv: Apply vext_check_input_eew to vector indexed load/store instructions
+      target/riscv: Fix the rvv reserved encoding of unmasked instructions
+
+Paolo Bonzini (1):
+      hw/riscv: Fix type conflict of GLib function pointers
+
+Paolo Savini (3):
+      Generate strided vector loads/stores with tcg nodes.
+      target/riscv: use tcg ops generation to emulate whole reg rvv loads/stores.
+      Expand the probe_pages helper function to handle probe flags.
+
+Richard Henderson (7):
+      target/riscv: Pass ra to riscv_csr_write_fn
+      target/riscv: Pass ra to riscv_csrrw_do64
+      target/riscv: Pass ra to riscv_csrrw_do128
+      target/riscv: Pass ra to riscv_csrrw
+      target/riscv: Pass ra to riscv_csrrw_i128
+      target/riscv: Move insn_len to internals.h
+      target/riscv: Fix write_misa vs aligned next_pc
+
+Sebastian Huber (6):
+      hw/misc: Add MPFS system reset support
+      hw/riscv: More flexible FDT placement for MPFS
+      hw/riscv: Make FDT optional for MPFS
+      hw/riscv: Allow direct start of kernel for MPFS
+      hw/riscv: Configurable MPFS CLINT timebase freq
+      hw/riscv: microchip_pfsoc: Rework documentation
+
+Sunil V L (2):
+      hw/riscv/virt: Add the BDF of IOMMU to RISCVVirtState structure
+      hw/riscv/virt-acpi-build: Add support for RIMT
+
+Ziqiao Kong (1):
+      target/riscv: fix endless translation loop on big endian systems
+
+ MAINTAINERS                                |   1 +
+ docs/system/riscv/microchip-icicle-kit.rst | 124 ++----
+ include/hw/riscv/microchip_pfsoc.h         |   1 +
+ include/hw/riscv/virt.h                    |   1 +
+ target/riscv/cpu.h                         |  16 +-
+ target/riscv/internals.h                   |   5 +
+ target/riscv/insn32.decode                 |  18 +-
+ hw/misc/mchp_pfsoc_sysreg.c                |   7 +
+ hw/riscv/microchip_pfsoc.c                 | 153 +++++--
+ hw/riscv/riscv_hart.c                      |   9 +-
+ hw/riscv/virt-acpi-build.c                 | 215 ++++++++++
+ hw/riscv/virt.c                            | 273 ++++++------
+ target/riscv/cpu_helper.c                  |   6 +-
+ target/riscv/csr.c                         | 278 +++++++------
+ target/riscv/kvm/kvm-cpu.c                 | 333 +++++++++------
+ target/riscv/op_helper.c                   |  13 +-
+ target/riscv/pmp.c                         | 147 ++++---
+ target/riscv/translate.c                   |   5 -
+ target/riscv/vector_helper.c               |  63 ++-
+ target/riscv/insn_trans/trans_rvbf16.c.inc |   9 +-
+ target/riscv/insn_trans/trans_rvv.c.inc    | 644 +++++++++++++++++++++++------
+ common-user/host/riscv/safe-syscall.inc.S  |   4 +-
+ 22 files changed, 1570 insertions(+), 755 deletions(-)
 
