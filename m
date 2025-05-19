@@ -2,87 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1131CABBFDE
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 15:53:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69919ABBF9C
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 15:46:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uH0uA-0007dl-V2; Mon, 19 May 2025 09:51:46 -0400
+	id 1uH0oM-00056v-8C; Mon, 19 May 2025 09:45:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uH0u8-0007dI-6E
- for qemu-devel@nongnu.org; Mon, 19 May 2025 09:51:44 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uH0u6-0000f0-6T
- for qemu-devel@nongnu.org; Mon, 19 May 2025 09:51:43 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-3a36e0d22c1so838626f8f.2
- for <qemu-devel@nongnu.org>; Mon, 19 May 2025 06:51:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747662700; x=1748267500; darn=nongnu.org;
- h=mime-version:message-id:in-reply-to:references:user-agent:subject
- :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=TaQ2adZzLMqgAPfaB0k5L5diWXv6nP9Kg5y/xe9TS+U=;
- b=sfyn0KYIfx/Fr+1mlDsRH3PLdmTAfo2cj9F1CGQCyKQDlRlebADYMxqZQkCOUvcw5p
- NVdDuBZo1GYxEkLzlAFpQBpl6GfyNndSiQ4Mrigu6Td5yt/rYBd/xMNyvpDccxEg0iEZ
- jzTMSR7UlrC3CpWwobmmG/m6ou8XeRVZhqBqVVa0V6gTx445ejNTDj1c6NKHxpDJlgyx
- zqy9sgkTYpXrdOd96uPxVRfpOS2ifcGxsXZzoFhmCRQE7WCWCfGhgSsbZoJs/SY5y4wg
- gg+XTRY/LOuFA9bnFenuI4dDdwO5d1P376RHJBNqpcpLP4gXAcyqNK7GsZCq5zETPEhi
- o7Bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747662700; x=1748267500;
- h=mime-version:message-id:in-reply-to:references:user-agent:subject
- :cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TaQ2adZzLMqgAPfaB0k5L5diWXv6nP9Kg5y/xe9TS+U=;
- b=fdh9oWASB3vv39I09UYxNkNQBo+49zBtOpmhP4kaDWG30wO4BEzbt29CJp56PEU9B7
- Cc/fudEGb4NMWD2NdylkqX6eG1D90JdMchq8oXuZVcD/Zzqylaoyd13bUejexuEknTNZ
- frBIX1QC6Ad+zZ4ps588GojQjIWMjmPqDuGpuVCM5O0Sx8viNPHFoGkZgzStjlEH++CY
- S1mdKBrWDpndUg4l0m2pMxe1Ov4HyoJgIqr/eLoqASQevMztuogDGm6yVe+Z1qTFd+Y/
- uErfrKFI9aren8Vrja215rKey7FE/M6shdP28WXPv2XdWHZzMpzqMuKryFK0fx63Q6HY
- ibrg==
-X-Gm-Message-State: AOJu0YxLJq1CTKknFKwEKIwZ9Pvh7RF+DnPyoLNhbzucGeuMOQTi+K/s
- U+1nyhsggna6KCZlOe4dWWuYR8nXRYU1ugvXGBoxz8W4IAQyjOS3tbnOatjiFS5LAPQ=
-X-Gm-Gg: ASbGncvs4aCCiYEtb/em2Z+SNN02XYyqdzSaD8rTDVMI0FeOXdeBXOM2GCPU9vMyPiI
- fUuDPCEugoYiad5u6kcNp/rqAjd/d8g5jHFHWwzON7DB4MHIVrwhOCcdizRIUUYOdViCqiWvSLw
- gZn80vkkbTm55LQ1i5g5QwsuBNrqOkwum7extBoXaoaSYrKsSiR9QzwQDoAYXur9CkTxVtpqG7P
- FC1fochFM88+FF3QcGRjq8erDRkxMvVr8B+wXivEtNppy3dZqrmRQfC+fYblxZSqsAXV/3DgdVC
- 6BTRrE45UeekPhA8HG574v4/THB29iFRSKIeNnpkc8vMjUnHrhEd9MRv9J+0FojvuvO5ZSRm7/X
- TzXWn6CiYAPM9BaKD0+1wTtpEGPLHIi6Q
-X-Google-Smtp-Source: AGHT+IHixjDlIaKX/rNTF9kdy/MW6o3IrRMxcjXy05kThsN7g3LFSK+Cmf4i91fIl7g1trLbcaJRCg==
-X-Received: by 2002:a05:6000:40e0:b0:3a0:b733:f264 with SMTP id
- ffacd0b85a97d-3a35fe5ba7amr10520197f8f.11.1747662699884; 
- Mon, 19 May 2025 06:51:39 -0700 (PDT)
-Received: from meli-email.org (adsl-99.109.242.93.tellas.gr. [109.242.93.99])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442f9053b4dsm168254925e9.4.2025.05.19.06.51.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 19 May 2025 06:51:39 -0700 (PDT)
-Date: Mon, 19 May 2025 16:45:21 +0300
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: Alex Benn=?UTF-8?B?w6k=?=e <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org,
- Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>
-Subject: Re: [PATCH] gdbstub: update aarch64-core.xml
-User-Agent: meli/0.8.12
-References: <20250519-gdbstub-aarch64-pstate-xml-v1-1-b4dbe87fe7c6@linaro.org>
- <87msb8sqts.fsf@draig.linaro.org>
-In-Reply-To: <87msb8sqts.fsf@draig.linaro.org>
-Message-ID: <swih62.nwehumxno4zp@linaro.org>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uH0oD-00056N-2e
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 09:45:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uH0oA-000087-SJ
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 09:45:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747662332;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=QM0UZsyEGrtPvcJvo8S6NiJMpfvCmuRHPeSmgZmC0V0=;
+ b=NkIggLGpPWnbHl4+UL4BW9M8XKUiMxRMusvgaB+brbF2p8mXekKtHaHv7ulVZ52fRIbYg2
+ ECboZmgZGIt3A4JSe69/UHitpbZsVD7pp4CKr5JmbKdt98URPn/4dqH1Q7EJjtMWTretLH
+ aaapdyQ4W46gd8FLlWzr0cIkE0rNMJE=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-613-ZiEi97MdN96mJazonM2vJg-1; Mon,
+ 19 May 2025 09:45:29 -0400
+X-MC-Unique: ZiEi97MdN96mJazonM2vJg-1
+X-Mimecast-MFC-AGG-ID: ZiEi97MdN96mJazonM2vJg_1747662328
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 39315180087B; Mon, 19 May 2025 13:45:28 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.50])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AA78119560AA; Mon, 19 May 2025 13:45:26 +0000 (UTC)
+Date: Mon, 19 May 2025 14:45:23 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Cole Robinson <crobinso@redhat.com>
+Cc: qemu-devel@nongnu.org, deller@gmx.de
+Subject: Re: [PATCH] roms: re-remove execute bit from hppa-firmware*
+Message-ID: <aCs183hjzXVafV6B@redhat.com>
+References: <52d0edfbb9b2f63a866f0065a721f3a95da6f8ba.1747590860.git.crobinso@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wr1-x42f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, CTE_8BIT_MISMATCH=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <52d0edfbb9b2f63a866f0065a721f3a95da6f8ba.1747590860.git.crobinso@redhat.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.13,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,49 +82,41 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 19 May 2025 15:55, Alex Bennée <alex.bennee@linaro.org> wrote:
->Manos Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
->
->> Update aarch64-core.xml to include field definitions for PSTATE, which
->> in gdb is modelled in the cpsr (current program status register)
->> pseudo-register, named after the actual cpsr register in armv7.
->>
->> Defining the fields layout of the register allows easy inspection of for
->> example, the current exception level (EL):
->>
->> For example. Before booting a Linux guest, EL=2, but after booting and
->> Ctrl-C'ing in gdb, we get EL=0:
->>
->>   (gdb) info registers $cpsr
->>   cpsr           0x20402009          [ SP EL=2 BTYPE=0 PAN C ]
->>   (gdb) cont
->>   Continuing.
->>   ^C
->>   Thread 2 received signal SIGINT, Interrupt.
->>   0x0000ffffaaff286c in ?? ()
->>   (gdb) info registers $cpsr
->>   cpsr           0x20001000          [ EL=0 BTYPE=0 SSBS C ]
->>
->> The aarch64-core.xml has been updated to match exactly the version
->> retrieved from upstream gdb, retrieved in 2025-05-19 from HEAD commit
->> 9f4dc0b137c86f6ff2098cb1ab69442c69d6023d.
->>
->> https://sourceware.org/git/?p=binutils-gdb.git;a=tree;h=9f4dc0b137c86f6ff2098cb1ab69442c69d6023d
->>
->> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
->
->Queued to gdbstub/next, thanks.
->
+On Sun, May 18, 2025 at 01:54:20PM -0400, Cole Robinson wrote:
+> This was fixed in c9d77526bddba0803a1fa982fb59ec98057150f9 for
+> 9.2.0 but regressed in db34be329162cf6b06192703065e6c1010dbe3c5 in
+> 10.0.0
+> 
+> When the bit is present, rpmbuild complains about missing ELF build-id
+> 
+> Signed-off-by: Cole Robinson <crobinso@redhat.com>
+> ---
+>  pc-bios/hppa-firmware.img   | Bin
+>  pc-bios/hppa-firmware64.img | Bin
+>  2 files changed, 0 insertions(+), 0 deletions(-)
+>  mode change 100755 => 100644 pc-bios/hppa-firmware.img
+>  mode change 100755 => 100644 pc-bios/hppa-firmware64.img
 
-Would patches for the field system registers (NZCV, CurrentEL, DAIF, 
-SPSel) be acceptable?
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-If yes, I think defining them in the static core xml is cleaner than 
-generating them dynamically in "system-registers.xml" like we do with 
-arm_gen_dynamic_sysreg_feature() but both can work. The drawback would 
-be that we wouldn't match upstream gdb's core xml schema anymore. (Maybe 
-we  can add a new xml include "pstate.xml" instead)
+Though given the back & forth, I wonder if we wouldn't be better off
+changing meson.build rules instead to mode 0644 for all blobs ?
+
+  install_data(blobs,
+               install_dir: qemu_datadir,
+	       install_mode: 0644)
+
+...assuming none actually need execute bits set.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
