@@ -2,79 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2899FABC0BC
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 16:33:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6E1FABC0EC
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 16:36:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uH1Xb-0000W4-0O; Mon, 19 May 2025 10:32:31 -0400
+	id 1uH1ae-0001hu-Oy; Mon, 19 May 2025 10:35:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uH1XW-0000Vr-1d
- for qemu-devel@nongnu.org; Mon, 19 May 2025 10:32:26 -0400
-Received: from mail-yw1-x1132.google.com ([2607:f8b0:4864:20::1132])
+ (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
+ id 1uH1ac-0001gl-7e
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 10:35:38 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1uH1XQ-00071O-7c
- for qemu-devel@nongnu.org; Mon, 19 May 2025 10:32:25 -0400
-Received: by mail-yw1-x1132.google.com with SMTP id
- 00721157ae682-703cd93820fso39575077b3.2
- for <qemu-devel@nongnu.org>; Mon, 19 May 2025 07:32:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jim.shu@sifive.com>)
+ id 1uH1aZ-0007Pd-5j
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 10:35:37 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-742af84818cso2362953b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 19 May 2025 07:35:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747665137; x=1748269937; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=kdShHZiHFHvFcUelGV29idzXHFoE9B+g0kognMMc0BU=;
- b=R2oS6X9Gjgnht69fc/hTgQLwp0LRqiQLUSq/Heool+4IAHIcT1tvpiXlCiaR6eEGqd
- lZ+t+Ih5kpT/1wqbk3ApqTl5mC7fFL3Nr3MUYutI08bVgOCAmAgniebfYKDBNpp1IFfX
- dNNY9sZcRVzU40ae4aNFhXpk1La4erala2u3Lc7XKtqDhYbEIaOQYyyNZaEt/IfDOE3p
- 4noL2hD5yc5iMgMyCwufIsrpIqyY+dmaLqHJ1DZ1wooNb7L0pD76LLBfVjrG5I2q7Kl7
- 1TYZs05l92tmCuxuCvqcsyIKEYGmDWzsFq8MDNESQ44z/EF5Y2/PAOZi6HPERGocc+kn
- Oz9g==
+ d=sifive.com; s=google; t=1747665332; x=1748270132; darn=nongnu.org;
+ h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=40itAGysfNIjQ/fzPkWnlZm6Ucscvk9farBtstKM3UU=;
+ b=BR4joDmEDv802Pr9fJ/9ibagX99jRxqu3v+YLdV87nVgB5DgxwlkqnufT9opF4125W
+ ERBBJa8rI3I7YYnAst16pydV4mEQomLO/CaJT+vGz1mqIOFNnIMuqdxxdo7fXpHzCs87
+ BkxoRf+EvTphvJ8LMgfraklzyJoIuDbVxo95zsbW1Nm/mDNmtZ8KUqZ/sEiGX2USG0/w
+ rJvm1WTlilxLqqi4z9k05baOVq+e4MBlO5jgtzalDLCjWS3UkrJUHmSh1ajzzYCAzVn0
+ 1kaIYaB1hnSUYeplQkIIkvF5xGmYLaAWUpUJvxCyWEfHyUCoONoxnziH8uKYx34q/YzS
+ n2iQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747665137; x=1748269937;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=kdShHZiHFHvFcUelGV29idzXHFoE9B+g0kognMMc0BU=;
- b=FruzcmK3ZCe0TlRsaG29s/W2Wur1Uk0LrUWLiFMuFrgn4/qSz0EZ0DEQqGfzTNZOdX
- udxIVxOA5NzxrKVr31KV3YeO8hocRJ3m+78P288NG5mrttXjdR1PhhsPkxiNXNzFZWse
- EuUo8te4691Y2ACyJFpZjclVSNLPEa9rQOInt8EDiRnoXLOJMJLHH03geIY6thl9y85g
- +2bfeQHAucZDwvds2gG98YzlKLOSuZVgQPyrVSEPD9qxBlAX8+qruskUuThNzHtb3aqh
- Qr4McsTXKr9MEbEQlz5eJlldtnbG7hGO6VhXdpEVdZal2LV4BlCxmMSMbYtYvsAV5+Z5
- uY3w==
-X-Gm-Message-State: AOJu0YwwGcORvZFpEs1Zmf+MUHI684yCg83olEz0evFjNHC7DzjDRoIj
- XygRxEhkRlpREEZQ2dxZoQuYWF5//bWFkAMeOtBLfErhRlf8XM4ZIRYYmQ6WyKeXOVXMqTV0wBk
- wyRrJpqUHRFLv13bZg4i4kDZp4v2xU80gPc1uxjFTZOutPPIcAcyv
-X-Gm-Gg: ASbGncsdi3pHqsmvfA2uKTdZTYWfmoHdbY+Wh2xpFzKO/RnZ2b6l3MepO8BcMppRGaI
- Pr8aCi63/fgTGyVtLA50mzOdx/LcvOwwc+boXyf8F5S+h+MvI6hwMrBY5ot78kKU24Q06Bf+4jc
- JsVLzDQ+NHk71sJznwVJkEOHxTv9sQu8l69A==
-X-Google-Smtp-Source: AGHT+IHg/7GLXr5FbAlVSHG73eQlyix4+GJN1svEZHN0dEKnURkLmqG+LZ7KSLlkknwxGNEAIK2VmgoSB6KTNDsVGX8=
-X-Received: by 2002:a05:690c:7093:b0:708:c7db:ceac with SMTP id
- 00721157ae682-70cab0bb1e4mr166174987b3.24.1747665137326; Mon, 19 May 2025
- 07:32:17 -0700 (PDT)
-MIME-Version: 1.0
-References: <20250429163212.618953-1-peter.maydell@linaro.org>
-In-Reply-To: <20250429163212.618953-1-peter.maydell@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 19 May 2025 15:32:05 +0100
-X-Gm-Features: AX0GCFszqV7sHadLxm1PovC1_LZcnY95Au-vHxORxWkaroaMF1KvjtpgYXWDL_M
-Message-ID: <CAFEAcA_hV=962gFfKc-7D91X-MXxVs=VrKQVzOKaLS2gJDt5Lw@mail.gmail.com>
-Subject: Re: [PATCH 0/2] docs: Avoid duplicate labels with a sphinx extn
-To: qemu-devel@nongnu.org
-Cc: John Snow <jsnow@redhat.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1132;
- envelope-from=peter.maydell@linaro.org; helo=mail-yw1-x1132.google.com
+ d=1e100.net; s=20230601; t=1747665332; x=1748270132;
+ h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=40itAGysfNIjQ/fzPkWnlZm6Ucscvk9farBtstKM3UU=;
+ b=uVprZVN6l+YLnJEWhLiJJu3jUk4FbyLNGYWdiIKTWOUT+NK9DgC10bdm8TuoYWtplI
+ lk4uPom9PRyvpVu0oh0JVrSAD2a004AVGpt2Ap+ld05zNTZ/NkqCQKXcWSmV0ylen1UI
+ Ud+NNQu6i3pMS9e8YXIZWkaRoHkmWLo3wTCa88AGBmAYSvbrHHy1b1lOMii3hfcJdzMx
+ PgoanvSngVQGOblqkhVXcu+HmBJW3dU5GTjPcG0whB1oZeO4tBDzTEz6FNuU/Rda03fc
+ D71Zv3p+0/yMphKkPWTrFaHLRcnvg0bagVO1xYSWm3P8jo+PJjhlNjlVxq6cQw6DVM0r
+ mPhQ==
+X-Gm-Message-State: AOJu0YyaFDh4FMPRfTaJOVHYFK2jpyG17wZwFnY35jTPYCljuL1toZUL
+ lFgPGrEPv0nAuGrIt5h4Je5nCwoZ+216mDxzxJ6Fv7HqZPKUEzGu0QrabFUwXfzZwm9oxHNvTdc
+ r8UIdiFUDknjTg+KGqU3lxazVeaEpejIJYNSKMAOxrD1il//jMk16rsTG4gspmA7LJlCeC/8+le
+ T1el2+5u6DHMkxQhD5wuK6wFg/QJXQ4As25RBLuw==
+X-Gm-Gg: ASbGnct0lCYpMguoCFtYKVuz6uIMHeDH/Dru56kIhXb8CjkedNqV1M9mkaOH4RUmDqt
+ 1pe+Xh+khFBVchW4KVzQBOfLUJD+t6fOs2cnAIblydX+wiMVRbd2X/6MUDCLOhYpMWTDruRGfei
+ F4y/nN+iY+1J3+mOfXNmUGJzygopp1Qk/OznfIGArtQZOEbrxEq0ItfmCf53cGsy2gVDJrhW34i
+ /t7jYmbsa8gNbTkM7qbjkkeOffCQwsVLyAROaei+e7FUC1y9e5VFRQaQl2fLkysN5zjPfWH2h2K
+ /gRsbZmZRTKAx9hiYJoicXSnJxCXDNzdCkmTR3fQFJrGtHC3pyjWGCPdBOtkfHv2Oxzkek7RyQ=
+ =
+X-Google-Smtp-Source: AGHT+IGB0MMkDMsUlLrVg2uQHdqGcIangQnghRhV442caTvr/+OcTNSr6IH0wM7pnYPP4fcbuIfgxQ==
+X-Received: by 2002:a05:6a20:3d83:b0:1f5:80a3:b006 with SMTP id
+ adf61e73a8af0-21621934388mr20108307637.21.1747665332368; 
+ Mon, 19 May 2025 07:35:32 -0700 (PDT)
+Received: from hsinchu26.internal.sifive.com ([210.176.154.34])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-742a98a32edsm6297683b3a.162.2025.05.19.07.35.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 19 May 2025 07:35:31 -0700 (PDT)
+From: Jim Shu <jim.shu@sifive.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Jim Shu <jim.shu@sifive.com>
+Subject: [PATCH v3 0/4] Several sstc extension fixes
+Date: Mon, 19 May 2025 22:35:14 +0800
+Message-Id: <20250519143518.11086-1-jim.shu@sifive.com>
+X-Mailer: git-send-email 2.17.1
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=jim.shu@sifive.com; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,84 +98,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ping? Any opinions on this?
+This patch series contains several sstc fixes:
 
-In the interim we've applied commit 82707dd4f0 to drop
-the specific duplicate-label that is causing problems
-right now, so patch 2 here will need the obvious trivial
-update. But I do think this is a better approach than
-forever avoiding defining labels in .rst.inc files...
+(1) Writing to ACLINT mtime should also update the period of S/VS-mode
+    timer, just like M-mode timer.
+(2) VSTIP bit of $mip CSR should check both M-mode and H-mode STCE.
+(3) Writing to STCE bit may enable/disable sstc extension in S/VS-mode,
+    which should update the timer and IRQ pending bits.
 
-thanks
--- PMM
+Changed in v3:
+- Rebase to riscv-to-apply.next
 
-On Tue, 29 Apr 2025 at 17:32, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> Sphinx requires that labels within documents are unique across the
-> whole manual.  This is because the "create a hyperlink" directive
-> specifies only the name of the label, not a filename+label.  Some
-> Sphinx versions will warn about duplicate labels, but even if there
-> is no warning there is still an ambiguity and no guarantee that the
-> hyperlink will be created to the intended target.
->
-> For QEMU this is awkward, because we have various .rst.inc fragments
-> which we include into multiple .rst files.  If you define a label in
-> the .rst.inc file then it will be a duplicate label.  We have mostly
-> worked around this by not putting labels into those .rst.inc files,
-> or by adding "insert a label" functionality into the hxtool extension
-> (see commit 1eeb432a953b0 "doc/sphinx/hxtool.py: add optional label
-> argument to SRST directive"). However, we let one into the codebase
-> without initially noticing, in commit 7f6314427e ("docs/devel: add a
-> codebase section"), because not all versions of Sphinx warn about
-> the duplicate labels.
->
-> This patchset resolves the problem by implementing a small Sphinx
-> extension. The extension lets you write in a .rst.inc:
->
->   .. uniquelabel:: mylabel
->
-> and it will be as if you had written:
->
->   .. _foo/bar-mylabel
->
-> where foo/bar.rst is the top level document that includes the
-> .rst.inc file.
->
-> Patch 1 is the extension; patch 2 is the use of it to fix the
-> problem in qemu-block-drivers.rst.inc. (Concretely, the result is
-> that instead of an ambiguous "nbd" label, we now have separate
-> "system/images-nbd" and "system/qemu-block-drivers-nbd" labels.
-> We want to link to the former, because the latter is in the
-> manpage, not the proper HTML manual.)
->
-> This patchset is a bit RFC quality -- I have not tested it
-> super thoroughly, and the extension itself is written based on
-> our existing ones, because I'm neither a Python nor a Sphinx
-> expert. I figured I'd send it out to see if people agreed that
-> it was the right way to solve this problem.
->
-> (In theory we could remove the SRST(label) functionality from
-> the hxtool extension and have the .hx files use uniquelabel.
-> Not sure that's worthwhile at this point.)
->
-> PS: I find that our extensions are confused about whether they
-> should set "required_arguments = 1" or "required_argument = 1";
-> probably the latter are all bugs that happen to have no bad
-> side effects...
->
-> thanks
-> -- PMM
->
-> Peter Maydell (2):
->   docs: Create a uniquelabel Sphinx extension
->   docs: Use uniquelabel in qemu-block-drivers.rst.inc
->
->  docs/conf.py                           |  1 +
->  docs/devel/codebase.rst                |  2 +-
->  docs/sphinx/uniquelabel.py             | 74 ++++++++++++++++++++++++++
->  docs/system/qemu-block-drivers.rst.inc |  2 +-
->  4 files changed, 77 insertions(+), 2 deletions(-)
->  create mode 100644 docs/sphinx/uniquelabel.py
->
-> --
+Changed in v2:
+- Remove duplicated code in riscv_timer_stce_changed() function
+- Add sstc spec description in the commit log
+
+Jim Shu (4):
+  target/riscv: Add the checking into stimecmp write function.
+  hw/intc: riscv_aclint: Fix mtime write for sstc extension
+  target/riscv: Fix VSTIP bit in sstc extension.
+  target/riscv: Enable/Disable S/VS-mode Timer when STCE bit is changed
+
+ hw/intc/riscv_aclint.c     |  5 +++
+ target/riscv/csr.c         | 55 +++++++++++++++++++++++++++++++-
+ target/riscv/time_helper.c | 65 ++++++++++++++++++++++++++++++++++++--
+ target/riscv/time_helper.h |  1 +
+ 4 files changed, 123 insertions(+), 3 deletions(-)
+
+-- 
+2.17.1
+
 
