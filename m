@@ -2,66 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16638ABC546
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 19:11:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02B28ABC54B
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 19:11:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uH40N-0005tn-CB; Mon, 19 May 2025 13:10:23 -0400
+	id 1uH40T-0005xq-6l; Mon, 19 May 2025 13:10:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uH40H-0005rN-Ld
- for qemu-devel@nongnu.org; Mon, 19 May 2025 13:10:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uH40R-0005xb-G5
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 13:10:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uH40F-0001XY-Md
- for qemu-devel@nongnu.org; Mon, 19 May 2025 13:10:17 -0400
+ id 1uH40P-0001Yz-Ga
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 13:10:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747674614;
+ s=mimecast20190719; t=1747674624;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QlUv3WXzN1tjBcwFhwjIM/PQQRTgeOpjkK85tto1bTY=;
- b=BYsXrOGx+XiFDqoMNtv9xCaZ8RtDiqhNpgavK8WbqHVspC/wCIv2s5qkcPgRi+UDMl/rva
- XemsevTk8nbX2/JynPNx3lsutg0SzhzgmZyL6j8W2afGQd3nlWO3hmi8mPI22s3Yotcn1X
- qoSTsHDlJaAUBdaGkxcxJJ5davdvE2A=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=6D5RyZES2SWDQ6wNrdDFXxlCfksypSEuA8DR7Bwa5jE=;
+ b=OcIVVQXRUw21wcAWIKWfs4/P368ehY+r17tF/wmrsf/S5O4Z9ZoUAkZExVzHyb48YluGOh
+ kMclCC2MAgSQ2pk4kyn956RzDi9p2xrIY6NHNVEsMB3qWJDtcBDsd2ZCFjz61aAVP51ji2
+ Uv71eo3ubrRxQtUqDT1niXMI8FFzkIM=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-461-yy3-RrAFOUGFeL2JY56mcg-1; Mon,
- 19 May 2025 13:10:11 -0400
-X-MC-Unique: yy3-RrAFOUGFeL2JY56mcg-1
-X-Mimecast-MFC-AGG-ID: yy3-RrAFOUGFeL2JY56mcg_1747674610
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-134-T0qTIJatMUe-Pi-fWyzZUQ-1; Mon,
+ 19 May 2025 13:10:18 -0400
+X-MC-Unique: T0qTIJatMUe-Pi-fWyzZUQ-1
+X-Mimecast-MFC-AGG-ID: T0qTIJatMUe-Pi-fWyzZUQ_1747674613
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A21A31956080; Mon, 19 May 2025 17:10:10 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2ECB21800875; Mon, 19 May 2025 17:10:13 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.50])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B900C19560AA; Mon, 19 May 2025 17:10:08 +0000 (UTC)
+ id 3441819560AA; Mon, 19 May 2025 17:10:10 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v5 1/9] Revert "scripts: mandate that new files have
- SPDX-License-Identifier"
-Date: Mon, 19 May 2025 18:09:56 +0100
-Message-ID: <20250519171004.352636-2-berrange@redhat.com>
+Subject: [PATCH v5 2/9] scripts/checkpatch.pl: fix various indentation mistakes
+Date: Mon, 19 May 2025 18:09:57 +0100
+Message-ID: <20250519171004.352636-3-berrange@redhat.com>
 In-Reply-To: <20250519171004.352636-1-berrange@redhat.com>
 References: <20250519171004.352636-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
@@ -86,78 +85,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This reverts commit fa4d79c64dae03ffa269e42e21822453856618b7.
+Various checks in the code were under-indented relative to other
+surrounding code. Some places used 4-space indents instead of
+single tab, while other places simply used too few tabs.
 
-The logic in this commit was flawed in two critical ways
-
- * It always failed to report SPDX validation on the last newly
-   added file. IOW, it only worked if at least 2 new files were
-   added in a commit
-
- * If an existing file change, followed a new file change, in
-   the commit and the existing file context/changed lines
-   included SPDX-License-Identifier, it would incorrectly
-   associate this with the previous newly added file.
-
-Simply reverting this commit will make it significantly easier to
-understand the improved logic in the following commit.
-
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- scripts/checkpatch.pl | 30 ------------------------------
- 1 file changed, 30 deletions(-)
+ scripts/checkpatch.pl | 98 +++++++++++++++++++++----------------------
+ 1 file changed, 49 insertions(+), 49 deletions(-)
 
 diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 365892de04..d355c0dad5 100755
+index d355c0dad5..7675418b0b 100755
 --- a/scripts/checkpatch.pl
 +++ b/scripts/checkpatch.pl
-@@ -1442,8 +1442,6 @@ sub process {
- 	my $in_imported_file = 0;
- 	my $in_no_imported_file = 0;
- 	my $non_utf8_charset = 0;
--	my $expect_spdx = 0;
--	my $expect_spdx_file;
+@@ -1681,19 +1681,19 @@ sub process {
  
- 	our @report = ();
- 	our $cnt_lines = 0;
-@@ -1681,34 +1679,6 @@ sub process {
- 			WARN("added, moved or deleted file(s), does MAINTAINERS need updating?\n" . $herecurr);
- 		}
- 
--# All new files should have a SPDX-License-Identifier tag
--		if ($line =~ /^new file mode\s*\d+\s*$/) {
--		    if ($expect_spdx) {
--			if ($expect_spdx_file =~
--			    /\.(c|h|py|pl|sh|json|inc|Makefile)$/) {
--			    # source code files MUST have SPDX license declared
--			    ERROR("New file '$expect_spdx_file' requires " .
--				  "'SPDX-License-Identifier'");
--			} else {
--			    # Other files MAY have SPDX license if appropriate
--			    WARN("Does new file '$expect_spdx_file' need " .
--				 "'SPDX-License-Identifier'?");
--			}
--		    }
--		    $expect_spdx = 1;
--		    $expect_spdx_file = undef;
--		} elsif ($expect_spdx) {
--		    $expect_spdx_file = $realfile unless
--			defined $expect_spdx_file;
--
--		    # SPDX tags may occurr in comments which were
--		    # stripped from '$line', so use '$rawline'
--		    if ($rawline =~ /SPDX-License-Identifier/) {
--			$expect_spdx = 0;
--			$expect_spdx_file = undef;
--		    }
--		}
--
  # Check SPDX-License-Identifier references a permitted license
  		if ($rawline =~ m,SPDX-License-Identifier: (.*?)(\*/)?\s*$,) {
- 		    &checkspdx($realfile, $1);
+-		    &checkspdx($realfile, $1);
++			&checkspdx($realfile, $1);
+ 		}
+ 
+ 		if ($rawline =~ m,(SPDX-[a-zA-Z0-9-_]+):,) {
+-		    my $tag = $1;
+-		    my @permitted = qw(
+-			SPDX-License-Identifier
+-		    );
+-
+-		    unless (grep { /^$tag$/ } @permitted) {
+-			ERROR("Tag $tag not permitted in QEMU code, valid " .
+-			      "choices are: " . join(", ", @permitted));
+-		    }
++			my $tag = $1;
++			my @permitted = qw(
++				SPDX-License-Identifier
++			);
++
++			unless (grep { /^$tag$/ } @permitted) {
++				ERROR("Tag $tag not permitted in QEMU code, valid " .
++				      "choices are: " . join(", ", @permitted));
++			}
+ 		}
+ 
+ # Check for wrappage within a valid hunk of the file
+@@ -2274,7 +2274,7 @@ sub process {
+ 
+ # missing space after union, struct or enum definition
+ 		if ($line =~ /^.\s*(?:typedef\s+)?(enum|union|struct)(?:\s+$Ident)?(?:\s+$Ident)?[=\{]/) {
+-		    ERROR("missing space after $1 definition\n" . $herecurr);
++			ERROR("missing space after $1 definition\n" . $herecurr);
+ 		}
+ 
+ # check for spacing round square brackets; allowed:
+@@ -2569,7 +2569,7 @@ sub process {
+ 
+ 		if ($line =~ /^.\s*(Q(?:S?LIST|SIMPLEQ|TAILQ)_HEAD)\s*\(\s*[^,]/ &&
+ 		    $line !~ /^.typedef/) {
+-		    ERROR("named $1 should be typedefed separately\n" . $herecurr);
++			ERROR("named $1 should be typedefed separately\n" . $herecurr);
+ 		}
+ 
+ # Need a space before open parenthesis after if, while etc
+@@ -3118,48 +3118,48 @@ sub process {
+ 
+ # Qemu error function tests
+ 
+-	# Find newlines in error messages
+-	my $qemu_error_funcs = qr{error_setg|
+-				error_setg_errno|
+-				error_setg_win32|
+-				error_setg_file_open|
+-				error_set|
+-				error_prepend|
+-				warn_reportf_err|
+-				error_reportf_err|
+-				error_vreport|
+-				warn_vreport|
+-				info_vreport|
+-				error_report|
+-				warn_report|
+-				info_report|
+-				g_test_message}x;
+-
+-	if ($rawline =~ /\b(?:$qemu_error_funcs)\s*\(.*\".*\\n/) {
+-		ERROR("Error messages should not contain newlines\n" . $herecurr);
+-	}
++		# Find newlines in error messages
++		my $qemu_error_funcs = qr{error_setg|
++					 error_setg_errno|
++					 error_setg_win32|
++					 error_setg_file_open|
++					 error_set|
++					 error_prepend|
++					 warn_reportf_err|
++					 error_reportf_err|
++					 error_vreport|
++					 warn_vreport|
++					 info_vreport|
++					 error_report|
++					 warn_report|
++					 info_report|
++					 g_test_message}x;
++
++		if ($rawline =~ /\b(?:$qemu_error_funcs)\s*\(.*\".*\\n/) {
++			ERROR("Error messages should not contain newlines\n" . $herecurr);
++		}
+ 
+-	# Continue checking for error messages that contains newlines. This
+-	# check handles cases where string literals are spread over multiple lines.
+-	# Example:
+-	# error_report("Error msg line #1"
+-	#              "Error msg line #2\n");
+-	my $quoted_newline_regex = qr{\+\s*\".*\\n.*\"};
+-	my $continued_str_literal = qr{\+\s*\".*\"};
++		# Continue checking for error messages that contains newlines. This
++		# check handles cases where string literals are spread over multiple lines.
++		# Example:
++		# error_report("Error msg line #1"
++		#              "Error msg line #2\n");
++		my $quoted_newline_regex = qr{\+\s*\".*\\n.*\"};
++		my $continued_str_literal = qr{\+\s*\".*\"};
+ 
+-	if ($rawline =~ /$quoted_newline_regex/) {
+-		# Backtrack to first line that does not contain only a quoted literal
+-		# and assume that it is the start of the statement.
+-		my $i = $linenr - 2;
++		if ($rawline =~ /$quoted_newline_regex/) {
++			# Backtrack to first line that does not contain only a quoted literal
++			# and assume that it is the start of the statement.
++			my $i = $linenr - 2;
+ 
+-		while (($i >= 0) & $rawlines[$i] =~ /$continued_str_literal/) {
+-			$i--;
+-		}
++			while (($i >= 0) & $rawlines[$i] =~ /$continued_str_literal/) {
++				$i--;
++			}
+ 
+-		if ($rawlines[$i] =~ /\b(?:$qemu_error_funcs)\s*\(/) {
+-			ERROR("Error messages should not contain newlines\n" . $herecurr);
++			if ($rawlines[$i] =~ /\b(?:$qemu_error_funcs)\s*\(/) {
++				ERROR("Error messages should not contain newlines\n" . $herecurr);
++			}
+ 		}
+-	}
+ 
+ # check for non-portable libc calls that have portable alternatives in QEMU
+ 		if ($line =~ /\bffs\(/) {
 -- 
 2.49.0
 
