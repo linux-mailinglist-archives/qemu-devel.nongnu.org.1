@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1730ABB40C
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:29:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E1E4ABB3CB
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:08:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uGs3N-0000bm-Ou; Mon, 19 May 2025 00:24:41 -0400
+	id 1uGrnP-0005DZ-IU; Mon, 19 May 2025 00:08:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uGrnH-00055k-Cf; Mon, 19 May 2025 00:08:04 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ id 1uGrnK-00058N-SL; Mon, 19 May 2025 00:08:07 -0400
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uGrnF-0004BT-Ej; Mon, 19 May 2025 00:08:02 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-af908bb32fdso3032599a12.1; 
- Sun, 18 May 2025 21:08:00 -0700 (PDT)
+ id 1uGrnJ-0004Bb-6N; Mon, 19 May 2025 00:08:06 -0400
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-b26f5f47ba1so1261486a12.1; 
+ Sun, 18 May 2025 21:08:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747627679; x=1748232479; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1747627682; x=1748232482; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6qi58OsTABBr981B/8AZV6yobLaS4vDssxw7naPBl2U=;
- b=F6O7KY7C9mvLbeDWQuHISTwjJAVVEXuF54dh+ghqzGP5kGxZKsbWV0zdbccrSSHdwh
- XYNobNzp6IMLzn3iHGnawrvlW6rcq2ucIKpdgR8S14rmmXTjjLDc+swYlu2KidPtj1ng
- DfQgk2U0TBl7V5Yn7TXXzIkyQCXtY6gg9goxo5keFNl1v/xp491v2un1w3rMhxJExXKZ
- 1Ck5ftpVIxHynit+JfLta1vnD4nFQPINxnf4Q+dC4qdHyuhk58Mvn8UptmEfsVz26Nyt
- FDENhRZYHyVAVNRko8/fgNWE6KEujLf+niK8Lol7GygAn9AGndSMtoRihw+mm3x5zTjy
- Xb8w==
+ bh=vp8MYp6bfU3nKiXsdBY8MEFgu8O1kZSwn/lekxA3uRE=;
+ b=YZKQSb82owQ475o1sSg9xNHlPUzlbaw/kUbYZgUPq6EIoUZ9bXhqivXyGmP4jft254
+ CioMJrFced1qrjXRbTKvL3dJ9yvhr4zSQip+DZqBfzwhyBdV8g0t3D+V1ByYYhMgoYWs
+ MRFulGumynUthw6XM+MpQJC+RnKaPJsRGVow8bSFFcTtYJIU/Vk/Vyr8PCR5O8IhlD7E
+ RddPQOBz9a3w6/ejqX69CkHMYyegdIeQVRMSHJ7MBHonC/EqI6E7hHhOGMYdqxap9bJZ
+ F4dNobE5Iz+JYv/1mWTt0bioIfBqSAgZ01W4Ov5V50KsjcMBmjT5FfdklQByjD1PbuJ4
+ SRZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747627679; x=1748232479;
+ d=1e100.net; s=20230601; t=1747627682; x=1748232482;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6qi58OsTABBr981B/8AZV6yobLaS4vDssxw7naPBl2U=;
- b=Z9udmPdRo5y64wBai/Ym6dcY2x23iabt4N9T8uryEnF4UFepP2jinoc39EzJgPE2Kv
- LXRO8j7ml+qpQW02tZIJfV/KlFAGhWCjVTd+iWA+bVkDbkhWx2JQ9M2rULgXaLbSOq5E
- 94+ltEbnGE62EbVmVAiqZGz1QfTKWl7qgcfLJx5nXHyATXhh/oJJ1mzDMScdCF4/ie7h
- gj4tnxPXTITAX02cqmOcU0/w8XrhwYRciEeAiZSuPxEsQJPvrgwPKH/fXpIsfLFC3FZJ
- xVlwbYakio2f2sDP/NN2bbjHqx8qDWyrKeKbxiIlMlZ3CyKpsYSlfHCSi7Z+v3gPbrhL
- t9Pw==
+ bh=vp8MYp6bfU3nKiXsdBY8MEFgu8O1kZSwn/lekxA3uRE=;
+ b=QvCo37WF5WNr3zy0xwwmQarfhkqN94cRLey5om9D5OX476/1YTxqgQSkOYohd812SM
+ bnRtX66CjxKpKg1s8u5ZP9L1XoIgnte7PLYdMA2JllqJidwxSYhtMXZYwfe2H2q0g2bI
+ vqU2vFzEyAgMEalR2dW9e+/TY84d0wCMl+GKGBFSmL4rqFDYxR/hdohexjcgiPjKGqH3
+ tmhZDjaDUB5skXbiUXlgj4/GfAQ1+bXM5DvbJCSj5/3gvTJrPgyNnfVPGa+NyYF4r9Lv
+ ZNADT25+7FrGr+yxopOPZY+9Ge85VbKkSrerUHAJgt5bqOBJzkypVnQ5GkTuEPBF6VDF
+ vZUA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVXpuiLPIY8qWIANdSQTmmyC2TdFdltLZVtlG09cZ0Pe4UcMMvIJ7rG4ob61xpGOWMUo5LNuBXbMIiNJg==@nongnu.org
-X-Gm-Message-State: AOJu0YzHMrPpJIxGoFouavMvw2xCqyBWEbT2J7C1mAUDM93oNeZnjNLr
- KWOB43C7qluhCaciWAyGRZVFZVX5HeMfONYWDhm/zkl/NTT1fZCM4/pmAWsiZA==
-X-Gm-Gg: ASbGnctM5wXxsFjZ7Tv/u/0D++GfDgH6t6eh6StqC8Vuc3JxJ54fWqWNhnq5ZhNIgs5
- 0YT34oeXPbSaGNiNdelvgCI+BfpXjEjYfbP8G5Vt0DTlLu36dutDCHZEkGXwAMPBfwRSGP1sKE0
- r614sf0XrBvSfxiiEMexR4C8752WXwkhaiJvaMhmfwq/EgjIDjhgnop7lRGwz+zNWyIDuUEhyYK
- mr4gn8xyU6kanPIbVbAO1u0tyYzugUVsN/tdgNyvteZq++qoI0PqerLm4zvVoZbH/WFTQFkYJUq
- AuYozWGCQ/Hs5pka7qVk/7YHgsrASpSH3YzR4qn29bNOZf6fdoDBxkKa3ReuyJzPVLjwyCMH9ZR
- 0xHIRTWikl6cN9+ZUMAhxH4gK9SJURzJUwIAJlnz/zsZZLotCq7vJJeIx
-X-Google-Smtp-Source: AGHT+IHKmb4D0nfIS1CHukiUDBdgupwm+w1qzLJ7ucRLuKxzcuVW6pNInR8p3PeBQwGpqEb7XLqr5w==
-X-Received: by 2002:a17:902:c202:b0:231:c89f:4e94 with SMTP id
- d9443c01a7336-231c89f4f9amr147373365ad.21.1747627678692; 
- Sun, 18 May 2025 21:07:58 -0700 (PDT)
+ AJvYcCXmjdXyBQR9CObtULhyQjI8uWZnzUBIYgfcyjsAzny6ZfzJkI4uqWIFjRWEnj7fGx9sHM9riHKI7cJdag==@nongnu.org
+X-Gm-Message-State: AOJu0YwITfRQq0J+lzI6TebyhX2rngXVTNc74y35iEiIGkLhSzvTgjf1
+ ikGu+ApwneDVEzW+PLqm09qfDxb/MUjorEEPLaQWo+gGJS6h+cUz4+iLeBrdRg==
+X-Gm-Gg: ASbGncvx9j1GkIWVkMW8XWC5kXJ+cqCYzerwr626+D8KVE0zaWMxoZEy4qwaCvdUj3P
+ 54zp7tX6FtHLNXhqk/nZYiNYNo7o+AOHVUEL30sCaZf9coZ4eoJz/htistmnPoH12kK2Ip/e5lV
+ fKK+ItSlgQZJbIsHbb2I1AUVn7f2NxTVflPFluHtqxrVzu8LpWl53LzqnbU95fTM+YACmA+M6Z2
+ 7Ayjnwv1/aXzAIoe41ogp83xoLDIOYsjXiu0X39bijeDAN4Je0hdCx9IDsb0JfWk208QVUY5DNM
+ zyJd8XcPSGrofKW8ahOLYXn8cFbH7M80JY3Nq7qMgs/Mwiy1WjvH3TK1Chxk6aMU9Vh2i8+ZrOj
+ Dus3GzIRXRbfXDnNcytTJO4Kgz/ZBHscIlKUO/dGXaN/elOenRo7QELj1yActtVSzdKg=
+X-Google-Smtp-Source: AGHT+IFA8PE6NSgLbIfqqJqtl/4eOoUwlicn9jZ09I7Gc5/DDUYGusnGE3Vm6rujaiYhtDAWbUyCgA==
+X-Received: by 2002:a17:903:46d0:b0:231:d16c:7f6c with SMTP id
+ d9443c01a7336-231de2e95ebmr156262495ad.11.1747627681996; 
+ Sun, 18 May 2025 21:08:01 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.07.55
+ d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.07.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 May 2025 21:07:58 -0700 (PDT)
+ Sun, 18 May 2025 21:08:01 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Paolo Bonzini <pbonzini@redhat.com>,
- Kohei Tokunaga <ktokunaga.mail@gmail.com>,
+Cc: alistair23@gmail.com, Ziqiao Kong <ziqiaokong@gmail.com>,
  Alistair Francis <alistair.francis@wdc.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-stable@nongnu.org
-Subject: [PULL 17/56] hw/riscv: Fix type conflict of GLib function pointers
-Date: Mon, 19 May 2025 14:05:14 +1000
-Message-ID: <20250519040555.3797167-18-alistair.francis@wdc.com>
+ Richard Henderson <richard.henderson@linaro.org>, qemu-stable@nongnu.org
+Subject: [PULL 18/56] target/riscv: fix endless translation loop on big endian
+ systems
+Date: Mon, 19 May 2025 14:05:15 +1000
+Message-ID: <20250519040555.3797167-19-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250519040555.3797167-1-alistair.francis@wdc.com>
 References: <20250519040555.3797167-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x531.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x536.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -106,43 +104,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Ziqiao Kong <ziqiaokong@gmail.com>
 
-qtest_set_command_cb passed to g_once should match GThreadFunc,
-which it does not.  But using g_once is actually unnecessary,
-because the function is called by riscv_harts_realize() under
-the Big QEMU Lock.
+On big endian systems, pte and updated_pte hold big endian host data
+while pte_pa points to little endian target data. This means the branch
+at cpu_helper.c:1669 will be always satisfied and restart translation,
+causing an endless translation loop.
 
-Reported-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+The correctness of this patch can be deduced by:
+
+old_pte will hold value either from cpu_to_le32/64(pte) or
+cpu_to_le32/64(updated_pte), both of wich is litte endian. After that,
+an in-place conversion by le32/64_to_cpu(old_pte) ensures that old_pte
+now is in native endian, same with pte. Therefore, the endianness of the
+both side of if (old_pte != pte) is correct.
+
+Signed-off-by: Ziqiao Kong <ziqiaokong@gmail.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250410161722.595634-1-pbonzini@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20250415080254.3667878-2-ziqiaokong@gmail.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 Cc: qemu-stable@nongnu.org
 ---
- hw/riscv/riscv_hart.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ target/riscv/cpu_helper.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/hw/riscv/riscv_hart.c b/hw/riscv/riscv_hart.c
-index ac6539bd3e..333083a4f1 100644
---- a/hw/riscv/riscv_hart.c
-+++ b/hw/riscv/riscv_hart.c
-@@ -104,8 +104,11 @@ static bool csr_qtest_callback(CharBackend *chr, gchar **words)
- 
- static void riscv_cpu_register_csr_qtest_callback(void)
- {
--    static GOnce once;
--    g_once(&once, (GThreadFunc)qtest_set_command_cb, csr_qtest_callback);
-+    static bool first = true;
-+    if (first) {
-+        first = false;
-+        qtest_set_command_cb(csr_qtest_callback);
-+    }
- }
- #endif
- 
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index d5039f69a9..2ed69d7c2d 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -1566,9 +1566,11 @@ static int get_physical_address(CPURISCVState *env, hwaddr *physical,
+             target_ulong *pte_pa = qemu_map_ram_ptr(mr->ram_block, addr1);
+             target_ulong old_pte;
+             if (riscv_cpu_sxl(env) == MXL_RV32) {
+-                old_pte = qatomic_cmpxchg((uint32_t *)pte_pa, pte, updated_pte);
++                old_pte = qatomic_cmpxchg((uint32_t *)pte_pa, cpu_to_le32(pte), cpu_to_le32(updated_pte));
++                old_pte = le32_to_cpu(old_pte);
+             } else {
+-                old_pte = qatomic_cmpxchg(pte_pa, pte, updated_pte);
++                old_pte = qatomic_cmpxchg(pte_pa, cpu_to_le64(pte), cpu_to_le64(updated_pte));
++                old_pte = le64_to_cpu(old_pte);
+             }
+             if (old_pte != pte) {
+                 goto restart;
 -- 
 2.49.0
 
