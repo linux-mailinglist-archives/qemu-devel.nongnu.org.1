@@ -2,84 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A50B5ABB3C8
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:07:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF088ABB3D9
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:13:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uGrmv-0004jU-5A; Mon, 19 May 2025 00:07:41 -0400
+	id 1uGrsg-0002cP-Hf; Mon, 19 May 2025 00:13:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uGrmV-0004is-Fa
- for qemu-devel@nongnu.org; Mon, 19 May 2025 00:07:17 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1uGrmZ-0004j9-G0; Mon, 19 May 2025 00:07:21 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uGrmS-00044j-Kk
- for qemu-devel@nongnu.org; Mon, 19 May 2025 00:07:14 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-231d4679580so21974565ad.1
- for <qemu-devel@nongnu.org>; Sun, 18 May 2025 21:07:12 -0700 (PDT)
+ id 1uGrmX-00044s-ER; Mon, 19 May 2025 00:07:18 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-b26ee6be1ecso1638717a12.0; 
+ Sun, 18 May 2025 21:07:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747627631; x=1748232431; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1747627634; x=1748232434; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=r5C5gvbFcMnRIuSXrPTRGKO/UvIsswQe1PqV9iglJ8E=;
- b=aK+8WgfrhELFXcI64rfWvNi3YYU4LIboRumLzdcmWVaILZCQqx7YqA03Y6gx24FD2U
- 2BhlEH6C5hRKND6HwjkmovafBMEOG6Hv0SIbrKf0DDmB3Ft8ufXSM29BaA4gJ1Ld82B6
- tgKXQjH8dpQh1eI903woW1ECEtk3m/bnDL37kyDXjp617aipLfzT763KZt6+G25MU4pu
- BOkmHu7bHKdmx6udF+Xx8AoFp1twwrsYvTXQgQpeNDDnCLmSflQuEXwjzoLwdo/jrFOD
- 2eapnoyiSYCP9uRnw0d76j8cin5H2ABW/1dksetMDNdugvx51hkIOAvRkF/W0CGtfUUI
- TPRg==
+ bh=yTIvHcAFACQpxbEMKQQmOLfJuML6Aq0ZlBGdT+L1BSU=;
+ b=KZZHIFoqqoNl0nGzs4UxyHdmp/NSm1RiWsz+/cWhWip6LPH+uEvdGjTi6+tYPyFDyu
+ Mh7ChvJvvj2cVt7E/sM7S8Vweq5EW6jVl64Y3mxMJ7/oVjY5uRpXSFTYsyzL48l24QUN
+ ZZVE7bxwTFqs49fAqtVtnqrmOFhkUg2Z+irTTELrrXQzIVyQw09KcQisK4laq9nrOk96
+ 6WNkF5LiEWzj/gMWgWN8Hrfwbp+2OxXXEBqQg7vEVUdt3mHBolAe9XV5TjdTo1IFL2hp
+ pjyK0AItqMAD2NdoDybEOJjuPY8QE4md2mP5CwxOvAsYtfO+vN8giwUJKc7p7k+Mou8E
+ 4ZWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747627631; x=1748232431;
+ d=1e100.net; s=20230601; t=1747627634; x=1748232434;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=r5C5gvbFcMnRIuSXrPTRGKO/UvIsswQe1PqV9iglJ8E=;
- b=Xh1iNveySQ8nHKgePcNYC/vS+UNdGM+zfFVKtpnRp6rGy8NuUQmP3/e1BQSrmHe//F
- ejejSPxNV5kVERB8sy/JFln2lgOjJ6FTk1LtgDJdcSyMm7AIwGkpYjpKL7I1g8px+h+m
- lCcveI7XwhQ7aSl7ZIsgtNWBGGco5H8PoVTis+p3F7N79ACOR+VVaZjpi6j2zrJU2qCQ
- RisrqhGrZANNd/rDh80RnGJ1BMjYMf3u+iRg5tiNg0SfitgCpvd/Morm+xBTBdozC3ad
- ZKO/4uDQLKftdwMbnGeTAfQQlNtJt41TZJN0iq/VQ2wxrWrlza3FGbMNzoyOBrSRdelx
- w0Ww==
-X-Gm-Message-State: AOJu0Yz9msKvrUgY9ZR9Rp+m+YoAsMBKdbwwR+J4dTCetCTVIh/hVvG7
- nS6kndNSFKrBOZqHLtnq+u/wP4mWKG3xC/tpqN0DnFovIyGUQ5kt6YxdLhfCJQ==
-X-Gm-Gg: ASbGncvgnV0IFpuussqJnge//+5a+AhxUSo1DFScJQDlIM96NyzQkTDB61WHSPnvLt1
- B9Mni0PT4+nbCardaji2nrhJWEFyJ/rcxUcJPXW+8MOTbMDM11F2CE3v3OesvmsMZrWVNtcEdIW
- qL/chhRv12vqlkdVST1fnmV9md7/u81FFhTNQVySWYLI35HqfR33Dlqayc5fR/7OSKCYA2JDhdD
- q5AtekrO4K1+UELhsUvPlzYKYxUhGJ3pc+vSZe1UQfRjJZMX8Seme4wNxTSfTq9y6fqkGFXZIXv
- QwKRes2exzciRjvvuA1ef0qE+f3el/MSn+j5NumqAtfSdo5TKvg1OUgDBf8rj+cZtreJs3FfC+A
- 7WSZMGRTfHg2nYoyhEZ6ku2a5bQVKMtnvFQbJZ/M35FucNvp7ZAGyQmiCg4cJx42p2F8=
-X-Google-Smtp-Source: AGHT+IGlNLSuL2Y6S/NobeJ68ilfdCP8vTz0Bvz5kfvvqnwLc6+1trm/4QT6qCkLc4J9EkQQ4vBVGA==
-X-Received: by 2002:a17:903:18f:b0:224:249f:9734 with SMTP id
- d9443c01a7336-231d43d9a1fmr169883105ad.4.1747627630581; 
- Sun, 18 May 2025 21:07:10 -0700 (PDT)
+ bh=yTIvHcAFACQpxbEMKQQmOLfJuML6Aq0ZlBGdT+L1BSU=;
+ b=Uz1UC75NlDvFcbkxXZDQxCmh+hAYVQwdp9QiPmPP9F4YsWN09b0B/ABNpfe00L2d7v
+ 6eMGy/V3VUqVk9+AMQ/Ys4uR8AS2Ah2/Ve0021hIcCRn9m1pkiUwF3zdo0tswkHQWxhP
+ KHDuPbrtU1NvyIoG/rdnj+NABYbbsTarYNzu7L/GyezC5o8UppAULEdEyow1aiJYUOak
+ O19HAI1HVt0m5MQzYFsCNAxaM27c2iqJZTQpP7tkliEoDDSUg5j4G8uEf/nZ+A8juZKc
+ 0zqgkXBvvgRFjAtCxiFeq2OGfFMtEdTqcEyK/SsRH6uL5SiRdRe138muVwpNQdiaWrFu
+ SxUw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWCBnbah34NB+RwvjhA08aCWRxm75EjFfdOVBNlnJnVWY689IsZfraQIe21e1t+TSkg3uP2QK/AbZfi+w==@nongnu.org
+X-Gm-Message-State: AOJu0Yy+QhrnU+ibJ8K2FIEYppCc4R1Iz0b3BTVu3ZeIBXxrw9KcPlvi
+ 6dLBhI5WcbCDvIltapcUfB5OC/Nli0CBEVl2soe0OeLnV1QZSCpcWROlLJoAEw==
+X-Gm-Gg: ASbGncu1z1B9+UdG9lORSl6fr4oawZdrqiLSX2wQ9IWIAtEu8K8CEP3EIwm0K4j5l2r
+ ReOJP6XvttUopH7K+fGfhmfv3qBrFvbVG1//egayktO58on7wxLmvFTXqYjt4qPSlnm5JFPeE7R
+ ecN0H7ExL2Vecu1G4vKNnAbBjblbO9H9c03BXUkcQHhy3Z/yxGUWVXTYF/W3UhGJ0eJ2bVKXXfV
+ Zu8MHIy8I6vtwflT1XTJa8VPvBD24vvSC1yRRvwgMcM1EviuEdpVjQuLCk6EiyRcXXtsJAzjTgd
+ xCQ+HhA5kM3Zi18T+J97NoWfOsEvDnX9Ntad7fAHOcUD9tchA5U+EYsJkD5mCzJyeQMMTw/0lhM
+ tjiD+V1/gVIt8HfdYasGemB6braylQPKeUjpo3yg0KsfPDXQCG7+8heVrXO90llhMB6M=
+X-Google-Smtp-Source: AGHT+IHVZyQRDYIxJyiL91I/9mVazjNn5i+tqrvUZoeyS1x9XaXQgc1SdC06ZmFkm4oEak8DIcL3PQ==
+X-Received: by 2002:a17:903:228b:b0:224:1157:6d26 with SMTP id
+ d9443c01a7336-231de352994mr150114505ad.4.1747627634355; 
+ Sun, 18 May 2025 21:07:14 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.07.08
+ d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.07.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 May 2025 21:07:10 -0700 (PDT)
+ Sun, 18 May 2025 21:07:13 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Sunil V L <sunilvl@ventanamicro.com>,
+Cc: alistair23@gmail.com, =?UTF-8?q?Lo=C3=AFc=20Lefort?= <loic@rivosinc.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 02/56] hw/riscv/virt-acpi-build: Add support for RIMT
-Date: Mon, 19 May 2025 14:04:59 +1000
-Message-ID: <20250519040555.3797167-3-alistair.francis@wdc.com>
+ =?UTF-8?q?LIU=20Zhiwei=C2=A0?= <zhiwei_liu@linux.alibaba.com>,
+ qemu-stable@nongnu.org
+Subject: [PULL 03/56] target/riscv: pmp: don't allow RLB to bypass rule
+ privileges
+Date: Mon, 19 May 2025 14:05:00 +1000
+Message-ID: <20250519040555.3797167-4-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250519040555.3797167-1-alistair.francis@wdc.com>
 References: <20250519040555.3797167-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x530.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -103,270 +107,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sunil V L <sunilvl@ventanamicro.com>
+From: Loïc Lefort <loic@rivosinc.com>
 
-RISC-V IO Mapping Table (RIMT) is a new static ACPI table used to
-communicate IOMMU information to the OS. Add support for creating this
-table when the IOMMU is present. The specification is frozen and
-available at [1].
+When Smepmp is supported, mseccfg.RLB allows bypassing locks when writing CSRs
+but should not affect interpretation of actual PMP rules.
 
-[1] - https://github.com/riscv-non-isa/riscv-acpi-rimt/releases/download/v0.99/rimt-spec.pdf
+This is not the case with the current implementation where pmp_hart_has_privs
+calls pmp_is_locked which implements mseccfg.RLB bypass.
 
-Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+This commit implements the correct behavior by removing mseccfg.RLB bypass from
+pmp_is_locked.
+
+RLB bypass when writing CSRs is implemented by adding a new pmp_is_readonly
+function that calls pmp_is_locked and check mseccfg.RLB. pmp_write_cfg and
+pmpaddr_csr_write are changed to use this new function.
+
+Signed-off-by: Loïc Lefort <loic@rivosinc.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20250322043139.2003479-3-sunilvl@ventanamicro.com>
+Reviewed-by: LIU Zhiwei  <zhiwei_liu@linux.alibaba.com>
+Message-ID: <20250313193011.720075-2-loic@rivosinc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+Cc: qemu-stable@nongnu.org
 ---
- hw/riscv/virt-acpi-build.c | 215 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 215 insertions(+)
+ target/riscv/pmp.c | 43 +++++++++++++++++++++++--------------------
+ 1 file changed, 23 insertions(+), 20 deletions(-)
 
-diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
-index 1ad6800508..1eef2fb4eb 100644
---- a/hw/riscv/virt-acpi-build.c
-+++ b/hw/riscv/virt-acpi-build.c
-@@ -198,6 +198,32 @@ acpi_dsdt_add_uart(Aml *scope, const MemMapEntry *uart_memmap,
-     aml_append(scope, dev);
- }
- 
-+/*
-+ * Add DSDT entry for the IOMMU platform device.
-+ * ACPI ID for IOMMU is defined in the section 6.2 of RISC-V BRS spec.
-+ * https://github.com/riscv-non-isa/riscv-brs/releases/download/v0.8/riscv-brs-spec.pdf
-+ */
-+static void acpi_dsdt_add_iommu_sys(Aml *scope, const MemMapEntry *iommu_memmap,
-+                                    uint32_t iommu_irq)
-+{
-+    uint32_t i;
-+
-+    Aml *dev = aml_device("IMU0");
-+    aml_append(dev, aml_name_decl("_HID", aml_string("RSCV0004")));
-+    aml_append(dev, aml_name_decl("_UID", aml_int(0)));
-+
-+    Aml *crs = aml_resource_template();
-+    aml_append(crs, aml_memory32_fixed(iommu_memmap->base,
-+                                       iommu_memmap->size, AML_READ_WRITE));
-+    for (i = iommu_irq; i < iommu_irq + 4; i++) {
-+        aml_append(crs, aml_interrupt(AML_CONSUMER, AML_EDGE, AML_ACTIVE_LOW,
-+                                      AML_EXCLUSIVE, &i, 1));
-+    }
-+
-+    aml_append(dev, aml_name_decl("_CRS", crs));
-+    aml_append(scope, dev);
-+}
-+
- /*
-  * Serial Port Console Redirection Table (SPCR)
-  * Rev: 1.10
-@@ -450,6 +476,9 @@ static void build_dsdt(GArray *table_data,
+diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
+index c13a117e3f..d8e2949aaf 100644
+--- a/target/riscv/pmp.c
++++ b/target/riscv/pmp.c
+@@ -46,11 +46,6 @@ static inline uint8_t pmp_get_a_field(uint8_t cfg)
+  */
+ static inline int pmp_is_locked(CPURISCVState *env, uint32_t pmp_index)
+ {
+-    /* mseccfg.RLB is set */
+-    if (MSECCFG_RLB_ISSET(env)) {
+-        return 0;
+-    }
+-
+     if (env->pmp_state.pmp[pmp_index].cfg_reg & PMP_LOCK) {
+         return 1;
      }
- 
-     acpi_dsdt_add_uart(scope, &memmap[VIRT_UART0], UART0_IRQ);
-+    if (virt_is_iommu_sys_enabled(s)) {
-+        acpi_dsdt_add_iommu_sys(scope, &memmap[VIRT_IOMMU_SYS], IOMMU_SYS_IRQ);
-+    }
- 
-     if (socket_count == 1) {
-         virtio_acpi_dsdt_add(scope, memmap[VIRT_VIRTIO].base,
-@@ -602,6 +631,187 @@ static void build_madt(GArray *table_data,
-     acpi_table_end(linker, &table);
+@@ -63,6 +58,15 @@ static inline int pmp_is_locked(CPURISCVState *env, uint32_t pmp_index)
+     return 0;
  }
  
-+#define ID_MAPPING_ENTRY_SIZE        20
-+#define IOMMU_ENTRY_SIZE             40
-+#define RISCV_INTERRUPT_WIRE_OFFSSET 40
-+#define ROOT_COMPLEX_ENTRY_SIZE      20
-+#define RIMT_NODE_OFFSET             48
-+
 +/*
-+ * ID Mapping Structure
++ * Check whether a PMP is locked for writing or not.
++ * (i.e. has LOCK flag and mseccfg.RLB is unset)
 + */
-+static void build_rimt_id_mapping(GArray *table_data, uint32_t source_id_base,
-+                                  uint32_t num_ids, uint32_t dest_id_base)
++static int pmp_is_readonly(CPURISCVState *env, uint32_t pmp_index)
 +{
-+    /* Source ID Base */
-+    build_append_int_noprefix(table_data, source_id_base, 4);
-+    /* Number of IDs */
-+    build_append_int_noprefix(table_data, num_ids, 4);
-+    /* Destination Device ID Base */
-+    build_append_int_noprefix(table_data, source_id_base, 4);
-+    /* Destination IOMMU Offset */
-+    build_append_int_noprefix(table_data, dest_id_base, 4);
-+    /* Flags */
-+    build_append_int_noprefix(table_data, 0, 4);
-+}
-+
-+struct AcpiRimtIdMapping {
-+    uint32_t source_id_base;
-+    uint32_t num_ids;
-+};
-+typedef struct AcpiRimtIdMapping AcpiRimtIdMapping;
-+
-+/* Build the rimt ID mapping to IOMMU for a given PCI host bridge */
-+static int rimt_host_bridges(Object *obj, void *opaque)
-+{
-+    GArray *idmap_blob = opaque;
-+
-+    if (object_dynamic_cast(obj, TYPE_PCI_HOST_BRIDGE)) {
-+        PCIBus *bus = PCI_HOST_BRIDGE(obj)->bus;
-+
-+        if (bus && !pci_bus_bypass_iommu(bus)) {
-+            int min_bus, max_bus;
-+
-+            pci_bus_range(bus, &min_bus, &max_bus);
-+
-+            AcpiRimtIdMapping idmap = {
-+                .source_id_base = min_bus << 8,
-+                .num_ids = (max_bus - min_bus + 1) << 8,
-+            };
-+            g_array_append_val(idmap_blob, idmap);
-+        }
-+    }
-+
-+    return 0;
-+}
-+
-+static int rimt_idmap_compare(gconstpointer a, gconstpointer b)
-+{
-+    AcpiRimtIdMapping *idmap_a = (AcpiRimtIdMapping *)a;
-+    AcpiRimtIdMapping *idmap_b = (AcpiRimtIdMapping *)b;
-+
-+    return idmap_a->source_id_base - idmap_b->source_id_base;
-+}
-+
-+/*
-+ * RISC-V IO Mapping Table (RIMT)
-+ * https://github.com/riscv-non-isa/riscv-acpi-rimt/releases/download/v0.99/rimt-spec.pdf
-+ */
-+static void build_rimt(GArray *table_data, BIOSLinker *linker,
-+                       RISCVVirtState *s)
-+{
-+    int i, nb_nodes, rc_mapping_count;
-+    size_t node_size, iommu_offset = 0;
-+    uint32_t id = 0;
-+    g_autoptr(GArray) iommu_idmaps = g_array_new(false, true,
-+                                                 sizeof(AcpiRimtIdMapping));
-+
-+    AcpiTable table = { .sig = "RIMT", .rev = 1, .oem_id = s->oem_id,
-+                        .oem_table_id = s->oem_table_id };
-+
-+    acpi_table_begin(&table, table_data);
-+
-+    object_child_foreach_recursive(object_get_root(),
-+                                   rimt_host_bridges, iommu_idmaps);
-+
-+    /* Sort the ID mapping  by Source ID Base*/
-+    g_array_sort(iommu_idmaps, rimt_idmap_compare);
-+
-+    nb_nodes = 2; /* RC, IOMMU */
-+    rc_mapping_count = iommu_idmaps->len;
-+    /* Number of RIMT Nodes */
-+    build_append_int_noprefix(table_data, nb_nodes, 4);
-+
-+    /* Offset to Array of RIMT Nodes */
-+    build_append_int_noprefix(table_data, RIMT_NODE_OFFSET, 4);
-+    build_append_int_noprefix(table_data, 0, 4); /* Reserved */
-+
-+    iommu_offset = table_data->len - table.table_offset;
-+    /*  IOMMU Device Structure */
-+    build_append_int_noprefix(table_data, 0, 1);         /* Type - IOMMU*/
-+    build_append_int_noprefix(table_data, 1, 1);         /* Revision */
-+    node_size =  IOMMU_ENTRY_SIZE;
-+    build_append_int_noprefix(table_data, node_size, 2); /* Length */
-+    build_append_int_noprefix(table_data, 0, 2);         /* Reserved */
-+    build_append_int_noprefix(table_data, id++, 2);      /* ID */
-+    if (virt_is_iommu_sys_enabled(s)) {
-+        /* Hardware ID */
-+        build_append_int_noprefix(table_data, 'R', 1);
-+        build_append_int_noprefix(table_data, 'S', 1);
-+        build_append_int_noprefix(table_data, 'C', 1);
-+        build_append_int_noprefix(table_data, 'V', 1);
-+        build_append_int_noprefix(table_data, '0', 1);
-+        build_append_int_noprefix(table_data, '0', 1);
-+        build_append_int_noprefix(table_data, '0', 1);
-+        build_append_int_noprefix(table_data, '4', 1);
-+        /* Base Address */
-+        build_append_int_noprefix(table_data,
-+                                  s->memmap[VIRT_IOMMU_SYS].base, 8);
-+        build_append_int_noprefix(table_data, 0, 4);   /* Flags */
-+    } else {
-+        /* Hardware ID */
-+        build_append_int_noprefix(table_data, '0', 1);
-+        build_append_int_noprefix(table_data, '0', 1);
-+        build_append_int_noprefix(table_data, '1', 1);
-+        build_append_int_noprefix(table_data, '0', 1);
-+        build_append_int_noprefix(table_data, '0', 1);
-+        build_append_int_noprefix(table_data, '0', 1);
-+        build_append_int_noprefix(table_data, '1', 1);
-+        build_append_int_noprefix(table_data, '4', 1);
-+
-+        build_append_int_noprefix(table_data, 0, 8);   /* Base Address */
-+        build_append_int_noprefix(table_data, 1, 4);   /* Flags */
-+    }
-+
-+    build_append_int_noprefix(table_data, 0, 4);       /* Proximity Domain */
-+    build_append_int_noprefix(table_data, 0, 2);       /* PCI Segment number */
-+    /* PCIe B/D/F */
-+    if (virt_is_iommu_sys_enabled(s)) {
-+        build_append_int_noprefix(table_data, 0, 2);
-+    } else {
-+        build_append_int_noprefix(table_data, s->pci_iommu_bdf, 2);
-+    }
-+    /* Number of interrupt wires */
-+    build_append_int_noprefix(table_data, 0, 2);
-+    /* Interrupt wire array offset */
-+    build_append_int_noprefix(table_data, RISCV_INTERRUPT_WIRE_OFFSSET, 2);
-+
-+    /*  PCIe Root Complex Node */
-+    build_append_int_noprefix(table_data, 1, 1);           /* Type */
-+    build_append_int_noprefix(table_data, 1, 1);           /* Revision */
-+    node_size =  ROOT_COMPLEX_ENTRY_SIZE +
-+                 ID_MAPPING_ENTRY_SIZE * rc_mapping_count;
-+    build_append_int_noprefix(table_data, node_size, 2);   /* Length */
-+    build_append_int_noprefix(table_data, 0, 2);           /* Reserved */
-+    build_append_int_noprefix(table_data, id++, 2);        /* ID */
-+    build_append_int_noprefix(table_data, 0, 4);           /* Flags */
-+    build_append_int_noprefix(table_data, 0, 2);           /* Reserved */
-+    /* PCI Segment number */
-+    build_append_int_noprefix(table_data, 0, 2);
-+    /* ID mapping array offset */
-+    build_append_int_noprefix(table_data, ROOT_COMPLEX_ENTRY_SIZE, 2);
-+    /* Number of ID mappings */
-+    build_append_int_noprefix(table_data, rc_mapping_count, 2);
-+
-+    /* Output Reference */
-+    AcpiRimtIdMapping *range;
-+
-+    /* ID mapping array */
-+    for (i = 0; i < iommu_idmaps->len; i++) {
-+        range = &g_array_index(iommu_idmaps, AcpiRimtIdMapping, i);
-+        if (virt_is_iommu_sys_enabled(s)) {
-+            range->source_id_base = 0;
-+        } else {
-+            range->source_id_base = s->pci_iommu_bdf + 1;
-+        }
-+        range->num_ids = 0xffff - s->pci_iommu_bdf;
-+        build_rimt_id_mapping(table_data, range->source_id_base,
-+                              range->num_ids, iommu_offset);
-+    }
-+
-+    acpi_table_end(linker, &table);
++    return pmp_is_locked(env, pmp_index) && !MSECCFG_RLB_ISSET(env);
 +}
 +
  /*
-  * ACPI spec, Revision 6.5+
-  * 5.2.16 System Resource Affinity Table (SRAT)
-@@ -679,6 +889,11 @@ static void virt_acpi_build(RISCVVirtState *s, AcpiBuildTables *tables)
-     acpi_add_table(table_offsets, tables_blob);
-     build_rhct(tables_blob, tables->linker, s);
+  * Count the number of active rules.
+  */
+@@ -91,39 +95,38 @@ static inline uint8_t pmp_read_cfg(CPURISCVState *env, uint32_t pmp_index)
+ static bool pmp_write_cfg(CPURISCVState *env, uint32_t pmp_index, uint8_t val)
+ {
+     if (pmp_index < MAX_RISCV_PMPS) {
+-        bool locked = true;
++        bool readonly = true;
  
-+    if (virt_is_iommu_sys_enabled(s) || s->pci_iommu_bdf) {
-+        acpi_add_table(table_offsets, tables_blob);
-+        build_rimt(tables_blob, tables->linker, s);
-+    }
-+
-     acpi_add_table(table_offsets, tables_blob);
-     spcr_setup(tables_blob, tables->linker, s);
+         if (riscv_cpu_cfg(env)->ext_smepmp) {
+             /* mseccfg.RLB is set */
+             if (MSECCFG_RLB_ISSET(env)) {
+-                locked = false;
++                readonly = false;
+             }
  
+             /* mseccfg.MML is not set */
+-            if (!MSECCFG_MML_ISSET(env) && !pmp_is_locked(env, pmp_index)) {
+-                locked = false;
++            if (!MSECCFG_MML_ISSET(env) && !pmp_is_readonly(env, pmp_index)) {
++                readonly = false;
+             }
+ 
+             /* mseccfg.MML is set */
+             if (MSECCFG_MML_ISSET(env)) {
+                 /* not adding execute bit */
+                 if ((val & PMP_LOCK) != 0 && (val & PMP_EXEC) != PMP_EXEC) {
+-                    locked = false;
++                    readonly = false;
+                 }
+                 /* shared region and not adding X bit */
+                 if ((val & PMP_LOCK) != PMP_LOCK &&
+                     (val & 0x7) != (PMP_WRITE | PMP_EXEC)) {
+-                    locked = false;
++                    readonly = false;
+                 }
+             }
+         } else {
+-            if (!pmp_is_locked(env, pmp_index)) {
+-                locked = false;
+-            }
++            readonly = pmp_is_readonly(env, pmp_index);
+         }
+ 
+-        if (locked) {
+-            qemu_log_mask(LOG_GUEST_ERROR, "ignoring pmpcfg write - locked\n");
++        if (readonly) {
++            qemu_log_mask(LOG_GUEST_ERROR,
++                          "ignoring pmpcfg write - read only\n");
+         } else if (env->pmp_state.pmp[pmp_index].cfg_reg != val) {
+             /* If !mseccfg.MML then ignore writes with encoding RW=01 */
+             if ((val & PMP_WRITE) && !(val & PMP_READ) &&
+@@ -525,14 +528,14 @@ void pmpaddr_csr_write(CPURISCVState *env, uint32_t addr_index,
+             uint8_t pmp_cfg = env->pmp_state.pmp[addr_index + 1].cfg_reg;
+             is_next_cfg_tor = PMP_AMATCH_TOR == pmp_get_a_field(pmp_cfg);
+ 
+-            if (pmp_is_locked(env, addr_index + 1) && is_next_cfg_tor) {
++            if (pmp_is_readonly(env, addr_index + 1) && is_next_cfg_tor) {
+                 qemu_log_mask(LOG_GUEST_ERROR,
+-                              "ignoring pmpaddr write - pmpcfg + 1 locked\n");
++                              "ignoring pmpaddr write - pmpcfg+1 read only\n");
+                 return;
+             }
+         }
+ 
+-        if (!pmp_is_locked(env, addr_index)) {
++        if (!pmp_is_readonly(env, addr_index)) {
+             if (env->pmp_state.pmp[addr_index].addr_reg != val) {
+                 env->pmp_state.pmp[addr_index].addr_reg = val;
+                 pmp_update_rule_addr(env, addr_index);
+@@ -543,7 +546,7 @@ void pmpaddr_csr_write(CPURISCVState *env, uint32_t addr_index,
+             }
+         } else {
+             qemu_log_mask(LOG_GUEST_ERROR,
+-                          "ignoring pmpaddr write - locked\n");
++                          "ignoring pmpaddr write - read only\n");
+         }
+     } else {
+         qemu_log_mask(LOG_GUEST_ERROR,
 -- 
 2.49.0
 
