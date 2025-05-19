@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13EF1ABB3DA
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:14:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8650ABB3C9
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 06:08:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uGrtE-0002gk-C8; Mon, 19 May 2025 00:14:12 -0400
+	id 1uGrn6-0004lv-6m; Mon, 19 May 2025 00:07:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uGrmk-0004kC-Fe
+ id 1uGrml-0004kE-WF
  for qemu-devel@nongnu.org; Mon, 19 May 2025 00:07:33 -0400
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1uGrmg-00045c-Pa
- for qemu-devel@nongnu.org; Mon, 19 May 2025 00:07:28 -0400
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-30ed99132abso752409a91.3
- for <qemu-devel@nongnu.org>; Sun, 18 May 2025 21:07:26 -0700 (PDT)
+ id 1uGrmk-00047Q-8J
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 00:07:31 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-2322dc5c989so4517725ad.3
+ for <qemu-devel@nongnu.org>; Sun, 18 May 2025 21:07:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747627645; x=1748232445; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1747627648; x=1748232448; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eQ8oK567cL4InAUCLjpcMcBvYiQLXRFYVbtoODZATfI=;
- b=ZFOJwxFRF7tDSEo90iCHdp8ixY9FcBGrj2sJs1XAtDDOhXcWiT1RR8S8WCFyZWzvby
- wJW3ZEch4U6xnwhg7GCxRE0nd1gaVmw5IqOnv6Sa+/XCGaYQFBEeQ6MFX4QHe+kctFYs
- BEHDwgJIi/Jov/fnyrDg0UryjLQ86oUnW/T6rM/uHknle8X9PdZeakJHKhKh3WFfkkwc
- uV/cgPCfMJIm96JFZomOOuBXezDyvSt9DfWd9le06MF4gsMnIe6KffEQLBoH6H7GVPs7
- C4gQM5Izscqc/LzULa8/vRDzhJXJCFIKnc+Sd5wbqNUl6bjKpOaUqrd5ZNiSBqrJ0TRE
- Go7A==
+ bh=6w4QEmVsDfk2xWldFPm61oyaPQk8pJz+xLAC04XqHF8=;
+ b=ZNiOe/vJoQUVqe4d7D3XehD//F+ET21cVFlWcm+05Rc6AZv16zhaYkEBKbN5xisSwZ
+ rZhOYlD8Rt1hWW5e+w3L3vEHqS6Q+ezDFDe/qdFR5aNqPVWmwos4x+Co6xLZxFNWLU78
+ 01Xr/oUEw4YrflR6nCnmecqC0cY9M7SKwxRBDjUFfmx0y40/wPlLCXAOoZXw8TebNtI0
+ rb/j+HQ3THTi96OhHm3SC5oTR7oMSJLqmgFfXEtRHdvJg16frzP5EN3B06ivqB0JYB94
+ fLxvufMKxY5GkdRCo4KNLPHGxdEJVrJm9Z9H+sGnT/Lq2/zGjah+oxE5hZMHcQdXJgaJ
+ dJUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747627645; x=1748232445;
+ d=1e100.net; s=20230601; t=1747627648; x=1748232448;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eQ8oK567cL4InAUCLjpcMcBvYiQLXRFYVbtoODZATfI=;
- b=e6fGHvPBrvzPhmVk9ZDi+j9Cen/X9Qti2aa/VL9+b9VwwdK37w7PVEMRdS2kslqClx
- IrQ526QEvUGXIFp838tesf/Tf2GUk2RIy2hKPdYSbZX4kJ0fn9AnwsRzfN3k6nsw/LhU
- NEogj8vAfhdC63WrRbE+MkLij3vFO0MtCj2Sl+tmmckimH3O/rWgEQRNYHKMxrbPVTSB
- rRjSOyKH3kBdnEJhnjwDsVe4BVX/eHQtGYspehttBN5xd4r7LvaLQagnTSyvPW13p3GW
- niRM61Z+FHhduo9YMVuRpUVhU+YjvR1J51NtRM1+rYjjdBfv1VFy0JYDw5JqhyJPkufq
- 3vrA==
-X-Gm-Message-State: AOJu0YylSvQsrg9qKLnMifahOniYebwc6y5YHHG2BFOEtftfOLJTOYYu
- nM58VwhbtDuEKCAanFxUQd23q26Jqz4fkYQKrxvjF7nvC4VrxGkK59NwJB/NQA==
-X-Gm-Gg: ASbGncvWYlQLPfJFZ9TUR/eAubhhEv+zLg6IX8M8MukuNnpVjbesEJePp0Vs4rS3nI+
- 1vuI5B6L+PvGxs88kRDcHOS3onqt3iWSIcuE1HXQ9mBdwGa+RriGt6TH27c23MnMkExJ0qlJlNV
- 8/Uwc5iO4XXKjPM46z9FaWbvy5T2TZNrzIUcdU4bWN39Fb1T56qxPVEo320l4Mf5dvuQZBOcqF2
- h1Ek5JK+zZ4cj+LXCylDpA/Vp48NAongHIE1WMCczJoqk6b9Ud15PwBQSUy/kQ4B1RKotMvuG8p
- SNuyaow68gOjmtV9qoF2XiFy1goDI8DITkmcSi7Zjb7naoNiPkqdFwuHRI4LI+XT5ilvg/CD6q/
- 7gaZXkb8qY+3klYfUXIpVk8tKVCI4bkMpkuAVM+I7lf5V4nMDnJw3UH8s
-X-Google-Smtp-Source: AGHT+IGVOZWfhn2SIfXo1tf+oMj5+2825n7mGdgRmxejbaGH5S2f9xhJsJLeE7BHwf/6TbBYUkc3+A==
-X-Received: by 2002:a17:902:c948:b0:22f:c91f:d05f with SMTP id
- d9443c01a7336-231d45c99c7mr173264435ad.46.1747627644713; 
- Sun, 18 May 2025 21:07:24 -0700 (PDT)
+ bh=6w4QEmVsDfk2xWldFPm61oyaPQk8pJz+xLAC04XqHF8=;
+ b=lbXvthsAg/2npZVoV82MWnRGS+uXUfzOqenEklDNsVxMJXzapBQkQDkzSvS7+SLSiH
+ UNYWGa1fWvBwiSl+84i8nTM7TPBj2MfmBpxWD8fOFcoHpB9zpghWO7apRAPe7yCqw0uD
+ ovF5rI98oZm0H4t1yZ+cfzuhq21BFo4h6feJR9/dh8g/t6wchvWxvlzbGF6GAQzMEst8
+ ht3HjtIPHbBnBwqTE64C7cPKNwjfKt/k8+ZS05wyFFoPX4Rf+WSuw/yV/wQK98Xn+VcD
+ JmQyEFFKHJ4A+39qDWlrE60qBN5FEKFuJQMiMafqIa0nQVQSsBS04FVz5CAVgdljqSVv
+ BfTA==
+X-Gm-Message-State: AOJu0YzJ/U3PbrZJRrekpbGoyKrJhPx72IF4wpOayDJm1NVzQic7XHJ4
+ DHy1hycZSwOR5DofbUKSWWzdydHdNh25Z1GLLNI/b1OEk10nyfyJCtvj9GofLg==
+X-Gm-Gg: ASbGncuwlhwk0ibLkLSQaUQkw/g/2T/zVluTrGy0o/fNiCFM36qss40RQDzfRiYVJ/N
+ yyy+3GOa6AAv5CBPlKeJusF+6f/y7vIjjZ33tRw9XejsySxry5YJ4Gsm6xlOmDw1tQCtZRmjCbK
+ VpQps4evc2kyAe7DqOsjjpLCoMiqrsxCZTq4YDfdd27EkooWHRCRuYlwBMaWvCYTvQW/HtanW1B
+ EVuqhKmQIR2/Bm9VOghu0eiWMkZIGd5EXwhpjexZVWe7L4tkXQx9ProEvBAoy2zpsMPq8IWeFz0
+ 30OMZZC2E7orvL09v1n+elany3CkB1s37VSBIIo84sSimCI2PEOU20Bvv6yr7XxAl7ErFHuHG7C
+ bhd5a6c4YhocKm+7jvU9KRXjE9t5016kB8dVB0TLTVCjevFFNTjxI0LCU
+X-Google-Smtp-Source: AGHT+IG6g54EThRXihL1Hlm2HbvKSN1wl9sH9ce7T6nz+Y3ubn0Hg+N6UXbFqH2NQKjCFsmZLb/SiQ==
+X-Received: by 2002:a17:903:1a68:b0:22f:c568:e691 with SMTP id
+ d9443c01a7336-231de3149ddmr162049745ad.21.1747627647995; 
+ Sun, 18 May 2025 21:07:27 -0700 (PDT)
 Received: from toolbx.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.07.21
+ d9443c01a7336-231ecd5ea41sm41750035ad.228.2025.05.18.21.07.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 18 May 2025 21:07:24 -0700 (PDT)
+ Sun, 18 May 2025 21:07:27 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: qemu-devel@nongnu.org
@@ -71,18 +71,18 @@ Cc: alistair23@gmail.com, =?UTF-8?q?Lo=C3=AFc=20Lefort?= <loic@rivosinc.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PULL 06/56] target/riscv: pmp: exit csr writes early if value was
- not changed
-Date: Mon, 19 May 2025 14:05:03 +1000
-Message-ID: <20250519040555.3797167-7-alistair.francis@wdc.com>
+Subject: [PULL 07/56] target/riscv: pmp: remove redundant check in
+ pmp_is_locked
+Date: Mon, 19 May 2025 14:05:04 +1000
+Message-ID: <20250519040555.3797167-8-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250519040555.3797167-1-alistair.francis@wdc.com>
 References: <20250519040555.3797167-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
- envelope-from=alistair23@gmail.com; helo=mail-pj1-x1029.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -108,64 +108,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Loïc Lefort <loic@rivosinc.com>
 
+Remove useless check in pmp_is_locked, the function will return 0 in either
+case.
+
 Signed-off-by: Loïc Lefort <loic@rivosinc.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Message-ID: <20250313193011.720075-5-loic@rivosinc.com>
+Message-ID: <20250313193011.720075-6-loic@rivosinc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/pmp.c | 22 +++++++++++++++-------
- 1 file changed, 15 insertions(+), 7 deletions(-)
+ target/riscv/pmp.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
 diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-index 8fc313990a..4070e21ea3 100644
+index 4070e21ea3..5af295e410 100644
 --- a/target/riscv/pmp.c
 +++ b/target/riscv/pmp.c
-@@ -142,6 +142,11 @@ static inline uint8_t pmp_read_cfg(CPURISCVState *env, uint32_t pmp_index)
- static bool pmp_write_cfg(CPURISCVState *env, uint32_t pmp_index, uint8_t val)
- {
-     if (pmp_index < MAX_RISCV_PMPS) {
-+        if (env->pmp_state.pmp[pmp_index].cfg_reg == val) {
-+            /* no change */
-+            return false;
-+        }
-+
-         if (pmp_is_readonly(env, pmp_index)) {
-             qemu_log_mask(LOG_GUEST_ERROR,
-                           "ignoring pmpcfg write - read only\n");
-@@ -529,6 +534,11 @@ void pmpaddr_csr_write(CPURISCVState *env, uint32_t addr_index,
-     bool is_next_cfg_tor = false;
+@@ -59,11 +59,6 @@ static inline int pmp_is_locked(CPURISCVState *env, uint32_t pmp_index)
+         return 1;
+     }
  
-     if (addr_index < MAX_RISCV_PMPS) {
-+        if (env->pmp_state.pmp[addr_index].addr_reg == val) {
-+            /* no change */
-+            return;
-+        }
-+
-         /*
-          * In TOR mode, need to check the lock bit of the next pmp
-          * (if there is a next).
-@@ -545,14 +555,12 @@ void pmpaddr_csr_write(CPURISCVState *env, uint32_t addr_index,
-         }
+-    /* Top PMP has no 'next' to check */
+-    if ((pmp_index + 1u) >= MAX_RISCV_PMPS) {
+-        return 0;
+-    }
+-
+     return 0;
+ }
  
-         if (!pmp_is_readonly(env, addr_index)) {
--            if (env->pmp_state.pmp[addr_index].addr_reg != val) {
--                env->pmp_state.pmp[addr_index].addr_reg = val;
--                pmp_update_rule_addr(env, addr_index);
--                if (is_next_cfg_tor) {
--                    pmp_update_rule_addr(env, addr_index + 1);
--                }
--                tlb_flush(env_cpu(env));
-+            env->pmp_state.pmp[addr_index].addr_reg = val;
-+            pmp_update_rule_addr(env, addr_index);
-+            if (is_next_cfg_tor) {
-+                pmp_update_rule_addr(env, addr_index + 1);
-             }
-+            tlb_flush(env_cpu(env));
-         } else {
-             qemu_log_mask(LOG_GUEST_ERROR,
-                           "ignoring pmpaddr write - read only\n");
 -- 
 2.49.0
 
