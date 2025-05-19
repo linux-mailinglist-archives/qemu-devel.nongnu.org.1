@@ -2,71 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A795AABBFF3
-	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 15:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF8DBABC022
+	for <lists+qemu-devel@lfdr.de>; Mon, 19 May 2025 16:03:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uH0wq-0008JN-3l; Mon, 19 May 2025 09:54:32 -0400
+	id 1uH15U-0003TZ-1W; Mon, 19 May 2025 10:03:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uH0wm-0008J5-10
- for qemu-devel@nongnu.org; Mon, 19 May 2025 09:54:28 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uH15O-0003Rl-V7
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 10:03:25 -0400
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uH0wj-0000yp-Pi
- for qemu-devel@nongnu.org; Mon, 19 May 2025 09:54:27 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uH15J-0001vg-3W
+ for qemu-devel@nongnu.org; Mon, 19 May 2025 10:03:18 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id DCB8422984;
- Mon, 19 May 2025 13:54:20 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 4EE26203CC;
+ Mon, 19 May 2025 14:03:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1747662861; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1747663395; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=gXj5+XeDeOHdJHEg0SZHmyd9ANqv4U70pjbG2SPqcFU=;
- b=nvjgnDfQ7eAAAXpfziuluxb0cJMBUZwL1YyExtQ33yURP+az62pCE9KkvaV5WQnrY1ZEcW
- 8rVUIz3Sb/dwfpVKELWWOPUdUT7mPDb/0n+dUOuZ1HJUb7Hk8AlQaTebDnIfLwr/CEHeVD
- Oz0bs56ogdNITaTzXplz2EfxxWr85c8=
+ bh=dHu1e6ToqGFR1VKH35bRuT9Vz0Veib08Tsw98JTKDBM=;
+ b=WH/JMilh1CjjJQVyM2+nknlSaVFMr+cFQ+Vv7dFXZYfB2k9Nb5f4ypo8reTRwjLB+L/WmH
+ BczByBejodGnFMfiLn603IhsBxqQMHWYHJf99/QrBaYfh9tkxJGQ5b3+tsjs24ICyXSszT
+ DrF+wnliq+0NpmY1dA9SgEtVbZc5LaA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1747662861;
+ s=susede2_ed25519; t=1747663395;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=gXj5+XeDeOHdJHEg0SZHmyd9ANqv4U70pjbG2SPqcFU=;
- b=T4FFRaDsEa6zIZvqfVLElVdwunzN1PwfXUaF81KBwbUmOde7ZHj59DtVcJdct8NUJAIWOu
- 3rNDkcAS1gwoqDBw==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b="k/fI+X0V";
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=OmTtmdR2
+ bh=dHu1e6ToqGFR1VKH35bRuT9Vz0Veib08Tsw98JTKDBM=;
+ b=5AekD3BMCYikF183kJMpMFVDksb9eveG/WpDXGHgfAqDxDfCGXb05BWluvdWdDjGjNs4I4
+ H3HLoYo45Vgac5Dw==
+Authentication-Results: smtp-out2.suse.de;
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1747662860; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1747663395; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=gXj5+XeDeOHdJHEg0SZHmyd9ANqv4U70pjbG2SPqcFU=;
- b=k/fI+X0Va3QtwUk8Kyz67PXuLbyPiepMFg27R1pKlair97LGp01j0i0dBGJXLhSD/s3E6m
- hn3wTbMgOo2yslTy5QozLd8XM5rG3ja705YZ1IYaCO5qOS2EUjfpqpLA4lKkyRJKppo2ZY
- EOE8DpdBbu/kf8CP+CzzyKZ0L9vQlOg=
+ bh=dHu1e6ToqGFR1VKH35bRuT9Vz0Veib08Tsw98JTKDBM=;
+ b=WH/JMilh1CjjJQVyM2+nknlSaVFMr+cFQ+Vv7dFXZYfB2k9Nb5f4ypo8reTRwjLB+L/WmH
+ BczByBejodGnFMfiLn603IhsBxqQMHWYHJf99/QrBaYfh9tkxJGQ5b3+tsjs24ICyXSszT
+ DrF+wnliq+0NpmY1dA9SgEtVbZc5LaA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1747662860;
+ s=susede2_ed25519; t=1747663395;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=gXj5+XeDeOHdJHEg0SZHmyd9ANqv4U70pjbG2SPqcFU=;
- b=OmTtmdR2P54Kor8/6+bc4zdJV/gZB4wFsi5UtduxQIJsv3mAyulqifsLg+UQHX0HgCDKZt
- OTEMXbredntv38BA==
+ bh=dHu1e6ToqGFR1VKH35bRuT9Vz0Veib08Tsw98JTKDBM=;
+ b=5AekD3BMCYikF183kJMpMFVDksb9eveG/WpDXGHgfAqDxDfCGXb05BWluvdWdDjGjNs4I4
+ H3HLoYo45Vgac5Dw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4D7151372E;
- Mon, 19 May 2025 13:54:20 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AC7A813A30;
+ Mon, 19 May 2025 14:03:14 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id KtdVAww4K2h/LwAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 19 May 2025 13:54:20 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id n+wNGiI6K2jfMQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Mon, 19 May 2025 14:03:14 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: Nicholas Piggin <npiggin@gmail.com>, Gerd Hoffmann <kraxel@redhat.com>
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org, Kevin Wolf
@@ -75,48 +73,40 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org, Kevin Wolf
  Laurent Vivier <lvivier@redhat.com>, Phil Dennis-Jordan
  <phil@philjordan.eu>, Bernhard Beschow <shentey@gmail.com>, Philippe
  =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH v4 03/22] tests/qtest/xhci: test the qemu-xhci device
-In-Reply-To: <20250502033047.102465-4-npiggin@gmail.com>
+Subject: Re: [PATCH v4 04/22] tests/qtest/xhci: Add controller and device
+ setup and ring tests
+In-Reply-To: <20250502033047.102465-5-npiggin@gmail.com>
 References: <20250502033047.102465-1-npiggin@gmail.com>
- <20250502033047.102465-4-npiggin@gmail.com>
-Date: Mon, 19 May 2025 10:54:17 -0300
-Message-ID: <8734d09052.fsf@suse.de>
+ <20250502033047.102465-5-npiggin@gmail.com>
+Date: Mon, 19 May 2025 11:03:11 -0300
+Message-ID: <87zff87l5s.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Spamd-Result: default: False [-2.74 / 50.00]; BAYES_HAM(-2.73)[98.84%];
- SUSPICIOUS_RECIPS(1.50)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+X-Spam-Score: 0.20
+X-Spamd-Result: default: False [0.20 / 50.00]; SUSPICIOUS_RECIPS(1.50)[];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
  NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; FREEMAIL_ENVRCPT(0.00)[gmail.com];
- TO_MATCH_ENVRCPT_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- RCPT_COUNT_TWELVE(0.00)[12];
- FREEMAIL_TO(0.00)[gmail.com,redhat.com]; MIME_TRACE(0.00)[0:+];
- ARC_NA(0.00)[];
+ FREEMAIL_ENVRCPT(0.00)[gmail.com]; RCVD_TLS_ALL(0.00)[];
+ ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ MIME_TRACE(0.00)[0:+]; MISSING_XM_UA(0.00)[];
+ RCPT_COUNT_TWELVE(0.00)[12]; TAGGED_RCPT(0.00)[];
+ FREEMAIL_TO(0.00)[gmail.com,redhat.com];
+ MID_RHS_MATCH_FROM(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[];
  FREEMAIL_CC(0.00)[gmail.com,nongnu.org,redhat.com,philjordan.eu,linaro.org];
- RCVD_TLS_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- RCVD_COUNT_TWO(0.00)[2]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]; TAGGED_RCPT(0.00)[];
- MISSING_XM_UA(0.00)[];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,suse.de:dkim]
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Score: -2.74
-X-Rspamd-Queue-Id: DCB8422984
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_COUNT_TWO(0.00)[2];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid]
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -135,8 +125,10 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Nicholas Piggin <npiggin@gmail.com> writes:
 
-> Add support in the test code for running multiple drivers, and add
-> tests for the qemu-xhci device.
+> Add tests which init the host controller registers to the point where
+> command and event rings, irqs are operational. Enumerate ports and set
+> up an attached device context that enables device transfer ring to be
+> set up and tested.
 >
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
