@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B3ADABE1A0
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 19:09:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0DB8ABE193
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 19:09:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHQRr-000093-Qd; Tue, 20 May 2025 13:08:15 -0400
+	id 1uHQRu-0000D6-IW; Tue, 20 May 2025 13:08:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uHQRi-0008S2-EF
- for qemu-devel@nongnu.org; Tue, 20 May 2025 13:08:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uHQRj-0008St-Tb
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 13:08:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uHQRg-00016D-HY
- for qemu-devel@nongnu.org; Tue, 20 May 2025 13:08:06 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uHQRh-00016i-S2
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 13:08:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747760883;
+ s=mimecast20190719; t=1747760885;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cK2Qrag8lsMimqo4w6ggG/jQzApxY9jejaQoEEkbUak=;
- b=ehQ/Vybav/7YKrmVqcLpGoDojYWkoDsLidIBI4Ie3bXTkJmzmZ8aMMp9eBG84c9Vr85cmo
- 6Ef6b0x7J0o1zEZYuzNPY/coW5JFnOz1e4902gZD1YQR2oLsc4abLHUldqRvm1a/02EX7D
- C6iYM70Q9h3U8NZxySObKoQNo3l6jfI=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Mg57tDr1hLSW4EBlF63M1IEQEijGGkMw39lQFkGM4v8=;
+ b=iMZiNr27Xnn4Bg23jkiedz/5aFA1vyTc/IpGcdz7BHHapFMc/w5AlTR6jCjMb8mSzSCDmE
+ Nb2ohYUfchK9OkEfD5oUSu6gBlkYPi4Wd7mT7SH2expBeJXrdB9KAI+ZXdS3v8d+znTWJI
+ xBk3O4Tm/RiGQlj2QKNEf8TtUTt3EWs=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-277-hq69AJzvOH2kWTlm1eGuAw-1; Tue, 20 May 2025 13:08:02 -0400
-X-MC-Unique: hq69AJzvOH2kWTlm1eGuAw-1
-X-Mimecast-MFC-AGG-ID: hq69AJzvOH2kWTlm1eGuAw_1747760882
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-7c579d37eeeso916967385a.0
- for <qemu-devel@nongnu.org>; Tue, 20 May 2025 10:08:02 -0700 (PDT)
+ us-mta-458-4bkymGRUNOyustuN5Wk0jg-1; Tue, 20 May 2025 13:08:03 -0400
+X-MC-Unique: 4bkymGRUNOyustuN5Wk0jg-1
+X-Mimecast-MFC-AGG-ID: 4bkymGRUNOyustuN5Wk0jg_1747760883
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-7c5f876bfe0so1067329385a.3
+ for <qemu-devel@nongnu.org>; Tue, 20 May 2025 10:08:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747760881; x=1748365681;
+ d=1e100.net; s=20230601; t=1747760883; x=1748365683;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cK2Qrag8lsMimqo4w6ggG/jQzApxY9jejaQoEEkbUak=;
- b=Pa2R1/oIXNSL+Qn3pdutHTIPLgYmFNfKs75CSFy5/Uf2DYPfRsBSTMVV0jCiWN62Gg
- Pdiw9mm7JImTpcVIslhVP2Oq65SwvV3a1rGJRq9MawqpHGxUAKemTh8xlDpQHEU7BdJN
- YWZsxtvuP5Vk0M/e8bMIwAgIOkP1xPjVSDDtotRfSEDHWFC77K6YJ6pBv2SVCs/Twej1
- cFao3WZ7heY9s4wD/Kp3rOhXiVA4WiOk1UwfkIagXiDwpAQncs+wniNlJg28q6fVD3Rd
- Mb5p0K+b8FFBfxVba4YEg/bqbbQSN7YKwJdPN1dgI8eb1cN0QRhmgJXa8sSX4smlzk7Z
- lQ2Q==
-X-Gm-Message-State: AOJu0YzguC90OOJMNh809gGNG76Yy1zqGko2HgzBI+eGJhtQBY4PNECK
- crGZS6OqdN9+OnDAC13yzIQ5viDsYiJMPazdsu5AIpYs+kc8rnlQCdxEXiPuv5x1IuJSzMupj4q
- 2ImZ7k7yR6D9YgBGMKdPqZ7gpoD+1aFy3Ms2zjT4lAJBXNFQN7Dxs2wf2V0qMQ1gZtCcqo8i6zs
- 7JJRc+fv4HmebHH3uiEqJpMxl66YdS5OG5P3CaLA==
-X-Gm-Gg: ASbGncuqOCNHCkM+iZPUcXTQVY+GEdFBVxtV5sDn+dhHLgpnWGDklTzMbfK0wurahWx
- 0ZzuB/lCj1N+yfsm83LPqwZDM5VnMFOy/KGDeLe4xKPaif/KoQZEFddn2T7108LRznKKBEgtPcg
- 9AvZIZx9kI8X/LhrjW6Kd1FetgfBdzPNZ+8Phxg/q+0wUw0x2AYCH5QfTGtzH+jFdDT7xgBBED2
- DCSu6nzjK9lGz4k+CY+6Xe1hH7Y70holkEnMDLt+ipilKJqfgPJRhQxVxFFb8dz8B8tK8o4p5mz
-X-Received: by 2002:a05:620a:1793:b0:7c9:256d:f6b6 with SMTP id
- af79cd13be357-7cd47f0f301mr2305922185a.2.1747760881176; 
- Tue, 20 May 2025 10:08:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEkKLwIkorKdzOcSpiP4fteKVOeDjGU5s9tyL22DM/26CHeQLU8oy8w/gxo2dhYyVPWRdSPoQ==
-X-Received: by 2002:a05:620a:1793:b0:7c9:256d:f6b6 with SMTP id
- af79cd13be357-7cd47f0f301mr2305918085a.2.1747760880768; 
- Tue, 20 May 2025 10:08:00 -0700 (PDT)
+ bh=Mg57tDr1hLSW4EBlF63M1IEQEijGGkMw39lQFkGM4v8=;
+ b=YGG06IUfKPHj2Octz3rMCbGXEjjV6m3ZJUVJWoBj57zLmuvR+YSZbVWGu/rmdF6Xr1
+ ElcCpQIqkgcb6MutYk5iKPV94vqSQvCjoql/r9ptYBP5VDs0EYNeZVVnhGCUx2Ln1or3
+ 0iKf0+sg85EgcT10CUhYGvpPGMd28GdQ9hWzNfRR74wkURatG/gg+1y6GT8JmB9nhVZD
+ TXYWV9wvf3vUOcVdbODLhX8EdkQnluaUyNdcgeeGI2C6x9+X60v4FAG/YEFIRmEJqsr0
+ lqKigKedLCDXdUQNczDz0glhLOjyUiETDqd5B4100tsiVKUxLpmqzNw1zVu8lcLXqzf5
+ eCjQ==
+X-Gm-Message-State: AOJu0YzCv6SDQ/9+gvmRTR9tdBwe3wnemkTHRB4m0Hz/sXlpTwSAlzMS
+ qUKk0SQ+dTGcyQ84UFgbkskDk/9AoNs5jwvY/NLSSmGLbw8URJgGLLvz6lE5tdEp+7bQoCq8D5C
+ Z+RpZoB++s+vNc8x5C/s9w68TRbBy2tshdiEr2Ihj+ByJCUNXuSuEpVlq1agUvRj6sUclYC4ZcU
+ 0QDXVNNRWNlTeT9Pf31jhV72lLXLTfsvQxlaWFYQ==
+X-Gm-Gg: ASbGncsJ7gu7N+4h2/iOal9sXYdAPmhmrCRYgstdTYW1mIfCKw2GjL7MAXFUJoSJGdp
+ 0jfeXylHrQbQU4wBdDB0RMT11YsKzO4nrUKepzbVvr+M9kgyspTtIJQbDMUchqA6UW9H//3ou1s
+ KrHJzppDhI8nfp/L1e5NA+tlQk7oUxbSDLHve/J4Q6lfz8B6vnLFK7XFnoucwKrZ4eNyPpwCVK4
+ f2hTCjDv+YStfPm1f/HYnRcpi48hg/CDj35bK07DwBr/QTgyZbbchpjzcUrq/u91nTD5bmTsKLg
+X-Received: by 2002:a05:620a:430b:b0:7c9:55b2:c3a with SMTP id
+ af79cd13be357-7cd4670815amr2286949085a.11.1747760882816; 
+ Tue, 20 May 2025 10:08:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHSX+ZuU2hGc6nYq7kRIuJRV91HuIIRauMHdPEm3A/L3UNohg7zDV5wTFzCibGN197HyNtaLQ==
+X-Received: by 2002:a05:620a:430b:b0:7c9:55b2:c3a with SMTP id
+ af79cd13be357-7cd4670815amr2286943985a.11.1747760882273; 
+ Tue, 20 May 2025 10:08:02 -0700 (PDT)
 Received: from x1.com ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7cd467be47bsm763846585a.16.2025.05.20.10.07.58
+ af79cd13be357-7cd467be47bsm763846585a.16.2025.05.20.10.08.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 May 2025 10:07:59 -0700 (PDT)
+ Tue, 20 May 2025 10:08:01 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Stefan Hajnoczi <stefanha@redhat.com>,
  peterx@redhat.com
-Subject: [PULL 04/12] ci: Re-enable python subtests in qtest migration suite
-Date: Tue, 20 May 2025 13:07:43 -0400
-Message-ID: <20250520170751.786787-5-peterx@redhat.com>
+Subject: [PULL 05/12] ci: Fix build-previous-qemu when the version tag is
+ absent
+Date: Tue, 20 May 2025 13:07:44 -0400
+Message-ID: <20250520170751.786787-6-peterx@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250520170751.786787-1-peterx@redhat.com>
 References: <20250520170751.786787-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -105,41 +106,57 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fabiano Rosas <farosas@suse.de>
 
-The migration compatibility tests have been running with the PYTHON
-variable unset to avoid running a broken test. The faulty test has
-since been removed, so we can enable the python tests once again.
+Stefan reports that during QEMU release, pushing a series with the
+VERSION bump commit, but not pushing the new git tag in the same
+command will cause a failure of the build-previous-qemu job at the git
+fetch step.
 
-Aside from the broken test, only one other test uses python and I have
-been running it locally ever since, so this commit should not expose
-any new bug.
+Since the job is intended to produce a build of the previous QEMU
+version for consumption by the migration-compat-* jobs, there's no
+reason to produce a build of the release commit because the migration
+job would end up testing the release against itself.
 
+Skip the job when VERSION contains the newly release version number.
+
+I'm opting for 'exit 0' for both the build and the test jobs because
+allow_failure would mask any real error in the jobs. It also avoids
+having an orange ! on every release pipeline.
+
+Reported-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20250513133353.23022-2-farosas@suse.de
+Link: https://lore.kernel.org/r/20250513133353.23022-3-farosas@suse.de
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- .gitlab-ci.d/buildtest.yml | 8 --------
- 1 file changed, 8 deletions(-)
+ .gitlab-ci.d/buildtest.yml | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 248aaed137..fbad34138c 100644
+index fbad34138c..b4e39fd7c1 100644
 --- a/.gitlab-ci.d/buildtest.yml
 +++ b/.gitlab-ci.d/buildtest.yml
-@@ -227,14 +227,6 @@ build-previous-qemu:
+@@ -203,6 +203,11 @@ build-previous-qemu:
+     GIT_FETCH_EXTRA_FLAGS: --prune --quiet
+   before_script:
+     - source scripts/ci/gitlab-ci-section
++    # Skip if this series contains the release bump commit. During the
++    # release process there might be a window of commits when the
++    # version tag is not yet present in the remote and git fetch would
++    # fail.
++    - if grep -q "\.0$" VERSION; then exit 0; fi
+     - export QEMU_PREV_VERSION="$(sed 's/\([0-9.]*\)\.[0-9]*/v\1.0/' VERSION)"
+     - git remote add upstream https://gitlab.com/qemu-project/qemu
+     - git fetch upstream refs/tags/$QEMU_PREV_VERSION:refs/tags/$QEMU_PREV_VERSION
+@@ -223,6 +228,9 @@ build-previous-qemu:
+     IMAGE: opensuse-leap
+     MAKE_CHECK_ARGS: check-build
+   script:
++    # Skip for round release numbers, this job is only relevant for
++    # testing a development tree.
++    - if grep -q "\.0$" VERSION; then exit 0; fi
+     # Use the migration-tests from the older QEMU tree. This avoids
      # testing an old QEMU against new features/tests that it is not
      # compatible with.
-     - cd build-previous
--    # Don't allow python-based tests to run. The
--    # vmstate-checker-script test has a race that causes it to fail
--    # sometimes. It cannot be fixed it because this job runs the test
--    # from the old QEMU version. The test will be removed on master,
--    # but this job will only see the change in the next release.
--    #
--    # TODO: remove this line after 9.2 release
--    - unset PYTHON
-     # old to new
-     - QTEST_QEMU_BINARY_SRC=./qemu-system-${TARGET}
-           QTEST_QEMU_BINARY=../build/qemu-system-${TARGET} ./tests/qtest/migration-test
 -- 
 2.49.0
 
