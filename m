@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1321FABE19F
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 19:09:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52473ABE19C
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 19:09:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHQRv-0000FK-Js; Tue, 20 May 2025 13:08:20 -0400
+	id 1uHQRz-0000HH-LS; Tue, 20 May 2025 13:08:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uHQRs-0000CR-M3
- for qemu-devel@nongnu.org; Tue, 20 May 2025 13:08:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uHQRv-0000Fs-G6
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 13:08:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uHQRr-0001Ac-4U
- for qemu-devel@nongnu.org; Tue, 20 May 2025 13:08:16 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uHQRt-0001BT-5p
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 13:08:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747760894;
+ s=mimecast20190719; t=1747760896;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XMKQccz4NfqoEUSihdV88pqT2wjsRf3oFYxwpJIsn2I=;
- b=C1+zug/E9/lkdovXklhImBzRCubeWeX/Qa13T4GQT2BmE8LKPTP8mMzecZSogyR7hA2XmH
- ubymDdnKvgK9Yx+krQ0rD3wZuOj8arRkntubmUmxL5ZhounWglwZeNZV6j3QZOrk/ohMuK
- w5nmVwDlum9Z9PVQ4FVXLdScumF3gaI=
+ bh=I1t580PshyRViX4u6aQJtTxFf+hQIfkQ/JxQslXSAcE=;
+ b=WdW/4RwrV+uojEcf8GGgDa0zN80iUjrVbb6c7LULU1E50sPMsFHCrWoTahu3h88f0NdYP7
+ N+wHTtSd4650Nen2BNZ45G2XNaSNSVj8FPPnDydFgzOrcT8mSpWAwLhPCMWz9WGVUUnUEg
+ TXbqf7ukmGzttTYqdwNnqL2carZ3ko0=
 Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
  [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-175-BSiT8sSSNeW1iwAAJg3A8w-1; Tue, 20 May 2025 13:08:13 -0400
-X-MC-Unique: BSiT8sSSNeW1iwAAJg3A8w-1
-X-Mimecast-MFC-AGG-ID: BSiT8sSSNeW1iwAAJg3A8w_1747760893
+ us-mta-518-h1UaXgdePluVSAgYa5scaQ-1; Tue, 20 May 2025 13:08:15 -0400
+X-MC-Unique: h1UaXgdePluVSAgYa5scaQ-1
+X-Mimecast-MFC-AGG-ID: h1UaXgdePluVSAgYa5scaQ_1747760895
 Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-7c53e316734so1073591485a.2
- for <qemu-devel@nongnu.org>; Tue, 20 May 2025 10:08:13 -0700 (PDT)
+ af79cd13be357-7c543ab40d3so898923085a.2
+ for <qemu-devel@nongnu.org>; Tue, 20 May 2025 10:08:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747760892; x=1748365692;
+ d=1e100.net; s=20230601; t=1747760894; x=1748365694;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XMKQccz4NfqoEUSihdV88pqT2wjsRf3oFYxwpJIsn2I=;
- b=U59SE3GvWL/PyG7RvhMwl3vnBuSiq2Ojum5Iy/pQvUGvpRls1kYdez7os/L25w2j9T
- tlGkCrrOwMOhIPIaTjKL4h/q1RXcH6Rko3QMhiSKOpdayF93uZNBTzDomqFDxnlP7d4n
- Wy0XjSftk8/Bllx2z8AlIA81YETNwsQ35VKb9HN3MpVImnxrG/sHr0sHc/xVScAEdXgw
- 5E+2ZLnLYHUIH5CVBc0/Leg2KYnys0rRojbiZrsHHbfT5/dgptJf/7M9Q+J8qOp2gATd
- at+6ttbPNly8NLLIDm/4rh47E0zLi8o3RieHCHamPAz99SSrebKcRbAuE5Xb+r4852HS
- kufA==
-X-Gm-Message-State: AOJu0YwbBWzXquD0e3HTRdizr64GodaUe/NDPhoEeBY7GznnKceEDsab
- tlTk87Wkn3/n4MbFnNUuyABA3Ny8PbsfXFs+gUIDctnSQEHZZm5Q3AesTvA7dpb9OSpjtBO1b0g
- SjQDAaIOHcm5fapnQCeyrk5CKbrGajwyoIEbEtIAgvNil1r6pHv0khM+Ib9rh6m3SzZ4Qz0ggvo
- CNipNQcOtJ6UifWsUTiQaZd6F3L7hbCJMt9Ui+mQ==
-X-Gm-Gg: ASbGncsL+iy5yzQG+e0hmxMNqkvKVqXUgRoIrV5QlW545SqhwB4r/SB1GGYOzxwbV5W
- 4Rawqvzwtqh9b4J8Ieu0L/XyBxNB2wWcTKNeFrqcvraEQamsOXSQ1yo3xITaGO8aTpaFnoA5RlA
- mRCUiIjexMPa40PSeKkag+/wUWOWPW6npYAAnb6fmw7J02dmwhtF0mLM2P30IycYjI7R+DB5hKb
- UyW0Td6xyPYW8f9lfNN+49EX+JNlTmp2CHL8FVgSUNxG76XK9OAPlHIYE4zWZTSzAkmVXCbJzNr
-X-Received: by 2002:a05:620a:2848:b0:7ca:cd70:718b with SMTP id
- af79cd13be357-7cd4679c9dcmr2793400685a.35.1747760891899; 
- Tue, 20 May 2025 10:08:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFE0mqoXb04w4Aa1zfWjUQc/fNc75N1Hkcyl3zALqNroJmsJxWlZlHVmuXnpQsZRf3HbLghQA==
-X-Received: by 2002:a05:620a:2848:b0:7ca:cd70:718b with SMTP id
- af79cd13be357-7cd4679c9dcmr2793394985a.35.1747760891535; 
- Tue, 20 May 2025 10:08:11 -0700 (PDT)
+ bh=I1t580PshyRViX4u6aQJtTxFf+hQIfkQ/JxQslXSAcE=;
+ b=McppNix/jOwFy8GSmN+AToJEBpNaoDSVj12sAXamXZT4rPNsJPNZZfyx3/8PyQiuaF
+ Ukr6lAJHFUiyB+RShBPZtb3E4b/ZAEKbIJP0nRLdIra6JYJygIf7IBDGFPEgGoTImFac
+ qamEZ96O4fKhsUZtB6/KljbqGQ8JYYJa0GqjG7wWFBIxKbbzINBikL4gCYkFCd43L0Ra
+ epZCpgmV1CviX8zgVf/XHfM0lZ8BAS1GmvUTz6PdYyhaDvcSgvDpl0kUjKBRZMX8KGa3
+ OpLoYusKauERkNFqS1NSeziHLpqF0fl0EJmPb8P39ncw1kiBxvEO1UCqLjdI+fVOCqJ+
+ m9FA==
+X-Gm-Message-State: AOJu0Yx7XxZaTuzjuvcCSs82a4p6maGpbGYQ98u2Q+RNdLWCTqskyCa2
+ ZoN9D2TvewbYdbwBBsF1bj7DZloptOe5uRPCmnVBL7QgmL86x25erIAbc7gnpMfa+3LCGi/ij22
+ tRBFbZcueRxNlFOAqpqPAbnY96ySa6nLdwu4vxRYi+Ulzdlzui6TTL7DxvxD1eESgGqZGZj/DCo
+ bwycpqpcfgwHweCfT3S7G4nUMkeufP1saCyDwdNQ==
+X-Gm-Gg: ASbGncuPblCudzgW8VeNamdmkSlgxXQmCTearn/lSOOeG1y/MiqWXrRMzuP3ft4AIou
+ tBEaIpJ5tIPT4OkktM2taznRDnIQxyHE/Yw6ok0Sn2bCKIHULmGh6SuLquPCu4iYW89eCdyUOoR
+ mTVYDuLF7baQsOkFnXpXHoX9hiMi5Awq76E2JFuJaduDM5kh+QGZ8pLdYB5ZWL3ASvREv3m2BIS
+ Dp8/By6AhA1kQEZNs68zdLcCGqINx1E8jx3b1FXUmgK1X9Rn1PCNx0eRYpFX4sm24B796H5FSKd
+X-Received: by 2002:a05:620a:1786:b0:7c7:a543:dcfe with SMTP id
+ af79cd13be357-7cd46733519mr2802472285a.32.1747760893833; 
+ Tue, 20 May 2025 10:08:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEybWnckE09Bi4ELiXcAz9KYQWh6FzCZrdiAjiHDr6IqWh0pYqePAjANtrGMPX51lFwwYB1bA==
+X-Received: by 2002:a05:620a:1786:b0:7c7:a543:dcfe with SMTP id
+ af79cd13be357-7cd46733519mr2802465985a.32.1747760893299; 
+ Tue, 20 May 2025 10:08:13 -0700 (PDT)
 Received: from x1.com ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7cd467be47bsm763846585a.16.2025.05.20.10.08.09
+ af79cd13be357-7cd467be47bsm763846585a.16.2025.05.20.10.08.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 May 2025 10:08:10 -0700 (PDT)
+ Tue, 20 May 2025 10:08:12 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Stefan Hajnoczi <stefanha@redhat.com>,
  peterx@redhat.com, "Dr. David Alan Gilbert" <dave@treblig.org>,
- Juraj Marcin <jmarcin@redhat.com>
-Subject: [PULL 11/12] migration: Allow caps to be set when preempt or multifd
- cap enabled
-Date: Tue, 20 May 2025 13:07:50 -0400
-Message-ID: <20250520170751.786787-12-peterx@redhat.com>
+ Mario Casquero <mcasquer@redhat.com>
+Subject: [PULL 12/12] migration/hmp: Add "info migrate -a", reorg the dump
+Date: Tue, 20 May 2025 13:07:51 -0400
+Message-ID: <20250520170751.786787-13-peterx@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250520170751.786787-1-peterx@redhat.com>
 References: <20250520170751.786787-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -105,46 +104,387 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With commit 82137e6c8c ("migration: enforce multifd and postcopy preempt to
-be set before incoming"), and if postcopy preempt / multifd is enabled, one
-cannot setup any capability because these checks would always fail.
+A new parameter "-a" is added to "info migrate" to dump all info, while
+when not specified it only dumps the important ones.  When at it, reorg
+everything to make it easier to read for human.
 
-(qemu) migrate_set_capability xbzrle off
-Error: Postcopy preempt must be set before incoming starts
+The general rule is:
 
-To fix it, check existing cap and only raise an error if the specific cap
-changed.
+  - Put important things at the top
+  - Reuse a single line when things are very relevant, hence reducing lines
+    needed to show the results
+  - Remove almost useless ones (e.g. "normal_bytes", while we also have
+    both "page size" and "normal" pages)
+  - Regroup things, so that related fields will show together
+  - etc.
 
-Fixes: 82137e6c8c ("migration: enforce multifd and postcopy preempt to be set before incoming")
+Before this change, it looks like (one example of a completed case):
+
+  globals:
+  store-global-state: on
+  only-migratable: off
+  send-configuration: on
+  send-section-footer: on
+  send-switchover-start: on
+  clear-bitmap-shift: 18
+  Migration status: completed
+  total time: 122952 ms
+  downtime: 76 ms
+  setup: 15 ms
+  transferred ram: 130825923 kbytes
+  throughput: 8717.68 mbps
+  remaining ram: 0 kbytes
+  total ram: 16777992 kbytes
+  duplicate: 997263 pages
+  normal: 32622225 pages
+  normal bytes: 130488900 kbytes
+  dirty sync count: 10
+  page size: 4 kbytes
+  multifd bytes: 117134260 kbytes
+  pages-per-second: 169431
+  postcopy request count: 5835
+  precopy ram: 15 kbytes
+  postcopy ram: 13691151 kbytes
+
+After this change, sample output (default, no "-a" specified):
+
+  Status: postcopy-active
+  Time (ms): total=40504, setup=14, down=145
+  RAM info:
+    Bandwidth (mbps): 6102.65
+    Sizes (KB): psize=4, total=16777992,
+      transferred=37673019, remain=2136404,
+      precopy=3, multifd=26108780, postcopy=11563855
+    Pages: normal=9394288, zero=600672, rate_per_sec=185875
+    Others: dirty_syncs=3, dirty_pages_rate=278378, postcopy_req=4078
+
+Sample output when "-a" specified:
+
+  Status: active
+  Time (ms): total=3040, setup=4, exp_down=300
+  RAM info:
+    Throughput (mbps): 10.51
+    Sizes (KB): psize=4, total=4211528,
+      transferred=3979, remain=4206452,
+      precopy=3978, multifd=0, postcopy=0
+    Pages: normal=992, zero=277, rate_per_sec=320
+    Others: dirty_syncs=1
+  Globals:
+    store-global-state: on
+    only-migratable: off
+    send-configuration: on
+    send-section-footer: on
+    send-switchover-start: on
+    clear-bitmap-shift: 18
+  XBZRLE: size=67108864, transferred=0, pages=0, miss=188451
+    miss_rate=0.00, encode_rate=0.00, overflow=0
+  CPU Throttle (%): 0
+  Dirty-limit Throttle (us): 0
+  Dirty-limit Ring Full (us): 0
+  Postcopy Blocktime (ms): 0
+  Postcopy vCPU Blocktime: ...
+
 Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
-Reviewed-by: Juraj Marcin <jmarcin@redhat.com>
+Tested-by: Mario Casquero <mcasquer@redhat.com>
+[peterx: print "," too in 1st line of RAM info]
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/options.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ migration/migration-hmp-cmds.c | 186 +++++++++++++++++----------------
+ hmp-commands-info.hx           |   6 +-
+ 2 files changed, 99 insertions(+), 93 deletions(-)
 
-diff --git a/migration/options.c b/migration/options.c
-index 3fcd577cd7..162c72cda4 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -568,7 +568,7 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
-             return false;
-         }
+diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+index 49c26daed3..e8a563c7d8 100644
+--- a/migration/migration-hmp-cmds.c
++++ b/migration/migration-hmp-cmds.c
+@@ -37,29 +37,28 @@ static void migration_global_dump(Monitor *mon)
+ {
+     MigrationState *ms = migrate_get_current();
  
--        if (migrate_incoming_started()) {
-+        if (!migrate_postcopy_preempt() && migrate_incoming_started()) {
-             error_setg(errp,
-                        "Postcopy preempt must be set before incoming starts");
-             return false;
-@@ -576,7 +576,7 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+-    monitor_printf(mon, "globals:\n");
+-    monitor_printf(mon, "store-global-state: %s\n",
++    monitor_printf(mon, "Globals:\n");
++    monitor_printf(mon, "  store-global-state: %s\n",
+                    ms->store_global_state ? "on" : "off");
+-    monitor_printf(mon, "only-migratable: %s\n",
++    monitor_printf(mon, "  only-migratable: %s\n",
+                    only_migratable ? "on" : "off");
+-    monitor_printf(mon, "send-configuration: %s\n",
++    monitor_printf(mon, "  send-configuration: %s\n",
+                    ms->send_configuration ? "on" : "off");
+-    monitor_printf(mon, "send-section-footer: %s\n",
++    monitor_printf(mon, "  send-section-footer: %s\n",
+                    ms->send_section_footer ? "on" : "off");
+-    monitor_printf(mon, "send-switchover-start: %s\n",
++    monitor_printf(mon, "  send-switchover-start: %s\n",
+                    ms->send_switchover_start ? "on" : "off");
+-    monitor_printf(mon, "clear-bitmap-shift: %u\n",
++    monitor_printf(mon, "  clear-bitmap-shift: %u\n",
+                    ms->clear_bitmap_shift);
+ }
+ 
+ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
+ {
++    bool show_all = qdict_get_try_bool(qdict, "all", false);
+     MigrationInfo *info;
+ 
+     info = qmp_query_migrate(NULL);
+ 
+-    migration_global_dump(mon);
+-
+     if (info->blocked_reasons) {
+         strList *reasons = info->blocked_reasons;
+         monitor_printf(mon, "Outgoing migration blocked:\n");
+@@ -70,7 +69,7 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
      }
  
-     if (new_caps[MIGRATION_CAPABILITY_MULTIFD]) {
--        if (migrate_incoming_started()) {
-+        if (!migrate_multifd() && migrate_incoming_started()) {
-             error_setg(errp, "Multifd must be set before incoming starts");
-             return false;
+     if (info->has_status) {
+-        monitor_printf(mon, "Migration status: %s",
++        monitor_printf(mon, "Status: %s",
+                        MigrationStatus_str(info->status));
+         if (info->status == MIGRATION_STATUS_FAILED && info->error_desc) {
+             monitor_printf(mon, " (%s)\n", info->error_desc);
+@@ -78,107 +77,130 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
+             monitor_printf(mon, "\n");
          }
+ 
+-        monitor_printf(mon, "total time: %" PRIu64 " ms\n",
+-                       info->total_time);
+-        if (info->has_expected_downtime) {
+-            monitor_printf(mon, "expected downtime: %" PRIu64 " ms\n",
+-                           info->expected_downtime);
+-        }
+-        if (info->has_downtime) {
+-            monitor_printf(mon, "downtime: %" PRIu64 " ms\n",
+-                           info->downtime);
++        if (info->total_time) {
++            monitor_printf(mon, "Time (ms): total=%" PRIu64,
++                           info->total_time);
++            if (info->has_setup_time) {
++                monitor_printf(mon, ", setup=%" PRIu64,
++                               info->setup_time);
++            }
++            if (info->has_expected_downtime) {
++                monitor_printf(mon, ", exp_down=%" PRIu64,
++                               info->expected_downtime);
++            }
++            if (info->has_downtime) {
++                monitor_printf(mon, ", down=%" PRIu64,
++                               info->downtime);
++            }
++            monitor_printf(mon, "\n");
+         }
+-        if (info->has_setup_time) {
+-            monitor_printf(mon, "setup: %" PRIu64 " ms\n",
+-                           info->setup_time);
++    }
++
++    if (info->has_socket_address) {
++        SocketAddressList *addr;
++
++        monitor_printf(mon, "Sockets: [\n");
++
++        for (addr = info->socket_address; addr; addr = addr->next) {
++            char *s = socket_uri(addr->value);
++            monitor_printf(mon, "\t%s\n", s);
++            g_free(s);
+         }
++        monitor_printf(mon, "]\n");
+     }
+ 
+     if (info->ram) {
+-        monitor_printf(mon, "transferred ram: %" PRIu64 " kbytes\n",
+-                       info->ram->transferred >> 10);
+-        monitor_printf(mon, "throughput: %0.2f mbps\n",
++        monitor_printf(mon, "RAM info:\n");
++        monitor_printf(mon, "  Throughput (Mbps): %0.2f\n",
+                        info->ram->mbps);
+-        monitor_printf(mon, "remaining ram: %" PRIu64 " kbytes\n",
+-                       info->ram->remaining >> 10);
+-        monitor_printf(mon, "total ram: %" PRIu64 " kbytes\n",
++        monitor_printf(mon, "  Sizes (KiB): pagesize=%" PRIu64
++                       ", total=%" PRIu64 ",\n",
++                       info->ram->page_size >> 10,
+                        info->ram->total >> 10);
+-        monitor_printf(mon, "duplicate: %" PRIu64 " pages\n",
+-                       info->ram->duplicate);
+-        monitor_printf(mon, "normal: %" PRIu64 " pages\n",
+-                       info->ram->normal);
+-        monitor_printf(mon, "normal bytes: %" PRIu64 " kbytes\n",
+-                       info->ram->normal_bytes >> 10);
+-        monitor_printf(mon, "dirty sync count: %" PRIu64 "\n",
+-                       info->ram->dirty_sync_count);
+-        monitor_printf(mon, "page size: %" PRIu64 " kbytes\n",
+-                       info->ram->page_size >> 10);
+-        monitor_printf(mon, "multifd bytes: %" PRIu64 " kbytes\n",
+-                       info->ram->multifd_bytes >> 10);
+-        monitor_printf(mon, "pages-per-second: %" PRIu64 "\n",
++        monitor_printf(mon, "    transferred=%" PRIu64
++                       ", remain=%" PRIu64 ",\n",
++                       info->ram->transferred >> 10,
++                       info->ram->remaining >> 10);
++        monitor_printf(mon, "    precopy=%" PRIu64
++                       ", multifd=%" PRIu64
++                       ", postcopy=%" PRIu64,
++                       info->ram->precopy_bytes >> 10,
++                       info->ram->multifd_bytes >> 10,
++                       info->ram->postcopy_bytes >> 10);
++
++        if (info->vfio) {
++            monitor_printf(mon, ", vfio=%" PRIu64,
++                           info->vfio->transferred >> 10);
++        }
++        monitor_printf(mon, "\n");
++
++        monitor_printf(mon, "  Pages: normal=%" PRIu64 ", zero=%" PRIu64
++                       ", rate_per_sec=%" PRIu64 "\n",
++                       info->ram->normal,
++                       info->ram->duplicate,
+                        info->ram->pages_per_second);
++        monitor_printf(mon, "  Others: dirty_syncs=%" PRIu64,
++                       info->ram->dirty_sync_count);
+ 
+         if (info->ram->dirty_pages_rate) {
+-            monitor_printf(mon, "dirty pages rate: %" PRIu64 " pages\n",
++            monitor_printf(mon, ", dirty_pages_rate=%" PRIu64,
+                            info->ram->dirty_pages_rate);
+         }
+         if (info->ram->postcopy_requests) {
+-            monitor_printf(mon, "postcopy request count: %" PRIu64 "\n",
++            monitor_printf(mon, ", postcopy_req=%" PRIu64,
+                            info->ram->postcopy_requests);
+         }
+-        if (info->ram->precopy_bytes) {
+-            monitor_printf(mon, "precopy ram: %" PRIu64 " kbytes\n",
+-                           info->ram->precopy_bytes >> 10);
+-        }
+         if (info->ram->downtime_bytes) {
+-            monitor_printf(mon, "downtime ram: %" PRIu64 " kbytes\n",
+-                           info->ram->downtime_bytes >> 10);
+-        }
+-        if (info->ram->postcopy_bytes) {
+-            monitor_printf(mon, "postcopy ram: %" PRIu64 " kbytes\n",
+-                           info->ram->postcopy_bytes >> 10);
++            monitor_printf(mon, ", downtime_ram=%" PRIu64,
++                           info->ram->downtime_bytes);
+         }
+         if (info->ram->dirty_sync_missed_zero_copy) {
+-            monitor_printf(mon,
+-                           "Zero-copy-send fallbacks happened: %" PRIu64 " times\n",
++            monitor_printf(mon, ", zerocopy_fallbacks=%" PRIu64,
+                            info->ram->dirty_sync_missed_zero_copy);
+         }
++        monitor_printf(mon, "\n");
++    }
++
++    if (!show_all) {
++        goto out;
+     }
+ 
++    migration_global_dump(mon);
++
+     if (info->xbzrle_cache) {
+-        monitor_printf(mon, "cache size: %" PRIu64 " bytes\n",
+-                       info->xbzrle_cache->cache_size);
+-        monitor_printf(mon, "xbzrle transferred: %" PRIu64 " kbytes\n",
+-                       info->xbzrle_cache->bytes >> 10);
+-        monitor_printf(mon, "xbzrle pages: %" PRIu64 " pages\n",
+-                       info->xbzrle_cache->pages);
+-        monitor_printf(mon, "xbzrle cache miss: %" PRIu64 " pages\n",
+-                       info->xbzrle_cache->cache_miss);
+-        monitor_printf(mon, "xbzrle cache miss rate: %0.2f\n",
+-                       info->xbzrle_cache->cache_miss_rate);
+-        monitor_printf(mon, "xbzrle encoding rate: %0.2f\n",
+-                       info->xbzrle_cache->encoding_rate);
+-        monitor_printf(mon, "xbzrle overflow: %" PRIu64 "\n",
++        monitor_printf(mon, "XBZRLE: size=%" PRIu64
++                       ", transferred=%" PRIu64
++                       ", pages=%" PRIu64
++                       ", miss=%" PRIu64 "\n"
++                       "  miss_rate=%0.2f"
++                       ", encode_rate=%0.2f"
++                       ", overflow=%" PRIu64 "\n",
++                       info->xbzrle_cache->cache_size,
++                       info->xbzrle_cache->bytes,
++                       info->xbzrle_cache->pages,
++                       info->xbzrle_cache->cache_miss,
++                       info->xbzrle_cache->cache_miss_rate,
++                       info->xbzrle_cache->encoding_rate,
+                        info->xbzrle_cache->overflow);
+     }
+ 
+     if (info->has_cpu_throttle_percentage) {
+-        monitor_printf(mon, "cpu throttle percentage: %" PRIu64 "\n",
++        monitor_printf(mon, "CPU Throttle (%%): %" PRIu64 "\n",
+                        info->cpu_throttle_percentage);
+     }
+ 
+     if (info->has_dirty_limit_throttle_time_per_round) {
+-        monitor_printf(mon, "dirty-limit throttle time: %" PRIu64 " us\n",
++        monitor_printf(mon, "Dirty-limit Throttle (us): %" PRIu64 "\n",
+                        info->dirty_limit_throttle_time_per_round);
+     }
+ 
+     if (info->has_dirty_limit_ring_full_time) {
+-        monitor_printf(mon, "dirty-limit ring full time: %" PRIu64 " us\n",
++        monitor_printf(mon, "Dirty-limit Ring Full (us): %" PRIu64 "\n",
+                        info->dirty_limit_ring_full_time);
+     }
+ 
+     if (info->has_postcopy_blocktime) {
+-        monitor_printf(mon, "postcopy blocktime: %u\n",
++        monitor_printf(mon, "Postcopy Blocktime (ms): %" PRIu32 "\n",
+                        info->postcopy_blocktime);
+     }
+ 
+@@ -189,28 +211,12 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
+         visit_type_uint32List(v, NULL, &info->postcopy_vcpu_blocktime,
+                               &error_abort);
+         visit_complete(v, &str);
+-        monitor_printf(mon, "postcopy vcpu blocktime: %s\n", str);
++        monitor_printf(mon, "Postcopy vCPU Blocktime: %s\n", str);
+         g_free(str);
+         visit_free(v);
+     }
+-    if (info->has_socket_address) {
+-        SocketAddressList *addr;
+-
+-        monitor_printf(mon, "socket address: [\n");
+-
+-        for (addr = info->socket_address; addr; addr = addr->next) {
+-            char *s = socket_uri(addr->value);
+-            monitor_printf(mon, "\t%s\n", s);
+-            g_free(s);
+-        }
+-        monitor_printf(mon, "]\n");
+-    }
+-
+-    if (info->vfio) {
+-        monitor_printf(mon, "vfio device transferred: %" PRIu64 " kbytes\n",
+-                       info->vfio->transferred >> 10);
+-    }
+ 
++out:
+     qapi_free_MigrationInfo(info);
+ }
+ 
+diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
+index c59cd6637b..639a450ee5 100644
+--- a/hmp-commands-info.hx
++++ b/hmp-commands-info.hx
+@@ -475,9 +475,9 @@ ERST
+ 
+     {
+         .name       = "migrate",
+-        .args_type  = "",
+-        .params     = "",
+-        .help       = "show migration status",
++        .args_type  = "all:-a",
++        .params     = "[-a]",
++        .help       = "show migration status (-a: all, dump all status)",
+         .cmd        = hmp_info_migrate,
+     },
+ 
 -- 
 2.49.0
 
