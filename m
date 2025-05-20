@@ -2,89 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06C6CABE1BA
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 19:19:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98BF2ABE1CC
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 19:25:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHQc4-0008No-Au; Tue, 20 May 2025 13:18:48 -0400
+	id 1uHQgv-0000tY-7s; Tue, 20 May 2025 13:23:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1uHQbn-0008Mq-Oi
- for qemu-devel@nongnu.org; Tue, 20 May 2025 13:18:31 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1uHQgt-0000sq-6F
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 13:23:47 -0400
+Received: from mail-ua1-x930.google.com ([2607:f8b0:4864:20::930])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1uHQbg-0003d8-Ol
- for qemu-devel@nongnu.org; Tue, 20 May 2025 13:18:31 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-7370a2d1981so4657646b3a.2
- for <qemu-devel@nongnu.org>; Tue, 20 May 2025 10:18:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1uHQgr-000598-4E
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 13:23:46 -0400
+Received: by mail-ua1-x930.google.com with SMTP id
+ a1e0cc1a2514c-87bfc9ff795so874241241.2
+ for <qemu-devel@nongnu.org>; Tue, 20 May 2025 10:23:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747761503; x=1748366303; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
- bh=WHRuLt0uKLk3Rne5lNMYRtlHU9xfOLNLxmkhdwAs/4g=;
- b=d52MEZntdN2ylF52JaImdV5H2xQQR13cWCA4VfQho+yKDHFUdHyvCgTtldvUPH7dTj
- nL8rD0hi51sJCgx3GW9MBxWWty6EuRSiiwJeFmbqF7kXOxQqVOU0fyWIs910p0MmDo5a
- 1LgECQZiwVw6cLRMPr9hjt5VESLD9Ft9pGJMPYJTF5s12uVLgLoZa+b/KfyrOPLm/G54
- V+LgcyfssSN94HHEGtgxnMdLqi10hLv9GmXEDrND79dJF7VIk8NBm7xytWw0hsfqwsfA
- AQnKZv9SGMSgTYDhdSjs7g3V02wyrl9bNGLLwlEzg8aLCq3hy5amZNuW3vDZh8D9Y8vf
- laWw==
+ d=ventanamicro.com; s=google; t=1747761822; x=1748366622; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=73dnwvJmpiXV1HjI7uGxuEtw4e2T+HxBZsmOkSYPJOM=;
+ b=BI2CaL8sYX6d+U5cwNulcIUbnEKe2hSwHyDp8XgGiBsk3BJYFshQhlJBEXFpRI1IZn
+ oVIQa0Bw5Lm4i3boJifegkrx054y32KOADcwC39Zqh0Q6k0ZHMoeVpgHeuFoZ9H339b5
+ nz6eMtb9uOoxT7J9O0SIM0DX3989unQkBfMp/DKyR92qwaBf+/8HSi59lT1nFNADnYLf
+ g6MQHjnw0/c9ZITyn0WgQb40Yh/j4BDltv+hE1Iwa0sQBWzwEnmCwZ1mczXiqlomLwst
+ q53aucMHFKx59mu5iqlfYL2paeQsltr+hV9bSBtTZQr2ajyrp101bsxRkPTffBpFWl7Q
+ WO/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747761503; x=1748366303;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=WHRuLt0uKLk3Rne5lNMYRtlHU9xfOLNLxmkhdwAs/4g=;
- b=aoKl32pzpUU2jRIig3UwKrRWrlUSavh1mTp0/H3bmjjaeF0ChAUcF7OcLFHKSg72q7
- xOuHTIEBPV8mttkpbs7o3zDm+gZUh6XnG+gdZIB1M1fZEFi7fKZWSsFRlA+X3f3MGob0
- l2p0f5nzByyatf6hquPXvej7IV7/mHU4KbPq0QVnRAoKWEJAE5Zj6GSfTu9qrdeay+2Y
- 6xnCtLbiWMeF/58OdrAp2A5nuq+7WXHzu+htX7SInkN1vEhycHoxC0KB9OIh83zfjN1u
- WeT8MU4yP4cJswPe/XqEDJlTtnkkbW0/tc1+Y8z3+P22bQyW0tgmD3WRuaQULqirg3Ve
- l0ew==
-X-Gm-Message-State: AOJu0Ywuj/xRlCz0ASE4jKsl3SAXJeRMXz8u+rjfcn8dwFWYxEcj8seJ
- exAOmzPoXt9BIXNEUfYX3b3nL1xr2Tq2v2vA9ew2BhpDWECCnayWQXZj
-X-Gm-Gg: ASbGnctOw7VUPAh8Pus+eP0apB1CBCtTbqqX4QoUqupzcfapoEfYkdD9ntDP0I0keBE
- Oj6lFHYx5nO+x+lCbVnLy4/aWZR8YuSgjpjEOecel/XPybVxPGh6g4VfwQ6awLmyOPP2elia9tl
- ROi6WOE3QWkJXPU++sC1JSGSz5dIz9p05lSIATj2+m7951Sgafx2qrVUNGFNndK4Vxq/HPjXVPu
- FIMcfZHC+nc76/1a27uu0dgN5pG+73nF1MxDSCRrDJk512ThHOuWfGv5GG/Hgt0c35ypOelZ5bs
- JJtVPTYOioWtuT7/tkZWQ3MMF8jWi+k8V/aVZ/twuQ==
-X-Google-Smtp-Source: AGHT+IEctpiI1b8xjCQw29kS9/gOk5u9HHcNs6F4R53OPn52CJSeYZxVBSumexGTOGHE18YzMnuB3w==
-X-Received: by 2002:a05:6a00:391a:b0:734:b136:9c39 with SMTP id
- d2e1a72fcca58-742acd509f2mr22687459b3a.19.1747761502653; 
- Tue, 20 May 2025 10:18:22 -0700 (PDT)
-Received: from lg ([2601:646:8f03:9fee:2c89:c0cf:1cbd:96d3])
+ d=1e100.net; s=20230601; t=1747761822; x=1748366622;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=73dnwvJmpiXV1HjI7uGxuEtw4e2T+HxBZsmOkSYPJOM=;
+ b=G4aY2HP3wrIn6woYE1hnrjhlndWCuyevQWEiV47lxsjFRASIgZD+Z6WqDOVV3a7OQr
+ 3o2q5R/gkLlyOx4JGSxKuTM4RlNZN9YLfgmGpmjENzFcc/puZOCuZyUJRXcWHop/WFSj
+ Dg0bcAWwDAyAV9fADxjxYTTzPypQEyz152KAyXkp9hbfDrv4WojjTXM8eq3M/nHKn34e
+ 67lcvyFJH9V7ebL5nyeCQR6tHMJWU6Z5qds/X2/kF6OKemsLeAeUDH/Q0ISRb7CiadIR
+ wW7ckgKqeV2dCXTg4nUbeZ0682Dvkhj4m6sgVpBJ4vkC1GqBqzR97psEH1LGFS8apu7m
+ M9xQ==
+X-Gm-Message-State: AOJu0YymTOZMN2ZJSqCVZNUlOeHAexZuCR5KgFogXxOq82Qx21Vo7YzL
+ xBRGlX3jXrRD/gH+XrgCN+kRPPHsCufAagFOmsmShjyKYzOyGrYDBLG/vJKsjYLworA62SvBkoF
+ 5PqTY
+X-Gm-Gg: ASbGncsmw8HCWdGJEHTJikuasnUlcA1Lm9MuLkBPXBnTwe163NFz2iNnQ7ug6I/qT/H
+ ROJodddoujcamApZ4/0TOeTpY+CLblwjKkExa6hheyFPdqozSUd1/p+ryzDI7OMmin5JrsTJfDv
+ XbYXafS54tgBAXSecO2p13tkGU1l2S0i9KKIP+iVbbeoFV9aWLp65gvbRysSrrVkYMWE1mJClRV
+ Im7B/XxjbSxXbBEBkfrlMg9K0kxnG1cmq9CjPeQC/wgXFqyj/UG5Kmdp1qZplwECEyKrOrM8Wf9
+ 8WMjXCoGFi5o4XXsA02BOeZL5+YnPbASmnbaf/4+o9xQOworfL0YznFeJ5/gTHKWDeF1Rhtg3O4
+ 0eRaU
+X-Google-Smtp-Source: AGHT+IEL6mMxC+l95+/5BY8TzFsAAROkiu/bNfufQsQzMxc5QaamORT6q8iPCjjdI/1sy3eXSH4hVg==
+X-Received: by 2002:a05:6102:e06:b0:4e2:a29d:ecb6 with SMTP id
+ ada2fe7eead31-4e2a29ded6bmr6280497137.1.1747761822549; 
+ Tue, 20 May 2025 10:23:42 -0700 (PDT)
+Received: from grind.dc1.ventanamicro.com ([152.250.131.100])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-742a9829b9dsm8159736b3a.88.2025.05.20.10.18.21
+ a1e0cc1a2514c-87bec155e21sm7698107241.17.2025.05.20.10.23.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 May 2025 10:18:22 -0700 (PDT)
-From: Fan Ni <nifan.cxl@gmail.com>
-X-Google-Original-From: Fan Ni <fan.ni@samsung.com>
-Date: Tue, 20 May 2025 10:18:20 -0700
-To: anisa.su887@gmail.com
-Cc: qemu-devel@nongnu.org, Jonathan.Cameron@huawei.com, nifan.cxl@gmail.com,
- dave@stgolabs.net, linux-cxl@vger.kernel.org,
- Anisa Su <anisa.su@samsung.com>
-Subject: Re: [PATCH v2 08/10] cxl-mailbox-utils: 0x5603 - FMAPI Get DC Region
- Extent Lists
-Message-ID: <aCy5XLlc81t0BdVp@lg>
-References: <20250508001754.122180-1-anisa.su887@gmail.com>
- <20250508001754.122180-9-anisa.su887@gmail.com>
+ Tue, 20 May 2025 10:23:42 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, liwei1518@gmail.com,
+ zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com, ajones@ventanamicro.com,
+ bjorn@kernel.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH 0/3] target/riscv: profile handling fixes
+Date: Tue, 20 May 2025 14:23:33 -0300
+Message-ID: <20250520172336.759708-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250508001754.122180-9-anisa.su887@gmail.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=nifan.cxl@gmail.com; helo=mail-pf1-x42e.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::930;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ua1-x930.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,129 +98,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 08, 2025 at 12:01:04AM +0000, anisa.su887@gmail.com wrote:
-> From: Anisa Su <anisa.su@samsung.com>
-> 
-> FM DCD Management command 0x5603 implemented per CXL r3.2 Spec Section 7.6.7.6.4
-> Very similar to previously implemented command 0x4801.
-> 
-> Signed-off-by: Anisa Su <anisa.su@samsung.com>
+Hi,
 
-Reviewed-by: Fan Ni <fan.ni@samsung.com>
+The motivation of this short series is to fix a reported in [1]. A
+couple of bugs were fixed along the way.
 
-> ---
->  hw/cxl/cxl-mailbox-utils.c   | 75 ++++++++++++++++++++++++++++++++++++
->  include/hw/cxl/cxl_opcodes.h |  1 +
->  2 files changed, 76 insertions(+)
-> 
-> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-> index fe38a13f71..a897a34ef9 100644
-> --- a/hw/cxl/cxl-mailbox-utils.c
-> +++ b/hw/cxl/cxl-mailbox-utils.c
-> @@ -3516,6 +3516,79 @@ static CXLRetCode cmd_fm_set_dc_region_config(const struct cxl_cmd *cmd,
->      return CXL_MBOX_SUCCESS;
->  }
->  
-> +/* CXL r3.2 section 7.6.7.6.4 Get DC Region Extent Lists (Opcode 5603h) */
-> +static CXLRetCode cmd_fm_get_dc_region_extent_list(const struct cxl_cmd *cmd,
-> +                                                   uint8_t *payload_in,
-> +                                                   size_t len_in,
-> +                                                   uint8_t *payload_out,
-> +                                                   size_t *len_out,
-> +                                                   CXLCCI *cci)
-> +{
-> +    struct {
-> +        uint16_t host_id;
-> +        uint8_t rsvd[2];
-> +        uint32_t extent_cnt;
-> +        uint32_t start_extent_id;
-> +    } QEMU_PACKED *in = (void *)payload_in;
-> +    struct {
-> +        uint16_t host_id;
-> +        uint8_t rsvd[2];
-> +        uint32_t start_extent_id;
-> +        uint32_t extents_returned;
-> +        uint32_t total_extents;
-> +        uint32_t list_generation_num;
-> +        uint8_t rsvd2[4];
-> +        CXLDCExtentRaw records[];
-> +    } QEMU_PACKED *out = (void *)payload_out;
-> +    QEMU_BUILD_BUG_ON(sizeof(*in) != 0xc);
-> +    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
-> +    CXLDCExtent *ent;
-> +    CXLDCExtentRaw *out_rec;
-> +    uint16_t record_count = 0, record_done = 0, i = 0;
-> +    uint16_t out_pl_len, max_size;
-> +
-> +    if (in->host_id != 0) {
-> +        return CXL_MBOX_INVALID_INPUT;
-> +    }
-> +
-> +    if (in->start_extent_id > ct3d->dc.total_extent_count) {
-> +        return CXL_MBOX_INVALID_INPUT;
-> +    }
-> +
-> +    record_count = MIN(in->extent_cnt,
-> +                       ct3d->dc.total_extent_count - in->start_extent_id);
-> +    max_size = CXL_MAILBOX_MAX_PAYLOAD_SIZE - sizeof(*out);
-> +    record_count = MIN(record_count, max_size / sizeof(out->records[0]));
-> +    out_pl_len = sizeof(*out) + record_count * sizeof(out->records[0]);
-> +
-> +    stw_le_p(&out->host_id, in->host_id);
-> +    stl_le_p(&out->start_extent_id, in->start_extent_id);
-> +    stl_le_p(&out->extents_returned, record_count);
-> +    stl_le_p(&out->total_extents, ct3d->dc.total_extent_count);
-> +    stl_le_p(&out->list_generation_num, ct3d->dc.ext_list_gen_seq);
-> +
-> +    if (record_count > 0) {
-> +        QTAILQ_FOREACH(ent, &ct3d->dc.extents, node) {
-> +            if (i++ < in->start_extent_id) {
-> +                continue;
-> +            }
-> +            out_rec = &out->records[record_done];
-> +            stq_le_p(&out_rec->start_dpa, ent->start_dpa);
-> +            stq_le_p(&out_rec->len, ent->len);
-> +            memcpy(&out_rec->tag, ent->tag, 0x10);
-> +            stw_le_p(&out_rec->shared_seq, ent->shared_seq);
-> +
-> +            record_done++;
-> +            if (record_done == record_count) {
-> +                break;
-> +            }
-> +        }
-> +    }
-> +
-> +    *len_out = out_pl_len;
-> +    return CXL_MBOX_SUCCESS;
-> +}
-> +
->  static const struct cxl_cmd cxl_cmd_set[256][256] = {
->      [INFOSTAT][BACKGROUND_OPERATION_ABORT] = { "BACKGROUND_OPERATION_ABORT",
->          cmd_infostat_bg_op_abort, 0, 0 },
-> @@ -3649,6 +3722,8 @@ static const struct cxl_cmd cxl_cmd_set_fm_dcd[256][256] = {
->           CXL_MBOX_CONFIG_CHANGE_CXL_RESET |
->           CXL_MBOX_IMMEDIATE_CONFIG_CHANGE |
->           CXL_MBOX_IMMEDIATE_DATA_CHANGE) },
-> +    [FMAPI_DCD_MGMT][GET_DC_REGION_EXTENT_LIST] = { "GET_DC_REGION_EXTENT_LIST",
-> +        cmd_fm_get_dc_region_extent_list, 12, 0 },
->  };
->  
->  /*
-> diff --git a/include/hw/cxl/cxl_opcodes.h b/include/hw/cxl/cxl_opcodes.h
-> index ed4be23b75..ad4e614daa 100644
-> --- a/include/hw/cxl/cxl_opcodes.h
-> +++ b/include/hw/cxl/cxl_opcodes.h
-> @@ -65,5 +65,6 @@ enum {
->          #define GET_DCD_INFO 0x0
->          #define GET_HOST_DC_REGION_CONFIG 0x1
->          #define SET_DC_REGION_CONFIG 0x2
-> +        #define GET_DC_REGION_EXTENT_LIST 0x3
->      GLOBAL_MEMORY_ACCESS_EP_MGMT = 0X59
->  };
-> -- 
-> 2.47.2
-> 
+Björn, these patches should remediate the situation you're experiencing.
+
+Patches based on master.
+
+[1] https://lore.kernel.org/qemu-riscv/87y0usiz22.fsf@all.your.base.are.belong.to.us/
+
+Daniel Henrique Barboza (3):
+  target/riscv/tcg: restrict satp_mode changes in cpu_set_profile
+  target/riscv/tcg: decouple profile enablement from user prop
+  target/riscv: add profile->present flag
+
+ target/riscv/cpu.h            |  15 ++++
+ target/riscv/riscv-qmp-cmds.c |   2 +-
+ target/riscv/tcg/tcg-cpu.c    | 138 +++++++++++++++++-----------------
+ 3 files changed, 86 insertions(+), 69 deletions(-)
 
 -- 
-Fan Ni
+2.49.0
+
 
