@@ -2,90 +2,143 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8986BABDCA7
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 16:26:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91F70ABDCAC
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 16:26:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHNuJ-0007MO-Be; Tue, 20 May 2025 10:25:27 -0400
+	id 1uHNup-0007Of-Sl; Tue, 20 May 2025 10:25:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uHNuG-0007Lx-Ka
- for qemu-devel@nongnu.org; Tue, 20 May 2025 10:25:24 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uHNuE-0002vo-6j
- for qemu-devel@nongnu.org; Tue, 20 May 2025 10:25:24 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3a0ac853894so5014687f8f.3
- for <qemu-devel@nongnu.org>; Tue, 20 May 2025 07:25:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747751120; x=1748355920; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=3S9b9WHqsNuka2NVPLNeaqXuQyKRzBvYMAZPp1x9eug=;
- b=aY92C8ijxZGo28eM0nFzNCvN5xXe7d2+1We0YpF5/oB4f7Us5FLWTqZUP4a5sXeSC3
- 9UEGOQ1OcfM390+G6+vW+KSaaDoHz9uPS3Edpha0LX8FpqEp0gktCLzrqazteVQ/MO9B
- CYchSaRUPaLp0h/KHAvr+kdlEhfolnsQMxdop4LnWc3vG53MGa8NGlATf/ynGoJCX31h
- IFGFK7EKAaH+Dt+BmcXvHF8uevBUMbp34OBljRNRTP01W3Bb6wFpVrsT+2H+mFd45edm
- jdSaVmaJjvHi7QR2I1zLtFHvOUa/XDqE8yFJWmquj15Mp673YzS4v8xhrJilYurk0cq6
- uPHQ==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uHNuX-0007Nc-Fw
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 10:25:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uHNuV-0002y5-1h
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 10:25:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747751138;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=YXpwTELuy2jj1c0Fcom/vtTE/hXoLvRzEXKXcxfmq8I=;
+ b=LMMJm2X0gMDb/hzi2aFhxbM38I2e33PHTU9iAU8wiG8ysP03llkP9aI2W5C+uAS2Pq453t
+ 9G4K9KlNBV3YCclgh8Hp9FPP2SYLPRrQic18Xtg0gzyhBVHzfvYxKQ6TPLctW/S3tssfj6
+ CTbUhlOXVLbEYadheYxPVIrmV4w9+FU=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-468-_L7m464bO1GNVl5jombXYA-1; Tue, 20 May 2025 10:25:37 -0400
+X-MC-Unique: _L7m464bO1GNVl5jombXYA-1
+X-Mimecast-MFC-AGG-ID: _L7m464bO1GNVl5jombXYA_1747751136
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-ac6ce5fe9bfso575588366b.1
+ for <qemu-devel@nongnu.org>; Tue, 20 May 2025 07:25:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747751120; x=1748355920;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=3S9b9WHqsNuka2NVPLNeaqXuQyKRzBvYMAZPp1x9eug=;
- b=SkTVxISuA9bN0m2A7EBrpl4HYNF9YeXy8BBl6/OvfqDpODMThZI7fsM5c0eGHC4pdj
- G2Gi9uJK3kKzWykJgBhynoK+2PMc+fNURj9rg+9fDbYIXgHfNnnr9bx24TWjRptQCF7m
- CuD5aGAJ3glYn9rQ7ehix8Ee3dpCastZ83aPedVAlzZrT6I3O+2Xe/wgtiDDEGM1d/40
- jFV6dhVn0pYBXi6ogZ8Ez8tlkF0nMsttszLm3ugXaHIIEN57vLB8duUmWzyWsekXhTxX
- uC7C76q1gs6OU+D02SwmHNRyO3fenEkbOpWLX9tayWVSKWPFHtwCw2J512mssk15lv9v
- TmJA==
-X-Gm-Message-State: AOJu0Yx2YF5MzhQBAw6c94pGWa7kHILOPpj66zkId59nMAFI3TYUubQ1
- a+UHfctBqqx0jnvUtYsXtEcmW3Iz8S/bHgrNv3A+L7k4abKhHGvalaPlJDGE+rsM8vs=
-X-Gm-Gg: ASbGnct2tS1eg3NSQX6vZjBkHnp0y6h2ZWEb5J6b71sVDhD+sjY30MBcyBXhj08iUwD
- s+ICKGeFRo5PGvb3NFCTsk7zLKjkO3fX55XaTy1msuR/kYFsRAU/d83z7Uah6WHsbXonyjTB8Gh
- NOYr/X6rA/Va5GXE09ABb802BygxTnydL9i3H72b8+E6gGUMPSU/yGFzIO+sfR+2gnBVVL+otsl
- PR/Gv5P7CV2fPEFF/5vg9obbSKTVu/BHz+be+yrZ2P3XuhHNAbN5yRWfydYkLPr6Ma01OCHuhOw
- sVUnPE6AUVNt5nSGiyQ8l8/9c3vruz027PdSOlMe1TvYPbYocS9K2HG67+ShBq8=
-X-Google-Smtp-Source: AGHT+IHwfahr6+7rmqqX1F816oBFLMD4lKGouf1mYrgGAe+I6eO0i5tOgQAkm2ynvj5fTDN4vKoqxw==
-X-Received: by 2002:a05:6000:430d:b0:3a0:ad5e:2ee1 with SMTP id
- ffacd0b85a97d-3a35c84f3c9mr14843350f8f.50.1747751119664; 
- Tue, 20 May 2025 07:25:19 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a36c6eeaf8sm9113626f8f.48.2025.05.20.07.25.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 May 2025 07:25:19 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 1B49D5F7A5;
- Tue, 20 May 2025 15:25:18 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Nabih Estefan <nabihestefan@google.com>
-Cc: qemu-devel@nongnu.org,  richard.henderson@linaro.org,
- pbonzini@redhat.com,  philmd@linaro.org
-Subject: Re: [PATCH 0/2] Fix for multi-process gdbstub breakpoints
-In-Reply-To: <20250508224514.805456-1-nabihestefan@google.com> (Nabih
- Estefan's message of "Thu, 8 May 2025 22:45:12 +0000")
-References: <20250508224514.805456-1-nabihestefan@google.com>
-User-Agent: mu4e 1.12.11; emacs 30.1
-Date: Tue, 20 May 2025 15:25:18 +0100
-Message-ID: <87tt5f9x69.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1747751136; x=1748355936;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=YXpwTELuy2jj1c0Fcom/vtTE/hXoLvRzEXKXcxfmq8I=;
+ b=wyvav6qzEfCY51KdHAbcnFCLe0fnxFkVsZVyylxTx1jRVXRbvgdB4oZKBYAtxuefnu
+ Vwv9O/b+bBToNppzQEYruq6I4Qyd/hFh4rKoXq9klv0oBxOWwWJdcb+N0NucgyZs/ajP
+ /+O9yIF9ZSvNnFuaWDXLjAxZXZa4POGCxDo4GSysxgEiM/+k+Yid4nX5mpX3W/yRQCsh
+ vaB93azZWIjF4xl3HN8ibG4HtWfuWcV+X4M+ePhQMaQ+0I22+1jneOt6UzCTNHvAnV9l
+ sGPrgCH+O4yNziZPg7AhY8fw25uCXlKUS0TjP2n+0n70HK+9FC4CYk1tMuzv53XMqkWk
+ cuSA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXEiceV8Z47fOsln4MlTVS00XGAQuJErOBxgBGNpy8RM6s/SNogzKibPc6eHKUKhJ6RXY5CTbXh7V6i@nongnu.org
+X-Gm-Message-State: AOJu0YyD8vS2ZKwiaMdDs/Jv5WVzl8XsXNy1MhJkDNtcQkeX9BMH7Gka
+ MFnFif9Nf6hGH0v/jhugQ2kuTW9PdrR1uDmKCakqOkFOzOFX9AkdWFpQPSG+0kWIDoMMv4xp+88
+ ssLgjfT8SNp1ECwnq7KlLqaHtstDSaJDkix6Ybwul1Tep24IGOcIVxIL+
+X-Gm-Gg: ASbGncsOLJBh9q2UW5hi0usymmBofF3ASou+pnJy5S6GxRai/me0/KSvw0ZTSMlEX4v
+ CHfZaqNk6U0vCBfks9Zfd/7Fr6CVwkxdvyiRYel5znDM34dtaspOde8ZzuhdBPilKP6P8aL7i3j
+ UlV5AzHepy11d12TbI4VsyijY5zDbGKmCn1g4eAPz+rxh3LJcjoRexNhBJFzjS2IQg0tkie/VVj
+ wlE5BhJyukPrgm2g3rhkE2KQuemzSE3lIh844FFT90+Z/tcBhUbuqa5xtydUBZ3k0LM8AZjcTD6
+ LCCISNiyuwExiA==
+X-Received: by 2002:a17:907:8dcb:b0:ad2:2d60:24a2 with SMTP id
+ a640c23a62f3a-ad52d45c749mr1660182466b.6.1747751135820; 
+ Tue, 20 May 2025 07:25:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGxGD9guygso8LpBnJIgNlqySTE0q6oS3MyuHGe7Gj/kz/xcJqU1hM3KfyBuynEwGEKN9YuvA==
+X-Received: by 2002:a17:907:8dcb:b0:ad2:2d60:24a2 with SMTP id
+ a640c23a62f3a-ad52d45c749mr1660178866b.6.1747751135314; 
+ Tue, 20 May 2025 07:25:35 -0700 (PDT)
+Received: from [192.168.10.81] ([151.95.46.79])
+ by smtp.googlemail.com with ESMTPSA id
+ a640c23a62f3a-ad52d278274sm733062066b.86.2025.05.20.07.25.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 20 May 2025 07:25:34 -0700 (PDT)
+Message-ID: <6d176fba-3628-4f7c-8822-4eb3b11e9143@redhat.com>
+Date: Tue, 20 May 2025 16:25:33 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 00/25] Implementing a MSHV (Microsoft Hypervisor)
+ accelerator
+To: Magnus Kulke <magnuskulke@linux.microsoft.com>,
+ magnuskulke@microsoft.com, qemu-devel@nongnu.org, liuwe@microsoft.com
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Wei Liu <wei.liu@kernel.org>,
+ Phil Dennis-Jordan <phil@philjordan.eu>, Roman Bolshakov
+ <rbolshakov@ddn.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Zhao Liu <zhao1.liu@intel.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Cameron Esfahani <dirty@apple.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+References: <20250520113018.49569-1-magnuskulke@linux.microsoft.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <20250520113018.49569-1-magnuskulke@linux.microsoft.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.487,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,144 +154,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Nabih Estefan <nabihestefan@google.com> writes:
+On 5/20/25 13:29, Magnus Kulke wrote:
+> Hello all,
+> 
+> as previously announced here, we are working on an integration that will
+> expose the HyperV hypervisor to QEMU on Linux hosts. HyperV is a Type 1
+> hypervisor with a layered architecture that features a "root partition"
+> alongside VMs as "child partitions" that will interface with the
+> hypervisor and has access to the hardware. (https://aka.ms/hypervarch)
 
-> This patch series modifies the gdbstub to address a bug running a
-> multi cluster machine in QEMU using TCG.
+I gave a look at stuff that is usually incorrect in newly submitted 
+accelerators. :)  The two main thing to cover are:
 
-Was this a downstream multi-cluster machine? Do we have any examples for
-upstream? It would be nice to add a gdbstub test case to cover the
-multi-inferior behaviour.
+- the signal handlers, which require a kernel change
 
-> The machine where the
-> problem was seen had several clusters of CPUs with similar
-> architectures and similar memory layout all working with physical
-> addresses. It was discovered under gdb debugging that a breakpoint
-> targeting one cluster misfired on the wrong cluster quite frequently
-> with no possible workaround since gdb was also unaware of any
-> breakpoint in that cluster and simply reported SIGTRAP.
->
-> The sequence that discovered the bug adds N inferiors and adds a
-> breakpoint on inferior N. Then after continuing an unrelated thread
-> stops the execution when its PC hits the same address of the break
-> targeting a different inferior.
->
-> target extended-remote :1234
-> add-inferior
-> inferior 2
-> attach 2
-> ...
-> add-inferior
-> inferior N
-> attach N
-> add-symbol-file /path/to/foo.elf
-> break foo
->> Breakpoint 1 at 0xf00add
-> info break
->> Num     Type           Disp Enb Address    What
->> 1       breakpoint     keep y   0x00f00add in foo
->>                                            at foo.c:1234 inf N
-> continue
->> Continuing.
->>
->> Thread 2.1 received signal SIGTRAP, Trace/breakpoint trap.
->> [Switching to Thread 2.2]
->> 0xf00add in ?? ()
->
-> The main problem is the current implementation of
-> 'tcg_insert_breakpoint' and 'tcg_remove_breakpoint' insert and remove
-> breakpoints to all the CPUs in the system regardless of what the
-> remote gdb protocol implements.
->
-> If we look at the current source code of GDB we can see that the
-> function 'remote_target::insert_breakpoint' in file gdb/remote.c has
-> the intention to select the process ID of the inferior where the
-> break was inserted.
->
-> int
-> remote_target::insert_breakpoint (struct gdbarch *gdbarch,
->                                   struct bp_target_info *bp_tgt)
-> {
-> ...
->   /* Make sure the remote is pointing at the right process, if
->      necessary.  */
->   if (!gdbarch_has_global_breakpoints (current_inferior ()->arch ()))
->     set_general_process ();
-> ...
-> }
->
-> https:sourceware.org/git/?p=3Dbinutils-gdb.git;a=3Dblob;f=3Dgdb/remote.c;=
-h=3D2c3988cb5075655e8a799d1cc5d4760ad8ed426e;hb=3DHEAD#l11023
->
-> This would not happen when we input the 'break' in gdb but it is
-> deferred until the time we execute the 'continue' command. Because we
-> might be currently selecting an inferior that is not the one where we
-> previously set the breakpoint, the remote gdb has to make sure we
-> move the focus to the process ID of the inferior where we inserted
-> the break.
->
-> In the previous example this will translate to something like:
->
-> HgpN.M
-> Z0,00f00add,4
->
-> Another thing that is wrong with the current implementation (and it
-> affects both TCG and KVM mode) is that the remote gdb protocol uses
-> 'Hg' and not 'Hc' to select the process. Functions
-> 'gdb_breakpoint_insert' and 'gdb_breakpoint_remove' receive wrongly
-> 'gdbserver_state.c_cpu' instead of 'gdbserver_state.g_cpu'.
->
-> This is supported by the documentation of 'H op thread-id' where op =3D
-> 'c' is reserved to the step and continue:
->
-> https:sourceware.org/gdb/current/onlinedocs/gdb.html/Packets.html
->
-> And it can be verified that the function 'set_general_process' in the
-> previous code snippet will eventually call
-> 'remote_target::set_general_thread' and not
-> 'remote_target::set_continue_thread' if it needs to change focus.
->
-> A third scenario that has to be taken into account is the case of a
-> break on a specific thread, for instance the sequence:
->
-> inferior 1
-> break bar thread 1.3
-> break bar thread 1.4
->
-> The remote protocol expects the gdbstub to apply the break to the
-> process ID of inferior 1 and considers the specific thread-id as a
-> breakpoint condition (not too different from a 'break if').
->
-> In this case the packet exchange may look like:
->
-> Hgp1.1
-> Z0,00ba2add,4
->
-> There wouldn't be an independent set of packets for 'Hgp1.3' and
-> 'Hgp1.4'.
->
-> In the gdb source code, the handling of the specific thread-id
-> happens during breakpoint evaluation in function
-> 'bpstat_check_breakpoint_conditions' of file gdb/breakpoint.c
->
-> https:sourceware.org/git/?p=3Dbinutils-gdb.git;a=3Dblob;f=3Dgdb/breakpoin=
-t.c;h=3D17bd627f867cf3d4dc81322ed1919ba40cbb237d;hb=3DHEAD#l5550
->
-> The proposed fix inserts or removes a breakpoint to all the cpus
-> sharing the same process ID as the one selected with the latest
-> received 'Hg' packet.
->
-> Roque Arcudia Hernandez (2):
->   gdbstub: Fix wrong CPUState pointer in breakpoint functions
->   gdbstub: Apply breakpoints only to the selected PID
->
->  accel/tcg/tcg-accel-ops.c | 37 +++++++++++++++++++++++--------------
->  gdbstub/gdbstub.c         | 10 ++++++++--
->  gdbstub/internals.h       | 13 +++++++++++--
->  include/exec/gdbstub.h    | 12 ++++++++++++
->  4 files changed, 54 insertions(+), 18 deletions(-)
+- the memory region issue that isn't clear
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Everything else is just small things that need to be cleaned up.
+
+Paolo
+
 
