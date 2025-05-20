@@ -2,97 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4C26ABD6FB
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 13:36:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6989ABD71C
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 13:43:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHLEI-0004aC-9Y; Tue, 20 May 2025 07:33:55 -0400
+	id 1uHLLp-0008O3-KV; Tue, 20 May 2025 07:41:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1uHLE2-0004MS-SO
- for qemu-devel@nongnu.org; Tue, 20 May 2025 07:33:39 -0400
-Received: from mail-vs1-xe2d.google.com ([2607:f8b0:4864:20::e2d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1uHLDy-0001Zb-89
- for qemu-devel@nongnu.org; Tue, 20 May 2025 07:33:38 -0400
-Received: by mail-vs1-xe2d.google.com with SMTP id
- ada2fe7eead31-4dfa28eb4d8so3123859137.1
- for <qemu-devel@nongnu.org>; Tue, 20 May 2025 04:33:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1747740811; x=1748345611; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=fd11ekkjfrXxaFZeIFljZm4Y2T2aMORytHgpIUVaYtE=;
- b=PAZqzQyUdGyeNlw/dv1SvESTfZGOwBjFtXKhgrV7xEj2sSUCDJ3wWXbohXUi9Btqte
- NVduAV21i3C0VJo83qwSIKKz4bGUFTeD7G+hb33EeJ8LpEReZM9tMr8Ez/EOUXvtfaFr
- mo5JZYY88EdFjPNQNB5qbp8m/nOUabWVWlfpcJFRFphakS78XA9cXKStw27ifPcwWAqm
- zNoxTu6fRe/V2F/v5ixjwmFm34MwRTuHlds7yGc1drwSuB/TVFwz0kXl5cYYDjqNmbdt
- Xd8bgQxdgfLrDTosgOeBtw0wRGyQO6T1pI2GICZR+nvfkFgpCB7Dobke422TbxxqWjKS
- ekZw==
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1uHLLZ-0008MX-Ih
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 07:41:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1uHLLT-00033q-44
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 07:41:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747741276;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=5i4Y7k2uui7OdsUwBkGkkZIH49rdaSoxdr+eV+BNJY4=;
+ b=T2fO/+7FemUCT4D7/Us3ztgxX27yTENwkRG2Gnu3rEYbHqYMMJ7+j+r3rSc1yrbdLX88zH
+ HKbUlkMGfFuPRb0xxiKeoeUdATjKw07FcWK7xbzMERYKi2W8YZxzfeJj2YNeLo1HE0l19x
+ 4y0S0O8vwEkwCHIoXAQCTtOAUH/ftjM=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-682-gqXn_FHBNk2DQC4FCoG_DA-1; Tue, 20 May 2025 07:41:14 -0400
+X-MC-Unique: gqXn_FHBNk2DQC4FCoG_DA-1
+X-Mimecast-MFC-AGG-ID: gqXn_FHBNk2DQC4FCoG_DA_1747741274
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-601c0493731so1299294a12.3
+ for <qemu-devel@nongnu.org>; Tue, 20 May 2025 04:41:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747740811; x=1748345611;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fd11ekkjfrXxaFZeIFljZm4Y2T2aMORytHgpIUVaYtE=;
- b=VoKeJIsrVSHNDDOka3KEkTU+mzTvVLyP604rqXNIXk6H07p/SyW8KFToX0pq5daKVC
- UkjuN7vc55/4Ai3mZrGSoBM3BsqkY0SdLX/gFHAI1QP08W9vgbuUnTrvposO24jB2Cla
- i5zZGkghvCIKrgLOFAF6DtaX0RPq65UOmaUo+9JzJG0iEJE2CM13+G3xOG3wbJiJiWTz
- Jj7h1eDGaaSjJUr8SCAvLUSFIduyiKcKDJ5aU6TbysCIzz3T9di7oRcVGI/iIPzpGP7x
- JFuNR0eKor8qpjNRpJsMcopbG6qlialC2+LNIinPXSs4X93MLM4vuJ560SjcatUdzFqU
- Ra6w==
+ d=1e100.net; s=20230601; t=1747741273; x=1748346073;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5i4Y7k2uui7OdsUwBkGkkZIH49rdaSoxdr+eV+BNJY4=;
+ b=poLKyGKvbRDLtlInaCwIPSAo65jdZLL/1NGU6r0fplPj3VOGViUpNWMv5fd+HfSUnT
+ qmAg9c6EASJE2zpC605f+YqVEKhbuYzkVrr6ekXj3QOmL1aIPvkUySM8S1emDYQFOhEK
+ STUgRi0uUr2k7qapwVLQGNOBkxiEixDAcM4OWlBgWV9Wzydgkm95X+9O+qmRsgvv8KBn
+ NNqZ1U6XuCcO2PpGekSe7ionVm1m7kULtI7NBED0TsvRRdSMKytaThvNaTFpPk3vt0Ij
+ GcoKlqHBUfG9GHV/H4U0tlKsTSgFgBv2AOcQ7dzVH630893nodiJyh28AgF/ZBmhap3s
+ oFIQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUL10bkJyi3qQ6sSqr4xCD5GfPMaNWtSXDmTLEh73HfDya0m3l3h6WzmSNQtVZhXjOQMzF6TkdC0GQd@nongnu.org
-X-Gm-Message-State: AOJu0YwsRajcELH1ED3uUSKmWIW6TdXwyT5ankIJ4UvwMXWu4qoAfgBj
- XkOsT97kp7OrXwA3PvO799qRhtZ2YZBXQdCOiYPFmWpKAiABxvcToyRP2zNeaZfa1qc=
-X-Gm-Gg: ASbGnctnaQGF9EfN5SwCykAGzGvrzwDSnukVdkBJkO4hOqcqk9cNFsrqKTdVaWW2WBN
- uweDU+QNNBkE1Ft4LQPLqUoM48sCRn1yjpw5HMMKr/1ef6LUFOBzpN0IHlJnV4TBHswApLthTHU
- //j5SXEbR75hZ7I9omQHwlfnrz6AXUKakSlHAtEahe4KO/Z6QTkbutDMAO8Mg3hZePrwTjVIZ/R
- oyGGw+m+5Aq3q0eLbuGf9rXwzH8IddLWJqpSZmrU+zMuk2iDu5C1NXVSYsI2ESmmJ5GmicSpJEq
- rdenR9jZbR5EvqozcmfVsgYGW/sSFkzJ3q4YkurOmx4M+s40Xxsou3uwe0IKQcnjTvQ=
-X-Google-Smtp-Source: AGHT+IE4cyaVzNZQkoqtLnvsO1d0uHL9lkIAVf7qnHlpSO7pZuqBq6M3D7NYMTEB8ms2oKjRocXe+w==
-X-Received: by 2002:a67:ef84:0:b0:4e1:449b:1b78 with SMTP id
- ada2fe7eead31-4e1449b1d4amr8509104137.9.1747740811440; 
- Tue, 20 May 2025 04:33:31 -0700 (PDT)
-Received: from [192.168.68.110] ([152.250.131.100])
- by smtp.gmail.com with ESMTPSA id
- a1e0cc1a2514c-87bec10c9f0sm7276125241.1.2025.05.20.04.33.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 May 2025 04:33:31 -0700 (PDT)
-Message-ID: <1e170923-9bb3-4327-a6ff-75c53bb2830f@ventanamicro.com>
-Date: Tue, 20 May 2025 08:33:27 -0300
+ AJvYcCXbDVlGPuuOcBjCx3T5xpnpZNAgO5uoc5atL7MGcD2pteQ/iEeLDIwnLNgeivxsouTWTiLxay3Ar9zS@nongnu.org
+X-Gm-Message-State: AOJu0Yz8M32FPXJLUa/wUHSTjUEYP+TZTMwSJnI0bTpn7mKL93sFepLm
+ gXXd8g+qGlUuNRo3Q2Q786kttZc3bhPwFCq8i9mWSfIT7I5v6njRBhJ3FwtEebobQ4Zc+bLDhAj
+ QZY3FYEvm01j1pcyWeDEqa2/vBhaNjl6MGNvf8ZwyJDmxleSrsHZprreV
+X-Gm-Gg: ASbGncsJdzxul8fSglx7UEhXqkQG9lmxLizkAExw+iYdb1mkK7wGSbr050rPsZlu+eE
+ RDZq0fA76XdMPkSI2pQCLZxFKa0Dpgxi1xLK5hqVW1TkvyVe1Y1rmhgRS/VzRPbQ7zLx25turty
+ y4x7OamAqmu5LjEz8SxdpQ0IBRfDZuYJeOTqkl9NxxEydBbqiERg3X8GJeekQQgep5+GdCdBGVL
+ 9z/1R8rQ4cgbh6j0YxP0zECiIYMJiWP6IYIOL9wQb2XurdKr1dzu5JhA/UC1SHhPYzbA9zi1SaC
+ nRT7J+MRsPskNDx1+UXJuUpHEEiVAZq+tUHncicT8lGOeFzYkxmpewJutLJ7
+X-Received: by 2002:a05:6402:13cf:b0:601:fd36:6ee1 with SMTP id
+ 4fb4d7f45d1cf-601fd367865mr4721683a12.0.1747741273542; 
+ Tue, 20 May 2025 04:41:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFnZwAioUqzoVdZhAjrcTnSCzlu7P7QmebOT2m8uY8E9zPW4ItyiNRKXpb7R8Ma/73iHDSWZA==
+X-Received: by 2002:a05:6402:13cf:b0:601:fd36:6ee1 with SMTP id
+ 4fb4d7f45d1cf-601fd367865mr4721641a12.0.1747741272919; 
+ Tue, 20 May 2025 04:41:12 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-134-35.retail.telecomitalia.it.
+ [82.53.134.35]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-6005ac33757sm7035640a12.59.2025.05.20.04.41.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 20 May 2025 04:41:12 -0700 (PDT)
+Date: Tue, 20 May 2025 13:41:08 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: oenhan@gmail.com
+Cc: mst@redhat.com, marcel.apfelbaum@gmail.com, cohuck@redhat.com, 
+ pasic@linux.ibm.com, farman@linux.ibm.com, borntraeger@linux.ibm.com, 
+ leiyang@redhat.com, qemu-devel@nongnu.org, qemu-stable@nongnu.org, 
+ Huaitong Han <hanht2@chinatelecom.cn>,
+ Zhiyuan Yuan <yuanzhiyuan@chinatelecom.cn>, 
+ Jidong Xia <xiajd@chinatelecom.cn>
+Subject: Re: [PATCH V2] vhost: Don't set vring call if guest notifier is unused
+Message-ID: <dmtvkhqkwdv7rzum6c4gs3uiekwckou3yp7w2ql6tijxshoiju@w4rplxvassk6>
+References: <20250513112825.1731347-1-hanht2@chinatelecom.cn>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC] target: riscv: Fix satp mode initialization based on
- profile
-To: Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@kernel.org>, Alexandre Ghiti <alexghiti@rivosinc.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org
-References: <20250516122319.4100121-1-alexghiti@rivosinc.com>
- <87y0usiz22.fsf@all.your.base.are.belong.to.us>
- <51356014-b645-4e86-b338-0d097bf80260@redhat.com>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <51356014-b645-4e86-b338-0d097bf80260@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2d;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-vs1-xe2d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20250513112825.1731347-1-hanht2@chinatelecom.cn>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.487,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,89 +111,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, May 13, 2025 at 07:28:25PM +0800, oenhan@gmail.com wrote:
+>From: Huaitong Han <hanht2@chinatelecom.cn>
+>
+>The vring call fd is set even when the guest does not use MSI-X (e.g., in the
+>case of virtio PMD), leading to unnecessary CPU overhead for processing
+>interrupts.
+>
+>The commit 96a3d98d2c("vhost: don't set vring call if no vector") optimized the
+>case where MSI-X is enabled but the queue vector is unset. However, there's an
+>additional case where the guest uses INTx and the INTx_DISABLED bit in the PCI
+>config is set, meaning that no interrupt notifier will actually be used.
+>
+>In such cases, the vring call fd should also be cleared to avoid redundant
+>interrupt handling.
+>
+>Fixes: 96a3d98d2c("vhost: don't set vring call if no vector")
+                   ^
+nit: there should be a space here.
 
+If you need to resend, I think you can fix also the one in the 
+description.
 
-On 5/20/25 7:53 AM, Paolo Bonzini wrote:
-> On 5/19/25 14:07, Björn Töpel wrote:
->> When realizing the cpus, the first cpu calls riscv_cpu_add_profiles()
->> all profiles are disabled, whereas for the other cpu calls to
->> riscv_cpu_add_profiles() have some profiles enabled. Having some
->> profiles enabled, will issue a call to cpu_set_profile() that will
->> enforce the satp code that Alex removes in this patch.
-> Ah so the problem is that *parent* profiles are not enabled until
-> riscv_cpu_add_profiles().
+>Reported-by: Zhiyuan Yuan <yuanzhiyuan@chinatelecom.cn>
+>Signed-off-by: Jidong Xia <xiajd@chinatelecom.cn>
+>Signed-off-by: Huaitong Han <hanht2@chinatelecom.cn>
+>---
+>V2:
+>- Retain the name `query_guest_notifiers`
+>- All qtest/unit test cases pass
+>- Fix V1 patch style problems
+>
+> hw/pci/pci.c                   |  2 +-
+> hw/s390x/virtio-ccw.c          |  7 +++++--
+> hw/virtio/vhost.c              |  3 +--
+> hw/virtio/virtio-pci.c         | 10 ++++++++--
+> include/hw/pci/pci.h           |  1 +
+> include/hw/virtio/virtio-bus.h |  2 +-
+> 6 files changed, 17 insertions(+), 8 deletions(-)
+>
+>diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+>index 352b3d12c8..45b491412a 100644
+>--- a/hw/pci/pci.c
+>+++ b/hw/pci/pci.c
+>@@ -1712,7 +1712,7 @@ static void pci_update_mappings(PCIDevice *d)
+>     pci_update_vga(d);
+> }
+>
+>-static inline int pci_irq_disabled(PCIDevice *d)
+>+int pci_irq_disabled(PCIDevice *d)
+> {
+>     return pci_get_word(d->config + PCI_COMMAND) & PCI_COMMAND_INTX_DISABLE;
+> }
+>diff --git a/hw/s390x/virtio-ccw.c b/hw/s390x/virtio-ccw.c
+>index d2f85b39f3..632708ba4d 100644
+>--- a/hw/s390x/virtio-ccw.c
+>+++ b/hw/s390x/virtio-ccw.c
+>@@ -936,11 +936,14 @@ static void virtio_ccw_vmstate_change(DeviceState *d, bool running)
+>     }
+> }
+>
+>-static bool virtio_ccw_query_guest_notifiers(DeviceState *d)
+>+static bool virtio_ccw_query_guest_notifiers(DeviceState *d, int n)
+> {
+>     CcwDevice *dev = CCW_DEVICE(d);
+>+    VirtioCcwDevice *vdev = VIRTIO_CCW_DEVICE(d);
+>+    VirtIODevice *virtio_dev = virtio_bus_get_device(&vdev->bus);
+>
+>-    return !!(dev->sch->curr_status.pmcw.flags & PMCW_FLAGS_MASK_ENA);
+>+    return !!(dev->sch->curr_status.pmcw.flags & PMCW_FLAGS_MASK_ENA)
+>+            && virtio_queue_vector(virtio_dev, n) != VIRTIO_NO_VECTOR;
+> }
+>
+> static int virtio_ccw_get_mappings(VirtioCcwDevice *dev)
+>diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+>index 4cae7c1664..2a9a839763 100644
+>--- a/hw/virtio/vhost.c
+>+++ b/hw/virtio/vhost.c
+>@@ -1341,8 +1341,7 @@ int vhost_virtqueue_start(struct vhost_dev *dev,
+>     }
+>
+>     if (k->query_guest_notifiers &&
+>-        k->query_guest_notifiers(qbus->parent) &&
+>-        virtio_queue_vector(vdev, idx) == VIRTIO_NO_VECTOR) {
+>+        !k->query_guest_notifiers(qbus->parent, idx)) {
+>         file.fd = -1;
+>         r = dev->vhost_ops->vhost_set_vring_call(dev, &file);
+>         if (r) {
+>diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+>index 0fa8fe4955..d62e199489 100644
+>--- a/hw/virtio/virtio-pci.c
+>+++ b/hw/virtio/virtio-pci.c
+>@@ -1212,10 +1212,16 @@ static int virtio_pci_set_guest_notifier(DeviceState *d, int n, bool assign,
+>     return 0;
+> }
+>
+>-static bool virtio_pci_query_guest_notifiers(DeviceState *d)
+>+static bool virtio_pci_query_guest_notifiers(DeviceState *d, int n)
+> {
+>     VirtIOPCIProxy *proxy = to_virtio_pci_proxy(d);
+>-    return msix_enabled(&proxy->pci_dev);
+>+    VirtIODevice *vdev = virtio_bus_get_device(&proxy->bus);
+>+
+>+    if (msix_enabled(&proxy->pci_dev)) {
+>+        return virtio_queue_vector(vdev, n) != VIRTIO_NO_VECTOR;
 
-The problem in Björn's case is that we shouldn't take the profile code path
-for any CPUs since he's not enabling any profiles. There's a bug in how we're
-detecting a profile presence for QMP for CPU0 and how this detection is changing
-the cpu_init of CPU1 and above. I'll send a fix for it today.
+Why are we moving this check in every callback, can't we leave it as 
+before in vhost.c and here return true?
 
-> 
-> With my patches to introduce RISCVCPUDef, it's a pretty easy fix:
-> 
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 629ac37501e..04b929af41c 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1083,6 +1083,19 @@ static bool riscv_cpu_is_dynamic(Object *cpu_obj)
->       return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) != NULL;
->   }
-> 
-> +static void riscv_cpu_enable_profile(RISCVCPU *cpu,
-> +                                     RISCVCPUProfile *profile)
-> +{
-> +    profile->enabled = true;
-> +
-> +    if (profile->u_parent) {
-> +        riscv_cpu_enable_profile(cpu, profile->u_parent);
-> +    }
-> +    if (profile->s_parent) {
-> +        riscv_cpu_enable_profile(cpu, profile->s_parent);
-> +    }
-> +}
-> +
->   static void riscv_cpu_init(Object *obj)
->   {
->       RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(obj);
-> @@ -1121,7 +1134,7 @@ static void riscv_cpu_init(Object *obj)
->       cpu->cfg.max_satp_mode = -1;
-> 
->       if (mcc->def->profile) {
-> -        mcc->def->profile->enabled = true;
-> +        riscv_cpu_enable_profile(cpu, mcc->def->profile);
->       }
-> 
->       env->misa_ext_mask = env->misa_ext = mcc->def->misa_ext;
-> 
-> Since they're all reviewed and Alistair has flushed his queue, I'll
-> send them in my next pull request.
-> 
-> On top of them, probably profiles should also be converted to use
-> RISCVCPUCfg and riscv_cpu_enable_profile() can then enable all the
-> flags with riscv_cpu_cfg_merge().
-> 
+I mean here:
+     if (msix_enabled(&proxy->pci_dev)) {
+         return true;
+     } else {
+         return !pci_irq_disabled(&proxy->pci_dev);
+     }
 
-If we can do the same thing with less abstractions than what we're using
-ATM I'll all for it.
-
-> In general a lot (if not all) of the profile code should be moved out
-> of tcg-cpu.c and into riscv_cpu_class_base_init().  I didn't do that
-> because I didn't want to balloon an already-large series, but it's a
-> pretty obvious extension of the RISCVCPUDef concept to include all
-> profile features.
-
-Note that KVM RISC-V does not have the same profile support as TCG - I'm not
-sure if KVM RISC-V has RVA22 support, let alone RVA23. If we move the profile
-logic to cpu.c we need to be careful with TCG assumptions affecting KVM CPUs.
-
+and leave vhost.c untouched.
 
 Thanks,
+Stefano
 
-
-Daniel
-
-> 
-> Paolo
-> 
+>+    } else {
+>+        return !pci_irq_disabled(&proxy->pci_dev);
+>+    }
+> }
+>
+> static int virtio_pci_set_guest_notifiers(DeviceState *d, int nvqs, bool assign)
+>diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+>index c2fe6caa2c..8c24bd97db 100644
+>--- a/include/hw/pci/pci.h
+>+++ b/include/hw/pci/pci.h
+>@@ -668,6 +668,7 @@ void lsi53c8xx_handle_legacy_cmdline(DeviceState *lsi_dev);
+>
+> qemu_irq pci_allocate_irq(PCIDevice *pci_dev);
+> void pci_set_irq(PCIDevice *pci_dev, int level);
+>+int pci_irq_disabled(PCIDevice *d);
+>
+> static inline void pci_irq_assert(PCIDevice *pci_dev)
+> {
+>diff --git a/include/hw/virtio/virtio-bus.h b/include/hw/virtio/virtio-bus.h
+>index 7ab8c9dab0..75d43b508a 100644
+>--- a/include/hw/virtio/virtio-bus.h
+>+++ b/include/hw/virtio/virtio-bus.h
+>@@ -48,7 +48,7 @@ struct VirtioBusClass {
+>     int (*load_done)(DeviceState *d, QEMUFile *f);
+>     int (*load_extra_state)(DeviceState *d, QEMUFile *f);
+>     bool (*has_extra_state)(DeviceState *d);
+>-    bool (*query_guest_notifiers)(DeviceState *d);
+>+    bool (*query_guest_notifiers)(DeviceState *d, int n);
+>     int (*set_guest_notifiers)(DeviceState *d, int nvqs, bool assign);
+>     int (*set_host_notifier_mr)(DeviceState *d, int n,
+>                                 MemoryRegion *mr, bool assign);
+>-- 
+>2.43.5
+>
 
 
