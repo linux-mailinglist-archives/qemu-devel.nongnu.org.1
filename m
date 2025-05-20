@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 814CDABD4E2
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 12:31:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62402ABD4DD
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 12:30:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHKDy-0004jJ-Pg; Tue, 20 May 2025 06:29:30 -0400
+	id 1uHKDz-0004kw-JP; Tue, 20 May 2025 06:29:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
- id 1uHKDu-0004dT-Tl
- for qemu-devel@nongnu.org; Tue, 20 May 2025 06:29:26 -0400
+ id 1uHKDv-0004hE-TS
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 06:29:28 -0400
 Received: from mgamail.intel.com ([198.175.65.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
- id 1uHKDr-0004gB-Ft
- for qemu-devel@nongnu.org; Tue, 20 May 2025 06:29:26 -0400
+ id 1uHKDs-0004hJ-Il
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 06:29:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747736964; x=1779272964;
+ t=1747736965; x=1779272965;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=8c4TeopTLUWlOA2yHdqDsJj+x3XUBu597J4JC9hu9Wc=;
- b=B4UagtcluSXGlhdriqvCkaCs6CYJwMC60hYccTfurlyIe/hpY3q3lzH6
- cRRblNh1KqiFHKoAfOuDohJwZH4jeAS5KJhoaBwfazK0kDy5GPrpIpqHX
- 2lTarRybkrBKk3TpkUlyTHvitE7HZt8b38Tcouqtw8WMM7i33XxucMBAy
- 2K2urLBvzlWGFEV1tN9OKHgeXBgSHxl4pBaMjJCCbJe118/kqskfxJdPY
- 99fMCt1grp4R+6ZbN97wdGBammhuvIr3CLSt1yu2Y4tTyagcmNdJ5WHBh
- KPVg2oJh73C4QAKjEkdzMyDvpyRXMPLfJ7FCXhzupoNp74cbittLMqT/b Q==;
-X-CSE-ConnectionGUID: vDfeLkl3QTSJ5cXOpgFvcw==
-X-CSE-MsgGUID: yRyelhuuQ0aboiNgATY1HQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="49566655"
-X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="49566655"
+ bh=xjsSyyH/vKZhnfoKeplftZcDafjUAYrMzMyTUKLznE8=;
+ b=lWmdQWxvxS+TbNqdDd11iSL0EkipB1RW9Yv7PAGFEbET1cgDaR1YL1uW
+ vdOqWowkihjlmj1o0fhbyT78CUMbrfYHMgcOGDEuiL6cMQn0jhHV1Sc3O
+ w8NV4q9gEWA8lgJpE7CXq2AF+NlIQHX0AstB2OnFV6BRZTTBVDXtfKPjD
+ Rlg8f2U2S+yjhyZifJAet0lRzyxoAkHHFacbJJb2tcvpFem0DisFh1A7L
+ 89Qf3KtMULRye6iQIQjd3H2O8VmYDpfRmeKtlpMGvNUFRTPA+glOVNm2l
+ fqg+Tp2Sofr3Zfu3MA9axJ20Mt7xfHN5DacnWLx0A9SwvE+wkyIOCLOdu A==;
+X-CSE-ConnectionGUID: pCEouSRHTJ6sup4l4SPq4Q==
+X-CSE-MsgGUID: qj+XW3upRUqc/LoZTa8C7A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="49566661"
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="49566661"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2025 03:29:19 -0700
-X-CSE-ConnectionGUID: rd3D3QsJTMmOts5oDKPumw==
-X-CSE-MsgGUID: rd/r1JwwQSW8T+ez4mF8rQ==
+ 20 May 2025 03:29:23 -0700
+X-CSE-ConnectionGUID: Lph/xiMcRAauSxFu6majOw==
+X-CSE-MsgGUID: gmuyuwicRxWHnua84DPXKA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="144905246"
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="144905255"
 Received: from emr-bkc.sh.intel.com ([10.112.230.82])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2025 03:29:15 -0700
+ 20 May 2025 03:29:19 -0700
 From: Chenyi Qiang <chenyi.qiang@intel.com>
 To: David Hildenbrand <david@redhat.com>, Alexey Kardashevskiy <aik@amd.com>,
  Peter Xu <peterx@redhat.com>, Gupta Pankaj <pankaj.gupta@amd.com>,
@@ -55,10 +55,10 @@ Cc: Chenyi Qiang <chenyi.qiang@intel.com>, qemu-devel@nongnu.org,
  Zhao Liu <zhao1.liu@intel.com>, Baolu Lu <baolu.lu@linux.intel.com>,
  Gao Chao <chao.gao@intel.com>, Xu Yilun <yilun.xu@intel.com>,
  Li Xiaoyao <xiaoyao.li@intel.com>
-Subject: [PATCH v5 04/10] ram-block-attribute: Introduce RamBlockAttribute to
- manage RAMBlock with guest_memfd
-Date: Tue, 20 May 2025 18:28:44 +0800
-Message-ID: <20250520102856.132417-5-chenyi.qiang@intel.com>
+Subject: [PATCH v5 05/10] ram-block-attribute: Introduce a helper to notify
+ shared/private state changes
+Date: Tue, 20 May 2025 18:28:45 +0800
+Message-ID: <20250520102856.132417-6-chenyi.qiang@intel.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250520102856.132417-1-chenyi.qiang@intel.com>
 References: <20250520102856.132417-1-chenyi.qiang@intel.com>
@@ -89,479 +89,223 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 852f0048f3 ("RAMBlock: make guest_memfd require uncoordinated
-discard") highlighted that subsystems like VFIO may disable RAM block
-discard. However, guest_memfd relies on discard operations for page
-conversion between private and shared memory, potentially leading to
-stale IOMMU mapping issue when assigning hardware devices to
-confidential VMs via shared memory. To address this and allow shared
-device assignement, it is crucial to ensure VFIO system refresh its
-IOMMU mappings.
+A new state_change() helper is introduced for RamBlockAttribute
+to efficiently notify all registered RamDiscardListeners, including
+VFIO listeners, about memory conversion events in guest_memfd. The VFIO
+listener can dynamically DMA map/unmap shared pages based on conversion
+types:
+- For conversions from shared to private, the VFIO system ensures the
+  discarding of shared mapping from the IOMMU.
+- For conversions from private to shared, it triggers the population of
+  the shared mapping into the IOMMU.
 
-RamDiscardManager is an existing interface (used by virtio-mem) to
-adjust VFIO mappings in relation to VM page assignment. Effectively page
-conversion is similar to hot-removing a page in one mode and adding it
-back in the other. Therefore, similar actions are required for page
-conversion events. Introduce the RamDiscardManager to guest_memfd to
-facilitate this process.
+Currently, memory conversion failures cause QEMU to quit instead of
+resuming the guest or retrying the operation. It would be a future work
+to add more error handling or rollback mechanisms once conversion
+failures are allowed. For example, in-place conversion of guest_memfd
+could retry the unmap operation during the conversion from shared to
+private. However, for now, keep the complex error handling out of the
+picture as it is not required:
 
-Since guest_memfd is not an object, it cannot directly implement the
-RamDiscardManager interface. Implementing it in HostMemoryBackend is
-not appropriate because guest_memfd is per RAMBlock, and some RAMBlocks
-have a memory backend while others do not. Notably, virtual BIOS
-RAMBlocks using memory_region_init_ram_guest_memfd() do not have a
-backend.
+- If a conversion request is made for a page already in the desired
+  state, the helper simply returns success.
+- For requests involving a range partially in the desired state, there
+  is no such scenario in practice at present. Simply return error.
+- If a conversion request is declined by other systems, such as a
+  failure from VFIO during notify_to_populated(), the failure is
+  returned directly. As for notify_to_discard(), VFIO cannot fail
+  unmap/unpin, so no error is returned.
 
-To manage RAMBlocks with guest_memfd, define a new object named
-RamBlockAttribute to implement the RamDiscardManager interface. This
-object can store the guest_memfd information such as bitmap for shared
-memory, and handles page conversion notification. In the context of
-RamDiscardManager, shared state is analogous to populated and private
-state is treated as discard. The memory state is tracked at the host
-page size granularity, as minimum memory conversion size can be one page
-per request. Additionally, VFIO expects the DMA mapping for a specific
-iova to be mapped and unmapped with the same granularity. Confidential
-VMs may perform partial conversions, such as conversions on small
-regions within larger regions. To prevent such invalid cases and until
-cut_mapping operation support is available, all operations are performed
-with 4K granularity.
+Note that the bitmap status is updated before callbacks, allowing
+listeners to handle memory based on the latest status.
 
 Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
 ---
-Changes in v5:
-    - Revert to use RamDiscardManager interface instead of introducing
-      new hierarchy of class to manage private/shared state, and keep
-      using the new name of RamBlockAttribute compared with the
-      MemoryAttributeManager in v3.
-    - Use *simple* version of object_define and object_declare since the
-      state_change() function is changed as an exported function instead
-      of a virtual function in later patch.
-    - Move the introduction of RamBlockAttribute field to this patch and
-      rename it to ram_shared. (Alexey)
-    - call the exit() when register/unregister failed. (Zhao)
-    - Add the ram-block-attribute.c to Memory API related part in
-      MAINTAINERS.
+Change in v5:
+    - Move the state_change() back to a helper instead of a callback of
+      the class since there's no child for the RamBlockAttributeClass.
+    - Remove the error handling and move them to an individual patch for
+      simple management.
 
 Changes in v4:
-    - Change the name from memory-attribute-manager to
-      ram-block-attribute.
-    - Implement the newly-introduced PrivateSharedManager instead of
-      RamDiscardManager and change related commit message.
-    - Define the new object in ramblock.h instead of adding a new file.
+    - Add the state_change() callback in PrivateSharedManagerClass
+      instead of the RamBlockAttribute.
 
 Changes in v3:
-    - Some rename (bitmap_size->shared_bitmap_size,
-      first_one/zero_bit->first_bit, etc.)
-    - Change shared_bitmap_size from uint32_t to unsigned
-    - Return mgr->mr->ram_block->page_size in get_block_size()
-    - Move set_ram_discard_manager() up to avoid a g_free() in failure
-      case.
-    - Add const for the memory_attribute_manager_get_block_size()
-    - Unify the ReplayRamPopulate and ReplayRamDiscard and related
-      callback.
+    - Move the bitmap update before notifier callbacks.
+    - Call the notifier callbacks directly in notify_discard/populate()
+      with the expectation that the request memory range is in the
+      desired attribute.
+    - For the case that only partial range in the desire status, handle
+      the range with block_size granularity for ease of rollback
+      (https://lore.kernel.org/qemu-devel/812768d7-a02d-4b29-95f3-fb7a125cf54e@redhat.com/)
 
 Changes in v2:
-    - Rename the object name to MemoryAttributeManager
-    - Rename the bitmap to shared_bitmap to make it more clear.
-    - Remove block_size field and get it from a helper. In future, we
-      can get the page_size from RAMBlock if necessary.
-    - Remove the unncessary "struct" before GuestMemfdReplayData
-    - Remove the unncessary g_free() for the bitmap
-    - Add some error report when the callback failure for
-      populated/discarded section.
-    - Move the realize()/unrealize() definition to this patch.
+    - Do the alignment changes due to the rename to MemoryAttributeManager
+    - Move the state_change() helper definition in this patch.
 ---
- MAINTAINERS                  |   1 +
- include/system/ramblock.h    |  20 +++
- system/meson.build           |   1 +
- system/ram-block-attribute.c | 311 +++++++++++++++++++++++++++++++++++
- 4 files changed, 333 insertions(+)
- create mode 100644 system/ram-block-attribute.c
+ include/system/ramblock.h    |   2 +
+ system/ram-block-attribute.c | 134 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 136 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 6dacd6d004..3b4947dc74 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3149,6 +3149,7 @@ F: system/memory.c
- F: system/memory_mapping.c
- F: system/physmem.c
- F: system/memory-internal.h
-+F: system/ram-block-attribute.c
- F: scripts/coccinelle/memory-region-housekeeping.cocci
- 
- Memory devices
 diff --git a/include/system/ramblock.h b/include/system/ramblock.h
-index d8a116ba99..09255e8495 100644
+index 09255e8495..270dffb2f3 100644
 --- a/include/system/ramblock.h
 +++ b/include/system/ramblock.h
-@@ -22,6 +22,10 @@
- #include "exec/cpu-common.h"
- #include "qemu/rcu.h"
- #include "exec/ramlist.h"
-+#include "system/hostmem.h"
-+
-+#define TYPE_RAM_BLOCK_ATTRIBUTE "ram-block-attribute"
-+OBJECT_DECLARE_SIMPLE_TYPE(RamBlockAttribute, RAM_BLOCK_ATTRIBUTE)
- 
- struct RAMBlock {
-     struct rcu_head rcu;
-@@ -42,6 +46,8 @@ struct RAMBlock {
-     int fd;
-     uint64_t fd_offset;
-     int guest_memfd;
-+    /* 1-setting of the bitmap in ram_shared represents ram is shared */
-+    RamBlockAttribute *ram_shared;
-     size_t page_size;
-     /* dirty bitmap used during migration */
-     unsigned long *bmap;
-@@ -91,4 +97,18 @@ struct RAMBlock {
-     ram_addr_t postcopy_length;
+@@ -108,6 +108,8 @@ struct RamBlockAttribute {
+     QLIST_HEAD(, RamDiscardListener) rdl_list;
  };
  
-+struct RamBlockAttribute {
-+    Object parent;
-+
-+    MemoryRegion *mr;
-+
-+    unsigned bitmap_size;
-+    unsigned long *bitmap;
-+
-+    QLIST_HEAD(, RamDiscardListener) rdl_list;
-+};
-+
-+RamBlockAttribute *ram_block_attribute_create(MemoryRegion *mr);
-+void ram_block_attribute_destroy(RamBlockAttribute *attr);
-+
- #endif
-diff --git a/system/meson.build b/system/meson.build
-index c2f0082766..107596ce86 100644
---- a/system/meson.build
-+++ b/system/meson.build
-@@ -17,6 +17,7 @@ libsystem_ss.add(files(
-   'dma-helpers.c',
-   'globals.c',
-   'ioport.c',
-+  'ram-block-attribute.c',
-   'memory_mapping.c',
-   'memory.c',
-   'physmem.c',
++int ram_block_attribute_state_change(RamBlockAttribute *attr, uint64_t offset,
++                                     uint64_t size, bool to_private);
+ RamBlockAttribute *ram_block_attribute_create(MemoryRegion *mr);
+ void ram_block_attribute_destroy(RamBlockAttribute *attr);
+ 
 diff --git a/system/ram-block-attribute.c b/system/ram-block-attribute.c
-new file mode 100644
-index 0000000000..8d4a24738c
---- /dev/null
+index 8d4a24738c..f12dd4b881 100644
+--- a/system/ram-block-attribute.c
 +++ b/system/ram-block-attribute.c
-@@ -0,0 +1,311 @@
-+/*
-+ * QEMU ram block attribute
-+ *
-+ * Copyright Intel
-+ *
-+ * Author:
-+ *      Chenyi Qiang <chenyi.qiang@intel.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory
-+ *
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/error-report.h"
-+#include "system/ramblock.h"
-+
-+OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RamBlockAttribute,
-+                                          ram_block_attribute,
-+                                          RAM_BLOCK_ATTRIBUTE,
-+                                          OBJECT,
-+                                          { TYPE_RAM_DISCARD_MANAGER },
-+                                          { })
-+
-+static size_t ram_block_attribute_get_block_size(const RamBlockAttribute *attr)
+@@ -253,6 +253,140 @@ ram_block_attribute_rdm_replay_discard(const RamDiscardManager *rdm,
+                                             ram_block_attribute_rdm_replay_cb);
+ }
+ 
++static bool ram_block_attribute_is_valid_range(RamBlockAttribute *attr,
++                                               uint64_t offset, uint64_t size)
 +{
-+    /*
-+     * Because page conversion could be manipulated in the size of at least 4K
-+     * or 4K aligned, Use the host page size as the granularity to track the
-+     * memory attribute.
-+     */
-+    g_assert(attr && attr->mr && attr->mr->ram_block);
-+    g_assert(attr->mr->ram_block->page_size == qemu_real_host_page_size());
-+    return attr->mr->ram_block->page_size;
++    MemoryRegion *mr = attr->mr;
++
++    g_assert(mr);
++
++    uint64_t region_size = memory_region_size(mr);
++    int block_size = ram_block_attribute_get_block_size(attr);
++
++    if (!QEMU_IS_ALIGNED(offset, block_size)) {
++        return false;
++    }
++    if (offset + size < offset || !size) {
++        return false;
++    }
++    if (offset >= region_size || offset + size > region_size) {
++        return false;
++    }
++    return true;
 +}
 +
++static void ram_block_attribute_notify_to_discard(RamBlockAttribute *attr,
++                                                  uint64_t offset,
++                                                  uint64_t size)
++{
++    RamDiscardListener *rdl;
++
++    QLIST_FOREACH(rdl, &attr->rdl_list, next) {
++        MemoryRegionSection tmp = *rdl->section;
++
++        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
++            continue;
++        }
++        rdl->notify_discard(rdl, &tmp);
++    }
++}
++
++static int
++ram_block_attribute_notify_to_populated(RamBlockAttribute *attr,
++                                        uint64_t offset, uint64_t size)
++{
++    RamDiscardListener *rdl;
++    int ret = 0;
++
++    QLIST_FOREACH(rdl, &attr->rdl_list, next) {
++        MemoryRegionSection tmp = *rdl->section;
++
++        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
++            continue;
++        }
++        ret = rdl->notify_populate(rdl, &tmp);
++        if (ret) {
++            break;
++        }
++    }
++
++    return ret;
++}
++
++static bool ram_block_attribute_is_range_populated(RamBlockAttribute *attr,
++                                                   uint64_t offset,
++                                                   uint64_t size)
++{
++    const int block_size = ram_block_attribute_get_block_size(attr);
++    const unsigned long first_bit = offset / block_size;
++    const unsigned long last_bit = first_bit + (size / block_size) - 1;
++    unsigned long found_bit;
++
++    /* We fake a shorter bitmap to avoid searching too far. */
++    found_bit = find_next_zero_bit(attr->bitmap, last_bit + 1,
++                                   first_bit);
++    return found_bit > last_bit;
++}
 +
 +static bool
-+ram_block_attribute_rdm_is_populated(const RamDiscardManager *rdm,
-+                                     const MemoryRegionSection *section)
++ram_block_attribute_is_range_discard(RamBlockAttribute *attr,
++                                     uint64_t offset, uint64_t size)
 +{
-+    const RamBlockAttribute *attr = RAM_BLOCK_ATTRIBUTE(rdm);
 +    const int block_size = ram_block_attribute_get_block_size(attr);
-+    uint64_t first_bit = section->offset_within_region / block_size;
-+    uint64_t last_bit = first_bit + int128_get64(section->size) / block_size - 1;
-+    unsigned long first_discard_bit;
++    const unsigned long first_bit = offset / block_size;
++    const unsigned long last_bit = first_bit + (size / block_size) - 1;
++    unsigned long found_bit;
 +
-+    first_discard_bit = find_next_zero_bit(attr->bitmap, last_bit + 1,
-+                                           first_bit);
-+    return first_discard_bit > last_bit;
++    /* We fake a shorter bitmap to avoid searching too far. */
++    found_bit = find_next_bit(attr->bitmap, last_bit + 1, first_bit);
++    return found_bit > last_bit;
 +}
 +
-+typedef int (*ram_block_attribute_section_cb)(MemoryRegionSection *s,
-+                                              void *arg);
-+
-+static int ram_block_attribute_notify_populate_cb(MemoryRegionSection *section,
-+                                                   void *arg)
++int ram_block_attribute_state_change(RamBlockAttribute *attr, uint64_t offset,
++                                     uint64_t size, bool to_private)
 +{
-+    RamDiscardListener *rdl = arg;
-+
-+    return rdl->notify_populate(rdl, section);
-+}
-+
-+static int ram_block_attribute_notify_discard_cb(MemoryRegionSection *section,
-+                                                 void *arg)
-+{
-+    RamDiscardListener *rdl = arg;
-+
-+    rdl->notify_discard(rdl, section);
-+    return 0;
-+}
-+
-+static int
-+ram_block_attribute_for_each_populated_section(const RamBlockAttribute *attr,
-+                                               MemoryRegionSection *section,
-+                                               void *arg,
-+                                               ram_block_attribute_section_cb cb)
-+{
-+    unsigned long first_bit, last_bit;
-+    uint64_t offset, size;
 +    const int block_size = ram_block_attribute_get_block_size(attr);
++    const unsigned long first_bit = offset / block_size;
++    const unsigned long nbits = size / block_size;
 +    int ret = 0;
 +
-+    first_bit = section->offset_within_region / block_size;
-+    first_bit = find_next_bit(attr->bitmap, attr->bitmap_size,
-+                              first_bit);
-+
-+    while (first_bit < attr->bitmap_size) {
-+        MemoryRegionSection tmp = *section;
-+
-+        offset = first_bit * block_size;
-+        last_bit = find_next_zero_bit(attr->bitmap, attr->bitmap_size,
-+                                      first_bit + 1) - 1;
-+        size = (last_bit - first_bit + 1) * block_size;
-+
-+        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
-+            break;
-+        }
-+
-+        ret = cb(&tmp, arg);
-+        if (ret) {
-+            error_report("%s: Failed to notify RAM discard listener: %s",
-+                         __func__, strerror(-ret));
-+            break;
-+        }
-+
-+        first_bit = find_next_bit(attr->bitmap, attr->bitmap_size,
-+                                  last_bit + 2);
++    if (!ram_block_attribute_is_valid_range(attr, offset, size)) {
++        error_report("%s, invalid range: offset 0x%lx, size 0x%lx",
++                     __func__, offset, size);
++        return -1;
 +    }
 +
-+    return ret;
-+}
-+
-+static int
-+ram_block_attribute_for_each_discard_section(const RamBlockAttribute *attr,
-+                                             MemoryRegionSection *section,
-+                                             void *arg,
-+                                             ram_block_attribute_section_cb cb)
-+{
-+    unsigned long first_bit, last_bit;
-+    uint64_t offset, size;
-+    const int block_size = ram_block_attribute_get_block_size(attr);
-+    int ret = 0;
-+
-+    first_bit = section->offset_within_region / block_size;
-+    first_bit = find_next_zero_bit(attr->bitmap, attr->bitmap_size,
-+                                   first_bit);
-+
-+    while (first_bit < attr->bitmap_size) {
-+        MemoryRegionSection tmp = *section;
-+
-+        offset = first_bit * block_size;
-+        last_bit = find_next_bit(attr->bitmap, attr->bitmap_size,
-+                                 first_bit + 1) - 1;
-+        size = (last_bit - first_bit + 1) * block_size;
-+
-+        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
-+            break;
-+        }
-+
-+        ret = cb(&tmp, arg);
-+        if (ret) {
-+            error_report("%s: Failed to notify RAM discard listener: %s",
-+                         __func__, strerror(-ret));
-+            break;
-+        }
-+
-+        first_bit = find_next_zero_bit(attr->bitmap,
-+                                       attr->bitmap_size,
-+                                       last_bit + 2);
++    /* Already discard/populated */
++    if ((ram_block_attribute_is_range_discard(attr, offset, size) &&
++         to_private) ||
++        (ram_block_attribute_is_range_populated(attr, offset, size) &&
++         !to_private)) {
++        return 0;
 +    }
 +
-+    return ret;
-+}
-+
-+static uint64_t
-+ram_block_attribute_rdm_get_min_granularity(const RamDiscardManager *rdm,
-+                                            const MemoryRegion *mr)
-+{
-+    const RamBlockAttribute *attr = RAM_BLOCK_ATTRIBUTE(rdm);
-+
-+    g_assert(mr == attr->mr);
-+    return ram_block_attribute_get_block_size(attr);
-+}
-+
-+static void
-+ram_block_attribute_rdm_register_listener(RamDiscardManager *rdm,
-+                                          RamDiscardListener *rdl,
-+                                          MemoryRegionSection *section)
-+{
-+    RamBlockAttribute *attr = RAM_BLOCK_ATTRIBUTE(rdm);
-+    int ret;
-+
-+    g_assert(section->mr == attr->mr);
-+    rdl->section = memory_region_section_new_copy(section);
-+
-+    QLIST_INSERT_HEAD(&attr->rdl_list, rdl, next);
-+
-+    ret = ram_block_attribute_for_each_populated_section(attr, section, rdl,
-+                                    ram_block_attribute_notify_populate_cb);
-+    if (ret) {
-+        error_report("%s: Failed to register RAM discard listener: %s",
-+                     __func__, strerror(-ret));
-+        exit(1);
++    /* Unexpected mixture */
++    if ((!ram_block_attribute_is_range_populated(attr, offset, size) &&
++         to_private) ||
++        (!ram_block_attribute_is_range_discard(attr, offset, size) &&
++         !to_private)) {
++        error_report("%s, the range is not all in the desired state: "
++                     "(offset 0x%lx, size 0x%lx), %s",
++                     __func__, offset, size,
++                     to_private ? "private" : "shared");
++        return -1;
 +    }
-+}
 +
-+static void
-+ram_block_attribute_rdm_unregister_listener(RamDiscardManager *rdm,
-+                                            RamDiscardListener *rdl)
-+{
-+    RamBlockAttribute *attr = RAM_BLOCK_ATTRIBUTE(rdm);
-+    int ret;
-+
-+    g_assert(rdl->section);
-+    g_assert(rdl->section->mr == attr->mr);
-+
-+    if (rdl->double_discard_supported) {
-+        rdl->notify_discard(rdl, rdl->section);
++    if (to_private) {
++        bitmap_clear(attr->bitmap, first_bit, nbits);
++        ram_block_attribute_notify_to_discard(attr, offset, size);
 +    } else {
-+        ret = ram_block_attribute_for_each_populated_section(attr,
-+                rdl->section, rdl, ram_block_attribute_notify_discard_cb);
-+        if (ret) {
-+            error_report("%s: Failed to unregister RAM discard listener: %s",
-+                         __func__, strerror(-ret));
-+            exit(1);
-+        }
++        bitmap_set(attr->bitmap, first_bit, nbits);
++        ret = ram_block_attribute_notify_to_populated(attr, offset, size);
 +    }
 +
-+    memory_region_section_free_copy(rdl->section);
-+    rdl->section = NULL;
-+    QLIST_REMOVE(rdl, next);
++    return ret;
 +}
 +
-+typedef struct RamBlockAttributeReplayData {
-+    ReplayRamDiscardState fn;
-+    void *opaque;
-+} RamBlockAttributeReplayData;
-+
-+static int ram_block_attribute_rdm_replay_cb(MemoryRegionSection *section,
-+                                             void *arg)
-+{
-+    RamBlockAttributeReplayData *data = arg;
-+
-+    return data->fn(section, data->opaque);
-+}
-+
-+static int
-+ram_block_attribute_rdm_replay_populated(const RamDiscardManager *rdm,
-+                                         MemoryRegionSection *section,
-+                                         ReplayRamDiscardState replay_fn,
-+                                         void *opaque)
-+{
-+    RamBlockAttribute *attr = RAM_BLOCK_ATTRIBUTE(rdm);
-+    RamBlockAttributeReplayData data = { .fn = replay_fn, .opaque = opaque };
-+
-+    g_assert(section->mr == attr->mr);
-+    return ram_block_attribute_for_each_populated_section(attr, section, &data,
-+                                            ram_block_attribute_rdm_replay_cb);
-+}
-+
-+static int
-+ram_block_attribute_rdm_replay_discard(const RamDiscardManager *rdm,
-+                                       MemoryRegionSection *section,
-+                                       ReplayRamDiscardState replay_fn,
-+                                       void *opaque)
-+{
-+    RamBlockAttribute *attr = RAM_BLOCK_ATTRIBUTE(rdm);
-+    RamBlockAttributeReplayData data = { .fn = replay_fn, .opaque = opaque };
-+
-+    g_assert(section->mr == attr->mr);
-+    return ram_block_attribute_for_each_discard_section(attr, section, &data,
-+                                            ram_block_attribute_rdm_replay_cb);
-+}
-+
-+RamBlockAttribute *ram_block_attribute_create(MemoryRegion *mr)
-+{
-+    uint64_t bitmap_size;
-+    const int block_size  = qemu_real_host_page_size();
-+    RamBlockAttribute *attr;
-+    int ret;
-+
-+    attr = RAM_BLOCK_ATTRIBUTE(object_new(TYPE_RAM_BLOCK_ATTRIBUTE));
-+
-+    attr->mr = mr;
-+    ret = memory_region_set_ram_discard_manager(mr, RAM_DISCARD_MANAGER(attr));
-+    if (ret) {
-+        object_unref(OBJECT(attr));
-+        return NULL;
-+    }
-+    bitmap_size = ROUND_UP(mr->size, block_size) / block_size;
-+    attr->bitmap_size = bitmap_size;
-+    attr->bitmap = bitmap_new(bitmap_size);
-+
-+    return attr;
-+}
-+
-+void ram_block_attribute_destroy(RamBlockAttribute *attr)
-+{
-+    if (!attr) {
-+        return;
-+    }
-+
-+    g_free(attr->bitmap);
-+    memory_region_set_ram_discard_manager(attr->mr, NULL);
-+    object_unref(OBJECT(attr));
-+}
-+
-+static void ram_block_attribute_init(Object *obj)
-+{
-+    RamBlockAttribute *attr = RAM_BLOCK_ATTRIBUTE(obj);
-+
-+    QLIST_INIT(&attr->rdl_list);
-+}
-+
-+static void ram_block_attribute_finalize(Object *obj)
-+{
-+}
-+
-+static void ram_block_attribute_class_init(ObjectClass *klass,
-+                                           const void *data)
-+{
-+    RamDiscardManagerClass *rdmc = RAM_DISCARD_MANAGER_CLASS(klass);
-+
-+    rdmc->get_min_granularity = ram_block_attribute_rdm_get_min_granularity;
-+    rdmc->register_listener = ram_block_attribute_rdm_register_listener;
-+    rdmc->unregister_listener = ram_block_attribute_rdm_unregister_listener;
-+    rdmc->is_populated = ram_block_attribute_rdm_is_populated;
-+    rdmc->replay_populated = ram_block_attribute_rdm_replay_populated;
-+    rdmc->replay_discarded = ram_block_attribute_rdm_replay_discard;
-+}
+ RamBlockAttribute *ram_block_attribute_create(MemoryRegion *mr)
+ {
+     uint64_t bitmap_size;
 -- 
 2.43.5
 
