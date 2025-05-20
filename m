@@ -2,87 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E59DABE438
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 21:59:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94E70ABE440
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 22:01:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHT6H-0001ho-9p; Tue, 20 May 2025 15:58:09 -0400
+	id 1uHT8W-0002lO-H7; Tue, 20 May 2025 16:00:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1uHT6E-0001he-8x
- for qemu-devel@nongnu.org; Tue, 20 May 2025 15:58:06 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1uHT89-0002cS-Mk
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 16:00:05 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1uHT67-0007Kr-Ob
- for qemu-devel@nongnu.org; Tue, 20 May 2025 15:58:05 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-73972a54919so5683618b3a.3
- for <qemu-devel@nongnu.org>; Tue, 20 May 2025 12:57:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
+ id 1uHT82-0007ZV-Ln
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 16:00:05 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-7376dd56f8fso6889229b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 20 May 2025 12:59:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747771076; x=1748375876; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=mxu7EAKjxOL/jRlNPWnc2FmXYmyv4DcFiIfRobuMjWM=;
- b=C+584C8BNngbUp6Q6cwOWkZkDvuilcFJAoKk5qoOAXgbiJ6E7SbQl9cr5GRzQSidiV
- z1HCw2T0t+sctLJuSUfnkOj/dxYFBbBVzqHqmk5kdVV8M5xTA9c6+SvMio1Ai2+JI+Bw
- IPEDnJ6WTb9GGVAP/El1xrU7BhCpXioB2eAESmIWKl0qkWd7BT1kwOvwFUHca3HUvO6/
- 7P7oqb2ZzKBWMaCewEgZBOZT2HpTOL9VhXUCYgOc+AOIqUxQAn31YsbfkM8pwZ3gKDCV
- thvEw8oNJKgj1Qd7DxJK4ckX7iwZXTkLZsDjpkPNQVBDZ9Ib3baQDzqJKObwuCgUdMm2
- 2A7A==
+ d=linaro.org; s=google; t=1747771196; x=1748375996; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=e0Vo+XWPia2ro4Tn2sHmF8ont5kIyuPTttTlPL9Ngr8=;
+ b=Wsj+SoosyXAjqDn0B+gfE8mstbJJkYCAzuJPGYiLBhNZ3OxARH2u/aQcIlPXOQ3rNK
+ Jr3WTmXMEsB6RM0kCRg4RNcl+sTcquX/clJHi/SxM5T+aO9ZwSGT2NxMpvZTnHL+1uv9
+ bGK5Ikh4zpdnqNc9AsO910xujGznB1qs4+IpMKcJS3P2qpv/T6b0t+KkJsNegtgQVIYy
+ 1AScrvhc2yADl8J9mE7Z6+TpNMRKwX+cSPS4XFS3R54dTceTrgWGHRy2G8dx9uTTFdgs
+ oF6AoUL1FYh5/A6LOLWY97a2DfHsKw8tJC5PSnUkVHDRZL1LjfI1Q6PeDrUWdgn7Gj3b
+ kWZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747771076; x=1748375876;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=mxu7EAKjxOL/jRlNPWnc2FmXYmyv4DcFiIfRobuMjWM=;
- b=OytEiIxGnZ14y+j7FpCyZG2gr/QenMkMCgQuLE72ioYZD3r8RK0K3w+8YE/P5BSM1q
- cPyqGSeeL7RfVdvbDx7jjfC+6q21N1tHS22FEU/TgWDN2cnF8NqNyV2/ue1ADdn654ov
- u0498ttJbObW2ahZ8Z5CAepLX+VzV4U0EiQVdsPtwmgb8dkdgQiRYB8b1Wx6fJxsOWBf
- 6MTgH9PG+agkvjRzUKb72LY3bjzOy0xcunXQOHuNQIFhdAj15bzpdN2pxqjg70a1OLxP
- 7mPRJy+F1k7khTjErTm6Z1evRptsNtl6NbJNvvyZicoPdkHqRr1eWpjizrvYwF8M+PNu
- NpDg==
+ d=1e100.net; s=20230601; t=1747771196; x=1748375996;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=e0Vo+XWPia2ro4Tn2sHmF8ont5kIyuPTttTlPL9Ngr8=;
+ b=ijkG7R+m5/qi6/z52Pn4Z/SQBVVmcxBR7XNNZgoGEQIzPq7XXvsnxUzb95TocDFE5r
+ RK/lxbFGNpuZH2OgZT2O6NSi4bWLmDWtCaEn+1dmJXuCQxSe0q/NhDu6sqGLbmJfCDb3
+ zomEX7pPIPmtwWHWMmX1uNIuTiEY+MMIn6Fas5jYu1ADw8sF1QVugyjIMwtGzC42MuqD
+ F1PDpoT/BYcOjPjdgsyBsRhX5E0auuCUcxfDxlrJD5E5IvpRzFuVf3nReb/dgtYH6mzp
+ tYjCxZON7vyXJcupXCwb/+u32/5EznDlgaoNtJYrw/GbTWrOGbkUuAJmR+W+6H6xQcIV
+ 462Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX8kDTM9qOd1o4yY6iygB11IIO7/IAUW8+FYGE4IDa7nC1HdpNlgVUzcYBlscCnzJnr+GjXQgWVJDeW@nongnu.org
-X-Gm-Message-State: AOJu0Yzu8uJXrLdpLlTdN8VXLQ0axgbBxXUyLoEnX7y4DOyVNWp8C7Id
- vGzj+hWB9jbOAjeouTX58mN6dvZy2VtBkC73b9akFH6ZP9MdQsLFSL0l
-X-Gm-Gg: ASbGncvKVTVtRlFz4KKM03ClHFeTSMI3XLrQNjpz4IF/3MRYItxs40uX3f6Y3CmyeXy
- rZCYdBVeMZTnkrOiX3viNKAYRO5S+bScQhc7SpJt2aiTKItwDpm6a0kVN3DHjtkW5+ehaHbSRYD
- Qnd1GB9J36V0/clAj/GjuVGiGChESyw8BMh8JHiv6GcW1v5/48CQAf9TzWMPnlpAe5d+B81tbJM
- Qgzr7WDmSXy/joQaQGSRGqJuKEuS1HFOkSVH5C93ZLEcFBt8JSZG1uw0MXDkNoN7w8oDGmeNK59
- Q+R9rBFbBZY3+APpcf2tABOFNFcV1XTVpIV9I9kO92O3Mx1gFx13w+KWKqgylCEpKkYw
-X-Google-Smtp-Source: AGHT+IHVgoS/GUrv4eXd7c/tYQixcYyqNwUlmHsqZpaOzi2Jukxs0vecZkBbaB+DbCsJDFN5uiXTyw==
-X-Received: by 2002:a05:6a21:9183:b0:1fe:5e67:21af with SMTP id
- adf61e73a8af0-216219d18e0mr29653558637.30.1747771076060; 
- Tue, 20 May 2025 12:57:56 -0700 (PDT)
-Received: from localhost.localdomain ([2601:646:8f03:9fee:2c89:c0cf:1cbd:96d3])
+ AJvYcCUMWO6R5y6SU4XBg+tm2aEfc6OLCS8xysPukLt4KTPuHxu3C8a3gjIlhdlOUF2GBJMGHyyrVPpyHx+M@nongnu.org
+X-Gm-Message-State: AOJu0YzbijflZLjRBQ8uI0q2g+w7ectHA9WD4iqb65OoEHhZzjizGxvl
+ Y0D8L2ZTv75Hk5tsdbdIfzeLR2jx8NTNHYgc+bl2QIIjdbISz7X7OhOR7rgM3Ctc9pE=
+X-Gm-Gg: ASbGncuYyFbGjME2iAhzbZSXWLyf+7E9Y5ZBAlvt+7kaEProf+SzPEWyp2UzPmcvJ9i
+ BWj9SX6sKhow5sQE7qkWoeSoCbDZnTUwaXtxDEVMWd518fPnRwy+UxYWnrtqQvtD04MbtrK7mCr
+ iBykF6bLbOQ4hrJQhnwzVKaol3LVA5M2Vt0oeVE/aOGAKV6sEYDZa9E1CdIncoKEx2Dvswg3xl2
+ kyECj5KjrqQfs76qu16JhSS+VHZJacrgnOdvAiTDog0NL9Zo0F+NcNCmPE/8UDpG9k7uLb4r08q
+ oLYmLQcj3auZOCoWyfbDPJSsXZb2IBWIouUBZ8ipXkWwBvh59qwpWxPp+Dw9kXhYPHGOi/4bzUu
+ p+PhCeE+wbHXSWKLuP5TKF+xELNDc8Q==
+X-Google-Smtp-Source: AGHT+IGYlB3rnWr0eKyRU9h2O1X5W86lI2rHajyBmJk8wcP93dqMvAmasFyUYWgMVXswm8ZYL2nsyw==
+X-Received: by 2002:a05:6a00:2288:b0:742:9bd3:238a with SMTP id
+ d2e1a72fcca58-742a978dc29mr26481423b3a.4.1747771196496; 
+ Tue, 20 May 2025 12:59:56 -0700 (PDT)
+Received: from ?IPV6:2804:7f0:b401:d47f:6989:b93e:2caa:f174?
+ ([2804:7f0:b401:d47f:6989:b93e:2caa:f174])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b26eb0843d1sm8458531a12.49.2025.05.20.12.57.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 May 2025 12:57:55 -0700 (PDT)
-From: nifan.cxl@gmail.com
-To: jonathan.cameron@huawei.com,
-	qemu-devel@nongnu.org
-Cc: linux-cxl@vger.kernel.org, a.manzanares@samsung.com, dave@stgolabs.net,
- nmtadam.samsung@gmail.com, nifan.cxl@gmail.com, anisa.su887@gmail.com,
- gourry@gourry.net, Fan Ni <fan.ni@samsung.com>
-Subject: [PATCH] hw/cxl: fix DC extent capacity tracking
-Date: Tue, 20 May 2025 12:56:43 -0700
-Message-ID: <20250520195741.789841-1-nifan.cxl@gmail.com>
-X-Mailer: git-send-email 2.47.2
+ d2e1a72fcca58-742acb8731esm8056290b3a.168.2025.05.20.12.59.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 20 May 2025 12:59:55 -0700 (PDT)
+Message-ID: <fdf853d2-35ae-40d7-942e-e01c7331ba34@linaro.org>
+Date: Tue, 20 May 2025 16:59:42 -0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=nifan.cxl@gmail.com; helo=mail-pf1-x435.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 12/22] hw/i386/acpi-build: Move
+ build_append_pci_bus_devices/pcihp_slots to pcihp
+To: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, peter.maydell@linaro.org,
+ imammedo@redhat.com, anisinha@redhat.com, mst@redhat.com,
+ shannon.zhaosl@gmail.com
+Cc: pbonzini@redhat.com, Jonathan.Cameron@huawei.com, philmd@linaro.org
+References: <20250514170431.2786231-1-eric.auger@redhat.com>
+ <20250514170431.2786231-13-eric.auger@redhat.com>
+Content-Language: en-US
+From: Gustavo Romero <gustavo.romero@linaro.org>
+In-Reply-To: <20250514170431.2786231-13-eric.auger@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=gustavo.romero@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,160 +107,439 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fan Ni <fan.ni@samsung.com>
+Hi Eric,
 
-Per cxl r3.2 Section 9.13.3.3, extent capacity tracking should include
-extents in different states including added, pending, etc.
+On 5/14/25 14:00, Eric Auger wrote:
+> We intend to reuse build_append_pci_bus_devices and
+> build_append_pcihp_slots on ARM. So Let's move them to
 
-Before the change, for the in-device extent number tracking purpose, we only
-have "total_extent_count" defined, which only tracks the number of
-extents accepted. However, we need to track number of extents in other
-states also, for now it is extents pending-to-add.
+nit: lowercase                     ---^
 
-To fix that, we introduce a new counter for dynamic capacity
-"nr_extents_accepted" which explicitly tracks number of the extents
-accepted by the hosts, and fix "total_extent_count" to include
-both accepted and pending extents counting.
 
-Signed-off-by: Fan Ni <fan.ni@samsung.com>
----
- hw/cxl/cxl-mailbox-utils.c  | 26 ++++++++++++++++++--------
- hw/mem/cxl_type3.c          |  1 +
- include/hw/cxl/cxl_device.h |  3 ++-
- 3 files changed, 21 insertions(+), 9 deletions(-)
+> hw/acpi/pcihp.c as well as all static helpers they
+> use.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> ---
+>   include/hw/acpi/pci.h   |   1 -
+>   include/hw/acpi/pcihp.h |   2 +
+>   hw/acpi/pcihp.c         | 173 ++++++++++++++++++++++++++++++++++++++++
+>   hw/i386/acpi-build.c    | 172 ---------------------------------------
+>   4 files changed, 175 insertions(+), 173 deletions(-)
 
-diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 299f232f26..0b615ea37a 100644
---- a/hw/cxl/cxl-mailbox-utils.c
-+++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -2750,7 +2750,7 @@ static CXLRetCode cmd_dcd_get_dyn_cap_ext_list(const struct cxl_cmd *cmd,
-     uint16_t out_pl_len, size;
-     CXLDCExtent *ent;
- 
--    if (start_extent_id > ct3d->dc.total_extent_count) {
-+    if (start_extent_id > ct3d->dc.nr_extents_accepted) {
-         return CXL_MBOX_INVALID_INPUT;
-     }
- 
-@@ -2761,7 +2761,7 @@ static CXLRetCode cmd_dcd_get_dyn_cap_ext_list(const struct cxl_cmd *cmd,
-     out_pl_len = sizeof(*out) + record_count * sizeof(out->records[0]);
- 
-     stl_le_p(&out->count, record_count);
--    stl_le_p(&out->total_extents, ct3d->dc.total_extent_count);
-+    stl_le_p(&out->total_extents, ct3d->dc.nr_extents_accepted);
-     stl_le_p(&out->generation_num, ct3d->dc.ext_list_gen_seq);
- 
-     if (record_count > 0) {
-@@ -2883,16 +2883,20 @@ void cxl_extent_group_list_insert_tail(CXLDCExtentGroupList *list,
-     QTAILQ_INSERT_TAIL(list, group, node);
- }
- 
--void cxl_extent_group_list_delete_front(CXLDCExtentGroupList *list)
-+uint32_t cxl_extent_group_list_delete_front(CXLDCExtentGroupList *list)
- {
-     CXLDCExtent *ent, *ent_next;
-     CXLDCExtentGroup *group = QTAILQ_FIRST(list);
-+    uint32_t extents_deleted = 0;
- 
-     QTAILQ_REMOVE(list, group, node);
-     QTAILQ_FOREACH_SAFE(ent, &group->list, node, ent_next) {
-         cxl_remove_extent_from_extent_list(&group->list, ent);
-+        extents_deleted++;
-     }
-     g_free(group);
-+
-+    return extents_deleted;
- }
- 
- /*
-@@ -3011,7 +3015,7 @@ static CXLRetCode cmd_dcd_add_dyn_cap_rsp(const struct cxl_cmd *cmd,
-     CXLUpdateDCExtentListInPl *in = (void *)payload_in;
-     CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
-     CXLDCExtentList *extent_list = &ct3d->dc.extents;
--    uint32_t i;
-+    uint32_t i, num;
-     uint64_t dpa, len;
-     CXLRetCode ret;
- 
-@@ -3020,7 +3024,8 @@ static CXLRetCode cmd_dcd_add_dyn_cap_rsp(const struct cxl_cmd *cmd,
-     }
- 
-     if (in->num_entries_updated == 0) {
--        cxl_extent_group_list_delete_front(&ct3d->dc.extents_pending);
-+        num = cxl_extent_group_list_delete_front(&ct3d->dc.extents_pending);
-+        ct3d->dc.total_extent_count -= num;
-         return CXL_MBOX_SUCCESS;
-     }
- 
-@@ -3051,10 +3056,12 @@ static CXLRetCode cmd_dcd_add_dyn_cap_rsp(const struct cxl_cmd *cmd,
- 
-         cxl_insert_extent_to_extent_list(extent_list, dpa, len, NULL, 0);
-         ct3d->dc.total_extent_count += 1;
-+        ct3d->dc.nr_extents_accepted += 1;
-         ct3_set_region_block_backed(ct3d, dpa, len);
-     }
-     /* Remove the first extent group in the pending list */
--    cxl_extent_group_list_delete_front(&ct3d->dc.extents_pending);
-+    num = cxl_extent_group_list_delete_front(&ct3d->dc.extents_pending);
-+    ct3d->dc.total_extent_count -= num;
- 
-     return CXL_MBOX_SUCCESS;
- }
-@@ -3160,7 +3167,7 @@ free_and_exit:
-         }
-         *updated_list_size = 0;
-     } else {
--        *updated_list_size = ct3d->dc.total_extent_count + cnt_delta;
-+        *updated_list_size = ct3d->dc.nr_extents_accepted + cnt_delta;
-     }
- 
-     return ret;
-@@ -3222,7 +3229,10 @@ static CXLRetCode cmd_dcd_release_dyn_cap(const struct cxl_cmd *cmd,
-         ct3_set_region_block_backed(ct3d, ent->start_dpa, ent->len);
-         cxl_remove_extent_from_extent_list(&updated_list, ent);
-     }
--    ct3d->dc.total_extent_count = updated_list_size;
-+    ct3d->dc.total_extent_count += (updated_list_size -
-+                                    ct3d->dc.nr_extents_accepted);
-+
-+    ct3d->dc.nr_extents_accepted = updated_list_size;
- 
-     return CXL_MBOX_SUCCESS;
- }
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index 94e7274912..f283178d88 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -2076,6 +2076,7 @@ static void qmp_cxl_process_dynamic_capacity_prescriptive(const char *path,
-     }
-     if (group) {
-         cxl_extent_group_list_insert_tail(&dcd->dc.extents_pending, group);
-+        dcd->dc.total_extent_count += num_extents;
-     }
- 
-     /*
-diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index ed6cd50c67..a151e19da8 100644
---- a/include/hw/cxl/cxl_device.h
-+++ b/include/hw/cxl/cxl_device.h
-@@ -618,6 +618,7 @@ struct CXLType3Dev {
-         CXLDCExtentList extents;
-         CXLDCExtentGroupList extents_pending;
-         uint32_t total_extent_count;
-+        uint32_t nr_extents_accepted;
-         uint32_t ext_list_gen_seq;
- 
-         uint8_t num_regions; /* 0-8 regions */
-@@ -696,7 +697,7 @@ CXLDCExtentGroup *cxl_insert_extent_to_extent_group(CXLDCExtentGroup *group,
-                                                     uint16_t shared_seq);
- void cxl_extent_group_list_insert_tail(CXLDCExtentGroupList *list,
-                                        CXLDCExtentGroup *group);
--void cxl_extent_group_list_delete_front(CXLDCExtentGroupList *list);
-+uint32_t cxl_extent_group_list_delete_front(CXLDCExtentGroupList *list);
- void ct3_set_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
-                                  uint64_t len);
- void ct3_clear_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
--- 
-2.47.2
+Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
+
+
+Cheers,
+Gustavo
+
+> diff --git a/include/hw/acpi/pci.h b/include/hw/acpi/pci.h
+> index ab0187a894..4dca22c0e2 100644
+> --- a/include/hw/acpi/pci.h
+> +++ b/include/hw/acpi/pci.h
+> @@ -37,7 +37,6 @@ typedef struct AcpiMcfgInfo {
+>   void build_mcfg(GArray *table_data, BIOSLinker *linker, AcpiMcfgInfo *info,
+>                   const char *oem_id, const char *oem_table_id);
+>   
+> -void build_append_pci_bus_devices(Aml *parent_scope, PCIBus *bus);
+>   void build_pci_bridge_aml(AcpiDevAmlIf *adev, Aml *scope);
+>   
+>   void build_srat_generic_affinity_structures(GArray *table_data);
+> diff --git a/include/hw/acpi/pcihp.h b/include/hw/acpi/pcihp.h
+> index 7c5d59243f..4d820b4baf 100644
+> --- a/include/hw/acpi/pcihp.h
+> +++ b/include/hw/acpi/pcihp.h
+> @@ -80,6 +80,8 @@ void build_append_pcihp_resources(Aml *table,
+>                                     uint64_t io_addr, uint64_t io_len);
+>   bool build_append_notification_callback(Aml *parent_scope, const PCIBus *bus);
+>   
+> +void build_append_pci_bus_devices(Aml *parent_scope, PCIBus *bus);
+> +
+>   /* Called on reset */
+>   void acpi_pcihp_reset(AcpiPciHpState *s);
+>   
+> diff --git a/hw/acpi/pcihp.c b/hw/acpi/pcihp.c
+> index 907a08ac7f..942669ea89 100644
+> --- a/hw/acpi/pcihp.c
+> +++ b/hw/acpi/pcihp.c
+> @@ -27,6 +27,7 @@
+>   #include "qemu/osdep.h"
+>   #include "hw/acpi/pcihp.h"
+>   #include "hw/acpi/aml-build.h"
+> +#include "hw/acpi/acpi_aml_interface.h"
+>   #include "hw/pci-host/i440fx.h"
+>   #include "hw/pci/pci.h"
+>   #include "hw/pci/pci_bridge.h"
+> @@ -763,6 +764,178 @@ bool build_append_notification_callback(Aml *parent_scope, const PCIBus *bus)
+>       return !!nr_notifiers;
+>   }
+>   
+> +static void build_append_pcihp_notify_entry(Aml *method, int slot)
+> +{
+> +    Aml *if_ctx;
+> +    int32_t devfn = PCI_DEVFN(slot, 0);
+> +
+> +    if_ctx = aml_if(aml_and(aml_arg(0), aml_int(0x1U << slot), NULL));
+> +    aml_append(if_ctx, aml_notify(aml_name("S%.02X", devfn), aml_arg(1)));
+> +    aml_append(method, if_ctx);
+> +}
+> +
+> +static bool is_devfn_ignored_generic(const int devfn, const PCIBus *bus)
+> +{
+> +    const PCIDevice *pdev = bus->devices[devfn];
+> +
+> +    if (PCI_FUNC(devfn)) {
+> +        if (IS_PCI_BRIDGE(pdev)) {
+> +            /*
+> +             * Ignore only hotplugged PCI bridges on !0 functions, but
+> +             * allow describing cold plugged bridges on all functions
+> +             */
+> +            if (DEVICE(pdev)->hotplugged) {
+> +                return true;
+> +            }
+> +        }
+> +    }
+> +    return false;
+> +}
+> +
+> +static bool is_devfn_ignored_hotplug(const int devfn, const PCIBus *bus)
+> +{
+> +    PCIDevice *pdev = bus->devices[devfn];
+> +    if (pdev) {
+> +        return is_devfn_ignored_generic(devfn, bus) ||
+> +               !DEVICE_GET_CLASS(pdev)->hotpluggable ||
+> +               /* Cold plugged bridges aren't themselves hot-pluggable */
+> +               (IS_PCI_BRIDGE(pdev) && !DEVICE(pdev)->hotplugged);
+> +    } else { /* non populated slots */
+> +         /*
+> +          * hotplug is supported only for non-multifunction device
+> +          * so generate device description only for function 0
+> +          */
+> +        if (PCI_FUNC(devfn) ||
+> +            (pci_bus_is_express(bus) && PCI_SLOT(devfn) > 0)) {
+> +            return true;
+> +        }
+> +    }
+> +    return false;
+> +}
+> +
+> +static Aml *aml_pci_static_endpoint_dsm(PCIDevice *pdev)
+> +{
+> +    Aml *method;
+> +
+> +    g_assert(pdev->acpi_index != 0);
+> +    method = aml_method("_DSM", 4, AML_SERIALIZED);
+> +    {
+> +        Aml *params = aml_local(0);
+> +        Aml *pkg = aml_package(1);
+> +        aml_append(pkg, aml_int(pdev->acpi_index));
+> +        aml_append(method, aml_store(pkg, params));
+> +        aml_append(method,
+> +            aml_return(aml_call5("EDSM", aml_arg(0), aml_arg(1),
+> +                                 aml_arg(2), aml_arg(3), params))
+> +        );
+> +    }
+> +    return method;
+> +}
+> +
+> +static Aml *aml_pci_device_dsm(void)
+> +{
+> +    Aml *method;
+> +
+> +    method = aml_method("_DSM", 4, AML_SERIALIZED);
+> +    {
+> +        Aml *params = aml_local(0);
+> +        Aml *pkg = aml_package(2);
+> +        aml_append(pkg, aml_int(0));
+> +        aml_append(pkg, aml_int(0));
+> +        aml_append(method, aml_store(pkg, params));
+> +        aml_append(method,
+> +            aml_store(aml_name("BSEL"), aml_index(params, aml_int(0))));
+> +        aml_append(method,
+> +            aml_store(aml_name("ASUN"), aml_index(params, aml_int(1))));
+> +        aml_append(method,
+> +            aml_return(aml_call5("PDSM", aml_arg(0), aml_arg(1),
+> +                                 aml_arg(2), aml_arg(3), params))
+> +        );
+> +    }
+> +    return method;
+> +}
+> +
+> +void build_append_pcihp_slots(Aml *parent_scope, PCIBus *bus)
+> +{
+> +    int devfn;
+> +    Aml *dev, *notify_method = NULL, *method;
+> +    QObject *bsel = object_property_get_qobject(OBJECT(bus),
+> +                        ACPI_PCIHP_PROP_BSEL, NULL);
+> +    uint64_t bsel_val = qnum_get_uint(qobject_to(QNum, bsel));
+> +    qobject_unref(bsel);
+> +
+> +    aml_append(parent_scope, aml_name_decl("BSEL", aml_int(bsel_val)));
+> +    notify_method = aml_method("DVNT", 2, AML_NOTSERIALIZED);
+> +
+> +    for (devfn = 0; devfn < ARRAY_SIZE(bus->devices); devfn++) {
+> +        int slot = PCI_SLOT(devfn);
+> +        int adr = slot << 16 | PCI_FUNC(devfn);
+> +
+> +        if (is_devfn_ignored_hotplug(devfn, bus)) {
+> +            continue;
+> +        }
+> +
+> +        if (bus->devices[devfn]) {
+> +            dev = aml_scope("S%.02X", devfn);
+> +        } else {
+> +            dev = aml_device("S%.02X", devfn);
+> +            aml_append(dev, aml_name_decl("_ADR", aml_int(adr)));
+> +        }
+> +
+> +        /*
+> +         * Can't declare _SUN here for every device as it changes 'slot'
+> +         * enumeration order in linux kernel, so use another variable for it
+> +         */
+> +        aml_append(dev, aml_name_decl("ASUN", aml_int(slot)));
+> +        aml_append(dev, aml_pci_device_dsm());
+> +
+> +        aml_append(dev, aml_name_decl("_SUN", aml_int(slot)));
+> +        /* add _EJ0 to make slot hotpluggable  */
+> +        method = aml_method("_EJ0", 1, AML_NOTSERIALIZED);
+> +        aml_append(method,
+> +            aml_call2("PCEJ", aml_name("BSEL"), aml_name("_SUN"))
+> +        );
+> +        aml_append(dev, method);
+> +
+> +        build_append_pcihp_notify_entry(notify_method, slot);
+> +
+> +        /* device descriptor has been composed, add it into parent context */
+> +        aml_append(parent_scope, dev);
+> +    }
+> +    aml_append(parent_scope, notify_method);
+> +}
+> +
+> +void build_append_pci_bus_devices(Aml *parent_scope, PCIBus *bus)
+> +{
+> +    int devfn;
+> +    Aml *dev;
+> +
+> +    for (devfn = 0; devfn < ARRAY_SIZE(bus->devices); devfn++) {
+> +        /* ACPI spec: 1.0b: Table 6-2 _ADR Object Bus Types, PCI type */
+> +        int adr = PCI_SLOT(devfn) << 16 | PCI_FUNC(devfn);
+> +        PCIDevice *pdev = bus->devices[devfn];
+> +
+> +        if (!pdev || is_devfn_ignored_generic(devfn, bus)) {
+> +            continue;
+> +        }
+> +
+> +        /* start to compose PCI device descriptor */
+> +        dev = aml_device("S%.02X", devfn);
+> +        aml_append(dev, aml_name_decl("_ADR", aml_int(adr)));
+> +
+> +        call_dev_aml_func(DEVICE(bus->devices[devfn]), dev);
+> +        /* add _DSM if device has acpi-index set */
+> +        if (pdev->acpi_index &&
+> +            !object_property_get_bool(OBJECT(pdev), "hotpluggable",
+> +                                      &error_abort)) {
+> +            aml_append(dev, aml_pci_static_endpoint_dsm(pdev));
+> +        }
+> +
+> +        /* device descriptor has been composed, add it into parent context */
+> +        aml_append(parent_scope, dev);
+> +    }
+> +}
+> +
+>   const VMStateDescription vmstate_acpi_pcihp_pci_status = {
+>       .name = "acpi_pcihp_pci_status",
+>       .version_id = 1,
+> diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+> index f08ce407c8..06b4b8eed4 100644
+> --- a/hw/i386/acpi-build.c
+> +++ b/hw/i386/acpi-build.c
+> @@ -338,29 +338,6 @@ build_facs(GArray *table_data)
+>       g_array_append_vals(table_data, reserved, 40); /* Reserved */
+>   }
+>   
+> -static Aml *aml_pci_device_dsm(void)
+> -{
+> -    Aml *method;
+> -
+> -    method = aml_method("_DSM", 4, AML_SERIALIZED);
+> -    {
+> -        Aml *params = aml_local(0);
+> -        Aml *pkg = aml_package(2);
+> -        aml_append(pkg, aml_int(0));
+> -        aml_append(pkg, aml_int(0));
+> -        aml_append(method, aml_store(pkg, params));
+> -        aml_append(method,
+> -            aml_store(aml_name("BSEL"), aml_index(params, aml_int(0))));
+> -        aml_append(method,
+> -            aml_store(aml_name("ASUN"), aml_index(params, aml_int(1))));
+> -        aml_append(method,
+> -            aml_return(aml_call5("PDSM", aml_arg(0), aml_arg(1),
+> -                                 aml_arg(2), aml_arg(3), params))
+> -        );
+> -    }
+> -    return method;
+> -}
+> -
+>   static Aml *aml_pci_edsm(void)
+>   {
+>       Aml *method, *ifctx;
+> @@ -414,155 +391,6 @@ static Aml *aml_pci_edsm(void)
+>       return method;
+>   }
+>   
+> -static Aml *aml_pci_static_endpoint_dsm(PCIDevice *pdev)
+> -{
+> -    Aml *method;
+> -
+> -    g_assert(pdev->acpi_index != 0);
+> -    method = aml_method("_DSM", 4, AML_SERIALIZED);
+> -    {
+> -        Aml *params = aml_local(0);
+> -        Aml *pkg = aml_package(1);
+> -        aml_append(pkg, aml_int(pdev->acpi_index));
+> -        aml_append(method, aml_store(pkg, params));
+> -        aml_append(method,
+> -            aml_return(aml_call5("EDSM", aml_arg(0), aml_arg(1),
+> -                                 aml_arg(2), aml_arg(3), params))
+> -        );
+> -    }
+> -    return method;
+> -}
+> -
+> -static void build_append_pcihp_notify_entry(Aml *method, int slot)
+> -{
+> -    Aml *if_ctx;
+> -    int32_t devfn = PCI_DEVFN(slot, 0);
+> -
+> -    if_ctx = aml_if(aml_and(aml_arg(0), aml_int(0x1U << slot), NULL));
+> -    aml_append(if_ctx, aml_notify(aml_name("S%.02X", devfn), aml_arg(1)));
+> -    aml_append(method, if_ctx);
+> -}
+> -
+> -static bool is_devfn_ignored_generic(const int devfn, const PCIBus *bus)
+> -{
+> -    const PCIDevice *pdev = bus->devices[devfn];
+> -
+> -    if (PCI_FUNC(devfn)) {
+> -        if (IS_PCI_BRIDGE(pdev)) {
+> -            /*
+> -             * Ignore only hotplugged PCI bridges on !0 functions, but
+> -             * allow describing cold plugged bridges on all functions
+> -             */
+> -            if (DEVICE(pdev)->hotplugged) {
+> -                return true;
+> -            }
+> -        }
+> -    }
+> -    return false;
+> -}
+> -
+> -static bool is_devfn_ignored_hotplug(const int devfn, const PCIBus *bus)
+> -{
+> -    PCIDevice *pdev = bus->devices[devfn];
+> -    if (pdev) {
+> -        return is_devfn_ignored_generic(devfn, bus) ||
+> -               !DEVICE_GET_CLASS(pdev)->hotpluggable ||
+> -               /* Cold plugged bridges aren't themselves hot-pluggable */
+> -               (IS_PCI_BRIDGE(pdev) && !DEVICE(pdev)->hotplugged);
+> -    } else { /* non populated slots */
+> -         /*
+> -         * hotplug is supported only for non-multifunction device
+> -         * so generate device description only for function 0
+> -         */
+> -        if (PCI_FUNC(devfn) ||
+> -            (pci_bus_is_express(bus) && PCI_SLOT(devfn) > 0)) {
+> -            return true;
+> -        }
+> -    }
+> -    return false;
+> -}
+> -
+> -void build_append_pcihp_slots(Aml *parent_scope, PCIBus *bus)
+> -{
+> -    int devfn;
+> -    Aml *dev, *notify_method = NULL, *method;
+> -    QObject *bsel = object_property_get_qobject(OBJECT(bus),
+> -                        ACPI_PCIHP_PROP_BSEL, NULL);
+> -    uint64_t bsel_val = qnum_get_uint(qobject_to(QNum, bsel));
+> -    qobject_unref(bsel);
+> -
+> -    aml_append(parent_scope, aml_name_decl("BSEL", aml_int(bsel_val)));
+> -    notify_method = aml_method("DVNT", 2, AML_NOTSERIALIZED);
+> -
+> -    for (devfn = 0; devfn < ARRAY_SIZE(bus->devices); devfn++) {
+> -        int slot = PCI_SLOT(devfn);
+> -        int adr = slot << 16 | PCI_FUNC(devfn);
+> -
+> -        if (is_devfn_ignored_hotplug(devfn, bus)) {
+> -            continue;
+> -        }
+> -
+> -        if (bus->devices[devfn]) {
+> -            dev = aml_scope("S%.02X", devfn);
+> -        } else {
+> -            dev = aml_device("S%.02X", devfn);
+> -            aml_append(dev, aml_name_decl("_ADR", aml_int(adr)));
+> -        }
+> -
+> -        /*
+> -         * Can't declare _SUN here for every device as it changes 'slot'
+> -         * enumeration order in linux kernel, so use another variable for it
+> -         */
+> -        aml_append(dev, aml_name_decl("ASUN", aml_int(slot)));
+> -        aml_append(dev, aml_pci_device_dsm());
+> -
+> -        aml_append(dev, aml_name_decl("_SUN", aml_int(slot)));
+> -        /* add _EJ0 to make slot hotpluggable  */
+> -        method = aml_method("_EJ0", 1, AML_NOTSERIALIZED);
+> -        aml_append(method,
+> -            aml_call2("PCEJ", aml_name("BSEL"), aml_name("_SUN"))
+> -        );
+> -        aml_append(dev, method);
+> -
+> -        build_append_pcihp_notify_entry(notify_method, slot);
+> -
+> -        /* device descriptor has been composed, add it into parent context */
+> -        aml_append(parent_scope, dev);
+> -    }
+> -    aml_append(parent_scope, notify_method);
+> -}
+> -
+> -void build_append_pci_bus_devices(Aml *parent_scope, PCIBus *bus)
+> -{
+> -    int devfn;
+> -    Aml *dev;
+> -
+> -    for (devfn = 0; devfn < ARRAY_SIZE(bus->devices); devfn++) {
+> -        /* ACPI spec: 1.0b: Table 6-2 _ADR Object Bus Types, PCI type */
+> -        int adr = PCI_SLOT(devfn) << 16 | PCI_FUNC(devfn);
+> -        PCIDevice *pdev = bus->devices[devfn];
+> -
+> -        if (!pdev || is_devfn_ignored_generic(devfn, bus)) {
+> -            continue;
+> -        }
+> -
+> -        /* start to compose PCI device descriptor */
+> -        dev = aml_device("S%.02X", devfn);
+> -        aml_append(dev, aml_name_decl("_ADR", aml_int(adr)));
+> -
+> -        call_dev_aml_func(DEVICE(bus->devices[devfn]), dev);
+> -        /* add _DSM if device has acpi-index set */
+> -        if (pdev->acpi_index &&
+> -            !object_property_get_bool(OBJECT(pdev), "hotpluggable",
+> -                                      &error_abort)) {
+> -            aml_append(dev, aml_pci_static_endpoint_dsm(pdev));
+> -        }
+> -
+> -        /* device descriptor has been composed, add it into parent context */
+> -        aml_append(parent_scope, dev);
+> -    }
+> -}
+> -
+>   /*
+>    * build_prt - Define interrupt routing rules
+>    *
 
 
