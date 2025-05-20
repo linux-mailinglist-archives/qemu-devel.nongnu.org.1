@@ -2,66 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A92EABDE6E
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 17:10:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F253DABDF49
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 17:39:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHOZH-0000dz-9r; Tue, 20 May 2025 11:07:47 -0400
+	id 1uHP2N-00042E-7X; Tue, 20 May 2025 11:37:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uHOYa-0008B0-HG; Tue, 20 May 2025 11:07:05 -0400
-Received: from mgamail.intel.com ([198.175.65.11])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uHOYY-0002za-Ji; Tue, 20 May 2025 11:07:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747753623; x=1779289623;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=ifXIFaK3P0jlcn0kIXOIQM5Yvn/iFff3tBlWKMGRt5w=;
- b=NKeui/ztZ77Ab7gQc1pdYgkENXUbOTiq9BIkDgRnBgsFkAA6h5UhPrXz
- 7E/mu/F/tAUlEiq9wUHC236i5XIrCg31dH9VoDgXi/fsUUUEuiiH3me91
- mvPmPpvGg0WTpvZfXox8xXmV6tGWiGusmZZRCejsPtAz+i/EWi5qprrFA
- VFaJ9eZ41k7eBuXXaO7D6F+ZjG1k+NzexzVUBRwGPATQ/vhEyzSyrSPt1
- 7r7V25P4F7JaPYUxzXsBwmoLxHb6xLRtuwbqEP6X5BEiy3/HWzFrlP9JL
- +hBP7qbxL28ZG8ZbJXw3I1UoNd/FO0OmqiMsa7uC8MFStHHnw4S6eBdDG Q==;
-X-CSE-ConnectionGUID: WGMQYu6gQ2y/aWSE75nMvg==
-X-CSE-MsgGUID: RiMREqF1ROWnt6zemczVVA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="59922546"
-X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="59922546"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2025 08:06:57 -0700
-X-CSE-ConnectionGUID: AjelRlkjRTatyIf49x3WEg==
-X-CSE-MsgGUID: qPomVkvtQMKnBbDIsK423w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="144461908"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.39])
- by orviesa003.jf.intel.com with ESMTP; 20 May 2025 08:06:53 -0700
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
- Dapeng Mi <dapeng1.mi@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 5/5] rust: Fix the typos in doc
-Date: Tue, 20 May 2025 23:27:50 +0800
-Message-Id: <20250520152750.2542612-6-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250520152750.2542612-1-zhao1.liu@intel.com>
-References: <20250520152750.2542612-1-zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
+ id 1uHP2I-00041c-GJ
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 11:37:46 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
+ id 1uHP2F-0000N2-VE
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 11:37:46 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-742c3d06de3so3292479b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 20 May 2025 08:37:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1747755461; x=1748360261; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=QfUgbG7wlz+ybzD3R782KbS9QXsdGRcz+HFsWFmMcKY=;
+ b=QFzqFy7v5zGJXWSlQC411rN91ndUmpIFSITLx93+Ty6tiSi1TBlY9bqBEpW9AQqKkt
+ laEEXuNZITX7KdA846skgGyX7jB0wIvl9R5TgJKuogzbyIRDYhOv1j/Mj9EtjUsUjvmZ
+ vW2ZyOXcqzvb1y4HatvAAd99pb1PhD82ddTKBiA4D6U2UWYrmftoPsK6QP3sbcEoFXJH
+ VgLJACecQ0OQmIRpxNqRYIKpCeYyNdcUqTexrDXzdUW/CTOpv4WB9kF6+zP7yn2rR1d5
+ ObZFrpCwLxgeeEwqg7n8X2OCGgm+T+DA3JIf00yvvED5sA+nlu4Yem/DhakHZODX+yay
+ iLaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747755461; x=1748360261;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=QfUgbG7wlz+ybzD3R782KbS9QXsdGRcz+HFsWFmMcKY=;
+ b=EaUcdoxpVVqPv1JEoCyBfvJEleG+uBhecKZppj37iNjZK4HMOx/K8h04wa9Fjf/oWE
+ DPWId/sfPs4ALgH2gZkIqywLiKnvRtY0JBWcEzeCjhWU9OkHVdlTvwa+cHXN8kqss22I
+ 5b/MwkE0JhqH0N00D34HVAqJ2CEdxdJgcpv+OtiH+Ow8Aa84GqnJ9rGnrCrAooUxhVwV
+ BSRM7yGMPcqNsrvCbeDQdEdzGmrsLhKWUjWre3KT+B0RL7io1xwM0acvSvgOqz+5NX6+
+ bJ1T0kGU98b3+yYuPWK+5omUB65VqAfh8tPVlGn9Ji11HmXE1T3u+qwhKHCE8iEYoe9G
+ wRzQ==
+X-Gm-Message-State: AOJu0Yy8A72Qc6SZeFGzi9s6R0bMOQKXYTf9k4ET64qR4DIGZFD08jA1
+ zYXGZvLgfhb+3EX9pPh/r6LI/FviH9TRlFw7f9bnou4DqLibleXZr5R5
+X-Gm-Gg: ASbGncvtaS/JrVwI1dNVz1O/oHV7nhXLTTbU50A493zD6UR19zH76XhImljeENDeST+
+ DRpd75QbiqfDlbcBmnQGenqYm7wou5lfC+cOBi7C43yYap2QhBSOoBAB0z44X+4IJCdfkcCe5yV
+ p9uBS+QCAAc5tpbhZ6xaNm5wAs0JSYdDLcekI8N/qMx9IyVWJqwmDLYQtHWMtTdHEgBdglsb2iR
+ 9QRXpTp1FJzOD1caYEEu033geEEoMEJss5aOebliQ/SM3PiaWD64bOMLSbViTI5ErHRW/pk5rYf
+ K2+a8J/CUyxsz9XJ/mw1Z1+UkFgqTFK1IlKz4bGblbvGl3MdDBkD
+X-Google-Smtp-Source: AGHT+IEwSkvU591UJhbKnDRmu73swl+LkaJvyIbpoNTzQIdAkiru/cpM8OObscQjElXrRH2kNDBEOQ==
+X-Received: by 2002:a05:6a00:3492:b0:742:9bd3:cd1f with SMTP id
+ d2e1a72fcca58-742acd728eamr21638969b3a.23.1747755461288; 
+ Tue, 20 May 2025 08:37:41 -0700 (PDT)
+Received: from lg ([2601:646:8f03:9fee:2c89:c0cf:1cbd:96d3])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-742a9739906sm8071440b3a.80.2025.05.20.08.37.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 20 May 2025 08:37:40 -0700 (PDT)
+From: Fan Ni <nifan.cxl@gmail.com>
+X-Google-Original-From: Fan Ni <fan.ni@samsung.com>
+Date: Tue, 20 May 2025 08:37:35 -0700
+To: anisa.su887@gmail.com
+Cc: qemu-devel@nongnu.org, Jonathan.Cameron@huawei.com, nifan.cxl@gmail.com,
+ dave@stgolabs.net, linux-cxl@vger.kernel.org,
+ Anisa Su <anisa.su@samsung.com>
+Subject: Re: [PATCH v2 01/10] cxl-mailbox-utils: Move opcodes enum to new
+ header file
+Message-ID: <aCyhv8Qz1LUpJKd3@lg>
+References: <20250508001754.122180-1-anisa.su887@gmail.com>
+ <20250508001754.122180-2-anisa.su887@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.487,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250508001754.122180-2-anisa.su887@gmail.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=nifan.cxl@gmail.com; helo=mail-pf1-x429.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,77 +100,195 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These typos are found by "cargo spellcheck". Though it outputs a lot of
-noise and false positives, there still are some real typos.
+On Thu, May 08, 2025 at 12:00:57AM +0000, anisa.su887@gmail.com wrote:
+> From: Anisa Su <anisa.su@samsung.com>
+> 
+> In preparation for the next patch, move opcodes enum to new cxl_opcodes.h file
+> for visibility from mailbox-utils.c and i2c_mctp_cxl.c, which checks that
+> certain command sets are bound with the correct MCTP binding.
+> 
+> Signed-off-by: Anisa Su <anisa.su@samsung.com>
+> ---
+>  hw/cxl/cxl-mailbox-utils.c   | 68 ++----------------------------------
+>  include/hw/cxl/cxl_opcodes.h | 64 +++++++++++++++++++++++++++++++++
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
-Note: But I have to admit, cargo spellcheck isn't a great tool.
+Should we put the opcodes into include/hw/cxl/cxl_mailbox.h instead of
+creating a new file. cxl_mailbox.h only has some macros.
 
-Picked from <20250218092108.3347963-1-zhao1.liu@intel.com> with checking
-again.
----
- rust/hw/char/pl011/src/device.rs | 4 ++--
- rust/qemu-api/src/qom.rs         | 4 ++--
- rust/qemu-api/src/vmstate.rs     | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+Fan
 
-diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
-index bde3be65c5b0..bd5cee046473 100644
---- a/rust/hw/char/pl011/src/device.rs
-+++ b/rust/hw/char/pl011/src/device.rs
-@@ -480,13 +480,13 @@ pub fn post_load(&mut self) -> Result<(), ()> {
- }
- 
- impl PL011State {
--    /// Initializes a pre-allocated, unitialized instance of `PL011State`.
-+    /// Initializes a pre-allocated, uninitialized instance of `PL011State`.
-     ///
-     /// # Safety
-     ///
-     /// `self` must point to a correctly sized and aligned location for the
-     /// `PL011State` type. It must not be called more than once on the same
--    /// location/instance. All its fields are expected to hold unitialized
-+    /// location/instance. All its fields are expected to hold uninitialized
-     /// values with the sole exception of `parent_obj`.
-     unsafe fn init(&mut self) {
-         static PL011_OPS: MemoryRegionOps<PL011State> = MemoryRegionOpsBuilder::<PL011State>::new()
-diff --git a/rust/qemu-api/src/qom.rs b/rust/qemu-api/src/qom.rs
-index 41e5a5e29a82..14f98fee60ab 100644
---- a/rust/qemu-api/src/qom.rs
-+++ b/rust/qemu-api/src/qom.rs
-@@ -291,7 +291,7 @@ fn as_object(&self) -> &Object {
-     }
- 
-     /// Return the receiver as a const raw pointer to Object.
--    /// This is preferrable to `as_object_mut_ptr()` if a C
-+    /// This is preferable to `as_object_mut_ptr()` if a C
-     /// function only needs a `const Object *`.
-     fn as_object_ptr(&self) -> *const bindings::Object {
-         self.as_object().as_ptr()
-@@ -485,7 +485,7 @@ pub trait ObjectImpl: ObjectType + IsA<Object> {
-     /// `INSTANCE_INIT` functions have been called.
-     const INSTANCE_POST_INIT: Option<fn(&Self)> = None;
- 
--    /// Called on descendent classes after all parent class initialization
-+    /// Called on descendant classes after all parent class initialization
-     /// has occurred, but before the class itself is initialized.  This
-     /// is only useful if a class is not a leaf, and can be used to undo
-     /// the effects of copying the contents of the parent's class struct
-diff --git a/rust/qemu-api/src/vmstate.rs b/rust/qemu-api/src/vmstate.rs
-index 9c8b2398e9d4..812f390d7802 100644
---- a/rust/qemu-api/src/vmstate.rs
-+++ b/rust/qemu-api/src/vmstate.rs
-@@ -9,7 +9,7 @@
- //! * [`vmstate_unused!`](crate::vmstate_unused) and
- //!   [`vmstate_of!`](crate::vmstate_of), which are used to express the
- //!   migration format for a struct.  This is based on the [`VMState`] trait,
--//!   which is defined by all migrateable types.
-+//!   which is defined by all migratable types.
- //!
- //! * [`impl_vmstate_forward`](crate::impl_vmstate_forward) and
- //!   [`impl_vmstate_bitsized`](crate::impl_vmstate_bitsized), which help with
+
+
+>  2 files changed, 66 insertions(+), 66 deletions(-)
+>  create mode 100644 include/hw/cxl/cxl_opcodes.h
+> 
+> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+> index a02d130926..ed3294530f 100644
+> --- a/hw/cxl/cxl-mailbox-utils.c
+> +++ b/hw/cxl/cxl-mailbox-utils.c
+> @@ -23,6 +23,7 @@
+>  #include "qemu/uuid.h"
+>  #include "system/hostmem.h"
+>  #include "qemu/range.h"
+> +#include "hw/cxl/cxl_opcodes.h"
+>  
+>  #define CXL_CAPACITY_MULTIPLIER   (256 * MiB)
+>  #define CXL_DC_EVENT_LOG_SIZE 8
+> @@ -36,7 +37,7 @@
+>  
+>  /*
+>   * How to add a new command, example. The command set FOO, with cmd BAR.
+> - *  1. Add the command set and cmd to the enum.
+> + *  1. Add the command set and cmd to the enum in cxl_opcodes.h.
+>   *     FOO    = 0x7f,
+>   *          #define BAR 0
+>   *  2. Implement the handler
+> @@ -59,71 +60,6 @@
+>   *  a register interface that already deals with it.
+>   */
+>  
+> -enum {
+> -    INFOSTAT    = 0x00,
+> -        #define IS_IDENTIFY   0x1
+> -        #define BACKGROUND_OPERATION_STATUS    0x2
+> -        #define GET_RESPONSE_MSG_LIMIT         0x3
+> -        #define SET_RESPONSE_MSG_LIMIT         0x4
+> -        #define BACKGROUND_OPERATION_ABORT     0x5
+> -    EVENTS      = 0x01,
+> -        #define GET_RECORDS   0x0
+> -        #define CLEAR_RECORDS   0x1
+> -        #define GET_INTERRUPT_POLICY   0x2
+> -        #define SET_INTERRUPT_POLICY   0x3
+> -    FIRMWARE_UPDATE = 0x02,
+> -        #define GET_INFO      0x0
+> -        #define TRANSFER      0x1
+> -        #define ACTIVATE      0x2
+> -    TIMESTAMP   = 0x03,
+> -        #define GET           0x0
+> -        #define SET           0x1
+> -    LOGS        = 0x04,
+> -        #define GET_SUPPORTED 0x0
+> -        #define GET_LOG       0x1
+> -        #define GET_LOG_CAPABILITIES   0x2
+> -        #define CLEAR_LOG     0x3
+> -        #define POPULATE_LOG  0x4
+> -    FEATURES    = 0x05,
+> -        #define GET_SUPPORTED 0x0
+> -        #define GET_FEATURE   0x1
+> -        #define SET_FEATURE   0x2
+> -    IDENTIFY    = 0x40,
+> -        #define MEMORY_DEVICE 0x0
+> -    CCLS        = 0x41,
+> -        #define GET_PARTITION_INFO     0x0
+> -        #define GET_LSA       0x2
+> -        #define SET_LSA       0x3
+> -    HEALTH_INFO_ALERTS = 0x42,
+> -        #define GET_ALERT_CONFIG 0x1
+> -        #define SET_ALERT_CONFIG 0x2
+> -    SANITIZE    = 0x44,
+> -        #define OVERWRITE     0x0
+> -        #define SECURE_ERASE  0x1
+> -        #define MEDIA_OPERATIONS 0x2
+> -    PERSISTENT_MEM = 0x45,
+> -        #define GET_SECURITY_STATE     0x0
+> -    MEDIA_AND_POISON = 0x43,
+> -        #define GET_POISON_LIST        0x0
+> -        #define INJECT_POISON          0x1
+> -        #define CLEAR_POISON           0x2
+> -        #define GET_SCAN_MEDIA_CAPABILITIES 0x3
+> -        #define SCAN_MEDIA             0x4
+> -        #define GET_SCAN_MEDIA_RESULTS 0x5
+> -    DCD_CONFIG  = 0x48,
+> -        #define GET_DC_CONFIG          0x0
+> -        #define GET_DYN_CAP_EXT_LIST   0x1
+> -        #define ADD_DYN_CAP_RSP        0x2
+> -        #define RELEASE_DYN_CAP        0x3
+> -    PHYSICAL_SWITCH = 0x51,
+> -        #define IDENTIFY_SWITCH_DEVICE      0x0
+> -        #define GET_PHYSICAL_PORT_STATE     0x1
+> -    TUNNEL = 0x53,
+> -        #define MANAGEMENT_COMMAND     0x0
+> -    MHD = 0x55,
+> -        #define GET_MHD_INFO 0x0
+> -};
+> -
+>  /* CCI Message Format CXL r3.1 Figure 7-19 */
+>  typedef struct CXLCCIMessage {
+>      uint8_t category;
+> diff --git a/include/hw/cxl/cxl_opcodes.h b/include/hw/cxl/cxl_opcodes.h
+> new file mode 100644
+> index 0000000000..26d3a99e8a
+> --- /dev/null
+> +++ b/include/hw/cxl/cxl_opcodes.h
+> @@ -0,0 +1,64 @@
+> +enum {
+> +    INFOSTAT    = 0x00,
+> +        #define IS_IDENTIFY   0x1
+> +        #define BACKGROUND_OPERATION_STATUS    0x2
+> +        #define GET_RESPONSE_MSG_LIMIT         0x3
+> +        #define SET_RESPONSE_MSG_LIMIT         0x4
+> +        #define BACKGROUND_OPERATION_ABORT     0x5
+> +    EVENTS      = 0x01,
+> +        #define GET_RECORDS   0x0
+> +        #define CLEAR_RECORDS   0x1
+> +        #define GET_INTERRUPT_POLICY   0x2
+> +        #define SET_INTERRUPT_POLICY   0x3
+> +    FIRMWARE_UPDATE = 0x02,
+> +        #define GET_INFO      0x0
+> +        #define TRANSFER      0x1
+> +        #define ACTIVATE      0x2
+> +    TIMESTAMP   = 0x03,
+> +        #define GET           0x0
+> +        #define SET           0x1
+> +    LOGS        = 0x04,
+> +        #define GET_SUPPORTED 0x0
+> +        #define GET_LOG       0x1
+> +        #define GET_LOG_CAPABILITIES   0x2
+> +        #define CLEAR_LOG     0x3
+> +        #define POPULATE_LOG  0x4
+> +    FEATURES    = 0x05,
+> +        #define GET_SUPPORTED 0x0
+> +        #define GET_FEATURE   0x1
+> +        #define SET_FEATURE   0x2
+> +    IDENTIFY    = 0x40,
+> +        #define MEMORY_DEVICE 0x0
+> +    CCLS        = 0x41,
+> +        #define GET_PARTITION_INFO     0x0
+> +        #define GET_LSA       0x2
+> +        #define SET_LSA       0x3
+> +    HEALTH_INFO_ALERTS = 0x42,
+> +        #define GET_ALERT_CONFIG 0x1
+> +        #define SET_ALERT_CONFIG 0x2
+> +    SANITIZE    = 0x44,
+> +        #define OVERWRITE     0x0
+> +        #define SECURE_ERASE  0x1
+> +        #define MEDIA_OPERATIONS 0x2
+> +    PERSISTENT_MEM = 0x45,
+> +        #define GET_SECURITY_STATE     0x0
+> +    MEDIA_AND_POISON = 0x43,
+> +        #define GET_POISON_LIST        0x0
+> +        #define INJECT_POISON          0x1
+> +        #define CLEAR_POISON           0x2
+> +        #define GET_SCAN_MEDIA_CAPABILITIES 0x3
+> +        #define SCAN_MEDIA             0x4
+> +        #define GET_SCAN_MEDIA_RESULTS 0x5
+> +    DCD_CONFIG  = 0x48,
+> +        #define GET_DC_CONFIG          0x0
+> +        #define GET_DYN_CAP_EXT_LIST   0x1
+> +        #define ADD_DYN_CAP_RSP        0x2
+> +        #define RELEASE_DYN_CAP        0x3
+> +    PHYSICAL_SWITCH = 0x51,
+> +        #define IDENTIFY_SWITCH_DEVICE      0x0
+> +        #define GET_PHYSICAL_PORT_STATE     0x1
+> +    TUNNEL = 0x53,
+> +        #define MANAGEMENT_COMMAND     0x0
+> +    MHD = 0x55,
+> +        #define GET_MHD_INFO 0x0
+> +};
+> -- 
+> 2.47.2
+> 
+
 -- 
-2.34.1
-
+Fan Ni
 
