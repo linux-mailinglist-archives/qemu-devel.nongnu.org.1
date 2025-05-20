@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24BF8ABD89F
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 14:56:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8260ABD89C
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 14:56:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHMUp-0003jH-Tw; Tue, 20 May 2025 08:55:05 -0400
+	id 1uHMVO-0004ZQ-0l; Tue, 20 May 2025 08:55:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1uHMUL-0002PE-Mw; Tue, 20 May 2025 08:54:38 -0400
-Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
+ id 1uHMUP-0002Rj-Cs; Tue, 20 May 2025 08:54:40 -0400
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1uHMUH-000109-Td; Tue, 20 May 2025 08:54:33 -0400
-Received: by mail-pj1-x1036.google.com with SMTP id
- 98e67ed59e1d1-3081fe5987eso4693622a91.3; 
- Tue, 20 May 2025 05:54:26 -0700 (PDT)
+ id 1uHMUM-000117-RI; Tue, 20 May 2025 08:54:37 -0400
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-30e9397802eso2970361a91.1; 
+ Tue, 20 May 2025 05:54:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747745666; x=1748350466; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1747745672; x=1748350472; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CvwVU9F6cQaGXnx8rRhBrrA5oqA9zp4XDJF1ywgSwYE=;
- b=MG/WRv+ucLbCFUp3eM3Z7kWJAQiXtR0g75vxSu0i0YuLzhnPNdLPk7WF/P+lZhiYTG
- 4Gq/ax0aNybz3lU21WXg4zcqzQrBUdO+WZsPKve2RQe+KD6lAKguT2oDlfibaWy+Qvk+
- 3zY+pL6+Zu44cqJktzsqr25OtT5hueRVpbkDFMSG52nV2ZxSLuqWo3EdNXC/7+9tuvzq
- Q6XGk548J2Nphi8WhS2SAAWSNUhAMYiso0Dl6pusbjIgXis3qWD8EW/68vIdhViMdr8d
- V0pbY8kaiMrfEXjXsd3qkdSAq2OgjL3N+kTOXfv5Nw0ehHLYz7VHpJy0jQ5ROgEnqQoa
- cilQ==
+ bh=1G0lGd9H5YB3nSr0o+UY98M1y1yG48dZRtLGwlQiSB0=;
+ b=ZKc5xag9u76rxyy5Ow3RT9IYqEQR3Yt2KlboQd2REK9iwW2MoW2bb5G00j213vMbqx
+ 0sAa48dprkoQJhi7/jhpUBNrK5UxiALvVBjAsOb0CLIzOHIMo5oAEXkZ0AvEp2wEoLWe
+ X6HB+ZY5uk8IxzagOBpLgLzQRccDB2O3xZG3vU/llK04c7/HRuLrD9oUSuU6dDf6IWOi
+ 9aM0gST6LaMiYQOAP0W2JM1t9hZ+v74n5sjDTdLkCSp7lJKPVsM5wn/6PTBSS7sa8Yj0
+ srnjSlENfINlw6c5tLqpLBjAWJZyMqoGouJ8rLV5Wug7CForW8MqFjtdmNWZh/tAMvJl
+ NFLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747745666; x=1748350466;
+ d=1e100.net; s=20230601; t=1747745672; x=1748350472;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CvwVU9F6cQaGXnx8rRhBrrA5oqA9zp4XDJF1ywgSwYE=;
- b=DxQpsYQYvqqE6fcdgJjT4R/kEekfxnytQjquKAEjEtr8rGHRxqvH7zYgKrj/lcJv8a
- c9D2RWeXtL5tcJ8pVJWpM1PMCEQ1nX1LqwaWdL+MboT54wXliE2jbYInzLIyCqWxj9Cb
- JoVppFkeIatxeChNsm6hrWrOEmNsMfXyZdWHx11wpMoTZv0K5IVQ5YxyOgjeNK9pmUwR
- c2irMgNqu7h6ls+AoTNau3yF1UQwpgJ31/T3BtwqKR10L1J0vR59k2BdX87Kl2wntBGF
- 2/Cwpg2XJKpfpKTJRiMlSAuPe4AggRgkRmpTVgv/fDNGDxCT5vTjUtuCkM3LX3JazbDt
- qKKg==
+ bh=1G0lGd9H5YB3nSr0o+UY98M1y1yG48dZRtLGwlQiSB0=;
+ b=ZyNrIKqU0a3dJ0s02Gfktkrk9ddub93oNAwuSfPj0fuSaFX9euzYHfsqTMtfgZyAdV
+ AxAuJKRs0rJdSPcTQkgZsCQRU6S28VuxgEdcpndlMVON3Q1uaKimW9FUDkKnoHbkl/iG
+ 9tYrhrwnOSR71R8DNOLvb7mLJZpO0KVBsS0Xz9LgIw/ihZMLhF/c/nCnLVjPGZacfHeX
+ 7E3GGDtRQoQ2RXmHbi/YbZnG1JOEggYBHh9d3bdRFcLeqWbcrs+vDyBzQmocEdi0qafT
+ 8yaXADQd3r4CKHJkDa4hPyjpE7r3e5Epv1pTQdhY8Rn/sAv9WQ4kF3f77NYWW2d9kqwm
+ 3Fmg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX3e3z1djNt9T6kksi4e0GuQhomiOBMX6Za25GYeRGxbMoH+OoqvfVRFQv+zzAesmOKSoP+QmiCYVSleA==@nongnu.org,
- AJvYcCX4adKZYjyrCrZKVMpxbs06aK2i73ab0ay0NWSslnA0HOm9hd8tZ5ntLbFsNq69bJ7CfEce25EzhQ==@nongnu.org
-X-Gm-Message-State: AOJu0YzfU6L7DEZb85cwYgKfKvtXrWDDxDO8/DIQk8N39TzE0ug4saMY
- +1BotJBUy0ofEf6WVS998wTPDD02hm99ucyJ4pZkl8gcOn/zScrqwTwN3sEUbMtq
-X-Gm-Gg: ASbGncsRma2nghd6z2SLhBGTul46FnUlbg3Kzrpzu8Ic6Fd3VAnd4elzToHh4QO8xT8
- u19VgFSBIoT0NtqkCuU49Z/G53+Jz7NH6VRcHvEr+GXqFezo2BdCtdHoHGuZFVPtBYUP1b4rMJD
- gj6kWSt+suUGmeehQXkwRTLI7cAIAyhqyKMexBgH5mSTJwiIPdHQMhFrr08VBHfHSSBGv2lh7Hr
- fSe+qMaKP+S67pqf5DdfVKJZBJ2/nIBiIWpcPJ5tTScm+ryMIl5yetQKCgDGFgttptp1pOduEkL
- GG/mi/qHi86ZIos3x46d+GIRUK3UsVy32X2r8d2TT5B5DxSV3w8=
-X-Google-Smtp-Source: AGHT+IHUv1Ky3GKBjVeftojRctD7ekQgFkcQPAUZGG0rypCRZbOSLLaaaceS/2YOW575tisr9dvdyA==
-X-Received: by 2002:a17:90b:3c90:b0:30e:37be:6963 with SMTP id
- 98e67ed59e1d1-30e83228d1cmr24997945a91.29.1747745665822; 
- Tue, 20 May 2025 05:54:25 -0700 (PDT)
+ AJvYcCUFlG/rEqTyx6MHQWdx81NnrI6dnPoX75X1/1Y8YP56NHzStQvc80PcqxhZISrLPHFEU87142HorUM85A==@nongnu.org,
+ AJvYcCXLV1Wk6uf7s3MFSFjIsIN1vNzKaVn9Fik2Fe2uuDNPna6EkxJMLrT5T2VT2Nhq9v6M1PFjRm0qpg==@nongnu.org
+X-Gm-Message-State: AOJu0YyTNShCvaUalQxADikbfeUr4jSXQnupOH6h3faorrlwnlHaFUaD
+ 8P07HVxiHSFfOD73B/aGgb4H13Htcjur+tMmWNEuCQDpIzrqEgsHiZ/cQDb0aNS0
+X-Gm-Gg: ASbGncviqcGfD214hARw6E9Y9CFYCwNjZD7S5hH/XREi1bFlEkWf/vnmWT3aZW2Vuiz
+ whWhSHUINqtVeEeQlgOP9q8bzk7EE1PLkCoIYXV2U3a1SJkHYDvYr2KL1XkVAVQU9/nqWp3dLv+
+ uiLCKf9caDbr7Ys3y6OHqO2q/cVs3wm6Xyet9JWCx6ysYZSurcNxmydNfbaK+EB6AtMW7F7Ffxy
+ 4rak5Q2LFuvU6fpADtWvZA2hH5uhlJI2EbIx3rMU5UaMlYNlWuPhk7YoRdIMaUQR536Vx51G97A
+ GR167I5/uHvT9aNC5zDzpCj6u3IOTc3pMi1SO6eEgYnGa0yyau4bnbhrbNI3lA==
+X-Google-Smtp-Source: AGHT+IH5jPj4xy/PBDXM5vca25pM/qZpEeUcxUsvmm+yucQ5nKRbbIWJIY0zAt2Pcv7CYRhywuR8Uw==
+X-Received: by 2002:a17:90b:2d47:b0:2f8:b2c:5ef3 with SMTP id
+ 98e67ed59e1d1-30e7d520bfemr28537283a91.14.1747745671552; 
+ Tue, 20 May 2025 05:54:31 -0700 (PDT)
 Received: from ktock.. ([240d:1a:3b6:8b00:1bde:8310:e993:5dcc])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-30f36364f9asm1625916a91.4.2025.05.20.05.54.20
+ 98e67ed59e1d1-30f36364f9asm1625916a91.4.2025.05.20.05.54.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 May 2025 05:54:25 -0700 (PDT)
+ Tue, 20 May 2025 05:54:31 -0700 (PDT)
 From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -79,17 +79,16 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Kohei Tokunaga <ktokunaga.mail@gmail.com>, qemu-arm@nongnu.org,
  qemu-riscv@nongnu.org
-Subject: [PATCH 23/33] include/exec: Allow using 64bit guest addresses on
- emscripten
-Date: Tue, 20 May 2025 21:51:25 +0900
-Message-ID: <d3e7e584cf61c76952f4c9d913ba80d905c80e76.1747744132.git.ktokunaga.mail@gmail.com>
+Subject: [PATCH 24/33] tcg/wasm32: Set TCG_TARGET_REG_BITS to 64
+Date: Tue, 20 May 2025 21:51:26 +0900
+Message-ID: <8e72ec7b0735c14a2359e95606373ac1ade5a33e.1747744132.git.ktokunaga.mail@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1747744132.git.ktokunaga.mail@gmail.com>
 References: <cover.1747744132.git.ktokunaga.mail@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
- envelope-from=ktokunaga.mail@gmail.com; helo=mail-pj1-x1036.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=ktokunaga.mail@gmail.com; helo=mail-pj1-x1030.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,206 +111,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To enable 64-bit guest support in Wasm 32bit memory model today, it was
-necessary to partially revert recent changes that removed support for
-different pointer widths between the host and guest (e.g. commits
-a70af12addd9060fdf8f3dbd42b42e3072c3914f and
-bf455ec50b6fea15b4d2493059365bf94c706273) when compiling with
-Emscripten. While this serves as a temporary workaround, a long-term
-solution could involve adopting Wasm's 64-bit memory model once it gains
-broader support, as it is currently not widely adopted (e.g. unsupported by
-Safari and libffi).
+This commit enables to Wasm backend to run as a 64bit backend with removing
+TCG_TARGET_REG_BITS = 32 macros.
 
 Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 ---
- accel/tcg/cputlb.c             |  8 ++++----
- include/exec/helper-head.h.inc |  6 ++++++
- include/exec/tlb-common.h      | 14 ++++++++++----
- include/exec/vaddr.h           | 11 +++++++++++
- include/qemu/atomic.h          |  4 ++++
- include/tcg/tcg.h              |  4 ++++
- meson.build                    |  8 +++++---
- 7 files changed, 44 insertions(+), 11 deletions(-)
+ tcg/wasm32.c                     |  5 ++-
+ tcg/wasm32/tcg-target-reg-bits.h |  8 +---
+ tcg/wasm32/tcg-target.c.inc      | 69 +++-----------------------------
+ 3 files changed, 9 insertions(+), 73 deletions(-)
 
-V1:
-- Although I tried to use "#if HOST_LONG_BITS >= TARGET_LONG_BITS" based on
-  Paolo's suggestion from the previous patch series, TARGET_LONG_BITS is
-  marked as poisoned in include/exec/poison.h and cannot be used directly.
-
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 5f6d7c601c..b15e9e80ee 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -109,13 +109,13 @@ static inline uint64_t tlb_read_idx(const CPUTLBEntry *entry,
- {
-     /* Do not rearrange the CPUTLBEntry structure members. */
-     QEMU_BUILD_BUG_ON(offsetof(CPUTLBEntry, addr_read) !=
--                      MMU_DATA_LOAD * sizeof(uintptr_t));
-+                      MMU_DATA_LOAD * sizeof(tlb_addr));
-     QEMU_BUILD_BUG_ON(offsetof(CPUTLBEntry, addr_write) !=
--                      MMU_DATA_STORE * sizeof(uintptr_t));
-+                      MMU_DATA_STORE * sizeof(tlb_addr));
-     QEMU_BUILD_BUG_ON(offsetof(CPUTLBEntry, addr_code) !=
--                      MMU_INST_FETCH * sizeof(uintptr_t));
-+                      MMU_INST_FETCH * sizeof(tlb_addr));
+diff --git a/tcg/wasm32.c b/tcg/wasm32.c
+index 4bc53d76d0..b238ccf6d6 100644
+--- a/tcg/wasm32.c
++++ b/tcg/wasm32.c
+@@ -370,8 +370,9 @@ uintptr_t QEMU_DISABLE_CFI tcg_qemu_tb_exec(CPUArchState *env,
+                 unsigned i, s, n;
  
--    const uintptr_t *ptr = &entry->addr_idx[access_type];
-+    const tlb_addr *ptr = &entry->addr_idx[access_type];
-     /* ofs might correspond to .addr_write, so use qatomic_read */
-     return qatomic_read(ptr);
- }
-diff --git a/include/exec/helper-head.h.inc b/include/exec/helper-head.h.inc
-index 5b248fd713..7dfb4cfa46 100644
---- a/include/exec/helper-head.h.inc
-+++ b/include/exec/helper-head.h.inc
-@@ -58,6 +58,7 @@
- # define dh_ctype_tl target_ulong
- #endif /* COMPILING_PER_TARGET */
+                 tci_args_nl(insn, tb_ptr, &len, &ptr);
+-                func = ((void **)ptr)[0];
+-                cif = ((void **)ptr)[1];
++                tcg_target_ulong *data = (tcg_target_ulong *)ptr;
++                func = (void *)data[0];
++                cif = (void *)data[1];
  
-+#ifndef EMSCRIPTEN
- #if __SIZEOF_POINTER__ == 4
- # define dh_alias_vaddr i32
- # define dh_typecode_vaddr dh_typecode_i32
-@@ -68,6 +69,11 @@
- # error "sizeof pointer is different from {4,8}"
- #endif /* __SIZEOF_POINTER__ */
- # define dh_ctype_vaddr uintptr_t
-+#else
-+# define dh_alias_vaddr i64
-+# define dh_typecode_vaddr dh_typecode_i64
-+# define dh_ctype_vaddr uint64_t
-+#endif
+                 n = cif->nargs;
+                 for (i = s = 0; i < n; ++i) {
+diff --git a/tcg/wasm32/tcg-target-reg-bits.h b/tcg/wasm32/tcg-target-reg-bits.h
+index dcb1a203f8..375feccf91 100644
+--- a/tcg/wasm32/tcg-target-reg-bits.h
++++ b/tcg/wasm32/tcg-target-reg-bits.h
+@@ -7,12 +7,6 @@
+ #ifndef TCG_TARGET_REG_BITS_H
+ #define TCG_TARGET_REG_BITS_H
  
- /* We can't use glue() here because it falls foul of C preprocessor
-    recursive expansion rules.  */
-diff --git a/include/exec/tlb-common.h b/include/exec/tlb-common.h
-index 03b5a8ffc7..679054bb44 100644
---- a/include/exec/tlb-common.h
-+++ b/include/exec/tlb-common.h
-@@ -19,14 +19,20 @@
- #ifndef EXEC_TLB_COMMON_H
- #define EXEC_TLB_COMMON_H 1
- 
-+#ifndef EMSCRIPTEN
- #define CPU_TLB_ENTRY_BITS (HOST_LONG_BITS == 32 ? 4 : 5)
-+typedef uintptr_t tlb_addr;
-+#else
-+#define CPU_TLB_ENTRY_BITS 5
-+typedef uint64_t tlb_addr;
-+#endif
- 
- /* Minimalized TLB entry for use by TCG fast path. */
- typedef union CPUTLBEntry {
-     struct {
--        uintptr_t addr_read;
--        uintptr_t addr_write;
--        uintptr_t addr_code;
-+        tlb_addr addr_read;
-+        tlb_addr addr_write;
-+        tlb_addr addr_code;
-         /*
-          * Addend to virtual address to get host address.  IO accesses
-          * use the corresponding iotlb value.
-@@ -37,7 +43,7 @@ typedef union CPUTLBEntry {
-      * Padding to get a power of two size, as well as index
-      * access to addr_{read,write,code}.
-      */
--    uintptr_t addr_idx[(1 << CPU_TLB_ENTRY_BITS) / sizeof(uintptr_t)];
-+    tlb_addr addr_idx[(1 << CPU_TLB_ENTRY_BITS) / sizeof(tlb_addr)];
- } CPUTLBEntry;
- 
- QEMU_BUILD_BUG_ON(sizeof(CPUTLBEntry) != (1 << CPU_TLB_ENTRY_BITS));
-diff --git a/include/exec/vaddr.h b/include/exec/vaddr.h
-index 28bec632fb..ff57f944dd 100644
---- a/include/exec/vaddr.h
-+++ b/include/exec/vaddr.h
-@@ -9,6 +9,7 @@
-  * We do not support 64-bit guest on 32-host and detect at configure time.
-  * Therefore, a host pointer width will always fit a guest pointer.
-  */
-+#ifndef EMSCRIPTEN
- typedef uintptr_t vaddr;
- #define VADDR_PRId PRIdPTR
- #define VADDR_PRIu PRIuPTR
-@@ -16,5 +17,15 @@ typedef uintptr_t vaddr;
- #define VADDR_PRIx PRIxPTR
- #define VADDR_PRIX PRIXPTR
- #define VADDR_MAX UINTPTR_MAX
-+#else
-+/* Explicitly define this as 64bit on emscripten */
-+typedef uint64_t vaddr;
-+#define VADDR_PRId PRId64
-+#define VADDR_PRIu PRIu64
-+#define VADDR_PRIo PRIo64
-+#define VADDR_PRIx PRIx64
-+#define VADDR_PRIX PRIX64
-+#define VADDR_MAX UINT64_MAX
-+#endif
+-#if UINTPTR_MAX == UINT32_MAX
+-# define TCG_TARGET_REG_BITS 32
+-#elif UINTPTR_MAX == UINT64_MAX
+-# define TCG_TARGET_REG_BITS 64
+-#else
+-# error Unknown pointer size for tci target
+-#endif
++#define TCG_TARGET_REG_BITS 64
  
  #endif
-diff --git a/include/qemu/atomic.h b/include/qemu/atomic.h
-index f80cba24cf..76a8fbcd8c 100644
---- a/include/qemu/atomic.h
-+++ b/include/qemu/atomic.h
-@@ -56,6 +56,7 @@
-  */
- #define signal_barrier()    __atomic_signal_fence(__ATOMIC_SEQ_CST)
+diff --git a/tcg/wasm32/tcg-target.c.inc b/tcg/wasm32/tcg-target.c.inc
+index ea9131e6fe..9fad96d0fd 100644
+--- a/tcg/wasm32/tcg-target.c.inc
++++ b/tcg/wasm32/tcg-target.c.inc
+@@ -30,15 +30,9 @@
+ /* Used for function call generation. */
+ #define TCG_TARGET_CALL_STACK_OFFSET    0
+ #define TCG_TARGET_STACK_ALIGN          8
+-#if TCG_TARGET_REG_BITS == 32
+-# define TCG_TARGET_CALL_ARG_I32        TCG_CALL_ARG_EVEN
+-# define TCG_TARGET_CALL_ARG_I64        TCG_CALL_ARG_EVEN
+-# define TCG_TARGET_CALL_ARG_I128       TCG_CALL_ARG_EVEN
+-#else
+-# define TCG_TARGET_CALL_ARG_I32        TCG_CALL_ARG_NORMAL
+-# define TCG_TARGET_CALL_ARG_I64        TCG_CALL_ARG_NORMAL
+-# define TCG_TARGET_CALL_ARG_I128       TCG_CALL_ARG_NORMAL
+-#endif
++#define TCG_TARGET_CALL_ARG_I32         TCG_CALL_ARG_NORMAL
++#define TCG_TARGET_CALL_ARG_I64         TCG_CALL_ARG_NORMAL
++#define TCG_TARGET_CALL_ARG_I128        TCG_CALL_ARG_NORMAL
+ #define TCG_TARGET_CALL_RET_I128        TCG_CALL_RET_NORMAL
  
-+#ifndef EMSCRIPTEN
- /*
-  * Sanity check that the size of an atomic operation isn't "overly large".
-  * Despite the fact that e.g. i686 has 64-bit atomic operations, we do not
-@@ -63,6 +64,9 @@
-  * bit of sanity checking that other 32-bit hosts might build.
-  */
- #define ATOMIC_REG_SIZE  sizeof(void *)
-+#else
-+#define ATOMIC_REG_SIZE  8 /* wasm supports 64bit atomics */
-+#endif
+ typedef uint32_t tcg_insn_unit_tci;
+@@ -3083,39 +3077,6 @@ static const TCGOutOpMovcond outop_movcond = {
+     .out = tgen_movcond,
+ };
  
- /* Weak atomic operations prevent the compiler moving other
-  * loads/stores past the atomic operation load/store. However there is
-diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index 041d8035bc..62bc2c4ea8 100644
---- a/include/tcg/tcg.h
-+++ b/include/tcg/tcg.h
-@@ -218,6 +218,7 @@ typedef struct TCGv_ptr_d *TCGv_ptr;
- typedef struct TCGv_vec_d *TCGv_vec;
- typedef TCGv_ptr TCGv_env;
+-static void tgen_brcond2(TCGContext *s, TCGCond cond, TCGReg al, TCGReg ah,
+-                         TCGArg bl, bool const_bl,
+-                         TCGArg bh, bool const_bh, TCGLabel *l)
+-{
+-    tcg_out_op_rrrrrc(s, INDEX_op_setcond2_i32, TCG_REG_TMP,
+-                      al, ah, bl, bh, cond);
+-    tcg_out_op_rl(s, INDEX_op_brcond, TCG_REG_TMP, l);
+-}
+-
+-#if TCG_TARGET_REG_BITS != 32
+-__attribute__((unused))
+-#endif
+-static const TCGOutOpBrcond2 outop_brcond2 = {
+-    .base.static_constraint = C_O0_I4(r, r, r, r),
+-    .out = tgen_brcond2,
+-};
+-
+-static void tgen_setcond2(TCGContext *s, TCGCond cond, TCGReg ret,
+-                          TCGReg al, TCGReg ah,
+-                          TCGArg bl, bool const_bl,
+-                          TCGArg bh, bool const_bh)
+-{
+-    tcg_out_op_rrrrrc(s, INDEX_op_setcond2_i32, ret, al, ah, bl, bh, cond);
+-}
+-
+-#if TCG_TARGET_REG_BITS != 32
+-__attribute__((unused))
+-#endif
+-static const TCGOutOpSetcond2 outop_setcond2 = {
+-    .base.static_constraint = C_O1_I4(r, r, r, r, r),
+-    .out = tgen_setcond2,
+-};
+-
+ static void tcg_out_mb(TCGContext *s, unsigned a0)
+ {
+     tcg_out_op_v(s, INDEX_op_mb);
+@@ -3242,18 +3203,8 @@ static const TCGOutOpQemuLdSt outop_qemu_ld = {
+     .out = tgen_qemu_ld,
+ };
  
-+#ifndef EMSCRIPTEN
- #if __SIZEOF_POINTER__ == 4
- typedef TCGv_i32 TCGv_vaddr;
- #elif __SIZEOF_POINTER__ == 8
-@@ -225,6 +226,9 @@ typedef TCGv_i64 TCGv_vaddr;
- #else
- # error "sizeof pointer is different from {4,8}"
- #endif /* __SIZEOF_POINTER__ */
-+#else
-+typedef TCGv_i64 TCGv_vaddr;
-+#endif
+-static void tgen_qemu_ld2(TCGContext *s, TCGType type, TCGReg datalo,
+-                          TCGReg datahi, TCGReg addr, MemOpIdx oi)
+-{
+-    tcg_out_movi(s, TCG_TYPE_I32, TCG_REG_TMP, oi);
+-    tcg_out_op_rrrr(s, INDEX_op_qemu_ld2, datalo, datahi, addr, TCG_REG_TMP);
+-}
+-
+ static const TCGOutOpQemuLdSt2 outop_qemu_ld2 = {
+-    .base.static_constraint =
+-        TCG_TARGET_REG_BITS == 64 ? C_NotImplemented : C_O2_I1(r, r, r),
+-    .out =
+-        TCG_TARGET_REG_BITS == 64 ? NULL : tgen_qemu_ld2,
++    .base.static_constraint = C_NotImplemented,
+ };
  
- /* call flags */
- /* Helper does not read globals (either directly or through an exception). It
-diff --git a/meson.build b/meson.build
-index c533243157..f6ed867819 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3322,9 +3322,11 @@ foreach target : target_dirs
+ static void tgen_qemu_st(TCGContext *s, TCGType type, TCGReg data,
+@@ -3268,18 +3219,8 @@ static const TCGOutOpQemuLdSt outop_qemu_st = {
+     .out = tgen_qemu_st,
+ };
  
-   target_kconfig = []
-   foreach sym: accelerators
--    # Disallow 64-bit on 32-bit emulation and virtualization
--    if host_long_bits < config_target['TARGET_LONG_BITS'].to_int()
--      continue
-+    if host_arch != 'wasm32'
-+      # Disallow 64-bit on 32-bit emulation and virtualization
-+      if host_long_bits < config_target['TARGET_LONG_BITS'].to_int()
-+        continue
-+      endif
-     endif
-     if sym == 'CONFIG_TCG' or target in accelerator_targets.get(sym, [])
-       config_target += { sym: 'y' }
+-static void tgen_qemu_st2(TCGContext *s, TCGType type, TCGReg datalo,
+-                          TCGReg datahi, TCGReg addr, MemOpIdx oi)
+-{
+-    tcg_out_movi(s, TCG_TYPE_I32, TCG_REG_TMP, oi);
+-    tcg_out_op_rrrr(s, INDEX_op_qemu_st2, datalo, datahi, addr, TCG_REG_TMP);
+-}
+-
+ static const TCGOutOpQemuLdSt2 outop_qemu_st2 = {
+-    .base.static_constraint =
+-        TCG_TARGET_REG_BITS == 64 ? C_NotImplemented : C_O0_I3(r, r, r),
+-    .out =
+-        TCG_TARGET_REG_BITS == 64 ? NULL : tgen_qemu_st2,
++    .base.static_constraint = C_NotImplemented,
+ };
+ 
+ static void tcg_out_st(TCGContext *s, TCGType type, TCGReg val, TCGReg base,
 -- 
 2.43.0
 
