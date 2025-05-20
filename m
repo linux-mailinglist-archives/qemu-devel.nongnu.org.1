@@ -2,66 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C152ABDAFB
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 16:04:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC812ABDB16
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 16:06:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHNZO-00074o-Nm; Tue, 20 May 2025 10:03:50 -0400
+	id 1uHNb9-0008MJ-8a; Tue, 20 May 2025 10:05:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uHNZK-00070W-W9
- for qemu-devel@nongnu.org; Tue, 20 May 2025 10:03:47 -0400
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uHNav-0008KH-1K
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 10:05:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uHNZJ-0006oq-AA
- for qemu-devel@nongnu.org; Tue, 20 May 2025 10:03:46 -0400
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1uHNao-0007N9-VU
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 10:05:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747749824;
+ s=mimecast20190719; t=1747749917;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=n7ixXnJsvvTJitdRsTL9ixhhTWxyWh8J4K6H4I99UJk=;
- b=V5Y9zKOSlXYo89S5OvytWx8ZJ84jOvKd6FR82OX8+2FXAaFhUGR1c3t/hXYo9DDN9BjEV6
- AgiTmqvLXv2hV+1KWymynWL1HxYnAxFz6x5c1XJz2pLXYBqmqm7hREt3Y8xoIOcvAzH3UZ
- jZ8CEtQS7BWnxUeovxnzXmR1qEmGxOo=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=Dqea7MZDYhyQlC4xKO8LGx5epUTJ/uHF9sDafau5YHY=;
+ b=Yp/tU+8ypMmPJGg8BOKk3Ua30GypSpQdOf9Dtge1T80XpruhSCzONHsaajsVPALnoenH3h
+ 6W195sCvspudM79+vuqi1e68ekgz8B320LQiFINhNr/Bf2QcrLhi9UskUSUSTgRk9zIQMe
+ u9i6RB8vk71NQ25y+Wjl5hdaUq6y4V8=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-548-eoj-uFIcPq-kJacP4mt_wA-1; Tue,
- 20 May 2025 10:03:42 -0400
-X-MC-Unique: eoj-uFIcPq-kJacP4mt_wA-1
-X-Mimecast-MFC-AGG-ID: eoj-uFIcPq-kJacP4mt_wA_1747749821
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-94-bVnTc1EAMAylZKevhQ0_1Q-1; Tue,
+ 20 May 2025 10:05:14 -0400
+X-MC-Unique: bVnTc1EAMAylZKevhQ0_1Q-1
+X-Mimecast-MFC-AGG-ID: bVnTc1EAMAylZKevhQ0_1Q_1747749911
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4055718001EA; Tue, 20 May 2025 14:03:41 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.246])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B07CD30001AA; Tue, 20 May 2025 14:03:40 +0000 (UTC)
-Date: Tue, 20 May 2025 10:03:39 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-block@nongnu.org, hreitz@redhat.com, pbonzini@redhat.com,
- bmarzins@redhat.com, qemu-devel@nongnu.org
-Subject: Re: [PATCH] file-posix: Probe paths and retry SG_IO on potential
- path errors
-Message-ID: <20250520140339.GC82528@fedora>
-References: <20250513113730.37404-1-kwolf@redhat.com>
- <20250513135148.GB227327@fedora> <aCWiuYUWiwKJz4_j@redhat.com>
- <20250515140142.GA333399@fedora> <aCYCFrh_As6XuPQj@redhat.com>
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2C7151800874; Tue, 20 May 2025 14:05:10 +0000 (UTC)
+Received: from localhost (dhcp-192-216.str.redhat.com [10.33.192.216])
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 693CB1956095; Tue, 20 May 2025 14:05:07 +0000 (UTC)
+From: Cornelia Huck <cohuck@redhat.com>
+To: eric.auger@redhat.com, eric.auger.pro@gmail.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, kvmarm@lists.linux.dev, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, alex.bennee@linaro.org, maz@kernel.org,
+ oliver.upton@linux.dev, sebott@redhat.com,
+ shameerali.kolothum.thodi@huawei.com, armbru@redhat.com,
+ berrange@redhat.com, abologna@redhat.com, jdenemar@redhat.com
+Cc: agraf@csgraf.de, shahuang@redhat.com, mark.rutland@arm.com,
+ philmd@linaro.org, pbonzini@redhat.com
+Subject: Re: [PATCH v3 06/10] arm/kvm: Allow reading all the writable ID
+ registers
+In-Reply-To: <a706e9a2-0a49-4296-ba0a-8001f433b8b8@redhat.com>
+Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
+ Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
+ 153243,
+ =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
+ Michael O'Neill, Amy Ross"
+References: <20250414163849.321857-1-cohuck@redhat.com>
+ <20250414163849.321857-7-cohuck@redhat.com>
+ <a706e9a2-0a49-4296-ba0a-8001f433b8b8@redhat.com>
+User-Agent: Notmuch/0.38.3 (https://notmuchmail.org)
+Date: Tue, 20 May 2025 16:05:05 +0200
+Message-ID: <87jz6bbcoe.fsf@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="m/GStFk1LjxzomWv"
-Content-Disposition: inline
-In-Reply-To: <aCYCFrh_As6XuPQj@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -86,98 +93,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, May 13 2025, Eric Auger <eric.auger@redhat.com> wrote:
 
---m/GStFk1LjxzomWv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On 4/14/25 6:38 PM, Cornelia Huck wrote:
+>> From: Eric Auger <eric.auger@redhat.com>
+>>
+>> At the moment kvm_arm_get_host_cpu_features() reads a subset of the
+>> ID regs. As we want to introduce properties for all writable ID reg
+>> fields, we want more genericity and read more default host register
+>> values.
+>>
+>> Introduce a new get_host_cpu_idregs() helper and add a new exhaustive
+>> boolean parameter to kvm_arm_get_host_cpu_features() and
+>> kvm_arm_set_cpu_features_from_host() to select the right behavior.
+>> The host cpu model will keep the legacy behavior unless the writable
+>> id register interface is available.
+>>
+>> A writable_map IdRegMap is introduced in the CPU object. A subsequent
+>> patch will populate it.
+>>
+>> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+>> Signed-off-by: Cornelia Huck <cohuck@redhat.com>
+>> ---
+>>  target/arm/cpu-sysregs.h |  2 ++
+>>  target/arm/cpu.h         |  3 ++
+>>  target/arm/cpu64.c       |  2 +-
+>>  target/arm/kvm.c         | 78 ++++++++++++++++++++++++++++++++++++++--
+>>  target/arm/kvm_arm.h     |  9 +++--
+>>  target/arm/trace-events  |  1 +
+>>  6 files changed, 89 insertions(+), 6 deletions(-)
+>>
 
-On Thu, May 15, 2025 at 05:02:46PM +0200, Kevin Wolf wrote:
-> Am 15.05.2025 um 16:01 hat Stefan Hajnoczi geschrieben:
-> > On Thu, May 15, 2025 at 10:15:53AM +0200, Kevin Wolf wrote:
-> > > Am 13.05.2025 um 15:51 hat Stefan Hajnoczi geschrieben:
-> > > > On Tue, May 13, 2025 at 01:37:30PM +0200, Kevin Wolf wrote:
-> > > > > When scsi-block is used on a host multipath device, it runs into =
-the
-> > > > > problem that the kernel dm-mpath doesn't know anything about SCSI=
- or
-> > > > > SG_IO and therefore can't decide if a SG_IO request returned an e=
-rror
-> > > > > and needs to be retried on a different path. Instead of getting w=
-orking
-> > > > > failover, an error is returned to scsi-block and handled accordin=
-g to
-> > > > > the configured error policy. Obviously, this is not what users wa=
-nt,
-> > > > > they want working failover.
-> > > > >=20
-> > > > > QEMU can parse the SG_IO result and determine whether this could =
-have
-> > > > > been a path error, but just retrying the same request could just =
-send it
-> > > > > to the same failing path again and result in the same error.
-> > > > >=20
-> > > > > With a kernel that supports the DM_MPATH_PROBE_PATHS ioctl on dm-=
-mpath
-> > > > > block devices (queued in the device mapper tree for Linux 6.16), =
-we can
-> > > > > tell the kernel to probe all paths and tell us if any usable paths
-> > > > > remained. If so, we can now retry the SG_IO ioctl and expect it t=
-o be
-> > > > > sent to a working path.
-> > > > >=20
-> > > > > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> > > > > ---
-> > > > >  block/file-posix.c | 82 ++++++++++++++++++++++++++++++++++++++++=
-+++++-
-> > > > >  1 file changed, 81 insertions(+), 1 deletion(-)
-> > > >=20
-> > > > Maybe the probability of retry success would be higher with a delay=
- so
-> > > > that intermittent issues have time to resolve themselves. Either wa=
-y,
-> > > > the patch looks good.
-> > >=20
-> > > I don't think adding a delay here would be helpful. The point of
-> > > multipath isn't that you wait until a bad path comes back, but that y=
-ou
-> > > just switch to a different path until it is restored.
-> >=20
-> > That's not what this loop does. DM_MPATH_PROBE_PATHS probes all paths
-> > and fails when no paths are available. The delay would only apply in the
-> > case when there are no paths available.
-> >=20
-> > If the point is not to wait until some path comes back, then why loop at
-> > all?
->=20
-> DM_MPATH_PROBE_PATHS can only send I/O to paths in the active path
-> group, so it doesn't fail over to different path groups. If there are no
-> usable paths left in the current path group, but there are some in
-> another one, then the ioctl returns 0 and the next SG_IO would switch to
-> a different path group, which may or may not succeed. If it fails, we
-> have to probe the paths in that group, too.
+(...)
 
-This wasn't obvious to me, can that be emphasized in the code via naming
-or comments? About retrying up to 5 times: is the assumption that there
-will be 5 or fewer path groups?
+>> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+>> index 775a8aebc5d3..8717c5e7695b 100644
+>> --- a/target/arm/cpu.h
+>> +++ b/target/arm/cpu.h
+>> @@ -1088,6 +1088,9 @@ struct ArchCPU {
+>>       */
+>>      ARMIdRegsState writable_id_regs;
+>>  
+>> +    /* ID reg writable bitmask (KVM only) */
+>> +    IdRegMap *writable_map;
+> as it is KVM only we may put it in ifdef CONFIG_KVM block above
 
-Stefan
-
---m/GStFk1LjxzomWv
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmgsi7sACgkQnKSrs4Gr
-c8geZAgAytxvZIoiE30pEi6j2+qs50CQluSTjteJIn4lTjQbx6LFZca7GlmxEVWl
-3VbC/dJvYRoCadfuXUUtbY4QqAPyauSygJBm1ROn4B6XXxJVrfv3fU6OxKAvshaP
-dBHq0l75G5Ib7FjpceC4nuFRV0vYt+UBwZyIxFqQETYB+C7DjKKp3V0Xq7LKA3S7
-qJd7fcRWp1fT89TEauM5CfC9VuTLne4LGHCyzrzYcIMNCWPlTS4/grWyfT/wepnl
-9K2vtWA875IhK9qt3THr59cHGEiaTITSzTelzmr07BfXCK+GpeRarQc0gm5Vx0nS
-2wxCarsn9RTxfsZ64lqkvsVg5Tjqxw==
-=zb45
------END PGP SIGNATURE-----
-
---m/GStFk1LjxzomWv--
+Forgot to reply here; the CONFIG_KVM block is gone with a725f3710231
+("target/arm/cpu: always define kvm related registers")
 
 
