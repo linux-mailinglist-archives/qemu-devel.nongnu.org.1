@@ -2,142 +2,125 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 089FEABDE70
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 17:11:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91A51ABDEA1
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 17:17:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHOcF-0000mF-OL; Tue, 20 May 2025 11:10:52 -0400
+	id 1uHOhl-0000c2-SM; Tue, 20 May 2025 11:16:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uHOc2-0000Kf-Ie
- for qemu-devel@nongnu.org; Tue, 20 May 2025 11:10:40 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uHOhj-0000bm-DM
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 11:16:31 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uHOc0-0003fR-D7
- for qemu-devel@nongnu.org; Tue, 20 May 2025 11:10:38 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uHOhh-0004uK-7e
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 11:16:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747753833;
+ s=mimecast20190719; t=1747754187;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=5OnfnqIs/UVXLnC6LjmonlX6nK9lmgdbHV/Op83/SpM=;
- b=cw4ZSVu4d1KRaX9Sr4GwRSmZncJiVlqLfZlc9Vtj7f+EcFelOZualr4Hn3crupcvYWv5l4
- knwMb/iLbTjIL+/tYUff4Iwt5ckAWJ3/TYtXGnF5G+nQoZusZeJtZcWnqDmLqp4lk5kIbX
- 1Yo+q92rQEhKxEaCqdajFue6iY2VrHQ=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=pMbS6MXhAVfMMV0Lqo565rdqCrpEbuGU9c6h4Nte618=;
+ b=LpP/xRBvpffYifdwuN5dht/Jw1sikK3Gdvx5Xzqz3hazGdnlbF6+pEdLe9k4wSr7aMCkri
+ 4VlnUiT3zXdnuK8Nza6Hx+ukEkERjSx8CqMO4LwmsxjIdMKqr7zeARZ7qqXeM9DN4Xi+2z
+ AmW2eCdJvCXqt4kUb6THG5hTqF0z2C0=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-284-sAFTm-KJNeeHjbWoa_GX8Q-1; Tue, 20 May 2025 11:10:32 -0400
-X-MC-Unique: sAFTm-KJNeeHjbWoa_GX8Q-1
-X-Mimecast-MFC-AGG-ID: sAFTm-KJNeeHjbWoa_GX8Q_1747753831
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3a360d01518so3408967f8f.2
- for <qemu-devel@nongnu.org>; Tue, 20 May 2025 08:10:32 -0700 (PDT)
+ us-mta-650-8O0mm9BmMoaOuHQ2K-mR4w-1; Tue, 20 May 2025 11:16:25 -0400
+X-MC-Unique: 8O0mm9BmMoaOuHQ2K-mR4w-1
+X-Mimecast-MFC-AGG-ID: 8O0mm9BmMoaOuHQ2K-mR4w_1747754184
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3a3684a5655so1763444f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 20 May 2025 08:16:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747753831; x=1748358631;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=5OnfnqIs/UVXLnC6LjmonlX6nK9lmgdbHV/Op83/SpM=;
- b=R3VUPOif3Xu/o90ukiU3v2ZcKlSBcDpXyLN0KDdQMgClMORlLQmV9tuc3NQsJk2Bc/
- J9Og6dpQt3d/2O0SaS/aK/qqWTR1dwkB/Adbp5b96r9ssazrubtfDZXoy2EzvLYZCe9J
- 21rMjj4YrDwxVj9r1FUO/9hdOn5/gTSX3zKD5eTOjAaduNFACFQj4yE5M50Pq01VP1AD
- 5coKK464aLUS/M9wyR6n/7Vta5G2LO4OdE+F/sytGUTLGpuyIGWjBOgWOaP22kZGHjLH
- /n9gb3YxjYSWYg7IX3X90h/Iw/fUewUugPtKgJAcLiIxntPKQLYtXaTah/rJ78LbDEuH
- icDA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXNn24oBa4Fh81qOTNX2p2tm+wG7XVyJnW81rKa+s+dr6qh4B/qq/C0y8jMbbGnku2HPPnbX13/STiX@nongnu.org
-X-Gm-Message-State: AOJu0YwTB7wDyR0VI5iEjCIN0o45akE0XYUZjeKIPgi0FX2bd+HUNV/Z
- lfS0oDK/8QdpgICIFkrzEJ+fA79pSc3CTv9Jw2xL5SOli32Mak9oZxgyM7lZNAxIYhvR7H8hKGB
- Axzfi3xzbS31kYn9IQrSJC6UzFOi7MhL6rZIZ+OkvoFWF0eUIcGbmjc7E
-X-Gm-Gg: ASbGnctLqC2tK+Gh13PksdKs4udKJccDvheijpDj4HnU6KkduBw/fG5W2JjDySuSQfH
- Mnkvnkd1jD5nc44HmzB7lDIJKXImZv08BK7qpKWSxTulesoBiGlhLOQqMxqmEpvFw/g6p5wUEnb
- GlKjvtYengYNMbUJ8r4SPRiTjEcSWQn2u8My3SQwhATcHyE4irRm2DJbBScbV5N/Tfr61GbJ9Af
- 2mRgm1CShvAqchpbBSQ5vXqe09kIhISqVB+CUjj+L8/XI+dyr5zqAYhHPYul23+8R909MqcIqf8
- QPfcBN6xc5xrvYvDL/5c8+30Te9LJiZE0XJzHaLZoweU1E3Fqw==
-X-Received: by 2002:a05:6000:4284:b0:3a2:244:67a4 with SMTP id
- ffacd0b85a97d-3a35ffd2acbmr13738437f8f.43.1747753830930; 
- Tue, 20 May 2025 08:10:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGLZ7LLtbh2u8ZdeLYnJoxUWYRXuhyNROL0kQLGPK/LSAeflngKNQiSgVY5Bmx+0R6SywC1tg==
-X-Received: by 2002:a05:6000:4284:b0:3a2:244:67a4 with SMTP id
- ffacd0b85a97d-3a35ffd2acbmr13738394f8f.43.1747753830475; 
- Tue, 20 May 2025 08:10:30 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
- ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a35ca88735sm17094029f8f.69.2025.05.20.08.10.29
+ d=1e100.net; s=20230601; t=1747754184; x=1748358984;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=pMbS6MXhAVfMMV0Lqo565rdqCrpEbuGU9c6h4Nte618=;
+ b=YBSICUXIYY80M5bk3d9L6HYaCrATW6IFsdTNUdlYCWvlAu+opwn50ANZh3zdXuTJxP
+ JaR6edB+jsXEhpiCzEtdPAArDiyvE7x5H9lU6r23x8BnZUFsCE9ZFE4t44FnWqNNJnbo
+ mDAKAUAvAr7M5qyJJcHfDWmZ9LeQVRILo7Xt16DMbTFeCDFOpunpF4eGT2gPgjJ6voss
+ PbPcC6acFCy/Fv/vLhXHGvh8dm4u62eGEd9vNAfEQ1Hycazq9urAxfMtOGyJr4kYViyr
+ KsLqMe9Ko0PuycJ88VVtif/7FOfGbthcJkiwZe3IG1p/W7nqxxFUTW2r4/FkqJGQR3do
+ F4ag==
+X-Gm-Message-State: AOJu0YwkPenReqcqnlCtwP0UXCeJ9QCPyVCMeq6oPyXlB4LMM/gxZVe1
+ 8E+YUoSOmKoDbpah67vo+YvldcVvh8hBi4LzcNZ+HO3BZPZMdx3G2W7JqG2Ms54FwzIzzX3opwb
+ 8FofRyjRS30X7p391AC6P68uERimyO2LE7348rxfTROpHKHU7MjiVbylP
+X-Gm-Gg: ASbGnctPh09AJH2NkO1fTjmveL95IFTa+/aJtEVPgLgxjVbqY8FjexOa0/GmHJpKXXk
+ 2Gj8zPeapG9GJsWJ8UrWc9+X6y24CkV9u9xExuoxE7bYnNFrGqBvg8YzbCWdkUhWPYftMds+asA
+ DnvK4u/TgwcuO12tXSaB7ei85Fw0EWd7ZYEaI9jdHoEOlwsOVu5F4Rn77Va1ZPIjjYsMohzWMaj
+ CvCWVdO4XGbEXzWgBCb1FCV8vSYvK9l8JOyrmOgQkr/ignu6Q4eEpN+lAI93pLHXGHKksXO4+iU
+ YTNpDNWbl9cixw==
+X-Received: by 2002:a05:6000:184c:b0:3a3:6aa4:bf28 with SMTP id
+ ffacd0b85a97d-3a36aa4bfe0mr9747150f8f.10.1747754184275; 
+ Tue, 20 May 2025 08:16:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFQ8V25wibgocO+xB92awbcwRJFOHdwAJ517gol3TbCIFo9DfBQsImXvhVghYptcP9WRzi/bA==
+X-Received: by 2002:a05:6000:184c:b0:3a3:6aa4:bf28 with SMTP id
+ ffacd0b85a97d-3a36aa4bfe0mr9747116f8f.10.1747754183882; 
+ Tue, 20 May 2025 08:16:23 -0700 (PDT)
+Received: from [192.168.10.81] ([151.95.46.79])
+ by smtp.googlemail.com with ESMTPSA id
+ ffacd0b85a97d-3a366e08747sm13425215f8f.95.2025.05.20.08.16.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 May 2025 08:10:29 -0700 (PDT)
-Message-ID: <62edd00a-504b-4fab-89dd-68bb0582da2e@redhat.com>
-Date: Tue, 20 May 2025 17:10:28 +0200
+ Tue, 20 May 2025 08:16:23 -0700 (PDT)
+Message-ID: <20486914-1752-4710-b000-52ee04d4106d@redhat.com>
+Date: Tue, 20 May 2025 17:16:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3 21/42] vfio/pci: export MSI functions
-To: Steven Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>, Yi Liu
- <yi.l.liu@intel.com>, Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>
-References: <1747063973-124548-1-git-send-email-steven.sistare@oracle.com>
- <1747063973-124548-22-git-send-email-steven.sistare@oracle.com>
- <c5696d3e-cd21-4d90-9e30-676434c1020c@redhat.com>
- <25435e62-50e1-4bf3-8227-e2ed93b959e2@oracle.com>
- <2e3e82f5-334c-4fac-aa5a-73e08967b431@redhat.com>
- <5b38eb98-58da-478a-badd-124a90e480a1@oracle.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <5b38eb98-58da-478a-badd-124a90e480a1@oracle.com>
+Subject: Re: [PATCH 2/5] hw/timer/hpet: Adjust num_timers in hpet_init()
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: qemu-devel@nongnu.org, qemu-rust@nongnu.org,
+ Dapeng Mi <dapeng1.mi@intel.com>
+References: <20250520152750.2542612-1-zhao1.liu@intel.com>
+ <20250520152750.2542612-3-zhao1.liu@intel.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ xsEhBFRCcBIBDqDGsz4K0zZun3jh+U6Z9wNGLKQ0kSFyjN38gMqU1SfP+TUNQepFHb/Gc0E2
+ CxXPkIBTvYY+ZPkoTh5xF9oS1jqI8iRLzouzF8yXs3QjQIZ2SfuCxSVwlV65jotcjD2FTN04
+ hVopm9llFijNZpVIOGUTqzM4U55sdsCcZUluWM6x4HSOdw5F5Utxfp1wOjD/v92Lrax0hjiX
+ DResHSt48q+8FrZzY+AUbkUS+Jm34qjswdrgsC5uxeVcLkBgWLmov2kMaMROT0YmFY6A3m1S
+ P/kXmHDXxhe23gKb3dgwxUTpENDBGcfEzrzilWueOeUWiOcWuFOed/C3SyijBx3Av/lbCsHU
+ Vx6pMycNTdzU1BuAroB+Y3mNEuW56Yd44jlInzG2UOwt9XjjdKkJZ1g0P9dwptwLEgTEd3Fo
+ UdhAQyRXGYO8oROiuh+RZ1lXp6AQ4ZjoyH8WLfTLf5g1EKCTc4C1sy1vQSdzIRu3rBIjAvnC
+ tGZADei1IExLqB3uzXKzZ1BZ+Z8hnt2og9hb7H0y8diYfEk2w3R7wEr+Ehk5NQsT2MPI2QBd
+ wEv1/Aj1DgUHZAHzG1QN9S8wNWQ6K9DqHZTBnI1hUlkp22zCSHK/6FwUCuYp1zcAEQEAAc0j
+ UGFvbG8gQm9uemluaSA8cGJvbnppbmlAcmVkaGF0LmNvbT7CwU0EEwECACMFAlRCcBICGwMH
+ CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRB+FRAMzTZpsbceDp9IIN6BIA0Ol7MoB15E
+ 11kRz/ewzryFY54tQlMnd4xxfH8MTQ/mm9I482YoSwPMdcWFAKnUX6Yo30tbLiNB8hzaHeRj
+ jx12K+ptqYbg+cevgOtbLAlL9kNgLLcsGqC2829jBCUTVeMSZDrzS97ole/YEez2qFpPnTV0
+ VrRWClWVfYh+JfzpXmgyhbkuwUxNFk421s4Ajp3d8nPPFUGgBG5HOxzkAm7xb1cjAuJ+oi/K
+ CHfkuN+fLZl/u3E/fw7vvOESApLU5o0icVXeakfSz0LsygEnekDbxPnE5af/9FEkXJD5EoYG
+ SEahaEtgNrR4qsyxyAGYgZlS70vkSSYJ+iT2rrwEiDlo31MzRo6Ba2FfHBSJ7lcYdPT7bbk9
+ AO3hlNMhNdUhoQv7M5HsnqZ6unvSHOKmReNaS9egAGdRN0/GPDWr9wroyJ65ZNQsHl9nXBqE
+ AukZNr5oJO5vxrYiAuuTSd6UI/xFkjtkzltG3mw5ao2bBpk/V/YuePrJsnPFHG7NhizrxttB
+ nTuOSCMo45pfHQ+XYd5K1+Cv/NzZFNWscm5htJ0HznY+oOsZvHTyGz3v91pn51dkRYN0otqr
+ bQ4tlFFuVjArBZcapSIe6NV8C4cEiSTOwE0EVEJx7gEIAMeHcVzuv2bp9HlWDp6+RkZe+vtl
+ KwAHplb/WH59j2wyG8V6i33+6MlSSJMOFnYUCCL77bucx9uImI5nX24PIlqT+zasVEEVGSRF
+ m8dgkcJDB7Tps0IkNrUi4yof3B3shR+vMY3i3Ip0e41zKx0CvlAhMOo6otaHmcxr35sWq1Jk
+ tLkbn3wG+fPQCVudJJECvVQ//UAthSSEklA50QtD2sBkmQ14ZryEyTHQ+E42K3j2IUmOLriF
+ dNr9NvE1QGmGyIcbw2NIVEBOK/GWxkS5+dmxM2iD4Jdaf2nSn3jlHjEXoPwpMs0KZsgdU0pP
+ JQzMUMwmB1wM8JxovFlPYrhNT9MAEQEAAcLBMwQYAQIACQUCVEJx7gIbDAAKCRB+FRAMzTZp
+ sadRDqCctLmYICZu4GSnie4lKXl+HqlLanpVMOoFNnWs9oRP47MbE2wv8OaYh5pNR9VVgyhD
+ OG0AU7oidG36OeUlrFDTfnPYYSF/mPCxHttosyt8O5kabxnIPv2URuAxDByz+iVbL+RjKaGM
+ GDph56ZTswlx75nZVtIukqzLAQ5fa8OALSGum0cFi4ptZUOhDNz1onz61klD6z3MODi0sBZN
+ Aj6guB2L/+2ZwElZEeRBERRd/uommlYuToAXfNRdUwrwl9gRMiA0WSyTb190zneRRDfpSK5d
+ usXnM/O+kr3Dm+Ui+UioPf6wgbn3T0o6I5BhVhs4h4hWmIW7iNhPjX1iybXfmb1gAFfjtHfL
+ xRUr64svXpyfJMScIQtBAm0ihWPltXkyITA92ngCmPdHa6M1hMh4RDX+Jf1fiWubzp1voAg0
+ JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
+ dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
+ b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
+In-Reply-To: <20250520152750.2542612-3-zhao1.liu@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -162,67 +145,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/20/25 16:56, Steven Sistare wrote:
-> On 5/20/2025 1:52 AM, Cédric Le Goater wrote:
->> On 5/16/25 19:58, Steven Sistare wrote:
->>> On 5/16/2025 4:31 AM, Cédric Le Goater wrote:
->>>> On 5/12/25 17:32, Steve Sistare wrote:
->>>>> Export various MSI functions, for use by CPR in subsequent patches.
->>>>> No functional change.
->>>>>
->>>>> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
->>>>
->>>> Please rename this routines with a 'vfio_pci' prefix.
->>>
->>> Are you sure?  That makes sense for:
->>>    vfio_vector_init -> vfio_pci_vector_init
->>>
->>> but the rest already have msi or intx in the name which unambiguously
->>> means pci.  Adding pci_ seems unecessarily verbose:
->>
->> We are slowly defining an API for an internal VFIO library. I prefer
->> to ensure the interface is clean by changing the names of external
->> services to reflect the namespace they belong to.
->>
->> All routines are implemented in hw/vfio/pci.c and most take a
->> VFIOPCIDevice as first argument.
-> 
-> OK.  So this:
-> 
-> void vfio_pci_vector_init(VFIOPCIDevice *vdev, int nr);
-> void vfio_pci_add_kvm_msi_virq(VFIOPCIDevice *vdev, VFIOMSIVector *vector,
->                                 int vector_n, bool msix);
-> void vfio_pci_prepare_kvm_msi_virq_batch(VFIOPCIDevice *vdev);
-> void vfio_pci_commit_kvm_msi_virq_batch(VFIOPCIDevice *vdev);
-> bool vfio_pci_intx_enable(VFIOPCIDevice *vdev, Error **errp);
-> 
->> vfio_msi_interrupt(), vfio_msix_vector_use() and
->> vfio_msix_vector_release() are rather low level routines.
->> I think we need a wrapper to avoid exposing them.
-> 
-> OK.  These will do the trick, defined in pci.c and exported to cpr.c:
-> 
-> void vfio_pci_msix_set_notifiers(VFIOPCIDevice *vdev)
-> {
->      msix_set_vector_notifiers(&vdev->pdev, vfio_msix_vector_use,
->                                vfio_msix_vector_release, NULL);
-> }
-> 
-> void vfio_pci_msi_set_handler(VFIOPCIDevice *vdev, int nr)
-> {
->      VFIOMSIVector *vector = &vdev->msi_vectors[nr];
->      int fd = event_notifier_get_fd(&vector->interrupt);
-> 
->      qemu_set_fd_handler(fd, vfio_msi_interrupt, NULL, vector);
-> }
+On 5/20/25 17:27, Zhao Liu wrote:
+> Currently, HPET adjusts num_timers in hpet_realize(), and doesn't change
+> it in any other place. And this field is initialized as a property.
 
+Properties are initialized *after* hpet_init.  For hw/timer/hpet you can 
+check s->num_timers and return an error if it's out of bounds, but for 
+the Rust version we don't have Error** support yet. :(
 
-LGTM,
+Queued 1-4-5 for now.
 
-Thanks,
+Paolo
 
-C.
-
-
+> Therefore, it's possible to move such adjustments to hept_init(), so
+> that Rust side can synchronize this change.
+> 
+> Adjust num_timers in hpet_init().
+> 
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+>   hw/timer/hpet.c | 11 ++++++-----
+>   1 file changed, 6 insertions(+), 5 deletions(-)
+> 
+> diff --git a/hw/timer/hpet.c b/hw/timer/hpet.c
+> index 0fd1337a1564..48b1a9289f83 100644
+> --- a/hw/timer/hpet.c
+> +++ b/hw/timer/hpet.c
+> @@ -682,6 +682,12 @@ static void hpet_init(Object *obj)
+>       /* HPET Area */
+>       memory_region_init_io(&s->iomem, obj, &hpet_ram_ops, s, "hpet", HPET_LEN);
+>       sysbus_init_mmio(sbd, &s->iomem);
+> +
+> +    if (s->num_timers < HPET_MIN_TIMERS) {
+> +        s->num_timers = HPET_MIN_TIMERS;
+> +    } else if (s->num_timers > HPET_MAX_TIMERS) {
+> +        s->num_timers = HPET_MAX_TIMERS;
+> +    }
+>   }
+>   
+>   static void hpet_realize(DeviceState *dev, Error **errp)
+> @@ -710,11 +716,6 @@ static void hpet_realize(DeviceState *dev, Error **errp)
+>           sysbus_init_irq(sbd, &s->irqs[i]);
+>       }
+>   
+> -    if (s->num_timers < HPET_MIN_TIMERS) {
+> -        s->num_timers = HPET_MIN_TIMERS;
+> -    } else if (s->num_timers > HPET_MAX_TIMERS) {
+> -        s->num_timers = HPET_MAX_TIMERS;
+> -    }
+>       for (i = 0; i < HPET_MAX_TIMERS; i++) {
+>           timer = &s->timer[i];
+>           timer->qemu_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, hpet_timer, timer);
 
 
