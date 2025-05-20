@@ -2,97 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51C1FABD645
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 13:10:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEFC7ABD6FD
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 13:36:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHKp3-0003K0-2s; Tue, 20 May 2025 07:07:49 -0400
+	id 1uHLBn-00081U-Dm; Tue, 20 May 2025 07:31:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uHKoE-00027Y-B8
- for qemu-devel@nongnu.org; Tue, 20 May 2025 07:06:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uHKoC-0003Qk-HG
- for qemu-devel@nongnu.org; Tue, 20 May 2025 07:06:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747739215;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=W6c7Gh9zf4CyzFRI/lQnZmHEbdkuz1V05X93m00FYA0=;
- b=G775hOV9GHrrJImkLAFQckofDgz/90qyUn/poEmVocrIdvKI5VQzYuNPLMvLOIFCSf0SFW
- 3iEbhQv2xTD3FnjDJ438IagdJRd0wCnlFIRCnz2t86GXzJCQcNFwRQqAZzOQ1XSX7e1pVe
- zU2f5eYEFP7FaqKsVUuWqNKZt9tXFGc=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-150-fiPXIFSfOjSxwy7YdEuWvw-1; Tue, 20 May 2025 07:06:54 -0400
-X-MC-Unique: fiPXIFSfOjSxwy7YdEuWvw-1
-X-Mimecast-MFC-AGG-ID: fiPXIFSfOjSxwy7YdEuWvw_1747739212
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-ad53aaae592so422557466b.0
- for <qemu-devel@nongnu.org>; Tue, 20 May 2025 04:06:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747739211; x=1748344011;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=W6c7Gh9zf4CyzFRI/lQnZmHEbdkuz1V05X93m00FYA0=;
- b=RyYB+i0jGBKFuvbFtVeac6lVXswQ15O2TQ5wZyFNI49x4+SEx4Ne0ih/Z0PrQ/yWDa
- /Fnh5srGKtu8+k9x17zITWODx/nqKJ5EvWJYS5CRTYOZz2t0upoX5/wNWB9pE8TJ0vXA
- UNTGXK7pDJEu/Q/hlP+8b8AH3mtQ7hOu+BXoYE3XN/Df+A8ZzKEJQYgymg/aYZXMxAHy
- nTDyLajk1gNCuTBj8s2Q/BHex6vNhIaJ1oIb6kdAGqjlepihk46K2O+CmPdWAuew2BNs
- Bz4PuMpyCFx/ttVzjl6dyVrO0YmDSkVV7LIlJ4xtkoSrE7oyPcN+whvdgS+SopLcS3ug
- LA0Q==
-X-Gm-Message-State: AOJu0YwRlM8HEUzXSX8nFEOPyONTz41V5oBqqOzILbu8RcMNo3PaN7k7
- lZkWQLkfYBH+9ZCUA6pSH+bj92o4GgwOJJu9l6g33zkGuIiAV2S+FNTskZiEV9OwrzPsYw0OyqL
- P7XU2X7ooHGbuDb8FS42dJjVt16/N/VNg5WFIe9UKOeLNqMijYNz+Qw9uOwX1e9v/QGnQsr2S8u
- 0rconqzWQx9fe0Nxld1HmcqAMD+Mn2KomSr8/yRfgS
-X-Gm-Gg: ASbGncuqmqIPmtyQPlo2KuNncul5JHZzBKa6Pv4ZbbpW2V9cBYd320yPv7SeXZq8qkQ
- IUtLucXu60KGLE67397cnLovyr/AwU4cJ4AKHrpzUtqYra9gqREa3BIpKbtOqM18AVF/2ohk+m9
- 0kXXjJfY7c6LKtiPwHh+PT4CZ+4KIijf3d4PesHfXd/i1o+kCgu5syc2juyiTomzkMSfnDARJnp
- 6pKqGYwLV5IhJGmaABdRcRc6u+QI98P6WVjkjtCWxYUPtOhOcirjGIfJtNZxkWdkNfoxJRcWZkL
- +I5+PmouMd/9Uw==
-X-Received: by 2002:a17:907:9412:b0:ad5:69e7:181e with SMTP id
- a640c23a62f3a-ad569e71f30mr561319566b.61.1747739210991; 
- Tue, 20 May 2025 04:06:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG6oKRQuB0egJSplQuA7Um/O8LL+NPNaI/1AD4GjYy+RWZp1O3sYm/Auw9nAOER1sn/3orCkA==
-X-Received: by 2002:a17:907:9412:b0:ad5:69e7:181e with SMTP id
- a640c23a62f3a-ad569e71f30mr561317566b.61.1747739210160; 
- Tue, 20 May 2025 04:06:50 -0700 (PDT)
-Received: from [192.168.122.1] ([151.95.46.79])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ad52d4c516dsm711195166b.154.2025.05.20.04.06.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 May 2025 04:06:48 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 35/35] qom: reverse order of instance_post_init calls
-Date: Tue, 20 May 2025 13:05:30 +0200
-Message-ID: <20250520110530.366202-36-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520110530.366202-1-pbonzini@redhat.com>
-References: <20250520110530.366202-1-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <magnuskulke@linux.microsoft.com>)
+ id 1uHLBh-00080d-Aq
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 07:31:15 -0400
+Received: from linux.microsoft.com ([13.77.154.182])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <magnuskulke@linux.microsoft.com>) id 1uHLBe-000178-0y
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 07:31:12 -0400
+Received: from DESKTOP-TUU1E5L.fritz.box (unknown [172.201.77.43])
+ by linux.microsoft.com (Postfix) with ESMTPSA id 2C7712067864;
+ Tue, 20 May 2025 04:31:03 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2C7712067864
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+ s=default; t=1747740667;
+ bh=0eWhcyGT2SZdhe1ztMyfEKgEFMQEciLPDh0RAorlKR4=;
+ h=From:To:Cc:Subject:Date:From;
+ b=OluYBvhHRAAvOxdtxnBYVM56IIH1hEA/m7swgfw4by+TccO82OYyLnVTEog3SRcnr
+ N8QYdqut5wa1apvYm0ZBTxFLuqMqzmelm0wS11p6kBGNoHcUufJWgqAhZlJTxNLDfX
+ BdTkVT7LpcE3l2ryCe6xcAjw7R7tc+n30YxAecls=
+From: Magnus Kulke <magnuskulke@linux.microsoft.com>
+To: magnuskulke@microsoft.com,
+	qemu-devel@nongnu.org,
+	liuwe@microsoft.com
+Cc: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Wei Liu <wei.liu@kernel.org>, Phil Dennis-Jordan <phil@philjordan.eu>,
+ Roman Bolshakov <rbolshakov@ddn.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Cameron Esfahani <dirty@apple.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [RFC PATCH 00/25] Implementing a MSHV (Microsoft Hypervisor)
+ accelerator
+Date: Tue, 20 May 2025 13:29:53 +0200
+Message-Id: <20250520113018.49569-1-magnuskulke@linux.microsoft.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+Received-SPF: pass client-ip=13.77.154.182;
+ envelope-from=magnuskulke@linux.microsoft.com; helo=linux.microsoft.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.487,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,65 +72,192 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, the instance_post_init calls are performed from the leaf
-class and all the way up to Object.  This is incorrect because the
-leaf class cannot observe property values applied by the superclasses;
-for example, a compat property will be set on a device *after*
-the class's post_init callback has run.
+Hello all,
 
-In particular this makes it impossible for implementations of
-accel_cpu_instance_init() to operate based on the actual values of
-the properties, though it seems that cxl_dsp_instance_post_init and
-rp_instance_post_init might have similar issues.
+as previously announced here, we are working on an integration that will
+expose the HyperV hypervisor to QEMU on Linux hosts. HyperV is a Type 1
+hypervisor with a layered architecture that features a "root partition"
+alongside VMs as "child partitions" that will interface with the
+hypervisor and has access to the hardware. (https://aka.ms/hypervarch)
 
-Follow instead the same order as instance_init, starting with Object
-and running the child class's instance_post_init after the parent.
+The effort to run Linux on such a Root Partition and expose HyperV to
+such a management partition is called "MSHV". Sometimes we refer to the
+root partition as "Dom0 Linux". Today we are targetting nested
+virtualization, that is: the creation + management of L2 VMs on an L1
+VM (L0 would indicate bare metal).
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- include/qom/object.h | 3 ++-
- qom/object.c         | 8 ++++----
- 2 files changed, 6 insertions(+), 5 deletions(-)
++-------------+ +----------------+ +--------------+
+|             | |                | |              |
+| Azure Host  | | L1 Linux Dom0  | | L2 Guest VM  |
+|             | |                | |              |
+|     OS      | |                | |              |
+|             | | +------------+ | |              |
+|             | | |  Qemu VMM  | | |              |
+|             | | +------------+ | |              |
+|             | | +------------+ | |              |
+|             | | |   Kernel   | | |              |
+|             | | +-----+------+ | |              |
+|             | +-------|--------+ +--------------+
+|             | +-------v-------------------------+
+|             | |    Microsoft Hypervisor (L1)    |
++-------------+ +-------+-------------------------+
+                        |
++-----------------------v-------------------------+
+|            Microsoft Hypervisor (L0)            |
++-------------------------------------------------+
 
-diff --git a/include/qom/object.h b/include/qom/object.h
-index 1d5b0337242..26df6137b91 100644
---- a/include/qom/object.h
-+++ b/include/qom/object.h
-@@ -445,7 +445,8 @@ struct Object
-  *   class will have already been initialized so the type is only responsible
-  *   for initializing its own members.
-  * @instance_post_init: This function is called to finish initialization of
-- *   an object, after all @instance_init functions were called.
-+ *   an object, after all @instance_init functions were called, as well as
-+ *   @instance_post_init functions for the parent classes.
-  * @instance_finalize: This function is called during object destruction.  This
-  *   is called before the parent @instance_finalize function has been called.
-  *   An object should only free the members that are unique to its type in this
-diff --git a/qom/object.c b/qom/object.c
-index 7b013f40a0c..1856bb36c74 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -431,13 +431,13 @@ static void object_init_with_type(Object *obj, TypeImpl *ti)
- 
- static void object_post_init_with_type(Object *obj, TypeImpl *ti)
- {
--    if (ti->instance_post_init) {
--        ti->instance_post_init(obj);
--    }
--
-     if (type_has_parent(ti)) {
-         object_post_init_with_type(obj, type_get_parent(ti));
-     }
-+
-+    if (ti->instance_post_init) {
-+        ti->instance_post_init(obj);
-+    }
- }
- 
- bool object_apply_global_props(Object *obj, const GPtrArray *props,
++-------------------------------------------------+
+|                                                 |
+|                    Hardware                     |
+|                                                 |
++-------------------------------------------------+
+
+This submission is a port of the existing MSHV integration that is
+shipped in Cloud-Hypervisor and MSHV-specific rust-crates in rust-vmm.
+There are various products like AKS Pod Sandboxing and AKS Confidential
+Pods built on MSHV and Cloud-Hypervisor. We hope to achieve a seamless
+integration into the QEMU accelerator framework, similar to existing
+integrations like KVM, HVF or WHPX.
+
+The patch set has been split into chunks that should be applicable and
+buildable individually, but only the full set of commits will allow
+launching MSHV-accelerated guests on supported kernels and environments.
+
+The toggle to enable the feature at build time would be: `./configure
+--enable-mshv`.
+
+When launching a VM, the accelerator `mshv` can be enabled via
+
+`-accel mshv` or `-machine q35,accel=mshv`.
+
+We concluded the porting, but we haven't performed any comprehensive
+testing yet. We opted to send our submission early to receive feedback
+about the general structure and potential problems of our integration.
+Most likely we will uncover problems during testing and address those in
+upcoming revisions of the patch set.
+
+The configuration we are using during development:
+
+machine q35 + OVMF + various recent linux distros as guests (fedora
+42, ubuntu 22.04)
+
+We would welcome any feedback around the structure and integration
+points that we chose, so we can incorporate them into upcoming
+revisions.
+
+Some notes/caveats about the initial submission:
+
+- The relevant MSHV kernel code has been accepted for inclusion in the
+  upcoming 6.15 release, which should be released shortly. To allow
+  building it on older kernel we vendored the kernel headers that define
+  the MSHV ABI into the patch set. We might remove it in later
+  revisions of the patch set, or put it behind a feature toggle. Once
+  the kernel is released we plan to published a preconfigured Azure
+  image, which can be used to test the MSHV accelerator.
+
+- QEMU is mapping regions into the guest that might partially overlap in
+  their userspace_addr range (e.g. for ROMs in early boot). Currently
+  MSHV will reject such overlaps. We are looking into whether we
+  can/want to relax that restriction. To work around this we maintain a
+  list of mapping references and swap in/out regions if there's a GPA
+  fault and we find a valid candidate region in our list. (see last
+  commit). Maybe there are alternative, less invasive, suggestions. We'd
+  be happy to hear those.
+
+- We noticed that when using SeaBIOS, in certain permutations of guest
+  configuration (> 2GB ram & >1 virtio-blk-pci devices), we run into
+  unmapped GPA errors. We suspect it has to do with SeaBIOS addressing
+  memory in the 4GB+ region in those cases. We are investigating, and
+  will hopefully be able to issue a fix soon. For the time being this
+  can be worked around by using OVMF as firmware:
+
+- Since the MHSV accelerator requires a HyperV hypervisor to be present,
+  it would make sense to provide testing infrastructure for integration
+  testing on Azure. We are looking into options how to implement that.
+
+best,
+
+magnus
+
+Magnus Kulke (25):
+  accel: Add Meson and config support for MSHV accelerator
+  target/i386/emulate: allow instruction decoding from stream
+  target/i386/mshv: Add x86 decoder/emu implementation
+  hw/intc: Generalize APIC helper names from kvm_* to accel_*
+  include/hw/hyperv: Add MSHV ABI header definitions
+  accel/mshv: Add accelerator skeleton
+  accel/mshv: Register memory region listeners
+  accel/mshv: Initialize VM partition
+  accel/mshv: Register guest memory regions with hypervisor
+  accel/mshv: Add ioeventfd support
+  accel/mshv: Add basic interrupt injection support
+  accel/mshv: Add vCPU creation and execution loop
+  accel/mshv: Add vCPU signal handling
+  target/i386/mshv: Add CPU create and remove logic
+  target/i386/mshv: Implement mshv_store_regs()
+  target/i386/mshv: Implement mshv_get_standard_regs()
+  target/i386/mshv: Implement mshv_get_special_regs()
+  target/i386/mshv: Implement mshv_arch_put_registers()
+  target/i386/mshv: Set local interrupt controller state
+  target/i386/mshv: Register CPUID entries with MSHV
+  target/i386/mshv: Register MSRs with MSHV
+  target/i386/mshv: Integrate x86 instruction decoder/emulator
+  target/i386/mshv: Write MSRs to the hypervisor
+  target/i386/mshv: Implement mshv_vcpu_run()
+  accel/mshv: Add memory remapping workaround
+
+ accel/Kconfig                    |    3 +
+ accel/accel-irq.c                |   95 ++
+ accel/meson.build                |    3 +-
+ accel/mshv/irq.c                 |  370 +++++++
+ accel/mshv/mem.c                 |  434 ++++++++
+ accel/mshv/meson.build           |    9 +
+ accel/mshv/mshv-all.c            |  731 ++++++++++++
+ accel/mshv/msr.c                 |  375 +++++++
+ accel/mshv/trace-events          |   20 +
+ accel/mshv/trace.h               |    1 +
+ hw/intc/apic.c                   |    9 +
+ hw/intc/ioapic.c                 |   20 +-
+ hw/virtio/virtio-pci.c           |   19 +-
+ include/hw/hyperv/hvgdk.h        |   20 +
+ include/hw/hyperv/hvhdk.h        |  165 +++
+ include/hw/hyperv/hvhdk_mini.h   |  106 ++
+ include/hw/hyperv/linux-mshv.h   | 1038 ++++++++++++++++++
+ include/system/accel-irq.h       |   26 +
+ include/system/mshv.h            |  237 ++++
+ meson.build                      |   17 +
+ meson_options.txt                |    2 +
+ scripts/meson-buildoptions.sh    |    3 +
+ target/i386/cpu.h                |    2 +-
+ target/i386/emulate/meson.build  |    7 +-
+ target/i386/emulate/x86_decode.c |   32 +-
+ target/i386/emulate/x86_decode.h |   11 +
+ target/i386/emulate/x86_emu.c    |    3 +-
+ target/i386/emulate/x86_emu.h    |    1 +
+ target/i386/meson.build          |    2 +
+ target/i386/mshv/meson.build     |    8 +
+ target/i386/mshv/mshv-cpu.c      | 1768 ++++++++++++++++++++++++++++++
+ target/i386/mshv/x86.c           |  330 ++++++
+ 32 files changed, 5841 insertions(+), 26 deletions(-)
+ create mode 100644 accel/accel-irq.c
+ create mode 100644 accel/mshv/irq.c
+ create mode 100644 accel/mshv/mem.c
+ create mode 100644 accel/mshv/meson.build
+ create mode 100644 accel/mshv/mshv-all.c
+ create mode 100644 accel/mshv/msr.c
+ create mode 100644 accel/mshv/trace-events
+ create mode 100644 accel/mshv/trace.h
+ create mode 100644 include/hw/hyperv/hvgdk.h
+ create mode 100644 include/hw/hyperv/hvhdk.h
+ create mode 100644 include/hw/hyperv/hvhdk_mini.h
+ create mode 100644 include/hw/hyperv/linux-mshv.h
+ create mode 100644 include/system/accel-irq.h
+ create mode 100644 include/system/mshv.h
+ create mode 100644 target/i386/mshv/meson.build
+ create mode 100644 target/i386/mshv/mshv-cpu.c
+ create mode 100644 target/i386/mshv/x86.c
+
 -- 
-2.49.0
+2.34.1
 
 
