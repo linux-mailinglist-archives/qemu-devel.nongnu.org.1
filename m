@@ -2,177 +2,149 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2532CABD03D
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 09:20:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2225ABD079
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 09:34:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHHFp-0001A9-7Q; Tue, 20 May 2025 03:19:13 -0400
+	id 1uHHSh-0000y6-98; Tue, 20 May 2025 03:32:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clement.mathieu--drif@eviden.com>)
- id 1uHHFm-000199-AM
- for qemu-devel@nongnu.org; Tue, 20 May 2025 03:19:10 -0400
-Received: from smarthost1.eviden.com ([80.78.11.82])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uHHSd-0000xe-MQ
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 03:32:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clement.mathieu--drif@eviden.com>)
- id 1uHHFj-00028B-Ml
- for qemu-devel@nongnu.org; Tue, 20 May 2025 03:19:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=eviden.com; i=@eviden.com; q=dns/txt; s=mail;
- t=1747725548; x=1779261548;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=ShJISvjMrZqtI4j33FDslHorDGP6GHL2m3QaVL6SxKg=;
- b=g+uzQbLflGpZSSL5Z7cdj7uS5fNgzkYWJxT3pWEBLhfQn2+bOvFNExGI
- M6w1yJn4RcxbLXDzdbeAmrE+W8vK0N+UF7yd9Za1gxI9/GInKZklbzR43
- QTZPSGDYpTJzxAymbPFb2jT+owg+MSmHH3mLa5q7Y7XQxlrxbp8LNublu
- fwBwfJLY0K4mggs1wiJO/ofLyzJfze0LJpI491Rqs3UOH83p1kPqyiOTT
- 0E+BCIbvSJk+ZGYhUpQ9nnXEtse9cNKR5gVrb4F+dvxLkhPJ5YXFlqTA2
- gnZKX7RfSFO5jX1mFC5uqb2Azpf77GhpF1clUi94suVqDxajIH8W/m1v4 A==;
-X-CSE-ConnectionGUID: u3Vd1TXXRZKcCOs5S9vCIQ==
-X-CSE-MsgGUID: yaNmwBsnStGESkPwBPoZAw==
-X-IronPort-AV: E=Sophos;i="6.15,302,1739833200"; d="scan'208";a="37191613"
-X-MGA-submission: =?us-ascii?q?MDFIDjux/Zky0NOFzihKsl390V4ARTHrQROBbm?=
- =?us-ascii?q?3v77S2C2QXb/yzthjWIaBPn7Kc3jd030AJuMnoJ59++ga6Bcapi9QyH5?=
- =?us-ascii?q?qAYk/dnWo6dMofbidbQRJZTVbUtF8o23LGkeg+4eFCk2ioElRgB4wANC?=
- =?us-ascii?q?+WcwLjgvWjmwVtupVCLGNU3w=3D=3D?=
-Received: from mail-northeuropeazon11013057.outbound.protection.outlook.com
- (HELO DUZPR83CU001.outbound.protection.outlook.com) ([52.101.67.57])
- by smarthost1.eviden.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384;
- 20 May 2025 09:19:06 +0200
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UDHOEbIKzjW20wtqgJ2vmP4HGXCXmBEC2xs5lR0YYd8sZLyijotE/6e8bahlrj71ZJuUNXhZE/C+9RDNyK0czQ1u4/QZ6sDq6K84dVrE7de6JQuZxN9rF+UsB0X82DLTDmRAn/hOSOyd6w/Ubfp0ELvD4K+DpVsF8bt1++4cn52gNQP964aol90+QUJfLTXkGUGtL01EfCW0vMrYY0C1ISPV3aBea2zOhXEWEHFGoA8d2FOcMsvVq8ummyOHL91kiGOGi4yUMDFFGOibjGr0E/khHy7qnafqMr17SmnHhIRNnaHv2yz+Y+aWH3kfC9T/tUSmAzIJBZ8dstAwpxS1hQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=etlIBLlGhKnGpYVwNbiRhrNY/m0YqqcE16zSPEghsTA=;
- b=Jp28FxWLDQHJ0/WYhaycRyOHGI5l69dMPVT3NdNLN68iIs1cOSaRxYGopME8Zr4ItgaqR8eyTU23ihIyD00X5dOU/BRrGXIhuuvUFgUSFdsbUSOLu2DFrgMR4XmTaaA5cUwZ9Hvk7j49wPN4TXW4MlpwR3jx1t6PPd8wFI2oisMsLgAcXI/3zg5q/wYwaXeB3xSxjMGX/D3kfvLISgcUkcwExkd7sKinF29OEOo/fJ7G9rGbikBEDjxNCHoiwb6a6cd6aI1RUo8Rn1ELBrSb68X5g3/NtRUSXtbX4XChqtHo3/2tTzL8g6kbGwkEr1rNkN+G/J/KtvaYiGBhisDm/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=eviden.com; dmarc=pass action=none header.from=eviden.com;
- dkim=pass header.d=eviden.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Eviden.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=etlIBLlGhKnGpYVwNbiRhrNY/m0YqqcE16zSPEghsTA=;
- b=oC4zX8EwZsmyNVD8YbAJdKEMguC3XwBBBc8grv83H0yYoG7+/ppDO83jCmw5i7Af0ZFZAETo/Wp21AEWXKRW2LDrzGv661vSDwPeM9NiS38NOts9SsXv15d2OzEycoMM/PBZUTqeHovcLhQPFTTrgAoWW2JFxEbUjPs0HruncjHE3HiEeI3ld5DvlS8Y8YgkO43k1XhLhTxWvZ09HAMEZtqlaxfxyZB3oXrWFXKDh2zERnmkPLjuXW4AK3WdHxGdfzy5l+Msvx+DW7HwLjDNeQP1sl5gWO9Ghk5C46C5w6BOF9F2fT+L9Yys49ZaWodCyS6CntFOQ1IQjlTiM5cuPA==
-Received: from AM8PR07MB7602.eurprd07.prod.outlook.com (2603:10a6:20b:24b::7)
- by AS8PR07MB8102.eurprd07.prod.outlook.com (2603:10a6:20b:371::12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.30; Tue, 20 May
- 2025 07:19:04 +0000
-Received: from AM8PR07MB7602.eurprd07.prod.outlook.com
- ([fe80::fbd7:ca71:b636:6f9d]) by AM8PR07MB7602.eurprd07.prod.outlook.com
- ([fe80::fbd7:ca71:b636:6f9d%4]) with mapi id 15.20.8746.030; Tue, 20 May 2025
- 07:19:04 +0000
-From: CLEMENT MATHIEU--DRIF <clement.mathieu--drif@eviden.com>
-To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "peterx@redhat.com"
- <peterx@redhat.com>, "david@redhat.com" <david@redhat.com>,
- "philmd@linaro.org" <philmd@linaro.org>, "mst@redhat.com" <mst@redhat.com>,
- "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>, CLEMENT
- MATHIEU--DRIF <clement.mathieu--drif@eviden.com>, Ethan MILON
- <ethan.milon@eviden.com>
-Subject: [PATCH 11/11] pci: Add a PCI-level API for PRI
-Thread-Topic: [PATCH 11/11] pci: Add a PCI-level API for PRI
-Thread-Index: AQHbyVd3LHi5228jY06ftVz+GKmvWA==
-Date: Tue, 20 May 2025 07:19:04 +0000
-Message-ID: <20250520071823.764266-12-clement.mathieu--drif@eviden.com>
-References: <20250520071823.764266-1-clement.mathieu--drif@eviden.com>
-In-Reply-To: <20250520071823.764266-1-clement.mathieu--drif@eviden.com>
-Accept-Language: en-GB, fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=eviden.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM8PR07MB7602:EE_|AS8PR07MB8102:EE_
-x-ms-office365-filtering-correlation-id: 0a6b983a-0f6d-4396-a045-08dd976e99f9
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|366016|376014|38070700018;
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?Goy4ZW1AJTbJ2s4FxdTxvwX964uKXgZ+8z2lXh6WBvyvwzber4FC5xElSF?=
- =?iso-8859-1?Q?6CfjyHX4PBbJ6kT3Y46bzJbpcABUM+oKEb5o89WFsboxVLvriLGwPcKHff?=
- =?iso-8859-1?Q?VLm9dJooCG4ATA+bqdgxKu+ur1hMtbHR8qcXV5sQ60JQWipb0fbY/NgLQm?=
- =?iso-8859-1?Q?+vtz8lK5F1ryReKUi0hZWSSbGnXPhGuTJaidCxGRaIrxczWtGxaHoPAUKu?=
- =?iso-8859-1?Q?0Obc1JunmOGZ2Unty2bdqK1G9JvbZ6zAwgVWQ9XmAlWAZwtIa6ywLUCrED?=
- =?iso-8859-1?Q?NGZJH/HjJbP8DV9/Q+VP6bJQzFsy3OkDLmA4G+l5lX93Wb+6Gqyn/1ew/X?=
- =?iso-8859-1?Q?FiUjHFurKlCU4LAW4uoa9lWd5GuwXi0k0Fkha3yODhTJQfSYQk/phXnb8l?=
- =?iso-8859-1?Q?E6J7ex5X3lPYDNoVq2O6NfLGUgYNZ14BJbKm3cGxS5s/+Z6dBTjNkP0dkO?=
- =?iso-8859-1?Q?rNejeIwejMJNJUnQojgUvqsgn5qG3bVFGrNcGQ+6Q1TU/FbMCpdng06HOh?=
- =?iso-8859-1?Q?nIBAhROCkEpVMqiUwBSvGlzKPxn7Rmae+ig03u8PtbO1OuIE839xIAcDRl?=
- =?iso-8859-1?Q?Zlj83Nvf5tsjXU+poEy4OkoW4eLmCF+Bx3yuHZq1gSUJbGsKNsqc8+2/Bn?=
- =?iso-8859-1?Q?upCiNBgZx+5kAHudkDHwx8lU7raVHuI1iR4z0C/0PekzE1V+DNSWU2MZNF?=
- =?iso-8859-1?Q?hx55kCi2Zx0cKiFp7eCUsRqzLSdZ9+lT8ccl/Tpiy11Fafdx93Pk1F999I?=
- =?iso-8859-1?Q?R2mBXhuDSfUBbWvWdjG5QMfDuB1Wp1fxq7q5LL9tCFaTtbGV0U3CdRLkbN?=
- =?iso-8859-1?Q?MvLabc3HiLbck7BDBHYB6mpPt9kJGjbEL5gECgQi/LsvAbHS5Knn6dSVP7?=
- =?iso-8859-1?Q?Xh0SQ6VBrqlMAa1H7c75MZrALjqOoNbKJVMx4ZCxJEsAGXQK6B1hiZroz8?=
- =?iso-8859-1?Q?qliXTulswrBprws1/8MbU9/MY4mj0Ctf1j9eYm+EQ3li0K/Oku73cXYm5S?=
- =?iso-8859-1?Q?vFx79Ii7KnxJE/tA5qRVpsofGkvn2U2z3dmqYkl4MT7G0/OU6aESeHFFnx?=
- =?iso-8859-1?Q?0EbaN7DjAguNlqjSplJwsgXDY3pYO8u/Or0eewtDV4z0Lrc6sRknbgl2IX?=
- =?iso-8859-1?Q?gfcHbIkkTwEcZk+lV/5FrrbOXJp+aFuJhJEHljlgH7UeNsvtW2ud34+8gY?=
- =?iso-8859-1?Q?VEGLUL28+EO8ByYRmkPedlhmrKqCzaVVWl/2VH+j4L1hBL7Xx9JR7mb/9S?=
- =?iso-8859-1?Q?zEJtBgd9Y2JI1nJI5gJm16eW0ei3IbogUwsY7P43OQx4gXkB7bk/oXzkSc?=
- =?iso-8859-1?Q?NKTqJnUnS3hw7TjtC2BXIp7g4ognkpJaEUA21LUcYNo010xV9/zp192hLX?=
- =?iso-8859-1?Q?3FjoYHA2AynWZmw7CfusPlo+4SZUmkwW53yXiR2CHNoFVTFQs70W/nv5Bj?=
- =?iso-8859-1?Q?COVbb9T20yrDlGzBlGiDgpqwcI87qRod56eNJS5Z2vqf3a2uHKMnWHja7Y?=
- =?iso-8859-1?Q?3Gh4KeBd4P5HjuQnA0xDD1/yUCHD1Ip+wctzMyjxTyyA=3D=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:AM8PR07MB7602.eurprd07.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014)(38070700018); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?LulAWOwP8FjCzA9SiHQz5sUpFZmyzhEA40vpxE7uPSD+vJYXkOvRl6EaN/?=
- =?iso-8859-1?Q?zJWZx8ThTg1Icx92vFLy8RIShqExpiOX2artleM6HAMoAGbqv+zUo3n9er?=
- =?iso-8859-1?Q?LbZNV8k74gDlCRK8xaUxSnZF24Nq7zUPef4WVALqBuxakfaPQKoD3ztude?=
- =?iso-8859-1?Q?irwZKabJg5Zdf2w1sAu+NDYOjUc15uuV/Q9BUIkYZxJ7UL0IAcqGua6jUL?=
- =?iso-8859-1?Q?UXDySxGZVPyvRhxARlZ6+WhaIlmXCZheB7cT+9Kp4PcwHAx84bhiWJqN1w?=
- =?iso-8859-1?Q?HXr1bjqQL8FBjCBBvf15cC9uoa8lbSamfPIsbxmPAvd36zxdZcZUDakc8L?=
- =?iso-8859-1?Q?zhEQbKPbjdn6p5uRrQ9dN6CuAEzWZl128vIUa+QHKo711Xzy0j8sdAxy0i?=
- =?iso-8859-1?Q?K11YWX7LtO8cH41w8z6YhVyTm/tlWnfUD0mY9CUStx2gy9/4lb/PG13LrT?=
- =?iso-8859-1?Q?XEiC3M5zft9pB69t4uj5rzeOaoO2vdcxxCj7ZgYmFw826SaKCpVghiQ6hr?=
- =?iso-8859-1?Q?CqZO/N7pmYRjuhOSFB2+/R+dQ+OkOnS3wGIaZqrMYlHTfvAau4iW+dArKa?=
- =?iso-8859-1?Q?eC3U5Dbdi1lTOjIdWw9xTMHXoYmlv4DGNhl/P52SBoYM0lCgesZRgDheWf?=
- =?iso-8859-1?Q?dJ+gTVxwgGyuLsDhE4XJZalx8PVsNZBq4UCJgBc/QxBPQ0Poie+nLM1UWQ?=
- =?iso-8859-1?Q?5HkIqLZ4y5TQRQE+S5uM+5q7f8ENPOTP6mDX5kWySmUu6/NbIfI0jdSsXf?=
- =?iso-8859-1?Q?u4BlmZ31A3Yl8qfoIJsMnCZHdhvGOG7hTA/aFOaVcvOwmRBXuSQmuVLrpF?=
- =?iso-8859-1?Q?nT3y2XNkBtppmaJwh0OJUD66Lz1wJSFZ8bMnPnWpOwS70uAPi6KVWsuBKN?=
- =?iso-8859-1?Q?eoOGzQ5AH8gC8PHYQi907L2z/waMS4IG3ie/LUPuitqDl61GOJd45DZJJs?=
- =?iso-8859-1?Q?8N0GbHvz95ljkq4KiYX8gfnyWaQJU9+gc7KWCiU1cJkICP2bWFwwxpTit1?=
- =?iso-8859-1?Q?iGz4nWSTJQIOaXTXLUx5eU8Rj+ZZIK3gBs4hyKypKXfe3sQ14J0reX+osa?=
- =?iso-8859-1?Q?91pX4llIg47KeTFh0GZF4mX3StTJDCCOowEsr4SFB5K1UfvuoWh3XiVCRh?=
- =?iso-8859-1?Q?bIRenTeDMcAXB8HhIhcbJXjg/MReKRkIkXTT7LfN6kryDjT+ufYdD1dilz?=
- =?iso-8859-1?Q?A+vGXWFjQJd6hscGCP0wgPHHziuSpnKDPkUAaHu9gIio91m92xym7IA1DI?=
- =?iso-8859-1?Q?/8hsKWtsMp90TvDCMDhFVwkfNPfpWbumccRQgKvGRtuSg+ON5Y9OYum4cl?=
- =?iso-8859-1?Q?1TIJUCagjIq+ODFWlw7e8upP84fSK3jTGbHtqcWJ2bGZaKvuzyH7MbRbZ7?=
- =?iso-8859-1?Q?gpE4D0JpWGt7boC6p7EsuzJDHeFad6cEa8iq6pS74sGQ5TxxbkCorj91hv?=
- =?iso-8859-1?Q?UgcD4EVuG7RXhZoVMa73N8sxvSkbSe3AZRwFCg6NZ/24i0IOZ0FhgwC3/L?=
- =?iso-8859-1?Q?vSp6EYYCkGGesdleF0CV/SqkCS2SKZNEAKxksOwE4xKpv/V+qSVBqUAr0n?=
- =?iso-8859-1?Q?grNWmn9PVcwEZMYu9savrwlsB/Uf+gzQA3e94MjRWOx8+ZS+Fqjdb1yw8J?=
- =?iso-8859-1?Q?wh3yRGRpLL/OklFAjssqhCVH8IkXXK4pDzndqtylVMf+122XSOBYqaDyRS?=
- =?iso-8859-1?Q?T7ojFXewMdMkaK7na3o=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uHHSa-0003MZ-Oj
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 03:32:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747726342;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=epAspbg7Zodrv3tjBBqHwnWLGlV882BzHvPY3B+SsDk=;
+ b=VVYnHL13rHvN1R+eWjEEcs2bpIrlAJ8AXLCEz+UmzY9UJdeb13dCPABO8B+TghZaeLoHbf
+ aGonsdspkMbh/+A3mD/T5eD5168aDl7AD/J1j0i+RNLGnyPE/oI3mWlN/VeKnLDtf7Oay1
+ +vBMYtVxcL15kanb/iQ+8nd7by+Cclk=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-92-7b4nXpDAM2OG_hUYOMJwDA-1; Tue, 20 May 2025 03:32:20 -0400
+X-MC-Unique: 7b4nXpDAM2OG_hUYOMJwDA-1
+X-Mimecast-MFC-AGG-ID: 7b4nXpDAM2OG_hUYOMJwDA_1747726339
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3a34f19c977so2484994f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 20 May 2025 00:32:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747726339; x=1748331139;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=epAspbg7Zodrv3tjBBqHwnWLGlV882BzHvPY3B+SsDk=;
+ b=DE7mOE/KDbxzoNpcII3HxR8j8aKe6OjZ6hq7KMl5pxvF4t3SYvBEyWJwan5Dyaf8Mf
+ ExmU0Xy857cTqPK9A6B2ii3RSvM0BGX4GGBxY1DlBFw8gTiTKDLV+L3MaL4xk6/nEeYv
+ 1TByP7SZBa3hgQbpmV2+Tv0e/2TZFmwiUBbGLOkHBTQQPEUV1LVKLIOfv3kWVw2PDCBN
+ Avfwva6+qkWQUjHKJCPSyRoL39i2h3NDFMNNTbXonLuVFUDwkDCU5pV3lmBlDgEHVrGY
+ m3P4kSKEmVqcgWqrFKg8FXifgyd12hO+ztFKaAqmMlvINQ7IL1ouRjaHcwLCSAJsGAiR
+ pK8Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVAkd0ijHuet8nfUJmKCfWALabkK2dTBeGGAMkdCIwkvMxvnBTYzvxgcdvlrO/b8qhYGg4GSwSUDj+r@nongnu.org
+X-Gm-Message-State: AOJu0YzV9BCKxDsHfZ7mog6s4wyDlysGNtR/gf6jqeiPjjFuxCgAiq1g
+ mxUz0Cgk0n2+OINW3mEDJAn9K6RjzTY9ufLGHcebPUXwz+qxygBbi1wu9vSr8Wa2MzzR4IeY26n
+ FVj9343zdXeLxC/p8RTmTV7ptSPc3Gt9IOX0VU5368sxwno1ulOZB/U0a
+X-Gm-Gg: ASbGncshfg5FsFySZ+HBeRCEW3RTKFVTMlm/LejeoxymnD0AyLPbZpJl9EpDdduqHyT
+ 3xuuBQO8Fe/T0dY4LGQ6lHUNiXhra5vv9SGpCtq3KcUdC02ljgoqBdoSjuQ4LbhcTlDAXAZxCQi
+ 5W2DYw0hWZBlSbsciW0064Cnqk5SNDfUCay7nDOT5+0D7HdJjZ7kAdatDU0zmba8eEBaUtQKnlz
+ Xu/duKRT/UC2zgfyZPUNnn0mA6CiaBikR6T/8ifSd8+9LH8zeBKBqoKSQWQ29yxJhlyoaKmbjj8
+ JFWto2diRl+bJpAAK8qQV2/vreWiZTT1Pu0rtsjvrYWoPbRloA==
+X-Received: by 2002:a05:6000:400f:b0:3a0:b565:a2cb with SMTP id
+ ffacd0b85a97d-3a35ca76628mr13343718f8f.1.1747726339203; 
+ Tue, 20 May 2025 00:32:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH1zxdf4t75Ew6w9tzZJZjdvRtwbTWciKN4oojnwr6wEs5QtwEFpJ2dM6Jk+/tAPtPFmmGV2Q==
+X-Received: by 2002:a05:6000:400f:b0:3a0:b565:a2cb with SMTP id
+ ffacd0b85a97d-3a35ca76628mr13343688f8f.1.1747726338766; 
+ Tue, 20 May 2025 00:32:18 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
+ ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a35ca88735sm15713228f8f.69.2025.05.20.00.32.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 20 May 2025 00:32:18 -0700 (PDT)
+Message-ID: <bad3129a-8470-415e-8e85-0238b3ef1b26@redhat.com>
+Date: Tue, 20 May 2025 09:32:17 +0200
 MIME-Version: 1.0
-X-OriginatorOrg: eviden.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR07MB7602.eurprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0a6b983a-0f6d-4396-a045-08dd976e99f9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 May 2025 07:19:04.1889 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 7d1c7785-2d8a-437d-b842-1ed5d8fbe00a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: dyqtwGT3yhCzbNykiv6g7HP96uEyFC3tNCutmzCezvFRtUWITy+zoCT1pz/QLG4B3TsUsTSIlOkLHMLO7OoiYaVez+yJOPV/zLB7Hm/G51IWKjucOyEj5ln3+40XXlw7
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR07MB8102
-Received-SPF: pass client-ip=80.78.11.82;
- envelope-from=clement.mathieu--drif@eviden.com; helo=smarthost1.eviden.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V5] vfio: return mr from vfio_get_xlat_addr
+To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
+Cc: Marc-Andre Lureau <marcandre.lureau@redhat.com>,
+ Thanos Makatos <thanos.makatos@nutanix.com>,
+ "Daniel P. Berrange" <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Alex Williamson <alex.williamson@redhat.com>,
+ Philippe Mathieu-Daude <philmd@linaro.org>,
+ John Levon <john.levon@nutanix.com>
+References: <1747661203-136490-1-git-send-email-steven.sistare@oracle.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ xsFNBFu8o3UBEADP+oJVJaWm5vzZa/iLgpBAuzxSmNYhURZH+guITvSySk30YWfLYGBWQgeo
+ 8NzNXBY3cH7JX3/a0jzmhDc0U61qFxVgrPqs1PQOjp7yRSFuDAnjtRqNvWkvlnRWLFq4+U5t
+ yzYe4SFMjFb6Oc0xkQmaK2flmiJNnnxPttYwKBPd98WfXMmjwAv7QfwW+OL3VlTPADgzkcqj
+ 53bfZ4VblAQrq6Ctbtu7JuUGAxSIL3XqeQlAwwLTfFGrmpY7MroE7n9Rl+hy/kuIrb/TO8n0
+ ZxYXvvhT7OmRKvbYuc5Jze6o7op/bJHlufY+AquYQ4dPxjPPVUT/DLiUYJ3oVBWFYNbzfOrV
+ RxEwNuRbycttMiZWxgflsQoHF06q/2l4ttS3zsV4TDZudMq0TbCH/uJFPFsbHUN91qwwaN/+
+ gy1j7o6aWMz+Ib3O9dK2M/j/O/Ube95mdCqN4N/uSnDlca3YDEWrV9jO1mUS/ndOkjxa34ia
+ 70FjwiSQAsyIwqbRO3CGmiOJqDa9qNvd2TJgAaS2WCw/TlBALjVQ7AyoPEoBPj31K74Wc4GS
+ Rm+FSch32ei61yFu6ACdZ12i5Edt+To+hkElzjt6db/UgRUeKfzlMB7PodK7o8NBD8outJGS
+ tsL2GRX24QvvBuusJdMiLGpNz3uqyqwzC5w0Fd34E6G94806fwARAQABzSJDw6lkcmljIExl
+ IEdvYXRlciA8Y2xnQHJlZGhhdC5jb20+wsGRBBMBCAA7FiEEoPZlSPBIlev+awtgUaNDx8/7
+ 7KEFAmTLlVECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQUaNDx8/77KG0eg//
+ S0zIzTcxkrwJ/9XgdcvVTnXLVF9V4/tZPfB7sCp8rpDCEseU6O0TkOVFoGWM39sEMiQBSvyY
+ lHrP7p7E/JYQNNLh441MfaX8RJ5Ul3btluLapm8oHp/vbHKV2IhLcpNCfAqaQKdfk8yazYhh
+ EdxTBlzxPcu+78uE5fF4wusmtutK0JG0sAgq0mHFZX7qKG6LIbdLdaQalZ8CCFMKUhLptW71
+ xe+aNrn7hScBoOj2kTDRgf9CE7svmjGToJzUxgeh9mIkxAxTu7XU+8lmL28j2L5uNuDOq9vl
+ hM30OT+pfHmyPLtLK8+GXfFDxjea5hZLF+2yolE/ATQFt9AmOmXC+YayrcO2ZvdnKExZS1o8
+ VUKpZgRnkwMUUReaF/mTauRQGLuS4lDcI4DrARPyLGNbvYlpmJWnGRWCDguQ/LBPpbG7djoy
+ k3NlvoeA757c4DgCzggViqLm0Bae320qEc6z9o0X0ePqSU2f7vcuWN49Uhox5kM5L86DzjEQ
+ RHXndoJkeL8LmHx8DM+kx4aZt0zVfCHwmKTkSTQoAQakLpLte7tWXIio9ZKhUGPv/eHxXEoS
+ 0rOOAZ6np1U/xNR82QbF9qr9TrTVI3GtVe7Vxmff+qoSAxJiZQCo5kt0YlWwti2fFI4xvkOi
+ V7lyhOA3+/3oRKpZYQ86Frlo61HU3r6d9wzOwU0EW7yjdQEQALyDNNMw/08/fsyWEWjfqVhW
+ pOOrX2h+z4q0lOHkjxi/FRIRLfXeZjFfNQNLSoL8j1y2rQOs1j1g+NV3K5hrZYYcMs0xhmrZ
+ KXAHjjDx7FW3sG3jcGjFW5Xk4olTrZwFsZVUcP8XZlArLmkAX3UyrrXEWPSBJCXxDIW1hzwp
+ bV/nVbo/K9XBptT/wPd+RPiOTIIRptjypGY+S23HYBDND3mtfTz/uY0Jytaio9GETj+fFis6
+ TxFjjbZNUxKpwftu/4RimZ7qL+uM1rG1lLWc9SPtFxRQ8uLvLOUFB1AqHixBcx7LIXSKZEFU
+ CSLB2AE4wXQkJbApye48qnZ09zc929df5gU6hjgqV9Gk1rIfHxvTsYltA1jWalySEScmr0iS
+ YBZjw8Nbd7SxeomAxzBv2l1Fk8fPzR7M616dtb3Z3HLjyvwAwxtfGD7VnvINPbzyibbe9c6g
+ LxYCr23c2Ry0UfFXh6UKD83d5ybqnXrEJ5n/t1+TLGCYGzF2erVYGkQrReJe8Mld3iGVldB7
+ JhuAU1+d88NS3aBpNF6TbGXqlXGF6Yua6n1cOY2Yb4lO/mDKgjXd3aviqlwVlodC8AwI0Sdu
+ jWryzL5/AGEU2sIDQCHuv1QgzmKwhE58d475KdVX/3Vt5I9kTXpvEpfW18TjlFkdHGESM/Jx
+ IqVsqvhAJkalABEBAAHCwV8EGAECAAkFAlu8o3UCGwwACgkQUaNDx8/77KEhwg//WqVopd5k
+ 8hQb9VVdk6RQOCTfo6wHhEqgjbXQGlaxKHoXywEQBi8eULbeMQf5l4+tHJWBxswQ93IHBQjK
+ yKyNr4FXseUI5O20XVNYDJZUrhA4yn0e/Af0IX25d94HXQ5sMTWr1qlSK6Zu79lbH3R57w9j
+ hQm9emQEp785ui3A5U2Lqp6nWYWXz0eUZ0Tad2zC71Gg9VazU9MXyWn749s0nXbVLcLS0yop
+ s302Gf3ZmtgfXTX/W+M25hiVRRKCH88yr6it+OMJBUndQVAA/fE9hYom6t/zqA248j0QAV/p
+ LHH3hSirE1mv+7jpQnhMvatrwUpeXrOiEw1nHzWCqOJUZ4SY+HmGFW0YirWV2mYKoaGO2YBU
+ wYF7O9TI3GEEgRMBIRT98fHa0NPwtlTktVISl73LpgVscdW8yg9Gc82oe8FzU1uHjU8b10lU
+ XOMHpqDDEV9//r4ZhkKZ9C4O+YZcTFu+mvAY3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfA
+ HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
+ izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <1747661203-136490-1-git-send-email-steven.sistare@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.13,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -188,261 +160,266 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A device can send a PRI request to the IOMMU using pci_pri_request_page.
-The PRI response is sent back using the notifier managed with
-pci_pri_register_notifier and pci_pri_unregister_notifier.
+On 5/19/25 15:26, Steve Sistare wrote:
+> Modify memory_get_xlat_addr and vfio_get_xlat_addr to return the memory
+> region that the translated address is found in.  This will be needed by
+> CPR in a subsequent patch to map blocks using IOMMU_IOAS_MAP_FILE.
+> 
+> Also return the xlat offset, so we can simplify the interface by removing
+> the out parameters that can be trivially derived from mr and xlat.
+> 
+> Lastly, rename the functions to  to memory_translate_iotlb() and
+> vfio_translate_iotlb().
+> 
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> ---
+>   hw/vfio/listener.c      | 33 ++++++++++++++++++++++-----------
+>   hw/virtio/vhost-vdpa.c  |  9 +++++++--
+>   include/system/memory.h | 19 +++++++++----------
+>   system/memory.c         | 32 +++++++-------------------------
+>   4 files changed, 45 insertions(+), 48 deletions(-)
+> 
+> diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
+> index bfacb3d..0afafe3 100644
+> --- a/hw/vfio/listener.c
+> +++ b/hw/vfio/listener.c
+> @@ -90,16 +90,17 @@ static bool vfio_listener_skipped_section(MemoryRegionSection *section)
+>              section->offset_within_address_space & (1ULL << 63);
+>   }
+>   
+> -/* Called with rcu_read_lock held.  */
+> -static bool vfio_get_xlat_addr(IOMMUTLBEntry *iotlb, void **vaddr,
+> -                               ram_addr_t *ram_addr, bool *read_only,
+> -                               Error **errp)
+> +/*
+> + * Called with rcu_read_lock held.
+> + * The returned MemoryRegion must not be accessed after calling rcu_read_unlock.
+> + */
+> +static MemoryRegion *vfio_translate_iotlb(IOMMUTLBEntry *iotlb, hwaddr *xlat_p,
+> +                                          Error **errp)
+>   {
+> -    bool ret, mr_has_discard_manager;
+> +    MemoryRegion *mr;
+>   
+> -    ret = memory_get_xlat_addr(iotlb, vaddr, ram_addr, read_only,
+> -                               &mr_has_discard_manager, errp);
+> -    if (ret && mr_has_discard_manager) {
+> +    mr = memory_translate_iotlb(iotlb, xlat_p, errp);
+> +    if (mr && memory_region_has_ram_discard_manager(mr)) {
+>           /*
+>            * Malicious VMs might trigger discarding of IOMMU-mapped memory. The
+>            * pages will remain pinned inside vfio until unmapped, resulting in a
+> @@ -118,7 +119,7 @@ static bool vfio_get_xlat_addr(IOMMUTLBEntry *iotlb, void **vaddr,
+>                            " intended via an IOMMU. It's possible to mitigate "
+>                            " by setting/adjusting RLIMIT_MEMLOCK.");
+>       }
+> -    return ret;
+> +    return mr;
+>   }
+>   
+>   static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+> @@ -126,6 +127,8 @@ static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+>       VFIOGuestIOMMU *giommu = container_of(n, VFIOGuestIOMMU, n);
+>       VFIOContainerBase *bcontainer = giommu->bcontainer;
+>       hwaddr iova = iotlb->iova + giommu->iommu_offset;
+> +    MemoryRegion *mr;
+> +    hwaddr xlat;
+>       void *vaddr;
+>       int ret;
+>       Error *local_err = NULL;
+> @@ -150,10 +153,14 @@ static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+>       if ((iotlb->perm & IOMMU_RW) != IOMMU_NONE) {
+>           bool read_only;
+>   
+> -        if (!vfio_get_xlat_addr(iotlb, &vaddr, NULL, &read_only, &local_err)) {
+> +        mr = vfio_translate_iotlb(iotlb, &xlat, &local_err);
+> +        if (!mr) {
+>               error_report_err(local_err);
+>               goto out;
+>           }
+> +        vaddr = memory_region_get_ram_ptr(mr) + xlat;
+> +        read_only = !(iotlb->perm & IOMMU_WO) || mr->readonly;
+> +
+>           /*
+>            * vaddr is only valid until rcu_read_unlock(). But after
+>            * vfio_dma_map has set up the mapping the pages will be
+> @@ -1010,6 +1017,8 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+>       ram_addr_t translated_addr;
+>       Error *local_err = NULL;
+>       int ret = -EINVAL;
+> +    MemoryRegion *mr;
+> +    ram_addr_t xlat;
 
-Signed-off-by: Clement Mathieu--Drif <clement.mathieu--drif@eviden.com>
-Co-authored-by: Ethan Milon <ethan.milon@eviden.com>
----
- hw/pci/pci.c         |  66 ++++++++++++++++++++++
- include/hw/pci/pci.h | 130 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 196 insertions(+)
+xlat should be :
 
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 0c63cb4bbe..c6b5768f3a 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -2987,6 +2987,72 @@ void pci_device_unset_iommu_device(PCIDevice *dev)
-     }
- }
-=20
-+int pci_pri_request_page(PCIDevice *dev, uint32_t pasid, bool priv_req,
-+                         bool exec_req, hwaddr addr, bool lpig,
-+                         uint16_t prgi, bool is_read, bool is_write)
-+{
-+    PCIBus *bus;
-+    PCIBus *iommu_bus;
-+    int devfn;
-+
-+    if (!dev->is_master ||
-+            ((pasid !=3D PCI_NO_PASID) && !pcie_pasid_enabled(dev))) {
-+        return -EPERM;
-+    }
-+
-+    if (!pcie_pri_enabled(dev)) {
-+        return -EPERM;
-+    }
-+
-+    pci_device_get_iommu_bus_devfn(dev, &bus, &iommu_bus, &devfn);
-+    if (iommu_bus && iommu_bus->iommu_ops->pri_request_page) {
-+        return iommu_bus->iommu_ops->pri_request_page(bus,
-+                                                     iommu_bus->iommu_opaq=
-ue,
-+                                                     devfn, pasid, priv_re=
-q,
-+                                                     exec_req, addr, lpig,=
- prgi,
-+                                                     is_read, is_write);
-+    }
-+
-+    return -ENODEV;
-+}
-+
-+int pci_pri_register_notifier(PCIDevice *dev, uint32_t pasid,
-+                              IOMMUPRINotifier *notifier)
-+{
-+    PCIBus *bus;
-+    PCIBus *iommu_bus;
-+    int devfn;
-+
-+    if (!dev->is_master ||
-+            ((pasid !=3D PCI_NO_PASID) && !pcie_pasid_enabled(dev))) {
-+        return -EPERM;
-+    }
-+
-+    pci_device_get_iommu_bus_devfn(dev, &bus, &iommu_bus, &devfn);
-+    if (iommu_bus && iommu_bus->iommu_ops->pri_register_notifier) {
-+        iommu_bus->iommu_ops->pri_register_notifier(bus,
-+                                                    iommu_bus->iommu_opaqu=
-e,
-+                                                    devfn, pasid, notifier=
-);
-+        return 0;
-+    }
-+
-+    return -ENODEV;
-+}
-+
-+void pci_pri_unregister_notifier(PCIDevice *dev, uint32_t pasid)
-+{
-+    PCIBus *bus;
-+    PCIBus *iommu_bus;
-+    int devfn;
-+
-+    pci_device_get_iommu_bus_devfn(dev, &bus, &iommu_bus, &devfn);
-+    if (iommu_bus && iommu_bus->iommu_ops->pri_unregister_notifier) {
-+        iommu_bus->iommu_ops->pri_unregister_notifier(bus,
-+                                                      iommu_bus->iommu_opa=
-que,
-+                                                      devfn, pasid);
-+    }
-+}
-+
- ssize_t pci_ats_request_translation(PCIDevice *dev, uint32_t pasid,
-                                     bool priv_req, bool exec_req,
-                                     hwaddr addr, size_t length,
-diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index 5d72607ed5..a6854dad2b 100644
---- a/include/hw/pci/pci.h
-+++ b/include/hw/pci/pci.h
-@@ -375,6 +375,28 @@ void pci_bus_get_w64_range(PCIBus *bus, Range *range);
-=20
- void pci_device_deassert_intx(PCIDevice *dev);
-=20
-+/* Page Request Interface */
-+typedef enum {
-+    IOMMU_PRI_RESP_SUCCESS,
-+    IOMMU_PRI_RESP_INVALID_REQUEST,
-+    IOMMU_PRI_RESP_FAILURE,
-+} IOMMUPRIResponseCode;
-+
-+typedef struct IOMMUPRIResponse {
-+    IOMMUPRIResponseCode response_code;
-+    uint16_t prgi;
-+} IOMMUPRIResponse;
-+
-+struct IOMMUPRINotifier;
-+
-+typedef void (*IOMMUPRINotify)(struct IOMMUPRINotifier *notifier,
-+                               IOMMUPRIResponse *response);
-+
-+typedef struct IOMMUPRINotifier {
-+    IOMMUPRINotify notify;
-+} IOMMUPRINotifier;
-+
-+#define PCI_PRI_PRGI_MASK 0x1ffU
-=20
- /**
-  * struct PCIIOMMUOps: callbacks structure for specific IOMMU handlers
-@@ -536,6 +558,72 @@ typedef struct PCIIOMMUOps {
-                                        IOMMUTLBEntry *result,
-                                        size_t result_length,
-                                        uint32_t *err_count);
-+    /**
-+     * @pri_register_notifier: setup the PRI completion callback.
-+     *
-+     * Callback required if devices are allowed to use the page request
-+     * interface.
-+     *
-+     * @bus: the #PCIBus of the PCI device.
-+     *
-+     * @opaque: the data passed to pci_setup_iommu().
-+     *
-+     * @devfn: device and function number of the PCI device.
-+     *
-+     * @pasid: the pasid of the address space to track.
-+     *
-+     * @notifier: the notifier to register.
-+     */
-+    void (*pri_register_notifier)(PCIBus *bus, void *opaque, int devfn,
-+                                  uint32_t pasid, IOMMUPRINotifier *notifi=
-er);
-+    /**
-+     * @pri_unregister_notifier: remove the PRI completion callback.
-+     *
-+     * Callback required if devices are allowed to use the page request
-+     * interface.
-+     *
-+     * @bus: the #PCIBus of the PCI device.
-+     *
-+     * @opaque: the data passed to pci_setup_iommu().
-+     *
-+     * @devfn: device and function number of the PCI device.
-+     *
-+     * @pasid: the pasid of the address space to stop tracking.
-+     */
-+    void (*pri_unregister_notifier)(PCIBus *bus, void *opaque, int devfn,
-+                                    uint32_t pasid);
-+    /**
-+     * @pri_request_page: issue a PRI request.
-+     *
-+     * Callback required if devices are allowed to use the page request
-+     * interface.
-+     *
-+     * @bus: the #PCIBus of the PCI device.
-+     *
-+     * @opaque: the data passed to pci_setup_iommu().
-+     *
-+     * @devfn: device and function number of the PCI device.
-+     *
-+     * @pasid: the pasid of the address space to use for the request.
-+     *
-+     * @priv_req: privileged mode bit (PASID TLP).
-+     *
-+     * @exec_req: execute request bit (PASID TLP).
-+     *
-+     * @addr: untranslated address of the requested page.
-+     *
-+     * @lpig: last page in group.
-+     *
-+     * @prgi: page request group index.
-+     *
-+     * @is_read: request read access.
-+     *
-+     * @is_write: request write access.
-+     */
-+    int (*pri_request_page)(PCIBus *bus, void *opaque, int devfn,
-+                            uint32_t pasid, bool priv_req, bool exec_req,
-+                            hwaddr addr, bool lpig, uint16_t prgi, bool is=
-_read,
-+                            bool is_write);
- } PCIIOMMUOps;
-=20
- AddressSpace *pci_device_iommu_address_space(PCIDevice *dev);
-@@ -595,6 +683,48 @@ ssize_t pci_ats_request_translation(PCIDevice *dev, ui=
-nt32_t pasid,
-                                     size_t result_length,
-                                     uint32_t *err_count);
-=20
-+/**
-+ * pci_pri_request_page: perform a PRI request.
-+ *
-+ * Returns 0 if the PRI request has been sent to the guest OS,
-+ * an error code otherwise.
-+ *
-+ * @dev: the PRI-capable PCI device.
-+ * @pasid: the pasid of the address space in which the translation will be=
- done.
-+ * @priv_req: privileged mode bit (PASID TLP).
-+ * @exec_req: execute request bit (PASID TLP).
-+ * @addr: untranslated address of the requested page.
-+ * @lpig: last page in group.
-+ * @prgi: page request group index.
-+ * @is_read: request read access.
-+ * @is_write: request write access.
-+ */
-+int pci_pri_request_page(PCIDevice *dev, uint32_t pasid, bool priv_req,
-+                         bool exec_req, hwaddr addr, bool lpig,
-+                         uint16_t prgi, bool is_read, bool is_write);
-+
-+/**
-+ * pci_pri_register_notifier: register the PRI callback for a given addres=
-s
-+ * space.
-+ *
-+ * Returns 0 on success, an error code otherwise.
-+ *
-+ * @dev: the PRI-capable PCI device.
-+ * @pasid: the pasid of the address space to track.
-+ * @notifier: the notifier to register.
-+ */
-+int pci_pri_register_notifier(PCIDevice *dev, uint32_t pasid,
-+                              IOMMUPRINotifier *notifier);
-+
-+/**
-+ * pci_pri_unregister_notifier: remove the PRI callback from a given addre=
-ss
-+ * space.
-+ *
-+ * @dev: the PRI-capable PCI device.
-+ * @pasid: the pasid of the address space to stop tracking.
-+ */
-+void pci_pri_unregister_notifier(PCIDevice *dev, uint32_t pasid);
-+
- /**
-  * pci_iommu_register_iotlb_notifier: register a notifier for changes to
-  * IOMMU translation entries in a specific address space.
---=20
-2.49.0
+	hwaddr xlat;
+
+
+Thanks,
+
+C.
+
+
+>   
+>       trace_vfio_iommu_map_dirty_notify(iova, iova + iotlb->addr_mask);
+>   
+> @@ -1021,9 +1030,11 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+>       }
+>   
+>       rcu_read_lock();
+> -    if (!vfio_get_xlat_addr(iotlb, NULL, &translated_addr, NULL, &local_err)) {
+> +    mr = vfio_translate_iotlb(iotlb, &xlat, &local_err);
+> +    if (!mr) {
+>           goto out_unlock;
+>       }
+> +    translated_addr = memory_region_get_ram_addr(mr) + xlat;
+>   
+>       ret = vfio_container_query_dirty_bitmap(bcontainer, iova, iotlb->addr_mask + 1,
+>                                   translated_addr, &local_err);
+> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+> index 1ab2c11..a1dd9e1 100644
+> --- a/hw/virtio/vhost-vdpa.c
+> +++ b/hw/virtio/vhost-vdpa.c
+> @@ -209,6 +209,8 @@ static void vhost_vdpa_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+>       int ret;
+>       Int128 llend;
+>       Error *local_err = NULL;
+> +    MemoryRegion *mr;
+> +    hwaddr xlat;
+>   
+>       if (iotlb->target_as != &address_space_memory) {
+>           error_report("Wrong target AS \"%s\", only system memory is allowed",
+> @@ -228,11 +230,14 @@ static void vhost_vdpa_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+>       if ((iotlb->perm & IOMMU_RW) != IOMMU_NONE) {
+>           bool read_only;
+>   
+> -        if (!memory_get_xlat_addr(iotlb, &vaddr, NULL, &read_only, NULL,
+> -                                  &local_err)) {
+> +        mr = memory_translate_iotlb(iotlb, &xlat, &local_err);
+> +        if (!mr) {
+>               error_report_err(local_err);
+>               return;
+>           }
+> +        vaddr = memory_region_get_ram_ptr(mr) + xlat;
+> +        read_only = !(iotlb->perm & IOMMU_WO) || mr->readonly;
+> +
+>           ret = vhost_vdpa_dma_map(s, VHOST_VDPA_GUEST_PA_ASID, iova,
+>                                    iotlb->addr_mask + 1, vaddr, read_only);
+>           if (ret) {
+> diff --git a/include/system/memory.h b/include/system/memory.h
+> index fbbf4cf..13416d7 100644
+> --- a/include/system/memory.h
+> +++ b/include/system/memory.h
+> @@ -738,21 +738,20 @@ void ram_discard_manager_unregister_listener(RamDiscardManager *rdm,
+>                                                RamDiscardListener *rdl);
+>   
+>   /**
+> - * memory_get_xlat_addr: Extract addresses from a TLB entry
+> + * memory_translate_iotlb: Extract addresses from a TLB entry.
+> + *                         Called with rcu_read_lock held.
+>    *
+>    * @iotlb: pointer to an #IOMMUTLBEntry
+> - * @vaddr: virtual address
+> - * @ram_addr: RAM address
+> - * @read_only: indicates if writes are allowed
+> - * @mr_has_discard_manager: indicates memory is controlled by a
+> - *                          RamDiscardManager
+> + * @xlat_p: return the offset of the entry from the start of the returned
+> + *          MemoryRegion.
+>    * @errp: pointer to Error*, to store an error if it happens.
+>    *
+> - * Return: true on success, else false setting @errp with error.
+> + * Return: On success, return the MemoryRegion containing the @iotlb translated
+> + *         addr.  The MemoryRegion must not be accessed after rcu_read_unlock.
+> + *         On failure, return NULL, setting @errp with error.
+>    */
+> -bool memory_get_xlat_addr(IOMMUTLBEntry *iotlb, void **vaddr,
+> -                          ram_addr_t *ram_addr, bool *read_only,
+> -                          bool *mr_has_discard_manager, Error **errp);
+> +MemoryRegion *memory_translate_iotlb(IOMMUTLBEntry *iotlb, hwaddr *xlat_p,
+> +                                     Error **errp);
+>   
+>   typedef struct CoalescedMemoryRange CoalescedMemoryRange;
+>   typedef struct MemoryRegionIoeventfd MemoryRegionIoeventfd;
+> diff --git a/system/memory.c b/system/memory.c
+> index 63b983e..306e9ff 100644
+> --- a/system/memory.c
+> +++ b/system/memory.c
+> @@ -2174,18 +2174,14 @@ void ram_discard_manager_unregister_listener(RamDiscardManager *rdm,
+>   }
+>   
+>   /* Called with rcu_read_lock held.  */
+> -bool memory_get_xlat_addr(IOMMUTLBEntry *iotlb, void **vaddr,
+> -                          ram_addr_t *ram_addr, bool *read_only,
+> -                          bool *mr_has_discard_manager, Error **errp)
+> +MemoryRegion *memory_translate_iotlb(IOMMUTLBEntry *iotlb, hwaddr *xlat_p,
+> +                                     Error **errp)
+>   {
+>       MemoryRegion *mr;
+>       hwaddr xlat;
+>       hwaddr len = iotlb->addr_mask + 1;
+>       bool writable = iotlb->perm & IOMMU_WO;
+>   
+> -    if (mr_has_discard_manager) {
+> -        *mr_has_discard_manager = false;
+> -    }
+>       /*
+>        * The IOMMU TLB entry we have just covers translation through
+>        * this IOMMU to its immediate target.  We need to translate
+> @@ -2195,7 +2191,7 @@ bool memory_get_xlat_addr(IOMMUTLBEntry *iotlb, void **vaddr,
+>                                    &xlat, &len, writable, MEMTXATTRS_UNSPECIFIED);
+>       if (!memory_region_is_ram(mr)) {
+>           error_setg(errp, "iommu map to non memory area %" HWADDR_PRIx "", xlat);
+> -        return false;
+> +        return NULL;
+>       } else if (memory_region_has_ram_discard_manager(mr)) {
+>           RamDiscardManager *rdm = memory_region_get_ram_discard_manager(mr);
+>           MemoryRegionSection tmp = {
+> @@ -2203,9 +2199,6 @@ bool memory_get_xlat_addr(IOMMUTLBEntry *iotlb, void **vaddr,
+>               .offset_within_region = xlat,
+>               .size = int128_make64(len),
+>           };
+> -        if (mr_has_discard_manager) {
+> -            *mr_has_discard_manager = true;
+> -        }
+>           /*
+>            * Malicious VMs can map memory into the IOMMU, which is expected
+>            * to remain discarded. vfio will pin all pages, populating memory.
+> @@ -2216,7 +2209,7 @@ bool memory_get_xlat_addr(IOMMUTLBEntry *iotlb, void **vaddr,
+>               error_setg(errp, "iommu map to discarded memory (e.g., unplugged"
+>                            " via virtio-mem): %" HWADDR_PRIx "",
+>                            iotlb->translated_addr);
+> -            return false;
+> +            return NULL;
+>           }
+>       }
+>   
+> @@ -2226,22 +2219,11 @@ bool memory_get_xlat_addr(IOMMUTLBEntry *iotlb, void **vaddr,
+>        */
+>       if (len & iotlb->addr_mask) {
+>           error_setg(errp, "iommu has granularity incompatible with target AS");
+> -        return false;
+> +        return NULL;
+>       }
+>   
+> -    if (vaddr) {
+> -        *vaddr = memory_region_get_ram_ptr(mr) + xlat;
+> -    }
+> -
+> -    if (ram_addr) {
+> -        *ram_addr = memory_region_get_ram_addr(mr) + xlat;
+> -    }
+> -
+> -    if (read_only) {
+> -        *read_only = !writable || mr->readonly;
+> -    }
+> -
+> -    return true;
+> +    *xlat_p = xlat;
+> +    return mr;
+>   }
+>   
+>   void memory_region_set_log(MemoryRegion *mr, bool log, unsigned client)
+
 
