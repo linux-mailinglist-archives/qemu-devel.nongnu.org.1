@@ -2,110 +2,201 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C51F6ABDE07
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 16:59:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE30AABDE2F
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 17:05:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHOQH-0001IJ-Fo; Tue, 20 May 2025 10:58:29 -0400
+	id 1uHOWH-0002z5-WE; Tue, 20 May 2025 11:04:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uHOQ6-0001Ht-BQ
- for qemu-devel@nongnu.org; Tue, 20 May 2025 10:58:18 -0400
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1uHOQ3-00010L-U4
- for qemu-devel@nongnu.org; Tue, 20 May 2025 10:58:18 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id AAE6B2075D;
- Tue, 20 May 2025 14:58:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1747753092; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=zc0NXxGaHDQilt4Hjkb52J4hyjntzmNysUNSSQjbnqo=;
- b=A8M1a7bwJxwIEh4Ra+2PT47u9pCkyPCtuqtOE0cuKSCu74yVAy7v8zMmcLWkwspusIQ5Bw
- 8PLpmLtNJ//yTYR9NKtYnf9+Fn3qqzpetlB0cIeFshX+lMYA2l0bigKa0GjBKggFDs7c6U
- TEz5ksB9fODTQgYOg1n7AChMxR9a+v4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1747753092;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=zc0NXxGaHDQilt4Hjkb52J4hyjntzmNysUNSSQjbnqo=;
- b=1dWi5dCgt+HWmo4tnRCmUdlzsqGkWf38Gkgg+opPpUWnaP7YqO7TJ4HdBM1EU3gwct+MUD
- BgazlstvBGpnd9Ag==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1747753092; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=zc0NXxGaHDQilt4Hjkb52J4hyjntzmNysUNSSQjbnqo=;
- b=A8M1a7bwJxwIEh4Ra+2PT47u9pCkyPCtuqtOE0cuKSCu74yVAy7v8zMmcLWkwspusIQ5Bw
- 8PLpmLtNJ//yTYR9NKtYnf9+Fn3qqzpetlB0cIeFshX+lMYA2l0bigKa0GjBKggFDs7c6U
- TEz5ksB9fODTQgYOg1n7AChMxR9a+v4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1747753092;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=zc0NXxGaHDQilt4Hjkb52J4hyjntzmNysUNSSQjbnqo=;
- b=1dWi5dCgt+HWmo4tnRCmUdlzsqGkWf38Gkgg+opPpUWnaP7YqO7TJ4HdBM1EU3gwct+MUD
- BgazlstvBGpnd9Ag==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1530013888;
- Tue, 20 May 2025 14:58:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 2jdlMYOYLGjcLAAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 20 May 2025 14:58:11 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Jamin Lin via <qemu-devel@nongnu.org>, =?utf-8?Q?C=C3=A9dric?= Le Goater
- <clg@kaod.org>, Peter Maydell <peter.maydell@linaro.org>, Steven Lee
- <steven_lee@aspeedtech.com>, Troy Lee <leetroy@gmail.com>, Andrew Jeffery
- <andrew@codeconstruct.com.au>, Joel
- Stanley <joel@jms.id.au>, Laurent Vivier <lvivier@redhat.com>, Paolo
- Bonzini <pbonzini@redhat.com>, "open list:ASPEED
- BMCs" <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>
-Cc: jamin_lin@aspeedtech.com, troy_lee@aspeedtech.com
-Subject: Re: [PATCH v3 00/28] Fix incorrect hash results on AST2700
-In-Reply-To: <20250515081008.583578-1-jamin_lin@aspeedtech.com>
-References: <20250515081008.583578-1-jamin_lin@aspeedtech.com>
-Date: Tue, 20 May 2025 11:58:09 -0300
-Message-ID: <8734cz72im.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
+ id 1uHOWE-0002yj-VE
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 11:04:39 -0400
+Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
+ id 1uHOWB-0002Ju-W5
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 11:04:38 -0400
+Received: from pps.filterd (m0127843.ppops.net [127.0.0.1])
+ by mx0b-002c1b01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54KBfwAL026470;
+ Tue, 20 May 2025 08:04:31 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
+ cc:content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=proofpoint20171006; bh=ByB5wUM/N+/cm
+ kRkBDVKT7c3ymfqDxiGwCvcJzCkurU=; b=2Rjs5wn0UUSz+fK2rMwqNpIDvNW7n
+ 4d3GEgdK9SAWwrrFO4gnUI087n1KSAyxSCcuXNP6KgID4IHa4tjOc3qJZAhncU/2
+ m2YWAJymuMq55SeMGAl9ya24uyM1+bPp+k0KNH6rG/mrcEgty8JwVkFFBT5aHFRX
+ RiJNMP4cZAMsYEggma1ZzKwoiRVqBh59yhq+zHIv83smTv09X3bu+fFxcLiVD36x
+ 0E3fjlPprBcWgeQDqtcSBr6Fykh3rwFNR6fsXOAlM+uubCc2yeTkjBpaxwyJzwyP
+ LUglIx5iCoajcllV6V2ey6cOWJadhFROX+U8FV39ZVvLvWJLuggdrzCDQ==
+Received: from byapr05cu005.outbound.protection.outlook.com
+ (mail-westusazlp17010001.outbound.protection.outlook.com [40.93.1.1])
+ by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 46prjheabe-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 20 May 2025 08:04:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=suP46U/6XSxPOoQtGJcgUu3cEZRiQxTaUYDz4Y/fllg313Fvqjvh6IUTkYulelJjC2ry8F84pER7XLwHKleBNkadG0C8d/f4rcu/QRD95vaICDci9ETTjUbzlOnPg8vTldSztAzt+47lBMPkSagVzQipewAxkcsLsIDkLrAZLdBqFZguhB340fi/IoDDstPICa9DsXKWQxbci25uOi1J8Vzs8HKsXNXrzVUL4Sp4Ebhe1QX50WIIah9IREz95lvt7RiX6ZbKEVGNVAO+B5yEz4zaOUUqy+AuADE6sk8RgtbuGCkIw235+SNsbki50A6fCLHcxsTyDAKgGoV9WBkcmg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ByB5wUM/N+/cmkRkBDVKT7c3ymfqDxiGwCvcJzCkurU=;
+ b=F8+af1wy5/3pSDF+xQZyZfKr0hjWUqpwRdsvhoLk/lbWmuTGDqVMRqHVm5zGjpHwMldkdQlRjVs4dsv/pmCpTLFFg68mA2A8W1U2lfIAGOiN/nHebLertD1LAunzF50CXcQ2xPGalvhU0EGyPtdTmeKh6OqiKh3H1jGSp/yS6sbYMY8OE1PWTXJ8bPxva2/VcBBAWCOtNtpbHjVwhzLP78rCTS5yPelebwLdNyt9mefcNJLjltHdPEhB599acEqCaeTrKRl7GhD3PCQE0QS7+1ZzhbXaEDtAgMDk1Z+EW29PVlII/WvUM4Kk3eulnmE/FnIITZdRaeKsdkvwi1zMUQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
+ dkim=pass header.d=nutanix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ByB5wUM/N+/cmkRkBDVKT7c3ymfqDxiGwCvcJzCkurU=;
+ b=ak8GKm14usGm28rCRcVt7pa6JPmQRxwc7vVh1V8qGaL0lsGRbglS7WaSTiVBiYD/OUE3gV5HUI0UVpi2hMzN/BsaLMUEo0Kk91jQTQQSRT1AJx/uAKR+e9Em3sMQTIL/jyotSEwPcWzi9gwyqcbhF10nTUREFK5yfSCJvi8ByRgdojZjkbaKkUoRBaapP+ZOkvA4gZwhzihIljsBgCMdXvMpsUZnXHfTGJom3gjy4ONOAG3hgKRRXNZ3GFcWYVP+bJnnYMmDIkvuq75nil834fKkjPzbUmYSEa6XM/uR5SeTxRyzvUwGl7A9fe+OdB9cc6QRa9NN6++lVqAnFXwmeg==
+Received: from CH2PR02MB6760.namprd02.prod.outlook.com (2603:10b6:610:7f::9)
+ by CH4PR02MB10612.namprd02.prod.outlook.com (2603:10b6:610:240::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.16; Tue, 20 May
+ 2025 15:04:26 +0000
+Received: from CH2PR02MB6760.namprd02.prod.outlook.com
+ ([fe80::fd77:ea65:a159:ef51]) by CH2PR02MB6760.namprd02.prod.outlook.com
+ ([fe80::fd77:ea65:a159:ef51%6]) with mapi id 15.20.8769.016; Tue, 20 May 2025
+ 15:04:26 +0000
+From: John Levon <john.levon@nutanix.com>
+To: qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ John Levon <john.levon@nutanix.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Thanos Makatos <thanos.makatos@nutanix.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH v2 00/29] vfio-user client
+Date: Tue, 20 May 2025 16:03:49 +0100
+Message-ID: <20250520150419.2172078-1-john.levon@nutanix.com>
+X-Mailer: git-send-email 2.43.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AM9P193CA0021.EURP193.PROD.OUTLOOK.COM
+ (2603:10a6:20b:21e::26) To CH2PR02MB6760.namprd02.prod.outlook.com
+ (2603:10b6:610:7f::9)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- FUZZY_BLOCKED(0.00)[rspamd.com];
- FREEMAIL_ENVRCPT(0.00)[gmail.com];
- URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email,suse.de:mid,ast2700-default:email,nongnu.org:email];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FREEMAIL_TO(0.00)[nongnu.org,kaod.org,linaro.org,aspeedtech.com,gmail.com,codeconstruct.com.au,jms.id.au,redhat.com];
- MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[];
- RCPT_COUNT_TWELVE(0.00)[13]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- RCVD_TLS_ALL(0.00)[]; MISSING_XM_UA(0.00)[];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- TO_DN_SOME(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- RCVD_VIA_SMTP_AUTH(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid]
-X-Spam-Score: -4.30
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR02MB6760:EE_|CH4PR02MB10612:EE_
+X-MS-Office365-Filtering-Correlation-Id: c1d1e1a3-c94d-4c6b-c24e-08dd97af9c9b
+x-proofpoint-crosstenant: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?RmZ2WFFmdHpXRlBuc1ljU0prY0lBeXd5OEJMaEVHUFBKTGwva3YxRWlrTFlr?=
+ =?utf-8?B?ejdCRnFyTnlLcGh6N2tRYUFXTFUvdTkrMUFsTVdYWHpvdXhuazJ5em9abkN1?=
+ =?utf-8?B?TUhlaHZVbjBuTFpCZHQ3TmErMnB1TnpsS3owS0lTL094eU52OG1TaFFhbXl3?=
+ =?utf-8?B?UVRrdG9qRkxYWFlTeHc1Z0pjWG5xYXNBS3dRR3RzOGlRVnQ0b0VzenhsZURN?=
+ =?utf-8?B?UWpIQXFFTEpiaWZ5SjBORkJJZ01DRTZud2tNZXZ5UEYzMnJOUUc1bjZrbkJ6?=
+ =?utf-8?B?YUVmVHFWZUMwZ1V5Vk5LTUJBRTZUVmlBOS8rVE1NYnFmRFlQa3hjc1Jobkdv?=
+ =?utf-8?B?UnNlc2JuZjk1ZDM3N2JlY2lJMlhhU3RzMTlFMVVxSnRuZjZjdjRPVFVycnlC?=
+ =?utf-8?B?UXF5SUZlcWt4UUJweTZLUGhoUElHV3ViaHhUYUplNDJ1ZTNYMHFlNWd1eFVG?=
+ =?utf-8?B?bGtDV0NMbXIyVWhSY0JlNEVEWTVucVI1dFZicnpJd09DeEx2WUdnNEx5N0pF?=
+ =?utf-8?B?U1F1LzA0ZGZJS3pDTXhMekM5dHFkamhac0ptUFZnbFR5UHo4ZUtBTnQ1cS9X?=
+ =?utf-8?B?MFgxa3BlVzdsck1EOFkvVFZsMG1PYUJEck9OalB0a1pJZDlOUEdYd3pscjZO?=
+ =?utf-8?B?Yjl2aVVYQWs3VlRvYmhhWTZvTFl6TTduUWZpQStJVE9kR1hKRmc1SGg3WVFV?=
+ =?utf-8?B?RzZ5UnRGS1NuVEJ5VmN3cWljM1BsWmxJblkrTk1GZUlNZVBBWDRjelNqN3Rj?=
+ =?utf-8?B?TVZrTnFWcHByQ1ZoWFMrZE5SRHIrMGtvM3B4QzRBMksrYjVrY0tuaCtLdzAr?=
+ =?utf-8?B?YnBJeThBUEI4OTNoYkVTY1FCeG9TMS9HSG53V3l1aStqV2JtckN4WTJVdWh5?=
+ =?utf-8?B?TkoybVdPZEJqWHB4VlA3a0xaQVZxdEV0TDY2WUowQ1hTWm1YSSs4b0U3Uitx?=
+ =?utf-8?B?bTBveVZoTkFzSnUwaFJPR0lnTUR4Wld1V21hbnN2dmVJcXlFM0ZqK00rb3FL?=
+ =?utf-8?B?VTNYaU5qaVY3RXBxOHNmc2hOcEJpVzRaaFFFaDhHWktFSy9wK2JGVjhLcUh6?=
+ =?utf-8?B?UDBhS1JBYS9Mc0xMaHdHbzFVblZHcW5zQXZiV3B2RWlPT0FXaFE5VVpRSFBI?=
+ =?utf-8?B?ZFd0ZmdwTVh0UzBWUEhia053dHZTdDFQM3pBMmtaMmR2NTQyRldMb2IzQS9M?=
+ =?utf-8?B?amExUzBvTTBpbkxST1BEV0hwTSsvZ0J6NU1RQXg3cndzbG1NU1NBaGt3Z0la?=
+ =?utf-8?B?RG9aWGpmbjZEeUF3VGxSNm95ay9LTjB4b0lrMURPRmlzNnR4N2N1YzZaUlJ3?=
+ =?utf-8?B?NjZVbnhkNFZVUE1LMjlVaXYwbXJxTjd4S05GNEZSVG1mdXVOSVd6cnE0emNQ?=
+ =?utf-8?B?cHdKYUoxNVJ4Y0pFZ0tVeW1zb0srK3pQMGtGUFFHaVdqSTlyL2ZLUFdHelZC?=
+ =?utf-8?B?UUFaNHd5YUdRdStad1J2UHBVcHBqTThueUpSRnVvWGtWbEZ4aXFNeE9iQUpL?=
+ =?utf-8?B?WG1MYnZRN3dMT0lLVGJaMTFud3N2SDVVSDFUZVRmYndPUVBsTnlnVnJsYm9Q?=
+ =?utf-8?B?cDJBc01KRjNlbThJOC9PcGc5d2t6RzVBRk8yNXpDY0I5cUc5TzdESXJZWmw2?=
+ =?utf-8?B?TjhjYmlGaGtsWGZLREI3WTYrZFFCLzhoWWdUMUtWQ1JSN2pCU1E3amVkd0hz?=
+ =?utf-8?B?YVdmT2lLU2NsZmRmMnMwNHBhcVJCNmEvQ0xlTU80T1dZUXRJcklYVUIzQjNU?=
+ =?utf-8?B?dE9meDYzRzlaSlVrMUErVVlEdTRQVHRuMU5idnJkL0loZkhNdW9FVjBtL0FR?=
+ =?utf-8?Q?VgP49QYg7TGNcaRLkup9XFt7NK0PQczDrhvDo=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH2PR02MB6760.namprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(7416014)(376014); DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VXZ2amIzRzRBZ3hCOXozVGtXblRnQXFzWkR3ZmgveThIc0plQlNTUGNmc1NJ?=
+ =?utf-8?B?UkRPR08wNWxNN2RFWjE3WlJXQTc2NVN3QzB1bS93ZWd2bzFQcXpGajZGQTN0?=
+ =?utf-8?B?VFJSTFlSRXhNdUdXZ25wbEcwdTNsdXl1Y1hrRUhtMkpZWlRleEhla0R5Nkk5?=
+ =?utf-8?B?Ly8rd0s0QTlyRjY0ZndLV3ZRTkFQYi9tTnBRVDFWbXhjQWd2WjU0WGJqR2hs?=
+ =?utf-8?B?Y240ZTdOVXFnMzNxZjJjaUhmVlNnSFdxRDN6WjVoQ3BaY05vQjI3N0tNekRD?=
+ =?utf-8?B?b3JoOGZhd1BlckxSU2ltbldSWVdKZXFRRzROZUg5cWZMNkgrY0oyeEpDNERX?=
+ =?utf-8?B?S2ZZbXlQVjNGemxVVHloV3V0Vzd3TU5oK3c0T1ZialAwbWNOZDZhcDROMEtK?=
+ =?utf-8?B?akh5NTNHRzFrbytzVk51SHZlNDR6MDZ6TmZGTmVKdlR4Q1J0eDdsUUhEd1VV?=
+ =?utf-8?B?Y2p0K0U0aVpKTXVOajAvNkZoVHA0Uk9QY1dGeURVUElYdlM3bXFhTDlOT0Y4?=
+ =?utf-8?B?SmNwV21BbXFnSmNOcnUya2d6dVNZbUZqMHRhdkR5eHhsREVHYnRaQUN5MXhX?=
+ =?utf-8?B?aTVtUGtaaFNjRVJ4NUh0S3Y3Yk1XUkd2SGdVRkdJUmJGUEFvWU5LMDFJQkFl?=
+ =?utf-8?B?OWw2Um9VRjkxd3JBbFpCeEVLenNPY0JIRGRMcGxvSlBIZ3JlOFBselkzMmww?=
+ =?utf-8?B?QWlGTUJncGFOQWU4ejBRZlhJNHhmbEJweGdjNVdOUGFBQ3dmbjd1YVpETkFW?=
+ =?utf-8?B?SkZTZXBqWlJuOFB0OFhjNFQzNzdTd3RpZFRUaU5BNlhYa01QV3RIN1RZOVNz?=
+ =?utf-8?B?czhoM3VvSjZ1czc3MU9VY0xYQlpJbWNVU3FoUjJqbGNaLzZIR015M1MxM3h0?=
+ =?utf-8?B?UUt2emhneEQ5ZE1nUkVBSkVEVkhrckhPYTlmclBtd0VKQzRWMjN2aWxoNms4?=
+ =?utf-8?B?NkF3RzdTMnBSNGUwaGpxeDBYSThKSk45WDk1OEJBazcxZUZrV2FCOWNYeFdv?=
+ =?utf-8?B?ZzVpd0lvOXhlRklMSHd6eWFMSWFVRGEvc1VHMWZVQlF2a2Z5amJFcmxDV29v?=
+ =?utf-8?B?Wms1c3lqV1E1ZVhHUG1rNzU2Ni9KUzJuMzNFM05hd2RFNERBUjV2enlRZEhL?=
+ =?utf-8?B?dnR5TFlza2dBeDkwZkhHa0EyTnZ5SUNHT2VVQjNvV3JrVkg3Q1pkUTdoYml2?=
+ =?utf-8?B?SkdoWC9IWTVGQy91ZWF3NUpxamRxWENQOUtia2NMMGlPWlRHYUlSWVRaSmFU?=
+ =?utf-8?B?ZWlnRm01WmNLSWt4RkVCL2d0dmhhdDJ1Z0hFTEJhNlBCbGtKakdDTXkzSElQ?=
+ =?utf-8?B?WEhmOTIvNUU0MHBRanpCd052NitkU3IyRXJYYTUxSCtMaVVHM1JVWG9BOUo0?=
+ =?utf-8?B?UmpyeHl2eXFrUUVsNmI2a1FPUkQyM3dpVVBHY3NmZFZqK01FbWVWNlZWdjhu?=
+ =?utf-8?B?MFNuemMyck4xOVlTK1ROdm0vbmwvVnZYQnloVHlFOTg3cDQ0SWRrMGhDbzc0?=
+ =?utf-8?B?WGhlM2NPRk5RUUZpNThKL2pDR0E5czQrSWxjaUVYR1BlaG8rOTFqRFE1bUZ5?=
+ =?utf-8?B?Z0lMZnRUZE02aWVYU3psTmUrRmpVOERNeHpFL3I2TFdNTDIxcmFpSVQ5UkVa?=
+ =?utf-8?B?RWJIcG9uRDUyNUdKOXVwbk1XRGJrYkdsNG5pZm92aHUrUHE4Ulh6T2ppai9G?=
+ =?utf-8?B?QlJqOTA4Z1JibUxrVmI4S2ZaYStWS1VIQW5HUko4VXF4Nk1TQ291QTN5M2Z3?=
+ =?utf-8?B?NlFjdU5rREZFUk16RURYOGZOeW5yenJXeHBLMmdiVTFPVEpYUE12Sk14UUJV?=
+ =?utf-8?B?OHlSQldnZlFyM1RhL3grNFJWUXN3aHJDNXhPQW1RdytyL3UxcHJhRkphVElx?=
+ =?utf-8?B?RjNxYitQcDlQNnJ2QzR4R0UxdDhDQTJZN2NzaExEZU95UGdhTUVqVzN4ZDh4?=
+ =?utf-8?B?alVwRXhoNjBzRUY1SXJlZ2NuREFwenp2c0ZpaFJQMHBuYTd4SGVqeURGaGRj?=
+ =?utf-8?B?d3phSWszSnlYekhVQ2FHVmlmbFJOaFNVTmxVbW45dGNkVXZBYTczM2FzaW12?=
+ =?utf-8?B?L1IzSE9Za0czMVBoSGNoWEtHY3A1bnlaTnJDQzlnWUpubDJza1Q2NE1YeS8z?=
+ =?utf-8?Q?cHKFn6jTcQzbVmMSpDDi1Edw3?=
+X-OriginatorOrg: nutanix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c1d1e1a3-c94d-4c6b-c24e-08dd97af9c9b
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR02MB6760.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2025 15:04:26.1400 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: DvdsUfCuVAElAOfKH0xC2/gyY5a6hG3FhX5dEsmi2dD2UzNcRRTgV6LatnxdtMBlYmD3pmF//FiYF3qWmomCLQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH4PR02MB10612
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIwMDEyMiBTYWx0ZWRfX4cjz1fJKnNgc
+ p/g/3kYIEYo89XEgLa4opisQ1jlEjU7nZbhMlxC+7Zq5+a2sJ3y6JbrfKKV20JoTbN1dVPOUYCw
+ Lp1deFVa0+qntZf6IuyCQDR1HejRKB1hYh62YbxBaXxm60b1IlgGMDTWh7mLT6JCjjkZBqEyzBw
+ PxVRKE6sRTeL5szAlgsdr1pcwSpCUqj1O3yTzr/7oFGegq4q78fSuapFHW4KPSJMmRaTmtqUgvl
+ tprZJE14oQFXuHYq2/8b+lqne0OHk/OBTmjMSTnr8a8ljAdV9m0feH7lOdaoOa50iQaFfC7tA01
+ CrwmiEYwuiMAmuyu46KM+BdWy4Lh+73YdK3reKaHmbCy8OQx2aPwqLtNrbuQU537VdxudX4qtur
+ TUZN1U1MQ80f1nsXGri1/x4um6L8rFI/8baGE0K21nivmO1sAitqVsomS+O+GHz/hVXxPvra
+X-Authority-Analysis: v=2.4 cv=T+SMT+KQ c=1 sm=1 tr=0 ts=682c99fe cx=c_pps
+ a=zbudaZmfUx0dwwhLSrpPog==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
+ a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=dt9VzEwgFbYA:10 a=0kUYKlekyDsA:10 a=VwQbUJbxAAAA:8 a=20KFwNOVAAAA:8
+ a=hmw1MBtjsp0sKPK5uPoA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: HRuAxy6aIZN-G0wab5YDeZRof8IkDbRA
+X-Proofpoint-ORIG-GUID: HRuAxy6aIZN-G0wab5YDeZRof8IkDbRA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-20_06,2025-05-20_01,2025-03-28_01
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=148.163.155.12;
+ envelope-from=john.levon@nutanix.com; helo=mx0b-002c1b01.pphosted.com
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.487,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -122,188 +213,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Jamin Lin via <qemu-devel@nongnu.org> writes:
+The series contains an implement of a vfio-user client in QEMU, along with a few
+more preparatory patches.
 
-> v1:
->  1. Added support for 64-bit DMA in the HACE model
->  2. Refactored the do_hash operation in the HACE model
->  3. Fixed a crash caused by out-of-bound memory access in HACE
->  4. Added more trace events and implemented dumping of source hash data and
->     resulting digests to improve debugging
->  5. Refactored the HACE QTest framework to support both AST1030 and AST2700
->  6. Added a test case for SHA384
->
-> v2:
->   1. Create new helper functions
->      hash_get_source_addr
->      hash_prepare_direct_iov
->      hash_prepare_sg_iov
->      hash_get_digest_addr
->      hash_write_digest_and_unmap_iov
->      hash_execute_non_acc_mode
->      hash_execute_acc_mode
->   2. Refactor do_hash_operation
->   3. Fix review issue
->   4. Revise trace-events
->   5. Move register size to instance class and dynamically allocate regs
->
-> v3:
->   1. Split patch to introduce these routines one by one : 
->        hash_prepare_sg_iov
->        hash_prepare_direct_iov
->        hash_execute_acc_mode
->        hash_execute_non_acc_mode
->        hash_write_digest_and_unmap_iov
->   2. Fix run qtest failed  
->  
-> This patchset resolves incorrect hash results reported on the AST2700 platform.
-> This update addresses the following kernel warnings and test failures related to
-> the crypto self-test framework:
->
-> aspeed-hmac-sha512 test failed (incorrect result)
-> aspeed-hmac-sha384 test failed (incorrect result)
-> aspeed-sha512 test failed (incorrect result)
-> aspeed-sha384 test failed (incorrect result)
-> aspeed-hmac-sha256 test failed (incorrect result)
-> aspeed-hmac-sha224 test failed (incorrect result)
-> aspeed-hmac-sha1 test failed (incorrect result)
-> aspeed-sha224 test failed (incorrect result)
-> aspeed-sha256 test failed (incorrect result)
-> aspeed-sha1 test failed (incorrect result)
->
-> How to test it
->
-> Use the following command to dump information about the supported digest methods
-> via the ast_crypto_engine hardware engine:
->
-> root@ast2700-default:~# openssl engine -pre DUMP_INFO ast_crypto_engine
->
-> Digest SHA1, NID=64, AF_ALG info: name=sha1ALG_ERR: , driver=aspeed-sha1 (hw accelerated)
-> Digest SHA224, NID=675, AF_ALG info: name=sha224ALG_ERR: , driver=aspeed-sha224 (hw accelerated)
-> Digest SHA256, NID=672, AF_ALG info: name=sha256ALG_ERR: , driver=aspeed-sha256 (hw accelerated)
-> Digest SHA384, NID=673, AF_ALG info: name=sha384ALG_ERR: , driver=aspeed-sha384 (hw accelerated)
-> Digest SHA512, NID=674, AF_ALG info: name=sha512ALG_ERR: , driver=aspeed-sha512 (hw accelerated)
->
-> The status of SHA1, SHA224, SHA256, SHA384, and SHA512 should be marked as
-> hw accelerated, indicating that these algorithms are supported by hardware
-> acceleration via the aspeed drivers.
->
-> Create a test file on the host machine and compute its HASH value as the
-> expected result
->
-> Create a 256MB test file
->
-> $ dd if=/dev/random of=/tmp/256M bs=1M count=256
-> Generate Hash Values Using SHA1, SHA224, SHA256, SHA384, and SHA512
->
-> Use the following commands to generate HASH values for a 256MB file using
-> different SHA algorithms:
->
-> $ sha1sum /tmp/256M
-> 7fc628811a31ab87b0502dab3ed8d3ef07565885  /tmp/256M
->
-> $ sha224sum /tmp/256M
-> 2d261c11ba05b3a62e0efeab51c307d9933426c7e18204683ef3da54  /tmp/256M
->
-> $ sha256sum /tmp/256M
-> 5716d1700ee35c92ca5ca5b466639e9c36eed3f1447c1aec27f16d0fe113f94d  /tmp/256M
->
-> $ sha384sum /tmp/256M
-> fb6bc62afa1096dcd3b870e7d2546b7a5a177b5f2bbd5c9759218182454709e0c504a2d9c26404e04aa8010a291b7f1c  /tmp/256M
->
-> $ sha512sum /tmp/256M
-> fbceda7be34836fe857781656318ecd5b457a833a24c8736d5b8ef8d07e1950eebcdb140eebe4f12b5ff59586f7eb1c64fa95869c63dd9e4703d91261093c5c9  /tmp/256M
->
-> Generate HASH Values Using the Hardware Engine
->
-> Use the following commands to generate HASH values for a 256MB file using
-> various SHA algorithms with the ast_crypto_engine hardware engine:
->
-> root@ast2700-default:~# openssl dgst -sha1 -engine ast_crypto_engine /tmp/256M
-> Engine "ast_crypto_engine" set.
-> SHA1(/tmp/256M)= 7fc628811a31ab87b0502dab3ed8d3ef07565885
->
-> root@ast2700-default:~# openssl dgst -sha224 -engine ast_crypto_engine /tmp/256M
-> Engine "ast_crypto_engine" set.
-> SHA2-224(/tmp/256M)= 2d261c11ba05b3a62e0efeab51c307d9933426c7e18204683ef3da54
->
-> root@ast2700-default:~# openssl dgst -sha256 -engine ast_crypto_engine /tmp/256M
-> Engine "ast_crypto_engine" set.
-> SHA2-256(/tmp/256M)= 5716d1700ee35c92ca5ca5b466639e9c36eed3f1447c1aec27f16d0fe113f94d
->
-> root@ast2700-default:~# openssl dgst -sha384 -engine ast_crypto_engine /tmp/256M
-> Engine "ast_crypto_engine" set.
-> SHA2-384(/tmp/256M)= fb6bc62afa1096dcd3b870e7d2546b7a5a177b5f2bbd5c9759218182454709e0c504a2d9c26404e04aa8010a291b7f1c
->
-> root@ast2700-default:~# openssl dgst -sha512 -engine ast_crypto_engine /tmp/256M
-> Engine "ast_crypto_engine" set.
-> SHA2-512(/tmp/256M)= fbceda7be34836fe857781656318ecd5b457a833a24c8736d5b8ef8d07e1950eebcdb140eebe4f12b5ff59586f7eb1c64fa95869c63dd9e4703d91261093c5c9
->
-> The HASH values generated here should exactly match those computed on the host
-> machine using sha shell commands, verifying both the correctness of the
-> hardware-accelerated results and the functionality of the ast_crypto_engine.
->
-> Jamin Lin (28):
->   hw/misc/aspeed_hace: Remove unused code for better readability
->   hw/misc/aspeed_hace: Improve readability and consistency in variable
->     naming
->   hw/misc/aspeed_hace: Ensure HASH_IRQ is always set to prevent firmware
->     hang
->   hw/misc/aspeed_hace: Extract direct mode hash buffer setup into helper
->     function
->   hw/misc/aspeed_hace: Extract SG-mode hash buffer setup into helper
->     function
->   hw/misc/aspeed_hace: Extract digest write and iov unmap into helper
->     function
->   hw/misc/aspeed_hace: Extract non-accumulation hash execution into
->     helper function
->   hw/misc/aspeed_hace: Extract accumulation-mode hash execution into
->     helper function
->   hw/misc/aspeed_hace: Introduce 64-bit hash source address helper
->     function
->   hw/misc/aspeed_hace: Rename R_HASH_DEST to R_HASH_DIGEST and introduce
->     64-bit hash digest address helper
->   hw/misc/aspeed_hace: Support accumulative mode for direct access mode
->   hw/misc/aspeed_hace: Move register size to instance class and
->     dynamically allocate regs
->   hw/misc/aspeed_hace: Add support for source, digest, key buffer 64 bit
->     addresses
->   hw/misc/aspeed_hace: Support DMA 64 bits dram address
->   hw/misc/aspeed_hace: Add trace-events for better debugging
->   hw/misc/aspeed_hace: Support to dump plaintext and digest for better
->     debugging
->   tests/qtest: Reorder aspeed test list
->   test/qtest: Introduce a new aspeed-hace-utils.c to place common
->     testcases
->   test/qtest/hace: Specify explicit array sizes for test vectors and
->     hash results
->   test/qtest/hace: Adjust test address range for AST1030 due to SRAM
->     limitations
->   test/qtest/hace: Add SHA-384 test cases for ASPEED HACE model
->   test/qtest/hace: Add SHA-384 tests for AST2600
->   test/qtest/hace: Add tests for AST1030
->   test/qtest/hace: Update source data and digest data type to 64-bit
->   test/qtest/hace: Support 64-bit source and digest addresses for
->     AST2700
->   test/qtest/hace: Support to test upper 32 bits of digest and source
->     addresses
->   test/qtest/hace: Support to validate 64-bit hmac key buffer addresses
->   test/qtest/hace: Add tests for AST2700
->
->  include/hw/misc/aspeed_hace.h   |  11 +-
->  tests/qtest/aspeed-hace-utils.h |  84 +++++
->  hw/misc/aspeed_hace.c           | 479 +++++++++++++++--------
->  tests/qtest/aspeed-hace-utils.c | 646 ++++++++++++++++++++++++++++++++
->  tests/qtest/aspeed_hace-test.c  | 577 +++++-----------------------
->  tests/qtest/ast2700-hace-test.c |  98 +++++
->  hw/misc/trace-events            |   8 +
->  tests/qtest/meson.build         |  13 +-
->  8 files changed, 1279 insertions(+), 637 deletions(-)
->  create mode 100644 tests/qtest/aspeed-hace-utils.h
->  create mode 100644 tests/qtest/aspeed-hace-utils.c
->  create mode 100644 tests/qtest/ast2700-hace-test.c
+The vfio-user protocol allows for implementing (PCI) devices in another
+userspace process; SPDK is one example, which includes a virtual NVMe
+implementation.
 
-For qtest:
+The vfio-user framework consists of 3 parts:
+ 1) The VFIO user protocol specification.
+ 2) A client - the VFIO device in QEMU that encapsulates VFIO messages
+    and sends them to the server.
+ 3) A server - a remote process that emulates a device.
 
-Acked-by: Fabiano Rosas <farosas@suse.de>
+This patchset implements parts 1 and 2.
+
+It has been tested against libvfio-user test servers as well as SPDK.
+
+A previous version of this series can be found at
+https://lore.kernel.org/qemu-devel/047d7d93-3fa5-41db-bdbf-3c14c8b47455@redhat.com/T/#t
+
+Changes since last series:
+
+ - rebased on v5 of vfio: return mr from vfio_get_xlat_addr
+ - added docs for VFIOIOMMUClass
+ - separated out vfio pci exports and renamed to vfio_pci namespace
+
+John Levon (27):
+  vfio: add more VFIOIOMMUClass docs
+  vfio: move more cleanup into vfio_pci_put_device()
+  vfio: move config space read into vfio_pci_config_setup()
+  vfio: refactor out IRQ signalling setup
+  vfio: export PCI helpers needed for vfio-user
+  vfio: enable per-IRQ MSI-X masking
+  vfio: add per-region fd support
+  vfio: mark posted writes in region write callbacks
+  vfio/container: pass MemoryRegion to DMA operations
+  vfio-user: add vfio-user class and container
+  vfio-user: connect vfio proxy to remote server
+  vfio-user: implement message receive infrastructure
+  vfio-user: implement message send infrastructure
+  vfio-user: implement VFIO_USER_DEVICE_GET_INFO
+  vfio-user: implement VFIO_USER_DEVICE_GET_REGION_INFO
+  vfio-user: implement VFIO_USER_REGION_READ/WRITE
+  vfio-user: set up PCI in vfio_user_pci_realize()
+  vfio-user: implement VFIO_USER_DEVICE_GET/SET_IRQ*
+  vfio-user: forward MSI-X PBA BAR accesses to server
+  vfio-user: set up container access to the proxy
+  vfio-user: implement VFIO_USER_DEVICE_RESET
+  vfio-user: implement VFIO_USER_DMA_MAP/UNMAP
+  vfio-user: implement VFIO_USER_DMA_READ/WRITE
+  vfio-user: add 'x-msg-timeout' option
+  vfio-user: support posted writes
+  vfio-user: add coalesced posted writes
+  docs: add vfio-user documentation
+
+Steve Sistare (1):
+  vfio: return mr from vfio_get_xlat_addr
+
+Thanos Makatos (1):
+  vfio-user: introduce vfio-user protocol specification
+
+ MAINTAINERS                           |   10 +-
+ docs/devel/index-internals.rst        |    1 +
+ docs/devel/vfio-user.rst              | 1522 +++++++++++++++++++++++++
+ docs/system/device-emulation.rst      |    1 +
+ docs/system/devices/vfio-user.rst     |   24 +
+ meson.build                           |    1 +
+ hw/vfio-user/container.h              |   27 +
+ hw/vfio-user/device.h                 |   27 +
+ hw/vfio-user/protocol.h               |  245 ++++
+ hw/vfio-user/proxy.h                  |  137 +++
+ hw/vfio-user/trace.h                  |    1 +
+ hw/vfio/pci.h                         |   16 +
+ include/hw/vfio/vfio-container-base.h |   70 +-
+ include/hw/vfio/vfio-device.h         |   15 +-
+ include/hw/vfio/vfio-region.h         |    2 +
+ include/system/memory.h               |   19 +-
+ hw/vfio-user/container.c              |  348 ++++++
+ hw/vfio-user/device.c                 |  389 +++++++
+ hw/vfio-user/pci.c                    |  428 +++++++
+ hw/vfio-user/proxy.c                  | 1314 +++++++++++++++++++++
+ hw/vfio/container-base.c              |    4 +-
+ hw/vfio/container.c                   |    3 +-
+ hw/vfio/device.c                      |   57 +-
+ hw/vfio/iommufd.c                     |    3 +-
+ hw/vfio/listener.c                    |   39 +-
+ hw/vfio/pci.c                         |  195 ++--
+ hw/vfio/region.c                      |   10 +-
+ hw/virtio/vhost-vdpa.c                |    9 +-
+ system/memory.c                       |   32 +-
+ hw/meson.build                        |    1 +
+ hw/vfio-user/meson.build              |   11 +
+ hw/vfio-user/trace-events             |   18 +
+ hw/vfio/trace-events                  |    6 +-
+ meson_options.txt                     |    2 +
+ scripts/meson-buildoptions.sh         |    4 +
+ 35 files changed, 4845 insertions(+), 146 deletions(-)
+ create mode 100644 docs/devel/vfio-user.rst
+ create mode 100644 docs/system/devices/vfio-user.rst
+ create mode 100644 hw/vfio-user/container.h
+ create mode 100644 hw/vfio-user/device.h
+ create mode 100644 hw/vfio-user/protocol.h
+ create mode 100644 hw/vfio-user/proxy.h
+ create mode 100644 hw/vfio-user/trace.h
+ create mode 100644 hw/vfio-user/container.c
+ create mode 100644 hw/vfio-user/device.c
+ create mode 100644 hw/vfio-user/pci.c
+ create mode 100644 hw/vfio-user/proxy.c
+ create mode 100644 hw/vfio-user/meson.build
+ create mode 100644 hw/vfio-user/trace-events
+
+-- 
+2.43.0
+
 
