@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C00AABDF68
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 17:45:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A09ABDF7A
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 17:48:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHP9C-0006UH-OY; Tue, 20 May 2025 11:44:54 -0400
+	id 1uHPCY-0000Io-NS; Tue, 20 May 2025 11:48:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uHP9A-0006TO-Lp
- for qemu-devel@nongnu.org; Tue, 20 May 2025 11:44:52 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uHPCS-0000I2-MB
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 11:48:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uHP98-0001l3-IH
- for qemu-devel@nongnu.org; Tue, 20 May 2025 11:44:52 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uHPCR-0002MQ-4N
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 11:48:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747755888;
+ s=mimecast20190719; t=1747756093;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=aNlsCtZE0r3OHxgKyDXuSNuJvP4hqieubTiXEhLmsg8=;
- b=bR+0WpQKHd03h1V0uOJjVgSfaDr0E48Pm+OSrUm56hVYywzZqDLsdY20mEpGz97Gb3LZt6
- yXDkwJ6M2cTEbVzYYbuDM/OLiEJkLxTr5tt2onB+N09VuwkYq0f5ztuGSgXsv7N1vIqMzY
- QkcmAVlLTHbSGlPaFt9E+CfkCoxH6/k=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ bh=AkuJockVPYKRQlGQhJ4Vx7XQ+h/iMB7KaxIr56ZY0js=;
+ b=M17pMLEGkfsh9PHRQrWiKgJ8H94F/vPv1eb/ZDm7W+YIx7Tky5d5WsactOEzZa9JoQDegU
+ 65R00fjXC1vtz97Nr7QyEBkSkJCjKlrh6mOv8lwTXCs5X44fbCFyvAI5eAYTY3VOyUlI+C
+ ie4N2o2SawnphzAc9RCenffC/iwkXzQ=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-647-G2eZDXyaN5uKLSYjJHj7Jg-1; Tue,
- 20 May 2025 11:44:45 -0400
-X-MC-Unique: G2eZDXyaN5uKLSYjJHj7Jg-1
-X-Mimecast-MFC-AGG-ID: G2eZDXyaN5uKLSYjJHj7Jg_1747755883
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-335-E1F83hP7NJKlgsP_kKAg4Q-1; Tue,
+ 20 May 2025 11:48:08 -0400
+X-MC-Unique: E1F83hP7NJKlgsP_kKAg4Q-1
+X-Mimecast-MFC-AGG-ID: E1F83hP7NJKlgsP_kKAg4Q_1747756086
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 4C8F61955E79; Tue, 20 May 2025 15:44:42 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 0ABC719560AA; Tue, 20 May 2025 15:48:06 +0000 (UTC)
 Received: from redhat.com (unknown [10.2.16.201])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2861819560A3; Tue, 20 May 2025 15:44:36 +0000 (UTC)
-Date: Tue, 20 May 2025 10:44:34 -0500
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6698819560AD; Tue, 20 May 2025 15:48:00 +0000 (UTC)
+Date: Tue, 20 May 2025 10:47:57 -0500
 From: Eric Blake <eblake@redhat.com>
 To: Fiona Ebner <f.ebner@proxmox.com>
 Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, kwolf@redhat.com, 
@@ -50,15 +50,17 @@ Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, kwolf@redhat.com,
  stefanha@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru, 
  xiechanglong.d@gmail.com, wencongyang2@huawei.com, berto@igalia.com,
  fam@euphon.net, ari@tuxera.com
-Subject: Re: [PATCH v2 00/24] block: do not drain while holding the graph lock
-Message-ID: <3izqd7cy467tul2k6xuv74jwbbl65hi7gmknhl5m33asm3zaii@3mtbilfwfszt>
+Subject: Re: [PATCH v2 06/24] block: mark change_aio_ctx() callback and
+ instances as GRAPH_RDLOCK(_PTR)
+Message-ID: <ujbo2q7weoe7irynye5xbcah3nrst73imvty6rhgdzgtqtdmrn@rmvdqm3iabxo>
 References: <20250520103012.424311-1-f.ebner@proxmox.com>
+ <20250520103012.424311-7-f.ebner@proxmox.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250520103012.424311-1-f.ebner@proxmox.com>
+In-Reply-To: <20250520103012.424311-7-f.ebner@proxmox.com>
 User-Agent: NeoMutt/20250404
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
@@ -84,26 +86,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 20, 2025 at 12:29:48PM +0200, Fiona Ebner wrote:
-> Previous discussion [0].
+On Tue, May 20, 2025 at 12:29:54PM +0200, Fiona Ebner wrote:
+> This is a small step in preparation to mark bdrv_drained_begin() as
+> GRAPH_UNLOCKED. More concretely, it is in preparatoin to move the
+
+preparation
+
+> drain out of bdrv_change_aio_context() and marking that function as
+> GRAPH_RDLOCK.
 > 
-
-> NOTE:
-> there are pre-existing test failures on current master, e.g. '240' for
-> all formats, '295 296 inactive-node-nbd luks-detached-header' for luks
-> and 'mirror-sparse' for raw. For me, the failures do not change after
-> this series.
-
-I have not yet reproduced the mirror-sparse failure locally; I suspect
-the culprit may be a difference in filesystems and how well (or not)
-SEEK_HOLE and FALLOC_FL_PUNCH_HOLE work on different filesystems.
-
-Can I get more details on the failure as you see it, so I can work on
-skipping the test when the filesystem does not support the test at
-hand?  (It might be better to reply in context to the pull request
-that introduced the file [2])
-
-[2] https://lists.gnu.org/archive/html/qemu-devel/2025-05/msg03623.html
+> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+> ---
+> 
 
 -- 
 Eric Blake, Principal Software Engineer
