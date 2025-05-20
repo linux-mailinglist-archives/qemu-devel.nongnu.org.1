@@ -2,89 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45CCCABE43D
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 22:00:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC7DCABE447
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 22:02:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHT8Y-0002re-Qb; Tue, 20 May 2025 16:00:30 -0400
+	id 1uHT9s-0004Ut-8r; Tue, 20 May 2025 16:01:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uHT8W-0002pP-BM
- for qemu-devel@nongnu.org; Tue, 20 May 2025 16:00:28 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uHT9f-0004Sr-2d
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 16:01:40 -0400
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uHT8Q-0007pD-CJ
- for qemu-devel@nongnu.org; Tue, 20 May 2025 16:00:28 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-2321c38a948so34484935ad.2
- for <qemu-devel@nongnu.org>; Tue, 20 May 2025 13:00:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uHT9U-0007yk-ID
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 16:01:35 -0400
+Received: by mail-pj1-x102f.google.com with SMTP id
+ 98e67ed59e1d1-30ea559c18aso4485748a91.2
+ for <qemu-devel@nongnu.org>; Tue, 20 May 2025 13:01:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747771217; x=1748376017; darn=nongnu.org;
+ d=linaro.org; s=google; t=1747771285; x=1748376085; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=GuujTtlKxG0Vdawkfcvu+aUrsLj2lJNKbbFDPjMIYSY=;
- b=HYo8B01n2sZD1MuRIDKyfIo1W7R2ZMQtGVIdZPVaKh4FynqejtaJUE7rrfsmaGKonU
- +hEumGz7zlA7ILpH319TvPJ+HdmsuiwxNBrUylj5SsOwqTvQVhLB//+xB4bK3qWx3Wqf
- 44zhFrKKE+zzt1ZY43Hjvm6RUuuS5NKSwSDI+39Oocac8AGM+5P9eEwQfGVsO18ZzZvy
- HrSiZ0rHFwppXEiNHnpVkTVJ7cdMK0xQS7z5IrTU3CysqKqdzEfRd1R2uMoDickFktLA
- fh0E9zF53a1AR3uHThT6fvY7Cx4dwMJwoEf2jwLZwHAo3h8AJjl3wG8uwN4rr9eRyNKS
- lt3g==
+ bh=JSx7/myuJN6RoX/DrlMn7WxYYSRNtaC2cA12R1bsSUw=;
+ b=hsFtnRtQgqsm74J8gMpqveOOi4e/IAoYJZn9Sz8FLeUx756nqzFW2zYs8oDhOgyeuF
+ f5wo+LxeTmJxt4RRuSnUIoNRgX8plDd16LoW58mVtp0kUBLzGl54SfPNwBzjLAeTGgtv
+ nVPm9/hjvFCWlyTS5R51UIAnE8m+3FISNFc5+3XtPNAwTtiw8I9KM4fS980GX1NW3loN
+ XrT07GH+A2QvKMVlLmztF0bqywj4HBBsS71oZJC+VNnWQDb7uyqgOJ2DpqTpub1oGwuN
+ 61wVZaK3pWzLqEQ9BdT8brZKykfvei61bZjg7PVto6kDvIhPx7tfZsu1iSGWvkaVbAC5
+ trCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747771217; x=1748376017;
+ d=1e100.net; s=20230601; t=1747771285; x=1748376085;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=GuujTtlKxG0Vdawkfcvu+aUrsLj2lJNKbbFDPjMIYSY=;
- b=H7aKGujapP38m2lphm28pYXkeyFbROXz/cRGtBh7BHwayRbndJlsCpGrKoJQ26MCQE
- 9DThS/8B/B/5WnhLDqHCuLR8++KRIzLSmwr6P0vlWlM1eZ0bxH33CQMUCzbkrQf+50GD
- Tu2Gv8MVL1ERm/q4ZD1Ne+P+Z3tCq3NAfKqBUmqeWRq5XmABz89+S+qAfch5QQEdoEFm
- Rwb+c9DxgNmLq2Pkl6fyDeqaEhSsnuRUVsBzfjO52oEMtU1uj7HxEF6LFlPPrTeTrewO
- s4KHGlywVVueb1pbZXfhSdxje3Uu2fgoWNehFwu9GhY59c+z0gLUfFUuGLwXAVuzCDzY
- utGg==
+ bh=JSx7/myuJN6RoX/DrlMn7WxYYSRNtaC2cA12R1bsSUw=;
+ b=H5YWWuMCWCvJ/uv287m99Qjy66MtbpYo7fFXHxFmZ8oklfluQshcQX7du7ffPGUg90
+ uRO710mb0vRri9YJklQMN6/32WIYn3bvZ5wAFOOILC3kNPaVh8l7iyLP9y0Ji6ejuhUB
+ jNd0xoFqkksNBcy5/cBQvoElVFRJp0ohzf1Od9GprgRpHeKJkDVxnPwgrz1CvDhcq3C5
+ UKUwqU/UW45svnQk9A27Mqqs1xn7UBhw7/xKiGIQRbuUGmc1LnELpiVNoiuaSLoXKdiZ
+ GVX4Wa2eh0P2gCiPbAYloGXZwHZKMQrvKbOkXfUmbphOrtZlczD6lwo7884J1dIEF/T2
+ P3Qg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUVvPfi1NtLnowQrblEAdHev/EDbGylXac9uXaVS51JtIvDWNUoW6tHGuU2VU8azvGuZjpM8zdII0M6@nongnu.org
-X-Gm-Message-State: AOJu0YyYyKEwuhHvKORC+yt5oPgnW4CKkf+6THDjR3HNi8XwQX0k6C+Q
- tbKbNbQnuV0YrnVpICCAB2taA8n/qEoMy390LS2QjC6S8Rkcx44bkKnbCiJGyGeHaUI=
-X-Gm-Gg: ASbGncvXoq3lIJQbDsLN6eVDsQoQ7yYYAQjHIc53DPPIUPoHCLjorzJKkDj9x/fhYaW
- gQUu59F6KeYF9J5RLBtH9ttVcuHAvaEj2Tr0Zb1kdPn1Id6w/tjqn7MCq+eJsyP2Z4B5uJx6jFg
- 4KYi0IbOXDYV/sTVlhW3dQCi88wv8q77tyqea/yf5GhLiP8aEgvsJW+hydwdxYyrVlz1uRfkxFp
- vO/84pR7/0j8pNMwLILjX+4YxijdiCQJE5UE3Xm4JBid0UkZrWHtnS+uIR8ZHSL3/4Yntd+zy/8
- 074oi03H/jF5SDWu6LBiUUftSnyjfNzOW/wF0PngVdN3zXRfstihPdSeovBN1HOyVDdNT0kuwk0
- ygU+8A9N3IOcOUyMHMFazTvNScvz6PQ==
-X-Google-Smtp-Source: AGHT+IGzqC0k8AxpmtuO8c9/97gS9sRlZDWsr0SGPhUElNPFsIWbTfGric44UFyXtx4yKEkSxw7CiA==
-X-Received: by 2002:a17:902:fc46:b0:231:bf74:e1df with SMTP id
- d9443c01a7336-231de3515demr238550995ad.7.1747771216649; 
- Tue, 20 May 2025 13:00:16 -0700 (PDT)
-Received: from ?IPV6:2804:7f0:b401:d47f:6989:b93e:2caa:f174?
- ([2804:7f0:b401:d47f:6989:b93e:2caa:f174])
+ AJvYcCXwMA8vyW7TuZhtXzlyOjFfw6BwVvnJFUO/bvwUfZ5O90L8zFdn11X90V5hZH19kQmOCsS814yvVOR6@nongnu.org
+X-Gm-Message-State: AOJu0YzZag5wbg7ReS/rVGKAl4BMPuALl3n3Tsap+Nvs1VIz16WJ7h19
+ qsSFNwGmodsFkEvTMgGdqDV9GpgfriLimWum3qwMZlW+a9LnYXLb8C62EP+Ds3kk5IU=
+X-Gm-Gg: ASbGncufWJ0eX/20KIw96PTRwKueHrVc8of7s2TG3p0PNSUzsXGDV8EWLoOQ+owqqQX
+ RP2ezLuPrc2/yoN5mlunzZW5Rud5rLMeP3gqtjwIlGQGUezwJU3aHMlnrNKQqCALd8Jm/+9bC0x
+ v2odzvu5eUSxPmom2s4EM634/jasYjAn6j9xH7AO0C6IJZWZuhxKW9FyMiSBooZvYWYEXE7U6pR
+ AQ2vhx7rHwhTvhd2KAuk+aeGFKvMbLL87YB+coPWwcyoF8EogoCh+t1GrO5U75X4b1kWO127/O2
+ TERYdPizLotV6vFhDE6YMH7UlE5bMbNZfZrnrxobksMk3OQXStenWBQI4YbRwr/9
+X-Google-Smtp-Source: AGHT+IEymaMcbXywX8h5oNSlCPlVs2f/X3jT5XYD/wLnQ5lPzVmNTiR+j1q0pf+MUmJ2TYsgIkC++g==
+X-Received: by 2002:a17:90b:1343:b0:30e:9349:2d93 with SMTP id
+ 98e67ed59e1d1-30e93493283mr27945335a91.28.1747771284780; 
+ Tue, 20 May 2025 13:01:24 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-231d4ebaef0sm80368435ad.203.2025.05.20.13.00.12
+ 98e67ed59e1d1-30f3638649esm2151166a91.13.2025.05.20.13.01.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 May 2025 13:00:16 -0700 (PDT)
-Message-ID: <9b996b3a-cc60-499e-a8a6-028f16156180@linaro.org>
-Date: Tue, 20 May 2025 17:00:03 -0300
+ Tue, 20 May 2025 13:01:23 -0700 (PDT)
+Message-ID: <dbf71afe-1ae2-4110-8f83-fe1b1823a774@linaro.org>
+Date: Tue, 20 May 2025 13:01:22 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 13/22] hw/i386/acpi-build: Introduce and use
- acpi_get_pci_host
-To: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org, peter.maydell@linaro.org,
- imammedo@redhat.com, anisinha@redhat.com, mst@redhat.com,
- shannon.zhaosl@gmail.com
-Cc: pbonzini@redhat.com, Jonathan.Cameron@huawei.com, philmd@linaro.org
-References: <20250514170431.2786231-1-eric.auger@redhat.com>
- <20250514170431.2786231-14-eric.auger@redhat.com>
+Subject: Re: [PATCH v5 23/25] tests: add plugin asserting correctness of
+ discon event's to_pc
+To: Julian Ganz <neither@nut.email>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>, Mahmoud Mandour <ma.mandourr@gmail.com>
+References: <cover.1747666625.git.neither@nut.email>
+ <2a30a629012f39f8495415f87568fe9b3a0eb32b.1747666625.git.neither@nut.email>
 Content-Language: en-US
-From: Gustavo Romero <gustavo.romero@linaro.org>
-In-Reply-To: <20250514170431.2786231-14-eric.auger@redhat.com>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <2a30a629012f39f8495415f87568fe9b3a0eb32b.1747666625.git.neither@nut.email>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=gustavo.romero@linaro.org; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x102f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,179 +103,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Eric,
-
-On 5/14/25 14:01, Eric Auger wrote:
-> pcihp acpi_set_pci_info() generic code currently uses
-> acpi_get_i386_pci_host() to retrieve the pci host bridge.
+On 5/19/25 8:24 AM, Julian Ganz wrote:
+> We recently introduced plugin API for the registration of callbacks for
+> discontinuity events, specifically for interrupts, exceptions and host
+> call events. The callback receives various bits of information,
+> including the VCPU index and PCs.
 > 
-> Let's rename acpi_get_i386_pci_host into acpi_get_pci_host and
-> move it in pci generic code.
+> This change introduces a test plugin asserting the correctness of that
+> behaviour in cases where this is possible with reasonable effort. Since
+> instruction PCs are recorded at translation blocks translation time and
+> a TB may be used in multiple processes running in distinct virtual
+> memory, the plugin allows comparing not full addresses but a subset of
+> address bits via the `compare-addr-bits` option.
 > 
-> The helper is augmented with the support of ARM GPEX.
-> 
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> Signed-off-by: Julian Ganz <neither@nut.email>
 > ---
->   include/hw/acpi/pci.h |  2 ++
->   hw/acpi/pci.c         | 20 ++++++++++++++++++++
->   hw/acpi/pcihp.c       |  3 ++-
->   hw/i386/acpi-build.c  | 24 ++++--------------------
->   4 files changed, 28 insertions(+), 21 deletions(-)
 > 
-> diff --git a/include/hw/acpi/pci.h b/include/hw/acpi/pci.h
-> index 4dca22c0e2..310cbd02db 100644
-> --- a/include/hw/acpi/pci.h
-> +++ b/include/hw/acpi/pci.h
-> @@ -41,4 +41,6 @@ void build_pci_bridge_aml(AcpiDevAmlIf *adev, Aml *scope);
->   
->   void build_srat_generic_affinity_structures(GArray *table_data);
->   
-> +Object *acpi_get_pci_host(void);
-> +
->   #endif
-> diff --git a/hw/acpi/pci.c b/hw/acpi/pci.c
-> index d511a85029..4191886ebe 100644
-> --- a/hw/acpi/pci.c
-> +++ b/hw/acpi/pci.c
-> @@ -26,6 +26,7 @@
->   #include "qemu/osdep.h"
->   #include "qemu/error-report.h"
->   #include "qom/object_interfaces.h"
-> +#include "qom/object.h"
->   #include "qapi/error.h"
->   #include "hw/boards.h"
->   #include "hw/acpi/aml-build.h"
-> @@ -33,6 +34,9 @@
->   #include "hw/pci/pci_bridge.h"
->   #include "hw/pci/pci_device.h"
->   #include "hw/pci/pcie_host.h"
-> +#include "hw/pci-host/i440fx.h"
-> +#include "hw/pci-host/q35.h"
-> +#include "hw/pci-host/gpex.h"
->   
->   /*
->    * PCI Firmware Specification, Revision 3.0
-> @@ -301,3 +305,19 @@ void build_srat_generic_affinity_structures(GArray *table_data)
->       object_child_foreach_recursive(object_get_root(), build_acpi_generic_port,
->                                      table_data);
->   }
-> +
-> +Object *acpi_get_pci_host(void)
-> +{
-> +    Object *host;
-> +
-> +    host = object_resolve_type_unambiguous(TYPE_I440FX_PCI_HOST_BRIDGE, NULL);
-> +    if (host) {
-> +        return host;
-> +    }
-> +    host = object_resolve_type_unambiguous(TYPE_Q35_HOST_DEVICE, NULL);
-> +    if (host) {
-> +        return host;
-> +    }
-> +    host = object_resolve_type_unambiguous(TYPE_GPEX_HOST, NULL);
-> +    return host;
-> +}
-> diff --git a/hw/acpi/pcihp.c b/hw/acpi/pcihp.c
-> index 942669ea89..d800371ddc 100644
-> --- a/hw/acpi/pcihp.c
-> +++ b/hw/acpi/pcihp.c
-> @@ -36,6 +36,7 @@
->   #include "hw/pci-bridge/xio3130_downstream.h"
->   #include "hw/i386/acpi-build.h"
->   #include "hw/acpi/acpi.h"
-> +#include "hw/acpi/pci.h"
->   #include "hw/pci/pci_bus.h"
->   #include "migration/vmstate.h"
->   #include "qapi/error.h"
-> @@ -102,7 +103,7 @@ static void *acpi_set_bsel(PCIBus *bus, void *opaque)
->   static void acpi_set_pci_info(bool has_bridge_hotplug)
->   {
->       static bool bsel_is_set;
-> -    Object *host = acpi_get_i386_pci_host();
-> +    Object *host = acpi_get_pci_host();
->       PCIBus *bus;
->       BSELInfo info = { .bsel_alloc = ACPI_PCIHP_BSEL_DEFAULT,
->                         .has_bridge_hotplug = has_bridge_hotplug };
-> diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-> index 06b4b8eed4..bcfba2ccb3 100644
-> --- a/hw/i386/acpi-build.c
-> +++ b/hw/i386/acpi-build.c
-> @@ -269,27 +269,11 @@ static void acpi_get_misc_info(AcpiMiscInfo *info)
->   #endif
->   }
->   
-> -/*
-> - * Because of the PXB hosts we cannot simply query TYPE_PCI_HOST_BRIDGE.
-> - * On i386 arch we only have two pci hosts, so we can look only for them.
-> - */
-> -Object *acpi_get_i386_pci_host(void)
-> -{
-> -    PCIHostState *host;
-> -
-> -    host = PCI_HOST_BRIDGE(object_resolve_path("/machine/i440fx", NULL));
-> -    if (!host) {
-> -        host = PCI_HOST_BRIDGE(object_resolve_path("/machine/q35", NULL));
-> -    }
-> -
-> -    return OBJECT(host);
-> -}
-> -
+> Pierrick: I did implement the changes you requested, but I did not add
+> your Reviewed-By because I felt the changes were not trivial enough to
+> not require a new, coarse review.
+>
 
-It's also possible to add a child prop to the TYPE_GPEX_HOST in create_pcie, like:
+Looks good to me, thanks.
 
-@@ -1510,6 +1510,7 @@ static void create_pcie(VirtMachineState *vms)
-      MachineClass *mc = MACHINE_GET_CLASS(ms);
-  
-      dev = qdev_new(TYPE_GPEX_HOST);
-+    object_property_add_child(OBJECT(vms), "gpex", OBJECT(dev));
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-then follow to logic in acpi_get_i386_pci_host via:
+Regarding the issue with the same tb being mapped at different virtual 
+addresses, I'm ok with the current solution of comparing only page bits.
 
-PCI_HOST_BRIDGE(object_resolve_path("/machine/gpex", NULL))
+That said, a better solution could be to compare physical addresses when 
+a discon is detected (on plugin side), and confirm it's really a 
+discontinuity or just a different mapping. With this approach, it's not 
+even needed to have a dedicated option, and there would be no false 
+positive in the plugin. It's just a suggestion though.
 
-but I like better your solution of using the final class types, so:
-
-Reviewed-by: Gustavo Romero <gustavo.romero@linaro.org>
-
-
-Cheers,
-Gustavo
-
->   static void acpi_get_pci_holes(Range *hole, Range *hole64)
->   {
->       Object *pci_host;
->   
-> -    pci_host = acpi_get_i386_pci_host();
-> +    pci_host = acpi_get_pci_host();
->   
->       if (!pci_host) {
->           return;
-> @@ -1245,7 +1229,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
->   
->       sb_scope = aml_scope("\\_SB");
->       {
-> -        Object *pci_host = acpi_get_i386_pci_host();
-> +        Object *pci_host = acpi_get_pci_host();
->   
->           if (pci_host) {
->               PCIBus *pbus = PCI_HOST_BRIDGE(pci_host)->bus;
-> @@ -1306,7 +1290,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
->       if (pm->pcihp_bridge_en || pm->pcihp_root_en) {
->           bool has_pcnt;
->   
-> -        Object *pci_host = acpi_get_i386_pci_host();
-> +        Object *pci_host = acpi_get_pci_host();
->           PCIBus *b = PCI_HOST_BRIDGE(pci_host)->bus;
->   
->           scope = aml_scope("\\_SB.PCI0");
-> @@ -1946,7 +1930,7 @@ static bool acpi_get_mcfg(AcpiMcfgInfo *mcfg)
->       Object *pci_host;
->       QObject *o;
->   
-> -    pci_host = acpi_get_i386_pci_host();
-> +    pci_host = acpi_get_pci_host();
->       if (!pci_host) {
->           return false;
->       }
-
+Regards,
+Pierrick
 
