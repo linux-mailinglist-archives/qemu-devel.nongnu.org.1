@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CEB4ABD700
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 13:36:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E5F6ABD6DB
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 13:32:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHLBr-000829-FI; Tue, 20 May 2025 07:31:23 -0400
+	id 1uHLBs-00082K-8C; Tue, 20 May 2025 07:31:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <magnuskulke@linux.microsoft.com>)
- id 1uHLBl-000818-LB
- for qemu-devel@nongnu.org; Tue, 20 May 2025 07:31:17 -0400
+ id 1uHLBp-000827-Hp
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 07:31:21 -0400
 Received: from linux.microsoft.com ([13.77.154.182])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <magnuskulke@linux.microsoft.com>) id 1uHLBj-0001AI-GT
- for qemu-devel@nongnu.org; Tue, 20 May 2025 07:31:17 -0400
+ (envelope-from <magnuskulke@linux.microsoft.com>) id 1uHLBn-0001B7-0m
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 07:31:21 -0400
 Received: from DESKTOP-TUU1E5L.fritz.box (unknown [172.201.77.43])
- by linux.microsoft.com (Postfix) with ESMTPSA id 182822067887;
- Tue, 20 May 2025 04:31:10 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 182822067887
+ by linux.microsoft.com (Postfix) with ESMTPSA id 9C621206788F;
+ Tue, 20 May 2025 04:31:14 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 9C621206788F
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1747740674;
- bh=w1BvluDl1fz7hFalZU7oqAiLldLQh5M2Touk4/f4rWE=;
+ s=default; t=1747740677;
+ bh=kiSwBxsrpREHcCNUamJV6d9nNzOZx4WMReNeya8ItkI=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=E9J4tCYN4AzeinItrxYtz++T22ftQ+uukBQth0eX0cH7L9KWptVMDQ3uR5EpD7fQe
- Of19uQeQrdNT37po59BrMajMclNIVwiDCZ3VDhrkWEVLBiZSjM1s+ehLTDD464Hc6W
- nVIfcOXNM9myAqfDbFosn0iJklOAFCfh+F165uyE=
+ b=jl0tEYQuslvgpRIxrz8I2ULrZUEwlPpZNCfiDNfEByJZQL6yFT7dhaoBWaJZKxS6l
+ 3J08AIE+zdYNqa+tuboywckpbBA32A7py1pjl3HKTPH0IBFSYCeLBu0CJBU0A+KMQ5
+ pKgPr+DIYDIIAdhgiB0yZ1l+VnALOuwncPiB47ZI=
 From: Magnus Kulke <magnuskulke@linux.microsoft.com>
 To: magnuskulke@microsoft.com,
 	qemu-devel@nongnu.org,
@@ -41,10 +41,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Cameron Esfahani <dirty@apple.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [RFC PATCH 02/25] target/i386/emulate: allow instruction decoding
- from stream
-Date: Tue, 20 May 2025 13:29:55 +0200
-Message-Id: <20250520113018.49569-3-magnuskulke@linux.microsoft.com>
+Subject: [RFC PATCH 03/25] target/i386/mshv: Add x86 decoder/emu implementation
+Date: Tue, 20 May 2025 13:29:56 +0200
+Message-Id: <20250520113018.49569-4-magnuskulke@linux.microsoft.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250520113018.49569-1-magnuskulke@linux.microsoft.com>
 References: <20250520113018.49569-1-magnuskulke@linux.microsoft.com>
@@ -74,146 +73,458 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce a new helper function to decode x86 instructions from a
-raw instruction byte stream. MSHV delivers an instruction stream in a
-buffer of the vm_exit message. It can be used to speed up MMIO
-emulation, since instructions do not have to be fetched and translated.
+The MSHV accelerator requires a x86 decoder/emulator in userland to
+emulate MMIO instructions. This change contains the implementations for
+the generalized i386 instruction decoder/emulator.
 
 Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
 ---
- target/i386/emulate/x86_decode.c | 32 +++++++++++++++++++++++++++-----
- target/i386/emulate/x86_decode.h | 11 +++++++++++
- target/i386/emulate/x86_emu.c    |  3 ++-
- target/i386/emulate/x86_emu.h    |  1 +
- 4 files changed, 41 insertions(+), 6 deletions(-)
+ include/system/mshv.h           |  32 ++++
+ target/i386/cpu.h               |   2 +-
+ target/i386/emulate/meson.build |   7 +-
+ target/i386/meson.build         |   2 +
+ target/i386/mshv/meson.build    |   7 +
+ target/i386/mshv/x86.c          | 330 ++++++++++++++++++++++++++++++++
+ 6 files changed, 377 insertions(+), 3 deletions(-)
+ create mode 100644 include/system/mshv.h
+ create mode 100644 target/i386/mshv/meson.build
+ create mode 100644 target/i386/mshv/x86.c
 
-diff --git a/target/i386/emulate/x86_decode.c b/target/i386/emulate/x86_decode.c
-index 88be9479a8..7a862b976e 100644
---- a/target/i386/emulate/x86_decode.c
-+++ b/target/i386/emulate/x86_decode.c
-@@ -60,6 +60,7 @@ static inline uint64_t decode_bytes(CPUX86State *env, struct x86_decode *decode,
-                                     int size)
- {
-     uint64_t val = 0;
-+    target_ulong va;
- 
-     switch (size) {
-     case 1:
-@@ -71,10 +72,16 @@ static inline uint64_t decode_bytes(CPUX86State *env, struct x86_decode *decode,
-         VM_PANIC_EX("%s invalid size %d\n", __func__, size);
-         break;
-     }
--    target_ulong va  = linear_rip(env_cpu(env), env->eip) + decode->len;
--    emul_ops->read_mem(env_cpu(env), &val, va, size);
+diff --git a/include/system/mshv.h b/include/system/mshv.h
+new file mode 100644
+index 0000000000..8380b92da2
+--- /dev/null
++++ b/include/system/mshv.h
+@@ -0,0 +1,32 @@
++/*
++ * QEMU MSHV support
++ *
++ * Copyright Microsoft, Corp. 2025
++ *
++ * Authors:
++ *  Ziqiao Zhou       <ziqiaozhou@microsoft.com>
++ *  Magnus Kulke      <magnuskulke@microsoft.com>
++ *  Jinank Jain       <jinankjain@microsoft.com>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ *
++ */
 +
-+	/* copy the bytes from the instruction stream, if available */
-+	if (decode->stream && decode->len + size <= decode->stream->len) {
-+		memcpy(&val, decode->stream->bytes + decode->len, size);
-+	} else {
-+		va = linear_rip(env_cpu(env), env->eip) + decode->len;
-+		emul_ops->fetch_instruction(env_cpu(env), &val, va, size);
-+	}
-     decode->len += size;
--    
++#ifndef QEMU_MSHV_INT_H
++#define QEMU_MSHV_INT_H
 +
-     return val;
- }
++#ifdef COMPILING_PER_TARGET
++#ifdef CONFIG_MSHV
++#define CONFIG_MSHV_IS_POSSIBLE
++#endif
++#else
++#define CONFIG_MSHV_IS_POSSIBLE
++#endif
++
++/* cpu */
++/* EFER (technically not a register) bits */
++#define EFER_LMA   ((uint64_t)0x400)
++#define EFER_LME   ((uint64_t)0x100)
++
++#endif
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 4f8ed8868e..db6a37b271 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2101,7 +2101,7 @@ typedef struct CPUArchState {
+     QEMUTimer *xen_periodic_timer;
+     QemuMutex xen_timers_lock;
+ #endif
+-#if defined(CONFIG_HVF)
++#if defined(CONFIG_HVF) || defined(CONFIG_MSHV)
+     X86LazyFlags lflags;
+     void *emu_mmio_buf;
+ #endif
+diff --git a/target/i386/emulate/meson.build b/target/i386/emulate/meson.build
+index 4edd4f462f..b6dafb6a5b 100644
+--- a/target/i386/emulate/meson.build
++++ b/target/i386/emulate/meson.build
+@@ -1,5 +1,8 @@
+-i386_system_ss.add(when: [hvf, 'CONFIG_HVF'], if_true: files(
++emulator_files = files(
+   'x86_decode.c',
+   'x86_emu.c',
+   'x86_flags.c',
+-))
++)
++
++i386_system_ss.add(when: [hvf, 'CONFIG_HVF'], if_true: emulator_files)
++i386_system_ss.add(when: 'CONFIG_MSHV', if_true: emulator_files)
+diff --git a/target/i386/meson.build b/target/i386/meson.build
+index c1aacea613..6097e5c427 100644
+--- a/target/i386/meson.build
++++ b/target/i386/meson.build
+@@ -11,6 +11,7 @@ i386_ss.add(when: 'CONFIG_SEV', if_true: files('host-cpu.c', 'confidential-guest
+ # x86 cpu type
+ i386_ss.add(when: 'CONFIG_KVM', if_true: files('host-cpu.c'))
+ i386_ss.add(when: 'CONFIG_HVF', if_true: files('host-cpu.c'))
++i386_ss.add(when: 'CONFIG_MSHV', if_true: files('host-cpu.c'))
  
-@@ -2076,9 +2083,8 @@ static void decode_opcodes(CPUX86State *env, struct x86_decode *decode)
-     }
- }
+ i386_system_ss = ss.source_set()
+ i386_system_ss.add(files(
+@@ -32,6 +33,7 @@ subdir('nvmm')
+ subdir('hvf')
+ subdir('tcg')
+ subdir('emulate')
++subdir('mshv')
  
--uint32_t decode_instruction(CPUX86State *env, struct x86_decode *decode)
-+static uint32_t decode_opcode(CPUX86State *env, struct x86_decode *decode)
- {
--    memset(decode, 0, sizeof(*decode));
-     decode_prefix(env, decode);
-     set_addressing_size(env, decode);
-     set_operand_size(env, decode);
-@@ -2088,6 +2094,22 @@ uint32_t decode_instruction(CPUX86State *env, struct x86_decode *decode)
-     return decode->len;
- }
- 
-+uint32_t decode_instruction(CPUX86State *env, struct x86_decode *decode)
+ target_arch += {'i386': i386_ss}
+ target_system_arch += {'i386': i386_system_ss}
+diff --git a/target/i386/mshv/meson.build b/target/i386/mshv/meson.build
+new file mode 100644
+index 0000000000..8ddaa7c11d
+--- /dev/null
++++ b/target/i386/mshv/meson.build
+@@ -0,0 +1,7 @@
++i386_mshv_ss = ss.source_set()
++
++i386_mshv_ss.add(files(
++  'x86.c',
++))
++
++i386_system_ss.add_all(when: 'CONFIG_MSHV', if_true: i386_mshv_ss)
+diff --git a/target/i386/mshv/x86.c b/target/i386/mshv/x86.c
+new file mode 100644
+index 0000000000..581710fd06
+--- /dev/null
++++ b/target/i386/mshv/x86.c
+@@ -0,0 +1,330 @@
++/*
++ * QEMU MSHV support
++ *
++ * Copyright Microsoft, Corp. 2025
++ *
++ * Authors:
++ *  Magnus Kulke      <magnuskulke@microsoft.com>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ *
++ */
++
++#include "qemu/osdep.h"
++
++#include "cpu.h"
++#include "emulate/x86_decode.h"
++#include "emulate/x86_emu.h"
++#include "qemu/typedefs.h"
++#include "qemu/error-report.h"
++#include "system/mshv.h"
++
++/* RW or Exec segment */
++static const uint8_t RWRX_SEGMENT_TYPE        = 0x2;
++static const uint8_t CODE_SEGMENT_TYPE        = 0x8;
++static const uint8_t EXPAND_DOWN_SEGMENT_TYPE = 0x4;
++
++typedef enum CpuMode {
++    REAL_MODE,
++    PROTECTED_MODE,
++    LONG_MODE,
++} CpuMode;
++
++static CpuMode cpu_mode(CPUState *cpu)
 +{
-+	memset(decode, 0, sizeof(*decode));
-+	return decode_opcode(env, decode);
++    enum CpuMode m = REAL_MODE;
++
++    if (x86_is_protected(cpu)) {
++        m = PROTECTED_MODE;
++
++        if (x86_is_long_mode(cpu)) {
++            m = LONG_MODE;
++        }
++    }
++
++    return m;
 +}
 +
-+uint32_t decode_instruction_stream(CPUX86State *env, struct x86_decode *decode,
-+		                           struct x86_insn_stream *stream)
++static bool segment_type_ro(const SegmentCache *seg)
 +{
-+	memset(decode, 0, sizeof(*decode));
-+	if (stream != NULL) {
-+		decode->stream = stream;
-+	}
-+	return decode_opcode(env, decode);
++    uint32_t type_ = (seg->flags >> DESC_TYPE_SHIFT) & 15;
++    return (type_ & (~RWRX_SEGMENT_TYPE)) == 0;
 +}
 +
- void init_decoder(void)
- {
-     int i;
-diff --git a/target/i386/emulate/x86_decode.h b/target/i386/emulate/x86_decode.h
-index 87cc728598..9bc7d6cc49 100644
---- a/target/i386/emulate/x86_decode.h
-+++ b/target/i386/emulate/x86_decode.h
-@@ -269,6 +269,11 @@ typedef struct x86_decode_op {
-     target_ulong ptr;
- } x86_decode_op;
- 
-+typedef struct x86_insn_stream {
-+	const uint8_t *bytes;
-+	size_t len;
-+} x86_insn_stream;
++static bool segment_type_code(const SegmentCache *seg)
++{
++    uint32_t type_ = (seg->flags >> DESC_TYPE_SHIFT) & 15;
++    return (type_ & CODE_SEGMENT_TYPE) != 0;
++}
 +
- typedef struct x86_decode {
-     int len;
-     uint8_t opcode[4];
-@@ -295,12 +300,18 @@ typedef struct x86_decode {
-     struct x86_modrm modrm;
-     struct x86_decode_op op[4];
-     bool is_fpu;
++static bool segment_expands_down(const SegmentCache *seg)
++{
++    uint32_t type_ = (seg->flags >> DESC_TYPE_SHIFT) & 15;
 +
-+	x86_insn_stream *stream;
- } x86_decode;
- 
- uint64_t sign(uint64_t val, int size);
- 
- uint32_t decode_instruction(CPUX86State *env, struct x86_decode *decode);
- 
-+uint32_t decode_instruction_stream(CPUX86State *env,
-+								   struct x86_decode *decode,
-+		                           struct x86_insn_stream *stream);
++    if (segment_type_code(seg)) {
++        return false;
++    }
 +
- target_ulong get_reg_ref(CPUX86State *env, int reg, int rex_present,
-                          int is_extended, int size);
- target_ulong get_reg_val(CPUX86State *env, int reg, int rex_present,
-diff --git a/target/i386/emulate/x86_emu.c b/target/i386/emulate/x86_emu.c
-index 7773b51b95..73c9eb41d1 100644
---- a/target/i386/emulate/x86_emu.c
-+++ b/target/i386/emulate/x86_emu.c
-@@ -1241,7 +1241,8 @@ static void init_cmd_handler(void)
- bool exec_instruction(CPUX86State *env, struct x86_decode *ins)
- {
-     if (!_cmd_handler[ins->cmd].handler) {
--        printf("Unimplemented handler (" TARGET_FMT_lx ") for %d (%x %x) \n", env->eip,
-+        printf("Unimplemented handler (" TARGET_FMT_lx ") for %d (%x %x) \n",
-+                env->eip,
-                 ins->cmd, ins->opcode[0],
-                 ins->opcode_len > 1 ? ins->opcode[1] : 0);
-         env->eip += ins->len;
-diff --git a/target/i386/emulate/x86_emu.h b/target/i386/emulate/x86_emu.h
-index 555b567e2c..761e83fd6b 100644
---- a/target/i386/emulate/x86_emu.h
-+++ b/target/i386/emulate/x86_emu.h
-@@ -24,6 +24,7 @@
- #include "cpu.h"
- 
- struct x86_emul_ops {
-+    void (*fetch_instruction)(CPUState *cpu, void *data, target_ulong addr, int bytes);
-     void (*read_mem)(CPUState *cpu, void *data, target_ulong addr, int bytes);
-     void (*write_mem)(CPUState *cpu, void *data, target_ulong addr, int bytes);
-     void (*read_segment_descriptor)(CPUState *cpu, struct x86_segment_descriptor *desc,
++    return (type_ & EXPAND_DOWN_SEGMENT_TYPE) != 0;
++}
++
++static uint32_t segment_limit(const SegmentCache *seg)
++{
++    uint32_t limit = seg->limit;
++    uint32_t granularity = (seg->flags & DESC_G_MASK) != 0;
++
++    if (granularity != 0) {
++        limit = (limit << 12) | 0xFFF;
++    }
++
++    return limit;
++}
++
++static uint8_t segment_db(const SegmentCache *seg)
++{
++    return (seg->flags >> DESC_B_SHIFT) & 1;
++}
++
++static uint32_t segment_max_limit(const SegmentCache *seg)
++{
++    if (segment_db(seg) != 0) {
++        return 0xFFFFFFFF;
++    }
++    return 0xFFFF;
++}
++
++static int linearize(CPUState *cpu,
++                     target_ulong logical_addr, target_ulong *linear_addr,
++                     X86Seg seg_idx)
++{
++    enum CpuMode mode;
++    X86CPU *x86_cpu = X86_CPU(cpu);
++    CPUX86State *env = &x86_cpu->env;
++    SegmentCache *seg = &env->segs[seg_idx];
++    target_ulong base = seg->base;
++    target_ulong logical_addr_32b;
++    uint32_t limit;
++    /* TODO: the emulator will not pass us "write" indicator yet */
++    bool write = false;
++
++    mode = cpu_mode(cpu);
++
++    switch (mode) {
++    case LONG_MODE:
++        if (__builtin_add_overflow(logical_addr, base, linear_addr)) {
++            error_report("Address overflow");
++            return -1;
++        }
++        break;
++    case PROTECTED_MODE:
++    case REAL_MODE:
++        if (segment_type_ro(seg) && write) {
++            error_report("Cannot write to read-only segment");
++            return -1;
++        }
++
++        logical_addr_32b = logical_addr & 0xFFFFFFFF;
++        limit = segment_limit(seg);
++
++        if (segment_expands_down(seg)) {
++            if (logical_addr_32b >= limit) {
++                error_report("Address exceeds limit (expands down)");
++                return -1;
++            }
++
++            limit = segment_max_limit(seg);
++        }
++
++        if (logical_addr_32b > limit) {
++            error_report("Address exceeds limit %u", limit);
++            return -1;
++        }
++        *linear_addr = logical_addr_32b + base;
++        break;
++    default:
++        error_report("Unknown cpu mode: %d", mode);
++        return -1;
++    }
++
++    return 0;
++}
++
++bool x86_read_segment_descriptor(CPUState *cpu,
++                                 struct x86_segment_descriptor *desc,
++                                 x86_segment_selector sel)
++{
++    target_ulong base;
++    uint32_t limit;
++    X86CPU *x86_cpu = X86_CPU(cpu);
++    CPUX86State *env = &x86_cpu->env;
++    target_ulong gva;
++    /* int ret; */
++
++    memset(desc, 0, sizeof(*desc));
++
++    /* valid gdt descriptors start from index 1 */
++    if (!sel.index && GDT_SEL == sel.ti) {
++        return false;
++    }
++
++    if (GDT_SEL == sel.ti) {
++        base = env->gdt.base;
++        limit = env->gdt.limit;
++    } else {
++        base = env->ldt.base;
++        limit = env->ldt.limit;
++    }
++
++    if (sel.index * 8 >= limit) {
++        return false;
++    }
++
++    gva = base + sel.index * 8;
++    emul_ops->read_mem(cpu, desc, gva, sizeof(*desc));
++
++    return true;
++}
++
++bool x86_write_segment_descriptor(CPUState *cpu,
++                                  struct x86_segment_descriptor *desc,
++                                  x86_segment_selector sel)
++{
++    target_ulong base;
++    uint32_t limit;
++    X86CPU *x86_cpu = X86_CPU(cpu);
++    CPUX86State *env = &x86_cpu->env;
++    /* int ret; */
++    target_ulong gva;
++
++    if (GDT_SEL == sel.ti) {
++        base = env->gdt.base;
++        limit = env->gdt.limit;
++    } else {
++        base = env->ldt.base;
++        limit = env->ldt.limit;
++    }
++
++    if (sel.index * 8 >= limit) {
++        return false;
++    }
++
++    gva = base + sel.index * 8;
++    emul_ops->write_mem(cpu, desc, gva, sizeof(*desc));
++
++    return true;
++}
++
++bool x86_read_call_gate(CPUState *cpu, struct x86_call_gate *idt_desc,
++                        int gate)
++{
++    target_ulong base;
++    uint32_t limit;
++    X86CPU *x86_cpu = X86_CPU(cpu);
++    CPUX86State *env = &x86_cpu->env;
++    target_ulong gva;
++
++    base = env->idt.base;
++    limit = env->idt.limit;
++
++    memset(idt_desc, 0, sizeof(*idt_desc));
++    if (gate * 8 >= limit) {
++        perror("call gate exceeds idt limit");
++        return false;
++    }
++
++    gva = base + gate * 8;
++    emul_ops->read_mem(cpu, idt_desc, gva, sizeof(*idt_desc));
++
++    return true;
++}
++
++bool x86_is_protected(CPUState *cpu)
++{
++    X86CPU *x86_cpu = X86_CPU(cpu);
++    CPUX86State *env = &x86_cpu->env;
++    uint64_t cr0 = env->cr[0];
++
++    return cr0 & CR0_PE_MASK;
++}
++
++bool x86_is_real(CPUState *cpu)
++{
++    return !x86_is_protected(cpu);
++}
++
++bool x86_is_v8086(CPUState *cpu)
++{
++    X86CPU *x86_cpu = X86_CPU(cpu);
++    CPUX86State *env = &x86_cpu->env;
++    return x86_is_protected(cpu) && (env->eflags & VM_MASK);
++}
++
++bool x86_is_long_mode(CPUState *cpu)
++{
++    X86CPU *x86_cpu = X86_CPU(cpu);
++    CPUX86State *env = &x86_cpu->env;
++    uint64_t efer = env->efer;
++
++    return ((efer & (EFER_LME | EFER_LMA)) == (EFER_LME | EFER_LMA));
++}
++
++bool x86_is_long64_mode(CPUState *cpu)
++{
++    error_report("unimplemented: is_long64_mode()");
++    abort();
++}
++
++bool x86_is_paging_mode(CPUState *cpu)
++{
++    X86CPU *x86_cpu = X86_CPU(cpu);
++    CPUX86State *env = &x86_cpu->env;
++    uint64_t cr0 = env->cr[0];
++
++    return cr0 & CR0_PG_MASK;
++}
++
++bool x86_is_pae_enabled(CPUState *cpu)
++{
++    X86CPU *x86_cpu = X86_CPU(cpu);
++    CPUX86State *env = &x86_cpu->env;
++    uint64_t cr4 = env->cr[4];
++
++    return cr4 & CR4_PAE_MASK;
++}
++
++target_ulong linear_addr(CPUState *cpu, target_ulong addr, X86Seg seg)
++{
++    int ret;
++    target_ulong linear_addr;
++
++    /* return vmx_read_segment_base(cpu, seg) + addr; */
++    ret = linearize(cpu, addr, &linear_addr, seg);
++    if (ret < 0) {
++        error_report("failed to linearize address");
++        abort();
++    }
++
++    return linear_addr;
++}
++
++target_ulong linear_addr_size(CPUState *cpu, target_ulong addr, int size,
++                              X86Seg seg)
++{
++    switch (size) {
++    case 2:
++        addr = (uint16_t)addr;
++        break;
++    case 4:
++        addr = (uint32_t)addr;
++        break;
++    default:
++        break;
++    }
++    return linear_addr(cpu, addr, seg);
++}
++
++target_ulong linear_rip(CPUState *cpu, target_ulong rip)
++{
++    return linear_addr(cpu, rip, R_CS);
++}
 -- 
 2.34.1
 
