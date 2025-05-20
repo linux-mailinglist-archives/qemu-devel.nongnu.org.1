@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E8A7ABDC01
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 16:18:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E1BABDCA6
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 16:26:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHNnw-0006JX-1e; Tue, 20 May 2025 10:18:52 -0400
+	id 1uHNud-0007My-KD; Tue, 20 May 2025 10:25:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uHNno-0006J6-KR
- for qemu-devel@nongnu.org; Tue, 20 May 2025 10:18:44 -0400
+ id 1uHNuM-0007MZ-7K
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 10:25:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uHNnk-0001Qd-Vx
- for qemu-devel@nongnu.org; Tue, 20 May 2025 10:18:43 -0400
+ id 1uHNuH-0002wD-7M
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 10:25:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747750718;
+ s=mimecast20190719; t=1747751123;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=jGHAhhBrC7f9aRQof5HBzIVxY4UdnMG2/lFtIORImUc=;
- b=GQ5FwJFuXR0+6+QNgiyOUh2hfY15fR5PZ4MqCVOPyM9tAcVzZPiBeFCXYz7KbRL+v5JiQ3
- UGOb2T9CJbsy+jSNcpx1pY7P07jNfRNA1xrDcaXT1ne9yIZ5VdwuOokJdY/Km4R51P7pFj
- N6tPRi3Hp/84dNBhS/7ki0pCOPR/trA=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=0F1RLQx1wpJNy373HzOcgz7CQ7Ie/dR5ZDtzCamxPZ4=;
+ b=DHjaXrGNkGAaqOSvk38wFKOgTCMf8JLUP+RxtprzX0EuEwXHopWBsTRPEXSXMvQV7e11sn
+ NKqtxOfpuhFuzT5Q/Fyv9+CNr1kRiEifwCfgaQqS+e4PW10UHwu/CGIjdjFtdXohx5mCQv
+ F5HA7aG8sxl9ghfwuqYwnd//mhK8k7k=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-382-rzcHRk3gMkyUgHYCzEWdLA-1; Tue, 20 May 2025 10:18:37 -0400
-X-MC-Unique: rzcHRk3gMkyUgHYCzEWdLA-1
-X-Mimecast-MFC-AGG-ID: rzcHRk3gMkyUgHYCzEWdLA_1747750716
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3a371fb826cso1053328f8f.1
- for <qemu-devel@nongnu.org>; Tue, 20 May 2025 07:18:37 -0700 (PDT)
+ us-mta-664-5sRUIhQdNjWbatd7QCUurQ-1; Tue, 20 May 2025 10:25:03 -0400
+X-MC-Unique: 5sRUIhQdNjWbatd7QCUurQ-1
+X-Mimecast-MFC-AGG-ID: 5sRUIhQdNjWbatd7QCUurQ_1747751102
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-ac6ef2d1b7dso445937366b.0
+ for <qemu-devel@nongnu.org>; Tue, 20 May 2025 07:25:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747750716; x=1748355516;
+ d=1e100.net; s=20230601; t=1747751100; x=1748355900;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=jGHAhhBrC7f9aRQof5HBzIVxY4UdnMG2/lFtIORImUc=;
- b=B4EVooIbd13EOOQo0Mhj7UX4PIe756QVIkN0Qww7A5M5mW5TX5Qv4xGXqMeerMyuUD
- u5WouiHi2/dVGb6HnnfihetOC3M9MeDDkN3CgTt8htUFIdIq95xRbuNCJtka/eBBKIOY
- 7xoR9Zg2aJbSAzfWsyQd4CvoLL4qO8LDFMZsEi4lBqjDbZ3cZdu+Wlw8wFHK65n28sYZ
- Wq36D28Xf3i3knfRJpRlkI3Yo0yUjACVQGvUiOeyvqlFfNc2QQ+3Kk5XMcsaE5tV9sSd
- aC2zk25Vfwx4EWj1Ahfeb2soSahP5FuJAnnRKwNGfyh9z5czOaArtXPDgXx6IjYUBAI1
- ov4g==
+ bh=0F1RLQx1wpJNy373HzOcgz7CQ7Ie/dR5ZDtzCamxPZ4=;
+ b=k+L2nnLRaecyM8pbDDXptiI38CjKLpaaq8ikSoiOC1zizPUyu4vPi9Q5kYEI/B72N0
+ CrmN6kVt4+3+J4HiaaYO8ZzCS4+fpR2ZLoLWblXn7YN3CWzVjHCN68C0KHBkPyZ/cmjk
+ V1zUnMTKH4LnCCzbJRtPvOAm1z+TL706T6qJPIzfzBWio4/bIr5yL2f1WAxXKfDrfNcC
+ fqQLkRmjoxL+X0cX3nixIXNcEuJF7doShtqtCMvbv0wktVsVTkiz1VBuqq14/ho0sB1k
+ dobordQq/I+JnDGZY5cfRj6xYm2YQfDtAamh7hOJkBVWvQwcKDiK0b70aPbyeo7IlvPO
+ CGYA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXFUkymxz3vnRZ48nAUTGEFxnLHAjk5U1ZSZYIvnXokerfDC7/DaZz2VGEaBm02nsjo/HpVfSB5JyGo@nongnu.org
-X-Gm-Message-State: AOJu0YzbAMJCDJ7+ayyUJPTrSek30GDGBTChFByZFuT9oMh3XOwNpIaO
- pOmaxrrMVRQHBjb6yeDq/FzZTUZ6Ol5aOkHaxvkJbXPrAgPzm3jI02q5x1QOmqcVRMcP6/Tn1Ce
- qx5mDffik3I7MPlZyDn73QpXeVAgFqLw0Ig8fKLTbz7ExDZywyitg7MagtZSwMuDH
-X-Gm-Gg: ASbGncs44pEbbehWdKg8k6+X27qwmlzoY5/MTV5HU8xh8Shg93dro18Ky3RsKmjFPBZ
- FyDRqqW3Sr6G/Sf51aCPXlFUKjGKz17BDwgBtJO0Ho5gesVVdM8BeU5HzQ5aJnj8Al322KDL4O8
- dqwVCmec7cpQjkSO1P9bYoyMpP9MVeqNMs/E8D902QcuAfCDJNTz71pvvvsKMia9b7//AVNeU18
- 5Py8PT+0Y4oIkYFQc2aU0187GZA6upasjjRMXiL0aiE8W0IUV4Qi4mAW96jC5bWB4VWC7tsj/l5
- 8HTsD+a0cZzZfQ==
-X-Received: by 2002:a05:6000:2306:b0:3a3:6a3f:bc5d with SMTP id
- ffacd0b85a97d-3a36a3fbdfcmr9212129f8f.1.1747750715724; 
- Tue, 20 May 2025 07:18:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFt5cWg9+KIzvd8d5Lrvm0anjZZ9qrP2zqJovdjciZg7wGs+UHEyrv4Rkaxj/3yruNlGJIdLg==
-X-Received: by 2002:a05:6000:2306:b0:3a3:6a3f:bc5d with SMTP id
- ffacd0b85a97d-3a36a3fbdfcmr9212087f8f.1.1747750715380; 
- Tue, 20 May 2025 07:18:35 -0700 (PDT)
+ AJvYcCXyarOJRumj14mVU2lf7OTAGvny2/zsk1LXP3TwafepCV5x1QoOYxfYvfS1v4w9/U154EvT0EcDG4BA@nongnu.org
+X-Gm-Message-State: AOJu0YwoRYnWzjr6zsXELXZXFc/lC72rRFNNMevh5wQ/p6kMOJR9PQ/Y
+ Cb92/ipToHc6EOKJP8fZfbNdhUGxJWtwT4FiLEPBkAKjA5Sx3MMXZulK1OBbE3oJ+/aMFeC+ngH
+ hNrD+SfCZC6ZenSRCi3NvPOrt/o/3X2ddXAMtyo7BmrcDV+kROeervGBIJNEaKT/Q
+X-Gm-Gg: ASbGncsst/fepBmZPh7WzKTInssrjsmz84N/EXKFr5fXhPwd/QTHzbRZg1T7SNRlSoj
+ 9Gog5DmdeQrMT9wPKxDPe9hm+TC8nfJNXXyQsH1EYkMTcPpGxPnUA9r0Xah0XtM3hapvhX+lgAF
+ OsMc8BLb9/XBvhDnFIVRj8JUfbWOAw8a3rMFwZjarTVfW/VyxM0hf7BYSyv6K3VEtaL5nOq9uYt
+ 1PxYrfdYE6b4t00F6ktlnTAVMfVDFTMdQb+aCYWHSxm4Tq6kg9MlWlpf45lyJ/pJTVZxVEG30hH
+ jOW2wtpmkJcgWQ==
+X-Received: by 2002:a17:907:1c29:b0:ad5:7499:2644 with SMTP id
+ a640c23a62f3a-ad574992f9amr603619166b.54.1747751100162; 
+ Tue, 20 May 2025 07:25:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEa5ogUPLlFK2/NGuZtXJRrXnU7HKpJn4V5kOgMysIyQThNrcBUcWR5vxj47xUmxcD/35Mxhw==
+X-Received: by 2002:a17:907:2d2a:b0:ad5:1e70:7145 with SMTP id
+ a640c23a62f3a-ad52d4e746dmr1622126366b.22.1747751089325; 
+ Tue, 20 May 2025 07:24:49 -0700 (PDT)
 Received: from [192.168.10.81] ([151.95.46.79])
  by smtp.googlemail.com with ESMTPSA id
- 5b1f17b1804b1-447f7d975cfsm34266795e9.38.2025.05.20.07.18.34
+ a640c23a62f3a-ad52d4383d6sm744041566b.102.2025.05.20.07.24.48
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 May 2025 07:18:34 -0700 (PDT)
-Message-ID: <a85ea01f-af0b-47d7-9ce2-b1b00d34ff68@redhat.com>
-Date: Tue, 20 May 2025 16:18:33 +0200
+ Tue, 20 May 2025 07:24:48 -0700 (PDT)
+Message-ID: <90efb003-6cf3-4555-ac4b-1aeae141e79c@redhat.com>
+Date: Tue, 20 May 2025 16:24:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 11/25] accel/mshv: Add basic interrupt injection
- support
+Subject: Re: [RFC PATCH 05/25] include/hw/hyperv: Add MSHV ABI header
+ definitions
 To: Magnus Kulke <magnuskulke@linux.microsoft.com>,
  magnuskulke@microsoft.com, qemu-devel@nongnu.org, liuwe@microsoft.com
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Wei Liu <wei.liu@kernel.org>,
@@ -89,7 +89,7 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, Wei Liu <wei.liu@kernel.org>,
  =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
 References: <20250520113018.49569-1-magnuskulke@linux.microsoft.com>
- <20250520113018.49569-12-magnuskulke@linux.microsoft.com>
+ <20250520113018.49569-6-magnuskulke@linux.microsoft.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=pbonzini@redhat.com; keydata=
@@ -127,7 +127,7 @@ Autocrypt: addr=pbonzini@redhat.com; keydata=
  JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
  dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
  b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
-In-Reply-To: <20250520113018.49569-12-magnuskulke@linux.microsoft.com>
+In-Reply-To: <20250520113018.49569-6-magnuskulke@linux.microsoft.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
@@ -139,7 +139,7 @@ X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.487,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -155,18 +155,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/20/25 13:30, Magnus Kulke wrote:
-> diff --git a/include/system/mshv.h b/include/system/mshv.h
-> index c7ee4f0cc1..4c1e901835 100644
-> --- a/include/system/mshv.h
-> +++ b/include/system/mshv.h
-> @@ -40,6 +40,10 @@
->    */
->   #define MSHV_USE_IOEVENTFD 1
->   
-> +#define MSHV_USE_KERNEL_GSI_IRQFD 1
+On 5/20/25 13:29, Magnus Kulke wrote:
+> Introduce headers for the Microsoft Hypervisor (MSHV) userspace ABI,
+> including IOCTLs and structures used to interface with the hypervisor.
+> 
+> These definitions are based on the upstream Linux MSHV interface and
+> will be used by the MSHV accelerator backend in later patches.
+> 
+> Note that for the time being the header `linux-mshv.h` is also being
+> included to allow building on machines that do not ship the header yet.
+> The header will be available in kernel 6.15 (at the time of writing
+> we're at -rc6) we will probably drop it in later revisions of the
+> patch set.
 
-Please make this code unconditional - same for MSHV_USE_IOEVENTFD.
+We do ship headers copied from Linux in QEMU; please modify 
+scripts/update-linux-headers.sh to include linux/mshv.h as 
+linux-headers/linux/mshv.h.
+
+The other three can remain in include/hw/hyperv, since the Linux 
+versions are not intended for consumption outside the kernel (they're 
+not in include/uapi/).  But when you copy them...
+
+> +#ifndef HW_HYPERV_HVHDK_H
+> +#define HW_HYPERV_HVHDK_H
+> +
+> +#define HV_PARTITION_SYNTHETIC_PROCESSOR_FEATURES_BANKS 1
+> +
+> +struct hv_input_set_partition_property {
+> +    __u64 partition_id;
+> +    __u32 property_code; /* enum hv_partition_property_code */
+> +    __u32 padding;
+> +    __u64 property_value;
+
+... please change the types to uintNN_t and drop <linux/types.h>.
+
+Thanks,
 
 Paolo
 
