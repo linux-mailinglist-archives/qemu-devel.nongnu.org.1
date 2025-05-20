@@ -2,144 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5539BABD851
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 14:42:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36A85ABD895
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 14:54:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHMIg-0006vd-9Z; Tue, 20 May 2025 08:42:30 -0400
+	id 1uHMSK-0000cE-A1; Tue, 20 May 2025 08:52:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uHMIV-0006qc-Si
- for qemu-devel@nongnu.org; Tue, 20 May 2025 08:42:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uHMIR-0006N4-2r
- for qemu-devel@nongnu.org; Tue, 20 May 2025 08:42:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747744932;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=8sLKED9xztYpJL6Cputh/Gko7jNsGpx2HBNd47GILhs=;
- b=A12LpNiFuvt/sCnd4x/RuQ/hOpi0MsZcVHuE7ab+4QbGM0dJfsO4Z8GiD1YEmmLW29cg6e
- Yx2CBeIw8SbGywnma16uaXToPlv322HDk2dfmRUVWeWw0NSw0Saa5BC2ALw12UIicSz79j
- o/K+yd9rSXvOf1X5JLD9CqdVGjw+VhA=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-357-VivQBm7FO9umj_-Fm_A04A-1; Tue, 20 May 2025 08:42:11 -0400
-X-MC-Unique: VivQBm7FO9umj_-Fm_A04A-1
-X-Mimecast-MFC-AGG-ID: VivQBm7FO9umj_-Fm_A04A_1747744930
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-ad5271a051eso449410266b.1
- for <qemu-devel@nongnu.org>; Tue, 20 May 2025 05:42:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
+ id 1uHMSH-0000bq-K2; Tue, 20 May 2025 08:52:25 -0400
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
+ id 1uHMSD-0000dD-W3; Tue, 20 May 2025 08:52:25 -0400
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-b26c5fd40a9so5288704a12.1; 
+ Tue, 20 May 2025 05:52:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1747745535; x=1748350335; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=6AOdg1AywyIl611ITWfSCCutnIjDg8eluRSR+NLR4ts=;
+ b=iwltJhIGc1ViAlwqBf/jvmHsJ28mWgt7uGbTjbkoKn9AgEPZNeNiMAsG9Bl4GN7Pwq
+ 19U2iTR2iDKG+Ek1OEzLT+apj011raF+v821z/bICb/q2ZYD7eE2yYoUdiYTTa7i7W1Y
+ KbRsPI/xvJziFCry88l/AuzrPpw4LEC4PfqYMAF3K0ohzYpvX1IZ+v2kwKEAJ5bxC5Ns
+ lMMLBZTNc6kXOeil5SplQoSd7iTR/LFzvok3CxaGhv+H4y2NaViy6lyxnv96J6r6/Rdn
+ WHhmQvt52rpKqIhHx4N0bqsNYsUkkejljCNAJFQObWZmo2gMtYJmAM8grXgO1XSzSHet
+ z8pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747744930; x=1748349730;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1747745535; x=1748350335;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=8sLKED9xztYpJL6Cputh/Gko7jNsGpx2HBNd47GILhs=;
- b=A78bCcS5QnVjnGSeU9iyMPQwp4bDTr5v/rXBAaRvbv44XCBU8/Hp5zBJnpURjz+gXO
- ksH7UAoIM7yKgJhdZfaJYyNsv047U7I1tVxez9EIMosGEyX2QoWZjH40DPaTazN6+Wqe
- UjWqu5KXXYPEo0ZQ0p7z68WNF+8hs7fl22v5vDvcPvnqlcNb6luNQ3eFclyuXN+sEQ9G
- RgkIQZa1P8jjNV1btRxrJHw1lg1bkS9rkQIJuZ3n+ze9+2bHEZoSICwsFtg/hWcbbnAd
- 51X4mgI2ZczcK2HmjI2YP/bJ1Q5gcKrn0bH8l6vGCXc4qI+s9ZcHYAOQaaV1Cl01IxJb
- SQyw==
+ bh=6AOdg1AywyIl611ITWfSCCutnIjDg8eluRSR+NLR4ts=;
+ b=EIWeTmFGRD4tjNVKgvJo2GYBvbvqXPtrAa2+bxVw9dXSN78GY5Yj3i+A3Ux5EvBkDI
+ qZjcgk4ciwo+cyvncEkiEdLqOTh223NDP1ckUj5pr/LkWf2+vCyFO5+RUtWOLqVeH9qL
+ QwX/ndufs4tmk6LytvVgl7R2WBNbBnfFZ3qUdXJGqBOXcD1XGWeCTCS3WK2OCkUAitx+
+ JjrrFXpViKOSZeF/+b6VRbe8pZ2EheWKHUw9T53GoyzPF9YtF9RzMGNj5TZYijUkrPiM
+ dt6ueujAO3fzydGo8p6Epmh6Qo6NeO+XRzxMuNRfsuptIMlsBMqwObev9Z033J6Fhmb8
+ mZNQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVl3rFoyBrZjME5lTWIzihohd1SbFhIHYLq8Bu/5cEC5t0pFFDvdHdtU+nTGOEl2MkiYwQbQo10m/pY@nongnu.org
-X-Gm-Message-State: AOJu0YyEm8ALOjb4mZoCzp7HS51RaBvEsjQVfqPa7sG70DX88mP3jWwt
- vj6lT/Fi4ndof3c1xyFjb2sXK4NTQ3oYVoI0UXghf8i7uzatwua8mRVMOisM2dS/CqNLJ5l1ggw
- ojlLY1dtxdDjZdIWy2K+ZLRwH4bQ/0PHb0TEzX0TG4DSOE30nuQI3iJGG8bcMkyP7
-X-Gm-Gg: ASbGncvdmFnBg2sKvx5/19affW9V1CYG5aR8AJ79zvwkWZYditihwDjklVE93CV4PSG
- kt5VGO7MgYGOLrSdFPZyYpjmhb2kJ+teZw9Ev/tdMqAkY0IGr+aZ7Bk9QrbWFL/3cnvpsFM1/Sk
- xAsgNv2Jo2BVhsfW9930a6E3mCsqu655snrA73tRAdXSUhvvJs4Na/PzMSmwM7NnotMHLLF/cnK
- 5EtGX+i0Jjl+qn7gaMyfufZdiIN4JDADI8aQLYCXsuoO56mgsQKSWWoHrf2iWtXM0u6MNX4ruu/
- iD0Oc+348sod2w==
-X-Received: by 2002:a17:906:3194:b0:ad5:32d8:1360 with SMTP id
- a640c23a62f3a-ad532d8161bmr1016754566b.34.1747744929781; 
- Tue, 20 May 2025 05:42:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGvdkPsE8n/1QtNovIx4z7G3e+OOoSvj2ikflGUq2Q5fdFSXVO951J1Koqimmxiz35NbSSrPg==
-X-Received: by 2002:a17:906:3194:b0:ad5:32d8:1360 with SMTP id
- a640c23a62f3a-ad532d8161bmr1016751366b.34.1747744929330; 
- Tue, 20 May 2025 05:42:09 -0700 (PDT)
-Received: from [192.168.10.81] ([151.95.46.79])
- by smtp.googlemail.com with ESMTPSA id
- a640c23a62f3a-ad52d4f8e40sm713645866b.183.2025.05.20.05.42.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 May 2025 05:42:08 -0700 (PDT)
-Message-ID: <c8a8971e-5cf6-4a13-a01b-1d3cd25fd0fb@redhat.com>
-Date: Tue, 20 May 2025 14:42:07 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 02/25] target/i386/emulate: allow instruction decoding
- from stream
-To: Magnus Kulke <magnuskulke@linux.microsoft.com>,
- magnuskulke@microsoft.com, qemu-devel@nongnu.org, liuwe@microsoft.com
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Wei Liu <wei.liu@kernel.org>,
- Phil Dennis-Jordan <phil@philjordan.eu>, Roman Bolshakov
- <rbolshakov@ddn.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Zhao Liu <zhao1.liu@intel.com>,
+ AJvYcCUU/KRaowwYC6LvTk4A5l0C3q+SUvnrQGhsRaRtgw7wWIEJhrlkHbYBO398i7dKux0jBHzxtY5AJg==@nongnu.org,
+ AJvYcCVoJOcJIXDWHpqO/20Gb61Z3Fvx0qPjvLvhIwxJyQpDzFdYdK1s9qPIuwjcVCeGoSR7zlwDnW7Yrajtyg==@nongnu.org
+X-Gm-Message-State: AOJu0YxrkFIf9mSNUifJMiOusOvLD+Jt4lLSBy15rjZX3q+u2O107phW
+ ZzoMY2/Cd7ceA0YqH3ZaEL7XQg1rPvtvtgB/Sg9l6xjTzBs+XxZgREK1E6drXvor
+X-Gm-Gg: ASbGncs66gr/9BQk1NStYDJIGzDtInEkk7sItyKgHo+W2cKy0fvV4oCJi7VtO4UsY2s
+ PcL7443dPDnRmm0D1opa2W/0WXRRdzwvw/ymlc+f/I6E/+2BJlvteBovmjJfv93WElIXoBdOIcj
+ m4l8k2/95E+sYlR7E/82SyVhAYL7Tnk8FIKM4CIJrfMxhItbyRp/r9C7fSp9a1Jb8uuaihfHsmt
+ pBGNvSd7KIAySPazUL8CMY31zDwJaMaXG+A1ZBL4xBe6ri5vbcTUhl+otc9cXlm+TXWXIpq9ySJ
+ urL5o1V085W8MdWMtT4WAnpayT/POckwsP6WBdbPaPDtdcyoTMU=
+X-Google-Smtp-Source: AGHT+IHnHoG1pdY+DSlUAYQ+x5iFiPPLD8vIXKhLgYXpLwBJk0GbWd59nDqGjbHkpkx+fbgBr+HeZA==
+X-Received: by 2002:a17:90b:2e85:b0:2ee:c30f:33c9 with SMTP id
+ 98e67ed59e1d1-30e7e770523mr21483641a91.14.1747745535218; 
+ Tue, 20 May 2025 05:52:15 -0700 (PDT)
+Received: from ktock.. ([240d:1a:3b6:8b00:1bde:8310:e993:5dcc])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-30f36364f9asm1625916a91.4.2025.05.20.05.52.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 20 May 2025 05:52:14 -0700 (PDT)
+From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Cameron Esfahani <dirty@apple.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-References: <20250520113018.49569-1-magnuskulke@linux.microsoft.com>
- <20250520113018.49569-3-magnuskulke@linux.microsoft.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <20250520113018.49569-3-magnuskulke@linux.microsoft.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ WANG Xuerui <git@xen0n.name>, Aurelien Jarno <aurelien@aurel32.net>,
+ Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <arikalo@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <Alistair.Francis@wdc.com>, Stefan Weil <sw@weilnetz.de>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Kohei Tokunaga <ktokunaga.mail@gmail.com>, qemu-arm@nongnu.org,
+ qemu-riscv@nongnu.org
+Subject: [PATCH 00/33] tcg: Add WebAssembly backend
+Date: Tue, 20 May 2025 21:51:02 +0900
+Message-ID: <cover.1747744132.git.ktokunaga.mail@gmail.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=ktokunaga.mail@gmail.com; helo=mail-pg1-x535.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.487,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -155,151 +108,182 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/20/25 13:29, Magnus Kulke wrote:
-> Introduce a new helper function to decode x86 instructions from a
-> raw instruction byte stream. MSHV delivers an instruction stream in a
-> buffer of the vm_exit message. It can be used to speed up MMIO
-> emulation, since instructions do not have to be fetched and translated.
-> 
-> Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
+This patch series is split from the original "Enable QEMU to run on
+browsers" series, focusing solely on introducing a TCG backend for
+WebAssembly. This implemention is based on the latest master which already
+includes the essential changes required to compile QEMU (in 32bit TCI mode)
+using Emscripten.
 
-Missing update of hvf_x86_emul_ops.
+# New TCG Backend for Browsers
 
-Paolo
+A new TCG backend translates IR instructions into Wasm instructions and runs
+them using the browser's WebAssembly APIs (WebAssembly.Module and
+WebAssembly.instantiate). To minimize compilation overhead and avoid hitting
+the browser's limitation of the number of instances, this backend integrates
+a forked TCI. TBs run on TCI by default, with frequently executed TBs
+compiled into WebAssembly.
 
-> ---
->   target/i386/emulate/x86_decode.c | 32 +++++++++++++++++++++++++++-----
->   target/i386/emulate/x86_decode.h | 11 +++++++++++
->   target/i386/emulate/x86_emu.c    |  3 ++-
->   target/i386/emulate/x86_emu.h    |  1 +
->   4 files changed, 41 insertions(+), 6 deletions(-)
-> 
-> diff --git a/target/i386/emulate/x86_decode.c b/target/i386/emulate/x86_decode.c
-> index 88be9479a8..7a862b976e 100644
-> --- a/target/i386/emulate/x86_decode.c
-> +++ b/target/i386/emulate/x86_decode.c
-> @@ -60,6 +60,7 @@ static inline uint64_t decode_bytes(CPUX86State *env, struct x86_decode *decode,
->                                       int size)
->   {
->       uint64_t val = 0;
-> +    target_ulong va;
->   
->       switch (size) {
->       case 1:
-> @@ -71,10 +72,16 @@ static inline uint64_t decode_bytes(CPUX86State *env, struct x86_decode *decode,
->           VM_PANIC_EX("%s invalid size %d\n", __func__, size);
->           break;
->       }
-> -    target_ulong va  = linear_rip(env_cpu(env), env->eip) + decode->len;
-> -    emul_ops->read_mem(env_cpu(env), &val, va, size);
-> +
-> +	/* copy the bytes from the instruction stream, if available */
-> +	if (decode->stream && decode->len + size <= decode->stream->len) {
-> +		memcpy(&val, decode->stream->bytes + decode->len, size);
-> +	} else {
-> +		va = linear_rip(env_cpu(env), env->eip) + decode->len;
-> +		emul_ops->fetch_instruction(env_cpu(env), &val, va, size);
-> +	}
->       decode->len += size;
-> -
-> +
->       return val;
->   }
->   
-> @@ -2076,9 +2083,8 @@ static void decode_opcodes(CPUX86State *env, struct x86_decode *decode)
->       }
->   }
->   
-> -uint32_t decode_instruction(CPUX86State *env, struct x86_decode *decode)
-> +static uint32_t decode_opcode(CPUX86State *env, struct x86_decode *decode)
->   {
-> -    memset(decode, 0, sizeof(*decode));
->       decode_prefix(env, decode);
->       set_addressing_size(env, decode);
->       set_operand_size(env, decode);
-> @@ -2088,6 +2094,22 @@ uint32_t decode_instruction(CPUX86State *env, struct x86_decode *decode)
->       return decode->len;
->   }
->   
-> +uint32_t decode_instruction(CPUX86State *env, struct x86_decode *decode)
-> +{
-> +	memset(decode, 0, sizeof(*decode));
-> +	return decode_opcode(env, decode);
-> +}
-> +
-> +uint32_t decode_instruction_stream(CPUX86State *env, struct x86_decode *decode,
-> +		                           struct x86_insn_stream *stream)
-> +{
-> +	memset(decode, 0, sizeof(*decode));
-> +	if (stream != NULL) {
-> +		decode->stream = stream;
-> +	}
-> +	return decode_opcode(env, decode);
-> +}
-> +
->   void init_decoder(void)
->   {
->       int i;
-> diff --git a/target/i386/emulate/x86_decode.h b/target/i386/emulate/x86_decode.h
-> index 87cc728598..9bc7d6cc49 100644
-> --- a/target/i386/emulate/x86_decode.h
-> +++ b/target/i386/emulate/x86_decode.h
-> @@ -269,6 +269,11 @@ typedef struct x86_decode_op {
->       target_ulong ptr;
->   } x86_decode_op;
->   
-> +typedef struct x86_insn_stream {
-> +	const uint8_t *bytes;
-> +	size_t len;
-> +} x86_insn_stream;
-> +
->   typedef struct x86_decode {
->       int len;
->       uint8_t opcode[4];
-> @@ -295,12 +300,18 @@ typedef struct x86_decode {
->       struct x86_modrm modrm;
->       struct x86_decode_op op[4];
->       bool is_fpu;
-> +
-> +	x86_insn_stream *stream;
->   } x86_decode;
->   
->   uint64_t sign(uint64_t val, int size);
->   
->   uint32_t decode_instruction(CPUX86State *env, struct x86_decode *decode);
->   
-> +uint32_t decode_instruction_stream(CPUX86State *env,
-> +								   struct x86_decode *decode,
-> +		                           struct x86_insn_stream *stream);
-> +
->   target_ulong get_reg_ref(CPUX86State *env, int reg, int rex_present,
->                            int is_extended, int size);
->   target_ulong get_reg_val(CPUX86State *env, int reg, int rex_present,
-> diff --git a/target/i386/emulate/x86_emu.c b/target/i386/emulate/x86_emu.c
-> index 7773b51b95..73c9eb41d1 100644
-> --- a/target/i386/emulate/x86_emu.c
-> +++ b/target/i386/emulate/x86_emu.c
-> @@ -1241,7 +1241,8 @@ static void init_cmd_handler(void)
->   bool exec_instruction(CPUX86State *env, struct x86_decode *ins)
->   {
->       if (!_cmd_handler[ins->cmd].handler) {
-> -        printf("Unimplemented handler (" TARGET_FMT_lx ") for %d (%x %x) \n", env->eip,
-> +        printf("Unimplemented handler (" TARGET_FMT_lx ") for %d (%x %x) \n",
-> +                env->eip,
->                   ins->cmd, ins->opcode[0],
->                   ins->opcode_len > 1 ? ins->opcode[1] : 0);
->           env->eip += ins->len;
-> diff --git a/target/i386/emulate/x86_emu.h b/target/i386/emulate/x86_emu.h
-> index 555b567e2c..761e83fd6b 100644
-> --- a/target/i386/emulate/x86_emu.h
-> +++ b/target/i386/emulate/x86_emu.h
-> @@ -24,6 +24,7 @@
->   #include "cpu.h"
->   
->   struct x86_emul_ops {
-> +    void (*fetch_instruction)(CPUState *cpu, void *data, target_ulong addr, int bytes);
->       void (*read_mem)(CPUState *cpu, void *data, target_ulong addr, int bytes);
->       void (*write_mem)(CPUState *cpu, void *data, target_ulong addr, int bytes);
->       void (*read_segment_descriptor)(CPUState *cpu, struct x86_segment_descriptor *desc,
+# Workaround for Running 64bit Guests
+
+The current implementation uses Wasm's 32bit memory model. This series
+explores supporting TCG 64bit instructions while relying on SoftMMU for
+address translation. To enable 64bit guest support in Wasm today, it was
+necessary to partially revert recent changes that removed support for 64bit
+guests on 32bit hosts (e.g. commits a70af12addd9060fdf8f3dbd42b42e3072c3914f
+and bf455ec50b6fea15b4d2493059365bf94c706273) when compiling with
+Emscripten. The reverting is partial and addresses only pointer width
+differences between hosts and guests since the Wasm backend supports 64bit
+word operations. While this serves as a temporary workaround, a long-term
+solution could involve migrating to Wasm's 64bit memory model once it gains
+broader support, as it is currently not widely adopted (e.g. unsupported by
+Safari and libffi).
+
+# Overview of build process
+
+This section provides an overview of the build process for compiling QEMU
+using Emscripten. Full instructions are available in the sample
+repository[1].
+
+To compile QEMU with Emscripten, the following dependencies are required.
+The emsdk-wasm32-cross.docker environment includes all necessary components
+and can be used as the build environment:
+
+- Emscripten SDK (emsdk) v3.1.50
+- Libraries cross-compiled with Emscripten (refer to
+  emsdk-wasm32-cross.docker for build steps)
+  - GLib v2.84.0
+  - zlib v1.3.1
+  - libffi v3.4.7
+  - Pixman v0.44.2
+
+QEMU can be compiled using Emscripten's emconfigure and emmake, which
+automatically set environment variables such as CC for targeting Emscripten.
+
+emconfigure configure --static --disable-tools --target-list=x86_64-softmmu
+emmake make -j$(nproc)
+
+This process generates the following files:
+
+- qemu-system-x86_64.js
+- qemu-system-x86_64.wasm
+- qemu-system-x86_64.worker.js
+
+Guest images can be packaged using Emscripten's file_packager.py tool.
+For example, if the images are stored in a directory named "pack", the
+following command packages them, allowing QEMU to access them through
+Emscripten's virtual filesystem:
+
+/path/to/file_packager.py qemu-system-x86_64.data --preload pack > load.js
+
+This process generates the following files:
+
+- qemu-system-x86_64.data
+- load.js
+
+Emscripten allows passing arguments to the QEMU command via the Module
+object in JavaScript:
+
+Module['arguments'] = [
+    '-nographic', '-m', '512M', '-accel', 'tcg,tb-size=500',
+    '-L', 'pack/',
+    '-drive', 'if=virtio,format=raw,file=pack/rootfs.bin',
+    '-kernel', 'pack/bzImage',
+    '-append', 'earlyprintk=ttyS0 console=ttyS0 root=/dev/vda loglevel=7',
+];
+
+The sample repository[1] provides a complete setup, including an HTML file
+that implements a terminal UI.
+
+[1] https://github.com/ktock/qemu-wasm-sample
+
+# Additional references
+
+- A talk at FOSDEM 2025:
+  https://fosdem.org/2025/schedule/event/fosdem-2025-6290-running-qemu-inside-browser/
+- Demo page on GitHub Pages: https://ktock.github.io/qemu-wasm-demo/
+
+Kohei Tokunaga (33):
+  tcg: Fork TCI for wasm32 backend
+  tcg/wasm32: Do not use TCI disassembler in Wasm backend
+  meson: Enable to build wasm backend
+  tcg/wasm32: Set TCG_TARGET_INSN_UNIT_SIZE to 1
+  tcg/wasm32: Add and/or/xor instructions
+  tcg/wasm32: Add add/sub/mul instructions
+  tcg/wasm32: Add shl/shr/sar instructions
+  tcg/wasm32: Add setcond/negsetcond/movcond instructions
+  tcg/wasm32: Add deposit/sextract/extract instrcutions
+  tcg/wasm32: Add load and store instructions
+  tcg/wasm32: Add mov/movi instructions
+  tcg/wasm32: Add ext instructions
+  tcg/wasm32: Add bswap instructions
+  tcg/wasm32: Add rem/div instructions
+  tcg/wasm32: Add andc/orc/eqv/nand/nor instructions
+  tcg/wasm32: Add neg/not/ctpop instructions
+  tcg/wasm32: Add rot/clz/ctz instructions
+  tcg/wasm32: Add addc/subb instructions
+  tcg/wasm32: Add br/brcond instructions
+  tcg/wasm32: Add exit_tb/goto_tb/goto_ptr instructions
+  tcg/wasm32: Add call instruction
+  tcg/wasm32: Add qemu_ld/qemu_st instructions
+  include/exec: Allow using 64bit guest addresses on emscripten
+  tcg/wasm32: Set TCG_TARGET_REG_BITS to 64
+  tcg/wasm32: Set mulu2/muls2 as unimplemented
+  tcg/wasm32: Add initialization of fundamental registers
+  tcg/wasm32: Write wasm binary to TB
+  tcg/wasm32: Implement instantiation of Wasm binary
+  tcg/wasm32: Allow Asyncify unwinding from TB
+  tcg/wasm32: Enable instantiation of TBs executed many times
+  tcg/wasm32: Enable TLB lookup
+  meson: Propagate optimization flag for linking on Emscripten
+  .gitlab-ci.d: build wasm backend in CI
+
+ .gitlab-ci.d/buildtest.yml       |    2 +-
+ MAINTAINERS                      |    7 +
+ accel/tcg/cputlb.c               |    8 +-
+ include/accel/tcg/getpc.h        |    2 +-
+ include/exec/helper-head.h.inc   |    6 +
+ include/exec/tlb-common.h        |   14 +-
+ include/exec/vaddr.h             |   11 +
+ include/qemu/atomic.h            |    4 +
+ include/tcg/helper-info.h        |    4 +-
+ include/tcg/tcg.h                |    6 +-
+ meson.build                      |   16 +-
+ tcg/aarch64/tcg-target.c.inc     |   11 +
+ tcg/arm/tcg-target.c.inc         |   11 +
+ tcg/i386/tcg-target.c.inc        |   11 +
+ tcg/loongarch64/tcg-target.c.inc |   11 +
+ tcg/meson.build                  |    5 +
+ tcg/mips/tcg-target.c.inc        |   11 +
+ tcg/ppc/tcg-target.c.inc         |   11 +
+ tcg/region.c                     |   10 +-
+ tcg/riscv/tcg-target.c.inc       |   11 +
+ tcg/s390x/tcg-target.c.inc       |   11 +
+ tcg/sparc64/tcg-target.c.inc     |   11 +
+ tcg/tcg.c                        |   23 +-
+ tcg/tci/tcg-target.c.inc         |   11 +
+ tcg/wasm32.c                     | 1096 ++++++++
+ tcg/wasm32.h                     |  119 +
+ tcg/wasm32/tcg-target-con-set.h  |   21 +
+ tcg/wasm32/tcg-target-con-str.h  |   11 +
+ tcg/wasm32/tcg-target-has.h      |   22 +
+ tcg/wasm32/tcg-target-mo.h       |   17 +
+ tcg/wasm32/tcg-target-opc.h.inc  |   15 +
+ tcg/wasm32/tcg-target-reg-bits.h |   12 +
+ tcg/wasm32/tcg-target.c.inc      | 3985 ++++++++++++++++++++++++++++++
+ tcg/wasm32/tcg-target.h          |   76 +
+ 34 files changed, 5569 insertions(+), 33 deletions(-)
+ create mode 100644 tcg/wasm32.c
+ create mode 100644 tcg/wasm32.h
+ create mode 100644 tcg/wasm32/tcg-target-con-set.h
+ create mode 100644 tcg/wasm32/tcg-target-con-str.h
+ create mode 100644 tcg/wasm32/tcg-target-has.h
+ create mode 100644 tcg/wasm32/tcg-target-mo.h
+ create mode 100644 tcg/wasm32/tcg-target-opc.h.inc
+ create mode 100644 tcg/wasm32/tcg-target-reg-bits.h
+ create mode 100644 tcg/wasm32/tcg-target.c.inc
+ create mode 100644 tcg/wasm32/tcg-target.h
+
+-- 
+2.43.0
 
 
