@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 540B7ABE1A2
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 19:09:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E952DABE199
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 19:09:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHQRv-0000FI-DG; Tue, 20 May 2025 13:08:19 -0400
+	id 1uHQRt-00009s-23; Tue, 20 May 2025 13:08:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uHQRl-0008V0-ED
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uHQRn-0008V4-6k
  for qemu-devel@nongnu.org; Tue, 20 May 2025 13:08:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uHQRj-00017g-Pv
- for qemu-devel@nongnu.org; Tue, 20 May 2025 13:08:09 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uHQRl-00018H-AB
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 13:08:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747760886;
+ s=mimecast20190719; t=1747760888;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9r2K5IRydGAKK2ZqGpput8QmW6uoc48LgjM6fFzTJZY=;
- b=aJrusxoV2aUUBysLxOtH8Z0ffeI5lSm1mbT7JqXSIdgQ4pxYSafpyK6EYUPZsNAB4zOE5N
- JFbGZdyPh1lnn3Bwftcr9a3WOq5HOGrJqkaugcrYbhyzJVxDgZ7qfLIOOySRrc2lWyfSLR
- k3A+pOGURrmqd21Sadw5MXZKBczdLLk=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=QHv2iNqYhFqYDicLPQgm1PbA3RDnzLiIMmKr4H3KBKo=;
+ b=hnogXX8DqxiNu1VO6KLyTp8ruyyjCFo8WbOeeqq9ybBg9SiVyOopWTCdKRT1U2Z9b9c2nv
+ Fmv5H87VtnfQVxHqYoOuIUH9D53X/lVzdbDH0hB8rhaLe6FyaVmJrdiAquI7RetPV2r/6x
+ BM3XJUzXUWUQx14NRZ4dHZBAYsq7fww=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-81-kKkKisOYMzC9HlvFLfP1Sw-1; Tue, 20 May 2025 13:08:05 -0400
-X-MC-Unique: kKkKisOYMzC9HlvFLfP1Sw-1
-X-Mimecast-MFC-AGG-ID: kKkKisOYMzC9HlvFLfP1Sw_1747760885
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-7c760637fe5so1056809385a.0
- for <qemu-devel@nongnu.org>; Tue, 20 May 2025 10:08:05 -0700 (PDT)
+ us-mta-376-DnwKobpGNNeq1O7MCufvZQ-1; Tue, 20 May 2025 13:08:07 -0400
+X-MC-Unique: DnwKobpGNNeq1O7MCufvZQ-1
+X-Mimecast-MFC-AGG-ID: DnwKobpGNNeq1O7MCufvZQ_1747760886
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-7c5b9333642so679847785a.3
+ for <qemu-devel@nongnu.org>; Tue, 20 May 2025 10:08:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747760884; x=1748365684;
+ d=1e100.net; s=20230601; t=1747760886; x=1748365686;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9r2K5IRydGAKK2ZqGpput8QmW6uoc48LgjM6fFzTJZY=;
- b=VxuTxIUacxNQx+/0zKp3gFbU7tYnHi2nZW6qkfqGCGK4rVLl9sTOcvrS+jakSFiolI
- xo6TEDrjz9LqCLEo/1468tCv0TMSpZcoUr/Y6YvU5mxfy99h9MxdDknOUycEulpXfIHw
- xw+rtNGvxAhU1psBy3Jn6UsFW9l5U8/npB3/l3OVTHQVM7HyqrLstrX50YMZPzjlTOl2
- 73B9aKXpRg6n++Pp7YHuPtWmeQkWuYF0NE2DYv931j8tzmurap58O9hzBZOFqbncGfN1
- QLspyCj3mFKd0QYKhtRMhZNw3Zx0QMo6yByFNP/Nc3CQeY1p36AOr58TTbOeNbtV0OKo
- a9FA==
-X-Gm-Message-State: AOJu0Yy88SLl9brKEZ0WjKWN+zUN7xmkjPyOCptMON1RQBcDoBFFBP42
- M3RMrnOfzDpUAGu6qVZ9P1ybzz9axH+wkKIYdS8rjwcdXJnaXBRE8JSsF8h+OEYlX24e5IAflcO
- C3cpTZsV5XVeeifxn8cOqqHtY6G4E/oXME3W4h8dwXmg7FNOnPHQk5zTTMxM0Q0OUDRm4tPGovb
- y0k0aA0eI+MadYv/iiD4AIYA5AwISFjoqr0QBOyA==
-X-Gm-Gg: ASbGncu2rNmAdXZyUKaObLsP8l0bzzHAmPUaOMlcKyWd91j0Na+YBS+ER6kjL7yTvmr
- yDgYcbopPr5hBq/Ovk7hz52jJn8qsoXU87Ujx2v1ZeHKWKKZBbTWZvNpyUuxnRRtyH/G2uicCc9
- 7IjN/wSsDsBq6qVYIIyIBupXlNXQUEWbbwxfSh8x8NC8qG6SHQPfqEXS2YdplTCaGpKGu3vvEHK
- dE1pyuItHowaEeR8ZdDyqm+tqSr0vFvIN0C/aNjAfe2qj1ltfV7quhb6rvVG9a2Z8vwaEkRrA87
-X-Received: by 2002:a05:620a:2948:b0:7c7:747f:89d0 with SMTP id
- af79cd13be357-7cd46721bc7mr2410086685a.18.1747760884213; 
+ bh=QHv2iNqYhFqYDicLPQgm1PbA3RDnzLiIMmKr4H3KBKo=;
+ b=ErUvaiwT75JRdc+ohmPXj/VrLRTte15nfMWifHw11Q1gl616UAJYoNUeyj8VqAzGif
+ gadsNfQv37hCZPGu4BvK6B0TKab9dsgTDcx4B6W2KHz+FEbX28tNseXLH2wAm2vI0ZY3
+ IJN9XzmtCl2Bv5MNDNL/Yhc6PmH0ndk5tPuhroPK2ZzzEkjjTRO4AMGRlqORjlgW+ZZn
+ QFj0Zw4c8lcFpmVp+ryuV6+2QXYs/1hrPcIMwHA6XS+f/SRVbZ9JP8wTz9sWsHJ+ZFsJ
+ PBVVa2p7hTjNmDx3+nQCxfDJYbvxmi9JaKKQbyoBDeXL1rk+Gl8QRpwkVCIOgr9JpTTo
+ up8w==
+X-Gm-Message-State: AOJu0Ywubt2Snwq285Vn3JRDZF4l/lNL+GV/fgJ0JHOttnzosqBfyHbF
+ zcyVguoq1HmKstX7OvVNZgQTI0k+5/0fyLse2HHHPEzEbuknqIwhoAQwUhMuBjgjp8UHJ5Nds8k
+ lrYFpDYrgL4thfhwenjQiy9sKWGGq9+Qv+XRAyx2AaXvS1Hxya5mFeIN80Jl9LP6k/PRiAA2S49
+ d0hq3KM5UESJX9/Dwb5h9IKvDcgO02QGHsMNGpug==
+X-Gm-Gg: ASbGncsDwOjVAYyhAHyk0E/s0TIUd9/uXiXuwRY+3p8eMoLvox6oIdZuF34rFloIjSC
+ hDUL8wrd7jN3aNK3DObr0NqBwsUJN6t1vPVbCVmW3q6S3wc32iOwBe0A+sZ+KzhmdriTcS5J2MV
+ Ev2l4+VxLFR39lSV/K7IsCg8/QDQOLdiwwYSO6A2fAdtGlkhMhamPdvVH2Krr8kQqG3uv9580wu
+ Zst3DtilMgF36QQixzu5rBvQW3T5ObrowSlc91FgATUQ2mPsfFllGNDa0IoSOYhNSx3JMcLTdHv
+X-Received: by 2002:a05:620a:44d0:b0:7ca:ea9a:828c with SMTP id
+ af79cd13be357-7cd467ac210mr3193005985a.48.1747760885489; 
+ Tue, 20 May 2025 10:08:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFBlxk36UFSySyte3/zNACB19fveue/7EgR84iRSn/HU5Kh9J4V1pvsnmO/I6KPRjIwhhYzwg==
+X-Received: by 2002:a05:620a:44d0:b0:7ca:ea9a:828c with SMTP id
+ af79cd13be357-7cd467ac210mr3192998085a.48.1747760884810; 
  Tue, 20 May 2025 10:08:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IECkjycnqg3O/94xSsEw97NNHZPc+JWixdlIYcpLvqI9zHoIeTO/6/SDpOZx0lSmzfU4dYEUg==
-X-Received: by 2002:a05:620a:2948:b0:7c7:747f:89d0 with SMTP id
- af79cd13be357-7cd46721bc7mr2410080585a.18.1747760883570; 
- Tue, 20 May 2025 10:08:03 -0700 (PDT)
 Received: from x1.com ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7cd467be47bsm763846585a.16.2025.05.20.10.08.02
+ af79cd13be357-7cd467be47bsm763846585a.16.2025.05.20.10.08.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 May 2025 10:08:02 -0700 (PDT)
+ Tue, 20 May 2025 10:08:04 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Stefan Hajnoczi <stefanha@redhat.com>,
- peterx@redhat.com
-Subject: [PULL 06/12] ci: Reduce the size of artifacts for build-previous-qemu
-Date: Tue, 20 May 2025 13:07:45 -0400
-Message-ID: <20250520170751.786787-7-peterx@redhat.com>
+ peterx@redhat.com, Prasad Pandit <pjp@fedoraproject.org>
+Subject: [PULL 07/12] migration: write zero pages when postcopy enabled
+Date: Tue, 20 May 2025 13:07:46 -0400
+Message-ID: <20250520170751.786787-8-peterx@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250520170751.786787-1-peterx@redhat.com>
 References: <20250520170751.786787-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -103,42 +103,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+From: Prasad Pandit <pjp@fedoraproject.org>
 
-The build-previous-qemu job is intented to produce a build of the
-previous QEMU release for consumption by the migration-compat-*
-jobs. Keep only the pieces of the build that are necessary.
+During multifd migration, zero pages are written if
+they are migrated more than once.
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20250513133353.23022-4-farosas@suse.de
+This may result in a migration thread hang issue when
+multifd and postcopy are enabled together.
+
+When postcopy is enabled, always write zero pages as and
+when they are migrated.
+
+Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Link: https://lore.kernel.org/r/20250512125124.147064-2-ppandit@redhat.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- .gitlab-ci.d/buildtest.yml | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ migration/multifd-zero-page.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index b4e39fd7c1..ca1a9c6f70 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -188,12 +188,11 @@ build-previous-qemu:
-     when: on_success
-     expire_in: 2 days
-     paths:
--      - build-previous
--    exclude:
--      - build-previous/**/*.p
--      - build-previous/**/*.a.p
--      - build-previous/**/*.c.o
--      - build-previous/**/*.c.o.d
-+      - build-previous/qemu-bundle
-+      - build-previous/qemu-system-aarch64
-+      - build-previous/qemu-system-x86_64
-+      - build-previous/tests/qtest/migration-test
-+      - build-previous/scripts
-   needs:
-     job: amd64-opensuse-leap-container
-   variables:
+diff --git a/migration/multifd-zero-page.c b/migration/multifd-zero-page.c
+index dbc1184921..4cde868159 100644
+--- a/migration/multifd-zero-page.c
++++ b/migration/multifd-zero-page.c
+@@ -85,9 +85,27 @@ void multifd_recv_zero_page_process(MultiFDRecvParams *p)
+ {
+     for (int i = 0; i < p->zero_num; i++) {
+         void *page = p->host + p->zero[i];
+-        if (ramblock_recv_bitmap_test_byte_offset(p->block, p->zero[i])) {
++        bool received =
++                ramblock_recv_bitmap_test_byte_offset(p->block, p->zero[i]);
++
++        /*
++         * During multifd migration zero page is written to the memory
++         * only if it is migrated more than once.
++         *
++         * It becomes a problem when both multifd & postcopy options are
++         * enabled. If the zero page which was skipped during multifd phase,
++         * is accessed during the postcopy phase of the migration, a page
++         * fault occurs. But this page fault is not served because the
++         * 'receivedmap' says the zero page is already received. Thus the
++         * thread accessing that page may hang.
++         *
++         * When postcopy is enabled, always write the zero page as and when
++         * it is migrated.
++         */
++        if (migrate_postcopy_ram() || received) {
+             memset(page, 0, multifd_ram_page_size());
+-        } else {
++        }
++        if (!received) {
+             ramblock_recv_bitmap_set_offset(p->block, p->zero[i]);
+         }
+     }
 -- 
 2.49.0
 
