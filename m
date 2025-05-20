@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37D5AABD4E3
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 12:31:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 897DAABD4DF
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 12:30:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHKE2-0004lu-7O; Tue, 20 May 2025 06:29:34 -0400
+	id 1uHKE5-0004mx-TL; Tue, 20 May 2025 06:29:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
- id 1uHKE0-0004lH-BI
- for qemu-devel@nongnu.org; Tue, 20 May 2025 06:29:32 -0400
+ id 1uHKE3-0004mk-Sm
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 06:29:35 -0400
 Received: from mgamail.intel.com ([198.175.65.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
- id 1uHKDy-0004gB-AW
- for qemu-devel@nongnu.org; Tue, 20 May 2025 06:29:31 -0400
+ id 1uHKE1-0004gB-US
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 06:29:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747736971; x=1779272971;
+ t=1747736974; x=1779272974;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=OSuErpkqUJGssDM/2HKZwtfnarun4vbCQ+Y6deq9Hhs=;
- b=L0iuRGqCQW+CbkK1poDl2PKmnqRaCHcMhESyW44DbEJbLL6tIf8DW7XA
- kxgnC1SwfpYMH9nA3Ll0sHBtHiGK86a1I1iyHDithA7DWEn0U8HXeS5bn
- IMUOezIwMgElztEvAi3URAbszQhf0VXgC0hlhVUj2qCJ/ayE0yXXAYKsg
- p9Jl0P0LXUHdIOuzSqqbT905c3w2wZONEMU/HX1HwaX+CxPvNPQ8PdkGW
- UkzxCTWbrfByRxpt09VHfWUxemDNFDIS91eHBiSLfDVi2ZKgcKsCesOs/
- eiH4VyFkCeAbji7WqsUBJ0PN7bCK45Ltq6PgcKsp8kvOpuXrK6fBTyRw0 Q==;
-X-CSE-ConnectionGUID: FaK9ZBqPQyee3EWrEJXV8Q==
-X-CSE-MsgGUID: fAwAET9lTN+r4fOO2e/TPQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="49566675"
-X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="49566675"
+ bh=OTa0g2q+m0xONAZ985oRQ8DaRJiUFsfwCwbWIOiPDSE=;
+ b=io881stpj2+Cy1W8gnutmmBl3XYWq4Ato45kSPl68AtVEzeJCFv2zEh5
+ kZQHmWcv0idcOOsQ4DOCydbeEr+QrCgPv0YuW5P1xPMmyKzJd+7PESw76
+ 1OGItSc34l1Lp2lpjBIs8zNhBSTgdKmDNh+KEf9oZ2TQE+96SONknRSoR
+ uM23QwVbEWhWhWwNLmLJ5GRIqg5E0WM0wsOB0UZWFboFS/ikcvdzciYUc
+ Jko15nRP9GQvuIEXft5y8AHH0WiKOk1nb6+XHlLBaMfR3+u82GTYupKaP
+ dVyDY24nccKqa6FQSLy1xrYubvPMV6f+Lo9COrTlOiO4jvRtTR9kdfydo A==;
+X-CSE-ConnectionGUID: lcx5nT/+RoOlCK93G0AcxA==
+X-CSE-MsgGUID: nwDYdWHrQiOIUK+BmlQjPA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="49566681"
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="49566681"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2025 03:29:30 -0700
-X-CSE-ConnectionGUID: TGNIopkFRjSHPyy6DQtU4A==
-X-CSE-MsgGUID: dLLYEA9gQ6iB4ii9cFAFGA==
+ 20 May 2025 03:29:34 -0700
+X-CSE-ConnectionGUID: j9eFD9hUQnubW4cm6fpS2Q==
+X-CSE-MsgGUID: Vyb9SCSARHefsgMJnbyKSg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="144905289"
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="144905299"
 Received: from emr-bkc.sh.intel.com ([10.112.230.82])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2025 03:29:26 -0700
+ 20 May 2025 03:29:30 -0700
 From: Chenyi Qiang <chenyi.qiang@intel.com>
 To: David Hildenbrand <david@redhat.com>, Alexey Kardashevskiy <aik@amd.com>,
  Peter Xu <peterx@redhat.com>, Gupta Pankaj <pankaj.gupta@amd.com>,
@@ -55,9 +55,10 @@ Cc: Chenyi Qiang <chenyi.qiang@intel.com>, qemu-devel@nongnu.org,
  Zhao Liu <zhao1.liu@intel.com>, Baolu Lu <baolu.lu@linux.intel.com>,
  Gao Chao <chao.gao@intel.com>, Xu Yilun <yilun.xu@intel.com>,
  Li Xiaoyao <xiaoyao.li@intel.com>
-Subject: [PATCH v5 07/10] RAMBlock: Make guest_memfd require coordinate discard
-Date: Tue, 20 May 2025 18:28:47 +0800
-Message-ID: <20250520102856.132417-8-chenyi.qiang@intel.com>
+Subject: [PATCH v5 08/10] memory: Change NotifyRamDiscard() definition to
+ return the result
+Date: Tue, 20 May 2025 18:28:48 +0800
+Message-ID: <20250520102856.132417-9-chenyi.qiang@intel.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250520102856.132417-1-chenyi.qiang@intel.com>
 References: <20250520102856.132417-1-chenyi.qiang@intel.com>
@@ -88,58 +89,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As guest_memfd is now managed by RamBlockAttribute with
-RamDiscardManager, only block uncoordinated discard.
+So that the caller can check the result of NotifyRamDiscard() handler if
+the operation fails.
 
 Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
 ---
 Changes in v5:
-    - Revert to use RamDiscardManager.
+    - Revert to use of NotifyRamDiscard()
 
 Changes in v4:
-    - Modify commit message (RamDiscardManager->PrivateSharedManager).
-
-Changes in v3:
-    - No change.
-
-Changes in v2:
-    - Change the ram_block_discard_require(false) to
-      ram_block_coordinated_discard_require(false).
+    - Newly added.
 ---
- system/physmem.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ hw/vfio/listener.c           | 6 ++++--
+ include/system/memory.h      | 4 ++--
+ system/ram-block-attribute.c | 3 +--
+ 3 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/system/physmem.c b/system/physmem.c
-index f05f7ff09a..58b7614660 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -1916,7 +1916,7 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
-         }
-         assert(new_block->guest_memfd < 0);
+diff --git a/hw/vfio/listener.c b/hw/vfio/listener.c
+index bfacb3d8d9..06454e0584 100644
+--- a/hw/vfio/listener.c
++++ b/hw/vfio/listener.c
+@@ -190,8 +190,8 @@ out:
+     rcu_read_unlock();
+ }
  
--        ret = ram_block_discard_require(true);
-+        ret = ram_block_coordinated_discard_require(true);
-         if (ret < 0) {
-             error_setg_errno(errp, -ret,
-                              "cannot set up private guest memory: discard currently blocked");
-@@ -1939,7 +1939,7 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
-              * ever develops a need to check for errors.
-              */
-             close(new_block->guest_memfd);
--            ram_block_discard_require(false);
-+            ram_block_coordinated_discard_require(false);
-             qemu_mutex_unlock_ramlist();
-             goto out_free;
-         }
-@@ -2302,7 +2302,7 @@ static void reclaim_ramblock(RAMBlock *block)
-     if (block->guest_memfd >= 0) {
-         ram_block_attribute_destroy(block->ram_shared);
-         close(block->guest_memfd);
--        ram_block_discard_require(false);
-+        ram_block_coordinated_discard_require(false);
+-static void vfio_ram_discard_notify_discard(RamDiscardListener *rdl,
+-                                            MemoryRegionSection *section)
++static int vfio_ram_discard_notify_discard(RamDiscardListener *rdl,
++                                           MemoryRegionSection *section)
+ {
+     VFIORamDiscardListener *vrdl = container_of(rdl, VFIORamDiscardListener,
+                                                 listener);
+@@ -206,6 +206,8 @@ static void vfio_ram_discard_notify_discard(RamDiscardListener *rdl,
+         error_report("%s: vfio_container_dma_unmap() failed: %s", __func__,
+                      strerror(-ret));
      }
++
++    return ret;
+ }
  
-     g_free(block);
+ static int vfio_ram_discard_notify_populate(RamDiscardListener *rdl,
+diff --git a/include/system/memory.h b/include/system/memory.h
+index 83b28551c4..e5155120d9 100644
+--- a/include/system/memory.h
++++ b/include/system/memory.h
+@@ -518,8 +518,8 @@ struct IOMMUMemoryRegionClass {
+ typedef struct RamDiscardListener RamDiscardListener;
+ typedef int (*NotifyRamPopulate)(RamDiscardListener *rdl,
+                                  MemoryRegionSection *section);
+-typedef void (*NotifyRamDiscard)(RamDiscardListener *rdl,
+-                                 MemoryRegionSection *section);
++typedef int (*NotifyRamDiscard)(RamDiscardListener *rdl,
++                                MemoryRegionSection *section);
+ 
+ struct RamDiscardListener {
+     /*
+diff --git a/system/ram-block-attribute.c b/system/ram-block-attribute.c
+index f12dd4b881..896c3d7543 100644
+--- a/system/ram-block-attribute.c
++++ b/system/ram-block-attribute.c
+@@ -66,8 +66,7 @@ static int ram_block_attribute_notify_discard_cb(MemoryRegionSection *section,
+ {
+     RamDiscardListener *rdl = arg;
+ 
+-    rdl->notify_discard(rdl, section);
+-    return 0;
++    return rdl->notify_discard(rdl, section);
+ }
+ 
+ static int
 -- 
 2.43.5
 
