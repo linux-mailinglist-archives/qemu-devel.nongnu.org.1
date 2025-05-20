@@ -2,91 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9486ABE18B
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 19:08:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F141ABE198
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 19:09:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHQQt-0007jS-VF; Tue, 20 May 2025 13:07:15 -0400
+	id 1uHQRq-0008Rn-0P; Tue, 20 May 2025 13:08:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1uHQQn-0007ix-99
- for qemu-devel@nongnu.org; Tue, 20 May 2025 13:07:11 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1uHQQl-0000yk-4G
- for qemu-devel@nongnu.org; Tue, 20 May 2025 13:07:09 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-742c9563fafso2578038b3a.0
- for <qemu-devel@nongnu.org>; Tue, 20 May 2025 10:07:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747760825; x=1748365625; darn=nongnu.org;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:date:from:from:to
- :cc:subject:date:message-id:reply-to;
- bh=8q+EYA2c9WPJk2TN75JC+fehQQGo9FQiZD7bYilPvpw=;
- b=gzqVsCyPsROEyrMuUc4j8vGHT4mJKLNJu6Jn4Yl+YWXWGCNthfXvA2+ua3aaFKUA1a
- mYGFjR55ymeRFeW4JADjk50cnqCtnspnC4FoTpXAa2F9LlsuauN1slAByekh/vmjrC7W
- yEx/71hC1leLcfgtaOUvx6ESeuXC9iZtyNp1co6H+zZ8YfWeXh0up18O+VcaWhaz8HAK
- qe5MArLLPfWOZd6dfr1IVN6D5/1nONIGrKMprmYynLXI/QNQxUYMVXwpUzNm12wueWdM
- n7jDPca1GRqUT463j+peciWGdXhx7bkTTVb4LNa88zutwoa8oMccqYLx39y+EiqyYO1i
- 7A5g==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uHQRd-0008OL-N4
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 13:08:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uHQRb-00014s-L8
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 13:08:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747760877;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=BSChp/yWLfyXdo35ujhhjyxtrDWB+YIA7jVW4YRKwBU=;
+ b=gNys7Xxq40mAC6O5MwrzaHBlMHh7iZNHo8KENARz0nSONqPV+tCY5e+DHV1DXgJjiBySeZ
+ 1tyDlE4kiPHCUdTJTwj+HBRqaaa4hWtgLqM7J7j+SF9Niagmf837DxC40qS/S5y+5p/G14
+ Ke3jUxJBytfIONskTBqItz76QdHIzbw=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-251-sKzwsujMMXGbjl7khoaKHA-1; Tue, 20 May 2025 13:07:55 -0400
+X-MC-Unique: sKzwsujMMXGbjl7khoaKHA-1
+X-Mimecast-MFC-AGG-ID: sKzwsujMMXGbjl7khoaKHA_1747760875
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-7c5b9333642so679823585a.3
+ for <qemu-devel@nongnu.org>; Tue, 20 May 2025 10:07:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747760825; x=1748365625;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:date:from
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8q+EYA2c9WPJk2TN75JC+fehQQGo9FQiZD7bYilPvpw=;
- b=AqOzBof2QrqliFYZcAKms7H2tOUN7+5HCY22qCIFdUpYP8BqH2bNBtllWrxepO//nH
- GPSA5aTcIxDdbYWuu7UKqr16jm2I0D5djcxHqa2Jp3lG9vISX0FnKF0XBy4w+/Jaq7Ip
- gqXGa1t6fQsn/EQr/J0MqSnvdeCX1H/EZcRLy1YjHvd6TCAcg9fW/96ykhT6y3P1UwYq
- An3dO0vMIoNfZvk2PYQpKrtvQ5gTwvV2w3XFH2S0OHOv04rJkdTvKY6ZqjMa7wFNoEKN
- zesA/gyh6eOP1oqF6tRFEm9PGKlNy4pZU/8FSfVwU4acYHko0/P1nOmXniiPzlk17QMC
- 4Vmw==
-X-Gm-Message-State: AOJu0YyXeGRYQc6b4zIl/v2fGND/jg10omSgK7sW4GqZJaO8typIPQ7K
- Trm9Xj8K6Wb4ZZ3cdOCn0QElDhFghceTGpt0AbZWHCamQj7BTpHKKliej8IS7w==
-X-Gm-Gg: ASbGncsGTI/z/K2LuS1a0NZOi7fLioI3hgf6vXRZx46CmOLNCG6nbYwvkXL+q1vPxoE
- l+akA4TyeS69bZ8D6WTQvHRqEW3EcgXOhMH8yJDNuGR+DcVxBaMyzKFrW7bGvTV2GI2IgQgyHBh
- anZz3tKoKFV6T9dQGzQFnt2w3zE7N1bVJOAzoC6G5cOV6xbkfsjfWEV8c7F+PhqEfYJPpGKUOj6
- hFvhtCr3VDT5JfEW/Q4fZ8v9zZc+ZfcEwxFqD4okeAziaXANY4SHfUQ4WnimxpPyisKQrCR94xR
- gxuTpBx0bTCRkCHxgx27cEHKjTWCX6va6YI0yuQ9Y4TcuVy6LMru
-X-Google-Smtp-Source: AGHT+IFmtzOivtQLt/MERhxfivImekdEeQkNMQgXIoMpA3EnIyZnt3/tYApwH0vBzkOXESYF+llakw==
-X-Received: by 2002:a05:6a20:d705:b0:215:e43a:29b9 with SMTP id
- adf61e73a8af0-216219bd612mr24255820637.33.1747760825446; 
- Tue, 20 May 2025 10:07:05 -0700 (PDT)
-Received: from lg ([2601:646:8f03:9fee:2c89:c0cf:1cbd:96d3])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b26eaf8e13csm8230164a12.45.2025.05.20.10.07.04
+ d=1e100.net; s=20230601; t=1747760875; x=1748365675;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=BSChp/yWLfyXdo35ujhhjyxtrDWB+YIA7jVW4YRKwBU=;
+ b=U0yhOSJFBZtscZrog6lIl82Fu9tP7AfIhsFthClPmG6BzJxxwCzFoG434ebunXDu6g
+ qiuQLPP/CRsp6ys4oJ1wbq5lsR9+XrYQQrv4PHnWZSes8YgqYWFtK+RxXtb0gL1CCKCJ
+ aKtVduH/XGlchY4l1MhYl42IQdNtF67vWTiL3glVedtrnvDoLGCb9Zsa73Mv08ntvKjR
+ x9x8faED4vCwtejsQCzOzRUaNHubnzAT+7B6ip1BmD/bMxM3bh7K6y3Es8ENylXGmSIg
+ 5/GDSBiM2Aiqn0lYsZz1CmTI8ee7LNfnAv7GLZ0f68UKkUSj1xR3HNQdCGMyabXEv29C
+ H5VQ==
+X-Gm-Message-State: AOJu0YzZro1lnllh0X/7UenWXKc8FUdUIYnQprbT2P8w6v+sbao9CuIB
+ gee9ZxnnG83jqCvzqaYqn2+UpE6j/wckVSYmlxfUWGt/YPZv+4eQKdolk4InF2zYAnjiSyw+4Xp
+ L/XBhnFV3JYBTN3c4zsBIMUi2r02zdPj0XDzsJQ4OIfYOHJmkn8mck0slfxnitmit0TsXA1HWEB
+ ls5DMSDvLHPmv8K5Lcsg3CbPEd8rIQzVg63/UjmQ==
+X-Gm-Gg: ASbGncs4Ld5iJlOQrJzw1WIRuUoYuqcqMeZIkrI532o1CbCAt+Bqhe13TKVwTn1Ry9i
+ /qlsPsZN5O65z4F9Y/Ce5Hupk3BL7HXJ9ytcxhFFy+Pcu9TSEk3S3TbJvNn6HqiCmAHn/r3npp8
+ VcsO5nA/I5IZCf4eWw1lpezxCUvYhwhsPe08gq/B15wU7c1rH8EoTgSDF8ew8nEhFvgKYVd6M2J
+ 8iuFq4rF6bVJzYjMBKEmWVqegP63+RTQpXcvxhNVt+rNx31DW4n9dbUrP3bWJbt7i9hIGmBp0JC
+X-Received: by 2002:a05:620a:408e:b0:7c5:3d0b:a565 with SMTP id
+ af79cd13be357-7cd4677d684mr2587654785a.46.1747760874924; 
+ Tue, 20 May 2025 10:07:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHpuWfLRORU6oytwGXYn0r3gOmzpFpEFc7c1dGoG9mIQQQp+XdYs7bimh57NuJqFRtTYC/qtQ==
+X-Received: by 2002:a05:620a:408e:b0:7c5:3d0b:a565 with SMTP id
+ af79cd13be357-7cd4677d684mr2587647885a.46.1747760874283; 
+ Tue, 20 May 2025 10:07:54 -0700 (PDT)
+Received: from x1.com ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7cd467be47bsm763846585a.16.2025.05.20.10.07.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 May 2025 10:07:04 -0700 (PDT)
-From: Fan Ni <nifan.cxl@gmail.com>
-X-Google-Original-From: Fan Ni <fan.ni@samsung.com>
-Date: Tue, 20 May 2025 10:07:02 -0700
-To: anisa.su887@gmail.com
-Cc: qemu-devel@nongnu.org, Jonathan.Cameron@huawei.com, nifan.cxl@gmail.com,
- dave@stgolabs.net, linux-cxl@vger.kernel.org,
- Anisa Su <anisa.su@samsung.com>
-Subject: Re: [PATCH v2 07/10] cxl-mailbox-utils: 0x5602 - FMAPI Set DC Region
- Config
-Message-ID: <aCy2thqeJ7DnD-7K@lg>
-References: <20250508001754.122180-1-anisa.su887@gmail.com>
- <20250508001754.122180-8-anisa.su887@gmail.com>
+ Tue, 20 May 2025 10:07:53 -0700 (PDT)
+From: Peter Xu <peterx@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Fabiano Rosas <farosas@suse.de>, Stefan Hajnoczi <stefanha@redhat.com>,
+ peterx@redhat.com
+Subject: [PULL 00/12] Migration 20250520 patches
+Date: Tue, 20 May 2025 13:07:39 -0400
+Message-ID: <20250520170751.786787-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.49.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250508001754.122180-8-anisa.su887@gmail.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=nifan.cxl@gmail.com; helo=mail-pf1-x432.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.487,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,212 +101,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 08, 2025 at 12:01:03AM +0000, anisa.su887@gmail.com wrote:
-> From: Anisa Su <anisa.su@samsung.com>
-> 
-> FM DCD Management command 0x5602 implemented per CXL r3.2 Spec Section 7.6.7.6.3
-> 
-> Signed-off-by: Anisa Su <anisa.su@samsung.com>
-> ---
->  hw/cxl/cxl-mailbox-utils.c   | 97 ++++++++++++++++++++++++++++++++++++
->  hw/mem/cxl_type3.c           |  2 +-
->  include/hw/cxl/cxl_device.h  |  3 ++
->  include/hw/cxl/cxl_mailbox.h |  6 +++
->  include/hw/cxl/cxl_opcodes.h |  1 +
->  5 files changed, 108 insertions(+), 1 deletion(-)
-> 
-> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-> index 6afc45833d..fe38a13f71 100644
-> --- a/hw/cxl/cxl-mailbox-utils.c
-> +++ b/hw/cxl/cxl-mailbox-utils.c
-> @@ -3426,6 +3426,96 @@ static CXLRetCode cmd_fm_get_host_dc_region_config(const struct cxl_cmd *cmd,
->      return CXL_MBOX_SUCCESS;
->  }
->  
-> +static void cxl_mbox_dc_event_create_record_hdr(CXLType3Dev *ct3d,
-> +                                                CXLEventRecordHdr *hdr)
-> +{
-> +    /*
-> +     * CXL r3.1 section 8.2.9.2.1.6: Dynamic Capacity Event Record
-> +     *
-> +     * All Dynamic Capacity event records shall set the Event Record Severity
-> +     * field in the Common Event Record Format to Informational Event. All
-> +     * Dynamic Capacity related events shall be logged in the Dynamic Capacity
-> +     * Event Log.
-> +     */
-> +    uint8_t flags = 1 << CXL_EVENT_TYPE_INFO;
-> +
-> +    st24_le_p(&hdr->flags, flags);
-> +    hdr->length = sizeof(struct CXLEventDynamicCapacity);
-> +    memcpy(&hdr->id, &dynamic_capacity_uuid, sizeof(hdr->id));
-> +    stq_le_p(&hdr->timestamp, cxl_device_get_timestamp(&ct3d->cxl_dstate));
-> +}
+The following changes since commit 2af4a82ab2cce3412ffc92cd4c96bd870e33bc8e:
 
-This function does the same thing as cxl_assign_event_header(), maybe we
-can move the cxl_assign_event_header() to header file so it can be used by
-both cxl_type3.c and cxl-mailbox-utils.c and then this function is not
-needed or simplified by calling cxl_assign_event_header().
+  Merge tag 'pull-riscv-to-apply-20250519' of https://github.com/alistair23/qemu into staging (2025-05-19 14:00:54 -0400)
 
-Fan
-> +
-> +/* CXL r3.2 section 7.6.7.6.3: Set Host DC Region Configuration (Opcode 5602) */
-> +static CXLRetCode cmd_fm_set_dc_region_config(const struct cxl_cmd *cmd,
-> +                                              uint8_t *payload_in,
-> +                                              size_t len_in,
-> +                                              uint8_t *payload_out,
-> +                                              size_t *len_out,
-> +                                              CXLCCI *cci)
-> +{
-> +    struct {
-> +        uint8_t reg_id;
-> +        uint8_t rsvd[3];
-> +        uint64_t block_sz;
-> +        uint8_t flags;
-> +        uint8_t rsvd2[3];
-> +    } QEMU_PACKED *in = (void *)payload_in;
-> +    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
-> +    CXLEventDynamicCapacity dcEvent = {};
-> +    CXLDCRegion *region;
-> +
-> +    region = &ct3d->dc.regions[in->reg_id];
-> +
-> +    /*
-> +     * CXL r3.2 7.6.7.6.3: Set DC Region Configuration
-> +     * This command shall fail with Unsupported when the Sanitize on Release
-> +     * field does not match the region’s configuration... and the device
-> +     * does not support reconfiguration of the Sanitize on Release setting.
-> +     *
-> +     * Currently not reconfigurable, so always fail if sanitize bit
-> +     * doesn't match.
-> +     */
-> +    if ((in->flags & 0x1) != (region->flags & 0x1)) {
-> +        return CXL_MBOX_UNSUPPORTED;
-> +    }
-> +
-> +    if (in->reg_id >= DCD_MAX_NUM_REGION) {
-> +        return CXL_MBOX_UNSUPPORTED;
-> +    }
-> +
-> +    /* Check that no extents are in the region being reconfigured */
-> +    if (!bitmap_empty(region->blk_bitmap, region->len / region->block_size)) {
-> +        return CXL_MBOX_UNSUPPORTED;
-> +    }
-> +
-> +    /* Check that new block size is supported */
-> +    if (!test_bit(BIT((int) log2(in->block_sz)),
-> +                  &region->supported_blk_size_bitmask)) {
-> +        return CXL_MBOX_INVALID_INPUT;
-> +    }
-> +
-> +    /* Free bitmap and create new one for new block size. */
-> +    qemu_mutex_lock(&region->bitmap_lock);
-> +    g_free(region->blk_bitmap);
-> +    region->blk_bitmap = bitmap_new(region->len / in->block_sz);
-> +    qemu_mutex_unlock(&region->bitmap_lock);
-> +    region->block_size = in->block_sz;
+are available in the Git repository at:
 
-If the new block size equals to region->block_size, we can avoid the free
-and allocation of the bitmap?
+  https://gitlab.com/peterx/qemu.git tags/migration-20250520-pull-request
 
-Fan
+for you to fetch changes up to e09c6d837593aa1e12d92d7031c65a881eb2eb27:
 
-> +
-> +    /* Create event record and insert into event log */
-> +    cxl_mbox_dc_event_create_record_hdr(ct3d, &dcEvent.hdr);
-> +    dcEvent.type = DC_EVENT_REGION_CONFIG_UPDATED;
-> +    dcEvent.validity_flags = 1;
-> +    dcEvent.host_id = 0;
-> +    dcEvent.updated_region_id = in->reg_id;
-> +
-> +    if (cxl_event_insert(&ct3d->cxl_dstate,
-> +                         CXL_EVENT_TYPE_DYNAMIC_CAP,
-> +                         (CXLEventRecordRaw *)&dcEvent)) {
-> +        cxl_event_irq_assert(ct3d);
-> +    }
-> +    return CXL_MBOX_SUCCESS;
-> +}
-> +
->  static const struct cxl_cmd cxl_cmd_set[256][256] = {
->      [INFOSTAT][BACKGROUND_OPERATION_ABORT] = { "BACKGROUND_OPERATION_ABORT",
->          cmd_infostat_bg_op_abort, 0, 0 },
-> @@ -3552,6 +3642,13 @@ static const struct cxl_cmd cxl_cmd_set_fm_dcd[256][256] = {
->          cmd_fm_get_dcd_info, 0, 0 },
->      [FMAPI_DCD_MGMT][GET_HOST_DC_REGION_CONFIG] = { "GET_HOST_DC_REGION_CONFIG",
->          cmd_fm_get_host_dc_region_config, 4, 0 },
-> +    [FMAPI_DCD_MGMT][SET_DC_REGION_CONFIG] = { "SET_DC_REGION_CONFIG",
-> +        cmd_fm_set_dc_region_config, 16,
-> +        (CXL_MBOX_CONFIG_CHANGE_COLD_RESET |
-> +         CXL_MBOX_CONFIG_CHANGE_CONV_RESET |
-> +         CXL_MBOX_CONFIG_CHANGE_CXL_RESET |
-> +         CXL_MBOX_IMMEDIATE_CONFIG_CHANGE |
-> +         CXL_MBOX_IMMEDIATE_DATA_CHANGE) },
->  };
->  
->  /*
-> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-> index b5b3df5edf..edc29f1ccb 100644
-> --- a/hw/mem/cxl_type3.c
-> +++ b/hw/mem/cxl_type3.c
-> @@ -1695,7 +1695,7 @@ void qmp_cxl_inject_correctable_error(const char *path, CxlCorErrorType type,
->      pcie_aer_inject_error(PCI_DEVICE(obj), &err);
->  }
->  
-> -static void cxl_assign_event_header(CXLEventRecordHdr *hdr,
-> +void cxl_assign_event_header(CXLEventRecordHdr *hdr,
->                                      const QemuUUID *uuid, uint32_t flags,
->                                      uint8_t length, uint64_t timestamp)
->  {
-> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-> index 9cfd9c5a9f..22823e2054 100644
-> --- a/include/hw/cxl/cxl_device.h
-> +++ b/include/hw/cxl/cxl_device.h
-> @@ -821,4 +821,7 @@ void ct3_clear_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
->                                     uint64_t len);
->  bool ct3_test_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
->                                    uint64_t len);
-> +void cxl_assign_event_header(CXLEventRecordHdr *hdr,
-> +                             const QemuUUID *uuid, uint32_t flags,
-> +                             uint8_t length, uint64_t timestamp);
->  #endif
-> diff --git a/include/hw/cxl/cxl_mailbox.h b/include/hw/cxl/cxl_mailbox.h
-> index 8e1c7c5f15..820c411cbb 100644
-> --- a/include/hw/cxl/cxl_mailbox.h
-> +++ b/include/hw/cxl/cxl_mailbox.h
-> @@ -8,6 +8,7 @@
->  #ifndef CXL_MAILBOX_H
->  #define CXL_MAILBOX_H
->  
-> +#define CXL_MBOX_CONFIG_CHANGE_COLD_RESET (1)
->  #define CXL_MBOX_IMMEDIATE_CONFIG_CHANGE (1 << 1)
->  #define CXL_MBOX_IMMEDIATE_DATA_CHANGE (1 << 2)
->  #define CXL_MBOX_IMMEDIATE_POLICY_CHANGE (1 << 3)
-> @@ -15,6 +16,11 @@
->  #define CXL_MBOX_SECURITY_STATE_CHANGE (1 << 5)
->  #define CXL_MBOX_BACKGROUND_OPERATION (1 << 6)
->  #define CXL_MBOX_BACKGROUND_OPERATION_ABORT (1 << 7)
-> +#define CXL_MBOX_SECONDARY_MBOX_SUPPORTED (1 << 8)
-> +#define CXL_MBOX_REQUEST_ABORT_BACKGROUND_OP_SUPPORTED (1 << 9)
-> +#define CXL_MBOX_CEL_10_TO_11_VALID (1 << 10)
-> +#define CXL_MBOX_CONFIG_CHANGE_CONV_RESET (1 << 11)
-> +#define CXL_MBOX_CONFIG_CHANGE_CXL_RESET (1 << 12)
->  
->  #define CXL_LOG_CAP_CLEAR_SUPPORTED (1 << 0)
->  #define CXL_LOG_CAP_POPULATE_SUPPORTED (1 << 1)
-> diff --git a/include/hw/cxl/cxl_opcodes.h b/include/hw/cxl/cxl_opcodes.h
-> index 68ad68291c..ed4be23b75 100644
-> --- a/include/hw/cxl/cxl_opcodes.h
-> +++ b/include/hw/cxl/cxl_opcodes.h
-> @@ -64,5 +64,6 @@ enum {
->      FMAPI_DCD_MGMT = 0x56,
->          #define GET_DCD_INFO 0x0
->          #define GET_HOST_DC_REGION_CONFIG 0x1
-> +        #define SET_DC_REGION_CONFIG 0x2
->      GLOBAL_MEMORY_ACCESS_EP_MGMT = 0X59
->  };
-> -- 
-> 2.47.2
-> 
+  migration/hmp: Add "info migrate -a", reorg the dump (2025-05-20 13:05:57 -0400)
+
+----------------------------------------------------------------
+Migration pull
+
+- Peter's vmstate static checker entry for recent hpet change
+- Zhijian's rdma test patch to properly skip tests when locked_vm too low,
+  and ipv6 test
+- Fabiano's few CI changes
+- Prasad's last patches to enable postcopy on precopy-multifd
+- Maciej's fix to disable multifd zerocopy for device states
+- Peter's HMP change to "info migrate", plus a small fix on cap set
+
+----------------------------------------------------------------
+
+Fabiano Rosas (3):
+  ci: Re-enable python subtests in qtest migration suite
+  ci: Fix build-previous-qemu when the version tag is absent
+  ci: Reduce the size of artifacts for build-previous-qemu
+
+Li Zhijian (2):
+  qtest/migration/rdma: Enforce RLIMIT_MEMLOCK >= 128MB requirement
+  qtest/migration/rdma: Add test for rdma migration with ipv6
+
+Maciej S. Szmigiero (1):
+  migration/multifd: Don't send device state packets with zerocopy flag
+
+Peter Xu (3):
+  scripts/vmstate-static-checker.py: Add new hpet entry for num_timers
+  migration: Allow caps to be set when preempt or multifd cap enabled
+  migration/hmp: Add "info migrate -a", reorg the dump
+
+Prasad J Pandit (3):
+  migration: write zero pages when postcopy enabled
+  migration: enable multifd and postcopy together
+  tests/qtest/migration: add postcopy tests with multifd
+
+ migration/migration-hmp-cmds.c            | 186 +++++++++++-----------
+ migration/multifd-nocomp.c                |   3 +-
+ migration/multifd-zero-page.c             |  22 ++-
+ migration/multifd.c                       |  14 +-
+ migration/options.c                       |   9 +-
+ migration/ram.c                           |   5 +-
+ tests/qtest/migration/compression-tests.c |  18 +++
+ tests/qtest/migration/postcopy-tests.c    |  27 ++++
+ tests/qtest/migration/precopy-tests.c     |  83 +++++++++-
+ tests/qtest/migration/tls-tests.c         |  51 ++++++
+ .gitlab-ci.d/buildtest.yml                |  27 ++--
+ hmp-commands-info.hx                      |   6 +-
+ scripts/rdma-migration-helper.sh          |  57 +++++--
+ scripts/vmstate-static-checker.py         |   1 +
+ 14 files changed, 373 insertions(+), 136 deletions(-)
 
 -- 
-Fan Ni
+2.49.0
+
 
