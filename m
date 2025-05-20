@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D633CABDE3D
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 17:06:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FFD0ABDE5B
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 17:09:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHOX9-0003j0-69; Tue, 20 May 2025 11:05:35 -0400
+	id 1uHOXA-0003ja-1G; Tue, 20 May 2025 11:05:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
- id 1uHOX5-0003bz-IS
- for qemu-devel@nongnu.org; Tue, 20 May 2025 11:05:31 -0400
+ id 1uHOX7-0003fo-0m
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 11:05:33 -0400
 Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <john.levon@nutanix.com>)
- id 1uHOX2-0002kf-Fp
- for qemu-devel@nongnu.org; Tue, 20 May 2025 11:05:30 -0400
+ id 1uHOX3-0002kn-7y
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 11:05:32 -0400
 Received: from pps.filterd (m0127840.ppops.net [127.0.0.1])
- by mx0a-002c1b01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54KCUIcA006673;
- Tue, 20 May 2025 08:05:26 -0700
+ by mx0a-002c1b01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54KCUIcB006673;
+ Tue, 20 May 2025 08:05:27 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
  cc:content-transfer-encoding:content-type:date:from:in-reply-to
  :message-id:mime-version:references:subject:to; s=
- proofpoint20171006; bh=le0NKHZtXWjCySeTO7S61i/syVWzvme3vUpWwRiOy
- n4=; b=mZKftc2xhtgWsw0Y4KY/aFYU6p5z8govRbwFVcKavTY2occ1/Pi68dUqo
- /+ujAASLr7v7W00wpzur2zABBUpwJ+WazNaEI3YQfbKblIgaq1aNovm3X4L8UO0y
- X+ccRTAV3hs7z0OB3V4mryS144SSgLyLTM7RE31iU+yJZbOnPZPOlkTjvzOtD+IE
- RzU+zavli14VOgWB8VQOS3W4C6FnvAa030cniQ9BOCkKrCWvz5ZeHOMN/5VZglRg
- nSZJ15fqITZirzmD/ZJgYwYMUN1r+mBpMwKQjS94eoFec0aTY4tzTd1ZZiJdJRM/
- 2NIwxWN2zRHBI81zayaO5vF5Y595w==
+ proofpoint20171006; bh=IQLbshIKGGPj2z1Iv3e/LimoSuGnuEKgY1cekfKet
+ Wk=; b=tLC10Pd0+ZtgxD4TkYEFbkFDOhhzwL8uIP7DscsdgfZ4FXTpbImXUWGQX
+ vr0EjdSjjJsgUvL4dasYLOqgi94uf8DiRfapb7EHmNFm7TBbVvoXBk57550U63NH
+ VaeKEoVlKUBjPi/OUWfk9KSXGSkY+dSqm3kYS2d6XiPI9Km0CEfiIgc7YvSU8hLp
+ xhuB9UwMdKJcM0ccEF56iCkDpEjQDVgNzvzCjOoPyHnK3Qo6Hpo1pAEhzcQbFuYz
+ irR/+ZyNU0VvWwBwKFY1NzuQPsToAJq4yMdR8GjKCf3oQE3LjpO/aQtQ1LWfHQSd
+ H2JEASx2lGLU+o3NKgsxWVnkP+Z+Q==
 Received: from nam12-mw2-obe.outbound.protection.outlook.com
  (mail-mw2nam12lp2043.outbound.protection.outlook.com [104.47.66.43])
- by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 46ppsuehk1-1
+ by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 46ppsuehk1-2
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Tue, 20 May 2025 08:05:26 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GZ/6SvI60ABQWQ2po71vwgzfu7gLP9yhBNoV6+DoEuYOWbmeskD5EMbjE0ZJisuUtung6+7T9JdToXPF/6vIXltVl09p2pO4k3+9kl7cr3xbWf7+sH7fSoPyBdhFofbMMzItfm2F3Y7Vy52oKcBt5CK5skHxJZGa4/N9+4It5eIH2YddIq/DN4tmjYsxo3U4CimF2zS8GdoVwO3dRi11Sr5Z0oTfYKr2SqYwG9geg2rVsZlZvh2vrvOtW7gD6+wB03ZdD4uaOBCZC2cMvRWoZK9gRKkyB+jxdWf9qEtUVICKewMHddAZQtDPv9bqbcJRNqAoaEVPwGUL05bIOMxg5g==
+ b=XVFslGAYBrCi0jZ9cSiB5UmOiIBwbCmUibuF0ULNz4JwvXziZWS9P9fdOVTMBb8OtvqLSam7nj/DI5xXgUAgkjBvdvUHpwh7cQiVZsaT+wWnIm2WzOO2frVgKEOk/J0akQ8iaUu6Tn08moMzYDuUR+IH0spVT1U237G/yn0vZWn0qL3KPrssw7rJWmlOg/HLdlGvm9kaOaZ6DEuUlkw8UvkRT60qrR+k/8KQ8KgzhsMtKzEDU3o2bIB/k8p0kU5Z+/5na4GbWDanPF34BFTogzFyDH1PwAet2qW3CVzOGO+fiMiDN6ekOObP1eRMvWeWoMNM761YvIBlSdS7phzhog==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=le0NKHZtXWjCySeTO7S61i/syVWzvme3vUpWwRiOyn4=;
- b=Q2A4bQ9rj2Q6vS/FnjYs9use9L0D4fLvcnEURlPSEeonVvOaaCyWaCLE+4J8sCzczRj0TrhamOuGRMnNAZX0hD6g3Yq84y6vSYeshzZ3k4ENwKFK48oIgJw3yjEteGpsWzb741C0vP0Najw89ippXAlhN69q+VhUxsx7VwPEiOu7Tn3N3pZQMWJV2gt3qpcA8gRwrSwWELPK6qe7rZ2sM4HO8UbBaxHmwbs600olE5IJBd30YNICTwHIyUn9ITp0c91Eery5keLTMr+NkaBUO//DUcI5trXDzSvg0ULIjRn1HUdLhIYpwCL1clEZyGxMs5vXPSix1dlnjyu3Rq2Uzw==
+ bh=IQLbshIKGGPj2z1Iv3e/LimoSuGnuEKgY1cekfKetWk=;
+ b=Ox45uJtbZGJhHHGqY1GYCvygpB177JHV+zfvTVfmnPU0m6EDq38QJ/odefslOva/KHwcBX5YdyHrL3qdwrK9tb5AsZP8BtYTlU/AQeQw5De5nvp1lgleX7UNUQe2MC/2RITo2tFlbgN/GZYnU1UckJrNDsrkIuZuvbWRCym6NKKbP92dsrtKZU9VjSzAp7opRHucYt3P0Aj8Jr5nPys+ja2kKlax66by6SJPnG1tgnhhwRACivRFtQFlKzuhe/jltUoMHWhdbFSn3fsrfGcRXmLq8PCJpnsV/0JcsqbO+TDdthO9BYY0nJXrjLWmk9wsK7sYdtbvIXGEJ9929u8I/w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
  dkim=pass header.d=nutanix.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=le0NKHZtXWjCySeTO7S61i/syVWzvme3vUpWwRiOyn4=;
- b=nYl3pKWp7RBB92N8Mx15EKHxB/GFU5g+d2GkEwmLsx3XsYlS3ZlstLGviisWS9r9yqalyEoZo47y+3lhbEmDu9McWEUjP6S25o5Hu5/MheItdNActAG53N7Vi8bufQgVLcTI2vyIQeYgzbU+JBhxuojQ/+UNLbesEDj7JdrTuz8Szg9+VGgpF8PsU1NKkOOvfozWE/GS6/Hau31956nV1c84K7bOHSHurszbqAmnOn7x/fWNlVvohkhULzfJORj9YibaLPGJ5wSFkEmUboNoBA53FfjfqCFPdzxLXoieNZLNGbZp8T/T7bR5Z+EHEFS0STGCUx5ZW1AvnJ49x35uCA==
+ bh=IQLbshIKGGPj2z1Iv3e/LimoSuGnuEKgY1cekfKetWk=;
+ b=i00p3xWfLs8OXBK6+/CoHFY7Ez4b/659W4ASzs9FUTG685pKAdmBblhUnqTUCZblZLWBRNyFrYFYJRB8pSqkrbp8YCthGcjsrQezXLTHxmfSMQdht2r6nJ1THNh69fZ+sE5Cnjge48T+qjQdUMWtp/FPIJQnNgKhSfBXWAXQDt9z7GnneY+0JEjYmUwzH2xNVNNrNo4JbNtNEIM8/uwQSj8UW19VFwwGy+FjDJ4is16x9wdcwhBQJ6E4nTGAHQ3IEhMF4QS0onYVGOwjfShnRcGwbrHO7RPcCvA/ZfI41/LHtsUna0/1DJ5qQMhQJZFTHe2pqYk5saq1TKTzyqV1AA==
 Received: from CH2PR02MB6760.namprd02.prod.outlook.com (2603:10b6:610:7f::9)
  by PH0PR02MB8582.namprd02.prod.outlook.com (2603:10b6:510:104::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.23; Tue, 20 May
- 2025 15:05:20 +0000
+ 2025 15:05:24 +0000
 Received: from CH2PR02MB6760.namprd02.prod.outlook.com
  ([fe80::fd77:ea65:a159:ef51]) by CH2PR02MB6760.namprd02.prod.outlook.com
  ([fe80::fd77:ea65:a159:ef51%6]) with mapi id 15.20.8769.016; Tue, 20 May 2025
- 15:05:20 +0000
+ 15:05:23 +0000
 From: John Levon <john.levon@nutanix.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -75,9 +75,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  John Johnson <john.g.johnson@oracle.com>,
  Elena Ufimtseva <elena.ufimtseva@oracle.com>,
  Jagannathan Raman <jag.raman@oracle.com>
-Subject: [PATCH v2 22/29] vfio-user: set up container access to the proxy
-Date: Tue, 20 May 2025 16:04:11 +0100
-Message-ID: <20250520150419.2172078-23-john.levon@nutanix.com>
+Subject: [PATCH v2 23/29] vfio-user: implement VFIO_USER_DEVICE_RESET
+Date: Tue, 20 May 2025 16:04:12 +0100
+Message-ID: <20250520150419.2172078-24-john.levon@nutanix.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250520150419.2172078-1-john.levon@nutanix.com>
 References: <20250520150419.2172078-1-john.levon@nutanix.com>
@@ -89,91 +89,91 @@ X-ClientProxiedBy: AM9P193CA0021.EURP193.PROD.OUTLOOK.COM
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CH2PR02MB6760:EE_|PH0PR02MB8582:EE_
-X-MS-Office365-Filtering-Correlation-Id: b62c074e-4e02-4ea3-069f-08dd97afbd03
+X-MS-Office365-Filtering-Correlation-Id: 666107d5-66a1-42de-c809-08dd97afbe90
 x-proofpoint-crosstenant: true
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?y1BaM9sf2D1PtsQRdYBtlb04ab8OFmMVBKtHK8iqgZeUMa3d7nEcTZL+WDlZ?=
- =?us-ascii?Q?44JNNorrAPsZzPHuTlFDAGNdgY+PrBG0ecBKSsg/CejiU5muZpil2Ceb/SKr?=
- =?us-ascii?Q?bKf7kXbBmVFNmYEHzZCltDMTt0vcl3IMUCAwR4mVUs6Yjjmo+kzMnBvKZ1+a?=
- =?us-ascii?Q?WdaWEnneSKPUbfrJnWk5QKGLhjsaAIGNaV8Gk/UcTHzUli6sZnUn5xT01WaG?=
- =?us-ascii?Q?yzee/OmZZKdjbd6NZoWpTlvx6OUIGfh7BEjZFDlk4Cvf5YIGZrOmtqjG23+X?=
- =?us-ascii?Q?t6QpfSoADOtbwIFhcyx00Lwvtuq0SXRI8uBvy0bmyKgXHDDPcFPXHuJWGYQs?=
- =?us-ascii?Q?pxXvjaTM5jfbMERuQC/neBSNurxnSas9b1ouP7Iv3VVljC2HLuIiH6fjp2Bb?=
- =?us-ascii?Q?lmwGd6DuvP0dAXF19B7rdgUv9ozgpcXvAwY2MUA7OjqyNsR9ly7b2ZqIzyPH?=
- =?us-ascii?Q?FalZNzmhToBxYOySpA5sY4vTMnUrCC+pRkZGgs8HLABX1cmPzyZDCVF2Kgzy?=
- =?us-ascii?Q?AHoK9jzllRziSdSmQAHL72X0DFyApYoUAMb5f2fT4eODOV9URwMGiOsCK0VU?=
- =?us-ascii?Q?coWum3KMa+R7iDAhAN8wONmGlynEMYSp2H+oMOwpTbdCIihnav9N4J1Uhuyx?=
- =?us-ascii?Q?uZR0slrfcF2eancLz2sEZNXSYLU/3CsOz/dWFoKSxw8Qt8ehWufxgFmJ46Y+?=
- =?us-ascii?Q?rcPcgCx74QBmEUZWTF0UrDtj/ERzK5fRGv1wyb3kt782Ck0VPcnwxe1chZ8s?=
- =?us-ascii?Q?gCBWPVtIUyxQADltJDyqxT4bELLj4+Z2KZNH55+pNW8omnN9ajpgDGNsVevO?=
- =?us-ascii?Q?3GZ4vpb+kyMNcvKutjAc1/2OAUF+PwZ5YLLf1+LzP5qZJUfbKbZuocrUsO0g?=
- =?us-ascii?Q?Bia21iLq850aupQ3Tk6mFb9tKuOoMt0dgpS1KYgDugu846tSZmAYuZhQEuut?=
- =?us-ascii?Q?UpWICiJ8yjQbic2vz8kVyfvL49M4oQ+WlHzFAOkOHKuxUPhMhmCSzVgkRDG/?=
- =?us-ascii?Q?NViIgWU5fhcB0kQKKV1D89UAxz5vdcwuP/ljgCMJ4vYGvm4Ed7UMQtfYbEYa?=
- =?us-ascii?Q?QXQuRLUc+5mOIdSRaLJLrYFMyepO2NLdgtoJDPVcVw6tnBgcNqSA7lovk6OX?=
- =?us-ascii?Q?jpoQiJ9V3+51sTVC4F1TedWuS5o9H2DLzMjiEyFNc18b/suL7ltuuZEAF+eD?=
- =?us-ascii?Q?p4kqw/6rTuLyeUX4y1MBckr7gehY94SSfzoXZKC+9cGQIlzSJ7kJMd9wTqoL?=
- =?us-ascii?Q?i3jR9JVSkrhKLYjycuOduDgrULLKUeeVzVRyRdKBmgq0x8BkMx04eS+JwCB5?=
- =?us-ascii?Q?5SM6JJB1kDISVBkXTyhNRO4lUG9r1cQs9V9dGs7hnyV+I9kbMZ8+G+O3ffuh?=
- =?us-ascii?Q?xXDr98lCeeimkQHREd4JHVSyqHo3Xeq67Nf8pg+Mspw7/OtH32O0lG3bOpnU?=
- =?us-ascii?Q?T7OpaQ1CRyE=3D?=
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?pDyXyC2a7X+cLyvjr5bD/5AmOdLJ/xReuovO0BqCmgI5zC48n8Md1iQGRWCu?=
+ =?us-ascii?Q?tKPRmsJec1bFnrvIRJrHNGe+VlGJ9cNPU3FbeiNJ3xQgCaWbj+Ld33E5J1oK?=
+ =?us-ascii?Q?vHjJoViQCzd86m10sujla96sANNycpLcTGCB+c6b0crdS9n1AUkVrL92aa4r?=
+ =?us-ascii?Q?R3epmvy1jlScKzkXuj6G0lxRdyqs4xQdSnnz1RmDsVIe0HJWpryzk9PhmKfD?=
+ =?us-ascii?Q?IoBn1xckAfdIdVLBEiLvcEHsMbNiq7/Qrl1PKVIeFyW2pugP7LYcqsH6Vxn7?=
+ =?us-ascii?Q?3H6/4RzS5vqo6Kpx6kSXdDBvTaNSOvFLWhL2HcxmRwLAPW9b11Cg0UHB0sdy?=
+ =?us-ascii?Q?KuXO5McKVYr2gHZEp8qkOSZlthEBoK4xjjiSX5ULG8i7hFrt7fpoycuv5b6y?=
+ =?us-ascii?Q?DXC9HjKhnR4bYlwChbQ6xy6hj/kWTzz3skGvRQmLGEgQ0fUsBx8fWxs/SpNP?=
+ =?us-ascii?Q?DeU/lTtBKHBUEVSUuJGmFFj8hfR5eRCd2wBqRZ0KsBSwDWMKb++qRgxp6PyQ?=
+ =?us-ascii?Q?cmXGSlk1tTGuh0/vAD15zQ2xTMIqc7irsubcWCq7nazYzPSNHe6PvISfOcID?=
+ =?us-ascii?Q?OcP5qdBoki8XCEuZZQ9AuTidapaIIevg6NWBYUodYj6na8mZjSsUzG2GuQgk?=
+ =?us-ascii?Q?1WAh+qjDtN87U95zOSGOOdYPrb1m1ci7IYIw1DOUuNdgBNQx+xV014F0cQwt?=
+ =?us-ascii?Q?YyeOi8/UDcakIS3n25rQojn2/wqc8U9urF63o5bWUWrveaFjXMBdhq4xf30E?=
+ =?us-ascii?Q?R1f41s9VTMgZnspttlYFnm3vDBsVMeDmxxs1i6+QudQyXTibmWa/46eXb/n6?=
+ =?us-ascii?Q?MriP/qEjBmBfwCHHt2mHl+MxqfNXUK//aZH4yunmABGXWNBYlf2OTgrC1ZwC?=
+ =?us-ascii?Q?pHWXV5Y2gfF0kmuuQDulRhGT1xL8X4CWFalEbgpuhcxmxE/upZtHLuwCQmZD?=
+ =?us-ascii?Q?lwdH1JYzebqCwEG3GF9uSDqjZ4wFpcXCo3lKo7aDnepOI0QTaobSowjtLhTs?=
+ =?us-ascii?Q?UZbJxz7lf/9mVnDngi3qsMd56y9d/gliCB5phwGa1j4zPsqrKHBd9ANlYZzl?=
+ =?us-ascii?Q?baewGVxXd9dmjogkWxpkxAZOC780SwZeCFvIYf8T7QabLg2u8Bp+InlvDWnC?=
+ =?us-ascii?Q?nG907LTdCSZPr4h9mFT+j5IZAb7y7lLdZjz4Hns3HZZRR9HM9gVFnU+5P0TE?=
+ =?us-ascii?Q?J4Wba0W3RanymB4G7KeOhVY4mtkV0t02SUmCaX0u5pVE4KyXvz2jRA9NYDUD?=
+ =?us-ascii?Q?syEWMbGMyjqcxvUcc5sZjM8URb7DCM4/ZG3dTb7sFPOFOr3z15Tgru4XnSax?=
+ =?us-ascii?Q?/b0Ye5BE495XAXKz3IU0aH/jQWhsHDjli8Eyx+npQxFslKhFGA4zzi4Iuk7/?=
+ =?us-ascii?Q?/RHAIBGbsz5PC3ENGxNV/h6bNmuv8EjStnMmi+2hjNKSAFI0lq18F2OHlDVv?=
+ =?us-ascii?Q?N0SI4ZckEqA=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:CH2PR02MB6760.namprd02.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(7416014)(1800799024)(376014)(366016); DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?CLdplS3LNxpiBYpDmdMoAUrDEKyHZXbTSO8HITdLP/JhvYayHdG1SZJ35+xf?=
- =?us-ascii?Q?E/rg5UQCFzQ5Iirwrn+q0D9ZoWJiO20IqefYFbDz/7Yi/hupHc3folVT3NxD?=
- =?us-ascii?Q?9v1PWVF5eIp+3aY4tcgwSv4QnfLTalfGbszKzzgW26DNJ7IJGnaQcXrypWFU?=
- =?us-ascii?Q?SvEGhGGddDLky04+ga7nsJ2Ax7i6+ga++Q+4EaVA7gbVvtJPuqxkwff2c4DZ?=
- =?us-ascii?Q?LPWKTOMnG2LT5JPwq0pqOBiqvdXy9MCkhpLbs2M0mSnXfgzukBd7zKs9Slm9?=
- =?us-ascii?Q?uVVFhZ+Ec49MDsFXjIdH/pqFd5GJyIQbkcZHDE2VtXtjlvv3kcIzh0f63UFk?=
- =?us-ascii?Q?Q7Tt7qHdxhoHdne6B5P/p27nwB2KRQZzhudupFDdnb6ZFskJ6kcGaEQWMYER?=
- =?us-ascii?Q?ImzGURaIlWM4tZCgBMe66x94ut5fO/O8DHZy0cVroZtAncS7Or4ho3PhZNKi?=
- =?us-ascii?Q?mefz9KMynVf6TYNeh5n5mBHhnR7dKMQRCxoq1WdoDe0Sg+S/L2l3pFH/FRLw?=
- =?us-ascii?Q?fz+XKdavCi8KJSRJelRSJwaNOcEkhdCPd5X3hdAgy1QKa3AUoMtHX/6vbRvt?=
- =?us-ascii?Q?2djq9WOA9Y7kY6/4exVDg3nWGgZJXwrogSc/hvmDslzOvdKTFrwl9NNijYWV?=
- =?us-ascii?Q?7MM8H1zW0F+UGqtXReBLMNPxjf6PMbPweQeEelgDv63TL1nz/0KGu6m2w9tb?=
- =?us-ascii?Q?musXSbnfdhYPwH6IzaBUrMNvrsdW9jBrqQAdcgx+DI5CuusvWvpu0kXZ1R2p?=
- =?us-ascii?Q?k7l0lF5Puukt8VyJhYi9EwFcX+MWmooASeRkAg/8WLKYpSxU58VWCL9RTSVz?=
- =?us-ascii?Q?2RWOoQvfZ09DiYaoBzXBRLPUh2j3jehuj/xQiRKCtAPV/cE3pqzWJuhIuJC6?=
- =?us-ascii?Q?mDusQPe97gC5CWRAoTsHmw1Gb1EahpwBtrXOyzWgBE0lN8ZIGVRl8wpUyfwH?=
- =?us-ascii?Q?dnE2kOmjx8RMyH33dU9dioU1gNTlhcsqhbBB9q+g1LDoz9c2qgRoGaTrwG32?=
- =?us-ascii?Q?H2YgrIJGUfwYMk9c5ie/kiEJzpeFF7ONUo5QT65GCmVBO/EielVhCgASA498?=
- =?us-ascii?Q?V+0fvqa3C8gHBj/a1+73Sf2f30Dj1yGtEpPlb0++q5333lfM7yBMj2bIXVdb?=
- =?us-ascii?Q?akdo3Ygx0micswrkmTPG64JEgr7yilFDrYE7ddxNn+JEqqbbZIh50S1ILXwf?=
- =?us-ascii?Q?kPzaMo2+a0gUMcUEYS1RVsB7BCDsPYt4C0P4W7D52+ODrNw2SDYMM+MtXeq8?=
- =?us-ascii?Q?6gf0ENABvu5YSMrQBcSCC4aP3Mg0AmROL1CXcmhUBe8JI1nO4YUV1eD60dNY?=
- =?us-ascii?Q?JbB0LS/ZKIpz2KO5uYxdNN5azX6T41JMTn4Dt1KHfpZwWb5CSnujoAWY89R+?=
- =?us-ascii?Q?uYdCx6rdyI+fHr5PYT2mXYU3eCuuGETRc+S9MLYvoBpqV8TcS+j2fQSjLgMS?=
- =?us-ascii?Q?8M9Kr1iT+TgAo+kiSngRMn8iR30mWdF5T5HoOMWqqWqxklaatfkMexaGhRxc?=
- =?us-ascii?Q?TsclaLhETrumO02OsC+ZVtSkdr8XD8RmCdXdnF6/XTDrO2DhZsSX+vh1Vn56?=
- =?us-ascii?Q?2GKyCxt7V8cH1OLSed8PZlGjJuC8gU7nCrV09lkj?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?odRtdTIBGQdVRkw4GTh0kVOvlSoRysjTS6tn0Dslz5hZ8hVHDM5+djHP/OQh?=
+ =?us-ascii?Q?E+Rfjit2MZF7MXupInm3hNUe3wX19Ls8n7T3/VDJQB1oXXUFxghlp6n+42ks?=
+ =?us-ascii?Q?UzT4XUkSeNy2MlOyk8su5bIe5jRY4Km7Lrg0MS87H5/cTFp7mSyiSS6QFITs?=
+ =?us-ascii?Q?VEMnb3cst3Akq3hDE0UNlkFoBo7x849b2EttBQ40Ic9M14WN8hg2Y3mx/P4c?=
+ =?us-ascii?Q?XM+8c4qe7XA3w4ocHJpS9xbjqUMhrAq2snA0V5ty5q7KORyw7FYOCtHYt1Ly?=
+ =?us-ascii?Q?qm0H8h1FanQGQtiyVTmAET2AKaCv3kMaARHBa14HP/yUnb8ecPPz/oShNWLi?=
+ =?us-ascii?Q?d0qJj3ilcVizfVr6N5JxnxkUvhjPowLOGyt7aGeeVDa9MM3P0RcXwLjlsmHj?=
+ =?us-ascii?Q?UcnoVLBxQEVvEuvjFf6W+JfiycWKSYpoBXK7DyWBVUz7bfK0iIZHnhrBgmxk?=
+ =?us-ascii?Q?6x9rpmRV0rjlQH0VfqxzMdYMPt3cn3Nuu1kSrNf3V2238OAnXL9eQwvg1Ful?=
+ =?us-ascii?Q?ByRU12YUuIOPgp9Uy4PVQxnGCQVN8v+3QHIP1uYlGmkh+pjEeB8nuQNf0+qB?=
+ =?us-ascii?Q?ePjsz0Ce1gi8LmnrMQrkfxBeDlF2tyedkMhC70/rYPokqkbCsEUncEgWlPdQ?=
+ =?us-ascii?Q?c6RDeY2jxGw9t34SSbR9KJm9Ab2k3bc2D6iN4QPzxhBAa3xf/HQzAWVebO/6?=
+ =?us-ascii?Q?9LHPFd0aF9pPYr8ULUQBoTTzXPokpDou+1qS6zo8VFVsXM7PytX14BnCwMBQ?=
+ =?us-ascii?Q?rl/kmGuHd7ZuMydbbFbIL59GToZHSEDW/vxJ2F9idkYdGdZcEwdLoLvTvFHh?=
+ =?us-ascii?Q?fxhI7Oqz0UCI+wKodiV5eUrKZyxCBtP/PHpWRGYvqOO2X6z9BMzXn0de5WFY?=
+ =?us-ascii?Q?ZKxpw+49721+h6a+o2uZ6qtoejMikiCUkobtPvdEnEfpwDapaVDgZAdnu6ne?=
+ =?us-ascii?Q?Gi9WYrVEMRYlmthhy+wF/b+8E4SbpWLlhqZdQ11TsTqHt1VMqJROUVva+0zy?=
+ =?us-ascii?Q?UEvY31vtnhd7z0S9l4M8UKKZzlMGio7s2E/E/mmDFbDxwfHBacvbzlJSHUVk?=
+ =?us-ascii?Q?IGR5n2OF/TaiKBAHQqlXEiftgxNIS/pXMoZ/BjYRVLk4Mof2qfJ2I5XeJjF2?=
+ =?us-ascii?Q?tWSL41TXEYPCZ/9AZf6pKjT3rtDbmhymgiYnzJTTCNldp7ZngsAo8Zoxvz5d?=
+ =?us-ascii?Q?ijetFSvvZxHVWoSl4jd2L6Lq/Y49pWFVBcXXYU52YTK7dc2pLrEGQ+lGTRIy?=
+ =?us-ascii?Q?er8Hnn2QaELDx3yheIjgUkHThR/bZPvWHtHmFum1GTyWVuZ5xbHdM6EJAxeT?=
+ =?us-ascii?Q?WxiFWEyfQ7prCad7zC+yrSI/7zk8SUOMnsm9OUUn4DK9Sno5WiGkifRSsRKN?=
+ =?us-ascii?Q?C6SwwQrspL0QSXSx1YG8UJ/qNPag2ywYERYuWIIer+c1lHdam4f0LCVkL2+Q?=
+ =?us-ascii?Q?en5EKY4LRUYlVX+C+PoSxeGUjoZpKFn0jEGZTpZFDfey3ek8ghlUw4gFAXsf?=
+ =?us-ascii?Q?61ikHoLVoAwG2uOJ8sp1Wxe7nkphUuyJJccWyEkKsco4gMz4WITIB2NQoKhe?=
+ =?us-ascii?Q?3eQYBVciMijmfIG+NtbNZ9svtrZteIPHQfklqsiL?=
 X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b62c074e-4e02-4ea3-069f-08dd97afbd03
+X-MS-Exchange-CrossTenant-Network-Message-Id: 666107d5-66a1-42de-c809-08dd97afbe90
 X-MS-Exchange-CrossTenant-AuthSource: CH2PR02MB6760.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2025 15:05:20.4278 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2025 15:05:23.0456 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2Q+MYh36U/IZD3uBvYvHcHa+yygGqJxch/qwJ8oJg+9GYrcTvzQZQP8g+m9r5yvBsClcYK7abeqCUgg3nyyTEg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: UfwWhEVDZYCDBrWvEz8vrpf2JvFjZ/phY9pHvy2OfgCGTisvXwsJ7EzRuZRVuR/SMMDbN+hFu0JXkDTieMRt8Q==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR02MB8582
-X-Proofpoint-ORIG-GUID: ifS9hkD7UuY2xhehSrXTAd4xL40d6CLh
+X-Proofpoint-ORIG-GUID: 1qoKds8WDyA_8QExJheVVetyO0pjxsKA
 X-Authority-Analysis: v=2.4 cv=Y9v4sgeN c=1 sm=1 tr=0 ts=682c9a36 cx=c_pps
  a=TJva2t+EO/r6NhP7QVz7tA==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
  a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
  a=xqWC_Br6kY4A:10 a=dt9VzEwgFbYA:10
- a=0kUYKlekyDsA:10 a=yPCof4ZbAAAA:8 a=64Cc0HZtAAAA:8 a=eNiANMbe5KInMaSQXcgA:9
-X-Proofpoint-GUID: ifS9hkD7UuY2xhehSrXTAd4xL40d6CLh
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIwMDEyMiBTYWx0ZWRfX/fr3GIHsAbXl
- mfBdqXoboA25gHQNQtw+V9cC8a+zJzegj630cXRLHa6NLhB8oKv6kseyYCkiKIeh2KZgwmKlFHQ
- mPxa5p5Q6Yb0dOCSm6Xjcaw7xhHXn6mVsWRYyychM7Sc1SxBRJi2M4ZAmiyTo7muLYsF+VEl/8O
- XhPPHWVXFwkYby8oDYuAt2JlfeMpgf0HWCvoDzaBl/APSWCvfvvI7virRYzONvtYJYJ3t/5015G
- q5kem4OHD5KvqFScgO/tYN6abZfm4uV9iwGR52h4ZuhPcPKWeKPffnl+d4mirG6sSI6EJwk3laF
- +dqcjSEFRrf8QPKwZruic6woBKk7CIxCQbhpceOJs62Feaqar4LZHDhNlIeyKY5ZMXwlHYJXruc
- L1fpIsnTd1keIKTxq/TNVe1CrBLHXa+lEueucuh6a56GTLJQpjBUNmvrUf3pDkPqvU2sVsw2
+ a=0kUYKlekyDsA:10 a=yPCof4ZbAAAA:8 a=64Cc0HZtAAAA:8 a=70NfNXkHNs9el5T2m-kA:9
+X-Proofpoint-GUID: 1qoKds8WDyA_8QExJheVVetyO0pjxsKA
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIwMDEyMiBTYWx0ZWRfX5MJ5+dDZk25J
+ 6qgzfCQgC20oRa+/6Elsx0M45BYtjccWtr+7t64mCXAsuWVch7qSp2Iu7wOxf0IdIJeZIk4Dycz
+ FA5acTdgee/NjGrGrBjl58cQAYAqDi2o3vTmRxe02T3Q+edkJp5t/4h6qTSq+dEanPTC6hyAegW
+ ZLrw1i7/o1ZKP6PrkavUMv849gl7ahxukearhiqXKxjl57tl8gfFLCXcsMeqJpvSlbXReeR46py
+ olNF8UHg2BNbTq+6JVX/uhSK2GDv/KD2qkoBF2Kr73q1kau6GORXf0iqTmbL8j2pLmRk/1lUHhW
+ QUgpd+7BIa49J+ibjLbeFNGIh67yz9oVVnpw36wsOkqzkDORCUn7KCQ520Ygy5k5W1w8WLZIS3C
+ VQtB9O4tneq5e1fP8aTNAmQ4GXBp6z3+etG8eRrQFVKjTrZ+0DgrSE/ej24QGgf60x02Mvlz
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-20_06,2025-05-20_01,2025-03-28_01
@@ -203,148 +203,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The user container will shortly need access to the underlying vfio-user
-proxy; set this up.
+Hook this call up to the legacy reset handler for vfio-user-pci.
 
 Originally-by: John Johnson <john.g.johnson@oracle.com>
 Signed-off-by: Elena Ufimtseva <elena.ufimtseva@oracle.com>
 Signed-off-by: Jagannathan Raman <jag.raman@oracle.com>
 Signed-off-by: John Levon <john.levon@nutanix.com>
 ---
- hw/vfio-user/container.h |  2 ++
- hw/vfio-user/container.c | 43 +++++++++++++++++++++++++++++++---------
- 2 files changed, 36 insertions(+), 9 deletions(-)
+ hw/vfio-user/device.h |  2 ++
+ hw/vfio-user/device.c | 12 ++++++++++++
+ hw/vfio-user/pci.c    | 15 +++++++++++++++
+ 3 files changed, 29 insertions(+)
 
-diff --git a/hw/vfio-user/container.h b/hw/vfio-user/container.h
-index 3cd3303e68..59e14cf5b3 100644
---- a/hw/vfio-user/container.h
-+++ b/hw/vfio-user/container.h
-@@ -14,10 +14,12 @@
- #include <stdbool.h>
+diff --git a/hw/vfio-user/device.h b/hw/vfio-user/device.h
+index a5a2aa9ba6..25cd4c8a00 100644
+--- a/hw/vfio-user/device.h
++++ b/hw/vfio-user/device.h
+@@ -20,6 +20,8 @@
+ int vfio_user_get_device_info(VFIOUserProxy *proxy,
+                               struct vfio_device_info *info);
  
- #include "hw/vfio/vfio-container-base.h"
-+#include "hw/vfio-user/proxy.h"
- 
- /* MMU container sub-class for vfio-user. */
- typedef struct VFIOUserContainer {
-     VFIOContainerBase bcontainer;
-+    VFIOUserProxy *proxy;
- } VFIOUserContainer;
- 
- OBJECT_DECLARE_SIMPLE_TYPE(VFIOUserContainer, VFIO_IOMMU_USER);
-diff --git a/hw/vfio-user/container.c b/hw/vfio-user/container.c
-index 6f0eb86a75..38e9cf8d8a 100644
---- a/hw/vfio-user/container.c
-+++ b/hw/vfio-user/container.c
-@@ -53,15 +53,28 @@ static int vfio_user_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
- 
- static bool vfio_user_setup(VFIOContainerBase *bcontainer, Error **errp)
- {
--    error_setg_errno(errp, ENOTSUP, "Not supported");
--    return -ENOTSUP;
-+    VFIOUserContainer *container = container_of(bcontainer, VFIOUserContainer,
-+                                                bcontainer);
++void vfio_user_device_reset(VFIOUserProxy *proxy);
 +
-+    assert(container->proxy->dma_pgsizes != 0);
-+    bcontainer->pgsizes = container->proxy->dma_pgsizes;
-+    bcontainer->dma_max_mappings = container->proxy->max_dma;
-+
-+    /* No live migration support yet. */
-+    bcontainer->dirty_pages_supported = false;
-+    bcontainer->max_dirty_bitmap_size = container->proxy->max_bitmap;
-+    bcontainer->dirty_pgsizes = container->proxy->migr_pgsize;
-+
-+    return true;
+ extern VFIODeviceIOOps vfio_user_device_io_ops_sock;
+ 
+ #endif /* VFIO_USER_DEVICE_H */
+diff --git a/hw/vfio-user/device.c b/hw/vfio-user/device.c
+index 45b91d22f0..b37f7329a1 100644
+--- a/hw/vfio-user/device.c
++++ b/hw/vfio-user/device.c
+@@ -49,6 +49,18 @@ int vfio_user_get_device_info(VFIOUserProxy *proxy,
+     return 0;
  }
  
--static VFIOUserContainer *vfio_user_create_container(Error **errp)
-+static VFIOUserContainer *vfio_user_create_container(VFIODevice *vbasedev,
-+                                                     Error **errp)
- {
-     VFIOUserContainer *container;
- 
-     container = VFIO_IOMMU_USER(object_new(TYPE_VFIO_IOMMU_USER));
-+    container->proxy = vbasedev->proxy;
-     return container;
++void vfio_user_device_reset(VFIOUserProxy *proxy)
++{
++    VFIOUserHdr msg;
++
++    vfio_user_request_msg(&msg, VFIO_USER_DEVICE_RESET, sizeof(msg), 0);
++
++    vfio_user_send_wait(proxy, &msg, NULL, 0);
++    if (msg.flags & VFIO_USER_ERROR) {
++        error_printf("reset reply error %d\n", msg.error_reply);
++    }
++}
++
+ static int vfio_user_get_region_info(VFIOUserProxy *proxy,
+                                      struct vfio_region_info *info,
+                                      VFIOUserFDs *fds)
+diff --git a/hw/vfio-user/pci.c b/hw/vfio-user/pci.c
+index 5904e7ebc5..2c3edb7378 100644
+--- a/hw/vfio-user/pci.c
++++ b/hw/vfio-user/pci.c
+@@ -251,6 +251,20 @@ static void vfio_user_instance_finalize(Object *obj)
+     }
  }
  
-@@ -69,16 +82,18 @@ static VFIOUserContainer *vfio_user_create_container(Error **errp)
-  * Try to mirror vfio_container_connect() as much as possible.
-  */
- static VFIOUserContainer *
--vfio_user_container_connect(AddressSpace *as, Error **errp)
-+vfio_user_container_connect(AddressSpace *as, VFIODevice *vbasedev,
-+                            Error **errp)
- {
-     VFIOContainerBase *bcontainer;
-     VFIOUserContainer *container;
-     VFIOAddressSpace *space;
-     VFIOIOMMUClass *vioc;
-+    int ret;
- 
-     space = vfio_address_space_get(as);
- 
--    container = vfio_user_create_container(errp);
-+    container = vfio_user_create_container(vbasedev, errp);
-     if (!container) {
-         goto put_space_exit;
-     }
-@@ -89,11 +104,17 @@ vfio_user_container_connect(AddressSpace *as, Error **errp)
-         goto free_container_exit;
-     }
- 
-+    ret = ram_block_uncoordinated_discard_disable(true);
-+    if (ret) {
-+        error_setg_errno(errp, -ret, "Cannot set discarding of RAM broken");
-+        goto unregister_container_exit;
++static void vfio_user_pci_reset(DeviceState *dev)
++{
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(dev);
++    VFIODevice *vbasedev = &vdev->vbasedev;
++
++    vfio_pci_pre_reset(vdev);
++
++    if (vbasedev->reset_works) {
++        vfio_user_device_reset(vbasedev->proxy);
 +    }
 +
-     vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
-     assert(vioc->setup);
- 
-     if (!vioc->setup(bcontainer, errp)) {
--        goto unregister_container_exit;
-+        goto enable_discards_exit;
-     }
- 
-     vfio_address_space_insert(space, bcontainer);
-@@ -112,6 +133,9 @@ listener_release_exit:
-         vioc->release(bcontainer);
-     }
- 
-+enable_discards_exit:
-+    ram_block_uncoordinated_discard_disable(false);
++    vfio_pci_post_reset(vdev);
++}
 +
- unregister_container_exit:
-     vfio_cpr_unregister_container(bcontainer);
+ static const Property vfio_user_pci_dev_properties[] = {
+     DEFINE_PROP_UINT32("x-pci-vendor-id", VFIOPCIDevice,
+                        vendor_id, PCI_ANY_ID),
+@@ -269,6 +283,7 @@ static void vfio_user_pci_dev_class_init(ObjectClass *klass, const void *data)
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     PCIDeviceClass *pdc = PCI_DEVICE_CLASS(klass);
  
-@@ -128,14 +152,15 @@ static void vfio_user_container_disconnect(VFIOUserContainer *container)
- {
-     VFIOContainerBase *bcontainer = &container->bcontainer;
-     VFIOIOMMUClass *vioc = VFIO_IOMMU_GET_CLASS(bcontainer);
-+    VFIOAddressSpace *space = bcontainer->space;
-+
-+    ram_block_uncoordinated_discard_disable(false);
- 
-     vfio_listener_unregister(bcontainer);
-     if (vioc->release) {
-         vioc->release(bcontainer);
-     }
- 
--    VFIOAddressSpace *space = bcontainer->space;
--
-     vfio_cpr_unregister_container(bcontainer);
-     object_unref(container);
- 
-@@ -169,7 +194,7 @@ static bool vfio_user_device_attach(const char *name, VFIODevice *vbasedev,
- {
-     VFIOUserContainer *container;
- 
--    container = vfio_user_container_connect(as, errp);
-+    container = vfio_user_container_connect(as, vbasedev, errp);
-     if (container == NULL) {
-         error_prepend(errp, "failed to connect proxy");
-         return false;
++    device_class_set_legacy_reset(dc, vfio_user_pci_reset);
+     device_class_set_props(dc, vfio_user_pci_dev_properties);
+     dc->desc = "VFIO over socket PCI device assignment";
+     pdc->realize = vfio_user_pci_realize;
 -- 
 2.43.0
 
