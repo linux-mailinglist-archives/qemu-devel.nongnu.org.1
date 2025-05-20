@@ -2,95 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5329ABD5D2
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 13:05:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93632ABD632
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 13:09:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHKm2-0005pf-2Z; Tue, 20 May 2025 07:04:42 -0400
+	id 1uHKn1-0006ZY-Gx; Tue, 20 May 2025 07:05:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1uHKln-0005oy-T4
- for qemu-devel@nongnu.org; Tue, 20 May 2025 07:04:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uHKmx-0006YC-G6
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 07:05:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1uHKlj-0002ef-De
- for qemu-devel@nongnu.org; Tue, 20 May 2025 07:04:27 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uHKmv-0002yr-KP
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 07:05:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747739059;
+ s=mimecast20190719; t=1747739136;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=yOIZxwKbx/nM4dr/0oTTSQzM9/oZm8GOD1BZZFq4vME=;
- b=KNoDZEzd2MpwwHlC3nEcqTPlM6BKYs1sXjkuj6y0IlamoisA8QKkhhBeXOIOOZYHTa3VV5
- OMn2qAcWHuoIaUfRd57rbw96wTBvsNA87aGasWADs3GfzDmABlrycZqppvsgzFNDPFoCWT
- m4iaWA0tIDByxB8Ux2M8RDwpg3E8pfw=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=F/IHqHeQSPs0xLbiwFrGhlfgQpdXt/rKlioayxv+ryA=;
+ b=OvzBqbgH7znHF2Wgr+KccfXFWNlt0nj/JsIJeZATHpxsPCJ1l2oVSQHhU9wVMyY8P+/lc/
+ ujjhGAJ16NL8A/0ISRw3YGAFWiArvncGqNlY5Y0u3VdWzoLkrPqZkiirPB4TuVHAfQhN/I
+ xv7VoAMTGuIVzAzrgjn9EQ0Xk/Qtxmc=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-455-cEzPkzY-POWnIsoF20dDCw-1; Tue, 20 May 2025 07:04:17 -0400
-X-MC-Unique: cEzPkzY-POWnIsoF20dDCw-1
-X-Mimecast-MFC-AGG-ID: cEzPkzY-POWnIsoF20dDCw_1747739057
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-ad53aaae592so422315266b.0
- for <qemu-devel@nongnu.org>; Tue, 20 May 2025 04:04:17 -0700 (PDT)
+ us-mta-436-V9Jp0-BOPlyTX9fbfJr2Ng-1; Tue, 20 May 2025 07:05:35 -0400
+X-MC-Unique: V9Jp0-BOPlyTX9fbfJr2Ng-1
+X-Mimecast-MFC-AGG-ID: V9Jp0-BOPlyTX9fbfJr2Ng_1747739134
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-ac6ce5fe9bfso552152066b.1
+ for <qemu-devel@nongnu.org>; Tue, 20 May 2025 04:05:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747739056; x=1748343856;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yOIZxwKbx/nM4dr/0oTTSQzM9/oZm8GOD1BZZFq4vME=;
- b=jrrV7clXxV0o2TIpgS5wYvkkd0bHCKcxWJQYajMCbgvBtCh7jzgGUEb69QeqeVruXT
- t1cesPxK2e2Ccp5QLTa3aPdjoSOymk5UISafwvm5RUU75Cxhmc/H8oM3NJ/fHgb4RfTX
- VIltMrscCChKCMpJBLfmcNcjBC/lkUWg06cKSwPl2l1MUnit/sHws51I5Ch73FbXB6im
- meWRZbtbYQKpElxrF2rTs2v/GlxOa7Q3nbmvmFauIaMHCtA+HDj+ZTK07J9dV/DEFExw
- D7F96J8CwWQKGqbTZqptLvBmicazkPU36PcQ0+54PLZh4JmibGi8/CQ2zZK3I7FLh6hj
- QsNQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUyj2dg4TXI7oCUU3pd7EwDYq/ECuUQJw6IEB64L2F7nnmdcw057niyMh469JI8ddI3U4C0qu3/r/JJ@nongnu.org
-X-Gm-Message-State: AOJu0YwfaFuB5HGbsrwWZttFc81oXvfJIG7Gw/jbZAabWu0QCi4nYoNx
- tf3RWZNNdgEqybkyLYN6qcG2ZeCgellK/5MM12N6IbGKul/97Y8bkTVUdP+o3B8FYWElwGBvz+4
- +U3viOwRYr4m+kLbjAkc8AwQhYm1lpEXuTg+lDd2UnAUZm++yAfDcpUgI
-X-Gm-Gg: ASbGncsddoTKsI2HPqb+XTdeQQPO4lZLj4sC37YCwDI4TELji+33IPM/X9eelbRf7/5
- DFt+qepNBEWjBG7R+pJelL5PmAe0PgFnFI+1uuo76YFkU7o2WAwe1DZGztHGAxsQ3k3O5swdTAg
- jaUKTDxRfo/nEd3Ga62sxgrw6E4w/IK1Tgi6PmwIdEmxUlztBDcwAt8rwfxQs5R8caG7YT0aSMx
- SqBmRew9l5QGOL5jRwXsz/iUJ3/0a79QCjDQFJ2+GUo/2cUIrPPJbBwG5HtujZQoei9t8VdgIu1
- Mr9WlpVmv/+GtBN5cui9tez3afWMHJsYlDE16lXFWJkKnhpnQvyRQRWFMTrH
-X-Received: by 2002:a17:906:c147:b0:ad5:75da:540d with SMTP id
- a640c23a62f3a-ad575da5630mr614782666b.32.1747739056490; 
- Tue, 20 May 2025 04:04:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH/JvXlRCW8ocdtcuV9ggEx7O8WIDXDYJ6/WpaOkKi+YElcKMLZ/V1vNTjX2fn/m5O753wleQ==
-X-Received: by 2002:a17:906:c147:b0:ad5:75da:540d with SMTP id
- a640c23a62f3a-ad575da5630mr614776666b.32.1747739055828; 
- Tue, 20 May 2025 04:04:15 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-134-35.retail.telecomitalia.it.
- [82.53.134.35]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ad52d498737sm712100566b.138.2025.05.20.04.04.14
+ d=1e100.net; s=20230601; t=1747739133; x=1748343933;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=F/IHqHeQSPs0xLbiwFrGhlfgQpdXt/rKlioayxv+ryA=;
+ b=OzYEiMlzYNnky3314L00cfPiTzxfOGRvYNQJMpmSTq1b0bYmR8WB909LAzP92w8rEV
+ ZCm5+WxBLIm04RlellsxurcWTaQeDQm3lmNAhAweLGT02B0/+6TjjRLuxpziUrih4Sb5
+ uSvofH9B7gXA7jTP9h07fGg6R+FIXthXhrAOGehP1Izoc8mUr4KxaB9YZ8nxQ08Erjg+
+ 5f+e8UQsVMlUUig4S3dorqGGU19EfoT7gL0xIMh/s953xly1i+OTwRkBl1Aa+VOesQDW
+ l4YoTMvT0bjcGKbQBzkqB+Kr4JrHKsUeZzo9YWksANsb8ycZRGLnv2/EQQLUojP2/qVG
+ 7Tqw==
+X-Gm-Message-State: AOJu0YxCD1r+NiX0DeDAYJgJLb5ghTc57FNJehp0W/6jeAjkMDQdXAHQ
+ rLycaFQwU1WE0Lu8VpLocpeOuGkLLlV3V95I9RlQcrRwbielbKCAT7JtElP6NgKLyzK673FThZD
+ GvGeZtOHB5OC8qQcquBvKWetntmZhxTgew/tYejbe4L3a6qzqzuXFAnNnKf0PgUrlTWZ8nBKIeq
+ /BYHXFlZSjC+ET2IMmLeEuqTG/OxTiE3b0GHgLpgb0
+X-Gm-Gg: ASbGnctMrCPIgfh8DAooytHAvQhFD5pEKozVQ+RVfVOYo1FkwNYGN3q/5Nkb/oYnKiK
+ AUONVBE2nlXzH+QKwINO7tO5QvEu9IkprSzU08Q4q4KLnFGlLailuuAN8Sj1IJx/MC2AygpCZIC
+ oxx9mCg9KXTwtfL0Ht7NTcBxhfzvzrEm3rA+CjVbvqGoe52PIEj66sq4l/PHg2tHhxGt6Yr6n/b
+ /IZIDYTDzVWZzX4Azfy5q5XlmK7cy0bra4u5Zt2ZA3EkEXKhtQvKSc0B6w6uv+Vgds/zs60Ho8z
+ EdhtCsOICuV6lQ==
+X-Received: by 2002:a17:907:7f16:b0:ad5:5210:749c with SMTP id
+ a640c23a62f3a-ad5521075fbmr934619066b.22.1747739133489; 
+ Tue, 20 May 2025 04:05:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEB4Y9T3BtwTY4R6E5G+pSpnhIriHFvtVgXLmFiQBENpOdUxho4ljhvhWf4afMLWxKasWhnVw==
+X-Received: by 2002:a17:907:7f16:b0:ad5:5210:749c with SMTP id
+ a640c23a62f3a-ad5521075fbmr934605166b.22.1747739131582; 
+ Tue, 20 May 2025 04:05:31 -0700 (PDT)
+Received: from [192.168.122.1] ([151.95.46.79])
+ by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-6004d501e0esm7312122a12.24.2025.05.20.04.05.31
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 May 2025 04:04:15 -0700 (PDT)
-Date: Tue, 20 May 2025 13:04:10 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Huaitong Han <oenhan@gmail.com>
-Cc: mst@redhat.com, marcel.apfelbaum@gmail.com, cohuck@redhat.com, 
- pasic@linux.ibm.com, farman@linux.ibm.com, borntraeger@linux.ibm.com, 
- leiyang@redhat.com, qemu-devel@nongnu.org, qemu-stable@nongnu.org, 
- Huaitong Han <hanht2@chinatelecom.cn>,
- Zhiyuan Yuan <yuanzhiyuan@chinatelecom.cn>, 
- Jidong Xia <xiajd@chinatelecom.cn>
-Subject: Re: [PATCH V2] vhost: Don't set vring call if guest notifier is unused
-Message-ID: <ypbprsw5lngenryzn7txs3gpoljgxr4yso4zjqfr5467nl5bkn@k5zgrfhqagq4>
-References: <20250513112825.1731347-1-hanht2@chinatelecom.cn>
- <5cstdapha4xzmgkuja5ydxxvfgr4ux5iytex3qp65vm5hedp7s@h2mjfv72npyw>
- <CAAuJbeKtVjDzxBLkX86tHFnmXNBzTRpunAQ7WmBQXpYrSs-kig@mail.gmail.com>
+ Tue, 20 May 2025 04:05:31 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/35] RISCV, i386, endianness fixes for 2025-05-20
+Date: Tue, 20 May 2025 13:04:55 +0200
+Message-ID: <20250520110530.366202-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAuJbeKtVjDzxBLkX86tHFnmXNBzTRpunAQ7WmBQXpYrSs-kig@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -115,166 +103,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 16, 2025 at 09:03:33PM +0800, Huaitong Han wrote:
->Stefano Garzarella <sgarzare@redhat.com> 于2025年5月16日周五 16:19写道：
->>
->> On Tue, May 13, 2025 at 07:28:25PM +0800, oenhan@gmail.com wrote:
->> >From: Huaitong Han <hanht2@chinatelecom.cn>
->> >
->> >The vring call fd is set even when the guest does not use MSI-X (e.g., in the
->> >case of virtio PMD), leading to unnecessary CPU overhead for processing
->> >interrupts.
->> >
->> >The commit 96a3d98d2c("vhost: don't set vring call if no vector") optimized the
->> >case where MSI-X is enabled but the queue vector is unset. However, there's an
->> >additional case where the guest uses INTx and the INTx_DISABLED bit in the PCI
->> >config is set, meaning that no interrupt notifier will actually be used.
->> >
->> >In such cases, the vring call fd should also be cleared to avoid redundant
->> >interrupt handling.
->> >
->> >Fixes: 96a3d98d2c("vhost: don't set vring call if no vector")
->> >Reported-by: Zhiyuan Yuan <yuanzhiyuan@chinatelecom.cn>
->> >Signed-off-by: Jidong Xia <xiajd@chinatelecom.cn>
->> >Signed-off-by: Huaitong Han <hanht2@chinatelecom.cn>
->> >---
->> >V2:
->> >- Retain the name `query_guest_notifiers`
->> >- All qtest/unit test cases pass
->> >- Fix V1 patch style problems
->> >
->> > hw/pci/pci.c                   |  2 +-
->> > hw/s390x/virtio-ccw.c          |  7 +++++--
->> > hw/virtio/vhost.c              |  3 +--
->> > hw/virtio/virtio-pci.c         | 10 ++++++++--
->> > include/hw/pci/pci.h           |  1 +
->> > include/hw/virtio/virtio-bus.h |  2 +-
->> > 6 files changed, 17 insertions(+), 8 deletions(-)
->> >
->> >diff --git a/hw/pci/pci.c b/hw/pci/pci.c
->> >index 352b3d12c8..45b491412a 100644
->> >--- a/hw/pci/pci.c
->> >+++ b/hw/pci/pci.c
->> >@@ -1712,7 +1712,7 @@ static void pci_update_mappings(PCIDevice *d)
->> >     pci_update_vga(d);
->> > }
->> >
->> >-static inline int pci_irq_disabled(PCIDevice *d)
->> >+int pci_irq_disabled(PCIDevice *d)
->>
->> Since it was inline, will it be better to move the whole function to
->> include/hw/pci/pci.h and keep it inline?
->>
->I did try moving the function to include/hw/pci/pci.h and marking it
->inline, but ran into compilation issues due to the use of the incomplete
->PCIDevice type.
->Specifically, accessing d->config triggers the following error:
->include/hw/pci/pci.h:674:26: error: invalid use of incomplete typedef
->‘PCIDevice’
->return pci_get_word(d->config + PCI_COMMAND) & PCI_COMMAND_INTX_DISABLE;
->Including hw/pci/pci_device.h in pci.h to resolve this introduces
->further issues, so I suggest to keep the function as a non-inline
->helper in the .c file.
+The following changes since commit 2af4a82ab2cce3412ffc92cd4c96bd870e33bc8e:
 
-I see. If Michael is happy with that, it's fine by me!
+  Merge tag 'pull-riscv-to-apply-20250519' of https://github.com/alistair23/qemu into staging (2025-05-19 14:00:54 -0400)
 
-Thanks,
-Stefano
+are available in the Git repository at:
 
->
->> Thanks,
->> Stefano
->>
->> > {
->> >     return pci_get_word(d->config + PCI_COMMAND) & PCI_COMMAND_INTX_DISABLE;
->> > }
->> >diff --git a/hw/s390x/virtio-ccw.c b/hw/s390x/virtio-ccw.c
->> >index d2f85b39f3..632708ba4d 100644
->> >--- a/hw/s390x/virtio-ccw.c
->> >+++ b/hw/s390x/virtio-ccw.c
->> >@@ -936,11 +936,14 @@ static void virtio_ccw_vmstate_change(DeviceState *d, bool running)
->> >     }
->> > }
->> >
->> >-static bool virtio_ccw_query_guest_notifiers(DeviceState *d)
->> >+static bool virtio_ccw_query_guest_notifiers(DeviceState *d, int n)
->> > {
->> >     CcwDevice *dev = CCW_DEVICE(d);
->> >+    VirtioCcwDevice *vdev = VIRTIO_CCW_DEVICE(d);
->> >+    VirtIODevice *virtio_dev = virtio_bus_get_device(&vdev->bus);
->> >
->> >-    return !!(dev->sch->curr_status.pmcw.flags & PMCW_FLAGS_MASK_ENA);
->> >+    return !!(dev->sch->curr_status.pmcw.flags & PMCW_FLAGS_MASK_ENA)
->> >+            && virtio_queue_vector(virtio_dev, n) != VIRTIO_NO_VECTOR;
->> > }
->> >
->> > static int virtio_ccw_get_mappings(VirtioCcwDevice *dev)
->> >diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
->> >index 4cae7c1664..2a9a839763 100644
->> >--- a/hw/virtio/vhost.c
->> >+++ b/hw/virtio/vhost.c
->> >@@ -1341,8 +1341,7 @@ int vhost_virtqueue_start(struct vhost_dev *dev,
->> >     }
->> >
->> >     if (k->query_guest_notifiers &&
->> >-        k->query_guest_notifiers(qbus->parent) &&
->> >-        virtio_queue_vector(vdev, idx) == VIRTIO_NO_VECTOR) {
->> >+        !k->query_guest_notifiers(qbus->parent, idx)) {
->> >         file.fd = -1;
->> >         r = dev->vhost_ops->vhost_set_vring_call(dev, &file);
->> >         if (r) {
->> >diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
->> >index 0fa8fe4955..d62e199489 100644
->> >--- a/hw/virtio/virtio-pci.c
->> >+++ b/hw/virtio/virtio-pci.c
->> >@@ -1212,10 +1212,16 @@ static int virtio_pci_set_guest_notifier(DeviceState *d, int n, bool assign,
->> >     return 0;
->> > }
->> >
->> >-static bool virtio_pci_query_guest_notifiers(DeviceState *d)
->> >+static bool virtio_pci_query_guest_notifiers(DeviceState *d, int n)
->> > {
->> >     VirtIOPCIProxy *proxy = to_virtio_pci_proxy(d);
->> >-    return msix_enabled(&proxy->pci_dev);
->> >+    VirtIODevice *vdev = virtio_bus_get_device(&proxy->bus);
->> >+
->> >+    if (msix_enabled(&proxy->pci_dev)) {
->> >+        return virtio_queue_vector(vdev, n) != VIRTIO_NO_VECTOR;
->> >+    } else {
->> >+        return !pci_irq_disabled(&proxy->pci_dev);
->> >+    }
->> > }
->> >
->> > static int virtio_pci_set_guest_notifiers(DeviceState *d, int nvqs, bool assign)
->> >diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
->> >index c2fe6caa2c..8c24bd97db 100644
->> >--- a/include/hw/pci/pci.h
->> >+++ b/include/hw/pci/pci.h
->> >@@ -668,6 +668,7 @@ void lsi53c8xx_handle_legacy_cmdline(DeviceState *lsi_dev);
->> >
->> > qemu_irq pci_allocate_irq(PCIDevice *pci_dev);
->> > void pci_set_irq(PCIDevice *pci_dev, int level);
->> >+int pci_irq_disabled(PCIDevice *d);
->> >
->> > static inline void pci_irq_assert(PCIDevice *pci_dev)
->> > {
->> >diff --git a/include/hw/virtio/virtio-bus.h b/include/hw/virtio/virtio-bus.h
->> >index 7ab8c9dab0..75d43b508a 100644
->> >--- a/include/hw/virtio/virtio-bus.h
->> >+++ b/include/hw/virtio/virtio-bus.h
->> >@@ -48,7 +48,7 @@ struct VirtioBusClass {
->> >     int (*load_done)(DeviceState *d, QEMUFile *f);
->> >     int (*load_extra_state)(DeviceState *d, QEMUFile *f);
->> >     bool (*has_extra_state)(DeviceState *d);
->> >-    bool (*query_guest_notifiers)(DeviceState *d);
->> >+    bool (*query_guest_notifiers)(DeviceState *d, int n);
->> >     int (*set_guest_notifiers)(DeviceState *d, int nvqs, bool assign);
->> >     int (*set_host_notifier_mr)(DeviceState *d, int n,
->> >                                 MemoryRegion *mr, bool assign);
->> >--
->> >2.43.5
->> >
->>
->
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
+
+for you to fetch changes up to 220c739903cec99df032219ac94c45b5269a0ab5:
+
+  qom: reverse order of instance_post_init calls (2025-05-20 08:18:53 +0200)
+
+----------------------------------------------------------------
+* target/riscv: clean up supported MMU modes, declarative CPU definitions,
+  remove .instance_post_init (reviewed by Alistair)
+* qom: reverse order of instance_post_init calls
+* qapi/misc-target: doc and standard improvements for SGX
+* hw/pci-host/gt64120: Fix endianness handling
+* i386/hvf: Make CPUID_HT supported
+* i386/tcg: Make CPUID_HT and CPUID_EXT3_CMP_LEG supported
+
+----------------------------------------------------------------
+Paolo Bonzini (27):
+      hw/riscv: acpi: only create RHCT MMU entry for supported types
+      target/riscv: assert argument to set_satp_mode_max_supported is valid
+      target/riscv: cpu: store max SATP mode as a single integer
+      target/riscv: update max_satp_mode based on QOM properties
+      target/riscv: remove supported from RISCVSATPMap
+      target/riscv: move satp_mode.{map,init} out of CPUConfig
+      target/riscv: introduce RISCVCPUDef
+      target/riscv: store RISCVCPUDef struct directly in the class
+      target/riscv: merge riscv_cpu_class_init with the class_base function
+      target/riscv: move RISCVCPUConfig fields to a header file
+      target/riscv: include default value in cpu_cfg_fields.h.inc
+      target/riscv: add more RISCVCPUDef fields
+      target/riscv: convert abstract CPU classes to RISCVCPUDef
+      target/riscv: convert profile CPU models to RISCVCPUDef
+      target/riscv: convert bare CPU models to RISCVCPUDef
+      target/riscv: convert dynamic CPU models to RISCVCPUDef
+      target/riscv: convert SiFive E CPU models to RISCVCPUDef
+      target/riscv: convert ibex CPU models to RISCVCPUDef
+      target/riscv: convert SiFive U models to RISCVCPUDef
+      target/riscv: th: make CSR insertion test a bit more intuitive
+      target/riscv: generalize custom CSR functionality
+      target/riscv: convert THead C906 to RISCVCPUDef
+      target/riscv: convert TT Ascalon to RISCVCPUDef
+      target/riscv: convert Ventana V1 to RISCVCPUDef
+      target/riscv: convert Xiangshan Nanhu to RISCVCPUDef
+      target/riscv: remove .instance_post_init
+      qom: reverse order of instance_post_init calls
+
+Rakesh Jeyasingh (2):
+      hw/pci-host/gt64120: Fix endianness handling
+      hw/pci-host: Remove unused pci_host_data_be_ops
+
+Xiaoyao Li (2):
+      i386/tcg: Make CPUID_HT and CPUID_EXT3_CMP_LEG supported
+      i386/hvf: Make CPUID_HT supported
+
+Zhao Liu (4):
+      qapi/misc-target: Rename SGXEPCSection to SgxEpcSection
+      qapi/misc-target: Rename SGXInfo to SgxInfo
+      qapi/misc-target: Fix the doc related SGXEPCSection
+      qapi/misc-target: Fix the doc to distinguish query-sgx and query-sgx-capabilities
+
+ qapi/misc-target.json             |   26 +-
+ include/hw/pci-host/dino.h        |    4 -
+ include/hw/pci/pci_host.h         |    1 -
+ include/qom/object.h              |    3 +-
+ target/riscv/cpu-qom.h            |    2 +
+ target/riscv/cpu.h                |   42 +-
+ target/riscv/cpu_cfg.h            |  178 +------
+ target/riscv/cpu_cfg_fields.h.inc |  170 +++++++
+ hw/i386/sgx-stub.c                |    4 +-
+ hw/i386/sgx.c                     |   32 +-
+ hw/pci-host/gt64120.c             |   82 +--
+ hw/pci/pci_host.c                 |    6 -
+ hw/riscv/boot.c                   |    2 +-
+ hw/riscv/virt-acpi-build.c        |   15 +-
+ hw/riscv/virt.c                   |    5 +-
+ qom/object.c                      |    8 +-
+ target/i386/cpu.c                 |    8 +-
+ target/i386/hvf/x86_cpuid.c       |    2 +-
+ target/riscv/cpu.c                | 1014 +++++++++++++++++--------------------
+ target/riscv/csr.c                |   11 +-
+ target/riscv/gdbstub.c            |    6 +-
+ target/riscv/kvm/kvm-cpu.c        |   27 +-
+ target/riscv/machine.c            |    2 +-
+ target/riscv/tcg/tcg-cpu.c        |   13 +-
+ target/riscv/th_csr.c             |   30 +-
+ target/riscv/translate.c          |    2 +-
+ 26 files changed, 821 insertions(+), 874 deletions(-)
+ create mode 100644 target/riscv/cpu_cfg_fields.h.inc
+-- 
+2.49.0
 
 
