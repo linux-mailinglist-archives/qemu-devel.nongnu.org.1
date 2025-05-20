@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D577BABE19E
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 19:09:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D13E5ABE1A1
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 19:09:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHQRj-0008Qi-B7; Tue, 20 May 2025 13:08:09 -0400
+	id 1uHQRr-00006O-7D; Tue, 20 May 2025 13:08:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uHQRd-0008OI-MR
- for qemu-devel@nongnu.org; Tue, 20 May 2025 13:08:01 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uHQRg-0008Rf-3p
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 13:08:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uHQRb-000153-ME
- for qemu-devel@nongnu.org; Tue, 20 May 2025 13:08:01 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uHQRe-00015a-9o
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 13:08:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747760878;
+ s=mimecast20190719; t=1747760881;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=oFv5D4hEy9mdg+wBMNu8OfO2ONidK/rNd3D0qeEm5jo=;
- b=YTBayRrAXFD8Z8p2L/t6AvDLaBOH5naTqxoastx6h7iQUgTVBcwYOBqdgd8O4hpCvOEUwE
- 8HExdwp7veJXNmf+ecuvBMCaDbFPDx3MTVYdxU8g7DYr9A8oTqnEBjdBP6C4wBMzpaRKyC
- peQBzArp4rdYg/f36Z/Ob4aWpDfyl2M=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rq0T0MzaIFV/IMvPshoRJq+5dempSPF70k6hbdmc2b8=;
+ b=V5a9mY62RASYbMVjPWmNIjZJ5dFkp0bvtGvFBYhtf8HWOqlKsrkEDWhn7rObAdZldv7JWw
+ q4w2ycprvTWU0wPrlqKewteWjbHVJGDLhpK80QGnctH+7M7xQKmCCo/vah49X3+aT3JD6h
+ 5+s/v1ghnADi+AC6xxQohUS9IiKwvYk=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-686-B4lkGYMDMpi-hj2GyrwCNw-1; Tue, 20 May 2025 13:07:57 -0400
-X-MC-Unique: B4lkGYMDMpi-hj2GyrwCNw-1
-X-Mimecast-MFC-AGG-ID: B4lkGYMDMpi-hj2GyrwCNw_1747760877
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-7caee990715so1612596685a.3
- for <qemu-devel@nongnu.org>; Tue, 20 May 2025 10:07:57 -0700 (PDT)
+ us-mta-638-vMoPtvSTNsW76_rBieD57Q-1; Tue, 20 May 2025 13:08:00 -0400
+X-MC-Unique: vMoPtvSTNsW76_rBieD57Q-1
+X-Mimecast-MFC-AGG-ID: vMoPtvSTNsW76_rBieD57Q_1747760879
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-7c5cd0f8961so1222278085a.1
+ for <qemu-devel@nongnu.org>; Tue, 20 May 2025 10:07:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747760876; x=1748365676;
+ d=1e100.net; s=20230601; t=1747760878; x=1748365678;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oFv5D4hEy9mdg+wBMNu8OfO2ONidK/rNd3D0qeEm5jo=;
- b=Ngkq4s7AaDYZ4bvdHFlPU+iGCODfKzdJkIgl7gQLrtrpTxXZugjKkp1YCdKRKxOz34
- sYNAIUJFOSUHh0Vqk/TgUFf0iJ8TYlgdtSJzoPo2+qGkYVgQrmmoATB7d20S5lBQ7T65
- peQDbSawOpxDqs5WIe4aMj81urWs9ImPV8BsHHBmuoE/HK240Lto+WwtWFLFs5JnKvzj
- g+OPI1ROJ//23sE7OZVUKVoxvOZExc9fChSL9xx+Pw59jdOPNCMGmZZYxVNxLu4gtctc
- KcKkDzqsk/QTG61T9+OGCgNAQ31kjBTpPzsXTpArGoBvV5F3UWWSxzqbXXWd6+pBdznr
- U8YA==
-X-Gm-Message-State: AOJu0YwEvQLmta2esOUeyZosRC+GoZdgMW4iYFKZJWZUeKwGRK3ID9Y4
- TKVPrLgGSy7qT/HvOdDO4GyddFStASZE1qPZE3Q8jBRQMs1Mw8SwRN57z6TkrSvpEYWXLiAvgVm
- JfDFbB0BFpt3L32++9EfMtedsHI+/KTh0CQ9iGWhLlagESEuJpxP+bsCTb5q8SBc8QN2WxtJKkl
- +oSJAxHYfCDSv5MnWiR/aXiKYrgymbSLIUNhdCFQ==
-X-Gm-Gg: ASbGnct8BuRA+gF3OETHmGyMsyhYR5TvpjFjpDlvTfNcE9QHCp2UlAEQ9TxN5Uwm83q
- ajIz8QmMIctLN6VbmgjXxBaDmqXAuwSgfEpmAhuvoRurhORxTfsrE/6z7hda6qy//5NO8sVTRP9
- h8+v1fWMWZnkmeloM0k8VTGHEFeR6HrcG8Fgyop24MQBdUSZxTUzHoV6KKnt7AZaL/Ar4TgI//V
- gZKvEFx2ni4fYZMOBW7Ge8Ej/vYyFMp2FEbXBB1SjIBhOZWd/E+NpupD2BvK+S2bBMpi2zuaP+6
-X-Received: by 2002:a05:620a:2847:b0:7ca:f04b:3fa2 with SMTP id
- af79cd13be357-7cd4679cf74mr2588746985a.38.1747760875796; 
- Tue, 20 May 2025 10:07:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHYQBdINaITNXB48B+U532tsejXcavQFUNo6veM7e/fx9HjYiddrbQOCrybaJ4QWMaEPgmYLg==
-X-Received: by 2002:a05:620a:2847:b0:7ca:f04b:3fa2 with SMTP id
- af79cd13be357-7cd4679cf74mr2588742985a.38.1747760875446; 
- Tue, 20 May 2025 10:07:55 -0700 (PDT)
+ bh=rq0T0MzaIFV/IMvPshoRJq+5dempSPF70k6hbdmc2b8=;
+ b=D8IHj9VrzyExzDsPmPqmf0qBYR2Oc5UbX3xB1S70dA+me5ZoMqaK9GaFwlmPTRo9Ic
+ l0nZ0VXIpGX0gB78nPB+ERIVisSqFF/FojimzVLQUQFSoG9PdG5nKmq3McM8RX8K+2+F
+ dnJsoZ37h6HlcAVw8eWky5gW/ClPsTUDRpiTa1thItUBlGxidjiJx81EmMzv3nprVvYh
+ HCBgFmFXP3CHasrajSHRCWow583u+bP7my/lxGEpv0S6mNKaaHOZmoXX8fqcma1tetaw
+ 2lMUmv1CwCI0YAxsuSWZmhZrszrIMgKivEdJ9F8YsezkDks3Gr0AvjWDXkk+oBCwX5D5
+ 4zMw==
+X-Gm-Message-State: AOJu0Yy4nNQs80vTRR0SewKLLXP5PiTv2oyjY+MlGRzE7Qb0f1zvZuZQ
+ sRKeB9vE5L5EYUVJB25M46FWzBADlIRbmAC8nZrl4riidN4JRCRDncdxtOOHCNWxf3+Dafc9x28
+ rlYulFPn0oT0B8dMRET5LAt9HiC0gA9YUny9KwW4/Um4Q7n7aWxqXktTsqOwnSCTCYIYFhOgZU3
+ 0hm2SXYk/rgGNP6O6/gwF+tPSHvDdPIdRsvkv4RA==
+X-Gm-Gg: ASbGnctT01Kp4tipDfuxIBzswoY1BhnhtAC3lqR7ypJeU+Fi1MdNmshUJ0OyAyauYRg
+ hZgeXmNZFmajRYdPwSKS9eKjw8hIOOgJaXyU4cpHo8s+CfejmRr1vKQmB7g0lKaJRaFJb8hUb/x
+ oPcbTiul70meD7PLN+iSj76fib7bjpJT/meNyzPyB90w42o2LxwSF8J3T4bvX9Zb79OdANuuaks
+ ooBe/5+TbbovNOsH4QqaTxwKmbHg20diFtAVYdGIGcD6U0/dOEgVwygKKCPKSYmrhztvS33li2q
+X-Received: by 2002:a05:620a:d8d:b0:7ca:c9cb:ac1 with SMTP id
+ af79cd13be357-7cd4671895bmr3050488285a.4.1747760878098; 
+ Tue, 20 May 2025 10:07:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF8YVVQBo/XHo3OTYsL7tLkltlROFlAi7O3RiahparSKlJO6T2zAjyw/SWzcNVvBBdhyF2wFw==
+X-Received: by 2002:a05:620a:d8d:b0:7ca:c9cb:ac1 with SMTP id
+ af79cd13be357-7cd4671895bmr3050482385a.4.1747760877501; 
+ Tue, 20 May 2025 10:07:57 -0700 (PDT)
 Received: from x1.com ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7cd467be47bsm763846585a.16.2025.05.20.10.07.54
+ af79cd13be357-7cd467be47bsm763846585a.16.2025.05.20.10.07.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 May 2025 10:07:54 -0700 (PDT)
+ Tue, 20 May 2025 10:07:55 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Stefan Hajnoczi <stefanha@redhat.com>,
- peterx@redhat.com, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PULL 01/12] scripts/vmstate-static-checker.py: Add new hpet entry
- for num_timers
-Date: Tue, 20 May 2025 13:07:40 -0400
-Message-ID: <20250520170751.786787-2-peterx@redhat.com>
+ peterx@redhat.com, Li Zhijian <lizhijian@fujitsu.com>
+Subject: [PULL 02/12] qtest/migration/rdma: Enforce RLIMIT_MEMLOCK >= 128MB
+ requirement
+Date: Tue, 20 May 2025 13:07:41 -0400
+Message-ID: <20250520170751.786787-3-peterx@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250520170751.786787-1-peterx@redhat.com>
 References: <20250520170751.786787-1-peterx@redhat.com>
@@ -105,31 +104,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The old "num_timers" got a rename.  See commit 1433e38cc8 ("hpet: do not
-overwrite properties on post_load") for more details.  Teach the script to
-accept the new name.
+From: Li Zhijian <lizhijian@fujitsu.com>
 
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Link: https://lore.kernel.org/r/20250501151235.636709-1-peterx@redhat.com
+Ensure successful migration over RDMA by verifying that RLIMIT_MEMLOCK is
+set to at least 128MB. This allocation is necessary due to the requirement
+to pin significant portions of guest memory, typically exceeding 100MB
+in this test, while the remainder is transmitted as compressed zero pages.
+
+Otherwise, it will fail with:
+stderr:
+qemu-system-x86_64: cannot get rkey
+qemu-system-x86_64: error while loading state section id 2(ram)
+qemu-system-x86_64: load of migration failed: Operation not permitted
+qemu-system-x86_64: rdma migration: recv polling control error!
+qemu-system-x86_64: RDMA is in an error state waiting migration to abort!
+qemu-system-x86_64: failed to save SaveStateEntry with id(name): 2(ram): -1
+qemu-system-x86_64: Channel error: Operation not permitted
+
+Reported-by: Peter Xu <peterx@redhat.com>
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Link: https://lore.kernel.org/r/20250509014211.1272640-1-lizhijian@fujitsu.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- scripts/vmstate-static-checker.py | 1 +
- 1 file changed, 1 insertion(+)
+ tests/qtest/migration/precopy-tests.c | 34 +++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
-diff --git a/scripts/vmstate-static-checker.py b/scripts/vmstate-static-checker.py
-index 25aca839a0..2335e25f94 100755
---- a/scripts/vmstate-static-checker.py
-+++ b/scripts/vmstate-static-checker.py
-@@ -91,6 +91,7 @@ def check_fields_match(name, s_field, d_field):
-                       'mem_win_size', 'mig_mem_win_size',
-                       'io_win_addr', 'mig_io_win_addr',
-                       'io_win_size', 'mig_io_win_size'],
-+        'hpet': ['num_timers', 'num_timers_save'],
-     }
+diff --git a/tests/qtest/migration/precopy-tests.c b/tests/qtest/migration/precopy-tests.c
+index 87b0a7e8ef..5be1cd5742 100644
+--- a/tests/qtest/migration/precopy-tests.c
++++ b/tests/qtest/migration/precopy-tests.c
+@@ -101,6 +101,35 @@ static void test_precopy_unix_dirty_ring(void)
  
-     if not name in changed_names:
+ #ifdef CONFIG_RDMA
+ 
++#include <sys/resource.h>
++
++/*
++ * During migration over RDMA, it will try to pin portions of guest memory,
++ * typically exceeding 100MB in this test, while the remainder will be
++ * transmitted as compressed zero pages.
++ *
++ * REQUIRED_MEMLOCK_SZ indicates the minimal mlock size in the current context.
++ */
++#define REQUIRED_MEMLOCK_SZ (128 << 20) /* 128MB */
++
++/* check 'ulimit -l' */
++static bool mlock_check(void)
++{
++    uid_t uid;
++    struct rlimit rlim;
++
++    uid = getuid();
++    if (uid == 0) {
++        return true;
++    }
++
++    if (getrlimit(RLIMIT_MEMLOCK, &rlim) != 0) {
++        return false;
++    }
++
++    return rlim.rlim_cur >= REQUIRED_MEMLOCK_SZ;
++}
++
+ #define RDMA_MIGRATION_HELPER "scripts/rdma-migration-helper.sh"
+ static int new_rdma_link(char *buffer)
+ {
+@@ -136,6 +165,11 @@ static void test_precopy_rdma_plain(void)
+ {
+     char buffer[128] = {};
+ 
++    if (!mlock_check()) {
++        g_test_skip("'ulimit -l' is too small, require >=128M");
++        return;
++    }
++
+     if (new_rdma_link(buffer)) {
+         g_test_skip("No rdma link available\n"
+                     "# To enable the test:\n"
 -- 
 2.49.0
 
