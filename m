@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D13E5ABE1A1
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 19:09:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4146ABE1A3
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 19:09:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHQRr-00006O-7D; Tue, 20 May 2025 13:08:15 -0400
+	id 1uHQRr-00007u-IB; Tue, 20 May 2025 13:08:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uHQRg-0008Rf-3p
- for qemu-devel@nongnu.org; Tue, 20 May 2025 13:08:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uHQRi-0008Rw-9D
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 13:08:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uHQRe-00015a-9o
- for qemu-devel@nongnu.org; Tue, 20 May 2025 13:08:03 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uHQRg-000165-9F
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 13:08:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747760881;
+ s=mimecast20190719; t=1747760883;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rq0T0MzaIFV/IMvPshoRJq+5dempSPF70k6hbdmc2b8=;
- b=V5a9mY62RASYbMVjPWmNIjZJ5dFkp0bvtGvFBYhtf8HWOqlKsrkEDWhn7rObAdZldv7JWw
- q4w2ycprvTWU0wPrlqKewteWjbHVJGDLhpK80QGnctH+7M7xQKmCCo/vah49X3+aT3JD6h
- 5+s/v1ghnADi+AC6xxQohUS9IiKwvYk=
+ bh=qY1AUIA6ijEBYZA6sdiasVuRJE305+tULljHJYN/mSM=;
+ b=UbLfwEpVtXXc9fI3h0BxjRhPKrDHyfabbWcsPoMSK208RUkj3VDsvCN7ryQhwhRwoxmlXm
+ BzPdcfSDmOOKt2Rn40KL3RpS96unGNz38BeSDSgYzAO4wIIOMYXwQ1ES0RjOAD0qjcTC/u
+ u6IeSlwCHUvugnMW2UDTZI15DIChZfA=
 Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
  [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-638-vMoPtvSTNsW76_rBieD57Q-1; Tue, 20 May 2025 13:08:00 -0400
-X-MC-Unique: vMoPtvSTNsW76_rBieD57Q-1
-X-Mimecast-MFC-AGG-ID: vMoPtvSTNsW76_rBieD57Q_1747760879
+ us-mta-13-A1DGnXsxOyyznupgk-R9wA-1; Tue, 20 May 2025 13:08:00 -0400
+X-MC-Unique: A1DGnXsxOyyznupgk-R9wA-1
+X-Mimecast-MFC-AGG-ID: A1DGnXsxOyyznupgk-R9wA_1747760880
 Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-7c5cd0f8961so1222278085a.1
- for <qemu-devel@nongnu.org>; Tue, 20 May 2025 10:07:59 -0700 (PDT)
+ af79cd13be357-7c5b9333642so679833885a.3
+ for <qemu-devel@nongnu.org>; Tue, 20 May 2025 10:08:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747760878; x=1748365678;
+ d=1e100.net; s=20230601; t=1747760879; x=1748365679;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rq0T0MzaIFV/IMvPshoRJq+5dempSPF70k6hbdmc2b8=;
- b=D8IHj9VrzyExzDsPmPqmf0qBYR2Oc5UbX3xB1S70dA+me5ZoMqaK9GaFwlmPTRo9Ic
- l0nZ0VXIpGX0gB78nPB+ERIVisSqFF/FojimzVLQUQFSoG9PdG5nKmq3McM8RX8K+2+F
- dnJsoZ37h6HlcAVw8eWky5gW/ClPsTUDRpiTa1thItUBlGxidjiJx81EmMzv3nprVvYh
- HCBgFmFXP3CHasrajSHRCWow583u+bP7my/lxGEpv0S6mNKaaHOZmoXX8fqcma1tetaw
- 2lMUmv1CwCI0YAxsuSWZmhZrszrIMgKivEdJ9F8YsezkDks3Gr0AvjWDXkk+oBCwX5D5
- 4zMw==
-X-Gm-Message-State: AOJu0Yy4nNQs80vTRR0SewKLLXP5PiTv2oyjY+MlGRzE7Qb0f1zvZuZQ
- sRKeB9vE5L5EYUVJB25M46FWzBADlIRbmAC8nZrl4riidN4JRCRDncdxtOOHCNWxf3+Dafc9x28
- rlYulFPn0oT0B8dMRET5LAt9HiC0gA9YUny9KwW4/Um4Q7n7aWxqXktTsqOwnSCTCYIYFhOgZU3
- 0hm2SXYk/rgGNP6O6/gwF+tPSHvDdPIdRsvkv4RA==
-X-Gm-Gg: ASbGnctT01Kp4tipDfuxIBzswoY1BhnhtAC3lqR7ypJeU+Fi1MdNmshUJ0OyAyauYRg
- hZgeXmNZFmajRYdPwSKS9eKjw8hIOOgJaXyU4cpHo8s+CfejmRr1vKQmB7g0lKaJRaFJb8hUb/x
- oPcbTiul70meD7PLN+iSj76fib7bjpJT/meNyzPyB90w42o2LxwSF8J3T4bvX9Zb79OdANuuaks
- ooBe/5+TbbovNOsH4QqaTxwKmbHg20diFtAVYdGIGcD6U0/dOEgVwygKKCPKSYmrhztvS33li2q
-X-Received: by 2002:a05:620a:d8d:b0:7ca:c9cb:ac1 with SMTP id
- af79cd13be357-7cd4671895bmr3050488285a.4.1747760878098; 
+ bh=qY1AUIA6ijEBYZA6sdiasVuRJE305+tULljHJYN/mSM=;
+ b=DNgJ8sygAQnWqwU1XTOblaEj3eW9RHtDISRTuqn6AuGu2RkIMFgRmzBlUwTqv2eek7
+ yk8oajeV3B/R79i+3SNmdAxFy0x67EoUe94DGHgIoQVVCOEBYWQYRu4LMG/oiKP1IY6l
+ MEPbZGggEwSE6TdtpJrTTkKwkgQPtFeGYwyIKLBQcTOyxp75e3UQRMYR2Bo2J5eMslnQ
+ zW1L48dYv6Wns584sAlpw3t/hZgDTLWUjdfKoaEAIn52c9s9BtRAWiEQUnBsTOjFtuSC
+ 8tHPw0mbtdQEt8NmFejxILW4VmLSd6zahi8XYs5Srrof157C5oaNZH1TDTy321Q4lpgh
+ B4Ug==
+X-Gm-Message-State: AOJu0Yz47MnbjaEIRFuX8d8ocyDUdjlvIbWsls/0P+glEnJmBvrwFlkf
+ VsBL2pXaWtso6d/yVZHeZXXQn4wRz+E9d7d1ud69NJQXzriOEImNIohdHxeAfTr3IJA5PhkCVvm
+ zrCjcQA12fak1lo8+Chqw/ujKFvD0M39Dk7MJMJ9HWPd26W6/t5PeGC+YD0gKA71H7rWTTLUSfZ
+ SJnxgL3g29JSLDXdUL5BfaphHPd8CbRHLAakzHbg==
+X-Gm-Gg: ASbGncsmHCHd41PtNU7spz4t2Ms4qY28bIuK1QKWY2nDS2JNZtjK8HOrap4DH3XPPuK
+ WTTzEqFgFVa7cbN0oWkjxP9DBj5m/Ye0yVALhBUNQ+1nTvAzJjLR09YpEyikRCuPMQRB+aDkaSJ
+ iFGrv4FNxkdWXSsG4HnQI3mP8qn6DCPSFWHzGbM5VI3o0g58M0C7Qiyrkx1HErWGyOfF7l2f+Pa
+ Glf3TSDPPmDDYpEkDQyclxPwOySUXVI/VL1ahmTPsssGjkWdiQmja6FDKTs0PU6nnK1NY/dKvKj
+X-Received: by 2002:a05:620a:370a:b0:7c5:5e5b:2fdb with SMTP id
+ af79cd13be357-7cd4677d69cmr2912243185a.41.1747760879303; 
+ Tue, 20 May 2025 10:07:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGAOBQaU2XywMsAhySyQMLL1//jg8KqIle/kmQfUg/MKeKythcQ7TrQy2L7nfiQUJsjotsAsw==
+X-Received: by 2002:a05:620a:370a:b0:7c5:5e5b:2fdb with SMTP id
+ af79cd13be357-7cd4677d69cmr2912235685a.41.1747760878670; 
  Tue, 20 May 2025 10:07:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF8YVVQBo/XHo3OTYsL7tLkltlROFlAi7O3RiahparSKlJO6T2zAjyw/SWzcNVvBBdhyF2wFw==
-X-Received: by 2002:a05:620a:d8d:b0:7ca:c9cb:ac1 with SMTP id
- af79cd13be357-7cd4671895bmr3050482385a.4.1747760877501; 
- Tue, 20 May 2025 10:07:57 -0700 (PDT)
 Received: from x1.com ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-7cd467be47bsm763846585a.16.2025.05.20.10.07.55
+ af79cd13be357-7cd467be47bsm763846585a.16.2025.05.20.10.07.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 20 May 2025 10:07:55 -0700 (PDT)
+ Tue, 20 May 2025 10:07:58 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fabiano Rosas <farosas@suse.de>, Stefan Hajnoczi <stefanha@redhat.com>,
- peterx@redhat.com, Li Zhijian <lizhijian@fujitsu.com>
-Subject: [PULL 02/12] qtest/migration/rdma: Enforce RLIMIT_MEMLOCK >= 128MB
- requirement
-Date: Tue, 20 May 2025 13:07:41 -0400
-Message-ID: <20250520170751.786787-3-peterx@redhat.com>
+ peterx@redhat.com, Li Zhijian <lizhijian@fujitsu.com>,
+ Jack Wang <jinpu.wang@ionos.com>,
+ "Michael R. Galaxy" <mrgalaxy@nvidia.com>, Yu Zhang <yu.zhang@ionos.com>
+Subject: [PULL 03/12] qtest/migration/rdma: Add test for rdma migration with
+ ipv6
+Date: Tue, 20 May 2025 13:07:42 -0400
+Message-ID: <20250520170751.786787-4-peterx@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250520170751.786787-1-peterx@redhat.com>
 References: <20250520170751.786787-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -106,81 +108,199 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Li Zhijian <lizhijian@fujitsu.com>
 
-Ensure successful migration over RDMA by verifying that RLIMIT_MEMLOCK is
-set to at least 128MB. This allocation is necessary due to the requirement
-to pin significant portions of guest memory, typically exceeding 100MB
-in this test, while the remainder is transmitted as compressed zero pages.
+Recently, we removed ipv6 restriction[0] from RDMA migration, add a
+test for it.
 
-Otherwise, it will fail with:
-stderr:
-qemu-system-x86_64: cannot get rkey
-qemu-system-x86_64: error while loading state section id 2(ram)
-qemu-system-x86_64: load of migration failed: Operation not permitted
-qemu-system-x86_64: rdma migration: recv polling control error!
-qemu-system-x86_64: RDMA is in an error state waiting migration to abort!
-qemu-system-x86_64: failed to save SaveStateEntry with id(name): 2(ram): -1
-qemu-system-x86_64: Channel error: Operation not permitted
+[0] https://lore.kernel.org/qemu-devel/20250326095224.9918-1-jinpu.wang@ionos.com/
 
-Reported-by: Peter Xu <peterx@redhat.com>
+Cc: Jack Wang <jinpu.wang@ionos.com>
+Cc: Michael R. Galaxy <mrgalaxy@nvidia.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Yu Zhang <yu.zhang@ionos.com>
+Reviewed-by: Jack Wang <jinpu.wang@ionos.com>
 Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Link: https://lore.kernel.org/r/20250509014211.1272640-1-lizhijian@fujitsu.com
+Link: https://lore.kernel.org/r/20250513012207.2867069-1-lizhijian@fujitsu.com
+[peterx: Fix over long lines]
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- tests/qtest/migration/precopy-tests.c | 34 +++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+ tests/qtest/migration/precopy-tests.c | 21 ++++++++--
+ scripts/rdma-migration-helper.sh      | 57 ++++++++++++++++++++++-----
+ 2 files changed, 65 insertions(+), 13 deletions(-)
 
 diff --git a/tests/qtest/migration/precopy-tests.c b/tests/qtest/migration/precopy-tests.c
-index 87b0a7e8ef..5be1cd5742 100644
+index 5be1cd5742..a62d3c5378 100644
 --- a/tests/qtest/migration/precopy-tests.c
 +++ b/tests/qtest/migration/precopy-tests.c
-@@ -101,6 +101,35 @@ static void test_precopy_unix_dirty_ring(void)
+@@ -131,12 +131,13 @@ static bool mlock_check(void)
+ }
  
- #ifdef CONFIG_RDMA
- 
-+#include <sys/resource.h>
-+
-+/*
-+ * During migration over RDMA, it will try to pin portions of guest memory,
-+ * typically exceeding 100MB in this test, while the remainder will be
-+ * transmitted as compressed zero pages.
-+ *
-+ * REQUIRED_MEMLOCK_SZ indicates the minimal mlock size in the current context.
-+ */
-+#define REQUIRED_MEMLOCK_SZ (128 << 20) /* 128MB */
-+
-+/* check 'ulimit -l' */
-+static bool mlock_check(void)
-+{
-+    uid_t uid;
-+    struct rlimit rlim;
-+
-+    uid = getuid();
-+    if (uid == 0) {
-+        return true;
-+    }
-+
-+    if (getrlimit(RLIMIT_MEMLOCK, &rlim) != 0) {
-+        return false;
-+    }
-+
-+    return rlim.rlim_cur >= REQUIRED_MEMLOCK_SZ;
-+}
-+
  #define RDMA_MIGRATION_HELPER "scripts/rdma-migration-helper.sh"
- static int new_rdma_link(char *buffer)
+-static int new_rdma_link(char *buffer)
++static int new_rdma_link(char *buffer, bool ipv6)
  {
-@@ -136,6 +165,11 @@ static void test_precopy_rdma_plain(void)
+     char cmd[256];
+     bool verbose = g_getenv("QTEST_LOG");
+ 
+-    snprintf(cmd, sizeof(cmd), "%s detect %s", RDMA_MIGRATION_HELPER,
++    snprintf(cmd, sizeof(cmd), "IP_FAMILY=%s %s detect %s",
++             ipv6 ? "ipv6" : "ipv4", RDMA_MIGRATION_HELPER,
+              verbose ? "" : "2>/dev/null");
+ 
+     FILE *pipe = popen(cmd, "r");
+@@ -161,7 +162,7 @@ static int new_rdma_link(char *buffer)
+     return -1;
+ }
+ 
+-static void test_precopy_rdma_plain(void)
++static void __test_precopy_rdma_plain(bool ipv6)
  {
      char buffer[128] = {};
  
-+    if (!mlock_check()) {
-+        g_test_skip("'ulimit -l' is too small, require >=128M");
-+        return;
-+    }
-+
-     if (new_rdma_link(buffer)) {
+@@ -170,7 +171,7 @@ static void test_precopy_rdma_plain(void)
+         return;
+     }
+ 
+-    if (new_rdma_link(buffer)) {
++    if (new_rdma_link(buffer, ipv6)) {
          g_test_skip("No rdma link available\n"
                      "# To enable the test:\n"
+                     "# Run \'" RDMA_MIGRATION_HELPER " setup\' with root to "
+@@ -193,6 +194,16 @@ static void test_precopy_rdma_plain(void)
+ 
+     test_precopy_common(&args);
+ }
++
++static void test_precopy_rdma_plain(void)
++{
++    __test_precopy_rdma_plain(false);
++}
++
++static void test_precopy_rdma_plain_ipv6(void)
++{
++    __test_precopy_rdma_plain(true);
++}
+ #endif
+ 
+ static void test_precopy_tcp_plain(void)
+@@ -1226,6 +1237,8 @@ static void migration_test_add_precopy_smoke(MigrationTestEnv *env)
+ #ifdef CONFIG_RDMA
+     migration_test_add("/migration/precopy/rdma/plain",
+                        test_precopy_rdma_plain);
++    migration_test_add("/migration/precopy/rdma/plain/ipv6",
++                       test_precopy_rdma_plain_ipv6);
+ #endif
+ }
+ 
+diff --git a/scripts/rdma-migration-helper.sh b/scripts/rdma-migration-helper.sh
+index a39f2fb0e5..d784d1566a 100755
+--- a/scripts/rdma-migration-helper.sh
++++ b/scripts/rdma-migration-helper.sh
+@@ -8,23 +8,44 @@ get_ipv4_addr()
+         head -1 | tr -d '\n'
+ }
+ 
++get_ipv6_addr() {
++    ipv6=$(ip -6 -o addr show dev "$1" |
++        sed -n 's/.*[[:blank:]]inet6[[:blank:]]*\([^[:blank:]/]*\).*/\1/p' |
++        head -1 | tr -d '\n')
++
++    [ $? -eq 0 ] || return
++
++    if [[ "$ipv6" =~ ^fe80: ]]; then
++        echo -n "[$ipv6%$1]"
++    else
++        echo -n "[$ipv6]"
++    fi
++}
++
+ # existing rdma interfaces
+ rdma_interfaces()
+ {
+-    rdma link show | sed -nE 's/^link .* netdev ([^ ]+).*$/\1 /p'
++    rdma link show | sed -nE 's/^link .* netdev ([^ ]+).*$/\1 /p' |
++    grep -Ev '^(lo|tun|tap)'
+ }
+ 
+ # existing valid ipv4 interfaces
+ ipv4_interfaces()
+ {
+-    ip -o addr show | awk '/inet / {print $2}' | grep -v -w lo
++    ip -o addr show | awk '/inet / {print $2}' | grep -Ev '^(lo|tun|tap)'
++}
++
++ipv6_interfaces()
++{
++    ip -o addr show | awk '/inet6 / {print $2}' | grep -Ev '^(lo|tun|tap)'
+ }
+ 
+ rdma_rxe_detect()
+ {
++    family=$1
+     for r in $(rdma_interfaces)
+     do
+-        ipv4_interfaces | grep -qw $r && get_ipv4_addr $r && return
++        "$family"_interfaces | grep -qw $r && get_"$family"_addr $r && return
+     done
+ 
+     return 1
+@@ -32,16 +53,23 @@ rdma_rxe_detect()
+ 
+ rdma_rxe_setup()
+ {
+-    for i in $(ipv4_interfaces)
++    family=$1
++    for i in $("$family"_interfaces)
+     do
+-        rdma_interfaces | grep -qw $i && continue
++        if rdma_interfaces | grep -qw $i; then
++            echo "$family: Reuse the existing rdma/rxe ${i}_rxe" \
++                 "for $i with $(get_"$family"_addr $i)"
++            return
++        fi
++
+         rdma link add "${i}_rxe" type rxe netdev "$i" && {
+-            echo "Setup new rdma/rxe ${i}_rxe for $i with $(get_ipv4_addr $i)"
++            echo "$family: Setup new rdma/rxe ${i}_rxe" \
++                 "for $i with $(get_"$family"_addr $i)"
+             return
+         }
+     done
+ 
+-    echo "Failed to setup any new rdma/rxe link" >&2
++    echo "$family: Failed to setup any new rdma/rxe link" >&2
+     return 1
+ }
+ 
+@@ -50,6 +78,12 @@ rdma_rxe_clean()
+     modprobe -r rdma_rxe
+ }
+ 
++IP_FAMILY=${IP_FAMILY:-ipv4}
++if [ "$IP_FAMILY" != "ipv6" ] && [ "$IP_FAMILY" != "ipv4" ]; then
++    echo "Unknown ip family '$IP_FAMILY', only ipv4 or ipv6 is supported." >&2
++    exit 1
++fi
++
+ operation=${1:-detect}
+ 
+ command -v rdma >/dev/null || {
+@@ -62,9 +96,14 @@ if [ "$operation" == "setup" ] || [ "$operation" == "clean" ]; then
+         echo "Root privilege is required to setup/clean a rdma/rxe link" >&2
+         exit 1
+     }
+-    rdma_rxe_"$operation"
++    if [ "$operation" == "setup" ]; then
++        rdma_rxe_setup ipv4
++        rdma_rxe_setup ipv6
++    else
++        rdma_rxe_clean
++    fi
+ elif [ "$operation" == "detect" ]; then
+-    rdma_rxe_detect
++    rdma_rxe_detect "$IP_FAMILY"
+ else
+     echo "Usage: $0 [setup | detect | clean]"
+ fi
 -- 
 2.49.0
 
