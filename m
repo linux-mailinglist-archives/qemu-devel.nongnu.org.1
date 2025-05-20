@@ -2,78 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 559F4ABD4D4
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 12:30:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBEF6ABD501
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 12:33:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHKED-0004sG-Od; Tue, 20 May 2025 06:29:45 -0400
+	id 1uHKF8-0007EN-OH; Tue, 20 May 2025 06:30:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
- id 1uHKEB-0004ri-Gi
- for qemu-devel@nongnu.org; Tue, 20 May 2025 06:29:43 -0400
-Received: from mgamail.intel.com ([198.175.65.21])
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1uHKEr-0006iN-Bm; Tue, 20 May 2025 06:30:25 -0400
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
- id 1uHKE9-0004gB-EL
- for qemu-devel@nongnu.org; Tue, 20 May 2025 06:29:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747736982; x=1779272982;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=QVe4ZfDlF+KN1Ku+/Uhd92OOHuL5O75EpmRDC6Ka9Vw=;
- b=BeJw6H15kfjwYQ/pZ2EbLDv2BQUpF4Cj6xyqzFy+berkTGk8BFkw7hhd
- A/7tn+YaII0g4OZf90NqYpTsqQMJz4iCHq+p6uRfGOMGqP5fxYaN+gprC
- uvDB1+eCZvYn4VTj4nP+an36ZpTxWDLp+1nX9LXKlzxp7y5lnXqlmu/ZN
- GnBLOab5wkd4uyt4YDrXmx51BI8Xky3X+iotScLGrXT5nZdiJj3299F7I
- v2X4fuCDkqpxX0+TWjducKRV0OzHJmXt3i51pbe1LCGVv8aJXZJ1V1T1J
- TmrycVpFqI1TeYYKYai41Y16Nwzhxoa8jggMT9Y9iImYVFHALt3ibrI3v g==;
-X-CSE-ConnectionGUID: OdftwBB7Svq2Gc+Dr9TL2Q==
-X-CSE-MsgGUID: SHvZauM3Qqy9PBum6iA4ZQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="49566697"
-X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="49566697"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2025 03:29:41 -0700
-X-CSE-ConnectionGUID: HXt5MnjgSyC7CFljN6GtVg==
-X-CSE-MsgGUID: SuPLIgPaTYODvzo/5Z8fdQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="144905325"
-Received: from emr-bkc.sh.intel.com ([10.112.230.82])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2025 03:29:37 -0700
-From: Chenyi Qiang <chenyi.qiang@intel.com>
-To: David Hildenbrand <david@redhat.com>, Alexey Kardashevskiy <aik@amd.com>,
- Peter Xu <peterx@redhat.com>, Gupta Pankaj <pankaj.gupta@amd.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Roth <michael.roth@amd.com>
-Cc: Chenyi Qiang <chenyi.qiang@intel.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Williams Dan J <dan.j.williams@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>, Baolu Lu <baolu.lu@linux.intel.com>,
- Gao Chao <chao.gao@intel.com>, Xu Yilun <yilun.xu@intel.com>,
- Li Xiaoyao <xiaoyao.li@intel.com>
-Subject: [PATCH v5 10/10] ram-block-attribute: Add more error handling during
- state changes
-Date: Tue, 20 May 2025 18:28:50 +0800
-Message-ID: <20250520102856.132417-11-chenyi.qiang@intel.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250520102856.132417-1-chenyi.qiang@intel.com>
-References: <20250520102856.132417-1-chenyi.qiang@intel.com>
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1uHKEo-00050i-QM; Tue, 20 May 2025 06:30:24 -0400
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 6C47B43AAD;
+ Tue, 20 May 2025 12:30:17 +0200 (CEST)
+From: Fiona Ebner <f.ebner@proxmox.com>
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
+ andrey.drobyshev@virtuozzo.com, hreitz@redhat.com, stefanha@redhat.com,
+ eblake@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru,
+ xiechanglong.d@gmail.com, wencongyang2@huawei.com, berto@igalia.com,
+ fam@euphon.net, ari@tuxera.com
+Subject: [PATCH v2 00/24] block: do not drain while holding the graph lock
+Date: Tue, 20 May 2025 12:29:48 +0200
+Message-Id: <20250520103012.424311-1-f.ebner@proxmox.com>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.21;
- envelope-from=chenyi.qiang@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.13,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,186 +55,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The current error handling is simple with the following assumption:
-- QEMU will quit instead of resuming the guest if kvm_convert_memory()
-  fails, thus no need to do rollback.
-- The convert range is required to be in the desired state. It is not
-  allowed to handle the mixture case.
-- The conversion from shared to private is a non-failure operation.
+Previous discussion [0].
 
-This is sufficient for now as complext error handling is not required.
-For future extension, add some potential error handling.
-- For private to shared conversion, do the rollback operation if
-  ram_block_attribute_notify_to_populated() fails.
-- For shared to private conversion, still assert it as a non-failure
-  operation for now. It could be an easy fail path with in-place
-  conversion, which will likely have to retry the conversion until it
-  works in the future.
-- For mixture case, process individual blocks for ease of rollback.
+Changes in v2:
+* Split the big patch moving the drain outside of
+  bdrv_change_aio_context(), mark functions along the way with graph
+  lock annotations.
+* In {internal,external}_snapshot_action, check that associated bs did
+  not change after drain and re-acquiring the lock.
+* Improve error handling using goto where appropriate.
+* Add bdrv_graph_wrlock_drained() convenience wrapper rather than
+  adding a flag argument.
+* Don't use atomics to access bs->quiesce_counter field, add a patch
+  to adapt the two existing places that used atomics.
+* Re-use 'top' image for graph-changes-while-io test case and rename
+  the other image to 'mid'. Remove the image files after the test.
+* Use "must be" instead of "needs to be" in documentation, use single
+  line comments where possible.
+* Remove yet another outdated comment.
+* I did not add Kevin's R-b for the patch marking bdrv_drained_begin()
+  GRAPH_RDLOCK, as the earlier patches/preconditions changed.
 
-Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
----
- system/ram-block-attribute.c | 116 +++++++++++++++++++++++++++--------
- 1 file changed, 90 insertions(+), 26 deletions(-)
+This series is an attempt to fix a deadlock issue reported by Andrey
+here [1].
 
-diff --git a/system/ram-block-attribute.c b/system/ram-block-attribute.c
-index 387501b569..0af3396aa4 100644
---- a/system/ram-block-attribute.c
-+++ b/system/ram-block-attribute.c
-@@ -289,7 +289,12 @@ static int ram_block_attribute_notify_to_discard(RamBlockAttribute *attr,
-         }
-         ret = rdl->notify_discard(rdl, &tmp);
-         if (ret) {
--            break;
-+            /*
-+             * The current to_private listeners (VFIO dma_unmap and
-+             * KVM set_attribute_private) are non-failing operations.
-+             * TODO: add rollback operations if it is allowed to fail.
-+             */
-+            g_assert(ret);
-         }
-     }
- 
-@@ -300,7 +305,7 @@ static int
- ram_block_attribute_notify_to_populated(RamBlockAttribute *attr,
-                                         uint64_t offset, uint64_t size)
- {
--    RamDiscardListener *rdl;
-+    RamDiscardListener *rdl, *rdl2;
-     int ret = 0;
- 
-     QLIST_FOREACH(rdl, &attr->rdl_list, next) {
-@@ -315,6 +320,20 @@ ram_block_attribute_notify_to_populated(RamBlockAttribute *attr,
-         }
-     }
- 
-+    if (ret) {
-+        /* Notify all already-notified listeners. */
-+        QLIST_FOREACH(rdl2, &attr->rdl_list, next) {
-+            MemoryRegionSection tmp = *rdl2->section;
-+
-+            if (rdl == rdl2) {
-+                break;
-+            }
-+            if (!memory_region_section_intersect_range(&tmp, offset, size)) {
-+                continue;
-+            }
-+            rdl2->notify_discard(rdl2, &tmp);
-+        }
-+    }
-     return ret;
- }
- 
-@@ -353,6 +372,9 @@ int ram_block_attribute_state_change(RamBlockAttribute *attr, uint64_t offset,
-     const int block_size = ram_block_attribute_get_block_size(attr);
-     const unsigned long first_bit = offset / block_size;
-     const unsigned long nbits = size / block_size;
-+    const uint64_t end = offset + size;
-+    unsigned long bit;
-+    uint64_t cur;
-     int ret = 0;
- 
-     if (!ram_block_attribute_is_valid_range(attr, offset, size)) {
-@@ -361,32 +383,74 @@ int ram_block_attribute_state_change(RamBlockAttribute *attr, uint64_t offset,
-         return -1;
-     }
- 
--    /* Already discard/populated */
--    if ((ram_block_attribute_is_range_discard(attr, offset, size) &&
--         to_private) ||
--        (ram_block_attribute_is_range_populated(attr, offset, size) &&
--         !to_private)) {
--        return 0;
--    }
--
--    /* Unexpected mixture */
--    if ((!ram_block_attribute_is_range_populated(attr, offset, size) &&
--         to_private) ||
--        (!ram_block_attribute_is_range_discard(attr, offset, size) &&
--         !to_private)) {
--        error_report("%s, the range is not all in the desired state: "
--                     "(offset 0x%lx, size 0x%lx), %s",
--                     __func__, offset, size,
--                     to_private ? "private" : "shared");
--        return -1;
--    }
--
-     if (to_private) {
--        bitmap_clear(attr->bitmap, first_bit, nbits);
--        ret = ram_block_attribute_notify_to_discard(attr, offset, size);
-+        if (ram_block_attribute_is_range_discard(attr, offset, size)) {
-+            /* Already private */
-+        } else if (!ram_block_attribute_is_range_populated(attr, offset,
-+                                                           size)) {
-+            /* Unexpected mixture: process individual blocks */
-+            for (cur = offset; cur < end; cur += block_size) {
-+                bit = cur / block_size;
-+                if (!test_bit(bit, attr->bitmap)) {
-+                    continue;
-+                }
-+                clear_bit(bit, attr->bitmap);
-+                ram_block_attribute_notify_to_discard(attr, cur, block_size);
-+            }
-+        } else {
-+            /* Completely shared */
-+            bitmap_clear(attr->bitmap, first_bit, nbits);
-+            ram_block_attribute_notify_to_discard(attr, offset, size);
-+        }
-     } else {
--        bitmap_set(attr->bitmap, first_bit, nbits);
--        ret = ram_block_attribute_notify_to_populated(attr, offset, size);
-+        if (ram_block_attribute_is_range_populated(attr, offset, size)) {
-+            /* Already shared */
-+        } else if (!ram_block_attribute_is_range_discard(attr, offset, size)) {
-+            /* Unexpected mixture: process individual blocks */
-+            unsigned long *modified_bitmap = bitmap_new(nbits);
-+
-+            for (cur = offset; cur < end; cur += block_size) {
-+                bit = cur / block_size;
-+                if (test_bit(bit, attr->bitmap)) {
-+                    continue;
-+                }
-+                set_bit(bit, attr->bitmap);
-+                ret = ram_block_attribute_notify_to_populated(attr, cur,
-+                                                           block_size);
-+                if (!ret) {
-+                    set_bit(bit - first_bit, modified_bitmap);
-+                    continue;
-+                }
-+                clear_bit(bit, attr->bitmap);
-+                break;
-+            }
-+
-+            if (ret) {
-+                /*
-+                 * Very unexpected: something went wrong. Revert to the old
-+                 * state, marking only the blocks as private that we converted
-+                 * to shared.
-+                 */
-+                for (cur = offset; cur < end; cur += block_size) {
-+                    bit = cur / block_size;
-+                    if (!test_bit(bit - first_bit, modified_bitmap)) {
-+                        continue;
-+                    }
-+                    assert(test_bit(bit, attr->bitmap));
-+                    clear_bit(bit, attr->bitmap);
-+                    ram_block_attribute_notify_to_discard(attr, cur,
-+                                                          block_size);
-+                }
-+            }
-+            g_free(modified_bitmap);
-+        } else {
-+            /* Complete private */
-+            bitmap_set(attr->bitmap, first_bit, nbits);
-+            ret = ram_block_attribute_notify_to_populated(attr, offset, size);
-+            if (ret) {
-+                bitmap_clear(attr->bitmap, first_bit, nbits);
-+            }
-+        }
-     }
- 
-     return ret;
+bdrv_drained_begin() polls and is not allowed to be called with the
+block graph lock held. Mark the function as GRAPH_UNLOCKED.
+
+This alone does not catch the issue reported by Andrey, because there
+is a bdrv_graph_rdunlock_main_loop() before bdrv_drained_begin() in
+the function bdrv_change_aio_context(). That unlock is of course
+ineffective if the exclusive lock is held, but it prevents TSA from
+finding the issue.
+
+Thus the bdrv_drained_begin() call from inside
+bdrv_change_aio_context() needs to be moved up the call stack before
+acquiring the locks. This is the bulk of the series.
+
+Granular draining is not trivially possible, because many of the
+affected functions can recursively call themselves.
+
+In place where bdrv_drained_begin() calls were removed, assertions
+are added, checking the quiesced_counter to ensure that the nodes
+already got drained further up in the call stack.
+
+NOTE:
+there are pre-existing test failures on current master, e.g. '240' for
+all formats, '295 296 inactive-node-nbd luks-detached-header' for luks
+and 'mirror-sparse' for raw. For me, the failures do not change after
+this series.
+
+[0]: https://lore.kernel.org/qemu-devel/20250508140936.3344485-1-f.ebner@proxmox.com/
+[1]: https://lore.kernel.org/qemu-devel/73839c04-7616-407e-b057-80ca69e63f51@virtuozzo.com/
+
+Andrey Drobyshev (1):
+  iotests/graph-changes-while-io: add test case with removal of lower
+    snapshot
+
+Fiona Ebner (23):
+  block: remove outdated comments about AioContext locking
+  block: move drain outside of read-locked bdrv_reopen_queue_child()
+  block/snapshot: move drain outside of read-locked
+    bdrv_snapshot_delete()
+  block: move drain outside of read-locked bdrv_inactivate_recurse()
+  block: mark bdrv_parent_change_aio_context() GRAPH_RDLOCK
+  block: mark change_aio_ctx() callback and instances as
+    GRAPH_RDLOCK(_PTR)
+  block: mark bdrv_child_change_aio_context() GRAPH_RDLOCK
+  block: move drain outside of bdrv_change_aio_context() and mark
+    GRAPH_RDLOCK
+  block: move drain outside of bdrv_try_change_aio_context()
+  block: move drain outside of bdrv_attach_child_common(_abort)()
+  block: move drain outside of bdrv_set_backing_hd_drained()
+  block: move drain outside of bdrv_root_attach_child()
+  block: move drain outside of bdrv_attach_child()
+  block: move drain outside of quorum_add_child()
+  block: move drain outside of bdrv_root_unref_child()
+  block: move drain outside of quorum_del_child()
+  blockdev: drain while unlocked in internal_snapshot_action()
+  blockdev: drain while unlocked in external_snapshot_action()
+  block: mark bdrv_drained_begin() as GRAPH_UNLOCKED
+  iotests/graph-changes-while-io: remove image file after test
+  block/io: remove duplicate GLOBAL_STATE_CODE() in
+    bdrv_do_drained_end()
+  block: never use atomics to access bs->quiesce_counter
+  block: add bdrv_graph_wrlock_drained() convenience wrapper
+
+ block.c                                       | 156 ++++++++++--------
+ block/backup.c                                |   2 +-
+ block/blklogwrites.c                          |   4 +-
+ block/blkverify.c                             |   2 +-
+ block/block-backend.c                         |  10 +-
+ block/commit.c                                |   2 +-
+ block/graph-lock.c                            |  40 ++++-
+ block/io.c                                    |   8 +-
+ block/mirror.c                                |   2 +-
+ block/qcow2.c                                 |   2 +-
+ block/quorum.c                                |   4 +-
+ block/replication.c                           |   4 +-
+ block/snapshot.c                              |  28 ++--
+ block/stream.c                                |   8 +-
+ block/vmdk.c                                  |  10 +-
+ blockdev.c                                    |  78 +++++++--
+ blockjob.c                                    |  10 +-
+ include/block/block-global-state.h            |  15 +-
+ include/block/block-io.h                      |   2 +-
+ include/block/block_int-common.h              |   8 +-
+ include/block/graph-lock.h                    |  11 ++
+ qemu-img.c                                    |   2 +
+ .../qemu-iotests/tests/graph-changes-while-io | 102 +++++++++++-
+ .../tests/graph-changes-while-io.out          |   4 +-
+ tests/unit/test-bdrv-drain.c                  |  22 +--
+ tests/unit/test-bdrv-graph-mod.c              |  10 +-
+ 26 files changed, 373 insertions(+), 173 deletions(-)
+
 -- 
-2.43.5
+2.39.5
+
 
 
