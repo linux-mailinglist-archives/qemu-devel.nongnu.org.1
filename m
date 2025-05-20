@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62402ABD4DD
-	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 12:30:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5398DABD4D6
+	for <lists+qemu-devel@lfdr.de>; Tue, 20 May 2025 12:30:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHKDz-0004kw-JP; Tue, 20 May 2025 06:29:31 -0400
+	id 1uHKE0-0004l1-C4; Tue, 20 May 2025 06:29:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
- id 1uHKDv-0004hE-TS
- for qemu-devel@nongnu.org; Tue, 20 May 2025 06:29:28 -0400
+ id 1uHKDx-0004jb-I7
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 06:29:29 -0400
 Received: from mgamail.intel.com ([198.175.65.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chenyi.qiang@intel.com>)
- id 1uHKDs-0004hJ-Il
- for qemu-devel@nongnu.org; Tue, 20 May 2025 06:29:27 -0400
+ id 1uHKDv-0004gB-CQ
+ for qemu-devel@nongnu.org; Tue, 20 May 2025 06:29:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747736965; x=1779272965;
+ t=1747736968; x=1779272968;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=xjsSyyH/vKZhnfoKeplftZcDafjUAYrMzMyTUKLznE8=;
- b=lWmdQWxvxS+TbNqdDd11iSL0EkipB1RW9Yv7PAGFEbET1cgDaR1YL1uW
- vdOqWowkihjlmj1o0fhbyT78CUMbrfYHMgcOGDEuiL6cMQn0jhHV1Sc3O
- w8NV4q9gEWA8lgJpE7CXq2AF+NlIQHX0AstB2OnFV6BRZTTBVDXtfKPjD
- Rlg8f2U2S+yjhyZifJAet0lRzyxoAkHHFacbJJb2tcvpFem0DisFh1A7L
- 89Qf3KtMULRye6iQIQjd3H2O8VmYDpfRmeKtlpMGvNUFRTPA+glOVNm2l
- fqg+Tp2Sofr3Zfu3MA9axJ20Mt7xfHN5DacnWLx0A9SwvE+wkyIOCLOdu A==;
-X-CSE-ConnectionGUID: pCEouSRHTJ6sup4l4SPq4Q==
-X-CSE-MsgGUID: qj+XW3upRUqc/LoZTa8C7A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="49566661"
-X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="49566661"
+ bh=ZTijY9Sdopl8+Dse6K2gwMX4Z7V1NW/c8Gpa+JnYhEs=;
+ b=Q4jvl9XCnKSl1a0qvVWN6KvhazYIsdUC7qS3yTvKnA34kAxXw+RG0fRE
+ azOb1wO2ISAJ2DMUmLPYWCy3wDRdqePPGYm9AOPm/tu4TqXOUzEwLxqJy
+ TrrFecbEIQpEEZkcXEehzYPpEXWyUttOCiHn6FrJipo4SlL5c/XpO3V3Y
+ U/H77e2A3kFkxwqfqnh5XSZzhgh3DOM02BN5kV9UxY2z60CR+IXLivnYU
+ nECv2lb53+9lRsSqz8/EQ8bzlAPNalthOSfiw+nbMTJA5r4DPmj4/D74R
+ cAPLJgjGmxDIhfcrdmbAAic/R7wln56t6zPRjCAcpx/3t7zRIwR8IAVCT A==;
+X-CSE-ConnectionGUID: dGEZMmW3Q9ikvPD0tCc4Wg==
+X-CSE-MsgGUID: egUJm4yLT4GcXxrY8m4Dcg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="49566668"
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="49566668"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2025 03:29:23 -0700
-X-CSE-ConnectionGUID: Lph/xiMcRAauSxFu6majOw==
-X-CSE-MsgGUID: gmuyuwicRxWHnua84DPXKA==
+ 20 May 2025 03:29:26 -0700
+X-CSE-ConnectionGUID: qH/3r4eJRWqXLyP4ArAIjw==
+X-CSE-MsgGUID: Dn1CjrlUSPixRMIoLxJdBw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="144905255"
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; d="scan'208";a="144905270"
 Received: from emr-bkc.sh.intel.com ([10.112.230.82])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2025 03:29:19 -0700
+ 20 May 2025 03:29:22 -0700
 From: Chenyi Qiang <chenyi.qiang@intel.com>
 To: David Hildenbrand <david@redhat.com>, Alexey Kardashevskiy <aik@amd.com>,
  Peter Xu <peterx@redhat.com>, Gupta Pankaj <pankaj.gupta@amd.com>,
@@ -55,10 +55,10 @@ Cc: Chenyi Qiang <chenyi.qiang@intel.com>, qemu-devel@nongnu.org,
  Zhao Liu <zhao1.liu@intel.com>, Baolu Lu <baolu.lu@linux.intel.com>,
  Gao Chao <chao.gao@intel.com>, Xu Yilun <yilun.xu@intel.com>,
  Li Xiaoyao <xiaoyao.li@intel.com>
-Subject: [PATCH v5 05/10] ram-block-attribute: Introduce a helper to notify
- shared/private state changes
-Date: Tue, 20 May 2025 18:28:45 +0800
-Message-ID: <20250520102856.132417-6-chenyi.qiang@intel.com>
+Subject: [PATCH v5 06/10] memory: Attach RamBlockAttribute to
+ guest_memfd-backed RAMBlocks
+Date: Tue, 20 May 2025 18:28:46 +0800
+Message-ID: <20250520102856.132417-7-chenyi.qiang@intel.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250520102856.132417-1-chenyi.qiang@intel.com>
 References: <20250520102856.132417-1-chenyi.qiang@intel.com>
@@ -89,223 +89,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A new state_change() helper is introduced for RamBlockAttribute
-to efficiently notify all registered RamDiscardListeners, including
-VFIO listeners, about memory conversion events in guest_memfd. The VFIO
-listener can dynamically DMA map/unmap shared pages based on conversion
-types:
-- For conversions from shared to private, the VFIO system ensures the
-  discarding of shared mapping from the IOMMU.
-- For conversions from private to shared, it triggers the population of
-  the shared mapping into the IOMMU.
+A new field, ram_shared, was introduced in RAMBlock to link to a
+RamBlockAttribute object, which centralizes all guest_memfd state
+information (such as fd and shared_bitmap) within a RAMBlock.
 
-Currently, memory conversion failures cause QEMU to quit instead of
-resuming the guest or retrying the operation. It would be a future work
-to add more error handling or rollback mechanisms once conversion
-failures are allowed. For example, in-place conversion of guest_memfd
-could retry the unmap operation during the conversion from shared to
-private. However, for now, keep the complex error handling out of the
-picture as it is not required:
+Create and initialize the RamBlockAttribute object upon ram_block_add().
+Meanwhile, register the object in the target RAMBlock's MemoryRegion.
+After that, guest_memfd-backed RAMBlock is associated with the
+RamDiscardManager interface, and the users will execute
+RamDiscardManager specific handling. For example, VFIO will register the
+RamDiscardListener as expected. The live migration path needs to be
+avoided since it is not supported yet in confidential VMs.
 
-- If a conversion request is made for a page already in the desired
-  state, the helper simply returns success.
-- For requests involving a range partially in the desired state, there
-  is no such scenario in practice at present. Simply return error.
-- If a conversion request is declined by other systems, such as a
-  failure from VFIO during notify_to_populated(), the failure is
-  returned directly. As for notify_to_discard(), VFIO cannot fail
-  unmap/unpin, so no error is returned.
-
-Note that the bitmap status is updated before callbacks, allowing
-listeners to handle memory based on the latest status.
+Additionally, use the ram_block_attribute_state_change() helper to
+notify the registered RamDiscardListener of these changes.
 
 Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
 ---
-Change in v5:
-    - Move the state_change() back to a helper instead of a callback of
-      the class since there's no child for the RamBlockAttributeClass.
-    - Remove the error handling and move them to an individual patch for
-      simple management.
+Changes in v5:
+    - Revert to use RamDiscardManager interface.
+    - Move the object_new() into the ram_block_attribute_create()
+      helper.
+    - Add some check in migration path.
 
 Changes in v4:
-    - Add the state_change() callback in PrivateSharedManagerClass
-      instead of the RamBlockAttribute.
+    - Remove the replay operations for attribute changes which will be
+      handled in a listener in following patches.
+    - Add some comment in the error path of realize() to remind the
+      future development of the unified error path.
 
 Changes in v3:
-    - Move the bitmap update before notifier callbacks.
-    - Call the notifier callbacks directly in notify_discard/populate()
-      with the expectation that the request memory range is in the
-      desired attribute.
-    - For the case that only partial range in the desire status, handle
-      the range with block_size granularity for ease of rollback
-      (https://lore.kernel.org/qemu-devel/812768d7-a02d-4b29-95f3-fb7a125cf54e@redhat.com/)
+    - Use ram_discard_manager_reply_populated/discarded() to set the
+      memory attribute and add the undo support if state_change()
+      failed.
+    - Didn't add Reviewed-by from Alexey due to the new changes in this
+      commit.
 
 Changes in v2:
-    - Do the alignment changes due to the rename to MemoryAttributeManager
-    - Move the state_change() helper definition in this patch.
+    - Introduce a new field memory_attribute_manager in RAMBlock.
+    - Move the state_change() handling during page conversion in this patch.
+    - Undo what we did if it fails to set.
+    - Change the order of close(guest_memfd) and memory_attribute_manager cleanup.
 ---
- include/system/ramblock.h    |   2 +
- system/ram-block-attribute.c | 134 +++++++++++++++++++++++++++++++++++
- 2 files changed, 136 insertions(+)
+ accel/kvm/kvm-all.c |  9 +++++++++
+ migration/ram.c     | 28 ++++++++++++++++++++++++++++
+ system/physmem.c    | 14 ++++++++++++++
+ 3 files changed, 51 insertions(+)
 
-diff --git a/include/system/ramblock.h b/include/system/ramblock.h
-index 09255e8495..270dffb2f3 100644
---- a/include/system/ramblock.h
-+++ b/include/system/ramblock.h
-@@ -108,6 +108,8 @@ struct RamBlockAttribute {
-     QLIST_HEAD(, RamDiscardListener) rdl_list;
- };
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 51526d301b..2d7ecaeb6a 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -3089,6 +3089,15 @@ int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
+     addr = memory_region_get_ram_ptr(mr) + section.offset_within_region;
+     rb = qemu_ram_block_from_host(addr, false, &offset);
  
-+int ram_block_attribute_state_change(RamBlockAttribute *attr, uint64_t offset,
-+                                     uint64_t size, bool to_private);
- RamBlockAttribute *ram_block_attribute_create(MemoryRegion *mr);
- void ram_block_attribute_destroy(RamBlockAttribute *attr);
++    ret = ram_block_attribute_state_change(RAM_BLOCK_ATTRIBUTE(mr->rdm),
++                                           offset, size, to_private);
++    if (ret) {
++        error_report("Failed to notify the listener the state change of "
++                     "(0x%"HWADDR_PRIx" + 0x%"HWADDR_PRIx") to %s",
++                     start, size, to_private ? "private" : "shared");
++        goto out_unref;
++    }
++
+     if (to_private) {
+         if (rb->page_size != qemu_real_host_page_size()) {
+             /*
+diff --git a/migration/ram.c b/migration/ram.c
+index c004f37060..69c9a42f16 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -890,6 +890,13 @@ static uint64_t ramblock_dirty_bitmap_clear_discarded_pages(RAMBlock *rb)
  
-diff --git a/system/ram-block-attribute.c b/system/ram-block-attribute.c
-index 8d4a24738c..f12dd4b881 100644
---- a/system/ram-block-attribute.c
-+++ b/system/ram-block-attribute.c
-@@ -253,6 +253,140 @@ ram_block_attribute_rdm_replay_discard(const RamDiscardManager *rdm,
-                                             ram_block_attribute_rdm_replay_cb);
- }
- 
-+static bool ram_block_attribute_is_valid_range(RamBlockAttribute *attr,
-+                                               uint64_t offset, uint64_t size)
-+{
-+    MemoryRegion *mr = attr->mr;
+     if (rb->mr && rb->bmap && memory_region_has_ram_discard_manager(rb->mr)) {
+         RamDiscardManager *rdm = memory_region_get_ram_discard_manager(rb->mr);
 +
-+    g_assert(mr);
-+
-+    uint64_t region_size = memory_region_size(mr);
-+    int block_size = ram_block_attribute_get_block_size(attr);
-+
-+    if (!QEMU_IS_ALIGNED(offset, block_size)) {
-+        return false;
-+    }
-+    if (offset + size < offset || !size) {
-+        return false;
-+    }
-+    if (offset >= region_size || offset + size > region_size) {
-+        return false;
-+    }
-+    return true;
-+}
-+
-+static void ram_block_attribute_notify_to_discard(RamBlockAttribute *attr,
-+                                                  uint64_t offset,
-+                                                  uint64_t size)
-+{
-+    RamDiscardListener *rdl;
-+
-+    QLIST_FOREACH(rdl, &attr->rdl_list, next) {
-+        MemoryRegionSection tmp = *rdl->section;
-+
-+        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
-+            continue;
++        if (object_dynamic_cast(OBJECT(rdm), TYPE_RAM_BLOCK_ATTRIBUTE)) {
++            error_report("%s: Live migration for confidential VM is not "
++                         "supported yet.", __func__);
++            exit(1);
 +        }
-+        rdl->notify_discard(rdl, &tmp);
-+    }
-+}
 +
-+static int
-+ram_block_attribute_notify_to_populated(RamBlockAttribute *attr,
-+                                        uint64_t offset, uint64_t size)
-+{
-+    RamDiscardListener *rdl;
-+    int ret = 0;
-+
-+    QLIST_FOREACH(rdl, &attr->rdl_list, next) {
-+        MemoryRegionSection tmp = *rdl->section;
-+
-+        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
-+            continue;
-+        }
-+        ret = rdl->notify_populate(rdl, &tmp);
-+        if (ret) {
-+            break;
-+        }
-+    }
-+
-+    return ret;
-+}
-+
-+static bool ram_block_attribute_is_range_populated(RamBlockAttribute *attr,
-+                                                   uint64_t offset,
-+                                                   uint64_t size)
-+{
-+    const int block_size = ram_block_attribute_get_block_size(attr);
-+    const unsigned long first_bit = offset / block_size;
-+    const unsigned long last_bit = first_bit + (size / block_size) - 1;
-+    unsigned long found_bit;
-+
-+    /* We fake a shorter bitmap to avoid searching too far. */
-+    found_bit = find_next_zero_bit(attr->bitmap, last_bit + 1,
-+                                   first_bit);
-+    return found_bit > last_bit;
-+}
-+
-+static bool
-+ram_block_attribute_is_range_discard(RamBlockAttribute *attr,
-+                                     uint64_t offset, uint64_t size)
-+{
-+    const int block_size = ram_block_attribute_get_block_size(attr);
-+    const unsigned long first_bit = offset / block_size;
-+    const unsigned long last_bit = first_bit + (size / block_size) - 1;
-+    unsigned long found_bit;
-+
-+    /* We fake a shorter bitmap to avoid searching too far. */
-+    found_bit = find_next_bit(attr->bitmap, last_bit + 1, first_bit);
-+    return found_bit > last_bit;
-+}
-+
-+int ram_block_attribute_state_change(RamBlockAttribute *attr, uint64_t offset,
-+                                     uint64_t size, bool to_private)
-+{
-+    const int block_size = ram_block_attribute_get_block_size(attr);
-+    const unsigned long first_bit = offset / block_size;
-+    const unsigned long nbits = size / block_size;
-+    int ret = 0;
-+
-+    if (!ram_block_attribute_is_valid_range(attr, offset, size)) {
-+        error_report("%s, invalid range: offset 0x%lx, size 0x%lx",
-+                     __func__, offset, size);
-+        return -1;
-+    }
-+
-+    /* Already discard/populated */
-+    if ((ram_block_attribute_is_range_discard(attr, offset, size) &&
-+         to_private) ||
-+        (ram_block_attribute_is_range_populated(attr, offset, size) &&
-+         !to_private)) {
-+        return 0;
-+    }
-+
-+    /* Unexpected mixture */
-+    if ((!ram_block_attribute_is_range_populated(attr, offset, size) &&
-+         to_private) ||
-+        (!ram_block_attribute_is_range_discard(attr, offset, size) &&
-+         !to_private)) {
-+        error_report("%s, the range is not all in the desired state: "
-+                     "(offset 0x%lx, size 0x%lx), %s",
-+                     __func__, offset, size,
-+                     to_private ? "private" : "shared");
-+        return -1;
-+    }
-+
-+    if (to_private) {
-+        bitmap_clear(attr->bitmap, first_bit, nbits);
-+        ram_block_attribute_notify_to_discard(attr, offset, size);
-+    } else {
-+        bitmap_set(attr->bitmap, first_bit, nbits);
-+        ret = ram_block_attribute_notify_to_populated(attr, offset, size);
-+    }
-+
-+    return ret;
-+}
-+
- RamBlockAttribute *ram_block_attribute_create(MemoryRegion *mr)
+         MemoryRegionSection section = {
+             .mr = rb->mr,
+             .offset_within_region = 0,
+@@ -913,6 +920,13 @@ bool ramblock_page_is_discarded(RAMBlock *rb, ram_addr_t start)
  {
-     uint64_t bitmap_size;
+     if (rb->mr && memory_region_has_ram_discard_manager(rb->mr)) {
+         RamDiscardManager *rdm = memory_region_get_ram_discard_manager(rb->mr);
++
++        if (object_dynamic_cast(OBJECT(rdm), TYPE_RAM_BLOCK_ATTRIBUTE)) {
++            error_report("%s: Live migration for confidential VM is not "
++                         "supported yet.", __func__);
++            exit(1);
++        }
++
+         MemoryRegionSection section = {
+             .mr = rb->mr,
+             .offset_within_region = start,
+@@ -1552,6 +1566,13 @@ static void ram_block_populate_read(RAMBlock *rb)
+      */
+     if (rb->mr && memory_region_has_ram_discard_manager(rb->mr)) {
+         RamDiscardManager *rdm = memory_region_get_ram_discard_manager(rb->mr);
++
++        if (object_dynamic_cast(OBJECT(rdm), TYPE_RAM_BLOCK_ATTRIBUTE)) {
++            error_report("%s: Live migration for confidential VM is not "
++                         "supported yet.", __func__);
++            exit(1);
++        }
++
+         MemoryRegionSection section = {
+             .mr = rb->mr,
+             .offset_within_region = 0,
+@@ -1611,6 +1632,13 @@ static int ram_block_uffd_protect(RAMBlock *rb, int uffd_fd)
+     /* See ram_block_populate_read() */
+     if (rb->mr && memory_region_has_ram_discard_manager(rb->mr)) {
+         RamDiscardManager *rdm = memory_region_get_ram_discard_manager(rb->mr);
++
++        if (object_dynamic_cast(OBJECT(rdm), TYPE_RAM_BLOCK_ATTRIBUTE)) {
++            error_report("%s: Live migration for confidential VM is not "
++                         "supported yet.", __func__);
++            exit(1);
++        }
++
+         MemoryRegionSection section = {
+             .mr = rb->mr,
+             .offset_within_region = 0,
+diff --git a/system/physmem.c b/system/physmem.c
+index a8a9ca309e..f05f7ff09a 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -1931,6 +1931,19 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
+             goto out_free;
+         }
+ 
++        new_block->ram_shared = ram_block_attribute_create(new_block->mr);
++        if (!new_block->ram_shared) {
++            error_setg(errp, "Failed to create ram block attribute");
++            /*
++             * The error path could be unified if the rest of ram_block_add()
++             * ever develops a need to check for errors.
++             */
++            close(new_block->guest_memfd);
++            ram_block_discard_require(false);
++            qemu_mutex_unlock_ramlist();
++            goto out_free;
++        }
++
+         /*
+          * Add a specific guest_memfd blocker if a generic one would not be
+          * added by ram_block_add_cpr_blocker.
+@@ -2287,6 +2300,7 @@ static void reclaim_ramblock(RAMBlock *block)
+     }
+ 
+     if (block->guest_memfd >= 0) {
++        ram_block_attribute_destroy(block->ram_shared);
+         close(block->guest_memfd);
+         ram_block_discard_require(false);
+     }
 -- 
 2.43.5
 
