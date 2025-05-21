@@ -2,65 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90CF4ABFF50
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 00:08:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C946BABFFA3
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 00:36:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHrbJ-0005mk-K3; Wed, 21 May 2025 18:07:49 -0400
+	id 1uHs1F-0001Ux-3f; Wed, 21 May 2025 18:34:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <itaru.kitayama@linux.dev>)
- id 1uHrbG-0005ma-Sc
- for qemu-devel@nongnu.org; Wed, 21 May 2025 18:07:46 -0400
-Received: from out-178.mta0.migadu.com ([91.218.175.178])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <itaru.kitayama@linux.dev>)
- id 1uHrbD-0000Up-6k
- for qemu-devel@nongnu.org; Wed, 21 May 2025 18:07:46 -0400
-Content-Type: text/plain;
-	charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
- t=1747865257;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=1vLkAUBDYK3sNFDLMY9liH8VgjHaEs3+UBhEp1Fq4WI=;
- b=CqyDfhzncjx2qOGH7QMBE0DnkKIhKwClintTwwFWVE+TnqtLWS+6MDhn88rB16i6ShxHFw
- nNnV+ztdFclH6SXino4FyJ0yl9GhiU4rDA+ReldED4TmO0ikGoJVzyf2poOeL7WAyhRuBE
- 7ZU4WiTDGzJYiGZeVVveCFxr4dqdYc8=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v13 5/5] qtest/cxl: Add aarch64 virt test for CXL
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
- include these headers.
-From: Itaru Kitayama <itaru.kitayama@linux.dev>
-In-Reply-To: <20250521185231.00005e4a@huawei.com>
-Date: Thu, 22 May 2025 07:07:17 +0900
-Cc: qemu-devel@nongnu.org, Fan Ni <fan.ni@samsung.com>,
- Peter Maydell <peter.maydell@linaro.org>, mst@redhat.com,
- linux-cxl@vger.kernel.org, linuxarm@huawei.com, qemu-arm@nongnu.org,
- Yuquan Wang <wangyuquan1236@phytium.com.cn>,
- =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <277C5799-872A-4A63-887B-92540FD63DDB@linux.dev>
-References: <20250513111455.128266-1-Jonathan.Cameron@huawei.com>
- <20250513111455.128266-6-Jonathan.Cameron@huawei.com>
- <D9E503CC-1271-4008-9975-9BAEC7A33376@linux.dev>
- <20250519135413.000026b4@huawei.com>
- <5CCC3C8C-7348-4409-9964-8367C8FC1C1E@linux.dev>
- <20250521185231.00005e4a@huawei.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-X-Migadu-Flow: FLOW_OUT
-Received-SPF: pass client-ip=91.218.175.178;
- envelope-from=itaru.kitayama@linux.dev; helo=out-178.mta0.migadu.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uHs1D-0001UX-DP
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 18:34:35 -0400
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uHs13-0004zh-Ol
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 18:34:35 -0400
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-af908bb32fdso5619321a12.1
+ for <qemu-devel@nongnu.org>; Wed, 21 May 2025 15:34:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1747866862; x=1748471662; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=WeWztwRO1f9kpE1L9uL08Bn44xYTu0XHTbPptf9BzjA=;
+ b=GJSsNnnOdV97+fzfNAY63469W44nX06R4M7/EIYozH/2pzsa14jyHU1YByrqckQRlV
+ W6GQMg8BwW1bDorfn4dhDb3C5STbcTW8XrKeJR6FyE5mPyEzwHvEtUBwSmMRTxy5dSk9
+ ecvkXW5oC7lLwTU2P8beGOLCWYnnP2uD4WmPU7EkRPICHH8PO5HHUIDlIt6hDSLxNhna
+ 5kx+f0SreW/d0w6vHfRHDoYvIT2tpXYhdmkgyxCfu0YjJPluY1n4wqifziFfdve1xqwR
+ GKD73ogQm6KmimYz8/OchiDpYT9LxbcVMVyOajBpZnraJd2fnMuak9cGnWFsM+3sbBrL
+ REig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747866862; x=1748471662;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=WeWztwRO1f9kpE1L9uL08Bn44xYTu0XHTbPptf9BzjA=;
+ b=plqLQ0LGwgP8dyWbc+Ro1HmGfCp4wftbCkVTd/NEQwi36KPYpxN7yMY7XnZuvBSN9b
+ wdhU4yRlPgPArD+oClC5I5iblVAozXRwcuhJNdsRsTSeXHmGN65If4Pvm8E+BaZdaNNw
+ 5H6IjsaZKV9izFtXz7fVCr4BT+8m3Stl5xD2OV4UTukEs9/3tGDmwAyxpcTux0klL20L
+ 8jN4n/TyOZnYcLJQmnaTRK57EnmKNoMPeuGvpbIbQcgsTbXh/X2yc+r33WpyortfIpk1
+ cHSlvYncZw9/CJk/MAOuHnuKS49ec5K8ir0/y3YRfW8VfHYCufZPkVYvo84GKdButYBz
+ cgLw==
+X-Gm-Message-State: AOJu0YwHsbPNf6aCwUNee4CUusbll5KhhyexsgjJnA7BJVuciDA2sDXg
+ 30NIzOmGa+QqX2IPLbCi0qI1QMPxud1ipdaAno59o8eXWVeJWVk8UNPGwfdVEmwKYrIFCi77F/s
+ mxeYc
+X-Gm-Gg: ASbGncs3MA79Gdwgm4CqqnPTzDDPwlZ9hvqJn6bPzGyCT4SOGA4yIpeq99vGUt3UPgP
+ ICt46gs8CPKPyBnDQn2PxdeAx8EN2C1B05ci3yg1RrKNo9JC7nwlHj5GKkhq2p3OLsa1uvrJST1
+ PAKr2VOkQB6IiehiFG87nlTU8u6uTCW7ejwI+xapliEDpTd03j1aokUaMPSktcli37EzNcxRiO1
+ 8TOab0xcMKO6qFEn7PCOjtTu3R7dR/39C79hScDfpGIFljW0t6Q5IDRvVHIUPkIaVq3Rn3JR26V
+ Rp/G4nMliVsLaZWaVIOFl99l1yYsWFB8iISaKj0C+ILetevqc0A=
+X-Google-Smtp-Source: AGHT+IG7yGzuJv+5LIVdeTCYxGucE9KEvaqN+9jZtnn3Py3YOy/GALpfcdhPxU0pvsWKFwKENNZHqw==
+X-Received: by 2002:a05:6a21:6d82:b0:218:2ee9:2c67 with SMTP id
+ adf61e73a8af0-2182ee94ed2mr19701568637.9.1747866861961; 
+ Wed, 21 May 2025 15:34:21 -0700 (PDT)
+Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-b26eaf5a31dsm10165224a12.2.2025.05.21.15.34.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 21 May 2025 15:34:21 -0700 (PDT)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, thuth@redhat.com,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH v2 0/7] single-binary: build target common libraries with
+ dependencies
+Date: Wed, 21 May 2025 15:34:07 -0700
+Message-ID: <20250521223414.248276-1-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.47.2
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x52e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,446 +101,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Recently, common libraries per target base architecture were introduced in order
+to compile those files only once. However, it was missing common dependencies
+(which include external libraries), so it failed to build on some hosts.
 
+This series fixes this, inspired by Thomas fix [1], and applied to other
+libraries introduced very recently with [2].
 
-> On May 22, 2025, at 2:52, Jonathan Cameron =
-<Jonathan.Cameron@huawei.com> wrote:
->=20
-> On Wed, 21 May 2025 16:38:10 +0900
-> Itaru Kitayama <itaru.kitayama@linux.dev> wrote:
->=20
->>> On May 19, 2025, at 21:54, Jonathan Cameron =
-<Jonathan.Cameron@huawei.com> wrote:
->>>=20
->>> On Thu, 15 May 2025 18:04:18 +0900
->>> Itaru Kitayama <itaru.kitayama@linux.dev> wrote:
->>>=20
->>>>> On May 13, 2025, at 20:14, Jonathan Cameron =
-<Jonathan.Cameron@huawei.com> wrote:
->>>>>=20
->>>>> Add a single complex case for aarch64 virt machine.
->>>>> Given existing much more comprehensive tests for x86 cover the
->>>>> common functionality, a single test should be enough to verify
->>>>> that the aarch64 part continue to work.
->>>>>=20
->>>>> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->>>>> ---
->>>>> tests/qtest/cxl-test.c  | 59 =
-++++++++++++++++++++++++++++++++---------
->>>>> tests/qtest/meson.build |  1 +
->>>>> 2 files changed, 47 insertions(+), 13 deletions(-)
->>>>>=20
->>>>> diff --git a/tests/qtest/cxl-test.c b/tests/qtest/cxl-test.c
->>>>> index a600331843..c7189d6222 100644
->>>>> --- a/tests/qtest/cxl-test.c
->>>>> +++ b/tests/qtest/cxl-test.c
->>>>> @@ -19,6 +19,12 @@
->>>>>   "-device pxb-cxl,id=3Dcxl.1,bus=3Dpcie.0,bus_nr=3D53 " \
->>>>>   "-M =
-cxl-fmw.0.targets.0=3Dcxl.0,cxl-fmw.0.targets.1=3Dcxl.1,cxl-fmw.0.size=3D4=
-G "
->>>>>=20
->>>>> +#define QEMU_VIRT_2PXB_CMD \
->>>>> +    "-machine virt,cxl=3Don -cpu max " \
->>>>> +    "-device pxb-cxl,id=3Dcxl.0,bus=3Dpcie.0,bus_nr=3D52 " \
->>>>> +    "-device pxb-cxl,id=3Dcxl.1,bus=3Dpcie.0,bus_nr=3D53 " \
->>>>> +    "-M =
-cxl-fmw.0.targets.0=3Dcxl.0,cxl-fmw.0.targets.1=3Dcxl.1,cxl-fmw.0.size=3D4=
-G "
->>>>> +
->>>>> #define QEMU_RP \
->>>>>   "-device cxl-rp,id=3Drp0,bus=3Dcxl.0,chassis=3D0,slot=3D0 "
->>>>>=20
->>>>> @@ -197,25 +203,52 @@ static void cxl_2pxb_4rp_4t3d(void)
->>>>>   qtest_end();
->>>>>   rmdir(tmpfs);
->>>>> }
->>>>> +
->>>>> +static void cxl_virt_2pxb_4rp_4t3d(void)
->>>>> +{
->>>>> +    g_autoptr(GString) cmdline =3D g_string_new(NULL);
->>>>> +    char template[] =3D "/tmp/cxl-test-XXXXXX";
->>>>> +    const char *tmpfs;
->>>>> +
->>>>> +    tmpfs =3D mkdtemp(template);
->>>>> +
->>>>> +    g_string_printf(cmdline, QEMU_VIRT_2PXB_CMD QEMU_4RP =
-QEMU_4T3D,
->>>>> +                    tmpfs, tmpfs, tmpfs, tmpfs, tmpfs, tmpfs,
->>>>> +                    tmpfs, tmpfs);
->>>>> +
->>>>> +    qtest_start(cmdline->str);
->>>>> +    qtest_end();
->>>>> +    rmdir(tmpfs);
->>>>> +}
->>>>> #endif /* CONFIG_POSIX */
->>>>>=20
->>>>> int main(int argc, char **argv)
->>>>> {
->>>>> -    g_test_init(&argc, &argv, NULL);
->>>>> +    const char *arch =3D qtest_get_arch();
->>>>>=20
->>>>> -    qtest_add_func("/pci/cxl/basic_hostbridge", cxl_basic_hb);
->>>>> -    qtest_add_func("/pci/cxl/basic_pxb", cxl_basic_pxb);
->>>>> -    qtest_add_func("/pci/cxl/pxb_with_window", =
-cxl_pxb_with_window);
->>>>> -    qtest_add_func("/pci/cxl/pxb_x2_with_window", =
-cxl_2pxb_with_window);
->>>>> -    qtest_add_func("/pci/cxl/rp", cxl_root_port);
->>>>> -    qtest_add_func("/pci/cxl/rp_x2", cxl_2root_port);
->>>>> +    g_test_init(&argc, &argv, NULL);
->>>>> +    if (strcmp(arch, "i386") =3D=3D 0 || strcmp(arch, "x86_64") =
-=3D=3D 0) {
->>>>> +        qtest_add_func("/pci/cxl/basic_hostbridge", =
-cxl_basic_hb);
->>>>> +        qtest_add_func("/pci/cxl/basic_pxb", cxl_basic_pxb);
->>>>> +        qtest_add_func("/pci/cxl/pxb_with_window", =
-cxl_pxb_with_window);
->>>>> +        qtest_add_func("/pci/cxl/pxb_x2_with_window", =
-cxl_2pxb_with_window);
->>>>> +        qtest_add_func("/pci/cxl/rp", cxl_root_port);
->>>>> +        qtest_add_func("/pci/cxl/rp_x2", cxl_2root_port);
->>>>> #ifdef CONFIG_POSIX
->>>>> -    qtest_add_func("/pci/cxl/type3_device", cxl_t3d_deprecated);
->>>>> -    qtest_add_func("/pci/cxl/type3_device_pmem", =
-cxl_t3d_persistent);
->>>>> -    qtest_add_func("/pci/cxl/type3_device_vmem", =
-cxl_t3d_volatile);
->>>>> -    qtest_add_func("/pci/cxl/type3_device_vmem_lsa", =
-cxl_t3d_volatile_lsa);
->>>>> -    qtest_add_func("/pci/cxl/rp_x2_type3_x2", cxl_1pxb_2rp_2t3d);
->>>>> -    qtest_add_func("/pci/cxl/pxb_x2_root_port_x4_type3_x4", =
-cxl_2pxb_4rp_4t3d);
->>>>> +        qtest_add_func("/pci/cxl/type3_device", =
-cxl_t3d_deprecated);
->>>>> +        qtest_add_func("/pci/cxl/type3_device_pmem", =
-cxl_t3d_persistent);
->>>>> +        qtest_add_func("/pci/cxl/type3_device_vmem", =
-cxl_t3d_volatile);
->>>>> +        qtest_add_func("/pci/cxl/type3_device_vmem_lsa", =
-cxl_t3d_volatile_lsa);
->>>>> +        qtest_add_func("/pci/cxl/rp_x2_type3_x2", =
-cxl_1pxb_2rp_2t3d);
->>>>> +        qtest_add_func("/pci/cxl/pxb_x2_root_port_x4_type3_x4",
->>>>> +                       cxl_2pxb_4rp_4t3d);
->>>>> #endif
->>>>> +    } else if (strcmp(arch, "aarch64") =3D=3D 0) {
->>>>> +#ifdef CONFIG_POSIX
->>>>> +        =
-qtest_add_func("/pci/cxl/virt/pxb_x2_root_port_x4_type3_x4",
->>>>> +                       cxl_virt_2pxb_4rp_4t3d);
->>>>> +#endif
->>>>> +    }
->>>>> +
->>>>>   return g_test_run();
->>>>> }
->>>>> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
->>>>> index 7daf619845..361000267a 100644
->>>>> --- a/tests/qtest/meson.build
->>>>> +++ b/tests/qtest/meson.build
->>>>> @@ -258,6 +258,7 @@ qtests_aarch64 =3D \
->>>>> (config_all_accel.has_key('CONFIG_TCG') and                        =
-                    \
->>>>>  config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? =
-['tpm-tis-i2c-test'] : []) + \
->>>>> (config_all_devices.has_key('CONFIG_ASPEED_SOC') ? qtests_aspeed64 =
-: []) + \
->>>>> +  qtests_cxl +                                                    =
-                              \
->>>>> ['arm-cpu-features',
->>>>>  'numa-test',
->>>>>  'boot-serial-test',
->>>>> --=20
->>>>> 2.43.0
->>>>>=20
->>>>=20
->>>> ~/projects/qemu/build$ meson test qtest-aarch64/cxl-test
->>>> ninja: Entering directory `/home/realm/projects/qemu/build'
->>>> [1/8] Generating qemu-version.h with a custom command (wrapped by =
-meson to capture output)
->>>> 1/1 qemu:qtest+qtest-aarch64 / qtest-aarch64/cxl-test        OK     =
-         0.17s   1 subtests passed
->>>>=20
->>>> Ok:                 1
->>>> Expected Fail:      0
->>>> Fail:               0
->>>> Unexpected Pass:    0
->>>> Skipped:            0
->>>> Timeout:            0
->>>>=20
->>>> Tested-by: Itaru Kitayama <itaru.kitayama@fujitsu.com =
-<mailto:itaru.kitayama@fujitsu.com>>
->>>>=20
->>>> Jonathan, would you push your branch this series applied? I =
-manually applied your series no issues though. =20
->>>=20
->>> I'm reluctant to push a 'normal' staging CXL tree whilst we have the =
-TCG
->>> issue outstanding (which is in mainline).
->>> I can probably push one with a name that makes it clear we know it =
-will
->>> crash under some circumstances though. I'll aim to get that done =
-later this week.
->>>=20
->>> After talking to Richard Henderson I'm going to spin some images etc =
-to
->>> make it easier for him to replicate that TCG issue. =20
->>=20
->> While QEMU (the kernel is built off of cxl branch) boots fine and =
-lspci shows CXL devices as shown:
->>=20
->> root@localhost:~# lspci -mm
->> 00:00.0 "Host bridge" "Red Hat, Inc." "QEMU PCIe Host bridge" -p00 =
-"Red Hat, Inc." "Device 1100"
->> 00:01.0 "SCSI storage controller" "Red Hat, Inc." "Virtio block =
-device" -p00 "Red Hat, Inc." "Device 0002"
->> 00:02.0 "Ethernet controller" "Intel Corporation" "82540EM Gigabit =
-Ethernet Controller" -r03 -p00 "Red Hat, Inc." "QEMU Virtual Machine"
->> 00:03.0 "Host bridge" "Red Hat, Inc." "QEMU PCIe Expander bridge" =
--p00 "Red Hat, Inc." "Device 1100"
->> 00:04.0 "Host bridge" "Red Hat, Inc." "QEMU PCIe Expander bridge" =
--p00 "Red Hat, Inc." "Device 1100"
->> 35:00.0 "PCI bridge" "Intel Corporation" "Device 7075" -p00 "Intel =
-Corporation" "Device 0000"
->> 35:01.0 "PCI bridge" "Intel Corporation" "Device 7075" -p00 "Intel =
-Corporation" "Device 0000"
->> 36:00.0 "PCI bridge" "Huawei Technologies Co., Ltd." "Device a128" =
--p00 "" ""
->> 36:00.1 "Serial bus controller [0c0b]" "Huawei Technologies Co., =
-Ltd." "Device a123" -p00 "Red Hat, Inc." "Device 1100"
->> 37:00.0 "PCI bridge" "Huawei Technologies Co., Ltd." "Device a129" =
--p00 "" ""
->> 37:01.0 "PCI bridge" "Huawei Technologies Co., Ltd." "Device a129" =
--p00 "" ""
->> 37:02.0 "PCI bridge" "Huawei Technologies Co., Ltd." "Device a129" =
--p00 "" ""
->> 37:03.0 "PCI bridge" "Huawei Technologies Co., Ltd." "Device a129" =
--p00 "" ""
->> 38:00.0 "CXL" "Intel Corporation" "Device 0d93" -r01 -p10 "Red Hat, =
-Inc." "Device 1100"
->> 3a:00.0 "CXL" "Intel Corporation" "Device 0d93" -r01 -p10 "Red Hat, =
-Inc." "Device 1100"
->> bf:00.0 "PCI bridge" "Intel Corporation" "Device 7075" -p00 "Intel =
-Corporation" "Device 0000"
->> bf:01.0 "PCI bridge" "Intel Corporation" "Device 7075" -p00 "Intel =
-Corporation" "Device 0000"
->> c0:00.0 "PCI bridge" "Huawei Technologies Co., Ltd." "Device a128" =
--p00 "" ""
->> c0:00.1 "Serial bus controller [0c0b]" "Huawei Technologies Co., =
-Ltd." "Device a123" -p00 "Red Hat, Inc." "Device 1100"
->> c1:00.0 "PCI bridge" "Huawei Technologies Co., Ltd." "Device a129" =
--p00 "" ""
->> c1:01.0 "PCI bridge" "Huawei Technologies Co., Ltd." "Device a129" =
--p00 "" ""
->> c1:02.0 "PCI bridge" "Huawei Technologies Co., Ltd." "Device a129" =
--p00 "" ""
->> c1:03.0 "PCI bridge" "Huawei Technologies Co., Ltd." "Device a129" =
--p00 "" ""
->> c2:00.0 "CXL" "Intel Corporation" "Device 0d93" -r01 -p10 "Red Hat, =
-Inc." "Device 1100"
->> c4:00.0 "CXL" "Intel Corporation" "Device 0d93" -r01 -p10 "Red Hat, =
-Inc." "Device 1100=E2=80=9D
->>=20
->> but the cxl-list command takes 5-10 minutes to return the =
-information. I=E2=80=99ll test with your qtest minimalist setup to see =
-if the system is loaded. Am I seeing the TCG issue you mentioned?
->=20
-> I don't think so. That should only matter if the memory is hotplugged =
-in
-> as normal system RAM.
->=20
->>=20
->> root@localhost:~# cxl list -M
->> [
->>  {
->>    "memdev":"mem10",
->>    "ram_size":2147483648,
->>    "ram_qos_class":42,
->>    "serial":11,
->>    "numa_node":0,
->>    "host":"cxl_rcd.10",
->>    "firmware_version":"mock fw v1 "
->=20
-> So this seems to be with both some emulated devices from qemu command =
-line
-> and CXL test at the same time.=20
->=20
-> I replicated a similar setup and not setting a significant delay
-> (half a second maybe?)  So not sure.
->=20
+As well, we do further cleanup by removing lib{system, user} source sets that
+were recently introduced, by merging them in system/user libraries, thus
+simplifying the work on single-binary.
 
-Good news. And I confirm that the cxl-list command returns a list =
-quickly with older cxl/next kernel(s).
-I am still in the process of bisecting trying to narrow down the bad =
-commit.
+This series was built on {linux, macos, windows} x {x86_64, aarch64} and
+freebsd on x86_64. Fully tested on linux x {x86_64, aarch64}.
+In addition to that, it was checked that compilation units compiled per binary
+stayed the same, and that their size was identical.
 
-Itaru.
+[1] https://lore.kernel.org/qemu-devel/20250513115637.184940-1-thuth@redhat.com/
+[2] https://gitlab.com/qemu-project/qemu/-/commit/b2bb3f3576e5dc99218607dde09e25ac0e55693c
 
-> I did notice that there is a bug in qemu though which has surfaced
-> for some reason in the kernel log (it dates all the way back to=20
-> origin CXL support series). In=20
-> include/hw/cxl/cxl_pci.h
-> #define REG_LOC_DEVSEC_LENGTH is 0x24 and it should be 0x1C
->=20
-> That results for me in a kernel log entry about a bar not being
-> big enough for a huge offset (which is random data coming from
-> somewhere in text I think).
->=20
-> Seems unlikely to trigger your issue, but you never know!
->=20
-> Jonathan
->=20
->=20
->>  },
->>  {
->>    "memdev":"mem5",
->>    "pmem_size":1073741824,
->>    "pmem_qos_class":42,
->>    "ram_size":1073741824,
->>    "ram_qos_class":42,
->>    "serial":6,
->>    "numa_node":1,
->>    "host":"cxl_mem.5",
->>    "firmware_version":"mock fw v1 "
->>  },
->>  {
->>    "memdev":"mem1",
->>    "pmem_size":1073741824,
->>    "pmem_qos_class":42,
->>    "ram_size":1073741824,
->>    "ram_qos_class":42,
->>    "serial":2,
->>    "numa_node":1,
->>    "host":"cxl_mem.1",
->>    "firmware_version":"mock fw v1 "
->>  },
->>  {
->>    "memdev":"mem6",
->>    "pmem_size":1073741824,
->>    "pmem_qos_class":42,
->>    "ram_size":1073741824,
->>    "ram_qos_class":42,
->>    "serial":8,
->>    "numa_node":1,
->>    "host":"cxl_mem.7",
->>    "firmware_version":"mock fw v1 "
->>  },
->>  {
->>    "memdev":"mem3",
->>    "pmem_size":1073741824,
->>    "pmem_qos_class":42,
->>    "ram_size":1073741824,
->>    "ram_qos_class":42,
->>    "serial":4,
->>    "numa_node":1,
->>    "host":"cxl_mem.3",
->>    "firmware_version":"mock fw v1 "
->>  },
->>  {
->>    "memdev":"mem4",
->>    "pmem_size":1073741824,
->>    "pmem_qos_class":42,
->>    "ram_size":1073741824,
->>    "ram_qos_class":42,
->>    "serial":5,
->>    "numa_node":0,
->>    "host":"cxl_mem.4",
->>    "firmware_version":"mock fw v1 "
->>  },
->>  {
->>    "memdev":"mem0",
->>    "pmem_size":1073741824,
->>    "pmem_qos_class":42,
->>    "ram_size":1073741824,
->>    "ram_qos_class":42,
->>    "serial":1,
->>    "numa_node":0,
->>    "host":"cxl_mem.0",
->>    "firmware_version":"mock fw v1 "
->>  },
->>  {
->>    "memdev":"mem2",
->>    "pmem_size":1073741824,
->>    "pmem_qos_class":42,
->>    "ram_size":1073741824,
->>    "ram_qos_class":42,
->>    "serial":3,
->>    "numa_node":0,
->>    "host":"cxl_mem.2",
->>    "firmware_version":"mock fw v1 "
->>  },
->>  {
->>    "memdev":"mem7",
->>    "pmem_size":1073741824,
->>    "pmem_qos_class":42,
->>    "ram_size":1073741824,
->>    "ram_qos_class":42,
->>    "serial":7,
->>    "numa_node":0,
->>    "host":"cxl_mem.6",
->>    "firmware_version":"mock fw v1 "
->>  },
->>  {
->>    "memdev":"mem8",
->>    "pmem_size":1073741824,
->>    "pmem_qos_class":42,
->>    "ram_size":1073741824,
->>    "ram_qos_class":42,
->>    "serial":9,
->>    "numa_node":0,
->>    "host":"cxl_mem.8",
->>    "firmware_version":"mock fw v1 "
->>  },
->>  {
->>    "memdev":"mem9",
->>    "pmem_size":1073741824,
->>    "pmem_qos_class":42,
->>    "ram_size":1073741824,
->>    "ram_qos_class":42,
->>    "serial":10,
->>    "numa_node":1,
->>    "host":"cxl_mem.9",
->>    "firmware_version":"mock fw v1 "
->>  },
->>  {
->>    "memdev":"mem12",
->>    "ram_size":268435456,
->>    "serial":0,
->>    "host":"0000:c4:00.0",
->>    "firmware_version":"BWFW VERSION 00"
->>  },
->>  {
->>    "memdev":"mem11",
->>    "ram_size":268435456,
->>    "serial":0,
->>    "host":"0000:c2:00.0",
->>    "firmware_version":"BWFW VERSION 00"
->>  },
->>  {
->>    "memdev":"mem14",
->>    "pmem_size":268435456,
->>    "serial":0,
->>    "host":"0000:3a:00.0",
->>    "firmware_version":"BWFW VERSION 00"
->>  },
->>  {
->>    "memdev":"mem13",
->>    "pmem_size":268435456,
->>    "serial":0,
->>    "host":"0000:38:00.0",
->>    "firmware_version":"BWFW VERSION 00"
->>  }
->> ]
->>=20
->> Getting this shouldn=E2=80=99t take minutes, even with the emulator I =
-think.
->>=20
->> Itaru.
->>=20
->>>=20
->>> Thanks for reviews.
->>>=20
->>> Jonathan
+v2
+--
 
+- Additional patch to merge hw_common_arch_libs in
+  target_common_system_arch libs (Paolo)
+- Better commit description for merging lib{system, user}_ss with
+  {system, user}_ss (Paolo)
+
+Pierrick Bouvier (7):
+  meson: build target libraries with common dependencies
+  hw/arm: remove explicit dependencies listed
+  target/arm: remove explicit dependencies listed
+  meson: apply target config for picking files from lib{system, user}
+  meson: merge lib{system, user}_ss with {system, user}_ss
+  meson: remove lib{system, user}_ss aliases
+  meson: merge hw_common_arch in target_common_system_arch
+
+ meson.build            | 124 +++++++++++++++++++++--------------------
+ accel/tcg/meson.build  |   8 +--
+ gdbstub/meson.build    |   4 +-
+ hw/arm/meson.build     |   4 +-
+ hw/core/meson.build    |   4 +-
+ plugins/meson.build    |   4 +-
+ system/meson.build     |   2 +-
+ target/arm/meson.build |   2 +-
+ tcg/meson.build        |   4 +-
+ 9 files changed, 80 insertions(+), 76 deletions(-)
+
+-- 
+2.47.2
 
 
