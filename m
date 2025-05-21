@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C16C8ABF2A1
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 13:20:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D07C6ABF29F
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 13:20:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHhUG-0005wF-7J; Wed, 21 May 2025 07:19:52 -0400
+	id 1uHhUJ-00063t-DP; Wed, 21 May 2025 07:19:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uHhTj-0005Vo-4R
- for qemu-devel@nongnu.org; Wed, 21 May 2025 07:19:22 -0400
+ id 1uHhTt-0005bp-CJ
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 07:19:31 -0400
 Received: from mgamail.intel.com ([192.198.163.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uHhTg-0006RC-27
- for qemu-devel@nongnu.org; Wed, 21 May 2025 07:19:18 -0400
+ id 1uHhTn-0006SH-QC
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 07:19:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747826356; x=1779362356;
+ t=1747826364; x=1779362364;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=KLjRZ+Hv72Y3pA0KOcUTZCjBQvdG45vZ8JtjLhnvJ+A=;
- b=SL3G64zuqtyDxtF7QWYY9hhSmYK+HEQAAbduTbVhSUFCMyS0WK9+pcEf
- PXr8bc+Er8X2uA6to/mHC2HwkYY5VV4kmIX4GZMamIAvI1RTMoDsMQEEu
- eroGUuOg8Rl+khNErHs4lr3MArZdMn9FpXM7AYk/mEmi51Eb9EQ6doWzw
- 6KaHhQjr2BWMtK+gFd5DbnV0mpXl6XV4KEWzRBWyi+/GYcuwoIqNx7Num
- 5nuT/jjYAsNBJ8r22H2EcEcVkhNLnzwoBBoikIUaaOBl6NVj8VhSL7Udj
- 6WkPq0Rs9bzaGIgljdN4gXzasx3tkootpWfr0YeZJNtzU6oosYHXL/9Nf g==;
-X-CSE-ConnectionGUID: B+cjEv68RF+NB+I0c1gecw==
-X-CSE-MsgGUID: JFRHimOYRqawviazBIrk6w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="49894991"
-X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="49894991"
+ bh=YCEK4guH+zxZ4cdXjewze95hAdbr9FNgVfo6kAul0Ow=;
+ b=EMCKz6fsmEBjixzar8+E4umxOOmClyYXs7igZFkWIUyPLWeCTzKbcBgp
+ 55qYjmUbfzH6vQj4C8AQ4ZUA/MF6RTibCXiGkG2QeqvKELtFEi0BrCja4
+ BKvXMw+crezsUF6mAIpn5rZuwCubpCkaJST2H4Eeg2XR0DrQpetPHxVEV
+ ULcWSOE9cycBGX9m3E4izZc8IBgGYFh5MTKrLtxbjdcxOnBBLjvHTEggh
+ xSitNbzFi9wHyuYMpq0/GAFZmRs2Y/BL8Ha7H6S0WFUKaeaX5MFp+4iPI
+ W00LbBLEd1GnaQmj5r63tu43nAvR6Ai0N4zGeRgLvJOB7CCDPgiszyJru A==;
+X-CSE-ConnectionGUID: ONYMm9qCT1mMbjQ0hUN4qA==
+X-CSE-MsgGUID: 7Qm/aAMdRoyl2oSn6L5AUg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="49895006"
+X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="49895006"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2025 04:19:15 -0700
-X-CSE-ConnectionGUID: xYBNWGo1SZOU1uNKeJCF7Q==
-X-CSE-MsgGUID: 5oi/zXR/SDCKo/LYSEVakw==
+ 21 May 2025 04:19:20 -0700
+X-CSE-ConnectionGUID: V/nx36OaSd+4dGB1vpHAXQ==
+X-CSE-MsgGUID: muY/OyvSQyq0ZQeII2sSXQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="145158336"
+X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="145158339"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2025 04:19:10 -0700
+ 21 May 2025 04:19:15 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -56,10 +56,10 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH rfcv3 08/21] intel_iommu: Optimize context entry cache
- utilization
-Date: Wed, 21 May 2025 19:14:38 +0800
-Message-Id: <20250521111452.3316354-9-zhenzhong.duan@intel.com>
+Subject: [PATCH rfcv3 09/21] intel_iommu: Check for compatibility with IOMMUFD
+ backed device when x-flts=on
+Date: Wed, 21 May 2025 19:14:39 +0800
+Message-Id: <20250521111452.3316354-10-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250521111452.3316354-1-zhenzhong.duan@intel.com>
 References: <20250521111452.3316354-1-zhenzhong.duan@intel.com>
@@ -90,117 +90,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are many call sites referencing context entry by calling
-vtd_dev_to_context_entry() which will traverse the DMAR table.
+When vIOMMU is configured x-flts=on in scalable mode, stage-1 page table
+is passed to host to construct nested page table. We need to check
+compatibility of some critical IOMMU capabilities between vIOMMU and
+host IOMMU to ensure guest stage-1 page table could be used by host.
 
-In most cases we can use cached context entry in vtd_as->context_cache_entry
-except when its entry is stale. Currently only global and domain context
-invalidation stale it.
+For instance, vIOMMU supports stage-1 1GB huge page mapping, but host
+does not, then this IOMMUFD backed device should be failed.
 
-So introduce a helper function vtd_as_to_context_entry() to fetch from cache
-before trying with vtd_dev_to_context_entry().
+Declare an enum type host_iommu_device_iommu_hw_info_type aliased to
+iommu_hw_info_type which comes from iommufd header file. This can avoid
+build failure on windows which doesn't support iommufd.
 
+Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/i386/intel_iommu.c | 36 +++++++++++++++++++++++-------------
- 1 file changed, 23 insertions(+), 13 deletions(-)
+ include/system/host_iommu_device.h | 13 +++++++++++
+ hw/i386/intel_iommu.c              | 36 ++++++++++++++++++++++++++++++
+ 2 files changed, 49 insertions(+)
 
+diff --git a/include/system/host_iommu_device.h b/include/system/host_iommu_device.h
+index 30da88789d..38070aff09 100644
+--- a/include/system/host_iommu_device.h
++++ b/include/system/host_iommu_device.h
+@@ -125,5 +125,18 @@ struct HostIOMMUDeviceClass {
+ #define HOST_IOMMU_DEVICE_CAP_FS1GP             3
+ #define HOST_IOMMU_DEVICE_CAP_ERRATA            4
+ 
++/**
++ * enum host_iommu_device_iommu_hw_info_type - IOMMU Hardware Info Types
++ * @HOST_IOMMU_DEVICE_IOMMU_HW_INFO_TYPE_NONE: Used by the drivers that do not
++ *                                             report hardware info
++ * @HOST_IOMMU_DEVICE_IOMMU_HW_INFO_TYPE_INTEL_VTD: Intel VT-d iommu info type
++ *
++ * This is alias to enum iommu_hw_info_type but for general purpose.
++ */
++enum host_iommu_device_iommu_hw_info_type {
++    HOST_IOMMU_DEVICE_IOMMU_HW_INFO_TYPE_NONE,
++    HOST_IOMMU_DEVICE_IOMMU_HW_INFO_TYPE_INTEL_VTD,
++};
++
+ #define HOST_IOMMU_DEVICE_CAP_AW_BITS_MAX       64
+ #endif
 diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index f0b1f90eff..a2f3250724 100644
+index a2f3250724..dc839037cf 100644
 --- a/hw/i386/intel_iommu.c
 +++ b/hw/i386/intel_iommu.c
-@@ -1597,6 +1597,22 @@ static int vtd_dev_to_context_entry(IntelIOMMUState *s, uint8_t bus_num,
-     return 0;
- }
+@@ -39,6 +39,7 @@
+ #include "kvm/kvm_i386.h"
+ #include "migration/vmstate.h"
+ #include "trace.h"
++#include "system/iommufd.h"
  
-+static int vtd_as_to_context_entry(VTDAddressSpace *vtd_as, VTDContextEntry *ce)
-+{
-+    IntelIOMMUState *s = vtd_as->iommu_state;
-+    uint8_t bus_num = pci_bus_num(vtd_as->bus);
-+    uint8_t devfn = vtd_as->devfn;
-+    VTDContextCacheEntry *cc_entry = &vtd_as->context_cache_entry;
-+
-+    /* Try to fetch context-entry from cache first */
-+    if (cc_entry->context_cache_gen == s->context_cache_gen) {
-+        *ce = cc_entry->context_entry;
-+        return 0;
-+    } else {
-+        return vtd_dev_to_context_entry(s, bus_num, devfn, ce);
-+    }
-+}
-+
- static int vtd_sync_shadow_page_hook(const IOMMUTLBEvent *event,
-                                      void *private)
- {
-@@ -1649,9 +1665,7 @@ static int vtd_address_space_sync(VTDAddressSpace *vtd_as)
-         return 0;
+ /* context entry operations */
+ #define VTD_CE_GET_RID2PASID(ce) \
+@@ -4361,6 +4362,41 @@ static bool vtd_check_hiod(IntelIOMMUState *s, HostIOMMUDevice *hiod,
+         return true;
      }
  
--    ret = vtd_dev_to_context_entry(vtd_as->iommu_state,
--                                   pci_bus_num(vtd_as->bus),
--                                   vtd_as->devfn, &ce);
-+    ret = vtd_as_to_context_entry(vtd_as, &ce);
-     if (ret) {
-         if (ret == -VTD_FR_CONTEXT_ENTRY_P) {
-             /*
-@@ -1710,8 +1724,7 @@ static bool vtd_as_pt_enabled(VTDAddressSpace *as)
-     assert(as);
- 
-     s = as->iommu_state;
--    if (vtd_dev_to_context_entry(s, pci_bus_num(as->bus), as->devfn,
--                                 &ce)) {
-+    if (vtd_as_to_context_entry(as, &ce)) {
-         /*
-          * Possibly failed to parse the context entry for some reason
-          * (e.g., during init, or any guest configuration errors on
-@@ -2435,8 +2448,7 @@ static void vtd_iotlb_domain_invalidate(IntelIOMMUState *s, uint16_t domain_id)
-     vtd_iommu_unlock(s);
- 
-     QLIST_FOREACH(vtd_as, &s->vtd_as_with_notifiers, next) {
--        if (!vtd_dev_to_context_entry(s, pci_bus_num(vtd_as->bus),
--                                      vtd_as->devfn, &ce) &&
-+        if (!vtd_as_to_context_entry(vtd_as, &ce) &&
-             domain_id == vtd_get_domain_id(s, &ce, vtd_as->pasid)) {
-             vtd_address_space_sync(vtd_as);
-         }
-@@ -2458,8 +2470,7 @@ static void vtd_iotlb_page_invalidate_notify(IntelIOMMUState *s,
-     hwaddr size = (1 << am) * VTD_PAGE_SIZE;
- 
-     QLIST_FOREACH(vtd_as, &(s->vtd_as_with_notifiers), next) {
--        ret = vtd_dev_to_context_entry(s, pci_bus_num(vtd_as->bus),
--                                       vtd_as->devfn, &ce);
-+        ret = vtd_as_to_context_entry(vtd_as, &ce);
-         if (!ret && domain_id == vtd_get_domain_id(s, &ce, vtd_as->pasid)) {
-             uint32_t rid2pasid = PCI_NO_PASID;
- 
-@@ -2966,8 +2977,7 @@ static void vtd_piotlb_pasid_invalidate(IntelIOMMUState *s,
-     vtd_iommu_unlock(s);
- 
-     QLIST_FOREACH(vtd_as, &s->vtd_as_with_notifiers, next) {
--        if (!vtd_dev_to_context_entry(s, pci_bus_num(vtd_as->bus),
--                                      vtd_as->devfn, &ce) &&
-+        if (!vtd_as_to_context_entry(vtd_as, &ce) &&
-             domain_id == vtd_get_domain_id(s, &ce, vtd_as->pasid)) {
-             uint32_t rid2pasid = VTD_CE_GET_RID2PASID(&ce);
- 
-@@ -4146,7 +4156,7 @@ static void vtd_report_ir_illegal_access(VTDAddressSpace *vtd_as,
-     assert(vtd_as->pasid != PCI_NO_PASID);
- 
-     /* Try out best to fetch FPD, we can't do anything more */
--    if (vtd_dev_to_context_entry(s, bus_n, vtd_as->devfn, &ce) == 0) {
-+    if (vtd_as_to_context_entry(vtd_as, &ce) == 0) {
-         is_fpd_set = ce.lo & VTD_CONTEXT_ENTRY_FPD;
-         if (!is_fpd_set && s->root_scalable) {
-             vtd_ce_get_pasid_fpd(s, &ce, &is_fpd_set, vtd_as->pasid);
-@@ -4506,7 +4516,7 @@ static void vtd_iommu_replay(IOMMUMemoryRegion *iommu_mr, IOMMUNotifier *n)
-     /* replay is protected by BQL, page walk will re-setup it safely */
-     iova_tree_remove(vtd_as->iova_tree, map);
- 
--    if (vtd_dev_to_context_entry(s, bus_n, vtd_as->devfn, &ce) == 0) {
-+    if (vtd_as_to_context_entry(vtd_as, &ce) == 0) {
-         trace_vtd_replay_ce_valid(s->root_scalable ? "scalable mode" :
-                                   "legacy mode",
-                                   bus_n, PCI_SLOT(vtd_as->devfn),
++    /* Remaining checks are all stage-1 translation specific */
++    if (!object_dynamic_cast(OBJECT(hiod), TYPE_HOST_IOMMU_DEVICE_IOMMUFD)) {
++        error_setg(errp, "Need IOMMUFD backend when x-flts=on");
++        return false;
++    }
++
++    /*
++     * HOST_IOMMU_DEVICE_CAP_IOMMU_TYPE should be supported by different
++     * backend devices, either VFIO or VDPA.
++     */
++    ret = hiodc->get_cap(hiod, HOST_IOMMU_DEVICE_CAP_IOMMU_TYPE, errp);
++    assert(ret >= 0);
++    if (ret != HOST_IOMMU_DEVICE_IOMMU_HW_INFO_TYPE_INTEL_VTD) {
++        error_setg(errp, "Incompatible host platform IOMMU type %d", ret);
++        return false;
++    }
++
++    /*
++     * HOST_IOMMU_DEVICE_CAP_NESTING/FS1GP are VTD vendor specific
++     * capabilities, so get_cap() should never fail on them now that
++     * HOST_IOMMU_DEVICE_IOMMU_HW_INFO_TYPE_INTEL_VTD type check passed
++     * above.
++     */
++    ret = hiodc->get_cap(hiod, HOST_IOMMU_DEVICE_CAP_NESTING, errp);
++    if (ret != 1) {
++        error_setg(errp, "Host IOMMU doesn't support nested translation");
++        return false;
++    }
++
++    ret = hiodc->get_cap(hiod, HOST_IOMMU_DEVICE_CAP_FS1GP, errp);
++    if (s->fs1gp && ret != 1) {
++        error_setg(errp, "Stage-1 1GB huge page is unsupported by host IOMMU");
++        return false;
++    }
++
+     error_setg(errp, "host device is uncompatible with stage-1 translation");
+     return false;
+ }
 -- 
 2.34.1
 
