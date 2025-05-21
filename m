@@ -2,73 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89DA1ABEDF9
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 10:32:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 459EAABEF27
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 11:07:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHes7-0007Ru-4l; Wed, 21 May 2025 04:32:19 -0400
+	id 1uHfOW-00074i-He; Wed, 21 May 2025 05:05:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uHes3-0007RP-WC
- for qemu-devel@nongnu.org; Wed, 21 May 2025 04:32:16 -0400
-Received: from mgamail.intel.com ([192.198.163.18])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uHfOV-00074T-3v
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 05:05:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1uHerz-00024q-5z
- for qemu-devel@nongnu.org; Wed, 21 May 2025 04:32:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747816331; x=1779352331;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=WYKrLqTpzo+Kn2nj+U3KFX7t/XvO3S/P5Se2toDBQk0=;
- b=Zyc1pSpRWzjc0Wix4h8rJOGMzCoIWpd0DOrkN0NKCgyFvpJNPCSMAwI3
- AgRPQpvqgkOb4ISDSU2fEKMhr7ga3fziU8IaD4c0sYt3+fbIpx/MixMHi
- ZjCqNdG6TdUc9F55/8UZnahL9KT5GnuEqTTeUvcmwYkOiEDbUyi3YPR8W
- g4UvwJnVT09Ms3tKFCAWx1f3/ReEpGJepncLi0AqYbokZCs3g/Xbq98z0
- aRaF7ho3HcHjXxH6/0BER6OgcUBP0+vh/+XX2PNtipSFVfDiOGAdrBRyt
- QrM0eiw99rwpSGVpYPgRGXzdLYniZsIbWYyeu3s1jM+C/lAVbJosEFYC5 w==;
-X-CSE-ConnectionGUID: oyhCEL4oTDurDXrZPFN4pA==
-X-CSE-MsgGUID: 3NoYIy4aRjWTOSeBSBaotg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="49043530"
-X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="49043530"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2025 01:32:06 -0700
-X-CSE-ConnectionGUID: 301eAhgwQDaptSZLeY+T+w==
-X-CSE-MsgGUID: Q91BmB1sTdeyeJxBnk7oRw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="144698852"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.39])
- by orviesa003.jf.intel.com with ESMTP; 21 May 2025 01:32:04 -0700
-Date: Wed, 21 May 2025 16:53:10 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Igor Mammedov <imammedo@redhat.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Chuang Xu <xuchuangxclwt@bytedance.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>,
- Babu Moger <babu.moger@amd.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH 0/4] i386/cpu: Fix topological field encoding & overflow
-Message-ID: <aC2UduRVRiALRVyk@intel.com>
-References: <20250227062523.124601-1-zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1uHfOT-0005xw-6s
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 05:05:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747818343;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=mbntxoFO+HxR+TpSoBYNhdO4fjkx/ZcxvgLgffvhmU4=;
+ b=DU/lCVuGOqYHbX2GARlKqEvcti7TmV77LUZQytUAhW5S9Jk1Ng2R6Nyr0sT3w9X5Xff7Au
+ BCOUzqwfCNH7i+bjBJqxCrT0EhWqNH5N+alJbVayUmZDkCe489I24sAMarmWcqU54tTKzl
+ Pzyiyp+mPRQdOCJQROgbExqsyjIS21w=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-558-ImN-lEKHNvi57SHiuuN14w-1; Wed,
+ 21 May 2025 05:05:41 -0400
+X-MC-Unique: ImN-lEKHNvi57SHiuuN14w-1
+X-Mimecast-MFC-AGG-ID: ImN-lEKHNvi57SHiuuN14w_1747818341
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C3CCF1800370
+ for <qemu-devel@nongnu.org>; Wed, 21 May 2025 09:05:40 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.129])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id C470019560AD
+ for <qemu-devel@nongnu.org>; Wed, 21 May 2025 09:05:39 +0000 (UTC)
+Date: Wed, 21 May 2025 10:05:35 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PATCH v5 10/9] scripts/checkpatch.pl: mandate SPDX tag for Rust src
+ files
+Message-ID: <aC2XX9jqmCRnSnQV@redhat.com>
+References: <20250519171004.352636-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250227062523.124601-1-zhao1.liu@intel.com>
-Received-SPF: pass client-ip=192.198.163.18; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.487,
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250519171004.352636-1-berrange@redhat.com>
+User-Agent: Mutt/2.2.14 (2025-02-20)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.487,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,69 +84,29 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Paolo,
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+---
+ scripts/checkpatch.pl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-A gentle poke. There's no conflict for now. Do you agree with these
-fixes?
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 17b8db40ad..c0b36a85cd 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -1499,7 +1499,7 @@ sub process_end_of_file {
+ 	if ($fileinfo->{action} eq "new" &&
+ 	    !exists $fileinfo->{facts}->{sawspdx}) {
+ 		if ($fileinfo->{filenew} =~
+-		    /(\.(c|h|py|pl|sh|json|inc)|Makefile.*)$/) {
++		    /(\.(c|h|py|pl|sh|json|inc|rs)|Makefile.*)$/) {
+ 			# source code files MUST have SPDX license declared
+ 			ERROR("New file '" . $fileinfo->{filenew} .
+ 			      "' requires 'SPDX-License-Identifier'");
+-- 
+2.49.0
 
-Thanks,
-Zhao
-
-On Thu, Feb 27, 2025 at 02:25:19PM +0800, Zhao Liu wrote:
-> Date: Thu, 27 Feb 2025 14:25:19 +0800
-> From: Zhao Liu <zhao1.liu@intel.com>
-> Subject: [PATCH 0/4] i386/cpu: Fix topological field encoding & overflow
-> X-Mailer: git-send-email 2.34.1
-> 
-> Hi,
-> 
-> This series collects and organizes several topology-related cleanups and
-> fixes, based on b69801dd6b1e ("Merge tag 'for_upstream' of
-> https://git.kernel.org/pub/scm/virt/kvm/mst/qemu into staging").
-> 
-> Patch 1 is picked from Chuang's v6 [1].
-> 
-> Patch 2-3 are picked from Qian's v4 [2], though it had previously gone
-> through sufficient review (got R/b tags), I dropped its R/b tags because
-> of my code change.
-> 
-> Patch 4 is newly added, inspired by patch 3, to also perform a check on
-> AMD's cache CPUID. This is to consider the current maximum number of
-> supported CPUs, which is approaching the overflow boundary.
-> 
-> In addition to the 0x1, 0x4, and 0x8000001d leaves involved in the patch
-> series, there is also the 0x1f leaf related to topology. However, the
-> upper limit for CPUID.1FH.EBX[bits 15:0] is 65,535 threads, which
-> provides enough room. Therefore, this field does not currently require
-> overflow checks.
-> 
-> This series correct the CPUIDs, but it doesn't affect the Guest's live
-> migration. Therefore, I did not add the compat property for this.
-> 
-> [1]: https://lore.kernel.org/qemu-devel/20241009035638.59330-1-xuchuangxclwt@bytedance.com/
-> [2]: https://lore.kernel.org/qemu-devel/20230829042405.932523-2-qian.wen@intel.com/
-> 
-> Thanks and Best Regards,
-> Zhao
-> ---
-> Chuang Xu (1):
->   i386/cpu: Fix number of addressable IDs field for CPUID.01H.EBX[23:16]
-> 
-> Qian Wen (2):
->   i386/cpu: Fix cpu number overflow in CPUID.01H.EBX[23:16]
->   i386/cpu: Fix overflow of cache topology fields in CPUID.04H
-> 
-> Zhao Liu (1):
->   i386/cpu: Honor maximum value for CPUID.8000001DH.EAX[25:14]
-> 
->  target/i386/cpu.c | 35 ++++++++++++++++++++++++++++-------
->  1 file changed, 28 insertions(+), 7 deletions(-)
-> 
-> -- 
-> 2.34.1
-> 
-> 
 
