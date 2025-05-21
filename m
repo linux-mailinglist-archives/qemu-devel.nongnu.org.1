@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C946BABFFA3
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 00:36:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FCBBABFFA0
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 00:36:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHs1F-0001Ux-3f; Wed, 21 May 2025 18:34:37 -0400
+	id 1uHs1C-0001UC-0N; Wed, 21 May 2025 18:34:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uHs1D-0001UX-DP
- for qemu-devel@nongnu.org; Wed, 21 May 2025 18:34:35 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ id 1uHs19-0001Ti-6s
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 18:34:32 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uHs13-0004zh-Ol
- for qemu-devel@nongnu.org; Wed, 21 May 2025 18:34:35 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-af908bb32fdso5619321a12.1
- for <qemu-devel@nongnu.org>; Wed, 21 May 2025 15:34:23 -0700 (PDT)
+ id 1uHs13-0004zp-Me
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 18:34:30 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-73bf5aa95e7so6604068b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 21 May 2025 15:34:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747866862; x=1748471662; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=WeWztwRO1f9kpE1L9uL08Bn44xYTu0XHTbPptf9BzjA=;
- b=GJSsNnnOdV97+fzfNAY63469W44nX06R4M7/EIYozH/2pzsa14jyHU1YByrqckQRlV
- W6GQMg8BwW1bDorfn4dhDb3C5STbcTW8XrKeJR6FyE5mPyEzwHvEtUBwSmMRTxy5dSk9
- ecvkXW5oC7lLwTU2P8beGOLCWYnnP2uD4WmPU7EkRPICHH8PO5HHUIDlIt6hDSLxNhna
- 5kx+f0SreW/d0w6vHfRHDoYvIT2tpXYhdmkgyxCfu0YjJPluY1n4wqifziFfdve1xqwR
- GKD73ogQm6KmimYz8/OchiDpYT9LxbcVMVyOajBpZnraJd2fnMuak9cGnWFsM+3sbBrL
- REig==
+ d=linaro.org; s=google; t=1747866863; x=1748471663; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=iFTPMBgBeSb1Nb3otdhugWerdFL6Has6F3uTGj/LNK8=;
+ b=LT5ZREmRjiGgW4lhkNVmUUWHG9WY+CcjSnhQgEyT4v1F77JxKjt6sUyfIXHjQA/jvS
+ 0FE4xBkQo/4rb/kSnkRdL5p9aNVziYoqTEweeQGzCBmhsQmNzshtVJpJoKFsgt5z2o9z
+ HcrWWGZLkcj75JgI4VbFzVd2CbuKvxv4MngHqa6qMOi6uoGskiTipcB4Y7wU+s/AUQ0N
+ 2UkyOFgEkjshnndkrXyueBms70Rn9f/QrgOnWObizwZRwq5UJKFA5/ZiyILbusLAO9vB
+ 2bFdieMP4+yJMgWQg+gNuiCYVRuCjqzP+0lskD4MDrhDQaZN/OP01nGL1tY1xyh39eFW
+ WMPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747866862; x=1748471662;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=WeWztwRO1f9kpE1L9uL08Bn44xYTu0XHTbPptf9BzjA=;
- b=plqLQ0LGwgP8dyWbc+Ro1HmGfCp4wftbCkVTd/NEQwi36KPYpxN7yMY7XnZuvBSN9b
- wdhU4yRlPgPArD+oClC5I5iblVAozXRwcuhJNdsRsTSeXHmGN65If4Pvm8E+BaZdaNNw
- 5H6IjsaZKV9izFtXz7fVCr4BT+8m3Stl5xD2OV4UTukEs9/3tGDmwAyxpcTux0klL20L
- 8jN4n/TyOZnYcLJQmnaTRK57EnmKNoMPeuGvpbIbQcgsTbXh/X2yc+r33WpyortfIpk1
- cHSlvYncZw9/CJk/MAOuHnuKS49ec5K8ir0/y3YRfW8VfHYCufZPkVYvo84GKdButYBz
- cgLw==
-X-Gm-Message-State: AOJu0YwHsbPNf6aCwUNee4CUusbll5KhhyexsgjJnA7BJVuciDA2sDXg
- 30NIzOmGa+QqX2IPLbCi0qI1QMPxud1ipdaAno59o8eXWVeJWVk8UNPGwfdVEmwKYrIFCi77F/s
- mxeYc
-X-Gm-Gg: ASbGncs3MA79Gdwgm4CqqnPTzDDPwlZ9hvqJn6bPzGyCT4SOGA4yIpeq99vGUt3UPgP
- ICt46gs8CPKPyBnDQn2PxdeAx8EN2C1B05ci3yg1RrKNo9JC7nwlHj5GKkhq2p3OLsa1uvrJST1
- PAKr2VOkQB6IiehiFG87nlTU8u6uTCW7ejwI+xapliEDpTd03j1aokUaMPSktcli37EzNcxRiO1
- 8TOab0xcMKO6qFEn7PCOjtTu3R7dR/39C79hScDfpGIFljW0t6Q5IDRvVHIUPkIaVq3Rn3JR26V
- Rp/G4nMliVsLaZWaVIOFl99l1yYsWFB8iISaKj0C+ILetevqc0A=
-X-Google-Smtp-Source: AGHT+IG7yGzuJv+5LIVdeTCYxGucE9KEvaqN+9jZtnn3Py3YOy/GALpfcdhPxU0pvsWKFwKENNZHqw==
-X-Received: by 2002:a05:6a21:6d82:b0:218:2ee9:2c67 with SMTP id
- adf61e73a8af0-2182ee94ed2mr19701568637.9.1747866861961; 
- Wed, 21 May 2025 15:34:21 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1747866863; x=1748471663;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=iFTPMBgBeSb1Nb3otdhugWerdFL6Has6F3uTGj/LNK8=;
+ b=L90ox6elqPV9LaIb4c7S5EFO5BjGuDFzoor1xFWWoqYVniUP7zaSlvyvpRek4yssfX
+ RabEmZX56kG8po+PtNSVSRIN5jflzJXD4ntpMiH4aYYFULhqqYrluCug6oNrX5DigrjY
+ CJLk04bMzsWAfuFt507FdekHmxmPFH1uI1aPHeUCUkQA2XucOlrk8vb9KmzlRxlwMhtz
+ Dnf+SGbgk19EYMz+2KjMFemBrebSFIcWttom2xDYO1N4v3oq5cQeH9jJzwytxEZdsXIA
+ aZ6CSjWDLDg7SShfc1Xoa2SbRwsEXFM3OkqSQiG5Nc8N1drTRvKcAR8sB9MXj1IHZClg
+ bfNQ==
+X-Gm-Message-State: AOJu0YxsY4ak5jau2iwlQ0zH7my7kTqjX4pn/ORQZfM4EFsF5wyWrmi3
+ lpQyeYu/dT8piq9KLSIqXnZj3LSyxQo6tYBiQg4/2MIc1VLQIftJTW+85okYbnJFvNVAaTNmRPJ
+ 6MdpD
+X-Gm-Gg: ASbGncs+NL1SIhrxzdetimKdJJtPiwb+zx9W+CUoq5mQej4uHl4RTka0A9l1mH62yy8
+ JOD6zsPIcOajzCJKAskBO9uYoJldvnrbZf//7mM8FqXAzU+g7stPIHibAqR06MX8ALnvsWUOxyK
+ 526uRjZrcr6Oo4Q950VPdVKaMNNPs9TrpW5tZGJGQYrEuTRcFEEPwbK8UopaZsBCAj1yfplyHzV
+ vkYWGkAE2++hDyfpkMR62sdD+ujSfSGYO9IMv4pv2PhrImuai3AoONRQ+yM6xexOOH3W29e3XxO
+ eRJtCh6y215IIdubuwm4wBQifqWG8QZi/6duyrYClbGYNq/tibs=
+X-Google-Smtp-Source: AGHT+IFiGuN+jNpOhnPmSQ47Z4Q6SH4T9q4ux8WgqN+/wec40sTmRACeqXs6V8C94yZokdMyGqTL/A==
+X-Received: by 2002:a05:6a21:3384:b0:1f5:769a:a4bf with SMTP id
+ adf61e73a8af0-21621a23f5fmr37446219637.36.1747866862831; 
+ Wed, 21 May 2025 15:34:22 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b26eaf5a31dsm10165224a12.2.2025.05.21.15.34.21
+ 41be03b00d2f7-b26eaf5a31dsm10165224a12.2.2025.05.21.15.34.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 21 May 2025 15:34:21 -0700 (PDT)
+ Wed, 21 May 2025 15:34:22 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
@@ -69,16 +70,16 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, thuth@redhat.com,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 0/7] single-binary: build target common libraries with
- dependencies
-Date: Wed, 21 May 2025 15:34:07 -0700
-Message-ID: <20250521223414.248276-1-pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 1/7] meson: build target libraries with common dependencies
+Date: Wed, 21 May 2025 15:34:08 -0700
+Message-ID: <20250521223414.248276-2-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20250521223414.248276-1-pierrick.bouvier@linaro.org>
+References: <20250521223414.248276-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x52e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,53 +102,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Recently, common libraries per target base architecture were introduced in order
-to compile those files only once. However, it was missing common dependencies
-(which include external libraries), so it failed to build on some hosts.
+As mentioned in [1], dependencies
+were missing when compiling per target libraries, thus breaking
+compilation on certain host systems.
 
-This series fixes this, inspired by Thomas fix [1], and applied to other
-libraries introduced very recently with [2].
-
-As well, we do further cleanup by removing lib{system, user} source sets that
-were recently introduced, by merging them in system/user libraries, thus
-simplifying the work on single-binary.
-
-This series was built on {linux, macos, windows} x {x86_64, aarch64} and
-freebsd on x86_64. Fully tested on linux x {x86_64, aarch64}.
-In addition to that, it was checked that compilation units compiled per binary
-stayed the same, and that their size was identical.
+We now explicitly add common dependencies to those libraries, so it
+solves the problem.
 
 [1] https://lore.kernel.org/qemu-devel/20250513115637.184940-1-thuth@redhat.com/
-[2] https://gitlab.com/qemu-project/qemu/-/commit/b2bb3f3576e5dc99218607dde09e25ac0e55693c
 
-v2
---
+Tested-by: Thomas Huth <thuth@redhat.com>
+Fixes: 6f4e8a92bbd ("hw/arm: make most of the compilation units common")
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+---
+ meson.build | 75 ++++++++++++++++++++++++++++-------------------------
+ 1 file changed, 40 insertions(+), 35 deletions(-)
 
-- Additional patch to merge hw_common_arch_libs in
-  target_common_system_arch libs (Paolo)
-- Better commit description for merging lib{system, user}_ss with
-  {system, user}_ss (Paolo)
-
-Pierrick Bouvier (7):
-  meson: build target libraries with common dependencies
-  hw/arm: remove explicit dependencies listed
-  target/arm: remove explicit dependencies listed
-  meson: apply target config for picking files from lib{system, user}
-  meson: merge lib{system, user}_ss with {system, user}_ss
-  meson: remove lib{system, user}_ss aliases
-  meson: merge hw_common_arch in target_common_system_arch
-
- meson.build            | 124 +++++++++++++++++++++--------------------
- accel/tcg/meson.build  |   8 +--
- gdbstub/meson.build    |   4 +-
- hw/arm/meson.build     |   4 +-
- hw/core/meson.build    |   4 +-
- plugins/meson.build    |   4 +-
- system/meson.build     |   2 +-
- target/arm/meson.build |   2 +-
- tcg/meson.build        |   4 +-
- 9 files changed, 80 insertions(+), 76 deletions(-)
-
+diff --git a/meson.build b/meson.build
+index 49c8b0e5f6a..d803ec47221 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3259,6 +3259,7 @@ config_devices_mak_list = []
+ config_devices_h = {}
+ config_target_h = {}
+ config_target_mak = {}
++config_base_arch_mak = {}
+ 
+ disassemblers = {
+   'alpha' : ['CONFIG_ALPHA_DIS'],
+@@ -3451,6 +3452,11 @@ foreach target : target_dirs
+     config_all_devices += config_devices
+   endif
+   config_target_mak += {target: config_target}
++
++  # build a merged config for all targets with the same TARGET_BASE_ARCH
++  target_base_arch = config_target['TARGET_BASE_ARCH']
++  config_base_arch = config_base_arch_mak.get(target_base_arch, {}) + config_target
++  config_base_arch_mak += {target_base_arch: config_base_arch}
+ endforeach
+ target_dirs = actual_target_dirs
+ 
+@@ -4131,57 +4137,56 @@ common_all = static_library('common',
+ hw_common_arch_libs = {}
+ target_common_arch_libs = {}
+ target_common_system_arch_libs = {}
+-foreach target : target_dirs
++foreach target_base_arch, config_base_arch : config_base_arch_mak
+   config_target = config_target_mak[target]
+-  target_base_arch = config_target['TARGET_BASE_ARCH']
+   target_inc = [include_directories('target' / target_base_arch)]
+   inc = [common_user_inc + target_inc]
+ 
++  target_common = common_ss.apply(config_target, strict: false)
++  common_deps = []
++  foreach dep: target_common.dependencies()
++    common_deps += dep.partial_dependency(compile_args: true, includes: true)
++  endforeach
++
+   # prevent common code to access cpu compile time definition,
+   # but still allow access to cpu.h
+   target_c_args = ['-DCPU_DEFS_H']
+   target_system_c_args = target_c_args + ['-DCOMPILING_SYSTEM_VS_USER', '-DCONFIG_SOFTMMU']
+ 
+   if target_base_arch in hw_common_arch
+-    if target_base_arch not in hw_common_arch_libs
+-      src = hw_common_arch[target_base_arch]
+-      lib = static_library(
+-        'hw_' + target_base_arch,
+-        build_by_default: false,
+-        sources: src.all_sources() + genh,
+-        include_directories: inc,
+-        c_args: target_system_c_args,
+-        dependencies: src.all_dependencies())
+-      hw_common_arch_libs += {target_base_arch: lib}
+-    endif
++    src = hw_common_arch[target_base_arch]
++    lib = static_library(
++      'hw_' + target_base_arch,
++      build_by_default: false,
++      sources: src.all_sources() + genh,
++      include_directories: inc,
++      c_args: target_system_c_args,
++      dependencies: src.all_dependencies() + common_deps)
++    hw_common_arch_libs += {target_base_arch: lib}
+   endif
+ 
+   if target_base_arch in target_common_arch
+-    if target_base_arch not in target_common_arch_libs
+-      src = target_common_arch[target_base_arch]
+-      lib = static_library(
+-        'target_' + target_base_arch,
+-        build_by_default: false,
+-        sources: src.all_sources() + genh,
+-        include_directories: inc,
+-        c_args: target_c_args,
+-        dependencies: src.all_dependencies())
+-      target_common_arch_libs += {target_base_arch: lib}
+-    endif
++    src = target_common_arch[target_base_arch]
++    lib = static_library(
++      'target_' + target_base_arch,
++      build_by_default: false,
++      sources: src.all_sources() + genh,
++      include_directories: inc,
++      c_args: target_c_args,
++      dependencies: src.all_dependencies() + common_deps)
++    target_common_arch_libs += {target_base_arch: lib}
+   endif
+ 
+   if target_base_arch in target_common_system_arch
+-    if target_base_arch not in target_common_system_arch_libs
+-      src = target_common_system_arch[target_base_arch]
+-      lib = static_library(
+-        'target_system_' + target_base_arch,
+-        build_by_default: false,
+-        sources: src.all_sources() + genh,
+-        include_directories: inc,
+-        c_args: target_system_c_args,
+-        dependencies: src.all_dependencies())
+-      target_common_system_arch_libs += {target_base_arch: lib}
+-    endif
++    src = target_common_system_arch[target_base_arch]
++    lib = static_library(
++      'target_system_' + target_base_arch,
++      build_by_default: false,
++      sources: src.all_sources() + genh,
++      include_directories: inc,
++      c_args: target_system_c_args,
++      dependencies: src.all_dependencies() + common_deps)
++    target_common_system_arch_libs += {target_base_arch: lib}
+   endif
+ endforeach
+ 
 -- 
 2.47.2
 
