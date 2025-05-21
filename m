@@ -2,72 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E055BABEE9F
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 10:54:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89DA1ABEDF9
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 10:32:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHfBc-00042E-IJ; Wed, 21 May 2025 04:52:28 -0400
+	id 1uHes7-0007Ru-4l; Wed, 21 May 2025 04:32:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
- id 1uHfBZ-00041v-B8
- for qemu-devel@nongnu.org; Wed, 21 May 2025 04:52:25 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uHes3-0007RP-WC
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 04:32:16 -0400
+Received: from mgamail.intel.com ([192.198.163.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
- id 1uHfBV-0004fg-P6
- for qemu-devel@nongnu.org; Wed, 21 May 2025 04:52:25 -0400
-Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
- [IPv6:2a02:6b8:c11:4195:0:640:137b:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 6423560C83;
- Wed, 21 May 2025 11:52:13 +0300 (MSK)
-Received: from [IPV6:2a02:6bf:803e:400:b77e:ba0d:cfcc:d8a5] (unknown
- [2a02:6bf:803e:400:b77e:ba0d:cfcc:d8a5])
- by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id BqJGfE0Fd4Y0-a7SfsiQQ; Wed, 21 May 2025 11:52:12 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1747817532;
- bh=HGquC7GNMsVVzLmjkeZklsmiHj3PwkxNFy8CAoCi1iY=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=XSWDh/JKLwYsqrfwT+uvs+oSIjLnwa0VIqZGr01ePOqpubEJy4y+OHwuTteGVBCMQ
- KNcKBQ+NkDPJQehxmjidOwXFD3LsMnR7a+kyUUnXFG0nkNfUQnMjWhr8Ujbb5I11P+
- dzlPBk3Nu21d3XR8WB66KbNjJrFG81T6aEpPdXzk=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <5f7cd94d-d0de-4e06-957e-b246d4be534b@yandex-team.ru>
-Date: Wed, 21 May 2025 13:52:11 +0500
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1uHerz-00024q-5z
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 04:32:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1747816331; x=1779352331;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=WYKrLqTpzo+Kn2nj+U3KFX7t/XvO3S/P5Se2toDBQk0=;
+ b=Zyc1pSpRWzjc0Wix4h8rJOGMzCoIWpd0DOrkN0NKCgyFvpJNPCSMAwI3
+ AgRPQpvqgkOb4ISDSU2fEKMhr7ga3fziU8IaD4c0sYt3+fbIpx/MixMHi
+ ZjCqNdG6TdUc9F55/8UZnahL9KT5GnuEqTTeUvcmwYkOiEDbUyi3YPR8W
+ g4UvwJnVT09Ms3tKFCAWx1f3/ReEpGJepncLi0AqYbokZCs3g/Xbq98z0
+ aRaF7ho3HcHjXxH6/0BER6OgcUBP0+vh/+XX2PNtipSFVfDiOGAdrBRyt
+ QrM0eiw99rwpSGVpYPgRGXzdLYniZsIbWYyeu3s1jM+C/lAVbJosEFYC5 w==;
+X-CSE-ConnectionGUID: oyhCEL4oTDurDXrZPFN4pA==
+X-CSE-MsgGUID: 3NoYIy4aRjWTOSeBSBaotg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="49043530"
+X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="49043530"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 May 2025 01:32:06 -0700
+X-CSE-ConnectionGUID: 301eAhgwQDaptSZLeY+T+w==
+X-CSE-MsgGUID: Q91BmB1sTdeyeJxBnk7oRw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="144698852"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by orviesa003.jf.intel.com with ESMTP; 21 May 2025 01:32:04 -0700
+Date: Wed, 21 May 2025 16:53:10 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Igor Mammedov <imammedo@redhat.com>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Chuang Xu <xuchuangxclwt@bytedance.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Isaku Yamahata <isaku.yamahata@intel.com>,
+ Babu Moger <babu.moger@amd.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH 0/4] i386/cpu: Fix topological field encoding & overflow
+Message-ID: <aC2UduRVRiALRVyk@intel.com>
+References: <20250227062523.124601-1-zhao1.liu@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 0/2] tests/functional: add memlock tests
-To: qemu-devel@nongnu.org
-Cc: Cleber Rosa <crosa@redhat.com>,
- "yc-core @ yandex-team . ru" <yc-core@yandex-team.ru>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Alexandr Moshkov <dtalexundeer@yandex-team.ru>
-References: <20250417114008.169350-1-dtalexundeer@yandex-team.ru>
-Content-Language: en-US
-From: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
-In-Reply-To: <20250417114008.169350-1-dtalexundeer@yandex-team.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.136;
- envelope-from=dtalexundeer@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250227062523.124601-1-zhao1.liu@intel.com>
+Received-SPF: pass client-ip=192.198.163.18; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -48
+X-Spam_score: -4.9
+X-Spam_bar: ----
+X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.487,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -79,62 +84,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Paolo,
 
-On 4/17/25 16:40, Alexandr Moshkov wrote:
-> Add new tests to check the correctness of the `-overcommit memlock`
-> option (possible values: off, on, on-fault) by using
-> `/proc/{qemu_pid}/smaps` file to check in Size, Rss and Locked fields of
-> anonymous segments:
->
-> * if `memlock=off`, then Locked = 0 on every anonymous smaps;
-> * if `memlock=on`, then Size, Rss and Locked values must be equal for
-> every anon smaps where Rss is not 0;
-> * if `memlock=on-fault`, then Rss and Locked must be equal on every anon
-> smaps and anonymous segment with Rss < Size must exists.
->
+A gentle poke. There's no conflict for now. Do you agree with these
+fixes?
+
+Thanks,
+Zhao
+
+On Thu, Feb 27, 2025 at 02:25:19PM +0800, Zhao Liu wrote:
+> Date: Thu, 27 Feb 2025 14:25:19 +0800
+> From: Zhao Liu <zhao1.liu@intel.com>
+> Subject: [PATCH 0/4] i386/cpu: Fix topological field encoding & overflow
+> X-Mailer: git-send-email 2.34.1
+> 
+> Hi,
+> 
+> This series collects and organizes several topology-related cleanups and
+> fixes, based on b69801dd6b1e ("Merge tag 'for_upstream' of
+> https://git.kernel.org/pub/scm/virt/kvm/mst/qemu into staging").
+> 
+> Patch 1 is picked from Chuang's v6 [1].
+> 
+> Patch 2-3 are picked from Qian's v4 [2], though it had previously gone
+> through sufficient review (got R/b tags), I dropped its R/b tags because
+> of my code change.
+> 
+> Patch 4 is newly added, inspired by patch 3, to also perform a check on
+> AMD's cache CPUID. This is to consider the current maximum number of
+> supported CPUs, which is approaching the overflow boundary.
+> 
+> In addition to the 0x1, 0x4, and 0x8000001d leaves involved in the patch
+> series, there is also the 0x1f leaf related to topology. However, the
+> upper limit for CPUID.1FH.EBX[bits 15:0] is 65,535 threads, which
+> provides enough room. Therefore, this field does not currently require
+> overflow checks.
+> 
+> This series correct the CPUIDs, but it doesn't affect the Guest's live
+> migration. Therefore, I did not add the compat property for this.
+> 
+> [1]: https://lore.kernel.org/qemu-devel/20241009035638.59330-1-xuchuangxclwt@bytedance.com/
+> [2]: https://lore.kernel.org/qemu-devel/20230829042405.932523-2-qian.wen@intel.com/
+> 
+> Thanks and Best Regards,
+> Zhao
 > ---
->
-> v5 -> v6:
-> * add python3 shebang to tests/functional/test_memlock.py
->
-> v4 -> v5:
-> * refactor skipLockedMemoryTest decorator: using resource.getrlimit()
->    function instead of spawning a process
->
-> v3 -> v4:
-> * add skipLockedMemoryTest decorator to skip test if system's locked
->    memory limit is below the required threashold;
-> * add to MemlockTest skipLockedMemoryTest decorator with 2 GB limit.
->
-> v2 -> v3:
-> Move tests to tests/functional dir, as the tests/avocado dir is being phased out.
-> v2 was [PATCH v2] tests/avocado: add memlock tests.
-> Supersedes: <20250414075702.9248-1-dtalexundeer@yandex-team.ru>
->
-> v1 -> v2:
-> In the previous send, i forgot to specify new patch version (v2)
-> So i resend previous patch with version specified.
->
->
-> Alexandr Moshkov (2):
->    tests/functional: add skipLockedMemoryTest decorator
->    tests/functional: add memlock tests
->
->   tests/functional/meson.build             |   1 +
->   tests/functional/qemu_test/__init__.py   |   2 +-
->   tests/functional/qemu_test/decorators.py |  18 ++++
->   tests/functional/test_memlock.py         | 104 +++++++++++++++++++++++
->   4 files changed, 124 insertions(+), 1 deletion(-)
->   create mode 100755 tests/functional/test_memlock.py
-
-Gentle ping :)
-
-Also add reviewers from get_maintainer.pl (forget to fix it after 
-refactor on v3)
-
-
-Best regards,
-
-Alexander
-
+> Chuang Xu (1):
+>   i386/cpu: Fix number of addressable IDs field for CPUID.01H.EBX[23:16]
+> 
+> Qian Wen (2):
+>   i386/cpu: Fix cpu number overflow in CPUID.01H.EBX[23:16]
+>   i386/cpu: Fix overflow of cache topology fields in CPUID.04H
+> 
+> Zhao Liu (1):
+>   i386/cpu: Honor maximum value for CPUID.8000001DH.EAX[25:14]
+> 
+>  target/i386/cpu.c | 35 ++++++++++++++++++++++++++++-------
+>  1 file changed, 28 insertions(+), 7 deletions(-)
+> 
+> -- 
+> 2.34.1
+> 
+> 
 
