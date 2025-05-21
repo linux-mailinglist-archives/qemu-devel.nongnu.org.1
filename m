@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 507BFABFA94
+	by mail.lfdr.de (Postfix) with ESMTPS id 22764ABFA92
 	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 18:03:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHltT-0001gn-A0; Wed, 21 May 2025 12:02:11 -0400
+	id 1uHltO-0001eP-5Y; Wed, 21 May 2025 12:02:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <srv_ts003@codethink.com>)
- id 1uHltD-0001Vx-6i
+ id 1uHltB-0001Ui-7v
  for qemu-devel@nongnu.org; Wed, 21 May 2025 12:01:56 -0400
 Received: from imap4.hz.codethink.co.uk ([188.40.203.114])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <srv_ts003@codethink.com>)
- id 1uHlt9-0000Wf-Ck
- for qemu-devel@nongnu.org; Wed, 21 May 2025 12:01:54 -0400
+ id 1uHlt8-0000Wg-Q4
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 12:01:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=codethink.co.uk; s=imap4-20230908; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=EjgORWCxVXGE6WYnvxvXGhoWi/FN9cJTshKnA0rENI8=; b=aqTlcXXapM2ZKhHMMSA8fcTqOM
- yLzLkGg4Qu1roV5QaHalZy5qYCmnw1SKXRt9Xd9OBsQF9YoRXDC7UzEqwFJbLlj7eVgxTakRElLL7
- zOnUnHnIPVegtdNhjPOFcy5Mmpp7C3eY9C+OyiD6D0CfTzVFtB4IKeuYyssEEP4SxGT9IW9802YRZ
- ol5Ka835oxHYKd56zyN2TO5IGLIFR3ojmVCT1QnyNmMohPCmNO9NRNseRVLdyk7sJOKb0VW3UA6q/
- T+bWC6nOMxZrza82Mys+mhm4CbA28ilv+12kRRrjiVyIlwz6E+aBvh25XK11WQUGQe4vxVpr2p7cj
- c2kbMpcQ==;
+ bh=Wx11R4hHmcZx4Owx73f7dFOsZyVJSShRDqAxd3mWQgY=; b=D813DH5WV77Rzr6hQarVCXGnXe
+ mCpdWPKayN0EdwN8/IRptMQnT3TLaee55jRb1aWnHlzS0Hu3NAD3BlxqP/b1CJLqxaq+yFfNXPYZQ
+ 9U90+QPT4gXnMzw8e5v/dvQE7iOsvIqUsU5k7JeXyVJQHUc5mSIV70rVE7d99CifScwVfEmhxQJXM
+ MkFr/lOr1/gS4OwgaMbfJcExaQFpV7gj7A9eMaRRi5uTNVf2XUxwXp8bY2f1KQ2N7+jqM0BsWdVeJ
+ oB1svcA4k6p+3rOZZFepxys7g3nb4gDUwzO4pSkwr8ZcwT1pjK1AjBpAT1TQMEhrOwj2WefZ4AE6x
+ y3zFI57A==;
 Received: from [167.98.27.226] (helo=rainbowdash)
  by imap4.hz.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
- id 1uHlt1-00FTdM-FE; Wed, 21 May 2025 17:01:43 +0100
+ id 1uHlt1-00FTdN-Fy; Wed, 21 May 2025 17:01:43 +0100
 Received: from ben by rainbowdash with local (Exim 4.98.2)
- (envelope-from <ben@rainbowdash>) id 1uHlt1-000000006RD-0tc3;
+ (envelope-from <ben@rainbowdash>) id 1uHlt1-000000006RH-0zPR;
  Wed, 21 May 2025 17:01:43 +0100
 From: Ben Dooks <ben.dooks@codethink.co.uk>
 To: nazar.kazakov@codethink.co.uk, joseph.baker@codethink.co.uk,
  fran.redondo@codethink.co.uk, lawrence.hunter@codethink.co.uk,
  qemu-devel@nongnu.org
 Cc: ben.dooks@codethink.co.uk
-Subject: [RFC 2/3] hw/net: add bit-bang mdio decoding helper (mdio_bb)
-Date: Wed, 21 May 2025 17:01:41 +0100
-Message-Id: <20250521160142.24715-3-ben.dooks@codethink.co.uk>
+Subject: [RFC 3/3] hw/net: lowrisc: initial mdio_bb work
+Date: Wed, 21 May 2025 17:01:42 +0100
+Message-Id: <20250521160142.24715-4-ben.dooks@codethink.co.uk>
 X-Mailer: git-send-email 2.37.2.352.g3c44437643
 In-Reply-To: <20250521160142.24715-1-ben.dooks@codethink.co.uk>
 References: <20250521160142.24715-1-ben.dooks@codethink.co.uk>
@@ -73,307 +73,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The mdio_bb allows PHY interfaces that are basically IO lines
-that are twiddle by registers (although GPIO isn't supported
-at this time, it would not be difficult to add)
+Add initial implementation of PHY via bit-banged code.
 
-The code processes the clock changes and issues a callback to
-the driver when there is data to be transfered. It supports
-both read and write, any other OP code is deemed invalid and
-will abort the transfer.
-
-todo:
-- add proper vmstate helper for users
-- get implementation fully tested with lowrisc_eth
-
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+This is to test the mdio_bb code and will need updating
+for real board values.
 ---
-notes:
-- squashed in tracing and fixups
----
- hw/net/Kconfig           |   3 +
- hw/net/mdio_bb.c         | 167 +++++++++++++++++++++++++++++++++++++++
- hw/net/meson.build       |   1 +
- hw/net/trace-events      |   8 ++
- include/hw/net/mdio_bb.h |  50 ++++++++++++
- 5 files changed, 229 insertions(+)
- create mode 100644 hw/net/mdio_bb.c
- create mode 100644 include/hw/net/mdio_bb.h
+ hw/net/Kconfig               |  1 +
+ hw/net/lowrisc.c             | 42 +++++++++++++++++++++++++++++++-----
+ include/hw/net/lowrisc_eth.h |  4 ++++
+ 3 files changed, 42 insertions(+), 5 deletions(-)
 
 diff --git a/hw/net/Kconfig b/hw/net/Kconfig
-index 790fe1ce60..3abee9130e 100644
+index 3abee9130e..0bc11e567a 100644
 --- a/hw/net/Kconfig
 +++ b/hw/net/Kconfig
-@@ -109,6 +109,9 @@ config LASI_82596
-     bool
-     select I82596_COMMON
+@@ -114,6 +114,7 @@ config MDIO_BB
  
-+config MDIO_BB
-+    bool
-+
  config LOWRISC_ETH
      bool
++    select MDIO_BB
  
-diff --git a/hw/net/mdio_bb.c b/hw/net/mdio_bb.c
-new file mode 100644
-index 0000000000..945f32b7a8
---- /dev/null
-+++ b/hw/net/mdio_bb.c
-@@ -0,0 +1,167 @@
-+/*
-+ * QEMU MDIO bit-bang emulaiton
-+ *
-+ * Ben Dooks <ben.dooks@codethink.co.uk>
-+ * Copyright (c) 2025 Codethink Ltd,
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+
-+#include "hw/net/mdio_bb.h"
-+
-+#include "trace.h"
-+
-+void mdio_bb_init(struct mdio_bb *s)
+ config SUNHME
+     bool
+diff --git a/hw/net/lowrisc.c b/hw/net/lowrisc.c
+index 98177793e6..d5cae83eb0 100644
+--- a/hw/net/lowrisc.c
++++ b/hw/net/lowrisc.c
+@@ -194,6 +194,32 @@ static bool lowrisc_eth_can_receive(NetClientState *nc)
+     return ok;
+ }
+ 
++static unsigned lowrisc_eth_phy_read(void *opaque, unsigned reg)
 +{
-+    s->mdi = true;
-+    s->mdo = true;
-+    s->mdc = true;
++    unsigned phy = reg >> 5;
 +
-+    s->opcode = 0;
-+    s->bitcount = 0;
-+    s->phy_reg_addr = 0;
-+    s->phy_data = 0;
-+    s->state = MDG_IDLE;
-+}
++    reg &= 0x1f;
++    if (phy == 1) {
++        switch (reg) {
++        case 0x00:
++            return 0xcafe;
++        case 0x01:
++            return 0xf00d;
 +
-+void mdio_bb_update(struct mdio_bb *s,
-+                    bool mdc, bool mdo)
-+{
-+    enum mdio_bb_state n_state = MDG_ILLEGAL;
-+    bool rising = (!s->mdc && mdc);
-+
-+    s->mdc = mdc;
-+    s->mdo = mdo;
-+
-+    /* work on rising edge of mdclk */
-+    if (!rising)
-+        return;
-+
-+    trace_mdio_bb_update(s->name, s->state, mdc, mdo);
-+
-+    switch (s->state) {
-+    case MDG_IDLE:
-+        /* if we get a '1' stick in idle,the pre-amble is 32 '1' bits */
-+
-+        if (!mdo) {
-+            trace_mdio_bb_start(s->name);
-+            n_state = MDG_START0;
-+        } else {
-+            n_state = MDG_IDLE;
++        default:
++            return 0xffff;
 +        }
-+        break;
-+
-+    case MDG_START0:
-+        if (!mdo) {
-+            n_state = MDG_IDLE;
-+        } else {
-+            n_state = MDG_OP0;
-+        };
-+        break;
-+
-+    case MDG_OP0:
-+        s->opcode = mdo << 1;
-+        n_state = MDG_OP1;
-+        break;
-+
-+    case MDG_OP1:
-+        s->opcode |= mdo;
-+        s->bitcount = 0;
-+        s->phy_reg_addr = 0;
-+
-+        if (s->opcode == OP_READ || s->opcode == OP_WRITE) {
-+            n_state = MDG_ADDR;
-+        } else {
-+            fprintf(stderr, "illegal MDIO op %02x\n", s->opcode);
-+            n_state = MDG_ILLEGAL;
-+        }
-+        break;
-+
-+    case MDG_ADDR:
-+        s->phy_reg_addr <<= 1;
-+        s->phy_reg_addr |= mdo;
-+        s->bitcount++;
-+
-+        if (s->bitcount == 10) {
-+            n_state = MDG_TURN1;
-+        } else {
-+            n_state = MDG_ADDR;
-+        }
-+        break;
-+
-+    case MDG_TURN1:
-+        n_state = MDG_TURN2;
-+        break;
-+
-+    case MDG_TURN2:
-+        s->bitcount = 15;
-+
-+        if (s->opcode == OP_READ) {
-+            s->phy_data = (s->read)(s->param, s->phy_reg_addr);
-+
-+            trace_mdio_bb_read(s->name, s->phy_reg_addr >> 5,
-+                               s->phy_reg_addr & 0x1f, s->phy_data);
-+            n_state = MDG_READ;
-+        } else {
-+            n_state = MDG_WRITE;
-+        }
-+        break;
-+
-+    case MDG_READ:
-+        s->mdi = s->phy_data & (1 << s->bitcount) ? 1 : 0;
-+
-+        if (s->bitcount == 0) {
-+            n_state = MDG_IDLE;
-+        } else {
-+            s->bitcount--;
-+            n_state = MDG_READ;
-+        }
-+        break;
-+
-+    case MDG_WRITE:
-+        /* writing data to the phy, mirror the mdi as the same as mdo in case
-+         * it is being checked, otherwise collect bits and invoke the write when
-+         * all the bits are received
-+         */
-+        s->mdi = mdo;
-+
-+        if (mdo) {
-+            s->phy_data |= 1 << s->bitcount;
-+        }
-+
-+        if (!s->bitcount) {
-+            trace_mdio_bb_write(s->name, s->phy_reg_addr >> 5,
-+                                s->phy_reg_addr & 0x1f, s->phy_data);
-+            (s->write)(s->param, s->phy_reg_addr, s->phy_data);
-+            n_state = MDG_IDLE;
-+        } else {
-+            s->bitcount--;
-+            n_state = MDG_WRITE;
-+        }
-+        break;
-+
-+    case MDG_ILLEGAL:
-+        n_state = MDG_IDLE;
-+        break;
-+
-+    default:
-+        /* should not need a default state, but if so, illega. */
-+        n_state = MDG_ILLEGAL;
-+    }
-+
-+    if (n_state != MDG_ILLEGAL) {
-+        trace_mdio_bb_new_state(s->name, s->state, n_state);
-+        s->state = n_state;
 +    } else {
-+        /* encountered an illegal state. not much we can do here but go back
-+         * into idle and hope that the reader is going to try and reset?
-+         */
-+
-+        trace_mdio_bb_illegal_state(s->name, s->state, mdo);
-+
-+        fprintf(stderr, "mdio_bb: illegal next state from current %d (mdo %u)\n", s->state, mdo);
-+        s->state = MDG_IDLE;
++        return reg;
 +    }
++
++    return 0xffff;
 +}
-diff --git a/hw/net/meson.build b/hw/net/meson.build
-index 79a65850fc..fe34ee5c15 100644
---- a/hw/net/meson.build
-+++ b/hw/net/meson.build
-@@ -1,6 +1,7 @@
- system_ss.add(when: 'CONFIG_DP8393X', if_true: files('dp8393x.c'))
- system_ss.add(when: 'CONFIG_XEN_BUS', if_true: files('xen_nic.c'))
- system_ss.add(when: 'CONFIG_NE2000_COMMON', if_true: files('ne2000.c'))
-+system_ss.add(when: 'CONFIG_MDIO_BB', if_true: files('mdio_bb.c'))
++
++static void lowrisc_eth_phy_write(void *opaque, unsigned reg, unsigned val)
++{
++}
++
+ #define make_mac(__m, __b) (((uint32_t)(__m)) << (__b))
  
- # PCI network cards
- system_ss.add(when: 'CONFIG_NE2000_PCI', if_true: files('ne2000-pci.c'))
-diff --git a/hw/net/trace-events b/hw/net/trace-events
-index acf1851eb4..e35324c4fd 100644
---- a/hw/net/trace-events
-+++ b/hw/net/trace-events
-@@ -312,6 +312,14 @@ igb_wrn_rx_desc_modes_not_supp(int desc_type) "Not supported descriptor type: %d
- # igbvf.c
- igbvf_wrn_io_addr_unknown(uint64_t addr) "IO unknown register 0x%"PRIx64
+ static void lowrisc_eth_init_registers(LowriscEthState *s)
+@@ -209,6 +235,13 @@ static void lowrisc_eth_init_registers(LowriscEthState *s)
+     s->r_mdioctrl = FIELD_DP32(0x0, MDIOCTRL, M_DI, 1);
+     memset(&s->r_rplr, 0, sizeof(s->r_rplr));
  
-+# mdio_bb.c
-+mdio_bb_update(const char *name, unsigned state, bool mdc, bool mdo) "(%s) state %u, mdc=%u mdo=%u"
-+mdio_bb_start(const char *name) "(%s) starting transaction"
-+mdio_bb_read(const char *name, unsigned phy, unsigned reg, unsigned data) "(%s) phy %d reg %u -> read %04x"
-+mdio_bb_write(const char *name, unsigned phy, unsigned reg, unsigned data) "(%s) phy %d reg %u -> write  %04x"
-+mdio_bb_new_state(const char *name, unsigned prev, unsigned state) "(%s) state %u to new state %u"
-+mdio_bb_illegal_state(const char *name, unsigned last, unsigned mdo) "(%s) illegal state from %u (mdo %u)"
-+
- # spapr_llan.c
- spapr_vlan_get_rx_bd_from_pool_found(int pool, int32_t count, uint32_t rx_bufs) "pool=%d count=%"PRId32" rxbufs=%"PRIu32
- spapr_vlan_get_rx_bd_from_page(int buf_ptr, uint64_t bd) "use_buf_ptr=%d bd=0x%016"PRIx64
-diff --git a/include/hw/net/mdio_bb.h b/include/hw/net/mdio_bb.h
-new file mode 100644
-index 0000000000..d3f80267c9
---- /dev/null
-+++ b/include/hw/net/mdio_bb.h
-@@ -0,0 +1,50 @@
-+/* MDIO GPIO based code
-+ *
-+ *  * Ben Dooks <ben.dooks@codethink.co.uk>
-+ * Copyright (c) 2025 Codethink Ltd,
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+*/
-+
-+#ifndef MDIO_BB_H
-+#define MDIO_BB_H
-+
-+ enum mdio_bb_state {
-+    MDG_IDLE,
-+    MDG_START0,
-+    MDG_OP0,
-+    MDG_OP1,
-+    MDG_ADDR,
-+    MDG_TURN1,
-+    MDG_TURN2,
-+    MDG_READ,
-+    MDG_WRITE,
-+    MDG_ILLEGAL,
-+};
-+
-+#define OP_READ  (2)
-+#define OP_WRITE (1)
-+
-+struct mdio_bb {
-+    const char *name;
-+    void *param;
-+    bool mdc, mdo, mdi;
-+    unsigned opcode;
-+    unsigned bitcount;
-+    unsigned phy_reg_addr;
-+    unsigned phy_data;
-+    enum mdio_bb_state state;
-+
-+    /* addresses are supplied as addr[4:0] = reg, addr[10:5] = phy-addr */
-+    /* read called to read from phy, so supply data to the MDIO bus */
-+    unsigned (*read)(void *opaque, unsigned addr);
-+    /* write called when data written to phy */
-+    void (*write)(void *opaque, unsigned addr, unsigned data);
-+};
-+
-+extern void mdio_bb_init(struct mdio_bb *bb);
-+
-+extern void mdio_bb_update(struct mdio_bb *s,
-+                           bool mdc, bool mdo);
++    /* setup the mdio bus */
++    mdio_bb_init(&s->mdio_bb);
++    s->mdio_bb.name = "lowrisc_eth";
++    s->mdio_bb.param = s;
++    s->mdio_bb.read = lowrisc_eth_phy_read;
++    s->mdio_bb.write = lowrisc_eth_phy_write;
 +    
-+#endif /* MDIO_BB_H */
+     /* init mac registers */
+ 
+     mac = &s->conf.macaddr.a[0];
+@@ -259,12 +292,11 @@ static uint64_t lowrisc_eth_read(void *opaque, hwaddr offset, unsigned size)
+ 
+ static void lowrisc_eth_update_mdioctrl(LowriscEthState *s, uint32_t val)
+ {
+-    /* since we're not implementing any sort of bit-banged MDIO, we just
+-     * return the data input as high, which seems to be enough to allow
+-     * the PHY link checks to work
+-     */
++    bool mdc = FIELD_EX32(val, MDIOCTRL, M_CLK);
++    bool mdo = FIELD_EX32(val, MDIOCTRL, M_DO);
+ 
+-    s->r_mdioctrl = FIELD_DP32(s->r_mdioctrl, MDIOCTRL, M_DI, 1);
++    mdio_bb_update(&s->mdio_bb, mdc, mdo);
++    s->r_mdioctrl = FIELD_DP32(val, MDIOCTRL, M_DI, s->mdio_bb.mdi);
+ }
+ 
+ /* update tplr register, assume we're transmitting a packet */
+diff --git a/include/hw/net/lowrisc_eth.h b/include/hw/net/lowrisc_eth.h
+index 1f27d92ca8..5c15549cc1 100644
+--- a/include/hw/net/lowrisc_eth.h
++++ b/include/hw/net/lowrisc_eth.h
+@@ -17,6 +17,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(LowriscEthState, LOWRISC_ETH)
+ 
+ #include "net/net.h"
+ #include "hw/sysbus.h"
++#include "hw/net/mdio_bb.h"
+ 
+ #define RX_SZ           (2048)
+ #define NR_RX_BUFFS     (8)
+@@ -37,6 +38,9 @@ struct LowriscEthState {
+     NICConf conf;
+     qemu_irq irq;
+ 
++    /* the mdio bus */
++    struct mdio_bb mdio_bb;
++
+     /* register states */
+     uint32_t r_maclo;
+     uint32_t r_machi;
 -- 
 2.37.2.352.g3c44437643
 
