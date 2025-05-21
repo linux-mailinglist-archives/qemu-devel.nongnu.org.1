@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16E3FABFBA5
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 18:52:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50FEAABFB89
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 18:46:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHmf1-0004dI-TJ; Wed, 21 May 2025 12:51:20 -0400
+	id 1uHmXP-0000gP-Tk; Wed, 21 May 2025 12:43:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uHmev-0004d5-IJ
- for qemu-devel@nongnu.org; Wed, 21 May 2025 12:51:14 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ id 1uHmXM-0000eO-U8
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 12:43:25 -0400
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uHmet-0007KO-K9
- for qemu-devel@nongnu.org; Wed, 21 May 2025 12:51:13 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-ad1b94382b8so1262470966b.0
- for <qemu-devel@nongnu.org>; Wed, 21 May 2025 09:51:10 -0700 (PDT)
+ id 1uHmX6-0006Da-HE
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 12:43:24 -0400
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-ace94273f0dso1211128366b.3
+ for <qemu-devel@nongnu.org>; Wed, 21 May 2025 09:43:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747846269; x=1748451069; darn=nongnu.org;
+ d=linaro.org; s=google; t=1747845786; x=1748450586; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sGcCBogciGYCcQtD2ipd63qJym+pfIRLPkHANZ4+71E=;
- b=vZcp78R77W8Vb9qYq1z0EOZyQXpiez9qvAPTNZe9u3I7+a4pUEHyZdNklqKyHCArf9
- fWMunRIqvhpsz4K9SDTFan6QHaLWQIck/hnsQz5A3Y2J3r1CZAoIP48rG8SXToa2jzsd
- E/KAIrERkBgdnqPBrWAthDljQEUoeAiiRk3rrwyJKXo4gzCWHMkIPGQzrQI+8+TXMjSG
- OkF5TNg88ODA2RJknYWO7zQdLRrtoE0kDMxCpp9A58Z1EYivfsQ7si+fXf9VZ+nSlVpA
- SAWUzsOIgmm/2gacORx8M4PzusDWQOGPyan12xxN38s26NOAp2aJKqEAt5LgMQBDN2ix
- eI3Q==
+ bh=IR1BW0V6NZfur5cS1FGWmpSotNouca/s3x/m5RfYwqA=;
+ b=XZxqylnm1gMGHum887YEEz4yYhNNd3zePMrBbjccnv1MKdrPqHWdBnn45lwXS2vwCq
+ h5IHqgybflSSdJblLdWnezfDgbfZW0etwfkysGpSgJP4G2q/aThL//Kg41cyScBtbX5s
+ T7f8RU/MGUYqRsQ8iCMT3p1ZfOzmd9eDYp8uCHjzL5hOM5I32vx9hqtAt05cebp1VFrK
+ i1TrBKM42Quv74P3hlu19iPBWD9vOGwIvgTdzc26QwsIsSoDBNr30naktV3mjCRkz/hj
+ bUdQx9RV0nARaB31eqN7FPknsHZ6ZXiev6wNin4zpLWE36QugpFj0aOG3LELvToyhIlm
+ gIkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747846269; x=1748451069;
+ d=1e100.net; s=20230601; t=1747845786; x=1748450586;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sGcCBogciGYCcQtD2ipd63qJym+pfIRLPkHANZ4+71E=;
- b=Ox0PvBVWTGnfkv5CyJSWiaYJGz9Ii83F1J90R7IVezAQTQQsmXKus9rfW0HPivzeS3
- y5pSo8p+Fz8tIS4PgxKaH41ZA4gmWqY/tjlf0FHoFfZUuqcp8NjVP/LTpExKWdHuzjJM
- t3/CZEhtu0BSNeqf0v3Hgjx5BYreT+FEuOlGFJezXmWxMl/XI5sfJnDrsbMGkWQIENrY
- g2Yjja53l3Wdl3cv7BYATY4kbVVenwCyJQ5nYC1aL8cMzAUDU8WICYh2kl9CvsAcUvHe
- tiMcAWAsjt1qh6VRuoVv8A9QZfA20PMaNQsARnix9CzrLt9yZwPdleXp2PQj2q3E9inz
- RMQw==
-X-Gm-Message-State: AOJu0YzNTKJ1dGyPso6nJUjTAMHBbCrwHR+xchofSwOcfZF+G+zvJkrM
- qU3+SHHZPkMmNJLarHdeozjKdCqEXxEwQQuQRQ5miMZRpyPmCB22i+DLaGTd7xkuS7I=
-X-Gm-Gg: ASbGncslvqwvGvjSaTct6br6usR7/LpFxEt+OqXQJSAvCQMoodmHLBRLQYQlbN4RbJ+
- eJ+x7LaaUtws9OybwpJLTnyfh+j4tDq+GsSWjHWiGshWwHFx0FG9pC0972+1sikTgBVYeipPv6z
- n+RSVjqakZYPGY1dI9xAkZBP1pIBCyfxFKVv77MI7BlyVHeaUvdlZGOyzzQdKiGlL7KBAaidWrb
- eU8tCBSB4Hki8FRNibuGUEVh3QI63USmgWghPUCGE+cr6qd1FmqEwPzHDtnl/tB126xF7OleLue
- foBA7XSl2daIWcn7S2ZxiB0zcN9jArAvkPNHOyMq2onqCyI7lwA0
-X-Google-Smtp-Source: AGHT+IEETB0uQSx+vt2nQE05eghxn786gNgAonj45SZnNQqgb3soKKQpuLEkR2f2Qk6JFeEqJWJZnw==
-X-Received: by 2002:a17:906:730a:b0:ad5:112:48e4 with SMTP id
- a640c23a62f3a-ad52d49e918mr2028702666b.18.1747846268911; 
- Wed, 21 May 2025 09:51:08 -0700 (PDT)
+ bh=IR1BW0V6NZfur5cS1FGWmpSotNouca/s3x/m5RfYwqA=;
+ b=mL0zEWyfu60UAZSfAt9wkm2ccBEsueNBeYF/38XVRhVIHzA9rS9LrETvgI3u7Nx5pJ
+ aDD1ModTov4RbGqgVp02XhvbPLp130DKoppW2Z2eZgxsTggRHLu015IGjkn4VxbH3/jF
+ RevbSM4f5ZTuhsgwnXft/WX74BwpvMxZTY6Ma4MOExab8NCfXd8YADGv62eZ902sktXk
+ VxFdUWQ8J6+smctoQCB+4ny8BP9e3/GxUCJPCTYNIAJlmokziZjUfzw/rtKfuKQ9tiEA
+ qv3weZwBpIleR1tM8x89AgkIuIN1NPZ91yhDwZTHdJJ1QjyXF/n2bUitDcB6YMncGfKO
+ C7ow==
+X-Gm-Message-State: AOJu0YwLRMbPg3IJhXlLcSIH6ZnYUu4/EkMot0lMLCj17lgnvSp8h71D
+ bwWnJuGXWmdezBRErWQML+uj3OkNqXrgqVvsNLycFnXWCbdDW5SzF/L375CRdmFyjV4=
+X-Gm-Gg: ASbGncvYibWSc6pOSnmjHDMHq8hqI1i5jHdUIJj7BhoAez62yCmT1dfXANjgwBXbH4Y
+ KztiqfiBEkL749B2dvJ3PLcG6xSVJLL6Wx1r8e4k9HsXqt7GOZpnw5zKNpRN/1ZOzz/K5ZByiRu
+ 3CdqhnxPCTNqDS4qmqGilBWapRlnt/vDsdRlHFmIc2sfDt97m+XK/px/pEr0JNxfE4BnuuIebrB
+ tIL6AefnStq/TytOoC+WzbOMUeOtKK5q1vqMyhXiAu4LOM2y6smCPxl2AzfHP6adzcV1w8sogG/
+ rDVIhDtosoHMNQuPFv0BTT1gSNKkkQi8VIFgCNFWQd1myHykZU3F
+X-Google-Smtp-Source: AGHT+IFCsPcX/oo9BM5upLFxqdU2MK67yeRr0Y1cxMS1ngbRQntV/2OcImjg5sXgDvrohU3pjysSjw==
+X-Received: by 2002:a17:907:6d11:b0:ad2:1cd7:cefc with SMTP id
+ a640c23a62f3a-ad52d496b58mr1813848966b.13.1747845786411; 
+ Wed, 21 May 2025 09:43:06 -0700 (PDT)
 Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-ad52d4382e2sm932518866b.107.2025.05.21.09.51.08
+ a640c23a62f3a-ad5572f6436sm674593966b.182.2025.05.21.09.42.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 21 May 2025 09:51:08 -0700 (PDT)
+ Wed, 21 May 2025 09:43:03 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 951A25FAFC;
+ by draig.lan (Postfix) with ESMTP id A7BC15FAFD;
  Wed, 21 May 2025 17:42:51 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -80,18 +80,20 @@ Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>,
  Gustavo Romero <gustavo.romero@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH v3 18/20] gdbstub: assert earlier in handle_read_all_regs
-Date: Wed, 21 May 2025 17:42:48 +0100
-Message-Id: <20250521164250.135776-19-alex.bennee@linaro.org>
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Dominik 'Disconnect3d' Czarnota <dominik.b.czarnota@gmail.com>,
+ Patryk 'patryk4815' Sondej <patryk.sondej@gmail.com>
+Subject: [PATCH v3 19/20] gdbstub: Implement qGDBServerVersion packet
+Date: Wed, 21 May 2025 17:42:49 +0100
+Message-Id: <20250521164250.135776-20-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250521164250.135776-1-alex.bennee@linaro.org>
 References: <20250521164250.135776-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62c.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -114,29 +116,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When things go wrong we want to assert on the register that failed to
-be able to figure out what went wrong.
+From: Dominik 'Disconnect3d' Czarnota <dominik.b.czarnota@gmail.com>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+This commit adds support for the `qGDBServerVersion` packet to the qemu
+gdbstub  which could be used by clients to detect the QEMU version
+(and, e.g., use a workaround for known bugs).
+
+This packet is not documented/standarized by GDB but it was implemented
+by LLDB gdbstub [0] and is helpful for projects like Pwndbg [1].
+
+This has been implemented by Patryk, who I included in Co-authored-by
+and who asked me to send the patch.
+
+[0] https://lldb.llvm.org/resources/lldbgdbremote.html#qgdbserverversion
+[1] https://github.com/pwndbg/pwndbg/issues/2648
+
+Co-authored-by: Patryk 'patryk4815' Sondej <patryk.sondej@gmail.com>
+Signed-off-by: Dominik 'Disconnect3d' Czarnota <dominik.b.czarnota@gmail.com>
+Message-Id: <20250403191340.53343-1-dominik.b.czarnota@gmail.com>
+[AJB: fix include, checkpatch linewrap]
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- gdbstub/gdbstub.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ gdbstub/gdbstub.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
 diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 565f6b33a9..6023c80d25 100644
+index 6023c80d25..def0b7e877 100644
 --- a/gdbstub/gdbstub.c
 +++ b/gdbstub/gdbstub.c
-@@ -1343,8 +1343,8 @@ static void handle_read_all_regs(GArray *params, void *user_ctx)
-         len += gdb_read_register(gdbserver_state.g_cpu,
-                                  gdbserver_state.mem_buf,
-                                  reg_id);
-+        g_assert(len == gdbserver_state.mem_buf->len);
-     }
--    g_assert(len == gdbserver_state.mem_buf->len);
+@@ -28,6 +28,7 @@
+ #include "qemu/cutils.h"
+ #include "qemu/module.h"
+ #include "qemu/error-report.h"
++#include "qemu/target-info.h"
+ #include "trace.h"
+ #include "exec/gdbstub.h"
+ #include "gdbstub/commands.h"
+@@ -1597,6 +1598,18 @@ static void handle_query_threads(GArray *params, void *user_ctx)
+     gdbserver_state.query_cpu = gdb_next_attached_cpu(gdbserver_state.query_cpu);
+ }
  
-     gdb_memtohex(gdbserver_state.str_buf, gdbserver_state.mem_buf->data, len);
-     gdb_put_strbuf();
++static void handle_query_gdb_server_version(GArray *params, void *user_ctx)
++{
++#if defined(CONFIG_USER_ONLY)
++    g_string_printf(gdbserver_state.str_buf, "name:qemu-%s;version:%s;",
++                    target_name(), QEMU_VERSION);
++#else
++    g_string_printf(gdbserver_state.str_buf, "name:qemu-system-%s;version:%s;",
++                    target_name(), QEMU_VERSION);
++#endif
++    gdb_put_strbuf();
++}
++
+ static void handle_query_first_threads(GArray *params, void *user_ctx)
+ {
+     gdbserver_state.query_cpu = gdb_first_attached_cpu();
+@@ -1842,6 +1855,10 @@ static const GdbCmdParseEntry gdb_gen_query_table[] = {
+         .handler = handle_query_threads,
+         .cmd = "sThreadInfo",
+     },
++    {
++        .handler = handle_query_gdb_server_version,
++        .cmd = "GDBServerVersion",
++    },
+     {
+         .handler = handle_query_first_threads,
+         .cmd = "fThreadInfo",
 -- 
 2.39.5
 
