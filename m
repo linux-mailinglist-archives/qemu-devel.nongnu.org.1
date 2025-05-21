@@ -2,93 +2,156 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2A4DABEA82
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 05:53:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEC97ABEBF9
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 08:26:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHaUM-0002f4-P8; Tue, 20 May 2025 23:51:30 -0400
+	id 1uHcuO-0003sg-2Q; Wed, 21 May 2025 02:26:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uHaUJ-0002ep-9j
- for qemu-devel@nongnu.org; Tue, 20 May 2025 23:51:27 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uHaUG-0002nK-1C
- for qemu-devel@nongnu.org; Tue, 20 May 2025 23:51:26 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-7390d21bb1cso5583975b3a.2
- for <qemu-devel@nongnu.org>; Tue, 20 May 2025 20:51:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1747799482; x=1748404282;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=bZKPfEkqbMC3Fn67c4OgivPjzVU/E6vlO8f69b9MnPk=;
- b=QSoQUsELRCTVnkzoBzJKmSWwc+HN2D9JBAbL8KMKbS+NR0DtSZRavIk1lhoHYIA3Js
- z0KXPqsBSkV6KGIFsiO92wE5bYmF0Yst0A9C+fFwgN9FKfxMBaAp/qmexMd484iU4MMk
- hu6XNiCe0SCMIYloDdDgRqhz8ReYjrC3k1pRE6AmGVDBX+cxKDh449s48E72NxQjTLmn
- ACnfc67YCS8Z8JpMMFEfV5VWgRyAn50KrUcjpttWeXFdS4vgCYocMMOXzXY4YWlszHf5
- bTpd2mtrAxt/l9Ng+eFJSHzlrK9eFTnX0GkXNxnwyxnHQMJU/5d+Itw7HRr4mPpsTX+Q
- a/fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747799482; x=1748404282;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bZKPfEkqbMC3Fn67c4OgivPjzVU/E6vlO8f69b9MnPk=;
- b=THKNmcIinzl1O+5iv7ql0TSbetfI3Vhc3erW9YhMOJhXKtEWP/UuURECB/CgOlzZVb
- GntLjJnSCr69XSt30/udjXY3Nrdp/8ygv1Mw5bXNCZlQmb4Si1a/noCqHFckM+Cq23Im
- 6Q26SjUfFHn/p/0LGKMcUQfN5abP/6ASh4ay6VGBrF7+q+f+0obuC8nb8XzzEcohfXDW
- M46DqxWZoNpDiKyTPTiWf0uZH0jBkAn2ylX4u58dz2+DXEELacXHiSXeabJjSlGTTPVq
- Hlifp6Ds8uOgvcgyWar741PV+o9kPPzZ0molh8QwMKxm2Rg06rPJKKcavW5XUR8H1yqY
- zyMw==
-X-Gm-Message-State: AOJu0Yx4T2qfnx3FKU+gZwzV8RfSnIpy5fpLzGoSGh2wB8Dk4tuDP1x4
- P+rbGgOlf5TSzxoA9F5tDS0mjDVgYuNU9kkuZ2GYjXbc3Gn0lsZHgrnXRHaAG0PlSOA=
-X-Gm-Gg: ASbGncuCybABcccvf0kY+wRo8I46DmQ6+XU1obLUtX1M0OgHvlwFiAR0BWe12M5oR0T
- cy+lzyaQcaNBa0a9Td3mHAclE2Fp62QI1OzlYubKezWLuiU9U+n1NpZO8nLFpjy6Tg677nVnvV9
- +B6w1PHFOR7nEni5fQhz84D62Ht4943EyK1m3tXU4BmkOKR+O90pCeihqdFjt7Y8IZl23werMwS
- gzNEETXjwWYJ1sj7c9pS/aslYTCd5/EZikYOb4mpAq5hPO1Xr0zbNGc/eM1xzZTTrZ81vj0M/Tj
- LrPkem3fWxiJVEMIwmja6Ipnv4nAnCcLkRmESl0MllB/iNW4XJmXEItWB4ymKejE4COHUhGs
-X-Google-Smtp-Source: AGHT+IFbDjK4CSmEznpP+P9uyF88RW5RF4IBisQaKGRPgWzSaScl2LyRyc5Bw502kO0Nk8RosyrtZg==
-X-Received: by 2002:a05:6a00:a88f:b0:736:33fd:f57d with SMTP id
- d2e1a72fcca58-742a98a32e1mr20410237b3a.17.1747799481912; 
- Tue, 20 May 2025 20:51:21 -0700 (PDT)
-Received: from [10.100.116.185] ([157.82.128.1])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-742a98a242asm8647580b3a.164.2025.05.20.20.51.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 20 May 2025 20:51:21 -0700 (PDT)
-Message-ID: <f299600a-cf0b-47e4-85d1-5c3d1b4eaef0@daynix.com>
-Date: Wed, 21 May 2025 12:51:19 +0900
+ (Exim 4.90_1) (envelope-from <Sairaj.ArunKodilkar@amd.com>)
+ id 1uHcuL-0003sS-De
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 02:26:29 -0400
+Received: from mail-bn8nam12on2087.outbound.protection.outlook.com
+ ([40.107.237.87] helo=NAM12-BN8-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Sairaj.ArunKodilkar@amd.com>)
+ id 1uHcuI-00008Q-Cn
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 02:26:28 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=y9wLcHcICGuY5Z3X2KyRzt+iZOi6crWcykbe2GmNquyIAJxeqmfOUBOKS5Oe7rnGfS7iAVeCVqdxHueJzn50kAZrFC/GI0GNAI/XkPvgTDjp/aKlREwvFodJwvDIvo2WyAeFIoqnf1H2a6fX160smnGiA3+yEYuM7iXd73HqwUHk1gfO91VxpoBbO1p6Gr09ysMnj7SLy7po9TQWosWV6ZsfNHEaJAoKA9zA0a2ZWJrNFRW9P/EvJWea4SUg0HELV4+OeeoQHsdeg3RbFO0kzKX7RlXwnzPswHOq0nqGQ5msOF5CqrDXwMSJ7vP0B0G4+U7pw5sITPYDwXX+iLmBXQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=b2rZ0fRpxvRq3tKqsDPZeq9ggQ41nDOyZm5nU5mqvoQ=;
+ b=V7BVFGhiIZLdmEywesT+PnuCZLZ/NwlgUMa/3EPi3y7qGKO6/60gO6KQesdHE7IEwI3X/4qOSs+73oPukYYdFoiStVljhALWDCeUY/eMbbXTfp/OzmlwLcARc54ChyvQqlHVZYuYqZWGGQ3LtEjKgXha7FqwRcmWcrDpaQ8e1KF+uNn4NXFtOsLg2mnTCkoNJetYX7nJ2v5LgoKZnvcMIiX/BdgKmIzYk7qpetnsP4GygT4uGkEP6XvHNttMOiItJDaWJpqJfIiIAMYuB2AIStsm8MZaZwZljT/ukCHh9LdozMsNSNbWGP9FlpABATyGriWSe5R/6oozaawuAEqSZg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=oracle.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=b2rZ0fRpxvRq3tKqsDPZeq9ggQ41nDOyZm5nU5mqvoQ=;
+ b=OxhUm2/JV5T2BrtVpdeMWXGtL0LaumQcuwLc356py10hFvL0qNzMUgzgIV0lDJS0s4AFX+7G7B7XhJvmxEa4yDRppu1A/zNLX66kyhjsNhXF+bS+Avy2ljxoP65oLkt4OTZ4QBWUB4qTV5n7Pw4TNliYto3N3rUgGSX2CxsVtxE=
+Received: from BY1P220CA0026.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:5c3::17)
+ by CH3PR12MB8330.namprd12.prod.outlook.com (2603:10b6:610:12c::22)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.30; Wed, 21 May
+ 2025 06:21:17 +0000
+Received: from SJ1PEPF00002318.namprd03.prod.outlook.com
+ (2603:10b6:a03:5c3:cafe::76) by BY1P220CA0026.outlook.office365.com
+ (2603:10b6:a03:5c3::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8769.20 via Frontend Transport; Wed,
+ 21 May 2025 06:21:17 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SJ1PEPF00002318.mail.protection.outlook.com (10.167.242.228) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8769.18 via Frontend Transport; Wed, 21 May 2025 06:21:16 +0000
+Received: from [10.85.46.226] (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 21 May
+ 2025 01:21:11 -0500
+Message-ID: <592e4fdd-d4d1-450e-8035-6c781f1c3340@amd.com>
+Date: Wed, 21 May 2025 11:51:09 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] virtio-net: Add queues for RSS during migration
-To: Jason Wang <jasowang@redhat.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- devel@daynix.com
-References: <20250510-n-v1-1-19ee26ac3ca6@daynix.com>
- <CACGkMEt7xoX-HvV1mOo=zqpyV0se2ELBMvNV-uGpKUZPQ-PB2A@mail.gmail.com>
- <f3d10b18-9755-46af-9623-fb0ed7d99c51@daynix.com>
- <CACGkMEu_hyc-mP4zk9kJprCpFQbVzO0D2SEMy9eid5TmUH7Uaw@mail.gmail.com>
- <7f1c31de-de22-4290-a4fd-44e523477ca5@daynix.com>
- <CACGkMEsPb6TdT5qx9CkNOeT3ScJmS8_-FDjGh916fi8pWkuxNQ@mail.gmail.com>
+Subject: Re: [PATCH v2 00/20] AMD vIOMMU: DMA remapping support for VFIO
+ devices
+To: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>, <qemu-devel@nongnu.org>
+CC: <pbonzini@redhat.com>, <richard.henderson@linaro.org>,
+ <eduardo@habkost.net>, <peterx@redhat.com>, <david@redhat.com>,
+ <philmd@linaro.org>, <mst@redhat.com>, <marcel.apfelbaum@gmail.com>,
+ <alex.williamson@redhat.com>, <vasant.hegde@amd.com>,
+ <suravee.suthikulpanit@amd.com>, <santosh.shukla@amd.com>,
+ <Wei.Huang2@amd.com>, <clement.mathieu--drif@eviden.com>,
+ <ethan.milon@eviden.com>, <joao.m.martins@oracle.com>,
+ <boris.ostrovsky@oracle.com>
+References: <20250502021605.1795985-1-alejandro.j.jimenez@oracle.com>
+ <77942c0b-c7a4-4614-b0a7-f8d047cb47ee@amd.com>
+ <a04f20f6-17f9-4001-9f44-2d41cc9ca96a@oracle.com>
 Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <CACGkMEsPb6TdT5qx9CkNOeT3ScJmS8_-FDjGh916fi8pWkuxNQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Sairaj Kodilkar <sarunkod@amd.com>
+In-Reply-To: <a04f20f6-17f9-4001-9f44-2d41cc9ca96a@oracle.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x430.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002318:EE_|CH3PR12MB8330:EE_
+X-MS-Office365-Filtering-Correlation-Id: 90e5c8a7-680a-4bc7-0a29-08dd982fb1ca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|7416014|82310400026|30052699003|1800799024|376014|36860700013; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?WnE3VDZyck9SQU81bXQ2ZlBWcVYwKzRwNWp2NW9CRno1cmFTMnlLN09UbnBj?=
+ =?utf-8?B?VmNML2syVFFIWWhEWUNWNXlJQUd4RDdQcWtjdG5JZ1FuaVJlRmVXVFYyYW4x?=
+ =?utf-8?B?b2NZa25tOTl2OWxlSEZjZ21Camw3M1VQWmZtZW5GUzlQUDM5bnFYaW5UQkdY?=
+ =?utf-8?B?SW9lcGx1b3FUYURSZ0QwdFg5M2VLUjJidkxzWmNTVk1TVytyMHNWQWY4dnhk?=
+ =?utf-8?B?a3pSdVRtYXp1dkZyMTFnS0YweHhVVTRjYi80N1FrYjRuWmR3NzdJYjVjSGls?=
+ =?utf-8?B?eXlFcHJrM1EwV1lrb2k4dG1hdnVzSFVoSk1scmRqNURGWERpUlg0R1lvcExT?=
+ =?utf-8?B?RVM0VWRMblZibjBhZmw5Y3pFUzlIVWdKOVFTQUFTSXU5ekJBeGZneHZScnRD?=
+ =?utf-8?B?UkJENXZhbXV4V0E1dWloUjJNMWRDWEtHYjBFTEM0cktZZXZuVnhPN0ZPRzE5?=
+ =?utf-8?B?V0RPUzErdFREYWh4SEhRRktvMVp2cHZhRWtZeXcxaGxJL0pJWXJEcTdoQXBP?=
+ =?utf-8?B?UTE1dlZBSWRwVmV4Y1plcC9CUm1wK2V4Ti8rK1pXTVRKOTZaRVV3bGFiRGlo?=
+ =?utf-8?B?Qm9yZlYvQ3J2U1YyTnlxQzN2WkhtdTVzUDFmb2tESkExMU1aM3dOWmZpbUlh?=
+ =?utf-8?B?NVJ4bmRpVWFoNWpPSHBKVlU3cktzbGhVRUNuTWg3VGlMYlU2b3ZJSThtb0xN?=
+ =?utf-8?B?YzVoeUxYbWg1SzFucUR3Tytwb05qRkRCY0xSb0ZGRDljeDJpMDE5eXRRRURR?=
+ =?utf-8?B?QkF4Yy83V3RzSnY4cEVNN3NVanExdlJvZUM1cExBTWJ2WGtkUUNVME1wcXBj?=
+ =?utf-8?B?UTdZakdkSUErWU5nS2tydWM1RTQ3YnVSZi9jSmI5SWRpV3prVUo0SnpHL3Rw?=
+ =?utf-8?B?Vm5uL214OE9XaUtaLytBeVNQKzNwK1RqdWdRTTF5NTMwV295ckp0SDZFcXdt?=
+ =?utf-8?B?VjMxZ0hGeGM0dlJPTXlVK1RqZ2E3amNRNFNMQWJjelpoMTNPdWFjSFQ5MU1F?=
+ =?utf-8?B?OU1qQjd3bWRvdjFvWFFMQlhnZXJGMUFzM2FuSGxFeWpBTGV0ekx3RUdvQ29i?=
+ =?utf-8?B?MU5YdUtKZkZOWXhSYWRrN0FqY3IwOEUrRSthWFE2OHdMR0hYSzVIbzlueE9W?=
+ =?utf-8?B?bXlXWlV6QmpxVHVpV3NaanpheCttSU1zVWVKN1J4MVRUM3hFYlg4dE9tTnBr?=
+ =?utf-8?B?VFZXbytWbFN3R20yV3FuUUNQekdRRzNFL29ZQUdBaXRuQWlkOTAvSVUzZHN4?=
+ =?utf-8?B?Qk1Vd2FzeFlrSjR5QWRHaFl3V2tKNmdUOEVVQVk5U2UxMERKekpLejlobWNW?=
+ =?utf-8?B?b3ZEVGJyelpyZnp6aVh5NUxORzZDdjgxQkZqazBoQzlXek8wWGZLUnVRNFlI?=
+ =?utf-8?B?cXRLbmNWdGcxK1JCTFREWFk5U1ZWbHFKVzhmSi9TaHZyZlNpU3pHdkNVMkVI?=
+ =?utf-8?B?bTZzVlp4YUFRZTNqQXIyT3JFRDBsYzdCWHpTR3BtT21CbVcxMzk0cGJuS0hJ?=
+ =?utf-8?B?NU1yUVovMUw5R0NsRU00MjUvYXdiRmx0OTRnKys5a3BGUkpScndSYTNUcU1X?=
+ =?utf-8?B?eDE2NVNzcWVJdnlZK0JBdVdoWXVsemRydExCaVp3T0FJc2lhNTMwNVUwYmpJ?=
+ =?utf-8?B?UDdMMlBYMGVUcTlwRC9meWVrRUJCRHhSZWExeGRETnZYTUhrNmlBM0VLU0Ez?=
+ =?utf-8?B?YmRqcngrY3EyeXgxZ3ZFaUlHdFlscDlCVU0xVjhpLzMrVVM1NWxYb3A1TmYv?=
+ =?utf-8?B?bnd5cVhkVlJhTi9wa3BsU0hKalhNcmJxNm1qTUk2RXRWVkJGMFNYeFJGb0lo?=
+ =?utf-8?B?V25hSnZhc2pwWWUwOHpBL0RnYWtiUkdTdkI2ZTUzcGhNVjcwellUTjFNb0hh?=
+ =?utf-8?B?NmI2ZmJVajk1L0pOZVRxT3NIMkNrSmNWd0pEMVJhVGVTQVRLN2tveGxkWW9i?=
+ =?utf-8?B?djFLYnR1cGZnNXNTRUVCZnVjUEk1bGlQc2NJbFZpSHRBTTlwMGpZZ3RVdXlx?=
+ =?utf-8?B?TEtvRXFsa0VWaEVBaEE3by84Y09SQm5pUG8wWHZ3aTBjM2tpRTJGNjRRZnBM?=
+ =?utf-8?Q?/jl8+V?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(7416014)(82310400026)(30052699003)(1800799024)(376014)(36860700013);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2025 06:21:16.8908 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 90e5c8a7-680a-4bc7-0a29-08dd982fb1ca
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF00002318.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8330
+Received-SPF: permerror client-ip=40.107.237.87;
+ envelope-from=Sairaj.ArunKodilkar@amd.com;
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.487,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,139 +167,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/05/21 9:51, Jason Wang wrote:
-> On Fri, May 16, 2025 at 11:29 AM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>
->> On 2025/05/16 10:44, Jason Wang wrote:
->>> On Wed, May 14, 2025 at 2:58 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>>>
->>>> On 2025/05/14 14:05, 'Jason Wang' via devel wrote:
->>>>> On Sat, May 10, 2025 at 3:24 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>>>>>
->>>>>> virtio_net_pre_load_queues() inspects vdev->guest_features to tell if
->>>>>> VIRTIO_NET_F_RSS or VIRTIO_NET_F_MQ is enabled to infer the required
->>>>>> number of queues. This works for VIRTIO_NET_F_MQ but it doesn't for
->>>>>> VIRTIO_NET_F_RSS because only the lowest 32 bits of vdev->guest_features
->>>>>> is set at the point and VIRTIO_NET_F_RSS uses bit 60 while
->>>>>> VIRTIO_NET_F_MQ uses bit 22.
->>>>>>
->>>>>> Instead of inferring the required number of queues from
->>>>>> vdev->guest_features, use the number loaded from the vm state.
->>>>>>
->>>>>> Fixes: 8c49756825da ("virtio-net: Add only one queue pair when realizing")
->>>>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->>>>>> ---
->>>>>>     include/hw/virtio/virtio.h |  2 +-
->>>>>>     hw/net/virtio-net.c        | 11 ++++-------
->>>>>>     hw/virtio/virtio.c         | 14 +++++++-------
->>>>>>     3 files changed, 12 insertions(+), 15 deletions(-)
->>>>>>
->>>>>> diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
->>>>>> index 638691028050..af52580c1e63 100644
->>>>>> --- a/include/hw/virtio/virtio.h
->>>>>> +++ b/include/hw/virtio/virtio.h
->>>>>> @@ -211,7 +211,7 @@ struct VirtioDeviceClass {
->>>>>>         int (*start_ioeventfd)(VirtIODevice *vdev);
->>>>>>         void (*stop_ioeventfd)(VirtIODevice *vdev);
->>>>>>         /* Called before loading queues. Useful to add queues before loading. */
->>>>>> -    int (*pre_load_queues)(VirtIODevice *vdev);
->>>>>> +    int (*pre_load_queues)(VirtIODevice *vdev, uint32_t n);
->>>>>
->>>>> This turns out to be tricky as it has a lot of assumptions as
->>>>> described in the changelog (e.g only lower 32bit of guest_features is
->>>>> correct etc when calling this function).
->>>>
->>>> The problem is that I missed the following comment in
->>>> hw/virtio/virtio.c:
->>>>        /*
->>>>         * Temporarily set guest_features low bits - needed by
->>>>         * virtio net load code testing for VIRTIO_NET_F_CTRL_GUEST_OFFLOADS
->>>>         * VIRTIO_NET_F_GUEST_ANNOUNCE and VIRTIO_NET_F_CTRL_VQ.
->>>>         *
->>>>         * Note: devices should always test host features in future - don't
->>>> create
->>>>         * new dependencies like this.
->>>>         */
->>>>        vdev->guest_features = features;
->>>>
->>>> This problem is specific to guest_features so avoiding it should give us
->>>> a reliable solution.
->>>
->>> I meant not all the states were fully loaded for pre_load_queues(),
->>> this seems another trick besides the above one. We should seek a way
->>> to do it in post_load() or at least document the assumptions.
->>
->> The name of the function already clarifies the state is not fully
->> loaded. An implementation of the function can make no assumption on the
->> state except that you can add queues here, which is already documented.
-> 
-> Where? I can only see this:
-> 
->      /* Called before loading queues. Useful to add queues before loading. */
 
-I meant it is documented that it can add queues. There is nothing else 
-to document as an implementation of the function can make no assumption 
-else.
+
+On 5/21/2025 8:05 AM, Alejandro Jimenez wrote:
+> Hi Sairaj
+> 
+> On 5/16/25 4:07 AM, Sairaj Kodilkar wrote:
+>>
+>>
+>> On 5/2/2025 7:45 AM, Alejandro Jimenez wrote:
+> 
+>> Hi Alejandro,
+>>
+>> Tested the v2, everything looks good when I boot guest with upstream
+>> kernel. But I observed that NVME driver fails to load with guest kernel
+>> version 4.15.0-213-generic. This is the default kernel that comes with
+>> the ubuntu image.
+> 
+> Thank you for the additional testing and for the report. I wanted to 
+> investigate and if possible solve the issue before replying, but since 
+> it is taking me some time I wanted to ACK your message. Minor comments 
+> below...
+>>
+>> This is what I see in the dmesg
+>>
+>> [   26.702381] nvme nvme0: pci function 0000:00:04.0
+>> [   26.817847] nvme nvme0: missing or invalid SUBNQN field.
+> 
+> There are multiple reports of that warning which would indicate that is 
+> not caused by an issue with the IOMMU emulation, but it is interesting 
+> that you don't see it with "regular passthrough" (I assume that means 
+> with guest kernel in pt mode).
+> 
+
+Yep The "regular passthrough" is guest without amd-iommu or pt=on
+
+>>
+>> I am using following command qemu command line
+>>
+>> -enable-kvm -m 10G -smp cpus=$NUM_VCPUS  \
+>> -device amd-iommu,dma-remap=on \
+>> -netdev user,id=USER0,hostfwd=tcp::3333-:22 \
+>> -device virtio-net-pci,id=vnet0,iommu_platform=on,disable- 
+>> legacy=on,romfile=,netdev=USER0 \
+>> -cpu EPYC-Genoa,x2apic=on,kvm-msi-ext-dest-id=on,+kvm-pv-unhalt,kvm- 
+>> pv- tlb-flush,kvm-pv-ipi,kvm-pv-sched-yield  \
+>> -name guest=my-vm,debug-threads=on \
+>> -machine q35,kernel_irqchip=split \
+>> -global kvm-pit.lost_tick_policy=discard \
+>> -nographic -vga none -chardev stdio,id=STDIO0,signal=off,mux=on \
+>> -device isa-serial,id=isa-serial0,chardev=STDIO0 \
+>> -smbios type=0,version=2.8 \
+>> -blockdev node- 
+>> name=drive0,driver=qcow2,file.driver=file,file.filename=$IMG \
+>> -device virtio-blk-pci,num-queues=8,drive=drive0 \
+>> -chardev socket,id=SOCKET1,server=on,wait=off,path=qemu.mon.user3333 \
+>> -mon chardev=SOCKET1,mode=control \
+>> -device vfio-pci,host=0000:44:00.0
+>>
+>> Do you have any idea what might trigger this.
+> 
+> There are some parameters above that are unnecessary and perhaps 
+> conflicting e.g. we don't need kvm-msi-ext-dest-id=on since the vIOMMU 
+> provides interrupt remapping (plus you are likely not using more than 
+> 255 vCPUs). We also don't need kvm-pit.lost_tick_policy when using split 
+> irqchip, since the PIT is not emulated by KVM. But to be fair I don't 
+> believe those are likely to be causing the problem...
+
+Thanks for letting me know, I'll update the script.
 
 > 
->>
->>>
->>>>
->>>>>
->>>>> Looking at the commit that introduces this which is 9379ea9db3c that says:
->>>>>
->>>>> """
->>>>> Otherwise the loaded queues will not have handlers and elements
->>>>> in them will not be processed.
->>>>> """
->>>>>
->>>>> I fail to remember what it means or what happens if we don't do 9379ea9db3c.
->>>>
->>>> The packets and control commands in the queues except the first queue
->>>> will not be processed because they do not have handle_output set.
->>>
->>> I don't understand here, the VM is not resumed in this case. Or what
->>> issue did you see here?
->>
->> Below is the order of relevant events that happen when loading and
->> resuming a VM for migration:
->>
->> 1) vdc->realize() gets called. virtio-net adds one RX queue, one TX
->> queue, and one control queue.
->> 2) vdc->pre_load_queues() gets called. virtio-net adds more queues if
->> the "n" parameter requires that.
->> 3) The state of queues are loaded.
->> 4) The VM gets resumed.
->>
->> If we skip 2), 3) will load states of queues that are not added yet,
->> which breaks these queues and packets and leave control packets on them
->> unprocessed.
+> My main suspicion is the guest IOMMU driver being too old and missing 
+> lots of fixes, so it could be missing some essential operations that the 
+> emulation requires to work. e.g. if the guest driver does not comply 
+> with the spec and fails to issue a DEVTAB_INVALIDATE after changing the 
+> DTE, the vIOMMU code never gets the chance to enable the IOMMU memory 
+> region, and it all goes wrong from that point on.
+ > But I need to reproduce the problem and figure out where/when the > 
+emulation is failing. I've tested as far back as 5.15 based kernels.
 > 
-> Ok, let's document this and
+> I would argue that while it is something that I am definitely going to 
+> address if possible, this issue should not be a blocker. I'll update as 
+> soon as I have more data on the cause.
 > 
-> 1) explain why only virtio-net requires the pre_load_queues (due to
-> the fact that the index of ctrl vq could be changed according to
-> #queue_paris)
+> Thank you,
+> Alejandro
+> 
 
-We would need this logic even if the index of ctrl vq didn't change. We 
-need it because virtio-net have varying number of queues, which needs to 
-be added before loading.
+I also think the same. This may be some old driver issue and we should 
+not block on it.
 
-> 2) the commit also fixes the issue that changing the TAP queue pairs twice
+Tested-by: Sairaj Kodilkar <sarunkod@amd.com>
 
-Commit 9379ea9db3c makes it change the TAP queue pairs once more. This 
-patch reverts it, but that doesn't matter because the operation is 
-idempotent.
+Regards
+Sairaj Kodilkar
 
-More concretely, before commit 9379ea9db3c, we had two points that 
-updates the TAP queue pairs when loading a VM for migration:
-1) virtio_net_set_features()
-2) virtio_net_post_load_device()
-
-Commit 9379ea9db3c added a third point: virtio_net_pre_load_queues().
-This patch removes the third point by avoid calling 
-virtio_net_set_queue_pairs(), which is a nice side effect.
-
-Regards,
-Akihiko Odaki
 
