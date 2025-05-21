@@ -2,140 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E196ABEDA0
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 10:14:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22F76ABEDAE
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 10:20:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHeao-0003Az-9E; Wed, 21 May 2025 04:14:26 -0400
+	id 1uHefS-0004ou-SL; Wed, 21 May 2025 04:19:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uHeal-0003Aj-94
- for qemu-devel@nongnu.org; Wed, 21 May 2025 04:14:23 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uHefI-0004n2-LJ
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 04:19:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uHeaY-0007c1-Mf
- for qemu-devel@nongnu.org; Wed, 21 May 2025 04:14:22 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1uHefA-0000A0-U4
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 04:19:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747815249;
+ s=mimecast20190719; t=1747815532;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=1M9jemnbLFL7Kv+YNbqeVSFG3Gn0tlQaBbRvJdjpfdU=;
- b=Bfho4LPx/PlNqD14T2Pbct6MZGNUh5UwQ+jAB5CaUuIm0TlnHoOE6M2wjvhyUk6pmcbq7F
- 5PsI3wWH1UnZenMrnOn1ZCgXtK/rssc3k1BwW08GXeX5b7Ax115JR8L9GBwPcG/+yV6Lib
- 4PaR2CWBXk0XDB11ODOhIuNKJnMJceA=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=oBjkbO7ab/Bs8vweaRnYdvEsyUdC25nLwFE9KdD0if0=;
+ b=RnV0ssiiKwNdF5KpU4U5XzR9IWkBMLdZrPqBztm1Jpqb2gey9taWKHxlWgPCFNM+SsRABf
+ Dn9coLJPoe51Tl+zuUx8naDjygppSipJXqw19NWo5Qhq/fjeK0HkG/yc4CVU5nyZ7IvLzH
+ RduQrlkQc4D/NeIvQsxRHa80LwH0GYw=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-627-H2EAD3_SMbGoLhB69HUg8A-1; Wed, 21 May 2025 04:14:07 -0400
-X-MC-Unique: H2EAD3_SMbGoLhB69HUg8A-1
-X-Mimecast-MFC-AGG-ID: H2EAD3_SMbGoLhB69HUg8A_1747815246
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3a367b3bb78so2610747f8f.1
- for <qemu-devel@nongnu.org>; Wed, 21 May 2025 01:14:06 -0700 (PDT)
+ us-mta-675-V2xEAnyeNN-NF8Y5L6dY6A-1; Wed, 21 May 2025 04:18:50 -0400
+X-MC-Unique: V2xEAnyeNN-NF8Y5L6dY6A-1
+X-Mimecast-MFC-AGG-ID: V2xEAnyeNN-NF8Y5L6dY6A_1747815529
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3a35c86b338so3781437f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 21 May 2025 01:18:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747815245; x=1748420045;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=1M9jemnbLFL7Kv+YNbqeVSFG3Gn0tlQaBbRvJdjpfdU=;
- b=Mn5wsAKv88FYQ/kP/nUocIjiQzAbvAEQ0RJsy7ymVD9cXu2TA2uKSiPqwWUNf94fH7
- 7kNZJrqMJ53u+tEm5qXXhgubHjTXzHl9K9msvtiNtNe9SjvCDjgYg06B+b2RxemdoUVF
- Dx6ubPmzs1pl3xKmLDVmyMP8CwIQOYNoviQwqmFZYaAa5SQ+8nngxgrX/FlTMP6yId2J
- 0WudAx2a2SHLLrLx/VymK3C9r8+dIERg75c5HzMV9P/1LlabZuMjM128HBvgmMDDTyjk
- wUEgWJpwuUvO7OW2qkaxw37JapXFwdyS+qsONR21YTD8DJLcbipGd7PYUgD+171bN1Mn
- zDvw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUlddaTMZECdRFPti8bIis89joRD8cGSimpH3Fo7d+UpPMWOfApZcUP+FEm1/elCS30qZaVyd78DU7A@nongnu.org
-X-Gm-Message-State: AOJu0Yz0x6LG2jjT43BbtfW7jK2mvjjwZhz/Fm27hQNtiwbmkO9XwWYb
- cc//H0Jj/qDVx7j4KK0j993YoYpgU5EWUoLvUtVnehWRptaJDPEwhV+4LewLyxXhncz/c8CZNEt
- 4jaD5OQ7Ozsv/TdTHUDZxhdNlma3h2K0It7SXfTnlaZLLV7nAMU+q59qudmjf/I93Exk=
-X-Gm-Gg: ASbGncsqtRzFzZZsDC+aGI4xuLRu9kUyQr+HfHkRor0CfMWCHvv82hp96QAh19JFE3B
- r0v8og5RGURUaHtBkGRvqnamHChrfZGJQH7Vpq072L+YW3HAXALxhJIrkyBwWeoXE5h3gtOFVQM
- INFrLEXTlrjksLVdwYf4JiaC+TGHL3CiS7SVzIKFKO2q+m3KOhrmBKnbpIKyciKHGGNCRPgWE6W
- QofuTUIfaYP7SkBEccIfFsbxDBNoG6HeQ6WLvncOJdfEHJtRf22qG2M4WazJTtprsLK5wEgGQD5
- HQ8lXrKFJMwFFgTVtpX7Po1SlT3gY2GfBK5IsnsvJHxpryQOlA==
-X-Received: by 2002:a05:6000:184d:b0:3a0:b84c:52b4 with SMTP id
- ffacd0b85a97d-3a35c809250mr19117583f8f.10.1747815245445; 
- Wed, 21 May 2025 01:14:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHgBAxN6Yiy9XpebFD/5zJP1tJCPCj1rGEmLzdE+elnnsxrUXTVpfBM0SXbzBk1N1AIGpaOUw==
-X-Received: by 2002:a05:6000:184d:b0:3a0:b84c:52b4 with SMTP id
- ffacd0b85a97d-3a35c809250mr19117550f8f.10.1747815245062; 
- Wed, 21 May 2025 01:14:05 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
- ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
+ d=1e100.net; s=20230601; t=1747815528; x=1748420328;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=oBjkbO7ab/Bs8vweaRnYdvEsyUdC25nLwFE9KdD0if0=;
+ b=XmxJULkypScf7J7Wsmoi5UDAVSNYxZQEQEyyvhDPGpt86y1SoU+PVDE/tHqWrIyQdm
+ WQGUdOlT0UzwV4KanygAAONVmdoZSWOGNVHrGctM2TEY+RAQHzb2zQxPjoVrooSPpV1T
+ DgGaRcxO4StCoMVrtRUebmEAIjEBYtixFa89vHvSnugORs3YYzT5iFCI9w3Wa43eqYY0
+ y1Dz4Cu8nOBXNfiUYLaXidUakwLyXafPGXd8HP87VylEqBNtADzVDO/gYFoGpe7sS4CJ
+ O0hLDPBVW+C3VGUsdzGWK2luMQzyRwFjo1GAiBp/duYA4hdgu3fNY8rL6ZfcrAbI0pqF
+ vBXg==
+X-Gm-Message-State: AOJu0YyCKgW7odVNhGDl3+eXsVJGpazBQARy1BdT6nas61m0kXmeAXDQ
+ 8hNDiYp+ln1STk46yQO5ZSNGOxqdN77sVyYXF6uaXxl+wbyK6F2y+h5Cs6jaR9cXz8CFgML8z3q
+ 4IUYFi35JxWYAnhAHt+Yy96vRPDonBJ4qV3mLHfQ//FfAkEBP8xWqqFDH0ZZGAuE8iFcx81L47i
+ FEgrNRQ0bSavYT6kv8g9VLJ6tXdM0qEUPMd9kGT36r
+X-Gm-Gg: ASbGncsXOhAfbcH3l+dFytdFx6XzVn3Y8T4NjlbQbzLwwx2Op1fCOZbewFS1pqIF7CC
+ mT57odxcFgphaiW1iPXNAukk9GG7NA312Cnx0++R7d3rd4uEi/zdc9PdRCPk2ho6b5xw3PM8KHi
+ 9UZL1JF07ECeZA8DmysdQ/RDTnKJvtB+3SVgOcma9i8PoLjt8UbpuXOGwStiJ+9zPM/ee6m/rKz
+ jJ0xcH3Kx2EUuYzlC7ce0s0CTdjZszriQpuO3lGzqd8IU90ucI7N0/SORz58XYCUQyNcjZ2N+Cg
+ 1j4nSJ1jpMg8Hw==
+X-Received: by 2002:a05:6000:e4e:b0:3a3:6273:802f with SMTP id
+ ffacd0b85a97d-3a36273835emr15122793f8f.14.1747815528042; 
+ Wed, 21 May 2025 01:18:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGsg/GqmklxmQ7sz4QFR1LXhEFG9K6O4Ar6IkiF6h+ieSZuCuV56zTQtlu5fzkXbeXsXhXonA==
+X-Received: by 2002:a05:6000:e4e:b0:3a3:6273:802f with SMTP id
+ ffacd0b85a97d-3a36273835emr15122764f8f.14.1747815527546; 
+ Wed, 21 May 2025 01:18:47 -0700 (PDT)
+Received: from [192.168.122.1] ([151.95.46.79])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-447f78b0acasm58305845e9.31.2025.05.21.01.14.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 21 May 2025 01:14:04 -0700 (PDT)
-Message-ID: <320624c6-b71e-4272-b87b-ca702d15b1c8@redhat.com>
-Date: Wed, 21 May 2025 10:14:04 +0200
+ 5b1f17b1804b1-447f78b2f19sm58652665e9.32.2025.05.21.01.18.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 21 May 2025 01:18:47 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, qemu-rust@nongnu.org,
+ manos.pitsidianakis@linaro.org
+Subject: [RFC PATCH 0/6] rust: make usage of bitmasks and bitfields nicer
+Date: Wed, 21 May 2025 10:18:39 +0200
+Message-ID: <20250521081845.496442-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vfio: add more VFIOIOMMUClass docs
-To: John Levon <john.levon@nutanix.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>
-References: <20250520162530.2194548-1-john.levon@nutanix.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20250520162530.2194548-1-john.levon@nutanix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.487,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -151,141 +104,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/20/25 18:25, John Levon wrote:
-> Add some additional doc comments for these class methods.
-> 
-> Signed-off-by: John Levon <john.levon@nutanix.com>
+This adds or modifies some of the early choices that were done when
+writing the pl011 crate.  Now that the implementation is safe and
+readable, it's possible to look at the code as a whole, see what
+looks ugly and fix it.
+
+To see the effect on the pl011 code, jump at patches 2 and 4.  But
+overall the focus is on "ugly" constant declarations of two kinds.
+
+First, bitmasks.  These are currently written like this:
+
+    const IRQMASK: [u32; 6] = [                
+      Interrupt::E.0 | Interrupt::MS.0 | Interrupt::RT.0 | Interrupt::TX.0 | Interrupt::RX.0,
+      ...
+    }
+
+Here the issue is threefold: 1) the repeated "Interrupt::"; 2) the
+ugly ".0" and 3) the type of IRQMASK is not "Interrupt" to avoid further
+".0"s elsewhere.
+
+All this can be fixed by abstracting this kind of bitmasks, and the go-to
+solution for Rust is called "bitflags".  However, it does not solve the
+constant declaration part so I'm rolling my own here, while keeping it
+similar to bitflags so it's not completely foreign to Rust developers.
+It's a bit simpler and it has the extra expression parsing functionality,
+so that the above becomes:
+
+    const IRQMASK: [Interrupt; 6] = [                
+      bits!(Interrupt: E | MS | RT | TX | RX)
+      ...
+    }
+
+(this specific case can also be written simply as "Interrupt::all()",
+because all bits are set, but still).
 
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Second, while the "bilge" crate is very nice it was written with the
+expectation that const traits would be stable Real Soon.  They didn't
+and we're left with stuff like
 
-Thanks,
+    pub const BREAK: Self = Self { value: 1 << 10 };
 
-C.
+So this series replaces "bilge" with an alternative implementation of
+bitfields called (less cryptically) "bitfield-struct".  Now, there is a
+trade-off here.  It is described more in detail in patch 4, but roughly
+speaking:
+
+++ bitfield-struct supports "const" well
+
++ bitfield-struct is much smaller than bilge, so that it is possible
+  to remove a bunch of subprojects
+
+- bitfield-struct requires manual size annotations for anything that is
+  not a primitive type (bool, iNN or uNN); this is especially annoying
+  for enums
+
+It's important that the disadvantages affect only the definition of
+the type.  Code that *uses* the type is the same or better, for example
+the above const declaration becomes:
+
+    pub const BREAK: Self = Self::new().with_errors(Errors::BREAK);
+
+This "with_*()" convention is in fact the same that it's used for
+VMState declarations, such as in ".with_version_id(N)", so there is some
+consistency too.
+
+Again, I do like "bilge" and I think it's usage of arbitrary-width
+types like "u4" is very nice and readable.  If it ever grows "const"
+capabilities it's certainly possible to come back to it, but right
+now I feel that the trade-off leans towards the switch.
+
+Paolo
 
 
-> ---
->   include/hw/vfio/vfio-container-base.h | 75 +++++++++++++++++++++++++--
->   1 file changed, 72 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-> index 3d392b0fd8..f9e561cb08 100644
-> --- a/include/hw/vfio/vfio-container-base.h
-> +++ b/include/hw/vfio/vfio-container-base.h
-> @@ -115,13 +115,56 @@ OBJECT_DECLARE_TYPE(VFIOContainerBase, VFIOIOMMUClass, VFIO_IOMMU)
->   struct VFIOIOMMUClass {
->       ObjectClass parent_class;
->   
-> -    /* basic feature */
-> +    /**
-> +     * @setup
-> +     *
-> +     * Perform basic setup of the container, including configuring IOMMU
-> +     * capabilities, IOVA ranges, supported page sizes, etc.
-> +     *
-> +     * @bcontainer: #VFIOContainerBase
-> +     * @errp: pointer to Error*, to store an error if it happens.
-> +     *
-> +     * Returns true to indicate success and false for error.
-> +     */
->       bool (*setup)(VFIOContainerBase *bcontainer, Error **errp);
-> +
-> +    /**
-> +     * @listener_begin
-> +     *
-> +     * Called at the beginning of an address space update transaction.
-> +     * See #MemoryListener.
-> +     *
-> +     * @bcontainer: #VFIOContainerBase
-> +     */
->       void (*listener_begin)(VFIOContainerBase *bcontainer);
-> +
-> +    /**
-> +     * @listener_commit
-> +     *
-> +     * Called at the end of an address space update transaction,
-> +     * See #MemoryListener.
-> +     *
-> +     * @bcontainer: #VFIOContainerBase
-> +     */
->       void (*listener_commit)(VFIOContainerBase *bcontainer);
-> +
-> +    /**
-> +     * @dma_map
-> +     *
-> +     * Map an address range into the container.
-> +     *
-> +     * @bcontainer: #VFIOContainerBase to use
-> +     * @iova: start address to map
-> +     * @size: size of the range to map
-> +     * @vaddr: process virtual address of mapping
-> +     * @readonly: true if mapping should be readonly
-> +     *
-> +     * Returns 0 to indicate success and -errno otherwise.
-> +     */
->       int (*dma_map)(const VFIOContainerBase *bcontainer,
->                      hwaddr iova, ram_addr_t size,
->                      void *vaddr, bool readonly);
-> +
->       /**
->        * @dma_unmap
->        *
-> @@ -132,12 +175,38 @@ struct VFIOIOMMUClass {
->        * @size: size of the range to unmap
->        * @iotlb: The IOMMU TLB mapping entry (or NULL)
->        * @unmap_all: if set, unmap the entire address space
-> +     *
-> +     * Returns 0 to indicate success and -errno otherwise.
->        */
->       int (*dma_unmap)(const VFIOContainerBase *bcontainer,
->                        hwaddr iova, ram_addr_t size,
->                        IOMMUTLBEntry *iotlb, bool unmap_all);
-> +
-> +
-> +    /**
-> +     * @attach_device
-> +     *
-> +     * Associate the given device with a container and do some related
-> +     * initialization of the device context.
-> +     *
-> +     * @name: name of the device
-> +     * @vbasedev: the device
-> +     * @as: address space to use
-> +     * @errp: pointer to Error*, to store an error if it happens.
-> +     *
-> +     * Returns true to indicate success and false for error.
-> +     */
->       bool (*attach_device)(const char *name, VFIODevice *vbasedev,
->                             AddressSpace *as, Error **errp);
-> +
-> +    /*
-> +     * @detach_device
-> +     *
-> +     * Detach the given device from its container and clean up any necessary
-> +     * state.
-> +     *
-> +     * @vbasedev: the device to disassociate
-> +     */
->       void (*detach_device)(VFIODevice *vbasedev);
->   
->       /* migration feature */
-> @@ -152,7 +221,7 @@ struct VFIOIOMMUClass {
->        * @start: indicates whether to start or stop dirty pages tracking
->        * @errp: pointer to Error*, to store an error if it happens.
->        *
-> -     * Returns zero to indicate success and negative for error
-> +     * Returns zero to indicate success and negative for error.
->        */
->       int (*set_dirty_page_tracking)(const VFIOContainerBase *bcontainer,
->                                      bool start, Error **errp);
-> @@ -167,7 +236,7 @@ struct VFIOIOMMUClass {
->        * @size: size of iova range
->        * @errp: pointer to Error*, to store an error if it happens.
->        *
-> -     * Returns zero to indicate success and negative for error
-> +     * Returns zero to indicate success and negative for error.
->        */
->       int (*query_dirty_bitmap)(const VFIOContainerBase *bcontainer,
->                   VFIOBitmap *vbmap, hwaddr iova, hwaddr size, Error **errp);
+Paolo Bonzini (6):
+  rust: add "bits", a custom bitflags implementation
+  rust: pl011: use the bits macro
+  rust: qemu-api-macros: add from_bits and into_bits to
+    #[derive(TryInto)]
+  rust: subprojects: add bitfield-struct
+  rust: pl011: switch from bilge to bitfield-struct
+  rust: remove bilge crate
+
+ rust/Cargo.lock                               |  75 +--
+ rust/Cargo.toml                               |   2 +
+ rust/bits/Cargo.toml                          |  19 +
+ rust/bits/meson.build                         |  12 +
+ rust/bits/src/lib.rs                          | 441 ++++++++++++++++++
+ rust/hw/char/pl011/Cargo.toml                 |   4 +-
+ rust/hw/char/pl011/meson.build                |  12 +-
+ rust/hw/char/pl011/src/device.rs              |  51 +-
+ rust/hw/char/pl011/src/registers.rs           | 145 +++---
+ rust/meson.build                              |   4 +
+ rust/qemu-api-macros/src/bits.rs              | 227 +++++++++
+ rust/qemu-api-macros/src/lib.rs               |  60 ++-
+ rust/qemu-api/src/vmstate.rs                  |  34 +-
+ subprojects/.gitignore                        |   8 +-
+ subprojects/arbitrary-int-1-rs.wrap           |  10 -
+ subprojects/bilge-0.2-rs.wrap                 |  10 -
+ subprojects/bilge-impl-0.2-rs.wrap            |  10 -
+ subprojects/bitfield-struct-0.9-rs.wrap       |   7 +
+ subprojects/either-1-rs.wrap                  |  10 -
+ subprojects/itertools-0.11-rs.wrap            |  10 -
+ .../bitfield-struct-0.9-rs/meson.build        |  36 ++
+ subprojects/proc-macro-error-1-rs.wrap        |  10 -
+ subprojects/proc-macro-error-attr-1-rs.wrap   |  10 -
+ 23 files changed, 917 insertions(+), 290 deletions(-)
+ create mode 100644 rust/bits/Cargo.toml
+ create mode 100644 rust/bits/meson.build
+ create mode 100644 rust/bits/src/lib.rs
+ create mode 100644 rust/qemu-api-macros/src/bits.rs
+ delete mode 100644 subprojects/arbitrary-int-1-rs.wrap
+ delete mode 100644 subprojects/bilge-0.2-rs.wrap
+ delete mode 100644 subprojects/bilge-impl-0.2-rs.wrap
+ create mode 100644 subprojects/bitfield-struct-0.9-rs.wrap
+ delete mode 100644 subprojects/either-1-rs.wrap
+ delete mode 100644 subprojects/itertools-0.11-rs.wrap
+ create mode 100644 subprojects/packagefiles/bitfield-struct-0.9-rs/meson.build
+ delete mode 100644 subprojects/proc-macro-error-1-rs.wrap
+ delete mode 100644 subprojects/proc-macro-error-attr-1-rs.wrap
+
+-- 
+2.49.0
 
 
