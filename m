@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED4B9ABF293
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 13:19:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE8F5ABF29A
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 13:20:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHhTW-0005UD-Qo; Wed, 21 May 2025 07:19:07 -0400
+	id 1uHhU1-0005VM-Pt; Wed, 21 May 2025 07:19:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uHhTU-0005Ta-HQ
- for qemu-devel@nongnu.org; Wed, 21 May 2025 07:19:04 -0400
+ id 1uHhTa-0005V4-Li
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 07:19:10 -0400
 Received: from mgamail.intel.com ([192.198.163.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uHhTS-0006Ov-HQ
- for qemu-devel@nongnu.org; Wed, 21 May 2025 07:19:04 -0400
+ id 1uHhTY-0006Qk-JH
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 07:19:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747826343; x=1779362343;
+ t=1747826349; x=1779362349;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=4frTGND9Al9idiJkchXDq6kWR6Z+xfk40H5WnMQ5KM4=;
- b=kmcuzwFb4qt8PcMPMhXWriGgy2Qg3lwBKNsb7E59OTm4JFeCM7MRw6Q5
- JLDbny9SBpbf5M9/iFi25QIp2ShsEMttnvHouonWz7wsoKK3EUA2KoC/x
- XVV+JlnQc1+nf9kCi9KZrCyiIwBhBX62Pz9D/KVjSjHgm9IGG1cOcTzIF
- sCz8ZDpitSAOUE07dSzF1ysi4lTZIueXhiDAL4ggq+0poBo3bhHScSji/
- vaI9pd8kFqum1gfwipu1MK0UVSQohVl31lPq6CZgqQKHiQNmN75wb9s7G
- TX2khrIQTKJKF8v2Vz9pg+5CSaGEhuuzhhz2w6mBbIQ7ViEfNj+NALtEd g==;
-X-CSE-ConnectionGUID: jkPD7c2hTluNjz2n1ZDwNw==
-X-CSE-MsgGUID: RkmEzH53T6KFdBmJGRozbQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="49894911"
-X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="49894911"
+ bh=JG8jbSr6cYp7BQFkRpLapXdKgkWUaQh8kaDvQ/qFiz4=;
+ b=Q2mKnwqyWGU20PK0k6iw6g8as9OUEnEJZk4+kcePaKKJXF4k+/AdUdg/
+ V9Ngw0unoscRCYghC2eZPesD37u9u3fb/+0Oczu5+rM+piZaGfbcObzji
+ /5Kb4XkNFF+uoJ+7UHnpOlbOOzyyA0eD8Qc63QAy9cpOGBuXeveIqxTCg
+ qkUVESwl5eZm5jBY+hqWKtZFd1LEElDGioyCy2GZYAyFf0JbHbALvR0fj
+ GqP1jmn9F0+H544as/s1bIMt+gUe0MGmJGzj9cC4Tn9M2qWCYAVa5eGiU
+ Obov3FsMkrFMp1nc1c6PAjU3YFG5wRm9bDIzZXw60xR8FsP+TNfSbKpE+ A==;
+X-CSE-ConnectionGUID: jUZGpUBhQ+ugrADBPmWOCA==
+X-CSE-MsgGUID: s/1eCiZcQY+VdUv/ShVimQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="49894924"
+X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="49894924"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2025 04:19:00 -0700
-X-CSE-ConnectionGUID: R1LLdrsPTsuQpHp56j7Emg==
-X-CSE-MsgGUID: AatEFAggSbCAVsXwZOYfuw==
+ 21 May 2025 04:19:05 -0700
+X-CSE-ConnectionGUID: Nza/lW44Qx6B1kLHIp89zQ==
+X-CSE-MsgGUID: DQ4ddnt+RFOB8pJpoQgWVQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="145158321"
+X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="145158327"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2025 04:18:55 -0700
+ 21 May 2025 04:19:00 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -51,10 +51,15 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  jgg@nvidia.com, nicolinc@nvidia.com, shameerali.kolothum.thodi@huawei.com,
  joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
  kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
- Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH rfcv3 05/21] vfio/iommufd: Save vendor specific device info
-Date: Wed, 21 May 2025 19:14:35 +0800
-Message-Id: <20250521111452.3316354-6-zhenzhong.duan@intel.com>
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH rfcv3 06/21] iommufd: Implement query of host VTD IOMMU's
+ capability
+Date: Wed, 21 May 2025 19:14:36 +0800
+Message-Id: <20250521111452.3316354-7-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250521111452.3316354-1-zhenzhong.duan@intel.com>
 References: <20250521111452.3316354-1-zhenzhong.duan@intel.com>
@@ -85,82 +90,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some device information returned by ioctl(IOMMU_GET_HW_INFO) are vendor
-specific. Save them all in a new defined structure mirroring that vendor
-IOMMU's structure, then get_cap() can query those information for
-capability.
+Implement query of HOST_IOMMU_DEVICE_CAP_[NESTING|FS1GP|ERRATA] for IOMMUFD
+backed host VTD IOMMU device.
 
-We can't use the vendor IOMMU's structure directly because they are in
-linux/iommufd.h which breaks build on windows.
+Query on these capabilities is not supported for legacy backend because there
+is no plan to support nesting with legacy backend backed host device.
 
-Suggested-by: Eric Auger <eric.auger@redhat.com>
-Suggested-by: Nicolin Chen <nicolinc@nvidia.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/system/host_iommu_device.h | 12 ++++++++++++
- hw/vfio/iommufd.c                  | 12 ++++++++++++
- 2 files changed, 24 insertions(+)
+ hw/i386/intel_iommu_internal.h     |  1 +
+ include/system/host_iommu_device.h |  7 ++++++
+ backends/iommufd.c                 | 39 ++++++++++++++++++++++++++++--
+ 3 files changed, 45 insertions(+), 2 deletions(-)
 
+diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
+index e8b211e8b0..2cda744786 100644
+--- a/hw/i386/intel_iommu_internal.h
++++ b/hw/i386/intel_iommu_internal.h
+@@ -191,6 +191,7 @@
+ #define VTD_ECAP_PT                 (1ULL << 6)
+ #define VTD_ECAP_SC                 (1ULL << 7)
+ #define VTD_ECAP_MHMV               (15ULL << 20)
++#define VTD_ECAP_NEST               (1ULL << 26)
+ #define VTD_ECAP_SRS                (1ULL << 31)
+ #define VTD_ECAP_PASID              (1ULL << 40)
+ #define VTD_ECAP_SMTS               (1ULL << 43)
 diff --git a/include/system/host_iommu_device.h b/include/system/host_iommu_device.h
-index 809cced4ba..908bfe32c7 100644
+index 908bfe32c7..30da88789d 100644
 --- a/include/system/host_iommu_device.h
 +++ b/include/system/host_iommu_device.h
-@@ -15,6 +15,17 @@
- #include "qom/object.h"
- #include "qapi/error.h"
- 
-+/* This is mirror of struct iommu_hw_info_vtd */
-+typedef struct Vtd_Caps {
-+    uint32_t flags;
-+    uint64_t cap_reg;
-+    uint64_t ecap_reg;
-+} Vtd_Caps;
-+
-+typedef union VendorCaps {
-+    Vtd_Caps vtd;
-+} VendorCaps;
-+
- /**
-  * struct HostIOMMUDeviceCaps - Define host IOMMU device capabilities.
+@@ -33,6 +33,10 @@ typedef union VendorCaps {
   *
-@@ -26,6 +37,7 @@
+  * @hw_caps: host platform IOMMU capabilities (e.g. on IOMMUFD this represents
+  *           the @out_capabilities value returned from IOMMU_GET_HW_INFO ioctl)
++ *
++ * @vendor_caps: host platform IOMMU vendor specific capabilities (e.g. on
++ *               IOMMUFD this represents extracted content from data_uptr
++ *               buffer returned from IOMMU_GET_HW_INFO ioctl)
+  */
  typedef struct HostIOMMUDeviceCaps {
      uint32_t type;
-     uint64_t hw_caps;
-+    VendorCaps vendor_caps;
- } HostIOMMUDeviceCaps;
+@@ -117,6 +121,9 @@ struct HostIOMMUDeviceClass {
+  */
+ #define HOST_IOMMU_DEVICE_CAP_IOMMU_TYPE        0
+ #define HOST_IOMMU_DEVICE_CAP_AW_BITS           1
++#define HOST_IOMMU_DEVICE_CAP_NESTING           2
++#define HOST_IOMMU_DEVICE_CAP_FS1GP             3
++#define HOST_IOMMU_DEVICE_CAP_ERRATA            4
  
- #define TYPE_HOST_IOMMU_DEVICE "host-iommu-device"
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index d661737c17..5c740222e5 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -834,6 +834,7 @@ static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
-     VFIODevice *vdev = opaque;
-     HostIOMMUDeviceIOMMUFD *idev;
-     HostIOMMUDeviceCaps *caps = &hiod->caps;
-+    VendorCaps *vendor_caps = &caps->vendor_caps;
-     enum iommu_hw_info_type type;
-     union {
-         struct iommu_hw_info_vtd vtd;
-@@ -852,6 +853,17 @@ static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
-     caps->type = type;
-     caps->hw_caps = hw_caps;
+ #define HOST_IOMMU_DEVICE_CAP_AW_BITS_MAX       64
+ #endif
+diff --git a/backends/iommufd.c b/backends/iommufd.c
+index b114fb08e7..d91c1eb8b8 100644
+--- a/backends/iommufd.c
++++ b/backends/iommufd.c
+@@ -21,6 +21,7 @@
+ #include "hw/vfio/vfio-device.h"
+ #include <sys/ioctl.h>
+ #include <linux/iommufd.h>
++#include "hw/i386/intel_iommu_internal.h"
  
+ static void iommufd_backend_init(Object *obj)
+ {
+@@ -364,6 +365,41 @@ bool host_iommu_device_iommufd_detach_hwpt(HostIOMMUDeviceIOMMUFD *idev,
+     return idevc->detach_hwpt(idev, errp);
+ }
+ 
++static int hiod_iommufd_get_vtd_cap(HostIOMMUDevice *hiod, int cap,
++                                    Error **errp)
++{
++    Vtd_Caps *caps = &hiod->caps.vendor_caps.vtd;
++
++    switch (cap) {
++    case HOST_IOMMU_DEVICE_CAP_NESTING:
++        return !!(caps->ecap_reg & VTD_ECAP_NEST);
++    case HOST_IOMMU_DEVICE_CAP_FS1GP:
++        return !!(caps->cap_reg & VTD_CAP_FS1GP);
++    case HOST_IOMMU_DEVICE_CAP_ERRATA:
++        return caps->flags & IOMMU_HW_INFO_VTD_ERRATA_772415_SPR17;
++    default:
++        error_setg(errp, "%s: unsupported capability %x", hiod->name, cap);
++        return -EINVAL;
++    }
++}
++
++static int hiod_iommufd_get_vendor_cap(HostIOMMUDevice *hiod, int cap,
++                                       Error **errp)
++{
++    enum iommu_hw_info_type type = hiod->caps.type;
++
 +    switch (type) {
 +    case IOMMU_HW_INFO_TYPE_INTEL_VTD:
-+        vendor_caps->vtd.flags = data.vtd.flags;
-+        vendor_caps->vtd.cap_reg = data.vtd.cap_reg;
-+        vendor_caps->vtd.ecap_reg = data.vtd.ecap_reg;
-+        break;
++        return hiod_iommufd_get_vtd_cap(hiod, cap, errp);
 +    case IOMMU_HW_INFO_TYPE_ARM_SMMUV3:
 +    case IOMMU_HW_INFO_TYPE_NONE:
 +        break;
 +    }
 +
-     idev = HOST_IOMMU_DEVICE_IOMMUFD(hiod);
-     idev->iommufd = vdev->iommufd;
-     idev->devid = vdev->devid;
++    error_setg(errp, "%s: unsupported capability type %x", hiod->name, type);
++    return -EINVAL;
++}
++
+ static int hiod_iommufd_get_cap(HostIOMMUDevice *hiod, int cap, Error **errp)
+ {
+     HostIOMMUDeviceCaps *caps = &hiod->caps;
+@@ -374,8 +410,7 @@ static int hiod_iommufd_get_cap(HostIOMMUDevice *hiod, int cap, Error **errp)
+     case HOST_IOMMU_DEVICE_CAP_AW_BITS:
+         return vfio_device_get_aw_bits(hiod->agent);
+     default:
+-        error_setg(errp, "%s: unsupported capability %x", hiod->name, cap);
+-        return -EINVAL;
++        return hiod_iommufd_get_vendor_cap(hiod, cap, errp);
+     }
+ }
+ 
 -- 
 2.34.1
 
