@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 833FBABFFAF
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 00:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BCF1ABFFC3
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 00:40:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHs4U-000686-TS; Wed, 21 May 2025 18:37:58 -0400
+	id 1uHs4T-00067p-Bi; Wed, 21 May 2025 18:37:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uHs4Q-00067g-U9
+ id 1uHs4Q-00067V-9B
  for qemu-devel@nongnu.org; Wed, 21 May 2025 18:37:54 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uHs4N-0005YD-D9
- for qemu-devel@nongnu.org; Wed, 21 May 2025 18:37:54 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-2321c38a948so49244645ad.2
+ id 1uHs4K-0005YL-O7
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 18:37:53 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-231e331baceso57169295ad.0
  for <qemu-devel@nongnu.org>; Wed, 21 May 2025 15:37:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747867066; x=1748471866; darn=nongnu.org;
+ d=linaro.org; s=google; t=1747867067; x=1748471867; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0N4C9DptqevA9wK4usU3+DxvuKBaI+3ZGbXSlc09sfk=;
- b=WRvrlvHiYR7GGyvZJ2178TgaUvL4jPeHuF6VKRidhDOacr1FSGL67GE8w/sQFqZsaD
- xAJgaT0+7drAm5s6zyqwLFIrmkaFk0STFu2jcfSAYIFjolG4PiBbCknEna60xSj54XTe
- HN+isXia/9JPg1qHtqDPV/MtqxexuEaj3nPMymY7fEeI2iMaLbVW5RGt8WMREhmp00l2
- 4YqLD/0S2Y+0gchjy3gTjWe9d2j6lOniHwx6OBt+YupRRwQOI3R+nbrdcl/PIjpECk6o
- skwZ82lyrvG3XfBMDU8Y9dphS9VuSar+PmF8+jYDET5QQXPxDgLZxURN5WzGT3zWKixC
- zUGQ==
+ bh=fNQNvYWp/z3kSBykHJK9nPCJGqDZwEVbVWsgm8QVtr4=;
+ b=J5kPIwwTbm6fPN2VQ5GO8OR+eoRFt6h/pvrLFuwCV5YXYlrJfDb7v6PeyjDcn86Ibw
+ evajKwgXGGgi9L+crXvXCJYcaJ2byyt4J0OK6PsC43iD+qdtwL6FH9rK4G+Co8OllLYU
+ 2GGqWjOWn4uUarkxs2Lt1aR3/V6ksvMTkR4SC2hAV9cACBC9u0bWG9hrxuONi6PriRBi
+ v2c4s63YzTpaSsNaGLpJ7/DRqIxgRrt00LxG+97Mxsgo62mjotZjiYbj3Gf4bAacw3Bo
+ 3s0Tbql+/NENZBqp2fYr3Z77Qb+4kinyKtGbi3fqEhwPZmpb0dqxmh5pY6CbYM4gplq/
+ c5zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747867066; x=1748471866;
+ d=1e100.net; s=20230601; t=1747867067; x=1748471867;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0N4C9DptqevA9wK4usU3+DxvuKBaI+3ZGbXSlc09sfk=;
- b=G7xaoL1qvj5zCjAx58zqNyw2Pz8zYMdjcy6/2IyysEQzjTaST6L0PMEbCrrR6mPLOu
- kWOd+29P9in29y1A56Lm3w8jV7x6+W6LCe9lF73kKpXQ6yX1zO87ZLDaTTgSQnzm5jti
- /qpm4b1RAj2JgZe/HrGPX0oEU7b+tpbBcFplp6VXE/ttvZu8mPbvJsPPSDf53/1NIu+f
- s1DnYLWKWzNqa5xaE45OrdnwSNSY46yLss49ER+kMZPFvj6awAVsPLOVw+T/l61wREUj
- bs+FpSEOz3oZbU/PSe+lBNV+YBHu3g69LZLutO5yPKNQiad12emJG0ocHDKI3bPDFeBN
- y45A==
-X-Gm-Message-State: AOJu0YxFfY3T16N3gxF2rRyibQ4gEG2gScwwkBjt1Bar5LqyJbAkgA59
- WA/ZBu2nDSo4XqRsqwOxGwMWR71/vPVkOsqG4e/e4wMgOBmaE+LyzSU9oSeTe7hlR4CI0+AAIRh
- Gc4RJ
-X-Gm-Gg: ASbGncvgQZzaHZ0QrqTBHa1u7Qc2i4kaF4BVKSH+MKlkToUz87zjzDyxVaQPOD3scth
- 5tCgvkRMvuM+dpUhahOvZ0Foo7IMjX5eDv5eSi7hlPNRiPlDezpWqtifoa+huL2TPn2n8S4REnb
- 8/zmbUo92aGjf+6kX37ja/BztFXmRpMWv34hi07btshUVkKczgPxyq9untItfqHJkpSYLBhBa8i
- nbJ/8XCcp9uClA7s5/Lj3U6qpFvA1ijOvogq7kwRbQRY5AnlHbwT5kWx2feRt+E35/pw/H/rAp+
- eq7pu93mn9IewyqCRCFbh1tsuE6f8YkEI8URbmtlx2q0OmGjBrg=
-X-Google-Smtp-Source: AGHT+IG6TLxm7U5Fef4R0jF2GtqE94xid0h71JYx4EltdZ43DutkU8xT2Y0c+A94xV56oGaNnV4tgA==
-X-Received: by 2002:a17:902:e846:b0:22e:4586:e33f with SMTP id
- d9443c01a7336-231de3bb190mr305305035ad.45.1747867065993; 
- Wed, 21 May 2025 15:37:45 -0700 (PDT)
+ bh=fNQNvYWp/z3kSBykHJK9nPCJGqDZwEVbVWsgm8QVtr4=;
+ b=e7/BxX5cu5OTKd73DQ22tPnF4e6EfdQtwGPPqGYjTsaeM4RCsgqpMdi70AffnRXecO
+ oGq3ZXNlpQneg4qYCmTpqeDMUc0k9Tftqc+WOl2FnLzCWcUc7wr9a9tk4osOVCh74fOM
+ MM619snfMGlUdIBBmNCRe8CjpXJBDTtE7t9jQziuiiRqs/Jt5L6Tw4zKNgYdI7FCcGaj
+ 8N93fJ9mUgTLSlbLtIbYcS+b3qx1Bk3mlM06Ozl7jfW457YGub8lsvR9+d9m4BNS2K3N
+ Od8+ytCwYIIJXHac9L5iO9Rf/x8Idyybbasnd3+auESC7I5xGGbyh3mN8fbK8Xqmrsay
+ P5AQ==
+X-Gm-Message-State: AOJu0YzJn0UbN024hgAhukkQjr/kPnZ5zhA53gIsGDgWx4c9nQmp0Vet
+ N51lHtXqILgmn5JGLQHSEtT9BbMZe6/XZxLq+fzkettIleVSvF0P3gVa3P19rJut0rGV9Fis4JH
+ YITZc
+X-Gm-Gg: ASbGnctmpmJFH0wI6HviUK1GaL/Gprj4BP/9uTvo5hoqldeAS4F60U7tfQy/OFimKau
+ 5T+GV7NSF3HZ56I+5vOhloVfJNrmmcL1qTc5qNgCQ7wtfNAhrlKt600U4pChSJUYTpzvCLuSY7Z
+ j3tYsyWlPXNxLYG85LqFvROpXglLrv7CITO/6+dCrD+IbSUHmcO93Y8JV4WBugvPXtzrGdEKrE+
+ pXFGtwVDScia9HzgWB7mGMTX0TwlBX3j6NjOYBRgVsa0IyK5+JSheFw4wzAzDTYvYkvPgSNAHcj
+ RvA/HOrqH/h6muI2s3Bf0slLoYnkbDtkThK4E9yAzipReDBWZeY=
+X-Google-Smtp-Source: AGHT+IHvpgUKAHz6LBQJJ3PYAOalXAamtLSUiOapuSCPareRE7PyR9376yTOsUhA2ARWC4u/t9VseA==
+X-Received: by 2002:a17:903:1b6d:b0:22e:4d50:4f58 with SMTP id
+ d9443c01a7336-231d454d2f7mr333454485ad.31.1747867066889; 
+ Wed, 21 May 2025 15:37:46 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-231d4e97dcesm97711105ad.121.2025.05.21.15.37.45
+ d9443c01a7336-231d4e97dcesm97711105ad.121.2025.05.21.15.37.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 21 May 2025 15:37:45 -0700 (PDT)
+ Wed, 21 May 2025 15:37:46 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org, pbonzini@redhat.com, peter.maydell@linaro.org,
  armbru@redhat.com, michael.roth@amd.com, philmd@linaro.org,
  richard.henderson@linaro.org, berrange@redhat.com, thuth@redhat.com
-Subject: [PATCH v3 01/14] qapi: expose rtc-reset-reinjection command
- unconditionally
-Date: Wed, 21 May 2025 15:37:27 -0700
-Message-ID: <20250521223740.249720-2-pierrick.bouvier@linaro.org>
+Subject: [PATCH v3 02/14] qapi: expand docs for SEV commands
+Date: Wed, 21 May 2025 15:37:28 -0700
+Message-ID: <20250521223740.249720-3-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250521223740.249720-1-pierrick.bouvier@linaro.org>
 References: <20250521223740.249720-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,166 +101,98 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-This removes the TARGET_I386 condition from the rtc-reset-reinjection
-command. This requires providing a QMP command stub for non-i386 target.
-This in turn requires moving the command out of misc-target.json, since
-that will trigger symbol poisoning errors when built from target
-independent code.
-
-Rather than putting the command into misc.json, it is proposed to create
-misc-$TARGET.json files to hold commands whose impl is conceptually
-only applicable to a single target. This gives an obvious docs hint to
-consumers that the command is only useful in relation a specific target,
-while misc.json is for commands applicable to 2 or more targets.
-
-The current impl of qmp_rtc_reset_reinject() is a no-op if the i386
-RTC is disabled in Kconfig, or if the running machine type lack any
-RTC device.
-
-The stub impl for non-i386 targets retains this no-op behaviour.
-However, it is now reporting an Error mentioning this command is not
-available for current target.
+This gives some more context about the behaviour of the commands in
+unsupported guest configuration or platform scenarios.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- qapi/misc-i386.json      | 24 ++++++++++++++++++++++++
- qapi/misc-target.json    | 17 -----------------
- qapi/qapi-schema.json    |  1 +
- hw/i386/monitor.c        |  2 +-
- stubs/monitor-i386-rtc.c | 12 ++++++++++++
- qapi/meson.build         |  1 +
- stubs/meson.build        |  1 +
- 7 files changed, 40 insertions(+), 18 deletions(-)
- create mode 100644 qapi/misc-i386.json
- create mode 100644 stubs/monitor-i386-rtc.c
+ qapi/misc-target.json | 43 ++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 36 insertions(+), 7 deletions(-)
 
-diff --git a/qapi/misc-i386.json b/qapi/misc-i386.json
-new file mode 100644
-index 00000000000..d5bfd91405e
---- /dev/null
-+++ b/qapi/misc-i386.json
-@@ -0,0 +1,24 @@
-+# -*- Mode: Python -*-
-+# vim: filetype=python
-+#
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+##
-+# @rtc-reset-reinjection:
-+#
-+# This command will reset the RTC interrupt reinjection backlog.  Can
-+# be used if another mechanism to synchronize guest time is in effect,
-+# for example QEMU guest agent's guest-set-time command.
-+#
-+# Use of this command is only applicable for x86 machines with an RTC,
-+# and on other machines will silently return without performing any
-+# action.
-+#
-+# Since: 2.1
-+#
-+# .. qmp-example::
-+#
-+#     -> { "execute": "rtc-reset-reinjection" }
-+#     <- { "return": {} }
-+##
-+{ 'command': 'rtc-reset-reinjection' }
 diff --git a/qapi/misc-target.json b/qapi/misc-target.json
-index f7ec695caad..c5f9f6be7e1 100644
+index c5f9f6be7e1..6b857efc1cc 100644
 --- a/qapi/misc-target.json
 +++ b/qapi/misc-target.json
-@@ -2,23 +2,6 @@
- # vim: filetype=python
- #
- 
--##
--# @rtc-reset-reinjection:
--#
--# This command will reset the RTC interrupt reinjection backlog.  Can
--# be used if another mechanism to synchronize guest time is in effect,
--# for example QEMU guest agent's guest-set-time command.
--#
--# Since: 2.1
--#
--# .. qmp-example::
--#
--#     -> { "execute": "rtc-reset-reinjection" }
--#     <- { "return": {} }
--##
--{ 'command': 'rtc-reset-reinjection',
--  'if': 'TARGET_I386' }
--
+@@ -110,7 +110,11 @@
  ##
- # @SevState:
+ # @query-sev:
  #
-diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
-index 7bc600bb768..96f6aa44133 100644
---- a/qapi/qapi-schema.json
-+++ b/qapi/qapi-schema.json
-@@ -61,6 +61,7 @@
- { 'include': 'replay.json' }
- { 'include': 'yank.json' }
- { 'include': 'misc.json' }
-+{ 'include': 'misc-i386.json' }
- { 'include': 'misc-target.json' }
- { 'include': 'audio.json' }
- { 'include': 'acpi.json' }
-diff --git a/hw/i386/monitor.c b/hw/i386/monitor.c
-index 1921e4d52e9..79df96562f6 100644
---- a/hw/i386/monitor.c
-+++ b/hw/i386/monitor.c
-@@ -26,7 +26,7 @@
- #include "monitor/monitor.h"
- #include "qobject/qdict.h"
- #include "qapi/error.h"
--#include "qapi/qapi-commands-misc-target.h"
-+#include "qapi/qapi-commands-misc-i386.h"
- #include "hw/i386/x86.h"
- #include "hw/rtc/mc146818rtc.h"
- 
-diff --git a/stubs/monitor-i386-rtc.c b/stubs/monitor-i386-rtc.c
-new file mode 100644
-index 00000000000..8420d7c93c2
---- /dev/null
-+++ b/stubs/monitor-i386-rtc.c
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "qapi/qapi-commands-misc-i386.h"
-+
-+void qmp_rtc_reset_reinjection(Error **errp)
-+{
-+    error_setg(errp,
-+               "RTC interrupt reinjection backlog reset is not available for"
-+               "this machine");
-+}
-diff --git a/qapi/meson.build b/qapi/meson.build
-index eadde4db307..3a9bd061047 100644
---- a/qapi/meson.build
-+++ b/qapi/meson.build
-@@ -64,6 +64,7 @@ if have_system
-     'qdev',
-     'pci',
-     'rocker',
-+    'misc-i386',
-     'tpm',
-     'uefi',
-   ]
-diff --git a/stubs/meson.build b/stubs/meson.build
-index 63392f5e785..9907b54c1e6 100644
---- a/stubs/meson.build
-+++ b/stubs/meson.build
-@@ -77,6 +77,7 @@ if have_system
-   stub_ss.add(files('target-monitor-defs.c'))
-   stub_ss.add(files('win32-kbd-hook.c'))
-   stub_ss.add(files('xen-hw-stub.c'))
-+  stub_ss.add(files('monitor-i386-rtc.c'))
- endif
- 
- if have_system or have_user
+-# Returns information about SEV
++# Returns information about SEV/SEV-ES/SEV-SNP.
++#
++# If unavailable due to an incompatible configuration the
++# returned @enabled field will be set to 'false' and the
++# state of all other fields is undefined.
+ #
+ # Returns: @SevInfo
+ #
+@@ -141,7 +145,16 @@
+ ##
+ # @query-sev-launch-measure:
+ #
+-# Query the SEV guest launch information.
++# Query the SEV/SEV-ES guest launch information.
++#
++# This is only valid on x86 machines configured with KVM and the
++# 'sev-guest' confidential virtualization object. The launch
++# measurement for SEV-SNP guests is only available within
++# the guest.
++#
++# This will return an error if the launch measurement is
++# unavailable, either due to an invalid guest configuration
++# or if the guest has not reached the required SEV state.
+ #
+ # Returns: The @SevLaunchMeasureInfo for the guest
+ #
+@@ -185,8 +198,9 @@
+ ##
+ # @query-sev-capabilities:
+ #
+-# This command is used to get the SEV capabilities, and is supported
+-# on AMD X86 platforms only.
++# This command is used to get the SEV capabilities, and is only
++# supported on AMD X86 platforms with KVM enabled. If SEV is not
++# available on the platform an error will be returned.
+ #
+ # Returns: SevCapability objects.
+ #
+@@ -205,7 +219,15 @@
+ ##
+ # @sev-inject-launch-secret:
+ #
+-# This command injects a secret blob into memory of SEV guest.
++# This command injects a secret blob into memory of a SEV/SEV-ES guest.
++#
++# This is only valid on x86 machines configured with KVM and the
++# 'sev-guest' confidential virtualization object. SEV-SNP guests
++# do not support launch secret injection
++#
++# This will return an error if launch secret injection is not possible,
++# either due to an invalid guest configuration, or if the guest has not
++# reached the required SEV state.
+ #
+ # @packet-header: the launch secret packet header encoded in base64
+ #
+@@ -236,8 +258,15 @@
+ ##
+ # @query-sev-attestation-report:
+ #
+-# This command is used to get the SEV attestation report, and is
+-# supported on AMD X86 platforms only.
++# This command is used to get the SEV attestation report.
++#
++# This is only valid on x86 machines configured with KVM and the
++# 'sev-guest' confidential virtualization object. The attestation
++# report for SEV-SNP guests is only available within the guest.
++#
++# This will return an error if the attestation report is
++# unavailable, either due to an invalid guest configuration
++# or if the guest has not reached the required SEV state.
+ #
+ # @mnonce: a random 16 bytes value encoded in base64 (it will be
+ #     included in report)
 -- 
 2.47.2
 
