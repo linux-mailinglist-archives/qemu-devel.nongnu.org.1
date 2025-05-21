@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87C71ABF290
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 13:19:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7BE2ABF297
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 13:20:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHhTN-0005SB-JR; Wed, 21 May 2025 07:18:57 -0400
+	id 1uHhTW-0005U9-Fh; Wed, 21 May 2025 07:19:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uHhTL-0005Re-0r
- for qemu-devel@nongnu.org; Wed, 21 May 2025 07:18:55 -0400
+ id 1uHhTS-0005Sx-Ml
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 07:19:02 -0400
 Received: from mgamail.intel.com ([192.198.163.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1uHhTI-0006OF-VF
- for qemu-devel@nongnu.org; Wed, 21 May 2025 07:18:54 -0400
+ id 1uHhTM-0006OF-7R
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 07:19:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1747826333; x=1779362333;
+ t=1747826336; x=1779362336;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=zo69rdRFcH7jyNGc0gnvUNf+sZ1XBR3BBsROGKmPTrc=;
- b=Cj0EM2onK9m7HvbigvywYvtdHKij+3gtREu9/WAfX77XSdNIavvL6DxY
- hvks6yLS+rs9EsjVJ+8zgMqIovTe1WmisFfOefhMLwPIQvzgeGKYrvmxj
- myi9SuPtXss3p0YSHxZ8YQPfRw2bvc9vA+v3K11/7XXokeHi2a6si3AOy
- wD9JFabUYJjplXWf+/SndmXsjBy/kOR8ltkxLTk43qZMd+5ttHqf3UtW9
- RLERIOJoa4ZYTl6B4Sy+0vY2Y82PEraTAVUsWPbCFPn+4ka9F9OapKXFA
- OVFMhI+c2eDbSfg5ueK8dzd+sVo2T6TljWPHByVVWJQuKUi1KPP4IalSk g==;
-X-CSE-ConnectionGUID: erkUnnvDRay3xoJpOZjTAg==
-X-CSE-MsgGUID: msjkf3bMScqBjRJ0JnDO0g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="49894887"
-X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="49894887"
+ bh=Qms8gWgZTbPWCsNrXc1g5v9D9gqBsNbzKGKEj46mU3I=;
+ b=aFTPqwYKEEyMyHnc/u5W6EP2r6Zd3Oi1GkNX8Lm+WIWBDkVGpMA5VNjq
+ oiCYWdLfNxvtrWbe3YMt2SGHZ7C6iFIlj8uqjvqVzi79iHtJx7PyyMtZ/
+ au586mjPc4CnSTEc8cpiVMo3P7tfupdud0MS+1b+UTivdWqFLTr08kp6+
+ M4PnAhr1Z5OTEqeq19xzsjbKCRW6ACeduMWudeg5u6lrEzXKhZUt8Feu9
+ fNyJHM16cgJGOZwR3cZFhI1Hcjb68Yh39VXnbxJon5OeSubWTLDigoxpZ
+ FXYXMW13zhoivImB6TMwPuxvyrPAXkykjBDi9hUv/natNWvPN5uvA2qMs g==;
+X-CSE-ConnectionGUID: NoFkXc8lTbCFxSQxhSc+Xw==
+X-CSE-MsgGUID: qJkBmtp2T9aq2XgzlgVMsA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="49894898"
+X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="49894898"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2025 04:18:51 -0700
-X-CSE-ConnectionGUID: oZOJYwO8RPOYA4+uECGlpA==
-X-CSE-MsgGUID: mr+YiMW7TvqAosW3wi0mSw==
+ 21 May 2025 04:18:56 -0700
+X-CSE-ConnectionGUID: NvHU85HRQwO4bXuS07LAoA==
+X-CSE-MsgGUID: PdRy/4DSTdeVCbbx+fYatw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="145158312"
+X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="145158317"
 Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2025 04:18:47 -0700
+ 21 May 2025 04:18:51 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -52,10 +52,9 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
  kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH rfcv3 03/21] vfio/iommufd: Initialize iommufd specific members
- in HostIOMMUDeviceIOMMUFD
-Date: Wed, 21 May 2025 19:14:33 +0800
-Message-Id: <20250521111452.3316354-4-zhenzhong.duan@intel.com>
+Subject: [PATCH rfcv3 04/21] vfio/iommufd: Implement [at|de]tach_hwpt handlers
+Date: Wed, 21 May 2025 19:14:34 +0800
+Message-Id: <20250521111452.3316354-5-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250521111452.3316354-1-zhenzhong.duan@intel.com>
 References: <20250521111452.3316354-1-zhenzhong.duan@intel.com>
@@ -69,8 +68,7 @@ X-Spam_bar: ----
 X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.184,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,39 +84,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are three iommufd specific members in HostIOMMUDeviceIOMMUFD
-that need to be initialized after attachment, they will all be used
-by vIOMMU.
+Implement [at|de]tach_hwpt handlers in VFIO subsystem. vIOMMU
+utilizes them to attach to or detach from hwpt on host side.
 
+Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/iommufd.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ hw/vfio/iommufd.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
 diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index af1c7ab10a..5fde2b633a 100644
+index 5fde2b633a..d661737c17 100644
 --- a/hw/vfio/iommufd.c
 +++ b/hw/vfio/iommufd.c
-@@ -814,6 +814,7 @@ static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
+@@ -810,6 +810,24 @@ static void vfio_iommu_iommufd_class_init(ObjectClass *klass, const void *data)
+     vioc->query_dirty_bitmap = iommufd_query_dirty_bitmap;
+ };
+ 
++static bool
++host_iommu_device_iommufd_vfio_attach_hwpt(HostIOMMUDeviceIOMMUFD *idev,
++                                           uint32_t hwpt_id, Error **errp)
++{
++    VFIODevice *vbasedev = HOST_IOMMU_DEVICE(idev)->agent;
++
++    return !iommufd_cdev_attach_ioas_hwpt(vbasedev, hwpt_id, errp);
++}
++
++static bool
++host_iommu_device_iommufd_vfio_detach_hwpt(HostIOMMUDeviceIOMMUFD *idev,
++                                           Error **errp)
++{
++    VFIODevice *vbasedev = HOST_IOMMU_DEVICE(idev)->agent;
++
++    return iommufd_cdev_detach_ioas_hwpt(vbasedev, errp);
++}
++
+ static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
                                        Error **errp)
  {
-     VFIODevice *vdev = opaque;
-+    HostIOMMUDeviceIOMMUFD *idev;
-     HostIOMMUDeviceCaps *caps = &hiod->caps;
-     enum iommu_hw_info_type type;
-     union {
-@@ -833,6 +834,11 @@ static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
-     caps->type = type;
-     caps->hw_caps = hw_caps;
+@@ -864,10 +882,14 @@ hiod_iommufd_vfio_get_page_size_mask(HostIOMMUDevice *hiod)
+ static void hiod_iommufd_vfio_class_init(ObjectClass *oc, const void *data)
+ {
+     HostIOMMUDeviceClass *hiodc = HOST_IOMMU_DEVICE_CLASS(oc);
++    HostIOMMUDeviceIOMMUFDClass *idevc = HOST_IOMMU_DEVICE_IOMMUFD_CLASS(oc);
  
-+    idev = HOST_IOMMU_DEVICE_IOMMUFD(hiod);
-+    idev->iommufd = vdev->iommufd;
-+    idev->devid = vdev->devid;
-+    idev->hwpt_id = vdev->hwpt->hwpt_id;
+     hiodc->realize = hiod_iommufd_vfio_realize;
+     hiodc->get_iova_ranges = hiod_iommufd_vfio_get_iova_ranges;
+     hiodc->get_page_size_mask = hiod_iommufd_vfio_get_page_size_mask;
 +
-     return true;
- }
++    idevc->attach_hwpt = host_iommu_device_iommufd_vfio_attach_hwpt;
++    idevc->detach_hwpt = host_iommu_device_iommufd_vfio_detach_hwpt;
+ };
  
+ static const TypeInfo types[] = {
 -- 
 2.34.1
 
