@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 480D3ABF2FB
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 13:37:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E21C1ABF2F8
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 13:37:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHhkE-0003rP-4U; Wed, 21 May 2025 07:36:22 -0400
+	id 1uHhkC-0003qP-0w; Wed, 21 May 2025 07:36:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pabeni@redhat.com>) id 1uHhk0-0003f7-T7
- for qemu-devel@nongnu.org; Wed, 21 May 2025 07:36:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <pabeni@redhat.com>) id 1uHhk7-0003ml-82
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 07:36:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pabeni@redhat.com>) id 1uHhjx-00017c-PA
- for qemu-devel@nongnu.org; Wed, 21 May 2025 07:36:07 -0400
+ (Exim 4.90_1) (envelope-from <pabeni@redhat.com>) id 1uHhk2-00018P-Qb
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 07:36:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747827364;
+ s=mimecast20190719; t=1747827369;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/VNFzrq/Ooi4pork00bC5nqjr61W6Qox9V85Ynz5t7U=;
- b=QmjUdFsDTQmhbIgD9N2hIXfjduol7E10N4iaWLz3jsYQ32G133pPipkHCv3gmDI8LIMQz6
- RcAJVpUrpkyccukos85wRY7TqnMGCCTR6lPoLUw44U+HGu5BzbeQNe31VBR4uk6rvX04en
- 9kQDxPl8qluQ6o/0S43vij0HWzJ9gn4=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=4ZpCLgvWatSfPeBcPKsV0twpfMUST5XFoEJrjxQz8ks=;
+ b=doroJnRRg/BWirc4IWeFoABmd3aFrx0EIYyybgaxVMoWlqCtilK5e5A8THIePOwy/c1hQh
+ RlBbU32JcQEBqr0yFSWMZUfpuXCJ4Nf0RN6qWvRkMdz/tbFJ6/Xhwes4Agw9IFsm5sz4Wb
+ NPk9vjN38dzBypu6LNI/LZohefkI6Jw=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-619-r1Rv4ylxPbKJjYg9vDuZTg-1; Wed,
- 21 May 2025 07:36:00 -0400
-X-MC-Unique: r1Rv4ylxPbKJjYg9vDuZTg-1
-X-Mimecast-MFC-AGG-ID: r1Rv4ylxPbKJjYg9vDuZTg_1747827359
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-648-9cUalADxOlml1Pa-w_8PZQ-1; Wed,
+ 21 May 2025 07:36:06 -0400
+X-MC-Unique: 9cUalADxOlml1Pa-w_8PZQ-1
+X-Mimecast-MFC-AGG-ID: 9cUalADxOlml1Pa-w_8PZQ_1747827365
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E7814180034A; Wed, 21 May 2025 11:35:58 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E5C661956088; Wed, 21 May 2025 11:36:04 +0000 (UTC)
 Received: from gerbillo.redhat.com (unknown [10.45.224.39])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 71FA419560B7; Wed, 21 May 2025 11:35:53 +0000 (UTC)
+ id 7218D19560B7; Wed, 21 May 2025 11:35:59 +0000 (UTC)
 From: Paolo Abeni <pabeni@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -58,15 +58,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Giuseppe Lettieri <g.lettieri@iet.unipi.it>,
  Vincenzo Maffione <v.maffione@gmail.com>, Eric Blake <eblake@redhat.com>,
  Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH RFC 10/16] vhost-net: implement extended features support.
-Date: Wed, 21 May 2025 13:34:04 +0200
-Message-ID: <625a5d2173d582e58f90c96897e2ca569c73e4c3.1747825544.git.pabeni@redhat.com>
+Subject: [PATCH RFC 11/16] qdev-properties: add property for extended virtio
+ features
+Date: Wed, 21 May 2025 13:34:05 +0200
+Message-ID: <a6e4033e5890afb43552e9e38645dcaf7b0dc86c.1747825544.git.pabeni@redhat.com>
 In-Reply-To: <cover.1747825544.git.pabeni@redhat.com>
 References: <cover.1747825544.git.pabeni@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pabeni@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pabeni@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -91,159 +92,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update the features manipulation helpers to cope with the
-extended features, adjust the relevant format strings accordingly
-and always use the virtio features type for bitmask manipulation.
+Virtio features extend above the 64 bit space, and GSO over
+UDP tunnels support is going to use some bits in the extended
+space.
+
+Introduce a new Property type to handle the extended feature
+defined in the previous patch.
 
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 ---
- hw/net/vhost_net-stub.c |  7 ++++---
- hw/net/vhost_net.c      | 31 ++++++++++++++++++-------------
- include/net/vhost_net.h |  8 +++++---
- 3 files changed, 27 insertions(+), 19 deletions(-)
+ hw/core/qdev-properties.c    | 46 ++++++++++++++++++++++++++++++++++++
+ include/hw/qdev-properties.h | 13 ++++++++++
+ 2 files changed, 59 insertions(+)
 
-diff --git a/hw/net/vhost_net-stub.c b/hw/net/vhost_net-stub.c
-index 72df6d757e..3997b3b814 100644
---- a/hw/net/vhost_net-stub.c
-+++ b/hw/net/vhost_net-stub.c
-@@ -47,7 +47,8 @@ void vhost_net_cleanup(struct vhost_net *net)
- {
- }
+diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
+index 147b3ffd16..2a0182479c 100644
+--- a/hw/core/qdev-properties.c
++++ b/hw/core/qdev-properties.c
+@@ -225,6 +225,52 @@ const PropertyInfo qdev_prop_bit64 = {
+     .set_default_value = set_default_value_bool,
+ };
  
--uint64_t vhost_net_get_features(struct vhost_net *net, uint64_t features)
-+virtio_features_t vhost_net_get_features(struct vhost_net *net,
-+                                         virtio_features_t features)
- {
-     return features;
- }
-@@ -63,11 +64,11 @@ int vhost_net_set_config(struct vhost_net *net, const uint8_t *data,
-     return 0;
- }
- 
--void vhost_net_ack_features(struct vhost_net *net, uint64_t features)
-+void vhost_net_ack_features(struct vhost_net *net, virtio_features_t features)
- {
- }
- 
--uint64_t vhost_net_get_acked_features(VHostNetState *net)
-+virtio_features_t vhost_net_get_acked_features(VHostNetState *net)
- {
-     return 0;
- }
-diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
-index 891f235a0a..58d7619fc8 100644
---- a/hw/net/vhost_net.c
-+++ b/hw/net/vhost_net.c
-@@ -121,7 +121,8 @@ static const int *vhost_net_get_feature_bits(struct vhost_net *net)
-     return feature_bits;
- }
- 
--uint64_t vhost_net_get_features(struct vhost_net *net, uint64_t features)
-+virtio_features_t vhost_net_get_features(struct vhost_net *net,
-+                                         virtio_features_t features)
- {
-     return vhost_get_features(&net->dev, vhost_net_get_feature_bits(net),
-             features);
-@@ -137,7 +138,7 @@ int vhost_net_set_config(struct vhost_net *net, const uint8_t *data,
-     return vhost_dev_set_config(&net->dev, data, offset, size, flags);
- }
- 
--void vhost_net_ack_features(struct vhost_net *net, uint64_t features)
-+void vhost_net_ack_features(struct vhost_net *net, virtio_features_t features)
- {
-     net->dev.acked_features = net->dev.backend_features;
-     vhost_ack_features(&net->dev, vhost_net_get_feature_bits(net), features);
-@@ -148,7 +149,7 @@ uint64_t vhost_net_get_max_queues(VHostNetState *net)
-     return net->dev.max_queues;
- }
- 
--uint64_t vhost_net_get_acked_features(VHostNetState *net)
-+virtio_features_t vhost_net_get_acked_features(VHostNetState *net)
- {
-     return net->dev.acked_features;
- }
-@@ -317,10 +318,11 @@ static int vhost_net_get_fd(NetClientState *backend)
- 
- struct vhost_net *vhost_net_init(VhostNetOptions *options)
- {
-+    virtio_features_t missing_features;
-     int r;
-     bool backend_kernel = options->backend_type == VHOST_BACKEND_TYPE_KERNEL;
-     struct vhost_net *net = g_new0(struct vhost_net, 1);
--    uint64_t features = 0;
-+    virtio_features_t features = 0;
-     Error *local_err = NULL;
- 
-     if (!options->net_backend) {
-@@ -361,12 +363,14 @@ struct vhost_net *vhost_net_init(VhostNetOptions *options)
-     if (backend_kernel) {
-         if (!qemu_has_vnet_hdr_len(options->net_backend,
-                                sizeof(struct virtio_net_hdr_mrg_rxbuf))) {
--            net->dev.features &= ~(1ULL << VIRTIO_NET_F_MRG_RXBUF);
-+            net->dev.features &= ~VIRTIO_BIT(VIRTIO_NET_F_MRG_RXBUF);
-         }
--        if (~net->dev.features & net->dev.backend_features) {
--            fprintf(stderr, "vhost lacks feature mask 0x%" PRIx64
--                   " for backend\n",
--                   (uint64_t)(~net->dev.features & net->dev.backend_features));
++/* Bit virtio features __int128_t */
++#ifdef CONFIG_INT128
++static void vf_prop_set(Object *obj, const Property *props, bool val)
++{
++    __int128_t *vf = object_field_prop_ptr(obj, props);
++    assert(props->info == &qdev_prop_bitvf);
++    if (val) {
++        *vf |= (__int128_t)1 << props->bitnr;
++    } else {
++        *vf &= ~((__int128_t)1 << props->bitnr);
++    }
++}
 +
-+        missing_features = ~net->dev.features & net->dev.backend_features;
-+        if (missing_features) {
-+            fprintf(stderr, "vhost lacks feature mask 0x" VIRTIO_FEATURES_FMT
-+                   " for backend\n", VIRTIO_FEATURES_HI(missing_features),
-+                   VIRTIO_FEATURES_LOW(missing_features));
-             goto fail;
-         }
-     }
-@@ -375,10 +379,11 @@ struct vhost_net *vhost_net_init(VhostNetOptions *options)
- #ifdef CONFIG_VHOST_NET_USER
-     if (net->nc->info->type == NET_CLIENT_DRIVER_VHOST_USER) {
-         features = vhost_user_get_acked_features(net->nc);
--        if (~net->dev.features & features) {
--            fprintf(stderr, "vhost lacks feature mask 0x%" PRIx64
--                    " for backend\n",
--                    (uint64_t)(~net->dev.features & features));
-+        missing_features = ~net->dev.features & features;
-+        if (missing_features) {
-+            fprintf(stderr, "vhost lacks feature mask 0x" VIRTIO_FEATURES_FMT
-+                    " for backend\n", VIRTIO_FEATURES_HI(missing_features),
-+                    VIRTIO_FEATURES_LOW(missing_features));
-             goto fail;
-         }
-     }
-diff --git a/include/net/vhost_net.h b/include/net/vhost_net.h
-index c6a5361a2a..d7d733b7ad 100644
---- a/include/net/vhost_net.h
-+++ b/include/net/vhost_net.h
-@@ -2,6 +2,7 @@
- #define VHOST_NET_H
++static void prop_get_bitvf(Object *obj, Visitor *v, const char *name,
++                           void *opaque, Error **errp)
++{
++    const Property *prop = opaque;
++    __int128_t *vf = object_field_prop_ptr(obj, prop);
++    bool value;
++
++    assert(prop->info == &qdev_prop_bitvf);
++    value = *vf & ((__int128_t)1 << prop->bitnr);
++    visit_type_bool(v, name, &value, errp);
++}
++
++static void prop_set_bitvf(Object *obj, Visitor *v, const char *name,
++                           void *opaque, Error **errp)
++{
++    const Property *prop = opaque;
++    bool value;
++
++    if (!visit_type_bool(v, name, &value, errp)) {
++        return;
++    }
++    vf_prop_set(obj, prop, value);
++}
++
++const PropertyInfo qdev_prop_bitvf = {
++    .type  = "bool",
++    .description = "on/off",
++    .get   = prop_get_bitvf,
++    .set   = prop_set_bitvf,
++    .set_default_value = set_default_value_bool,
++};
++#endif
++
+ /* --- bool --- */
  
- #include "net/net.h"
-+#include "hw/virtio/virtio-features.h"
- #include "hw/virtio/vhost-backend.h"
+ static void get_bool(Object *obj, Visitor *v, const char *name, void *opaque,
+diff --git a/include/hw/qdev-properties.h b/include/hw/qdev-properties.h
+index 2c99856caa..7760dd6dbd 100644
+--- a/include/hw/qdev-properties.h
++++ b/include/hw/qdev-properties.h
+@@ -100,6 +100,19 @@ extern const PropertyInfo qdev_prop_link;
+                 .set_default = true,                              \
+                 .defval.u  = (bool)_defval)
  
- struct vhost_net;
-@@ -25,8 +26,9 @@ void vhost_net_stop(VirtIODevice *dev, NetClientState *ncs,
- 
- void vhost_net_cleanup(VHostNetState *net);
- 
--uint64_t vhost_net_get_features(VHostNetState *net, uint64_t features);
--void vhost_net_ack_features(VHostNetState *net, uint64_t features);
-+virtio_features_t vhost_net_get_features(VHostNetState *net,
-+                                         virtio_features_t features);
-+void vhost_net_ack_features(VHostNetState *net, virtio_features_t features);
- 
- int vhost_net_get_config(struct vhost_net *net,  uint8_t *config,
-                          uint32_t config_len);
-@@ -43,7 +45,7 @@ VHostNetState *get_vhost_net(NetClientState *nc);
- 
- int vhost_set_vring_enable(NetClientState * nc, int enable);
- 
--uint64_t vhost_net_get_acked_features(VHostNetState *net);
-+virtio_features_t vhost_net_get_acked_features(VHostNetState *net);
- 
- int vhost_net_set_mtu(struct vhost_net *net, uint16_t mtu);
- 
++#ifdef CONFIG_INT128
++extern const PropertyInfo qdev_prop_bitvf;
++
++#define DEFINE_PROP_BITVF(_name, _state, _field, _bit, _defval)   \
++    DEFINE_PROP(_name, _state, _field, qdev_prop_bitvf,           \
++                 virtio_features_t,                               \
++                .bitnr    = (_bit),                               \
++                .set_default = true,                              \
++                .defval.u  = (bool)_defval)
++#else
++#define qdev_prop_bitvf qdev_prop_bit64
++#endif
++
+ #define DEFINE_PROP_BOOL(_name, _state, _field, _defval)     \
+     DEFINE_PROP(_name, _state, _field, qdev_prop_bool, bool, \
+                 .set_default = true,                         \
 -- 
 2.49.0
 
