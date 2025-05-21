@@ -2,90 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2AA3ABF69F
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 15:52:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36CC2ABF6B1
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 15:55:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHjrk-000705-S8; Wed, 21 May 2025 09:52:16 -0400
+	id 1uHjuk-00080F-5J; Wed, 21 May 2025 09:55:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uHjrD-0006zE-9r
- for qemu-devel@nongnu.org; Wed, 21 May 2025 09:51:44 -0400
+ (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
+ id 1uHjuP-0007xu-E8
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 09:55:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1uHjr9-0006ay-VO
- for qemu-devel@nongnu.org; Wed, 21 May 2025 09:51:42 -0400
+ (Exim 4.90_1) (envelope-from <jmarcin@redhat.com>)
+ id 1uHjuN-0006rM-2X
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 09:55:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747835498;
+ s=mimecast20190719; t=1747835697;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=TLAbJwWk+zXlTB1vrvkrehkS1xSOSoMPDH3c1wuQcsQ=;
- b=BAwOP/kzRSLh8gktO2rUyLrpiBZLfZDAnF9of/9EYF4RXevTe/wbvWn8TnPN7Az3rWZBBw
- 3TPEj6JIhZk1D6jICEmY28sEfmIA/CY+vvV6tWrT/xQ5s7u1WZiaXscefStJbpXF/YTY38
- 0bf6TJfSjJdHHCR5PKz8jCQffVlCK+0=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-215-vDNp9ju6MK-8p7wfZIoeLw-1; Wed, 21 May 2025 09:51:37 -0400
-X-MC-Unique: vDNp9ju6MK-8p7wfZIoeLw-1
-X-Mimecast-MFC-AGG-ID: vDNp9ju6MK-8p7wfZIoeLw_1747835495
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-551fe205635so1023208e87.3
- for <qemu-devel@nongnu.org>; Wed, 21 May 2025 06:51:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747835493; x=1748440293;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=TLAbJwWk+zXlTB1vrvkrehkS1xSOSoMPDH3c1wuQcsQ=;
- b=dmU639O5IaHRWOodUqemc/er3puuvzMA/12BK8svvg4IP0T2fDCollLTab/Eh0cVWe
- WLINuadMl9IZn/2tVSgO+d1ABoh5pw7S6Rau8TSmRgauv832/uZFsoO9HSWfU7v8Fi7z
- OPY7QP2JlmD5zf/TxoKgDUtOWCcm6zRewOGrEzWpM6JfyewMFENC1j5gzKNE1CRubNNP
- v+usGxsHysI3otqrNvc7SoXTjWqxtEjIU3CHVNIdGFZsQ2lWyLX6Qa5TfPdmfkf17zds
- HRg4yEMJatn6RgJqTBkcJ1yRR/Xq74N7aZjSHPgszSQu7vw558AlHzZUB7STh/+5JkF2
- b7SQ==
-X-Gm-Message-State: AOJu0Yx75OPbpsLAVC+e2z4EDESCC6sHN7GTedl4JJmLksxTHqoPHXFh
- 0/UY3ozNfs7nPbSvJhFJx0m1/pKJZok89y+XZy1ova8HgxBEFdw5q7Qap++UrTetbZXE5NShJys
- bdtd3ZyhnlLC0mvFcPSzOB3vJBYUT5BMweGrj5GkJ0PKkxHEjv4d7IxAnsOalQ/2MD+WSEKepbM
- MGMblX5yNuNKxyHzCafo1c1rjdh9uJ/D4ncQHbF4w=
-X-Gm-Gg: ASbGnctDFaWawXw38hvk9ergBKAG0quEscXY/g69qmkysrqh+d06vnkKHNKCgY307JH
- Lf/E3Ka3oQvXVP2Vu1dZtuZbbQAZiPum4AsBPdeVdc7JzXo/1dL3tEC6kLz7QnHehsrc=
-X-Received: by 2002:a05:6512:2216:b0:549:39b1:65c2 with SMTP id
- 2adb3069b0e04-550e72443e9mr6505743e87.48.1747835493459; 
- Wed, 21 May 2025 06:51:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGS+CHiLnn3WLec1hDg1Mr4Hq7/8xJ/Vo7edMZtdaoLZVdggk+3kNFQOfoTpnWawi7JaurliNdok8fshU7BKWk=
-X-Received: by 2002:a05:6000:2385:b0:3a3:4ba4:f3cd with SMTP id
- ffacd0b85a97d-3a35c821e38mr16589443f8f.1.1747835482114; Wed, 21 May 2025
- 06:51:22 -0700 (PDT)
+ content-transfer-encoding:content-transfer-encoding;
+ bh=pAK1vvudTunosHpdBGR3dFyo+C0rpEyQ/8UCKGtHKDk=;
+ b=JmIP+hppLub8evjEJhpQ0Tymv975IV9zbxbFAZ9fZnqw5p8/YZyNzTMGoFDyhj1k3tmQ4W
+ YiXd9IUNRe5aPi5Wd6SMvoDV/lqAeOcW+9gfqJCdbfeqvYijSFZbBNQ7l500zH6BYe58u/
+ u0onWC6VZd5Cs+SMVzQbHt0kH83fsng=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-687-jODbQdITPY6J2pymJdhG4w-1; Wed,
+ 21 May 2025 09:54:54 -0400
+X-MC-Unique: jODbQdITPY6J2pymJdhG4w-1
+X-Mimecast-MFC-AGG-ID: jODbQdITPY6J2pymJdhG4w_1747835693
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 6E9201800570; Wed, 21 May 2025 13:54:53 +0000 (UTC)
+Received: from fedora.brq.redhat.com (unknown [10.43.2.64])
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 98F211955E83; Wed, 21 May 2025 13:54:51 +0000 (UTC)
+From: Juraj Marcin <jmarcin@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Juraj Marcin <jmarcin@redhat.com>, vsementsov@yandex-team.ru,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v5 0/6] util/qemu-sockets: Introduce inet socket options
+ controlling TCP keep-alive
+Date: Wed, 21 May 2025 15:52:29 +0200
+Message-ID: <20250521135240.3941598-1-jmarcin@redhat.com>
 MIME-Version: 1.0
-References: <20250521081845.496442-1-pbonzini@redhat.com>
- <20250521081845.496442-6-pbonzini@redhat.com>
- <CAAjaMXaeM0Nt3dzEJLCiAOeCQzneEDO6yeX3+CF5tZ2dhQ=YLw@mail.gmail.com>
-In-Reply-To: <CAAjaMXaeM0Nt3dzEJLCiAOeCQzneEDO6yeX3+CF5tZ2dhQ=YLw@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 21 May 2025 15:51:09 +0200
-X-Gm-Features: AX0GCFskEqIBfZzMwAaokzgt7MsktJWVY2naGoodt-FOhBPgcV6fQiBNnrq30nw
-Message-ID: <CABgObfbaTced6eqXW_h+Nkth9i0gB_myrtpG64a46K0MQgFRzQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 5/6] rust: pl011: switch from bilge to bitfield-struct
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel <qemu-devel@nongnu.org>, "Maydell,
- Peter" <peter.maydell@linaro.org>, qemu-rust@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000099bb10635a5a9a5"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jmarcin@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
 X-Spam_bar: --
 X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.184,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,85 +82,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000099bb10635a5a9a5
-Content-Type: text/plain; charset="UTF-8"
+This series extends the work introduced by commit aec21d3175 ("qapi: Add
+InetSocketAddress member keep-alive"). [1]
 
-Il mer 21 mag 2025, 11:22 Manos Pitsidianakis <
-manos.pitsidianakis@linaro.org> ha scritto:
+First, the series fixes an issue in qio_dns_resolver_lookup_sync_inet(),
+where the InetSocketAddress structure is only partially copied. Next, it
+refactors setting client socket options into a separate function and the
+success and failure paths in inet_listen_saddr() in preparation for
+keep-alive support on server sockets and the addition of new TCP
+keep-alive options.
 
-> Perhaps it'd be simpler to contribute const-ability to upstream bilge?
-> Is From/Into the only problem trait?
+Then, the series extends the support for keep-alive on server sockets.
 
+Before adding new inet address options, there are a couple of issues
+with the inet address options parsing this series resolves:
+- the parser contains a bug where it does not allow options with names that
+  start with the name of another flag,
+- the parser lacks some common function for parsing numeric values,
+- the parser supports only a subset of the inet address options, namely
+  the 'numeric' flag is missing.
+This is resolved by the sixth patch by reworking with parser using the
+QemuOpts parser. The series also includes unit tests to verify, there is
+no regression in the refactored parser.
 
-Probably.
+Finally, the series introduces three new InetSocketAddress options for
+the control of TCP keep-alive settings. By default, the value of all new
+settings is 0, which means no custom socket option value is set.
 
-I was thinking we can generate
-> from/into associated methods for each type that are const
+This is useful, for example, for live migration. In case there is no
+traffic from the destination to the source machine during postcopy, the
+destination cannot detect a failed connection due to a lack of
+non-acknowledged packets and stays in the postcopy-active state until
+paused by the management of the QEMU instance.
 
+[1]: https://lore.kernel.org/all/20190725094937.32454-1-vsementsov@virtuozzo.com/
 
-Yes, that's what bitfield-struct does too.
+---
+V5:
+- squashed "tests/unit/test-util-sockets: Add tests for inet_parse()"
+  and "util/qemu-sockets: Refactor inet_parse() to use QemuOpts"
+- updated the existing test case to use only explicit bool option values
+  and added a second test case using only implicit bool option values
 
-. It'd not
-> even be a big change and we can carry it as a patch until we can
-> catchup with upstream crates.io version in subprojects/. WDYT?
->
+V4:
+https://lore.kernel.org/all/20250516155710.2246148-1-jmarcin@redhat.com/
+- refactored inet_parse() to use QemuOpts, this resolves a bug and
+  allows more option types, with tests
+- fixed HAVE_TCP_* macros on Windows and macOS and other suggestions by
+  Daniel
 
-Sure, I have no idea how hard it is but I think they'd accept it? The
-bitflags/bits part is more important; I put the two together just for
-convenience, as a "let's define our standard toolbox" kind of series,
-because they conflict. But it's possible to merge just the first part.
+V3:
+https://lore.kernel.org/all/20250408112508.1638722-1-jmarcin@redhat.com/
+- moved the InetSocketAddress struct copy fix and the common function
+  setting socket options into a separate commit
+- refactored inet_listen_saddr()
 
-Paolo
+V2:
+https://lore.kernel.org/all/20250319163638.456417-1-jmarcin@redhat.com/
+- moved socket options setting into a common function for both server
+  and client sockets (suggested by Vladimir)
 
+V1:
+https://lore.kernel.org/all/20250303143312.640909-1-jmarcin@redhat.com/
 
-> --
-> Manos Pitsidianakis
-> Emulation and Virtualization Engineer at Linaro Ltd
->
->
+Juraj Marcin (6):
+  io: Fix partial struct copy in qio_dns_resolver_lookup_sync_inet()
+  util/qemu-sockets: Refactor setting client sockopts into a separate
+    function
+  util/qemu-sockets: Refactor success and failure paths in
+    inet_listen_saddr()
+  util/qemu-sockets: Add support for keep-alive flag to passive sockets
+  util/qemu-sockets: Refactor inet_parse() to use QemuOpts
+  util/qemu-sockets: Introduce inet socket options controlling TCP
+    keep-alive
 
---000000000000099bb10635a5a9a5
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ io/dns-resolver.c              |  21 +--
+ meson.build                    |  30 +++
+ qapi/sockets.json              |  23 ++-
+ tests/unit/test-util-sockets.c | 228 +++++++++++++++++++++++
+ util/qemu-sockets.c            | 327 ++++++++++++++++++++-------------
+ 5 files changed, 487 insertions(+), 142 deletions(-)
 
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">Il mer 21 mag 2025, 11:22 Manos Pitsidianakis &lt;<a h=
-ref=3D"mailto:manos.pitsidianakis@linaro.org" target=3D"_blank" rel=3D"nore=
-ferrer">manos.pitsidianakis@linaro.org</a>&gt; ha scritto:</div><blockquote=
- class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px so=
-lid rgb(204,204,204);padding-left:1ex">
-Perhaps it&#39;d be simpler to contribute const-ability to upstream bilge?<=
-br>
-Is From/Into the only problem trait?</blockquote></div></div><div dir=3D"au=
-to"><br></div><div dir=3D"auto">Probably.</div><div dir=3D"auto"><br></div>=
-<div dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quo=
-te" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204=
-);padding-left:1ex"> I was thinking we can generate<br>
-from/into associated methods for each type that are const</blockquote></div=
-></div><div dir=3D"auto"><br></div><div dir=3D"auto">Yes, that&#39;s what b=
-itfield-struct does too.</div><div dir=3D"auto"><br></div><div dir=3D"auto"=
-><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"marg=
-in:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1e=
-x">. It&#39;d not<br>
-even be a big change and we can carry it as a patch until we can<br>
-catchup with upstream <a href=3D"http://crates.io" rel=3D"noreferrer norefe=
-rrer noreferrer" target=3D"_blank">crates.io</a> version in subprojects/. W=
-DYT?<br></blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"au=
-to">Sure, I have no idea how hard it is but I think they&#39;d accept it? T=
-he bitflags/bits part is more important; I put the two together just for co=
-nvenience, as a &quot;let&#39;s define our standard toolbox&quot; kind of s=
-eries, because they conflict. But it&#39;s possible to merge just the first=
- part.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Paolo</div><div d=
-ir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockqu=
-ote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px=
- solid rgb(204,204,204);padding-left:1ex">
-<br>
--- <br>
-Manos Pitsidianakis<br>
-Emulation and Virtualization Engineer at Linaro Ltd<br>
-<br>
-</blockquote></div></div></div>
-
---000000000000099bb10635a5a9a5--
+-- 
+2.49.0
 
 
