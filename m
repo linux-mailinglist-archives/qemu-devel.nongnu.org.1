@@ -2,81 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8596DABFFCD
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 00:40:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 883C4ABFFC5
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 00:40:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHs4f-0006DG-Ds; Wed, 21 May 2025 18:38:09 -0400
+	id 1uHs5g-0007wl-Cn; Wed, 21 May 2025 18:39:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uHs4a-0006BM-12
- for qemu-devel@nongnu.org; Wed, 21 May 2025 18:38:04 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1uHs5c-0007sW-SB
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 18:39:08 -0400
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uHs4Y-0005bp-1t
- for qemu-devel@nongnu.org; Wed, 21 May 2025 18:38:03 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-231e98e46c0so46383575ad.3
- for <qemu-devel@nongnu.org>; Wed, 21 May 2025 15:37:59 -0700 (PDT)
+ id 1uHs5X-0005jR-Mp
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 18:39:07 -0400
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-af523f4511fso5609219a12.0
+ for <qemu-devel@nongnu.org>; Wed, 21 May 2025 15:39:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747867078; x=1748471878; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2aCXupjQf+KpZBVxWkFiZBckC01w8HvIqJ4QFv6HBfc=;
- b=Okwq030Z6AGdtvUPTkYwW9HB/jrhEheqT5jvqp+acl+PaqYCkhwwd2zjVNMeTvKkQl
- oeU8cjpQ5voUahFFCZCyt/ZrJ2Gn7ho1nK4Z0uk4xoqlXzTDZwJZXaIWHAsXXU2aYC8g
- QC7Z0YwPvKgLzjQ7xrQESH9A3FhHW4TsolRsTlw6FmhPDsQVZFgOH1biOCw8bKddGCdN
- ilUX1yB6mmBoSCSZCLFTSIvuu4EzDj2T6CePJdK9aXz/BfGUc996DhMgbkBog/AzDmMB
- xRX0qjeggaVd5q0NMV64j+3wzh2DnWSYbu9k2avp/Pu90f9sMxEk6OQHdPt1EGzoyfwU
- 3QMQ==
+ d=linaro.org; s=google; t=1747867141; x=1748471941; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=JjFDse8vvxEF+z5TEd+TMPYfR6DXZF4ktjUOUAx1KzM=;
+ b=aMPXKA7T78jdrO/FhPtY1I8/L7/JhCdc4hRewJVtJOu5TjywpVkTRV9tYGzH4ek68A
+ B7oQBRhAWEfl05hldXN7AdqbiYmH9dvNpVnk0sGO4TSgCx+1CEzwgDPV7zX2LX47+V0l
+ olloN+AeQY1WU9Nvp+2TW+bJQQGhITLyfzrDTnmBK4V+L35AVRE17uEHa6e4up0axhQu
+ 40c9/76jbZtWsTx4E4uE09V4JC1m4Yh7kroPHuQ/5YqYOcx+12Si4KAmHrjm++xl9DW6
+ EsMM69sBgB3qGub2jKO12RrkSPF9cBmtENE07K6gwCBhLyRJzQsfLxQIAYFKrZ9ZeYGT
+ QC0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747867078; x=1748471878;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2aCXupjQf+KpZBVxWkFiZBckC01w8HvIqJ4QFv6HBfc=;
- b=ilIICcb/hJrsPX+nmY+XDiiWzJUmL3BNzDAhNEY3tgGR7lAesMxYnCbZapu47Q3xIN
- Fk6jLmCCLpi9Ruq/bMREmaVGxVUCsNQhbeXHAX9zdh4SJ2E0B2dXHT0iUlgj3os/LoTQ
- IP0ckK7qIiDIRNkLo+ecJIofF7KDRyjHxx6C9P4i5stqEHbUn4IPNxOWlxhuipD6eZLB
- mI0VAM8ICqHFJkHv9bplg3yJgXmS4Ap1MiyemcAVq4EFhQgcN5r67i4ddaFFLyJwdGQA
- dW/Cjl6gtVSbzANluhYDZtFinJqXyvnryEMTdffqlTe+uDIvox8Oec4oma0vZUuUY3gI
- SUeA==
-X-Gm-Message-State: AOJu0Yz+UqZg0t1ElBMLhPRaNQntdxLrBBgNupDcxLGiFO0gwVC8lS+F
- glySAUIc3GSoLdValYoyroK2dChc2TneAjYqPdygEpvV9KlDcG6NR1eD9AMudBqWjn0AVy0+dsP
- YokFH
-X-Gm-Gg: ASbGncudEaO+yb41iL3rs5RPkbxdoqUHcvln/ClFnLVQS3pcSsVKhK+zk58rhaU2EEo
- +stu8IZdWU4EERBVMqiTmRNKiOVZXeoFgm+8voPW8Da9Mpa0US7sRdp+5shEyfchoj4PZ1dm44P
- SlOrFvK6ADmIU3LMnVRzyi0Aghwcm+d3//tkaIlcbz/sS6+CCIRGjNVd+R5cYr1nWWkCmpABCms
- qp0Rnh711U18jYsovTI4GD1W50c/u2MpKbYAhUpEx56uTMU3V1Mji2weFKruVbkwidr8u00YKFd
- E8Ho3mDtogCh6QlqdVS0rrrV/BxPQ+XX/cMU+IMJo4Wll66Lyfk=
-X-Google-Smtp-Source: AGHT+IEYivub2LoaZPIXlmMUl3N6Hlmw5qhpkRSViRpv/opxSR1bknZdrE5OMgahPattMZzak1NrJg==
-X-Received: by 2002:a17:903:324c:b0:231:e331:b7c9 with SMTP id
- d9443c01a7336-231e331bc2emr275792475ad.10.1747867077894; 
- Wed, 21 May 2025 15:37:57 -0700 (PDT)
-Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-231d4e97dcesm97711105ad.121.2025.05.21.15.37.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 21 May 2025 15:37:57 -0700 (PDT)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: pierrick.bouvier@linaro.org, pbonzini@redhat.com, peter.maydell@linaro.org,
- armbru@redhat.com, michael.roth@amd.com, philmd@linaro.org,
- richard.henderson@linaro.org, berrange@redhat.com, thuth@redhat.com
-Subject: [PATCH v3 14/14] qapi/misc-i386: move errors to their own
- documentation section
-Date: Wed, 21 May 2025 15:37:40 -0700
-Message-ID: <20250521223740.249720-15-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250521223740.249720-1-pierrick.bouvier@linaro.org>
-References: <20250521223740.249720-1-pierrick.bouvier@linaro.org>
+ d=1e100.net; s=20230601; t=1747867141; x=1748471941;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=JjFDse8vvxEF+z5TEd+TMPYfR6DXZF4ktjUOUAx1KzM=;
+ b=CWvb8kby2C54kFLWAqjhp4IK2RDtO5EIErvwa3++apLSeWxBjM835H9Ip1e3Wh1FYD
+ mFxDU64DBfaMb8S9gOEIz0LquK9w5vSpgF5JwZB9vsOjlFKs1SuvwpeRGCKcZhrzxJiQ
+ 2Vw5Oy6XCX0DpTC3sRl0rVM5ubVHc+0zvpOdf+U6hRRuVxVHbh3etMpUYgmq9JvKPSrN
+ tmmBZkJwcFlJ2KwctK0yek6n9O5ULTbFDnPxXsb+SVYkOZnIn8A/PK0tKUvEvkCBMMMi
+ pPc8B1BsUOR6dMXDpwVD+V53GxNc1qrXq+VXao7/AatXe497V2O1dFpE5Vg54L1VqJoW
+ sgrA==
+X-Gm-Message-State: AOJu0YzDROmm9EDFC3ZlG9NUVNg6IIiTdfzZdu0NfNLgSij4hPiKzl/W
+ VL9HE/vgQZOXZqkYMrD11JU3597ABdggvF0l7rSvgjDrYX4KQwlS1BKk4Zz4IYh0AW1fJ4bCqt0
+ gr9Au
+X-Gm-Gg: ASbGnctSBEpRSNxK7z554e/7HrDLbU3Wyl4azU6AzLb2dq+l8fKvE3s15IlzsfNd8zS
+ we4TzyT+IMdUQ+9jAzn+OtIh2/wEZ2kXOg7ozYM8ze3AoVhe8eIizWn8h4PQLGVabZDdbHeGLeN
+ p9vLKoxnH9E/kBD+QlFzZyzTASm56LLy7dW1XImCBJJSWFhZpjK1TajLjLqZlLzjv8IfpTj4PWF
+ th1FZrP0+PFMoOK/XZ1AxTQ8cIZCCeikIl0BnvOpX5l9cPQD2oZLBnUv0SoB4NVQLcsF2IwInzw
+ n1AGmJ66OqkQIxFNR+9aLmIUAHyJ4IzfmdhMRF8fvPBIM/O4bnlTasRphQslXntq
+X-Google-Smtp-Source: AGHT+IHT/4qENw/uP3sGZHwUmGTP+CZUWWHZ1CrSZppabxwdUWvp9t2RdiBUlJQvCXq3NZ0KmZ7zmw==
+X-Received: by 2002:a17:903:3d0f:b0:231:c99b:9fd7 with SMTP id
+ d9443c01a7336-231d43ad4b6mr320178435ad.19.1747867140860; 
+ Wed, 21 May 2025 15:39:00 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-231d4adb71dsm97972575ad.62.2025.05.21.15.39.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 21 May 2025 15:39:00 -0700 (PDT)
+Message-ID: <740a64ae-fece-491b-aaf4-e2bcdd61b02c@linaro.org>
+Date: Wed, 21 May 2025 15:38:59 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x635.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/6] single-binary: build target common libraries with
+ dependencies
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, berrange@redhat.com,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ thuth@redhat.com, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+References: <20250516052708.930928-1-pierrick.bouvier@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20250516052708.930928-1-pierrick.bouvier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,100 +105,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- qapi/misc-i386.json | 39 +++++++++++++++++++++++----------------
- 1 file changed, 23 insertions(+), 16 deletions(-)
+On 5/15/25 10:27 PM, Pierrick Bouvier wrote:
+> Recently, common libraries per target base architecture were introduced in order
+> to compile those files only once. However, it was missing common dependencies
+> (which include external libraries), so it failed to build on some hosts.
+> 
+> This series fixes this, inspired by Thomas fix [1], and applied to other
+> libraries introduced very recently with [2].
+> 
+> As well, we do further cleanup by removing lib{system, user} source sets that
+> were recently introduced, by merging them in system/user libraries, thus
+> simplifying the work on single-binary.
+> 
+> This series was built on {linux, macos, windows} x {x86_64, aarch64} and
+> freebsd on x86_64. Fully tested on linux x {x86_64, aarch64}.
+> In addition to that, it was checked that compilation units compiled per binary
+> stayed the same, and that their size was identical.
+> 
+> [1] https://lore.kernel.org/qemu-devel/20250513115637.184940-1-thuth@redhat.com/
+> [2] https://gitlab.com/qemu-project/qemu/-/commit/b2bb3f3576e5dc99218607dde09e25ac0e55693c
+> 
+> Pierrick Bouvier (6):
+>    meson: build target libraries with common dependencies
+>    hw/arm: remove explicit dependencies listed
+>    target/arm: remove explicit dependencies listed
+>    meson: apply target config for picking files from lib{system, user}
+>    meson: merge lib{system, user}_ss with {system, user}_ss.
+>    meson: remove lib{system, user}_ss aliases
+> 
+>   meson.build            | 65 +++++++++++++++++++++++++++---------------
+>   accel/tcg/meson.build  |  8 +++---
+>   gdbstub/meson.build    |  4 +--
+>   hw/arm/meson.build     |  4 +--
+>   hw/core/meson.build    |  4 +--
+>   plugins/meson.build    |  4 +--
+>   system/meson.build     |  2 +-
+>   target/arm/meson.build |  2 +-
+>   tcg/meson.build        |  4 +--
+>   9 files changed, 58 insertions(+), 39 deletions(-)
+> 
 
-diff --git a/qapi/misc-i386.json b/qapi/misc-i386.json
-index 6f79817e382..796eaa5f406 100644
---- a/qapi/misc-i386.json
-+++ b/qapi/misc-i386.json
-@@ -166,12 +166,13 @@
- # measurement for SEV-SNP guests is only available within
- # the guest.
- #
--# This will return an error if the launch measurement is
--# unavailable, either due to an invalid guest configuration
--# or if the guest has not reached the required SEV state.
--#
- # Returns: The @SevLaunchMeasureInfo for the guest
- #
-+# Errors:
-+#     - If the launch measurement is unavailable, either due to an
-+#       invalid guest configuration or if the guest has not reached
-+#       the required SEV state, GenericError
-+#
- # Since: 2.12
- #
- # .. qmp-example::
-@@ -210,12 +211,15 @@
- ##
- # @query-sev-capabilities:
- #
--# This command is used to get the SEV capabilities, and is only
--# supported on AMD X86 platforms with KVM enabled. If SEV is not
--# available on the platform an error will be returned.
-+# Get SEV capabilities.
-+#
-+# This is only supported on AMD X86 platforms with KVM enabled.
- #
- # Returns: SevCapability objects.
- #
-+# Errors:
-+#     - If # SEV is not available on the platform, GenericError
-+#
- # Since: 2.12
- #
- # .. qmp-example::
-@@ -234,11 +238,7 @@
- #
- # This is only valid on x86 machines configured with KVM and the
- # 'sev-guest' confidential virtualization object. SEV-SNP guests
--# do not support launch secret injection
--#
--# This will return an error if launch secret injection is not possible,
--# either due to an invalid guest configuration, or if the guest has not
--# reached the required SEV state.
-+# do not support launch secret injection.
- #
- # @packet-header: the launch secret packet header encoded in base64
- #
-@@ -246,6 +246,11 @@
- #
- # @gpa: the guest physical address where secret will be injected.
- #
-+# Errors:
-+#     - If launch secret injection is not possible, either due to
-+#       an invalid guest configuration, or if the guest has not
-+#       reached the required SEV state, GenericError
-+#
- # Since: 6.0
- ##
- { 'command': 'sev-inject-launch-secret',
-@@ -273,15 +278,17 @@
- # 'sev-guest' confidential virtualization object. The attestation
- # report for SEV-SNP guests is only available within the guest.
- #
--# This will return an error if the attestation report is
--# unavailable, either due to an invalid guest configuration
--# or if the guest has not reached the required SEV state.
--#
- # @mnonce: a random 16 bytes value encoded in base64 (it will be
- #     included in report)
- #
- # Returns: SevAttestationReport objects.
- #
-+# Errors:
-+#     - This will return an error if the attestation report is
-+#       unavailable, either due to an invalid guest configuration
-+#       or if the guest has not reached the required SEV state,
-+#       GenericError
-+#
- # Since: 6.1
- #
- # .. qmp-example::
--- 
-2.47.2
-
+v2 was posted here:
+https://lore.kernel.org/qemu-devel/20250521223414.248276-1-pierrick.bouvier@linaro.org
 
