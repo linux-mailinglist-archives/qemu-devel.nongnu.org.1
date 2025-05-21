@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 815E4ABFFB7
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 00:39:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0590BABFFCA
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 00:40:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHs4l-0006Es-7T; Wed, 21 May 2025 18:38:15 -0400
+	id 1uHs4g-0006De-Dh; Wed, 21 May 2025 18:38:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uHs4h-0006EK-Vd
- for qemu-devel@nongnu.org; Wed, 21 May 2025 18:38:12 -0400
-Received: from mail-il1-x129.google.com ([2607:f8b0:4864:20::129])
+ id 1uHs4b-0006C8-Ip
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 18:38:06 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uHs4f-0005dZ-Sh
- for qemu-devel@nongnu.org; Wed, 21 May 2025 18:38:11 -0400
-Received: by mail-il1-x129.google.com with SMTP id
- e9e14a558f8ab-3dc87649822so9568585ab.3
- for <qemu-devel@nongnu.org>; Wed, 21 May 2025 15:38:06 -0700 (PDT)
+ id 1uHs4U-0005an-66
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 18:38:05 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-231fc83a33aso45174255ad.0
+ for <qemu-devel@nongnu.org>; Wed, 21 May 2025 15:37:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747867084; x=1748471884; darn=nongnu.org;
+ d=linaro.org; s=google; t=1747867075; x=1748471875; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eI0EvUmIkbWrjMKnBfnwOSekuZrl/EU3iIxo3aepxTQ=;
- b=CruQuO7VBDX7NXXccl1jKKHprt0KM9xBOOREl5MtCXsA46tfAYDQHVCz0W/nZvcL2j
- yC/6S75Id0CNEPUc2AQOYNxQPbBbP8EEzBsFjOxRO0rjFBwkG6ms2+CUPBVZhyTblDQd
- XKKaKAZGs3M2LvWlkjFbcc99b+2Qj/YolhrMDHXXvR1yY25bt1LqRSxtaLAVekLziOLv
- +0M0ESR9OchnIxRTHm4pWnD8t4audgYZ/OMZZ3hiP/bqb9OkazWQTnASNmnMrXz2SOGZ
- zIlHBZaFGk5MmvMC/CEy1JvcZiU6qWGgTWz2VYJmizVS2fvGKjVD5twmJEkI2DiH92Qq
- gPlw==
+ bh=xKpDcwMErvQxgyaL+Q2tctV5ddB+KbCBa/wlI68stYM=;
+ b=kIJ+bRDU1R4UhJKjqPzMIUec98SalVSV/HVgN7JDubf68onnlSlSG4apxVotLq0uaF
+ T49t6tx3kMZh+NCCHvcG5ysQbwwaUh1ID8bITfwqzbXbVosT9zL79u5kFfqlyFQNyU1f
+ 1gIZL2gKHoPk9oeoM17ZWgXwbaIJGcNwsRPrS4uk1hBbFl1g/BJzvXlZ1gqoqH4egmMN
+ grWnYgx3fX973+oNHwxNir3RsQmNjKXmkgYEIHs+PlSj+LG6xa/DJNuu6yA8gOSUOi1V
+ LCuKrMmMX1G9KQDp2cxcDfaComJCqkLAFozfM5aU5RT+kFJ0+SzSTgD7RPSGLJ2R91oJ
+ N8Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747867084; x=1748471884;
+ d=1e100.net; s=20230601; t=1747867075; x=1748471875;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eI0EvUmIkbWrjMKnBfnwOSekuZrl/EU3iIxo3aepxTQ=;
- b=sD9rL05H9YopW9KBCfdi68PtXbWrm/t5P/BXXpCipZbS2iA7TdvJPIx8CSQf7UiHOl
- eyXy2Eyco9o2iHoVxqBiyUMtQPpb8SziQmVIAj4SN7Nz7I74IiabVxTsJfvpYwmE1UuM
- Tc6vdy4Ka0NttVlXomJr4A+t6Iiqr1Qm7euXigZjDSlp8ggIPSs9tgUTenHWhAf7MCxA
- Ef6xA9k408CRV0Z2UkNiMPNJGnonnONh71eLpNYC+DNosUlz+1zFHVs4XQhYk6EKFt6y
- 01FXtbhJtwPnfaYmBrmmGPzU5UT7tT9a+gI4ajnHynaAAbOjGChjaqGtMXiQn+9fkbgb
- DYQw==
-X-Gm-Message-State: AOJu0Yyyoiyi4KFAxKA09+EgU/U+ZtCO/pPCbKxpXF8o+FGhpqOe5yH1
- BdligdPbO8m3nw51+/4BvHH1yYo+gfyNLpPSogYxyOfbh+baYgtIrLAAWvVm/G07o5VMhgWtGHO
- oRRGe
-X-Gm-Gg: ASbGncuP5YBTR84j10MuB9zKV0rFCrZNTVh55fgAs+ItdfITPOheYSSXaUfunMEC+8/
- IjNoMMQeSNpOAphaEjhmmwIyllNbwn8arBj/MM26XXO2n2drY7kyZ1cuJZFZvcroFkoXsrFA6hT
- 5lBfjOw/QS72rCNAKjHxYG4s1+X2RvsDLNIcZOjLZZdk0OTnhzDYLcntmmYrw6QQU+tnzQrI5p+
- w1pAs8f7vkU4g9HI177pXehVDLpugtmLKH7xG+/2hYaSKYl4/7nbh5Vo6vDb9ctWm5W4AbnpbUP
- +tj96sZArwEoz2NFeUdDpufzKNzgzrVIpdSQTvpwIzyfzDSp890=
-X-Google-Smtp-Source: AGHT+IHvYFfY1S33T1lU1/0MJAqc1SHFeKukRBUmn2XwAk75gMGPReXd8sOlNKPWCIJmYA6NHAy/tw==
-X-Received: by 2002:a17:902:c951:b0:22e:421b:49ad with SMTP id
- d9443c01a7336-231d454e4bamr343299675ad.46.1747867074513; 
- Wed, 21 May 2025 15:37:54 -0700 (PDT)
+ bh=xKpDcwMErvQxgyaL+Q2tctV5ddB+KbCBa/wlI68stYM=;
+ b=B9mQAfG6M8IQDmVCoG0WcCtN9amNXp9lMQZG/Ja+YBxPVCrPnEA7uHQV1vXez20AfG
+ ZznHiJR0aI7BlA+mM8VfPP+bm4Yx4IVwSD0WQf05Rwu0tpqN/VAxniv4MxSTNTeUFOJF
+ 5omBn+/RB5Aigg4tGXky93vtNp2xrIcYYT28yt3FMFM2ONDEzF6Ah56eXIs5ZcfoYw46
+ Fg8Io0Xz5AFEb3d4DbJIwqDSueAuMIMOJW9J21DVVL65TMAwLlP9SecDnOUptHoyEv0E
+ WZUf0wnSl+v2CeGArMbQQOseylm6C+zrxDv3Bta6b5KpxH7eI+LRrLedepX85s7R68zL
+ 5vjQ==
+X-Gm-Message-State: AOJu0Yx1xawdeS/rLm4Am3GXyYztm0lc67GS1mnao1lO5DhnfnX6sIth
+ Qmtbd+/4mKTiZ81UqZkXmrD5108BTZ2GrZHaMcW/EL8lULwGhYAXDguFpUyOLDbZ2F2hAAFG1Ln
+ uYtbc
+X-Gm-Gg: ASbGncsl6TfBc/tEQy0KK73RbvAgbyBXKVJT1aGo5rfTp/afJOEy1WtWpkC0K1951UD
+ VxGludLK3gw2MHIyqRcudEXNza+A9yctBYQw7g6DDzY5yMQTtBcgYj8GQfa1qS9mw39BBRi5v44
+ jW5RepK9kE/exD3QCdI7JTPRV41jAakeN4fNGIe8TR1ogBPaTr/vMSPMiEvWH8CTob2z4hnpGd3
+ DNOxCpRBCbiI3VDrGpxLaY8+vKGpwh5BRO44uTZbaS3Kz3IE3GLEfLfY6BwcknI0MhydVU90TCW
+ sZcDHmC2Lu2cXmSLvlN8kYqcs1uPX2VkS4HvneVgrnFuQdIbPd8=
+X-Google-Smtp-Source: AGHT+IE8bb15Nmmy76tq0E32hsYIaWrKB2zggQmhQOa+EFtlzKvZr6af7RPPx9e0HlV35bRO2X6dJQ==
+X-Received: by 2002:a17:902:f54a:b0:231:b7a6:df1a with SMTP id
+ d9443c01a7336-231de3ba25fmr271002475ad.50.1747867075331; 
+ Wed, 21 May 2025 15:37:55 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-231d4e97dcesm97711105ad.121.2025.05.21.15.37.53
+ d9443c01a7336-231d4e97dcesm97711105ad.121.2025.05.21.15.37.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 21 May 2025 15:37:54 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
@@ -66,23 +66,21 @@ To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org, pbonzini@redhat.com, peter.maydell@linaro.org,
  armbru@redhat.com, michael.roth@amd.com, philmd@linaro.org,
  richard.henderson@linaro.org, berrange@redhat.com, thuth@redhat.com
-Subject: [PATCH v3 10/14] qapi: remove qapi_specific_outputs from meson.build
-Date: Wed, 21 May 2025 15:37:36 -0700
-Message-ID: <20250521223740.249720-11-pierrick.bouvier@linaro.org>
+Subject: [PATCH v3 11/14] qapi: make all generated files common
+Date: Wed, 21 May 2025 15:37:37 -0700
+Message-ID: <20250521223740.249720-12-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250521223740.249720-1-pierrick.bouvier@linaro.org>
 References: <20250521223740.249720-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::129;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-il1-x129.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,57 +97,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is no more QAPI files that need to be compiled per target, so we
-can remove this. qapi_specific_outputs is now empty, so we can remove
-the associated logic in meson.
+Monolithic files (qapi_nonmodule_outputs) can now be compiled just
+once, so we can remove qapi_util_outputs logic.
+This removes the need for any specific_ss file.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- qapi/meson.build | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ qapi/meson.build | 23 ++++-------------------
+ 1 file changed, 4 insertions(+), 19 deletions(-)
 
 diff --git a/qapi/meson.build b/qapi/meson.build
-index e038b636c9d..7582c2b5bcf 100644
+index 7582c2b5bcf..3b035aea339 100644
 --- a/qapi/meson.build
 +++ b/qapi/meson.build
-@@ -92,7 +92,6 @@ qapi_util_outputs = [
+@@ -85,8 +85,7 @@ qapi_nonmodule_outputs = [
+   'qapi-emit-events.c', 'qapi-emit-events.h',
  ]
  
- qapi_inputs = []
--qapi_specific_outputs = []
- foreach module : qapi_all_modules
-   qapi_inputs += [ files(module + '.json') ]
-   qapi_module_outputs = [
-@@ -110,15 +109,11 @@ foreach module : qapi_all_modules
+-# First build all sources
+-qapi_util_outputs = [
++qapi_outputs = qapi_nonmodule_outputs + [
+   'qapi-builtin-types.c', 'qapi-builtin-visit.c',
+   'qapi-builtin-types.h', 'qapi-builtin-visit.h',
+ ]
+@@ -109,20 +108,17 @@ foreach module : qapi_all_modules
        'qapi-commands-@0@.trace-events'.format(module),
      ]
    endif
--  if module.endswith('-target')
--    qapi_specific_outputs += qapi_module_outputs
--  else
--    qapi_util_outputs += qapi_module_outputs
--  endif
-+  qapi_util_outputs += qapi_module_outputs
+-  qapi_util_outputs += qapi_module_outputs
++  qapi_outputs += qapi_module_outputs
  endforeach
  
  qapi_files = custom_target('shared QAPI source files',
--  output: qapi_util_outputs + qapi_specific_outputs + qapi_nonmodule_outputs,
-+  output: qapi_util_outputs + qapi_nonmodule_outputs,
+-  output: qapi_util_outputs + qapi_nonmodule_outputs,
++  output: qapi_outputs,
    input: [ files('qapi-schema.json') ],
    command: [ qapi_gen, '-o', 'qapi', '-b', '@INPUT0@' ],
    depend_files: [ qapi_inputs, qapi_gen_depends ])
-@@ -138,7 +133,7 @@ foreach output : qapi_util_outputs
-   i = i + 1
- endforeach
  
--foreach output : qapi_specific_outputs + qapi_nonmodule_outputs
-+foreach output : qapi_nonmodule_outputs
+-# Now go through all the outputs and add them to the right sourceset.
+-# These loops must be synchronized with the output of the above custom target.
+-
+ i = 0
+-foreach output : qapi_util_outputs
++foreach output : qapi_outputs
    if output.endswith('.h')
      genh += qapi_files[i]
    endif
+@@ -132,14 +128,3 @@ foreach output : qapi_util_outputs
+   util_ss.add(qapi_files[i])
+   i = i + 1
+ endforeach
+-
+-foreach output : qapi_nonmodule_outputs
+-  if output.endswith('.h')
+-    genh += qapi_files[i]
+-  endif
+-  if output.endswith('.trace-events')
+-    qapi_trace_events += qapi_files[i]
+-  endif
+-  specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: qapi_files[i])
+-  i = i + 1
+-endforeach
 -- 
 2.47.2
 
