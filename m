@@ -2,74 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B68DABF042
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 11:43:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D043ABF053
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 11:44:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHfxa-0001Pe-H9; Wed, 21 May 2025 05:42:02 -0400
+	id 1uHfzI-0002eq-Ja; Wed, 21 May 2025 05:43:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uHfxV-0001Ok-3l
- for qemu-devel@nongnu.org; Wed, 21 May 2025 05:41:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uHfxP-0001WL-V5
- for qemu-devel@nongnu.org; Wed, 21 May 2025 05:41:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747820507;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ifA0dnHA8ehJQ6CxHFhUXR6UNqRrXGeg6i7i6C9eVnU=;
- b=T/TMrtHX+PEJykBDmL6PyOSigdVW13C3lYMdpoxq48jdXpaiR6eHti0kxccO/fFnAXifmz
- nG3WL/bhL0NbwD8sOz/MQpQm9XPVWo63t2/kBoUU5VaF6lY1ijWQJkdY1Fcm1hM5F80Kqk
- dKTISP4WdQ6vDWTeXqi7FreIH7s9m/g=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-610-7AJ6n16aMXSjjjMdulJOdw-1; Wed,
- 21 May 2025 05:41:43 -0400
-X-MC-Unique: 7AJ6n16aMXSjjjMdulJOdw-1
-X-Mimecast-MFC-AGG-ID: 7AJ6n16aMXSjjjMdulJOdw_1747820502
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id BFFD4180045C; Wed, 21 May 2025 09:41:35 +0000 (UTC)
-Received: from redhat.com (unknown [10.45.226.112])
- by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 39AE618004A7; Wed, 21 May 2025 09:41:29 +0000 (UTC)
-Date: Wed, 21 May 2025 11:41:27 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, den@virtuozzo.com,
- andrey.drobyshev@virtuozzo.com, hreitz@redhat.com,
- stefanha@redhat.com, eblake@redhat.com, jsnow@redhat.com,
- vsementsov@yandex-team.ru, xiechanglong.d@gmail.com,
- wencongyang2@huawei.com, berto@igalia.com, fam@euphon.net, ari@tuxera.com
-Subject: Re: [PATCH v2 01/24] block: remove outdated comments about
- AioContext locking
-Message-ID: <aC2fxw5KUH1SK0Ha@redhat.com>
-References: <20250520103012.424311-1-f.ebner@proxmox.com>
- <20250520103012.424311-2-f.ebner@proxmox.com>
+ (Exim 4.90_1) (envelope-from <rowanbhart@gmail.com>)
+ id 1uHfzE-0002cU-04
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 05:43:44 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <rowanbhart@gmail.com>)
+ id 1uHfz7-0001bO-RL
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 05:43:43 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-72d3b48d2ffso6222726b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 21 May 2025 02:43:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1747820614; x=1748425414; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=SDigpLEHOcASBPQ+h37bW4+TaTXAuMf9WqxXXMh2500=;
+ b=Ekh8tlRL1rGUst+ZsrcX0vF2tto6tbCEVuKy+5eN94JLI5V7OUzhvj6ETnYBSib+bd
+ 9wt5WaW09MfG0vB1AZSTzbjsWYpQ+5iM2OKZHhsXSvUbBBdG+I7mFX1MpF5ojfed2too
+ N80Y3RYl+hbrYZumzoqB/gEqaoVPuP64cq0bq2ZVhnxXYbxpbC0KxyPfEMdBZ+ipxPya
+ Y1eb0Q9J8FixpEoKTTmKImOHDNSezskCWxKzs4rZciprJtua9vCmwRsZ6OGeFAPnvfUP
+ 1dQQik3D0fUgecmuNWOv9Izp2jgd+zMNHRMlkQk2F+aWTXBRNkmpQ+kNU81HTfuk5gEm
+ SKfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747820614; x=1748425414;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=SDigpLEHOcASBPQ+h37bW4+TaTXAuMf9WqxXXMh2500=;
+ b=A3iY77g9NPP7jdkepHX0kG9bVChcF7yPs1QV2fPdziqQPJr5Ff12WXmvNjCaqzagU3
+ uacOWTyb8wXqQRutJ3xEVkdZvdP2bIbbPJWjydhEFcS55dH9ATJ6xyy3jDuuh3zBkjgi
+ Qta6FM7bUS3dBgR6F0AnuHRypmlDu0NgbOgqdC570hkCihraYXk8vnDiIGbpMhGqMKd9
+ 8VY7CrERMnkPVPp19NM9tQALZuh68j97wmwuJM8jE+8yeqh6fkMy3wvbeHNXiszmNAGu
+ w2+uEPR8xSfDP2VA13JeevYHPA6MN+cwUlcH72o9WcUMlZYAeivtr3SN5mpO1gsUbIUb
+ bTsg==
+X-Gm-Message-State: AOJu0Yyje4LH16TKXdouAMva1BBZVhUakVhmc8zLyWFRENAZka1jvP3G
+ AVyBqmyFJZbY1KbxKhifNUDvv2AsPgdEBB5Yc0EtlCW+C90qX8xRI/sKf+t8r4PwKEI=
+X-Gm-Gg: ASbGncvBQPc1eRDRcq5BdcJ2q0N6S4uu2S9QrEx/TVapLH7c+Tm2sGb6HPoznAPR6Zd
+ 4Pc36iEJS8W+O73eqz6BCpsUbyEf8y60KYLhNeC2UlxJmfMV0Qjtv12Fea3V/tv1fijkRmkZG5H
+ xw4UFatePeOlRjOc3TQ9kdVGL1CKNkF2jbAFDq7Pcx3SNuQ+gNbrCKPr3J90NQqgIY77IAtcoHJ
+ jk1orMH0f9pLEvRQT51+en7BcumNmwd2j1AGlDKqHn5ObG0EU5ZO9S9dUfSMQZm/4+VcTZcqcBl
+ PUo9L0CjbMGCSFQzGjZyNZ4GEY40+8ZL6er5o9Xc6wdqSGY+owY=
+X-Google-Smtp-Source: AGHT+IHbTOLquIwk8cMtecFBdkLbEmvI1IH40vsbZCx7BhaNqP4pIxQ7GCyNKYr5pCDA7V6UwA/P6Q==
+X-Received: by 2002:a05:6a00:2396:b0:742:a111:ee6f with SMTP id
+ d2e1a72fcca58-742accc578emr24204467b3a.10.1747820614142; 
+ Wed, 21 May 2025 02:43:34 -0700 (PDT)
+Received: from shemhazi.lan ([50.46.174.34]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-742a9829b87sm9255668b3a.114.2025.05.21.02.43.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 21 May 2025 02:43:33 -0700 (PDT)
+From: Rowan Hart <rowanbhart@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Rowan Hart <rowanbhart@gmail.com>
+Subject: [PATCH v3 0/8] Add additional plugin API functions to read and write
+ memory and registers
+Date: Wed, 21 May 2025 02:43:24 -0700
+Message-ID: <20250521094333.4075796-1-rowanbhart@gmail.com>
+X-Mailer: git-send-email 2.49.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250520103012.424311-2-f.ebner@proxmox.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=rowanbhart@gmail.com; helo=mail-pf1-x42b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.487,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,12 +101,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 20.05.2025 um 12:29 hat Fiona Ebner geschrieben:
-> AioContext locking was removed in commit b49f4755c7 ("block: remove
-> AioContext locking").
-> 
-> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+This patch series adds several new API functions focused on enabling use
+cases around reading and writing guest memory from QEMU plugins. To support
+these new APIs, some utility functionality around retrieving information about
+address spaces is added as well.
 
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+The new qemu_plugin_write_register utilizes gdb_write_register, which is now
+declared in gdbstub.h for this purpose instead of being static.
+
+qemu_plugin_write_memory_vaddr utilizes cpu_memory_rw_debug much the same as
+the existing read_memory_vaddr function does.
+
+The read and write_hwaddr functions are the most different. These functions
+use address_space_rw, which works well in most cases. There is an important
+caveat that for writes, the page being written will be set dirty by the
+write operation. This dirty setting requires locking the page range,
+which can contend with an already held lock in page_collection_lock
+when called in a tb translate callback with a write to the instruction
+memory in the tb. The doc comments warn against doing this, and it's unlikely
+anyone would want to do this.
+
+I've also added two test plugins: one that implements a simple hypercall
+interface that guest code can use to communicate with the plugin in a
+structured way with a test to ensure that this hypercall works and writing
+virtual memory works. And one that implements a simple patch utility to patch
+memory at runtime. The test for the second plugin ensures the patch applies
+successfully to instruction memory, and can use both hw and vaddr methods.
+
+novafacing (8):
+  Expose gdb_write_register function to consumers of gdbstub
+  Add register write API
+  Add address space API
+  Add memory virtual address write API
+  Add memory hardware address read/write API
+  Add patcher plugin and test
+  Add hypercalls plugin and test
+  Update plugin version and add notes
+
+ gdbstub/gdbstub.c                             |   2 +-
+ include/exec/gdbstub.h                        |  14 +
+ include/qemu/plugin.h                         |   6 +
+ include/qemu/qemu-plugin.h                    | 217 ++++++-
+ plugins/api.c                                 | 213 ++++++-
+ tests/tcg/Makefile.target                     |   2 +
+ tests/tcg/plugins/hypercalls.c                | 552 ++++++++++++++++++
+ tests/tcg/plugins/meson.build                 |   2 +-
+ tests/tcg/plugins/patch.c                     | 324 ++++++++++
+ tests/tcg/x86_64/Makefile.softmmu-target      |  36 +-
+ tests/tcg/x86_64/system/hypercalls-target.c   |  45 ++
+ tests/tcg/x86_64/system/patch-target.c        |  32 +
+ .../tcg/x86_64/system/validate-hypercalls.py  |  40 ++
+ tests/tcg/x86_64/system/validate-patch.py     |  39 ++
+ 14 files changed, 1501 insertions(+), 23 deletions(-)
+ create mode 100644 tests/tcg/plugins/hypercalls.c
+ create mode 100644 tests/tcg/plugins/patch.c
+ create mode 100644 tests/tcg/x86_64/system/hypercalls-target.c
+ create mode 100644 tests/tcg/x86_64/system/patch-target.c
+ create mode 100755 tests/tcg/x86_64/system/validate-hypercalls.py
+ create mode 100755 tests/tcg/x86_64/system/validate-patch.py
+
+-- 
+2.49.0
 
 
