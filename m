@@ -2,84 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C00FABF283
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 13:13:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EE02ABF28F
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 13:19:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHhNW-0003x7-9P; Wed, 21 May 2025 07:12:54 -0400
+	id 1uHhTF-0005Q9-D2; Wed, 21 May 2025 07:18:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uHhNS-0003wJ-Tl
- for qemu-devel@nongnu.org; Wed, 21 May 2025 07:12:50 -0400
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1uHhNP-0005H9-Op
- for qemu-devel@nongnu.org; Wed, 21 May 2025 07:12:50 -0400
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-ad55d6aeb07so279978766b.0
- for <qemu-devel@nongnu.org>; Wed, 21 May 2025 04:12:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747825965; x=1748430765; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0P3vKaBJuJzdP+aFCfryV42rGOV/6FNNWhPqYLFM9fQ=;
- b=j5XmiB3GpN0jga7NrEO8PliNQhchvTAYk2jci1oWqqXWPWH4ioci8GXBdgnqgf5ys+
- KtpnzWvUlbn40dlp6XaNqmYGPG/8CNcYREdG9JkHFLiTAvrf/01T06cqjZYtl7f8ImxS
- vTFoV5h77cuT/9ccNlcMoek1/yaBEe91uBSp1xW+bbmunf1ub6il9uaXYtmwoSBG9BEW
- J6RXYZYvY1qPB5xtP88ZI+CoRsKw7IGaMjnMV0vJ4sxeiOzJBwAGmkzXkX5ECxNpk+Tv
- RWwOmvLEJ1gZqBHv6ANz9uuIpYFL/Lg0UB7JAU3HdfIBapWW86gwAReMa3wgWx61MEUh
- yifA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747825965; x=1748430765;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0P3vKaBJuJzdP+aFCfryV42rGOV/6FNNWhPqYLFM9fQ=;
- b=lAkwhs7gzO1iMRi+MTtX3MdTu5Gr9rtwO3sH/qc9EslX5gBdsPITlWMe72stMRDM7q
- F4TvfJCKWPfa3FE4bBv5pdxlcYAeE/E/QBmSlluBoozL67wh9Xs/XXZZFrHZuQfHpgke
- ze7rNqbPnjKbYt8QKfDbEel3tX7tA6QSLPCvNyrWdTlSqri+KI/ORr8G4OJ4PmP8vruM
- d9OhkxP9aOFEgw6tcKmZLVkEvBHkmOBndnv+wJXxP7qFTE4Nu/wKRWqi2QwlCL9HU77B
- thYv6G1TPiOlWYSDgh9AOf97uWYfSNQi21ueYRl2YrKhJ1+Mh4gPcx2oSZ5nET2+lWpx
- FUDQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW6e1L8hbr2sXZC0Dxhv1cdqFdcxpCIU263Tuhf3UrUzVcSu3vHBdKCkJUCvs8ZupwVCdG+sJWg1Xza@nongnu.org
-X-Gm-Message-State: AOJu0YwaogFa/FmXAH1Qs73MnTXx4AJL9JmeEvcprWHSMNACnYcYav4B
- YBVPNTl2UqfiqaPg+8vTZhDYNpT3rHLuZ3/uKKI4GNdw6G7WcpfIHNbPlD05wenYjtxt8d/xMHf
- A1JCagldJiguOhmMgtoEcHNv4yNwy2wE0EnVheyGcCQ==
-X-Gm-Gg: ASbGncvDH6QSRpKT8tRofdNqeDxrQo+JEkOorW6lgHG6KUjUr8OuMO0yGnctYadQflv
- 3Oe3+xVrcqUDfri9LJT2mmuIkPU1Pq3YAKjLJQI0wrjA0l/DB8k4qTISrD8jKzIy7FzgfMiTOLa
- HdgUoq/1NAvDWRpKC4GWDXaXtDPuw=
-X-Google-Smtp-Source: AGHT+IGhkwvUMlS4wFZIoTJLutdcOyqBIR7tbuHC3B/zO5dqo6GLtIUNOBoEDLuFLa961n99/+9c05M6f0mslB3PZs4=
-X-Received: by 2002:a17:907:2d8c:b0:ad2:3d34:e2ad with SMTP id
- a640c23a62f3a-ad536bde522mr1770278466b.26.1747825964630; Wed, 21 May 2025
- 04:12:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1uHhTC-0005Pw-KP
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 07:18:46 -0400
+Received: from mgamail.intel.com ([192.198.163.14])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1uHhT8-0006N1-7R
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 07:18:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1747826322; x=1779362322;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=HWt7cLu4dN8eynQtv1LmlMi+odC7y81WOQ/S+BTpmv8=;
+ b=K2zYtlVFjE0q5QK39q6WIMlG1m3hwIcqMJixVfWwVEm0QGDN2Og4T2EB
+ Iu5vcI6H0iSxr++QXJT+h7op8kixABckQHEb9tchXlx0YZkIKqbxhy6/r
+ 89E+kk/SD8Lxc+qydTixR9vOIAweSfyxJMgSZ8SUXKS/Z/iZpoJpibCGW
+ PKdYNjxbQ31fT7qbm0UgtzrnrRTojmaRXK7ZK3XgvTcW8m2vJPkmGYQzs
+ S3/zMsFj1cO4/bDukqdpFWqcqM6mFTHFr4X2bUKkPiLjyBxlaKfZWD3ng
+ osqmoSeE4Yf3JQ3KA0aYGmklNfi0JAhU1lcNm7TxLMv2smhUVzC6B3cfW Q==;
+X-CSE-ConnectionGUID: 2ZeYHG7dTi6iCO6jWbUD6Q==
+X-CSE-MsgGUID: sCzoRtTsTzujfB7rz31Xmg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="49894849"
+X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="49894849"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 May 2025 04:18:39 -0700
+X-CSE-ConnectionGUID: Zu10v4dYSVuhDKvw2gjQfQ==
+X-CSE-MsgGUID: 37scwfy1T82RckwT2pHhRQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="145158272"
+Received: from spr-s2600bt.bj.intel.com ([10.240.192.127])
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 May 2025 04:18:34 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
+ mst@redhat.com, jasowang@redhat.com, peterx@redhat.com, ddutile@redhat.com,
+ jgg@nvidia.com, nicolinc@nvidia.com, shameerali.kolothum.thodi@huawei.com,
+ joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
+ kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH rfcv3 00/21] intel_iommu: Enable stage-1 translation for
+ passthrough device
+Date: Wed, 21 May 2025 19:14:30 +0800
+Message-Id: <20250521111452.3316354-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20250521081845.496442-1-pbonzini@redhat.com>
- <20250521081845.496442-6-pbonzini@redhat.com>
- <871psi9tsw.fsf@draig.linaro.org>
-In-Reply-To: <871psi9tsw.fsf@draig.linaro.org>
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Wed, 21 May 2025 14:12:17 +0300
-X-Gm-Features: AX0GCFsFFMtzS5sjhWe7odpXckOqnB3kRbgy_2cBjS6yzvGXHjbVGbsk1WPyZ5o
-Message-ID: <CAAjaMXbVCfXBqmNYH3Up1n+N9VCgRamg9msURwE-x1KxcKOi4Q@mail.gmail.com>
-Subject: Re: [RFC PATCH 5/6] rust: pl011: switch from bilge to bitfield-struct
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org, qemu-rust@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x636.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.198.163.14;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.184,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,378 +84,222 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 21, 2025 at 12:50=E2=80=AFPM Alex Benn=C3=A9e <alex.bennee@lina=
-ro.org> wrote:
->
-> Paolo Bonzini <pbonzini@redhat.com> writes:
->
-> > The bilge crate, while very nice and espressive, is heavily reliant on
-> > traits; because trait functions are never const, bilge and const mix
-> > about as well as water and oil.
-> >
-> > Try using the bitfield-struct crate instead.  It is built to support
-> > const very well and the only downside is that more manual annotations
-> > are needed (for enums and non-full-byte members).  Otherwise, the use
-> > is pretty much the same and in fact device code does not change at all,
-> > only register declarations.
-> >
-> > Recent versions want to use Rust 1.83, so this uses a slightly older
-> > version with basically no lost functionality; but anyway, I want to swi=
-tch
-> > to 1.83 for QEMU as well due to improved "const" support in the compile=
-r.
-> >
-> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> > ---
-> >  rust/Cargo.toml                     |   1 +
-> >  rust/hw/char/pl011/Cargo.toml       |   3 +-
-> >  rust/hw/char/pl011/meson.build      |  11 +--
-> >  rust/hw/char/pl011/src/registers.rs | 108 ++++++++++++++--------------
-> >  4 files changed, 56 insertions(+), 67 deletions(-)
-> >
-> > diff --git a/rust/Cargo.toml b/rust/Cargo.toml
-> > index 165328b6d01..3345858b5b4 100644
-> > --- a/rust/Cargo.toml
-> > +++ b/rust/Cargo.toml
-> > @@ -97,5 +97,6 @@ used_underscore_binding =3D "deny"
-> >  #wildcard_imports =3D "deny"   # still have many bindings::* imports
-> >
-> >  # these may have false positives
-> > +enum_variant_names =3D "allow"
-> >  #option_if_let_else =3D "deny"
-> >  cognitive_complexity =3D "deny"
-> > diff --git a/rust/hw/char/pl011/Cargo.toml b/rust/hw/char/pl011/Cargo.t=
-oml
-> > index 003ef9613d4..97e3dd00c35 100644
-> > --- a/rust/hw/char/pl011/Cargo.toml
-> > +++ b/rust/hw/char/pl011/Cargo.toml
-> > @@ -16,8 +16,7 @@ rust-version.workspace =3D true
-> >  crate-type =3D ["staticlib"]
-> >
-> >  [dependencies]
-> > -bilge =3D { version =3D "0.2.0" }
-> > -bilge-impl =3D { version =3D "0.2.0" }
-> > +bitfield-struct =3D { version =3D "0.9" }
-> >  bits =3D { path =3D "../../../bits" }
-> >  qemu_api =3D { path =3D "../../../qemu-api" }
-> >  qemu_api_macros =3D { path =3D "../../../qemu-api-macros" }
-> > diff --git a/rust/hw/char/pl011/meson.build b/rust/hw/char/pl011/meson.=
-build
-> > index f134a6cdc6b..1bae5a03310 100644
-> > --- a/rust/hw/char/pl011/meson.build
-> > +++ b/rust/hw/char/pl011/meson.build
-> > @@ -1,17 +1,10 @@
-> > -subproject('bilge-0.2-rs', required: true)
-> > -subproject('bilge-impl-0.2-rs', required: true)
-> > -
-> > -bilge_dep =3D dependency('bilge-0.2-rs')
-> > -bilge_impl_dep =3D dependency('bilge-impl-0.2-rs')
-> > -
-> >  _libpl011_rs =3D static_library(
-> >    'pl011',
-> >    files('src/lib.rs'),
-> >    override_options: ['rust_std=3D2021', 'build.rust_std=3D2021'],
-> >    rust_abi: 'rust',
-> >    dependencies: [
-> > -    bilge_dep,
-> > -    bilge_impl_dep,
-> > +    bitfield_struct_dep,
-> >      bits_rs,
-> >      qemu_api,
-> >      qemu_api_macros,
-> > @@ -22,6 +15,6 @@ rust_devices_ss.add(when: 'CONFIG_X_PL011_RUST', if_t=
-rue: [declare_dependency(
-> >    link_whole: [_libpl011_rs],
-> >    # Putting proc macro crates in `dependencies` is necessary for Meson=
- to find
-> >    # them when compiling the root per-target static rust lib.
-> > -  dependencies: [bilge_impl_dep, qemu_api_macros],
-> > +  dependencies: [bitfield_struct_dep, qemu_api_macros],
-> >    variables: {'crate': 'pl011'},
-> >  )])
-> > diff --git a/rust/hw/char/pl011/src/registers.rs b/rust/hw/char/pl011/s=
-rc/registers.rs
-> > index 7ececd39f86..f2138c637c5 100644
-> > --- a/rust/hw/char/pl011/src/registers.rs
-> > +++ b/rust/hw/char/pl011/src/registers.rs
-> > @@ -5,12 +5,16 @@
-> >  //! Device registers exposed as typed structs which are backed by arbi=
-trary
-> >  //! integer bitmaps. [`Data`], [`Control`], [`LineControl`], etc.
-> >
-> > +// rustc prefers "constant-like" enums to use upper case names, but th=
-at
-> > +// is inconsistent in its own way.
-> > +#![allow(non_upper_case_globals)]
-> > +
-> >  // For more detail see the PL011 Technical Reference Manual DDI0183:
-> >  // https://developer.arm.com/documentation/ddi0183/latest/
-> >
-> > -use bilge::prelude::*;
-> > +use bitfield_struct::bitfield;
-> >  use bits::bits;
-> > -use qemu_api::{impl_vmstate_bitsized, impl_vmstate_forward};
-> > +use qemu_api::impl_vmstate_forward;
-> >
-> >  /// Offset of each register from the base memory address of the device=
-.
-> >  #[doc(alias =3D "offset")]
-> > @@ -78,14 +82,18 @@ pub enum RegisterOffset {
-> >  /// The `UARTRSR` register is updated only when a read occurs
-> >  /// from the `UARTDR` register with the same status information
-> >  /// that can also be obtained by reading the `UARTDR` register
-> > -#[bitsize(8)]
-> > -#[derive(Clone, Copy, Default, DebugBits, FromBits)]
-> > +#[bitfield(u8)]
-> >  pub struct Errors {
-> >      pub framing_error: bool,
-> >      pub parity_error: bool,
-> >      pub break_error: bool,
-> >      pub overrun_error: bool,
-> > -    _reserved_unpredictable: u4,
-> > +    #[bits(4)]
-> > +    _reserved_unpredictable: u8,
->
-> This does come off as a little janky - effectively casting the u8 to
-> only cover 4 bits. Is this not something we can derive from the type? I
-> see lower down...
+Hi,
 
-Also, I wonder, does bitfield_struct also use 1 bit to represent bool?
+Per Jason Wang's suggestion, iommufd nesting series[1] is split into
+"Enable stage-1 translation for emulated device" series and
+"Enable stage-1 translation for passthrough device" series.
+
+This series is 2nd part focusing on passthrough device. We don't do
+shadowing of guest page table for passthrough device but pass stage-1
+page table to host side to construct a nested domain. There was some
+effort to enable this feature in old days, see [2] for details.
+
+The key design is to utilize the dual-stage IOMMU translation
+(also known as IOMMU nested translation) capability in host IOMMU.
+As the below diagram shows, guest I/O page table pointer in GPA
+(guest physical address) is passed to host and be used to perform
+the stage-1 address translation. Along with it, modifications to
+present mappings in the guest I/O page table should be followed
+with an IOTLB invalidation.
+
+        .-------------.  .---------------------------.
+        |   vIOMMU    |  | Guest I/O page table      |
+        |             |  '---------------------------'
+        .----------------/
+        | PASID Entry |--- PASID cache flush --+
+        '-------------'                        |
+        |             |                        V
+        |             |           I/O page table pointer in GPA
+        '-------------'
+    Guest
+    ------| Shadow |---------------------------|--------
+          v        v                           v
+    Host
+        .-------------.  .------------------------.
+        |   pIOMMU    |  | Stage1 for GIOVA->GPA  |
+        |             |  '------------------------'
+        .----------------/  |
+        | PASID Entry |     V (Nested xlate)
+        '----------------\.--------------------------------------.
+        |             |   | Stage2 for GPA->HPA, unmanaged domain|
+        |             |   '--------------------------------------'
+        '-------------'
+For history reason, there are different namings in different VTD spec rev,
+Where:
+ - Stage1 = First stage = First level = flts
+ - Stage2 = Second stage = Second level = slts
+<Intel VT-d Nested translation>
+
+There are some interactions between VFIO and vIOMMU
+* vIOMMU registers PCIIOMMUOps [set|unset]_iommu_device to PCI
+  subsystem. VFIO calls them to register/unregister HostIOMMUDevice
+  instance to vIOMMU at vfio device realize stage.
+* vIOMMU calls HostIOMMUDeviceIOMMUFD interface [at|de]tach_hwpt
+  to bind/unbind device to IOMMUFD backed domains, either nested
+  domain or not.
+
+See below diagram:
+
+        VFIO Device                                 Intel IOMMU
+    .-----------------.                         .-------------------.
+    |                 |                         |                   |
+    |       .---------|PCIIOMMUOps              |.-------------.    |
+    |       | IOMMUFD |(set_iommu_device)       || Host IOMMU  |    |
+    |       | Device  |------------------------>|| Device list |    |
+    |       .---------|(unset_iommu_device)     |.-------------.    |
+    |                 |                         |       |           |
+    |                 |                         |       V           |
+    |       .---------|  HostIOMMUDeviceIOMMUFD |  .-------------.  |
+    |       | IOMMUFD |            (attach_hwpt)|  | Host IOMMU  |  |
+    |       | link    |<------------------------|  |   Device    |  |
+    |       .---------|            (detach_hwpt)|  .-------------.  |
+    |                 |                         |       |           |
+    |                 |                         |       ...         |
+    .-----------------.                         .-------------------.
+
+Based on Yi's suggestion, this design is optimal in sharing ioas/hwpt
+whenever possible and create new one on demand, also supports multiple
+iommufd objects and ERRATA_772415.
+
+E.g., Under one guest's scope, Stage-2 page table could be shared by different
+devices if there is no conflict and devices link to same iommufd object,
+i.e. devices under same host IOMMU can share same stage-2 page table. If there
+is conflict, i.e. there is one device under non cache coherency mode which is
+different from others, it requires a separate stage-2 page table in non-CC mode.
+
+SPR platform has ERRATA_772415 which requires no readonly mappings
+in stage-2 page table. This series supports creating VTDIOASContainer
+with no readonly mappings. If there is a rare case that some IOMMUs
+on a multiple IOMMU host have ERRATA_772415 and others not, this
+design can still survive.
+
+See below example diagram for a full view:
+
+      IntelIOMMUState
+             |
+             V
+    .------------------.    .------------------.    .-------------------.
+    | VTDIOASContainer |--->| VTDIOASContainer |--->| VTDIOASContainer  |-->...
+    | (iommufd0,RW&RO) |    | (iommufd1,RW&RO) |    | (iommufd0,only RW)|
+    .------------------.    .------------------.    .-------------------.
+             |                       |                              |
+             |                       .-->...                        |
+             V                                                      V
+      .-------------------.    .-------------------.          .---------------.
+      |   VTDS2Hwpt(CC)   |--->| VTDS2Hwpt(non-CC) |-->...    | VTDS2Hwpt(CC) |-->...
+      .-------------------.    .-------------------.          .---------------.
+          |            |               |                            |
+          |            |               |                            |
+    .-----------.  .-----------.  .------------.              .------------.
+    | IOMMUFD   |  | IOMMUFD   |  | IOMMUFD    |              | IOMMUFD    |
+    | Device(CC)|  | Device(CC)|  | Device     |              | Device(CC) |
+    | (iommufd0)|  | (iommufd0)|  | (non-CC)   |              | (errata)   |
+    |           |  |           |  | (iommufd0) |              | (iommufd0) |
+    .-----------.  .-----------.  .------------.              .------------.
+
+This series is also a prerequisite work for vSVA, i.e. Sharing
+guest application address space with passthrough devices.
+
+To enable stage-1 translation, only need to add "x-scalable-mode=on,x-flts=on".
+i.e. -device intel-iommu,x-scalable-mode=on,x-flts=on...
+
+Passthrough device should use iommufd backend to work with stage-1 translation.
+i.e. -object iommufd,id=iommufd0 -device vfio-pci,iommufd=iommufd0,...
+
+If host doesn't support nested translation, qemu will fail with an unsupported
+report.
+
+Test done:
+- VFIO devices hotplug/unplug
+- different VFIO devices linked to different iommufds
+- vhost net device ping test
+
+Fault report isn't supported in this series, we presume guest kernel always
+construct correct S1 page table for passthrough device. For emulated devices,
+the emulation code already provided S1 fault injection.
+
+PATCH1-6:  Add HWPT-based nesting infrastructure support
+PATCH7-8:  Some cleanup work
+PATCH9:    cap/ecap related compatibility check between vIOMMU and Host IOMMU
+PATCH10-20:Implement stage-1 page table for passthrough device
+PATCH21:   Enable stage-1 translation for passthrough device
+
+Qemu code can be found at [3]
+
+TODO:
+- RAM discard
+- dirty tracking on stage-2 page table
+- Fault report to guest when HW Stage-1 faults
+
+[1] https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg02740.html
+[2] https://patchwork.kernel.org/project/kvm/cover/20210302203827.437645-1-yi.l.liu@intel.com/
+[3] https://github.com/yiliu1765/qemu/tree/zhenzhong/iommufd_nesting_rfcv3
+
+Thanks
+Zhenzhong
+
+Changelog:
+rfcv3:
+- s/hwpt_id/id in iommufd_backend_invalidate_cache()'s parameter (Shameer)
+- hide vtd vendor specific caps in a wrapper union (Eric, Nicolin)
+- simplify return value check of get_cap() (Eric)
+- drop realize_late (Cedric, Eric)
+- split patch13:intel_iommu: Add PASID cache management infrastructure (Eric)
+- s/vtd_pasid_cache_reset/vtd_pasid_cache_reset_locked (Eric)
+- s/vtd_pe_get_domain_id/vtd_pe_get_did (Eric)
+- refine comments (Eric, Donald)
+
+rfcv2:
+- Drop VTDPASIDAddressSpace and use VTDAddressSpace (Eric, Liuyi)
+- Move HWPT uAPI patches ahead(patch1-8) so arm nesting could easily rebase
+- add two cleanup patches(patch9-10)
+- VFIO passes iommufd/devid/hwpt_id to vIOMMU instead of iommufd/devid/ioas_id
+- add vtd_as_[from|to]_iommu_pasid() helper to translate between vtd_as and
+  iommu pasid, this is important for dropping VTDPASIDAddressSpace
 
 
->
-> > +}
-> > +
-> > +impl Errors {
-> > +    pub const BREAK: Self =3D Errors::new().with_break_error(true);
-> >  }
-> >
-> >  /// Data Register, `UARTDR`
-> > @@ -93,19 +101,18 @@ pub struct Errors {
-> >  /// The `UARTDR` register is the data register; write for TX and
-> >  /// read for RX. It is a 12-bit register, where bits 7..0 are the
-> >  /// character and bits 11..8 are error bits.
-> > -#[bitsize(32)]
-> > -#[derive(Clone, Copy, Default, DebugBits, FromBits)]
-> > +#[bitfield(u32)]
-> >  #[doc(alias =3D "UARTDR")]
-> >  pub struct Data {
-> >      pub data: u8,
-> > +    #[bits(8)]
-> >      pub errors: Errors,
->
-> We should be able to derive that Errors fits into 8 bits as defined above=
-.
->
-> >      _reserved: u16,
-> >  }
-> > -impl_vmstate_bitsized!(Data);
-> > +impl_vmstate_forward!(Data);
-> >
-> >  impl Data {
-> > -    // bilge is not very const-friendly, unfortunately
-> > -    pub const BREAK: Self =3D Self { value: 1 << 10 };
-> > +    pub const BREAK: Self =3D Self::new().with_errors(Errors::BREAK);
-> >  }
->
-> I guess this flys a little over my head, is the effect only seen in the
-> generated code?
+Yi Liu (3):
+  intel_iommu: Replay pasid binds after context cache invalidation
+  intel_iommu: Propagate PASID-based iotlb invalidation to host
+  intel_iommu: Refresh pasid bind when either SRTP or TE bit is changed
 
-Because these functions are const, they can be evaluated at compile
-time, so this would be replaced with a constant value when compiled.
+Zhenzhong Duan (18):
+  backends/iommufd: Add a helper to invalidate user-managed HWPT
+  vfio/iommufd: Add properties and handlers to
+    TYPE_HOST_IOMMU_DEVICE_IOMMUFD
+  vfio/iommufd: Initialize iommufd specific members in
+    HostIOMMUDeviceIOMMUFD
+  vfio/iommufd: Implement [at|de]tach_hwpt handlers
+  vfio/iommufd: Save vendor specific device info
+  iommufd: Implement query of host VTD IOMMU's capability
+  intel_iommu: Rename vtd_ce_get_rid2pasid_entry to
+    vtd_ce_get_pasid_entry
+  intel_iommu: Optimize context entry cache utilization
+  intel_iommu: Check for compatibility with IOMMUFD backed device when
+    x-flts=on
+  intel_iommu: Introduce a new structure VTDHostIOMMUDevice
+  intel_iommu: Introduce two helpers vtd_as_from/to_iommu_pasid_locked
+  intel_iommu: Handle PASID entry removing and updating
+  intel_iommu: Handle PASID entry adding
+  intel_iommu: Introduce a new pasid cache invalidation type FORCE_RESET
+  intel_iommu: Bind/unbind guest page table to host
+  intel_iommu: ERRATA_772415 workaround
+  intel_iommu: Bypass replay in stage-1 page table mode
+  intel_iommu: Enable host device when x-flts=on in scalable mode
 
->
-> >
-> >  /// Receive Status Register / Error Clear Register, `UARTRSR/UARTECR`
-> > @@ -119,13 +126,14 @@ impl Data {
-> >  /// and UARTECR for writes, but really it's a single error status
-> >  /// register where writing anything to the register clears the error
-> >  /// bits.
-> > -#[bitsize(32)]
-> > -#[derive(Clone, Copy, DebugBits, FromBits)]
-> > +#[bitfield(u32)]
-> >  pub struct ReceiveStatusErrorClear {
-> > +    #[bits(8)]
-> >      pub errors: Errors,
-> > -    _reserved_unpredictable: u24,
-> > +    #[bits(24)]
-> > +    _reserved_unpredictable: u32,
-> >  }
-> > -impl_vmstate_bitsized!(ReceiveStatusErrorClear);
-> > +impl_vmstate_forward!(ReceiveStatusErrorClear);
-> >
-> >  impl ReceiveStatusErrorClear {
-> >      pub fn set_from_data(&mut self, data: Data) {
-> > @@ -138,14 +146,7 @@ pub fn reset(&mut self) {
-> >      }
-> >  }
-> >
-> > -impl Default for ReceiveStatusErrorClear {
-> > -    fn default() -> Self {
-> > -        0.into()
-> > -    }
-> > -}
-> > -
-> > -#[bitsize(32)]
-> > -#[derive(Clone, Copy, DebugBits, FromBits)]
-> > +#[bitfield(u32, default =3D false)]
-> >  /// Flag Register, `UARTFR`
-> >  ///
-> >  /// This has the usual inbound RS232 modem-control signals, plus flags
-> > @@ -171,9 +172,10 @@ pub struct Flags {
-> >      pub transmit_fifo_empty: bool,
-> >      /// RI: Ring indicator
-> >      pub ring_indicator: bool,
-> > -    _reserved_zero_no_modify: u23,
-> > +    #[bits(23)]
-> > +    _reserved_zero_no_modify: u32,
-> >  }
-> > -impl_vmstate_bitsized!(Flags);
-> > +impl_vmstate_forward!(Flags);
-> >
-> >  impl Flags {
-> >      pub fn reset(&mut self) {
-> > @@ -183,16 +185,14 @@ pub fn reset(&mut self) {
-> >
-> >  impl Default for Flags {
-> >      fn default() -> Self {
-> > -        let mut ret: Self =3D 0.into();
-> >          // After reset TXFF, RXFF, and BUSY are 0, and TXFE and RXFE a=
-re 1
-> > -        ret.set_receive_fifo_empty(true);
-> > -        ret.set_transmit_fifo_empty(true);
-> > -        ret
-> > +        Self::from(0)
-> > +            .with_receive_fifo_empty(true)
-> > +            .with_transmit_fifo_empty(true)
->
-> I guess skipping the mut is the advantage of being able to const eval.
+ hw/i386/intel_iommu_internal.h     |   56 +
+ include/hw/i386/intel_iommu.h      |   33 +-
+ include/system/host_iommu_device.h |   32 +
+ include/system/iommufd.h           |   54 +
+ backends/iommufd.c                 |   94 +-
+ hw/i386/intel_iommu.c              | 1670 ++++++++++++++++++++++++----
+ hw/vfio/iommufd.c                  |   40 +
+ backends/trace-events              |    1 +
+ hw/i386/trace-events               |   13 +
+ 9 files changed, 1791 insertions(+), 202 deletions(-)
 
-No you can actually have mut in const-eval. What you can't have is
-heap allocations and calling non-const functions, and some other
-things. But in this case it doesn't matter, because this is the
-Default trait and it's not const, because it's a trait method.
+-- 
+2.34.1
 
->
-> >      }
-> >  }
-> >
-> > -#[bitsize(32)]
-> > -#[derive(Clone, Copy, DebugBits, FromBits)]
-> > +#[bitfield(u32)]
-> >  /// Line Control Register, `UARTLCR_H`
-> >  #[doc(alias =3D "UARTLCR_H")]
-> >  pub struct LineControl {
-> > @@ -201,48 +201,46 @@ pub struct LineControl {
-> >      /// PEN: Parity enable
-> >      pub parity_enabled: bool,
-> >      /// EPS: Even parity select
-> > +    #[bits(1)]
-> >      pub parity: Parity,
-> >      /// STP2: Two stop bits select
-> >      pub two_stops_bits: bool,
-> >      /// FEN: Enable FIFOs
-> > +    #[bits(1)]
-> >      pub fifos_enabled: Mode,
-> >      /// WLEN: Word length in bits
-> >      /// b11 =3D 8 bits
-> >      /// b10 =3D 7 bits
-> >      /// b01 =3D 6 bits
-> >      /// b00 =3D 5 bits.
-> > +    #[bits(2)]
-> >      pub word_length: WordLength,
-> >      /// SPS Stick parity select
-> >      pub sticky_parity: bool,
-> >      /// 31:8 - Reserved, do not modify, read as zero.
-> > -    _reserved_zero_no_modify: u24,
-> > +    #[bits(24)]
-> > +    _reserved_zero_no_modify: u32,
-> >  }
-> > -impl_vmstate_bitsized!(LineControl);
-> > +impl_vmstate_forward!(LineControl);
-> >
-> >  impl LineControl {
-> >      pub fn reset(&mut self) {
-> >          // All the bits are cleared to 0 when reset.
-> > -        *self =3D 0.into();
-> > +        *self =3D Self::default();
-> >      }
-> >  }
-> >
-> > -impl Default for LineControl {
-> > -    fn default() -> Self {
-> > -        0.into()
-> > -    }
-> > -}
-> > -
-> > -#[bitsize(1)]
-> > -#[derive(Clone, Copy, Debug, Eq, FromBits, PartialEq)]
-> >  /// `EPS` "Even parity select", field of [Line Control
-> >  /// register](LineControl).
-> > +#[repr(u8)]
-> > +#[derive(Clone, Copy, Debug, Eq, PartialEq, qemu_api_macros::TryInto)]
-> >  pub enum Parity {
-> >      Odd =3D 0,
-> >      Even =3D 1,
-> >  }
-> >
-> > -#[bitsize(1)]
-> > -#[derive(Clone, Copy, Debug, Eq, FromBits, PartialEq)]
-> > +#[repr(u8)]
-> > +#[derive(Clone, Copy, Debug, Eq, PartialEq, qemu_api_macros::TryInto)]
-> >  /// `FEN` "Enable FIFOs" or Device mode, field of [Line Control
-> >  /// register](LineControl).
-> >  pub enum Mode {
-> > @@ -253,8 +251,8 @@ pub enum Mode {
-> >      FIFO =3D 1,
-> >  }
-> >
-> > -#[bitsize(2)]
-> > -#[derive(Clone, Copy, Debug, Eq, FromBits, PartialEq)]
-> > +#[repr(u8)]
-> > +#[derive(Clone, Copy, Debug, Eq, PartialEq, qemu_api_macros::TryInto)]
-> >  /// `WLEN` Word length, field of [Line Control register](LineControl).
-> >  ///
-> >  /// These bits indicate the number of data bits transmitted or receive=
-d in a
-> > @@ -275,9 +273,8 @@ pub enum WordLength {
-> >  /// The `UARTCR` register is the control register. It contains various
-> >  /// enable bits, and the bits to write to set the usual outbound RS232
-> >  /// modem control signals. All bits reset to 0 except TXE and RXE.
-> > -#[bitsize(32)]
-> > +#[bitfield(u32, default =3D false)]
-> >  #[doc(alias =3D "UARTCR")]
-> > -#[derive(Clone, Copy, DebugBits, FromBits)]
-> >  pub struct Control {
-> >      /// `UARTEN` UART enable: 0 =3D UART is disabled.
-> >      pub enable_uart: bool,
-> > @@ -285,9 +282,10 @@ pub struct Control {
-> >      /// QEMU does not model this.
-> >      pub enable_sir: bool,
-> >      /// `SIRLP` SIR low-power IrDA mode. QEMU does not model this.
-> > -    pub sir_lowpower_irda_mode: u1,
-> > +    pub sir_lowpower_irda_mode: bool,
-> >      /// Reserved, do not modify, read as zero.
-> > -    _reserved_zero_no_modify: u4,
-> > +    #[bits(4)]
-> > +    _reserved_zero_no_modify: u8,
-> >      /// `LBE` Loopback enable: feed UART output back to the input
-> >      pub enable_loopback: bool,
-> >      /// `TXE` Transmit enable
-> <snip>
->
-> I guess I'm not seeing a massive difference here. I guess the const eval
-> is nice but there is cognitive dissonance having annotations not match
-> types. It would be nice to have the best of both worlds.
->
-> For now I don't see a compelling reason to change from a standard crate
-> (which I guess is the reason this is an RFC ;-)
->
-> --
-> Alex Benn=C3=A9e
-> Virtualisation Tech Lead @ Linaro
-
---=20
-Manos Pitsidianakis
-Emulation and Virtualization Engineer at Linaro Ltd
 
