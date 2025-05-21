@@ -2,77 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 621D8AC0B03
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 14:01:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C11EEAC0C09
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 14:55:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uI4ar-0004vu-B6; Thu, 22 May 2025 08:00:13 -0400
+	id 1uI5S2-0002aG-BG; Thu, 22 May 2025 08:55:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uI4am-0004vX-JF
- for qemu-devel@nongnu.org; Thu, 22 May 2025 08:00:08 -0400
-Received: from mailgate02.uberspace.is ([185.26.156.114])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uI4ai-0003mH-TO
- for qemu-devel@nongnu.org; Thu, 22 May 2025 08:00:07 -0400
-Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
- by mailgate02.uberspace.is (Postfix) with ESMTPS id 03F1218031B
- for <qemu-devel@nongnu.org>; Thu, 22 May 2025 13:59:53 +0200 (CEST)
-Received: (qmail 29706 invoked by uid 990); 22 May 2025 11:59:53 -0000
-Authentication-Results: skiff.uberspace.de;
-	auth=pass (plain)
-Received: from unknown (HELO unkown) (::1)
- by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
- Thu, 22 May 2025 13:59:53 +0200
-From: Julian Ganz <neither@nut.email>
-To: Rowan Hart <rowanbhart@gmail.com>
-Cc: Julian Ganz <neither@nut.email>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v3 5/8] Add memory hardware address read/write API
-Date: Thu, 22 May 2025 13:59:32 +0200
-Message-ID: <20250522115935.34716-3-neither@nut.email>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250521094333.4075796-6-rowanbhart@gmail.com>
-References: <20250521094333.4075796-1-rowanbhart@gmail.com>
- <20250521094333.4075796-6-rowanbhart@gmail.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.comg>)
+ id 1uI0bg-0005m7-1Z; Thu, 22 May 2025 03:44:48 -0400
+Received: from mgamail.intel.com ([198.175.65.19])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.comg>)
+ id 1uI0bc-0000II-GU; Thu, 22 May 2025 03:44:46 -0400
+X-CSE-ConnectionGUID: byn5qMoPR6GQLy+Pvv6M7A==
+X-CSE-MsgGUID: DdP8dZ9VRRW0vCr89p39vg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="49648576"
+X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="49648576"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 May 2025 00:13:49 -0700
+X-CSE-ConnectionGUID: 6wiW2drYR/6IzEoiq/Go2g==
+X-CSE-MsgGUID: FeWAS7M9Q3iN2VY90+lShg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; d="scan'208";a="140997796"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.39])
+ by fmviesa009.fm.intel.com with ESMTP; 21 May 2025 00:13:47 -0700
+Date: Wed, 21 May 2025 15:34:54 +0800
+From: Zhao Liu <zhao1.liu@intel.comg>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>, qemu-devel@nongnu.org,
+ qemu-rust@nongnu.org, Dapeng Mi <dapeng1.mi@intel.com>
+Subject: Re: [PATCH 2/5] hw/timer/hpet: Adjust num_timers in hpet_init()
+Message-ID: <aC2CHrteHfhQDzOh@intel.com>
+References: <20250520152750.2542612-1-zhao1.liu@intel.com>
+ <20250520152750.2542612-3-zhao1.liu@intel.com>
+ <20486914-1752-4710-b000-52ee04d4106d@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Bar: /
-X-Rspamd-Report: SUSPICIOUS_RECIPS(1.5) BAYES_HAM(-3) MID_CONTAINS_FROM(1)
- MIME_GOOD(-0.1)
-X-Rspamd-Score: -0.6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
- h=from:to:cc:subject:date;
- bh=doSqRyXXsf1NTn+TJKo4v2nGsZfnhTW2imRNbaJYcPU=;
- b=RpObsh5y6VBv2I4mNpNdByUIDYnZ/qbac5Ql9ag5+96AG9n8vPpK+MMJza7b8+FO83nz64twW+
- m56/9v8qxbUxHX/zkQp8HNMs36T2AtnRstzSKJ1Umsqz1FX1ilS/YLScreOY5TCJxrQWYWdEPsBo
- qZP6rvePeIl0Jp6uUrw7oNev9FyHWQPgGgmYJ8OOmW4L4L9B88oLgsPPjgflllrIfDbb8INrfn/x
- rls+bZqzKl+C/e5XM390NM5Kx/TsPbmH/4g7cLOvD/mmBx7hbUtrO2lj2ca/5SL+BdIt0KglY578
- 7JGkwPvQu+Z7qlkKNAxvFPbA4JbLIv5nK5IxmxDMmxKXt2vGujC1p7dklffgSQXHp2RDus4tXn1E
- 7dk9DZbdnRBPb0RMTPOy7s6TPf8F8bFLEvx4gfxunGd54D9gcuJDrdCgKwVTrKMMEgZ5bU8ydRHI
- pfAfHCsENFASejhghw1g4xKCFuRLXQseuiDyzGXLhMkRmRK0douwUqmCKgqmbi/uHJI/usT9lpxQ
- +vZrjHA3Zkjh66N2E+c/kSOMU6+lw2/qcStdpRrMxhoqIOM2o900QcGyWlDru+hkytt20ZunvcWI
- Y3Z4pnn7PnLGbxREZIikOFtprsYDVgFF1y9DQFaS7aCD4S7ze9QKamAsLbYfCuRXzI5UzJWF0Cf7
- U=
-Received-SPF: pass client-ip=185.26.156.114; envelope-from=neither@nut.email;
- helo=mailgate02.uberspace.is
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20486914-1752-4710-b000-52ee04d4106d@redhat.com>
+Received-SPF: none client-ip=198.175.65.19; envelope-from=zhao1.liu@intel.comg;
+ helo=mgamail.intel.com
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_ADSP_NXDOMAIN=0.9,
+ NO_DNS_FOR_FROM=0.001, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 22 May 2025 08:54:59 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,73 +69,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Rowan,
+On Tue, May 20, 2025 at 05:16:22PM +0200, Paolo Bonzini wrote:
+> Date: Tue, 20 May 2025 17:16:22 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: Re: [PATCH 2/5] hw/timer/hpet: Adjust num_timers in hpet_init()
+> 
+> On 5/20/25 17:27, Zhao Liu wrote:
+> > Currently, HPET adjusts num_timers in hpet_realize(), and doesn't change
+> > it in any other place. And this field is initialized as a property.
+> 
+> Properties are initialized *after* hpet_init.  For hw/timer/hpet you can
+> check s->num_timers and return an error if it's out of bounds, but for the
+> Rust version we don't have Error** support yet. :(
 
-> diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
-> index eff8430b4a..d4f229abd9 100644
-> --- a/include/qemu/qemu-plugin.h
-> +++ b/include/qemu/qemu-plugin.h
-> @@ -1014,6 +1014,102 @@ QEMU_PLUGIN_API
->  bool qemu_plugin_write_memory_vaddr(uint64_t addr,
->                                     GByteArray *data);
->  
-> <snip>
-> +/**
-> + * qemu_plugin_translate_vaddr() - translate a virtual address to a physical one
-> + *
-> + * @vaddr: virtual address to translate
-> + * @hwaddr: pointer to store the physical address
-> + *
-> + * This function is only valid in vCPU context (i.e. in callbacks) and is only
-> + * valid for softmmu targets.
-> + *
-> + * Returns true on success and false on failure.
-> + */
-> +QEMU_PLUGIN_API
-> +bool qemu_plugin_translate_vaddr(uint64_t vaddr, uint64_t *hwaddr);
+Oops, yes.
 
-As a (testing) plugin author, I'm quite interested in this function in
-particular. For the next iteration, would you be willing to split this
-one out into its own patch? This would enhance the chance of it getting
-picked up even if other parts of the series should not make it.
+(Note for myself,) the default property value is set before hpet_init(),
+but the subsequent adjustments to property (via object_property_set_uint8())
+need to take boundaries into account, which is why the num_timers adjustment
+is placed in realize().
 
-> diff --git a/plugins/api.c b/plugins/api.c
-> index 19c10bb39e..5983768783 100644
-> --- a/plugins/api.c
-> +++ b/plugins/api.c
-> @@ -569,6 +569,106 @@ bool qemu_plugin_write_memory_vaddr(uint64_t addr, GByteArray *data)
-> <snip> 
-> +bool qemu_plugin_translate_vaddr(uint64_t vaddr, uint64_t *hwaddr)
-> +{
-> +#ifdef CONFIG_SOFTMMU
-> +    g_assert(current_cpu);
-> +
-> +    CPUState *cpu = current_cpu;
-> +
-> +    uint64_t res = cpu_get_phys_page_debug(cpu, vaddr);
-> +
-> +    if (res == (uint64_t)-1) {
-> +        return false;
-> +    }
-> +
-> +    *hwaddr = res | (vaddr & ~TARGET_PAGE_MASK);
-> +
-> +    return true;
-> +#else
-> +    return false;
-> +#endif
-> +}
+> Queued 1-4-5 for now.
 
-This definition strikes me as odd. What was your reason to assert
-`current_cpu` here, but not in the other two functions? Also a bit
-surprising is the declaration of `cpu` if you use it in just one place
-(rather than just use `current_cpu` directly as for the assertion).
+Thanks!
 
-And there is no reason in particular why the vCPU could not be a
-function parameter of `qemu_plugin_translate_vaddr`, right? You don't
-have the same restrictions as in `qemu_plugin_read_memory_hwaddr` or
-`qemu_plugin_hwaddr_operation_result` where you actually touch memory?
+Zhao
 
-Regards,
-Julian
 
