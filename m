@@ -2,85 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72365ABFFAA
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 00:37:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34B1DABFFC4
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 00:40:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHs1R-0001XL-Pq; Wed, 21 May 2025 18:34:49 -0400
+	id 1uHs4T-00068U-VH; Wed, 21 May 2025 18:37:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uHs1M-0001WQ-Hc
- for qemu-devel@nongnu.org; Wed, 21 May 2025 18:34:45 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1uHs4Q-00067a-IH
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 18:37:55 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uHs19-00050b-TL
- for qemu-devel@nongnu.org; Wed, 21 May 2025 18:34:42 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-742c96af71dso5322602b3a.0
- for <qemu-devel@nongnu.org>; Wed, 21 May 2025 15:34:29 -0700 (PDT)
+ id 1uHs4M-0005Y8-2w
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 18:37:54 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-231fc83a33aso45173235ad.0
+ for <qemu-devel@nongnu.org>; Wed, 21 May 2025 15:37:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747866868; x=1748471668; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BzbmByqdOkqyRMXARFIXus2CwGPGDwIxO/jwoX/CbXM=;
- b=mmodHKjAx3LGbFp11BFg0pud8tZnZ5QdR+3iU1I5ku7EpQGwd+kON6PA0uEFUzJXmQ
- F922vGiHNAQXMo7UowPM1ZVH2RXpBbvg7/jJv55RLUjbJQ7un6m0P8NTViUo3MXeedaC
- uk0iXPV4YVHnZpOiCNse0Gt0io2eSHiJoptW2x1/BxwvCW9Hp32O21dyi20W6IGlrtSQ
- v/2ZdvjxcmAZY+AyVDK/wnfURArcrodPccZKZO24ocRScwcqA1pXCmj1Jogwai8Q6Ptf
- kFFlUlMj+Hbj/cREKdesILN6mcSmZ9jvwPJ5x1YGTApe9+vhlGd9tsafXwNvqctnDmOO
- dlEQ==
+ d=linaro.org; s=google; t=1747867065; x=1748471865; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=jjhvBQmc58bRfW1BmUaC+6dNwrbsuNXyv6FxaIjBx7E=;
+ b=RPmoexCHTWiJgGpL95Zy0yPvAKPFdulMzK0mIVLHbbSGQm4OskAl84fzDYjU2n1F13
+ ZuAj5qdSXYQxw1EVSDI8fruLBKeBxJLStGkPJAkSrjTDan0DQPdGfDaVQtZqGwFtt5re
+ 8wYyA1iPCiJuedhz4HRst2kt0t8boeLhoVowssy/HYv47J1SEkTu15vKRm0rFU2hFBhD
+ hbiBiGdBVw8P4eVPMowQRxnuwYFFT2C4mjzYn4FDrFiC1tMCXWCc8YQ7K9xdVJB24zhj
+ 6J/y4y7CI/JpyH+xu/pcBQsqKQPQZhyq/SXXbft9Pg46c8LxwwlLKiCsOCWOHu/baSmH
+ JpYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747866868; x=1748471668;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=BzbmByqdOkqyRMXARFIXus2CwGPGDwIxO/jwoX/CbXM=;
- b=cRlvLILobtx3T6uGTuZ09i8avzyKda61+B/NiVZ7MxihL8/bXmZ1u5bMRmxdsjxakQ
- +CAJ5hgHik5IV5NOdJAeM3K9Fduzp6tp3w04Ah37Q3LnkQITwtox/ajIm4/7s8Um0no8
- aYEaIbgNiQh++C67CoRUBJf7kQtpTgnX3+7K1NeC+Q22eXlZ4t5o4sWPH/hQVevp/QaT
- BTBDR41dVZYVggYCWIyDQhs8O4kIxGfwGc1O5034Z5u5kxRx641VR6ggVQnMmi0ioww1
- Rppkhxt6YclUYnlgxbrok12ffigf8wpz3qaYed4HxaQhtfcuQHQkbQDy/fd9FE6i0JAx
- U8TA==
-X-Gm-Message-State: AOJu0Yw5aTRAZGUjJjZ/5DDSn8GWwadvjm3v35ZIGB2C/NSLO3mNGlFM
- baLEm9rhHh5B/lBEJy/im90pPynr8e68zuT7U2BSzPMUScuSxBZrJsuBjwl5nAR2rSGcEY5lhkK
- c81hZ
-X-Gm-Gg: ASbGnctXSEXjuh0BFAn9pdJrhY818WDaUXNOmRFw0KAdJQJGUFdiZkR4Xhz1IC8/uJ3
- EWbbfkIzgEnKTlICXy9O3a9LV2VTDp6Z5yYZHAtWpliyOG+ZFGbBZI5BehGAro80oCxHJBpizRl
- ZY2rcHh2/hOkvMrovqAeRzz58Ypg+kpL0tNA8nK3hNBB3zgCJc8c4EghXtlJ8kemKvXFJdSagOV
- zNq5iBg32602LvSEjCg2MUF/brzkjmWjrv6OGk9CRRf1S++Gx0c2jc6LNaAimp300aXXjbKy1Rz
- BzeKYAgv6qiGCQvAmk+0KwBMx4ME8f5x8MfI9Ez0mGqLcCclOJY=
-X-Google-Smtp-Source: AGHT+IGMV2qNrOkZCutEZzQtXRCnh8SatdbIhZY1/S1cvReL3RJKd8edhUoLhBndd22BKq4rH20x3A==
-X-Received: by 2002:a17:90b:4a50:b0:301:98fc:9b5a with SMTP id
- 98e67ed59e1d1-30e7d500953mr32636482a91.6.1747866867942; 
- Wed, 21 May 2025 15:34:27 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1747867065; x=1748471865;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=jjhvBQmc58bRfW1BmUaC+6dNwrbsuNXyv6FxaIjBx7E=;
+ b=gIAzU188JkGX97w0vI3BqTziLAKRNBjbDGDD1gZ2Byv6+l9cgv1QEHzQiJ7vWqj2t+
+ fOvoMPYEb+ZEZmvDlUvc4qOTRLUS04ETx4da9STwF4xCPRCtZ7kn7lx5RI0zCqUkt4nq
+ MMGlFr/OdIbKV0wJzzUtvcAqGQ+ekVE9aD2s7/a2Y72UuuPhuCtIktGB3cx5Z2Cc/9iS
+ oBbyP3pK0oqgI6tzEaD0n1OYOFc6S6SPn4ks6o0hAITfd4NTvTujwD/7cGvY5+uYoDJ9
+ rXySJxQqRwkiLvrQUnl4xbfc3tAKP08TDwGo3ztclhC8YhNhJ7jUkhmOIMumaIejXrt/
+ d/Pg==
+X-Gm-Message-State: AOJu0YzmGeivpJgz2HQClpXbr7gT5zkwscuRbN2T032ZcBWrdEUzsQkg
+ +Yqg762FR76CjJzumqvNDDGHW5pzJ1zogu3K+wOKEyd3f3+IR8E0jYd61RHmNlWcWt5Da0OOkRR
+ 0gBu+
+X-Gm-Gg: ASbGncsS8+RcXBhEX///SF0ysWOnh13DANbb/BsGSzZV5mmFIUBlJ4afXq/mc6dlaTx
+ QMifpda/IQoS/yBsk4Wx3s6iHEOUjjQnWS+3Av4Qy4OY3DSmdXTEJfAd2EsFcVdnK95WG99HRRy
+ eSblOxhF783CDzsGzOGKjEtD1ZbV0VMxdQZUc5wzrS+y76vNr6u9XAxf5Yz/KnTUQl52wM+NHa3
+ +rxo5QO34RXODPfZkqGyKr4H9EFMnYzJgT2xXGpILbrc2oY6SAV8Znb67yrrVBrZpidK8hm0KOK
+ YCvGlhREiOUmx/eiXJQUJ2QLaApGf1sEN4uUYn224iPGP2SQBkiWyzuBYyodLA==
+X-Google-Smtp-Source: AGHT+IEk6ZsYoI8i35UQ4KgUkxBEAVL7m0Qia61XjIay/ajvgl9bcFpnhGOwTwpPidBbN9lpi3qygA==
+X-Received: by 2002:a17:902:ce87:b0:220:e924:99dd with SMTP id
+ d9443c01a7336-231de3ace9emr320579305ad.34.1747867065113; 
+ Wed, 21 May 2025 15:37:45 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b26eaf5a31dsm10165224a12.2.2025.05.21.15.34.27
+ d9443c01a7336-231d4e97dcesm97711105ad.121.2025.05.21.15.37.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 21 May 2025 15:34:27 -0700 (PDT)
+ Wed, 21 May 2025 15:37:44 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, thuth@redhat.com,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 7/7] meson: merge hw_common_arch in
- target_common_system_arch
-Date: Wed, 21 May 2025 15:34:14 -0700
-Message-ID: <20250521223414.248276-8-pierrick.bouvier@linaro.org>
+Cc: pierrick.bouvier@linaro.org, pbonzini@redhat.com, peter.maydell@linaro.org,
+ armbru@redhat.com, michael.roth@amd.com, philmd@linaro.org,
+ richard.henderson@linaro.org, berrange@redhat.com, thuth@redhat.com
+Subject: [PATCH v3 00/14] qapi: remove all TARGET_* conditionals from the
+ schema
+Date: Wed, 21 May 2025 15:37:26 -0700
+Message-ID: <20250521223740.249720-1-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250521223414.248276-1-pierrick.bouvier@linaro.org>
-References: <20250521223414.248276-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,86 +97,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-No need to keep two different libraries, as both are compiled with exact
-same flags. As well, rename target common libraries to common_{arch} and
-system_{arch}, to follow what exists for common and system libraries.
+This series exposes all qmp commands for any target unconditionally, allowing to
+compile QAPI generated code without any TARGET conditionals.
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- meson.build | 33 ++++++++++++---------------------
- 1 file changed, 12 insertions(+), 21 deletions(-)
+Based on original RFC from Daniel P. Berrangé:
+https://lore.kernel.org/qemu-devel/20250508135816.673087-1-berrange@redhat.com/
 
-diff --git a/meson.build b/meson.build
-index 087ce7dd20d..f57b051b3d4 100644
---- a/meson.build
-+++ b/meson.build
-@@ -4121,7 +4121,6 @@ common_all = static_library('common',
-                             dependencies: common_ss.all_dependencies())
- 
- # construct common libraries per base architecture
--hw_common_arch_libs = {}
- target_common_arch_libs = {}
- target_common_system_arch_libs = {}
- foreach target_base_arch, config_base_arch : config_base_arch_mak
-@@ -4150,22 +4149,10 @@ foreach target_base_arch, config_base_arch : config_base_arch_mak
-   target_c_args = ['-DCPU_DEFS_H']
-   target_system_c_args = target_c_args + ['-DCOMPILING_SYSTEM_VS_USER', '-DCONFIG_SOFTMMU']
- 
--  if target_base_arch in hw_common_arch
--    src = hw_common_arch[target_base_arch]
--    lib = static_library(
--      'hw_' + target_base_arch,
--      build_by_default: false,
--      sources: src.all_sources() + genh,
--      include_directories: inc,
--      c_args: target_system_c_args,
--      dependencies: src.all_dependencies() + common_deps + system_deps)
--    hw_common_arch_libs += {target_base_arch: lib}
--  endif
--
-   if target_base_arch in target_common_arch
-     src = target_common_arch[target_base_arch]
-     lib = static_library(
--      'target_' + target_base_arch,
-+      'common_' + target_base_arch,
-       build_by_default: false,
-       sources: src.all_sources() + genh,
-       include_directories: inc,
-@@ -4175,10 +4162,20 @@ foreach target_base_arch, config_base_arch : config_base_arch_mak
-     target_common_arch_libs += {target_base_arch: lib}
-   endif
- 
-+  # merge hw_common_arch in target_common_system_arch
-+  if target_base_arch in hw_common_arch
-+    hw_src = hw_common_arch[target_base_arch]
-+    if target_base_arch in target_common_system_arch
-+      target_common_system_arch[target_base_arch].add_all(hw_src)
-+    else
-+      target_common_system_arch += {target_base_arch: hw_src}
-+    endif
-+  endif
-+
-   if target_base_arch in target_common_system_arch
-     src = target_common_system_arch[target_base_arch]
-     lib = static_library(
--      'target_system_' + target_base_arch,
-+      'system_' + target_base_arch,
-       build_by_default: false,
-       sources: src.all_sources() + genh,
-       include_directories: inc,
-@@ -4373,12 +4370,6 @@ foreach target : target_dirs
-     objects += libuser.extract_objects(src.sources())
-     arch_deps += src.dependencies()
-   endif
--  if target_type == 'system' and target_base_arch in hw_common_arch_libs
--    src = hw_common_arch[target_base_arch].apply(config_target, strict: false)
--    lib = hw_common_arch_libs[target_base_arch]
--    objects += lib.extract_objects(src.sources())
--    arch_deps += src.dependencies()
--  endif
-   if target_type == 'system' and target_base_arch in target_common_system_arch_libs
-     src = target_common_system_arch[target_base_arch].apply(config_target, strict: false)
-     lib = target_common_system_arch_libs[target_base_arch]
+v3
+--
+
+- Change error message for rtc-reset-injection stub
+- s/'*deprecated-props' : { 'type': ['str'] }/'*deprecated-props' : ['str'] }
+- further cleanup in qapi/meson.build
+- move qapi/machine-target.json deletion to s390x cpu commands commit
+- cleanup qapi_outputs in qapi/meson.build
+- All comment and commit description updates requested
+- Rebase on top of master (conflict with s/SGX/Sgx/ case change)
+
+v2
+--
+
+- rtc-reset-reinjection now returns an error if the command is not applicable
+  for current target (Markus & Daniel)
+
+v1
+--
+
+- remove file qapi/misc-target.json (Markus)
+- remove qapi/*-target.json from MAINTAINERS (Markus)
+- remove qapi_specific_outputs from qapi/meson.build (Markus)
+- update comment in rtc-reset-reinjection stub (Markus)
+- build QAPI generated code only once
+
+Daniel P. Berrangé (8):
+  qapi: expose rtc-reset-reinjection command unconditionally
+  qapi: expand docs for SEV commands
+  qapi: make SEV commands unconditionally available
+  qapi: expose query-gic-capability command unconditionally
+  qapi: make SGX commands unconditionally available
+  qapi: make Xen event commands unconditionally available
+  qapi: remove the misc-target.json file
+  qapi: make s390x specific CPU commands unconditionally available
+
+Philippe Mathieu-Daudé (1):
+  qapi: Make CpuModelExpansionInfo::deprecated-props optional and
+    generic
+
+Pierrick Bouvier (5):
+  qapi: remove qapi_specific_outputs from meson.build
+  qapi: make all generated files common
+  qapi: use imperative style in documentation
+  qapi/misc-i386: s/field will be set/field is set/
+  qapi/misc-i386: move errors to their own documentation section
+
+ MAINTAINERS                               |   1 -
+ qapi/audio.json                           |   2 +-
+ qapi/char.json                            |   4 +-
+ qapi/cryptodev.json                       |   2 +-
+ qapi/machine-s390x.json                   | 121 +++++
+ qapi/machine-target.json                  | 523 ----------------------
+ qapi/machine.json                         | 367 ++++++++++++++-
+ qapi/migration.json                       |   8 +-
+ qapi/misc-arm.json                        |  49 ++
+ qapi/{misc-target.json => misc-i386.json} | 165 +++----
+ qapi/qapi-schema.json                     |   5 +-
+ qapi/ui.json                              |   8 +-
+ include/hw/s390x/cpu-topology.h           |   2 +-
+ hw/i386/kvm/xen-stubs.c                   |  13 -
+ hw/i386/kvm/xen_evtchn.c                  |   2 +-
+ hw/i386/monitor.c                         |   2 +-
+ hw/i386/sgx-stub.c                        |   2 +-
+ hw/i386/sgx.c                             |   2 +-
+ hw/s390x/cpu-topology.c                   |   4 +-
+ hw/s390x/s390-skeys.c                     |   1 -
+ stubs/monitor-arm-gic.c                   |  12 +
+ stubs/monitor-cpu-s390x-kvm.c             |  22 +
+ stubs/monitor-cpu-s390x.c                 |  23 +
+ stubs/monitor-cpu.c                       |  21 +
+ stubs/monitor-i386-rtc.c                  |  12 +
+ stubs/monitor-i386-sev.c                  |  36 ++
+ stubs/monitor-i386-sgx.c                  |  17 +
+ stubs/monitor-i386-xen.c                  |  16 +
+ target/arm/arm-qmp-cmds.c                 |   4 +-
+ target/i386/cpu-system.c                  |   2 +-
+ target/i386/cpu.c                         |   2 +-
+ target/i386/monitor.c                     |   1 -
+ target/i386/sev-system-stub.c             |  32 --
+ target/i386/sev.c                         |   2 +-
+ target/loongarch/loongarch-qmp-cmds.c     |   2 +-
+ target/mips/system/mips-qmp-cmds.c        |  12 +-
+ target/ppc/ppc-qmp-cmds.c                 |  12 +-
+ target/riscv/riscv-qmp-cmds.c             |   2 +-
+ target/s390x/cpu_models_system.c          |   2 +-
+ tests/qtest/qmp-cmd-test.c                |   1 +
+ qapi/meson.build                          |  33 +-
+ stubs/meson.build                         |   8 +
+ 42 files changed, 833 insertions(+), 724 deletions(-)
+ create mode 100644 qapi/machine-s390x.json
+ delete mode 100644 qapi/machine-target.json
+ create mode 100644 qapi/misc-arm.json
+ rename qapi/{misc-target.json => misc-i386.json} (75%)
+ create mode 100644 stubs/monitor-arm-gic.c
+ create mode 100644 stubs/monitor-cpu-s390x-kvm.c
+ create mode 100644 stubs/monitor-cpu-s390x.c
+ create mode 100644 stubs/monitor-cpu.c
+ create mode 100644 stubs/monitor-i386-rtc.c
+ create mode 100644 stubs/monitor-i386-sev.c
+ create mode 100644 stubs/monitor-i386-sgx.c
+ create mode 100644 stubs/monitor-i386-xen.c
+
 -- 
 2.47.2
 
