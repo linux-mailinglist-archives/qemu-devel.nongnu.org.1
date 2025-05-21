@@ -2,62 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22764ABFA92
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 18:03:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4083ABFAB5
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 18:05:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHltO-0001eP-5Y; Wed, 21 May 2025 12:02:06 -0400
+	id 1uHlwV-0005gP-1V; Wed, 21 May 2025 12:05:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <srv_ts003@codethink.com>)
- id 1uHltB-0001Ui-7v
- for qemu-devel@nongnu.org; Wed, 21 May 2025 12:01:56 -0400
-Received: from imap4.hz.codethink.co.uk ([188.40.203.114])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uHlwI-0005dA-PT
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 12:05:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <srv_ts003@codethink.com>)
- id 1uHlt8-0000Wg-Q4
- for qemu-devel@nongnu.org; Wed, 21 May 2025 12:01:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=codethink.co.uk; s=imap4-20230908; h=Sender:Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
- Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=Wx11R4hHmcZx4Owx73f7dFOsZyVJSShRDqAxd3mWQgY=; b=D813DH5WV77Rzr6hQarVCXGnXe
- mCpdWPKayN0EdwN8/IRptMQnT3TLaee55jRb1aWnHlzS0Hu3NAD3BlxqP/b1CJLqxaq+yFfNXPYZQ
- 9U90+QPT4gXnMzw8e5v/dvQE7iOsvIqUsU5k7JeXyVJQHUc5mSIV70rVE7d99CifScwVfEmhxQJXM
- MkFr/lOr1/gS4OwgaMbfJcExaQFpV7gj7A9eMaRRi5uTNVf2XUxwXp8bY2f1KQ2N7+jqM0BsWdVeJ
- oB1svcA4k6p+3rOZZFepxys7g3nb4gDUwzO4pSkwr8ZcwT1pjK1AjBpAT1TQMEhrOwj2WefZ4AE6x
- y3zFI57A==;
-Received: from [167.98.27.226] (helo=rainbowdash)
- by imap4.hz.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
- id 1uHlt1-00FTdN-Fy; Wed, 21 May 2025 17:01:43 +0100
-Received: from ben by rainbowdash with local (Exim 4.98.2)
- (envelope-from <ben@rainbowdash>) id 1uHlt1-000000006RH-0zPR;
- Wed, 21 May 2025 17:01:43 +0100
-From: Ben Dooks <ben.dooks@codethink.co.uk>
-To: nazar.kazakov@codethink.co.uk, joseph.baker@codethink.co.uk,
- fran.redondo@codethink.co.uk, lawrence.hunter@codethink.co.uk,
- qemu-devel@nongnu.org
-Cc: ben.dooks@codethink.co.uk
-Subject: [RFC 3/3] hw/net: lowrisc: initial mdio_bb work
-Date: Wed, 21 May 2025 17:01:42 +0100
-Message-Id: <20250521160142.24715-4-ben.dooks@codethink.co.uk>
-X-Mailer: git-send-email 2.37.2.352.g3c44437643
-In-Reply-To: <20250521160142.24715-1-ben.dooks@codethink.co.uk>
-References: <20250521160142.24715-1-ben.dooks@codethink.co.uk>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1uHlwG-0000tw-Fy
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 12:05:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747843500;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=bs7XGcyM2aC+svS8PZpt2c+NweJT8nx9A1SJr9WqvlI=;
+ b=Ju98YPisjN32cfl8sUnQRAQtrpiR3gO/Qxg9sgWZx6DcKt7EBYCBH6d6GMem8XPe/EagDn
+ lmo8N4sSX4kVU9lnf16t2pUCfo3zUAZYHHQBQD9R0uOAcZYKFpVSh2MZdOYnktmk8Pi7d/
+ ROJrJH190QrZ3vqzr7Mll2JFt5/Xzn4=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-499-QPHsCk-gPdqDHX1fQqfbBA-1; Wed, 21 May 2025 12:04:59 -0400
+X-MC-Unique: QPHsCk-gPdqDHX1fQqfbBA-1
+X-Mimecast-MFC-AGG-ID: QPHsCk-gPdqDHX1fQqfbBA_1747843499
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-7c5b9333642so823667185a.3
+ for <qemu-devel@nongnu.org>; Wed, 21 May 2025 09:04:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747843499; x=1748448299;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=bs7XGcyM2aC+svS8PZpt2c+NweJT8nx9A1SJr9WqvlI=;
+ b=YMMVyrmBugkrqmE9Nya0xfEq8WCC+uV5MaQAGm1kjTORxoN+Wgk07TJEkLGJhLexip
+ 7bfMHkQsBdiix1qvJxiliWnmp3JD3MByhbXSnKxwb8F+C4ys47xrPHmYN8NeQyDP1g55
+ OeYTEYhGMJ6l0QO899YomZbwUxfJuLdujZFOXo8JTVxRlkOysFsRmL3rLmatRViyDA8s
+ /V+D7hBEzRV0JDULHN3UHAZB7smEx7hPGcCA4AxYEJq0WAZHwEROF40cfuszVjZV6YVn
+ zq/3M4qkam/wfdZ5+Y+AdfSQXcjlobvOBg+FSyzdDgwsYbH4/QcTHwLdxGWaHAKpo0ir
+ zupg==
+X-Gm-Message-State: AOJu0Yx9kis6qHeuLxtkrbQTnnmmMfHHUpaAzDC92KgOABoKFklgZAG7
+ HZdWx0OsIpsYz32GoXp67ZXe66JODzRYiikMVsbh8BJYcrcNePCkAuuIIU15CdjMf2h03mcYOIL
+ qNV7CHQA5RCKl1cm1thzVUuq7P8WR/nYIiQYoTB4uU0KwyrC9Qz5BDWU6
+X-Gm-Gg: ASbGncvFWM8kTOed8qKcZhJGOs+60j780Li8icnZLnrwRUvojPHcqRBJrBO0kEnFCSo
+ p+Dq12F3sl+E+gugvuT838yTPx7YVgqsiPZVRGwgX9b+1U5Y1fZmoMrtiuQaMbx12VgRw7sUpzf
+ EO2hreJscFQ3PbBy9tWR/Pw1oabqulydNJgiYCPXnqvayBG0bKuAWit8u71czOnZ4N21k9X+F55
+ ihvIk95J4dFiduJgia6Oib0Sqaegnr8bmutPlr8D0TzdeaQMvLrrs93uhKS2a9czTDpSzSBYqNL
+ dtA=
+X-Received: by 2002:a05:620a:4415:b0:7ca:eb5b:9971 with SMTP id
+ af79cd13be357-7cd4677ddb3mr3882323885a.36.1747843498682; 
+ Wed, 21 May 2025 09:04:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGtKmSV5scsRularTcU0VB+oALvGPiwcpMUEQxQIC8HVUjUzlvrg6PmlPTjZXJFjaH2MEbYww==
+X-Received: by 2002:a05:620a:4415:b0:7ca:eb5b:9971 with SMTP id
+ af79cd13be357-7cd4677ddb3mr3882316985a.36.1747843498132; 
+ Wed, 21 May 2025 09:04:58 -0700 (PDT)
+Received: from x1.local ([85.131.185.92]) by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-7cd467ecfbasm888286185a.49.2025.05.21.09.04.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 21 May 2025 09:04:57 -0700 (PDT)
+Date: Wed, 21 May 2025 12:04:54 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Juraj Marcin <jmarcin@redhat.com>
+Cc: qemu-devel@nongnu.org, kraxel@redhat.com,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
+Subject: Re: [PATCH] ui/vnc: Update display update interval when VM state
+ changes to RUNNING
+Message-ID: <aC35pvtRC3OcQruO@x1.local>
+References: <20250521151616.3951178-1-jmarcin@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=188.40.203.114;
- envelope-from=srv_ts003@codethink.com; helo=imap4.hz.codethink.co.uk
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250521151616.3951178-1-jmarcin@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.001,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.184,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,119 +103,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add initial implementation of PHY via bit-banged code.
+On Wed, May 21, 2025 at 05:16:13PM +0200, Juraj Marcin wrote:
+> From: Juraj Marcin <jmarcin@redhat.com>
+> 
+> If a virtual machine is paused for an extended period time, for example,
+> due to an incoming migration, there are also no changes on the screen.
+> VNC in such case increases the display update interval by
+> VNC_REFRESH_INTERVAL_INC (50 ms). The update interval can then grow up
+> to VNC_REFRESH_INTERVAL_MAX (3000 ms).
+> 
+> When the machine resumes, it can then take up to 3 seconds for the first
+> display update. Furthermore, the update interval is then halved with
+> each display update with changes on the screen. If there are moving
+> elements on the screen, such as a video, this can be perceived as
+> freezing and stuttering for few seconds before the movement is smooth
+> again.
+> 
+> This patch resolves this issue, by adding a listener to VM state changes
+> and changing the update interval when the VM state changes to RUNNING.
+> The update_displaychangelistener() function updates the internal timer,
+> and the display is refreshed immediately if the timer is expired.
+> 
+> Signed-off-by: Juraj Marcin <jmarcin@redhat.com>
 
-This is to test the mdio_bb code and will need updating
-for real board values.
----
- hw/net/Kconfig               |  1 +
- hw/net/lowrisc.c             | 42 +++++++++++++++++++++++++++++++-----
- include/hw/net/lowrisc_eth.h |  4 ++++
- 3 files changed, 42 insertions(+), 5 deletions(-)
+Thanks for looking into it!
 
-diff --git a/hw/net/Kconfig b/hw/net/Kconfig
-index 3abee9130e..0bc11e567a 100644
---- a/hw/net/Kconfig
-+++ b/hw/net/Kconfig
-@@ -114,6 +114,7 @@ config MDIO_BB
- 
- config LOWRISC_ETH
-     bool
-+    select MDIO_BB
- 
- config SUNHME
-     bool
-diff --git a/hw/net/lowrisc.c b/hw/net/lowrisc.c
-index 98177793e6..d5cae83eb0 100644
---- a/hw/net/lowrisc.c
-+++ b/hw/net/lowrisc.c
-@@ -194,6 +194,32 @@ static bool lowrisc_eth_can_receive(NetClientState *nc)
-     return ok;
- }
- 
-+static unsigned lowrisc_eth_phy_read(void *opaque, unsigned reg)
-+{
-+    unsigned phy = reg >> 5;
-+
-+    reg &= 0x1f;
-+    if (phy == 1) {
-+        switch (reg) {
-+        case 0x00:
-+            return 0xcafe;
-+        case 0x01:
-+            return 0xf00d;
-+
-+        default:
-+            return 0xffff;
-+        }
-+    } else {
-+        return reg;
-+    }
-+
-+    return 0xffff;
-+}
-+
-+static void lowrisc_eth_phy_write(void *opaque, unsigned reg, unsigned val)
-+{
-+}
-+
- #define make_mac(__m, __b) (((uint32_t)(__m)) << (__b))
- 
- static void lowrisc_eth_init_registers(LowriscEthState *s)
-@@ -209,6 +235,13 @@ static void lowrisc_eth_init_registers(LowriscEthState *s)
-     s->r_mdioctrl = FIELD_DP32(0x0, MDIOCTRL, M_DI, 1);
-     memset(&s->r_rplr, 0, sizeof(s->r_rplr));
- 
-+    /* setup the mdio bus */
-+    mdio_bb_init(&s->mdio_bb);
-+    s->mdio_bb.name = "lowrisc_eth";
-+    s->mdio_bb.param = s;
-+    s->mdio_bb.read = lowrisc_eth_phy_read;
-+    s->mdio_bb.write = lowrisc_eth_phy_write;
-+    
-     /* init mac registers */
- 
-     mac = &s->conf.macaddr.a[0];
-@@ -259,12 +292,11 @@ static uint64_t lowrisc_eth_read(void *opaque, hwaddr offset, unsigned size)
- 
- static void lowrisc_eth_update_mdioctrl(LowriscEthState *s, uint32_t val)
- {
--    /* since we're not implementing any sort of bit-banged MDIO, we just
--     * return the data input as high, which seems to be enough to allow
--     * the PHY link checks to work
--     */
-+    bool mdc = FIELD_EX32(val, MDIOCTRL, M_CLK);
-+    bool mdo = FIELD_EX32(val, MDIOCTRL, M_DO);
- 
--    s->r_mdioctrl = FIELD_DP32(s->r_mdioctrl, MDIOCTRL, M_DI, 1);
-+    mdio_bb_update(&s->mdio_bb, mdc, mdo);
-+    s->r_mdioctrl = FIELD_DP32(val, MDIOCTRL, M_DI, s->mdio_bb.mdi);
- }
- 
- /* update tplr register, assume we're transmitting a packet */
-diff --git a/include/hw/net/lowrisc_eth.h b/include/hw/net/lowrisc_eth.h
-index 1f27d92ca8..5c15549cc1 100644
---- a/include/hw/net/lowrisc_eth.h
-+++ b/include/hw/net/lowrisc_eth.h
-@@ -17,6 +17,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(LowriscEthState, LOWRISC_ETH)
- 
- #include "net/net.h"
- #include "hw/sysbus.h"
-+#include "hw/net/mdio_bb.h"
- 
- #define RX_SZ           (2048)
- #define NR_RX_BUFFS     (8)
-@@ -37,6 +38,9 @@ struct LowriscEthState {
-     NICConf conf;
-     qemu_irq irq;
- 
-+    /* the mdio bus */
-+    struct mdio_bb mdio_bb;
-+
-     /* register states */
-     uint32_t r_maclo;
-     uint32_t r_machi;
+Reviewed-by: Peter Xu <peterx@redhat.com>
+
+One trivial comment (and partly, pure question) below,
+
+> ---
+>  ui/vnc.c | 12 ++++++++++++
+>  ui/vnc.h |  2 ++
+>  2 files changed, 14 insertions(+)
+> 
+> diff --git a/ui/vnc.c b/ui/vnc.c
+> index 9e097dc4b4..32f8bfd1f9 100644
+> --- a/ui/vnc.c
+> +++ b/ui/vnc.c
+> @@ -3384,6 +3384,16 @@ static const DisplayChangeListenerOps dcl_ops = {
+>      .dpy_cursor_define    = vnc_dpy_cursor_define,
+>  };
+>  
+> +static void vmstate_change_handler(void *opaque, bool running, RunState state)
+> +{
+> +    VncDisplay *vd = opaque;
+> +
+> +    if (state != RUN_STATE_RUNNING) {
+
+Just to mention in vm_prepare_start() it's possible we migrate a VM that
+used to be suspended, if so it'll keep suspended after migration:
+
+    RunState state = vm_was_suspended ? RUN_STATE_SUSPENDED : RUN_STATE_RUNNING;
+
+Here I'm not sure whether SUSPENDED would also like to update the display
+freq.  I don't think it matters hugely, but just to say, if we want we can
+simply check "running=true" instead of checking the state to cover both
+RUNNING|SUSPENDED cases.
+
+> +        return;
+> +    }
+> +    update_displaychangelistener(&vd->dcl, VNC_REFRESH_INTERVAL_BASE);
+> +}
+> +
+>  void vnc_display_init(const char *id, Error **errp)
+>  {
+>      VncDisplay *vd;
+> @@ -3420,6 +3430,8 @@ void vnc_display_init(const char *id, Error **errp)
+>      vd->dcl.ops = &dcl_ops;
+>      register_displaychangelistener(&vd->dcl);
+>      vd->kbd = qkbd_state_init(vd->dcl.con);
+> +    vd->vmstate_handler_entry = qemu_add_vm_change_state_handler(
+> +        &vmstate_change_handler, vd);
+>  }
+>  
+>  
+> diff --git a/ui/vnc.h b/ui/vnc.h
+> index acc53a2cc1..3bb23acd34 100644
+> --- a/ui/vnc.h
+> +++ b/ui/vnc.h
+> @@ -185,6 +185,8 @@ struct VncDisplay
+>  #endif
+>  
+>      AudioState *audio_state;
+> +
+> +    VMChangeStateEntry *vmstate_handler_entry;
+>  };
+>  
+>  typedef struct VncTight {
+> -- 
+> 2.49.0
+> 
+
 -- 
-2.37.2.352.g3c44437643
+Peter Xu
 
 
