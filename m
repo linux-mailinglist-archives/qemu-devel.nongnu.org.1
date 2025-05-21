@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D193ABFCB1
-	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 20:18:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AEA7ABFD9D
+	for <lists+qemu-devel@lfdr.de>; Wed, 21 May 2025 22:00:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHnzg-0003jl-68; Wed, 21 May 2025 14:16:44 -0400
+	id 1uHpaM-0007nF-U6; Wed, 21 May 2025 15:58:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1uHnza-0003jb-Kw
- for qemu-devel@nongnu.org; Wed, 21 May 2025 14:16:38 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1uHnzY-0003ZO-Nh
- for qemu-devel@nongnu.org; Wed, 21 May 2025 14:16:38 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-601dfef6a8dso6401810a12.1
- for <qemu-devel@nongnu.org>; Wed, 21 May 2025 11:16:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747851394; x=1748456194; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=UCUyd1fZWwbFPz2RyC6UKrUSziF1ehp3vCOOlsbxCHg=;
- b=dRH1OKVgZzAR3xdKPRYFpA61p1em2jM2zUivJCyCTnKVYd8sa1L5s/+4fafV0f3M6m
- W+3gLVhV1ztN8ElDscj3d9d/oKultJgtILk1S43O9IhYbNqYoEsYOnPWga6ITJG1N/bd
- d9y8CXEknJL4NPhSkPJfCpo12Fw0ndyVeeb3ualdUB53dSFr/lO4EYDnglT6ZPoYeqGD
- VEizd3iIbdfUsffKJSNWtQkDOc9dRpnAXqm5lXJsQsPkJN1JAjzkLqRiTncMpIPrJE/A
- xpyogj0Vpex/cRfEYKplfZZKvmtt+u33/nM99HiEv+B9D1NGo341P8jwYIo/gFQxMJWD
- iRJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747851394; x=1748456194;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UCUyd1fZWwbFPz2RyC6UKrUSziF1ehp3vCOOlsbxCHg=;
- b=XWoZoVZbT78A8JXHpubBQEqD+uLhTmScvgrEMVuhwnQYpB7VSA3oLLTmuB7Dutajth
- TrLlP9X63XpJFLxGf9mypk/lk3IzV7Xpg54NOOWBAI5984UNsz7Im4l46/tCZYhAWEEi
- rYEmHICTyyV+sC0CT6fZTJtodCHQl5dmvIi6fHe80iMMiYi2KklvYMH0V8Og45Zp1avM
- h9+LrISIDXkyq6rPF4JqcyhWqa12D8p3ZjgWs/w/FwdWUR1i67Pg4+tA901DQoSCujUV
- 2UasshWats44x7attbQAPSw3JkEj/HBD+k7AhAG5r+yk7R5555QmJ6zUIkxzth5BaTUA
- sB4w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUwnTzwXZe2sSeI5Tiyr4WiGwPa33q4XepRCbqIGJSlulwou+I5VONGKqLuRmPQt8zNYcWV0rYqLxKr@nongnu.org
-X-Gm-Message-State: AOJu0YwU2k5wTTBlSOSHQ3nFIqGZJKjakdd2TgkLLVsTiOFubvoTfGTB
- Qk7UUHva2wbSgjCIvZgq6ZG0pjbcdZaDLd7I3+5R1VDDksPmvrwKIAlK+zeIaNKJ1uMBv0Hemao
- JnSABIJmwSBCRItYSGM0yr8J5pvBMr+I=
-X-Gm-Gg: ASbGncspOp4gMYRFHm/Jqw0MaitMuA6RCygsjfWJhssDG0XMPfb27qflnVpFFgFyS4x
- RLmZV2YQttPwsEK27DxiB53HNLH04GdkpXbuR93wozuya90zL5nJh7B5AKw2FwO1lLaJKo0O3ON
- igr+7K2cn6efupsVdl135vuHol0kpx9ijb1Hfwwx+qYw==
-X-Google-Smtp-Source: AGHT+IFW0/yQRN+Ped3NhjWuZ0ru5PmJJf0rpRolncfCMEFwIO44HlfKPL3DZY2TH4wT4ccUsm/frXbq278f/AKTIA8=
-X-Received: by 2002:a05:6402:847:b0:5e7:b02b:1eb8 with SMTP id
- 4fb4d7f45d1cf-600900cade8mr19254126a12.14.1747851393585; Wed, 21 May 2025
- 11:16:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <bmarzins@redhat.com>)
+ id 1uHo7W-0004nZ-7B
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 14:24:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <bmarzins@redhat.com>)
+ id 1uHo7Q-00059g-R8
+ for qemu-devel@nongnu.org; Wed, 21 May 2025 14:24:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1747851882;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=MtYnxm+R9qr+gg54NUhqzGSSx4sYOYfUwPDWgVozEig=;
+ b=S85D1gGas4lgiwhbtoTBs9j04R1ilw5lhywMlWaYMc5flnPHcWwSbKqLiMwoLBKDTUtGPn
+ AsJ4gmcMG7lsWIIMZoy0J7bJwRJT9Vpl5gyL8pR4WAfGqFQ5tc2YYqYDL3R2QqQwKESXlk
+ YqupOF/1PfFWJzpl28imk2RV66/G4/s=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-393-Hheea976OvOqZ6EOhr0zEg-1; Wed,
+ 21 May 2025 14:23:32 -0400
+X-MC-Unique: Hheea976OvOqZ6EOhr0zEg-1
+X-Mimecast-MFC-AGG-ID: Hheea976OvOqZ6EOhr0zEg_1747851811
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D0CB71800446; Wed, 21 May 2025 18:23:31 +0000 (UTC)
+Received: from bmarzins-01.fast.eng.rdu2.dc.redhat.com (unknown [10.6.23.247])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix)
+ with ESMTPS id EACE719560B7; Wed, 21 May 2025 18:23:30 +0000 (UTC)
+Received: from bmarzins-01.fast.eng.rdu2.dc.redhat.com (localhost [127.0.0.1])
+ by bmarzins-01.fast.eng.rdu2.dc.redhat.com (8.18.1/8.17.1) with
+ ESMTPS id 54LINTBo597458
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+ Wed, 21 May 2025 14:23:29 -0400
+Received: (from bmarzins@localhost)
+ by bmarzins-01.fast.eng.rdu2.dc.redhat.com (8.18.1/8.18.1/Submit) id
+ 54LINTQI597457; Wed, 21 May 2025 14:23:29 -0400
+Date: Wed, 21 May 2025 14:23:29 -0400
+From: Benjamin Marzinski <bmarzins@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-block@nongnu.org,
+ hreitz@redhat.com, pbonzini@redhat.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH] file-posix: Probe paths and retry SG_IO on potential
+ path errors
+Message-ID: <aC4aIXX-Ce7ZY8J8@redhat.com>
+References: <20250513113730.37404-1-kwolf@redhat.com>
+ <20250513135148.GB227327@fedora> <aCWiuYUWiwKJz4_j@redhat.com>
+ <20250515140142.GA333399@fedora> <aCYCFrh_As6XuPQj@redhat.com>
+ <20250520140339.GC82528@fedora> <aC4Rdt5HWgh7LGjG@redhat.com>
 MIME-Version: 1.0
-References: <20250519185108.14412-1-tanishdesai37@gmail.com>
- <CAJSP0QVOSGKnt8YCay5r+HR2O6xCz9Nb5Hp4TOzsSHE9fpYgHw@mail.gmail.com>
- <CABgObfY5uMM+Z4QpxqCya8om4_=0eYFN2dnWGYD0vsYhrmaR7w@mail.gmail.com>
-In-Reply-To: <CABgObfY5uMM+Z4QpxqCya8om4_=0eYFN2dnWGYD0vsYhrmaR7w@mail.gmail.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Wed, 21 May 2025 14:16:21 -0400
-X-Gm-Features: AX0GCFuoW_OFfyvGNMFMrQ_tlhG1z64KhBxyizOlipvoXwOmjNyUI8uvgOxG-ag
-Message-ID: <CAJSP0QXi=UbkdZ499GzMjW49UeCwvk1=EyE=51-jL-P6PH_UXQ@mail.gmail.com>
-Subject: Re: [PATCH] trace/simple: seperate hot paths of tracing fucntions
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Tanish Desai <tanishdesai37@gmail.com>, qemu-devel <qemu-devel@nongnu.org>,
- Mads Ynddal <mads@ynddal.dk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=stefanha@gmail.com; helo=mail-ed1-x535.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aC4Rdt5HWgh7LGjG@redhat.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=bmarzins@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.184,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 21 May 2025 15:58:39 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,72 +95,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 20, 2025 at 4:52=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
- wrote:
-> Il mar 20 mag 2025, 21:01 Stefan Hajnoczi <stefanha@gmail.com> ha scritto=
-:
->>
->> On Mon, May 19, 2025 at 2:52=E2=80=AFPM Tanish Desai <tanishdesai37@gmai=
-l.com> wrote:
->> >
->> > Remove hot paths from .c file and added it in .h file to keep it inlin=
-e.
->>
->> Please include performance results in the commit description so it's
->> clear what impact this change has.
->
->
-> Hi Stefan,
->
-> I am replying because I take the blame for this :) and as an example of h=
-ow he could interact with the maintainer.
->
-> For now we mostly looked at differences between the code that tracetool g=
-enerates for the various backends, and the observation that some of them pu=
-t code in the .h and some in the .c file. I explained to Tanish the concept=
- of separating hot vs cold code in theory, showed him some examples in QEMU=
- where performance measurements were done in the past, and suggested applyi=
-ng this to various backends (starting with the one with the weirdest choice=
-!). However we didn't do any measurement yet.
->
-> Some possibilities that come to mind:
->
-> 1) maybe the coroutine benchmarks are enough to show a difference, with s=
-ome luck
->
-> 2) a new microbenchmark (or a set of microbenchmarks that try various lev=
-el of register pressure around the tracepoint), which would be nice to have=
- anyway
+On Wed, May 21, 2025 at 07:46:30PM +0200, Kevin Wolf wrote:
+> Am 20.05.2025 um 16:03 hat Stefan Hajnoczi geschrieben:
+> > On Thu, May 15, 2025 at 05:02:46PM +0200, Kevin Wolf wrote:
+> > > Am 15.05.2025 um 16:01 hat Stefan Hajnoczi geschrieben:
+> > > > On Thu, May 15, 2025 at 10:15:53AM +0200, Kevin Wolf wrote:
+> > > > > Am 13.05.2025 um 15:51 hat Stefan Hajnoczi geschrieben:
+> > > > > > On Tue, May 13, 2025 at 01:37:30PM +0200, Kevin Wolf wrote:
+> > > > > > > When scsi-block is used on a host multipath device, it runs into the
+> > > > > > > problem that the kernel dm-mpath doesn't know anything about SCSI or
+> > > > > > > SG_IO and therefore can't decide if a SG_IO request returned an error
+> > > > > > > and needs to be retried on a different path. Instead of getting working
+> > > > > > > failover, an error is returned to scsi-block and handled according to
+> > > > > > > the configured error policy. Obviously, this is not what users want,
+> > > > > > > they want working failover.
+> > > > > > > 
+> > > > > > > QEMU can parse the SG_IO result and determine whether this could have
+> > > > > > > been a path error, but just retrying the same request could just send it
+> > > > > > > to the same failing path again and result in the same error.
+> > > > > > > 
+> > > > > > > With a kernel that supports the DM_MPATH_PROBE_PATHS ioctl on dm-mpath
+> > > > > > > block devices (queued in the device mapper tree for Linux 6.16), we can
+> > > > > > > tell the kernel to probe all paths and tell us if any usable paths
+> > > > > > > remained. If so, we can now retry the SG_IO ioctl and expect it to be
+> > > > > > > sent to a working path.
+> > > > > > > 
+> > > > > > > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> > > > > > > ---
+> > > > > > >  block/file-posix.c | 82 +++++++++++++++++++++++++++++++++++++++++++++-
+> > > > > > >  1 file changed, 81 insertions(+), 1 deletion(-)
+> > > > > > 
+> > > > > > Maybe the probability of retry success would be higher with a delay so
+> > > > > > that intermittent issues have time to resolve themselves. Either way,
+> > > > > > the patch looks good.
+> > > > > 
+> > > > > I don't think adding a delay here would be helpful. The point of
+> > > > > multipath isn't that you wait until a bad path comes back, but that you
+> > > > > just switch to a different path until it is restored.
+> > > > 
+> > > > That's not what this loop does. DM_MPATH_PROBE_PATHS probes all paths
+> > > > and fails when no paths are available. The delay would only apply in the
+> > > > case when there are no paths available.
+> > > > 
+> > > > If the point is not to wait until some path comes back, then why loop at
+> > > > all?
+> > > 
+> > > DM_MPATH_PROBE_PATHS can only send I/O to paths in the active path
+> > > group, so it doesn't fail over to different path groups. If there are no
+> > > usable paths left in the current path group, but there are some in
+> > > another one, then the ioctl returns 0 and the next SG_IO would switch to
+> > > a different path group, which may or may not succeed. If it fails, we
+> > > have to probe the paths in that group, too.
+> > 
+> > This wasn't obvious to me, can that be emphasized in the code via naming
+> > or comments? About retrying up to 5 times: is the assumption that there
+> > will be 5 or fewer path groups?
+> 
+> Originally, the thought behind the 5 was more about the case where
+> DM_MPATH_PROBE_PATHS offlines bad paths, but then another one goes down
+> before we retry SG_IO, so that it fails again.
+> 
+> But you're right that it would now apply to retrying in a different path
+> group. The assumption we make would then be that there will be 5 or
+> fewer path groups with no working path in them (rather than just 5 of
+> them existing). That doesn't seem like a completely unreasonable
+> assumption, but maybe we should increase the number now just to be on
+> the safe side?
+> 
+> Ben, do you have an opinion on this?
 
-2 is going above and beyond :). I'm not trying to make life hard.
+5 seems like a reasonable number. Unless people have the
+path_grouping_policy set to failover, 5 path groups seems like more
+than enough. You could make the argument that if users were configured
+with failover (one path per path group) or had a number paths marked
+marginal (and placed into marginal path groups), you could exceed 5
+path groups. 8 would seems like a reasonable maximum then. It is
+possible to have multipath devices with over 8 paths, but that's pretty
+rare.
 
-Another option if 1 or 2 are difficult to quantify: I'd be happy with
-just a "before" and "after" disassembly snippet from objdump showing
-that the instructions at a call site changed as intended.
+-Ben
 
-What I'm looking for is a commit description that explains the purpose
-of the commit followed by, since this is a performance improvement,
-some form of evidence that the change achieved its goal. At that point
-it's easy for me to merge because it has a justification and the
-nature of the commit will be clear to anyone looking at the git log in
-the future.
+> 
+> Kevin
 
-> 3) perhaps we could try to check the code size for some object files in b=
-lock/ (for example libblock.a.p/*.c.o), as a proxy for how much instruction=
- cache space is saved when all tracepoints are disabled
->
-> We can start from 3, but also try 1+3 and 2+3 if it fails if you think th=
-at would be more persuasive.
 
-Can you explain 3 more? Total code size on disk should stay about the
-same because most trace events only have one call site. Moving code
-between the caller and callee doesn't make a big difference in either
-direction. At runtime there is a benefit from inlining the condition
-check since the call site no longer needs to execute the callee's
-function prologue/epilogue when the trace event is runtime-disabled,
-but that CPU cycle and instruction cache effect won't be visible from
-the on-disk code size.
-
-Thanks,
-Stefan
 
