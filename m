@@ -2,98 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F71AAC0AC3
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 13:47:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D6FAC0B04
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 14:02:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uI4My-0002Gu-W7; Thu, 22 May 2025 07:45:53 -0400
+	id 1uI4av-0004yG-Py; Thu, 22 May 2025 08:00:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1uI4Mq-0002AD-4I
- for qemu-devel@nongnu.org; Thu, 22 May 2025 07:45:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1uI4Mn-0001lu-F2
- for qemu-devel@nongnu.org; Thu, 22 May 2025 07:45:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747914339;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=bRPhXblA8J7fizv58w853LZHARqbP/0pPmDyhoZxGCQ=;
- b=WsPsZvLfZyV1hAevOy+ZRoXvZ/deL/cQ1yLEtOO0x4nUTySUkUESlciStjLt0iUIVcZlUD
- ++8jOPwwcXmfjwoF+F/AKEMR7Zp0NtMEFLO5ALBRT6q2jSJYwt2AkiQIMF6h8COMB/WS1m
- GBL00WMbSqwiWbhieF7Wai/CChpDd+I=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-595--OeqTyfAPG6FTs8LKa94Dw-1; Thu, 22 May 2025 07:45:36 -0400
-X-MC-Unique: -OeqTyfAPG6FTs8LKa94Dw-1
-X-Mimecast-MFC-AGG-ID: -OeqTyfAPG6FTs8LKa94Dw_1747914335
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3a376da334dso2552977f8f.0
- for <qemu-devel@nongnu.org>; Thu, 22 May 2025 04:45:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747914335; x=1748519135;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=bRPhXblA8J7fizv58w853LZHARqbP/0pPmDyhoZxGCQ=;
- b=GCz8S+G8iLCj4sBVyjxxW+AQQ7Fwe+c0bVs++UkJEB+GqJg6V0MVHM26xNra2LKxA9
- 6u8f9s16GhdoGjVpPLYSuAKn+hAEhQ7GzQwLDZhL7tpCs/DW/jnujLNFchHunYqQ9qPG
- ERbvGJETcY/UE35YQrWGAQXY8DL1EE+WXXMBqsBbNeh8OjqCEHeVMgJu9EsxL1O2wFF1
- F9e4UHFsM5OAX9OwDvImKwOFJ/87TkEijfmYQhzoTKsWSUxyGkFmlPDMjXzni08R5CJr
- oEruBzOgHdh8pBKiRlTW3JXj8+Z3SZ2JHtS6hRNTtmw7BDEdQrGYII+rJYSQRdu2iKeX
- UIaQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWqu+dGpCt3Cs8NZHw4Dsshr/ifCqISfYDK9uFCSNeTU5+C3yo+ql8n5w7YXy7XlHuCNGdxEmpBq/cr@nongnu.org
-X-Gm-Message-State: AOJu0Ywd7umbZy5EIDGOLGEf387ODSeHGr1V4UJc/h0bZOb3nzRRBLAB
- swHLXxn9nRNFBzGcpcMqmhINKcdzE7q+Hq8WNCi6vHxykEagRkyHoIXOn85w4Uz7915QUypjhhn
- n6gppvOIr4OsszNZV9pQ4TRD1SR5gHBDP8Zoyq0xaNhih4P3cd9Q/2jjL
-X-Gm-Gg: ASbGncuvHM/UFtgCh42C0RrznnxDkbhf8sMSHKMM0+Y+T1C5LkeWz3b7ob4+7tqoU/O
- uUxDcf0eHWhJv3Mza7T9Ikqg78V4g7gnrUnBc9cSbxOsosiJy8cLso0BUerLSwHTGn0jw90dL8n
- 1m6LFm5OXACOLwRUHCsmM6MXoH1xVpRtyRKNxkSP1NPFj0X2qUjiN1GLlkS0AbwDxdz60y+Myl+
- UIIivjs8euEucRdfdmXssWXgFJZLOV2iEK/Q+lpmBjGDIXxZLJoDgRk/p0LXDjwzzuH6N6uS3gj
- FmuGIAcQtS9cpbapbvXUIlhd0IdtoHPMPq2CteDWW+isu3ToMoRowEMrnnR9
-X-Received: by 2002:a05:6000:1846:b0:38f:4d20:4a17 with SMTP id
- ffacd0b85a97d-3a35c8218b5mr21582716f8f.13.1747914334967; 
- Thu, 22 May 2025 04:45:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFgAnZma/bQxH9d/VzdTOkElm8ZxkLh5fonLeuJSjKXJDgWep+gZqe7U7LNian5yu8E7JDS3w==
-X-Received: by 2002:a05:6000:1846:b0:38f:4d20:4a17 with SMTP id
- ffacd0b85a97d-3a35c8218b5mr21582667f8f.13.1747914334401; 
- Thu, 22 May 2025 04:45:34 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-134-35.retail.telecomitalia.it.
- [82.53.134.35]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3a35ca8874bsm23164039f8f.67.2025.05.22.04.45.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 May 2025 04:45:33 -0700 (PDT)
-Date: Thu, 22 May 2025 13:45:28 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: oenhan@gmail.com
-Cc: mst@redhat.com, marcel.apfelbaum@gmail.com, cohuck@redhat.com, 
- pasic@linux.ibm.com, farman@linux.ibm.com, borntraeger@linux.ibm.com, 
- leiyang@redhat.com, qemu-devel@nongnu.org, qemu-stable@nongnu.org, 
- Huaitong Han <hanht2@chinatelecom.cn>,
- Zhiyuan Yuan <yuanzhiyuan@chinatelecom.cn>, 
- Jidong Xia <xiajd@chinatelecom.cn>
-Subject: Re: [PATCH V3] vhost: Don't set vring call if guest notifier is unused
-Message-ID: <6rqjkyuvautarpuubc4s42ouwz4yupskyrowe3r5z6tcagw5ss@zsxqzeolyauj>
-References: <20250522100548.212740-1-hanht2@chinatelecom.cn>
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uI4ap-0004wx-89
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 08:00:12 -0400
+Received: from mailgate02.uberspace.is ([185.26.156.114])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <neither@nut.email>) id 1uI4ak-0003m3-2N
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 08:00:09 -0400
+Received: from skiff.uberspace.de (skiff.uberspace.de [185.26.156.131])
+ by mailgate02.uberspace.is (Postfix) with ESMTPS id 2C8151802F6
+ for <qemu-devel@nongnu.org>; Thu, 22 May 2025 13:59:53 +0200 (CEST)
+Received: (qmail 29660 invoked by uid 990); 22 May 2025 11:59:53 -0000
+Authentication-Results: skiff.uberspace.de;
+	auth=pass (plain)
+Received: from unknown (HELO unkown) (::1)
+ by skiff.uberspace.de (Haraka/3.0.1) with ESMTPSA;
+ Thu, 22 May 2025 13:59:52 +0200
+From: Julian Ganz <neither@nut.email>
+To: Rowan Hart <rowanbhart@gmail.com>
+Cc: Julian Ganz <neither@nut.email>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v3 1/8] Expose gdb_write_register function to consumers of
+ gdbstub
+Date: Thu, 22 May 2025 13:59:30 +0200
+Message-ID: <20250522115935.34716-1-neither@nut.email>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250521094333.4075796-2-rowanbhart@gmail.com>
+References: <20250521094333.4075796-1-rowanbhart@gmail.com>
+ <20250521094333.4075796-2-rowanbhart@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20250522100548.212740-1-hanht2@chinatelecom.cn>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Bar: ++
+X-Rspamd-Report: SUSPICIOUS_RECIPS(1.5) BAYES_HAM(-0.01156)
+ MID_CONTAINS_FROM(1) MIME_GOOD(-0.1)
+X-Rspamd-Score: 2.388439
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nut.email; s=uberspace;
+ h=from:to:cc:subject:date;
+ bh=+1vetvm9cQqSzD4/InBZJvm2127GQIH+Ws0LgCmssrM=;
+ b=yFWYrnQ1iKeJFzjJIDOR7C7Fw9G/6GIf56P4NkpmPIBCQsxeOpNr9W9nHno61+ETA0CGO/tU2b
+ lLtLZxsbMhd06skVVzwIjrTJkZwjN6Mkdy/HdXrkisdtf90At6LtmSHg1kkJKPJHOWMfpMiqQLc/
+ /PSfvFliZ3zlHhgiOxWbLyWi+BzU+2LmZEUTqtzc4hQuRHi2fHenuWuLzv6jdaFRPbXkRi2YDO2U
+ 2444dPzgiFYV/zCMTTrZ9CVz39dCDlTdVoy8mIENBsL8axlg0SLT0mB9K3A4cLhApyB1Iqw9y60R
+ cwjXcf1Mox9d5UDRj/3n3i6Nuff9yA6nkUH5sEU7ZpoZAZiN4Zv5w1m4s515fuKkTnJQH9FpreeH
+ rxzk5mbO0E1na9sRQePDYuvL28FEpSqOgoMYkhw+yweApUH5ElWRTdRcAjn06u6Bet/Kt3Ebmx1Y
+ srEoKTuC4CtaBR2C1g+maDuIRIadoeUN3DIJrlZjv/PI0L0I0QIwF+GSd+JbXdaJl4iwjP6rFn2B
+ j212BiJvcVYQmIMZyr14kvyRsjOH0gKYJWCS1FfoowxcQuXphpK51jtjzLojgFX4wm6LqaBm9AmV
+ syr58+tokIaan6Q6ULhdz9sL6M2Ic9FBnDdkqvMH/l3AGnmI4cyLJAD+kfF69gD9HK/i0ETZ2oHT
+ o=
+Received-SPF: pass client-ip=185.26.156.114; envelope-from=neither@nut.email;
+ helo=mailgate02.uberspace.is
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.275,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -111,97 +88,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 22, 2025 at 06:05:48PM +0800, oenhan@gmail.com wrote:
->From: Huaitong Han <hanht2@chinatelecom.cn>
->
->The vring call fd is set even when the guest does not use MSI-X (e.g., in the
->case of virtio PMD), leading to unnecessary CPU overhead for processing
->interrupts.
->
->The commit 96a3d98d2c("vhost: don't set vring call if no vector") optimized the
->case where MSI-X is enabled but the queue vector is unset. However, there's an
->additional case where the guest uses INTx and the INTx_DISABLED bit in the PCI
->config is set, meaning that no interrupt notifier will actually be used.
->
->In such cases, the vring call fd should also be cleared to avoid redundant
->interrupt handling.
->
->Fixes: 96a3d98d2c("vhost: don't set vring call if no vector")
->
+Hi Rowan,
 
-As I pointed out on v2 [1], we may fix the tag format and I think we
-can also remove this empty line between Fixes and Reported-by.
+> From: novafacing <rowanbhart@gmail.com>
+> 
+> Signed-off-by: novafacing <rowanbhart@gmail.com>
+> Signed-off-by: Rowan Hart <rowanbhart@gmail.com>
 
-[1] https://lore.kernel.org/qemu-devel/dmtvkhqkwdv7rzum6c4gs3uiekwckou3yp7w2ql6tijxshoiju@w4rplxvassk6/
+As I understand it, the commit subject should be prefixed with the
+subsystem the patch (mainly) touches. In this case "plugins".
 
-I don't know if Michael can fix will applying or you need to resend.
+Commit message bodies would also be appreciated. In this case maybe one
+motivating the change in one or two sentences. It's obvious enough from
+context here, but you want at least some context when stumbling accross
+a commit in isolation (e.g. after consulting git blame).
 
-BTW I still didn't completely get the pci bits, but for vhost LGTM:
+Reviewed-By: Julian Ganz <neither@nut.email>
 
-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
-
->Reported-by: Zhiyuan Yuan <yuanzhiyuan@chinatelecom.cn>
->Signed-off-by: Jidong Xia <xiajd@chinatelecom.cn>
->Signed-off-by: Huaitong Han <hanht2@chinatelecom.cn>
->---
->V3:
->- Don't change query_guest_notifiers semantics, just fix the issue
->
->V2:
->- Retain the name `query_guest_notifiers`
->- All qtest/unit test cases pass
->- Fix V1 patch style problems
->
-> hw/pci/pci.c           | 2 +-
-> hw/virtio/virtio-pci.c | 7 ++++++-
-> include/hw/pci/pci.h   | 1 +
-> 3 files changed, 8 insertions(+), 2 deletions(-)
->
->diff --git a/hw/pci/pci.c b/hw/pci/pci.c
->index f5ab510697..82f82e726b 100644
->--- a/hw/pci/pci.c
->+++ b/hw/pci/pci.c
->@@ -1725,7 +1725,7 @@ static void pci_update_mappings(PCIDevice *d)
->     pci_update_vga(d);
-> }
->
->-static inline int pci_irq_disabled(PCIDevice *d)
->+int pci_irq_disabled(PCIDevice *d)
-> {
->     return pci_get_word(d->config + PCI_COMMAND) & PCI_COMMAND_INTX_DISABLE;
-> }
->diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
->index 9b48aa8c3e..7e309d1d49 100644
->--- a/hw/virtio/virtio-pci.c
->+++ b/hw/virtio/virtio-pci.c
->@@ -1215,7 +1215,12 @@ static int virtio_pci_set_guest_notifier(DeviceState *d, int n, bool assign,
-> static bool virtio_pci_query_guest_notifiers(DeviceState *d)
-> {
->     VirtIOPCIProxy *proxy = to_virtio_pci_proxy(d);
->-    return msix_enabled(&proxy->pci_dev);
->+
->+    if (msix_enabled(&proxy->pci_dev)) {
->+        return true;
->+    } else {
->+        return pci_irq_disabled(&proxy->pci_dev);
->+    }
-> }
->
-> static int virtio_pci_set_guest_notifiers(DeviceState *d, int nvqs, bool assign)
->diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
->index c2fe6caa2c..8c24bd97db 100644
->--- a/include/hw/pci/pci.h
->+++ b/include/hw/pci/pci.h
->@@ -668,6 +668,7 @@ void lsi53c8xx_handle_legacy_cmdline(DeviceState *lsi_dev);
->
-> qemu_irq pci_allocate_irq(PCIDevice *pci_dev);
-> void pci_set_irq(PCIDevice *pci_dev, int level);
->+int pci_irq_disabled(PCIDevice *d);
->
-> static inline void pci_irq_assert(PCIDevice *pci_dev)
-> {
->-- 
->2.43.5
->
-
+Regards,
+Julian
 
