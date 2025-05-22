@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A1CAC0309
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 05:37:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3A0DAC030E
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 05:38:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHwk2-0005pw-6T; Wed, 21 May 2025 23:37:10 -0400
+	id 1uHwk0-0005pK-NH; Wed, 21 May 2025 23:37:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven_lee@aspeedtech.com>)
- id 1uHwjq-0005mh-SO; Wed, 21 May 2025 23:37:00 -0400
+ id 1uHwjt-0005nA-NX; Wed, 21 May 2025 23:37:02 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven_lee@aspeedtech.com>)
- id 1uHwjp-00047S-6e; Wed, 21 May 2025 23:36:58 -0400
+ id 1uHwjr-00047S-Pq; Wed, 21 May 2025 23:37:01 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 22 May
@@ -30,10 +30,10 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <troy_lee@aspeedtech.com>, <longzl2@lenovo.com>,
  <yunlin.tang@aspeedtech.com>, <steven_lee@aspeedtech.com>
-Subject: [PATCH v3 2/5] hw/arm/aspeed_ast27x0: Remove unused iomem region
- overlapping VBootROM
-Date: Thu, 22 May 2025 11:36:25 +0800
-Message-ID: <20250522033628.3752086-4-steven_lee@aspeedtech.com>
+Subject: [PATCH v3 3/5] hw/arm/aspeed_ast27x0-fc: Map ca35 memory into system
+ memory
+Date: Thu, 22 May 2025 11:36:26 +0800
+Message-ID: <20250522033628.3752086-5-steven_lee@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250522033628.3752086-1-steven_lee@aspeedtech.com>
 References: <20250522033628.3752086-1-steven_lee@aspeedtech.com>
@@ -65,52 +65,27 @@ From:  Steven Lee via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The iomem region at 0x00000000 is unused and overlaps with VBootROM.
-Removing it avoids incorrect memory layout.
+Map the CA35 memory region as a subregion of system_memory to ensure
+a valid FlatView. This prevents failures in APIs that rely on the
+global memory view, such as rom_check_and_register_reset().
 
 Signed-off-by: Steven Lee <steven_lee@aspeedtech.com>
 ---
- hw/arm/aspeed_ast27x0.c | 8 --------
- 1 file changed, 8 deletions(-)
+ hw/arm/aspeed_ast27x0-fc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/arm/aspeed_ast27x0.c b/hw/arm/aspeed_ast27x0.c
-index 1974a25766..328897ded0 100644
---- a/hw/arm/aspeed_ast27x0.c
-+++ b/hw/arm/aspeed_ast27x0.c
-@@ -23,13 +23,11 @@
- #include "qobject/qlist.h"
- #include "qemu/log.h"
+diff --git a/hw/arm/aspeed_ast27x0-fc.c b/hw/arm/aspeed_ast27x0-fc.c
+index f8cb632bca..7087be4288 100644
+--- a/hw/arm/aspeed_ast27x0-fc.c
++++ b/hw/arm/aspeed_ast27x0-fc.c
+@@ -68,6 +68,7 @@ static void ast2700fc_ca35_init(MachineState *machine)
  
--#define AST2700_SOC_IO_SIZE          0x01000000
- #define AST2700_SOC_IOMEM_SIZE       0x01000000
- #define AST2700_SOC_DPMCU_SIZE       0x00040000
- #define AST2700_SOC_LTPI_SIZE        0x01000000
+     memory_region_init(&s->ca35_memory, OBJECT(&s->ca35), "ca35-memory",
+                        UINT64_MAX);
++    memory_region_add_subregion(get_system_memory(), 0, &s->ca35_memory);
  
- static const hwaddr aspeed_soc_ast2700_memmap[] = {
--    [ASPEED_DEV_IOMEM]     =  0x00000000,
-     [ASPEED_DEV_VBOOTROM]  =  0x00000000,
-     [ASPEED_DEV_SRAM]      =  0x10000000,
-     [ASPEED_DEV_DPMCU]     =  0x11000000,
-@@ -521,8 +519,6 @@ static void aspeed_soc_ast2700_init(Object *obj)
-                             TYPE_UNIMPLEMENTED_DEVICE);
-     object_initialize_child(obj, "ltpi", &s->ltpi,
-                             TYPE_UNIMPLEMENTED_DEVICE);
--    object_initialize_child(obj, "iomem", &s->iomem,
--                            TYPE_UNIMPLEMENTED_DEVICE);
-     object_initialize_child(obj, "iomem0", &s->iomem0,
-                             TYPE_UNIMPLEMENTED_DEVICE);
-     object_initialize_child(obj, "iomem1", &s->iomem1,
-@@ -942,10 +938,6 @@ static void aspeed_soc_ast2700_realize(DeviceState *dev, Error **errp)
-                                   "aspeed.ltpi",
-                                   sc->memmap[ASPEED_DEV_LTPI],
-                                   AST2700_SOC_LTPI_SIZE);
--    aspeed_mmio_map_unimplemented(s, SYS_BUS_DEVICE(&s->iomem),
--                                  "aspeed.io",
--                                  sc->memmap[ASPEED_DEV_IOMEM],
--                                  AST2700_SOC_IO_SIZE);
-     aspeed_mmio_map_unimplemented(s, SYS_BUS_DEVICE(&s->iomem0),
-                                   "aspeed.iomem0",
-                                   sc->memmap[ASPEED_DEV_IOMEM0],
+     if (!memory_region_init_ram(&s->ca35_dram, OBJECT(&s->ca35), "ca35-dram",
+                                 AST2700FC_BMC_RAM_SIZE, &error_abort)) {
 -- 
 2.43.0
 
