@@ -2,105 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09545AC0536
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 09:05:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3C67AC05C2
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 09:31:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHzxX-00023d-7Z; Thu, 22 May 2025 03:03:20 -0400
+	id 1uI0Ne-0007H6-LO; Thu, 22 May 2025 03:30:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uHzxO-00022x-8U
- for qemu-devel@nongnu.org; Thu, 22 May 2025 03:03:10 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1uHzxK-0003fE-UG
- for qemu-devel@nongnu.org; Thu, 22 May 2025 03:03:09 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-231e331baceso59992055ad.0
- for <qemu-devel@nongnu.org>; Thu, 22 May 2025 00:03:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1747897384; x=1748502184;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=6MbzrNe07J9PuN5nKx+v7w9BDmMOmSK5wfI+NNv8fqQ=;
- b=dczLf6HW8fEZO87Y+vtunIf6lPRZth4ZWWAehrNMFOftEfsIdj/5y3xEpLCEbJFVnq
- y5auDfD9nDUfeoIwsbgN1XC/CvhsBbMVlNXFQm8Uoxs6PTPSwJt9qfgDnNWF2n0bC0XW
- nGeZIqIbfAuqkHjQ39WX/UjkYu1bfI333CyNQOAlvM8YCNzbUQ10duaP6Nc3NsLAESTh
- uaS6upoKRs+yD/9F9M+f/659bn+U3Ljv8oxIEuo5Fn2elh+7cpcb8D5580VnDhBiglNu
- xgjO9vUl1kA21RECnYUnRYbDV0ahncbikMjD3wTkkR0uKYp5sK5pvFrAL1GmC/6Lvoy9
- WtlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747897384; x=1748502184;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6MbzrNe07J9PuN5nKx+v7w9BDmMOmSK5wfI+NNv8fqQ=;
- b=Ki6YgeYoAMExq3hBbK9GTLP+kNnKZJiSwEaSNlLlNN4tuOHZmVAmSkfZep422dzQ1V
- 3/rYVbBWaSkyNj3T2nYG4qcvuzU5lw9magU8PYsCwl15nWSI0bwP0ag8/Il2a4zjf3vQ
- zH2VkIRXY4KyBuR+/5RfDD61yvH/Rp+C/ucCCl/58NsSvCCRLatHX/5qh5PUAD8aYEBZ
- Mekic4r2WHWBZhKdHkwJ/li4KlPOYBt1Hn4h32GkR7Xop2bSfpAQ1+crhD4s+5M23xcQ
- ++M28onsUbr4PTVf9LERnSl7ERl6GisyZa47CxsZ/bRoVQKWmmcNunwqW2wBV9Rr0K1Y
- wp/Q==
-X-Gm-Message-State: AOJu0Yw2VOWZbBYTcu7PcybiIxk5AG6fnV4uOpccLZFW7dxAmH2QDfWc
- 4D4iVpr5AVwT71+Mak1oAeSCBdXDcQW4hhkzO5l8KwsWyvAzXRNWX+qlbGPR4gN7N38=
-X-Gm-Gg: ASbGnctVTRGXG+V7X3u7Apw0wuPGMaLbfQbdtp41I6fyzOcD4TomibvPXWP7fKM27xR
- buvcYKgv3F6U9fVq/9H5k+BxGcayWGAgu/CI9OJiBEA2F5oFRvZs+0MiBqgFgcV9T11xM39ig83
- zuOtCYbJcUnXGPZ7qBWbSTJllXiyTY5RKg4ETFAza7ezJnqu+Jyt9xmFC2+w16/lBDmNrxnVz0o
- hRCmwdTXHuKdi7+cCs61egxJ7130CYvkmglZUrdfRXgQ82T2p4cz62ENxEUZXn+DAdmgwe6vvxv
- NaA3C+3p8tUZUyTM7w1wRo43logcxCObrFbk2ILtwhNUuBllZr577mmeqXPqYA==
-X-Google-Smtp-Source: AGHT+IFga+LZR3j3IBXBtJnxkI06qGIkBsNmyDUOxUKlGqFVAfaDlB+1RoySglh4RC2lJ/oeuOb71A==
-X-Received: by 2002:a17:903:2ece:b0:21f:988d:5758 with SMTP id
- d9443c01a7336-231d4596fe8mr386551995ad.35.1747897383856; 
- Thu, 22 May 2025 00:03:03 -0700 (PDT)
-Received: from [10.100.116.185] ([157.82.128.1])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-231d4adb017sm103115525ad.53.2025.05.22.00.02.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 22 May 2025 00:03:03 -0700 (PDT)
-Message-ID: <83945c43-bfb2-4469-90bd-e3a7c2ca5d89@daynix.com>
-Date: Thu, 22 May 2025 16:02:58 +0900
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1uI0NZ-0007Et-GG; Thu, 22 May 2025 03:30:13 -0400
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1uI0NX-0007EQ-AX; Thu, 22 May 2025 03:30:13 -0400
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 6641343B1E;
+ Thu, 22 May 2025 09:30:07 +0200 (CEST)
+Message-ID: <71185c72-10b3-4f3a-acb4-f258aea58288@proxmox.com>
+Date: Thu, 22 May 2025 09:30:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 12/20] virtio-gpu: fix hang under TCG when unmapping
- blob
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- John Snow <jsnow@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
- <marcandre.lureau@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
- Markus Armbruster <armbru@redhat.com>, David Hildenbrand <david@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Mahmoud Mandour <ma.mandourr@gmail.com>,
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-stable@nongnu.org
-References: <20250521164250.135776-1-alex.bennee@linaro.org>
- <20250521164250.135776-13-alex.bennee@linaro.org>
- <4d300cca-3ac2-4072-a35c-0b6aef970b26@daynix.com>
- <87bjrl87p5.fsf@draig.linaro.org>
+Subject: Re: [PULL 13/14] tests: Add iotest mirror-sparse for recent patches
+To: Eric Blake <eblake@redhat.com>
+Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ "open list:Block layer core" <qemu-block@nongnu.org>
+References: <20250515022904.575509-16-eblake@redhat.com>
+ <20250515022904.575509-29-eblake@redhat.com>
+ <78bc08dc-5da5-4fcf-804b-1a387f2e9ea8@proxmox.com>
+ <kd563ogyr5t2sh5nz3i3iydcy4r5o2kuze4byv3d22rjyffktt@gbmqgnuufpnh>
 Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <87bjrl87p5.fsf@draig.linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62c.google.com
+From: Fiona Ebner <f.ebner@proxmox.com>
+In-Reply-To: <kd563ogyr5t2sh5nz3i3iydcy4r5o2kuze4byv3d22rjyffktt@gbmqgnuufpnh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,103 +60,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2025/05/22 15:45, Alex Bennée wrote:
-> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
-> 
->> On 2025/05/22 1:42, Alex Bennée wrote:
->>> From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
->>> This commit fixes an indefinite hang when using VIRTIO GPU blob
->>> objects
->>> under TCG in certain conditions.
->>> The VIRTIO_GPU_CMD_RESOURCE_MAP_BLOB VIRTIO command creates a
->>> MemoryRegion and attaches it to an offset on a PCI BAR of the
->>> VirtIOGPUdevice. The VIRTIO_GPU_CMD_RESOURCE_UNMAP_BLOB command unmaps
->>> it.
->>> Because virglrenderer commands are not thread-safe they are only
->>> called on the main context and QEMU performs the cleanup in three steps
->>> to prevent a use-after-free scenario where the guest can access the
->>> region after it’s unmapped:
->>> 1. From the main context, the region’s field finish_unmapping is
->>> false
->>>      by default, so it sets a variable cmd_suspended, increases the
->>>      renderer_blocked variable, deletes the blob subregion, and unparents
->>>      the blob subregion causing its reference count to decrement.
->>> 2. From an RCU context, the MemoryView gets freed, the FlatView gets
->>>      recalculated, the free callback of the blob region
->>>      virtio_gpu_virgl_hostmem_region_free is called which sets the
->>>      region’s field finish_unmapping to true, allowing the main thread
->>>      context to finish replying to the command
->>> 3. From the main context, the command is processed again, but this
->>> time
->>>      finish_unmapping is true, so virgl_renderer_resource_unmap can be
->>>      called and a response is sent to the guest.
->>> It happens so that under TCG, if the guest has no timers configured
->>> (and
->>> thus no interrupt will cause the CPU to exit), the RCU thread does not
->>> have enough time to grab the locks and recalculate the FlatView.
->>> That’s not a big problem in practice since most guests will assume a
->>> response will happen later in time and go on to do different things,
->>> potentially triggering interrupts and allowing the RCU context to run.
->>> If the guest waits for the unmap command to complete though, it blocks
->>> indefinitely. Attaching to the QEMU monitor and force quitting the guest
->>> allows the cleanup to continue.
->>> There's no reason why the FlatView recalculation can't occur right
->>> away
->>> when we delete the blob subregion, however. It does not, because when we
->>> create the subregion we set the object as its own parent:
->>>       memory_region_init_ram_ptr(mr, OBJECT(mr), "blob", size, data);
->>> The extra reference is what prevents freeing the memory region
->>> object in
->>> the memory transaction of deleting the subregion.
->>> This commit changes the owner object to the device, which removes
->>> the
->>> extra owner reference in the memory region and causes the MR to be
->>> freed right away in the main context.
->>> Acked-by: Michael S. Tsirkin <mst@redhat.com>
->>> Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
->>> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
->>> Tested-by: Alex Bennée <alex.bennee@linaro.org>
->>> Message-Id: <20250410122643.1747913-3-manos.pitsidianakis@linaro.org>
->>> Cc: qemu-stable@nongnu.org
->>> ---
->>>    hw/display/virtio-gpu-virgl.c | 2 +-
->>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>> diff --git a/hw/display/virtio-gpu-virgl.c
->>> b/hw/display/virtio-gpu-virgl.c
->>> index 71a7500de9..8fbe4e70cc 100644
->>> --- a/hw/display/virtio-gpu-virgl.c
->>> +++ b/hw/display/virtio-gpu-virgl.c
->>> @@ -112,7 +112,7 @@ virtio_gpu_virgl_map_resource_blob(VirtIOGPU *g,
->>>        vmr->g = g;
->>>        mr = g_new0(MemoryRegion, 1);
->>>    -    memory_region_init_ram_ptr(mr, OBJECT(mr), "blob", size,
->>> data);
->>> +    memory_region_init_ram_ptr(mr, OBJECT(g), "blob", size, data);
->>>        memory_region_add_subregion(&b->hostmem, offset, mr);
->>>        memory_region_set_enabled(mr, true);
->>>    
+Am 21.05.25 um 17:32 schrieb Eric Blake:
+> On Wed, May 21, 2025 at 11:54:03AM +0200, Fiona Ebner wrote:
+>> I also tried it on my host, where the filesystem is ZFS using
+>> compression, and there, 'du' will already report a lower value after
+>> creating the image, because of compression. And even without compression
+>> it seems that preallocation=full on ZFS is somehow async :/
 >>
->> I suggest dropping this patch for now due to the reason I pointed out
->> for the first version of this series.
+>>> [I] febner@enia ~/qemu/build/tests/qemu-iotests (master)> qemu-img create my.raw 20M -f raw -o preallocation=full
+>>> Formatting 'my.raw', fmt=raw size=20971520 preallocation=full
+>>> [I] febner@enia ~/qemu/build/tests/qemu-iotests (master)> du --block-size=1 my.raw
+>>> 512	my.raw
+>>> [I] febner@enia ~/qemu/build/tests/qemu-iotests (master)> du --block-size=1 my.raw
+>>> 20980224	my.raw
 > 
-> This fixes an actual bug - without it we get a hang.
-> 
+> That one may be a bit harder to work around, but I'll give it a shot
+> while I'm patching the first one.
 
-I understand that but it also introduces a regression; "[PATCH v3 14/20] 
-ui/gtk-gl-area: Remove extra draw call in refresh" is also a similar case.
+FWIW, doing a 'sync' before querying with 'du' will avoid the issue for
+the allocation. But even then, after mirroring, the file will be sparse
+again.
 
-Ideally such a bug should be fixed without regression, but I understand 
-it is sometimes difficult to do that and postponing the bug resolution 
-until figuring out the correct way does not make sense.
+Best Regards,
+Fiona
 
-In such a case, a bug should be fixed minimizing the regression and the 
-documentation of the regression should be left in the code.
-
-In particular, this patch can cause use-after-free whether TCG is used 
-or not. Instead, I suggest to avoid freeing memory regions at all on 
-TCG. It will surely leak memory, but won't result in use-after-free at 
-least and the other accelerators will be unaffected.
-
-Regards,
-Akihiko Odaki
 
