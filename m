@@ -2,107 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40294AC0964
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 12:06:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C72F8AC099F
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 12:16:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uI2oM-0004Xo-Jo; Thu, 22 May 2025 06:06:02 -0400
+	id 1uI2w7-000774-36; Thu, 22 May 2025 06:14:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uI2oK-0004XU-FE
- for qemu-devel@nongnu.org; Thu, 22 May 2025 06:06:00 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1uI2oG-0002XY-8r
- for qemu-devel@nongnu.org; Thu, 22 May 2025 06:06:00 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-43d0618746bso63712425e9.2
- for <qemu-devel@nongnu.org>; Thu, 22 May 2025 03:05:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747908353; x=1748513153; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mzSmlbzdXyt7bNZpTi9t5T9ZvJwF2RhXhAKlnwzFnqk=;
- b=cR52E00yyJckOw6Abu4msWY8UGChigEGhbW+HnwCu0G/VuyTdz/bJiyl/xYsqpum2n
- SdwTEIMCceXmMmVkLPTWSnraM7QGyrNVL9Cbxf5F0i0NAjSj2v7D/4mquKLHxuicdT1v
- abMQof0fqcThzXnBMuztFHfyCGtNLvrf5KPzrRjRVohPNznuWLKBIVZZJplaPMJf/OWG
- dsAYTsrE2C3q8SxGgZiPvsFLTK2Q2l2bbOV2fwHevE5wUhCtRRZ2R+bZzb7RJC0xNlPo
- GHph7xM8qcDJ5WmY2TaDn81cO9YM5RZthet/cZfadISjoOKuQkCgeLqoWfcsioxi9xZv
- aDJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747908353; x=1748513153;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=mzSmlbzdXyt7bNZpTi9t5T9ZvJwF2RhXhAKlnwzFnqk=;
- b=JeRh8RF23a2dacchB9UutYUXPNrkq2XnG8nCzha2h/5fl8H/qAMqALmRihIoFivIt8
- K1+QDFFVIIS8GKfNcFiNhKtXhYaM/LluI9or5bH5pqKIKGp32nPxjEwvGAzBxheT8w01
- 6jKVeArO/ptvbDqjsrB/DPDe56SYFcDutu48OLKyTTlwIisF1mMvRMkbb2elmtzBHpX9
- Xw9Yoo9lnbaJV41MPi8qTAcIcesVGFRdQf3h8a5gE+LRPBxfiqRjF1+vgBaCQ7NK+g8t
- nOsGfQAA7XguA3CcS70bju1kp0Q4baq8NX2n/HiJaZiV3QqCVcFcWR9XzSQRVug26173
- URQw==
-X-Gm-Message-State: AOJu0Yz2k9oyNICNV/ZFR/CpX6cfh5rLovFNT0lD9vsqjHXRlALmrzMk
- jYe45MJ3fi40+SDbNY7g1Lb4mWAvE+7nv73zVyzxsvB8PVfDmNI1HyuRsPGVjEaTT2I=
-X-Gm-Gg: ASbGnctwckPinYHwxMo99IXyXJ5z1py7fZChTFyOFcZilryKJJXJUoC+tBLXAwWzf6x
- Qyws2KaPlEGZ84gP85rSvLtmHOUgTrqYwEe5EsJyMI6LRgiD2r/v5/FhidD+4D8iH+XXACpMrLZ
- Dx8qN/eeE3UVdMjaAbxE+l+H3Lq+PbJaWRFCppRTzNAW+U1ATeaS4YtEKUNqmW6HgEId2Fv8ZyQ
- Z8TkpAie/f8UElubqBsXq0bx98zxhpiJLAyhKVSejZdKGTo+ATBVR+RWTJRbi69i0bsmvOActxL
- yHKSoIHLbcg6JSF678Yek9JhCeX77s6uYc/aIzo3rOgBMzn3WK3s
-X-Google-Smtp-Source: AGHT+IHAOwooPWuagL3wDUu00H+w42AkTySOuPM5T7BlpYDCZ5ab5O4ddWOsMld0pWAid2QaLu718w==
-X-Received: by 2002:a05:600c:3acb:b0:440:9b1a:cd78 with SMTP id
- 5b1f17b1804b1-442fefee292mr240181885e9.10.1747908353197; 
- Thu, 22 May 2025 03:05:53 -0700 (PDT)
-Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-447f3814262sm98656845e9.25.2025.05.22.03.05.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 May 2025 03:05:52 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id DE8B75F8AD;
- Thu, 22 May 2025 11:05:51 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org,  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Thomas Huth <thuth@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,
- John Snow <jsnow@redhat.com>,  Fabiano Rosas <farosas@suse.de>,  Peter Xu
- <peterx@redhat.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,
- Alexandre Iooss <erdnaxe@crans.org>,  Markus Armbruster
- <armbru@redhat.com>,  David Hildenbrand <david@redhat.com>,  Laurent
- Vivier <lvivier@redhat.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,  qemu-arm@nongnu.org,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Mahmoud Mandour
- <ma.mandourr@gmail.com>,  Sriram Yagnaraman
- <sriram.yagnaraman@ericsson.com>,  Dmitry Osipenko
- <dmitry.osipenko@collabora.com>,  Gustavo Romero
- <gustavo.romero@linaro.org>,  "Michael S. Tsirkin" <mst@redhat.com>,
- Dominik 'Disconnect3d' Czarnota <dominik.b.czarnota@gmail.com>,  Patryk
- 'patryk4815' Sondej <patryk.sondej@gmail.com>
-Subject: Re: [PATCH v3 19/20] gdbstub: Implement qGDBServerVersion packet
-In-Reply-To: <0e6cb7af-37eb-4e8d-b342-ecfcdb639f10@daynix.com> (Akihiko
- Odaki's message of "Thu, 22 May 2025 15:29:06 +0900")
-References: <20250521164250.135776-1-alex.bennee@linaro.org>
- <20250521164250.135776-20-alex.bennee@linaro.org>
- <0e6cb7af-37eb-4e8d-b342-ecfcdb639f10@daynix.com>
-User-Agent: mu4e 1.12.11; emacs 30.1
-Date: Thu, 22 May 2025 11:05:51 +0100
-Message-ID: <87zff56juo.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <mengzhuo@iscas.ac.cn>)
+ id 1uI2vu-00075R-2I; Thu, 22 May 2025 06:13:50 -0400
+Received: from smtp84.cstnet.cn ([159.226.251.84] helo=cstnet.cn)
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.90_1) (envelope-from <mengzhuo@iscas.ac.cn>)
+ id 1uI2vo-0003fD-UZ; Thu, 22 May 2025 06:13:49 -0400
+Received: from iscas.ac.cn (unknown [113.16.146.135])
+ by APP-05 (Coremail) with SMTP id zQCowAAnw8TF+C5opIQGAA--.2086S2;
+ Thu, 22 May 2025 18:13:27 +0800 (CST)
+From: Meng Zhuo <mengzhuo@iscas.ac.cn>
+To: qemu-devel@nongnu.org
+Cc: Meng Zhuo <mengzhuo@iscas.ac.cn>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ qemu-riscv@nongnu.org (open list:RISC-V TCG CPUs)
+Subject: [PATCH v4] target/riscv/kvm: add satp mode for host cpu
+Date: Thu, 22 May 2025 18:13:20 +0800
+Message-Id: <20250522101320.96217-1-mengzhuo@iscas.ac.cn>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: zQCowAAnw8TF+C5opIQGAA--.2086S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxZw15AF1DZF1rKF4UAF1UKFg_yoW5tFWUpF
+ W5GrZ5CrW3tF9rJayxtrykXF45Jws5Kr42ka12vr1xXan8JrWUWF1kKa13CF98JF47AF13
+ A3WFkrW7CF40yFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUUvK14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+ rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+ 1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+ 6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+ Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+ I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+ 4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
+ AVWUtwCY1x0264kExVAvwVAq07x20xyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7
+ v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
+ 1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIx
+ AIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI
+ 42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxh
+ VjvjDU0xZFpf9x0JUr5rcUUUUU=
+X-Originating-IP: [113.16.146.135]
+X-CM-SenderInfo: pphqw6xkxrqxpvfd2hldfou0/1tbiCRAKEmgu0b+yxAAAsf
+Received-SPF: pass client-ip=159.226.251.84; envelope-from=mengzhuo@iscas.ac.cn;
+ helo=cstnet.cn
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,83 +75,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+This patch adds host satp mode while kvm/host cpu satp mode is not
+set.
 
-> On 2025/05/22 1:42, Alex Benn=C3=A9e wrote:
->> From: Dominik 'Disconnect3d' Czarnota <dominik.b.czarnota@gmail.com>
->> This commit adds support for the `qGDBServerVersion` packet to the
->> qemu
->> gdbstub  which could be used by clients to detect the QEMU version
->> (and, e.g., use a workaround for known bugs).
->> This packet is not documented/standarized by GDB but it was
->> implemented
->> by LLDB gdbstub [0] and is helpful for projects like Pwndbg [1].
->> This has been implemented by Patryk, who I included in
->> Co-authored-by
->> and who asked me to send the patch.
->> [0]
->> https://lldb.llvm.org/resources/lldbgdbremote.html#qgdbserverversion
->> [1] https://github.com/pwndbg/pwndbg/issues/2648
->> Co-authored-by: Patryk 'patryk4815' Sondej <patryk.sondej@gmail.com>
->> Signed-off-by: Dominik 'Disconnect3d' Czarnota <dominik.b.czarnota@gmail=
-.com>
->> Message-Id: <20250403191340.53343-1-dominik.b.czarnota@gmail.com>
->> [AJB: fix include, checkpatch linewrap]
->> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->> ---
->>   gdbstub/gdbstub.c | 17 +++++++++++++++++
->>   1 file changed, 17 insertions(+)
->> diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
->> index 6023c80d25..def0b7e877 100644
->> --- a/gdbstub/gdbstub.c
->> +++ b/gdbstub/gdbstub.c
->> @@ -28,6 +28,7 @@
->>   #include "qemu/cutils.h"
->>   #include "qemu/module.h"
->>   #include "qemu/error-report.h"
->> +#include "qemu/target-info.h"
->>   #include "trace.h"
->>   #include "exec/gdbstub.h"
->>   #include "gdbstub/commands.h"
->> @@ -1597,6 +1598,18 @@ static void handle_query_threads(GArray *params, =
-void *user_ctx)
->>       gdbserver_state.query_cpu =3D gdb_next_attached_cpu(gdbserver_stat=
-e.query_cpu);
->>   }
->>   +static void handle_query_gdb_server_version(GArray *params, void
->> *user_ctx)
->> +{
->> +#if defined(CONFIG_USER_ONLY)
->> +    g_string_printf(gdbserver_state.str_buf, "name:qemu-%s;version:%s;",
->> +                    target_name(), QEMU_VERSION);
->> +#else
->> +    g_string_printf(gdbserver_state.str_buf, "name:qemu-system-%s;versi=
-on:%s;",
->> +                    target_name(), QEMU_VERSION);
->> +#endif
->
-> I sugguest passing "qemu" as the name property.
->
-> I guess LLDB developers chose to explicitly have the key-value pair
-> syntax so that users can have one unified logic for parsing and avoid
-> the mess of HTTP's User-Agent; there is a proposal for Web that
-> introduces key-value pairs in a similar manner:
-> https://developer.chrome.com/docs/privacy-security/user-agent-client-hints
->
-> If we embed more information like to the name property, users will
-> need to have an additional logic to know if it's QEMU or to know other
-> information. Instead, we can emit:
-> name:qemu;version:10.0.50;
->
-> and we can use something like follows if we want to tell more:
-> name:qemu;version:10.0.50;qemu-mode:system;qemu-target:hexagon;
+This patch not change the output of errno nor errno strings pattern
+like other functions do. See [v3] for further information.
 
-I think we are getting into bike shedding territory here. GDB does need
-a decent way to communicate about supported targets and when it comes up
-with one we shall implement it. But I don't think we need to give too
-much thought to this custom response for now.
+Change in v4:
+- Adds changelog in commit message
+- Link to v3: https://lists.nongnu.org/archive/html/qemu-devel/2025-05/msg04629.html
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Change in v3:
+- Rebase on https://github.com/alistair23/qemu/tree/riscv-to-apply.next
+  as requested
+- Link to v2: https://lists.nongnu.org/archive/html/qemu-devel/2025-04/msg05203.html
+
+Changes in v2:
+- use set_satp_mode_max_supported instead of hard code
+- Link to v1: https://lists.nongnu.org/archive/html/qemu-devel/2025-04/msg05094.html
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2931
+Signed-off-by: Meng Zhuo <mengzhuo@iscas.ac.cn>
+---
+ target/riscv/cpu.c         |  3 +--
+ target/riscv/cpu.h         |  1 +
+ target/riscv/kvm/kvm-cpu.c | 20 +++++++++++++++++++-
+ 3 files changed, 21 insertions(+), 3 deletions(-)
+
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index d92874baa0..a84edd3a3b 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -433,8 +433,7 @@ const char *satp_mode_str(uint8_t satp_mode, bool is_32_bit)
+     g_assert_not_reached();
+ }
+ 
+-static void set_satp_mode_max_supported(RISCVCPU *cpu,
+-                                        uint8_t satp_mode)
++void set_satp_mode_max_supported(RISCVCPU *cpu, uint8_t satp_mode)
+ {
+     bool rv32 = riscv_cpu_mxl(&cpu->env) == MXL_RV32;
+     const bool *valid_vm = rv32 ? valid_vm_1_10_32 : valid_vm_1_10_64;
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index b56d3afa69..d7136f1d72 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -915,6 +915,7 @@ char *riscv_cpu_get_name(RISCVCPU *cpu);
+ 
+ void riscv_cpu_finalize_features(RISCVCPU *cpu, Error **errp);
+ void riscv_add_satp_mode_properties(Object *obj);
++void set_satp_mode_max_supported(RISCVCPU *cpu, uint8_t satp_mode);
+ bool riscv_cpu_accelerator_compatible(RISCVCPU *cpu);
+ 
+ /* CSR function table */
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index 82f9728636..18fbca1a08 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -999,6 +999,23 @@ static void kvm_riscv_destroy_scratch_vcpu(KVMScratchCPU *scratch)
+     close(scratch->kvmfd);
+ }
+ 
++static void kvm_riscv_init_satp_mode(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
++{
++    CPURISCVState *env = &cpu->env;
++    struct kvm_one_reg reg;
++    int ret;
++    uint64_t val;
++
++    reg.id = RISCV_CONFIG_REG(env, satp_mode);
++    reg.addr = (uint64_t)&val;
++    ret = ioctl(kvmcpu->cpufd, KVM_GET_ONE_REG, &reg);
++    if (ret != 0) {
++        error_report("Unable to retrieve satp from host, error %d", ret);
++    }
++
++    set_satp_mode_max_supported(cpu, val);
++}
++
+ static void kvm_riscv_init_machine_ids(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
+ {
+     struct kvm_one_reg reg;
+@@ -1302,6 +1319,7 @@ static void riscv_init_kvm_registers(Object *cpu_obj)
+     kvm_riscv_init_machine_ids(cpu, &kvmcpu);
+     kvm_riscv_init_misa_ext_mask(cpu, &kvmcpu);
+     kvm_riscv_init_cfg(cpu, &kvmcpu);
++    kvm_riscv_init_satp_mode(cpu, &kvmcpu);
+ 
+     kvm_riscv_destroy_scratch_vcpu(&kvmcpu);
+ }
+@@ -1980,7 +1998,7 @@ static bool kvm_cpu_realize(CPUState *cs, Error **errp)
+         }
+     }
+ 
+-   return true;
++    return true;
+ }
+ 
+ void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
+-- 
+2.39.5
+
 
