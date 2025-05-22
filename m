@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C434AC030B
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 05:37:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1114FAC0308
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 05:37:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHwjb-0005js-Va; Wed, 21 May 2025 23:36:44 -0400
+	id 1uHwje-0005kp-O1; Wed, 21 May 2025 23:36:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven_lee@aspeedtech.com>)
- id 1uHwjZ-0005jF-Oy; Wed, 21 May 2025 23:36:41 -0400
+ id 1uHwjc-0005kH-Fw; Wed, 21 May 2025 23:36:44 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven_lee@aspeedtech.com>)
- id 1uHwjX-00047S-BG; Wed, 21 May 2025 23:36:41 -0400
+ id 1uHwja-00047S-OI; Wed, 21 May 2025 23:36:44 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 22 May
@@ -30,13 +30,16 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <troy_lee@aspeedtech.com>, <longzl2@lenovo.com>,
  <yunlin.tang@aspeedtech.com>, <steven_lee@aspeedtech.com>
-Subject: [PATCH v3 0/5] hw/arm/aspeed_ast2700-fc: Fix null pointer dereference
-Date: Thu, 22 May 2025 11:36:22 +0800
-Message-ID: <20250522033628.3752086-1-steven_lee@aspeedtech.com>
+Subject: [PATCH v3 1/5] hw/arm/aspeed_ast2700-fc: Fix null pointer dereference
+ in ca35 init
+Date: Thu, 22 May 2025 11:36:23 +0800
+Message-ID: <20250522033628.3752086-2-steven_lee@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250522033628.3752086-1-steven_lee@aspeedtech.com>
+References: <20250522033628.3752086-1-steven_lee@aspeedtech.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Received-SPF: pass client-ip=211.20.114.72;
  envelope-from=steven_lee@aspeedtech.com; helo=TWMBX01.aspeed.com
 X-Spam_score_int: -18
@@ -75,32 +78,38 @@ Fix:
   where the ram-container is defined as 1GiB in its class.
 - Add nic configuration in ast2700fc's ca35 init function.
 
+Signed-off-by: Steven Lee <steven_lee@aspeedtech.com>
+---
+ hw/arm/aspeed_ast27x0-fc.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-v2:
-- Split the CA35 memory mapping into a separate patch.
-- Added a new patch to fix BMC memory mapping in the fby35 machine,
-  which had a similar issue (unmapped system_memory).
-- Removed Change-Id tag from commit messages
-
-v3:
-- Fixed issue with incorrectly inheriting TYPE_ASPEED_MACHINE.
-- Rewrote the commit message for "Map BMC memory into system memory".
-- Added more details to the commit message for "Fix unimplemented region
-  overlap with VBootROM".
-
-Steven Lee (5):
-  hw/arm/aspeed_ast2700-fc: Fix null pointer dereference in ca35 init
-  hw/arm/aspeed_ast27x0: Fix unimplemented region overlap with vbootrom
-  hw/arm/aspeed_ast27x0-fc: Map ca35 memory into system memory
-  hw/arm/fby35: Map BMC memory into system memory
-  docs: Remove ast2700fc from Aspeed family boards
-
- docs/system/arm/aspeed.rst |  2 +-
- hw/arm/aspeed_ast27x0-fc.c | 10 +++++++++-
- hw/arm/aspeed_ast27x0.c    |  4 ++--
- hw/arm/fby35.c             |  1 +
- 4 files changed, 13 insertions(+), 4 deletions(-)
-
+diff --git a/hw/arm/aspeed_ast27x0-fc.c b/hw/arm/aspeed_ast27x0-fc.c
+index 125a3ade40..f8cb632bca 100644
+--- a/hw/arm/aspeed_ast27x0-fc.c
++++ b/hw/arm/aspeed_ast27x0-fc.c
+@@ -48,7 +48,7 @@ struct Ast2700FCState {
+     bool mmio_exec;
+ };
+ 
+-#define AST2700FC_BMC_RAM_SIZE (2 * GiB)
++#define AST2700FC_BMC_RAM_SIZE (1 * GiB)
+ #define AST2700FC_CM4_DRAM_SIZE (32 * MiB)
+ 
+ #define AST2700FC_HW_STRAP1 0x000000C0
+@@ -86,6 +86,13 @@ static void ast2700fc_ca35_init(MachineState *machine)
+                                  AST2700FC_BMC_RAM_SIZE, &error_abort)) {
+         return;
+     }
++
++    for (int i = 0; i < sc->macs_num; i++) {
++        if (!qemu_configure_nic_device(DEVICE(&soc->ftgmac100[i]),
++                                       true, NULL)) {
++            break;
++        }
++    }
+     if (!object_property_set_int(OBJECT(&s->ca35), "hw-strap1",
+                                  AST2700FC_HW_STRAP1, &error_abort)) {
+         return;
 -- 
 2.43.0
 
