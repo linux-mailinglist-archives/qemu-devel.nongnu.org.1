@@ -2,66 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64B7CAC139C
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 20:46:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CAB2AC13AE
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 20:48:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uIAvN-0003Us-Q5; Thu, 22 May 2025 14:45:49 -0400
+	id 1uIAxZ-00056s-D4; Thu, 22 May 2025 14:48:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uIAvK-0003Qn-8d
- for qemu-devel@nongnu.org; Thu, 22 May 2025 14:45:46 -0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uIAxV-00056Q-Hj
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 14:48:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uIAvI-00031f-GR
- for qemu-devel@nongnu.org; Thu, 22 May 2025 14:45:46 -0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uIAxS-0003Ms-Mj
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 14:48:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747939543;
+ s=mimecast20190719; t=1747939678;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Gn5KgJ4a6xQOLUCAAw3X5IjxyrDjnw9hm4m+bT3koig=;
- b=LTsiNGQYiVI5GfdvyIXwTbS/uMi6/uM/WpZfhRSqs1FszNwQEmSP4uK/Amk+kjgMRK84QP
- YuWMB8rY3Cye4pxIcYIaZ26RCc0GvjsfovmJnqs/OtRUaFFkCK3YIrbb5YRsPEC2JzgBEi
- Yent7STVfUl7h7XccR2lMEoaqu/9qzk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=rUNCdCA39uDh2QTrAiaI/p5ezBJxV579gkFC0WocEvQ=;
+ b=Qzg2w8nsmDYabAgP/IKumfhj1AGiDGQBIyHtsreTnsvuxe//cpCvQvfrMtZVlqRIcOXlFL
+ 5lDv+sGDGCwiabPOapRhHXFzL2+z+yrw4/nQvxIhs7VLHQ+07OeVLvguRlJ0Urx3J9f9WD
+ B48od3RoIBB4EqxTlAo8fFd/xj7AgxE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-304-33k-cHkfNKOIAIJjWtoZWA-1; Thu,
- 22 May 2025 14:45:42 -0400
-X-MC-Unique: 33k-cHkfNKOIAIJjWtoZWA-1
-X-Mimecast-MFC-AGG-ID: 33k-cHkfNKOIAIJjWtoZWA_1747939541
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-370--xBc7IJhPeirrCA-WmcKvw-1; Thu,
+ 22 May 2025 14:47:54 -0400
+X-MC-Unique: -xBc7IJhPeirrCA-WmcKvw-1
+X-Mimecast-MFC-AGG-ID: -xBc7IJhPeirrCA-WmcKvw_1747939673
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id F0E0C18001EA; Thu, 22 May 2025 18:45:40 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.201])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 0570A1956094; Thu, 22 May 2025 18:45:38 +0000 (UTC)
-Date: Thu, 22 May 2025 13:45:35 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
- "Richard W.M. Jones" <rjones@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>, 
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, 
- Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH v2 4/4] nbd: Enable multi-conn using round-robin
-Message-ID: <4sxzmn7ztnmnuc5rvsq7r3gmsdelykb2gea3dfcvzym4au5an4@hwzwkvl2e64x>
-References: <20250428185246.492388-6-eblake@redhat.com>
- <20250428185246.492388-10-eblake@redhat.com>
- <faa5559f-2529-4c3a-827d-5350dd3213f2@virtuozzo.com>
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 94D121956088; Thu, 22 May 2025 18:47:53 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.10])
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id BA8F119560AF; Thu, 22 May 2025 18:47:52 +0000 (UTC)
+Date: Thu, 22 May 2025 14:47:51 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Stefan Hajnoczi <stefanha@redhat.com>, peterx@redhat.com
+Subject: Re: [PULL 00/12] Migration 20250520 patches
+Message-ID: <20250522184751.GA16275@fedora>
+References: <20250520170751.786787-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="n6zYfyHRSqz1NmIo"
 Content-Disposition: inline
-In-Reply-To: <faa5559f-2529-4c3a-827d-5350dd3213f2@virtuozzo.com>
-User-Agent: NeoMutt/20250404
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+In-Reply-To: <20250520170751.786787-1-peterx@redhat.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
@@ -86,79 +83,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 22, 2025 at 08:37:58PM +0300, Andrey Drobyshev wrote:
-> On 4/28/25 9:46 PM, Eric Blake wrote:
-> > From: "Richard W.M. Jones" <rjones@redhat.com>
-> > 
-> > Enable NBD multi-conn by spreading operations across multiple
-> > connections.
-> > 
-> > (XXX) This uses a naive round-robin approach which could be improved.
-> > For example we could look at how many requests are in flight and
-> > assign operations to the connections with fewest.  Or we could try to
-> > estimate (based on size of requests outstanding) the load on each
-> > connection.  But this implementation doesn't do any of that.
-> > 
-> > Signed-off-by: Richard W.M. Jones <rjones@redhat.com>
-> > Message-ID: <20230309113946.1528247-5-rjones@redhat.com>
-> > ---
-> >  block/nbd.c | 67 +++++++++++++++++++++++++++++++++++++++--------------
-> >  1 file changed, 49 insertions(+), 18 deletions(-)
-> > 
-> > diff --git a/block/nbd.c b/block/nbd.c
-> > index 19da1a7a1fe..bf5bc57569c 100644
-> > --- a/block/nbd.c
-> > +++ b/block/nbd.c
-> > 
-> > [...]
-> 
-> 
-> > @@ -2207,24 +2233,29 @@ static const char *const nbd_strong_runtime_opts[] = {
-> >  static void nbd_cancel_in_flight(BlockDriverState *bs)
-> >  {
-> >      BDRVNBDState *s = (BDRVNBDState *)bs->opaque;
-> > -    NBDConnState * const cs = s->conns[0];
-> > +    size_t i;
-> > +    NBDConnState *cs;
-> > 
-> > -    reconnect_delay_timer_del(cs);
-> > +    for (i = 0; i < MAX_MULTI_CONN; ++i) {
-> > +        cs = s->conns[i];
-> > 
-> > -    qemu_mutex_lock(&cs->requests_lock);
-> > -    if (cs->state == NBD_CLIENT_CONNECTING_WAIT) {
-> > -        cs->state = NBD_CLIENT_CONNECTING_NOWAIT;
-> > +        reconnect_delay_timer_del(cs);
-> > +
-> 
-> This code is causing iotests/{185,264,281} to segfault.  E.g.:
-> 
-> > (gdb) bt
-> > #0  0x000055bbaec58119 in reconnect_delay_timer_del (cs=0x0) at ../block/nbd.c:205
-> > #1  0x000055bbaec5d8e4 in nbd_cancel_in_flight (bs=0x55bbb1458020) at ../block/nbd.c:2242
-> > #2  0x000055bbaec4ff16 in bdrv_cancel_in_flight (bs=0x55bbb1458020) at ../block/io.c:3737
-> > #3  0x000055bbaec54ec1 in mirror_cancel (job=0x55bbb21ce800, force=true) at ../block/mirror.c:1335
-> > #4  0x000055bbaec18278 in job_cancel_async_locked (job=0x55bbb21ce800, force=true) at ../job.c:893
-> > #5  0x000055bbaec18df2 in job_cancel_locked (job=0x55bbb21ce800, force=true) at ../job.c:1143
-> > #6  0x000055bbaec18ef3 in job_force_cancel_err_locked (job=0x55bbb21ce800, errp=0x7fff44f247a0) at ../job.c:1190
-> > #7  0x000055bbaec192a4 in job_finish_sync_locked (job=0x55bbb21ce800, finish=0x55bbaec18ed2 <job_force_cancel_err_locked>, errp=0x0) at ../job.c:1253
-> > #8  0x000055bbaec18f2e in job_cancel_sync_locked (job=0x55bbb21ce800, force=true) at ../job.c:1196
-> > #9  0x000055bbaec19086 in job_cancel_sync_all () at ../job.c:1214
-> > #10 0x000055bbaed55177 in qemu_cleanup (status=0) at ../system/runstate.c:949
-> > #11 0x000055bbaedd0aad in qemu_default_main (opaque=0x0) at ../system/main.c:51
-> > #12 0x000055bbaedd0b4f in main (argc=21, argv=0x7fff44f249d8) at ../system/main.c:80
-> 
-> We're dereferencing a pointer to NBDConnState that was never
-> initialized.  So it should either be
-> 
-> > -    for (i = 0; i < MAX_MULTI_CONN; ++i) {
-> > +    for (i = 0; i < s->multi_conn; ++i) {
 
-Thanks for pointing it out; I'll fix that.
+--n6zYfyHRSqz1NmIo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+Applied, thanks.
+
+Please update the changelog at https://wiki.qemu.org/ChangeLog/10.1 for any user-visible changes.
+
+--n6zYfyHRSqz1NmIo
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmgvcVYACgkQnKSrs4Gr
+c8jhDAgAl0RihyJImOfVJH4fawsyAurFdcqYW4+xM+5rhAqTjgGLlTS90TPrJUmE
+omioXwBKL/Pul8pIkJteyH6xNRUdU6+lk8JeECwrS45dHjW1U1QttO08gnrQpNgp
+qfN26MhA2U/5FtrzxpPzv1i+nLSB88DVZbSsYncMsZ5UzvdlxD/mjjIdYD7ZACtl
+1wYYfRXRrpgAIxchPBd7Q4AlG55meK/As8866dGUUHxw5Y2hEmtQLeptJ5EISgGA
+ASVJo6T4bD1vu6+rSgnqhhIuHHVIDl6GZD5A2kvCCDkj1OZ0djbxsVLmgXgk8Q/d
+GnZ7J461X9+WF7yqsqx7TFjXc3QE2w==
+=X+Aj
+-----END PGP SIGNATURE-----
+
+--n6zYfyHRSqz1NmIo--
 
 
