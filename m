@@ -2,115 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35D75AC144B
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 21:08:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 658D6AC1458
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 21:09:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uIBGC-00027a-EO; Thu, 22 May 2025 15:07:20 -0400
+	id 1uIBI9-0000uz-JV; Thu, 22 May 2025 15:09:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akrowiak@linux.ibm.com>)
- id 1uIBFB-00013R-WC; Thu, 22 May 2025 15:06:19 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akrowiak@linux.ibm.com>)
- id 1uIBFA-0006Xk-A2; Thu, 22 May 2025 15:06:17 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54MF02oP026860;
- Thu, 22 May 2025 19:06:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=osJTwj
- gBsYSOVAlBgXN03B58/9Q0yjewkiwg17B2KT4=; b=dLZDx4cFOjBRPgE2cE/66H
- ZYBCct3oUf7Iefp81D0wTs6Fj6eXVWv9w2qBgRVLZxvlKWA+WpIbEDYPHG+BMfhT
- 579A4gU2kAorsnezxCIRMpOhCwO1PGzRovtueSzN9UOYBcDPWfELAiDntVXKe1Qq
- JjPUyihtyROZ155FpPiwbjiFwzvsap9wgfyrCYHDxT2KkRjVqIN5H+76bPbXJtQ7
- ThxKwZKj5GxFSSuFy1t6MTfRgHw64PLo5mOFjr0TYUU+jWWzibDrgRdRSBysYfeE
- YBpHc8+pysKxPdXNzW2QiicxjVVuFAJlBDyukR7oF/DTJ/pTUchMoSQwd9e+MRiw
- ==
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46t669h69f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 22 May 2025 19:06:14 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54MHMGgo024617;
- Thu, 22 May 2025 19:06:00 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46rwkravm6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 22 May 2025 19:06:00 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
- [10.39.53.231])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 54MJ5wYE21430788
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 22 May 2025 19:05:59 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BF19D58054;
- Thu, 22 May 2025 19:05:58 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7276958045;
- Thu, 22 May 2025 19:05:57 +0000 (GMT)
-Received: from [9.61.89.69] (unknown [9.61.89.69])
- by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 22 May 2025 19:05:57 +0000 (GMT)
-Message-ID: <dabf0d9e-5dd5-493b-82e3-920d0ca96195@linux.ibm.com>
-Date: Thu, 22 May 2025 15:05:56 -0400
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uIBI0-0000gy-Vh
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 15:09:13 -0400
+Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uIBHz-0006wi-8u
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 15:09:12 -0400
+Received: by mail-pj1-x1034.google.com with SMTP id
+ 98e67ed59e1d1-30e8a968b15so5933106a91.3
+ for <qemu-devel@nongnu.org>; Thu, 22 May 2025 12:09:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1747940949; x=1748545749; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=OyTrm5QkBf1uYJ/MAoGvWOGtHNNLL++H2p58cJWl7EY=;
+ b=pgf/G/EbUYD0kjuF/pgV0DxNtUfe36LKyaZBv6Q7WQNk9RKfV650CJZ1wAK0H16rzp
+ uObRMWB81t9gVfNdmUm1Cnt/pEi38Wsr1fnJuH7xMS35iyXRLcpaKkh3dmUAFAhtWlWu
+ 1CJ4IAr8gDE+ZlNRAmQu0hlYjYe58z9wfYedPrW0+rQ8ltE38Hd4KNiWYLGytKlxm4+x
+ WQSEJ/gK/BZRCgCIKKPg0U1+vnSsDPM74hrJjk3D9hZ3LB7neAgdepIcAt+c2j3/rUva
+ ZgPcVU68PqhHdh8tz5Es2taiD56+rt2DSSbtdQnc2S+XGA6vGsVrAQXSWS50WlTtVXFb
+ hdKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747940949; x=1748545749;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=OyTrm5QkBf1uYJ/MAoGvWOGtHNNLL++H2p58cJWl7EY=;
+ b=Pl9oWFLRvFSknwALtvVMX4CKLIbdNq1OEWdMjsLYvgmai9F3eDGe2GNmADseZzYNBN
+ pDQgzByNh4o5c/B6yhmC6rT6b73Q9QHDxiJNz0H9Eadb+ccvM1u8dGpbC+uMkdlgTuJ7
+ 8xQUyA7NFQDeE39XXxWLs6AE16juuFcTD6Dq3ZTELVaayPUK9AC4rQvd71z69Oj2NCBs
+ 9e0GFAB9nEA3dBp97iaWYy8c+IHYufY09he7vVlNpjKB2CEOp241tBBlzBBr/0OUqz23
+ teqqoqV0p9ZAGjBZwjQ58//pCn2Vmu7y6Pbj6W1KQc3qmWmsfKPUAbIjXbtWBClgC+nv
+ bXZg==
+X-Gm-Message-State: AOJu0YxWRTBBiM2xdrOeYYNF64LVptXgYcZkIKeoCuiKaxGxgcgcVWLp
+ r4cfdK0nZKA7T5qFBKk4aWCOLpVEXfkF/XzBQF1oSJb086lSrx+o3d05w6OtGm7YQ1ibzlMe1gw
+ VbgJq
+X-Gm-Gg: ASbGncuIZxeVCQZlwsp32q7l84SezHpXht9E/05HmtU9bDf6jcIXEyVUnMEwXEsQr93
+ Ju7MNp+xlDPs/mXnSzWdLIv61PvrFHI2JqNi5cDy+Ii8wBFXGxKrOE4pmnwCBtwpjQjdc2Dnh91
+ bO9vN9Doj5GodTdJmakldoRKiVEnxPLaS9qx2MoWPySuqpjzAFFKV4n1GZo/qUGWh2lR8thZ45Q
+ zdmNkSbyaNpIOuLMSP/puW2YZr4lDoocGkdGYi2IKQGo4Xyay9cb2WCOFSAVYI9SjLuwawSLvG+
+ Uw1cdHi8S9YFnG4q9Md+1zh8haP+d/xTS/X9GPmJH0Lrw8j7r7P3CnvjZvXs69ZZ
+X-Google-Smtp-Source: AGHT+IFNoHSz2kHP4KB1WDx1DyTo7Wygrvf44Re2Nx7Q7Xx0M/khgUtPp5j2FY2mT6zp0ftMju4Xhw==
+X-Received: by 2002:a17:90b:1cd0:b0:2fa:1a23:c01d with SMTP id
+ 98e67ed59e1d1-30e8314dbf1mr32446638a91.21.1747940949003; 
+ Thu, 22 May 2025 12:09:09 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
+ by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-30f3650006esm5907623a91.35.2025.05.22.12.09.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 22 May 2025 12:09:08 -0700 (PDT)
+Message-ID: <17152e34-a71e-45af-8ef2-abf86467ebac@linaro.org>
+Date: Thu, 22 May 2025 12:09:07 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v9 3/4] hw/vfio/ap: Storing event information for an
- AP configuration change event
-To: Rorie Reyes <rreyes@linux.ibm.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@redhat.com>, qemu-devel@nongnu.org, qemu-s390x@nongnu.org
-Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
- jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
- alex.williamson@redhat.com, thuth@redhat.com
-References: <20250512180230.50129-1-rreyes@linux.ibm.com>
- <20250512180230.50129-4-rreyes@linux.ibm.com>
- <7d1699d4-6d7d-4de3-a0bc-6dd345d9c2dd@redhat.com>
- <147f3278-bd20-4339-9dff-bf6a43ea0a48@linux.ibm.com>
+Subject: Re: [PATCH v3 00/14] qapi: remove all TARGET_* conditionals from the
+ schema
 Content-Language: en-US
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <147f3278-bd20-4339-9dff-bf6a43ea0a48@linux.ibm.com>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, peter.maydell@linaro.org, armbru@redhat.com,
+ michael.roth@amd.com, philmd@linaro.org, richard.henderson@linaro.org,
+ berrange@redhat.com, thuth@redhat.com
+References: <20250521223740.249720-1-pierrick.bouvier@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20250521223740.249720-1-pierrick.bouvier@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=RrPFLDmK c=1 sm=1 tr=0 ts=682f75a6 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=sWKEhP36mHoA:10 a=VnNF1IyMAAAA:8
- a=daVjc4-f4LzRCDcAgo4A:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: evQgZlfeBdfqumpMo_PP2UkCrYBy64cd
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIyMDE5MyBTYWx0ZWRfX6DqRDDFapZNk
- WrbCB6N3NGfKih35tnheCUbDOp3Ab8aLz0GrRydJKn/OM6ikAu28XXlAQOeuNkBLL2toQZeYspz
- 8fYat4vFGQ6lHHSeBQxIQ8BI2b6I+8y5LxMg+exdG8wwGd9VdMz1pyi75aaPGbdpWHF96w2ZtO9
- WFY0COanoKxyHrRD01ov8oDsDOBDFSsfQW4AfCr45mecuFQKPVUkW5GtNJKJWopNV5OqaE2ussX
- tSo3h0/b3C9NqGgVKdEjjIeGgKzSMfrV6q98p4jQcbN+/HrbGMVW/3YVC2YvgWKEtYuYf+IC0Ko
- 4Jh+/hGD7WQk8/2fuF+TwQd4ny8I9T1wHZDX5xODGY2aZEWHPBZ3EfA+eZRd1nfTb4WEdgmpYFQ
- UyyRVDd1hqcBLHFHO3X0wXHCNdlyAaCrdvAE3z8yoBpXw9EXbracqaeyA58/SDDcFLh1lYVo
-X-Proofpoint-GUID: evQgZlfeBdfqumpMo_PP2UkCrYBy64cd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-22_09,2025-05-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0
- impostorscore=0 mlxlogscore=999 suspectscore=0 bulkscore=0
- lowpriorityscore=0 priorityscore=1501 mlxscore=0 spamscore=0 adultscore=0
- clxscore=1015 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
- definitions=main-2505220193
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=akrowiak@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1034.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -126,94 +102,10 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This series contains a rebase mistake (two patches were merged 
+together), please skip it and check v4 instead:
+https://lore.kernel.org/qemu-devel/20250522190542.588267-1-pierrick.bouvier@linaro.org
 
-
-
-On 5/22/25 1:17 PM, Rorie Reyes wrote:
->
-> On 5/22/25 9:30 AM, Cédric Le Goater wrote:
->> On 5/12/25 20:02, Rorie Reyes wrote:
->>> These functions can be invoked by the function that handles 
->>> interception
->>> of the CHSC SEI instruction for requests indicating the 
->>> accessibility of
->>> one or more adjunct processors has changed.
->>>
->>> Signed-off-by: Rorie Reyes <rreyes@linux.ibm.com>
->>> ---
->>>   hw/vfio/ap.c                 | 39 
->>> ++++++++++++++++++++++++++++++++++++
->>>   include/hw/s390x/ap-bridge.h | 22 ++++++++++++++++++++
->>>   2 files changed, 61 insertions(+)
->>>
->>> diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
->>> index 5ea5dd9cca..4f88f80c54 100644
->>> --- a/hw/vfio/ap.c
->>> +++ b/hw/vfio/ap.c
->>> @@ -96,6 +96,45 @@ static void vfio_ap_cfg_chg_notifier_handler(void 
->>> *opaque)
->>>     }
->>>   +int ap_chsc_sei_nt0_get_event(void *res)
->>> +{
->>> +    ChscSeiNt0Res *nt0_res  = (ChscSeiNt0Res *)res;
->>> +    APConfigChgEvent *cfg_chg_event;
->>> +
->>> +    if (!ap_chsc_sei_nt0_have_event()) {
->>> +        return 1;
->>> +    }
->>> +
->>> +    cfg_chg_event = QTAILQ_FIRST(&cfg_chg_events);
->>> +    memset(nt0_res, 0, sizeof(*nt0_res));
->>> +
->>> +    QTAILQ_REMOVE(&cfg_chg_events, cfg_chg_event, next);
->>
->> btw, I don't know if this was discussed. Are we OK to manipulate the
->> 'cfg_chg_events' construct withou locking ?
->>
-> I don't think it was discussed. Since I made it static, should we 
-> think about locking the construct? If so, would using 'static 
-> QemuMutex cfg_chg_events_lock;' to declare it and use 
-> 'qemu_mutex_lock()' and 'qemu_mutex_unlock()' to lock and unlock when 
-> needed? Tony, do you have any thoughts on this process?
-
-See my response to Cedric. If you decide to go with locking, I don't 
-have a problem with using QemuMutex.
-
->
->>> diff --git a/include/hw/s390x/ap-bridge.h 
->>> b/include/hw/s390x/ap-bridge.h
->>> index 470e439a98..f4d838bf99 100644
->>> --- a/include/hw/s390x/ap-bridge.h
->>> +++ b/include/hw/s390x/ap-bridge.h
->>> @@ -16,4 +16,26 @@
->>>     void s390_init_ap(void);
->>>   +typedef struct ChscSeiNt0Res {
->>> +    uint16_t length;
->>> +    uint16_t code;
->>> +    uint8_t reserved1;
->>> +    uint16_t reserved2;
->>> +    uint8_t nt;
->>> +#define PENDING_EVENT_INFO_BITMASK 0x80;
->>> +    uint8_t flags;
->>> +    uint8_t reserved3;
->>> +    uint8_t rs;
->>> +    uint8_t cc;
->>> +} QEMU_PACKED ChscSeiNt0Res;
->>> +
->>> +#define NT0_RES_RESPONSE_CODE 1;
->>> +#define NT0_RES_NT_DEFAULT    0;
->>> +#define NT0_RES_RS_AP_CHANGE  5;
->>> +#define NT0_RES_CC_AP_CHANGE  3;
->>
->>
->>
->> please drop the ending ';'
->>
->>
->> Thanks,
->>
->> C.
->>
-> Will drop in the next version
-
+Regards,
+Pierrick
 
