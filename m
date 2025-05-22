@@ -2,52 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49E3AAC16DE
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 May 2025 00:33:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96198AC16ED
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 May 2025 00:39:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uIESH-0003gH-07; Thu, 22 May 2025 18:32:01 -0400
+	id 1uIEYE-0005Dq-Mn; Thu, 22 May 2025 18:38:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uIESD-0003fo-F5; Thu, 22 May 2025 18:31:57 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1uIES4-0005nU-2q; Thu, 22 May 2025 18:31:56 -0400
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id A5E3755C1B9;
- Fri, 23 May 2025 00:31:42 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id m5p-61pEMt2J; Fri, 23 May 2025 00:31:40 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id B202555C16F; Fri, 23 May 2025 00:31:40 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id B053E745684;
- Fri, 23 May 2025 00:31:40 +0200 (CEST)
-Date: Fri, 23 May 2025 00:31:40 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
-cc: =?ISO-8859-15?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>, 
- Artyom Tarasenko <atar4qemu@gmail.com>, 
- Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 00/16] hw/pci-host/raven clean ups
-In-Reply-To: <cover.1746374076.git.balaton@eik.bme.hu>
-Message-ID: <f07d5a20-30e3-dddc-e15c-745b449af839@eik.bme.hu>
-References: <cover.1746374076.git.balaton@eik.bme.hu>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uIEY9-0005DM-30
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 18:38:06 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uIEY1-0006Ru-U5
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 18:38:03 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-742c3d06de3so6478832b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 22 May 2025 15:37:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1747953473; x=1748558273; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=RN4mZHjloUYc5xBEcx0zXmdorZNruJ4VWRnKGIZ7Wbc=;
+ b=BE35zbM90I7LK0zqC6Z2ecGuLdfObfhDO1AXJ3YmfvNazXRjyH0kAavb1Qh35ezLfm
+ ZNVoFo2pwHITTg1TJfYh/L2NWnJEyPeBgjuM2nu8Q/lriw9YjqadBt9Mr91hnjmCXQPy
+ xKM4JYMvqZvZ/EGiTYKe+bcaMihW2wxZMEZlAp5A/ngY2i0xB6mNdZZwAMVuCwQ3KHea
+ q50fFk4cIieHbYoP/4BKyRZCG+TxHtQA1APqb6UbjbFWoYtXSHOCk401/m/XBDgcelYf
+ LC++UMsERbFbfPubUUJ4s/R02CmdzBeT3MQ1YwEa85rqFMXiV4lgMDKdTExzCV3BcgeS
+ Z3Hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747953473; x=1748558273;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=RN4mZHjloUYc5xBEcx0zXmdorZNruJ4VWRnKGIZ7Wbc=;
+ b=OTVbONMZ3vjQiMB8hjPbkwcVN1Up+LhkZE74UXLsQ99ctXjuug5gCZGWNaW1pNbtQs
+ 1jM1adiKj2Z9h8eeIgOVfDtvnidoU8Zyg0v4V0Kva5dazH0wc3scEohWFs1DrjsH1B7L
+ EHntB1E1E9YOqZasl4yxCIlpZKjsdlyKq52ZV9P+XpW8/pB1utwOhqZVVgRDDydhU7Dy
+ v52JQNSCACqPpjJlcgA37ecmOdCOXDuQt6hT0CTBwSSG7wOwq0aleBaU0X+sCOLit4dc
+ NxShNiQcYPziiKtDlEb7Cgdx6PGJkUrtlijpuSAgqTyqzBLAQIvK8dJgA6DIJTK9TxjM
+ +/Ng==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWtuJlze9EJm8taNLdRBvskKDC1XXwu3H4pmqZnWusvsrgTyh2bPXng0SvXEAHmz4Q7M0hknsofwefe@nongnu.org
+X-Gm-Message-State: AOJu0YxbusVqO2k7oSU9Q5oCjsQyxeYwxUtLeb2T8ix+2MfYpOXFYxEv
+ 3hLlIk8Fh6rXiLAGztgtyZMyM/m+pG32lHfBGC80WtnDRZiTCnsZC7YevjIinGnU7pE=
+X-Gm-Gg: ASbGncuhaZhDgcwbUpvePLn70GXBLf57H4X1vnv4j8LrbVgg2REdoyisBddUD8s+Bc5
+ JaCcubhanGpwP3NoSWnXRCtcFldHMRBaDFwj9h1WJ8TdThuhuWzqKIT4F1+kEmXDh/JYsZvYHeV
+ GFOje4/iPYvMGd/lQczN3GV5NlIgCNZxIb00a70mrAXGBjJJukaQfeQ2XWYxeic/ZVCXO8ldXZb
+ 3cXB8jieM5UpbFrbJWzkre4MHUZnGwcAyBFk+IdRyC4A2rWOJbT7lwbsdgb4YbE6X63E3UGGN20
+ ZaQ5oNH10Xq/ec/uJ+AH8WyD4HlP4DltHCDNmuN3LeXUhlByH2TtHnpWv+Jt48sq
+X-Google-Smtp-Source: AGHT+IG1Ef+vEla6bYfUvGeaKaGOG2esj1QWgNjZiTA3Ckkd/ybJjDyvbLtkiGVk69RI84RMPbWsXQ==
+X-Received: by 2002:a05:6a00:4106:b0:740:9c57:3907 with SMTP id
+ d2e1a72fcca58-742acd50f3amr36895617b3a.19.1747953473103; 
+ Thu, 22 May 2025 15:37:53 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-742a96e589esm11695457b3a.9.2025.05.22.15.37.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 22 May 2025 15:37:52 -0700 (PDT)
+Message-ID: <25730845-c77c-47b0-8c23-a254dbbb32d6@linaro.org>
+Date: Thu, 22 May 2025 15:37:51 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 5/8] Add memory hardware address read/write API
+To: Rowan Hart <rowanbhart@gmail.com>
+Cc: Julian Ganz <neither@nut.email>, Alexandre Iooss <erdnaxe@crans.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20250521094333.4075796-1-rowanbhart@gmail.com>
+ <20250521094333.4075796-6-rowanbhart@gmail.com>
+ <20250522115935.34716-3-neither@nut.email>
+ <bbbc7639-9ef0-4510-b481-0c3145b6ff11@linaro.org>
+ <CAE5MsNaacPXefwk=tsUmmAoxUZ9UU3uc084rOT7TOarW7Y7FwQ@mail.gmail.com>
+Content-Language: en-US
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <CAE5MsNaacPXefwk=tsUmmAoxUZ9UU3uc084rOT7TOarW7Y7FwQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x435.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,46 +110,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 4 May 2025, BALATON Zoltan wrote:
-> Hello,
->
-> This series cleans up and simplifies the raven model which does some
-> strange stuff that no other pci-host is doing and does it in a
-> convoluted way and also has some legacy bits that can be removed.
-> Apart from making the model much more readable this also fixes the
-> non-contiguous IO control bit which was there but did not work as it
-> was not connected but apparently it's not really used by any guest so
-> that wasn't noticed.
+On 5/22/25 2:01 PM, Rowan Hart wrote:
+> 
+>      > This definition strikes me as odd. What was your reason to assert
+>      > `current_cpu` here, but not in the other two functions? Also a bit
+>      > surprising is the declaration of `cpu` if you use it in just one
+>     place
+>      > (rather than just use `current_cpu` directly as for the assertion).
+>      >
+>      > And there is no reason in particular why the vCPU could not be a
+>      > function parameter of `qemu_plugin_translate_vaddr`, right? You don't
+>      > have the same restrictions as in `qemu_plugin_read_memory_hwaddr` or
+>      > `qemu_plugin_hwaddr_operation_result` where you actually touch
+>     memory?
+>      >
+> 
+>     That's a good point, adding a "unsigned int vcpu_index" to the
+>     signature
+>     should be enough to query current or any other vcpu easily.
+> 
+> This is a really nice idea, it might be nice to make a vcpu version of 
+> read/write register too. For memory, I'd think going with the current 
+> memory is probably fine, I don't see any configs with different memory 
+> per vcpu?
+> 
 
-Ping?
-
-> Regards,
-> BALATON Zoltan
->
-> BALATON Zoltan (16):
->  hw/pci-host/raven: Remove is-legacy-prep property
->  hw/pci-host/raven: Revert "raven: Move BIOS loading from board code to
->    PCI host"
->  hw/pci-host/raven: Simplify PCI facing part
->  hw/pci-host/raven: Simplify host bridge type declaration
->  hw/pci-host/raven: Use DEFINE_TYPES macro
->  hw/pci-host/raven: Simplify PCI bus creation
->  hw/pci-host/raven: Simplify PCI interrupt routing
->  hw/pci-host/raven: Simplify direct config access address decoding
->  hw/pci-host/raven: Rename direct config access ops
->  hw/pci-host/raven: Use correct parameter in direct access ops
->  hw/pci-host/raven: Do not use parent object for mmcfg region
->  hw/pci-host/raven: Fix PCI config direct access region
->  hw/pci-host/raven: Simpify discontiguous IO access
->  hw/pci-host/raven: Move bus master address space creation to one place
->  hw/pci-host/raven: Do not map regions in init method
->  hw/ppc/prep: Fix non-contiguous IO control bit
->
-> hw/pci-host/raven.c       | 395 ++++++++++----------------------------
-> hw/ppc/prep.c             |  46 ++++-
-> hw/ppc/prep_systemio.c    |  14 +-
-> include/hw/pci/pci_host.h |   1 -
-> 4 files changed, 152 insertions(+), 304 deletions(-)
->
->
+Thinking about it twice, and after reading Alex comments for writing 
+registers, it's probably not a good idea to allow such side effects on 
+other vcpus (on registers and memory).
+In case of registers, there is nothing ensuring they will be written 
+correctly, so it only makes sense for current_cpu, as we are in a 
+callback running on it.
+Safer to have the same semantic for memory read/write also, so please 
+forget my idea.
 
