@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D6ADAC144F
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 21:09:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B10D8AC144A
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 21:08:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uIBFM-00016s-Mr; Thu, 22 May 2025 15:06:28 -0400
+	id 1uIBGC-00028p-IE; Thu, 22 May 2025 15:07:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uIBF2-0000xk-IC
- for qemu-devel@nongnu.org; Thu, 22 May 2025 15:06:10 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1uIBFE-00016t-HX
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 15:06:22 -0400
+Received: from mail-il1-x130.google.com ([2607:f8b0:4864:20::130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uIBEz-0006UZ-On
- for qemu-devel@nongnu.org; Thu, 22 May 2025 15:06:08 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-742c035f2afso3759397b3a.2
- for <qemu-devel@nongnu.org>; Thu, 22 May 2025 12:06:04 -0700 (PDT)
+ id 1uIBFA-0006Y1-Nm
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 15:06:19 -0400
+Received: by mail-il1-x130.google.com with SMTP id
+ e9e14a558f8ab-3dc87649822so19121865ab.3
+ for <qemu-devel@nongnu.org>; Thu, 22 May 2025 12:06:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747940763; x=1748545563; darn=nongnu.org;
+ d=linaro.org; s=google; t=1747940775; x=1748545575; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SGfL+RzDQIDa37K5e41+zNPdkMKsax67ftvf0bDSf/s=;
- b=vIjxZbveqNRQ96bu0Q3RB/F73yjr08kyrSrkEUvfREhTjLEkD8OYS2KoPE6a9BNb3F
- Cxl0CV/HnV/w9fV1QqIkQE3VE45/HfKUzTQEenwwIvlwNJdccNs53qFvTcDuOvsrY7Aj
- +V8ZzktzIY4l87pOW2JVddKD1Rtskbk1403T0uW0CURR0dDmGUcClLW0Uxx4cT3DTnoc
- cDU++ql+HalvbgKQFJDqp0WX1AMyhapySXxsXsVwAbCBM5fPH6eHW3dkdM9wl0r9krt3
- LZf+ShiQqeNlZg3Ny8qH2jyQdrFLIyMuBxXFCXb04A+o2Wg2YCYWLWM2mDE+uVYWje97
- 9aEw==
+ bh=2aCXupjQf+KpZBVxWkFiZBckC01w8HvIqJ4QFv6HBfc=;
+ b=oCLSyFALdZpwNw22TIIJ9f/oaHnfmJSQYBnkm5BXEzrR2E80LLluX43dO74FLApxv8
+ wcyVZLeMEM/drTA8CA7MjtrZMzld1S7MbTH4+/g2bcSSZjlO5mQ2PRX3IAKKpxOMik78
+ nZE4uLH2g1zv+p12L2bv+mI9Jb+Zx3tArnWpLKrScbcX9paJDRSVwFUiBr7T0BGMFmGb
+ Ycidmj9nMrZAu8Rew9s/LTCihDiaqqS4oHUZE9p3Yh9eDYvRPvK549XCKWF95493eF8t
+ J4otfosOhSen/4KYAlimCGs/UMT7jg7ml27O5crxLf2ur7tzwfvR34NoCr12k425vUot
+ 93YA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747940763; x=1748545563;
+ d=1e100.net; s=20230601; t=1747940775; x=1748545575;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SGfL+RzDQIDa37K5e41+zNPdkMKsax67ftvf0bDSf/s=;
- b=iGlQZxR7NrSPJxwtQTCrMimrmoMd+lvb9DgH4/0icI5dwWAqBKWvBvwgbHJyGDDTPB
- sDgRGHYpg4Z/quwnktNe167hv8NYxANe0AQFoA47DkEEcsyaWRMG8xSAN1JLPdtzC+1n
- ZWNEFV/pfs4zpgB+wDZSVOVJCIVzytJrCXl9wbQnfLQTaGCQgKS/MXkGFIB5R9aJuNmV
- diR6jPizdAv5Guw16Cgpbq6cY0bbx3hmxJLFjIifAQVz58ldTdiqrk4g/GSbdcZH32qm
- 4HNqK6BU7v4wEVKbnWQjDktosOWDafvkuyYCt4ElnF4tig4FNvC/dCtfn8r9I6T25E3+
- 4Guw==
-X-Gm-Message-State: AOJu0YzXeaqFTusSFTFolDJVYhpbMIXPevU12mNG4A9LDlu4E9gWPFAR
- E1/MNMwSY3tRirTYLS1VjA3u4TBAkUC/8YFsVJbTdNtrxOz5gLa93cand66/mrPm3HPowWyCiyP
- c/9zd
-X-Gm-Gg: ASbGncvCNtSx2Mr3vZmfmGSjDlN2NnCY5WxL247CI5plVJwDEKMlRi9TTiLLnnnZbUk
- pwHSGPqpOFzA9ZE5hNctP7OaJ+v3W1yIHV2i2Flico2IVC18dnP5bkUMYF/itgAU5xu6WlEMLxd
- 6XapPeajLrgoYaSDJfTaK+OjCU106pBgNTTgsh9yL5A+I/DOOCDI76eG1ITk/328EYsVuDA7ww1
- /16zMT0/tPDmyDOXDLkwG5pcgVCFNLdSAcV5leKifko6gNCo0I8BEL84bcXRlhmkaF0WaRyGWm9
- U1GqXM8rR/m3xSuCa0lMrMr47lnUnW5T0+jjmUMKmAm6ME9LD3s=
-X-Google-Smtp-Source: AGHT+IFTF/SCBFEPX9N7bmuaX/zk+D9G+U/ntpEA+/zBC4YxKIgLJe948mz8At1xXZ0+AwCrF+3/Kg==
-X-Received: by 2002:a05:6a21:7991:b0:218:59b:b2f6 with SMTP id
- adf61e73a8af0-218059bb4abmr31951480637.15.1747940763602; 
- Thu, 22 May 2025 12:06:03 -0700 (PDT)
+ bh=2aCXupjQf+KpZBVxWkFiZBckC01w8HvIqJ4QFv6HBfc=;
+ b=DzRDbdb37yAnl+Nla/MtkQj5runBXXzIujKfarXSwIhs23UCRJOOBNoUVieOqQ2Gwj
+ TyHz+TFqTC+BqC+5I+WRezA3EqF4sVnT13f7aoZerM4ui16kkUc7yw3RDsXnnORC/JjD
+ 2MNCPXVPwdKDFP9NfDNQirp2juMFF0nRHB1uxYJ7DLz6M9S5E3uE83RgTZDp28/baHgD
+ MUN7GqGzJjS8FKQoCSAjYyJ19V1cRLjp7yjX1V1UU1UDrySmsAJoN+NQoJAr2/EaGI/b
+ KbR8hXEqd3IquoQHxHjmaL/YB55Ja/E6VDxsuqPB7Rxlr2mt66v3MiUx7qW4V2khB/Oj
+ tCSQ==
+X-Gm-Message-State: AOJu0YwKrUyYNDHxmI5iTp8L2GVo1tMcU+IyCZ5gsvakiZdSor854g/i
+ qYR3iJ0JB8HeWnzpBW3qE9nW/tbb6dKSULsg/3w+oE74Ix/R3trRLIXlwYDQZrp/fyMtHIvMKeP
+ p8ly7
+X-Gm-Gg: ASbGncuMmjrzzbIUv4qNvUZ2o0hOYdpsG0P51dUDmHvAVOL7IEQsRIwff5VaD3EgxSV
+ ld5p4RYps3nAp707rSn7b7aGWlF1GHovcyEPhD4NKENQ4w7FOK6wrWF/jVuv6UCqnfSvVq99pRe
+ PrJ5b8S+DyEMQLD1jd6wvNithp6v5Sa1WliWojZ8s4HpRDYFTb+dkALASnyNvBO1Trx8WhHpAqA
+ CV3VdCwIyNK08gYNRd8cO/afLuKdycqN5amxkLYGllrMLPDdDbnpXJLOTk/NsozBgazSkhzOR3u
+ /4dlPueBf7YXh0PVamcnnPPlGwLFqwYIKLzF+SIN55qJJ81rOQI=
+X-Google-Smtp-Source: AGHT+IHWvrDXwuZvs3ShngwDLOKbnqNTg8w5Yzm7YwLBqSxwiRLnhXpPk6hpGeF12K/BeRSYiom/FQ==
+X-Received: by 2002:a17:902:e5c3:b0:224:376:7a21 with SMTP id
+ d9443c01a7336-233f23c9f98mr1715205ad.42.1747940764790; 
+ Thu, 22 May 2025 12:06:04 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b26eb082c66sm11625565a12.60.2025.05.22.12.06.02
+ 41be03b00d2f7-b26eb082c66sm11625565a12.60.2025.05.22.12.06.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 May 2025 12:06:03 -0700 (PDT)
+ Thu, 22 May 2025 12:06:04 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: michael.roth@amd.com, thuth@redhat.com, pbonzini@redhat.com,
  richard.henderson@linaro.org, armbru@redhat.com,
  pierrick.bouvier@linaro.org, peter.maydell@linaro.org, berrange@redhat.com,
  philmd@linaro.org
-Subject: [PATCH v4 14/15] qapi/misc-i386: s/field will be set/field is set/
-Date: Thu, 22 May 2025 12:05:41 -0700
-Message-ID: <20250522190542.588267-15-pierrick.bouvier@linaro.org>
+Subject: [PATCH v4 15/15] qapi/misc-i386: move errors to their own
+ documentation section
+Date: Thu, 22 May 2025 12:05:42 -0700
+Message-ID: <20250522190542.588267-16-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250522190542.588267-1-pierrick.bouvier@linaro.org>
 References: <20250522190542.588267-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::130;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-il1-x130.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,27 +100,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As requested by Markus:
-> I'd prefer "field is set".
-
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- qapi/misc-i386.json | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ qapi/misc-i386.json | 39 +++++++++++++++++++++++----------------
+ 1 file changed, 23 insertions(+), 16 deletions(-)
 
 diff --git a/qapi/misc-i386.json b/qapi/misc-i386.json
-index 3fda7a20bdd..6f79817e382 100644
+index 6f79817e382..796eaa5f406 100644
 --- a/qapi/misc-i386.json
 +++ b/qapi/misc-i386.json
-@@ -129,7 +129,7 @@
- # Return information about SEV/SEV-ES/SEV-SNP.
+@@ -166,12 +166,13 @@
+ # measurement for SEV-SNP guests is only available within
+ # the guest.
  #
- # If unavailable due to an incompatible configuration the
--# returned @enabled field will be set to 'false' and the
-+# returned @enabled field is set to 'false' and the
- # state of all other fields is undefined.
+-# This will return an error if the launch measurement is
+-# unavailable, either due to an invalid guest configuration
+-# or if the guest has not reached the required SEV state.
+-#
+ # Returns: The @SevLaunchMeasureInfo for the guest
  #
- # Returns: @SevInfo
++# Errors:
++#     - If the launch measurement is unavailable, either due to an
++#       invalid guest configuration or if the guest has not reached
++#       the required SEV state, GenericError
++#
+ # Since: 2.12
+ #
+ # .. qmp-example::
+@@ -210,12 +211,15 @@
+ ##
+ # @query-sev-capabilities:
+ #
+-# This command is used to get the SEV capabilities, and is only
+-# supported on AMD X86 platforms with KVM enabled. If SEV is not
+-# available on the platform an error will be returned.
++# Get SEV capabilities.
++#
++# This is only supported on AMD X86 platforms with KVM enabled.
+ #
+ # Returns: SevCapability objects.
+ #
++# Errors:
++#     - If # SEV is not available on the platform, GenericError
++#
+ # Since: 2.12
+ #
+ # .. qmp-example::
+@@ -234,11 +238,7 @@
+ #
+ # This is only valid on x86 machines configured with KVM and the
+ # 'sev-guest' confidential virtualization object. SEV-SNP guests
+-# do not support launch secret injection
+-#
+-# This will return an error if launch secret injection is not possible,
+-# either due to an invalid guest configuration, or if the guest has not
+-# reached the required SEV state.
++# do not support launch secret injection.
+ #
+ # @packet-header: the launch secret packet header encoded in base64
+ #
+@@ -246,6 +246,11 @@
+ #
+ # @gpa: the guest physical address where secret will be injected.
+ #
++# Errors:
++#     - If launch secret injection is not possible, either due to
++#       an invalid guest configuration, or if the guest has not
++#       reached the required SEV state, GenericError
++#
+ # Since: 6.0
+ ##
+ { 'command': 'sev-inject-launch-secret',
+@@ -273,15 +278,17 @@
+ # 'sev-guest' confidential virtualization object. The attestation
+ # report for SEV-SNP guests is only available within the guest.
+ #
+-# This will return an error if the attestation report is
+-# unavailable, either due to an invalid guest configuration
+-# or if the guest has not reached the required SEV state.
+-#
+ # @mnonce: a random 16 bytes value encoded in base64 (it will be
+ #     included in report)
+ #
+ # Returns: SevAttestationReport objects.
+ #
++# Errors:
++#     - This will return an error if the attestation report is
++#       unavailable, either due to an invalid guest configuration
++#       or if the guest has not reached the required SEV state,
++#       GenericError
++#
+ # Since: 6.1
+ #
+ # .. qmp-example::
 -- 
 2.47.2
 
