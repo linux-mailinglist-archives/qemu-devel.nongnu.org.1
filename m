@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77DDBAC09D7
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 12:32:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59CE8AC09C9
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 12:31:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uI3BL-0002zx-D7; Thu, 22 May 2025 06:29:47 -0400
+	id 1uI3BS-000316-Op; Thu, 22 May 2025 06:29:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uI3BI-0002zS-I3
- for qemu-devel@nongnu.org; Thu, 22 May 2025 06:29:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uI3BP-00030P-B1
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 06:29:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uI3BG-0006N6-Q2
- for qemu-devel@nongnu.org; Thu, 22 May 2025 06:29:44 -0400
+ id 1uI3BN-0006NX-KR
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 06:29:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747909781;
+ s=mimecast20190719; t=1747909788;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=biXxzScDBWVmE+hD/uFL07beKKlaR++rnGpBnyLbCto=;
- b=BBOydzOo254S59zhMPyV5xgWJj8r5dc+XdO+9/LfST+lZGxkAr27bWcC2ayDYZxP5aHDwD
- +CORa9UviLwkcgN0TGzDiHGI/38ESeOikE5MBQs2nqAjqB19K5uT6IPXUZbXO+hkVhpx0M
- 9a/TE1BORjYX3VGEXEbaB3eNOaGAfLE=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=H1ru16hW7DCDOwAs0v+4rHKqGbQmXQDtD3+sjoRZxn4=;
+ b=jS9QQ5d4J6PtOKlQfZgYrIss6IojsJNxGzgTOHFo7ZdTHpvk9l4aEsmuADksrLOjAFIib6
+ g97RRjKV1reTOw7Qr4ihP4dJjRF6b/kH5JrXXAFILCv6PiWC0ghWJGt7rEDlbfxuwhkybx
+ L/Py7Rtnr9kQPpGNy1euY4tBRFgamfY=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-167-MVlD0FQwNc6uMRLyrL4GWA-1; Thu,
- 22 May 2025 06:29:39 -0400
-X-MC-Unique: MVlD0FQwNc6uMRLyrL4GWA-1
-X-Mimecast-MFC-AGG-ID: MVlD0FQwNc6uMRLyrL4GWA_1747909778
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-664-pWa7CPkuOmelubZhzTze_w-1; Thu,
+ 22 May 2025 06:29:42 -0400
+X-MC-Unique: pWa7CPkuOmelubZhzTze_w-1
+X-Mimecast-MFC-AGG-ID: pWa7CPkuOmelubZhzTze_w_1747909782
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AB34E19560B5; Thu, 22 May 2025 10:29:38 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E0F831800570; Thu, 22 May 2025 10:29:41 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.179])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id D03311958014; Thu, 22 May 2025 10:29:35 +0000 (UTC)
+ id 3F4661958014; Thu, 22 May 2025 10:29:38 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Eric Blake <eblake@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL 03/23] ui/vnc: fix tight palette pixel encoding for 8/16-bpp
- formats
-Date: Thu, 22 May 2025 11:29:03 +0100
-Message-ID: <20250522102923.309452-4-berrange@redhat.com>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 04/23] tests: skip encrypted secret tests if AES is not
+ available
+Date: Thu, 22 May 2025 11:29:04 +0100
+Message-ID: <20250522102923.309452-5-berrange@redhat.com>
 In-Reply-To: <20250522102923.309452-1-berrange@redhat.com>
 References: <20250522102923.309452-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -87,50 +88,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When sending a tight rectangle with the palette filter, if the client
-format was 8/16bpp, the colours on big endian hosts are not set as
-we're sending the wrong bytes. We must first cast the 32-bit colour
-to a 16/8-bit value, and then send the result.
+This avoids test breakage when we drop support for using the
+built-in AES impl as a fallback for missing crypto libraries.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- ui/vnc-enc-tight.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ tests/unit/test-crypto-secret.c | 28 ++++++++++++++++------------
+ 1 file changed, 16 insertions(+), 12 deletions(-)
 
-diff --git a/ui/vnc-enc-tight.c b/ui/vnc-enc-tight.c
-index a5bdc19ebb..25c7b2c788 100644
---- a/ui/vnc-enc-tight.c
-+++ b/ui/vnc-enc-tight.c
-@@ -1001,16 +1001,24 @@ static int send_mono_rect(VncState *vs, int x, int y,
-         break;
-     }
-     case 2:
--        vnc_write(vs, &bg, 2);
--        vnc_write(vs, &fg, 2);
-+    {
-+        uint16_t bg16 = bg;
-+        uint16_t fg16 = fg;
-+        vnc_write(vs, &bg16, 2);
-+        vnc_write(vs, &fg16, 2);
-         tight_encode_mono_rect16(vs->tight->tight.buffer, w, h, bg, fg);
-         break;
-+    }
-     default:
--        vnc_write_u8(vs, bg);
--        vnc_write_u8(vs, fg);
-+    {
-+        uint8_t bg8 = bg;
-+        uint8_t fg8 = fg;
-+        vnc_write_u8(vs, bg8);
-+        vnc_write_u8(vs, fg8);
-         tight_encode_mono_rect8(vs->tight->tight.buffer, w, h, bg, fg);
-         break;
-     }
-+    }
-     vs->tight->tight.offset = bytes;
+diff --git a/tests/unit/test-crypto-secret.c b/tests/unit/test-crypto-secret.c
+index ffd13ff70e..fc32a01747 100644
+--- a/tests/unit/test-crypto-secret.c
++++ b/tests/unit/test-crypto-secret.c
+@@ -22,6 +22,7 @@
  
-     bytes = tight_compress_data(vs, stream, bytes, level, Z_DEFAULT_STRATEGY);
+ #include "crypto/init.h"
+ #include "crypto/secret.h"
++#include "crypto/cipher.h"
+ #include "qapi/error.h"
+ #include "qemu/module.h"
+ #if defined(CONFIG_KEYUTILS) && defined(CONFIG_SECRET_KEYRING)
+@@ -597,18 +598,21 @@ int main(int argc, char **argv)
+     g_test_add_func("/crypto/secret/conv/utf8/base64",
+                     test_secret_conv_utf8_base64);
+ 
+-    g_test_add_func("/crypto/secret/crypt/raw",
+-                    test_secret_crypt_raw);
+-    g_test_add_func("/crypto/secret/crypt/base64",
+-                    test_secret_crypt_base64);
+-    g_test_add_func("/crypto/secret/crypt/shortkey",
+-                    test_secret_crypt_short_key);
+-    g_test_add_func("/crypto/secret/crypt/shortiv",
+-                    test_secret_crypt_short_iv);
+-    g_test_add_func("/crypto/secret/crypt/missingiv",
+-                    test_secret_crypt_missing_iv);
+-    g_test_add_func("/crypto/secret/crypt/badiv",
+-                    test_secret_crypt_bad_iv);
++    if (qcrypto_cipher_supports(QCRYPTO_CIPHER_ALGO_AES_128,
++                                QCRYPTO_CIPHER_MODE_CBC)) {
++        g_test_add_func("/crypto/secret/crypt/raw",
++                        test_secret_crypt_raw);
++        g_test_add_func("/crypto/secret/crypt/base64",
++                        test_secret_crypt_base64);
++        g_test_add_func("/crypto/secret/crypt/shortkey",
++                        test_secret_crypt_short_key);
++        g_test_add_func("/crypto/secret/crypt/shortiv",
++                        test_secret_crypt_short_iv);
++        g_test_add_func("/crypto/secret/crypt/missingiv",
++                        test_secret_crypt_missing_iv);
++        g_test_add_func("/crypto/secret/crypt/badiv",
++                        test_secret_crypt_bad_iv);
++    }
+ 
+     return g_test_run();
+ }
 -- 
 2.49.0
 
