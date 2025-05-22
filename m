@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 042C8AC027C
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 04:34:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83AB0AC027A
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 04:34:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uHvkc-0003L3-MR; Wed, 21 May 2025 22:33:42 -0400
+	id 1uHvkd-0003MR-90; Wed, 21 May 2025 22:33:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1uHvkF-0003J0-QG; Wed, 21 May 2025 22:33:21 -0400
+ id 1uHvkJ-0003JB-1n; Wed, 21 May 2025 22:33:23 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1uHvkD-00010W-Gl; Wed, 21 May 2025 22:33:19 -0400
+ id 1uHvkH-00010W-8S; Wed, 21 May 2025 22:33:22 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 22 May
@@ -30,9 +30,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  "open list:All patches CC here" <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v2 1/3] hw/intc/aspeed: Set impl.min_access_size to 4
-Date: Thu, 22 May 2025 10:33:02 +0800
-Message-ID: <20250522023305.2486536-2-jamin_lin@aspeedtech.com>
+Subject: [PATCH v2 2/3] hw/intc/aspeed Fix coding style
+Date: Thu, 22 May 2025 10:33:03 +0800
+Message-ID: <20250522023305.2486536-3-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250522023305.2486536-1-jamin_lin@aspeedtech.com>
 References: <20250522023305.2486536-1-jamin_lin@aspeedtech.com>
@@ -64,69 +64,38 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch explicitly sets ".impl.min_access_size = 4" to match the
-declared ".valid.min_access_size = 4", enforcing stricter access size
-checking and preventing inconsistent partial accesses to the interrupt
-controller registers.
+Fix coding style issues from checkpatch.pl.
 
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/intc/aspeed_intc.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ hw/intc/aspeed_intc.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/hw/intc/aspeed_intc.c b/hw/intc/aspeed_intc.c
-index 33fcbe729c..19f88853d8 100644
+index 19f88853d8..5cd786dee6 100644
 --- a/hw/intc/aspeed_intc.c
 +++ b/hw/intc/aspeed_intc.c
-@@ -737,6 +737,7 @@ static const MemoryRegionOps aspeed_intc_ops = {
-     .read = aspeed_intc_read,
-     .write = aspeed_intc_write,
-     .endianness = DEVICE_LITTLE_ENDIAN,
-+    .impl.min_access_size = 4,
-     .valid = {
-         .min_access_size = 4,
-         .max_access_size = 4,
-@@ -747,6 +748,7 @@ static const MemoryRegionOps aspeed_intcio_ops = {
-     .read = aspeed_intcio_read,
-     .write = aspeed_intcio_write,
-     .endianness = DEVICE_LITTLE_ENDIAN,
-+    .impl.min_access_size = 4,
-     .valid = {
-         .min_access_size = 4,
-         .max_access_size = 4,
-@@ -757,6 +759,7 @@ static const MemoryRegionOps aspeed_ssp_intc_ops = {
-     .read = aspeed_intc_read,
-     .write = aspeed_ssp_intc_write,
-     .endianness = DEVICE_LITTLE_ENDIAN,
-+    .impl.min_access_size = 4,
-     .valid = {
-         .min_access_size = 4,
-         .max_access_size = 4,
-@@ -767,6 +770,7 @@ static const MemoryRegionOps aspeed_ssp_intcio_ops = {
-     .read = aspeed_intcio_read,
-     .write = aspeed_ssp_intcio_write,
-     .endianness = DEVICE_LITTLE_ENDIAN,
-+    .impl.min_access_size = 4,
-     .valid = {
-         .min_access_size = 4,
-         .max_access_size = 4,
-@@ -777,6 +781,7 @@ static const MemoryRegionOps aspeed_tsp_intc_ops = {
-     .read = aspeed_intc_read,
-     .write = aspeed_tsp_intc_write,
-     .endianness = DEVICE_LITTLE_ENDIAN,
-+    .impl.min_access_size = 4,
-     .valid = {
-         .min_access_size = 4,
-         .max_access_size = 4,
-@@ -787,6 +792,7 @@ static const MemoryRegionOps aspeed_tsp_intcio_ops = {
-     .read = aspeed_intcio_read,
-     .write = aspeed_tsp_intcio_write,
-     .endianness = DEVICE_LITTLE_ENDIAN,
-+    .impl.min_access_size = 4,
-     .valid = {
-         .min_access_size = 4,
-         .max_access_size = 4,
+@@ -1001,7 +1001,8 @@ static AspeedINTCIRQ aspeed_2700ssp_intcio_irqs[ASPEED_INTC_MAX_INPINS] = {
+     {5, 5, 1, R_SSPINT165_EN, R_SSPINT165_STATUS},
+ };
+ 
+-static void aspeed_2700ssp_intcio_class_init(ObjectClass *klass, const void *data)
++static void aspeed_2700ssp_intcio_class_init(ObjectClass *klass,
++                                             const void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     AspeedINTCClass *aic = ASPEED_INTC_CLASS(klass);
+@@ -1069,7 +1070,8 @@ static AspeedINTCIRQ aspeed_2700tsp_intcio_irqs[ASPEED_INTC_MAX_INPINS] = {
+     {5, 5, 1, R_TSPINT165_EN, R_TSPINT165_STATUS},
+ };
+ 
+-static void aspeed_2700tsp_intcio_class_init(ObjectClass *klass, const void *data)
++static void aspeed_2700tsp_intcio_class_init(ObjectClass *klass,
++                                             const void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     AspeedINTCClass *aic = ASPEED_INTC_CLASS(klass);
 -- 
 2.43.0
 
