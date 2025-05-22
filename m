@@ -2,101 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62297AC0FAD
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 17:15:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F92CAC0FBB
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 17:18:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uI7co-0002bs-7N; Thu, 22 May 2025 11:14:31 -0400
+	id 1uI7fI-0004PC-Hm; Thu, 22 May 2025 11:17:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uI7cY-0002aE-3N
- for qemu-devel@nongnu.org; Thu, 22 May 2025 11:14:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1uI7cU-0006vY-AO
- for qemu-devel@nongnu.org; Thu, 22 May 2025 11:14:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747926842;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ZUU1vrB6K7muaVtxkPDZ/zsZBWCAMJCIos6LlhjeG4c=;
- b=hDFr4paUT6fDwj+p/Lx4zH3ksZHT+WikbUB+I5hCwToK6i3CTdogVXQM/RKYJzlOY0s1tk
- +cegcv5WiW9XNIeoGYQzU/UMMrE2zl5S/9v9sKw7jBRD7I3EPxc8aUOQ1oq7/IFAJjyZMo
- HZMdGmMuMHPkHVFH+SLN8PjWsqnZz80=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-3-Th85qgg3PWSMVvve2fzAjQ-1; Thu, 22 May 2025 11:14:00 -0400
-X-MC-Unique: Th85qgg3PWSMVvve2fzAjQ-1
-X-Mimecast-MFC-AGG-ID: Th85qgg3PWSMVvve2fzAjQ_1747926840
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-44a3b5996d2so4922755e9.1
- for <qemu-devel@nongnu.org>; Thu, 22 May 2025 08:14:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
+ id 1uI7fF-0004Os-9y
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 11:16:57 -0400
+Received: from mail-pf1-x442.google.com ([2607:f8b0:4864:20::442])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <tomitamoeko@gmail.com>)
+ id 1uI7fC-0007bR-3d
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 11:16:56 -0400
+Received: by mail-pf1-x442.google.com with SMTP id
+ d2e1a72fcca58-742c2ed0fe1so5304637b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 22 May 2025 08:16:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1747927011; x=1748531811; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=A+n4qWhRiYJ8WWSS1cLt4tQidBRZMZ5H3Qcz1gp0bv8=;
+ b=WWX5nmWAcouWMQiSiCMWwaPliA0byuaJK7Iv3YJ87rPwSv2yNhvh12KUgMKq/OK1jC
+ 02Kpt4ld4RzYMGrx02pu6dMs/rzqIDbhc/PuTAPn6EcNZwDOaxPp2XWEU1cFL4s3O3dq
+ GVpmoGinwg9a3SWgq2hRbeWnkA6Xs45k3BfsQiFElxAEUwxDOfk5J1TAPre0SwswHnMX
+ Qn5jPns+B0OYfLAKECyy3ErTNO66C+OawtA1Dnz8Qpr/u2b92q4kl/FwuI1oKRX86VtC
+ fLqVWf/VewUbTYaEysWGoCImjI25kVXpK8Yie5T7gw+DSsZa+cTETpBwojMQOkuu8dYu
+ 6b1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747926840; x=1748531640;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZUU1vrB6K7muaVtxkPDZ/zsZBWCAMJCIos6LlhjeG4c=;
- b=mWUkLODzvPZSjUt0FQXttcfwRAU0Ytp9o0NhZ66rIFt4BAfAkwHstOOqO+CjKVP+fG
- eiklGW1WMMCTutvaPk0nLOEws7qPX8zaHC8K545xqFtcuv/9Fo67O12Wz18/jWxZA6FZ
- cpQRm1ZYrA4XWY/jZRnKcfF4AY9FqAEbWUQjg46vIxv48gUq+Nx+SBhvNfmWV3ANgxRF
- UOOhH7nNr4wJLO7aOYd+EWNgmoP1+QWf4SN2hdyhOJXcnqUhrz/DSVutmhaIZPYaD+AT
- +5Qc+A+WstAW24qRZCvUv2nw9MSyjp638sDu1cELpKoDRIjWgc1neAmSO1d8VlBJZOYL
- zC+Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVgu20ha1etrOoRNiREKAgh8ESn4kv/8k6cX29fOYRbBUFGWC2cHVubFS1X7Q8hene1UhwLNpmhauRM@nongnu.org
-X-Gm-Message-State: AOJu0Yxnw60tQ7vZ+uRUfCgC3FEj3yPU41zyTKE5LysmPREM5SM3AX9S
- eej5jbu0dUCQjq0JaCqW6iTHDGuvUIdKhxDFIEpcsJVKG3DVU9W/Ca/rlJ24R0Dt8D65BBmTXB4
- GtzM3x2yEri+G2+eqNqLiYx9WeATquIrVAzkD2ZQWcPdnN0ztdEaD/jKQ
-X-Gm-Gg: ASbGncuNye6CYhPRhV4AIq9rhXuXmaInaTrkXfxenUP3L0acbddeS3p97UmloU5CPF5
- Uo4R34LB/q8177QZCx0lRVvOyaEVh30j/oslGUjtzvIOnZ9wf8i6yz+kLTRJ57OHvw+Hpx1No9m
- Q1EPOuAdBO7ACRPpWya0sMbJWDGe9NLbDcKsJWBA8EH3A/7XsbwNggXysxwb/fvDxqFX+GNH+tq
- NnTeMVPBJS9KbBFB7hu07sTfIRXDnnGX1pzm2JjB/4QGKEwFtrxjdw2RuSDFNUJY6uWXseSnAu2
- pLvUWY0Z2YW+IFb2K5WvKNBPf5zSZ2KE4aiKwbYpWUrJma3Id61hua1hOxmUtinbj28Oipula8R
- OWE1bXeTsCC2PFEN2Ep1/Wc12kZX0S1NmvQxhE3P6
-X-Received: by 2002:a05:600c:64cc:b0:43d:82c:2b11 with SMTP id
- 5b1f17b1804b1-442fd664f7dmr228301555e9.23.1747926839569; 
- Thu, 22 May 2025 08:13:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHpX6SmlXnyeAAlYMUzeFf5LcuHt2mu2aF4Oh4uRWgjDT1nJJ8eJWP4VhzgKML7UT8XLGHfBg==
-X-Received: by 2002:a05:600c:64cc:b0:43d:82c:2b11 with SMTP id
- 5b1f17b1804b1-442fd664f7dmr228301015e9.23.1747926839135; 
- Thu, 22 May 2025 08:13:59 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d700:f30f:4c03:bf99:79e1:4b96?
- (p200300cfd700f30f4c03bf9979e14b96.dip0.t-ipconnect.de.
- [2003:cf:d700:f30f:4c03:bf99:79e1:4b96])
+ d=1e100.net; s=20230601; t=1747927011; x=1748531811;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=A+n4qWhRiYJ8WWSS1cLt4tQidBRZMZ5H3Qcz1gp0bv8=;
+ b=ITx1mGV2Nb7Gwn792bgt5+4mJN8k8gupCQMHgUnLz+Rlt3QhoWjEv7dbRgx0nNsNs6
+ A7fTIVKoDEksQMehi67UTRR8TD7xWc6st/qFk+jGjJlfwZ2XmZyd+sVKjwFWhM38KaLt
+ 33D930Xp41uySLwbS+mPx9vNiQBQgfHbAcHcs7rcEXL8uZyj/Jw928qqHg2s6+yFHK96
+ ksASdwNihabp83j7O4II9PJv4OMkRFt5OU7fbH1vc0qcbtEt+CLm2O1lw7xhm4aLJQqm
+ aXM6R8eFtnl6dVCIbtwazfp9JbKhU4BRdoc3WxvjIzQHG7/UAvj/xYFO6aI9UoTfU2xL
+ WjiA==
+X-Gm-Message-State: AOJu0YyV3vNxOylTdsFtbdBNET1/ntghHOnNs2z2ZPXqPILhhaj4/zhQ
+ iANevvz+0EFapx5/IAAjNfp7rvl1GTTKEJe9bhBUQQAXcAk+lsl89Xs=
+X-Gm-Gg: ASbGncta7iaajEDI2QRn0oogHG0aya8XD0biEPb7mmkD29brUivtrRGdLr3AP8g/std
+ zcNLgWwhhKeg8ELYlbLl/283oY3wmUM9Bbz7KtSwp88GXJwYX0eMOnZEmxI8D8Rbu18r5Vpins7
+ MTja8HtNLDGeo/KtoM542KqJp3I3j5tuN4ZBllbk0y3Qq2Jc8fdjnom2jhikCcx9gVd6x+gT3hF
+ jcOOFkE9Esv3LFvBuWp61VWQLBFeE+ujDCriJW4XBV72VyKT0KT0BHaNF6/kxZtpsbvVhriuwSt
+ M2Ie01zfU1+bynyyDCrhWNqBa1QeAf3opdY0qqdk37C3TknNsdDmzkqFafp7G0U+A52P2985aoz
+ Y
+X-Google-Smtp-Source: AGHT+IFherqNTuikQUrcCqxG1iNKELp8p2/bW2jkmkAQ5Pwdls97eyr3qyYmwpwlT49fHbAkW5giKg==
+X-Received: by 2002:a05:6a00:3a14:b0:740:67ce:1d8b with SMTP id
+ d2e1a72fcca58-742a97b7a1bmr35179019b3a.7.1747927011097; 
+ Thu, 22 May 2025 08:16:51 -0700 (PDT)
+Received: from localhost.localdomain ([139.227.17.250])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442ebdc362fsm235147765e9.1.2025.05.22.08.13.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 22 May 2025 08:13:57 -0700 (PDT)
-Message-ID: <fbb8a262-10c5-43a5-bb99-a3a1c2a33714@redhat.com>
-Date: Thu, 22 May 2025 17:13:56 +0200
+ d2e1a72fcca58-742a987150bsm11729125b3a.136.2025.05.22.08.16.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 22 May 2025 08:16:50 -0700 (PDT)
+From: Tomita Moeko <tomitamoeko@gmail.com>
+To: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Tomita Moeko <tomitamoeko@gmail.com>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?q?Corvin=20K=C3=B6hne?= <c.koehne@beckhoff.com>,
+ edmund.raile@proton.me, Edmund Raile <edmund.raile@protonmail.com>
+Subject: [PATCH v2] vfio/igd: Fix incorrect error propagation in
+ vfio_pci_igd_opregion_detect()
+Date: Thu, 22 May 2025 23:16:36 +0800
+Message-ID: <20250522151636.20001-1-tomitamoeko@gmail.com>
+X-Mailer: git-send-email 2.47.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] file-posix: Probe paths and retry SG_IO on potential
- path errors
-To: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org
-Cc: stefanha@redhat.com, bmarzins@redhat.com, pbonzini@redhat.com,
- qemu-devel@nongnu.org
-References: <20250522130803.34738-1-kwolf@redhat.com>
-Content-Language: en-US
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20250522130803.34738-1-kwolf@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::442;
+ envelope-from=tomitamoeko@gmail.com; helo=mail-pf1-x442.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.275,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,34 +99,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22.05.25 15:08, Kevin Wolf wrote:
-> When scsi-block is used on a host multipath device, it runs into the
-> problem that the kernel dm-mpath doesn't know anything about SCSI or
-> SG_IO and therefore can't decide if a SG_IO request returned an error
-> and needs to be retried on a different path. Instead of getting working
-> failover, an error is returned to scsi-block and handled according to
-> the configured error policy. Obviously, this is not what users want,
-> they want working failover.
->
-> QEMU can parse the SG_IO result and determine whether this could have
-> been a path error, but just retrying the same request could just send it
-> to the same failing path again and result in the same error.
->
-> With a kernel that supports the DM_MPATH_PROBE_PATHS ioctl on dm-mpath
-> block devices (queued in the device mapper tree for Linux 6.16), we can
-> tell the kernel to probe all paths and tell us if any usable paths
-> remained. If so, we can now retry the SG_IO ioctl and expect it to be
-> sent to a working path.
->
-> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> ---
-> v2:
-> - Add a comment to explain retry scenarios [Stefan]
-> - Handle -EAGAIN returned for suspended devices [Ben]
->
->   block/file-posix.c | 115 ++++++++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 114 insertions(+), 1 deletion(-)
+In vfio_pci_igd_opregion_detect(), errp will be set when the device does
+not have OpRegion or is hotplugged. This errp will be propagated to
+pci_qdev_realize(), which interprets it as failure, causing unexpected
+termination on devices without OpRegion like SR-IOV VFs or discrete
+GPUs. Fix it by not setting errp in vfio_pci_igd_opregion_detect().
 
-Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
+This patch also checks if the device has OpRegion before hotplug status
+to prevent unwanted warning messages on non-IGD devices.
+
+Fixes: c0273e77f2d7 ("vfio/igd: Detect IGD device by OpRegion")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2968
+Reported-by: Edmund Raile <edmund.raile@protonmail.com>
+Link: https://lore.kernel.org/qemu-devel/30044d14-17ec-46e3-b9c3-63d27a5bde27@gmail.com
+Tested-by: Edmund Raile <edmund.raile@protonmail.com>
+Signed-off-by: Tomita Moeko <tomitamoeko@gmail.com>
+---
+v2:
+* Add Tested-by from Edmund Raile. Thanks for the contribution.
+* Rebased on vfio-next
+* Fix typos.
+
+ hw/vfio/igd.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
+
+diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
+index 5b6341c5bf..e7a9d1ffc1 100644
+--- a/hw/vfio/igd.c
++++ b/hw/vfio/igd.c
+@@ -187,23 +187,21 @@ static bool vfio_pci_igd_opregion_init(VFIOPCIDevice *vdev,
+ }
+ 
+ static bool vfio_pci_igd_opregion_detect(VFIOPCIDevice *vdev,
+-                                         struct vfio_region_info **opregion,
+-                                         Error **errp)
++                                         struct vfio_region_info **opregion)
+ {
+     int ret;
+ 
+-    /* Hotplugging is not supported for opregion access */
+-    if (vdev->pdev.qdev.hotplugged) {
+-        error_setg(errp, "IGD OpRegion is not supported on hotplugged device");
+-        return false;
+-    }
+-
+     ret = vfio_device_get_region_info_type(&vdev->vbasedev,
+                     VFIO_REGION_TYPE_PCI_VENDOR_TYPE | PCI_VENDOR_ID_INTEL,
+                     VFIO_REGION_SUBTYPE_INTEL_IGD_OPREGION, opregion);
+     if (ret) {
+-        error_setg_errno(errp, -ret,
+-                         "Device does not support IGD OpRegion feature");
++        return false;
++    }
++
++    /* Hotplugging is not supported for opregion access */
++    if (vdev->pdev.qdev.hotplugged) {
++        warn_report("IGD device detected, but OpRegion is not supported "
++                    "on hotplugged device.");
+         return false;
+     }
+ 
+@@ -524,7 +522,7 @@ static bool vfio_pci_igd_config_quirk(VFIOPCIDevice *vdev, Error **errp)
+     }
+ 
+     /* IGD device always comes with OpRegion */
+-    if (!vfio_pci_igd_opregion_detect(vdev, &opregion, errp)) {
++    if (!vfio_pci_igd_opregion_detect(vdev, &opregion)) {
+         return true;
+     }
+     info_report("OpRegion detected on Intel display %x.", vdev->device_id);
+@@ -695,7 +693,7 @@ static bool vfio_pci_kvmgt_config_quirk(VFIOPCIDevice *vdev, Error **errp)
+         return true;
+     }
+ 
+-    if (!vfio_pci_igd_opregion_detect(vdev, &opregion, errp)) {
++    if (!vfio_pci_igd_opregion_detect(vdev, &opregion)) {
+         /* Should never reach here, KVMGT always emulates OpRegion */
+         return false;
+     }
+-- 
+2.47.2
 
 
