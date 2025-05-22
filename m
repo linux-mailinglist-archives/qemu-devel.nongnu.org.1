@@ -2,76 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF00EAC09F3
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 12:36:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E57B2AC0A4C
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 13:08:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uI3Hi-0001Pr-7h; Thu, 22 May 2025 06:36:22 -0400
+	id 1uI3lA-0008Jd-Rd; Thu, 22 May 2025 07:06:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
- id 1uI3Hg-0001OS-8c
- for qemu-devel@nongnu.org; Thu, 22 May 2025 06:36:20 -0400
-Received: from forwardcorp1d.mail.yandex.net ([178.154.239.200])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dtalexundeer@yandex-team.ru>)
- id 1uI3Hd-0007Hs-0q
- for qemu-devel@nongnu.org; Thu, 22 May 2025 06:36:19 -0400
-Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net
- [IPv6:2a02:6b8:c42:cca4:0:640:432b:0])
- by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 50BA162104;
- Thu, 22 May 2025 13:36:09 +0300 (MSK)
-Received: from [IPV6:2a02:6bf:803e:400:5ed1:ca1a:388:8e9e] (unknown
- [2a02:6bf:803e:400:5ed1:ca1a:388:8e9e])
- by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 6aMdAo0FZKo0-uIr8e8gV; Thu, 22 May 2025 13:36:08 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1747910168;
- bh=4wjfaexxVWBo+0ALNAAUr/GcPGU8Bd+MmwKvZNQalCI=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=Ur125VhqUf0W3x/q2A5+QtGiJvXeM/ifMsB+rs5/brWJ9d2v9OLPIf9e8GgsNwqal
- CTCcZGEMeMr7AHyJ8tD3QT6/rMSL296ZWyPZe7ibqg/K6p5TFTlFrpq2blnvGcGr9/
- 21cBMeshCn6mWYOxr7Ii4UGCj1zlJpfOGBBXNbl8=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <f73a0380-d594-4237-a547-4b8ec531224f@yandex-team.ru>
-Date: Thu, 22 May 2025 15:36:06 +0500
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1uI3l4-0008Iq-0u
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 07:06:42 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1uI3kz-000344-QZ
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 07:06:41 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3a375d758a0so3141124f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 22 May 2025 04:06:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1747911995; x=1748516795; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=EmkKu4dXe17v+ipMwHVL5iZj6DkLedZ1oACq7kJUUco=;
+ b=krLV4YoiVgzFbbCxiQCv/zfx1ZISXE2Dngkbo6HqTz/6ytGU2zcv0tZ8eWppT1/fDR
+ 8VWQjyfArALKC3/ru5H4GAWtwEwmhMkOWrgtdmW5FXNPHJQL/u/aPzgFHwuKbopeabtg
+ D/VbqD5H4yWyKeJXhcKnsKj/HwwtHrbG5pmIwL2TOx74AR0aW/b9s+8bZBWXX//Uy/yn
+ dzAuDD9IOUS/qoEs2pUy9UD1z7Q8tdyPI73nTulDnybfDr0AISkd90gEylLKDRC5eWov
+ h1/sQAa0ZGtdVLDGU84vIkgFQZOxqGDXMLA3gDv5oVT4i+7Y17XjgVHh65SPD1YUYO+y
+ V7fA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747911995; x=1748516795;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=EmkKu4dXe17v+ipMwHVL5iZj6DkLedZ1oACq7kJUUco=;
+ b=mRswxMs+vWADNSX13++ppRaQJlSr4tH9Dn6sy4CHBd5vRBnhdhRJPQgWY7LimA59g3
+ WyyrCUkohqHpdV5ktx/J3gt7VlXskcVJ21k8UwZOuTOcfOAHBDQcXLjvlXGiPpP1Z56I
+ ZVQWU24xyowjwwO/aiPgyfic7lOQXHr6Q7Nb9LFJxE14MJdbmGt+6KAOX9u5KFJ69m9O
+ o7tW5UNhpeViaStAKmSCUyhGV4XMcWSHoJLnpWtEMAVfhGba4OpIGVMHiYI/qpSQ0O9t
+ 5WTmTgWNa3LKPDN7ooglVGwQvW6l8uMFRIPqLNGCLSSOuW0Z/3wagVUnY6D8SfnDqS60
+ UvVQ==
+X-Gm-Message-State: AOJu0Yx0i46oda3RIR/5Ym2+wPFm2566dDWUf3zCA5JIIqeJPSVb6hA4
+ K51LGgaNue6oY6rrFFgTz9pRo9h3anVrmejlv6OVJpZEpZMkO/6HoziZGbC6M4fp9vE=
+X-Gm-Gg: ASbGncs2qR1qbxHKsro/p7JdE9xuHctD+s/uxXDzRLy8qCSYB3kNfwNAxi9zl4N7XcH
+ laprdI4C+1+jYNihDNxTgKu1Z+QUNkeel85ACLQwTzKOwORe1DKskwjWTvbDZPRjqGWMkaS03+a
+ UnWpuB/pG86N/Qtj0n0ubewAQiCGTgX6L6syxMl7tm+rd0OrRIa5hHR6p0WedCpicjZYzy3lIqg
+ 230LYxJQyj9Nx2pmidNMLYrTLQC/vS4GJtgZ5UjwbGXRIjClWnBgtWJS6VbF/BQle3PoNXHU4lw
+ a6p4LmyumlV/lhzWDwbJ7dVgtNRxiNHMbAj78bg=
+X-Google-Smtp-Source: AGHT+IEOfE7awJOz9bcfOBx6FnE7FNgOt/04FSZfhMvO3f0uNsodmDkWxN+Y2WJgXauWehreSTlJug==
+X-Received: by 2002:a05:6000:2907:b0:3a3:64b7:620b with SMTP id
+ ffacd0b85a97d-3a364b7643cmr18553751f8f.20.1747911995488; 
+ Thu, 22 May 2025 04:06:35 -0700 (PDT)
+Received: from localhost ([2a02:8308:a00c:e200::ce80])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a35ca4d305sm23197700f8f.16.2025.05.22.04.06.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 22 May 2025 04:06:35 -0700 (PDT)
+Date: Thu, 22 May 2025 13:06:34 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Meng Zhuo <mengzhuo@iscas.ac.cn>
+Cc: qemu-devel@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alistair Francis <alistair.francis@wdc.com>, Weiwei Li <liwei1518@gmail.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ "open list:RISC-V TCG CPUs" <qemu-riscv@nongnu.org>
+Subject: Re: [PATCH v4] target/riscv/kvm: add satp mode for host cpu
+Message-ID: <20250522-e8815a2dbdeedbb6ea9fdd7a@orel>
+References: <20250522101320.96217-1-mengzhuo@iscas.ac.cn>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/2] tests/functional: add memlock tests
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: Cleber Rosa <crosa@redhat.com>,
- "yc-core @ yandex-team . ru" <yc-core@yandex-team.ru>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20250521135522.11180-1-dtalexundeer@yandex-team.ru>
- <20250521135522.11180-3-dtalexundeer@yandex-team.ru>
- <430eaa84-5695-4fc2-90d5-d488a204e999@redhat.com>
- <af6b28bd-44cf-4540-b5f8-49d8b2781e13@yandex-team.ru>
- <0e4a5fe1-186b-4c69-87d0-9b0743d795b7@redhat.com>
-Content-Language: en-US
-From: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
-In-Reply-To: <0e4a5fe1-186b-4c69-87d0-9b0743d795b7@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=dtalexundeer@yandex-team.ru; helo=forwardcorp1d.mail.yandex.net
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250522101320.96217-1-mengzhuo@iscas.ac.cn>
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=ajones@ventanamicro.com; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -83,168 +99,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Thu, May 22, 2025 at 06:13:20PM +0800, Meng Zhuo wrote:
+> This patch adds host satp mode while kvm/host cpu satp mode is not
+> set.
+> 
+> This patch not change the output of errno nor errno strings pattern
+> like other functions do. See [v3] for further information.
+> 
+> Change in v4:
+> - Adds changelog in commit message
+> - Link to v3: https://lists.nongnu.org/archive/html/qemu-devel/2025-05/msg04629.html
+> 
+> Change in v3:
+> - Rebase on https://github.com/alistair23/qemu/tree/riscv-to-apply.next
+>   as requested
+> - Link to v2: https://lists.nongnu.org/archive/html/qemu-devel/2025-04/msg05203.html
+> 
+> Changes in v2:
+> - use set_satp_mode_max_supported instead of hard code
+> - Link to v1: https://lists.nongnu.org/archive/html/qemu-devel/2025-04/msg05094.html
+> 
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2931
+> Signed-off-by: Meng Zhuo <mengzhuo@iscas.ac.cn>
 
-On 5/22/25 14:16, Thomas Huth wrote:
-> On 22/05/2025 10.51, Alexandr Moshkov wrote:
->>
->> On 5/22/25 12:49, Thomas Huth wrote:
->>> On 21/05/2025 15.55, Alexandr Moshkov wrote:
->>>> Add new tests to check the correctness of the `-overcommit memlock`
->>>> option (possible values: off, on, on-fault) by using
->>>> `/proc/{qemu_pid}/smaps` file to check in Size, Rss and Locked 
->>>> fields of
->>>> anonymous segments:
->>>>
->>>> * if `memlock=off`, then Locked = 0 on every anonymous smaps;
->>>> * if `memlock=on`, then Size, Rss and Locked values must be equal for
->>>> every anon smaps where Rss is not 0;
->>>> * if `memlock=on-fault`, then Rss and Locked must be equal on every 
->>>> anon
->>>> smaps and anonymous segment with Rss < Size must exists.
->>>>
->>>> Signed-off-by: Alexandr Moshkov <dtalexundeer@yandex-team.ru>
->>>> ---
->>> ...
->>>> diff --git a/tests/functional/test_memlock.py b/tests/functional/ 
->>>> test_memlock.py
->>>> new file mode 100755
->>>> index 0000000000..a090e7f9ad
->>>> --- /dev/null
->>>> +++ b/tests/functional/test_memlock.py
->>>> @@ -0,0 +1,107 @@
->>>> +#!/usr/bin/env python3
->>>> +#
->>>> +# Functional test that check overcommit memlock options
->>>> +#
->>>> +# Copyright (c) Yandex Technologies LLC, 2025
->>>> +#
->>>> +# Author:
->>>> +#  Alexandr Moshkov <dtalexundeer@yandex-team.ru>
->>>> +#
->>>> +#
->>>> +# This work is licensed under the terms of the GNU GPL, version 2 or
->>>> +# later.  See the COPYING file in the top-level directory.
->>>
->>> I just noticed: New file need a SPDX identifier nowadays to keep 
->>> scripts/ check_patch.pl happy.
->>
->> Hello, thanks for reply, i fix that in a moment!
->>
->>>
->>> Anyway, I now also tested the patch, but for me, it's not working: 
->>> After setting ulimit -l to 2G and running the test, I get:
->>>
->>> $ ~/devel/qemu/tests/functional/test_memlock.py
->>> TAP version 13
->>> ok 1 test_memlock.MemlockTest.test_memlock_off
->>> Traceback (most recent call last):
->>>   File "~/devel/qemu/tests/functional/test_memlock.py", line 60, in 
->>> test_memlock_on
->>>     self.assertTrue(smap['Size'] == smap['Rss'] == smap['Locked'])
->>> ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->>> AssertionError: False is not true
->>>
->>> not ok 2 test_memlock.MemlockTest.test_memlock_on
->>> Traceback (most recent call last):
->>>   File "~/devel/qemu/tests/functional/test_memlock.py", line 70, in 
->>> test_memlock_onfault
->>>     self.assertTrue(smap['Rss'] == smap['Locked'])
->>>     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->>> AssertionError: False is not true
->>>
->>> not ok 3 test_memlock.MemlockTest.test_memlock_onfault
->>>
->>> I added two print statements right in front of the asserts to see 
->>> the values, and for the first one it shows (after many successfully 
->>> comparisons):
->>>
->>> line 60: 4 == 4 == 0
->>>
->>> And similar for the second one:
->>>
->>> line 70: 4 == 0
->>>
->>> FWIW, this is on Fedora 41.
->>>
->>> Looking at the smaps file, it seems like this comes from a shared 
->>> library:
->>>
->>> 7ff16c7c9000-7ff16c7ca000 r--p 00000000 00:2a 29149631 
->>> /usr/lib64/spa-0.2/ support/libspa-support.so
->>> Size:                  4 kB
->>> KernelPageSize:        4 kB
->>> MMUPageSize:           4 kB
->>> Rss:                   4 kB
->>> Pss:                   0 kB
->>> Pss_Dirty:             0 kB
->>> Shared_Clean:          4 kB
->>> Shared_Dirty:          0 kB
->>> Private_Clean:         0 kB
->>> Private_Dirty:         0 kB
->>> Referenced:            4 kB
->>> Anonymous:             0 kB
->>> KSM:                   0 kB
->>> LazyFree:              0 kB
->>> AnonHugePages:         0 kB
->>> ShmemPmdMapped:        0 kB
->>> FilePmdMapped:         0 kB
->>> Shared_Hugetlb:        0 kB
->>> Private_Hugetlb:       0 kB
->>> Swap:                  0 kB
->>> SwapPss:               0 kB
->>> Locked:                0 kB
->>> THPeligible:           0
->>> ProtectionKey:         0
->>>
->>> So maybe you've got to ignore the mappings of .so files in your test?
->>
->> Oh, this segments are already ignored in _parse_anonymous_smaps(), so 
->> this segment should not have returned from it.
->>
->> Maybe it comes from another segment? Or i have bug in anon segments 
->> parsing.. I'll take a closer look, thanks.
->
-> Yes, it seems to be another segment. After looking through the smaps a 
-> little bit longer, I also spotted this one here:
->
-> 7f8fcc6a1000-7f8fcc6a2000 rw-p 00000000 00:00 0
-> Size:                  4 kB
-> KernelPageSize:        4 kB
-> MMUPageSize:           4 kB
-> Rss:                   4 kB
-> Pss:                   4 kB
-> Pss_Dirty:             4 kB
-> Shared_Clean:          0 kB
-> Shared_Dirty:          0 kB
-> Private_Clean:         0 kB
-> Private_Dirty:         4 kB
-> Referenced:            4 kB
-> Anonymous:             4 kB
-> KSM:                   0 kB
-> LazyFree:              0 kB
-> AnonHugePages:         0 kB
-> ShmemPmdMapped:        0 kB
-> FilePmdMapped:         0 kB
-> Shared_Hugetlb:        0 kB
-> Private_Hugetlb:       0 kB
-> Swap:                  0 kB
-> SwapPss:               0 kB
-> Locked:                0 kB
-> THPeligible:           0
-> ProtectionKey:         0
->
->  HTH,
->   Thomas
+I gave my r-b on the last version of this patch (please include those when
+posting again without major changes), here it is again
 
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 
-Can you, please, also provide QEMU package version or how you configure 
-and build it?
+drew
 
-Or maybe attach full smaps file, I think it would help me a lot. Thanks!
-
-
-Best regards,
-
-Alexandr
-
+> ---
+>  target/riscv/cpu.c         |  3 +--
+>  target/riscv/cpu.h         |  1 +
+>  target/riscv/kvm/kvm-cpu.c | 20 +++++++++++++++++++-
+>  3 files changed, 21 insertions(+), 3 deletions(-)
+> 
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index d92874baa0..a84edd3a3b 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -433,8 +433,7 @@ const char *satp_mode_str(uint8_t satp_mode, bool is_32_bit)
+>      g_assert_not_reached();
+>  }
+>  
+> -static void set_satp_mode_max_supported(RISCVCPU *cpu,
+> -                                        uint8_t satp_mode)
+> +void set_satp_mode_max_supported(RISCVCPU *cpu, uint8_t satp_mode)
+>  {
+>      bool rv32 = riscv_cpu_mxl(&cpu->env) == MXL_RV32;
+>      const bool *valid_vm = rv32 ? valid_vm_1_10_32 : valid_vm_1_10_64;
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index b56d3afa69..d7136f1d72 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -915,6 +915,7 @@ char *riscv_cpu_get_name(RISCVCPU *cpu);
+>  
+>  void riscv_cpu_finalize_features(RISCVCPU *cpu, Error **errp);
+>  void riscv_add_satp_mode_properties(Object *obj);
+> +void set_satp_mode_max_supported(RISCVCPU *cpu, uint8_t satp_mode);
+>  bool riscv_cpu_accelerator_compatible(RISCVCPU *cpu);
+>  
+>  /* CSR function table */
+> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+> index 82f9728636..18fbca1a08 100644
+> --- a/target/riscv/kvm/kvm-cpu.c
+> +++ b/target/riscv/kvm/kvm-cpu.c
+> @@ -999,6 +999,23 @@ static void kvm_riscv_destroy_scratch_vcpu(KVMScratchCPU *scratch)
+>      close(scratch->kvmfd);
+>  }
+>  
+> +static void kvm_riscv_init_satp_mode(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
+> +{
+> +    CPURISCVState *env = &cpu->env;
+> +    struct kvm_one_reg reg;
+> +    int ret;
+> +    uint64_t val;
+> +
+> +    reg.id = RISCV_CONFIG_REG(env, satp_mode);
+> +    reg.addr = (uint64_t)&val;
+> +    ret = ioctl(kvmcpu->cpufd, KVM_GET_ONE_REG, &reg);
+> +    if (ret != 0) {
+> +        error_report("Unable to retrieve satp from host, error %d", ret);
+> +    }
+> +
+> +    set_satp_mode_max_supported(cpu, val);
+> +}
+> +
+>  static void kvm_riscv_init_machine_ids(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
+>  {
+>      struct kvm_one_reg reg;
+> @@ -1302,6 +1319,7 @@ static void riscv_init_kvm_registers(Object *cpu_obj)
+>      kvm_riscv_init_machine_ids(cpu, &kvmcpu);
+>      kvm_riscv_init_misa_ext_mask(cpu, &kvmcpu);
+>      kvm_riscv_init_cfg(cpu, &kvmcpu);
+> +    kvm_riscv_init_satp_mode(cpu, &kvmcpu);
+>  
+>      kvm_riscv_destroy_scratch_vcpu(&kvmcpu);
+>  }
+> @@ -1980,7 +1998,7 @@ static bool kvm_cpu_realize(CPUState *cs, Error **errp)
+>          }
+>      }
+>  
+> -   return true;
+> +    return true;
+>  }
+>  
+>  void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
+> -- 
+> 2.39.5
+> 
+> 
 
