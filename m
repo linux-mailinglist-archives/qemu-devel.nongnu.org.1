@@ -2,90 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC813AC0FC9
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 17:19:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3733AC0FEB
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 17:26:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uI7hN-0005oy-Il; Thu, 22 May 2025 11:19:09 -0400
+	id 1uI7nm-0000zp-3G; Thu, 22 May 2025 11:25:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1uI7gh-0005Ik-9O
- for qemu-devel@nongnu.org; Thu, 22 May 2025 11:18:27 -0400
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1uI7ge-0007kG-JF
- for qemu-devel@nongnu.org; Thu, 22 May 2025 11:18:26 -0400
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-7fd581c2bf4so6410062a12.3
- for <qemu-devel@nongnu.org>; Thu, 22 May 2025 08:18:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747927103; x=1748531903; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=edXpGQQK83lOkWaFk7S4cvE7PVc3Wlv6jUv6RWOBqJ0=;
- b=Z/lxIsh/qTxSO90CB8NeuylbQJn/w1gEBBU4ZsAT6aHjaGvc0r7mn3pLUc9w6TWj5P
- y+UI993fondWRXrtvQiDbhOI1dV46ha3KdvUd/RYsu0+BxrKPNYt/7byMPTPqnsPRbXY
- L1G+dQfgOi0o3YxZtYHasAPzjxmgT1dVhVIgGqLeRtDc1eVCxu4u4XlXgitYNYKgW4qQ
- VSkbjU7uyWHma3fpbitHnlmGI1H/RyONt64HxzkOkJPi6ThHc8HaU0GtSaajnr5Ckb7x
- xxvJnPTUqbjf2GEzbMh9HJQFunAHjJatU1xs42/WYk1F2IV+waNgK8fATXYr4VSY7e7r
- Q/Tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747927103; x=1748531903;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=edXpGQQK83lOkWaFk7S4cvE7PVc3Wlv6jUv6RWOBqJ0=;
- b=IKk+fxUTSE+sTWk425TDAboNvJ49OEvBDhXuiEktBEwZkN758NU/6UCHaMrQAuzVTg
- Pun7ewDum+westVds9IZB9Na/nXXYLwyraEupUPrtQ626scEmluAZIp9izAwGgaux+7s
- eQsMKxHVcXTqW3K4TObfZ2G5vp+0hXOfDUy5H/dEAiudsBLs12R7TK78QTcWKdPIP6H4
- 5VaxrokL1OrBwPBz4Z2zIXywXb7jphen0HGOqedpVEng7AMGVFPOHIuaMTV4WQGnYZfF
- PDsCuBEpksL7zKxGydCmhLhO3VjEnTVr+1pT5U70GbRiXRNiRFqUNVmTDoQ0fV5jOf+9
- 8WjA==
-X-Gm-Message-State: AOJu0YybHJ94rR5GBs+/Pty8aIb8EdEvYivPHIyD+fGzodYnNLptFSse
- Lt/xUnlGFH8U1vMtja7K2kvPZ+600RK77Gd2AacSSYab34hSWHecbkJGB6vZCQ==
-X-Gm-Gg: ASbGncts16p8VHf2jItKTm7oqqS5G1EZ3uBkXZbOJYgTV7kpzfsII+649dbIVm0AIIy
- sj6DmjrIp31bV9w5byihj6aHZE6A8AIas0rHYZgbpsefvYebRpbaS9D36h4f59rVDsuBOYmIlOH
- r2PMlRPXu5+ktRcnZz61CC1jSb8qy33m+cqU8/2FWXXm+6MNOIe8g7GrwkkJuy0XS9FdLdSBw52
- gpm6DMax4wqWNEHIPGIxPwb7caLAz/x5KUgznRfQi1ExQL7LjczztMeYbJePZhYUEM1MYxeShU1
- +n0NjOHclM12ukfDS/Jwuk5GQEoflSV1Uojn5MED2mU2+SEtDuSBwcm05dr5rg==
-X-Google-Smtp-Source: AGHT+IGUVf3g1XiI9/kpr82fHFFb6dQtpnyJ8dnGvQGzSzqNH8K7oZoP7yVfd0YjliecXkQUQrJh8w==
-X-Received: by 2002:a17:903:2990:b0:22e:1740:e561 with SMTP id
- d9443c01a7336-231d4515b85mr398278555ad.19.1747927103005; 
- Thu, 22 May 2025 08:18:23 -0700 (PDT)
-Received: from ktock.. ([240d:1a:3b6:8b00:c732:a88c:b916:8b9f])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-231d4b017dasm110443555ad.98.2025.05.22.08.18.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 May 2025 08:18:22 -0700 (PDT)
-From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Stefan Weil <sw@weilnetz.de>, Stefan Hajnoczi <stefanha@redhat.com>,
- ktokunaga.mail@gmail.com
-Subject: [PATCH 5/5] tci: use tcg_target_ulong when retrieving the pool data
-Date: Fri, 23 May 2025 00:17:30 +0900
-Message-ID: <3ec0f9bd69a42965f55e079739045ef10f4d4d82.1747922170.git.ktokunaga.mail@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1747922170.git.ktokunaga.mail@gmail.com>
-References: <cover.1747922170.git.ktokunaga.mail@gmail.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uI7ne-0000zT-Oo
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 11:25:39 -0400
+Received: from [185.176.79.56] (helo=frasgout.his.huawei.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1uI7na-0000Wt-6F
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 11:25:37 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4b3Bq51Cmqz6L5MP;
+ Thu, 22 May 2025 23:22:09 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+ by mail.maildlp.com (Postfix) with ESMTPS id 156AC1402FC;
+ Thu, 22 May 2025 23:25:24 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 22 May
+ 2025 17:25:23 +0200
+Date: Thu, 22 May 2025 16:25:21 +0100
+To: <qemu-devel@nongnu.org>, Mattias Nissler <mnissler@rivosinc.com>, "Peter
+ Xu" <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, "David
+ Hildenbrand" <david@redhat.com>, "Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= "
+ <philmd@linaro.org>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Peter
+ Maydell <peter.maydell@linaro.org>, <linuxarm@huawei.com>
+Subject: RFC: How to make max_bounce_buffer_size configurable for
+ address_space_memory
+Message-ID: <20250522162521.000077d9@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
- envelope-from=ktokunaga.mail@gmail.com; helo=mail-pg1-x52a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.66]
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 185.176.79.56 (deferred)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,41 +67,50 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TCI's tcg_out_call stores "func" and "cif" as tcg_target_ulong in the TB
-using the pool feature. On non-wasm hosts, tcg_target_ulong matches the
-pointer size so this commit preserves the original behaviour. On the wasm
-host, tcg_target_ulong differs from the pointer size so this change ensures
-TCI retrieves the data using the correct type consistent with how it was
-stored using the pool feature.
+Hi All,
 
-Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
----
- tcg/tci.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+This closely related to Mattias' work to resolve bounce buffer limitations for
+PCI memory spaces.
+https://lore.kernel.org/qemu-devel/20240819135455.2957406-1-mnissler@rivosinc.com/
 
-diff --git a/tcg/tci.c b/tcg/tci.c
-index 700e672616..cee65bceea 100644
---- a/tcg/tci.c
-+++ b/tcg/tci.c
-@@ -367,10 +367,12 @@ uintptr_t QEMU_DISABLE_CFI tcg_qemu_tb_exec(CPUArchState *env,
-                 ffi_cif *cif;
-                 void *func;
-                 unsigned i, s, n;
-+                tcg_target_ulong *data;
+For CXL memory, due to the way interleave memory is emulated we end
+up with the same problem with concurrent virtio mappings into IOMEM but
+in this case they are in the address_space_memory.  In my tests
+virtio-blk tends to fail as a result.  Note whilst QEMU sees this as
+IOMEM, in the host it's just 'normal RAM' (be it with terrible performance :)
+
+Currently I'm carrying the hack (obviously I never checked how much
+space I actually needed as it's unlikely to be that much :)
+
+diff --git a/system/physmem.c b/system/physmem.c
+index e97de3ef65cf8105b030a44e7a481b1679f86b53..fd0848c1d5b982c3255a7c6c8c1f22b32c86b85a 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -2787,6 +2787,7 @@ static void memory_map_init(void)
+     memory_region_init(system_memory, NULL, "system", UINT64_MAX);
+     address_space_init(&address_space_memory, system_memory, "memory");
  
-                 tci_args_nl(insn, tb_ptr, &len, &ptr);
--                func = ((void **)ptr)[0];
--                cif = ((void **)ptr)[1];
-+                data = ptr;
-+                func = (void *)data[0];
-+                cif = (void *)data[1];
- 
-                 n = cif->nargs;
-                 for (i = s = 0; i < n; ++i) {
--- 
-2.43.0
++    address_space_memory.max_bounce_buffer_size = 1024 * 1024 * 1024;
+     system_io = g_malloc(sizeof(*system_io));
+     memory_region_init_io(system_io, NULL, &unassigned_io_ops, NULL, "io",
+                           65536);
 
+
+Assuming people are amenable to making this configurable with a parameter
+like x-max-bounce-buffer-size (from Mattias' set) how would people like
+that to be configured?  The address_space_init() call is
+fairly early but I think we can modify the max_bounce_buffer_size later
+potentially directly from machine_set_mem() if the parameter is set.
+
+I'm also interested if anyone has another suggestion for how to solve this
+problem more generally.
+
+Thanks,
+
+Jonathan
 
