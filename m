@@ -2,60 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1D0DAC09C6
+	by mail.lfdr.de (Postfix) with ESMTPS id E8D82AC09C8
 	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 12:31:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uI3BG-0002yv-Vx; Thu, 22 May 2025 06:29:43 -0400
+	id 1uI3BH-0002z6-6D; Thu, 22 May 2025 06:29:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uI3BC-0002yK-K3
- for qemu-devel@nongnu.org; Thu, 22 May 2025 06:29:38 -0400
+ id 1uI3BD-0002yY-KK
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 06:29:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uI3B7-0006M7-RP
- for qemu-devel@nongnu.org; Thu, 22 May 2025 06:29:38 -0400
+ id 1uI3BB-0006MT-OZ
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 06:29:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747909771;
+ s=mimecast20190719; t=1747909776;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=ektz7OD0hYzBphenw5zpimORufWjXvtSTh7ImPDDEts=;
- b=ME+TICn39JqsUr6thLfbM+bxZ1gVV8hsQxJP97AINNKG0M5FNNUwQNpTlPMAmVIr+W75Ck
- cSdqrbtbwXHoAnpmHox+rMtWqa8prTazkEf1HVTnZaPE5AqZV2UNA+HXZI2ye9qNtgR7cY
- RsaDugCf7uSFoC7En5XvZ3VRrbGRDB4=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8jfTVts1uQnnQOq04ScY/y3ND2kZkyWDQrlQ9FP3OdE=;
+ b=J7iGG1qem7Y76g5VWiLyp909usdKG3PvuDKgQTq8ZPs8NFm/u4A5zJY7giL59Bow3zZSpA
+ 7WWQwA2rcq0p0BFdlnG+ozuiD+KcP3eaBaDtwHS1W/F6vBN0/fow4QZjx2BVpgs8vnK1Zo
+ VA39Rlfyrcs7eccqWIm+DF29+0JQJus=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-450-UOuSp77WMwqPuVdLN0ts-Q-1; Thu,
- 22 May 2025 06:29:29 -0400
-X-MC-Unique: UOuSp77WMwqPuVdLN0ts-Q-1
-X-Mimecast-MFC-AGG-ID: UOuSp77WMwqPuVdLN0ts-Q_1747909768
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-486-T5fhH__9P_2qdCk-8Tgg3Q-1; Thu,
+ 22 May 2025 06:29:33 -0400
+X-MC-Unique: T5fhH__9P_2qdCk-8Tgg3Q-1
+X-Mimecast-MFC-AGG-ID: T5fhH__9P_2qdCk-8Tgg3Q_1747909772
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 967CB1801A1E; Thu, 22 May 2025 10:29:28 +0000 (UTC)
+ by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2F7411956080; Thu, 22 May 2025 10:29:32 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.179])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id B4FE91958014; Thu, 22 May 2025 10:29:24 +0000 (UTC)
+ id 32A7C1958014; Thu, 22 May 2025 10:29:28 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Eric Blake <eblake@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL 00/23] Misc VNC, I/O, Crypto & checkpatch fixes
-Date: Thu, 22 May 2025 11:29:00 +0100
-Message-ID: <20250522102923.309452-1-berrange@redhat.com>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PULL 01/23] ui/vnc.c: replace big endian flag with byte order value
+Date: Thu, 22 May 2025 11:29:01 +0100
+Message-ID: <20250522102923.309452-2-berrange@redhat.com>
+In-Reply-To: <20250522102923.309452-1-berrange@redhat.com>
+References: <20250522102923.309452-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
@@ -83,85 +87,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit f0737158b483e7ec2b2512145aeab888b85cc1f7:
+It will make it easier to do certain comparisons in future if we
+store G_BIG_ENDIAN/G_LITTLE_ENDIAN directly, instead of a boolean
+flag, as we can then compare directly to the G_BYTE_ORDER constant.
 
-  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2025-05-20 10:26:30 -0400)
+Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+---
+ ui/vnc-enc-tight.c | 2 +-
+ ui/vnc-enc-zrle.c  | 2 +-
+ ui/vnc-jobs.c      | 2 +-
+ ui/vnc.c           | 6 +++---
+ ui/vnc.h           | 2 +-
+ 5 files changed, 7 insertions(+), 7 deletions(-)
 
-are available in the Git repository at:
-
-  https://gitlab.com/berrange/qemu tags/misc-next-pull-request
-
-for you to fetch changes up to 81941aa896b718c194f08cebb4303561b64c60b4:
-
-  scripts/checkpatch.pl: mandate SPDX tag for Rust src files (2025-05-22 11:24:41 +0100)
-
-----------------------------------------------------------------
-
-* Fix VNC tight encoding with 8/16-bpp formats with
-  mixed endian server/client
-* Fix VNC non-tight encoding with mixed endian server/client
-* Drop built-in AES impl from non-TCG usage, requiring
-  nettle/gcrypt/gnutls
-* Fix validation of SPDX-License-Identifier in new files
-* Mandate SPDX-License-Identifier in Rust source
-* Reject license boilerplate in new files
-* Add full control over TCP keep alive setting for sockets
-
-----------------------------------------------------------------
-
-Daniel P. Berrangé (17):
-  ui/vnc.c: replace big endian flag with byte order value
-  ui/vnc: take account of client byte order in pixman format
-  ui/vnc: fix tight palette pixel encoding for 8/16-bpp formats
-  tests: skip encrypted secret tests if AES is not available
-  tests: skip legacy qcow2 encryption test if AES is not available
-  tests: fix skipping cipher tests when AES is not available
-  crypto: fully drop built-in cipher provider
-  Revert "scripts: mandate that new files have SPDX-License-Identifier"
-  scripts/checkpatch.pl: fix various indentation mistakes
-  scripts/checkpatch: introduce tracking of file start/end
-  scripts/checkpatch: use new hook for ACPI test data check
-  scripts/checkpatch: use new hook for file permissions check
-  scripts/checkpatch: expand pattern for matching makefiles
-  scripts/checkpatch: use new hook for MAINTAINERS update check
-  scripts/checkpatch: reimplement mandate for SPDX-License-Identifier
-  scripts/checkpatch: reject license boilerplate on new files
-  scripts/checkpatch.pl: mandate SPDX tag for Rust src files
-
-Juraj Marcin (6):
-  io: Fix partial struct copy in qio_dns_resolver_lookup_sync_inet()
-  util/qemu-sockets: Refactor setting client sockopts into a separate
-    function
-  util/qemu-sockets: Refactor success and failure paths in
-    inet_listen_saddr()
-  util/qemu-sockets: Add support for keep-alive flag to passive sockets
-  util/qemu-sockets: Refactor inet_parse() to use QemuOpts
-  util/qemu-sockets: Introduce inet socket options controlling TCP
-    keep-alive
-
- crypto/cipher-builtin.c.inc     | 303 ------------------------
- crypto/cipher-stub.c.inc        |  30 +++
- crypto/cipher.c                 |   2 +-
- include/ui/qemu-pixman.h        |   4 +-
- io/dns-resolver.c               |  21 +-
- meson.build                     |  30 +++
- qapi/sockets.json               |  23 +-
- scripts/checkpatch.pl           | 392 +++++++++++++++++++++-----------
- tests/unit/test-crypto-block.c  |   7 +
- tests/unit/test-crypto-cipher.c |  13 +-
- tests/unit/test-crypto-secret.c |  28 ++-
- tests/unit/test-util-sockets.c  | 235 +++++++++++++++++++
- ui/qemu-pixman.c                |  15 +-
- ui/vnc-enc-tight.c              |  20 +-
- ui/vnc-enc-zrle.c               |   2 +-
- ui/vnc-jobs.c                   |   2 +-
- ui/vnc.c                        |   9 +-
- ui/vnc.h                        |   2 +-
- util/qemu-sockets.c             | 327 ++++++++++++++++----------
- 19 files changed, 843 insertions(+), 622 deletions(-)
- delete mode 100644 crypto/cipher-builtin.c.inc
- create mode 100644 crypto/cipher-stub.c.inc
-
+diff --git a/ui/vnc-enc-tight.c b/ui/vnc-enc-tight.c
+index 41f559eb83..f8aaa8f346 100644
+--- a/ui/vnc-enc-tight.c
++++ b/ui/vnc-enc-tight.c
+@@ -150,7 +150,7 @@ tight_detect_smooth_image24(VncState *vs, int w, int h)
+      * If client is big-endian, color samples begin from the second
+      * byte (offset 1) of a 32-bit pixel value.
+      */
+-    off = vs->client_be;
++    off = vs->client_endian == G_BIG_ENDIAN ? 1 : 0;
+ 
+     memset(stats, 0, sizeof (stats));
+ 
+diff --git a/ui/vnc-enc-zrle.c b/ui/vnc-enc-zrle.c
+index bd33b89063..97ec6c7119 100644
+--- a/ui/vnc-enc-zrle.c
++++ b/ui/vnc-enc-zrle.c
+@@ -255,7 +255,7 @@ static void zrle_write_u8(VncState *vs, uint8_t value)
+ static int zrle_send_framebuffer_update(VncState *vs, int x, int y,
+                                         int w, int h)
+ {
+-    bool be = vs->client_be;
++    bool be = vs->client_endian == G_BIG_ENDIAN;
+     size_t bytes;
+     int zywrle_level;
+ 
+diff --git a/ui/vnc-jobs.c b/ui/vnc-jobs.c
+index fcca7ec632..d3486af9e2 100644
+--- a/ui/vnc-jobs.c
++++ b/ui/vnc-jobs.c
+@@ -188,7 +188,7 @@ static void vnc_async_encoding_start(VncState *orig, VncState *local)
+     local->lossy_rect = orig->lossy_rect;
+     local->write_pixels = orig->write_pixels;
+     local->client_pf = orig->client_pf;
+-    local->client_be = orig->client_be;
++    local->client_endian = orig->client_endian;
+     local->tight = orig->tight;
+     local->zlib = orig->zlib;
+     local->hextile = orig->hextile;
+diff --git a/ui/vnc.c b/ui/vnc.c
+index 9e097dc4b4..ab18172c4d 100644
+--- a/ui/vnc.c
++++ b/ui/vnc.c
+@@ -891,7 +891,7 @@ void vnc_convert_pixel(VncState *vs, uint8_t *buf, uint32_t v)
+         buf[0] = v;
+         break;
+     case 2:
+-        if (vs->client_be) {
++        if (vs->client_endian == G_BIG_ENDIAN) {
+             buf[0] = v >> 8;
+             buf[1] = v;
+         } else {
+@@ -901,7 +901,7 @@ void vnc_convert_pixel(VncState *vs, uint8_t *buf, uint32_t v)
+         break;
+     default:
+     case 4:
+-        if (vs->client_be) {
++        if (vs->client_endian == G_BIG_ENDIAN) {
+             buf[0] = v >> 24;
+             buf[1] = v >> 16;
+             buf[2] = v >> 8;
+@@ -2312,7 +2312,7 @@ static void set_pixel_format(VncState *vs, int bits_per_pixel,
+     vs->client_pf.bits_per_pixel = bits_per_pixel;
+     vs->client_pf.bytes_per_pixel = bits_per_pixel / 8;
+     vs->client_pf.depth = bits_per_pixel == 32 ? 24 : bits_per_pixel;
+-    vs->client_be = big_endian_flag;
++    vs->client_endian = big_endian_flag ? G_BIG_ENDIAN : G_LITTLE_ENDIAN;
+ 
+     if (!true_color_flag) {
+         send_color_map(vs);
+diff --git a/ui/vnc.h b/ui/vnc.h
+index acc53a2cc1..02613aa63a 100644
+--- a/ui/vnc.h
++++ b/ui/vnc.h
+@@ -323,7 +323,7 @@ struct VncState
+     VncWritePixels *write_pixels;
+     PixelFormat client_pf;
+     pixman_format_code_t client_format;
+-    bool client_be;
++    int client_endian; /* G_LITTLE_ENDIAN or G_BIG_ENDIAN */
+ 
+     CaptureVoiceOut *audio_cap;
+     struct audsettings as;
 -- 
 2.49.0
 
