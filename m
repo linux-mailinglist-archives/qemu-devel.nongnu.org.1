@@ -2,100 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EAAFAC0954
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 12:04:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B11AC096A
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 12:07:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uI2l3-000382-LJ; Thu, 22 May 2025 06:02:38 -0400
+	id 1uI2oX-0004Zx-Lc; Thu, 22 May 2025 06:06:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=J2Rp=YG=kaod.org=clg@ozlabs.org>)
- id 1uI2kO-00036P-V9; Thu, 22 May 2025 06:02:05 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76] helo=mail.ozlabs.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=J2Rp=YG=kaod.org=clg@ozlabs.org>)
- id 1uI2kI-0001pB-HD; Thu, 22 May 2025 06:01:53 -0400
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4b33jK5PV7z4xdw;
- Thu, 22 May 2025 20:01:41 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (Client did not present a certificate)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4b33jF52jnz4xcw;
- Thu, 22 May 2025 20:01:37 +1000 (AEST)
-Message-ID: <186bd216-529a-4d33-bbe4-bd1ff44a1e1b@kaod.org>
-Date: Thu, 22 May 2025 12:01:34 +0200
+ (Exim 4.90_1) (envelope-from <oenhan@gmail.com>)
+ id 1uI2oV-0004ZK-47; Thu, 22 May 2025 06:06:11 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <oenhan@gmail.com>)
+ id 1uI2oS-0002a6-06; Thu, 22 May 2025 06:06:10 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-742c3d06de3so5612428b3a.0; 
+ Thu, 22 May 2025 03:06:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1747908363; x=1748513163; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=u+jAhJvSiiXBD9mect6svubQFP5HWgruvnvTSTNgeB0=;
+ b=INSuXnKqHMBRtszEQ2SdD9RSgXHs/3sOYUyk+OjmCEaiM1Le/e5BA6Qtvzh6a6LQhL
+ 1ovbwOTAaknESrVV3+i8sJ7MlO/D9JUiCvzVcgH9BFt3wPVyRuGd+5pn0Av7pZpeyG97
+ 6/fA81DhCm/wW6agbqLXoLfgFy/m0KfxphnljG7oVkk5XQM9nCy2ct6xw7wSqL84ZBWg
+ DMChWZU6b3yVEKSKuKSL1z/D3KaKfXaQzvkQfT7NsehaE2TzwFQxDk5SOJRooA5Yg5aK
+ dG4XhxFCrKVCWdIZ+X9iJNnigKvDcsLgBTrYSHiJSQBYdeuRr9gORPPx8veTZgO5LfJ5
+ kp6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747908363; x=1748513163;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=u+jAhJvSiiXBD9mect6svubQFP5HWgruvnvTSTNgeB0=;
+ b=E9vqVXAfqSyJ19cHjYoucbE/mlFHueqZpIecBeS4U4njEWin92Ul5axn96jTmRT1ap
+ q/+rklMNGwyuBHEpBMWLi18Bv68defFALBY4CWqBRe9vPg6E7P5tlvuHVXnislNn3kk9
+ YItk3RXzXzD8wgOAqzulmVTYCQitohyAWaYMpKJ9uos0n45t/csVtjXGMYZykYqZNlbT
+ hKMR2q1f6uomRKbARQDC2yU2b7oc2j+r12nL7ngIjUa/2yt5CB0lJ+m98GUamNsmBE9E
+ 4Oa0dv1EXH6zXEKKnzBmHx14TryYtIefE8Wt3MCpr+s4gQeHcfg9rGBmVHnJYSJiE4aD
+ TEfw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXghtLtqMa7KIaTeWD5pw6xc50eYn1tx/oEtOkMoT8sW1HBKo8TUvZkUBVLjCh/D9nGe+Mj1sn8T4QXWQ==@nongnu.org
+X-Gm-Message-State: AOJu0YwUqi/v+Cqod5Ml0LT3YoR6fB8DFfDd9bzI9Dn7yp72UFhKjlYS
+ P6qQCV3622nhLl+q4RHXkmBsvr6NqFj+TGnNSrZp3ByGVqHllE05LFI9FP0fvxkZ
+X-Gm-Gg: ASbGncuL0s2GvXn4rcDlcd07SKgMIjnmqskQvoAdpKFjl9zF6DDlCM/bVO1HUS1ypf4
+ 3xvoqIWyNyZEdC2rkXn1bia0dK9qhYWJBq8vNCD8Axp3WcOO6/GBGaP799+KAudnpCGoESsweEF
+ 2fY0IxBjhahhjAX7y/u/Zi2GYx15InPzbFsnb82Zdq0zb23d/laNjBMTIBsdY9ZF8+RJjk1b+H5
+ JDTVY4gidVEK1hddyGmkY39lTx7+9bgpgLimUSh9EV/xQcFGBLDcRgiYhrvh96LoMgbbZuVgpsI
+ DjYUtqRC6OtPa6mpgEAz+lreZfPRCDT4Xtk0lHx84QLIGTRqBs/D2DP9xfdIxLG2uvDvuR0E9Ir
+ XLDUzfMz5fMBrXCczaRcp20J4cTi80FCJ9JDospgrAnc2SnTvvG9Am3E=
+X-Google-Smtp-Source: AGHT+IE5yEPG3n+GNfWCq/dc7VfDzuRiu3clctMfZ82JiQKfNcHO1HqOPuRrK3h7yKMdkBX27ChBEA==
+X-Received: by 2002:a05:6a00:9094:b0:736:53f2:87bc with SMTP id
+ d2e1a72fcca58-742acce4f17mr30814997b3a.13.1747908363260; 
+ Thu, 22 May 2025 03:06:03 -0700 (PDT)
+Received: from localhost.localdomain (172-234-80-15.ip.linodeusercontent.com.
+ [172.234.80.15]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-742a95b2b19sm10909267b3a.0.2025.05.22.03.05.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 22 May 2025 03:06:02 -0700 (PDT)
+From: oenhan@gmail.com
+X-Google-Original-From: hanht2@chinatelecom.cn
+To: mst@redhat.com, sgarzare@redhat.com, marcel.apfelbaum@gmail.com,
+ cohuck@redhat.com, pasic@linux.ibm.com, farman@linux.ibm.com,
+ borntraeger@linux.ibm.com, leiyang@redhat.com
+Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org,
+ Huaitong Han <hanht2@chinatelecom.cn>,
+ Zhiyuan Yuan <yuanzhiyuan@chinatelecom.cn>,
+ Jidong Xia <xiajd@chinatelecom.cn>
+Subject: [PATCH V3] vhost: Don't set vring call if guest notifier is unused
+Date: Thu, 22 May 2025 18:05:48 +0800
+Message-ID: <20250522100548.212740-1-hanht2@chinatelecom.cn>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/6] hw/arm/aspeed_ast2700-fc: Reduce ca35 ram size to
- align with ast2700a1
-To: Steven Lee <steven_lee@aspeedtech.com>,
- Peter Maydell <peter.maydell@linaro.org>, Troy Lee <leetroy@gmail.com>,
- Jamin Lin <jamin_lin@aspeedtech.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
- "open list:ASPEED BMCs" <qemu-arm@nongnu.org>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-Cc: troy_lee@aspeedtech.com, longzl2@lenovo.com, yunlin.tang@aspeedtech.com
-References: <20250522091701.354185-1-steven_lee@aspeedtech.com>
- <20250522091701.354185-3-steven_lee@aspeedtech.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Autocrypt: addr=clg@kaod.org; keydata=
- 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
-In-Reply-To: <20250522091701.354185-3-steven_lee@aspeedtech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=J2Rp=YG=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.001, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=oenhan@gmail.com; helo=mail-pf1-x42e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,36 +100,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/22/25 11:16, Steven Lee wrote:
-> Reduce ca35 ram size from 2GiB to 1GiB to align with ast2700a1-evb,
-> where the ram-container is defined as 1GiB in its class.
-> 
-> Signed-off-by: Steven Lee <steven_lee@aspeedtech.com>
+From: Huaitong Han <hanht2@chinatelecom.cn>
 
+The vring call fd is set even when the guest does not use MSI-X (e.g., in the
+case of virtio PMD), leading to unnecessary CPU overhead for processing
+interrupts.
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+The commit 96a3d98d2c("vhost: don't set vring call if no vector") optimized the
+case where MSI-X is enabled but the queue vector is unset. However, there's an
+additional case where the guest uses INTx and the INTx_DISABLED bit in the PCI
+config is set, meaning that no interrupt notifier will actually be used.
 
-Thanks,
+In such cases, the vring call fd should also be cleared to avoid redundant
+interrupt handling.
 
-C.
+Fixes: 96a3d98d2c("vhost: don't set vring call if no vector")
 
+Reported-by: Zhiyuan Yuan <yuanzhiyuan@chinatelecom.cn>
+Signed-off-by: Jidong Xia <xiajd@chinatelecom.cn>
+Signed-off-by: Huaitong Han <hanht2@chinatelecom.cn>
+---
+V3:
+- Don't change query_guest_notifiers semantics, just fix the issue
 
-> ---
->   hw/arm/aspeed_ast27x0-fc.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/arm/aspeed_ast27x0-fc.c b/hw/arm/aspeed_ast27x0-fc.c
-> index 7bf4f2a52d..f8cb632bca 100644
-> --- a/hw/arm/aspeed_ast27x0-fc.c
-> +++ b/hw/arm/aspeed_ast27x0-fc.c
-> @@ -48,7 +48,7 @@ struct Ast2700FCState {
->       bool mmio_exec;
->   };
->   
-> -#define AST2700FC_BMC_RAM_SIZE (2 * GiB)
-> +#define AST2700FC_BMC_RAM_SIZE (1 * GiB)
->   #define AST2700FC_CM4_DRAM_SIZE (32 * MiB)
->   
->   #define AST2700FC_HW_STRAP1 0x000000C0
+V2:
+- Retain the name `query_guest_notifiers`
+- All qtest/unit test cases pass
+- Fix V1 patch style problems
+
+ hw/pci/pci.c           | 2 +-
+ hw/virtio/virtio-pci.c | 7 ++++++-
+ include/hw/pci/pci.h   | 1 +
+ 3 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index f5ab510697..82f82e726b 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -1725,7 +1725,7 @@ static void pci_update_mappings(PCIDevice *d)
+     pci_update_vga(d);
+ }
+ 
+-static inline int pci_irq_disabled(PCIDevice *d)
++int pci_irq_disabled(PCIDevice *d)
+ {
+     return pci_get_word(d->config + PCI_COMMAND) & PCI_COMMAND_INTX_DISABLE;
+ }
+diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+index 9b48aa8c3e..7e309d1d49 100644
+--- a/hw/virtio/virtio-pci.c
++++ b/hw/virtio/virtio-pci.c
+@@ -1215,7 +1215,12 @@ static int virtio_pci_set_guest_notifier(DeviceState *d, int n, bool assign,
+ static bool virtio_pci_query_guest_notifiers(DeviceState *d)
+ {
+     VirtIOPCIProxy *proxy = to_virtio_pci_proxy(d);
+-    return msix_enabled(&proxy->pci_dev);
++
++    if (msix_enabled(&proxy->pci_dev)) {
++        return true;
++    } else {
++        return pci_irq_disabled(&proxy->pci_dev);
++    }
+ }
+ 
+ static int virtio_pci_set_guest_notifiers(DeviceState *d, int nvqs, bool assign)
+diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+index c2fe6caa2c..8c24bd97db 100644
+--- a/include/hw/pci/pci.h
++++ b/include/hw/pci/pci.h
+@@ -668,6 +668,7 @@ void lsi53c8xx_handle_legacy_cmdline(DeviceState *lsi_dev);
+ 
+ qemu_irq pci_allocate_irq(PCIDevice *pci_dev);
+ void pci_set_irq(PCIDevice *pci_dev, int level);
++int pci_irq_disabled(PCIDevice *d);
+ 
+ static inline void pci_irq_assert(PCIDevice *pci_dev)
+ {
+-- 
+2.43.5
 
 
