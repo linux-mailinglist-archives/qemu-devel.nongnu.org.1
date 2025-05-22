@@ -2,102 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BB41AC06A6
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 10:10:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A9FEAC06C1
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 10:14:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uI0z2-0006UE-1Y; Thu, 22 May 2025 04:08:58 -0400
+	id 1uI131-0007Ru-8j; Thu, 22 May 2025 04:13:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vinayak.kh@samsung.com>)
- id 1uI0yv-0006Tq-MX
- for qemu-devel@nongnu.org; Thu, 22 May 2025 04:08:49 -0400
-Received: from mailout3.samsung.com ([203.254.224.33])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vinayak.kh@samsung.com>)
- id 1uI0yo-0002mL-MH
- for qemu-devel@nongnu.org; Thu, 22 May 2025 04:08:46 -0400
-Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
- by mailout3.samsung.com (KnoxPortal) with ESMTP id
- 20250522080831epoutp03fe5693315677ec57d4f0fcd010b3ae1d~ByvuDe6pQ2648226482epoutp03r
- for <qemu-devel@nongnu.org>; Thu, 22 May 2025 08:08:31 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com
- 20250522080831epoutp03fe5693315677ec57d4f0fcd010b3ae1d~ByvuDe6pQ2648226482epoutp03r
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1747901312;
- bh=j5e89bxW+dUvDSFtAEe4o/9DR+/R6+jma2SiWb+OTGI=;
- h=From:To:Cc:Subject:Date:References:From;
- b=QOhekBoYXqqY0URx8JeZjeNDfICVVv2VDnGcOADP0El9vNv/MfFtsusiL0Ga08Zy7
- YWxoXXYD/HXhQ6gC9BkoNPq3luh8YLNdDQZwu4uWK9NKYuM9MLFgij2OOHNbwFjEV1
- Xn++5pifm2wSQDmCdFweI0p9dcVApVDQDtmMhDto=
-Received: from epsnrtp03.localdomain (unknown [182.195.42.155]) by
- epcas5p3.samsung.com (KnoxPortal) with ESMTPS id
- 20250522080831epcas5p3f5affcf829c94f3e627c5242590ca378~ByvtR7RC_0045300453epcas5p3n;
- Thu, 22 May 2025 08:08:31 +0000 (GMT)
-Received: from epcas5p4.samsung.com (unknown [182.195.38.175]) by
- epsnrtp03.localdomain (Postfix) with ESMTP id 4b31Bj2k0nz3hhT8; Thu, 22 May
- 2025 08:08:29 +0000 (GMT)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
- epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
- 20250522063149epcas5p13719600aa8f59313ff3dc2570c996aec~BxbR0iKUi2830428304epcas5p16;
- Thu, 22 May 2025 06:31:49 +0000 (GMT)
-Received: from epsmgmc1p1new.samsung.com (unknown [182.195.42.40]) by
- epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
- 20250522063149epsmtrp230f6db4aef1e4c0f9bee98421485facb~BxbRzvRn41208312083epsmtrp2W;
- Thu, 22 May 2025 06:31:49 +0000 (GMT)
-X-AuditID: b6c32a28-46cef70000001e8a-bc-682ec4d57996
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
- epsmgmc1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
- F5.F8.07818.5D4CE286; Thu, 22 May 2025 15:31:49 +0900 (KST)
-Received: from test-PowerEdge-R740xd.samsungds.net (unknown [107.99.41.79])
- by epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
- 20250522063147epsmtip24a25fc88e390ec373fae9aab2a4bd8d8~BxbQXsN-y1283412834epsmtip2G;
- Thu, 22 May 2025 06:31:47 +0000 (GMT)
-From: Vinayak Holikatti <vinayak.kh@samsung.com>
-To: qemu-devel@nongnu.org
-Cc: gost.dev@samsung.com, linux-cxl@vger.kernel.org, nifan.cxl@gmail.com,
- dave@stgolabs.net, vishak.g@samsung.com, krish.reddy@samsung.com,
- a.manzanares@samsung.com, alok.rathore@samsung.com, Vinayak Holikatti
- <vinayak.kh@samsung.com>
-Subject: [PATCH] Add support for FMAPI Get Mutliheaded Head info opcode (5501h)
-Date: Thu, 22 May 2025 12:01:35 +0530
-Message-Id: <20250522063135.366295-1-vinayak.kh@samsung.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1uI12s-0007PS-Lu
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 04:12:56 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1uI12n-0003Mi-QH
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 04:12:54 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-43cfe63c592so87981765e9.2
+ for <qemu-devel@nongnu.org>; Thu, 22 May 2025 01:12:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1747901567; x=1748506367; darn=nongnu.org;
+ h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+ :date:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=oRP6hFzjEnRw224aWEFGaLpYcpqN6JBOx/NBdDGoSLg=;
+ b=KcEiik4zx08a9E/5FcxlzBybSVkW5wcg5AcLwmcrmQbnG/08F+e2l0wiF9JdkwWSc9
+ BcTYI676GlKy8kfX+SLd6CYLFoCCrzYyXIIXj+/v9+KLGlhyO/8MDeCsuVzjZdufcOSJ
+ Hx695D+s9Z5KK1OZKUMdlQlfF8yvFzb2OGZ2o50TcMjyc374z5+8CF6vZA8Q7Hv247aQ
+ sXaIuOP7Mwsc2UwzkBsmvdH9SIbvidszJ9ElIu3So1baM7lporMk8AaKpnbwYOVj3vPN
+ tJ4bz5ulrSgFDxaxbQmJdZ9kIUZqk4Qfu4aW98tB0W1oGKChD8s+IdMTq/wrbbJCllX7
+ VteA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747901567; x=1748506367;
+ h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+ :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=oRP6hFzjEnRw224aWEFGaLpYcpqN6JBOx/NBdDGoSLg=;
+ b=d4OWjPRI29m7/CcISVR2jeqEaKIWu7Yp89otkTr9K66b34T6fIvTT5pQxJcgQjmU3G
+ /YAIjRPMDp5L1zEEm0UnY9J5XoFNYPvemBsKIjfH3ydxgVYQ5uuWYld3ixj/aVpX9a8m
+ Oj9q2jcD1w0B+mtq6D2IZpx3m4WrY+Ybx5nNb5L0ceAffLXYldrFrj3uZEsaaGrvmdcl
+ uoKV8DIzpGKbdeW3wk53GiViSWRUgdJYomfSzIBtNKvmNGWK1M76ihlbtNYES3c/B5YV
+ MJ1Ci58LUYa7/x4h/Dj3fAbtRnxk+j+PKVYCppACrfI7+Fb6y7MFhIVqGtxEjWDJ7W/x
+ l9TA==
+X-Gm-Message-State: AOJu0YxqOlCsCPmcjDb+jsxQdWdBfMcV62QdbTzJw8Ba6J4NDW/jtHRs
+ wCOQ9TQoArF/pUhg9mMNobPvhJOSNJtfCjV1cb+lklvQfU2m72wX4dSO+IrO2RSjVYA=
+X-Gm-Gg: ASbGnctrqoykCZMrRXhLyvfGrHdMdHfjJ8NkyUbFdH5PZkMzscnIRjlliR5VvAr04Uf
+ 3KdcuOJTwZYgNK9tDX2aiAMKmpUi6InVszoglO/imJtrtFonM6S/jx/kB+I7kOpnMhkcMPtNDxj
+ k4rJe8ylyxsApeuZYdMYuVM+ZMACLr8AEgjl+pMbwyZvP6946qbZ4PI8D2aGl+YvN2Oq5GyzKX7
+ DTtly4GnLTOGmzqaxbkPZKD9tb4tNn4ncBbiaivMK6gqRfqthm2XtefKDAqyzfPiJTT1rF870p9
+ qEjJJuTLpr1I8wD0BNwPJLbbjvYEZbZfjASQ1oMcEWVZHqUK1WPgKFZwG3nUyyr62zP6doDGPEA
+ X/25fj9NYJA==
+X-Google-Smtp-Source: AGHT+IHLW7PJoV4Kj8oI/e3oRVXUFm6kjsYTQdySN+Bu0fgIX8zuf6OtbngYiF8Nwz2m9vtV3O/Mcg==
+X-Received: by 2002:a05:6000:2012:b0:39e:cbe1:8d68 with SMTP id
+ ffacd0b85a97d-3a35c80923dmr22168778f8f.6.1747901567023; 
+ Thu, 22 May 2025 01:12:47 -0700 (PDT)
+Received: from [127.0.1.1] (adsl-1.37.6.162.tellas.gr. [37.6.162.1])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a35ca208besm22159584f8f.0.2025.05.22.01.12.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 22 May 2025 01:12:46 -0700 (PDT)
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Date: Thu, 22 May 2025 11:12:30 +0300
+Subject: [PATCH WIP RFC] rust: add qdev DeviceProperties derive macro
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrDLMWRmVeSWpSXmKPExsWy7bCSvO7VI3oZBndncllMP6xo8eX0HjaL
- 1TfXMFrcPLCTyWLhxmVMFudnnWKx+LttL6PF8d4dLBYnTm5nB4rNYXfg8tg56y67x5Nrm5k8
- +rasYvSYOrve4/MmuQDWKC6blNSczLLUIn27BK6MxXfeMxc8jag4/fwuWwNjn0MXIyeHhICJ
- xK8V69i7GLk4hAR2M0rMbgNxQBJSEsd2/mSDsIUlVv57DlX0j1FiW+MZJpAEm4CBxIPm42AN
- IgKSEr+7TjODFDEL/GKUeLr7PlhCWMBfoqulDaiBg4NFQFVi7cRokDCvgI3ErLXrGSEWyEvs
- P3iWGSIuKHFy5hMWEJsZKN68dTbzBEa+WUhSs5CkFjAyrWKUTC0ozk3PTTYsMMxLLdcrTswt
- Ls1L10vOz93ECA5gLY0djO++NekfYmTiYDzEKMHBrCTCG7tCJ0OINyWxsiq1KD++qDQntfgQ
- ozQHi5I470rDiHQhgfTEktTs1NSC1CKYLBMHp1QDk05TfWp1t+qySdI7JbaJ/NqbVvpKTn3J
- qzVlGiyBb9Y/WfvmSf+2sA/HZMLWOHHomxavVw84q2G29PDZsv/ZOlb/s26cyUvIvbgqkP3Y
- xCrzqrVn7Wz3/2SbdeCV+An+FI0Vd7ebHm90Dv3OqH+Am8PDp+boS3F+59jlcdvmxvxViPis
- sqJ36dW1Vse/WK42Dy8y/jJrttaSm0XnAne6CKxhin1X9L2vOVktc/XBDd0JRqvrkk4khvk1
- udi6v2k3amObuOOcSw5PlTDTqn0S2q75wTuu5XLZbXuvP/12867PUYaZJdaP4qx+HExnfT67
- arKh9u7Kg2LPbr7Zd05c/E3x6tlOB2rZXDhslwWxKbEUZyQaajEXFScCALdVnTXPAgAA
-X-CMS-MailID: 20250522063149epcas5p13719600aa8f59313ff3dc2570c996aec
-X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: REQ_APPROVE
-CMS-TYPE: 105P
-cpgsPolicy: CPGSC10-542,Y
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20250522063149epcas5p13719600aa8f59313ff3dc2570c996aec
-References: <CGME20250522063149epcas5p13719600aa8f59313ff3dc2570c996aec@epcas5p1.samsung.com>
-Received-SPF: pass client-ip=203.254.224.33;
- envelope-from=vinayak.kh@samsung.com; helo=mailout3.samsung.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.184,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250522-rust-qdev-properties-v1-1-5b18b218bad1@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAG3cLmgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDUyMj3aLS4hLdwpTUMt2CovyC1KISoG5dcyOLVIs0s0QTM4tUJaDWgqL
+ UtMwKsLHRSuGeASCxIDdnpdjaWgDzByU6cgAAAA==
+X-Change-ID: 20250522-rust-qdev-properties-728e8f6a468e
+To: qemu-devel@nongnu.org
+Cc: qemu-rust@nongnu.org, 
+ =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>, 
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=17152;
+ i=manos.pitsidianakis@linaro.org; h=from:subject:message-id;
+ bh=6uvIlwwVxcMvDdJyIjn1Iy83OnEKAKozLbBUQB1YoBo=;
+ b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0VCYlFLUy9aQU5Bd0FLQVhjcHgzQi9mZ
+ 25RQWNzbVlnQm9MdHg5SHprb2FSOW1vdjc5QWE5czR2bTVpbTN5CjFsWjR0bmRqdnZnOUxlOGxY
+ YU9KQWpNRUFBRUtBQjBXSVFUTVhCdE9SS0JXODRkd0hSQjNLY2R3ZjM0SjBBVUMKYUM3Y2ZRQUt
+ DUkIzS2Nkd2YzNEowQ2J6RUFDYTdFaEdaTzYzTkdlNVlRZGE1N1g2cTVVQUFUcDhGQW9Rc1J2Vw
+ pobllQTTFRMFNwbm9WZmJaMGtWcmlGRWxnT3c2TXFMeFZ6QUtEQURpVW5wb1JlWnMxUlNXQ2dkY
+ VNwa0x5Q0E3CmViMExaUnNyWXVrcWxydmNFa09wUmVyM0tjYi90ajl5dVcrQVBNNnczbVdJREdB
+ Z3FPeW1NVlN1NnBVK0tkODIKaXNFRjNJdWZtZkp5eHpTdkNadUpQM0dmcWZZbFZLSVVTSE5vSHF
+ WQ2ZmcVVDMzF6Q2pyWnE0UDFuTDJvbm5MQgp6VEI4Q0dNdk01VUczN0FBeEQwTzFjb1JsODlBNH
+ BleHF6K0c2dnRVZTRaMlM2eVdnWlJiMkswbmNoVW1Ic1lDCkJGejZWVXZnaUxOaVJZM0hXMzNyW
+ DJCNUVCR3lJeVJKa0NibmdXeWpJTXlXWFVraHFQaE9zZFJtbldzQVoxZzgKaU1GSnhpczFtMVNH
+ eWkzVDY1cFVPOVdHMFh2dHRNajVGQUUwMGlybEVEa3FFMW9OZ1VLVngzYWZXK0VkcW91TwpSa0M
+ 5TUFwVzlkUXBOTGFNVldQN1MzNGtDQkZiRE8vY2Q5NEpXN2dsUU1oY2l5R1F4S1Q5NGIyUGg1Mj
+ lIdlNNCkRBNzZwVFFCZEh4S3dzZnFhSmtCWlBoZEhyU2FodllyTTgzYWpoaURXdDJRd1NGc21YW
+ jl1M0E3blBJWGhBc28KdzZoUGtiYUQ1clJod2luWGFhcmY3QU9kVy8rN3V6NWxSV0o3bEFJWVc2
+ NFAvSWM0bzZEK3RKMnZaektHMlJDNQpZRUJ5djkyNGVuWWV2K2QyN3R6b1lpaStnZHM1NjRPT2h
+ 5TE9aSU9USmhScHNXNldiYlRFUitWeGZtdTk2a2RnCmR5SmpqUT09Cj1FV29QCi0tLS0tRU5EIF
+ BHUCBNRVNTQUdFLS0tLS0K
+X-Developer-Key: i=manos.pitsidianakis@linaro.org; a=openpgp;
+ fpr=7C721DF9DB3CC7182311C0BF68BC211D47B421E1
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x331.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,272 +124,440 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CXL spec 3.2 section 7.6.7.5.2  describes Get Head Info.
+Add derive macro for declaring qdev properties directly above the field
+definitions. To do this, we split DeviceImpl::properties method on a
+separate trait so we can implement only that part in the derive macro
+expansion (we cannot partially implement the DeviceImpl trait).
 
-Signed-off-by: Vinayak Holikatti <vinayak.kh@samsung.com>
+Adding a `property` attribute above the field declaration will generate
+a `qemu_api::bindings::Property` array member in the device's property
+list.
+
+As a proof of concept, I added a typed alias for booleans,
+`bool_property` that allows you to skip specifying qdev_prop_bool.
+
+This is unnecessary though, because once we have the
+const_refs_to_static feature we can introduce a QdevProp trait that
+returns a reference to a type's qdev_prop_* global variable. We cannot
+do this now because for our minimum Rust version we cannot refer to
+statics from const values.
+
+It'd look like this:
+
+  pub trait QDevProp {
+    const VALUE: &'static bindings::PropertyInfo;
+  }
+
+  impl QDevProp for bool {
+    const VALUE: &'static bindings::PropertyInfo = unsafe {
+      &bindings::qdev_prop_bool };
+  }
+
+  impl QDevProp for u64 {
+    const VALUE: &'static bindings::PropertyInfo = unsafe {
+      &bindings::qdev_prop_uint64 };
+  }
+
+  // etc.. for all basic types
+
+So, this patch is not for merging yet, I will wait until we upgrade the
+Rust version and re-spin it with a proper trait-based implementation (and
+also split it into individual steps/patches).
+
+Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
-This patch is generated against Jonathan Cameron's branch cxl-2025-03-20
+ rust/hw/char/pl011/src/device.rs       |  13 +--
+ rust/hw/char/pl011/src/device_class.rs |  26 +-----
+ rust/hw/timer/hpet/src/hpet.rs         |   4 +-
+ rust/qemu-api-macros/src/lib.rs        | 157 ++++++++++++++++++++++++++++++++-
+ rust/qemu-api/src/qdev.rs              |  22 +++--
+ rust/qemu-api/tests/tests.rs           |   9 +-
+ 6 files changed, 187 insertions(+), 44 deletions(-)
 
- hw/cxl/cxl-mailbox-utils.c  | 21 +++++++++
- hw/cxl/mhsld/mhsld.c        | 92 ++++++++++++++++++++++++++++++++++++-
- hw/cxl/mhsld/mhsld.h        | 26 +++++++++++
- include/hw/cxl/cxl_device.h |  6 +++
- 4 files changed, 144 insertions(+), 1 deletion(-)
-
-diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index a02d130926..4f25caecea 100644
---- a/hw/cxl/cxl-mailbox-utils.c
-+++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -122,6 +122,7 @@ enum {
-         #define MANAGEMENT_COMMAND     0x0
-     MHD = 0x55,
-         #define GET_MHD_INFO 0x0
-+        #define GET_MHD_HEAD_INFO 0x1
- };
- 
- /* CCI Message Format CXL r3.1 Figure 7-19 */
-@@ -267,6 +268,23 @@ static CXLRetCode cmd_mhd_get_info(const struct cxl_cmd *cmd,
-     return CXL_MBOX_UNSUPPORTED;
+diff --git a/rust/hw/char/pl011/src/device.rs b/rust/hw/char/pl011/src/device.rs
+index bde3be65c5b0d9dbb117407734d93fff577ddecf..e22f5421dc5d9cd5c6fa8b11ab746e5c254bdb37 100644
+--- a/rust/hw/char/pl011/src/device.rs
++++ b/rust/hw/char/pl011/src/device.rs
+@@ -10,7 +10,10 @@
+     irq::{IRQState, InterruptSource},
+     memory::{hwaddr, MemoryRegion, MemoryRegionOps, MemoryRegionOpsBuilder},
+     prelude::*,
+-    qdev::{Clock, ClockEvent, DeviceImpl, DeviceState, Property, ResetType, ResettablePhasesImpl},
++    qdev::{
++        Clock, ClockEvent, DeviceImpl, DevicePropertiesImpl, DeviceState, ResetType,
++        ResettablePhasesImpl,
++    },
+     qom::{ObjectImpl, Owned, ParentField},
+     static_assert,
+     sysbus::{SysBusDevice, SysBusDeviceImpl},
+@@ -98,12 +101,13 @@ pub struct PL011Registers {
  }
  
-+/*
-+ * CXL r3.2 section 7.6.7.5.2 - Get Multi-Headed Head Info (Opcode 5501h)
-+ */
-+static CXLRetCode cmd_mhd_get_head_info(const struct cxl_cmd *cmd,
-+                                   uint8_t *payload_in, size_t len_in,
-+                                   uint8_t *payload_out, size_t *len_out,
-+                                   CXLCCI *cci)
-+{
-+    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
-+    CXLType3Class *cvc = CXL_TYPE3_GET_CLASS(ct3d);
-+    if (cvc->mhd_get_head_info) {
-+        return cvc->mhd_get_head_info(cmd, payload_in, len_in, payload_out,
-+                                 len_out, cci);
-+    }
-+    return CXL_MBOX_UNSUPPORTED;
-+}
-+
- static CXLRetCode cmd_events_get_records(const struct cxl_cmd *cmd,
-                                          uint8_t *payload_in, size_t len_in,
-                                          uint8_t *payload_out, size_t *len_out,
-@@ -3429,6 +3447,7 @@ static const struct cxl_cmd cxl_cmd_set[256][256] = {
-         "MEDIA_AND_POISON_GET_SCAN_MEDIA_RESULTS",
-         cmd_media_get_scan_media_results, 0, 0 },
-     [MHD][GET_MHD_INFO] = { "GET_MULTI_HEADED_INFO", cmd_mhd_get_info, 2, 0},
-+    [MHD][GET_MHD_HEAD_INFO] = { "GET_MULTI_HEADED_INFO", cmd_mhd_get_head_info, 2, 0},
- };
- 
- static const struct cxl_cmd cxl_cmd_set_dcd[256][256] = {
-@@ -3761,6 +3780,8 @@ static const struct cxl_cmd cxl_cmd_set_t3_fm_owned_ld_mctp[256][256] = {
-     [TIMESTAMP][GET] = { "TIMESTAMP_GET", cmd_timestamp_get, 0, 0 },
-     [TUNNEL][MANAGEMENT_COMMAND] = { "TUNNEL_MANAGEMENT_COMMAND",
-                                      cmd_tunnel_management_cmd, ~0, 0 },
-+    [MHD][GET_MHD_INFO] = { "GET_MULTI_HEADED_INFO", cmd_mhd_get_info, 2, 0},
-+    [MHD][GET_MHD_HEAD_INFO] = { "GET_MULTI_HEADED_INFO", cmd_mhd_get_head_info, 2, 0},
- };
- 
- void cxl_initialize_t3_fm_owned_ld_mctpcci(CXLCCI *cci, DeviceState *d,
-diff --git a/hw/cxl/mhsld/mhsld.c b/hw/cxl/mhsld/mhsld.c
-index 9f633b3bed..981546b5ff 100644
---- a/hw/cxl/mhsld/mhsld.c
-+++ b/hw/cxl/mhsld/mhsld.c
-@@ -61,9 +61,57 @@ static CXLRetCode cmd_mhd_get_info(const struct cxl_cmd *cmd,
-     return CXL_MBOX_SUCCESS;
+ #[repr(C)]
+-#[derive(qemu_api_macros::Object)]
++#[derive(qemu_api_macros::Object, qemu_api_macros::DeviceProperties)]
+ /// PL011 Device Model in QEMU
+ pub struct PL011State {
+     pub parent_obj: ParentField<SysBusDevice>,
+     pub iomem: MemoryRegion,
+     #[doc(alias = "chr")]
++    #[property(name = c"chardev", qdev_prop = qemu_api::bindings::qdev_prop_chr)]
+     pub char_backend: CharBackend,
+     pub regs: BqlRefCell<PL011Registers>,
+     /// QEMU interrupts
+@@ -122,6 +126,7 @@ pub struct PL011State {
+     #[doc(alias = "clk")]
+     pub clock: Owned<Clock>,
+     #[doc(alias = "migrate_clk")]
++    #[bool_property(name = c"migrate-clk", default = true)]
+     pub migrate_clock: bool,
  }
  
-+/*
-+ * CXL r3.2 section 7.6.7.5.2 - Get Head Info (Opcode 5501h)
-+ *
-+ * This command retrieves the number of heads, number of supported LDs,
-+ * and Head-to-LD mapping of a Multi-Headed device.
-+ */
-+static CXLRetCode cmd_mhd_get_head_info(const struct cxl_cmd *cmd,
-+                                        uint8_t *payload_in, size_t len_in,
-+                                        uint8_t *payload_out, size_t *len_out,
-+                                        CXLCCI *cci)
-+{
-+    CXLMHSLDState *s = CXL_MHSLD(cci->d);
-+    MHDGetHeadInfoInput *input = (void *)payload_in;
-+    MHDGetHeadInfoOutput *output = (void *)payload_out;
-+    int i = 0;
-+
-+    if (input->start_head > MHSLD_HEADS) {
-+        return CXL_MBOX_INVALID_INPUT;
-+    }
-+
-+    output->nr_heads = MIN((MHSLD_HEADS - input->start_head), input->nr_heads);
-+    for (i = input->start_head; i < input->start_head + output->nr_heads; i++) {
-+        output->head_info_list[i].port_number =
-+                                 s->mhd_state->head_info_blocks[i].port_number;
-+        output->head_info_list[i].max_link_width =
-+                              s->mhd_state->head_info_blocks[i].max_link_width;
-+        output->head_info_list[i].nego_link_width =
-+                             s->mhd_state->head_info_blocks[i].nego_link_width;
-+        output->head_info_list[i].supp_link_speeds_vector =
-+                     s->mhd_state->head_info_blocks[i].supp_link_speeds_vector;
-+        output->head_info_list[i].max_link_speed =
-+                              s->mhd_state->head_info_blocks[i].max_link_speed;
-+        output->head_info_list[i].current_link_speed =
-+                          s->mhd_state->head_info_blocks[i].current_link_speed;
-+        output->head_info_list[i].ltssm_state =
-+                                 s->mhd_state->head_info_blocks[i].ltssm_state;
-+        output->head_info_list[i].first_nego_lane_num =
-+                         s->mhd_state->head_info_blocks[i].first_nego_lane_num;
-+        output->head_info_list[i].link_state_flags =
-+                            s->mhd_state->head_info_blocks[i].link_state_flags;
-+    }
-+
-+    *len_out = sizeof(*output) + output->nr_heads * sizeof(MHDHeadInfoBlock);
-+    return CXL_MBOX_SUCCESS;
-+}
-+
- static const struct cxl_cmd cxl_cmd_set_mhsld[256][256] = {
-     [MHSLD_MHD][GET_MHD_INFO] = {"GET_MULTI_HEADED_INFO",
-         cmd_mhd_get_info, 2, 0},
-+    [MHSLD_MHD][GET_MHD_HEAD_INFO] = {"GET_HEAD_INFO",
-+        cmd_mhd_get_head_info, 2, 0},
- };
- 
- static const Property cxl_mhsld_props[] = {
-@@ -166,6 +214,47 @@ static void cxl_mhsld_state_initialize(CXLMHSLDState *s, size_t dc_size)
-     s->mhd_state->nr_blocks = dc_size / MHSLD_BLOCK_SZ;
+@@ -169,9 +174,6 @@ impl ObjectImpl for PL011State {
  }
  
-+
-+static void cxl_mhsld_init_head_info(CXLMHSLDState *s, PCIDevice *pdev)
-+{
-+    uint16_t lnksta = 0;
-+    uint16_t current_link_speed = 0;
-+    uint16_t negotiated_link_width = 0;
-+    uint16_t lnkcap = 0, lnkcap2 = 0;
-+    uint16_t max_link_width = 0;
-+    uint16_t max_link_speed = 0;
-+    uint16_t supported_link_speeds_vector = 0;
-+
-+    lnksta = pdev->config_read(pdev,
-+                               pdev->exp.exp_cap + PCI_EXP_LNKSTA,
-+                               sizeof(lnksta));
-+    lnkcap = pdev->config_read(pdev,
-+                               pdev->exp.exp_cap + PCI_EXP_LNKCAP,
-+                               sizeof(lnkcap));
-+    lnkcap2 = pdev->config_read(pdev,
-+                                pdev->exp.exp_cap + PCI_EXP_LNKCAP2,
-+                                sizeof(lnkcap2));
-+    supported_link_speeds_vector = (lnkcap2 & 0xFE) >> 1;
-+    max_link_width = (lnkcap & PCI_EXP_LNKCAP_MLW) >> 4;
-+    max_link_speed = lnkcap & PCI_EXP_LNKCAP_SLS;
-+    current_link_speed = lnksta & PCI_EXP_LNKSTA_CLS;
-+    negotiated_link_width = (lnksta & PCI_EXP_LNKSTA_NLW) >> 4;
-+
-+    s->mhd_state->head_info_blocks[s->mhd_head].port_number = s->mhd_head;
-+    s->mhd_state->head_info_blocks[s->mhd_head].max_link_width = max_link_width;
-+    s->mhd_state->head_info_blocks[s->mhd_head].nego_link_width =
-+                                                          negotiated_link_width;
-+    s->mhd_state->head_info_blocks[s->mhd_head].supp_link_speeds_vector =
-+                                                   supported_link_speeds_vector;
-+    s->mhd_state->head_info_blocks[s->mhd_head].max_link_speed =
-+                                                                 max_link_speed;
-+    s->mhd_state->head_info_blocks[s->mhd_head].current_link_speed =
-+                                                             current_link_speed;
-+    s->mhd_state->head_info_blocks[s->mhd_head].ltssm_state = 0x7;
-+    s->mhd_state->head_info_blocks[s->mhd_head].first_nego_lane_num = 0;
-+    s->mhd_state->head_info_blocks[s->mhd_head].link_state_flags = 0;
-+}
-+
- /* Returns starting index of region in MHD map. */
- static inline size_t cxl_mhsld_find_dc_region_start(PCIDevice *d,
-                                                     CXLDCRegion *r)
-@@ -376,7 +465,7 @@ static void cxl_mhsld_realize(PCIDevice *pci_dev, Error **errp)
+ impl DeviceImpl for PL011State {
+-    fn properties() -> &'static [Property] {
+-        &device_class::PL011_PROPERTIES
+-    }
+     fn vmsd() -> Option<&'static VMStateDescription> {
+         Some(&device_class::VMSTATE_PL011)
      }
+@@ -703,6 +705,7 @@ impl PL011Impl for PL011Luminary {
+     const DEVICE_ID: DeviceId = DeviceId(&[0x11, 0x00, 0x18, 0x01, 0x0d, 0xf0, 0x05, 0xb1]);
+ }
  
-     cxl_mhsld_state_initialize(s, dc_size);
--
-+    cxl_mhsld_init_head_info(s, pci_dev);
-     /* Set the LD ownership for this head to this system */
-     s->mhd_state->ldmap[s->mhd_head] = s->mhd_head;
-     return;
-@@ -428,6 +517,7 @@ static void cxl_mhsld_class_init(ObjectClass *klass, void *data)
- 
-     CXLType3Class *cvc = CXL_TYPE3_CLASS(klass);
-     cvc->mhd_get_info = cmd_mhd_get_info;
-+    cvc->mhd_get_head_info = cmd_mhd_get_head_info;
-     cvc->mhd_access_valid = cxl_mhsld_access_valid;
-     cvc->mhd_reserve_extents = cxl_mhsld_reserve_extents;
-     cvc->mhd_reclaim_extents = cxl_mhsld_reclaim_extents;
-diff --git a/hw/cxl/mhsld/mhsld.h b/hw/cxl/mhsld/mhsld.h
-index e7ead1f0d2..c9fbec71ca 100644
---- a/hw/cxl/mhsld/mhsld.h
-+++ b/hw/cxl/mhsld/mhsld.h
-@@ -23,6 +23,18 @@
-  */
- #define MHSLD_HEADS  (8)
- 
-+typedef struct MHDHeadInfoBlock {
-+    uint8_t port_number;
-+    uint8_t max_link_width;
-+    uint8_t nego_link_width;
-+    uint8_t supp_link_speeds_vector;
-+    uint8_t max_link_speed;
-+    uint8_t current_link_speed;
-+    uint8_t ltssm_state;
-+    uint8_t first_nego_lane_num;
-+    uint8_t link_state_flags;
-+} QEMU_PACKED MHDHeadInfoBlock;
-+
- /*
-  * The shared state cannot have 2 variable sized regions
-  * so we have to max out the ldmap.
-@@ -32,6 +44,7 @@ typedef struct MHSLDSharedState {
-     uint8_t nr_lds;
-     uint8_t ldmap[MHSLD_HEADS];
-     uint64_t nr_blocks;
-+    MHDHeadInfoBlock head_info_blocks[MHSLD_HEADS];
-     uint8_t blocks[];
- } MHSLDSharedState;
- 
-@@ -52,6 +65,7 @@ struct CXLMHSLDClass {
- enum {
-     MHSLD_MHD = 0x55,
-         #define GET_MHD_INFO 0x0
-+        #define GET_MHD_HEAD_INFO 0x1
++impl DevicePropertiesImpl for PL011Luminary {}
+ impl DeviceImpl for PL011Luminary {}
+ impl ResettablePhasesImpl for PL011Luminary {}
+ impl SysBusDeviceImpl for PL011Luminary {}
+diff --git a/rust/hw/char/pl011/src/device_class.rs b/rust/hw/char/pl011/src/device_class.rs
+index d328d846323f6080a9573053767e51481eb32941..83d70d7d82aac4a3252a0b4cb24af705b01d3635 100644
+--- a/rust/hw/char/pl011/src/device_class.rs
++++ b/rust/hw/char/pl011/src/device_class.rs
+@@ -8,11 +8,8 @@
  };
  
- /*
-@@ -72,4 +86,16 @@ typedef struct MHDGetInfoOutput {
-     uint16_t resv2;
-     uint8_t ldmap[];
- } QEMU_PACKED MHDGetInfoOutput;
+ use qemu_api::{
+-    bindings::{qdev_prop_bool, qdev_prop_chr},
+-    prelude::*,
+-    vmstate::VMStateDescription,
+-    vmstate_clock, vmstate_fields, vmstate_of, vmstate_struct, vmstate_subsections, vmstate_unused,
+-    zeroable::Zeroable,
++    prelude::*, vmstate::VMStateDescription, vmstate_clock, vmstate_fields, vmstate_of,
++    vmstate_struct, vmstate_subsections, vmstate_unused, zeroable::Zeroable,
+ };
+ 
+ use crate::device::{PL011Registers, PL011State};
+@@ -82,22 +79,3 @@ extern "C" fn pl011_post_load(opaque: *mut c_void, version_id: c_int) -> c_int {
+     },
+     ..Zeroable::ZERO
+ };
+-
+-qemu_api::declare_properties! {
+-    PL011_PROPERTIES,
+-    qemu_api::define_property!(
+-        c"chardev",
+-        PL011State,
+-        char_backend,
+-        unsafe { &qdev_prop_chr },
+-        CharBackend
+-    ),
+-    qemu_api::define_property!(
+-        c"migrate-clk",
+-        PL011State,
+-        migrate_clock,
+-        unsafe { &qdev_prop_bool },
+-        bool,
+-        default = true
+-    ),
+-}
+diff --git a/rust/hw/timer/hpet/src/hpet.rs b/rust/hw/timer/hpet/src/hpet.rs
+index 779681d650998291f138e8cc61807612b8597961..21ebcfc9f22f8f5463812db218a1dc2039eda75b 100644
+--- a/rust/hw/timer/hpet/src/hpet.rs
++++ b/rust/hw/timer/hpet/src/hpet.rs
+@@ -1033,11 +1033,13 @@ impl ObjectImpl for HPETState {
+     ..Zeroable::ZERO
+ };
+ 
+-impl DeviceImpl for HPETState {
++impl qemu_api::qdev::DevicePropertiesImpl for HPETState {
+     fn properties() -> &'static [Property] {
+         &HPET_PROPERTIES
+     }
++}
+ 
++impl DeviceImpl for HPETState {
+     fn vmsd() -> Option<&'static VMStateDescription> {
+         Some(&VMSTATE_HPET)
+     }
+diff --git a/rust/qemu-api-macros/src/lib.rs b/rust/qemu-api-macros/src/lib.rs
+index f97449bb304b575c7d8c3272f287a81a9f8c9131..c5b746198d183d214526c8f0132b23d375e2d27b 100644
+--- a/rust/qemu-api-macros/src/lib.rs
++++ b/rust/qemu-api-macros/src/lib.rs
+@@ -3,10 +3,11 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ 
+ use proc_macro::TokenStream;
+-use quote::quote;
++use quote::{quote, quote_spanned, ToTokens};
+ use syn::{
+-    parse_macro_input, parse_quote, punctuated::Punctuated, spanned::Spanned, token::Comma, Data,
+-    DeriveInput, Field, Fields, FieldsUnnamed, Ident, Meta, Path, Token, Variant,
++    parse::Parse, parse_macro_input, parse_quote, punctuated::Punctuated, spanned::Spanned,
++    token::Comma, Data, DeriveInput, Field, Fields, FieldsUnnamed, Ident, Meta, Path, Token,
++    Variant,
+ };
+ 
+ mod utils;
+@@ -143,6 +144,156 @@ pub const fn raw_get(slot: *mut Self) -> *mut <Self as crate::cell::Wrapper>::Wr
+     })
+ }
+ 
++#[derive(Debug)]
++struct DeviceProperty {
++    name: Option<syn::LitCStr>,
++    qdev_prop: Option<syn::Path>,
++    assert_type: Option<proc_macro2::TokenStream>,
++    bitnr: Option<syn::Expr>,
++    defval: Option<syn::Expr>,
++}
 +
-+typedef struct MHDGetHeadInfoInput {
-+    uint8_t start_head;
-+    uint8_t nr_heads;
-+} QEMU_PACKED MHDGetHeadInfoInput;
++impl Parse for DeviceProperty {
++    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
++        let _: syn::Token![#] = input.parse()?;
++        let bracketed;
++        _ = syn::bracketed!(bracketed in input);
++        let attribute = bracketed.parse::<syn::Ident>()?.to_string();
++        let (assert_type, qdev_prop) = match attribute.as_str() {
++            "property" => (None, None),
++            "bool_property" => (
++                Some(quote! { bool }),
++                Some(syn::parse2(
++                    quote! { ::qemu_api::bindings::qdev_prop_bool },
++                )?),
++            ),
++            other => unreachable!("Got unexpected DeviceProperty attribute `{}`", other),
++        };
++        let mut retval = Self {
++            name: None,
++            qdev_prop,
++            assert_type,
++            bitnr: None,
++            defval: None,
++        };
++        let content;
++        _ = syn::parenthesized!(content in bracketed);
++        while !content.is_empty() {
++            let value: syn::Ident = content.parse()?;
++            if value == "name" {
++                let _: syn::Token![=] = content.parse()?;
++                if retval.name.is_some() {
++                    panic!("`name` can only be used at most once");
++                }
++                retval.name = Some(content.parse()?);
++            } else if value == "qdev_prop" {
++                let _: syn::Token![=] = content.parse()?;
++                if retval.assert_type.is_some() {
++                    // qdev_prop will be Some(_), but we want to print a helpful error message
++                    // explaining why you should use #[property(...)] instead of saying "you
++                    // defined qdev_prop twice".
++                    panic!("Use `property` attribute instead of `{attribute}` if you want to override `qdev_prop` value.");
++                }
++                if retval.qdev_prop.is_some() {
++                    panic!("`qdev_prop` can only be used at most once");
++                }
++                retval.qdev_prop = Some(content.parse()?);
++            } else if value == "bitnr" {
++                let _: syn::Token![=] = content.parse()?;
++                if retval.bitnr.is_some() {
++                    panic!("`bitnr` can only be used at most once");
++                }
++                retval.bitnr = Some(content.parse()?);
++            } else if value == "default" {
++                let _: syn::Token![=] = content.parse()?;
++                if retval.defval.is_some() {
++                    panic!("`default` can only be used at most once");
++                }
++                retval.defval = Some(content.parse()?);
++            } else {
++                panic!("unrecognized field `{value}`");
++            }
 +
-+typedef struct MHDGetHeadInfoOutput {
-+    uint8_t nr_heads;
-+    uint8_t rsvd[3];
-+    MHDHeadInfoBlock head_info_list[];
-+} QEMU_PACKED MHDGetHeadInfoOutput;
++            if !content.is_empty() {
++                let _: syn::Token![,] = content.parse()?;
++            }
++        }
++        Ok(retval)
++    }
++}
 +
- #endif
-diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index ca515cab13..c93c71c45d 100644
---- a/include/hw/cxl/cxl_device.h
-+++ b/include/hw/cxl/cxl_device.h
-@@ -732,6 +732,12 @@ struct CXLType3Class {
-                                uint8_t *payload_out,
-                                size_t *len_out,
-                                CXLCCI *cci);
-+    CXLRetCode (*mhd_get_head_info)(const struct cxl_cmd *cmd,
-+                               uint8_t *payload_in,
-+                               size_t len_in,
-+                               uint8_t *payload_out,
-+                               size_t *len_out,
-+                               CXLCCI *cci);
-     bool (*mhd_access_valid)(PCIDevice *d, uint64_t addr, unsigned int size);
-     bool (*mhd_reserve_extents)(PCIDevice *d,
-                                 CxlDynamicCapacityExtentList *records,
--- 
-2.34.1
++#[proc_macro_derive(DeviceProperties, attributes(property, bool_property))]
++pub fn derive_device_properties(input: TokenStream) -> TokenStream {
++    let span = proc_macro::Span::call_site();
++    let input = parse_macro_input!(input as DeriveInput);
++    let properties: Vec<(syn::Field, proc_macro2::Span, DeviceProperty)> = match input.data {
++        syn::Data::Struct(syn::DataStruct {
++            fields: syn::Fields::Named(fields),
++            ..
++        }) => fields
++            .named
++            .iter()
++            .flat_map(|f| {
++                f.attrs
++                    .iter()
++                    .filter(|a| a.path().is_ident("property") || a.path().is_ident("bool_property"))
++                    .map(|a| {
++                        (
++                            f.clone(),
++                            f.span(),
++                            syn::parse(a.to_token_stream().into())
++                                .expect("could not parse property attr"),
++                        )
++                    })
++            })
++            .collect::<Vec<_>>(),
++        _other => unreachable!(),
++    };
++    let name = &input.ident;
++
++    let mut assertions = vec![];
++    let mut properties_expanded = vec![];
++    let zero = syn::Expr::Verbatim(quote! { 0 });
++    for (field, field_span, prop) in properties {
++        let prop_name = prop.name.as_ref().unwrap();
++        let field_name = field.ident.as_ref().unwrap();
++        let qdev_prop = prop.qdev_prop.as_ref().unwrap();
++        let bitnr = prop.bitnr.as_ref().unwrap_or(&zero);
++        let set_default = prop.defval.is_some();
++        let defval = prop.defval.as_ref().unwrap_or(&zero);
++        if let Some(assert_type) = prop.assert_type {
++            assertions.push(quote_spanned! {field_span=>
++                ::qemu_api::assert_field_type! ( #name, #field_name, #assert_type );
++            });
++        }
++        properties_expanded.push(quote_spanned! {field_span=>
++            ::qemu_api::bindings::Property {
++                // use associated function syntax for type checking
++                name: ::std::ffi::CStr::as_ptr(#prop_name),
++                info: unsafe { &#qdev_prop },
++                offset: ::core::mem::offset_of!(#name, #field_name) as isize,
++                bitnr: #bitnr,
++                set_default: #set_default,
++                defval: ::qemu_api::bindings::Property__bindgen_ty_1 { u: #defval as u64 },
++                ..::qemu_api::zeroable::Zeroable::ZERO
++            }
++        });
++    }
++    let properties_expanded = quote_spanned! {span.into()=>
++        #(#assertions)*
++
++        impl ::qemu_api::qdev::DevicePropertiesImpl for #name {
++            fn properties() -> &'static [::qemu_api::bindings::Property] {
++                static PROPERTIES: &'static [::qemu_api::bindings::Property] = &[#(#properties_expanded),*];
++
++                PROPERTIES
++            }
++        }
++    };
++
++    TokenStream::from(properties_expanded)
++}
++
+ #[proc_macro_derive(Wrapper)]
+ pub fn derive_opaque(input: TokenStream) -> TokenStream {
+     let input = parse_macro_input!(input as DeriveInput);
+diff --git a/rust/qemu-api/src/qdev.rs b/rust/qemu-api/src/qdev.rs
+index 1279d7a58d50e1bf6c8d2e6f00d7229bbb19e003..2fd8b2750ffabcaa1065558d38a700e35fbc9136 100644
+--- a/rust/qemu-api/src/qdev.rs
++++ b/rust/qemu-api/src/qdev.rs
+@@ -100,8 +100,19 @@ pub trait ResettablePhasesImpl {
+     T::EXIT.unwrap()(unsafe { state.as_ref() }, typ);
+ }
+ 
++pub trait DevicePropertiesImpl {
++    /// An array providing the properties that the user can set on the
++    /// device.  Not a `const` because referencing statics in constants
++    /// is unstable until Rust 1.83.0.
++    fn properties() -> &'static [Property] {
++        &[]
++    }
++}
++
+ /// Trait providing the contents of [`DeviceClass`].
+-pub trait DeviceImpl: ObjectImpl + ResettablePhasesImpl + IsA<DeviceState> {
++pub trait DeviceImpl:
++    ObjectImpl + ResettablePhasesImpl + DevicePropertiesImpl + IsA<DeviceState>
++{
+     /// _Realization_ is the second stage of device creation. It contains
+     /// all operations that depend on device properties and can fail (note:
+     /// this is not yet supported for Rust devices).
+@@ -110,13 +121,6 @@ pub trait DeviceImpl: ObjectImpl + ResettablePhasesImpl + IsA<DeviceState> {
+     /// with the function pointed to by `REALIZE`.
+     const REALIZE: Option<fn(&Self)> = None;
+ 
+-    /// An array providing the properties that the user can set on the
+-    /// device.  Not a `const` because referencing statics in constants
+-    /// is unstable until Rust 1.83.0.
+-    fn properties() -> &'static [Property] {
+-        &[]
+-    }
+-
+     /// A `VMStateDescription` providing the migration format for the device
+     /// Not a `const` because referencing statics in constants is unstable
+     /// until Rust 1.83.0.
+@@ -171,7 +175,7 @@ pub fn class_init<T: DeviceImpl>(&mut self) {
+         if let Some(vmsd) = <T as DeviceImpl>::vmsd() {
+             self.vmsd = vmsd;
+         }
+-        let prop = <T as DeviceImpl>::properties();
++        let prop = <T as DevicePropertiesImpl>::properties();
+         if !prop.is_empty() {
+             unsafe {
+                 bindings::device_class_set_props_n(self, prop.as_ptr(), prop.len());
+diff --git a/rust/qemu-api/tests/tests.rs b/rust/qemu-api/tests/tests.rs
+index a658a49fcfdda8fa4b9d139c10afb6ff3243790b..e8eadfd6e9add385ffc97de015b84aae825c18ee 100644
+--- a/rust/qemu-api/tests/tests.rs
++++ b/rust/qemu-api/tests/tests.rs
+@@ -9,7 +9,7 @@
+     cell::{self, BqlCell},
+     declare_properties, define_property,
+     prelude::*,
+-    qdev::{DeviceImpl, DeviceState, Property, ResettablePhasesImpl},
++    qdev::{DeviceImpl, DevicePropertiesImpl, DeviceState, Property, ResettablePhasesImpl},
+     qom::{ObjectImpl, ParentField},
+     sysbus::SysBusDevice,
+     vmstate::VMStateDescription,
+@@ -68,10 +68,13 @@ impl ObjectImpl for DummyState {
+ 
+ impl ResettablePhasesImpl for DummyState {}
+ 
+-impl DeviceImpl for DummyState {
++impl DevicePropertiesImpl for DummyState {
+     fn properties() -> &'static [Property] {
+         &DUMMY_PROPERTIES
+     }
++}
++
++impl DeviceImpl for DummyState {
+     fn vmsd() -> Option<&'static VMStateDescription> {
+         Some(&VMSTATE)
+     }
+@@ -85,6 +88,8 @@ pub struct DummyChildState {
+ 
+ qom_isa!(DummyChildState: Object, DeviceState, DummyState);
+ 
++impl DevicePropertiesImpl for DummyChildState {}
++
+ pub struct DummyChildClass {
+     parent_class: <DummyState as ObjectType>::Class,
+ }
+
+---
+base-commit: 2af4a82ab2cce3412ffc92cd4c96bd870e33bc8e
+change-id: 20250522-rust-qdev-properties-728e8f6a468e
+
+--
+γαῖα πυρί μιχθήτω
 
 
