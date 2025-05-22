@@ -2,66 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4EEEAC16CE
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 May 2025 00:30:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E9AEAC16DD
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 May 2025 00:32:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uIEOa-0002UH-Vn; Thu, 22 May 2025 18:28:13 -0400
+	id 1uIES8-0003er-JU; Thu, 22 May 2025 18:31:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <henson@acm.org>) id 1uIEOV-0002Td-Qp
- for qemu-devel@nongnu.org; Thu, 22 May 2025 18:28:08 -0400
-Received: from 004.mia.mailroute.net ([199.89.3.7])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1uIES4-0003ed-L0; Thu, 22 May 2025 18:31:48 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <henson@acm.org>) id 1uIEOQ-0005B5-Gg
- for qemu-devel@nongnu.org; Thu, 22 May 2025 18:28:07 -0400
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1uIERx-0005mi-IE; Thu, 22 May 2025 18:31:48 -0400
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id D8D0A55BC03;
+ Fri, 23 May 2025 00:31:30 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id 261qlfsUnyq3; Fri, 23 May 2025 00:31:28 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id F0C4C55BC02; Fri, 23 May 2025 00:31:28 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by 004.mia.mailroute.net (Postfix) with ESMTP id 4b3NGF0qBbzm1Hbc
- for <qemu-devel@nongnu.org>; Thu, 22 May 2025 22:27:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
- content-transfer-encoding:content-type:content-type:subject
- :subject:from:from:content-language:user-agent:mime-version:date
- :date:message-id:received:received; s=mr01; t=1747952868; x=
- 1750544869; bh=z+6lNas0E2ByKjVQ2TrXgQJpE/UPa2yF6X88D5hZo4Y=; b=L
- qXsHCWSjQG1j/QbLkqV4hupCABVgIBwjTkFkHG9Oq7Mhd4jrDULBqVIMGKmyWh2Q
- Lc2Fs0CAlVR2uipazc2aSKWMLBvysTJF3FbcZanKCNw9xoJl1Z/8NOkhgg18/kkq
- yF3WjM702NJRT2t5Qbjs9jl20Iby65EyQk65E9czuGHtg5hBdvEDU5X5sDv+HPsB
- VPdk7TKAbIZbs/5+Lm2M0gxNyj6XS21g9M78j/Y+lDYfZJKWRgt+DwFZkPDGuo2W
- QPKjlIYgHfMx488y5wuJcCMX1FzRU/yuPZUK78yUvkUPc7M2Uv0f0GqVF2M8Vp8G
- 8pFoPx7lf/pL1xDzsPk2w==
-X-Virus-Scanned: by MailRoute
-Received: from 004.mia.mailroute.net ([127.0.0.1])
- by localhost (004.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id zd2a8Vsr4sTK for <qemu-devel@nongnu.org>;
- Thu, 22 May 2025 22:27:48 +0000 (UTC)
-Received: from [10.128.60.154] (vip.pbhware.com [47.181.41.151])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- (Authenticated sender: henson@acm.org)
- by 004.mia.mailroute.net (Postfix) with ESMTPSA id 4b3NGD1cNszm1Hbd
- for <qemu-devel@nongnu.org>; Thu, 22 May 2025 22:27:47 +0000 (UTC)
-Message-ID: <b27e86f8-a93f-4b77-a2d6-3a47e23dfb12@acm.org>
-Date: Thu, 22 May 2025 15:27:45 -0700
+ by zero.eik.bme.hu (Postfix) with ESMTP id EEBEF745683;
+ Fri, 23 May 2025 00:31:28 +0200 (CEST)
+Date: Fri, 23 May 2025 00:31:28 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+cc: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 00/13] Pegasos2 clean up and pegasos1 emulation
+In-Reply-To: <cover.1746139668.git.balaton@eik.bme.hu>
+Message-ID: <d4f3967e-24cc-a723-6d19-30b389bdacfd@eik.bme.hu>
+References: <cover.1746139668.git.balaton@eik.bme.hu>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-From: "Paul B. Henson" <henson@acm.org>
-Subject: sr-iov live migration with NET_FAILOVER
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=199.89.3.7; envelope-from=henson@acm.org;
- helo=004.mia.mailroute.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,72 +61,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I'm running libvirtd under Debian 12 and trying to set up live migration 
-of a linux vm that's using an sr-iov VF as its primary ethernet device. 
-I have that device and the corresponding virtio backup device properly 
-configured in libvirt, and when the vm starts up everything looks good:
+On Fri, 2 May 2025, BALATON Zoltan wrote:
+> This series changes how the fdt for VOF is generated in pegasos2 by
+> moving the static parts to a dtb and only generate the changing parts
+> such as memory size and PCI devices programmatically. This simplifies
+> the code and allows simply adding emulation of Pegasos I which has a
+> different north bridge and slightly different memory map but otherwise
+> very similar and can be emulated by reusing parts from the amigaone
+> machine.
+>
+> The first patch adds an extended DEFINE_MACHINE macro that is later
+> used for more easily define the abstract machine type and hide most of
+> the QOM boiler plate.
+>
+> The second patch (submitted separetely before, v3 is included here)
+> fixes handling the name property in VOF that cannot be represented in
+> a dts as that always takes the path as the name and cannot accept an
+> explicit name property but we need that to appear when guest queries
+> properties which previously was worked around by adding it to every
+> node.
 
-2: nic0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state 
-UP mode DEFAULT group default qlen 1000
-     link/ether 52:54:00:a1:e0:38 brd ff:ff:ff:ff:ff:ff
-3: enp8s0nsby: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc 
-fq_codel master nic0 state DOWN mode DEFAULT group default qlen 1000
-     link/ether 52:54:00:a1:e0:38 brd ff:ff:ff:ff:ff:ff
-5: enp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq master 
-nic0 state UP mode DEFAULT group default qlen 1000
-     link/ether 52:54:00:a1:e0:38 brd ff:ff:ff:ff:ff:ff
+Ping?
 
-The problem I am having is that when I do a live migration of the box, 
-link on the standby virtio interface does not come up when the VF is 
-unplugged, so all network traffic to the system is dropped during the 
-interval between the source pulling the VF and the destination plugging 
-it back in.
-
-It's not clear to me who is responsible for doing that? But from what I 
-can tell, it seems like it should be qmeu?
-
-Per the documentation:
-
-https://www.kernel.org/doc/html/latest/networking/net_failover.html
-
-The sequence of events should be:
-
-* bring up link on standby device
-* detach sr-iov device
-* migrate vm
-* attach sr-iov device
-* bring down link on standby device
-
-If I do that manually, using virsh to light up the standby device and 
-detach the VF before migration and then manually reattach the device and 
-bring down standby link, no traffic is lost at all during the migration 
-process.
-
-I initially thought perhaps libvirt was supposed to be doing it, but 
-reviewing the debug logs and the QMP commands, it is neither detaching 
-nor reattaching the VF. It's just telling qmeu there's a failover pair, 
-and qemu is doing the detach/attach while migrating:
-
--device 
-{"driver":"virtio-net-pci","failover":true,"netdev":"hostua-sr-iov-backup","id":"ua-sr-iov-backup","mac":"52:54:00:a1:e0:38","bus":"pci.7","addr":"0x0"}
-
--device 
-{"driver":"vfio-pci","host":"0000:37:10.0","id":"hostdev0","failover_pair_id":"ua-sr-iov-backup","bus":"pci.1","addr":"0x0"}
-
-
-I tried manually bringing up link on the standby device before migrating 
-the system and letting qemu deal with the vf detach/attach, but that 
-resulted in even more lost traffic than simply letting the standby 
-device be down during the migration (the network started sending packets 
-to the standby device but the failover device didn't forward them on to 
-the virtual nic as long as the VF existed).
-
-Am I missing something? Is there some other configuration I'm supposed 
-to do? Any insight on this issue would be most appreciated.
-
-Debian 12 has qemu 7.2 as stable, but I also tried the backport of 9.2 
-with the same apparent behavior.
-
-Thanks much...
-
+> Regards,
+> BALATON Zoltan
+>
+> BALATON Zoltan (13):
+>  hw/boards: Extend DEFINE_MACHINE macro to cover more use cases
+>  ppc/vof: Make nextprop behave more like Open Firmware
+>  hw/ppc/pegasos2: Remove explicit name properties from device tree
+>  hw/ppc/pegasos2: Change device tree generation
+>  hw/ppc/pegasos2: Remove fdt pointer from machine state
+>  hw/ppc/pegasos2: Rename mv field in machine state
+>  hw/ppc/pegasos2: Add south bridge pointer in the machine state
+>  hw/ppc/pegasos2: Move PCI IRQ routing setup to a function
+>  hw/ppc/pegasos2: Move hardware specific parts out of machine reset
+>  hw/ppc/pegasos2: Introduce abstract superclass
+>  hw/ppc/pegasos2: Add bus frequency to machine state
+>  hw/ppc/pegasos2: Add Pegasos I emulation
+>  hw/ppc/pegasos2: Add VOF support for pegasos1
+>
+> MAINTAINERS              |   1 +
+> hw/ppc/pegasos2.c        | 770 +++++++++++++++++++--------------------
+> hw/ppc/vof.c             |  50 ++-
+> include/hw/boards.h      |  16 +-
+> pc-bios/dtb/meson.build  |   2 +
+> pc-bios/dtb/pegasos1.dtb | Bin 0 -> 857 bytes
+> pc-bios/dtb/pegasos1.dts | 125 +++++++
+> pc-bios/dtb/pegasos2.dtb | Bin 0 -> 1701 bytes
+> pc-bios/dtb/pegasos2.dts | 167 +++++++++
+> 9 files changed, 718 insertions(+), 413 deletions(-)
+> create mode 100644 pc-bios/dtb/pegasos1.dtb
+> create mode 100644 pc-bios/dtb/pegasos1.dts
+> create mode 100644 pc-bios/dtb/pegasos2.dtb
+> create mode 100644 pc-bios/dtb/pegasos2.dts
+>
+>
 
