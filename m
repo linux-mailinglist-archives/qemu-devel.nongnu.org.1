@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91E22AC1444
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 21:07:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAFD0AC1441
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 21:07:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uIBF6-0000wZ-RY; Thu, 22 May 2025 15:06:13 -0400
+	id 1uIBFn-0001CC-Sa; Thu, 22 May 2025 15:06:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uIBEr-0000vI-Qp
- for qemu-devel@nongnu.org; Thu, 22 May 2025 15:05:59 -0400
-Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
+ id 1uIBEz-0000wU-VK
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 15:06:06 -0400
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uIBEp-0006Sl-LZ
- for qemu-devel@nongnu.org; Thu, 22 May 2025 15:05:57 -0400
-Received: by mail-pj1-x1036.google.com with SMTP id
- 98e67ed59e1d1-30e8feb1886so6850841a91.0
- for <qemu-devel@nongnu.org>; Thu, 22 May 2025 12:05:55 -0700 (PDT)
+ id 1uIBEr-0006TD-QA
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 15:05:59 -0400
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-30e57a37294so7906234a91.2
+ for <qemu-devel@nongnu.org>; Thu, 22 May 2025 12:05:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747940754; x=1748545554; darn=nongnu.org;
+ d=linaro.org; s=google; t=1747940755; x=1748545555; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HPVF35l9UHbNMEec1/7K6eJuGQybRaf36tQqQS1N9wo=;
- b=sh298Yw+BFjpBYRUOmlbLgWld6PVF6Da1OR/86CjaTmq7WfBRAEgR67XwZLHx9N1Vi
- Csdv8UEIdWcv1MdCDnqYOEajfpsqbLH7XOp45/T3kN1ncRZ89CPir4f7lNaqpVnx+mAR
- 9HbY1bePy0RIL9h0Yj6ZGM+oFVDStJNUDtsT8ggbNzdhKsZdbFJJ6EumTNjRR+9IYT7/
- X3BAHmwnC64IXzEYFLuWqGtWx/f9lvygS55kdn3U1SOCgVQJ2/f/yCp0Ih+9aRVGGxlS
- PHVVWCcxIDVnBtmQBe1EgMnTzu8D7bxMhxgfFRUtkJ9IdzJdUvALh0w2EzViFgickOMs
- EIEg==
+ bh=gMEOAZnlEJm4Cel43J2TXjtD8bt/qKeMwnzVffeoXSU=;
+ b=Kg5BufUHXILgZdipCxRkl/4CRvIsyGvc8qml5KEcdeH/wUmht4tKVg1E8h3DTRuhah
+ 4C8anl5dQqd/s/qpKzpDhRw1pDmi3wqgkVYG+15/oPzfa5rFZczQES8buYbZvXuuVOne
+ UrCpVH4Pelh4SD7vXl8NqXAAtTozWj7Zcp9AyMRSd8zMyH1XvByh4Eegi74nSg9E8O5Z
+ TMuUbMhjVB2uhuKrSfZ5gGkaL+uuDJ+lbAgFMfTQQg+eWlV9M9DmywKijU+PB1ljdMfY
+ Ze1ZgGXsRM0mag9TAf26IVE4OC3SrmCZMsEk+2X5V0TmxblU05HbBZCCnS5ryK/MIlOV
+ d+ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747940754; x=1748545554;
+ d=1e100.net; s=20230601; t=1747940755; x=1748545555;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HPVF35l9UHbNMEec1/7K6eJuGQybRaf36tQqQS1N9wo=;
- b=xBC1+7aQjBJMyI6Ch26jdwBOj5DaZt4X9pqy3psagxSsbJ/pGCW3mqrtYjDMx5jKp0
- id/8hoSJfMhaCDy6m9gUlBA6rNjell5pfAxaPSjBEAI57wlIB4Kr4AOiZmuOEitqdh/U
- oCa/tTy+woedNb9tyecQwedgBUdOS9u+Oi61klABfsx8ZIlu5rJWBT/r9BRsDDxshy9N
- py3TlTCPBFJWPTqDzXH6VrM4kGGcDIKaXSozfcmPElGi7QZbfxF74WzLQoxYV3NaBQgq
- 9/D12FVHQV6EDbr+4gR2AGwtuXgHMWL5ov7VinshcfBisiW9vWx6GVBUQ4hMnRMNvYmD
- IBCQ==
-X-Gm-Message-State: AOJu0YzRWQ2sblnsj2aYbuVFzVcbf2K+bmb9hreXAMpjFcLxmF+nKoVE
- NJeToLG0ZKEyq5fekDYWh/QSqy39NW9ziiMJVCqQ1saHlI50gbYH2k2BSTsHyD4Y7Lg6L1L5Rth
- py2t1
-X-Gm-Gg: ASbGncuI1FwlGpDduNTuJAsfYy3mD4b8MKBtxVvqbSQ5Hi83HgLLAOtZPfkuswA2o3D
- nXcBRu2M3O/MrnDaHJ3ELNJ+btDAoeolQ3p63Y9/R/8pyodYtZkrQbNfqCNqr+LHipeM4QCPy9Q
- vgFvviF0TC5TlAF3hTjo2kY+kKyQ8GQQLpZSzcgyWnhv/KWcipy1amHbPPRk2rmYO0y6nD4Z3/O
- 29p/30ep+Mjifei/Vd6XaqFiqwQjrQYpvfCvbhGBm21Kxo4JrLOV7XZEQsSXjhRaE0Q8TxJKQzr
- WhYYWI7avHPwCYMa0rqIxOPBRwv3K+tACHyl4EIPl09Tlwe48Dk=
-X-Google-Smtp-Source: AGHT+IFzuObatCQ7AWeHlLcwaqSClgW0UR31OMlecU4w0CHy92LwWF1bx/7te69fI47VJHe09dPNAg==
-X-Received: by 2002:a17:90b:1e01:b0:30c:540b:99e with SMTP id
- 98e67ed59e1d1-310e96cbff2mr454734a91.13.1747940754108; 
- Thu, 22 May 2025 12:05:54 -0700 (PDT)
+ bh=gMEOAZnlEJm4Cel43J2TXjtD8bt/qKeMwnzVffeoXSU=;
+ b=UcmRB0X0i/BQNxIY2qsiIc+zN+KXw2eTQY4WN6kZg3Nv+MCERavIyR3oESCztmaPT6
+ iOpcK3FWGqpjswtFD6MaoizR7X3U2KFwdXWiWSWuvpt6mfKwa/ozGJGAq58OfQnblzZP
+ 4YGF1YV4a55qY1oQmXaaFw6GEGJ6hPb7iW2YJkdG5Wg6g+WpTDMScBiqjdXCpOpf89Ix
+ 1XMx+Jwcel1G7qd2vV6qcvF93BVxPWibLBhGW9gB8rlmOM8kDQzCYNX7EoG2yfd7M0iw
+ n49vzIGbCfYY+py3vMJEMSVTA02ZiigFOPThlw8V6JHm3+jSrTZH3jgJlkiPzoiAaYeI
+ cQMw==
+X-Gm-Message-State: AOJu0Yyrfu3GTjTZmHSINVlH4ajOfhEt3ofHaVKQ4e+QxrEC9qXfPZdi
+ eVmyWI90Fk+aVvuuyhzBn9CYpXuPdQbSSGIfODCuAKU49wwZ+/F1Iu5sw3OosjSym270D46dv0W
+ LvLw3
+X-Gm-Gg: ASbGncsFYcna3qCu527CL3nVzbWwNEE4INBqIIpipW0Vjp1V4KxcoF3tuBVQyECFlXT
+ 50Alr1kqBRD6Kpn+ou7KPIxjBpD4f/pOXYq+qek259jmeFTceC7HjSr1AAWRmX/WQ0qli4tMibK
+ CKGwTs/i1Izji0zKb2YOcfNviQYD1AG+KoxD5ziHYuWjx2iJexpf3LH1GLjlT+71Wx/xvO7DlSK
+ 587qEkH/NyqIPtz7uQ/VwCZCJtAUph7Z6VDNSaUjKycCsrqOb2Mxvo5GSDyaY1TKr6paImfx5QJ
+ eT5e1qJjdPd3skofzYia4s7QgBvbefbNxUzHZSV/joLCzUGC/hWZLVgrnM+l7A==
+X-Google-Smtp-Source: AGHT+IEbDbmKUmu9k3CnG7i0pxmzr9UALCh0UhZxtRvJS/N3wxy2YOJR47ymKrPYEixa5pWzIZE0qg==
+X-Received: by 2002:a17:90b:5344:b0:30a:b93e:381b with SMTP id
+ 98e67ed59e1d1-30e8323efb1mr37558178a91.35.1747940755128; 
+ Thu, 22 May 2025 12:05:55 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b26eb082c66sm11625565a12.60.2025.05.22.12.05.53
+ 41be03b00d2f7-b26eb082c66sm11625565a12.60.2025.05.22.12.05.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 May 2025 12:05:53 -0700 (PDT)
+ Thu, 22 May 2025 12:05:54 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: michael.roth@amd.com, thuth@redhat.com, pbonzini@redhat.com,
  richard.henderson@linaro.org, armbru@redhat.com,
  pierrick.bouvier@linaro.org, peter.maydell@linaro.org, berrange@redhat.com,
- philmd@linaro.org
-Subject: [PATCH v4 05/15] qapi: make SGX commands unconditionally available
-Date: Thu, 22 May 2025 12:05:32 -0700
-Message-ID: <20250522190542.588267-6-pierrick.bouvier@linaro.org>
+ philmd@linaro.org, David Woodhouse <dwmw@amazon.co.uk>
+Subject: [PATCH v4 06/15] qapi: make Xen event commands unconditionally
+ available
+Date: Thu, 22 May 2025 12:05:33 -0700
+Message-ID: <20250522190542.588267-7-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250522190542.588267-1-pierrick.bouvier@linaro.org>
 References: <20250522190542.588267-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1036.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x102d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,262 +103,330 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-This removes the TARGET_I386 condition from the SGX confidential
-virtualization commands, moving them to the recently introduced
-misc-i386.json QAPI file, given they are inherantly i386 specific
-commands.
-
-Observe a pre-existing bug that the "SGXEPCSection" struct lacked
-a TARGET_I386 condition, despite its only usage being behind a
-TARGET_I386 condition.
+This removes the TARGET_I386 condition from the Xen event channel
+commands, moving them to the recently introduced misc-i386.json
+QAPI file, given they are inherantly i386 specific commands.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Acked-by: David Woodhouse <dwmw@amazon.co.uk>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- qapi/misc-i386.json      | 77 +++++++++++++++++++++++++++++++++++++++
- qapi/misc-target.json    | 79 ----------------------------------------
- hw/i386/sgx-stub.c       |  2 +-
- hw/i386/sgx.c            |  2 +-
- stubs/monitor-i386-sgx.c | 17 +++++++++
- stubs/meson.build        |  1 +
- 6 files changed, 97 insertions(+), 81 deletions(-)
- create mode 100644 stubs/monitor-i386-sgx.c
+ qapi/misc-i386.json      | 107 +++++++++++++++++++++++++++++++++++++
+ qapi/misc-target.json    | 111 ---------------------------------------
+ hw/i386/kvm/xen-stubs.c  |  13 -----
+ hw/i386/kvm/xen_evtchn.c |   2 +-
+ stubs/monitor-i386-xen.c |  16 ++++++
+ stubs/meson.build        |   1 +
+ 6 files changed, 125 insertions(+), 125 deletions(-)
+ create mode 100644 stubs/monitor-i386-xen.c
 
 diff --git a/qapi/misc-i386.json b/qapi/misc-i386.json
-index de0e4ab67ff..92751d5e180 100644
+index 92751d5e180..cbf85233eba 100644
 --- a/qapi/misc-i386.json
 +++ b/qapi/misc-i386.json
-@@ -293,3 +293,80 @@
- { 'command': 'query-sev-attestation-report',
-   'data': { 'mnonce': 'str' },
-   'returns': 'SevAttestationReport' }
+@@ -370,3 +370,110 @@
+ #                      {"node": 1, "size": 29360128}]} }
+ ##
+ { 'command': 'query-sgx-capabilities', 'returns': 'SgxInfo' }
 +
 +##
-+# @SgxEpcSection:
++# @EvtchnPortType:
 +#
-+# Information about intel SGX EPC section
++# An enumeration of Xen event channel port types.
 +#
-+# @node: the numa node
++# @closed: The port is unused.
 +#
-+# @size: the size of EPC section
++# @unbound: The port is allocated and ready to be bound.
 +#
-+# Since: 7.0
++# @interdomain: The port is connected as an interdomain interrupt.
++#
++# @pirq: The port is bound to a physical IRQ (PIRQ).
++#
++# @virq: The port is bound to a virtual IRQ (VIRQ).
++#
++# @ipi: The post is an inter-processor interrupt (IPI).
++#
++# Since: 8.0
 +##
-+{ 'struct': 'SgxEpcSection',
-+  'data': { 'node': 'int',
-+            'size': 'uint64'}}
++{ 'enum': 'EvtchnPortType',
++  'data': ['closed', 'unbound', 'interdomain', 'pirq', 'virq', 'ipi'] }
 +
 +##
-+# @SgxInfo:
++# @EvtchnInfo:
 +#
-+# Information about intel Safe Guard eXtension (SGX) support
++# Information about a Xen event channel port
 +#
-+# @sgx: true if SGX is supported
++# @port: the port number
 +#
-+# @sgx1: true if SGX1 is supported
++# @vcpu: target vCPU for this port
 +#
-+# @sgx2: true if SGX2 is supported
++# @type: the port type
 +#
-+# @flc: true if FLC is supported
++# @remote-domain: remote domain for interdomain ports
 +#
-+# @sections: The EPC sections information (Since: 7.0)
++# @target: remote port ID, or virq/pirq number
 +#
-+# Since: 6.2
++# @pending: port is currently active pending delivery
++#
++# @masked: port is masked
++#
++# Since: 8.0
 +##
-+{ 'struct': 'SgxInfo',
-+  'data': { 'sgx': 'bool',
-+            'sgx1': 'bool',
-+            'sgx2': 'bool',
-+            'flc': 'bool',
-+            'sections': ['SgxEpcSection']} }
++{ 'struct': 'EvtchnInfo',
++  'data': {'port': 'uint16',
++           'vcpu': 'uint32',
++           'type': 'EvtchnPortType',
++           'remote-domain': 'str',
++           'target': 'uint16',
++           'pending': 'bool',
++           'masked': 'bool'} }
++
 +
 +##
-+# @query-sgx:
++# @xen-event-list:
 +#
-+# Returns information about configured SGX capabilities of guest
++# Query the Xen event channels opened by the guest.
 +#
-+# Returns: @SgxInfo
++# Returns: list of open event channel ports.
 +#
-+# Since: 6.2
++# Since: 8.0
 +#
 +# .. qmp-example::
 +#
-+#     -> { "execute": "query-sgx" }
-+#     <- { "return": { "sgx": true, "sgx1" : true, "sgx2" : true,
-+#                      "flc": true,
-+#                      "sections": [{"node": 0, "size": 67108864},
-+#                      {"node": 1, "size": 29360128}]} }
++#     -> { "execute": "xen-event-list" }
++#     <- { "return": [
++#             {
++#                 "pending": false,
++#                 "port": 1,
++#                 "vcpu": 1,
++#                 "remote-domain": "qemu",
++#                 "masked": false,
++#                 "type": "interdomain",
++#                 "target": 1
++#             },
++#             {
++#                 "pending": false,
++#                 "port": 2,
++#                 "vcpu": 0,
++#                 "remote-domain": "",
++#                 "masked": false,
++#                 "type": "virq",
++#                 "target": 0
++#             }
++#          ]
++#        }
 +##
-+{ 'command': 'query-sgx', 'returns': 'SgxInfo' }
++{ 'command': 'xen-event-list',
++  'returns': ['EvtchnInfo'] }
 +
 +##
-+# @query-sgx-capabilities:
++# @xen-event-inject:
 +#
-+# Returns information about SGX capabilities of host
++# Inject a Xen event channel port (interrupt) to the guest.
 +#
-+# Returns: @SgxInfo
++# @port: The port number
 +#
-+# Since: 6.2
++# Since: 8.0
 +#
 +# .. qmp-example::
 +#
-+#     -> { "execute": "query-sgx-capabilities" }
-+#     <- { "return": { "sgx": true, "sgx1" : true, "sgx2" : true,
-+#                      "flc": true,
-+#                      "section" : [{"node": 0, "size": 67108864},
-+#                      {"node": 1, "size": 29360128}]} }
++#     -> { "execute": "xen-event-inject", "arguments": { "port": 1 } }
++#     <- { "return": { } }
 +##
-+{ 'command': 'query-sgx-capabilities', 'returns': 'SgxInfo' }
++{ 'command': 'xen-event-inject',
++  'data': { 'port': 'uint32' } }
 diff --git a/qapi/misc-target.json b/qapi/misc-target.json
-index cc472ce91cb..d62db37d7cf 100644
+index d62db37d7cf..c9ea1ab23e7 100644
 --- a/qapi/misc-target.json
 +++ b/qapi/misc-target.json
-@@ -2,85 +2,6 @@
+@@ -1,114 +1,3 @@
+ # -*- Mode: Python -*-
  # vim: filetype=python
  #
+-
+-##
+-# @EvtchnPortType:
+-#
+-# An enumeration of Xen event channel port types.
+-#
+-# @closed: The port is unused.
+-#
+-# @unbound: The port is allocated and ready to be bound.
+-#
+-# @interdomain: The port is connected as an interdomain interrupt.
+-#
+-# @pirq: The port is bound to a physical IRQ (PIRQ).
+-#
+-# @virq: The port is bound to a virtual IRQ (VIRQ).
+-#
+-# @ipi: The post is an inter-processor interrupt (IPI).
+-#
+-# Since: 8.0
+-##
+-{ 'enum': 'EvtchnPortType',
+-  'data': ['closed', 'unbound', 'interdomain', 'pirq', 'virq', 'ipi'],
+-  'if': 'TARGET_I386' }
+-
+-##
+-# @EvtchnInfo:
+-#
+-# Information about a Xen event channel port
+-#
+-# @port: the port number
+-#
+-# @vcpu: target vCPU for this port
+-#
+-# @type: the port type
+-#
+-# @remote-domain: remote domain for interdomain ports
+-#
+-# @target: remote port ID, or virq/pirq number
+-#
+-# @pending: port is currently active pending delivery
+-#
+-# @masked: port is masked
+-#
+-# Since: 8.0
+-##
+-{ 'struct': 'EvtchnInfo',
+-  'data': {'port': 'uint16',
+-           'vcpu': 'uint32',
+-           'type': 'EvtchnPortType',
+-           'remote-domain': 'str',
+-           'target': 'uint16',
+-           'pending': 'bool',
+-           'masked': 'bool'},
+-  'if': 'TARGET_I386' }
+-
+-
+-##
+-# @xen-event-list:
+-#
+-# Query the Xen event channels opened by the guest.
+-#
+-# Returns: list of open event channel ports.
+-#
+-# Since: 8.0
+-#
+-# .. qmp-example::
+-#
+-#     -> { "execute": "xen-event-list" }
+-#     <- { "return": [
+-#             {
+-#                 "pending": false,
+-#                 "port": 1,
+-#                 "vcpu": 1,
+-#                 "remote-domain": "qemu",
+-#                 "masked": false,
+-#                 "type": "interdomain",
+-#                 "target": 1
+-#             },
+-#             {
+-#                 "pending": false,
+-#                 "port": 2,
+-#                 "vcpu": 0,
+-#                 "remote-domain": "",
+-#                 "masked": false,
+-#                 "type": "virq",
+-#                 "target": 0
+-#             }
+-#          ]
+-#        }
+-##
+-{ 'command': 'xen-event-list',
+-  'returns': ['EvtchnInfo'],
+-  'if': 'TARGET_I386' }
+-
+-##
+-# @xen-event-inject:
+-#
+-# Inject a Xen event channel port (interrupt) to the guest.
+-#
+-# @port: The port number
+-#
+-# Since: 8.0
+-#
+-# .. qmp-example::
+-#
+-#     -> { "execute": "xen-event-inject", "arguments": { "port": 1 } }
+-#     <- { "return": { } }
+-##
+-{ 'command': 'xen-event-inject',
+-  'data': { 'port': 'uint32' },
+-  'if': 'TARGET_I386' }
+diff --git a/hw/i386/kvm/xen-stubs.c b/hw/i386/kvm/xen-stubs.c
+index d03131e6864..ce73119ee7a 100644
+--- a/hw/i386/kvm/xen-stubs.c
++++ b/hw/i386/kvm/xen-stubs.c
+@@ -12,7 +12,6 @@
+ #include "qemu/osdep.h"
  
--##
--# @SgxEpcSection:
--#
--# Information about intel SGX EPC section
--#
--# @node: the numa node
--#
--# @size: the size of EPC section
--#
--# Since: 7.0
--##
--{ 'struct': 'SgxEpcSection',
--  'data': { 'node': 'int',
--            'size': 'uint64'}}
--
--##
--# @SgxInfo:
--#
--# Information about intel Safe Guard eXtension (SGX) support
--#
--# @sgx: true if SGX is supported
--#
--# @sgx1: true if SGX1 is supported
--#
--# @sgx2: true if SGX2 is supported
--#
--# @flc: true if FLC is supported
--#
--# @sections: The EPC sections information (Since: 7.0)
--#
--# Since: 6.2
--##
--{ 'struct': 'SgxInfo',
--  'data': { 'sgx': 'bool',
--            'sgx1': 'bool',
--            'sgx2': 'bool',
--            'flc': 'bool',
--            'sections': ['SgxEpcSection']},
--   'if': 'TARGET_I386' }
--
--##
--# @query-sgx:
--#
--# Returns information about configured SGX capabilities of guest
--#
--# Returns: @SgxInfo
--#
--# Since: 6.2
--#
--# .. qmp-example::
--#
--#     -> { "execute": "query-sgx" }
--#     <- { "return": { "sgx": true, "sgx1" : true, "sgx2" : true,
--#                      "flc": true,
--#                      "sections": [{"node": 0, "size": 67108864},
--#                      {"node": 1, "size": 29360128}]} }
--##
--{ 'command': 'query-sgx', 'returns': 'SgxInfo', 'if': 'TARGET_I386' }
--
--##
--# @query-sgx-capabilities:
--#
--# Returns information about SGX capabilities of host
--#
--# Returns: @SgxInfo
--#
--# Since: 6.2
--#
--# .. qmp-example::
--#
--#     -> { "execute": "query-sgx-capabilities" }
--#     <- { "return": { "sgx": true, "sgx1" : true, "sgx2" : true,
--#                      "flc": true,
--#                      "section" : [{"node": 0, "size": 67108864},
--#                      {"node": 1, "size": 29360128}]} }
--##
--{ 'command': 'query-sgx-capabilities', 'returns': 'SgxInfo', 'if': 'TARGET_I386' }
--
--
- ##
- # @EvtchnPortType:
- #
-diff --git a/hw/i386/sgx-stub.c b/hw/i386/sgx-stub.c
-index ccb21a975d7..d295e54d239 100644
---- a/hw/i386/sgx-stub.c
-+++ b/hw/i386/sgx-stub.c
-@@ -3,8 +3,8 @@
- #include "monitor/hmp-target.h"
- #include "hw/i386/pc.h"
- #include "hw/i386/sgx-epc.h"
-+#include "qapi/qapi-commands-misc-i386.h"
  #include "qapi/error.h"
 -#include "qapi/qapi-commands-misc-target.h"
  
- void sgx_epc_build_srat(GArray *table_data)
+ #include "xen_evtchn.h"
+ #include "xen_primary_console.h"
+@@ -38,15 +37,3 @@ void xen_primary_console_create(void)
+ void xen_primary_console_set_be_port(uint16_t port)
  {
-diff --git a/hw/i386/sgx.c b/hw/i386/sgx.c
-index c80203b438e..e2801546ad6 100644
---- a/hw/i386/sgx.c
-+++ b/hw/i386/sgx.c
+ }
+-#ifdef TARGET_I386
+-EvtchnInfoList *qmp_xen_event_list(Error **errp)
+-{
+-    error_setg(errp, "Xen event channel emulation not enabled");
+-    return NULL;
+-}
+-
+-void qmp_xen_event_inject(uint32_t port, Error **errp)
+-{
+-    error_setg(errp, "Xen event channel emulation not enabled");
+-}
+-#endif
+diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
+index b5190549a81..dd566c49679 100644
+--- a/hw/i386/kvm/xen_evtchn.c
++++ b/hw/i386/kvm/xen_evtchn.c
 @@ -19,7 +19,7 @@
- #include "monitor/hmp-target.h"
+ #include "monitor/monitor.h"
+ #include "monitor/hmp.h"
  #include "qapi/error.h"
- #include "qemu/error-report.h"
 -#include "qapi/qapi-commands-misc-target.h"
 +#include "qapi/qapi-commands-misc-i386.h"
- #include "system/address-spaces.h"
- #include "system/hw_accel.h"
- #include "system/reset.h"
-diff --git a/stubs/monitor-i386-sgx.c b/stubs/monitor-i386-sgx.c
+ #include "qobject/qdict.h"
+ #include "qom/object.h"
+ #include "exec/target_page.h"
+diff --git a/stubs/monitor-i386-xen.c b/stubs/monitor-i386-xen.c
 new file mode 100644
-index 00000000000..00e081d52dd
+index 00000000000..95b826f9795
 --- /dev/null
-+++ b/stubs/monitor-i386-sgx.c
-@@ -0,0 +1,17 @@
++++ b/stubs/monitor-i386-xen.c
+@@ -0,0 +1,16 @@
 +/* SPDX-License-Identifier: GPL-2.0-or-later */
 +
 +#include "qemu/osdep.h"
 +#include "qapi/error.h"
 +#include "qapi/qapi-commands-misc-i386.h"
 +
-+SgxInfo *qmp_query_sgx(Error **errp)
++EvtchnInfoList *qmp_xen_event_list(Error **errp)
 +{
-+    error_setg(errp, "SGX support is not compiled in");
++    error_setg(errp, "Xen event channel emulation not enabled");
 +    return NULL;
 +}
 +
-+SgxInfo *qmp_query_sgx_capabilities(Error **errp)
++void qmp_xen_event_inject(uint32_t port, Error **errp)
 +{
-+    error_setg(errp, "SGX support is not compiled in");
-+    return NULL;
++    error_setg(errp, "Xen event channel emulation not enabled");
 +}
 diff --git a/stubs/meson.build b/stubs/meson.build
-index 07e9d3799a5..f2eb4880181 100644
+index f2eb4880181..0ef11976a2f 100644
 --- a/stubs/meson.build
 +++ b/stubs/meson.build
-@@ -80,6 +80,7 @@ if have_system
-   stub_ss.add(files('monitor-arm-gic.c'))
+@@ -81,6 +81,7 @@ if have_system
    stub_ss.add(files('monitor-i386-rtc.c'))
    stub_ss.add(files('monitor-i386-sev.c'))
-+  stub_ss.add(files('monitor-i386-sgx.c'))
+   stub_ss.add(files('monitor-i386-sgx.c'))
++  stub_ss.add(files('monitor-i386-xen.c'))
  endif
  
  if have_system or have_user
