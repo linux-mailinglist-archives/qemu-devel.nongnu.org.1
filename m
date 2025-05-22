@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07356AC09CC
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 12:31:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7852AAC09E4
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 12:34:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uI3C6-0003FB-5O; Thu, 22 May 2025 06:30:34 -0400
+	id 1uI3CH-0003Lt-Qw; Thu, 22 May 2025 06:30:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uI3C3-0003EM-G0
- for qemu-devel@nongnu.org; Thu, 22 May 2025 06:30:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uI3C7-0003FY-P3
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 06:30:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uI3C1-0006dy-Ic
- for qemu-devel@nongnu.org; Thu, 22 May 2025 06:30:31 -0400
+ id 1uI3C5-0006eD-CE
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 06:30:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747909828;
+ s=mimecast20190719; t=1747909831;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UA4cTGi+Lc/4+DoQqkYqbsXU1LB2JteeJLHXJiUGT/U=;
- b=ReE1pElLY7UrHz2Fw6JmWx3HtUvvT6U8hPNgK356NxUy33AGxkqF+M4Y/zita7h0do0lCN
- LBUpeoImyNkvN6SfaSUKTfVAbVpzMA1dYgs3uNU1SrrO4eG84lllbQq6QOjLY91NibTi6S
- b0dSNekXNt5aDl0L5emFYU/6C/vG2ME=
+ bh=YeVGPqqBG6X5kTXB75qnLsL0StBNE9cX70oHLqpo4kI=;
+ b=PkhwbSJx8Icx2DCAyXodAYtsAnHVE5N6Qf0DgcQUvLE96p9kvQBT2HrPNSfnXca46h2TPx
+ Ubz7qjPajNi/rmkb4pUnOoXndtYwVDzTzkn/7OZavrj8yeGed/lKAfVwmi9niS/W4y17tR
+ MrcrVyVii7i9/UVWMkI9dI37p77gml8=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-660-Ak7YZXCvMx-xZMstpwX8gw-1; Thu,
- 22 May 2025 06:30:25 -0400
-X-MC-Unique: Ak7YZXCvMx-xZMstpwX8gw-1
-X-Mimecast-MFC-AGG-ID: Ak7YZXCvMx-xZMstpwX8gw_1747909824
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-17-ZHxpZ2i8MzKZ9hOapG9i8Q-1; Thu,
+ 22 May 2025 06:30:28 -0400
+X-MC-Unique: ZHxpZ2i8MzKZ9hOapG9i8Q-1
+X-Mimecast-MFC-AGG-ID: ZHxpZ2i8MzKZ9hOapG9i8Q_1747909827
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
  by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 344B418007E1; Thu, 22 May 2025 10:30:24 +0000 (UTC)
+ id C2A0018003FC; Thu, 22 May 2025 10:30:27 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.179])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id BEE461958019; Thu, 22 May 2025 10:30:19 +0000 (UTC)
+ id C2FF01958014; Thu, 22 May 2025 10:30:24 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -52,19 +52,19 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Eric Blake <eblake@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 15/23] scripts/checkpatch: reimplement mandate for
- SPDX-License-Identifier
-Date: Thu, 22 May 2025 11:29:15 +0100
-Message-ID: <20250522102923.309452-16-berrange@redhat.com>
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 16/23] scripts/checkpatch: reject license boilerplate on new
+ files
+Date: Thu, 22 May 2025 11:29:16 +0100
+Message-ID: <20250522102923.309452-17-berrange@redhat.com>
 In-Reply-To: <20250522102923.309452-1-berrange@redhat.com>
 References: <20250522102923.309452-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -89,58 +89,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Going forward we want all newly created source files to have an
-SPDX-License-Identifier tag present.
+The previous commit mandates use of SPDX-License-Identifier on common
+source files, and encourages it on all other files.
 
-Initially mandate this for C, Python, Perl, Shell source files,
-as well as JSON (QAPI) and Makefiles, while encouraging users
-to consider it for other file types.
+Some contributors are none the less still also including the license
+boilerplate text. This is redundant and will potentially cause
+trouble if inconsistent with the SPDX declaration.
 
-The new attempt at detecting missing SPDX-License-Identifier relies
-on the hooks for relying triggering logic at the end of scanning a
-new file in the diff.
+Match common boilerplate text blurbs and report them as invalid,
+for newly added files.
 
-Tested-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- scripts/checkpatch.pl | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ scripts/checkpatch.pl | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
 diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index c05559a108..da13102eda 100755
+index da13102eda..9291bc9209 100755
 --- a/scripts/checkpatch.pl
 +++ b/scripts/checkpatch.pl
-@@ -1483,6 +1483,20 @@ sub process_start_of_file {
- # Called at the end of processing a diff hunk for a file
- sub process_end_of_file {
- 	my $fileinfo = shift;
+@@ -365,6 +365,18 @@ our @typeList = (
+ 	qr{guintptr},
+ );
+ 
++# Match text found in common license boilerplate comments:
++# for new files the SPDX-License-Identifier line is sufficient.
++our @LICENSE_BOILERPLATE = (
++	"licensed under the terms of the GNU GPL",
++	"under the terms of the GNU General Public License",
++	"under the terms of the GNU Lesser General Public",
++	"Permission is hereby granted, free of charge",
++	"GNU GPL, version 2 or later",
++	"See the COPYING file"
++);
++our $LICENSE_BOILERPLATE_RE = join("|", @LICENSE_BOILERPLATE);
 +
+ # Load common spelling mistakes and build regular expression list.
+ my $misspellings;
+ my %spelling_fix;
+@@ -1497,6 +1509,13 @@ sub process_end_of_file {
+ 			     "' need 'SPDX-License-Identifier'?");
+ 		}
+ 	}
 +	if ($fileinfo->{action} eq "new" &&
-+	    !exists $fileinfo->{facts}->{sawspdx}) {
-+		if ($fileinfo->{filenew} =~
-+		    /(\.(c|h|py|pl|sh|json|inc)|Makefile.*)$/) {
-+			# source code files MUST have SPDX license declared
-+			ERROR("New file '" . $fileinfo->{filenew} .
-+			      "' requires 'SPDX-License-Identifier'");
-+		} else {
-+			# Other files MAY have SPDX license if appropriate
-+			WARN("Does new file '" . $fileinfo->{filenew} .
-+			     "' need 'SPDX-License-Identifier'?");
-+		}
++	    exists $fileinfo->{facts}->{sawboilerplate}) {
++		ERROR("New file '" . $fileinfo->{filenew} . "' must " .
++		      "not have license boilerplate header text, only " .
++		      "the SPDX-License-Identifier, unless this file was " .
++		      "copied from existing code already having such text.");
 +	}
  }
  
  sub process {
-@@ -1781,6 +1795,7 @@ sub process {
- 
- # Check SPDX-License-Identifier references a permitted license
- 		if ($rawline =~ m,SPDX-License-Identifier: (.*?)(\*/)?\s*$,) {
-+			$fileinfo->{facts}->{sawspdx} = 1;
+@@ -1799,6 +1818,10 @@ sub process {
  			&checkspdx($realfile, $1);
  		}
  
++		if ($rawline =~ /$LICENSE_BOILERPLATE_RE/) {
++			$fileinfo->{facts}->{sawboilerplate} = 1;
++		}
++
+ 		if ($rawline =~ m,(SPDX-[a-zA-Z0-9-_]+):,) {
+ 			my $tag = $1;
+ 			my @permitted = qw(
 -- 
 2.49.0
 
