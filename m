@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 265DBAC1367
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 20:33:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87AFBAC136A
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 20:33:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uIAhY-0005kY-LM; Thu, 22 May 2025 14:31:32 -0400
+	id 1uIAiC-0005nL-Ho; Thu, 22 May 2025 14:32:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uIAhW-0005k3-Na
- for qemu-devel@nongnu.org; Thu, 22 May 2025 14:31:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uIAhZ-0005lO-6W
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 14:31:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uIAhU-0000N1-MN
- for qemu-devel@nongnu.org; Thu, 22 May 2025 14:31:30 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uIAhW-0000Nx-T1
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 14:31:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747938687;
+ s=mimecast20190719; t=1747938690;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sUaTgO2vTys8H4ViTayW5yivwWSc1BhR5TJhH22T7z0=;
- b=Mbj+/CT56TFjul3dTaQFLf6Fx5r/DXiEGVCcc/yUjM6QJFT++9eQtjG12dr8sqLlzGudrf
- 9K71pWeYC5ENzOZRRo2BI6mwnEDT/l5kz0akMLzEugHZMLY0ja8SIfdsgocyff1ssqB/YO
- HaZhyXqXNJ588KXxN6yjDFm0j6RfjXE=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=hjuYirBkwph/WiIGkgU7D8925XkGSUPnaUZ8PN66ITk=;
+ b=evTZ9C2M5HchUrSw4PCFoFvbw/ZfMaOVeLUT7GCeTlmsxjKQiNrC94An5sqtlRIX5z1zE6
+ C6DJ+L8q8a2+wt1N64v2+lwnKCHlFL687Mz3CDCyhYn0nbluCYb7HaZ6ttAqv4x0QLveOU
+ Q1lYr5LqrhTgQdOFwITBjdhAz4d2gMk=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-341-UVIFQtojPNW7pZi49kk_oA-1; Thu,
- 22 May 2025 14:31:24 -0400
-X-MC-Unique: UVIFQtojPNW7pZi49kk_oA-1
-X-Mimecast-MFC-AGG-ID: UVIFQtojPNW7pZi49kk_oA_1747938683
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-210-bWT-2s-COa-NtK3JM93YfQ-1; Thu,
+ 22 May 2025 14:31:26 -0400
+X-MC-Unique: bWT-2s-COa-NtK3JM93YfQ-1
+X-Mimecast-MFC-AGG-ID: bWT-2s-COa-NtK3JM93YfQ_1747938685
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 71B4018004AD; Thu, 22 May 2025 18:31:23 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 16BA9195609F; Thu, 22 May 2025 18:31:25 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.45.226.76])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 0C70E1944DFF; Thu, 22 May 2025 18:31:21 +0000 (UTC)
+ id C76A51944DFF; Thu, 22 May 2025 18:31:23 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 2/5] scsi-disk: Advertise FUA support by default
-Date: Thu, 22 May 2025 20:31:12 +0200
-Message-ID: <20250522183115.246746-3-kwolf@redhat.com>
+Subject: [PULL 3/5] qemu-img: fix offset calculation in bench
+Date: Thu, 22 May 2025 20:31:13 +0200
+Message-ID: <20250522183115.246746-4-kwolf@redhat.com>
 In-Reply-To: <20250522183115.246746-1-kwolf@redhat.com>
 References: <20250522183115.246746-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
@@ -80,48 +80,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alberto Faria <afaria@redhat.com>
+From: Denis Rastyogin <gerben@altlinux.org>
 
-Allow the guest to submit FUA requests directly, instead of forcing it
-to emulate them using a regular flush.
+This error was discovered by fuzzing qemu-img.
 
-Signed-off-by: Alberto Faria <afaria@redhat.com>
-Message-ID: <20250502121115.3613717-3-afaria@redhat.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+The current offset calculation leads to an EIO error
+in block/block-backend.c: blk_check_byte_request():
+
+ if (offset > len || len - offset < bytes) {
+     return -EIO;
+ }
+
+This triggers the error message:
+"qemu-img: Failed request: Input/output error".
+
+Example of the issue:
+ offset: 260076
+ len: 260096
+ bytes: 4096
+
+This fix ensures that offset remains within a valid range.
+
+Signed-off-by: Denis Rastyogin <gerben@altlinux.org>
+Message-ID: <20250506141410.100119-1-gerben@altlinux.org>
+[kwolf: Fixed up integer overflow]
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- hw/core/machine.c   | 4 +++-
- hw/scsi/scsi-disk.c | 2 +-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ qemu-img.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index b8ae155dfa..c3f3a5020d 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -37,7 +37,9 @@
- #include "hw/virtio/virtio-iommu.h"
- #include "audio/audio.h"
- 
--GlobalProperty hw_compat_10_0[] = {};
-+GlobalProperty hw_compat_10_0[] = {
-+    { "scsi-hd", "dpofua", "off" },
-+};
- const size_t hw_compat_10_0_len = G_N_ELEMENTS(hw_compat_10_0);
- 
- GlobalProperty hw_compat_9_2[] = {
-diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
-index 738d8df8ec..b4782c6248 100644
---- a/hw/scsi/scsi-disk.c
-+++ b/hw/scsi/scsi-disk.c
-@@ -3192,7 +3192,7 @@ static const Property scsi_hd_properties[] = {
-     DEFINE_PROP_BIT("removable", SCSIDiskState, features,
-                     SCSI_DISK_F_REMOVABLE, false),
-     DEFINE_PROP_BIT("dpofua", SCSIDiskState, features,
--                    SCSI_DISK_F_DPOFUA, false),
-+                    SCSI_DISK_F_DPOFUA, true),
-     DEFINE_PROP_UINT64("wwn", SCSIDiskState, qdev.wwn, 0),
-     DEFINE_PROP_UINT64("port_wwn", SCSIDiskState, qdev.port_wwn, 0),
-     DEFINE_PROP_UINT16("port_index", SCSIDiskState, port_index, 0),
+diff --git a/qemu-img.c b/qemu-img.c
+index 76ac5d3028..139eeb5039 100644
+--- a/qemu-img.c
++++ b/qemu-img.c
+@@ -4488,10 +4488,10 @@ static void bench_cb(void *opaque, int ret)
+          */
+         b->in_flight++;
+         b->offset += b->step;
+-        if (b->image_size == 0) {
++        if (b->image_size <= b->bufsize) {
+             b->offset = 0;
+         } else {
+-            b->offset %= b->image_size;
++            b->offset %= b->image_size - b->bufsize;
+         }
+         if (b->write) {
+             acb = blk_aio_pwritev(b->blk, offset, b->qiov, 0, bench_cb, b);
 -- 
 2.49.0
 
