@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89B3BAC0FC0
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 17:18:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6977AC0FC8
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 17:19:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uI7gh-0005CD-S7; Thu, 22 May 2025 11:18:28 -0400
+	id 1uI7hI-0005a4-Ld; Thu, 22 May 2025 11:19:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1uI7gK-0005A8-GJ
- for qemu-devel@nongnu.org; Thu, 22 May 2025 11:18:04 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ id 1uI7gW-0005HQ-9z
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 11:18:23 -0400
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ktokunaga.mail@gmail.com>)
- id 1uI7gI-0007hq-6m
- for qemu-devel@nongnu.org; Thu, 22 May 2025 11:18:04 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-b1396171fb1so4671351a12.2
- for <qemu-devel@nongnu.org>; Thu, 22 May 2025 08:18:00 -0700 (PDT)
+ id 1uI7gT-0007ix-8i
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 11:18:15 -0400
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-b26df8f44e6so7737822a12.2
+ for <qemu-devel@nongnu.org>; Thu, 22 May 2025 08:18:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1747927079; x=1748531879; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=rvg2UlH6jf+nRIXvLdTGrLlkT7w11xuha3nJjKC5QcY=;
- b=egbkdK/VfpJxTDIMpZD0sAybaLj2onOJEjfy2+yVi9TcNQ8c7CmfVzGlgPDTG0zeyi
- xIPmYUOJZ2MVymoEkmxMpgtYaH/0hAHVQUMgSBWXRUAEKTn0b14uh9r8f3d9jAx+RSq5
- h3k/21hOUkaAckGfX71beQSCxL8QBAnbCRJuEkuUKWuoLbBiHJ0vKRLtTJ57X6tGKzrM
- KYF9FyjPyQsChzEJ9kJ3c/LHQ2oJLtlvsA0egBlCrQA6poA9e3+R50c7QCEjSrfjt67u
- IoYDBgBwezKv9zAvimkFDa1FS+jYZXf3B4nwhALu0FDgS9B5VqLdR2xA8emmFPzsIJJ+
- 3W4w==
+ d=gmail.com; s=20230601; t=1747927090; x=1748531890; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Go/jatOKtlAjZefV0JEAoAPDqQyoCGHsk+o50Hmjd5k=;
+ b=Fudb3mpALPQJ2pbI3FLHcigX4NzbkFgkU+E8EfOeVGoavX8aAeZAW8IflxUHtZJZ4F
+ NdJcG7YBYUs5L5jDOFUMmPMK8uo9vcL2hNfDVt7QywlYYWOqlVI/o2sp81Tl7eYTXSt1
+ wbC2UhwVsWIB01M8ZT1rDxWv0g4w1K7M7ZCPgBpzCja0PbXHKLdieG2NX6u273qjkDa7
+ oPezGf5egZF0GEDpHSzPbw+fyo3vckFBjktsKYiHEpTN8HhQRd5awE45tlpLfqtnZt6f
+ 8Ib560Ev2WzXmOz5PH8UAbf09TVdhuuiNPK/f0pK7MWeyz1S8nMJaR8RscVBx69EfH5V
+ wBYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747927079; x=1748531879;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=rvg2UlH6jf+nRIXvLdTGrLlkT7w11xuha3nJjKC5QcY=;
- b=pFOqIphiE8cEXyYtHRtkGneStPL7R5ypKAurxkTG1hCAoAASFsphH21H0GiZ2hwjWt
- REeKki/fsobcn0/0WYVoZ8nhy0K+f1w7+iyT7LBJwDUicyLMqI5q4ejD2Bs5zzgnuxA5
- 1eSE3kASTA1zOsWDD2cgmH7g3rH2JJYUra7FUSU9sBqZP74FLlC2WZabwnpTV+ejvpYT
- Uiq8zWta2w46W6V26T+qyGpGEnj3ZPD2+dEqxDPDLW5WZltMhi6n4KszlGNBkUcQrG4X
- 9jUwSLafC0qczwf6sAkpwFzOJ8Vvs/tVGIolUI1Nck6WwcFoyDNJwclqOtVOSg5d+Qzl
- 3ElA==
-X-Gm-Message-State: AOJu0YyGUT9W58NODfPeUe/2zxSaaGjERHeXYszhlKBlaHr4eVlUmagn
- cbbG1nvyol43cnx1h20o3cvv5Fi7AtAW1OdUioVNvG7pCo3FimI+v4CKz1JfRg==
-X-Gm-Gg: ASbGncuqRZdTkh7ErLc8T8o5YPMNEiqwmufl3U1PRP9NGzVGaUkAyx+t3Fk75SQJePl
- 2QFBuwoFudFAv11Myox84v+A0JKnm25TqB70y7fDz7PhCLu1RnnHlMZLck1bBhIB9ehmEwnfREN
- kUf9w0TozHlAgWtTmDCkQDQDJIQv0qI0RXQJ+1i2TCORkDt76iDm/EWbm+XxuD44WBT8/Jcz6eq
- 62Gvj33Rt0jU2wiO6BYwFyojSFYqaeXOPX69q3mtoFGiPW0xsaz6mdzOZOyAqbt+x/+PnXPpZey
- wNmF/zpUCUW0wIOdiHxd51lbk2Xj+pd0to8k+u8qRZIGv6V1/DM=
-X-Google-Smtp-Source: AGHT+IGQhqFhPAldDe+Sht7STTTKHjiyqWe5tKDLP4t47DsJ80enjdb2r1HtTmUwtKGBxWpSANlLIg==
-X-Received: by 2002:a17:903:324c:b0:231:e331:b7c9 with SMTP id
- d9443c01a7336-231e331bc2emr309521525ad.10.1747927079205; 
- Thu, 22 May 2025 08:17:59 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1747927090; x=1748531890;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Go/jatOKtlAjZefV0JEAoAPDqQyoCGHsk+o50Hmjd5k=;
+ b=g2VOhv2JoiBV34t7+wjtwSQzTYih70P6Ill2i6rs9n7776biSv1M/RbXHI0sJv9gHL
+ JhGg1pMQ7rSSRHeTZAmspiRZKD+8qonKLF7fd7q/SdNYm5TTkOfpvBjXAKVifVEalaLd
+ YgL8SwDo2ZT7RQs0n476+1U7jp0wZsIlM7FhAREbaaFDIo52n53BfmpmOtKNGW5mj36/
+ HhhmQosi1H07bbvA78xp9mnQWHLX09W7u7TBsZth8LVcqtj9x06GmGshYXTby2ikeZSx
+ OVWcdHA8tBDSqa+a1GkhiJ1VzrKX8P3Dmmumj6H5pESTIjuSxPlzouofWDNXdZ+Cr1AF
+ kAkw==
+X-Gm-Message-State: AOJu0YyTZAdoZSr0wRiESpV1hooL3zdOaU3fS/Syk0E5ATDJAyDTxW4p
+ Q8xUu1WGc/aDVMI5pHjpuWbps6dzAsfGQaXjC5j3a1LFpK/9e8ar4lr2TTXX0g==
+X-Gm-Gg: ASbGncv3oGCD/IrpAV5Cjl9n0lo3I7Mqg/q+hQidpBlOYyh7pWPiVkF/zrF/Z3GsbhW
+ vlxAPjcPz3vpuyl9iymtqZe4a8tdLG5VXgzR0JyIZ2DwvJ7MgAGiQGH5uKnLMcIbW1v8UAMsvuz
+ yDRKTxlmunChtXc8XyU0cQJZ2zp/0uKlnAAyFUANidtg/PNcV/DdT+mmCM+6OQhPqbBKDpL7uxx
+ Bn+6hpOZhSjqE8kbFJue8v8kBazRvnqwqAPROjInz5ZGv6F3pHsqSEdUv9nHkmheIHHjxnuelPe
+ 99hwwoTPZb4QiehCiaWv72E+4H0HsqZYDBx1JV3ax0uBwIry6Ys=
+X-Google-Smtp-Source: AGHT+IFmVcLBoWWpigk2FYgdlvz4Uxp6os1f7Ol3kCTog8B8OBZl3ImoywrnKjRR+BEOgjN/GxQF8A==
+X-Received: by 2002:a17:903:17cb:b0:229:1cef:4c83 with SMTP id
+ d9443c01a7336-231d438b415mr364805865ad.4.1747927090423; 
+ Thu, 22 May 2025 08:18:10 -0700 (PDT)
 Received: from ktock.. ([240d:1a:3b6:8b00:c732:a88c:b916:8b9f])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-231d4b017dasm110443555ad.98.2025.05.22.08.17.56
+ d9443c01a7336-231d4b017dasm110443555ad.98.2025.05.22.08.18.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 May 2025 08:17:58 -0700 (PDT)
+ Thu, 22 May 2025 08:18:09 -0700 (PDT)
 From: Kohei Tokunaga <ktokunaga.mail@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -69,14 +70,17 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Stefan Weil <sw@weilnetz.de>, Stefan Hajnoczi <stefanha@redhat.com>,
  ktokunaga.mail@gmail.com
-Subject: [PATCH 0/5] Enable QEMU TCI to run 64bit guests on browsers
-Date: Fri, 23 May 2025 00:17:25 +0900
-Message-ID: <cover.1747922170.git.ktokunaga.mail@gmail.com>
+Subject: [PATCH 1/5] meson.build: add TCG_VADDR_BITS for defining the vaddr
+ size
+Date: Fri, 23 May 2025 00:17:26 +0900
+Message-ID: <d3cfe67f43b61ff00ecb35a9e8fc6ba609ee4e00.1747922170.git.ktokunaga.mail@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1747922170.git.ktokunaga.mail@gmail.com>
+References: <cover.1747922170.git.ktokunaga.mail@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
- envelope-from=ktokunaga.mail@gmail.com; helo=mail-pg1-x530.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
+ envelope-from=ktokunaga.mail@gmail.com; helo=mail-pg1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,109 +103,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch series is split from the original "Enable QEMU to run on
-browsers" series, focusing solely on supporting 64bit guest on QEMU TCI
-compiled with Emscripten. The implementation is based on discussions from
-the thread in the "tcg: Add WebAssembly backend" patch series, particulalrly
-Paolo Bonzini's suggestion to introduce TCG_VADDR_BITS. Thank you for the
-feedback in that thread.
+This commit introduces TCG_VADDR_BITS in meson.build to explicitly define
+the vaddr size. For non-wasm hosts, this is set to the value of
+host_long_bits, preserving the original behaviour of the check in the target
+loop. For the wasm host, it's explicitly set to 64 to enable support for
+64bit guests.
 
-# Running 64bit Guests on WebAssembly
+Signed-off-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
+---
+ meson.build | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-The current implementation uses Wasm's 32bit memory model. This series
-explores supporting 64bit guests while relying on SoftMMU for address
-translation. To achieve this in Wasm today, it was necessary to partially
-revert recent changes that removed support for 64bit guests on 32bit hosts,
-specifically those related to pointer width differences between host and
-guest (e.g. commits a70af12addd9060fdf8f3dbd42b42e3072c3914f and
-bf455ec50b6fea15b4d2493059365bf94c706273) when compiling with
-Emscripten. While this serves as a temporary workaround, a long-term
-solution could involve migrating to Wasm's 64bit memory model once it gains
-broader support, as it is currently not widely adopted (e.g. unsupported by
-Safari and libffi).
-
-# Overview of build process
-
-This section provides an overview of the build process for compiling QEMU
-using Emscripten. Full instructions are available in the sample
-repository[1].
-
-To compile QEMU with Emscripten, the following dependencies are required.
-The emsdk-wasm32-cross.docker environment includes all necessary components
-and can be used as the build environment:
-
-- Emscripten SDK (emsdk) v3.1.50
-- Libraries cross-compiled with Emscripten (refer to
-  emsdk-wasm32-cross.docker for build steps)
-  - GLib v2.84.0
-  - zlib v1.3.1
-  - libffi v3.4.7
-  - Pixman v0.44.2
-
-QEMU can be compiled using Emscripten's emconfigure and emmake, which
-automatically set environment variables such as CC for targeting Emscripten.
-
-emconfigure configure --static --disable-tools \
-                      --target-list=x86_64-softmmu --enable-tcg-interpreter
-emmake make -j$(nproc)
-
-This process generates the following files:
-
-- qemu-system-x86_64.js
-- qemu-system-x86_64.wasm
-- qemu-system-x86_64.worker.js
-
-Guest images can be packaged using Emscripten's file_packager.py tool.
-For example, if the images are stored in a directory named "pack", the
-following command packages them, allowing QEMU to access them through
-Emscripten's virtual filesystem:
-
-/path/to/file_packager.py qemu-system-x86_64.data --preload pack > load.js
-
-This process generates the following files:
-
-- qemu-system-x86_64.data
-- load.js
-
-Emscripten allows passing arguments to the QEMU command via the Module
-object in JavaScript:
-
-Module['arguments'] = [
-    '-nographic', '-m', '512M',
-    '-L', 'pack/',
-    '-drive', 'if=virtio,format=raw,file=pack/rootfs.bin',
-    '-kernel', 'pack/bzImage',
-    '-append', 'earlyprintk=ttyS0 console=ttyS0 root=/dev/vda loglevel=7',
-];
-
-The sample repository[1] provides a complete setup, including an HTML file
-that implements a terminal UI.
-
-[1] https://github.com/ktock/qemu-wasm-sample
-
-# Additional references
-
-- A talk at FOSDEM 2025:
-  https://fosdem.org/2025/schedule/event/fosdem-2025-6290-running-qemu-inside-browser/
-
-Kohei Tokunaga (5):
-  meson.build: add TCG_VADDR_BITS for defining the vaddr size
-  include: define vaddr based on TCG_VADDR_BITS
-  tlb: specify address field size based on TCG_VADDR_BITS
-  tci: define TCG_TARGET_REG_BITS based on TCG_VADDR_BITS
-  tci: use tcg_target_ulong when retrieving the pool data
-
- accel/tcg/cputlb.c             |  8 ++++----
- include/exec/helper-head.h.inc |  9 +++++----
- include/exec/tlb-common.h      | 18 +++++++++++++-----
- include/exec/vaddr.h           | 28 +++++++++++++++++++---------
- include/qemu/atomic.h          |  4 ++++
- include/tcg/tcg.h              |  6 +++---
- meson.build                    |  5 ++++-
- tcg/tci.c                      |  6 ++++--
- tcg/tci/tcg-target-reg-bits.h  |  4 ++--
- 9 files changed, 58 insertions(+), 30 deletions(-)
-
+diff --git a/meson.build b/meson.build
+index ad2053f968..185ec96149 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3229,6 +3229,9 @@ endif
+ 
+ # Detect host pointer size for the target configuration loop.
+ host_long_bits = cc.sizeof('void *') * 8
++tcg_vaddr_bits = host_arch == 'wasm32' ? 64 : host_long_bits
++
++config_host_data.set('TCG_VADDR_BITS', tcg_vaddr_bits)
+ 
+ ########################
+ # Target configuration #
+@@ -3327,7 +3330,7 @@ foreach target : target_dirs
+   target_kconfig = []
+   foreach sym: accelerators
+     # Disallow 64-bit on 32-bit emulation and virtualization
+-    if host_long_bits < config_target['TARGET_LONG_BITS'].to_int()
++    if tcg_vaddr_bits < config_target['TARGET_LONG_BITS'].to_int()
+       continue
+     endif
+     if sym == 'CONFIG_TCG' or target in accelerator_targets.get(sym, [])
 -- 
 2.43.0
 
