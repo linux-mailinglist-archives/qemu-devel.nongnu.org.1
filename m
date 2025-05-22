@@ -2,70 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84B0EAC136C
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 20:33:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA483AC1383
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 20:43:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uIAiL-000631-HZ; Thu, 22 May 2025 14:32:22 -0400
+	id 1uIAre-0002DE-QN; Thu, 22 May 2025 14:41:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uIAhd-0005mu-AO
- for qemu-devel@nongnu.org; Thu, 22 May 2025 14:31:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uIAha-0000Ov-5g
- for qemu-devel@nongnu.org; Thu, 22 May 2025 14:31:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747938693;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5PEAZpbs5TWoCFtJJ9kIYanvD3S/LIcCEWPEtqoAb7E=;
- b=BCEeuyWNZLNFqG0Pg4uTvzlqk6lBKngEOcCOdCUCSqqwy22hERAOnCX2VHzIQ9jnPMvS51
- ZRFTSHtxrL0cC94mzBgSOukolJnHEsUxtsqIMFwdAghzWazA5ZqQGZI37aDYqjQl6BDA4u
- /cc1r9Cy/q5b11hPtBoQnEmqN2I8Mfg=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-479-jd_Vwr9xNxuIaxhV5ckzhw-1; Thu,
- 22 May 2025 14:31:29 -0400
-X-MC-Unique: jd_Vwr9xNxuIaxhV5ckzhw-1
-X-Mimecast-MFC-AGG-ID: jd_Vwr9xNxuIaxhV5ckzhw_1747938688
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id A34D01956089; Thu, 22 May 2025 18:31:28 +0000 (UTC)
-Received: from merkur.redhat.com (unknown [10.45.226.76])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 554621944DFF; Thu, 22 May 2025 18:31:27 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com,
-	qemu-devel@nongnu.org
-Subject: [PULL 5/5] file-posix: Probe paths and retry SG_IO on potential path
- errors
-Date: Thu, 22 May 2025 20:31:15 +0200
-Message-ID: <20250522183115.246746-6-kwolf@redhat.com>
-In-Reply-To: <20250522183115.246746-1-kwolf@redhat.com>
-References: <20250522183115.246746-1-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uIArZ-0002Cb-N2
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 14:41:53 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1uIArX-0002Cn-Ts
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 14:41:53 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-742c3d06de3so6269722b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 22 May 2025 11:41:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1747939309; x=1748544109; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Dqf+6w2QfOmdXavhJ3Obery6ceilUl9qhvYxqUCLtHw=;
+ b=ge4hSLLPBteZDkBVYR4l7wYmutW2RwjhtmL9u1/RDBvn6tGe9YikkEMYUrC1vGvdyg
+ AKEZ2Cgdl5JdbS0/TRprHdpqwPlv8t47j3omJpZlAKsBXfZ9K+8/NZ23240gmD8KvkWT
+ IMh6Me/gmZGP7JzHPD3/LFVTjrVo6YI7UeHgbFer/w84T+8XhVnS7YY70pF4mYE/ANgO
+ l9Y+8jP9ErIa9lr86r+PV6CLPGQYwJhndvhkjTNKY5qY7KjH2E+WppQcwRu9uI35+oFg
+ +RyluUwqEQawBilEQwbTxRH4GFUll3zq0lWUqVFP0OocURzmV0AS+IzDrEPW+aN2z0C6
+ 8oKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747939309; x=1748544109;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Dqf+6w2QfOmdXavhJ3Obery6ceilUl9qhvYxqUCLtHw=;
+ b=eHof/O/M1pawFrfjDIT9YUa0t9eBahlNz6bXs9uzcaYf66SQQAl/MDO2tQMhMRl2zD
+ ikNBsBQfEZs+WNr/Hxl08UyLIswmu3HvU6Ce0UkUtXoi6QDO8OAjDgoR8n3nu0ZXI/SD
+ xPP0D15FRPeQDpezCMEZOAPDStMIhuWETYTClyFLP7E8SGtpnXCNPYzFAAGWK69/Q4tg
+ 0EUmQYNbjq/M4eCAR7r5lwTlMOXv9IODxhIvbKe40XgazRAbsVrizHOpViHLxB9RDQ12
+ VqUXCx/in4ouVa1jdRSdUZA0w1cbYdFvgT3wnPW2DSj9r4DEyaRXiIeL8Tj1++YVwatH
+ Ow7g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVO9nUQpOEo6M3iaozVHtNKnyEBT9rM/4r/i0b1aI9a2UuPGp1Ejw8CTVdVNSjOOY7duOjDqWr+PhbC@nongnu.org
+X-Gm-Message-State: AOJu0YyIISQkPkZv1vWkBs+TkijLazQ1hkxcaLNwepja8u1gx8LygNOv
+ uxByFaXaKGwNujURa6CmdAlp3X0FM8O3nf7h7sxrCMypX2ZVLrch0V7wlgUUeZ6AR4I=
+X-Gm-Gg: ASbGncs2JOe1L8i+H38ndICSor2Z6yd2+XNblsE1akGd2rBxFE8JTOdBHaMsWZMMyE6
+ U2yZ8qJDBFlvc9r5YJgMvAWtBzU2+n6k9QLMvI8e4sMJCbkW0wl6CiuIcIT7HiAnxyuoa+rd8t0
+ dmXNVmjJ7uSfJYsN5sQGu+eMy1emmxo0mwKmJL1usGXihOqPAmrhTSmuWES3IyADHh7G38Iy1HF
+ ROrb5snHg1oJuZXK3xxpxvsU8Mpx6VJ2lzN3QqykHQTwBAAp2OSLHtGOZESgiQVxqVxTZZZdrA2
+ 7q/HX9/fGwI7MYcSi/q3JkJTQASFRpI1h2sMnLyLjSFlM+P9jlNqK0li/rqxkEMV
+X-Google-Smtp-Source: AGHT+IEWk7mGWRc+KoxqKjiasU2XzKA7uaPpJVNySwHRFLgNzh5f8+IUNe75ERsDwX2gruzEh+Paqw==
+X-Received: by 2002:a05:6a20:1591:b0:215:e60b:3bcf with SMTP id
+ adf61e73a8af0-2170cdeb43emr41521787637.30.1747939309133; 
+ Thu, 22 May 2025 11:41:49 -0700 (PDT)
+Received: from [192.168.1.87] ([38.41.223.211])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-742a98a471bsm11554857b3a.180.2025.05.22.11.41.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 22 May 2025 11:41:48 -0700 (PDT)
+Message-ID: <1a5b4bd2-4648-41b7-a6c3-9ad5c843a063@linaro.org>
+Date: Thu, 22 May 2025 11:41:47 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/7] hw/arm: remove explicit dependencies listed
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>
+References: <20250521223414.248276-1-pierrick.bouvier@linaro.org>
+ <20250521223414.248276-3-pierrick.bouvier@linaro.org>
+ <a86894c0-5afa-4a85-bace-aa138f77a161@redhat.com>
+Content-Language: en-US
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <a86894c0-5afa-4a85-bace-aa138f77a161@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x430.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.275,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,204 +107,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When scsi-block is used on a host multipath device, it runs into the
-problem that the kernel dm-mpath doesn't know anything about SCSI or
-SG_IO and therefore can't decide if a SG_IO request returned an error
-and needs to be retried on a different path. Instead of getting working
-failover, an error is returned to scsi-block and handled according to
-the configured error policy. Obviously, this is not what users want,
-they want working failover.
+On 5/21/25 9:52 PM, Thomas Huth wrote:
+> On 22/05/2025 00.34, Pierrick Bouvier wrote:
+>> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+>> ---
+>>    hw/arm/meson.build | 4 ++--
+>>    1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> 
+> There is another bunch of pixmans in hw/display/meson.build and
+> hw/s390x/meson.build ... I wonder whether we could get rid of those now, too?
+> 
 
-QEMU can parse the SG_IO result and determine whether this could have
-been a path error, but just retrying the same request could just send it
-to the same failing path again and result in the same error.
-
-With a kernel that supports the DM_MPATH_PROBE_PATHS ioctl on dm-mpath
-block devices (queued in the device mapper tree for Linux 6.16), we can
-tell the kernel to probe all paths and tell us if any usable paths
-remained. If so, we can now retry the SG_IO ioctl and expect it to be
-sent to a working path.
-
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20250522130803.34738-1-kwolf@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
----
- block/file-posix.c | 115 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 114 insertions(+), 1 deletion(-)
-
-diff --git a/block/file-posix.c b/block/file-posix.c
-index 5a3532e40b..9b5f08ccb2 100644
---- a/block/file-posix.c
-+++ b/block/file-posix.c
-@@ -41,6 +41,7 @@
- 
- #include "scsi/pr-manager.h"
- #include "scsi/constants.h"
-+#include "scsi/utils.h"
- 
- #if defined(__APPLE__) && (__MACH__)
- #include <sys/ioctl.h>
-@@ -72,6 +73,7 @@
- #include <linux/blkzoned.h>
- #endif
- #include <linux/cdrom.h>
-+#include <linux/dm-ioctl.h>
- #include <linux/fd.h>
- #include <linux/fs.h>
- #include <linux/hdreg.h>
-@@ -138,6 +140,22 @@
- #define RAW_LOCK_PERM_BASE             100
- #define RAW_LOCK_SHARED_BASE           200
- 
-+/*
-+ * Multiple retries are mostly meant for two separate scenarios:
-+ *
-+ * - DM_MPATH_PROBE_PATHS returns success, but before SG_IO completes, another
-+ *   path goes down.
-+ *
-+ * - DM_MPATH_PROBE_PATHS failed all paths in the current path group, so we have
-+ *   to send another SG_IO to switch to another path group to probe the paths in
-+ *   it.
-+ *
-+ * Even if each path is in a separate path group (path_grouping_policy set to
-+ * failover), it's rare to have more than eight path groups - and even then
-+ * pretty unlikely that only bad path groups would be chosen in eight retries.
-+ */
-+#define SG_IO_MAX_RETRIES 8
-+
- typedef struct BDRVRawState {
-     int fd;
-     bool use_lock;
-@@ -165,6 +183,7 @@ typedef struct BDRVRawState {
-     bool use_linux_aio:1;
-     bool has_laio_fdsync:1;
-     bool use_linux_io_uring:1;
-+    bool use_mpath:1;
-     int page_cache_inconsistent; /* errno from fdatasync failure */
-     bool has_fallocate;
-     bool needs_alignment;
-@@ -4253,15 +4272,105 @@ hdev_open_Mac_error:
-     /* Since this does ioctl the device must be already opened */
-     bs->sg = hdev_is_sg(bs);
- 
-+    /* sg devices aren't even block devices and can't use dm-mpath */
-+    s->use_mpath = !bs->sg;
-+
-     return ret;
- }
- 
- #if defined(__linux__)
-+#if defined(DM_MPATH_PROBE_PATHS)
-+static bool coroutine_fn sgio_path_error(int ret, sg_io_hdr_t *io_hdr)
-+{
-+    if (ret < 0) {
-+        switch (ret) {
-+        case -ENODEV:
-+            return true;
-+        case -EAGAIN:
-+            /*
-+             * The device is probably suspended. This happens while the dm table
-+             * is reloaded, e.g. because a path is added or removed. This is an
-+             * operation that should complete within 1ms, so just wait a bit and
-+             * retry.
-+             *
-+             * If the device was suspended for another reason, we'll wait and
-+             * retry SG_IO_MAX_RETRIES times. This is a tolerable delay before
-+             * we return an error and potentially stop the VM.
-+             */
-+            qemu_co_sleep_ns(QEMU_CLOCK_REALTIME, 1000000);
-+            return true;
-+        default:
-+            return false;
-+        }
-+    }
-+
-+    if (io_hdr->host_status != SCSI_HOST_OK) {
-+        return true;
-+    }
-+
-+    switch (io_hdr->status) {
-+    case GOOD:
-+    case CONDITION_GOOD:
-+    case INTERMEDIATE_GOOD:
-+    case INTERMEDIATE_C_GOOD:
-+    case RESERVATION_CONFLICT:
-+    case COMMAND_TERMINATED:
-+        return false;
-+    case CHECK_CONDITION:
-+        return !scsi_sense_buf_is_guest_recoverable(io_hdr->sbp,
-+                                                    io_hdr->mx_sb_len);
-+    default:
-+        return true;
-+    }
-+}
-+
-+static bool coroutine_fn hdev_co_ioctl_sgio_retry(RawPosixAIOData *acb, int ret)
-+{
-+    BDRVRawState *s = acb->bs->opaque;
-+    RawPosixAIOData probe_acb;
-+
-+    if (!s->use_mpath) {
-+        return false;
-+    }
-+
-+    if (!sgio_path_error(ret, acb->ioctl.buf)) {
-+        return false;
-+    }
-+
-+    probe_acb = (RawPosixAIOData) {
-+        .bs         = acb->bs,
-+        .aio_type   = QEMU_AIO_IOCTL,
-+        .aio_fildes = s->fd,
-+        .aio_offset = 0,
-+        .ioctl      = {
-+            .buf        = NULL,
-+            .cmd        = DM_MPATH_PROBE_PATHS,
-+        },
-+    };
-+
-+    ret = raw_thread_pool_submit(handle_aiocb_ioctl, &probe_acb);
-+    if (ret == -ENOTTY) {
-+        s->use_mpath = false;
-+    } else if (ret == -EAGAIN) {
-+        /* The device might be suspended for a table reload, worth retrying */
-+        return true;
-+    }
-+
-+    return ret == 0;
-+}
-+#else
-+static bool coroutine_fn hdev_co_ioctl_sgio_retry(RawPosixAIOData *acb, int ret)
-+{
-+    return false;
-+}
-+#endif /* DM_MPATH_PROBE_PATHS */
-+
- static int coroutine_fn
- hdev_co_ioctl(BlockDriverState *bs, unsigned long int req, void *buf)
- {
-     BDRVRawState *s = bs->opaque;
-     RawPosixAIOData acb;
-+    int retries = SG_IO_MAX_RETRIES;
-     int ret;
- 
-     ret = fd_open(bs);
-@@ -4289,7 +4398,11 @@ hdev_co_ioctl(BlockDriverState *bs, unsigned long int req, void *buf)
-         },
-     };
- 
--    return raw_thread_pool_submit(handle_aiocb_ioctl, &acb);
-+    do {
-+        ret = raw_thread_pool_submit(handle_aiocb_ioctl, &acb);
-+    } while (req == SG_IO && retries-- && hdev_co_ioctl_sgio_retry(&acb, ret));
-+
-+    return ret;
- }
- #endif /* linux */
- 
--- 
-2.49.0
-
+It could, but those files are not (yet) included in target_common 
+libraries, so I think it can be cleaned up later.
 
