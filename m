@@ -2,70 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6026EAC0F1A
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 16:58:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB1D5AC0F2E
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 17:00:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uI7MM-0002LC-H0; Thu, 22 May 2025 10:57:26 -0400
+	id 1uI7O7-0003cL-17; Thu, 22 May 2025 10:59:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uI7MK-0002Km-Ir
- for qemu-devel@nongnu.org; Thu, 22 May 2025 10:57:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1uI7O0-0003b3-TE
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 10:59:09 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1uI7MH-0004Vt-Qn
- for qemu-devel@nongnu.org; Thu, 22 May 2025 10:57:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747925840;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=SAxu2TG4Qa6wmMYOMNFQxrCbLKii1Tnw4EYNpLqDRbA=;
- b=Nzfnt0LQDRP2C2soNMhT9KfIChkWDRTvO3GbYXPXOsUF9q6dt+zQ7EZsXb7Do9kWibQnBQ
- gfFl+ZPkzS1olzhSq74H85WzVX6YDeLKkdiFcYr0R6h+7NzVEin0TgbTxZpQdJpPoIK5R7
- iNPaCh6f+wIbkgE5rHklQGHaxCEDupU=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-214-MVrCb6tuMV6t1dQupT4XOA-1; Thu,
- 22 May 2025 10:57:17 -0400
-X-MC-Unique: MVrCb6tuMV6t1dQupT4XOA-1
-X-Mimecast-MFC-AGG-ID: MVrCb6tuMV6t1dQupT4XOA_1747925836
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id CCFD31956095; Thu, 22 May 2025 14:57:15 +0000 (UTC)
-Received: from redhat.com (unknown [10.45.226.76])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 6835019560AB; Thu, 22 May 2025 14:57:12 +0000 (UTC)
-Date: Thu, 22 May 2025 16:57:10 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-block@nongnu.org, hreitz@redhat.com, bmarzins@redhat.com,
- pbonzini@redhat.com, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2] file-posix: Probe paths and retry SG_IO on potential
- path errors
-Message-ID: <aC87RvpJ9O-4jmMM@redhat.com>
-References: <20250522130803.34738-1-kwolf@redhat.com>
- <20250522144607.GA258433@fedora>
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1uI7Nx-0004gD-T3
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 10:59:08 -0400
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54MEuW26022292;
+ Thu, 22 May 2025 14:58:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=corp-2025-04-25; bh=jtNFJpZiwmU9xF4q
+ rlHLhnddEZ4A8NSN64FcE49XGVo=; b=lWIrvKWeAV/TN9cerPQbZjWou2QChqzk
+ YAzPtqQ7EB2zBP2i9Sf/qh7IcRgO/bTBiS7tsWnpHIXYC1CnNj46oQbIonoSpmMB
+ DIHMbukj7q/0lcZ2kSaUQTbZl7HS742iwUP47CUFhO1vYidpfcDlr4QDjrA3ZGv4
+ oOFKEmQCDVEtPmLR/xkszxkifk1gmdrwEzBqQtddBjWsFe2ndlW+SbgHAJL0h558
+ xdI/COYZ1renD1YsxuWBUx8QeEHu9NK+VykV4f2Ouy1EJDqKylB5FClv17JV4OZE
+ rN0rwhvNtQ9PWNSZJKOa0xY/77VJ5lnPhwGEqh3KNCdBjitCjarYyw==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46t5b407d7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 22 May 2025 14:58:46 +0000 (GMT)
+Received: from pps.filterd
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
+ with ESMTP id 54MEFRLt034557; Thu, 22 May 2025 14:58:45 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 46rwer98yx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 22 May 2025 14:58:44 +0000
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54MEwiTt010227;
+ Thu, 22 May 2025 14:58:44 GMT
+Received: from dhcp-10-43-71-124.usdhcp.oraclecorp.com.com
+ (dhcp-10-43-71-124.usdhcp.oraclecorp.com [10.43.71.124])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
+ 46rwer98yj-1; Thu, 22 May 2025 14:58:44 +0000
+From: Jonah Palmer <jonah.palmer@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: jonah.palmer@oracle.com, eperezma@redhat.com, peterx@redhat.com,
+ mst@redhat.com, jasowang@redhat.com, lvivier@redhat.com,
+ dtatulea@nvidia.com, leiyang@redhat.com, parav@mellanox.com,
+ sgarzare@redhat.com, si-wei.liu@oracle.com, boris.ostrovsky@oracle.com,
+ armbru@redhat.com
+Subject: [PATCH v5 0/7] Move memory listener register to vhost_vdpa_init
+Date: Thu, 22 May 2025 10:58:32 -0400
+Message-ID: <20250522145839.59974-1-jonah.palmer@oracle.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="6RZJ7/Ph9I/N1Yzs"
-Content-Disposition: inline
-In-Reply-To: <20250522144607.GA258433@fedora>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.275,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-22_07,2025-05-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ mlxscore=0 spamscore=0
+ suspectscore=0 adultscore=0 malwarescore=0 phishscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
+ definitions=main-2505220152
+X-Proofpoint-ORIG-GUID: peO5WENZi0dRDjOkropl8COv2agkwTUM
+X-Authority-Analysis: v=2.4 cv=AdaxH2XG c=1 sm=1 tr=0 ts=682f3ba6 b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=mDV3o1hIAAAA:8 a=VwQbUJbxAAAA:8
+ a=20KFwNOVAAAA:8 a=yPCof4ZbAAAA:8
+ a=WQgBD-38X1HkX1-ZmYAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=5WABlXvFAscA:10
+ a=n0c7R5xxTHgA:10 cc=ntf awl=host:13206
+X-Proofpoint-GUID: peO5WENZi0dRDjOkropl8COv2agkwTUM
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIyMDE1MiBTYWx0ZWRfXy2wlzFpHkMVY
+ ztnilPMrPYHU4GYQ/iPehzCbEuHrB9WeRSbFGXT8yf07g08KqvNKEDvlskxeCLAmE/U56RNIVa7
+ 6D6OW+fCEV22ZPbnR6JqQvEl5aSN9KYirWYFtOqE6HPfrh/BcGrHVcGRpgM9XQUMZYl6K73n/MI
+ 79in0ATW0k0d5htp1qj+sPt57XTx7hWxLOJ45/7gOzup7fvYDI4CoLHVbK+vP35NN3Shve+XMPx
+ oEFnqLC+lfglNMXwVk2CgSDsErhujvSDgRhaLo61btYQg/xNM5XGNBBNkXd+0ByzB5HWNcyWO+0
+ 5EonNrwlRlmXD5XHPshl2A0kOMWgQq0OLay7pCdCn/ukQ+7k5RMh4xI0t09EvxI4v4/C+dN8w+I
+ NyJwnoaukxrxj7dtCVxHFiLdNYJ35RBP0zhjJgZ/2fBxSmPSXU9P4VaUYjJdzC5jS5wCW5bI
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=jonah.palmer@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.499,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -83,93 +114,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Current memory operations like pinning may take a lot of time at the
+destination.  Currently they are done after the source of the migration is
+stopped, and before the workload is resumed at the destination.  This is a
+period where neigher traffic can flow, nor the VM workload can continue
+(downtime).
 
---6RZJ7/Ph9I/N1Yzs
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+We can do better as we know the memory layout of the guest RAM at the
+destination from the moment that all devices are initializaed.  So
+moving that operation allows QEMU to communicate the kernel the maps
+while the workload is still running in the source, so Linux can start
+mapping them.
 
-Am 22.05.2025 um 16:46 hat Stefan Hajnoczi geschrieben:
-> On Thu, May 22, 2025 at 03:08:03PM +0200, Kevin Wolf wrote:
-> > When scsi-block is used on a host multipath device, it runs into the
-> > problem that the kernel dm-mpath doesn't know anything about SCSI or
-> > SG_IO and therefore can't decide if a SG_IO request returned an error
-> > and needs to be retried on a different path. Instead of getting working
-> > failover, an error is returned to scsi-block and handled according to
-> > the configured error policy. Obviously, this is not what users want,
-> > they want working failover.
-> >=20
-> > QEMU can parse the SG_IO result and determine whether this could have
-> > been a path error, but just retrying the same request could just send it
-> > to the same failing path again and result in the same error.
-> >=20
-> > With a kernel that supports the DM_MPATH_PROBE_PATHS ioctl on dm-mpath
-> > block devices (queued in the device mapper tree for Linux 6.16), we can
-> > tell the kernel to probe all paths and tell us if any usable paths
-> > remained. If so, we can now retry the SG_IO ioctl and expect it to be
-> > sent to a working path.
-> >=20
-> > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> > ---
-> > v2:
-> > - Add a comment to explain retry scenarios [Stefan]
-> > - Handle -EAGAIN returned for suspended devices [Ben]
+As a small drawback, there is a time in the initialization where QEMU
+cannot respond to QMP etc.  By some testing, this time is about
+0.2seconds.  This may be further reduced (or increased) depending on the
+vdpa driver and the platform hardware, and it is dominated by the cost
+of memory pinning.
 
-> >  #if defined(__linux__)
-> > +#if defined(DM_MPATH_PROBE_PATHS)
-> > +static bool sgio_path_error(int ret, sg_io_hdr_t *io_hdr)
-> > +{
-> > +    if (ret < 0) {
-> > +        switch (ret) {
-> > +        case -ENODEV:
-> > +            return true;
-> > +        case -EAGAIN:
-> > +            /*
-> > +             * The device is probably suspended. This happens while th=
-e dm table
-> > +             * is reloaded, e.g. because a path is added or removed. T=
-his is an
-> > +             * operation that should complete within 1ms, so just wait=
- a bit and
-> > +             * retry.
-> > +             *
-> > +             * If the device was suspended for another reason, we'll w=
-ait and
-> > +             * retry SG_IO_MAX_RETRIES times. This is a tolerable dela=
-y before
-> > +             * we return an error and potentially stop the VM.
-> > +             */
-> > +            qemu_co_sleep_ns(QEMU_CLOCK_REALTIME, 1000000);
->=20
-> sgio_path_error() is missing coroutine_fn.
->=20
-> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+This matches the time that we move out of the called downtime window.
+The guest-visible downtime is measured as the elapsed trace time between
+the last vhost_vdpa_suspend on the source and the last
+vhost_vdpa_set_vring_enable_one on the destination. In other words, from
+"guest CPUs freeze" to the instant the final Rx/Tx queue-pair is able to
+start moving data.
 
-Thanks, good catch. I already applied the patch and fixed it up to make
-sure that I won't forget.
+Using ConnectX-6 Dx (MLX5) NICs in vhost-vDPA mode with 8 queue-pairs,
+the series reduces guest-visible downtime during back-to-back live
+migrations by more than half:
+- 39G VM:   4.72s -> 2.09s (-2.63s, ~56% improvement)
+- 128G VM:  14.72s -> 5.83s (-8.89s, ~60% improvement)
 
-Kevin
+Future directions on top of this series may include to move more things ahead
+of the migration time, like set DRIVER_OK or perform actual iterative migration
+of virtio-net devices.
 
---6RZJ7/Ph9I/N1Yzs
-Content-Type: application/pgp-signature; name=signature.asc
+Comments are welcome.
 
------BEGIN PGP SIGNATURE-----
+This series is a different approach of series [1]. As the title does not
+reflect the changes anymore, please refer to the previous one to know the
+series history.
 
-iQIzBAEBCAAdFiEE3D3rFZqa+V09dFb+fwmycsiPL9YFAmgvO0YACgkQfwmycsiP
-L9Y6YA//UosZ7aMjtAl4tOd56NSTB5G5fhflWPmsWN1H4MZTQ1+Q9vE3jOtJalIZ
-/1xsoLveuSzRmDGWzOEaqZpsMvrMt2Fjw9F3Wm/Ckdp1I0dlcK6lle37Ned2kvVf
-TrRbH1CLCkmOB20WOHPbTLmMkINL3a51GglOx8+BzeQagIV/M0WAleCQ2WQG336R
-Xiy9GN9LE8C5rUbi5QtbvPx3rya30XGnNACWr+bX4Q2OdjusHp9QbSLNndIEOHrO
-TSuXzwv60pdTotaiVY8UEPFNRj7VfYfXLH4iK/h7SBzRH2HSkVagr6NLao8RVhzO
-aVeHfBrp9X5uPKRdeUoXxkXVJQffbOrPB8BnkkOe1T+644UbvlKAKvjgyB0N+wfG
-z9BFmJgZlOt2aAV0kECPfX2sJ5w3NK4B7a8LEtLXJBj08piCpyr3cyT6/xXNyrkJ
-TsIxZu5SEFHZRLp8szFViSMguoBJGcniR9NQr2WH0vIlGAJo5Ohf+dJ3dmj5kvuG
-FhMEaPghFIrMcQ+IQt+N6Az6AoLvcQM9coB9bYarNJOM+9v1HFb4pwjoAkHjBJnx
-dC9Lwtm37bei+wacIc00z49VQNFM7IlvPPnFEqvy/xwjTSc9/zfsytBytnCVv1Js
-IPqOnqonpNEIJR9vTYpnSQ4NY1ZnfDTwZxbBz32Ee4s8OMYce68=
-=0OOc
------END PGP SIGNATURE-----
+This series is based on [2] and has already been merged.
 
---6RZJ7/Ph9I/N1Yzs--
+[Jonah Palmer]
+This series was rebased after [3] was pulled in, as [3] was a prerequisite
+fix for this series.
+
+v5:
+---
+* Update performance metrics from the change in v4.
+
+v4:
+---
+* Add memory listener unregistration to vhost_vdpa_reset_device.
+* Remove memory listener unregistration from vhost_vdpa_reset_status.
+
+v3:
+---
+* Rebase
+
+v2:
+---
+* Move the memory listener registration to vhost_vdpa_set_owner function.
+* Move the iova_tree allocation to net_vhost_vdpa_init.
+
+v1 at https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg02136.html.
+
+[1] https://patchwork.kernel.org/project/qemu-devel/cover/20231215172830.2540987-1-eperezma@redhat.com/
+[2] https://lists.gnu.org/archive/html/qemu-devel/2024-01/msg05910.html
+[3] https://lore.kernel.org/qemu-devel/20250217144936.3589907-1-jonah.palmer@oracle.com/
+
+Eugenio Pérez (7):
+  vdpa: check for iova tree initialized at net_client_start
+  vdpa: reorder vhost_vdpa_set_backend_cap
+  vdpa: set backend capabilities at vhost_vdpa_init
+  vdpa: add listener_registered
+  vdpa: reorder listener assignment
+  vdpa: move iova_tree allocation to net_vhost_vdpa_init
+  vdpa: move memory listener register to vhost_vdpa_init
+
+ hw/virtio/vhost-vdpa.c         | 107 +++++++++++++++++++++------------
+ include/hw/virtio/vhost-vdpa.h |  22 ++++++-
+ net/vhost-vdpa.c               |  34 +----------
+ 3 files changed, 93 insertions(+), 70 deletions(-)
+
+-- 
+2.43.5
 
 
