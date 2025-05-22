@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4EE0AC09CB
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 12:31:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CA58AC09DE
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 12:33:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uI3BR-00030l-KA; Thu, 22 May 2025 06:29:53 -0400
+	id 1uI3BT-00031Q-T3; Thu, 22 May 2025 06:29:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uI3BP-00030O-7r
- for qemu-devel@nongnu.org; Thu, 22 May 2025 06:29:51 -0400
+ id 1uI3BR-000311-Nr
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 06:29:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1uI3BN-0006NV-KQ
- for qemu-devel@nongnu.org; Thu, 22 May 2025 06:29:51 -0400
+ id 1uI3BP-0006Ns-Us
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 06:29:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747909787;
+ s=mimecast20190719; t=1747909791;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZxpEFbLS34uMmcFhE5xzGXyMY8b1zltlu/qrjpYdh8I=;
- b=L+AD+sZ0HPq9CXlqKO+rPxR4UUqUiKQDGw1vH3mLJijDw0vaO1NTAH40S67svyhFlGTDVZ
- j8ZQX2gU+6c2kJmR3OELbJC9kEaPOzt9TFYkukTpsWpWp03Hx1IeyBWO3vGqmFbh0lDTvZ
- LlSn5PC2+ygmBojC+TmJ6/Dq2/E1yAI=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=XyUnMj9/H/0h1Xv5aB6MTdGPBSZaLnJUbbb38XM38Uw=;
+ b=E7CmLgZdxWTX9sKXRclO4wz2gYuH+W9KXwNH/Y6Hc7v4VPGUfyhjVpf0uiv7cnNPFtJAQ2
+ hDZ6REXlrFbJCRJDLzMJF/HFR96ztHZkaSQZl9UismBr+rxkiVdepN8jWv3FfLfJCOLoFc
+ dlMC3S4q7WkvqH2Ac5UCnbPoCkTO22s=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-518-dzxVuL-FMyC7ojCtk3EsgQ-1; Thu,
- 22 May 2025 06:29:46 -0400
-X-MC-Unique: dzxVuL-FMyC7ojCtk3EsgQ-1
-X-Mimecast-MFC-AGG-ID: dzxVuL-FMyC7ojCtk3EsgQ_1747909785
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-576-mlDKAfqPPOGC5jIfGfC7pg-1; Thu,
+ 22 May 2025 06:29:49 -0400
+X-MC-Unique: mlDKAfqPPOGC5jIfGfC7pg-1
+X-Mimecast-MFC-AGG-ID: mlDKAfqPPOGC5jIfGfC7pg_1747909789
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 7AF5A18004A7; Thu, 22 May 2025 10:29:45 +0000 (UTC)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id D835A195608B; Thu, 22 May 2025 10:29:48 +0000 (UTC)
 Received: from toolbx.redhat.com (unknown [10.42.28.179])
  by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7C3B01958014; Thu, 22 May 2025 10:29:42 +0000 (UTC)
+ id 170801958014; Thu, 22 May 2025 10:29:45 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -53,10 +53,10 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eric Blake <eblake@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 05/23] tests: skip legacy qcow2 encryption test if AES is not
+Subject: [PULL 06/23] tests: fix skipping cipher tests when AES is not
  available
-Date: Thu, 22 May 2025 11:29:05 +0100
-Message-ID: <20250522102923.309452-6-berrange@redhat.com>
+Date: Thu, 22 May 2025 11:29:06 +0100
+Message-ID: <20250522102923.309452-7-berrange@redhat.com>
 In-Reply-To: <20250522102923.309452-1-berrange@redhat.com>
 References: <20250522102923.309452-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -88,33 +88,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This avoids test breakage when we drop support for using the
+This avoid tests breakage when we drop support for using the
 built-in AES impl as a fallback for missing crypto libraries.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- tests/unit/test-crypto-block.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tests/unit/test-crypto-cipher.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/tests/unit/test-crypto-block.c b/tests/unit/test-crypto-block.c
-index 9217b9a2ef..3ac7f17b2a 100644
---- a/tests/unit/test-crypto-block.c
-+++ b/tests/unit/test-crypto-block.c
-@@ -574,6 +574,13 @@ int main(int argc, char **argv)
-     for (i = 0; i < G_N_ELEMENTS(test_data); i++) {
-         if (test_data[i].open_opts->format == QCRYPTO_BLOCK_FORMAT_LUKS &&
-             !qcrypto_hash_supports(test_data[i].hash_alg)) {
-+            g_printerr("# skip unsupported %s\n",
-+                       QCryptoHashAlgo_str(test_data[i].hash_alg));
-+            continue;
-+        }
-+        if (!qcrypto_cipher_supports(QCRYPTO_CIPHER_ALGO_AES_128,
-+                                     QCRYPTO_CIPHER_MODE_CBC)) {
-+            g_printerr("# skip unsupported aes-128:cbc\n");
-             continue;
+diff --git a/tests/unit/test-crypto-cipher.c b/tests/unit/test-crypto-cipher.c
+index b328b482e1..1331d558cf 100644
+--- a/tests/unit/test-crypto-cipher.c
++++ b/tests/unit/test-crypto-cipher.c
+@@ -828,11 +828,16 @@ int main(int argc, char **argv)
          }
-         if (!test_data[i].slow ||
+     }
+ 
+-    g_test_add_func("/crypto/cipher/null-iv",
+-                    test_cipher_null_iv);
++    if (qcrypto_cipher_supports(QCRYPTO_CIPHER_ALGO_AES_256,
++                                QCRYPTO_CIPHER_MODE_CBC)) {
++        g_test_add_func("/crypto/cipher/null-iv",
++                        test_cipher_null_iv);
+ 
+-    g_test_add_func("/crypto/cipher/short-plaintext",
+-                    test_cipher_short_plaintext);
++        g_test_add_func("/crypto/cipher/short-plaintext",
++                        test_cipher_short_plaintext);
++    } else {
++        g_printerr("# skip unsupported aes-256:cbc\n");
++    }
+ 
+     return g_test_run();
+ }
 -- 
 2.49.0
 
