@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40798AC1440
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 21:07:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EBAEAC144D
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 21:08:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uIBFP-0001Af-Vx; Thu, 22 May 2025 15:06:36 -0400
+	id 1uIBG2-0001sm-Bq; Thu, 22 May 2025 15:07:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uIBF2-0000xl-Hv
+ id 1uIBF3-0000xz-0B
  for qemu-devel@nongnu.org; Thu, 22 May 2025 15:06:10 -0400
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1uIBEz-0006UG-O5
+ id 1uIBEz-0006US-Os
  for qemu-devel@nongnu.org; Thu, 22 May 2025 15:06:08 -0400
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-310ce23a660so550173a91.1
- for <qemu-devel@nongnu.org>; Thu, 22 May 2025 12:06:02 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-742c46611b6so6930427b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 22 May 2025 12:06:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1747940762; x=1748545562; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xKpDcwMErvQxgyaL+Q2tctV5ddB+KbCBa/wlI68stYM=;
- b=NISuLF01GpztabWUlR67hZXKEt3eGD+MXTBAheHDsNDT55HiYetp5Nt3DBjhF71eod
- sxc/8FiynKiqQxg2ETayl4IpYvudncxlIVoV9mAkaG3GkKHv+FfcDEgrIoXHynjoWEVL
- XhPn8erZJd8y5H1gA8PvjKG4DtlbaP5t8GnkuhXhH5RblCuyb1izuPMS5njeT7Q7k8Ru
- JpieevWP0lZ4EsuOFhlGGlo7hQ6Wt9yeH93J3XFzQ8h59hgolfO+r6xBZv8Uxa0putrX
- j022Bievj4Le7Xe0WK5Ngm394+FUEfTmfdnmR+NS9XOl6kudd5El6LOF+CQVlAv1gcQJ
- VavA==
+ bh=xFNyLq61X9oj5XcqX9ULx+NmBqVjk0YKZDfCa6aorIU=;
+ b=RXqI4uIQ3yCkjnDoeg8Nsx+8nHFtDPChPqFuBulcwPG9ZeG8pYSbzwp/1wXHPaGnYm
+ HajfknDF+kLKlFD42Us7StPntEHnRLfc9xe1v7GpG6+1YiwvAyKmZVf9Z9g9arzZilza
+ nrum/dYKVCCOOoR1LHO2KPFht/wl32NX7IUcg5b6r9d7b9/eKYRjVsP3gLNdZ/TvQxzK
+ 2GSljnyFdbNPMjQYlaZ1oAi1JgiTlMTU3XrrKcbuhJkeZ2CRwFFc72koHyi1qNbeeTY3
+ EKr9zCOmIhaGY9LUjFYFw3tRVx0eYgnFbPjYAKNpDoCZ8F6ntzRJHPEHq2LvQXSy73a8
+ mAyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1747940762; x=1748545562;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xKpDcwMErvQxgyaL+Q2tctV5ddB+KbCBa/wlI68stYM=;
- b=KEGcKnjNI8vRK9OWOqga9hmdTpjAywRrbjvwNBsKz954FpH6GYVoViBJ12WyMsq08c
- C97+JAaSnHLYZo/Iu6hWZ2K6Wm5cz9TZ8uZvNJeH3frFSSEUg5rtM8L1wxY9X5CcjoRi
- HDnkMyISTl51zFwBT0ruoVsXP1dF2LUkjKu5g8GVBs8V/NzWgqYDKISoGHydiNSxwbKb
- Pfs96RFtvHkIcAhmBvg/b/heTDiyVCu3ydU/fTwuc8jhKoFFTU5pC0MWiDJmrQkhVjof
- trNly1S6Sn+OQ26OcEg54H2Q2nkMwnJTf2jo3wGqHQff7aDocGQq9b61sHi50V5iC013
- 6MCw==
-X-Gm-Message-State: AOJu0Ywx46fEoaxIONjtTSaDdihLrc2ReAEk1YBkuHR/WdPlhBt9YCK7
- a/tYnErBpyq4BIVAzSFjTJ3rQ6/eeoRhkRW+e4wYbiNEwTCx7g8tSqOHSWYsfkMST7O02SZHM4K
- SYpVn
-X-Gm-Gg: ASbGncteOTpw+1WM/HP/PvBxZNoF/SCDZ1CTdMPjXX6DAN9DmWiLFdm/34RLULJmKY5
- IIEjZRkeNODYQ3oVDf77TnXuSDsv3ce/qfmUZ6MkNCzgKwHCol/Q9+Rzdl1lg72v4eL+hzEfcSh
- DZbkz5si+U/8QryPc3FoyFMN6HvYzxN8U7iaaJlgeYPVY0NqsD07o1tZPT0TZjOuXvMGbcCTumz
- wd+nB4j3u/gVN8cg/98IOw7k8wUtKy5k4+cQ1rqqUCrZzaIKoK2Bu/kzLol9ANqwrDSH1AeHYS1
- fx2hdP2HyQKOHTvhbrCD42IQefJPGR/RtmDOj0ISC/FiXsRS3kM=
-X-Google-Smtp-Source: AGHT+IHDh8FiEznzPLjsuVTJ7cxt9M/OwunSmIidZ8ovWq7boiQ1zkwVpksgwb2Jbx/oBKLn1j84+Q==
-X-Received: by 2002:a17:90b:3c03:b0:308:6d7a:5d30 with SMTP id
- 98e67ed59e1d1-310e96e6cb5mr613322a91.18.1747940761656; 
- Thu, 22 May 2025 12:06:01 -0700 (PDT)
+ bh=xFNyLq61X9oj5XcqX9ULx+NmBqVjk0YKZDfCa6aorIU=;
+ b=ZOGse1gWUjxXxGRE1cgWKebe9puVR4JUDoBSWgdj1HzYb1zOmczsqpPg6dj4K7+iZI
+ WFBm71gp/oO8V5c440jILvznQvlwaUVrIapCgV2g9fKzVJvQRbVTpdek4YaNW7yivXdV
+ J7U7iHOE6mYpf6h3awDnhn4EF3QQ/AyA9cjqpvEROOj/q9RwxDCtm7aR/q95AvOSBhw5
+ gDm+1L6/1kDmf0DUhUbjqcZ9VQKsBTeRpm6MTQWQop8RNbXMh3cCnndBQ5+IBnP0L/Ic
+ CGW3bxUdD4s+/zcJNYw4lXdFOT4QANbVFOQeRZR2Cd2Pb2PxZb8Qb4nqUkyAwVY203Qw
+ USjw==
+X-Gm-Message-State: AOJu0Yyq+EV1VhBdZJZQFYZ+yt8x9w9mGRbGE3/ghbquX7k2d6Z0KWpE
+ 6/+P84ypM16YKOEY3yiqDdFtXNMK5UWm0z4Mx/BCbYO8NIfxI97shiA+POsp8jfgNFeNRUbgWHf
+ qQcNK
+X-Gm-Gg: ASbGnctaStAHXq40s894tQKcT/N8MC/r7kCRK3JoUz/MBgS4zStZFV/6xZT9uPXlW97
+ +k4DOGxIkjftTjRYdJ4Qd6aIAZ4C7bq2bcZdk89eUEkohZ5IEwo5yBSTJVdzG1rkvkUsLkc/Q0G
+ gowMuStKozyEW8OenPC0DruO8CW4ZrsRrO2RIKEaWLvzk1KGRSW9ZLyChoSfpWvQ4VzeKt3+nDp
+ Z8auPM0IhMYXf6YQlTZB8R6zBi66e/bTil7R+bO/+caR7oxwys/xTzZIze8PhOhiJThHYv9ev1w
+ 4hHSMET8ULt7NyawUNhPIxqHbLpeLMDcHy6gREgaCdq+SeabMnw=
+X-Google-Smtp-Source: AGHT+IF5IID0F81h0tLeg9xYW9mqtcfFGLLk9yDAeTgQvYSveO0u7K4Dy3YiuLcmWmVBpIKP1vkZrw==
+X-Received: by 2002:a05:6a20:6a2b:b0:215:dfee:bb70 with SMTP id
+ adf61e73a8af0-2170cde519dmr40055087637.29.1747940762585; 
+ Thu, 22 May 2025 12:06:02 -0700 (PDT)
 Received: from pc.. ([38.41.223.211]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-b26eb082c66sm11625565a12.60.2025.05.22.12.06.00
+ 41be03b00d2f7-b26eb082c66sm11625565a12.60.2025.05.22.12.06.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 22 May 2025 12:06:01 -0700 (PDT)
+ Thu, 22 May 2025 12:06:02 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: michael.roth@amd.com, thuth@redhat.com, pbonzini@redhat.com,
  richard.henderson@linaro.org, armbru@redhat.com,
  pierrick.bouvier@linaro.org, peter.maydell@linaro.org, berrange@redhat.com,
  philmd@linaro.org
-Subject: [PATCH v4 12/15] qapi: make all generated files common
-Date: Thu, 22 May 2025 12:05:39 -0700
-Message-ID: <20250522190542.588267-13-pierrick.bouvier@linaro.org>
+Subject: [PATCH v4 13/15] qapi: use imperative style in documentation
+Date: Thu, 22 May 2025 12:05:40 -0700
+Message-ID: <20250522190542.588267-14-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250522190542.588267-1-pierrick.bouvier@linaro.org>
 References: <20250522190542.588267-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1030.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,68 +99,201 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Monolithic files (qapi_nonmodule_outputs) can now be compiled just
-once, so we can remove qapi_util_outputs logic.
-This removes the need for any specific_ss file.
+As requested by Markus:
+> We prefer imperative mood "Return" over "Returns".
 
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- qapi/meson.build | 23 ++++-------------------
- 1 file changed, 4 insertions(+), 19 deletions(-)
+ qapi/audio.json     | 2 +-
+ qapi/char.json      | 4 ++--
+ qapi/cryptodev.json | 2 +-
+ qapi/machine.json   | 4 ++--
+ qapi/migration.json | 8 ++++----
+ qapi/misc-i386.json | 6 +++---
+ qapi/ui.json        | 8 ++++----
+ 7 files changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/qapi/meson.build b/qapi/meson.build
-index 7582c2b5bcf..3b035aea339 100644
---- a/qapi/meson.build
-+++ b/qapi/meson.build
-@@ -85,8 +85,7 @@ qapi_nonmodule_outputs = [
-   'qapi-emit-events.c', 'qapi-emit-events.h',
- ]
- 
--# First build all sources
--qapi_util_outputs = [
-+qapi_outputs = qapi_nonmodule_outputs + [
-   'qapi-builtin-types.c', 'qapi-builtin-visit.c',
-   'qapi-builtin-types.h', 'qapi-builtin-visit.h',
- ]
-@@ -109,20 +108,17 @@ foreach module : qapi_all_modules
-       'qapi-commands-@0@.trace-events'.format(module),
-     ]
-   endif
--  qapi_util_outputs += qapi_module_outputs
-+  qapi_outputs += qapi_module_outputs
- endforeach
- 
- qapi_files = custom_target('shared QAPI source files',
--  output: qapi_util_outputs + qapi_nonmodule_outputs,
-+  output: qapi_outputs,
-   input: [ files('qapi-schema.json') ],
-   command: [ qapi_gen, '-o', 'qapi', '-b', '@INPUT0@' ],
-   depend_files: [ qapi_inputs, qapi_gen_depends ])
- 
--# Now go through all the outputs and add them to the right sourceset.
--# These loops must be synchronized with the output of the above custom target.
--
- i = 0
--foreach output : qapi_util_outputs
-+foreach output : qapi_outputs
-   if output.endswith('.h')
-     genh += qapi_files[i]
-   endif
-@@ -132,14 +128,3 @@ foreach output : qapi_util_outputs
-   util_ss.add(qapi_files[i])
-   i = i + 1
- endforeach
--
--foreach output : qapi_nonmodule_outputs
--  if output.endswith('.h')
--    genh += qapi_files[i]
--  endif
--  if output.endswith('.trace-events')
--    qapi_trace_events += qapi_files[i]
--  endif
--  specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: qapi_files[i])
--  i = i + 1
--endforeach
+diff --git a/qapi/audio.json b/qapi/audio.json
+index dd5a58d13e6..826477c3072 100644
+--- a/qapi/audio.json
++++ b/qapi/audio.json
+@@ -533,7 +533,7 @@
+ ##
+ # @query-audiodevs:
+ #
+-# Returns information about audiodev configuration
++# Return information about audiodev configuration
+ #
+ # Returns: array of @Audiodev
+ #
+diff --git a/qapi/char.json b/qapi/char.json
+index dde2f9538f8..447c10b91a5 100644
+--- a/qapi/char.json
++++ b/qapi/char.json
+@@ -34,7 +34,7 @@
+ ##
+ # @query-chardev:
+ #
+-# Returns information about current character devices.
++# Return information about current character devices.
+ #
+ # Returns: a list of @ChardevInfo
+ #
+@@ -80,7 +80,7 @@
+ ##
+ # @query-chardev-backends:
+ #
+-# Returns information about character device backends.
++# Return information about character device backends.
+ #
+ # Returns: a list of @ChardevBackendInfo
+ #
+diff --git a/qapi/cryptodev.json b/qapi/cryptodev.json
+index 04d0e21d209..28b97eb3da6 100644
+--- a/qapi/cryptodev.json
++++ b/qapi/cryptodev.json
+@@ -94,7 +94,7 @@
+ ##
+ # @query-cryptodev:
+ #
+-# Returns information about current crypto devices.
++# Return information about current crypto devices.
+ #
+ # Returns: a list of @QCryptodevInfo
+ #
+diff --git a/qapi/machine.json b/qapi/machine.json
+index e6b4b2dfef8..7f3af355b36 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -99,7 +99,7 @@
+ ##
+ # @query-cpus-fast:
+ #
+-# Returns information about all virtual CPUs.
++# Return information about all virtual CPUs.
+ #
+ # Returns: list of @CpuInfoFast
+ #
+@@ -467,7 +467,7 @@
+ ##
+ # @query-kvm:
+ #
+-# Returns information about KVM acceleration
++# Return information about KVM acceleration
+ #
+ # Returns: @KvmInfo
+ #
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 8b9c53595c4..1278450e09d 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -282,7 +282,7 @@
+ ##
+ # @query-migrate:
+ #
+-# Returns information about current migration process.  If migration
++# Return information about current migration process.  If migration
+ # is active there will be another json-object with RAM migration
+ # status.
+ #
+@@ -535,7 +535,7 @@
+ ##
+ # @query-migrate-capabilities:
+ #
+-# Returns information about the current migration capabilities status
++# Return information about the current migration capabilities status
+ #
+ # Returns: @MigrationCapabilityStatus
+ #
+@@ -1320,7 +1320,7 @@
+ ##
+ # @query-migrate-parameters:
+ #
+-# Returns information about the current migration parameters
++# Return information about the current migration parameters
+ #
+ # Returns: @MigrationParameters
+ #
+@@ -2294,7 +2294,7 @@
+ ##
+ # @query-vcpu-dirty-limit:
+ #
+-# Returns information about virtual CPU dirty page rate limits, if
++# Return information about virtual CPU dirty page rate limits, if
+ # any.
+ #
+ # Since: 7.1
+diff --git a/qapi/misc-i386.json b/qapi/misc-i386.json
+index cbf85233eba..3fda7a20bdd 100644
+--- a/qapi/misc-i386.json
++++ b/qapi/misc-i386.json
+@@ -126,7 +126,7 @@
+ ##
+ # @query-sev:
+ #
+-# Returns information about SEV/SEV-ES/SEV-SNP.
++# Return information about SEV/SEV-ES/SEV-SNP.
+ #
+ # If unavailable due to an incompatible configuration the
+ # returned @enabled field will be set to 'false' and the
+@@ -336,7 +336,7 @@
+ ##
+ # @query-sgx:
+ #
+-# Returns information about configured SGX capabilities of guest
++# Return information about configured SGX capabilities of guest
+ #
+ # Returns: @SgxInfo
+ #
+@@ -355,7 +355,7 @@
+ ##
+ # @query-sgx-capabilities:
+ #
+-# Returns information about SGX capabilities of host
++# Return information about SGX capabilities of host
+ #
+ # Returns: @SgxInfo
+ #
+diff --git a/qapi/ui.json b/qapi/ui.json
+index c536d4e5241..59897fcb9f0 100644
+--- a/qapi/ui.json
++++ b/qapi/ui.json
+@@ -323,7 +323,7 @@
+ ##
+ # @query-spice:
+ #
+-# Returns information about the current SPICE server
++# Return information about the current SPICE server
+ #
+ # Returns: @SpiceInfo
+ #
+@@ -654,7 +654,7 @@
+ ##
+ # @query-vnc:
+ #
+-# Returns information about the current VNC server
++# Return information about the current VNC server
+ #
+ # Returns: @VncInfo
+ #
+@@ -820,7 +820,7 @@
+ ##
+ # @query-mice:
+ #
+-# Returns information about each active mouse device
++# Return information about each active mouse device
+ #
+ # Returns: a list of @MouseInfo for each device
+ #
+@@ -1562,7 +1562,7 @@
+ ##
+ # @query-display-options:
+ #
+-# Returns information about display configuration
++# Return information about display configuration
+ #
+ # Returns: @DisplayOptions
+ #
 -- 
 2.47.2
 
