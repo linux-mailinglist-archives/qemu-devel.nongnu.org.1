@@ -2,149 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9926AAC1012
-	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 17:38:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C15E7AC101E
+	for <lists+qemu-devel@lfdr.de>; Thu, 22 May 2025 17:41:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uI7yU-0003V9-JV; Thu, 22 May 2025 11:36:50 -0400
+	id 1uI81z-0005V8-E6; Thu, 22 May 2025 11:40:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uI7yR-0003Uc-T6
- for qemu-devel@nongnu.org; Thu, 22 May 2025 11:36:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1uI7yG-0002Tu-3h
- for qemu-devel@nongnu.org; Thu, 22 May 2025 11:36:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1747928193;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=iEdSawLK5YISq9P3UfNvhblYeKj2QR21UD1W5pGO258=;
- b=YBlYpPlLB8Wq6YuHv3PgCN/ZN92wRZwKViB/CozJz8huQ9YSfbD2JF9iPWjKoe2HAVrCHH
- YEj2F7dRzpXdqnWdmmdcZAsrc0JOnSBv7iJjpBSBDviu/sz9NfUO26etPcH4ODnhsAG93I
- UOPHHFLPqcDN+gY3PhtJLBvE2AKeLYc=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-593-ZsKrDNOKOp2rMZ-2-tVxaQ-1; Thu, 22 May 2025 11:36:32 -0400
-X-MC-Unique: ZsKrDNOKOp2rMZ-2-tVxaQ-1
-X-Mimecast-MFC-AGG-ID: ZsKrDNOKOp2rMZ-2-tVxaQ_1747928191
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-43d4d15058dso32530635e9.0
- for <qemu-devel@nongnu.org>; Thu, 22 May 2025 08:36:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747928191; x=1748532991;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uI81d-0005TX-PM
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 11:40:05 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1uI81a-0002vU-Qp
+ for qemu-devel@nongnu.org; Thu, 22 May 2025 11:40:05 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-601d10de7e1so7800221a12.1
+ for <qemu-devel@nongnu.org>; Thu, 22 May 2025 08:40:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1747928400; x=1748533200; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iEdSawLK5YISq9P3UfNvhblYeKj2QR21UD1W5pGO258=;
- b=JzkdeqXosEXeWpNgaMh2iXGQMJQN5jfj/PEGAa5mqsuidLuELsfUNpv7/8bBwi6GnX
- K92r936uqIDFBnjsDyaeQ/tuRuQINKdXupf4eQPZkxoFgal7Zk+NdgXH0S/sFVjeV65V
- PTG+Vr+69BTUzqRd5+DYOUV7wV4gRvuCzCcLcwIaRaS2edu06eC2M/wMDZvRw0Go3b9a
- KhygeI1iJVrmbTyKnztBb1s/qfH0XX/LBfkvyA5S54yJUa/rm4cZLk+I9Yv0ATN/P4yK
- /PKbQ8e9PyLSyrWq2VvQthtLjwCKA7bR6QpY2dxhkyKnLXmZlIgtx0RdUnt8wrBapvej
- AmIw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVQBBC9JNnfWFSNrkdWW/saReuhjQ2SoRGFT/PO/JFJyLehd+FopvbOobRKWmhRj90jLPN3QTMcdD4u@nongnu.org
-X-Gm-Message-State: AOJu0YzwZJVV9AuuLJRTbdxcqDI7USFSWqtNWm6r0wV0bfjM/tV8Xayz
- 5kBkD+Z5NUUFdJ3vPuyqCxkFMhjuSNAQNSfwAappij7N4NSXHwAvrfbgHANHTUb0ezzB4dF3t0R
- O4qwx8qW1TUf12kp3B5H8qDT1rYhP7821x9v3q8Fd3/xdz0JzoERHNcPQ
-X-Gm-Gg: ASbGnctlrtTtHmhkUWrLQYzPazn9fNkWbJpS5euVmwuIUhHOiwql4ULLhmBoWOV5WS6
- RfsEVG+k9vVUo6eTRM6vIQBoWWBpgku7PuOoep4SAal+fwlE6LsYOJWdYhhmN2bvBDGFdlV0+kP
- sNjR92MaI8YAF3rdozBjcLiMY1AIyQJ2Eu2seLmk+HxO2dA44XJy4du4QQfiVQgyNIDRROGNJBY
- SjH9lyHTOp5HboaOhkKVogf55zip/pos85+FAaPnWERTKRPCd+WQrr6sAW9b+pKz0IiGCTo2/je
- LMgziTI9mbVM7DhYSpoRY/sHRhRfmv46vDfexEQw/PQuXyhnAw==
-X-Received: by 2002:a05:600c:3e88:b0:43c:fbbf:7bf1 with SMTP id
- 5b1f17b1804b1-442fd6724bbmr272828095e9.30.1747928190820; 
- Thu, 22 May 2025 08:36:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFOwcnCCJT7sjoqUgOX3PzqTKYr5wWuK5Ltb439qcCHLX2BXjfq5zESHGLJwa+MjiK9IucEQA==
-X-Received: by 2002:a05:600c:3e88:b0:43c:fbbf:7bf1 with SMTP id
- 5b1f17b1804b1-442fd6724bbmr272827785e9.30.1747928190421; 
- Thu, 22 May 2025 08:36:30 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
- ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-447f78aea59sm113089805e9.25.2025.05.22.08.36.29
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 22 May 2025 08:36:29 -0700 (PDT)
-Message-ID: <73d159e9-abde-4f97-8d04-4f8f8783975d@redhat.com>
-Date: Thu, 22 May 2025 17:36:29 +0200
+ bh=ot8JENurp6e7aO2NzX5cehLZR9sNFK64U95hYjOdV6U=;
+ b=WlXffOqugWMNbwwTou2KUjXc4d+fvsN6j5lEcZZzfaDFiI/nt78eU3Gyw/jW65DxFI
+ x0oUZ4+U2OTmgno5Vz2ujddSmO77nPOsiLB9xGDvNkt60g+V0Oplr7Ih0US4CWlTHoSX
+ pCVQeTaH4fXg8f/eT7775x0HVVASMZb4rfgSQS0ryduS/Bs/5K94dcRN27wYFisXJqYa
+ EST+AjUwEX7CjfnNnP6VKrXdUlg6KV8oEZsqGtWS7Re0zJMRgyHBRAwlmq910Lh4fswv
+ xlI3isNuHUfG/8am3wfa7Y3fSgrvlaWDl72PnvLfYydUvLEm13OkUoh4YrqJrMfUMG44
+ XV0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1747928400; x=1748533200;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=ot8JENurp6e7aO2NzX5cehLZR9sNFK64U95hYjOdV6U=;
+ b=MLVOXVnEYd/+B2obhlXNTBg3bVicV7GeD+iTMfnKZQPUixEJATLUtC5Biou0yPTTg6
+ Ai5ZVazBYnyIN1s45zVl6s59HAhiwQ0SFMXMmBYfeUx1U4bSRm8s1CCFc3IHH78qioDT
+ A9xTpyk/VIyHGrqL2L+sRk0pYnn1oGbbxQLa0WU9b2ETP0UbX9od4NZJ5SNIy4ZHJzQp
+ UVVU8E9bmC7Uqm91kCz3ZpQm26nbXfBqXjdJJIZ5TF5T7zq0cshifaM5/2/TIPr8oVN1
+ 7+xojOglQz+BnuIeRvqMzxdrCApEuPNXByLBgrU3nY+huShU8/F9P7loYyDcGZITCiDP
+ eZEw==
+X-Gm-Message-State: AOJu0YwKiF5fkS+hESCAG9gfmX2sKDBspNx/p+Q3Ja7anuB3aI2hPY5s
+ FOwnerAFSwVIl/13jiCKjozLkUzlWawLTRvA2FPYdV1DjJJLhvVbEqpEDa95O4fE/U4=
+X-Gm-Gg: ASbGncvDnvfwTALrbTctUKJV1D0IWxHqjSAJnyTyB3ZM7MQC7+ucCqFG0zNjIRkc4J8
+ sNh8qHITvuZ+auJvMfiBV0bZr2PE5ZApp4aHh/HSPiKF7pua7nvCV3AE7CSZTR/izRr0nF+5a6T
+ hidFQiLOqEeULtopc51VnVJIv9qXVdlvhZP7ohjzBnrZQj28Iq9bLP4vS9V0klnGJxid9Jnx7aH
+ dkvYeMKgvRwDJaOV9IRKOT9BzwiqYq1rm/JI9grefzPRNnFEGW8pKpkAjuAYFrivYPXC3IOJFwO
+ M/5c+t21wp7FGBr3yREfzbreivyDuoGLZRpnWxNTPauF5T62ImiT
+X-Google-Smtp-Source: AGHT+IFqIFgqDn4Za3TOSx2QnqAfbnOjugpBhv9tC9qUZrDGyR9sAC8X2EoBFd61DKShWLPqF0dK4A==
+X-Received: by 2002:a05:6402:26c9:b0:5ec:cbf8:ab28 with SMTP id
+ 4fb4d7f45d1cf-6011411a904mr22891545a12.22.1747928400192; 
+ Thu, 22 May 2025 08:40:00 -0700 (PDT)
+Received: from draig.lan ([185.126.160.19]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-6005ac33a98sm10824421a12.49.2025.05.22.08.39.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 22 May 2025 08:39:59 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 76E645F7D1;
+ Thu, 22 May 2025 16:39:58 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Rowan Hart <rowanbhart@gmail.com>
+Cc: qemu-devel@nongnu.org,  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,  Richard Henderson
+ <richard.henderson@linaro.org>,  Eduardo Habkost <eduardo@habkost.net>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Mahmoud
+ Mandour <ma.mandourr@gmail.com>,  Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 2/8] Add register write API
+In-Reply-To: <20250521094333.4075796-3-rowanbhart@gmail.com> (Rowan Hart's
+ message of "Wed, 21 May 2025 02:43:26 -0700")
+References: <20250521094333.4075796-1-rowanbhart@gmail.com>
+ <20250521094333.4075796-3-rowanbhart@gmail.com>
+User-Agent: mu4e 1.12.11; emacs 30.1
+Date: Thu, 22 May 2025 16:39:58 +0100
+Message-ID: <874ixcwt69.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v9 2/4] hw/vfio/ap: store object indicating AP config
- changed in a queue
-To: Rorie Reyes <rreyes@linux.ibm.com>, qemu-devel@nongnu.org,
- qemu-s390x@nongnu.org
-Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
- jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
- alex.williamson@redhat.com, thuth@redhat.com, akrowiak@linux.ibm.com
-References: <20250512180230.50129-1-rreyes@linux.ibm.com>
- <20250512180230.50129-3-rreyes@linux.ibm.com>
- <f917f4f3-836b-4bdf-8dde-4d83cb226334@redhat.com>
- <38ba5741-e564-4812-87e2-ba6235e077b1@linux.ibm.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <38ba5741-e564-4812-87e2-ba6235e077b1@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.275,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
- SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x535.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -160,51 +105,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/22/25 16:28, Rorie Reyes wrote:
-> 
-> On 5/22/25 9:27 AM, Cédric Le Goater wrote:
->> On 5/12/25 20:02, Rorie Reyes wrote:
->>> Creates an object indicating that an AP configuration change event
->>> has been received and stores it in a queue. These objects will later
->>> be used to store event information for an AP configuration change
->>> when the CHSC instruction is intercepted.
->>>
->>> Signed-off-by: Rorie Reyes <rreyes@linux.ibm.com>
->>> ---
->>>   hw/vfio/ap.c | 12 ++++++++++++
->>>   1 file changed, 12 insertions(+)
->>>
->>> diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
->>> index 3d0af7a54a..5ea5dd9cca 100644
->>> --- a/hw/vfio/ap.c
->>> +++ b/hw/vfio/ap.c
->>> @@ -41,6 +41,13 @@ struct VFIOAPDevice {
->>>       EventNotifier cfg_notifier;
->>>   };
->>>   +typedef struct APConfigChgEvent {
->>> +    QTAILQ_ENTRY(APConfigChgEvent) next;
->>> +} APConfigChgEvent;
->>> +
->>> +QTAILQ_HEAD(, APConfigChgEvent) cfg_chg_events =
->>> +    QTAILQ_HEAD_INITIALIZER(cfg_chg_events);
->>> +
->>
->> Could cfg_chg_events be static ?
->>
->>
->> Thanks,
->>
->> C.
->>
-> You make a good point, Cedric. I'm only using this variable in ap.c. Having it as a static would prevent it from being modified anywhere else
-> 
+Rowan Hart <rowanbhart@gmail.com> writes:
 
-Good. Would you have time to send a v10 ?
+> From: novafacing <rowanbhart@gmail.com>
+>
+> Signed-off-by: novafacing <rowanbhart@gmail.com>
+> Signed-off-by: Rowan Hart <rowanbhart@gmail.com>
+> ---
+>  include/qemu/qemu-plugin.h | 57 +++++++++++++++++++++++++-------------
+>  plugins/api.c              | 26 ++++++++++++-----
+>  2 files changed, 56 insertions(+), 27 deletions(-)
+>
+> diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+> index 3a850aa216..68c8632fd7 100644
+> --- a/include/qemu/qemu-plugin.h
+> +++ b/include/qemu/qemu-plugin.h
+> @@ -254,9 +254,6 @@ typedef struct {
+>   * @QEMU_PLUGIN_CB_NO_REGS: callback does not access the CPU's regs
+>   * @QEMU_PLUGIN_CB_R_REGS: callback reads the CPU's regs
+>   * @QEMU_PLUGIN_CB_RW_REGS: callback reads and writes the CPU's regs
+> - *
+> - * Note: currently QEMU_PLUGIN_CB_RW_REGS is unused, plugins cannot chan=
+ge
+> - * system register state.
 
+I would expect us to:
 
-Thanks,
+ a) handle the QEMU_PLUGIN_CB_RW_REGS
+ b) try and enforce we are only being called from such callbacks
 
-C.
+Otherwise TCG won't know to restore register state from what has been
+written to.
 
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
