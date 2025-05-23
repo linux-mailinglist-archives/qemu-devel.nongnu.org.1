@@ -2,70 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC7AAC27AF
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 May 2025 18:32:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 216A1AC27DF
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 May 2025 18:48:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uIVIb-0001R4-Oe; Fri, 23 May 2025 12:31:09 -0400
+	id 1uIVY1-0005jK-5I; Fri, 23 May 2025 12:47:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uIVIR-0001Ov-Sa
- for qemu-devel@nongnu.org; Fri, 23 May 2025 12:31:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from
+ <BATV+a69e8103bdb0262a3eb0+7943+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1uIVXX-0005iT-Gt
+ for qemu-devel@nongnu.org; Fri, 23 May 2025 12:46:39 -0400
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1uIVIQ-0006Xf-1s
- for qemu-devel@nongnu.org; Fri, 23 May 2025 12:30:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748017857;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=yoUc7S9ZxW1OXHM9W64yjUiO4aEYPNW0PaKNrb+pmJE=;
- b=i0n+moES+Lpp0dup+cccTeXZiJX4i3gp/HrdLTmhgHGP4xg/icShdof+1/CouAwaLA8NoL
- WBKs3G+g+7KC29jkTsl/nlReCkTuBc2iVlpj4RUMiBBMnNDy+CAgRJEMcYUxsk/UwWTQyc
- 4K4IihNQPUbf3dvxU+9J/nycjszUJ2E=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-39-qWMerglCPWCABqEu9iuypw-1; Fri,
- 23 May 2025 12:30:53 -0400
-X-MC-Unique: qWMerglCPWCABqEu9iuypw-1
-X-Mimecast-MFC-AGG-ID: qWMerglCPWCABqEu9iuypw_1748017852
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id B9D401800446; Fri, 23 May 2025 16:30:52 +0000 (UTC)
-Received: from green.redhat.com (unknown [10.2.16.201])
- by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 7BC06195608F; Fri, 23 May 2025 16:30:51 +0000 (UTC)
-From: Eric Blake <eblake@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, f.ebner@proxmox.com, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>
-Subject: [PATCH v2 3/3] iotests: Filter out ZFS in several tests
-Date: Fri, 23 May 2025 11:27:23 -0500
-Message-ID: <20250523163041.2548675-8-eblake@redhat.com>
-In-Reply-To: <20250523163041.2548675-5-eblake@redhat.com>
-References: <20250523163041.2548675-5-eblake@redhat.com>
+ (Exim 4.90_1) (envelope-from
+ <BATV+a69e8103bdb0262a3eb0+7943+infradead.org+dwmw2@desiato.srs.infradead.org>)
+ id 1uIVXU-0000P9-NL
+ for qemu-devel@nongnu.org; Fri, 23 May 2025 12:46:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=DSo+3iRpAKjbqKRR6RJC/r/W1BxEyLxiqZAtmn6Od9Y=; b=JgVPyqxDu9OlwOK9EV5e09f+EU
+ rn/skQWRwn7fTruW6Mv2sA+3emmgzVux6l9QYlvxMxcVmVZ7YiGIglqz3CiasVaFf0NNI/8ejMv9g
+ pDdA8x+E/Kho9EsE7npPWk27fuWaD7V00wuBj2kZ7Rqp5EmKEJnePlqQW/ZmxerVH0vayVNnll03J
+ q7IQjuOYQ2CFwNOlbSEaRrNliAnxKSoJH2x/FWdt5Ecwk3fmq1MMMAAX3+jPowaZ7hN2vzloZ4rAS
+ YGOBpfU8u0ed6lFUH25wtZ7d5iyYZ7aiNHuxL4Dnv3HL9lbKZeeg2hggzoj6VLDbJpKW/Yt1hrK8i
+ hJtGE/KQ==;
+Received: from [172.31.31.140] (helo=u09cd745991455d.ant.amazon.com)
+ by desiato.infradead.org with esmtpsa (Exim 4.98.1 #2 (Red Hat Linux))
+ id 1uIVXI-00000001M1n-27ql; Fri, 23 May 2025 16:46:20 +0000
+Message-ID: <9ddde4627ed42c55ba7ea56d6e3c9b4870b606bc.camel@infradead.org>
+Subject: Re: [EXTERNAL] [PATCH] hw/xen: Fix trace_xs_node_read() params
+From: David Woodhouse <dwmw2@infradead.org>
+To: Liam Merwick <liam.merwick@oracle.com>, anthony.perard@vates.tech, 
+ roger.pau@citrix.com, xen-devel@lists.xenproject.org, qemu-devel@nongnu.org
+Date: Fri, 23 May 2025 17:46:19 +0100
+In-Reply-To: <20250523160134.218997-1-liam.merwick@oracle.com>
+References: <20250523160134.218997-1-liam.merwick@oracle.com>
+Content-Type: multipart/signed; micalg="sha-256";
+ protocol="application/pkcs7-signature"; 
+ boundary="=-1qEj1gTPazsQRVxc738m"
+User-Agent: Evolution 3.52.3-0ubuntu1 
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.287,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ desiato.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05;
+ envelope-from=BATV+a69e8103bdb0262a3eb0+7943+infradead.org+dwmw2@desiato.srs.infradead.org;
+ helo=desiato.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,163 +73,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fiona reported that ZFS makes sparse file testing awkward, since:
-- it has asynchronous allocation (not even 'fsync $file' makes du see
-  the desired size; it takes the slower 'fsync -f $file' which is not
-  appropriate for the tests)
-- for tests of fully allocated files, ZFS with compression enabled
-  still reports smaller disk usage
 
-Add a new _require_sparse_file that quickly probes whether an attempt
-to create a sparse 5M file shows as less than 1M usage, while the same
-file with -o preallocation=full shows as more than 4M usage without
-sync, which should filter out ZFS behavior.  Then use it in various
-affected tests.
+--=-1qEj1gTPazsQRVxc738m
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This does not add the new filter on all tests that Fiona is seeing ZFS
-failures on, but only those where I could quickly spot that there is
-at least one place where the test depends on the output of 'du -b' or
-'stat -c %b'.
+On Fri, 2025-05-23 at 16:01 +0000, Liam Merwick wrote:
+> When the '--enable-trace-backends=3Dsyslog' build option is configured,
+> the following compilation error is encountered.
+>=20
+> In file included from /usr/include/sys/syslog.h:207,
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 from /usr/include/syslog.h:1,
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 from ./trace/trace-hw_xen.h:224,
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 from ../hw/xen/trace.h:1,
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 from ../hw/xen/xen-bus-helper.c:13:
+> In function =E2=80=98syslog=E2=80=99,
+> =C2=A0=C2=A0=C2=A0 inlined from =E2=80=98_nocheck__trace_xs_node_read=E2=
+=80=99 at ../hw/xen/trace-events:41:9,
+> =C2=A0=C2=A0=C2=A0 inlined from =E2=80=98trace_xs_node_read=E2=80=99 at t=
+race/trace-hw_xen.h:903:9,
+> =C2=A0=C2=A0=C2=A0 inlined from =E2=80=98xs_node_read=E2=80=99 at ../hw/x=
+en/xen-bus-helper.c:154:5:
+> /usr/include/bits/syslog.h:45:3: error: =E2=80=98%s=E2=80=99 directive ar=
+gument is null [-Werror=3Dformat-overflow=3D]
+> =C2=A0=C2=A0 45 |=C2=A0=C2=A0 __syslog_chk (__pri, __USE_FORTIFY_LEVEL - =
+1, __fmt, __va_arg_pack ());
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>=20
+> Add a check that 'value' is not null before passing it to trace_xs_node_r=
+ead().
+>=20
+> Fixes: e6cdeee95990 ("hw/xen: Add xs_node_read() helper function")
+> Signed-off-by: Liam Merwick <liam.merwick@oracle.com>
 
-Reported-by: Fiona Ebner <f.ebner@proxmox.com>
-Signed-off-by: Eric Blake <eblake@redhat.com>
----
- tests/qemu-iotests/common.rc                | 30 +++++++++++++++++++++
- tests/qemu-iotests/106                      |  1 +
- tests/qemu-iotests/175                      |  1 +
- tests/qemu-iotests/221                      |  1 +
- tests/qemu-iotests/253                      |  1 +
- tests/qemu-iotests/308                      |  1 +
- tests/qemu-iotests/tests/mirror-sparse      |  1 +
- tests/qemu-iotests/tests/write-zeroes-unmap |  1 +
- 8 files changed, 37 insertions(+)
+Acked-by: David Woodhouse <dwmw@amazon.co.uk>
 
-diff --git a/tests/qemu-iotests/common.rc b/tests/qemu-iotests/common.rc
-index 237f746af88..e977cb4eb61 100644
---- a/tests/qemu-iotests/common.rc
-+++ b/tests/qemu-iotests/common.rc
-@@ -996,6 +996,36 @@ _require_large_file()
-     rm "$FILENAME"
- }
+Thanks.
 
-+# Check whether disk_usage can be reliably used.
-+_require_disk_usage()
-+{
-+    local unusable=false
-+    # ZFS triggers known failures on this front; it does not immediately
-+    # allocate files, and then aggressively compresses writes even when full
-+    # allocation was requested.
-+    if [ -z "$TEST_IMG_FILE" ]; then
-+        FILENAME="$TEST_IMG"
-+    else
-+        FILENAME="$TEST_IMG_FILE"
-+    fi
-+    if [ -e "FILENAME" ]; then
-+        echo "unwilling to overwrite existing file"
-+        exit 1
-+    fi
-+    $QEMU_IMG create -f raw "$FILENAME" 5M > /dev/null
-+    if [ $(disk_usage "$FILENAME") -gt $((1024*1024)) ]; then
-+        unusable=true
-+    fi
-+    $QEMU_IMG create -f raw -o preallocation=full "$FILENAME" 5M > /dev/null
-+    if [ $(disk_usage "$FILENAME") -lt $((4*1024*1024)) ]; then
-+        unusable=true
-+    fi
-+    rm -f "$FILENAME"
-+    if $unusable; then
-+        _notrun "file system on $TEST_DIR does not handle sparse files nicely"
-+    fi
-+}
-+
- # Check that a set of devices is available in the QEMU binary
- #
- _require_devices()
-diff --git a/tests/qemu-iotests/106 b/tests/qemu-iotests/106
-index ae0fc466910..55548439aad 100755
---- a/tests/qemu-iotests/106
-+++ b/tests/qemu-iotests/106
-@@ -40,6 +40,7 @@ trap "_cleanup; exit \$status" 0 1 2 3 15
- _supported_fmt raw
- _supported_proto file fuse
- _supported_os Linux
-+_require_disk_usage
+--=-1qEj1gTPazsQRVxc738m
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
- # in kB
- CREATION_SIZE=128
-diff --git a/tests/qemu-iotests/175 b/tests/qemu-iotests/175
-index f74f053b719..bbbf550a5af 100755
---- a/tests/qemu-iotests/175
-+++ b/tests/qemu-iotests/175
-@@ -77,6 +77,7 @@ _supported_os Linux
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MDUyMzE2NDYx
+OVowLwYJKoZIhvcNAQkEMSIEINZcEptfkeU8/S49PsOPTkFl9eoHVTylBw6doIM1n1ieMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIASDshdhug3J9q
+RBKMSe483yG3Pljs+RasGvmJHz/cec7U0Z21+mTXKor/SCGPVZEbRBf61f4RzD3nkhOTqY/xi4Nc
+1GvJmJT40FAZSR5iBkan9/QU3MSXe3aCCohyLHK4eLAI6je+/T09Eu9SNTIIsLyGo4EGU/FHL1lT
+dNP/i3ps13PiFkOp2xMtzsLyQmSXvuUDRzJ+bPvqOfChg2IjBls1Jznem+IO55ZjrZc4ghEjl8fm
+8sZTEgAyZ3DoJ5bODW0dgiF5kA01U7c7GWzTW/tDFJrwHUPVy/W48oIFIIgRLRKq6hN9kSxyvKjn
+lELRgs8PdY9A3pNXpVwoeAFM/IXR5x0sjdzqiH3keIdYjS0KP7M1hcTbxdiFgVT+A5G+r/rnEhr/
+z5+0ZDBbz+PgPWTtGau2xBEwkMuRFS94lN0KQoVc7jd1UeiskKTlryBcS+1+kBWzSU6k0R0x0Zb0
+jlulo4PhUUSCpxOueR931ZNWHgMU90rvAxTnokKgsMbaP6RAmtLpMWRLxkzIwr+zgX4rmdQJ0MhF
+y1gPm42ZurVRUDfgJhiK9XjpYI5z7EyrNkYvb+xzO+8pJMHSccU8jy3IvTAItiKfveQ7I1JXe7M9
+Tlo5EDY1U562/IVFaO0uvU96T6rJmDo0aa2n4r0hKMpaS3KYu6hbeHbwTOLjZgIAAAAAAAA=
 
- _default_cache_mode none
- _supported_cache_modes none directsync
-+_require_disk_usage
 
- size=$((1 * 1024 * 1024))
-
-diff --git a/tests/qemu-iotests/221 b/tests/qemu-iotests/221
-index c463fd4b113..eba00b80adb 100755
---- a/tests/qemu-iotests/221
-+++ b/tests/qemu-iotests/221
-@@ -41,6 +41,7 @@ _supported_os Linux
-
- _default_cache_mode writeback
- _supported_cache_modes writeback writethrough unsafe
-+_require_disk_usage
-
- echo
- echo "=== Check mapping of unaligned raw image ==="
-diff --git a/tests/qemu-iotests/253 b/tests/qemu-iotests/253
-index 35039d20a89..6da85e6a113 100755
---- a/tests/qemu-iotests/253
-+++ b/tests/qemu-iotests/253
-@@ -41,6 +41,7 @@ _supported_os Linux
-
- _default_cache_mode none
- _supported_cache_modes none directsync
-+_require_disk_usage
-
- echo
- echo "=== Check mapping of unaligned raw image ==="
-diff --git a/tests/qemu-iotests/308 b/tests/qemu-iotests/308
-index 437a9014da5..6eced3aefb9 100755
---- a/tests/qemu-iotests/308
-+++ b/tests/qemu-iotests/308
-@@ -51,6 +51,7 @@ _unsupported_fmt vpc
-
- _supported_proto file # We create the FUSE export manually
- _supported_os Linux # We need /dev/urandom
-+_require_disk_usage
-
- # $1: Export ID
- # $2: Options (beyond the node-name and ID)
-diff --git a/tests/qemu-iotests/tests/mirror-sparse b/tests/qemu-iotests/tests/mirror-sparse
-index 338d6cfbb35..39e3196c811 100755
---- a/tests/qemu-iotests/tests/mirror-sparse
-+++ b/tests/qemu-iotests/tests/mirror-sparse
-@@ -40,6 +40,7 @@ cd ..
- _supported_fmt qcow2 raw  # Format of the source. dst is always raw file
- _supported_proto file
- _supported_os Linux
-+_require_disk_usage
-
- echo
- echo "=== Initial image setup ==="
-diff --git a/tests/qemu-iotests/tests/write-zeroes-unmap b/tests/qemu-iotests/tests/write-zeroes-unmap
-index 7cfeeaf8391..f90fb8e8d27 100755
---- a/tests/qemu-iotests/tests/write-zeroes-unmap
-+++ b/tests/qemu-iotests/tests/write-zeroes-unmap
-@@ -32,6 +32,7 @@ cd ..
- _supported_fmt raw
- _supported_proto file
- _supported_os Linux
-+_require_disk_usage
-
- create_test_image() {
-     _make_test_img -f $IMGFMT 1m
--- 
-2.49.0
-
+--=-1qEj1gTPazsQRVxc738m--
 
