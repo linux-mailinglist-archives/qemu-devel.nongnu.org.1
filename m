@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6518DAC29A0
+	by mail.lfdr.de (Postfix) with ESMTPS id 90C0AAC29A1
 	for <lists+qemu-devel@lfdr.de>; Fri, 23 May 2025 20:26:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uIX5E-0000gm-DB; Fri, 23 May 2025 14:25:28 -0400
+	id 1uIX5c-00015O-1J; Fri, 23 May 2025 14:25:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uIX5B-0000fn-BN
- for qemu-devel@nongnu.org; Fri, 23 May 2025 14:25:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uIX5X-0000vn-2W
+ for qemu-devel@nongnu.org; Fri, 23 May 2025 14:25:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uIX58-00037g-53
- for qemu-devel@nongnu.org; Fri, 23 May 2025 14:25:25 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1uIX5T-0003A3-B7
+ for qemu-devel@nongnu.org; Fri, 23 May 2025 14:25:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748024721;
+ s=mimecast20190719; t=1748024742;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uKODmXhPDHkmnZ7tQP/XsV06+O6RfGOqyeXGqv1TdbY=;
- b=XWA2bOeUA8qcvjuVW5O0TSVAHK6AfOd6Xz+EGU+Hp854lYQyAg8duKrOj5S3RYIVDrRonv
- foIdAgSHnR4BS/54SfKnmUP6s34Mgx9UlfChThfZTGJhof6CrFpyrdr/lePsxkTp5cXYTc
- 1d9WDC0lUmvyaJ3a7k8I4soocjRCl4s=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=fA8iNN1LwEHSlpRiWf75slmpOQWaEBgpIFanj9juOH8=;
+ b=DLZ6CP8eHdQp1PZ286MM3r59LhQMbBNG6yehZjaSMU/9pGgTry1X18lBhXWPDFeBwdYTFD
+ K6b8WIpek4p3c4JwiNsyqTrD47ebyRnOivtQdx5WXhjA5ZBpP7EfbFZz1lTo6xmlygJSua
+ oLJKnjCYmE4SUoJok1JfK39IpFiDPd8=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-689-AG34uMN9Oragr-Y6CSvlOQ-1; Fri,
- 23 May 2025 14:25:18 -0400
-X-MC-Unique: AG34uMN9Oragr-Y6CSvlOQ-1
-X-Mimecast-MFC-AGG-ID: AG34uMN9Oragr-Y6CSvlOQ_1748024716
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-646-bFJWH64kPG-xvfNPHjseIg-1; Fri,
+ 23 May 2025 14:25:39 -0400
+X-MC-Unique: bFJWH64kPG-xvfNPHjseIg-1
+X-Mimecast-MFC-AGG-ID: bFJWH64kPG-xvfNPHjseIg_1748024727
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 49920180048E; Fri, 23 May 2025 18:25:14 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id CB13A18004AD; Fri, 23 May 2025 18:25:25 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (unknown [10.22.64.78])
  by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 9B6511944A8B; Fri, 23 May 2025 18:25:02 +0000 (UTC)
+ id 1EF8D1944A89; Fri, 23 May 2025 18:25:14 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Kevin Wolf <kwolf@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
@@ -66,15 +66,15 @@ Cc: Kevin Wolf <kwolf@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
  "Gonglei (Arei)" <arei.gonglei@huawei.com>,
  Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH v3 1/4] docs/qapi-domain: add return-nodesc
-Date: Fri, 23 May 2025 14:24:39 -0400
-Message-ID: <20250523182442.54469-2-jsnow@redhat.com>
+Subject: [PATCH v3 2/4] docs, qapi: generate undocumented return sections
+Date: Fri, 23 May 2025 14:24:40 -0400
+Message-ID: <20250523182442.54469-3-jsnow@redhat.com>
 In-Reply-To: <20250523182442.54469-1-jsnow@redhat.com>
 References: <20250523182442.54469-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
 X-Spam_score: -2.4
@@ -99,85 +99,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This form is used to annotate a return type without an accompanying
-description, for when there is no "Returns:" information in the source
-doc, but we have a return type we want to generate a cross-reference to.
-
-The syntax is:
-
-:return-nodesc: TypeName
-
-It's primarily necessary because Sphinx always expects both a type and a
-description for the prior form and will format it accordingly. To have a
-reasonable rendering when the body is missing, we need to use a
-different info field list entirely.
+This patch changes the qapidoc transmogrifier to generate Return value
+documentation for any command that has a return value but hasn't
+explicitly documented that return value.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/devel/qapi-domain.rst | 30 ++++++++++++++++++++++++++++++
- docs/sphinx/qapi_domain.py |  8 ++++++++
- 2 files changed, 38 insertions(+)
+ docs/sphinx/qapidoc.py | 14 ++++++++------
+ scripts/qapi/parser.py | 15 +++++++++++++++
+ scripts/qapi/schema.py |  3 +++
+ 3 files changed, 26 insertions(+), 6 deletions(-)
 
-diff --git a/docs/devel/qapi-domain.rst b/docs/devel/qapi-domain.rst
-index 11238723c2d..204abb72ff4 100644
---- a/docs/devel/qapi-domain.rst
-+++ b/docs/devel/qapi-domain.rst
-@@ -242,6 +242,36 @@ Example::
-              }
+diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
+index 8011ac9efaf..627d0b5ff1a 100644
+--- a/docs/sphinx/qapidoc.py
++++ b/docs/sphinx/qapidoc.py
+@@ -255,16 +255,18 @@ def visit_feature(self, section: QAPIDoc.ArgSection) -> None:
+     def visit_returns(self, section: QAPIDoc.Section) -> None:
+         assert isinstance(self.entity, QAPISchemaCommand)
+         rtype = self.entity.ret_type
+-        # q_empty can produce None, but we won't be documenting anything
+-        # without an explicit return statement in the doc block, and we
+-        # should not have any such explicit statements when there is no
+-        # return value.
++        # return statements will not be present (and won't be
++        # autogenerated) for any command that doesn't return
++        # *something*, so ret_type will always be defined here.
+         assert rtype
  
+         typ = self.format_type(rtype)
+         assert typ
+-        assert section.text
+-        self.add_field("return", typ, section.text, section.info)
++
++        if section.text:
++            self.add_field("return", typ, section.text, section.info)
++        else:
++            self.add_lines(f":return-nodesc: {typ}", section.info)
  
-+``:return-nodesc:``
-+-------------------
-+
-+Document the return type of a QAPI command, without an accompanying description.
-+
-+:availability: This field list is only available in the body of the
-+               Command directive.
-+:syntax: ``:return-nodesc: type``
-+:type: `sphinx.util.docfields.Field
-+       <https://pydoc.dev/sphinx/latest/sphinx.util.docfields.Field.html?private=1>`_
-+
-+
-+Example::
-+
-+   .. qapi:command:: query-replay
-+      :since: 5.2
-+
-+      Retrieve the record/replay information.  It includes current
-+      instruction count which may be used for ``replay-break`` and
-+      ``replay-seek`` commands.
-+
-+      :return-nodesc: ReplayInfo
-+
-+      .. qmp-example::
-+
-+          -> { "execute": "query-replay" }
-+          <- { "return": {
-+                 "mode": "play", "filename": "log.rr", "icount": 220414 }
-+             }
-+
- ``:value:``
- -----------
+     def visit_errors(self, section: QAPIDoc.Section) -> None:
+         # FIXME: the formatting for errors may be inconsistent and may
+diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
+index 949d9e8bff7..6db08f82409 100644
+--- a/scripts/qapi/parser.py
++++ b/scripts/qapi/parser.py
+@@ -815,6 +815,21 @@ def connect_feature(self, feature: 'QAPISchemaFeature') -> None:
+                                % feature.name)
+         self.features[feature.name].connect(feature)
  
-diff --git a/docs/sphinx/qapi_domain.py b/docs/sphinx/qapi_domain.py
-index ebc46a72c61..f561dc465f8 100644
---- a/docs/sphinx/qapi_domain.py
-+++ b/docs/sphinx/qapi_domain.py
-@@ -532,6 +532,14 @@ class QAPICommand(QAPIObject):
-                 names=("return",),
-                 can_collapse=True,
-             ),
-+            # :return-nodesc: TypeName
-+            CompatField(
-+                "returnvalue",
-+                label=_("Return"),
-+                names=("return-nodesc",),
-+                bodyrolename="type",
-+                has_arg=False,
-+            ),
-         ]
-     )
++    def ensure_returns(self, info: QAPISourceInfo) -> None:
++        if not any(s.kind == QAPIDoc.Kind.RETURNS for s in self.all_sections):
++
++            stub = QAPIDoc.Section(info, QAPIDoc.Kind.RETURNS)
++
++            # Stub "Returns" section for undocumented returns value.
++            # Insert stub after the last non-PLAIN section.
++            for sect in reversed(self.all_sections):
++                if sect.kind != QAPIDoc.Kind.PLAIN:
++                    idx = self.all_sections.index(sect) + 1
++                    self.all_sections.insert(idx, stub)
++                    break
++            else:
++                self.all_sections.append(stub)
++
+     def check_expr(self, expr: QAPIExpression) -> None:
+         if 'command' in expr:
+             if self.returns and 'returns' not in expr:
+diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
+index cbe3b5aa91e..3abddea3525 100644
+--- a/scripts/qapi/schema.py
++++ b/scripts/qapi/schema.py
+@@ -1062,6 +1062,9 @@ def connect_doc(self, doc: Optional[QAPIDoc] = None) -> None:
+             if self.arg_type and self.arg_type.is_implicit():
+                 self.arg_type.connect_doc(doc)
  
++            if self.ret_type and self.info:
++                doc.ensure_returns(self.info)
++
+     def visit(self, visitor: QAPISchemaVisitor) -> None:
+         super().visit(visitor)
+         visitor.visit_command(
 -- 
 2.48.1
 
