@@ -2,83 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 831FBAC2A8F
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 May 2025 21:46:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAD71AC2B4A
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 May 2025 23:18:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uIYKu-0006tc-F2; Fri, 23 May 2025 15:45:44 -0400
+	id 1uIZlh-00039w-Mz; Fri, 23 May 2025 17:17:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1uIYKs-0006tR-OH
- for qemu-devel@nongnu.org; Fri, 23 May 2025 15:45:42 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1uIYKr-0003PX-2N
- for qemu-devel@nongnu.org; Fri, 23 May 2025 15:45:42 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-601d66f8cafso371430a12.3
- for <qemu-devel@nongnu.org>; Fri, 23 May 2025 12:45:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1748029538; x=1748634338; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cmfkiwIfOoxFkN9kWkRi6+EEKrwIbG/WYOLCan1dKeA=;
- b=Tv6yXXQIoCmsTHJn6CxQFC0XcsTB+C5et4YsCITznfxU7heY06nOVRUiTjDlKBWPOk
- 2Xd4fblms8baPVlGglgJpweng/rBMbFRLp0X6v8e26/TAGxiC21hNZL0n5koe4CLplWs
- 1X750nk9iBvX6n7netyMBam6nRLeYjjt/j1hNdK8dqU7+wgtIOT0+fXl1ETPb1r8xTqg
- ZhrYnK8TRSevFbFciIAGWnixwKdHZqEqRqUxHMUbpSLOl0D1hjXSYwr0FrrSgBCd4EI4
- vEf+4hwDxIWbueECw8F+AurZUEKsRSlU9oOKZwsgnC4Oo+ySCq6Z3OVBiKub/Z14uZoP
- Ht7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748029538; x=1748634338;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cmfkiwIfOoxFkN9kWkRi6+EEKrwIbG/WYOLCan1dKeA=;
- b=qM3fVUl92a5KKUaDxlVvQVkdIBw63FWLPUcZPBk9QKMZUissuF+M1w+1DKAt8wECI8
- Z17kUbTXWhMVJl1XQetqCvFdHFjNnYj/xMgwPy8ViSHUBNefyquhm7lPV9+mJKRHvOkK
- p7aBdqdKlFMe2Q6PGPywREXds54Ha2m3j3mWeArE8p0lg6d0Q6uj9E8SzqafVd5sa/lX
- e84tDEdzC0CGlsUHjt1RqR9AWCqMRTlgJWRJKuLU/MxLjim2ZzasGfgvl75hddCjVoav
- pd5KTq0HrV+aD0uizFIfT7hOSYrV0IjxjNpsDcyjJ9pLXblsZXl5HeLsYymbfcaXayPe
- JVaA==
-X-Gm-Message-State: AOJu0YznJDV4sqRgawzvBm+BsYhGwhxPXhEBwRZV26RaNLQBSpPXUwgF
- P/qWODGcsQHtBBZiBPan20dR2a7wCLpaFheCL09fOB7xcYyOkN+m3GVOdDYIiazQi/IFA3+JTse
- f///SAVQaODapKMoYQml758gtXzoieW4=
-X-Gm-Gg: ASbGncvIiCcqp7wVI8XQs+b7CEZwl0Iwa2tVlTmS+fUEKv8T28EJAUQgny5zsNkidPX
- LnLmo3yI292QbYdlEtITaoaCjGB9e0k0cp9bDENtH4OY5go5nWAwhNRYJ1t4BKLSNZVr5uu4X16
- JC5oXzKSrJ7/2yt0b9cmNTdMaB6uRozE8=
-X-Google-Smtp-Source: AGHT+IGukhY2eg40gV9lcITpQI+Yym9UG5cWz/hrK5pTz/Ab5RkCT7LiZeKyYLMaPGTGpUKJi8k7EGcwU5L6NRxLhSU=
-X-Received: by 2002:a05:6402:90b:b0:5fb:868b:5a59 with SMTP id
- 4fb4d7f45d1cf-602da8ddecbmr331752a12.32.1748029538562; Fri, 23 May 2025
- 12:45:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stdcalllevi@yandex-team.ru>)
+ id 1uIUZk-0006HF-QK
+ for qemu-devel@nongnu.org; Fri, 23 May 2025 11:44:48 -0400
+Received: from forwardcorp1a.mail.yandex.net
+ ([2a02:6b8:c0e:500:1:45:d181:df01])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stdcalllevi@yandex-team.ru>)
+ id 1uIUZi-0000ZQ-A2
+ for qemu-devel@nongnu.org; Fri, 23 May 2025 11:44:48 -0400
+Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c15:2b89:0:640:9815:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 76F8D613C2;
+ Fri, 23 May 2025 18:44:39 +0300 (MSK)
+Received: from dev-vm2-nested.ru-central1.internal (unknown
+ [2a02:6b8:c0e:501:0:fca5:0:123])
+ by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id ViSnaZ0FfqM0-SZi5ZzzK; Fri, 23 May 2025 18:44:38 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1748015079;
+ bh=iWz0ReyH+SKNmPaGDhMX0bWIwvt8gZviHfnomndUJSc=;
+ h=Message-ID:Date:Cc:Subject:To:From;
+ b=sTwBEjn/dW8AhUwtn7NsK4RzATPJHv3WSr3H5GVjmvC/MODF/0Bz1h/iLmnazDeK8
+ Y2kc+UP/51MT6bzh0+RzNafWJmUBj4bRl1LeM0wggQ+UTN+r+6X9WOoDNdi0MP8iyr
+ VYA4s8bvOg2sUfqs2renxfOb6tgqWXVa9aAqmx/Q=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Kirill Martynov <stdcalllevi@yandex-team.ru>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Kirill Martynov <stdcalllevi@yandex-team.ru>
+Subject: [PATCH] x86/cpu: Handle SMM mode in x86_cpu_dump_state for softmmu
+Date: Fri, 23 May 2025 15:44:31 +0000
+Message-ID: <20250523154431.506993-1-stdcalllevi@yandex-team.ru>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20250519170055.3693275-1-jsnow@redhat.com>
-In-Reply-To: <20250519170055.3693275-1-jsnow@redhat.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Fri, 23 May 2025 15:45:26 -0400
-X-Gm-Features: AX0GCFs0iEOTejYTfQtK38u-t16I1GgXQZyfF9G2kp5EEOflHmQ12eWafkZL5p0
-Message-ID: <CAJSP0QUT+rtmBKXa6Ve7oV_rWB4aGwTU3=xBmQTDWv0GT4zRDA@mail.gmail.com>
-Subject: Re: [PULL 0/6] Python patches
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org, Cleber Rosa <crosa@redhat.com>, 
- Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=stefanha@gmail.com; helo=mail-ed1-x532.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+ envelope-from=stdcalllevi@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 23 May 2025 17:17:23 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,73 +73,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 19, 2025 at 1:03=E2=80=AFPM John Snow <jsnow@redhat.com> wrote:
->
-> The following changes since commit 757a34115e7491744a63dfc3d291fd1de5297e=
-e2:
->
->   Merge tag 'pull-nvme-20250515' of https://gitlab.com/birkelund/qemu int=
-o staging (2025-05-15 13:42:27 -0400)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/jsnow/qemu.git tags/python-pull-request
->
-> for you to fetch changes up to 818060c02a53df4b27bc86cbac3a26009996b6a4:
->
->   qapi: delete un-needed python static analysis configs (2025-05-19 12:44=
-:01 -0400)
->
-> ----------------------------------------------------------------
-> Python PR
->
-> Add scripts/qapi and docs/sphinx/*qapi* to the Python static analysis che=
-cks
->
-> ----------------------------------------------------------------
+Certain error conditions can trigger x86_cpu_dump_state() to output CPU state
+debug information e.g. KVM emulation failure due to misbehaving guest.
+However, if the CPU is in System Management Mode (SMM) when the assertion
+in cpu_asidx_from_attrs failure happens because:
 
-Please take a look at this CI failure:
-https://gitlab.com/qemu-project/qemu/-/jobs/10135225231#L448
+1. In SMM mode (smm=1), the CPU must use multiple address spaces
+   with a dedicated SMM address space
+2. On machine types with softmmu, address spaces are hardcoded to 1
+   (no multiple address spaces available)
 
-Thanks,
-Stefan
+The assertion occurs in cpu_asidx_from_attrs() when trying to
+access memory in SMM mode with insufficient address spaces.
 
->
-> John Snow (5):
->   qapi: Add some pylint ignores
->   docs/qapidoc: linting fixes
->   python: update missing dependencies from minreqs
->   python: add qapi static analysis tests
->   qapi: delete un-needed python static analysis configs
->
-> Markus Armbruster (1):
->   python: Drop redundant warn_unused_configs =3D True
->
->  docs/sphinx/qapi_domain.py  | 25 ++++++++++++++-----------
->  docs/sphinx/qapidoc.py      |  5 +++--
->  python/setup.cfg            |  2 +-
->  python/tests/minreqs.txt    | 25 +++++++++++++++++++++++++
->  python/tests/qapi-flake8.sh |  4 ++++
->  python/tests/qapi-isort.sh  |  6 ++++++
->  python/tests/qapi-mypy.sh   |  2 ++
->  python/tests/qapi-pylint.sh |  6 ++++++
->  scripts/qapi/.flake8        |  3 ---
->  scripts/qapi/.isort.cfg     |  7 -------
->  scripts/qapi/backend.py     |  2 ++
->  scripts/qapi/mypy.ini       |  4 ----
->  scripts/qapi/pylintrc       |  1 +
->  13 files changed, 64 insertions(+), 28 deletions(-)
->  create mode 100755 python/tests/qapi-flake8.sh
->  create mode 100755 python/tests/qapi-isort.sh
->  create mode 100755 python/tests/qapi-mypy.sh
->  create mode 100755 python/tests/qapi-pylint.sh
->  delete mode 100644 scripts/qapi/.flake8
->  delete mode 100644 scripts/qapi/.isort.cfg
->  delete mode 100644 scripts/qapi/mypy.ini
->
-> --
-> 2.48.1
->
->
->
+Fix this by:
+1. If number of address spaces is 1 always use index 0
+2. In other cases use attr.secure for identified proper index
+
+This prevents the assertion while still providing useful debug
+output during VM shutdown errors.
+
+Stack trace of the original issue:
+#0  ... in raise () from /lib/x86_64-linux-gnu/libc.so.6
+#1  ... in abort () from /lib/x86_64-linux-gnu/libc.so.6
+#2  ... in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+#3  ... in __assert_fail () from /lib/x86_64-linux-gnu/libc.so.6
+#4  ... in cpu_asidx_from_attrs (cpu=cpu@entry=0x5578ca2eb340, attrs=...)
+   at ../hw/core/cpu-sysemu.c:76
+#5  ... in cpu_memory_rw_debug (cpu=cpu@entry=0x5578ca2eb340,
+   addr=addr@entry=2147258348, ptr=ptr@entry=0x7f5341ca373c, len=len@entry=1,
+    is_write=is_write@entry=false) at ../softmmu/physmem.c:3529
+#6  ... in x86_cpu_dump_state (cs=0x5578ca2eb340,
+   f=0x7f53434065c0 <_IO_2_1_stderr_>, flags=<optimized out>)
+   at ../target/i386/cpu-dump.c:560
+#7  ... in kvm_cpu_exec (cpu=cpu@entry=0x5578ca2eb340)
+   at ../accel/kvm/kvm-all.c:3000
+#8  ... in kvm_vcpu_thread_fn (arg=arg@entry=0x5578ca2eb340)
+   at ../accel/kvm/kvm-accel-ops.c:51
+#9  ... in qemu_thread_start (args=<optimized out>)
+   at ../util/qemu-thread-posix.c:505
+#10 ... in start_thread () from /lib/x86_64-linux-gnu/libpthread.so.0
+#11 ... in clone () from /lib/x86_64-linux-gnu/libc.so.6
+
+Signed-off-by: Kirill Martynov <stdcalllevi@yandex-team.ru>
+---
+ target/i386/cpu.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index c51e0a43d0..2616a61c87 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2507,7 +2507,7 @@ void cpu_sync_avx_hflag(CPUX86State *env);
+ #ifndef CONFIG_USER_ONLY
+ static inline int x86_asidx_from_attrs(CPUState *cs, MemTxAttrs attrs)
+ {
+-    return !!attrs.secure;
++    return cs->num_ases == 1 ? 0 : (!!attrs.secure);
+ }
+ 
+ static inline AddressSpace *cpu_addressspace(CPUState *cs, MemTxAttrs attrs)
+-- 
+2.43.0
+
 
