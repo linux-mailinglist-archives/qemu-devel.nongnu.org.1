@@ -2,110 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47578AC271B
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 May 2025 18:04:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B85BAAC2755
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 May 2025 18:16:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uIUsP-0003uN-20; Fri, 23 May 2025 12:04:08 -0400
+	id 1uIV2z-0007cm-QT; Fri, 23 May 2025 12:15:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
- id 1uIUsA-0003qy-Ex; Fri, 23 May 2025 12:03:50 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
- id 1uIUs8-0002uE-F8; Fri, 23 May 2025 12:03:50 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54N9wMOs006414;
- Fri, 23 May 2025 16:03:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=pp1; bh=V0JW4S
- j2yvo30DYwjGrFuhd41cbqKH5NGb1oYCJvZTE=; b=RkHXxsE0HJLg3nJrcUR65U
- 1pvkWcOnTH/ENdn+GgnZ8f+yGTbpqsj9NkuMuYlYsFgBeNY1MIKdnMRlY/VE+VKB
- eD22MJqLW8CIuPxr4C6m3iiVn3LXEQFX7skDeyaqr/XZWfd2OJJVgsNg09cDBfPM
- d6eN6lM0ZY/UkQ1JlQ6cWzeVEvk6gyMZmlxPSjTMhG4RkOKRCej4LPjkUWyODxeM
- U7NE4lCfof/PSd6oxmUv3k3FxsshgHsY7TGduQ2PUrpTMWnIjt/5Ropzp4Gl7CIU
- vL1Vi4GQVIXKtKXAwITacE2K8TDYCah0PhdNtan2Q4T7M+F4Yx8+eM1xIiIUPrvw
- ==
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46t9m7w4aa-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 23 May 2025 16:03:44 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54NEo1Fv015444;
- Fri, 23 May 2025 16:03:43 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 46rwnnq9u1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 23 May 2025 16:03:43 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
- [10.241.53.101])
- by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 54NG3gMa18809442
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 23 May 2025 16:03:43 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D47F45805C;
- Fri, 23 May 2025 16:03:42 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2323758051;
- Fri, 23 May 2025 16:03:42 +0000 (GMT)
-Received: from MacBookPro.ibm.com (unknown [9.61.240.236])
- by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 23 May 2025 16:03:42 +0000 (GMT)
-From: Rorie Reyes <rreyes@linux.ibm.com>
-To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
-Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
- jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
- alex.williamson@redhat.com, clg@redhat.com, thuth@redhat.com,
- akrowiak@linux.ibm.com, rreyes@linux.ibm.com
-Subject: [RFC PATCH v11 4/4] s390: implementing CHSC SEI for AP config change
-Date: Fri, 23 May 2025 12:03:38 -0400
-Message-ID: <20250523160338.41896-5-rreyes@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250523160338.41896-1-rreyes@linux.ibm.com>
-References: <20250523160338.41896-1-rreyes@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <magnuskulke@linux.microsoft.com>)
+ id 1uIV2q-0007cE-4C
+ for qemu-devel@nongnu.org; Fri, 23 May 2025 12:14:53 -0400
+Received: from linux.microsoft.com ([13.77.154.182])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <magnuskulke@linux.microsoft.com>) id 1uIV2i-0004M2-E4
+ for qemu-devel@nongnu.org; Fri, 23 May 2025 12:14:51 -0400
+Received: from example.com (unknown [167.220.208.67])
+ by linux.microsoft.com (Postfix) with ESMTPSA id ACF0D2067890;
+ Fri, 23 May 2025 09:13:57 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com ACF0D2067890
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+ s=default; t=1748016840;
+ bh=eD13QmKshkXo5litfHI40Bv/pZp/SKufg5cdhcDJV0k=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=P1/3F46DcdqYbY12nFLrlJDPBBCw5CoGG/YnwSM/R0zdFfu7SPlTY27W+8LK7MtVT
+ jlIXFgP+JpFeGhGCOGbCJkz2SXLehyrdxje0jmkekRyIv6XHfuzsqlRwHz9me6Z8NM
+ 94kB3W5WGGbDHiNEXO++nFwlZh8H1B2PNMPTl56o=
+Date: Fri, 23 May 2025 18:13:54 +0200
+From: Magnus Kulke <magnuskulke@linux.microsoft.com>
+To: Wei Liu <wei.liu@kernel.org>
+Cc: magnuskulke@microsoft.com, qemu-devel@nongnu.org, liuwe@microsoft.com,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ Roman Bolshakov <rbolshakov@ddn.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Cameron Esfahani <dirty@apple.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Subject: Re: [RFC PATCH 08/25] accel/mshv: Initialize VM partition
+Message-ID: <aDCewoDE7iyj1kpt@example.com>
+References: <20250520113018.49569-1-magnuskulke@linux.microsoft.com>
+ <20250520113018.49569-9-magnuskulke@linux.microsoft.com>
+ <aCzS2h9UfGe-FZDW@liuwe-devbox-ubuntu-v2.tail21d00.ts.net>
+ <aDAwnkXFsEri/e4D@example.com>
+ <aDCWHsw0iGd00JyL@liuwe-devbox-ubuntu-v2.tail21d00.ts.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=SMZCVPvH c=1 sm=1 tr=0 ts=68309c60 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8
- a=uLlxcZOcU1Y7BrJQP9YA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: hLyeFc5bJRmz_jxRwYopJANX7r4xpmZW
-X-Proofpoint-ORIG-GUID: hLyeFc5bJRmz_jxRwYopJANX7r4xpmZW
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIzMDE0NSBTYWx0ZWRfX1j5LA2It4/ZW
- OSquW4Pn6XOrFejaaS4Upvb4hVDrxDeIJ5ZR03JqaAv80U0RXNq0AodCE76A+GkImwEvbVrNiCn
- qKTMcN8bBEBPMFVRXPtc5cgdneCQ1CMj2VJNYIwvF6KiG79gSUKQA0cgctZUQyLI/wonN4+HrjX
- ueVhSs4s/bCPgCqnyyS66GoyiRncuBDGSROZ+Ac4sMuSbMYzMmTrU8ecmT5+qiq8FTtv8xbo92/
- kf6VzYSoaYM/ZWkyZXfLC6+Q5PyRGtNNy4iYNGHZPkm2oaAKm0fU4cPlRuux5EDt3r/pcFvlv+w
- Y8/F805qVploLkPY9SK2K1QStIMfOgQyjb4nni5/ZhS4hxXovaOYWIAfuI1RcH+z6HidhBY/Bf4
- Kx2Mn/zSWCOjLf1lt/AyQSI53opypiiUIBGQIxzVdUb1ni2BBv/yrK/+JkelCyry6VRORNqe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-23_05,2025-05-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- mlxlogscore=999 suspectscore=0 bulkscore=0 clxscore=1015 adultscore=0
- phishscore=0 mlxscore=0 impostorscore=0 spamscore=0 lowpriorityscore=0
- malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
- definitions=main-2505230145
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=rreyes@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aDCWHsw0iGd00JyL@liuwe-devbox-ubuntu-v2.tail21d00.ts.net>
+Received-SPF: pass client-ip=13.77.154.182;
+ envelope-from=magnuskulke@linux.microsoft.com; helo=linux.microsoft.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,111 +76,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Handle interception of the CHSC SEI instruction for requests
-indicating the guest's AP configuration has changed.
+On Fri, May 23, 2025 at 03:37:02PM +0000, Wei Liu wrote:
+> On Fri, May 23, 2025 at 10:23:58AM +0200, Magnus Kulke wrote:
+> > On Tue, May 20, 2025 at 07:07:06PM +0000, Wei Liu wrote:
+> > > On Tue, May 20, 2025 at 01:30:01PM +0200, Magnus Kulke wrote:
+> > > > Create the MSHV virtual machine by opening a partition and issuing
+> > > > the necessary ioctl to initialize it. This sets up the basic VM
+> > > > structure and initial configuration used by MSHV to manage guest state.
+> > > > 
+> > > > Signed-off-by: Magnus Kulke <magnuskulke@linux.microsoft.com>
+> > > > ---
+> > > [...]
+> I'm not talking about initialization specifically. I don't think QEMU
+> calls the initialization function of an accelerator multiple times.
+> 
+> What I mean is that after this point, the fd is neither closed nor
+> tracked. There is no way to cleanly handle it other than waiting for the
+> process to exist. One fd may not seem a lot, but it takes up precise
+> space in the file descriptor table in the kernel and is counted against
+> the fd limit.
+> 
+> My suggestion would be if this fd is no longer needed, it can be closed
+> in this same function.
+> 
+> If it is needed throughout the life cycle of the VM, we put it in a
+> either a global variable or (better) the accelerator state structure. If
+> we do the latter, we should also close it when we deinitialize the
+> accelerator if we have such a phase.
+> 
+> Thanks,
+> Wei.
+> 
 
-If configuring --without-default-devices, hw/s390x/ap-stub.c
-was created to handle such circumstance. Also added the
-following to hw/s390x/meson.build if CONFIG_VFIO_AP is
-false, it will use the stub file.
-
-Signed-off-by: Rorie Reyes <rreyes@linux.ibm.com>
-Reviewed-by: Anthony Krowiak <akrowiak@linux.ibm.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
----
- MAINTAINERS           |  1 +
- hw/s390x/ap-stub.c    | 21 +++++++++++++++++++++
- hw/s390x/meson.build  |  1 +
- target/s390x/ioinst.c | 11 +++++++++--
- 4 files changed, 32 insertions(+), 2 deletions(-)
- create mode 100644 hw/s390x/ap-stub.c
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7060cf49b9..444523a35e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -112,6 +112,7 @@ F: hw/intc/s390_flic.c
- F: hw/intc/s390_flic_kvm.c
- F: hw/s390x/
- F: hw/vfio/ap.c
-+F: hw/s390x/ap-stub.c
- F: hw/vfio/ccw.c
- F: hw/watchdog/wdt_diag288.c
- F: include/hw/s390x/
-diff --git a/hw/s390x/ap-stub.c b/hw/s390x/ap-stub.c
-new file mode 100644
-index 0000000000..001fe5f8b0
---- /dev/null
-+++ b/hw/s390x/ap-stub.c
-@@ -0,0 +1,21 @@
-+/*
-+ * VFIO based AP matrix device assignment
-+ *
-+ * Copyright 2025 IBM Corp.
-+ * Author(s): Rorie Reyes <rreyes@linux.ibm.com>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/s390x/ap-bridge.h"
-+
-+int ap_chsc_sei_nt0_get_event(void *res)
-+{
-+    return EVENT_INFORMATION_NOT_STORED;
-+}
-+
-+bool ap_chsc_sei_nt0_have_event(void)
-+{
-+    return false;
-+}
-diff --git a/hw/s390x/meson.build b/hw/s390x/meson.build
-index 3bbebfd817..99cbcbd7d6 100644
---- a/hw/s390x/meson.build
-+++ b/hw/s390x/meson.build
-@@ -33,6 +33,7 @@ s390x_ss.add(when: 'CONFIG_S390_CCW_VIRTIO', if_true: files(
- ))
- s390x_ss.add(when: 'CONFIG_TERMINAL3270', if_true: files('3270-ccw.c'))
- s390x_ss.add(when: 'CONFIG_VFIO', if_true: files('s390-pci-vfio.c'))
-+s390x_ss.add(when: 'CONFIG_VFIO_AP', if_false: files('ap-stub.c'))
- 
- virtio_ss = ss.source_set()
- virtio_ss.add(files('virtio-ccw.c'))
-diff --git a/target/s390x/ioinst.c b/target/s390x/ioinst.c
-index fe62ba5b06..2320dd4c12 100644
---- a/target/s390x/ioinst.c
-+++ b/target/s390x/ioinst.c
-@@ -18,6 +18,7 @@
- #include "trace.h"
- #include "hw/s390x/s390-pci-bus.h"
- #include "target/s390x/kvm/pv.h"
-+#include "hw/s390x/ap-bridge.h"
- 
- /* All I/O instructions but chsc use the s format */
- static uint64_t get_address_from_regs(CPUS390XState *env, uint32_t ipb,
-@@ -574,13 +575,19 @@ out:
- 
- static int chsc_sei_nt0_get_event(void *res)
- {
--    /* no events yet */
-+    if (s390_has_feat(S390_FEAT_AP)) {
-+        return ap_chsc_sei_nt0_get_event(res);
-+    }
-+
-     return 1;
- }
- 
- static int chsc_sei_nt0_have_event(void)
- {
--    /* no events yet */
-+    if (s390_has_feat(S390_FEAT_AP)) {
-+        return ap_chsc_sei_nt0_have_event();
-+    }
-+
-     return 0;
- }
- 
--- 
-2.48.1
-
+oh yes, that's right. we wouldn't use the mshv_fd anywhere else for the
+time being, so we can close it immediately after the create_vm ioctl.
 
