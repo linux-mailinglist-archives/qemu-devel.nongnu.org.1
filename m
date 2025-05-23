@@ -2,76 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAEA5AC26B2
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 May 2025 17:46:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D272DAC24D5
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 May 2025 16:19:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uIUaT-0006TM-VE; Fri, 23 May 2025 11:45:34 -0400
+	id 1uITDb-0006m4-7H; Fri, 23 May 2025 10:17:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uIUaR-0006Sa-46
- for qemu-devel@nongnu.org; Fri, 23 May 2025 11:45:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1uIUaP-0000r1-As
- for qemu-devel@nongnu.org; Fri, 23 May 2025 11:45:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748015126;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=F2GuPQgBj7FQ20R9GC9RPc5kXTHJLTycgG5LJ5cOEqw=;
- b=HZBVmHgcLcJcwOUKadJHrT0VYPqRhv6I4jrSK26Ip0At8Aakavl8FNCKyVDFBPOkqqSw5F
- kBwfOqNz/w25qDPqFskWw4w+sptl+kg4Ps5m6e4dgi4dOJTeo3d5oBh1gPMYmHan5a+OUS
- 7CG3DlyqWbuTvZQvvwmNBTUEwmMk9EA=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-91-ymBrF6r9M3mQVWZwJWiZnw-1; Fri,
- 23 May 2025 11:45:25 -0400
-X-MC-Unique: ymBrF6r9M3mQVWZwJWiZnw-1
-X-Mimecast-MFC-AGG-ID: ymBrF6r9M3mQVWZwJWiZnw_1748015124
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 2BD3D1955DB3; Fri, 23 May 2025 15:45:24 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.119])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 84DF430001A1; Fri, 23 May 2025 15:45:23 +0000 (UTC)
-Date: Fri, 23 May 2025 09:21:21 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ (Exim 4.90_1) (envelope-from <magnuskulke@linux.microsoft.com>)
+ id 1uITDW-0006lk-EX
+ for qemu-devel@nongnu.org; Fri, 23 May 2025 10:17:47 -0400
+Received: from linux.microsoft.com ([13.77.154.182])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <magnuskulke@linux.microsoft.com>) id 1uITDU-0006NV-81
+ for qemu-devel@nongnu.org; Fri, 23 May 2025 10:17:46 -0400
+Received: from example.com (unknown [167.220.208.67])
+ by linux.microsoft.com (Postfix) with ESMTPSA id 95C422068352;
+ Fri, 23 May 2025 07:17:37 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 95C422068352
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+ s=default; t=1748009860;
+ bh=P3zKMS3IUy8W5yQHX335lEv+c+Kd+vBg2QWwBuIo4Ec=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=LtNjvgDik4dANRSPs25I0rhknfIr7cs53eNQVn6sdPyTnSbDGpfBdzBZW0S8cV5Q0
+ 3xuhF5yEOMTMQ0il2BudLcD/g5DuoNoQHSb5dAudu80Q4yfSs2d6yMZHo3X7RlvJJ7
+ owpWl4h0cC4C8bWGKxK7VoNNP76AkmUFfGyFPXjY=
+Date: Fri, 23 May 2025 16:17:34 +0200
+From: Magnus Kulke <magnuskulke@linux.microsoft.com>
+To: Wei Liu <wei.liu@kernel.org>
+Cc: magnuskulke@microsoft.com, qemu-devel@nongnu.org, liuwe@microsoft.com,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Phil Dennis-Jordan <phil@philjordan.eu>,
+ Roman Bolshakov <rbolshakov@ddn.com>,
  Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>
-Subject: Re: [PULL 00/23] Misc VNC, I/O, Crypto & checkpatch fixes
-Message-ID: <20250523132121.GA13454@fedora>
-References: <20250522102923.309452-1-berrange@redhat.com>
+ Zhao Liu <zhao1.liu@intel.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Cameron Esfahani <dirty@apple.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Subject: Re: [RFC PATCH 09/25] accel/mshv: Register guest memory regions with
+ hypervisor
+Message-ID: <aDCDfrqNG9y6zSkv@example.com>
+References: <20250520113018.49569-1-magnuskulke@linux.microsoft.com>
+ <20250520113018.49569-10-magnuskulke@linux.microsoft.com>
+ <aCzg__6lGlvypZMB@liuwe-devbox-ubuntu-v2.tail21d00.ts.net>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="1/UHU4NLGBPtEMTX"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250522102923.309452-1-berrange@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+In-Reply-To: <aCzg__6lGlvypZMB@liuwe-devbox-ubuntu-v2.tail21d00.ts.net>
+Received-SPF: pass client-ip=13.77.154.182;
+ envelope-from=magnuskulke@linux.microsoft.com; helo=linux.microsoft.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.287,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,30 +75,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, May 20, 2025 at 08:07:27PM +0000, Wei Liu wrote:
+> On Tue, May 20, 2025 at 01:30:02PM +0200, Magnus Kulke wrote:
+> > Handle region_add events by invoking the MSHV memory registration
+> > +        return set_guest_memory(vm_fd, &region);
+> > +    }
+> > +
+> > +    region.flags = (1 << MSHV_SET_MEM_BIT_EXECUTABLE);
+> 
+> Should this be always set? Is there a way to get more information from
+> the caller or QEMU's core memory region management logic?
+> 
 
---1/UHU4NLGBPtEMTX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+HVF always sets the bit and as far as I can tell KVM doesn't have a
+KVM_MEM_EXECUTE flag, so it's implied.
 
-Applied, thanks.
-
-Please update the changelog at https://wiki.qemu.org/ChangeLog/10.1 for any user-visible changes.
-
---1/UHU4NLGBPtEMTX
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmgwdlAACgkQnKSrs4Gr
-c8j4DAf+N7vn9g+rZpichMxCsAuAfk/H9XhKN+ZN2I+j+88DJNSit931oc5XtNzl
-aJJFbyJp/6eol6Jt1kGnR/jzexHyBNjntBd3P5zC/HVlqIrXxSwSQDwV717JXVD9
-uI1lYUzK8MreAprYN4XSYYgtBceJ0pZD1ICMvQknX924nwik34rumDEykLqhUHUt
-cCihPMQyJmH7Gc7+3mXr25c5DoZ61d9aUnQqDTWjKE0yru+2OEr0dZsc6D8bxyms
-1bPS/WEuN9RhVovsfQ3El/gYzIHq3Fg+mfArT8QOcPULjEEccDmw+0Y2i93QnzCh
-K9AkO4dYA9f+Kr+RnZ+XeQ7KqdAFgw==
-=VghY
------END PGP SIGNATURE-----
-
---1/UHU4NLGBPtEMTX--
-
+Still, there might be some criteria to determine whether a region is
+executable or not, I'll look further into that.
 
