@@ -2,89 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6081DAC1973
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 May 2025 03:15:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 893A6AC19CB
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 May 2025 03:42:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uIGz7-0003ge-WC; Thu, 22 May 2025 21:14:06 -0400
+	id 1uIHOZ-0006rN-MC; Thu, 22 May 2025 21:40:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uIGz6-0003gP-L2
- for qemu-devel@nongnu.org; Thu, 22 May 2025 21:14:04 -0400
-Received: from mail-ua1-x944.google.com ([2607:f8b0:4864:20::944])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gustavo.romero@linaro.org>)
- id 1uIGz4-0001tt-Q5
- for qemu-devel@nongnu.org; Thu, 22 May 2025 21:14:04 -0400
-Received: by mail-ua1-x944.google.com with SMTP id
- a1e0cc1a2514c-87c0633a093so1444001241.2
- for <qemu-devel@nongnu.org>; Thu, 22 May 2025 18:14:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1747962841; x=1748567641; darn=nongnu.org;
- h=content-transfer-encoding:subject:from:cc:to:content-language
- :user-agent:mime-version:date:message-id:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gCEPHijVWh21bdlDld6lQdhgKqvpabRR/RC4fMVNV6I=;
- b=ZHzWRR4IqOA2IycDwAaUDmF+zuFCjsyHEGrvmBgYpzT0TOEnsuzEbJLoOqN2R/tf/3
- l/er/lSlCUWHaSEky7AqSj9eNmMNJf8z4rw1Gl+LaK2y/dhblqFiT5nxkGr4YuvznrM9
- ZuwngEQJemc8b6mV4ajwp2cSWkKVRhP6CHcKfb+kb9LU0TCyTNAO3gOthDQC/bVGd2e7
- lOXtHBeMoi9Rm0DBHujZffhbuJfYKQBYu8BaXaIrERb0MeXI1GBL2J2q0uncXRLdPCeW
- /W3NrxWJFhAiaAERaBwKZCUCwlHQdcAAEgDy/2xWel6qxLP64OkqTFEAqbdv0SgzD2uq
- F8wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1747962841; x=1748567641;
- h=content-transfer-encoding:subject:from:cc:to:content-language
- :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=gCEPHijVWh21bdlDld6lQdhgKqvpabRR/RC4fMVNV6I=;
- b=FC+OSpTke/SLF2fsfYdN9Ni7zTFoPWmDMfLdSkWbSQFmXYgLP7IpCmk75CySRGSPzg
- udRtsnkp0M9kKQxCRI3/jwtX3EbbKdEIlv62EsrlbdOJZNlRTbQLOPafvde2Fz6wpjgH
- qwuDTuMNFWvwXs+Ts8nsA9v/jA1Dee60PD2CJNpln5hcVdlpt5AH21Gr9ev/zDsbN8QW
- N5VZnQO1/HZ3aQk/PznIQBVvWTliIlQ2Nq0O/HkxcERbikRMUS2veHGJ1u/ol7RkmTyA
- HxcXmuvNNeSd55fEpQD0ILpLzRqq5SVtwNHIkiFOWRTiL6OFWVTDBjpj3/9ifgZh/gXr
- w65Q==
-X-Gm-Message-State: AOJu0YxRD6P6Xeabn8Pb5N9UBr0W2AQlv7uGlx3alcaZlMrIrufJkcg5
- 7y1EGfeKScsWGy65O98iSNOxqaRBNHGIQIcW1p7rcZ0agG5ZN/sKI2rP3+dSRnHD5a0=
-X-Gm-Gg: ASbGncvBTIPox/BmOwfAcO0deZ0exTAzf5GDL9par/WDwMMr+9FMS5vrwDjtkEIkV3q
- V4RDZhXLEwK7SnrGEgBbt/NMSIW8LPufdRwIxgXW6o0g8np0AXMit9lG9WYh69DZAiULuf+5EQP
- 24M+q7yFBAov8PtCEKr0fbEd24Zp0/dMdkMGMvPbOU55TlSt3azDYIU7a23QHiDlNs4vX0U7I+m
- bakzUYmytYSdoMqiumO3PVpExTlndkLKRF92L3xanTaBFuJRggR0PYBLNoYQynR1A9Hu0OEJ/qC
- HDin425darm9eGR/an4KGxRD0o15BM2piiwxt6ezrjjOE/KZRzM4x8BRU7m7GY+uaOwvD/UeJtd
- 2xlZ8yfQYqyQ/J/9ZcfLq/jXmrinZDW9Q4OcMZxQV
-X-Google-Smtp-Source: AGHT+IGGijAvz7VnHBOKNCAhoV3jzSOqNpyQahifYB0fNaOmOLyCEsjvs19+dsIoiPfvscpmbJZ2DA==
-X-Received: by 2002:a05:6102:370a:b0:4de:d08f:6727 with SMTP id
- ada2fe7eead31-4dfa6bbb263mr25240750137.13.1747962840802; 
- Thu, 22 May 2025 18:14:00 -0700 (PDT)
-Received: from ?IPV6:2804:7f0:b402:6ba2:59c4:f305:3d77:f678?
- ([2804:7f0:b402:6ba2:59c4:f305:3d77:f678])
- by smtp.gmail.com with ESMTPSA id
- ada2fe7eead31-4dfa66bcf1bsm11842587137.10.2025.05.22.18.13.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 22 May 2025 18:14:00 -0700 (PDT)
-Message-ID: <e376b3f5-81e9-4b67-ba8c-048ca713d894@linaro.org>
-Date: Thu, 22 May 2025 22:13:29 -0300
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1uIHOU-0006qP-Ct; Thu, 22 May 2025 21:40:18 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>)
+ id 1uIHOR-00056q-2k; Thu, 22 May 2025 21:40:17 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8AxHHL20S9oUbz3AA--.7052S3;
+ Fri, 23 May 2025 09:40:06 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by front1 (Coremail) with SMTP id qMiowMBx3MTz0S9oStbpAA--.8898S2;
+ Fri, 23 May 2025 09:40:03 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, maobibo@loongson.cn, philmd@linaro.org,
+ lorenz.hetterich@cispa.de, qemu-stable@nongnu.org
+Subject: [PATCH] target/loongarch: add check for fcond
+Date: Fri, 23 May 2025 09:17:45 +0800
+Message-Id: <20250523011745.3833883-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Eric Auger <eric.auger@redhat.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-From: Gustavo Romero <gustavo.romero@linaro.org>
-Subject: New test in bios-tables-test.c for the ACPI PCI hotplug on ARM series
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::944;
- envelope-from=gustavo.romero@linaro.org; helo=mail-ua1-x944.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: qMiowMBx3MTz0S9oStbpAA--.8898S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,26 +60,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Eric,
+fcond only has 22 types, add a check for fcond.
 
-While we go through the ACPI PCI Hotplug series [0] and review it, I'm
-starting to take a look at tests/qtest/bios-tables-test.c.
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2972
 
-You mentioned testing the combinations of "acpi-root-pci-hotplug"
-and "acpi-pci-hotplug-with-bridge-support" flags [1], but taking a
-look now I see that "acpi-root-pci-hotplug" is only used in a PCI
-context (not in PCIE, so not meaningful in GPEX), hence
-"acpi-pci-hotplug-with-bridge-support" would be the interesting
-flag for testing the ACPI PCI HP series for ARM. Since this maps to
-'use_acpi_hotplug_bridge' variable in i386 (e.g., in ICH9 controller)
-and this variable is being controlled by machine flag "acpi_pcihp"
-in the series, I understand it's only a matter of testing the ACPI for
-acpi_pcihp=off and acpi_pcihp=on. What do you think?
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+---
+ target/loongarch/tcg/insn_trans/trans_fcmp.c.inc | 11 ++++++++---
+ target/loongarch/tcg/insn_trans/trans_vec.c.inc  |  4 ++--
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
+diff --git a/target/loongarch/tcg/insn_trans/trans_fcmp.c.inc b/target/loongarch/tcg/insn_trans/trans_fcmp.c.inc
+index 3babf69e4a..5be759d30c 100644
+--- a/target/loongarch/tcg/insn_trans/trans_fcmp.c.inc
++++ b/target/loongarch/tcg/insn_trans/trans_fcmp.c.inc
+@@ -4,10 +4,15 @@
+  */
+ 
+ /* bit0(signaling/quiet) bit1(lt) bit2(eq) bit3(un) bit4(neq) */
+-static uint32_t get_fcmp_flags(int cond)
++static uint32_t get_fcmp_flags(DisasContext *ctx, int cond)
+ {
+     uint32_t flags = 0;
+ 
++    /*check cond , cond =[0-8,10,12] */
++    if ((cond > 8) &&(cond != 10) && (cond != 12)) {
++        generate_exception(ctx, EXCCODE_INE);
++    }
++
+     if (cond & 0x1) {
+         flags |= FCMP_LT;
+     }
+@@ -39,7 +44,7 @@ static bool trans_fcmp_cond_s(DisasContext *ctx, arg_fcmp_cond_s *a)
+     src1 = get_fpr(ctx, a->fj);
+     src2 = get_fpr(ctx, a->fk);
+     fn = (a->fcond & 1 ? gen_helper_fcmp_s_s : gen_helper_fcmp_c_s);
+-    flags = get_fcmp_flags(a->fcond >> 1);
++    flags = get_fcmp_flags(ctx, a->fcond >> 1);
+ 
+     fn(var, tcg_env, src1, src2, tcg_constant_i32(flags));
+ 
+@@ -63,7 +68,7 @@ static bool trans_fcmp_cond_d(DisasContext *ctx, arg_fcmp_cond_d *a)
+     src1 = get_fpr(ctx, a->fj);
+     src2 = get_fpr(ctx, a->fk);
+     fn = (a->fcond & 1 ? gen_helper_fcmp_s_d : gen_helper_fcmp_c_d);
+-    flags = get_fcmp_flags(a->fcond >> 1);
++    flags = get_fcmp_flags(ctx, a->fcond >> 1);
+ 
+     fn(var, tcg_env, src1, src2, tcg_constant_i32(flags));
+ 
+diff --git a/target/loongarch/tcg/insn_trans/trans_vec.c.inc b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
+index b33622ff79..0128a2398f 100644
+--- a/target/loongarch/tcg/insn_trans/trans_vec.c.inc
++++ b/target/loongarch/tcg/insn_trans/trans_vec.c.inc
+@@ -4666,7 +4666,7 @@ static bool do_vfcmp_cond_s(DisasContext *ctx, arg_vvv_fcond *a, uint32_t sz)
+     }
+ 
+     fn = (a->fcond & 1 ? gen_helper_vfcmp_s_s : gen_helper_vfcmp_c_s);
+-    flags = get_fcmp_flags(a->fcond >> 1);
++    flags = get_fcmp_flags(ctx, a->fcond >> 1);
+     fn(tcg_env, oprsz, vd, vj, vk, tcg_constant_i32(flags));
+ 
+     return true;
+@@ -4686,7 +4686,7 @@ static bool do_vfcmp_cond_d(DisasContext *ctx, arg_vvv_fcond *a, uint32_t sz)
+     }
+ 
+     fn = (a->fcond & 1 ? gen_helper_vfcmp_s_d : gen_helper_vfcmp_c_d);
+-    flags = get_fcmp_flags(a->fcond >> 1);
++    flags = get_fcmp_flags(ctx, a->fcond >> 1);
+     fn(tcg_env, oprsz, vd, vj, vk, tcg_constant_i32(flags));
+ 
+     return true;
+-- 
+2.34.1
 
-Cheers,
-Gustavo
-
-[0] https://lists.nongnu.org/archive/html/qemu-devel/2025-05/msg03487.html
-[1] https://lists.nongnu.org/archive/html/qemu-trivial/2025-05/msg00020.html
 
