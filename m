@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78CE4AC1FCB
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 May 2025 11:33:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC8BAC1FC8
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 May 2025 11:33:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uIOlD-0005IQ-Kc; Fri, 23 May 2025 05:32:15 -0400
+	id 1uIOlE-0005JH-7v; Fri, 23 May 2025 05:32:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven_lee@aspeedtech.com>)
- id 1uIOl5-0005Go-Ib; Fri, 23 May 2025 05:32:07 -0400
+ id 1uIOl8-0005HJ-2J; Fri, 23 May 2025 05:32:10 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven_lee@aspeedtech.com>)
- id 1uIOl4-0005Md-5u; Fri, 23 May 2025 05:32:07 -0400
+ id 1uIOl6-0005Md-Cz; Fri, 23 May 2025 05:32:09 -0400
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Fri, 23 May
@@ -31,9 +31,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
 CC: <troy_lee@aspeedtech.com>, <longzl2@lenovo.com>,
  <yunlin.tang@aspeedtech.com>, <steven_lee@aspeedtech.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v5 5/6] hw/arm/fby35: Map BMC memory into system memory
-Date: Fri, 23 May 2025 17:31:42 +0800
-Message-ID: <20250523093144.991408-6-steven_lee@aspeedtech.com>
+Subject: [PATCH v5 6/6] docs: Remove ast2700fc from Aspeed family boards
+Date: Fri, 23 May 2025 17:31:43 +0800
+Message-ID: <20250523093144.991408-7-steven_lee@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250523093144.991408-1-steven_lee@aspeedtech.com>
 References: <20250523093144.991408-1-steven_lee@aspeedtech.com>
@@ -65,27 +65,26 @@ From:  Steven Lee via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the BMC memory region as a subregion of system_memory so that
-modules relying on system memory can operate correctly.
+The ast2700fc machine is now covered in the dedicated ast2700-evb
+section. Listing it in the general Aspeed board family list is
+redundant.
 
 Signed-off-by: Steven Lee <steven_lee@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/arm/fby35.c | 1 +
- 1 file changed, 1 insertion(+)
+ docs/system/arm/aspeed.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/arm/fby35.c b/hw/arm/fby35.c
-index e123fa69e1..c14fc2efe9 100644
---- a/hw/arm/fby35.c
-+++ b/hw/arm/fby35.c
-@@ -77,6 +77,7 @@ static void fby35_bmc_init(Fby35State *s)
+diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
+index 58a8020eec..43d27d83cb 100644
+--- a/docs/system/arm/aspeed.rst
++++ b/docs/system/arm/aspeed.rst
+@@ -1,4 +1,4 @@
+-Aspeed family boards (``ast2500-evb``, ``ast2600-evb``, ``ast2700-evb``, ``ast2700fc``, ``bletchley-bmc``, ``fuji-bmc``, ``fby35-bmc``, ``fp5280g2-bmc``, ``g220a-bmc``, ``palmetto-bmc``, ``qcom-dc-scm-v1-bmc``, ``qcom-firework-bmc``, ``quanta-q71l-bmc``, ``rainier-bmc``, ``romulus-bmc``, ``sonorapass-bmc``, ``supermicrox11-bmc``, ``supermicrox11spi-bmc``, ``tiogapass-bmc``, ``witherspoon-bmc``, ``yosemitev2-bmc``)
++Aspeed family boards (``ast2500-evb``, ``ast2600-evb``, ``ast2700-evb``, ``bletchley-bmc``, ``fuji-bmc``, ``fby35-bmc``, ``fp5280g2-bmc``, ``g220a-bmc``, ``palmetto-bmc``, ``qcom-dc-scm-v1-bmc``, ``qcom-firework-bmc``, ``quanta-q71l-bmc``, ``rainier-bmc``, ``romulus-bmc``, ``sonorapass-bmc``, ``supermicrox11-bmc``, ``supermicrox11spi-bmc``, ``tiogapass-bmc``, ``witherspoon-bmc``, ``yosemitev2-bmc``)
+ =================================================================================================================================================================================================================================================================================================================================================================================================================================
  
-     memory_region_init(&s->bmc_memory, OBJECT(&s->bmc), "bmc-memory",
-                        UINT64_MAX);
-+    memory_region_add_subregion(get_system_memory(), 0, &s->bmc_memory);
-     memory_region_init_ram(&s->bmc_dram, OBJECT(&s->bmc), "bmc-dram",
-                            FBY35_BMC_RAM_SIZE, &error_abort);
- 
+ The QEMU Aspeed machines model BMCs of various OpenPOWER systems and
 -- 
 2.43.0
 
