@@ -2,97 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50306AC271A
-	for <lists+qemu-devel@lfdr.de>; Fri, 23 May 2025 18:03:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC813AC271E
+	for <lists+qemu-devel@lfdr.de>; Fri, 23 May 2025 18:05:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uIUqm-0001sg-Hm; Fri, 23 May 2025 12:02:28 -0400
+	id 1uIUsU-0003wX-4D; Fri, 23 May 2025 12:04:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <liam.merwick@oracle.com>)
- id 1uIUqE-0001nz-Bj
- for qemu-devel@nongnu.org; Fri, 23 May 2025 12:01:50 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
+ id 1uIUsF-0003tW-7Y; Fri, 23 May 2025 12:03:56 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <liam.merwick@oracle.com>)
- id 1uIUqB-0002gT-JN
- for qemu-devel@nongnu.org; Fri, 23 May 2025 12:01:49 -0400
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54NFxT4H011710;
- Fri, 23 May 2025 16:01:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
- content-transfer-encoding:content-type:date:from:message-id
- :mime-version:subject:to; s=corp-2025-04-25; bh=/HSM8HF+XvdzD7AJ
- OUGZLdAp3QeqS8wTKQhywnwBqrU=; b=TjHYYmKPXQxfff6avkU4904RFrpK6MxZ
- 78zUWbATL69DasbWSJ3BVrtJXfCF0q31N20tHWeo45l7H8DQoiiKGtR05VT310z2
- +xjiAhIqw0PLW4n7mVms9vfF/bPJDLfxFTzy/KYGEr8ZpsBzFNtjsTahdYzqKtfc
- xVpY1GLYAGF0eS2AB5Cm7deF4/ZXuOEqRgb2b+3nr5zR/hxTx9o1fT3lS1zBCEK7
- t7cTxg6R1JqqIYSd6g2JWwZVEF2jw6QqvtDjrkNalQ1WVxq7Eh+70EAR8DPA5wlK
- 8NMhWQZ3GNBx0DWuM57161MJQ0a0JuAAFRCJY50nrmXDZOU+Zh5y9w==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46tv4q8079-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 23 May 2025 16:01:37 +0000 (GMT)
-Received: from pps.filterd
- (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2)
- with ESMTP id 54NFvE9H001898; Fri, 23 May 2025 16:01:36 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 46rwev5r1b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 23 May 2025 16:01:36 +0000
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54NG1Zq7032523;
- Fri, 23 May 2025 16:01:35 GMT
-Received: from lmerwick-vm-ol8.osdevelopmeniad.oraclevcn.com
- (lmerwick-vm-ol8.allregionaliads.osdevelopmeniad.oraclevcn.com
- [100.100.255.219])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 46rwev5qyx-1; Fri, 23 May 2025 16:01:35 +0000
-From: Liam Merwick <liam.merwick@oracle.com>
-To: dwmw@amazon.co.uk, anthony.perard@vates.tech, roger.pau@citrix.com,
- xen-devel@lists.xenproject.org, qemu-devel@nongnu.org,
- liam.merwick@oracle.com
-Subject: [PATCH] hw/xen: Fix trace_xs_node_read() params
-Date: Fri, 23 May 2025 16:01:34 +0000
-Message-ID: <20250523160134.218997-1-liam.merwick@oracle.com>
-X-Mailer: git-send-email 2.47.1
+ (Exim 4.90_1) (envelope-from <rreyes@linux.ibm.com>)
+ id 1uIUsC-0002tV-0n; Fri, 23 May 2025 12:03:53 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54NAargj025515;
+ Fri, 23 May 2025 16:03:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+ :content-transfer-encoding:date:from:message-id:mime-version
+ :subject:to; s=pp1; bh=7NRZwqa8N6fHssIVpdG0d8OITO04r58mgjtZMbCFO
+ 5s=; b=Weu9dBxslUf4LS/LuNYtrZw41/e+rnCIUQUksf7FDmPTl+VsAxMYXDFGe
+ CR9k+RDqDVTw+AIrwJtq148EmVZ0u4F0ZC59idzSlbo8vq0+QuamQGeWTWmUxCiH
+ 2x4CTBb6qyerK29r1OznMOZQ//dbJxn2xBE3cxCZwrTfxWDYm4fiudFIBTwxBvwf
+ l9QQCjlwfWu2pie84dY+qkK6qCW3TIbnCU6rFN8ygoK2dw2ovI0xtQEa0foNy7Tt
+ K8E/mABVDP0T+8E3LO/FOAppuHNp7tyDHRj+MF/bePlhNiy+Cf+rnu4QbNxnUItc
+ cJKz0DUhFIgtNaCVAe5GIrPowXs5w==
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46t9j957xs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 23 May 2025 16:03:41 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54NEuY53032076;
+ Fri, 23 May 2025 16:03:40 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 46rwnmq9jf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 23 May 2025 16:03:40 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
+ [10.241.53.101])
+ by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 54NG3djD13697668
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 23 May 2025 16:03:39 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 48C125805A;
+ Fri, 23 May 2025 16:03:39 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 86CA458051;
+ Fri, 23 May 2025 16:03:38 +0000 (GMT)
+Received: from MacBookPro.ibm.com (unknown [9.61.240.236])
+ by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 23 May 2025 16:03:38 +0000 (GMT)
+From: Rorie Reyes <rreyes@linux.ibm.com>
+To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
+Cc: pbonzini@redhat.com, cohuck@redhat.com, pasic@linux.ibm.com,
+ jjherne@linux.ibm.com, borntraeger@linux.ibm.com,
+ alex.williamson@redhat.com, clg@redhat.com, thuth@redhat.com,
+ akrowiak@linux.ibm.com, rreyes@linux.ibm.com
+Subject: [RFC PATCH v11 0/4] Report vfio-ap configuration changes
+Date: Fri, 23 May 2025 12:03:34 -0400
+Message-ID: <20250523160338.41896-1-rreyes@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: N0X_dNsFOARs4NGFxWBKF7Gv0gRCd4rn
+X-Authority-Analysis: v=2.4 cv=O6Y5vA9W c=1 sm=1 tr=0 ts=68309c5d cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=dt9VzEwgFbYA:10 a=oB4wincVlwQkxkIkRscA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIzMDE0NSBTYWx0ZWRfX4Q2fwZO0tlyB
+ 6aoHJQ9NF/x1cBRAxup+vPqG2t6Jw/FwTx2BGZZA0MHD6dzV5wFrDRaQcO7hrgNOyfcOiz1jeS8
+ D736w4Oitg6p7H6cXaQMFIIFcjuHnsuuXJonBgQgsHT3c+u2JMLNgqJ/5HkmJATbTzCJrzlyEfT
+ AYDKSg4mklwE1Fz8RgpxGmPpm9kDmUVjOcDM4ePmNwJKjOhv3wKERl7Zm2RmzpJZRPIENSgrZzL
+ 7nvS7OhIHhOi0NDl0+rzfN6QPWNf/aC35YWO1KaBUrTN4pW3MmwPUwE9KgUOCxw9jFywhP6uiOG
+ LDl3e7LDyYYWeULTVL+QrtQ9SHSkLBKey906kOTFnswGPJn87KgvIT5Do6AvtPWWG3edWkxmkor
+ OCGNcZhLcs8s+ywPouGPfQ5tN4zYiNEhpy6YpAFa1oX+sZKA9/eeyIC48/j4aS6LN8bmyrj0
+X-Proofpoint-ORIG-GUID: N0X_dNsFOARs4NGFxWBKF7Gv0gRCd4rn
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-23_05,2025-05-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- mlxlogscore=963
- spamscore=0 bulkscore=0 adultscore=0 mlxscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2505160000 definitions=main-2505230145
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIzMDE0NSBTYWx0ZWRfXzKhc12nOACPq
- ry0AdFC6085lYP89tiCbsgK59zp6dbmGaRNLjkmSFkTDJLkCByJwoyBoF7T3ms3Km+VGNsBnv0w
- bcZQCvQbXst7hNmq8vXblCJsOpzLCj8E4Z77T2KILxalaY2J528WJ8rXiSN3pqT55wXq4LLyvJa
- Lf7EOYZDKVWD0rIrrp1Nt/vkgpoIO6J5HBgV6LPif/qf5xReyirOybjbk1fJ2lg+Ut+5RN3TQbF
- 4BPh0x/POI6wgvyXoI0XIFzRNl8qN9Okqk8okEBJrV8D0Y2rdnmgyKO3SuKzGTW2Fy1yr2XB9ot
- aeun3TTD6dparyeqlownuPfW9DdzbFufu4CF+EwADGThttaShBZbXZeVjBeK1rULfVdaTzsMKjm
- EF7FuUwlUsMQBvtmJMMSbTuJI4UizbVeXBDKJJEtpXb4csCcfm9MV08Kanh2eGa4ciqAhYdk
-X-Authority-Analysis: v=2.4 cv=VoUjA/2n c=1 sm=1 tr=0 ts=68309be1 cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=yPCof4ZbAAAA:8 a=bOG54WbAxldRIBuYn70A:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: yj_f9Ug9G2CAGoj9LV9uUD-tIWKa7atM
-X-Proofpoint-ORIG-GUID: yj_f9Ug9G2CAGoj9LV9uUD-tIWKa7atM
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=liam.merwick@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.498,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015
+ suspectscore=0 adultscore=0 spamscore=0 mlxlogscore=999 phishscore=0
+ malwarescore=0 priorityscore=1501 mlxscore=0 lowpriorityscore=0
+ bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
+ definitions=main-2505230145
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=rreyes@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -110,44 +115,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the '--enable-trace-backends=syslog' build option is configured,
-the following compilation error is encountered.
+Changelog:
+v11:
+- reverted return type to int for 'ap_chsc_sei_nt0_get_event'
+   - files reflected are 'ap.c', 'ap-bridge'h, and 'ap-stub.c'
+- using defined variables to represent return 0 and 1 to reflect logical sense
+- update documentation for 'ap_chsc_sei_nt0_get_event' to reflect return types
 
-In file included from /usr/include/sys/syslog.h:207,
-                 from /usr/include/syslog.h:1,
-                 from ./trace/trace-hw_xen.h:224,
-                 from ../hw/xen/trace.h:1,
-                 from ../hw/xen/xen-bus-helper.c:13:
-In function ‘syslog’,
-    inlined from ‘_nocheck__trace_xs_node_read’ at ../hw/xen/trace-events:41:9,
-    inlined from ‘trace_xs_node_read’ at trace/trace-hw_xen.h:903:9,
-    inlined from ‘xs_node_read’ at ../hw/xen/xen-bus-helper.c:154:5:
-/usr/include/bits/syslog.h:45:3: error: ‘%s’ directive argument is null [-Werror=format-overflow=]
-   45 |   __syslog_chk (__pri, __USE_FORTIFY_LEVEL - 1, __fmt, __va_arg_pack ());
-      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+v10:
+- Added reviewed by for patch 4 by Tony and Cedric
+   - review needed for patch 2 and 3
+- changed 'cfg_chg_events' to a static variable
+- locked 'cfg_chg_events' using QemuMutex
+- removed ';' at the end of the definition for NT0
+- returning bools for 'ap_chsc_sei_nt0_get_event' and
+'ap_chsc_sei_nt0_have_event'
+- updated the header file that contains 'ap_chsc_sei_nt0_get_event' and
+'ap_chsc_sei_nt0_have_event' to a bool function
+- added documentation explaining the returning bool functions
+- whitespace clean up
 
-Add a check that 'value' is not null before passing it to trace_xs_node_read().
+v9:
+- added SPDX licensing to newly created file 'hw/s390x/ap-stub.c'
 
-Fixes: e6cdeee95990 ("hw/xen: Add xs_node_read() helper function")
-Signed-off-by: Liam Merwick <liam.merwick@oracle.com>
----
- hw/xen/xen-bus-helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v8:
+- fixed windows cross-compile build
+- moved /hw/vfio/ap-stub.c to /hw/s390x/ap-stub.c
+- updated the use of stub file to MAINTAINERS to reflect new location
+- removed if_false for 'CONFIG_VFIO_AP' statement from /hw/vfio/meson.build
+- added if_false for 'CONFIG_VFIO_AP' to use ap-stub.c in /hw/s390x/meson.build
+- all those changes still address '--without-default-devices' issue from v5
 
-diff --git a/hw/xen/xen-bus-helper.c b/hw/xen/xen-bus-helper.c
-index 288fad422be3..1087a585cc71 100644
---- a/hw/xen/xen-bus-helper.c
-+++ b/hw/xen/xen-bus-helper.c
-@@ -151,7 +151,7 @@ char *xs_node_read(struct qemu_xs_handle *h, xs_transaction_t tid,
-     va_end(ap);
- 
-     value = qemu_xen_xs_read(h, tid, path, len);
--    trace_xs_node_read(path, value);
-+    trace_xs_node_read(path, value ? value : "<null>");
-     if (!value) {
-         error_setg_errno(errp, errno, "failed to read from '%s'", path);
-     }
+v7:
+- Dropped initial commit for linux-header file vfio.h since I created two new commits
+to address the changes made in v6
+- Moved patches 6 and 7 to the beginning of the series after dropping the first patch
+   - Because I dropped the initial commit for linux-header file vfio.h, I had to add
+VFIO_AP_CFG_CHG_IRQ_INDEX
+- Resyncing latest to v6.15-rc3
+- Still need Thomas Huth's review of v5 changes for patch 6/6
+
+v6:
+- Updating the update-linux-headers script to address kernel commit change 8a14
+- Update headers to retrieve uapi information for vfio-ap for update to Linux v6.15-rc1
+- Still need Thomas Huth's review of v5 changes for patch 7/7 (see below)
+
+v5:
+- configuring using the '--without-default-devices' fails when building the code
+- created a stub file for functions ap_chsc_sei_nt0_get_event and ap_chsc_sei_nt0_have_event
+- add if_false for 'CONFIG_VFIO_AP' use ap-stub.c in meson.build
+- add the use of the stub file to MAINTAINERS since it's a new file
+
+v4:
+- allocating cfg_chg_event before inserting into the queue
+- calling nt0_have_event in if loop to check if there are any
+elemenets in the queue, then calling QTAILQ_FIRST when the check
+passes
+- moving memset() after the check
+
+v3:
+- changes that were made to patch 3/5 should have been made in
+patch 2/5
+
+v2:
+- removed warnings that weren't needed
+- added unregister function
+- removed whitelines
+- changed variable names for consistency
+- removed rc variable and returning 1 or 0 outright
+- reversed logics for if statements
+- using g_free() instead of free()
+- replaced hardcoded numeric values by defining them with #define
+in the header
+
+--------------------------------------------------------------------------
+This patch series creates and registers a handler that is called when
+userspace is notified by the kernel that a guest's AP configuration has
+changed. The handler in turn notifies the guest that its AP configuration
+has changed. This allows the guest to immediately respond to AP
+configuration changes rather than relying on polling or some other
+inefficient mechanism for detecting config changes. 
+
+Rorie Reyes (4):
+  hw/vfio/ap: notification handler for AP config changed event
+  hw/vfio/ap: store object indicating AP config changed in a queue
+  hw/vfio/ap: Storing event information for an AP configuration change
+    event
+  s390: implementing CHSC SEI for AP config change
+
+ MAINTAINERS                  |  1 +
+ hw/s390x/ap-stub.c           | 21 ++++++++
+ hw/s390x/meson.build         |  1 +
+ hw/vfio/ap.c                 | 96 ++++++++++++++++++++++++++++++++++++
+ include/hw/s390x/ap-bridge.h | 39 +++++++++++++++
+ target/s390x/ioinst.c        | 11 ++++-
+ 6 files changed, 167 insertions(+), 2 deletions(-)
+ create mode 100644 hw/s390x/ap-stub.c
+
 -- 
-2.47.1
+2.48.1
 
 
