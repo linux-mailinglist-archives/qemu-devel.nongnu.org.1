@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1954CAC30B0
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 May 2025 19:37:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E15EAC30AF
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 May 2025 19:37:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uIsnd-0001zP-MI; Sat, 24 May 2025 13:36:45 -0400
+	id 1uIsnZ-0001hD-4Z; Sat, 24 May 2025 13:36:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1uIsnI-0001Li-1Q
- for qemu-devel@nongnu.org; Sat, 24 May 2025 13:36:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uIsnK-0001Ui-6L
+ for qemu-devel@nongnu.org; Sat, 24 May 2025 13:36:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1uIsnG-0000lt-Ii
- for qemu-devel@nongnu.org; Sat, 24 May 2025 13:36:23 -0400
+ id 1uIsnI-0000ly-AP
+ for qemu-devel@nongnu.org; Sat, 24 May 2025 13:36:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748108181;
+ s=mimecast20190719; t=1748108183;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NWYf2BeSTPqu7GlOBYoQqbkCpXlL24ybqO9vOsn3aSI=;
- b=biV0/RSU5kPih0xxv35HIYjuPZsDtlVMFlv2iiMciqXKQZeyJ97b0iN1qQYX8d9T+4ToUI
- 7hLZ5Oe2H2MG2d9Kiccm7+co4UrtsvN7CA46yiadkBTF4aSxbGQuMpQlzNqw3bBEd/m4kO
- 7IH4xtytPuUNInAkEcB81wlXQC51ql4=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=OgRH6/eFm+pH+gB1fXJHRpL3xXRtg898YAqKXTAuvZI=;
+ b=BEKhVHYhGsPPjrQQoDwWtodCvKJsIm5L/hmnM/wZoOUxN5CHZy6fpupbQYrQoDmmoNG5DW
+ MrBj9zbYJ03QBtOYdhTbJrUEYgn4/0bdcJXV2z6UJ0/LimXVGp3j1Qt5s6arZG6JBBUJEH
+ kzn2Y7jDBXCJd+t+lzqSQDsDT9K1uFg=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-169-AJGHsgMJNdijRZQkfuLecQ-1; Sat,
- 24 May 2025 13:36:17 -0400
-X-MC-Unique: AJGHsgMJNdijRZQkfuLecQ-1
-X-Mimecast-MFC-AGG-ID: AJGHsgMJNdijRZQkfuLecQ_1748108175
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-392-oVBRJ8vpN9Cj9EJbA8O7Ow-1; Sat,
+ 24 May 2025 13:36:20 -0400
+X-MC-Unique: oVBRJ8vpN9Cj9EJbA8O7Ow-1
+X-Mimecast-MFC-AGG-ID: oVBRJ8vpN9Cj9EJbA8O7Ow_1748108179
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 56B01180035C; Sat, 24 May 2025 17:36:15 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 338471800873; Sat, 24 May 2025 17:36:19 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.4])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id AF0CF19560B7; Sat, 24 May 2025 17:36:14 +0000 (UTC)
+ id C09A419560B7; Sat, 24 May 2025 17:36:17 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  stefanha@redhat.com, Weifeng Liu <weifeng.liu.z@gmail.com>
-Subject: [PULL 17/19] ui/gtk: Consider scaling when propagating ui info
-Date: Sat, 24 May 2025 19:35:10 +0200
-Message-ID: <20250524173514.317886-18-marcandre.lureau@redhat.com>
+Subject: [PULL 18/19] ui/gtk-gl-area: Render guest content with padding in
+ fixed-scale mode
+Date: Sat, 24 May 2025 19:35:11 +0200
+Message-ID: <20250524173514.317886-19-marcandre.lureau@redhat.com>
 In-Reply-To: <20250524173514.317886-1-marcandre.lureau@redhat.com>
 References: <20250524173514.317886-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124;
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
@@ -86,76 +87,84 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Weifeng Liu <weifeng.liu.z@gmail.com>
 
-The ui width and height sent to guest is supposed to be in buffer
-coordinate. Hence conversion is required.
-
-If scaling (global window scale and zooming scale) is not respected in
-non-free-scale mode, window size could keep changing because of the
-existence of the iteration of the following steps:
-
-1. In resize event or configure event, a size larger (or smaller) than
-   the currently used one might be calculated due to not considering
-   scaling.
-2. On reception of the display size change event in guest, the guest
-   might decide to do a mode setting and use the larger (or smaller)
-   mode.
-3. When the new guest scan-out command arrives, QEMU would request the
-   window size to change to fit the new buffer size. This will trigger a
-   resize event or a configure event, making us go back to step 1.
+In fixed-scale mode (zoom-to-fit=false), we expect that scale should not
+change, meaning that if window size is larger than guest surface,
+padding is supposed to be added to preserve the scale. However, in
+OpenGL mode (gl=on), guest surface is always painted to the whole canvas
+without any padding. This change tries to fix this bug by adding
+appropriate padding when drawing surfaces.
 
 Signed-off-by: Weifeng Liu <weifeng.liu.z@gmail.com>
-Message-ID: <20250511073337.876650-8-weifeng.liu.z@gmail.com>
+Message-ID: <20250511073337.876650-9-weifeng.liu.z@gmail.com>
 Acked-by: Gerd Hoffmann <kraxel@redhat.com>
 Acked-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- ui/gtk.c | 25 +++++++++++++++++++++++--
- 1 file changed, 23 insertions(+), 2 deletions(-)
+ ui/gtk-gl-area.c | 33 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 32 insertions(+), 1 deletion(-)
 
-diff --git a/ui/gtk.c b/ui/gtk.c
-index 47af49e387..8c4a94c8f6 100644
---- a/ui/gtk.c
-+++ b/ui/gtk.c
-@@ -772,8 +772,21 @@ static void gd_resize_event(GtkGLArea *area,
-                             gint width, gint height, gpointer *opaque)
- {
-     VirtualConsole *vc = (void *)opaque;
-+    double pw = width, ph = height;
-+    double sx = vc->gfx.scale_x, sy = vc->gfx.scale_y;
-+    GdkWindow *window = gtk_widget_get_window(GTK_WIDGET(area));
-+    const int gs = gdk_window_get_scale_factor(window);
- 
--    gd_set_ui_size(vc, width, height);
-+    if (!vc->s->free_scale && !vc->s->full_screen) {
-+        pw /= sx;
-+        ph /= sy;
-+    }
-+
-+    /**
-+     * width and height here are in pixel coordinate, so we must divide it
-+     * by global window scale (gs)
-+     */
-+    gd_set_ui_size(vc, pw / gs, ph / gs);
- }
- 
+diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
+index db93cd6204..8151cc413c 100644
+--- a/ui/gtk-gl-area.c
++++ b/ui/gtk-gl-area.c
+@@ -44,7 +44,9 @@ void gd_gl_area_draw(VirtualConsole *vc)
  #endif
-@@ -1836,8 +1849,16 @@ static gboolean gd_configure(GtkWidget *widget,
-                              GdkEventConfigure *cfg, gpointer opaque)
- {
-     VirtualConsole *vc = opaque;
-+    const double sx = vc->gfx.scale_x, sy = vc->gfx.scale_y;
-+    double width = cfg->width, height = cfg->height;
+     int pw, ph, gs, y1, y2;
+     int ww, wh;
++    int ww_surface, wh_surface;
+     int fbw, fbh;
++    int wx_offset, wy_offset;
+ 
+     if (!vc->gfx.gls) {
+         return;
+@@ -61,6 +63,17 @@ void gd_gl_area_draw(VirtualConsole *vc)
+ 
+     gd_update_scale(vc, ww, wh, fbw, fbh);
+ 
++    ww_surface = fbw * vc->gfx.scale_x;
++    wh_surface = fbh * vc->gfx.scale_y;
 +
-+    if (!vc->s->free_scale && !vc->s->full_screen) {
-+        width /= sx;
-+        height /= sy;
++    wx_offset = wy_offset = 0;
++    if (ww > ww_surface) {
++        wx_offset = (ww - ww_surface) / 2;
++    }
++    if (wh > wh_surface) {
++        wy_offset = (wh - wh_surface) / 2;
 +    }
 +
-+    gd_set_ui_size(vc, width, height);
+     if (vc->gfx.scanout_mode) {
+         if (!vc->gfx.guest_fb.framebuffer) {
+             return;
+@@ -79,11 +92,29 @@ void gd_gl_area_draw(VirtualConsole *vc)
+         glBindFramebuffer(GL_READ_FRAMEBUFFER, vc->gfx.guest_fb.framebuffer);
+         /* GtkGLArea sets GL_DRAW_FRAMEBUFFER for us */
  
--    gd_set_ui_size(vc, cfg->width, cfg->height);
-     return FALSE;
- }
- 
++        if (wx_offset > 0) {
++            glEnable(GL_SCISSOR_TEST);
++            glScissor(0, 0, wx_offset * gs, wh * gs);
++            glClear(GL_COLOR_BUFFER_BIT);
++            glScissor((ww - wx_offset) * gs, 0, wx_offset * gs, wh * gs);
++            glClear(GL_COLOR_BUFFER_BIT);
++            glDisable(GL_SCISSOR_TEST);
++        }
++        if (wy_offset > 0) {
++            glEnable(GL_SCISSOR_TEST);
++            glScissor(0, 0, ww * gs, wy_offset * gs);
++            glClear(GL_COLOR_BUFFER_BIT);
++            glScissor(0, (wh - wy_offset) * gs, ww * gs, wy_offset * gs);
++            glClear(GL_COLOR_BUFFER_BIT);
++            glDisable(GL_SCISSOR_TEST);
++        }
++
+         glViewport(0, 0, pw, ph);
+         y1 = vc->gfx.y0_top ? 0 : vc->gfx.h;
+         y2 = vc->gfx.y0_top ? vc->gfx.h : 0;
+         glBlitFramebuffer(0, y1, vc->gfx.w, y2,
+-                          0, 0, pw, ph,
++                          wx_offset * gs, wy_offset * gs,
++                          (ww - wx_offset) * gs, (wh - wy_offset) * gs,
+                           GL_COLOR_BUFFER_BIT, GL_NEAREST);
+ #ifdef CONFIG_GBM
+         if (dmabuf) {
 -- 
 2.49.0
 
