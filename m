@@ -2,60 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46EEEAC30A6
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 May 2025 19:36:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D0ACAC30AC
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 May 2025 19:37:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uIsmP-0007ya-Tx; Sat, 24 May 2025 13:35:29 -0400
+	id 1uIsmR-00081R-OD; Sat, 24 May 2025 13:35:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1uIsmM-0007yJ-FM
- for qemu-devel@nongnu.org; Sat, 24 May 2025 13:35:26 -0400
+ id 1uIsmO-0007yd-Kv
+ for qemu-devel@nongnu.org; Sat, 24 May 2025 13:35:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1uIsmK-0000fu-C9
- for qemu-devel@nongnu.org; Sat, 24 May 2025 13:35:25 -0400
+ id 1uIsmL-0000gm-If
+ for qemu-devel@nongnu.org; Sat, 24 May 2025 13:35:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748108120;
+ s=mimecast20190719; t=1748108124;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=byUOXe8VwAUSQArOqwNd3ereEs2i5qTgip2wOvJ7d8k=;
- b=dokUHbI9xZ07FrCoZcDHcK245P4SxZ17vK9Enfng44qzRpH2iZbfAnxqwB0GdfzzedZLFO
- 5Pr1WOHjQ9KHWnLl0Nw5g2N3JLOKa3MZgh+jKeP7dTMTpROK5Kud7J9SiHiITQUQMRQhCo
- jnVxdR1TIm0HKQsNU6ICb1Ow1Hu20kw=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Z1BUcCpSr5ctVf8kpo2QU7QmLHfVmuGp/pyUk+dZcBo=;
+ b=B9m4uNNA0YyT7O1Pz6uysgYY1FVT7HG6TZO40FBzLHxQk2IAhP/c/Xk97DnoHInuo1CDEE
+ yMtZUvyYyXDKZphsD5auqTRqGoCFWDrSVem8CNLvWG+IgJQuhjt7A++ylewdjhQF+0sRK/
+ /atFn1dxgTM3YxpBr4aFCjQR42RWVgg=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-649-b3bkYeb9Ohy-Lj4dHi6peA-1; Sat,
- 24 May 2025 13:35:18 -0400
-X-MC-Unique: b3bkYeb9Ohy-Lj4dHi6peA-1
-X-Mimecast-MFC-AGG-ID: b3bkYeb9Ohy-Lj4dHi6peA_1748108118
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-371-fkMCyTXLOAap_vAo2cBjXA-1; Sat,
+ 24 May 2025 13:35:22 -0400
+X-MC-Unique: fkMCyTXLOAap_vAo2cBjXA-1
+X-Mimecast-MFC-AGG-ID: fkMCyTXLOAap_vAo2cBjXA_1748108121
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id E392F19560A1
- for <qemu-devel@nongnu.org>; Sat, 24 May 2025 17:35:17 +0000 (UTC)
+ by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id AA310195608E
+ for <qemu-devel@nongnu.org>; Sat, 24 May 2025 17:35:21 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.4])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 56C1430001A1; Sat, 24 May 2025 17:35:15 +0000 (UTC)
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 6EB531944DFF; Sat, 24 May 2025 17:35:19 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  stefanha@redhat.com
-Subject: [PULL 00/19] Ui patches
-Date: Sat, 24 May 2025 19:34:53 +0200
-Message-ID: <20250524173514.317886-1-marcandre.lureau@redhat.com>
+Subject: [PULL 01/19] ui/gtk: warn if setting the clipboard failed
+Date: Sat, 24 May 2025 19:34:54 +0200
+Message-ID: <20250524173514.317886-2-marcandre.lureau@redhat.com>
+In-Reply-To: <20250524173514.317886-1-marcandre.lureau@redhat.com>
+References: <20250524173514.317886-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -84,63 +87,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-The following changes since commit 668df86ee8076152320345d8e36be7c95ec0a09a:
+Just in case.
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+---
+ ui/gtk-clipboard.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-  Merge tag 'for-upstream' of https://repo.or.cz/qemu/kevin into staging (2025-05-23 09:26:29 -0400)
-
-are available in the Git repository at:
-
-  https://gitlab.com/marcandre.lureau/qemu.git tags/ui-pull-request
-
-for you to fetch changes up to f05e1a93f48729b568fdf86a12d56ee142cee5e1:
-
-  ui/gtk-egl: Render guest content with padding in fixed-scale mode (2025-05-24 17:04:09 +0200)
-
-----------------------------------------------------------------
-UI-related
-
-- vdagent migration support
-- gtk: improve scale handling
-
-----------------------------------------------------------------
-
-Marc-André Lureau (10):
-  ui/gtk: warn if setting the clipboard failed
-  ui/clipboard: use int for selection field
-  ui/clipboard: split out QemuClipboardContent
-  ui/clipboard: add vmstate_cbinfo
-  ui/clipboard: delay clipboard update when not running
-  ui/vdagent: replace Buffer with GByteArray
-  ui/vdagent: keep "connected" state
-  ui/vdagent: factor out clipboard peer registration
-  ui/vdagent: add migration support
-  ui/vdagent: remove migration blocker
-
-Weifeng Liu (9):
-  ui/gtk: Document scale and coordinate handling
-  ui/gtk: Use consistent naming for variables in different coordinates
-  gtk/ui: Introduce helper gd_update_scale
-  ui/gtk: Update scales in fixed-scale mode when rendering GL area
-  ui/sdl: Consider scaling in mouse event handling
-  ui/gtk: Don't update scale in fixed scale mode in gtk-egl.c
-  ui/gtk: Consider scaling when propagating ui info
-  ui/gtk-gl-area: Render guest content with padding in fixed-scale mode
-  ui/gtk-egl: Render guest content with padding in fixed-scale mode
-
- include/ui/clipboard.h   |  31 +++--
- include/ui/egl-helpers.h |   4 +-
- include/ui/gtk.h         |   2 +
- ui/clipboard.c           |  66 ++++++++++-
- ui/egl-helpers.c         |  10 +-
- ui/gtk-clipboard.c       |  13 ++-
- ui/gtk-egl.c             |  58 ++++++---
- ui/gtk-gl-area.c         |  53 +++++++--
- ui/gtk.c                 | 245 +++++++++++++++++++++++++++------------
- ui/sdl2-gl.c             |   2 +-
- ui/sdl2.c                |  20 +++-
- ui/vdagent.c             | 205 +++++++++++++++++++++++++++-----
- 12 files changed, 561 insertions(+), 148 deletions(-)
-
+diff --git a/ui/gtk-clipboard.c b/ui/gtk-clipboard.c
+index 8d8a636fd1..65d89ec601 100644
+--- a/ui/gtk-clipboard.c
++++ b/ui/gtk-clipboard.c
+@@ -19,6 +19,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qemu/error-report.h"
+ #include "qemu/main-loop.h"
+ 
+ #include "ui/gtk.h"
+@@ -95,11 +96,13 @@ static void gd_clipboard_update_info(GtkDisplayState *gd,
+             gtk_clipboard_clear(gd->gtkcb[s]);
+             if (targets) {
+                 gd->cbowner[s] = true;
+-                gtk_clipboard_set_with_data(gd->gtkcb[s],
+-                                            targets, n_targets,
+-                                            gd_clipboard_get_data,
+-                                            gd_clipboard_clear,
+-                                            gd);
++                if (!gtk_clipboard_set_with_data(gd->gtkcb[s],
++                                                 targets, n_targets,
++                                                 gd_clipboard_get_data,
++                                                 gd_clipboard_clear,
++                                                 gd)) {
++                    warn_report("Failed to set GTK clipboard");
++                }
+ 
+                 gtk_target_table_free(targets, n_targets);
+             }
 -- 
 2.49.0
 
