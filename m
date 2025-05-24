@@ -2,63 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0437BAC30AD
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 May 2025 19:37:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D37AC30B3
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 May 2025 19:37:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uIsmy-000092-F1; Sat, 24 May 2025 13:36:04 -0400
+	id 1uIsmy-000095-OR; Sat, 24 May 2025 13:36:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1uIsmq-0008Ib-IN
- for qemu-devel@nongnu.org; Sat, 24 May 2025 13:35:57 -0400
+ id 1uIsmt-0008Re-SQ
+ for qemu-devel@nongnu.org; Sat, 24 May 2025 13:36:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1uIsmp-0000jw-4v
- for qemu-devel@nongnu.org; Sat, 24 May 2025 13:35:56 -0400
+ id 1uIsms-0000kG-6b
+ for qemu-devel@nongnu.org; Sat, 24 May 2025 13:35:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748108153;
+ s=mimecast20190719; t=1748108157;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TkdhgyOb714kh1D6jnvl7f0hAIUjxiJ6emgKevVzWKs=;
- b=Uhv0Bd98Z3QsmiJvNdEeW8FzTD4rDUbdpQGcfOKOii2QJgJd17jfTFcwYVO53oWkyBqa6q
- 6FvwR4G26ulnVcC/KDZF9sP/ONeUKH+uIYXapniDGFv+MjypDcGoDL2XL4fwIlj70uXPoR
- 89AnTsJiNwyfF6YhCC2UEsDQUMaVwlk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=EvfmhXkFKgpdo74Mx0i48lY/oqi/ZCY4LrmYKzh3wB0=;
+ b=QoAzyK1NCx9YXuf05deX5Z14rtUmy2WQh8f50pAe0yhXoW16RcJ4Q58r6cEBSbKVyCCg9s
+ guvwouare5ONHgOJ+mWjzJpCCUQrOJNaWIxA9/gkIcpvpHVYJ5xxrxJXJu0wZwoCaEhFeX
+ cnpTwnHYJL7PwgrWG4YLB/K+FwMeZaM=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-554-RAZANPQ9PtWC3CTN6yTAkg-1; Sat,
- 24 May 2025 13:35:52 -0400
-X-MC-Unique: RAZANPQ9PtWC3CTN6yTAkg-1
-X-Mimecast-MFC-AGG-ID: RAZANPQ9PtWC3CTN6yTAkg_1748108151
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-650-1-eYWJV0MuiQ07Hf6nnN1Q-1; Sat,
+ 24 May 2025 13:35:55 -0400
+X-MC-Unique: 1-eYWJV0MuiQ07Hf6nnN1Q-1
+X-Mimecast-MFC-AGG-ID: 1-eYWJV0MuiQ07Hf6nnN1Q_1748108155
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 5FD4218004AD
- for <qemu-devel@nongnu.org>; Sat, 24 May 2025 17:35:51 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id E7E7318004AD; Sat, 24 May 2025 17:35:54 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.4])
- by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 3BD6930001B5; Sat, 24 May 2025 17:35:49 +0000 (UTC)
+ by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id A1C2F19560AD; Sat, 24 May 2025 17:35:53 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- stefanha@redhat.com
-Subject: [PULL 10/19] ui/vdagent: remove migration blocker
-Date: Sat, 24 May 2025 19:35:03 +0200
-Message-ID: <20250524173514.317886-11-marcandre.lureau@redhat.com>
+ stefanha@redhat.com, Weifeng Liu <weifeng.liu.z@gmail.com>
+Subject: [PULL 11/19] ui/gtk: Document scale and coordinate handling
+Date: Sat, 24 May 2025 19:35:04 +0200
+Message-ID: <20250524173514.317886-12-marcandre.lureau@redhat.com>
 In-Reply-To: <20250524173514.317886-1-marcandre.lureau@redhat.com>
 References: <20250524173514.317886-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -85,65 +84,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+From: Weifeng Liu <weifeng.liu.z@gmail.com>
 
-Fixes: https://issues.redhat.com/browse/RHEL-81894
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+The existence of multiple scaling factors forces us to deal with various
+coordinate systems and this would be confusing. It would be beneficial
+to define the concepts clearly and use consistent representation for
+variables in different coordinates.
+
+Signed-off-by: Weifeng Liu <weifeng.liu.z@gmail.com>
+Message-ID: <20250511073337.876650-2-weifeng.liu.z@gmail.com>
+Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+Acked-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- ui/vdagent.c | 11 -----------
- 1 file changed, 11 deletions(-)
+ ui/gtk.c | 65 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 65 insertions(+)
 
-diff --git a/ui/vdagent.c b/ui/vdagent.c
-index adc8755bd9..c0746fe5b1 100644
---- a/ui/vdagent.c
-+++ b/ui/vdagent.c
-@@ -6,7 +6,6 @@
- #include "qemu/option.h"
- #include "qemu/units.h"
- #include "hw/qdev-core.h"
--#include "migration/blocker.h"
- #include "ui/clipboard.h"
- #include "ui/console.h"
- #include "ui/input.h"
-@@ -33,9 +32,6 @@
- struct VDAgentChardev {
-     Chardev parent;
- 
--    /* TODO: migration isn't yet supported */
--    Error *migration_blocker;
--
-     /* config */
-     bool mouse;
-     bool clipboard;
-@@ -673,10 +669,6 @@ static void vdagent_chr_open(Chardev *chr,
-     return;
+diff --git a/ui/gtk.c b/ui/gtk.c
+index 982037b2c0..9f3171abc5 100644
+--- a/ui/gtk.c
++++ b/ui/gtk.c
+@@ -800,6 +800,71 @@ void gd_update_monitor_refresh_rate(VirtualConsole *vc, GtkWidget *widget)
  #endif
- 
--    if (migrate_add_blocker(&vd->migration_blocker, errp) != 0) {
--        return;
--    }
--
-     vd->mouse = VDAGENT_MOUSE_DEFAULT;
-     if (cfg->has_mouse) {
-         vd->mouse = cfg->mouse;
-@@ -1076,8 +1068,6 @@ static void vdagent_chr_init(Object *obj)
-     VDAgentChardev *vd = QEMU_VDAGENT_CHARDEV(obj);
- 
-     vd->outbuf = g_byte_array_new();
--    error_setg(&vd->migration_blocker,
--               "The vdagent chardev doesn't yet support migration");
-     vmstate_register_any(NULL, &vmstate_vdagent, vd);
  }
  
-@@ -1085,7 +1075,6 @@ static void vdagent_chr_fini(Object *obj)
++/**
++ * DOC: Coordinate handling.
++ *
++ * We are coping with sizes and positions in various coordinates and the
++ * handling of these coordinates is somewhat confusing. It would benefit us
++ * all if we define these coordinates explicitly and clearly. Besides, it's
++ * also helpful to follow the same naming convention for variables
++ * representing values in different coordinates.
++ *
++ * I. Definitions
++ *
++ * - (guest) buffer coordinate: this is the coordinates that the guest will
++ *   see. The x/y offsets and width/height specified in commands sent by
++ *   guest is basically in buffer coordinate.
++ *
++ * - (host) pixel coordinate: this is the coordinate in pixel level on the
++ *   host destop. A window/widget of width 300 in pixel coordinate means it
++ *   occupies 300 pixels horizontally.
++ *
++ * - (host) logical window coordinate: the existence of global scaling
++ *   factor in desktop level makes this kind of coordinate play a role. It
++ *   always holds that (logical window size) * (global scale factor) =
++ *   (pixel size).
++ *
++ * - global scale factor: this is specified in desktop level and is
++ *   typically invariant during the life cycle of the process. Users with
++ *   high-DPI monitors might set this scale, for example, to 2, in order to
++ *   make the UI look larger.
++ *
++ * - zooming scale: this can be freely controlled by the QEMU user to zoom
++ *   in/out the guest content.
++ *
++ * II. Representation
++ *
++ * We'd like to use consistent representation for variables in different
++ * coordinates:
++ * - buffer coordinate: prefix fb
++ * - pixel coordinate: prefix p
++ * - logical window coordinate: prefix w
++ *
++ * For scales:
++ * - global scale factor: prefix gs
++ * - zooming scale: prefix scale/s
++ *
++ * Example: fbw, pw, ww for width in different coordinates
++ *
++ * III. Equation
++ *
++ * - fbw * gs * scale_x = pw
++ * - pw = gs * ww
++ *
++ * Consequently we have
++ *
++ * - fbw * scale_x = ww
++ *
++ * Example: assuming we are running QEMU on a 3840x2160 screen and have set
++ * global scaling factor to 2, if the guest buffer size is 1920x1080 and the
++ * zooming scale is 0.5, then we have:
++ * - fbw = 1920, fbh = 1080
++ * - pw  = 1920, ph  = 1080
++ * - ww  = 960,  wh  = 540
++ * A bonus of this configuration is that we can achieve pixel to pixel
++ * presentation of the guest content.
++ */
++
+ static gboolean gd_draw_event(GtkWidget *widget, cairo_t *cr, void *opaque)
  {
-     VDAgentChardev *vd = QEMU_VDAGENT_CHARDEV(obj);
- 
--    migrate_del_blocker(&vd->migration_blocker);
-     vdagent_disconnect(vd);
-     if (vd->mouse_hs) {
-         qemu_input_handler_unregister(vd->mouse_hs);
+     VirtualConsole *vc = opaque;
 -- 
 2.49.0
 
