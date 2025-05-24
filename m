@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81E4EAC30B6
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 May 2025 19:38:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34904AC30B2
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 May 2025 19:37:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uIsmu-0008Q3-Le; Sat, 24 May 2025 13:36:00 -0400
+	id 1uIsmv-0008Ul-NO; Sat, 24 May 2025 13:36:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1uIsmh-0008Ds-6l
- for qemu-devel@nongnu.org; Sat, 24 May 2025 13:35:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uIsmm-0008Ee-4q
+ for qemu-devel@nongnu.org; Sat, 24 May 2025 13:35:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1uIsmf-0000ii-1T
- for qemu-devel@nongnu.org; Sat, 24 May 2025 13:35:46 -0400
+ id 1uIsmj-0000jN-St
+ for qemu-devel@nongnu.org; Sat, 24 May 2025 13:35:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748108143;
+ s=mimecast20190719; t=1748108149;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uX4W6oscBViDkzVCmMiWL2OgGFIZSnMNoIBKHZYTsUQ=;
- b=M0aNwNlaTT8o/lnUZ5KnDREP+B+eDbTF94LecN9wWwC1zlVwfH2idb+nmQrcYHY/Bd3Voq
- yxmjE7L7Wi4QZ48/Ct6kdIns+28wcYM5NwlyfNXnWsDki45MrbvEUk7t4vAYtN/Yl9kSVh
- S5/oJjMjWpyH4DGbxA5s0Xef+d6PXqM=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ bh=7rJw3QVQTA9bB0if4ANHAV4qW4nScS/fUz8P5Ca7OuI=;
+ b=Wpy1DQ45SP5ReY5XNAaWF2JOj1XHL4BE/5uTe0u5YhWq0T25OjS4nmLenrDV0jwnD4rZ9J
+ Tl10dDUmMw1jxmz2gwv0tsk50ylcryka5xvepXubQKrKcT1BX1+vaY3Fh6mWWIEGuMLcFl
+ 6dkbXttzIGVSSG9jZ4V3TweVczoOcr0=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-673-jBiUQ04TPvK_5ZgVc5dpkg-1; Sat,
- 24 May 2025 13:35:42 -0400
-X-MC-Unique: jBiUQ04TPvK_5ZgVc5dpkg-1
-X-Mimecast-MFC-AGG-ID: jBiUQ04TPvK_5ZgVc5dpkg_1748108141
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-532-eOUfVA_pPIqTids8NT6NEA-1; Sat,
+ 24 May 2025 13:35:46 -0400
+X-MC-Unique: eOUfVA_pPIqTids8NT6NEA-1
+X-Mimecast-MFC-AGG-ID: eOUfVA_pPIqTids8NT6NEA_1748108145
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id C31911800446
- for <qemu-devel@nongnu.org>; Sat, 24 May 2025 17:35:41 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 3BE9E1800361
+ for <qemu-devel@nongnu.org>; Sat, 24 May 2025 17:35:45 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.4])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id F422D19560AF; Sat, 24 May 2025 17:35:40 +0000 (UTC)
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 2B5AF19560AB; Sat, 24 May 2025 17:35:43 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  stefanha@redhat.com
-Subject: [PULL 07/19] ui/vdagent: keep "connected" state
-Date: Sat, 24 May 2025 19:35:00 +0200
-Message-ID: <20250524173514.317886-8-marcandre.lureau@redhat.com>
+Subject: [PULL 08/19] ui/vdagent: factor out clipboard peer registration
+Date: Sat, 24 May 2025 19:35:01 +0200
+Message-ID: <20250524173514.317886-9-marcandre.lureau@redhat.com>
 In-Reply-To: <20250524173514.317886-1-marcandre.lureau@redhat.com>
 References: <20250524173514.317886-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
@@ -87,55 +87,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-During post-load of migration, virtio will notify of fe_open state.
-However vdagent code will handle this as a reconnection. This will
-trigger a connection reset/caps with the agent.
+This allows common code reuse during migration.
 
-Check if the state actually changed before resetting the connection.
+Note that resetting the serial is now done regardless if the clipboard
+peer was registered or not. This should still be correct.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- ui/vdagent.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ ui/vdagent.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
 diff --git a/ui/vdagent.c b/ui/vdagent.c
-index 4027126b7d..210b8c14ca 100644
+index 210b8c14ca..fcbd7b167b 100644
 --- a/ui/vdagent.c
 +++ b/ui/vdagent.c
-@@ -40,6 +40,7 @@ struct VDAgentChardev {
-     bool clipboard;
+@@ -694,6 +694,18 @@ static void vdagent_chr_open(Chardev *chr,
+     *be_opened = true;
+ }
  
-     /* guest vdagent */
-+    bool connected;
-     uint32_t caps;
-     VDIChunkHeader chunk;
-     uint32_t chunksize;
-@@ -858,6 +859,7 @@ static void vdagent_disconnect(VDAgentChardev *vd)
- {
-     trace_vdagent_disconnect();
- 
-+    vd->connected = false;
-     g_byte_array_set_size(vd->outbuf, 0);
-     vdagent_reset_bufs(vd);
-     vd->caps = 0;
-@@ -876,6 +878,10 @@ static void vdagent_chr_set_fe_open(struct Chardev *chr, int fe_open)
- 
-     trace_vdagent_fe_open(fe_open);
- 
-+    if (vd->connected == fe_open) {
++static void vdagent_clipboard_peer_register(VDAgentChardev *vd)
++{
++    if (vd->cbpeer.notifier.notify != NULL) {
 +        return;
 +    }
 +
-     if (!fe_open) {
-         trace_vdagent_close();
-         vdagent_disconnect(vd);
-@@ -885,6 +891,7 @@ static void vdagent_chr_set_fe_open(struct Chardev *chr, int fe_open)
-         return;
-     }
++    vd->cbpeer.name = "vdagent";
++    vd->cbpeer.notifier.notify = vdagent_clipboard_notify;
++    vd->cbpeer.request = vdagent_clipboard_request;
++    qemu_clipboard_peer_register(&vd->cbpeer);
++}
++
+ static void vdagent_chr_recv_caps(VDAgentChardev *vd, VDAgentMessage *msg)
+ {
+     VDAgentAnnounceCapabilities *caps = (void *)msg->data;
+@@ -720,13 +732,9 @@ static void vdagent_chr_recv_caps(VDAgentChardev *vd, VDAgentMessage *msg)
  
-+    vd->connected = true;
-     vdagent_send_caps(vd, true);
+     memset(vd->last_serial, 0, sizeof(vd->last_serial));
+ 
+-    if (have_clipboard(vd) && vd->cbpeer.notifier.notify == NULL) {
++    if (have_clipboard(vd)) {
+         qemu_clipboard_reset_serial();
+-
+-        vd->cbpeer.name = "vdagent";
+-        vd->cbpeer.notifier.notify = vdagent_clipboard_notify;
+-        vd->cbpeer.request = vdagent_clipboard_request;
+-        qemu_clipboard_peer_register(&vd->cbpeer);
++        vdagent_clipboard_peer_register(vd);
+     }
  }
  
 -- 
