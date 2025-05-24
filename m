@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34904AC30B2
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 May 2025 19:37:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F670AC30AB
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 May 2025 19:37:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uIsmv-0008Ul-NO; Sat, 24 May 2025 13:36:01 -0400
+	id 1uIsmw-00005C-VH; Sat, 24 May 2025 13:36:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1uIsmm-0008Ee-4q
- for qemu-devel@nongnu.org; Sat, 24 May 2025 13:35:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1uIsmn-0008Eq-6r
+ for qemu-devel@nongnu.org; Sat, 24 May 2025 13:35:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1uIsmj-0000jN-St
- for qemu-devel@nongnu.org; Sat, 24 May 2025 13:35:51 -0400
+ id 1uIsml-0000jY-Ky
+ for qemu-devel@nongnu.org; Sat, 24 May 2025 13:35:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748108149;
+ s=mimecast20190719; t=1748108151;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7rJw3QVQTA9bB0if4ANHAV4qW4nScS/fUz8P5Ca7OuI=;
- b=Wpy1DQ45SP5ReY5XNAaWF2JOj1XHL4BE/5uTe0u5YhWq0T25OjS4nmLenrDV0jwnD4rZ9J
- Tl10dDUmMw1jxmz2gwv0tsk50ylcryka5xvepXubQKrKcT1BX1+vaY3Fh6mWWIEGuMLcFl
- 6dkbXttzIGVSSG9jZ4V3TweVczoOcr0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=XUfnDwYRc5/qq1OUomuApWVfWvzcXVHwfvl96q7zTjo=;
+ b=BHgd1IdvfkL9jNJNTjLO20ICU/rF6jiuU4kQbr+P7bM3TEy7SPXhGc3ZSBMAkNXj0rqpzM
+ hcGDJeBud+UyACDYKbGFpahgmCBdpJHTRbqoM6i8JIld2UvqlzjYr1bdvHU9ppBiBHo3xN
+ l2/Whd1x5WZtdE7NoTh1pJs6Ip7Y9Eg=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-532-eOUfVA_pPIqTids8NT6NEA-1; Sat,
- 24 May 2025 13:35:46 -0400
-X-MC-Unique: eOUfVA_pPIqTids8NT6NEA-1
-X-Mimecast-MFC-AGG-ID: eOUfVA_pPIqTids8NT6NEA_1748108145
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-643-7-BnLn_uNxOP5rYZRr7h5Q-1; Sat,
+ 24 May 2025 13:35:48 -0400
+X-MC-Unique: 7-BnLn_uNxOP5rYZRr7h5Q-1
+X-Mimecast-MFC-AGG-ID: 7-BnLn_uNxOP5rYZRr7h5Q_1748108148
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 3BE9E1800361
- for <qemu-devel@nongnu.org>; Sat, 24 May 2025 17:35:45 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 2B86519560AA
+ for <qemu-devel@nongnu.org>; Sat, 24 May 2025 17:35:48 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.4])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 2B5AF19560AB; Sat, 24 May 2025 17:35:43 +0000 (UTC)
+ by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 7DB0819560AF; Sat, 24 May 2025 17:35:47 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  stefanha@redhat.com
-Subject: [PULL 08/19] ui/vdagent: factor out clipboard peer registration
-Date: Sat, 24 May 2025 19:35:01 +0200
-Message-ID: <20250524173514.317886-9-marcandre.lureau@redhat.com>
+Subject: [PULL 09/19] ui/vdagent: add migration support
+Date: Sat, 24 May 2025 19:35:02 +0200
+Message-ID: <20250524173514.317886-10-marcandre.lureau@redhat.com>
 In-Reply-To: <20250524173514.317886-1-marcandre.lureau@redhat.com>
 References: <20250524173514.317886-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
@@ -87,56 +87,179 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-This allows common code reuse during migration.
-
-Note that resetting the serial is now done regardless if the clipboard
-peer was registered or not. This should still be correct.
-
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- ui/vdagent.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ ui/vdagent.c | 142 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 142 insertions(+)
 
 diff --git a/ui/vdagent.c b/ui/vdagent.c
-index 210b8c14ca..fcbd7b167b 100644
+index fcbd7b167b..adc8755bd9 100644
 --- a/ui/vdagent.c
 +++ b/ui/vdagent.c
-@@ -694,6 +694,18 @@ static void vdagent_chr_open(Chardev *chr,
-     *be_opened = true;
+@@ -10,6 +10,7 @@
+ #include "ui/clipboard.h"
+ #include "ui/console.h"
+ #include "ui/input.h"
++#include "migration/vmstate.h"
+ #include "trace.h"
+ 
+ #include "qapi/qapi-types-char.h"
+@@ -930,6 +931,146 @@ static void vdagent_chr_class_init(ObjectClass *oc, const void *data)
+     cc->chr_accept_input = vdagent_chr_accept_input;
  }
  
-+static void vdagent_clipboard_peer_register(VDAgentChardev *vd)
++static int post_load(void *opaque, int version_id)
 +{
-+    if (vd->cbpeer.notifier.notify != NULL) {
-+        return;
++    VDAgentChardev *vd = QEMU_VDAGENT_CHARDEV(opaque);
++
++    if (have_mouse(vd) && vd->mouse_hs) {
++        qemu_input_handler_activate(vd->mouse_hs);
 +    }
 +
-+    vd->cbpeer.name = "vdagent";
-+    vd->cbpeer.notifier.notify = vdagent_clipboard_notify;
-+    vd->cbpeer.request = vdagent_clipboard_request;
-+    qemu_clipboard_peer_register(&vd->cbpeer);
++    if (have_clipboard(vd)) {
++        vdagent_clipboard_peer_register(vd);
++    }
++
++    return 0;
 +}
 +
- static void vdagent_chr_recv_caps(VDAgentChardev *vd, VDAgentMessage *msg)
++static const VMStateDescription vmstate_chunk = {
++    .name = "vdagent/chunk",
++    .version_id = 0,
++    .minimum_version_id = 0,
++    .fields = (const VMStateField[]) {
++        VMSTATE_UINT32(port, VDIChunkHeader),
++        VMSTATE_UINT32(size, VDIChunkHeader),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
++static const VMStateDescription vmstate_vdba = {
++    .name = "vdagent/bytearray",
++    .version_id = 0,
++    .minimum_version_id = 0,
++    .fields = (const VMStateField[]) {
++        VMSTATE_UINT32(len, GByteArray),
++        VMSTATE_VBUFFER_ALLOC_UINT32(data, GByteArray, 0, 0, len),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
++struct CBInfoArray {
++    uint32_t n;
++    QemuClipboardInfo cbinfo[QEMU_CLIPBOARD_SELECTION__COUNT];
++};
++
++static const VMStateDescription vmstate_cbinfo_array = {
++    .name = "cbinfoarray",
++    .fields = (const VMStateField[]) {
++        VMSTATE_UINT32(n, struct CBInfoArray),
++        VMSTATE_STRUCT_VARRAY_UINT32(cbinfo, struct CBInfoArray, n,
++                                     0, vmstate_cbinfo, QemuClipboardInfo),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
++static int put_cbinfo(QEMUFile *f, void *pv, size_t size,
++                      const VMStateField *field, JSONWriter *vmdesc)
++{
++    VDAgentChardev *vd = QEMU_VDAGENT_CHARDEV(pv);
++    struct CBInfoArray cbinfo = {};
++    int i;
++
++    if (!have_clipboard(vd)) {
++        return 0;
++    }
++
++    for (i = 0; i < QEMU_CLIPBOARD_SELECTION__COUNT; i++) {
++        if (qemu_clipboard_peer_owns(&vd->cbpeer, i)) {
++            cbinfo.cbinfo[cbinfo.n++] = *qemu_clipboard_info(i);
++        }
++    }
++
++    return vmstate_save_state(f, &vmstate_cbinfo_array, &cbinfo, vmdesc);
++}
++
++static int get_cbinfo(QEMUFile *f, void *pv, size_t size,
++                      const VMStateField *field)
++{
++    VDAgentChardev *vd = QEMU_VDAGENT_CHARDEV(pv);
++    struct CBInfoArray cbinfo = {};
++    int i, ret;
++
++    if (!have_clipboard(vd)) {
++        return 0;
++    }
++
++    vdagent_clipboard_peer_register(vd);
++
++    ret = vmstate_load_state(f, &vmstate_cbinfo_array, &cbinfo, 0);
++    if (ret) {
++        return ret;
++    }
++
++    for (i = 0; i < cbinfo.n; i++) {
++        g_autoptr(QemuClipboardInfo) info =
++            qemu_clipboard_info_new(&vd->cbpeer, cbinfo.cbinfo[i].selection);
++        /* this will steal clipboard data pointer from cbinfo.types */
++        memcpy(info->types, cbinfo.cbinfo[i].types, sizeof(cbinfo.cbinfo[i].types));
++        qemu_clipboard_update(info);
++    }
++
++    return 0;
++}
++
++static const VMStateInfo vmstate_cbinfos = {
++    .name = "vdagent/cbinfos",
++    .get  = get_cbinfo,
++    .put  = put_cbinfo,
++};
++
++static const VMStateDescription vmstate_vdagent = {
++    .name = "vdagent",
++    .version_id = 0,
++    .minimum_version_id = 0,
++    .post_load = post_load,
++    .fields = (const VMStateField[]) {
++        VMSTATE_BOOL(connected, VDAgentChardev),
++        VMSTATE_UINT32(caps, VDAgentChardev),
++        VMSTATE_STRUCT(chunk, VDAgentChardev, 0, vmstate_chunk, VDIChunkHeader),
++        VMSTATE_UINT32(chunksize, VDAgentChardev),
++        VMSTATE_UINT32(msgsize, VDAgentChardev),
++        VMSTATE_VBUFFER_ALLOC_UINT32(msgbuf, VDAgentChardev, 0, 0, msgsize),
++        VMSTATE_UINT32(xsize, VDAgentChardev),
++        VMSTATE_UINT32(xoff, VDAgentChardev),
++        VMSTATE_VBUFFER_ALLOC_UINT32(xbuf, VDAgentChardev, 0, 0, xsize),
++        VMSTATE_STRUCT_POINTER(outbuf, VDAgentChardev, vmstate_vdba, GByteArray),
++        VMSTATE_UINT32(mouse_x, VDAgentChardev),
++        VMSTATE_UINT32(mouse_y, VDAgentChardev),
++        VMSTATE_UINT32(mouse_btn, VDAgentChardev),
++        VMSTATE_UINT32(mouse_display, VDAgentChardev),
++        VMSTATE_UINT32_ARRAY(last_serial, VDAgentChardev,
++                             QEMU_CLIPBOARD_SELECTION__COUNT),
++        VMSTATE_UINT32_ARRAY(cbpending, VDAgentChardev,
++                             QEMU_CLIPBOARD_SELECTION__COUNT),
++        {
++            .name         = "cbinfos",
++            .info         = &vmstate_cbinfos,
++            .flags        = VMS_SINGLE,
++        },
++        VMSTATE_END_OF_LIST()
++    }
++};
++
+ static void vdagent_chr_init(Object *obj)
  {
-     VDAgentAnnounceCapabilities *caps = (void *)msg->data;
-@@ -720,13 +732,9 @@ static void vdagent_chr_recv_caps(VDAgentChardev *vd, VDAgentMessage *msg)
- 
-     memset(vd->last_serial, 0, sizeof(vd->last_serial));
- 
--    if (have_clipboard(vd) && vd->cbpeer.notifier.notify == NULL) {
-+    if (have_clipboard(vd)) {
-         qemu_clipboard_reset_serial();
--
--        vd->cbpeer.name = "vdagent";
--        vd->cbpeer.notifier.notify = vdagent_clipboard_notify;
--        vd->cbpeer.request = vdagent_clipboard_request;
--        qemu_clipboard_peer_register(&vd->cbpeer);
-+        vdagent_clipboard_peer_register(vd);
-     }
+     VDAgentChardev *vd = QEMU_VDAGENT_CHARDEV(obj);
+@@ -937,6 +1078,7 @@ static void vdagent_chr_init(Object *obj)
+     vd->outbuf = g_byte_array_new();
+     error_setg(&vd->migration_blocker,
+                "The vdagent chardev doesn't yet support migration");
++    vmstate_register_any(NULL, &vmstate_vdagent, vd);
  }
  
+ static void vdagent_chr_fini(Object *obj)
 -- 
 2.49.0
 
