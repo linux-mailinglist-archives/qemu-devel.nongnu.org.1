@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D0ACAC30AC
-	for <lists+qemu-devel@lfdr.de>; Sat, 24 May 2025 19:37:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C70A3AC30A4
+	for <lists+qemu-devel@lfdr.de>; Sat, 24 May 2025 19:36:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uIsmR-00081R-OD; Sat, 24 May 2025 13:35:31 -0400
+	id 1uIsmS-000823-I0; Sat, 24 May 2025 13:35:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1uIsmO-0007yd-Kv
+ id 1uIsmP-00080r-Um
  for qemu-devel@nongnu.org; Sat, 24 May 2025 13:35:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1uIsmL-0000gm-If
- for qemu-devel@nongnu.org; Sat, 24 May 2025 13:35:27 -0400
+ id 1uIsmO-0000hD-Lp
+ for qemu-devel@nongnu.org; Sat, 24 May 2025 13:35:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748108124;
+ s=mimecast20190719; t=1748108127;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Z1BUcCpSr5ctVf8kpo2QU7QmLHfVmuGp/pyUk+dZcBo=;
- b=B9m4uNNA0YyT7O1Pz6uysgYY1FVT7HG6TZO40FBzLHxQk2IAhP/c/Xk97DnoHInuo1CDEE
- yMtZUvyYyXDKZphsD5auqTRqGoCFWDrSVem8CNLvWG+IgJQuhjt7A++ylewdjhQF+0sRK/
- /atFn1dxgTM3YxpBr4aFCjQR42RWVgg=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ bh=D1r7a5cY+zuG6A7VJ15YEEiLalEiBYJ3Mg7pu5TjNWg=;
+ b=F72ORWQeQuRnNJ2lE/qb8GRO2JjrYiHHsomSo3QFb/JZvbfqgziGve4zHLDswCy9DKZYi4
+ MahHgCWJ0nB/dSBWso5XEYlhnnScBajR0r2dSt/QhuOLLNFgEGDrztvtAL69eBb8NIjEtm
+ WbB5ndw8Pcd3p1RjdzRSP8q3gedjeQk=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-371-fkMCyTXLOAap_vAo2cBjXA-1; Sat,
- 24 May 2025 13:35:22 -0400
-X-MC-Unique: fkMCyTXLOAap_vAo2cBjXA-1
-X-Mimecast-MFC-AGG-ID: fkMCyTXLOAap_vAo2cBjXA_1748108121
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-128-yHSImFQAOwuY0JOM6k2n3A-1; Sat,
+ 24 May 2025 13:35:26 -0400
+X-MC-Unique: yHSImFQAOwuY0JOM6k2n3A-1
+X-Mimecast-MFC-AGG-ID: yHSImFQAOwuY0JOM6k2n3A_1748108125
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id AA310195608E
- for <qemu-devel@nongnu.org>; Sat, 24 May 2025 17:35:21 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 15B8B1955DB3
+ for <qemu-devel@nongnu.org>; Sat, 24 May 2025 17:35:25 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.4])
- by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 6EB531944DFF; Sat, 24 May 2025 17:35:19 +0000 (UTC)
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 02FDB19560AB; Sat, 24 May 2025 17:35:23 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  stefanha@redhat.com
-Subject: [PULL 01/19] ui/gtk: warn if setting the clipboard failed
-Date: Sat, 24 May 2025 19:34:54 +0200
-Message-ID: <20250524173514.317886-2-marcandre.lureau@redhat.com>
+Subject: [PULL 02/19] ui/clipboard: use int for selection field
+Date: Sat, 24 May 2025 19:34:55 +0200
+Message-ID: <20250524173514.317886-3-marcandre.lureau@redhat.com>
 In-Reply-To: <20250524173514.317886-1-marcandre.lureau@redhat.com>
 References: <20250524173514.317886-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -23
@@ -87,44 +87,27 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Just in case.
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
----
- ui/gtk-clipboard.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+This allows to use a VMSTATE_INT32 field for migration purposes.
 
-diff --git a/ui/gtk-clipboard.c b/ui/gtk-clipboard.c
-index 8d8a636fd1..65d89ec601 100644
---- a/ui/gtk-clipboard.c
-+++ b/ui/gtk-clipboard.c
-@@ -19,6 +19,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "qemu/error-report.h"
- #include "qemu/main-loop.h"
- 
- #include "ui/gtk.h"
-@@ -95,11 +96,13 @@ static void gd_clipboard_update_info(GtkDisplayState *gd,
-             gtk_clipboard_clear(gd->gtkcb[s]);
-             if (targets) {
-                 gd->cbowner[s] = true;
--                gtk_clipboard_set_with_data(gd->gtkcb[s],
--                                            targets, n_targets,
--                                            gd_clipboard_get_data,
--                                            gd_clipboard_clear,
--                                            gd);
-+                if (!gtk_clipboard_set_with_data(gd->gtkcb[s],
-+                                                 targets, n_targets,
-+                                                 gd_clipboard_get_data,
-+                                                 gd_clipboard_clear,
-+                                                 gd)) {
-+                    warn_report("Failed to set GTK clipboard");
-+                }
- 
-                 gtk_target_table_free(targets, n_targets);
-             }
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+---
+ include/ui/clipboard.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/ui/clipboard.h b/include/ui/clipboard.h
+index ab6acdbd8a..14b6099e73 100644
+--- a/include/ui/clipboard.h
++++ b/include/ui/clipboard.h
+@@ -112,7 +112,7 @@ struct QemuClipboardNotify {
+ struct QemuClipboardInfo {
+     uint32_t refcount;
+     QemuClipboardPeer *owner;
+-    QemuClipboardSelection selection;
++    int selection; /* QemuClipboardSelection */
+     bool has_serial;
+     uint32_t serial;
+     struct {
 -- 
 2.49.0
 
