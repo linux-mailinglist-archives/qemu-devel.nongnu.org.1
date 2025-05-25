@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7EF8AC3470
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:14:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AF2FAC346D
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:13:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJADl-0005MK-05; Sun, 25 May 2025 08:12:53 -0400
+	id 1uJADX-0004kb-F8; Sun, 25 May 2025 08:12:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJAC9-00017o-Lt; Sun, 25 May 2025 08:11:15 -0400
+ id 1uJAC9-00017p-W1; Sun, 25 May 2025 08:11:15 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJAC7-0003tt-MT; Sun, 25 May 2025 08:11:13 -0400
+ id 1uJAC7-0003ud-Vh; Sun, 25 May 2025 08:11:13 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9FD35124E68;
+ by isrv.corpit.ru (Postfix) with ESMTP id ADB6C124E69;
  Sun, 25 May 2025 15:08:18 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id ACC43215FCF;
+ by tsrv.corpit.ru (Postfix) with ESMTP id B6AA5215FD0;
  Sun, 25 May 2025 15:08:19 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+Cc: qemu-stable@nongnu.org,
+ "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+ Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.1 54/59] qapi/misc-target: Fix the doc to distinguish
- query-sgx and query-sgx-capabilities
-Date: Sun, 25 May 2025 15:08:11 +0300
-Message-Id: <20250525120818.273372-31-mjt@tls.msk.ru>
+Subject: [Stable-10.0.1 55/59] migration/multifd: Don't send device state
+ packets with zerocopy flag
+Date: Sun, 25 May 2025 15:08:12 +0300
+Message-Id: <20250525120818.273372-32-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
 References: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
@@ -59,60 +60,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-There're 2 QMP commands: query-sgx and query-sgx-capabilities, but
-their outputs are very similar and the documentation lacks clear
-differentiation.
+If zerocopy is enabled for multifd then QIO_CHANNEL_WRITE_FLAG_ZERO_COPY
+flag is forced into all multifd channel write calls via p->write_flags
+that was setup in multifd_nocomp_send_setup().
 
-From the codes, query-sgx is used to gather guest's SGX capabilities
-(including SGX related CPUIDs and EPC sections' size, in SGXInfo), and
-if guest doesn't have SGX, then QEMU will report the error message.
+However, device state packets aren't compatible with zerocopy - the data
+buffer isn't getting kept pinned until multifd channel flush.
 
-On the other hand, query-sgx-capabilities is used to gather host's SGX
-capabilities (descripted by SGXInfo as well). And if host doesn't
-support SGX, then QEMU will also report the error message.
+Make sure to mask that QIO_CHANNEL_WRITE_FLAG_ZERO_COPY flag in a multifd
+send thread if the data being sent is device state.
 
-Considering that SGXInfo is already documented and both these 2 commands
-have enough error messages (for the exception case in their codes).
-
-Therefore the QAPI documentation for these two commands only needs to
-emphasize that one of them applies to the guest and the other to the
-host.
-
-Fix their documentation to reflect this difference.
-
-Reported-by: Markus Armbruster <armbru@redhat.com>
-Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Acked-by: Markus Armbruster <armbru@redhat.com>
-Link: https://lore.kernel.org/r/20250513143131.2008078-3-zhao1.liu@intel.com
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 7f2131c35c1781ca41c62dc26fd93282e1351323)
+Fixes: 0525b91a0b99 ("migration/multifd: Device state transfer support - send side")
+Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Link: https://lore.kernel.org/r/3bd5f48578e29f3a78f41b1e4fbea3d4b2d9b136.1747403393.git.maciej.szmigiero@oracle.com
+Signed-off-by: Peter Xu <peterx@redhat.com>
+(cherry picked from commit 6be7696129b302830a9cff7e30484e08c2d64b57)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/qapi/misc-target.json b/qapi/misc-target.json
-index 8d70bd24d8..827515c363 100644
---- a/qapi/misc-target.json
-+++ b/qapi/misc-target.json
-@@ -380,7 +380,7 @@
- ##
- # @query-sgx:
- #
--# Returns information about SGX
-+# Returns information about configured SGX capabilities of guest
- #
- # Returns: @SGXInfo
- #
-@@ -399,7 +399,7 @@
- ##
- # @query-sgx-capabilities:
- #
--# Returns information from host SGX capabilities
-+# Returns information about SGX capabilities of host
- #
- # Returns: @SGXInfo
- #
+diff --git a/migration/multifd.c b/migration/multifd.c
+index dfb5189f0e..198763bada 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -695,6 +695,7 @@ static void *multifd_send_thread(void *opaque)
+         if (qatomic_load_acquire(&p->pending_job)) {
+             bool is_device_state = multifd_payload_device_state(p->data);
+             size_t total_size;
++            int write_flags_masked = 0;
+ 
+             p->flags = 0;
+             p->iovs_num = 0;
+@@ -702,6 +703,9 @@ static void *multifd_send_thread(void *opaque)
+ 
+             if (is_device_state) {
+                 multifd_device_state_send_prepare(p);
++
++                /* Device state packets cannot be sent via zerocopy */
++                write_flags_masked |= QIO_CHANNEL_WRITE_FLAG_ZERO_COPY;
+             } else {
+                 ret = multifd_send_state->ops->send_prepare(p, &local_err);
+                 if (ret != 0) {
+@@ -723,7 +727,8 @@ static void *multifd_send_thread(void *opaque)
+                                               &p->data->u.ram, &local_err);
+             } else {
+                 ret = qio_channel_writev_full_all(p->c, p->iov, p->iovs_num,
+-                                                  NULL, 0, p->write_flags,
++                                                  NULL, 0,
++                                                  p->write_flags & ~write_flags_masked,
+                                                   &local_err);
+             }
+ 
 -- 
 2.39.5
 
