@@ -2,33 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9593AC337B
+	by mail.lfdr.de (Postfix) with ESMTPS id C7B10AC337A
 	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 11:41:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJ7qP-0004AR-LZ; Sun, 25 May 2025 05:40:37 -0400
+	id 1uJ7qQ-0004Az-1q; Sun, 25 May 2025 05:40:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJ7qK-00048w-MC; Sun, 25 May 2025 05:40:33 -0400
+ id 1uJ7qN-00049h-Aq; Sun, 25 May 2025 05:40:35 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJ7qI-0004Gf-7G; Sun, 25 May 2025 05:40:32 -0400
+ id 1uJ7qL-0004Hg-Mi; Sun, 25 May 2025 05:40:35 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D5A3D124DC7;
+ by isrv.corpit.ru (Postfix) with ESMTP id DF980124DC8;
  Sun, 25 May 2025 12:40:24 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id B9573215EF9;
+ by tsrv.corpit.ru (Postfix) with ESMTP id C2F8A215EFA;
  Sun, 25 May 2025 12:40:25 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.18 19/21] virtio: Call set_features during reset
-Date: Sun, 25 May 2025 12:40:20 +0300
-Message-Id: <20250525094025.174507-1-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Icenowy Zheng <uwu@icenowy.me>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.18 20/21] common-user/host/riscv: use tail
+ pseudoinstruction for calling tail
+Date: Sun, 25 May 2025 12:40:21 +0300
+Message-Id: <20250525094025.174507-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-7.2.18-20250525111620@cover.tls.msk.ru>
 References: <qemu-stable-7.2.18-20250525111620@cover.tls.msk.ru>
@@ -57,51 +60,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Icenowy Zheng <uwu@icenowy.me>
 
-virtio-net expects set_features() will be called when the feature set
-used by the guest changes to update the number of virtqueues but it is
-not called during reset, which will clear all features, leaving the
-queues added for VIRTIO_NET_F_MQ or VIRTIO_NET_F_RSS. Not only these
-extra queues are visible to the guest, they will cause segmentation
-fault during migration.
+The j pseudoinstruction maps to a JAL instruction, which can only handle
+a jump to somewhere with a signed 20-bit destination. In case of static
+linking and LTO'ing this easily leads to "relocation truncated to fit"
+error.
 
-Call set_features() during reset to remove those queues for virtio-net
-as we call set_status(). It will also prevent similar bugs for
-virtio-net and other devices in the future.
+Switch to use tail pseudoinstruction, which is the standard way to
+tail-call a function in medium code model (emits AUIPC+JALR).
 
-Fixes: f9d6dbf0bf6e ("virtio-net: remove virtio queues if the guest doesn't support multiqueue")
-Buglink: https://issues.redhat.com/browse/RHEL-73842
+Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20250417072206.364008-1-uwu@icenowy.me>
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20250421-reset-v2-1-e4c1ead88ea1@daynix.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 0caed25cd171c611781589b5402161d27d57229c)
+(cherry picked from commit 22b448ccc6611a59d4aa54419f4d88c1f343cb35)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index d0d13f4766..5914f839ea 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -2578,6 +2578,8 @@ void virtio_queue_enable(VirtIODevice *vdev, uint32_t queue_index)
-     }
- }
+diff --git a/common-user/host/riscv/safe-syscall.inc.S b/common-user/host/riscv/safe-syscall.inc.S
+index dfe83c300e..c8b81e33d0 100644
+--- a/common-user/host/riscv/safe-syscall.inc.S
++++ b/common-user/host/riscv/safe-syscall.inc.S
+@@ -69,11 +69,11 @@ safe_syscall_end:
  
-+static int virtio_set_features_nocheck(VirtIODevice *vdev, uint64_t val);
-+
- void virtio_reset(void *opaque)
- {
-     VirtIODevice *vdev = opaque;
-@@ -2600,7 +2602,7 @@ void virtio_reset(void *opaque)
-     vdev->start_on_kick = false;
-     vdev->started = false;
-     vdev->broken = false;
--    vdev->guest_features = 0;
-+    virtio_set_features_nocheck(vdev, 0);
-     vdev->queue_sel = 0;
-     vdev->status = 0;
-     vdev->disabled = false;
+         /* code path setting errno */
+ 0:      neg     a0, a0
+-        j       safe_syscall_set_errno_tail
++        tail    safe_syscall_set_errno_tail
+ 
+         /* code path when we didn't execute the syscall */
+ 2:      li      a0, QEMU_ERESTARTSYS
+-        j       safe_syscall_set_errno_tail
++        tail    safe_syscall_set_errno_tail
+ 
+         .cfi_endproc
+         .size   safe_syscall_base, .-safe_syscall_base
 -- 
 2.39.5
 
