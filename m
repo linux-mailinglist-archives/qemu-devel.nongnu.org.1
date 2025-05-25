@@ -2,38 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE618AC3476
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:14:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9E5CAC347C
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:15:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJACs-0003Qd-Kr; Sun, 25 May 2025 08:11:59 -0400
+	id 1uJAEP-0006uQ-6n; Sun, 25 May 2025 08:13:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJABl-0008NT-M9; Sun, 25 May 2025 08:10:51 -0400
+ id 1uJAC6-0000y6-9Q; Sun, 25 May 2025 08:11:12 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJABh-0003t8-ON; Sun, 25 May 2025 08:10:49 -0400
+ id 1uJAC3-0003tZ-QM; Sun, 25 May 2025 08:11:09 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8A96E124E66;
+ by isrv.corpit.ru (Postfix) with ESMTP id 95CA5124E67;
  Sun, 25 May 2025 15:08:18 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 9805C215FCD;
+ by tsrv.corpit.ru (Postfix) with ESMTP id A15DD215FCE;
  Sun, 25 May 2025 15:08:19 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Rakesh Jeyasingh <rakeshjb010@gmail.com>,
- Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.1 52/59] hw/pci-host/gt64120: Fix endianness handling
-Date: Sun, 25 May 2025 15:08:09 +0300
-Message-Id: <20250525120818.273372-29-mjt@tls.msk.ru>
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.1 53/59] hw/pci-host: Remove unused pci_host_data_be_ops
+Date: Sun, 25 May 2025 15:08:10 +0300
+Message-Id: <20250525120818.273372-30-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
 References: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,151 +62,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Rakesh Jeyasingh <rakeshjb010@gmail.com>
 
-The GT-64120 PCI controller requires special handling where:
-1. Host bridge(bus 0 ,device 0) must never be byte-swapped
-2. Other devices follow MByteSwap bit in GT_PCI0_CMD
+pci_host_data_be_ops became unused after endianness fixes
 
-The previous implementation incorrectly  swapped all accesses, breaking
-host bridge detection (lspci -d 11ab:4620).
-
-Changes made:
-1. Removed gt64120_update_pci_cfgdata_mapping() and moved data_mem initialization
-  to gt64120_realize() for cleaner setup
-2. Implemented custom read/write handlers that:
-   - Preserve host bridge accesses (extract32(config_reg,11,13)==0)
-   - apply swapping only for non-bridge devices in big-endian mode
-
-Fixes: 145e2198 ("hw/mips/gt64xxx_pci: Endian-swap using PCI_HOST_BRIDGE MemoryRegionOps")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2826
-
+Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Rakesh Jeyasingh <rakeshjb010@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Thomas Huth <thuth@redhat.com>
-Link: https://lore.kernel.org/r/20250429170354.150581-2-rakeshjb010@gmail.com
+Link: https://lore.kernel.org/r/20250429170354.150581-3-rakeshjb010@gmail.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit e5894fd6f411c113e2b5f62811e96eeb5b084381)
+(cherry picked from commit 560375cff3ccedabf1fe5ca1bc7a31b13fdc68e5)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/pci-host/gt64120.c b/hw/pci-host/gt64120.c
-index d5c13a89b6..7ad44cf2da 100644
---- a/hw/pci-host/gt64120.c
-+++ b/hw/pci-host/gt64120.c
-@@ -320,38 +320,6 @@ static void gt64120_isd_mapping(GT64120State *s)
-     memory_region_transaction_commit();
- }
- 
--static void gt64120_update_pci_cfgdata_mapping(GT64120State *s)
--{
--    /* Indexed on MByteSwap bit, see Table 158: PCI_0 Command, Offset: 0xc00 */
--    static const MemoryRegionOps *pci_host_data_ops[] = {
--        &pci_host_data_be_ops, &pci_host_data_le_ops
--    };
--    PCIHostState *phb = PCI_HOST_BRIDGE(s);
--
--    memory_region_transaction_begin();
--
--    /*
--     * The setting of the MByteSwap bit and MWordSwap bit in the PCI Internal
--     * Command Register determines how data transactions from the CPU to/from
--     * PCI are handled along with the setting of the Endianness bit in the CPU
--     * Configuration Register. See:
--     * - Table 16: 32-bit PCI Transaction Endianness
--     * - Table 158: PCI_0 Command, Offset: 0xc00
--     */
--
--    if (memory_region_is_mapped(&phb->data_mem)) {
--        memory_region_del_subregion(&s->ISD_mem, &phb->data_mem);
--        object_unparent(OBJECT(&phb->data_mem));
--    }
--    memory_region_init_io(&phb->data_mem, OBJECT(phb),
--                          pci_host_data_ops[s->regs[GT_PCI0_CMD] & 1],
--                          s, "pci-conf-data", 4);
--    memory_region_add_subregion_overlap(&s->ISD_mem, GT_PCI0_CFGDATA << 2,
--                                        &phb->data_mem, 1);
--
--    memory_region_transaction_commit();
--}
--
- static void gt64120_pci_mapping(GT64120State *s)
- {
-     memory_region_transaction_begin();
-@@ -645,7 +613,6 @@ static void gt64120_writel(void *opaque, hwaddr addr,
-     case GT_PCI0_CMD:
-     case GT_PCI1_CMD:
-         s->regs[saddr] = val & 0x0401fc0f;
--        gt64120_update_pci_cfgdata_mapping(s);
-         break;
-     case GT_PCI0_TOR:
-     case GT_PCI0_BS_SCS10:
-@@ -1024,6 +991,48 @@ static const MemoryRegionOps isd_mem_ops = {
-     },
+diff --git a/hw/pci/pci_host.c b/hw/pci/pci_host.c
+index 80f91f409f..56f7f28a1a 100644
+--- a/hw/pci/pci_host.c
++++ b/hw/pci/pci_host.c
+@@ -217,12 +217,6 @@ const MemoryRegionOps pci_host_data_le_ops = {
+     .endianness = DEVICE_LITTLE_ENDIAN,
  };
  
-+static bool bswap(const GT64120State *s) 
-+{
-+    PCIHostState *phb = PCI_HOST_BRIDGE(s);
-+    /*check for bus == 0 && device == 0, Bits 11:15 = Device , Bits 16:23 = Bus*/
-+    bool is_phb_dev0 = extract32(phb->config_reg, 11, 13) == 0;
-+    bool le_mode = FIELD_EX32(s->regs[GT_PCI0_CMD], GT_PCI0_CMD, MByteSwap);
-+    /* Only swap for non-bridge devices in big-endian mode */
-+    return !le_mode && !is_phb_dev0;
-+}
-+
-+static uint64_t gt64120_pci_data_read(void *opaque, hwaddr addr, unsigned size)
-+{
-+    GT64120State *s = opaque;
-+    uint32_t val = pci_host_data_le_ops.read(opaque, addr, size);
-+
-+    if (bswap(s)) {
-+        val = bswap32(val);
-+    }
-+    return val;
-+}
-+
-+static void gt64120_pci_data_write(void *opaque, hwaddr addr, 
-+    uint64_t val, unsigned size)
-+{
-+    GT64120State *s = opaque;
-+
-+    if (bswap(s)) {
-+        val = bswap32(val); 
-+    }
-+    pci_host_data_le_ops.write(opaque, addr, val, size);  
-+}
-+
-+static const MemoryRegionOps gt64120_pci_data_ops = {
-+    .read = gt64120_pci_data_read,
-+    .write = gt64120_pci_data_write,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
-+    .valid = {
-+        .min_access_size = 4,
-+        .max_access_size = 4,
-+    },
-+};
-+
- static void gt64120_reset(DeviceState *dev)
+-const MemoryRegionOps pci_host_data_be_ops = {
+-    .read = pci_host_data_read,
+-    .write = pci_host_data_write,
+-    .endianness = DEVICE_BIG_ENDIAN,
+-};
+-
+ static bool pci_host_needed(void *opaque)
  {
-     GT64120State *s = GT64120_PCI_HOST_BRIDGE(dev);
-@@ -1178,7 +1187,6 @@ static void gt64120_reset(DeviceState *dev)
+     PCIHostState *s = opaque;
+diff --git a/include/hw/pci-host/dino.h b/include/hw/pci-host/dino.h
+index fd7975c798..5dc8cdf610 100644
+--- a/include/hw/pci-host/dino.h
++++ b/include/hw/pci-host/dino.h
+@@ -109,10 +109,6 @@ static const uint32_t reg800_keep_bits[DINO800_REGS] = {
+ struct DinoState {
+     PCIHostState parent_obj;
  
-     gt64120_isd_mapping(s);
-     gt64120_pci_mapping(s);
--    gt64120_update_pci_cfgdata_mapping(s);
- }
+-    /*
+-     * PCI_CONFIG_ADDR is parent_obj.config_reg, via pci_host_conf_be_ops,
+-     * so that we can map PCI_CONFIG_DATA to pci_host_data_be_ops.
+-     */
+     uint32_t config_reg_dino; /* keep original copy, including 2 lowest bits */
  
- static void gt64120_realize(DeviceState *dev, Error **errp)
-@@ -1202,6 +1210,12 @@ static void gt64120_realize(DeviceState *dev, Error **errp)
-     memory_region_add_subregion_overlap(&s->ISD_mem, GT_PCI0_CFGADDR << 2,
-                                         &phb->conf_mem, 1);
+     uint32_t iar0;
+diff --git a/include/hw/pci/pci_host.h b/include/hw/pci/pci_host.h
+index e52d8ec2cd..954dd446fa 100644
+--- a/include/hw/pci/pci_host.h
++++ b/include/hw/pci/pci_host.h
+@@ -68,6 +68,5 @@ uint32_t pci_data_read(PCIBus *s, uint32_t addr, unsigned len);
+ extern const MemoryRegionOps pci_host_conf_le_ops;
+ extern const MemoryRegionOps pci_host_conf_be_ops;
+ extern const MemoryRegionOps pci_host_data_le_ops;
+-extern const MemoryRegionOps pci_host_data_be_ops;
  
-+    memory_region_init_io(&phb->data_mem, OBJECT(phb),
-+                          &gt64120_pci_data_ops,
-+                          s, "pci-conf-data", 4);
-+    memory_region_add_subregion_overlap(&s->ISD_mem, GT_PCI0_CFGDATA << 2,
-+                                        &phb->data_mem, 1);
-+
- 
-     /*
-      * The whole address space decoded by the GT-64120A doesn't generate
+ #endif /* PCI_HOST_H */
 -- 
 2.39.5
 
