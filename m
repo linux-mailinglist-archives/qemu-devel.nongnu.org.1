@@ -2,36 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA491AC338F
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 11:45:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45CF2AC33A5
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 11:49:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJ7u8-0000hw-Ub; Sun, 25 May 2025 05:44:29 -0400
+	id 1uJ7uL-0000pO-W8; Sun, 25 May 2025 05:44:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJ7u4-0000cz-P0; Sun, 25 May 2025 05:44:25 -0400
+ id 1uJ7u6-0000hv-UI; Sun, 25 May 2025 05:44:27 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJ7u2-0004fE-Ov; Sun, 25 May 2025 05:44:24 -0400
+ id 1uJ7u5-0004kq-2k; Sun, 25 May 2025 05:44:26 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BFBA0124DE9;
+ by isrv.corpit.ru (Postfix) with ESMTP id C9028124DEA;
  Sun, 25 May 2025 12:42:47 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id A4791215F11;
+ by tsrv.corpit.ru (Postfix) with ESMTP id AD82C215F12;
  Sun, 25 May 2025 12:42:48 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Andrew Jones <ajones@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>,
+Cc: qemu-stable@nongnu.org, Rakesh Jeyasingh <rakeshjb010@gmail.com>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.4 55/62] target/riscv/kvm: add kvm_csr_cfgs[]
-Date: Sun, 25 May 2025 12:42:38 +0300
-Message-Id: <20250525094246.174612-21-mjt@tls.msk.ru>
+Subject: [Stable-9.2.4 56/62] hw/pci-host/gt64120: Fix endianness handling
+Date: Sun, 25 May 2025 12:42:39 +0300
+Message-Id: <20250525094246.174612-22-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.4-20250525112803@cover.tls.msk.ru>
 References: <qemu-stable-9.2.4-20250525112803@cover.tls.msk.ru>
@@ -60,204 +58,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+From: Rakesh Jeyasingh <rakeshjb010@gmail.com>
 
-At this moment we're not checking if the host has support for any
-specific CSR before doing get/put regs. This will cause problems if the
-host KVM doesn't support it (see [1] as an example).
+The GT-64120 PCI controller requires special handling where:
+1. Host bridge(bus 0 ,device 0) must never be byte-swapped
+2. Other devices follow MByteSwap bit in GT_PCI0_CMD
 
-We'll use the same approach done with the CPU extensions: read all known
-KVM CSRs during init() to check for availability, then read/write them
-if they are present. This will be made by either using get-reglist or by
-directly reading the CSRs.
+The previous implementation incorrectly  swapped all accesses, breaking
+host bridge detection (lspci -d 11ab:4620).
 
-For now we'll just convert the CSRs to use a kvm_csr_cfg[] array,
-reusing the same KVMCPUConfig abstraction we use for extensions, and use
-the array in (get|put)_csr_regs() instead of manually listing them. A
-lot of boilerplate will be added but at least we'll automate the get/put
-procedure for CSRs, i.e. adding a new CSR in the future will be a matter
-of adding it in kvm_csr_regs[] and everything else will be taken care
-of.
+Changes made:
+1. Removed gt64120_update_pci_cfgdata_mapping() and moved data_mem initialization
+  to gt64120_realize() for cleaner setup
+2. Implemented custom read/write handlers that:
+   - Preserve host bridge accesses (extract32(config_reg,11,13)==0)
+   - apply swapping only for non-bridge devices in big-endian mode
 
-Despite all the code changes no behavioral change is made.
+Fixes: 145e2198 ("hw/mips/gt64xxx_pci: Endian-swap using PCI_HOST_BRIDGE MemoryRegionOps")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2826
 
-[1] https://lore.kernel.org/qemu-riscv/CABJz62OfUDHYkQ0T3rGHStQprf1c7_E0qBLbLKhfv=+jb0SYAw@mail.gmail.com/
-
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250429124421.223883-6-dbarboza@ventanamicro.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-Cc: qemu-stable@nongnu.org
-(cherry picked from commit d3b6f1742c36e3a3c1e74cb60646ee98a4e39ea3)
+Signed-off-by: Rakesh Jeyasingh <rakeshjb010@gmail.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Link: https://lore.kernel.org/r/20250429170354.150581-2-rakeshjb010@gmail.com
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit e5894fd6f411c113e2b5f62811e96eeb5b084381)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 284b112821..77e7e989a6 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -80,6 +80,7 @@ const char *riscv_get_misa_ext_name(uint32_t bit);
- const char *riscv_get_misa_ext_description(uint32_t bit);
- 
- #define CPU_CFG_OFFSET(_prop) offsetof(struct RISCVCPUConfig, _prop)
-+#define ENV_CSR_OFFSET(_csr) offsetof(CPURISCVState, _csr)
- 
- typedef struct riscv_cpu_profile {
-     struct riscv_cpu_profile *parent;
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index b646bb034b..54d61edf6a 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -114,22 +114,6 @@ static uint64_t kvm_riscv_vector_reg_id(RISCVCPU *cpu,
-     KVM_RISCV_REG_ID_ULONG(KVM_REG_RISCV_VECTOR, \
-                            KVM_REG_RISCV_VECTOR_CSR_REG(name))
- 
--#define KVM_RISCV_GET_CSR(cs, env, csr, reg) \
--    do { \
--        int _ret = kvm_get_one_reg(cs, RISCV_CSR_REG(csr), &reg); \
--        if (_ret) { \
--            return _ret; \
--        } \
--    } while (0)
--
--#define KVM_RISCV_SET_CSR(cs, env, csr, reg) \
--    do { \
--        int _ret = kvm_set_one_reg(cs, RISCV_CSR_REG(csr), &reg); \
--        if (_ret) { \
--            return _ret; \
--        } \
--    } while (0)
--
- #define KVM_RISCV_GET_TIMER(cs, name, reg) \
-     do { \
-         int ret = kvm_get_one_reg(cs, RISCV_TIMER_REG(name), &reg); \
-@@ -251,6 +235,53 @@ static void kvm_riscv_update_cpu_misa_ext(RISCVCPU *cpu, CPUState *cs)
-     }
+diff --git a/hw/pci-host/gt64120.c b/hw/pci-host/gt64120.c
+index 14fc803d27..072137feeb 100644
+--- a/hw/pci-host/gt64120.c
++++ b/hw/pci-host/gt64120.c
+@@ -320,38 +320,6 @@ static void gt64120_isd_mapping(GT64120State *s)
+     memory_region_transaction_commit();
  }
  
-+#define KVM_CSR_CFG(_name, _env_prop, reg_id) \
-+    {.name = _name, .offset = ENV_CSR_OFFSET(_env_prop), \
-+     .kvm_reg_id = reg_id}
+-static void gt64120_update_pci_cfgdata_mapping(GT64120State *s)
+-{
+-    /* Indexed on MByteSwap bit, see Table 158: PCI_0 Command, Offset: 0xc00 */
+-    static const MemoryRegionOps *pci_host_data_ops[] = {
+-        &pci_host_data_be_ops, &pci_host_data_le_ops
+-    };
+-    PCIHostState *phb = PCI_HOST_BRIDGE(s);
+-
+-    memory_region_transaction_begin();
+-
+-    /*
+-     * The setting of the MByteSwap bit and MWordSwap bit in the PCI Internal
+-     * Command Register determines how data transactions from the CPU to/from
+-     * PCI are handled along with the setting of the Endianness bit in the CPU
+-     * Configuration Register. See:
+-     * - Table 16: 32-bit PCI Transaction Endianness
+-     * - Table 158: PCI_0 Command, Offset: 0xc00
+-     */
+-
+-    if (memory_region_is_mapped(&phb->data_mem)) {
+-        memory_region_del_subregion(&s->ISD_mem, &phb->data_mem);
+-        object_unparent(OBJECT(&phb->data_mem));
+-    }
+-    memory_region_init_io(&phb->data_mem, OBJECT(phb),
+-                          pci_host_data_ops[s->regs[GT_PCI0_CMD] & 1],
+-                          s, "pci-conf-data", 4);
+-    memory_region_add_subregion_overlap(&s->ISD_mem, GT_PCI0_CFGDATA << 2,
+-                                        &phb->data_mem, 1);
+-
+-    memory_region_transaction_commit();
+-}
+-
+ static void gt64120_pci_mapping(GT64120State *s)
+ {
+     memory_region_transaction_begin();
+@@ -645,7 +613,6 @@ static void gt64120_writel(void *opaque, hwaddr addr,
+     case GT_PCI0_CMD:
+     case GT_PCI1_CMD:
+         s->regs[saddr] = val & 0x0401fc0f;
+-        gt64120_update_pci_cfgdata_mapping(s);
+         break;
+     case GT_PCI0_TOR:
+     case GT_PCI0_BS_SCS10:
+@@ -1024,6 +991,48 @@ static const MemoryRegionOps isd_mem_ops = {
+     },
+ };
+ 
++static bool bswap(const GT64120State *s) 
++{
++    PCIHostState *phb = PCI_HOST_BRIDGE(s);
++    /*check for bus == 0 && device == 0, Bits 11:15 = Device , Bits 16:23 = Bus*/
++    bool is_phb_dev0 = extract32(phb->config_reg, 11, 13) == 0;
++    bool le_mode = FIELD_EX32(s->regs[GT_PCI0_CMD], GT_PCI0_CMD, MByteSwap);
++    /* Only swap for non-bridge devices in big-endian mode */
++    return !le_mode && !is_phb_dev0;
++}
 +
-+static KVMCPUConfig kvm_csr_cfgs[] = {
-+    KVM_CSR_CFG("sstatus",    mstatus,    RISCV_CSR_REG(sstatus)),
-+    KVM_CSR_CFG("sie",        mie,        RISCV_CSR_REG(sie)),
-+    KVM_CSR_CFG("stvec",      stvec,      RISCV_CSR_REG(stvec)),
-+    KVM_CSR_CFG("sscratch",   sscratch,   RISCV_CSR_REG(sscratch)),
-+    KVM_CSR_CFG("sepc",       sepc,       RISCV_CSR_REG(sepc)),
-+    KVM_CSR_CFG("scause",     scause,     RISCV_CSR_REG(scause)),
-+    KVM_CSR_CFG("stval",      stval,      RISCV_CSR_REG(stval)),
-+    KVM_CSR_CFG("sip",        mip,        RISCV_CSR_REG(sip)),
-+    KVM_CSR_CFG("satp",       satp,       RISCV_CSR_REG(satp)),
++static uint64_t gt64120_pci_data_read(void *opaque, hwaddr addr, unsigned size)
++{
++    GT64120State *s = opaque;
++    uint32_t val = pci_host_data_le_ops.read(opaque, addr, size);
++
++    if (bswap(s)) {
++        val = bswap32(val);
++    }
++    return val;
++}
++
++static void gt64120_pci_data_write(void *opaque, hwaddr addr, 
++    uint64_t val, unsigned size)
++{
++    GT64120State *s = opaque;
++
++    if (bswap(s)) {
++        val = bswap32(val); 
++    }
++    pci_host_data_le_ops.write(opaque, addr, val, size);  
++}
++
++static const MemoryRegionOps gt64120_pci_data_ops = {
++    .read = gt64120_pci_data_read,
++    .write = gt64120_pci_data_write,
++    .endianness = DEVICE_LITTLE_ENDIAN,
++    .valid = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
 +};
 +
-+static void *kvmconfig_get_env_addr(RISCVCPU *cpu, KVMCPUConfig *csr_cfg)
-+{
-+    return (void *)&cpu->env + csr_cfg->offset;
-+}
-+
-+static uint32_t kvm_cpu_csr_get_u32(RISCVCPU *cpu, KVMCPUConfig *csr_cfg)
-+{
-+    uint32_t *val32 = kvmconfig_get_env_addr(cpu, csr_cfg);
-+    return *val32;
-+}
-+
-+static uint64_t kvm_cpu_csr_get_u64(RISCVCPU *cpu, KVMCPUConfig *csr_cfg)
-+{
-+    uint64_t *val64 = kvmconfig_get_env_addr(cpu, csr_cfg);
-+    return *val64;
-+}
-+
-+static void kvm_cpu_csr_set_u32(RISCVCPU *cpu, KVMCPUConfig *csr_cfg,
-+                                uint32_t val)
-+{
-+    uint32_t *val32 = kvmconfig_get_env_addr(cpu, csr_cfg);
-+    *val32 = val;
-+}
-+
-+static void kvm_cpu_csr_set_u64(RISCVCPU *cpu, KVMCPUConfig *csr_cfg,
-+                                uint64_t val)
-+{
-+    uint64_t *val64 = kvmconfig_get_env_addr(cpu, csr_cfg);
-+    *val64 = val;
-+}
-+
- #define KVM_EXT_CFG(_name, _prop, _reg_id) \
-     {.name = _name, .offset = CPU_CFG_OFFSET(_prop), \
-      .kvm_reg_id = _reg_id}
-@@ -590,34 +621,52 @@ static int kvm_riscv_put_regs_core(CPUState *cs)
- 
- static int kvm_riscv_get_regs_csr(CPUState *cs)
+ static void gt64120_reset(DeviceState *dev)
  {
--    CPURISCVState *env = &RISCV_CPU(cs)->env;
-+    RISCVCPU *cpu = RISCV_CPU(cs);
-+    uint64_t reg;
-+    int i, ret;
-+
-+    for (i = 0; i < ARRAY_SIZE(kvm_csr_cfgs); i++) {
-+        KVMCPUConfig *csr_cfg = &kvm_csr_cfgs[i];
+     GT64120State *s = GT64120_PCI_HOST_BRIDGE(dev);
+@@ -1178,7 +1187,6 @@ static void gt64120_reset(DeviceState *dev)
  
--    KVM_RISCV_GET_CSR(cs, env, sstatus, env->mstatus);
--    KVM_RISCV_GET_CSR(cs, env, sie, env->mie);
--    KVM_RISCV_GET_CSR(cs, env, stvec, env->stvec);
--    KVM_RISCV_GET_CSR(cs, env, sscratch, env->sscratch);
--    KVM_RISCV_GET_CSR(cs, env, sepc, env->sepc);
--    KVM_RISCV_GET_CSR(cs, env, scause, env->scause);
--    KVM_RISCV_GET_CSR(cs, env, stval, env->stval);
--    KVM_RISCV_GET_CSR(cs, env, sip, env->mip);
--    KVM_RISCV_GET_CSR(cs, env, satp, env->satp);
-+        ret = kvm_get_one_reg(cs, csr_cfg->kvm_reg_id, &reg);
-+        if (ret) {
-+            return ret;
-+        }
-+
-+        if (KVM_REG_SIZE(csr_cfg->kvm_reg_id) == sizeof(uint32_t)) {
-+            kvm_cpu_csr_set_u32(cpu, csr_cfg, reg);
-+        } else if (KVM_REG_SIZE(csr_cfg->kvm_reg_id) == sizeof(uint64_t)) {
-+            kvm_cpu_csr_set_u64(cpu, csr_cfg, reg);
-+        } else {
-+            g_assert_not_reached();
-+        }
-+    }
- 
-     return 0;
+     gt64120_isd_mapping(s);
+     gt64120_pci_mapping(s);
+-    gt64120_update_pci_cfgdata_mapping(s);
  }
  
- static int kvm_riscv_put_regs_csr(CPUState *cs)
- {
--    CPURISCVState *env = &RISCV_CPU(cs)->env;
-+    RISCVCPU *cpu = RISCV_CPU(cs);
-+    uint64_t reg;
-+    int i, ret;
-+
-+    for (i = 0; i < ARRAY_SIZE(kvm_csr_cfgs); i++) {
-+        KVMCPUConfig *csr_cfg = &kvm_csr_cfgs[i];
-+
-+        if (KVM_REG_SIZE(csr_cfg->kvm_reg_id) == sizeof(uint32_t)) {
-+            reg = kvm_cpu_csr_get_u32(cpu, csr_cfg);
-+        } else if (KVM_REG_SIZE(csr_cfg->kvm_reg_id) == sizeof(uint64_t)) {
-+            reg = kvm_cpu_csr_get_u64(cpu, csr_cfg);
-+        } else {
-+            g_assert_not_reached();
-+        }
+ static void gt64120_realize(DeviceState *dev, Error **errp)
+@@ -1202,6 +1210,12 @@ static void gt64120_realize(DeviceState *dev, Error **errp)
+     memory_region_add_subregion_overlap(&s->ISD_mem, GT_PCI0_CFGADDR << 2,
+                                         &phb->conf_mem, 1);
  
--    KVM_RISCV_SET_CSR(cs, env, sstatus, env->mstatus);
--    KVM_RISCV_SET_CSR(cs, env, sie, env->mie);
--    KVM_RISCV_SET_CSR(cs, env, stvec, env->stvec);
--    KVM_RISCV_SET_CSR(cs, env, sscratch, env->sscratch);
--    KVM_RISCV_SET_CSR(cs, env, sepc, env->sepc);
--    KVM_RISCV_SET_CSR(cs, env, scause, env->scause);
--    KVM_RISCV_SET_CSR(cs, env, stval, env->stval);
--    KVM_RISCV_SET_CSR(cs, env, sip, env->mip);
--    KVM_RISCV_SET_CSR(cs, env, satp, env->satp);
-+        ret = kvm_set_one_reg(cs, csr_cfg->kvm_reg_id, &reg);
-+        if (ret) {
-+            return ret;
-+        }
-+    }
++    memory_region_init_io(&phb->data_mem, OBJECT(phb),
++                          &gt64120_pci_data_ops,
++                          s, "pci-conf-data", 4);
++    memory_region_add_subregion_overlap(&s->ISD_mem, GT_PCI0_CFGDATA << 2,
++                                        &phb->data_mem, 1);
++
  
-     return 0;
- }
+     /*
+      * The whole address space decoded by the GT-64120A doesn't generate
 -- 
 2.39.5
 
