@@ -2,40 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9E5CAC347C
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:15:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7EF8AC3470
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:14:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJAEP-0006uQ-6n; Sun, 25 May 2025 08:13:33 -0400
+	id 1uJADl-0005MK-05; Sun, 25 May 2025 08:12:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJAC6-0000y6-9Q; Sun, 25 May 2025 08:11:12 -0400
+ id 1uJAC9-00017o-Lt; Sun, 25 May 2025 08:11:15 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJAC3-0003tZ-QM; Sun, 25 May 2025 08:11:09 -0400
+ id 1uJAC7-0003tt-MT; Sun, 25 May 2025 08:11:13 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 95CA5124E67;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9FD35124E68;
  Sun, 25 May 2025 15:08:18 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id A15DD215FCE;
+ by tsrv.corpit.ru (Postfix) with ESMTP id ACC43215FCF;
  Sun, 25 May 2025 15:08:19 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Rakesh Jeyasingh <rakeshjb010@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.1 53/59] hw/pci-host: Remove unused pci_host_data_be_ops
-Date: Sun, 25 May 2025 15:08:10 +0300
-Message-Id: <20250525120818.273372-30-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
+ Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.1 54/59] qapi/misc-target: Fix the doc to distinguish
+ query-sgx and query-sgx-capabilities
+Date: Sun, 25 May 2025 15:08:11 +0300
+Message-Id: <20250525120818.273372-31-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
 References: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,62 +59,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Rakesh Jeyasingh <rakeshjb010@gmail.com>
+From: Zhao Liu <zhao1.liu@intel.com>
 
-pci_host_data_be_ops became unused after endianness fixes
+There're 2 QMP commands: query-sgx and query-sgx-capabilities, but
+their outputs are very similar and the documentation lacks clear
+differentiation.
 
+From the codes, query-sgx is used to gather guest's SGX capabilities
+(including SGX related CPUIDs and EPC sections' size, in SGXInfo), and
+if guest doesn't have SGX, then QEMU will report the error message.
+
+On the other hand, query-sgx-capabilities is used to gather host's SGX
+capabilities (descripted by SGXInfo as well). And if host doesn't
+support SGX, then QEMU will also report the error message.
+
+Considering that SGXInfo is already documented and both these 2 commands
+have enough error messages (for the exception case in their codes).
+
+Therefore the QAPI documentation for these two commands only needs to
+emphasize that one of them applies to the guest and the other to the
+host.
+
+Fix their documentation to reflect this difference.
+
+Reported-by: Markus Armbruster <armbru@redhat.com>
 Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Rakesh Jeyasingh <rakeshjb010@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Thomas Huth <thuth@redhat.com>
-Link: https://lore.kernel.org/r/20250429170354.150581-3-rakeshjb010@gmail.com
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Acked-by: Markus Armbruster <armbru@redhat.com>
+Link: https://lore.kernel.org/r/20250513143131.2008078-3-zhao1.liu@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 560375cff3ccedabf1fe5ca1bc7a31b13fdc68e5)
+(cherry picked from commit 7f2131c35c1781ca41c62dc26fd93282e1351323)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/pci/pci_host.c b/hw/pci/pci_host.c
-index 80f91f409f..56f7f28a1a 100644
---- a/hw/pci/pci_host.c
-+++ b/hw/pci/pci_host.c
-@@ -217,12 +217,6 @@ const MemoryRegionOps pci_host_data_le_ops = {
-     .endianness = DEVICE_LITTLE_ENDIAN,
- };
- 
--const MemoryRegionOps pci_host_data_be_ops = {
--    .read = pci_host_data_read,
--    .write = pci_host_data_write,
--    .endianness = DEVICE_BIG_ENDIAN,
--};
--
- static bool pci_host_needed(void *opaque)
- {
-     PCIHostState *s = opaque;
-diff --git a/include/hw/pci-host/dino.h b/include/hw/pci-host/dino.h
-index fd7975c798..5dc8cdf610 100644
---- a/include/hw/pci-host/dino.h
-+++ b/include/hw/pci-host/dino.h
-@@ -109,10 +109,6 @@ static const uint32_t reg800_keep_bits[DINO800_REGS] = {
- struct DinoState {
-     PCIHostState parent_obj;
- 
--    /*
--     * PCI_CONFIG_ADDR is parent_obj.config_reg, via pci_host_conf_be_ops,
--     * so that we can map PCI_CONFIG_DATA to pci_host_data_be_ops.
--     */
-     uint32_t config_reg_dino; /* keep original copy, including 2 lowest bits */
- 
-     uint32_t iar0;
-diff --git a/include/hw/pci/pci_host.h b/include/hw/pci/pci_host.h
-index e52d8ec2cd..954dd446fa 100644
---- a/include/hw/pci/pci_host.h
-+++ b/include/hw/pci/pci_host.h
-@@ -68,6 +68,5 @@ uint32_t pci_data_read(PCIBus *s, uint32_t addr, unsigned len);
- extern const MemoryRegionOps pci_host_conf_le_ops;
- extern const MemoryRegionOps pci_host_conf_be_ops;
- extern const MemoryRegionOps pci_host_data_le_ops;
--extern const MemoryRegionOps pci_host_data_be_ops;
- 
- #endif /* PCI_HOST_H */
+diff --git a/qapi/misc-target.json b/qapi/misc-target.json
+index 8d70bd24d8..827515c363 100644
+--- a/qapi/misc-target.json
++++ b/qapi/misc-target.json
+@@ -380,7 +380,7 @@
+ ##
+ # @query-sgx:
+ #
+-# Returns information about SGX
++# Returns information about configured SGX capabilities of guest
+ #
+ # Returns: @SGXInfo
+ #
+@@ -399,7 +399,7 @@
+ ##
+ # @query-sgx-capabilities:
+ #
+-# Returns information from host SGX capabilities
++# Returns information about SGX capabilities of host
+ #
+ # Returns: @SGXInfo
+ #
 -- 
 2.39.5
 
