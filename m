@@ -2,66 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7994AC34ED
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 15:29:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E940FAC34E9
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 15:29:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJBOQ-0007bj-BE; Sun, 25 May 2025 09:27:58 -0400
+	id 1uJBOe-0007ca-OT; Sun, 25 May 2025 09:28:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1uJBON-0007ZY-2U
+ id 1uJBON-0007Zt-L1
  for qemu-devel@nongnu.org; Sun, 25 May 2025 09:27:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1uJBOL-0003MN-1y
- for qemu-devel@nongnu.org; Sun, 25 May 2025 09:27:54 -0400
+ id 1uJBOL-0003MU-TB
+ for qemu-devel@nongnu.org; Sun, 25 May 2025 09:27:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748179672;
+ s=mimecast20190719; t=1748179673;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uGQQjmsFQDOZCLUWla4tbc9wwaNUFpGpLEggjyCxOWY=;
- b=gzODGqx79j/u2HMGuBccj8acf6D8l9dfmPEaUziCZnwPRRnn+kIVo1Sq2I3I7e6SlCZZVb
- rxijbGj/knjue0fEfBTtS0QVIFF8pSof6ollUytoWIjQsBf6J8AM2XIqsTv3wJLAtEp5W6
- b29cIAQ+JaQGbj08YDZhTezPCdVaXGA=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ bh=dFvrH2+9GANTq3N03obPSF9VQnhO5Ah93xhdKnav2dY=;
+ b=GMu9ntdFQxfpceQfjR875R+vdnk6Yi22wya85WP5nUd8mil6nzBfuTkPie116FFWE3yEDd
+ KTm4XKa8b1SngprxXg/Zgt7/YXYuB3i1MSXdUEb3OuAws2ursgD2lLRBSE+hJJ8qD0NBnA
+ LGzJbYQZVcI+qipa1YC00HOcbotpw84=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-168-cOcm32kANVOAQcg5ACGA_A-1; Sun,
- 25 May 2025 09:27:48 -0400
-X-MC-Unique: cOcm32kANVOAQcg5ACGA_A-1
-X-Mimecast-MFC-AGG-ID: cOcm32kANVOAQcg5ACGA_A_1748179667
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-39-sIypGuJJN22k1EBZFpOKUQ-1; Sun,
+ 25 May 2025 09:27:51 -0400
+X-MC-Unique: sIypGuJJN22k1EBZFpOKUQ-1
+X-Mimecast-MFC-AGG-ID: sIypGuJJN22k1EBZFpOKUQ_1748179670
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 131E61800446; Sun, 25 May 2025 13:27:47 +0000 (UTC)
+ by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BB806180045C; Sun, 25 May 2025 13:27:50 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.5])
- by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 763B719560AF; Sun, 25 May 2025 13:27:45 +0000 (UTC)
+ by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 4A9CB1956095; Sun, 25 May 2025 13:27:48 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, BALATON Zoltan <balaton@eik.bme.hu>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+Cc: stefanha@redhat.com, Akihiko Odaki <akihiko.odaki@daynix.com>,
  Gerd Hoffmann <kraxel@redhat.com>,
- Christian Schoenebeck <qemu_oss@crudebyte.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>
-Subject: [PULL 8/9] alsaaudio: Set try-poll to false by default
-Date: Sun, 25 May 2025 15:27:15 +0200
-Message-ID: <20250525132717.527392-9-marcandre.lureau@redhat.com>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PULL 9/9] audio: Reset rate control when adding bytes
+Date: Sun, 25 May 2025 15:27:16 +0200
+Message-ID: <20250525132717.527392-10-marcandre.lureau@redhat.com>
 In-Reply-To: <20250525132717.527392-1-marcandre.lureau@redhat.com>
 References: <20250525132717.527392-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -59
@@ -87,93 +84,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BALATON Zoltan <balaton@eik.bme.hu>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Quoting Volker Rümelin: "try-poll=on tells the ALSA backend to try to
-use an event loop instead of the audio timer. This works most of the
-time. But the poll event handler in the ALSA backend has a bug. For
-example, if the guest can't provide enough audio frames in time, the
-ALSA buffer is only partly full and the event handler will be called
-again and again on every iteration of the main loop. This increases
-the processor load and the guest has less processor time to provide
-new audio frames in time. I have two examples where a guest can't
-recover from this situation and the guest seems to hang."
+Commit 90320051ea99 ("spiceaudio: add a pcm_ops buffer_get_free
+function") caused to emit messages saying "Resetting rate control"
+frequently when the guest generates no frames.
 
-One reproducer I've found is booting MorphOS demo iso on
-qemu-system-ppc -machine pegasos2 -audio alsa which should play a
-startup sound but instead it freezes. Even when it does not hang it
-plays choppy sound. Volker suggested using command line to set
-try-poll=off saying: "The try-poll=off arguments are typically
-necessary, because the alsa backend has a design issue with
-try-poll=on. If the guest can't provide enough audio frames, it's
-really unhelpful to ask for new audio frames on every main loop
-iteration until the guest can provide enough audio frames. Timer based
-playback doesn't have that problem."
+audio_rate_peek_bytes() resets the rate control when frames < 0 ||
+frames > 65536 where frames is the rate-limited number of frames.
+Resetting when frames < 0 is sensible as the number simply doesn't make
+sense.
 
-But users cannot easily find this option and having a non-working
-default is really unhelpful so to make life easier just set it to
-false by default which works until the issue with the alsa backend can
-be fixed.
+There is a problem when frames > 65536. It implies the guest stopped
+generating frames for a while so it makes sense to reset the rate
+control when the guest resumed generating frames. However, the
+commit mentioned earlier broke this assumption by letting spiceaudio
+call audio_rate_peek_bytes() whether the guest is generating frames or
+not.
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Acked-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-[ Marc-André - Updated QAPI and CLI doc ]
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-Id: <20250316002046.D066A4E6004@zero.eik.bme.hu>
+Reset the rate control in audio_rate_add_bytes(), which is called only
+when actually adding frames, according to the previous call to
+audio_rate_peek_bytes() to avoid frequent rate control resets even when
+the guest generates no frame.
+
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Message-Id: <20250317-rate-v1-1-da9df062747c@daynix.com>
 ---
- qapi/audio.json   | 2 +-
- audio/alsaaudio.c | 2 +-
- qemu-options.hx   | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ audio/audio_int.h |  1 +
+ audio/audio.c     | 14 ++++++++------
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/qapi/audio.json b/qapi/audio.json
-index dd5a58d13e..49633cf317 100644
---- a/qapi/audio.json
-+++ b/qapi/audio.json
-@@ -96,7 +96,7 @@
- # @period-length: the period length in microseconds
- #
- # @try-poll: attempt to use poll mode, falling back to non-polling
--#     access on failure (default true)
-+#     access on failure (default false)
- #
- # Since: 4.0
- ##
-diff --git a/audio/alsaaudio.c b/audio/alsaaudio.c
-index cacae1ea59..9b6c01c0ef 100644
---- a/audio/alsaaudio.c
-+++ b/audio/alsaaudio.c
-@@ -899,7 +899,7 @@ static void alsa_enable_in(HWVoiceIn *hw, bool enable)
- static void alsa_init_per_direction(AudiodevAlsaPerDirectionOptions *apdo)
- {
-     if (!apdo->has_try_poll) {
--        apdo->try_poll = true;
-+        apdo->try_poll = false;
-         apdo->has_try_poll = true;
-     }
+diff --git a/audio/audio_int.h b/audio/audio_int.h
+index 2d079d00a2..f78ca05f92 100644
+--- a/audio/audio_int.h
++++ b/audio/audio_int.h
+@@ -255,6 +255,7 @@ const char *audio_application_name(void);
+ typedef struct RateCtl {
+     int64_t start_ticks;
+     int64_t bytes_sent;
++    int64_t peeked_frames;
+ } RateCtl;
+ 
+ void audio_rate_start(RateCtl *rate);
+diff --git a/audio/audio.c b/audio/audio.c
+index b58ad74433..89f091bc88 100644
+--- a/audio/audio.c
++++ b/audio/audio.c
+@@ -2283,17 +2283,19 @@ size_t audio_rate_peek_bytes(RateCtl *rate, struct audio_pcm_info *info)
+     ticks = now - rate->start_ticks;
+     bytes = muldiv64(ticks, info->bytes_per_second, NANOSECONDS_PER_SECOND);
+     frames = (bytes - rate->bytes_sent) / info->bytes_per_frame;
+-    if (frames < 0 || frames > 65536) {
+-        AUD_log(NULL, "Resetting rate control (%" PRId64 " frames)\n", frames);
+-        audio_rate_start(rate);
+-        frames = 0;
+-    }
++    rate->peeked_frames = frames;
+ 
+-    return frames * info->bytes_per_frame;
++    return frames < 0 ? 0 : frames * info->bytes_per_frame;
  }
-diff --git a/qemu-options.hx b/qemu-options.hx
-index aab53bcfe8..7eb8e02b4b 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -965,7 +965,7 @@ SRST
-         Sets the period length in microseconds.
  
-     ``in|out.try-poll=on|off``
--        Attempt to use poll mode with the device. Default is on.
-+        Attempt to use poll mode with the device. Default is off.
+ void audio_rate_add_bytes(RateCtl *rate, size_t bytes_used)
+ {
++    if (rate->peeked_frames < 0 || rate->peeked_frames > 65536) {
++        AUD_log(NULL, "Resetting rate control (%" PRId64 " frames)\n",
++                rate->peeked_frames);
++        audio_rate_start(rate);
++    }
++
+     rate->bytes_sent += bytes_used;
+ }
  
-     ``threshold=threshold``
-         Threshold (in microseconds) when playback starts. Default is 0.
-@@ -1002,7 +1002,7 @@ SRST
-     ``in|out.buffer-count=count``
-         Sets the count of the buffers.
- 
--    ``in|out.try-poll=on|of``
-+    ``in|out.try-poll=on|off``
-         Attempt to use poll mode with the device. Default is on.
- 
-     ``try-mmap=on|off``
 -- 
 2.49.0
 
