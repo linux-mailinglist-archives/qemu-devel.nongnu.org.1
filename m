@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02A04AC339D
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 11:48:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59304AC33A6
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 11:49:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJ7uc-0001bq-Eu; Sun, 25 May 2025 05:44:58 -0400
+	id 1uJ7ud-0001jT-Vm; Sun, 25 May 2025 05:45:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJ7uY-0001QW-4n; Sun, 25 May 2025 05:44:54 -0400
+ id 1uJ7uY-0001Rq-8X; Sun, 25 May 2025 05:44:54 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJ7uV-0004m6-R1; Sun, 25 May 2025 05:44:53 -0400
+ id 1uJ7uW-0004oq-7w; Sun, 25 May 2025 05:44:53 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 03862124DEE;
+ by isrv.corpit.ru (Postfix) with ESMTP id 0A884124DEF;
  Sun, 25 May 2025 12:42:48 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id D2AD8215F16;
+ by tsrv.corpit.ru (Postfix) with ESMTP id E4EB1215F17;
  Sun, 25 May 2025 12:42:48 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Helge Deller <deller@gmx.de>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.4 60/62] target/hppa: Copy instruction code into fr1 on
- FPU assist fault
-Date: Sun, 25 May 2025 12:42:43 +0300
-Message-Id: <20250525094246.174612-26-mjt@tls.msk.ru>
+Subject: [Stable-9.2.4 61/62] linux-user/hppa: Send proper si_code on SIGFPE
+ exception
+Date: Sun, 25 May 2025 12:42:44 +0300
+Message-Id: <20250525094246.174612-27-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.4-20250525112803@cover.tls.msk.ru>
 References: <qemu-stable-9.2.4-20250525112803@cover.tls.msk.ru>
@@ -60,31 +60,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-The hardware stores the instruction code in the lower bits of the FP
-exception register #1 on FP assist traps.
-This fixes the FP exception handler on Linux, as the Linux kernel uses
-the value to decide on the correct signal which should be pushed into
-userspace (see decode_fpu() in Linux kernel).
+Improve the linux-user emulation to send the correct si_code depending
+on overflow (TARGET_FPE_FLTOVF), underflow (TARGET_FPE_FLTUND), ...
+Note that the hardware stores the relevant flags in FP exception
+register #1, which is actually the lower 32-bits of the 64-bit fr[0]
+register in qemu.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
-(cherry picked from commit 923976dfe367b0bfed45ff660c369f3fe65604a7)
+(cherry picked from commit b4b49cf39dba5f993ad925f204cb820aacfc8e45)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/hppa/int_helper.c b/target/hppa/int_helper.c
-index 58695def82..d87e5a5a34 100644
---- a/target/hppa/int_helper.c
-+++ b/target/hppa/int_helper.c
-@@ -175,6 +175,10 @@ void hppa_cpu_do_interrupt(CPUState *cs)
-                     }
-                 }
-                 env->cr[CR_IIR] = ldl_phys(cs->as, paddr);
-+                if (i == EXCP_ASSIST) {
-+                    /* stuff insn code into bits of FP exception register #1 */
-+                    env->fr[0] |= (env->cr[CR_IIR] & 0x03ffffff);
-+                }
-             }
-             break;
+diff --git a/linux-user/hppa/cpu_loop.c b/linux-user/hppa/cpu_loop.c
+index 23b38ff9b2..13f18d79ab 100644
+--- a/linux-user/hppa/cpu_loop.c
++++ b/linux-user/hppa/cpu_loop.c
+@@ -112,7 +112,7 @@ static abi_ulong hppa_lws(CPUHPPAState *env)
+ void cpu_loop(CPUHPPAState *env)
+ {
+     CPUState *cs = env_cpu(env);
+-    abi_ulong ret;
++    abi_ulong ret, si_code = 0;
+     int trapnr;
  
+     while (1) {
+@@ -169,7 +169,15 @@ void cpu_loop(CPUHPPAState *env)
+             force_sig_fault(TARGET_SIGFPE, TARGET_FPE_CONDTRAP, env->iaoq_f);
+             break;
+         case EXCP_ASSIST:
+-            force_sig_fault(TARGET_SIGFPE, 0, env->iaoq_f);
++            #define set_si_code(mask, val) \
++                if (env->fr[0] & mask) { si_code = val; }
++            set_si_code(R_FPSR_FLG_I_MASK, TARGET_FPE_FLTRES);
++            set_si_code(R_FPSR_FLG_U_MASK, TARGET_FPE_FLTUND);
++            set_si_code(R_FPSR_FLG_O_MASK, TARGET_FPE_FLTOVF);
++            set_si_code(R_FPSR_FLG_Z_MASK, TARGET_FPE_FLTDIV);
++            set_si_code(R_FPSR_FLG_V_MASK, TARGET_FPE_FLTINV);
++            #undef set_si_code
++            force_sig_fault(TARGET_SIGFPE, si_code, env->iaoq_f);
+             break;
+         case EXCP_BREAK:
+             force_sig_fault(TARGET_SIGTRAP, TARGET_TRAP_BRKPT, env->iaoq_f);
 -- 
 2.39.5
 
