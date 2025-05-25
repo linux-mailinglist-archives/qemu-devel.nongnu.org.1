@@ -2,25 +2,25 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A28DAC33A0
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 11:49:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 755EAAC3393
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 11:46:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJ7tE-0007hi-3A; Sun, 25 May 2025 05:43:32 -0400
+	id 1uJ7tH-0007nN-FX; Sun, 25 May 2025 05:43:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJ7tA-0007c2-U8; Sun, 25 May 2025 05:43:28 -0400
+ id 1uJ7tD-0007jb-HV; Sun, 25 May 2025 05:43:31 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJ7t9-0004ZI-80; Sun, 25 May 2025 05:43:28 -0400
+ id 1uJ7tB-0004bb-Iz; Sun, 25 May 2025 05:43:31 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5B43B124DE0;
+ by isrv.corpit.ru (Postfix) with ESMTP id 694EB124DE1;
  Sun, 25 May 2025 12:42:47 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 33F58215F08;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4AAF8215F09;
  Sun, 25 May 2025 12:42:48 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
@@ -29,10 +29,10 @@ Cc: qemu-stable@nongnu.org, Max Chou <max.chou@sifive.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.4 46/62] target/riscv: rvv: Apply vext_check_input_eew to
- vector integer extension instructions(OPMVV)
-Date: Sun, 25 May 2025 12:42:29 +0300
-Message-Id: <20250525094246.174612-12-mjt@tls.msk.ru>
+Subject: [Stable-9.2.4 47/62] target/riscv: rvv: Apply vext_check_input_eew to
+ vector narrow/widen instructions
+Date: Sun, 25 May 2025 12:42:30 +0300
+Message-Id: <20250525094246.174612-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.4-20250525112803@cover.tls.msk.ru>
 References: <qemu-stable-9.2.4-20250525112803@cover.tls.msk.ru>
@@ -64,30 +64,209 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Max Chou <max.chou@sifive.com>
 
 Handle the overlap of source registers with different EEWs.
+The vd of vector widening mul-add instructions is one of the input
+operands.
 
 Co-authored-by: Anton Blanchard <antonb@tenstorrent.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Signed-off-by: Max Chou <max.chou@sifive.com>
-Message-ID: <20250408103938.3623486-8-max.chou@sifive.com>
+Message-ID: <20250408103938.3623486-9-max.chou@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 Cc: qemu-stable@nongnu.org
-(cherry picked from commit 411eefd56a3921ddbfdbadca596e1a8593ce834c)
+(cherry picked from commit 1f090a229f85e662394267680408bd31fd0a99c9)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
+diff --git a/target/riscv/insn_trans/trans_rvbf16.c.inc b/target/riscv/insn_trans/trans_rvbf16.c.inc
+index 0a9cd1ec31..066dc364c5 100644
+--- a/target/riscv/insn_trans/trans_rvbf16.c.inc
++++ b/target/riscv/insn_trans/trans_rvbf16.c.inc
+@@ -119,8 +119,11 @@ static bool trans_vfwmaccbf16_vv(DisasContext *ctx, arg_vfwmaccbf16_vv *a)
+     REQUIRE_FPU;
+     REQUIRE_ZVFBFWMA(ctx);
+ 
++    uint8_t sew = ctx->sew;
+     if (require_rvv(ctx) && vext_check_isa_ill(ctx) && (ctx->sew == MO_16) &&
+-        vext_check_dss(ctx, a->rd, a->rs1, a->rs2, a->vm)) {
++        vext_check_dss(ctx, a->rd, a->rs1, a->rs2, a->vm) &&
++        vext_check_input_eew(ctx, a->rd, sew + 1, a->rs1, sew, a->vm) &&
++        vext_check_input_eew(ctx, a->rd, sew + 1, a->rs2, sew, a->vm)) {
+         uint32_t data = 0;
+ 
+         gen_set_rm_chkfrm(ctx, RISCV_FRM_DYN);
+@@ -146,8 +149,10 @@ static bool trans_vfwmaccbf16_vf(DisasContext *ctx, arg_vfwmaccbf16_vf *a)
+     REQUIRE_FPU;
+     REQUIRE_ZVFBFWMA(ctx);
+ 
++    uint8_t sew = ctx->sew;
+     if (require_rvv(ctx) && (ctx->sew == MO_16) && vext_check_isa_ill(ctx) &&
+-        vext_check_ds(ctx, a->rd, a->rs2, a->vm)) {
++        vext_check_ds(ctx, a->rd, a->rs2, a->vm) &&
++        vext_check_input_eew(ctx, a->rd, sew + 1, a->rs2, sew, a->vm)) {
+         uint32_t data = 0;
+ 
+         gen_set_rm(ctx, RISCV_FRM_DYN);
 diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
-index d72792e46a..585ee98b27 100644
+index 585ee98b27..2d067a59e2 100644
 --- a/target/riscv/insn_trans/trans_rvv.c.inc
 +++ b/target/riscv/insn_trans/trans_rvv.c.inc
-@@ -3659,7 +3659,9 @@ static bool int_ext_check(DisasContext *s, arg_rmr *a, uint8_t div)
-         require_align(a->rd, s->lmul) &&
-         require_align(a->rs2, s->lmul - div) &&
-         require_vm(a->vm, a->rd) &&
--        require_noover(a->rd, s->lmul, a->rs2, s->lmul - div);
-+        require_noover(a->rd, s->lmul, a->rs2, s->lmul - div) &&
-+        vext_check_input_eew(s, -1, 0, a->rs2, s->sew, a->vm);
-+
-     return ret;
+@@ -528,6 +528,7 @@ static bool vext_narrow_check_common(DisasContext *s, int vd, int vs2,
+ static bool vext_check_ds(DisasContext *s, int vd, int vs, int vm)
+ {
+     return vext_wide_check_common(s, vd, vm) &&
++           vext_check_input_eew(s, vs, s->sew, -1, 0, vm) &&
+            require_align(vs, s->lmul) &&
+            require_noover(vd, s->lmul + 1, vs, s->lmul);
  }
+@@ -535,6 +536,7 @@ static bool vext_check_ds(DisasContext *s, int vd, int vs, int vm)
+ static bool vext_check_dd(DisasContext *s, int vd, int vs, int vm)
+ {
+     return vext_wide_check_common(s, vd, vm) &&
++           vext_check_input_eew(s, vs, s->sew + 1, -1, 0, vm) &&
+            require_align(vs, s->lmul + 1);
+ }
+ 
+@@ -553,6 +555,7 @@ static bool vext_check_dd(DisasContext *s, int vd, int vs, int vm)
+ static bool vext_check_dss(DisasContext *s, int vd, int vs1, int vs2, int vm)
+ {
+     return vext_check_ds(s, vd, vs2, vm) &&
++           vext_check_input_eew(s, vs1, s->sew, vs2, s->sew, vm) &&
+            require_align(vs1, s->lmul) &&
+            require_noover(vd, s->lmul + 1, vs1, s->lmul);
+ }
+@@ -575,12 +578,14 @@ static bool vext_check_dss(DisasContext *s, int vd, int vs1, int vs2, int vm)
+ static bool vext_check_dds(DisasContext *s, int vd, int vs1, int vs2, int vm)
+ {
+     return vext_check_ds(s, vd, vs1, vm) &&
++           vext_check_input_eew(s, vs1, s->sew, vs2, s->sew + 1, vm) &&
+            require_align(vs2, s->lmul + 1);
+ }
+ 
+ static bool vext_check_sd(DisasContext *s, int vd, int vs, int vm)
+ {
+-    bool ret = vext_narrow_check_common(s, vd, vs, vm);
++    bool ret = vext_narrow_check_common(s, vd, vs, vm) &&
++               vext_check_input_eew(s, vs, s->sew + 1, -1, 0, vm);
+     if (vd != vs) {
+         ret &= require_noover(vd, s->lmul, vs, s->lmul + 1);
+     }
+@@ -603,6 +608,7 @@ static bool vext_check_sd(DisasContext *s, int vd, int vs, int vm)
+ static bool vext_check_sds(DisasContext *s, int vd, int vs1, int vs2, int vm)
+ {
+     return vext_check_sd(s, vd, vs2, vm) &&
++           vext_check_input_eew(s, vs1, s->sew, vs2, s->sew + 1, vm) &&
+            require_align(vs1, s->lmul);
+ }
+ 
+@@ -1531,6 +1537,16 @@ static bool opivv_widen_check(DisasContext *s, arg_rmrr *a)
+            vext_check_dss(s, a->rd, a->rs1, a->rs2, a->vm);
+ }
+ 
++/* OPIVV with overwrite and WIDEN */
++static bool opivv_overwrite_widen_check(DisasContext *s, arg_rmrr *a)
++{
++    return require_rvv(s) &&
++           vext_check_isa_ill(s) &&
++           vext_check_dss(s, a->rd, a->rs1, a->rs2, a->vm) &&
++           vext_check_input_eew(s, a->rd, s->sew + 1, a->rs1, s->sew, a->vm) &&
++           vext_check_input_eew(s, a->rd, s->sew + 1, a->rs2, s->sew, a->vm);
++}
++
+ static bool do_opivv_widen(DisasContext *s, arg_rmrr *a,
+                            gen_helper_gvec_4_ptr *fn,
+                            bool (*checkfn)(DisasContext *, arg_rmrr *))
+@@ -1578,6 +1594,14 @@ static bool opivx_widen_check(DisasContext *s, arg_rmrr *a)
+            vext_check_ds(s, a->rd, a->rs2, a->vm);
+ }
+ 
++static bool opivx_overwrite_widen_check(DisasContext *s, arg_rmrr *a)
++{
++    return require_rvv(s) &&
++           vext_check_isa_ill(s) &&
++           vext_check_ds(s, a->rd, a->rs2, a->vm) &&
++           vext_check_input_eew(s, a->rd, s->sew + 1, a->rs2, s->sew, a->vm);
++}
++
+ #define GEN_OPIVX_WIDEN_TRANS(NAME, CHECK) \
+ static bool trans_##NAME(DisasContext *s, arg_rmrr *a)                    \
+ {                                                                         \
+@@ -2049,13 +2073,13 @@ GEN_OPIVX_TRANS(vmadd_vx, opivx_check)
+ GEN_OPIVX_TRANS(vnmsub_vx, opivx_check)
+ 
+ /* Vector Widening Integer Multiply-Add Instructions */
+-GEN_OPIVV_WIDEN_TRANS(vwmaccu_vv, opivv_widen_check)
+-GEN_OPIVV_WIDEN_TRANS(vwmacc_vv, opivv_widen_check)
+-GEN_OPIVV_WIDEN_TRANS(vwmaccsu_vv, opivv_widen_check)
+-GEN_OPIVX_WIDEN_TRANS(vwmaccu_vx, opivx_widen_check)
+-GEN_OPIVX_WIDEN_TRANS(vwmacc_vx, opivx_widen_check)
+-GEN_OPIVX_WIDEN_TRANS(vwmaccsu_vx, opivx_widen_check)
+-GEN_OPIVX_WIDEN_TRANS(vwmaccus_vx, opivx_widen_check)
++GEN_OPIVV_WIDEN_TRANS(vwmaccu_vv, opivv_overwrite_widen_check)
++GEN_OPIVV_WIDEN_TRANS(vwmacc_vv, opivv_overwrite_widen_check)
++GEN_OPIVV_WIDEN_TRANS(vwmaccsu_vv, opivv_overwrite_widen_check)
++GEN_OPIVX_WIDEN_TRANS(vwmaccu_vx, opivx_overwrite_widen_check)
++GEN_OPIVX_WIDEN_TRANS(vwmacc_vx, opivx_overwrite_widen_check)
++GEN_OPIVX_WIDEN_TRANS(vwmaccsu_vx, opivx_overwrite_widen_check)
++GEN_OPIVX_WIDEN_TRANS(vwmaccus_vx, opivx_overwrite_widen_check)
+ 
+ /* Vector Integer Merge and Move Instructions */
+ static bool trans_vmv_v_v(DisasContext *s, arg_vmv_v_v *a)
+@@ -2396,6 +2420,17 @@ static bool opfvv_widen_check(DisasContext *s, arg_rmrr *a)
+            vext_check_dss(s, a->rd, a->rs1, a->rs2, a->vm);
+ }
+ 
++static bool opfvv_overwrite_widen_check(DisasContext *s, arg_rmrr *a)
++{
++    return require_rvv(s) &&
++           require_rvf(s) &&
++           require_scale_rvf(s) &&
++           vext_check_isa_ill(s) &&
++           vext_check_dss(s, a->rd, a->rs1, a->rs2, a->vm) &&
++           vext_check_input_eew(s, a->rd, s->sew + 1, a->rs1, s->sew, a->vm) &&
++           vext_check_input_eew(s, a->rd, s->sew + 1, a->rs2, s->sew, a->vm);
++}
++
+ /* OPFVV with WIDEN */
+ #define GEN_OPFVV_WIDEN_TRANS(NAME, CHECK)                       \
+ static bool trans_##NAME(DisasContext *s, arg_rmrr *a)           \
+@@ -2435,6 +2470,16 @@ static bool opfvf_widen_check(DisasContext *s, arg_rmrr *a)
+            vext_check_ds(s, a->rd, a->rs2, a->vm);
+ }
+ 
++static bool opfvf_overwrite_widen_check(DisasContext *s, arg_rmrr *a)
++{
++    return require_rvv(s) &&
++           require_rvf(s) &&
++           require_scale_rvf(s) &&
++           vext_check_isa_ill(s) &&
++           vext_check_ds(s, a->rd, a->rs2, a->vm) &&
++           vext_check_input_eew(s, a->rd, s->sew + 1, a->rs2, s->sew, a->vm);
++}
++
+ /* OPFVF with WIDEN */
+ #define GEN_OPFVF_WIDEN_TRANS(NAME, CHECK)                       \
+ static bool trans_##NAME(DisasContext *s, arg_rmrr *a)           \
+@@ -2559,14 +2604,14 @@ GEN_OPFVF_TRANS(vfmsub_vf, opfvf_check)
+ GEN_OPFVF_TRANS(vfnmsub_vf, opfvf_check)
+ 
+ /* Vector Widening Floating-Point Fused Multiply-Add Instructions */
+-GEN_OPFVV_WIDEN_TRANS(vfwmacc_vv, opfvv_widen_check)
+-GEN_OPFVV_WIDEN_TRANS(vfwnmacc_vv, opfvv_widen_check)
+-GEN_OPFVV_WIDEN_TRANS(vfwmsac_vv, opfvv_widen_check)
+-GEN_OPFVV_WIDEN_TRANS(vfwnmsac_vv, opfvv_widen_check)
+-GEN_OPFVF_WIDEN_TRANS(vfwmacc_vf, opfvf_widen_check)
+-GEN_OPFVF_WIDEN_TRANS(vfwnmacc_vf, opfvf_widen_check)
+-GEN_OPFVF_WIDEN_TRANS(vfwmsac_vf, opfvf_widen_check)
+-GEN_OPFVF_WIDEN_TRANS(vfwnmsac_vf, opfvf_widen_check)
++GEN_OPFVV_WIDEN_TRANS(vfwmacc_vv, opfvv_overwrite_widen_check)
++GEN_OPFVV_WIDEN_TRANS(vfwnmacc_vv, opfvv_overwrite_widen_check)
++GEN_OPFVV_WIDEN_TRANS(vfwmsac_vv, opfvv_overwrite_widen_check)
++GEN_OPFVV_WIDEN_TRANS(vfwnmsac_vv, opfvv_overwrite_widen_check)
++GEN_OPFVF_WIDEN_TRANS(vfwmacc_vf, opfvf_overwrite_widen_check)
++GEN_OPFVF_WIDEN_TRANS(vfwnmacc_vf, opfvf_overwrite_widen_check)
++GEN_OPFVF_WIDEN_TRANS(vfwmsac_vf, opfvf_overwrite_widen_check)
++GEN_OPFVF_WIDEN_TRANS(vfwnmsac_vf, opfvf_overwrite_widen_check)
+ 
+ /* Vector Floating-Point Square-Root Instruction */
  
 -- 
 2.39.5
