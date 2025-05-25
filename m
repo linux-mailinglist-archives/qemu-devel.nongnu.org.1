@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 559B6AC3460
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:10:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04531AC345C
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:10:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJAAy-0005Gy-3A; Sun, 25 May 2025 08:10:00 -0400
+	id 1uJAB5-0005ax-Ts; Sun, 25 May 2025 08:10:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJA9d-0004Sq-Q2; Sun, 25 May 2025 08:08:37 -0400
+ id 1uJA9g-0004Uv-9M; Sun, 25 May 2025 08:08:41 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJA9a-0003Bl-5y; Sun, 25 May 2025 08:08:36 -0400
+ id 1uJA9d-0003D2-Vc; Sun, 25 May 2025 08:08:39 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 48BF7124E4D;
+ by isrv.corpit.ru (Postfix) with ESMTP id 53511124E4E;
  Sun, 25 May 2025 15:08:17 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 551B9215FB4;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 5FACE215FB5;
  Sun, 25 May 2025 15:08:18 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, =?UTF-8?q?Lo=C3=AFc=20Lefort?= <loic@rivosinc.com>,
- Alistair Francis <alistair.francis@wdc.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- =?UTF-8?q?LIU=20Zhiwei=C2=A0?= <zhiwei_liu@linux.alibaba.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.1 27/59] target/riscv: pmp: don't allow RLB to bypass
- rule privileges
-Date: Sun, 25 May 2025 15:07:44 +0300
-Message-Id: <20250525120818.273372-4-mjt@tls.msk.ru>
+ Alistair Francis <alistair.francis@wdc.com>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.1 28/59] target/riscv: pmp: move Smepmp operation
+ conversion into a function
+Date: Sun, 25 May 2025 15:07:45 +0300
+Message-Id: <20250525120818.273372-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
 References: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
@@ -64,138 +63,63 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Loïc Lefort <loic@rivosinc.com>
 
-When Smepmp is supported, mseccfg.RLB allows bypassing locks when writing CSRs
-but should not affect interpretation of actual PMP rules.
-
-This is not the case with the current implementation where pmp_hart_has_privs
-calls pmp_is_locked which implements mseccfg.RLB bypass.
-
-This commit implements the correct behavior by removing mseccfg.RLB bypass from
-pmp_is_locked.
-
-RLB bypass when writing CSRs is implemented by adding a new pmp_is_readonly
-function that calls pmp_is_locked and check mseccfg.RLB. pmp_write_cfg and
-pmpaddr_csr_write are changed to use this new function.
-
 Signed-off-by: Loïc Lefort <loic@rivosinc.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: LIU Zhiwei  <zhiwei_liu@linux.alibaba.com>
-Message-ID: <20250313193011.720075-2-loic@rivosinc.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Message-ID: <20250313193011.720075-3-loic@rivosinc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 Cc: qemu-stable@nongnu.org
-(cherry picked from commit 4541d205f03cf1529439f68d2ec5056685189399)
+(cherry picked from commit 915b203745540e908943758f78f5da49e0a15e45)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-index b0841d44f4..e1e5ca589e 100644
+index e1e5ca589e..7d65dc24a5 100644
 --- a/target/riscv/pmp.c
 +++ b/target/riscv/pmp.c
-@@ -45,11 +45,6 @@ static inline uint8_t pmp_get_a_field(uint8_t cfg)
-  */
- static inline int pmp_is_locked(CPURISCVState *env, uint32_t pmp_index)
- {
--    /* mseccfg.RLB is set */
--    if (MSECCFG_RLB_ISSET(env)) {
--        return 0;
--    }
--
-     if (env->pmp_state.pmp[pmp_index].cfg_reg & PMP_LOCK) {
-         return 1;
-     }
-@@ -62,6 +57,15 @@ static inline int pmp_is_locked(CPURISCVState *env, uint32_t pmp_index)
-     return 0;
- }
+@@ -31,6 +31,15 @@ static bool pmp_write_cfg(CPURISCVState *env, uint32_t addr_index,
+                           uint8_t val);
+ static uint8_t pmp_read_cfg(CPURISCVState *env, uint32_t addr_index);
  
 +/*
-+ * Check whether a PMP is locked for writing or not.
-+ * (i.e. has LOCK flag and mseccfg.RLB is unset)
++ * Convert the PMP permissions to match the truth table in the Smepmp spec.
 + */
-+static int pmp_is_readonly(CPURISCVState *env, uint32_t pmp_index)
++static inline uint8_t pmp_get_smepmp_operation(uint8_t cfg)
 +{
-+    return pmp_is_locked(env, pmp_index) && !MSECCFG_RLB_ISSET(env);
++    return ((cfg & PMP_LOCK) >> 4) | ((cfg & PMP_READ) << 2) |
++           (cfg & PMP_WRITE) | ((cfg & PMP_EXEC) >> 2);
 +}
 +
  /*
-  * Count the number of active rules.
+  * Accessor method to extract address matching type 'a field' from cfg reg
   */
-@@ -90,39 +94,38 @@ static inline uint8_t pmp_read_cfg(CPURISCVState *env, uint32_t pmp_index)
- static bool pmp_write_cfg(CPURISCVState *env, uint32_t pmp_index, uint8_t val)
- {
-     if (pmp_index < MAX_RISCV_PMPS) {
--        bool locked = true;
-+        bool readonly = true;
+@@ -355,16 +364,6 @@ bool pmp_hart_has_privs(CPURISCVState *env, hwaddr addr,
+         const uint8_t a_field =
+             pmp_get_a_field(env->pmp_state.pmp[i].cfg_reg);
  
-         if (riscv_cpu_cfg(env)->ext_smepmp) {
-             /* mseccfg.RLB is set */
-             if (MSECCFG_RLB_ISSET(env)) {
--                locked = false;
-+                readonly = false;
-             }
- 
-             /* mseccfg.MML is not set */
--            if (!MSECCFG_MML_ISSET(env) && !pmp_is_locked(env, pmp_index)) {
--                locked = false;
-+            if (!MSECCFG_MML_ISSET(env) && !pmp_is_readonly(env, pmp_index)) {
-+                readonly = false;
-             }
- 
-             /* mseccfg.MML is set */
-             if (MSECCFG_MML_ISSET(env)) {
-                 /* not adding execute bit */
-                 if ((val & PMP_LOCK) != 0 && (val & PMP_EXEC) != PMP_EXEC) {
--                    locked = false;
-+                    readonly = false;
-                 }
-                 /* shared region and not adding X bit */
-                 if ((val & PMP_LOCK) != PMP_LOCK &&
-                     (val & 0x7) != (PMP_WRITE | PMP_EXEC)) {
--                    locked = false;
-+                    readonly = false;
-                 }
-             }
-         } else {
--            if (!pmp_is_locked(env, pmp_index)) {
--                locked = false;
--            }
-+            readonly = pmp_is_readonly(env, pmp_index);
-         }
- 
--        if (locked) {
--            qemu_log_mask(LOG_GUEST_ERROR, "ignoring pmpcfg write - locked\n");
-+        if (readonly) {
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "ignoring pmpcfg write - read only\n");
-         } else if (env->pmp_state.pmp[pmp_index].cfg_reg != val) {
-             /* If !mseccfg.MML then ignore writes with encoding RW=01 */
-             if ((val & PMP_WRITE) && !(val & PMP_READ) &&
-@@ -524,14 +527,14 @@ void pmpaddr_csr_write(CPURISCVState *env, uint32_t addr_index,
-             uint8_t pmp_cfg = env->pmp_state.pmp[addr_index + 1].cfg_reg;
-             is_next_cfg_tor = PMP_AMATCH_TOR == pmp_get_a_field(pmp_cfg);
- 
--            if (pmp_is_locked(env, addr_index + 1) && is_next_cfg_tor) {
-+            if (pmp_is_readonly(env, addr_index + 1) && is_next_cfg_tor) {
-                 qemu_log_mask(LOG_GUEST_ERROR,
--                              "ignoring pmpaddr write - pmpcfg + 1 locked\n");
-+                              "ignoring pmpaddr write - pmpcfg+1 read only\n");
-                 return;
-             }
-         }
- 
--        if (!pmp_is_locked(env, addr_index)) {
-+        if (!pmp_is_readonly(env, addr_index)) {
-             if (env->pmp_state.pmp[addr_index].addr_reg != val) {
-                 env->pmp_state.pmp[addr_index].addr_reg = val;
-                 pmp_update_rule_addr(env, addr_index);
-@@ -542,7 +545,7 @@ void pmpaddr_csr_write(CPURISCVState *env, uint32_t addr_index,
-             }
-         } else {
-             qemu_log_mask(LOG_GUEST_ERROR,
--                          "ignoring pmpaddr write - locked\n");
-+                          "ignoring pmpaddr write - read only\n");
-         }
-     } else {
-         qemu_log_mask(LOG_GUEST_ERROR,
+-        /*
+-         * Convert the PMP permissions to match the truth table in the
+-         * Smepmp spec.
+-         */
+-        const uint8_t smepmp_operation =
+-            ((env->pmp_state.pmp[i].cfg_reg & PMP_LOCK) >> 4) |
+-            ((env->pmp_state.pmp[i].cfg_reg & PMP_READ) << 2) |
+-            (env->pmp_state.pmp[i].cfg_reg & PMP_WRITE) |
+-            ((env->pmp_state.pmp[i].cfg_reg & PMP_EXEC) >> 2);
+-
+         if (((s + e) == 2) && (PMP_AMATCH_OFF != a_field)) {
+             /*
+              * If the PMP entry is not off and the address is in range,
+@@ -383,6 +382,9 @@ bool pmp_hart_has_privs(CPURISCVState *env, hwaddr addr,
+                 /*
+                  * If mseccfg.MML Bit set, do the enhanced pmp priv check
+                  */
++                const uint8_t smepmp_operation =
++                    pmp_get_smepmp_operation(env->pmp_state.pmp[i].cfg_reg);
++
+                 if (mode == PRV_M) {
+                     switch (smepmp_operation) {
+                     case 0:
 -- 
 2.39.5
 
