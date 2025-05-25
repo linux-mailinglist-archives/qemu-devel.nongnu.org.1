@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E8F0AC345F
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:10:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CD60AC345A
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:10:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJAAd-0004kC-MW; Sun, 25 May 2025 08:09:43 -0400
+	id 1uJAAx-0005CV-Vl; Sun, 25 May 2025 08:10:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJA9o-0004X9-8W; Sun, 25 May 2025 08:08:48 -0400
+ id 1uJA9t-0004cG-0s; Sun, 25 May 2025 08:08:53 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJA9k-0003Fq-7s; Sun, 25 May 2025 08:08:46 -0400
+ id 1uJA9n-0003IO-SX; Sun, 25 May 2025 08:08:50 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 718DA124E51;
+ by isrv.corpit.ru (Postfix) with ESMTP id 7AED6124E52;
  Sun, 25 May 2025 15:08:17 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 7F757215FB8;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 88882215FB9;
  Sun, 25 May 2025 15:08:18 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Ziqiao Kong <ziqiaokong@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>,
+Cc: qemu-stable@nongnu.org, Icenowy Zheng <uwu@icenowy.me>,
  Richard Henderson <richard.henderson@linaro.org>,
+ Alistair Francis <alistair.francis@wdc.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.1 31/59] target/riscv: fix endless translation loop on
- big endian systems
-Date: Sun, 25 May 2025 15:07:48 +0300
-Message-Id: <20250525120818.273372-8-mjt@tls.msk.ru>
+Subject: [Stable-10.0.1 32/59] common-user/host/riscv: use tail
+ pseudoinstruction for calling tail
+Date: Sun, 25 May 2025 15:07:49 +0300
+Message-Id: <20250525120818.273372-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
 References: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
@@ -60,48 +60,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ziqiao Kong <ziqiaokong@gmail.com>
+From: Icenowy Zheng <uwu@icenowy.me>
 
-On big endian systems, pte and updated_pte hold big endian host data
-while pte_pa points to little endian target data. This means the branch
-at cpu_helper.c:1669 will be always satisfied and restart translation,
-causing an endless translation loop.
+The j pseudoinstruction maps to a JAL instruction, which can only handle
+a jump to somewhere with a signed 20-bit destination. In case of static
+linking and LTO'ing this easily leads to "relocation truncated to fit"
+error.
 
-The correctness of this patch can be deduced by:
+Switch to use tail pseudoinstruction, which is the standard way to
+tail-call a function in medium code model (emits AUIPC+JALR).
 
-old_pte will hold value either from cpu_to_le32/64(pte) or
-cpu_to_le32/64(updated_pte), both of wich is litte endian. After that,
-an in-place conversion by le32/64_to_cpu(old_pte) ensures that old_pte
-now is in native endian, same with pte. Therefore, the endianness of the
-both side of if (old_pte != pte) is correct.
-
-Signed-off-by: Ziqiao Kong <ziqiaokong@gmail.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20250415080254.3667878-2-ziqiaokong@gmail.com>
+Message-ID: <20250417072206.364008-1-uwu@icenowy.me>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 Cc: qemu-stable@nongnu.org
-(cherry picked from commit ad63158bdb33dab5704ea1cf740d2ea0387175df)
+(cherry picked from commit 22b448ccc6611a59d4aa54419f4d88c1f343cb35)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 6c4391d96b..3233b66e7e 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -1662,9 +1662,11 @@ static int get_physical_address(CPURISCVState *env, hwaddr *physical,
-             target_ulong *pte_pa = qemu_map_ram_ptr(mr->ram_block, addr1);
-             target_ulong old_pte;
-             if (riscv_cpu_sxl(env) == MXL_RV32) {
--                old_pte = qatomic_cmpxchg((uint32_t *)pte_pa, pte, updated_pte);
-+                old_pte = qatomic_cmpxchg((uint32_t *)pte_pa, cpu_to_le32(pte), cpu_to_le32(updated_pte));
-+                old_pte = le32_to_cpu(old_pte);
-             } else {
--                old_pte = qatomic_cmpxchg(pte_pa, pte, updated_pte);
-+                old_pte = qatomic_cmpxchg(pte_pa, cpu_to_le64(pte), cpu_to_le64(updated_pte));
-+                old_pte = le64_to_cpu(old_pte);
-             }
-             if (old_pte != pte) {
-                 goto restart;
+diff --git a/common-user/host/riscv/safe-syscall.inc.S b/common-user/host/riscv/safe-syscall.inc.S
+index dfe83c300e..c8b81e33d0 100644
+--- a/common-user/host/riscv/safe-syscall.inc.S
++++ b/common-user/host/riscv/safe-syscall.inc.S
+@@ -69,11 +69,11 @@ safe_syscall_end:
+ 
+         /* code path setting errno */
+ 0:      neg     a0, a0
+-        j       safe_syscall_set_errno_tail
++        tail    safe_syscall_set_errno_tail
+ 
+         /* code path when we didn't execute the syscall */
+ 2:      li      a0, QEMU_ERESTARTSYS
+-        j       safe_syscall_set_errno_tail
++        tail    safe_syscall_set_errno_tail
+ 
+         .cfi_endproc
+         .size   safe_syscall_base, .-safe_syscall_base
 -- 
 2.39.5
 
