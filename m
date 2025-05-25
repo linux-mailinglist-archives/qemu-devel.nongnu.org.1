@@ -2,58 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB88CAC34E6
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 15:28:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFEC5AC34E2
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 15:28:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJBO5-0007UV-Nt; Sun, 25 May 2025 09:27:37 -0400
+	id 1uJBOC-0007WG-HW; Sun, 25 May 2025 09:27:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1uJBO3-0007Tx-7Y
- for qemu-devel@nongnu.org; Sun, 25 May 2025 09:27:35 -0400
+ id 1uJBO9-0007VZ-Mv
+ for qemu-devel@nongnu.org; Sun, 25 May 2025 09:27:41 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1uJBO1-0003KL-Ku
- for qemu-devel@nongnu.org; Sun, 25 May 2025 09:27:34 -0400
+ id 1uJBO8-0003Kh-0P
+ for qemu-devel@nongnu.org; Sun, 25 May 2025 09:27:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748179652;
+ s=mimecast20190719; t=1748179658;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BqlUAxT+hdSLz403cEf2Dsl53ycpIlMX0426Ocr9F4U=;
- b=ijw1ljmtPT+Jf5GbMJKsahxcCxIovbvHyjAGfyCeEGjHBHCMLI6eb5NuFqGfb7cShZJk0c
- mQma9fCr1tD3ssJokmZPqYWgw7rZXz/56kZsG0golo55idGHtmSwfBRsMBQWyJJKZ1YkSl
- U0b9CS67uRUuZvuob4To98xjaPZ6C4Q=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ bh=BDhB1i4A6BjVBlpPJhMtwYfTcIqCx6p1i4XfmTXC0wc=;
+ b=OGD5LwZKvZNReGOq+CYlM3x8v7XupZn80wBpGLEyw4da7jCyyQahWyD9Wg+J1orEAEsO7M
+ O+/BwRADSLLaMHsA5q7tsNEtQ2hUfqbjVknb0c6X9g4zeErDklInR5j4Nal0MnUCsrikfp
+ TfB+h11clMl4bfwWocvkYNWN3oTwdfg=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-505-lO1IB8owPni4NJ4xU90g0g-1; Sun,
- 25 May 2025 09:27:31 -0400
-X-MC-Unique: lO1IB8owPni4NJ4xU90g0g-1
-X-Mimecast-MFC-AGG-ID: lO1IB8owPni4NJ4xU90g0g_1748179650
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-279-0ZnTovqQOmmIY01fCM5e_g-1; Sun,
+ 25 May 2025 09:27:34 -0400
+X-MC-Unique: 0ZnTovqQOmmIY01fCM5e_g-1
+X-Mimecast-MFC-AGG-ID: 0ZnTovqQOmmIY01fCM5e_g_1748179653
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
  (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 684301956080; Sun, 25 May 2025 13:27:30 +0000 (UTC)
+ by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id BA8D418004AD; Sun, 25 May 2025 13:27:33 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.5])
  by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id 262DF1956095; Sun, 25 May 2025 13:27:28 +0000 (UTC)
+ id E0F3319560AB; Sun, 25 May 2025 13:27:32 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
  =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL 3/9] audio: fix size calculation in AUD_get_buffer_size_out()
-Date: Sun, 25 May 2025 15:27:10 +0200
-Message-ID: <20250525132717.527392-4-marcandre.lureau@redhat.com>
+ Laurent Vivier <laurent@vivier.eu>, Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PULL 4/9] hw/audio/asc: fix SIGSEGV in asc_realize()
+Date: Sun, 25 May 2025 15:27:11 +0200
+Message-ID: <20250525132717.527392-5-marcandre.lureau@redhat.com>
 In-Reply-To: <20250525132717.527392-1-marcandre.lureau@redhat.com>
 References: <20250525132717.527392-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
@@ -88,37 +87,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Volker Rümelin <vr_qemu@t-online.de>
 
-The buffer size calculated by AUD_get_buffer_size_out() is often
-incorrect. sw->hw->samples * sw->hw->info.bytes_per_frame is the
-size of the mixing engine buffer in audio frames multiplied by
-the size of one frame of the audio backend. Due to resampling or
-format conversion, the size of the frontend buffer can differ
-significantly.
+AUD_open_out() may fail and return NULL. This may then lead to
+a segmentation fault in memset() below. The memset() behaviour
+is undefined if the pointer to the destination object is a null
+pointer.
 
-Return the correct buffer size when the mixing engine is used.
+Add the missing error handling code.
 
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
-Message-Id: <20250515054429.7385-3-vr_qemu@t-online.de>
+Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Message-Id: <20250515054429.7385-4-vr_qemu@t-online.de>
 ---
- audio/audio.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ hw/audio/asc.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/audio/audio.c b/audio/audio.c
-index 70ef22b1a4..3f5baf0cc6 100644
---- a/audio/audio.c
-+++ b/audio/audio.c
-@@ -909,6 +909,10 @@ int AUD_get_buffer_size_out(SWVoiceOut *sw)
-         return 0;
-     }
+diff --git a/hw/audio/asc.c b/hw/audio/asc.c
+index 18382ccf6a..6721c0d9fb 100644
+--- a/hw/audio/asc.c
++++ b/hw/audio/asc.c
+@@ -12,6 +12,7 @@
  
-+    if (audio_get_pdo_out(sw->s->dev)->mixing_engine) {
-+        return sw->resample_buf.size * sw->info.bytes_per_frame;
+ #include "qemu/osdep.h"
+ #include "qemu/timer.h"
++#include "qapi/error.h"
+ #include "hw/sysbus.h"
+ #include "hw/irq.h"
+ #include "audio/audio.h"
+@@ -653,6 +654,12 @@ static void asc_realize(DeviceState *dev, Error **errp)
+ 
+     s->voice = AUD_open_out(&s->card, s->voice, "asc.out", s, asc_out_cb,
+                             &as);
++    if (!s->voice) {
++        AUD_remove_card(&s->card);
++        error_setg(errp, "Initializing audio stream failed");
++        return;
 +    }
 +
-     return sw->hw->samples * sw->hw->info.bytes_per_frame;
- }
- 
+     s->shift = 1;
+     s->samples = AUD_get_buffer_size_out(s->voice) >> s->shift;
+     s->mixbuf = g_malloc0(s->samples << s->shift);
 -- 
 2.49.0
 
