@@ -2,35 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AACD9AC346C
+	by mail.lfdr.de (Postfix) with ESMTPS id A81ACAC346B
 	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:13:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJACX-000203-NT; Sun, 25 May 2025 08:11:38 -0400
+	id 1uJACl-0002dm-JF; Sun, 25 May 2025 08:11:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJABf-0008Ed-Iq; Sun, 25 May 2025 08:10:45 -0400
+ id 1uJABh-0008IK-Gj; Sun, 25 May 2025 08:10:47 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJABZ-0003sD-V6; Sun, 25 May 2025 08:10:42 -0400
+ id 1uJABf-0003sd-Jl; Sun, 25 May 2025 08:10:45 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 793DC124E64;
+ by isrv.corpit.ru (Postfix) with ESMTP id 814B5124E65;
  Sun, 25 May 2025 15:08:18 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 86FAE215FCB;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 8FC84215FCC;
  Sun, 25 May 2025 15:08:19 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Xiaoyao Li <xiaoyao.li@intel.com>,
- Ewan Hai <ewanhai-oc@zhaoxin.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.1 50/59] i386/tcg: Make CPUID_HT and CPUID_EXT3_CMP_LEG
- supported
-Date: Sun, 25 May 2025 15:08:07 +0300
-Message-Id: <20250525120818.273372-27-mjt@tls.msk.ru>
+ Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.1 51/59] i386/hvf: Make CPUID_HT supported
+Date: Sun, 25 May 2025 15:08:08 +0300
+Message-Id: <20250525120818.273372-28-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
 References: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
@@ -61,62 +59,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Since commit c6bd2dd63420 ("i386/cpu: Set up CPUID_HT in
-x86_cpu_expand_features() instead of cpu_x86_cpuid()") and
-commit 99a637a86f55 ("i386/cpu: Set and track CPUID_EXT3_CMP_LEG in
-env->features[FEAT_8000_0001_ECX]"), it gets warnings when booting the
-VM with vcpus >= 2 and with tcg:
+Since Commit c6bd2dd63420 ("i386/cpu: Set up CPUID_HT in
+x86_cpu_expand_features() instead of cpu_x86_cpuid()"), CPUID_HT will be
+set in env->features[] in x86_cpu_expand_features() when vcpus >= 2.
 
-  qemu-system-x86_64: warning: TCG doesn't support requested feature: CPUID.01H:EDX.ht [bit 28]
-  qemu-system-x86_64: warning: TCG doesn't support requested feature: CPUID.80000001H:ECX.cmp-legacy [bit 1]
+Later in x86_cpu_filter_features() it will check against the HVF
+supported bits. It will trigger the warning like
 
-This is because, after the two commits, CPUID_HT and CPUID_EXT3_CMP_LEG
-are set in env->features[] when vcpus >=2 (in x86_cpu_expand_features())
-later in x86_cpu_filter_features() it will check against the TCG supported
-bits. However, current TCG doesn't mark the two bits as supported, hence
-the warnings.
+    qemu-system-x86_64: warning: host doesn't support requested feature: CPUID.01H:EDX.ht [bit 28]
 
-Fix it by adding the two bits to the supported bits of TCG since multiple
-vcpus are supported by TCG.
+Add CPUID_HT to HVF supported CPUID bits to fix it.
 
-Fixes: c6bd2dd63420 ("i386/cpu: Set up CPUID_HT in x86_cpu_expand_features() instead of cpu_x86_cpuid()")
-Fixes: 99a637a86f55 ("i386/cpu: Set and track CPUID_EXT3_CMP_LEG in env->features[FEAT_8000_0001_ECX]")
-Reported-by: Ewan Hai <ewanhai-oc@zhaoxin.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Link: https://lore.kernel.org/r/20250514031652.838763-2-xiaoyao.li@intel.com
+Link: https://lore.kernel.org/r/20250514031652.838763-3-xiaoyao.li@intel.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 5979f50fa9fdbb3fb49e2b498f84faa7503c8ed1)
+(cherry picked from commit 7a48612306768833f8cc87418a5a53e712f26ac1)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 3fb1ec62da..5e12cba1b8 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -774,11 +774,12 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
-           CPUID_PAE | CPUID_MCE | CPUID_CX8 | CPUID_APIC | CPUID_SEP | \
-           CPUID_MTRR | CPUID_PGE | CPUID_MCA | CPUID_CMOV | CPUID_PAT | \
-           CPUID_PSE36 | CPUID_CLFLUSH | CPUID_ACPI | CPUID_MMX | \
--          CPUID_FXSR | CPUID_SSE | CPUID_SSE2 | CPUID_SS | CPUID_DE)
-+          CPUID_FXSR | CPUID_SSE | CPUID_SSE2 | CPUID_SS | CPUID_DE | \
-+          CPUID_HT)
-           /* partly implemented:
-           CPUID_MTRR, CPUID_MCA, CPUID_CLFLUSH (needed for Win64) */
-           /* missing:
--          CPUID_VME, CPUID_DTS, CPUID_SS, CPUID_HT, CPUID_TM, CPUID_PBE */
-+          CPUID_VME, CPUID_DTS, CPUID_SS, CPUID_TM, CPUID_PBE */
- 
- /*
-  * Kernel-only features that can be shown to usermode programs even if
-@@ -846,7 +847,8 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
- 
- #define TCG_EXT3_FEATURES (CPUID_EXT3_LAHF_LM | CPUID_EXT3_SVM | \
-           CPUID_EXT3_CR8LEG | CPUID_EXT3_ABM | CPUID_EXT3_SSE4A | \
--          CPUID_EXT3_3DNOWPREFETCH | CPUID_EXT3_KERNEL_FEATURES)
-+          CPUID_EXT3_3DNOWPREFETCH | CPUID_EXT3_KERNEL_FEATURES | \
-+          CPUID_EXT3_CMP_LEG)
- 
- #define TCG_EXT4_FEATURES 0
- 
+diff --git a/target/i386/hvf/x86_cpuid.c b/target/i386/hvf/x86_cpuid.c
+index ae836f65cc..c59cc25f3d 100644
+--- a/target/i386/hvf/x86_cpuid.c
++++ b/target/i386/hvf/x86_cpuid.c
+@@ -73,7 +73,7 @@ uint32_t hvf_get_supported_cpuid(uint32_t func, uint32_t idx,
+              CPUID_MSR | CPUID_PAE | CPUID_MCE | CPUID_CX8 | CPUID_APIC |
+              CPUID_SEP | CPUID_MTRR | CPUID_PGE | CPUID_MCA | CPUID_CMOV |
+              CPUID_PAT | CPUID_PSE36 | CPUID_CLFLUSH | CPUID_MMX |
+-             CPUID_FXSR | CPUID_SSE | CPUID_SSE2 | CPUID_SS;
++             CPUID_FXSR | CPUID_SSE | CPUID_SSE2 | CPUID_SS | CPUID_HT;
+         ecx &= CPUID_EXT_SSE3 | CPUID_EXT_PCLMULQDQ | CPUID_EXT_SSSE3 |
+              CPUID_EXT_FMA | CPUID_EXT_CX16 | CPUID_EXT_PCID |
+              CPUID_EXT_SSE41 | CPUID_EXT_SSE42 | CPUID_EXT_MOVBE |
 -- 
 2.39.5
 
