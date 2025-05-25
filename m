@@ -2,37 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50AD8AC3469
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:12:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AACD9AC346C
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:13:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJACQ-0001Q2-FC; Sun, 25 May 2025 08:11:31 -0400
+	id 1uJACX-000203-NT; Sun, 25 May 2025 08:11:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJABd-0008C9-Jz; Sun, 25 May 2025 08:10:43 -0400
+ id 1uJABf-0008Ed-Iq; Sun, 25 May 2025 08:10:45 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJABZ-0003pZ-BF; Sun, 25 May 2025 08:10:41 -0400
+ id 1uJABZ-0003sD-V6; Sun, 25 May 2025 08:10:42 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 70399124E63;
+ by isrv.corpit.ru (Postfix) with ESMTP id 793DC124E64;
  Sun, 25 May 2025 15:08:18 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 7D1AF215FCA;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 86FAE215FCB;
  Sun, 25 May 2025 15:08:19 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Andrea Bolognani <abologna@redhat.com>,
- Andrew Jones <ajones@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>,
+Cc: qemu-stable@nongnu.org, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Ewan Hai <ewanhai-oc@zhaoxin.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.1 49/59] target/riscv/kvm: do not read unavailable CSRs
-Date: Sun, 25 May 2025 15:08:06 +0300
-Message-Id: <20250525120818.273372-26-mjt@tls.msk.ru>
+Subject: [Stable-10.0.1 50/59] i386/tcg: Make CPUID_HT and CPUID_EXT3_CMP_LEG
+ supported
+Date: Sun, 25 May 2025 15:08:07 +0300
+Message-Id: <20250525120818.273372-27-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
 References: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
@@ -61,155 +59,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-[1] reports that commit 4db19d5b21 broke a KVM guest running kernel 6.6.
-This happens because the kernel does not know 'senvcfg', making it
-unable to boot because QEMU is reading/wriiting it without any checks.
+Since commit c6bd2dd63420 ("i386/cpu: Set up CPUID_HT in
+x86_cpu_expand_features() instead of cpu_x86_cpuid()") and
+commit 99a637a86f55 ("i386/cpu: Set and track CPUID_EXT3_CMP_LEG in
+env->features[FEAT_8000_0001_ECX]"), it gets warnings when booting the
+VM with vcpus >= 2 and with tcg:
 
-After converting the CSRs to do "automated" get/put reg procedures in
-the previous patch we can now scan for availability. Two functions are
-created:
+  qemu-system-x86_64: warning: TCG doesn't support requested feature: CPUID.01H:EDX.ht [bit 28]
+  qemu-system-x86_64: warning: TCG doesn't support requested feature: CPUID.80000001H:ECX.cmp-legacy [bit 1]
 
-- kvm_riscv_read_csr_cfg_legacy() will check if the CSR exists by brute
-  forcing KVM_GET_ONE_REG in each one of them, interpreting an EINVAL
-  return as indication that the CSR isn't available. This will be use in
-  absence of KVM_GET_REG_LIST;
+This is because, after the two commits, CPUID_HT and CPUID_EXT3_CMP_LEG
+are set in env->features[] when vcpus >=2 (in x86_cpu_expand_features())
+later in x86_cpu_filter_features() it will check against the TCG supported
+bits. However, current TCG doesn't mark the two bits as supported, hence
+the warnings.
 
-- kvm_riscv_read_csr_cfg() will use the existing result of get_reg_list
-  to check if the CSRs ids are present.
+Fix it by adding the two bits to the supported bits of TCG since multiple
+vcpus are supported by TCG.
 
-kvm_riscv_init_multiext_cfg() is now kvm_riscv_init_cfg() to reflect that
-the function is also dealing with CSRs.
-
-[1] https://lore.kernel.org/qemu-riscv/CABJz62OfUDHYkQ0T3rGHStQprf1c7_E0qBLbLKhfv=+jb0SYAw@mail.gmail.com/
-
-Fixes: 4db19d5b21 ("target/riscv/kvm: add missing KVM CSRs")
-Reported-by: Andrea Bolognani <abologna@redhat.com>
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250429124421.223883-7-dbarboza@ventanamicro.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-Cc: qemu-stable@nongnu.org
-(cherry picked from commit f396c217a53d9b7960dd002fbb07cfe1d46b27aa)
+Fixes: c6bd2dd63420 ("i386/cpu: Set up CPUID_HT in x86_cpu_expand_features() instead of cpu_x86_cpuid()")
+Fixes: 99a637a86f55 ("i386/cpu: Set and track CPUID_EXT3_CMP_LEG in env->features[FEAT_8000_0001_ECX]")
+Reported-by: Ewan Hai <ewanhai-oc@zhaoxin.com>
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Link: https://lore.kernel.org/r/20250514031652.838763-2-xiaoyao.li@intel.com
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit 5979f50fa9fdbb3fb49e2b498f84faa7503c8ed1)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 751494a8ec..8001ca153e 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -636,6 +636,10 @@ static int kvm_riscv_get_regs_csr(CPUState *cs)
-     for (i = 0; i < ARRAY_SIZE(kvm_csr_cfgs); i++) {
-         KVMCPUConfig *csr_cfg = &kvm_csr_cfgs[i];
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 3fb1ec62da..5e12cba1b8 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -774,11 +774,12 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
+           CPUID_PAE | CPUID_MCE | CPUID_CX8 | CPUID_APIC | CPUID_SEP | \
+           CPUID_MTRR | CPUID_PGE | CPUID_MCA | CPUID_CMOV | CPUID_PAT | \
+           CPUID_PSE36 | CPUID_CLFLUSH | CPUID_ACPI | CPUID_MMX | \
+-          CPUID_FXSR | CPUID_SSE | CPUID_SSE2 | CPUID_SS | CPUID_DE)
++          CPUID_FXSR | CPUID_SSE | CPUID_SSE2 | CPUID_SS | CPUID_DE | \
++          CPUID_HT)
+           /* partly implemented:
+           CPUID_MTRR, CPUID_MCA, CPUID_CLFLUSH (needed for Win64) */
+           /* missing:
+-          CPUID_VME, CPUID_DTS, CPUID_SS, CPUID_HT, CPUID_TM, CPUID_PBE */
++          CPUID_VME, CPUID_DTS, CPUID_SS, CPUID_TM, CPUID_PBE */
  
-+        if (!csr_cfg->supported) {
-+            continue;
-+        }
-+
-         ret = kvm_get_one_reg(cs, csr_cfg->kvm_reg_id, &reg);
-         if (ret) {
-             return ret;
-@@ -662,6 +666,10 @@ static int kvm_riscv_put_regs_csr(CPUState *cs)
-     for (i = 0; i < ARRAY_SIZE(kvm_csr_cfgs); i++) {
-         KVMCPUConfig *csr_cfg = &kvm_csr_cfgs[i];
+ /*
+  * Kernel-only features that can be shown to usermode programs even if
+@@ -846,7 +847,8 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
  
-+        if (!csr_cfg->supported) {
-+            continue;
-+        }
-+
-         if (KVM_REG_SIZE(csr_cfg->kvm_reg_id) == sizeof(uint32_t)) {
-             reg = kvm_cpu_csr_get_u32(cpu, csr_cfg);
-         } else if (KVM_REG_SIZE(csr_cfg->kvm_reg_id) == sizeof(uint64_t)) {
-@@ -1090,6 +1098,32 @@ static void kvm_riscv_read_multiext_legacy(RISCVCPU *cpu,
-     }
- }
+ #define TCG_EXT3_FEATURES (CPUID_EXT3_LAHF_LM | CPUID_EXT3_SVM | \
+           CPUID_EXT3_CR8LEG | CPUID_EXT3_ABM | CPUID_EXT3_SSE4A | \
+-          CPUID_EXT3_3DNOWPREFETCH | CPUID_EXT3_KERNEL_FEATURES)
++          CPUID_EXT3_3DNOWPREFETCH | CPUID_EXT3_KERNEL_FEATURES | \
++          CPUID_EXT3_CMP_LEG)
  
-+static void kvm_riscv_read_csr_cfg_legacy(KVMScratchCPU *kvmcpu)
-+{
-+    uint64_t val;
-+    int i, ret;
-+
-+    for (i = 0; i < ARRAY_SIZE(kvm_csr_cfgs); i++) {
-+        KVMCPUConfig *csr_cfg = &kvm_csr_cfgs[i];
-+        struct kvm_one_reg reg;
-+
-+        reg.id = csr_cfg->kvm_reg_id;
-+        reg.addr = (uint64_t)&val;
-+        ret = ioctl(kvmcpu->cpufd, KVM_GET_ONE_REG, &reg);
-+        if (ret != 0) {
-+            if (errno == EINVAL) {
-+                csr_cfg->supported = false;
-+            } else {
-+                error_report("Unable to read KVM CSR %s: %s",
-+                             csr_cfg->name, strerror(errno));
-+                exit(EXIT_FAILURE);
-+            }
-+        } else {
-+            csr_cfg->supported = true;
-+        }
-+    }
-+}
-+
- static int uint64_cmp(const void *a, const void *b)
- {
-     uint64_t val1 = *(const uint64_t *)a;
-@@ -1146,7 +1180,26 @@ static void kvm_riscv_read_vlenb(RISCVCPU *cpu, KVMScratchCPU *kvmcpu,
-     }
- }
+ #define TCG_EXT4_FEATURES 0
  
--static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
-+static void kvm_riscv_read_csr_cfg(struct kvm_reg_list *reglist)
-+{
-+    struct kvm_reg_list *reg_search;
-+    uint64_t reg_id;
-+
-+    for (int i = 0; i < ARRAY_SIZE(kvm_csr_cfgs); i++) {
-+        KVMCPUConfig *csr_cfg = &kvm_csr_cfgs[i];
-+
-+        reg_id = csr_cfg->kvm_reg_id;
-+        reg_search = bsearch(&reg_id, reglist->reg, reglist->n,
-+                             sizeof(uint64_t), uint64_cmp);
-+        if (!reg_search) {
-+            continue;
-+        }
-+
-+        csr_cfg->supported = true;
-+    }
-+}
-+
-+static void kvm_riscv_init_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
- {
-     g_autofree struct kvm_reg_list *reglist = NULL;
-     KVMCPUConfig *multi_ext_cfg;
-@@ -1163,7 +1216,9 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
-      * (EINVAL). Use read_legacy() in this case.
-      */
-     if (errno == EINVAL) {
--        return kvm_riscv_read_multiext_legacy(cpu, kvmcpu);
-+        kvm_riscv_read_multiext_legacy(cpu, kvmcpu);
-+        kvm_riscv_read_csr_cfg_legacy(kvmcpu);
-+        return;
-     } else if (errno != E2BIG) {
-         /*
-          * E2BIG is an expected error message for the API since we
-@@ -1226,6 +1281,7 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
-     }
- 
-     kvm_riscv_check_sbi_dbcn_support(cpu, reglist);
-+    kvm_riscv_read_csr_cfg(reglist);
- }
- 
- static void riscv_init_kvm_registers(Object *cpu_obj)
-@@ -1239,7 +1295,7 @@ static void riscv_init_kvm_registers(Object *cpu_obj)
- 
-     kvm_riscv_init_machine_ids(cpu, &kvmcpu);
-     kvm_riscv_init_misa_ext_mask(cpu, &kvmcpu);
--    kvm_riscv_init_multiext_cfg(cpu, &kvmcpu);
-+    kvm_riscv_init_cfg(cpu, &kvmcpu);
- 
-     kvm_riscv_destroy_scratch_vcpu(&kvmcpu);
- }
 -- 
 2.39.5
 
