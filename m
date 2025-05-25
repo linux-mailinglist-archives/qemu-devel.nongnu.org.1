@@ -2,36 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2C39AC33A2
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 11:49:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AD3DAC3387
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 11:44:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJ7tL-0007qB-J7; Sun, 25 May 2025 05:43:39 -0400
+	id 1uJ7tj-000831-08; Sun, 25 May 2025 05:44:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJ7tG-0007oK-LP; Sun, 25 May 2025 05:43:34 -0400
+ id 1uJ7tb-000801-0H; Sun, 25 May 2025 05:43:55 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJ7tE-0004cC-Vv; Sun, 25 May 2025 05:43:34 -0400
+ id 1uJ7tZ-0004cM-Ad; Sun, 25 May 2025 05:43:54 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7D7F8124DE3;
+ by isrv.corpit.ru (Postfix) with ESMTP id 85F90124DE4;
  Sun, 25 May 2025 12:42:47 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 61D43215F0B;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 6B344215F0C;
  Sun, 25 May 2025 12:42:48 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Max Chou <max.chou@sifive.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: qemu-stable@nongnu.org, Anton Blanchard <antonb@tenstorrent.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.4 49/62] target/riscv: Fix the rvv reserved encoding of
- unmasked instructions
-Date: Sun, 25 May 2025 12:42:32 +0300
-Message-Id: <20250525094246.174612-15-mjt@tls.msk.ru>
+Subject: [Stable-9.2.4 50/62] target/riscv: Fix vslidedown with rvv_ta_all_1s
+Date: Sun, 25 May 2025 12:42:33 +0300
+Message-Id: <20250525094246.174612-16-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.4-20250525112803@cover.tls.msk.ru>
 References: <qemu-stable-9.2.4-20250525112803@cover.tls.msk.ru>
@@ -60,55 +58,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Max Chou <max.chou@sifive.com>
+From: Anton Blanchard <antonb@tenstorrent.com>
 
-According to the v spec, the encodings of vcomoress.vm and vector
-mask-register logical instructions with vm=0 are reserved.
+vslidedown always zeroes elements past vl, where it should use the
+tail policy.
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Signed-off-by: Max Chou <max.chou@sifive.com>
-Message-ID: <20250408103938.3623486-11-max.chou@sifive.com>
+Signed-off-by: Anton Blanchard <antonb@tenstorrent.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20250414213006.3509058-1-antonb@tenstorrent.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 Cc: qemu-stable@nongnu.org
-(cherry picked from commit 8539a1244bf240d28917effb88a140eb58e45e88)
+(cherry picked from commit 2669b696e243b64f8ea1a6468dcee255de99f08d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
-index e9139ec1b9..2ba997e269 100644
---- a/target/riscv/insn32.decode
-+++ b/target/riscv/insn32.decode
-@@ -700,14 +700,14 @@ vfredmax_vs     000111 . ..... ..... 001 ..... 1010111 @r_vm
- # Vector widening ordered and unordered float reduction sum
- vfwredusum_vs   110001 . ..... ..... 001 ..... 1010111 @r_vm
- vfwredosum_vs   110011 . ..... ..... 001 ..... 1010111 @r_vm
--vmand_mm        011001 - ..... ..... 010 ..... 1010111 @r
--vmnand_mm       011101 - ..... ..... 010 ..... 1010111 @r
--vmandn_mm       011000 - ..... ..... 010 ..... 1010111 @r
--vmxor_mm        011011 - ..... ..... 010 ..... 1010111 @r
--vmor_mm         011010 - ..... ..... 010 ..... 1010111 @r
--vmnor_mm        011110 - ..... ..... 010 ..... 1010111 @r
--vmorn_mm        011100 - ..... ..... 010 ..... 1010111 @r
--vmxnor_mm       011111 - ..... ..... 010 ..... 1010111 @r
-+vmand_mm        011001 1 ..... ..... 010 ..... 1010111 @r
-+vmnand_mm       011101 1 ..... ..... 010 ..... 1010111 @r
-+vmandn_mm       011000 1 ..... ..... 010 ..... 1010111 @r
-+vmxor_mm        011011 1 ..... ..... 010 ..... 1010111 @r
-+vmor_mm         011010 1 ..... ..... 010 ..... 1010111 @r
-+vmnor_mm        011110 1 ..... ..... 010 ..... 1010111 @r
-+vmorn_mm        011100 1 ..... ..... 010 ..... 1010111 @r
-+vmxnor_mm       011111 1 ..... ..... 010 ..... 1010111 @r
- vcpop_m         010000 . ..... 10000 010 ..... 1010111 @r2_vm
- vfirst_m        010000 . ..... 10001 010 ..... 1010111 @r2_vm
- vmsbf_m         010100 . ..... 00001 010 ..... 1010111 @r2_vm
-@@ -729,7 +729,7 @@ vrgather_vv     001100 . ..... ..... 000 ..... 1010111 @r_vm
- vrgatherei16_vv 001110 . ..... ..... 000 ..... 1010111 @r_vm
- vrgather_vx     001100 . ..... ..... 100 ..... 1010111 @r_vm
- vrgather_vi     001100 . ..... ..... 011 ..... 1010111 @r_vm
--vcompress_vm    010111 - ..... ..... 010 ..... 1010111 @r
-+vcompress_vm    010111 1 ..... ..... 010 ..... 1010111 @r
- vmv1r_v         100111 1 ..... 00000 011 ..... 1010111 @r2rd
- vmv2r_v         100111 1 ..... 00001 011 ..... 1010111 @r2rd
- vmv4r_v         100111 1 ..... 00011 011 ..... 1010111 @r2rd
+diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+index 9394a7233c..0c2f4fe9d2 100644
+--- a/target/riscv/vector_helper.c
++++ b/target/riscv/vector_helper.c
+@@ -5089,9 +5089,11 @@ void HELPER(NAME)(void *vd, void *v0, target_ulong s1, void *vs2,         \
+     }                                                                     \
+                                                                           \
+     for (i = i_max; i < vl; ++i) {                                        \
+-        if (vm || vext_elem_mask(v0, i)) {                                \
+-            *((ETYPE *)vd + H(i)) = 0;                                    \
++        if (!vm && !vext_elem_mask(v0, i)) {                              \
++            vext_set_elems_1s(vd, vma, i * esz, (i + 1) * esz);           \
++            continue;                                                     \
+         }                                                                 \
++        *((ETYPE *)vd + H(i)) = 0;                                        \
+     }                                                                     \
+                                                                           \
+     env->vstart = 0;                                                      \
 -- 
 2.39.5
 
