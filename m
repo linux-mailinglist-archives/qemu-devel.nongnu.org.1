@@ -2,104 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82EF0AC356D
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 17:20:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0092AC356E
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 17:20:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJD9B-00059W-Ku; Sun, 25 May 2025 11:20:21 -0400
+	id 1uJD9Y-0005kz-4h; Sun, 25 May 2025 11:20:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uJD8r-00053q-Cc
- for qemu-devel@nongnu.org; Sun, 25 May 2025 11:20:01 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uJD8p-0006ya-IB
- for qemu-devel@nongnu.org; Sun, 25 May 2025 11:20:01 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3a4d877dfb3so238791f8f.1
- for <qemu-devel@nongnu.org>; Sun, 25 May 2025 08:19:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1748186397; x=1748791197; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=sUcRthyO7NQK7sZA75EGL4Oasjz/aYc7VVal8xGYmY0=;
- b=X2M5UV0+w96d5pN6o+/QanlIyNeV8WlX15GnWoRy8+uoPS1PRjasMWQvaoYvldBvht
- MnOccIMsmJCxHRR6+ejA6pdixzQq53h89WhCwMA9gSV0Rx/67dqW1WwfQ++TLj0MWT1v
- hJodE3J55MIyMmLafzrWIecnBixrmoSVU+bn2IU+CAk7lPKO+mw78tXdCGp04jeuQC6z
- 4RyeYXHr3q5EjzVhkXKILk5ba6Bi4sQZm1mxfB0ySWT8SA/j5/8E8DoaqH1IvjjjJm3T
- 5RK9KHB3SYN8LmTJC8gTdwoBNuL7BsITDvUImZ9Te+x4Qj8tujFU0/5vzLN4v3u6xvud
- aHkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1748186397; x=1748791197;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sUcRthyO7NQK7sZA75EGL4Oasjz/aYc7VVal8xGYmY0=;
- b=HBmHPxFFhQZlG7q/oL1zo43o3bl13qoiDtzqP8AliSJrB4Mu+YOmjANuSsiTpNVcf1
- B6UlFfGUXkHt11DwqHdDN0Z1Y7r34gAHRizzxM8/5FhImlXTlMYnFCrrlpH8QBlqDgMu
- BvZdkaa8K04d6/mpjAjmHl8aBl2n0dIr46CHKRTnes180jHddZYi3NCOkqD4xb25Efsz
- vRtEdqq09mUng1gvkzZUu35xT79KmvHFMPCM3r/X0kTokIJnZhaFy1EqdFFL3b5uH0mj
- sh2jCWz504NXMnoq0dhldnQBF+Lgnnb8PNJkH0You+EmVyWBSu42HwUsBxSpPxGOHP/9
- u0oQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUujzi8RAZ1bw0E8XEZKD+EMJEmS1vEjIzjfmh+KywPbwzQx0IQ+dc/J8o4xoQsNG7ZHcjiznHYFhnv@nongnu.org
-X-Gm-Message-State: AOJu0Yy4DyPTa0O9CDJdFKyvXqI759ZNBzH57TtEg1RIe4kWTCuMVaqk
- 8NtHHXdNOdpVSFU5LeJGVny79yqvkEU8pTnv3fiD6Xk2pubMab/V5WQ9zbRhBUuOPJA=
-X-Gm-Gg: ASbGncsrE6NCAeGtUx/jj4ix3dvhPGdKbHDaUeqUZ1lsjOyuxNO2q7hohKy5peBAhis
- j4TXpuJXTCqImewgkPY5hEORAn3t4q5gKNas+5QV6r4+fEphYuDE/peuJ9MLl4bvWyelYSOqQlc
- 7cxKCdopEYzEiIo8ZMZfcLz/VjRANugTWx+jDRNf/TPmHAr7MxtIyB3j2bHBtMJXc/mjNxB5zgb
- ucu0RmtumBBLF17QZo/YXZyhP1tcWJDjtKIIFAmh4ztXooBGmj4gk3TATJ/yV/5UdWk2ux8O8Jm
- q27IVmj7Cou0PvNhh9o22tHTYoJLdIJ6Ivr9iecMY4gQrYncPM6358BeZiHBRHSCbE/sgsxNJJV
- UslI0zGMgRuuJDng0aKwi+eDbXylQME1P7x4yWw==
-X-Google-Smtp-Source: AGHT+IFlT5i5kKk3Z0SM0a41dpKM6/SUmh8tZRBXgiz7PPSaXTpz+AAwwxzsDzMQnnTRJv/bi4kwdg==
-X-Received: by 2002:a05:6000:2389:b0:3a4:d238:682b with SMTP id
- ffacd0b85a97d-3a4d2386cbamr2446821f8f.51.1748186397110; 
- Sun, 25 May 2025 08:19:57 -0700 (PDT)
-Received: from [10.132.0.213] (17.red-95-127-33.staticip.rima-tde.net.
- [95.127.33.17]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-442ebd6fe86sm301311865e9.0.2025.05.25.08.19.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 25 May 2025 08:19:56 -0700 (PDT)
-Message-ID: <25d9fac2-66c2-4a55-b41c-d932c8a33dee@linaro.org>
-Date: Sun, 25 May 2025 17:19:53 +0200
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uJD9R-0005gb-Bm
+ for qemu-devel@nongnu.org; Sun, 25 May 2025 11:20:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1uJD9P-0007EB-97
+ for qemu-devel@nongnu.org; Sun, 25 May 2025 11:20:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1748186432;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=z3LiA80BnhvqJAqPfyDnsPR6GAW91TqhNbQzzrMd2Hk=;
+ b=LHuntPyrbgoNvOGOz06RNl2m+HNCj5uPCq18gSo3qcxJFfyqYXJWCchnJ8z6PicCcVmZfy
+ PEt0j4DQrSVmAE2kb/bZGc9xJMdVx+nDKvWL0InuPCSt3DPNNeQxMyz9CedMgeK5HakPCX
+ eoeibm8c9hZbBj+GYO+qd7NHGuKEQgs=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-632-dKxKT2HVO5GgVae_ZuCItQ-1; Sun,
+ 25 May 2025 11:20:30 -0400
+X-MC-Unique: dKxKT2HVO5GgVae_ZuCItQ-1
+X-Mimecast-MFC-AGG-ID: dKxKT2HVO5GgVae_ZuCItQ_1748186429
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id 836011956087
+ for <qemu-devel@nongnu.org>; Sun, 25 May 2025 15:20:29 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.24])
+ by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id 9F88519560AB; Sun, 25 May 2025 15:20:28 +0000 (UTC)
+Date: Sun, 25 May 2025 11:20:26 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: marcandre.lureau@redhat.com
+Cc: qemu-devel@nongnu.org,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ stefanha@redhat.com
+Subject: Re: [PULL 00/19] Ui patches
+Message-ID: <20250525152026.GA68441@fedora>
+References: <20250524173514.317886-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 07/20] contrib/plugins: add a scaling factor to the ips
- arg
-To: Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- John Snow <jsnow@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
- <marcandre.lureau@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
- Markus Armbruster <armbru@redhat.com>, David Hildenbrand <david@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org, Mahmoud Mandour <ma.mandourr@gmail.com>,
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Gustavo Romero <gustavo.romero@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>
-References: <20250521164250.135776-1-alex.bennee@linaro.org>
- <20250521164250.135776-8-alex.bennee@linaro.org>
- <2aece273-04e9-48ee-aa97-dfe1d8c0d6d8@daynix.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <2aece273-04e9-48ee-aa97-dfe1d8c0d6d8@daynix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="P7lMs4jm2tu1c1fA"
+Content-Disposition: inline
+In-Reply-To: <20250524173514.317886-1-marcandre.lureau@redhat.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -59
+X-Spam_score: -6.0
+X-Spam_bar: ------
+X-Spam_report: (-6.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.904,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=-1, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_VALIDITY_CERTIFIED_BLOCKED=0.001, RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,50 +85,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/5/25 06:45, Akihiko Odaki wrote:
-> On 2025/05/22 1:42, Alex Bennée wrote:
->> It's easy to get lost in zeros while setting the numbers of
->> instructions per second. Add a scaling suffix to make things simpler.
->>
->> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
->> Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
->>
->> ---
->> v2
->>    - normalise the suffix before a full strcmp0
->>    - check endptr actually set
->>    - fix checkpatch
->>    - scale_entry -> ScaleEntry
->>    - drop hz from suffix
->> ---
->>   contrib/plugins/ips.c | 34 +++++++++++++++++++++++++++++++++-
->>   1 file changed, 33 insertions(+), 1 deletion(-)
->>
->> diff --git a/contrib/plugins/ips.c b/contrib/plugins/ips.c
->> index e5297dbb01..eb4418c25b 100644
->> --- a/contrib/plugins/ips.c
->> +++ b/contrib/plugins/ips.c
->> @@ -129,6 +129,18 @@ static void plugin_exit(qemu_plugin_id_t id, void 
->> *udata)
->>       qemu_plugin_scoreboard_free(vcpus);
->>   }
->> +typedef struct {
->> +    const char *suffix;
->> +    unsigned long multipler;
-> 
-> As I suggested for the previous version, let's use uint32_t or uint64_t.
-> 
->> +} ScaleEntry;
->> +
->> +/* a bit like units.h but not binary */
->> +static 
 
-const
+--P7lMs4jm2tu1c1fA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
->> ScaleEntry scales[] = {
->> +    { "k", 1000 },
->> +    { "m", 1000 * 1000 },
->> +    { "g", 1000 * 1000 * 1000 },
->> +};
+Applied, thanks.
+
+Please update the changelog at https://wiki.qemu.org/ChangeLog/10.1 for any user-visible changes.
+
+--P7lMs4jm2tu1c1fA
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmgzNToACgkQnKSrs4Gr
+c8hYRgf+NG0doCHH6Z4rFuzyeGW/pi/1rb4V5oBoo3WTG1JKCgnsUfY/yAOTIrdb
+A9x82WriRZGUnKZw442m1V1ALkHiOw1MndTKRO0ATcjfbOSqjmIEWMD63G9WkjLp
+Yia4a/Qo2T/1HbbvuvaNW1AG1CADZe4L1PYcoq+Wz2nDtyyYkK8wt8T+/O1b/LT7
+0DJfic4w6hB8db8XUeRnyVHjGpEU7w4XbnMPQSxocWp637niqKKbEIR1YcDwviIp
+8SqjNihQs8gh90ggU0CmJwE6oFL1+aBGRtFmRQd0j7jLo+WVQaCLzCSx4nfvoG9W
+93vsFC1lHbopacGLFo56S1I1Pt4vBg==
+=XPg/
+-----END PGP SIGNATURE-----
+
+--P7lMs4jm2tu1c1fA--
 
 
