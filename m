@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D2D0AC33A8
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 11:49:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03119AC3394
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 11:46:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJ7sp-0006xk-2J; Sun, 25 May 2025 05:43:07 -0400
+	id 1uJ7sn-0006wz-I9; Sun, 25 May 2025 05:43:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJ7si-0006uk-GD; Sun, 25 May 2025 05:43:00 -0400
+ id 1uJ7sk-0006w3-TB; Sun, 25 May 2025 05:43:03 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJ7sh-0004Xa-0C; Sun, 25 May 2025 05:43:00 -0400
+ id 1uJ7sj-0004Xz-4v; Sun, 25 May 2025 05:43:02 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id F17E8124DDB;
- Sun, 25 May 2025 12:42:46 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 076BF124DDC;
+ Sun, 25 May 2025 12:42:47 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id D537C215F03;
+ by tsrv.corpit.ru (Postfix) with ESMTP id DF5F1215F04;
  Sun, 25 May 2025 12:42:47 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Anton Blanchard <antonb@tenstorrent.com>,
+Cc: qemu-stable@nongnu.org, Max Chou <max.chou@sifive.com>,
+ Anton Blanchard <antonb@tenstorrent.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Max Chou <max.chou@sifive.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.4 41/62] target/riscv: rvv: Add CHECK arg to
- GEN_OPFVF_WIDEN_TRANS
-Date: Sun, 25 May 2025 12:42:24 +0300
-Message-Id: <20250525094246.174612-7-mjt@tls.msk.ru>
+Subject: [Stable-9.2.4 42/62] target/riscv: rvv: Apply vext_check_input_eew to
+ vrgather instructions to check mismatched input EEWs encoding constraint
+Date: Sun, 25 May 2025 12:42:25 +0300
+Message-Id: <20250525094246.174612-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.4-20250525112803@cover.tls.msk.ru>
 References: <qemu-stable-9.2.4-20250525112803@cover.tls.msk.ru>
@@ -61,70 +61,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Anton Blanchard <antonb@tenstorrent.com>
+From: Max Chou <max.chou@sifive.com>
 
-Signed-off-by: Anton Blanchard <antonb@tenstorrent.com>
+According to the v spec, a vector register cannot be used to provide source
+operands with more than one EEW for a single instruction.
+The vs1 EEW of vrgatherei16.vv is 16.
+
+Co-authored-by: Anton Blanchard <antonb@tenstorrent.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Max Chou <max.chou@sifive.com>
 Signed-off-by: Max Chou <max.chou@sifive.com>
-Message-ID: <20250408103938.3623486-3-max.chou@sifive.com>
+Message-ID: <20250408103938.3623486-4-max.chou@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 Cc: qemu-stable@nongnu.org
-(cherry picked from commit b0450a101d6c88789d0e8df2bcbef61bc7cd159a)
+(cherry picked from commit 629c2a8dd7506e1cb9b6b7127604641632ac453f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
-index 20b1cb127b..e630f8661e 100644
+index e630f8661e..4a0c9fbeff 100644
 --- a/target/riscv/insn_trans/trans_rvv.c.inc
 +++ b/target/riscv/insn_trans/trans_rvv.c.inc
-@@ -2403,10 +2403,10 @@ static bool opfvf_widen_check(DisasContext *s, arg_rmrr *a)
+@@ -379,6 +379,35 @@ static bool vext_check_ld_index(DisasContext *s, int vd, int vs2,
+     return ret;
  }
  
- /* OPFVF with WIDEN */
--#define GEN_OPFVF_WIDEN_TRANS(NAME)                              \
-+#define GEN_OPFVF_WIDEN_TRANS(NAME, CHECK)                       \
- static bool trans_##NAME(DisasContext *s, arg_rmrr *a)           \
- {                                                                \
--    if (opfvf_widen_check(s, a)) {                               \
-+    if (CHECK(s, a)) {                                           \
-         uint32_t data = 0;                                       \
-         static gen_helper_opfvf *const fns[2] = {                \
-             gen_helper_##NAME##_h, gen_helper_##NAME##_w,        \
-@@ -2422,8 +2422,8 @@ static bool trans_##NAME(DisasContext *s, arg_rmrr *a)           \
-     return false;                                                \
- }
- 
--GEN_OPFVF_WIDEN_TRANS(vfwadd_vf)
--GEN_OPFVF_WIDEN_TRANS(vfwsub_vf)
-+GEN_OPFVF_WIDEN_TRANS(vfwadd_vf, opfvf_widen_check)
-+GEN_OPFVF_WIDEN_TRANS(vfwsub_vf, opfvf_widen_check)
- 
- static bool opfwv_widen_check(DisasContext *s, arg_rmrr *a)
++/*
++ * Check whether a vector register is used to provide source operands with
++ * more than one EEW for the vector instruction.
++ * Returns true if the instruction has valid encoding
++ * Returns false if encoding violates the mismatched input EEWs constraint
++ */
++static bool vext_check_input_eew(DisasContext *s, int vs1, uint8_t eew_vs1,
++                                 int vs2, uint8_t eew_vs2, int vm)
++{
++    bool is_valid = true;
++    int8_t emul_vs1 = eew_vs1 - s->sew + s->lmul;
++    int8_t emul_vs2 = eew_vs2 - s->sew + s->lmul;
++
++    /* When vm is 0, vs1 & vs2(EEW!=1) group can't overlap v0 (EEW=1) */
++    if ((vs1 != -1 && !require_vm(vm, vs1)) ||
++        (vs2 != -1 && !require_vm(vm, vs2))) {
++        is_valid = false;
++    }
++
++    /* When eew_vs1 != eew_vs2, check whether vs1 and vs2 are overlapped */
++    if ((vs1 != -1 && vs2 != -1) && (eew_vs1 != eew_vs2) &&
++        is_overlapped(vs1, 1 << MAX(emul_vs1, 0),
++                      vs2, 1 << MAX(emul_vs2, 0))) {
++        is_valid = false;
++    }
++
++    return is_valid;
++}
++
+ static bool vext_check_ss(DisasContext *s, int vd, int vs, int vm)
  {
-@@ -2505,7 +2505,7 @@ GEN_OPFVF_TRANS(vfrdiv_vf,  opfvf_check)
- 
- /* Vector Widening Floating-Point Multiply */
- GEN_OPFVV_WIDEN_TRANS(vfwmul_vv, opfvv_widen_check)
--GEN_OPFVF_WIDEN_TRANS(vfwmul_vf)
-+GEN_OPFVF_WIDEN_TRANS(vfwmul_vf, opfvf_widen_check)
- 
- /* Vector Single-Width Floating-Point Fused Multiply-Add Instructions */
- GEN_OPFVV_TRANS(vfmacc_vv, opfvv_check)
-@@ -2530,10 +2530,10 @@ GEN_OPFVV_WIDEN_TRANS(vfwmacc_vv, opfvv_widen_check)
- GEN_OPFVV_WIDEN_TRANS(vfwnmacc_vv, opfvv_widen_check)
- GEN_OPFVV_WIDEN_TRANS(vfwmsac_vv, opfvv_widen_check)
- GEN_OPFVV_WIDEN_TRANS(vfwnmsac_vv, opfvv_widen_check)
--GEN_OPFVF_WIDEN_TRANS(vfwmacc_vf)
--GEN_OPFVF_WIDEN_TRANS(vfwnmacc_vf)
--GEN_OPFVF_WIDEN_TRANS(vfwmsac_vf)
--GEN_OPFVF_WIDEN_TRANS(vfwnmsac_vf)
-+GEN_OPFVF_WIDEN_TRANS(vfwmacc_vf, opfvf_widen_check)
-+GEN_OPFVF_WIDEN_TRANS(vfwnmacc_vf, opfvf_widen_check)
-+GEN_OPFVF_WIDEN_TRANS(vfwmsac_vf, opfvf_widen_check)
-+GEN_OPFVF_WIDEN_TRANS(vfwnmsac_vf, opfvf_widen_check)
- 
- /* Vector Floating-Point Square-Root Instruction */
- 
+     return require_vm(vm, vd) &&
+@@ -3449,6 +3478,7 @@ static bool vrgather_vv_check(DisasContext *s, arg_rmrr *a)
+ {
+     return require_rvv(s) &&
+            vext_check_isa_ill(s) &&
++           vext_check_input_eew(s, a->rs1, s->sew, a->rs2, s->sew, a->vm) &&
+            require_align(a->rd, s->lmul) &&
+            require_align(a->rs1, s->lmul) &&
+            require_align(a->rs2, s->lmul) &&
+@@ -3461,6 +3491,7 @@ static bool vrgatherei16_vv_check(DisasContext *s, arg_rmrr *a)
+     int8_t emul = MO_16 - s->sew + s->lmul;
+     return require_rvv(s) &&
+            vext_check_isa_ill(s) &&
++           vext_check_input_eew(s, a->rs1, MO_16, a->rs2, s->sew, a->vm) &&
+            (emul >= -3 && emul <= 3) &&
+            require_align(a->rd, s->lmul) &&
+            require_align(a->rs1, emul) &&
+@@ -3480,6 +3511,7 @@ static bool vrgather_vx_check(DisasContext *s, arg_rmrr *a)
+ {
+     return require_rvv(s) &&
+            vext_check_isa_ill(s) &&
++           vext_check_input_eew(s, -1, MO_64, a->rs2, s->sew, a->vm) &&
+            require_align(a->rd, s->lmul) &&
+            require_align(a->rs2, s->lmul) &&
+            (a->rd != a->rs2) &&
 -- 
 2.39.5
 
