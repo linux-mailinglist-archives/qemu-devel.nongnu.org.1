@@ -2,25 +2,25 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D034DAC346A
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:12:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 738C4AC3463
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:11:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJABv-0008Aw-Sx; Sun, 25 May 2025 08:11:01 -0400
+	id 1uJABG-0006Od-0Y; Sun, 25 May 2025 08:10:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJAA1-0004hK-EG; Sun, 25 May 2025 08:09:04 -0400
+ id 1uJAA6-0004iE-W9; Sun, 25 May 2025 08:09:08 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJA9x-0003Ly-73; Sun, 25 May 2025 08:08:59 -0400
+ id 1uJAA3-0003NT-OS; Sun, 25 May 2025 08:09:05 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 99548124E55;
+ by isrv.corpit.ru (Postfix) with ESMTP id AF363124E56;
  Sun, 25 May 2025 15:08:17 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id A66C7215FBC;
+ by tsrv.corpit.ru (Postfix) with ESMTP id B0395215FBD;
  Sun, 25 May 2025 15:08:18 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
@@ -29,10 +29,10 @@ Cc: qemu-stable@nongnu.org, Max Chou <max.chou@sifive.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.1 35/59] target/riscv: rvv: Apply vext_check_input_eew
- to vrgather instructions to check mismatched input EEWs encoding constraint
-Date: Sun, 25 May 2025 15:07:52 +0300
-Message-Id: <20250525120818.273372-12-mjt@tls.msk.ru>
+Subject: [Stable-10.0.1 36/59] target/riscv: rvv: Apply vext_check_input_eew
+ to OPIVI/OPIVX/OPFVF(vext_check_ss) instructions
+Date: Sun, 25 May 2025 15:07:53 +0300
+Message-Id: <20250525120818.273372-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
 References: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
@@ -63,83 +63,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Max Chou <max.chou@sifive.com>
 
-According to the v spec, a vector register cannot be used to provide source
-operands with more than one EEW for a single instruction.
-The vs1 EEW of vrgatherei16.vv is 16.
+Handle the overlap of source registers with different EEWs.
 
 Co-authored-by: Anton Blanchard <antonb@tenstorrent.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Signed-off-by: Max Chou <max.chou@sifive.com>
-Message-ID: <20250408103938.3623486-4-max.chou@sifive.com>
+Message-ID: <20250408103938.3623486-5-max.chou@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 Cc: qemu-stable@nongnu.org
-(cherry picked from commit 629c2a8dd7506e1cb9b6b7127604641632ac453f)
+(cherry picked from commit fbeaf35838768086b435833cb4dc5182c73ec2bc)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
-index e630f8661e..4a0c9fbeff 100644
+index 4a0c9fbeff..e8197f779e 100644
 --- a/target/riscv/insn_trans/trans_rvv.c.inc
 +++ b/target/riscv/insn_trans/trans_rvv.c.inc
-@@ -379,6 +379,35 @@ static bool vext_check_ld_index(DisasContext *s, int vd, int vs2,
-     return ret;
- }
- 
-+/*
-+ * Check whether a vector register is used to provide source operands with
-+ * more than one EEW for the vector instruction.
-+ * Returns true if the instruction has valid encoding
-+ * Returns false if encoding violates the mismatched input EEWs constraint
-+ */
-+static bool vext_check_input_eew(DisasContext *s, int vs1, uint8_t eew_vs1,
-+                                 int vs2, uint8_t eew_vs2, int vm)
-+{
-+    bool is_valid = true;
-+    int8_t emul_vs1 = eew_vs1 - s->sew + s->lmul;
-+    int8_t emul_vs2 = eew_vs2 - s->sew + s->lmul;
-+
-+    /* When vm is 0, vs1 & vs2(EEW!=1) group can't overlap v0 (EEW=1) */
-+    if ((vs1 != -1 && !require_vm(vm, vs1)) ||
-+        (vs2 != -1 && !require_vm(vm, vs2))) {
-+        is_valid = false;
-+    }
-+
-+    /* When eew_vs1 != eew_vs2, check whether vs1 and vs2 are overlapped */
-+    if ((vs1 != -1 && vs2 != -1) && (eew_vs1 != eew_vs2) &&
-+        is_overlapped(vs1, 1 << MAX(emul_vs1, 0),
-+                      vs2, 1 << MAX(emul_vs2, 0))) {
-+        is_valid = false;
-+    }
-+
-+    return is_valid;
-+}
-+
- static bool vext_check_ss(DisasContext *s, int vd, int vs, int vm)
+@@ -412,7 +412,8 @@ static bool vext_check_ss(DisasContext *s, int vd, int vs, int vm)
  {
      return require_vm(vm, vd) &&
-@@ -3449,6 +3478,7 @@ static bool vrgather_vv_check(DisasContext *s, arg_rmrr *a)
- {
-     return require_rvv(s) &&
-            vext_check_isa_ill(s) &&
-+           vext_check_input_eew(s, a->rs1, s->sew, a->rs2, s->sew, a->vm) &&
-            require_align(a->rd, s->lmul) &&
-            require_align(a->rs1, s->lmul) &&
-            require_align(a->rs2, s->lmul) &&
-@@ -3461,6 +3491,7 @@ static bool vrgatherei16_vv_check(DisasContext *s, arg_rmrr *a)
-     int8_t emul = MO_16 - s->sew + s->lmul;
-     return require_rvv(s) &&
-            vext_check_isa_ill(s) &&
-+           vext_check_input_eew(s, a->rs1, MO_16, a->rs2, s->sew, a->vm) &&
-            (emul >= -3 && emul <= 3) &&
-            require_align(a->rd, s->lmul) &&
-            require_align(a->rs1, emul) &&
-@@ -3480,6 +3511,7 @@ static bool vrgather_vx_check(DisasContext *s, arg_rmrr *a)
- {
-     return require_rvv(s) &&
-            vext_check_isa_ill(s) &&
-+           vext_check_input_eew(s, -1, MO_64, a->rs2, s->sew, a->vm) &&
-            require_align(a->rd, s->lmul) &&
-            require_align(a->rs2, s->lmul) &&
-            (a->rd != a->rs2) &&
+            require_align(vd, s->lmul) &&
+-           require_align(vs, s->lmul);
++           require_align(vs, s->lmul) &&
++           vext_check_input_eew(s, vs, s->sew, -1, s->sew, vm);
+ }
+ 
+ /*
 -- 
 2.39.5
 
