@@ -2,41 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 788A9AC338E
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 11:44:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 793DAAC339B
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 11:48:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJ7se-0006rh-D1; Sun, 25 May 2025 05:42:56 -0400
+	id 1uJ7sh-0006tU-DB; Sun, 25 May 2025 05:42:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJ7sc-0006rQ-Cb; Sun, 25 May 2025 05:42:54 -0400
+ id 1uJ7se-0006sd-Nb; Sun, 25 May 2025 05:42:56 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJ7sa-0004WM-Mv; Sun, 25 May 2025 05:42:54 -0400
+ id 1uJ7sd-0004Wo-6C; Sun, 25 May 2025 05:42:56 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C9099124DD7;
+ by isrv.corpit.ru (Postfix) with ESMTP id D3C9F124DD8;
  Sun, 25 May 2025 12:42:46 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id AC5DA215EFF;
+ by tsrv.corpit.ru (Postfix) with ESMTP id B6CC5215F00;
  Sun, 25 May 2025 12:42:47 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, =?UTF-8?q?Lo=C3=AFc=20Lefort?= <loic@rivosinc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: qemu-stable@nongnu.org, Ziqiao Kong <ziqiaokong@gmail.com>,
  Alistair Francis <alistair.francis@wdc.com>,
- LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.4 37/62] target/riscv: pmp: move Smepmp operation
- conversion into a function
-Date: Sun, 25 May 2025 12:42:20 +0300
-Message-Id: <20250525094246.174612-3-mjt@tls.msk.ru>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.4 38/62] target/riscv: fix endless translation loop on
+ big endian systems
+Date: Sun, 25 May 2025 12:42:21 +0300
+Message-Id: <20250525094246.174612-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.4-20250525112803@cover.tls.msk.ru>
 References: <qemu-stable-9.2.4-20250525112803@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,65 +60,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Loïc Lefort <loic@rivosinc.com>
+From: Ziqiao Kong <ziqiaokong@gmail.com>
 
-Signed-off-by: Loïc Lefort <loic@rivosinc.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+On big endian systems, pte and updated_pte hold big endian host data
+while pte_pa points to little endian target data. This means the branch
+at cpu_helper.c:1669 will be always satisfied and restart translation,
+causing an endless translation loop.
+
+The correctness of this patch can be deduced by:
+
+old_pte will hold value either from cpu_to_le32/64(pte) or
+cpu_to_le32/64(updated_pte), both of wich is litte endian. After that,
+an in-place conversion by le32/64_to_cpu(old_pte) ensures that old_pte
+now is in native endian, same with pte. Therefore, the endianness of the
+both side of if (old_pte != pte) is correct.
+
+Signed-off-by: Ziqiao Kong <ziqiaokong@gmail.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Message-ID: <20250313193011.720075-3-loic@rivosinc.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20250415080254.3667878-2-ziqiaokong@gmail.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 Cc: qemu-stable@nongnu.org
-(cherry picked from commit 915b203745540e908943758f78f5da49e0a15e45)
+(cherry picked from commit ad63158bdb33dab5704ea1cf740d2ea0387175df)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-index a1b36664fc..cfb535638e 100644
---- a/target/riscv/pmp.c
-+++ b/target/riscv/pmp.c
-@@ -31,6 +31,15 @@ static bool pmp_write_cfg(CPURISCVState *env, uint32_t addr_index,
-                           uint8_t val);
- static uint8_t pmp_read_cfg(CPURISCVState *env, uint32_t addr_index);
- 
-+/*
-+ * Convert the PMP permissions to match the truth table in the Smepmp spec.
-+ */
-+static inline uint8_t pmp_get_smepmp_operation(uint8_t cfg)
-+{
-+    return ((cfg & PMP_LOCK) >> 4) | ((cfg & PMP_READ) << 2) |
-+           (cfg & PMP_WRITE) | ((cfg & PMP_EXEC) >> 2);
-+}
-+
- /*
-  * Accessor method to extract address matching type 'a field' from cfg reg
-  */
-@@ -352,16 +361,6 @@ bool pmp_hart_has_privs(CPURISCVState *env, hwaddr addr,
-         const uint8_t a_field =
-             pmp_get_a_field(env->pmp_state.pmp[i].cfg_reg);
- 
--        /*
--         * Convert the PMP permissions to match the truth table in the
--         * Smepmp spec.
--         */
--        const uint8_t smepmp_operation =
--            ((env->pmp_state.pmp[i].cfg_reg & PMP_LOCK) >> 4) |
--            ((env->pmp_state.pmp[i].cfg_reg & PMP_READ) << 2) |
--            (env->pmp_state.pmp[i].cfg_reg & PMP_WRITE) |
--            ((env->pmp_state.pmp[i].cfg_reg & PMP_EXEC) >> 2);
--
-         if (((s + e) == 2) && (PMP_AMATCH_OFF != a_field)) {
-             /*
-              * If the PMP entry is not off and the address is in range,
-@@ -380,6 +379,9 @@ bool pmp_hart_has_privs(CPURISCVState *env, hwaddr addr,
-                 /*
-                  * If mseccfg.MML Bit set, do the enhanced pmp priv check
-                  */
-+                const uint8_t smepmp_operation =
-+                    pmp_get_smepmp_operation(env->pmp_state.pmp[i].cfg_reg);
-+
-                 if (mode == PRV_M) {
-                     switch (smepmp_operation) {
-                     case 0:
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index dfd6a9d149..803d87479c 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -1240,9 +1240,11 @@ restart:
+ #else
+             target_ulong old_pte;
+             if (riscv_cpu_sxl(env) == MXL_RV32) {
+-                old_pte = qatomic_cmpxchg((uint32_t *)pte_pa, pte, updated_pte);
++                old_pte = qatomic_cmpxchg((uint32_t *)pte_pa, cpu_to_le32(pte), cpu_to_le32(updated_pte));
++                old_pte = le32_to_cpu(old_pte);
+             } else {
+-                old_pte = qatomic_cmpxchg(pte_pa, pte, updated_pte);
++                old_pte = qatomic_cmpxchg(pte_pa, cpu_to_le64(pte), cpu_to_le64(updated_pte));
++                old_pte = le64_to_cpu(old_pte);
+             }
+             if (old_pte != pte) {
+                 goto restart;
 -- 
 2.39.5
 
