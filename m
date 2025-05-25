@@ -2,33 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A81ACAC346B
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:13:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE618AC3476
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:14:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJACl-0002dm-JF; Sun, 25 May 2025 08:11:52 -0400
+	id 1uJACs-0003Qd-Kr; Sun, 25 May 2025 08:11:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJABh-0008IK-Gj; Sun, 25 May 2025 08:10:47 -0400
+ id 1uJABl-0008NT-M9; Sun, 25 May 2025 08:10:51 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJABf-0003sd-Jl; Sun, 25 May 2025 08:10:45 -0400
+ id 1uJABh-0003t8-ON; Sun, 25 May 2025 08:10:49 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 814B5124E65;
+ by isrv.corpit.ru (Postfix) with ESMTP id 8A96E124E66;
  Sun, 25 May 2025 15:08:18 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 8FC84215FCC;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 9805C215FCD;
  Sun, 25 May 2025 15:08:19 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Xiaoyao Li <xiaoyao.li@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.1 51/59] i386/hvf: Make CPUID_HT supported
-Date: Sun, 25 May 2025 15:08:08 +0300
-Message-Id: <20250525120818.273372-28-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Rakesh Jeyasingh <rakeshjb010@gmail.com>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.1 52/59] hw/pci-host/gt64120: Fix endianness handling
+Date: Sun, 25 May 2025 15:08:09 +0300
+Message-Id: <20250525120818.273372-29-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
 References: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
@@ -57,38 +58,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Xiaoyao Li <xiaoyao.li@intel.com>
+From: Rakesh Jeyasingh <rakeshjb010@gmail.com>
 
-Since Commit c6bd2dd63420 ("i386/cpu: Set up CPUID_HT in
-x86_cpu_expand_features() instead of cpu_x86_cpuid()"), CPUID_HT will be
-set in env->features[] in x86_cpu_expand_features() when vcpus >= 2.
+The GT-64120 PCI controller requires special handling where:
+1. Host bridge(bus 0 ,device 0) must never be byte-swapped
+2. Other devices follow MByteSwap bit in GT_PCI0_CMD
 
-Later in x86_cpu_filter_features() it will check against the HVF
-supported bits. It will trigger the warning like
+The previous implementation incorrectly  swapped all accesses, breaking
+host bridge detection (lspci -d 11ab:4620).
 
-    qemu-system-x86_64: warning: host doesn't support requested feature: CPUID.01H:EDX.ht [bit 28]
+Changes made:
+1. Removed gt64120_update_pci_cfgdata_mapping() and moved data_mem initialization
+  to gt64120_realize() for cleaner setup
+2. Implemented custom read/write handlers that:
+   - Preserve host bridge accesses (extract32(config_reg,11,13)==0)
+   - apply swapping only for non-bridge devices in big-endian mode
 
-Add CPUID_HT to HVF supported CPUID bits to fix it.
+Fixes: 145e2198 ("hw/mips/gt64xxx_pci: Endian-swap using PCI_HOST_BRIDGE MemoryRegionOps")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2826
 
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Link: https://lore.kernel.org/r/20250514031652.838763-3-xiaoyao.li@intel.com
+Signed-off-by: Rakesh Jeyasingh <rakeshjb010@gmail.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Link: https://lore.kernel.org/r/20250429170354.150581-2-rakeshjb010@gmail.com
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 7a48612306768833f8cc87418a5a53e712f26ac1)
+(cherry picked from commit e5894fd6f411c113e2b5f62811e96eeb5b084381)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/hvf/x86_cpuid.c b/target/i386/hvf/x86_cpuid.c
-index ae836f65cc..c59cc25f3d 100644
---- a/target/i386/hvf/x86_cpuid.c
-+++ b/target/i386/hvf/x86_cpuid.c
-@@ -73,7 +73,7 @@ uint32_t hvf_get_supported_cpuid(uint32_t func, uint32_t idx,
-              CPUID_MSR | CPUID_PAE | CPUID_MCE | CPUID_CX8 | CPUID_APIC |
-              CPUID_SEP | CPUID_MTRR | CPUID_PGE | CPUID_MCA | CPUID_CMOV |
-              CPUID_PAT | CPUID_PSE36 | CPUID_CLFLUSH | CPUID_MMX |
--             CPUID_FXSR | CPUID_SSE | CPUID_SSE2 | CPUID_SS;
-+             CPUID_FXSR | CPUID_SSE | CPUID_SSE2 | CPUID_SS | CPUID_HT;
-         ecx &= CPUID_EXT_SSE3 | CPUID_EXT_PCLMULQDQ | CPUID_EXT_SSSE3 |
-              CPUID_EXT_FMA | CPUID_EXT_CX16 | CPUID_EXT_PCID |
-              CPUID_EXT_SSE41 | CPUID_EXT_SSE42 | CPUID_EXT_MOVBE |
+diff --git a/hw/pci-host/gt64120.c b/hw/pci-host/gt64120.c
+index d5c13a89b6..7ad44cf2da 100644
+--- a/hw/pci-host/gt64120.c
++++ b/hw/pci-host/gt64120.c
+@@ -320,38 +320,6 @@ static void gt64120_isd_mapping(GT64120State *s)
+     memory_region_transaction_commit();
+ }
+ 
+-static void gt64120_update_pci_cfgdata_mapping(GT64120State *s)
+-{
+-    /* Indexed on MByteSwap bit, see Table 158: PCI_0 Command, Offset: 0xc00 */
+-    static const MemoryRegionOps *pci_host_data_ops[] = {
+-        &pci_host_data_be_ops, &pci_host_data_le_ops
+-    };
+-    PCIHostState *phb = PCI_HOST_BRIDGE(s);
+-
+-    memory_region_transaction_begin();
+-
+-    /*
+-     * The setting of the MByteSwap bit and MWordSwap bit in the PCI Internal
+-     * Command Register determines how data transactions from the CPU to/from
+-     * PCI are handled along with the setting of the Endianness bit in the CPU
+-     * Configuration Register. See:
+-     * - Table 16: 32-bit PCI Transaction Endianness
+-     * - Table 158: PCI_0 Command, Offset: 0xc00
+-     */
+-
+-    if (memory_region_is_mapped(&phb->data_mem)) {
+-        memory_region_del_subregion(&s->ISD_mem, &phb->data_mem);
+-        object_unparent(OBJECT(&phb->data_mem));
+-    }
+-    memory_region_init_io(&phb->data_mem, OBJECT(phb),
+-                          pci_host_data_ops[s->regs[GT_PCI0_CMD] & 1],
+-                          s, "pci-conf-data", 4);
+-    memory_region_add_subregion_overlap(&s->ISD_mem, GT_PCI0_CFGDATA << 2,
+-                                        &phb->data_mem, 1);
+-
+-    memory_region_transaction_commit();
+-}
+-
+ static void gt64120_pci_mapping(GT64120State *s)
+ {
+     memory_region_transaction_begin();
+@@ -645,7 +613,6 @@ static void gt64120_writel(void *opaque, hwaddr addr,
+     case GT_PCI0_CMD:
+     case GT_PCI1_CMD:
+         s->regs[saddr] = val & 0x0401fc0f;
+-        gt64120_update_pci_cfgdata_mapping(s);
+         break;
+     case GT_PCI0_TOR:
+     case GT_PCI0_BS_SCS10:
+@@ -1024,6 +991,48 @@ static const MemoryRegionOps isd_mem_ops = {
+     },
+ };
+ 
++static bool bswap(const GT64120State *s) 
++{
++    PCIHostState *phb = PCI_HOST_BRIDGE(s);
++    /*check for bus == 0 && device == 0, Bits 11:15 = Device , Bits 16:23 = Bus*/
++    bool is_phb_dev0 = extract32(phb->config_reg, 11, 13) == 0;
++    bool le_mode = FIELD_EX32(s->regs[GT_PCI0_CMD], GT_PCI0_CMD, MByteSwap);
++    /* Only swap for non-bridge devices in big-endian mode */
++    return !le_mode && !is_phb_dev0;
++}
++
++static uint64_t gt64120_pci_data_read(void *opaque, hwaddr addr, unsigned size)
++{
++    GT64120State *s = opaque;
++    uint32_t val = pci_host_data_le_ops.read(opaque, addr, size);
++
++    if (bswap(s)) {
++        val = bswap32(val);
++    }
++    return val;
++}
++
++static void gt64120_pci_data_write(void *opaque, hwaddr addr, 
++    uint64_t val, unsigned size)
++{
++    GT64120State *s = opaque;
++
++    if (bswap(s)) {
++        val = bswap32(val); 
++    }
++    pci_host_data_le_ops.write(opaque, addr, val, size);  
++}
++
++static const MemoryRegionOps gt64120_pci_data_ops = {
++    .read = gt64120_pci_data_read,
++    .write = gt64120_pci_data_write,
++    .endianness = DEVICE_LITTLE_ENDIAN,
++    .valid = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
++};
++
+ static void gt64120_reset(DeviceState *dev)
+ {
+     GT64120State *s = GT64120_PCI_HOST_BRIDGE(dev);
+@@ -1178,7 +1187,6 @@ static void gt64120_reset(DeviceState *dev)
+ 
+     gt64120_isd_mapping(s);
+     gt64120_pci_mapping(s);
+-    gt64120_update_pci_cfgdata_mapping(s);
+ }
+ 
+ static void gt64120_realize(DeviceState *dev, Error **errp)
+@@ -1202,6 +1210,12 @@ static void gt64120_realize(DeviceState *dev, Error **errp)
+     memory_region_add_subregion_overlap(&s->ISD_mem, GT_PCI0_CFGADDR << 2,
+                                         &phb->conf_mem, 1);
+ 
++    memory_region_init_io(&phb->data_mem, OBJECT(phb),
++                          &gt64120_pci_data_ops,
++                          s, "pci-conf-data", 4);
++    memory_region_add_subregion_overlap(&s->ISD_mem, GT_PCI0_CFGDATA << 2,
++                                        &phb->data_mem, 1);
++
+ 
+     /*
+      * The whole address space decoded by the GT-64120A doesn't generate
 -- 
 2.39.5
 
