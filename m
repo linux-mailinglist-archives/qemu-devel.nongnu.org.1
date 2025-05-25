@@ -2,40 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 499EFAC339C
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 11:48:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D0D8AC3386
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 11:44:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJ7sb-0006qH-9m; Sun, 25 May 2025 05:42:53 -0400
+	id 1uJ7sf-0006sc-Rn; Sun, 25 May 2025 05:42:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJ7sY-0006pj-O8; Sun, 25 May 2025 05:42:50 -0400
+ id 1uJ7sb-0006rI-QI; Sun, 25 May 2025 05:42:54 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJ7sX-0004Vk-7V; Sun, 25 May 2025 05:42:50 -0400
+ id 1uJ7sa-0004WC-6j; Sun, 25 May 2025 05:42:53 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B5CEC124DD5;
+ by isrv.corpit.ru (Postfix) with ESMTP id BE4E4124DD6;
  Sun, 25 May 2025 12:42:46 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 9A1FB215EFD;
+ by tsrv.corpit.ru (Postfix) with ESMTP id A37FF215EFE;
  Sun, 25 May 2025 12:42:47 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.4 35/62] s390x: Fix leak in machine_set_loadparm
-Date: Sun, 25 May 2025 12:42:18 +0300
-Message-Id: <20250525094246.174612-1-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.4 36/62] virtio: Call set_features during reset
+Date: Sun, 25 May 2025 12:42:19 +0300
+Message-Id: <20250525094246.174612-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.4-20250525112803@cover.tls.msk.ru>
 References: <qemu-stable-9.2.4-20250525112803@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,48 +57,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-ASAN spotted a leaking string in machine_set_loadparm():
+virtio-net expects set_features() will be called when the feature set
+used by the guest changes to update the number of virtqueues but it is
+not called during reset, which will clear all features, leaving the
+queues added for VIRTIO_NET_F_MQ or VIRTIO_NET_F_RSS. Not only these
+extra queues are visible to the guest, they will cause segmentation
+fault during migration.
 
-Direct leak of 9 byte(s) in 1 object(s) allocated from:
-    #0 0x560ffb5bb379 in malloc ../projects/compiler-rt/lib/asan/asan_malloc_linux.cpp:69:3
-    #1 0x7f1aca926518 in g_malloc ../glib/gmem.c:106
-    #2 0x7f1aca94113e in g_strdup ../glib/gstrfuncs.c:364
-    #3 0x560ffc8afbf9 in qobject_input_type_str ../qapi/qobject-input-visitor.c:542:12
-    #4 0x560ffc8a80ff in visit_type_str ../qapi/qapi-visit-core.c:349:10
-    #5 0x560ffbe6053a in machine_set_loadparm ../hw/s390x/s390-virtio-ccw.c:802:10
-    #6 0x560ffc0c5e52 in object_property_set ../qom/object.c:1450:5
-    #7 0x560ffc0d4175 in object_property_set_qobject ../qom/qom-qobject.c:28:10
-    #8 0x560ffc0c6004 in object_property_set_str ../qom/object.c:1458:15
-    #9 0x560ffbe2ae60 in update_machine_ipl_properties ../hw/s390x/ipl.c:569:9
-    #10 0x560ffbe2aa65 in s390_ipl_update_diag308 ../hw/s390x/ipl.c:594:5
-    #11 0x560ffbdee132 in handle_diag_308 ../target/s390x/diag.c:147:9
-    #12 0x560ffbebb956 in helper_diag ../target/s390x/tcg/misc_helper.c:137:9
-    #13 0x7f1a3c51c730  (/memfd:tcg-jit (deleted)+0x39730)
+Call set_features() during reset to remove those queues for virtio-net
+as we call set_status(). It will also prevent similar bugs for
+virtio-net and other devices in the future.
 
+Fixes: f9d6dbf0bf6e ("virtio-net: remove virtio queues if the guest doesn't support multiqueue")
+Buglink: https://issues.redhat.com/browse/RHEL-73842
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Message-ID: <20250509174938.25935-1-farosas@suse.de>
-Fixes: 1fd396e3228 ("s390x: Register TYPE_S390_CCW_MACHINE properties as class properties")
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit bdf12f2a56bf3f13c52eb51f0a994bbfe40706b2)
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Message-Id: <20250421-reset-v2-1-e4c1ead88ea1@daynix.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+(cherry picked from commit 0caed25cd171c611781589b5402161d27d57229c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 54f09cf096..9d66e2e0a9 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -739,6 +739,7 @@ static void machine_set_loadparm(Object *obj, Visitor *v,
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index f12c4aa81e..8378c19a43 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -2316,6 +2316,8 @@ void virtio_queue_enable(VirtIODevice *vdev, uint32_t queue_index)
      }
- 
-     s390_ipl_fmt_loadparm(ms->loadparm, val, errp);
-+    g_free(val);
  }
  
- static void ccw_machine_class_init(ObjectClass *oc, void *data)
++static int virtio_set_features_nocheck(VirtIODevice *vdev, uint64_t val);
++
+ void virtio_reset(void *opaque)
+ {
+     VirtIODevice *vdev = opaque;
+@@ -2346,7 +2348,7 @@ void virtio_reset(void *opaque)
+     vdev->start_on_kick = false;
+     vdev->started = false;
+     vdev->broken = false;
+-    vdev->guest_features = 0;
++    virtio_set_features_nocheck(vdev, 0);
+     vdev->queue_sel = 0;
+     vdev->status = 0;
+     vdev->disabled = false;
 -- 
 2.39.5
 
