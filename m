@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FC29AC3477
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:14:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E15A3AC3473
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:14:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJAEX-0007lr-2m; Sun, 25 May 2025 08:13:41 -0400
+	id 1uJAEj-0008CV-0B; Sun, 25 May 2025 08:13:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJACD-0001Gm-RY; Sun, 25 May 2025 08:11:21 -0400
+ id 1uJACD-0001Gp-Rw; Sun, 25 May 2025 08:11:21 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJACB-0003ux-7O; Sun, 25 May 2025 08:11:16 -0400
+ id 1uJACB-0003v3-Fz; Sun, 25 May 2025 08:11:17 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B95C4124E6A;
+ by isrv.corpit.ru (Postfix) with ESMTP id CCAA4124E6B;
  Sun, 25 May 2025 15:08:18 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id C5316215FD1;
+ by tsrv.corpit.ru (Postfix) with ESMTP id D08BB215FD2;
  Sun, 25 May 2025 15:08:19 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Xu <peterx@redhat.com>,
- "Dr . David Alan Gilbert" <dave@treblig.org>,
- Juraj Marcin <jmarcin@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.1 56/59] migration: Allow caps to be set when preempt or
- multifd cap enabled
-Date: Sun, 25 May 2025 15:08:13 +0300
-Message-Id: <20250525120818.273372-33-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Helge Deller <deller@gmx.de>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.1 57/59] target/hppa: Copy instruction code into fr1 on
+ FPU assist fault
+Date: Sun, 25 May 2025 15:08:14 +0300
+Message-Id: <20250525120818.273372-34-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
 References: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
@@ -59,47 +58,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Xu <peterx@redhat.com>
+From: Helge Deller <deller@gmx.de>
 
-With commit 82137e6c8c ("migration: enforce multifd and postcopy preempt to
-be set before incoming"), and if postcopy preempt / multifd is enabled, one
-cannot setup any capability because these checks would always fail.
+The hardware stores the instruction code in the lower bits of the FP
+exception register #1 on FP assist traps.
+This fixes the FP exception handler on Linux, as the Linux kernel uses
+the value to decide on the correct signal which should be pushed into
+userspace (see decode_fpu() in Linux kernel).
 
-(qemu) migrate_set_capability xbzrle off
-Error: Postcopy preempt must be set before incoming starts
-
-To fix it, check existing cap and only raise an error if the specific cap
-changed.
-
-Fixes: 82137e6c8c ("migration: enforce multifd and postcopy preempt to be set before incoming")
-Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
-Reviewed-by: Juraj Marcin <jmarcin@redhat.com>
-Signed-off-by: Peter Xu <peterx@redhat.com>
-(cherry picked from commit 17bec9235bb0775cf8dec4103c167757ee8898f3)
+Signed-off-by: Helge Deller <deller@gmx.de>
+(cherry picked from commit 923976dfe367b0bfed45ff660c369f3fe65604a7)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/migration/options.c b/migration/options.c
-index b0ac2ea408..5dc290c292 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -555,7 +555,7 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
-             return false;
-         }
+diff --git a/target/hppa/int_helper.c b/target/hppa/int_helper.c
+index 7d48643bb6..191ae19404 100644
+--- a/target/hppa/int_helper.c
++++ b/target/hppa/int_helper.c
+@@ -177,6 +177,10 @@ void hppa_cpu_do_interrupt(CPUState *cs)
+                     }
+                 }
+                 env->cr[CR_IIR] = ldl_phys(cs->as, paddr);
++                if (i == EXCP_ASSIST) {
++                    /* stuff insn code into bits of FP exception register #1 */
++                    env->fr[0] |= (env->cr[CR_IIR] & 0x03ffffff);
++                }
+             }
+             break;
  
--        if (migrate_incoming_started()) {
-+        if (!migrate_postcopy_preempt() && migrate_incoming_started()) {
-             error_setg(errp,
-                        "Postcopy preempt must be set before incoming starts");
-             return false;
-@@ -563,7 +563,7 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
-     }
- 
-     if (new_caps[MIGRATION_CAPABILITY_MULTIFD]) {
--        if (migrate_incoming_started()) {
-+        if (!migrate_multifd() && migrate_incoming_started()) {
-             error_setg(errp, "Multifd must be set before incoming starts");
-             return false;
-         }
 -- 
 2.39.5
 
