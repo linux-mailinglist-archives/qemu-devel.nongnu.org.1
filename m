@@ -2,64 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E29B0AC34EA
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 15:29:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5C2CAC34E3
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 15:28:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJBOC-0007Vt-1u; Sun, 25 May 2025 09:27:44 -0400
+	id 1uJBOJ-0007YG-7O; Sun, 25 May 2025 09:27:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1uJBO9-0007VY-MP
- for qemu-devel@nongnu.org; Sun, 25 May 2025 09:27:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1uJBOE-0007XO-TN
+ for qemu-devel@nongnu.org; Sun, 25 May 2025 09:27:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1uJBO8-0003Kj-08
- for qemu-devel@nongnu.org; Sun, 25 May 2025 09:27:41 -0400
+ id 1uJBOD-0003Lw-75
+ for qemu-devel@nongnu.org; Sun, 25 May 2025 09:27:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1748179659;
+ s=mimecast20190719; t=1748179664;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4zBlc/trBlZVvlSclE+TjFVwrWRwhdoV0H1DLERA2U0=;
- b=cUt1pMZzeHGj6E11OndJUNZFKEl3chFdGTrVfbiC0mLIUbaJH23+IbEptwklk8bhI9q0TG
- u+XZjr4TmmEj9heBfamCnwTC7zAZmXL8CiBUbPvcONlI0tlvjeqVWsiqBJi5c466l+QC8J
- 9YMwa6cyapZwjz5HFwMW0aLsZlYiS5A=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ bh=FLku0fleFOmUk4q9nyUVYXtVJGIVygN4ILzV4cARliE=;
+ b=YZF/lpa0Y3iV+wexO3dN/7VurlVjTcdRxHveDm3N3YLSpjueUDv8LWzb6dgO3RBC5KZuxN
+ 0xA8QGn7+kLWXyszkcbCmx5u1HglOaEMNL04FSpqTzaLLtakxrBeeuRUR3fj4I+aLaW2dg
+ jd1n69M0VQ6CwYf6t29+p7ZarakSIP4=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-287-0x-jPlCWO8K_cTYlWVGtxQ-1; Sun,
- 25 May 2025 09:27:37 -0400
-X-MC-Unique: 0x-jPlCWO8K_cTYlWVGtxQ-1
-X-Mimecast-MFC-AGG-ID: 0x-jPlCWO8K_cTYlWVGtxQ_1748179656
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com
- (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-662-oLvzES_uPX-V1savboGTeQ-1; Sun,
+ 25 May 2025 09:27:40 -0400
+X-MC-Unique: oLvzES_uPX-V1savboGTeQ-1
+X-Mimecast-MFC-AGG-ID: oLvzES_uPX-V1savboGTeQ_1748179660
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com
+ (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
- id 559C61800447; Sun, 25 May 2025 13:27:36 +0000 (UTC)
+ by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS
+ id F3E5219560AA; Sun, 25 May 2025 13:27:39 +0000 (UTC)
 Received: from localhost (unknown [10.45.242.5])
- by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
- id A7A5D1956095; Sun, 25 May 2025 13:27:35 +0000 (UTC)
+ by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP
+ id A0081180045B; Sun, 25 May 2025 13:27:38 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
  =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
- Laurent Vivier <laurent@vivier.eu>, Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 5/9] hw/audio/asc: replace g_malloc0() with g_malloc()
-Date: Sun, 25 May 2025 15:27:12 +0200
-Message-ID: <20250525132717.527392-6-marcandre.lureau@redhat.com>
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PULL 6/9] audio/mixeng: remove unnecessary pointer type casts
+Date: Sun, 25 May 2025 15:27:13 +0200
+Message-ID: <20250525132717.527392-7-marcandre.lureau@redhat.com>
 In-Reply-To: <20250525132717.527392-1-marcandre.lureau@redhat.com>
 References: <20250525132717.527392-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -59
@@ -87,31 +88,56 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Volker Rümelin <vr_qemu@t-online.de>
 
-There is no need to allocate initialized memory with g_malloc0()
-if it's directly followed by a memset() function call. g_malloc()
-is sufficient.
+A simple assignment automatically converts a void pointer type
+to any other pointer type.
 
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
-Message-Id: <20250515054429.7385-5-vr_qemu@t-online.de>
+Message-Id: <20250515054429.7385-6-vr_qemu@t-online.de>
 ---
- hw/audio/asc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ audio/mixeng.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/audio/asc.c b/hw/audio/asc.c
-index 6721c0d9fb..edd42d6d91 100644
---- a/hw/audio/asc.c
-+++ b/hw/audio/asc.c
-@@ -664,7 +664,7 @@ static void asc_realize(DeviceState *dev, Error **errp)
-     s->samples = AUD_get_buffer_size_out(s->voice) >> s->shift;
-     s->mixbuf = g_malloc0(s->samples << s->shift);
+diff --git a/audio/mixeng.c b/audio/mixeng.c
+index 69f6549224..13e1ff9b08 100644
+--- a/audio/mixeng.c
++++ b/audio/mixeng.c
+@@ -286,7 +286,7 @@ static const float float_scale_reciprocal = 1.f / ((int64_t)INT32_MAX + 1);
+ static void conv_natural_float_to_mono(struct st_sample *dst, const void *src,
+                                        int samples)
+ {
+-    float *in = (float *)src;
++    const float *in = src;
  
--    s->silentbuf = g_malloc0(s->samples << s->shift);
-+    s->silentbuf = g_malloc(s->samples << s->shift);
-     memset(s->silentbuf, 0x80, s->samples << s->shift);
+     while (samples--) {
+         dst->r = dst->l = CONV_NATURAL_FLOAT(*in++);
+@@ -297,7 +297,7 @@ static void conv_natural_float_to_mono(struct st_sample *dst, const void *src,
+ static void conv_natural_float_to_stereo(struct st_sample *dst, const void *src,
+                                          int samples)
+ {
+-    float *in = (float *)src;
++    const float *in = src;
  
-     /* Add easc registers if required */
+     while (samples--) {
+         dst->l = CONV_NATURAL_FLOAT(*in++);
+@@ -314,7 +314,7 @@ t_sample *mixeng_conv_float[2] = {
+ static void clip_natural_float_from_mono(void *dst, const struct st_sample *src,
+                                          int samples)
+ {
+-    float *out = (float *)dst;
++    float *out = dst;
+ 
+     while (samples--) {
+         *out++ = CLIP_NATURAL_FLOAT(src->l + src->r);
+@@ -325,7 +325,7 @@ static void clip_natural_float_from_mono(void *dst, const struct st_sample *src,
+ static void clip_natural_float_from_stereo(
+     void *dst, const struct st_sample *src, int samples)
+ {
+-    float *out = (float *)dst;
++    float *out = dst;
+ 
+     while (samples--) {
+         *out++ = CLIP_NATURAL_FLOAT(src->l);
 -- 
 2.49.0
 
