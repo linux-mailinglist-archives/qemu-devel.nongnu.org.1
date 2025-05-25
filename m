@@ -2,25 +2,25 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB5A2AC347D
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:15:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DFA9AC3465
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:12:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJABW-0007KB-DN; Sun, 25 May 2025 08:10:34 -0400
+	id 1uJAC9-0000f9-0r; Sun, 25 May 2025 08:11:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJAB6-0005wV-9V; Sun, 25 May 2025 08:10:08 -0400
+ id 1uJAB8-00060C-0C; Sun, 25 May 2025 08:10:10 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJAB3-0003ZW-ID; Sun, 25 May 2025 08:10:07 -0400
+ id 1uJAB5-0003m6-C0; Sun, 25 May 2025 08:10:09 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3300C124E5E;
+ by isrv.corpit.ru (Postfix) with ESMTP id 47B27124E5F;
  Sun, 25 May 2025 15:08:18 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 403C8215FC5;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 4A4E6215FC6;
  Sun, 25 May 2025 15:08:19 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
@@ -29,9 +29,10 @@ Cc: qemu-stable@nongnu.org,
  Andrew Jones <ajones@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.1 44/59] target/riscv/kvm: minor fixes/tweaks
-Date: Sun, 25 May 2025 15:08:01 +0300
-Message-Id: <20250525120818.273372-21-mjt@tls.msk.ru>
+Subject: [Stable-10.0.1 45/59] target/riscv/kvm: fix leak in
+ kvm_riscv_init_multiext_cfg()
+Date: Sun, 25 May 2025 15:08:02 +0300
+Message-Id: <20250525120818.273372-22-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
 References: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
@@ -62,84 +63,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Remove an unused 'KVMScratchCPU' pointer argument in
-kvm_riscv_check_sbi_dbcn_support().
+'reglist' is being g-malloc'ed but never freed.
 
-Put kvm_riscv_reset_regs_csr() after kvm_riscv_put_regs_csr(). This will
-make a future patch diff easier to read, when changes in
-kvm_riscv_reset_regs_csr() and kvm_riscv_get_regs_csr() will be made.
-
-Fixes: a6b53378f5 ("target/riscv/kvm: implement SBI debug console (DBCN) calls")
+Reported-by: Andrew Jones <ajones@ventanamicro.com>
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20250429124421.223883-2-dbarboza@ventanamicro.com>
+Message-ID: <20250429124421.223883-3-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 Cc: qemu-stable@nongnu.org
-(cherry picked from commit 73f81da0a3628180409a0ae90ece19534bcdf09b)
+(cherry picked from commit 906af6de9462c5192547cca0beac2c134659a437)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 0f4997a918..afe3d3e609 100644
+index afe3d3e609..616360bd04 100644
 --- a/target/riscv/kvm/kvm-cpu.c
 +++ b/target/riscv/kvm/kvm-cpu.c
-@@ -613,19 +613,6 @@ static int kvm_riscv_put_regs_core(CPUState *cs)
-     return ret;
- }
+@@ -1119,10 +1119,10 @@ static void kvm_riscv_read_vlenb(RISCVCPU *cpu, KVMScratchCPU *kvmcpu,
  
--static void kvm_riscv_reset_regs_csr(CPURISCVState *env)
--{
--    env->mstatus = 0;
--    env->mie = 0;
--    env->stvec = 0;
--    env->sscratch = 0;
--    env->sepc = 0;
--    env->scause = 0;
--    env->stval = 0;
--    env->mip = 0;
--    env->satp = 0;
--}
--
- static int kvm_riscv_get_regs_csr(CPUState *cs)
+ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
  {
-     CPURISCVState *env = &RISCV_CPU(cs)->env;
-@@ -660,6 +647,19 @@ static int kvm_riscv_put_regs_csr(CPUState *cs)
-     return 0;
- }
++    g_autofree struct kvm_reg_list *reglist = NULL;
+     KVMCPUConfig *multi_ext_cfg;
+     struct kvm_one_reg reg;
+     struct kvm_reg_list rl_struct;
+-    struct kvm_reg_list *reglist;
+     uint64_t val, reg_id, *reg_search;
+     int i, ret;
  
-+static void kvm_riscv_reset_regs_csr(CPURISCVState *env)
-+{
-+    env->mstatus = 0;
-+    env->mie = 0;
-+    env->stvec = 0;
-+    env->sscratch = 0;
-+    env->sepc = 0;
-+    env->scause = 0;
-+    env->stval = 0;
-+    env->mip = 0;
-+    env->satp = 0;
-+}
-+
- static int kvm_riscv_get_regs_fp(CPUState *cs)
- {
-     int ret = 0;
-@@ -1078,7 +1078,6 @@ static int uint64_cmp(const void *a, const void *b)
- }
- 
- static void kvm_riscv_check_sbi_dbcn_support(RISCVCPU *cpu,
--                                             KVMScratchCPU *kvmcpu,
-                                              struct kvm_reg_list *reglist)
- {
-     struct kvm_reg_list *reg_search;
-@@ -1197,7 +1196,7 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
-         kvm_riscv_read_vlenb(cpu, kvmcpu, reglist);
-     }
- 
--    kvm_riscv_check_sbi_dbcn_support(cpu, kvmcpu, reglist);
-+    kvm_riscv_check_sbi_dbcn_support(cpu, reglist);
- }
- 
- static void riscv_init_kvm_registers(Object *cpu_obj)
 -- 
 2.39.5
 
