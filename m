@@ -2,36 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AF2FAC346D
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:13:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FC29AC3477
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:14:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJADX-0004kb-F8; Sun, 25 May 2025 08:12:41 -0400
+	id 1uJAEX-0007lr-2m; Sun, 25 May 2025 08:13:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJAC9-00017p-W1; Sun, 25 May 2025 08:11:15 -0400
+ id 1uJACD-0001Gm-RY; Sun, 25 May 2025 08:11:21 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJAC7-0003ud-Vh; Sun, 25 May 2025 08:11:13 -0400
+ id 1uJACB-0003ux-7O; Sun, 25 May 2025 08:11:16 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id ADB6C124E69;
+ by isrv.corpit.ru (Postfix) with ESMTP id B95C4124E6A;
  Sun, 25 May 2025 15:08:18 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id B6AA5215FD0;
+ by tsrv.corpit.ru (Postfix) with ESMTP id C5316215FD1;
  Sun, 25 May 2025 15:08:19 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
- Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.1 55/59] migration/multifd: Don't send device state
- packets with zerocopy flag
-Date: Sun, 25 May 2025 15:08:12 +0300
-Message-Id: <20250525120818.273372-32-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Xu <peterx@redhat.com>,
+ "Dr . David Alan Gilbert" <dave@treblig.org>,
+ Juraj Marcin <jmarcin@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-10.0.1 56/59] migration: Allow caps to be set when preempt or
+ multifd cap enabled
+Date: Sun, 25 May 2025 15:08:13 +0300
+Message-Id: <20250525120818.273372-33-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
 References: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
@@ -60,58 +59,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+From: Peter Xu <peterx@redhat.com>
 
-If zerocopy is enabled for multifd then QIO_CHANNEL_WRITE_FLAG_ZERO_COPY
-flag is forced into all multifd channel write calls via p->write_flags
-that was setup in multifd_nocomp_send_setup().
+With commit 82137e6c8c ("migration: enforce multifd and postcopy preempt to
+be set before incoming"), and if postcopy preempt / multifd is enabled, one
+cannot setup any capability because these checks would always fail.
 
-However, device state packets aren't compatible with zerocopy - the data
-buffer isn't getting kept pinned until multifd channel flush.
+(qemu) migrate_set_capability xbzrle off
+Error: Postcopy preempt must be set before incoming starts
 
-Make sure to mask that QIO_CHANNEL_WRITE_FLAG_ZERO_COPY flag in a multifd
-send thread if the data being sent is device state.
+To fix it, check existing cap and only raise an error if the specific cap
+changed.
 
-Fixes: 0525b91a0b99 ("migration/multifd: Device state transfer support - send side")
-Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/3bd5f48578e29f3a78f41b1e4fbea3d4b2d9b136.1747403393.git.maciej.szmigiero@oracle.com
+Fixes: 82137e6c8c ("migration: enforce multifd and postcopy preempt to be set before incoming")
+Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
+Reviewed-by: Juraj Marcin <jmarcin@redhat.com>
 Signed-off-by: Peter Xu <peterx@redhat.com>
-(cherry picked from commit 6be7696129b302830a9cff7e30484e08c2d64b57)
+(cherry picked from commit 17bec9235bb0775cf8dec4103c167757ee8898f3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/migration/multifd.c b/migration/multifd.c
-index dfb5189f0e..198763bada 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -695,6 +695,7 @@ static void *multifd_send_thread(void *opaque)
-         if (qatomic_load_acquire(&p->pending_job)) {
-             bool is_device_state = multifd_payload_device_state(p->data);
-             size_t total_size;
-+            int write_flags_masked = 0;
+diff --git a/migration/options.c b/migration/options.c
+index b0ac2ea408..5dc290c292 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -555,7 +555,7 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+             return false;
+         }
  
-             p->flags = 0;
-             p->iovs_num = 0;
-@@ -702,6 +703,9 @@ static void *multifd_send_thread(void *opaque)
+-        if (migrate_incoming_started()) {
++        if (!migrate_postcopy_preempt() && migrate_incoming_started()) {
+             error_setg(errp,
+                        "Postcopy preempt must be set before incoming starts");
+             return false;
+@@ -563,7 +563,7 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+     }
  
-             if (is_device_state) {
-                 multifd_device_state_send_prepare(p);
-+
-+                /* Device state packets cannot be sent via zerocopy */
-+                write_flags_masked |= QIO_CHANNEL_WRITE_FLAG_ZERO_COPY;
-             } else {
-                 ret = multifd_send_state->ops->send_prepare(p, &local_err);
-                 if (ret != 0) {
-@@ -723,7 +727,8 @@ static void *multifd_send_thread(void *opaque)
-                                               &p->data->u.ram, &local_err);
-             } else {
-                 ret = qio_channel_writev_full_all(p->c, p->iov, p->iovs_num,
--                                                  NULL, 0, p->write_flags,
-+                                                  NULL, 0,
-+                                                  p->write_flags & ~write_flags_masked,
-                                                   &local_err);
-             }
- 
+     if (new_caps[MIGRATION_CAPABILITY_MULTIFD]) {
+-        if (migrate_incoming_started()) {
++        if (!migrate_multifd() && migrate_incoming_started()) {
+             error_setg(errp, "Multifd must be set before incoming starts");
+             return false;
+         }
 -- 
 2.39.5
 
