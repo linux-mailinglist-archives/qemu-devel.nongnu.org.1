@@ -2,42 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6803AC3461
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:11:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E8F0AC345F
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 14:10:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJABA-0005tM-NQ; Sun, 25 May 2025 08:10:12 -0400
+	id 1uJAAd-0004kC-MW; Sun, 25 May 2025 08:09:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJA9l-0004X5-V6; Sun, 25 May 2025 08:08:47 -0400
+ id 1uJA9o-0004X9-8W; Sun, 25 May 2025 08:08:48 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJA9i-0003Ev-3H; Sun, 25 May 2025 08:08:44 -0400
+ id 1uJA9k-0003Fq-7s; Sun, 25 May 2025 08:08:46 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6890E124E50;
+ by isrv.corpit.ru (Postfix) with ESMTP id 718DA124E51;
  Sun, 25 May 2025 15:08:17 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id 74CCF215FB7;
+ by tsrv.corpit.ru (Postfix) with ESMTP id 7F757215FB8;
  Sun, 25 May 2025 15:08:18 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Kohei Tokunaga <ktokunaga.mail@gmail.com>,
+Cc: qemu-stable@nongnu.org, Ziqiao Kong <ziqiaokong@gmail.com>,
  Alistair Francis <alistair.francis@wdc.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-10.0.1 30/59] hw/riscv: Fix type conflict of GLib function
- pointers
-Date: Sun, 25 May 2025 15:07:47 +0300
-Message-Id: <20250525120818.273372-7-mjt@tls.msk.ru>
+Subject: [Stable-10.0.1 31/59] target/riscv: fix endless translation loop on
+ big endian systems
+Date: Sun, 25 May 2025 15:07:48 +0300
+Message-Id: <20250525120818.273372-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
 References: <qemu-stable-10.0.1-20250525112807@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,42 +60,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Ziqiao Kong <ziqiaokong@gmail.com>
 
-qtest_set_command_cb passed to g_once should match GThreadFunc,
-which it does not.  But using g_once is actually unnecessary,
-because the function is called by riscv_harts_realize() under
-the Big QEMU Lock.
+On big endian systems, pte and updated_pte hold big endian host data
+while pte_pa points to little endian target data. This means the branch
+at cpu_helper.c:1669 will be always satisfied and restart translation,
+causing an endless translation loop.
 
-Reported-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+The correctness of this patch can be deduced by:
+
+old_pte will hold value either from cpu_to_le32/64(pte) or
+cpu_to_le32/64(updated_pte), both of wich is litte endian. After that,
+an in-place conversion by le32/64_to_cpu(old_pte) ensures that old_pte
+now is in native endian, same with pte. Therefore, the endianness of the
+both side of if (old_pte != pte) is correct.
+
+Signed-off-by: Ziqiao Kong <ziqiaokong@gmail.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Kohei Tokunaga <ktokunaga.mail@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20250410161722.595634-1-pbonzini@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20250415080254.3667878-2-ziqiaokong@gmail.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 Cc: qemu-stable@nongnu.org
-(cherry picked from commit 56cde18d048e1e1f889e31f7553e1f39f03eeec5)
+(cherry picked from commit ad63158bdb33dab5704ea1cf740d2ea0387175df)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/riscv/riscv_hart.c b/hw/riscv/riscv_hart.c
-index a55d156668..bb9104bae0 100644
---- a/hw/riscv/riscv_hart.c
-+++ b/hw/riscv/riscv_hart.c
-@@ -104,8 +104,11 @@ static bool csr_qtest_callback(CharBackend *chr, gchar **words)
- 
- static void riscv_cpu_register_csr_qtest_callback(void)
- {
--    static GOnce once;
--    g_once(&once, (GThreadFunc)qtest_set_command_cb, csr_qtest_callback);
-+    static bool first = true;
-+    if (first) {
-+        first = false;
-+        qtest_set_command_cb(csr_qtest_callback);
-+    }
- }
- #endif
- 
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index 6c4391d96b..3233b66e7e 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -1662,9 +1662,11 @@ static int get_physical_address(CPURISCVState *env, hwaddr *physical,
+             target_ulong *pte_pa = qemu_map_ram_ptr(mr->ram_block, addr1);
+             target_ulong old_pte;
+             if (riscv_cpu_sxl(env) == MXL_RV32) {
+-                old_pte = qatomic_cmpxchg((uint32_t *)pte_pa, pte, updated_pte);
++                old_pte = qatomic_cmpxchg((uint32_t *)pte_pa, cpu_to_le32(pte), cpu_to_le32(updated_pte));
++                old_pte = le32_to_cpu(old_pte);
+             } else {
+-                old_pte = qatomic_cmpxchg(pte_pa, pte, updated_pte);
++                old_pte = qatomic_cmpxchg(pte_pa, cpu_to_le64(pte), cpu_to_le64(updated_pte));
++                old_pte = le64_to_cpu(old_pte);
+             }
+             if (old_pte != pte) {
+                 goto restart;
 -- 
 2.39.5
 
