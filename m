@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94796AC33A7
-	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 11:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB8EAC3396
+	for <lists+qemu-devel@lfdr.de>; Sun, 25 May 2025 11:46:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJ7uV-00016p-EA; Sun, 25 May 2025 05:44:51 -0400
+	id 1uJ7uZ-0001La-IY; Sun, 25 May 2025 05:44:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJ7uA-0000s4-Bc; Sun, 25 May 2025 05:44:30 -0400
+ id 1uJ7uU-0001Eg-Ru; Sun, 25 May 2025 05:44:50 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1uJ7u8-0004lX-DT; Sun, 25 May 2025 05:44:30 -0400
+ id 1uJ7uT-0004lj-8o; Sun, 25 May 2025 05:44:50 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DBEDB124DEC;
+ by isrv.corpit.ru (Postfix) with ESMTP id E54C1124DED;
  Sun, 25 May 2025 12:42:47 +0300 (MSK)
 Received: from think4mjt.origo (mjtthink.wg.tls.msk.ru [192.168.177.146])
- by tsrv.corpit.ru (Postfix) with ESMTP id C0844215F14;
+ by tsrv.corpit.ru (Postfix) with ESMTP id C97A1215F15;
  Sun, 25 May 2025 12:42:48 +0300 (MSK)
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.2.4 58/62] qapi/misc-target: Fix the doc to distinguish
- query-sgx and query-sgx-capabilities
-Date: Sun, 25 May 2025 12:42:41 +0300
-Message-Id: <20250525094246.174612-24-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Xu <peterx@redhat.com>,
+ "Dr . David Alan Gilbert" <dave@treblig.org>,
+ Juraj Marcin <jmarcin@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.2.4 59/62] migration: Allow caps to be set when preempt or
+ multifd cap enabled
+Date: Sun, 25 May 2025 12:42:42 +0300
+Message-Id: <20250525094246.174612-25-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <qemu-stable-9.2.4-20250525112803@cover.tls.msk.ru>
 References: <qemu-stable-9.2.4-20250525112803@cover.tls.msk.ru>
@@ -59,60 +59,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+From: Peter Xu <peterx@redhat.com>
 
-There're 2 QMP commands: query-sgx and query-sgx-capabilities, but
-their outputs are very similar and the documentation lacks clear
-differentiation.
+With commit 82137e6c8c ("migration: enforce multifd and postcopy preempt to
+be set before incoming"), and if postcopy preempt / multifd is enabled, one
+cannot setup any capability because these checks would always fail.
 
-From the codes, query-sgx is used to gather guest's SGX capabilities
-(including SGX related CPUIDs and EPC sections' size, in SGXInfo), and
-if guest doesn't have SGX, then QEMU will report the error message.
+(qemu) migrate_set_capability xbzrle off
+Error: Postcopy preempt must be set before incoming starts
 
-On the other hand, query-sgx-capabilities is used to gather host's SGX
-capabilities (descripted by SGXInfo as well). And if host doesn't
-support SGX, then QEMU will also report the error message.
+To fix it, check existing cap and only raise an error if the specific cap
+changed.
 
-Considering that SGXInfo is already documented and both these 2 commands
-have enough error messages (for the exception case in their codes).
-
-Therefore the QAPI documentation for these two commands only needs to
-emphasize that one of them applies to the guest and the other to the
-host.
-
-Fix their documentation to reflect this difference.
-
-Reported-by: Markus Armbruster <armbru@redhat.com>
-Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Acked-by: Markus Armbruster <armbru@redhat.com>
-Link: https://lore.kernel.org/r/20250513143131.2008078-3-zhao1.liu@intel.com
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 7f2131c35c1781ca41c62dc26fd93282e1351323)
+Fixes: 82137e6c8c ("migration: enforce multifd and postcopy preempt to be set before incoming")
+Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
+Reviewed-by: Juraj Marcin <jmarcin@redhat.com>
+Signed-off-by: Peter Xu <peterx@redhat.com>
+(cherry picked from commit 17bec9235bb0775cf8dec4103c167757ee8898f3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/qapi/misc-target.json b/qapi/misc-target.json
-index 8d70bd24d8..827515c363 100644
---- a/qapi/misc-target.json
-+++ b/qapi/misc-target.json
-@@ -380,7 +380,7 @@
- ##
- # @query-sgx:
- #
--# Returns information about SGX
-+# Returns information about configured SGX capabilities of guest
- #
- # Returns: @SGXInfo
- #
-@@ -399,7 +399,7 @@
- ##
- # @query-sgx-capabilities:
- #
--# Returns information from host SGX capabilities
-+# Returns information about SGX capabilities of host
- #
- # Returns: @SGXInfo
- #
+diff --git a/migration/options.c b/migration/options.c
+index ad8d6989a8..0ee1c74937 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -543,7 +543,7 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+             return false;
+         }
+ 
+-        if (migrate_incoming_started()) {
++        if (!migrate_postcopy_preempt() && migrate_incoming_started()) {
+             error_setg(errp,
+                        "Postcopy preempt must be set before incoming starts");
+             return false;
+@@ -551,7 +551,7 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+     }
+ 
+     if (new_caps[MIGRATION_CAPABILITY_MULTIFD]) {
+-        if (migrate_incoming_started()) {
++        if (!migrate_multifd() && migrate_incoming_started()) {
+             error_setg(errp, "Multifd must be set before incoming starts");
+             return false;
+         }
 -- 
 2.39.5
 
