@@ -2,22 +2,22 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65AA8AC4039
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 May 2025 15:22:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9192AAC4054
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 May 2025 15:28:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJXmQ-00009v-FK; Mon, 26 May 2025 09:22:14 -0400
+	id 1uJXnA-0000xM-H1; Mon, 26 May 2025 09:23:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uJXmB-0008VO-Ir; Mon, 26 May 2025 09:21:59 -0400
+ id 1uJXmZ-0000Ec-4F; Mon, 26 May 2025 09:22:23 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1uJXm7-0000Ip-5a; Mon, 26 May 2025 09:21:57 -0400
+ id 1uJXmU-0000Jc-Af; Mon, 26 May 2025 09:22:20 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 88825445EE;
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 91DB1445EF;
  Mon, 26 May 2025 15:21:48 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-block@nongnu.org
@@ -26,9 +26,10 @@ Cc: qemu-devel@nongnu.org, kwolf@redhat.com, den@virtuozzo.com,
  eblake@redhat.com, jsnow@redhat.com, vsementsov@yandex-team.ru,
  xiechanglong.d@gmail.com, wencongyang2@huawei.com, berto@igalia.com,
  fam@euphon.net, ari@tuxera.com
-Subject: [PATCH v3 16/24] block: move drain outside of quorum_del_child()
-Date: Mon, 26 May 2025 15:21:32 +0200
-Message-Id: <20250526132140.1641377-17-f.ebner@proxmox.com>
+Subject: [PATCH v3 17/24] blockdev: drain while unlocked in
+ internal_snapshot_action()
+Date: Mon, 26 May 2025 15:21:33 +0200
+Message-Id: <20250526132140.1641377-18-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250526132140.1641377-1-f.ebner@proxmox.com>
 References: <20250526132140.1641377-1-f.ebner@proxmox.com>
@@ -57,41 +58,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The quorum_del_child() callback runs under the graph lock, so it is
-not allowed to drain. It is only called as the .bdrv_del_child()
-callback, which is only called in the bdrv_del_child() function, which
-also runs under the graph lock.
-
-The bdrv_del_child() function is called by qmp_x_blockdev_change().
-A drained section was already introduced there by commit "block: move
-drain out of quorum_add_child()".
-
-This finally finishes moving out the drain to places that are not
-under the graph lock started in "block: move draining out of
-bdrv_change_aio_context() and mark GRAPH_RDLOCK".
+This is in preparation to mark bdrv_drained_begin() as GRAPH_UNLOCKED.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
 
 No changes in v3.
 
- block/quorum.c | 2 --
- 1 file changed, 2 deletions(-)
+ blockdev.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/block/quorum.c b/block/quorum.c
-index 81407a38ee..cc3bc5f4e7 100644
---- a/block/quorum.c
-+++ b/block/quorum.c
-@@ -1147,9 +1147,7 @@ quorum_del_child(BlockDriverState *bs, BdrvChild *child, Error **errp)
-             (s->num_children - i - 1) * sizeof(BdrvChild *));
-     s->children = g_renew(BdrvChild *, s->children, --s->num_children);
+diff --git a/blockdev.c b/blockdev.c
+index bd5ca77619..506755bef1 100644
+--- a/blockdev.c
++++ b/blockdev.c
+@@ -1208,7 +1208,7 @@ static void internal_snapshot_action(BlockdevSnapshotInternal *internal,
+     Error *local_err = NULL;
+     const char *device;
+     const char *name;
+-    BlockDriverState *bs;
++    BlockDriverState *bs, *check_bs;
+     QEMUSnapshotInfo old_sn, *sn;
+     bool ret;
+     int64_t rt;
+@@ -1216,7 +1216,7 @@ static void internal_snapshot_action(BlockdevSnapshotInternal *internal,
+     int ret1;
  
--    bdrv_drain_all_begin();
-     bdrv_unref_child(bs, child);
--    bdrv_drain_all_end();
+     GLOBAL_STATE_CODE();
+-    GRAPH_RDLOCK_GUARD_MAINLOOP();
++    bdrv_graph_rdlock_main_loop();
  
-     quorum_refresh_flags(bs);
- }
+     tran_add(tran, &internal_snapshot_drv, state);
+ 
+@@ -1225,14 +1225,29 @@ static void internal_snapshot_action(BlockdevSnapshotInternal *internal,
+ 
+     bs = qmp_get_root_bs(device, errp);
+     if (!bs) {
++        bdrv_graph_rdunlock_main_loop();
+         return;
+     }
+ 
+     state->bs = bs;
+ 
++    /* Need to drain while unlocked. */
++    bdrv_graph_rdunlock_main_loop();
+     /* Paired with .clean() */
+     bdrv_drained_begin(bs);
+ 
++    GRAPH_RDLOCK_GUARD_MAINLOOP();
++
++    /* Make sure the root bs did not change with the drain. */
++    check_bs = qmp_get_root_bs(device, errp);
++    if (bs != check_bs) {
++        if (check_bs) {
++            error_setg(errp, "Block node of device '%s' unexpectedly changed",
++                       device);
++        } /* else errp is already set */
++        return;
++    }
++
+     if (bdrv_op_is_blocked(bs, BLOCK_OP_TYPE_INTERNAL_SNAPSHOT, errp)) {
+         return;
+     }
 -- 
 2.39.5
 
