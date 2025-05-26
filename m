@@ -2,69 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEB14AC4189
-	for <lists+qemu-devel@lfdr.de>; Mon, 26 May 2025 16:36:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0C36AC414A
+	for <lists+qemu-devel@lfdr.de>; Mon, 26 May 2025 16:22:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1uJYvg-0002to-Pm; Mon, 26 May 2025 10:35:52 -0400
+	id 1uJYhP-00011r-5X; Mon, 26 May 2025 10:21:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <michael.scherle@rz.uni-freiburg.de>)
- id 1uJXYi-00051J-6K
- for qemu-devel@nongnu.org; Mon, 26 May 2025 09:08:04 -0400
-Received: from c1422.mx.srv.dfn.de ([194.95.239.70])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <michael.scherle@rz.uni-freiburg.de>)
- id 1uJXYd-0006UU-SB
- for qemu-devel@nongnu.org; Mon, 26 May 2025 09:08:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
- rz.uni-freiburg.de; h=content-transfer-encoding:content-type
- :content-type:in-reply-to:from:from:content-language:references
- :subject:subject:user-agent:mime-version:date:date:message-id
- :received; s=s1; t=1748264804; x=1750079205; bh=wpkA5r3WAaf/ZzVr
- bOru3pDgiFVDrttyEY94RwSVO9Q=; b=bGf1C/6AfFH7t+8VaqWYHiTufEM29PzC
- RD4b2gE+N/Qyok9BJmr+16uo+GTbIszYShKZMev7SDdfHsIMMIodvC18QBcOhzeU
- dqpssQVtHXG+8+fOpTN1tO+E+Y+XW5Bd5X63mo99K+efTFQ8aLdRXlYFo0rVzn2u
- Q7C4w19xVCI=
-Received: from fe1.uni-freiburg.de (fe1.uni-freiburg.de [132.230.2.221])
- by c1422.mx.srv.dfn.de (Postfix) with ESMTP id AE0DF2C0155
- for <qemu-devel@nongnu.org>; Mon, 26 May 2025 15:06:44 +0200 (CEST)
-Received: from [2001:7c0:2517:20:2d65:91f6:f0da:8564] (account
- michael.scherle@rz.uni-freiburg.de HELO
- [IPV6:2001:7c0:2517:20:2d65:91f6:f0da:8564])
- by mail.uni-freiburg.de (CommuniGate Pro SMTP 6.3.19)
- with ESMTPSA id 47700398; Mon, 26 May 2025 15:06:44 +0200
-Message-ID: <7dba8ee4-3af2-4bdb-9edb-df49fea1e842@rz.uni-freiburg.de>
-Date: Mon, 26 May 2025 15:06:44 +0200
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uJYh3-0000z9-07
+ for qemu-devel@nongnu.org; Mon, 26 May 2025 10:20:46 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1uJYgz-0007Kn-FD
+ for qemu-devel@nongnu.org; Mon, 26 May 2025 10:20:44 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3a4c6c0a9c7so1526174f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 26 May 2025 07:20:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1748269239; x=1748874039; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=nMwp4QRNJ8OAGlpjifsAwGcs42ixDJ8dmMqqy9rPA/0=;
+ b=ebCj8Uz44Zr+9Yv+vCrQveUMKrcmk8TERBLqo80x7DpGM4kuiY78wBh+4NVQHIcgtT
+ PqgaXB0F2VGzRgGFyac8nlsNMxFZZyoTJ52BRksDxwyjuG8unqhaX1JG06dek/EDhXwv
+ F9g/xyx1ETdTyiLkEEhO55Xcc4kqXgSrrP+T+oiWxClQalWhLyPxX5gTUOVvVMPaJTkz
+ CBdZgFcjUhp8hVgm7YCcFEWpD831St7ujFNzT2mrov13H0GmXJEQ2BkGRiSOMzda6qff
+ iQ5eZe4mWJLONRNKHasPyOQaCi1+sVsrX6IM+NxFdB81y+YQrgDlMTwtqo2wCPkVyWYS
+ oYPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1748269239; x=1748874039;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=nMwp4QRNJ8OAGlpjifsAwGcs42ixDJ8dmMqqy9rPA/0=;
+ b=t5g9yJukQXzBUtFVpfVgGYEhcmfSxBp5bMd0TFuLxnTeNmyluqgg2CRDKgKLZz3aRV
+ E8Q7zb4WX2DM1Z6f5EeQG8TsRF/7JtLADFp872uiYcVFjr207yBvJrgCMFSWIXK77VJz
+ z7kiC8Gmwy5PPGbTRoiPOMtn4SnG5R/24utPx/oDrbLst5+WfJK980LN7Jkxw5kBBRz0
+ 5gM7/oPWngSYq8T+vWW5mlUuwckZL9O8kOlpD1y60bLMhonMhSe+GFHm2N4ExWT/GUQf
+ XIRA6BtBi+TqceImKbCadn/qulXPo5oc9InYf/BT5BhBioqOV4oTb9R5utTapf7X/dqS
+ /8HQ==
+X-Gm-Message-State: AOJu0YyLi2mmxRudaizdf5wC5pNnP5YlREO/zyOjz16Oi36wvM8rdVh1
+ 0tX5PByOfHSUSf6eKG3czm4sDT2/yda57TrL/zk0mqhHpG3V7JcatEYtU91JLNoydk8=
+X-Gm-Gg: ASbGnct/5QSwizNdIMmvwH3+UotHOl5JZR87mbprNPxml34Wg93frnOrpNf4gHMOg8z
+ TFJq5NwAmOnj3/ALulQl8R7BGKLUbHMOtJTPMD/NXVhXiy3h5cqdqLv2PiVNbNyBRNrRrKkHu2b
+ 07ZqwmWYFtsNAvodLEuDRy3V+YbgBLQT1W017UIhznf4NEWc9ioqonYYX9Aon9bmGRBeRj2uoik
+ BLE/XSE1j69OxaAp5s6M6q6f83NkixeiAjqsAKnvizW0TH0QjVgCLszVAsmxBZH6C7DrEn4puiF
+ a4nDOiXSHDaGjjzFlsCfH6+ftxf2AVDQY1qa5AleLUDhxOGN3JlcOwyukMHyv0kuNF+9f/LpFPf
+ SrAhd7nktneKPD9PyuWo=
+X-Google-Smtp-Source: AGHT+IGmh0bgBhAjThk2cOUJAhEClFU4oZK0IE+frlpGoj5GEhUCHMaIxgwoNTOpnsASDwPf0iNlyQ==
+X-Received: by 2002:a5d:64cb:0:b0:3a1:f564:cd9d with SMTP id
+ ffacd0b85a97d-3a4cb4b8c18mr7422719f8f.36.1748269239265; 
+ Mon, 26 May 2025 07:20:39 -0700 (PDT)
+Received: from [192.168.69.138] (88-187-86-199.subs.proxad.net.
+ [88.187.86.199]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3a4de9c9853sm961921f8f.27.2025.05.26.07.20.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 26 May 2025 07:20:38 -0700 (PDT)
+Message-ID: <649e4c91-fb4c-4cb2-9810-b1ee885ffea3@linaro.org>
+Date: Mon, 26 May 2025 16:20:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH v4 5/7] ui/console-gl: Add a helper to create a texture with
- linear memory layout
-To: Vivek Kasireddy <vivek.kasireddy@intel.com>, qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Frediano Ziglio <freddy77@gmail.com>, Dongwon Kim <dongwon.kim@intel.com>
-References: <20250515024734.758335-1-vivek.kasireddy@intel.com>
- <20250515024734.758335-6-vivek.kasireddy@intel.com>
+Subject: Re: [PATCH 0/3] hw/boards: Remove MachineState::usb_disabled field
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Nicholas Piggin <npiggin@gmail.com>, Yanan Wang <wangyanan55@huawei.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Zhao Liu <zhao1.liu@intel.com>, qemu-ppc@nongnu.org,
+ Eduardo Habkost <eduardo@habkost.net>, Alexander Graf <agraf@csgraf.de>,
+ Markus Armbruster <armbru@redhat.com>
+References: <20250526130006.49817-1-philmd@linaro.org>
+ <1c9f8e9d-1ee6-b2d9-98d6-5640f59f0e4a@eik.bme.hu>
 Content-Language: en-US
-From: Michael Scherle <michael.scherle@rz.uni-freiburg.de>
-In-Reply-To: <20250515024734.758335-6-vivek.kasireddy@intel.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <1c9f8e9d-1ee6-b2d9-98d6-5640f59f0e4a@eik.bme.hu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=194.95.239.70;
- envelope-from=michael.scherle@rz.uni-freiburg.de; helo=c1422.mx.srv.dfn.de
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_VALIDITY_RPBL_BLOCKED=0.001, RCVD_IN_VALIDITY_SAFE_BLOCKED=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 26 May 2025 10:35:34 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,130 +108,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Great to see this patch making progress.
-
-I've tested it extensively, and unfortunately, I’ve noticed a memory 
-leak in surface_gl_create_texture_from_fd(). The memory leak is hard to 
-see since the memory is owned by the gpu driver.
-On Intel hardware, it's possible to observe the leak using:
-
-cat /sys/module/i915/refcnt
-or
-xpu-smi ps
-
-In on of my use case—which involves frequent scanout disable/enable 
-cycles—the leak is quite apparent. However, in more typical scenarios, 
-it might be difficult to catch.
-
-The issue stems from the mem_obj not being deleted after use. I’ve put 
-together a minimal modification to address it:
-
-
-
-On 15.05.25 04:45, Vivek Kasireddy wrote:
-> There are cases where we do not want the memory layout of a texture to
-> be tiled as the component processing the texture would not know how to
-> de-tile either via software or hardware. Therefore, ensuring that the
-> memory backing the texture has a linear layout is absolutely necessary
-> in these situations.
+On 26/5/25 15:18, BALATON Zoltan wrote:
+> On Mon, 26 May 2025, Philippe Mathieu-Daudé wrote:
+>> Only add default devices checking defaults_enabled().
+>> Remove the unused usb_disabled field in MachineState.
 > 
-> Cc: Gerd Hoffmann <kraxel@redhat.com>
-> Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-> Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> Cc: Frediano Ziglio <freddy77@gmail.com>
-> Cc: Dongwon Kim <dongwon.kim@intel.com>
-> Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-> ---
->   include/ui/console.h |  2 ++
->   ui/console-gl.c      | 32 ++++++++++++++++++++++++++++++++
->   2 files changed, 34 insertions(+)
+> At least for Mac machines this may be more complex. I think there is a - 
+> usb switch to enable/disable USB independently of defaults and due to 
+> some bugs some MacOS versions may need this to boot so maybe it's used.
+
+If the user asks -usb off, we shouldn't re-enable it in the shadow.
+
+If a configuration isn't usable, we have to report a configuration
+error, possibly providing hints about what should be fixed.
+
 > 
-> diff --git a/include/ui/console.h b/include/ui/console.h
-> index 46b3128185..5cfa6ae215 100644
-> --- a/include/ui/console.h
-> +++ b/include/ui/console.h
-> @@ -422,6 +422,8 @@ bool console_gl_check_format(DisplayChangeListener *dcl,
->                                pixman_format_code_t format);
->   void surface_gl_create_texture(QemuGLShader *gls,
->                                  DisplaySurface *surface);
-> +bool surface_gl_create_texture_from_fd(DisplaySurface *surface,
-> +                                       int fd, GLuint *texture);
->   void surface_gl_update_texture(QemuGLShader *gls,
->                                  DisplaySurface *surface,
->                                  int x, int y, int w, int h);
-> diff --git a/ui/console-gl.c b/ui/console-gl.c
-> index 103b954017..97f7989651 100644
-> --- a/ui/console-gl.c
-> +++ b/ui/console-gl.c
-> @@ -25,6 +25,7 @@
->    * THE SOFTWARE.
->    */
->   #include "qemu/osdep.h"
-> +#include "qemu/error-report.h"
->   #include "ui/console.h"
->   #include "ui/shader.h"
->   
-> @@ -96,6 +97,37 @@ void surface_gl_create_texture(QemuGLShader *gls,
->       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
->   }
->   
-> +bool surface_gl_create_texture_from_fd(DisplaySurface *surface,
-> +                                       int fd, GLuint *texture)
-> +{
-> +    unsigned long size = surface_stride(surface) * surface_height(surface);
-> +    GLenum err = glGetError();
-> +    GLuint mem_obj;
+> Regards,
+> BALATON Zoltan
+> 
+>> Based-on: <20250526112346.48744-1-philmd@linaro.org>
+>>          "hw/ppc: Fix --without-default-devices build"
+>>
+>> Philippe Mathieu-Daudé (3):
+>>  hw/ppc/spapr: Only create default devices when requested
+>>  hw/ppc/mac_newworld: Only create default devices when requested
+>>  hw/boards: Remove MachineState::usb_disabled field
+>>
+>> include/hw/boards.h   | 1 -
+>> hw/core/machine.c     | 1 -
+>> hw/ppc/mac_newworld.c | 3 +--
+>> hw/ppc/spapr.c        | 3 +--
+>> 4 files changed, 2 insertions(+), 6 deletions(-)
+>>
+>>
 
-+    GLuint mem_obj = 0;
-
-> +
-> +    if (!epoxy_has_gl_extension("GL_EXT_memory_object") ||
-> +        !epoxy_has_gl_extension("GL_EXT_memory_object_fd")) {
-> +        return false;
-> +    }
-> +
-> +#ifdef GL_EXT_memory_object_fd
-> +    glCreateMemoryObjectsEXT(1, &mem_obj);
-> +    glImportMemoryFdEXT(mem_obj, size, GL_HANDLE_TYPE_OPAQUE_FD_EXT, fd);
-> +
-> +    err = glGetError();
-> +    if (err != GL_NO_ERROR) {
-
-+          if (mem_obj) {
-+              glDeleteMemoryObjectsEXT(1, &mem_obj);
-+          }
-
-> +        error_report("spice: cannot import memory object from fd");
-> +        return false;
-> +    }
-> +
-> +    glGenTextures(1, texture);
-> +    glBindTexture(GL_TEXTURE_2D, *texture);
-> +    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_TILING_EXT, GL_LINEAR_TILING_EXT);
-> +    glTexStorageMem2DEXT(GL_TEXTURE_2D, 1, GL_RGBA8, surface_width(surface),
-> +                         surface_height(surface), mem_obj, 0);
-> +#endif
-
-+    glDeleteMemoryObjectsEXT(1, &mem_obj);
-
-> +    return *texture > 0 && glGetError() == GL_NO_ERROR;
-> +}
-> +
->   void surface_gl_update_texture(QemuGLShader *gls,
->                                  DisplaySurface *surface,
->                                  int x, int y, int w, int h)
-
-
-
-That said, my OpenGL knowledge is somewhat limited, and the 
-documentation wasn’t entirely clear to me on whether deleting the memory 
-object while the texture is still being used, is always safe. Based on a 
-quick look at the iris and llvmpipe implementations, it appears to be 
-acceptable.
-
-If that's not the case, an alternative fix could follow this approach 
-instead: 
-https://gitlab.uni-freiburg.de/opensourcevdi/qemu/-/commit/4ca806871c141089be16af25c1820d3e04f3e27d
-
-Greetings Michael
 
